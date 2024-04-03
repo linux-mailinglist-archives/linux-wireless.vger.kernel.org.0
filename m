@@ -1,75 +1,75 @@
-Return-Path: <linux-wireless+bounces-5829-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5830-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 246AF897248
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 16:19:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18C3889724B
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 16:19:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FEA61F2220D
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 14:19:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 996371F23125
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 14:19:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3EF14BF98;
-	Wed,  3 Apr 2024 14:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71FEC14C588;
+	Wed,  3 Apr 2024 14:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ks0grguv"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uNaRJZXv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8228114A637
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Apr 2024 14:17:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3729A14B072
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Apr 2024 14:17:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712153839; cv=none; b=j4dilAh0YsaJ0BVhtidMGg06t/jaMnnCXjYaY78hP454ZVNrlLxnP+5bKgNs5WkqUbWpYqI8yA9LFa1ZOJNHc8KtAeNvbT7PX/62gIn/PCt9HxKkXjfjiESZHAeIi7EjCplNI7v6roDh/GxEgiTQny62E3XlbNMFDj4Gs6XEqPk=
+	t=1712153840; cv=none; b=P9pgbFd7TX23WzczHr+OJTBxSqh6cmneJJ9etB3DbGRQqr/VR6QkX8HSRBuIO7PEKhartuaIe+quoJOw87rxyiZwUgZY6wqZdFNX/TRMv5213X7B2exRR3jY929e06RoRweecAM41Ue/RRLDfEutjFAgT3Tds88+YFcs5D7Vme0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712153839; c=relaxed/simple;
-	bh=+oQOj54E8azRB6OAy0SBTyBX7qm6Cw4f0BTTdrV/19g=;
+	s=arc-20240116; t=1712153840; c=relaxed/simple;
+	bh=44MLP9zefnsNnal/9x3LUH01f3HB/XMi7tqRa1ODu/w=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qwywQ+c+QO4IxXCNEzHhARGtgSvMhKepJPp7KiL1BAm05I0VoSqtYj7qnX5hjvUldyb1kQfxMpOs00uaBfft0/LhAvhCthhezDPzjv64monEDp7PxoKV+RQlQSJoB9+ZbzVwZhrjQv3wuu4onOwnrarQzQWFsNFPOWvJuBoF/Cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ks0grguv; arc=none smtp.client-ip=209.85.218.44
+	 In-Reply-To:To:Cc; b=Ow/CG/sFW8TtVNudE7hNZjDsleeZheL47xYCrTomz08nK8n7qnAMhBmKoU43RSplJcT3zJxS0UnMb0bI6pBHigtyDs+bZg+/zC94TlEJtSLKPm09WpQR772JCGGupAcLyXFyHdPPlcsHHMaWZGwhH00I2jMEQ/7LoNklN4lWwPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uNaRJZXv; arc=none smtp.client-ip=209.85.208.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a4e60a64abcso170676266b.1
-        for <linux-wireless@vger.kernel.org>; Wed, 03 Apr 2024 07:17:16 -0700 (PDT)
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-56bf6591865so9532975a12.0
+        for <linux-wireless@vger.kernel.org>; Wed, 03 Apr 2024 07:17:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712153835; x=1712758635; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1712153836; x=1712758636; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=KtzghwkQC0PmjQC/FhDBGdEgi78pS9U5YA2ZXwW6cgM=;
-        b=ks0grguvOETbuTX2Mg9Hva8OdTgyp3ZoNri//mNIG4LhHfD5VN2y3OrEKkpEt3rEfw
-         a6OBRloYMaZRiJ8NqNsQqlACjkPyqVECFecuEJP9bOhTlsAlK+j0NmIv0/4VCDF2AJ+w
-         4sYorpaK029iWBNsxJggfB+ZJfOUUM4a5JaeF9EkmGAhBDqF0nZELGkaI+P+CtmjIgle
-         NDQeu3Ba59gqOrYNQ4Q5foTDPhS2uXujDUekdPE0bG6h4zeWdwOVWbm712ByIebupWfg
-         nP6a8Eflakj5Vv0N5yp3iqnT0tYkxgdDMDUC1AoRr2Cue1akSQjZgjvdTF+KyAGR2QqZ
-         jctA==
+        bh=B0vV1TVhRuXYRf/9v8gYugm0cKFpboW4ZZINajTG3+I=;
+        b=uNaRJZXvanAS5Bdenpj9jIK8YQ571I0xjJzdRUAElmKB2hjP4IDGTTPm3OnF9AYxx4
+         7Ay5aULnJM3CnwGKnsH2xrXofFpa8/s3lmOqAlrEEVlR461CJVkUNtGZnzs8m0Ly1eGY
+         r34hkVnT4aA4D0o5LsRm2LWkOiV+CZy06B2ADgxZ9btuC+Ik7TF7RKfQixNM0JUCTjoO
+         e9Rm9MrhT9Rmsb4VmXx0115fJpP8iyLmL/4Ske52nHls0c17c3xiUMDXOj3/OhJVhcux
+         FaNc2jorEMyzsupyqxxyCcvj0A2DxcZXEr5+5dsWEUD5F/Wn6qud3yrEx1g3XEjfwE8f
+         1tKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712153835; x=1712758635;
+        d=1e100.net; s=20230601; t=1712153836; x=1712758636;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KtzghwkQC0PmjQC/FhDBGdEgi78pS9U5YA2ZXwW6cgM=;
-        b=S3Kdb1iQOCT50xdvwfuifQ2BMQfjsj0fe3/JTENOiPIHvlP2MWJ0lFecCCvcFpulcq
-         6FIQf08T+dtiAmUeqe5YMt0awy9GhPyKgIIwzKCrr+R+obNQZ3cG3PePsCR8ALXLxBKa
-         anTQSVomHdUwGeXAy37kn5Y5mUs+FRxeqo6an1mnotcmyzMN4Cq0+tTLyaA3hk/lorA8
-         FlOYYwRcmQ0CPjHs4aZPFk8OeGfEBzr9mhIKtQBb+Z5gbCQEbG8PGuij27S2Oomce1Hm
-         OdmNPMMDr15CgItZQ9SSoW3DXiRL94MpxJQpijqwokmsMUZv42m0HvKsMaURe1ctr0Cp
-         oG7A==
-X-Forwarded-Encrypted: i=1; AJvYcCWVqBVP/gQjlva57dM27C3btAYn6bkPf8zYo+X+vgong3p3Xe9uiLl8io2Eu3HQ/aGxF/4JUcMBpt/X5q0uW0yXaN7GmUk2vU8VbmhGOmM=
-X-Gm-Message-State: AOJu0YxdhCytFaOuipWP0FGXcSWBs+C0gxhTHk8BgCRS3CmtPeUrd2B9
-	K5OvwdLSGb3ymEAEOD1l3gqpqpy8DUVg8usxUQ8T+BZ1TrXnuSDKXRWJDNFmWT4=
-X-Google-Smtp-Source: AGHT+IHhgEWh9iPNOPHwnOG5Ucf0f1VjLhJAnC0jPd6Py8JOZqFE+ITUDFrj/tVu+BgC1bMNTDrVYA==
-X-Received: by 2002:a17:906:f203:b0:a4e:3841:8da9 with SMTP id gt3-20020a170906f20300b00a4e38418da9mr2445038ejb.23.1712153834987;
-        Wed, 03 Apr 2024 07:17:14 -0700 (PDT)
+        bh=B0vV1TVhRuXYRf/9v8gYugm0cKFpboW4ZZINajTG3+I=;
+        b=xP9G8XMXlVOH8SLx+btRYSmZ3A/dK/z+WZsHRjxISFSsfpD+tNR5MPaMo2qE2ug6dM
+         Xe9a/2GEGIizvdqMW9QX5yBVwXuQI4ku92Dk8Boa5kGNMLbsO9h0GtjlyJFox4bIZ0GW
+         ce8RsPLMRsQuFj+jNdmuoCFh6Q4Isq6k0fo+hjUmkF3FDb0Hx4bwFhfOMd0FUdKgZI7T
+         exCHVnRRhpvoXYAYaIOKsdA+JxKcEkF8Bu361XdaLJvxr7w3FhZURC7fOAYzZmhSFPgg
+         7aaLya/TfmC9XK7ANykoELMSBRrd1mh42GE+QvICp93bQDupLljnv0KEq085Yz2d5Lr1
+         QBlg==
+X-Forwarded-Encrypted: i=1; AJvYcCVa2bhF+ZYwz2KGHt/ijo0xHGaSr/wqdEB/PxCwGdurSavj6ksk1KbecVd3jU7UKQa5gdEXxktDCho/xL1GEnthkg2asA3OQJ/IYTxOPqo=
+X-Gm-Message-State: AOJu0YwRIUOa3vDzsbykqJIOQyQY19RrsDcdzGf+aNI1GX2XnbEc95oC
+	o1JhKMVpYqr5a1eja1+Kb2eqwcaY+dgjuXkTPeJ+pV+LeMR/zHa/Fg+geYA3cWo=
+X-Google-Smtp-Source: AGHT+IESXedZWS12j/IBeLIYCIeiTvUtDhGnVVmwc7Y65AKvMiVNSuQO/q5aF56JXsx/yKl9XqaeMg==
+X-Received: by 2002:a17:906:b889:b0:a4e:101e:8a97 with SMTP id hb9-20020a170906b88900b00a4e101e8a97mr1828471ejb.65.1712153836735;
+        Wed, 03 Apr 2024 07:17:16 -0700 (PDT)
 Received: from [127.0.1.1] ([178.197.223.16])
-        by smtp.gmail.com with ESMTPSA id he18-20020a1709073d9200b00a4729f093ecsm7737819ejc.53.2024.04.03.07.17.13
+        by smtp.gmail.com with ESMTPSA id he18-20020a1709073d9200b00a4729f093ecsm7737819ejc.53.2024.04.03.07.17.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Apr 2024 07:17:14 -0700 (PDT)
+        Wed, 03 Apr 2024 07:17:16 -0700 (PDT)
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Wed, 03 Apr 2024 16:16:54 +0200
-Subject: [PATCH v2 5/7] wifi: brcm80211: drop driver owner initialization
+Date: Wed, 03 Apr 2024 16:16:55 +0200
+Subject: [PATCH v2 6/7] wifi: mwifiex: drop driver owner initialization
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -78,7 +78,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240403-module-owner-sdio-v2-5-ae46d6b955eb@linaro.org>
+Message-Id: <20240403-module-owner-sdio-v2-6-ae46d6b955eb@linaro.org>
 References: <20240403-module-owner-sdio-v2-0-ae46d6b955eb@linaro.org>
 In-Reply-To: <20240403-module-owner-sdio-v2-0-ae46d6b955eb@linaro.org>
 To: Ulf Hansson <ulf.hansson@linaro.org>, 
@@ -96,23 +96,24 @@ Cc: linux-mmc@vger.kernel.org, linux-bluetooth@vger.kernel.org,
  linux-mediatek@lists.infradead.org, linux-wireless@vger.kernel.org, 
  ath10k@lists.infradead.org, brcm80211@lists.linux.dev, 
  brcm80211-dev-list.pdl@broadcom.com, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ Francesco Dolcini <francesco.dolcini@toradex.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=936;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=901;
  i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=+oQOj54E8azRB6OAy0SBTyBX7qm6Cw4f0BTTdrV/19g=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmDWTdk4remwYQ8MPd4+0bn1vbzqllLhREEFzZE
- nqHbYhDUiaJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZg1k3QAKCRDBN2bmhouD
- 10GHEACVe0SHPfWrkE8WfxpC0NwDclSzh8WdeUe8P2iGIhi2sSBmHMWdbEVvwA9PEG7eDB+lXHQ
- y3vG54Y+GTZz3oErC9uQb+hWN3JzA1tsIZww1h9xrezZ+dHz+FpsZhz6VWSG271LLle0fmTzzzC
- 3/SC+j3CiyPS/JRWizY1s4AxuFuSRiN67/LUGaXDQd5+VDig6n1gdH5oByYOnL2cZNDybG/fDje
- qSXiUl9pkheNK39WKuvwn5jVwJxdohynYCmR2ePhSJfLvyroUxXque3MgCqvk6DS61IR88VqP4X
- P3uEzcVFQCghvmhnv/Mj+gBdqOV/BJAjvC0Q0pwAfNKIv2A8LSd8KsvGgG6aalFW57nuOw8HC87
- 5RoT8klgd7VwJA2f0bvjXtsZXkoIoL+73dU3mShuF5Ara7wcxpXXBrzpZdrJ8exjN3L/UYqbAsr
- MjQGm0YUEnN7MshNVlBNwx39kWCCvv5HV6qF31vpKcYUNjuD2FXj1n17JGqMO4pTPCn2DAUeyvd
- gQ2Cs2YcDuT78OzcrktDA+vylKPDyonrGSChlZ4WZWO7oiy64jN1KTzFJHsdFO/0vC3oOX1ts/q
- au+zXHVRkAi0iqcmT28UKAxFFFpWHoKMiv/HLfDlAWvQrtH3zcR0IoZdl+WyAU+Wx+uXvOAyNji
- 8iU4ZZ+B2ce9nVw==
+ bh=44MLP9zefnsNnal/9x3LUH01f3HB/XMi7tqRa1ODu/w=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmDWTe16dq1dJEsJSnP/kRyVGwLiEnTFn788+oV
+ GGtYkan9UyJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZg1k3gAKCRDBN2bmhouD
+ 1/9kEACCfFciE1oJa5A3bFkEqBgQPN/py7DctCjUn70y9z0g5ME7fMcUi9khdsK8OM3rvoqne+o
+ U8NNqieNKtAO9IMi2CPA1wC8M4Wh9e4SCx5XngbxiNWP9/eEAnHvBGxckTaLGtPrX0yqgvpb8zf
+ 8DDyI6avfAZTM75Goy/SBVEFEQHhNDXHBwAsHJfHHerATA2Eb0RtNfrdl6KZNHpw9dBki/Gqguq
+ SmFaK64ZzF3NvOxY3j0bnSd7+TSXkt/XbCu94FYgP69uva7f608NittH/9PlF3lPqtwoMFZuite
+ C72R5lG5ygVaTQrAjmpVPU+ptiW1S4WE56ZoAMnE13XJ40cnXSfWCTvHVkap0FYipYZJ2jbI6ZW
+ T52u7f1yoFmxcJMxt+wi0OFJ5yr0sRPZ4ykTk0TE0FEnjdfZUTra0qpR1eTpP4SwDyNKwTHqerO
+ 7mCz2E+zeY7hHhvcaiaVLD67Zh3oiZaz7Gk0bCdz+AIZSS4+r/eIJZPXCi87hUJG7mzgB7kCyKO
+ n629sK+58CEmUGqaqdYlJyFJhXPRHh0x3psIBUbElx8S/NNF8VpPJ+ayj+xk0YEQBcco9ZuQjVG
+ XvGW/Qwa5uZQp0HPCL5SceQ0/zwQULALaSmtsD/ZYO5Jd3u1gzfyw0+kMi/gdZyZ+KN53+foAhu
+ PLE3iIJrkQ+zufA==
 X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
  fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
@@ -120,26 +121,27 @@ Core in sdio_register_driver() already sets the .owner, so driver does
 not need to.
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Acked-by: Kalle Valo <kvalo@kernel.org>
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 ---
 
 Depends on the patch in mmc tree.
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c | 1 -
+ drivers/net/wireless/marvell/mwifiex/sdio.c | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-index 00679a990e3d..13391c2d82aa 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-@@ -1238,7 +1238,6 @@ static struct sdio_driver brcmf_sdmmc_driver = {
- 	.name = KBUILD_MODNAME,
- 	.id_table = brcmf_sdmmc_ids,
+diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
+index f41048b5cd3c..bda9b2b8a1f3 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sdio.c
++++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
+@@ -979,7 +979,6 @@ static struct sdio_driver mwifiex_sdio = {
+ 	.probe = mwifiex_sdio_probe,
+ 	.remove = mwifiex_sdio_remove,
  	.drv = {
 -		.owner = THIS_MODULE,
- 		.pm = pm_sleep_ptr(&brcmf_sdio_pm_ops),
- 		.coredump = brcmf_dev_coredump,
- 	},
+ 		.coredump = mwifiex_sdio_coredump,
+ 		.pm = &mwifiex_sdio_pm_ops,
+ 	}
 
 -- 
 2.34.1
