@@ -1,143 +1,106 @@
-Return-Path: <linux-wireless+bounces-5834-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5835-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B6E897325
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 16:56:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B6CF897343
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 17:00:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0FB60B2BCE5
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 14:56:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F30FBB23CC1
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 15:00:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D626A149C4C;
-	Wed,  3 Apr 2024 14:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0499149DE8;
+	Wed,  3 Apr 2024 15:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="aKnImIsP"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ibbj7TPV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0B01494CA
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Apr 2024 14:56:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A45D59B67
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Apr 2024 15:00:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712156175; cv=none; b=LzPZ0Xzu2BPblt9FEgR3GRzmbeaHONPFyB976N0Ae6VlBx5wKAXcExZ/9/GqDxcL5FdT/tIbtzmJlCluWpbfAm+w6uzD0KHpQpkNzrlb5KPhcaDi7K3Rl/r6OEGZxcJIe54Mkkp+5SUP4QX06nRjmyuHMEkWfxjtF5v+nLcxn8I=
+	t=1712156421; cv=none; b=MGjw/Rah/VyWFKP+MPNbHwORx6nXsLZwqGzDx0J+YzNdptOKXVL3OSLtTmE3oroTjNcv4PslxwA/aMG9zONm6UZB/mOp2B7iyxYRMg7mO42snj1mHeLaWuT55T3f01kGM6Jq33xBiztJA+iPy1LLUabjy3XMM0ThalrPujumlzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712156175; c=relaxed/simple;
-	bh=qIMp/Bi43gG5OxVpu00ce21O5fSpFFXCTZkgJC0kaJQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X/e9igxKp1MV7GMwsRzeKIkEm6Xaki3rari/H7hABq/te6Jbi3bxNuWuPLFZ6Hf+Vh7YLyVIA+p/vyhA0nmChMgQvcKfzRkQjexqse0tnmX98IE+NWDvRzWg5vyELXsYd2yxM/gfapXq8Kc/7RDyrzZCIAVOLmU4AGy4dHUNQMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=aKnImIsP; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-516c08c25e1so670838e87.1
-        for <linux-wireless@vger.kernel.org>; Wed, 03 Apr 2024 07:56:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1712156172; x=1712760972; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0AEDPySL2e/8A7unRrzw52gMZQYQQOXlB4w/mt06n1w=;
-        b=aKnImIsP8DZAEOQspUmW8LWc/9dXAMfFVzUOfjLRQsExSm+YC8ycRjE9jQg1o6dCoh
-         5iCfqS8uDMWH8uO6lMAz2bXbEK1O0D1nYOBbq3XqtW79q/Cc7cVCG/R+muXrspBOhUUm
-         wadCcstUMIMt3R/oSq96Xl2cpKgJiSVRjicPLlU31sGKvbVAKvjSD7hEZhM0KUek9PDj
-         D9ZxTZrrn2A9yTFvjpckb3yAeEfUcfL7ftrnJfDZXwe2Sxq44SAu4rCtOAIHV/88Fhxr
-         lrLYKerwj6Ig9SZ5Ouak9rn5oo6VaMzJgxH0mXFJBHIYX3GIlS7S/g+p7/JVK98F7huP
-         C6Vg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712156172; x=1712760972;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0AEDPySL2e/8A7unRrzw52gMZQYQQOXlB4w/mt06n1w=;
-        b=wvSAsseZiGVBThtQ53yIJWkE7EU+CtiLF+W18DQ5Fhp1/ZPzZffqQDznJd02LYeed7
-         YvV1fHaZ+5lpv5/W//DI+6lGlU7wf1BlsXSZI+Y8RwsOPHdiv0kpjjuREWg5963S0Xgj
-         xMjHxbYFizzZh/lNZedc4KDbxTickR6FQYaihMOiJ+4SekdcB/GVm88KDhPV83vn/Bre
-         9++8Y4x5pVNEO9zzEwwAO13xSD7F0Hoqy+hAuOHlKs4Sfo0+yTC0sW6aODJh6gbyXMm7
-         nDASVcZmMC26yVGAe9V+8tDePjRQHO+1Ihbfbj6SBhLG/in3rkUahrZGtupApQKQ/DFl
-         haVg==
-X-Forwarded-Encrypted: i=1; AJvYcCXcJzM2H6fB2ZELE3Cm/nhAEcHbdTYC6bOBt+AXfcvYMisMXV9MqGWaYPsrATiqlPBRL7jmHElHJwQX8t472LPxRGvpX8lTYIsiKcP8msY=
-X-Gm-Message-State: AOJu0YxkklNslRxmtGe9ndS+2vAlxKKfcxsFfgTZi5nbZ3CtmJGCIa/s
-	2QCK+WVV+/Qy0hOxeu7HkdRwGGo74zRw2GBYPw2R/ZI/nBi0aiquQ8C+xbjHt9J/pNkpsPlxjYn
-	B27lzzpPOJd9eWvXcYDjCUx9/pcTDYog1PqJAdg==
-X-Google-Smtp-Source: AGHT+IH1uAqfWGiUk+RIbBgdGkD1xZiuVe0WG6sH6tI1B254BJw9nsHUMXBNKMkZlc7467jz/bVPfZDn3fzBPSidFbA=
-X-Received: by 2002:a05:6512:36d2:b0:515:c17e:ddb1 with SMTP id
- e18-20020a05651236d200b00515c17eddb1mr11741487lfs.50.1712156171964; Wed, 03
- Apr 2024 07:56:11 -0700 (PDT)
+	s=arc-20240116; t=1712156421; c=relaxed/simple;
+	bh=NIn6Q80ppyEbg8lHi0cDMLyf3Sv2j86G+KkhmvLwLBg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Fz/fcJkAK56i57HBqAH6Ve+LIz0YWGycjjf1wzcUdoctagbU0GLavktm7m1Y0eHIqP2uMpQMpeKS7Dn8husXep3AofDfr1figr8lQ+X7QsGwAWJOGy+Z3eHROiRjargQe998maQVgUIkpA3M3u+iJ6Q5i/liu/6yzBCSi4rLloQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ibbj7TPV; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 433DmO85014117;
+	Wed, 3 Apr 2024 15:00:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=d5lIUhkPkZrQGh5RTSBkxbGqGWRelVvdvHuggsf0q30=; b=ib
+	bj7TPV1gMexe2aBEYXtWBCqtuBRYk5mqBu0/ZdGA9ZO+SSyleGV7OCREx3wwzId2
+	n2qjbjaaIYI7jYr0yqyZAoGQrh47oO8gfFREO/5t9cuefmCudxizol2NPudR/tpv
+	TBrG+92q3OC8dkM1TGzQesulYnuU84vsL9Mo2CkQD3EAF59FmorgGozyqbm0eEFP
+	0EPjRHNztXsk4EkuHgiIABXcfnkIJaB6eduC8lDuE96529FSkQw62fOpSGQl8XCU
+	vo162rnnS93wmy9xWpWPvD0FCyPOyg4H/79Y1Gy7Sfphc3d3k5apj1DZeg/DkMDx
+	LbdoM+MwmJ+cpTLajqOg==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x944e0x8m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 03 Apr 2024 15:00:13 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 433F0CZi019846
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 3 Apr 2024 15:00:12 GMT
+Received: from [10.227.110.203] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 3 Apr 2024
+ 08:00:12 -0700
+Message-ID: <9dc8f48b-bc94-47ab-a283-773e5623f7e5@quicinc.com>
+Date: Wed, 3 Apr 2024 08:00:11 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240325131624.26023-1-brgl@bgdev.pl> <20240325131624.26023-6-brgl@bgdev.pl>
- <87msqm8l6q.fsf@kernel.org>
-In-Reply-To: <87msqm8l6q.fsf@kernel.org>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Wed, 3 Apr 2024 16:56:01 +0200
-Message-ID: <CAMRc=MeCjNn7QdDrcQMuj32JFYoemQ6A8WOYcwKJo1YhDTfY+Q@mail.gmail.com>
-Subject: Re: [PATCH v6 05/16] dt-bindings: net: wireless: describe the ath12k
- PCI module
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Saravana Kannan <saravanak@google.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Arnd Bergmann <arnd@arndb.de>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Alex Elder <elder@linaro.org>, Srini Kandagatla <srinivas.kandagatla@linaro.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Abel Vesa <abel.vesa@linaro.org>, 
-	Manivannan Sadhasivam <mani@kernel.org>, Lukas Wunner <lukas@wunner.de>, 
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, linux-bluetooth@vger.kernel.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-pci@vger.kernel.org, linux-pm@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/2] [RESEND] wifi: ath12k: refactor the link capable
+ flag
+Content-Language: en-US
+To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+        Kalle Valo
+	<kvalo@kernel.org>
+CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20240403042056.1504209-1-quic_periyasa@quicinc.com>
+ <87o7aq68a3.fsf@kernel.org>
+ <9200cdc1-00ae-d3bb-1f3d-abb4ce993cf7@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <9200cdc1-00ae-d3bb-1f3d-abb4ce993cf7@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: P3_gPe0SFgQ6ny-Nkf_gdT1ThGx8DxaV
+X-Proofpoint-GUID: P3_gPe0SFgQ6ny-Nkf_gdT1ThGx8DxaV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-03_15,2024-04-03_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ spamscore=0 mlxlogscore=725 clxscore=1015 suspectscore=0 mlxscore=0
+ phishscore=0 adultscore=0 priorityscore=1501 malwarescore=0
+ impostorscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2403210001 definitions=main-2404030102
 
-On Mon, Mar 25, 2024 at 3:01=E2=80=AFPM Kalle Valo <kvalo@kernel.org> wrote=
-:
->
-> Bartosz Golaszewski <brgl@bgdev.pl> writes:
->
-> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >
-> > +
-> > +maintainers:
-> > +  - Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->
-> IMHO it would be better to have just driver maintainers listed here.
->
+On 4/3/2024 4:21 AM, Karthikeyan Periyasamy wrote:
+> On 4/3/2024 4:08 PM, Kalle Valo wrote:
+>> Why the resend? 
+> 
+> I missed the version log in the commit message.
 
-Why? What's wrong with having the author of the bindings in the Cc list?
+In that case in the future, just reply to your cover letter and say you missed
+including the versioning info, and put it in the reply.
 
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - vddaon-supply
-> > +  - vddwlcx-supply
-> > +  - vddwlmx-supply
-> > +  - vddrfacmn-supply
-> > +  - vddrfa0p8-supply
-> > +  - vddrfa1p2-supply
-> > +  - vddrfa1p8-supply
-> > +  - vddpcie0p9-supply
-> > +  - vddpcie1p8-supply
->
-> Same comment here as in patch 4. There are also ath12k PCI devices which
-> don't need DT at all. I don't know if that should be reflected in the
-> bindings doc but I want to point out this.
->
-
-But DT bindings don't apply to devices that don't have DT nodes. This
-isn't an issue at all.
-
-Bart
 
