@@ -1,60 +1,69 @@
-Return-Path: <linux-wireless+bounces-5816-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5817-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EB61897193
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 15:50:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E62538971AA
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 15:53:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01E151F22885
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 13:50:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97EE4281512
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 13:53:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B24901487E0;
-	Wed,  3 Apr 2024 13:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2384B148820;
+	Wed,  3 Apr 2024 13:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xd/SRhp2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YOic17JM"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A14514831D;
-	Wed,  3 Apr 2024 13:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E024A146D65;
+	Wed,  3 Apr 2024 13:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712152245; cv=none; b=s/PmdrCY/so6wAe7I9XxDBXlzSlEZABL6vZP07RL5AHATPhYOlGjNGcATqkF6QQy2Jstn9whBlUKbCiWQXiWujXMKGydt2H8W+mumljah3QZC7Y9My1Uz0sh3DG813Opo1mKjzcrDrbmS1C9CMdSz7z7EtRa+6XkDdD0XhPY8l0=
+	t=1712152426; cv=none; b=lTs7uHKoo1pmC729uG5w8JTwv+KSNcZw4s1gpCQ3nE4uUF9T2cBnQoeetUWtSIa4uT2DLzJfksSEPEvogcHScZZyU/aOBADNNpZicPxWsBjyuUjRhChDHXeIrt3fPS5S8fvoFaLwbuw6XHWaARg2m4teOAkIeRGu8nuc9rYyoNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712152245; c=relaxed/simple;
-	bh=ik1Yx7g2yV54SqbOiKkosaQPOUnk7YH54MIOwB7vzuU=;
+	s=arc-20240116; t=1712152426; c=relaxed/simple;
+	bh=m0lorB2MbPpc2sRbPkYyOS6AnvFCBRgPrepaAMOzzv0=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=X1FkB1SEfvcRCCs6BjmbUqfrNdjrPugY9xQuTOL/ambXcRgaFzo/7RaGLYVdwTVjl1P2KCpJ0X5uH9+458P0SpRbSFgvsszX/ZDiYYbmIw15a2CqqCipZtAYtTEDJBDrfVieBd7ZECT6wb1qWhZCs6+nb4GZkOITm+femHiQ3Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xd/SRhp2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29B22C433C7;
-	Wed,  3 Apr 2024 13:50:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oYzWv8jVZtcGrsk49SimKRqwzOBoOun6TKmnduua/18m02j6YF0vaZ6+FI23KJbUUmkw2i5kAvxfx9sVk05Ha7HUFqEWTA0JaTjVRo7Zf5b8desBoDvl13dej31VIQOVuBcG2EEh9AgeTv2swbuCksywFGKmTdX1An0hyF34oW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YOic17JM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C15C433F1;
+	Wed,  3 Apr 2024 13:53:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712152245;
-	bh=ik1Yx7g2yV54SqbOiKkosaQPOUnk7YH54MIOwB7vzuU=;
+	s=k20201202; t=1712152425;
+	bh=m0lorB2MbPpc2sRbPkYyOS6AnvFCBRgPrepaAMOzzv0=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=Xd/SRhp2o//KNgIe7V9q/Vqg3uMo+ldj6QJa3Gna1jr+O1daos75LaAQurJDXj7S3
-	 SQpjuyBXs8LKDZxlP2b6Q+t74wd0XPqaj4IOEZ9K2UETteki/AyE1R7VudIVAZaENq
-	 t/G855WrxmaMUoZu26xsKMpeZo93MW9/e+9u1lhhOArsZyD+c7TpDuzQUFPvqdAEmp
-	 W8NBlBtB59+jYcGHqyzg+EJ0sbaweDiylmVe3DFIzAQgGQgLIfpS/KYgZlRv/jGOB3
-	 +sqnbyIPXuYuM1xTlr7CXju+xbTt6y9gynfhQrsH0cgQH3XmKWrXtymyAWFJXgOp63
-	 NXFLXnaF0P3OA==
+	b=YOic17JM08kzLf6HccVjw0tiON+A4lbyi59R2hAAwcWksGE4hL4QskZ99Ec4ieQLy
+	 mQ+6OAGCtxnVIXaOBXRMjXkrFLFoJoy0BrmmDWc41/Z2tLnKK0nUKvRqUvLacufSmW
+	 vXgnmo1FsVfofAq7Zfl5lRm0yxpoPs2kb/WGpMI8VUTznZsVpIX48OOtr3aWlW1t9j
+	 3qIQUzwDyJUFRzhLJuBniJFjnSxtMGNxasSB5803FWt+k1J/4tGFtaXTdNpHZl9dKB
+	 wjN2QHlTeDnJVocdcLi2LXzgfrx2ePZRajTehI4211rdxcvbC3pfc6FraLlELkOA3g
+	 11XkAwGd8DwYg==
 From: Kalle Valo <kvalo@kernel.org>
-To: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,  Jeff Johnson
- <jjohnson@kernel.org>,  Brian Norris <briannorris@chromium.org>,  Ajay
- Singh <ajay.kathat@microchip.com>,  Claudiu Beznea
- <claudiu.beznea@tuxon.dev>,  <linux-wireless@vger.kernel.org>,
-  <ath10k@lists.infradead.org>,  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/6] wifi: ath10k: sdio: simplify module initialization
-References: <20240329171019.63836-1-krzysztof.kozlowski@linaro.org>
-	<f78fa061-3b34-47d2-a40c-bbec744f0f97@quicinc.com>
-Date: Wed, 03 Apr 2024 16:50:41 +0300
-In-Reply-To: <f78fa061-3b34-47d2-a40c-bbec744f0f97@quicinc.com> (Jeff
-	Johnson's message of "Fri, 29 Mar 2024 10:22:00 -0700")
-Message-ID: <87jzle5zda.fsf@kernel.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>,  Marcel Holtmann
+ <marcel@holtmann.org>,  Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+  Matthias Brugger <matthias.bgg@gmail.com>,  AngeloGioacchino Del Regno
+ <angelogioacchino.delregno@collabora.com>,  Jeff Johnson
+ <jjohnson@kernel.org>,  Arend van Spriel <arend.vanspriel@broadcom.com>,
+  Brian Norris <briannorris@chromium.org>,  =?utf-8?B?SsOpcsO0bWU=?=
+ Pouiller
+ <jerome.pouiller@silabs.com>,  linux-mmc@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  linux-bluetooth@vger.kernel.org,
+  linux-arm-kernel@lists.infradead.org,
+  linux-mediatek@lists.infradead.org,  linux-wireless@vger.kernel.org,
+  ath10k@lists.infradead.org,  brcm80211@lists.linux.dev,
+  brcm80211-dev-list.pdl@broadcom.com
+Subject: Re: [PATCH 6/7] wifi: marvell: mwifiex: drop driver owner
+ initialization
+References: <20240329-module-owner-sdio-v1-0-e4010b11ccaa@linaro.org>
+	<20240329-module-owner-sdio-v1-6-e4010b11ccaa@linaro.org>
+Date: Wed, 03 Apr 2024 16:53:39 +0300
+In-Reply-To: <20240329-module-owner-sdio-v1-6-e4010b11ccaa@linaro.org>
+	(Krzysztof Kozlowski's message of "Fri, 29 Mar 2024 18:24:36 +0100")
+Message-ID: <87frw25z8c.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -64,43 +73,20 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Jeff Johnson <quic_jjohnson@quicinc.com> writes:
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> writes:
 
-> On 3/29/2024 10:10 AM, Krzysztof Kozlowski wrote:
->> This driver's initialization functions do not perform any custom code,
->> except printing messages.  Printing messages on modules
->> loading/unloading is discouraged because it pollutes the dmesg
->> regardless whether user actually has this device.  Core kernel code
->> already gives tools to investigate whether module was loaded or not.
->> 
->> Drop the printing messages which allows to replace open-coded
->> module_sdio_driver().
->> 
->> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Core in sdio_register_driver() already sets the .owner, so driver does
+> not need to.
 >
-> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
->
->> 
->> ---
->> 
->> FYI:
->> I have ongoing patchset touching few lines above this patch chunk
->> (sdio_driver) which might go via different tree. If that patchset is
->> applied via different tree, it might result in a trivial conflict, but
->> there is no dependency. They can go via separate trees (except that
->> trivial conflict).
->
-> I'll let Kalle respond if he'll take this through the ath tree vs letting you
-> take it through your tree
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-I prefer to avoid conflicts as much as possible. In this patchset I'm
-not anticipating any conflicts with wireless trees, so if we can avoid
-any conflicts, please take this patchset via the other tree:
+The preferred title format is:
+
+wifi: mwifiex: drop driver owner initialization
+
+But that's just cosmetics. Feel free to take this via sdio tree:
 
 Acked-by: Kalle Valo <kvalo@kernel.org>
-
-I'll drop this patchset from my queue. But if I should take these to
-wireless trees instead just let me know.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
