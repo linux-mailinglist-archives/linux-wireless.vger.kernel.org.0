@@ -1,74 +1,63 @@
-Return-Path: <linux-wireless+bounces-5839-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5840-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38E508977F1
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 20:16:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EBCA8977F7
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 20:17:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB397285857
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 18:16:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E24581F21192
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 18:17:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CD7F1534EB;
-	Wed,  3 Apr 2024 18:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23E5515350E;
+	Wed,  3 Apr 2024 18:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="uEGRsZqx"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="IhkENPo+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BADA0152DE8
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Apr 2024 18:16:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885AC152DEE
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Apr 2024 18:17:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712168170; cv=none; b=piXc7TxcWkz8AxvKRckkDGRtO7rEtmAzHhNNyTQikvKx/ki7CAl0Gnr0w/lE4omNHCdH3o95l31Y7h9IIL1MUI6ueGWp0AVKvXr2HRFYjiGYFi2RPqxxLcKDnwd7efq1D1snO9BBCsfhl5kq/hcXUqytlCBQBp0ZIPEe32NSoYM=
+	t=1712168226; cv=none; b=RTInBff7lgK5mET8RvzU16JWCQoi03o5SI5Bz9pVSNB4iRHbvSsZZ2Gxt2OpOys+Ex4PGu+3jWM3ws684iZTtfHX8VAM2hlVhgTZtuuBcOxXPZMjxvbL9BHsw/e4AnilYV3O0wBPQCFChkctapsLkrAHkEc2i1sUvPW2GIujaGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712168170; c=relaxed/simple;
-	bh=a9E2mGfmVxcJ7x2M2sf17xeANHcNSUBMmGhTG7nDg+Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X5IJ9AShoHPFd6NoR1PxPPSsTrc1slRjUTIXFM9ZrKD0LkX09VjyIIx0yVDGlgBlCAA9A1x0JOTJn1O5dehLysJ35SrzIsc4CH0KINrhY9bfUnJsySysmcyV3dNuffI3plk3lTpjCo0NJVYBTdwLuOS9kIoqldRUMgpITTcu4vA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=uEGRsZqx; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3436b096690so989448f8f.1
-        for <linux-wireless@vger.kernel.org>; Wed, 03 Apr 2024 11:16:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1712168166; x=1712772966; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=yMk/LPFqs7VskBV22jyb1Tdh2P4ZoSSQNrYCMOikFmQ=;
-        b=uEGRsZqxt+GOjRB5J5PpXP7ZWa4Ht1abkW1eOQsIyRJr59DE8s2vIVZnkr4nz0JhPs
-         SpM/bQRkYB2hVEOLFioBdnA53+W+/0dm5bHzNltzFVoWgisdadiznKVdHh7nwF0K5Upf
-         J5XwvHQpDMCLz+CK+VTBO2hEc8nQ37wIxFhJgj6nudCYnC6uAXubuB91RekmkJMr4Y85
-         JJUtxqGzbT5mc0KN6Ji6vybIvbOLTvSYMEwD4DBLr0rO2IcR6WNFkGQ69Hqyzc1B1YXO
-         9IZg3Gp9sFoxHFwoPowZpqr2Rw1PicP6pRnltje7TLCHRLwB3g4E1wXE53DmGKgCXii0
-         prXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712168166; x=1712772966;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yMk/LPFqs7VskBV22jyb1Tdh2P4ZoSSQNrYCMOikFmQ=;
-        b=IW6ZSqa6tzn9JsqZNFMo/2F0H7rOem3HsDf/ekEEdSogJXUaW0TDRE6BzZhzp3cfDg
-         HbjPCRfF0l4GqAS5FvQOl2DrJ4BWjVxDwZdW0qWaBQiHuBG6SuBBCfV60/wJK1Cq2TUU
-         7IwMbf++WJkYy5W+/Uwzo7fBmZGzMIqiZDA+jGcEmMYnphdSyR1WlI/KgKftzAwGOXVK
-         LLe5n6iaGDk3Xyd60Dt4cPDM2t6bEiBLR5op4SSbF+gap6JPcpIZjRaeOaj77JnhgU9F
-         ooNBuRGNF3oef9BnKIDl0q4My8vQ4arb1oddUzOTepLj2lnq1NtqOTcCayKbVgu471ON
-         dMxA==
-X-Forwarded-Encrypted: i=1; AJvYcCX0+xTuhleU4Y7ithA5OvOvpOYBpVmnHYIkQyFqoeukl6JYX0OZ+zxHcEIWAEq6r4SMiHh50xQvTm5rhoZ0MVYieL8llSRxE+bSZIBNL/k=
-X-Gm-Message-State: AOJu0YyQ4AKhYrWCFksA8S6f4ZvwsL0V7p3KH7l5x0LmSCwZPKTvpWJu
-	gw+8kgawGe5JjZM9dsqW4reuBuRXt6jwkzXHVS4IRvcgznh3Ms3RVeuuf3C5RIo=
-X-Google-Smtp-Source: AGHT+IGo6IK4jzvPBeq+2C/SXoVrcSjTLf8DS+QLbHtNh0mgQm3NoGkkSkE8i74VGzKZ5Xv8eEXnFQ==
-X-Received: by 2002:a5d:690d:0:b0:343:8485:4edd with SMTP id t13-20020a5d690d000000b0034384854eddmr3336441wru.23.1712168165964;
-        Wed, 03 Apr 2024 11:16:05 -0700 (PDT)
-Received: from ?IPV6:2a02:8428:2a4:1a01:79e6:9288:5142:9623? ([2a02:8428:2a4:1a01:79e6:9288:5142:9623])
-        by smtp.gmail.com with ESMTPSA id t10-20020a05600c450a00b004161b59e230sm6352480wmo.41.2024.04.03.11.16.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Apr 2024 11:16:05 -0700 (PDT)
-Message-ID: <43e18846-cc4f-4b30-8019-4617359ddaa0@freebox.fr>
-Date: Wed, 3 Apr 2024 20:16:04 +0200
+	s=arc-20240116; t=1712168226; c=relaxed/simple;
+	bh=uUihCIYWvUwS04vLKcIdcTOCAvTDPnVaNGCs0lyIH38=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=pIz5sQMZocCleg3ubju4o/zaPfXMUnGtwWOESP+bL2eKgM5mySrfmlpxCbHIgClfF6qeofikSPZPV6vFtMO5SZmSofgLDXCCbaVYGbULr9jvl/CEqgi2NUwXexw2p36zAazWfPSENqJC0S0j4TMtQFQAqtrJpHG1n1P0+ZUGJRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=IhkENPo+; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 433Hwpno027734;
+	Wed, 3 Apr 2024 18:16:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=u1gg7BtXSbUOjl/vSQpIU9j111eSM4QBolwwCkYmX/8=; b=Ih
+	kENPo+YK040rYMfxE0jOFp11SREmfpHvK3b25GGvIexC+TH+bRvsGdPDPZSGvNWo
+	q7o0V/azbZbx6WJKsw1kfk5qJFNTcuqeiU7xTWMf24N5c3ZJVXQmLfe72BgM5yOm
+	Ihwr8MHuzG8Q/Y9Rg0ZuX/vMMNrvkbBajY34g0uUGfP6weAcf/RwdwT7wq1/g+Nq
+	jNhK60CugDgAegvnYOCybmuhs6b/fBRSUeVFHs3nEZaLp9PPyO7kfI4zNjquMywk
+	RNCnc88kbdeveYm5t1ADjO+rtsIVYToNRs1J+y/HV9hTs5FUx7H69cEVHQMG6LSR
+	YE86IaMSrCwoq1RYNt9w==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x8xnxt3a7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 03 Apr 2024 18:16:57 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 433IGuLK023051
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 3 Apr 2024 18:16:56 GMT
+Received: from [10.227.110.203] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 3 Apr 2024
+ 11:16:56 -0700
+Message-ID: <5eaef6a2-7bf9-490b-8edb-d9bd8ce5b5af@quicinc.com>
+Date: Wed, 3 Apr 2024 11:16:55 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -76,93 +65,53 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] arm64: dts: qcom: msm8998: set
- qcom,no-msa-ready-indicator for wifi
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Konrad Dybcio <konrad.dybcio@linaro.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Kalle Valo <kvalo@kernel.org>, Jeff Johnson <quic_jjohnson@quicinc.com>,
- ath10k <ath10k@lists.infradead.org>,
- wireless <linux-wireless@vger.kernel.org>, DT <devicetree@vger.kernel.org>,
- MSM <linux-arm-msm@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Pierre-Hugues Husson <phhusson@freebox.fr>, Arnaud Vrac <avrac@freebox.fr>,
- Bjorn Andersson <andersson@kernel.org>,
- Jami Kettunen <jamipkettunen@gmail.com>,
- Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
-References: <fd26ce4a-a9f3-4ada-8d46-ed36fb2456ca@freebox.fr>
- <5cdad89c-282a-4df5-a286-b8404bc4dd81@freebox.fr>
- <252618e8-9e80-4774-a96c-caa7f838ef01@linaro.org>
- <502322f1-4f66-4922-bc4e-46bacac23410@linaro.org>
- <0ca1221b-b707-450f-877d-ca07a601624d@freebox.fr>
- <CAA8EJppeREj-0g9oGCzzKx5ywhg1mgmJR1q8yvXKN7N45do1Xg@mail.gmail.com>
- <91031ed0-104a-4752-8b1e-0dbe15ebf201@freebox.fr>
- <CAA8EJpooJLbV+nVWedru=r6fascd8ZxKumiMm_iyzzJwyQ-tig@mail.gmail.com>
+Subject: Re: [PATCH 1/9] wifi: ath12k: advertise driver capabilities for
+ MBSSID and EMA
 Content-Language: en-US
-From: Marc Gonzalez <mgonzalez@freebox.fr>
-In-Reply-To: <CAA8EJpooJLbV+nVWedru=r6fascd8ZxKumiMm_iyzzJwyQ-tig@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+To: Aloka Dixit <quic_alokad@quicinc.com>, <ath12k@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>
+References: <20240402210538.7308-1-quic_alokad@quicinc.com>
+ <20240402210538.7308-2-quic_alokad@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240402210538.7308-2-quic_alokad@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: TrbwhIpfFtKHmVL13qoeGXkjfduNzNKT
+X-Proofpoint-GUID: TrbwhIpfFtKHmVL13qoeGXkjfduNzNKT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-03_19,2024-04-03_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
+ mlxlogscore=956 priorityscore=1501 adultscore=0 phishscore=0 spamscore=0
+ suspectscore=0 clxscore=1015 lowpriorityscore=0 malwarescore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2403210001 definitions=main-2404030122
 
-On 03/04/2024 16:12, Dmitry Baryshkov wrote:
-
-> From [Jeff's] message it looks like we are expected to get MSA READY even on msm8998.
-
-This is the code we're using:
-
-https://git.codelinaro.org/clo/la/kernel/msm-4.4/-/blob/caf_migration/kernel.lnx.4.4.r38-rel/drivers/net/wireless/ath/ath10k/qmi.c
-
-When ATH10K_SNOC_DRIVER_EVENT_SERVER_ARRIVE,
-driver registers an "indicator handler"
-ath10k_snoc_qmi_wlfw_clnt_ind()
-
-It handles QMI_WLFW_FW_READY_IND_V01 by posting
-ATH10K_SNOC_DRIVER_EVENT_FW_READY_IND
-which is handled in the
-ath10k_snoc_driver_event_work() work queue.
-
-But QMI_WLFW_MSA_READY_IND_V01 only triggers
-a debug log and setting qmi_cfg->msa_ready = true;
-
-$ git grep '\<msa_ready\>'
-drivers/net/wireless/ath/ath10k/qmi.c:          qmi_cfg->msa_ready = true;
-drivers/net/wireless/ath/ath10k/qmi.c:  qmi_cfg->msa_ready = false;
-drivers/net/wireless/ath/ath10k/qmi.h: * msa_ready: wlan firmware msa memory ready for board data download
-drivers/net/wireless/ath/ath10k/qmi.h:  bool msa_ready;
-
-So basically, the vendor ath10k driver ignores QMI_WLFW_MSA_READY_IND_V01.
-
-
-I will test the following patch which aligns the behavior
-of mainline driver to that of vendor driver:
-
-diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
-index 38e939f572a9e..0e1ab5aca663b 100644
---- a/drivers/net/wireless/ath/ath10k/qmi.c
-+++ b/drivers/net/wireless/ath/ath10k/qmi.c
-@@ -1040,6 +1040,7 @@ static void ath10k_qmi_driver_event_work(struct work_struct *work)
- 		switch (event->type) {
- 		case ATH10K_QMI_EVENT_SERVER_ARRIVE:
- 			ath10k_qmi_event_server_arrive(qmi);
-+			ath10k_qmi_event_msa_ready(qmi);
- 			break;
- 		case ATH10K_QMI_EVENT_SERVER_EXIT:
- 			ath10k_qmi_event_server_exit(qmi);
-@@ -1048,7 +1049,7 @@ static void ath10k_qmi_driver_event_work(struct work_struct *work)
- 			ath10k_qmi_event_fw_ready_ind(qmi);
- 			break;
- 		case ATH10K_QMI_EVENT_MSA_READY_IND:
--			ath10k_qmi_event_msa_ready(qmi);
-+			printk(KERN_WARNING "IGNORING MSA_READY INDICATOR");
- 			break;
- 		default:
- 			ath10k_warn(ar, "invalid event type: %d", event->type);
+On 4/2/2024 2:05 PM, Aloka Dixit wrote:
+> Advertise the driver support for multiple BSSID (MBSSID) and
+> enhanced multi-BSSID advertisements (EMA) by setting extended
+> capabilities.
+> 
+> Configure mbssid_max_interfaces and ema_max_profile_periodicity
+> fields in structure wiphy which are used to advertise maximum number
+> of interfaces and profile periodicity supported by the driver.
+> 
+> Add new WMI fields to configure maximum vdev count supported for
+> MBSSID and profile periodicity in case of EMA.
+> 
+> Set WMI_RSRC_CFG_FLAGS2_CALC_NEXT_DTIM_COUNT_SET flag to allow
+> firmware to track and update the DTIM counts for each nontransmitted
+> profile.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> 
+> Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
 
-Dmitry Baryshkov reported:
-Works on sm8150, sdm845, qrb2210
-
-Regards
 
 
