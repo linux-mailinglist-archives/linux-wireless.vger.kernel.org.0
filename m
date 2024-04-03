@@ -1,258 +1,168 @@
-Return-Path: <linux-wireless+bounces-5838-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5839-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DF26897526
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 18:24:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38E508977F1
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 20:16:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91DCF1C240C7
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 16:24:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB397285857
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 18:16:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C93714A0A2;
-	Wed,  3 Apr 2024 16:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CD7F1534EB;
+	Wed,  3 Apr 2024 18:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="XwD1cvcG"
+	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="uEGRsZqx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4CF14F9D2
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Apr 2024 16:23:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BADA0152DE8
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Apr 2024 18:16:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712161429; cv=none; b=d9MKVl1M0hH6rlMis/Iy/UfyrdrLEjiXsRIID6oziP92ep+66/3NJ0LXLKOJqtYtRluL9RQsgVmGtTAcCB5BMDLNmNC1DAOLk/uLLMKxgmgSu+Xy+swNkxScxoffHSwhyjnZIM2LRZZVcBPXjrWE6zkpp0GoRtIpXJ9pTBVHM5U=
+	t=1712168170; cv=none; b=piXc7TxcWkz8AxvKRckkDGRtO7rEtmAzHhNNyTQikvKx/ki7CAl0Gnr0w/lE4omNHCdH3o95l31Y7h9IIL1MUI6ueGWp0AVKvXr2HRFYjiGYFi2RPqxxLcKDnwd7efq1D1snO9BBCsfhl5kq/hcXUqytlCBQBp0ZIPEe32NSoYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712161429; c=relaxed/simple;
-	bh=JKYrXcBZIkYJ8v3xIyJh3zxzyrhc9rV4oS8K1dMCrjU=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DrCMAyNA22bLF7jijc+VytGC6EnFbiPwjb5YIyugM5hYHQVNlcnownaTQE55UxJa02A1KA29/NhsZKbyE8LnMHDI+Q+vmqtDjNx37BWhyZHrzM2Ura2AGBw8c0O+AkSkj3K3WLz8EbC1eJkb/yVTSk8IVWUfF+btd5bX3Yx6tqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=XwD1cvcG; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 433FcVex028007;
-	Wed, 3 Apr 2024 16:23:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding:content-type; s=
-	qcppdkim1; bh=AXI/MJPCc+A+uzaZZ0wkt5sm2vHwWkx8L995KKisUi8=; b=Xw
-	D1cvcGb5tfDiPrp++s58oK9VvZdFIuLS4P9hjcZQZ1nlPVV0QFKYI0X5TuyC3zjM
-	6PKzpspmSGL4lfpH3IP9Bo+mg1nRWhwl4BMeT3WjSTPERX8Pfn6U91wiyKJSHlil
-	mRcU4cmkuUqIVyQm2+AWSafRGMoZOUUuGiOdNFtihUUNi7Snuu5l3E8DqMIIx99M
-	v1CEfcKwzreIT8A9CfDFuZtXA6174likYtvXVvNMI/4/5QhwVrNizvV4V7dtlwGm
-	MU4OYX/RyN9dyzyUbwrvT354QXkgGOrlbOgX2COojARmkaNk5PzaSMAuS35OO3P8
-	XgBc4CcOxgPLkjWsD9Mw==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x944e1595-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Apr 2024 16:23:43 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 433GNfH3004309
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 3 Apr 2024 16:23:41 GMT
-Received: from hu-rrchinan-blr.qualcomm.com (10.80.80.8) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Wed, 3 Apr 2024 09:23:40 -0700
-From: Rathees Kumar R Chinannan <quic_rrchinan@quicinc.com>
-To: <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>, <quic_rrchinan@quicinc.com>
-Subject: [RFC v2 2/2] wifi: mac80211: Indicate ongoing critical update parameters
-Date: Wed, 3 Apr 2024 21:52:25 +0530
-Message-ID: <20240403162225.3096228-3-quic_rrchinan@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240403162225.3096228-1-quic_rrchinan@quicinc.com>
-References: <20240403162225.3096228-1-quic_rrchinan@quicinc.com>
+	s=arc-20240116; t=1712168170; c=relaxed/simple;
+	bh=a9E2mGfmVxcJ7x2M2sf17xeANHcNSUBMmGhTG7nDg+Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=X5IJ9AShoHPFd6NoR1PxPPSsTrc1slRjUTIXFM9ZrKD0LkX09VjyIIx0yVDGlgBlCAA9A1x0JOTJn1O5dehLysJ35SrzIsc4CH0KINrhY9bfUnJsySysmcyV3dNuffI3plk3lTpjCo0NJVYBTdwLuOS9kIoqldRUMgpITTcu4vA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=uEGRsZqx; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3436b096690so989448f8f.1
+        for <linux-wireless@vger.kernel.org>; Wed, 03 Apr 2024 11:16:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1712168166; x=1712772966; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yMk/LPFqs7VskBV22jyb1Tdh2P4ZoSSQNrYCMOikFmQ=;
+        b=uEGRsZqxt+GOjRB5J5PpXP7ZWa4Ht1abkW1eOQsIyRJr59DE8s2vIVZnkr4nz0JhPs
+         SpM/bQRkYB2hVEOLFioBdnA53+W+/0dm5bHzNltzFVoWgisdadiznKVdHh7nwF0K5Upf
+         J5XwvHQpDMCLz+CK+VTBO2hEc8nQ37wIxFhJgj6nudCYnC6uAXubuB91RekmkJMr4Y85
+         JJUtxqGzbT5mc0KN6Ji6vybIvbOLTvSYMEwD4DBLr0rO2IcR6WNFkGQ69Hqyzc1B1YXO
+         9IZg3Gp9sFoxHFwoPowZpqr2Rw1PicP6pRnltje7TLCHRLwB3g4E1wXE53DmGKgCXii0
+         prXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712168166; x=1712772966;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yMk/LPFqs7VskBV22jyb1Tdh2P4ZoSSQNrYCMOikFmQ=;
+        b=IW6ZSqa6tzn9JsqZNFMo/2F0H7rOem3HsDf/ekEEdSogJXUaW0TDRE6BzZhzp3cfDg
+         HbjPCRfF0l4GqAS5FvQOl2DrJ4BWjVxDwZdW0qWaBQiHuBG6SuBBCfV60/wJK1Cq2TUU
+         7IwMbf++WJkYy5W+/Uwzo7fBmZGzMIqiZDA+jGcEmMYnphdSyR1WlI/KgKftzAwGOXVK
+         LLe5n6iaGDk3Xyd60Dt4cPDM2t6bEiBLR5op4SSbF+gap6JPcpIZjRaeOaj77JnhgU9F
+         ooNBuRGNF3oef9BnKIDl0q4My8vQ4arb1oddUzOTepLj2lnq1NtqOTcCayKbVgu471ON
+         dMxA==
+X-Forwarded-Encrypted: i=1; AJvYcCX0+xTuhleU4Y7ithA5OvOvpOYBpVmnHYIkQyFqoeukl6JYX0OZ+zxHcEIWAEq6r4SMiHh50xQvTm5rhoZ0MVYieL8llSRxE+bSZIBNL/k=
+X-Gm-Message-State: AOJu0YyQ4AKhYrWCFksA8S6f4ZvwsL0V7p3KH7l5x0LmSCwZPKTvpWJu
+	gw+8kgawGe5JjZM9dsqW4reuBuRXt6jwkzXHVS4IRvcgznh3Ms3RVeuuf3C5RIo=
+X-Google-Smtp-Source: AGHT+IGo6IK4jzvPBeq+2C/SXoVrcSjTLf8DS+QLbHtNh0mgQm3NoGkkSkE8i74VGzKZ5Xv8eEXnFQ==
+X-Received: by 2002:a5d:690d:0:b0:343:8485:4edd with SMTP id t13-20020a5d690d000000b0034384854eddmr3336441wru.23.1712168165964;
+        Wed, 03 Apr 2024 11:16:05 -0700 (PDT)
+Received: from ?IPV6:2a02:8428:2a4:1a01:79e6:9288:5142:9623? ([2a02:8428:2a4:1a01:79e6:9288:5142:9623])
+        by smtp.gmail.com with ESMTPSA id t10-20020a05600c450a00b004161b59e230sm6352480wmo.41.2024.04.03.11.16.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Apr 2024 11:16:05 -0700 (PDT)
+Message-ID: <43e18846-cc4f-4b30-8019-4617359ddaa0@freebox.fr>
+Date: Wed, 3 Apr 2024 20:16:04 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: eHdO-YwRGhj6z6ml02POsWhi8pwPa9nN
-X-Proofpoint-GUID: eHdO-YwRGhj6z6ml02POsWhi8pwPa9nN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-03_16,2024-04-03_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- spamscore=0 mlxlogscore=999 clxscore=1015 suspectscore=0 mlxscore=0
- phishscore=0 adultscore=0 priorityscore=1501 malwarescore=0
- impostorscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2403210001 definitions=main-2404030112
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/3] arm64: dts: qcom: msm8998: set
+ qcom,no-msa-ready-indicator for wifi
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Konrad Dybcio <konrad.dybcio@linaro.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ Kalle Valo <kvalo@kernel.org>, Jeff Johnson <quic_jjohnson@quicinc.com>,
+ ath10k <ath10k@lists.infradead.org>,
+ wireless <linux-wireless@vger.kernel.org>, DT <devicetree@vger.kernel.org>,
+ MSM <linux-arm-msm@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Pierre-Hugues Husson <phhusson@freebox.fr>, Arnaud Vrac <avrac@freebox.fr>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Jami Kettunen <jamipkettunen@gmail.com>,
+ Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
+References: <fd26ce4a-a9f3-4ada-8d46-ed36fb2456ca@freebox.fr>
+ <5cdad89c-282a-4df5-a286-b8404bc4dd81@freebox.fr>
+ <252618e8-9e80-4774-a96c-caa7f838ef01@linaro.org>
+ <502322f1-4f66-4922-bc4e-46bacac23410@linaro.org>
+ <0ca1221b-b707-450f-877d-ca07a601624d@freebox.fr>
+ <CAA8EJppeREj-0g9oGCzzKx5ywhg1mgmJR1q8yvXKN7N45do1Xg@mail.gmail.com>
+ <91031ed0-104a-4752-8b1e-0dbe15ebf201@freebox.fr>
+ <CAA8EJpooJLbV+nVWedru=r6fascd8ZxKumiMm_iyzzJwyQ-tig@mail.gmail.com>
+Content-Language: en-US
+From: Marc Gonzalez <mgonzalez@freebox.fr>
+In-Reply-To: <CAA8EJpooJLbV+nVWedru=r6fascd8ZxKumiMm_iyzzJwyQ-tig@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-User space application doesn't have the latest ongoing critical
-update parameters like critical update flag, BSS param change
-count (BPCC) and CSA/CCA switch count for each link. Add an
-ieee80211_critical_update() API to send these params to cfg80211
-and call it when event received from firmware during probe or assoc
-or reassoc request frame receive to update critical parameters to
-user space and needed only on beacon offload case.
+On 03/04/2024 16:12, Dmitry Baryshkov wrote:
 
-Signed-off-by: Rathees Kumar R Chinannan <quic_rrchinan@quicinc.com>
----
- include/net/mac80211.h | 13 +++++++++++++
- net/mac80211/cfg.c     | 43 +++++++++++++++++++++++++++++++++++++++++-
- net/mac80211/rx.c      | 12 ++++++++++++
- net/mac80211/tx.c      |  9 +++++++++
- 4 files changed, 76 insertions(+), 1 deletion(-)
+> From [Jeff's] message it looks like we are expected to get MSA READY even on msm8998.
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 353488ab94a2..a369f0d7087d 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -7599,4 +7599,17 @@ int ieee80211_emulate_switch_vif_chanctx(struct ieee80211_hw *hw,
- 					 int n_vifs,
- 					 enum ieee80211_chanctx_switch_mode mode);
- 
-+/**
-+ * ieee80211_critical_update - update critical params for each link
-+ * @vif: the specified virtual interface
-+ * @link_id: the link ID for MLO, otherwise 0
-+ * @critical_flag: critical update information
-+ * @bpcc: Bss parameter change count value
-+ *
-+ * The function is called when event received from firmware to update
-+ * critical parameters to user space during probe or assoc or reassoc request
-+ * frame receive and needed only on beacon offload case.
-+ */
-+void ieee80211_critical_update(struct ieee80211_vif *vif, unsigned int link_id,
-+			       bool critical_flag, u8 bpcc);
- #endif /* MAC80211_H */
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index f03452dc716d..97ffd3028467 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -3606,6 +3606,7 @@ void ieee80211_csa_finish(struct ieee80211_vif *vif, unsigned int link_id)
- 	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
- 	struct ieee80211_local *local = sdata->local;
- 	struct ieee80211_link_data *link_data;
-+	struct wireless_dev *wdev = ieee80211_vif_to_wdev(vif);
- 
- 	if (WARN_ON(link_id >= IEEE80211_MLD_MAX_NUM_LINKS))
- 		return;
-@@ -3617,7 +3618,13 @@ void ieee80211_csa_finish(struct ieee80211_vif *vif, unsigned int link_id)
- 		rcu_read_unlock();
- 		return;
- 	}
--
-+	if (wiphy_ext_feature_isset(
-+		    local->hw.wiphy,
-+		    NL80211_EXT_FEATURE_CRITICAL_UPDATE_OFFLOAD) &&
-+	    wdev->valid_links && wdev->links[link_id].ap.switch_count != 0) {
-+		wdev->links[link_id].ap.switch_count = 0;
-+		wdev->critical_update = true;
-+	}
- 	/* TODO: MBSSID with MLO changes */
- 	if (vif->mbssid_tx_vif == vif) {
- 		/* Trigger ieee80211_csa_finish() on the non-transmitting
-@@ -3643,6 +3650,40 @@ void ieee80211_csa_finish(struct ieee80211_vif *vif, unsigned int link_id)
- }
- EXPORT_SYMBOL(ieee80211_csa_finish);
- 
-+/**
-+ * ieee80211_critical_update - update critical params for each link
-+ * @vif: the specified virtual interface
-+ * @link_id: the link ID for MLO, otherwise 0
-+ * @critical_flag: critical update information
-+ * @bpcc: Bss parameter change count value
-+ *
-+ * The function is called when event received from firmware to update
-+ * critical parameters to user space during probe or assoc or reassoc request
-+ * frame receive and needed only on beacon offload case.
-+ */
-+void ieee80211_critical_update(struct ieee80211_vif *vif, unsigned int link_id,
-+			       bool critical_flag, u8 bpcc)
-+{
-+	struct wireless_dev *wdev = ieee80211_vif_to_wdev(vif);
-+	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
-+	struct ieee80211_local *local = sdata->local;
-+
-+	if (!wiphy_ext_feature_isset(
-+		    local->hw.wiphy,
-+		    NL80211_EXT_FEATURE_CRITICAL_UPDATE_OFFLOAD) ||
-+	    !wdev->valid_links)
-+		return;
-+	if (WARN_ON(link_id > IEEE80211_MLD_MAX_NUM_LINKS))
-+		return;
-+	if (wdev->links[link_id].ap.critical_flag != critical_flag ||
-+	    wdev->links[link_id].ap.bpcc != bpcc) {
-+		wdev->critical_update = true;
-+		wdev->links[link_id].ap.critical_flag = critical_flag;
-+		wdev->links[link_id].ap.bpcc = bpcc;
-+	}
-+}
-+EXPORT_SYMBOL(ieee80211_critical_update);
-+
- void ieee80211_channel_switch_disconnect(struct ieee80211_vif *vif, bool block_tx)
- {
- 	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index c1f850138405..e60560b4e3e4 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -3825,14 +3825,26 @@ static ieee80211_rx_result debug_noinline
- ieee80211_rx_h_userspace_mgmt(struct ieee80211_rx_data *rx)
- {
- 	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(rx->skb);
-+	struct ieee80211_mgmt *mgmt = (void *)rx->skb->data;
-+	__le16 stype;
-+	struct wireless_dev *wdev = &rx->sdata->wdev;
-+
- 	struct cfg80211_rx_info info = {
- 		.freq = ieee80211_rx_status_to_khz(status),
- 		.buf = rx->skb->data,
- 		.len = rx->skb->len,
- 		.link_id = rx->link_id,
- 		.have_link_id = rx->link_id >= 0,
-+		.critical_update = false,
- 	};
- 
-+	stype = mgmt->frame_control & cpu_to_le16(IEEE80211_FCTL_STYPE);
-+	if (stype ==  cpu_to_le16(IEEE80211_STYPE_PROBE_REQ) ||
-+	    stype ==  cpu_to_le16(IEEE80211_STYPE_ASSOC_REQ) ||
-+	    stype ==  cpu_to_le16(IEEE80211_STYPE_REASSOC_REQ)) {
-+		if (wdev->critical_update)
-+			info.critical_update = true;
-+	}
- 	/* skip known-bad action frames and return them in the next handler */
- 	if (status->rx_flags & IEEE80211_RX_MALFORMED_ACTION_FRM)
- 		return RX_CONTINUE;
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 6bf223e6cd1a..3603cc582b0d 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -5041,6 +5041,8 @@ u8 ieee80211_beacon_update_cntdwn(struct ieee80211_vif *vif, unsigned int link_i
- 	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
- 	struct ieee80211_link_data *link;
- 	struct beacon_data *beacon = NULL;
-+	struct wireless_dev *wdev = ieee80211_vif_to_wdev(vif);
-+	struct ieee80211_local *local = sdata->local;
- 	u8 count = 0;
- 
- 	if (WARN_ON(link_id >= IEEE80211_MLD_MAX_NUM_LINKS))
-@@ -5063,6 +5065,13 @@ u8 ieee80211_beacon_update_cntdwn(struct ieee80211_vif *vif, unsigned int link_i
- 		goto unlock;
- 
- 	count = __ieee80211_beacon_update_cntdwn(beacon);
-+	if (wiphy_ext_feature_isset(
-+		    local->hw.wiphy,
-+		    NL80211_EXT_FEATURE_CRITICAL_UPDATE_OFFLOAD) &&
-+	    wdev->valid_links && wdev->links[link_id].ap.switch_count != count) {
-+		wdev->links[link_id].ap.switch_count = count;
-+		wdev->critical_update = true;
-+	}
- 
- unlock:
- 	rcu_read_unlock();
--- 
-2.34.1
+This is the code we're using:
+
+https://git.codelinaro.org/clo/la/kernel/msm-4.4/-/blob/caf_migration/kernel.lnx.4.4.r38-rel/drivers/net/wireless/ath/ath10k/qmi.c
+
+When ATH10K_SNOC_DRIVER_EVENT_SERVER_ARRIVE,
+driver registers an "indicator handler"
+ath10k_snoc_qmi_wlfw_clnt_ind()
+
+It handles QMI_WLFW_FW_READY_IND_V01 by posting
+ATH10K_SNOC_DRIVER_EVENT_FW_READY_IND
+which is handled in the
+ath10k_snoc_driver_event_work() work queue.
+
+But QMI_WLFW_MSA_READY_IND_V01 only triggers
+a debug log and setting qmi_cfg->msa_ready = true;
+
+$ git grep '\<msa_ready\>'
+drivers/net/wireless/ath/ath10k/qmi.c:          qmi_cfg->msa_ready = true;
+drivers/net/wireless/ath/ath10k/qmi.c:  qmi_cfg->msa_ready = false;
+drivers/net/wireless/ath/ath10k/qmi.h: * msa_ready: wlan firmware msa memory ready for board data download
+drivers/net/wireless/ath/ath10k/qmi.h:  bool msa_ready;
+
+So basically, the vendor ath10k driver ignores QMI_WLFW_MSA_READY_IND_V01.
+
+
+I will test the following patch which aligns the behavior
+of mainline driver to that of vendor driver:
+
+diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
+index 38e939f572a9e..0e1ab5aca663b 100644
+--- a/drivers/net/wireless/ath/ath10k/qmi.c
++++ b/drivers/net/wireless/ath/ath10k/qmi.c
+@@ -1040,6 +1040,7 @@ static void ath10k_qmi_driver_event_work(struct work_struct *work)
+ 		switch (event->type) {
+ 		case ATH10K_QMI_EVENT_SERVER_ARRIVE:
+ 			ath10k_qmi_event_server_arrive(qmi);
++			ath10k_qmi_event_msa_ready(qmi);
+ 			break;
+ 		case ATH10K_QMI_EVENT_SERVER_EXIT:
+ 			ath10k_qmi_event_server_exit(qmi);
+@@ -1048,7 +1049,7 @@ static void ath10k_qmi_driver_event_work(struct work_struct *work)
+ 			ath10k_qmi_event_fw_ready_ind(qmi);
+ 			break;
+ 		case ATH10K_QMI_EVENT_MSA_READY_IND:
+-			ath10k_qmi_event_msa_ready(qmi);
++			printk(KERN_WARNING "IGNORING MSA_READY INDICATOR");
+ 			break;
+ 		default:
+ 			ath10k_warn(ar, "invalid event type: %d", event->type);
+
+
+Dmitry Baryshkov reported:
+Works on sm8150, sdm845, qrb2210
+
+Regards
 
 
