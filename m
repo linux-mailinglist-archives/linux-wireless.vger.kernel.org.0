@@ -1,34 +1,34 @@
-Return-Path: <linux-wireless+bounces-5802-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5809-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CAD0896D5F
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 12:56:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54953896D67
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 12:56:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 512911F2E8A0
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 10:56:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 862491C252E3
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 10:56:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2342136989;
-	Wed,  3 Apr 2024 10:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470F9142E77;
+	Wed,  3 Apr 2024 10:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="bR02LTfM"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="JJCL2n/v"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F171411F0
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Apr 2024 10:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB1F140E34
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Apr 2024 10:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712141725; cv=none; b=DmkQdpIa0zXTMDNBho8UQrniqONfUKk3GWx9rgnlggrohiR15dyEdTr05TDQA3ejEYMKDaIesz28RTutb6EyFwXhmw0BSp/1GWuBmGpIrWIjrY4n/OGUx6h+ZK5j195eGL8g85h3zkxE2LAZTVmcGPKjQ9P3hZyYPAc4k7D57mo=
+	t=1712141752; cv=none; b=Nh4J3iOLErA+xfYkL+LAgcCDpASniA6YhbgdEH1+495kdU9Yf/0MvvFXUqEQLGcoy1esnRSywEK65qJ7mtp/aA9jBdlFItc58m6U1ExV3q3UNLy9/JykyFJz27/5nL6P0aqC6IuC3cGxj8pwPrNuO1/YZpITqs5+cIxule/MXfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712141725; c=relaxed/simple;
-	bh=Cx46qIRZhwhYPjCcGGxM7VUI2f+02o2x+njiup04PDU=;
+	s=arc-20240116; t=1712141752; c=relaxed/simple;
+	bh=olitPaX7ytx77pT7Rb5XhK6+Ca4NmsrNmSKY6j56B/E=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=okiXVRPiSTuCu7f6Rou11n+6KAFovAEoPhbGjGLMZPEvncRkVrGmVukcyL+iYQ4anpqGhvJTQwWnTnN7thu8LhJv8jOjt+PnHqlH9HWlKs6anY9kLaeDehPfS84gtDmFw0beNM4dQpHsZyeWHjTP9sN1p1txBQxP1SkVnlZTbPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=bR02LTfM; arc=none smtp.client-ip=46.4.11.11
+	 MIME-Version; b=e6u4UKX0IOfneQvBG/r8d/nX4q/jK+VhZ+Qaz1s//zR28Fc8o/7N4gPhnxSuWHKT6E0WusQJ7TAa/NXdupxTEbQ6Zi/B0mc3h88zzkzFp+4tdNmNnVWVQfHoJX/FDAOnjqBhIB8GKUvN7qI/T3o3WnmdpfvpFVrGGRItKjVWre8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=JJCL2n/v; arc=none smtp.client-ip=46.4.11.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
@@ -37,20 +37,20 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=oXttf9KHJqxJzjNqpvFFvl+Tzz7NR3cA/kIZ5dMzYi4=; b=bR02LTfMNtGDumNiiGFQBDvlGE
-	72a5xMFZTVb5GFvrBJrIeGRXgQXIReay4HlzeJYQ2ncHJ3Phg4bTJyQbwJbIHDknxdqh6aZ1lAmfQ
-	hkeGbYVjtU9PvbsYf/FfYmoq/PGygpyIetsQfAV1DIhz4yRXxqKOdldsvaJeegVh+5nU=;
+	bh=z5i8dfIc6UFoXkSbX/8ZtOXqwWbj8eXU/Tal851P0Y4=; b=JJCL2n/vkDYXkE7C+8WgnTBsm4
+	R4FyxU1V+boh1QXlU4PX83Q5BNiRE/Ov73HATp3V0QUEH7AzAMM8Pm+LL4qfhoMmol2xcH8kbbSCk
+	izIL9s7zelrRej/HvAMzNPc9s/VV/MQU2mBPUHkZqYa4fedWGuqV44sf8W/LZFVR63LU=;
 Received: from p54ae9c93.dip0.t-ipconnect.de ([84.174.156.147] helo=localhost.localdomain)
 	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
 	(Exim 4.94.2)
 	(envelope-from <nbd@nbd.name>)
-	id 1rrxt3-00CgfA-GF
+	id 1rrxt3-00CgfA-LK
 	for linux-wireless@vger.kernel.org; Wed, 03 Apr 2024 12:30:33 +0200
 From: Felix Fietkau <nbd@nbd.name>
 To: linux-wireless@vger.kernel.org
-Subject: [PATCH 05/13] wifi: mt76: mt7915: fix bogus Tx/Rx airtime duration values
-Date: Wed,  3 Apr 2024 12:30:24 +0200
-Message-ID: <20240403103032.54823-5-nbd@nbd.name>
+Subject: [PATCH 06/13] wifi: mt76: mt7915: fix HE PHY capabilities IE for station mode
+Date: Wed,  3 Apr 2024 12:30:25 +0200
+Message-ID: <20240403103032.54823-6-nbd@nbd.name>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240403103032.54823-1-nbd@nbd.name>
 References: <20240403103032.54823-1-nbd@nbd.name>
@@ -62,39 +62,46 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Henry Yen <henry.yen@mediatek.com>
+From: Howard Hsu <howard-yh.hsu@mediatek.com>
 
-Do not report measurements if the airtime counter was cleared since the
-last update (possibly by firmware)
+Set correct beamformer capabilities for station vif in HE PHY
+capabilities IE.
 
-Signed-off-by: Henry Yen <henry.yen@mediatek.com>
+Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/init.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index e45361111f9b..f350b3f7a0bd 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -140,8 +140,15 @@ static void mt7915_mac_sta_poll(struct mt7915_dev *dev)
- 			msta->airtime_ac[i] = mt76_rr(dev, addr);
- 			msta->airtime_ac[i + 4] = mt76_rr(dev, addr + 4);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index cea2f6d9050a..d9e391fbb4bf 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -934,11 +934,10 @@ mt7915_set_stream_he_txbf_caps(struct mt7915_phy *phy,
+ 	/* the maximum cap is 4 x 3, (Nr, Nc) = (3, 2) */
+ 	elem->phy_cap_info[7] |= min_t(int, sts - 1, 2) << 3;
  
--			tx_time[i] = msta->airtime_ac[i] - tx_last;
--			rx_time[i] = msta->airtime_ac[i + 4] - rx_last;
-+			if (msta->airtime_ac[i] <= tx_last)
-+				tx_time[i] = 0;
-+			else
-+				tx_time[i] = msta->airtime_ac[i] - tx_last;
+-	if (vif != NL80211_IFTYPE_AP)
++	if (vif != NL80211_IFTYPE_AP && vif != NL80211_IFTYPE_STATION)
+ 		return;
+ 
+ 	elem->phy_cap_info[3] |= IEEE80211_HE_PHY_CAP3_SU_BEAMFORMER;
+-	elem->phy_cap_info[4] |= IEEE80211_HE_PHY_CAP4_MU_BEAMFORMER;
+ 
+ 	c = FIELD_PREP(IEEE80211_HE_PHY_CAP5_BEAMFORMEE_NUM_SND_DIM_UNDER_80MHZ_MASK,
+ 		       sts - 1);
+@@ -947,6 +946,11 @@ mt7915_set_stream_he_txbf_caps(struct mt7915_phy *phy,
+ 				sts_160 - 1);
+ 	elem->phy_cap_info[5] |= c;
+ 
++	if (vif != NL80211_IFTYPE_AP)
++		return;
 +
-+			if (msta->airtime_ac[i + 4] <= rx_last)
-+				rx_time[i] = 0;
-+			else
-+				rx_time[i] = msta->airtime_ac[i + 4] - rx_last;
- 
- 			if ((tx_last | rx_last) & BIT(30))
- 				clear = true;
++	elem->phy_cap_info[4] |= IEEE80211_HE_PHY_CAP4_MU_BEAMFORMER;
++
+ 	c = IEEE80211_HE_PHY_CAP6_TRIG_SU_BEAMFORMING_FB |
+ 	    IEEE80211_HE_PHY_CAP6_TRIG_MU_BEAMFORMING_PARTIAL_BW_FB;
+ 	elem->phy_cap_info[6] |= c;
 -- 
 2.43.0
 
