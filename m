@@ -1,129 +1,95 @@
-Return-Path: <linux-wireless+bounces-5813-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5814-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FF9C896DFF
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 13:21:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25ABE896F96
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 14:56:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5178D1C25E90
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 11:21:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4996B1C243CD
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 12:56:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3FAF1420A3;
-	Wed,  3 Apr 2024 11:21:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="X7zDRydP"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBCDC1474BF;
+	Wed,  3 Apr 2024 12:55:24 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6871420A5
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Apr 2024 11:21:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81A6146A75
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Apr 2024 12:55:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712143284; cv=none; b=j0ldeAJvUF1SG/7+mNNFmIVrQMz0YH9aoZVYyJ0wun437jrL982kaOee3QocncDgrDQtOP3LIq9YG9VPy8ked0ZAIM5RpYIfTakFoPEFaGtp5/ANP51mDfCHyv3NNEoOQuotxkqiY+b8mZPP/jaHE3MZ42CPUNzHnsiX9iAYOyQ=
+	t=1712148924; cv=none; b=eQOpSar1lOLHtVc3ptC35eOekLqzNSV8NJMBB7ODUxoi7b3NPBNooWvg3Zm5ObsuVZzGx/MIDdWs2ljfWkrJFfatnAlxaGfQyhTrT4bBdyFmzqnze3O/PP3HQmofrpHwgu8Dh06cJ/xIH4edTprkeO/cMfm6kIkz81EZNvn0PMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712143284; c=relaxed/simple;
-	bh=NtKU8+USW/X+9IPdP79q1Hjd/E5gGjo4KjceFszYa54=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=mbJ7jf+dsTsGIYX/N3TM2CNza3Zp51w7DtzRylEVcAQMG9SKEGZp8lZ0BssyYzXEenm2r0oqlGlfQnVRR3SO1H6waQ7XYNhdStRsXndGoJ6TObjFpYfa78KQVORaCx9pRHV9LzKAAeK+hjz/qGdUqnAWzdUYXfZQE2YA6HTwqJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=X7zDRydP; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4338g8O7021480;
-	Wed, 3 Apr 2024 11:21:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=oqkf5lQ/fDuGQnjKHJNVonlY9yGRjWaX2QxXO6E+zAc=; b=X7
-	zDRydPnnRp7S0Z6dm5vzxbgn419CGVApA5eEFb2a7ptFQfKrIIoqCoHp0J9fbuO0
-	7YOHAyBJalrNMLrUqz1LfhZdDpE7Xxa7RGBFKIXcs7vO6NdGPYb1Xl4YYwBWPs+y
-	i46uNyxFpPo6ddpHgBkTf3QcwRbUSsMVHaUJKhNMlnuSAk7l7MSyaFMy/sIhRfp0
-	xiWPmo6AzTlJA9yN6UQU1vvKTcrUDdGNgDEhXopsoOLFV/cqpmejvrCVxIsmMWP0
-	mluD/JX/LXhrjzShplD32Jum+ji08uXv1R2L6ddrd8MsORHZUrwad+YnmH5AIfMl
-	rXpsw3Xr3lJ1RHDY0geA==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x93u58b2r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Apr 2024 11:21:15 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 433BLE2j025828
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 3 Apr 2024 11:21:14 GMT
-Received: from [10.152.205.142] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 3 Apr 2024
- 04:21:13 -0700
-Message-ID: <9200cdc1-00ae-d3bb-1f3d-abb4ce993cf7@quicinc.com>
-Date: Wed, 3 Apr 2024 16:51:09 +0530
+	s=arc-20240116; t=1712148924; c=relaxed/simple;
+	bh=lkFPD9wO8NvCDkC/+n70/SZWpOEq0LtzWRfYD6iFbWc=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=EUh58ky1L9E+enMnMoBl0FeNVDr4FcEsBbepw2pD+9fEMVMT+uwkYi/zDDvbDbokKVZ6UFASM3QI2aymOfD9qrTW12+BKUszkLt99rSD+uNgDs6xBB1eIBHdUk2boLfgd08t0wQ1CpFVqqLeF+s8SbirmMWmIdkicn5rxg9/Czk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 433CtCIg9940473, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 433CtCIg9940473
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 3 Apr 2024 20:55:12 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 3 Apr 2024 20:55:13 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 3 Apr 2024 20:55:13 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
+ 15.01.2507.035; Wed, 3 Apr 2024 20:55:13 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "nbd@nbd.name" <nbd@nbd.name>
+Subject: Re: [PATCH 10/13] wifi: mt76: mt7915: add mt7986, mt7916 and mt7981 pre-calibration
+Thread-Topic: [PATCH 10/13] wifi: mt76: mt7915: add mt7986, mt7916 and mt7981
+ pre-calibration
+Thread-Index: AQHahbXGB1CWg4HZjEGprXZP2j2FZLFV+nOA
+Date: Wed, 3 Apr 2024 12:55:13 +0000
+Message-ID: <4cea6924dad8c564312cfa819e189121016dae85.camel@realtek.com>
+References: <20240403103032.54823-1-nbd@nbd.name>
+	 <20240403103032.54823-10-nbd@nbd.name>
+In-Reply-To: <20240403103032.54823-10-nbd@nbd.name>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+user-agent: Evolution 3.36.1-2 
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <40352E102895A9498BAFFB578010467D@realtek.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v2 0/2] [RESEND] wifi: ath12k: refactor the link capable
- flag
-Content-Language: en-US
-To: Kalle Valo <kvalo@kernel.org>
-CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20240403042056.1504209-1-quic_periyasa@quicinc.com>
- <87o7aq68a3.fsf@kernel.org>
-From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-In-Reply-To: <87o7aq68a3.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: Tzwxm9eqnnMIW3H6A0DCNe5yQdNU_LVI
-X-Proofpoint-ORIG-GUID: Tzwxm9eqnnMIW3H6A0DCNe5yQdNU_LVI
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-03_10,2024-04-01_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- priorityscore=1501 bulkscore=0 suspectscore=0 adultscore=0 mlxlogscore=766
- mlxscore=0 lowpriorityscore=0 impostorscore=0 spamscore=0 phishscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2403210001 definitions=main-2404030078
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-
-
-On 4/3/2024 4:08 PM, Kalle Valo wrote:
-> Karthikeyan Periyasamy <quic_periyasa@quicinc.com> writes:
-> 
->> extend the link capable flag to accommodate inter-device capability.
->>
->> v2:
->>   - Rename the terminology from chip to device
->>
->> Karthikeyan Periyasamy (2):
->>    wifi: ath12k: extend the link capable flag
->>    wifi: ath12k: fix link capable flags
-> 
-> Why the resend? 
-
-I missed the version log in the commit message.
-
-I'm not really a fan of these "RESEND" versions. If you
-> need to resend something simply just increase the version number (in
-> this case to v3) and explain in the change log why you sent v3. That's a
-> lot more clear for everyone than having "v2", "v2 RESEND", "v2 RESEND
-> RESEND" and what not. It's not like we are running out of version
-> numbers ;)
-> 
-> But no need to resend because of this :)
-> 
-
-Sure, i got it.
-
--- 
-Karthikeyan Periyasamy
---
-கார்த்திகேயன் பெரியசாமி
+T24gV2VkLCAyMDI0LTA0LTAzIGF0IDEyOjMwICswMjAwLCBGZWxpeCBGaWV0a2F1IHdyb3RlOg0K
+PiANCj4gRnJvbTogUGV0ZXIgQ2hpdSA8Y2h1aS1oYW8uY2hpdUBtZWRpYXRlay5jb20+DQo+IA0K
+PiBBZGQgcHJlLWNhbGlicmF0aW9uIGZvciBtdDc5ODYgYW5kIG10NzkxNi4gSXQgaGFzIGRpZmZl
+cmVudCBkYXRhIHNpemUNCj4gd2l0aCBtdDc5MTUuIEdyb3VwIGNhbCBuZWVkcyA1NGsgYW5kIDk0
+ayBmb3IgMkcgKyA1RyBhbmQgMkcgKyA2RywNCj4gcmVzcGVjdGl2ZWx5LiBEUEQgY2FsIG5lZWRz
+IDMwMGsuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBQZXRlciBDaGl1IDxjaHVpLWhhby5jaGl1QG1l
+ZGlhdGVrLmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogU3RhbmxleVlQIFdhbmcgPFN0YW5sZXlZUC5X
+YW5nQG1lZGlhdGVrLmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogRmVsaXggRmlldGthdSA8bmJkQG5i
+ZC5uYW1lPg0KPiAtLS0NCg0KWy4uLl0NCg0KPiAtc3RhdGljIGludCBtdDc5MTVfZHBkX2ZyZXFf
+aWR4KHUxNiBmcmVxLCB1OCBidykNCj4gK3N0YXRpYyBpbnQgbXQ3OTE1X2RwZF9mcmVxX2lkeChz
+dHJ1Y3QgbXQ3OTE1X2RldiAqZGV2LCB1MTYgZnJlcSwgdTggYncpDQo+ICB7DQo+IC0gICAgICAg
+c3RhdGljIGNvbnN0IHUxNiBmcmVxX2xpc3RbXSA9IHsNCj4gKyAgICAgICBjb25zdCB1MTYgZnJl
+cV9saXN0X3YxW10gPSB7DQo+ICAgICAgICAgICAgICAgICA1MTgwLCA1MjAwLCA1MjIwLCA1MjQw
+LA0KPiAgICAgICAgICAgICAgICAgNTI2MCwgNTI4MCwgNTMwMCwgNTMyMCwNCj4gICAgICAgICAg
+ICAgICAgIDU1MDAsIDU1MjAsIDU1NDAsIDU1NjAsDQo+IA0KDQonc3RhdGljIGNvbnN0JyB3b3Vs
+ZCBiZSBiZXR0ZXIgdGhhbiAnY29uc3QnLCBiZWNhdXNlICdzdGF0aWMgY29uc3QnIGlzIG9ubHkN
+CmEgY29weSBvZiByb2RhdGEsIGJ1dCAnY29uc3QnIGlzIGEgY29weSBvZiByb2RhdGEgcGx1cyBh
+IGxvY2FsIGNvcHkgaW4gc3RhY2suDQoNCg0KDQo=
 
