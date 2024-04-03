@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-5817-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5818-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E62538971AA
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 15:53:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E13D98971B5
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 15:54:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97EE4281512
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 13:53:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E84B5B261A5
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 13:54:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2384B148820;
-	Wed,  3 Apr 2024 13:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D9F148839;
+	Wed,  3 Apr 2024 13:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YOic17JM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RoXYoA8X"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E024A146D65;
-	Wed,  3 Apr 2024 13:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3DCF148820;
+	Wed,  3 Apr 2024 13:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712152426; cv=none; b=lTs7uHKoo1pmC729uG5w8JTwv+KSNcZw4s1gpCQ3nE4uUF9T2cBnQoeetUWtSIa4uT2DLzJfksSEPEvogcHScZZyU/aOBADNNpZicPxWsBjyuUjRhChDHXeIrt3fPS5S8fvoFaLwbuw6XHWaARg2m4teOAkIeRGu8nuc9rYyoNc=
+	t=1712152479; cv=none; b=hz4BLRNNrbt55Q+OEUH4qM64vRO7ZekUAGRqTZ5rtASX2ZGYs6rBcposg4H7aOgsScgk/60nS32UJOM/rS8+khSLMI3isyl5RjGj+ggV02akazk01g296HZhX+TlH/+ju4bMDU/0gU9L/mVp/o3q+LqY+P/zDipT///CVKGnWLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712152426; c=relaxed/simple;
-	bh=m0lorB2MbPpc2sRbPkYyOS6AnvFCBRgPrepaAMOzzv0=;
+	s=arc-20240116; t=1712152479; c=relaxed/simple;
+	bh=jmLir6yT+gXZwNc/mLtJCMF1x5e9R+cRof8vBe2L93U=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=oYzWv8jVZtcGrsk49SimKRqwzOBoOun6TKmnduua/18m02j6YF0vaZ6+FI23KJbUUmkw2i5kAvxfx9sVk05Ha7HUFqEWTA0JaTjVRo7Zf5b8desBoDvl13dej31VIQOVuBcG2EEh9AgeTv2swbuCksywFGKmTdX1An0hyF34oW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YOic17JM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C15C433F1;
-	Wed,  3 Apr 2024 13:53:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=L0GoMQN6rhJz0CBExhh9wRMc425UbzQyFYsF92JkjN9huWE91xjI4O14AdrmSQ7+sX1Cxqda7RbLP/Nqdn52pJQ2A1YwxeKfwIZzcWrsOOeORl6FAg2EaZQxRAuWcuxN5dZLmlkq/2KXQ/douDrXjfTnyTq4Vr0/69DMokhp6EE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RoXYoA8X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA13C433F1;
+	Wed,  3 Apr 2024 13:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712152425;
-	bh=m0lorB2MbPpc2sRbPkYyOS6AnvFCBRgPrepaAMOzzv0=;
+	s=k20201202; t=1712152478;
+	bh=jmLir6yT+gXZwNc/mLtJCMF1x5e9R+cRof8vBe2L93U=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=YOic17JM08kzLf6HccVjw0tiON+A4lbyi59R2hAAwcWksGE4hL4QskZ99Ec4ieQLy
-	 mQ+6OAGCtxnVIXaOBXRMjXkrFLFoJoy0BrmmDWc41/Z2tLnKK0nUKvRqUvLacufSmW
-	 vXgnmo1FsVfofAq7Zfl5lRm0yxpoPs2kb/WGpMI8VUTznZsVpIX48OOtr3aWlW1t9j
-	 3qIQUzwDyJUFRzhLJuBniJFjnSxtMGNxasSB5803FWt+k1J/4tGFtaXTdNpHZl9dKB
-	 wjN2QHlTeDnJVocdcLi2LXzgfrx2ePZRajTehI4211rdxcvbC3pfc6FraLlELkOA3g
-	 11XkAwGd8DwYg==
+	b=RoXYoA8Xu3bK3fwacMxAUk55arZBbe8CSE0xL8PSkJ3LC07/XU2PHh7+AuCstnLfx
+	 famW8CIYt4jydEYRZEIDzw/p+FKjZ1OC0Yf9Ec/RARno3Hd8gtQpMg6qk6BEaqgRU5
+	 JYn5naQopH64LRTGh38PCKogDX3Tlrn3mUba3VN5gumRdikAVYysrxIuoLMzw0jpUn
+	 ZvfXILkBp0Gy1QUrz2abtzArDjNIj1lFdzrXMiIkDad3NjCTSavW47yLDU6I4XCytm
+	 IyjaH1bqtzpgymZkv/OAfQ9G7IGV1RSifehVdAZXCgN47lyU6ER91FKgy583Mp3NDG
+	 V5uyp0DpLwGmw==
 From: Kalle Valo <kvalo@kernel.org>
 To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Cc: Ulf Hansson <ulf.hansson@linaro.org>,  Marcel Holtmann
@@ -56,14 +56,13 @@ Cc: Ulf Hansson <ulf.hansson@linaro.org>,  Marcel Holtmann
   linux-mediatek@lists.infradead.org,  linux-wireless@vger.kernel.org,
   ath10k@lists.infradead.org,  brcm80211@lists.linux.dev,
   brcm80211-dev-list.pdl@broadcom.com
-Subject: Re: [PATCH 6/7] wifi: marvell: mwifiex: drop driver owner
- initialization
+Subject: Re: [PATCH 7/7] wifi: silabs: wfx: drop driver owner initialization
 References: <20240329-module-owner-sdio-v1-0-e4010b11ccaa@linaro.org>
-	<20240329-module-owner-sdio-v1-6-e4010b11ccaa@linaro.org>
-Date: Wed, 03 Apr 2024 16:53:39 +0300
-In-Reply-To: <20240329-module-owner-sdio-v1-6-e4010b11ccaa@linaro.org>
-	(Krzysztof Kozlowski's message of "Fri, 29 Mar 2024 18:24:36 +0100")
-Message-ID: <87frw25z8c.fsf@kernel.org>
+	<20240329-module-owner-sdio-v1-7-e4010b11ccaa@linaro.org>
+Date: Wed, 03 Apr 2024 16:54:33 +0300
+In-Reply-To: <20240329-module-owner-sdio-v1-7-e4010b11ccaa@linaro.org>
+	(Krzysztof Kozlowski's message of "Fri, 29 Mar 2024 18:24:37 +0100")
+Message-ID: <87bk6q5z6u.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -80,11 +79,11 @@ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> writes:
 >
 > Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-The preferred title format is:
+Also here the preferred title format is:
 
-wifi: mwifiex: drop driver owner initialization
+wifi: wfx: drop driver owner initialization
 
-But that's just cosmetics. Feel free to take this via sdio tree:
+Feel free to take this via sdio tree:
 
 Acked-by: Kalle Valo <kvalo@kernel.org>
 
