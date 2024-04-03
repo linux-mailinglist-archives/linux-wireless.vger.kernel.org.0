@@ -1,269 +1,215 @@
-Return-Path: <linux-wireless+bounces-5795-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5796-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E353C896B12
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 11:52:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA8CF896B3A
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 11:59:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 125281C24828
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 09:52:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 348611F292A3
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 09:59:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80595134CC8;
-	Wed,  3 Apr 2024 09:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B5071350D6;
+	Wed,  3 Apr 2024 09:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="Wd89HncC"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="dVGnky6K"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8B76EB73
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Apr 2024 09:52:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79115134CD4
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Apr 2024 09:59:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712137953; cv=none; b=le8t0Kl5r6hhId/g/xvap4XVSGMGYM+DDbB80Yaw6zyHtf7TOmQ2OmB73uwqW3oncfYSLpuJ+XQtvIB5ZHccGRpAyupQqjch8xWCuhBLTBmNXTRLHP8OD/eijzxsGUH8j/X1J0rDf8Jfnnk6+JCpbQ96X1zLopU5phX7DOEOPZQ=
+	t=1712138370; cv=none; b=Huik96pu51oRaeTcXzmqcWMqS51BSFtb6mUW/hbH6qOLa484ISjRCsjlk4iR1UVyYmzSX/He/dCxQF/ZHeUvDFKJMKxG706hDtPhoGgO4ArND9i8q0JzOJl4+fEdH2KGuL+PXYYS/6ZlgEmAl6OUJjsUBuzKerlVZgtOOvJYAVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712137953; c=relaxed/simple;
-	bh=lbxUiISgJz4GO5tC8DjacOmjzrqbnJiUbyCFr4oEp8c=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=W6INTPOFvLXQXmJIzZQIdoVXHaRrtAx1FgvIjwuf2uP7tR01sbWL28fmfNiPv2mqfkfKct1uMKcMdR1246XKLwWiX5m+iqZwj/WJM9BeC5RTogwUJb50fblYVTuhzg68RHclWyyJ6YR0mD/bK9SOwJ7ecToKeNuZyRsqRRbj2u0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=Wd89HncC; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: da640e36f19f11eeb8927bc1f75efef4-20240403
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=qeWypaWPri9rAciaLOJ6QGFlszp1IkAwPLtsuqUh4/c=;
-	b=Wd89HncCqiuuIDK5PxX1OwXkXXvpesZ1/x66C9pjCEfbLxYSsBTJbvfiJxaryt4zWn4HGFDRbpVN+exbNHPZ8AqnZDO8xoQtIRqBNLUOt2MXZve/32e5VPhRFRT/oVrHW0p6EPRBYFDKP7Zw4NtwFCH2QRR2fdnmWO4iVezgL7Y=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.37,REQID:5ca6bdb2-f830-46dc-841a-a5072c53824c,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6f543d0,CLOUDID:a7034582-4f93-4875-95e7-8c66ea833d57,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,
-	SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: da640e36f19f11eeb8927bc1f75efef4-20240403
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
-	(envelope-from <mingyen.hsieh@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 2021280097; Wed, 03 Apr 2024 17:52:16 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Wed, 3 Apr 2024 17:52:15 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Wed, 3 Apr 2024 17:52:15 +0800
-From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
-	<Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
-	<Eric-SY.Chang@mediatek.com>, <km.lin@mediatek.com>,
-	<robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-	<Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
-	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, Rong Yan <rong.yan@mediatek.com>, Ming
- Yen Hsieh <mingyen.hsieh@mediatek.com>
-Subject: [PATCH] wifi: mt76: mt7921: cqm rssi low/high event notify
-Date: Wed, 3 Apr 2024 17:52:14 +0800
-Message-ID: <20240403095214.20596-1-mingyen.hsieh@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+	s=arc-20240116; t=1712138370; c=relaxed/simple;
+	bh=FY9qyGVTn2fzNNg52jRWIk3Tr/ZxExvG53Dgj3MxXRg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=UVGtKn7RxMncCfIsLA2nPOSStjOY+B20c9etJFFEcVqi5gqF7PU+eVK94lyzr/8xHnnvoxFnZKyiuQ67OH/k5whKzH5a2saT/FRqTAS33tUBL+kgGC6LH+Jv9ByKFnaPopBjf6xjNnnPPecBQhlbBbXGULTDf7zZOdX0u3Bj3T8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=dVGnky6K; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4334Z6tP005076;
+	Wed, 3 Apr 2024 09:58:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=CVoOQL6BL5QltBMYhaBYd0mReQolKmj5oeLMAJ4L9nA=; b=dV
+	Gnky6KyhGrnAyzXBEu7QfqxGQqVf7+/I5eYZmtLsS8E6yFx+jzKK+IeMvzHLjX3X
+	x+at0RmZIQFqPTPQurU7MnFOpqoe7hXAU9W+2v7J+nsnV51KJNjsfxnhBAiI079E
+	I4Wmb5AgP9Ln2Mz+mtmXNvDu/MLe62S8FZnCQq9w57FlJ7jF2q85ZBC3JOXxxiKs
+	Gl3NhQmsG69gYvTtJvklPyXSwdeFSSFRK0ugtFVjbYGbMr8qYhK/0JtIicxV1SNQ
+	QI/GYGbj3n+XCuvTy8SHOguyta2sE/jLKJsGO6SV5o4RUgY3Tq1eWUf+cLfgV+br
+	n5Lpz5sA9i3FQr4wAFbQ==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x9077gkwj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 03 Apr 2024 09:58:56 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4339wsPv005015
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 3 Apr 2024 09:58:54 GMT
+Received: from [10.152.205.142] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 3 Apr 2024
+ 02:58:52 -0700
+Message-ID: <7bbd676a-748b-a1d6-aa5c-2e8868017159@quicinc.com>
+Date: Wed, 3 Apr 2024 15:28:49 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 09/13] wifi: cfg80211: Add multi-hardware iface
+ combination support
+Content-Language: en-US
+To: Johannes Berg <johannes@sipsolutions.net>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Vasanthakumar Thiagarajan
+	<quic_vthiagar@quicinc.com>
+References: <20240328072916.1164195-1-quic_periyasa@quicinc.com>
+ <20240328072916.1164195-10-quic_periyasa@quicinc.com>
+ <a24b7d967dbe31ef613fae8c331f4ff718482c93.camel@sipsolutions.net>
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+In-Reply-To: <a24b7d967dbe31ef613fae8c331f4ff718482c93.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: _TYS5nf6FFZMcsC5OfbWM4QKc8JS5NRH
+X-Proofpoint-ORIG-GUID: _TYS5nf6FFZMcsC5OfbWM4QKc8JS5NRH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-03_08,2024-04-01_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ malwarescore=0 adultscore=0 suspectscore=0 clxscore=1015
+ priorityscore=1501 lowpriorityscore=0 spamscore=0 phishscore=0 bulkscore=0
+ impostorscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2403210001 definitions=main-2404030068
 
-From: "Rong Yan" <rong.yan@mediatek.com>
 
-The implementation amounts to setting the driver flag
-IEEE80211_VIF_SUPPORTS_CQM_RSSI, and then providing
-mechanisms for continuously updating enough information
-to be able to provide notifications to userspace when
-RSSI drops below a certain threshold
 
-Signed-off-by: Rong Yan <rong.yan@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
----
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  6 ++
- .../net/wireless/mediatek/mt76/mt7921/main.c  |  5 ++
- .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 61 +++++++++++++++++++
- .../wireless/mediatek/mt76/mt7921/mt7921.h    |  1 +
- drivers/net/wireless/mediatek/mt76/mt792x.h   |  1 +
- 5 files changed, 74 insertions(+)
+On 3/28/2024 7:46 PM, Johannes Berg wrote:
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index 657a4d1f856b..8a6642495d62 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -1004,6 +1004,7 @@ enum {
- 	MCU_EVENT_CH_PRIVILEGE = 0x18,
- 	MCU_EVENT_SCHED_SCAN_DONE = 0x23,
- 	MCU_EVENT_DBG_MSG = 0x27,
-+	MCU_EVENT_RSSI_NOTIFY = 0x96,
- 	MCU_EVENT_TXPWR = 0xd0,
- 	MCU_EVENT_EXT = 0xed,
- 	MCU_EVENT_RESTART_DL = 0xef,
-@@ -1303,6 +1304,7 @@ enum {
- 	MCU_CE_CMD_SCHED_SCAN_ENABLE = 0x61,
- 	MCU_CE_CMD_SCHED_SCAN_REQ = 0x62,
- 	MCU_CE_CMD_GET_NIC_CAPAB = 0x8a,
-+	MCU_CE_CMD_RSSI_MONITOR = 0xa1,
- 	MCU_CE_CMD_SET_MU_EDCA_PARMS = 0xb0,
- 	MCU_CE_CMD_REG_WRITE = 0xc0,
- 	MCU_CE_CMD_REG_READ = 0xc0,
-@@ -1448,6 +1450,10 @@ struct mt76_connac_beacon_loss_event {
- 	u8 pad[2];
- } __packed;
- 
-+struct mt76_connac_rssi_notify_event {
-+	s32 rssi[4];
-+} __packed;
-+
- struct mt76_connac_mcu_bss_event {
- 	u8 bss_idx;
- 	u8 is_absent;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index ca36de34171b..afcda7c481e0 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -310,6 +310,8 @@ mt7921_add_interface(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
- 	}
- 
- 	vif->driver_flags |= IEEE80211_VIF_BEACON_FILTER;
-+	if (phy->chip_cap & MT792x_CHIP_CAP_RSSI_NOTIFY_EVT_EN)
-+		vif->driver_flags |= IEEE80211_VIF_SUPPORTS_CQM_RSSI;
- out:
- 	mt792x_mutex_release(dev);
- 
-@@ -679,6 +681,9 @@ static void mt7921_bss_info_changed(struct ieee80211_hw *hw,
- 	if (changed & BSS_CHANGED_PS)
- 		mt7921_mcu_uni_bss_ps(dev, vif);
- 
-+	if (changed & BSS_CHANGED_CQM)
-+		mt7921_mcu_set_rssimonitor(dev, vif);
-+
- 	if (changed & BSS_CHANGED_ASSOC) {
- 		mt7921_mcu_sta_update(dev, NULL, vif, true,
- 				      MT76_STA_INFO_STATE_ASSOC);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index 8b4ce32a2cd1..5ccef867b4b8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -253,6 +253,42 @@ mt7921_mcu_tx_done_event(struct mt792x_dev *dev, struct sk_buff *skb)
- 	mt7921_mac_add_txs(dev, event->txs);
- }
- 
-+static void
-+mt7921_mcu_rssi_monitor_iter(void *priv, u8 *mac,
-+			     struct ieee80211_vif *vif)
-+{
-+	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
-+	struct mt76_connac_rssi_notify_event *event = priv;
-+	enum nl80211_cqm_rssi_threshold_event nl_event;
-+	s32 rssi = le32_to_cpu(event->rssi[mvif->mt76.idx]);
-+
-+	if (!rssi)
-+		return;
-+
-+	if (!(vif->driver_flags & IEEE80211_VIF_SUPPORTS_CQM_RSSI))
-+		return;
-+
-+	if (rssi > vif->bss_conf.cqm_rssi_thold)
-+		nl_event = NL80211_CQM_RSSI_THRESHOLD_EVENT_HIGH;
-+	else
-+		nl_event = NL80211_CQM_RSSI_THRESHOLD_EVENT_LOW;
-+
-+	ieee80211_cqm_rssi_notify(vif, nl_event, rssi, GFP_KERNEL);
-+}
-+
-+static void
-+mt7921_mcu_rssi_monitor_event(struct mt792x_dev *dev, struct sk_buff *skb)
-+{
-+	struct mt76_connac_rssi_notify_event *event;
-+
-+	skb_pull(skb, sizeof(struct mt76_connac2_mcu_rxd));
-+	event = (struct mt76_connac_rssi_notify_event *)skb->data;
-+
-+	ieee80211_iterate_active_interfaces_atomic(mt76_hw(dev),
-+						   IEEE80211_IFACE_ITER_RESUME_ALL,
-+						   mt7921_mcu_rssi_monitor_iter, event);
-+}
-+
- static void
- mt7921_mcu_rx_unsolicited_event(struct mt792x_dev *dev, struct sk_buff *skb)
- {
-@@ -281,6 +317,9 @@ mt7921_mcu_rx_unsolicited_event(struct mt792x_dev *dev, struct sk_buff *skb)
- 	case MCU_EVENT_TX_DONE:
- 		mt7921_mcu_tx_done_event(dev, skb);
- 		break;
-+	case MCU_EVENT_RSSI_NOTIFY:
-+		mt7921_mcu_rssi_monitor_event(dev, skb);
-+		break;
- 	default:
- 		break;
- 	}
-@@ -327,6 +366,7 @@ void mt7921_mcu_rx_event(struct mt792x_dev *dev, struct sk_buff *skb)
- 	if (rxd->ext_eid == MCU_EXT_EVENT_RATE_REPORT ||
- 	    rxd->eid == MCU_EVENT_BSS_BEACON_LOSS ||
- 	    rxd->eid == MCU_EVENT_SCHED_SCAN_DONE ||
-+	    rxd->eid == MCU_EVENT_RSSI_NOTIFY ||
- 	    rxd->eid == MCU_EVENT_SCAN_DONE ||
- 	    rxd->eid == MCU_EVENT_TX_DONE ||
- 	    rxd->eid == MCU_EVENT_DBG_MSG ||
-@@ -1391,3 +1431,24 @@ int mt7921_mcu_set_rxfilter(struct mt792x_dev *dev, u32 fif,
- 	return mt76_mcu_send_msg(&dev->mt76, MCU_CE_CMD(SET_RX_FILTER),
- 				 &data, sizeof(data), false);
- }
-+
-+int mt7921_mcu_set_rssimonitor(struct mt792x_dev *dev, struct ieee80211_vif *vif)
-+{
-+	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
-+	struct {
-+		u8 enable;
-+		s8 cqm_rssi_high;
-+		s8 cqm_rssi_low;
-+		u8 bss_idx;
-+		u16 duration;
-+		u8 rsv2[2];
-+	} __packed data = {
-+		.enable = vif->cfg.assoc,
-+		.cqm_rssi_high = vif->bss_conf.cqm_rssi_thold + vif->bss_conf.cqm_rssi_hyst,
-+		.cqm_rssi_low = vif->bss_conf.cqm_rssi_thold - vif->bss_conf.cqm_rssi_hyst,
-+		.bss_idx = mvif->mt76.idx,
-+	};
-+
-+	return mt76_mcu_send_msg(&dev->mt76, MCU_CE_CMD(RSSI_MONITOR),
-+				 &data, sizeof(data), false);
-+}
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index 3016636d18c6..62617589a84f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -323,4 +323,5 @@ int mt7921_mcu_set_roc(struct mt792x_phy *phy, struct mt792x_vif *vif,
- int mt7921_mcu_abort_roc(struct mt792x_phy *phy, struct mt792x_vif *vif,
- 			 u8 token_id);
- void mt7921_roc_abort_sync(struct mt792x_dev *dev);
-+int mt7921_mcu_set_rssimonitor(struct mt792x_dev *dev, struct ieee80211_vif *vif);
- #endif
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wireless/mediatek/mt76/mt792x.h
-index a8556de3d480..4c14e2c5da5b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
-@@ -26,6 +26,7 @@
- #define MT792x_FW_CAP_CNM	BIT(7)
- 
- #define MT792x_CHIP_CAP_CLC_EVT_EN BIT(0)
-+#define MT792x_CHIP_CAP_RSSI_NOTIFY_EVT_EN BIT(1)
- 
- /* NOTE: used to map mt76_rates. idx may change if firmware expands table */
- #define MT792x_BASIC_RATES_TBL	11
+> 
+>> +static const struct ieee80211_iface_per_hw *
+>> +cfg80211_get_hw_iface_comb_by_idx(struct wiphy *wiphy,
+>> +				  const struct ieee80211_iface_combination *c,
+>> +				  int idx)
+>> +{
+>> +	int i;
+>> +
+>> +	for (i = 0; i < c->n_hw_list; i++)
+>> +		if (c->iface_hw_list[i].hw_chans_idx == idx)
+>> +			break;
+>> +
+>> +	if (i == c->n_hw_list)
+>> +		return NULL;
+>> +
+>> +	return &c->iface_hw_list[i];
+>> +}
+> 
+> ???
+> 
+> Hint: it's perfectly legal to return directly from a loop.
+
+sure
+
+> 
+>> +static int
+>> +cfg80211_validate_iface_comb_per_hw_limits(struct wiphy *wiphy,
+>> +					   struct iface_combination_params *params,
+>> +					   const struct ieee80211_iface_combination *c,
+>> +					   u16 *num_ifaces, u32 *all_iftypes)
+>> +{
+>> +	struct ieee80211_iface_limit *limits;
+>> +	const struct iface_comb_per_hw_params *per_hw;
+>> +	const struct ieee80211_iface_per_hw *per_hw_comb;
+>> +	int i, ret = 0;
+> 
+> The = 0 doesn't seem needed.
+
+sure
+
+> 
+>> +		ret = cfg80211_validate_iface_limits(wiphy,
+>> +						     per_hw->iftype_num,
+>> +						     limits,
+>> +						     per_hw_comb->n_limits,
+>> +						     all_iftypes);
+>> +
+>> +		kfree(limits);
+>> +
+>> +		if (ret)
+>> +			goto out;
+>> +	}
+>> +
+>> +out:
+>> +	return ret;
+> 
+> That 'out' label is pointless.
+
+sure
+
+> 
+>> +static void cfg80211_put_iface_comb_iftypes(u16 *num_ifaces)
+>> +{
+>> +	kfree(num_ifaces);
+>> +}
+> 
+> Not sure I see value in that indirection?
+
+sure
+
+> 
+>> +static u16*
+> 
+> missing space
+
+sure
+
+> 
+>> +cfg80211_get_iface_comb_iftypes(struct wiphy *wiphy,
+>> +				struct iface_combination_params *params,
+>> +				u32 *used_iftypes)
+>> +{
+>> +	const struct iface_comb_per_hw_params *per_hw;
+>> +	u16 *num_ifaces;
+>> +	int i;
+>> +	u8 num_hw;
+>> +
+>> +	num_hw = params->n_per_hw ? params->n_per_hw : 1;
+> 
+> I think we're allowed to use the "?:" shortcut.
+
+sure
+
+> 
+>> +	num_ifaces = kcalloc(num_hw, sizeof(*num_ifaces), GFP_KERNEL);
+>> +	if (!num_ifaces)
+>> +		return NULL;
+> 
+> But ... maybe we should just cap num_hw to a reasonable limit (4? 5?)
+> and use a static array in the caller instead of allocating here.
+> 
+>> +	is_per_hw = cfg80211_per_hw_iface_comb_advertised(wiphy);
+> 
+> Maybe call that "have_per_hw_combinations" or so? Or "check_per_hw"
+> even, "is" seems not clear - "what is?"
+
+sure, will address all the above comments in the next version of the patch.
+
+
 -- 
-2.18.0
-
+Karthikeyan Periyasamy
+--
+கார்த்திகேயன் பெரியசாமி
 
