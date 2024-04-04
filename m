@@ -1,81 +1,90 @@
-Return-Path: <linux-wireless+bounces-5853-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5854-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38EB1897A97
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 23:23:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 816E2897DDC
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Apr 2024 04:50:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E80C2288CD0
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Apr 2024 21:23:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1051285A63
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Apr 2024 02:50:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9172E15664D;
-	Wed,  3 Apr 2024 21:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01F61CD20;
+	Thu,  4 Apr 2024 02:50:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="aqkX3Oh5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="limjUGjT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15AB2C683;
-	Wed,  3 Apr 2024 21:23:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92BA1CAA8;
+	Thu,  4 Apr 2024 02:50:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712179404; cv=none; b=Xrpt8nfBstkSz7Eg2pJWS8aOUXEFKLoucoR/VMYsLtXF7Tiu2TFbgfezHHumotlLjkjGQdiC8LVku9beZxvQOypG3REKf/1wZ7xK/Rlf9i14LqEqUcGFi2ziTrIUiWeEf9jtAk+UFgHNc4jKqSjwjjUi9hzFMuns4MKerND2JyA=
+	t=1712199043; cv=none; b=iLcw4ZwrVgfklCinPDmhtiqo4FdSE/3N0y8czww6LWyx7EjYqSLK5iK4XfSyqy6+TAt6UxwF72RkvXSFFftu7V11w7pdaW4YefDNZSl7YMJcPNGRrNwP7NDAVRsVmLbSymMu0lJfY9hXRbWUwUPw7adClFsyIA3CfT3QzHGe+t8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712179404; c=relaxed/simple;
-	bh=zKcfJEWPy8TF6EjCWJ8BJL0m/4Wc3HUSGtpaiggXuiI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=JECmoHCpMay2ThjuYCYCikpwcHTEeH3juyIdT3zVR0c6reYY1Lo+NJnXabzvFoy+BI7CzhGUsSajxjiVMKJEjzSm/Qu2c6ABE7skSmvsbPmJOI2lJUyblMSiXcWgx/9Q+MmK0XbKIGr4dZOcwDZwNWodpjEiOPdk1yHSVqwL5r8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=aqkX3Oh5; arc=none smtp.client-ip=45.145.95.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-	t=1712179389; bh=zKcfJEWPy8TF6EjCWJ8BJL0m/4Wc3HUSGtpaiggXuiI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=aqkX3Oh5oUQ9Pj917Fpw6OxxRrxAvxIwZNg6WEu/GatO06cG1Rbj2M4W1knXjL/I9
-	 WbYkGl9CfL4FZ5UKL4ouYaD2WSk/coLw1TN7CmGCKayWuFLDo5coaPWpMBSauRCA52
-	 vRGBN4nUU/9Z4FiylTkv9jF53Dx4pGaGLEOIAzzhwmmR3RkSMWOBpROyM9vsplJKJz
-	 knPyqjQjZAJjoD+K1JYQr6dDRxuXqBNK43pPU+Q1VAsaWXWTRTXmZy2udmTTyqKoZP
-	 oAwrMisu1sWEZWpbtqYG1fkRKj6P2MIzsm7v5LmzY9sbQe/1V1JTpQ7bRv/1ds1L59
-	 yTHTawT+o9WCQ==
-To: Heiner Kallweit <hkallweit1@gmail.com>, Kalle Valo <kvalo@kernel.org>,
- Andreas =?utf-8?Q?F=C3=A4rber?= <afaerber@suse.de>, Manivannan Sadhasivam
- <manivannan.sadhasivam@linaro.org>, Martin Blumenstingl
- <martin.blumenstingl@googlemail.com>
-Cc: linux-wireless <linux-wireless@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, linux-actions@lists.infradead.org,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
-Subject: Re: [PATCH] ath9k: use unmanaged PCI functions in ath9k_pci_owl_loader
-In-Reply-To: <cd66af0c-835e-4222-b362-e2e9cafdeb40@gmail.com>
-References: <cd66af0c-835e-4222-b362-e2e9cafdeb40@gmail.com>
-Date: Wed, 03 Apr 2024 23:23:08 +0200
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87y19ukuo3.fsf@toke.dk>
+	s=arc-20240116; t=1712199043; c=relaxed/simple;
+	bh=fLLhdICbSbYMyMYPr4eJBTupZKW9tjY+NKcxxmVVcis=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=ldljzk2iyLdipGxGBfa33/erAdzF1l5oYzQvIdJcaaxivF7bTHTS/HV5jAmXYo1JOiovioRt8JXt3bvNESvJWwMWOmFgpCULfKkdFqKe7X5JQ8aq8JvAm7rH2tc2oErqDXNAtrkOXR+fmIHnvktT/AjBlZeZIpafL0kiDZR6mbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=limjUGjT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 43B42C43394;
+	Thu,  4 Apr 2024 02:50:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712199043;
+	bh=fLLhdICbSbYMyMYPr4eJBTupZKW9tjY+NKcxxmVVcis=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=limjUGjTRjNokn4OBBNQscQdSbKHr9GhFLPRk9rU8WDKLslldthVK0OnggBe/pI50
+	 VZZup/2jyf6ekuN4xVnuWkZNB+vDKNSHs25KqTDghR5C/VSTM81Aam6FsODGVZ8DdD
+	 aOWfUE/dBaNF7JP9D98sKPG1VUyTpx43i9K4oeHrGAMLp5eTo+ngNmbLszF3QQudh2
+	 7LzJ99Y2n9wp9ORPEuHQ1WDSjFq7a3aOcJJ42kZz5GQTCHXyksBqBnW00DcP6XuD5w
+	 PA3b60vxO8rZGNrQ57d8dhRIGNdQS8trGE6HVo8GBqWWx0X+Hr1GEUjNr+XKq6NPuH
+	 jD4FAWa+xZ4ug==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 2C894D8BD16;
+	Thu,  4 Apr 2024 02:50:43 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+Subject: Re: pull-request: wireless-next-2024-04-03
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <171219904317.5496.10294522118952771698.git-patchwork-notify@kernel.org>
+Date: Thu, 04 Apr 2024 02:50:43 +0000
+References: <20240403093625.CF515C433C7@smtp.kernel.org>
+In-Reply-To: <20240403093625.CF515C433C7@smtp.kernel.org>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 
-Heiner Kallweit <hkallweit1@gmail.com> writes:
+Hello:
 
-> Using the device-managed versions has no benefit here, because
-> resources are released as part of the asynchronous fw loading.
->
-> Actual reason why I got here is that I was looking for places with
-> dubious use of pcim_pin_device().
+This pull request was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Could you please expand the commit message to explain what this means in
-a bit more detail? That will be helpful to someone who wants to
-understand what the difference between these versions is and why this
-change makes sense, but who is not that familiar with how these internal
-bits are really supposed to work. Someone like myself, in other words :)
+On Wed,  3 Apr 2024 09:36:24 +0000 (UTC) you wrote:
+> Hi,
+> 
+> here's a pull request to net-next tree, more info below. Please let me know if
+> there are any problems.
+> 
+> Kalle
+> 
+> [...]
 
--Toke
+Here is the summary with links:
+  - pull-request: wireless-next-2024-04-03
+    https://git.kernel.org/netdev/net-next/c/8c73e8b59593
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
