@@ -1,116 +1,98 @@
-Return-Path: <linux-wireless+bounces-5859-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5860-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69F4E89841F
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Apr 2024 11:35:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9143D8984B1
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Apr 2024 12:07:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 134EFB28879
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Apr 2024 09:35:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14D73B27E8E
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Apr 2024 10:07:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847A5762CD;
-	Thu,  4 Apr 2024 09:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F45B59B78;
+	Thu,  4 Apr 2024 10:07:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IDIQIVuS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c9u4v2oK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FCCE745C3
-	for <linux-wireless@vger.kernel.org>; Thu,  4 Apr 2024 09:31:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ACA3101E6
+	for <linux-wireless@vger.kernel.org>; Thu,  4 Apr 2024 10:07:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712223094; cv=none; b=LUP3q51vr22BlZ9Kq5f5cj4zChh/vVZ3icW91kSiNwHqcgF2bg4PNfMLb216Ai0hETsTQKJ49cXcQlMVKki1bJYsrR8rpHHtdZu5zrb3Ld57Hmp8406iFI0liV3UmXrvBbN4VHoj7RQcsBOr3haeLaMGxm/snPlVUHCli9B5ITk=
+	t=1712225251; cv=none; b=pIJ9nUFN+BIRvGe+FBIQhDmyZUN6qNkaT2Pz9xRUFnH9zUyKo4NN/ZTMsfpIwn+7DIHdxSlPsFgue7+w8ZtTu/tSXfWPr2qeUG91N5sYfxLzf5dD5pP5pvcALvh4qaHmiffButtHM6J+JJfZ5N+/6JYb2VSlhYkrAcolKQyGPDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712223094; c=relaxed/simple;
-	bh=eal+hbwuJR0GkxwgPiJg2NCYAvGM7tKiSJzcHq0j6dA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GGDu39kOOYYBTrgxVuEEeYsSH9NqfXMNATNNl/MffW/sO7CBxulMij+aD6K64wo2qV6NL802O00WeB8dPfbXtmV4kc1xHSOSq9gjJ/rGarkeG1cg6OjQcE2qn0QMciCWyAuylcxB9N0ZNT50RA3/WWEcUYctE+5T2CpuLf4ntt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IDIQIVuS; arc=none smtp.client-ip=209.85.128.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-61524d10f86so8883637b3.3
-        for <linux-wireless@vger.kernel.org>; Thu, 04 Apr 2024 02:31:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712223091; x=1712827891; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=QJzdwgYqSiXBG2wAbt+70V3f0hLZ0hXphRY5qJD39hQ=;
-        b=IDIQIVuSWzz/kI90Xib4W+1zCVY4pIjQCEiWSvoH9xAYiIDaC3HmgZPB70q3bF5Zqw
-         J3hlygutFS16HiA6/H5LLfPmfDTCBbjjPvquHBCVt6NyvlAanqlqHijX2yXkcRe3AIla
-         IqkOX86dse2kSa0XxKO16AsIJlq1Nr2gNhAb/1B8szRxoaYtoN5h+HzVlszju4xMaqGH
-         sbsO+JX9Czpr9v77XztS15C4DFvS6264r57pKsESNJeR4wm0QUtUz7x3aG+KgmpY70d1
-         SN7d2gEhfeHJW1sikNgHU/8J+An0bRPLQjOZS+9r+vRbn5mm1Zs4XCvjE4dAnkr+pwwJ
-         5wNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712223091; x=1712827891;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QJzdwgYqSiXBG2wAbt+70V3f0hLZ0hXphRY5qJD39hQ=;
-        b=HJOsR8FXvmw20hQFogrn7Xl/ZgKwlABRfk+rVkUw8F6DbMLIPuVznBuf8aia8TZPz2
-         zGMQtTuiZ81FoNRxcY+k7MBe/K2Qp2nrQ3anpuIBUwDnkhDSUfH8Bo+21sV0Zhv+vR4s
-         c5Vru8UKn7b8Qoem2NzY3/G988IjAbUlt3g0XAG+faUxDzZ4wNNaqVQvvy9u5D5RqQn1
-         Uz/hUnlEPxqgpgzHSm5JilbwZ8OVdr8S++ZR3ErZ66bPxqrW4G4lvOriR4qAPCmyi805
-         fvCxM7+znYupmcHeusll90Ku85m+HIw9+qlPznIgqRi6+puZC+/3ciobffjCGOrOAtgV
-         +yHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV9wDL4mixtiSJNHmzS3n651tL8JrnvXfx97GI3NIS8/JLKV8E/G4LFBQlHaL391HGd0KgXaHp+NV96cZkDMH2CwOZJ/7DBFXqog4e0A5M=
-X-Gm-Message-State: AOJu0Yy8rVIoamV0R/HS5ml7UBc+nbBZNpMKyciJm73jEY7tCEZEr2m/
-	p8NX8WX/kY64PU20R8n02Wx2wjP9qe2U6aQCloH32B7qiIIEF5uaRYP1pqlgVw+MvH1ygrIcrF1
-	lZqhLaLomhVXfSBjXDg/VFQKUrjeWRV6bibekSQ==
-X-Google-Smtp-Source: AGHT+IHTXtbKZV4PRrgxvlL/R1tUqcSFTjPcwK6//feDtYUO9NjrShijYYET6/+oeV22B9HIEQVjv5iZuw/cw+hBGTs=
-X-Received: by 2002:a25:ac04:0:b0:dc7:423c:b8aa with SMTP id
- w4-20020a25ac04000000b00dc7423cb8aamr1828891ybi.12.1712223091503; Thu, 04 Apr
- 2024 02:31:31 -0700 (PDT)
+	s=arc-20240116; t=1712225251; c=relaxed/simple;
+	bh=XEgOJFtAd5hyX1dGEovuhPvmsdKiprDvZmqlS9wDNQI=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=balJKIcW8aEiaqG0FH/ZijZ9jCmoLWDwClJASe9VByYSvVbaPfiJ3Yck8KgBYFCddywgpXEcyYP6fu8nxAi3i910iY2EvYn8iNv3Dt0bq7ulibsbTzRVvoVyU9OJgzAhGM94a2n8y7lbsUNfRbe2MWwJfsR81E61ud1B+YkrYK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c9u4v2oK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35FF2C433C7;
+	Thu,  4 Apr 2024 10:07:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712225250;
+	bh=XEgOJFtAd5hyX1dGEovuhPvmsdKiprDvZmqlS9wDNQI=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=c9u4v2oKow1m8FOfV3+vm3m7neKDXSA93hj7pjGlY9T+UdS86Z4SH/OKmaN+1hHx8
+	 rBF3gLqFhx4bshxkzVlJqAnpabSIhWogMGI90Idv1X3CZ+FeHko2531gK/YArNXhoJ
+	 RQr6Y4CcmkHR0nyj7XS9trmAFyg3lFwb+fW7AGZu8BvwFAwJlgqoe3G78lmu601eVk
+	 YYJtTA2xG24N2rHtQPQ+QjdgjlckenswgCHshFSSwZoiEoOtzUGQYldZ55WwW/kMXV
+	 SCi09j0deiZkFaOpaIwbsu+q/nPeA3M49rQIsOpaT5mehZcK+Km2eE685Y5zvIvShm
+	 3Q/xS0+N5ZaZw==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240403-module-owner-sdio-v2-0-ae46d6b955eb@linaro.org>
-In-Reply-To: <20240403-module-owner-sdio-v2-0-ae46d6b955eb@linaro.org>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Thu, 4 Apr 2024 11:30:54 +0200
-Message-ID: <CAPDyKFodTh-KN+=b1B3V+7aNEoR0SPo5-xjFaWu=gYEtsDy1pQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/7] mmc/wifi/bluetooth: store owner from modules with sdio_register_driver()
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Kalle Valo <kvalo@kernel.org>, 
-	Jeff Johnson <jjohnson@kernel.org>, Arend van Spriel <arend.vanspriel@broadcom.com>, 
-	Brian Norris <briannorris@chromium.org>, Francesco Dolcini <francesco@dolcini.it>, 
-	=?UTF-8?B?SsOpcsO0bWUgUG91aWxsZXI=?= <jerome.pouiller@silabs.com>, 
-	linux-mmc@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org, linux-wireless@vger.kernel.org, 
-	ath10k@lists.infradead.org, brcm80211@lists.linux.dev, 
-	brcm80211-dev-list.pdl@broadcom.com, Jeff Johnson <quic_jjohnson@quicinc.com>, 
-	Francesco Dolcini <francesco.dolcini@toradex.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/2] wifi: ath12k: Add initial debugfs support in ath12k
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20240320171305.655288-2-quic_rgnanase@quicinc.com>
+References: <20240320171305.655288-2-quic_rgnanase@quicinc.com>
+To: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
+Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
+ Ramasamy Kaliappan <quic_rkaliapp@quicinc.com>,
+ Ramya Gnanasekar <quic_rgnanase@quicinc.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <171222524717.1806092.5883238198294792890.kvalo@kernel.org>
+Date: Thu,  4 Apr 2024 10:07:29 +0000 (UTC)
 
-On Wed, 3 Apr 2024 at 16:17, Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
->
-> Changes in v2:
-> 1. Add "wifi: ath10k: sdio: simplify module initialization" patch, from
->    my other patchset to avoid conflicts.
-> 2. Add Acks/Rb tags.
-> 3. Drop applied SDIO patch, which was the dependency for the rest
->    cleanups.
-> 4. Update subjects according to feedback.
-> - Link to v1: https://lore.kernel.org/r/20240329-module-owner-sdio-v1-0-e4010b11ccaa@linaro.org
->
-> Merging
-> =======
-> With Acks from Kalle, please take entire set via mmc/sdio.
+Ramya Gnanasekar <quic_rgnanase@quicinc.com> wrote:
 
-The series applied for next, thanks!
+> The initial debugfs infra bringup in ath12k driver and create the ath12k debugfs
+> and soc-specific directories in /sys/kernel/debug/
+> 
+> For each ath12k device, directory will be created in <bus>-<devname>
+> schema under ath12k root directory.
+> 
+> Example with one ath12k device:
+> /sys/kernel/debug/ath12k/pci-0000:06:00.0
+> 
+> ath12k
+> `-- pci-0000:06:00.0
+>     |-- mac0
+> 
+> To enable ath12k debugfs support (CONFIG_ATH12K_DEBUGFS=y)
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> 
+> Signed-off-by: Ramasamy Kaliappan <quic_rkaliapp@quicinc.com>
+> Signed-off-by: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-[...]
+2 patches applied to ath-next branch of ath.git, thanks.
 
-Kind regards
-Uffe
+f8bde02a26b9 wifi: ath12k: initial debugfs support
+f51d917b7330 wifi: ath12k: debugfs: radar simulation support
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20240320171305.655288-2-quic_rgnanase@quicinc.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
