@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-5865-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5866-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F237E8984CE
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Apr 2024 12:12:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8FCF8984D9
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Apr 2024 12:13:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27CED1C25DAE
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Apr 2024 10:12:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F126B298D0
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Apr 2024 10:13:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9614875805;
-	Thu,  4 Apr 2024 10:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2CB475805;
+	Thu,  4 Apr 2024 10:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CX4l+JUq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MfDQu68w"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6725873177;
-	Thu,  4 Apr 2024 10:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B292757F3;
+	Thu,  4 Apr 2024 10:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712225551; cv=none; b=dH2rweNZHXC86+UTn3Sr7IqrvhoPH/Xo+gq1I/5a6ZIZ+8gWowPTVi62IeCXLMBzN5V/B5Mvr70ZZdiojOi66vT7vOrXNImipFh7gEq43tl8Hg1pH/+rKbp7xP+IXTqMEafiJ23kvOzhf/ITtM6Pp+ptTx8ZVqKj0l0Dco2kwzY=
+	t=1712225590; cv=none; b=JlzspX1Mze5aaLXc4mopIjJ3FdvBWrKiQBmyOWd1XX2R8/5z0gxQgFTs1kFSU38Y+eEtZsCuSeWaTY6JtSFqlwWcA12oyQxK9zkS6uKyj29FO3r0PclM5GALThQWca7idvxWLXL0BHrQ5a+2Fr282Jx3nZeHgONmztsaQxL+RvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712225551; c=relaxed/simple;
-	bh=sh6vMvCh7dRXhXNmhb02Vd2ORWWM0S+qssTbnri6+oc=;
+	s=arc-20240116; t=1712225590; c=relaxed/simple;
+	bh=ov/eEmo4hI8DNy7UxuewIgS81uubOwPI939mMAuO5Sk=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=pj+njkzUdvXM4yLJHTpDwlj50cTgFN7w2iRHq0ce6yWSkme5hLMWN35y3N4mZwLydnRghiVITI5ZUJKMZwdDiVhTjJwluvOJVCSl5AiYyUpCEiwLNSFDD5MyrHXGVEA1y13LYndqNW+fSQf9AzJorynSS1SA4mmnyWZiP/vjww0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CX4l+JUq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F7AC433C7;
-	Thu,  4 Apr 2024 10:12:28 +0000 (UTC)
+	 Cc:Message-ID:Date; b=CmsHOLG7MF4kVJ1tGuDwFJvQqePR5vBUfv6DtKT0GpdIgVEN1paqMQvsvOpB62I8R7kbyAEw+n14QGXxCEyGJBnMYm0XIEc1TI12yqlA5MCe4NlI/FXnLqB57nUPaog6HuNQks97N+FXRDf9nP3g8/4OwYOZBRXTdgEiN7vKc80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MfDQu68w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28935C433C7;
+	Thu,  4 Apr 2024 10:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712225550;
-	bh=sh6vMvCh7dRXhXNmhb02Vd2ORWWM0S+qssTbnri6+oc=;
+	s=k20201202; t=1712225590;
+	bh=ov/eEmo4hI8DNy7UxuewIgS81uubOwPI939mMAuO5Sk=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=CX4l+JUqzKln48BcTkuOrhwMXxiSLWKwCr+DMiBeBjG+95DUZoIewGs8b2pI/O5Ej
-	 kJrIiEqb4sHeoeMGS8RvVbVTq6/ilPrbzJSxRSNQiU5iO83YQMejMR8+E2hWLoFfE1
-	 8kHbJJ1OSKoGd98UUZH5fujXCJnX6hF3qCdDHaDZyiM0Zk8xeDOyiwPvSvG235vjeo
-	 RztCfhjT/EYCbNOd+aYA7iXIBGpbvS5TZ2WDjE67KYUOJJPgoyOxXusMUHMUzkuKSg
-	 vjyPxmpJKYyl+oqzbi7JQCN6ck4Olk/qevE65wHGlgpZBstQTSjW6DUpOYPX0vz3++
-	 lLpcgvTcqMfiQ==
+	b=MfDQu68wdj0+Gt+hGh32IxxTl+2WxdimEZwggEOKt4TcerYqgIs/eEf1y6z++L3NR
+	 Nodp/ttcxthuQywCuam2suW5SiThDG1zKQBP+68eojlP7PLA77Gy9zrjVHLGWHVxqQ
+	 4W/vQbgCin/d6bjG2gkHD/bBnyRZ1HOcEpfb1xOhJGvciXiuUxqtfl7BlfqjR0Xihf
+	 XQ75LqUJrRxN6K9kZ3nu9ud4+y/264FVfhgJY/Vmcn1RMBY1MxgT9ytWDn0k7ZzJn0
+	 tiRhyaaaQSUFklVMUIQnjSpUC2a+wuFlgmROOtCEEwSq6uj5B03jX4lBYURxCoDzbp
+	 5XDjn3h1DlZ9w==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,49 +49,41 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2][next] wifi: wil6210: wmi: Use __counted_by() in struct
- wmi_set_link_monitor_cmd and avoid -Wfamnae warning
+Subject: Re: [PATCH 2/6] wifi: ath6kl: sdio: simplify module initialization
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <ZgSTCmdP+omePvWg@neat>
-References: <ZgSTCmdP+omePvWg@neat>
-To: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- linux-hardening@vger.kernel.org
+In-Reply-To: <20240329171019.63836-2-krzysztof.kozlowski@linaro.org>
+References: <20240329171019.63836-2-krzysztof.kozlowski@linaro.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Jeff Johnson <jjohnson@kernel.org>,
+ Brian Norris <briannorris@chromium.org>,
+ Ajay Singh <ajay.kathat@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, linux-wireless@vger.kernel.org,
+ ath10k@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <171222554691.1806092.8730005090791383928.kvalo@kernel.org>
-Date: Thu,  4 Apr 2024 10:12:28 +0000 (UTC)
+Message-ID: <171222558545.1806092.4218541650720633810.kvalo@kernel.org>
+Date: Thu,  4 Apr 2024 10:13:07 +0000 (UTC)
 
-"Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-> Prepare for the coming implementation by GCC and Clang of the
-> __counted_by attribute. Flexible array members annotated with
-> __counted_by can have their accesses bounds-checked at run-time
-> via CONFIG_UBSAN_BOUNDS (for array indexing) and CONFIG_FORTIFY_SOURCE
-> (for strcpy/memcpy-family functions).
+> This driver's initialization functions do not perform any custom code,
+> except printing messages.  Printing messages on modules
+> loading/unloading is discouraged because it pollutes the dmesg
+> regardless whether user actually has this device.  Core kernel code
+> already gives tools to investigate whether module was loaded or not.
 > 
-> Also, -Wflex-array-member-not-at-end is coming in GCC-14, and we are
-> getting ready to enable it globally.
+> Drop the printing messages which allows to replace open-coded
+> module_sdio_driver().
 > 
-> So, use the `DEFINE_FLEX()` helper for an on-stack definition of
-> a flexible structure where the size of the flexible-array member
-> is known at compile-time, and refactor the rest of the code,
-> accordingly.
-> 
-> So, with these changes, fix the following warning:
-> drivers/net/wireless/ath/wil6210/wmi.c:4018:49: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> 
-> Link: https://github.com/KSPP/linux/issues/202
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-cbb0697e0ded wifi: wil6210: wmi: Use __counted_by() in struct wmi_set_link_monitor_cmd and avoid -Wfamnae warning
+565759ce814a wifi: ath6kl: sdio: simplify module initialization
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/ZgSTCmdP+omePvWg@neat/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240329171019.63836-2-krzysztof.kozlowski@linaro.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
