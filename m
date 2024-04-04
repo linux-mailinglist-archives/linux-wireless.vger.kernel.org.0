@@ -1,237 +1,146 @@
-Return-Path: <linux-wireless+bounces-5874-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5875-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C27E8989BB
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Apr 2024 16:16:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23E08898A9A
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Apr 2024 17:02:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D63BA290BB6
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Apr 2024 14:16:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 546E31C29CA7
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Apr 2024 15:02:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFD9D12A16B;
-	Thu,  4 Apr 2024 14:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57D5712AAEF;
+	Thu,  4 Apr 2024 15:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="SmWgXzpH"
+	dkim=pass (1024-bit key) header.d=xv97.com header.i=m@xv97.com header.b="fJvajIHc"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B094129A7D
-	for <linux-wireless@vger.kernel.org>; Thu,  4 Apr 2024 14:16:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712240187; cv=none; b=LfISzV3IVzsWFS9xzGxbqCfeUtF7wSoIXsxi0M86734CTx2NzfsvM8cMNZ5byAmOnyKid3dFa9tWsFw/z0uexDK1J3rPh5ckQsope74+dAEDIEwmaYMHri+f10vL/zdqoECJWbd2fpO6joRjYB+v/+yxrKU2mG3KuMvTHXx3Ht4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712240187; c=relaxed/simple;
-	bh=BFuc2Lq4U5GQAYy5gLFSI1jQ3RyQD1warCOGb8JVO+4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PAzr2xxbrbnHI1J7BDE/iGfAVE1Y3z51LOAvi1qnMjQogwk+R1+iJH/pB1DHwDdIRZlFJjNov3Rhuqx0rp88BAdpQqPgajN2OEz1NfVaMo6vVZMHe2eQdDpN5zvbXWC8nF9DJY5bwN5r6NTSMyQakTYcHZj2vZ2Bw5FLcxmHg0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=SmWgXzpH; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 434CpgpO019614;
-	Thu, 4 Apr 2024 14:16:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version:content-type; s=
-	qcppdkim1; bh=MJ5crcrRYqFS2u+k7JLRK7iWlhpCOd4410/QX1u009o=; b=Sm
-	WgXzpHAAvY2fhMsRh+eeDhwkvK0wYQoMpIB0pxTZOvl+3c1lJebqU9+MgzguSNYL
-	xtP35d0en2LzqQn5WnZKnso9bGsxlT3n7sI9Gql09CZn5mTjCtEfDHRfrxQDvOkq
-	snMTROo6aD/uPOH3AWbt6gg6NIcxpRBJyPmgTqC8YVhUYlCtAeQsyIH0bNHatQlC
-	aaZNgn98Esn7cH667rHddNT1ZRGv1FgebUrk0zd/muwFbe0DC3//NTA5MEz48xQe
-	durA25g2HNIwSGSSrYNOGVIPy1hRj7zdUInkJJaQ8ojDSLHgMy1yYNqOrmWpGJ76
-	OzDiHADAmzZd36xEJ0zQ==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x9en39nk0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Apr 2024 14:16:20 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 434EGJ3x022226
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 4 Apr 2024 14:16:19 GMT
-Received: from hu-nithp-blr.qualcomm.com (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Thu, 4 Apr 2024 07:16:17 -0700
-From: Nithyanantham Paramasivam <quic_nithp@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Karthikeyan Periyasamy
-	<quic_periyasa@quicinc.com>,
-        Nithyanantham Paramasivam
-	<quic_nithp@quicinc.com>
-Subject: [PATCH v3] wifi: ath12k: fix mac id extraction when MSDU spillover in rx error path
-Date: Thu, 4 Apr 2024 19:45:38 +0530
-Message-ID: <20240404141538.1277258-1-quic_nithp@quicinc.com>
-X-Mailer: git-send-email 2.17.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD5612AAF0
+	for <linux-wireless@vger.kernel.org>; Thu,  4 Apr 2024 15:01:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712242908; cv=pass; b=SBNOTdvTJzXzVrmTWYEJYUBZ9BhCSyNeBUO+fMfgVv5btGyjr54F5yABcV4DxoQXhNlCzQo++D6PL++qs/GQBIWMPDrWSAsgBIY3ahXPN0G6qSAJUgMMScI2gDtniJn8fNKtgI/gWqDBdkKmNn5Em+vVC3eujhZcbm6pl0MoHE8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712242908; c=relaxed/simple;
+	bh=tj4TYIiKTOc1FBIFrjwXSAvF+vYn4GHISzbJrn8wkoU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XbtApHKjpQSITtWVYU1fNaySWFPLO/fjFwOh2w8yocKkKlmR7VFyH7xEbcfddukv+HcJArm/03IB/K+tYv6EJbf1i4XEaeLQYZPcPzAUdb9tPY/S9/DWUfqPo30egWJSwsMwCun66VPSAgRz7bLhdn7+1YvXqRHoWCh1I9AibyA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xv97.com; spf=pass smtp.mailfrom=xv97.com; dkim=pass (1024-bit key) header.d=xv97.com header.i=m@xv97.com header.b=fJvajIHc; arc=pass smtp.client-ip=136.143.188.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xv97.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xv97.com
+ARC-Seal: i=1; a=rsa-sha256; t=1712242899; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=LyeWqFYgRJEN0g9mZaSbVkGQpkE1g0OJ0NlVIOSg9sAwp5ee2cCnyCrFXObyNiMXr8Ovys4O9TLe+/y8CQWoPIbadPN3KvGtKNMkVwpq4L/U4xfmpGI+bE/Gmte3PDVIL0YTOVxwBb9jNh+GFD8ML1oBDVUSxCqkoSa0FGGJwG4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1712242899; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=L8+Rw0lsBwXyorvBCYYaQx3uvulAB25rY+XY1LOB9pk=; 
+	b=OgcWFlU8Q20KhvkM9CpDei4AawWbh2kOIDAJoQ9cphzrS/9pXkKZERrwskaZdcj0YPkU7vEnsa/hsGej0bfHJccwrlB/vVe7n1KiYsqc6eCQWwtU0OHGN8z21SWk1/Au47cNsDSV4o8NRvFB+8W1lbhe2NidFsb6QreEPJLK87k=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=xv97.com;
+	spf=pass  smtp.mailfrom=m@xv97.com;
+	dmarc=pass header.from=<m@xv97.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1712242899;
+	s=zmail; d=xv97.com; i=m@xv97.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=L8+Rw0lsBwXyorvBCYYaQx3uvulAB25rY+XY1LOB9pk=;
+	b=fJvajIHcVHgo7xSrHUfalAsN7QIgzpMqdGKls48jMGg5B1SXN1v4RwqU42lMignp
+	OygvAO3JwCeQUOBCuSLCgab+8XKeSspLycEVRB4XaqhP+axPXCSx9AsfuvlnqcyRNCH
+	xftktzkUo9+q0w/ZOqDQLoRpVcUlWDGRLuG5Ef7I=
+Received: by mx.zohomail.com with SMTPS id 1712242897862494.86385693026614;
+	Thu, 4 Apr 2024 08:01:37 -0700 (PDT)
+From: Chien Wong <m@xv97.com>
+To: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH] wifi: ath9k_htc: drop too long USB messages
+Date: Thu,  4 Apr 2024 23:01:10 +0800
+Message-ID: <20240404150110.13816-1-m@xv97.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: f6YAOA-d9EM2JUNbFfv_FY4B9kp9PqUy
-X-Proofpoint-ORIG-GUID: f6YAOA-d9EM2JUNbFfv_FY4B9kp9PqUy
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-04_10,2024-04-04_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
- mlxscore=0 bulkscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0
- mlxlogscore=460 suspectscore=0 malwarescore=0 clxscore=1015
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2404040098
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Currently, the length of USB messages sent from host to Wi-Fi dongle is
+not checked. Without the check, we could crash the firmware.
 
-Currently, in the rx error data path, mac id is extracted from the
-last 64bits of MSDU end description tag for each entry received in
-the WBM error ring. Then, each entry will be updated into the MSDU
-list for further processing. The extracted mac id is valid when a
-single MSDU is not fragmented and received in the WBM error ring.
+The length limits are determined by _HIFusb_get_max_msg_len_patch()
+in the firmware code, located in k2_HIF_usb_patch.c and HIF_usb_patch.c
+of the open-ath9k-htc-firmware project. The limits are 512 and 1600
+bytes for regout and Wi-Fi TX messages respectively.
+I'm not sure if the firmware crash is due to buffer overflow if RXing
+too long USB messages but the length limit is clear and verified.
+Somebody knowing hardware internals could help.
 
-In scenarios where the size of a single MSDU received exceeds the
-descriptor buffer size, resulting in fragmented or spillover MSDU
-entries into the WBM error ring. In this case, the extracted mac id
-from each spillover entry is invalid except the last spillover entry
-of the MSDU. This invalid mac id leads to packet rejection.
+We should try our best not to crash the firmware. Note that setting the
+MTU limit may not work: monitor interfaces will ignore the limit.
+So we just drop too long messages and give warning on such events.
 
-To address this issue, check if the MSDU continuation flag is set,
-then extract the valid mac id from the last spillover entry.
-Propagate the valid mac id to all the spillover entries of the single
-MSDU in the temporary MSDU list(scatter_msdu_list). Then, update this
-into the MSDU list (msdu_list) for further processing.
+How to reproduce a crash:
+1. Insert a supported Wi-Fi card
+2. Associate to an AP
+3. Increase MTU of interface: # ip link set wlan0 mtu 2000
+4. Generate some big packets: $ ping <gateway> -s 1550
+5. The firmware should crash. If not, repeat step 4.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+Tested on TP-LINK TL-WN722N v1(AR9271) and TL-WN821N v3(AR7010+AR9287).
 
-Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-Signed-off-by: Nithyanantham Paramasivam <quic_nithp@quicinc.com>
+Signed-off-by: Chien Wong <m@xv97.com>
 ---
-v3:
- - email name change suggested by kalle 
-v2:
- - Signed-off change 
----
- drivers/net/wireless/ath/ath12k/dp_rx.c | 60 +++++++++++++++++++++----
- 1 file changed, 52 insertions(+), 8 deletions(-)
+ drivers/net/wireless/ath/ath9k/hif_usb.c | 12 ++++++++++++
+ drivers/net/wireless/ath/ath9k/hif_usb.h |  3 +++
+ 2 files changed, 15 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-index a593beecdd12..b1b50e14a492 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -239,6 +239,14 @@ static inline u8 ath12k_dp_rx_get_msdu_src_link(struct ath12k_base *ab,
- 	return ab->hal_rx_ops->rx_desc_get_msdu_src_link_id(desc);
- }
+diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
+index 0c7841f95228..caee35d59ba7 100644
+--- a/drivers/net/wireless/ath/ath9k/hif_usb.c
++++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
+@@ -103,6 +103,11 @@ static int hif_usb_send_regout(struct hif_device_usb *hif_dev,
+ 	struct cmd_buf *cmd;
+ 	int ret = 0;
  
-+static void ath12k_dp_clean_up_skb_list(struct sk_buff_head *skb_list)
-+{
-+	struct sk_buff *skb;
++	if (skb->len > MAX_USB_REG_OUT_PIPE_MSG_SIZE) {
++		dev_err(&hif_dev->udev->dev, "ath9k_htc: Too long regout msg\n");
++		return -EMSGSIZE;
++	}
 +
-+	while ((skb = __skb_dequeue(skb_list)))
-+		dev_kfree_skb_any(skb);
-+}
-+
- static int ath12k_dp_purge_mon_ring(struct ath12k_base *ab)
- {
- 	int i, reaped = 0;
-@@ -3742,19 +3750,20 @@ int ath12k_dp_rx_process_wbm_err(struct ath12k_base *ab,
- 	struct hal_rx_wbm_rel_info err_info;
- 	struct hal_srng *srng;
- 	struct sk_buff *msdu;
--	struct sk_buff_head msdu_list;
-+	struct sk_buff_head msdu_list, scatter_msdu_list;
- 	struct ath12k_skb_rxcb *rxcb;
- 	void *rx_desc;
- 	u8 mac_id;
- 	int num_buffs_reaped = 0;
- 	struct ath12k_rx_desc_info *desc_info;
- 	int ret, pdev_id;
-+	struct hal_rx_desc *msdu_data;
+ 	urb = usb_alloc_urb(0, GFP_KERNEL);
+ 	if (urb == NULL)
+ 		return -ENOMEM;
+@@ -381,6 +386,13 @@ static int hif_usb_send_tx(struct hif_device_usb *hif_dev, struct sk_buff *skb)
  
- 	__skb_queue_head_init(&msdu_list);
-+	__skb_queue_head_init(&scatter_msdu_list);
+ 	spin_lock_irqsave(&hif_dev->tx.tx_lock, flags);
  
- 	srng = &ab->hal.srng_list[dp->rx_rel_ring.ring_id];
- 	rx_ring = &dp->rx_refill_buf_ring;
--
- 	spin_lock_bh(&srng->lock);
++	if (skb->len > MAX_USB_WLAN_TX_PIPE_MSG_SIZE) {
++		spin_unlock_irqrestore(&hif_dev->tx.tx_lock, flags);
++		dev_warn_ratelimited(&hif_dev->udev->dev,
++				     "ath9k_htc: Too long TX packet(len=%u)\n", skb->len);
++		return -EMSGSIZE;
++	}
++
+ 	if (hif_dev->tx.flags & HIF_USB_TX_STOP) {
+ 		spin_unlock_irqrestore(&hif_dev->tx.tx_lock, flags);
+ 		return -ENODEV;
+diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.h b/drivers/net/wireless/ath/ath9k/hif_usb.h
+index b3e66b0485a5..f8fd78309829 100644
+--- a/drivers/net/wireless/ath/ath9k/hif_usb.h
++++ b/drivers/net/wireless/ath/ath9k/hif_usb.h
+@@ -50,6 +50,9 @@ extern int htc_use_dev_fw;
+ #define ATH_USB_RX_STREAM_MODE_TAG 0x4e00
+ #define ATH_USB_TX_STREAM_MODE_TAG 0x697e
  
- 	ath12k_hal_srng_access_begin(ab, srng);
-@@ -3807,16 +3816,50 @@ int ath12k_dp_rx_process_wbm_err(struct ath12k_base *ab,
- 			continue;
- 		}
- 
-+		msdu_data = (struct hal_rx_desc *)msdu->data;
- 		rxcb->err_rel_src = err_info.err_rel_src;
- 		rxcb->err_code = err_info.err_code;
--		rxcb->rx_desc = (struct hal_rx_desc *)msdu->data;
--
--		__skb_queue_tail(&msdu_list, msdu);
--
- 		rxcb->is_first_msdu = err_info.first_msdu;
- 		rxcb->is_last_msdu = err_info.last_msdu;
- 		rxcb->is_continuation = err_info.continuation;
-+		rxcb->rx_desc = msdu_data;
++#define MAX_USB_REG_OUT_PIPE_MSG_SIZE 512
++#define MAX_USB_WLAN_TX_PIPE_MSG_SIZE 1600
 +
-+		if (err_info.continuation) {
-+			__skb_queue_tail(&scatter_msdu_list, msdu);
-+		} else {
-+			mac_id = ath12k_dp_rx_get_msdu_src_link(ab,
-+								msdu_data);
-+			if (mac_id >= MAX_RADIOS) {
-+				dev_kfree_skb_any(msdu);
-+
-+				/* In any case continuation bit is set
-+				 * in the previous record, cleanup scatter_msdu_list
-+				 */
-+				ath12k_dp_clean_up_skb_list(&scatter_msdu_list);
-+				continue;
-+			}
-+
-+			if (!skb_queue_empty(&scatter_msdu_list)) {
-+				struct sk_buff *msdu;
-+
-+				skb_queue_walk(&scatter_msdu_list, msdu) {
-+					rxcb = ATH12K_SKB_RXCB(msdu);
-+					rxcb->mac_id = mac_id;
-+				}
-+
-+				skb_queue_splice_tail_init(&scatter_msdu_list,
-+							   &msdu_list);
-+			}
-+
-+			rxcb = ATH12K_SKB_RXCB(msdu);
-+			rxcb->mac_id = mac_id;
-+			__skb_queue_tail(&msdu_list, msdu);
-+		}
- 	}
-+	/* In any case continuation bit is set in the
-+	 * last record, cleanup scatter_msdu_list
-+	 */
-+	ath12k_dp_clean_up_skb_list(&scatter_msdu_list);
- 
- 	ath12k_hal_srng_access_end(ab, srng);
- 
-@@ -3830,8 +3873,9 @@ int ath12k_dp_rx_process_wbm_err(struct ath12k_base *ab,
- 
- 	rcu_read_lock();
- 	while ((msdu = __skb_dequeue(&msdu_list))) {
--		mac_id = ath12k_dp_rx_get_msdu_src_link(ab,
--							(struct hal_rx_desc *)msdu->data);
-+		rxcb = ATH12K_SKB_RXCB(msdu);
-+		mac_id = rxcb->mac_id;
-+
- 		pdev_id = ath12k_hw_mac_id_to_pdev_id(ab->hw_params, mac_id);
- 		ar = ab->pdevs[pdev_id].ar;
- 
-
-base-commit: fe7e1b830cf3c0272aa4eaf367c4c7b29c169c3d
+ /* FIXME: Verify these numbers (with Windows) */
+ #define MAX_TX_URB_NUM  8
+ #define MAX_TX_BUF_NUM  256
 -- 
-2.17.1
+2.44.0
 
 
