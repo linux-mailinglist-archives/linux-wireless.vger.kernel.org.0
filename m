@@ -1,162 +1,237 @@
-Return-Path: <linux-wireless+bounces-5873-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5874-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5619B89889C
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Apr 2024 15:14:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C27E8989BB
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Apr 2024 16:16:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89B8DB26366
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Apr 2024 13:14:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D63BA290BB6
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Apr 2024 14:16:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E86E1272A3;
-	Thu,  4 Apr 2024 13:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFD9D12A16B;
+	Thu,  4 Apr 2024 14:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QCwQTXUs"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="SmWgXzpH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70899126F2F
-	for <linux-wireless@vger.kernel.org>; Thu,  4 Apr 2024 13:14:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B094129A7D
+	for <linux-wireless@vger.kernel.org>; Thu,  4 Apr 2024 14:16:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712236455; cv=none; b=Y049jo0w/dfmlqn5Ut8bxgtUT6zk8OEqNhJ/CiNaivggrT+DHQcFdQy1L3JOJBNW2KIKk5ttLbKoE+AgrDDyEdYT47VC7+1/5vVZKxNHnEh+PGStthQpUH0SZ8QExo7d5clQ5hoZ0M50xwo6OavxYR0ekvXYhMwRzM0JF0tZIkI=
+	t=1712240187; cv=none; b=LfISzV3IVzsWFS9xzGxbqCfeUtF7wSoIXsxi0M86734CTx2NzfsvM8cMNZ5byAmOnyKid3dFa9tWsFw/z0uexDK1J3rPh5ckQsope74+dAEDIEwmaYMHri+f10vL/zdqoECJWbd2fpO6joRjYB+v/+yxrKU2mG3KuMvTHXx3Ht4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712236455; c=relaxed/simple;
-	bh=TvVo9cCYyR632GL7Cc0fqR3Kh9+qrXT134eJYEYfMZI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pc9IeTk2zxUfps/7moCWXdwFTxZGk3lzjt+MgeVjk6zLOoU03PXYWJL786niHq7knShQx31t6UvgQ9H+9w9i7K5+ccYTmzaKoKBo96heKVrg5LKjszyDy3yVU+0CcZN873H6TP/lkkb2ttvSMLJNID81ryFmOTDRwSbHVDMZ+58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QCwQTXUs; arc=none smtp.client-ip=209.85.128.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-6152be7c58bso10527437b3.0
-        for <linux-wireless@vger.kernel.org>; Thu, 04 Apr 2024 06:14:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712236452; x=1712841252; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=tknSODYMU/l/2VPgjwwryjgmML6llAA/U7CzR6kpVHI=;
-        b=QCwQTXUsjxHVDw6kc1QhrXrHBl7OZSxalSAqJgIWQorp1SSNS7tcpYj8+KxuymXMAG
-         3l5SZy8RPm9EfT6De3dAeiFjf3rZXtzdqlhG1xVjxEluN+zqn0hh1qLBbr8wzi4wDyUE
-         v/juRr40Bpln/wr5QopjwTep8aCQmeqrckSgU31vPKcIS3MK1S5G8RxITI2xM8FGhd85
-         MYoB+MALAEt1iXahOqSnrsDvMZlx/JSll/y0l6OuqQ9A2OYg6xOZ6B7DgurpVWEk44FU
-         kwSoXsUJrs4RFC/HAE7AcKksifNIZldTWhXu3qeH66VBSQ6nK96C7jiwsc8ATq3wvUYl
-         iaIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712236452; x=1712841252;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tknSODYMU/l/2VPgjwwryjgmML6llAA/U7CzR6kpVHI=;
-        b=NN0ahR1P54++4FkRjflNCDlJVX/1Kl+zC8hltUhCPV9knRR0s5pX8rNlZS6bvgsg/d
-         6vf6fILwtzpH4Sn+5WggzfTUgziwzIdNJ8Jyc+DdZKwzOvETQ2CB1Kh8eQWrD0xmy+ke
-         hOKAHa/lg9x8UvOkYiRe+F9FZJx3XgU001QAdp1m2WKMYRlyRZbnDQd8V/VauBhomsPO
-         sZAFESt4q76InvryzV8ZVJfEJphY8yFy9/afRHHimE8+BjARS5BfL/ZUj8dOHiWvcx9H
-         HMEpzAT/VHCUULva0rsi02/2ccwYrsDlRRI4rHhbFuFT1xOhdcXPT0P6tvhgo49Sh9J9
-         WU0A==
-X-Forwarded-Encrypted: i=1; AJvYcCX8FKU8VuSj4/BifgjgAVIKOF9lg7YDFxpJXsLuCKow2FaCSs93JWINAUr2J/MBjaGj9KSgvpUOj92dqUKtEEltU+itSFjpKKRAGOnfrGA=
-X-Gm-Message-State: AOJu0YwH8/Jci4AJKAfY73qyfYQBAhbXtul8PjSdz6cUQQun/7j8i+AS
-	1+PzMSLytEO0YyEADuLZW/I7mY3YfwNDTesi4iOhdEWDAYTVL+QcHk5u1JREthrbZc7XgF1lXoO
-	8rSBzksz/RvsneH6Q0nisuvQpqleg4GBr+/motw==
-X-Google-Smtp-Source: AGHT+IHryU3PLO20GBRCCgKMJ6XaprTWbXPQPdQ4lA3pQDeAvfm7RbBhJGsftpZ1ACzQsnluXERsu8pQW/NEsN9JBts=
-X-Received: by 2002:a25:2e4b:0:b0:dc6:8534:bb06 with SMTP id
- b11-20020a252e4b000000b00dc68534bb06mr2340069ybn.17.1712236452434; Thu, 04
- Apr 2024 06:14:12 -0700 (PDT)
+	s=arc-20240116; t=1712240187; c=relaxed/simple;
+	bh=BFuc2Lq4U5GQAYy5gLFSI1jQ3RyQD1warCOGb8JVO+4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PAzr2xxbrbnHI1J7BDE/iGfAVE1Y3z51LOAvi1qnMjQogwk+R1+iJH/pB1DHwDdIRZlFJjNov3Rhuqx0rp88BAdpQqPgajN2OEz1NfVaMo6vVZMHe2eQdDpN5zvbXWC8nF9DJY5bwN5r6NTSMyQakTYcHZj2vZ2Bw5FLcxmHg0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=SmWgXzpH; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 434CpgpO019614;
+	Thu, 4 Apr 2024 14:16:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version:content-type; s=
+	qcppdkim1; bh=MJ5crcrRYqFS2u+k7JLRK7iWlhpCOd4410/QX1u009o=; b=Sm
+	WgXzpHAAvY2fhMsRh+eeDhwkvK0wYQoMpIB0pxTZOvl+3c1lJebqU9+MgzguSNYL
+	xtP35d0en2LzqQn5WnZKnso9bGsxlT3n7sI9Gql09CZn5mTjCtEfDHRfrxQDvOkq
+	snMTROo6aD/uPOH3AWbt6gg6NIcxpRBJyPmgTqC8YVhUYlCtAeQsyIH0bNHatQlC
+	aaZNgn98Esn7cH667rHddNT1ZRGv1FgebUrk0zd/muwFbe0DC3//NTA5MEz48xQe
+	durA25g2HNIwSGSSrYNOGVIPy1hRj7zdUInkJJaQ8ojDSLHgMy1yYNqOrmWpGJ76
+	OzDiHADAmzZd36xEJ0zQ==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3x9en39nk0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Apr 2024 14:16:20 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 434EGJ3x022226
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 4 Apr 2024 14:16:19 GMT
+Received: from hu-nithp-blr.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Thu, 4 Apr 2024 07:16:17 -0700
+From: Nithyanantham Paramasivam <quic_nithp@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Karthikeyan Periyasamy
+	<quic_periyasa@quicinc.com>,
+        Nithyanantham Paramasivam
+	<quic_nithp@quicinc.com>
+Subject: [PATCH v3] wifi: ath12k: fix mac id extraction when MSDU spillover in rx error path
+Date: Thu, 4 Apr 2024 19:45:38 +0530
+Message-ID: <20240404141538.1277258-1-quic_nithp@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <fd26ce4a-a9f3-4ada-8d46-ed36fb2456ca@freebox.fr>
- <5cdad89c-282a-4df5-a286-b8404bc4dd81@freebox.fr> <252618e8-9e80-4774-a96c-caa7f838ef01@linaro.org>
- <502322f1-4f66-4922-bc4e-46bacac23410@linaro.org> <0ca1221b-b707-450f-877d-ca07a601624d@freebox.fr>
- <CAA8EJppeREj-0g9oGCzzKx5ywhg1mgmJR1q8yvXKN7N45do1Xg@mail.gmail.com>
- <87ttkh49xi.fsf@kernel.org> <e804b257-4dc0-45f1-a5c5-66bda51cf296@freebox.fr>
-In-Reply-To: <e804b257-4dc0-45f1-a5c5-66bda51cf296@freebox.fr>
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Thu, 4 Apr 2024 16:14:01 +0300
-Message-ID: <CAA8EJprBe_th5n_J4BRxUhAO1k89cZOGyTfCBzGQazN5fe9Nuw@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] arm64: dts: qcom: msm8998: set qcom,no-msa-ready-indicator
- for wifi
-To: Marc Gonzalez <mgonzalez@freebox.fr>
-Cc: Kalle Valo <kvalo@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Jeff Johnson <quic_jjohnson@quicinc.com>, 
-	ath10k <ath10k@lists.infradead.org>, wireless <linux-wireless@vger.kernel.org>, 
-	DT <devicetree@vger.kernel.org>, MSM <linux-arm-msm@vger.kernel.org>, 
-	Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Pierre-Hugues Husson <phhusson@freebox.fr>, Arnaud Vrac <avrac@freebox.fr>, 
-	Bjorn Andersson <andersson@kernel.org>, Jami Kettunen <jamipkettunen@gmail.com>, 
-	Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: f6YAOA-d9EM2JUNbFfv_FY4B9kp9PqUy
+X-Proofpoint-ORIG-GUID: f6YAOA-d9EM2JUNbFfv_FY4B9kp9PqUy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-04_10,2024-04-04_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
+ mlxscore=0 bulkscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0
+ mlxlogscore=460 suspectscore=0 malwarescore=0 clxscore=1015
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404040098
 
-On Thu, 4 Apr 2024 at 15:30, Marc Gonzalez <mgonzalez@freebox.fr> wrote:
->
-> On 04/04/2024 13:57, Kalle Valo wrote:
->
-> > Dmitry Baryshkov wrote:
-> >
-> >> I'd say, we should take a step back and actually verify how this was
-> >> handled in the vendor kernel.
-> >
-> > One comment related to this: usually vendor driver and firmware branches
-> > go "hand in hand", meaning that a version of driver supports only one
-> > specific firmware branch. And there can be a lot of branches. So even if
-> > one branch might have a check for something specific, there are no
-> > guarantees what the other N+1 branches do :/
->
-> The consequences and ramifications of the above comment are not clear to me.
->
-> Does this mean:
-> "It is pointless to analyze a given version (or even several versions)
-> of the vendor driver downstream, because there are exist a large number
-> of variations of the code." ?
->
-> And thus, "it is nonsensical to try to "align" the mainline driver to
-> "the" vendor driver, as there is no single "vendor driver"" ?
->
-> Thus, the following patch (or one functionally-equivalent) is not acceptable?
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 
-For reference, I tested this patch on sdm845 (db845c), qcm2290 aka
-qrb2210 (rb1), sm6115 aka qrb4210 (rb2) and sm8150 platforms.
-I was not able to fully test it on sda660, modem crashes without this
-patch (there is no MSA_READY indication) and with the patch applied
-the device hangs, most likely because of the IOMMU or clocking issue.
+Currently, in the rx error data path, mac id is extracted from the
+last 64bits of MSDU end description tag for each entry received in
+the WBM error ring. Then, each entry will be updated into the MSDU
+list for further processing. The extracted mac id is valid when a
+single MSDU is not fragmented and received in the WBM error ring.
 
->
-> diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
-> index 38e939f572a9e..fd9ac9717488a 100644
-> --- a/drivers/net/wireless/ath/ath10k/qmi.c
-> +++ b/drivers/net/wireless/ath/ath10k/qmi.c
-> @@ -1040,6 +1040,8 @@ static void ath10k_qmi_driver_event_work(struct work_struct *work)
->                 switch (event->type) {
->                 case ATH10K_QMI_EVENT_SERVER_ARRIVE:
->                         ath10k_qmi_event_server_arrive(qmi);
-> +                       printk(KERN_NOTICE "NOT WAITING FOR MSA_READY INDICATOR");
-> +                       ath10k_qmi_event_msa_ready(qmi);
->                         break;
->                 case ATH10K_QMI_EVENT_SERVER_EXIT:
->                         ath10k_qmi_event_server_exit(qmi);
-> @@ -1048,7 +1050,7 @@ static void ath10k_qmi_driver_event_work(struct work_struct *work)
->                         ath10k_qmi_event_fw_ready_ind(qmi);
->                         break;
->                 case ATH10K_QMI_EVENT_MSA_READY_IND:
-> -                       ath10k_qmi_event_msa_ready(qmi);
-> +                       printk(KERN_NOTICE "IGNORING ACTUAL MSA_READY INDICATOR");
->                         break;
->                 default:
->                         ath10k_warn(ar, "invalid event type: %d", event->type);
->
->
->
-> Regards
->
+In scenarios where the size of a single MSDU received exceeds the
+descriptor buffer size, resulting in fragmented or spillover MSDU
+entries into the WBM error ring. In this case, the extracted mac id
+from each spillover entry is invalid except the last spillover entry
+of the MSDU. This invalid mac id leads to packet rejection.
 
+To address this issue, check if the MSDU continuation flag is set,
+then extract the valid mac id from the last spillover entry.
+Propagate the valid mac id to all the spillover entries of the single
+MSDU in the temporary MSDU list(scatter_msdu_list). Then, update this
+into the MSDU list (msdu_list) for further processing.
 
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Signed-off-by: Nithyanantham Paramasivam <quic_nithp@quicinc.com>
+---
+v3:
+ - email name change suggested by kalle 
+v2:
+ - Signed-off change 
+---
+ drivers/net/wireless/ath/ath12k/dp_rx.c | 60 +++++++++++++++++++++----
+ 1 file changed, 52 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index a593beecdd12..b1b50e14a492 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -239,6 +239,14 @@ static inline u8 ath12k_dp_rx_get_msdu_src_link(struct ath12k_base *ab,
+ 	return ab->hal_rx_ops->rx_desc_get_msdu_src_link_id(desc);
+ }
+ 
++static void ath12k_dp_clean_up_skb_list(struct sk_buff_head *skb_list)
++{
++	struct sk_buff *skb;
++
++	while ((skb = __skb_dequeue(skb_list)))
++		dev_kfree_skb_any(skb);
++}
++
+ static int ath12k_dp_purge_mon_ring(struct ath12k_base *ab)
+ {
+ 	int i, reaped = 0;
+@@ -3742,19 +3750,20 @@ int ath12k_dp_rx_process_wbm_err(struct ath12k_base *ab,
+ 	struct hal_rx_wbm_rel_info err_info;
+ 	struct hal_srng *srng;
+ 	struct sk_buff *msdu;
+-	struct sk_buff_head msdu_list;
++	struct sk_buff_head msdu_list, scatter_msdu_list;
+ 	struct ath12k_skb_rxcb *rxcb;
+ 	void *rx_desc;
+ 	u8 mac_id;
+ 	int num_buffs_reaped = 0;
+ 	struct ath12k_rx_desc_info *desc_info;
+ 	int ret, pdev_id;
++	struct hal_rx_desc *msdu_data;
+ 
+ 	__skb_queue_head_init(&msdu_list);
++	__skb_queue_head_init(&scatter_msdu_list);
+ 
+ 	srng = &ab->hal.srng_list[dp->rx_rel_ring.ring_id];
+ 	rx_ring = &dp->rx_refill_buf_ring;
+-
+ 	spin_lock_bh(&srng->lock);
+ 
+ 	ath12k_hal_srng_access_begin(ab, srng);
+@@ -3807,16 +3816,50 @@ int ath12k_dp_rx_process_wbm_err(struct ath12k_base *ab,
+ 			continue;
+ 		}
+ 
++		msdu_data = (struct hal_rx_desc *)msdu->data;
+ 		rxcb->err_rel_src = err_info.err_rel_src;
+ 		rxcb->err_code = err_info.err_code;
+-		rxcb->rx_desc = (struct hal_rx_desc *)msdu->data;
+-
+-		__skb_queue_tail(&msdu_list, msdu);
+-
+ 		rxcb->is_first_msdu = err_info.first_msdu;
+ 		rxcb->is_last_msdu = err_info.last_msdu;
+ 		rxcb->is_continuation = err_info.continuation;
++		rxcb->rx_desc = msdu_data;
++
++		if (err_info.continuation) {
++			__skb_queue_tail(&scatter_msdu_list, msdu);
++		} else {
++			mac_id = ath12k_dp_rx_get_msdu_src_link(ab,
++								msdu_data);
++			if (mac_id >= MAX_RADIOS) {
++				dev_kfree_skb_any(msdu);
++
++				/* In any case continuation bit is set
++				 * in the previous record, cleanup scatter_msdu_list
++				 */
++				ath12k_dp_clean_up_skb_list(&scatter_msdu_list);
++				continue;
++			}
++
++			if (!skb_queue_empty(&scatter_msdu_list)) {
++				struct sk_buff *msdu;
++
++				skb_queue_walk(&scatter_msdu_list, msdu) {
++					rxcb = ATH12K_SKB_RXCB(msdu);
++					rxcb->mac_id = mac_id;
++				}
++
++				skb_queue_splice_tail_init(&scatter_msdu_list,
++							   &msdu_list);
++			}
++
++			rxcb = ATH12K_SKB_RXCB(msdu);
++			rxcb->mac_id = mac_id;
++			__skb_queue_tail(&msdu_list, msdu);
++		}
+ 	}
++	/* In any case continuation bit is set in the
++	 * last record, cleanup scatter_msdu_list
++	 */
++	ath12k_dp_clean_up_skb_list(&scatter_msdu_list);
+ 
+ 	ath12k_hal_srng_access_end(ab, srng);
+ 
+@@ -3830,8 +3873,9 @@ int ath12k_dp_rx_process_wbm_err(struct ath12k_base *ab,
+ 
+ 	rcu_read_lock();
+ 	while ((msdu = __skb_dequeue(&msdu_list))) {
+-		mac_id = ath12k_dp_rx_get_msdu_src_link(ab,
+-							(struct hal_rx_desc *)msdu->data);
++		rxcb = ATH12K_SKB_RXCB(msdu);
++		mac_id = rxcb->mac_id;
++
+ 		pdev_id = ath12k_hw_mac_id_to_pdev_id(ab->hw_params, mac_id);
+ 		ar = ab->pdevs[pdev_id].ar;
+ 
+
+base-commit: fe7e1b830cf3c0272aa4eaf367c4c7b29c169c3d
 -- 
-With best wishes
-Dmitry
+2.17.1
+
 
