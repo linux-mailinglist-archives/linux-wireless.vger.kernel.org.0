@@ -1,160 +1,162 @@
-Return-Path: <linux-wireless+bounces-5872-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5873-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCED98987E2
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Apr 2024 14:35:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5619B89889C
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Apr 2024 15:14:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 923C02915EC
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Apr 2024 12:35:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89B8DB26366
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Apr 2024 13:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDF3A43AA4;
-	Thu,  4 Apr 2024 12:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E86E1272A3;
+	Thu,  4 Apr 2024 13:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="UdPpvlmz"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QCwQTXUs"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F87D4DA1F
-	for <linux-wireless@vger.kernel.org>; Thu,  4 Apr 2024 12:30:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70899126F2F
+	for <linux-wireless@vger.kernel.org>; Thu,  4 Apr 2024 13:14:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712233846; cv=none; b=dLzJ1lZprNlQS9xNlYUECVIXa8NBylM2Q52og8SyB+uLbsfPc18zDPVBgU1Y9ECuWF1TEDzx20aGIiyYWEijJ8NJH7830x3dcIJplwiTpTe+/kAc85DSDSGr2uLPCbq5jzdfSX5mVIjWVmbHFFa7KeHAElo1sy4rxzynIjG3pEc=
+	t=1712236455; cv=none; b=Y049jo0w/dfmlqn5Ut8bxgtUT6zk8OEqNhJ/CiNaivggrT+DHQcFdQy1L3JOJBNW2KIKk5ttLbKoE+AgrDDyEdYT47VC7+1/5vVZKxNHnEh+PGStthQpUH0SZ8QExo7d5clQ5hoZ0M50xwo6OavxYR0ekvXYhMwRzM0JF0tZIkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712233846; c=relaxed/simple;
-	bh=f28NbA4ZuZA/fyXjKOiLtArFZfgGGB0391csJcl81uI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gY8wbSXTrjuDmzoyyNIRdjoSb3ssB3IIKPdWRB3Dq6MGKH7/5vibzsmJt8GypbydD4NbDPjiy9IccNIw8yROARuVyPZSrVZgLXkUpLWAnRM34Kz/7AlhCHhqemBjTi943WNHIPM59VTzaAe4i20NJIh+b9eaxqTOOMbMBdpdlys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=UdPpvlmz; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-415515178ceso6948455e9.0
-        for <linux-wireless@vger.kernel.org>; Thu, 04 Apr 2024 05:30:42 -0700 (PDT)
+	s=arc-20240116; t=1712236455; c=relaxed/simple;
+	bh=TvVo9cCYyR632GL7Cc0fqR3Kh9+qrXT134eJYEYfMZI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pc9IeTk2zxUfps/7moCWXdwFTxZGk3lzjt+MgeVjk6zLOoU03PXYWJL786niHq7knShQx31t6UvgQ9H+9w9i7K5+ccYTmzaKoKBo96heKVrg5LKjszyDy3yVU+0CcZN873H6TP/lkkb2ttvSMLJNID81ryFmOTDRwSbHVDMZ+58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QCwQTXUs; arc=none smtp.client-ip=209.85.128.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-6152be7c58bso10527437b3.0
+        for <linux-wireless@vger.kernel.org>; Thu, 04 Apr 2024 06:14:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1712233841; x=1712838641; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3+BMPQleoesnEmuZIKvnJIR9RrNyhXeocOmGMELh+Uw=;
-        b=UdPpvlmzbkRG0OBRspo3R6mr9qaIOIjxZ3kgoE+5VEYXEL0mQgi2XxI7E2yA7sSkP9
-         2It8Fbwdwvf3cwC6wQ36RsqylPkisJvFNs64yUQahiBxtGZODn0TjkEsicM0HdeqUmys
-         PVF4DoUzvrwAAN/I7G3AnJ+vbXnNN1c7y0BIbSJfP+qOgmI5QaHcFW2Za1wHY2YHj9Y3
-         okSQgifFnSEurZ441Nh9NBkFymOqlRA8iCOIl8IYMDE8ghZ83NLvo3vyjCO5kypkYfl2
-         C3AakstAoqzTWK0ctR00oDwjj1eE7htJoeilH/H5eRXyxXHarWWzHf9fTAsMb4TcGWxm
-         UOkw==
+        d=linaro.org; s=google; t=1712236452; x=1712841252; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=tknSODYMU/l/2VPgjwwryjgmML6llAA/U7CzR6kpVHI=;
+        b=QCwQTXUsjxHVDw6kc1QhrXrHBl7OZSxalSAqJgIWQorp1SSNS7tcpYj8+KxuymXMAG
+         3l5SZy8RPm9EfT6De3dAeiFjf3rZXtzdqlhG1xVjxEluN+zqn0hh1qLBbr8wzi4wDyUE
+         v/juRr40Bpln/wr5QopjwTep8aCQmeqrckSgU31vPKcIS3MK1S5G8RxITI2xM8FGhd85
+         MYoB+MALAEt1iXahOqSnrsDvMZlx/JSll/y0l6OuqQ9A2OYg6xOZ6B7DgurpVWEk44FU
+         kwSoXsUJrs4RFC/HAE7AcKksifNIZldTWhXu3qeH66VBSQ6nK96C7jiwsc8ATq3wvUYl
+         iaIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712233841; x=1712838641;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3+BMPQleoesnEmuZIKvnJIR9RrNyhXeocOmGMELh+Uw=;
-        b=N4DdTvw1zlB/eZ790t4PbJRRrPrHiEK96jTa8pv2LdLofS1yQvJFNvX5ejacpcGR7N
-         JSx5IxPGzJUStIM+Ppy51jxcWu8HUosjPMClXhTatpVv+naU5ZIAcHcRgYLmhStakJ7o
-         JPcrDG3vyUBmlQ32tgyh3Ymdxg0kBAEtM6mFSKZ5oC6RZVL5WGOOJ5Rvh1p30WAK4HAr
-         B0YPfPAbP5uCMZ0wUTQoaI12F38SENJ23cBz/Hed6q++eMqWeJnUWCGu5iiqxUANZHQQ
-         9WQzgziLFT1ip05l4he/QCFD1lrWE/FzEjsgCtKVJ3/0yfTs2Zd85bIO1AtLxpZVe5wn
-         W/qA==
-X-Forwarded-Encrypted: i=1; AJvYcCVlWPaWkOq2zcketiQb38Z+IbaqjPExriyBeZKP/1BFsAUKJY7duDrgMUZvQ+WGGgCKFYZG8froBOpmX1ZqOKaNydrt5p52tfVqcvcLAUo=
-X-Gm-Message-State: AOJu0Yx8bVHP2k4R/pl7HKdb93kz7DRl/qOWhffjzsFPd0LFMpgL0EjU
-	WxCQdYUpD/8HfxyXe0wvqAOK2K/HkcoI0giIqhSWz0GBzpVcVzDOXxaFFJ+nEDU=
-X-Google-Smtp-Source: AGHT+IEV9SRf3L1IqaNEnuhHOMN7UgW5DwSVakpA51/xjM2jO4fLk72OjgqTkeR4uvMKVXqT36uwBA==
-X-Received: by 2002:a05:600c:3115:b0:416:1d2e:62f1 with SMTP id g21-20020a05600c311500b004161d2e62f1mr1874361wmo.5.1712233841414;
-        Thu, 04 Apr 2024 05:30:41 -0700 (PDT)
-Received: from [192.168.108.81] (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id bg2-20020a05600c3c8200b004149530aa97sm2617799wmb.10.2024.04.04.05.30.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Apr 2024 05:30:41 -0700 (PDT)
-Message-ID: <e804b257-4dc0-45f1-a5c5-66bda51cf296@freebox.fr>
-Date: Thu, 4 Apr 2024 14:30:40 +0200
+        d=1e100.net; s=20230601; t=1712236452; x=1712841252;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tknSODYMU/l/2VPgjwwryjgmML6llAA/U7CzR6kpVHI=;
+        b=NN0ahR1P54++4FkRjflNCDlJVX/1Kl+zC8hltUhCPV9knRR0s5pX8rNlZS6bvgsg/d
+         6vf6fILwtzpH4Sn+5WggzfTUgziwzIdNJ8Jyc+DdZKwzOvETQ2CB1Kh8eQWrD0xmy+ke
+         hOKAHa/lg9x8UvOkYiRe+F9FZJx3XgU001QAdp1m2WKMYRlyRZbnDQd8V/VauBhomsPO
+         sZAFESt4q76InvryzV8ZVJfEJphY8yFy9/afRHHimE8+BjARS5BfL/ZUj8dOHiWvcx9H
+         HMEpzAT/VHCUULva0rsi02/2ccwYrsDlRRI4rHhbFuFT1xOhdcXPT0P6tvhgo49Sh9J9
+         WU0A==
+X-Forwarded-Encrypted: i=1; AJvYcCX8FKU8VuSj4/BifgjgAVIKOF9lg7YDFxpJXsLuCKow2FaCSs93JWINAUr2J/MBjaGj9KSgvpUOj92dqUKtEEltU+itSFjpKKRAGOnfrGA=
+X-Gm-Message-State: AOJu0YwH8/Jci4AJKAfY73qyfYQBAhbXtul8PjSdz6cUQQun/7j8i+AS
+	1+PzMSLytEO0YyEADuLZW/I7mY3YfwNDTesi4iOhdEWDAYTVL+QcHk5u1JREthrbZc7XgF1lXoO
+	8rSBzksz/RvsneH6Q0nisuvQpqleg4GBr+/motw==
+X-Google-Smtp-Source: AGHT+IHryU3PLO20GBRCCgKMJ6XaprTWbXPQPdQ4lA3pQDeAvfm7RbBhJGsftpZ1ACzQsnluXERsu8pQW/NEsN9JBts=
+X-Received: by 2002:a25:2e4b:0:b0:dc6:8534:bb06 with SMTP id
+ b11-20020a252e4b000000b00dc68534bb06mr2340069ybn.17.1712236452434; Thu, 04
+ Apr 2024 06:14:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] arm64: dts: qcom: msm8998: set
- qcom,no-msa-ready-indicator for wifi
-To: Kalle Valo <kvalo@kernel.org>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Konrad Dybcio <konrad.dybcio@linaro.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Jeff Johnson <quic_jjohnson@quicinc.com>, ath10k
- <ath10k@lists.infradead.org>, wireless <linux-wireless@vger.kernel.org>,
- DT <devicetree@vger.kernel.org>, MSM <linux-arm-msm@vger.kernel.org>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Pierre-Hugues Husson <phhusson@freebox.fr>, Arnaud Vrac <avrac@freebox.fr>,
- Bjorn Andersson <andersson@kernel.org>,
- Jami Kettunen <jamipkettunen@gmail.com>,
- Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
 References: <fd26ce4a-a9f3-4ada-8d46-ed36fb2456ca@freebox.fr>
- <5cdad89c-282a-4df5-a286-b8404bc4dd81@freebox.fr>
- <252618e8-9e80-4774-a96c-caa7f838ef01@linaro.org>
- <502322f1-4f66-4922-bc4e-46bacac23410@linaro.org>
- <0ca1221b-b707-450f-877d-ca07a601624d@freebox.fr>
+ <5cdad89c-282a-4df5-a286-b8404bc4dd81@freebox.fr> <252618e8-9e80-4774-a96c-caa7f838ef01@linaro.org>
+ <502322f1-4f66-4922-bc4e-46bacac23410@linaro.org> <0ca1221b-b707-450f-877d-ca07a601624d@freebox.fr>
  <CAA8EJppeREj-0g9oGCzzKx5ywhg1mgmJR1q8yvXKN7N45do1Xg@mail.gmail.com>
- <87ttkh49xi.fsf@kernel.org>
-Content-Language: en-US
-From: Marc Gonzalez <mgonzalez@freebox.fr>
-In-Reply-To: <87ttkh49xi.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <87ttkh49xi.fsf@kernel.org> <e804b257-4dc0-45f1-a5c5-66bda51cf296@freebox.fr>
+In-Reply-To: <e804b257-4dc0-45f1-a5c5-66bda51cf296@freebox.fr>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Thu, 4 Apr 2024 16:14:01 +0300
+Message-ID: <CAA8EJprBe_th5n_J4BRxUhAO1k89cZOGyTfCBzGQazN5fe9Nuw@mail.gmail.com>
+Subject: Re: [PATCH v2 3/3] arm64: dts: qcom: msm8998: set qcom,no-msa-ready-indicator
+ for wifi
+To: Marc Gonzalez <mgonzalez@freebox.fr>
+Cc: Kalle Valo <kvalo@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Jeff Johnson <quic_jjohnson@quicinc.com>, 
+	ath10k <ath10k@lists.infradead.org>, wireless <linux-wireless@vger.kernel.org>, 
+	DT <devicetree@vger.kernel.org>, MSM <linux-arm-msm@vger.kernel.org>, 
+	Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Pierre-Hugues Husson <phhusson@freebox.fr>, Arnaud Vrac <avrac@freebox.fr>, 
+	Bjorn Andersson <andersson@kernel.org>, Jami Kettunen <jamipkettunen@gmail.com>, 
+	Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 04/04/2024 13:57, Kalle Valo wrote:
+On Thu, 4 Apr 2024 at 15:30, Marc Gonzalez <mgonzalez@freebox.fr> wrote:
+>
+> On 04/04/2024 13:57, Kalle Valo wrote:
+>
+> > Dmitry Baryshkov wrote:
+> >
+> >> I'd say, we should take a step back and actually verify how this was
+> >> handled in the vendor kernel.
+> >
+> > One comment related to this: usually vendor driver and firmware branches
+> > go "hand in hand", meaning that a version of driver supports only one
+> > specific firmware branch. And there can be a lot of branches. So even if
+> > one branch might have a check for something specific, there are no
+> > guarantees what the other N+1 branches do :/
+>
+> The consequences and ramifications of the above comment are not clear to me.
+>
+> Does this mean:
+> "It is pointless to analyze a given version (or even several versions)
+> of the vendor driver downstream, because there are exist a large number
+> of variations of the code." ?
+>
+> And thus, "it is nonsensical to try to "align" the mainline driver to
+> "the" vendor driver, as there is no single "vendor driver"" ?
+>
+> Thus, the following patch (or one functionally-equivalent) is not acceptable?
 
-> Dmitry Baryshkov wrote:
-> 
->> I'd say, we should take a step back and actually verify how this was
->> handled in the vendor kernel.
-> 
-> One comment related to this: usually vendor driver and firmware branches
-> go "hand in hand", meaning that a version of driver supports only one
-> specific firmware branch. And there can be a lot of branches. So even if
-> one branch might have a check for something specific, there are no
-> guarantees what the other N+1 branches do :/
+For reference, I tested this patch on sdm845 (db845c), qcm2290 aka
+qrb2210 (rb1), sm6115 aka qrb4210 (rb2) and sm8150 platforms.
+I was not able to fully test it on sda660, modem crashes without this
+patch (there is no MSA_READY indication) and with the patch applied
+the device hangs, most likely because of the IOMMU or clocking issue.
 
-The consequences and ramifications of the above comment are not clear to me.
-
-Does this mean:
-"It is pointless to analyze a given version (or even several versions)
-of the vendor driver downstream, because there are exist a large number
-of variations of the code." ?
-
-And thus, "it is nonsensical to try to "align" the mainline driver to
-"the" vendor driver, as there is no single "vendor driver"" ?
-
-Thus, the following patch (or one functionally-equivalent) is not acceptable?
-
-diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
-index 38e939f572a9e..fd9ac9717488a 100644
---- a/drivers/net/wireless/ath/ath10k/qmi.c
-+++ b/drivers/net/wireless/ath/ath10k/qmi.c
-@@ -1040,6 +1040,8 @@ static void ath10k_qmi_driver_event_work(struct work_struct *work)
-                switch (event->type) {
-                case ATH10K_QMI_EVENT_SERVER_ARRIVE:
-                        ath10k_qmi_event_server_arrive(qmi);
-+                       printk(KERN_NOTICE "NOT WAITING FOR MSA_READY INDICATOR");
-+                       ath10k_qmi_event_msa_ready(qmi);
-                        break;
-                case ATH10K_QMI_EVENT_SERVER_EXIT:
-                        ath10k_qmi_event_server_exit(qmi);
-@@ -1048,7 +1050,7 @@ static void ath10k_qmi_driver_event_work(struct work_struct *work)
-                        ath10k_qmi_event_fw_ready_ind(qmi);
-                        break;
-                case ATH10K_QMI_EVENT_MSA_READY_IND:
--                       ath10k_qmi_event_msa_ready(qmi);
-+                       printk(KERN_NOTICE "IGNORING ACTUAL MSA_READY INDICATOR");
-                        break;
-                default:
-                        ath10k_warn(ar, "invalid event type: %d", event->type);
+>
+> diff --git a/drivers/net/wireless/ath/ath10k/qmi.c b/drivers/net/wireless/ath/ath10k/qmi.c
+> index 38e939f572a9e..fd9ac9717488a 100644
+> --- a/drivers/net/wireless/ath/ath10k/qmi.c
+> +++ b/drivers/net/wireless/ath/ath10k/qmi.c
+> @@ -1040,6 +1040,8 @@ static void ath10k_qmi_driver_event_work(struct work_struct *work)
+>                 switch (event->type) {
+>                 case ATH10K_QMI_EVENT_SERVER_ARRIVE:
+>                         ath10k_qmi_event_server_arrive(qmi);
+> +                       printk(KERN_NOTICE "NOT WAITING FOR MSA_READY INDICATOR");
+> +                       ath10k_qmi_event_msa_ready(qmi);
+>                         break;
+>                 case ATH10K_QMI_EVENT_SERVER_EXIT:
+>                         ath10k_qmi_event_server_exit(qmi);
+> @@ -1048,7 +1050,7 @@ static void ath10k_qmi_driver_event_work(struct work_struct *work)
+>                         ath10k_qmi_event_fw_ready_ind(qmi);
+>                         break;
+>                 case ATH10K_QMI_EVENT_MSA_READY_IND:
+> -                       ath10k_qmi_event_msa_ready(qmi);
+> +                       printk(KERN_NOTICE "IGNORING ACTUAL MSA_READY INDICATOR");
+>                         break;
+>                 default:
+>                         ath10k_warn(ar, "invalid event type: %d", event->type);
+>
+>
+>
+> Regards
+>
 
 
-
-Regards
-
+-- 
+With best wishes
+Dmitry
 
