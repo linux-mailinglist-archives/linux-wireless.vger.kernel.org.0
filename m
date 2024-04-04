@@ -1,137 +1,121 @@
-Return-Path: <linux-wireless+bounces-5867-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5868-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3276489862D
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Apr 2024 13:41:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43F2489865E
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Apr 2024 13:48:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51B301C228FA
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Apr 2024 11:41:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCBB71F227AF
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Apr 2024 11:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F4E384FBA;
-	Thu,  4 Apr 2024 11:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A93D84A31;
+	Thu,  4 Apr 2024 11:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BzpYfce4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oZ3ysiRJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5041783CDE
-	for <linux-wireless@vger.kernel.org>; Thu,  4 Apr 2024 11:41:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2898D82876;
+	Thu,  4 Apr 2024 11:48:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712230893; cv=none; b=qe25ZuqHevWgqsfdsU2X8WIM3QgGByiEG9nCBUo5cQkmHXoyIj5Pq3RtByXjAdp0Tr/QSpHmFpn/pFiHrrWbrXSzzDJ44NIEvWGwWeuPLQeQ9BkDwhLQrZUZJ6H4izyngo6AKeLYf2o7vejoog5LT8wP/ybjtmSOCS11zowQLYo=
+	t=1712231305; cv=none; b=D+8yb0+SgR1hRCQUP3i6eQTzSITk2hVlVfBVjiClxrTQgjFeZY59ILBoeRz64TkIlzM1G0OWNad4BiqH4+nhTAj8CO9L9vWya9K4ExG9oErrVPmDSNInRahkKNy1rfCY77gati9UxH8aCrCAZLFlxRBC9LB4mCYLuC1aqWu8WQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712230893; c=relaxed/simple;
-	bh=xTu/IdCn/048THaVHddyM991QlKheudeHaOzDUEba/4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CbnfdACCpKM7Uc4gFzSIuRFwmKigKjPc5Isqa3rKxlnO63rflNgyWp4oa0Igwxjgy2oh4JUrhAaah0aW3A+CPVh9rXkfOvXd7DPrtRkicJR4IW2sgEQ52w1orcJR64JjxayzrJEsSVFNY9/+GTeLqwau8Gxc92lTxEoXyw1GGzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BzpYfce4; arc=none smtp.client-ip=209.85.219.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-dc6d8bd612dso977871276.1
-        for <linux-wireless@vger.kernel.org>; Thu, 04 Apr 2024 04:41:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712230889; x=1712835689; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xTu/IdCn/048THaVHddyM991QlKheudeHaOzDUEba/4=;
-        b=BzpYfce4q/zv0gCorIvWLSXuzW4HjLtqKmXuLtELMIG7pv5Gw5rD2es8aCVqQFqD//
-         8JggHBzNznjWgNLq2nD9WBWW0NsYaidmHqnL2ihAYJpv7o5gc1VJY6DJ0clWC7aekflL
-         okxkVaJGNSO0qVH2yOxsFJLCq+7hYpnwhkr7HgXgiRTKZmRNaOv51pSZ+2EvNJ7l32Ax
-         3rV1o60Rwqf7/3WoHSX+9OLMYTDALVEnxQwPAvQSTwkL+2+b5q+pMv+fOiTCP+zwNcc+
-         ViJk4rxb2Vw07nE8VHUP+XT2krjKR9JIgTGsriDdaif1hRFImGjHsjVSH1La3PcFbNJH
-         hkUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712230889; x=1712835689;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xTu/IdCn/048THaVHddyM991QlKheudeHaOzDUEba/4=;
-        b=ZiOhyjk93MnUFzBFJtrgz2KQKaHPbi09Js/YmKYLRdTdJ+lG7FCi3OljCU6RI9lG5z
-         ELSdUr+VhS0ZAWXAXbHYasCKTm4/eLu9pHqUKYO3RvmBIziP0MlFXeE/pU0zv9mh7rgS
-         cNftw7xB/+kS3MlRRrcmvATslyp3fiNSdAR7BCk5LS6z/vkMThDQeIiRpmjgoKkF6FUY
-         YRWlPy5zXVe1PPaSFPFknPK9t9W6Rc9kMKFU4/Bz1+ZdxzpuElcb+JaE35ylvIPtgQpN
-         ZgYfzGI3rYCOR27cMfRKpIYfoQYYuTXzyMyWpsaLeef1FR8iAF77uji4xSh2vadR77bY
-         MHjA==
-X-Forwarded-Encrypted: i=1; AJvYcCVjnLl/l7JQf7E0SajqChuKs12sAO7F7rTcwupWbKXM0lfm4Zzcc74o4MetzOdslFTZON8BVk+2LYHTtU7qspMeNee9QUL9CuovVxv4eZY=
-X-Gm-Message-State: AOJu0YxMGySc32kgP8v9tfOt7UXkRWXY+B9XU1AY4GAR03NOAXb0P4ls
-	3rUloOejZjDxw1UY9+vd7FN/tQwJkIuEaKQEaei453micQOLgsFpnMMff2avjs8+bS99NOLnA7i
-	gV/lxZAyfPy122zU7tQzB5FLNwcPxvjwRU3hQcg==
-X-Google-Smtp-Source: AGHT+IEhL+O4bSIOCRsSy+Vdywn61xtrVBJ3li47sHwN1FOt8H7g9W+tj2/Or7rao9/9euGeRsXbtXq4vPMz7+GnZRc=
-X-Received: by 2002:a25:ba86:0:b0:dd1:6fab:81e4 with SMTP id
- s6-20020a25ba86000000b00dd16fab81e4mr2034373ybg.37.1712230889318; Thu, 04 Apr
- 2024 04:41:29 -0700 (PDT)
+	s=arc-20240116; t=1712231305; c=relaxed/simple;
+	bh=dAhTmkzD/Nmh0C2TGZh+xAa7rrEqwqkaz/GvQ75Pxgk=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=jB+TlZB0/JZIMdXxSgW3P7uD7QTXiUavDgHMaKOnsC3+eNL0o9+1z9UPDypv/IH0nUEZab2ej69OBSMSnF15tcwDNRXnvqXM9lORmcCy9fXDb/NwWsdKdHEwpL0QKxF4nZN7qfodZCGx/hOk023F863bpH96a3OCUAbe1KkSU1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oZ3ysiRJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A850C433C7;
+	Thu,  4 Apr 2024 11:48:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712231304;
+	bh=dAhTmkzD/Nmh0C2TGZh+xAa7rrEqwqkaz/GvQ75Pxgk=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=oZ3ysiRJDSYt/kN9hfKEvbX+lYFhMkuZPFEjeLM1IaNtVCP2RO4mgUpMVciE8KRga
+	 065MjFV57yg9nErRgKXpwZ9OvAYKvJEDWryQwve7yNEupWPEU3KY50zCX1Ec0Eib4u
+	 B4+w8CyWSMmI6ZEJ2hyQtb83sa2yjAsy7lNyHSTvydru95AwCfhz3xZ8eyjL6oV2Qj
+	 E9ts3COC0a+/R4KGw87uNxJzApcCR7tn6iifhs6gGz/olk6KiBoaYezIU4KvGd1W5D
+	 btUrI0dUPOKAmKuHIE3mRpMemLR/aI6wgJoUjUF6c1qhLMj9HqzAZpALXW9SFSN9vu
+	 5x/IM/wXbFCSQ==
+From: Kalle Valo <kvalo@kernel.org>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,  "David S. Miller"
+ <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
+ Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,  Rob Herring
+ <robh+dt@kernel.org>,  Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>,  Conor Dooley <conor+dt@kernel.org>,
+  Bjorn Andersson <andersson@kernel.org>,  Konrad Dybcio
+ <konrad.dybcio@linaro.org>,  <ath10k@lists.infradead.org>,
+  <linux-wireless@vger.kernel.org>,  <netdev@vger.kernel.org>,
+  <devicetree@vger.kernel.org>,  <linux-arm-msm@vger.kernel.org>,
+  Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH RFC v2 0/4] wifi: ath10k: support board-specific
+ firmware overrides
+References: <20240306-wcn3990-firmware-path-v2-0-f89e98e71a57@linaro.org>
+	<CAA8EJprpmC6+ePxw_G6y9YEszndq1VonS1HP=aP9OVHNm42LLw@mail.gmail.com>
+	<c2bd01d1-8ddf-44b8-b5bc-860cc9754b76@quicinc.com>
+Date: Thu, 04 Apr 2024 14:48:19 +0300
+In-Reply-To: <c2bd01d1-8ddf-44b8-b5bc-860cc9754b76@quicinc.com> (Jeff
+	Johnson's message of "Tue, 2 Apr 2024 16:40:57 -0700")
+Message-ID: <87y19t4ad8.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240331-module-owner-virtio-v2-0-98f04bfaf46a@linaro.org> <20240331-module-owner-virtio-v2-12-98f04bfaf46a@linaro.org>
-In-Reply-To: <20240331-module-owner-virtio-v2-12-98f04bfaf46a@linaro.org>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Thu, 4 Apr 2024 13:41:18 +0200
-Message-ID: <CACRpkdYpVUq1SgxnPVfRdTiNg3o8dcBePxoxu9GRYy6LdzUE5A@mail.gmail.com>
-Subject: Re: [PATCH v2 12/25] gpio: virtio: drop owner assignment
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Jonathan Corbet <corbet@lwn.net>, 
-	David Hildenbrand <david@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, 
-	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, Jens Axboe <axboe@kernel.dk>, 
-	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
-	Olivia Mackall <olivia@selenic.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	Amit Shah <amit@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Gonglei <arei.gonglei@huawei.com>, 
-	"David S. Miller" <davem@davemloft.net>, Sudeep Holla <sudeep.holla@arm.com>, 
-	Cristian Marussi <cristian.marussi@arm.com>, Viresh Kumar <vireshk@kernel.org>, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, David Airlie <airlied@redhat.com>, 
-	Gurchetan Singh <gurchetansingh@chromium.org>, Chia-I Wu <olvaffe@gmail.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Daniel Vetter <daniel@ffwll.ch>, 
-	Jean-Philippe Brucker <jean-philippe@linaro.org>, Joerg Roedel <joro@8bytes.org>, 
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Alexander Graf <graf@amazon.com>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, 
-	Dominique Martinet <asmadeus@codewreck.org>, Christian Schoenebeck <linux_oss@crudebyte.com>, 
-	Stefano Garzarella <sgarzare@redhat.com>, Kalle Valo <kvalo@kernel.org>, 
-	Dan Williams <dan.j.williams@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, 
-	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
-	Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Bjorn Andersson <andersson@kernel.org>, 
-	Mathieu Poirier <mathieu.poirier@linaro.org>, "James E.J. Bottomley" <jejb@linux.ibm.com>, 
-	"Martin K. Petersen" <martin.petersen@oracle.com>, Vivek Goyal <vgoyal@redhat.com>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Anton Yakovlev <anton.yakovlev@opensynergy.com>, 
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, virtualization@lists.linux.dev, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-um@lists.infradead.org, linux-block@vger.kernel.org, 
-	linux-bluetooth@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev, 
-	netdev@vger.kernel.org, v9fs@lists.linux.dev, kvm@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, nvdimm@lists.linux.dev, 
-	linux-remoteproc@vger.kernel.org, linux-scsi@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, alsa-devel@alsa-project.org, 
-	linux-sound@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Viresh Kumar <viresh.kumar@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Sun, Mar 31, 2024 at 10:45=E2=80=AFAM Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
+Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 
-> virtio core already sets the .owner, so driver does not need to.
+> On 3/29/2024 9:47 PM, Dmitry Baryshkov wrote:
 >
-> Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>> On Wed, 6 Mar 2024 at 10:16, Dmitry Baryshkov
+>> <dmitry.baryshkov@linaro.org> wrote:
+>>>
+>>> On WCN3990 platforms actual firmware, wlanmdsp.mbn, is sideloaded to the
+>>> modem DSP via the TQFTPserv. These MBN files are signed by the device
+>>> vendor, can only be used with the particular SoC or device.
+>>>
+>>> Unfortunately different firmware versions come with different features.
+>>> For example firmware for SDM845 doesn't use single-chan-info-per-channel
+>>> feature, while firmware for QRB2210 / QRB4210 requires that feature.
+>>>
+>>> Allow board DT files to override the subdir of the fw dir used to lookup
+>>> the firmware-N.bin file decribing corresponding WiFi firmware.
+>>> For example, adding firmware-name = "qrb4210" property will make the
+>>> driver look for the firmware-N.bin first in ath10k/WCN3990/hw1.0/qrb4210
+>>> directory and then fallback to the default ath10k/WCN3990/hw1.0 dir.
+>>>
+>>> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+>>> ---
+>>> Changes in v2:
+>>> - Fixed the comment about the default board name being NULL (Kalle)
+>>> - Expanded commit message to provide examples for firmware paths (Kalle)
+>>> - Added a note regarding board-2.bin to the commit message (Kalle)
+>>> - Link to v1:
+>>> https://lore.kernel.org/r/20240130-wcn3990-firmware-path-v1-0-826b93202964@linaro.org
+>>>
+>>> ---
+>>> Dmitry Baryshkov (4):
+>>>       dt-bindings: net: wireless: ath10k: describe firmware-name property
+>>>       wifi: ath10k: support board-specific firmware overrides
+>>>       arm64: dts: qcom: qrb2210-rb1: add firmware-name qualifier to WiFi node
+>>>       arm64: dts: qcom: qrb4210-rb1: add firmware-name qualifier to WiFi node
+>> 
+>> Kalle, Jeff, is there anything pending on me on this series?
+>> 
+> Nothing from me -- this is outside my area of expertise so I'm deferring to Kalle.
 
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
+I was on Easter vacation and now catching up, that's why the delay.
 
-Yours,
-Linus Walleij
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
