@@ -1,113 +1,199 @@
-Return-Path: <linux-wireless+bounces-5904-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5905-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F4042899D77
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Apr 2024 14:46:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E6F8899D82
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Apr 2024 14:50:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 311541C223B1
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Apr 2024 12:46:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC00F1F222F9
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Apr 2024 12:50:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E21D216D318;
-	Fri,  5 Apr 2024 12:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C0EF16C86F;
+	Fri,  5 Apr 2024 12:50:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rp6+rZ9/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-io1-f70.google.com (mail-io1-f70.google.com [209.85.166.70])
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5657A13C673
-	for <linux-wireless@vger.kernel.org>; Fri,  5 Apr 2024 12:46:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434C216ABFA
+	for <linux-wireless@vger.kernel.org>; Fri,  5 Apr 2024 12:50:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712321182; cv=none; b=jsaBgr1zpZtvDGZ4aJfEvRALTZuHe8bLvJZXO79L0GJToikJ0mWiA4/zCN67RJHEuO2cR/u2kxJKTDq4DIrqM8e/sdoh2bulhvD4wp/Z8hbsrgLW6qUkd6sDMwfzhQfNfW2PoQJLZgIrokgCrKwzKo1D/6No8eUvaXc+9gTdTnU=
+	t=1712321402; cv=none; b=Ku6wN4WLJq3IosNgTeMaYyMEWoYyKe91RVy/OUkAnvKcAevXGm3MEXurVmUArXNIRiGT4chqAmf2iEpeosmTEfy7n0m4eX4XmSLALp2LuV5Kd5snsOWVhQgnOkTUBHfskmLdxbusV3jKLKLkP/oyD/bIyELXXXciHom731fKnQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712321182; c=relaxed/simple;
-	bh=WRsBuSjHUzTQxBfLyZla+hkSSKIsEqFIsaME6OB+fEo=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=YtwE9EVVQVDYk41p4r4l6ZRtu0WsTIObDvfXfdLpEf/BbFeXbpOjjjJFxVQKa077vJTOa3av1+jaOBi2jW9bboeUa10o1NCGAkg+WiNTUv0GvhrUjkjVJcBPip7Q/DtGFwjqvkmrjOUukgayuY8+rMJ/FRRSg2QZcXSvAoMBpVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f70.google.com with SMTP id ca18e2360f4ac-7cc764c885bso233752039f.3
-        for <linux-wireless@vger.kernel.org>; Fri, 05 Apr 2024 05:46:21 -0700 (PDT)
+	s=arc-20240116; t=1712321402; c=relaxed/simple;
+	bh=/h5ZKUyP0Cry0+mHbTzooNJMYvg5n+9KMU/0TdwKBUE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bRVAvS6NFVV0zGKGbLZCrRK7cXsHsSphERdEOwBtosv7P27wlwY14IAFkx2PDqpPA9DNMoHMiFIiUqT4cpBoByNzljwccYN4q3/NlnqNQBUGFqHegDjA+kzPc7cP78zG5mMo+ocNMTCB3AETyiReeNeaLuBNf32R5plseefAI+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rp6+rZ9/; arc=none smtp.client-ip=209.85.219.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-ddaad2aeab1so2056923276.3
+        for <linux-wireless@vger.kernel.org>; Fri, 05 Apr 2024 05:50:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1712321399; x=1712926199; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=/h5ZKUyP0Cry0+mHbTzooNJMYvg5n+9KMU/0TdwKBUE=;
+        b=rp6+rZ9/wlE3O1qClOfG0L8PLIxmbUpZOenVR/srWXYqtseT5+l/ULqHIHQRUqTg0d
+         CxbC/CWYDL0m09UAH+BPoYzSeYKU4E/75//5bsPidPrNtsrJj/N5fEQki5WYTd3QFcLg
+         ASZbgcUNZhu2OVD0neIgiQb0moNPJjGr8x9CFAE7tqd8BufL4M2Z5S29VMFYYxQhlfUS
+         kOMHK3oB+dpM5AnUveKI+8c9QUfoeZrLOy5xxaFDDjqKRL3e0PYP6UnHFQMmJA0DrzfH
+         LCEtqxiCSdlv+yXU7Qxk0QRgbIZTXaq4pPCAoWM4t20icObba1xNokmKqYrWfQJpouMM
+         LWmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712321180; x=1712925980;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=12OUjT4o2BmUoPYzd0RNRensS2gycfoa6iSCUdJDBjA=;
-        b=ncwkv+H5amFSj7SlCgcb/aQlW1cMCvJWTydvoXt3+dRiavLuC6fDmA4rohdXwlZewX
-         hPqZ8bu2SgM5EBHvS5Sv0Dv6rZiGyOC15gW+Bbe/lUWhCVq06PCoOKAOFznnwsKD8ndU
-         HZFL3t8IFO7N9Mq1BkwUQEzmmTZY5v9mggtJeq0oGTzJEOunzsFiWETkzg6VAqalI9wN
-         1nlEvs/3feY/99714gnTO7EgmzQuhzYrRccaKqVF+YmbJ3BUF80nJrHe0ZYsIpCA+fys
-         tT0djCaRpfnpqksZe6WYZjp8VT5CNJfl+S37dEPX5Wyyctf+l3zkSg7Zw4y+xs3cEygF
-         /LNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVjG16RyGNzHq6cbmyhOOqPOum2+Uwc/93QnBbBAMdau2f4ePgudESDDQ7d9xHFw1cGsbXU0t2Z/1d/VquXgiJi6NX61700Dan4MW8fYB8=
-X-Gm-Message-State: AOJu0Yxs/CdkMULbFNQx05ztuGrDqkgd35fCtS+tlNwZSGvfCBt81fyP
-	0KQ/eTr/YWxBZOhaqa8xcPdAsK029Hh97jQylDPCEHTPDmdecZQezISS7pCsS7D/49V6ymgQiPv
-	6tS2A+mVkYBix8jvL4KFdJnu3F6/i9XJP0G6/Co9XbQ4xOgNVj3mMzP0=
-X-Google-Smtp-Source: AGHT+IHUSX+UTWlSb1AR/cJOIfpFBOJBQ8I/qjxG90HqOzL/9/H8NsvcgYdPdnTHg42wBEgpmd6txjF7jo0+6QOsy/mwLPFP5/lx
+        d=1e100.net; s=20230601; t=1712321399; x=1712926199;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/h5ZKUyP0Cry0+mHbTzooNJMYvg5n+9KMU/0TdwKBUE=;
+        b=uCOpH8Qy1VUY+nfzuiOleVt+MolznYScVbY8i6tHOmg2C9lW+1S2XaTWYE0dTXNaVT
+         MJ4/EXgxmgFWK7m6E4+Z65WfuvQzkRhludK/CjcSx0clLAmTSaZSL32EHpwBsIJCpNYt
+         6fkNGZAcHRNecHBs3wXkFeHcU00ZzsSc2lnUQsFMfT5C61Fj81RqikDvMMYenEcOlWvv
+         /HiQQHyi6IF5AnqJslRfd4tSiuur/SMrN85Y5J7BPYZ4v9peVcypva01dneie9j719Qh
+         woml7ywGTGYXCkbU/mtnx146jIr/2duQsivfhTwP3zab2x961tuiSgRWOZLji9g2Pnv8
+         cWQA==
+X-Forwarded-Encrypted: i=1; AJvYcCVPyfXr+eJHX1xS4vAHLjh4iXrRTifOkh3BbNu/n1iMDGZd9EWOLNR9R0cxsKhDUuGGji6gYZMnmNbSgIan/hjDVSCN9wAp60i9Wqj8IVA=
+X-Gm-Message-State: AOJu0YyCyKPZTDondoiDyftmc6KTEcbnLGZ9YZNhjeGD9085mb1rGQpI
+	QLK9VntZzGvUDOlBPRrA9enAOcVU8/FfN2tUGyBWhRvd38pgN8kIjCnqjNTrf/ua5c0j1QQO+c3
+	vX/K88LMJHjQDf2uegECzw9SraW6FXRYDhCg9Gg==
+X-Google-Smtp-Source: AGHT+IF+uYN0V7kj1WIHdUIWItVzS1wQ6IV2lWWc/0drhKwFzKBD2YiWPAiRHKjXhywplhFwsAgFyDg/DQC+/Ij0EOk=
+X-Received: by 2002:a5b:9c5:0:b0:dcc:4b84:67cd with SMTP id
+ y5-20020a5b09c5000000b00dcc4b8467cdmr937832ybq.9.1712321399265; Fri, 05 Apr
+ 2024 05:49:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:27c7:b0:7cc:342:72f9 with SMTP id
- l7-20020a05660227c700b007cc034272f9mr29400ios.2.1712321180474; Fri, 05 Apr
- 2024 05:46:20 -0700 (PDT)
-Date: Fri, 05 Apr 2024 05:46:20 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000b4284f061558d73c@google.com>
-Subject: [syzbot] Monthly wireless report (Apr 2024)
-From: syzbot <syzbot+list390ce5482b806d5e0aeb@syzkaller.appspotmail.com>
-To: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+References: <20240306-wcn3990-firmware-path-v2-0-f89e98e71a57@linaro.org>
+ <87plw7hgt4.fsf@kernel.org> <CAA8EJpr6fRfY5pNz6cXVTaNashqffy5_qLv9c35nkgjaDuSgyQ@mail.gmail.com>
+ <87cys7hard.fsf@kernel.org> <CAA8EJpowyEEbXQ4YK-GQ63wZSkJDy04qJsC2uuYCXt+aJ1HSOQ@mail.gmail.com>
+ <87v85wg39y.fsf@kernel.org> <CAA8EJpq_XLUEMC67ck2tZRjqS0PazCkQWWMGmwydeWxTETHwcg@mail.gmail.com>
+ <871q7k3tnq.fsf@kernel.org> <CAA8EJppASEmj6-Jt7OCABAeqr8umSgXaDDha9nn2nRafuZ-Gvw@mail.gmail.com>
+ <87sf002d8d.fsf@kernel.org>
+In-Reply-To: <87sf002d8d.fsf@kernel.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Fri, 5 Apr 2024 15:49:48 +0300
+Message-ID: <CAA8EJpp4J4b1mpkkeVCsnjVw83E7jmu+3yHActTNEeGcOKHPrQ@mail.gmail.com>
+Subject: Re: [PATCH RFC v2 0/4] wifi: ath10k: support board-specific firmware overrides
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
+	ath10k@lists.infradead.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 
-Hello wireless maintainers/developers,
+On Fri, 5 Apr 2024 at 15:41, Kalle Valo <kvalo@kernel.org> wrote:
+>
+> Dmitry Baryshkov <dmitry.baryshkov@linaro.org> writes:
+>
+> > On Fri, 5 Apr 2024 at 15:01, Kalle Valo <kvalo@kernel.org> wrote:
+> >
+> >>
+> >> Dmitry Baryshkov <dmitry.baryshkov@linaro.org> writes:
+> >>
+> >> > On Fri, 8 Mar 2024 at 17:19, Kalle Valo <kvalo@kernel.org> wrote:
+> >> >>
+> >> >> Dmitry Baryshkov <dmitry.baryshkov@linaro.org> writes:
+> >> >>
+> >> >> >> To be on the safe side using 'qcom-rb1' makes sense but on the other
+> >> >> >> hand that means we need to update linux-firmware (basically add a new
+> >> >> >> symlink) everytime a new product is added. But are there going to be
+> >> >> >> that many new ath10k based products?
+> >> >> >>
+> >> >> >> Using 'qcm2290' is easier because for a new product then there only
+> >> >> >> needs to be a change in DTS and no need to change anything
+> >> >> >> linux-firmware. But here the risk is that if there's actually two
+> >> >> >> different ath10k firmware branches for 'qcm2290'. If that ever happens
+> >> >> >> (I hope not) I guess we could solve that by adding new 'qcm2290-foo'
+> >> >> >> directory?
+> >> >> >>
+> >> >> >> But I don't really know, thoughts?
+> >> >> >
+> >> >> > After some thought, I'd suggest to follow approach taken by the rest
+> >> >> > of qcom firmware:
+> >> >>
+> >> >> Can you provide pointers to those cases?
+> >> >
+> >> > https://gitlab.com/kernel-firmware/linux-firmware/-/tree/main/qcom/sc8280xp/LENOVO/21BX
+> >> >
+> >> >>
+> >> >> > put a default (accepted by non-secured hardware) firmware to SoC dir
+> >> >> > and then put a vendor-specific firmware into subdir. If any of such
+> >> >> > vendors appear, we might even implement structural fallback: first
+> >> >> > look into sdm845/Google/blueline, then in sdm845/Google, sdm845/ and
+> >> >> > finally just under hw1.0.
+> >> >>
+> >> >> Honestly that looks quite compilicated compared to having just one
+> >> >> sub-directory. How will ath10k find the directory names (or I vendor and
+> >> >> model names) like 'Google' or 'blueline' in this example?
+> >> >
+> >> > I was thinking about the firmware-name = "sdm845/Google/blueline". But
+> >> > this can be really simpler, firmware-name = "blueline" or
+> >> > "sdm845/blueline" with no need for fallbacks.
+> >>
+> >> I have been also thinking about this and I would prefer not to have the
+> >> fallbacks. But good if you agree with that.
+> >>
+> >> IMHO just "sdm845-blueline" would be the most simple. I don't see the
+> >> point of having a directory structure when there are not that many
+> >> directories really. But this is just cosmetics.
+> >
+> > It is "not many directories" if we are thinking about the
+> > linux-firmware or open devices. But once embedded distros start
+> > picking this up for the supported devices, this can quickly become a
+> > nuisance.
+>
+> Ok. Just out of curiosity, any ideas how many devices/products are there
+> with wcn3990 who want to use ath10k?
 
-This is a 31-day syzbot report for the wireless subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/wireless
+Just for the DT in mainline I can count about 30 devices that have
+ath10k WiFi node:
 
-During the period, 5 new issues were detected and 0 were fixed.
-In total, 31 issues are still open and 122 have been fixed so far.
+arch/arm64/boot/dts/qcom/msm8998-clamshell.dtsi:&wifi {
+arch/arm64/boot/dts/qcom/msm8998-fxtec-pro1.dts:&wifi {
+arch/arm64/boot/dts/qcom/msm8998-mtp.dts:&wifi {
+arch/arm64/boot/dts/qcom/msm8998-oneplus-common.dtsi:&wifi {
+arch/arm64/boot/dts/qcom/msm8998-xiaomi-sagit.dts:&wifi {
+arch/arm64/boot/dts/qcom/qcs404-evb.dtsi:&wifi {
+arch/arm64/boot/dts/qcom/sc7180-acer-aspire1.dts:&wifi {
+arch/arm64/boot/dts/qcom/sc7180-idp.dts:&wifi {
+arch/arm64/boot/dts/qcom/sc7180-trogdor.dtsi:&wifi {
+arch/arm64/boot/dts/qcom/sc7180-trogdor-homestar.dtsi:&wifi {
+arch/arm64/boot/dts/qcom/sc7180-trogdor-kingoftown.dts:&wifi {
+arch/arm64/boot/dts/qcom/sc7180-trogdor-lazor.dtsi:&wifi {
+arch/arm64/boot/dts/qcom/sc7180-trogdor-pazquel360.dtsi:&wifi {
+arch/arm64/boot/dts/qcom/sc7180-trogdor-pompom.dtsi:&wifi {
+arch/arm64/boot/dts/qcom/sc7180-trogdor-wormdingler.dtsi:&wifi {
+arch/arm64/boot/dts/qcom/sc8180x-lenovo-flex-5g.dts:&wifi {
+arch/arm64/boot/dts/qcom/sc8180x-primus.dts:&wifi {
+arch/arm64/boot/dts/qcom/sdm845-cheza.dtsi:&wifi {
+arch/arm64/boot/dts/qcom/sdm845-db845c.dts:&wifi {
+arch/arm64/boot/dts/qcom/sdm845-mtp.dts:&wifi {
+arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi:&wifi {
+arch/arm64/boot/dts/qcom/sdm845-samsung-starqltechn.dts:&wifi {
+arch/arm64/boot/dts/qcom/sdm845-shift-axolotl.dts:&wifi {
+arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi:&wifi {
+arch/arm64/boot/dts/qcom/sdm845-xiaomi-polaris.dts:&wifi {
+arch/arm64/boot/dts/qcom/sm6375-sony-xperia-murray-pdx225.dts:&wifi {
+arch/arm64/boot/dts/qcom/sm8150-microsoft-surface-duo.dts:&wifi {
+arch/arm64/boot/dts/qcom/sm8150-mtp.dts:&wifi {
+arch/arm64/boot/dts/qcom/qrb2210-rb1.dts:&wifi {
+arch/arm64/boot/dts/qcom/qrb4210-rb2.dts:&wifi {
 
-Some of the still happening issues:
-
-Ref  Crashes Repro Title
-<1>  7813    Yes   WARNING in ieee80211_link_info_change_notify (2)
-                   https://syzkaller.appspot.com/bug?extid=de87c09cc7b964ea2e23
-<2>  7129    Yes   WARNING in __ieee80211_beacon_get
-                   https://syzkaller.appspot.com/bug?extid=18c783c5cf6a781e3e2c
-<3>  4419    Yes   WARNING in __cfg80211_ibss_joined (2)
-                   https://syzkaller.appspot.com/bug?extid=7f064ba1704c2466e36d
-<4>  925     No    INFO: task hung in ath9k_hif_usb_firmware_cb (2)
-                   https://syzkaller.appspot.com/bug?extid=d5635158fb0281b27bff
-<5>  862     Yes   WARNING in ar5523_submit_rx_cmd/usb_submit_urb
-                   https://syzkaller.appspot.com/bug?extid=6101b0c732dea13ea55b
-<6>  761     Yes   WARNING in ieee80211_start_next_roc
-                   https://syzkaller.appspot.com/bug?extid=c3a167b5615df4ccd7fb
-<7>  47      Yes   WARNING in carl9170_usb_submit_cmd_urb/usb_submit_urb
-                   https://syzkaller.appspot.com/bug?extid=9468df99cb63a4a4c4e1
-<8>  39      Yes   WARNING in ar5523_cmd/usb_submit_urb
-                   https://syzkaller.appspot.com/bug?extid=1bc2c2afd44f820a669f
-<9>  7       Yes   INFO: task hung in reg_process_self_managed_hints
-                   https://syzkaller.appspot.com/bug?extid=1f16507d9ec05f64210a
-<10> 6       Yes   WARNING in drv_remove_interface
-                   https://syzkaller.appspot.com/bug?extid=2e5c1e55b9e5c28a3da7
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
-
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
+The list doesn't include e.g. PIxel 2-3-4-5 or some other phones which
+are still on their way for the proper mainline support.
+--
+With best wishes
+Dmitry
 
