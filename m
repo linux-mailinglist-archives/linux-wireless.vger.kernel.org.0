@@ -1,146 +1,113 @@
-Return-Path: <linux-wireless+bounces-5903-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5904-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8224F899D3C
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Apr 2024 14:41:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F4042899D77
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Apr 2024 14:46:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 227CC1F23599
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Apr 2024 12:41:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 311541C223B1
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Apr 2024 12:46:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE7D16ABDE;
-	Fri,  5 Apr 2024 12:41:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pFHM2C2G"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E21D216D318;
+	Fri,  5 Apr 2024 12:46:22 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f70.google.com (mail-io1-f70.google.com [209.85.166.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C270328DB;
-	Fri,  5 Apr 2024 12:41:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5657A13C673
+	for <linux-wireless@vger.kernel.org>; Fri,  5 Apr 2024 12:46:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712320904; cv=none; b=HgsQ0EeA9g2rCOpJlnq6yM+NzOyBgjXmnMJPWHqPPwpUHkq/gbjmeUj/895SgKLvQzsTjNdG9qb0L1A/7eI3StwzpF5E3a/Cah3DlfnebSF7M5JhJUOPa2xAHRd1CPKBu4fJEI8yNFoRi0w1NJvh+hyMxUcfyyOyJlPmb6Jkc2E=
+	t=1712321182; cv=none; b=jsaBgr1zpZtvDGZ4aJfEvRALTZuHe8bLvJZXO79L0GJToikJ0mWiA4/zCN67RJHEuO2cR/u2kxJKTDq4DIrqM8e/sdoh2bulhvD4wp/Z8hbsrgLW6qUkd6sDMwfzhQfNfW2PoQJLZgIrokgCrKwzKo1D/6No8eUvaXc+9gTdTnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712320904; c=relaxed/simple;
-	bh=XstQV4I3hA64wkJdbVIzI8G3hTpnTOdEI888VqMr7I4=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=RKmpB9TDOOPvnKRwSFD/b4n2ohnB+5AUgP64dtJ3e5/OCRQIw2fBukUOyNY661e1G+NHnFXjBOZ/kCU7A5q9kTierD8PYeTgKCecPIPhuVb2VHlLTcO4kP4Kwjl2gJc8i5hfg+gEsarvli2pKg+nCq9jhCirTvhI1WfkYEqpG+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pFHM2C2G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 366B1C433F1;
-	Fri,  5 Apr 2024 12:41:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712320903;
-	bh=XstQV4I3hA64wkJdbVIzI8G3hTpnTOdEI888VqMr7I4=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=pFHM2C2GbsBvF2xfSpXbDbaeeEthKyyQgnk3Sh1pD+g7kaPMyMOdDsUUKD8nhM5ei
-	 b2Wrjp9NU01rX5iBliGumbHoX/2Uas8in0Of+sBK9wmOIK9ItUsc+0xeoYjiAFLC+M
-	 3RTH2EaieomEgwH69yqkFwNxh3zfPfohpjhKZbSQMLF6eseattZCeR8jxqDjXwmJk0
-	 DjsaoTkLKvG6tEvkbIOhvjBZzMqATIKYE0HqU1SIThb3v8zBpyiox4mz8CQ4rsGvnQ
-	 34zZP9u3HcKyKiw6J3e3nHKstbXuWjqfbR/b5w4viCAk65sw5lYGu+5wfYmy9We2Fu
-	 /hFNursI5SIog==
-From: Kalle Valo <kvalo@kernel.org>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,  "David S. Miller"
- <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
- Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,  Rob Herring
- <robh+dt@kernel.org>,  Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>,  Conor Dooley <conor+dt@kernel.org>,
-  Bjorn Andersson <andersson@kernel.org>,  Konrad Dybcio
- <konrad.dybcio@linaro.org>,  ath10k@lists.infradead.org,
-  linux-wireless@vger.kernel.org,  netdev@vger.kernel.org,
-  devicetree@vger.kernel.org,  linux-arm-msm@vger.kernel.org,  Krzysztof
- Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH RFC v2 0/4] wifi: ath10k: support board-specific
- firmware overrides
-References: <20240306-wcn3990-firmware-path-v2-0-f89e98e71a57@linaro.org>
-	<87plw7hgt4.fsf@kernel.org>
-	<CAA8EJpr6fRfY5pNz6cXVTaNashqffy5_qLv9c35nkgjaDuSgyQ@mail.gmail.com>
-	<87cys7hard.fsf@kernel.org>
-	<CAA8EJpowyEEbXQ4YK-GQ63wZSkJDy04qJsC2uuYCXt+aJ1HSOQ@mail.gmail.com>
-	<87v85wg39y.fsf@kernel.org>
-	<CAA8EJpq_XLUEMC67ck2tZRjqS0PazCkQWWMGmwydeWxTETHwcg@mail.gmail.com>
-	<871q7k3tnq.fsf@kernel.org>
-	<CAA8EJppASEmj6-Jt7OCABAeqr8umSgXaDDha9nn2nRafuZ-Gvw@mail.gmail.com>
-Date: Fri, 05 Apr 2024 15:41:38 +0300
-In-Reply-To: <CAA8EJppASEmj6-Jt7OCABAeqr8umSgXaDDha9nn2nRafuZ-Gvw@mail.gmail.com>
-	(Dmitry Baryshkov's message of "Fri, 5 Apr 2024 15:34:29 +0300")
-Message-ID: <87sf002d8d.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1712321182; c=relaxed/simple;
+	bh=WRsBuSjHUzTQxBfLyZla+hkSSKIsEqFIsaME6OB+fEo=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=YtwE9EVVQVDYk41p4r4l6ZRtu0WsTIObDvfXfdLpEf/BbFeXbpOjjjJFxVQKa077vJTOa3av1+jaOBi2jW9bboeUa10o1NCGAkg+WiNTUv0GvhrUjkjVJcBPip7Q/DtGFwjqvkmrjOUukgayuY8+rMJ/FRRSg2QZcXSvAoMBpVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f70.google.com with SMTP id ca18e2360f4ac-7cc764c885bso233752039f.3
+        for <linux-wireless@vger.kernel.org>; Fri, 05 Apr 2024 05:46:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712321180; x=1712925980;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=12OUjT4o2BmUoPYzd0RNRensS2gycfoa6iSCUdJDBjA=;
+        b=ncwkv+H5amFSj7SlCgcb/aQlW1cMCvJWTydvoXt3+dRiavLuC6fDmA4rohdXwlZewX
+         hPqZ8bu2SgM5EBHvS5Sv0Dv6rZiGyOC15gW+Bbe/lUWhCVq06PCoOKAOFznnwsKD8ndU
+         HZFL3t8IFO7N9Mq1BkwUQEzmmTZY5v9mggtJeq0oGTzJEOunzsFiWETkzg6VAqalI9wN
+         1nlEvs/3feY/99714gnTO7EgmzQuhzYrRccaKqVF+YmbJ3BUF80nJrHe0ZYsIpCA+fys
+         tT0djCaRpfnpqksZe6WYZjp8VT5CNJfl+S37dEPX5Wyyctf+l3zkSg7Zw4y+xs3cEygF
+         /LNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVjG16RyGNzHq6cbmyhOOqPOum2+Uwc/93QnBbBAMdau2f4ePgudESDDQ7d9xHFw1cGsbXU0t2Z/1d/VquXgiJi6NX61700Dan4MW8fYB8=
+X-Gm-Message-State: AOJu0Yxs/CdkMULbFNQx05ztuGrDqkgd35fCtS+tlNwZSGvfCBt81fyP
+	0KQ/eTr/YWxBZOhaqa8xcPdAsK029Hh97jQylDPCEHTPDmdecZQezISS7pCsS7D/49V6ymgQiPv
+	6tS2A+mVkYBix8jvL4KFdJnu3F6/i9XJP0G6/Co9XbQ4xOgNVj3mMzP0=
+X-Google-Smtp-Source: AGHT+IHUSX+UTWlSb1AR/cJOIfpFBOJBQ8I/qjxG90HqOzL/9/H8NsvcgYdPdnTHg42wBEgpmd6txjF7jo0+6QOsy/mwLPFP5/lx
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-Received: by 2002:a05:6602:27c7:b0:7cc:342:72f9 with SMTP id
+ l7-20020a05660227c700b007cc034272f9mr29400ios.2.1712321180474; Fri, 05 Apr
+ 2024 05:46:20 -0700 (PDT)
+Date: Fri, 05 Apr 2024 05:46:20 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000b4284f061558d73c@google.com>
+Subject: [syzbot] Monthly wireless report (Apr 2024)
+From: syzbot <syzbot+list390ce5482b806d5e0aeb@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Dmitry Baryshkov <dmitry.baryshkov@linaro.org> writes:
+Hello wireless maintainers/developers,
 
-> On Fri, 5 Apr 2024 at 15:01, Kalle Valo <kvalo@kernel.org> wrote:
->
->>
->> Dmitry Baryshkov <dmitry.baryshkov@linaro.org> writes:
->>
->> > On Fri, 8 Mar 2024 at 17:19, Kalle Valo <kvalo@kernel.org> wrote:
->> >>
->> >> Dmitry Baryshkov <dmitry.baryshkov@linaro.org> writes:
->> >>
->> >> >> To be on the safe side using 'qcom-rb1' makes sense but on the other
->> >> >> hand that means we need to update linux-firmware (basically add a new
->> >> >> symlink) everytime a new product is added. But are there going to be
->> >> >> that many new ath10k based products?
->> >> >>
->> >> >> Using 'qcm2290' is easier because for a new product then there only
->> >> >> needs to be a change in DTS and no need to change anything
->> >> >> linux-firmware. But here the risk is that if there's actually two
->> >> >> different ath10k firmware branches for 'qcm2290'. If that ever happens
->> >> >> (I hope not) I guess we could solve that by adding new 'qcm2290-foo'
->> >> >> directory?
->> >> >>
->> >> >> But I don't really know, thoughts?
->> >> >
->> >> > After some thought, I'd suggest to follow approach taken by the rest
->> >> > of qcom firmware:
->> >>
->> >> Can you provide pointers to those cases?
->> >
->> > https://gitlab.com/kernel-firmware/linux-firmware/-/tree/main/qcom/sc8280xp/LENOVO/21BX
->> >
->> >>
->> >> > put a default (accepted by non-secured hardware) firmware to SoC dir
->> >> > and then put a vendor-specific firmware into subdir. If any of such
->> >> > vendors appear, we might even implement structural fallback: first
->> >> > look into sdm845/Google/blueline, then in sdm845/Google, sdm845/ and
->> >> > finally just under hw1.0.
->> >>
->> >> Honestly that looks quite compilicated compared to having just one
->> >> sub-directory. How will ath10k find the directory names (or I vendor and
->> >> model names) like 'Google' or 'blueline' in this example?
->> >
->> > I was thinking about the firmware-name = "sdm845/Google/blueline". But
->> > this can be really simpler, firmware-name = "blueline" or
->> > "sdm845/blueline" with no need for fallbacks.
->>
->> I have been also thinking about this and I would prefer not to have the
->> fallbacks. But good if you agree with that.
->>
->> IMHO just "sdm845-blueline" would be the most simple. I don't see the
->> point of having a directory structure when there are not that many
->> directories really. But this is just cosmetics.
->
-> It is "not many directories" if we are thinking about the
-> linux-firmware or open devices. But once embedded distros start
-> picking this up for the supported devices, this can quickly become a
-> nuisance.
+This is a 31-day syzbot report for the wireless subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/wireless
 
-Ok. Just out of curiosity, any ideas how many devices/products are there
-with wcn3990 who want to use ath10k?
+During the period, 5 new issues were detected and 0 were fixed.
+In total, 31 issues are still open and 122 have been fixed so far.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Some of the still happening issues:
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Ref  Crashes Repro Title
+<1>  7813    Yes   WARNING in ieee80211_link_info_change_notify (2)
+                   https://syzkaller.appspot.com/bug?extid=de87c09cc7b964ea2e23
+<2>  7129    Yes   WARNING in __ieee80211_beacon_get
+                   https://syzkaller.appspot.com/bug?extid=18c783c5cf6a781e3e2c
+<3>  4419    Yes   WARNING in __cfg80211_ibss_joined (2)
+                   https://syzkaller.appspot.com/bug?extid=7f064ba1704c2466e36d
+<4>  925     No    INFO: task hung in ath9k_hif_usb_firmware_cb (2)
+                   https://syzkaller.appspot.com/bug?extid=d5635158fb0281b27bff
+<5>  862     Yes   WARNING in ar5523_submit_rx_cmd/usb_submit_urb
+                   https://syzkaller.appspot.com/bug?extid=6101b0c732dea13ea55b
+<6>  761     Yes   WARNING in ieee80211_start_next_roc
+                   https://syzkaller.appspot.com/bug?extid=c3a167b5615df4ccd7fb
+<7>  47      Yes   WARNING in carl9170_usb_submit_cmd_urb/usb_submit_urb
+                   https://syzkaller.appspot.com/bug?extid=9468df99cb63a4a4c4e1
+<8>  39      Yes   WARNING in ar5523_cmd/usb_submit_urb
+                   https://syzkaller.appspot.com/bug?extid=1bc2c2afd44f820a669f
+<9>  7       Yes   INFO: task hung in reg_process_self_managed_hints
+                   https://syzkaller.appspot.com/bug?extid=1f16507d9ec05f64210a
+<10> 6       Yes   WARNING in drv_remove_interface
+                   https://syzkaller.appspot.com/bug?extid=2e5c1e55b9e5c28a3da7
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
+
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
 
