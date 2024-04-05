@@ -1,100 +1,102 @@
-Return-Path: <linux-wireless+bounces-5915-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5914-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16EDD89A155
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Apr 2024 17:36:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D338A89A153
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Apr 2024 17:36:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9CC53B221C5
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Apr 2024 15:36:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7233D1F21C68
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Apr 2024 15:36:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F27C16F90D;
-	Fri,  5 Apr 2024 15:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8569616F8F7;
+	Fri,  5 Apr 2024 15:36:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="oz/D2npm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from tretyak2.mcst.ru (tretyak2.mcst.ru [212.5.119.215])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFAAA16F90E;
-	Fri,  5 Apr 2024 15:36:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.5.119.215
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4E416F912
+	for <linux-wireless@vger.kernel.org>; Fri,  5 Apr 2024 15:36:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712331400; cv=none; b=AtMaJVT+CVZ3fM19YGG2E4GPHSYyEh73mLzXinuBjxyKSa//8NWc96zAAW3epPp1o+fehzZSER39LaZWeNZY8SHJSbtf8M3KcutCOlrVCBcWYNtdhQnKRM2o5hZfobxwPN7Yg21iR795VXO0n7IEym2h0ZcMBYqx/U9Au9tOL4M=
+	t=1712331381; cv=none; b=u8Xd07oQ1lL3al+mF+wVjBmPR7OElFL6IC0856aymQ4y+NiuR0IHTKcEzngQJTFcfuxYLyXZoSHfP67qOKq5P3rJv+GIYQI8YlAtwUDL4EFBcJtWvArdFyArmRDh0e4E0ioaPR5sle2GErV3ubTn4Qh8fj3h4Uk6WdzfaOZbaqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712331400; c=relaxed/simple;
-	bh=zHcMHKvPO78NbKWFx4WJtT4MssjLzx3ZxNF75dmvbvc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=g93ZzVx3aUTad9ci3pDWw0sJ7Nlxi/7oGb3qiMh2yKbPZDDES1wvpSXEX90n4UktB1uAsSWkPHV0iLuUaRD0D21hHEeDgHdW2k3fcBeupK9n2+ZKk6hFL5Z4XXXZWkZJmQ5qUB49FgkY/kPJlpztGsvHzbvew98WevrY6Jjei4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mcst.ru; spf=pass smtp.mailfrom=mcst.ru; arc=none smtp.client-ip=212.5.119.215
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mcst.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mcst.ru
-Received: from tretyak2.mcst.ru (localhost [127.0.0.1])
-	by tretyak2.mcst.ru (Postfix) with ESMTP id 42140102397;
-	Fri,  5 Apr 2024 18:28:28 +0300 (MSK)
-Received: from frog.lab.sun.mcst.ru (frog.lab.sun.mcst.ru [176.16.4.50])
-	by tretyak2.mcst.ru (Postfix) with ESMTP id 381C9102398;
-	Fri,  5 Apr 2024 18:27:43 +0300 (MSK)
-Received: from artemiev-i.lab.sun.mcst.ru (avior-1 [192.168.63.223])
-	by frog.lab.sun.mcst.ru (8.13.4/8.12.11) with ESMTP id 435FRgqo010337;
-	Fri, 5 Apr 2024 18:27:42 +0300
-From: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Igor Artemiev <Igor.A.Artemiev@mcst.ru>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        lvc-project@linuxtesting.org
-Subject: [lvc-project] [PATCH] wifi: cfg80211: fix the order of arguments for trace events of the tx_rx_evt class
-Date: Fri,  5 Apr 2024 18:24:30 +0300
-Message-Id: <20240405152431.270267-1-Igor.A.Artemiev@mcst.ru>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1712331381; c=relaxed/simple;
+	bh=fKp4kGWmhyXjUHBc89ffu8WE2eggiJqu+ruZMwmdwuc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=fDnDM7qtrJmRkhfO96J8sLw0rOSeR5tj+kEsHOzM3y6eplQ2zPyFNwzSz3wsZHbvJuF6xbwo2ojajveU23itLr8tTpBPeazj/v+n4TulXrpafcXHDaK6JwFvTrClWblyr6YIiOyi1M6Fh1dcoTX1SzdXytMv5wbKqNZwdENQ804=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=oz/D2npm; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4356PvTc016112;
+	Fri, 5 Apr 2024 15:36:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=DyzRcfosSoahMsC0CkfmLAxIcnCYww5lEesThVlWUjU=; b=oz
+	/D2npmusnI58wdAGIWIxeLmkksz8VKzCHrtzg+5ztpgNCaEm4tohXdbhJ5YKBums
+	RV/WQZBJLjYo8luMdk2GXOwFTRtk2JCYer3048FF1kf26yOM4sJRb7Mk1tv/6vLb
+	8fbALlVNhZ8z6+bFrhsiHChbh8xQQMc/ElXLTjBSs0txpcXWW/oZjxu185ABjmom
+	utm6PDJ03u7fyAAJYZYOvon/P86qQQtGQ/mQemhhR5OsLZJDgltMhpGUfR1SwBvs
+	wE+wdoajtIj9U4TN7iREi3KsllM6JOM2Z68uuDbikZ5usowiB99sDq+x3nXUEVPl
+	xhUWno/0eedWS2QBWtPw==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xa8fc1juw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Apr 2024 15:36:09 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 435Fa8Pa003036
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 5 Apr 2024 15:36:08 GMT
+Received: from [10.110.127.230] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Fri, 5 Apr 2024
+ 08:36:08 -0700
+Message-ID: <19570dc2-1c39-4407-93b4-87ed2e355f85@quicinc.com>
+Date: Fri, 5 Apr 2024 08:36:07 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.39/RELEASE,
-	 bases: 20111107 #2745587, check: 20240405 notchecked
-X-AV-Checked: ClamAV using ClamSMTP
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 00/12] wifi: ath12k: Add single wiphy suppor
+Content-Language: en-US
+To: Rameshkumar Sundaram <quic_ramess@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, Sriram R <quic_srirrama@quicinc.com>
+References: <20240401190409.2461819-1-quic_ramess@quicinc.com>
+ <0d1058eb-aced-4e81-9f61-e4b5a08c04a2@quicinc.com>
+ <bdf7abad-3d13-4085-8e75-c0d5ff4b41db@quicinc.com>
+ <65e994e1-8da9-470f-9b1e-b2db20974b2d@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <65e994e1-8da9-470f-9b1e-b2db20974b2d@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: aeBcD5RnnFpoJSdPcJWaPTD3kzPp23U3
+X-Proofpoint-ORIG-GUID: aeBcD5RnnFpoJSdPcJWaPTD3kzPp23U3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-05_16,2024-04-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
+ malwarescore=0 mlxlogscore=677 bulkscore=0 suspectscore=0 clxscore=1015
+ priorityscore=1501 adultscore=0 phishscore=0 impostorscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2404010003
+ definitions=main-2404050112
 
-The declarations of the tx_rx_evt class and the rdev_set_antenna event
-use the wrong order of arguments in the TP_ARGS macro.
+On 4/4/2024 7:12 PM, Rameshkumar Sundaram wrote:
+> Hi Jeff,
+> Planning to re-spin v7 to address comments on PATCH 07/12, do you have 
+> anymore comments on the commit text or other patches ?
 
-Fix the order of arguments in the TP_ARGS macro.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
----
- net/wireless/trace.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-index cbbf347c6b2e..df013c98b80d 100644
---- a/net/wireless/trace.h
-+++ b/net/wireless/trace.h
-@@ -1758,7 +1758,7 @@ TRACE_EVENT(rdev_return_void_tx_rx,
- 
- DECLARE_EVENT_CLASS(tx_rx_evt,
- 	TP_PROTO(struct wiphy *wiphy, u32 tx, u32 rx),
--	TP_ARGS(wiphy, rx, tx),
-+	TP_ARGS(wiphy, tx, rx),
- 	TP_STRUCT__entry(
- 		WIPHY_ENTRY
- 		__field(u32, tx)
-@@ -1775,7 +1775,7 @@ DECLARE_EVENT_CLASS(tx_rx_evt,
- 
- DEFINE_EVENT(tx_rx_evt, rdev_set_antenna,
- 	TP_PROTO(struct wiphy *wiphy, u32 tx, u32 rx),
--	TP_ARGS(wiphy, rx, tx)
-+	TP_ARGS(wiphy, tx, rx)
- );
- 
- DECLARE_EVENT_CLASS(wiphy_netdev_id_evt,
--- 
-2.39.2
-
+no, i don't have any additional comments, at least not at this time ;)
 
