@@ -1,66 +1,66 @@
-Return-Path: <linux-wireless+bounces-5947-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5948-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B604389B19D
-	for <lists+linux-wireless@lfdr.de>; Sun,  7 Apr 2024 15:27:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 738D989B1CA
+	for <lists+linux-wireless@lfdr.de>; Sun,  7 Apr 2024 15:31:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62C341F2245C
-	for <lists+linux-wireless@lfdr.de>; Sun,  7 Apr 2024 13:27:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAFDBB21F41
+	for <lists+linux-wireless@lfdr.de>; Sun,  7 Apr 2024 13:31:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8AD781728;
-	Sun,  7 Apr 2024 13:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9CCD12E1D2;
+	Sun,  7 Apr 2024 13:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NqKPLFed"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="To4kqDTN"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE81381720;
-	Sun,  7 Apr 2024 13:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E42412E1C6;
+	Sun,  7 Apr 2024 13:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712495573; cv=none; b=KvlVpnCIg+6Fqx5D7gCID2FGbpp30BllpWWBu+6JtIvqtrgXctp5Bkp2WjYLxa/05We14sgExq2FiHsBl7NfR5asTZ9ideESrs8sYzvd18q4tp8MM+UhD5eY1Muza2j9p2CGvNjBbEUbLDNeLF2yc3N/KuAjoqFvMDEw8gW62/4=
+	t=1712495605; cv=none; b=Ot9d2qcWy16aF5Q1a8hSbBQC5PWO0uko2GRjCr6gDJiJO2frT+x1Yw04bLZ6mnC9evWedviao0KeMBAV3J1y8CoCTmgJMLpXJUm5gZxGUwt7o6f4MrFgkoJq0WYzx7BJmkPMZ1JvlRYfdBbnQfyR1J6p9Xldf1xTWbWQOAkPdQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712495573; c=relaxed/simple;
-	bh=Wp16SEaUqiBlbRrODh8PW9//FIKwbH4jF5nuV2QQ+q4=;
+	s=arc-20240116; t=1712495605; c=relaxed/simple;
+	bh=64vWe5CBIQmeZPfSYXbVoTRfmze5W6UKNJFOeHC74UU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aXoq7y6HKIiw3wJAwinOtnewT4pXqXaQQz1pH8wsbJEg1H3qARJOLMmnXHUZdS/mMUIa2yQ18xZzy98yn4wwop+JOX8MaYtY3RHHzEcKGSDn+WEyA52bKUm1r6ZerwxPpZqGF+eOFVgiHCiRCJ+pEa2Ub6dWyHc8yjaJ5XqWq5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NqKPLFed; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E15A8C43394;
-	Sun,  7 Apr 2024 13:12:51 +0000 (UTC)
+	 MIME-Version; b=KT0zKmEousjPxs94DF4rLzSh7quwXON0XChlD7Hk4vVfgf8gQrOeuoTsd713Mmev0T1e7S0eoelOqJYjxlTByelEPgGrgXhqPyHm6Bs8Dmr7eaUO5xhO7GK9tezj66LlGqIjujzoBMpGCNFATF3TOyvVEY81aXl6hFo9qYL+Vqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=To4kqDTN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F4D1C433F1;
+	Sun,  7 Apr 2024 13:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712495573;
-	bh=Wp16SEaUqiBlbRrODh8PW9//FIKwbH4jF5nuV2QQ+q4=;
+	s=k20201202; t=1712495605;
+	bh=64vWe5CBIQmeZPfSYXbVoTRfmze5W6UKNJFOeHC74UU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NqKPLFedaTab7X7A6S5rCuUBGVZfz4CpABx9VMfR6qQh4d+cpOPMrdwQxk0ooUEbL
-	 qBY+HbhKI864g+FZxpBZfZxQcLLeX9EBAeVTCTFvYaujV9kQZ44OhSoMVAig5i4MZo
-	 ACkpttIy19MaoJ6eFpoYeDRDUdSzl4RvyuaV6v7fVAMF1gjNg0hqPbQWYnM3zx5rNw
-	 Gdd5+bZGikkBCxCsgBmyiiEAC9yae97yVNQb85rdIWSQvg/WqDLFlCoZIhIQYMMZuk
-	 xAaZpwktvGEN2gAygmKLYj3IywO8Y9xpOlVskGUEzB0iCQufvvdabKXH9D1//FyaGS
-	 FlyBzDGlZ9Iww==
+	b=To4kqDTNAetP+9w/PMcXDC8FW6it97+WY4ztWfMvJADctRBgFSMb63xFS+mfgMNcQ
+	 lwrvjCFXoxmJfm0ZJEKKrnbhaFC84skldSVH5xQGrltbVk1Nv89JhsEVJIUTs3jVkw
+	 SWdiac5O3adiC5q3vV7cLMxBVsHHz5onF400WhBI3BKya8z2ZK5p5zedgG6bMmD6UU
+	 psQy8nVg2HI122W3IRkSb/qrevcz3oC7QjcUiIVTOmcCpxolu8TdJlUXK0a5WzfOOz
+	 qDKlSl20L0K+ztFkEgmKGyYe1XJt0biDhaRgSUtV2GorUciMq30rScESMmqTPXmcrN
+	 CkXCWJTFWdBiw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Benjamin Berg <benjamin.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Simon Horman <horms@kernel.org>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	gregory.greenman@intel.com,
-	emmanuel.grumbach@intel.com,
-	avraham.stern@intel.com,
-	dan.carpenter@linaro.org,
-	mukesh.sisodiya@intel.com,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 13/22] wifi: iwlwifi: mvm: guard against invalid STA ID on removal
-Date: Sun,  7 Apr 2024 09:12:12 -0400
-Message-ID: <20240407131231.1051652-13-sashal@kernel.org>
+	johannes@sipsolutions.net,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 06/13] wifi: mac80211: fix ieee80211_bss_*_flags kernel-doc
+Date: Sun,  7 Apr 2024 09:13:05 -0400
+Message-ID: <20240407131316.1052393-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240407131231.1051652-1-sashal@kernel.org>
-References: <20240407131231.1051652-1-sashal@kernel.org>
+In-Reply-To: <20240407131316.1052393-1-sashal@kernel.org>
+References: <20240407131316.1052393-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -69,47 +69,50 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.25
+X-stable-base: Linux 6.1.84
 Content-Transfer-Encoding: 8bit
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-[ Upstream commit 17f64517bf5c26af56b6c3566273aad6646c3c4f ]
+[ Upstream commit 774f8841f55d7ac4044c79812691649da203584a ]
 
-Guard against invalid station IDs in iwl_mvm_mld_rm_sta_id as that would
-result in out-of-bounds array accesses. This prevents issues should the
-driver get into a bad state during error handling.
+Running kernel-doc on ieee80211_i.h flagged the following:
+net/mac80211/ieee80211_i.h:145: warning: expecting prototype for enum ieee80211_corrupt_data_flags. Prototype was for enum ieee80211_bss_corrupt_data_flags instead
+net/mac80211/ieee80211_i.h:162: warning: expecting prototype for enum ieee80211_valid_data_flags. Prototype was for enum ieee80211_bss_valid_data_flags instead
 
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240320232419.d523167bda9c.I1cffd86363805bf86a95d8bdfd4b438bb54baddc@changeid
+Fix these warnings.
+
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://msgid.link/20240314-kdoc-ieee80211_i-v1-1-72b91b55b257@quicinc.com
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/mac80211/ieee80211_i.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-index 1ccbe8c1eeb42..278454c116fee 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-@@ -853,10 +853,15 @@ int iwl_mvm_mld_rm_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index d5dd2d9e89b48..3e14d5c9aa1b4 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -120,7 +120,7 @@ struct ieee80211_bss {
+ };
  
- int iwl_mvm_mld_rm_sta_id(struct iwl_mvm *mvm, u8 sta_id)
- {
--	int ret = iwl_mvm_mld_rm_sta_from_fw(mvm, sta_id);
-+	int ret;
+ /**
+- * enum ieee80211_corrupt_data_flags - BSS data corruption flags
++ * enum ieee80211_bss_corrupt_data_flags - BSS data corruption flags
+  * @IEEE80211_BSS_CORRUPT_BEACON: last beacon frame received was corrupted
+  * @IEEE80211_BSS_CORRUPT_PROBE_RESP: last probe response received was corrupted
+  *
+@@ -133,7 +133,7 @@ enum ieee80211_bss_corrupt_data_flags {
+ };
  
- 	lockdep_assert_held(&mvm->mutex);
- 
-+	if (WARN_ON(sta_id == IWL_MVM_INVALID_STA))
-+		return 0;
-+
-+	ret = iwl_mvm_mld_rm_sta_from_fw(mvm, sta_id);
-+
- 	RCU_INIT_POINTER(mvm->fw_id_to_mac_id[sta_id], NULL);
- 	RCU_INIT_POINTER(mvm->fw_id_to_link_sta[sta_id], NULL);
- 	return ret;
+ /**
+- * enum ieee80211_valid_data_flags - BSS valid data flags
++ * enum ieee80211_bss_valid_data_flags - BSS valid data flags
+  * @IEEE80211_BSS_VALID_WMM: WMM/UAPSD data was gathered from non-corrupt IE
+  * @IEEE80211_BSS_VALID_RATES: Supported rates were gathered from non-corrupt IE
+  * @IEEE80211_BSS_VALID_ERP: ERP flag was gathered from non-corrupt IE
 -- 
 2.43.0
 
