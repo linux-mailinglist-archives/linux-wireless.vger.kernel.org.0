@@ -1,232 +1,176 @@
-Return-Path: <linux-wireless+bounces-5969-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5970-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA0F689BA50
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Apr 2024 10:31:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AE5289BB14
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Apr 2024 11:01:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F5DA1F2270B
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Apr 2024 08:31:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A207B20C2C
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Apr 2024 09:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8E0538DF9;
-	Mon,  8 Apr 2024 08:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A37BC3A1D3;
+	Mon,  8 Apr 2024 09:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="d9/tD+iJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AX0zuTjn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE2F2E651
-	for <linux-wireless@vger.kernel.org>; Mon,  8 Apr 2024 08:31:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56B93A1B6
+	for <linux-wireless@vger.kernel.org>; Mon,  8 Apr 2024 09:01:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712565083; cv=none; b=XYE0Bfsbvaeq/TFlYdldULHf7hY7nkw4fT3zK3+GFtGxMRwHi/fZHxAo02iM70iPopq+9CTakvvKMcQznELFcOmR8NdlvgNNsc4MDx6jTjgq++PFiVBqbGmNPRCqaXbI/2MXhf1U8dEFjSwSlspRQnhydLTxOTCJgYQpxKGh/MY=
+	t=1712566891; cv=none; b=OqKE1YNnRYF4CKNB5qyRdRHiBYBqkmek5iiRDlv/Q09gBkOeOeGWdbdYS4pnLVcdSSqF51HyHNTev/s1rYcDxpQKdYEcHK8E8lac31AYjlBy4ePVvE40U15PbCT9PsVAl/etaNjAAGwW1zS5EvAOZkh+jJTgZXnqvypXzMWFVKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712565083; c=relaxed/simple;
-	bh=l5WyV53/kJV9P9N2IcvPRS05RENaWk98bz3Vxx7e+zQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eVSVA8UVXn//HRgb6h+19eZP4PZkCiG3ahIjJ3ae/GhpWDsH1gINiRxsTt7ZbulfZxCPUoXjMC+zLLh9wlQsY74RCU+MdKVuI5kktOevDXOE7FTTcrjJ0AXWYjAZAtOtMZ70a6RokLUoy78lg5rUfHniORj7u2poIL2Rw0Beljc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=d9/tD+iJ; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4386e2hL013278;
-	Mon, 8 Apr 2024 08:31:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding:content-type; s=qcppdkim1; bh=0MtRO1+
-	soqHxny4chjfSSFFBCIprjNXz7K3OWIW7yzs=; b=d9/tD+iJdxYAEB+7LQNjXH/
-	C4fc1UkLrTphAfR36s+bhyawHFJPCZrqFEmm/mCUo/2JFnxl6UJiGPjrfB0R68ma
-	Dq0Gtxd00FhBDl3h1f/hywjKQtLQVZ1pu0dFeEKD2Ew6iX6McdMBGQ5QEodj7BwU
-	d6qEutolX/5yC+jOEZpvXMhMTjwGLBYNSQ1s6BmG8iDTv1yvC93bNWXYe1jMzvC5
-	LueKcnvK+Q6giaUFLQfpfufPTiMjPdwhO0MQeZr28Fzp6WYkPVgBwL8B7eoo9MBo
-	d0j9pbNyW07/6+pL0GTIKSIzfQuOQgSPXf5RLlduic4fw7xBeMxYVmBEA9jJ7xw=
-	=
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xcbfyg6v0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Apr 2024 08:31:16 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4388VFZ3031992
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 8 Apr 2024 08:31:15 GMT
-Received: from Mayan.qca.qualcomm.com (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Mon, 8 Apr 2024 01:31:14 -0700
-From: Kang Yang <quic_kangyang@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, <quic_kangyang@quicinc.com>
-Subject: [PATCH v2] wifi: ath12k: dynamically update peer puncturing bitmap for STA
-Date: Mon, 8 Apr 2024 16:30:47 +0800
-Message-ID: <20240408083047.22548-1-quic_kangyang@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1712566891; c=relaxed/simple;
+	bh=lMM7lXU18SSdCllbPlmhKuC/zyOM3EncpM8CE02k78M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=USLLMWhdDX8t55FAQSgqH/LR9L7zzki5QnsacbRHVPf0Sp9EVEowQL1h9gsTC2qGqVn8QSpAPEvu51YF+WrxyjOSyhR7DLHuH66MPh46TDB5VzgxGw9Y4uMSD20lduayNTaLkru6RM9WlNBqb1C64mmxlBOSuIDHfgmNXYjwm5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AX0zuTjn; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-345e1c645c4so184890f8f.0
+        for <linux-wireless@vger.kernel.org>; Mon, 08 Apr 2024 02:01:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712566888; x=1713171688; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oBla0YTZhen5WbXxI3wT/JyTJNM41P97D7kc8E5jobM=;
+        b=AX0zuTjnHMKLc0F+2KiMmE9nINp9t8diidTcQQe5buAJe2vHOUNu0YZuORY66VT6lj
+         h4dWa3PMjHbpaSQo3t8jCni1P5DA8UAL3SjsWXg3gBpQlHLnytY4cjeCIZUS8qssskSE
+         ReeN/1z7E0LPUmnhrAJM+tHaRSI1v9mAVNwrjbboNNi16MMa41S1UQ1+/bs78XtD5HLw
+         WmkOXhJuMLmIXmBu/ZOAfClfnPOK8X0d8nSfSZ4Y+rwyrpdNLbepX0UyHUqI3kZACbMH
+         4jdyxSsH8MiyLkMyOMjjG+J9rBmYNdjT+Ll3c6e0XF1QmG4yAhPnOtOG8RFGmvKw6y/4
+         IWSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712566888; x=1713171688;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oBla0YTZhen5WbXxI3wT/JyTJNM41P97D7kc8E5jobM=;
+        b=kYWKF01CoTPSyYPbHpN60HbsOMjjVrApBQpX8pO9NasJq+FP02vzjf3jSZm0ByH9qv
+         GWF9hODU4KHhNIpnCu8NUWmcyb8J9zpYO8EnxKd2EPkw6cKKe0l7bFpdI4I6SuuwzjcL
+         Ulv/SuDKSYOLhwLK4ns9QXKz911IK3N9b6oIqp5KYgBQBg7GITqz7lad7++xul4E6YtR
+         0Xpf0gRfiXcAxhLLA2hXEtZ4o8DLktbW+E5mosw3xqZmLr+qhjxexGGPizjx314NV/mT
+         tO9rMMcJvfIChiBr2TMVQWgAPOYheP68dDtXF6Jo3tiS4alQOMBQYqNbmWfaZJfNR82J
+         /zaQ==
+X-Gm-Message-State: AOJu0YwIMqiQk4xDJs/s2cl6//1DD+Gz3KjkQe/qtMAEDPVQbgL7/nDb
+	tVekkxBjPsGgmf1RoxmwBHUuNuVLzNeRWLjEjbue6Z/5OQ6hsbzP
+X-Google-Smtp-Source: AGHT+IHi0fWKL1qBVYjNY2OTtV+Ih9z4yrK7XgW5DOiqbRf4CKe3j6tZSVuaCtLiJSInpxmNu8HfXg==
+X-Received: by 2002:a5d:4d85:0:b0:343:9308:3af8 with SMTP id b5-20020a5d4d85000000b0034393083af8mr4861244wru.23.1712566887944;
+        Mon, 08 Apr 2024 02:01:27 -0700 (PDT)
+Received: from [192.168.1.50] ([81.196.40.5])
+        by smtp.gmail.com with ESMTPSA id o16-20020a5d6710000000b00343956e8852sm8452312wru.42.2024.04.08.02.01.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Apr 2024 02:01:27 -0700 (PDT)
+Message-ID: <519e6717-3a58-4814-932d-8b246fd39f37@gmail.com>
+Date: Mon, 8 Apr 2024 12:01:26 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: FAfzVIdcO9eySTBnHQdifBlR6__B3Ubz
-X-Proofpoint-GUID: FAfzVIdcO9eySTBnHQdifBlR6__B3Ubz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-08_07,2024-04-05_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- lowpriorityscore=0 malwarescore=0 clxscore=1011 suspectscore=0
- impostorscore=0 spamscore=0 adultscore=0 bulkscore=0 mlxlogscore=999
- mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2404080065
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 11/12] wifi: rtlwifi: Add rtl8192du/sw.{c,h}
+To: Ping-Ke Shih <pkshih@realtek.com>, "kvalo@kernel.org" <kvalo@kernel.org>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
+ "s.l-h@gmx.de" <s.l-h@gmx.de>, "chewitt@libreelec.tv" <chewitt@libreelec.tv>
+References: <7f4b3309-1580-48f3-9426-29f1eb4052fd@gmail.com>
+ <2eb79c8c-cf2c-4696-b958-e8d961628e17@gmail.com>
+ <f86a40493745a53ff73083f87b3e8fae215eac77.camel@realtek.com>
+ <66565618-3638-47e5-afe5-3530214da0c9@gmail.com> <87ttkrzf1m.fsf@kernel.org>
+ <5696990a-4450-4d92-bbda-1d9ca3a9a619@gmail.com>
+ <4672072ef782ae1200886a190c740e0f3ccec2c8.camel@realtek.com>
+ <7873dee1-46a8-48a7-9059-bc300ac98c23@gmail.com>
+ <1f8ebed6a04a4fbebf33b0a3edc2f50b@realtek.com>
+ <ff3b97d0-118c-42b3-be0b-47cfcf06ab74@gmail.com>
+ <7741a59a6ebf4e0f8c55b0f5c3f55a41@realtek.com>
+ <321c6855-2e58-48ae-b131-a3f6d7041713@gmail.com>
+ <21299940bf9342ae9c82916084ea7d9e@realtek.com>
+Content-Language: en-US
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <21299940bf9342ae9c82916084ea7d9e@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Every time EHT Operation element changed, mac80211 will parse it and
-extract the valid puncturing bitmap according to the bandwidth.
+On 08/04/2024 05:45, Ping-Ke Shih wrote:
+> 
+>> I did not consider using a ref_cnt variable. I made the first
+>> probe allocate the things and the first disconnect frees them:
+> 
+> The allocation seems fine, but I feel we should free shared data by second
+> disconnect because the other intf can still use them, no?
+> 
 
-Current driver only update puncturing bitmap to firmware as vdev
-parameter. Which can only meet the needs of AP. But STA will also use
-it as peer parameter. If only update as vdev parameter, might cause
-firmware crash. QCN9274 is the same. 
+Maybe. Sure, the second disconnect can free them.
 
-So update bandwidth and puncturing bitmap as peer parameters once they
-changed for STA. Then send them to the firmware by WMI event.
+>>
+>>
+>> static struct usb_interface *rtl92du_get_other_intf(struct ieee80211_hw *hw)
+>> {
+>>         struct usb_interface *intf;
+>>         struct usb_device *udev;
+>>         u8 other_interfaceindex;
+>>
+>>         /* See SET_IEEE80211_DEV(hw, &intf->dev); in usb.c */
+>>         intf = container_of_const(wiphy_dev(hw->wiphy), struct usb_interface, dev);
+>>
+>>         other_interfaceindex = 1 - intf->altsetting[0].desc.bInterfaceNumber;
+> 
+> The value of bInterfaceNumber for two instances are 0 and 1, right? Then
+> '1 - x' to get each other -- that looks a little tricky ;-) 
+> 
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+The vendor driver assumes bInterfaceNumber can only be 0 or 1.
+I can make it more explicit:
 
-Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
----
+	if (intf->altsetting[0].desc.bInterfaceNumber == 0)
+		other_interfaceindex = 1;
+	else
+		other_interfaceindex = 0;
 
-v2:
-    1. remove mac80211 patch because it is merged.
-    2. add station mode judgment.
-    3. rebased on tag: ath-202404051226.
+>>
+>>         udev = interface_to_usbdev(intf);
+>>
+>>         return usb_ifnum_to_if(udev, other_interfaceindex);
+>> }
+>>
+> 
+> [...]
+> 
+>>
+>> static void rtl92du_deinit_shared_data(struct ieee80211_hw *hw)
+>> {
+>>         struct usb_interface *other_intf = rtl92du_get_other_intf(hw);
+>>         struct rtl_priv *rtlpriv = rtl_priv(hw);
+>>
+>>         if (!other_intf || usb_get_intfdata(other_intf)) {
+>>                 /* The other interface doesn't exist or was not disconnected yet. */
+> 
+> For the USB adaptor with single one interface, you don't have other_intf.
+> Then, just free them.
+> 
+> If the USB adaptor has two interfaces, it has both other_intf and
+> usb_get_intfdata(other_intf), so you want to free them. But, I wonder if both 
+> interfaces can enter this branch?
+> 
 
----
- drivers/net/wireless/ath/ath12k/mac.c | 61 +++++++++++++++++++++++++++
- drivers/net/wireless/ath/ath12k/wmi.h | 16 +++++++
- 2 files changed, 77 insertions(+)
+They can't both enter this branch because after the first
+disconnect usb_get_intfdata() will return NULL.
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 2df966723c44..adcb2681e50e 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -6503,6 +6503,57 @@ ath12k_mac_change_chanctx_fill_iter(void *data, u8 *mac,
- 	arg->next_vif++;
- }
- 
-+static u32 ath12k_mac_nlwidth_to_wmiwidth(enum nl80211_chan_width width)
-+{
-+	switch (width) {
-+	case NL80211_CHAN_WIDTH_20:
-+		return WMI_CHAN_WIDTH_20;
-+	case NL80211_CHAN_WIDTH_40:
-+		return WMI_CHAN_WIDTH_40;
-+	case NL80211_CHAN_WIDTH_80:
-+		return WMI_CHAN_WIDTH_80;
-+	case NL80211_CHAN_WIDTH_160:
-+		return WMI_CHAN_WIDTH_160;
-+	case NL80211_CHAN_WIDTH_80P80:
-+		return WMI_CHAN_WIDTH_80P80;
-+	case NL80211_CHAN_WIDTH_5:
-+		return WMI_CHAN_WIDTH_5;
-+	case NL80211_CHAN_WIDTH_10:
-+		return WMI_CHAN_WIDTH_10;
-+	case NL80211_CHAN_WIDTH_320:
-+		return WMI_CHAN_WIDTH_320;
-+	default:
-+		WARN_ON(1);
-+		return WMI_CHAN_WIDTH_20;
-+	}
-+}
-+
-+static int ath12k_mac_update_peer_puncturing_width(struct ath12k *ar,
-+						   struct ath12k_vif *arvif,
-+						   struct cfg80211_chan_def def)
-+{
-+	u32 param_id, param_value;
-+	int ret;
-+
-+	if (arvif->vdev_type != WMI_VDEV_TYPE_STA)
-+		return 0;
-+
-+	param_id = WMI_PEER_CHWIDTH_PUNCTURE_20MHZ_BITMAP;
-+	param_value = ath12k_mac_nlwidth_to_wmiwidth(def.width) |
-+		u32_encode_bits((~def.punctured),
-+				WMI_PEER_PUNCTURE_BITMAP);
-+
-+	ath12k_dbg(ar->ab, ATH12K_DBG_MAC,
-+		   "Set puncturing bitmap %02x and width %d for vdev: %d\n",
-+		   def.punctured, def.width, arvif->vdev_id);
-+
-+	ret = ath12k_wmi_set_peer_param(ar, arvif->bssid,
-+					arvif->vdev_id, param_id,
-+					param_value);
-+
-+	return ret;
-+}
-+
- static void
- ath12k_mac_update_vif_chan(struct ath12k *ar,
- 			   struct ieee80211_vif_chanctx_switch *vifs,
-@@ -6595,6 +6646,16 @@ ath12k_mac_update_vif_chan(struct ath12k *ar,
- 				    arvif->vdev_id, ret);
- 			continue;
- 		}
-+
-+		ret = ath12k_mac_update_peer_puncturing_width(arvif->ar, arvif,
-+							      vifs[i].new_ctx->def);
-+		if (ret) {
-+			ath12k_warn(ar->ab,
-+				    "failed to update puncturing bitmap %02x and width %d: %d\n",
-+				    vifs[i].new_ctx->def.punctured,
-+				    vifs[i].new_ctx->def.width, ret);
-+			continue;
-+		}
- 	}
- 
- 	/* Restart the internal monitor vdev on new channel */
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
-index 78afc94a815d..0941272334cd 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.h
-+++ b/drivers/net/wireless/ath/ath12k/wmi.h
-@@ -2195,8 +2195,11 @@ enum wmi_peer_param {
- 	WMI_PEER_SET_MAX_TX_RATE = 17,
- 	WMI_PEER_SET_MIN_TX_RATE = 18,
- 	WMI_PEER_SET_DEFAULT_ROUTING = 19,
-+	WMI_PEER_CHWIDTH_PUNCTURE_20MHZ_BITMAP = 39,
- };
- 
-+#define WMI_PEER_PUNCTURE_BITMAP		GENMASK(23, 8)
-+
- enum wmi_slot_time {
- 	WMI_VDEV_SLOT_TIME_LONG = 1,
- 	WMI_VDEV_SLOT_TIME_SHORT = 2,
-@@ -2600,6 +2603,19 @@ struct ath12k_wmi_soc_hal_reg_caps_params {
- 	__le32 num_phy;
- } __packed;
- 
-+enum wmi_channel_width {
-+	WMI_CHAN_WIDTH_20 = 0,
-+	WMI_CHAN_WIDTH_40 = 1,
-+	WMI_CHAN_WIDTH_80 = 2,
-+	WMI_CHAN_WIDTH_160 = 3,
-+	WMI_CHAN_WIDTH_80P80 = 4,
-+	WMI_CHAN_WIDTH_5 = 5,
-+	WMI_CHAN_WIDTH_10 = 6,
-+	WMI_CHAN_WIDTH_165 = 7,
-+	WMI_CHAN_WIDTH_160P160 = 8,
-+	WMI_CHAN_WIDTH_320 = 9,
-+};
-+
- #define WMI_MAX_EHTCAP_MAC_SIZE  2
- #define WMI_MAX_EHTCAP_PHY_SIZE  3
- #define WMI_MAX_EHTCAP_RATE_SET  3
--- 
-2.34.1
+> Also as I mentioned above, how can you ensure other_intf isn't still using the
+> shared data?
+> 
 
+I can make the second disconnect free the shared data by
+checking if usb_get_intfdata() returns NULL:
+
+	if (!other_intf || !usb_get_intfdata(other_intf)) {
+		/* The other interface doesn't exist or was already disconnected. */
+		kfree(rtlpriv->curveindex_2g);
 
