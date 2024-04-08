@@ -1,128 +1,232 @@
-Return-Path: <linux-wireless+bounces-5968-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5969-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0EC889B780
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Apr 2024 08:15:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA0F689BA50
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Apr 2024 10:31:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 426C5B21242
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Apr 2024 06:15:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F5DA1F2270B
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Apr 2024 08:31:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2699510976;
-	Mon,  8 Apr 2024 06:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8E0538DF9;
+	Mon,  8 Apr 2024 08:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="gpb/ph8f"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="d9/tD+iJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6649D10942
-	for <linux-wireless@vger.kernel.org>; Mon,  8 Apr 2024 06:15:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE2F2E651
+	for <linux-wireless@vger.kernel.org>; Mon,  8 Apr 2024 08:31:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712556913; cv=none; b=a8QU1yctEchx7PghHZh2f/Y0AqYJJ3Q+Epz0j+9cCvj/f9srSkJvNsWEjP32KhN2DeBixwKbYRLIkWc9PanWHUGClQLBRzcrnn2pRVhqCurOwct9EqBX4J380pliglmNw+xCgImU0NTQZX/WaABDd/xmHv1beH9LeIfSo4IIIv8=
+	t=1712565083; cv=none; b=XYE0Bfsbvaeq/TFlYdldULHf7hY7nkw4fT3zK3+GFtGxMRwHi/fZHxAo02iM70iPopq+9CTakvvKMcQznELFcOmR8NdlvgNNsc4MDx6jTjgq++PFiVBqbGmNPRCqaXbI/2MXhf1U8dEFjSwSlspRQnhydLTxOTCJgYQpxKGh/MY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712556913; c=relaxed/simple;
-	bh=QnPyomYcpTEHKqkuI4QsUTTIaecwOg2KT1/dwcYjWYE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=etZ/ZIWSS7NmBA8+ElIUthX2nZ0UIm3Jil+rwLe+J8SD0eIjqnk/J4d8x5va2O6vnJ2uiTwEajXuang/SAyXZ3ZqNXTkHMWdZbEDoHIjkVHt/oGF/5d7bTWEgH3xkfMwcdkPdftBnMUHExS+d09mlHHHqt6xslkT5+Api0MitqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=gpb/ph8f; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 579e5ecef56f11eeb8927bc1f75efef4-20240408
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=ee6ScaF8NDqFt1x4FzTWri7fuE/3zdB6eCOnjp0D+Cw=;
-	b=gpb/ph8fma/Vr7S2u69Av3c5+KTOtoLQ6O3hRxbwu41RD1ojZEyguC/4iraYXQv4NdaXDJrvGLS2sz+JmWK89odMm7anW1GMs4dXgmccIypGsiJN/dLVxn+5L5m0aGdypLZtdzXHsrTFH1cgIWVykcOoJcajskgSBzNv1U8ppy4=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.37,REQID:56f7ffbe-4fc9-4943-920a-81a1389fd685,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6f543d0,CLOUDID:88bce885-8d4f-477b-89d2-1e3bdbef96d1,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,
-	SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 579e5ecef56f11eeb8927bc1f75efef4-20240408
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
-	(envelope-from <shayne.chen@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1075619960; Mon, 08 Apr 2024 14:15:05 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+	s=arc-20240116; t=1712565083; c=relaxed/simple;
+	bh=l5WyV53/kJV9P9N2IcvPRS05RENaWk98bz3Vxx7e+zQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eVSVA8UVXn//HRgb6h+19eZP4PZkCiG3ahIjJ3ae/GhpWDsH1gINiRxsTt7ZbulfZxCPUoXjMC+zLLh9wlQsY74RCU+MdKVuI5kktOevDXOE7FTTcrjJ0AXWYjAZAtOtMZ70a6RokLUoy78lg5rUfHniORj7u2poIL2Rw0Beljc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=d9/tD+iJ; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4386e2hL013278;
+	Mon, 8 Apr 2024 08:31:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=0MtRO1+
+	soqHxny4chjfSSFFBCIprjNXz7K3OWIW7yzs=; b=d9/tD+iJdxYAEB+7LQNjXH/
+	C4fc1UkLrTphAfR36s+bhyawHFJPCZrqFEmm/mCUo/2JFnxl6UJiGPjrfB0R68ma
+	Dq0Gtxd00FhBDl3h1f/hywjKQtLQVZ1pu0dFeEKD2Ew6iX6McdMBGQ5QEodj7BwU
+	d6qEutolX/5yC+jOEZpvXMhMTjwGLBYNSQ1s6BmG8iDTv1yvC93bNWXYe1jMzvC5
+	LueKcnvK+Q6giaUFLQfpfufPTiMjPdwhO0MQeZr28Fzp6WYkPVgBwL8B7eoo9MBo
+	d0j9pbNyW07/6+pL0GTIKSIzfQuOQgSPXf5RLlduic4fw7xBeMxYVmBEA9jJ7xw=
+	=
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xcbfyg6v0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Apr 2024 08:31:16 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4388VFZ3031992
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 8 Apr 2024 08:31:15 GMT
+Received: from Mayan.qca.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Mon, 8 Apr 2024 14:15:03 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Mon, 8 Apr 2024 14:15:03 +0800
-From: Shayne Chen <shayne.chen@mediatek.com>
-To: Felix Fietkau <nbd@nbd.name>
-CC: linux-wireless <linux-wireless@vger.kernel.org>, Lorenzo Bianconi
-	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Evelyn Tsai
-	<evelyn.tsai@mediatek.com>, Bo Jiao <Bo.Jiao@mediatek.com>, linux-mediatek
-	<linux-mediatek@lists.infradead.org>, Michael-CY Lee
-	<michael-cy.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH v2] wifi: mt76: mt7996: let upper layer handle MGMT frame protection
-Date: Mon, 8 Apr 2024 14:14:21 +0800
-Message-ID: <20240408061421.10287-1-shayne.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+ 15.2.1544.4; Mon, 8 Apr 2024 01:31:14 -0700
+From: Kang Yang <quic_kangyang@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, <quic_kangyang@quicinc.com>
+Subject: [PATCH v2] wifi: ath12k: dynamically update peer puncturing bitmap for STA
+Date: Mon, 8 Apr 2024 16:30:47 +0800
+Message-ID: <20240408083047.22548-1-quic_kangyang@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-MTK: N
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: FAfzVIdcO9eySTBnHQdifBlR6__B3Ubz
+X-Proofpoint-GUID: FAfzVIdcO9eySTBnHQdifBlR6__B3Ubz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-08_07,2024-04-05_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ lowpriorityscore=0 malwarescore=0 clxscore=1011 suspectscore=0
+ impostorscore=0 spamscore=0 adultscore=0 bulkscore=0 mlxlogscore=999
+ mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404080065
 
-From: Michael-CY Lee <michael-cy.lee@mediatek.com>
+Every time EHT Operation element changed, mac80211 will parse it and
+extract the valid puncturing bitmap according to the bandwidth.
 
-The firmware support for management frame protection has limitations:
-- do not support cipher BIP-GMAC-128 and BIP-GMAC-256
-- support cipher BIP-CMAC-128 and BIP-CMAC-256, except action frame with
-  action type 'not robust'.
+Current driver only update puncturing bitmap to firmware as vdev
+parameter. Which can only meet the needs of AP. But STA will also use
+it as peer parameter. If only update as vdev parameter, might cause
+firmware crash. QCN9274 is the same. 
 
-Therefore, to simplify the logic, do not set the IGTK to firmware and
-let the encryption of management frames be handled by upper layer.
+So update bandwidth and puncturing bitmap as peer parameters once they
+changed for STA. Then send them to the firmware by WMI event.
 
-Signed-off-by: Michael-CY Lee <michael-cy.lee@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
 ---
-v2: add back missing line
----
- drivers/net/wireless/mediatek/mt76/mt7996/main.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 338ff10b121d..c4a068d52c35 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -352,10 +352,6 @@ static int mt7996_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+v2:
+    1. remove mac80211 patch because it is merged.
+    2. add station mode judgment.
+    3. rebased on tag: ath-202404051226.
+
+---
+ drivers/net/wireless/ath/ath12k/mac.c | 61 +++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath12k/wmi.h | 16 +++++++
+ 2 files changed, 77 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 2df966723c44..adcb2681e50e 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -6503,6 +6503,57 @@ ath12k_mac_change_chanctx_fill_iter(void *data, u8 *mac,
+ 	arg->next_vif++;
+ }
  
- 	/* fall back to sw encryption for unsupported ciphers */
- 	switch (key->cipher) {
--	case WLAN_CIPHER_SUITE_AES_CMAC:
--		wcid_keyidx = &wcid->hw_key_idx2;
--		key->flags |= IEEE80211_KEY_FLAG_GENERATE_MMIE;
--		break;
- 	case WLAN_CIPHER_SUITE_TKIP:
- 	case WLAN_CIPHER_SUITE_CCMP:
- 	case WLAN_CIPHER_SUITE_CCMP_256:
-@@ -363,6 +359,11 @@ static int mt7996_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
- 	case WLAN_CIPHER_SUITE_GCMP_256:
- 	case WLAN_CIPHER_SUITE_SMS4:
- 		break;
-+	case WLAN_CIPHER_SUITE_AES_CMAC:
-+		wcid_keyidx = &wcid->hw_key_idx2;
-+		key->flags |= IEEE80211_KEY_FLAG_GENERATE_MMIE;
-+		fallthrough;
-+	case WLAN_CIPHER_SUITE_BIP_CMAC_256:
- 	case WLAN_CIPHER_SUITE_BIP_GMAC_128:
- 	case WLAN_CIPHER_SUITE_BIP_GMAC_256:
- 		if (key->keyidx == 6 || key->keyidx == 7)
++static u32 ath12k_mac_nlwidth_to_wmiwidth(enum nl80211_chan_width width)
++{
++	switch (width) {
++	case NL80211_CHAN_WIDTH_20:
++		return WMI_CHAN_WIDTH_20;
++	case NL80211_CHAN_WIDTH_40:
++		return WMI_CHAN_WIDTH_40;
++	case NL80211_CHAN_WIDTH_80:
++		return WMI_CHAN_WIDTH_80;
++	case NL80211_CHAN_WIDTH_160:
++		return WMI_CHAN_WIDTH_160;
++	case NL80211_CHAN_WIDTH_80P80:
++		return WMI_CHAN_WIDTH_80P80;
++	case NL80211_CHAN_WIDTH_5:
++		return WMI_CHAN_WIDTH_5;
++	case NL80211_CHAN_WIDTH_10:
++		return WMI_CHAN_WIDTH_10;
++	case NL80211_CHAN_WIDTH_320:
++		return WMI_CHAN_WIDTH_320;
++	default:
++		WARN_ON(1);
++		return WMI_CHAN_WIDTH_20;
++	}
++}
++
++static int ath12k_mac_update_peer_puncturing_width(struct ath12k *ar,
++						   struct ath12k_vif *arvif,
++						   struct cfg80211_chan_def def)
++{
++	u32 param_id, param_value;
++	int ret;
++
++	if (arvif->vdev_type != WMI_VDEV_TYPE_STA)
++		return 0;
++
++	param_id = WMI_PEER_CHWIDTH_PUNCTURE_20MHZ_BITMAP;
++	param_value = ath12k_mac_nlwidth_to_wmiwidth(def.width) |
++		u32_encode_bits((~def.punctured),
++				WMI_PEER_PUNCTURE_BITMAP);
++
++	ath12k_dbg(ar->ab, ATH12K_DBG_MAC,
++		   "Set puncturing bitmap %02x and width %d for vdev: %d\n",
++		   def.punctured, def.width, arvif->vdev_id);
++
++	ret = ath12k_wmi_set_peer_param(ar, arvif->bssid,
++					arvif->vdev_id, param_id,
++					param_value);
++
++	return ret;
++}
++
+ static void
+ ath12k_mac_update_vif_chan(struct ath12k *ar,
+ 			   struct ieee80211_vif_chanctx_switch *vifs,
+@@ -6595,6 +6646,16 @@ ath12k_mac_update_vif_chan(struct ath12k *ar,
+ 				    arvif->vdev_id, ret);
+ 			continue;
+ 		}
++
++		ret = ath12k_mac_update_peer_puncturing_width(arvif->ar, arvif,
++							      vifs[i].new_ctx->def);
++		if (ret) {
++			ath12k_warn(ar->ab,
++				    "failed to update puncturing bitmap %02x and width %d: %d\n",
++				    vifs[i].new_ctx->def.punctured,
++				    vifs[i].new_ctx->def.width, ret);
++			continue;
++		}
+ 	}
+ 
+ 	/* Restart the internal monitor vdev on new channel */
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
+index 78afc94a815d..0941272334cd 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.h
++++ b/drivers/net/wireless/ath/ath12k/wmi.h
+@@ -2195,8 +2195,11 @@ enum wmi_peer_param {
+ 	WMI_PEER_SET_MAX_TX_RATE = 17,
+ 	WMI_PEER_SET_MIN_TX_RATE = 18,
+ 	WMI_PEER_SET_DEFAULT_ROUTING = 19,
++	WMI_PEER_CHWIDTH_PUNCTURE_20MHZ_BITMAP = 39,
+ };
+ 
++#define WMI_PEER_PUNCTURE_BITMAP		GENMASK(23, 8)
++
+ enum wmi_slot_time {
+ 	WMI_VDEV_SLOT_TIME_LONG = 1,
+ 	WMI_VDEV_SLOT_TIME_SHORT = 2,
+@@ -2600,6 +2603,19 @@ struct ath12k_wmi_soc_hal_reg_caps_params {
+ 	__le32 num_phy;
+ } __packed;
+ 
++enum wmi_channel_width {
++	WMI_CHAN_WIDTH_20 = 0,
++	WMI_CHAN_WIDTH_40 = 1,
++	WMI_CHAN_WIDTH_80 = 2,
++	WMI_CHAN_WIDTH_160 = 3,
++	WMI_CHAN_WIDTH_80P80 = 4,
++	WMI_CHAN_WIDTH_5 = 5,
++	WMI_CHAN_WIDTH_10 = 6,
++	WMI_CHAN_WIDTH_165 = 7,
++	WMI_CHAN_WIDTH_160P160 = 8,
++	WMI_CHAN_WIDTH_320 = 9,
++};
++
+ #define WMI_MAX_EHTCAP_MAC_SIZE  2
+ #define WMI_MAX_EHTCAP_PHY_SIZE  3
+ #define WMI_MAX_EHTCAP_RATE_SET  3
 -- 
-2.39.2
+2.34.1
 
 
