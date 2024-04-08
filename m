@@ -1,129 +1,119 @@
-Return-Path: <linux-wireless+bounces-5959-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5960-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8BF989B616
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Apr 2024 04:46:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC0789B68A
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Apr 2024 05:45:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 491D41F21594
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Apr 2024 02:46:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4857A2821BE
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Apr 2024 03:45:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E11CD4C8A;
-	Mon,  8 Apr 2024 02:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9E7C1877;
+	Mon,  8 Apr 2024 03:45:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="DJdHhsFH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C044C63
-	for <linux-wireless@vger.kernel.org>; Mon,  8 Apr 2024 02:46:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1711C0DEB
+	for <linux-wireless@vger.kernel.org>; Mon,  8 Apr 2024 03:45:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712544391; cv=none; b=rneLBMTgMlYB7A4gl9L9MIuB4ajjdG7/e1sN0ZTGF1tK66L4s10ik0noB7zJCP74Ch2bQIypKgT03xfrCCj+cByU1zqzPWT43YrECpROWIMFOJqw3McQ4HeD7SOO4u1W8/oGkdHd2KHQOPEIDORtpq0dAEpaanFhIHidKWBj8ys=
+	t=1712547930; cv=none; b=Dm7iQ5mZRx0Wn6km8quYgOXj/7uuSaClATdpLtXurdmEGA8wm1xrCcQzNlFR1uzcFCwMuYGAXyK6C9ELOErFjSjCxM0XyHPmWuZAW/m/PQ0WtGWSZ0o5TWD7IAOoTAYdkeKr7QgOb9dIExq5NFC6bmdNTPX/oz7V1AHm3faJxpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712544391; c=relaxed/simple;
-	bh=/81W9d2mBp0W0wsvMJ+MuxZ/LrU4KtC93+VWAa3PWh8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=W4Fyip8VxcLgqGYLNqb7n6J2dtFqeYVIED6OD6I9P/VuoDLClMkQDVrAGvMljNRfP/HwRSp1tiZtlYOFKyXdXFgdsQPK0+nxn54euT9qPUvXrJacsSX+Sy95+w4dl+Wgne5MSRZpq+v9r7Qo9EFwA2uDmELMGhh9jvCddOx2nFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4382jo1631372928, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 4382jo1631372928
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 8 Apr 2024 10:45:50 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 8 Apr 2024 10:45:50 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 8 Apr 2024 10:45:49 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
- RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
- 15.01.2507.035; Mon, 8 Apr 2024 10:45:49 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "kvalo@kernel.org"
-	<kvalo@kernel.org>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
-        "s.l-h@gmx.de"
-	<s.l-h@gmx.de>,
-        "chewitt@libreelec.tv" <chewitt@libreelec.tv>
-Subject: RE: [PATCH v3 11/12] wifi: rtlwifi: Add rtl8192du/sw.{c,h}
-Thread-Topic: [PATCH v3 11/12] wifi: rtlwifi: Add rtl8192du/sw.{c,h}
-Thread-Index: AQHaev7lVhGGoQ4nQ0GxbEPAiHfc3rFCwUMAgAhizQCAANTTI///vigAgAAwEwCAAMUwAIABPbAAgAPR/oCAAO0mAIAJogKAgAFx7VA=
-Date: Mon, 8 Apr 2024 02:45:49 +0000
-Message-ID: <21299940bf9342ae9c82916084ea7d9e@realtek.com>
-References: <7f4b3309-1580-48f3-9426-29f1eb4052fd@gmail.com>
- <2eb79c8c-cf2c-4696-b958-e8d961628e17@gmail.com>
- <f86a40493745a53ff73083f87b3e8fae215eac77.camel@realtek.com>
- <66565618-3638-47e5-afe5-3530214da0c9@gmail.com> <87ttkrzf1m.fsf@kernel.org>
- <5696990a-4450-4d92-bbda-1d9ca3a9a619@gmail.com>
- <4672072ef782ae1200886a190c740e0f3ccec2c8.camel@realtek.com>
- <7873dee1-46a8-48a7-9059-bc300ac98c23@gmail.com>
- <1f8ebed6a04a4fbebf33b0a3edc2f50b@realtek.com>
- <ff3b97d0-118c-42b3-be0b-47cfcf06ab74@gmail.com>
- <7741a59a6ebf4e0f8c55b0f5c3f55a41@realtek.com>
- <321c6855-2e58-48ae-b131-a3f6d7041713@gmail.com>
-In-Reply-To: <321c6855-2e58-48ae-b131-a3f6d7041713@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1712547930; c=relaxed/simple;
+	bh=KkMb4R1kiGwcbhJ28fzrqFsccfh5lqjh3XObTE1A420=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=CQ5DCLsstVnl2sAOG5toQOb0UUpC8bdCMSHcVFdU8T6W84KgJUBmiFVypHCAW1waHqgSSoQhU5rFe8FM4PwuHpX1FlR5CpnNE9dWqJ0IxqiMqrL+uKmf17tR1DzeTnAyiOHy5fstcBx79PxKLD5m5hgOOJ90o1cLULbEtxg55WM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=DJdHhsFH; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4382BAUH008670;
+	Mon, 8 Apr 2024 03:45:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=slJn6FOUMTMvis8dDeAmu+VeGEP7mYQVAl5wGZQXhhE=; b=DJ
+	dHhsFHoUVdqUJ7lmgM5xiQiAsVBrsntIXUbHUKEteELM1Rrqc5SJf86xT2LaE8ns
+	0mX50Avdn9CIFZIc8kzD8Bj9Vsoh0htVHwclhUvkKNCJYz629YkMFCTTRzBbCNEW
+	2knSqF/wLqxG35bowLS7aedOW5glZYsIyrerbSiwu9BL5SZLyUzUUOMxOc2YDp0f
+	GClQadGUj7CBKplBPM9BSk0yZ41O+3r59LiTIGLV9YZEs22JGYC4zxi5qNH+dAUL
+	o68zhJdFF1h1jztyi0Mf+6RONNc/uLdpe4PvxeHn1hUmcGsd1/WuB5YCX0XhV43A
+	PDQ1ZYUhRRpYaKtP+BKw==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xaursjrrk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Apr 2024 03:45:19 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4383jIOc016128
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 8 Apr 2024 03:45:18 GMT
+Received: from [10.216.32.4] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Sun, 7 Apr 2024
+ 20:45:16 -0700
+Message-ID: <bb9940b6-a858-48e1-bc1d-999340b8eb5d@quicinc.com>
+Date: Mon, 8 Apr 2024 09:15:13 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: mac80211: handle link ID during management Tx
+Content-Language: en-US
+To: <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>, Sriram R <quic_srirrama@quicinc.com>
+References: <20240326045242.3190611-1-quic_adisi@quicinc.com>
+From: Aditya Kumar Singh <quic_adisi@quicinc.com>
+In-Reply-To: <20240326045242.3190611-1-quic_adisi@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: PgiqR9ZI64rlVfc0qdwRYZSxWuMZ2z0J
+X-Proofpoint-ORIG-GUID: PgiqR9ZI64rlVfc0qdwRYZSxWuMZ2z0J
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-08_01,2024-04-05_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ impostorscore=0 malwarescore=0 adultscore=0 priorityscore=1501 bulkscore=0
+ phishscore=0 clxscore=1011 spamscore=0 mlxlogscore=819 suspectscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404080026
 
-DQo+IEkgZGlkIG5vdCBjb25zaWRlciB1c2luZyBhIHJlZl9jbnQgdmFyaWFibGUuIEkgbWFkZSB0
-aGUgZmlyc3QNCj4gcHJvYmUgYWxsb2NhdGUgdGhlIHRoaW5ncyBhbmQgdGhlIGZpcnN0IGRpc2Nv
-bm5lY3QgZnJlZXMgdGhlbToNCg0KVGhlIGFsbG9jYXRpb24gc2VlbXMgZmluZSwgYnV0IEkgZmVl
-bCB3ZSBzaG91bGQgZnJlZSBzaGFyZWQgZGF0YSBieSBzZWNvbmQNCmRpc2Nvbm5lY3QgYmVjYXVz
-ZSB0aGUgb3RoZXIgaW50ZiBjYW4gc3RpbGwgdXNlIHRoZW0sIG5vPw0KDQo+IA0KPiANCj4gc3Rh
-dGljIHN0cnVjdCB1c2JfaW50ZXJmYWNlICpydGw5MmR1X2dldF9vdGhlcl9pbnRmKHN0cnVjdCBp
-ZWVlODAyMTFfaHcgKmh3KQ0KPiB7DQo+ICAgICAgICAgc3RydWN0IHVzYl9pbnRlcmZhY2UgKmlu
-dGY7DQo+ICAgICAgICAgc3RydWN0IHVzYl9kZXZpY2UgKnVkZXY7DQo+ICAgICAgICAgdTggb3Ro
-ZXJfaW50ZXJmYWNlaW5kZXg7DQo+IA0KPiAgICAgICAgIC8qIFNlZSBTRVRfSUVFRTgwMjExX0RF
-VihodywgJmludGYtPmRldik7IGluIHVzYi5jICovDQo+ICAgICAgICAgaW50ZiA9IGNvbnRhaW5l
-cl9vZl9jb25zdCh3aXBoeV9kZXYoaHctPndpcGh5KSwgc3RydWN0IHVzYl9pbnRlcmZhY2UsIGRl
-dik7DQo+IA0KPiAgICAgICAgIG90aGVyX2ludGVyZmFjZWluZGV4ID0gMSAtIGludGYtPmFsdHNl
-dHRpbmdbMF0uZGVzYy5iSW50ZXJmYWNlTnVtYmVyOw0KDQpUaGUgdmFsdWUgb2YgYkludGVyZmFj
-ZU51bWJlciBmb3IgdHdvIGluc3RhbmNlcyBhcmUgMCBhbmQgMSwgcmlnaHQ/IFRoZW4NCicxIC0g
-eCcgdG8gZ2V0IGVhY2ggb3RoZXIgLS0gdGhhdCBsb29rcyBhIGxpdHRsZSB0cmlja3kgOy0pIA0K
-DQo+IA0KPiAgICAgICAgIHVkZXYgPSBpbnRlcmZhY2VfdG9fdXNiZGV2KGludGYpOw0KPiANCj4g
-ICAgICAgICByZXR1cm4gdXNiX2lmbnVtX3RvX2lmKHVkZXYsIG90aGVyX2ludGVyZmFjZWluZGV4
-KTsNCj4gfQ0KPiANCg0KWy4uLl0NCg0KPiANCj4gc3RhdGljIHZvaWQgcnRsOTJkdV9kZWluaXRf
-c2hhcmVkX2RhdGEoc3RydWN0IGllZWU4MDIxMV9odyAqaHcpDQo+IHsNCj4gICAgICAgICBzdHJ1
-Y3QgdXNiX2ludGVyZmFjZSAqb3RoZXJfaW50ZiA9IHJ0bDkyZHVfZ2V0X290aGVyX2ludGYoaHcp
-Ow0KPiAgICAgICAgIHN0cnVjdCBydGxfcHJpdiAqcnRscHJpdiA9IHJ0bF9wcml2KGh3KTsNCj4g
-DQo+ICAgICAgICAgaWYgKCFvdGhlcl9pbnRmIHx8IHVzYl9nZXRfaW50ZmRhdGEob3RoZXJfaW50
-ZikpIHsNCj4gICAgICAgICAgICAgICAgIC8qIFRoZSBvdGhlciBpbnRlcmZhY2UgZG9lc24ndCBl
-eGlzdCBvciB3YXMgbm90IGRpc2Nvbm5lY3RlZCB5ZXQuICovDQoNCkZvciB0aGUgVVNCIGFkYXB0
-b3Igd2l0aCBzaW5nbGUgb25lIGludGVyZmFjZSwgeW91IGRvbid0IGhhdmUgb3RoZXJfaW50Zi4N
-ClRoZW4sIGp1c3QgZnJlZSB0aGVtLg0KDQpJZiB0aGUgVVNCIGFkYXB0b3IgaGFzIHR3byBpbnRl
-cmZhY2VzLCBpdCBoYXMgYm90aCBvdGhlcl9pbnRmIGFuZA0KdXNiX2dldF9pbnRmZGF0YShvdGhl
-cl9pbnRmKSwgc28geW91IHdhbnQgdG8gZnJlZSB0aGVtLiBCdXQsIEkgd29uZGVyIGlmIGJvdGgg
-DQppbnRlcmZhY2VzIGNhbiBlbnRlciB0aGlzIGJyYW5jaD8NCg0KQWxzbyBhcyBJIG1lbnRpb25l
-ZCBhYm92ZSwgaG93IGNhbiB5b3UgZW5zdXJlIG90aGVyX2ludGYgaXNuJ3Qgc3RpbGwgdXNpbmcg
-dGhlDQpzaGFyZWQgZGF0YT8NCg0KDQo+ICAgICAgICAgICAgICAgICBrZnJlZShydGxwcml2LT5j
-dXJ2ZWluZGV4XzJnKTsNCj4gICAgICAgICAgICAgICAgIGtmcmVlKHJ0bHByaXYtPmN1cnZlaW5k
-ZXhfNWcpOw0KPiAgICAgICAgICAgICAgICAgaWYgKHJ0bHByaXYtPm11dGV4X2Zvcl9wb3dlcl9v
-bl9vZmYpDQo+ICAgICAgICAgICAgICAgICAgICAgICAgIG11dGV4X2Rlc3Ryb3kocnRscHJpdi0+
-bXV0ZXhfZm9yX3Bvd2VyX29uX29mZik7DQo+ICAgICAgICAgICAgICAgICBpZiAocnRscHJpdi0+
-bXV0ZXhfZm9yX2h3X2luaXQpDQo+ICAgICAgICAgICAgICAgICAgICAgICAgIG11dGV4X2Rlc3Ry
-b3kocnRscHJpdi0+bXV0ZXhfZm9yX2h3X2luaXQpOw0KPiAgICAgICAgICAgICAgICAga2ZyZWUo
-cnRscHJpdi0+bXV0ZXhfZm9yX3Bvd2VyX29uX29mZik7DQo+ICAgICAgICAgICAgICAgICBrZnJl
-ZShydGxwcml2LT5tdXRleF9mb3JfaHdfaW5pdCk7DQo+ICAgICAgICAgfQ0KPiB9DQo+IA0KDQpb
-Li4uXQ0KDQo=
+On 3/26/24 10:22, Aditya Kumar Singh wrote:
+> From: Sriram R <quic_srirrama@quicinc.com>
+> 
+> During management Tx, when source address is same as the link conf's
+> address and even when userspace requested Tx on a specific link, link ID
+> is not set which leads to dropping of the frame later.
+> 
+> Add changes to use the same link id and set it if the link bss is matching
+> the requested channel.
+> 
+> Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
+> Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
+
+
+Hi Johannes,
+
+Any further inputs?
+
+This is a dependency for the hostapd series change -
+
+[PATCH 00/22] hostapd: add cohosted MLO support
+(https://patchwork.ozlabs.org/project/hostap/list/?series=400904)
+
+The newly added test cases needs this kernel change.
+
+- Aditya
+
 
