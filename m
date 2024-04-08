@@ -1,147 +1,129 @@
-Return-Path: <linux-wireless+bounces-5971-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5972-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FF6C89BEB5
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Apr 2024 14:14:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CFF589C34C
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Apr 2024 15:40:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA02E2838B4
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Apr 2024 12:14:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F36D1C22051
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Apr 2024 13:40:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D69C63BBD8;
-	Mon,  8 Apr 2024 12:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 091EE839E3;
+	Mon,  8 Apr 2024 13:34:03 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from exchange.fintech.ru (exchange.fintech.ru [195.54.195.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D1E6A347;
-	Mon,  8 Apr 2024 12:14:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.54.195.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3379542046;
+	Mon,  8 Apr 2024 13:34:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712578477; cv=none; b=LmBccGZ29rE6PA0HexL2dLyontfqF2g4NUcSVtutXyjQCqHvQc+dx3iphGkOpeyYLGtxvNbrpyp7VoIqj4vYkJVGJqGiRAOsr1ga7QX915Tf0oniS+RdbVS27EzFNn+/yQ3cYcMi0ri+ffvBL237K6cWVKybxtFDYQPNEZ7uJ0g=
+	t=1712583242; cv=none; b=ZROKON8VXcMp2ViiqJLlPKzgnwKwpIP/y12n4Ia8HfHybOlwqv0JsG2LkKBv7HQjlZxY8fRIZG2CmcylDYjUN+MaIkSRFapYqltZko4THvwuKtYzA8fO+F9uVCDAaPECrknd3b+zcR9/dr7DtzXW0ah5RRkQbSjOCl44c+uj8DM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712578477; c=relaxed/simple;
-	bh=qgZsHg6eDtT2YJiUeBg3UDqbrXbnKl+EsVP7WJDqH50=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tvSPXA4n+KxM9c8/fdrbc6uYwEl2H4z/x2slMMV+2TWvESf8aNMnKkd0aL3mutBA8EVbj6lijLdgbZhg5mu3t88ddR6CS1c+MGSxc3VjiaNSfsWdksHh9B3+pUATY/ILhOxzqjPRv6TY0LPtEJBG4toLJIFvRTVm2sA/A/SdXkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru; spf=pass smtp.mailfrom=fintech.ru; arc=none smtp.client-ip=195.54.195.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fintech.ru
-Received: from Ex16-01.fintech.ru (10.0.10.18) by exchange.fintech.ru
- (195.54.195.159) with Microsoft SMTP Server (TLS) id 14.3.498.0; Mon, 8 Apr
- 2024 15:14:29 +0300
-Received: from localhost (10.0.253.138) by Ex16-01.fintech.ru (10.0.10.18)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Mon, 8 Apr 2024
- 15:14:29 +0300
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+	s=arc-20240116; t=1712583242; c=relaxed/simple;
+	bh=NZ39CbTPsstFUFbg48EkUt6r4iWC/wV5cUNKMrLJTPE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=blNJCn0urrS71hFSusO+bYLN5puONtOzLLPExyorXFWLFlsgtDkmS93URQuTd/cJTtkcyIEbrozfwbJv8ad6r5RnbOZEwXo5KZB8z1XbbSOXZxJIv7XF6ZTs8Y7M/4OxSoH3/d7seu1KJJ614LcTnEmRNMUtTjF3FdYnafoWSHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a51a1c8d931so366327666b.0;
+        Mon, 08 Apr 2024 06:34:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712583239; x=1713188039;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/+5wDrVmPRuIiSwBrRmVT0PS58QAkfRbs3RzHuiSDAI=;
+        b=LWG9dajZb0kll5nBRB39spOicYztSxbSoEQtxr0MG2FRJ/LFVwgLWFfGhomCusboRh
+         lpwBWDB7GtjDtpLNlGNRa0LY80ldc+hbrHkpNpSYpbjVI2ZXD8V02l451CDWiXzPM071
+         PLOPB3DoGdo/k68Gtjzs2o18KJt5vUlCwTtrqIJMFs+29NVmLXr9ElnEMBOCSgB8SyuZ
+         aJsWW3xDP3IUoDghZguth4AL/CBCNe5R7PoCPwgZFHnCcRnYTsx6wf5nuaXFcECdcDcQ
+         9ZgYg1Pf9MpxviGGY8pcQjsSFm0qDXTYjGw3PDnoEQRi/KfBAmOBtgXuhlzmcSV+475Y
+         Z6Hw==
+X-Forwarded-Encrypted: i=1; AJvYcCW2UaEHlHRXYRYlYJyagQNrwWcVNVGumlnfVK0CjkZewWN5VW/tJXE11A3eG0dUi1uAVimSFwIliyg/EA5ybtK8eVcQomrPUrJu9fVqHdVy9Ick7/7QKKXRTFHUPsNcJGqLlOGJiwMkfddNOxmmarxsawtajTfeAE+d3MUzCbv36AE9zmU=
+X-Gm-Message-State: AOJu0Yxnr1G2mXJx73ZP2ZUrp6QWNrZvvIsYKUnvAplAWhCQSo6P+Osx
+	JqC1Np1U8z6IMK8pyTbkm3dEK72YCkxOA+EdB74xcTTz/GaIul9P8wBvhuNJ
+X-Google-Smtp-Source: AGHT+IFG1A/aXSJF1vs3BAnXmRfhA0B3vs71mMEuEDjURn9PVqQkXpJtMGYAvgXIPvupcCdvOEeZ3Q==
+X-Received: by 2002:a17:907:d8a:b0:a51:ce92:1e1b with SMTP id go10-20020a1709070d8a00b00a51ce921e1bmr3195308ejc.72.1712583239288;
+        Mon, 08 Apr 2024 06:33:59 -0700 (PDT)
+Received: from gmail.com (fwdproxy-lla-008.fbsv.net. [2a03:2880:30ff:8::face:b00c])
+        by smtp.gmail.com with ESMTPSA id s21-20020a170906355500b00a51da296f66sm1035902eja.41.2024.04.08.06.33.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Apr 2024 06:33:59 -0700 (PDT)
+Date: Mon, 8 Apr 2024 06:33:56 -0700
+From: Breno Leitao <leitao@debian.org>
 To: Kalle Valo <kvalo@kernel.org>
-CC: Nikita Zhandarovich <n.zhandarovich@fintech.ru>, Wu Yunchuan
-	<yunchuan@nfschina.com>, Johannes Berg <johannes.berg@intel.com>, "Breno
- Leitao" <leitao@debian.org>, <linux-wireless@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>,
-	<syzbot+1bc2c2afd44f820a669f@syzkaller.appspotmail.com>
-Subject: [PATCH v2] wifi: ar5523: enable proper endpoint verification
-Date: Mon, 8 Apr 2024 05:14:25 -0700
-Message-ID: <20240408121425.29392-1-n.zhandarovich@fintech.ru>
-X-Mailer: git-send-email 2.25.1
+Cc: kuba@kernel.org, ath11k@lists.infradead.org, ath10k@lists.infradead.org,
+	linux-wireless@vger.kernel.org, imitsyanko@quantenna.com,
+	geomatsi@gmail.com, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH 0/3] wifi: Un-embed ath10k and ath11k dummy netdev
+Message-ID: <ZhPyRHHlVot+a8Xq@gmail.com>
+References: <20240405122123.4156104-1-leitao@debian.org>
+ <87y19r264m.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: Ex16-02.fintech.ru (10.0.10.19) To Ex16-01.fintech.ru
- (10.0.10.18)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87y19r264m.fsf@kernel.org>
 
-Syzkaller reports [1] hitting a warning about an endpoint in use
-not having an expected type to it.
+Hello Kalle,
 
-Fix the issue by checking for the existence of all proper
-endpoints with their according types intact.
+On Fri, Apr 05, 2024 at 06:15:05PM +0300, Kalle Valo wrote:
+> Breno Leitao <leitao@debian.org> writes:
+> 
+> > struct net_device shouldn't be embedded into any structure, instead,
+> > the owner should use the private space to embed their state into
+> > net_device.
+> >
+> > This patch set fixes the problem above for ath10k and ath11k. This also
+> > fixes the conversion of qtnfmac driver to the new helper.
+> >
+> > This patch set depends on a series that is still under review:
+> > https://lore.kernel.org/all/20240404114854.2498663-1-leitao@debian.org/#t
+> >
+> > If it helps, I've pushed the tree to
+> > https://github.com/leitao/linux/tree/wireless-dummy
+> >
+> > PS: Due to lack of hardware, unfortunately all these patches are
+> > compiled tested only.
+> >
+> > Breno Leitao (3):
+> >   wifi: qtnfmac: Use netdev dummy allocator helper
+> >   wifi: ath10k: allocate dummy net_device dynamically
+> >   wifi: ath11k: allocate dummy net_device dynamically
+> 
+> Thanks for setting up the branch, that makes the testing very easy. I
+> now tested the branch using the commit below with ath11k WCN6855 hw2.0
+> on an x86 box:
+> 
+> 5be9a125d8e7 wifi: ath11k: allocate dummy net_device dynamically
+> 
+> But unfortunately it crashes, the stack trace below. I can easily test
+> your branches, just let me know what to test. A direct 'git pull'
+> command is the best.
 
-Sadly, this patch has not been tested on real hardware.
+Thanks for the test.
 
-[1] Syzkaller report:
-------------[ cut here ]------------
-usb 1-1: BOGUS urb xfer, pipe 3 != type 1
-WARNING: CPU: 0 PID: 3643 at drivers/usb/core/urb.c:504 usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
-...
-Call Trace:
- <TASK>
- ar5523_cmd+0x41b/0x780 drivers/net/wireless/ath/ar5523/ar5523.c:275
- ar5523_cmd_read drivers/net/wireless/ath/ar5523/ar5523.c:302 [inline]
- ar5523_host_available drivers/net/wireless/ath/ar5523/ar5523.c:1376 [inline]
- ar5523_probe+0x14b0/0x1d10 drivers/net/wireless/ath/ar5523/ar5523.c:1655
- usb_probe_interface+0x30f/0x7f0 drivers/usb/core/driver.c:396
- call_driver_probe drivers/base/dd.c:560 [inline]
- really_probe+0x249/0xb90 drivers/base/dd.c:639
- __driver_probe_device+0x1df/0x4d0 drivers/base/dd.c:778
- driver_probe_device+0x4c/0x1a0 drivers/base/dd.c:808
- __device_attach_driver+0x1d4/0x2e0 drivers/base/dd.c:936
- bus_for_each_drv+0x163/0x1e0 drivers/base/bus.c:427
- __device_attach+0x1e4/0x530 drivers/base/dd.c:1008
- bus_probe_device+0x1e8/0x2a0 drivers/base/bus.c:487
- device_add+0xbd9/0x1e90 drivers/base/core.c:3517
- usb_set_configuration+0x101d/0x1900 drivers/usb/core/message.c:2170
- usb_generic_driver_probe+0xbe/0x100 drivers/usb/core/generic.c:238
- usb_probe_device+0xd8/0x2c0 drivers/usb/core/driver.c:293
- call_driver_probe drivers/base/dd.c:560 [inline]
- really_probe+0x249/0xb90 drivers/base/dd.c:639
- __driver_probe_device+0x1df/0x4d0 drivers/base/dd.c:778
- driver_probe_device+0x4c/0x1a0 drivers/base/dd.c:808
- __device_attach_driver+0x1d4/0x2e0 drivers/base/dd.c:936
- bus_for_each_drv+0x163/0x1e0 drivers/base/bus.c:427
- __device_attach+0x1e4/0x530 drivers/base/dd.c:1008
- bus_probe_device+0x1e8/0x2a0 drivers/base/bus.c:487
- device_add+0xbd9/0x1e90 drivers/base/core.c:3517
- usb_new_device.cold+0x685/0x10ad drivers/usb/core/hub.c:2573
- hub_port_connect drivers/usb/core/hub.c:5353 [inline]
- hub_port_connect_change drivers/usb/core/hub.c:5497 [inline]
- port_event drivers/usb/core/hub.c:5653 [inline]
- hub_event+0x26cb/0x45d0 drivers/usb/core/hub.c:5735
- process_one_work+0x9bf/0x1710 kernel/workqueue.c:2289
- worker_thread+0x669/0x1090 kernel/workqueue.c:2436
- kthread+0x2e8/0x3a0 kernel/kthread.c:376
- ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:306
- </TASK>
+Reading the issue, I am afraid that freeing netdev explicitly
+(free_netdev()) might not be the best approach at the exit path.
 
-Reported-and-tested-by: syzbot+1bc2c2afd44f820a669f@syzkaller.appspotmail.com
-Fixes: b7d572e1871d ("ar5523: Add new driver")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
----
-v2: added 'const' qualifier to bulk_ep_addr[] per Jeff Johnson's
-helpful suggestion.
+I would like to try to leverage the ->needs_free_netdev netdev
+mechanism to do the clean-up, if that makes sense. I've updated the
+ath11k patch, and I am curious if that is what we want.
 
- drivers/net/wireless/ath/ar5523/ar5523.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+Would you mind testing a net patch I have, please?
 
-diff --git a/drivers/net/wireless/ath/ar5523/ar5523.c b/drivers/net/wireless/ath/ar5523/ar5523.c
-index 815f8f599f5d..5a55db349cb5 100644
---- a/drivers/net/wireless/ath/ar5523/ar5523.c
-+++ b/drivers/net/wireless/ath/ar5523/ar5523.c
-@@ -1594,6 +1594,20 @@ static int ar5523_probe(struct usb_interface *intf,
- 	struct ar5523 *ar;
- 	int error = -ENOMEM;
- 
-+	static const u8 bulk_ep_addr[] = {
-+		AR5523_CMD_TX_PIPE | USB_DIR_OUT,
-+		AR5523_DATA_TX_PIPE | USB_DIR_OUT,
-+		AR5523_CMD_RX_PIPE | USB_DIR_IN,
-+		AR5523_DATA_RX_PIPE | USB_DIR_IN,
-+		0};
-+
-+	if (!usb_check_bulk_endpoints(intf, bulk_ep_addr)) {
-+		dev_err(&dev->dev,
-+			"Could not find all expected endpoints\n");
-+		error = -ENODEV;
-+		goto out;
-+	}
-+
- 	/*
- 	 * Load firmware if the device requires it.  This will return
- 	 * -ENXIO on success and we'll get called back afer the usb
+  https://github.com/leitao/linux/tree/wireless-dummy_v2
+
+PS: I didn't updated the other drivers (ath10k, qtnfmac, etc).
+
+Thank you!
 
