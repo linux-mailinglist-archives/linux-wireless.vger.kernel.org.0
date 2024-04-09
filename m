@@ -1,73 +1,73 @@
-Return-Path: <linux-wireless+bounces-6043-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6044-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5236489E3F5
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 21:55:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93F5E89E3F6
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 21:56:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03438281060
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 19:55:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9B6D1C218A7
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 19:56:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B33D15749F;
-	Tue,  9 Apr 2024 19:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DC8A15749A;
+	Tue,  9 Apr 2024 19:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XqoRJ5KG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K/A1F9Oi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B1E145320
-	for <linux-wireless@vger.kernel.org>; Tue,  9 Apr 2024 19:55:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48FAE145320
+	for <linux-wireless@vger.kernel.org>; Tue,  9 Apr 2024 19:56:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712692506; cv=none; b=W2ubGSDIfxf/5rnneCIJtnOhy+2aJ3hYwC+IE78ZAwFaxVMHu4e5oqhofnrKuf8tY85wmWA+lYeoNHC9maGRtXI7hPobArEQ5dyAMrinm0D1jOhRQoIwHAql0okT6jh/hOePdT22+6m77soIFqR7HbNTCuYm47NBP2eugP4fmSU=
+	t=1712692578; cv=none; b=MD/EOp63WAZAESXCtKJTKcpEhQa2/b0fwyZq9CAMa2KPSGt0Ww4lwXq5h3GDreWKNRThwOkiIwOPwc5aV9qK53KG73GxyU6ooycow4sem/zralsooXuzbQXbjO+SDudf/D81+Rw+ZNLjVMFX5mOJCWep5yPS4bZSrgMKKZcHehc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712692506; c=relaxed/simple;
-	bh=7htcFCykE3kVuENDkRKDNmIE1Uvi3QG1pHnxS0sKBYo=;
+	s=arc-20240116; t=1712692578; c=relaxed/simple;
+	bh=DmvseEmBlaRGPWpbDFhpfjzvthRyN0bPCCz7A6Zb8Iw=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=RMzEG3tWkYgn8aCpksYaE1qi0O6WhJoPuRYPCPt5p9caG+o5xVFvsXQRQD0ym/VIW1aLE34AsllFPPHNsCcJn41CdR9/4UGbHLUdiQVbhGICVHNNvjf4YTx9AC1+LbjXE7XT2zHNTzY48GCCSbCXlWqXtCju2eytEwCgzmDyl/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XqoRJ5KG; arc=none smtp.client-ip=209.85.208.42
+	 In-Reply-To:Content-Type; b=lH/Bf2NLzQvmyddb5DbtdOXqkGL5O+4q3YGK+c5HdIeAE2u1iqnMd0G8Yjo1ZoCnNko5TffUpriUL23KuFpWgATNzCOR6q+7FBOBowxONeM7+CVEPtQKD4pk4hXgbJGiapxfmqgSxqhb7iRFuSkSsGzjAojVEkc20l3sq6PKldE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K/A1F9Oi; arc=none smtp.client-ip=209.85.167.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-566e869f631so5952760a12.0
-        for <linux-wireless@vger.kernel.org>; Tue, 09 Apr 2024 12:55:02 -0700 (PDT)
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-516d6898bebso4998274e87.3
+        for <linux-wireless@vger.kernel.org>; Tue, 09 Apr 2024 12:56:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712692501; x=1713297301; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1712692573; x=1713297373; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=MuEN9mwYtI6o1DvDEfvWvfSctjTGdUiZqHs1SdDXG6U=;
-        b=XqoRJ5KG+fjJ+SsGpoQGbNU7Qz6tEAQcIqgpkQNeHZ66qzYSu9eG58oE+24TqCtYC4
-         v057c9Z+qBSyyjYi2gx13l9wgflxm914p/40BvgVJWlw15gVmAVEfPTns6uO1DqpR9SL
-         oCd47KwYlh0TwSie/PgXqgVbZdM2YePRxyJJKPBw8AaQinYgQcCTzHvU3/E6OeI4DuNz
-         wNMWDpYZfRFjIYQ35PHpEuzA6GcMWaQSw+aZfEubHxJiPTjJDkvBddXx/satCYfO+3M6
-         Q1aUJrwHyc1KTyyTH6xtYVgHd9ddL3NGBgzDbxU8EPl9Z5rxEiuU39YH0Yu2LTv+q2wM
-         emqQ==
+        bh=1f2bf4fXajBAZvq6SfkqGj03J0gYq2Q6h3D+Cs/nU/Y=;
+        b=K/A1F9OixgFSSGuKhAKg94NxIv5bDIw4LVlF1FJEUZaWu6ZRzQXjzIb0w7WqIBdxb2
+         8dzW6z2t7VnsDxJOxRd5FmUt2tqBnN9JhFs3lmdZRunXKPvWedYOVZ0d5wtsNZoAWzHh
+         Y9zBZhzByLEDMwxobXPmDdgO8KTdsE2GyycyPC6vFEanz0O/6dpBmmrmffZA+05Xi3s/
+         YYG0a4Gw+pWZYVA4PD9x+/R028n/PmqTJBVvwjb50ICFGdmu4oQtnTjwLQIjusQnUAsu
+         Wzmbmdwzf1urWHXwt+vzn6aLJJd++qOpEkxhEwGKOfXAjBN8/IToUW31vJWKXslgTc0X
+         Gq5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712692501; x=1713297301;
+        d=1e100.net; s=20230601; t=1712692573; x=1713297373;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MuEN9mwYtI6o1DvDEfvWvfSctjTGdUiZqHs1SdDXG6U=;
-        b=WMqqfrkdFpxet60Swbp5aP3jj+mOsf/9YkVb+MoYvpKaeyaRwV6cgs04dl6mRfct47
-         FlbDyTvv+0lRROwK0uCX53yN6H0rMtGv6fHyqub4LD3eBtbzGcqph0bjhoihlViBcVD8
-         ARj2kMJHIJTdN2EwHfrwOZayrTI0/k50siemPlagQGk+wdMtye/oipN6WSreHo8hGisW
-         Tuh3uOIaRGeTcuviZYOmY1gz9KrQ/O1EjscVTg5vLuUALORpRmsKGSdJJxg0FT1LWmpM
-         +z/lpLfJCx6kvL8e9nsCU9fU6sLFu6OArD2Zm/qmEiNSrH4kUadSvBbNDZWf+A9+5zdq
-         DLgg==
-X-Gm-Message-State: AOJu0YzYF3AwtSQalw84rC98cikCMg5aWW34iPIxAJ/7hJdycZ1eOx0M
-	Vb0GCRl8MzYkO6tIIPNRgKTqjY3zkT1Za8TDBuuzLb7z1V9n7AwltF0fXctt/Oo=
-X-Google-Smtp-Source: AGHT+IEfwI8jBCavdOBjJTLP/MkVyt+avYT/Tgq206pcNJQCwc7jF/4+9nsmaxulmCaF4Uss15huhA==
-X-Received: by 2002:a50:9ea6:0:b0:56e:edc:9837 with SMTP id a35-20020a509ea6000000b0056e0edc9837mr393525edf.35.1712692501131;
-        Tue, 09 Apr 2024 12:55:01 -0700 (PDT)
+        bh=1f2bf4fXajBAZvq6SfkqGj03J0gYq2Q6h3D+Cs/nU/Y=;
+        b=XgPHIwnNIeykDT32VPdffAt/yI1kBwtF191fHacBqUts09/okxO8tzzZ+V989JEaXr
+         kiTGegrQOx9z/2imY0sA/3jw4yjrguq2qYFp4Ayo0xhYdthd3P0vt947UpEtJr6OK9Qy
+         S6uGF81BC7z8gRURXSZeqDfFp2GE+SSEbfow+X0a4fyS5ImbyRNTjW8rbYvkMCpfnqHu
+         oUnfsyujkEJnTfE1qR4yn/Ch2JR8Dbz1sVwf8GkTwQr/0obfvbZWEU7F6unG6LG17pZU
+         CJgIo5eHPBuXqMqSH7f+r1mz8+IFcfWP/zbYveL0wUbQYKFPRC28eaRachMUUp+u435M
+         pTtg==
+X-Gm-Message-State: AOJu0YznFlCbkvz34vwJWl5r6+DOR4NfukyWZvTEbBzR20CzH4JnczCj
+	W4MhgMR7asxCRVVdzJ6nsssIZglqNSHbrMtC7mjBT32tEQjtqmoI0Puotvmnae8=
+X-Google-Smtp-Source: AGHT+IHi2Bb4+kKVXgXSW9dcPEjoobmYUPLSVE/o2aumUHoLZRK83IIlunmrXIKMgdqGEN+FY3eVnw==
+X-Received: by 2002:a19:7605:0:b0:515:d4bc:c64d with SMTP id c5-20020a197605000000b00515d4bcc64dmr223168lff.68.1712692572806;
+        Tue, 09 Apr 2024 12:56:12 -0700 (PDT)
 Received: from [192.168.1.50] ([79.113.154.240])
-        by smtp.gmail.com with ESMTPSA id da23-20020a056402177700b0056e672573e5sm2206935edb.88.2024.04.09.12.55.00
+        by smtp.gmail.com with ESMTPSA id m8-20020a1709061ec800b00a46d2e9fd73sm6022952ejj.222.2024.04.09.12.56.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Apr 2024 12:55:00 -0700 (PDT)
-Message-ID: <ea74a24b-ea49-4539-9a73-2b26ce07fa45@gmail.com>
-Date: Tue, 9 Apr 2024 22:54:59 +0300
+        Tue, 09 Apr 2024 12:56:12 -0700 (PDT)
+Message-ID: <a8357033-3301-47ec-a922-ce56db3f2ef3@gmail.com>
+Date: Tue, 9 Apr 2024 22:56:11 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,7 +75,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH v4 05/14] wifi: rtlwifi: Add rtl8192du/table.{c,h}
+Subject: [PATCH v4 06/14] wifi: rtlwifi: Add rtl8192du/hw.{c,h}
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 Cc: Ping-Ke Shih <pkshih@realtek.com>,
@@ -88,15 +88,25 @@ In-Reply-To: <91d932b3-5c72-4416-920e-f2bf4fc9b039@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-These contain the MAC, BB, RF, and AGC initialisation tables for
-RTL8192DU.
+These contain mostly hardware init/deinit routines for RTL8192DU.
 
 Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 ---
 v4:
- - Fix table.h header guard.
- - Make the arrays static const and add accessor functions as suggested
-   by Jeff Johnson.
+ - Fix hw.h header guard.
+ - Use more bit definitions.
+ - Remove unnecessary parentheses.
+ - Rename delay to retry.
+ - Adjust whitespace.
+ - Initialise variable retry.
+ - Replace the global variables with members of rtl_priv:
+	curveindex_2g
+	curveindex_5g
+	mutex_for_hw_init (used to be globalmutex_for_power_and_efuse)
+	mutex_for_power_on_off (used to be globalmutex_power)
+ - Delete globalmutex_for_mac0_2g_mac1_5g. Extend mutex_for_hw_init's
+   critical section instead.
+ - Add empty lines for better readability.
 
 v3:
  - No change.
@@ -104,1779 +114,1282 @@ v3:
 v2:
  - Patch is new in v2, split from patch 3/3 in v1.
 ---
- .../realtek/rtlwifi/rtl8192du/table.c         | 1725 +++++++++++++++++
- .../realtek/rtlwifi/rtl8192du/table.h         |   29 +
- 2 files changed, 1754 insertions(+)
- create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.c
- create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.h
+ .../wireless/realtek/rtlwifi/rtl8192du/hw.c   | 1232 +++++++++++++++++
+ .../wireless/realtek/rtlwifi/rtl8192du/hw.h   |   24 +
+ 2 files changed, 1256 insertions(+)
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.h
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.c
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.c
 new file mode 100644
-index 000000000000..efc96db55057
+index 000000000000..14a3e4685dee
 --- /dev/null
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.c
-@@ -0,0 +1,1725 @@
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.c
+@@ -0,0 +1,1232 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/* Copyright(c) 2009-2012  Realtek Corporation.*/
 +
-+#include <linux/types.h>
++#include "../wifi.h"
++#include "../efuse.h"
++#include "../base.h"
++#include "../regd.h"
++#include "../cam.h"
++#include "../ps.h"
++#include "../pci.h"
++#include "../usb.h"
++#include "../rtl8192d/reg.h"
++#include "../rtl8192d/def.h"
++#include "../rtl8192d/dm_common.h"
++#include "../rtl8192d/fw_common.h"
++#include "../rtl8192d/hw_common.h"
++#include "../rtl8192d/phy_common.h"
++#include "phy.h"
++#include "dm.h"
++#include "fw.h"
++#include "led.h"
++#include "hw.h"
++#include "trx.h"
 +
-+#include "table.h"
-+
-+static const u32 rtl8192du_phy_reg_2tarray[PHY_REG_2T_ARRAYLENGTH] = {
-+	0x800, 0x80040002,
-+	0x804, 0x00000003,
-+	0x808, 0x0000fc00,
-+	0x80c, 0x0000000a,
-+	0x810, 0x10001331,
-+	0x814, 0x020c3d10,
-+	0x818, 0x02200385,
-+	0x81c, 0x00000000,
-+	0x820, 0x01000100,
-+	0x824, 0x00390004,
-+	0x828, 0x01000100,
-+	0x82c, 0x00390004,
-+	0x830, 0x27272727,
-+	0x834, 0x27272727,
-+	0x838, 0x27272727,
-+	0x83c, 0x27272727,
-+	0x840, 0x00010000,
-+	0x844, 0x00010000,
-+	0x848, 0x27272727,
-+	0x84c, 0x27272727,
-+	0x850, 0x00000000,
-+	0x854, 0x00000000,
-+	0x858, 0x569a569a,
-+	0x85c, 0x0c1b25a4,
-+	0x860, 0x66e60250,
-+	0x864, 0x061f0150,
-+	0x868, 0x27272727,
-+	0x86c, 0x272b2b2b,
-+	0x870, 0x07000700,
-+	0x874, 0x22188000,
-+	0x878, 0x08080808,
-+	0x87c, 0x0001fff8,
-+	0x880, 0xc0083070,
-+	0x884, 0x00000cd5,
-+	0x888, 0x00000000,
-+	0x88c, 0xcc0000c0,
-+	0x890, 0x00000800,
-+	0x894, 0xfffffffe,
-+	0x898, 0x40302010,
-+	0x89c, 0x00706050,
-+	0x900, 0x00000000,
-+	0x904, 0x00000023,
-+	0x908, 0x00000000,
-+	0x90c, 0x81121313,
-+	0xa00, 0x00d047c8,
-+	0xa04, 0x80ff000c,
-+	0xa08, 0x8c8a8300,
-+	0xa0c, 0x2e68120f,
-+	0xa10, 0x9500bb78,
-+	0xa14, 0x11144028,
-+	0xa18, 0x00881117,
-+	0xa1c, 0x89140f00,
-+	0xa20, 0x1a1b0000,
-+	0xa24, 0x090e1317,
-+	0xa28, 0x00000204,
-+	0xa2c, 0x00d30000,
-+	0xa70, 0x101fff00,
-+	0xa74, 0x00000007,
-+	0xc00, 0x40071d40,
-+	0xc04, 0x03a05633,
-+	0xc08, 0x001000e4,
-+	0xc0c, 0x6c6c6c6c,
-+	0xc10, 0x08800000,
-+	0xc14, 0x40000100,
-+	0xc18, 0x08800000,
-+	0xc1c, 0x40000100,
-+	0xc20, 0x00000000,
-+	0xc24, 0x00000000,
-+	0xc28, 0x00000000,
-+	0xc2c, 0x00000000,
-+	0xc30, 0x69e9ac44,
-+	0xc34, 0x469652af,
-+	0xc38, 0x49795994,
-+	0xc3c, 0x0a979718,
-+	0xc40, 0x1f7c403f,
-+	0xc44, 0x000100b7,
-+	0xc48, 0xec020107,
-+	0xc4c, 0x007f037f,
-+	0xc50, 0x69543420,
-+	0xc54, 0x43bc009e,
-+	0xc58, 0x69543420,
-+	0xc5c, 0x433c00a8,
-+	0xc60, 0x00000000,
-+	0xc64, 0x7112848b,
-+	0xc68, 0x47c00bff,
-+	0xc6c, 0x00000036,
-+	0xc70, 0x2c7f000d,
-+	0xc74, 0x258610db,
-+	0xc78, 0x0000001f,
-+	0xc7c, 0x40b95612,
-+	0xc80, 0x40000100,
-+	0xc84, 0x20f60000,
-+	0xc88, 0x40000100,
-+	0xc8c, 0xa0e40000,
-+	0xc90, 0x00121820,
-+	0xc94, 0x00000007,
-+	0xc98, 0x00121820,
-+	0xc9c, 0x00007f7f,
-+	0xca0, 0x00000000,
-+	0xca4, 0x00000080,
-+	0xca8, 0x00000000,
-+	0xcac, 0x00000000,
-+	0xcb0, 0x00000000,
-+	0xcb4, 0x00000000,
-+	0xcb8, 0x00000000,
-+	0xcbc, 0x28000000,
-+	0xcc0, 0x00000000,
-+	0xcc4, 0x00000000,
-+	0xcc8, 0x00000000,
-+	0xccc, 0x00000000,
-+	0xcd0, 0x00000000,
-+	0xcd4, 0x00000000,
-+	0xcd8, 0x64b11e20,
-+	0xcdc, 0xe0767533,
-+	0xce0, 0x00222222,
-+	0xce4, 0x00000000,
-+	0xce8, 0x37644302,
-+	0xcec, 0x2f97d40c,
-+	0xd00, 0x00080740,
-+	0xd04, 0x00020403,
-+	0xd08, 0x0000907f,
-+	0xd0c, 0x20010201,
-+	0xd10, 0xa0633333,
-+	0xd14, 0x3333bc43,
-+	0xd18, 0x7a8f5b6b,
-+	0xd2c, 0xcc979975,
-+	0xd30, 0x00000000,
-+	0xd34, 0x80608404,
-+	0xd38, 0x00000000,
-+	0xd3c, 0x00027353,
-+	0xd40, 0x00000000,
-+	0xd44, 0x00000000,
-+	0xd48, 0x00000000,
-+	0xd4c, 0x00000000,
-+	0xd50, 0x6437140a,
-+	0xd54, 0x00000000,
-+	0xd58, 0x00000000,
-+	0xd5c, 0x30032064,
-+	0xd60, 0x4653de68,
-+	0xd64, 0x04518a3c,
-+	0xd68, 0x00002101,
-+	0xd6c, 0x2a201c16,
-+	0xd70, 0x1812362e,
-+	0xd74, 0x322c2220,
-+	0xd78, 0x000e3c24,
-+	0xe00, 0x2a2a2a2a,
-+	0xe04, 0x2a2a2a2a,
-+	0xe08, 0x03902a2a,
-+	0xe10, 0x2a2a2a2a,
-+	0xe14, 0x2a2a2a2a,
-+	0xe18, 0x2a2a2a2a,
-+	0xe1c, 0x2a2a2a2a,
-+	0xe28, 0x00000000,
-+	0xe30, 0x1000dc1f,
-+	0xe34, 0x10008c1f,
-+	0xe38, 0x02140102,
-+	0xe3c, 0x681604c2,
-+	0xe40, 0x01007c00,
-+	0xe44, 0x01004800,
-+	0xe48, 0xfb000000,
-+	0xe4c, 0x000028d1,
-+	0xe50, 0x1000dc1f,
-+	0xe54, 0x10008c1f,
-+	0xe58, 0x02140102,
-+	0xe5c, 0x28160d05,
-+	0xe60, 0x00000010,
-+	0xe68, 0x001b25a4,
-+	0xe6c, 0x63db25a4,
-+	0xe70, 0x63db25a4,
-+	0xe74, 0x0c126da4,
-+	0xe78, 0x0c126da4,
-+	0xe7c, 0x0c126da4,
-+	0xe80, 0x0c126da4,
-+	0xe84, 0x63db25a4,
-+	0xe88, 0x0c126da4,
-+	0xe8c, 0x63db25a4,
-+	0xed0, 0x63db25a4,
-+	0xed4, 0x63db25a4,
-+	0xed8, 0x63db25a4,
-+	0xedc, 0x001b25a4,
-+	0xee0, 0x001b25a4,
-+	0xeec, 0x6fdb25a4,
-+	0xf14, 0x00000003,
-+	0xf1c, 0x00000064,
-+	0xf4c, 0x00000004,
-+	0xf00, 0x00000300,
-+};
-+
-+const u32 *rtl8192du_get_phy_reg_2tarray(void)
++static void _rtl92de_set_bcn_ctrl_reg(struct ieee80211_hw *hw,
++				      u8 set_bits, u8 clear_bits)
 +{
-+	return rtl8192du_phy_reg_2tarray;
++	struct rtl_usb *rtlusb = rtl_usbdev(rtl_usbpriv(hw));
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++
++	rtlusb->reg_bcn_ctrl_val |= set_bits;
++	rtlusb->reg_bcn_ctrl_val &= ~clear_bits;
++	rtl_write_byte(rtlpriv, REG_BCN_CTRL, (u8)rtlusb->reg_bcn_ctrl_val);
 +}
 +
-+static const u32 rtl8192du_phy_reg_array_pg[PHY_REG_ARRAY_PG_LENGTH] = {
-+	0xe00, 0xffffffff, 0x07090c0c,
-+	0xe04, 0xffffffff, 0x01020405,
-+	0xe08, 0x0000ff00, 0x00000000,
-+	0x86c, 0xffffff00, 0x00000000,
-+	0xe10, 0xffffffff, 0x0b0c0c0e,
-+	0xe14, 0xffffffff, 0x01030506,
-+	0xe18, 0xffffffff, 0x0b0c0d0e,
-+	0xe1c, 0xffffffff, 0x01030509,
-+	0x830, 0xffffffff, 0x07090c0c,
-+	0x834, 0xffffffff, 0x01020405,
-+	0x838, 0xffffff00, 0x00000000,
-+	0x86c, 0x000000ff, 0x00000000,
-+	0x83c, 0xffffffff, 0x0b0c0c0e,
-+	0x848, 0xffffffff, 0x01030506,
-+	0x84c, 0xffffffff, 0x0b0c0d0e,
-+	0x868, 0xffffffff, 0x01030509,
-+	0xe00, 0xffffffff, 0x00000000,
-+	0xe04, 0xffffffff, 0x00000000,
-+	0xe08, 0x0000ff00, 0x00000000,
-+	0x86c, 0xffffff00, 0x00000000,
-+	0xe10, 0xffffffff, 0x00000000,
-+	0xe14, 0xffffffff, 0x00000000,
-+	0xe18, 0xffffffff, 0x00000000,
-+	0xe1c, 0xffffffff, 0x00000000,
-+	0x830, 0xffffffff, 0x00000000,
-+	0x834, 0xffffffff, 0x00000000,
-+	0x838, 0xffffff00, 0x00000000,
-+	0x86c, 0x000000ff, 0x00000000,
-+	0x83c, 0xffffffff, 0x00000000,
-+	0x848, 0xffffffff, 0x00000000,
-+	0x84c, 0xffffffff, 0x00000000,
-+	0x868, 0xffffffff, 0x00000000,
-+	0xe00, 0xffffffff, 0x04040404,
-+	0xe04, 0xffffffff, 0x00020204,
-+	0xe08, 0x0000ff00, 0x00000000,
-+	0x86c, 0xffffff00, 0x00000000,
-+	0xe10, 0xffffffff, 0x06060606,
-+	0xe14, 0xffffffff, 0x00020406,
-+	0xe18, 0xffffffff, 0x00000000,
-+	0xe1c, 0xffffffff, 0x00000000,
-+	0x830, 0xffffffff, 0x04040404,
-+	0x834, 0xffffffff, 0x00020204,
-+	0x838, 0xffffff00, 0x00000000,
-+	0x86c, 0x000000ff, 0x00000000,
-+	0x83c, 0xffffffff, 0x06060606,
-+	0x848, 0xffffffff, 0x00020406,
-+	0x84c, 0xffffffff, 0x00000000,
-+	0x868, 0xffffffff, 0x00000000,
-+	0xe00, 0xffffffff, 0x00000000,
-+	0xe04, 0xffffffff, 0x00000000,
-+	0xe08, 0x0000ff00, 0x00000000,
-+	0x86c, 0xffffff00, 0x00000000,
-+	0xe10, 0xffffffff, 0x00000000,
-+	0xe14, 0xffffffff, 0x00000000,
-+	0xe18, 0xffffffff, 0x00000000,
-+	0xe1c, 0xffffffff, 0x00000000,
-+	0x830, 0xffffffff, 0x00000000,
-+	0x834, 0xffffffff, 0x00000000,
-+	0x838, 0xffffff00, 0x00000000,
-+	0x86c, 0x000000ff, 0x00000000,
-+	0x83c, 0xffffffff, 0x00000000,
-+	0x848, 0xffffffff, 0x00000000,
-+	0x84c, 0xffffffff, 0x00000000,
-+	0x868, 0xffffffff, 0x00000000,
-+	0xe00, 0xffffffff, 0x00000000,
-+	0xe04, 0xffffffff, 0x00000000,
-+	0xe08, 0x0000ff00, 0x00000000,
-+	0x86c, 0xffffff00, 0x00000000,
-+	0xe10, 0xffffffff, 0x00000000,
-+	0xe14, 0xffffffff, 0x00000000,
-+	0xe18, 0xffffffff, 0x00000000,
-+	0xe1c, 0xffffffff, 0x00000000,
-+	0x830, 0xffffffff, 0x00000000,
-+	0x834, 0xffffffff, 0x00000000,
-+	0x838, 0xffffff00, 0x00000000,
-+	0x86c, 0x000000ff, 0x00000000,
-+	0x83c, 0xffffffff, 0x00000000,
-+	0x848, 0xffffffff, 0x00000000,
-+	0x84c, 0xffffffff, 0x00000000,
-+	0x868, 0xffffffff, 0x00000000,
-+	0xe00, 0xffffffff, 0x04040404,
-+	0xe04, 0xffffffff, 0x00020204,
-+	0xe08, 0x0000ff00, 0x00000000,
-+	0x86c, 0xffffff00, 0x00000000,
-+	0xe10, 0xffffffff, 0x00000000,
-+	0xe14, 0xffffffff, 0x00000000,
-+	0xe18, 0xffffffff, 0x00000000,
-+	0xe1c, 0xffffffff, 0x00000000,
-+	0x830, 0xffffffff, 0x04040404,
-+	0x834, 0xffffffff, 0x00020204,
-+	0x838, 0xffffff00, 0x00000000,
-+	0x86c, 0x000000ff, 0x00000000,
-+	0x83c, 0xffffffff, 0x00000000,
-+	0x848, 0xffffffff, 0x00000000,
-+	0x84c, 0xffffffff, 0x00000000,
-+	0x868, 0xffffffff, 0x00000000,
-+	0xe00, 0xffffffff, 0x00000000,
-+	0xe04, 0xffffffff, 0x00000000,
-+	0xe08, 0x0000ff00, 0x00000000,
-+	0x86c, 0xffffff00, 0x00000000,
-+	0xe10, 0xffffffff, 0x00000000,
-+	0xe14, 0xffffffff, 0x00000000,
-+	0xe18, 0xffffffff, 0x00000000,
-+	0xe1c, 0xffffffff, 0x00000000,
-+	0x830, 0xffffffff, 0x00000000,
-+	0x834, 0xffffffff, 0x00000000,
-+	0x838, 0xffffff00, 0x00000000,
-+	0x86c, 0x000000ff, 0x00000000,
-+	0x83c, 0xffffffff, 0x00000000,
-+	0x848, 0xffffffff, 0x00000000,
-+	0x84c, 0xffffffff, 0x00000000,
-+	0x868, 0xffffffff, 0x00000000,
-+	0xe00, 0xffffffff, 0x04040404,
-+	0xe04, 0xffffffff, 0x00020204,
-+	0xe08, 0x0000ff00, 0x00000000,
-+	0x86c, 0xffffff00, 0x00000000,
-+	0xe10, 0xffffffff, 0x08080808,
-+	0xe14, 0xffffffff, 0x00040408,
-+	0xe18, 0xffffffff, 0x00000000,
-+	0xe1c, 0xffffffff, 0x00000000,
-+	0x830, 0xffffffff, 0x04040404,
-+	0x834, 0xffffffff, 0x00020204,
-+	0x838, 0xffffff00, 0x00000000,
-+	0x86c, 0x000000ff, 0x00000000,
-+	0x83c, 0xffffffff, 0x08080808,
-+	0x848, 0xffffffff, 0x00040408,
-+	0x84c, 0xffffffff, 0x00000000,
-+	0x868, 0xffffffff, 0x00000000,
-+	0xe00, 0xffffffff, 0x04040404,
-+	0xe04, 0xffffffff, 0x00020204,
-+	0xe08, 0x0000ff00, 0x00000000,
-+	0x86c, 0xffffff00, 0x00000000,
-+	0xe10, 0xffffffff, 0x08080808,
-+	0xe14, 0xffffffff, 0x00040408,
-+	0xe18, 0xffffffff, 0x00000000,
-+	0xe1c, 0xffffffff, 0x00000000,
-+	0x830, 0xffffffff, 0x04040404,
-+	0x834, 0xffffffff, 0x00020204,
-+	0x838, 0xffffff00, 0x00000000,
-+	0x86c, 0x000000ff, 0x00000000,
-+	0x83c, 0xffffffff, 0x08080808,
-+	0x848, 0xffffffff, 0x00040408,
-+	0x84c, 0xffffffff, 0x00000000,
-+	0x868, 0xffffffff, 0x00000000,
-+	0xe00, 0xffffffff, 0x04040404,
-+	0xe04, 0xffffffff, 0x00020204,
-+	0xe08, 0x0000ff00, 0x00000000,
-+	0x86c, 0xffffff00, 0x00000000,
-+	0xe10, 0xffffffff, 0x08080808,
-+	0xe14, 0xffffffff, 0x00040408,
-+	0xe18, 0xffffffff, 0x00000000,
-+	0xe1c, 0xffffffff, 0x00000000,
-+	0x830, 0xffffffff, 0x04040404,
-+	0x834, 0xffffffff, 0x00020204,
-+	0x838, 0xffffff00, 0x00000000,
-+	0x86c, 0x000000ff, 0x00000000,
-+	0x83c, 0xffffffff, 0x08080808,
-+	0x848, 0xffffffff, 0x00040408,
-+	0x84c, 0xffffffff, 0x00000000,
-+	0x868, 0xffffffff, 0x00000000,
-+	0xe00, 0xffffffff, 0x04040404,
-+	0xe04, 0xffffffff, 0x00020204,
-+	0xe08, 0x0000ff00, 0x00000000,
-+	0x86c, 0xffffff00, 0x00000000,
-+	0xe10, 0xffffffff, 0x08080808,
-+	0xe14, 0xffffffff, 0x00040408,
-+	0xe18, 0xffffffff, 0x00000000,
-+	0xe1c, 0xffffffff, 0x00000000,
-+	0x830, 0xffffffff, 0x04040404,
-+	0x834, 0xffffffff, 0x00020204,
-+	0x838, 0xffffff00, 0x00000000,
-+	0x86c, 0x000000ff, 0x00000000,
-+	0x83c, 0xffffffff, 0x08080808,
-+	0x848, 0xffffffff, 0x00040408,
-+	0x84c, 0xffffffff, 0x00000000,
-+	0x868, 0xffffffff, 0x00000000,
-+	0xe00, 0xffffffff, 0x04040404,
-+	0xe04, 0xffffffff, 0x00020204,
-+	0xe08, 0x0000ff00, 0x00000000,
-+	0x86c, 0xffffff00, 0x00000000,
-+	0xe10, 0xffffffff, 0x08080808,
-+	0xe14, 0xffffffff, 0x00040408,
-+	0xe18, 0xffffffff, 0x00000000,
-+	0xe1c, 0xffffffff, 0x00000000,
-+	0x830, 0xffffffff, 0x04040404,
-+	0x834, 0xffffffff, 0x00020204,
-+	0x838, 0xffffff00, 0x00000000,
-+	0x86c, 0x000000ff, 0x00000000,
-+	0x83c, 0xffffffff, 0x08080808,
-+	0x848, 0xffffffff, 0x00040408,
-+	0x84c, 0xffffffff, 0x00000000,
-+	0x868, 0xffffffff, 0x00000000,
-+	0xe00, 0xffffffff, 0x04040404,
-+	0xe04, 0xffffffff, 0x00020204,
-+	0xe08, 0x0000ff00, 0x00000000,
-+	0x86c, 0xffffff00, 0x00000000,
-+	0xe10, 0xffffffff, 0x08080808,
-+	0xe14, 0xffffffff, 0x00040408,
-+	0xe18, 0xffffffff, 0x00000000,
-+	0xe1c, 0xffffffff, 0x00000000,
-+	0x830, 0xffffffff, 0x04040404,
-+	0x834, 0xffffffff, 0x00020204,
-+	0x838, 0xffffff00, 0x00000000,
-+	0x86c, 0x000000ff, 0x00000000,
-+	0x83c, 0xffffffff, 0x08080808,
-+	0x848, 0xffffffff, 0x00040408,
-+	0x84c, 0xffffffff, 0x00000000,
-+	0x868, 0xffffffff, 0x00000000,
-+};
-+
-+const u32 *rtl8192du_get_phy_reg_array_pg(void)
++static void _rtl92de_enable_bcn_sub_func(struct ieee80211_hw *hw)
 +{
-+	return rtl8192du_phy_reg_array_pg;
++	_rtl92de_set_bcn_ctrl_reg(hw, 0, BIT(1));
 +}
 +
-+static const u32 rtl8192du_radioa_2tarray[RADIOA_2T_ARRAYLENGTH] = {
-+	0x000, 0x00030000,
-+	0x001, 0x00030000,
-+	0x002, 0x00000000,
-+	0x003, 0x00018c63,
-+	0x004, 0x00018c63,
-+	0x008, 0x00084000,
-+	0x00b, 0x0001c000,
-+	0x00e, 0x00018c67,
-+	0x00f, 0x00000851,
-+	0x014, 0x00021440,
-+	0x018, 0x00017524,
-+	0x019, 0x00000000,
-+	0x01d, 0x000a1290,
-+	0x023, 0x00001558,
-+	0x01a, 0x00030a99,
-+	0x01b, 0x00040b00,
-+	0x01c, 0x000fc339,
-+	0x03a, 0x000a57eb,
-+	0x03b, 0x00020000,
-+	0x03c, 0x000ff454,
-+	0x020, 0x0000aa52,
-+	0x021, 0x00054000,
-+	0x040, 0x0000aa52,
-+	0x041, 0x00014000,
-+	0x025, 0x000803be,
-+	0x026, 0x000fc638,
-+	0x027, 0x00077c18,
-+	0x028, 0x000de471,
-+	0x029, 0x000d7110,
-+	0x02a, 0x0008cb04,
-+	0x02b, 0x0004128b,
-+	0x02c, 0x00001840,
-+	0x043, 0x0002444f,
-+	0x044, 0x0001adb0,
-+	0x045, 0x00056467,
-+	0x046, 0x0008992c,
-+	0x047, 0x0000452c,
-+	0x048, 0x000f9c43,
-+	0x049, 0x00002e0c,
-+	0x04a, 0x000546eb,
-+	0x04b, 0x0008966c,
-+	0x04c, 0x0000dde9,
-+	0x018, 0x00007401,
-+	0x000, 0x00070000,
-+	0x012, 0x000dc000,
-+	0x012, 0x00090000,
-+	0x012, 0x00051000,
-+	0x012, 0x00012000,
-+	0x013, 0x000287b7,
-+	0x013, 0x000247ab,
-+	0x013, 0x0002079f,
-+	0x013, 0x0001c793,
-+	0x013, 0x0001839b,
-+	0x013, 0x00014392,
-+	0x013, 0x0001019a,
-+	0x013, 0x0000c191,
-+	0x013, 0x00008194,
-+	0x013, 0x000040a0,
-+	0x013, 0x00000018,
-+	0x015, 0x0000f424,
-+	0x015, 0x0004f424,
-+	0x015, 0x0008f424,
-+	0x016, 0x000e1330,
-+	0x016, 0x000a1330,
-+	0x016, 0x00061330,
-+	0x016, 0x00021330,
-+	0x018, 0x00017524,
-+	0x000, 0x00070000,
-+	0x012, 0x000cf000,
-+	0x012, 0x000bc000,
-+	0x012, 0x00078000,
-+	0x012, 0x00000000,
-+	0x013, 0x000287bc,
-+	0x013, 0x000247b0,
-+	0x013, 0x000203b4,
-+	0x013, 0x0001c3a8,
-+	0x013, 0x000181b4,
-+	0x013, 0x000141a8,
-+	0x013, 0x000100b4,
-+	0x013, 0x0000c0a8,
-+	0x013, 0x0000b030,
-+	0x013, 0x00004024,
-+	0x013, 0x00000018,
-+	0x015, 0x0000f4c3,
-+	0x015, 0x0004f4c3,
-+	0x015, 0x0008f4c3,
-+	0x016, 0x000e085f,
-+	0x016, 0x000a085f,
-+	0x016, 0x0006085f,
-+	0x016, 0x0002085f,
-+	0x018, 0x00037524,
-+	0x000, 0x00070000,
-+	0x012, 0x000cf000,
-+	0x012, 0x000bc000,
-+	0x012, 0x00078000,
-+	0x012, 0x00000000,
-+	0x013, 0x000287bc,
-+	0x013, 0x000247b0,
-+	0x013, 0x000203b4,
-+	0x013, 0x0001c3a8,
-+	0x013, 0x000181b4,
-+	0x013, 0x000141a8,
-+	0x013, 0x000100b4,
-+	0x013, 0x0000c0a8,
-+	0x013, 0x0000b030,
-+	0x013, 0x00004024,
-+	0x013, 0x00000018,
-+	0x015, 0x0000f4c3,
-+	0x015, 0x0004f4c3,
-+	0x015, 0x0008f4c3,
-+	0x016, 0x000e085f,
-+	0x016, 0x000a085f,
-+	0x016, 0x0006085f,
-+	0x016, 0x0002085f,
-+	0x018, 0x00057568,
-+	0x000, 0x00070000,
-+	0x012, 0x000cf000,
-+	0x012, 0x000bc000,
-+	0x012, 0x00078000,
-+	0x012, 0x00000000,
-+	0x013, 0x000287bc,
-+	0x013, 0x000247b0,
-+	0x013, 0x000203b4,
-+	0x013, 0x0001c3a8,
-+	0x013, 0x000181b4,
-+	0x013, 0x000141a8,
-+	0x013, 0x000100b4,
-+	0x013, 0x0000c0a8,
-+	0x013, 0x0000b030,
-+	0x013, 0x00004024,
-+	0x013, 0x00000018,
-+	0x015, 0x0000f4c3,
-+	0x015, 0x0004f4c3,
-+	0x015, 0x0008f4c3,
-+	0x016, 0x000e085f,
-+	0x016, 0x000a085f,
-+	0x016, 0x0006085f,
-+	0x016, 0x0002085f,
-+	0x030, 0x0004470f,
-+	0x031, 0x00044ff0,
-+	0x032, 0x00000070,
-+	0x033, 0x000dd480,
-+	0x034, 0x000ffac0,
-+	0x035, 0x000b80c0,
-+	0x036, 0x00077000,
-+	0x037, 0x00064ff2,
-+	0x038, 0x000e7661,
-+	0x039, 0x00000e90,
-+	0x000, 0x00030000,
-+	0x018, 0x0000f401,
-+	0x0fe, 0x00000000,
-+	0x0fe, 0x00000000,
-+	0x01e, 0x00088009,
-+	0x01f, 0x00080003,
-+	0x0fe, 0x00000000,
-+	0x01e, 0x00088001,
-+	0x01f, 0x00080000,
-+	0x0fe, 0x00000000,
-+	0x018, 0x00097524,
-+	0x0fe, 0x00000000,
-+	0x0fe, 0x00000000,
-+	0x0fe, 0x00000000,
-+	0x0fe, 0x00000000,
-+	0x02b, 0x00041289,
-+	0x0fe, 0x00000000,
-+	0x02d, 0x0006aaaa,
-+	0x02e, 0x000b4d01,
-+	0x02d, 0x00080000,
-+	0x02e, 0x00004d02,
-+	0x02d, 0x00095555,
-+	0x02e, 0x00054d03,
-+	0x02d, 0x000aaaaa,
-+	0x02e, 0x000b4d04,
-+	0x02d, 0x000c0000,
-+	0x02e, 0x00004d05,
-+	0x02d, 0x000d5555,
-+	0x02e, 0x00054d06,
-+	0x02d, 0x000eaaaa,
-+	0x02e, 0x000b4d07,
-+	0x02d, 0x00000000,
-+	0x02e, 0x00005108,
-+	0x02d, 0x00015555,
-+	0x02e, 0x00055109,
-+	0x02d, 0x0002aaaa,
-+	0x02e, 0x000b510a,
-+	0x02d, 0x00040000,
-+	0x02e, 0x0000510b,
-+	0x02d, 0x00055555,
-+	0x02e, 0x0005510c,
-+};
-+
-+const u32 *rtl8192du_get_radioa_2tarray(void)
++static void _rtl92de_disable_bcn_sub_func(struct ieee80211_hw *hw)
 +{
-+	return rtl8192du_radioa_2tarray;
++	_rtl92de_set_bcn_ctrl_reg(hw, BIT(1), 0);
 +}
 +
-+static const u32 rtl8192du_radiob_2tarray[RADIOB_2T_ARRAYLENGTH] = {
-+	0x000, 0x00030000,
-+	0x001, 0x00030000,
-+	0x002, 0x00000000,
-+	0x003, 0x00018c63,
-+	0x004, 0x00018c63,
-+	0x008, 0x00084000,
-+	0x00b, 0x0001c000,
-+	0x00e, 0x00018c67,
-+	0x00f, 0x00000851,
-+	0x014, 0x00021440,
-+	0x018, 0x00007401,
-+	0x019, 0x00000060,
-+	0x01d, 0x000a1290,
-+	0x023, 0x00001558,
-+	0x01a, 0x00030a99,
-+	0x01b, 0x00040b00,
-+	0x01c, 0x000fc339,
-+	0x03a, 0x000a57eb,
-+	0x03b, 0x00020000,
-+	0x03c, 0x000ff454,
-+	0x020, 0x0000aa52,
-+	0x021, 0x00054000,
-+	0x040, 0x0000aa52,
-+	0x041, 0x00014000,
-+	0x025, 0x000803be,
-+	0x026, 0x000fc638,
-+	0x027, 0x00077c18,
-+	0x028, 0x000d1c31,
-+	0x029, 0x000d7110,
-+	0x02a, 0x000aeb04,
-+	0x02b, 0x0004128b,
-+	0x02c, 0x00001840,
-+	0x043, 0x0002444f,
-+	0x044, 0x0001adb0,
-+	0x045, 0x00056467,
-+	0x046, 0x0008992c,
-+	0x047, 0x0000452c,
-+	0x048, 0x000f9c43,
-+	0x049, 0x00002e0c,
-+	0x04a, 0x000546eb,
-+	0x04b, 0x0008966c,
-+	0x04c, 0x0000dde9,
-+	0x018, 0x00007401,
-+	0x000, 0x00070000,
-+	0x012, 0x000dc000,
-+	0x012, 0x00090000,
-+	0x012, 0x00051000,
-+	0x012, 0x00012000,
-+	0x013, 0x000287b7,
-+	0x013, 0x000247ab,
-+	0x013, 0x0002079f,
-+	0x013, 0x0001c793,
-+	0x013, 0x0001839b,
-+	0x013, 0x00014392,
-+	0x013, 0x0001019a,
-+	0x013, 0x0000c191,
-+	0x013, 0x00008194,
-+	0x013, 0x000040a0,
-+	0x013, 0x00000018,
-+	0x015, 0x0000f424,
-+	0x015, 0x0004f424,
-+	0x015, 0x0008f424,
-+	0x016, 0x000e1330,
-+	0x016, 0x000a1330,
-+	0x016, 0x00061330,
-+	0x016, 0x00021330,
-+	0x018, 0x00017524,
-+	0x000, 0x00070000,
-+	0x012, 0x000cf000,
-+	0x012, 0x000bc000,
-+	0x012, 0x00078000,
-+	0x012, 0x00000000,
-+	0x013, 0x000287bc,
-+	0x013, 0x000247b0,
-+	0x013, 0x000203b4,
-+	0x013, 0x0001c3a8,
-+	0x013, 0x000181b4,
-+	0x013, 0x000141a8,
-+	0x013, 0x000100b4,
-+	0x013, 0x0000c0a8,
-+	0x013, 0x0000b030,
-+	0x013, 0x00004024,
-+	0x013, 0x00000018,
-+	0x015, 0x0000f4c3,
-+	0x015, 0x0004f4c3,
-+	0x015, 0x0008f4c3,
-+	0x016, 0x000e085f,
-+	0x016, 0x000a085f,
-+	0x016, 0x0006085f,
-+	0x016, 0x0002085f,
-+	0x018, 0x00037524,
-+	0x000, 0x00070000,
-+	0x012, 0x000cf000,
-+	0x012, 0x000bc000,
-+	0x012, 0x00078000,
-+	0x012, 0x00000000,
-+	0x013, 0x000287bc,
-+	0x013, 0x000247b0,
-+	0x013, 0x000203b4,
-+	0x013, 0x0001c3a8,
-+	0x013, 0x000181b4,
-+	0x013, 0x000141a8,
-+	0x013, 0x000100b4,
-+	0x013, 0x0000c0a8,
-+	0x013, 0x0000b030,
-+	0x013, 0x00004024,
-+	0x013, 0x00000018,
-+	0x015, 0x0000f4c3,
-+	0x015, 0x0004f4c3,
-+	0x015, 0x0008f4c3,
-+	0x016, 0x000e085f,
-+	0x016, 0x000a085f,
-+	0x016, 0x0006085f,
-+	0x016, 0x0002085f,
-+	0x018, 0x00057524,
-+	0x000, 0x00070000,
-+	0x012, 0x000cf000,
-+	0x012, 0x000bc000,
-+	0x012, 0x00078000,
-+	0x012, 0x00000000,
-+	0x013, 0x000287bc,
-+	0x013, 0x000247b0,
-+	0x013, 0x000203b4,
-+	0x013, 0x0001c3a8,
-+	0x013, 0x000181b4,
-+	0x013, 0x000141a8,
-+	0x013, 0x000100b4,
-+	0x013, 0x0000c0a8,
-+	0x013, 0x0000b030,
-+	0x013, 0x00004024,
-+	0x013, 0x00000018,
-+	0x015, 0x0000f4c3,
-+	0x015, 0x0004f4c3,
-+	0x015, 0x0008f4c3,
-+	0x016, 0x000e085f,
-+	0x016, 0x000a085f,
-+	0x016, 0x0006085f,
-+	0x016, 0x0002085f,
-+	0x030, 0x0004470f,
-+	0x031, 0x00044ff0,
-+	0x032, 0x00000070,
-+	0x033, 0x000dd480,
-+	0x034, 0x000ffac0,
-+	0x035, 0x000b80c0,
-+	0x036, 0x00077000,
-+	0x037, 0x00064ff2,
-+	0x038, 0x000e7661,
-+	0x039, 0x00000e90,
-+	0x000, 0x00030000,
-+	0x018, 0x0000f401,
-+	0x0fe, 0x00000000,
-+	0x0fe, 0x00000000,
-+	0x01e, 0x00088009,
-+	0x01f, 0x00080003,
-+	0x0fe, 0x00000000,
-+	0x01e, 0x00088001,
-+	0x01f, 0x00080000,
-+	0x0fe, 0x00000000,
-+	0x018, 0x00087401,
-+	0x0fe, 0x00000000,
-+	0x0fe, 0x00000000,
-+	0x0fe, 0x00000000,
-+	0x02b, 0x00041289,
-+	0x0fe, 0x00000000,
-+	0x02d, 0x00066666,
-+	0x02e, 0x00064001,
-+	0x02d, 0x00091111,
-+	0x02e, 0x00014002,
-+	0x02d, 0x000bbbbb,
-+	0x02e, 0x000b4003,
-+	0x02d, 0x000e6666,
-+	0x02e, 0x00064004,
-+	0x02d, 0x00088888,
-+	0x02e, 0x00084005,
-+	0x02d, 0x0009dddd,
-+	0x02e, 0x000d4006,
-+	0x02d, 0x000b3333,
-+	0x02e, 0x00034007,
-+	0x02d, 0x00048888,
-+	0x02e, 0x00084408,
-+	0x02d, 0x000bbbbb,
-+	0x02e, 0x000b4409,
-+	0x02d, 0x000e6666,
-+	0x02e, 0x0006440a,
-+	0x02d, 0x00011111,
-+	0x02e, 0x0001480b,
-+	0x02d, 0x0003bbbb,
-+	0x02e, 0x000b480c,
-+	0x02d, 0x00066666,
-+	0x02e, 0x0006480d,
-+	0x02d, 0x000ccccc,
-+	0x02e, 0x000c480e,
-+};
-+
-+const u32 *rtl8192du_get_radiob_2tarray(void)
++void rtl92du_get_hw_reg(struct ieee80211_hw *hw, u8 variable, u8 *val)
 +{
-+	return rtl8192du_radiob_2tarray;
++	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
++
++	switch (variable) {
++	case HW_VAR_RCR:
++		*((u32 *)val) = mac->rx_conf;
++		break;
++	default:
++		rtl92d_get_hw_reg(hw, variable, val);
++		break;
++	}
 +}
 +
-+static const u32 rtl8192du_radioa_2t_int_paarray[RADIOA_2T_INT_PA_ARRAYLENGTH] = {
-+	0x000, 0x00030000,
-+	0x001, 0x00030000,
-+	0x002, 0x00000000,
-+	0x003, 0x00018c63,
-+	0x004, 0x00018c63,
-+	0x008, 0x00084000,
-+	0x00b, 0x0001c000,
-+	0x00e, 0x00018c67,
-+	0x00f, 0x00000851,
-+	0x014, 0x00021440,
-+	0x018, 0x00017524,
-+	0x019, 0x00000000,
-+	0x01d, 0x000a1290,
-+	0x023, 0x00001558,
-+	0x01a, 0x00030a99,
-+	0x01b, 0x00040b00,
-+	0x01c, 0x000fc339,
-+	0x03a, 0x000a57eb,
-+	0x03b, 0x00020000,
-+	0x03c, 0x000ff455,
-+	0x020, 0x0000aa52,
-+	0x021, 0x00054000,
-+	0x040, 0x0000aa52,
-+	0x041, 0x00014000,
-+	0x025, 0x000803be,
-+	0x026, 0x000fc638,
-+	0x027, 0x00077c18,
-+	0x028, 0x000de471,
-+	0x029, 0x000d7110,
-+	0x02a, 0x0008eb04,
-+	0x02b, 0x0004128b,
-+	0x02c, 0x00001840,
-+	0x043, 0x0002444f,
-+	0x044, 0x0001adb0,
-+	0x045, 0x00056467,
-+	0x046, 0x0008992c,
-+	0x047, 0x0000452c,
-+	0x048, 0x000c0443,
-+	0x049, 0x00000730,
-+	0x04a, 0x00050f0f,
-+	0x04b, 0x000896ef,
-+	0x04c, 0x0000ddee,
-+	0x018, 0x00007401,
-+	0x000, 0x00070000,
-+	0x012, 0x000dc000,
-+	0x012, 0x00090000,
-+	0x012, 0x00051000,
-+	0x012, 0x00012000,
-+	0x013, 0x000287b7,
-+	0x013, 0x000247ab,
-+	0x013, 0x0002079f,
-+	0x013, 0x0001c793,
-+	0x013, 0x0001839b,
-+	0x013, 0x00014392,
-+	0x013, 0x0001019a,
-+	0x013, 0x0000c191,
-+	0x013, 0x00008194,
-+	0x013, 0x000040a0,
-+	0x013, 0x00000018,
-+	0x015, 0x0000f424,
-+	0x015, 0x0004f424,
-+	0x015, 0x0008f424,
-+	0x016, 0x000e1330,
-+	0x016, 0x000a1330,
-+	0x016, 0x00061330,
-+	0x016, 0x00021330,
-+	0x018, 0x00017524,
-+	0x000, 0x00070000,
-+	0x012, 0x000cf000,
-+	0x012, 0x000bc000,
-+	0x012, 0x00078000,
-+	0x012, 0x00000000,
-+	0x013, 0x000287bf,
-+	0x013, 0x000247b3,
-+	0x013, 0x000207a7,
-+	0x013, 0x0001c79b,
-+	0x013, 0x0001839f,
-+	0x013, 0x00014393,
-+	0x013, 0x00010399,
-+	0x013, 0x0000c38d,
-+	0x013, 0x00008199,
-+	0x013, 0x0000418d,
-+	0x013, 0x00000099,
-+	0x015, 0x0000f495,
-+	0x015, 0x0004f495,
-+	0x015, 0x0008f495,
-+	0x016, 0x000e1874,
-+	0x016, 0x000a1874,
-+	0x016, 0x00061874,
-+	0x016, 0x00021874,
-+	0x018, 0x00037564,
-+	0x000, 0x00070000,
-+	0x012, 0x000cf000,
-+	0x012, 0x000bc000,
-+	0x012, 0x00078000,
-+	0x012, 0x00000000,
-+	0x013, 0x000287bf,
-+	0x013, 0x000247b3,
-+	0x013, 0x000207a7,
-+	0x013, 0x0001c79b,
-+	0x013, 0x0001839f,
-+	0x013, 0x00014393,
-+	0x013, 0x00010399,
-+	0x013, 0x0000c38d,
-+	0x013, 0x00008199,
-+	0x013, 0x0000418d,
-+	0x013, 0x00000099,
-+	0x015, 0x0000f495,
-+	0x015, 0x0004f495,
-+	0x015, 0x0008f495,
-+	0x016, 0x000e1874,
-+	0x016, 0x000a1874,
-+	0x016, 0x00061874,
-+	0x016, 0x00021874,
-+	0x018, 0x00057595,
-+	0x000, 0x00070000,
-+	0x012, 0x000cf000,
-+	0x012, 0x000bc000,
-+	0x012, 0x00078000,
-+	0x012, 0x00000000,
-+	0x013, 0x000287bf,
-+	0x013, 0x000247b3,
-+	0x013, 0x000207a7,
-+	0x013, 0x0001c79b,
-+	0x013, 0x0001839f,
-+	0x013, 0x00014393,
-+	0x013, 0x00010399,
-+	0x013, 0x0000c38d,
-+	0x013, 0x00008199,
-+	0x013, 0x0000418d,
-+	0x013, 0x00000099,
-+	0x015, 0x0000f495,
-+	0x015, 0x0004f495,
-+	0x015, 0x0008f495,
-+	0x016, 0x000e1874,
-+	0x016, 0x000a1874,
-+	0x016, 0x00061874,
-+	0x016, 0x00021874,
-+	0x030, 0x0004470f,
-+	0x031, 0x00044ff0,
-+	0x032, 0x00000070,
-+	0x033, 0x000dd480,
-+	0x034, 0x000ffac0,
-+	0x035, 0x000b80c0,
-+	0x036, 0x00077000,
-+	0x037, 0x00064ff2,
-+	0x038, 0x000e7661,
-+	0x039, 0x00000e90,
-+	0x000, 0x00030000,
-+	0x018, 0x0000f401,
-+	0x0fe, 0x00000000,
-+	0x0fe, 0x00000000,
-+	0x01e, 0x00088009,
-+	0x01f, 0x00080003,
-+	0x0fe, 0x00000000,
-+	0x01e, 0x00088001,
-+	0x01f, 0x00080000,
-+	0x0fe, 0x00000000,
-+	0x018, 0x00097524,
-+	0x0fe, 0x00000000,
-+	0x0fe, 0x00000000,
-+	0x0fe, 0x00000000,
-+	0x0fe, 0x00000000,
-+	0x02b, 0x00041289,
-+	0x0fe, 0x00000000,
-+	0x02d, 0x0006aaaa,
-+	0x02e, 0x000b4d01,
-+	0x02d, 0x00080000,
-+	0x02e, 0x00004d02,
-+	0x02d, 0x00095555,
-+	0x02e, 0x00054d03,
-+	0x02d, 0x000aaaaa,
-+	0x02e, 0x000b4d04,
-+	0x02d, 0x000c0000,
-+	0x02e, 0x00004d05,
-+	0x02d, 0x000d5555,
-+	0x02e, 0x00054d06,
-+	0x02d, 0x000eaaaa,
-+	0x02e, 0x000b4d07,
-+	0x02d, 0x00000000,
-+	0x02e, 0x00005108,
-+	0x02d, 0x00015555,
-+	0x02e, 0x00055109,
-+	0x02d, 0x0002aaaa,
-+	0x02e, 0x000b510a,
-+	0x02d, 0x00040000,
-+	0x02e, 0x0000510b,
-+	0x02d, 0x00055555,
-+	0x02e, 0x0005510c,
-+};
-+
-+const u32 *rtl8192du_get_radioa_2t_int_paarray(void)
++void rtl92du_set_hw_reg(struct ieee80211_hw *hw, u8 variable, u8 *val)
 +{
-+	return rtl8192du_radioa_2t_int_paarray;
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++	struct rtl_mac *mac = rtl_mac(rtlpriv);
++
++	switch (variable) {
++	case HW_VAR_AC_PARAM: {
++		rtl92d_dm_init_edca_turbo(hw);
++		break;
++	}
++	case HW_VAR_ACM_CTRL: {
++		u8 e_aci = *val;
++		union aci_aifsn *p_aci_aifsn =
++		    (union aci_aifsn *)(&mac->ac[0].aifs);
++		u8 acm = p_aci_aifsn->f.acm;
++		u8 acm_ctrl = rtl_read_byte(rtlpriv, REG_ACMHWCTRL);
++
++		if (acm) {
++			switch (e_aci) {
++			case AC0_BE:
++				acm_ctrl |= ACMHW_BEQEN;
++				break;
++			case AC2_VI:
++				acm_ctrl |= ACMHW_VIQEN;
++				break;
++			case AC3_VO:
++				acm_ctrl |= ACMHW_VOQEN;
++				break;
++			default:
++				rtl_dbg(rtlpriv, COMP_ERR, DBG_WARNING,
++					"HW_VAR_ACM_CTRL acm set failed: eACI is %d\n",
++					acm);
++				break;
++			}
++		} else {
++			switch (e_aci) {
++			case AC0_BE:
++				acm_ctrl &= (~ACMHW_BEQEN);
++				break;
++			case AC2_VI:
++				acm_ctrl &= (~ACMHW_VIQEN);
++				break;
++			case AC3_VO:
++				acm_ctrl &= (~ACMHW_VOQEN);
++				break;
++			default:
++				pr_err("%s:%d switch case %#x not processed\n",
++				       __func__, __LINE__, e_aci);
++				break;
++			}
++		}
++		rtl_dbg(rtlpriv, COMP_QOS, DBG_TRACE,
++			"SetHwReg8190pci(): [HW_VAR_ACM_CTRL] Write 0x%X\n",
++			acm_ctrl);
++		rtl_write_byte(rtlpriv, REG_ACMHWCTRL, acm_ctrl);
++		break;
++	}
++	case HW_VAR_RCR:
++		mac->rx_conf = ((u32 *)val)[0];
++		rtl_write_dword(rtlpriv, REG_RCR, mac->rx_conf);
++		break;
++	case HW_VAR_H2C_FW_JOINBSSRPT: {
++		u8 tmp_regcr, tmp_reg422;
++		bool recover = false;
++		u8 mstatus = *val;
++
++		if (mstatus == RT_MEDIA_CONNECT) {
++			rtlpriv->cfg->ops->set_hw_reg(hw,
++						      HW_VAR_AID, NULL);
++			tmp_regcr = rtl_read_byte(rtlpriv, REG_CR + 1);
++			rtl_write_byte(rtlpriv, REG_CR + 1,
++				       tmp_regcr | ENSWBCN);
++			_rtl92de_set_bcn_ctrl_reg(hw, 0, EN_BCN_FUNCTION);
++			_rtl92de_set_bcn_ctrl_reg(hw, DIS_TSF_UDT, 0);
++			tmp_reg422 = rtl_read_byte(rtlpriv,
++						   REG_FWHW_TXQ_CTRL + 2);
++			if (tmp_reg422 & (EN_BCNQ_DL >> 16))
++				recover = true;
++			rtl_write_byte(rtlpriv, REG_FWHW_TXQ_CTRL + 2,
++				       tmp_reg422 & ~(EN_BCNQ_DL >> 16));
++
++			/* We don't implement FW LPS so this is not needed. */
++			/* rtl92d_set_fw_rsvdpagepkt(hw, 0); */
++
++			_rtl92de_set_bcn_ctrl_reg(hw, EN_BCN_FUNCTION, 0);
++			_rtl92de_set_bcn_ctrl_reg(hw, 0, DIS_TSF_UDT);
++			if (recover)
++				rtl_write_byte(rtlpriv,
++					       REG_FWHW_TXQ_CTRL + 2,
++					       tmp_reg422);
++			rtl_write_byte(rtlpriv, REG_CR + 1,
++				       tmp_regcr & ~ENSWBCN);
++		}
++		rtl92d_set_fw_joinbss_report_cmd(hw, (*val));
++		break;
++	}
++	case HW_VAR_CORRECT_TSF: {
++		u8 btype_ibss = val[0];
++
++		if (btype_ibss)
++			rtl92de_stop_tx_beacon(hw);
++		_rtl92de_set_bcn_ctrl_reg(hw, 0, EN_BCN_FUNCTION);
++		rtl_write_dword(rtlpriv, REG_TSFTR,
++				(u32)(mac->tsf & 0xffffffff));
++		rtl_write_dword(rtlpriv, REG_TSFTR + 4,
++				(u32)((mac->tsf >> 32) & 0xffffffff));
++		_rtl92de_set_bcn_ctrl_reg(hw, EN_BCN_FUNCTION, 0);
++		if (btype_ibss)
++			rtl92de_resume_tx_beacon(hw);
++
++		break;
++	}
++	case HW_VAR_KEEP_ALIVE:
++		/* Avoid "switch case not processed" error. RTL8192DU doesn't
++		 * need to do anything here, maybe.
++		 */
++		break;
++	default:
++		rtl92d_set_hw_reg(hw, variable, val);
++		break;
++	}
 +}
 +
-+static const u32 rtl8192du_radiob_2t_int_paarray[RADIOB_2T_INT_PA_ARRAYLENGTH] = {
-+	0x000, 0x00030000,
-+	0x001, 0x00030000,
-+	0x002, 0x00000000,
-+	0x003, 0x00018c63,
-+	0x004, 0x00018c63,
-+	0x008, 0x00084000,
-+	0x00b, 0x0001c000,
-+	0x00e, 0x00018c67,
-+	0x00f, 0x00000851,
-+	0x014, 0x00021440,
-+	0x018, 0x00007401,
-+	0x019, 0x00000060,
-+	0x01d, 0x000a1290,
-+	0x023, 0x00001558,
-+	0x01a, 0x00030a99,
-+	0x01b, 0x00040b00,
-+	0x01c, 0x000fc339,
-+	0x03a, 0x000a57eb,
-+	0x03b, 0x00020000,
-+	0x03c, 0x000ff455,
-+	0x020, 0x0000aa52,
-+	0x021, 0x00054000,
-+	0x040, 0x0000aa52,
-+	0x041, 0x00014000,
-+	0x025, 0x000803be,
-+	0x026, 0x000fc638,
-+	0x027, 0x00077c18,
-+	0x028, 0x000d1c31,
-+	0x029, 0x000d7110,
-+	0x02a, 0x000aeb04,
-+	0x02b, 0x0004128b,
-+	0x02c, 0x00001840,
-+	0x043, 0x0002444f,
-+	0x044, 0x0001adb0,
-+	0x045, 0x00056467,
-+	0x046, 0x0008992c,
-+	0x047, 0x0000452c,
-+	0x048, 0x000c0443,
-+	0x049, 0x00000730,
-+	0x04a, 0x00050f0f,
-+	0x04b, 0x000896ef,
-+	0x04c, 0x0000ddee,
-+	0x018, 0x00007401,
-+	0x000, 0x00070000,
-+	0x012, 0x000dc000,
-+	0x012, 0x00090000,
-+	0x012, 0x00051000,
-+	0x012, 0x00012000,
-+	0x013, 0x000287b7,
-+	0x013, 0x000247ab,
-+	0x013, 0x0002079f,
-+	0x013, 0x0001c793,
-+	0x013, 0x0001839b,
-+	0x013, 0x00014392,
-+	0x013, 0x0001019a,
-+	0x013, 0x0000c191,
-+	0x013, 0x00008194,
-+	0x013, 0x000040a0,
-+	0x013, 0x00000018,
-+	0x015, 0x0000f424,
-+	0x015, 0x0004f424,
-+	0x015, 0x0008f424,
-+	0x016, 0x000e1330,
-+	0x016, 0x000a1330,
-+	0x016, 0x00061330,
-+	0x016, 0x00021330,
-+	0x018, 0x00017524,
-+	0x000, 0x00070000,
-+	0x012, 0x000cf000,
-+	0x012, 0x000bc000,
-+	0x012, 0x00078000,
-+	0x012, 0x00000000,
-+	0x013, 0x000287bf,
-+	0x013, 0x000247b3,
-+	0x013, 0x000207a7,
-+	0x013, 0x0001c79b,
-+	0x013, 0x0001839f,
-+	0x013, 0x00014393,
-+	0x013, 0x00010399,
-+	0x013, 0x0000c38d,
-+	0x013, 0x00008199,
-+	0x013, 0x0000418d,
-+	0x013, 0x00000099,
-+	0x015, 0x0000f495,
-+	0x015, 0x0004f495,
-+	0x015, 0x0008f495,
-+	0x016, 0x000e1874,
-+	0x016, 0x000a1874,
-+	0x016, 0x00061874,
-+	0x016, 0x00021874,
-+	0x018, 0x00037564,
-+	0x000, 0x00070000,
-+	0x012, 0x000cf000,
-+	0x012, 0x000bc000,
-+	0x012, 0x00078000,
-+	0x012, 0x00000000,
-+	0x013, 0x000287bf,
-+	0x013, 0x000247b3,
-+	0x013, 0x000207a7,
-+	0x013, 0x0001c79b,
-+	0x013, 0x0001839f,
-+	0x013, 0x00014393,
-+	0x013, 0x00010399,
-+	0x013, 0x0000c38d,
-+	0x013, 0x00008199,
-+	0x013, 0x0000418d,
-+	0x013, 0x00000099,
-+	0x015, 0x0000f495,
-+	0x015, 0x0004f495,
-+	0x015, 0x0008f495,
-+	0x016, 0x000e1874,
-+	0x016, 0x000a1874,
-+	0x016, 0x00061874,
-+	0x016, 0x00021874,
-+	0x018, 0x00057595,
-+	0x000, 0x00070000,
-+	0x012, 0x000cf000,
-+	0x012, 0x000bc000,
-+	0x012, 0x00078000,
-+	0x012, 0x00000000,
-+	0x013, 0x000287bf,
-+	0x013, 0x000247b3,
-+	0x013, 0x000207a7,
-+	0x013, 0x0001c79b,
-+	0x013, 0x0001839f,
-+	0x013, 0x00014393,
-+	0x013, 0x00010399,
-+	0x013, 0x0000c38d,
-+	0x013, 0x00008199,
-+	0x013, 0x0000418d,
-+	0x013, 0x00000099,
-+	0x015, 0x0000f495,
-+	0x015, 0x0004f495,
-+	0x015, 0x0008f495,
-+	0x016, 0x000e1874,
-+	0x016, 0x000a1874,
-+	0x016, 0x00061874,
-+	0x016, 0x00021874,
-+	0x030, 0x0004470f,
-+	0x031, 0x00044ff0,
-+	0x032, 0x00000070,
-+	0x033, 0x000dd480,
-+	0x034, 0x000ffac0,
-+	0x035, 0x000b80c0,
-+	0x036, 0x00077000,
-+	0x037, 0x00064ff2,
-+	0x038, 0x000e7661,
-+	0x039, 0x00000e90,
-+	0x000, 0x00030000,
-+	0x018, 0x0000f401,
-+	0x0fe, 0x00000000,
-+	0x0fe, 0x00000000,
-+	0x01e, 0x00088009,
-+	0x01f, 0x00080003,
-+	0x0fe, 0x00000000,
-+	0x01e, 0x00088001,
-+	0x01f, 0x00080000,
-+	0x0fe, 0x00000000,
-+	0x018, 0x00087401,
-+	0x0fe, 0x00000000,
-+	0x0fe, 0x00000000,
-+	0x0fe, 0x00000000,
-+	0x02b, 0x00041289,
-+	0x0fe, 0x00000000,
-+	0x02d, 0x00066666,
-+	0x02e, 0x00064001,
-+	0x02d, 0x00091111,
-+	0x02e, 0x00014002,
-+	0x02d, 0x000bbbbb,
-+	0x02e, 0x000b4003,
-+	0x02d, 0x000e6666,
-+	0x02e, 0x00064004,
-+	0x02d, 0x00088888,
-+	0x02e, 0x00084005,
-+	0x02d, 0x0009dddd,
-+	0x02e, 0x000d4006,
-+	0x02d, 0x000b3333,
-+	0x02e, 0x00034007,
-+	0x02d, 0x00048888,
-+	0x02e, 0x00084408,
-+	0x02d, 0x000bbbbb,
-+	0x02e, 0x000b4409,
-+	0x02d, 0x000e6666,
-+	0x02e, 0x0006440a,
-+	0x02d, 0x00011111,
-+	0x02e, 0x0001480b,
-+	0x02d, 0x0003bbbb,
-+	0x02e, 0x000b480c,
-+	0x02d, 0x00066666,
-+	0x02e, 0x0006480d,
-+	0x02d, 0x000ccccc,
-+	0x02e, 0x000c480e,
-+};
-+
-+const u32 *rtl8192du_get_radiob_2t_int_paarray(void)
++static void _rtl92du_init_queue_reserved_page(struct ieee80211_hw *hw,
++					      u8 out_ep_num,
++					      u8 queue_sel)
 +{
-+	return rtl8192du_radiob_2t_int_paarray;
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
++	u32 txqpagenum, txqpageunit;
++	u32 txqremainingpage;
++	u32 numhq = 0;
++	u32 numlq = 0;
++	u32 numnq = 0;
++	u32 numpubq;
++	u32 value32;
++
++	if (rtlhal->macphymode != SINGLEMAC_SINGLEPHY) {
++		numpubq = NORMAL_PAGE_NUM_PUBQ_92D_DUAL_MAC;
++		txqpagenum = TX_TOTAL_PAGE_NUMBER_92D_DUAL_MAC - numpubq;
++	} else {
++		numpubq = TEST_PAGE_NUM_PUBQ_92DU;
++		txqpagenum = TX_TOTAL_PAGE_NUMBER_92DU - numpubq;
++	}
++
++	if (rtlhal->macphymode != SINGLEMAC_SINGLEPHY && out_ep_num == 3) {
++		numhq = NORMAL_PAGE_NUM_HPQ_92D_DUAL_MAC;
++		numlq = NORMAL_PAGE_NUM_LPQ_92D_DUAL_MAC;
++		numnq = NORMAL_PAGE_NUM_NORMALQ_92D_DUAL_MAC;
++	} else {
++		txqpageunit = txqpagenum / out_ep_num;
++		txqremainingpage = txqpagenum % out_ep_num;
++
++		if (queue_sel & TX_SELE_HQ)
++			numhq = txqpageunit;
++		if (queue_sel & TX_SELE_LQ)
++			numlq = txqpageunit;
++		if (queue_sel & TX_SELE_NQ)
++			numnq = txqpageunit;
++
++		/* HIGH priority queue always present in the
++		 * configuration of 2 or 3 out-ep. Remainder pages
++		 * assigned to High queue
++		 */
++		if (out_ep_num > 1 && txqremainingpage)
++			numhq += txqremainingpage;
++	}
++
++	/* NOTE: This step done before writing REG_RQPN. */
++	rtl_write_byte(rtlpriv, REG_RQPN_NPQ, (u8)numnq);
++
++	/* TX DMA */
++	u32p_replace_bits(&value32, numhq, HPQ_MASK);
++	u32p_replace_bits(&value32, numlq, LPQ_MASK);
++	u32p_replace_bits(&value32, numpubq, PUBQ_MASK);
++	value32 |= LD_RQPN;
++	rtl_write_dword(rtlpriv, REG_RQPN, value32);
 +}
 +
-+static const u32 rtl8192du_mac_2tarray[MAC_2T_ARRAYLENGTH] = {
-+	0x420, 0x00000080,
-+	0x423, 0x00000000,
-+	0x430, 0x00000000,
-+	0x431, 0x00000000,
-+	0x432, 0x00000000,
-+	0x433, 0x00000001,
-+	0x434, 0x00000004,
-+	0x435, 0x00000005,
-+	0x436, 0x00000006,
-+	0x437, 0x00000007,
-+	0x438, 0x00000000,
-+	0x439, 0x00000000,
-+	0x43a, 0x00000000,
-+	0x43b, 0x00000001,
-+	0x43c, 0x00000004,
-+	0x43d, 0x00000005,
-+	0x43e, 0x00000006,
-+	0x43f, 0x00000007,
-+	0x440, 0x00000050,
-+	0x441, 0x00000001,
-+	0x442, 0x00000000,
-+	0x444, 0x00000015,
-+	0x445, 0x000000f0,
-+	0x446, 0x0000000f,
-+	0x447, 0x00000000,
-+	0x462, 0x00000008,
-+	0x463, 0x00000003,
-+	0x4c8, 0x000000ff,
-+	0x4c9, 0x00000008,
-+	0x4cc, 0x000000ff,
-+	0x4cd, 0x000000ff,
-+	0x4ce, 0x00000001,
-+	0x500, 0x00000026,
-+	0x501, 0x000000a2,
-+	0x502, 0x0000002f,
-+	0x503, 0x00000000,
-+	0x504, 0x00000028,
-+	0x505, 0x000000a3,
-+	0x506, 0x0000005e,
-+	0x507, 0x00000000,
-+	0x508, 0x0000002b,
-+	0x509, 0x000000a4,
-+	0x50a, 0x0000005e,
-+	0x50b, 0x00000000,
-+	0x50c, 0x0000004f,
-+	0x50d, 0x000000a4,
-+	0x50e, 0x00000000,
-+	0x50f, 0x00000000,
-+	0x512, 0x0000001c,
-+	0x514, 0x0000000a,
-+	0x515, 0x00000010,
-+	0x516, 0x0000000a,
-+	0x517, 0x00000010,
-+	0x51a, 0x00000016,
-+	0x524, 0x0000000f,
-+	0x525, 0x0000004f,
-+	0x546, 0x00000040,
-+	0x547, 0x00000000,
-+	0x550, 0x00000010,
-+	0x551, 0x00000010,
-+	0x559, 0x00000002,
-+	0x55a, 0x00000002,
-+	0x55d, 0x000000ff,
-+	0x605, 0x00000080,
-+	0x608, 0x0000000e,
-+	0x609, 0x0000002a,
-+	0x652, 0x00000020,
-+	0x63c, 0x0000000a,
-+	0x63d, 0x0000000a,
-+	0x63e, 0x0000000e,
-+	0x63f, 0x0000000e,
-+	0x66e, 0x00000005,
-+	0x700, 0x00000021,
-+	0x701, 0x00000043,
-+	0x702, 0x00000065,
-+	0x703, 0x00000087,
-+	0x708, 0x00000021,
-+	0x709, 0x00000043,
-+	0x70a, 0x00000065,
-+	0x70b, 0x00000087,
-+	0x024, 0x0000000d,
-+	0x025, 0x00000080,
-+	0x026, 0x00000011,
-+	0x027, 0x00000000,
-+	0x028, 0x00000083,
-+	0x029, 0x000000db,
-+	0x02a, 0x000000ff,
-+	0x02b, 0x00000000,
-+	0x014, 0x00000055,
-+	0x015, 0x000000a9,
-+	0x016, 0x0000008b,
-+	0x017, 0x00000008,
-+	0x010, 0x00000003,
-+	0x011, 0x0000002b,
-+	0x012, 0x00000002,
-+	0x013, 0x00000049,
-+};
-+
-+const u32 *rtl8192du_get_mac_2tarray(void)
++static void _rtl92du_init_tx_buffer_boundary(struct ieee80211_hw *hw,
++					     u8 txpktbuf_bndy)
 +{
-+	return rtl8192du_mac_2tarray;
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++
++	rtl_write_byte(rtlpriv, REG_TXPKTBUF_BCNQ_BDNY, txpktbuf_bndy);
++	rtl_write_byte(rtlpriv, REG_TXPKTBUF_MGQ_BDNY, txpktbuf_bndy);
++
++	rtl_write_byte(rtlpriv, REG_TXPKTBUF_WMAC_LBK_BF_HD, txpktbuf_bndy);
++
++	/* TXRKTBUG_PG_BNDY */
++	rtl_write_byte(rtlpriv, REG_TRXFF_BNDY, txpktbuf_bndy);
++
++	/* Beacon Head for TXDMA */
++	rtl_write_byte(rtlpriv, REG_TDECTRL + 1, txpktbuf_bndy);
 +}
 +
-+static const u32 rtl8192du_agctab_array[AGCTAB_ARRAYLENGTH] = {
-+	0xc78, 0x7b000001,
-+	0xc78, 0x7b010001,
-+	0xc78, 0x7b020001,
-+	0xc78, 0x7b030001,
-+	0xc78, 0x7b040001,
-+	0xc78, 0x7b050001,
-+	0xc78, 0x7b060001,
-+	0xc78, 0x7a070001,
-+	0xc78, 0x79080001,
-+	0xc78, 0x78090001,
-+	0xc78, 0x770a0001,
-+	0xc78, 0x760b0001,
-+	0xc78, 0x750c0001,
-+	0xc78, 0x740d0001,
-+	0xc78, 0x730e0001,
-+	0xc78, 0x720f0001,
-+	0xc78, 0x71100001,
-+	0xc78, 0x70110001,
-+	0xc78, 0x6f120001,
-+	0xc78, 0x6e130001,
-+	0xc78, 0x6d140001,
-+	0xc78, 0x6c150001,
-+	0xc78, 0x6b160001,
-+	0xc78, 0x6a170001,
-+	0xc78, 0x69180001,
-+	0xc78, 0x68190001,
-+	0xc78, 0x671a0001,
-+	0xc78, 0x661b0001,
-+	0xc78, 0x651c0001,
-+	0xc78, 0x641d0001,
-+	0xc78, 0x631e0001,
-+	0xc78, 0x621f0001,
-+	0xc78, 0x61200001,
-+	0xc78, 0x60210001,
-+	0xc78, 0x49220001,
-+	0xc78, 0x48230001,
-+	0xc78, 0x47240001,
-+	0xc78, 0x46250001,
-+	0xc78, 0x45260001,
-+	0xc78, 0x44270001,
-+	0xc78, 0x43280001,
-+	0xc78, 0x42290001,
-+	0xc78, 0x412a0001,
-+	0xc78, 0x402b0001,
-+	0xc78, 0x262c0001,
-+	0xc78, 0x252d0001,
-+	0xc78, 0x242e0001,
-+	0xc78, 0x232f0001,
-+	0xc78, 0x22300001,
-+	0xc78, 0x21310001,
-+	0xc78, 0x20320001,
-+	0xc78, 0x06330001,
-+	0xc78, 0x05340001,
-+	0xc78, 0x04350001,
-+	0xc78, 0x03360001,
-+	0xc78, 0x02370001,
-+	0xc78, 0x01380001,
-+	0xc78, 0x00390001,
-+	0xc78, 0x003a0001,
-+	0xc78, 0x003b0001,
-+	0xc78, 0x003c0001,
-+	0xc78, 0x003d0001,
-+	0xc78, 0x003e0001,
-+	0xc78, 0x003f0001,
-+	0xc78, 0x7b400001,
-+	0xc78, 0x7b410001,
-+	0xc78, 0x7a420001,
-+	0xc78, 0x79430001,
-+	0xc78, 0x78440001,
-+	0xc78, 0x77450001,
-+	0xc78, 0x76460001,
-+	0xc78, 0x75470001,
-+	0xc78, 0x74480001,
-+	0xc78, 0x73490001,
-+	0xc78, 0x724a0001,
-+	0xc78, 0x714b0001,
-+	0xc78, 0x704c0001,
-+	0xc78, 0x6f4d0001,
-+	0xc78, 0x6e4e0001,
-+	0xc78, 0x6d4f0001,
-+	0xc78, 0x6c500001,
-+	0xc78, 0x6b510001,
-+	0xc78, 0x6a520001,
-+	0xc78, 0x69530001,
-+	0xc78, 0x68540001,
-+	0xc78, 0x67550001,
-+	0xc78, 0x66560001,
-+	0xc78, 0x65570001,
-+	0xc78, 0x64580001,
-+	0xc78, 0x63590001,
-+	0xc78, 0x625a0001,
-+	0xc78, 0x615b0001,
-+	0xc78, 0x605c0001,
-+	0xc78, 0x485d0001,
-+	0xc78, 0x475e0001,
-+	0xc78, 0x465f0001,
-+	0xc78, 0x45600001,
-+	0xc78, 0x44610001,
-+	0xc78, 0x43620001,
-+	0xc78, 0x42630001,
-+	0xc78, 0x41640001,
-+	0xc78, 0x40650001,
-+	0xc78, 0x27660001,
-+	0xc78, 0x26670001,
-+	0xc78, 0x25680001,
-+	0xc78, 0x24690001,
-+	0xc78, 0x236a0001,
-+	0xc78, 0x226b0001,
-+	0xc78, 0x216c0001,
-+	0xc78, 0x206d0001,
-+	0xc78, 0x206e0001,
-+	0xc78, 0x206f0001,
-+	0xc78, 0x20700001,
-+	0xc78, 0x20710001,
-+	0xc78, 0x20720001,
-+	0xc78, 0x20730001,
-+	0xc78, 0x20740001,
-+	0xc78, 0x20750001,
-+	0xc78, 0x20760001,
-+	0xc78, 0x20770001,
-+	0xc78, 0x20780001,
-+	0xc78, 0x20790001,
-+	0xc78, 0x207a0001,
-+	0xc78, 0x207b0001,
-+	0xc78, 0x207c0001,
-+	0xc78, 0x207d0001,
-+	0xc78, 0x207e0001,
-+	0xc78, 0x207f0001,
-+	0xc78, 0x38000002,
-+	0xc78, 0x38010002,
-+	0xc78, 0x38020002,
-+	0xc78, 0x38030002,
-+	0xc78, 0x38040002,
-+	0xc78, 0x38050002,
-+	0xc78, 0x38060002,
-+	0xc78, 0x38070002,
-+	0xc78, 0x38080002,
-+	0xc78, 0x3c090002,
-+	0xc78, 0x3e0a0002,
-+	0xc78, 0x400b0002,
-+	0xc78, 0x440c0002,
-+	0xc78, 0x480d0002,
-+	0xc78, 0x4c0e0002,
-+	0xc78, 0x500f0002,
-+	0xc78, 0x52100002,
-+	0xc78, 0x56110002,
-+	0xc78, 0x5a120002,
-+	0xc78, 0x5e130002,
-+	0xc78, 0x60140002,
-+	0xc78, 0x60150002,
-+	0xc78, 0x60160002,
-+	0xc78, 0x62170002,
-+	0xc78, 0x62180002,
-+	0xc78, 0x62190002,
-+	0xc78, 0x621a0002,
-+	0xc78, 0x621b0002,
-+	0xc78, 0x621c0002,
-+	0xc78, 0x621d0002,
-+	0xc78, 0x621e0002,
-+	0xc78, 0x621f0002,
-+	0xc78, 0x32000044,
-+	0xc78, 0x32010044,
-+	0xc78, 0x32020044,
-+	0xc78, 0x32030044,
-+	0xc78, 0x32040044,
-+	0xc78, 0x32050044,
-+	0xc78, 0x32060044,
-+	0xc78, 0x34070044,
-+	0xc78, 0x35080044,
-+	0xc78, 0x36090044,
-+	0xc78, 0x370a0044,
-+	0xc78, 0x380b0044,
-+	0xc78, 0x390c0044,
-+	0xc78, 0x3a0d0044,
-+	0xc78, 0x3e0e0044,
-+	0xc78, 0x420f0044,
-+	0xc78, 0x44100044,
-+	0xc78, 0x46110044,
-+	0xc78, 0x4a120044,
-+	0xc78, 0x4e130044,
-+	0xc78, 0x50140044,
-+	0xc78, 0x55150044,
-+	0xc78, 0x5a160044,
-+	0xc78, 0x5e170044,
-+	0xc78, 0x64180044,
-+	0xc78, 0x6e190044,
-+	0xc78, 0x6e1a0044,
-+	0xc78, 0x6e1b0044,
-+	0xc78, 0x6e1c0044,
-+	0xc78, 0x6e1d0044,
-+	0xc78, 0x6e1e0044,
-+	0xc78, 0x6e1f0044,
-+	0xc78, 0x6e1f0000,
-+};
-+
-+const u32 *rtl8192du_get_agctab_array(void)
++static bool _rtl92de_llt_table_init(struct ieee80211_hw *hw, u8 txpktbuf_bndy)
 +{
-+	return rtl8192du_agctab_array;
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++	unsigned short i;
++	bool status;
++	u8 maxpage;
++
++	if (rtlpriv->rtlhal.macphymode == SINGLEMAC_SINGLEPHY)
++		maxpage = 255;
++	else
++		maxpage = 127;
++
++	for (i = 0; i < (txpktbuf_bndy - 1); i++) {
++		status = rtl92de_llt_write(hw, i, i + 1);
++		if (!status)
++			return status;
++	}
++
++	/* end of list */
++	status = rtl92de_llt_write(hw, txpktbuf_bndy - 1, 0xFF);
++	if (!status)
++		return status;
++
++	/* Make the other pages as ring buffer */
++	/* This ring buffer is used as beacon buffer if we */
++	/* config this MAC as two MAC transfer. */
++	/* Otherwise used as local loopback buffer.  */
++	for (i = txpktbuf_bndy; i < maxpage; i++) {
++		status = rtl92de_llt_write(hw, i, i + 1);
++		if (!status)
++			return status;
++	}
++
++	/* Let last entry point to the start entry of ring buffer */
++	status = rtl92de_llt_write(hw, maxpage, txpktbuf_bndy);
++	if (!status)
++		return status;
++
++	return true;
 +}
 +
-+static const u32 rtl8192du_agctab_5garray[AGCTAB_5G_ARRAYLENGTH] = {
-+	0xc78, 0x7b000001,
-+	0xc78, 0x7b010001,
-+	0xc78, 0x7a020001,
-+	0xc78, 0x79030001,
-+	0xc78, 0x78040001,
-+	0xc78, 0x77050001,
-+	0xc78, 0x76060001,
-+	0xc78, 0x75070001,
-+	0xc78, 0x74080001,
-+	0xc78, 0x73090001,
-+	0xc78, 0x720a0001,
-+	0xc78, 0x710b0001,
-+	0xc78, 0x700c0001,
-+	0xc78, 0x6f0d0001,
-+	0xc78, 0x6e0e0001,
-+	0xc78, 0x6d0f0001,
-+	0xc78, 0x6c100001,
-+	0xc78, 0x6b110001,
-+	0xc78, 0x6a120001,
-+	0xc78, 0x69130001,
-+	0xc78, 0x68140001,
-+	0xc78, 0x67150001,
-+	0xc78, 0x66160001,
-+	0xc78, 0x65170001,
-+	0xc78, 0x64180001,
-+	0xc78, 0x63190001,
-+	0xc78, 0x621a0001,
-+	0xc78, 0x611b0001,
-+	0xc78, 0x601c0001,
-+	0xc78, 0x481d0001,
-+	0xc78, 0x471e0001,
-+	0xc78, 0x461f0001,
-+	0xc78, 0x45200001,
-+	0xc78, 0x44210001,
-+	0xc78, 0x43220001,
-+	0xc78, 0x42230001,
-+	0xc78, 0x41240001,
-+	0xc78, 0x40250001,
-+	0xc78, 0x27260001,
-+	0xc78, 0x26270001,
-+	0xc78, 0x25280001,
-+	0xc78, 0x24290001,
-+	0xc78, 0x232a0001,
-+	0xc78, 0x222b0001,
-+	0xc78, 0x212c0001,
-+	0xc78, 0x202d0001,
-+	0xc78, 0x202e0001,
-+	0xc78, 0x202f0001,
-+	0xc78, 0x20300001,
-+	0xc78, 0x20310001,
-+	0xc78, 0x20320001,
-+	0xc78, 0x20330001,
-+	0xc78, 0x20340001,
-+	0xc78, 0x20350001,
-+	0xc78, 0x20360001,
-+	0xc78, 0x20370001,
-+	0xc78, 0x20380001,
-+	0xc78, 0x20390001,
-+	0xc78, 0x203a0001,
-+	0xc78, 0x203b0001,
-+	0xc78, 0x203c0001,
-+	0xc78, 0x203d0001,
-+	0xc78, 0x203e0001,
-+	0xc78, 0x203f0001,
-+	0xc78, 0x32000044,
-+	0xc78, 0x32010044,
-+	0xc78, 0x32020044,
-+	0xc78, 0x32030044,
-+	0xc78, 0x32040044,
-+	0xc78, 0x32050044,
-+	0xc78, 0x32060044,
-+	0xc78, 0x34070044,
-+	0xc78, 0x35080044,
-+	0xc78, 0x36090044,
-+	0xc78, 0x370a0044,
-+	0xc78, 0x380b0044,
-+	0xc78, 0x390c0044,
-+	0xc78, 0x3a0d0044,
-+	0xc78, 0x3e0e0044,
-+	0xc78, 0x420f0044,
-+	0xc78, 0x44100044,
-+	0xc78, 0x46110044,
-+	0xc78, 0x4a120044,
-+	0xc78, 0x4e130044,
-+	0xc78, 0x50140044,
-+	0xc78, 0x55150044,
-+	0xc78, 0x5a160044,
-+	0xc78, 0x5e170044,
-+	0xc78, 0x64180044,
-+	0xc78, 0x6e190044,
-+	0xc78, 0x6e1a0044,
-+	0xc78, 0x6e1b0044,
-+	0xc78, 0x6e1c0044,
-+	0xc78, 0x6e1d0044,
-+	0xc78, 0x6e1e0044,
-+	0xc78, 0x6e1f0044,
-+	0xc78, 0x6e1f0000,
-+};
-+
-+const u32 *rtl8192du_get_agctab_5garray(void)
++static void _rtl92d_init_chipn_reg_priority(struct ieee80211_hw *hw, u16 beq,
++					    u16 bkq, u16 viq, u16 voq,
++					    u16 mgtq, u16 hiq)
 +{
-+	return rtl8192du_agctab_5garray;
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++	u16 value16;
++
++	value16 = rtl_read_word(rtlpriv, REG_TRXDMA_CTRL) & 0x7;
++	u16p_replace_bits(&value16, beq, TXDMA_BEQ_MAP);
++	u16p_replace_bits(&value16, bkq, TXDMA_BKQ_MAP);
++	u16p_replace_bits(&value16, viq, TXDMA_VIQ_MAP);
++	u16p_replace_bits(&value16, voq, TXDMA_VOQ_MAP);
++	u16p_replace_bits(&value16, mgtq, TXDMA_MGQ_MAP);
++	u16p_replace_bits(&value16, hiq, TXDMA_HIQ_MAP);
++	rtl_write_word(rtlpriv,  REG_TRXDMA_CTRL, value16);
 +}
 +
-+static const u32 rtl8192du_agctab_2garray[AGCTAB_2G_ARRAYLENGTH] = {
-+	0xc78, 0x7b000001,
-+	0xc78, 0x7b010001,
-+	0xc78, 0x7b020001,
-+	0xc78, 0x7b030001,
-+	0xc78, 0x7b040001,
-+	0xc78, 0x7b050001,
-+	0xc78, 0x7b060001,
-+	0xc78, 0x7a070001,
-+	0xc78, 0x79080001,
-+	0xc78, 0x78090001,
-+	0xc78, 0x770a0001,
-+	0xc78, 0x760b0001,
-+	0xc78, 0x750c0001,
-+	0xc78, 0x740d0001,
-+	0xc78, 0x730e0001,
-+	0xc78, 0x720f0001,
-+	0xc78, 0x71100001,
-+	0xc78, 0x70110001,
-+	0xc78, 0x6f120001,
-+	0xc78, 0x6e130001,
-+	0xc78, 0x6d140001,
-+	0xc78, 0x6c150001,
-+	0xc78, 0x6b160001,
-+	0xc78, 0x6a170001,
-+	0xc78, 0x69180001,
-+	0xc78, 0x68190001,
-+	0xc78, 0x671a0001,
-+	0xc78, 0x661b0001,
-+	0xc78, 0x651c0001,
-+	0xc78, 0x641d0001,
-+	0xc78, 0x631e0001,
-+	0xc78, 0x621f0001,
-+	0xc78, 0x61200001,
-+	0xc78, 0x60210001,
-+	0xc78, 0x49220001,
-+	0xc78, 0x48230001,
-+	0xc78, 0x47240001,
-+	0xc78, 0x46250001,
-+	0xc78, 0x45260001,
-+	0xc78, 0x44270001,
-+	0xc78, 0x43280001,
-+	0xc78, 0x42290001,
-+	0xc78, 0x412a0001,
-+	0xc78, 0x402b0001,
-+	0xc78, 0x262c0001,
-+	0xc78, 0x252d0001,
-+	0xc78, 0x242e0001,
-+	0xc78, 0x232f0001,
-+	0xc78, 0x22300001,
-+	0xc78, 0x21310001,
-+	0xc78, 0x20320001,
-+	0xc78, 0x06330001,
-+	0xc78, 0x05340001,
-+	0xc78, 0x04350001,
-+	0xc78, 0x03360001,
-+	0xc78, 0x02370001,
-+	0xc78, 0x01380001,
-+	0xc78, 0x00390001,
-+	0xc78, 0x003a0001,
-+	0xc78, 0x003b0001,
-+	0xc78, 0x003c0001,
-+	0xc78, 0x003d0001,
-+	0xc78, 0x003e0001,
-+	0xc78, 0x003f0001,
-+	0xc78, 0x38000002,
-+	0xc78, 0x38010002,
-+	0xc78, 0x38020002,
-+	0xc78, 0x38030002,
-+	0xc78, 0x38040002,
-+	0xc78, 0x38050002,
-+	0xc78, 0x38060002,
-+	0xc78, 0x38070002,
-+	0xc78, 0x38080002,
-+	0xc78, 0x3c090002,
-+	0xc78, 0x3e0a0002,
-+	0xc78, 0x400b0002,
-+	0xc78, 0x440c0002,
-+	0xc78, 0x480d0002,
-+	0xc78, 0x4c0e0002,
-+	0xc78, 0x500f0002,
-+	0xc78, 0x52100002,
-+	0xc78, 0x56110002,
-+	0xc78, 0x5a120002,
-+	0xc78, 0x5e130002,
-+	0xc78, 0x60140002,
-+	0xc78, 0x60150002,
-+	0xc78, 0x60160002,
-+	0xc78, 0x62170002,
-+	0xc78, 0x62180002,
-+	0xc78, 0x62190002,
-+	0xc78, 0x621a0002,
-+	0xc78, 0x621b0002,
-+	0xc78, 0x621c0002,
-+	0xc78, 0x621d0002,
-+	0xc78, 0x621e0002,
-+	0xc78, 0x621f0002,
-+	0xc78, 0x6e1f0000,
-+};
-+
-+const u32 *rtl8192du_get_agctab_2garray(void)
++static void _rtl92du_init_chipn_one_out_ep_priority(struct ieee80211_hw *hw,
++						    u8 queue_sel)
 +{
-+	return rtl8192du_agctab_2garray;
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++	u16 value;
++
++	switch (queue_sel) {
++	case TX_SELE_HQ:
++		value = QUEUE_HIGH;
++		break;
++	case TX_SELE_LQ:
++		value = QUEUE_LOW;
++		break;
++	case TX_SELE_NQ:
++		value = QUEUE_NORMAL;
++		break;
++	default:
++		WARN_ON(1); /* Shall not reach here! */
++		return;
++	}
++	_rtl92d_init_chipn_reg_priority(hw, value, value, value, value,
++					value, value);
++	rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
++		"Tx queue select: 0x%02x\n", queue_sel);
 +}
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.h
++
++static void _rtl92du_init_chipn_two_out_ep_priority(struct ieee80211_hw *hw,
++						    u8 queue_sel)
++{
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++	u16 beq, bkq, viq, voq, mgtq, hiq;
++	u16 valuehi, valuelow;
++
++	switch (queue_sel) {
++	default:
++		WARN_ON(1);
++		fallthrough;
++	case (TX_SELE_HQ | TX_SELE_LQ):
++		valuehi = QUEUE_HIGH;
++		valuelow = QUEUE_LOW;
++		break;
++	case (TX_SELE_NQ | TX_SELE_LQ):
++		valuehi = QUEUE_NORMAL;
++		valuelow = QUEUE_LOW;
++		break;
++	case (TX_SELE_HQ | TX_SELE_NQ):
++		valuehi = QUEUE_HIGH;
++		valuelow = QUEUE_NORMAL;
++		break;
++	}
++
++	beq = valuelow;
++	bkq = valuelow;
++	viq = valuehi;
++	voq = valuehi;
++	mgtq = valuehi;
++	hiq = valuehi;
++
++	_rtl92d_init_chipn_reg_priority(hw, beq, bkq, viq, voq, mgtq, hiq);
++	rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
++		"Tx queue select: 0x%02x\n", queue_sel);
++}
++
++static void _rtl92du_init_chipn_three_out_ep_priority(struct ieee80211_hw *hw,
++						      u8 queue_sel)
++{
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++	u16 beq, bkq, viq, voq, mgtq, hiq;
++
++	beq = QUEUE_LOW;
++	bkq = QUEUE_LOW;
++	viq = QUEUE_NORMAL;
++	voq = QUEUE_HIGH;
++	mgtq = QUEUE_HIGH;
++	hiq = QUEUE_HIGH;
++
++	_rtl92d_init_chipn_reg_priority(hw, beq, bkq, viq, voq, mgtq, hiq);
++	rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
++		"Tx queue select: 0x%02x\n", queue_sel);
++}
++
++static void _rtl92du_init_queue_priority(struct ieee80211_hw *hw,
++					 u8 out_ep_num,
++					 u8 queue_sel)
++{
++	switch (out_ep_num) {
++	case 1:
++		_rtl92du_init_chipn_one_out_ep_priority(hw, queue_sel);
++		break;
++	case 2:
++		_rtl92du_init_chipn_two_out_ep_priority(hw, queue_sel);
++		break;
++	case 3:
++		_rtl92du_init_chipn_three_out_ep_priority(hw, queue_sel);
++		break;
++	default:
++		WARN_ON(1); /* Shall not reach here! */
++		break;
++	}
++}
++
++static void _rtl92du_init_wmac_setting(struct ieee80211_hw *hw)
++{
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++	struct rtl_mac *mac = rtl_mac(rtlpriv);
++
++	mac->rx_conf = RCR_APM | RCR_AM | RCR_AB | RCR_ADF | RCR_APP_ICV |
++		       RCR_AMF | RCR_HTC_LOC_CTRL | RCR_APP_MIC |
++		       RCR_APP_PHYST_RXFF | RCR_APPFCS;
++
++	rtl_write_dword(rtlpriv, REG_RCR, mac->rx_conf);
++
++	/* Set Multicast Address. */
++	rtl_write_dword(rtlpriv, REG_MAR, 0xffffffff);
++	rtl_write_dword(rtlpriv, REG_MAR + 4, 0xffffffff);
++}
++
++static void _rtl92du_init_adaptive_ctrl(struct ieee80211_hw *hw)
++{
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++	u32 val32;
++
++	val32 = rtl_read_dword(rtlpriv, REG_RRSR);
++	val32 &= ~0xfffff;
++	if (rtlpriv->rtlhal.current_bandtype == BAND_ON_5G)
++		val32 |= 0xffff0; /* No CCK */
++	else
++		val32 |= 0xffff1;
++	rtl_write_dword(rtlpriv, REG_RRSR, val32);
++
++	/* Set Spec SIFS (used in NAV) */
++	rtl_write_word(rtlpriv, REG_SPEC_SIFS, 0x1010);
++
++	/* Retry limit 0x30 */
++	rtl_write_word(rtlpriv, REG_RL, 0x3030);
++}
++
++static void _rtl92du_init_edca(struct ieee80211_hw *hw)
++{
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++	u16 val16;
++
++	/* Disable EDCCA count down, to reduce collison and retry */
++	val16 = rtl_read_word(rtlpriv, REG_RD_CTRL);
++	val16 |= DIS_EDCA_CNT_DWN;
++	rtl_write_word(rtlpriv, REG_RD_CTRL, val16);
++
++	/* CCK SIFS shall always be 10us. */
++	rtl_write_word(rtlpriv, REG_SIFS_CTX, 0x0a0a);
++	/* Set SIFS for OFDM */
++	rtl_write_word(rtlpriv, REG_SIFS_TRX, 0x1010);
++
++	rtl_write_word(rtlpriv, REG_PROT_MODE_CTRL, 0x0204);
++
++	rtl_write_dword(rtlpriv, REG_BAR_MODE_CTRL, 0x014004);
++
++	/* TXOP */
++	rtl_write_dword(rtlpriv, REG_EDCA_BE_PARAM, 0x005EA42B);
++	rtl_write_dword(rtlpriv, REG_EDCA_BK_PARAM, 0x0000A44F);
++	rtl_write_dword(rtlpriv, REG_EDCA_VI_PARAM, 0x005EA324);
++	rtl_write_dword(rtlpriv, REG_EDCA_VO_PARAM, 0x002FA226);
++
++	rtl_write_byte(rtlpriv, REG_PIFS, 0x1C);
++
++	rtl_write_byte(rtlpriv, REG_AGGR_BREAK_TIME, 0x16);
++
++	rtl_write_word(rtlpriv, REG_NAV_PROT_LEN, 0x0040);
++
++	rtl_write_byte(rtlpriv, REG_BCNDMATIM, 0x2);
++	rtl_write_byte(rtlpriv, REG_ATIMWND, 0x2);
++}
++
++static void _rtl92du_init_retry_function(struct ieee80211_hw *hw)
++{
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++	u8 val8;
++
++	val8 = rtl_read_byte(rtlpriv, REG_FWHW_TXQ_CTRL);
++	val8 |= EN_AMPDU_RTY_NEW;
++	rtl_write_byte(rtlpriv, REG_FWHW_TXQ_CTRL, val8);
++
++	rtl_write_byte(rtlpriv, REG_ACKTO, 0x40);
++}
++
++static void _rtl92du_init_operation_mode(struct ieee80211_hw *hw)
++{
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
++
++	rtl_write_byte(rtlpriv, REG_BWOPMODE, BW_OPMODE_20MHZ);
++
++	switch (rtlpriv->phy.rf_type) {
++	case RF_1T2R:
++	case RF_1T1R:
++		rtlhal->minspace_cfg = (MAX_MSS_DENSITY_1T << 3);
++		break;
++	case RF_2T2R:
++	case RF_2T2R_GREEN:
++		rtlhal->minspace_cfg = (MAX_MSS_DENSITY_2T << 3);
++		break;
++	}
++	rtl_write_byte(rtlpriv, REG_AMPDU_MIN_SPACE, rtlhal->minspace_cfg);
++}
++
++static void _rtl92du_init_beacon_parameters(struct ieee80211_hw *hw)
++{
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++
++	rtl_write_word(rtlpriv, REG_BCN_CTRL, 0x1010);
++
++	rtl_write_word(rtlpriv, REG_TBTT_PROHIBIT, 0x3c02);
++	rtl_write_byte(rtlpriv, REG_DRVERLYINT, 0x05);
++	rtl_write_byte(rtlpriv, REG_BCNDMATIM, 0x03);
++
++	rtl_write_word(rtlpriv, REG_BCNTCFG, 0x660f);
++}
++
++static void _rtl92du_init_ampdu_aggregation(struct ieee80211_hw *hw)
++{
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
++
++	/* Aggregation threshold */
++	if (rtlhal->macphymode == DUALMAC_DUALPHY)
++		rtl_write_dword(rtlpriv, REG_AGGLEN_LMT, 0x66525541);
++	else if (rtlhal->macphymode == DUALMAC_SINGLEPHY)
++		rtl_write_dword(rtlpriv, REG_AGGLEN_LMT, 0x44444441);
++	else
++		rtl_write_dword(rtlpriv, REG_AGGLEN_LMT, 0x88728841);
++
++	rtl_write_byte(rtlpriv, REG_AGGR_BREAK_TIME, 0x16);
++}
++
++static bool _rtl92du_init_power_on(struct ieee80211_hw *hw)
++{
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++	unsigned short wordtmp;
++	unsigned char bytetmp;
++	u16 retry = 0;
++
++	do {
++		if (rtl_read_byte(rtlpriv, REG_APS_FSMCO) & PFM_ALDN)
++			break;
++
++		if (retry++ > 1000)
++			return false;
++	} while (true);
++
++	/* Unlock ISO/CLK/Power control register */
++	rtl_write_byte(rtlpriv, REG_RSV_CTRL, 0x00);
++
++	/* SPS0_CTRL 0x11[7:0] = 0x2b  enable SPS into PWM mode */
++	rtl_write_byte(rtlpriv, REG_SPS0_CTRL, 0x2b);
++
++	msleep(1);
++
++	bytetmp = rtl_read_byte(rtlpriv, REG_LDOV12D_CTRL);
++	if ((bytetmp & LDV12_EN) == 0) {
++		bytetmp |= LDV12_EN;
++		rtl_write_byte(rtlpriv, REG_LDOV12D_CTRL, bytetmp);
++
++		msleep(1);
++
++		bytetmp = rtl_read_byte(rtlpriv, REG_SYS_ISO_CTRL);
++		bytetmp &= ~ISO_MD2PP;
++		rtl_write_byte(rtlpriv, REG_SYS_ISO_CTRL, bytetmp);
++	}
++
++	/* Auto enable WLAN */
++	wordtmp = rtl_read_word(rtlpriv, REG_APS_FSMCO);
++	wordtmp |= APFM_ONMAC;
++	rtl_write_word(rtlpriv, REG_APS_FSMCO, wordtmp);
++
++	wordtmp = rtl_read_word(rtlpriv, REG_APS_FSMCO);
++	retry = 0;
++	while ((wordtmp & APFM_ONMAC) && retry < 1000) {
++		retry++;
++		wordtmp = rtl_read_word(rtlpriv, REG_APS_FSMCO);
++	}
++
++	/* Release RF digital isolation */
++	wordtmp = rtl_read_word(rtlpriv, REG_SYS_ISO_CTRL);
++	wordtmp &= ~ISO_DIOR;
++	rtl_write_word(rtlpriv, REG_SYS_ISO_CTRL, wordtmp);
++
++	/* Enable MAC DMA/WMAC/SCHEDULE/SEC block */
++	wordtmp = rtl_read_word(rtlpriv, REG_CR);
++	wordtmp |= HCI_TXDMA_EN | HCI_RXDMA_EN | TXDMA_EN | RXDMA_EN |
++		   PROTOCOL_EN | SCHEDULE_EN | MACTXEN | MACRXEN | ENSEC;
++	rtl_write_word(rtlpriv, REG_CR, wordtmp);
++
++	return true;
++}
++
++static bool _rtl92de_init_mac(struct ieee80211_hw *hw)
++{
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++	u8 val8;
++
++	rtl_write_byte(rtlpriv, REG_RSV_CTRL, 0x00);
++
++	val8 = rtl_read_byte(rtlpriv, REG_SYS_FUNC_EN + 1);
++	val8 &= ~(FEN_MREGEN >> 8);
++	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN + 1, val8);
++
++	/* For s3/s4 may reset mac, Reg0xf8 may be set to 0,
++	 * so reset macphy control reg here.
++	 */
++	rtl92d_phy_config_macphymode(hw);
++
++	rtl92d_phy_set_poweron(hw);
++
++	if (!_rtl92du_init_power_on(hw)) {
++		pr_err("Failed to init power on!\n");
++		return false;
++	}
++
++	rtl92d_phy_config_maccoexist_rfpage(hw);
++
++	return true;
++}
++
++int rtl92du_hw_init(struct ieee80211_hw *hw)
++{
++	struct rtl_usb_priv *usb_priv = rtl_usbpriv(hw);
++	struct rtl_usb *rtlusb = rtl_usbdev(usb_priv);
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++	struct rtl_ps_ctl *ppsc = rtl_psc(rtlpriv);
++	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
++	struct rtl_mac *mac = rtl_mac(rtlpriv);
++	struct rtl_phy *rtlphy = &rtlpriv->phy;
++	u8 val8, txpktbuf_bndy;
++	unsigned long flags;
++	int err, i;
++	u32 val32;
++	u16 val16;
++
++	/* As this function can take a very long time
++	 * and can be called with irqs disabled, reenable the irqs
++	 * to let the other devices continue being serviced.
++	 *
++	 * It is safe doing so since our own interrupts will only be enabled
++	 * in a subsequent step.
++	 */
++	local_save_flags(flags);
++	local_irq_enable();
++
++	mutex_lock(rtlpriv->mutex_for_hw_init);
++
++	/* we should do iqk after disable/enable */
++	rtl92d_phy_reset_iqk_result(hw);
++
++	if (!_rtl92de_init_mac(hw)) {
++		pr_err("Init MAC failed\n");
++		mutex_unlock(rtlpriv->mutex_for_hw_init);
++		return 1;
++	}
++
++	if (rtlhal->macphymode == SINGLEMAC_SINGLEPHY)
++		txpktbuf_bndy = 249;
++	else
++		txpktbuf_bndy = 123;
++
++	if (!_rtl92de_llt_table_init(hw, txpktbuf_bndy)) {
++		pr_err("Init LLT failed\n");
++		mutex_unlock(rtlpriv->mutex_for_hw_init);
++		return 1;
++	}
++
++	err = rtl92d_download_fw(hw);
++
++	/* return fail only when part number check fail */
++	if (err && rtl_read_byte(rtlpriv, 0x1c5) == 0xe0) {
++		rtl_dbg(rtlpriv, COMP_ERR, DBG_WARNING,
++			"Failed to download FW. Init HW without FW..\n");
++		mutex_unlock(rtlpriv->mutex_for_hw_init);
++		return 1;
++	}
++	rtlhal->last_hmeboxnum = 0;
++	rtlpriv->psc.fw_current_inpsmode = false;
++
++	rtl92d_phy_mac_config(hw);
++
++	/* Set reserved page for each queue */
++	_rtl92du_init_queue_reserved_page(hw, rtlusb->out_ep_nums,
++					  rtlusb->out_queue_sel);
++
++	_rtl92du_init_tx_buffer_boundary(hw, txpktbuf_bndy);
++
++	_rtl92du_init_queue_priority(hw, rtlusb->out_ep_nums,
++				     rtlusb->out_queue_sel);
++
++	/* Set Tx/Rx page size (Tx must be 128 Bytes,
++	 * Rx can be 64, 128, 256, 512, 1024 bytes)
++	 */
++	rtl_write_byte(rtlpriv, REG_PBP, 0x11);
++
++	/* Get Rx PHY status in order to report RSSI and others. */
++	rtl_write_byte(rtlpriv, REG_RX_DRVINFO_SZ, 0x4);
++
++	rtl_write_dword(rtlpriv, REG_HISR, 0xffffffff);
++	rtl_write_dword(rtlpriv, REG_HIMR, 0xffffffff);
++
++	val8 = rtl_read_byte(rtlpriv, MSR);
++	val8 &= ~MSR_MASK;
++	val8 |= MSR_INFRA;
++	rtl_write_byte(rtlpriv, MSR, val8);
++
++	_rtl92du_init_wmac_setting(hw);
++	_rtl92du_init_adaptive_ctrl(hw);
++	_rtl92du_init_edca(hw);
++
++	rtl_write_dword(rtlpriv, REG_DARFRC, 0x00000000);
++	rtl_write_dword(rtlpriv, REG_DARFRC + 4, 0x10080404);
++	rtl_write_dword(rtlpriv, REG_RARFRC, 0x04030201);
++	rtl_write_dword(rtlpriv, REG_RARFRC + 4, 0x08070605);
++
++	_rtl92du_init_retry_function(hw);
++	/* _InitUsbAggregationSetting(padapter); no aggregation for now */
++	_rtl92du_init_operation_mode(hw);
++	_rtl92du_init_beacon_parameters(hw);
++	_rtl92du_init_ampdu_aggregation(hw);
++
++	rtl_write_byte(rtlpriv, REG_BCN_MAX_ERR, 0xff);
++
++	/* unit: 256us. 256ms */
++	rtl_write_word(rtlpriv, REG_PKT_VO_VI_LIFE_TIME, 0x0400);
++	rtl_write_word(rtlpriv, REG_PKT_BE_BK_LIFE_TIME, 0x0400);
++
++	/* Hardware-controlled blinking. */
++	rtl_write_word(rtlpriv, REG_LEDCFG0, 0x8282);
++	rtl_write_byte(rtlpriv, REG_LEDCFG2, 0x82);
++
++	val32 = rtl_read_dword(rtlpriv, REG_TXDMA_OFFSET_CHK);
++	val32 |= DROP_DATA_EN;
++	rtl_write_dword(rtlpriv, REG_TXDMA_OFFSET_CHK, val32);
++
++	if (mac->rdg_en) {
++		rtl_write_byte(rtlpriv, REG_RD_CTRL, 0xff);
++		rtl_write_word(rtlpriv, REG_RD_NAV_NXT, 0x200);
++		rtl_write_byte(rtlpriv, REG_RD_RESP_PKT_TH, 0x05);
++	}
++
++	for (i = 0; i < 4; i++)
++		rtl_write_dword(rtlpriv, REG_ARFR0 + i * 4, 0x1f8ffff0);
++
++	if (rtlhal->macphymode == SINGLEMAC_SINGLEPHY) {
++		if (rtlusb->out_ep_nums == 2)
++			rtl_write_dword(rtlpriv, REG_FAST_EDCA_CTRL, 0x03066666);
++		else
++			rtl_write_word(rtlpriv, REG_FAST_EDCA_CTRL, 0x8888);
++	} else {
++		rtl_write_word(rtlpriv, REG_FAST_EDCA_CTRL, 0x5555);
++	}
++
++	val8 = rtl_read_byte(rtlpriv, 0x605);
++	val8 |= 0xf0;
++	rtl_write_byte(rtlpriv, 0x605, val8);
++
++	rtl_write_byte(rtlpriv, REG_RXTSF_OFFSET_CCK, 0x30);
++	rtl_write_byte(rtlpriv, REG_RXTSF_OFFSET_OFDM, 0x30);
++	rtl_write_byte(rtlpriv, 0x606, 0x30);
++
++	/* temp for high queue and mgnt Queue corrupt in time; it may
++	 * cause hang when sw beacon use high_Q, other frame use mgnt_Q;
++	 * or, sw beacon use mgnt_Q, other frame use high_Q;
++	 */
++	rtl_write_byte(rtlpriv, REG_DIS_TXREQ_CLR, 0x10);
++	val16 = rtl_read_word(rtlpriv, REG_RD_CTRL);
++	val16 |= BIT(12);
++	rtl_write_word(rtlpriv, REG_RD_CTRL, val16);
++
++	rtl_write_byte(rtlpriv, REG_TXPAUSE, 0);
++
++	/* usb suspend idle time count for bitfile0927 */
++	val8 = rtl_read_byte(rtlpriv, 0xfe56);
++	val8 |= BIT(0) | BIT(1);
++	rtl_write_byte(rtlpriv, 0xfe56, val8);
++
++	if (rtlhal->earlymode_enable) {
++		rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
++			"EarlyMode Enabled!!!\n");
++
++		val8 = rtl_read_byte(rtlpriv, REG_EARLY_MODE_CONTROL);
++		val8 |= 0x1f;
++		rtl_write_byte(rtlpriv, REG_EARLY_MODE_CONTROL, val8);
++
++		rtl_write_byte(rtlpriv, REG_EARLY_MODE_CONTROL + 3, 0x80);
++
++		val8 = rtl_read_byte(rtlpriv, 0x605);
++		val8 |= 0x40;
++		rtl_write_byte(rtlpriv, 0x605, val8);
++	} else {
++		rtl_write_byte(rtlpriv, REG_EARLY_MODE_CONTROL, 0);
++	}
++
++	rtl92d_phy_bb_config(hw);
++
++	rtlphy->rf_mode = RF_OP_BY_SW_3WIRE;
++	/* set before initialize RF */
++	rtl_set_bbreg(hw, RFPGA0_ANALOGPARAMETER4, 0x00f00000, 0xf);
++
++	/* config RF */
++	rtl92d_phy_rf_config(hw);
++
++	/* set default value after initialize RF */
++	rtl_set_bbreg(hw, RFPGA0_ANALOGPARAMETER4, 0x00f00000, 0);
++
++	/* After load BB, RF params, we need to do more for 92D. */
++	rtl92d_update_bbrf_configuration(hw);
++
++	rtlphy->rfreg_chnlval[0] =
++		rtl_get_rfreg(hw, RF90_PATH_A, RF_CHNLBW, RFREG_OFFSET_MASK);
++	rtlphy->rfreg_chnlval[1] =
++		rtl_get_rfreg(hw, RF90_PATH_B, RF_CHNLBW, RFREG_OFFSET_MASK);
++
++	/*---- Set CCK and OFDM Block "ON"----*/
++	if (rtlhal->current_bandtype == BAND_ON_2_4G)
++		rtl_set_bbreg(hw, RFPGA0_RFMOD, BCCKEN, 0x1);
++	rtl_set_bbreg(hw, RFPGA0_RFMOD, BOFDMEN, 0x1);
++
++	/* reset hw sec */
++	rtl_cam_reset_all_entry(hw);
++	rtl92de_enable_hw_security_config(hw);
++
++	rtl_write_byte(rtlpriv, REG_HWSEQ_CTRL, 0xFF);
++
++	/* schmitt trigger, improve tx evm for 92du */
++	val8 = rtl_read_byte(rtlpriv, REG_AFE_XTAL_CTRL);
++	val8 |= BIT(1);
++	rtl_write_byte(rtlpriv, REG_AFE_XTAL_CTRL, val8);
++
++	/* Disable bar */
++	rtl_write_dword(rtlpriv, REG_BAR_MODE_CTRL, 0xffff);
++
++	/* Nav limit */
++	rtl_write_byte(rtlpriv, REG_NAV_CTRL + 2, 0);
++	rtl_write_byte(rtlpriv, ROFDM0_XATXAFE + 3, 0x50);
++
++	/* Read EEPROM TX power index and PHY_REG_PG.txt to capture correct
++	 * TX power index for different rate set.
++	 */
++	rtl92d_phy_get_hw_reg_originalvalue(hw);
++
++	ppsc->rfpwr_state = ERFON;
++
++	/* do IQK for 2.4G for better scan result */
++	if (rtlhal->current_bandtype == BAND_ON_2_4G)
++		rtl92d_phy_iq_calibrate(hw);
++
++	rtl92d_phy_lc_calibrate(hw, IS_92D_SINGLEPHY(rtlhal->version));
++
++	rtl92du_phy_init_pa_bias(hw);
++
++	mutex_unlock(rtlpriv->mutex_for_hw_init);
++
++	rtl92du_dm_init(hw);
++
++	/* For 2 PORT TSF SYNC */
++	rtl_write_word(rtlpriv, REG_BCN_CTRL, 0x1818);
++	rtlusb->reg_bcn_ctrl_val = 0x18;
++
++	udelay(500);
++
++	if (rtlhal->macphymode != DUALMAC_DUALPHY) {
++		rtl_write_dword(rtlpriv, RFPGA1_TXINFO,
++				rtl_read_dword(rtlpriv, RFPGA1_TXINFO) & ~BIT(30));
++
++		rtl_write_dword(rtlpriv, RFPGA0_TXGAINSTAGE,
++				rtl_read_dword(rtlpriv, RFPGA0_TXGAINSTAGE) & ~BIT(31));
++
++		rtl_write_dword(rtlpriv, ROFDM0_XBTXAFE, 0xa0e40000);
++	}
++
++	val32 = rtl_read_dword(rtlpriv, REG_FWHW_TXQ_CTRL);
++	val32 |= BIT(12);
++	rtl_write_dword(rtlpriv, REG_FWHW_TXQ_CTRL, val32);
++
++	local_irq_disable();
++	local_irq_restore(flags);
++
++	return err;
++}
++
++static int _rtl92de_set_media_status(struct ieee80211_hw *hw,
++				     enum nl80211_iftype type)
++{
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++	enum led_ctl_mode ledaction = LED_CTL_NO_LINK;
++	u8 bt_msr = rtl_read_byte(rtlpriv, MSR);
++
++	bt_msr &= 0xfc;
++
++	if (type == NL80211_IFTYPE_UNSPECIFIED ||
++	    type == NL80211_IFTYPE_STATION) {
++		rtl92de_stop_tx_beacon(hw);
++		_rtl92de_enable_bcn_sub_func(hw);
++	} else if (type == NL80211_IFTYPE_ADHOC ||
++		   type == NL80211_IFTYPE_AP) {
++		rtl92de_resume_tx_beacon(hw);
++		_rtl92de_disable_bcn_sub_func(hw);
++	} else {
++		rtl_dbg(rtlpriv, COMP_ERR, DBG_WARNING,
++			"Set HW_VAR_MEDIA_STATUS: No such media status(%x)\n",
++			type);
++	}
++
++	switch (type) {
++	case NL80211_IFTYPE_UNSPECIFIED:
++		bt_msr |= MSR_NOLINK;
++		ledaction = LED_CTL_LINK;
++		rtl_dbg(rtlpriv, COMP_INIT, DBG_TRACE,
++			"Set Network type to NO LINK!\n");
++		break;
++	case NL80211_IFTYPE_ADHOC:
++		bt_msr |= MSR_ADHOC;
++		rtl_dbg(rtlpriv, COMP_INIT, DBG_TRACE,
++			"Set Network type to Ad Hoc!\n");
++		break;
++	case NL80211_IFTYPE_STATION:
++		bt_msr |= MSR_INFRA;
++		ledaction = LED_CTL_LINK;
++		rtl_dbg(rtlpriv, COMP_INIT, DBG_TRACE,
++			"Set Network type to STA!\n");
++		break;
++	case NL80211_IFTYPE_AP:
++		bt_msr |= MSR_AP;
++		rtl_dbg(rtlpriv, COMP_INIT, DBG_TRACE,
++			"Set Network type to AP!\n");
++		break;
++	default:
++		pr_err("Network type %d not supported!\n", type);
++		return 1;
++	}
++	rtl_write_byte(rtlpriv, MSR, bt_msr);
++
++	rtlpriv->cfg->ops->led_control(hw, ledaction);
++
++	if ((bt_msr & MSR_MASK) == MSR_AP)
++		rtl_write_byte(rtlpriv, REG_BCNTCFG + 1, 0x00);
++	else
++		rtl_write_byte(rtlpriv, REG_BCNTCFG + 1, 0x66);
++
++	return 0;
++}
++
++void rtl92de_set_check_bssid(struct ieee80211_hw *hw, bool check_bssid)
++{
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++	u32 reg_rcr;
++
++	if (rtlpriv->psc.rfpwr_state != ERFON)
++		return;
++
++	rtlpriv->cfg->ops->get_hw_reg(hw, HW_VAR_RCR, (u8 *)(&reg_rcr));
++
++	if (check_bssid) {
++		reg_rcr |= RCR_CBSSID_DATA | RCR_CBSSID_BCN;
++		rtlpriv->cfg->ops->set_hw_reg(hw, HW_VAR_RCR, (u8 *)&reg_rcr);
++		_rtl92de_set_bcn_ctrl_reg(hw, 0, DIS_TSF_UDT);
++	} else if (!check_bssid) {
++		reg_rcr &= ~(RCR_CBSSID_DATA | RCR_CBSSID_BCN);
++		_rtl92de_set_bcn_ctrl_reg(hw, DIS_TSF_UDT, 0);
++		rtlpriv->cfg->ops->set_hw_reg(hw, HW_VAR_RCR, (u8 *)&reg_rcr);
++	}
++}
++
++int rtl92de_set_network_type(struct ieee80211_hw *hw, enum nl80211_iftype type)
++{
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++
++	if (_rtl92de_set_media_status(hw, type))
++		return -EOPNOTSUPP;
++
++	/* check bssid */
++	if (rtlpriv->mac80211.link_state == MAC80211_LINKED) {
++		if (type != NL80211_IFTYPE_AP)
++			rtl92de_set_check_bssid(hw, true);
++	} else {
++		rtl92de_set_check_bssid(hw, false);
++	}
++
++	return 0;
++}
++
++/* do iqk or reload iqk */
++/* windows just rtl92d_phy_reload_iqk_setting in set channel,
++ * but it's very strict for time sequence so we add
++ * rtl92d_phy_reload_iqk_setting here
++ */
++void rtl92d_linked_set_reg(struct ieee80211_hw *hw)
++{
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++	struct rtl_phy *rtlphy = &rtlpriv->phy;
++	u8 channel = rtlphy->current_channel;
++	u8 indexforchannel;
++
++	indexforchannel = rtl92d_get_rightchnlplace_for_iqk(channel);
++	if (!rtlphy->iqk_matrix[indexforchannel].iqk_done) {
++		rtl_dbg(rtlpriv, COMP_SCAN | COMP_INIT, DBG_DMESG,
++			"Do IQK for channel:%d\n", channel);
++		rtl92d_phy_iq_calibrate(hw);
++	}
++}
++
++void rtl92de_enable_interrupt(struct ieee80211_hw *hw)
++{
++	/* Nothing to do. */
++}
++
++void rtl92de_disable_interrupt(struct ieee80211_hw *hw)
++{
++	/* Nothing to do. */
++}
++
++static void _rtl92du_poweroff_adapter(struct ieee80211_hw *hw)
++{
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++	u8 retry = 100;
++	u8 u1b_tmp;
++	u16 val16;
++	u32 val32;
++
++	rtl_write_byte(rtlpriv, REG_LDOA15_CTRL, 0x04);
++
++	rtl_write_byte(rtlpriv, REG_RF_CTRL, 0x00);
++
++	/* IF fw in RAM code, do reset */
++	if (rtl_read_byte(rtlpriv, REG_MCUFWDL) & MCUFWDL_RDY) {
++		rtl_write_byte(rtlpriv, REG_FSIMR, 0);
++
++		/* We need to disable other HRCV INT to influence 8051 reset. */
++		rtl_write_byte(rtlpriv, REG_FWIMR, 0x20);
++
++		/* Close mask to prevent incorrect FW write operation. */
++		rtl_write_byte(rtlpriv, REG_FTIMR, 0);
++
++		rtl_write_byte(rtlpriv, REG_MCUFWDL, 0);
++
++		/* Set (REG_HMETFR + 3) to 0x20 is reset 8051 */
++		rtl_write_byte(rtlpriv, REG_HMETFR + 3, 0x20);
++		val16 = rtl_read_word(rtlpriv, REG_SYS_FUNC_EN);
++		while (val16 & FEN_CPUEN) {
++			retry--;
++			if (retry == 0)
++				break;
++			udelay(50);
++			val16 = rtl_read_word(rtlpriv, REG_SYS_FUNC_EN);
++		}
++
++		if (retry == 0) {
++			rtl_write_byte(rtlpriv, REG_FWIMR, 0);
++
++			/* if 8051 reset fail, reset MAC directly. */
++			rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN + 1, 0x50);
++
++			mdelay(10);
++		}
++	}
++
++	/* reset MCU, MAC register, DCORE */
++	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN + 1, 0x54);
++
++	/* reset MCU ready status */
++	rtl_write_byte(rtlpriv, REG_MCUFWDL, 0x00);
++
++	/* Pull GPIO PIN to balance level and LED control */
++
++	/* Disable GPIO[7:0] */
++	rtl_write_word(rtlpriv, REG_GPIO_PIN_CTRL + 2, 0x0000);
++	val32 = rtl_read_dword(rtlpriv, REG_GPIO_PIN_CTRL);
++	u32p_replace_bits(&val32, val32 & 0xff, 0x0000ff00);
++	u32p_replace_bits(&val32, 0xff, 0x00ff0000);
++	rtl_write_dword(rtlpriv, REG_GPIO_PIN_CTRL, val32);
++
++	/* Disable GPIO[10:8] */
++	rtl_write_byte(rtlpriv, REG_MAC_PINMUX_CFG, 0);
++	val16 = rtl_read_word(rtlpriv, REG_GPIO_IO_SEL);
++	u16p_replace_bits(&val16, val16 & 0xf, 0x00f0);
++	u16p_replace_bits(&val16, 0xf, 0x0780);
++	rtl_write_word(rtlpriv, REG_GPIO_IO_SEL, val16);
++
++	/* Disable LED 0, 1, and 2 */
++	rtl_write_word(rtlpriv, REG_LEDCFG0, 0x8888);
++	rtl_write_byte(rtlpriv, REG_LEDCFG2, 0x88);
++
++	/* Disable analog sequence */
++
++	/* enter PFM mode */
++	rtl_write_byte(rtlpriv, REG_SPS0_CTRL, 0x23);
++
++	rtl_write_word(rtlpriv, REG_APS_FSMCO,
++		       APDM_HOST | AFSM_HSUS | PFM_ALDN);
++
++	/* lock ISO/CLK/Power control register */
++	rtl_write_byte(rtlpriv, REG_RSV_CTRL, 0x0e);
++
++	rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
++		"In PowerOff,reg0x%x=%X\n",
++		REG_SPS0_CTRL, rtl_read_byte(rtlpriv, REG_SPS0_CTRL));
++
++	/* 0x17[7] 1b': power off in process  0b' : power off over */
++	if (rtlpriv->rtlhal.macphymode != SINGLEMAC_SINGLEPHY) {
++		mutex_lock(rtlpriv->mutex_for_power_on_off);
++		u1b_tmp = rtl_read_byte(rtlpriv, REG_POWER_OFF_IN_PROCESS);
++		u1b_tmp &= ~BIT(7);
++		rtl_write_byte(rtlpriv, REG_POWER_OFF_IN_PROCESS, u1b_tmp);
++		mutex_unlock(rtlpriv->mutex_for_power_on_off);
++	}
++
++	rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD, "<=======\n");
++}
++
++void rtl92du_card_disable(struct ieee80211_hw *hw)
++{
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
++	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
++	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
++	enum nl80211_iftype opmode;
++	u32 val32;
++	u16 val16;
++	u8 val8;
++
++	mac->link_state = MAC80211_NOLINK;
++	opmode = NL80211_IFTYPE_UNSPECIFIED;
++	_rtl92de_set_media_status(hw, opmode);
++
++	RT_SET_PS_LEVEL(ppsc, RT_RF_OFF_LEVL_HALT_NIC);
++	/* Power sequence for each MAC. */
++	/* a. stop tx DMA  */
++	/* b. close RF */
++	/* c. clear rx buf */
++	/* d. stop rx DMA */
++	/* e. reset MAC */
++
++	val16 = rtl_read_word(rtlpriv, REG_GPIO_MUXCFG);
++	val16 &= ~BIT(12);
++	rtl_write_word(rtlpriv, REG_GPIO_MUXCFG, val16);
++
++	rtl_write_byte(rtlpriv, REG_TXPAUSE, 0xff);
++	udelay(500);
++	rtl_write_byte(rtlpriv, REG_CR, 0);
++
++	/* RF OFF sequence */
++	rtl_set_bbreg(hw, RFPGA0_ANALOGPARAMETER4, 0x00f00000, 0xf);
++	rtl_set_rfreg(hw, RF90_PATH_A, RF_AC, RFREG_OFFSET_MASK, 0x00);
++
++	rtl_write_byte(rtlpriv, REG_APSD_CTRL, 0x40);
++
++	val8 = FEN_USBD | FEN_USBA | FEN_BB_GLB_RSTN;
++	rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN, val8);
++
++	/* Mac0 can not do Global reset. Mac1 can do. */
++	if (rtlhal->macphymode == SINGLEMAC_SINGLEPHY ||
++	    rtlhal->interfaceindex == 1) {
++		/* before BB reset should do clock gated */
++		val32 = rtl_read_dword(rtlpriv, RFPGA0_XCD_RFPARAMETER);
++		val32 |= BIT(31);
++		rtl_write_dword(rtlpriv, RFPGA0_XCD_RFPARAMETER, val32);
++
++		val8 &= ~FEN_BB_GLB_RSTN;
++		rtl_write_byte(rtlpriv, REG_SYS_FUNC_EN, val8);
++	}
++
++	rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD, "==> Do power off.......\n");
++	if (!rtl92d_phy_check_poweroff(hw))
++		return;
++
++	_rtl92du_poweroff_adapter(hw);
++}
++
++void rtl92de_set_beacon_related_registers(struct ieee80211_hw *hw)
++{
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++	struct rtl_mac *mac = rtl_mac(rtlpriv);
++	u16 bcn_interval, atim_window;
++
++	bcn_interval = mac->beacon_interval;
++	atim_window = 2;
++	rtl92de_disable_interrupt(hw);
++	rtl_write_word(rtlpriv, REG_ATIMWND, atim_window);
++	rtl_write_word(rtlpriv, REG_BCN_INTERVAL, bcn_interval);
++	rtl_write_word(rtlpriv, REG_BCNTCFG, 0x660f);
++	rtl_write_byte(rtlpriv, REG_RXTSF_OFFSET_CCK, 0x20);
++	if (rtlpriv->rtlhal.current_bandtype == BAND_ON_5G)
++		rtl_write_byte(rtlpriv, REG_RXTSF_OFFSET_OFDM, 0x30);
++	else
++		rtl_write_byte(rtlpriv, REG_RXTSF_OFFSET_OFDM, 0x20);
++	rtl_write_byte(rtlpriv, 0x606, 0x30);
++}
++
++void rtl92de_set_beacon_interval(struct ieee80211_hw *hw)
++{
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
++	u16 bcn_interval = mac->beacon_interval;
++
++	rtl_dbg(rtlpriv, COMP_BEACON, DBG_DMESG,
++		"beacon_interval:%d\n", bcn_interval);
++	rtl92de_disable_interrupt(hw);
++	rtl_write_word(rtlpriv, REG_BCN_INTERVAL, bcn_interval);
++	rtl92de_enable_interrupt(hw);
++}
++
++void rtl92de_update_interrupt_mask(struct ieee80211_hw *hw,
++				   u32 add_msr, u32 rm_msr)
++{
++	/* Nothing to do here. */
++}
++
++void rtl92du_read_chip_version(struct ieee80211_hw *hw)
++{
++	struct rtl_priv *rtlpriv = rtl_priv(hw);
++
++	/* Chip version reading is done in rtl92de_read_eeprom_info. */
++
++	rtlpriv->rtlhal.hw_type = HARDWARE_TYPE_RTL8192DU;
++}
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.h
 new file mode 100644
-index 000000000000..95e0367abb5a
+index 000000000000..d3b6a22a75fa
 --- /dev/null
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.h
-@@ -0,0 +1,29 @@
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.h
+@@ -0,0 +1,24 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
 +/* Copyright(c) 2009-2012  Realtek Corporation.*/
 +
-+#ifndef __RTL92DU_TABLE_H__
-+#define __RTL92DU_TABLE_H__
++#ifndef __RTL92DU_HW_H__
++#define __RTL92DU_HW_H__
 +
-+#define PHY_REG_2T_ARRAYLENGTH 372
-+#define PHY_REG_ARRAY_PG_LENGTH 624
-+#define RADIOA_2T_ARRAYLENGTH 378
-+#define RADIOB_2T_ARRAYLENGTH 384
-+#define RADIOA_2T_INT_PA_ARRAYLENGTH 378
-+#define RADIOB_2T_INT_PA_ARRAYLENGTH 384
-+#define MAC_2T_ARRAYLENGTH 192
-+#define AGCTAB_ARRAYLENGTH 386
-+#define AGCTAB_5G_ARRAYLENGTH 194
-+#define AGCTAB_2G_ARRAYLENGTH 194
-+
-+const u32 *rtl8192du_get_phy_reg_2tarray(void);
-+const u32 *rtl8192du_get_phy_reg_array_pg(void);
-+const u32 *rtl8192du_get_radioa_2tarray(void);
-+const u32 *rtl8192du_get_radiob_2tarray(void);
-+const u32 *rtl8192du_get_radioa_2t_int_paarray(void);
-+const u32 *rtl8192du_get_radiob_2t_int_paarray(void);
-+const u32 *rtl8192du_get_mac_2tarray(void);
-+const u32 *rtl8192du_get_agctab_array(void);
-+const u32 *rtl8192du_get_agctab_5garray(void);
-+const u32 *rtl8192du_get_agctab_2garray(void);
++void rtl92du_get_hw_reg(struct ieee80211_hw *hw, u8 variable, u8 *val);
++void rtl92du_set_hw_reg(struct ieee80211_hw *hw, u8 variable, u8 *val);
++void rtl92du_read_chip_version(struct ieee80211_hw *hw);
++int rtl92du_hw_init(struct ieee80211_hw *hw);
++void rtl92du_card_disable(struct ieee80211_hw *hw);
++void rtl92de_enable_interrupt(struct ieee80211_hw *hw);
++void rtl92de_disable_interrupt(struct ieee80211_hw *hw);
++int rtl92de_set_network_type(struct ieee80211_hw *hw, enum nl80211_iftype type);
++void rtl92de_set_check_bssid(struct ieee80211_hw *hw, bool check_bssid);
++void rtl92de_set_beacon_related_registers(struct ieee80211_hw *hw);
++void rtl92de_set_beacon_interval(struct ieee80211_hw *hw);
++void rtl92de_update_interrupt_mask(struct ieee80211_hw *hw,
++				   u32 add_msr, u32 rm_msr);
++void rtl92de_suspend(struct ieee80211_hw *hw);
++void rtl92de_resume(struct ieee80211_hw *hw);
++void rtl92d_linked_set_reg(struct ieee80211_hw *hw);
 +
 +#endif
 -- 
 2.44.0
+
 
 
