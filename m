@@ -1,132 +1,132 @@
-Return-Path: <linux-wireless+bounces-6008-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6009-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B69A89D93E
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 14:31:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BDE189D965
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 14:51:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C4281C21111
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 12:31:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBC54289ED5
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 12:51:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B257F1C3D;
-	Tue,  9 Apr 2024 12:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1759E12D772;
+	Tue,  9 Apr 2024 12:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SP4KjDcF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QoGEWQbo"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB8F384
-	for <linux-wireless@vger.kernel.org>; Tue,  9 Apr 2024 12:31:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4C61A5A2;
+	Tue,  9 Apr 2024 12:51:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712665883; cv=none; b=GBj8YUVSEseraEQoAITPV3dTjR3/wfGUjcBojF0psW14UTT8ktneCCOL3YhjkwQdrKR6bvtUbpxzcq7YS09woSPiFaRVeRdAgUYJ8TfDhpv7ydrl2wLGQh5kyPHLYCzpNrUOm3k/XqYphOkzDQdreE5NfHyKWQPCcS8itEA/O3g=
+	t=1712667074; cv=none; b=LWGwAT6JPaxBisnp0yz7NMHL0gug9AmPDQkQ5nEz+svyIAgF3TMm4UIEwG8NWffI0qBujmi223rRtvNbkiVRq8QlmSucZEqbRCmurojIeEI7W6ihr8rCTrlJgAi5tvtimOUEGoo0FyquW+GSngvIrXvbFICApBqGAuGpEQloJq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712665883; c=relaxed/simple;
-	bh=Smf8CqsXg9haM1YfQmcDVxHR/BjPzeFlKSG9GLUaZc4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=l17EGCqgLfqXglzqV4jRhI5EHdMtrwymqO44hh5BMJgZBrazgYFXAQZaImrJ+JwwXtONtDbuCuQM8udUx1I0nl2BaUR3pH1mCB+xSm1rXoY4AvzPIkrLnh+qVvdWvBQ1kpOaPfFiHV9CUKS4gsFA8xsPBtyxD4+8J8B82x+3WAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SP4KjDcF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE50C43394
-	for <linux-wireless@vger.kernel.org>; Tue,  9 Apr 2024 12:31:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712665883;
-	bh=Smf8CqsXg9haM1YfQmcDVxHR/BjPzeFlKSG9GLUaZc4=;
-	h=References:In-Reply-To:From:Date:Subject:To:List-Id:Cc:From;
-	b=SP4KjDcFJ2bCEYqa0OlTYSGyYm1+MGf3qTmWEgLDGYhvBurCkkVYo15Iq3paVftq/
-	 WE6Iw0crN6YTofAoElRw2TzZvqpmSDTQkyrLZ9elNII5Lp0Ri8YFAP3RPPg1rT/c+2
-	 JmXoSOC1/lPll8GZQ2+YpdouZIOu/y4pferiqrKmWjQW9zwGTA8kRGAyS1EDElHY7+
-	 vBPP8WpCkC2sV5fJX6W9TyV8hUEDB3m3VfFvdvbKh2/5lzopc/fdFCJRYP84+plMUG
-	 IfQ6Y+vtoahGB7mnk1R3ZHbpS1JrS5WoCSzSxiAHaFIpFDVaXBF2UkWZP1qWpZClvG
-	 q51ccIsRdaUXA==
-Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-dcd9e34430cso6381077276.1
-        for <linux-wireless@vger.kernel.org>; Tue, 09 Apr 2024 05:31:23 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXjMfdygJHaEQXSZmWeFwACvtnIB5+8DEv2htEx0gHqk734xBMmT1ZhQGPuXuhbudH0bZW836fcNovFV1cGO55FbUF+YOmOvnIV5ynbuP4=
-X-Gm-Message-State: AOJu0Ywea356a7pXdwZwIzsch5KLQ7JyPXybfFcYsLnwnu5bWv4mkd6c
-	hnAMpLvL4tpd8/IfX9UyJ7r9FH+d/bsyo68S8rFKpyqVroiTwGZgYX+Er9C5b4iWtrSwij9HaJ1
-	Vb/i9h1oWC3KoRbSrqoZw1LUuYWI=
-X-Google-Smtp-Source: AGHT+IE99X1JBsIJgtH7+iJVAR6Bk+3/OL9aBba9eT9vOnm5TO7JumZsOpnQnVxXUOhdxZX7RC4CQFfWOA+kNjIU8D8=
-X-Received: by 2002:a25:9947:0:b0:de1:1ac2:98e1 with SMTP id
- n7-20020a259947000000b00de11ac298e1mr620160ybo.37.1712665882252; Tue, 09 Apr
- 2024 05:31:22 -0700 (PDT)
+	s=arc-20240116; t=1712667074; c=relaxed/simple;
+	bh=qLaR1T3JCwD+pcaCnaUzLtRoSUp8R3ZkvQx5FcERa6E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DWXq9VGaUlbdfMSYeYzApuqEl8vXBDuh1giCuUCUCG4tP54QEtF/rR0oIyhKSkMzACoovuMrZZXMoY8TKMFZ8FHOmu7FEeV7tzZc/6ubPXlLsIuEJQyzkMWEI2J+WsF6jPoICwpMXbGkgnn9XZ9VgWdjE+wnLzMScW+JiYmKY4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QoGEWQbo; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712667073; x=1744203073;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=qLaR1T3JCwD+pcaCnaUzLtRoSUp8R3ZkvQx5FcERa6E=;
+  b=QoGEWQbom5g8+IpDR1YEFyhxlPB2224xElM/kkaiFxCds6yP2vDFKGNw
+   OgFSDsjKZ45NRQ6nFEYr+1tCo5qbo37f34GiT5hYLqG6YZQSUt+sl+yqm
+   iv3nVrCRAsGFZ0qfMmyYaJg+RFT2Vjl0vayFfcham3cGOSgm7uJqZRRLQ
+   +GFm/hnbZz1mpMdVJk2Gah0qyfhSMrBtFtWMW1MvlKUqgGbACYhSssM6I
+   sP2bY0Pb/zixokc1hDMbZ1VGn6l27iHP3qXYPB+TNuLhs2LCq19m2jzkE
+   yvdAROnAluU1kq+qgDibI2x5rUuABxfUIPpwti+tLeXSwl5wLeUTzTrNJ
+   g==;
+X-CSE-ConnectionGUID: pJXgfUAETemAJHQp8KMYbw==
+X-CSE-MsgGUID: Z9T7qQTRT4Stmnx6g9itNw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="8080657"
+X-IronPort-AV: E=Sophos;i="6.07,189,1708416000"; 
+   d="scan'208";a="8080657"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2024 05:51:12 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="915399074"
+X-IronPort-AV: E=Sophos;i="6.07,189,1708416000"; 
+   d="scan'208";a="915399074"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2024 05:51:07 -0700
+Received: from andy by smile with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1ruAwL-00000002o6H-0JxC;
+	Tue, 09 Apr 2024 15:51:05 +0300
+Date: Tue, 9 Apr 2024 15:51:04 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Kent Gibson <warthog618@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>
+Subject: Re: [PATCH v2 1/2] gpiolib: Fix a mess with the GPIO_* flags
+Message-ID: <ZhU5uDJk_M_TtKH2@smile.fi.intel.com>
+References: <20240408231727.396452-1-andriy.shevchenko@linux.intel.com>
+ <20240408231727.396452-2-andriy.shevchenko@linux.intel.com>
+ <CAMRc=Mf73fFHo83gNvDXGy9BosB1MNz_=8kt56hLA12bPBb8CA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <063c9937acb36ccf352056d212a9a2733abb9dd5.camel@realtek.com>
-In-Reply-To: <063c9937acb36ccf352056d212a9a2733abb9dd5.camel@realtek.com>
-From: Josh Boyer <jwboyer@kernel.org>
-Date: Tue, 9 Apr 2024 08:31:10 -0400
-X-Gmail-Original-Message-ID: <CA+5PVA5T4imRCyiww4gzry0Qi+gVY2EQ9jznxvhCn3RL9Q-Wnw@mail.gmail.com>
-Message-ID: <CA+5PVA5T4imRCyiww4gzry0Qi+gVY2EQ9jznxvhCn3RL9Q-Wnw@mail.gmail.com>
-Subject: Re: pull request: rtw: update/add firmware of Realtek WiFi 8703B,
- 8852C and 8922A
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: "linux-firmware@kernel.org" <linux-firmware@kernel.org>, 
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, Timlee <timlee@realtek.com>, 
-	"fiona.klute@gmx.de" <fiona.klute@gmx.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMRc=Mf73fFHo83gNvDXGy9BosB1MNz_=8kt56hLA12bPBb8CA@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Wed, Mar 20, 2024 at 11:23=E2=80=AFPM Ping-Ke Shih <pkshih@realtek.com> =
-wrote:
->
-> Hi,
->
-> Add/update three firmware including
->
->  - add initial firmware v11.0.0 for 8703
->  - update 8852C to v0.27.56.14
->  - add initial firmware v0.35.18.0 for 8922A
->
-> Thank you
-> Ping-Ke
->
-> ---
-> The following changes since commit 22ee1d8ca6663ca7c28477581993d6ed5cc543=
-23:
->
->   Merge branch 'robot/pr-0-1710861164' into 'main' (2024-03-19 19:07:14 +=
-0000)
->
-> are available in the Git repository at:
->
->   https://github.com/pkshih/linux-firmware.git HEAD
+On Tue, Apr 09, 2024 at 11:42:37AM +0200, Bartosz Golaszewski wrote:
+> On Tue, Apr 9, 2024 at 1:17 AM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> >
+> > The GPIO_* flag definitions are *almost* duplicated in two files
+> > (with unmatches OPEN_SOURCE / OPEN_DRAIN). Moreover, some code relies
+> > on one set of definitions while the rest is on the other. Clean up
+> > this mess by providing only one source of the definitions to all.
+> >
+> > Fixes: b424808115cb ("brcm80211: brcmsmac: Move LEDs to GPIO descriptors")
+> > Fixes: 5923ea6c2ce6 ("gpio: pass lookup and descriptor flags to request_own")
+> > Fixes: fed7026adc7c ("gpiolib: Make use of enum gpio_lookup_flags consistent")
+> > Fixes: 4c0facddb7d8 ("gpio: core: Decouple open drain/source flag with active low/high")
+> > Fixes: 69d301fdd196 ("gpio: add DT bindings for existing consumer flags")
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > ---
+> >  drivers/gpio/gpiolib-of.c                     |  5 ++---
+> >  drivers/gpio/gpiolib.c                        |  8 +++-----
+> >  .../broadcom/brcm80211/brcmsmac/led.c         |  2 +-
+> >  include/linux/gpio/driver.h                   |  3 +--
+> >  include/linux/gpio/machine.h                  | 20 +++++--------------
+> >  5 files changed, 12 insertions(+), 26 deletions(-)
+> 
+> I don't think ./dt-bindings/gpio/gpio.h is the right source of these
+> defines for everyone - including non-OF systems. I would prefer the
+> ones in include/linux/gpio/machine.h be the upstream source but then
+> headers in include/dt-bindings/ cannot include them so my second-best
+> suggestion is to rename the ones in include/linux/gpio/machine.h and
+> treewide too. In general values from ./dt-bindings/gpio/gpio.h should
+> only be used in DTS sources and gpiolib-of code.
 
-Merged and pushed out.
+Then, please fix that your way. It's quite annoying issue.
 
-https://gitlab.com/kernel-firmware/linux-firmware/-/merge_requests/189
+-- 
+With Best Regards,
+Andy Shevchenko
 
-josh
 
->
-> for you to fetch changes up to 08259e7f17f553d5f985a530f825ac8ad6f48450:
->
->   rtw89: 8852c: update fw to v0.27.56.14 (2024-03-21 11:02:32 +0800)
->
-> ----------------------------------------------------------------
-> Chin-Yen Lee (1):
->       rtw89: 8852c: update fw to v0.27.56.14
->
-> Fiona Klute (1):
->       rtw88: Add RTL8703B firmware v11.0.0
->
-> Ping-Ke Shih (1):
->       rtw89: 8922a: add firmware v0.35.18.0
->
->  WHENCE                    |  12 +++++++++---
->  rtw88/README              |   3 +++
->  rtw88/rtw8703b_fw.bin     | Bin 0 -> 20290 bytes
->  rtw88/rtw8703b_wow_fw.bin | Bin 0 -> 23074 bytes
->  rtw89/rtw8852c_fw.bin     | Bin 1532736 -> 1532656 bytes
->  rtw89/rtw8922a_fw.bin     | Bin 0 -> 1537690 bytes
->  6 files changed, 12 insertions(+), 3 deletions(-)
->  create mode 100644 rtw88/rtw8703b_fw.bin
->  create mode 100644 rtw88/rtw8703b_wow_fw.bin
->  create mode 100644 rtw89/rtw8922a_fw.bin
->
 
