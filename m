@@ -1,99 +1,134 @@
-Return-Path: <linux-wireless+bounces-6004-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6005-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5818E89D854
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 13:43:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96FB889D863
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 13:46:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED7D71F21A27
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 11:43:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B906E1C23D1A
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 11:46:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F8B786651;
-	Tue,  9 Apr 2024 11:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7AA12D1E7;
+	Tue,  9 Apr 2024 11:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d46EgBGB"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="Re2MZHX5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-fw-52003.amazon.com (smtp-fw-52003.amazon.com [52.119.213.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B46B42053;
-	Tue,  9 Apr 2024 11:43:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3284B127B4E;
+	Tue,  9 Apr 2024 11:45:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712663034; cv=none; b=MbiNnLYYSMF1KTcUlop/hulVv/DG84zJphKCLOcLkR3bQsqE0x7jjNVlJA4DWyx9OX6w07KXzamtBSEhBFQoRwEi2iyLL7dTqm4ctxnRkM68trH9Qp6Ri4MIVx7eRafrBS1jRd6/bJ6X8oR6Zf+titRTgEi+/6VOUj+uRc9x774=
+	t=1712663153; cv=none; b=njl/IZizOHf9Oy2AvUpkEgQLImugWOneEnneYLjndQlNeObg/eiCozv7bhqOyYEBjt+QMCAXbclZhfJaiwmb+P7Yr70WZ/zYkJ5QyUw7rPf7X8hobtFPj/0935KPeCmBDhCU98C4x2T950AlV69bSUdyUXqP7ClOFme8nHd/+FM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712663034; c=relaxed/simple;
-	bh=nbeeO/HdiPZM8HHVLpt1fCwCNBVTR0HOgVLESsZWhOI=;
-	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=MYvmVbl0o0W672vnkOrw+BfPjRyRGGdHo5rHW7mnMBJytKUVKvUIqwsLc0k9noQVKz+Wulo8cksNvVssKYpPsrM+hWGI5/A9Y4BiPwovlo+C4O1CO29fQn9rlFKevbkXiJ5dEhuAforHNT1GkBXBa9+95U0rx+mP+8OsoAgbVs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d46EgBGB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D44DC433F1;
-	Tue,  9 Apr 2024 11:43:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712663033;
-	bh=nbeeO/HdiPZM8HHVLpt1fCwCNBVTR0HOgVLESsZWhOI=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=d46EgBGBB+dImlGf5ySrLOyH8Ij3UrZQPzy4rRGGekUc48s6LOWgQaPOdY3zEgMrb
-	 DO+ftabH7b6ZH6g39eV2l9yV0LxEDg9HCUZxy3wN+9z9gffSuupiELVlZgLW9Akbya
-	 M3RLvjkJZ8ObgnMZwfjMMpd0zsNZUO92xmeIOKNA1e36B/vBLCWYDPtJObdYvr6VaS
-	 Q3jTycG3C8+o8NDe3wVxTpZglXPlZNeb9zp2ceyNA9qlJ3Ci43tHFQeuZWi93DQc8q
-	 pew28ArfhUw0IXj+aeUC7J4vyQ8YCqrXjhpTQex3N6zSlEl40rMQdQD50sxIuRR8rU
-	 tK+FeYLqyrmUw==
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1712663153; c=relaxed/simple;
+	bh=GFjr+qUI/xJlRfC49pDYbbQ+5mOHCUk/2gN5wZX0VPA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=lBIR1ZzgNFAiDhBZgiwFTJ1Hjbtgxh5r2XlqjC9uK91LBmTo0zonDD0RFLMilwlSPXoKVCFuu7RFValzVMoe7lSmHU/wR3KLx2txQVIah3cPmVakFvodIiyvfOU99UkKhMWn7HIsMlQWeYtdowO9yUrUIx5A89DElmMUefkbEi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=Re2MZHX5; arc=none smtp.client-ip=52.119.213.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1712663151; x=1744199151;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=GFjr+qUI/xJlRfC49pDYbbQ+5mOHCUk/2gN5wZX0VPA=;
+  b=Re2MZHX5GydCM8B6KilkbcXlSGPSLv0DHVNAFcmqvWsd0IZ1NH+wl46p
+   jp+rvzqYg9VvAX9wn3JpJghaHuXQWE2yPEhE8P08rq+2tVNxto7uD3tbV
+   QrLFtsNiMvuJGKG0kOuG7Rz2NIhkvDaaqqVhKqvF/2RhKVIbglEWBhS4x
+   g=;
+X-IronPort-AV: E=Sophos;i="6.07,189,1708387200"; 
+   d="scan'208";a="650727234"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-52003.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Apr 2024 11:45:43 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [10.0.21.151:49900]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.27.169:2525] with esmtp (Farcaster)
+ id 3f52ccb2-10c8-4639-a2de-4651f9e21034; Tue, 9 Apr 2024 11:45:42 +0000 (UTC)
+X-Farcaster-Flow-ID: 3f52ccb2-10c8-4639-a2de-4651f9e21034
+Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Tue, 9 Apr 2024 11:45:38 +0000
+Received: from [0.0.0.0] (10.253.83.51) by EX19D020UWC004.ant.amazon.com
+ (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.28; Tue, 9 Apr
+ 2024 11:45:22 +0000
+Message-ID: <7c82670e-6063-4b0f-9bbf-805a0d949d84@amazon.com>
+Date: Tue, 9 Apr 2024 13:45:18 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v7 2/3] net: qrtr: support suspend/hibernation
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240305021320.3367-3-quic_bqiang@quicinc.com>
-References: <20240305021320.3367-3-quic_bqiang@quicinc.com>
-To: Baochen Qiang <quic_bqiang@quicinc.com>
-Cc: <ath11k@lists.infradead.org>, <manivannan.sadhasivam@linaro.org>,
- <linux-wireless@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
- <mhi@lists.linux.dev>, <quic_bqiang@quicinc.com>, <davem@davemloft.net>,
- <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
- <netdev@vger.kernel.org>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <171266302937.3197288.10067259080549350573.kvalo@kernel.org>
-Date: Tue,  9 Apr 2024 11:43:51 +0000 (UTC)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 15/25] misc: nsm: drop owner assignment
+Content-Language: en-US
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, "Michael S. Tsirkin"
+	<mst@redhat.com>, Jason Wang <jasowang@redhat.com>, Xuan Zhuo
+	<xuanzhuo@linux.alibaba.com>, Jonathan Corbet <corbet@lwn.net>, "David
+ Hildenbrand" <david@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>, "Richard
+ Weinberger" <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>, Paolo Bonzini
+	<pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, Jens Axboe
+	<axboe@kernel.dk>, Marcel Holtmann <marcel@holtmann.org>, "Luiz Augusto von
+ Dentz" <luiz.dentz@gmail.com>, Olivia Mackall <olivia@selenic.com>, Herbert
+ Xu <herbert@gondor.apana.org.au>, Amit Shah <amit@kernel.org>, Arnd Bergmann
+	<arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Gonglei
+	<arei.gonglei@huawei.com>, "David S. Miller" <davem@davemloft.net>, "Sudeep
+ Holla" <sudeep.holla@arm.com>, Cristian Marussi <cristian.marussi@arm.com>,
+	Viresh Kumar <vireshk@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>, David Airlie <airlied@redhat.com>,
+	Gurchetan Singh <gurchetansingh@chromium.org>, Chia-I Wu <olvaffe@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+	<mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, Daniel Vetter
+	<daniel@ffwll.ch>, Jean-Philippe Brucker <jean-philippe@linaro.org>, "Joerg
+ Roedel" <joro@8bytes.org>, Will Deacon <will@kernel.org>, Robin Murphy
+	<robin.murphy@arm.com>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Eric Van Hensbergen
+	<ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet
+	<asmadeus@codewreck.org>, Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Stefano Garzarella <sgarzare@redhat.com>, Kalle Valo <kvalo@kernel.org>, "Dan
+ Williams" <dan.j.williams@intel.com>, Vishal Verma
+	<vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>, Ira Weiny
+	<ira.weiny@intel.com>, "Pankaj Gupta" <pankaj.gupta.linux@gmail.com>, Bjorn
+ Andersson <andersson@kernel.org>, Mathieu Poirier
+	<mathieu.poirier@linaro.org>, "James E.J. Bottomley" <jejb@linux.ibm.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>, Vivek Goyal
+	<vgoyal@redhat.com>, Miklos Szeredi <miklos@szeredi.hu>, "Anton Yakovlev"
+	<anton.yakovlev@opensynergy.com>, Jaroslav Kysela <perex@perex.cz>, Takashi
+ Iwai <tiwai@suse.com>
+CC: <virtualization@lists.linux.dev>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-um@lists.infradead.org>,
+	<linux-block@vger.kernel.org>, <linux-bluetooth@vger.kernel.org>,
+	<linux-crypto@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-gpio@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+	<iommu@lists.linux.dev>, <netdev@vger.kernel.org>, <v9fs@lists.linux.dev>,
+	<kvm@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+	<nvdimm@lists.linux.dev>, <linux-remoteproc@vger.kernel.org>,
+	<linux-scsi@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+	<alsa-devel@alsa-project.org>, <linux-sound@vger.kernel.org>
+References: <20240331-module-owner-virtio-v2-0-98f04bfaf46a@linaro.org>
+ <20240331-module-owner-virtio-v2-15-98f04bfaf46a@linaro.org>
+From: Alexander Graf <graf@amazon.com>
+In-Reply-To: <20240331-module-owner-virtio-v2-15-98f04bfaf46a@linaro.org>
+X-ClientProxiedBy: EX19D035UWA002.ant.amazon.com (10.13.139.60) To
+ EX19D020UWC004.ant.amazon.com (10.13.138.149)
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
 
-Baochen Qiang <quic_bqiang@quicinc.com> wrote:
-
-> MHI devices may not be destroyed during suspend/hibernation, so need
-> to unprepare/prepare MHI channels throughout the transition, this is
-> done by adding suspend/resume callbacks.
-> 
-> The suspend callback is called in the late suspend stage, this means
-> MHI channels are still alive at suspend stage, and that makes it
-> possible for an MHI controller driver to communicate with others over
-> those channels at suspend stage. While the resume callback is called
-> in the early resume stage, for a similar reason.
-> 
-> Also note that we won't do unprepare/prepare when MHI device is in
-> suspend state because it's pointless if MHI is only meant to go through
-> a suspend/resume transition, instead of a complete power cycle.
-> 
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
-> 
-> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-
-2 patches applied to ath-next branch of ath.git, thanks.
-
-e0cd1185900e net: qrtr: support suspend/hibernation
-166a490f59ac wifi: ath11k: support hibernation
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240305021320.3367-3-quic_bqiang@quicinc.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Ck9uIDMxLjAzLjI0IDEwOjQ0LCBLcnp5c3p0b2YgS296bG93c2tpIHdyb3RlOgo+IHZpcnRpbyBj
+b3JlIGFscmVhZHkgc2V0cyB0aGUgLm93bmVyLCBzbyBkcml2ZXIgZG9lcyBub3QgbmVlZCB0by4K
+Pgo+IFNpZ25lZC1vZmYtYnk6IEtyenlzenRvZiBLb3psb3dza2kgPGtyenlzenRvZi5rb3psb3dz
+a2lAbGluYXJvLm9yZz4KCgpSZXZpZXdlZC1ieTogQWxleGFuZGVyIEdyYWYgPGdyYWZAYW1hem9u
+LmNvbT4KCgpBbGV4CgoKCgpBbWF6b24gRGV2ZWxvcG1lbnQgQ2VudGVyIEdlcm1hbnkgR21iSApL
+cmF1c2Vuc3RyLiAzOAoxMDExNyBCZXJsaW4KR2VzY2hhZWZ0c2Z1ZWhydW5nOiBDaHJpc3RpYW4g
+U2NobGFlZ2VyLCBKb25hdGhhbiBXZWlzcwpFaW5nZXRyYWdlbiBhbSBBbXRzZ2VyaWNodCBDaGFy
+bG90dGVuYnVyZyB1bnRlciBIUkIgMTQ5MTczIEIKU2l0ejogQmVybGluClVzdC1JRDogREUgMjg5
+IDIzNyA4NzkKCgo=
 
 
