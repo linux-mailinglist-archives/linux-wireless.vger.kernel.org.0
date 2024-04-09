@@ -1,73 +1,73 @@
-Return-Path: <linux-wireless+bounces-6047-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6048-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A88289E407
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 21:58:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 837E889E408
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 21:59:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AFCF1C20B4B
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 19:58:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBA06B21221
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 19:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 961C115749A;
-	Tue,  9 Apr 2024 19:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 686F915749A;
+	Tue,  9 Apr 2024 19:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fRpTis9b"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VL6NQJxo"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8601515820D
-	for <linux-wireless@vger.kernel.org>; Tue,  9 Apr 2024 19:58:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F193156F4E
+	for <linux-wireless@vger.kernel.org>; Tue,  9 Apr 2024 19:58:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712692690; cv=none; b=PDb4qOc02G31A8UCsDojPs/LIZQal7TpnKoh+9Q/V1ltAtC+OXj2kIC0j/Was0QLjoaenxIo8aFP5j+zSUAH2fLllDf3uzVqhyReH6sv5U3E5CQ/ohtNr1FE3hrX+w4qWJe8TAInUjP8oUE4a7KDW7yxuIFGO+5YZWbkYf/YfZE=
+	t=1712692741; cv=none; b=NuTEVzFJgnzbuweC2zc24eEfM2/4qvuK4uuUdEknLZDyJkpgXMozdCsQr7SF9dS8bk5UOVvsqFC/E37o1OiJmKH26BpRCd+ZFU9VZZNO9zOmoU3OsWqX0oSTxe1O8WklS652A8LZ0LDJJEUpENu8Fa3EXKb7yq4Q2tuPwVasu0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712692690; c=relaxed/simple;
-	bh=BiQCWXP29URpPIy1Leypn7l5XOh/UebVuNIRfOWkVZQ=;
+	s=arc-20240116; t=1712692741; c=relaxed/simple;
+	bh=4zZMoWZ+abAPEZHN81Ch089gBElESjPhx5Cq+pQZ9u4=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=YzNc7wP6J0A8mmTtObukBzlUbcaMuzZV6UKjdB7JI4YuP/6nnKigk5g/tDOtpOYAqu+JDDhYKtXvHL+5oDqciaY1Igyjekjw//0XeYzaLYmTtdIpv3m014GAUXE/QlvYPDQZqQExClaVPi2QitW9tlgRY51mTL/tzHCVb4/aBWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fRpTis9b; arc=none smtp.client-ip=209.85.218.53
+	 In-Reply-To:Content-Type; b=eqEnjCpX+zj3mGj9h63PDLrtEa9RxaUQMIzfo0exxNFsVqkm9lrihuVVVY5bxD+I9K4xwurL4mh0jDEoLIIJFCA6bfPbk4Zu6P2kyh3ShHfQP/ERGkgFFIWJ+PCj3JJmPsMfT8ozg1qQqHSiYeUuuEL0N6KEQqEGMCqOexJsW98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VL6NQJxo; arc=none smtp.client-ip=209.85.167.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a51aac16b6eso255268266b.1
-        for <linux-wireless@vger.kernel.org>; Tue, 09 Apr 2024 12:58:08 -0700 (PDT)
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-516d6e23253so4706643e87.1
+        for <linux-wireless@vger.kernel.org>; Tue, 09 Apr 2024 12:58:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712692687; x=1713297487; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1712692737; x=1713297537; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=XADItTqh52y+04Wst2D1FiB+wLDeeMvVMdu6Lj814hQ=;
-        b=fRpTis9bueMkk1sONWn9T3khB7G/73XaNW82UeBf0bZyfwcIC2ciEqoJV3Yg3Av6YX
-         fsCOTtsbfxVzKhumjpcuqPNheo/EU+qtrp9wLoJZK8t/+HYZ2+ilD/haFrssphmMQqhs
-         yGPKhjoFgVmBZ09EIKC65XNayFzNUz1yKW1+iVsnd4D9HD+RSM8rqAnHPT43+Qsrb43C
-         4L5OJEg1LLbxL1yr+lvbOZUeJS1CVwbZUrG2Aat++MAdGrc/QkMelJ/qoemz98jI/QHD
-         v+1TDSXHBV6xd5/50A8clBFw0GxLrDmSbTg28aEK8T0AQCCmq173Aq6oFhoxXbO58kmq
-         MgyQ==
+        bh=TTDBETWvgfspHsqCcmbZiPdgDcc0NAGoCEJDQpyzTrQ=;
+        b=VL6NQJxoCdRnnDmtEr+aHOwhwq1EShC7bhp8TcmfQDmJ+CsgjYGNJg1cp9S17VZMx+
+         /UbHC/aZA2UJfGDO2h9Ckhi8E/bm3lb0ZOMKAL22PhSRDzjPp2xrFBZCFI116PUfWCZG
+         1BdenQI3A895uDB0KF2PXd3Bcck5rKEsUYNf/92hg2H30a19yoYr5uRon8FQMAblJ/ra
+         I5JQY94w6Ibwibo92Pu30YoLUy/XYHDAJVLhdIei426opkJv4UVXg5DuqPNZGQVJPMDz
+         v+XeMHfn741Sh7mKier/4W9tR/W5FlgryhKw6oxGtZ0XYkPmiii0KOSbuLU2rxvbqz92
+         HOtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712692687; x=1713297487;
+        d=1e100.net; s=20230601; t=1712692737; x=1713297537;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XADItTqh52y+04Wst2D1FiB+wLDeeMvVMdu6Lj814hQ=;
-        b=UZ9BwdhdqgNj3GuZAvsnfKttkz4jWbuR1l63cJ02j3T5Rc18o5oyvGfk/tb5QTJ1SO
-         kps6fD43upLSyxxHQ7z+ibTCFxapRoIV3flVLvjEcDu8u+iAAEbJ+z+jk1NHEVL7lbg5
-         bo7P6com2Lj7TY01nw/SOOU93VIvUyL02NvEkpgzEpDaVqB6xO9fl3LlpjidaIxOaREx
-         1xyfzen9KNhQHiZ8UbB6xVQxG2+YaR88DUtWU3OVkcoFMrqLhlqVEjdCgpK2VCSmnr4M
-         s0YapoqGi0RV1GGImHkCBY6aV2HLNmerXqaLHWS6SKnX9Afl31Mfp8vUvw5S2ZxDQziY
-         ZeXw==
-X-Gm-Message-State: AOJu0YzRHZqv3oszZT3R8lp2zta4MGwT3rZSwIZ2PBUIPLjtHFLIncAh
-	suj0g+Oc6nj3bxTOHlXrfbTHLHNAYqjWPhVQHGZ9BveYZloukknfyPusdTiF4bU=
-X-Google-Smtp-Source: AGHT+IET7Ef7ogIwGP1Vp3epOC+Gelv8vMUHvSfXbZregYtx5FWA26ExIBoQdhnjzpRx3tj6lHztng==
-X-Received: by 2002:a50:871c:0:b0:56e:3088:49a with SMTP id i28-20020a50871c000000b0056e3088049amr456037edb.37.1712692686661;
-        Tue, 09 Apr 2024 12:58:06 -0700 (PDT)
+        bh=TTDBETWvgfspHsqCcmbZiPdgDcc0NAGoCEJDQpyzTrQ=;
+        b=k9ryEE51+Ki3/UNt6/rwW08jLTp79AoeChC20rpm+FmtHBj01AdWDJhWAsoGwfzT9U
+         k3Q7NXVI8AhsD0Iwe/pIJ2emyF8VDPIyjIAhGXVncQaXgZK8kj+d1MS3P/XHCa55uhMf
+         Zs5gjugzWg2AaikI3lQrKCNSyT+CmmVrNo1xmNdLX6W88H4JM0OMbXrG27J444y9QO/f
+         ag6wvs7ndoCBmza6/A77b/LixENGaA4fcRYXZV++mhv5quVPKRAw3f+gUU6tDVZ81yq1
+         zHd+UGhDT4ICDJHCskbrId5U8gIzR+YrfTreJ3it8v4e4CLARa26Xr+C/RSWHHzv/asa
+         1XgA==
+X-Gm-Message-State: AOJu0Yw1QWqt3c5UF0y7o7L6hN4MWeEA0tlPQeDiBq2Lup//HTXi4zX1
+	GwMWMGZXjl5u8ulpBXj9Z5DZaQDpflf8uXXYM2J7tFxSZMaZQXSnnHr99lCBA3o=
+X-Google-Smtp-Source: AGHT+IGaGV1SmEvrxmZnFnUeGzS2PU6Ttl7jJt/QUaX1vVO36WoQLGgzwZJrm1EyQArWNxZQe8kOpw==
+X-Received: by 2002:a19:6b16:0:b0:513:db34:7caf with SMTP id d22-20020a196b16000000b00513db347cafmr354660lfa.17.1712692737250;
+        Tue, 09 Apr 2024 12:58:57 -0700 (PDT)
 Received: from [192.168.1.50] ([79.113.154.240])
-        by smtp.gmail.com with ESMTPSA id k11-20020a056402048b00b0056bc0c44f02sm271101edv.96.2024.04.09.12.58.05
+        by smtp.gmail.com with ESMTPSA id og15-20020a1709071dcf00b00a47423b4c33sm6027305ejc.128.2024.04.09.12.58.56
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Apr 2024 12:58:06 -0700 (PDT)
-Message-ID: <7addeb61-3590-4a43-9165-56920daa55b7@gmail.com>
-Date: Tue, 9 Apr 2024 22:58:05 +0300
+        Tue, 09 Apr 2024 12:58:56 -0700 (PDT)
+Message-ID: <4dddf301-47c8-45dd-ae82-c6b8a83cfeb7@gmail.com>
+Date: Tue, 9 Apr 2024 22:58:55 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,7 +75,8 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH v4 09/14] wifi: rtlwifi: Add rtl8192du/rf.{c,h}
+Subject: [PATCH v4 10/14] wifi: rtlwifi: Add rtl8192du/fw.{c,h} and
+ rtl8192du/led.{c,h}
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 Cc: Ping-Ke Shih <pkshih@realtek.com>,
@@ -88,16 +89,17 @@ In-Reply-To: <91d932b3-5c72-4416-920e-f2bf4fc9b039@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-These contain one RF configuration function and some functions related
-to dual MAC operation.
+fw.c contains a function for loading the firmware.
+led.c contains a function for controlling the LED.
 
 Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 ---
 v4:
- - Fix rf.h header guard.
- - Fix comment style.
- - Delete unnecessary label and goto.
+ - Fix fw.h and led.h header guards.
  - Add empty lines.
+ - Delete globalmutex_for_fwdownload and simplify rtl92d_download_fw.
+   It can't run in parallel because mutex_for_hw_init in rtl92du_hw_init
+   protects the entire function.
 
 v3:
  - No change.
@@ -105,280 +107,135 @@ v3:
 v2:
  - Patch is new in v2, split from patch 3/3 in v1.
 ---
- .../wireless/realtek/rtlwifi/rtl8192du/rf.c   | 244 ++++++++++++++++++
- .../wireless/realtek/rtlwifi/rtl8192du/rf.h   |  11 +
- 2 files changed, 255 insertions(+)
- create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/rf.c
- create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/rf.h
+ .../wireless/realtek/rtlwifi/rtl8192du/fw.c   | 65 +++++++++++++++++++
+ .../wireless/realtek/rtlwifi/rtl8192du/fw.h   |  9 +++
+ .../wireless/realtek/rtlwifi/rtl8192du/led.c  | 10 +++
+ .../wireless/realtek/rtlwifi/rtl8192du/led.h  |  9 +++
+ 4 files changed, 93 insertions(+)
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/fw.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/fw.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/led.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/led.h
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192du/rf.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/rf.c
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192du/fw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/fw.c
 new file mode 100644
-index 000000000000..0b151a7ac96f
+index 000000000000..21219e514ee5
 --- /dev/null
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/rf.c
-@@ -0,0 +1,244 @@
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/fw.c
+@@ -0,0 +1,65 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/* Copyright(c) 2009-2012  Realtek Corporation.*/
 +
 +#include "../wifi.h"
++#include "../base.h"
++#include "../efuse.h"
 +#include "../rtl8192d/reg.h"
 +#include "../rtl8192d/def.h"
-+#include "../rtl8192d/phy_common.h"
-+#include "../rtl8192d/rf_common.h"
-+#include "phy.h"
-+#include "rf.h"
-+#include "dm.h"
-+#include "hw.h"
++#include "../rtl8192d/fw_common.h"
++#include "fw.h"
 +
-+bool rtl92d_phy_enable_anotherphy(struct ieee80211_hw *hw, bool bmac0)
++int rtl92d_download_fw(struct ieee80211_hw *hw)
 +{
 +	struct rtl_priv *rtlpriv = rtl_priv(hw);
-+	struct rtl_hal *rtlhal = &rtlpriv->rtlhal;
-+	u8 mac_on_bit = bmac0 ? MAC1_ON : MAC0_ON;
-+	u8 mac_reg = bmac0 ? REG_MAC1 : REG_MAC0;
-+	bool bresult = true; /* true: need to enable BB/RF power */
-+	u32 maskforphyset = 0;
-+	u16 val16;
-+	u8 u1btmp;
++	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
++	enum version_8192d version = rtlhal->version;
++	u8 *pfwheader;
++	u8 *pfwdata;
++	u32 fwsize;
++	int err;
 +
-+	rtlhal->during_mac0init_radiob = false;
-+	rtlhal->during_mac1init_radioa = false;
-+	rtl_dbg(rtlpriv, COMP_RF, DBG_LOUD, "===>\n");
++	if (rtlpriv->max_fw_size == 0 || !rtlhal->pfirmware)
++		return 1;
 +
-+	/* MAC0 Need PHY1 load radio_b.txt . Driver use DBI to write. */
-+	u1btmp = rtl_read_byte(rtlpriv, mac_reg);
-+	if (!(u1btmp & mac_on_bit)) {
-+		rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD, "enable BB & RF\n");
-+		/* Enable BB and RF power */
++	fwsize = rtlhal->fwsize;
++	pfwheader = rtlhal->pfirmware;
++	pfwdata = rtlhal->pfirmware;
++	rtlhal->fw_version = (u16)GET_FIRMWARE_HDR_VERSION(pfwheader);
++	rtlhal->fw_subversion = (u16)GET_FIRMWARE_HDR_SUB_VER(pfwheader);
 +
-+		maskforphyset = bmac0 ? MAC0_ACCESS_PHY1 : MAC1_ACCESS_PHY0;
++	rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
++		"FirmwareVersion(%d), FirmwareSubVersion(%d), Signature(%#x)\n",
++		rtlhal->fw_version, rtlhal->fw_subversion,
++		GET_FIRMWARE_HDR_SIGNATURE(pfwheader));
 +
-+		val16 = rtl_read_word(rtlpriv, REG_SYS_FUNC_EN | maskforphyset);
-+		val16 &= 0xfffc;
-+		rtl_write_word(rtlpriv, REG_SYS_FUNC_EN | maskforphyset, val16);
-+
-+		val16 = rtl_read_word(rtlpriv, REG_SYS_FUNC_EN | maskforphyset);
-+		val16 |= BIT(13) | BIT(0) | BIT(1);
-+		rtl_write_word(rtlpriv, REG_SYS_FUNC_EN | maskforphyset, val16);
-+	} else {
-+		/* We think if MAC1 is ON,then radio_a.txt
-+		 * and radio_b.txt has been load.
-+		 */
-+		bresult = false;
++	if (IS_FW_HEADER_EXIST(pfwheader)) {
++		rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
++			"Shift 32 bytes for FW header!!\n");
++		pfwdata = pfwdata + 32;
++		fwsize = fwsize - 32;
 +	}
-+	rtl_dbg(rtlpriv, COMP_RF, DBG_LOUD, "<===\n");
-+	return bresult;
-+}
 +
-+void rtl92d_phy_powerdown_anotherphy(struct ieee80211_hw *hw, bool bmac0)
-+{
-+	struct rtl_priv *rtlpriv = rtl_priv(hw);
-+	struct rtl_hal *rtlhal = &rtlpriv->rtlhal;
-+	u8 mac_on_bit = bmac0 ? MAC1_ON : MAC0_ON;
-+	u8 mac_reg = bmac0 ? REG_MAC1 : REG_MAC0;
-+	u32 maskforphyset = 0;
-+	u8 u1btmp;
++	if (rtl92d_is_fw_downloaded(rtlpriv))
++		goto exit;
 +
-+	rtlhal->during_mac0init_radiob = false;
-+	rtlhal->during_mac1init_radioa = false;
-+	rtl_dbg(rtlpriv, COMP_RF, DBG_LOUD, "====>\n");
-+
-+	/* check MAC0 enable or not again now, if
-+	 * enabled, not power down radio A.
++	/* If 8051 is running in RAM code, driver should
++	 * inform Fw to reset by itself, or it will cause
++	 * download Fw fail.
 +	 */
-+	u1btmp = rtl_read_byte(rtlpriv, mac_reg);
-+	if (!(u1btmp & mac_on_bit)) {
-+		rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD, "power down\n");
-+		/* power down RF radio A according to YuNan's advice. */
-+		maskforphyset = bmac0 ? MAC0_ACCESS_PHY1 : MAC1_ACCESS_PHY0;
-+		rtl_write_dword(rtlpriv, RFPGA0_XA_LSSIPARAMETER | maskforphyset,
-+				0x00000000);
++	if (rtl_read_byte(rtlpriv, REG_MCUFWDL) & BIT(7)) {
++		rtl92d_firmware_selfreset(hw);
++		rtl_write_byte(rtlpriv, REG_MCUFWDL, 0x00);
 +	}
-+	rtl_dbg(rtlpriv, COMP_RF, DBG_LOUD, "<====\n");
++
++	rtl92d_enable_fw_download(hw, true);
++	rtl92d_write_fw(hw, version, pfwdata, fwsize);
++	rtl92d_enable_fw_download(hw, false);
++
++	err = rtl92d_fw_free_to_go(hw);
++	if (err)
++		pr_err("fw is not ready to run!\n");
++exit:
++	err = rtl92d_fw_init(hw);
++	return err;
 +}
-+
-+bool rtl92d_phy_rf6052_config(struct ieee80211_hw *hw)
-+{
-+	bool mac1_initradioa_first = false, mac0_initradiob_first = false;
-+	bool need_pwrdown_radioa = false, need_pwrdown_radiob = false;
-+	struct rtl_priv *rtlpriv = rtl_priv(hw);
-+	struct rtl_hal *rtlhal = &rtlpriv->rtlhal;
-+	struct rtl_phy *rtlphy = &rtlpriv->phy;
-+	struct bb_reg_def *pphyreg;
-+	bool true_bpath = false;
-+	bool rtstatus = true;
-+	u32 u4_regvalue = 0;
-+	u8 rfpath;
-+
-+	if (rtlphy->rf_type == RF_1T1R)
-+		rtlphy->num_total_rfpath = 1;
-+	else
-+		rtlphy->num_total_rfpath = 2;
-+
-+	/* Single phy mode: use radio_a radio_b config path_A path_B
-+	 * separately by MAC0, and MAC1 needn't configure RF;
-+	 * Dual PHY mode: MAC0 use radio_a config 1st phy path_A,
-+	 * MAC1 use radio_b config 2nd PHY path_A.
-+	 * DMDP, MAC0 on G band, MAC1 on A band.
-+	 */
-+	if (rtlhal->macphymode == DUALMAC_DUALPHY) {
-+		if (rtlhal->current_bandtype == BAND_ON_2_4G &&
-+		    rtlhal->interfaceindex == 0) {
-+			/* MAC0 needs PHY1 load radio_b.txt. */
-+			if (rtl92d_phy_enable_anotherphy(hw, true)) {
-+				rtlphy->num_total_rfpath = 2;
-+				mac0_initradiob_first = true;
-+			} else {
-+				/* We think if MAC1 is ON,then radio_a.txt and
-+				 * radio_b.txt has been load.
-+				 */
-+				return rtstatus;
-+			}
-+		} else if (rtlhal->current_bandtype == BAND_ON_5G &&
-+			   rtlhal->interfaceindex == 1) {
-+			/* MAC1 needs PHY0 load radio_a.txt. */
-+			if (rtl92d_phy_enable_anotherphy(hw, false)) {
-+				rtlphy->num_total_rfpath = 2;
-+				mac1_initradioa_first = true;
-+			} else {
-+				/* We think if MAC0 is ON, then radio_a.txt and
-+				 * radio_b.txt has been load.
-+				 */
-+				return rtstatus;
-+			}
-+		} else if (rtlhal->interfaceindex == 1) {
-+			/* MAC0 enabled, only init radia B.   */
-+			true_bpath = true;
-+		}
-+	}
-+
-+	for (rfpath = 0; rfpath < rtlphy->num_total_rfpath; rfpath++) {
-+		/* Mac1 use PHY0 write */
-+		if (mac1_initradioa_first) {
-+			if (rfpath == RF90_PATH_A) {
-+				rtlhal->during_mac1init_radioa = true;
-+				need_pwrdown_radioa = true;
-+			} else if (rfpath == RF90_PATH_B) {
-+				rtlhal->during_mac1init_radioa = false;
-+				mac1_initradioa_first = false;
-+				rfpath = RF90_PATH_A;
-+				true_bpath = true;
-+				rtlphy->num_total_rfpath = 1;
-+			}
-+		} else if (mac0_initradiob_first) {
-+			/* Mac0 use PHY1 write */
-+			if (rfpath == RF90_PATH_A)
-+				rtlhal->during_mac0init_radiob = false;
-+			if (rfpath == RF90_PATH_B) {
-+				rtlhal->during_mac0init_radiob = true;
-+				mac0_initradiob_first = false;
-+				need_pwrdown_radiob = true;
-+				rfpath = RF90_PATH_A;
-+				true_bpath = true;
-+				rtlphy->num_total_rfpath = 1;
-+			}
-+		}
-+
-+		pphyreg = &rtlphy->phyreg_def[rfpath];
-+
-+		switch (rfpath) {
-+		case RF90_PATH_A:
-+		case RF90_PATH_C:
-+			u4_regvalue = rtl_get_bbreg(hw, pphyreg->rfintfs,
-+						    BRFSI_RFENV);
-+			break;
-+		case RF90_PATH_B:
-+		case RF90_PATH_D:
-+			u4_regvalue = rtl_get_bbreg(hw, pphyreg->rfintfs,
-+						    BRFSI_RFENV << 16);
-+			break;
-+		}
-+
-+		rtl_set_bbreg(hw, pphyreg->rfintfe, BRFSI_RFENV << 16, 0x1);
-+		udelay(1);
-+		rtl_set_bbreg(hw, pphyreg->rfintfo, BRFSI_RFENV, 0x1);
-+		udelay(1);
-+
-+		/* Set bit number of Address and Data for RF register */
-+		rtl_set_bbreg(hw, pphyreg->rfhssi_para2,
-+			      B3WIREADDRESSLENGTH, 0x0);
-+		udelay(1);
-+		rtl_set_bbreg(hw, pphyreg->rfhssi_para2, B3WIREDATALENGTH, 0x0);
-+		udelay(1);
-+
-+		switch (rfpath) {
-+		case RF90_PATH_A:
-+			if (true_bpath)
-+				rtstatus = rtl92d_phy_config_rf_with_headerfile(
-+						hw, radiob_txt,
-+						(enum radio_path)rfpath);
-+			else
-+				rtstatus = rtl92d_phy_config_rf_with_headerfile(
-+						hw, radioa_txt,
-+						(enum radio_path)rfpath);
-+			break;
-+		case RF90_PATH_B:
-+			rtstatus =
-+			    rtl92d_phy_config_rf_with_headerfile(hw, radiob_txt,
-+						(enum radio_path)rfpath);
-+			break;
-+		case RF90_PATH_C:
-+			break;
-+		case RF90_PATH_D:
-+			break;
-+		}
-+
-+		switch (rfpath) {
-+		case RF90_PATH_A:
-+		case RF90_PATH_C:
-+			rtl_set_bbreg(hw, pphyreg->rfintfs, BRFSI_RFENV,
-+				      u4_regvalue);
-+			break;
-+		case RF90_PATH_B:
-+		case RF90_PATH_D:
-+			rtl_set_bbreg(hw, pphyreg->rfintfs, BRFSI_RFENV << 16,
-+				      u4_regvalue);
-+			break;
-+		}
-+
-+		if (!rtstatus) {
-+			rtl_dbg(rtlpriv, COMP_INIT, DBG_TRACE,
-+				"Radio[%d] Fail!!\n", rfpath);
-+			return rtstatus;
-+		}
-+	}
-+
-+	/* check MAC0 enable or not again, if enabled,
-+	 * not power down radio A.
-+	 * check MAC1 enable or not again, if enabled,
-+	 * not power down radio B.
-+	 */
-+	if (need_pwrdown_radioa)
-+		rtl92d_phy_powerdown_anotherphy(hw, false);
-+	else if (need_pwrdown_radiob)
-+		rtl92d_phy_powerdown_anotherphy(hw, true);
-+	rtl_dbg(rtlpriv, COMP_INIT, DBG_TRACE, "<---\n");
-+
-+	return rtstatus;
-+}
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192du/rf.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/rf.h
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192du/fw.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/fw.h
 new file mode 100644
-index 000000000000..86bf15496483
+index 000000000000..2c835f3b4e92
 --- /dev/null
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/rf.h
-@@ -0,0 +1,11 @@
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/fw.h
+@@ -0,0 +1,9 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
 +/* Copyright(c) 2009-2012  Realtek Corporation.*/
 +
-+#ifndef __RTL92DU_RF_H__
-+#define __RTL92DU_RF_H__
++#ifndef __RTL92DU_FW_H__
++#define __RTL92DU_FW_H__
 +
-+bool rtl92d_phy_rf6052_config(struct ieee80211_hw *hw);
-+bool rtl92d_phy_enable_anotherphy(struct ieee80211_hw *hw, bool bmac0);
-+void rtl92d_phy_powerdown_anotherphy(struct ieee80211_hw *hw, bool bmac0);
++int rtl92d_download_fw(struct ieee80211_hw *hw);
++
++#endif
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192du/led.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/led.c
+new file mode 100644
+index 000000000000..a2761f25e94e
+--- /dev/null
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/led.c
+@@ -0,0 +1,10 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright(c) 2009-2012  Realtek Corporation.*/
++
++#include "../wifi.h"
++#include "led.h"
++
++void rtl92de_led_control(struct ieee80211_hw *hw, enum led_ctl_mode ledaction)
++{
++	/* The hardware has control. */
++}
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192du/led.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/led.h
+new file mode 100644
+index 000000000000..2f0c1329f05f
+--- /dev/null
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/led.h
+@@ -0,0 +1,9 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright(c) 2009-2012  Realtek Corporation.*/
++
++#ifndef __RTL92DU_LED_H__
++#define __RTL92DU_LED_H__
++
++void rtl92de_led_control(struct ieee80211_hw *hw, enum led_ctl_mode ledaction);
 +
 +#endif
 -- 
 2.44.0
+
 
 
