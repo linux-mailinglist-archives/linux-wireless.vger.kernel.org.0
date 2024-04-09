@@ -1,128 +1,178 @@
-Return-Path: <linux-wireless+bounces-6001-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6002-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F10F289D744
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 12:52:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 839FE89D7B5
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 13:16:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D6F41C235E4
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 10:52:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5A1C1C2132B
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 11:16:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 493B981751;
-	Tue,  9 Apr 2024 10:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C874A8562E;
+	Tue,  9 Apr 2024 11:16:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NfgvMU8k"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF541EB46;
-	Tue,  9 Apr 2024 10:51:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E8484D02
+	for <linux-wireless@vger.kernel.org>; Tue,  9 Apr 2024 11:16:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712659916; cv=none; b=fAnRa79gXvOiXyWhkvXGZW+OxrS+6YCnsl5mLKD+7MVDHA+b0jRXd/cmiUToO4QIKtAgDwngSvRS11lojzUVZdtCGCpR2U4hXW2p8r4+iCjsUf7abgxGyRyk+C8bnAOr0iWfktjAFwHM0glN3F0NElYO8hiRbdlCD3FHDBgc35M=
+	t=1712661411; cv=none; b=qjK+BFVpKPeEf3rmxwIP5JexRGsYp+cCK5HA4t1N+t1ehe+59NhfoB2tCLfjUiuihOXq4Uljy9nzKlOPwmz4DzGdV20J9+IFrf02ugRjpYEPF59RbFx6qzxngsJLoVrQ1BvMAcqIirV5Q11rCjoRGrh9jl2a4LObiySyp7rGhEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712659916; c=relaxed/simple;
-	bh=J6BA9/3XJpuAa/jgWFFMWWa01R4APTaJ4ZKMe05arAI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gs1KuuOF3G09s6CpivmDJcs/7NPsS8Eb7H7/lnYdlUOPRJ0xRxk4EUeaXvIuTQnVumwL4y36xLzV5xcHTmyfLe2IdmbPCevPCe2twWHmVgnUjsbEEr5u5lrsBGEr2sf68ADAcLJ1nJz/pTAS6V3+jYp3+C+moTTrIU0cPGQbEz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+	s=arc-20240116; t=1712661411; c=relaxed/simple;
+	bh=+FYLvlWXzlY2Y+I0vK0OvKTukjsQBR729bzy6aZFBSk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=h7LDiJCcIbW3tuN8h/VjMKGI8iQPtRXBzy5wOiPSqolymq9kjkezRsjf7mhZ2U3DguYzFpNMK6gE4qg+yjS1blLQm0nb4zetNWc4AW2ZFkxs8u8uWOyuvrhe0Ho+FxKGiIntTwAzp+S3dbXlQn3I0AE2BbEtL9v4bx3duEKYYUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NfgvMU8k; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-56e6f4ee104so1179839a12.2;
-        Tue, 09 Apr 2024 03:51:54 -0700 (PDT)
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a51fea60c0bso43583566b.3
+        for <linux-wireless@vger.kernel.org>; Tue, 09 Apr 2024 04:16:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712661408; x=1713266208; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rbv2FFP6IjSxUeJ8VtfFtr82fldAXn1hyih+xqFuJPc=;
+        b=NfgvMU8kiqOPw6qQucRERS4oXo36ium2UNKhWbEBe/Hk6EwoRWc+80Ov6vj99Qsz+N
+         6XgcddnRBoySiPnz6EP0o6pt0cciJDKuwBNRYOKdAGkYDvc+A5l7MnqoR0Lc3aEbg73e
+         ycqu3ZvUIR3yUqIu5xm9bhgVjPyX8uD3WMZ0TkFodbdhShOr9MV0TMSL0rWOh0pzXxZb
+         rr9QjJVnAakQXE8wetm2UgKEgwHsb/fKhNba2IsfH6XDzMLgcPCCvouA3iiZAHwU5GMA
+         dcUWw0ORNL9ZJ8VCDLREeZ+LcIpxJPI2kQyU2o3a8Kqad4UrkPosbE2rFevndkEHOx7j
+         tjOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712659913; x=1713264713;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=D18zsKfXH63dj1S3Q8K0FBC8WrKFJn4nZwjzqAFKe8U=;
-        b=liy3PnNhLS9A4HDA0ODcwn3CcGxjBQa/TfJyoVTbtBiGLgN5xqLdq86IpzGVB7TNeS
-         YqZ7Ikg5X1N7zvt8FOJjnKY4fcmCXo/sjBD22bBDNECodv5DGL01Eh2EeXqgFx/pLaIB
-         nhuC5Sj0Wci1C8SgFmwd+N0zwIqvo7NTg6Yq7GP839eFjomLPV9eWdz3aXmN4prb+SlU
-         w6UXmgTR4+35fF3woG+pVZHf8VrCx0i7F8YPzuZVBiVv9tBzsnwq1d+Q/ZhsML0tjPqC
-         cO5xVndgLTi5LGyY04LikSg1KlO58sHKGCwP9hvboBg2HoW27lA2AWJTbGlwz0J6uMhZ
-         SZpw==
-X-Forwarded-Encrypted: i=1; AJvYcCUFrxjT1s3X1z8uk/LRtT9H31pKDzFwWY1euLXuFbzfvsCjwjwZRLw4MK8t2ZXGZXomwg5FeVSJ1mDcjLUUI6RXE38TZ5clG3C8dqn3urN76Ght639G+fprsVwoxgY5YvYGQS0IK+E0EaXHy4zqgkre3tOaYxpo9K50zLN+2TtbFWJlS6c=
-X-Gm-Message-State: AOJu0YxpPvjPjfuZ/wMDxFqdYVrnDUiiAlj0S3t75dBQd0HKts8ThYGT
-	mGmqMtRHH2jz5Qj530KJ2RPZFJ3dULzCTKPPPPc8JuvOi2m2qgom
-X-Google-Smtp-Source: AGHT+IE0kN/ATp0XtOHlpEkNGSfsAHzZLZV+Ki8bifnpSHDIQZARfBa9Mlhn4h+hE0pT/2GjSI89Zg==
-X-Received: by 2002:a50:ab5a:0:b0:56e:2d0c:6ed6 with SMTP id t26-20020a50ab5a000000b0056e2d0c6ed6mr6313316edc.41.1712659912586;
-        Tue, 09 Apr 2024 03:51:52 -0700 (PDT)
-Received: from gmail.com (fwdproxy-lla-007.fbsv.net. [2a03:2880:30ff:7::face:b00c])
-        by smtp.gmail.com with ESMTPSA id ij6-20020a056402158600b0056ddd9427d2sm5179868edb.58.2024.04.09.03.51.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Apr 2024 03:51:52 -0700 (PDT)
-Date: Tue, 9 Apr 2024 03:51:50 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: kuba@kernel.org, ath11k@lists.infradead.org, ath10k@lists.infradead.org,
-	linux-wireless@vger.kernel.org, imitsyanko@quantenna.com,
-	geomatsi@gmail.com, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH 0/3] wifi: Un-embed ath10k and ath11k dummy netdev
-Message-ID: <ZhUdxpnC+nMkNp+U@gmail.com>
-References: <20240405122123.4156104-1-leitao@debian.org>
- <87y19r264m.fsf@kernel.org>
- <ZhPyRHHlVot+a8Xq@gmail.com>
- <87pluz24ap.fsf@kernel.org>
- <ZhRGo3I57rXxsMV/@gmail.com>
- <87edbe26qe.fsf@kernel.org>
+        d=1e100.net; s=20230601; t=1712661408; x=1713266208;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rbv2FFP6IjSxUeJ8VtfFtr82fldAXn1hyih+xqFuJPc=;
+        b=FY/2Y7zrAdzjRUEWfRV8GvXuCVDcFOya4u6Pu+so96T+KvagB6l1ttsu38sSbth2Fo
+         BIu7SLjsJBxnG90c4Jkgvz5Q9vCjjik1RUZHxwB1rxAIL1HBn4mVq3Cz7AswD4I6vFYg
+         r1QQS1N8Mv8USOAijh7fWpEbK0kf1ctp4jLgHcw2KJwoSKSQGJ0ry1EAv0Uxs4Ijx0+2
+         90U4BbYSVexnB5Ddhm3I4TaMoC1+jqsKiz+jZ5y7GY9jCZwZR18rf8HvXFW1zg0H2nAi
+         3KvzT9c0D+E/EMF80+f7KXe/Z2I6VD3JKbplWOHc1mCZSlO5LOUDKPbwZW18vz/YqSAe
+         a+SA==
+X-Gm-Message-State: AOJu0Yxg36Q2N2QnEB0ECJ5A03EQYoRa1i/3py5XAf4F+imKPEHFITQ7
+	3rCJLQo6Hs2pS77pt7viidNVuCYPijKEii7N64aD5tGO5zl3cfhfVmbHl2Ua
+X-Google-Smtp-Source: AGHT+IEBiNy/WTykuIZmoUIq5+BgjVD541T7Kfj0K+SueBECrfrs6h8DjxgEXkL04/FuA8zI9HlvUA==
+X-Received: by 2002:a17:907:25c1:b0:a51:ddd1:183d with SMTP id ae1-20020a17090725c100b00a51ddd1183dmr4527036ejc.66.1712661408147;
+        Tue, 09 Apr 2024 04:16:48 -0700 (PDT)
+Received: from [192.168.1.50] ([79.113.154.240])
+        by smtp.gmail.com with ESMTPSA id x1-20020a170906134100b00a519ec0a965sm5528612ejb.49.2024.04.09.04.16.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Apr 2024 04:16:47 -0700 (PDT)
+Message-ID: <ab85199c-e82b-4ecf-994c-77fb418429bd@gmail.com>
+Date: Tue, 9 Apr 2024 14:16:46 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87edbe26qe.fsf@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 11/12] wifi: rtlwifi: Add rtl8192du/sw.{c,h}
+To: Ping-Ke Shih <pkshih@realtek.com>, "kvalo@kernel.org" <kvalo@kernel.org>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
+ "s.l-h@gmx.de" <s.l-h@gmx.de>, "chewitt@libreelec.tv" <chewitt@libreelec.tv>
+References: <7f4b3309-1580-48f3-9426-29f1eb4052fd@gmail.com>
+ <2eb79c8c-cf2c-4696-b958-e8d961628e17@gmail.com>
+ <f86a40493745a53ff73083f87b3e8fae215eac77.camel@realtek.com>
+ <66565618-3638-47e5-afe5-3530214da0c9@gmail.com> <87ttkrzf1m.fsf@kernel.org>
+ <5696990a-4450-4d92-bbda-1d9ca3a9a619@gmail.com>
+ <4672072ef782ae1200886a190c740e0f3ccec2c8.camel@realtek.com>
+ <7873dee1-46a8-48a7-9059-bc300ac98c23@gmail.com>
+ <1f8ebed6a04a4fbebf33b0a3edc2f50b@realtek.com>
+ <ff3b97d0-118c-42b3-be0b-47cfcf06ab74@gmail.com>
+ <7741a59a6ebf4e0f8c55b0f5c3f55a41@realtek.com>
+ <321c6855-2e58-48ae-b131-a3f6d7041713@gmail.com>
+ <21299940bf9342ae9c82916084ea7d9e@realtek.com>
+ <519e6717-3a58-4814-932d-8b246fd39f37@gmail.com>
+ <253da7b1650d47b59114c635e7ad8dc3@realtek.com>
+Content-Language: en-US
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <253da7b1650d47b59114c635e7ad8dc3@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Apr 09, 2024 at 01:03:21PM +0300, Kalle Valo wrote:
-> Breno Leitao <leitao@debian.org> writes:
+On 09/04/2024 03:27, Ping-Ke Shih wrote:
 > 
-> >> > Reading the issue, I am afraid that freeing netdev explicitly
-> >> > (free_netdev()) might not be the best approach at the exit path.
-> >> >
-> >> > I would like to try to leverage the ->needs_free_netdev netdev
-> >> > mechanism to do the clean-up, if that makes sense. I've updated the
-> >> > ath11k patch, and I am curious if that is what we want.
-> >> >
-> >> > Would you mind testing a net patch I have, please?
-> >> >
-> >> >   https://github.com/leitao/linux/tree/wireless-dummy_v2
-> >> 
-> >> I tested this again with my WCN6855 hw2.0 x86 test box on this commit:
-> >> 
-> >> a87674ac820e wifi: ath11k: allocate dummy net_device dynamically
-> >> 
-> >> It passes my tests and doesn't crash, but I see this kmemleak warning a
-> >> lot:
-> >
-> > Thanks Kalle, that was helpful. The device is not being clean-up
-> > automatically.
-> >
-> > Chatting with Jakub, he suggested coming back to the original approach,
-> > but, adding a additional patch, at the free_netdev().
-> >
-> > Would you mind running another test, please?
-> >
-> > 	https://github.com/leitao/linux/tree/wireless-dummy_v3
-> >
-> > The branch above is basically the original branch (as in this patch
-> > series), with this additional patch:
-> >
-> > 	Author: Breno Leitao <leitao@debian.org>
-> > 	Date:   Mon Apr 8 11:37:32 2024 -0700
-> >
-> > 	    net: free_netdev: exit earlier if dummy
 > 
-> I tested with the same ath11k hardware and this one passes all my
-> (simple) ath11k tests, no issues found. I used this commit:
+> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
 > 
-> 1c10aebaa8ce net: free_netdev: exit earlier if dummy
+>>
+>> On 08/04/2024 05:45, Ping-Ke Shih wrote:
+>>>>
+>>>>
+>>>> static struct usb_interface *rtl92du_get_other_intf(struct ieee80211_hw *hw)
+>>>> {
+>>>>         struct usb_interface *intf;
+>>>>         struct usb_device *udev;
+>>>>         u8 other_interfaceindex;
+>>>>
+>>>>         /* See SET_IEEE80211_DEV(hw, &intf->dev); in usb.c */
+>>>>         intf = container_of_const(wiphy_dev(hw->wiphy), struct usb_interface, dev);
+>>>>
+>>>>         other_interfaceindex = 1 - intf->altsetting[0].desc.bInterfaceNumber;
+>>>
+>>> The value of bInterfaceNumber for two instances are 0 and 1, right? Then
+>>> '1 - x' to get each other -- that looks a little tricky ;-)
+>>>
+>>
+>> The vendor driver assumes bInterfaceNumber can only be 0 or 1.
+>> I can make it more explicit:
+>>
+>>         if (intf->altsetting[0].desc.bInterfaceNumber == 0)
+>>                 other_interfaceindex = 1;
+>>         else
+>>                 other_interfaceindex = 0;
+>>
+> 
+> That looks easier to understand. 
+> 
+>>>
+>>>>
+>>>> static void rtl92du_deinit_shared_data(struct ieee80211_hw *hw)
+>>>> {
+>>>>         struct usb_interface *other_intf = rtl92du_get_other_intf(hw);
+>>>>         struct rtl_priv *rtlpriv = rtl_priv(hw);
+>>>>
+>>>>         if (!other_intf || usb_get_intfdata(other_intf)) {
+>>>>                 /* The other interface doesn't exist or was not disconnected yet. */
+>>>
+>>> For the USB adaptor with single one interface, you don't have other_intf.
+>>> Then, just free them.
+>>>
+>>> If the USB adaptor has two interfaces, it has both other_intf and
+>>> usb_get_intfdata(other_intf), so you want to free them. But, I wonder if both
+>>> interfaces can enter this branch?
+>>>
+>>
+>> They can't both enter this branch because after the first
+>> disconnect usb_get_intfdata() will return NULL.
+>>
+>>> Also as I mentioned above, how can you ensure other_intf isn't still using the
+>>> shared data?
+>>>
+>>
+>> I can make the second disconnect free the shared data by
+>> checking if usb_get_intfdata() returns NULL:
+>>
+>>         if (!other_intf || !usb_get_intfdata(other_intf)) {
+>>                 /* The other interface doesn't exist or was already disconnected. */
+>>                 kfree(rtlpriv->curveindex_2g);
+> 
+> Will usb_get_intfdata(other_intf) return NULL if the intf disconnected? 
+> If yes, that looks good to me. 
+> 
+> 
 
-Thank you so much for the test.
-
-I will respin a v2 of this patchset with the additional patch included.
+It should. rtl_usb_disconnect() has usb_set_intfdata(intf, NULL);
+at the end. Also usb_unbind_interface() in drivers/usb/core/driver.c
+does the same after calling rtl_usb_disconnect().
 
