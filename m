@@ -1,164 +1,224 @@
-Return-Path: <linux-wireless+bounces-5990-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5991-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F75289D18D
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 06:38:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 603A989D219
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 08:02:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C137B286C01
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 04:38:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8633D1C20E9D
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 06:02:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A3537149;
-	Tue,  9 Apr 2024 04:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D506A00B;
+	Tue,  9 Apr 2024 06:02:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oAMAo2iP"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="eJM33OVR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1E0EAE5;
-	Tue,  9 Apr 2024 04:38:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7604C69
+	for <linux-wireless@vger.kernel.org>; Tue,  9 Apr 2024 06:02:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712637526; cv=none; b=exSP/hzglhIWIIY4kX0lqAOTXA5XO89qUc++QpKLgqEcBaItqm7kCaBr7VdicigmKlVJ6GKiKzOfeYfCF9IwfzdVhR05cwTnWKvC4T1a8UyX4v0izOyBcAL83DbIZAK+HByXZ+j0tkOs4HfpmpBFPodcUnCKBVEJCc9Xq434jB0=
+	t=1712642544; cv=none; b=sdIhNk3k2jsTget80qSkTlO5xSkMC13i41RXZnj5yeC6RwgWuGnDBYOHTx7+3R4P/bo9hsbYekZjLcdsz9SVsD8v7qrfSYz7OEXzrToobg9ADa0h+jJhOIaT23GSzJK9BZBUUDilTMwhLUOL9b2gxKjmW5WFKozxo+gBhS8ufmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712637526; c=relaxed/simple;
-	bh=FwDRjCBN71NNWbuqJwe1vhuFGM+457CREEz1uKWOfUI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=etgjGytc7APIXUYkdHwcLPN2N6ZVRcjRuF8CCfg+qyHo4oRGCczuZdEnic71F8Y+Lf7uC4L5y8par6GT0JKbzsq0tA2Vrtxd+gnsJofQaiEY0oPVf53kYnfMzb8vfOhYXP8cifP2oeGoccnakH9w5YM3qxzoz5/vC/EKqRHFWAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oAMAo2iP; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712637524; x=1744173524;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=FwDRjCBN71NNWbuqJwe1vhuFGM+457CREEz1uKWOfUI=;
-  b=oAMAo2iPP3fui8EI/E5HMMr5k0Xf2FGzQk6JjabSMxQuaalq8AYxM24p
-   z7w4t0bubp5QC7co71gKnTKnA7IPQ2gBOmJo6vUp3UkfJ/50pnSOfcYyU
-   Y5y+3ew7vzyzVhFS06TzuZ55/V1ha0GqSrfkiH5V6i4aJ7QJFeX2Buevf
-   pQrcnfA7G4KDgpFDCHEHVkN11hFZXqFlqX9ubSlK38FCWZaEhT88qJFQL
-   jFO1XMIsiPeEaGOvIZdWV1jzxHVeThA/GNHSFPf8AkUF7FnBWVo/UrZyE
-   KsHILzX2/8PpL1xog+NPFA0BWrwAKb26mau/07+HWGpPUX6Ptc32YVVo7
-   w==;
-X-CSE-ConnectionGUID: ff0V6GGwTha4WV7QqYbc9A==
-X-CSE-MsgGUID: 4ocxdPmdS8+Q5WFitXeBYg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="25440832"
-X-IronPort-AV: E=Sophos;i="6.07,188,1708416000"; 
-   d="scan'208";a="25440832"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2024 21:38:44 -0700
-X-CSE-ConnectionGUID: e33hYWNgRzu9vk7HTBhA9w==
-X-CSE-MsgGUID: n4YA2P8CTm+jg8h8Evwn1Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,188,1708416000"; 
-   d="scan'208";a="20017073"
-Received: from lkp-server01.sh.intel.com (HELO e61807b1d151) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 08 Apr 2024 21:38:40 -0700
-Received: from kbuild by e61807b1d151 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1ru3Fm-0005jy-0R;
-	Tue, 09 Apr 2024 04:38:38 +0000
-Date: Tue, 9 Apr 2024 12:38:35 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Kent Gibson <warthog618@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-	brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com
-Cc: oe-kbuild-all@lists.linux.dev,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>
-Subject: Re: [PATCH v2 1/2] gpiolib: Fix a mess with the GPIO_* flags
-Message-ID: <202404091205.rnu1DOaq-lkp@intel.com>
-References: <20240408231727.396452-2-andriy.shevchenko@linux.intel.com>
+	s=arc-20240116; t=1712642544; c=relaxed/simple;
+	bh=uSSc3T/Z36VoXgzcHzPdWrqip6DGOHvJfiA1BuHf3pI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Ppg6RILnMuOhvOosLb/Pn+PErOUdGsOauJoiLCU1opaWfVy0moCyN0xW/KapGpw+eisrdYYdIx+pgtazcBfItQaJSd678/Kcvbnm2iGOTJ4umf3GRHjzCxC76KPctUP8eYYvKekTHUKXNoGZM4DTsFRMG40fi8pDotKdmVkg90I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=eJM33OVR; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4395kaDe009685;
+	Tue, 9 Apr 2024 06:02:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=gkAMR96SUwvntx11tVJ7L1gP8LVJISV8tZd9sah3VPc=; b=eJ
+	M33OVR+3J12ZgcAl/gWPO66eIknlb3eNc3rQ65bC42cpHWouizNX3lo7kmRVvSZc
+	QHMx4dDsf3g/grwfWKKaQ5qJEbfz6OWyGhScpJWo9UEE4N4Hr4F2con6AKSrvbo5
+	Ka7weeocXf5sMEG1v/RF2XsnaeAKskHIL/+2iVqsjpF5kbpwhG6BZxmgI5YoaBTy
+	3AfsDYYoxlQ/ulUtE6cnviEn7gtaIfnab61FSkqLn9884li31RsyB1Bm2bzLGLQA
+	FfLrx5KzowA9Q/DL7THTwy2mY2zO0qWvrPbbzDlCLGSzNSAHfs084pDwKFpdIWs+
+	8qQJ2fjYb9Am6AXUZUog==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xcvuf894x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 Apr 2024 06:02:17 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43962G13020263
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 9 Apr 2024 06:02:16 GMT
+Received: from [10.216.45.2] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 8 Apr 2024
+ 23:02:14 -0700
+Message-ID: <0496fb7e-53cc-476f-8052-985d82fd8d01@quicinc.com>
+Date: Tue, 9 Apr 2024 11:32:10 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240408231727.396452-2-andriy.shevchenko@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: mac80211: handle link ID during management Tx
+Content-Language: en-US
+To: Johannes Berg <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>, Sriram R <quic_srirrama@quicinc.com>
+References: <20240326045242.3190611-1-quic_adisi@quicinc.com>
+ <930cc3514cd73b837b9e818061215773444f0ecd.camel@sipsolutions.net>
+From: Aditya Kumar Singh <quic_adisi@quicinc.com>
+In-Reply-To: <930cc3514cd73b837b9e818061215773444f0ecd.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: tJMQd1MXM41Zk-V3h_cqfnoWW4qCBR55
+X-Proofpoint-ORIG-GUID: tJMQd1MXM41Zk-V3h_cqfnoWW4qCBR55
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-09_03,2024-04-05_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=756
+ impostorscore=0 clxscore=1015 suspectscore=0 phishscore=0 malwarescore=0
+ priorityscore=1501 lowpriorityscore=0 adultscore=0 spamscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2404010003
+ definitions=main-2404090035
 
-Hi Andy,
+On 4/9/24 00:01, Johannes Berg wrote:
+> On Tue, 2024-03-26 at 10:22 +0530, Aditya Kumar Singh wrote:
+>> From: Sriram R <quic_srirrama@quicinc.com>
+>>
+>> During management Tx, when source address is same as the link conf's
+>> address and even when userspace requested Tx on a specific link, link ID
+>> is not set which leads to dropping of the frame later.
+> 
+> Sorry, don't understand. Please be more precise about the scenario and
+> why it's dropped.
 
-kernel test robot noticed the following build warnings:
+So here, as per existing code, link_id would be -1 still even when user 
+space requested it and there is a channel to Tx on.
 
-[auto build test WARNING on brgl/gpio/for-next]
-[also build test WARNING on wireless-next/main wireless/main linus/master v6.9-rc3 next-20240408]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+This -1 would be sent forward like this -
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Andy-Shevchenko/gpiolib-Fix-a-mess-with-the-GPIO_-flags/20240409-071911
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/brgl/linux.git gpio/for-next
-patch link:    https://lore.kernel.org/r/20240408231727.396452-2-andriy.shevchenko%40linux.intel.com
-patch subject: [PATCH v2 1/2] gpiolib: Fix a mess with the GPIO_* flags
-config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20240409/202404091205.rnu1DOaq-lkp@intel.com/config)
-compiler: gcc-13 (Ubuntu 13.2.0-4ubuntu3) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240409/202404091205.rnu1DOaq-lkp@intel.com/reproduce)
+* ieee80211_tx_skb_tid()
+    * __ieee80211_tx_skb_tid_band()       // band = 0
+	Now, if your link address happen to be same as your MLD
+	address, then mac80211 would put IEEE80211_LINK_UNSPECIFIED.
+    	Looks like this results in mac80211 unable to set certain
+	sta related fields in tx_control.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202404091205.rnu1DOaq-lkp@intel.com/
+As a result when the packet arrives in driver, with various condition 
+checks it fails and goes to either wrong path or dropped completely.
 
-All warnings (new ones prefixed by >>):
+For example in mac80211_hw_sim driver,
 
-   In file included from arch/x86/include/asm/geode.h:12,
-                    from arch/x86/platform/geode/alix.c:28:
->> include/linux/cs5535.h:149: warning: "GPIO_PULL_UP" redefined
-     149 | #define GPIO_PULL_UP            0x18
-         | 
-   In file included from include/linux/gpio/machine.h:5,
-                    from arch/x86/platform/geode/alix.c:25:
-   include/dt-bindings/gpio/gpio.h:37: note: this is the location of the previous definition
-      37 | #define GPIO_PULL_UP 16
-         | 
->> include/linux/cs5535.h:150: warning: "GPIO_PULL_DOWN" redefined
-     150 | #define GPIO_PULL_DOWN          0x1C
-         | 
-   include/dt-bindings/gpio/gpio.h:40: note: this is the location of the previous definition
-      40 | #define GPIO_PULL_DOWN 32
-         | 
+Since link is unspecified, it goes in mac80211_hwsim_select_tx_link() 
+but there this condition is hit -
+
+if (WARN_ON_ONCE(!sta || !sta->valid_links))
+	return &vif->bss_conf;
+
+Following is the trace -
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 518 at 
+drivers/net/wireless/virtual/mac80211_hwsim.c:1889 
+mac80211_hwsim_tx+0x23e/0x7df
+CPU: 0 PID: 518 Comm: hostapd Tainted: G        W 
+6.8.0-rc7-g43e63eea1b51-dirty #140
+Stack:
+  6060f8e1 604af0ce 6003ba75 00000001
+  6060f8e1 604c74ef 00000000 604cf3b0
+  00000000 00000000 00000009 60044d6a
+Call Trace:
+  [<6003bcc9>] ? os_is_signal_stack+0x1b/0x27
+  [<604c74ef>] ? _printk+0x0/0x9f
+  [<60025b3b>] ? show_stack+0x13a/0x147
+  [<604af0ce>] ? dump_stack_print_info+0xe4/0xf0
+  [<6003ba75>] ? um_set_signals+0x0/0x3c
+  [<604c74ef>] ? _printk+0x0/0x9f
+  [<604cf3b0>] ? dump_stack_lvl+0x47/0x52
+  [<60044d6a>] ? __warn+0xd5/0x107
+  [<604c64ac>] ? warn_slowpath_fmt+0xd6/0xe2
+  [<604c7586>] ? _printk+0x97/0x9f
+  [<604c63d6>] ? warn_slowpath_fmt+0x0/0xe2
+  [<60078561>] ? find_held_lock+0x3b/0x82
+  [<6046b953>] ? ieee80211_tx_frags+0x1d8/0x27f
+  [<6007aa1d>] ? lock_release+0x239/0x248
+  [<60241801>] ? mac80211_hwsim_tx+0x23e/0x7df
+  [<6046b9a0>] ? ieee80211_tx_frags+0x225/0x27f
+  [<6046cd82>] ? invoke_tx_handlers_late+0x2da/0x7a3
+  [<604c74ef>] ? _printk+0x0/0x9f
+  [<604bf08b>] ? memcmp+0x0/0x21
+  [<6046baf9>] ? __ieee80211_tx+0xff/0x147
+  [<6046f658>] ? ieee80211_tx+0x11a/0x128
+  [<60471742>] ? __ieee80211_tx_skb_tid_band+0x20d/0x227
+  [<60471888>] ? ieee80211_tx_skb_tid+0x12c/0x148
+  [<6044439c>] ? ieee80211_mgmt_tx+0x528/0x5c7
 
 
-vim +/GPIO_PULL_UP +149 include/linux/cs5535.h
+Later in mac80211_hwsim_tx(), channel is selected as NULL ultimately due 
+to this and hence this condition is hit -
 
-f060f27007b393 Andres Salomon 2009-12-14  141  
-5f0a96b044d8ed Andres Salomon 2009-12-14  142  /* GPIOs */
-5f0a96b044d8ed Andres Salomon 2009-12-14  143  #define GPIO_OUTPUT_VAL		0x00
-5f0a96b044d8ed Andres Salomon 2009-12-14  144  #define GPIO_OUTPUT_ENABLE	0x04
-5f0a96b044d8ed Andres Salomon 2009-12-14  145  #define GPIO_OUTPUT_OPEN_DRAIN	0x08
-5f0a96b044d8ed Andres Salomon 2009-12-14  146  #define GPIO_OUTPUT_INVERT	0x0C
-5f0a96b044d8ed Andres Salomon 2009-12-14  147  #define GPIO_OUTPUT_AUX1	0x10
-5f0a96b044d8ed Andres Salomon 2009-12-14  148  #define GPIO_OUTPUT_AUX2	0x14
-5f0a96b044d8ed Andres Salomon 2009-12-14 @149  #define GPIO_PULL_UP		0x18
-5f0a96b044d8ed Andres Salomon 2009-12-14 @150  #define GPIO_PULL_DOWN		0x1C
-5f0a96b044d8ed Andres Salomon 2009-12-14  151  #define GPIO_INPUT_ENABLE	0x20
-5f0a96b044d8ed Andres Salomon 2009-12-14  152  #define GPIO_INPUT_INVERT	0x24
-5f0a96b044d8ed Andres Salomon 2009-12-14  153  #define GPIO_INPUT_FILTER	0x28
-5f0a96b044d8ed Andres Salomon 2009-12-14  154  #define GPIO_INPUT_EVENT_COUNT	0x2C
-5f0a96b044d8ed Andres Salomon 2009-12-14  155  #define GPIO_READ_BACK		0x30
-5f0a96b044d8ed Andres Salomon 2009-12-14  156  #define GPIO_INPUT_AUX1		0x34
-5f0a96b044d8ed Andres Salomon 2009-12-14  157  #define GPIO_EVENTS_ENABLE	0x38
-5f0a96b044d8ed Andres Salomon 2009-12-14  158  #define GPIO_LOCK_ENABLE	0x3C
-5f0a96b044d8ed Andres Salomon 2009-12-14  159  #define GPIO_POSITIVE_EDGE_EN	0x40
-5f0a96b044d8ed Andres Salomon 2009-12-14  160  #define GPIO_NEGATIVE_EDGE_EN	0x44
-5f0a96b044d8ed Andres Salomon 2009-12-14  161  #define GPIO_POSITIVE_EDGE_STS	0x48
-5f0a96b044d8ed Andres Salomon 2009-12-14  162  #define GPIO_NEGATIVE_EDGE_STS	0x4C
-5f0a96b044d8ed Andres Salomon 2009-12-14  163  
+if (WARN(!channel, "TX w/o channel - queue = %d\n", txi->hw_queue)) {
+	ieee80211_free_txskb(hw, skb);
+	return;
+}
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Trace-
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 518 at 
+drivers/net/wireless/virtual/mac80211_hwsim.c:2005 
+mac80211_hwsim_tx+0x54e/0x7df
+TX w/o channel - queue = 0
+CPU: 0 PID: 518 Comm: hostapd Tainted: G        W 
+6.8.0-rc7-g43e63eea1b51-dirty #140
+Stack:
+  6060f8e1 604af0ce 6003ba75 00000001
+  6060f8e1 604c74ef 00000000 604cf3b0
+  00000000 826d7560 00000009 60044d6a
+Call Trace:
+  [<6003bcc9>] ? os_is_signal_stack+0x1b/0x27
+  [<604c74ef>] ? _printk+0x0/0x9f
+  [<60025b3b>] ? show_stack+0x13a/0x147
+  [<604af0ce>] ? dump_stack_print_info+0xe4/0xf0
+  [<6003ba75>] ? um_set_signals+0x0/0x3c
+  [<604c74ef>] ? _printk+0x0/0x9f
+  [<604cf3b0>] ? dump_stack_lvl+0x47/0x52
+  [<60044d6a>] ? __warn+0xd5/0x107
+  [<604c64ac>] ? warn_slowpath_fmt+0xd6/0xe2
+  [<604c63d6>] ? warn_slowpath_fmt+0x0/0xe2
+  [<60078561>] ? find_held_lock+0x3b/0x82
+  [<6046b953>] ? ieee80211_tx_frags+0x1d8/0x27f
+  [<6007aa1d>] ? lock_release+0x239/0x248
+  [<60241b11>] ? mac80211_hwsim_tx+0x54e/0x7df
+  [<6046b9a0>] ? ieee80211_tx_frags+0x225/0x27f
+  [<6046cd82>] ? invoke_tx_handlers_late+0x2da/0x7a3
+  [<604c74ef>] ? _printk+0x0/0x9f
+  [<604bf08b>] ? memcmp+0x0/0x21
+  [<6046baf9>] ? __ieee80211_tx+0xff/0x147
+  [<6046f658>] ? ieee80211_tx+0x11a/0x128
+  [<60471742>] ? __ieee80211_tx_skb_tid_band+0x20d/0x227
+  [<60471888>] ? ieee80211_tx_skb_tid+0x12c/0x148
+  [<6044439c>] ? ieee80211_mgmt_tx+0x528/0x5c7
+  [<6041bf86>] ? nl80211_tx_mgmt+0x298/0x319
+
+
+
+> 
+> Also, client mode, so wpa_s is actually sending a link-specific action
+> frame?
+
+As per current supplicant code I don't see it sending. This change is 
+agnostic to supplicant or hostapd sending link id or not in action frame.
+
+If user space has requested in a particular link and if channel is set 
+in that link then use that link. This is what this change is trying to 
+do. And all this for management frames only.
+
 
