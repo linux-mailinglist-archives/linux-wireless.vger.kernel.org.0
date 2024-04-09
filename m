@@ -1,132 +1,128 @@
-Return-Path: <linux-wireless+bounces-6000-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6001-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A796D89D738
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 12:46:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F10F289D744
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 12:52:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 483B01F240B7
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 10:46:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D6F41C235E4
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 10:52:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4A180603;
-	Tue,  9 Apr 2024 10:46:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bXcR6+20";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+dAupo2/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 493B981751;
+	Tue,  9 Apr 2024 10:51:56 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4AD574297;
-	Tue,  9 Apr 2024 10:46:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF541EB46;
+	Tue,  9 Apr 2024 10:51:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712659595; cv=none; b=dOyRW2NmWtdG38AohsxiwTAcCou9WLQeA+csu3qleXf+TJSKXEsbuUl/lbELOPFp7L+oBzeWlYPIz/vNUeRj4Rx1tb0OCbNZeFq+3bkHcDWFHxdIpqfMID/XP1sICyWxwxHUR+lI8d+Zxjzx7p8hUvKUh9qN6F9AHdBZN3NHmGs=
+	t=1712659916; cv=none; b=fAnRa79gXvOiXyWhkvXGZW+OxrS+6YCnsl5mLKD+7MVDHA+b0jRXd/cmiUToO4QIKtAgDwngSvRS11lojzUVZdtCGCpR2U4hXW2p8r4+iCjsUf7abgxGyRyk+C8bnAOr0iWfktjAFwHM0glN3F0NElYO8hiRbdlCD3FHDBgc35M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712659595; c=relaxed/simple;
-	bh=r0dJIX3jmxNuXy65LFOpt4uyAtB3l+LV7CW1tPmmE6k=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=b4c1ii1UKpyFwF64ZRmkdF/WuboQ55JFF777M1Zo/ON55ZYbLu4ow8apReickXjhXnZHJKF6JlGYYUKOpauZ5un+FVYlSJYFN++cltonsQmHoTBJuElwZ3R29SGYjN3BtTexpg6prQoa5cZwIwyu0x5IKvadi1GLlAlr6n9yjMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bXcR6+20; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+dAupo2/; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1712659592;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=efzE8ApMA5WUvYXRDOVHInf88sGcAlh56uWppzAdwf0=;
-	b=bXcR6+20FIrY5chC/piBFZHcX/uZbegD6NjhsrS9pUbaQX8BETdVU9hYMEhudpyTisQ0eA
-	9yEPunYhKXS1sUBlbZ/i4mze2qYQ3HaxveThaRjSfemjycQmiiGn0Ony83UajSNEMuhmHx
-	zGYOscXd84L4VEqNNmhJ4Xres5GIa8AmbUXoyC3Ey+lrh51XYDqniTk7piZWo6uBVVIIWr
-	qWXyV4LPfvi/0tuX3lYdonxjTZZMRvh/n7SjGAascQADveiHY6MwCTwaUDL1DOS9Xbfm/5
-	v5RXxZRe7zVCdJYLHBc3p9JX6ghNHyH/vnG6fhaEQRmBKjVdyMjeJvBa1XhBng==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1712659592;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=efzE8ApMA5WUvYXRDOVHInf88sGcAlh56uWppzAdwf0=;
-	b=+dAupo2/30SurT7+tXaCfidAAhxSVe6PdtJN30y20/PgZBoZQkWxUHecIbc2+tDA9pprBH
-	HFMGpmLVYzJMfKAg==
-To: syzbot <syzbot+d1ae9c954f73570e7b58@syzkaller.appspotmail.com>,
- anna-maria@linutronix.de, frederic@kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- syzkaller-bugs@googlegroups.com
-Cc: Johannes Berg <johannes.berg@intel.com>, Kalle Valo
- <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org
-Subject: Re: [syzbot] [kernel?] WARNING in hrtimer_forward (2)
-In-Reply-To: <000000000000b77a880615a0ed2a@google.com>
-References: <000000000000b77a880615a0ed2a@google.com>
-Date: Tue, 09 Apr 2024 12:46:31 +0200
-Message-ID: <87a5m27r08.ffs@tglx>
+	s=arc-20240116; t=1712659916; c=relaxed/simple;
+	bh=J6BA9/3XJpuAa/jgWFFMWWa01R4APTaJ4ZKMe05arAI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gs1KuuOF3G09s6CpivmDJcs/7NPsS8Eb7H7/lnYdlUOPRJ0xRxk4EUeaXvIuTQnVumwL4y36xLzV5xcHTmyfLe2IdmbPCevPCe2twWHmVgnUjsbEEr5u5lrsBGEr2sf68ADAcLJ1nJz/pTAS6V3+jYp3+C+moTTrIU0cPGQbEz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-56e6f4ee104so1179839a12.2;
+        Tue, 09 Apr 2024 03:51:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712659913; x=1713264713;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=D18zsKfXH63dj1S3Q8K0FBC8WrKFJn4nZwjzqAFKe8U=;
+        b=liy3PnNhLS9A4HDA0ODcwn3CcGxjBQa/TfJyoVTbtBiGLgN5xqLdq86IpzGVB7TNeS
+         YqZ7Ikg5X1N7zvt8FOJjnKY4fcmCXo/sjBD22bBDNECodv5DGL01Eh2EeXqgFx/pLaIB
+         nhuC5Sj0Wci1C8SgFmwd+N0zwIqvo7NTg6Yq7GP839eFjomLPV9eWdz3aXmN4prb+SlU
+         w6UXmgTR4+35fF3woG+pVZHf8VrCx0i7F8YPzuZVBiVv9tBzsnwq1d+Q/ZhsML0tjPqC
+         cO5xVndgLTi5LGyY04LikSg1KlO58sHKGCwP9hvboBg2HoW27lA2AWJTbGlwz0J6uMhZ
+         SZpw==
+X-Forwarded-Encrypted: i=1; AJvYcCUFrxjT1s3X1z8uk/LRtT9H31pKDzFwWY1euLXuFbzfvsCjwjwZRLw4MK8t2ZXGZXomwg5FeVSJ1mDcjLUUI6RXE38TZ5clG3C8dqn3urN76Ght639G+fprsVwoxgY5YvYGQS0IK+E0EaXHy4zqgkre3tOaYxpo9K50zLN+2TtbFWJlS6c=
+X-Gm-Message-State: AOJu0YxpPvjPjfuZ/wMDxFqdYVrnDUiiAlj0S3t75dBQd0HKts8ThYGT
+	mGmqMtRHH2jz5Qj530KJ2RPZFJ3dULzCTKPPPPc8JuvOi2m2qgom
+X-Google-Smtp-Source: AGHT+IE0kN/ATp0XtOHlpEkNGSfsAHzZLZV+Ki8bifnpSHDIQZARfBa9Mlhn4h+hE0pT/2GjSI89Zg==
+X-Received: by 2002:a50:ab5a:0:b0:56e:2d0c:6ed6 with SMTP id t26-20020a50ab5a000000b0056e2d0c6ed6mr6313316edc.41.1712659912586;
+        Tue, 09 Apr 2024 03:51:52 -0700 (PDT)
+Received: from gmail.com (fwdproxy-lla-007.fbsv.net. [2a03:2880:30ff:7::face:b00c])
+        by smtp.gmail.com with ESMTPSA id ij6-20020a056402158600b0056ddd9427d2sm5179868edb.58.2024.04.09.03.51.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Apr 2024 03:51:52 -0700 (PDT)
+Date: Tue, 9 Apr 2024 03:51:50 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: kuba@kernel.org, ath11k@lists.infradead.org, ath10k@lists.infradead.org,
+	linux-wireless@vger.kernel.org, imitsyanko@quantenna.com,
+	geomatsi@gmail.com, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH 0/3] wifi: Un-embed ath10k and ath11k dummy netdev
+Message-ID: <ZhUdxpnC+nMkNp+U@gmail.com>
+References: <20240405122123.4156104-1-leitao@debian.org>
+ <87y19r264m.fsf@kernel.org>
+ <ZhPyRHHlVot+a8Xq@gmail.com>
+ <87pluz24ap.fsf@kernel.org>
+ <ZhRGo3I57rXxsMV/@gmail.com>
+ <87edbe26qe.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87edbe26qe.fsf@kernel.org>
 
-On Mon, Apr 08 2024 at 19:46, syzbot wrote:
-> ------------[ cut here ]------------
-> WARNING: CPU: 1 PID: 11239 at kernel/time/hrtimer.c:1053 hrtimer_forward+0x210/0x2d0 kernel/time/hrtimer.c:1053
-> RIP: 0010:hrtimer_forward+0x210/0x2d0 kernel/time/hrtimer.c:1053
-> Call Trace:
->  <IRQ>
->  hrtimer_forward_now include/linux/hrtimer.h:355 [inline]
->  mac80211_hwsim_beacon+0x192/0x1f0 drivers/net/wireless/virtual/mac80211_hwsim.c:2335
->  __run_hrtimer kernel/time/hrtimer.c:1692 [inline]
->  __hrtimer_run_queues+0x595/0xd00 kernel/time/hrtimer.c:1756
->  hrtimer_run_softirq+0x19a/0x2c0 kernel/time/hrtimer.c:1773
->  __do_softirq+0x2bc/0x943 kernel/softirq.c:554
->  invoke_softirq kernel/softirq.c:428 [inline]
->  __irq_exit_rcu+0xf2/0x1c0 kernel/softirq.c:633
->  irq_exit_rcu+0x9/0x30 kernel/softirq.c:645
->  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1043 [inline]
->  sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1043
->  </IRQ>
+On Tue, Apr 09, 2024 at 01:03:21PM +0300, Kalle Valo wrote:
+> Breno Leitao <leitao@debian.org> writes:
+> 
+> >> > Reading the issue, I am afraid that freeing netdev explicitly
+> >> > (free_netdev()) might not be the best approach at the exit path.
+> >> >
+> >> > I would like to try to leverage the ->needs_free_netdev netdev
+> >> > mechanism to do the clean-up, if that makes sense. I've updated the
+> >> > ath11k patch, and I am curious if that is what we want.
+> >> >
+> >> > Would you mind testing a net patch I have, please?
+> >> >
+> >> >   https://github.com/leitao/linux/tree/wireless-dummy_v2
+> >> 
+> >> I tested this again with my WCN6855 hw2.0 x86 test box on this commit:
+> >> 
+> >> a87674ac820e wifi: ath11k: allocate dummy net_device dynamically
+> >> 
+> >> It passes my tests and doesn't crash, but I see this kmemleak warning a
+> >> lot:
+> >
+> > Thanks Kalle, that was helpful. The device is not being clean-up
+> > automatically.
+> >
+> > Chatting with Jakub, he suggested coming back to the original approach,
+> > but, adding a additional patch, at the free_netdev().
+> >
+> > Would you mind running another test, please?
+> >
+> > 	https://github.com/leitao/linux/tree/wireless-dummy_v3
+> >
+> > The branch above is basically the original branch (as in this patch
+> > series), with this additional patch:
+> >
+> > 	Author: Breno Leitao <leitao@debian.org>
+> > 	Date:   Mon Apr 8 11:37:32 2024 -0700
+> >
+> > 	    net: free_netdev: exit earlier if dummy
+> 
+> I tested with the same ath11k hardware and this one passes all my
+> (simple) ath11k tests, no issues found. I used this commit:
+> 
+> 1c10aebaa8ce net: free_netdev: exit earlier if dummy
 
-The code which arms the timer is not serialized against the callback so
-the following can happen:
+Thank you so much for the test.
 
-    CPU1                        CPU2
-
-    __run_hrtimer(timer)
-                                if (!hrtimer_queued(timer))
-                                        hrtimer_start(timer);
-
-       hrtimer_forward(timer)
-         WARN_ON(hrtimer_queued(timer)
-
-This really wants to use hrtimer_active() which takes the running
-callback into account.
-
-Thanks,
-
-        tglx
-
---- a/drivers/net/wireless/virtual/mac80211_hwsim.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-@@ -2422,7 +2422,7 @@ static int mac80211_hwsim_config(struct
- 
- 		if (!data->started || !link_data->beacon_int) {
- 			hrtimer_cancel(&link_data->beacon_timer);
--		} else if (!hrtimer_is_queued(&link_data->beacon_timer)) {
-+		} else if (!hrtimer_is_active(&link_data->beacon_timer)) {
- 			u64 tsf = mac80211_hwsim_get_tsf(hw, NULL);
- 			u32 bcn_int = link_data->beacon_int;
- 			u64 until_tbtt = bcn_int - do_div(tsf, bcn_int);
-@@ -2517,7 +2517,7 @@ static void mac80211_hwsim_link_info_cha
- 			  info->enable_beacon, info->beacon_int);
- 		vp->bcn_en = info->enable_beacon;
- 		if (data->started &&
--		    !hrtimer_is_queued(&link_data->beacon_timer) &&
-+		    !hrtimer_is_active(&link_data->beacon_timer) &&
- 		    info->enable_beacon) {
- 			u64 tsf, until_tbtt;
- 			u32 bcn_int;
+I will respin a v2 of this patchset with the additional patch included.
 
