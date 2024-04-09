@@ -1,130 +1,146 @@
-Return-Path: <linux-wireless+bounces-5988-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5989-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BA2A89CF53
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 02:28:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D9B789D15E
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 05:57:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D64DA1C21448
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 00:28:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FB41281567
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 03:57:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CBE9370;
-	Tue,  9 Apr 2024 00:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A276A54FAB;
+	Tue,  9 Apr 2024 03:57:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="YYWX3xr2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A066719B
-	for <linux-wireless@vger.kernel.org>; Tue,  9 Apr 2024 00:28:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF40F54F95
+	for <linux-wireless@vger.kernel.org>; Tue,  9 Apr 2024 03:57:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712622512; cv=none; b=HNB0tnV9cQrnip76Al+DHR6YQxY2dM1KJZRpW4Wzh9wNG0Zq8RU6MuQpmUDbdQDEnkCZf83WX241jV2IPwG7xDTkkDGtmPGJyPH0gWpFqZq5la7ot8Zw07QCez1/o5R8EBaTg67zqn62rp80e/Zwh7wl4m9bOe6jcsmIyZ4ieMs=
+	t=1712635053; cv=none; b=PnRZsot5QZ2rWPw1B8CtUJkKgNiMzZzqN0+qFQ+SJpWvdFiWMkeT1sbDhSIlrVatfpWvgd1X7IQNWYP9g0UxvQXQeejbSMWFzv/0Wx2+Azl8Av/pNvgYrHXolc2oqvqNLnUbunXbZYOlKNIk0Aah6IAYAyqw17VNfJXTSCdnjK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712622512; c=relaxed/simple;
-	bh=WEtieh9NJ2PeTiESNx8tBKUtJv49Gix5zRUvEG00lrc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=VkzI0ekwak9igSuYsOymuK1ooMz0p8ZldlY255eBMCcIbk3EuZSzn6Xt8oPpihqekvGSYoU/THb8NWM5gjVqtzoaa7q78XoRRTb8gxxG8aHWG7SFHgKxnvfnkP4D81Rx5aybMDofmWeFom8vPBPwaB0CEltQ8pKjsynpM2SsK/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4390RvwA62340276, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 4390RvwA62340276
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 9 Apr 2024 08:27:57 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 9 Apr 2024 08:27:58 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 9 Apr 2024 08:27:57 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
- RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
- 15.01.2507.035; Tue, 9 Apr 2024 08:27:57 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "kvalo@kernel.org"
-	<kvalo@kernel.org>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
-        "s.l-h@gmx.de"
-	<s.l-h@gmx.de>,
-        "chewitt@libreelec.tv" <chewitt@libreelec.tv>
-Subject: RE: [PATCH v3 11/12] wifi: rtlwifi: Add rtl8192du/sw.{c,h}
-Thread-Topic: [PATCH v3 11/12] wifi: rtlwifi: Add rtl8192du/sw.{c,h}
-Thread-Index: AQHaev7lVhGGoQ4nQ0GxbEPAiHfc3rFCwUMAgAhizQCAANTTI///vigAgAAwEwCAAMUwAIABPbAAgAPR/oCAAO0mAIAJogKAgAFx7VD//+2BAIABh96w
-Date: Tue, 9 Apr 2024 00:27:57 +0000
-Message-ID: <253da7b1650d47b59114c635e7ad8dc3@realtek.com>
-References: <7f4b3309-1580-48f3-9426-29f1eb4052fd@gmail.com>
- <2eb79c8c-cf2c-4696-b958-e8d961628e17@gmail.com>
- <f86a40493745a53ff73083f87b3e8fae215eac77.camel@realtek.com>
- <66565618-3638-47e5-afe5-3530214da0c9@gmail.com> <87ttkrzf1m.fsf@kernel.org>
- <5696990a-4450-4d92-bbda-1d9ca3a9a619@gmail.com>
- <4672072ef782ae1200886a190c740e0f3ccec2c8.camel@realtek.com>
- <7873dee1-46a8-48a7-9059-bc300ac98c23@gmail.com>
- <1f8ebed6a04a4fbebf33b0a3edc2f50b@realtek.com>
- <ff3b97d0-118c-42b3-be0b-47cfcf06ab74@gmail.com>
- <7741a59a6ebf4e0f8c55b0f5c3f55a41@realtek.com>
- <321c6855-2e58-48ae-b131-a3f6d7041713@gmail.com>
- <21299940bf9342ae9c82916084ea7d9e@realtek.com>
- <519e6717-3a58-4814-932d-8b246fd39f37@gmail.com>
-In-Reply-To: <519e6717-3a58-4814-932d-8b246fd39f37@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1712635053; c=relaxed/simple;
+	bh=IMDHV5KRTrbzqE5SwgGsDAx0d2O+vkhJ0tIQFQH65z8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=UVI6sLY/V6K8rD6FJpT42cf6v+Iv1LfBjpYAy7koQTiPNki/F/kdDBXtQXkUFjTpg20lR1+9bezWYHP0SmA4vSahIyr8lwVtDCP+XWIMl1rQoIl9QnQEhLUolBFpkzO7F6zKYYXdKEDIScpNBPX8h7L1y2Z8fxzJfrzyOTDtGM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=YYWX3xr2; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4390l9D8032535;
+	Tue, 9 Apr 2024 03:57:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=+we+/wESv/0HibPrl5dUw7ZLp/mpcF0Mls0N3rvfpkA=; b=YY
+	WX3xr2VgqxhKpQ/tl3ux8vr0ElZtCmpQl4jkXDISYB5EwIlZi2E3vtIW34PL/G+P
+	/djOmrjcJc065p8cvX0/Evy41H0GIOqfghSXAjJFFSDp1qkbwIPvfJfjyoo49dCH
+	Hj7DvHvSPg0nzK/mWoxPu024O/BJDrtlkR1DYuKGAjNeyIhLHM5Ggh9wyYtWyZHR
+	bS0d/8SdXfz1N7NIpggVdq47NB4sxSdYwipsMFmbOl7DleLT3Q2MTD5mjasPZZwg
+	Uf03Pg34nxVEdTpz3DCVI+6WDArf7VyQ1F8G7oGlTT/XocjDz/tb1cgSYjz3Sh6G
+	p9iZ4PsllVwgaQA88dVw==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xcbg0adyv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 Apr 2024 03:57:22 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4393vLgZ026345
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 9 Apr 2024 03:57:21 GMT
+Received: from [10.216.45.2] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 8 Apr 2024
+ 20:57:20 -0700
+Message-ID: <15bc7705-5da9-4c56-aa45-81972bad5e01@quicinc.com>
+Date: Tue, 9 Apr 2024 09:27:16 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: mac80211: handle sdata->u.ap.active flag with MLO
+Content-Language: en-US
+To: Johannes Berg <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240326151141.3824454-1-quic_adisi@quicinc.com>
+ <bae1e71edcc13e73e8ef7f24d30140a4a6aefb98.camel@sipsolutions.net>
+From: Aditya Kumar Singh <quic_adisi@quicinc.com>
+In-Reply-To: <bae1e71edcc13e73e8ef7f24d30140a4a6aefb98.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: JYxyBKCZ0RMQ2D_d1Z6MOkeFj_mhxfKN
+X-Proofpoint-ORIG-GUID: JYxyBKCZ0RMQ2D_d1Z6MOkeFj_mhxfKN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-08_19,2024-04-05_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 mlxlogscore=877 clxscore=1015 spamscore=0 impostorscore=0
+ adultscore=0 suspectscore=0 lowpriorityscore=0 mlxscore=0 phishscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404090022
 
-DQoNCkJpdHRlcmJsdWUgU21pdGggPHJ0bDg4MjFjZXJmZTJAZ21haWwuY29tPiB3cm90ZToNCg0K
-PiANCj4gT24gMDgvMDQvMjAyNCAwNTo0NSwgUGluZy1LZSBTaGloIHdyb3RlOg0KPiA+Pg0KPiA+
-Pg0KPiA+PiBzdGF0aWMgc3RydWN0IHVzYl9pbnRlcmZhY2UgKnJ0bDkyZHVfZ2V0X290aGVyX2lu
-dGYoc3RydWN0IGllZWU4MDIxMV9odyAqaHcpDQo+ID4+IHsNCj4gPj4gICAgICAgICBzdHJ1Y3Qg
-dXNiX2ludGVyZmFjZSAqaW50ZjsNCj4gPj4gICAgICAgICBzdHJ1Y3QgdXNiX2RldmljZSAqdWRl
-djsNCj4gPj4gICAgICAgICB1OCBvdGhlcl9pbnRlcmZhY2VpbmRleDsNCj4gPj4NCj4gPj4gICAg
-ICAgICAvKiBTZWUgU0VUX0lFRUU4MDIxMV9ERVYoaHcsICZpbnRmLT5kZXYpOyBpbiB1c2IuYyAq
-Lw0KPiA+PiAgICAgICAgIGludGYgPSBjb250YWluZXJfb2ZfY29uc3Qod2lwaHlfZGV2KGh3LT53
-aXBoeSksIHN0cnVjdCB1c2JfaW50ZXJmYWNlLCBkZXYpOw0KPiA+Pg0KPiA+PiAgICAgICAgIG90
-aGVyX2ludGVyZmFjZWluZGV4ID0gMSAtIGludGYtPmFsdHNldHRpbmdbMF0uZGVzYy5iSW50ZXJm
-YWNlTnVtYmVyOw0KPiA+DQo+ID4gVGhlIHZhbHVlIG9mIGJJbnRlcmZhY2VOdW1iZXIgZm9yIHR3
-byBpbnN0YW5jZXMgYXJlIDAgYW5kIDEsIHJpZ2h0PyBUaGVuDQo+ID4gJzEgLSB4JyB0byBnZXQg
-ZWFjaCBvdGhlciAtLSB0aGF0IGxvb2tzIGEgbGl0dGxlIHRyaWNreSA7LSkNCj4gPg0KPiANCj4g
-VGhlIHZlbmRvciBkcml2ZXIgYXNzdW1lcyBiSW50ZXJmYWNlTnVtYmVyIGNhbiBvbmx5IGJlIDAg
-b3IgMS4NCj4gSSBjYW4gbWFrZSBpdCBtb3JlIGV4cGxpY2l0Og0KPiANCj4gICAgICAgICBpZiAo
-aW50Zi0+YWx0c2V0dGluZ1swXS5kZXNjLmJJbnRlcmZhY2VOdW1iZXIgPT0gMCkNCj4gICAgICAg
-ICAgICAgICAgIG90aGVyX2ludGVyZmFjZWluZGV4ID0gMTsNCj4gICAgICAgICBlbHNlDQo+ICAg
-ICAgICAgICAgICAgICBvdGhlcl9pbnRlcmZhY2VpbmRleCA9IDA7DQo+IA0KDQpUaGF0IGxvb2tz
-IGVhc2llciB0byB1bmRlcnN0YW5kLiANCg0KPiA+DQo+ID4+DQo+ID4+IHN0YXRpYyB2b2lkIHJ0
-bDkyZHVfZGVpbml0X3NoYXJlZF9kYXRhKHN0cnVjdCBpZWVlODAyMTFfaHcgKmh3KQ0KPiA+PiB7
-DQo+ID4+ICAgICAgICAgc3RydWN0IHVzYl9pbnRlcmZhY2UgKm90aGVyX2ludGYgPSBydGw5MmR1
-X2dldF9vdGhlcl9pbnRmKGh3KTsNCj4gPj4gICAgICAgICBzdHJ1Y3QgcnRsX3ByaXYgKnJ0bHBy
-aXYgPSBydGxfcHJpdihodyk7DQo+ID4+DQo+ID4+ICAgICAgICAgaWYgKCFvdGhlcl9pbnRmIHx8
-IHVzYl9nZXRfaW50ZmRhdGEob3RoZXJfaW50ZikpIHsNCj4gPj4gICAgICAgICAgICAgICAgIC8q
-IFRoZSBvdGhlciBpbnRlcmZhY2UgZG9lc24ndCBleGlzdCBvciB3YXMgbm90IGRpc2Nvbm5lY3Rl
-ZCB5ZXQuICovDQo+ID4NCj4gPiBGb3IgdGhlIFVTQiBhZGFwdG9yIHdpdGggc2luZ2xlIG9uZSBp
-bnRlcmZhY2UsIHlvdSBkb24ndCBoYXZlIG90aGVyX2ludGYuDQo+ID4gVGhlbiwganVzdCBmcmVl
-IHRoZW0uDQo+ID4NCj4gPiBJZiB0aGUgVVNCIGFkYXB0b3IgaGFzIHR3byBpbnRlcmZhY2VzLCBp
-dCBoYXMgYm90aCBvdGhlcl9pbnRmIGFuZA0KPiA+IHVzYl9nZXRfaW50ZmRhdGEob3RoZXJfaW50
-ZiksIHNvIHlvdSB3YW50IHRvIGZyZWUgdGhlbS4gQnV0LCBJIHdvbmRlciBpZiBib3RoDQo+ID4g
-aW50ZXJmYWNlcyBjYW4gZW50ZXIgdGhpcyBicmFuY2g/DQo+ID4NCj4gDQo+IFRoZXkgY2FuJ3Qg
-Ym90aCBlbnRlciB0aGlzIGJyYW5jaCBiZWNhdXNlIGFmdGVyIHRoZSBmaXJzdA0KPiBkaXNjb25u
-ZWN0IHVzYl9nZXRfaW50ZmRhdGEoKSB3aWxsIHJldHVybiBOVUxMLg0KPiANCj4gPiBBbHNvIGFz
-IEkgbWVudGlvbmVkIGFib3ZlLCBob3cgY2FuIHlvdSBlbnN1cmUgb3RoZXJfaW50ZiBpc24ndCBz
-dGlsbCB1c2luZyB0aGUNCj4gPiBzaGFyZWQgZGF0YT8NCj4gPg0KPiANCj4gSSBjYW4gbWFrZSB0
-aGUgc2Vjb25kIGRpc2Nvbm5lY3QgZnJlZSB0aGUgc2hhcmVkIGRhdGEgYnkNCj4gY2hlY2tpbmcg
-aWYgdXNiX2dldF9pbnRmZGF0YSgpIHJldHVybnMgTlVMTDoNCj4gDQo+ICAgICAgICAgaWYgKCFv
-dGhlcl9pbnRmIHx8ICF1c2JfZ2V0X2ludGZkYXRhKG90aGVyX2ludGYpKSB7DQo+ICAgICAgICAg
-ICAgICAgICAvKiBUaGUgb3RoZXIgaW50ZXJmYWNlIGRvZXNuJ3QgZXhpc3Qgb3Igd2FzIGFscmVh
-ZHkgZGlzY29ubmVjdGVkLiAqLw0KPiAgICAgICAgICAgICAgICAga2ZyZWUocnRscHJpdi0+Y3Vy
-dmVpbmRleF8yZyk7DQoNCldpbGwgdXNiX2dldF9pbnRmZGF0YShvdGhlcl9pbnRmKSByZXR1cm4g
-TlVMTCBpZiB0aGUgaW50ZiBkaXNjb25uZWN0ZWQ/IA0KSWYgeWVzLCB0aGF0IGxvb2tzIGdvb2Qg
-dG8gbWUuIA0KDQoNCg==
+On 4/8/24 23:55, Johannes Berg wrote:
+> On Tue, 2024-03-26 at 20:41 +0530, Aditya Kumar Singh wrote:
+> 
+>> @@ -1232,7 +1256,9 @@ ieee80211_assign_beacon(struct ieee80211_sub_if_data *sdata,
+>>   	}
+>>   
+>>   	rcu_assign_pointer(link->u.ap.beacon, new);
+>> -	sdata->u.ap.active = true;
+>> +
+>> +	if (ieee80211_num_beaconing_links(sdata) <= 1)
+>> +		sdata->u.ap.active = true;
+> 
+> I don't understand this change. Neither the <= 1 really, nor the fact
+> that you actually _make_ this change.
+> 
+
+The place above where we are checking number of beaconing links, at that 
+point at least 1 should be active. Since before checking, we have done 
+rcu_assign_pointer() so at least 1 should be there. That is why that 
+condition.
+
+If it is more than 1, then this is not the first link which is going to 
+come up and hence there is no need to set the flag again.
+
+>> @@ -1486,7 +1488,10 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
+>>   		if (old)
+>>   			kfree_rcu(old, rcu_head);
+>>   		RCU_INIT_POINTER(link->u.ap.beacon, NULL);
+>> -		sdata->u.ap.active = false;
+>> +
+>> +		if (!ieee80211_num_beaconing_links(sdata))
+>> +			sdata->u.ap.active = false;
+> 
+> == 0 maybe?
+> 
+
+Yeah can do. I prefer "!expr" over "expr == 0". Do you have any preference?
+
+> Or maybe we should just save/restore the value instead?
+> 
+>>   	list_for_each_entry(vlan, &sdata->u.ap.vlans, u.vlan.list)
+>>   		netif_carrier_off(vlan->dev);
+>>   
+>> -	if (ieee80211_num_beaconing_links(sdata) <= 1)
+> 
+> Unrelated, but it looks like the VLAN netif_carrier_off() handling above
+> is also wrong and should really go into this if block as well.
+> 
+
+Yeah MLO VLAN changes would do that? The previous change was focusing on 
+the AP mode alone and I did not want to break anything in VLAN so did 
+not touch it there.
+
 
