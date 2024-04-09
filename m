@@ -1,151 +1,132 @@
-Return-Path: <linux-wireless+bounces-6007-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6008-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 058A689D925
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 14:21:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B69A89D93E
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 14:31:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A9481F22955
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 12:21:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C4281C21111
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 12:31:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E06012C552;
-	Tue,  9 Apr 2024 12:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B257F1C3D;
+	Tue,  9 Apr 2024 12:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="TsZDflNx"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SP4KjDcF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD17912C7E8
-	for <linux-wireless@vger.kernel.org>; Tue,  9 Apr 2024 12:21:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB8F384
+	for <linux-wireless@vger.kernel.org>; Tue,  9 Apr 2024 12:31:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712665291; cv=none; b=OuPnavQ3mXU5QVbmV0p6oUtg2wy1ldKuramxLgeduCuEMKOEe63sX++BS1FLxuZx/Nak7n24Rx+DwdRYfteukUDMp+975ndccZXBJURE7MNVR2Ypkuspp4XCDbWzONKAJqcw1KyiDlcQIX/ymu7kL8qG5pop0LtBF6QA2pSmwsM=
+	t=1712665883; cv=none; b=GBj8YUVSEseraEQoAITPV3dTjR3/wfGUjcBojF0psW14UTT8ktneCCOL3YhjkwQdrKR6bvtUbpxzcq7YS09woSPiFaRVeRdAgUYJ8TfDhpv7ydrl2wLGQh5kyPHLYCzpNrUOm3k/XqYphOkzDQdreE5NfHyKWQPCcS8itEA/O3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712665291; c=relaxed/simple;
-	bh=xb4U2Ctsr3x6eX5sgR+hktBTNC9i8Y0jdvaSgtmixcE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=kLHPHDJ8Xxk3E6JCfKRON0n/TrwsoNu7lLCdeaSdyZu3hohgC/FWPoytEbsL0N/PRx29fXBU9kjK38wEEBZwJZ9cLXM3RpbFtJMN4LbjhsYJ517pzpzMzR3qpsh91pThlCM2FVuU38nhDDjcgOIuV6k3wOeBiPDzuTieEm5+Xs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=TsZDflNx; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 439BnMnP026280;
-	Tue, 9 Apr 2024 12:21:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=s4fqpEXDdKyMGZdE5RRDhqIm8vMvf8Nw2PrnW7+njjc=; b=Ts
-	ZDflNxp0vvvfG9VN6DXrZdR16g9d/8VhHqm3/4kr0iY1UmQ5jSjLL+b9xohERQhP
-	nC1mXzedR49z1w0AKhw67O5F3tpAffQsl3olBh4Jw/OmwrsNeE705BiinxAAHpgO
-	owx8qsevMGK2OmekpU2OdniAnxa7wqk+YH9IOgxs9h2XRAPDWMu0fwnxAKiXd8zl
-	Vh2kNvXpzEHdgARelt/EgvtjtyWVfFCQTGtppoMFYltgGE3Uki4aoUUMSmdcRsjC
-	Ksvwl7AHyQmnANzoTPCbdMVwAJ3PJXkzITb80KFSFW/LIYipTrgAJac3W3+DOQzA
-	vTotPfoqKaIH5qxO3e7Q==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xd3nbr7c3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Apr 2024 12:21:21 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 439CLKe6030644
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 9 Apr 2024 12:21:20 GMT
-Received: from [10.110.24.102] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 9 Apr 2024
- 05:21:19 -0700
-Message-ID: <4038e991-9207-4033-930a-a14eae4a526f@quicinc.com>
-Date: Tue, 9 Apr 2024 20:21:16 +0800
+	s=arc-20240116; t=1712665883; c=relaxed/simple;
+	bh=Smf8CqsXg9haM1YfQmcDVxHR/BjPzeFlKSG9GLUaZc4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=l17EGCqgLfqXglzqV4jRhI5EHdMtrwymqO44hh5BMJgZBrazgYFXAQZaImrJ+JwwXtONtDbuCuQM8udUx1I0nl2BaUR3pH1mCB+xSm1rXoY4AvzPIkrLnh+qVvdWvBQ1kpOaPfFiHV9CUKS4gsFA8xsPBtyxD4+8J8B82x+3WAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SP4KjDcF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE50C43394
+	for <linux-wireless@vger.kernel.org>; Tue,  9 Apr 2024 12:31:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712665883;
+	bh=Smf8CqsXg9haM1YfQmcDVxHR/BjPzeFlKSG9GLUaZc4=;
+	h=References:In-Reply-To:From:Date:Subject:To:List-Id:Cc:From;
+	b=SP4KjDcFJ2bCEYqa0OlTYSGyYm1+MGf3qTmWEgLDGYhvBurCkkVYo15Iq3paVftq/
+	 WE6Iw0crN6YTofAoElRw2TzZvqpmSDTQkyrLZ9elNII5Lp0Ri8YFAP3RPPg1rT/c+2
+	 JmXoSOC1/lPll8GZQ2+YpdouZIOu/y4pferiqrKmWjQW9zwGTA8kRGAyS1EDElHY7+
+	 vBPP8WpCkC2sV5fJX6W9TyV8hUEDB3m3VfFvdvbKh2/5lzopc/fdFCJRYP84+plMUG
+	 IfQ6Y+vtoahGB7mnk1R3ZHbpS1JrS5WoCSzSxiAHaFIpFDVaXBF2UkWZP1qWpZClvG
+	 q51ccIsRdaUXA==
+Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-dcd9e34430cso6381077276.1
+        for <linux-wireless@vger.kernel.org>; Tue, 09 Apr 2024 05:31:23 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXjMfdygJHaEQXSZmWeFwACvtnIB5+8DEv2htEx0gHqk734xBMmT1ZhQGPuXuhbudH0bZW836fcNovFV1cGO55FbUF+YOmOvnIV5ynbuP4=
+X-Gm-Message-State: AOJu0Ywea356a7pXdwZwIzsch5KLQ7JyPXybfFcYsLnwnu5bWv4mkd6c
+	hnAMpLvL4tpd8/IfX9UyJ7r9FH+d/bsyo68S8rFKpyqVroiTwGZgYX+Er9C5b4iWtrSwij9HaJ1
+	Vb/i9h1oWC3KoRbSrqoZw1LUuYWI=
+X-Google-Smtp-Source: AGHT+IE99X1JBsIJgtH7+iJVAR6Bk+3/OL9aBba9eT9vOnm5TO7JumZsOpnQnVxXUOhdxZX7RC4CQFfWOA+kNjIU8D8=
+X-Received: by 2002:a25:9947:0:b0:de1:1ac2:98e1 with SMTP id
+ n7-20020a259947000000b00de11ac298e1mr620160ybo.37.1712665882252; Tue, 09 Apr
+ 2024 05:31:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] wifi: ath12k: report tx bitrate for iw dev xxx station
- dump
-To: Kalle Valo <kvalo@kernel.org>
-CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20240219095802.1147-1-quic_lingbok@quicinc.com>
- <87y1b7jkxu.fsf@kernel.org>
- <6f39eb1c-97f7-4029-a5f2-5ab36ff0f0a6@quicinc.com>
- <877ciq9h3e.fsf@kernel.org>
- <4e67118d-80e4-422e-aa39-73b891ee6042@quicinc.com>
- <87a5nkkfs1.fsf@kernel.org>
- <fd8384dc-b35f-477e-aac3-b7a5f49ce712@quicinc.com>
- <87ttl9drii.fsf@kernel.org>
-Content-Language: en-US
-From: Lingbo Kong <quic_lingbok@quicinc.com>
-In-Reply-To: <87ttl9drii.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: a-KKjqNZk0CNyitMZmIZtfi3wPuKA00_
-X-Proofpoint-GUID: a-KKjqNZk0CNyitMZmIZtfi3wPuKA00_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-09_08,2024-04-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 mlxscore=0
- lowpriorityscore=0 clxscore=1015 phishscore=0 impostorscore=0 bulkscore=0
- spamscore=0 adultscore=0 suspectscore=0 priorityscore=1501 mlxlogscore=980
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2404010003
- definitions=main-2404090079
+References: <063c9937acb36ccf352056d212a9a2733abb9dd5.camel@realtek.com>
+In-Reply-To: <063c9937acb36ccf352056d212a9a2733abb9dd5.camel@realtek.com>
+From: Josh Boyer <jwboyer@kernel.org>
+Date: Tue, 9 Apr 2024 08:31:10 -0400
+X-Gmail-Original-Message-ID: <CA+5PVA5T4imRCyiww4gzry0Qi+gVY2EQ9jznxvhCn3RL9Q-Wnw@mail.gmail.com>
+Message-ID: <CA+5PVA5T4imRCyiww4gzry0Qi+gVY2EQ9jznxvhCn3RL9Q-Wnw@mail.gmail.com>
+Subject: Re: pull request: rtw: update/add firmware of Realtek WiFi 8703B,
+ 8852C and 8922A
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: "linux-firmware@kernel.org" <linux-firmware@kernel.org>, 
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, Timlee <timlee@realtek.com>, 
+	"fiona.klute@gmx.de" <fiona.klute@gmx.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Mar 20, 2024 at 11:23=E2=80=AFPM Ping-Ke Shih <pkshih@realtek.com> =
+wrote:
+>
+> Hi,
+>
+> Add/update three firmware including
+>
+>  - add initial firmware v11.0.0 for 8703
+>  - update 8852C to v0.27.56.14
+>  - add initial firmware v0.35.18.0 for 8922A
+>
+> Thank you
+> Ping-Ke
+>
+> ---
+> The following changes since commit 22ee1d8ca6663ca7c28477581993d6ed5cc543=
+23:
+>
+>   Merge branch 'robot/pr-0-1710861164' into 'main' (2024-03-19 19:07:14 +=
+0000)
+>
+> are available in the Git repository at:
+>
+>   https://github.com/pkshih/linux-firmware.git HEAD
 
+Merged and pushed out.
 
-On 2024/3/14 18:41, Kalle Valo wrote:
-> Lingbo Kong <quic_lingbok@quicinc.com> writes:
-> 
->>>>>>
->>>>>> Ok, i will apply it in next version. Thanks for pointing out.
->>>>> After rereading my comments maybe keep the title simple like:
->>>>>      wifi: ath12k: report station mode transmit rate
->>>>> But it would be good to clarify in the commit message what modes
->>>>> this is
->>>>> supported. And what hardware families support this.
->>>>
->>>> Hi kalle, Could you please offer your opinion on this commit message?
->>>>
->>>> wifi: ath12k: report station mode transmit rate
->>>>
->>>> Currently, the transmit rate of "iw dev xxx station dump" command
->>>> always show an invalid value.
->>>>
->>>> To address this issue, ath12k parse the info of transmit complete
->>>> report from firmware and indicate the transmit rate to mac80211.
->>>>
->>>> This patch only applies to the WCN7850's station mode.
->>>>
->>>> After that, "iw dev xxx station dump" show the correct transmit rate.
->>>> Such as:
->>>> tx bitrate: 104.0 MBit/s MCS 13
->>>> tx bitrate: 144.4 MBit/s MCS 15 short GI tx bitrate: 626.9 MBit/s
->>>> 80MHz HE-MCS 6 HE-NSS 2 HE-GI 0 HE-DCM 0 tx bitrate: 1921.5 MBit/s
->>>> 160MHz HE-MCS 9 HE-NSS 2 HE-GI 0 HE-DCM 0
->>> Looks good, except for readability I would add an empty line after
->>> "Such
->>> as:".
->>> I noticed that the signal patch depends on this patchset:
->>> https://patchwork.kernel.org/project/linux-wireless/patch/20240219111417.1185-1-quic_lingbok@quicinc.com/
->>> In that you should submit both patchses in same patchset. But please
->>> wait until I have reviewed the signal strength patch.
+https://gitlab.com/kernel-firmware/linux-firmware/-/merge_requests/189
 
-Hi Kalle,
-Please ignore the patches submitted separately below.
+josh
 
-[PATCH v4] wifi: ath12k: report tx bitrate for iw dev xxx station dump
-[PATCH] wifi: ath12k: report signal for iw dev xxx station dump
-[PATCH] wifi: ath12k: add display tx and rx bitrate for 11be
-
-I will resubmit these patches in same patchset:)
-
-Best regards,
-Lingbo Kong
-
+>
+> for you to fetch changes up to 08259e7f17f553d5f985a530f825ac8ad6f48450:
+>
+>   rtw89: 8852c: update fw to v0.27.56.14 (2024-03-21 11:02:32 +0800)
+>
+> ----------------------------------------------------------------
+> Chin-Yen Lee (1):
+>       rtw89: 8852c: update fw to v0.27.56.14
+>
+> Fiona Klute (1):
+>       rtw88: Add RTL8703B firmware v11.0.0
+>
+> Ping-Ke Shih (1):
+>       rtw89: 8922a: add firmware v0.35.18.0
+>
+>  WHENCE                    |  12 +++++++++---
+>  rtw88/README              |   3 +++
+>  rtw88/rtw8703b_fw.bin     | Bin 0 -> 20290 bytes
+>  rtw88/rtw8703b_wow_fw.bin | Bin 0 -> 23074 bytes
+>  rtw89/rtw8852c_fw.bin     | Bin 1532736 -> 1532656 bytes
+>  rtw89/rtw8922a_fw.bin     | Bin 0 -> 1537690 bytes
+>  6 files changed, 12 insertions(+), 3 deletions(-)
+>  create mode 100644 rtw88/rtw8703b_fw.bin
+>  create mode 100644 rtw88/rtw8703b_wow_fw.bin
+>  create mode 100644 rtw89/rtw8922a_fw.bin
+>
 
