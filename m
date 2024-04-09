@@ -1,146 +1,164 @@
-Return-Path: <linux-wireless+bounces-5989-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-5990-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D9B789D15E
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 05:57:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F75289D18D
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 06:38:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FB41281567
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 03:57:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C137B286C01
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 04:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A276A54FAB;
-	Tue,  9 Apr 2024 03:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A3537149;
+	Tue,  9 Apr 2024 04:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="YYWX3xr2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oAMAo2iP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF40F54F95
-	for <linux-wireless@vger.kernel.org>; Tue,  9 Apr 2024 03:57:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1E0EAE5;
+	Tue,  9 Apr 2024 04:38:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712635053; cv=none; b=PnRZsot5QZ2rWPw1B8CtUJkKgNiMzZzqN0+qFQ+SJpWvdFiWMkeT1sbDhSIlrVatfpWvgd1X7IQNWYP9g0UxvQXQeejbSMWFzv/0Wx2+Azl8Av/pNvgYrHXolc2oqvqNLnUbunXbZYOlKNIk0Aah6IAYAyqw17VNfJXTSCdnjK0=
+	t=1712637526; cv=none; b=exSP/hzglhIWIIY4kX0lqAOTXA5XO89qUc++QpKLgqEcBaItqm7kCaBr7VdicigmKlVJ6GKiKzOfeYfCF9IwfzdVhR05cwTnWKvC4T1a8UyX4v0izOyBcAL83DbIZAK+HByXZ+j0tkOs4HfpmpBFPodcUnCKBVEJCc9Xq434jB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712635053; c=relaxed/simple;
-	bh=IMDHV5KRTrbzqE5SwgGsDAx0d2O+vkhJ0tIQFQH65z8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=UVI6sLY/V6K8rD6FJpT42cf6v+Iv1LfBjpYAy7koQTiPNki/F/kdDBXtQXkUFjTpg20lR1+9bezWYHP0SmA4vSahIyr8lwVtDCP+XWIMl1rQoIl9QnQEhLUolBFpkzO7F6zKYYXdKEDIScpNBPX8h7L1y2Z8fxzJfrzyOTDtGM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=YYWX3xr2; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4390l9D8032535;
-	Tue, 9 Apr 2024 03:57:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=+we+/wESv/0HibPrl5dUw7ZLp/mpcF0Mls0N3rvfpkA=; b=YY
-	WX3xr2VgqxhKpQ/tl3ux8vr0ElZtCmpQl4jkXDISYB5EwIlZi2E3vtIW34PL/G+P
-	/djOmrjcJc065p8cvX0/Evy41H0GIOqfghSXAjJFFSDp1qkbwIPvfJfjyoo49dCH
-	Hj7DvHvSPg0nzK/mWoxPu024O/BJDrtlkR1DYuKGAjNeyIhLHM5Ggh9wyYtWyZHR
-	bS0d/8SdXfz1N7NIpggVdq47NB4sxSdYwipsMFmbOl7DleLT3Q2MTD5mjasPZZwg
-	Uf03Pg34nxVEdTpz3DCVI+6WDArf7VyQ1F8G7oGlTT/XocjDz/tb1cgSYjz3Sh6G
-	p9iZ4PsllVwgaQA88dVw==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xcbg0adyv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Apr 2024 03:57:22 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4393vLgZ026345
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 9 Apr 2024 03:57:21 GMT
-Received: from [10.216.45.2] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 8 Apr 2024
- 20:57:20 -0700
-Message-ID: <15bc7705-5da9-4c56-aa45-81972bad5e01@quicinc.com>
-Date: Tue, 9 Apr 2024 09:27:16 +0530
+	s=arc-20240116; t=1712637526; c=relaxed/simple;
+	bh=FwDRjCBN71NNWbuqJwe1vhuFGM+457CREEz1uKWOfUI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=etgjGytc7APIXUYkdHwcLPN2N6ZVRcjRuF8CCfg+qyHo4oRGCczuZdEnic71F8Y+Lf7uC4L5y8par6GT0JKbzsq0tA2Vrtxd+gnsJofQaiEY0oPVf53kYnfMzb8vfOhYXP8cifP2oeGoccnakH9w5YM3qxzoz5/vC/EKqRHFWAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oAMAo2iP; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712637524; x=1744173524;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=FwDRjCBN71NNWbuqJwe1vhuFGM+457CREEz1uKWOfUI=;
+  b=oAMAo2iPP3fui8EI/E5HMMr5k0Xf2FGzQk6JjabSMxQuaalq8AYxM24p
+   z7w4t0bubp5QC7co71gKnTKnA7IPQ2gBOmJo6vUp3UkfJ/50pnSOfcYyU
+   Y5y+3ew7vzyzVhFS06TzuZ55/V1ha0GqSrfkiH5V6i4aJ7QJFeX2Buevf
+   pQrcnfA7G4KDgpFDCHEHVkN11hFZXqFlqX9ubSlK38FCWZaEhT88qJFQL
+   jFO1XMIsiPeEaGOvIZdWV1jzxHVeThA/GNHSFPf8AkUF7FnBWVo/UrZyE
+   KsHILzX2/8PpL1xog+NPFA0BWrwAKb26mau/07+HWGpPUX6Ptc32YVVo7
+   w==;
+X-CSE-ConnectionGUID: ff0V6GGwTha4WV7QqYbc9A==
+X-CSE-MsgGUID: 4ocxdPmdS8+Q5WFitXeBYg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="25440832"
+X-IronPort-AV: E=Sophos;i="6.07,188,1708416000"; 
+   d="scan'208";a="25440832"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2024 21:38:44 -0700
+X-CSE-ConnectionGUID: e33hYWNgRzu9vk7HTBhA9w==
+X-CSE-MsgGUID: n4YA2P8CTm+jg8h8Evwn1Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,188,1708416000"; 
+   d="scan'208";a="20017073"
+Received: from lkp-server01.sh.intel.com (HELO e61807b1d151) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 08 Apr 2024 21:38:40 -0700
+Received: from kbuild by e61807b1d151 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ru3Fm-0005jy-0R;
+	Tue, 09 Apr 2024 04:38:38 +0000
+Date: Tue, 9 Apr 2024 12:38:35 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Kent Gibson <warthog618@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com
+Cc: oe-kbuild-all@lists.linux.dev,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>
+Subject: Re: [PATCH v2 1/2] gpiolib: Fix a mess with the GPIO_* flags
+Message-ID: <202404091205.rnu1DOaq-lkp@intel.com>
+References: <20240408231727.396452-2-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: mac80211: handle sdata->u.ap.active flag with MLO
-Content-Language: en-US
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240326151141.3824454-1-quic_adisi@quicinc.com>
- <bae1e71edcc13e73e8ef7f24d30140a4a6aefb98.camel@sipsolutions.net>
-From: Aditya Kumar Singh <quic_adisi@quicinc.com>
-In-Reply-To: <bae1e71edcc13e73e8ef7f24d30140a4a6aefb98.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: JYxyBKCZ0RMQ2D_d1Z6MOkeFj_mhxfKN
-X-Proofpoint-ORIG-GUID: JYxyBKCZ0RMQ2D_d1Z6MOkeFj_mhxfKN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-08_19,2024-04-05_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 mlxlogscore=877 clxscore=1015 spamscore=0 impostorscore=0
- adultscore=0 suspectscore=0 lowpriorityscore=0 mlxscore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2404090022
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240408231727.396452-2-andriy.shevchenko@linux.intel.com>
 
-On 4/8/24 23:55, Johannes Berg wrote:
-> On Tue, 2024-03-26 at 20:41 +0530, Aditya Kumar Singh wrote:
-> 
->> @@ -1232,7 +1256,9 @@ ieee80211_assign_beacon(struct ieee80211_sub_if_data *sdata,
->>   	}
->>   
->>   	rcu_assign_pointer(link->u.ap.beacon, new);
->> -	sdata->u.ap.active = true;
->> +
->> +	if (ieee80211_num_beaconing_links(sdata) <= 1)
->> +		sdata->u.ap.active = true;
-> 
-> I don't understand this change. Neither the <= 1 really, nor the fact
-> that you actually _make_ this change.
-> 
+Hi Andy,
 
-The place above where we are checking number of beaconing links, at that 
-point at least 1 should be active. Since before checking, we have done 
-rcu_assign_pointer() so at least 1 should be there. That is why that 
-condition.
+kernel test robot noticed the following build warnings:
 
-If it is more than 1, then this is not the first link which is going to 
-come up and hence there is no need to set the flag again.
+[auto build test WARNING on brgl/gpio/for-next]
+[also build test WARNING on wireless-next/main wireless/main linus/master v6.9-rc3 next-20240408]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
->> @@ -1486,7 +1488,10 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
->>   		if (old)
->>   			kfree_rcu(old, rcu_head);
->>   		RCU_INIT_POINTER(link->u.ap.beacon, NULL);
->> -		sdata->u.ap.active = false;
->> +
->> +		if (!ieee80211_num_beaconing_links(sdata))
->> +			sdata->u.ap.active = false;
-> 
-> == 0 maybe?
-> 
+url:    https://github.com/intel-lab-lkp/linux/commits/Andy-Shevchenko/gpiolib-Fix-a-mess-with-the-GPIO_-flags/20240409-071911
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/brgl/linux.git gpio/for-next
+patch link:    https://lore.kernel.org/r/20240408231727.396452-2-andriy.shevchenko%40linux.intel.com
+patch subject: [PATCH v2 1/2] gpiolib: Fix a mess with the GPIO_* flags
+config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20240409/202404091205.rnu1DOaq-lkp@intel.com/config)
+compiler: gcc-13 (Ubuntu 13.2.0-4ubuntu3) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240409/202404091205.rnu1DOaq-lkp@intel.com/reproduce)
 
-Yeah can do. I prefer "!expr" over "expr == 0". Do you have any preference?
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202404091205.rnu1DOaq-lkp@intel.com/
 
-> Or maybe we should just save/restore the value instead?
-> 
->>   	list_for_each_entry(vlan, &sdata->u.ap.vlans, u.vlan.list)
->>   		netif_carrier_off(vlan->dev);
->>   
->> -	if (ieee80211_num_beaconing_links(sdata) <= 1)
-> 
-> Unrelated, but it looks like the VLAN netif_carrier_off() handling above
-> is also wrong and should really go into this if block as well.
-> 
+All warnings (new ones prefixed by >>):
 
-Yeah MLO VLAN changes would do that? The previous change was focusing on 
-the AP mode alone and I did not want to break anything in VLAN so did 
-not touch it there.
+   In file included from arch/x86/include/asm/geode.h:12,
+                    from arch/x86/platform/geode/alix.c:28:
+>> include/linux/cs5535.h:149: warning: "GPIO_PULL_UP" redefined
+     149 | #define GPIO_PULL_UP            0x18
+         | 
+   In file included from include/linux/gpio/machine.h:5,
+                    from arch/x86/platform/geode/alix.c:25:
+   include/dt-bindings/gpio/gpio.h:37: note: this is the location of the previous definition
+      37 | #define GPIO_PULL_UP 16
+         | 
+>> include/linux/cs5535.h:150: warning: "GPIO_PULL_DOWN" redefined
+     150 | #define GPIO_PULL_DOWN          0x1C
+         | 
+   include/dt-bindings/gpio/gpio.h:40: note: this is the location of the previous definition
+      40 | #define GPIO_PULL_DOWN 32
+         | 
 
+
+vim +/GPIO_PULL_UP +149 include/linux/cs5535.h
+
+f060f27007b393 Andres Salomon 2009-12-14  141  
+5f0a96b044d8ed Andres Salomon 2009-12-14  142  /* GPIOs */
+5f0a96b044d8ed Andres Salomon 2009-12-14  143  #define GPIO_OUTPUT_VAL		0x00
+5f0a96b044d8ed Andres Salomon 2009-12-14  144  #define GPIO_OUTPUT_ENABLE	0x04
+5f0a96b044d8ed Andres Salomon 2009-12-14  145  #define GPIO_OUTPUT_OPEN_DRAIN	0x08
+5f0a96b044d8ed Andres Salomon 2009-12-14  146  #define GPIO_OUTPUT_INVERT	0x0C
+5f0a96b044d8ed Andres Salomon 2009-12-14  147  #define GPIO_OUTPUT_AUX1	0x10
+5f0a96b044d8ed Andres Salomon 2009-12-14  148  #define GPIO_OUTPUT_AUX2	0x14
+5f0a96b044d8ed Andres Salomon 2009-12-14 @149  #define GPIO_PULL_UP		0x18
+5f0a96b044d8ed Andres Salomon 2009-12-14 @150  #define GPIO_PULL_DOWN		0x1C
+5f0a96b044d8ed Andres Salomon 2009-12-14  151  #define GPIO_INPUT_ENABLE	0x20
+5f0a96b044d8ed Andres Salomon 2009-12-14  152  #define GPIO_INPUT_INVERT	0x24
+5f0a96b044d8ed Andres Salomon 2009-12-14  153  #define GPIO_INPUT_FILTER	0x28
+5f0a96b044d8ed Andres Salomon 2009-12-14  154  #define GPIO_INPUT_EVENT_COUNT	0x2C
+5f0a96b044d8ed Andres Salomon 2009-12-14  155  #define GPIO_READ_BACK		0x30
+5f0a96b044d8ed Andres Salomon 2009-12-14  156  #define GPIO_INPUT_AUX1		0x34
+5f0a96b044d8ed Andres Salomon 2009-12-14  157  #define GPIO_EVENTS_ENABLE	0x38
+5f0a96b044d8ed Andres Salomon 2009-12-14  158  #define GPIO_LOCK_ENABLE	0x3C
+5f0a96b044d8ed Andres Salomon 2009-12-14  159  #define GPIO_POSITIVE_EDGE_EN	0x40
+5f0a96b044d8ed Andres Salomon 2009-12-14  160  #define GPIO_NEGATIVE_EDGE_EN	0x44
+5f0a96b044d8ed Andres Salomon 2009-12-14  161  #define GPIO_POSITIVE_EDGE_STS	0x48
+5f0a96b044d8ed Andres Salomon 2009-12-14  162  #define GPIO_NEGATIVE_EDGE_STS	0x4C
+5f0a96b044d8ed Andres Salomon 2009-12-14  163  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
