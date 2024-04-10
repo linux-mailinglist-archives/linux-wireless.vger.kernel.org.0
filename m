@@ -1,118 +1,102 @@
-Return-Path: <linux-wireless+bounces-6127-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6128-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A10E89FD71
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 18:52:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 382A889FEB8
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 19:36:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97F151C21925
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 16:52:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E235C1F2214B
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 17:36:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 614A117B501;
-	Wed, 10 Apr 2024 16:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B905217BB1A;
+	Wed, 10 Apr 2024 17:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="PaefrWIf"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fakINiiU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D893153361;
-	Wed, 10 Apr 2024 16:52:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10683178CEE;
+	Wed, 10 Apr 2024 17:36:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712767949; cv=none; b=k9Qg8c8/iOthturJgm+VlQRC+mq1ZVvddVEEedyyUWR6e3RqdaN8waSg7xZsxpDWirYIOpIVUYWOjSmR1vWepCsskvHQ14bzuT8jT8NRFcjGGb8Jzuny8zHYOsk28qA6iXdjcyn3fefTMiWjLKo5twkZgXe8UAYFvsF4+/Ac8ew=
+	t=1712770603; cv=none; b=XEP7VaDL6IgMZu0rK/L9qX/75YBu944rIwzvbrpdjV+vQ5F93TSRbLwwkfKHov7vydBWwVXbST1quPdtuPMgp6WvmvJwGj7+H5BbtkJeEm0Ftu/z3qmU0achBjBVhyiU/DYnh9GZwr6KKnhuZax5TElu8dsto2fL2ODEWcXdImQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712767949; c=relaxed/simple;
-	bh=PZ5Xd+5UAr5QCT79N09AiNz7T8/on2P/RvirmiBIQio=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=k/A3V1wTGKowy/1Vgiki8eAhD/LRhgho0WohsvoOaNUFlcLiSuhnaGvtGlSz59FmcooTYVSMKNBZF6JX/SnUPmfClPi1MWoCZ7taPSt4QrOqDNudWME66cnR+goFpdAWzIGQMryCfAvuEg4TZAKL6Q3thlC/T16wm+oW39ZecjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=PaefrWIf; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43ACJVCl015865;
-	Wed, 10 Apr 2024 16:52:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=PZ5Xd+5UAr5QCT79N09AiNz7T8/on2P/RvirmiBIQio=; b=Pa
-	efrWIfS+h+r+4XOBuFAiI5GuZhEuszSzCf490t7rPk6fA8sxaKNTK78NZ4EJuJed
-	5xVPTGTSQ6GHsWl46XYqWYFGD4D9/l2hqRTlFItdSnOXc1pkEn6lKXs8mz7wylh4
-	A+wsOSpBRyfqPkZgE7sVrNWvFqbIRRDQ6ym/ReTAiKc9oFLZEm7Igo6UUcd7sZzn
-	H1VzRzrjUoSGTdJlZcSSuTTOfFB/rgVnTQ5Pm32HseF8vgnNkYAS+pa1zGRAmc4q
-	zj7cqk4KgeoyIwp/1293M6acXLla5hiUJF80Lqyp4H0K3rPBDTiRUz8Mu4nkKrTZ
-	pC1/DlCa6VMQnnor8S6A==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xdrkp9t9c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Apr 2024 16:52:17 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43AGqGuP018813
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Apr 2024 16:52:16 GMT
-Received: from [10.110.37.144] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 10 Apr
- 2024 09:52:15 -0700
-Message-ID: <3c9ea861-3964-4ae3-9c49-06760ef15406@quicinc.com>
-Date: Wed, 10 Apr 2024 09:52:14 -0700
+	s=arc-20240116; t=1712770603; c=relaxed/simple;
+	bh=C2Ckdhh6MShRypHTQfGnWVcfvy2wO5tJ+RrOIcXU+GE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ku2fbVdP9tN/myGy5+f1Nvmq2zNPGwrrTxF/Wq0CiWnfVO/1pT4yJNcQrpk6voQSUZiVbdzzPTA+GUhFYvllrnMuJWEsc7h50qHSsibzDv3Se+UysKrXFV3kjKQkXLGKCXFlG5+nMO+tDwgwL7yn+M27psyjg+sMRerMrcH3UnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fakINiiU; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712770602; x=1744306602;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=C2Ckdhh6MShRypHTQfGnWVcfvy2wO5tJ+RrOIcXU+GE=;
+  b=fakINiiUCRSw2Y/efrv454Y2guCzBhEsWkxytKQXg8bFw3gm1WRGftkH
+   87jkL0gqVzxXCcM25OxzKyBCKA8Wx9HwO0eGSmcUjsGbE2uBDipzgSOo3
+   gt01cUYDw1+l5enazbsUZlkPlLSsquie/hGMmiwG1XuWw7zcqU9uL4Urr
+   kKs5b9FuPhXGfZEbipOiH8GXjStDUDdAD9MwYaXP4jjtNRwe4rrurxTaP
+   aiKv9/7eP5h2pOJxdPiyqJxjlij3uLTXE7RQyFg9icl2AgPEMs5iznek4
+   1/wSu/z2WHtccpbIQsXiV3v6W8NuPM0Y1yLegI6X8OoD67o6yqtm5Ixnp
+   A==;
+X-CSE-ConnectionGUID: IWfmZtZIT+Owxx28JyCBrw==
+X-CSE-MsgGUID: IITQZQWQSMegjxzMIlpJOA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="8328253"
+X-IronPort-AV: E=Sophos;i="6.07,191,1708416000"; 
+   d="scan'208";a="8328253"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2024 10:36:24 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="915438867"
+X-IronPort-AV: E=Sophos;i="6.07,191,1708416000"; 
+   d="scan'208";a="915438867"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2024 10:36:21 -0700
+Received: from andy by smile with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rubru-000000038N0-3OjI;
+	Wed, 10 Apr 2024 20:36:18 +0300
+Date: Wed, 10 Apr 2024 20:36:18 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Felix Fietkau <nbd@nbd.name>, Alexander Couzens <lynxis@fe80.eu>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Cc: Lorenzo Bianconi <lorenzo@kernel.org>,
+	Ryder Lee <ryder.lee@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>, Kalle Valo <kvalo@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: Re: [PATCH wireless-next v1 1/1] wifi: mt76: mt7915: Remove unused
+ of_gpio.h
+Message-ID: <ZhbOEqO4BIE4q7Vv@smile.fi.intel.com>
+References: <20240228200321.3607764-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/13] wifi: nl80211: send underlying multi-hardware
- channel capabilities to user space
-Content-Language: en-US
-To: Johannes Berg <johannes@sipsolutions.net>,
-        Vasanthakumar Thiagarajan
-	<quic_vthiagar@quicinc.com>,
-        Karthikeyan Periyasamy
-	<quic_periyasa@quicinc.com>,
-        <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        Jakub Kicinski
-	<kuba@kernel.org>
-References: <20240328072916.1164195-1-quic_periyasa@quicinc.com>
- <20240328072916.1164195-3-quic_periyasa@quicinc.com>
- <6d92d0ba4a8764cd91cc20c4bd35613bcc41dfcd.camel@sipsolutions.net>
- <9d5c2f9f-19b5-af4d-8018-1eb97fac10d6@quicinc.com>
- <9d0f309da45ae657cd2ce0bc11a93d66e856ef64.camel@sipsolutions.net>
- <b455f267-9552-be3b-95b0-a036bfa8e14a@quicinc.com>
- <902dd36fa5ab0503377e558b92505fe499f666fa.camel@sipsolutions.net>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <902dd36fa5ab0503377e558b92505fe499f666fa.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: e_vJnnS5KvkjJl3oh0dXumNhbB-g4bzS
-X-Proofpoint-ORIG-GUID: e_vJnnS5KvkjJl3oh0dXumNhbB-g4bzS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-10_04,2024-04-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
- bulkscore=0 lowpriorityscore=0 adultscore=0 spamscore=0 malwarescore=0
- mlxscore=0 mlxlogscore=853 phishscore=0 priorityscore=1501 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2404010003
- definitions=main-2404100123
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240228200321.3607764-1-andriy.shevchenko@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On 4/10/2024 12:59 AM, Johannes Berg wrote:
-> I found the code that needs it later, just that Karthikeyan was using
-> the wrong explanation for it ... I'd hoped he'd understand your own code
-> better ;-)
+On Wed, Feb 28, 2024 at 10:03:21PM +0200, Andy Shevchenko wrote:
+> of_gpio.h is deprecated and subject to remove.
+> The driver doesn't use it, simply remove the unused header.
 
-Internally I'm stressing the need to provide sufficient information in these
-patches so that you (and I!) can understand the entire scope. Please continue
-to let us know when we are failing.
+What should be done to move this forward?
 
-(bcc to our internal development list)
+-- 
+With Best Regards,
+Andy Shevchenko
 
-/jeff
+
 
