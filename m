@@ -1,113 +1,149 @@
-Return-Path: <linux-wireless+bounces-6055-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6056-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9EE889E5C3
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 00:52:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7242B89E698
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 02:07:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 281BE1C20E05
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Apr 2024 22:52:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2E2F1F22528
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 00:07:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3029B158D83;
-	Tue,  9 Apr 2024 22:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3054A170;
+	Wed, 10 Apr 2024 00:07:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="FuYJVUh7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail115-95.sinamail.sina.com.cn (mail115-95.sinamail.sina.com.cn [218.30.115.95])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD781DFE8
-	for <linux-wireless@vger.kernel.org>; Tue,  9 Apr 2024 22:52:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.115.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6769F7F
+	for <linux-wireless@vger.kernel.org>; Wed, 10 Apr 2024 00:07:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712703166; cv=none; b=U8Wf1e9Ah31Zstg+l2KghiBeuQ/WQ14VIAYJ2cOrwm4g4dO6mDjD5jNZgYeJnaXFHm52LqWd1X9MP9neuRFJaif60AwW67Wli26sL3oOtcKXJqeqeZLZ66z8a1MjVQwbpDcnwBrlB/ye/91zejWi8TApcL+ob5LbmriPMEpAPDc=
+	t=1712707653; cv=none; b=NAPF3x3VZRRF8HGK2PstCs2LbApGI9stYdXAmDLPfXMqe5bVH7ax/mIDc9YLnZpGHz8zEADq3wKylBWY/BZq/TBf/GN1gUlD+hExIlzaqiLM+AqDHCAvvB7+r/0oSPnBJZkaWcHbCdKOrQsVSgbg/lgGdEKfYt1Suvs/KmOGfM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712703166; c=relaxed/simple;
-	bh=O+mGXfs3RDsQTErSVM8OTaHI3QnXgNIs9P8CYq9GNoM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HQnbxnVCH8s+QsWGPXghc3lBckLGJ2RY8/3js1wcdLsnitvfA9uOS0RYABC0JenL1i81g9Qs5D3Fk3qiOqW7jKrPM3LeVE8BBOe9fSXGDbWXv2n/7OBgUMbRvY0UzBrPec+q6R6GMkUfxB0TLO22crKO1b/P/u4ZxcBHL/zrfow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; arc=none smtp.client-ip=218.30.115.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sina.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
-X-SMAIL-HELO: localhost.localdomain
-Received: from unknown (HELO localhost.localdomain)([116.24.11.163])
-	by sina.com (172.16.235.24) with ESMTP
-	id 6615C68000007624; Tue, 10 Apr 2024 06:51:48 +0800 (CST)
-X-Sender: hdanton@sina.com
-X-Auth-ID: hdanton@sina.com
-Authentication-Results: sina.com;
-	 spf=none smtp.mailfrom=hdanton@sina.com;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=hdanton@sina.com
-X-SMAIL-MID: 83548545089525
-X-SMAIL-UIID: AA18EA2385864CD180945C3BC5570DCF-20240410-065148-1
-From: Hillf Danton <hdanton@sina.com>
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: syzbot <syzbot+d1ae9c954f73570e7b58@syzkaller.appspotmail.com>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	syzkaller-bugs@googlegroups.com,
-	Johannes Berg <johannes.berg@intel.com>,
-	Kalle Valo <kvalo@codeaurora.org>,
-	linux-wireless@vger.kernel.org
-Subject: Re: [syzbot] [kernel?] WARNING in hrtimer_forward (2)
-Date: Wed, 10 Apr 2024 06:51:39 +0800
-Message-Id: <20240409225139.1556-1-hdanton@sina.com>
-In-Reply-To: <87a5m27r08.ffs@tglx>
-References: <000000000000b77a880615a0ed2a@google.com>
+	s=arc-20240116; t=1712707653; c=relaxed/simple;
+	bh=Qf/C200YNIHf3H1owJsTHEZ0pju5m7YRE9+zSVQjDCU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=s2weDTdNxu58iQkPGwIdDLn3dw7LQBJRBhQY+gbZZ8Ts5GjS6b4SUscH6kEdca1L1aDLqM6BETRcuovbY5qDF3Ogp9hpw6i6PeLMCWuIeQDOFjUHEhBJiqA0NumXM3yI4WRnsNYAdYHSpWZqeJQeCR287IuuqLQ1VtQl76hAqWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=FuYJVUh7; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43A00OGT015941;
+	Wed, 10 Apr 2024 00:07:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=EY/V0UTpIc4eSRTb7M2ZDFuG/iwU+cKnFHTgb17wgXE=; b=Fu
+	YJVUh7MGRuXBZQzjIRuwdj3anltoWEbAjY2oUdf6ivtROkOa7Pp+SHHQgsAZPKn1
+	e6xyzbbikb48GowlY9LdubIRLRYfBTU9z7azNavdcJlt823/btQaYaJYE5B69Smm
+	0S9Gi4mRletr08HDuDIOW3XOcRXBPHXDSKhfMjVS99bnO54bOggqwsygub0OpI+Y
+	7IB1YSmSzJFtQP3eHtF+LP5fF/fH5NKv5DG7cRqwK/OikezmYvtA94nU9TESm1fW
+	ExnYvWdTYhlk/olvFAQnw8gkAWDFAlxecVOvAKO0X/VvKMYCzHBdRa9fFq3aICbc
+	G75hJA58t7oko4mfZzzA==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xdaw1ryej-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 10 Apr 2024 00:07:24 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43A07MiQ008931
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 10 Apr 2024 00:07:22 GMT
+Received: from [10.110.37.144] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 9 Apr 2024
+ 17:07:21 -0700
+Message-ID: <1e515bbc-0119-4114-b44e-d7a449b031f7@quicinc.com>
+Date: Tue, 9 Apr 2024 17:07:20 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath12k: enable service flag for survey dump stats
+Content-Language: en-US
+To: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Thiraviyam Mariyappan
+	<quic_tmariyap@quicinc.com>
+References: <20240409175604.3299752-1-quic_kathirve@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240409175604.3299752-1-quic_kathirve@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: rgHn3VHK1CzBjWvPj87zvwcd70yboJ7H
+X-Proofpoint-GUID: rgHn3VHK1CzBjWvPj87zvwcd70yboJ7H
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-09_12,2024-04-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 spamscore=0
+ bulkscore=0 mlxlogscore=999 adultscore=0 phishscore=0 lowpriorityscore=0
+ priorityscore=1501 malwarescore=0 impostorscore=0 suspectscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404090166
 
-On Tue, 09 Apr 2024 12:46:31 +0200 Thomas Gleixner <tglx@linutronix.de>
-> On Mon, Apr 08 2024 at 19:46, syzbot wrote:
-> > ------------[ cut here ]------------
-> > WARNING: CPU: 1 PID: 11239 at kernel/time/hrtimer.c:1053 hrtimer_forward+0x210/0x2d0 kernel/time/hrtimer.c:1053
-> > RIP: 0010:hrtimer_forward+0x210/0x2d0 kernel/time/hrtimer.c:1053
-> > Call Trace:
-> >  <IRQ>
-> >  hrtimer_forward_now include/linux/hrtimer.h:355 [inline]
-> >  mac80211_hwsim_beacon+0x192/0x1f0 drivers/net/wireless/virtual/mac80211_hwsim.c:2335
-> >  __run_hrtimer kernel/time/hrtimer.c:1692 [inline]
-> >  __hrtimer_run_queues+0x595/0xd00 kernel/time/hrtimer.c:1756
-> >  hrtimer_run_softirq+0x19a/0x2c0 kernel/time/hrtimer.c:1773
-> >  __do_softirq+0x2bc/0x943 kernel/softirq.c:554
-> >  invoke_softirq kernel/softirq.c:428 [inline]
-> >  __irq_exit_rcu+0xf2/0x1c0 kernel/softirq.c:633
-> >  irq_exit_rcu+0x9/0x30 kernel/softirq.c:645
-> >  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1043 [inline]
-> >  sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1043
-> >  </IRQ>
+On 4/9/2024 10:56 AM, Karthikeyan Kathirvel wrote:
+> From: Thiraviyam Mariyappan <quic_tmariyap@quicinc.com>
 > 
-> The code which arms the timer is not serialized against the callback so
-> the following can happen:
+> The survey dump statistics does not display channel RX and TX time
+> properly because the survey flag is not enabled in the firmware service
+> flag.
 > 
->     CPU1                        CPU2
+> If firmware supports enable the service flag "bss_chan_info" in
+> wmi_resource_config to fetch and print the stats for specific pdev.
 > 
->     __run_hrtimer(timer)
->                                 if (!hrtimer_queued(timer))
->                                         hrtimer_start(timer);
+> Enabling WMI_RSRC_CFG_FLAG1_BSS_CHANNEL_INFO_64 does not have any impact
+> on WCN7850 since this bit is not utilized by the WCN7850 firmware.
 > 
->        hrtimer_forward(timer)
->          WARN_ON(hrtimer_queued(timer)
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 > 
-> This really wants to use hrtimer_active() which takes the running
-> callback into account.
+> Signed-off-by: Thiraviyam Mariyappan <quic_tmariyap@quicinc.com>
+> Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+> ---
+>  drivers/net/wireless/ath/ath12k/wmi.c | 3 ++-
+>  drivers/net/wireless/ath/ath12k/wmi.h | 1 +
+>  2 files changed, 3 insertions(+), 1 deletion(-)
 > 
-Then the race window is still open with hrtimer_active() and serialization
-outside hrtimer is needed.
+> diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+> index a5575ce9eed4..16504786735a 100644
+> --- a/drivers/net/wireless/ath/ath12k/wmi.c
+> +++ b/drivers/net/wireless/ath/ath12k/wmi.c
+> @@ -3324,7 +3324,8 @@ ath12k_wmi_copy_resource_config(struct ath12k_wmi_resource_config_params *wmi_cf
+>  	wmi_cfg->bpf_instruction_size = cpu_to_le32(tg_cfg->bpf_instruction_size);
+>  	wmi_cfg->max_bssid_rx_filters = cpu_to_le32(tg_cfg->max_bssid_rx_filters);
+>  	wmi_cfg->use_pdev_id = cpu_to_le32(tg_cfg->use_pdev_id);
+> -	wmi_cfg->flag1 = cpu_to_le32(tg_cfg->atf_config);
+> +	wmi_cfg->flag1 = cpu_to_le32(tg_cfg->atf_config) |
+> +				     WMI_RSRC_CFG_FLAG1_BSS_CHANNEL_INFO_64;
 
-	CPU1				CPU2
-	---				---
-					if (!hrtimer_is_active(timer))
-	if (!hrtimer_is_active(timer))
-		hrtimer_start(timer);
-	__run_hrtimer(timer)
-						hrtimer_start(timer);
-	hrtimer_forward(timer)
-	  WARN_ON(hrtimer_queued(timer))
+shouldn't that | operation be inside the ) ?
+
+>  	wmi_cfg->peer_map_unmap_version = cpu_to_le32(tg_cfg->peer_map_unmap_version);
+>  	wmi_cfg->sched_params = cpu_to_le32(tg_cfg->sched_params);
+>  	wmi_cfg->twt_ap_pdev_count = cpu_to_le32(tg_cfg->twt_ap_pdev_count);
+> diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
+> index 78afc94a815d..1283d25b5cc4 100644
+> --- a/drivers/net/wireless/ath/ath12k/wmi.h
+> +++ b/drivers/net/wireless/ath/ath12k/wmi.h
+> @@ -2400,6 +2400,7 @@ struct wmi_init_cmd {
+>  
+>  #define WMI_RSRC_CFG_HOST_SVC_FLAG_REG_CC_EXT_SUPPORT_BIT 4
+>  #define WMI_RSRC_CFG_FLAGS2_RX_PEER_METADATA_VERSION		GENMASK(5, 4)
+> +#define WMI_RSRC_CFG_FLAG1_BSS_CHANNEL_INFO_64	BIT(5)
+>  
+>  struct ath12k_wmi_resource_config_params {
+>  	__le32 tlv_header;
+> 
+> base-commit: b36766befd306a606f287b0c0f0e53d994516acb
+
 
