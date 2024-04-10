@@ -1,112 +1,111 @@
-Return-Path: <linux-wireless+bounces-6079-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6080-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CC4889EE1E
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 11:02:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D07889EE2E
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 11:08:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B1DB1F235D6
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 09:02:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F1DDB23459
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 09:08:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C31513D8A6;
-	Wed, 10 Apr 2024 09:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA012154C15;
+	Wed, 10 Apr 2024 09:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OgVp91lN"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="pPF2s6il"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC46338393
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Apr 2024 09:02:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F0719BA6
+	for <linux-wireless@vger.kernel.org>; Wed, 10 Apr 2024 09:08:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712739745; cv=none; b=OyFA+0P3Ow+eB8ecANXLYjtqwFnsOf0rzzI7sPHt7UI78isFz309mc4cXMzfpTdkAIWwWqtRKtHqj0r0V0zzKA1t77ffbmzFKCFRm4eDhCR02Cev5Ps2SnACqfgeySFsxCBqMiQz9Rt9AHKxqhpgtSsFED4y0APtGEPf4d4rHdc=
+	t=1712740120; cv=none; b=Zg0y8nSpFq/x2YuA7aW1uZBeCSXm9S2ujb0eOCNw73NRol1mhJoh5Ne3tRbWldVd1tiRM4Y6YTtXC0UO4+q/fvT1y0tDab1hxLek8tiOi0SgQT+2xhP2kYdrkAEegQXlbzUkKl8J0/qFaBjdP2Ke0VgZy/TKXPIlIVbWSW5H7O4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712739745; c=relaxed/simple;
-	bh=BWIGtv/jtFuN/kcD1raMWNa1Vg9PxMfieRzFlD0RgUA=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=E4CyYAV8iMGRjpORjDJRg5ovI7x3ZWDxBJ4UOVtZU1cXGY6K7lvRPle9GL+LJ38AQwoW1262VAPQ2mq162HhxsGAbSApudl5CRvIthn9zefz1rMm0bTzYW9ChRtx9VmaesZrarlfGlxZqVMkvmAT8sgGd1IEmcAGQfAZrx+lPb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OgVp91lN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37ABAC433F1;
-	Wed, 10 Apr 2024 09:02:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712739745;
-	bh=BWIGtv/jtFuN/kcD1raMWNa1Vg9PxMfieRzFlD0RgUA=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=OgVp91lNYOWiLWekLEVfZ/V9In9eR7l4BiUAWXZzPkx8gbKadvHzD4rdY8+DGQA27
-	 6WxqDDpVjX5hWXd3yJU1ibAUAbHUh5dpuqQhHgyriatDhi5f+vSFXC9Dwb+DajjOsK
-	 KHmbhcGZE3AcvDTiNYA16a/wE3nf/r2f8VnPgvhw7d3snZ+lZV9g9zg1+lN+L0+umb
-	 OcgoqNTKVkoUd0QEfnR/SkYtSriNzjvU8Lhe7tElnDnBdJvEHu96YrlEPRyU7n+Cgk
-	 i8nU04Gi7XOvJfJwv3sVcNSHcWfRLe7xvr9kb9PHbiyGp9XgeiBpHWbgySHkbxauK6
-	 4HDa6A5PPmnqg==
-From: Kalle Valo <kvalo@kernel.org>
-To: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,  <ath12k@lists.infradead.org>,
-  <linux-wireless@vger.kernel.org>,  Thiraviyam Mariyappan
- <quic_tmariyap@quicinc.com>
-Subject: Re: [PATCH] wifi: ath12k: enable service flag for survey dump stats
-References: <20240409175604.3299752-1-quic_kathirve@quicinc.com>
-	<1e515bbc-0119-4114-b44e-d7a449b031f7@quicinc.com>
-	<c47aa30f-cebb-4460-a78c-9a8df4f9e85e@quicinc.com>
-Date: Wed, 10 Apr 2024 12:02:22 +0300
-In-Reply-To: <c47aa30f-cebb-4460-a78c-9a8df4f9e85e@quicinc.com> (Karthikeyan
-	Kathirvel's message of "Wed, 10 Apr 2024 14:20:05 +0530")
-Message-ID: <87seztzj35.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1712740120; c=relaxed/simple;
+	bh=dSKpmpsQxG+C4iGS6EL6LwbhTLM4G21OLrV4F+2TGKo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=AaJdaLuDxlK96vCj+3iOznfFJgHEBdUcTOXmxKFcV+49KmFYCXgOJdnpjv6clfc0jNZ1+pw4s3jKHBRTgcK/AXQ32ywoettrC5mT9CdJDtiXZuCJP57YNfvxMQ5aRE+qJ2dE9C0rrI78mPkG5GyNaR3MKfv+7CwgHSmzeqYzCBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=pPF2s6il; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43A7bS6d005668;
+	Wed, 10 Apr 2024 09:08:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=69XpRfCxp0+5Q/zhx5TDPs7ME9TL7fE+00ukrSeOfpg=; b=pP
+	F2s6ilDMCs2gNvC8vcPVgd2p7qxrSJ5y1ukwK6OgZxWoslSFYEzRDsajhOz2Tw9z
+	UkPWYPtUiRHWOnzmkGdCwPC1hS8o68e3KdZdkC3ECFLRmSZW9klsdFxq5V4/9IsL
+	bdK8b6eeDtqz/w/MI8s3fLLAuxnlakG82q70RR5q0zMUGPZtab9mt+I6k5GRsljq
+	u2Qb35wDZsRZWNnHOio/NJtav2qhMhDgb7i8xQppFro2UgMzxPZHoHHEp7ih7PeA
+	F59yt29ddxDqw1I2hmaA0mR5AaretW8MAi4WlxGII/Etb7guAGcClieYe8oG8HHv
+	7wUQtc63JqjLqhyXlwtg==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xdpharfya-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 10 Apr 2024 09:08:31 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43A98UCs005523
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 10 Apr 2024 09:08:30 GMT
+Received: from [10.152.205.142] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 10 Apr
+ 2024 02:08:27 -0700
+Message-ID: <d2e6360b-1092-4e57-47e6-c5f336f32c92@quicinc.com>
+Date: Wed, 10 Apr 2024 14:38:24 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 01/13] wifi: cfg80211: Add provision to advertise multiple
+ radio in one wiphy
+Content-Language: en-US
+To: Johannes Berg <johannes@sipsolutions.net>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Vasanthakumar Thiagarajan
+	<quic_vthiagar@quicinc.com>
+References: <20240328072916.1164195-1-quic_periyasa@quicinc.com>
+ <20240328072916.1164195-2-quic_periyasa@quicinc.com>
+ <e36599d3269496de59505b36be46f873976f8706.camel@sipsolutions.net>
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+In-Reply-To: <e36599d3269496de59505b36be46f873976f8706.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: diEgu_66qCdiLZoIpjt4XWGbI8Qep39I
+X-Proofpoint-ORIG-GUID: diEgu_66qCdiLZoIpjt4XWGbI8Qep39I
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-10_03,2024-04-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 bulkscore=0
+ clxscore=1015 adultscore=0 lowpriorityscore=0 impostorscore=0
+ mlxlogscore=579 mlxscore=0 priorityscore=1501 spamscore=0 phishscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404100065
 
-Karthikeyan Kathirvel <quic_kathirve@quicinc.com> writes:
 
-> On 4/10/2024 5:37 AM, Jeff Johnson wrote:
->> On 4/9/2024 10:56 AM, Karthikeyan Kathirvel wrote:
->>> From: Thiraviyam Mariyappan <quic_tmariyap@quicinc.com>
->>>
->>> The survey dump statistics does not display channel RX and TX time
->>> properly because the survey flag is not enabled in the firmware service
->>> flag.
->>>
->>> If firmware supports enable the service flag "bss_chan_info" in
->>> wmi_resource_config to fetch and print the stats for specific pdev.
->>>
->>> Enabling WMI_RSRC_CFG_FLAG1_BSS_CHANNEL_INFO_64 does not have any impact
->>> on WCN7850 since this bit is not utilized by the WCN7850 firmware.
->>>
->>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
->>>
->>> Signed-off-by: Thiraviyam Mariyappan <quic_tmariyap@quicinc.com>
->>> Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
->>> ---
->>>   drivers/net/wireless/ath/ath12k/wmi.c | 3 ++-
->>>   drivers/net/wireless/ath/ath12k/wmi.h | 1 +
->>>   2 files changed, 3 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
->>> index a5575ce9eed4..16504786735a 100644
->>> --- a/drivers/net/wireless/ath/ath12k/wmi.c
->>> +++ b/drivers/net/wireless/ath/ath12k/wmi.c
->>> @@ -3324,7 +3324,8 @@ ath12k_wmi_copy_resource_config(struct ath12k_wmi_resource_config_params *wmi_cf
->>>   	wmi_cfg->bpf_instruction_size = cpu_to_le32(tg_cfg->bpf_instruction_size);
->>>   	wmi_cfg->max_bssid_rx_filters = cpu_to_le32(tg_cfg->max_bssid_rx_filters);
->>>   	wmi_cfg->use_pdev_id = cpu_to_le32(tg_cfg->use_pdev_id);
->>> -	wmi_cfg->flag1 = cpu_to_le32(tg_cfg->atf_config);
->>> +	wmi_cfg->flag1 = cpu_to_le32(tg_cfg->atf_config) |
->>> +				     WMI_RSRC_CFG_FLAG1_BSS_CHANNEL_INFO_64;
->> shouldn't that | operation be inside the ) ?
-> Yes, will address in next version, thanks for the review Jeff
 
-BTW ath12k-check should catch these kind of errors. Didn't it warn about
-it or did you just skip running ath12k-check?
+On 3/28/2024 1:16 PM, Johannes Berg wrote:
+> That's a big set, not sure I can review it all at once :)
+> 
+
+I plan to separate the code refactoring changes from this patchset. Do 
+you have any concerns?
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Karthikeyan Periyasamy
+--
+கார்த்திகேயன் பெரியசாமி
 
