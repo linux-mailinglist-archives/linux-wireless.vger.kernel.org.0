@@ -1,144 +1,117 @@
-Return-Path: <linux-wireless+bounces-6118-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6119-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB13F89FA1B
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 16:40:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4137D89FAF8
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 17:03:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCF3C28724E
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 14:40:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 723C41C22B67
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 15:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED46116DECA;
-	Wed, 10 Apr 2024 14:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 151EB16C86C;
+	Wed, 10 Apr 2024 15:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="JJnZGYAN"
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="WFYVPKzf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wfout3-smtp.messagingengine.com (wfout3-smtp.messagingengine.com [64.147.123.146])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7FB16DEC3
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Apr 2024 14:37:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6C915958E;
+	Wed, 10 Apr 2024 15:03:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712759875; cv=none; b=o7Ev9x4iPNWqxvC244N9tqWugFpU+8cPUO2lygHz9Rkjxb0bR6RtI9Wcaxpy8Z2+36/GaDm4uRk+ygrEVqzLgOQ4wHWjJI8aXOllJ3IUQ/0DDhiqXfwf4zH26nVyfiHsVQ/mQLvbCADzSg/cZCeCkgokyZlZ0GLbRljqb1Ss6jA=
+	t=1712761407; cv=none; b=oFzSzD/lvZgS9umfgeLShlioiE1f5NtK0YMHbwHBqM1TCBM+DXEzzvoJa+e8JbG/UsHCouvOmW7UnRX6GzzorojpDkHl7t9B1oatOxlmWZM/nosL3uW0vD3yZHHqc21qw++WA0cknEb96PDczYLTS9PbxqalbYAoA9iVz6JqmCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712759875; c=relaxed/simple;
-	bh=HcjnHx29WXxDY+v7VWf1kZtucG8fOj8atDSMokCNb1I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=f0hEZUWbSzfJoiZeVDmTGCBRB2NjojTTxdqkk67Pwhq6XLbb5kfnXmGDEV2k1+gPH5l4kng5jT3otUiPNaqX7SJIMeaSsIxkzzxTZDRs4wXXNXI07kHn+kDD4/cuzraStuY88IF/fmHZX/VgOSADLD1xl+q1J5d082bmr3LHSWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=JJnZGYAN; arc=none smtp.client-ip=67.231.154.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
-	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 9731B30163C
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Apr 2024 14:37:47 +0000 (UTC)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 1139C3C0073;
-	Wed, 10 Apr 2024 14:37:40 +0000 (UTC)
-Received: from [172.20.4.169] (unknown [69.170.33.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 1CC6813C2B0;
-	Wed, 10 Apr 2024 07:37:37 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 1CC6813C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1712759858;
-	bh=HcjnHx29WXxDY+v7VWf1kZtucG8fOj8atDSMokCNb1I=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JJnZGYANtK1l7D1hbkjx3zOUOTm4r/XaVktUQXEOwOPtuTgUPiEQGYFzHnqEsaWON
-	 YCL8/vfKdylC+xn87PdCc7oGskBwhNmdf3VlAgZw1dshlr8vigM42NX9YfxwjDM0aG
-	 +7pC7ylDnjbMzwnqcEvsEXQcJjH1S5hN9wR85EMM=
-Message-ID: <20b56e52-a5e2-70cd-a62a-8c4a3526c2cf@candelatech.com>
-Date: Wed, 10 Apr 2024 07:37:37 -0700
+	s=arc-20240116; t=1712761407; c=relaxed/simple;
+	bh=VQyzQjJQejCEPzKQvU827ei9/KK+y+ux8JjA9cJgxVk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aPxzUOAkJVmZQ2GITtZHmBMVN+kiN1nmgM7VGtLjUtamSwaYnIdNX/x74171kR3eVcTFvrAbt0v/T/42XrGwU5bQkt9PcWiQETLMiHudm4Ml90MLNYTNSXKCxC0oSAuPmpUUVMmpO9HcGfWzlsPEGRGWnilxQONb5ldTXB8j9EE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=WFYVPKzf; arc=none smtp.client-ip=64.147.123.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
+Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
+	by mailfout.west.internal (Postfix) with ESMTP id C043C1C00081;
+	Wed, 10 Apr 2024 11:03:21 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute7.internal (MEProxy); Wed, 10 Apr 2024 11:03:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1712761401; x=1712847801; bh=fDN7LNg3MU1SeI2iaSN0kzB8FZeK
+	umLZXWxQhW85B6o=; b=WFYVPKzf+WTlvkgORk5e+JbUnduryZ++mSz035b372fQ
+	nuuwL97dI7BBVgjaBXXEKiIFzh1Xyv01xkS/cq15Jf/6yZYpZtPHaLiypshuFuF3
+	pdNQ89u0rPhqaZ0v4nEn/rH0Pm4IWN/RmYSgWwTslJtiTZfFs9TnrC1vfw7hS6cS
+	slsC7omM+v2bCRAG4tS98FRNeLa9r/PsYaf6q3SMIfjSW26kXJOAuPipp0e1V/1t
+	1gSSXfltOJA0rvVU/U6Bt1i1CuIc3N5d2S3+iWEu2lw7ds4BFcIWg5HbAgpKfY7A
+	//X3QyB6pnzMMsz5r74VsH5uH5SzoBvlIUGD+3U+Ug==
+X-ME-Sender: <xms:OKoWZqnU0_nEs71C46y4upxl7qPl4h1wr0ptDI2N1EkWGPuRowxEOQ>
+    <xme:OKoWZh1-A5K0sHS6Pz9MY-Jkcho3tPyb0Ezz3esBLHAFD3WITI1k-Dra9lZtBIzMW
+    GnK_CXTzQcXB7M>
+X-ME-Received: <xmr:OKoWZooY5673t2tsp3KDlWLQHLuu_S2mDs72czBwe9btkSIQlt6gBKV7kcyQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudehiedgkeduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtrodttddtvdenucfhrhhomhepkfguohcu
+    ufgthhhimhhmvghluceoihguohhstghhsehiughoshgthhdrohhrgheqnecuggftrfgrth
+    htvghrnhepfeefueegheehleelgeehjefgieeltdeuteekkeefheejudffleefgfeludeh
+    hfejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepih
+    guohhstghhsehiughoshgthhdrohhrgh
+X-ME-Proxy: <xmx:OKoWZunajKgXJvlzXySKL6AtIdjUEocGwBl1aQWCUN20yrdhYwhE6A>
+    <xmx:OKoWZo1PtmmB9RkBuY-kuLKW7T5dem6xCJWre-MPRzex3HJzmqr_EA>
+    <xmx:OKoWZlsp--rAHoLzaGyDDV9iW1zsiKd9Rl-zswd2O8QO_HZxOI8W5g>
+    <xmx:OKoWZkXvmTDOCoYgZzXSBYss2L67git07oFAdqTQjzSm7k4qlvQHtg>
+    <xmx:OaoWZt9mVLzcYFfWAX767iMyveSzZBJ9U9WoRGWckea2lIuLxllqdVCr>
+Feedback-ID: i494840e7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 10 Apr 2024 11:03:18 -0400 (EDT)
+Date: Wed, 10 Apr 2024 18:03:16 +0300
+From: Ido Schimmel <idosch@idosch.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: aleksander.lobakin@intel.com, kuba@kernel.org, davem@davemloft.net,
+	pabeni@redhat.com, edumazet@google.com, elder@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, nbd@nbd.name,
+	sean.wang@mediatek.com, Mark-MC.Lee@mediatek.com,
+	lorenzo@kernel.org, taras.chornyi@plvision.eu,
+	ath11k@lists.infradead.org, ath10k@lists.infradead.org,
+	linux-wireless@vger.kernel.org, geomatsi@gmail.com,
+	kvalo@kernel.org, quic_jjohnson@quicinc.com, leon@kernel.org,
+	dennis.dalessandro@cornelisnetworks.com,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	bpf@vger.kernel.org, Ido Schimmel <idosch@nvidia.com>,
+	Jiri Pirko <jiri@resnulli.us>, Simon Horman <horms@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: Re: [PATCH net-next v5 01/10] net: core: Fix documentation
+Message-ID: <ZhaqNOCeCFSObcPS@shredder>
+References: <20240410131407.3897251-1-leitao@debian.org>
+ <20240410131407.3897251-2-leitao@debian.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH 01/13] wifi: cfg80211: Add provision to advertise multiple
- radio in one wiphy
-Content-Language: en-MW
-To: Johannes Berg <johannes@sipsolutions.net>,
- Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>,
- Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
- ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-References: <20240328072916.1164195-1-quic_periyasa@quicinc.com>
- <20240328072916.1164195-2-quic_periyasa@quicinc.com>
- <e36599d3269496de59505b36be46f873976f8706.camel@sipsolutions.net>
- <033185b0-f878-a50b-d0d9-57fa79439bdf@quicinc.com>
- <ef6b6a7a4a9d3b01c0eb6abf0991e7e27425e102.camel@sipsolutions.net>
- <80fe5786-f764-455d-ac44-22adf7aeaf94@candelatech.com>
- <31f30c0e318904f3a082c7f213576ceb1f407141.camel@sipsolutions.net>
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <31f30c0e318904f3a082c7f213576ceb1f407141.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MDID: 1712759861-AjslrQx6Mflk
-X-MDID-O:
- us5;at1;1712759861;AjslrQx6Mflk;<greearb@candelatech.com>;e45dbe21c4fc86b950914d8831baea70
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240410131407.3897251-2-leitao@debian.org>
 
-On 4/10/24 00:56, Johannes Berg wrote:
-> On Fri, 2024-03-29 at 07:47 -0700, Ben Greear wrote:
->> On 3/29/24 07:30, Johannes Berg wrote:
->>> On Fri, 2024-03-29 at 19:41 +0530, Vasanthakumar Thiagarajan wrote:
->>>>>
->>>>>> + * @hw_chans: list of the channels supported by every constituent underlying
->>>>>> + *	hardware. Drivers abstracting multiple discrete hardware (radio) under
->>>>>> + *	one wiphy can advertise the list of channels supported by each physical
->>>>>> + *	hardware in this list. Underlying hardware specific channel list can be
->>>>>> + *	used while describing interface combination for each of them.
->>>>>
->>>>> I'd expect there to be a limit on channels being within a single band on
->>>>> a single "hardware"?
->>>>>
->>>>
->>>> There are ath12k hardware supporting multiple band which need to be
->>>> registered under one mac80211_hw/wiphy. This design is to support such
->>>> hardware.
->>>
->>> Oh OK, that was something that I didn't have in mind any more, or never
->>> knew or paid attention to.
->>
->> Would it work to leave the phy reporting pretty much as it is now, but add
->> a 'associated_peer_radios' list section, so that each phy could report the phys
->> associated with it?  Then user-space, driver, mac80211 etc could look up the
->> other phys as needed to get a full picture?
->>
+On Wed, Apr 10, 2024 at 06:13:42AM -0700, Breno Leitao wrote:
+> Fix bad grammer in description of init_dummy_netdev() functio.  This
+> topic showed up in the review of the "allocate dummy device dynamically"
+> patchset.
 > 
-> There's not really a good way to _do_ that short of creating multiple
-> wiphys, but that causes _massive_ complexity in the stack (both cfg80211
-> and mac80211) so we rejected it years ago.
+> Suggested-by: Ido Schimmel <idosch@nvidia.com>
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
-I thought the problem ath12k is trying to fix is that there are currently multiple phys (radios) that needed to be made to
-look like a single phy?
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
 
-For dual and tri-concurrent radios, I think we will need them to look like 3 individual radios for non-MLO use
-cases, but I guess there will be also some way to treat them as a single entity when using MLO.
+In case you need to send another version:
 
-For instance, mt7996 currently reports 3 single-band wiphys, and each can be used independently.
-But assuming it starts supporting MLO, then those 3 single band wiphys will need to start acting
-at least somewhat like a single entity (while also concurrently being able to act as individual
-wiphys so that one can do a mix of MLO and non MLO sta/AP.)
-
-Maybe I'm missing the entire point of the ath12k patches though...
-
-Thanks,
-Ben
-
-> 
-> johannes
-> 
-
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+s/grammer/grammar/
+s/functio/function/
 
