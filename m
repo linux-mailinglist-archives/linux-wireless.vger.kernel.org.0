@@ -1,100 +1,99 @@
-Return-Path: <linux-wireless+bounces-6063-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6064-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0932089EB55
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 08:59:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A634389EB7D
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 09:11:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52409B248B0
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 06:59:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61203285874
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 07:11:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCDDA13AD00;
-	Wed, 10 Apr 2024 06:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A00F13C90F;
+	Wed, 10 Apr 2024 07:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="pDwGiQuH"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="MgcVDYb9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D5B374D9
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Apr 2024 06:59:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5258113C902;
+	Wed, 10 Apr 2024 07:10:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712732363; cv=none; b=qQwqZE/yPw7e/+fmobUqazRoQvi/78y+8xfrQt4zIfw5oQUBTqVzJVFPHdN3AgYp7Qj5fCmRphRv4NFRbTi5bkD1FWL7w7mKA1qsEDtxtuSZyUggXzaKBIA4Ozmx57LkKW5omQ82/kgqOWoxA9nubSwWc2mGeGudP7MEaYcBDdE=
+	t=1712733061; cv=none; b=jrs01wT468UzrsOfO/VSPRA4Msgr2jvkTTzhLhOa/2ujVXEhIXVKPwD6Xp3ZKfLCeggXg2gom6niVMlPa0pxI77Y1tQIU6HI8Vp22KeWCxAx9uBhO03RBhnVan7CzEfQKMEWagKfS47mlB3oL6np496DpmU2IT9ndshYOxSUMlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712732363; c=relaxed/simple;
-	bh=QsGKRacQhT1Zyyw5hH5C6x0DL071LopwfNI1iyVTAZQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=p78KvsUH98CP2TPEdifctYEj7afmpJ1JZ7OcQ6qY/uE3tYtro1j3WVkN8GdgH6HyOzT/4hE5WT1/IS7ZGIl0O2pSFjQ5hihRZwXV2+rDJwJV2YuIsW4PvJSTK5mVuBwnTEPAYw68qExEu4FCs4ylACfWQPWOtxPIBrNcyUonzeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=pDwGiQuH; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=4vrhE4tKbLahCAkQehQfWkPykNqCr9lzHvLBR7qefoE=;
-	t=1712732359; x=1713941959; b=pDwGiQuHj3NUhrQ/nlB+FRK975DLvu/QmVdKWC5uKBZOPwz
-	8O+016RkrQ9YN2UJ1qRxQoI+5948qTMqv9EZRheoF7l+RsEe6TDfzrtn6GGcbefExUdA8itUjTRyk
-	Rs32cvj9HtYZk+bDB23WMX8bSPjuRmP9appHZXBm844ll68vnjTCzNS59cBS36617h6n710NEqmhv
-	nWFPkaqFBQm/lCXJ2fSXW/XZx6cVlGojMiRpEUNz57zftMBDFoyXb++0nqNGk+AmJJ7ML9Yx36P5+
-	MqODvXq7ZS6F5g1QE3kOKaHZgkdDk+23P2UjXQMjCGaQ2/UYMPqRVe2J2BF+sE+Q==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1ruRvH-00000001Ce8-3QgS;
-	Wed, 10 Apr 2024 08:59:09 +0200
-Message-ID: <1ab360a11f618ba16a3fb23f368c568f8ff57d36.camel@sipsolutions.net>
-Subject: Re: [PATCH 06/13] wifi: nl80211: send iface combination to user
- space in multi-hardware wiphy
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>, Vasanthakumar
-	Thiagarajan <quic_vthiagar@quicinc.com>, ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-Date: Wed, 10 Apr 2024 08:59:06 +0200
-In-Reply-To: <13bbfe51-5a91-3c67-9b11-2f30a43f38ff@quicinc.com>
-References: <20240328072916.1164195-1-quic_periyasa@quicinc.com>
-	 <20240328072916.1164195-7-quic_periyasa@quicinc.com>
-	 <29fc2719d6814a8e84f5db9ad81c76116a52828b.camel@sipsolutions.net>
-	 <14909268-53de-a686-eecd-443ce153c756@quicinc.com>
-	 <13bbfe51-5a91-3c67-9b11-2f30a43f38ff@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	s=arc-20240116; t=1712733061; c=relaxed/simple;
+	bh=iT1Aa/LQUufay8mm+6B75a/+Jn7rOT3IEQyjuP1iiqg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=S3YXLAhHioTMeiwVwxQ8ffXuILxv16XP3TS5sQ9lDLR60n2gg/LaDksY967U0yfUteTpPzujXXodozf585Q5CKj9nMPzWEyqZxfk7ugWMGNs0IsURJtYFHj2Pt09MIZEZbgsKpK3oTn0X7MSMMA2m0H4mrpgNsa9skBDqo3SXUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=MgcVDYb9; arc=none smtp.client-ip=217.70.183.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 451A6E0005;
+	Wed, 10 Apr 2024 07:10:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1712733057;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=341uR6qlkwbHnr/7IQaStkQef087xGpxi+6/6rr/DAs=;
+	b=MgcVDYb9mQXi843fhwVeIo5RJc96Jy357/buBrTdIzzPLVkBP82xyCV7VfqBUOQdQjDH08
+	m7R+gwcXUDRag7smKMq+gf2z/GZF2NVTv4f40ObQTO53QcXRVEMWS7Y9caA9o61Bdf7dGe
+	tb71xyLAJIr1Pk9QEiJ5QkClPAsIuV5g4OfPLRuhr6je8thNWq0KOfZC4bgQSKjRL+49d4
+	F7R+vPIwEIetZycLWNgVX6zA7zHA0hgFjUJT/x6gGUBHMi/xy9IZLJyuOAwk1bs9wf18Pz
+	qxLzfDeS76C/Z8+k5RUhx6NG4+hs98PX2Nuv++sgPH6ltesI8dBYNahyriAYfA==
+From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Subject: [PATCH 0/2] wifi: wilc1000: use RCU instead of SRCU
+Date: Wed, 10 Apr 2024 09:10:32 +0200
+Message-Id: <20240410-wilc_srcu_to_rcu-v1-0-a9ff5b10feaa@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAGg7FmYC/x2MywqAIBAAf0X2nKBrdehXIiR0q4Wo0F4Q/XtLp
+ 2EOMw9kSkwZGvVAopMzr4uILRSEqV9G0hzFAQ2WBhH1xXPwOYXD76sXaGNrFyvXY4wOJNsSDXz
+ /y7Z73w/iKH5cYgAAAA==
+To: Ajay Singh <ajay.kathat@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Kalle Valo <kvalo@kernel.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+X-Mailer: b4 0.13.0
+X-GND-Sasl: alexis.lothore@bootlin.com
 
-On Wed, 2024-04-10 at 09:40 +0530, Karthikeyan Periyasamy wrote:
-> > I agree, more duplication. So we have to have the per_hw_comb_attrs
-> > defines like below?
-> >=20
-> > enum nl80211_if_comb_per_hw_comb_attrs {
-> >  =C2=A0=C2=A0=C2=A0=C2=A0NL80211_IFACE_COMB_PER_HW_COMB_UNSPEC,
-> >  =C2=A0=C2=A0=C2=A0=C2=A0NL80211_IFACE_COMB_PER_HW_COMB_HW_IDX =3D
-> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 NL8=
-0211_IFACE_COMB_NUM_CHANNELS + 1,
-> >  =C2=A0=C2=A0=C2=A0=C2=A0/* keep last */
-> >  =C2=A0=C2=A0=C2=A0=C2=A0NUM_NL80211_IFACE_COMB_PER_HW_COMB,
-> >  =C2=A0=C2=A0=C2=A0=C2=A0MAX_NL80211_IFACE_COMB_PER_HW_COMB =3D
-> >  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 NUM=
-_NL80211_IFACE_COMB_PER_HW_COMB - 1
-> > };
-> >=20
->=20
-> @johannes Berg
->=20
->=20
-> Any comments on the vasanth suggested approach ?
+This small series is a follow-up to [1] which fixed pending SRCU warnings
+in wilc1000 driver, and raised the question of why SRCU was used in the
+first place and if it is really needed. Since no technical answer has been
+provided in favor of keeping SRCU, switch back the driver to classical RCU to
+simplify RCU usage.
 
-Think about it, do you have any comments? I mean, you've _already_ sent
-an email, why not actually say something about the topic?
+[1] https://lore.kernel.org/linux-wireless/20240215-wilc_fix_rcu_usage-v1-0-f610e46c6f82@bootlin.com/
 
-johannes
+Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+---
+Alexis Lothoré (2):
+      wifi: wilc1000: set atomic flag on kmemdup in srcu critical section
+      wifi: wilc1000: convert list management to RCU
+
+ drivers/net/wireless/microchip/wilc1000/cfg80211.c | 41 +++++++++------------
+ drivers/net/wireless/microchip/wilc1000/hif.c      | 17 ++++-----
+ drivers/net/wireless/microchip/wilc1000/netdev.c   | 43 +++++++++-------------
+ drivers/net/wireless/microchip/wilc1000/netdev.h   |  5 +--
+ drivers/net/wireless/microchip/wilc1000/wlan.c     |  5 +--
+ 5 files changed, 46 insertions(+), 65 deletions(-)
+---
+base-commit: bd53dcabb6d8211d5e2994d7acd000d203e1e031
+change-id: 20240222-wilc_srcu_to_rcu-0163d53a2dd3
+
+Best regards,
+-- 
+Alexis Lothoré, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
