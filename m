@@ -1,102 +1,141 @@
-Return-Path: <linux-wireless+bounces-6128-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6129-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 382A889FEB8
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 19:36:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8772B89FF3E
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 19:56:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E235C1F2214B
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 17:36:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C5A51F28A1D
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 17:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B905217BB1A;
-	Wed, 10 Apr 2024 17:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8F95168DC;
+	Wed, 10 Apr 2024 17:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fakINiiU"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="SihY/Zf0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10683178CEE;
-	Wed, 10 Apr 2024 17:36:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36CEF172BBA;
+	Wed, 10 Apr 2024 17:56:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712770603; cv=none; b=XEP7VaDL6IgMZu0rK/L9qX/75YBu944rIwzvbrpdjV+vQ5F93TSRbLwwkfKHov7vydBWwVXbST1quPdtuPMgp6WvmvJwGj7+H5BbtkJeEm0Ftu/z3qmU0achBjBVhyiU/DYnh9GZwr6KKnhuZax5TElu8dsto2fL2ODEWcXdImQ=
+	t=1712771811; cv=none; b=pC5kyqS2cIEM1rBrIRNQtV2HAizwCebAGMDk7t+lZXmc0XUSkssYtX/U1rmDTCA7pGlU7SclXE6jIfXibx5yTfa3v8nnbOtKedHspj9qmabR0f/BWUvJTls7OuXZBYs+mwF8TG6iFKF/DCtgVskO6OX89GokY0qGHziUyKRVaKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712770603; c=relaxed/simple;
-	bh=C2Ckdhh6MShRypHTQfGnWVcfvy2wO5tJ+RrOIcXU+GE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ku2fbVdP9tN/myGy5+f1Nvmq2zNPGwrrTxF/Wq0CiWnfVO/1pT4yJNcQrpk6voQSUZiVbdzzPTA+GUhFYvllrnMuJWEsc7h50qHSsibzDv3Se+UysKrXFV3kjKQkXLGKCXFlG5+nMO+tDwgwL7yn+M27psyjg+sMRerMrcH3UnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fakINiiU; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712770602; x=1744306602;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=C2Ckdhh6MShRypHTQfGnWVcfvy2wO5tJ+RrOIcXU+GE=;
-  b=fakINiiUCRSw2Y/efrv454Y2guCzBhEsWkxytKQXg8bFw3gm1WRGftkH
-   87jkL0gqVzxXCcM25OxzKyBCKA8Wx9HwO0eGSmcUjsGbE2uBDipzgSOo3
-   gt01cUYDw1+l5enazbsUZlkPlLSsquie/hGMmiwG1XuWw7zcqU9uL4Urr
-   kKs5b9FuPhXGfZEbipOiH8GXjStDUDdAD9MwYaXP4jjtNRwe4rrurxTaP
-   aiKv9/7eP5h2pOJxdPiyqJxjlij3uLTXE7RQyFg9icl2AgPEMs5iznek4
-   1/wSu/z2WHtccpbIQsXiV3v6W8NuPM0Y1yLegI6X8OoD67o6yqtm5Ixnp
-   A==;
-X-CSE-ConnectionGUID: IWfmZtZIT+Owxx28JyCBrw==
-X-CSE-MsgGUID: IITQZQWQSMegjxzMIlpJOA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="8328253"
-X-IronPort-AV: E=Sophos;i="6.07,191,1708416000"; 
-   d="scan'208";a="8328253"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2024 10:36:24 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="915438867"
-X-IronPort-AV: E=Sophos;i="6.07,191,1708416000"; 
-   d="scan'208";a="915438867"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2024 10:36:21 -0700
-Received: from andy by smile with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rubru-000000038N0-3OjI;
-	Wed, 10 Apr 2024 20:36:18 +0300
-Date: Wed, 10 Apr 2024 20:36:18 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Felix Fietkau <nbd@nbd.name>, Alexander Couzens <lynxis@fe80.eu>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Cc: Lorenzo Bianconi <lorenzo@kernel.org>,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>, Kalle Valo <kvalo@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: Re: [PATCH wireless-next v1 1/1] wifi: mt76: mt7915: Remove unused
- of_gpio.h
-Message-ID: <ZhbOEqO4BIE4q7Vv@smile.fi.intel.com>
-References: <20240228200321.3607764-1-andriy.shevchenko@linux.intel.com>
+	s=arc-20240116; t=1712771811; c=relaxed/simple;
+	bh=iEuQdqKd9H5/BlcT+O9gIZxVL7+0ZlEWbRJc2ARTWSw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=l6jkaUmKfTa1LxC80gXJkdSFuqC3Lc2egwVwW6+jEFUJRUvk89hfHfxkKUCTzYnuDIvxNBCARRgVfzrkb/Z0GLBii2rzsN5mgajzdee4Uk+t6ENxSmRl+V7XttYFEBTKEavu71t4Qfsw57pdSH4LAkFvHsq/9VlyT9enlyMcJQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=SihY/Zf0; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=iEuQdqKd9H5/BlcT+O9gIZxVL7+0ZlEWbRJc2ARTWSw=;
+	t=1712771808; x=1713981408; b=SihY/Zf063sJ9Y6S7UQjjb179Xso7UAQ+xdv86DFZKIST5l
+	7nJOEq1Z1IPn0ubF0hYP/o9/ahdnV7S+JNQCnKM/h+p2hq2Z//ytMl4IuKKd5OvtFEXsCjAFdwaKW
+	AcWjCSTF+73SaNVYWs+CtwL/CX62wFdNlwcldEqFOsX+ges+aeDh9WQh5RJ99+i0aMOVnFEzyki5/
+	dLS7XzvVSqM4+SSBWeI663l4tmWzlQrgicWjg5MebAj+eYp/2ZLt3eR79+JAZ8EicVOISTAyWxos5
+	RO/jYPH7ZN1GKZVsYd1Ei+GavTe2L9sb7OTk1kk4kXru9GvIDIjYEAyNFfEC2TnA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rucBh-00000001a9V-1iYv;
+	Wed, 10 Apr 2024 19:56:45 +0200
+Message-ID: <7af985e13d3254de73f9d68e1ad4ad1f81b5fd59.camel@sipsolutions.net>
+Subject: Re: [EXT] Re: [PATCH v9 0/2] wifi: mwifiex: add code to support
+ host mlme
+From: Johannes Berg <johannes@sipsolutions.net>
+To: David Lin <yu-hao.lin@nxp.com>, Brian Norris <briannorris@chromium.org>
+Cc: Francesco Dolcini <francesco@dolcini.it>, "kvalo@kernel.org"
+ <kvalo@kernel.org>, "linux-wireless@vger.kernel.org"
+ <linux-wireless@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, Pete Hsieh <tsung-hsien.hsieh@nxp.com>, 
+ "rafael.beims" <rafael.beims@toradex.com>, Francesco Dolcini
+ <francesco.dolcini@toradex.com>
+Date: Wed, 10 Apr 2024 19:56:44 +0200
+In-Reply-To: <DU0PR04MB96366A0E1FEBD7440F7536D0D1062@DU0PR04MB9636.eurprd04.prod.outlook.com>
+References: <ZfTspRKFgrO9xCTH@google.com>
+	 <969e95ccc4a1d35b45212b7fcb536ee90995e3b5.camel@sipsolutions.net>
+	 <PA4PR04MB9638D253189D6DD330B198B2D1332@PA4PR04MB9638.eurprd04.prod.outlook.com>
+	 <PA4PR04MB9638BE73DDBCE1CE8AA32BA8D1332@PA4PR04MB9638.eurprd04.prod.outlook.com>
+	 <b2d9a7ef53c5ab4212617e8edf202bbafe52e2f8.camel@sipsolutions.net>
+	 <ZftaJEIeNfV7YrVo@google.com>
+	 <PA4PR04MB9638F5037D1AB9BCF51CC9D9D1322@PA4PR04MB9638.eurprd04.prod.outlook.com>
+	 <Zf4rDifM6bLuqpX2@google.com>
+	 <4e5f3741819e457c5c79d825c6520cb9ee531b95.camel@sipsolutions.net>
+	 <PA4PR04MB96386917877832602F221282D13A2@PA4PR04MB9638.eurprd04.prod.outlook.com>
+	 <ZgxCngq_Rguc4qs8@google.com>
+	 <DU0PR04MB96365F2B6AFD856655D6A66CD1062@DU0PR04MB9636.eurprd04.prod.outlook.com>
+	 <5cf6b243c3967cd5a630f8f8e5bf17f7c9010f01.camel@sipsolutions.net>
+	 <DU0PR04MB96366A0E1FEBD7440F7536D0D1062@DU0PR04MB9636.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240228200321.3607764-1-andriy.shevchenko@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-malware-bazaar: not-scanned
 
-On Wed, Feb 28, 2024 at 10:03:21PM +0200, Andy Shevchenko wrote:
-> of_gpio.h is deprecated and subject to remove.
-> The driver doesn't use it, simply remove the unused header.
+On Wed, 2024-04-10 at 10:33 +0000, David Lin wrote:
+>=20
+>=20
+> Take Rx data path as an example,
+> In current FW, BA stream setup and de-ampdu are handled in FW. Packet is =
+converted to 802.3 before passing to host. Ampdu reordering is handled in h=
+ost driver (Mwifiex) due to memory consideration. We used to work on a driv=
+er that uses RX_FLAG_8023. It was on an older Wi-Fi part which has more mem=
+ory and powerful processor. But with this chip buffer required for reorderi=
+ng doesn=E2=80=99t fit FW memory.=20
+>=20
+> Ampdu reordering needs MAC 802.11 header, FW keeps the MAC header in pack=
+et descriptor since packet already 802.3 when arrive at driver. As packet d=
+escriptor only accessible in the driver, Mwifiex handles the reordering ins=
+tead of using mac80211 reordering.=20
+>=20
+> With current FW design, to apply mac802.11 we either change FW to pass pa=
+cket in 802.11 format or driver needs to do the conversion back to 802.11 (=
+which I think doesn=E2=80=99t make sense)=20
+>=20
+> Given existing FW design, we think it=E2=80=99s difficult to apply mac802=
+11.
 
-What should be done to move this forward?
+Hmm, I don't think so? If you have a mac80211 driver with RX_FLAG_8023,
+then of course mac80211 cannot do reordering, and you have to do it
+somewhere below. But that doesn't mean you necessarily _have_ to do it
+in hardware/firmware? You could do it in the driver, which you also have
+to do in a cfg80211 driver anyway, and that's OK. Due to usage of RSS,
+iwlwifi/mvm even does it internally, although it doesn't even have
+RX_FLAG_8023.
 
--- 
-With Best Regards,
-Andy Shevchenko
+But that goes into the direction I was talking about: the boundaries are
+getting fuzzier all the time, because offloads happen and get supported
+in mac80211. So if you have offloads for header conversion and only get
+some reordering data "out of band", then you have to handle that in the
+driver. Using mac80211 doesn't mean you have to use _all_ of it.
+Originally, mac80211 didn't even have RX_FLAG_8023 after all. But
+obviously adding something like that also requires more upstream
+engagement :)
 
+I think the question is about the design, but I also think the
+differences in the association process are much more fundamental, and
+you _don't_ (seem to) handle that in the way mac80211 does/expects,
+though you also don't seem to handle it in the way most other full-MAC
+devices do (which [can] offload even BSS selection.)
 
+The thing I want you to understand is the relative architecture and how
+your work fits into this. I'm not telling you have to change it right
+now or do this work differently, I just want to make sure you actually
+understand it. The above argument goes some way, showing you've actually
+looked at the differences mac80211 would imply, where before I felt you
+were pretty much handwaving it away as if irrelevant to the discussion.
+
+johannes
 
