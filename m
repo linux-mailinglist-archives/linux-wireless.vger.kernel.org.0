@@ -1,168 +1,174 @@
-Return-Path: <linux-wireless+bounces-6124-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6125-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B9B889FC6F
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 18:06:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ED5789FCC0
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 18:23:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAD1328D40D
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 16:06:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D1411C21F2A
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 16:23:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B65178CD1;
-	Wed, 10 Apr 2024 16:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4658A17A920;
+	Wed, 10 Apr 2024 16:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ZthO1lbM"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="VRy+DwW2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FAE51779B6;
-	Wed, 10 Apr 2024 16:06:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28AF316D9CC
+	for <linux-wireless@vger.kernel.org>; Wed, 10 Apr 2024 16:23:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712765162; cv=none; b=OpTS7KzUcJCwJf/VqHXvK2DTkd28re5/2RCGvW/bKZkz9jSGASlyTD1NrWOi08thUiaHekKlvXvk5xkkxtMy+MuXxl8KqYBnxCCtFtyosebCmYitaouio9E/o5ZUvSSBNxZ5qhfvVGxuHekZOte2usV+CeMg/L4njj2Z83K1CTg=
+	t=1712766221; cv=none; b=XpBmbdZf6xafQD7SkxEryrldsN6vPoopvGe3vfoNDZHNEvmapgSqLRirtbQrLc+K6IxhFfcAHWz5HTSwhctAsKYRZLor6QgT8XA0nSZvfc1ivxFeuFTosGBokBeuhF2VUCyp4UgPEObFUbs+cdW1gmfxjghvH/WH6R+d5p3rA9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712765162; c=relaxed/simple;
-	bh=piq+aZgljrVoCDKhCfSkoGK2WF2WNTFw7ziQ5tAjdOc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Lc8Ox9B9x8w7XPCLcLfCcVjyI54QwnThiRi3Jetn7rh+Bc2I46DOsfCHJI5sct4jW8p5Ku3jfL3FgOtOzR7JPJBG4zhoKAynlnaZmbHMQ3HI3fV6TZtLWYjUfF2vUEfvCsE9QfO9qoPes1KUY8vGBmzqDrTkHCaE+0mvFjI3DWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ZthO1lbM; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43AFr5a9030162;
-	Wed, 10 Apr 2024 16:05:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=gofH+p75A2H6MwZ+LcSc2nUNvgwMF53ULI8Ss/9g+q4=; b=Zt
-	hO1lbMnlBlYM6pnlELChyEfOLMh6lvk+6K4hFEz7irHMPx5GRtqr6QJL8OHa4STH
-	oY2274kPX9yaO21fipOT6y3smAhYzPP6GRS/B3aLVLAftOCeGcbeugvhU/G7yK29
-	05SlUnMnkyOMoDEzkj2dQ/8cr08q9dNwIbh/yvuEkLnP6wbKlqYmpXtMd9h/m2du
-	ui1PMRupXHY6oDfb2oMbIKBVK9Zl4o9ukJmcptWLKV/xFDZIsIyyxjPUTswV841P
-	1Jy+QeZYF7p3HG0g7Xb0a/Q2QTLXpZ5Cu4gXcK9WwsPFkTaadMR3vIQNdILQQ/IG
-	jFrXvEZsUHa3880I6uYQ==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xdskjha29-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Apr 2024 16:05:30 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43AG5T7f022079
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Apr 2024 16:05:29 GMT
-Received: from [10.110.37.144] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 10 Apr
- 2024 09:05:27 -0700
-Message-ID: <c128cf9b-de30-49f1-9adb-8b03b61f4d51@quicinc.com>
-Date: Wed, 10 Apr 2024 09:05:26 -0700
+	s=arc-20240116; t=1712766221; c=relaxed/simple;
+	bh=FksxrBE85wsNCkcWJSuKiJY1x/2Or6Zy6+YkRSQef3M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RMYS7tD62JmnWJVj+UMwrPY8HGBk9wXtwfaEax3J5Yctx+EDVMgvu71ri4pJi+Zy6DpncS7FgUwdtcc+twuX3wRdTUg3fU5Nk2+hjjPAP0zu1ybOSpuWiZ0ftteufQFnixLMtFLCd2jnHpyU+WIRzMl4GT6HAPxmeqGLVt7w83k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=VRy+DwW2; arc=none smtp.client-ip=67.231.154.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 90B2E8009C;
+	Wed, 10 Apr 2024 16:23:36 +0000 (UTC)
+Received: from [IPV6:2a00:79e1:abc:12b:612f:d396:1826:730f] (unknown [104.133.8.111])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id E7AC113C2B0;
+	Wed, 10 Apr 2024 09:23:34 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com E7AC113C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1712766215;
+	bh=FksxrBE85wsNCkcWJSuKiJY1x/2Or6Zy6+YkRSQef3M=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=VRy+DwW2WWLEQ/Dy8GaWJMu+X7JlpcyItUER8s9DQ1UnRs7Lf1J4EeQ6zpXSJ2IUC
+	 uk3Vi81U31/OtJgPU/eSednFuqIWHhlvTndH0SHfZxMXEIjVOsxX67x7Fp/sBe2olu
+	 I9REMA1P1DSno9+WN9vOPhbLVbcMhjR+qT0YnEB4=
+Message-ID: <aa9e1d54-bb5f-37cc-335f-c9970ab13789@candelatech.com>
+Date: Wed, 10 Apr 2024 09:23:34 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 16/16] PCI/pwrctl: add a PCI power control driver for
- power sequenced devices
-Content-Language: en-US
-To: Bartosz Golaszewski <brgl@bgdev.pl>,
-        Marcel Holtmann
-	<marcel@holtmann.org>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        "David
- S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Rob Herring
-	<robh@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, Kalle Valo <kvalo@kernel.org>,
-        Bjorn
- Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-        Catalin
- Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Bjorn
- Helgaas <bhelgaas@google.com>,
-        Saravana Kannan <saravanak@google.com>,
-        Geert
- Uytterhoeven <geert+renesas@glider.be>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Neil
- Armstrong <neil.armstrong@linaro.org>,
-        Marek Szyprowski
-	<m.szyprowski@samsung.com>,
-        Alex Elder <elder@linaro.org>,
-        Srini Kandagatla
-	<srinivas.kandagatla@linaro.org>,
-        Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>,
-        Abel Vesa <abel.vesa@linaro.org>,
-        Manivannan
- Sadhasivam <mani@kernel.org>,
-        Lukas Wunner <lukas@wunner.de>,
-        Dmitry
- Baryshkov <dmitry.baryshkov@linaro.org>,
-        Amit Pundir
-	<amit.pundir@linaro.org>, Xilin Wu <wuxilin123@gmail.com>
-CC: <linux-bluetooth@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-wireless@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-pci@vger.kernel.org>,
-        <linux-pm@vger.kernel.org>,
-        Bartosz Golaszewski
-	<bartosz.golaszewski@linaro.org>
-References: <20240410124628.171783-1-brgl@bgdev.pl>
- <20240410124628.171783-17-brgl@bgdev.pl>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240410124628.171783-17-brgl@bgdev.pl>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH 01/13] wifi: cfg80211: Add provision to advertise multiple
+ radio in one wiphy
+Content-Language: en-MW
+To: Johannes Berg <johannes@sipsolutions.net>,
+ Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>,
+ Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+ ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+References: <20240328072916.1164195-1-quic_periyasa@quicinc.com>
+ <20240328072916.1164195-2-quic_periyasa@quicinc.com>
+ <e36599d3269496de59505b36be46f873976f8706.camel@sipsolutions.net>
+ <033185b0-f878-a50b-d0d9-57fa79439bdf@quicinc.com>
+ <ef6b6a7a4a9d3b01c0eb6abf0991e7e27425e102.camel@sipsolutions.net>
+ <80fe5786-f764-455d-ac44-22adf7aeaf94@candelatech.com>
+ <31f30c0e318904f3a082c7f213576ceb1f407141.camel@sipsolutions.net>
+ <20b56e52-a5e2-70cd-a62a-8c4a3526c2cf@candelatech.com>
+ <614bb8a8f1d9174ad7d87cf7636f657cda7b1ef9.camel@sipsolutions.net>
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <614bb8a8f1d9174ad7d87cf7636f657cda7b1ef9.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: DT7Wv9f2L7fktC3xWXbBoB4QdMNzyLRm
-X-Proofpoint-ORIG-GUID: DT7Wv9f2L7fktC3xWXbBoB4QdMNzyLRm
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-10_04,2024-04-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 spamscore=0
- clxscore=1015 adultscore=0 priorityscore=1501 lowpriorityscore=0
- mlxscore=0 phishscore=0 impostorscore=0 bulkscore=0 malwarescore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2404100117
+X-MDID: 1712766217-ecBzFAlbZ_xB
+X-MDID-O:
+ us5;at1;1712766217;ecBzFAlbZ_xB;<greearb@candelatech.com>;e45dbe21c4fc86b950914d8831baea70
 
-On 4/10/2024 5:46 AM, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+On 4/10/24 08:42, Johannes Berg wrote:
+> On Wed, 2024-04-10 at 07:37 -0700, Ben Greear wrote:
+>> On 4/10/24 00:56, Johannes Berg wrote:
+>>> On Fri, 2024-03-29 at 07:47 -0700, Ben Greear wrote:
+>>>> On 3/29/24 07:30, Johannes Berg wrote:
+>>>>> On Fri, 2024-03-29 at 19:41 +0530, Vasanthakumar Thiagarajan wrote:
+>>>>>>>
+>>>>>>>> + * @hw_chans: list of the channels supported by every constituent underlying
+>>>>>>>> + *	hardware. Drivers abstracting multiple discrete hardware (radio) under
+>>>>>>>> + *	one wiphy can advertise the list of channels supported by each physical
+>>>>>>>> + *	hardware in this list. Underlying hardware specific channel list can be
+>>>>>>>> + *	used while describing interface combination for each of them.
+>>>>>>>
+>>>>>>> I'd expect there to be a limit on channels being within a single band on
+>>>>>>> a single "hardware"?
+>>>>>>>
+>>>>>>
+>>>>>> There are ath12k hardware supporting multiple band which need to be
+>>>>>> registered under one mac80211_hw/wiphy. This design is to support such
+>>>>>> hardware.
+>>>>>
+>>>>> Oh OK, that was something that I didn't have in mind any more, or never
+>>>>> knew or paid attention to.
+>>>>
+>>>> Would it work to leave the phy reporting pretty much as it is now, but add
+>>>> a 'associated_peer_radios' list section, so that each phy could report the phys
+>>>> associated with it?  Then user-space, driver, mac80211 etc could look up the
+>>>> other phys as needed to get a full picture?
+>>>>
+>>>
+>>> There's not really a good way to _do_ that short of creating multiple
+>>> wiphys, but that causes _massive_ complexity in the stack (both cfg80211
+>>> and mac80211) so we rejected it years ago.
+>>
+>> I thought the problem ath12k is trying to fix is that there are currently multiple phys (radios) that needed to be made to
+>> look like a single phy?
 > 
-> Add a PCI power control driver that's capable of correctly powering up
-> devices using the power sequencing subsystem. The first user of this
-> driver is the ath11k module on QCA6390.
-[...]
-> +config PCI_PWRCTL_PWRSEQ
-> +	tristate "PCI Power Control driver using the Power Sequencing subsystem"
-> +	select POWER_SEQUENCING
-> +	select PCI_PWRCTL
-> +	default m if (ATH11K_PCI && ARCH_QCOM)
-[...]
-> +static const struct of_device_id pci_pwrctl_pwrseq_of_match[] = {
-> +	{
-> +		/* ATH11K in QCA6390 package. */
-> +		.compatible = "pci17cb,1101",
-> +		.data = "wlan",
-> +	},
-> +	{
-> +		/* ATH12K in WCN7850 package. */
-> +		.compatible = "pci17cb,1107",
-> +		.data = "wlan",
+> Correct.
+> 
+>> For dual and tri-concurrent radios, I think we will need them to look like 3 individual radios for non-MLO use
+>> cases
+> 
+> No, I don't see why, and if you want that we wouldn't support it anyway,
+> you'd have to have a module option or something to decide which way to
+> go.
+> 
+> But it really ought to not be needed - the point of these patches is to
+> give userspace enough information to know how to (and where) to create
+> separate BSSes, with or without MLO between them.
 
-since you are adding both ath11k and ath12k packages, should you update the
-commit text and the config "default m if" condition to include ath12k?
+If phy0 told user-space that phy1 and phy2 were 'mlo peers', and phy1 and phy2
+gave similar mapping, couldn't user-space just notice the peer group and then
+have all the info it needed without the bulk of the patch set in question?
 
-/jeff
+So then if hostapd wants to have 3 radios in an mlo grouping, it can do so.
+
+And if instead it wants three old-style wifi-6 AP interfaces, it could do that
+as well.  I don't see why it would need any module option, and I also do not
+see why it could not do both behaviours concurrently (one BSSID being MLO, second one
+being non MLO, for instance).
+
+>> For instance, mt7996 currently reports 3 single-band wiphys, and each can be used independently.
+>> But assuming it starts supporting MLO, then those 3 single band wiphys will need to start acting
+>> at least somewhat like a single entity
+> 
+> Yes.
+> 
+>> (while also concurrently being able to act as individual
+>> wiphys so that one can do a mix of MLO and non MLO sta/AP.)
+> 
+> No.
+
+How will you allow all three bands/phys to host bssids that can talk to
+wifi-6 and earlier stations if there is only a single phy seen by hostapd?
+
+I definitely want to put STA vdevs on the three individual 7996 phys and have them
+be able to talk to non MLO APs. This currently works.
+
+I suspect other use cases, such as meshing with non MLO APs may also want
+this sort of ability.
+
+Thanks,
+Ben
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
