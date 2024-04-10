@@ -1,76 +1,67 @@
-Return-Path: <linux-wireless+bounces-6071-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6072-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4721589ECC1
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 09:55:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F8A689ECCF
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 09:57:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77832B23618
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 07:55:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02CA8B24B83
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 07:57:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99A5113D277;
-	Wed, 10 Apr 2024 07:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D88D113D60F;
+	Wed, 10 Apr 2024 07:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="UZ7GNjt1"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="MSLZUtIY"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0C913D28B;
-	Wed, 10 Apr 2024 07:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B89913D535
+	for <linux-wireless@vger.kernel.org>; Wed, 10 Apr 2024 07:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712735724; cv=none; b=PcxVNNb+NEWxvx7jiY0tllIMlrpm+rHdrbKlaS2q9+PmzWAOo3M0/Z0I/RSmQox0qi/0KW6t92sKMkuAzB7kvEuchp7U8DVeRQP86tsMTxbVGDV00rwWLlsFqR4Uf1hiBWYp2yA7uPw0aXsLQDBGFZ9ApqZ7lpHqp32GuSRb3Wg=
+	t=1712735800; cv=none; b=qinryYJv2n1/5nx2Yshp5V3/GxXFw2w0GFDeh5SPuicL+FH8LwzktwB+hLrXZS8DIbI0axL/GPiBOj0y9bElHhn2CLJO2d/cYxhsTJ257KNZaq9tKTQzCiToM54d42d6FET3AELTOo7Zz8P4v2z3ONksyMnpUNQi9vx8C16MwHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712735724; c=relaxed/simple;
-	bh=HcMcawYwrMbKNcpE8lk7DBbxiVe9ZzPEjbE5Enqe2Bs=;
+	s=arc-20240116; t=1712735800; c=relaxed/simple;
+	bh=EyCsOjvYWcw8ZMkgSOdW3Hs9mwR7vIMqzLHXKwNDIik=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tl4uSA1XDt61laQ5F4HbGZjAHKGYDjzozuWaxAdeDZ4wNZ9DQ5mWIosDjxsEvft56Ekj3E2vRGSQRVygBsfnCwGxxPfdisMSUiRaA5n1WhM+KB2xkM4Cd5ZRmzQSrkdgyEbOeGMiBNmEGhofeAgE1LWplj/MaY+9BtCepnmC9Ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=UZ7GNjt1; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=rB/AAYUPpoHQ8eFBwdwQJP8lQrpksBEQVIqfPvW8IiVXOvxrjMzcM38aLP9wlv6U8QADUcWOvFJEX8OY6x5fk1GD1JWijEmGsCkBrqT3FVW4Dzw73Bb6jSN5fY1FhmAjrnIVOQDQLMz7Y9lnFuIlLxWyCXe2R2bBpLHQKZ0wPDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=MSLZUtIY; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=ieFT59N5jWL4d5qY/lsIo26kUNWbiudGLqzvxyRefYQ=;
-	t=1712735722; x=1713945322; b=UZ7GNjt1n+hgmWpIAFiYMVYTo4RD93nB/nR46flo+52Lvyp
-	Wsc10ouQyWrX0ZF+T01njwizykidMARBcnVf1oUM51GJ7kZ/KlK59U+gtVHzB0ezQhg1mQ8iGYG7M
-	CZcTuAB65OjCklmKikmUx4jrs93tN/f+hxlgr8nBf2z4cqJnitTHQES5844SBOO6BZC3Fp2JV44ai
-	xE+K7HgcLk292mIzaVQiNU9JZUqOjEJNTsUn85vjoJmrQ5TgQYNseI+cES2GnntOPG90IP/PMGASN
-	D3DSuxU4dwNgmb0BatE+BmAvTSpZToEiq3HAraPP7KfGRcg62JIsCeFQCDC66iEg==;
+	Resent-Cc:Resent-Message-ID; bh=m0scYqStgxZbWMDUaVHUNB5CmHlQnGVtrgSLw2qoU8g=;
+	t=1712735799; x=1713945399; b=MSLZUtIYGIffbXlasvPeE2ZtnLONCN3crmZhAKIfeuVKc9u
+	Kl52XCI8WEWKS8X25ZnI5F+u2FqOU49pOcg0DK/5WJHRMboBuE5kCnyq08kQaZ/URpQSGkUwkccPb
+	x5mrmSKN5dslWYQCjpgiC1u8gzZZDpp7ZOc8vskON5X0Tf2+CzF3i4cT8ea3zkn9P9iVRAY2BZQvO
+	1CweJUKzdeqh8wVCXgeSm0dodomy+iTPTkz+F8oHdjAGe0/HjqFgFdsvGZ6BUno2IXJAJHZYU4PTu
+	NhFN2eS6F4svfSqso2dpX192FwzVR3BM5K6k2CZ9o4OTJFI+ryJcTRN4r259MtHA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1ruSnf-00000001Ees-42vq;
-	Wed, 10 Apr 2024 09:55:20 +0200
-Message-ID: <5cf6b243c3967cd5a630f8f8e5bf17f7c9010f01.camel@sipsolutions.net>
-Subject: Re: [EXT] Re: [PATCH v9 0/2] wifi: mwifiex: add code to support
- host mlme
+	id 1ruSos-00000001Ei3-1Y5e;
+	Wed, 10 Apr 2024 09:56:34 +0200
+Message-ID: <31f30c0e318904f3a082c7f213576ceb1f407141.camel@sipsolutions.net>
+Subject: Re: [PATCH 01/13] wifi: cfg80211: Add provision to advertise
+ multiple radio in one wiphy
 From: Johannes Berg <johannes@sipsolutions.net>
-To: David Lin <yu-hao.lin@nxp.com>, Brian Norris <briannorris@chromium.org>
-Cc: Francesco Dolcini <francesco@dolcini.it>, "kvalo@kernel.org"
- <kvalo@kernel.org>, "linux-wireless@vger.kernel.org"
- <linux-wireless@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, Pete Hsieh <tsung-hsien.hsieh@nxp.com>, 
- "rafael.beims" <rafael.beims@toradex.com>, Francesco Dolcini
- <francesco.dolcini@toradex.com>
-Date: Wed, 10 Apr 2024 09:55:18 +0200
-In-Reply-To: <DU0PR04MB96365F2B6AFD856655D6A66CD1062@DU0PR04MB9636.eurprd04.prod.outlook.com>
-References: <ZfTspRKFgrO9xCTH@google.com>
-	 <969e95ccc4a1d35b45212b7fcb536ee90995e3b5.camel@sipsolutions.net>
-	 <PA4PR04MB9638D253189D6DD330B198B2D1332@PA4PR04MB9638.eurprd04.prod.outlook.com>
-	 <PA4PR04MB9638BE73DDBCE1CE8AA32BA8D1332@PA4PR04MB9638.eurprd04.prod.outlook.com>
-	 <b2d9a7ef53c5ab4212617e8edf202bbafe52e2f8.camel@sipsolutions.net>
-	 <ZftaJEIeNfV7YrVo@google.com>
-	 <PA4PR04MB9638F5037D1AB9BCF51CC9D9D1322@PA4PR04MB9638.eurprd04.prod.outlook.com>
-	 <Zf4rDifM6bLuqpX2@google.com>
-	 <4e5f3741819e457c5c79d825c6520cb9ee531b95.camel@sipsolutions.net>
-	 <PA4PR04MB96386917877832602F221282D13A2@PA4PR04MB9638.eurprd04.prod.outlook.com>
-	 <ZgxCngq_Rguc4qs8@google.com>
-	 <DU0PR04MB96365F2B6AFD856655D6A66CD1062@DU0PR04MB9636.eurprd04.prod.outlook.com>
+To: Ben Greear <greearb@candelatech.com>, Vasanthakumar Thiagarajan
+ <quic_vthiagar@quicinc.com>, Karthikeyan Periyasamy
+ <quic_periyasa@quicinc.com>,  ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+Date: Wed, 10 Apr 2024 09:56:33 +0200
+In-Reply-To: <80fe5786-f764-455d-ac44-22adf7aeaf94@candelatech.com>
+References: <20240328072916.1164195-1-quic_periyasa@quicinc.com>
+	 <20240328072916.1164195-2-quic_periyasa@quicinc.com>
+	 <e36599d3269496de59505b36be46f873976f8706.camel@sipsolutions.net>
+	 <033185b0-f878-a50b-d0d9-57fa79439bdf@quicinc.com>
+	 <ef6b6a7a4a9d3b01c0eb6abf0991e7e27425e102.camel@sipsolutions.net>
+	 <80fe5786-f764-455d-ac44-22adf7aeaf94@candelatech.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
@@ -82,24 +73,45 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Wed, 2024-04-10 at 07:30 +0000, David Lin wrote:
-> Hi Johannes and Brian,
-> =20
->     I think this patch is used to leverage MLME of wpa_supplicant and hos=
-tapd. It won't affect the usage of cfg80211 for mwifiex. I wonder if I can =
-prepare patch v10.
+On Fri, 2024-03-29 at 07:47 -0700, Ben Greear wrote:
+> On 3/29/24 07:30, Johannes Berg wrote:
+> > On Fri, 2024-03-29 at 19:41 +0530, Vasanthakumar Thiagarajan wrote:
+> > > >=20
+> > > > > + * @hw_chans: list of the channels supported by every constituen=
+t underlying
+> > > > > + *	hardware. Drivers abstracting multiple discrete hardware (rad=
+io) under
+> > > > > + *	one wiphy can advertise the list of channels supported by eac=
+h physical
+> > > > > + *	hardware in this list. Underlying hardware specific channel l=
+ist can be
+> > > > > + *	used while describing interface combination for each of them.
+> > > >=20
+> > > > I'd expect there to be a limit on channels being within a single ba=
+nd on
+> > > > a single "hardware"?
+> > > >=20
+> > >=20
+> > > There are ath12k hardware supporting multiple band which need to be
+> > > registered under one mac80211_hw/wiphy. This design is to support suc=
+h
+> > > hardware.
+> >=20
+> > Oh OK, that was something that I didn't have in mind any more, or never
+> > knew or paid attention to.
+>=20
+> Would it work to leave the phy reporting pretty much as it is now, but ad=
+d
+> a 'associated_peer_radios' list section, so that each phy could report th=
+e phys
+> associated with it?  Then user-space, driver, mac80211 etc could look up =
+the
+> other phys as needed to get a full picture?
+>=20
 
-No. That sentence tells me you've _still_ not understood any of the
-technical arguments in the thread, you're _still_ arguing with
-completely uninteresting arguments. Where before you had "it's well
-tested" and "it uses 'standard' APIs" now you're saying "it doesn't
-affect anyone else". All of that is obvious, and also completely besides
-the point.
-
-Please go back and actually _understand_ the discussion. Also actually
-_participate_ in the discussion too, so far you've pretty much only made
-empty arguments. Once you've understood the concerns and can explain why
-they don't apply, _then_ you can resend the patch.
+There's not really a good way to _do_ that short of creating multiple
+wiphys, but that causes _massive_ complexity in the stack (both cfg80211
+and mac80211) so we rejected it years ago.
 
 johannes
 
