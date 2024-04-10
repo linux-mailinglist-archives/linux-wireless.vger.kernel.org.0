@@ -1,89 +1,114 @@
-Return-Path: <linux-wireless+bounces-6058-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6059-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8158489E7E9
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 03:46:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0771889E85C
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 05:11:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A5FA2831BA
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 01:46:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9890B1F22E10
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 03:11:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F30931388;
-	Wed, 10 Apr 2024 01:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46F3C64A;
+	Wed, 10 Apr 2024 03:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I/78VjWd"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="aA2I9Cnc"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85D015A4;
-	Wed, 10 Apr 2024 01:46:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA3F20EB
+	for <linux-wireless@vger.kernel.org>; Wed, 10 Apr 2024 03:11:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712713587; cv=none; b=HtDsmNuBJIvdW0Y+Lhencar1OsY8m3YP3kaZ5lp0CL2h3iwXaFwpfCaZQvEOlVAuPohPlOp6UTohO4YMdp9/z/32EKhpKoo/nQYtEHzW5LHQ6toedp/R7qXvMW8LLvPXGx2LQwWC4z8U3Ws3aS7WbZkhtQIfJ6hbQj2To5MhGW8=
+	t=1712718682; cv=none; b=ng+dXhXhrPH98iSepGuGKvWiSQgIqiZSRMTciscf2Twb04+9XBJ7+3l8mGScFdv9ycpOX/DAfQuxsT3ZV8g6VxgP7uePzq1GKrAXI9/CxZz0yBFs223hkncfezxz+c/O6tczRZ6VKSZlTFCeiygP+2Btpy/j5APgmQCZWJOmYRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712713587; c=relaxed/simple;
-	bh=1YgFdUcBOKesTaua31ZEyD1c9Gpgvfr0heHVZed0Enk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FAbalXxZN1JpQBl13Anor0GjbmosIr42lIDoS9VaMG0iSzT1sbkVaG200g0tsj46N23w30h4d5CL3x1JkQnQuL5sEgobJUpGgTwwLQiuAeOHENnm9CMhT1khM2awZR8rmrtuiMlThjZsxqd7bucw32IVMah3cQ+irbzd8p46Apc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I/78VjWd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D42C433F1;
-	Wed, 10 Apr 2024 01:46:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712713587;
-	bh=1YgFdUcBOKesTaua31ZEyD1c9Gpgvfr0heHVZed0Enk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=I/78VjWdo/c0F0Ap07gI5asrS7PrsOu2M02J+DbxVjLWDvzFOCQj0or2QN13AWozE
-	 I69cMnaM1ljMIhs/0Lp84+zGGrKjGK+/CXANY3BLrmNxLBhq4kaduZjuEReLaCWWCM
-	 rte8M4SlHEUagzJtAXFK0rggGoLFQZvYFbNsor1v1NzuoQK/a4YRotlvV3NLP6fos1
-	 5WsKk0K30sTsNVRZti9VcJ00BcNP1yTZV7kxZYXi4/yHOzNi43F1A9xC8vq4CFQg0l
-	 rwcAwaw4bJhCi9poeYvELIrMuEt8FcP5FKz1pc4TBZxdLGNQelNbfUOj7E91vbTg6q
-	 dEzc8Cp+Z0Vvg==
-Date: Tue, 9 Apr 2024 18:46:25 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: aleksander.lobakin@intel.com, davem@davemloft.net, pabeni@redhat.com,
- edumazet@google.com, elder@kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- nbd@nbd.name, sean.wang@mediatek.com, Mark-MC.Lee@mediatek.com,
- lorenzo@kernel.org, taras.chornyi@plvision.eu, ath11k@lists.infradead.org,
- ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
- geomatsi@gmail.com, kvalo@kernel.org, quic_jjohnson@quicinc.com,
- leon@kernel.org, dennis.dalessandro@cornelisnetworks.com,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org,
- Jiri Pirko <jiri@resnulli.us>, Simon Horman <horms@kernel.org>, Daniel
- Borkmann <daniel@iogearbox.net>, Sebastian Andrzej Siewior
- <bigeasy@linutronix.de>
-Subject: Re: [PATCH net-next v4 1/9] net: free_netdev: exit earlier if dummy
-Message-ID: <20240409184625.301e4bc0@kernel.org>
-In-Reply-To: <20240409125738.1824983-2-leitao@debian.org>
-References: <20240409125738.1824983-1-leitao@debian.org>
-	<20240409125738.1824983-2-leitao@debian.org>
+	s=arc-20240116; t=1712718682; c=relaxed/simple;
+	bh=WXVR5Slcp9sF1GWCUfEwZFfufSRs8OFc1+dqEaf0jRI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=S3i0q2rFla7vFJ8+CUb4RRle6luic3wJWoiTq8JncspNZpDj0HVHBTaUKFCahMY74FMMhgB1DJSvdSfCFoRS9e/k8GmNzKonYYn491T65OxZJfabtdprfUNaUXtKnwsblqrUGISrqUXWzH7Mc/vInCOeVJ8ro1+vCNzEs20hnRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=aA2I9Cnc; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43A1XLvI028103;
+	Wed, 10 Apr 2024 03:11:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version:content-type; s=
+	qcppdkim1; bh=guxfdpP/7sTWwuRs/bJeCcUC8QIT+TmO1i4ZfTAxiro=; b=aA
+	2I9CncDxzDS/aVx1LiBRhAweQF+/mQaBfoJJLARCqt1NmMG6QWJe7Pv+quJ6s2Wh
+	yl4S6eqjJSNYeTTvEPjj+rYK7kJvImJkYU+//tiOt0JmiprUAYjVnBkMgcs+Wc1i
+	K+t99y+ZiwS8I7sLHz3SsSxlKBjzDvUazo77cSWC8GPAhKY5nc6tw001m8r3WhTV
+	35rm1bYnLWvJhGo2lv2h+KiOqqSbKz33IpKxPTPLvgEoukHhB5kTRuGzC8meZMSE
+	F+zwVSM/0pXnixIJBX+GUZwYIK5Tj5GGuIxzDR04L4CRBIAM1952NmmvId0j8nRB
+	Pw2uvornmvEs2sLjO1aQ==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xdh6qgcbp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 10 Apr 2024 03:11:15 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43A3BEXr006311
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 10 Apr 2024 03:11:14 GMT
+Received: from hu-deng-lv.qualcomm.com (10.49.16.6) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Tue, 9 Apr 2024 20:11:14 -0700
+From: Xin Deng <quic_deng@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+Subject: [PATCH v2] wifi: cfg80211: Clear mlo_links info when STA disconnect
+Date: Tue, 9 Apr 2024 20:10:48 -0700
+Message-ID: <20240410031048.23372-1-quic_deng@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 5UatMNzqWOAPkQO4zwSOvZ34q50q49jO
+X-Proofpoint-ORIG-GUID: 5UatMNzqWOAPkQO4zwSOvZ34q50q49jO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-09_12,2024-04-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 adultscore=0 malwarescore=0 suspectscore=0 spamscore=0
+ mlxlogscore=978 phishscore=0 mlxscore=0 lowpriorityscore=0 clxscore=1015
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404100022
 
-On Tue,  9 Apr 2024 05:57:15 -0700 Breno Leitao wrote:
-> For dummy devices, exit earlier at free_netdev() instead of executing
-> the whole function. This is necessary, because dummy devices are
-> special, and shouldn't have the second part of the function executed.
-> 
-> Otherwise reg_state, which is NETREG_DUMMY for dummy devices, will be
-> overwritten and there will be no way to identify that this is a dummy
-> device. Also, this device do not need the final put_device(), since
-> dummy devices are not registered (through register_netdevice()), where
-> the device reference is increased (at netdev_register_kobject() ->
-> device_add()).
+wdev->valid_links is not cleared when upper layer disconnect from a
+wdev->AP MLD. It has been observed that this would prevent offchannel
+operations like remain-on-channel which would be needed for user space
+operations with Public Action frame.
+Clear the wdev->valid_links when STA disconnect.
 
-There's a small fuzz when applying due to the phy topo changes
-landing, please rebase, the CI didn't ingest it right.
+Signed-off-by: Xin Deng <quic_deng@quicinc.com>
+---
+ net/wireless/sme.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/net/wireless/sme.c b/net/wireless/sme.c
+index 82e3ce42206c..6a08f9d35eb2 100644
+--- a/net/wireless/sme.c
++++ b/net/wireless/sme.c
+@@ -477,6 +477,7 @@ static void cfg80211_wdev_release_bsses(struct wireless_dev *wdev)
+ 				 &wdev->links[link].client.current_bss->pub);
+ 		wdev->links[link].client.current_bss = NULL;
+ 	}
++	wdev->valid_links = 0;
+ }
+ 
+ void cfg80211_wdev_release_link_bsses(struct wireless_dev *wdev, u16 link_mask)
+
+base-commit: 8027a466a77a288eccd2d11868f504e24231f3b7
 -- 
-pw-bot: cr
+2.17.1
+
 
