@@ -1,142 +1,144 @@
-Return-Path: <linux-wireless+bounces-6117-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6118-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 643C089F99C
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 16:13:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB13F89FA1B
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 16:40:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95D081C21E14
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 14:13:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCF3C28724E
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 14:40:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBF1E15EFAD;
-	Wed, 10 Apr 2024 14:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED46116DECA;
+	Wed, 10 Apr 2024 14:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VmFto3ze"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="JJnZGYAN"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F4115EFA8
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Apr 2024 14:12:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7FB16DEC3
+	for <linux-wireless@vger.kernel.org>; Wed, 10 Apr 2024 14:37:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712758364; cv=none; b=dqxiwe/Q+RBxxi56r5vXsSxI66BtHp69Vxzx8ThpOr6r9ldJMb7uMxf0PljbkGHT5WwwCcxqiMWeScxpszYK72uP3zegnh4vrMxhES9KBHU0No8WBNonpe/gUn8Kc+gjPFKJ0YYg8pjQw+KnQD7wVt6YYQkwV9vPDAWb1YENRJk=
+	t=1712759875; cv=none; b=o7Ev9x4iPNWqxvC244N9tqWugFpU+8cPUO2lygHz9Rkjxb0bR6RtI9Wcaxpy8Z2+36/GaDm4uRk+ygrEVqzLgOQ4wHWjJI8aXOllJ3IUQ/0DDhiqXfwf4zH26nVyfiHsVQ/mQLvbCADzSg/cZCeCkgokyZlZ0GLbRljqb1Ss6jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712758364; c=relaxed/simple;
-	bh=BXGtyS18Uukci2HwGWwcuVTHGU7yyftxekIlybw6Ye4=;
-	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=VRGtWQuqlwyualoicYIwVq9KsPCl/Vqmd5/dwp3BWXZQB5q/DSJZewlsxfUOFY/q7y62z/GR9LYihZ8nbPMO4SWus3tJyOLvynDIv5BeaWTzRpk0y0P0Ay6X+e8ziOT8wg4gJ6oPA8bMI47Ge8EDGlRMSNUVnAdkPzyrkBPHdCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VmFto3ze; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9BD7C433F1;
-	Wed, 10 Apr 2024 14:12:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712758364;
-	bh=BXGtyS18Uukci2HwGWwcuVTHGU7yyftxekIlybw6Ye4=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=VmFto3zeOwuxZuydrRcp2fu8oQE+TptliJRsvi5nvtmbUhfLMakxSXSvBVUOoZVy1
-	 P8w4VSwJ573NYEcxtC6T4Jt0wjAJuW+B7l2CmxXSvJD7C1iHCMvInUH09RMCkCZADv
-	 u05yWuTo/dy+R3CvLbTK2/vvq7L44gSOJHNbX0xOlraR/2ZPiVGncM0mTvrHJC9ieu
-	 7syxEK48KnmDRMlPAWTK+feYH5CX/hqYXYpodnUJWDaiBg29fA3InyLmVbTaVF0cOi
-	 HQu2x313+PWhSH/UqdUX8olhO865GEL7GnK51hy6jwukUPCCAmJS18tQbddGzDxOqW
-	 eeGbnyRIOUyCA==
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1712759875; c=relaxed/simple;
+	bh=HcjnHx29WXxDY+v7VWf1kZtucG8fOj8atDSMokCNb1I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=f0hEZUWbSzfJoiZeVDmTGCBRB2NjojTTxdqkk67Pwhq6XLbb5kfnXmGDEV2k1+gPH5l4kng5jT3otUiPNaqX7SJIMeaSsIxkzzxTZDRs4wXXNXI07kHn+kDD4/cuzraStuY88IF/fmHZX/VgOSADLD1xl+q1J5d082bmr3LHSWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=JJnZGYAN; arc=none smtp.client-ip=67.231.154.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
+	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 9731B30163C
+	for <linux-wireless@vger.kernel.org>; Wed, 10 Apr 2024 14:37:47 +0000 (UTC)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 1139C3C0073;
+	Wed, 10 Apr 2024 14:37:40 +0000 (UTC)
+Received: from [172.20.4.169] (unknown [69.170.33.158])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id 1CC6813C2B0;
+	Wed, 10 Apr 2024 07:37:37 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 1CC6813C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1712759858;
+	bh=HcjnHx29WXxDY+v7VWf1kZtucG8fOj8atDSMokCNb1I=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=JJnZGYANtK1l7D1hbkjx3zOUOTm4r/XaVktUQXEOwOPtuTgUPiEQGYFzHnqEsaWON
+	 YCL8/vfKdylC+xn87PdCc7oGskBwhNmdf3VlAgZw1dshlr8vigM42NX9YfxwjDM0aG
+	 +7pC7ylDnjbMzwnqcEvsEXQcJjH1S5hN9wR85EMM=
+Message-ID: <20b56e52-a5e2-70cd-a62a-8c4a3526c2cf@candelatech.com>
+Date: Wed, 10 Apr 2024 07:37:37 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: [PATCH 01/13] wifi: cfg80211: Add provision to advertise multiple
+ radio in one wiphy
+Content-Language: en-MW
+To: Johannes Berg <johannes@sipsolutions.net>,
+ Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>,
+ Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+ ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+References: <20240328072916.1164195-1-quic_periyasa@quicinc.com>
+ <20240328072916.1164195-2-quic_periyasa@quicinc.com>
+ <e36599d3269496de59505b36be46f873976f8706.camel@sipsolutions.net>
+ <033185b0-f878-a50b-d0d9-57fa79439bdf@quicinc.com>
+ <ef6b6a7a4a9d3b01c0eb6abf0991e7e27425e102.camel@sipsolutions.net>
+ <80fe5786-f764-455d-ac44-22adf7aeaf94@candelatech.com>
+ <31f30c0e318904f3a082c7f213576ceb1f407141.camel@sipsolutions.net>
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <31f30c0e318904f3a082c7f213576ceb1f407141.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v7 01/12] wifi: ath12k: add multiple radio support in a
- single
- MAC HW un/register
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240405194519.1337906-2-quic_ramess@quicinc.com>
-References: <20240405194519.1337906-2-quic_ramess@quicinc.com>
-To: Rameshkumar Sundaram <quic_ramess@quicinc.com>
-Cc: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
- Karthikeyan Periyasamy
-	<quic_periyasa@quicinc.com>, Sriram R <quic_srirrama@quicinc.com>,
- Rameshkumar Sundaram <quic_ramess@quicinc.com>, Jeff Johnson
-	<quic_jjohnson@quicinc.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <171275836091.3687247.13367447879167874394.kvalo@kernel.org>
-Date: Wed, 10 Apr 2024 14:12:42 +0000 (UTC)
+X-MDID: 1712759861-AjslrQx6Mflk
+X-MDID-O:
+ us5;at1;1712759861;AjslrQx6Mflk;<greearb@candelatech.com>;e45dbe21c4fc86b950914d8831baea70
 
-Rameshkumar Sundaram <quic_ramess@quicinc.com> wrote:
+On 4/10/24 00:56, Johannes Berg wrote:
+> On Fri, 2024-03-29 at 07:47 -0700, Ben Greear wrote:
+>> On 3/29/24 07:30, Johannes Berg wrote:
+>>> On Fri, 2024-03-29 at 19:41 +0530, Vasanthakumar Thiagarajan wrote:
+>>>>>
+>>>>>> + * @hw_chans: list of the channels supported by every constituent underlying
+>>>>>> + *	hardware. Drivers abstracting multiple discrete hardware (radio) under
+>>>>>> + *	one wiphy can advertise the list of channels supported by each physical
+>>>>>> + *	hardware in this list. Underlying hardware specific channel list can be
+>>>>>> + *	used while describing interface combination for each of them.
+>>>>>
+>>>>> I'd expect there to be a limit on channels being within a single band on
+>>>>> a single "hardware"?
+>>>>>
+>>>>
+>>>> There are ath12k hardware supporting multiple band which need to be
+>>>> registered under one mac80211_hw/wiphy. This design is to support such
+>>>> hardware.
+>>>
+>>> Oh OK, that was something that I didn't have in mind any more, or never
+>>> knew or paid attention to.
+>>
+>> Would it work to leave the phy reporting pretty much as it is now, but add
+>> a 'associated_peer_radios' list section, so that each phy could report the phys
+>> associated with it?  Then user-space, driver, mac80211 etc could look up the
+>> other phys as needed to get a full picture?
+>>
+> 
+> There's not really a good way to _do_ that short of creating multiple
+> wiphys, but that causes _massive_ complexity in the stack (both cfg80211
+> and mac80211) so we rejected it years ago.
 
-> Currently MAC HW un/register helper function support the single radio.
-> To enable single/multi link operation in the future, the following helper
-> functions need to be refactored to accommodate multiple radios under a
-> single MAC HW un/register:
-> 
->         * ath12k_ah_to_ar()
->         * ath12k_mac_hw_allocate()
->         * ath12k_mac_hw_register()
->         * ath12k_mac_hw_unregister()
-> 
-> This refactoring will make it easier to scale these functionalities and
-> support Multi link operation.
-> 
->                          Current Multi wiphy Model
-> 
->  +---------------+          +---------------+            +---------------+
->  |  Mac80211 hw  |          | Mac80211 hw   |            | Mac80211 hw   |
->  |  private data |          | private data  |            | private data  |
->  |               |          |               |            |               |
->  |ath12k_hw (ah) |          |ath12k_hw (ah) |            |ath12k_hw (ah) |
->  |               |          |               |            |               |
->  | +-----------+ |          | +-----------+ |            | +-----------+ |
->  | | ar (2GHz) | |          | | ar (5GHz) | |            | | ar (6GHz) | |
->  | +-----------+ |          | +-----------+ |            | +-----------+ |
->  |               |          |               |            |               |
->  +---------------+          +---------------+            +---------------+
-> 
->                            Single wiphy Model
-> 
->                             +--------------+
->                             | Mac80211 hw  |
->                             | private data |
->                             |              |
->                             |ath12k hw (ah)|
->                             | +----------+ |
->                             | |ar (2GHz) | |
->                             | +----------+ |
->                             | |ar (5GHz) | |
->                             | +----------+ |
->                             | |ar (6GHz) | |
->                             | +----------+ |
->                             +--------------+
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-> 
-> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-> Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
-> Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
-> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+I thought the problem ath12k is trying to fix is that there are currently multiple phys (radios) that needed to be made to
+look like a single phy?
 
-12 patches applied to ath-next branch of ath.git, thanks.
+For dual and tri-concurrent radios, I think we will need them to look like 3 individual radios for non-MLO use
+cases, but I guess there will be also some way to treat them as a single entity when using MLO.
 
-ba12f08f3167 wifi: ath12k: add multiple radio support in a single MAC HW un/register
-d01c08ed6fdb wifi: ath12k: Modify add and remove chanctx ops for single wiphy support
-b8ce837ea264 wifi: ath12k: modify ath12k mac start/stop ops for single wiphy
-314876885bdc wifi: ath12k: vdev statemachine changes for single wiphy
-0d6e6736ed9f wifi: ath12k: scan statemachine changes for single wiphy
-0148e40c9f0a wifi: ath12k: fetch correct radio based on vdev status
-b5068bc9180d wifi: ath12k: Cache vdev configs before vdev create
-cec77a252407 wifi: ath12k: Add additional checks for vif and sta iterators
-0da00e45ee9a wifi: ath12k: modify regulatory support for single wiphy architecture
-5a6af83c397d wifi: ath12k: Modify set and get antenna mac ops for single wiphy
-d258f16ba10f wifi: ath12k: Modify rts threshold mac op for single wiphy
-4f242b1d6996 wifi: ath12k: support get_survey mac op for single wiphy
+For instance, mt7996 currently reports 3 single-band wiphys, and each can be used independently.
+But assuming it starts supporting MLO, then those 3 single band wiphys will need to start acting
+at least somewhat like a single entity (while also concurrently being able to act as individual
+wiphys so that one can do a mix of MLO and non MLO sta/AP.)
+
+Maybe I'm missing the entire point of the ath12k patches though...
+
+Thanks,
+Ben
+
+> 
+> johannes
+> 
+
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240405194519.1337906-2-quic_ramess@quicinc.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
