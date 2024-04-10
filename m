@@ -1,118 +1,149 @@
-Return-Path: <linux-wireless+bounces-6120-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6121-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6BAB89FB05
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 17:06:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 514E689FB7F
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 17:27:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 721F628BB8E
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 15:06:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E59A31F21BFD
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 15:27:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25ABF16D9CC;
-	Wed, 10 Apr 2024 15:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A7616E882;
+	Wed, 10 Apr 2024 15:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="SNGUDwkX"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QMVx+iIj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from wfhigh3-smtp.messagingengine.com (wfhigh3-smtp.messagingengine.com [64.147.123.154])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 953A416C877;
-	Wed, 10 Apr 2024 15:05:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5979D1591E1;
+	Wed, 10 Apr 2024 15:27:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712761558; cv=none; b=A1DlDub83agIsr1T1YkejQwXrshTqYEUXRXDltLuKLzvCkWH8UzexbygWKEu60lQ2aX7+Be/X8aWBkzxnmW2Atk/+bEi6H0BpoTcIAG2v9+a2WFU7jRUrIn7YN6uTt4hvz28bxKgmYiNF0vTo6QcjYRrJlC3/p9y05s8JBxnwZM=
+	t=1712762861; cv=none; b=NWidxYlPHSnMdJEFE7OeK2PNFYl7/bjiBIbg8zUdwkqsNe78KwQ0e/D97cOgl+McVAu06xN1wJ5f0pnYXIg38SmQUX2ALY9TCoqiM+IFCHIgH2tQ49756w7tkZFGxkW8etscol5zjjA9Z4jKu5PDm2HTCULw4nlkK9y+VS0z+5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712761558; c=relaxed/simple;
-	bh=cUzFDAS3EbYkXdW7wC2mTAuzm+O4VDnkMYMj/YD+Qr0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aaHShbInXeEJ9YENnC/6jkDq7rvwUNIbe1y4X1JmHzQ/lWQIfKxJIMQ0ZK8f9zcDnhr+7omm0Z1y7h9aeuNnUT7K5V6MvXWfqZMQP0uhjdPu63eXXQ/cyuFOplPxOOoePs5TlDwHil8hbqA4up8ObWOtja3uEUWohXirpx0ynhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org; spf=none smtp.mailfrom=idosch.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=SNGUDwkX; arc=none smtp.client-ip=64.147.123.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=idosch.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=idosch.org
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfhigh.west.internal (Postfix) with ESMTP id AF66B18000F0;
-	Wed, 10 Apr 2024 11:05:52 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Wed, 10 Apr 2024 11:05:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1712761552; x=1712847952; bh=TDGvkul+Q73nN0fHZOhTAHooDQZw
-	t3FC9x/QxxSs3zo=; b=SNGUDwkXjBq6YtQxxM3lA3GMHmXSrT2cy2J4JaBa5KHE
-	Hc+xeukLb0K8D1cZxsH4khv3vX5w4V26Ev7YwRBsBzEtfVxXcQG/DDo7Wq92YHEw
-	dcfJTEmtqnjPnc9NgFt/el+AJwp41r1btXkQrABaZ7W99StTxiXT58NBJ8p2lltD
-	iUKRp+tK1x7+tt/v5GS20dHXtRAxxLkSGlKzr4tdgJHRLM34nG7atn/SqZAqyZjE
-	Kghp5JrU2hT2wOiFqGuku2InwpV8r62JpiCDJeaLhY1qurB+4dCCtq3yEjCwQQhp
-	exn1cwQNlaGDPugyI06Ob69hDT0wm+lzpi7kihAHuA==
-X-ME-Sender: <xms:z6oWZirsV-nMSlBJ_lJHht3gSOq-1b8CG2vrEJEIev3ET7Gg5BIBhw>
-    <xme:z6oWZgpmS8OJjlntZPqhKVYsG_Ms_fMU82xVOyAvV8_0Lf8-lfkq0Hq4pN2Xy7GMZ
-    deF3Ovb49n63Gc>
-X-ME-Received: <xmr:z6oWZnPGX5nP-7JRHmiHleiBxQF-dNbP1wTCXQU8oUbIv9e_gjPq_L4IW_Kc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudehiedgkedvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepkfguohcu
-    ufgthhhimhhmvghluceoihguohhstghhsehiughoshgthhdrohhrgheqnecuggftrfgrth
-    htvghrnhepvddufeevkeehueegfedtvdevfefgudeifeduieefgfelkeehgeelgeejjeeg
-    gefhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepih
-    guohhstghhsehiughoshgthhdrohhrgh
-X-ME-Proxy: <xmx:z6oWZh49-kpbe5t6iou3vs4d-1A5eJnaI5xAIu1_4gCElWtyVPM-Cw>
-    <xmx:z6oWZh6-YFeqxhU1DrfRO3jic7Oo4N5ICNItdUDiCIzLDV9VlwEIDQ>
-    <xmx:z6oWZhiDjueR4bTXrVLEOVXiuABAM3tjPYq_DnwRZaBQzewPK0MBUA>
-    <xmx:z6oWZr7yMr5pEO2Zbdcw9y9CBMvABVOix3FefIk--Aup764a9f9V1w>
-    <xmx:0KoWZumSlhW9MHX9P70o-XAB3cMSnYOwHvogsN-suiaqrMuljzfLXBGb>
-Feedback-ID: i494840e7:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 10 Apr 2024 11:05:50 -0400 (EDT)
-Date: Wed, 10 Apr 2024 18:05:47 +0300
-From: Ido Schimmel <idosch@idosch.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: aleksander.lobakin@intel.com, kuba@kernel.org, davem@davemloft.net,
-	pabeni@redhat.com, edumazet@google.com, elder@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, nbd@nbd.name,
-	sean.wang@mediatek.com, Mark-MC.Lee@mediatek.com,
-	lorenzo@kernel.org, taras.chornyi@plvision.eu,
-	ath11k@lists.infradead.org, ath10k@lists.infradead.org,
-	linux-wireless@vger.kernel.org, geomatsi@gmail.com,
-	kvalo@kernel.org, quic_jjohnson@quicinc.com, leon@kernel.org,
-	dennis.dalessandro@cornelisnetworks.com,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	bpf@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>,
-	Simon Horman <horms@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: Re: [PATCH net-next v5 02/10] net: free_netdev: exit earlier if dummy
-Message-ID: <Zhaqyyk9CUaUvMDy@shredder>
-References: <20240410131407.3897251-1-leitao@debian.org>
- <20240410131407.3897251-3-leitao@debian.org>
+	s=arc-20240116; t=1712762861; c=relaxed/simple;
+	bh=yaqHM0962MfpM+OFdQda8fXPe0R1wO7c3AlNIHOVwdc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=cIDr9b+TXaDzq5eq0ksIiA5LVmLWXAL58VAPt8bPBT3w2Lp5ptcZt8K1cJEot2DdXJ3ZHUQemGHmuSecBTA7AXhXPlN0qm0PEMop62C+J9yTcBqnLuD/AvZI5AbjTIKRvXHuWID3lh/GmRj4O/5b3B4A1rcFzaHvSVRZEpjeZtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=QMVx+iIj; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43A8bUQZ020430;
+	Wed, 10 Apr 2024 15:27:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=SeKInDMchgVr+fW9WAo6YizzoIlylrKBtPkpDrYflGc=; b=QM
+	Vx+iIjNoBxgbQhbk47P1pSkvCBi6kiaSSZFteiH8PqXWUF0Y7UYSWrwJ3USY+xai
+	GpMzaeDLZwM3AoGqxqUV9+ueya3RJGxE95WUHnvgCDFs5MzZP+Djd3mUZ8JzAwe0
+	6S2YEqGQJdphdetr8iOfJZaaPyjM5230lKtCzNV8IrViCObX5p7tH3axnILjKVCn
+	HrHWFKU22mBrjW0gJUsF1fI2uYWOU0hgzhaQSDLoYsE+Jpvut0geIRe/ud4DPPSJ
+	8fggfL5TrmQ7pfWvB/7hPSNjCQTZ3E7PVA4IghTfCh3TrgZ3LycX2IH7oruboSQa
+	QCfwL5e2a4lspc6371dA==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xdnqtjn3f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 10 Apr 2024 15:27:09 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43AFR8Ts012315
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 10 Apr 2024 15:27:08 GMT
+Received: from [10.110.37.144] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 10 Apr
+ 2024 08:27:06 -0700
+Message-ID: <d440d38f-f805-4c85-96b3-ae0b5ad2bbdc@quicinc.com>
+Date: Wed, 10 Apr 2024 08:27:05 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240410131407.3897251-3-leitao@debian.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 05/16] dt-bindings: net: wireless: describe the ath12k
+ PCI module
+Content-Language: en-US
+To: Bartosz Golaszewski <brgl@bgdev.pl>,
+        Marcel Holtmann
+	<marcel@holtmann.org>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        "David
+ S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Rob Herring
+	<robh@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+        Bjorn
+ Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+        Catalin
+ Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Bjorn
+ Helgaas <bhelgaas@google.com>,
+        Saravana Kannan <saravanak@google.com>,
+        Geert
+ Uytterhoeven <geert+renesas@glider.be>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Neil
+ Armstrong <neil.armstrong@linaro.org>,
+        Marek Szyprowski
+	<m.szyprowski@samsung.com>,
+        Alex Elder <elder@linaro.org>,
+        Srini Kandagatla
+	<srinivas.kandagatla@linaro.org>,
+        Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>,
+        Abel Vesa <abel.vesa@linaro.org>,
+        Manivannan
+ Sadhasivam <mani@kernel.org>,
+        Lukas Wunner <lukas@wunner.de>,
+        Dmitry
+ Baryshkov <dmitry.baryshkov@linaro.org>,
+        Amit Pundir
+	<amit.pundir@linaro.org>, Xilin Wu <wuxilin123@gmail.com>
+CC: <linux-bluetooth@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-wireless@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-pci@vger.kernel.org>,
+        <linux-pm@vger.kernel.org>,
+        Bartosz Golaszewski
+	<bartosz.golaszewski@linaro.org>,
+        Krzysztof Kozlowski
+	<krzysztof.kozlowski@linaro.org>
+References: <20240410124628.171783-1-brgl@bgdev.pl>
+ <20240410124628.171783-6-brgl@bgdev.pl>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240410124628.171783-6-brgl@bgdev.pl>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: Wx5pfsg1IEL3FNsbq-QxsVprddWodQtT
+X-Proofpoint-GUID: Wx5pfsg1IEL3FNsbq-QxsVprddWodQtT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-10_04,2024-04-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 suspectscore=0
+ lowpriorityscore=0 mlxscore=0 adultscore=0 impostorscore=0 phishscore=0
+ bulkscore=0 priorityscore=1501 malwarescore=0 spamscore=0 mlxlogscore=826
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2404010003
+ definitions=main-2404100112
 
-On Wed, Apr 10, 2024 at 06:13:43AM -0700, Breno Leitao wrote:
-> For dummy devices, exit earlier at free_netdev() instead of executing
-> the whole function. This is necessary, because dummy devices are
-> special, and shouldn't have the second part of the function executed.
-> 
-> Otherwise reg_state, which is NETREG_DUMMY, will be overwritten and
-> there will be no way to identify that this is a dummy device. Also, this
-> device do not need the final put_device(), since dummy devices are not
-> registered (through register_netdevice()), where the device reference is
-> increased (at netdev_register_kobject()/device_add()).
-> 
-> Suggested-by: Jakub Kicinski <kuba@kernel.org>
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+On 4/10/2024 5:46 AM, Bartosz Golaszewski wrote:
+[...]
+> +description:
+> +  Qualcomm Technologies IEEE 802.11ax PCIe devices.
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+if you respin, nit: s/11ax/11be/
+
 
