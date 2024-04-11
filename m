@@ -1,164 +1,130 @@
-Return-Path: <linux-wireless+bounces-6135-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6136-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72D7E8A01E0
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 23:20:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B39818A0580
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Apr 2024 03:29:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A48CC1C21777
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Apr 2024 21:20:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62B0F1F22C2F
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Apr 2024 01:29:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E92F31836CE;
-	Wed, 10 Apr 2024 21:20:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="oDq5+6x5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7417679E2;
+	Thu, 11 Apr 2024 01:28:06 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pv237.mxout.mta2.net (pv237.mxout.mta2.net [178.33.242.237])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED30217BB2F
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Apr 2024 21:20:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250ED657C6
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Apr 2024 01:28:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.33.242.237
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712784046; cv=none; b=JrrXSYcGGxSl25eU/Wb0Y1k6Errv1QArStePeYzg3avszgZuBy+VcHPeZ9qHfPMZxupojzBOQNc0MMlSy1o8KiqUeRHN5Tscrs9fBgTV53TkJBgiA4mBUyoUqRO+YhFMcyAKwLm/kFkaymhfxkXxrd3PHVs6s7r2L0e7bxJk0Gg=
+	t=1712798886; cv=none; b=d1UYrajxb17hdlGxBI5R48MfYX1jkeEauEFgWOxTkchkCMKiHV4UjkDv12E+GYaA9WslcMrYV3oxOK8slrHJMbpFoKShH9OY7WoAF/0OMfdXRySVpqpyCWttIT8n9BCg6H05qZXAp8hdedT1GKCDKcGfPSvMSJqqAKh3eljmsW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712784046; c=relaxed/simple;
-	bh=qeon5nMw9hqtoeOdYCIVQbMLKMGgy2yvGMQDmRWCUHg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PmcnE29TsxQ+o5fYHCALSltbVolFHOBELoDi28zVmUxwSDDchdrsPTXLAfBkOb/Ajfv7O2xk7K1tNlMd9doCh8iYrCmGdocwtfc+IXeH2Q3+8Xy/FleXNIlzReJjCZ+tMkM/vDm7HILz/a/eiV0KBBnYyY938lHWv2ddkKAArtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=oDq5+6x5; arc=none smtp.client-ip=148.163.129.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
-	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id A2CC52A224A
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Apr 2024 21:03:48 +0000 (UTC)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id D0E7C100073;
-	Wed, 10 Apr 2024 21:03:40 +0000 (UTC)
-Received: from [192.168.1.148] (unknown [136.42.28.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 1540013C2B0;
-	Wed, 10 Apr 2024 14:03:39 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 1540013C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1712783020;
-	bh=qeon5nMw9hqtoeOdYCIVQbMLKMGgy2yvGMQDmRWCUHg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oDq5+6x5DT3Hso4hgUSMB2AbNbo5LpS7AGpau6Pfmk/ymlq5x03+AE9dFb9wxA1Lx
-	 ws6vMNSdzt7YqcG8Nfh0GvzNqY79fFjuBrAJVj9rDLUa2N+6YpP4RtGMff+sT4y1Uw
-	 fxC8VBspFi1F8/nGS40dKi057Bwk3NMrZmkAKSNE=
-Message-ID: <72f491f8-dd3a-0c9e-7490-4d51c86f2102@candelatech.com>
-Date: Wed, 10 Apr 2024 14:03:39 -0700
+	s=arc-20240116; t=1712798886; c=relaxed/simple;
+	bh=EXDdSD9Uf0lflZMxVYblJkIy+5X74ZdTgv+ooU7jtcU=;
+	h=From:Date:Subject:Message-Id:To:Cc:MIME-Version:Content-Type; b=I0z7GA6Tkx4TeYEEj4H2km1zU4unAUGZOPOuUny7OAwRPYqYDsH4flPFK5136dKkICrVRlCtdvbjG3zKR0xzm93CSg0RjvzzVpmId1ED3w3o77o18Iw0Fp0BTddDWJu5jXKgsftjOnyrh2XVA03/eolHNqh1tWtZE5AtWTwvluw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=bounces.elasticemail.net; arc=none smtp.client-ip=178.33.242.237
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bounces.elasticemail.net
+From: Larry Finger <Larry.Finger@gmail.com>
+Date: Thu, 11 Apr 2024 01:26:55 +0000
+Subject: [RFC] rtw88: Fix startup problems for SDIO wifi plus UART Bluetooth
+Message-Id: <4umro86wvv84.MjDfYvt4P5uZryt8boBK8Q2@1EHFQ.trk.elasticemail.com>
+Reply-To: Larry Finger <Larry.Finger@gmail.com>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org,
+ Larry Finger <Larry.Finger@gmail.com>, stable@vger.kernel.org
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+X-Msg-EID: MjDfYvt4P5uZryt8boBK8Q2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH 01/13] wifi: cfg80211: Add provision to advertise multiple
- radio in one wiphy
-Content-Language: en-MW
-To: Johannes Berg <johannes@sipsolutions.net>,
- Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>,
- Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
- ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-References: <20240328072916.1164195-1-quic_periyasa@quicinc.com>
- <20240328072916.1164195-2-quic_periyasa@quicinc.com>
- <e36599d3269496de59505b36be46f873976f8706.camel@sipsolutions.net>
- <033185b0-f878-a50b-d0d9-57fa79439bdf@quicinc.com>
- <ef6b6a7a4a9d3b01c0eb6abf0991e7e27425e102.camel@sipsolutions.net>
- <80fe5786-f764-455d-ac44-22adf7aeaf94@candelatech.com>
- <31f30c0e318904f3a082c7f213576ceb1f407141.camel@sipsolutions.net>
- <20b56e52-a5e2-70cd-a62a-8c4a3526c2cf@candelatech.com>
- <614bb8a8f1d9174ad7d87cf7636f657cda7b1ef9.camel@sipsolutions.net>
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <614bb8a8f1d9174ad7d87cf7636f657cda7b1ef9.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MDID: 1712783022-zT9Y6Rwlr8VG
-X-MDID-O:
- us5;ut7;1712783022;zT9Y6Rwlr8VG;<greearb@candelatech.com>;e45dbe21c4fc86b950914d8831baea70
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 
-On 4/10/24 08:42, Johannes Berg wrote:
-> On Wed, 2024-04-10 at 07:37 -0700, Ben Greear wrote:
->> On 4/10/24 00:56, Johannes Berg wrote:
->>> On Fri, 2024-03-29 at 07:47 -0700, Ben Greear wrote:
->>>> On 3/29/24 07:30, Johannes Berg wrote:
->>>>> On Fri, 2024-03-29 at 19:41 +0530, Vasanthakumar Thiagarajan wrote:
->>>>>>>
->>>>>>>> + * @hw_chans: list of the channels supported by every constituent underlying
->>>>>>>> + *	hardware. Drivers abstracting multiple discrete hardware (radio) under
->>>>>>>> + *	one wiphy can advertise the list of channels supported by each physical
->>>>>>>> + *	hardware in this list. Underlying hardware specific channel list can be
->>>>>>>> + *	used while describing interface combination for each of them.
->>>>>>>
->>>>>>> I'd expect there to be a limit on channels being within a single band on
->>>>>>> a single "hardware"?
->>>>>>>
->>>>>>
->>>>>> There are ath12k hardware supporting multiple band which need to be
->>>>>> registered under one mac80211_hw/wiphy. This design is to support such
->>>>>> hardware.
->>>>>
->>>>> Oh OK, that was something that I didn't have in mind any more, or never
->>>>> knew or paid attention to.
->>>>
->>>> Would it work to leave the phy reporting pretty much as it is now, but add
->>>> a 'associated_peer_radios' list section, so that each phy could report the phys
->>>> associated with it?  Then user-space, driver, mac80211 etc could look up the
->>>> other phys as needed to get a full picture?
->>>>
->>>
->>> There's not really a good way to _do_ that short of creating multiple
->>> wiphys, but that causes _massive_ complexity in the stack (both cfg80211
->>> and mac80211) so we rejected it years ago.
->>
->> I thought the problem ath12k is trying to fix is that there are currently multiple phys (radios) that needed to be made to
->> look like a single phy?
-> 
-> Correct.
-> 
->> For dual and tri-concurrent radios, I think we will need them to look like 3 individual radios for non-MLO use
->> cases
-> 
-> No, I don't see why, and if you want that we wouldn't support it anyway,
-> you'd have to have a module option or something to decide which way to
-> go.
-> 
-> But it really ought to not be needed - the point of these patches is to
-> give userspace enough information to know how to (and where) to create
-> separate BSSes, with or without MLO between them.
-> 
->> For instance, mt7996 currently reports 3 single-band wiphys, and each can be used independently.
->> But assuming it starts supporting MLO, then those 3 single band wiphys will need to start acting
->> at least somewhat like a single entity
-> 
-> Yes.
-> 
->> (while also concurrently being able to act as individual
->> wiphys so that one can do a mix of MLO and non MLO sta/AP.)
-> 
-> No.
+As discussed in the links below, the SDIO part of RTW8821CS fails to
+start correctly if such startup happens while the UART portion of
+the chip is initializing. The logged results with such failure is
 
-Hello Johannes,
+[   10.230516] rtw_8821cs mmc3:0001:1: Start of rtw_sdio_probe
+[   10.306569] Bluetooth: HCI UART driver ver 2.3
+[   10.306717] Bluetooth: HCI UART protocol Three-wire (H5) registered
+[   10.307167] of_dma_request_slave_channel: dma-names property of node '/serial@fe650000' missing or empty
+[   10.307199] dw-apb-uart fe650000.serial: failed to request DMA
+[   10.543474] rtw_8821cs mmc3:0001:1: Firmware version 24.8.0, H2C version 12
+[   10.730744] rtw_8821cs mmc3:0001:1: sdio read32 failed (0x11080): -110
+[   10.730923] rtw_8821cs mmc3:0001:1: sdio write32 failed (0x11080): -110
 
-Is there any design document for the combined phy approach somewhere publicly available?
+Due to the above errors, wifi fails to work.
 
-It is hard to understand the over all goals by just reading patches as they show up on
-the public mailing lists...
+For those instances when wifi works, the following is logged:
 
-Thanks,
-Ben
+[   10.452861] Bluetooth: HCI UART protocol Three-wire (H5) registered
+[   10.453580] of_dma_request_slave_channel: dma-names property of node '/serial@fe650000' missing or empty
+[   10.453621] dw-apb-uart fe650000.serial: failed to request DMA
+[   10.455741] rtw_8821cs mmc3:0001:1: Start of rtw_sdio_probe
+[   10.639186] rtw_8821cs mmc3:0001:1: Firmware version 24.8.0, H2C version 12
 
+In this case, SDIO wifi works correctly. The correct case is ensured by
+adding an mdelay(500) statement before the call to rtw_core_init(). No
+adverse effects are observed.
+
+Link: https://1EHFQ.trk.elasticemail.com/tracking/click?d=1UfsVowwwMAM6kBoyumkHP3o7pYa4kGXhuklYI-QPLuVUi2ohkUG8HssjZcN67C_2TySHAezxTUVFT_8wvKkE9xqzm8H8qwhbclOJ9HB0cExNK65eHoXK4LaCW3PT7iyvMI3d6qqwN6PHhYj2GEblxeP4xr4CJPwZE7lyMCRTuxZ0
+Link: https://1EHFQ.trk.elasticemail.com/tracking/click?d=XUEf4t8W9xt0czASPOeeDt8BnPqLK_YeGMMwadyXNu17p5TeSDk6RmEZ25rBt0-C5d-GR5IlKqu5URoKaespUAOAffgoysVTLbvgzQoAO57Ix1ChR-fYsf2VGRa1vIR9iWmNK1bUBvdHTZb0StprYVFMTYNi3fpihu3YoQYbaiZsYjqFovexmfiXfyHM3S00rqaJrXQwoylF4bELv8WaAC-QQM6OuDzE6rb32eW83smj0
+Fixes: 65371a3f14e7 ("wifi: rtw88: sdio: Add HCI implementation for SDIO based chipsets")
+Signed-off-by: Larry Finger <Larry.Finger@gmail.com>
+Cc: stable@vger.kernel.org # v6.4+
+---
+ drivers/net/wireless/realtek/rtw88/sdio.c | 28 +++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
+index 0cae5746f540..eec0ad85be72 100644
+--- a/drivers/net/wireless/realtek/rtw88/sdio.c
++++ b/drivers/net/wireless/realtek/rtw88/sdio.c
+@@ -1325,6 +1325,34 @@ int rtw_sdio_probe(struct sdio_func *sdio_func,
+ 	rtwdev->hci.ops = &rtw_sdio_ops;
+ 	rtwdev->hci.type = RTW_HCI_TYPE_SDIO;
+ 
++	/* Insert a delay of 500 ms. Without the delay, the wifi part
++	 * and the UART that controls Bluetooth interfere with one
++	 * another resulting in the following being logged:
++	 *
++	 * Start of SDIO probe function.
++	 * Bluetooth: HCI UART driver ver 2.3
++	 * Bluetooth: HCI UART protocol Three-wire (H5) registered
++	 * of_dma_request_slave_channel: dma-names property of node '/serial@fe650000'
++	 *	 missing or empty
++	 * dw-apb-uart fe650000.serial: failed to request DMA
++`	 * rtw_8821cs mmc3:0001:1: Firmware version 24.8.0, H2C version 12
++	 * rtw_8821cs mmc3:0001:1: sdio read32 failed (0x11080): -110
++	 *
++	 * If the UART is finished initializing before the SDIO probe
++	 * function startw, the following is logged:
++	 *
++	 * Bluetooth: HCI UART protocol Three-wire (H5) registered
++	 * of_dma_request_slave_channel: dma-names property of node '/serial@fe650000'
++	 *	missing or empty
++	 * dw-apb-uart fe650000.serial: failed to request DMA
++	 * Start of SDIO probe function.
++	 * rtw_8821cs mmc3:0001:1: Firmware version 24.8.0, H2C version 12
++	 * Bluetooth: hci0: RTL: examining hci_ver=08 hci_rev=000c lmp_ver=08 lmp_subver=8821
++	 * SDIO wifi works correctly.
++	 *
++	 * No adverse effects are observed from the delay.
++	 */
++	mdelay(500);
+ 	ret = rtw_core_init(rtwdev);
+ 	if (ret)
+ 		goto err_release_hw;
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+2.44.0
+
+
+https://1EHFQ.trk.elasticemail.com/tracking/unsubscribe?d=Q8ssbFKKxFyDYflgetP6nBeacBsR9zpdaz0g6MwIeA6CJKd2sQMmPI9ONTwNj6faC9CgSWZc53ZQ96HQFrbDSPngQHeCyqSokhmrQJQALWxI0
 
