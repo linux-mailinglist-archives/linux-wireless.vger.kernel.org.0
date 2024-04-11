@@ -1,171 +1,181 @@
-Return-Path: <linux-wireless+bounces-6197-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6198-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44E868A1DC6
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Apr 2024 20:18:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 517C38A1E3C
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Apr 2024 20:31:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDE4628AA28
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Apr 2024 18:18:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1B261F23BF7
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Apr 2024 18:31:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 866A9205E39;
-	Thu, 11 Apr 2024 17:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C46E747774;
+	Thu, 11 Apr 2024 18:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G8s+UbqG"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ILKX1iH7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B17056458
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Apr 2024 17:28:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 328D614F65
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Apr 2024 18:00:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712856517; cv=none; b=GskjjQvj/x1y3tTHriP3CkZJB4vua6ufYU0ZZz6eK0QDnlh8qifrPvIUhK1TjtRqT9YtF6mTZnsv6VOBjL7bqPIkhDjldsR2bxyMQKmJwKFHS3MY+3AareBAPGmLj8xwXS/AvaHzOXP4sE0OjL6o0j1CnmdWbkNXRmCheVD7mKc=
+	t=1712858456; cv=none; b=X50RYrAfu8NwBuzlkXL3p9w8c0+wHsuAwYTYUwsou9LOAWwqAhsY8weZnLbp0HJ/y1FHzqSNNdKkUo4DvUawVm8DO7tbLjN+zikiaXm0d2rkfjI5PlQ/mSLMlYwYcwvHYxb3gpJW9Iy3R5UR0+XgN4NmWjNp7wjt38mQyAjK9Ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712856517; c=relaxed/simple;
-	bh=YEGi9Jy+zH0Fbu65l8woHH0AF4eBEty5nu13kp4o6d8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qkLqa0yanpM+/slNbNVYVNtXHdlVSO6L0bEqg75hjuBx5VxPSeKqcIiJrXGkgYpBXBbvrVZHvy1E3KLdg5weDU1TkcaeFXpY2189HhTHE4nG5phjYrjowTMCHR/ZXjmsX8tyW/MFulAVhO5K+4rHhyTLQXf6ABKFcPTys6DuofI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lwfinger.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G8s+UbqG; arc=none smtp.client-ip=209.85.161.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lwfinger.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-5a7d6bc81c6so58511eaf.2
-        for <linux-wireless@vger.kernel.org>; Thu, 11 Apr 2024 10:28:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712856514; x=1713461314; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=0T8rtoqQ92EDxuwLceugcaPWhIqaMxutxDInAl4oXOs=;
-        b=G8s+UbqG8h0kHmqn35Y7JN+oh8ZHC8SrZzQDo/nXl81kp29Ea4AERjhTfgA2T1DFOD
-         77G1f1y69A/nFqxwhfKpu6W7Du54QJV6WnJCwY6gSywyWP51zGbUBMYoqRF6FRXYUc1K
-         5NhdHsK6lC7AdYE+ycAO1vkp9rfTtbxZK+LWaTWj3+pidHmJVpiFcKc39I9GhbBEFPj2
-         v1Q/ajTwZkm9tVuIwgdFvuaa5T6BCKIBcPRCoUY/0RRMQ/gOVIHM/gL96qUHjGP+/pCh
-         kz7XIXkVmPvS5V0PyHtPl2BehzoAA47vMwPDiyUdK2BIoNRy3MCLGT22mMogF6am/Wir
-         D5gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712856514; x=1713461314;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0T8rtoqQ92EDxuwLceugcaPWhIqaMxutxDInAl4oXOs=;
-        b=p3Q6ATjuqrzzD7QBAMoAp+3AXXvurEO/OHyeVkwwM0xvi5fPZf9X5Ybkt7iSk0gNU+
-         IztrlKmJxII+g3YAer2u4hQuwn+eBcPIkFwuXcxQEez435VzSWGfQrOXHkn5qyQiXkST
-         pqistVZH2nrIWgDkWMqOJZSICCqaQXUh7HAXTGKopcS/oobRiDwM9dbNfxcFHKHzip7M
-         n83jCV37dqTPxWE+n7Q7Y8Tja3lFobge6eg37Eqf7Z5OXS9aAd9SHhfdh64zwRtjvtFY
-         jyoIwY8w7qyhg6wVJz47Hw8STaYyJuW5HMhpwrh7x+sUSO0WmAycSRfgBXUXDXwmgmfX
-         7UgA==
-X-Forwarded-Encrypted: i=1; AJvYcCVMBcJ57sLTFE0vozE3kc0u+MwYuvh4lY4Np6bkYo5MBalPrU858aFCRDujgxvcj3D3Mq6hNKAWdZiT081C0/lfpW/bz+pg8Gdnk9JQ06s=
-X-Gm-Message-State: AOJu0YwgD8WN2OmrLR8BZ6cD9uRMge/JGmm4bIhsfgz2Qg2LRhcmNpil
-	KkOSAwOqz7qBPJj52ZeTLXj77Xfu2LT5j8CGPdWWNNti9/DohZ1i
-X-Google-Smtp-Source: AGHT+IF2VHmoqavvNAVsZhtSDshMzodfyvV3IJQ+2x4RRdPtaxtgzQ0JgtsglTpciWB2Ad2kqheJow==
-X-Received: by 2002:a05:6870:972a:b0:220:bd1c:6c21 with SMTP id n42-20020a056870972a00b00220bd1c6c21mr145816oaq.39.1712856514381;
-        Thu, 11 Apr 2024 10:28:34 -0700 (PDT)
-Received: from [192.168.1.119] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id wz2-20020a0568707ec200b0022e9ffdb5a5sm434641oab.24.2024.04.11.10.28.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Apr 2024 10:28:33 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <46745fe7-a43d-4f7c-b247-f0fde01ee63e@lwfinger.net>
-Date: Thu, 11 Apr 2024 12:28:33 -0500
+	s=arc-20240116; t=1712858456; c=relaxed/simple;
+	bh=rb3noOqbDv6eGp+yYFrfaQeIRPAlfmAf5+m7Vv/Lgbk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=eN1tmXrT5soJ3hyVn90BK4ImIzF2fj92uNBv3F7zxfjCjZf/DLXFXkOOl6dda0ioFIXs4i/RzOJXsKHutQoSruwlQstEo4uKXtwoqd251g0FHv8Bs2oMW7iesmwKFmQll5zZvjDo4fkIDh0/pvXxOV0Xx4oFff5r/fu/DOUFhJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ILKX1iH7; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43BDYf04011107;
+	Thu, 11 Apr 2024 18:00:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=qFLKA5s4ZScGNbJySHx0GJT+0skUyXTIdyR3J9uMtwY=; b=IL
+	KX1iH7vYMBs4CVaVwElianSNse7hB5VmzJKMeV1ZhsEwSlBZzquE4dZGRYijFxWR
+	vVkDtkJXD2Wo1CAuhy/K4wpWa8KvvqmiAY1bf8wZcEXuZ9riumOK39ZeBJNdwnU9
+	DF2NgKp2J9snjooIjQRU+zH/BHpfqDoofHEaIyjpbCxDwjMR4dSPGy9vU/BMJ2+g
+	cmzOvXbqRMR7vskBfgg5Skoz9iNyj+UHzLtd8zD0yq1oW/lVnSGupfBd4KkEmJfF
+	naZjfRXmHxnqNo1K/q5tfOyFvWs5rPYd0CZy/X8VfKreuUeWuY/kCFstbYf2Iq6v
+	jYVFwmCJiFLD/4D3h6RA==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xedugsc9x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 11 Apr 2024 18:00:46 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43BI0jcS018132
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 11 Apr 2024 18:00:45 GMT
+Received: from [10.216.26.172] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 11 Apr
+ 2024 11:00:43 -0700
+Message-ID: <eac79cf1-680e-5c5c-2c24-5e7bc1414fc1@quicinc.com>
+Date: Thu, 11 Apr 2024 23:30:39 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] rtw88: Fix startup problems for SDIO wifi plus UART
- Bluetooth
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>, Larry Finger <Larry.Finger@gmail.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <4umro86wvv84.MjDfYvt4P5uZryt8boBK8Q2@1EHFQ.trk.elasticemail.com>
- <5af71338f3904aac9d2c237637c851e7@realtek.com>
- <287e9d4e-316a-4579-961e-58e75abea534@lwfinger.net>
- <87o7agjs00.fsf@kernel.org>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2] wifi: ath12k: fix mac id extraction when MSDU
+ spillover in rx error path
 Content-Language: en-US
-From: Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <87o7agjs00.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Kalle Valo <kvalo@kernel.org>
+CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+References: <20240329092432.873710-1-quic_nithp@quicinc.com>
+ <87bk6gz1jc.fsf@kernel.org>
+From: Nithyanantham Paramasivam <quic_nithp@quicinc.com>
+In-Reply-To: <87bk6gz1jc.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: Xc3pw6alwEHSJ5ihZ7T6qcn1PISj7u6L
+X-Proofpoint-ORIG-GUID: Xc3pw6alwEHSJ5ihZ7T6qcn1PISj7u6L
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-11_10,2024-04-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxscore=0
+ priorityscore=1501 adultscore=0 suspectscore=0 bulkscore=0
+ lowpriorityscore=0 mlxlogscore=567 impostorscore=0 clxscore=1011
+ malwarescore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2404010003 definitions=main-2404110131
 
-On 4/11/24 2:08 AM, Kalle Valo wrote:
-> (dropping stable list from cc)
+On 4/11/2024 3:03 PM, Kalle Valo wrote:
+> Nithyanantham P <quic_nithp@quicinc.com> writes:
 > 
-> Larry Finger <Larry.Finger@lwfinger.net> writes:
-> 
->> On 4/10/24 9:13 PM, Ping-Ke Shih wrote:
->>> Larry Finger <Larry.Finger@gmail.com> wrote:
->>>
->>>> As discussed in the links below, the SDIO part of RTW8821CS fails to
->>>> start correctly if such startup happens while the UART portion of
->>>> the chip is initializing.
->>> I checked with SDIO team internally, but they didn't meet this case,
->>> so we may
->>> take this workaround.
->>> SDIO team wonder if something other than BT cause this failure, and
->>> after
->>> system boots everything will be well. Could you boot the system without WiFi/BT
->>> drivers, but insmod drivers manually after booting?
+>> From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 >>
->> I sent the request to the user with the problem. I do not have any SDIO devices.
+>> Currently, in the rx error data path, mac id is extracted from the
+>> last 64bits of MSDU end description tag for each entry received in
+>> the WBM error ring. Then, each entry will be updated into the MSDU
+>> list for further processing. The extracted mac id is valid when a
+>> single MSDU is not fragmented and received in the WBM error ring.
 >>
->>>
->>>> ---
->>>>    drivers/net/wireless/realtek/rtw88/sdio.c | 28 +++++++++++++++++++++++
->>>>    1 file changed, 28 insertions(+)
->>>>
->>>> diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
->>>> index 0cae5746f540..eec0ad85be72 100644
->>>> --- a/drivers/net/wireless/realtek/rtw88/sdio.c
->>>> +++ b/drivers/net/wireless/realtek/rtw88/sdio.c
->>>> @@ -1325,6 +1325,34 @@ int rtw_sdio_probe(struct sdio_func *sdio_func,
->>> [...]
->>>
->>>> +       mdelay(500);
->>> Will it better to use sleep function?
+>> In scenarios where the size of a single MSDU received exceeds the
+>> descriptor buffer size, resulting in fragmented or spillover MSDU
+>> entries into the WBM error ring. In this case, the extracted mac id
+>> from each spillover entry is invalid except the last spillover entry
+>> of the MSDU. This invalid mac id leads to packet rejection.
 >>
->> My thoughts were that a sleep function would tie up a CPU, whereas the
->> delay would not.
+>> To address this issue, check if the MSDU continuation flag is set,
+>> then extract the valid mac id from the last spillover entry.
+>> Propagate the valid mac id to all the spillover entries of the single
+>> MSDU in the temporary MSDU list(scatter_msdu_list). Then, update this
+>> into the MSDU list (msdu_list) for further processing.
+>>
+>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+>>
+>> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+>> Signed-off-by: Nithyanantham P <quic_nithp@quicinc.com>
 > 
-> It's actually the opposite, msleep() allows other processes to run.
+> [...]
 > 
-> "In general, use of mdelay is discouraged and code should be refactored
-> to allow for the use of msleep."
+>> @@ -3807,16 +3816,50 @@ int ath12k_dp_rx_process_wbm_err(struct ath12k_base *ab,
+>>   			continue;
+>>   		}
+>>   
+>> +		msdu_data = (struct hal_rx_desc *)msdu->data;
+>>   		rxcb->err_rel_src = err_info.err_rel_src;
+>>   		rxcb->err_code = err_info.err_code;
+>> -		rxcb->rx_desc = (struct hal_rx_desc *)msdu->data;
+>> -
+>> -		__skb_queue_tail(&msdu_list, msdu);
+>> -
+>>   		rxcb->is_first_msdu = err_info.first_msdu;
+>>   		rxcb->is_last_msdu = err_info.last_msdu;
+>>   		rxcb->is_continuation = err_info.continuation;
+>> +		rxcb->rx_desc = msdu_data;
+>> +
+>> +		if (err_info.continuation) {
+>> +			__skb_queue_tail(&scatter_msdu_list, msdu);
+>> +		} else {
+>> +			mac_id = ath12k_dp_rx_get_msdu_src_link(ab,
+>> +								msdu_data);
+>> +			if (mac_id >= MAX_RADIOS) {
+>> +				dev_kfree_skb_any(msdu);
+>> +
+>> +				/* In any case continuation bit is set
+>> +				 * in the previous record, cleanup scatter_msdu_list
+>> +				 */
+>> +				ath12k_dp_clean_up_skb_list(&scatter_msdu_list);
+>> +				continue;
+>> +			}
+>> +
+>> +			if (!skb_queue_empty(&scatter_msdu_list)) {
+>> +				struct sk_buff *msdu;
+>> +
+>> +				skb_queue_walk(&scatter_msdu_list, msdu) {
+>> +					rxcb = ATH12K_SKB_RXCB(msdu);
+>> +					rxcb->mac_id = mac_id;
+>> +				}
+>> +
+>> +				skb_queue_splice_tail_init(&scatter_msdu_list,
+>> +							   &msdu_list);
+>> +			}
+>> +
+>> +			rxcb = ATH12K_SKB_RXCB(msdu);
+>> +			rxcb->mac_id = mac_id;
+>> +			__skb_queue_tail(&msdu_list, msdu);
+>> +		}
+>>   	}
 > 
-> https://docs.kernel.org/timers/timers-howto.html
-
-Kalle and Ping-ke,
-
-Sorry that I got that wrong. I have become just another confused old man. :)
-
-The OP at GitHub has tested kernels where he blacklisted the BT drivers. The 
-wifi failed every time (3 tries with a delay and 3 times without). When he built 
-a kernel with BT built-in rather than as a module, it worked (again 3 tries). 
-There definitely is an interaction between the BT initialization and the wifi 
-setup. If the BT part is not started and has not completed the UART 
-initialization, SDIO wifi does not initialize correctly.
-
-When it fails, unloading the wifi driver and reloading it restores wifi.
-
-I originally wondered if there was a power problem when both were simultaneously 
-started, but I see that is not the case. To reiterate, the BT must start first 
-and complete UART initialization before the wifi starts initializing. It seems 
-to me that a suitable msleep() at the start of the SDIO probe routine seems to 
-be a viable workaround even though it is not aesthetically pleasing. A sleep of 
-150 ms is too short, but 500 seems to work reliably.
-
-Perhaps the SDIO experts at Realtek may be able to offer a more satisfying 
-explanation. The OP at GitHub and I will try to answer any questions they might 
-have. Note that I do not have the hardware, but my contact at GitHub is 
-knowledgeable, and seems eager to help.
-
-Larry
-
-
+> The else branch can be avoided with continue. I did that in the pending
+> branch, please check my changes:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=6c677d91adad4817e7f6ef65a85331f52f0237ee
+> 
+LGTM.
 
