@@ -1,250 +1,259 @@
-Return-Path: <linux-wireless+bounces-6144-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6145-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 016A48A07CA
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Apr 2024 07:36:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B6AD8A07D8
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Apr 2024 07:43:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C79B1F24DB4
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Apr 2024 05:36:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11F2D1F21A46
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Apr 2024 05:43:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1FFE13C9B9;
-	Thu, 11 Apr 2024 05:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2E513C9D9;
+	Thu, 11 Apr 2024 05:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Tj/zUgEZ"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="Yvh+/1WM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E9813B7AA
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Apr 2024 05:36:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1618113C9D5
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Apr 2024 05:42:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712813772; cv=none; b=XhIR/EZUvqvH445uQa9efYViBoo8o2+IQZWjJ96js3MU0qULvDtOClduC3u+0qmqeAMIaykV8rWv1DcjspHD5lUdyDfDhMVw5eY6SHCSmnfS0QKzA41qfXOlEx58v162g/S7125whls8AtKsRcSrLZ7t5ei5qCCWAjfLR+xKshk=
+	t=1712814140; cv=none; b=Qg2pNIFJsRU/2/UDpjbcJN7vK/p2mH/PZGplZz31QmcDOQWB+I2vgKKoFXZrseBN/gtbrSy2TSk2VrwSkBa5Y+09v20dt8oNLgFjmDzFBExsos0hiWagg9SGKgBDnfAzH4nVYvGxTnJV8XQg2w7qOnLzng3vgJWBfI+2zfZzyOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712813772; c=relaxed/simple;
-	bh=WxTpY2XURXw2iXucP59dgakeUuNRtY3sYyctjptenCY=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=rARMXwm2b/5szdkXC06AcBchbNUFpha3opGWwXjzENrKT3vLl9GwEHjpNcoqRCsylKC/yLvHcyBZDhCIaCZAGxUh0d1G//5wPGjoh4T2N6egEUdD9LACM3cShJTdfxDwG5FNdg6Er6i2XG0EAdDId3x5JF7BpYxTBPwXBp7Sgt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Tj/zUgEZ; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712813770; x=1744349770;
-  h=date:from:to:cc:subject:message-id;
-  bh=WxTpY2XURXw2iXucP59dgakeUuNRtY3sYyctjptenCY=;
-  b=Tj/zUgEZdKwFzgfposzUtiuavVnCjl6hBgVCbTGNBUlZ8sAIvrNPjDgU
-   rjtexfn2NevsLWb4fjbz2kRUHB88gIp2k5tKfDjN8+dmT5z1a1nH5/C6+
-   ijXb0XqLA231A1acrzih5FrqTVL/QQ1K9zwmSTpa9W/3rgFOc5lGw4q4/
-   Z9jFmshWqvcbbuKVZWsXCYgCO6uCLbs+yZn1r5/B/ULsk+LfZzdIXy91t
-   9yMqt9DMhgvwgrxPnryasvwjX8uoV7BkOJ+mAGC72B7grkCBwSVi3ErXK
-   ZncqbbGszMgr4JeOtZVOm3XaImWycau+7GUgcIoUKl0M/YCyI+kZE6ayC
-   Q==;
-X-CSE-ConnectionGUID: ZDBY0JgzRs2e0vGinsNodg==
-X-CSE-MsgGUID: cMCniMCzQGyAKSJ0KXMbtw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11039"; a="8063397"
-X-IronPort-AV: E=Sophos;i="6.07,192,1708416000"; 
-   d="scan'208";a="8063397"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2024 22:36:09 -0700
-X-CSE-ConnectionGUID: 1j8NzEiqQ1ChYPGsVe+ZiQ==
-X-CSE-MsgGUID: 7Hb2L7jrQmiWXKEAC3pQEg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,192,1708416000"; 
-   d="scan'208";a="44082258"
-Received: from lkp-server01.sh.intel.com (HELO e61807b1d151) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 10 Apr 2024 22:36:07 -0700
-Received: from kbuild by e61807b1d151 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1run6T-0008G7-1Y;
-	Thu, 11 Apr 2024 05:36:05 +0000
-Date: Thu, 11 Apr 2024 13:35:37 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
- linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- d26a0a66f9290a3665e283826637722507af5ce3
-Message-ID: <202404111335.HT3JzHH5-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1712814140; c=relaxed/simple;
+	bh=ldndzaapB3ybZnNSrmNGptKeWh162n8dh+rOl1t5mF4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Df2nbbP/5698N6lbeymgQ64b7m7mMSe0wccoeEU2xSt+gKMeKiJbGQex0c0d7hBlicOdG1nvjXkI+2ZtmtQaEK/Yi+vw5JaK1/xq+laVQW2G0DhF3EnGU5deyKsnppZU1F9/XlfBAVK5rdUPc+xD0O9vrOqNjD9DoDkZnRjuKz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=Yvh+/1WM; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 3d063ed4f7c611eeb8927bc1f75efef4-20240411
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=SxV6KgbdNWcpqKQkxd2HOEPbyuQhDemtmZp0jaWXqTI=;
+	b=Yvh+/1WMMedrptjf7aq70DYnoD5g/SDVZ7WlrNQ54al7GP+LPTf1URGP1YGJ2EozkitkQMtJBtlszMGgzzgiNrKqWl+r1d0Pib+SyLokLrEbcTXpW+stIjFeS3PZAsNQXA1w7ia9+oW1aMse7GBRTESGvEh1kLOxzn6+10e8p+E=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.37,REQID:37cbb058-4080-4cb7-bba8-4bcdadecf585,IP:0,U
+	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-25
+X-CID-META: VersionHash:6f543d0,CLOUDID:32d7c7fa-ed05-4274-9204-014369d201e8,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+	RL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,
+	SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 3d063ed4f7c611eeb8927bc1f75efef4-20240411
+Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by mailgw01.mediatek.com
+	(envelope-from <quan.zhou@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 832310347; Thu, 11 Apr 2024 13:42:09 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ MTKMBS14N2.mediatek.inc (172.21.101.76) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Thu, 11 Apr 2024 13:42:07 +0800
+Received: from mhfsdcap04.gcn.mediatek.inc (10.17.3.154) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Thu, 11 Apr 2024 13:42:06 +0800
+From: Quan Zhou <quan.zhou@mediatek.com>
+To: Quan Zhou <quan.zhou@mediatek.com>, Felix Fietkau <nbd@nbd.name>, "Lorenzo
+ Bianconi" <lorenzo@kernel.org>
+CC: Sean Wang <sean.wang@mediatek.com>, Deren Wu <Deren.Wu@mediatek.com>,
+	Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>,
+	linux-wireless <linux-wireless@vger.kernel.org>, linux-mediatek
+	<linux-mediatek@lists.infradead.org>, Shengxi Xu <shengxi.xu@mediatek.com>,
+	Hao Zhang <hao.zhang@mediatek.com>
+Subject: [PATCH v2] wifi: mt76: mt7921e: add LED control support
+Date: Thu, 11 Apr 2024 13:41:35 +0800
+Message-ID: <608cc2bb1c10c2f53a6bf26711bf49fe2c491e59.1712806947.git.quan.zhou@mediatek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-AS-Result: No-10--5.172600-8.000000
+X-TMASE-MatchedRID: LfFKigXY8dyjnza2fEWZS1z+axQLnAVBP9lbOpiWOGaY/Ue6G7XIMkdL
+	WPsfsZfcR5KBY5usn0xiSVnIdboijzI0UzRdrW2opvwZ9GmdwDMraL2mh8ZVK/FJXtgF4GFLLiy
+	64RCveAbWSi0L5EUg4oDBTs5Ew35aqH7dGVt6/4kc9jA4mLo8uU8bishHzYP6VI7KaIl9Nhd8wI
+	mBQX2L/5MWaqBLFuhw4jsl8iMQTTG233Qz/szkZqwxbZnudyr7WjRJreaOWv5Vf6Cr7LfN72qMd
+	wbSsCOuXj+G1I2Cld9IynfAMy1qaw+19lUIN2z0ngIgpj8eDcAZ1CdBJOsoY8RB0bsfrpPIXzYx
+	eQR1Dvvfru9Z0GEiqIHaI3X2cVgglzyCCGBCKprLD+ckh/PNGe3nCdV0cOJX
+X-TM-AS-User-Approved-Sender: No
+X-TM-AS-User-Blocked-Sender: No
+X-TMASE-Result: 10--5.172600-8.000000
+X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-SNTS-SMTP:
+	621C0CF8CDD7DC2E36FDE9DBD35A1918A4BD198626F6702484F135BE834E2CAF2000:8
+X-MTK: N
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: d26a0a66f9290a3665e283826637722507af5ce3  wifi: brcmfmac: Fix spelling mistake "ivalid" -> "invalid"
+From: Hao Zhang <hao.zhang@mediatek.com>
 
-elapsed time: 1263m
+Introduce wifi LED switch control, add flow to Control a wifi
+gpio pin based on the status of WIFI radio, if the pin is connected
+to an LED, the LED will indicate the status of the WiFi radio.
 
-configs tested: 156
-configs skipped: 3
+Signed-off-by: Hao Zhang <hao.zhang@mediatek.com>
+Co-developed-by: Quan Zhou <quan.zhou@mediatek.com>
+Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
+---
+v2:
+ fix to avoid wake device when Hardware interface not pcie
+---
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  1 +
+ .../net/wireless/mediatek/mt76/mt7921/main.c  | 27 ++++++++++++++++++-
+ .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 14 ++++++++++
+ .../wireless/mediatek/mt76/mt7921/mt7921.h    |  5 ++++
+ .../net/wireless/mediatek/mt76/mt7921/pci.c   |  8 +++++-
+ 5 files changed, 53 insertions(+), 2 deletions(-)
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                     haps_hs_smp_defconfig   gcc  
-arc                     nsimosci_hs_defconfig   gcc  
-arc                   randconfig-001-20240411   gcc  
-arc                   randconfig-002-20240411   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                        keystone_defconfig   gcc  
-arm                   randconfig-001-20240411   gcc  
-arm                   randconfig-002-20240411   gcc  
-arm                   randconfig-004-20240411   gcc  
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                            allyesconfig   clang
-arm64                               defconfig   gcc  
-arm64                 randconfig-002-20240411   gcc  
-arm64                 randconfig-003-20240411   gcc  
-arm64                 randconfig-004-20240411   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20240411   gcc  
-csky                  randconfig-002-20240411   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240411   clang
-i386         buildonly-randconfig-002-20240411   clang
-i386         buildonly-randconfig-003-20240411   clang
-i386         buildonly-randconfig-004-20240411   clang
-i386         buildonly-randconfig-005-20240411   clang
-i386         buildonly-randconfig-006-20240411   clang
-i386                                defconfig   clang
-i386                  randconfig-001-20240411   gcc  
-i386                  randconfig-002-20240411   gcc  
-i386                  randconfig-003-20240411   clang
-i386                  randconfig-004-20240411   clang
-i386                  randconfig-005-20240411   gcc  
-i386                  randconfig-006-20240411   clang
-i386                  randconfig-011-20240411   clang
-i386                  randconfig-012-20240411   gcc  
-i386                  randconfig-013-20240411   gcc  
-i386                  randconfig-014-20240411   gcc  
-i386                  randconfig-015-20240411   clang
-i386                  randconfig-016-20240411   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20240411   gcc  
-loongarch             randconfig-002-20240411   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                          sun3x_defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                     cu1830-neo_defconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20240411   gcc  
-nios2                 randconfig-002-20240411   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                randconfig-001-20240411   gcc  
-parisc                randconfig-002-20240411   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc                 mpc832x_rdb_defconfig   gcc  
-powerpc                    mvme5100_defconfig   gcc  
-powerpc               randconfig-001-20240411   gcc  
-powerpc               randconfig-003-20240411   gcc  
-powerpc                 xes_mpc85xx_defconfig   gcc  
-powerpc64             randconfig-002-20240411   gcc  
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-s390                  randconfig-002-20240411   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                    randconfig-001-20240411   gcc  
-sh                    randconfig-002-20240411   gcc  
-sh                          rsk7203_defconfig   gcc  
-sh                           se7722_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          alldefconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64               randconfig-001-20240411   gcc  
-sparc64               randconfig-002-20240411   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                    randconfig-001-20240411   gcc  
-um                    randconfig-002-20240411   gcc  
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-002-20240411   clang
-x86_64       buildonly-randconfig-003-20240411   clang
-x86_64       buildonly-randconfig-005-20240411   clang
-x86_64       buildonly-randconfig-006-20240411   clang
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20240411   clang
-x86_64                randconfig-002-20240411   clang
-x86_64                randconfig-004-20240411   clang
-x86_64                randconfig-006-20240411   clang
-x86_64                randconfig-011-20240411   clang
-x86_64                randconfig-013-20240411   clang
-x86_64                randconfig-071-20240411   clang
-x86_64                randconfig-072-20240411   clang
-x86_64                randconfig-073-20240411   clang
-x86_64                randconfig-076-20240411   clang
-x86_64                          rhel-8.3-rust   clang
-x86_64                               rhel-8.3   gcc  
-xtensa                            allnoconfig   gcc  
-xtensa                randconfig-001-20240411   gcc  
-xtensa                randconfig-002-20240411   gcc  
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+index 836cc4d5b1d2..4c2de556dee1 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+@@ -1189,6 +1189,7 @@ enum {
+ 	MCU_EXT_CMD_EFUSE_ACCESS = 0x01,
+ 	MCU_EXT_CMD_RF_REG_ACCESS = 0x02,
+ 	MCU_EXT_CMD_RF_TEST = 0x04,
++	MCU_EXT_CMD_ID_RADIO_ON_OFF_CTRL = 0x05,
+ 	MCU_EXT_CMD_PM_STATE_CTRL = 0x07,
+ 	MCU_EXT_CMD_CHANNEL_SWITCH = 0x08,
+ 	MCU_EXT_CMD_SET_TX_POWER_CTRL = 0x11,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index ca36de34171b..ea6a113b7b36 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -242,6 +242,15 @@ int __mt7921_start(struct mt792x_phy *phy)
+ 
+ 	ieee80211_queue_delayed_work(mphy->hw, &mphy->mac_work,
+ 				     MT792x_WATCHDOG_TIME);
++	if (mt76_is_mmio(mphy->dev)) {
++		err = mt7921_mcu_radio_led_ctrl(phy->dev, EXT_CMD_RADIO_LED_CTRL_ENABLE);
++		if (err)
++			return err;
++
++		err = mt7921_mcu_radio_led_ctrl(phy->dev, EXT_CMD_RADIO_ON_LED);
++		if (err)
++			return err;
++	}
+ 
+ 	return 0;
+ }
+@@ -259,6 +268,22 @@ static int mt7921_start(struct ieee80211_hw *hw)
+ 	return err;
+ }
+ 
++static void mt7921_stop(struct ieee80211_hw *hw)
++{
++	struct mt792x_dev *dev = mt792x_hw_dev(hw);
++	int err = 0;
++
++	if (mt76_is_mmio(&dev->mt76)) {
++		mt792x_mutex_acquire(dev);
++		err = mt7921_mcu_radio_led_ctrl(dev, EXT_CMD_RADIO_OFF_LED);
++		mt792x_mutex_release(dev);
++		if (err)
++			return;
++	}
++
++	mt792x_stop(hw);
++}
++
+ static int
+ mt7921_add_interface(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
+ {
+@@ -1372,7 +1397,7 @@ static void mt7921_mgd_complete_tx(struct ieee80211_hw *hw,
+ const struct ieee80211_ops mt7921_ops = {
+ 	.tx = mt792x_tx,
+ 	.start = mt7921_start,
+-	.stop = mt792x_stop,
++	.stop = mt7921_stop,
+ 	.add_interface = mt7921_add_interface,
+ 	.remove_interface = mt792x_remove_interface,
+ 	.config = mt7921_config,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index 8b4ce32a2cd1..2ebf0ffe78d5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -606,6 +606,20 @@ int mt7921_run_firmware(struct mt792x_dev *dev)
+ }
+ EXPORT_SYMBOL_GPL(mt7921_run_firmware);
+ 
++int mt7921_mcu_radio_led_ctrl(struct mt792x_dev *dev, u8 value)
++{
++	struct {
++		u8 ctrlid;
++		u8 rsv[3];
++	} __packed req = {
++		.ctrlid = value,
++	};
++
++	return mt76_mcu_send_msg(&dev->mt76, MCU_EXT_CMD(ID_RADIO_ON_OFF_CTRL),
++				&req, sizeof(req), false);
++}
++EXPORT_SYMBOL_GPL(mt7921_mcu_radio_led_ctrl);
++
+ int mt7921_mcu_set_tx(struct mt792x_dev *dev, struct ieee80211_vif *vif)
+ {
+ 	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+index 3016636d18c6..07023eb9e5b5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+@@ -27,6 +27,10 @@
+ #define MCU_UNI_EVENT_ROC  0x27
+ #define MCU_UNI_EVENT_CLC  0x80
+ 
++#define EXT_CMD_RADIO_LED_CTRL_ENABLE   0x1
++#define EXT_CMD_RADIO_ON_LED            0x2
++#define EXT_CMD_RADIO_OFF_LED           0x3
++
+ enum {
+ 	UNI_ROC_ACQUIRE,
+ 	UNI_ROC_ABORT,
+@@ -196,6 +200,7 @@ int mt7921_mcu_fw_log_2_host(struct mt792x_dev *dev, u8 ctrl);
+ void mt7921_mcu_rx_event(struct mt792x_dev *dev, struct sk_buff *skb);
+ int mt7921_mcu_set_rxfilter(struct mt792x_dev *dev, u32 fif,
+ 			    u8 bit_op, u32 bit_map);
++int mt7921_mcu_radio_led_ctrl(struct mt792x_dev *dev, u8 value);
+ 
+ static inline u32
+ mt7921_reg_map_l1(struct mt792x_dev *dev, u32 addr)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index 0b69b225bc16..f768e9389ac6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -427,6 +427,10 @@ static int mt7921_pci_suspend(struct device *device)
+ 	wait_event_timeout(dev->wait,
+ 			   !dev->regd_in_progress, 5 * HZ);
+ 
++	err = mt7921_mcu_radio_led_ctrl(dev, EXT_CMD_RADIO_OFF_LED);
++	if (err < 0)
++		goto restore_suspend;
++
+ 	err = mt76_connac_mcu_set_hif_suspend(mdev, true);
+ 	if (err)
+ 		goto restore_suspend;
+@@ -525,9 +529,11 @@ static int mt7921_pci_resume(struct device *device)
+ 		mt76_connac_mcu_set_deep_sleep(&dev->mt76, false);
+ 
+ 	err = mt76_connac_mcu_set_hif_suspend(mdev, false);
++	if (err < 0)
++		goto failed;
+ 
+ 	mt7921_regd_update(dev);
+-
++	err = mt7921_mcu_radio_led_ctrl(dev, EXT_CMD_RADIO_ON_LED);
+ failed:
+ 	pm->suspended = false;
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.18.0
+
 
