@@ -1,85 +1,79 @@
-Return-Path: <linux-wireless+bounces-6191-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6192-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 741FD8A1CEC
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Apr 2024 19:59:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41A6C8A1D3B
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Apr 2024 20:06:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F5801C23B97
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Apr 2024 17:59:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D69541F250A8
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Apr 2024 18:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 091C01C2303;
-	Thu, 11 Apr 2024 16:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EAFD4AEFA;
+	Thu, 11 Apr 2024 16:55:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y1LYvVHF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E06D14A83;
-	Thu, 11 Apr 2024 16:45:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA4F481D7
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Apr 2024 16:55:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712853922; cv=none; b=kom7tUwOW7IKkJpZnZkGRg3YRsJH/GhAGvCCY4fO1cbVj19qSbdcyXtwU7HlTaWtUziqZLqdJXPcJC01YKFGxsnXTFkSwPDBv09AKlvPfOvzopkhdso4ZjzPOXUtzygiiE2lqHuxjMCLE0ekTpz3bejm7yGWh/BzHA7R63TMYgc=
+	t=1712854520; cv=none; b=ZZlzHaMjLg7TtFeOhbVUeZFkgjfdlgFWcpGtyfkJOycTe8eqYT8BnKhLU9jyISkMJ0r3/OoSLuZVSGlIPSiqm9gCkEqqCxF3hWGqqT+QsrOM0jKt1ZwTIwBpwQwgwLVtAcNPpbk6qVG+nxeU2mm9hNg7zF2/aGEV8EK0UQEXqEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712853922; c=relaxed/simple;
-	bh=h/ZEohgU3P5v2a7EY1UZ9zQutp5wDrWrURUGVudi2mo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pouukBNzMyoYSIl2nZpxoLE+Wc1oWx0OksI4g+jDJ3Hai5VBHFDRnFGyOO44XVLSdzV5mQzJyaGjLkmWAawwmYX/kSbRdnTsXAEqURYyJLi3RMwzDYrcyzOPkHVMumi2CDMuu2NRvtthh3yBFe4BSY5/H5nBMSrtq6ZjJbSeUYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0C52C113E;
-	Thu, 11 Apr 2024 09:45:50 -0700 (PDT)
-Received: from [10.1.196.40] (e121345-lin.cambridge.arm.com [10.1.196.40])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 21A953F6C4;
-	Thu, 11 Apr 2024 09:45:17 -0700 (PDT)
-Message-ID: <f2d1bb68-7ab7-4bbf-a1b1-88334ba52bab@arm.com>
-Date: Thu, 11 Apr 2024 17:45:15 +0100
+	s=arc-20240116; t=1712854520; c=relaxed/simple;
+	bh=gk1IHjYzbP2eNwqxUsPH6sgseRZXBtkXRndssS6uIqk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RsHcXx5ZA/7WJR/rgocYrCDgMiEQ7rPgrAiw3TwKO3sq7gRdgRZiEFX8yJK4I0Xynqs6bI9cPJs1QazVvsmCB4BzoP2BPnbMNXrGrH6K0KpWn6bvygb/oq5jpI8QGR3IkciC9J9WtIlL4L8XTPWIoHU6IofIEEpT/zenvLQt7RQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y1LYvVHF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13260C072AA;
+	Thu, 11 Apr 2024 16:55:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712854519;
+	bh=gk1IHjYzbP2eNwqxUsPH6sgseRZXBtkXRndssS6uIqk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Y1LYvVHFKdZcSasMzkquHW0BkDkWwx/N/iHI2puNzVlrzV+pp3YHgR7vOabsgmJo7
+	 K7qz2oFrKSMazBzIJpwnaSozUYN0k9VQUzJfix81WLS+OMJJii24SxkVF4x1yubYmp
+	 mm0H79mAKCyimSbMrFqIN4S1jU6GnnqiFuK6xwMEn8quSme/m/MO+mq3KfkldCjXXY
+	 tFkvBiouLTfOy9/7EFRM7SwHEWzPZspltfSTWiEQhYieh/HjLuEE623eGlxJrjh/lq
+	 SKLg0iduk3VP+E4NkfOhe4P0Qexs8JT+7AATMRZ8TUgVoxuumN7VF6w8jBIWOcgrKR
+	 4GbVXhaCoJ+VA==
+From: Kalle Valo <kvalo@kernel.org>
+To: ath11k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH 0/2] wifi: ath11k: use RCU when accessing struct inet6_dev::ac_list
+Date: Thu, 11 Apr 2024 19:55:14 +0300
+Message-Id: <20240411165516.4070649-1-kvalo@kernel.org>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] treewide: Fix common grammar mistake "the the"
-To: Thorsten Blum <thorsten.blum@toblux.com>, kernel-janitors@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-s390@vger.kernel.org, speakup@linux-speakup.org,
- intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-wireless@vger.kernel.org,
- linux-scsi@vger.kernel.org, linux-afs@lists.infradead.org,
- ecryptfs@vger.kernel.org, netfs@lists.linux.dev,
- linux-fsdevel@vger.kernel.org, linux-unionfs@vger.kernel.org,
- linux-arch@vger.kernel.org, io-uring@vger.kernel.org, cocci@inria.fr,
- linux-perf-users@vger.kernel.org
-References: <20240411150437.496153-4-thorsten.blum@toblux.com>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20240411150437.496153-4-thorsten.blum@toblux.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 11/04/2024 4:04 pm, Thorsten Blum wrote:
-> Use `find . -type f -exec sed -i 's/\<the the\>/the/g' {} +` to find all
-> occurrences of "the the" and replace them with a single "the".
-> 
-[...]
-> diff --git a/arch/arm/include/asm/unwind.h b/arch/arm/include/asm/unwind.h
-> index d60b09a5acfc..a75da9a01f91 100644
-> --- a/arch/arm/include/asm/unwind.h
-> +++ b/arch/arm/include/asm/unwind.h
-> @@ -10,7 +10,7 @@
->   
->   #ifndef __ASSEMBLY__
->   
-> -/* Unwind reason code according the the ARM EABI documents */
-> +/* Unwind reason code according the ARM EABI documents */
+From: Kalle Valo <quic_kvalo@quicinc.com>
 
-Well, that's clearly still not right... repeated words aren't *always* 
-redundant, sometimes they're meant to be other words ;)
+Fix a recently introduced sparse warning in ath11k_mac_op_ipv6_changed() and
+switch to use list_for_each_entry() in the same function. My plan is to get
+first patch to wireless tree and the second patch ath-next (once the first
+patch is there).
 
-Thanks,
-Robin.
+Please review.
+
+Kalle Valo (2):
+  wifi: ath11k: use RCU when accessing struct inet6_dev::ac_list
+  wifi: ath11k: ath11k_mac_op_ipv6_changed(): use list_for_each_entry()
+
+ drivers/net/wireless/ath/ath11k/mac.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+
+base-commit: 363e7193eaf258fe7f04e8db560bd8a282a12cd9
+-- 
+2.39.2
+
 
