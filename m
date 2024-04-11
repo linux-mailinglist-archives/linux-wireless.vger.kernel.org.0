@@ -1,95 +1,140 @@
-Return-Path: <linux-wireless+bounces-6137-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6138-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55DFA8A05C0
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Apr 2024 04:14:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC6678A061F
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Apr 2024 04:48:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 847291C22359
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Apr 2024 02:14:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6141F1F22827
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Apr 2024 02:48:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E13C627E2;
-	Thu, 11 Apr 2024 02:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C9D13B28B;
+	Thu, 11 Apr 2024 02:48:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DJWp4vl1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C7E9449;
-	Thu, 11 Apr 2024 02:14:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8F8282FA;
+	Thu, 11 Apr 2024 02:48:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712801648; cv=none; b=o/AlB9o4eIT0BEG9urfM4i24hEaDVFtTuQbRCpWvJmqfXHA9uecVIrZLu/IGTBVVZvNeOj7FaO2JLye/Tb8hm/5Oo+1kKCM2X2Cze9z5G7UmbNe6IcMRzt3sSyaVd2i5ZV1B9d9xcA0t9zUDFlqRoH3cj7jL7krWOU2yMlJ+jzI=
+	t=1712803682; cv=none; b=qLCrkwbs1KzPJvGGOnVIU+joX9dhHKD+mkSR2sQqeBRfNdxJdbz0AFggTLomepf4pO2moPzZygqNBKviKiCak931jzbSFbivq4RlHTw36gbsiXPH8EDf6q1LfNrvjjzTokDY28VPVQrvaMZfpGQmteaW7nR0DmXPpHmgU/TKLDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712801648; c=relaxed/simple;
-	bh=oWW23wyAcY2Bs8ZA40RWyKbmkxTtK8oCZ29GSJrboE0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=YPmoqaBcluY25+MkFmUY01g99PWgcm1rXen644jcA5ptvtUnCnwPMAkX0ZQcKthQN69+eKlswkqiWhVB9lvmHLMiERoB8s0vLBBDIbjAS2i0KS+6IGuJfM2hb0Yx13IXf3TTObzW/jMJBAS9fSWGq8tRunPS1GHv5poNuWeGMyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 43B2DgG72471602, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 43B2DgG72471602
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 11 Apr 2024 10:13:42 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 11 Apr 2024 10:13:42 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 11 Apr 2024 10:13:42 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
- RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
- 15.01.2507.035; Thu, 11 Apr 2024 10:13:42 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Larry Finger <Larry.Finger@gmail.com>, Kalle Valo <kvalo@kernel.org>
-CC: Johannes Berg <johannes@sipsolutions.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [RFC] rtw88: Fix startup problems for SDIO wifi plus UART Bluetooth
-Thread-Topic: [RFC] rtw88: Fix startup problems for SDIO wifi plus UART
- Bluetooth
-Thread-Index: AQHai6+3Zq0VJBVgFk2i9wweb2CUxrFiTTdQ
-Date: Thu, 11 Apr 2024 02:13:42 +0000
-Message-ID: <5af71338f3904aac9d2c237637c851e7@realtek.com>
-References: <4umro86wvv84.MjDfYvt4P5uZryt8boBK8Q2@1EHFQ.trk.elasticemail.com>
-In-Reply-To: <4umro86wvv84.MjDfYvt4P5uZryt8boBK8Q2@1EHFQ.trk.elasticemail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1712803682; c=relaxed/simple;
+	bh=eJphG6hxK5MLkJm07zYc9BIh4Drt2GMMuGsf+W5mEnQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Dmk70dopWils0BRy/wFpY4IvlIjCRcbrRsmPx48PNhhSxSVtMOyvhZhyNUTPBl7FmYs3DtpnE0SRutQVev3iI5HdqY9h1hwHporpE+6J1LXV3zropPvu6hmXXjO0llPn8bDhUWijV9tovdptjvi52zZAJFDlhmP8Hq7+laTxZeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lwfinger.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DJWp4vl1; arc=none smtp.client-ip=209.85.210.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lwfinger.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-6ea163eb437so2380138a34.2;
+        Wed, 10 Apr 2024 19:48:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712803679; x=1713408479; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=0v2VY93AarnBB8OF2yJX5KcU060xyjTJtFzMOCSeicU=;
+        b=DJWp4vl1pWy9BLFeGq7d5JxnenILWpy7f6aQNvyUx/SG3k4bQhPlZvG7s0eikTpxzZ
+         CSEwqzC2auQYfTASHA78nLypsAzeyti3fT6+Mzno9SvnLUh6KQ6ykY9Q62HbYIUFtQne
+         7XrL+e8mzk+dNCKSZMzDHKSoRl0/4dntntZqMThkdEuQzFMQlRT1ZQG6TR/shKJd1wlZ
+         SaEH/7u3dbH4gXEzlURyfLc5zj7xoCLG9brXDWdhExMumM1EZR8HkwRUqUmFRpSb3DsW
+         pz7njkYD8SDMhIbJNNfiS0PkGugQl9/49yW0ShnFNAy+tqzB7sSz1FFy0wjP8mVPn3u0
+         eUng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712803679; x=1713408479;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0v2VY93AarnBB8OF2yJX5KcU060xyjTJtFzMOCSeicU=;
+        b=viFfm5vFVAGRChSQbVej/1F2nImXmhwkc3wXggH5UAoHEPhu7URtTiFE++7asCMEvr
+         55b1DsEKT2oJ4+3SMQQ4NUNhfAq2RkAQhz0Injh0VwWAh31hIx8+en1m96aq0fV2nC/K
+         EwkC+bfCmSQrKteWb+GkZpo8DV4oeFMoLodKSU6j14jvpYZRxPDnHHZXYJXHhVYZ7Ohq
+         4XpwKiWhBBvW1QuSJQjh5lea5J+gXtqhiqEtt0B26/YUN+YU27IkoGatMSt9DQ4nLFym
+         ystWxWxJ8IcN3EbvsRs1Ya1eVBvNbCouNkJaEF9COiRN392vxrwTXg2p/RCuvBcOnLuk
+         o8bQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW+I8C/YUZXkDgmGXMt6fazMw18n068AMae2K1/J4MUVOog9YJV7rzzu3g1rZVzbm0N84PHUwuOi7qFz20vGxPcQJL0reOhiOBreThWWkhXzD+KKnwWZfOzJLcxqi1a2vdbRc0kerM=
+X-Gm-Message-State: AOJu0Yydco4xLKPUuS0lvuwB5IFkGjtypW87izd0IbGzsDY9YbI2bCoe
+	OZcaZOCqpsL9jUFTavnG289lVhgMRfzLO/axvu63u1xC4zNPr2TghA/qmyID
+X-Google-Smtp-Source: AGHT+IF6/ra7tsi778+xsInsEN4ARudNuz9JQnw7btnunKOwMcuuhz3Gm/XqQPaDWRfp0y4IiBMUTg==
+X-Received: by 2002:a9d:66ca:0:b0:6ea:2d0d:f531 with SMTP id t10-20020a9d66ca000000b006ea2d0df531mr4811164otm.37.1712803679655;
+        Wed, 10 Apr 2024 19:47:59 -0700 (PDT)
+Received: from [192.168.1.119] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id y13-20020a0568301d8d00b006ea16d35096sm140824oti.20.2024.04.10.19.47.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Apr 2024 19:47:59 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <287e9d4e-316a-4579-961e-58e75abea534@lwfinger.net>
+Date: Wed, 10 Apr 2024 21:47:58 -0500
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC] rtw88: Fix startup problems for SDIO wifi plus UART
+ Bluetooth
+To: Ping-Ke Shih <pkshih@realtek.com>, Larry Finger <Larry.Finger@gmail.com>,
+ Kalle Valo <kvalo@kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <4umro86wvv84.MjDfYvt4P5uZryt8boBK8Q2@1EHFQ.trk.elasticemail.com>
+ <5af71338f3904aac9d2c237637c851e7@realtek.com>
+Content-Language: en-US
+From: Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <5af71338f3904aac9d2c237637c851e7@realtek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-DQpMYXJyeSBGaW5nZXIgPExhcnJ5LkZpbmdlckBnbWFpbC5jb20+IHdyb3RlOg0KDQo+IEFzIGRp
-c2N1c3NlZCBpbiB0aGUgbGlua3MgYmVsb3csIHRoZSBTRElPIHBhcnQgb2YgUlRXODgyMUNTIGZh
-aWxzIHRvDQo+IHN0YXJ0IGNvcnJlY3RseSBpZiBzdWNoIHN0YXJ0dXAgaGFwcGVucyB3aGlsZSB0
-aGUgVUFSVCBwb3J0aW9uIG9mDQo+IHRoZSBjaGlwIGlzIGluaXRpYWxpemluZy4gDQoNCkkgY2hl
-Y2tlZCB3aXRoIFNESU8gdGVhbSBpbnRlcm5hbGx5LCBidXQgdGhleSBkaWRuJ3QgbWVldCB0aGlz
-IGNhc2UsIHNvIHdlIG1heQ0KdGFrZSB0aGlzIHdvcmthcm91bmQuDQoNClNESU8gdGVhbSB3b25k
-ZXIgaWYgc29tZXRoaW5nIG90aGVyIHRoYW4gQlQgY2F1c2UgdGhpcyBmYWlsdXJlLCBhbmQgYWZ0
-ZXINCnN5c3RlbSBib290cyBldmVyeXRoaW5nIHdpbGwgYmUgd2VsbC4gQ291bGQgeW91IGJvb3Qg
-dGhlIHN5c3RlbSB3aXRob3V0IFdpRmkvQlQNCmRyaXZlcnMsIGJ1dCBpbnNtb2QgZHJpdmVycyBt
-YW51YWxseSBhZnRlciBib290aW5nPw0KDQoNCj4gLS0tDQo+ICBkcml2ZXJzL25ldC93aXJlbGVz
-cy9yZWFsdGVrL3J0dzg4L3NkaW8uYyB8IDI4ICsrKysrKysrKysrKysrKysrKysrKysrDQo+ICAx
-IGZpbGUgY2hhbmdlZCwgMjggaW5zZXJ0aW9ucygrKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2RyaXZl
-cnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvc2Rpby5jIGIvZHJpdmVycy9uZXQvd2lyZWxl
-c3MvcmVhbHRlay9ydHc4OC9zZGlvLmMNCj4gaW5kZXggMGNhZTU3NDZmNTQwLi5lZWMwYWQ4NWJl
-NzIgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvc2Rp
-by5jDQo+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvc2Rpby5jDQo+
-IEBAIC0xMzI1LDYgKzEzMjUsMzQgQEAgaW50IHJ0d19zZGlvX3Byb2JlKHN0cnVjdCBzZGlvX2Z1
-bmMgKnNkaW9fZnVuYywNCg0KWy4uLl0NCg0KPiArICAgICAgIG1kZWxheSg1MDApOw0KDQpXaWxs
-IGl0IGJldHRlciB0byB1c2Ugc2xlZXAgZnVuY3Rpb24/IA0KDQoNCg==
+On 4/10/24 9:13 PM, Ping-Ke Shih wrote:
+> 
+> Larry Finger <Larry.Finger@gmail.com> wrote:
+> 
+>> As discussed in the links below, the SDIO part of RTW8821CS fails to
+>> start correctly if such startup happens while the UART portion of
+>> the chip is initializing.
+> 
+> I checked with SDIO team internally, but they didn't meet this case, so we may
+> take this workaround.
+> 
+> SDIO team wonder if something other than BT cause this failure, and after
+> system boots everything will be well. Could you boot the system without WiFi/BT
+> drivers, but insmod drivers manually after booting?
+
+I sent the request to the user with the problem. I do not have any SDIO devices.
+
+> 
+> 
+>> ---
+>>   drivers/net/wireless/realtek/rtw88/sdio.c | 28 +++++++++++++++++++++++
+>>   1 file changed, 28 insertions(+)
+>>
+>> diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
+>> index 0cae5746f540..eec0ad85be72 100644
+>> --- a/drivers/net/wireless/realtek/rtw88/sdio.c
+>> +++ b/drivers/net/wireless/realtek/rtw88/sdio.c
+>> @@ -1325,6 +1325,34 @@ int rtw_sdio_probe(struct sdio_func *sdio_func,
+> 
+> [...]
+> 
+>> +       mdelay(500);
+> 
+> Will it better to use sleep function?
+
+My thoughts were that a sleep function would tie up a CPU, whereas the delay 
+would not. Initially, we tested an msleep(150) statement, but that only gave a 
+60% success rate, whereas mdelay(500) worked 20 straight tries.
+
+Thanks for your comments.
+
+Larry
+
+
 
