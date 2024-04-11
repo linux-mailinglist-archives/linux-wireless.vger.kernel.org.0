@@ -1,63 +1,55 @@
-Return-Path: <linux-wireless+bounces-6201-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6202-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12FC38A1F94
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Apr 2024 21:42:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D55978A2019
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Apr 2024 22:24:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D76AB21E12
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Apr 2024 19:42:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 404AFB22A79
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Apr 2024 20:24:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A5F15E81;
-	Thu, 11 Apr 2024 19:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70DFB199B8;
+	Thu, 11 Apr 2024 20:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Bv5qq/r1"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="QMCudDh1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-27.smtpout.orange.fr [80.12.242.27])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D232610799
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Apr 2024 19:42:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0B817C6A;
+	Thu, 11 Apr 2024 20:24:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712864523; cv=none; b=AStmoWruRAwZlefnwuf9IXAO9SrhSHzHJDpkEmbBL3ZMYhkB1avf3LrjSa1O+/0TV0hJN7cV+B9TnGmoEwCH4LKVRVviR4hGs3IjzU4NFcXEDCrLfzW/PVHQy4BQi+5ngqgfpKTy2BOOUCDI44vvmHDblGopF+Qz7iDCE1/fcGM=
+	t=1712867046; cv=none; b=IIMQHyOHU10964xjmyecUxwErI9ZpY/eI91Ixot2UDdSFdpv7jHg7H1EVzisTVU/dYlZ40M2o8xsbgGbKodzMmeTnLiqtJ82jfN9l8HVZfFgfjUEfZnGvQilGro0G5ufYaRytnNVDDzWRvtSeKYprFsYRKYgXVoIOreu3gtWaPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712864523; c=relaxed/simple;
-	bh=ywHE38Z7G6KHVf1sYosMygJvH1W2143pya/ZHKPX5gM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=g2T+YlryIdtzipudSPPLbwyrtUzS+bSz2dAVLfdDRQK5e/UiepQwIu1036PWJLC+pDflVMRy+6QGOEVdv/Q2LcBfgTjj9USLHAODpZ1grnCfmGI4vr9XxbiJjdi5Xdk05wpKeGGagI2fIqQlyxxJJ8zrA0YgnLsL5h/c9EzuzFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Bv5qq/r1; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43BJcD39012420;
-	Thu, 11 Apr 2024 19:41:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=bEGXvIgBrqclXOoSKQ712D+KL6n0S2D53O1A/6qY7d8=; b=Bv
-	5qq/r1z3rbIU4agK9Vj4C4VJn8GKA6PF2vUwN7c9n/3mgP4wm7oHxpX03JzzXlGW
-	3WNqQbJkPXlncZNDfuvz4EBqADSUTJ9i1xzumRBnFtEEkITf99rHOFopa/kNS95o
-	SeXTtLqlkdQgSAmw4UrA0cMIbuRqgg74t8MybDUH+IDr4k+mRtmL3i0rzvVBTJL9
-	6zzoCdQpdJXHPOj6Hjy8hAMe2prgjhwkcRj9V2F0QWaMrQO0X3C2mnokI9UPnPkV
-	qIewgRUcMl9mmAMWAKa2wKzqsLLALwIvF2iAos2nI4aBAoMBg3v/O0vhuJdFGehC
-	N/Bkko2HuRgzDjrKMaqg==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xep6fg06k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Apr 2024 19:41:51 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43BJfovX008411
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Apr 2024 19:41:50 GMT
-Received: from [10.110.37.144] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 11 Apr
- 2024 12:41:49 -0700
-Message-ID: <e8618364-e547-41e1-b18f-4cddeafd3371@quicinc.com>
-Date: Thu, 11 Apr 2024 12:41:48 -0700
+	s=arc-20240116; t=1712867046; c=relaxed/simple;
+	bh=QhmZqca6i4GwVv1XAcc9IrrgLk4abiFm/4Wl1hb/8sw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=R+q9P76gGpRrO7rGHoG85kD3J5l/gsvHfEkVuueG62aNA6G1C4zDdkYK28ZIkguOhiKEKe/L2kRBWoXddGR7JsHx1jNhYT+6BVMJYCmuyDQLzw+N6Ezu3T5JAWXyM4XpHlGlQ6qQFE41Np724XIXvcodmv8Wzc+ZTMPSxT9ESbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=QMCudDh1; arc=none smtp.client-ip=80.12.242.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from [192.168.1.18] ([86.243.17.157])
+	by smtp.orange.fr with ESMTPA
+	id v0xXr4JUAqkPUv0xYrdLi7; Thu, 11 Apr 2024 22:23:54 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1712867034;
+	bh=v4sYyES8feRyP/YNHQ4HOBPVocESBHJ4p6aCiQtSavI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=QMCudDh14uA+N4VCUkUhGD3njd4hP+Nm+dZR+AHIvomm17cl8lhe+OEOieTe2tfCd
+	 CSwaIP3rEU56ONRmKGTfz4ao9J8mzI9LnAVCKVmuUmS//1uy7UrVyFnucM+4esuv/T
+	 oo+W9WibJxCGBDkR1ETwHvYgNw2WqclnTcAwFFkQCDIl+7Og0xYMtfR6Ce6O1eg8Xj
+	 TprE9TDFAvWBbHv9DdeSW7gw0cL9SbIVgyxiFM+NCmvp8psAM0yRbsFF/z/qBtmvhS
+	 tk8PC6grRGcBt957JhfI8k8joswKv/XfbhH8qO5/V5krr5vlKn6DDKJ1S1Ygk95Ha3
+	 gYl5m7R2w2/OA==
+X-ME-Helo: [192.168.1.18]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 11 Apr 2024 22:23:54 +0200
+X-ME-IP: 86.243.17.157
+Message-ID: <da50e56a-cb59-4815-800d-81742e5294df@wanadoo.fr>
+Date: Thu, 11 Apr 2024 22:23:45 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,79 +57,78 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath12k: enable WIPHY_FLAG_DISABLE_WEXT
-Content-Language: en-US
-To: Kalle Valo <kvalo@kernel.org>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240411165645.4071238-1-kvalo@kernel.org>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240411165645.4071238-1-kvalo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: QRqDyjhaD8zlQDfnDVj_H6IN-g3KkDFX
-X-Proofpoint-ORIG-GUID: QRqDyjhaD8zlQDfnDVj_H6IN-g3KkDFX
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-11_10,2024-04-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
- clxscore=1015 bulkscore=0 mlxlogscore=999 adultscore=0 lowpriorityscore=0
- impostorscore=0 spamscore=0 suspectscore=0 priorityscore=1501 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2404010003
- definitions=main-2404110144
+Subject: Re: [PATCH v2] treewide: Fix common grammar mistake "the the"
+To: Thorsten Blum <thorsten.blum@toblux.com>, robin.murphy@arm.com
+Cc: cocci@inria.fr, dri-devel@lists.freedesktop.org,
+ ecryptfs@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, io-uring@vger.kernel.org,
+ kernel-janitors@vger.kernel.org, linux-afs@lists.infradead.org,
+ linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-unionfs@vger.kernel.org,
+ linux-wireless@vger.kernel.org, netfs@lists.linux.dev,
+ speakup@linux-speakup.org, Randy Dunlap <rdunlap@infradead.org>,
+ Tyler Hicks <code@tyhicks.com>
+References: <f2d1bb68-7ab7-4bbf-a1b1-88334ba52bab@arm.com>
+ <20240411171145.535123-3-thorsten.blum@toblux.com>
+Content-Language: en-MW
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20240411171145.535123-3-thorsten.blum@toblux.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 4/11/2024 9:56 AM, Kalle Valo wrote:
-> From: Kalle Valo <quic_kvalo@quicinc.com>
+Le 11/04/2024 à 19:11, Thorsten Blum a écrit :
+> Use `find . -type f -exec sed -i 's/\<the the\>/the/g' {} +` to find all
+> occurrences of "the the" and replace them with a single "the".
 > 
-> ath12k will support Multi-Link Operation (MLO) in the future but not yet. A
-> major change with MLO is that cfg80211 will disable Wireless Extension (WEXT)
-> user space interface. To avoid having inconsistent user experience, first
-> supporting WEXT and later not, disable WEXT already now.
+> In arch/arm/include/asm/unwind.h replace "the the" with "to the".
 > 
-> Now ath12k claims that WEXT is not supported:
+> Changes only comments and documentation - no code changes.
 > 
-> $ iwconfig wlan0
-> wlan0     no wireless extensions.
-> 
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-> 
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-> ---
->  drivers/net/wireless/ath/ath12k/mac.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-> index f15dcd75157d..e989628d7d72 100644
-> --- a/drivers/net/wireless/ath/ath12k/mac.c
-> +++ b/drivers/net/wireless/ath/ath12k/mac.c
-> @@ -8556,6 +8556,12 @@ static int ath12k_mac_hw_register(struct ath12k_hw *ah)
->  	wiphy->features |= NL80211_FEATURE_AP_MODE_CHAN_WIDTH_CHANGE |
->  				   NL80211_FEATURE_AP_SCAN;
->  
-> +	/* MLO is not yet supported so disable Wireless Extensions for now
-> +	 * to make sure ath12k users don't use it. This flag can be removed
-> +	 * once WIPHY_FLAG_SUPPORTS_MLO is enabled.
-> +	 */
-> +	wiphy->flags |= WIPHY_FLAG_DISABLE_WEXT;
-> +
->  	hw->queues = ATH12K_HW_MAX_QUEUES;
->  	wiphy->tx_queue_len = ATH12K_QUEUE_LEN;
->  	hw->offchannel_tx_hw_queue = ATH12K_HW_MAX_QUEUES - 1;
-> 
-> base-commit: 363e7193eaf258fe7f04e8db560bd8a282a12cd9
+> Signed-off-by: Thorsten Blum <thorsten.blum@toblux.com>
+> Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+> Reviewed-by: Tyler Hicks <code@tyhicks.com>
 
-Currently on my version of Ubuntu when I switch to Hotspot mode I'm seeing:
-[   55.189623] warning: `iwconfig' uses wireless extensions which will stop
-working for Wi-Fi 7 hardware; use nl80211
+...
 
-So are userspace folks aware of the need to move away from iwconfig?
-Is there a Ubuntu / Network Manager fix fir this?
+> --- a/drivers/scsi/isci/host.h
+> +++ b/drivers/scsi/isci/host.h
+> @@ -244,7 +244,7 @@ enum sci_controller_states {
+>   	SCIC_INITIALIZED,
+>   
+>   	/**
+> -	 * This state indicates the the controller is in the process of becoming
 
-/jeff
+maybe: that the?
 
-/jeff
+> +	 * This state indicates the controller is in the process of becoming
+>   	 * ready (i.e. starting).  In this state no new IO operations are permitted.
+>   	 * This state is entered from the INITIALIZED state.
+>   	 */
+
+...
+
+> diff --git a/io_uring/kbuf.c b/io_uring/kbuf.c
+> index 3aa16e27f509..503244e8470a 100644
+> --- a/io_uring/kbuf.c
+> +++ b/io_uring/kbuf.c
+> @@ -731,7 +731,7 @@ struct io_buffer_list *io_pbuf_get_bl(struct io_ring_ctx *ctx,
+>   	 * going away, if someone is trying to be sneaky. Look it up under rcu
+>   	 * so we know it's not going away, and attempt to grab a reference to
+>   	 * it. If the ref is already zero, then fail the mapping. If successful,
+> -	 * the caller will call io_put_bl() to drop the the reference at at the
+> +	 * the caller will call io_put_bl() to drop the reference at at the
+
+Not strictly related to your patch, but "at at".
+
+>   	 * end. This may then safely free the buffer_list (and drop the pages)
+>   	 * at that point, vm_insert_pages() would've already grabbed the
+>   	 * necessary vma references.
+
+...
+
+CJ
 
 
