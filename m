@@ -1,71 +1,72 @@
-Return-Path: <linux-wireless+bounces-6234-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6235-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 412A58A2B1F
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 11:25:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 208768A2B2D
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 11:28:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14A03B21850
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 09:24:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D02FC28D9EC
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 09:28:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 520D252F61;
-	Fri, 12 Apr 2024 09:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1FCC53392;
+	Fri, 12 Apr 2024 09:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IfM5pZvU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cn4yLZ2o"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A952454650
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Apr 2024 09:23:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E12753378
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Apr 2024 09:27:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712913827; cv=none; b=RpvspHy8eGaIoT6ts6WBDv3a3aH7xxByXFiWqVnJXknu8zD6FvjbsCVX5/6Ms60wwsWR/1zfXDypzERdoo7v55uNvQ2+aUdQFLyZjkIOyjrIcZK+z6F0rqS5LMBkayI3QPdyBsG0dn2GeJuUmQY8MfZkqGJpBFqQKq5eigucFEQ=
+	t=1712914078; cv=none; b=ke5+OxG26G0J5MWWn9hbVUXFmrBq6BQ6EN1CUdQx22yE0a9xDdBNK0RzxLDDzUD7aDxcqHAu3ci3k3wJq6aYOZurvavtHJQaIn07rCXjFhpP8ou/8mZVnjxsOZUlVOhHM9fuE+qWIxgN36ZjNK4I52Ka8/n999qbWVAC00ghp+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712913827; c=relaxed/simple;
-	bh=7UXVghcgcMjURurQ2igNhy01eq3tNyxUGlr0/MXH2u8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=f/KUiMRIkn9s33eQxleSjuCmkXl4tWpcTKwYK/g4ZtmSlthAUDzQWH+/ZMKA78A3mCH4VZdESUtj0/2JnTf33O1+PiNTN5dmE3F56BobR9VRvkzXTLjXOh13QrWeijUOm5TCYzR+dGgP7Bd5SQvB2z9mnpO3upx0TVRglTzO4cM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IfM5pZvU; arc=none smtp.client-ip=209.85.221.51
+	s=arc-20240116; t=1712914078; c=relaxed/simple;
+	bh=is5THqoH+3+MI28rem/n/EiXF8DHvGr/JlSxn3OnzEg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=kznoKLMEmIQeylLauyv8xEI9uD0wJw1yZOKn0rkjhKgwcZeogWC7d7CjVa3s9KFZ6vURfPGnJRDzQ35/Xaq7HTramtVQK9E+VjJ2O4Srs1Fiq5Q3t5ojKIMiWmwyrkItygAvyHmN35awRFSEfVrmBZMSisCVVNuE12lrlDpWmBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cn4yLZ2o; arc=none smtp.client-ip=209.85.167.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-343c2f5b50fso461504f8f.2
-        for <linux-wireless@vger.kernel.org>; Fri, 12 Apr 2024 02:23:45 -0700 (PDT)
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-516d4d80d00so944126e87.0
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Apr 2024 02:27:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712913824; x=1713518624; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=gmail.com; s=20230601; t=1712914075; x=1713518875; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5WK4hlBESstsIUX+zMhngFDheN5gnJTFx66i5y0Tzm4=;
-        b=IfM5pZvUyWBYFndBuUsdQPzwdinAZ/AcpZOJe9kAqLHWMC6R3+24/Em7r2BRvGpJCh
-         /jglvTHP9g0BZ2a5JZtSOBySIYVskjSEc5ai8Wh1uyUhIWimZXO8HulWlE0hhPPtV1b1
-         BoZbcShGUDtizCCpjyVjviAIPdfOFFMp/iZvGnQpGA13dcSHGluJWkpylc4gKGcjmkx9
-         rsLn4WJJ14WlejbE2KCWFBPfCPu4zXFo1PHnZgCw5Of0qD8q6qm/ObnJ28o+hBg48nC6
-         ZW4gHOizgTaIKD8lukOh8QoCe+cktzvkfLCcAg/5ObuFMhnPfqevpPDXlTzTaKum6E3S
-         oL0A==
+        bh=+OReUEDN2frbNEsMpeetqUaCFfc7dipywbbMjiR36/E=;
+        b=Cn4yLZ2o9cJ93E6h+PEOJe02eaDM+TWS8CYGazHZ08Aw4umZyEtvypocxmWniwDcjA
+         P+q8C6nVMEKwrGPs1umipojg+xBvQg4RT7AnqOHkQjSbE+Pms798EN2i4SZ9nmZvJSnl
+         67DJ4mmI30miF+nj+aZJe4Yt3LcLWjU1Ki79/CPsx0RdOc/PhJB/MnMj1/dYFo3WBGAO
+         Y6IGWJoXnEOqUN59lVLJryPtaMZiXsph6EMwNKMil2ES53NCit4xakqZnGeY1wWRVKqt
+         RvLbVhrEEZx8B8uQnZWdUDbHJBScZ6UW7ZF6zX1TwM20ioUPyTNwUun/cxZIfWVvg7RH
+         NqmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712913824; x=1713518624;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
+        d=1e100.net; s=20230601; t=1712914075; x=1713518875;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=5WK4hlBESstsIUX+zMhngFDheN5gnJTFx66i5y0Tzm4=;
-        b=WbyqeP7E/S65kQKinch2LbGyT/EWYOHAiYC7cOF3AKsNGA9ft9tmOdZAKamJvlyB6A
-         faXHya+4OPEDTYLApYGaxM1FzukBc21ExNJWVYbX/59fnaqbBySLG9NmkQfZWXOrH42y
-         WvPEf5JKG7A5gUg0cliuFlVVCHlEh37nBAgHK3N8CpQiJjfHnrFH3D3YJh5FRMEeS5uI
-         6T71b5o35oqRZeN4+tMbn54rtLulBgJWS+36SILj3SAw5qnIr0gdz5lE6XjXTzyhZgwH
-         tu2mi3ZJTOKK/qDY1I5jL83h83KliwWJgRJ8SqsF3BH+ap3QW8ma3UP8P9WQESABXdnQ
-         hKKw==
-X-Gm-Message-State: AOJu0YzEtOTUoASxK4PRM/dbCRzlrjN/vm45wCYuV4HKG0vLpZnkka25
-	Z5nz319mPAFlPzAmw9wYmuIAxo9sxuXxSjE2d52qd7clfJD0WJt1RsVBZg==
-X-Google-Smtp-Source: AGHT+IEfd/dQCgUdBpBoWhvCRuRFjBhFLkkyqmM/3BxuR9AAjM3dJ0VKTDcop11fx5p2PgRYfU9Tjg==
-X-Received: by 2002:adf:e2c8:0:b0:343:6e18:5f09 with SMTP id d8-20020adfe2c8000000b003436e185f09mr1261070wrj.12.1712913823801;
-        Fri, 12 Apr 2024 02:23:43 -0700 (PDT)
+        bh=+OReUEDN2frbNEsMpeetqUaCFfc7dipywbbMjiR36/E=;
+        b=iSMRF9n6cDV008ahs/OE0K+v7G4UnOG0ic2xmofahBH0rZK9q0zAImGZHxA3z+pnzL
+         70M8VW0jLoIfwcq9E5lEOvxOgC9pQrNN0jOeowcZ91agCdN8v28NoJZKm/Dpm6qtzeH1
+         0NlpyRXgHomKOpWgBSyc3zW783Lkml0PgegKx4+Uvc79WmWezufoIPOexZlnUEo49PUp
+         nTF1HWSMxJbRmLI9na+x+8czD0sL2mG0+je6IL/3PBVDn0g/G+nmRt3gagM2+qGVag8v
+         FyMAbn8ukds349ajepB5TWs8O0Rpvc2rmDboE4pHZ4BstuWPcjPmagAPpQYnQstvoyd/
+         q+UQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWpIiMGppXKXzaIzaYouh720rIWRs4EkM1Ra2XGYKbkX/xf45kEXcX8TGcB+lA27opTyH984oMyhzrn5v3xCIao8qCeRqkWG5M2Lsucsrs=
+X-Gm-Message-State: AOJu0YxCDIz01H85K1WGbr1KznNrQ+1GLNLSZHLQ5bN0eA+PUh3MGRYJ
+	lVSXgMeT/3Eachral6lw/N2lApFRsK8Zh9uXrx2E1mV60tCKp8mhB/Roce1R
+X-Google-Smtp-Source: AGHT+IEDzAhghf3BkO/RgZqY7va47me9gidgqhOpwVjCxTStASj/0/EN3dB/L+Y1I2Zc2CAZ0pv1BQ==
+X-Received: by 2002:a05:6512:60b:b0:518:6f95:1a37 with SMTP id b11-20020a056512060b00b005186f951a37mr1182850lfe.33.1712914075122;
+        Fri, 12 Apr 2024 02:27:55 -0700 (PDT)
 Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id ea15-20020a0560000ecf00b003438cc1d2b4sm3812598wrb.59.2024.04.12.02.23.43
+        by smtp.gmail.com with ESMTPSA id u10-20020a5d6aca000000b0033e9d9f891csm3825825wrw.58.2024.04.12.02.27.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Apr 2024 02:23:43 -0700 (PDT)
+        Fri, 12 Apr 2024 02:27:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -74,83 +75,61 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 12 Apr 2024 11:23:43 +0200
-Message-Id: <D0I19V0104BZ.IN8THB2XCFLV@gmail.com>
-Cc: <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v2] wifi: ath12k: add support to handle beacon miss for
- WCN7850
+Date: Fri, 12 Apr 2024 11:27:54 +0200
+Message-Id: <D0I1D2J8EB1L.2DPV9W79YKN2C@gmail.com>
 From: "Nicolas Escande" <nico.escande@gmail.com>
-To: "Kang Yang" <quic_kangyang@quicinc.com>, <ath12k@lists.infradead.org>
+To: "Mingyen Hsieh" <mingyen.hsieh@mediatek.com>, <nbd@nbd.name>,
+ <lorenzo@kernel.org>
+Cc: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
+ <Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
+ <Eric-SY.Chang@mediatek.com>, <km.lin@mediatek.com>,
+ <robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+ <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
+ <Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
+ <linux-mediatek@lists.infradead.org>, "Leon Yen" <leon.yen@mediatek.com>
+Subject: Re: [PATCH] wifi: mt76: mt7921: avoid undesired changes of the
+ preset regulatory domain
 X-Mailer: aerc 0.17.0
-References: <20240412025149.1211-1-quic_kangyang@quicinc.com>
- <D0HYXSPMY8JE.17YSACO3ROKKZ@gmail.com>
- <6ee5664b-997b-45eb-89f9-5f75708c268a@quicinc.com>
-In-Reply-To: <6ee5664b-997b-45eb-89f9-5f75708c268a@quicinc.com>
+References: <20240412085357.13756-1-mingyen.hsieh@mediatek.com>
+In-Reply-To: <20240412085357.13756-1-mingyen.hsieh@mediatek.com>
 
-On Fri Apr 12, 2024 at 10:47 AM CEST, Kang Yang wrote:
+On Fri Apr 12, 2024 at 10:53 AM CEST, Mingyen Hsieh wrote:
+> From: Leon Yen <leon.yen@mediatek.com>
 >
->
-> On 4/12/2024 3:33 PM, Nicolas Escande wrote:
-> > On Fri Apr 12, 2024 at 4:51 AM CEST, kangyang wrote:
-> > [...]
-> >> @@ -5986,6 +6055,20 @@ static int ath12k_mac_vdev_create(struct ath12k=
- *ar, struct ieee80211_vif *vif)
-> >>   	lockdep_assert_held(&ar->conf_mutex);
-> >>  =20
-> >>   	arvif->ar =3D ar;
-> >> +	arvif->vif =3D vif;
-> >> +
-> >> +	INIT_LIST_HEAD(&arvif->list);
-> >> +	INIT_DELAYED_WORK(&arvif->connection_loss_work,
-> >> +			  ath12k_mac_vif_sta_connection_loss_work);
-> >> +
-> > Is there a need to move the following part ?
-> > Isn't just adding the delay work enough ?
->
->
-> Just checked, you are right, but should add delay work in add_interface()=
-.
->
-> Will change in v3.
->
->
-> >> +	for (i =3D 0; i < ARRAY_SIZE(arvif->bitrate_mask.control); i++) {
-> >> +		arvif->bitrate_mask.control[i].legacy =3D 0xffffffff;
-> >> +		memset(arvif->bitrate_mask.control[i].ht_mcs, 0xff,
-> >> +		       sizeof(arvif->bitrate_mask.control[i].ht_mcs));
-> >> +		memset(arvif->bitrate_mask.control[i].vht_mcs, 0xff,
-> >> +		       sizeof(arvif->bitrate_mask.control[i].vht_mcs));
-> >> +	}
-> >> +
-> >>   	vdev_id =3D __ffs64(ab->free_vdev_map);
-> >>   	arvif->vdev_id =3D vdev_id;
-> >>   	arvif->vdev_subtype =3D WMI_VDEV_SUBTYPE_NONE;
-> >> @@ -6316,16 +6399,6 @@ static int ath12k_mac_op_add_interface(struct i=
-eee80211_hw *hw,
-> >>  =20
-> >>   	arvif->vif =3D vif;
-> >>  =20
-> >> -	INIT_LIST_HEAD(&arvif->list);
-> >> -
-> >> -	for (i =3D 0; i < ARRAY_SIZE(arvif->bitrate_mask.control); i++) {
-> >> -		arvif->bitrate_mask.control[i].legacy =3D 0xffffffff;
-> >> -		memset(arvif->bitrate_mask.control[i].ht_mcs, 0xff,
-> >> -		       sizeof(arvif->bitrate_mask.control[i].ht_mcs));
-> >> -		memset(arvif->bitrate_mask.control[i].vht_mcs, 0xff,
-> >> -		       sizeof(arvif->bitrate_mask.control[i].vht_mcs));
-> >> -	}
-> >> -
-> >>   	/* Allocate Default Queue now and reassign during actual vdev creat=
-e */
-> >>   	vif->cab_queue =3D ATH12K_HW_DEFAULT_QUEUE;
-> >>   	for (i =3D 0; i < ARRAY_SIZE(vif->hw_queue); i++)
-> > [...]
-> >=20
-> > Thanks
+> Some countries have strict RF restrictions where changing the regulatory
+> domain dynamically based on the connected AP is not acceptable.
+> This patch disables Beacon country IE hinting when a valid country code
+> is set from usersland (e.g., by system using iw or CRDA).
 
-Yeah, I wasn't clear enough, I meant adding the INIT_DELAY_WORK without mov=
-ing
-the rest of the code around.=20
+I always had trouble fully understanding the regulation but isn't the count=
+ry
+code IE sole purpose to adapt the regulatory of the client ?=20
 
-Thanks
+>
+> Signed-off-by: Leon Yen <leon.yen@mediatek.com>
+> Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt7921/init.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/n=
+et/wireless/mediatek/mt76/mt7921/init.c
+> index ef0c721d26e3..3c9a5fcd6924 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+> @@ -135,6 +135,13 @@ mt7921_regd_notifier(struct wiphy *wiphy,
+>  	dev->mt76.region =3D request->dfs_region;
+>  	dev->country_ie_env =3D request->country_ie_env;
+> =20
+> +	if (request->initiator =3D=3D NL80211_REGDOM_SET_BY_USER) {
+> +		if (dev->mt76.alpha2[0] =3D=3D '0' && dev->mt76.alpha2[1] =3D=3D '0')
+> +			wiphy->regulatory_flags &=3D ~REGULATORY_COUNTRY_IE_IGNORE;
+> +		else
+> +			wiphy->regulatory_flags |=3D REGULATORY_COUNTRY_IE_IGNORE;
+> +	}
+> +
+>  	if (pm->suspended)
+>  		return;
+> =20
+
 
