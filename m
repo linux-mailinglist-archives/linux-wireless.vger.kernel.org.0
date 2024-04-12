@@ -1,124 +1,135 @@
-Return-Path: <linux-wireless+bounces-6225-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6226-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB3048A26D3
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 08:42:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD21A8A2829
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 09:34:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C6FF1F21F0A
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 06:42:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86B0D281FCB
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 07:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41B1B48CE0;
-	Fri, 12 Apr 2024 06:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F9236AEF;
+	Fri, 12 Apr 2024 07:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iSIG88PM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ih7/8Gea"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B2C481AA;
-	Fri, 12 Apr 2024 06:41:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430492C683
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Apr 2024 07:33:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712904086; cv=none; b=FcEPPII0PjuyIcdaDdrNQgRGh0jHTZJ64CCC+El55BAD71bsFllRqYtMsxuiTRwmIH+6zZnvlB5y5AUl5wH3s1mCNb9YHQCKfE/+3nmyyCL49/KnMMSsVyiBZc7CZmYQuwVd73jZ75sEp6m8ftE0iY0OVcTg9b17N1jRVNm4YZ0=
+	t=1712907239; cv=none; b=EgI2OqyIEwmT0ccLgAY4142cja3g+nV/gQo4dvrUDem54sknDOLllPKyEy0Zz4GOLmfr7CanI0uMF4QR24odiaNesFiVeRs8ZUVlpjm2e8ix28MwFm2VoTVmQqO5xJJcuQ1ivrhREhKZ5hdaxB9gvs3vWk1ejBQdHNOvxS2xpoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712904086; c=relaxed/simple;
-	bh=nnftp3y20mnefQs/zA7rIGucHoCz77k4ThTY/2DnxXQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=WqZ4u2bp1etrmGwN4LvsEPc5P8AJHqF7YOdeX3PUsI0f7yW5353sMQfumFije+dnpo+1RbsV2oEBzu3BzyCh7zMWMGVGqHnsEXXP8w5YLHiRn6isxA0DilztxWv482/N9jaaplh0LdXlp6iYChmbPWluqpwmjkDKYt0JX8kP8AQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iSIG88PM; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712904084; x=1744440084;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=nnftp3y20mnefQs/zA7rIGucHoCz77k4ThTY/2DnxXQ=;
-  b=iSIG88PM9b2YgdRQ4szSPTsiEdHfMD5rvawOOi/wLLg8jMk/6RvNaAhh
-   oT8MCDqfxNcRKZIaxcmdnyc5dZFarta68w/0F5iqI/qjN12Q0xqiv/d3W
-   MzpkPrK3w3Kcc1AHe6HVTykvzAnyMk67pILZRjDVT2hnvtRmoe/Cw2Fd+
-   /uyq9R6DLLbY1+VPi8oWLD8fXYhTK1fOKpK5axS7YL1HSBv2I+Lw0Wccf
-   fe1j1FKLmWJwforIh40KJUeHO8Jk2MX9Ubj2Z2DTWjc8yz7+KWokasxYk
-   5t7Q9ylV9NvBLIftWfB78uD0Vkjhd9A4DcbrwRJ02bVl04XgItkgpfDlz
-   A==;
-X-CSE-ConnectionGUID: Y0HDLEZfStSZpp9NVKZxxw==
-X-CSE-MsgGUID: /QL/ha6+TkaFPIYYcUqo0A==
-X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="19059686"
-X-IronPort-AV: E=Sophos;i="6.07,195,1708416000"; 
-   d="scan'208";a="19059686"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2024 23:41:22 -0700
-X-CSE-ConnectionGUID: gXMdnuYmRRqCKEW6OOQMYA==
-X-CSE-MsgGUID: D1rZkMzDT4yyHA2nqy/ldg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,195,1708416000"; 
-   d="scan'208";a="21056020"
-Received: from gjantea-mobl.ger.corp.intel.com (HELO localhost) ([10.252.60.121])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2024 23:41:15 -0700
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: Thorsten Blum <thorsten.blum@toblux.com>, Dan Carpenter
- <dan.carpenter@linaro.org>
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org,
- speakup@linux-speakup.org, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-wireless@vger.kernel.org, linux-scsi@vger.kernel.org,
- linux-afs@lists.infradead.org, ecryptfs@vger.kernel.org,
- netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
- linux-unionfs@vger.kernel.org, linux-arch@vger.kernel.org,
- io-uring@vger.kernel.org, cocci@inria.fr, linux-perf-users@vger.kernel.org
-Subject: Re: [PATCH] treewide: Fix common grammar mistake "the the"
-In-Reply-To: <193B959E-60A3-499A-BFF3-EA7B2D0B6C12@toblux.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20240411150437.496153-4-thorsten.blum@toblux.com>
- <0bd7ccc2-4d8c-455b-a6c2-972ebe1fcb08@moroto.mountain>
- <193B959E-60A3-499A-BFF3-EA7B2D0B6C12@toblux.com>
-Date: Fri, 12 Apr 2024 09:41:10 +0300
-Message-ID: <87y19j3wxl.fsf@intel.com>
+	s=arc-20240116; t=1712907239; c=relaxed/simple;
+	bh=tbEVeD3AUoa4QJIvKiIKkH/6O5vag3+En2T9WmWoaUI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=VvzL78OMk6fX3ave5GYPwDkKvgi5wGcR00HZWUMCq+eAm4Hzr9+9qS8B7dvSVop80QIvP20qGwWj5mf+UYi8o4lxD9JA/fPv9y8JSXIP2xeBWm7RrEgtZKpIwwKgWAlLsSQcgU4S3T9CoZ72X09xWjLQNsT5iRXSgKHM54VCqec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ih7/8Gea; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-417f7edf87eso4965235e9.3
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Apr 2024 00:33:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712907236; x=1713512036; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=frZY594kWfIMrR/24RGxK2/1/2Nf7qSOc8dwbXPUe9g=;
+        b=ih7/8GeaTyEVuVOqMywCi3xdw9TCbYSvs29qumFokYdlTYr5g6bx0zObFaN1SUSr1W
+         KIS9/2CHu73hrhcloSyT2rrEegSqdjh5wuN2tCeyHn/rSNmIC0zemevYR4AqQTu9bziW
+         rJfuT4YfvJ0faKC8jiU/aoCoKDTbjLeVTs37wgsexAe5c2AyGlhm17PiZ91Vjh3ImDvM
+         d3lgFV7IEyKAXYbBwaWoOLu2YTpn7WHjMpHqkGMjW2MsFoIReRPuMVqidimeJQ9Lbilt
+         ajSJJZAlxHEM0j8VX43AfgnKSLJSrHApTtiV3bDo015Z5/gjBiJFiMY0SgCuh54eoAIU
+         MA8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712907236; x=1713512036;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=frZY594kWfIMrR/24RGxK2/1/2Nf7qSOc8dwbXPUe9g=;
+        b=DtbJWl/euoN+glQtJ+CDXfh3SPjrzQFwmVYFkTz3Xk4WwHFeq9xkKYSLiFOoI+WKci
+         8nqQ8Qzvx8V4OkqGUYcO0GvbkwDOg1/7udI3Li+BUY5lqKGSmkEJe4cZFPcKQeWrKmjq
+         9iAWbkPFdc3crnCuHPNwmb9X2CNbB11hnR+vm9nT1PM3nVszD3qCqtc076stTvitNbQr
+         uR3Qiw4k4lkhDUgsPJMIa1hxaPWYM9QCViwXwSszPVAi38jNpaUdleul4rSKGgPcXqkB
+         q6S0RnjEIjagCCYdXuYqJHLOeArnJTbcBUn4PZ73gcY4cyqm5W9kTRZ5UPJma0YUOwwN
+         97ZQ==
+X-Gm-Message-State: AOJu0Yw56Nt9SldgQ+1Gj3gObHvrG5/P0WnJfgNsdKmhrDHlGjOtuWpa
+	hHpwBECO855/t3zs2wrLD15TYtufuC/sArjnsN7CvdC6XTVm45gyW2jIzQ==
+X-Google-Smtp-Source: AGHT+IGrAwUdIyE2YxA7H0TGYK6EyEd19afc7TvtjYj8dcewHihSdOEdHE3HFvT76xHeF5kgHBJuMA==
+X-Received: by 2002:a5d:5102:0:b0:341:dedd:9726 with SMTP id s2-20020a5d5102000000b00341dedd9726mr1208837wrt.3.1712907236296;
+        Fri, 12 Apr 2024 00:33:56 -0700 (PDT)
+Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id q9-20020a05600000c900b00346c0062b0dsm3212945wrx.11.2024.04.12.00.33.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 Apr 2024 00:33:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 12 Apr 2024 09:33:55 +0200
+Message-Id: <D0HYXSPMY8JE.17YSACO3ROKKZ@gmail.com>
+From: "Nicolas Escande" <nico.escande@gmail.com>
+To: "kangyang" <quic_kangyang@quicinc.com>, <ath12k@lists.infradead.org>
+Cc: <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v2] wifi: ath12k: add support to handle beacon miss for
+ WCN7850
+X-Mailer: aerc 0.17.0
+References: <20240412025149.1211-1-quic_kangyang@quicinc.com>
+In-Reply-To: <20240412025149.1211-1-quic_kangyang@quicinc.com>
 
-On Fri, 12 Apr 2024, Thorsten Blum <thorsten.blum@toblux.com> wrote:
-> On 11. Apr 2024, at 17:25, Dan Carpenter <dan.carpenter@linaro.org> wrote:
->> 
->> It's tricky to know which tree a patch like this would go through.
->
-> The patch is based on the mainline tree. Should I have sent it directly to
-> Linus then?
->
-> I'm relatively new here and therefore only sent it to the corresponding mailing
-> lists.
+On Fri Apr 12, 2024 at 4:51 AM CEST, kangyang wrote:
+[...]
+> @@ -5986,6 +6055,20 @@ static int ath12k_mac_vdev_create(struct ath12k *a=
+r, struct ieee80211_vif *vif)
+>  	lockdep_assert_held(&ar->conf_mutex);
+> =20
+>  	arvif->ar =3D ar;
+> +	arvif->vif =3D vif;
+> +
+> +	INIT_LIST_HEAD(&arvif->list);
+> +	INIT_DELAYED_WORK(&arvif->connection_loss_work,
+> +			  ath12k_mac_vif_sta_connection_loss_work);
+> +
+Is there a need to move the following part ?
+Isn't just adding the delay work enough ?
+> +	for (i =3D 0; i < ARRAY_SIZE(arvif->bitrate_mask.control); i++) {
+> +		arvif->bitrate_mask.control[i].legacy =3D 0xffffffff;
+> +		memset(arvif->bitrate_mask.control[i].ht_mcs, 0xff,
+> +		       sizeof(arvif->bitrate_mask.control[i].ht_mcs));
+> +		memset(arvif->bitrate_mask.control[i].vht_mcs, 0xff,
+> +		       sizeof(arvif->bitrate_mask.control[i].vht_mcs));
+> +	}
+> +
+>  	vdev_id =3D __ffs64(ab->free_vdev_map);
+>  	arvif->vdev_id =3D vdev_id;
+>  	arvif->vdev_subtype =3D WMI_VDEV_SUBTYPE_NONE;
+> @@ -6316,16 +6399,6 @@ static int ath12k_mac_op_add_interface(struct ieee=
+80211_hw *hw,
+> =20
+>  	arvif->vif =3D vif;
+> =20
+> -	INIT_LIST_HEAD(&arvif->list);
+> -
+> -	for (i =3D 0; i < ARRAY_SIZE(arvif->bitrate_mask.control); i++) {
+> -		arvif->bitrate_mask.control[i].legacy =3D 0xffffffff;
+> -		memset(arvif->bitrate_mask.control[i].ht_mcs, 0xff,
+> -		       sizeof(arvif->bitrate_mask.control[i].ht_mcs));
+> -		memset(arvif->bitrate_mask.control[i].vht_mcs, 0xff,
+> -		       sizeof(arvif->bitrate_mask.control[i].vht_mcs));
+> -	}
+> -
+>  	/* Allocate Default Queue now and reassign during actual vdev create */
+>  	vif->cab_queue =3D ATH12K_HW_DEFAULT_QUEUE;
+>  	for (i =3D 0; i < ARRAY_SIZE(vif->hw_queue); i++)
+[...]
 
-It's not just about mailing lists, it's also about changes flowing in to
-mainline via a plethora of subsystem and driver repos and branches. See
-MAINTAINERS. Or this old LWN page [1]. The development happens in those
-branches, and if you make treewide changes like this, it's not clear who
-should take it, and you also risk unnecessary conflicts if those places
-get modified in the individual branches. So it might just be easiest to
-split this up to smaller patches sent to the appropriate lists.
-
-Anyway, all that said,
-
-Acked-by: Jani Nikula <jani.nikula@intel.com>
-
-on the i915 changes here.
-
-
-BR,
-Jani.
-
-
-[1] https://lwn.net/Articles/737094/
-
--- 
-Jani Nikula, Intel
+Thanks
 
