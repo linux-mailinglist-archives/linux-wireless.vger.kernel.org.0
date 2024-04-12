@@ -1,175 +1,191 @@
-Return-Path: <linux-wireless+bounces-6228-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6229-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83AAB8A2888
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 09:54:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DFBD8A28A6
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 10:02:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5FD31C22D48
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 07:54:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4087B2890C5
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 08:02:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7D974CE0F;
-	Fri, 12 Apr 2024 07:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F64E5028E;
+	Fri, 12 Apr 2024 08:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Dfw51veW"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="j4OzTnRX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403694D9E3
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Apr 2024 07:53:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC5C50284
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Apr 2024 08:01:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712908436; cv=none; b=tpAl01ZNtpu+CTZoX5zzVWwQhMQA2Vgf5Z63PDFHQLAD2NwhCJ6RaQLCtiC1GTcvDW58A4TaAVW8y0n7RqUEJPch6nlSgCarM29MTXhbSZtTP0eSl5TXuqDprcHA80cuU6duZwMpX2IqwaWw77FZHbMrqNU9Mp7iFu6iZl3oUnc=
+	t=1712908920; cv=none; b=DoBJ8fgIXxBirOPimW4cY6f+2ssS8ysraR/SpGbtwcmYdx+TOeZ4s3PQmBiWWji2/pK/p4uECmbmsU6lUv1S24WHdsDgG0vkOC2mvd1WkYK40l8gOJRbY4mlxYF8AkoMbMS5+b+K0dn9XOQBqApG7VDpKdzlI7HIoJNo6eCuHZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712908436; c=relaxed/simple;
-	bh=+BIRz40w1PCKmMO2wtU7DDFRbUrYoEXEr9tRma336A4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t2LfwbtmfnStNIo4VnVpyJrriyjb0O+m6Hn6U/U/PESUwkKf2rGJ4Vc0s7f8KGlYP5EIqj91yRBKzSf4u97c4/kbYDTHlAyBtUzdJUNdUB4mbGB7pacWbLKsz3iBuaOd3cJ1bYcgnN7XLEBOI+tlHTy8OvQs78fF+RVDHEWS8YI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Dfw51veW; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-56fffd131a8so118505a12.0
-        for <linux-wireless@vger.kernel.org>; Fri, 12 Apr 2024 00:53:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712908433; x=1713513233; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=RzM6dFST6MTowNeFATbCFv+juTS+kCT2d3nPXhzUOJc=;
-        b=Dfw51veWuu0iob6nylNAghEPZzhHVJB1JrvEbMJk/IH0l0Ilj9EFyY0KqLuyhBaWRA
-         NygyRw4jW68lIZLNheoRep72tdK31oysA1Q5AtlDKBUR076xfECABvvM73Z8Weahjd1n
-         OsFqkDbLED6U/+PQkOkkfOsfbRy8CjkmtI5b9F5g9fEPoATOOLXX5GD7NjBixTjxU+cc
-         zCvNrKfXgtZHtlyQuQcdwSgkVSDRIpizZ99s/pAeWl0ELY3IjeRgvit/5bn3i2FgGQtC
-         DnAukD11fVciZqCc/V3PGH2vaLedEEORje0/8quK9ef4RBWqY7AgD+qUgTmmllzzDPI3
-         mQhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712908433; x=1713513233;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RzM6dFST6MTowNeFATbCFv+juTS+kCT2d3nPXhzUOJc=;
-        b=j8C8qtQq+J4UbtXnBBYzCBXQ91DHylWUKosDr9MaTn1rqzaqGb44oQKmpTBgvENCq3
-         DQ7BnUi9w6zN/tGcpGSQO+99F1M1G1NhUzPRwl29nEVGD1+66/am1NSWfdJ59/UOpK26
-         BdRYxGD49ddcv7MIuGNcgXQg+uNXSNL6mSHAThywotUDXerpbYgO9yVQKyNIRY+ONwkl
-         6zP35lrBitxUJAFrXpdYQpEq/0sxdDFek+Ay2R3MZ560a5yx7V7qZ7jf65Ppq2FPxps8
-         cnrGirLwFVqDQ1YmsyHnDaXtBEGrrRHlKr5mZZ6x1vPtvGWmT9wCJetTiorJ4uC2GUJr
-         KonA==
-X-Forwarded-Encrypted: i=1; AJvYcCWCjO10Y1oMq5y20e6xakev7ykOy7F7+pLU7HiWAPu6IeJ5D4AkDhLc2ccYASDV6jbToNyxOwOcIPo81sGzJ7AOU9HjvE2gKdoJujmeqos=
-X-Gm-Message-State: AOJu0YzYIq6+FCo3ZJ+kppZ8uMLTMtaxXwuD+jPWhNZfBF5f/016Tbpk
-	dPYaZcTh50jyFYks0kIepOHgy98XN6IzXin7sawZ4tpXPI+kjYQn9kEC1QwjKWo=
-X-Google-Smtp-Source: AGHT+IHJo9Noj1BumEXH5oWny29fKEvKgw2utImwVpfaNDH8ddjvz9U+Ue1Q8sPDVqAZNqEYjELC0A==
-X-Received: by 2002:a50:a455:0:b0:56d:fc89:ecf8 with SMTP id v21-20020a50a455000000b0056dfc89ecf8mr1552881edb.10.1712908433531;
-        Fri, 12 Apr 2024 00:53:53 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.223.16])
-        by smtp.gmail.com with ESMTPSA id g29-20020a056402321d00b00570020fbedfsm69375eda.37.2024.04.12.00.53.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Apr 2024 00:53:53 -0700 (PDT)
-Message-ID: <becac82e-aa5a-4ee3-83c7-17b8478439d0@linaro.org>
-Date: Fri, 12 Apr 2024 09:53:49 +0200
+	s=arc-20240116; t=1712908920; c=relaxed/simple;
+	bh=ZTljc3xsYBOItWKc1lJqgMiXwrIpr7b4wW6fdzNCKjk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Y7R5pxYk8V2l/adVSwbw+WFTuf2mPr2hxzUUhbo+7LM7kI8Wu/X55/ucWpCFhYl6J8kL1g/xvufNHL+33W2Ne75g20G8nHu/uHzJQbdvYfdLG1QcsR39Hpg9NB40x6hkyrt4udX7LFXQhg5tVXq1KnOvfKTAVzhsFVdwxqikV0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=j4OzTnRX; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43C3Qrp7011206;
+	Fri, 12 Apr 2024 08:01:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=AXzmqe/HV/pIPC+x11YnHRp97KRRithDzZxLf+bgUfQ=; b=j4
+	OzTnRXQ84Opz3o+3H/K2rm4czoQ6o6R99i4r7wX/uoMnognpICb2cZs470+hfSIZ
+	+Hp43n1Qvs0vIgCNy5KwZPBheENypAtEapsnKp8c8HE/vNjQHDOWIrupcNt6ckxm
+	eT1VUaChf1RXhysqeQV3dH4ARc/MO+MtXZGG/xVTX+hWojzVj9HHpIiDlqIoxOtg
+	QzjMh2iyQPNgDjGfmCMAboO1Zx/bI0O/DGN2LuyDKRMk/cqGZMn5tNlVDmjaVYa4
+	PNYGYlFEpph2Fx4ERDUMrQpwIb212WDdm8A4hD1taD0nNwpkES3OJ3y1dluiE9VY
+	HI6BdcCvyMBR1PXlpuaQ==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xevweghb8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Apr 2024 08:01:42 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43C81f0W027173
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Apr 2024 08:01:41 GMT
+Received: from [10.216.26.110] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 12 Apr
+ 2024 01:01:37 -0700
+Message-ID: <816770ca-fb30-e1cc-3f57-51d1fd35f141@quicinc.com>
+Date: Fri, 12 Apr 2024 13:31:30 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 04/16] dt-bindings: net: wireless: qcom,ath11k:
- describe the ath11k on QCA6390
-To: Bartosz Golaszewski <brgl@bgdev.pl>, Marcel Holtmann
- <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Kalle Valo <kvalo@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>, Liam Girdwood
- <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Bjorn Helgaas <bhelgaas@google.com>, Saravana Kannan <saravanak@google.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>, Arnd Bergmann <arnd@arndb.de>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>, Alex Elder <elder@linaro.org>,
- Srini Kandagatla <srinivas.kandagatla@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Abel Vesa <abel.vesa@linaro.org>, Manivannan Sadhasivam <mani@kernel.org>,
- Lukas Wunner <lukas@wunner.de>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Amit Pundir <amit.pundir@linaro.org>, Xilin Wu <wuxilin123@gmail.com>
-Cc: linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-wireless@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
- linux-pm@vger.kernel.org,
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-References: <20240410124628.171783-1-brgl@bgdev.pl>
- <20240410124628.171783-5-brgl@bgdev.pl>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 01/13] wifi: cfg80211: Add provision to advertise multiple
+ radio in one wiphy
 Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240410124628.171783-5-brgl@bgdev.pl>
-Content-Type: text/plain; charset=UTF-8
+To: Nicolas Escande <nico.escande@gmail.com>, <mbizon@freebox.fr>,
+        "Jeff
+ Johnson" <quic_jjohnson@quicinc.com>,
+        Ben Greear <greearb@candelatech.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Karthikeyan Periyasamy
+	<quic_periyasa@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240328072916.1164195-1-quic_periyasa@quicinc.com>
+ <20240328072916.1164195-2-quic_periyasa@quicinc.com>
+ <e36599d3269496de59505b36be46f873976f8706.camel@sipsolutions.net>
+ <033185b0-f878-a50b-d0d9-57fa79439bdf@quicinc.com>
+ <ef6b6a7a4a9d3b01c0eb6abf0991e7e27425e102.camel@sipsolutions.net>
+ <80fe5786-f764-455d-ac44-22adf7aeaf94@candelatech.com>
+ <31f30c0e318904f3a082c7f213576ceb1f407141.camel@sipsolutions.net>
+ <20b56e52-a5e2-70cd-a62a-8c4a3526c2cf@candelatech.com>
+ <614bb8a8f1d9174ad7d87cf7636f657cda7b1ef9.camel@sipsolutions.net>
+ <aa9e1d54-bb5f-37cc-335f-c9970ab13789@candelatech.com>
+ <0cfe990b-182b-4ceb-b5b4-2989fefedb2f@quicinc.com>
+ <29f7ecb6d7c208c3614f37616943d5f97bb134d3.camel@freebox.fr>
+ <5fc2f2d2-7403-79d2-8909-ddda918ff8d5@quicinc.com>
+ <af70ee81e583f58dada3dde87ac335137c4038b0.camel@freebox.fr>
+ <6ff353e2-785a-f2ce-8d3b-acc8e79a64cf@quicinc.com>
+ <D0HZ1KH5VJ8P.2TZZ7NNZXSJA8@gmail.com>
+From: Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>
+In-Reply-To: <D0HZ1KH5VJ8P.2TZZ7NNZXSJA8@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: bTQnSVxn0gzORnd4lBkXWkqhK_tKoFU8
+X-Proofpoint-ORIG-GUID: bTQnSVxn0gzORnd4lBkXWkqhK_tKoFU8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-12_04,2024-04-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ spamscore=0 clxscore=1011 priorityscore=1501 impostorscore=0
+ mlxlogscore=407 bulkscore=0 phishscore=0 adultscore=0 suspectscore=0
+ mlxscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404120056
 
-On 10/04/2024 14:46, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+
+
+On 4/12/2024 1:08 PM, Nicolas Escande wrote:
+> On Fri Apr 12, 2024 at 5:50 AM CEST, Vasanthakumar Thiagarajan wrote:
+>>
+>>
+>> On 4/11/2024 10:09 PM, Maxime Bizon wrote:
+>>>
+>>> On Thu, 2024-04-11 at 21:56 +0530, Vasanthakumar Thiagarajan wrote:
+>>>
+>>> Hello,
+>>>
+>>> Thanks for making it clear,
+>>>
+>>>
+>>>>> For example, starting a 5Ghz AP in ax-only mode, and at the same
+>>>>> time
+>>>>> creating a STA interface on 2.4GHz ?
+>>>
+>>>> Yes, such use cases continue to be supported in single wiphy mode.
+>>>
+>>> Understood, but I see some corner cases.
+>>>
+>>>
+>>> For example, assume two bands AP hardware, 2.4GHz and 5GHz.
+>>>
+>>> Previously:
+>>>     - phy0 is 2.4Ghz
+>>>     - phy1 is 5Ghz
+>>>     - iw phy phy0 interface create wlan0 type managed
+>>>     - iw dev wlan0 scan
+>>>
+>>> => will only scan 2.4Ghz
+>>>
+>>>
+>>> With single phy approach:
+>>>     - phy0 is 2.4Ghz + 5Ghz concurrent
+>>>     - # iw phy phy0 interface create wlan0 type managed
+>>>     - # iw dev wlan0 scan
+>>>
+>>> => will scan both bands ?
+>>>
+>>
+>> Yes, both the bands will be scanned if freq list is not given
+>>
+>>>     - <starting from previous state>
+>>>     - # iw phy phy0 interface create wlan1 type __ap
+>>>     - # hostapd -i wlan1 <config>
+>>>     - # iw dev wlan0 scan
+>>>
+>>> => what will happen then ?
+>>>
+>>
+>> Scan will be carried out on all the radios including the one on which AP interface is
+>> running. Scan with freq list can be used not to disturb the radio of AP interface.
+>>
+>>>> Same goes for hostapd ACS, I assume specifying freqlist becomes
+>>> mandatory or we can't predict which band the AP will be on ?
+>>>
+>>
+>> If no freq list is given, ACS will run through all the bands and select a channel from any
+>> of the bands. But this can be optimized to do ACS and channels selection on a particular
+>> band using channellist/freqlist hostapd configurations.
+> Hello,
 > 
-> Add a PCI compatible for the ATH11K module on QCA6390 and describe the
-> power inputs from the PMU that it consumes.
+> And in a (very unlikely) case that there are two underlying radios that can
+> operate on the same frequencies, how would freqlist enable us to really select
+> the underlying radio ?
 > 
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> ---
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+This can not be supported in this approach. As only the radios participating in MLO are 
+supposed to be combined under one wiphy, not sure if we have real use case to combine 
+radios of same frequencies.
 
-Best regards,
-Krzysztof
-
+Vasanth
 
