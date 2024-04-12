@@ -1,67 +1,67 @@
-Return-Path: <linux-wireless+bounces-6213-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6215-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FAF38A2624
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 08:06:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A722F8A2626
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 08:06:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E17AD283403
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 06:06:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 633F928707E
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 06:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD2D1DDDB;
-	Fri, 12 Apr 2024 06:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE8E822EE3;
+	Fri, 12 Apr 2024 06:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="I7MpYg+9"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="DGDR/pv4"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419381B977
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Apr 2024 06:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA5E1CD04
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Apr 2024 06:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712902003; cv=none; b=BDouuMk8hqqUkDtY12O+x79CQkNcUbgRYSTdS5eg6cGONNF+FFubMyQl/LFZcx9jRQuUOUI57AYg8hkTd0TDbGr4xiXKKWh3GeDhSdI9bKA5978sjH0f+5RBnjJ5d4Q8CoiwVQKbk9Ih2TJof3xdlXe0VSuLj3TkziCja0QItVI=
+	t=1712902004; cv=none; b=n+EfQxQ5T5ulGDLZYczqREBv7aMDA1X+lTXvuSOtMF3yUnUjy2hxHmgeQT+Sh4nM3pCfUWTzKItdChMRwUFrBbwczjM40KkPvFLaMfARlpy0S7vZIEvGokw2Bhs9VgDK5ZEv1tLXMoi6TRAL5Nu2BsiByjDDNL5XzxwPwXPpcpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712902003; c=relaxed/simple;
-	bh=u2FfeEStNCdDqhijmLkVmrXfHAp6BALfOLlDdqSk3sc=;
+	s=arc-20240116; t=1712902004; c=relaxed/simple;
+	bh=0W7UftcKcGHft9IaIpKJwngcEeJielJdg37zMX4hXK0=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SejRTu6AWYfJ2aLxomKC5zs1itieNBBNpJunFG7DlA4ab9PxQySKGTDW+7FWztRwzsex4THp/2J8BT67cdGiXZEFs8zGnx1CZZkz+myZgU15Q3OSEIuidwNz6fHScyFRyOKSaSTa1UjIeAQUYQP25b6HxlFKtzg7A1NSd1+zjzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=I7MpYg+9; arc=none smtp.client-ip=205.220.168.131
+	 MIME-Version:Content-Type; b=YHcE11JewHL6NdcqjROqkKBiJNWIQMMdW2Z8dDtQTp/Os8IqkH/7JV+eF3ML9vj0EjQis3B4tmClneR+RLE6wqC7wJybGd/ygkhQW6Is84qKdokrOP9Hl3N13oCE2J6WZxLiX4wX1OnE+K1bzmbGWzskDZDNxE+sqPKmvWVEQfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=DGDR/pv4; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43C2pC91019922;
-	Fri, 12 Apr 2024 06:06:38 GMT
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43C3S5a0014210;
+	Fri, 12 Apr 2024 06:06:40 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	from:to:cc:subject:date:message-id:in-reply-to:references
 	:mime-version:content-transfer-encoding:content-type; s=
-	qcppdkim1; bh=pRFcpXVNOD995PB4K/wG8/Iyn227BDybTQ8ptYNTGYM=; b=I7
-	MpYg+9EoyXxeVoI7kYa/Fi/H4XRBNWbz1qT2EX6eIG1hKO0zyFO3z3BmGDx1VMxD
-	kJBaXBK54rXLFw0/XigsqgmpdC23Zr9mMlhEiAA6QuJhEqoSBH+RDlo1FdpLbRXK
-	dyZ5/90u68zph15KTvRCz40aZVuZTC7SYLSFhCT+N3BqwiizSC/EdxFJf8gYEo7B
-	5Cc1q6fr2Ak4Mm1sbVeokRDKagZ3OcEXsIl3uAlC8rZIcfcwg6ry3SZTXHCc7lKN
-	wlMIJPtAWJM6PK5J/OGTO8P4WIwwxoP6QyHiiAShoUvq/Byh1eCPxAnNQ2XOB/U1
-	pYzviD3E2YQQ6zba7Sdw==
+	qcppdkim1; bh=S9tuoPlp8qLUEeoWXen2+Nm4NgKMaXrZFxVw8PEbsJw=; b=DG
+	DR/pv4nPbr2t/5R+y3tFbJdatbUohw2zNu0xRsFiSG30FjG6lCWEbv0F/sjMZrV5
+	dFFL+3RLnByXJ/JRURyBNUDGvbr2+BGKmnaYwhGIQS8ILWGZ3tMUakMuhuYFHrTF
+	xP24Gwp1yn9vfbZu19pulwYMKZPFilL9sGTMbfy7P4HadPv3EwcEX/dlWfoHdyzX
+	8jUpoSjQQFTYWz+5u2C9jcKekVk/hK1Rvj4tRiVdp0JsZMyD3ZqqsLR2rYpTFjNQ
+	KeMJW5cO31hH3tmprBzeLH2MOKKw6mQbCNw1RQcwpxLyU4x3xj6C9q00Vpi5CuhZ
+	8g65DvwbELdalUnRR3/w==
 Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xeskt0n7c-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xebqxb5k7-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Apr 2024 06:06:38 +0000 (GMT)
+	Fri, 12 Apr 2024 06:06:39 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43C66bB6031852
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43C66dmK031860
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Apr 2024 06:06:37 GMT
+	Fri, 12 Apr 2024 06:06:39 GMT
 Received: from bqiang-SFF.qca.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Thu, 11 Apr 2024 23:06:36 -0700
+ 15.2.1544.9; Thu, 11 Apr 2024 23:06:37 -0700
 From: Baochen Qiang <quic_bqiang@quicinc.com>
 To: <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>, <quic_bqiang@quicinc.com>
-Subject: [PATCH 01/10] wifi: ath12k: rearrange IRQ enable/disable in reset path
-Date: Fri, 12 Apr 2024 14:06:11 +0800
-Message-ID: <20240412060620.27519-2-quic_bqiang@quicinc.com>
+Subject: [PATCH 02/10] wifi: ath12k: remove MHI LOOPBACK channels
+Date: Fri, 12 Apr 2024 14:06:12 +0800
+Message-ID: <20240412060620.27519-3-quic_bqiang@quicinc.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240412060620.27519-1-quic_bqiang@quicinc.com>
 References: <20240412060620.27519-1-quic_bqiang@quicinc.com>
@@ -77,57 +77,105 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: okI0-Nlwn17i-5Pbj4lldUj1M3sEjUzZ
-X-Proofpoint-ORIG-GUID: okI0-Nlwn17i-5Pbj4lldUj1M3sEjUzZ
+X-Proofpoint-GUID: EWcHQ9kIWQx5KZgLBOkHTrlrMCCHHftp
+X-Proofpoint-ORIG-GUID: EWcHQ9kIWQx5KZgLBOkHTrlrMCCHHftp
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-04-12_02,2024-04-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
- priorityscore=1501 suspectscore=0 lowpriorityscore=0 mlxscore=0
- phishscore=0 clxscore=1015 spamscore=0 malwarescore=0 adultscore=0
- mlxlogscore=842 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2404010003 definitions=main-2404120042
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ bulkscore=0 mlxlogscore=815 malwarescore=0 phishscore=0 suspectscore=0
+ adultscore=0 spamscore=0 lowpriorityscore=0 clxscore=1015 mlxscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404120042
 
-For non-WoW suspend/resume, ath12k host powers down whole hardware
-when suspend and powers up it when resume, the code path it goes
-through is very like the ath12k reset logic.
+There is no driver to match these two channels, so
+remove them. This fixes warnings from MHI subsystem during suspend:
 
-In order to reuse that logic, rearrange IRQ handling in the reset
-path.
+mhi mhi0_LOOPBACK: 1: Failed to reset channel, still resetting
+mhi mhi0_LOOPBACK: 0: Failed to reset channel, still resetting
 
 Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
 Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 
 Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/core.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath12k/mhi.c | 56 ---------------------------
+ 1 file changed, 56 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index 3c522a4b3e9b..28663cf4db30 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -879,9 +879,8 @@ static int ath12k_core_reconfigure_on_crash(struct ath12k_base *ab)
- 	int ret;
+diff --git a/drivers/net/wireless/ath/ath12k/mhi.c b/drivers/net/wireless/ath/ath12k/mhi.c
+index fd519c87ae24..403691355abf 100644
+--- a/drivers/net/wireless/ath/ath12k/mhi.c
++++ b/drivers/net/wireless/ath/ath12k/mhi.c
+@@ -18,34 +18,6 @@
+ #define OTP_VALID_DUALMAC_BOARD_ID_MASK		0x1000
  
- 	mutex_lock(&ab->core_lock);
--	ath12k_hif_irq_disable(ab);
- 	ath12k_dp_pdev_free(ab);
--	ath12k_hif_stop(ab);
-+	ath12k_ce_cleanup_pipes(ab);
- 	ath12k_wmi_detach(ab);
- 	ath12k_dp_rx_pdev_reo_cleanup(ab);
- 	mutex_unlock(&ab->core_lock);
-@@ -1136,6 +1135,9 @@ static void ath12k_core_reset(struct work_struct *work)
- 	time_left = wait_for_completion_timeout(&ab->recovery_start,
- 						ATH12K_RECOVER_START_TIMEOUT_HZ);
+ static const struct mhi_channel_config ath12k_mhi_channels_qcn9274[] = {
+-	{
+-		.num = 0,
+-		.name = "LOOPBACK",
+-		.num_elements = 32,
+-		.event_ring = 1,
+-		.dir = DMA_TO_DEVICE,
+-		.ee_mask = 0x4,
+-		.pollcfg = 0,
+-		.doorbell = MHI_DB_BRST_DISABLE,
+-		.lpm_notify = false,
+-		.offload_channel = false,
+-		.doorbell_mode_switch = false,
+-		.auto_queue = false,
+-	},
+-	{
+-		.num = 1,
+-		.name = "LOOPBACK",
+-		.num_elements = 32,
+-		.event_ring = 1,
+-		.dir = DMA_FROM_DEVICE,
+-		.ee_mask = 0x4,
+-		.pollcfg = 0,
+-		.doorbell = MHI_DB_BRST_DISABLE,
+-		.lpm_notify = false,
+-		.offload_channel = false,
+-		.doorbell_mode_switch = false,
+-		.auto_queue = false,
+-	},
+ 	{
+ 		.num = 20,
+ 		.name = "IPCR",
+@@ -111,34 +83,6 @@ const struct mhi_controller_config ath12k_mhi_config_qcn9274 = {
+ };
  
-+	ath12k_hif_irq_disable(ab);
-+	ath12k_hif_ce_irq_disable(ab);
-+
- 	ath12k_hif_power_down(ab);
- 	ath12k_qmi_free_resource(ab);
- 	ath12k_hif_power_up(ab);
+ static const struct mhi_channel_config ath12k_mhi_channels_wcn7850[] = {
+-	{
+-		.num = 0,
+-		.name = "LOOPBACK",
+-		.num_elements = 32,
+-		.event_ring = 0,
+-		.dir = DMA_TO_DEVICE,
+-		.ee_mask = 0x4,
+-		.pollcfg = 0,
+-		.doorbell = MHI_DB_BRST_DISABLE,
+-		.lpm_notify = false,
+-		.offload_channel = false,
+-		.doorbell_mode_switch = false,
+-		.auto_queue = false,
+-	},
+-	{
+-		.num = 1,
+-		.name = "LOOPBACK",
+-		.num_elements = 32,
+-		.event_ring = 0,
+-		.dir = DMA_FROM_DEVICE,
+-		.ee_mask = 0x4,
+-		.pollcfg = 0,
+-		.doorbell = MHI_DB_BRST_DISABLE,
+-		.lpm_notify = false,
+-		.offload_channel = false,
+-		.doorbell_mode_switch = false,
+-		.auto_queue = false,
+-	},
+ 	{
+ 		.num = 20,
+ 		.name = "IPCR",
 -- 
 2.25.1
 
