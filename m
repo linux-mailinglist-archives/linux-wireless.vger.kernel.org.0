@@ -1,225 +1,294 @@
-Return-Path: <linux-wireless+bounces-6253-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6254-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F5C28A2DE7
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 14:01:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 671198A2E26
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 14:21:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 331AA1C20916
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 12:01:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1C64B21726
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 12:21:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0892502A7;
-	Fri, 12 Apr 2024 12:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CF4F56444;
+	Fri, 12 Apr 2024 12:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mm3RAETE"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="I5JGjlzL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from nbd.name (nbd.name [46.4.11.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83458D50F
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Apr 2024 12:01:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD8055E56
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Apr 2024 12:20:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712923295; cv=none; b=Xc3lW0UwNC/mYhuMXU5DoqcMh+E6Yc4oN6GJNdWokWEO6f6Enrdj6/HuyjbTQemq3TUau9aoggF/4W1OWgP9RS4DQoJzuG6qLzMA9Zv6QFB6wO715lhxe/u428KcmJa/fj/0Ix2Ebu+3/9VuKd5eu584luuYISdr1VI7Iu1ucSs=
+	t=1712924451; cv=none; b=ZQfDEHa4VEYuEjy+VJOZVNTzPDC5dMeWXeGnWPrAgn8B0jJ+Cd1WIc092xavfnY/1TRyvmQHhXYKtKos5U85+Zc17AkVMFqEHnK8W2RgV08BA7k/iXekhCldtRw/lxD/nJVd9pzAHnmEQ6oDan41UeHrFXhB8dejfSvcYCZJHbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712923295; c=relaxed/simple;
-	bh=R5TUZF7kgYOPpGMYvqvhvnz91hVzlqWLKGQ+Lv0E4BM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=brQv3vERN2Tl0HbSEMDTheL/yTfDYvfKH/3BK2umYEJypA49Vm4BCmrYASRGvLXEdUPRxwOTLJAo8UBvTrK1F3NzhpqCK77pCcwTCgNOVsyh7ab+N3I54rLynG9rl11cTHfMLsULDfkupTjAeltsCtE91gkMsIAj4goHK0GkgLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mm3RAETE; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-56bdf81706aso983863a12.2
-        for <linux-wireless@vger.kernel.org>; Fri, 12 Apr 2024 05:01:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712923289; x=1713528089; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=CeCAE/QnruiTawWUprbCmFasjXRmO+GRxpSd//EBvAE=;
-        b=Mm3RAETEtbRfHYlfFNYtLqTRO9YYzagSXEJv1NOH9sE7dCZRsYaaXoo8PHmIbqJ8CF
-         5cqdlC3UHge9X1l3N3zyefzzZFY7Plnxt3raah5RHY5PJx0QMPf2ARvA0aKf0NgU5rno
-         XbzFGqXFywlYYonoNUiUSk3TCR2LCXFBxsJAPuFlpDWE26EP/7ZNN4jmHu/PyoBVYAaS
-         BSzfc2umGDYaOkHcftB3IEXDDAo8OEehmuBbyGR9JpreJpE6SHfzUUDyaI33Q5BomshH
-         /Y4S/2BxTClnqLeVtCpRNl4t/jsOXf0zEpEKtPdUNT8Dzm/111uh/3eOv4Apd/uB7S0K
-         FexA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712923289; x=1713528089;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CeCAE/QnruiTawWUprbCmFasjXRmO+GRxpSd//EBvAE=;
-        b=Zual3chZQtQzUeCdpaSGaOcdsCwnul8ixNnHFTUel/JMU3pq8sM4LdgM+PxZQkuBz1
-         9ZiFiDVN31xKf2PK9gPYhI+E58JEODM/CfZVqux8j1BJ+Nfu+n1aTGPHSNCZXj/vzF7T
-         aBOAV5DDDsGs/dxFfofvtdJYZhp6hjHZIoVEif+2HtSp1rQAO1qTgwJwCDzmn8WFaZ/V
-         wWyHJNpn/SxBSVHlbn7CvLGN2bayfU8rM3jqvtcafe6WfO/eolITFVnI8STkSYXJR3A+
-         NV4GTDvU/jLatCxf57XK0246FfhEEhR9FTaqfPmw0n2O2szrlt1tzPnTVGjWoF9dn7EF
-         ilrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUKDYj1SE/LFbBaorzbazFaX76fmbLmvkcltDAR4+f23cd4aDQez5nQv0be73PgwbB+opnPDuADfc7cyh5Y2BPSLpGzrfX4uCrF/ul9lYU=
-X-Gm-Message-State: AOJu0Yww3cFfJXtFW4xojgfHJYMPoQhYYTzanQ3nWLIYmHHOxQJHudYg
-	gA+U15dnQmqE5vr4Vdv+FABeKca6USVI3HctaNzJQxurtHnm9eQfrsHXgbC5tkjq0F/xbsB52XD
-	oLBvdIJ652n3Bue+4ziVx14bT9CY=
-X-Google-Smtp-Source: AGHT+IGp9ewgZpGM/38Ui91s9NpGJHPzveZW2R9MOq9DG0E8jUtcxinpLDwpAwSkcBFFElG4ngUTL9FOj1YrjHUACT0=
-X-Received: by 2002:a17:906:dac1:b0:a52:241b:b450 with SMTP id
- xi1-20020a170906dac100b00a52241bb450mr1886649ejb.36.1712923288360; Fri, 12
- Apr 2024 05:01:28 -0700 (PDT)
+	s=arc-20240116; t=1712924451; c=relaxed/simple;
+	bh=CCGNDipt5mMVD4EouRBk+m36zx0yAO6PLkrP96zIJxc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k6PgL6Aq7flwHFwb7dEob9+6iB75CP5wz/oVnH//1aCJF3GvnNWS3YbbGPfqoBoX3rzwnryxSuSy2jJH5F7iPOdRbPz+bL2rPqndKOHfOvEH+MhWmjuxtj+g11qthvywaSLmIRpBMLHAE1ne3kk5n+ugB+Hhw4c4V1mATLeP10E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=I5JGjlzL; arc=none smtp.client-ip=46.4.11.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+	s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=MY4lVoATe7xbtseEb/EQ9yRQlWZBsQRwd3m5c6lztAs=; b=I5JGjlzLHqhNbkwtN8b1GjBmw9
+	tRc3s+jENQVg7VuRLsp6+E0QE+Y1gLcQD7c/efTMqf9whzygeiCaupBjCUgVfd2bzItoSyz+FXhS7
+	PXSegfIs8QR9jGoE01gSw4P2c7pAHrnT0ahPAfngfibWpEpjCUr4asZRolV9s3eDJ8gE=;
+Received: from p54ae9c93.dip0.t-ipconnect.de ([84.174.156.147] helo=localhost.localdomain)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+	(Exim 4.96)
+	(envelope-from <nbd@nbd.name>)
+	id 1rvFg4-0003Re-0S;
+	Fri, 12 Apr 2024 14:06:44 +0200
+From: Felix Fietkau <nbd@nbd.name>
+To: linux-wireless@vger.kernel.org
+Cc: johannes@sipsolutions.net
+Subject: [PATCH] wifi: mac80211: split mesh fast tx cache into local/proxied/forwarded
+Date: Fri, 12 Apr 2024 14:06:34 +0200
+Message-ID: <20240412120634.88972-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240328072916.1164195-1-quic_periyasa@quicinc.com>
- <20240328072916.1164195-2-quic_periyasa@quicinc.com> <e36599d3269496de59505b36be46f873976f8706.camel@sipsolutions.net>
- <033185b0-f878-a50b-d0d9-57fa79439bdf@quicinc.com> <ef6b6a7a4a9d3b01c0eb6abf0991e7e27425e102.camel@sipsolutions.net>
- <80fe5786-f764-455d-ac44-22adf7aeaf94@candelatech.com> <31f30c0e318904f3a082c7f213576ceb1f407141.camel@sipsolutions.net>
- <20b56e52-a5e2-70cd-a62a-8c4a3526c2cf@candelatech.com> <614bb8a8f1d9174ad7d87cf7636f657cda7b1ef9.camel@sipsolutions.net>
- <aa9e1d54-bb5f-37cc-335f-c9970ab13789@candelatech.com> <0cfe990b-182b-4ceb-b5b4-2989fefedb2f@quicinc.com>
- <29f7ecb6d7c208c3614f37616943d5f97bb134d3.camel@freebox.fr>
- <5fc2f2d2-7403-79d2-8909-ddda918ff8d5@quicinc.com> <af70ee81e583f58dada3dde87ac335137c4038b0.camel@freebox.fr>
- <6ff353e2-785a-f2ce-8d3b-acc8e79a64cf@quicinc.com> <D0HZ1KH5VJ8P.2TZZ7NNZXSJA8@gmail.com>
- <816770ca-fb30-e1cc-3f57-51d1fd35f141@quicinc.com>
-In-Reply-To: <816770ca-fb30-e1cc-3f57-51d1fd35f141@quicinc.com>
-From: James Dutton <james.dutton@gmail.com>
-Date: Fri, 12 Apr 2024 13:00:51 +0100
-Message-ID: <CAAMvbhFPdPUOYSnxhO36E0yYJ7cuQLUGt87EqoGhBc=sw7GgHw@mail.gmail.com>
-Subject: Re: [PATCH 01/13] wifi: cfg80211: Add provision to advertise multiple
- radio in one wiphy
-To: Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>
-Cc: Nicolas Escande <nico.escande@gmail.com>, mbizon@freebox.fr, 
-	Jeff Johnson <quic_jjohnson@quicinc.com>, Ben Greear <greearb@candelatech.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, 
-	Karthikeyan Periyasamy <quic_periyasa@quicinc.com>, ath12k@lists.infradead.org, 
-	linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Fri, 12 Apr 2024 at 09:02, Vasanthakumar Thiagarajan
-<quic_vthiagar@quicinc.com> wrote:
-> On 4/12/2024 1:08 PM, Nicolas Escande wrote:
-> > On Fri Apr 12, 2024 at 5:50 AM CEST, Vasanthakumar Thiagarajan wrote:
-> >> On 4/11/2024 10:09 PM, Maxime Bizon wrote:
-> >>>
-> >>> On Thu, 2024-04-11 at 21:56 +0530, Vasanthakumar Thiagarajan wrote:
-> >>>
-> >>> Hello,
-> >>>
-> >>> Thanks for making it clear,
-> >>>
-> >>>
-> >>>>> For example, starting a 5Ghz AP in ax-only mode, and at the same
-> >>>>> time
-> >>>>> creating a STA interface on 2.4GHz ?
-> >>>
-> >>>> Yes, such use cases continue to be supported in single wiphy mode.
-> >>>
-> >>> Understood, but I see some corner cases.
-> >>>
-> >>>
-> >>> For example, assume two bands AP hardware, 2.4GHz and 5GHz.
-> >>>
-> >>> Previously:
-> >>>     - phy0 is 2.4Ghz
-> >>>     - phy1 is 5Ghz
-> >>>     - iw phy phy0 interface create wlan0 type managed
-> >>>     - iw dev wlan0 scan
-> >>>
-> >>> => will only scan 2.4Ghz
-> >>>
-> >>>
-> >>> With single phy approach:
-> >>>     - phy0 is 2.4Ghz + 5Ghz concurrent
-> >>>     - # iw phy phy0 interface create wlan0 type managed
-> >>>     - # iw dev wlan0 scan
-> >>>
-.> >>> => will scan both bands ?
-> >>>
-> >>
-> >> Yes, both the bands will be scanned if freq list is not given
-> >>
-> >>>     - <starting from previous state>
-> >>>     - # iw phy phy0 interface create wlan1 type __ap
-> >>>     - # hostapd -i wlan1 <config>
-> >>>     - # iw dev wlan0 scan
-> >>>
-> >>> => what will happen then ?
-> >>>
-> >>
-> >> Scan will be carried out on all the radios including the one on which AP interface is
-> >> running. Scan with freq list can be used not to disturb the radio of AP interface.
-> >>
-> >>>> Same goes for hostapd ACS, I assume specifying freqlist becomes
-> >>> mandatory or we can't predict which band the AP will be on ?
-> >>>
-> >>
-> >> If no freq list is given, ACS will run through all the bands and select a channel from any
-> >> of the bands. But this can be optimized to do ACS and channels selection on a particular
-> >> band using channellist/freqlist hostapd configurations.
-> > Hello,
-> >
-> > And in a (very unlikely) case that there are two underlying radios that can
-> > operate on the same frequencies, how would freqlist enable us to really select
-> > the underlying radio ?
-> >
->
-> This can not be supported in this approach. As only the radios participating in MLO are
-> supposed to be combined under one wiphy, not sure if we have real use case to combine
-> radios of same frequencies.
->
-> Vasanth
->
+Depending on the origin of the packets (and their SA), 802.11 + mesh headers
+could be filled in differently. In order to properly deal with that, add a
+new field to the lookup key, indicating the type (local, proxied or
+forwarded). This can fix spurious packet drop issues that depend on the order
+in which nodes/hosts communicate with each other.
 
-Looking at this discussion, I think it would really be helped with
-some architectural diagrams describing the various combinations of
-components in an RF chain.
+Fixes: d5edb9ae8d56 ("wifi: mac80211: mesh fast xmit support")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ net/mac80211/mesh.c         |  8 +++++++-
+ net/mac80211/mesh.h         | 31 ++++++++++++++++++++++++++++---
+ net/mac80211/mesh_pathtbl.c | 31 ++++++++++++++++++++++---------
+ net/mac80211/rx.c           | 13 ++++++++++---
+ 4 files changed, 67 insertions(+), 16 deletions(-)
 
-Let us take a single example.
-We have antennas, analogue front end, and ADCs (Analogue to digital converters)
-The features of those two are:
-1)  Antennas can be optimised for particular frequencies.
-2) The analogue front end has many different parameters, but for this
-discussion, the important one is:
-a) frequencies it can tune to.
-b) instantaneous bandwidth. I.e. When tuned to a particular frequency,
-what is the bandwidth around that frequency that one can receive.
-3) ADC
-a) The Sample rate
+diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
+index 32475da98d73..cbc9b5e40cb3 100644
+--- a/net/mac80211/mesh.c
++++ b/net/mac80211/mesh.c
+@@ -747,6 +747,9 @@ bool ieee80211_mesh_xmit_fast(struct ieee80211_sub_if_data *sdata,
+ 			      struct sk_buff *skb, u32 ctrl_flags)
+ {
+ 	struct ieee80211_if_mesh *ifmsh = &sdata->u.mesh;
++	struct ieee80211_mesh_fast_tx_key key = {
++		.type = MESH_FAST_TX_TYPE_LOCAL
++	};
+ 	struct ieee80211_mesh_fast_tx *entry;
+ 	struct ieee80211s_hdr *meshhdr;
+ 	u8 sa[ETH_ALEN] __aligned(2);
+@@ -782,7 +785,10 @@ bool ieee80211_mesh_xmit_fast(struct ieee80211_sub_if_data *sdata,
+ 			return false;
+ 	}
+ 
+-	entry = mesh_fast_tx_get(sdata, skb->data);
++	ether_addr_copy(key.addr, skb->data);
++	if (!ether_addr_equal(skb->data + ETH_ALEN, sdata->vif.addr))
++		key.type = MESH_FAST_TX_TYPE_PROXIED;
++	entry = mesh_fast_tx_get(sdata, &key);
+ 	if (!entry)
+ 		return false;
+ 
+diff --git a/net/mac80211/mesh.h b/net/mac80211/mesh.h
+index d913ce7ba72e..78645f73ad46 100644
+--- a/net/mac80211/mesh.h
++++ b/net/mac80211/mesh.h
+@@ -134,10 +134,34 @@ struct mesh_path {
+ #define MESH_FAST_TX_CACHE_THRESHOLD_SIZE	384
+ #define MESH_FAST_TX_CACHE_TIMEOUT		8000 /* msecs */
+ 
++/**
++ * enum ieee80211_mesh_fast_tx_type - cached mesh fast tx entry type
++ *
++ * @MESH_FAST_TX_TYPE_LOCAL: tx from the local vif address as SA
++ * @MESH_FAST_TX_TYPE_PROXIED: local tx with a different SA (e.g. bridged)
++ * @MESH_FAST_TX_TYPE_FORWARDED: forwarded from a different mesh point
++ */
++enum ieee80211_mesh_fast_tx_type {
++	MESH_FAST_TX_TYPE_LOCAL,
++	MESH_FAST_TX_TYPE_PROXIED,
++	MESH_FAST_TX_TYPE_FORWARDED,
++};
++
++/**
++ * struct ieee80211_mesh_fast_tx_key - cached mesh fast tx entry key
++ *
++ * @addr: The Ethernet DA for this entry
++ * @type: cache entry type
++ */
++struct ieee80211_mesh_fast_tx_key {
++	u8 addr[ETH_ALEN] __aligned(2);
++	enum ieee80211_mesh_fast_tx_type type;
++};
++
+ /**
+  * struct ieee80211_mesh_fast_tx - cached mesh fast tx entry
+  * @rhash: rhashtable pointer
+- * @addr_key: The Ethernet DA which is the key for this entry
++ * @key: the lookup key for this cache entry
+  * @fast_tx: base fast_tx data
+  * @hdr: cached mesh and rfc1042 headers
+  * @hdrlen: length of mesh + rfc1042
+@@ -148,7 +172,7 @@ struct mesh_path {
+  */
+ struct ieee80211_mesh_fast_tx {
+ 	struct rhash_head rhash;
+-	u8 addr_key[ETH_ALEN] __aligned(2);
++	struct ieee80211_mesh_fast_tx_key key;
+ 
+ 	struct ieee80211_fast_tx fast_tx;
+ 	u8 hdr[sizeof(struct ieee80211s_hdr) + sizeof(rfc1042_header)];
+@@ -334,7 +358,8 @@ void mesh_path_tx_root_frame(struct ieee80211_sub_if_data *sdata);
+ 
+ bool mesh_action_is_path_sel(struct ieee80211_mgmt *mgmt);
+ struct ieee80211_mesh_fast_tx *
+-mesh_fast_tx_get(struct ieee80211_sub_if_data *sdata, const u8 *addr);
++mesh_fast_tx_get(struct ieee80211_sub_if_data *sdata,
++		 struct ieee80211_mesh_fast_tx_key *key);
+ bool ieee80211_mesh_xmit_fast(struct ieee80211_sub_if_data *sdata,
+ 			      struct sk_buff *skb, u32 ctrl_flags);
+ void mesh_fast_tx_cache(struct ieee80211_sub_if_data *sdata,
+diff --git a/net/mac80211/mesh_pathtbl.c b/net/mac80211/mesh_pathtbl.c
+index 91b55d6a68b9..437199270fa0 100644
+--- a/net/mac80211/mesh_pathtbl.c
++++ b/net/mac80211/mesh_pathtbl.c
+@@ -37,8 +37,8 @@ static const struct rhashtable_params mesh_rht_params = {
+ static const struct rhashtable_params fast_tx_rht_params = {
+ 	.nelem_hint = 10,
+ 	.automatic_shrinking = true,
+-	.key_len = ETH_ALEN,
+-	.key_offset = offsetof(struct ieee80211_mesh_fast_tx, addr_key),
++	.key_len = sizeof(struct ieee80211_mesh_fast_tx_key),
++	.key_offset = offsetof(struct ieee80211_mesh_fast_tx, key),
+ 	.head_offset = offsetof(struct ieee80211_mesh_fast_tx, rhash),
+ 	.hashfn = mesh_table_hash,
+ };
+@@ -431,20 +431,21 @@ static void mesh_fast_tx_entry_free(struct mesh_tx_cache *cache,
+ }
+ 
+ struct ieee80211_mesh_fast_tx *
+-mesh_fast_tx_get(struct ieee80211_sub_if_data *sdata, const u8 *addr)
++mesh_fast_tx_get(struct ieee80211_sub_if_data *sdata,
++		 struct ieee80211_mesh_fast_tx_key *key)
+ {
+ 	struct ieee80211_mesh_fast_tx *entry;
+ 	struct mesh_tx_cache *cache;
+ 
+ 	cache = &sdata->u.mesh.tx_cache;
+-	entry = rhashtable_lookup(&cache->rht, addr, fast_tx_rht_params);
++	entry = rhashtable_lookup(&cache->rht, key, fast_tx_rht_params);
+ 	if (!entry)
+ 		return NULL;
+ 
+ 	if (!(entry->mpath->flags & MESH_PATH_ACTIVE) ||
+ 	    mpath_expired(entry->mpath)) {
+ 		spin_lock_bh(&cache->walk_lock);
+-		entry = rhashtable_lookup(&cache->rht, addr, fast_tx_rht_params);
++		entry = rhashtable_lookup(&cache->rht, key, fast_tx_rht_params);
+ 		if (entry)
+ 		    mesh_fast_tx_entry_free(cache, entry);
+ 		spin_unlock_bh(&cache->walk_lock);
+@@ -489,18 +490,24 @@ void mesh_fast_tx_cache(struct ieee80211_sub_if_data *sdata,
+ 	if (!sta)
+ 		return;
+ 
++	build.key.type = MESH_FAST_TX_TYPE_LOCAL;
+ 	if ((meshhdr->flags & MESH_FLAGS_AE) == MESH_FLAGS_AE_A5_A6) {
+ 		/* This is required to keep the mppath alive */
+ 		mppath = mpp_path_lookup(sdata, meshhdr->eaddr1);
+ 		if (!mppath)
+ 			return;
+ 		build.mppath = mppath;
++		if (!ether_addr_equal(meshhdr->eaddr2, sdata->vif.addr))
++			build.key.type = MESH_FAST_TX_TYPE_PROXIED;
+ 	} else if (ieee80211_has_a4(hdr->frame_control)) {
+ 		mppath = mpath;
+ 	} else {
+ 		return;
+ 	}
+ 
++	if (!ether_addr_equal(hdr->addr4, sdata->vif.addr))
++		build.key.type = MESH_FAST_TX_TYPE_FORWARDED;
++
+ 	/* rate limit, in case fast xmit can't be enabled */
+ 	if (mppath->fast_tx_check == jiffies)
+ 		return;
+@@ -547,7 +554,7 @@ void mesh_fast_tx_cache(struct ieee80211_sub_if_data *sdata,
+ 		}
+ 	}
+ 
+-	memcpy(build.addr_key, mppath->dst, ETH_ALEN);
++	memcpy(build.key.addr, mppath->dst, ETH_ALEN);
+ 	build.timestamp = jiffies;
+ 	build.fast_tx.band = info->band;
+ 	build.fast_tx.da_offs = offsetof(struct ieee80211_hdr, addr3);
+@@ -646,12 +653,18 @@ void mesh_fast_tx_flush_addr(struct ieee80211_sub_if_data *sdata,
+ 			     const u8 *addr)
+ {
+ 	struct mesh_tx_cache *cache = &sdata->u.mesh.tx_cache;
++	struct ieee80211_mesh_fast_tx_key key = {};
+ 	struct ieee80211_mesh_fast_tx *entry;
++	int i;
+ 
++	ether_addr_copy(key.addr, addr);
+ 	spin_lock_bh(&cache->walk_lock);
+-	entry = rhashtable_lookup_fast(&cache->rht, addr, fast_tx_rht_params);
+-	if (entry)
+-		mesh_fast_tx_entry_free(cache, entry);
++	for (i = MESH_FAST_TX_TYPE_LOCAL; i < MESH_FAST_TX_TYPE_FORWARDED; i++) {
++		key.type = i;
++		entry = rhashtable_lookup_fast(&cache->rht, &key, fast_tx_rht_params);
++		if (entry)
++			mesh_fast_tx_entry_free(cache, entry);
++	}
+ 	spin_unlock_bh(&cache->walk_lock);
+ }
+ 
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 685185dc04f9..6e24864f9a40 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -2763,7 +2763,10 @@ ieee80211_rx_mesh_fast_forward(struct ieee80211_sub_if_data *sdata,
+ 			       struct sk_buff *skb, int hdrlen)
+ {
+ 	struct ieee80211_if_mesh *ifmsh = &sdata->u.mesh;
+-	struct ieee80211_mesh_fast_tx *entry = NULL;
++	struct ieee80211_mesh_fast_tx_key key = {
++		.type = MESH_FAST_TX_TYPE_FORWARDED
++	};
++	struct ieee80211_mesh_fast_tx *entry;
+ 	struct ieee80211s_hdr *mesh_hdr;
+ 	struct tid_ampdu_tx *tid_tx;
+ 	struct sta_info *sta;
+@@ -2772,9 +2775,13 @@ ieee80211_rx_mesh_fast_forward(struct ieee80211_sub_if_data *sdata,
+ 
+ 	mesh_hdr = (struct ieee80211s_hdr *)(skb->data + sizeof(eth));
+ 	if ((mesh_hdr->flags & MESH_FLAGS_AE) == MESH_FLAGS_AE_A5_A6)
+-		entry = mesh_fast_tx_get(sdata, mesh_hdr->eaddr1);
++		ether_addr_copy(key.addr, mesh_hdr->eaddr1);
+ 	else if (!(mesh_hdr->flags & MESH_FLAGS_AE))
+-		entry = mesh_fast_tx_get(sdata, skb->data);
++		ether_addr_copy(key.addr, skb->data);
++	else
++		return false;
++
++	entry = mesh_fast_tx_get(sdata, &key);
+ 	if (!entry)
+ 		return false;
+ 
+-- 
+2.44.0
 
-Once the RF sample are in the digital domain one has the ADC ->
-DIgital Processing -> Output data
-If we assume that the ADC is set to receive the full instantaneous
-bandwidth, the digital processing can do a number of things.
-1) process the full instantaneous bandwidth into a single channel of data.
-2) process the instantaneous bandwidth into multiple sub bands, or
-multiple channels of data.
-
-There is also the control endpoint that controls all these components.
-There can be multiple front ends for each ADC. multiple ADCs per
-Digital Processing.
-
-A higher level process (maybe hostapd) can then speak to multiple
-Digital Processing and ADC, RF Front end components and then somehow
-has to manage and coordinate them all.
-
-All these capabilities and varying arrangement of the various
-components need to be reported up to a higher level, in a common way,
-that can handle all possible arrangements.
-Once the higher level process has all this information, it can then
-manage to do everything necessary for Multi-Link operation (MLO).
-
-So, to answer some of the questions in this thread.
-Scanning: The high level process should know what capabilities are
-available and what can be done in parallel or not. So it should be
-able to convert a request from a user, into a more detailed request
-down towards the hardware.
-I.e. User asks for scan.  High level process tells which bits of the
-hardware should do the scanning and across which frequencies.
-While it might sound complicated, when implemented correctly, it is
-just a matter of iterating over a  tree with a search match criteria.
-
-My expertise is in managing far more complex RF hardware and not Wifi
-specifically, but the concepts for managing the hardware across all
-the available frequencies is the same. I am just offering a
-perspective of where the problems discussed here have already been
-solved in another domain.
 
