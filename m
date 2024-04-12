@@ -1,88 +1,80 @@
-Return-Path: <linux-wireless+bounces-6238-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6240-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DBAA8A2B98
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 11:51:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA1E68A2C17
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 12:17:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE29A281E40
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 09:51:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7931E1F2173B
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 10:17:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE7D524A6;
-	Fri, 12 Apr 2024 09:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD2B5339E;
+	Fri, 12 Apr 2024 10:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="oa8eDzOO"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="aEEkjNZG"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE5251C54
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Apr 2024 09:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B17C502B0
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Apr 2024 10:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712915468; cv=none; b=RLmI3s4g13066HdeaAYsHKszHZTMBrKe6e8RWkbE9/pEx7tN7XRTZjk29TvmydS7V8+ieuWTz7K71XljfMXkc1WzNcvEgMRBEVzbqOG7C31lFePMN0FUeK6bwzatSPqZ/u58DKvhdiOpuPkUjrFeeFA4ASfn81YpE4wEqfVK5Rw=
+	t=1712917025; cv=none; b=cxp6PuJaKPWlKRneGf1nGm5SQzQhlRzNce0ZyslWWXcYYA3j3M0rkAXaqiweQ28T2FQgqXlTzNHOZQ4Xfv1oVLvXBFAA+ya34Heq86iEZ/ZSvfjqFAXIhuwMSj/a5Q+N0Cu3cbsrjddbE3h/k9+N3bi+2IX0fC245nfKYqZVQlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712915468; c=relaxed/simple;
-	bh=xS57L6jsqz/0EE7acOaCNTdlIbAArkDW4Y6TOb3yqLo=;
-	h=Message-ID:Date:MIME-Version:From:To:Subject:References:
-	 In-Reply-To:Content-Type; b=HLwHusfxJQiR6Iu+t8p/OqGSTgEGMsQ0hXS4V4R+k+CP+6lKrbEFNsJtOwmAgIR3k9S8oZ4MBvM4luexNpwvkV+Xb001V6dot7r/DciKX5RWNyHQftoW7M9Ar1yvI7P1g6M6/xEt4YNEF6VvfLM+kCppIp/hOdigDEpnQcerw/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=oa8eDzOO; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1712917025; c=relaxed/simple;
+	bh=iAH/FyvAyUS3SqblPoelrmASHIrmsht4wa43PQkZq5I=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NJrHNK1GOSQ+DgpdmTIFsGLk/PcmsycgVslnNscmlLJbOB6kuDMUGKhwieUdx2Fyd93BjOYT41vI23lEYvXNPKPf7NQO3AEeQLXo92oLRMVLG8VNgFoowZnNwWTQd/Vtkq4NXzb8hNVDv4etjgsXLoGLfCecUA2CTVc8x2VFO3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=aEEkjNZG; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43C2KpJB019282;
-	Fri, 12 Apr 2024 09:51:01 GMT
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43C1l5KO005947;
+	Fri, 12 Apr 2024 10:17:01 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:from:to:subject:references
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=V71pmPwEjr6t7FcZi1qFO6GR9lqAj23LxFrUiCaykUQ=; b=oa
-	8eDzOO9gT4Lrcy9QRPJEAWj7RWw39MP4PaAABhmvMhBu8gvuZa6n7Iwrm+FRXT2R
-	6lXbsfg3WY3x8HGOYnjy2eJTsU3/23JNO9K/237WoHtXm5L1Q44kqZLs0m4Lrwbz
-	p62rhhlLcn8MWwGMIrhknyTzVJdoi0Oq8NG7G12yA0ZSdOzaH4Dy6xunFlRpkUzK
-	mqvWIMtNwOswEGgJXLNa6VcUYq6pwnM/iAf3BXJSlZ9U1suQWaq6veBfZcwLQTqQ
-	6By+QwJ8g5D4RnP1ilbL6mfwSDiokV4FVRuiLk12O9c/ApT4viL7SBUV8oa86Fm9
-	bqzkCGrIunWDTwD8F7AA==
+	from:to:cc:subject:date:message-id:mime-version:content-type
+	:content-transfer-encoding; s=qcppdkim1; bh=wdpnUooqVUmLVJ1PAcrr
+	ISzZCkaPv9bjPL7duihbFTk=; b=aEEkjNZGmD95IQmBXw6S5VGaA6xYo9Ftbg0K
+	r0N/oerkuVTldwyDAr1s+QcSom7O/Tqf3q71wG69lcWwaF+8lUGG04gclc+ZveLU
+	QtSfx9tv6viVgNykC0W/NE1xDz5iHcdL4jYQ49DO41nAgZjePUQTQUvwwXZjdaRh
+	43ZykdVgiJBKIIqMJr3aIszTBwgFmIhNg1DZAAnbTzV8yylfx5XWrBdWgnze5zJP
+	Ujm25sm+o9xdhJ+GN7Z4pY/rPjqB48qNJi/mCB9pxr4nAyat6DTG8OOlDx2U3V3n
+	MdkBe57Ln31txGMzGnxn9PKQFlPpEYoEaeUEB2+WSy3E/wEX7g==
 Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xeskt13ak-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xeskt153x-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Apr 2024 09:51:00 +0000 (GMT)
+	Fri, 12 Apr 2024 10:17:01 +0000 (GMT)
 Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43C9ox0v020949
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43CAH0jE027291
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Apr 2024 09:50:59 GMT
-Received: from [10.253.34.41] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 12 Apr
- 2024 02:50:58 -0700
-Message-ID: <0b31dda9-f38a-4ac6-8583-96a16ac9cfcd@quicinc.com>
-Date: Fri, 12 Apr 2024 17:50:56 +0800
+	Fri, 12 Apr 2024 10:17:00 GMT
+Received: from lingbok-Birman-PHX.lan (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Fri, 12 Apr 2024 03:16:59 -0700
+From: Lingbo Kong <quic_lingbok@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, <quic_lingbok@quicinc.com>
+Subject: [PATCH v2 0/3] wifi: ath12k: report station mode stats
+Date: Fri, 12 Apr 2024 18:15:57 +0800
+Message-ID: <20240412101600.55344-1-quic_lingbok@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: <quic_kangyang@quicinc.com>
-To: Nicolas Escande <nico.escande@gmail.com>, <ath12k@lists.infradead.org>,
-        <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v2] wifi: ath12k: add support to handle beacon miss for
- WCN7850
-References: <20240412025149.1211-1-quic_kangyang@quicinc.com>
- <D0HYXSPMY8JE.17YSACO3ROKKZ@gmail.com>
- <6ee5664b-997b-45eb-89f9-5f75708c268a@quicinc.com>
- <D0I19V0104BZ.IN8THB2XCFLV@gmail.com>
-In-Reply-To: <D0I19V0104BZ.IN8THB2XCFLV@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01b.na.qualcomm.com (10.47.209.197)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: az3vQh4siK450cgzB7-_BwtgKFq-k0nX
-X-Proofpoint-ORIG-GUID: az3vQh4siK450cgzB7-_BwtgKFq-k0nX
+X-Proofpoint-GUID: 5GrCoiRgHFUes172ssCQbEPz08QrPcbr
+X-Proofpoint-ORIG-GUID: 5GrCoiRgHFUes172ssCQbEPz08QrPcbr
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-04-12_06,2024-04-09_01,2023-05-22_02
@@ -90,79 +82,61 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulksco
  priorityscore=1501 suspectscore=0 lowpriorityscore=0 mlxscore=0
  phishscore=0 clxscore=1015 spamscore=0 malwarescore=0 adultscore=0
  mlxlogscore=892 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2404010003 definitions=main-2404120070
+ scancount=1 engine=8.19.0-2404010003 definitions=main-2404120074
+
+Currently, the transmit rate, the receive rate and signal strength of
+“iw dev xxx station dump” always show an invalid value.
+
+This is because ath12k has no logic to handle this relevant information.
+
+To solve this issue, ath12k parses the information passed by the firmware
+and passes it to mac80211.
+
+After that, "iw dev xxx station dump" show the correct value.
+Such as:
+
+Station 00:03:7f:12:03:03 (on wlo1)
+        inactive time:  600 ms
+        rx bytes:       4642228
+        rx packets:     23796
+        tx bytes:       933967
+        tx packets:     8761
+        tx retries:     66
+        tx failed:      0
+        beacon loss:    0
+        beacon rx:      8925
+        rx drop misc:   191
+        signal:         -20 dBm
+        beacon signal avg:      -18 dBm
+        tx bitrate:     1441.1 MBit/s 80MHz EHT-MCS 13 EHT-NSS 2 EHT-GI 0
+        tx duration:    0 us
+        rx bitrate:     1801.4 MBit/s 80MHz EHT-MCS 11 EHT-NSS 3 EHT-GI 0
+        rx duration:    0 us
+
+v2:
+1.change copyright
+2.change name according Naming conventions for structures
+
+Lingbo Kong (3):
+  wifi: ath12k: report station mode transmit rate
+  wifi: ath12k: report station mode receive rate for IEEE 802.11be
+  wifi: ath12k: report station mode signal strength
+
+ drivers/net/wireless/ath/ath12k/core.h    |   5 +
+ drivers/net/wireless/ath/ath12k/dp_rx.c   |  20 ++-
+ drivers/net/wireless/ath/ath12k/dp_rx.h   |   3 +
+ drivers/net/wireless/ath/ath12k/dp_tx.c   | 147 +++++++++++++++++-
+ drivers/net/wireless/ath/ath12k/hal_tx.h  |   9 +-
+ drivers/net/wireless/ath/ath12k/mac.c     | 180 +++++++++++++++++++++-
+ drivers/net/wireless/ath/ath12k/mac.h     |   3 +
+ drivers/net/wireless/ath/ath12k/rx_desc.h |   2 +
+ drivers/net/wireless/ath/ath12k/wmi.c     | 130 ++++++++++++++++
+ drivers/net/wireless/ath/ath12k/wmi.h     |  48 ++++++
+ 10 files changed, 538 insertions(+), 9 deletions(-)
 
 
+base-commit: 363e7193eaf258fe7f04e8db560bd8a282a12cd9
+-- 
+2.34.1
 
-On 4/12/24 5:23 PM, "Nicolas Escande" <nico.escande@gmail.com> wrote:
-> On Fri Apr 12, 2024 at 10:47 AM CEST, Kang Yang wrote:
-> >
-> >
-> > On 4/12/2024 3:33 PM, Nicolas Escande wrote:
-> >> On Fri Apr 12, 2024 at 4:51 AM CEST, kangyang wrote:
-> >> [...]
-> >>> @@ -5986,6 +6055,20 @@ static int ath12k_mac_vdev_create(struct ath12k *ar, struct ieee80211_vif *vif)
-> >>>    	lockdep_assert_held(&ar->conf_mutex);
-> >>>    
-> >>>    	arvif->ar = ar;
-> >>> +	arvif->vif = vif;
-> >>> +
-> >>> +	INIT_LIST_HEAD(&arvif->list);
-> >>> +	INIT_DELAYED_WORK(&arvif->connection_loss_work,
-> >>> +			  ath12k_mac_vif_sta_connection_loss_work);
-> >>> +
-> >> Is there a need to move the following part ?
-> >> Isn't just adding the delay work enough ?
-> >
-> >
-> > Just checked, you are right, but should add delay work in add_interface().
-> >
-> > Will change in v3.
-> >
-> >
-> >>> +	for (i = 0; i < ARRAY_SIZE(arvif->bitrate_mask.control); i++) {
-> >>> +		arvif->bitrate_mask.control[i].legacy = 0xffffffff;
-> >>> +		memset(arvif->bitrate_mask.control[i].ht_mcs, 0xff,
-> >>> +		       sizeof(arvif->bitrate_mask.control[i].ht_mcs));
-> >>> +		memset(arvif->bitrate_mask.control[i].vht_mcs, 0xff,
-> >>> +		       sizeof(arvif->bitrate_mask.control[i].vht_mcs));
-> >>> +	}
-> >>> +
-> >>>    	vdev_id = __ffs64(ab->free_vdev_map);
-> >>>    	arvif->vdev_id = vdev_id;
-> >>>    	arvif->vdev_subtype = WMI_VDEV_SUBTYPE_NONE;
-> >>> @@ -6316,16 +6399,6 @@ static int ath12k_mac_op_add_interface(struct ieee80211_hw *hw,
-> >>>    
-> >>>    	arvif->vif = vif;
-> >>>    
-> >>> -	INIT_LIST_HEAD(&arvif->list);
-> >>> -
-> >>> -	for (i = 0; i < ARRAY_SIZE(arvif->bitrate_mask.control); i++) {
-> >>> -		arvif->bitrate_mask.control[i].legacy = 0xffffffff;
-> >>> -		memset(arvif->bitrate_mask.control[i].ht_mcs, 0xff,
-> >>> -		       sizeof(arvif->bitrate_mask.control[i].ht_mcs));
-> >>> -		memset(arvif->bitrate_mask.control[i].vht_mcs, 0xff,
-> >>> -		       sizeof(arvif->bitrate_mask.control[i].vht_mcs));
-> >>> -	}
-> >>> -
-> >>>    	/* Allocate Default Queue now and reassign during actual vdev create */
-> >>>    	vif->cab_queue = ATH12K_HW_DEFAULT_QUEUE;
-> >>>    	for (i = 0; i < ARRAY_SIZE(vif->hw_queue); i++)
-> >> [...]
-> >>
-> >> Thanks
-> 
-> Yeah, I wasn't clear enough, I meant adding the INIT_DELAY_WORK without moving
-> the rest of the code around.
-> 
-
-I know what you mean --- Just add INIT_DELAY_WORK in ath12k_mac_vdev_create(). 
-
-But i just checked with the person who just refactor the related code in patchset 'wifi: ath12k: Add single wiphy support'.
-He also think add in ath12k_mac_op_add_interface() is better.
-
-
-
-> Thanks
-> 
 
