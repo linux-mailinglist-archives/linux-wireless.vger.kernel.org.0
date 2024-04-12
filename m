@@ -1,116 +1,156 @@
-Return-Path: <linux-wireless+bounces-6233-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6234-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F6B38A2A3E
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 11:05:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 412A58A2B1F
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 11:25:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E94D1F230BC
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 09:05:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14A03B21850
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 09:24:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5830E5A104;
-	Fri, 12 Apr 2024 08:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 520D252F61;
+	Fri, 12 Apr 2024 09:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="ZEuztPpa"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IfM5pZvU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2942153E2B
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Apr 2024 08:54:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A952454650
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Apr 2024 09:23:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712912053; cv=none; b=lnZWiu9+khp6QVPEorJxdPm469d9sC/FqWlAuchTOjXehQ8z6xMsh3IgndSQg9Jq1bO2HgyjOL77TGjfySuGXjX6zU8teo90rMEGcN0k330d3XP9FCM4PVsc/6cj/RjesYKzmPWmkUKpzSE/qo4Y2n2n25P+HRk2qq5sTQ5r2YU=
+	t=1712913827; cv=none; b=RpvspHy8eGaIoT6ts6WBDv3a3aH7xxByXFiWqVnJXknu8zD6FvjbsCVX5/6Ms60wwsWR/1zfXDypzERdoo7v55uNvQ2+aUdQFLyZjkIOyjrIcZK+z6F0rqS5LMBkayI3QPdyBsG0dn2GeJuUmQY8MfZkqGJpBFqQKq5eigucFEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712912053; c=relaxed/simple;
-	bh=gV6QO15hzr3rqH5uNZxNncGpQ09deA7YpjI/SJB8uIA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qrDq/I6YCqvkTDwO5l26J/nKFKJRAKTKaJ46Lr+XCeyCYqlTIFV6bb7b+/y/LwKIm+IUerkL98TSI086KfPQC451mLw1yVjtrBNtm9l80IkO62spwr+/ppj05s8TY4KgrIH4SRXsTEZgC5nKyObuAAKVAOfC7rrG1t4LsCKMeh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=ZEuztPpa; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 360c1e34f8aa11ee935d6952f98a51a9-20240412
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=Oa0IHlTEkqm/Zd9yc51OmvWVeaF8/iRSN+iJu9U4MUM=;
-	b=ZEuztPpaoChX/gDOkSEkGkx2mMU3eNh9Y9IAjJCfOrsfS4IcEOpvqHp+lvhb8pNgHeLg68cM2T2iq9H0wnjOtoszVpTSXRddHNP7bUr5aRAV/6uAfmUw/zGfCOcvwfUGUqj+BtjG9YJ5VMFFN9AG1DMOU/y9a3CcqIQaZJyp5so=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.37,REQID:934bc3d7-6557-430b-acb6-a9fc0226f8b1,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6f543d0,CLOUDID:10b2d5fa-ed05-4274-9204-014369d201e8,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,
-	SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 360c1e34f8aa11ee935d6952f98a51a9-20240412
-Received: from mtkmbs14n2.mediatek.inc [(172.21.101.76)] by mailgw02.mediatek.com
-	(envelope-from <mingyen.hsieh@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1992218361; Fri, 12 Apr 2024 16:54:02 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Fri, 12 Apr 2024 16:54:01 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Fri, 12 Apr 2024 16:54:01 +0800
-From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
-	<Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
-	<Eric-SY.Chang@mediatek.com>, <km.lin@mediatek.com>,
-	<robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-	<Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
-	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, Leon Yen <leon.yen@mediatek.com>, Ming
- Yen Hsieh <mingyen.hsieh@mediatek.com>
-Subject: [PATCH] wifi: mt76: mt7921: avoid undesired changes of the preset regulatory domain
-Date: Fri, 12 Apr 2024 16:53:57 +0800
-Message-ID: <20240412085357.13756-1-mingyen.hsieh@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+	s=arc-20240116; t=1712913827; c=relaxed/simple;
+	bh=7UXVghcgcMjURurQ2igNhy01eq3tNyxUGlr0/MXH2u8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=f/KUiMRIkn9s33eQxleSjuCmkXl4tWpcTKwYK/g4ZtmSlthAUDzQWH+/ZMKA78A3mCH4VZdESUtj0/2JnTf33O1+PiNTN5dmE3F56BobR9VRvkzXTLjXOh13QrWeijUOm5TCYzR+dGgP7Bd5SQvB2z9mnpO3upx0TVRglTzO4cM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IfM5pZvU; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-343c2f5b50fso461504f8f.2
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Apr 2024 02:23:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712913824; x=1713518624; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5WK4hlBESstsIUX+zMhngFDheN5gnJTFx66i5y0Tzm4=;
+        b=IfM5pZvUyWBYFndBuUsdQPzwdinAZ/AcpZOJe9kAqLHWMC6R3+24/Em7r2BRvGpJCh
+         /jglvTHP9g0BZ2a5JZtSOBySIYVskjSEc5ai8Wh1uyUhIWimZXO8HulWlE0hhPPtV1b1
+         BoZbcShGUDtizCCpjyVjviAIPdfOFFMp/iZvGnQpGA13dcSHGluJWkpylc4gKGcjmkx9
+         rsLn4WJJ14WlejbE2KCWFBPfCPu4zXFo1PHnZgCw5Of0qD8q6qm/ObnJ28o+hBg48nC6
+         ZW4gHOizgTaIKD8lukOh8QoCe+cktzvkfLCcAg/5ObuFMhnPfqevpPDXlTzTaKum6E3S
+         oL0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712913824; x=1713518624;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=5WK4hlBESstsIUX+zMhngFDheN5gnJTFx66i5y0Tzm4=;
+        b=WbyqeP7E/S65kQKinch2LbGyT/EWYOHAiYC7cOF3AKsNGA9ft9tmOdZAKamJvlyB6A
+         faXHya+4OPEDTYLApYGaxM1FzukBc21ExNJWVYbX/59fnaqbBySLG9NmkQfZWXOrH42y
+         WvPEf5JKG7A5gUg0cliuFlVVCHlEh37nBAgHK3N8CpQiJjfHnrFH3D3YJh5FRMEeS5uI
+         6T71b5o35oqRZeN4+tMbn54rtLulBgJWS+36SILj3SAw5qnIr0gdz5lE6XjXTzyhZgwH
+         tu2mi3ZJTOKK/qDY1I5jL83h83KliwWJgRJ8SqsF3BH+ap3QW8ma3UP8P9WQESABXdnQ
+         hKKw==
+X-Gm-Message-State: AOJu0YzEtOTUoASxK4PRM/dbCRzlrjN/vm45wCYuV4HKG0vLpZnkka25
+	Z5nz319mPAFlPzAmw9wYmuIAxo9sxuXxSjE2d52qd7clfJD0WJt1RsVBZg==
+X-Google-Smtp-Source: AGHT+IEfd/dQCgUdBpBoWhvCRuRFjBhFLkkyqmM/3BxuR9AAjM3dJ0VKTDcop11fx5p2PgRYfU9Tjg==
+X-Received: by 2002:adf:e2c8:0:b0:343:6e18:5f09 with SMTP id d8-20020adfe2c8000000b003436e185f09mr1261070wrj.12.1712913823801;
+        Fri, 12 Apr 2024 02:23:43 -0700 (PDT)
+Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id ea15-20020a0560000ecf00b003438cc1d2b4sm3812598wrb.59.2024.04.12.02.23.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 Apr 2024 02:23:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 12 Apr 2024 11:23:43 +0200
+Message-Id: <D0I19V0104BZ.IN8THB2XCFLV@gmail.com>
+Cc: <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v2] wifi: ath12k: add support to handle beacon miss for
+ WCN7850
+From: "Nicolas Escande" <nico.escande@gmail.com>
+To: "Kang Yang" <quic_kangyang@quicinc.com>, <ath12k@lists.infradead.org>
+X-Mailer: aerc 0.17.0
+References: <20240412025149.1211-1-quic_kangyang@quicinc.com>
+ <D0HYXSPMY8JE.17YSACO3ROKKZ@gmail.com>
+ <6ee5664b-997b-45eb-89f9-5f75708c268a@quicinc.com>
+In-Reply-To: <6ee5664b-997b-45eb-89f9-5f75708c268a@quicinc.com>
 
-From: Leon Yen <leon.yen@mediatek.com>
+On Fri Apr 12, 2024 at 10:47 AM CEST, Kang Yang wrote:
+>
+>
+> On 4/12/2024 3:33 PM, Nicolas Escande wrote:
+> > On Fri Apr 12, 2024 at 4:51 AM CEST, kangyang wrote:
+> > [...]
+> >> @@ -5986,6 +6055,20 @@ static int ath12k_mac_vdev_create(struct ath12k=
+ *ar, struct ieee80211_vif *vif)
+> >>   	lockdep_assert_held(&ar->conf_mutex);
+> >>  =20
+> >>   	arvif->ar =3D ar;
+> >> +	arvif->vif =3D vif;
+> >> +
+> >> +	INIT_LIST_HEAD(&arvif->list);
+> >> +	INIT_DELAYED_WORK(&arvif->connection_loss_work,
+> >> +			  ath12k_mac_vif_sta_connection_loss_work);
+> >> +
+> > Is there a need to move the following part ?
+> > Isn't just adding the delay work enough ?
+>
+>
+> Just checked, you are right, but should add delay work in add_interface()=
+.
+>
+> Will change in v3.
+>
+>
+> >> +	for (i =3D 0; i < ARRAY_SIZE(arvif->bitrate_mask.control); i++) {
+> >> +		arvif->bitrate_mask.control[i].legacy =3D 0xffffffff;
+> >> +		memset(arvif->bitrate_mask.control[i].ht_mcs, 0xff,
+> >> +		       sizeof(arvif->bitrate_mask.control[i].ht_mcs));
+> >> +		memset(arvif->bitrate_mask.control[i].vht_mcs, 0xff,
+> >> +		       sizeof(arvif->bitrate_mask.control[i].vht_mcs));
+> >> +	}
+> >> +
+> >>   	vdev_id =3D __ffs64(ab->free_vdev_map);
+> >>   	arvif->vdev_id =3D vdev_id;
+> >>   	arvif->vdev_subtype =3D WMI_VDEV_SUBTYPE_NONE;
+> >> @@ -6316,16 +6399,6 @@ static int ath12k_mac_op_add_interface(struct i=
+eee80211_hw *hw,
+> >>  =20
+> >>   	arvif->vif =3D vif;
+> >>  =20
+> >> -	INIT_LIST_HEAD(&arvif->list);
+> >> -
+> >> -	for (i =3D 0; i < ARRAY_SIZE(arvif->bitrate_mask.control); i++) {
+> >> -		arvif->bitrate_mask.control[i].legacy =3D 0xffffffff;
+> >> -		memset(arvif->bitrate_mask.control[i].ht_mcs, 0xff,
+> >> -		       sizeof(arvif->bitrate_mask.control[i].ht_mcs));
+> >> -		memset(arvif->bitrate_mask.control[i].vht_mcs, 0xff,
+> >> -		       sizeof(arvif->bitrate_mask.control[i].vht_mcs));
+> >> -	}
+> >> -
+> >>   	/* Allocate Default Queue now and reassign during actual vdev creat=
+e */
+> >>   	vif->cab_queue =3D ATH12K_HW_DEFAULT_QUEUE;
+> >>   	for (i =3D 0; i < ARRAY_SIZE(vif->hw_queue); i++)
+> > [...]
+> >=20
+> > Thanks
 
-Some countries have strict RF restrictions where changing the regulatory
-domain dynamically based on the connected AP is not acceptable.
-This patch disables Beacon country IE hinting when a valid country code
-is set from usersland (e.g., by system using iw or CRDA).
+Yeah, I wasn't clear enough, I meant adding the INIT_DELAY_WORK without mov=
+ing
+the rest of the code around.=20
 
-Signed-off-by: Leon Yen <leon.yen@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7921/init.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index ef0c721d26e3..3c9a5fcd6924 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -135,6 +135,13 @@ mt7921_regd_notifier(struct wiphy *wiphy,
- 	dev->mt76.region = request->dfs_region;
- 	dev->country_ie_env = request->country_ie_env;
- 
-+	if (request->initiator == NL80211_REGDOM_SET_BY_USER) {
-+		if (dev->mt76.alpha2[0] == '0' && dev->mt76.alpha2[1] == '0')
-+			wiphy->regulatory_flags &= ~REGULATORY_COUNTRY_IE_IGNORE;
-+		else
-+			wiphy->regulatory_flags |= REGULATORY_COUNTRY_IE_IGNORE;
-+	}
-+
- 	if (pm->suspended)
- 		return;
- 
--- 
-2.18.0
-
+Thanks
 
