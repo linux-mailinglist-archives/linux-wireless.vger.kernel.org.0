@@ -1,67 +1,67 @@
-Return-Path: <linux-wireless+bounces-6221-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6220-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 891648A262C
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 08:07:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00DC48A262B
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 08:07:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 003A81F21BFB
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 06:07:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31E2A1C23E53
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 06:07:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF3451799F;
-	Fri, 12 Apr 2024 06:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC523E487;
+	Fri, 12 Apr 2024 06:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Wa/8QaXc"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Rr3QBx4Z"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5843DB9B
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Apr 2024 06:06:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CDF3D56D
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Apr 2024 06:06:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712902013; cv=none; b=B/G+2N6ZnBKpE2yJFMHBbq2z8VG0lJlSiFZksZw2Wm/xBajdeY7noc89/xmDCHaQV0uyykn1+U5dC3ggKe3FBAmahCPx0ktKaJ/rfpx75x+OUiUXIBU3zlGUPUNMxClxC4CvuMrdEa2I2HwhFVtdtIpYx38XRyuKdajRBXSHPEE=
+	t=1712902012; cv=none; b=jzJ/RgsSgq7wIgQuIY9NCqH3e8rzBj874z31x8T9sd65iosM2A5dYYY9Ml6BGx/iff1U1Hjzpknztxzesu0yNz9qsj/cV7PTBOZwvegXceNyw9jtOa6affLs7II4GmyEBqWeQ/X9TKus4Exv0CFGItWoM1yUuo6GFk8AoRiLnFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712902013; c=relaxed/simple;
-	bh=4kG27XODgiLWmgYpEcEq7H90pSFbWMEY7wUu2ZC6zr4=;
+	s=arc-20240116; t=1712902012; c=relaxed/simple;
+	bh=UdiVijcRrhxEghwCPHkyBD5vu01FbzBdMk58PSIoKqc=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JSG5oRlOWhyjxyWrxEptPWElwTW8rLFlOhVwhrhkBHyg6ZGZgx4pTSJbMansKCQ+RXJHa+W6tTU9GTAoXgNK6SakUUo+2OFHbRbqY+IAbKAtoL11NEAgJQ03WDc/HuE8ozuJOR/L+2jvwxtchmQ47QIcOaOA+SQ5/lEUjxqJXZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Wa/8QaXc; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version:Content-Type; b=BQwyFaM4M66ifeozNfeWSLfGiSpzWsDNj0R6dntyEDhouqrWJ3IleeYEGVVBaMwtX6XllorBvJy6l76mhNwMEdQiwbrPsFp5m1QM+tX9rynSfYT8HYljAsLbuvrC1lfwHl4au0RR0QPhhcNZ3spgRe622BEgjDrvB3fSLBJ0C20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Rr3QBx4Z; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43C4RuWI006597;
-	Fri, 12 Apr 2024 06:06:47 GMT
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43C4hV26022257;
+	Fri, 12 Apr 2024 06:06:48 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	from:to:cc:subject:date:message-id:in-reply-to:references
 	:mime-version:content-transfer-encoding:content-type; s=
-	qcppdkim1; bh=THroAguNRlZTaU9UglbQ3U8cc011cYRJtxNRMZTW1U4=; b=Wa
-	/8QaXcIRbb5Xmm6bdPa3y/xWr24NwbFWeQpfHVGX7iGDOfn6x8PGf9WZzHCzMU0F
-	HhdbF1+yseSB2i0LidAVozEcyWrU8eDmWl6aS6mZTfVVSWw70VC87SGOC5O+p1Kk
-	gnjTs3BJ2ETAMtC/4zyN3BK7aVCX9bCZy1bO52nGqBmS40SDLg8VmXPRyzrTY5O5
-	uerA3JAKcDBLuL4PBGkMB+3poXf/Wcufw1v3Z+qH1nBAjffAYu9l85Z/E8ERRng1
-	zHy9SBmEKi+Vo8KeYeV7hIFtABjSVV8iAzpPTrtiLvA2zRVqA2+Hud6wVwHENIT6
-	HuqQA6aw9CwUq5dhdPgQ==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xem8m195c-1
+	qcppdkim1; bh=8HUqW0g3dBDZuUgtkY+5SomlQdIkoT9yzaHjR3Z7/0w=; b=Rr
+	3QBx4Z4UwVv6GbsoLReKAB/MXKyS53xVYa9UuVB7iOcR6t8+KsJ6Bc2qX7fjswds
+	z6pnIma4hQrUT24c85Uv3ETeX5ufxquSCmARwFlA2uZgCbLH6Gc7J+rLG+VJH93N
+	gmAGtf9y3MAYtsUCg3zGxw6azc1LdzYXum25vHNKDi6mvuSlNwLbSdAcBzK6vxjC
+	dz7s/PPaP3sG0G71k8kpmoVYTzEecZfqfvmtGftZWB+xoWgsnpG19HAn0q4V/eKP
+	e7e6BFkov76Fij/ORh+GCsaTAoLiwzPVetvSYRVV2T0HdgUJuoIs4/CF96fzx/9A
+	X0lDqiaAPMIJ+EvlN+MA==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xebqxb5km-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Apr 2024 06:06:47 +0000 (GMT)
+	Fri, 12 Apr 2024 06:06:48 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43C66kwO032465
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43C66lNr008362
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Apr 2024 06:06:46 GMT
+	Fri, 12 Apr 2024 06:06:47 GMT
 Received: from bqiang-SFF.qca.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Thu, 11 Apr 2024 23:06:44 -0700
+ 15.2.1544.9; Thu, 11 Apr 2024 23:06:46 -0700
 From: Baochen Qiang <quic_bqiang@quicinc.com>
 To: <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>, <quic_bqiang@quicinc.com>
-Subject: [PATCH 07/10] wifi: ath12k: no need to handle pktlog during suspend/resume
-Date: Fri, 12 Apr 2024 14:06:17 +0800
-Message-ID: <20240412060620.27519-8-quic_bqiang@quicinc.com>
+Subject: [PATCH 08/10] wifi: ath12k: avoid stopping mac80211 queues in ath12k_core_restart()
+Date: Fri, 12 Apr 2024 14:06:18 +0800
+Message-ID: <20240412060620.27519-9-quic_bqiang@quicinc.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240412060620.27519-1-quic_bqiang@quicinc.com>
 References: <20240412060620.27519-1-quic_bqiang@quicinc.com>
@@ -77,155 +77,79 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 6_XLWY9--PXHcK4qagxQWBXFKrACCogI
-X-Proofpoint-GUID: 6_XLWY9--PXHcK4qagxQWBXFKrACCogI
+X-Proofpoint-GUID: sghHdIAN7K3Rkc13tN2rpfa-0KHJiDR6
+X-Proofpoint-ORIG-GUID: sghHdIAN7K3Rkc13tN2rpfa-0KHJiDR6
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-04-12_02,2024-04-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
- priorityscore=1501 malwarescore=0 phishscore=0 impostorscore=0
- mlxlogscore=676 bulkscore=0 lowpriorityscore=0 mlxscore=0 spamscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ bulkscore=0 mlxlogscore=816 malwarescore=0 phishscore=0 suspectscore=0
+ adultscore=0 spamscore=0 lowpriorityscore=0 clxscore=1015 mlxscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2404010003 definitions=main-2404120042
 
-Currently pktlog is stopped in suspend callback and started in
-resume callback, and in either scenarios it's basically to
-delete/modify ab->mon_reap_timer and to purge related rings.
-For WCN7850 it's pointless because pktlog is not enabled: both
-ab->mon_reap_timer and those rings are not initialized.
+Currently when resume ath12k_core_restart() calls
+ath12k_core_pre_reconfigure_recovery() where mac80211 queues are
+stopped by calling ieee80211_stop_queues(). Then in
+ath12k_mac_op_reconfig_complete() those queues are not started
+because ieee80211_wake_queues() is skipped due to the check on
+reconfig_type. The result is that mac80211
+could not deliver any frame to ath12k to send out, finally making
+connection fail.
 
-So remove pktlog handling in suspend/resume callbacks. And
-further, remove these two functions and related callee because
-no one is calling them.
+[84473.104249] PM: suspend exit
+[84479.372397] wlan0: no VHT 160 MHz capability on 5 GHz, limiting to 80 MHz
+[84479.372401] wlan0: determined local STA to be EHT, BW limited to 80 MHz
+[84479.372416] wlan0: determined AP 00:03:7f:12:b7:b7 to be HE
+[84479.372420] wlan0: connecting with HE mode, max bandwidth 80 MHz
+[84479.580348] wlan0: authenticate with 00:03:7f:12:b7:b7 (local address=00:03:7f:37:11:53)
+[84479.580351] wlan0: send auth to 00:03:7f:12:b7:b7 (try 1/3)
+[84480.698993] wlan0: send auth to 00:03:7f:12:b7:b7 (try 2/3)
+[84481.816505] wlan0: send auth to 00:03:7f:12:b7:b7 (try 3/3)
+[84482.810966] wlan0: authentication with 00:03:7f:12:b7:b7 timed out
 
-Other chips are not affected because now only WCN7850 supports
-suspend/resume.
+Actually we don't need to stop/start queues during suspend/resume,
+so remove ath12k_core_pre_reconfigure_recovery() from ath12k_core_restart().
+This won't cause any regression because currently the only chance
+ath12k_core_restart() gets called is in reset case, where ab->is_reset
+is set so that function will never be executed.
+
+Also remove ath12k_core_post_reconfigure_recovery() because it is
+not needed in suspend/resume case. This is also valid due to above
+analysis.
 
 Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
 Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 
 Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/core.c  | 21 -----------
- drivers/net/wireless/ath/ath12k/dp_rx.c | 48 -------------------------
- drivers/net/wireless/ath/ath12k/dp_rx.h |  2 --
- 3 files changed, 71 deletions(-)
+ drivers/net/wireless/ath/ath12k/core.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index dfec390b66c6..aeb7f9e43cc4 100644
+index aeb7f9e43cc4..380a3c8f7201 100644
 --- a/drivers/net/wireless/ath/ath12k/core.c
 +++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -64,20 +64,6 @@ int ath12k_core_suspend(struct ath12k_base *ab)
- 	}
- 	rcu_read_unlock();
+@@ -1045,9 +1045,6 @@ static void ath12k_core_restart(struct work_struct *work)
+ 	struct ath12k_base *ab = container_of(work, struct ath12k_base, restart_work);
+ 	int ret;
  
--	ret = ath12k_dp_rx_pktlog_stop(ab, true);
--	if (ret) {
--		ath12k_warn(ab, "failed to stop dp rx (and timer) pktlog during suspend: %d\n",
--			    ret);
--		return ret;
--	}
+-	if (!ab->is_reset)
+-		ath12k_core_pre_reconfigure_recovery(ab);
 -
--	ret = ath12k_dp_rx_pktlog_stop(ab, false);
--	if (ret) {
--		ath12k_warn(ab, "failed to stop dp rx pktlog during suspend: %d\n",
--			    ret);
--		return ret;
--	}
--
- 	ath12k_hif_irq_disable(ab);
- 	ath12k_hif_ce_irq_disable(ab);
+ 	ret = ath12k_core_reconfigure_on_crash(ab);
+ 	if (ret) {
+ 		ath12k_err(ab, "failed to reconfigure driver on crash recovery\n");
+@@ -1056,9 +1053,6 @@ static void ath12k_core_restart(struct work_struct *work)
  
-@@ -106,13 +92,6 @@ int ath12k_core_resume(struct ath12k_base *ab)
- 	ath12k_hif_ce_irq_enable(ab);
- 	ath12k_hif_irq_enable(ab);
- 
--	ret = ath12k_dp_rx_pktlog_start(ab);
--	if (ret) {
--		ath12k_warn(ab, "failed to start rx pktlog during resume: %d\n",
--			    ret);
--		return ret;
--	}
+ 	if (ab->is_reset)
+ 		complete_all(&ab->reconfigure_complete);
 -
- 	return 0;
+-	if (!ab->is_reset)
+-		ath12k_core_post_reconfigure_recovery(ab);
  }
  
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-index a593beecdd12..dd6d9b2a5bcf 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -239,28 +239,6 @@ static inline u8 ath12k_dp_rx_get_msdu_src_link(struct ath12k_base *ab,
- 	return ab->hal_rx_ops->rx_desc_get_msdu_src_link_id(desc);
- }
- 
--static int ath12k_dp_purge_mon_ring(struct ath12k_base *ab)
--{
--	int i, reaped = 0;
--	unsigned long timeout = jiffies + msecs_to_jiffies(DP_MON_PURGE_TIMEOUT_MS);
--
--	do {
--		for (i = 0; i < ab->hw_params->num_rxmda_per_pdev; i++)
--			reaped += ath12k_dp_mon_process_ring(ab, i, NULL,
--							     DP_MON_SERVICE_BUDGET,
--							     ATH12K_DP_RX_MONITOR_MODE);
--
--		/* nothing more to reap */
--		if (reaped < DP_MON_SERVICE_BUDGET)
--			return 0;
--
--	} while (time_before(jiffies, timeout));
--
--	ath12k_warn(ab, "dp mon ring purge timeout");
--
--	return -ETIMEDOUT;
--}
--
- static size_t ath12k_dp_list_cut_nodes(struct list_head *list,
- 				       struct list_head *head,
- 				       size_t count)
-@@ -4264,29 +4242,3 @@ int ath12k_dp_rx_pdev_mon_attach(struct ath12k *ar)
- 
- 	return 0;
- }
--
--int ath12k_dp_rx_pktlog_start(struct ath12k_base *ab)
--{
--	/* start reap timer */
--	mod_timer(&ab->mon_reap_timer,
--		  jiffies + msecs_to_jiffies(ATH12K_MON_TIMER_INTERVAL));
--
--	return 0;
--}
--
--int ath12k_dp_rx_pktlog_stop(struct ath12k_base *ab, bool stop_timer)
--{
--	int ret;
--
--	if (stop_timer)
--		del_timer_sync(&ab->mon_reap_timer);
--
--	/* reap all the monitor related rings */
--	ret = ath12k_dp_purge_mon_ring(ab);
--	if (ret) {
--		ath12k_warn(ab, "failed to purge dp mon ring: %d\n", ret);
--		return ret;
--	}
--
--	return 0;
--}
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.h b/drivers/net/wireless/ath/ath12k/dp_rx.h
-index 25940061ead5..6b8e22a5b43c 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.h
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.h
-@@ -123,8 +123,6 @@ int ath12k_dp_rx_bufs_replenish(struct ath12k_base *ab,
- int ath12k_dp_rx_pdev_mon_attach(struct ath12k *ar);
- int ath12k_dp_rx_peer_frag_setup(struct ath12k *ar, const u8 *peer_mac, int vdev_id);
- 
--int ath12k_dp_rx_pktlog_start(struct ath12k_base *ab);
--int ath12k_dp_rx_pktlog_stop(struct ath12k_base *ab, bool stop_timer);
- u8 ath12k_dp_rx_h_l3pad(struct ath12k_base *ab,
- 			struct hal_rx_desc *desc);
- struct ath12k_peer *
+ static void ath12k_core_reset(struct work_struct *work)
 -- 
 2.25.1
 
