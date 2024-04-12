@@ -1,365 +1,166 @@
-Return-Path: <linux-wireless+bounces-6266-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6267-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 523C48A3491
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 19:19:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14B7B8A3520
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 19:48:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08ED5284767
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 17:19:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CD3028855E
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Apr 2024 17:48:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB0114B06E;
-	Fri, 12 Apr 2024 17:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE0D14D29E;
+	Fri, 12 Apr 2024 17:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aBvoi15D"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OZwf0F/R"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7FB14B098
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Apr 2024 17:19:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53ED014C596
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Apr 2024 17:48:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712942394; cv=none; b=r59OV2PbdMvm3yfS4qAFLgcS6GKVBtDZMWCCoBetTPV9Fzyz9eM+Fh1UHbYHwRGlHEiK1f3MXnTmlJGt9h1YrqExhvS37j2V4TaKJI4KGpC7vmdw/vWSJY8OSf1ZoxGFJWegZ4+m36dgFRv8qILPG+RkcT0sGM8ZvVpfJpsMEK4=
+	t=1712944125; cv=none; b=WYSW1Zl53d3B1aLOIgMJxWsRSsRyYt+mO4v3QzrbPOzZKV4AHlJmnNg2Q2lGJzGuZE5mtYph0qJU0IyPWF10zgpcTRxkO7H0xZAM+eKngSDDL2r/RtBXIqQzTGgOs3j6VXp7u8cqzpNKVmOT2RDW2ugIm/341zcbbx84bpVtOjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712942394; c=relaxed/simple;
-	bh=K5Y2bN/K4iPsoujQt7n7Xcc+v7cwprzSDPvNATAwJng=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=a0jjTolYhdhCfK6YtBNXNAt7gMPXmErCZzUXpkAjO1I+lJOIAOS1prTxhRTh0SKg22DwPfI8R3o54azBDFIG2NpMjxwLS9RWglgqbKdn5IOdTFTqbWIPzPnEnB9g+jE4U38JKst5ipnsKerJjU5J/CtO95rwZnunPLiNvNOHesM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aBvoi15D; arc=none smtp.client-ip=209.85.128.171
+	s=arc-20240116; t=1712944125; c=relaxed/simple;
+	bh=nlFw604Ueneanf/thBFAfMvl/lWtz6UzMNv1eWU+VLQ=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=m/SYEWHc68pyS6mwY6gER/1z36HZwttxlpL81YhmSZ09oqoPrQizCo78VStJFUEIlGAi5S3hzJFwKS0fvkBcNDYnesr0i13iWh4HyDL7KvqmzQvnkI4JtFTrA98u6k4UO4h8fbF/ZeWuZkJdQG6Kj9haDR+45NI5oYNNKHGy28Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OZwf0F/R; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-618769020bcso11934677b3.3
-        for <linux-wireless@vger.kernel.org>; Fri, 12 Apr 2024 10:19:52 -0700 (PDT)
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-41802e8db9aso4622465e9.1
+        for <linux-wireless@vger.kernel.org>; Fri, 12 Apr 2024 10:48:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712942391; x=1713547191; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=m3E5JtPEXrk1KAej5eQrAgWvLFqB6nl1EhYc/brfaoc=;
-        b=aBvoi15Dvt1LM5J5N3w8yG1m5c7lDJdXBwZ9qtWx4KJ9bDexJ6uzfGf6Wr2kW7wLY7
-         Lj0qw2/ckDLm6sOXnYRoW0KRsPUjPqoFZmC6dUWq+pGTv7OqCE6lOH61MVGFAMUCeVRY
-         Ys+tUdXcqLL4wka326eb5wWVVk0lUxi3jW0imlXSYyCw9ulAbcJW/yRu6qLCFO6fPo6D
-         AlnyWeJzwDTPK1EWHwQkKgpJyiDb4wC7t4NnI81/ZifcpLq+eThBdRGWTUXvwvuW9r8i
-         aHzulJpYyrGcVNlT3GPDLEsiJttZNKM8rLGeERGb4esmUm7QqVl994NMlyG88R+8c2Ll
-         45eA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712942391; x=1713547191;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1712944123; x=1713548923; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=m3E5JtPEXrk1KAej5eQrAgWvLFqB6nl1EhYc/brfaoc=;
-        b=lyrFx+sj9ijBIoUPo/CB4/BxSOj5Ea/i+doZsgbfEKhVKK/8kPCYUc7c0jucuyjKmF
-         PgHwpThTmgNeMkWzg/FpuiZSa8gb9wmGgtfG/DtwRu9AO5mTrBEGVi8Ww3uqs8pgNekQ
-         ZCyj/MPY2xC9Z4J7YlZXKyHQdTbgZMmQwInQMFEi9ZAW4cbjPXRSih3ieEhQX5AipDW4
-         L65ZV/AyYiep7u4/ZdpSlRXX1m7WvQQJnx3Zk3hBnBEU3UyByj2YRR6UXOOzRCRg9rmU
-         xzhDdRsVlAtktNmCnDXbDQiVR4KvECx4Hv3cPmNUbVVKeEE/4v6HidBhbOtGV1sPGaPg
-         awBg==
-X-Gm-Message-State: AOJu0YxJYr6hDsskR3gnY1ng1oUorDqb0OzyzxUx62grS9sP3zh6YC8e
-	NURhQKY7EFkTMp6IzSlCmNIz7V9+07olYmnb7Rl5Kdb4oxlFrOzAczFc264WgMXgQTn8bMYzqR3
-	54AKVG2203jD85fMKXAJmyqqXVmp7GNk=
-X-Google-Smtp-Source: AGHT+IEffR1Dp/EVnRqahcvIHXX6/QXExnu5pC522BkvyN9Y9akZrT4uLgsxCJYwFgxUQJJnAnPRiaoXFNDKF9CgXEM=
-X-Received: by 2002:a05:690c:f0d:b0:618:8df9:5783 with SMTP id
- dc13-20020a05690c0f0d00b006188df95783mr1440430ywb.38.1712942391356; Fri, 12
- Apr 2024 10:19:51 -0700 (PDT)
+        bh=lbxyWFuVR7bMyTYuI1ipdVC3HWbyIZTBTABu+RcjbLE=;
+        b=OZwf0F/RYBEHaIzTc89I7U8USG3y43EZSwbDh4LkNhANZ3bodHTaKTRihCTJwUtOf1
+         E+KqjktxGyRLnZgmnNRWqAlZJNdE1A/4nPym8Q/FqWBu/dXQ460Zor0mZJGHFbRVKPXS
+         6mUeFXWnuU3K30QxOnDM5oEzKH1+D6lNoMeSgXoJGX2VJtHjUWk5qO25D5RG4eYDyH76
+         yejnlpHyXCvQdFPHkde/QkiIxm6LEg1oKKuI6Zk9U6A+GdOESNHB9yPWBxB2lCryPfjf
+         3CR+nymc3XNM0y74iLdl480ocNtNn/ceBObIDz0qjWqn2S4+R05lYCTrrcsQaHVzKFeR
+         dGDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712944123; x=1713548923;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=lbxyWFuVR7bMyTYuI1ipdVC3HWbyIZTBTABu+RcjbLE=;
+        b=I8wfAcFoMF/HcDSJ/UfNMv4H/egEh250Cf48H4CDhlgNmRLlIrpND3UfB7/YlueKo6
+         oP1+dBUB1RE3mMUpmytvzQOhJ5GMowtKvLOGhY7mkpbo9c1EhgL7tpfH1G7QWduimN/2
+         qjmlIGfl86/fJhxH+juwVKduotWxHbHxo+66dMOQqKjXGZT5X71tte+4Wq4pq8PGggb4
+         Wbtw1fDEpPlb6Ikc/eT/DfkaPU55AKbTqD2nehhfxCzzYIna7AGlj1iEOx3+xaR8kczI
+         LT766K3aV7jIO2VjK7y5T2EhojBYyAYneqpMMsNy9Y1uwL8m/sYo2u4DMSayYshjEfr2
+         p8Ew==
+X-Forwarded-Encrypted: i=1; AJvYcCW2RqFbhJLPFm2nkDiRWRg7U6n3DPHn4a07g2jQY28SYTCV9ycyfo4Hs3adWmK7xnEVewaIDNMjajFFTmeNqOy6CLIsS9BWZilnxjuKVC8=
+X-Gm-Message-State: AOJu0Yxginxj4dWB1x0U2Gjp0KODj2S1kf/JU5rN6Gtt/vHvoKP4hUU+
+	H3FGTfk1YKqWOWb/WE9pPaCMyl1LJdX9yjEQjB5z7oRBgS+UzVg=
+X-Google-Smtp-Source: AGHT+IFSAyaVbVzs6uo7GEs86H7RvwhBztoApLWnGPgjJyI5HwJArD4yVWU6GcR13WMzDvw8Qd+5EA==
+X-Received: by 2002:a05:600c:3b1b:b0:417:d99f:1fef with SMTP id m27-20020a05600c3b1b00b00417d99f1fefmr4566463wms.3.1712944122432;
+        Fri, 12 Apr 2024 10:48:42 -0700 (PDT)
+Received: from localhost (47.red-95-127-89.dynamicip.rima-tde.net. [95.127.89.47])
+        by smtp.gmail.com with ESMTPSA id v13-20020a05600c444d00b0041663450a4asm9451836wmn.45.2024.04.12.10.48.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 12 Apr 2024 10:48:41 -0700 (PDT)
+Message-ID: <2c534d01-449a-43f4-9216-eacdb3b35577@gmail.com>
+Date: Fri, 12 Apr 2024 19:48:39 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAD9ZU8Coc0r3AiWz+rA4eoXuDQBBCAMY0J4w5x-Pa1JEpbmdWA@mail.gmail.com>
-In-Reply-To: <CAD9ZU8Coc0r3AiWz+rA4eoXuDQBBCAMY0J4w5x-Pa1JEpbmdWA@mail.gmail.com>
-From: Nick Morrow <morrownr@gmail.com>
-Date: Fri, 12 Apr 2024 12:19:25 -0500
-Message-ID: <CAFktD2cp5eXJufdQibxDPGvN2iMfMZKDOunFzxv0TBNLqcMAQg@mail.gmail.com>
-Subject: Re: rtw88: rtw8822cu (LM842) on Raspi4 -> driver get stucked while
- sending data
-To: Gabriel Tisan <gabriel.tisan@gmail.com>
-Cc: linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Language: en-US
+To: Stanislaw Gruszka <stf_xl@wp.pl>, linux-wireless@vger.kernel.org
+From: Xose Vazquez Perez <xose.vazquez@gmail.com>
+Subject: [WARNING] memcpy: detected field-spanning write (size 1005) of single
+ field "&out_cmd->cmd.payload" at
+ drivers/net/wireless/intel/iwlegacy/common.c:3173 (size 320)
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
->
-> I want to use LM842 USB stick on a Raspberry Pi 4 using Raspberry Pi OS
-> (64-bit Debian Bookworm with kernel 6.6.20), but the driver get stucked.
->
-> The LM842 on Raspi is used as AP.
+Hi,
 
-Based on my testing of rtw88: rtw8822cu, it is non-functional in AP mode.
-A small group is working on this driver and recently sent in 5 patches to
-help with various problems, mostly managed mode and missing vid-pid
-related issues. The location where we are coordinating the effort is:
+In Fedora kernel 6.8.5-301.fc40.x86_64, dmesg shows:
 
-https://github.com/morrownr/8821cu-20210916/issues/115
+[ device: 03:00.0 Network controller [0280]: Intel Corporation PRO/Wireless 4965 AG or AGN [Kedron] Network Connection [8086:4230] (rev 61) ]
 
-Patches are being tested at:
+Thanks.
 
-https://github.com/lwfinger/rtw88
-
-If you need a driver that works right now:
-
-https://github.com/morrownr/8821cu-20210916
-
-> Here I show how I created the AP:
-> sudo nmcli con add type wifi ifname wlan1 mode ap con-name TEST-AP
-> ssid TEST autoconnect false
-> sudo nmcli con modify TEST-AP 802-11-wireless.band bg
-> sudo nmcli con modify TEST-AP 802-11-wireless.channel 6
-> sudo nmcli con modify TEST-AP 802-11-wireless.cloned-mac-address
-> 00:12:34:56:78:9a
-> sudo nmcli con modify TEST-AP ipv4.method shared ipv4.address 192.168.244.1/24
-> sudo nmcli con modify TEST-AP ipv6.method disabled
-> sudo nmcli con modify TEST-AP wifi-sec.key-mgmt wpa-psk
-> sudo nmcli con modify TEST-AP wifi-sec.psk "mypassword"
-> sudo nmcli con up TEST-AP
->
-> Here is the kernel log with 2 kernel traces:
-> ============plug-in LM842 USB stick ===========
-> Apr 12 14:36:33 lite-61 kernel: usb 1-1.3: new high-speed USB device
-> number 3 using xhci_hcd
-> Apr 12 14:36:33 lite-61 kernel: usb 1-1.3: New USB device found,
-> idVendor=0bda, idProduct=c82c, bcdDevice= 0.00
-> Apr 12 14:36:33 lite-61 kernel: usb 1-1.3: New USB device strings:
-> Mfr=1, Product=2, SerialNumber=3
-> Apr 12 14:36:33 lite-61 kernel: usb 1-1.3: Product: 802.11ac NIC
-> Apr 12 14:36:33 lite-61 kernel: usb 1-1.3: Manufacturer: Realtek
-> Apr 12 14:36:33 lite-61 kernel: usb 1-1.3: SerialNumber: 123456
-> Apr 12 14:36:33 lite-61 kernel: usbcore: registered new interface driver btusb
-> Apr 12 14:36:33 lite-61 kernel: Bluetooth: hci1: RTL: examining
-> hci_ver=0a hci_rev=000c lmp_ver=0a lmp_subver=8822
-> Apr 12 14:36:33 lite-61 kernel: Bluetooth: hci1: RTL: rom_version
-> status=0 version=3
-> Apr 12 14:36:33 lite-61 kernel: Bluetooth: hci1: RTL: loading
-> rtl_bt/rtl8822cu_fw.bin
-> Apr 12 14:36:33 lite-61 kernel: Bluetooth: hci1: RTL: loading
-> rtl_bt/rtl8822cu_config.bin
-> Apr 12 14:36:33 lite-61 kernel: Bluetooth: hci1: RTL: cfg_sz 6, total sz 35990
-> Apr 12 14:36:33 lite-61 kernel: rtw_8822cu 1-1.3:1.2: WOW Firmware
-> version 9.9.4, H2C version 15
-> Apr 12 14:36:33 lite-61 kernel: rtw_8822cu 1-1.3:1.2: Firmware version
-> 9.9.15, H2C version 15
-> Apr 12 14:36:34 lite-61 kernel: Bluetooth: hci1: RTL: fw version 0x0cc6d2e3
-> Apr 12 14:36:34 lite-61 kernel: Bluetooth: MGMT ver 1.22
-> Apr 12 14:36:34 lite-61 kernel: usbcore: registered new interface
-> driver rtw_8822cu
-> ===========AP is started, client connect to
-> AP===============================================================
-> ===========send some test data with iperf3 30-45 min (UDP/TCP test
-> data)=====================================
-> ===========iperf3 -c 192.168.244.1 -u -i 1 -t 600 -O 5  || iperf3 -c
-> 192.168.244.1 -i 1 -t 600 -O 5==========
-> Apr 12 14:41:01 lite-61 kernel: rtw_8822cu 1-1.3:1.2: timed out to flush queue 3
-> Apr 12 14:41:01 lite-61 kernel: rtw_8822cu 1-1.3:1.2: timed out to flush queue 3
->
-> Apr 12 14:57:04 lite-61 kernel: rtw_8822cu 1-1.3:1.2: timed out to flush queue 3
-> Apr 12 14:57:04 lite-61 kernel: rtw_8822cu 1-1.3:1.2: timed out to flush queue 3
-> Apr 12 14:57:15 lite-61 kernel: rtw_8822cu 1-1.3:1.2: timed out to flush queue 3
-> Apr 12 15:07:15 lite-61 kernel: rtw_8822cu 1-1.3:1.2: timed out to flush queue 3
-> =========here it get stalled : the connection is broken=========
-> =========AP is not anymore visible==============================
-> Apr 12 15:17:19 lite-61 kernel: rtw_8822cu 1-1.3:1.2: timed out to flush queue 3
-> Apr 12 15:17:19 lite-61 kernel: rtw_8822cu 1-1.3:1.2: timed out to flush queue 3
-> Apr 12 15:17:21 lite-61 kernel: rtw_8822cu 1-1.3:1.2: timed out to flush queue 3
-> Apr 12 15:17:24 lite-61 kernel: rtw_8822cu 1-1.3:1.2: error beacon valid
-> Apr 12 15:17:24 lite-61 kernel: rtw_8822cu 1-1.3:1.2: failed to
-> download drv rsvd page
-> =============shut down AP in Raspi(sudo nmcli con down TEST-AP)===========
-> Apr 12 15:23:47 lite-61 kernel: rtw_8822cu 1-1.3:1.2: timed out to flush queue 3
-> Apr 12 15:23:47 lite-61 kernel: rtw_8822cu 1-1.3:1.2: timed out to flush queue 3
-> Apr 12 15:23:47 lite-61 kernel: rtw_8822cu 1-1.3:1.2: timed out to flush queue 3
-> Apr 12 15:23:47 lite-61 kernel: rtw_8822cu 1-1.3:1.2: error beacon valid
-> Apr 12 15:23:47 lite-61 kernel: rtw_8822cu 1-1.3:1.2: failed to
-> download rsvd page
-> Apr 12 15:23:47 lite-61 kernel: rtw_8822cu 1-1.3:1.2: failed to
-> download firmware
-> Apr 12 15:23:47 lite-61 kernel: rtw_8822cu 1-1.3:1.2: leave idle state failed
-> Apr 12 15:23:47 lite-61 kernel: rtw_8822cu 1-1.3:1.2: failed to send h2c command
-> Apr 12 15:23:47 lite-61 kernel: rtw_8822cu 1-1.3:1.2: failed to send h2c command
-> Apr 12 15:23:47 lite-61 kernel: rtw_8822cu 1-1.3:1.2: failed to send h2c command
-> Apr 12 15:23:47 lite-61 kernel: rtw_8822cu 1-1.3:1.2: failed to leave ips state
-> Apr 12 15:23:47 lite-61 kernel: rtw_8822cu 1-1.3:1.2: failed to leave idle state
-> Apr 12 15:23:47 lite-61 kernel: ------------[ cut here ]------------
-> Apr 12 15:23:47 lite-61 kernel: WARNING: CPU: 0 PID: 513 at
-> net/wireless/core.c:1518 cfg80211_netdev_notifier_call+0x3a4/0x558
-> [cfg80211]
-> Apr 12 15:23:47 lite-61 kernel: Modules linked in: ctr ccm
-> nft_reject_ipv4 nf_reject_ipv4 nft_reject nft_ct nft_masq
-> nft_chain_nat nf_tables nfnetlink nf_nat_h323 nf_conntrack_h323
-> nf_nat_pptp nf_conntrack_pptp nf_nat_tftp nf_conntrack_tftp nf_nat_sip
-> nf_conntrack_sip nf_nat_irc nf_conntrack_irc nf_nat_ftp
-> nf_conntrack_ftp nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4
-> rtw88_8822cu rtw88_8822c rtw88_usb rtw88_core mac80211 btusb btrtl
-> btintel libarc4 cmac algif_hash aes_arm64 aes_generic algif_skcipher
-> af_alg bnep brcmfmac_wcc brcmfmac brcmutil cfg80211 hci_uart btbcm
-> bluetooth vc4 v3d gpu_sched drm_shmem_helper snd_soc_hdmi_codec
-> raspberrypi_hwmon drm_display_helper ecdh_generic cec ecc
-> drm_dma_helper rpivid_hevc(C) bcm2835_v4l2(C) bcm2835_codec(C)
-> bcm2835_isp(C) binfmt_misc drm_kms_helper rfkill bcm2835_mmal_vchiq(C)
-> v4l2_mem2mem snd_soc_core videobuf2_vmalloc libaes
-> videobuf2_dma_contig videobuf2_memops videobuf2_v4l2 snd_compress
-> videodev snd_pcm_dmaengine snd_bcm2835(C) snd_pcm videobuf2_common
-> vc_sm_cma(C) mc raspberrypi_gpiomem
-> Apr 12 15:23:47 lite-61 kernel:  snd_timer snd nvmem_rmem
-> uio_pdrv_genirq uio drm fuse dm_mod drm_panel_orientation_quirks
-> backlight ip_tables x_tables ipv6 i2c_brcmstb
-> Apr 12 15:23:47 lite-61 kernel: CPU: 0 PID: 513 Comm: NetworkManager
-> Tainted: G         C         6.6.20+rpt-rpi-v8 #1  Debian
-> 1:6.6.20-1+rpt1
-> Apr 12 15:23:47 lite-61 kernel: Hardware name: Raspberry Pi 4 Model B
-> Rev 1.5 (DT)
-> Apr 12 15:23:47 lite-61 kernel: pstate: 60000005 (nZCv daif -PAN -UAO
-> -TCO -DIT -SSBS BTYPE=--)
-> Apr 12 15:23:47 lite-61 kernel: pc :
-> cfg80211_netdev_notifier_call+0x3a4/0x558 [cfg80211]
-> Apr 12 15:23:47 lite-61 kernel: lr :
-> cfg80211_netdev_notifier_call+0x230/0x558 [cfg80211]
-> Apr 12 15:23:47 lite-61 kernel: sp : ffffffc080ba32e0
-> Apr 12 15:23:47 lite-61 kernel: x29: ffffffc080ba32e0 x28:
-> ffffffec109ec868 x27: ffffffec10974300
-> Apr 12 15:23:47 lite-61 kernel: x26: ffffffec8b22d850 x25:
-> ffffffec8ae94008 x24: ffffffc080ba35c0
-> Apr 12 15:23:47 lite-61 kernel: x23: 0000000000000002 x22:
-> ffffff8036be0000 x21: ffffff8036be03c0
-> Apr 12 15:23:47 lite-61 kernel: x20: ffffff8034ca8000 x19:
-> ffffff8034ca8950 x18: 0000000000000000
-> Apr 12 15:23:47 lite-61 kernel: x17: ffffff93b02ba000 x16:
-> ffffffec8a8fd448 x15: 0000000000070014
-> Apr 12 15:23:47 lite-61 kernel: x14: ffffffec8b54ef60 x13:
-> 0000000000000010 x12: 0000001000001780
-> Apr 12 15:23:47 lite-61 kernel: x11: 0000000000000000 x10:
-> 0000000000000000 x9 : ffffffec10974530
-> Apr 12 15:23:47 lite-61 kernel: x8 : ffffffc080ba32c8 x7 :
-> ffffff80051d0000 x6 : 0000000000000000
-> Apr 12 15:23:47 lite-61 kernel: x5 : 0000000000000080 x4 :
-> 0000000000000000 x3 : 0000000000000000
-> Apr 12 15:23:47 lite-61 kernel: x2 : ffffff8004049ec0 x1 :
-> ffffff8034ca8950 x0 : 0000000000000000
-> Apr 12 15:23:47 lite-61 kernel: Call trace:
-> Apr 12 15:23:47 lite-61 kernel:
-> cfg80211_netdev_notifier_call+0x3a4/0x558 [cfg80211]
-> Apr 12 15:23:47 lite-61 kernel:  notifier_call_chain+0x78/0x148
-> Apr 12 15:23:47 lite-61 kernel:  raw_notifier_call_chain+0x20/0x38
-> Apr 12 15:23:47 lite-61 kernel:  call_netdevice_notifiers_info+0x60/0xb8
-> Apr 12 15:23:47 lite-61 kernel:  __dev_notify_flags+0xbc/0xf0
-> Apr 12 15:23:47 lite-61 kernel:  dev_change_flags+0x5c/0x80
-> Apr 12 15:23:47 lite-61 kernel:  do_setlink+0x28c/0xef8
-> Apr 12 15:23:47 lite-61 kernel:  __rtnl_newlink+0x520/0x898
-> Apr 12 15:23:47 lite-61 kernel:  rtnl_newlink+0x58/0x90
-> Apr 12 15:23:47 lite-61 kernel:  rtnetlink_rcv_msg+0x134/0x390
-> Apr 12 15:23:47 lite-61 kernel:  netlink_rcv_skb+0x64/0x138
-> Apr 12 15:23:47 lite-61 kernel:  rtnetlink_rcv+0x20/0x38
-> Apr 12 15:23:47 lite-61 kernel:  netlink_unicast+0x2fc/0x370
-> Apr 12 15:23:47 lite-61 kernel:  netlink_sendmsg+0x1c4/0x448
-> Apr 12 15:23:47 lite-61 kernel:  __sock_sendmsg+0x64/0xc0
-> Apr 12 15:23:47 lite-61 kernel:  ____sys_sendmsg+0x260/0x298
-> Apr 12 15:23:47 lite-61 kernel:  ___sys_sendmsg+0xb4/0x110
-> Apr 12 15:23:47 lite-61 kernel:  __sys_sendmsg+0x8c/0xf0
-> Apr 12 15:23:47 lite-61 kernel:  __arm64_sys_sendmsg+0x2c/0x40
-> Apr 12 15:23:47 lite-61 kernel:  invoke_syscall+0x50/0x128
-> Apr 12 15:23:47 lite-61 kernel:  el0_svc_common.constprop.0+0x48/0xf0
-> Apr 12 15:23:47 lite-61 kernel:  do_el0_svc+0x24/0x38
-> Apr 12 15:23:47 lite-61 kernel:  el0_svc+0x40/0xe8
-> Apr 12 15:23:47 lite-61 kernel:  el0t_64_sync_handler+0x100/0x130
-> Apr 12 15:23:47 lite-61 kernel:  el0t_64_sync+0x190/0x198
-> Apr 12 15:23:47 lite-61 kernel: ---[ end trace 0000000000000000 ]---
-> Apr 12 15:23:47 lite-61 kernel: rtw_8822cu 1-1.3:1.2: error beacon valid
-> Apr 12 15:23:47 lite-61 kernel: rtw_8822cu 1-1.3:1.2: failed to
-> download rsvd page
-> Apr 12 15:23:47 lite-61 kernel: rtw_8822cu 1-1.3:1.2: failed to
-> download firmware
-> Apr 12 15:23:48 lite-61 kernel: warning: `iwconfig' uses wireless
-> extensions which will stop working for Wi-Fi 7 hardware; use nl80211
-> =============plug-out LM842 USB stick ===========
-> Apr 12 15:25:09 lite-61 kernel: usb 1-1.3: USB disconnect, device number 3
-> Apr 12 15:25:09 lite-61 kernel: ------------[ cut here ]------------
-> Apr 12 15:25:09 lite-61 kernel: Have pending ack frames!
-> Apr 12 15:25:09 lite-61 kernel: WARNING: CPU: 0 PID: 3332 at
-> net/mac80211/main.c:1510 ieee80211_free_ack_frame+0x5c/0x88 [mac80211]
-> Apr 12 15:25:09 lite-61 kernel: Modules linked in: ctr ccm
-> nft_reject_ipv4 nf_reject_ipv4 nft_reject nft_ct nft_masq
-> nft_chain_nat nf_tables nfnetlink nf_nat_h323 nf_conntrack_h323
-> nf_nat_pptp nf_conntrack_pptp nf_nat_tftp nf_conntrack_tftp nf_nat_sip
-> nf_conntrack_sip nf_nat_irc nf_conntrack_irc nf_nat_ftp
-> nf_conntrack_ftp nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4
-> rtw88_8822cu rtw88_8822c rtw88_usb rtw88_core mac80211 btusb btrtl
-> btintel libarc4 cmac algif_hash aes_arm64 aes_generic algif_skcipher
-> af_alg bnep brcmfmac_wcc brcmfmac brcmutil cfg80211 hci_uart btbcm
-> bluetooth vc4 v3d gpu_sched drm_shmem_helper snd_soc_hdmi_codec
-> raspberrypi_hwmon drm_display_helper ecdh_generic cec ecc
-> drm_dma_helper rpivid_hevc(C) bcm2835_v4l2(C) bcm2835_codec(C)
-> bcm2835_isp(C) binfmt_misc drm_kms_helper rfkill bcm2835_mmal_vchiq(C)
-> v4l2_mem2mem snd_soc_core videobuf2_vmalloc libaes
-> videobuf2_dma_contig videobuf2_memops videobuf2_v4l2 snd_compress
-> videodev snd_pcm_dmaengine snd_bcm2835(C) snd_pcm videobuf2_common
-> vc_sm_cma(C) mc raspberrypi_gpiomem
-> Apr 12 15:25:09 lite-61 kernel:  snd_timer snd nvmem_rmem
-> uio_pdrv_genirq uio drm fuse dm_mod drm_panel_orientation_quirks
-> backlight ip_tables x_tables ipv6 i2c_brcmstb
-> Apr 12 15:25:09 lite-61 kernel: CPU: 0 PID: 3332 Comm: kworker/0:1
-> Tainted: G        WC         6.6.20+rpt-rpi-v8 #1  Debian
-> 1:6.6.20-1+rpt1
-> Apr 12 15:25:09 lite-61 kernel: Hardware name: Raspberry Pi 4 Model B
-> Rev 1.5 (DT)
-> Apr 12 15:25:09 lite-61 kernel: Workqueue: usb_hub_wq hub_event
-> Apr 12 15:25:09 lite-61 kernel: pstate: 60000005 (nZCv daif -PAN -UAO
-> -TCO -DIT -SSBS BTYPE=--)
-> Apr 12 15:25:09 lite-61 kernel: pc :
-> ieee80211_free_ack_frame+0x5c/0x88 [mac80211]
-> Apr 12 15:25:09 lite-61 kernel: lr :
-> ieee80211_free_ack_frame+0x5c/0x88 [mac80211]
-> Apr 12 15:25:09 lite-61 kernel: sp : ffffffc0872bb910
-> Apr 12 15:25:09 lite-61 kernel: x29: ffffffc0872bb910 x28:
-> 0000000000000002 x27: ffffff80027fe000
-> Apr 12 15:25:09 lite-61 kernel: x26: ffffff800315f000 x25:
-> ffffff800315f0a8 x24: ffffff8036be1fa0
-> Apr 12 15:25:09 lite-61 kernel: x23: 0000000000000000 x22:
-> 000000007fffffff x21: ffffffec10b2e480
-> Apr 12 15:25:09 lite-61 kernel: x20: 0000000000000000 x19:
-> ffffff80047d5f00 x18: ffffffc080d2bc78
-> Apr 12 15:25:09 lite-61 kernel: x17: ffffffec8b382740 x16:
-> ffffffec89c8efa0 x15: 0000000000000040
-> Apr 12 15:25:09 lite-61 kernel: x14: ffffff8036be1fa0 x13:
-> 2173656d61726620 x12: 6b636120676e6964
-> Apr 12 15:25:09 lite-61 kernel: x11: fffffffffffe0000 x10:
-> ffffffec8b2a3708 x9 : ffffffec89d0946c
-> Apr 12 15:25:09 lite-61 kernel: x8 : 00000000ffffefff x7 :
-> ffffffec8b2a3708 x6 : 80000000fffff000
-> Apr 12 15:25:09 lite-61 kernel: x5 : ffffff803b150d48 x4 :
-> 0000000000000000 x3 : 0000000000000027
-> Apr 12 15:25:09 lite-61 kernel: x2 : 0000000000000000 x1 :
-> 0000000000000000 x0 : ffffff8002f8dc40
-> Apr 12 15:25:09 lite-61 kernel: Call trace:
-> Apr 12 15:25:09 lite-61 kernel:  ieee80211_free_ack_frame+0x5c/0x88 [mac80211]
-> Apr 12 15:25:09 lite-61 kernel:  idr_for_each+0x6c/0xf0
-> Apr 12 15:25:09 lite-61 kernel:  ieee80211_free_hw+0x48/0xc0 [mac80211]
-> Apr 12 15:25:09 lite-61 kernel:  rtw_usb_disconnect+0xc4/0x108 [rtw88_usb]
-> Apr 12 15:25:09 lite-61 kernel:  usb_unbind_interface+0x80/0x278
-> Apr 12 15:25:09 lite-61 kernel:  device_remove+0x78/0x90
-> Apr 12 15:25:09 lite-61 kernel:  device_release_driver_internal+0x1dc/0x238
-> Apr 12 15:25:09 lite-61 kernel:  device_release_driver+0x20/0x38
-> Apr 12 15:25:09 lite-61 kernel:  bus_remove_device+0xd4/0x120
-> Apr 12 15:25:09 lite-61 kernel:  device_del+0x164/0x430
-> Apr 12 15:25:09 lite-61 kernel:  usb_disable_device+0xdc/0x1c0
-> Apr 12 15:25:09 lite-61 kernel:  usb_disconnect+0xe0/0x2b8
-> Apr 12 15:25:09 lite-61 kernel:  hub_event+0x970/0x1540
-> Apr 12 15:25:09 lite-61 kernel:  process_one_work+0x148/0x3b8
-> Apr 12 15:25:09 lite-61 kernel:  worker_thread+0x32c/0x450
-> Apr 12 15:25:09 lite-61 kernel:  kthread+0x11c/0x128
-> Apr 12 15:25:09 lite-61 kernel:  ret_from_fork+0x10/0x20
-> Apr 12 15:25:09 lite-61 kernel: ---[ end trace 0000000000000000 ]---
->
-> The last kernel trace happens even if I don't send any data.
-> Only plug-in the stick , connect to AP, wait some minutes,
-> disconnect from AP and plug-out LM842.
->
-> Any ideas what might be the cause of this ?
->
-> Regards,
-> Gabriel
->
-
-Regards,
-
-Nick
+[   53.407607] ------------[ cut here ]------------
+[   53.407622] memcpy: detected field-spanning write (size 1005) of single field "&out_cmd->cmd.payload" at drivers/net/wireless/intel/iwlegacy/common.c:3173 (size 320)
+[   53.407721] WARNING: CPU: 1 PID: 1632 at drivers/net/wireless/intel/iwlegacy/common.c:3173 il_enqueue_hcmd+0x477/0x560 [iwlegacy]
+[   53.407804] Modules linked in: snd_hrtimer i915 snd_hda_codec_analog snd_hda_codec_generic iTCO_wdt intel_pmc_bxt iTCO_vendor_support iwl4965 btusb btrtl snd_hda_intel btintel snd_intel_dspcfg 
+btbcm snd_intel_sdw_acpi btmtk iwlegacy bluetooth snd_hda_codec drm_buddy mac80211 i2c_algo_bit coretemp i2c_i801 wmi_bmof ttm acpi_cpufreq i2c_smbus r592 libarc4 thinkpad_acpi memstick cfg80211 
+drm_display_helper snd_hda_core lpc_ich ses enclosure snd_seq_dummy snd_seq_oss scsi_transport_sas cec snd_seq_midi_event snd_pcm_oss snd_seq ledtrig_audio snd_hwdep snd_seq_device platform_profile 
+rfkill snd_pcm snd_timer snd_mixer_oss snd soundcore pktcdvd binfmt_misc loop nfnetlink zram sdhci_pci firewire_ohci cqhci firewire_core sdhci ata_generic sha512_ssse3 mmc_core video sha256_ssse3 
+e1000e sha1_ssse3 yenta_socket crc_itu_t wmi serio_raw pata_acpi uas usb_storage scsi_dh_rdac scsi_dh_emc scsi_dh_alua ip6_tables ip_tables fuse i2c_dev
+[   53.408052] CPU: 1 PID: 1632 Comm: wpa_supplicant Tainted: G     U             6.8.5-301.fc40.x86_64 #1
+[   53.408063] Hardware name: LENOVO 7659AB7/7659AB7, BIOS 7LETC9WW (2.29 ) 03/18/2011
+[   53.408069] RIP: 0010:il_enqueue_hcmd+0x477/0x560 [iwlegacy]
+[   53.408132] Code: 01 00 00 4c 89 c6 48 c7 c2 78 58 ba c0 48 c7 c7 d0 58 ba c0 48 89 44 24 20 4c 89 44 24 18 c6 05 77 48 1f 00 01 e8 e9 8b 8c c7 <0f> 0b 48 8b 44 24 20 4c 8b 44 24 18 e9 f9 fc ff ff 
+48 8b 85 90 3f
+[   53.408140] RSP: 0018:ffffb4d841ddb668 EFLAGS: 00010082
+[   53.408150] RAX: 0000000000000000 RBX: ffff958a1794d000 RCX: 0000000000000027
+[   53.408157] RDX: ffff958b37d218c8 RSI: 0000000000000001 RDI: ffff958b37d218c0
+[   53.408162] RBP: ffff958b18e11fc0 R08: 0000000000000000 R09: ffffb4d841ddb4d8
+[   53.408168] R10: ffffffff8a516808 R11: 0000000000000003 R12: ffffb4d841ddb770
+[   53.408173] R13: 00000000000003f1 R14: ffff958b2f6ae960 R15: ffff958b2c7d9d00
+[   53.408179] FS:  00007ff1ddeec840(0000) GS:ffff958b37d00000(0000) knlGS:0000000000000000
+[   53.408186] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   53.408193] CR2: 00007ff1de15f730 CR3: 0000000136860000 CR4: 00000000000006f0
+[   53.408199] Call Trace:
+[   53.408207]  <TASK>
+[   53.408212]  ? il_enqueue_hcmd+0x477/0x560 [iwlegacy]
+[   53.408274]  ? __warn+0x81/0x130
+[   53.408293]  ? il_enqueue_hcmd+0x477/0x560 [iwlegacy]
+[   53.408356]  ? report_bug+0x16f/0x1a0
+[   53.408371]  ? handle_bug+0x3c/0x80
+[   53.408379]  ? exc_invalid_op+0x17/0x70
+[   53.408388]  ? asm_exc_invalid_op+0x1a/0x20
+[   53.408405]  ? il_enqueue_hcmd+0x477/0x560 [iwlegacy]
+[   53.408466]  ? il_enqueue_hcmd+0x477/0x560 [iwlegacy]
+[   53.408496]  il_send_cmd_sync+0xf7/0x440 [iwlegacy]
+[   53.408551]  ? il4965_request_scan+0x859/0xa00 [iwl4965]
+[   53.408551]  il4965_request_scan+0x701/0xa00 [iwl4965]
+[   53.408551]  il_mac_hw_scan+0x201/0x340 [iwlegacy]
+[   53.408551]  drv_hw_scan+0x9f/0x150 [mac80211]
+[   53.408551]  __ieee80211_start_scan+0x296/0x750 [mac80211]
+[   53.408551]  rdev_scan+0x25/0xd0 [cfg80211]
+[   53.408551]  nl80211_trigger_scan+0x3b4/0x7b0 [cfg80211]
+[   53.408551]  genl_family_rcv_msg_doit+0xef/0x150
+[   53.408551]  genl_rcv_msg+0x1b7/0x2c0
+[   53.408551]  ? __pfx_nl80211_pre_doit+0x10/0x10 [cfg80211]
+[   53.408551]  ? __pfx_nl80211_trigger_scan+0x10/0x10 [cfg80211]
+[   53.408551]  ? __pfx_nl80211_post_doit+0x10/0x10 [cfg80211]
+[   53.408551]  ? __pfx_genl_rcv_msg+0x10/0x10
+[   53.408551]  netlink_rcv_skb+0x50/0x100
+[   53.408551]  genl_rcv+0x28/0x40
+[   53.408551]  netlink_unicast+0x249/0x370
+[   53.408551]  netlink_sendmsg+0x21c/0x480
+[   53.408551]  ____sys_sendmsg+0x39f/0x3d0
+[   53.408551]  ___sys_sendmsg+0x9a/0xe0
+[   53.408551]  __sys_sendmsg+0xcc/0x100
+[   53.408551]  do_syscall_64+0x83/0x170
+[   53.408551]  ? __sys_setsockopt+0xb2/0xe0
+[   53.408551]  ? syscall_exit_to_user_mode+0x80/0x230
+[   53.408551]  ? do_syscall_64+0x8f/0x170
+[   53.408551]  ? do_user_addr_fault+0x304/0x670
+[   53.408551]  ? exc_page_fault+0x7f/0x180
+[   53.408551]  entry_SYSCALL_64_after_hwframe+0x78/0x80
+[   53.408551] RIP: 0033:0x7ff1dd92d6a4
+[   53.408551] Code: 15 79 87 0c 00 f7 d8 64 89 02 b8 ff ff ff ff eb bf 0f 1f 44 00 00 f3 0f 1e fa 80 3d a5 09 0d 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 4c c3 0f 1f 00 55 48 89 e5 48 
+83 ec 20 89 55
+[   53.408551] RSP: 002b:00007ffe8bf867e8 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+[   53.408551] RAX: ffffffffffffffda RBX: 0000555e2541efa0 RCX: 00007ff1dd92d6a4
+[   53.408551] RDX: 0000000000000000 RSI: 00007ffe8bf86820 RDI: 0000000000000006
+[   53.408551] RBP: 00007ffe8bf86810 R08: 0000000000000004 R09: 0000000000000001
+[   53.408551] R10: 00007ffe8bf86920 R11: 0000000000000202 R12: 0000555e254910d0
+[   53.408551] R13: 0000555e2541eeb0 R14: 00007ffe8bf86820 R15: 0000000000000000
+[   53.408551]  </TASK>
+[   53.408551] ---[ end trace 0000000000000000 ]---
 
