@@ -1,143 +1,154 @@
-Return-Path: <linux-wireless+bounces-6276-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6277-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 897318A3D85
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Apr 2024 17:40:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB4A08A3E32
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 Apr 2024 21:15:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6BA8282249
-	for <lists+linux-wireless@lfdr.de>; Sat, 13 Apr 2024 15:40:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D73601C2093F
+	for <lists+linux-wireless@lfdr.de>; Sat, 13 Apr 2024 19:15:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7540A44C9C;
-	Sat, 13 Apr 2024 15:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F21EC4C637;
+	Sat, 13 Apr 2024 19:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="c3rLPoQp"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="U81LjPlo"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CDDB262BD
-	for <linux-wireless@vger.kernel.org>; Sat, 13 Apr 2024 15:40:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6292901
+	for <linux-wireless@vger.kernel.org>; Sat, 13 Apr 2024 19:15:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713022827; cv=none; b=sx2VfxOO21w/+n9T5fCCLGUZWFArN73euvd60toBsNKsbxgLTEUBn/9G+VZi/uxbJ7nivSs85vB81415SYKcaXK1mEocklr6W+wbhN+kiwy+9qf+Tvis2gf2PkFZ6lQ29vDmVn+YeR1stlclAz/Oi987QTCC9VU55EYvVD5nK7g=
+	t=1713035717; cv=none; b=YQsRUk1mK1qgfx7Z7sFYLuNtxKFYJVH+78dV8zM6QP31sIgxAk06smWafR1RBEkRy0SiObJgdXp/LpinOux35oxAlGCM7io6whHPI7NvsnRdcPR0AH9upAMGH/3NEftqzZhe6Lf3ZNIi6B2RyI7lZH5ikFh7WtQ4GNEGp2XXIGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713022827; c=relaxed/simple;
-	bh=tYqviZf2a7FFRaa4eiO0+lXf17YkmOVHaJ8Je8Idh6o=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=RhIQrCVzHy3Ej9S14LL5zxCtoE17hLviUXAv6YuhZDwsgDzIFB0xVjYakaqWNlq6C5dly6D8IpxL7hy7nVmWoGpN0cxVPirtV0BRK567KlW2sNFmt6UvNDFBhB1fLvRpqO50EPzwSd4mHva/kllDE6u2MqsYHXDkcjFRTdn5Fwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=c3rLPoQp; arc=none smtp.client-ip=148.163.129.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 131F0B80066;
-	Sat, 13 Apr 2024 15:40:17 +0000 (UTC)
-Received: from [172.20.4.169] (unknown [69.170.33.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 06CE713C2B0;
-	Sat, 13 Apr 2024 08:40:14 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 06CE713C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1713022815;
-	bh=tYqviZf2a7FFRaa4eiO0+lXf17YkmOVHaJ8Je8Idh6o=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=c3rLPoQpX923yCQxuSPiFN0/AIkhAcO6sgEuqJ5xBT8I+ev0JpF2KhX5+QdXBe0+b
-	 t55ykmD+xo4CKWan5eiOY0xE/DSXBqTPGHsTzQEod+2LHjOLhidbhvcy9NKjB62hfi
-	 DwvSKmv/Gua8IrC5DCyFpTbLZ4sC067IOU9p0qug=
-Message-ID: <54807acb-b7dc-851e-27ce-49e09df5e1e4@candelatech.com>
-Date: Sat, 13 Apr 2024 08:40:14 -0700
+	s=arc-20240116; t=1713035717; c=relaxed/simple;
+	bh=tojD15hbjDlFL7EezZKmwP+uOEnDUhI9KiGCe05GDpQ=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=mDsA6/JyKvSPzOZIsPaxaCIIhVyZWG18xdXhUa6t9RChl7PqeoeJvhy0o6mLGqd12D4uEBjkvcII6TEPvw497t9jzvq6+3RxX8qVWvZEiUuWclnTtqTR78XafYYNkWgw9MftYm4UMWNqaFK46+yVw37qnmJcSL8TmjO4pmGusMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=U81LjPlo; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43DIrV6l003108;
+	Sat, 13 Apr 2024 19:15:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:from:to:cc:references
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=t5mgxfJuUw821fzqNDGvWmLREVXh2YOEXZBv9+bOMtY=; b=U8
+	1LjPlovC8h4FnqFIrJbLe2iX3OZiM9/2e7g4RRd1G8E1KiD9MQoENL9+7FmQsxtb
+	7m7W3lPcEWJLVIlBDnJ4brdX8qnDLz/Z1eMLK+qxI1xiUzJB4eIWWNDt026Yharw
+	HjvIKH+oVp03fgDqIFDtAJ+55UXYntckzGfzBW9m2uQDtXylLopafMUof5M49O+x
+	NLNANhjb+ORlOgYt1/6MBaMU+FbWk6lP7FpsCQMP51G+045diQVQi/z2748dmMKI
+	FkegS+6SWZMX/q1Op5NKfOpcX4Npn9LlVQMk8l/rK05PsRI5leRhdvjx7ENWRyQy
+	ZGVhUVyx1QGkvVw1JfLw==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xfhn40u5v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 13 Apr 2024 19:15:08 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43DJF5g9030627
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 13 Apr 2024 19:15:05 GMT
+Received: from [10.110.3.16] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Sat, 13 Apr
+ 2024 12:15:04 -0700
+Message-ID: <ab9fd6ca-10cd-43a7-9d78-a6e740983869@quicinc.com>
+Date: Sat, 13 Apr 2024 12:15:03 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH 01/13] wifi: cfg80211: Add provision to advertise multiple
- radio in one wiphy
-Content-Language: en-MW
-From: Ben Greear <greearb@candelatech.com>
-To: Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
- ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-References: <20240328072916.1164195-1-quic_periyasa@quicinc.com>
- <20240328072916.1164195-2-quic_periyasa@quicinc.com>
- <e36599d3269496de59505b36be46f873976f8706.camel@sipsolutions.net>
- <033185b0-f878-a50b-d0d9-57fa79439bdf@quicinc.com>
- <ef6b6a7a4a9d3b01c0eb6abf0991e7e27425e102.camel@sipsolutions.net>
- <80fe5786-f764-455d-ac44-22adf7aeaf94@candelatech.com>
- <31f30c0e318904f3a082c7f213576ceb1f407141.camel@sipsolutions.net>
- <20b56e52-a5e2-70cd-a62a-8c4a3526c2cf@candelatech.com>
- <614bb8a8f1d9174ad7d87cf7636f657cda7b1ef9.camel@sipsolutions.net>
- <72f491f8-dd3a-0c9e-7490-4d51c86f2102@candelatech.com>
- <cb991a00-fce2-5a3d-c03f-579b44f922f5@quicinc.com>
- <87de72e9-1d3b-b401-a712-9fe8734515b6@candelatech.com>
- <31aa6b18-8ca4-e4ce-f693-e818fc7e6932@quicinc.com>
- <dbd51b99-8472-2641-7493-6b91e384b4b6@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <dbd51b99-8472-2641-7493-6b91e384b4b6@candelatech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-MDID: 1713022818-Y4DMTIL-019U
-X-MDID-O:
- us5;ut7;1713022818;Y4DMTIL-019U;<greearb@candelatech.com>;e45dbe21c4fc86b950914d8831baea70
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath12k: enable WIPHY_FLAG_DISABLE_WEXT
+Content-Language: en-US
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+To: Kalle Valo <kvalo@kernel.org>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240411165645.4071238-1-kvalo@kernel.org>
+ <e8618364-e547-41e1-b18f-4cddeafd3371@quicinc.com>
+ <b441cf78-cf1e-4f09-beb4-634b8d4b564b@quicinc.com>
+In-Reply-To: <b441cf78-cf1e-4f09-beb4-634b8d4b564b@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: CPoA1wGJSe3daVJ02r0hym4RzI5L4xo7
+X-Proofpoint-GUID: CPoA1wGJSe3daVJ02r0hym4RzI5L4xo7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-13_08,2024-04-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 suspectscore=0
+ lowpriorityscore=0 malwarescore=0 spamscore=0 priorityscore=1501
+ bulkscore=0 mlxlogscore=939 adultscore=0 mlxscore=0 clxscore=1015
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404130143
 
-On 4/12/24 08:58, Ben Greear wrote:
-> On 4/12/24 07:31, Vasanthakumar Thiagarajan wrote:
-
->> As said, please feel free to propose an alternate solution to address the issue.
+On 4/11/2024 1:59 PM, Jeff Johnson wrote:
+> On 4/11/2024 12:41 PM, Jeff Johnson wrote:
+>> On 4/11/2024 9:56 AM, Kalle Valo wrote:
+>>> From: Kalle Valo <quic_kvalo@quicinc.com>
+>>>
+>>> ath12k will support Multi-Link Operation (MLO) in the future but not yet. A
+>>> major change with MLO is that cfg80211 will disable Wireless Extension (WEXT)
+>>> user space interface. To avoid having inconsistent user experience, first
+>>> supporting WEXT and later not, disable WEXT already now.
+>>>
+>>> Now ath12k claims that WEXT is not supported:
+>>>
+>>> $ iwconfig wlan0
+>>> wlan0     no wireless extensions.
+>>>
+>>> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+>>>
+>>> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+>>> ---
+>>>  drivers/net/wireless/ath/ath12k/mac.c | 6 ++++++
+>>>  1 file changed, 6 insertions(+)
+>>>
+>>> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+>>> index f15dcd75157d..e989628d7d72 100644
+>>> --- a/drivers/net/wireless/ath/ath12k/mac.c
+>>> +++ b/drivers/net/wireless/ath/ath12k/mac.c
+>>> @@ -8556,6 +8556,12 @@ static int ath12k_mac_hw_register(struct ath12k_hw *ah)
+>>>  	wiphy->features |= NL80211_FEATURE_AP_MODE_CHAN_WIDTH_CHANGE |
+>>>  				   NL80211_FEATURE_AP_SCAN;
+>>>  
+>>> +	/* MLO is not yet supported so disable Wireless Extensions for now
+>>> +	 * to make sure ath12k users don't use it. This flag can be removed
+>>> +	 * once WIPHY_FLAG_SUPPORTS_MLO is enabled.
+>>> +	 */
+>>> +	wiphy->flags |= WIPHY_FLAG_DISABLE_WEXT;
+>>> +
+>>>  	hw->queues = ATH12K_HW_MAX_QUEUES;
+>>>  	wiphy->tx_queue_len = ATH12K_QUEUE_LEN;
+>>>  	hw->offchannel_tx_hw_queue = ATH12K_HW_MAX_QUEUES - 1;
+>>>
+>>> base-commit: 363e7193eaf258fe7f04e8db560bd8a282a12cd9
+>>
+>> Currently on my version of Ubuntu when I switch to Hotspot mode I'm seeing:
+>> [   55.189623] warning: `iwconfig' uses wireless extensions which will stop
+>> working for Wi-Fi 7 hardware; use nl80211
+>>
+>> So are userspace folks aware of the need to move away from iwconfig?
+>> Is there a Ubuntu / Network Manager fix fir this?
 > 
-> I do not know the particulars of your driver or driver's needs, but at high level:
-> 
-> *  Leave existing wiphy mapping as is.
-> *  Allow adding new combined wiphy(s) on top of groups of underlying physical wiphys.  Sort of
->     like bridges on top of Eth ports.
-> *  The combined wiphy would report underlying wiphy's capabilities (for instance, a combined wiphy on top of
->     3 single band phys would report itself as tri-band).
-> *  The combined wiphy would add new netlink field listing of its underlying wiphys.  User-space wanting to control the combined
->     wiphy would generally configure the underlying phys (to set 2.4g channel to 6, you'd set the underlying 2.4g
->     wiphy to channel 6)
-> *  This should require very minimal changes to user space, except of course for new code to actually utilize
->     the new combined wiphy.
-> *  MLO links and any other logic that needs the combined view would live on the combined wiphy (I understand
->     from Johannes' comments this is a needed feature.)
-> *  Or user can ignore that combined wiphy entirely and directly use underlying wiphys like we use them currently
->     for sniffers, stations, aps, combinations thereof.
-> *  Advanced use case could allow combined wiphy to use subset of underlying radios (add combined wiphy on 2.4 and 5g, use 6g for
->     dedicated mesh backhaul/whatever).
-> *  Interesting logic would be needed to deal with constraints to properly share the underlying resources (you could not
->     add 16 ap bssid to 2.4 wiphy and also add 16 other ones to the combined wiphy that also uses 2.4 radio most likely,
->     for instance).  But I think that logic has to be written
->     either way and is not overly worse with this approach.
+> And I've confirmed that with this patch in place I cannot start the Hotspot.
+> So suggest you sit on that until userspace is ready.
 
-I had some further thoughts on this approach:
+It turns out that once I configured the Hotspot explicitly for 2.4 GHz
+operation that it works even with this patch in place. So I have a separate
+issue somewhere with 5 GHz Hotspot operation.
 
-*  If someone has 2 QCA radio cards, and each radio card has 3 phys, would it be possible to have a 6-link MLO
-    setup?
-
-*  Could two be200 be combined into a multi-channel concurrent MLO setup with this approach?
+So this patch can go forward...
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
 
-*  For multi-phy arrangements like QCA ath12k and MTK7996, I think the default configuration when the driver
-    loads should just be the physical phys by themselves (as mt7996, at least, does it now).  This would be fully backwards compatible with
-    current user-space and operation.  But the phys would have netlink attributes that lets user-space
-    know combined phys (cphys?) can be created on top of them.  User-space that knows about MLO can then
-    create the cphy(s) as wanted and build sta/vap/whatever on top of the cphys.
-
-*  For radios like be200 that are already designed to show a single phy to userspace, they would not
-    need any significant change.
-
-Thanks,
-Ben
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
 
