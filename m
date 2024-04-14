@@ -1,173 +1,148 @@
-Return-Path: <linux-wireless+bounces-6281-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6282-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CED48A41E7
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Apr 2024 12:44:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9984A8A420D
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Apr 2024 13:32:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C91B62814BA
-	for <lists+linux-wireless@lfdr.de>; Sun, 14 Apr 2024 10:44:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DA78281478
+	for <lists+linux-wireless@lfdr.de>; Sun, 14 Apr 2024 11:32:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC5962E633;
-	Sun, 14 Apr 2024 10:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DB8725634;
+	Sun, 14 Apr 2024 11:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YLSq0jO5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HfRJoo3N"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C9F1865;
-	Sun, 14 Apr 2024 10:44:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81BFE1F941
+	for <linux-wireless@vger.kernel.org>; Sun, 14 Apr 2024 11:32:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713091465; cv=none; b=pIQ2eFj4GTisDFNS1P9jo7G1h8ZpfoqjsZByMOCK2PPzgQ6sYNuTYR727wvljc6R/rUkFiRmQA1+F6+XvnhHlN09mVN3RqN4oZlljHsGVwJ9I6fDZcSPy9Hrx11xhrQDL6Essa164L5O4UjjSKZedXlk3hEzlNHYSIzYjmrDSdw=
+	t=1713094355; cv=none; b=V28REMegCdoyQBShx298nElR4RCF0SW+OVbI6A+60ejdOMKqXNQpAVtCBF9Smj49YXo9k59MiaWXtEV74bpCEUsJdGG7iYdeZk1msE4RaFb9wEY9PK3bhah2BhHQE6E0VmZMGVMOJWXxPsfhDSpLKfxVhNRXvi+st2ccKY96FCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713091465; c=relaxed/simple;
-	bh=jScTQYNuKSdQRN71THl1woAyTI/mIsL2raQkX/Y0bi0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nWLippfyOH72rHuyZPK44aii6cmLT7ApAAAFecYA+zvG+mTHPVPiSUih8pT4UUxM/conGxd8+FvCubp0JTV0qgPXel9nub0L4/yH8R5lIuZwpyhx02mim+lSKhSb49V4N3Iz7RBkjfvQYo4T+FckuB85ndVNdUi82Z2a6tgxM/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YLSq0jO5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CC6FC072AA;
-	Sun, 14 Apr 2024 10:44:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713091465;
-	bh=jScTQYNuKSdQRN71THl1woAyTI/mIsL2raQkX/Y0bi0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YLSq0jO5BrG1cv9zv6kr3rQyeJsfGcqSJLz+Q7xeorHaa5lcEYIxKgLs8BydAqvJP
-	 q00VFElDlEjTcopyOUK1waF3ME2oKgyJyJuhNQ8v/L8qH/uHwBUxhuIj2eGfyki+TS
-	 cLaDO8XBRUmtvlQO17LNXikT/+ciPNG1G1mOLE6MzEOdH1OptnO0yOhbRwnIdnsFhS
-	 4KWPi5WnG8WA941iN29H2UDTT3MDtEtM6u0lugw1xKbrjNJbZqgMCGeunfLGAPErlS
-	 AiJgH3QgEOBt5HNed+WHbbgABU7V7RXOdFVKKS3RjTj/GAM8+Uc4/AZvtIHjdNwcLA
-	 sV8f64OIiMB0Q==
-Date: Sun, 14 Apr 2024 11:44:14 +0100
-From: Simon Horman <horms@kernel.org>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Kalle Valo <kvalo@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Saravana Kannan <saravanak@google.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Alex Elder <elder@linaro.org>,
-	Srini Kandagatla <srinivas.kandagatla@linaro.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Lukas Wunner <lukas@wunner.de>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Amit Pundir <amit.pundir@linaro.org>,
-	Xilin Wu <wuxilin123@gmail.com>, linux-bluetooth@vger.kernel.org,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-pci@vger.kernel.org, linux-pm@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH v7 14/16] power: pwrseq: add a driver for the PMU module
- on the QCom WCN chipsets
-Message-ID: <20240414104414.GC645060@kernel.org>
-References: <20240410124628.171783-1-brgl@bgdev.pl>
- <20240410124628.171783-15-brgl@bgdev.pl>
+	s=arc-20240116; t=1713094355; c=relaxed/simple;
+	bh=FjDSaKSB6+XYMhKutS/O+W4AZkNfjwNV/LS/1KWPCPM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Mz5PrpL4PyLAwBsKhMXmNsAZP64FIAl2aA2onpUNyHwmGOZX0y3wKNxQwEhouOOGrmk8UcFqOhRllAb3lfPXkP5IwLOQoh1PDFbjPo7Maih3QHHjJowrsi7+2dvWIrKamJWynZ+9G0z18fu/K19ZUQE3IfUhW9ofzpBjhLJXMRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HfRJoo3N; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4155819f710so15454675e9.2
+        for <linux-wireless@vger.kernel.org>; Sun, 14 Apr 2024 04:32:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713094351; x=1713699151; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JP/cSENjvucnYTCul05SybcWHmvPMdDKZgxdlbCRq4E=;
+        b=HfRJoo3NMV9lpY/3gJZW4OSa2pS3P920DchOdSWzM1FpJkmyW85jWiOSOHIdsf+0U0
+         l3ZoU2ntyJvSGTMNsbp3IXk7H4CfXU32Qc9ULptNORvXJIXbUxEj5Un0S+xr/tL4fmYL
+         7EqlJxW2wzmupYUEW4I0/MFYnEztzavsVJxJzrPD6gIyh5CFlkPpmCfde42c6OcKID2k
+         AwnnE/6bT25gamppvSZ5W6xy8m4V1+nJCvKS9W49IlUQyn//DOSoynob7B+eRTOy/6sR
+         sesAKUudScJcCiFzu4uywEDJzaGCS0lafy5YIA4PySbgkNuC/VPSsRRJPENHqvjuIuzb
+         XtsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713094351; x=1713699151;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JP/cSENjvucnYTCul05SybcWHmvPMdDKZgxdlbCRq4E=;
+        b=H4Z5+lfPX3jcr8cnalLdsUGABmuXn8dLDbXmi12uxCgFCKmyp0ZyxLgoYdlu44cQd3
+         9dDzUsXFL4fuP7pNB8zJVMEIRLfPTf9UhAqRi8suRVoF8/VBDbj22zcFHrWvWZzEDZJG
+         EsK77+m3mGLgBIIESiZjtRYbpmfg6TUFdoRtgvNagNUfZf02GB43ZL4t158FNllMvGWO
+         LbVYUbCLGkAiLW4cdi5esuU8Kw1scoFwZbYseweuz8VK8a2aLFtiqmc7tVpWhyxxD+2I
+         IiYydtM/QoaEioGibyBzkrFUMJYQIjobQScJODOKr7jHuRPXvr8900oFdCV3KYG5oAoJ
+         RAug==
+X-Forwarded-Encrypted: i=1; AJvYcCUyUR8sjKZr4Cm0Dw3EqrsPmPHKSPHXEAsJYQzbvy73lcqwWMlE238rsybXkPGi5SeA6qSKFeek9nN2dYHA8726D8YhSwoSRt6yH/rHIQs=
+X-Gm-Message-State: AOJu0YxBCPKCaJnD7LrAdSwn+mNeOY1uB+FYYNKhV9yA5soxWhAV2imd
+	rFUMfgCAlAu8WdU73bcWCaGMBNzUnobXtaw1/yMUO+02zqAP3Xej
+X-Google-Smtp-Source: AGHT+IEfp3Lq/nAA8uK2md2PLDk7aL81zT+CUYWClsK38cvzoq/mj6LperRv2YJuzRmkGL3LCKrC2Q==
+X-Received: by 2002:a05:600c:1e8c:b0:417:fe3d:8ada with SMTP id be12-20020a05600c1e8c00b00417fe3d8adamr5913372wmb.29.1713094350629;
+        Sun, 14 Apr 2024 04:32:30 -0700 (PDT)
+Received: from [192.168.1.50] ([79.113.154.240])
+        by smtp.gmail.com with ESMTPSA id m16-20020a05600c3b1000b004182b87aaacsm4517093wms.14.2024.04.14.04.32.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 14 Apr 2024 04:32:30 -0700 (PDT)
+Message-ID: <fa903f58-2362-49a1-9880-2b3fcbe1869e@gmail.com>
+Date: Sun, 14 Apr 2024 14:32:28 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240410124628.171783-15-brgl@bgdev.pl>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: rtl8xxxu: enable MFP support
+To: Martin Kaistra <martin.kaistra@linutronix.de>,
+ linux-wireless@vger.kernel.org
+Cc: Jes Sorensen <Jes.Sorensen@gmail.com>, Kalle Valo <kvalo@kernel.org>,
+ Ping-Ke Shih <pkshih@realtek.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+References: <20240314164850.86432-1-martin.kaistra@linutronix.de>
+Content-Language: en-US
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <20240314164850.86432-1-martin.kaistra@linutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 10, 2024 at 02:46:26PM +0200, Bartosz Golaszewski wrote:
+On 14/03/2024 18:48, Martin Kaistra wrote:
+> In order to connect to networks which require 802.11w, add the
+> MFP_CAPABLE flag and let mac80211 do the actual crypto in software.
+> 
+> When a robust management frames is received, rx_dec->swdec is not set,
+> even though the HW did not decrypt it. Extend the check and don't set
+> RX_FLAG_DECRYPTED for these frames in order to use SW decryption.
+> 
+> Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+> ---
+>  drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> index 4a49f8f9d80f2..870bd952f5902 100644
+> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+> @@ -6473,7 +6473,9 @@ int rtl8xxxu_parse_rxdesc16(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
+>  			rx_status->mactime = rx_desc->tsfl;
+>  			rx_status->flag |= RX_FLAG_MACTIME_START;
+>  
+> -			if (!rx_desc->swdec)
+> +			if (!rx_desc->swdec &&
+> +			    !(_ieee80211_is_robust_mgmt_frame(hdr) &&
+> +			      ieee80211_has_protected(hdr->frame_control)))
+>  				rx_status->flag |= RX_FLAG_DECRYPTED;
+>  			if (rx_desc->crc32)
+>  				rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
+> @@ -6578,7 +6580,9 @@ int rtl8xxxu_parse_rxdesc24(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
+>  			rx_status->mactime = rx_desc->tsfl;
+>  			rx_status->flag |= RX_FLAG_MACTIME_START;
+>  
+> -			if (!rx_desc->swdec)
+> +			if (!rx_desc->swdec &&
+> +			    !(_ieee80211_is_robust_mgmt_frame(hdr) &&
+> +			      ieee80211_has_protected(hdr->frame_control)))
+>  				rx_status->flag |= RX_FLAG_DECRYPTED;
+>  			if (rx_desc->crc32)
+>  				rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
+> @@ -7998,6 +8002,7 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
+>  	ieee80211_hw_set(hw, HAS_RATE_CONTROL);
+>  	ieee80211_hw_set(hw, SUPPORT_FAST_XMIT);
+>  	ieee80211_hw_set(hw, AMPDU_AGGREGATION);
+> +	ieee80211_hw_set(hw, MFP_CAPABLE);
+>  
+>  	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
+>  
 
-...
+I ran into this problem recently with rtl8192du:
+https://lore.kernel.org/linux-wireless/ed12ec17-ae6e-45fa-a72f-23e0a34654da@gmail.com/
 
-> +static int pwrseq_qcom_wcn_probe(struct platform_device *pdev)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	struct pwrseq_qcom_wcn_ctx *ctx;
-> +	struct pwrseq_config config;
-> +	int i, ret;
-> +
-> +	ctx = devm_kzalloc(dev, sizeof(*ctx), GFP_KERNEL);
-> +	if (!ctx)
-> +		return -ENOMEM;
-> +
-> +	ctx->of_node = dev->of_node;
-> +
-> +	ctx->pdata = of_device_get_match_data(dev);
-> +	if (!ctx->pdata)
-> +		return dev_err_probe(dev, -ENODEV,
-> +				     "Failed to obtain platform data\n");
-> +
-> +	ctx->regs = devm_kcalloc(dev, ctx->pdata->num_vregs,
-> +				 sizeof(*ctx->regs), GFP_KERNEL);
-> +	if (!ctx->regs)
-> +		return -ENOMEM;
-> +
-> +	for (i = 0; i < ctx->pdata->num_vregs; i++)
-> +		ctx->regs[i].supply = ctx->pdata->vregs[i];
-> +
-> +	ret = devm_regulator_bulk_get(dev, ctx->pdata->num_vregs, ctx->regs);
-> +	if (ret < 0)
-> +		return dev_err_probe(dev, PTR_ERR(ctx->regs),
-> +				     "Failed to get all regulators\n");
+Does the same fix work for you in rtl8xxxu? Checking the "security"
+field of the RX descriptor is simpler than calling two functions.
+Sorry to bother you when the patch is already applied.
 
-Hi Bartosz,
-
-It looks like ctx->regs is not an error pointer here,
-should this be:
-
-		return dev_err_probe(dev, ret, ...
-
-Flagged by Smatch.
-
-> +
-> +	ctx->bt_gpio = devm_gpiod_get_optional(dev, "bt-enable", GPIOD_OUT_LOW);
-> +	if (IS_ERR(ctx->bt_gpio))
-> +		return dev_err_probe(dev, PTR_ERR(ctx->bt_gpio),
-> +				     "Failed to get the Bluetooth enable GPIO\n");
-> +
-> +	ctx->wlan_gpio = devm_gpiod_get_optional(dev, "wlan-enable",
-> +						 GPIOD_OUT_LOW);
-> +	if (IS_ERR(ctx->wlan_gpio))
-> +		return dev_err_probe(dev, PTR_ERR(ctx->wlan_gpio),
-> +				     "Failed to get the WLAN enable GPIO\n");
-> +
-> +	ctx->clk = devm_clk_get_optional(dev, NULL);
-> +	if (IS_ERR(ctx->clk))
-> +		return dev_err_probe(dev, PTR_ERR(ctx->clk),
-> +				     "Failed to get the reference clock\n");
-> +
-> +	memset(&config, 0, sizeof(config));
-> +
-> +	config.parent = dev;
-> +	config.owner = THIS_MODULE;
-> +	config.drvdata = ctx;
-> +	config.match = pwrseq_qcom_wcn_match;
-> +	config.targets = pwrseq_qcom_wcn_targets;
-> +
-> +	ctx->pwrseq = devm_pwrseq_device_register(dev, &config);
-> +	if (IS_ERR(ctx->pwrseq))
-> +		return dev_err_probe(dev, PTR_ERR(ctx->pwrseq),
-> +				     "Failed to register the power sequencer\n");
-> +
-> +	return 0;
-> +}
-
-...
+Also, won't you send the patch to the stable tree?
 
