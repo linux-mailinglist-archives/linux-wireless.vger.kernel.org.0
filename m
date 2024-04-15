@@ -1,260 +1,162 @@
-Return-Path: <linux-wireless+bounces-6344-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6346-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CF438A5C2C
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Apr 2024 22:26:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE5248A5C37
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Apr 2024 22:28:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D2911C211DA
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Apr 2024 20:26:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B0541F22AFD
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Apr 2024 20:28:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D9015687D;
-	Mon, 15 Apr 2024 20:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 632CB156967;
+	Mon, 15 Apr 2024 20:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f+5kHHS7"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="k1mUfXcy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from smtp.smtpout.orange.fr (smtp-15.smtpout.orange.fr [80.12.242.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8F0156871
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Apr 2024 20:26:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB14271B50;
+	Mon, 15 Apr 2024 20:27:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713212779; cv=none; b=QfzLfBMekZoNXG6SA3de9elWxRWxAH3WheYE8WqMZEVsXCn+IgYChskL9DHGrbViAbPEEwp40lYpek53nxVgAQO4vI4Qq2T5S/k/xvzEzSp4K/85LEOcc/f0/YgR1Qg5CTEzJubG2MtopPTG38A8E84PC9ZuwjT3O5gtx1MTjrE=
+	t=1713212880; cv=none; b=AZlV2PqkNzt+skFzfmf2IgDyxpvqA5/ohTA1O6eOpkM1zAcDmz/MBBGtjNk3WeTYBi3fOP/bSM5vbKJsNYFQl3i1Y/jDgdjJrjcujhPhkfmtjvg0Xpxh+Iu9Y6eZe2UUgFGIlAVMENVsx2XFgxguZxulwc08AMP+uwfj8QZqs1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713212779; c=relaxed/simple;
-	bh=mcCVZawZzVONE7lvWpHlFE0ihspD0dJTL0akkv4yjlU=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=eVWoVCNgpVae9J3j1FSY6AdU4SqiwD82U+o5TQFnMcjcb34S1B0Z3N5iF9qe926RMNblC9nm906p2/9R0H7Y4Txmdjkw6sk4jC4ehuZjlW95/V9bk6PAKR7R6tP0TUijLz1wlchFrPfb4C5nzKN5KxspnRspJckEgZbN6QJrtK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f+5kHHS7; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-418913dc298so20865e9.3
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Apr 2024 13:26:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713212776; x=1713817576; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=MhMI1n7PFYfoeJsHzmW+zMmxTfge8/yN0bSZTuC6IPk=;
-        b=f+5kHHS7xnurEfIJKOx7NbQOgCC2KXA9+NFF9X+JmUeS91blDN8DBCREf9AjeTU6GS
-         M6VcsxZU027JrKFLJpK5aExvq6ZJesQc8+FevvpWSlq/Q2yGQaw0grhNj2N0Puy0QEVn
-         2BqD1MPuuoIYKM6Sn5fuifcQAY/K2cueFdPW87tDx+wvmp3z2RJD5LyTZh0nZgCfvZlw
-         4JIv/oiM0xBDbyB8+SxmpGk724AYWyUoEahdvNo2BkW+cEkMDKZAXf5/1FJBGVs2IKVc
-         fcQWcYLN/DcxaIYCi01R3kUFXKEnb2RafRJ6Ls+wWgl/zKXb7+P48s7ri47DH00X1wHp
-         uL0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713212776; x=1713817576;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MhMI1n7PFYfoeJsHzmW+zMmxTfge8/yN0bSZTuC6IPk=;
-        b=FBD79TDtiLQduQbhytwXFZ6q9oj5K/KQqBerrwxBKvRRa8NtKkn+zEC1WtOjLAXYlA
-         I3FxnkEdTo7yXtcP2DlQM91eJCUAr1Szv8AfebUbzpoMLZchRgR9CkCq5Hi8wzoyxIUr
-         YYB5yloJOSSDUCwWYulxtgdi1bGO1+khkl3ZkypKFHijf/94xlS+k6r1GaSTuE5WaVJF
-         4bwA9u8wL/ePNebcMuonGauK9Gp5/Lve7IGRCPVQG5RIOX6IRfJTdIESOJcQiOREGRaR
-         tktkhwR+ul1H1kTKqDWP7+s6yVrJdu3oAlO9/lnzbHdUktXa+Sttfgy5Mmv15R2cmPBx
-         XpMQ==
-X-Gm-Message-State: AOJu0YwEIN5lJh+raHXHkteJ57FSwfwOm6jQEU2YlSueFvqLNfR551KM
-	RVpIVE90LWGTCsbXTN6M4iR469gLum+Rxi8Hu57+M7eSC7AThJNaRqg9jmKj
-X-Google-Smtp-Source: AGHT+IEPrGkXNyMwlURoHwNsfX/OyFBYoizrVefRtjT6aZWX0cjzgq8kyiz2MzgbNAdUNi1Aw66UUQ==
-X-Received: by 2002:adf:f84a:0:b0:347:ec04:6ac5 with SMTP id d10-20020adff84a000000b00347ec046ac5mr2307493wrq.6.1713212775750;
-        Mon, 15 Apr 2024 13:26:15 -0700 (PDT)
-Received: from [192.168.1.50] ([79.113.154.240])
-        by smtp.gmail.com with ESMTPSA id cg14-20020a5d5cce000000b00346d91ddbe3sm11856262wrb.9.2024.04.15.13.26.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Apr 2024 13:26:15 -0700 (PDT)
-Message-ID: <4f5feba7-82ad-4287-a34f-648529a972d0@gmail.com>
-Date: Mon, 15 Apr 2024 23:26:14 +0300
+	s=arc-20240116; t=1713212880; c=relaxed/simple;
+	bh=20FFn4xWIkAMgaR8ZOBJJUqa2qzmnCc5kBb0iWBK/TY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r7C/0e+e5XgIOP06iYk40lMkzBakd8QsMyNi0waq5zP8Dhjf6RN5gzO3VJKvhg1+5FD0yI+Adz2Wvwya5DbbSNlFz2RWrdhYmUFhIXxWTnpe+8uYa5knehfbEBsiSn2lIBdSOYpqDeVhhkxk+cyw2wObVFAIWpDK5pi4+sloqps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=k1mUfXcy; arc=none smtp.client-ip=80.12.242.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from fedora.home ([86.243.17.157])
+	by smtp.orange.fr with ESMTPA
+	id wSuarbPSmGdLLwSuar5one; Mon, 15 Apr 2024 22:26:45 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1713212805;
+	bh=D6eSL9AbemWWH5HHmLNd9+N8gZj7u/Hg1vi/mWHhr7o=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=k1mUfXcylQ5lbkfSJPUOF7WwKpk0Ekoys2XugPd1Ac7PjqNQCngJGGJFf2yi0v70+
+	 jR8KC7DcQg6BmOXgaAt8PL4HAyc5RWyA8/2teKMq6CHrviozSk3VuPZRQzSYmNwIEZ
+	 5rY/JJhivs+Snq20TYUw0qRCxXpLJhgEZkcU4x7wt26+VrMQEM9EP4T8I4B8fl+BSm
+	 f2UZ0zis6wAhaJmIdjfj83qDxvq5GgrJSg37A5GGSwwWBVBCoEMccVfM99Cc1gKn8A
+	 HDzEOcEJU+BTAPX3GQzS6ByPYU56f6uz6Th8aic2MfE7vwohGwHB9Qmfxa8FNwp9IN
+	 u2n1ZGiwTO5fQ==
+X-ME-Helo: fedora.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 15 Apr 2024 22:26:45 +0200
+X-ME-IP: 86.243.17.157
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Kalle Valo <kvalo@kernel.org>,
+	Jeff Johnson <jjohnson@kernel.org>,
+	Kang Yang <quic_kangyang@quicinc.com>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
+	linux-wireless@vger.kernel.org,
+	ath11k@lists.infradead.org
+Subject: [PATCH v2] wifi: ath11k: Fix error handling in ath11k_wmi_p2p_noa_event()
+Date: Mon, 15 Apr 2024 22:26:41 +0200
+Message-ID: <07f1fc75b2d5b4173ae1b7bb1da5be7f6fc608c8.1713212781.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH v5 3/6] wifi: rtlwifi: rtl8192de: Fix endianness issue in RX
- path
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>,
- Larry Finger <Larry.Finger@lwfinger.net>,
- Stefan Lippers-Hollmann <s.l-h@gmx.de>,
- Christian Hewitt <chewitt@libreelec.tv>
-References: <561cc9e4-3ddc-40cd-a076-2c14c44eea87@gmail.com>
-Content-Language: en-US
-In-Reply-To: <561cc9e4-3ddc-40cd-a076-2c14c44eea87@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Structs rx_desc_92d and rx_fwinfo_92d will not work for big endian
-systems.
+if (noa_descriptors > WMI_P2P_MAX_NOA_DESCRIPTORS), there is a mix of
+return and goto. In such a case, 'td' should be freed to avoid a memory
+leak.
 
-Delete rx_desc_92d because it's big and barely used, and instead use
-the get_rx_desc_rxmcs and get_rx_desc_rxht functions, which work on big
-endian systems too.
+While at it, change ath11k_wmi_p2p_noa_event() to return void.
+'0' was returned in all cases, even in case of error and the only caller
+does not handle the return value.
+This is also more consistent with most of functions called from
+ath11k_wmi_tlv_op_rx().
 
-Fix rx_fwinfo_92d by duplicating four of its members in the correct
-order.
-
-Tested only with RTL8192DU, which will use the same code.
-Tested only on a little endian system.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Fixes: 2408379f15a1 ("wifi: ath11k: implement handling of P2P NoA event")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
-v5:
- - Patch is new in v5.
----
- .../wireless/realtek/rtlwifi/rtl8192de/trx.c  | 16 ++---
- .../wireless/realtek/rtlwifi/rtl8192de/trx.h  | 65 ++-----------------
- 2 files changed, 15 insertions(+), 66 deletions(-)
+Changes in V2
+   - Change ath11k_wmi_p2p_noa_event() to return void.   [Jeff Johnson]
+   - Update commit message accordingly
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
-index 30b262c3f6d0..cbc7b4dbea9a 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
-@@ -35,7 +35,7 @@ static long _rtl92de_translate_todbm(struct ieee80211_hw *hw,
+V1: https://lore.kernel.org/all/6ee80f65f736db1646f6f201f60816cf35b6f3fe.1713180046.git.christophe.jaillet@wanadoo.fr/
+---
+ drivers/net/wireless/ath/ath11k/wmi.c | 18 ++++++------------
+ 1 file changed, 6 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index c74aa3f95658..e9ae305a8a61 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -8650,30 +8650,27 @@ static void ath11k_wmi_gtk_offload_status_event(struct ath11k_base *ab,
+ 	kfree(tb);
+ }
  
- static void _rtl92de_query_rxphystatus(struct ieee80211_hw *hw,
- 				       struct rtl_stats *pstats,
--				       struct rx_desc_92d *pdesc,
-+				       __le32 *pdesc,
- 				       struct rx_fwinfo_92d *p_drvinfo,
- 				       bool packet_match_bssid,
- 				       bool packet_toself,
-@@ -50,8 +50,10 @@ static void _rtl92de_query_rxphystatus(struct ieee80211_hw *hw,
- 	u8 i, max_spatial_stream;
- 	u32 rssi, total_rssi = 0;
- 	bool is_cck_rate;
-+	u8 rxmcs;
- 
--	is_cck_rate = RX_HAL_IS_CCK_RATE(pdesc->rxmcs);
-+	rxmcs = get_rx_desc_rxmcs(pdesc);
-+	is_cck_rate = rxmcs <= DESC_RATE11M;
- 	pstats->packet_matchbssid = packet_match_bssid;
- 	pstats->packet_toself = packet_toself;
- 	pstats->packet_beacon = packet_beacon;
-@@ -157,8 +159,8 @@ static void _rtl92de_query_rxphystatus(struct ieee80211_hw *hw,
- 		pstats->rx_pwdb_all = pwdb_all;
- 		pstats->rxpower = rx_pwr_all;
- 		pstats->recvsignalpower = rx_pwr_all;
--		if (pdesc->rxht && pdesc->rxmcs >= DESC_RATEMCS8 &&
--		    pdesc->rxmcs <= DESC_RATEMCS15)
-+		if (get_rx_desc_rxht(pdesc) && rxmcs >= DESC_RATEMCS8 &&
-+		    rxmcs <= DESC_RATEMCS15)
- 			max_spatial_stream = 2;
- 		else
- 			max_spatial_stream = 1;
-@@ -364,7 +366,7 @@ static void _rtl92de_process_phyinfo(struct ieee80211_hw *hw,
- static void _rtl92de_translate_rx_signal_stuff(struct ieee80211_hw *hw,
- 					       struct sk_buff *skb,
- 					       struct rtl_stats *pstats,
--					       struct rx_desc_92d *pdesc,
-+					       __le32 *pdesc,
- 					       struct rx_fwinfo_92d *p_drvinfo)
+-static int ath11k_wmi_p2p_noa_event(struct ath11k_base *ab,
+-				    struct sk_buff *skb)
++static void ath11k_wmi_p2p_noa_event(struct ath11k_base *ab,
++				     struct sk_buff *skb)
  {
- 	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
-@@ -440,9 +442,7 @@ bool rtl92de_rx_query_desc(struct ieee80211_hw *hw,	struct rtl_stats *stats,
- 	if (phystatus) {
- 		p_drvinfo = (struct rx_fwinfo_92d *)(skb->data +
- 						     stats->rx_bufshift);
--		_rtl92de_translate_rx_signal_stuff(hw,
--						   skb, stats,
--						   (struct rx_desc_92d *)pdesc,
-+		_rtl92de_translate_rx_signal_stuff(hw, skb, stats, pdesc,
- 						   p_drvinfo);
+ 	const void **tb;
+ 	const struct wmi_p2p_noa_event *ev;
+ 	const struct ath11k_wmi_p2p_noa_info *noa;
+ 	struct ath11k *ar;
+-	int ret, vdev_id;
++	int vdev_id;
+ 	u8 noa_descriptors;
+ 
+ 	tb = ath11k_wmi_tlv_parse_alloc(ab, skb, GFP_ATOMIC);
+ 	if (IS_ERR(tb)) {
+-		ret = PTR_ERR(tb);
+-		ath11k_warn(ab, "failed to parse tlv: %d\n", ret);
+-		return ret;
++		ath11k_warn(ab, "failed to parse tlv: %ld\n", PTR_ERR(tb));
++		return;
  	}
- 	/*rx_status->qual = stats->signal; */
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h
-index f189ee2d9be2..2d4887490f00 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h
-@@ -394,10 +394,17 @@ struct rx_fwinfo_92d {
- 	u8 csi_target[2];
- 	u8 sigevm;
- 	u8 max_ex_pwr;
-+#ifdef __LITTLE_ENDIAN
- 	u8 ex_intf_flag:1;
- 	u8 sgi_en:1;
- 	u8 rxsc:2;
- 	u8 reserve:4;
-+#else
-+	u8 reserve:4;
-+	u8 rxsc:2;
-+	u8 sgi_en:1;
-+	u8 ex_intf_flag:1;
-+#endif
- } __packed;
  
- struct tx_desc_92d {
-@@ -502,64 +509,6 @@ struct tx_desc_92d {
- 	u32 reserve_pass_pcie_mm_limit[4];
- } __packed;
+ 	ev = tb[WMI_TAG_P2P_NOA_EVENT];
+ 	noa = tb[WMI_TAG_P2P_NOA_INFO];
  
--struct rx_desc_92d {
--	u32 length:14;
--	u32 crc32:1;
--	u32 icverror:1;
--	u32 drv_infosize:4;
--	u32 security:3;
--	u32 qos:1;
--	u32 shift:2;
--	u32 phystatus:1;
--	u32 swdec:1;
--	u32 lastseg:1;
--	u32 firstseg:1;
--	u32 eor:1;
--	u32 own:1;
--
--	u32 macid:5;
--	u32 tid:4;
--	u32 hwrsvd:5;
--	u32 paggr:1;
--	u32 faggr:1;
--	u32 a1_fit:4;
--	u32 a2_fit:4;
--	u32 pam:1;
--	u32 pwr:1;
--	u32 moredata:1;
--	u32 morefrag:1;
--	u32 type:2;
--	u32 mc:1;
--	u32 bc:1;
--
--	u32 seq:12;
--	u32 frag:4;
--	u32 nextpktlen:14;
--	u32 nextind:1;
--	u32 rsvd:1;
--
--	u32 rxmcs:6;
--	u32 rxht:1;
--	u32 amsdu:1;
--	u32 splcp:1;
--	u32 bandwidth:1;
--	u32 htc:1;
--	u32 tcpchk_rpt:1;
--	u32 ipcchk_rpt:1;
--	u32 tcpchk_valid:1;
--	u32 hwpcerr:1;
--	u32 hwpcind:1;
--	u32 iv0:16;
--
--	u32 iv1;
--
--	u32 tsfl;
--
--	u32 bufferaddress;
--	u32 bufferaddress64;
--
--} __packed;
--
- void rtl92de_tx_fill_desc(struct ieee80211_hw *hw,
- 			  struct ieee80211_hdr *hdr, u8 *pdesc,
- 			  u8 *pbd_desc_tx, struct ieee80211_tx_info *info,
+-	if (!ev || !noa) {
+-		ret = -EPROTO;
++	if (!ev || !noa)
+ 		goto out;
+-	}
+ 
+ 	vdev_id = ev->vdev_id;
+ 	noa_descriptors = u32_get_bits(noa->noa_attr,
+@@ -8682,7 +8679,6 @@ static int ath11k_wmi_p2p_noa_event(struct ath11k_base *ab,
+ 	if (noa_descriptors > WMI_P2P_MAX_NOA_DESCRIPTORS) {
+ 		ath11k_warn(ab, "invalid descriptor num %d in P2P NoA event\n",
+ 			    noa_descriptors);
+-		return -EINVAL;
+ 		goto out;
+ 	}
+ 
+@@ -8695,7 +8691,6 @@ static int ath11k_wmi_p2p_noa_event(struct ath11k_base *ab,
+ 	if (!ar) {
+ 		ath11k_warn(ab, "invalid vdev id %d in P2P NoA event\n",
+ 			    vdev_id);
+-		ret = -EINVAL;
+ 		goto unlock;
+ 	}
+ 
+@@ -8705,7 +8700,6 @@ static int ath11k_wmi_p2p_noa_event(struct ath11k_base *ab,
+ 	rcu_read_unlock();
+ out:
+ 	kfree(tb);
+-	return 0;
+ }
+ 
+ static void ath11k_wmi_tlv_op_rx(struct ath11k_base *ab, struct sk_buff *skb)
 -- 
 2.44.0
 
