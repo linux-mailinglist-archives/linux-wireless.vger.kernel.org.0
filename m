@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-6349-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6350-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D97C8A5C86
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Apr 2024 22:59:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AC948A5CB5
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Apr 2024 23:10:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC3081F21D90
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Apr 2024 20:59:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB9281C212AA
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Apr 2024 21:10:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970A515624B;
-	Mon, 15 Apr 2024 20:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B67882D93;
+	Mon, 15 Apr 2024 21:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b5dA9U6G"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CKN91KOi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5CC6154452
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Apr 2024 20:59:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9771DFEB
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Apr 2024 21:10:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713214750; cv=none; b=HAXbgwhazv4XU9WGn48Wfy/peMnED9isvZiPr02Fa1rfTp4g1AfSDv/FQ4+rhSh47Cklnmg+Bd2nu/7BKtu1hN6ksyU0LBfU9Y5uwautQ7MuDlxtM1zfZhme+tZNa1fjr2jwCFqMQYItEMntP7fvbdT7BhLobjvKQzkaonyi138=
+	t=1713215416; cv=none; b=eYDV7VoASLLvVg4tM66RMeFbKEXu59DYyLeexQzD7oNe3us08svSZ7GgJNuFiZ6x4Iwj89iwKE1xAyrhpeFDx/L2qhjqxBRQo+n+JEtaTS+d9VKpAqxH9Ox8a3XYLwmp2pSetE6StseQwMNyhXtFXDFeMGQuKhhhSxuD/0x9WrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713214750; c=relaxed/simple;
-	bh=kQN0kt5oVXpacVRwAEjqAK1YJVOvuB2myjA0tN0p3JM=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=f8c2cwDKPs6A1OcmTTP3nuZ7omISYWIrgcBq6tJund/b5XFPXWx3f1tLjPqfC8vXQ/d68vSFL8ni+0UX5pmcl2cAMe8Sp5PbspSetd8d0+lf3jCYpaGmef0asm3qLjooQVomjzOFckr+4UJqUYm90zO8aZ+iER85WNAUzIGiOw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b5dA9U6G; arc=none smtp.client-ip=209.85.218.43
+	s=arc-20240116; t=1713215416; c=relaxed/simple;
+	bh=5sfISh2h+9JxsUcfOBiqNMe43FrwJsGtK678hd5t8ZY=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=GnGgFsBz3/oOA46LagNRgKtucZ7bksk3FLjqzwxbxHfag/O9wFf7qqbMjLsx+lTm/axw449ITOnLtxmcwUlib9OGYu+Tu9df3kAkmfkWcfv8nyxtcLJigqcJoDHJ3R39acsBXzmjvZnOdWPw/B75RiwBKYKNMUWcb3qhlyRXi9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CKN91KOi; arc=none smtp.client-ip=209.85.128.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a526d381d2fso213346466b.0
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Apr 2024 13:59:08 -0700 (PDT)
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-41881bce4b5so5789515e9.2
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Apr 2024 14:10:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713214747; x=1713819547; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1713215413; x=1713820213; darn=vger.kernel.org;
         h=content-transfer-encoding:content-language:cc:to:subject:from
          :user-agent:mime-version:date:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=plIeSWJsa7iunyh4xApmFLkqiJ1A+HUPE6O8GPAkAdU=;
-        b=b5dA9U6GmJ6VCxlRfGRb8UpdxPHGL0sybYNBllbiMeu7rHxdc22tAZV+zy5Mtkk3n+
-         j4HgCjYmMigfFAEKEI87cwPh4V4f58rig+0/gJXvEuMO/XrqMWGeDiC6BKCUa6LeDMe/
-         1TbskThVZtg9L9Hfz2vds+/nfqklgWgUDcfGNQSASdIZ5QfyD572Z/GHK7To4d+3nfsa
-         JsowlcJ2InbX9MFVyC9ZbxDWWWNVvNvtbLxKAhsL38K/zUpzvgrjRIu+BNN49hhO9Fab
-         x4xJbSBsszbZ+8ZieKunzo3kE4H3qK8DBuP6sWZNONOPVFkaQa2z38umG8TD7bQxKsYA
-         rPkQ==
+        bh=yeQkXfIliUoQhaGX2i26s0aNXxrZ7g3zMHTNv0vz9fs=;
+        b=CKN91KOid1dYdJFN/cNUxHaBGRkKclzf6bjytg/puG8c27aqOuCgpy2RCCMX3WXhFW
+         G13sbWJo5hkKb1tZJL1Zl5X+i2WYODP7U/czQnKnsYBC8t4kV4pAniBKB5S3TigKkNxs
+         8Q1Ww+nEd83fMQ67TL/0LsokvUevx0I0MRs+31qYD6/F2ZwfQbxZOlegRUaII2cBege/
+         hqcknB//TNB4xmFSH63BigSod+m99VVhu248aNx+o5rGZUccee2sp9FyCE+AQ/NhtSM0
+         djxdTTplF2heDdQGGQ2Ep/H0F3d95RMU9cbvGTxoKPMT8OwJ9aqIUGOr8g+9lHSKg2Ne
+         FLbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713214747; x=1713819547;
+        d=1e100.net; s=20230601; t=1713215413; x=1713820213;
         h=content-transfer-encoding:content-language:cc:to:subject:from
          :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=plIeSWJsa7iunyh4xApmFLkqiJ1A+HUPE6O8GPAkAdU=;
-        b=omUUSKZRzx4mj+oKk1NEHPbmOYHZR8F4ce8EHKO1fnIeOYtmfe9Ix6y+l0ZPrGlPIy
-         uaI9CPQrhHZjZ80ctEk2K6PolJxVL8Qnt6n4FDM+Na+9Gm8xvkxDmjorKH2VhMWr12RR
-         19cv7/Pr0honoGg0P/4TfEbe+BLbRh9WYHs2t8/gEf/0B+w3Gwp4Bjt9ARPXtwh6URW/
-         Mh2o9rXwkRv80zMtWRCdEZjLXw8psIbcmi05YPhg0Ofs+FdnR+a1g64mCXrYCIW73L6U
-         t9mmzZra5m5hOcyOtYa1fLW8xI69fWdchDivZhrjdsLE5n/3pAuR2HKyMXEBuNHlXR/U
-         eZDQ==
-X-Gm-Message-State: AOJu0YyrMfhJA99j2ncH8Kk7yfqT5rYWFZNn0wrWFEXVLrtV9GZ4s0j9
-	F4dCB1VQjsbxo+pmw2enLUf8J1cx1DhQfZbyB/CcjuKRv3FZ1ZsGp1pyD0x8
-X-Google-Smtp-Source: AGHT+IF3Eo9OthhLhCxbfNzFNuAGvI5sIsrC0HVKqrSx4Flz2Zr8SYJJ7oQV3VGzgu6NcVeAg4vJRw==
-X-Received: by 2002:a17:906:3846:b0:a52:56e8:725a with SMTP id w6-20020a170906384600b00a5256e8725amr121625ejc.0.1713214747100;
-        Mon, 15 Apr 2024 13:59:07 -0700 (PDT)
+        bh=yeQkXfIliUoQhaGX2i26s0aNXxrZ7g3zMHTNv0vz9fs=;
+        b=TZgoLljga+An3hqvfSaXHuMyBDv9q0m0vJo+ArLQXmp9VTpuax4TLrnTbTya5tL4mt
+         LkTRF/s6itLXnt2fqbrnwz+iR4gCPCZESsETTVZ7AcHgpYF4aWudwJ+4Xp91jN3m7dkO
+         Dnu85FVXP/DkPQ7ZpzcIY1WsphlGT55OLBGvh1jhSoJtpfigiSkPxzCMWHYMKOvrCZz+
+         uXuNu779h2Gw81PGCrONVT/+h6Tk484cmTSsKOQfEuV/ghB6V5qHCg3QVBuPWmMb+OVo
+         2CshpdBQXLN50o2Ncnnd52UVVTyvQDbh0hsq9yVMyqfHV7qvaCN40/VTVzEa4LhoTotY
+         2Daw==
+X-Gm-Message-State: AOJu0Yz7Ed/tVZmPBASsfJ/KUDBeTq0as9pQUvpV+0Cs9gNMW/IWCtjS
+	orgY997YFtAB4sG9WIbU26D5gJ1Hv9TKORpj/Ofepu8aS3H+vtJWIBWzqR1d
+X-Google-Smtp-Source: AGHT+IFRkQhdYV6qhR/9R+op8RK/KjtJ/jNfDPerOQ+dCQiRKaujtOvczRfX6Z2Yyb2C+BEGL3+0EA==
+X-Received: by 2002:a05:600c:19cc:b0:416:4973:4d87 with SMTP id u12-20020a05600c19cc00b0041649734d87mr10273469wmq.3.1713215412866;
+        Mon, 15 Apr 2024 14:10:12 -0700 (PDT)
 Received: from [192.168.1.50] ([79.113.154.240])
-        by smtp.gmail.com with ESMTPSA id k21-20020a17090666d500b00a518bcb41c1sm5883941ejp.126.2024.04.15.13.59.06
+        by smtp.gmail.com with ESMTPSA id f8-20020a05600c154800b0041825f17a71sm10657866wmg.30.2024.04.15.14.10.12
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Apr 2024 13:59:06 -0700 (PDT)
-Message-ID: <6ae5945b-644e-45e4-a78f-4c7d9c987910@gmail.com>
-Date: Mon, 15 Apr 2024 23:59:05 +0300
+        Mon, 15 Apr 2024 14:10:12 -0700 (PDT)
+Message-ID: <3068a7f8-0178-4ea7-bd18-4e377db07e76@gmail.com>
+Date: Tue, 16 Apr 2024 00:10:11 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,98 +75,80 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: [PATCH v2] wifi: rtl8xxxu: Fix the TX power of RTL8192CU, RTL8723AU
+Subject: [PATCH] wifi: rtl8xxxu: Fix gen1 rate mask command
 To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 Cc: Jes Sorensen <Jes.Sorensen@gmail.com>, Ping-Ke Shih <pkshih@realtek.com>
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Don't subtract 1 from the power index. This was added in commit
-2fc0b8e5a17d ("rtl8xxxu: Add TX power base values for gen1 parts")
-for unknown reasons. The vendor drivers don't do this.
+The H2C (host to card) command which tells the firmware which TX rates
+it can use is slightly wrong. Fix the order of the bytes.
 
-Also correct the calculations of values written to
-REG_OFDM0_X{C,D}_TX_IQ_IMBALANCE. According to the vendor driver,
-these are used for TX power training.
+Also put the macid in the command (relevant for AP mode).
 
-With these changes rtl8xxxu sets the TX power of RTL8192CU the same
-as the vendor driver.
-
-None of this appears to have any effect on my RTL8192CU device.
+This was tested with RTL8192CU. It also affects the RTL8723AU.
 
 Cc: stable@vger.kernel.org
 Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 ---
-v1 was a long time ago:
-https://lore.kernel.org/linux-wireless/52c28b65-6f28-2cc0-7281-179bb1087c2a@gmail.com/
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h   | 10 +++++++---
+ .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c  | 18 +++++++++++-------
+ 2 files changed, 18 insertions(+), 10 deletions(-)
 
-v2:
- - Use ternary operator and max_t in the for loops.
----
- .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 25 ++++++++-----------
- 1 file changed, 10 insertions(+), 15 deletions(-)
-
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+index fd92d23c43d9..ca44d82cb5aa 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+@@ -1430,10 +1430,14 @@ struct h2c_cmd {
+ 			u8 data;
+ 		} __packed joinbss;
+ 		struct {
++#define RAID_MASK		GENMASK(31, 28)
++#define RATE_MASK_MASK		GENMASK(27, 0)
++#define MACID_MASK		GENMASK(4, 0)
++#define SHORT_GI_MASK		BIT(5)
++
+ 			u8 cmd;
+-			__le16 mask_hi;
+-			u8 arg;
+-			__le16 mask_lo;
++			__le32 rate_mask_and_raid;
++			u8 macid_and_short_gi;
+ 		} __packed ramask;
+ 		struct {
+ 			u8 cmd;
 diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 7bf0bbbd52c1..af58e5b2c846 100644
+index fac7824ae727..acbafc25c6e0 100644
 --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
 +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -1480,13 +1480,13 @@ rtl8xxxu_gen1_set_tx_power(struct rtl8xxxu_priv *priv, int channel, bool ht40)
- 	u8 cck[RTL8723A_MAX_RF_PATHS], ofdm[RTL8723A_MAX_RF_PATHS];
- 	u8 ofdmbase[RTL8723A_MAX_RF_PATHS], mcsbase[RTL8723A_MAX_RF_PATHS];
- 	u32 val32, ofdm_a, ofdm_b, mcs_a, mcs_b;
--	u8 val8;
-+	u8 val8, base;
- 	int group, i;
+@@ -4641,15 +4641,19 @@ void rtl8xxxu_update_rate_mask(struct rtl8xxxu_priv *priv,
+ 	memset(&h2c, 0, sizeof(struct h2c_cmd));
  
- 	group = rtl8xxxu_gen1_channel_to_group(channel);
+ 	h2c.ramask.cmd = H2C_SET_RATE_MASK;
+-	h2c.ramask.mask_lo = cpu_to_le16(ramask & 0xffff);
+-	h2c.ramask.mask_hi = cpu_to_le16(ramask >> 16);
  
--	cck[0] = priv->cck_tx_power_index_A[group] - 1;
--	cck[1] = priv->cck_tx_power_index_B[group] - 1;
-+	cck[0] = priv->cck_tx_power_index_A[group];
-+	cck[1] = priv->cck_tx_power_index_B[group];
- 
- 	if (priv->hi_pa) {
- 		if (cck[0] > 0x20)
-@@ -1497,10 +1497,6 @@ rtl8xxxu_gen1_set_tx_power(struct rtl8xxxu_priv *priv, int channel, bool ht40)
- 
- 	ofdm[0] = priv->ht40_1s_tx_power_index_A[group];
- 	ofdm[1] = priv->ht40_1s_tx_power_index_B[group];
--	if (ofdm[0])
--		ofdm[0] -= 1;
--	if (ofdm[1])
--		ofdm[1] -= 1;
- 
- 	ofdmbase[0] = ofdm[0] +	priv->ofdm_tx_power_index_diff[group].a;
- 	ofdmbase[1] = ofdm[1] +	priv->ofdm_tx_power_index_diff[group].b;
-@@ -1589,20 +1585,19 @@ rtl8xxxu_gen1_set_tx_power(struct rtl8xxxu_priv *priv, int channel, bool ht40)
- 
- 	rtl8xxxu_write32(priv, REG_TX_AGC_A_MCS15_MCS12,
- 			 mcs_a + power_base->reg_0e1c);
-+	val8 = u32_get_bits(mcs_a + power_base->reg_0e1c, 0xff000000);
- 	for (i = 0; i < 3; i++) {
--		if (i != 2)
--			val8 = (mcsbase[0] > 8) ? (mcsbase[0] - 8) : 0;
--		else
--			val8 = (mcsbase[0] > 6) ? (mcsbase[0] - 6) : 0;
-+		base = i != 2 ? 8 : 6;
-+		val8 = max_t(int, val8 - base, 0);
- 		rtl8xxxu_write8(priv, REG_OFDM0_XC_TX_IQ_IMBALANCE + i, val8);
- 	}
+-	h2c.ramask.arg = 0x80;
+-	if (sgi)
+-		h2c.ramask.arg |= 0x20;
++	le32p_replace_bits(&h2c.ramask.rate_mask_and_raid, rateid, RAID_MASK);
++	le32p_replace_bits(&h2c.ramask.rate_mask_and_raid, ramask, RATE_MASK_MASK);
 +
- 	rtl8xxxu_write32(priv, REG_TX_AGC_B_MCS15_MCS12,
- 			 mcs_b + power_base->reg_0868);
-+	val8 = u32_get_bits(mcs_b + power_base->reg_0868, 0xff000000);
- 	for (i = 0; i < 3; i++) {
--		if (i != 2)
--			val8 = (mcsbase[1] > 8) ? (mcsbase[1] - 8) : 0;
--		else
--			val8 = (mcsbase[1] > 6) ? (mcsbase[1] - 6) : 0;
-+		base = i != 2 ? 8 : 6;
-+		val8 = max_t(int, val8 - base, 0);
- 		rtl8xxxu_write8(priv, REG_OFDM0_XD_TX_IQ_IMBALANCE + i, val8);
- 	}
++	u8p_replace_bits(&h2c.ramask.macid_and_short_gi, macid, MACID_MASK);
++	u8p_replace_bits(&h2c.ramask.macid_and_short_gi, sgi, SHORT_GI_MASK);
++	u8p_replace_bits(&h2c.ramask.macid_and_short_gi, 1, BIT(7));
++
++	dev_dbg(&priv->udev->dev,
++		"%s: rate mask %08x, rate id %02x, arg %02x, size %zi\n",
++		__func__, ramask, rateid, h2c.ramask.macid_and_short_gi,
++		sizeof(h2c.ramask));
+ 
+-	dev_dbg(&priv->udev->dev, "%s: rate mask %08x, arg %02x, size %zi\n",
+-		__func__, ramask, h2c.ramask.arg, sizeof(h2c.ramask));
+ 	rtl8xxxu_gen1_h2c_cmd(priv, &h2c, sizeof(h2c.ramask));
  }
+ 
 -- 
 2.44.0
 
