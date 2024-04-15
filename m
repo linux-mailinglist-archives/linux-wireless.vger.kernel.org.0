@@ -1,303 +1,278 @@
-Return-Path: <linux-wireless+bounces-6322-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6323-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8FFC8A4EC3
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Apr 2024 14:18:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EF208A50F4
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Apr 2024 15:20:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 514451F23C1E
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Apr 2024 12:18:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92D9C1C21D92
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Apr 2024 13:20:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F27374D3;
-	Mon, 15 Apr 2024 12:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99E987603A;
+	Mon, 15 Apr 2024 13:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="Hst/jxSt"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="XmQe0uas"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from nbd.name (nbd.name [46.4.11.11])
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCCB7634E2
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Apr 2024 12:18:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D95128828
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Apr 2024 13:03:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713183509; cv=none; b=RphZkDenhu2B6C5EBPrt1H1fDeD3VB7SF/p3XpNSbsmNpNu95pnqesEAbPXup53Xc/H/BtghHMk9m+p4lVq5mbO/Pm7Ap8m/xj17a5onNj4zknf7oXFjMnTu4xcWo/EMduCQSwXGVobZ6sl/vADszH5WAamYpcc6SLgWfIaOPpA=
+	t=1713186237; cv=none; b=bgHksrnT1HKLKELC22JKbGHAUM6LyRaSGL9WIEaTv/s3IF/xdaRpR394DYzakVz4e5ot34QmyPma3X+sSiQrLNcA91wQht2uUC9NoHm91mqDQQUl5uvzPjKFMXViiCVIkRr71cZtAHyJOhZO7uvnJ6aVvCd/39u72yg/q+8vAS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713183509; c=relaxed/simple;
-	bh=Xv08o3uCVb3unqk84u7RMaywKGoxBHXlL6isRw7S54E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P47hy/MBbVR5qpdBzQQSBe16XV+9j/3lidFiRDDGPC3IQNR3UrjHxpspApr2F8UXcaCaQy46RkMAS6RyQWhczKs1AFHYouzZEDqp91b+N0h8XetGH6B1VL5Q119jrX1I7LD/x+/9c1XCzKqJysHKV7zln1NuDjyxIWNn2U4FmF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=Hst/jxSt; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=CVlY6+VP/fbEv4dZFaUhumpr+RIOCK8QoJm7YNsUp+0=; b=Hst/jxSt0k1PHpWmUYYglBcsV2
-	NlT3J9YR8J9nzBi+TvwjKYeDx5vickD6Hv0NZHDxfYMjWZb4vNWv0djmVKcFxYPcgFA9TNbvX/1CE
-	a73GlZOHLOKGBghzAEambka3ipUOwKVNajheJXA0cEQku1nwSU4zTw1MDzmAz88vyMn8=;
-Received: from p54ae9c93.dip0.t-ipconnect.de ([84.174.156.147] helo=localhost.localdomain)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
-	(Exim 4.96)
-	(envelope-from <nbd@nbd.name>)
-	id 1rwLHt-001L8B-1R;
-	Mon, 15 Apr 2024 14:18:17 +0200
-From: Felix Fietkau <nbd@nbd.name>
-To: linux-wireless@vger.kernel.org
-Cc: johannes@sipsolutions.net
-Subject: [PATCH v2] wifi: mac80211: split mesh fast tx cache into local/proxied/forwarded
-Date: Mon, 15 Apr 2024 14:18:11 +0200
-Message-ID: <20240415121811.13391-1-nbd@nbd.name>
-X-Mailer: git-send-email 2.44.0
+	s=arc-20240116; t=1713186237; c=relaxed/simple;
+	bh=XfmNsSw/Ml09+oEaJtrOu+01PAalDhb1mp3jbRBDvRU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=R0ca2gfgApvnaR116XnhND/nPkmi0q5G5D5wyWQs/0BpQUQV4+HWdbp4JyJzMDIEvPng9/SNUOCiSRiTvcM8iThPKb+abQhY331uOt9kLJdkfsHqA61JY0c5E+GeWnQBmQdLn7HCkoSeO9jadMiWl765H6Ihb7P2UmxeBjVecgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=XmQe0uas; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 970da290fb2811ee935d6952f98a51a9-20240415
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=cO+Nz6pWljWFlGjF8bOfXSxVNHA9wkQKw71vbqy+eKA=;
+	b=XmQe0uas4BSjRAZFKJ647ecisdnLWWlSAjHPWxpIHQW6sIrVItmLuJd4Iv3sb3+1+R6EL5pVsgqMljVwZuPd5DeohVs1tcOTnF94iHXi2eG1FF7botXkT655DF4130ohDjit3R6h6GHEdZVVuocGL19oaSQpIBXf8Ibdc6vyLLs=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.38,REQID:6bb45bcc-c48a-443e-8d11-2e188af27a6b,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:82c5f88,CLOUDID:75ab3286-8d4f-477b-89d2-1e3bdbef96d1,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+	RL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
+X-UUID: 970da290fb2811ee935d6952f98a51a9-20240415
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
+	(envelope-from <deren.wu@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 117503837; Mon, 15 Apr 2024 21:03:44 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Mon, 15 Apr 2024 21:03:44 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Mon, 15 Apr 2024 21:03:44 +0800
+From: Deren Wu <deren.wu@mediatek.com>
+To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>
+CC: Sean Wang <sean.wang@mediatek.com>, Soul Huang <Soul.Huang@mediatek.com>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>, Leon Yen
+	<Leon.Yen@mediatek.com>, Allan Wang <allan.wang@mediatek.com>, KM Lin
+	<km.lin@mediatek.com>, Robin Chiu <robin.chiu@mediatek.com>, CH Yeh
+	<ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>, Quan Zhou
+	<quan.zhou@mediatek.com>, Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen
+	<shayne.chen@mediatek.com>, linux-wireless <linux-wireless@vger.kernel.org>,
+	linux-mediatek <linux-mediatek@lists.infradead.org>, Deren Wu
+	<deren.wu@mediatek.com>
+Subject: [PATCH] wifi: mt76: mt7925: add EHT radiotap support in monitor mode
+Date: Mon, 15 Apr 2024 21:03:42 +0800
+Message-ID: <5553c30b820a299afce84a611562c21fbab6bb32.1713186083.git.deren.wu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK: N
 
-Depending on the origin of the packets (and their SA), 802.11 + mesh headers
-could be filled in differently. In order to properly deal with that, add a
-new field to the lookup key, indicating the type (local, proxied or
-forwarded). This can fix spurious packet drop issues that depend on the order
-in which nodes/hosts communicate with each other.
+Add IEEE80211_RADIOTAP_EHT and IEEE80211_RADIOTAP_EHT_USIG radiotap
+to fill in EHT information, such as MCS, NSS, GI and bandwidth.
 
-Fixes: d5edb9ae8d56 ("wifi: mac80211: mesh fast xmit support")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Co-developed-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
 ---
-v2:
- - fix flushing forwarding cache entries
- - make type field size explicit, make struct size a multiple of 4
+ .../net/wireless/mediatek/mt76/mt76_connac.h  |  2 +
+ .../wireless/mediatek/mt76/mt76_connac3_mac.c | 85 +++++++++++++++++++
+ .../wireless/mediatek/mt76/mt76_connac3_mac.h | 22 +++++
+ .../net/wireless/mediatek/mt76/mt7925/mac.c   | 15 +++-
+ 4 files changed, 122 insertions(+), 2 deletions(-)
 
- net/mac80211/mesh.c         |  8 +++++++-
- net/mac80211/mesh.h         | 36 +++++++++++++++++++++++++++++++++---
- net/mac80211/mesh_pathtbl.c | 31 ++++++++++++++++++++++---------
- net/mac80211/rx.c           | 13 ++++++++++---
- 4 files changed, 72 insertions(+), 16 deletions(-)
-
-diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
-index 32475da98d73..cbc9b5e40cb3 100644
---- a/net/mac80211/mesh.c
-+++ b/net/mac80211/mesh.c
-@@ -747,6 +747,9 @@ bool ieee80211_mesh_xmit_fast(struct ieee80211_sub_if_data *sdata,
- 			      struct sk_buff *skb, u32 ctrl_flags)
- {
- 	struct ieee80211_if_mesh *ifmsh = &sdata->u.mesh;
-+	struct ieee80211_mesh_fast_tx_key key = {
-+		.type = MESH_FAST_TX_TYPE_LOCAL
-+	};
- 	struct ieee80211_mesh_fast_tx *entry;
- 	struct ieee80211s_hdr *meshhdr;
- 	u8 sa[ETH_ALEN] __aligned(2);
-@@ -782,7 +785,10 @@ bool ieee80211_mesh_xmit_fast(struct ieee80211_sub_if_data *sdata,
- 			return false;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+index 91987bdf239d..445d0f0ab779 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
+@@ -451,4 +451,6 @@ void mt76_connac2_tx_token_put(struct mt76_dev *dev);
+ /* connac3 */
+ void mt76_connac3_mac_decode_he_radiotap(struct sk_buff *skb, __le32 *rxv,
+ 					 u8 mode);
++void mt76_connac3_mac_decode_eht_radiotap(struct sk_buff *skb, __le32 *rxv,
++					  u8 mode);
+ #endif /* __MT76_CONNAC_H */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.c
+index 73e9f283d0ae..92ad1ecf6c9d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.c
+@@ -6,8 +6,11 @@
+ #include "dma.h"
+ 
+ #define HE_BITS(f)		cpu_to_le16(IEEE80211_RADIOTAP_HE_##f)
++#define EHT_BITS(f)		cpu_to_le32(IEEE80211_RADIOTAP_EHT_##f)
+ #define HE_PREP(f, m, v)	le16_encode_bits(le32_get_bits(v, MT_CRXV_HE_##m),\
+ 						 IEEE80211_RADIOTAP_HE_##f)
++#define EHT_PREP(f, m, v)	le32_encode_bits(le32_get_bits(v, MT_CRXV_EHT_##m),\
++						 IEEE80211_RADIOTAP_EHT_##f)
+ 
+ static void
+ mt76_connac3_mac_decode_he_radiotap_ru(struct mt76_rx_status *status,
+@@ -180,3 +183,85 @@ void mt76_connac3_mac_decode_he_radiotap(struct sk_buff *skb, __le32 *rxv,
  	}
- 
--	entry = mesh_fast_tx_get(sdata, skb->data);
-+	ether_addr_copy(key.addr, skb->data);
-+	if (!ether_addr_equal(skb->data + ETH_ALEN, sdata->vif.addr))
-+		key.type = MESH_FAST_TX_TYPE_PROXIED;
-+	entry = mesh_fast_tx_get(sdata, &key);
- 	if (!entry)
- 		return false;
- 
-diff --git a/net/mac80211/mesh.h b/net/mac80211/mesh.h
-index d913ce7ba72e..3f9664e4e00c 100644
---- a/net/mac80211/mesh.h
-+++ b/net/mac80211/mesh.h
-@@ -134,10 +134,39 @@ struct mesh_path {
- #define MESH_FAST_TX_CACHE_THRESHOLD_SIZE	384
- #define MESH_FAST_TX_CACHE_TIMEOUT		8000 /* msecs */
- 
-+/**
-+ * enum ieee80211_mesh_fast_tx_type - cached mesh fast tx entry type
-+ *
-+ * @MESH_FAST_TX_TYPE_LOCAL: tx from the local vif address as SA
-+ * @MESH_FAST_TX_TYPE_PROXIED: local tx with a different SA (e.g. bridged)
-+ * @MESH_FAST_TX_TYPE_FORWARDED: forwarded from a different mesh point
-+ * @NUM_MESH_FAST_TX_TYPE: number of entry types
-+ */
-+enum ieee80211_mesh_fast_tx_type {
-+	MESH_FAST_TX_TYPE_LOCAL,
-+	MESH_FAST_TX_TYPE_PROXIED,
-+	MESH_FAST_TX_TYPE_FORWARDED,
-+
-+	/* must be last */
-+	NUM_MESH_FAST_TX_TYPE
-+};
-+
-+
-+/**
-+ * struct ieee80211_mesh_fast_tx_key - cached mesh fast tx entry key
-+ *
-+ * @addr: The Ethernet DA for this entry
-+ * @type: cache entry type
-+ */
-+struct ieee80211_mesh_fast_tx_key {
-+	u8 addr[ETH_ALEN] __aligned(2);
-+	u16 type;
-+};
-+
- /**
-  * struct ieee80211_mesh_fast_tx - cached mesh fast tx entry
-  * @rhash: rhashtable pointer
-- * @addr_key: The Ethernet DA which is the key for this entry
-+ * @key: the lookup key for this cache entry
-  * @fast_tx: base fast_tx data
-  * @hdr: cached mesh and rfc1042 headers
-  * @hdrlen: length of mesh + rfc1042
-@@ -148,7 +177,7 @@ struct mesh_path {
-  */
- struct ieee80211_mesh_fast_tx {
- 	struct rhash_head rhash;
--	u8 addr_key[ETH_ALEN] __aligned(2);
-+	struct ieee80211_mesh_fast_tx_key key;
- 
- 	struct ieee80211_fast_tx fast_tx;
- 	u8 hdr[sizeof(struct ieee80211s_hdr) + sizeof(rfc1042_header)];
-@@ -334,7 +363,8 @@ void mesh_path_tx_root_frame(struct ieee80211_sub_if_data *sdata);
- 
- bool mesh_action_is_path_sel(struct ieee80211_mgmt *mgmt);
- struct ieee80211_mesh_fast_tx *
--mesh_fast_tx_get(struct ieee80211_sub_if_data *sdata, const u8 *addr);
-+mesh_fast_tx_get(struct ieee80211_sub_if_data *sdata,
-+		 struct ieee80211_mesh_fast_tx_key *key);
- bool ieee80211_mesh_xmit_fast(struct ieee80211_sub_if_data *sdata,
- 			      struct sk_buff *skb, u32 ctrl_flags);
- void mesh_fast_tx_cache(struct ieee80211_sub_if_data *sdata,
-diff --git a/net/mac80211/mesh_pathtbl.c b/net/mac80211/mesh_pathtbl.c
-index 91b55d6a68b9..275f88074fac 100644
---- a/net/mac80211/mesh_pathtbl.c
-+++ b/net/mac80211/mesh_pathtbl.c
-@@ -37,8 +37,8 @@ static const struct rhashtable_params mesh_rht_params = {
- static const struct rhashtable_params fast_tx_rht_params = {
- 	.nelem_hint = 10,
- 	.automatic_shrinking = true,
--	.key_len = ETH_ALEN,
--	.key_offset = offsetof(struct ieee80211_mesh_fast_tx, addr_key),
-+	.key_len = sizeof(struct ieee80211_mesh_fast_tx_key),
-+	.key_offset = offsetof(struct ieee80211_mesh_fast_tx, key),
- 	.head_offset = offsetof(struct ieee80211_mesh_fast_tx, rhash),
- 	.hashfn = mesh_table_hash,
- };
-@@ -431,20 +431,21 @@ static void mesh_fast_tx_entry_free(struct mesh_tx_cache *cache,
  }
- 
- struct ieee80211_mesh_fast_tx *
--mesh_fast_tx_get(struct ieee80211_sub_if_data *sdata, const u8 *addr)
-+mesh_fast_tx_get(struct ieee80211_sub_if_data *sdata,
-+		 struct ieee80211_mesh_fast_tx_key *key)
- {
- 	struct ieee80211_mesh_fast_tx *entry;
- 	struct mesh_tx_cache *cache;
- 
- 	cache = &sdata->u.mesh.tx_cache;
--	entry = rhashtable_lookup(&cache->rht, addr, fast_tx_rht_params);
-+	entry = rhashtable_lookup(&cache->rht, key, fast_tx_rht_params);
- 	if (!entry)
- 		return NULL;
- 
- 	if (!(entry->mpath->flags & MESH_PATH_ACTIVE) ||
- 	    mpath_expired(entry->mpath)) {
- 		spin_lock_bh(&cache->walk_lock);
--		entry = rhashtable_lookup(&cache->rht, addr, fast_tx_rht_params);
-+		entry = rhashtable_lookup(&cache->rht, key, fast_tx_rht_params);
- 		if (entry)
- 		    mesh_fast_tx_entry_free(cache, entry);
- 		spin_unlock_bh(&cache->walk_lock);
-@@ -489,18 +490,24 @@ void mesh_fast_tx_cache(struct ieee80211_sub_if_data *sdata,
- 	if (!sta)
- 		return;
- 
-+	build.key.type = MESH_FAST_TX_TYPE_LOCAL;
- 	if ((meshhdr->flags & MESH_FLAGS_AE) == MESH_FLAGS_AE_A5_A6) {
- 		/* This is required to keep the mppath alive */
- 		mppath = mpp_path_lookup(sdata, meshhdr->eaddr1);
- 		if (!mppath)
- 			return;
- 		build.mppath = mppath;
-+		if (!ether_addr_equal(meshhdr->eaddr2, sdata->vif.addr))
-+			build.key.type = MESH_FAST_TX_TYPE_PROXIED;
- 	} else if (ieee80211_has_a4(hdr->frame_control)) {
- 		mppath = mpath;
- 	} else {
- 		return;
- 	}
- 
-+	if (!ether_addr_equal(hdr->addr4, sdata->vif.addr))
-+		build.key.type = MESH_FAST_TX_TYPE_FORWARDED;
+ EXPORT_SYMBOL_GPL(mt76_connac3_mac_decode_he_radiotap);
 +
- 	/* rate limit, in case fast xmit can't be enabled */
- 	if (mppath->fast_tx_check == jiffies)
- 		return;
-@@ -547,7 +554,7 @@ void mesh_fast_tx_cache(struct ieee80211_sub_if_data *sdata,
++static void *
++mt76_connac3_mac_radiotap_push_tlv(struct sk_buff *skb, u16 type, u16 len)
++{
++	struct ieee80211_radiotap_tlv *tlv;
++
++	tlv = skb_push(skb, sizeof(*tlv) + len);
++	tlv->type = cpu_to_le16(type);
++	tlv->len = cpu_to_le16(len);
++	memset(tlv->data, 0, len);
++
++	return tlv->data;
++}
++
++void mt76_connac3_mac_decode_eht_radiotap(struct sk_buff *skb, __le32 *rxv,
++					  u8 mode)
++{
++	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
++	struct ieee80211_radiotap_eht_usig *usig;
++	struct ieee80211_radiotap_eht *eht;
++	u32 ltf_size = le32_get_bits(rxv[4], MT_CRXV_HE_LTF_SIZE) + 1;
++	u8 bw = FIELD_GET(MT_PRXV_FRAME_MODE, le32_to_cpu(rxv[2]));
++
++	if (WARN_ONCE(skb_mac_header(skb) != skb->data,
++		      "Should push tlv at the top of mac hdr"))
++		return;
++
++	eht = mt76_connac3_mac_radiotap_push_tlv(skb, IEEE80211_RADIOTAP_EHT,
++						 sizeof(*eht) + sizeof(u32));
++	usig = mt76_connac3_mac_radiotap_push_tlv(skb, IEEE80211_RADIOTAP_EHT_USIG,
++						  sizeof(*usig));
++
++	status->flag |= RX_FLAG_RADIOTAP_TLV_AT_END;
++
++	eht->known |= EHT_BITS(KNOWN_SPATIAL_REUSE) |
++		      EHT_BITS(KNOWN_GI) |
++		      EHT_BITS(KNOWN_EHT_LTF) |
++		      EHT_BITS(KNOWN_LDPC_EXTRA_SYM_OM) |
++		      EHT_BITS(KNOWN_PE_DISAMBIGUITY_OM) |
++		      EHT_BITS(KNOWN_NSS_S);
++
++	eht->data[0] |=
++		EHT_PREP(DATA0_SPATIAL_REUSE, SR_MASK, rxv[13]) |
++		cpu_to_le32(FIELD_PREP(IEEE80211_RADIOTAP_EHT_DATA0_GI, status->eht.gi) |
++			    FIELD_PREP(IEEE80211_RADIOTAP_EHT_DATA0_LTF, ltf_size)) |
++		EHT_PREP(DATA0_PE_DISAMBIGUITY_OM, PE_DISAMBIG, rxv[5]) |
++		EHT_PREP(DATA0_LDPC_EXTRA_SYM_OM, LDPC_EXT_SYM, rxv[4]);
++
++	eht->data[7] |= le32_encode_bits(status->nss, IEEE80211_RADIOTAP_EHT_DATA7_NSS_S);
++
++	eht->user_info[0] |=
++		EHT_BITS(USER_INFO_MCS_KNOWN) |
++		EHT_BITS(USER_INFO_CODING_KNOWN) |
++		EHT_BITS(USER_INFO_NSS_KNOWN_O) |
++		EHT_BITS(USER_INFO_BEAMFORMING_KNOWN_O) |
++		EHT_BITS(USER_INFO_DATA_FOR_USER) |
++		le32_encode_bits(status->rate_idx, IEEE80211_RADIOTAP_EHT_USER_INFO_MCS) |
++		le32_encode_bits(status->nss, IEEE80211_RADIOTAP_EHT_USER_INFO_NSS_O);
++
++	if (le32_to_cpu(rxv[0]) & MT_PRXV_TXBF)
++		eht->user_info[0] |= EHT_BITS(USER_INFO_BEAMFORMING_O);
++
++	if (le32_to_cpu(rxv[0]) & MT_PRXV_HT_AD_CODE)
++		eht->user_info[0] |= EHT_BITS(USER_INFO_CODING);
++
++	if (mode == MT_PHY_TYPE_EHT_MU)
++		eht->user_info[0] |= EHT_BITS(USER_INFO_STA_ID_KNOWN) |
++				     EHT_PREP(USER_INFO_STA_ID, MU_AID, rxv[8]);
++
++	usig->common |=
++		EHT_BITS(USIG_COMMON_PHY_VER_KNOWN) |
++		EHT_BITS(USIG_COMMON_BW_KNOWN) |
++		EHT_BITS(USIG_COMMON_UL_DL_KNOWN) |
++		EHT_BITS(USIG_COMMON_BSS_COLOR_KNOWN) |
++		EHT_BITS(USIG_COMMON_TXOP_KNOWN) |
++		le32_encode_bits(0, IEEE80211_RADIOTAP_EHT_USIG_COMMON_PHY_VER) |
++		le32_encode_bits(bw, IEEE80211_RADIOTAP_EHT_USIG_COMMON_BW) |
++		EHT_PREP(USIG_COMMON_UL_DL, UPLINK, rxv[5]) |
++		EHT_PREP(USIG_COMMON_BSS_COLOR, BSS_COLOR, rxv[9]) |
++		EHT_PREP(USIG_COMMON_TXOP, TXOP_DUR, rxv[9]);
++}
++EXPORT_SYMBOL_GPL(mt76_connac3_mac_decode_eht_radiotap);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
+index 83dcd964bfd0..353e66069840 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
+@@ -142,6 +142,28 @@ enum {
+ #define MT_CRXV_HE_RU3_L		GENMASK(31, 27)
+ #define MT_CRXV_HE_RU3_H		GENMASK(3, 0)
+ 
++#define MT_CRXV_EHT_NUM_USER		GENMASK(26, 20)
++#define MT_CRXV_EHT_LTF_SIZE		GENMASK(28, 27)
++#define MT_CRXV_EHT_LDPC_EXT_SYM	BIT(30)
++#define MT_CRXV_EHT_PE_DISAMBIG		BIT(1)
++#define MT_CRXV_EHT_UPLINK		BIT(2)
++#define MT_CRXV_EHT_MU_AID		GENMASK(27, 17)
++#define MT_CRXV_EHT_BEAM_CHNG		BIT(29)
++#define MT_CRXV_EHT_DOPPLER		BIT(0)
++#define MT_CRXV_EHT_BSS_COLOR		GENMASK(15, 10)
++#define MT_CRXV_EHT_TXOP_DUR		GENMASK(23, 17)
++#define MT_CRXV_EHT_SR_MASK		GENMASK(11, 8)
++#define MT_CRXV_EHT_SR1_MASK		GENMASK(15, 12)
++#define MT_CRXV_EHT_SR2_MASK		GENMASK(19, 16)
++#define MT_CRXV_EHT_SR3_MASK		GENMASK(23, 20)
++#define MT_CRXV_EHT_RU0			GENMASK(8, 0)
++#define MT_CRXV_EHT_RU1			GENMASK(17, 9)
++#define MT_CRXV_EHT_RU2			GENMASK(26, 18)
++#define MT_CRXV_EHT_RU3_L		GENMASK(31, 27)
++#define MT_CRXV_EHT_RU3_H		GENMASK(3, 0)
++#define MT_CRXV_EHT_SIG_MCS		GENMASK(19, 18)
++#define MT_CRXV_EHT_LTF_SYM		GENMASK(22, 20)
++
+ enum tx_header_format {
+ 	MT_HDR_FORMAT_802_3,
+ 	MT_HDR_FORMAT_CMD,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+index 1b9fbd9a140d..c2460ef4993d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+@@ -590,14 +590,25 @@ mt7925_mac_fill_rx(struct mt792x_dev *dev, struct sk_buff *skb)
+ 			seq_ctrl = le16_to_cpu(hdr->seq_ctrl);
+ 			qos_ctl = *ieee80211_get_qos_ctl(hdr);
  		}
++		skb_set_mac_header(skb, (unsigned char *)hdr - skb->data);
+ 	} else {
+ 		status->flag |= RX_FLAG_8023;
  	}
  
--	memcpy(build.addr_key, mppath->dst, ETH_ALEN);
-+	memcpy(build.key.addr, mppath->dst, ETH_ALEN);
- 	build.timestamp = jiffies;
- 	build.fast_tx.band = info->band;
- 	build.fast_tx.da_offs = offsetof(struct ieee80211_hdr, addr3);
-@@ -646,12 +653,18 @@ void mesh_fast_tx_flush_addr(struct ieee80211_sub_if_data *sdata,
- 			     const u8 *addr)
- {
- 	struct mesh_tx_cache *cache = &sdata->u.mesh.tx_cache;
-+	struct ieee80211_mesh_fast_tx_key key = {};
- 	struct ieee80211_mesh_fast_tx *entry;
-+	int i;
+ 	mt792x_mac_assoc_rssi(dev, skb);
  
-+	ether_addr_copy(key.addr, addr);
- 	spin_lock_bh(&cache->walk_lock);
--	entry = rhashtable_lookup_fast(&cache->rht, addr, fast_tx_rht_params);
--	if (entry)
--		mesh_fast_tx_entry_free(cache, entry);
-+	for (i = 0; i < NUM_MESH_FAST_TX_TYPE; i++) {
-+		key.type = i;
-+		entry = rhashtable_lookup_fast(&cache->rht, &key, fast_tx_rht_params);
-+		if (entry)
-+			mesh_fast_tx_entry_free(cache, entry);
+-	if (rxv && mode >= MT_PHY_TYPE_HE_SU && !(status->flag & RX_FLAG_8023))
+-		mt76_connac3_mac_decode_he_radiotap(skb, rxv, mode);
++	if (rxv && !(status->flag & RX_FLAG_8023)) {
++		switch (status->encoding) {
++		case RX_ENC_EHT:
++			mt76_connac3_mac_decode_eht_radiotap(skb, rxv, mode);
++			break;
++		case RX_ENC_HE:
++			mt76_connac3_mac_decode_he_radiotap(skb, rxv, mode);
++			break;
++		default:
++			break;
++		}
 +	}
- 	spin_unlock_bh(&cache->walk_lock);
- }
  
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 685185dc04f9..6e24864f9a40 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -2763,7 +2763,10 @@ ieee80211_rx_mesh_fast_forward(struct ieee80211_sub_if_data *sdata,
- 			       struct sk_buff *skb, int hdrlen)
- {
- 	struct ieee80211_if_mesh *ifmsh = &sdata->u.mesh;
--	struct ieee80211_mesh_fast_tx *entry = NULL;
-+	struct ieee80211_mesh_fast_tx_key key = {
-+		.type = MESH_FAST_TX_TYPE_FORWARDED
-+	};
-+	struct ieee80211_mesh_fast_tx *entry;
- 	struct ieee80211s_hdr *mesh_hdr;
- 	struct tid_ampdu_tx *tid_tx;
- 	struct sta_info *sta;
-@@ -2772,9 +2775,13 @@ ieee80211_rx_mesh_fast_forward(struct ieee80211_sub_if_data *sdata,
- 
- 	mesh_hdr = (struct ieee80211s_hdr *)(skb->data + sizeof(eth));
- 	if ((mesh_hdr->flags & MESH_FLAGS_AE) == MESH_FLAGS_AE_A5_A6)
--		entry = mesh_fast_tx_get(sdata, mesh_hdr->eaddr1);
-+		ether_addr_copy(key.addr, mesh_hdr->eaddr1);
- 	else if (!(mesh_hdr->flags & MESH_FLAGS_AE))
--		entry = mesh_fast_tx_get(sdata, skb->data);
-+		ether_addr_copy(key.addr, skb->data);
-+	else
-+		return false;
-+
-+	entry = mesh_fast_tx_get(sdata, &key);
- 	if (!entry)
- 		return false;
- 
+ 	if (!status->wcid || !ieee80211_is_data_qos(fc))
+ 		return 0;
 -- 
-2.44.0
+2.18.0
 
 
