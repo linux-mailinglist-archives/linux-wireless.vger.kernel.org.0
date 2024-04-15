@@ -1,116 +1,145 @@
-Return-Path: <linux-wireless+bounces-6353-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6354-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 403ED8A5DF8
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 01:02:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA52C8A5E4F
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 01:31:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECCE02827A6
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Apr 2024 23:02:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 693FA1F22507
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Apr 2024 23:31:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFD4D158859;
-	Mon, 15 Apr 2024 23:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CBE31591F8;
+	Mon, 15 Apr 2024 23:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="e0OjPhoy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QCWUd8az"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6642F1B80F;
-	Mon, 15 Apr 2024 23:02:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67CC5158DDD;
+	Mon, 15 Apr 2024 23:31:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713222164; cv=none; b=Mxeb4pRHpPmuoWePJbqNckrJ28s1tLh5mOeqyczmS8CfkGyU8cC0KBZfzhyA+Y5X7oV1FzeOfqkLyEJGcNTN3HOWAuLWnJuO1yg0dQgDqlgsffxXaCH8SgBYAW07QmrXQhJy5p++N51xPK+ntfG5OS/4EFFsll0iR6TERXZ4dCw=
+	t=1713223872; cv=none; b=lqM2cStsfA5Tqajuy43YjzKRHkXBsg3tBBMfVzpA8kWVms3sT7aKwhoQzKtTW1qHQI4DLqCufGihNwnn0uKTYgAy0sGbRZXHWGRVkxqpI1qjLG2FFfaIpdRlOc6sT+/9GdL0PE2aYYho0wynlS6DwQNeIp8oer6A5bWU7DSP/iI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713222164; c=relaxed/simple;
-	bh=gxV1Ph97a/W74A6F8z4TFcPgXcQsydxRjPH6L9WEsnc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=VZyR9DV7SlPoDVflII4NBm69mKGcGY3NcLqn0rMQpHG8PqOEYVVqBVE6ekp0PltOr7mxj7GF9TrnAEov3qrD74MyQBukSNNudwZhTlMrY1R9m6WaPMpG7ImLBhhoX8Aora3gJX/KeM3mK7TqTsilXm8P51shlaEI9t9hoR3xVTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=e0OjPhoy; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43FMVsUa029113;
-	Mon, 15 Apr 2024 23:02:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=LD3APBpY44Us7u2kLbQJnxGyxFIwkWHb8n4qwYdex5k=; b=e0
-	OjPhoy3FpYydg6g+DG/PUnjLgce9/CsRDxayh9qMi+fGQcDeBMlakZykGzG7lg8a
-	mve33hAee+J8jCLbPt7Zh06irE5stYn9RiP8JSKnJq509FdJzhrYO5M2G87ZOMag
-	ddru1sjLE1mDcnY1OcCJBV/xdFS3iETCYAFn22PnN/5cS09qvHeNJ5btM8C/CEkD
-	4z/PevbxArsBb68liZ5Mh0cSAM/WAdQqqm9sp1ySRg7l9lwI26UutnSsydrw8FSc
-	Q4+9dovKtlzWnnqOGS5KR32V50RDMmfgxjuUktVbFbMWoQ8ENeDRiD8pmVaCrY18
-	U1JsmvBAAQsWf3jsG77Q==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xh25ghqet-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Apr 2024 23:02:32 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43FN2VHF020789
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Apr 2024 23:02:31 GMT
-Received: from [10.110.3.16] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 15 Apr
- 2024 16:02:30 -0700
-Message-ID: <a4e7ae9c-aaae-4f62-af2f-e7c58e65d465@quicinc.com>
-Date: Mon, 15 Apr 2024 16:02:29 -0700
+	s=arc-20240116; t=1713223872; c=relaxed/simple;
+	bh=2ako3/VsGj0B0JAvKI2djip7wX7ZZIyY6plsqbNFJ6Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=iWP44kAAU44iowKwcAAv5Ypy39kWDAdQAOh6kngOCUBEtyelNKxij7QK3yfOAoSHL6uw4BnOWwssRev+m07pq6nFaNTt/B/AJn0jmDmg6KfYgPybBmxjZctJVEkd3ynfokTJDJENayjSnzBFeyQxf1q5d7pGKe3pESpvIvqnla0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QCWUd8az; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-343c7fae6e4so3138494f8f.1;
+        Mon, 15 Apr 2024 16:31:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713223869; x=1713828669; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gIxRU79oSK//Uerme6kXym29Xbe+6F4+ro/QfQDfXsA=;
+        b=QCWUd8azqwPTyNpfphvzLPoo4gqSfgEGbxTW7hKDz9KHlkkLv1qp4IvEhuwWAZ0tZh
+         y6uerVvaZJwUGATUh2P70fOvJw6UxxXoisMfbtk0+4k655PBVI5z3Me0CPyFnEqIh9aa
+         0lvTnMe+S6ucxBlk34vZzbA2JKtq1P3EzSCXp8O9sT2gj/a5lEKbTh8rjQDHgRR9Z0gH
+         XxotTFEe6gQAvnkduWJHJOkZ+ENNVxGJ/pEY+Ctsdaiq9p/H+hu6FUXjU8l0dN9Aug7O
+         o5vZ56s1CywVajgwW0XfSPZQFeThLnKKaLTEviLtgWhEToHQh76PZOG3duumQu1iwMcr
+         GNIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713223869; x=1713828669;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gIxRU79oSK//Uerme6kXym29Xbe+6F4+ro/QfQDfXsA=;
+        b=qwA010qPwFlwsDW+Lst7sabQyKaiY8ZCQwsfAHCpUU4kas2P94k+iU05GA3t0gz/G2
+         6tqtKI0gSijKhxTikoILn2LRuutT9C3bEXxo4iP+bYJQadcdD8MjZmBCmqazAIyttvuP
+         zSrXZcRKJKBY4aTDevwnvlU6TgQ7E4paZEQsfVsO1wNbBmuwiA4LKhMuNqLlqmwMXnZ9
+         mqieSctomNtdoeMmDpl7l3oO39+0MLnsBWcfE3+sjOi8q7eOH1pE8twjMkuh3VZn4Zpt
+         NsPAQh5g1Z9Iv2QCIZQMmfPxGN2dUCqWK82QJ3EJbrCyKKsHCLP4BzKpDPY/kKvP+Qxd
+         aK4w==
+X-Forwarded-Encrypted: i=1; AJvYcCVWj0A1IXtrPzBkgXZN7TncFySvKnExTnHH/B7jypD+Z18nIP+iGLwZ4JluZsbhzBZGhhWDgurF/JAgeDkN6ykffrQbtXxokNfxtzvffdZXZwTcZT1gP/eojgR1YqSj0QGuPoNVZ3LSN9nsimQ=
+X-Gm-Message-State: AOJu0YxknReNMTKJMWMNMn4JKj206So+uTlEFynqXbDBd4oI49zXTqPM
+	2asddiNkaaxLbFB/pmzXfZbFsAODeX6oUIx+bHpRceSSxNah5oh3
+X-Google-Smtp-Source: AGHT+IHtBAtR5aP/qBxhvoCn1aJ38IOOJvIXGK5uO3kqyaqbOl/8XVrUVWeApXqIl4fycQ7VP4mVvA==
+X-Received: by 2002:a5d:6484:0:b0:346:47d6:5d17 with SMTP id o4-20020a5d6484000000b0034647d65d17mr9194707wri.57.1713223868408;
+        Mon, 15 Apr 2024 16:31:08 -0700 (PDT)
+Received: from lewis-nuc.. (0.8.5.0.4.e.2.b.b.7.e.1.3.e.2.b.2.5.b.3.a.b.d.1.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:1dba:3b52:b2e3:1e7b:b2e4:580])
+        by smtp.googlemail.com with ESMTPSA id cg17-20020a5d5cd1000000b0033e7a102cfesm10402318wrb.64.2024.04.15.16.31.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Apr 2024 16:31:07 -0700 (PDT)
+From: Lewis Robbins <lewis.robbins2@gmail.com>
+To: kvalo@kernel.org
+Cc: lewis.robbins2@gmail.com,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	pkshih@realtek.com
+Subject: Re: [PATCH] wifi: rtw88: reduce failed to flush queue severity
+Date: Tue, 16 Apr 2024 00:28:38 +0100
+Message-ID: <20240415232837.388945-2-lewis.robbins2@gmail.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <87le5ey52e.fsf@kernel.org>
+References: <87le5ey52e.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: ath11k: Fix error handling in
- ath11k_wmi_p2p_noa_event()
-Content-Language: en-US
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Kalle Valo
-	<kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
-        Kang Yang
-	<quic_kangyang@quicinc.com>
-CC: <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        "Kalle
- Valo" <quic_kvalo@quicinc.com>,
-        <linux-wireless@vger.kernel.org>, <ath11k@lists.infradead.org>
-References: <07f1fc75b2d5b4173ae1b7bb1da5be7f6fc608c8.1713212781.git.christophe.jaillet@wanadoo.fr>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <07f1fc75b2d5b4173ae1b7bb1da5be7f6fc608c8.1713212781.git.christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: _vjyx1FuakXJ5kezIV8e6P3iLy7hZPF3
-X-Proofpoint-ORIG-GUID: _vjyx1FuakXJ5kezIV8e6P3iLy7hZPF3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-15_18,2024-04-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 bulkscore=0
- spamscore=0 priorityscore=1501 malwarescore=0 mlxscore=0 adultscore=0
- impostorscore=0 lowpriorityscore=0 mlxlogscore=999 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2404150153
+Content-Transfer-Encoding: 8bit
 
-On 4/15/2024 1:26 PM, Christophe JAILLET wrote:
-> if (noa_descriptors > WMI_P2P_MAX_NOA_DESCRIPTORS), there is a mix of
-> return and goto. In such a case, 'td' should be freed to avoid a memory
-> leak.
-> 
-> While at it, change ath11k_wmi_p2p_noa_event() to return void.
-> '0' was returned in all cases, even in case of error and the only caller
-> does not handle the return value.
-> This is also more consistent with most of functions called from
-> ath11k_wmi_tlv_op_rx().
-> 
-> Fixes: 2408379f15a1 ("wifi: ath11k: implement handling of P2P NoA event")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Ping-Ke Shih <pkshih@realtek.com> writes:
 
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Lewis Robbins <lewis.robbins2@gmail.com> wrote:
+>> 
+>> Reduce the log message severity when we fail to flush device priority
+>> queue. If a system has a lot of traffic, we may fail to flush the queue
+>> in time. This generates a lot of messages in the kernel ring buffer. As
+>> this is a common occurrence, we should use dev_info instead of dev_warn.
+>> 
+>> Signed-off-by: Lewis Robbins <lewis.robbins2@gmail.com>
+>
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+>
+> I'd like to know situations of " If a system has a lot of traffic...". 
+> Did you scan or do something during traffic?
 
+So, after digging a bit more, it seems you're right this only happens during a
+scan. The log message itself is repeated about 5-10x.
+
+Kalle Valo <kvalo@kernel.org> writes:
+
+> The driver shouldn't print any warnings in normal usage, even using info
+> level. If this is expected scenario then maybe change it to debug print?
+> Or if is this an actual bug then it's better try to investigate and fix
+> it.
+
+I have the stack-trace:
+
+[23838.633664] rtw_8821ce 0000:02:00.0: timed out to flush queue 2
+[23838.633685] CPU: 1 PID: 363059 Comm: kworker/u8:1 Tainted G 6.8.5
+[23838.633698] Hardware name:  /, BIOS 5.26 09/26/2023
+[23838.633704] Workqueue: events_unbound cfg80211_wiphy_work [cfg80211]
+[23838.633881] Call Trace:
+[23838.633889]  <TASK>
+[23838.633898]  dump_stack_lvl+0x47/0x60
+[23838.633918]  rtw_mac_flush_queues+0x148/0x190 [rtw88_core 0d7ad2d9d6116c633c0aab4e7bc6016d572d75d4]
+[23838.633993]  rtw_ops_flush+0x5a/0x70 [rtw88_core 0d7ad2d9d6116c633c0aab4e7bc6016d572d75d4]
+[23838.634056]  __ieee80211_flush_queues+0x10b/0x2e0 [mac80211 5d0b446baffe1290bc56d55aa496e941688b7b40]
+[23838.634309]  ieee80211_scan_work+0x3e3/0x520 [mac80211 5d0b446baffe1290bc56d55aa496e941688b7b40]
+[23838.634494]  cfg80211_wiphy_work+0xa7/0xe0 [cfg80211 b36d5437ba649ace42ea92e8f83a3ec499e0d5b7]
+[23838.634646]  process_one_work+0x178/0x350
+[23838.634660]  worker_thread+0x30f/0x450
+[23838.634670]  ? __pfx_worker_thread+0x10/0x10
+[23838.634678]  kthread+0xe5/0x120
+[23838.634691]  ? __pfx_kthread+0x10/0x10
+[23838.634702]  ret_from_fork+0x31/0x50
+[23838.634714]  ? __pfx_kthread+0x10/0x10
+[23838.634724]  ret_from_fork_asm+0x1b/0x30
+[23838.634736]  </TASK>
+
+I'm not sure as to the cause. If the flush operation takes a long time do we 
+need to release any mutexes etc? And if this is just a hardware issue, then we
+can do a debug print as you say.
+
+BugZilla: https://bugzilla.kernel.org/show_bug.cgi?id=218697
 
