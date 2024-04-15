@@ -1,278 +1,296 @@
-Return-Path: <linux-wireless+bounces-6323-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6324-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EF208A50F4
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Apr 2024 15:20:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 479718A525C
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Apr 2024 15:54:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92D9C1C21D92
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Apr 2024 13:20:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6EC71F22AFA
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Apr 2024 13:54:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99E987603A;
-	Mon, 15 Apr 2024 13:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF2B16AF88;
+	Mon, 15 Apr 2024 13:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="XmQe0uas"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="L76KhHqE"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D95128828
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Apr 2024 13:03:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8713F73189
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Apr 2024 13:53:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713186237; cv=none; b=bgHksrnT1HKLKELC22JKbGHAUM6LyRaSGL9WIEaTv/s3IF/xdaRpR394DYzakVz4e5ot34QmyPma3X+sSiQrLNcA91wQht2uUC9NoHm91mqDQQUl5uvzPjKFMXViiCVIkRr71cZtAHyJOhZO7uvnJ6aVvCd/39u72yg/q+8vAS0=
+	t=1713189238; cv=none; b=c3zv6G1IW+v30hI+WMfYfB+dkZrCPlFQ6f+zlHfIYVHYOS1ow5JXLyNXztf/bJKthioKroN5qcmBFoF0IUPFSeeCNvab8v1NP41tRDVQ1MlmwKmgd7+PYbjLDR+f/uKS4O0NfbTRS3mm4eR1MKb3wy2e+UNiDqAI9v2aBHFzg1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713186237; c=relaxed/simple;
-	bh=XfmNsSw/Ml09+oEaJtrOu+01PAalDhb1mp3jbRBDvRU=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=R0ca2gfgApvnaR116XnhND/nPkmi0q5G5D5wyWQs/0BpQUQV4+HWdbp4JyJzMDIEvPng9/SNUOCiSRiTvcM8iThPKb+abQhY331uOt9kLJdkfsHqA61JY0c5E+GeWnQBmQdLn7HCkoSeO9jadMiWl765H6Ihb7P2UmxeBjVecgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=XmQe0uas; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 970da290fb2811ee935d6952f98a51a9-20240415
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=cO+Nz6pWljWFlGjF8bOfXSxVNHA9wkQKw71vbqy+eKA=;
-	b=XmQe0uas4BSjRAZFKJ647ecisdnLWWlSAjHPWxpIHQW6sIrVItmLuJd4Iv3sb3+1+R6EL5pVsgqMljVwZuPd5DeohVs1tcOTnF94iHXi2eG1FF7botXkT655DF4130ohDjit3R6h6GHEdZVVuocGL19oaSQpIBXf8Ibdc6vyLLs=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.38,REQID:6bb45bcc-c48a-443e-8d11-2e188af27a6b,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:82c5f88,CLOUDID:75ab3286-8d4f-477b-89d2-1e3bdbef96d1,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
-	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-UUID: 970da290fb2811ee935d6952f98a51a9-20240415
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
-	(envelope-from <deren.wu@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 117503837; Mon, 15 Apr 2024 21:03:44 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Mon, 15 Apr 2024 21:03:44 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Mon, 15 Apr 2024 21:03:44 +0800
-From: Deren Wu <deren.wu@mediatek.com>
-To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>
-CC: Sean Wang <sean.wang@mediatek.com>, Soul Huang <Soul.Huang@mediatek.com>,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>, Leon Yen
-	<Leon.Yen@mediatek.com>, Allan Wang <allan.wang@mediatek.com>, KM Lin
-	<km.lin@mediatek.com>, Robin Chiu <robin.chiu@mediatek.com>, CH Yeh
-	<ch.yeh@mediatek.com>, Posh Sun <posh.sun@mediatek.com>, Quan Zhou
-	<quan.zhou@mediatek.com>, Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen
-	<shayne.chen@mediatek.com>, linux-wireless <linux-wireless@vger.kernel.org>,
-	linux-mediatek <linux-mediatek@lists.infradead.org>, Deren Wu
-	<deren.wu@mediatek.com>
-Subject: [PATCH] wifi: mt76: mt7925: add EHT radiotap support in monitor mode
-Date: Mon, 15 Apr 2024 21:03:42 +0800
-Message-ID: <5553c30b820a299afce84a611562c21fbab6bb32.1713186083.git.deren.wu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+	s=arc-20240116; t=1713189238; c=relaxed/simple;
+	bh=p1Oz0/fkBK3Sx7+8neDk8FUQ9mDgOGrvBvyBFWqT2wY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MJHuiWUXQ2z1pfp4+pmrQUYMzNDdefWAwj1Iita6eOCBNdSx4IEPvVO2FUuo/MfHXOQ468ZZBg9Lrmf+gT5pOtM6zSYD8z/XPG5lrzr3Hh0JSRUakFblmX3paVHmaayoUaHfEm31czNhGzTdYDmb+k49h2n6MZ/aWrh3Ih3vZVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=L76KhHqE; arc=none smtp.client-ip=148.163.129.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id E81D9340070;
+	Mon, 15 Apr 2024 13:53:48 +0000 (UTC)
+Received: from [192.168.1.23] (unknown [98.97.34.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id 2348013C2B0;
+	Mon, 15 Apr 2024 06:53:47 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 2348013C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1713189227;
+	bh=p1Oz0/fkBK3Sx7+8neDk8FUQ9mDgOGrvBvyBFWqT2wY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=L76KhHqEQjaDYS60REuqIU1eW46l2b516RNtOPU9NGV8SByzdXptWKXu3QlCaYLZP
+	 FA9Yq3cc9Or87JwKk1muIBSGmSy/62kokDZo1oqhRPOcxoixXueiQLgDAJNgAO/lwS
+	 wB7SFOvvnW5XDmvIfpc7LYROZM5S8PzapLIfoO34=
+Message-ID: <53261b3c-e286-4f82-811c-6e9ef82ac8fc@candelatech.com>
+Date: Mon, 15 Apr 2024 06:53:46 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK: N
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/13] wifi: cfg80211: Add provision to advertise multiple
+ radio in one wiphy
+To: Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+ ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+References: <20240328072916.1164195-1-quic_periyasa@quicinc.com>
+ <20240328072916.1164195-2-quic_periyasa@quicinc.com>
+ <e36599d3269496de59505b36be46f873976f8706.camel@sipsolutions.net>
+ <033185b0-f878-a50b-d0d9-57fa79439bdf@quicinc.com>
+ <ef6b6a7a4a9d3b01c0eb6abf0991e7e27425e102.camel@sipsolutions.net>
+ <80fe5786-f764-455d-ac44-22adf7aeaf94@candelatech.com>
+ <31f30c0e318904f3a082c7f213576ceb1f407141.camel@sipsolutions.net>
+ <20b56e52-a5e2-70cd-a62a-8c4a3526c2cf@candelatech.com>
+ <614bb8a8f1d9174ad7d87cf7636f657cda7b1ef9.camel@sipsolutions.net>
+ <72f491f8-dd3a-0c9e-7490-4d51c86f2102@candelatech.com>
+ <cb991a00-fce2-5a3d-c03f-579b44f922f5@quicinc.com>
+ <87de72e9-1d3b-b401-a712-9fe8734515b6@candelatech.com>
+ <31aa6b18-8ca4-e4ce-f693-e818fc7e6932@quicinc.com>
+ <dbd51b99-8472-2641-7493-6b91e384b4b6@candelatech.com>
+ <c44e6c1e-431b-1641-3ecd-18c49a902170@quicinc.com>
+Content-Language: en-MW
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <c44e6c1e-431b-1641-3ecd-18c49a902170@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-MDID: 1713189230-x_eEjYEGzCsm
+X-MDID-O:
+ us5;ut7;1713189230;x_eEjYEGzCsm;<greearb@candelatech.com>;e45dbe21c4fc86b950914d8831baea70
 
-Add IEEE80211_RADIOTAP_EHT and IEEE80211_RADIOTAP_EHT_USIG radiotap
-to fill in EHT information, such as MCS, NSS, GI and bandwidth.
+On 4/14/24 08:52, Vasanthakumar Thiagarajan wrote:
+> 
+> 
+> On 4/12/2024 9:28 PM, Ben Greear wrote:
+>> On 4/12/24 07:31, Vasanthakumar Thiagarajan wrote:
+>>>
+>>>
+>>> On 4/12/2024 7:38 PM, Ben Greear wrote:
+>>>> On 4/11/24 21:11, Vasanthakumar Thiagarajan wrote:
+>>>>>
+>>>>>
+>>>>> On 4/11/2024 2:33 AM, Ben Greear wrote:
+>>>>>> On 4/10/24 08:42, Johannes Berg wrote:
+>>>>>>> On Wed, 2024-04-10 at 07:37 -0700, Ben Greear wrote:
+>>>>>>>> On 4/10/24 00:56, Johannes Berg wrote:
+>>>>>>>>> On Fri, 2024-03-29 at 07:47 -0700, Ben Greear wrote:
+>>>>>>>>>> On 3/29/24 07:30, Johannes Berg wrote:
+>>>>>>>>>>> On Fri, 2024-03-29 at 19:41 +0530, Vasanthakumar Thiagarajan wrote:
+>>>>>>>>>>>>>
+>>>>>>>>>>>>>> + * @hw_chans: list of the channels supported by every constituent underlying
+>>>>>>>>>>>>>> + *    hardware. Drivers abstracting multiple discrete hardware (radio) under
+>>>>>>>>>>>>>> + *    one wiphy can advertise the list of channels supported by each physical
+>>>>>>>>>>>>>> + *    hardware in this list. Underlying hardware specific channel list can be
+>>>>>>>>>>>>>> + *    used while describing interface combination for each of them.
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> I'd expect there to be a limit on channels being within a single band on
+>>>>>>>>>>>>> a single "hardware"?
+>>>>>>>>>>>>>
+>>>>>>>>>>>>
+>>>>>>>>>>>> There are ath12k hardware supporting multiple band which need to be
+>>>>>>>>>>>> registered under one mac80211_hw/wiphy. This design is to support such
+>>>>>>>>>>>> hardware.
+>>>>>>>>>>>
+>>>>>>>>>>> Oh OK, that was something that I didn't have in mind any more, or never
+>>>>>>>>>>> knew or paid attention to.
+>>>>>>>>>>
+>>>>>>>>>> Would it work to leave the phy reporting pretty much as it is now, but add
+>>>>>>>>>> a 'associated_peer_radios' list section, so that each phy could report the phys
+>>>>>>>>>> associated with it?  Then user-space, driver, mac80211 etc could look up the
+>>>>>>>>>> other phys as needed to get a full picture?
+>>>>>>>>>>
+>>>>>>>>>
+>>>>>>>>> There's not really a good way to _do_ that short of creating multiple
+>>>>>>>>> wiphys, but that causes _massive_ complexity in the stack (both cfg80211
+>>>>>>>>> and mac80211) so we rejected it years ago.
+>>>>>>>>
+>>>>>>>> I thought the problem ath12k is trying to fix is that there are currently multiple phys (radios) that needed to be made to
+>>>>>>>> look like a single phy?
+>>>>>>>
+>>>>>>> Correct.
+>>>>>>>
+>>>>>>>> For dual and tri-concurrent radios, I think we will need them to look like 3 individual radios for non-MLO use
+>>>>>>>> cases
+>>>>>>>
+>>>>>>> No, I don't see why, and if you want that we wouldn't support it anyway,
+>>>>>>> you'd have to have a module option or something to decide which way to
+>>>>>>> go.
+>>>>>>>
+>>>>>>> But it really ought to not be needed - the point of these patches is to
+>>>>>>> give userspace enough information to know how to (and where) to create
+>>>>>>> separate BSSes, with or without MLO between them.
+>>>>>>>
+>>>>>>>> For instance, mt7996 currently reports 3 single-band wiphys, and each can be used independently.
+>>>>>>>> But assuming it starts supporting MLO, then those 3 single band wiphys will need to start acting
+>>>>>>>> at least somewhat like a single entity
+>>>>>>>
+>>>>>>> Yes.
+>>>>>>>
+>>>>>>>> (while also concurrently being able to act as individual
+>>>>>>>> wiphys so that one can do a mix of MLO and non MLO sta/AP.)
+>>>>>>>
+>>>>>>> No.
+>>>>>>
+>>>>>> Hello Johannes,
+>>>>>>
+>>>>>> Is there any design document for the combined phy approach somewhere publicly available?
+>>>>>>
+>>>>>> It is hard to understand the over all goals by just reading patches as they show up on
+>>>>>> the public mailing lists...
+>>>>>>
+>>>>>
+>>>>> Hi Ben,
+>>>>>
+>>>>> I dont think there is a document for this composite phy approach. But we try to clarify
+>>>>> as much as possible in the commit log and kernel-doc. Pls let us know the area which
+>>>>> is more appropriate to be clarified in the path.
+>>>>>
+>>>>> Vasanth
+>>>>
+>>>> I am worried that the whole approach has problems that would be better solved with different
+>>>> architecture.
+>>>
+>>>
+>>> If you see a better approach, please feel free to propose one (preferably some RFC) to solve the problem.
+>>>
+>>>    I understand that someone has made a decision to go with the combined
+>>>> approach,
+>>>> and I am sure they have reasons.  It would be good to see some details about how this combined
+>>>> approach can work in lots of different use cases, including with un-modified user-space,
+>>>
+>>> Unmodified user space sees all bands from same radio. I guess, driver can probably provide
+>>> some configuration knob to turn this off so that everything works a before but will not
+>>> be able to operate in MLO. Please note that, user space has to updated to get MLO
+>>> support anyway.
+>>>
+>>>   and
+>>>> including what changes *are* required in user-space to keep current features and control working
+>>>> with combined wiphy approach.
+>>>>
+>>>> My over-all concerns are that I feel user-space is still going to need to understand the individual
+>>>> underlying phys and be able to read/modify them individually.  Older radios will continue to have single phy
+>>>> mappings, so that must be supported pretty much forever.  So it seems there is going to be a huge amount
+>>>> of duplicated code up and down the stack and user-space.
+>>>>
+>>>
+>>> Not sure why there should be any duplication, perhaps when corresponding user space
+>>> (hostapd) changes will clarify most of these concerns.
+>>>
+>>>> Having your team grind on a large patch set that turns out to have fundamental flaws would be
+>>>> a huge waste of time for all involved.
+>>>>
+>>>
+>>> As said, please feel free to propose an alternate solution to address the issue.
+>>
+>> I do not know the particulars of your driver or driver's needs, but at high level:
+>> > *  Leave existing wiphy mapping as is.
+>> *  Allow adding new combined wiphy(s) on top of groups of underlying physical wiphys. Sort of
+>>     like bridges on top of Eth ports.
+>> *  The combined wiphy would report underlying wiphy's capabilities (for instance, a combined wiphy on top of
+>>     3 single band phys would report itself as tri-band).
+>> *  The combined wiphy would add new netlink field listing of its underlying wiphys. User-space wanting to control the combined
+>>     wiphy would generally configure the underlying phys (to set 2.4g channel to 6, you'd set the underlying 2.4g
+>>     wiphy to channel 6)
+>> *  This should require very minimal changes to user space, except of course for new code to actually utilize
+>>     the new combined wiphy.
+>> *  MLO links and any other logic that needs the combined view would live on the combined wiphy (I understand
+> 
+> Having MLO links on top of thins combined wiphy will not work because there is no difference in the way MLO and legacy interfaces are created. More over, at a 
+> given
+> time same STA can be either MLO or legacy based on the AP the STA is connected with.
 
-Co-developed-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
----
- .../net/wireless/mediatek/mt76/mt76_connac.h  |  2 +
- .../wireless/mediatek/mt76/mt76_connac3_mac.c | 85 +++++++++++++++++++
- .../wireless/mediatek/mt76/mt76_connac3_mac.h | 22 +++++
- .../net/wireless/mediatek/mt76/mt7925/mac.c   | 15 +++-
- 4 files changed, 122 insertions(+), 2 deletions(-)
+Your comment makes no sense to me.  Of course it could be made to work, but maybe it is more
+difficult that I imagine.  It is possible to make STA vdevs to use older wifi features than
+what the local radio and the peer radio support, and you can have one STA be /ac and another be
+/n on the same radio.  It should be possible to have one MLO capable STA, one /ax, one /ac, one /n,
+etc...  I do this now with some modest changes to supplicant and the kernel.  But if the
+underlying radios are obscured, I am not sure it can work without much more extensive
+changes.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-index 91987bdf239d..445d0f0ab779 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-@@ -451,4 +451,6 @@ void mt76_connac2_tx_token_put(struct mt76_dev *dev);
- /* connac3 */
- void mt76_connac3_mac_decode_he_radiotap(struct sk_buff *skb, __le32 *rxv,
- 					 u8 mode);
-+void mt76_connac3_mac_decode_eht_radiotap(struct sk_buff *skb, __le32 *rxv,
-+					  u8 mode);
- #endif /* __MT76_CONNAC_H */
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.c
-index 73e9f283d0ae..92ad1ecf6c9d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.c
-@@ -6,8 +6,11 @@
- #include "dma.h"
- 
- #define HE_BITS(f)		cpu_to_le16(IEEE80211_RADIOTAP_HE_##f)
-+#define EHT_BITS(f)		cpu_to_le32(IEEE80211_RADIOTAP_EHT_##f)
- #define HE_PREP(f, m, v)	le16_encode_bits(le32_get_bits(v, MT_CRXV_HE_##m),\
- 						 IEEE80211_RADIOTAP_HE_##f)
-+#define EHT_PREP(f, m, v)	le32_encode_bits(le32_get_bits(v, MT_CRXV_EHT_##m),\
-+						 IEEE80211_RADIOTAP_EHT_##f)
- 
- static void
- mt76_connac3_mac_decode_he_radiotap_ru(struct mt76_rx_status *status,
-@@ -180,3 +183,85 @@ void mt76_connac3_mac_decode_he_radiotap(struct sk_buff *skb, __le32 *rxv,
- 	}
- }
- EXPORT_SYMBOL_GPL(mt76_connac3_mac_decode_he_radiotap);
-+
-+static void *
-+mt76_connac3_mac_radiotap_push_tlv(struct sk_buff *skb, u16 type, u16 len)
-+{
-+	struct ieee80211_radiotap_tlv *tlv;
-+
-+	tlv = skb_push(skb, sizeof(*tlv) + len);
-+	tlv->type = cpu_to_le16(type);
-+	tlv->len = cpu_to_le16(len);
-+	memset(tlv->data, 0, len);
-+
-+	return tlv->data;
-+}
-+
-+void mt76_connac3_mac_decode_eht_radiotap(struct sk_buff *skb, __le32 *rxv,
-+					  u8 mode)
-+{
-+	struct mt76_rx_status *status = (struct mt76_rx_status *)skb->cb;
-+	struct ieee80211_radiotap_eht_usig *usig;
-+	struct ieee80211_radiotap_eht *eht;
-+	u32 ltf_size = le32_get_bits(rxv[4], MT_CRXV_HE_LTF_SIZE) + 1;
-+	u8 bw = FIELD_GET(MT_PRXV_FRAME_MODE, le32_to_cpu(rxv[2]));
-+
-+	if (WARN_ONCE(skb_mac_header(skb) != skb->data,
-+		      "Should push tlv at the top of mac hdr"))
-+		return;
-+
-+	eht = mt76_connac3_mac_radiotap_push_tlv(skb, IEEE80211_RADIOTAP_EHT,
-+						 sizeof(*eht) + sizeof(u32));
-+	usig = mt76_connac3_mac_radiotap_push_tlv(skb, IEEE80211_RADIOTAP_EHT_USIG,
-+						  sizeof(*usig));
-+
-+	status->flag |= RX_FLAG_RADIOTAP_TLV_AT_END;
-+
-+	eht->known |= EHT_BITS(KNOWN_SPATIAL_REUSE) |
-+		      EHT_BITS(KNOWN_GI) |
-+		      EHT_BITS(KNOWN_EHT_LTF) |
-+		      EHT_BITS(KNOWN_LDPC_EXTRA_SYM_OM) |
-+		      EHT_BITS(KNOWN_PE_DISAMBIGUITY_OM) |
-+		      EHT_BITS(KNOWN_NSS_S);
-+
-+	eht->data[0] |=
-+		EHT_PREP(DATA0_SPATIAL_REUSE, SR_MASK, rxv[13]) |
-+		cpu_to_le32(FIELD_PREP(IEEE80211_RADIOTAP_EHT_DATA0_GI, status->eht.gi) |
-+			    FIELD_PREP(IEEE80211_RADIOTAP_EHT_DATA0_LTF, ltf_size)) |
-+		EHT_PREP(DATA0_PE_DISAMBIGUITY_OM, PE_DISAMBIG, rxv[5]) |
-+		EHT_PREP(DATA0_LDPC_EXTRA_SYM_OM, LDPC_EXT_SYM, rxv[4]);
-+
-+	eht->data[7] |= le32_encode_bits(status->nss, IEEE80211_RADIOTAP_EHT_DATA7_NSS_S);
-+
-+	eht->user_info[0] |=
-+		EHT_BITS(USER_INFO_MCS_KNOWN) |
-+		EHT_BITS(USER_INFO_CODING_KNOWN) |
-+		EHT_BITS(USER_INFO_NSS_KNOWN_O) |
-+		EHT_BITS(USER_INFO_BEAMFORMING_KNOWN_O) |
-+		EHT_BITS(USER_INFO_DATA_FOR_USER) |
-+		le32_encode_bits(status->rate_idx, IEEE80211_RADIOTAP_EHT_USER_INFO_MCS) |
-+		le32_encode_bits(status->nss, IEEE80211_RADIOTAP_EHT_USER_INFO_NSS_O);
-+
-+	if (le32_to_cpu(rxv[0]) & MT_PRXV_TXBF)
-+		eht->user_info[0] |= EHT_BITS(USER_INFO_BEAMFORMING_O);
-+
-+	if (le32_to_cpu(rxv[0]) & MT_PRXV_HT_AD_CODE)
-+		eht->user_info[0] |= EHT_BITS(USER_INFO_CODING);
-+
-+	if (mode == MT_PHY_TYPE_EHT_MU)
-+		eht->user_info[0] |= EHT_BITS(USER_INFO_STA_ID_KNOWN) |
-+				     EHT_PREP(USER_INFO_STA_ID, MU_AID, rxv[8]);
-+
-+	usig->common |=
-+		EHT_BITS(USIG_COMMON_PHY_VER_KNOWN) |
-+		EHT_BITS(USIG_COMMON_BW_KNOWN) |
-+		EHT_BITS(USIG_COMMON_UL_DL_KNOWN) |
-+		EHT_BITS(USIG_COMMON_BSS_COLOR_KNOWN) |
-+		EHT_BITS(USIG_COMMON_TXOP_KNOWN) |
-+		le32_encode_bits(0, IEEE80211_RADIOTAP_EHT_USIG_COMMON_PHY_VER) |
-+		le32_encode_bits(bw, IEEE80211_RADIOTAP_EHT_USIG_COMMON_BW) |
-+		EHT_PREP(USIG_COMMON_UL_DL, UPLINK, rxv[5]) |
-+		EHT_PREP(USIG_COMMON_BSS_COLOR, BSS_COLOR, rxv[9]) |
-+		EHT_PREP(USIG_COMMON_TXOP, TXOP_DUR, rxv[9]);
-+}
-+EXPORT_SYMBOL_GPL(mt76_connac3_mac_decode_eht_radiotap);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
-index 83dcd964bfd0..353e66069840 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h
-@@ -142,6 +142,28 @@ enum {
- #define MT_CRXV_HE_RU3_L		GENMASK(31, 27)
- #define MT_CRXV_HE_RU3_H		GENMASK(3, 0)
- 
-+#define MT_CRXV_EHT_NUM_USER		GENMASK(26, 20)
-+#define MT_CRXV_EHT_LTF_SIZE		GENMASK(28, 27)
-+#define MT_CRXV_EHT_LDPC_EXT_SYM	BIT(30)
-+#define MT_CRXV_EHT_PE_DISAMBIG		BIT(1)
-+#define MT_CRXV_EHT_UPLINK		BIT(2)
-+#define MT_CRXV_EHT_MU_AID		GENMASK(27, 17)
-+#define MT_CRXV_EHT_BEAM_CHNG		BIT(29)
-+#define MT_CRXV_EHT_DOPPLER		BIT(0)
-+#define MT_CRXV_EHT_BSS_COLOR		GENMASK(15, 10)
-+#define MT_CRXV_EHT_TXOP_DUR		GENMASK(23, 17)
-+#define MT_CRXV_EHT_SR_MASK		GENMASK(11, 8)
-+#define MT_CRXV_EHT_SR1_MASK		GENMASK(15, 12)
-+#define MT_CRXV_EHT_SR2_MASK		GENMASK(19, 16)
-+#define MT_CRXV_EHT_SR3_MASK		GENMASK(23, 20)
-+#define MT_CRXV_EHT_RU0			GENMASK(8, 0)
-+#define MT_CRXV_EHT_RU1			GENMASK(17, 9)
-+#define MT_CRXV_EHT_RU2			GENMASK(26, 18)
-+#define MT_CRXV_EHT_RU3_L		GENMASK(31, 27)
-+#define MT_CRXV_EHT_RU3_H		GENMASK(3, 0)
-+#define MT_CRXV_EHT_SIG_MCS		GENMASK(19, 18)
-+#define MT_CRXV_EHT_LTF_SYM		GENMASK(22, 20)
-+
- enum tx_header_format {
- 	MT_HDR_FORMAT_802_3,
- 	MT_HDR_FORMAT_CMD,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-index 1b9fbd9a140d..c2460ef4993d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
-@@ -590,14 +590,25 @@ mt7925_mac_fill_rx(struct mt792x_dev *dev, struct sk_buff *skb)
- 			seq_ctrl = le16_to_cpu(hdr->seq_ctrl);
- 			qos_ctl = *ieee80211_get_qos_ctl(hdr);
- 		}
-+		skb_set_mac_header(skb, (unsigned char *)hdr - skb->data);
- 	} else {
- 		status->flag |= RX_FLAG_8023;
- 	}
- 
- 	mt792x_mac_assoc_rssi(dev, skb);
- 
--	if (rxv && mode >= MT_PHY_TYPE_HE_SU && !(status->flag & RX_FLAG_8023))
--		mt76_connac3_mac_decode_he_radiotap(skb, rxv, mode);
-+	if (rxv && !(status->flag & RX_FLAG_8023)) {
-+		switch (status->encoding) {
-+		case RX_ENC_EHT:
-+			mt76_connac3_mac_decode_eht_radiotap(skb, rxv, mode);
-+			break;
-+		case RX_ENC_HE:
-+			mt76_connac3_mac_decode_he_radiotap(skb, rxv, mode);
-+			break;
-+		default:
-+			break;
-+		}
-+	}
- 
- 	if (!status->wcid || !ieee80211_is_data_qos(fc))
- 		return 0;
+>>     from Johannes' comments this is a needed feature.)
+>> *  Or user can ignore that combined wiphy entirely and directly use underlying wiphys like we use them currently
+> 
+> But old user space will get confused with this new combined wiphy...
+
+I think new combined phy should not even exist by default, user-space would build it
+stacked on top of physical phys if user-space is modified to use MLO.  Old user-space
+would just see 3 single-band phys.
+
+>>     for sniffers, stations, aps, combinations thereof.
+>> *  Advanced use case could allow combined wiphy to use subset of underlying radios (add combined wiphy on 2.4 and 5g, use 6g for
+>>     dedicated mesh backhaul/whatever).
+> 
+> Not sure having parallel path one for legacy and the other one for advanced use cases
+> may not be a clean solution...
+
+I don't see it as parallel paths, more as stacked paths.  Underlying phys stay mostly the
+same as today, but the combined phy would know how to manage the underlying phys and
+act a bit like a pass-through phy.
+
+>> *  Interesting logic would be needed to deal with constraints to properly share the underlying resources (you could not
+>>     add 16 ap bssid to 2.4 wiphy and also add 16 other ones to the combined wiphy that also uses 2.4 radio most likely,
+>>     for instance).  But I think that logic has to be written
+>>     either way and is not overly worse with this approach.
+>>
+> 
+> Anyway, similar approach was considered before coming up the with the one that
+> this patch series implements. Due to complexities in cfg80211 and mac80211 all
+> options building MLO on top of multiple wiphy was rejected. Im not planning
+> to look into such approaches. Instead, the approach implemented in this patch
+> series has gone into extensive testings with corresponding changes in ath12k
+> driver and hostapd. Other than few items (concurrent scan is one additional
+> not mentioned explicitly) as mentioned in the cover letter to do list, things
+> look fine. But all these pending items can be addressed in follow-on patches.
+> We dont really see much complexities in hostapd implementations , we'll post
+> them once the kernel part is concluded.
+> 
+> Other than ability to run interface on multiple supported bands concurrently,
+> this patches series does not change anything else.
+
+Ok, I'll experiment with my preferred approach when mt7996 MLO driver patches
+are available.
+
+Thanks,
+Ben
+
+
+> 
+> Vasanth
+> 
+
 -- 
-2.18.0
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
 
