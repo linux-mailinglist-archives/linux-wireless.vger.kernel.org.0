@@ -1,118 +1,106 @@
-Return-Path: <linux-wireless+bounces-6403-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6404-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3237A8A7005
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 17:40:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF7E98A714E
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 18:26:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C63AB1F21FB4
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 15:40:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D1201C22420
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 16:26:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB77130E40;
-	Tue, 16 Apr 2024 15:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0311131BDA;
+	Tue, 16 Apr 2024 16:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gSHYndLg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b8CVKSO6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76932130491;
-	Tue, 16 Apr 2024 15:40:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C21131BCA
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Apr 2024 16:25:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713282043; cv=none; b=TOrPcFZpcqcGFvIAyG0V3eLYlh1UFhj9ezWT1kUZVDb6QOPIVKAbxY+DhkXkAQWATcf+2F/I5DKXwJ3MHoT8xqwmeiTTjpmmiE5Zw1HLcVdh+OeTla4mY4BkWFV8Dn39hSCd+jcSkZd/cFxlqmThr6zB4DM9uneReiu6TKr4r54=
+	t=1713284759; cv=none; b=Kt4g/CRsDXUlx044lMXrk4rf7ry3dJdDRQ9u/sxff10kedAHg7V19VgmhYxkQyg3B66l9dLcDbUCRn6oaYcU33KZfEEHx+ulEupt3I7VpxArs9BX8K9kbUehIuAmm8pp7+wlah3xL5z/aRiackcemGG6LziCPowKkNeL2ullDSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713282043; c=relaxed/simple;
-	bh=M8oXFOXC9510L1sS9yrQwCiqB9isOtApcFXKR6Um07A=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Jg9yqwHJXW7WbN5UeGKVEP/yAp+ZHkKxglcwjyJEqrB45MWdQaUzCNtQoq04Cmwde1QQ/kYxViGKuQismgIlxC7PfwtHvHK6+DihWfSSHN8gouEMK/Nb3LUMnhbXzJ/01bxRRlXC4Rg+lmiFQwaSHKXv1T3uUaHLra32fY7a/nM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gSHYndLg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 565EFC113CE;
-	Tue, 16 Apr 2024 15:40:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713282043;
-	bh=M8oXFOXC9510L1sS9yrQwCiqB9isOtApcFXKR6Um07A=;
-	h=Date:From:To:Cc:Subject:From;
-	b=gSHYndLgQ56O76u3RNiEF/RQ7gBGKZxI/UgP8M0MOMUZchr73UqFrltTx1Jaky37E
-	 2PDm6pZUSLadw3UTIQP6/kmZqgB2xo6Cs59UhIR5pc+Whxv2wKsc5sdxU7LBfRUgkk
-	 /de0az0CjUS1nwJTflxergcCYLsZ7ThrkvCkGGEMqmVkyTeOVNsf+LT+zmiCuRi6+/
-	 n2UhOXE8XK2MWY+jWNPueo3zeu9IWC6rwmSTjq0OLWCnXVu8Rh/4bLW2DIBKw0r3iW
-	 XcDfBGWrT08PV3LlFv0oeQ5c5V2rzeeJ/dhyGwUAwEkfyFaPHA7b8nvCo+I0jlMk2B
-	 yeRmPWg/pZ3iA==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1rwkvL-000000005yE-0UE6;
-	Tue, 16 Apr 2024 17:40:43 +0200
-Date: Tue, 16 Apr 2024 17:40:43 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
-Cc: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: ath11k: WCN6855: possible ring buffer corruption
-Message-ID: <Zh6b-38tGGXo-ee7@hovoldconsulting.com>
+	s=arc-20240116; t=1713284759; c=relaxed/simple;
+	bh=5NW1DOXe/vrR53Z5kE76RMVXFMmVJjpQH5L2MMqEamk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IGv9v8ovruCYaQGD2WqSPWaR97lfvgVmu8LzAFhFjEuJaIK7M5B4TJOmY5dOyyUwhwrzKodqkKU16mq511/dilwtXSeYx0Axk9hd3ibo+Nf0vy2vKjQUXBPUnqSOABcWMa++JniWveb7lGGvcrUZF7nmr2zhN+2H0duLqAUqvy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b8CVKSO6; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4167fce0a41so31501655e9.0
+        for <linux-wireless@vger.kernel.org>; Tue, 16 Apr 2024 09:25:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713284756; x=1713889556; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=5NW1DOXe/vrR53Z5kE76RMVXFMmVJjpQH5L2MMqEamk=;
+        b=b8CVKSO6xv7sNsVrxu9i1NxvVMWFcgTPeR3BUhBZSFEj5XsOuUitGx9CANZIJwKaEq
+         bqPlRgzRlUkzVFmwLdrFiMT9EwKqRvfmkY3SS9dq7jFaC78OGkm7oOnh+dG2/fwRLOQ/
+         WCkelwSWK0xzE37Bx6dPcxoINelmwHace1KaYwAJvs6zd8Da9k6Vh5kOqjCZvSVp/sRN
+         tyG1yF4ovUdNsMJL5uLh3hGQdFLvL5zqEfO7pNcO4MayS1K1QO30KVKoCWmiNfXCY15l
+         Eh8bts1CZFURYL69wZtNvTX/XyzTQ/lIXicBjy1SqgFU6oPnplGvrCOMCcPjbHtQo3ut
+         RJXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713284756; x=1713889556;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5NW1DOXe/vrR53Z5kE76RMVXFMmVJjpQH5L2MMqEamk=;
+        b=A4K7vTa5oVQICJSrN6VfYBu1dyN3Dw0Yv3Ws3kWO2/a9jzll9RS0HASZLS9WiWDqdZ
+         fJ0WJjCvYmP2dPK43jLYMPqUD9082nPV4dGKil9TAy0kjNVH7GCA6Sx73kgz4WSTIi3w
+         EmfLJ2YV0vhaPgjP2o2SJEvAD038PlY7iULWL0WdGJmtWKIBMxCtENqId17pETw3budm
+         WbjQirMmFHmMj8mL4ZSSX6kOxXfS/RzZzluRWE0F+5mddRbZg5KPi8qeg2k1kpemGuXy
+         bKJaFOyl/8ToeTFYSmU47g5GFdY3mrboxb/38T4nAsYbEZvTf9vsEmERYt7C1xTeYRDl
+         Wb7g==
+X-Forwarded-Encrypted: i=1; AJvYcCV+2djIJ7Vfa6/ecLFPQj+LeVaCMlu5TnNWCfdJGB7zOhJ+a5z+lxBMVLBwgmM3uVQux9bjHO2oJupODcx0qwJf1H1U0BtxRWrP6tX6gFk=
+X-Gm-Message-State: AOJu0YyzlEz1eFdQ/14/CwPAECfE/WSet375DAd+WkwVOCvhpKgn0F1T
+	ynOpq6wMG9rjaHcWWxZLvYIGz8aHVo6WSC0zOMx/iV2ruclM1WLN+VnNRz9gPXCyYTjRCz4Hao3
+	cs1v8l6tsIuXjKHbTo2WwZ9yalVU=
+X-Google-Smtp-Source: AGHT+IH0LKelEx40Euj2U1AEuBvmh9v5x0mvRQSrmegLlDQZcHS0/CRWKWYpQjwLluoPybtFiDjICsCXoCoc5vXXVQo=
+X-Received: by 2002:a5d:59ad:0:b0:343:8097:213d with SMTP id
+ p13-20020a5d59ad000000b003438097213dmr3917261wrr.20.1713284756434; Tue, 16
+ Apr 2024 09:25:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <CAD9ZU8Coc0r3AiWz+rA4eoXuDQBBCAMY0J4w5x-Pa1JEpbmdWA@mail.gmail.com>
+ <CAFktD2cp5eXJufdQibxDPGvN2iMfMZKDOunFzxv0TBNLqcMAQg@mail.gmail.com>
+ <c68a406361524b6888d973a1e428118b@realtek.com> <CAD9ZU8A8f-aJuH54e+93cZGTckOSu+rYKcnQr0mkc8eq56zedg@mail.gmail.com>
+ <fe9d13fd-bf13-4c59-98a7-68fd20d97978@lwfinger.net>
+In-Reply-To: <fe9d13fd-bf13-4c59-98a7-68fd20d97978@lwfinger.net>
+From: Gabriel Tisan <gabriel.tisan@gmail.com>
+Date: Tue, 16 Apr 2024 18:25:45 +0200
+Message-ID: <CAD9ZU8CX-zC=mA-mE_B1ZGa2PCDwiW6qSWFhwvy7wMhu=MMNyA@mail.gmail.com>
+Subject: Re: rtw88: rtw8822cu (LM842) on Raspi4 -> driver get stucked while
+ sending data
+To: Larry Finger <Larry.Finger@lwfinger.net>
+Cc: Ping-Ke Shih <pkshih@realtek.com>, Nick Morrow <morrownr@gmail.com>, 
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Kalle and Jeff,
+> > To be sure, does anyone tested this driver in AP mode for 8822cu ?
+>
+> I have no idea if AP mode works for the rtw8822bu. The vendor driver for this
+> device is available at https://github.com/RinCat/RTL88x2BU-Linux-Driver or
+> https://github.com/morrownr/88x2bu-20210702.
+>
+> There is a problem with the wireless-next kernel and my rtw88 github repo in
+> that device 0bda:c82c is listed as active for both rtw8822cu and rtw8821cu -
+> certainly a mistake.
+The problem is also in mainline, was introduced by Nick Morrow with this commit:
+wifi: rtw88: Add missing VID/PIDs for 8811CU and 8821CU
 
-Over the past year I've received occasional reports from users of the
-Lenovo ThinkPad X13s (aarch64) that the wifi sometimes stops working.
-When this happens the kernel log is filled with errors like:
+Maybe he has a reason.
+He told me to check https://github.com/morrownr/8821cu-20210916
+even if I use a RTL8822CU chipset.
 
-[ 1164.962227] ath11k_warn: 222 callbacks suppressed
-[ 1164.962238] ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1484, expected 1492
-[ 1164.962309] ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1460, expected 1484
-[ 1164.962994] ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1476, expected 1484
-[ 1164.963405] ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1484, expected 1488
-[ 1164.963701] ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1480, expected 1484
-[ 1164.963852] ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1468, expected 1480
-[ 1164.964491] ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1484, expected 1492
-[ 1164.964733] ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1488, expected 1492
-[ 1165.198329] ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1460, expected 1488
-[ 1165.198470] ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1460, expected 1476
-[ 1166.266513] ath11k_pci 0006:01:00.0: wmi tlv parse failure of tag 2699 at byte 348 (1132 bytes left, 64788 expected)
-[ 1166.542803] ath11k_pci 0006:01:00.0: wmi tlv parse failure of tag 4270 at byte 348 (1128 bytes left, 63772 expected)
-[ 1166.768238] ath11k_pci 0006:01:00.0: wmi tlv parse failure of tag 0 at byte 376 (1112 bytes left, 11730 expected)
-[ 1166.900152] ath11k_pci 0006:01:00.0: wmi tlv parse failure of tag 3 at byte 790 (694 bytes left, 16256 expected)
-[ 1168.499073] ath11k_pci 0006:01:00.0: wmi tlv parse failure of tag 1 at byte 62 (1426 bytes left, 3089 expected)
-[ 1168.818086] ath11k_pci 0006:01:00.0: wmi tlv parse failure of tag 63063 at byte 1466 (10 bytes left, 50467 expected)
-[ 1169.032885] ath11k_pci 0006:01:00.0: wmi tlv parse failure of tag 0 at byte 364 (1120 bytes left, 12483 expected)
-[ 1169.308546] ath11k_pci 0006:01:00.0: wmi tlv parse failure of tag 3092 at byte 348 (1128 bytes left, 64780 expected)
-[ 1169.563928] ath11k_pci 0006:01:00.0: wmi tlv parse failure of tag 1 at byte 348 (1124 bytes left, 44062 expected)
-
-which after a quick look at the driver seems to suggest that we may be
-hitting some kind of ring buffer corruption.
-
-Rebinding the driver supposedly sometimes make things work again, but
-not always.
-
-The issue has been confirmed with the 6.8 kernel and the latest firmware
-WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.37.
-
-I've triggered this issue twice myself with 6.6 and .23 firmware, but
-the reports date back to at least 6.2 and likely when using even older
-firmware.
-
-An unconfirmed hypothesis is that we may be hitting this more often when
-enabling the GIC ITS so that the interrupt processing is spread out over
-all cores (unlike when using the DWC controller's internal MSI
-implementation). This change is now merged for 6.10.
-
-Do you have any immediate theories about what could be causing this?
-Does it look like a firmware or driver issue to you, for example? Is it
-something you've seen before?
-
-Note that I've previously reported this here:
-
-	https://bugzilla.kernel.org/show_bug.cgi?id=218623
-
-Johan
+I checked https://github.com/lwfinger/rtw88 regarding AP mode for rtw8822cu
+and I get the same problems like in the inline driver for kernel 6.6
 
