@@ -1,134 +1,121 @@
-Return-Path: <linux-wireless+bounces-6399-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6400-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 006FD8A6C21
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 15:23:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E4DE8A6D45
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 16:05:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F554B22A37
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 13:23:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA473B22DDA
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 14:05:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B43112C54B;
-	Tue, 16 Apr 2024 13:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C517F12CD90;
+	Tue, 16 Apr 2024 14:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gptTwyKa"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GLlJDBCd"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A577812AACE;
-	Tue, 16 Apr 2024 13:22:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D932612838C;
+	Tue, 16 Apr 2024 14:05:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713273768; cv=none; b=G+70bwdEw4gaC9PYZD4IGjYYij8A5geZB0X/zL8FHcPBPe03TaunOvuwZs6or1BSK2MxEvLrO2P1RAR+iKWcgwznEgBXrh7gHTFdUSEuptjRCX03PwBPS/LQ8HU8pwrVILs/vcrb6rh1fplb/qD0R/F+xKR8B6T0zyJRnNmOTbs=
+	t=1713276317; cv=none; b=kYGGJaSaz55BrG0+XiaH9pD+YMb9UO0G7S42ZHh7LbFfd+gR87qQygL76HJA7OtxwXcRt8vks+2udGtpEU6UwV+yxut5exFK3AkAOzV0vc2Lg6Tfiw6aPdq6Lq6X+r2rsA8lyAoU/NansjZpSRgTQRVdUHgDy2wx72mQg34xAPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713273768; c=relaxed/simple;
-	bh=1BjZEULlCLvJqv4DjncS8MZEajXmIYaXA1X0dAnpp98=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EdiyNKT6uNYJ5vzyQNSp+znKAHJDEaYELi+785XLY367fMXTQn3l2FrQ6d6NDfV/83+QpMpYPEtKfPNs7w7tec50vA7MUj8IU+51pOZmgg1/yNkyFc0hyVatGrJ8j5MTzsawfa6OFTuBtfTI38WMX+uxicv941Tfb84CnFSIYXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gptTwyKa; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-5dcc4076c13so2909144a12.0;
-        Tue, 16 Apr 2024 06:22:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713273767; x=1713878567; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=NUyFM9i0rtryeQoNW8AUTADCgYG36OPoQZzM4bvcyrg=;
-        b=gptTwyKaPIGx7CbGGFezkEYsD86lxBYlmJnbbfu8ili3c+37vBkjBgOoPQhKFdJKui
-         5QBEg0bnUccKdgICEERjj3Y/jOXLL1aU9fw3LrJIdNZglaneYK8XG8P8cu/Ld27lBmr5
-         uK0xujJhza5a6LX3RagqqfgrZq4Deovj+IqxXoVLA5wwphP7oAhoaQI6BqkzdNT6L6xf
-         hWJmaMJWz0VeFZACYjb7x6QFcxo5syVRIJur/Kd+YiH2w2otxtrVSTXRC6aMvwKu4GAf
-         Ejwq1EzxwiMOpx1yzdiREjtyl9SwrlHSGEFdXoLNAiYe9bIPjdIEMk1FbAStxs1J/Dcz
-         vHMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713273767; x=1713878567;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NUyFM9i0rtryeQoNW8AUTADCgYG36OPoQZzM4bvcyrg=;
-        b=Wpl/7g5QSErpX9GdHB6A++ODVFvDOFKEtQhEfhDOG0NEGxuSdv9SoiwdbLgVK9FzOX
-         e+m/uL3jo8SQJ/zlGTC0+2Ue2bPh4MWB7czn2WyrVKZdm2gBaSNcbo1BgfOf+M1jitzC
-         QbIqffKCjlo96a4TCM9XWC4YE17532tEdihCpIVDJhuWg8auNAtR5YPMMpkgXoCs9GTA
-         WW4HP4x70OdtUTieLRZOQJDc29ioWJr929vAi1ZsfxjFyLtZNPqi7r7oVnVhpuqX7HCb
-         U8B3/YKVT+qFFQTNWhixDmplZpB/IXUsrq0xI/iFwn47uB3NnxodFwWop3eP/pPXX8D1
-         NT1w==
-X-Forwarded-Encrypted: i=1; AJvYcCWfQ4EodvKQXhzeAY9m3r+BgErU9d8NAxygoGuWMsuxwlkLUGUYm5d581SJsn5t2713dUB/mjauj407r644ew13Ct2IZogdxbwNH/gP49eJefbQ//maF/84DqfB8CqAAg+Sr75wdXS/mLxOzM2cwAVMjhbMsCk0aYvftjBTyWZ8smEc4oOUqC72O6E7AFNKaH/N+oP0eDcW2GkXehFkQCvc
-X-Gm-Message-State: AOJu0YwqtAeGxrmRscc2UB4w/Z6rXSxG9o6/DArROqdOto1HqVPSUq2Z
-	6fhOfvwfe5WMOcgEWAVcLyvHeFXh4AFyT1JdMn4fmgTR/A7nfnkCqz1z7qVh/yCW2QiW7z+6/Ms
-	RdRaubMPIL9mkyOUl/xpsM5zKKYk=
-X-Google-Smtp-Source: AGHT+IFP6210waMqO1NN+/uEDyO7Znkn9Ms/B1bjT8WrCAkXIpVxBUQKxtXXNBOYwcbWaGoZpe/UQlzDo69EIq+/22M=
-X-Received: by 2002:a17:90a:ad7:b0:2a2:dcfe:bd69 with SMTP id
- r23-20020a17090a0ad700b002a2dcfebd69mr3827029pje.13.1713273766756; Tue, 16
- Apr 2024 06:22:46 -0700 (PDT)
+	s=arc-20240116; t=1713276317; c=relaxed/simple;
+	bh=8M2ppSPVva638z5ABaUVriqyvbuS97xgMtG6yxPRPDU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UdQax1IdkX5syaIGD5xBgJAQ8r5veI9uJn+goR6uYrpIj2zAVIZ0YXGne/r2AViYJLkGWattP4UHiY1tw8t0yB/ryGlqRwvySEkk4tToAaDC5kXYW5xnLBj3U1qzKWdeWekAAeIEGEKHQyK96QTQkDxS1k0CGQiX/iGa5v0ImvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GLlJDBCd; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713276314; x=1744812314;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=8M2ppSPVva638z5ABaUVriqyvbuS97xgMtG6yxPRPDU=;
+  b=GLlJDBCdmt+Q0jAgMTSwVBo/7QpwXWZR8ywotGfw/PqUtnjbpyE0gFdV
+   QfG0iInftIqiAtQw9+F6tny4m0zuQFZMRTSGD4ajS4qpnpf0zcQ6zBfwC
+   fFlswPKv82c/ISfru0K0FwgbiU1hn5YbCWliOA3bYkocVRdghTeJQhew+
+   vOSFwrf4aE6VhkGuWQwYNQTFJ7AyfMXICqGt9QnUyyPcTiUyegufkD5t5
+   5jyR7oMkKft20trFRqxfJBwJPiTFSlBOTJhkjWAtV40aq8Hlsn0T35JR0
+   q3DcgOSZCi1qQhQ5NvzwwFzZIs8oOlXwQ6uLBE86kYH4s+Qg1+FocLuuw
+   w==;
+X-CSE-ConnectionGUID: 19haIpVuSW+ibFHqiHR1Pw==
+X-CSE-MsgGUID: LftmEfNOTvCqndEidjV8Xg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="12554253"
+X-IronPort-AV: E=Sophos;i="6.07,206,1708416000"; 
+   d="scan'208";a="12554253"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2024 07:05:13 -0700
+X-CSE-ConnectionGUID: Osep5OIWR6yhlH0nyEsqwg==
+X-CSE-MsgGUID: 5BAvzasNR0WOGHBLZR1yMA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,206,1708416000"; 
+   d="scan'208";a="22340887"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2024 07:05:09 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rwjQo-00000004iLg-1Y7q;
+	Tue, 16 Apr 2024 17:05:06 +0300
+Date: Tue, 16 Apr 2024 17:05:05 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Kent Gibson <warthog618@gmail.com>, linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>
+Subject: Re: [PATCH v2 1/2] gpiolib: Fix a mess with the GPIO_* flags
+Message-ID: <Zh6FkejXcwBTAqIR@smile.fi.intel.com>
+References: <20240408231727.396452-1-andriy.shevchenko@linux.intel.com>
+ <20240408231727.396452-2-andriy.shevchenko@linux.intel.com>
+ <CACRpkdYaXVvtt3b9rFxU4ZNShD17Bm4XU9X3h4dY501iJy3kPA@mail.gmail.com>
+ <ZhlSaFWlbE6OS7om@smile.fi.intel.com>
+ <CAMRc=Me489H-mTfT1hfUsY47iKwoaVsf6sgkiBwBVkxJOBo9UA@mail.gmail.com>
+ <CACRpkdZRp-DFQgb3=Ut27DHd1w11_aEY0HbLjJHob=C5Ek-dyw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240412162510.29483-1-robimarko@gmail.com> <20240416132124.GA2143558-robh@kernel.org>
-In-Reply-To: <20240416132124.GA2143558-robh@kernel.org>
-From: Robert Marko <robimarko@gmail.com>
-Date: Tue, 16 Apr 2024 15:22:34 +0200
-Message-ID: <CAOX2RU5tWt-dEA4it1G+LeNawwPqkwdG=vBBgnmdD6CNc4iywA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] dt-bindings: net: wireless: ath11k: add
- ieee80211-freq-limit property
-To: Rob Herring <robh@kernel.org>
-Cc: kvalo@kernel.org, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, krzysztof.kozlowski+dt@linaro.org, 
-	conor+dt@kernel.org, jjohnson@kernel.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	ath11k@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACRpkdZRp-DFQgb3=Ut27DHd1w11_aEY0HbLjJHob=C5Ek-dyw@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Tue, 16 Apr 2024 at 15:21, Rob Herring <robh@kernel.org> wrote:
->
-> On Fri, Apr 12, 2024 at 06:24:08PM +0200, Robert Marko wrote:
-> > This is an existing optional property that ieee80211.yaml/cfg80211
-> > provides. It's useful to further restrict supported frequencies
-> > for a specified device through device-tree.
-> >
-> > Signed-off-by: Robert Marko <robimarko@gmail.com>
-> > ---
-> >  .../devicetree/bindings/net/wireless/qcom,ath11k.yaml          | 3 +++
-> >  1 file changed, 3 insertions(+)
-> >
-> > diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
-> > index 672282cdfc2f..907bbb646614 100644
-> > --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
-> > +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
-> > @@ -55,6 +55,8 @@ properties:
-> >        phandle to a node describing reserved memory (System RAM memory)
-> >        used by ath11k firmware (see bindings/reserved-memory/reserved-memory.txt)
-> >
-> > +  ieee80211-freq-limit: true
-> > +
->
-> Drop this and change additionalProperties to unevaluatedProperties.
+On Tue, Apr 16, 2024 at 02:22:09PM +0200, Linus Walleij wrote:
+> On Fri, Apr 12, 2024 at 9:44 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+> 
+> > IIUC include/dt-bindings/ headers should only be used by DT sources
+> > and code that parses the OF properties.
+> 
+> That's what I have come to understand as well.
+> 
+> I wonder if there is something that can be done to enforce it?
+> 
+> Ideally the code that parses OF properties should have to
+> opt in to get access to the <dt-bindings/*> namespace.
 
-Hi Rob,
-This patch series has been dropped as Christian already proposed the
-same before and it was reviewed.
+Whatever you, guys, come up with as a solution, can it be fixed sooner than later?
+I mean, I would appreciate if somebody got it done for v6.9-rcX/v6.10-rc1 so we don't
+need to look into this again.
 
-Regards,
-Robert
->
-> >    iommus:
-> >      minItems: 1
-> >      maxItems: 2
-> > @@ -88,6 +90,7 @@ required:
-> >  additionalProperties: false
-> >
-> >  allOf:
-> > +  - $ref: ieee80211.yaml#
-> >    - if:
-> >        properties:
-> >          compatible:
-> > --
-> > 2.44.0
-> >
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
