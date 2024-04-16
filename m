@@ -1,145 +1,118 @@
-Return-Path: <linux-wireless+bounces-6354-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6355-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA52C8A5E4F
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 01:31:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBD738A5F4B
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 02:32:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 693FA1F22507
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Apr 2024 23:31:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57FC7B21358
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 00:32:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CBE31591F8;
-	Mon, 15 Apr 2024 23:31:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QCWUd8az"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2734B80C;
+	Tue, 16 Apr 2024 00:31:59 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67CC5158DDD;
-	Mon, 15 Apr 2024 23:31:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4F3718D
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Apr 2024 00:31:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713223872; cv=none; b=lqM2cStsfA5Tqajuy43YjzKRHkXBsg3tBBMfVzpA8kWVms3sT7aKwhoQzKtTW1qHQI4DLqCufGihNwnn0uKTYgAy0sGbRZXHWGRVkxqpI1qjLG2FFfaIpdRlOc6sT+/9GdL0PE2aYYho0wynlS6DwQNeIp8oer6A5bWU7DSP/iI=
+	t=1713227519; cv=none; b=rmjI6by6c+BQLZnw65QQKQB0BWdV/LhJQVVHPtyNFt0vis30jdHEFs4U/eSlNoUH15S6e6qp+8B3j+0aZ0cfpqFxY+uSMgSTM6fOZD5Du0rgXZ4K8eZxtNukdQS3dWuvutxPjyB3ekQbc8ElmS13lX6cLLwMgIHoYB8exN+bM38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713223872; c=relaxed/simple;
-	bh=2ako3/VsGj0B0JAvKI2djip7wX7ZZIyY6plsqbNFJ6Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iWP44kAAU44iowKwcAAv5Ypy39kWDAdQAOh6kngOCUBEtyelNKxij7QK3yfOAoSHL6uw4BnOWwssRev+m07pq6nFaNTt/B/AJn0jmDmg6KfYgPybBmxjZctJVEkd3ynfokTJDJENayjSnzBFeyQxf1q5d7pGKe3pESpvIvqnla0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QCWUd8az; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-343c7fae6e4so3138494f8f.1;
-        Mon, 15 Apr 2024 16:31:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713223869; x=1713828669; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gIxRU79oSK//Uerme6kXym29Xbe+6F4+ro/QfQDfXsA=;
-        b=QCWUd8azqwPTyNpfphvzLPoo4gqSfgEGbxTW7hKDz9KHlkkLv1qp4IvEhuwWAZ0tZh
-         y6uerVvaZJwUGATUh2P70fOvJw6UxxXoisMfbtk0+4k655PBVI5z3Me0CPyFnEqIh9aa
-         0lvTnMe+S6ucxBlk34vZzbA2JKtq1P3EzSCXp8O9sT2gj/a5lEKbTh8rjQDHgRR9Z0gH
-         XxotTFEe6gQAvnkduWJHJOkZ+ENNVxGJ/pEY+Ctsdaiq9p/H+hu6FUXjU8l0dN9Aug7O
-         o5vZ56s1CywVajgwW0XfSPZQFeThLnKKaLTEviLtgWhEToHQh76PZOG3duumQu1iwMcr
-         GNIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713223869; x=1713828669;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gIxRU79oSK//Uerme6kXym29Xbe+6F4+ro/QfQDfXsA=;
-        b=qwA010qPwFlwsDW+Lst7sabQyKaiY8ZCQwsfAHCpUU4kas2P94k+iU05GA3t0gz/G2
-         6tqtKI0gSijKhxTikoILn2LRuutT9C3bEXxo4iP+bYJQadcdD8MjZmBCmqazAIyttvuP
-         zSrXZcRKJKBY4aTDevwnvlU6TgQ7E4paZEQsfVsO1wNbBmuwiA4LKhMuNqLlqmwMXnZ9
-         mqieSctomNtdoeMmDpl7l3oO39+0MLnsBWcfE3+sjOi8q7eOH1pE8twjMkuh3VZn4Zpt
-         NsPAQh5g1Z9Iv2QCIZQMmfPxGN2dUCqWK82QJ3EJbrCyKKsHCLP4BzKpDPY/kKvP+Qxd
-         aK4w==
-X-Forwarded-Encrypted: i=1; AJvYcCVWj0A1IXtrPzBkgXZN7TncFySvKnExTnHH/B7jypD+Z18nIP+iGLwZ4JluZsbhzBZGhhWDgurF/JAgeDkN6ykffrQbtXxokNfxtzvffdZXZwTcZT1gP/eojgR1YqSj0QGuPoNVZ3LSN9nsimQ=
-X-Gm-Message-State: AOJu0YxknReNMTKJMWMNMn4JKj206So+uTlEFynqXbDBd4oI49zXTqPM
-	2asddiNkaaxLbFB/pmzXfZbFsAODeX6oUIx+bHpRceSSxNah5oh3
-X-Google-Smtp-Source: AGHT+IHtBAtR5aP/qBxhvoCn1aJ38IOOJvIXGK5uO3kqyaqbOl/8XVrUVWeApXqIl4fycQ7VP4mVvA==
-X-Received: by 2002:a5d:6484:0:b0:346:47d6:5d17 with SMTP id o4-20020a5d6484000000b0034647d65d17mr9194707wri.57.1713223868408;
-        Mon, 15 Apr 2024 16:31:08 -0700 (PDT)
-Received: from lewis-nuc.. (0.8.5.0.4.e.2.b.b.7.e.1.3.e.2.b.2.5.b.3.a.b.d.1.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:1dba:3b52:b2e3:1e7b:b2e4:580])
-        by smtp.googlemail.com with ESMTPSA id cg17-20020a5d5cd1000000b0033e7a102cfesm10402318wrb.64.2024.04.15.16.31.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Apr 2024 16:31:07 -0700 (PDT)
-From: Lewis Robbins <lewis.robbins2@gmail.com>
-To: kvalo@kernel.org
-Cc: lewis.robbins2@gmail.com,
-	linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	pkshih@realtek.com
-Subject: Re: [PATCH] wifi: rtw88: reduce failed to flush queue severity
-Date: Tue, 16 Apr 2024 00:28:38 +0100
-Message-ID: <20240415232837.388945-2-lewis.robbins2@gmail.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <87le5ey52e.fsf@kernel.org>
-References: <87le5ey52e.fsf@kernel.org>
+	s=arc-20240116; t=1713227519; c=relaxed/simple;
+	bh=ohAFuRuQmHUgaZaaTlFr8ol+h4O6MQbtsPCnO3MkmpA=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Qr1PGow6YbBjEve+UwE9iIH6ziYIOCkePXMranuNhhyPnfhHAqBUY5HFCE/3LNeFSAAJqPvm8oZd0lYnakGbRHNGyssYpHR+NXRvUUFy85u9pbxFeewH+LDVSTBJWHt26LKiMYXJJkmwJHZt+HJW7znEr9XCaLq3kKKg6J95zdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 43G0VYOH01618108, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 43G0VYOH01618108
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 16 Apr 2024 08:31:39 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 16 Apr 2024 08:31:35 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 16 Apr 2024 08:31:34 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
+ 15.01.2507.035; Tue, 16 Apr 2024 08:31:34 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Plamen Dimitrov <plamen.dimitrov@pevogam.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: Problems with RTL8852BE PCIe 802.11ax Wireless Network Controller and Linux kernel 6.7.7-100.fc38.x86_64
+Thread-Topic: Problems with RTL8852BE PCIe 802.11ax Wireless Network
+ Controller and Linux kernel 6.7.7-100.fc38.x86_64
+Thread-Index: AQHajxBK3TMYBDJJU02LKax8Cy6TM7FphqBQ
+Date: Tue, 16 Apr 2024 00:31:34 +0000
+Message-ID: <2e67ec1dfc8b420bab05dc025c7c59cf@realtek.com>
+References: <7833fd15-5875-40b8-a20b-a68fa92f814f@pevogam.com>
+In-Reply-To: <7833fd15-5875-40b8-a20b-a68fa92f814f@pevogam.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-Ping-Ke Shih <pkshih@realtek.com> writes:
-
-> Lewis Robbins <lewis.robbins2@gmail.com> wrote:
->> 
->> Reduce the log message severity when we fail to flush device priority
->> queue. If a system has a lot of traffic, we may fail to flush the queue
->> in time. This generates a lot of messages in the kernel ring buffer. As
->> this is a common occurrence, we should use dev_info instead of dev_warn.
->> 
->> Signed-off-by: Lewis Robbins <lewis.robbins2@gmail.com>
->
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
->
-> I'd like to know situations of " If a system has a lot of traffic...". 
-> Did you scan or do something during traffic?
-
-So, after digging a bit more, it seems you're right this only happens during a
-scan. The log message itself is repeated about 5-10x.
-
-Kalle Valo <kvalo@kernel.org> writes:
-
-> The driver shouldn't print any warnings in normal usage, even using info
-> level. If this is expected scenario then maybe change it to debug print?
-> Or if is this an actual bug then it's better try to investigate and fix
-> it.
-
-I have the stack-trace:
-
-[23838.633664] rtw_8821ce 0000:02:00.0: timed out to flush queue 2
-[23838.633685] CPU: 1 PID: 363059 Comm: kworker/u8:1 Tainted G 6.8.5
-[23838.633698] Hardware name:  /, BIOS 5.26 09/26/2023
-[23838.633704] Workqueue: events_unbound cfg80211_wiphy_work [cfg80211]
-[23838.633881] Call Trace:
-[23838.633889]  <TASK>
-[23838.633898]  dump_stack_lvl+0x47/0x60
-[23838.633918]  rtw_mac_flush_queues+0x148/0x190 [rtw88_core 0d7ad2d9d6116c633c0aab4e7bc6016d572d75d4]
-[23838.633993]  rtw_ops_flush+0x5a/0x70 [rtw88_core 0d7ad2d9d6116c633c0aab4e7bc6016d572d75d4]
-[23838.634056]  __ieee80211_flush_queues+0x10b/0x2e0 [mac80211 5d0b446baffe1290bc56d55aa496e941688b7b40]
-[23838.634309]  ieee80211_scan_work+0x3e3/0x520 [mac80211 5d0b446baffe1290bc56d55aa496e941688b7b40]
-[23838.634494]  cfg80211_wiphy_work+0xa7/0xe0 [cfg80211 b36d5437ba649ace42ea92e8f83a3ec499e0d5b7]
-[23838.634646]  process_one_work+0x178/0x350
-[23838.634660]  worker_thread+0x30f/0x450
-[23838.634670]  ? __pfx_worker_thread+0x10/0x10
-[23838.634678]  kthread+0xe5/0x120
-[23838.634691]  ? __pfx_kthread+0x10/0x10
-[23838.634702]  ret_from_fork+0x31/0x50
-[23838.634714]  ? __pfx_kthread+0x10/0x10
-[23838.634724]  ret_from_fork_asm+0x1b/0x30
-[23838.634736]  </TASK>
-
-I'm not sure as to the cause. If the flush operation takes a long time do we 
-need to release any mutexes etc? And if this is just a hardware issue, then we
-can do a debug print as you say.
-
-BugZilla: https://bugzilla.kernel.org/show_bug.cgi?id=218697
+UGxhbWVuIERpbWl0cm92IDxwbGFtZW4uZGltaXRyb3ZAcGV2b2dhbS5jb20+IHdyb3RlOg0KDQo+
+IEhpIGFsbCwNCj4gDQo+IEkgaGFkIHNvbWUgcHJvYmxlbXMgd2l0aCBSVEw4ODUyQkUgYW5kIHRy
+aWVkIGEgY29tbW9ubHkgc3VnZ2VzdGVkIGZpeA0KPiANCj4gJCBzdWRvIGNhdCAvZXRjL21vZHBy
+b2JlLmQvMjAtd2lmaS5jb25mDQo+IG9wdGlvbnMgcnR3ODlfcGNpIGRpc2FibGVfYXNwbV9sMXNz
+PXkgZGlzYWJsZV9hc3BtX2wxPXkgZGlzYWJsZV9jbGtyZXE9eQ0KPiBvcHRpb25zIHJ0dzg5X2Nv
+cmUgZGlzYWJsZV9wc19tb2RlPXkNCj4gDQo+IGFzDQo+IA0KPiAkIGxzbW9kIHwgZ3JlcCBydHcN
+Cj4gcnR3ODlfODg1MmJlICAgICAgICAgICAxMjI4OCAgMA0KPiBydHc4OV84ODUyYiAgICAgICAg
+ICAgMzY0NTQ0ICAxIHJ0dzg5Xzg4NTJiZQ0KPiBydHc4OV9wY2kgICAgICAgICAgICAgIDgxOTIw
+ICAxIHJ0dzg5Xzg4NTJiZQ0KPiBydHc4OV9jb3JlICAgICAgICAgICAgNTc3NTM2ICAyIHJ0dzg5
+Xzg4NTJiLHJ0dzg5X3BjaQ0KPiBtYWM4MDIxMSAgICAgICAgICAgICAxNTY4NzY4ICAyIHJ0dzg5
+X2NvcmUscnR3ODlfcGNpDQo+IGNmZzgwMjExICAgICAgICAgICAgIDEzMzUyOTYgIDMgcnR3ODlf
+ODg1MmIscnR3ODlfY29yZSxtYWM4MDIxMQ0KPiANCj4gYnV0IHRoaXMgZG9lc24ndCBmaXggbXkg
+aXNzdWUgd2hpY2ggbG9va3MgbGlrZQ0KPiANCj4gWyAxNzk0LjU0MjI2Nl0gcnR3ODlfODg1MmJl
+IDAwMDA6MDI6MDAuMDogRlcgZG9lcyBub3QgcHJvY2VzcyBoMmMgcmVnaXN0ZXJzDQo+IFsgMTc5
+NC41NDIyNjldIHJ0dzg5Xzg4NTJiZSAwMDAwOjAyOjAwLjA6IEhXIHNjYW4gZmFpbGVkIHdpdGgg
+c3RhdHVzOiAtMTEwDQo+IFsgMTc5NC45MzUzMjhdIHJ0dzg5Xzg4NTJiZSAwMDAwOjAyOjAwLjA6
+IHh0YWwgc2kgbm90IHJlYWR5KFcpOiBvZmZzZXQ9OTAgdmFsPTEwIG1hc2s9MTANCj4gWyAxNzk1
+LjAwNjMyM10gcnR3ODlfODg1MmJlIDAwMDA6MDI6MDAuMDogeHRhbCBzaSBub3QgcmVhZHkoVyk6
+IG9mZnNldD05MCB2YWw9MTAgbWFzaz0xMA0KPiBbIDE3OTUuMDA2MzMwXSBydHc4OV84ODUyYmUg
+MDAwMDowMjowMC4wOiBtYWMgaW5pdCBmYWlsLCByZXQ6LTExMA0KDQpUaGVzZSBsb2dzIHNhaWQg
+dGhhdCBpdCBjYW4gZG93bmxvYWQgZmlybXdhcmUgc3VjY2Vzc2Z1bGx5LCBidXQgdGltZWQgb3V0
+IHRvDQphc2sgZmlybXdhcmUgdG8gZG8gc2Nhbi4gSSB3b3VsZCB0cnkgbW9kdWxlIHBhcmFtZXRl
+cnMgbGlrZSB5b3UgZGlkLCBidXQNCnBsZWFzZSBkbyAiY29sZCByZWJvb3QiIHRvIHRha2UgZWZm
+ZWN0IHRoZSBwYXJhbWV0ZXJzLCBiZWNhdXNlIGhhcmR3YXJlDQpoYXMgYmVlbiBnb3R0ZW4gaW50
+byBhYm5vcm1hbCBzdGF0ZS4gDQoNCj4gSG93ZXZlciwgdGhlIGB4dGFsIGlzIG5vdCByZWFkeWAg
+c3RpbGwgYXBwZWFycyBhZnRlciByZWxvYWRpbmcgYW5kIHRoZSBkZXZpY2UgaXMgbGlrZWx5IGlu
+IGEgYmFkIHN0YXRlIG9uY2UNCj4gdGhlIGVycm9yIGlzIGFscmVhZHkgZW5jb3VudGVyZWQ6DQo+
+IA0KPiBbMTI4NzYuNDc4MTM5XSBydHc4OV84ODUyYmUgMDAwMDowMjowMC4wOiBsb2FkZWQgZmly
+bXdhcmUgcnR3ODkvcnR3ODg1MmJfZnctMS5iaW4NCj4gWzEyODc2LjQ3ODI0OV0gcnR3ODlfODg1
+MmJlIDAwMDA6MDI6MDAuMDogVW5hYmxlIHRvIGNoYW5nZSBwb3dlciBzdGF0ZSBmcm9tIEQzY29s
+ZCB0byBEMCwgZGV2aWNlDQo+IGluYWNjZXNzaWJsZQ0KPiBbMTI4NzYuNTI5MzI3XSBydHc4OV84
+ODUyYmUgMDAwMDowMjowMC4wOiB4dGFsIHNpIG5vdCByZWFkeShSKTogb2Zmc2V0PTQxDQoNClRo
+aXMgaXMgc2Vjb25kIElPIGRyaXZlciBkb2VzIHRvIHJlYWQgaGFyZHdhcmUgcmV2aXNpb24sIGJ1
+dCBpbmFjY2Vzc2libGUuIA0KWW91IHNob3VsZCByZWJvb3QgdG8gcmVjb3ZlciBoYXJkd2FyZSBz
+dGF0ZS4gDQoNCj4gWzEyODc2LjUyOTMzNl0gcnR3ODlfODg1MmJlIDAwMDA6MDI6MDAuMDogbm8g
+c3VpdGFibGUgZmlybXdhcmUgZm91bmQNCj4gWzEyODc2LjUyOTMzOV0gcnR3ODlfODg1MmJlIDAw
+MDA6MDI6MDAuMDogZmFpbGVkIHRvIHJlY29nbml6ZSBmaXJtd2FyZQ0KPiBbMTI4NzYuNTI5MzQy
+XSBydHc4OV84ODUyYmUgMDAwMDowMjowMC4wOiBmYWlsZWQgdG8gc2V0dXAgY2hpcCBpbmZvcm1h
+dGlvbg0KPiBbMTI4NzYuNTMwMDc0XSBydHc4OV84ODUyYmU6IHByb2JlIG9mIDAwMDA6MDI6MDAu
+MCBmYWlsZWQgd2l0aCBlcnJvciAtMg0KDQoNCg0K
 
