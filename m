@@ -1,118 +1,140 @@
-Return-Path: <linux-wireless+bounces-6375-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6376-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C30358A6875
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 12:31:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8372F8A68FD
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 12:49:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51B08B2233E
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 10:31:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8026B20816
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 10:49:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAD1C127E36;
-	Tue, 16 Apr 2024 10:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32041127E32;
+	Tue, 16 Apr 2024 10:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Zln7zYJc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TRfVKsJg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46487127E24
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Apr 2024 10:31:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F9784FA0
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Apr 2024 10:49:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713263501; cv=none; b=JyiWyrh8IXaRgkOMNDE4Prr+Z4zulVAj/goURqVdSDZEP6NhYKsWysivcaDZtUsXb0txTeuC1n3wTIyAKLGU0NFYD835wtHOOS0dg7s2IB7K+ACjqGufSl81SKVeSyMZWSekK6vbki4TzgQ6He8jfvn0sZHDHH0r0pfTK4Tf00E=
+	t=1713264543; cv=none; b=cG5eFrK/TiTaoZ2/bWz9wXZcqxPN1UeU5F7HeO36ovYmWeHZz/RI3jN7810SYenLIJaUSIUCzP1Rpnznw4FLQ/UvdGDAw8Wskro9RZGtUnSmZoPATYmrzg9FbEqkuysvhcIrgTosijOAVPTAh0kVNL7yQs674r21+zmksj/jw2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713263501; c=relaxed/simple;
-	bh=ft9NgT6PN7pdnuVTTZIb9lOi47nAXcJTkfkAf6rARN0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=K76f4tPP9By/la2jR4U376egX98zWoVRavJHlMjdkvDpT1GAoOAABXjVXru9jnvier8u3j+WbS2tyj4fg1F3gmcaMnLUPSW2tPC1AbqUikiUSdcmoz1mg8oSHwf8aiaHspyXDXHF8wJw8NwHsYu6AidJyZdDJk8H1j1hpurb3oI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Zln7zYJc; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43G9OSL6029316;
-	Tue, 16 Apr 2024 10:31:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=ft9NgT6PN7pdnuVTTZIb9lOi47nAXcJTkfkAf6rARN0=; b=Zl
-	n7zYJcGHps0Wt4Rm5c6gKESfMINK9D+700YoDJOn8/pe5ZTpoSxhAhWfbJw0xM6o
-	x1w4g9p3yead/keqX2zOiMkwYw9Rptda9C7qbHrgigJ2sMsRRJE2Um825UJujnql
-	Ms5g6tQcTYIAUVLipBV/Dzor8uZ+A1zLcuQNpwlklTjZW03EE8sfeV0ECUTDoQVs
-	BT0NxHCz0Fzi7UiS1+w4IQzB/e49P22HQlhQCstJPX2RLFv7r1MhulMp9f6a7HkJ
-	cbT8ozmjJ4TnorDjFSoivkI0APgJRyJ6MJ75a7rrCU/Fh/p/NPOj0ot2ClD9gIQu
-	NOjlCAmXiybmbhn9MHEw==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xhpnrr539-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Apr 2024 10:31:27 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43GAVRia017469
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Apr 2024 10:31:27 GMT
-Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 16 Apr
- 2024 03:31:25 -0700
-Message-ID: <9465c006-fa33-1eeb-f4e9-f926ff04bd1c@quicinc.com>
-Date: Tue, 16 Apr 2024 18:31:24 +0800
+	s=arc-20240116; t=1713264543; c=relaxed/simple;
+	bh=l1WODMEkpD/vtalLFVe+QYBgh3moc/L2lDCvsW6aUM8=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=HK1evxg1cHpEW9NgGTeZHWUvipCLTP9arJ9dBEACq2ALlntJSNZU/wiVwvUA9DCydyZgTw+p6HO8BxObYlNnbSXoPfz1WGDm3Xk7iX2gNSnfng/pyCOyD0qUSPBmlqfm/qngyRGU/C0Ty/uEWxZkS8MVQWshaPqNvRazorSz1xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TRfVKsJg; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-346406a5fb9so3252153f8f.1
+        for <linux-wireless@vger.kernel.org>; Tue, 16 Apr 2024 03:49:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713264540; x=1713869340; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-language:cc:to:subject:from
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=b83sboEqTPego8HsvJMBEhEEo8zBau4fa8NN9fXFIf8=;
+        b=TRfVKsJgP+FsX+7WcFrHfaK7/MYLq+Pv7Tj8E0tmON+rre0sU25s4Efqr6OCdDTx1/
+         YWhnNfj71+GVpGM9akNM6IsEepO3nzsnFqqsMD6c0LBoVyKcIxXxwjZ42Ia3TDGESbKS
+         bKKA2wdoZxnfbZ3RWOF8x/os+8SHtmblUZEnhINdI/p4rmrRQOh4JsKV9J6WCDH+Hwzj
+         eQje3Zoo4Qm8Yqb2A/DOn84l1cQSZHfqQueuCYshE1PFyj2kQz6veS3JRWN98mFsUpsN
+         9/o/cqFcHet3LtjyQTF9DihrTkJWIaIPaIGM79zrJZEkFtciBxDq9wc0WYFV4DTyZ+oi
+         7bew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713264540; x=1713869340;
+        h=content-transfer-encoding:content-language:cc:to:subject:from
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=b83sboEqTPego8HsvJMBEhEEo8zBau4fa8NN9fXFIf8=;
+        b=MFYpH1qqOO+ss92owD1L20c845nn36hz5Qi9ez58C2c2G+MbeiH2Vip34MH038Hspj
+         LO+PxsuFRmCQiqmaRbhiJfeQLk66cinY8HuvDjpIfBLKme7uG7zAwmyaa+tLo13PCqhR
+         HVy5Q69fXz//jCMtCmoKdU7ibXCyuGXwsR24Ye1DVJ6tC4tB5Znxm1VQqBOepqa22Fz6
+         P7U1O95j/CVrHzgxlVZMrw6np1JENrQ18ueNUf2bC4GhTHcLrscYYuXFHefpvFw5DxH7
+         iPDBcsG2q1CXpeaYkgpfm1c7lgGc6CXL6423nF138IcfrVwEnA7+4i+d4tIQhlOt5sKi
+         XN2Q==
+X-Gm-Message-State: AOJu0YwypUYbQm8GfN6V0+QyPx1PPNxQ0p0NUwTOHff2ELDqSMfwps4v
+	AkJF9lLwJAiU/7HfAr4TIYhMe/Cw0RHMjs8EUehBjUJljqEWYpOVvgPt04xR
+X-Google-Smtp-Source: AGHT+IHRnAsV0CzRuE48P3CnZzaG90F9p7Trk89VHsCVbaYygNns/H0qIs1FheNFvSIvBMKOxHqKRQ==
+X-Received: by 2002:a5d:6d84:0:b0:343:6ca4:97e8 with SMTP id l4-20020a5d6d84000000b003436ca497e8mr9896890wrs.45.1713264539687;
+        Tue, 16 Apr 2024 03:48:59 -0700 (PDT)
+Received: from [192.168.1.50] ([79.113.154.240])
+        by smtp.gmail.com with ESMTPSA id gb32-20020a05600045a000b003462b54bc8asm14488924wrb.109.2024.04.16.03.48.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 16 Apr 2024 03:48:59 -0700 (PDT)
+Message-ID: <c0e93225-4672-48ac-9bdf-9d0fad00116e@gmail.com>
+Date: Tue, 16 Apr 2024 13:48:58 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 00/10] wifi: ath12k: support suspend/resume
+User-Agent: Mozilla Thunderbird
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH v2] wifi: rtl8xxxu: Add LED control code for RTL8723BU
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Jes Sorensen <Jes.Sorensen@gmail.com>, Ping-Ke Shih <pkshih@realtek.com>
 Content-Language: en-US
-To: Kalle Valo <kvalo@kernel.org>
-CC: Jeff Johnson <quic_jjohnson@quicinc.com>, <ath12k@lists.infradead.org>,
-        <linux-wireless@vger.kernel.org>
-References: <20240412060620.27519-1-quic_bqiang@quicinc.com>
- <aea9f68d-4862-439c-a52f-d6463e6edca9@quicinc.com>
- <76ef11b2-c477-ff11-df72-e8d934c00831@quicinc.com>
- <874jc1yam1.fsf@kernel.org>
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <874jc1yam1.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: HyM3dsMeVCcEDby4XDIwkXhg3js7ajKO
-X-Proofpoint-ORIG-GUID: HyM3dsMeVCcEDby4XDIwkXhg3js7ajKO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-16_08,2024-04-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=652
- bulkscore=0 phishscore=0 priorityscore=1501 impostorscore=0 clxscore=1015
- lowpriorityscore=0 spamscore=0 malwarescore=0 mlxscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2404010003
- definitions=main-2404160064
 
+Software control (on/off) and hardware control (automatic blinking)
+tested with EDUP EP-N8568.
 
-On 4/16/2024 4:28 PM, Kalle Valo wrote:
-> Baochen Qiang <quic_bqiang@quicinc.com> writes:
->
->>> patch 6 of this series conflicts with:
->>> wifi: ath12k: add support to handle beacon miss for WCN7850
->>>
->>> So I was not able to take this series into my local verification tree
->>>
->>> patch 7 of this series conflicts with:
->>> wifi: ath12k: fix mac id extraction when MSDU spillover in rx error path
->>>
->>> So this conflicts with a patch already in the pending branch
->>>
->>> So FYI at some point you'll need to rebase.
->> So I should rebase after these two patches got merged in master branch?
-> No need to rebase at this time. In the pending branch I was able to fix
-> the conflict in patch 7. Please check:
->
-> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=b92086862c7be6e6810eca204052cada50fc0f5f
-Thanks and LGTM.
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+---
+v2:
+ - More information in the commit message.
+---
+ .../realtek/rtl8xxxu/rtl8xxxu_8723b.c         | 23 +++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
+index 9640c841d20a..c677a47ed46d 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
+@@ -1701,6 +1701,28 @@ static s8 rtl8723b_cck_rssi(struct rtl8xxxu_priv *priv, struct rtl8723au_phy_sta
+ 	return rx_pwr_all;
+ }
+ 
++static int rtl8723bu_led_brightness_set(struct led_classdev *led_cdev,
++					enum led_brightness brightness)
++{
++	struct rtl8xxxu_priv *priv = container_of(led_cdev,
++						  struct rtl8xxxu_priv,
++						  led_cdev);
++	u8 ledcfg = rtl8xxxu_read8(priv, REG_LEDCFG2);
++	ledcfg &= LEDCFG2_DPDT_SELECT;
++
++	if (brightness == LED_OFF) {
++		ledcfg |= LEDCFG2_SW_LED_CONTROL | LEDCFG2_SW_LED_DISABLE;
++	} else if (brightness == LED_ON) {
++		ledcfg |= LEDCFG2_SW_LED_CONTROL;
++	} else if (brightness == RTL8XXXU_HW_LED_CONTROL) {
++		ledcfg |= LEDCFG2_HW_LED_CONTROL | LEDCFG2_HW_LED_ENABLE;
++	}
++
++	rtl8xxxu_write8(priv, REG_LEDCFG2, ledcfg);
++
++	return 0;
++}
++
+ struct rtl8xxxu_fileops rtl8723bu_fops = {
+ 	.identify_chip = rtl8723bu_identify_chip,
+ 	.parse_efuse = rtl8723bu_parse_efuse,
+@@ -1731,6 +1753,7 @@ struct rtl8xxxu_fileops rtl8723bu_fops = {
+ 	.fill_txdesc = rtl8xxxu_fill_txdesc_v2,
+ 	.set_crystal_cap = rtl8723a_set_crystal_cap,
+ 	.cck_rssi = rtl8723b_cck_rssi,
++	.led_classdev_brightness_set = rtl8723bu_led_brightness_set,
+ 	.writeN_block_size = 1024,
+ 	.tx_desc_size = sizeof(struct rtl8xxxu_txdesc40),
+ 	.rx_desc_size = sizeof(struct rtl8xxxu_rxdesc24),
+-- 
+2.44.0
+
 
