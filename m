@@ -1,263 +1,257 @@
-Return-Path: <linux-wireless+bounces-6405-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6406-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D268A7196
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 18:41:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B1908A758C
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 22:29:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A12A1F231D2
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 16:41:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F99E282246
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 20:29:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA52374EB;
-	Tue, 16 Apr 2024 16:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE29139D18;
+	Tue, 16 Apr 2024 20:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="afdWNcE1"
+	dkim=pass (2048-bit key) header.d=LIVE.NL header.i=@LIVE.NL header.b="d8ZZ7uzp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01olkn2094.outbound.protection.outlook.com [40.92.64.94])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834C984E11;
-	Tue, 16 Apr 2024 16:41:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713285702; cv=none; b=I5AfMB2ggHD9ouU3ORgQ/+MMralNZ6+Tmx0tbfY3Xw0uFUVSI6j/Et0WYZxPmXbv848JIt8A+KKtWly/ujpZjU0f0xXsDpLzpB+k+1K9wzkL11K8b+KHNqQy8JFBYTHA34FUEpYAxal1wsXqmjVP80Ra1GuMLcnjnTbj0O+nIcY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713285702; c=relaxed/simple;
-	bh=2BJzWBrTcslv0v3RT/hLn5vwxg4Nr1KG/xr4WmD8ts4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=awiCBmVWJ04WcoIJFv/mC4MszAxsWouX6j/oh9DYk01AF4MeJf1idNqneNxC1dx9+OS8Cp+xXrv15SUy4IBoj+wHpw3S/eJ+3u6ELDGEQYbMPtEorxK+8sKKy77t9bfyKCX+RpWrrbPhU67YFMLTSMzxZ5qIXEsY2cZIxLVhdEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=afdWNcE1; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43GEPt1T032590;
-	Tue, 16 Apr 2024 16:41:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:date:subject:mime-version:content-type
-	:content-transfer-encoding:message-id:to:cc; s=qcppdkim1; bh=mBA
-	fj53NHH6k4XlPZkjXvaFjngclHvL3pD6ZElWb19E=; b=afdWNcE18+HRWOjYM36
-	bgC9qZg1JH4GiOcq7z4FN0e2Gztd6ZNEJ8qU3UxFHTU1i0HvAhVVBJhy6g0siPTd
-	zH5k/1TlllnY92VU5sNtr0lS9NYUev1qa1sf8SCOXj3A/o0H8f2lWI0g+4hldYIG
-	BRB40tVavtt8rrJgBThyRpIzsgW+oc8mBgYVQ4CvETS5bXy6kTUQZ1DpEKrf2Xzx
-	BKKpSRdvyMLXD0ljS1/M5Kjof4kYqyRLrGBNAEnGWOBrjlh8Cu3zI9VyCtHsG0qE
-	9HUi+dZ+sd/pUbqMrAJLkDZVQD93/Vu0HNIYngV6K/SQmykqc2aHAvy5zgBCTufQ
-	X6Q==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xhu3agdhf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Apr 2024 16:41:26 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43GGfPSL021744
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Apr 2024 16:41:26 GMT
-Received: from [169.254.0.1] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 16 Apr
- 2024 09:41:25 -0700
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Date: Tue, 16 Apr 2024 09:41:19 -0700
-Subject: [PATCH] wifi: ath12k: don't use %pK in dmesg format strings
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63DB32C6A3;
+	Tue, 16 Apr 2024 20:29:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.64.94
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713299350; cv=fail; b=EDR+qf41r61nHV9w1gKW2eAaEqWPS/OqBnjQvzrrQDowz/3OhQg9JGnjRTUaUqxtwrIcgTUKFrnonat0HNRslbfkKi/dLjiE2C4DARVOEdc2MPbBYfrdTmOtRGfckFP3+/Z/SrSWJqIk1sFWTZ9nRWeaeE0sDicB5XjkOpoLqMQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713299350; c=relaxed/simple;
+	bh=eacoNVBgNFQjGchp8X4ADsWcAtCaQrIBQj3b/lJ34Vs=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=uMHGqB+MXnTSJASNBarkE2UWSLxogG26Tf+WXAy8cZSg2As1pmZaOET9yX3w1I6IjJMupltGlLjgKSMTcBhlyctDYBc4zuFfGYkedzmCrahXAjBu4SFktl3FB5uytNoMf5HizeJUp/N7pj49WGfokMDv0ZH6GxTP5Kcitflluiw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.nl; spf=pass smtp.mailfrom=live.nl; dkim=pass (2048-bit key) header.d=LIVE.NL header.i=@LIVE.NL header.b=d8ZZ7uzp; arc=fail smtp.client-ip=40.92.64.94
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=live.nl
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=md+Pc1lynjEC5PihbGe1XUyP3QYoq6r32zC2LyvP1Hb3eV1ST6MsuCa7mEy74j7IYsq99LPOh2ttwMJqjZxPsq/T/FWVhSLc6Jiw3AuCt0EE1NBpFJc9tvFLWkqbKr9bp/XmhK2i+mZbMYpFTzBhQ8M6Lra6pzB/99nvPzSEuntbb/NCkbn4tcskXzuGRLKdg5N5UP5tOgoktfxYbNylFsjYklLH9WaKflM6SF4BAmAPMYAorNoZBvEQJZZD675F3LVrMfzCc9uFux6CP3Xj6oD1LxHQfw1I4o8mRsRANhEIvf2T60Jaib9AfPSQwnKYGbRlpEzH68Lk4Fn4EBAqIw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=r2QtviUVyl6LnZa/TS9PJ+w5LsICx3NolXEtMCbVaTc=;
+ b=ebcPEKb4JV+7Fn9BmCGlk7V/D+RPJECYuw/vTVRyVdwPux2cteATeEbr6jej89tMLkGJnswkkQh7fyzHvUvZ+7FKP9VtKVMq4mLC6FHf4trjc4Q7BA4QF0JhVEfG4bwBDuUiM61ysNGQ0Tv3THxc4plTdSHvHhk2XYUrRfkPlyqWzrVNd5wco9GFzXWviTHpqXF7XuRjJ7GjY+RsAFgu1AH7bjifIbBrEdb2WwxuuTcnJf/R61Ukkmj2hsdpqp2KIAlaY/71o2mTTm+x3X8TjwlYE/H+SIKQxKPqEmCwvWkuBNeIRfoJjLSYxutaeNe5egi7xHCOAwr54wslTFDudQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=LIVE.NL; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=r2QtviUVyl6LnZa/TS9PJ+w5LsICx3NolXEtMCbVaTc=;
+ b=d8ZZ7uzp0uap+8wPewrcWkmimfNFGiCZbIs/VFJRKk0X3MdffElW/GxSRvluMk8QfKN4rsFNoWbnNDkRfRmvUHYnfK8EQJhG6p5ToOBVpVP9CkUUKgt7DGaqow9V8p9YXiZArjYocbFpmfih2+lGEmqoHxCy0ACe4w62mgf8PNGjTrTkwBeZEQZyC0bJYCtpiHAm53saKPGFlovaL5DX9o59+oORfON9S1Q14DLizoXrZe3vXvRWRdaZe7PlI46XJJeEeGGU3TY7JMgG8js2yq9RiYqCMH7TefgZCNfsZOrXJQ16KeXWmvAktsjg+D9iRaryfFSbjMJQbsMPDRY8MA==
+Received: from AM0PR09MB2675.eurprd09.prod.outlook.com (2603:10a6:208:d3::24)
+ by VI0PR09MB7745.eurprd09.prod.outlook.com (2603:10a6:800:21c::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Tue, 16 Apr
+ 2024 20:29:06 +0000
+Received: from AM0PR09MB2675.eurprd09.prod.outlook.com
+ ([fe80::6881:178c:bae6:1644]) by AM0PR09MB2675.eurprd09.prod.outlook.com
+ ([fe80::6881:178c:bae6:1644%6]) with mapi id 15.20.7452.049; Tue, 16 Apr 2024
+ 20:29:05 +0000
+From: Paul Geurts <paul_geurts@live.nl>
+To: mgreer@animalcreek.com,
+	krzk@kernel.org,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Paul Geurts <paul_geurts@live.nl>
+Subject: [PATCH] NFC: trf7970a: disable all regulators on removal
+Date: Tue, 16 Apr 2024 22:28:49 +0200
+Message-ID:
+ <AM0PR09MB2675EDFD44EC82B6BCBB430F95082@AM0PR09MB2675.eurprd09.prod.outlook.com>
+X-Mailer: git-send-email 2.20.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TMN: [soYv+R0FkcXdG5bKKTZALydyWdareuq8WKZM83j0SLjjwaR6OMHrw9K4kTxyDLd3]
+X-ClientProxiedBy: AS4PR09CA0002.eurprd09.prod.outlook.com
+ (2603:10a6:20b:5e0::9) To AM0PR09MB2675.eurprd09.prod.outlook.com
+ (2603:10a6:208:d3::24)
+X-Microsoft-Original-Message-ID: <20240416202849.2315-1-paul_geurts@live.nl>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20240416-pk-v1-1-2c8852743e6d@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIAC+qHmYC/x3M0QpAQBCF4VfRXNtC05JXkYvdNZhkaUZS8u6Wy
- 6/+c25QEiaFNrtB6GTlLSaUeQZhdnEiw0MyVEWFBZbW7IvBAWuyvvF2REjhLjTy9Z90fbJ3Ssa
- Li2H+pqvTgwSe5wXiEauobQAAAA==
-To: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
-CC: <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>
-X-Mailer: b4 0.13.0
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: FMbGQQ7tOQ0bNm1Y9TMc19g7Wv1qbf1p
-X-Proofpoint-GUID: FMbGQQ7tOQ0bNm1Y9TMc19g7Wv1qbf1p
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-16_14,2024-04-16_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- priorityscore=1501 mlxscore=0 adultscore=0 phishscore=0 mlxlogscore=927
- impostorscore=0 lowpriorityscore=0 clxscore=1015 spamscore=0
- malwarescore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2404160103
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR09MB2675:EE_|VI0PR09MB7745:EE_
+X-MS-Office365-Filtering-Correlation-Id: 912c2a95-f4a5-46c2-1713-08dc5e53dc43
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	hlRwZXDUUfgtnjDb11SuvuJEvyzTNeSqa/YK8rCXkpyazSHrFNgy/4BFKZjmola/IVDW4rVsoC5F7gjohHzyGTJRiTm5K82yH7Trbreq8ohuiUsVIK9by7gVEaPRWec/ApDWiD9Q1C2bRCq8vdJw9Ymd4H9o1dV+f2zFWy5ANDUf0Zf5+mwvjo9idFR1EK8nXavpLAFmpoNJ+1wW12lmVn2hLgU90/2Wk4U7HhvAtJDUPdYRwWpgLOTwMGQIYnJYkgqYtXRGvj/nZVVcXEOqoWrflAoyHUL/adXbf0TZL4S4M3cblEXSDvEI1k/nGrp+P7MfQ+oEL89p90FllopxrktWGR90DOnuxfn6pet+XF3n+EPPVrQrnhhclZD35/MQZ+7GXaBVtiRx/E2RHuVR4U1srh+Bca3jWVM51NHWRQeHZm7xIv8giy52xPL36cMvC4QpA0bHucnq+SijN5jCMH1uIjrVZKjlNyXmnwNOL1BNPM2vmhs6Q+9P8amPguchthP2mUnjwyqtwFoD6avbcXBEmovHlslhQMnWZ8oxIFZcUpzfAoyTCb0qAOjmfiHHny13pnoH1MnrIKpHrdjY5T4Q+sm2+a3J/FI8gNMo4ebCFqKZ8Mn5gM4RkozNy9eh
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?FlcKsIlSaG7Ym1QPgLk6pooCK7YfJkR5Pw5+PezhnvXBlsv0eQpgolJZ9pSL?=
+ =?us-ascii?Q?JNroih0AulX+WdTqE+Wqc19di43bQIoIdebu7JadA/OpKrojM6YpbjIZLaJz?=
+ =?us-ascii?Q?vHKm6cYb98ZSNd8Niqx3bfICmsT2neK7SwpmVzbxdeRCAHrkaTFkJLlnY8VW?=
+ =?us-ascii?Q?jL9ReWecQPCe6KOFChMf5r9nMQikwy1MO/NTWjAHJipS+mJvQ33Z27HLBead?=
+ =?us-ascii?Q?QYFGQgEwF2bJN/qDxOoQp4qf6TuMEUd5lML5j6VIeMsfiQbpKzwGK+G8cSR8?=
+ =?us-ascii?Q?7TciKyVI5MecV9gRNGLmITnulv3T/c8V0sn/vUV4WNmzwSsdGE+1Md+hXeoL?=
+ =?us-ascii?Q?GLPaiYavfA/CVi80Bnukh/oyt1P44avCHz3YWDJJ8IJ/mKP47uggLH1xxJXQ?=
+ =?us-ascii?Q?sNE8OpP50cykkgfpvCKa2j/BQ5OdYgVatubwy2hQ5KbhBT0xFRXV++l2c2a8?=
+ =?us-ascii?Q?v1PFYyySk6C+EsWDnUBHtg+ArA239Ms7Sigwz6AoqOaK0cYdGmWKoD3vrCl9?=
+ =?us-ascii?Q?wEL6vo9KXNfejFZR4lVjBus+fHvYOYCIKDUh/pbpV8OGBsoJHp73/5uLpPCV?=
+ =?us-ascii?Q?IYOjrUlD5q3F1hS8YFHpkYZE4/4dvy22rvaCKI8Wo5s8vpuG19xQbTqJt5vP?=
+ =?us-ascii?Q?7IhCuaj8Kr/reVkMzTvHO04Hb8g2qqp/I4DvnQCM8ZRhDjR7PsIFX5mBJMCY?=
+ =?us-ascii?Q?FeUCg8a13sjXpMOofNX35BC6z1nkFl2mwqf6+dMqyuF9Zf5VYM8pb4fo0wmu?=
+ =?us-ascii?Q?lEzziNph1bpxIX1310xANlaErG1LwfV8Y+n1lDomMoNzErEkg+aaKnamX8Hb?=
+ =?us-ascii?Q?wZn/iSluRAMFRw13wXUAg3VCebcLAq8SvNsZkQ0qVUPx0DX/7ioDzuBbHlHq?=
+ =?us-ascii?Q?xWS+7IvS/9Df05CnNvg8T8jZyMczLYHOG3/NN4p1pVrC9tGIpZBECpnao/o/?=
+ =?us-ascii?Q?C6Gvz84yo9VTWJ9/NWufOiXIvQMOCrg4qxT5UNCtEnESHmRpTzLQf9pSfjDg?=
+ =?us-ascii?Q?Y6qQ3KiQV2F/b5LSwwrub+4yd2Xr3I5KvDdx0kXrj9Fyl7duvoNQCUm9jupb?=
+ =?us-ascii?Q?BzuMs5UH5lNsIqABMInD3x55wypzokpMn95YsxzEAroLSvQmEUF4zL/wucXs?=
+ =?us-ascii?Q?K92/o/3BDX6p+mo7WrIsQfaKPmMk4PCKIWunGdAvC67lj67Iv8DfG/7UMQm3?=
+ =?us-ascii?Q?cVvDWyqj2qI+6REo6nYprVLPQXp8FwedBedJfXkCzUwb7u1zJOlT89d8jn7U?=
+ =?us-ascii?Q?aBqa4YwFztk0GfleOUpbLIBoAnQ6A5SbxW7u/SXvAtUsO2SqyhOtbPUMPylA?=
+ =?us-ascii?Q?UOk=3D?=
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-64da6.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 912c2a95-f4a5-46c2-1713-08dc5e53dc43
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR09MB2675.eurprd09.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2024 20:29:05.3084
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR09MB7745
 
-Currently, when debug logs are enabled, messages such as the following
-are found in the kernel log:
+During module probe, regulator 'vin' and 'vdd-io' are used and enabled,
+but the vdd-io regulator overwrites the 'vin' regulator pointer. During
+remove, only the vdd-io is disabled, as the vin regulator pointer is not
+available anymore. When regulator_put() is called during resource
+cleanup a kernel warning is given, as the regulator is still enabled.
 
-event mgmt rx skb         pK-error len 209 ftype 00 stype 50
+Store the two regulators in separate pointers and disable both the
+regulators on module remove.
 
-The "pK-error" comes from using %pK to display an skb address in an
-interrupt context.
+Fixes: 49d22c70aaf0 ("NFC: trf7970a: Add device tree option of 1.8 Volt IO voltage")
 
-Per the guidance in the current "printk-formats" documentation, %pK
-"is only intended when producing content of a file read by userspace
-from e.g. procfs or sysfs, not for dmesg."
-
-So replace %pK with %p in all of the ath12k_dbg() format strings.
-
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Paul Geurts <paul_geurts@live.nl>
 ---
- drivers/net/wireless/ath/ath12k/dp_mon.c |  6 +++---
- drivers/net/wireless/ath/ath12k/dp_rx.c  |  2 +-
- drivers/net/wireless/ath/ath12k/htc.c    |  4 ++--
- drivers/net/wireless/ath/ath12k/mac.c    | 10 +++++-----
- drivers/net/wireless/ath/ath12k/pci.c    |  2 +-
- drivers/net/wireless/ath/ath12k/wmi.c    |  2 +-
- 6 files changed, 13 insertions(+), 13 deletions(-)
+ drivers/nfc/trf7970a.c | 42 +++++++++++++++++++++++-------------------
+ 1 file changed, 23 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
-index 2d56913a75d0..6b0b72477540 100644
---- a/drivers/net/wireless/ath/ath12k/dp_mon.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
-@@ -944,7 +944,7 @@ ath12k_dp_mon_rx_merg_msdus(struct ath12k *ar,
- 			goto err_merge_fail;
+diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
+index 7eb17f46a815..9e1a34e23af2 100644
+--- a/drivers/nfc/trf7970a.c
++++ b/drivers/nfc/trf7970a.c
+@@ -424,7 +424,8 @@ struct trf7970a {
+ 	enum trf7970a_state		state;
+ 	struct device			*dev;
+ 	struct spi_device		*spi;
+-	struct regulator		*regulator;
++	struct regulator		*vin_regulator;
++	struct regulator		*vddio_regulator;
+ 	struct nfc_digital_dev		*ddev;
+ 	u32				quirks;
+ 	bool				is_initiator;
+@@ -1883,7 +1884,7 @@ static int trf7970a_power_up(struct trf7970a *trf)
+ 	if (trf->state != TRF7970A_ST_PWR_OFF)
+ 		return 0;
  
- 		ath12k_dbg(ab, ATH12K_DBG_DATA,
--			   "mpdu_buf %pK mpdu_buf->len %u",
-+			   "mpdu_buf %p mpdu_buf->len %u",
- 			   prev_buf, prev_buf->len);
- 	} else {
- 		ath12k_dbg(ab, ATH12K_DBG_DATA,
-@@ -958,7 +958,7 @@ ath12k_dp_mon_rx_merg_msdus(struct ath12k *ar,
- err_merge_fail:
- 	if (mpdu_buf && decap_format != DP_RX_DECAP_TYPE_RAW) {
- 		ath12k_dbg(ab, ATH12K_DBG_DATA,
--			   "err_merge_fail mpdu_buf %pK", mpdu_buf);
-+			   "err_merge_fail mpdu_buf %p", mpdu_buf);
- 		/* Free the head buffer */
- 		dev_kfree_skb_any(mpdu_buf);
- 	}
-@@ -1092,7 +1092,7 @@ static void ath12k_dp_mon_rx_deliver_msdu(struct ath12k *ar, struct napi_struct
- 	spin_unlock_bh(&ar->ab->base_lock);
+-	ret = regulator_enable(trf->regulator);
++	ret = regulator_enable(trf->vin_regulator);
+ 	if (ret) {
+ 		dev_err(trf->dev, "%s - Can't enable VIN: %d\n", __func__, ret);
+ 		return ret;
+@@ -1926,7 +1927,7 @@ static int trf7970a_power_down(struct trf7970a *trf)
+ 	if (trf->en2_gpiod && !(trf->quirks & TRF7970A_QUIRK_EN2_MUST_STAY_LOW))
+ 		gpiod_set_value_cansleep(trf->en2_gpiod, 0);
  
- 	ath12k_dbg(ar->ab, ATH12K_DBG_DATA,
--		   "rx skb %pK len %u peer %pM %u %s %s%s%s%s%s%s%s%s %srate_idx %u vht_nss %u freq %u band %u flag 0x%x fcs-err %i mic-err %i amsdu-more %i\n",
-+		   "rx skb %p len %u peer %pM %u %s %s%s%s%s%s%s%s%s %srate_idx %u vht_nss %u freq %u band %u flag 0x%x fcs-err %i mic-err %i amsdu-more %i\n",
- 		   msdu,
- 		   msdu->len,
- 		   peer ? peer->addr : NULL,
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-index 977a8acb736c..2b89a8d2c08f 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -2467,7 +2467,7 @@ static void ath12k_dp_rx_deliver_msdu(struct ath12k *ar, struct napi_struct *nap
- 	spin_unlock_bh(&ab->base_lock);
+-	ret = regulator_disable(trf->regulator);
++	ret = regulator_disable(trf->vin_regulator);
+ 	if (ret)
+ 		dev_err(trf->dev, "%s - Can't disable VIN: %d\n", __func__,
+ 			ret);
+@@ -2065,37 +2066,37 @@ static int trf7970a_probe(struct spi_device *spi)
+ 	mutex_init(&trf->lock);
+ 	INIT_DELAYED_WORK(&trf->timeout_work, trf7970a_timeout_work_handler);
  
- 	ath12k_dbg(ab, ATH12K_DBG_DATA,
--		   "rx skb %pK len %u peer %pM %d %s sn %u %s%s%s%s%s%s%s%s%s rate_idx %u vht_nss %u freq %u band %u flag 0x%x fcs-err %i mic-err %i amsdu-more %i\n",
-+		   "rx skb %p len %u peer %pM %d %s sn %u %s%s%s%s%s%s%s%s%s rate_idx %u vht_nss %u freq %u band %u flag 0x%x fcs-err %i mic-err %i amsdu-more %i\n",
- 		   msdu,
- 		   msdu->len,
- 		   peer ? peer->addr : NULL,
-diff --git a/drivers/net/wireless/ath/ath12k/htc.c b/drivers/net/wireless/ath/ath12k/htc.c
-index 23f7428abd95..2f2230f565bb 100644
---- a/drivers/net/wireless/ath/ath12k/htc.c
-+++ b/drivers/net/wireless/ath/ath12k/htc.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2022 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2022, 2024 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- #include <linux/skbuff.h>
- #include <linux/ctype.h>
-@@ -358,7 +358,7 @@ void ath12k_htc_rx_completion_handler(struct ath12k_base *ab,
- 		goto out;
+-	trf->regulator = devm_regulator_get(&spi->dev, "vin");
+-	if (IS_ERR(trf->regulator)) {
+-		ret = PTR_ERR(trf->regulator);
++	trf->vin_regulator = devm_regulator_get(&spi->dev, "vin");
++	if (IS_ERR(trf->vin_regulator)) {
++		ret = PTR_ERR(trf->vin_regulator);
+ 		dev_err(trf->dev, "Can't get VIN regulator: %d\n", ret);
+ 		goto err_destroy_lock;
  	}
  
--	ath12k_dbg(ab, ATH12K_DBG_HTC, "htc rx completion ep %d skb %pK\n",
-+	ath12k_dbg(ab, ATH12K_DBG_HTC, "htc rx completion ep %d skb %p\n",
- 		   eid, skb);
- 	ep->ep_ops.ep_rx_complete(ab, skb);
- 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 09b829dce1b3..42ec834bdc86 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -6630,7 +6630,7 @@ static int ath12k_mac_op_add_chanctx(struct ieee80211_hw *hw,
- 	ab = ar->ab;
- 
- 	ath12k_dbg(ab, ATH12K_DBG_MAC,
--		   "mac chanctx add freq %u width %d ptr %pK\n",
-+		   "mac chanctx add freq %u width %d ptr %p\n",
- 		   ctx->def.chan->center_freq, ctx->def.width, ctx);
- 
- 	mutex_lock(&ar->conf_mutex);
-@@ -6660,7 +6660,7 @@ static void ath12k_mac_op_remove_chanctx(struct ieee80211_hw *hw,
- 	ab = ar->ab;
- 
- 	ath12k_dbg(ab, ATH12K_DBG_MAC,
--		   "mac chanctx remove freq %u width %d ptr %pK\n",
-+		   "mac chanctx remove freq %u width %d ptr %p\n",
- 		   ctx->def.chan->center_freq, ctx->def.width, ctx);
- 
- 	mutex_lock(&ar->conf_mutex);
-@@ -7114,7 +7114,7 @@ static void ath12k_mac_op_change_chanctx(struct ieee80211_hw *hw,
- 	mutex_lock(&ar->conf_mutex);
- 
- 	ath12k_dbg(ab, ATH12K_DBG_MAC,
--		   "mac chanctx change freq %u width %d ptr %pK changed %x\n",
-+		   "mac chanctx change freq %u width %d ptr %p changed %x\n",
- 		   ctx->def.chan->center_freq, ctx->def.width, ctx, changed);
- 
- 	/* This shouldn't really happen because channel switching should use
-@@ -7192,7 +7192,7 @@ ath12k_mac_op_assign_vif_chanctx(struct ieee80211_hw *hw,
- 	mutex_lock(&ar->conf_mutex);
- 
- 	ath12k_dbg(ab, ATH12K_DBG_MAC,
--		   "mac chanctx assign ptr %pK vdev_id %i\n",
-+		   "mac chanctx assign ptr %p vdev_id %i\n",
- 		   ctx, arvif->vdev_id);
- 
- 	arvif->punct_bitmap = ctx->def.punctured;
-@@ -7283,7 +7283,7 @@ ath12k_mac_op_unassign_vif_chanctx(struct ieee80211_hw *hw,
- 	mutex_lock(&ar->conf_mutex);
- 
- 	ath12k_dbg(ab, ATH12K_DBG_MAC,
--		   "mac chanctx unassign ptr %pK vdev_id %i\n",
-+		   "mac chanctx unassign ptr %p vdev_id %i\n",
- 		   ctx, arvif->vdev_id);
- 
- 	WARN_ON(!arvif->is_started);
-diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
-index 14954bc05144..5fa7a3d770ee 100644
---- a/drivers/net/wireless/ath/ath12k/pci.c
-+++ b/drivers/net/wireless/ath/ath12k/pci.c
-@@ -872,7 +872,7 @@ static int ath12k_pci_claim(struct ath12k_pci *ab_pci, struct pci_dev *pdev)
- 		goto release_region;
+-	ret = regulator_enable(trf->regulator);
++	ret = regulator_enable(trf->vin_regulator);
+ 	if (ret) {
+ 		dev_err(trf->dev, "Can't enable VIN: %d\n", ret);
+ 		goto err_destroy_lock;
  	}
  
--	ath12k_dbg(ab, ATH12K_DBG_BOOT, "boot pci_mem 0x%pK\n", ab->mem);
-+	ath12k_dbg(ab, ATH12K_DBG_BOOT, "boot pci_mem 0x%p\n", ab->mem);
- 	return 0;
+-	uvolts = regulator_get_voltage(trf->regulator);
++	uvolts = regulator_get_voltage(trf->vin_regulator);
+ 	if (uvolts > 4000000)
+ 		trf->chip_status_ctrl = TRF7970A_CHIP_STATUS_VRS5_3;
  
- release_region:
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index a5575ce9eed4..bd393fa032c9 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -5933,7 +5933,7 @@ static void ath12k_mgmt_rx_event(struct ath12k_base *ab, struct sk_buff *skb)
- 	 */
+-	trf->regulator = devm_regulator_get(&spi->dev, "vdd-io");
+-	if (IS_ERR(trf->regulator)) {
+-		ret = PTR_ERR(trf->regulator);
++	trf->vddio_regulator = devm_regulator_get(&spi->dev, "vdd-io");
++	if (IS_ERR(trf->vddio_regulator)) {
++		ret = PTR_ERR(trf->vddio_regulator);
+ 		dev_err(trf->dev, "Can't get VDD_IO regulator: %d\n", ret);
+-		goto err_destroy_lock;
++		goto err_disable_vin_regulator;
+ 	}
  
- 	ath12k_dbg(ab, ATH12K_DBG_MGMT,
--		   "event mgmt rx skb %pK len %d ftype %02x stype %02x\n",
-+		   "event mgmt rx skb %p len %d ftype %02x stype %02x\n",
- 		   skb, skb->len,
- 		   fc & IEEE80211_FCTL_FTYPE, fc & IEEE80211_FCTL_STYPE);
+-	ret = regulator_enable(trf->regulator);
++	ret = regulator_enable(trf->vddio_regulator);
+ 	if (ret) {
+ 		dev_err(trf->dev, "Can't enable VDD_IO: %d\n", ret);
+-		goto err_destroy_lock;
++		goto err_disable_vin_regulator;
+ 	}
  
-
----
-base-commit: 448ef71a317cc00e2ec0c1edcefbdf6df4b3e46b
-change-id: 20240416-pk-4d47e6b8b6f4
+-	if (regulator_get_voltage(trf->regulator) == 1800000) {
++	if (regulator_get_voltage(trf->vddio_regulator) == 1800000) {
+ 		trf->io_ctrl = TRF7970A_REG_IO_CTRL_IO_LOW;
+ 		dev_dbg(trf->dev, "trf7970a config vdd_io to 1.8V\n");
+ 	}
+@@ -2108,7 +2109,7 @@ static int trf7970a_probe(struct spi_device *spi)
+ 	if (!trf->ddev) {
+ 		dev_err(trf->dev, "Can't allocate NFC digital device\n");
+ 		ret = -ENOMEM;
+-		goto err_disable_regulator;
++		goto err_disable_vddio_regulator;
+ 	}
+ 
+ 	nfc_digital_set_parent_dev(trf->ddev, trf->dev);
+@@ -2137,8 +2138,10 @@ static int trf7970a_probe(struct spi_device *spi)
+ 	trf7970a_shutdown(trf);
+ err_free_ddev:
+ 	nfc_digital_free_device(trf->ddev);
+-err_disable_regulator:
+-	regulator_disable(trf->regulator);
++err_disable_vddio_regulator:
++	regulator_disable(trf->vddio_regulator);
++err_disable_vin_regulator:
++	regulator_disable(trf->vin_regulator);
+ err_destroy_lock:
+ 	mutex_destroy(&trf->lock);
+ 	return ret;
+@@ -2157,7 +2160,8 @@ static void trf7970a_remove(struct spi_device *spi)
+ 	nfc_digital_unregister_device(trf->ddev);
+ 	nfc_digital_free_device(trf->ddev);
+ 
+-	regulator_disable(trf->regulator);
++	regulator_disable(trf->vddio_regulator);
++	regulator_disable(trf->vin_regulator);
+ 
+ 	mutex_destroy(&trf->lock);
+ }
+-- 
+2.20.1
 
 
