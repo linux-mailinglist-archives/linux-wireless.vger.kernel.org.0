@@ -1,111 +1,185 @@
-Return-Path: <linux-wireless+bounces-6395-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6396-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9DBC8A6ACC
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 14:22:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47B4B8A6AE6
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 14:29:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17ACD281E2B
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 12:22:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8A1D1F21422
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 12:29:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF52E12AAE3;
-	Tue, 16 Apr 2024 12:22:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Bd2Wnhbw"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D4012A17F;
+	Tue, 16 Apr 2024 12:29:20 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51743127B57
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Apr 2024 12:22:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9A312A170;
+	Tue, 16 Apr 2024 12:29:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713270143; cv=none; b=IIhzx4ogsqBgKBoKO+jRltieBIfUqnIa2RvFYCltvtkMxSfW1LAlmP07iT1a9OV+9CcskzIXqdr1FyBsE9nvDV3pKJ+yKz/j7luqvZM1ub7lfodj2kIkSZB/fx7W3Km8dZONH+gZ9DAIfpZojMBeiyQErCeybkhJb+djwl+YrYw=
+	t=1713270560; cv=none; b=VpfbF5riE9SgfNMg8HyYfn4Q5/qe+ilpLknHY73DIPNkHyUiJGbwsFnxy02LskyTH50DN1AD6U/++F7lrpxo404wIr94SDulpDL5boegRDiczuwl3nFCXaM8QCG/jgXKC790LHZg/xO39Gstw82DxNsziH24OfGrjvisDLVCto8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713270143; c=relaxed/simple;
-	bh=DKrIFSDvPyPsC6ZdQ2dqkpMRmXsqmzOPCzV+pvng9tk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rvk17/DKLKGrhLwALB84sbZxhoJOoVE3oMcSLaUDWZsZJhMbHjuBEYph/U3+YhrGJhUr74jl6e6jcrXiSyV2yp+qSMKysVKuCTKQim3No9v8PmLoz34Ou3sFluDf2ooYegXKPBi7OAqKt1l8vLN4jFzLzyXDq1YMOq4MmtnZ8hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Bd2Wnhbw; arc=none smtp.client-ip=209.85.219.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-db4364ecd6aso4578403276.2
-        for <linux-wireless@vger.kernel.org>; Tue, 16 Apr 2024 05:22:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713270141; x=1713874941; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DKrIFSDvPyPsC6ZdQ2dqkpMRmXsqmzOPCzV+pvng9tk=;
-        b=Bd2WnhbwBZKJHegchjwgDiRJVVpJeJ2ZWWuWskzQQ2rK3v/h3FE0Rk6ayC0gC+9GCJ
-         ZkELgngLgtWOpRMBFNrVFJRcz3pl3BtMKa8PXCtysA7IMD3Xhy7MUSTUvwe5yfCHaeS1
-         CyjyVoBn3Kros4JNMGUkyEd48F4SlOdgr97pXTj/LFr/epWiBc6O0MD5RBlGLqMZWlVl
-         N4/SOHPaymkkorLQS02tcLW+UHk8VW1ZqRdbeej6k/Kv/FdOxC7cn4b5QOh7UWsG5uWJ
-         PYlX2t5mYTETTHUIAUm9GwY/ym4ZCaef9FozhP9wW09z5JXmo9czYp8AsIcat4250fOK
-         GgFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713270141; x=1713874941;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DKrIFSDvPyPsC6ZdQ2dqkpMRmXsqmzOPCzV+pvng9tk=;
-        b=q3Fp5BZXj9mWOHVoT8WhQ8NUHgePJ+Gv50jhofXwZUuMiUv73QrMs7VAK857X53JVv
-         lA/REwEyF07RiQSt8v68j1P+xtlZzW2DwJ0NpnS3g+9KMOF9zx8URx9nOXQmsCYhKLLZ
-         18yOGjaO0sSYlTVGBZsB1P41btkSx0BPPGXOb1DNqVHnW5CnviENV48vbJzeDj3cguY2
-         PUrN00JftYTxsKWkChTfUfipX9AYFacMmIv1DytjHNMFyZVwX97phLiOwf7cN960oWeu
-         TTMvIrZLegzw6Xn+7BG8+QF1GDZet0o60N8mu6juULACq4gGcBHXMSXgg35aZuCPKX57
-         uPcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXZVTPeGWRbVeUD7InlEzyZgtflvHn5zdlrBTb6KTbyyW1v1a7uBM5HPpO+5RgTWN9znAAlvQEV3idEOVXUfSmIXIWUw2JQU8jqUT0LOPU=
-X-Gm-Message-State: AOJu0Yw7Y1+O0JxV5srMgNaTFPi2LgiD9dK7pD63Y7hdj9dCdOCrUtEv
-	iecVvQgeEcUv58mU188YvDWwltd1M4vo6enJ+DM3lKkS7Nk3QS9v1KMxRSoMki6YVkL3L8C9VKX
-	uVGVjrS2Sn6zFi3xzDhfttoHhUSgWI/j0hIIpfg==
-X-Google-Smtp-Source: AGHT+IH6I+79BV6weCSjyg+xHM274VtjfV8MzR1S0lXUMhI5Av+adu1GyzQ9NMJZOKWXpjT31ISM3wou5BWCwEtVdK4=
-X-Received: by 2002:a25:8211:0:b0:de1:1af9:c7ea with SMTP id
- q17-20020a258211000000b00de11af9c7eamr10234568ybk.1.1713270141306; Tue, 16
- Apr 2024 05:22:21 -0700 (PDT)
+	s=arc-20240116; t=1713270560; c=relaxed/simple;
+	bh=CYjxW5B1zvIlRVHDnJo1YXSqiHAJK1w+Lxk9rH99/sI=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=XpUEJZwvtlj+4a5n5loK7v+MsGtN589r60El7q2i4QCmjRDkm3mH9xWae2R4ygE1+zly3ucpZxVxPLCLybDAAfa3s5REapN+Tuip6uHU5weR3RgUuiWjnoZ6SDQEu3yGEngPdF+0JudIDd4ofLBZNnE3jfS9yrQyuqXdFNQrtk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [10.0.98.87] (unknown [212.201.152.66])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 0EC6D61E5FE35;
+	Tue, 16 Apr 2024 14:28:45 +0200 (CEST)
+Message-ID: <6689d445-af96-47eb-bcb5-eb096a77f084@molgen.mpg.de>
+Date: Tue, 16 Apr 2024 14:28:44 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240408231727.396452-1-andriy.shevchenko@linux.intel.com>
- <20240408231727.396452-2-andriy.shevchenko@linux.intel.com>
- <CACRpkdYaXVvtt3b9rFxU4ZNShD17Bm4XU9X3h4dY501iJy3kPA@mail.gmail.com>
- <ZhlSaFWlbE6OS7om@smile.fi.intel.com> <CAMRc=Me489H-mTfT1hfUsY47iKwoaVsf6sgkiBwBVkxJOBo9UA@mail.gmail.com>
-In-Reply-To: <CAMRc=Me489H-mTfT1hfUsY47iKwoaVsf6sgkiBwBVkxJOBo9UA@mail.gmail.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Tue, 16 Apr 2024 14:22:09 +0200
-Message-ID: <CACRpkdZRp-DFQgb3=Ut27DHd1w11_aEY0HbLjJHob=C5Ek-dyw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] gpiolib: Fix a mess with the GPIO_* flags
-To: Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Kent Gibson <warthog618@gmail.com>, 
-	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	Arend van Spriel <arend.vanspriel@broadcom.com>, Kalle Valo <kvalo@kernel.org>, 
-	Charles Keepax <ckeepax@opensource.cirrus.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+Subject: ath10k: Rekeying PTK for STA 10:06:ed:15:ac:6c but driver can't
+ safely do that.
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Fri, Apr 12, 2024 at 9:44=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl>=
- wrote:
+Dear Linux folks,
 
-> IIUC include/dt-bindings/ headers should only be used by DT sources
-> and code that parses the OF properties.
 
-That's what I have come to understand as well.
+In a research institution using *eduroam*, I noticed on Dell XPS 13 9360 
+with Debian sid/unstable
 
-I wonder if there is something that can be done to enforce it?
+     $ lspci -nn -s 3a:00.0 -v
+     3a:00.0 Network controller [0280]: Qualcomm Atheros QCA6174 
+802.11ac Wireless Network Adapter [168c:003e] (rev 32)
+         Subsystem: Rivet Networks Killer Wireless-n/a/ac 1535 Wireless 
+Network Adapter [1a56:1535]
+         Flags: bus master, fast devsel, latency 0, IRQ 137
+         Memory at dc000000 (64-bit, non-prefetchable) [size=2M]
+         Capabilities: <access denied>
+         Kernel driver in use: ath10k_pci
+         Kernel modules: ath10k_pci
 
-Ideally the code that parses OF properties should have to
-opt in to get access to the <dt-bindings/*> namespace.
+that the Wireless connection dropped for a short time, and then 
+reconnected again. Linux 6.9-rc3+ warns:
 
-Yours,
-Linus Walleij
+     [73861.687754] Rekeying PTK for STA 10:06:ed:15:ac:6c but driver 
+can't safely do that.
+
+According to the logs since March 2024, this never happened in other 
+environments.
+
+With wpa_supplicant logs:
+
+```
+[73862.470842] wpa_supplicant[595]: wlp58s0: CTRL-EVENT-EAP-STARTED EAP 
+authentication started
+[73862.485995] wpa_supplicant[595]: wlp58s0: 
+CTRL-EVENT-EAP-PROPOSED-METHOD vendor=0 method=25 -> NAK
+[73862.499998] wpa_supplicant[595]: wlp58s0: 
+CTRL-EVENT-EAP-PROPOSED-METHOD vendor=0 method=21
+[73862.500424] wpa_supplicant[595]: wlp58s0: CTRL-EVENT-EAP-METHOD EAP 
+vendor 0 method 21 (TTLS) selected
+[…]
+[73862.624544] wpa_supplicant[595]: wlp58s0: CTRL-EVENT-EAP-SUCCESS EAP 
+authentication completed successfully
+[73862.626116] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-REMOVED 
+10:06:ed:17:9b:6c 0
+[73862.626436] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-REMOVED 
+10:06:ed:1a:45:8c 0
+[73862.626723] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-REMOVED 
+10:06:ed:19:6f:8c 0
+[73862.626972] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-REMOVED 
+10:06:ed:19:f1:0c 0
+[73862.627211] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-REMOVED 
+10:06:ed:15:ac:63 0
+[73862.627435] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-REMOVED 
+10:06:ed:19:82:6c 0
+[73862.627699] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-REMOVED 
+10:06:ed:17:9b:63 0
+[73862.627911] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-REMOVED 
+10:06:ed:19:f1:03 0
+[73862.628245] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-REMOVED 
+10:06:ed:19:6f:83 0
+[73862.628451] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-REMOVED 
+10:06:ed:17:de:0c 0
+[73862.628645] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-REMOVED 
+10:06:ed:15:ac:6c 0
+[73862.628863] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-ADDED 
+10:06:ed:15:ac:6c 0
+[73862.668477] wpa_supplicant[595]: wlp58s0: WPA: Key negotiation 
+completed with 10:06:ed:15:ac:6c [PTK=CCMP GTK=CCMP]
+[73861.687754] kernel: Rekeying PTK for STA 10:06:ed:15:ac:6c but driver 
+can't safely do that.
+[73864.676479] kernel: wlp58s0: disassociated from 10:06:ed:15:ac:6c 
+(Reason: 15=4WAY_HANDSHAKE_TIMEOUT)
+[73865.736655] wpa_supplicant[595]: wlp58s0: CTRL-EVENT-DISCONNECTED 
+bssid=10:06:ed:15:ac:6c reason=15
+[73865.738236] wpa_supplicant[595]: wlp58s0: CTRL-EVENT-REGDOM-CHANGE 
+init=CORE type=WORLD
+[73865.743914] NetworkManager[37941]: <info>  [1713258751.9001] device 
+(wlp58s0): supplicant interface state: completed -> disconnected
+[73865.745206] NetworkManager[37941]: <info>  [1713258751.9002] device 
+(p2p-dev-wlp58s0): supplicant management interface state: completed -> 
+disconnected
+[73865.843396] NetworkManager[37941]: <info>  [1713258751.9996] device 
+(wlp58s0): supplicant interface state: disconnected -> scanning
+[73865.843901] NetworkManager[37941]: <info>  [1713258751.9997] device 
+(p2p-dev-wlp58s0): supplicant management interface state: disconnected 
+-> scanning
+[73866.738215] wpa_supplicant[595]: wlp58s0: CTRL-EVENT-REGDOM-CHANGE 
+init=BEACON_HINT type=UNKNOWN
+[73870.738803] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-ADDED 
+10:06:ed:17:9b:6c 0
+[73870.757221] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-ADDED 
+10:06:ed:1a:45:8c 0
+[73870.757717] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-ADDED 
+10:06:ed:15:ac:63 0
+[73870.758043] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-ADDED 
+10:06:ed:17:9b:63 0
+[73870.760797] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-ADDED 
+10:06:ed:19:f1:03 0
+[73870.761195] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-ADDED 
+10:06:ed:19:6f:8c 0
+[73870.761530] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-ADDED 
+10:06:ed:19:6f:83 0
+[73870.761817] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-ADDED 
+10:06:ed:19:f1:0c 0
+[73870.762121] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-ADDED 
+10:06:ed:17:de:0c 0
+[73870.795881] wpa_supplicant[595]: wlp58s0: SME: Trying to authenticate 
+with 10:06:ed:17:9b:6c (SSID='eduroam' freq=5280 MHz)
+[73869.865071] kernel: wlp58s0: authenticate with 10:06:ed:17:9b:6c 
+(local address=9c:b6:d0:d1:6a:b1)
+[73869.865097] kernel: wlp58s0: send auth to 10:06:ed:17:9b:6c (try 1/3)
+[73869.866808] kernel: wlp58s0: authenticated
+[73870.869552] wpa_supplicant[595]: wlp58s0: Trying to associate with 
+10:06:ed:17:9b:6c (SSID='eduroam' freq=5280 MHz)
+[73869.916978] kernel: wlp58s0: associate with 10:06:ed:17:9b:6c (try 1/3)
+[73869.922533] kernel: wlp58s0: RX AssocResp from 10:06:ed:17:9b:6c 
+(capab=0x1111 status=0 aid=4)
+[73869.928849] kernel: wlp58s0: associated
+[73870.889860] wpa_supplicant[595]: wlp58s0: Associated with 
+10:06:ed:17:9b:6c
+[73870.890342] wpa_supplicant[595]: wlp58s0: 
+CTRL-EVENT-SUBNET-STATUS-UPDATE status=0
+```
+
+Could something done about that or is it a hardware limitation?
+
+
+Kind regards,
+
+Paul
 
