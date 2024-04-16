@@ -1,42 +1,74 @@
-Return-Path: <linux-wireless+bounces-6396-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6397-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B4B8A6AE6
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 14:29:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 065238A6B71
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 14:50:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8A1D1F21422
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 12:29:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5F1B28475D
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 12:50:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D4012A17F;
-	Tue, 16 Apr 2024 12:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AC0C12BE8C;
+	Tue, 16 Apr 2024 12:50:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WnDLFkOt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9A312A170;
-	Tue, 16 Apr 2024 12:29:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44806BFDD
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Apr 2024 12:50:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713270560; cv=none; b=VpfbF5riE9SgfNMg8HyYfn4Q5/qe+ilpLknHY73DIPNkHyUiJGbwsFnxy02LskyTH50DN1AD6U/++F7lrpxo404wIr94SDulpDL5boegRDiczuwl3nFCXaM8QCG/jgXKC790LHZg/xO39Gstw82DxNsziH24OfGrjvisDLVCto8=
+	t=1713271827; cv=none; b=IxNw0Wd8T1yZkC13NGWDC5XkfJNX5D8nXpTATMDA7ko3YZq++Qqo0mgRZR0iDumCE0iQnmNI2X6yKy4n+4gORRqGDX6OhSqJ1O8QZMHzF4MeMNQYrWO7nniCmPW4jUm88JRFakRIpc74hdCb+EtZ7fiTVGBqcAtIy4dnxVlHyaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713270560; c=relaxed/simple;
-	bh=CYjxW5B1zvIlRVHDnJo1YXSqiHAJK1w+Lxk9rH99/sI=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=XpUEJZwvtlj+4a5n5loK7v+MsGtN589r60El7q2i4QCmjRDkm3mH9xWae2R4ygE1+zly3ucpZxVxPLCLybDAAfa3s5REapN+Tuip6uHU5weR3RgUuiWjnoZ6SDQEu3yGEngPdF+0JudIDd4ofLBZNnE3jfS9yrQyuqXdFNQrtk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [10.0.98.87] (unknown [212.201.152.66])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 0EC6D61E5FE35;
-	Tue, 16 Apr 2024 14:28:45 +0200 (CEST)
-Message-ID: <6689d445-af96-47eb-bcb5-eb096a77f084@molgen.mpg.de>
-Date: Tue, 16 Apr 2024 14:28:44 +0200
+	s=arc-20240116; t=1713271827; c=relaxed/simple;
+	bh=QsPs60QrR/NJi+PpximKUyGXiGUK3mOV26RSuEUF7So=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EDU4zcrt1PJJ1srx0SuVMjCT7At6vaH4Cvb2Yxo/ZdE4RJZ4MAYVq2SdD7qcl1OnOfhQgv3cWIJDP9+f3JyLFyFlWxbJT0dhqTnXZxnGrU5ODV+X7j7b7m1Mo0R8hWq3/4ShTiYhM0wnw98UOf9hCbz6neXb+7ZbWW3IEZshxys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WnDLFkOt; arc=none smtp.client-ip=209.85.222.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-78edc3e80e6so216478585a.2
+        for <linux-wireless@vger.kernel.org>; Tue, 16 Apr 2024 05:50:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713271825; x=1713876625; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KbLGwITuEtblOKj7PN81xTUn9EbuXq4z1YxI7bfyEy0=;
+        b=WnDLFkOtXtR3phxJHAwqEhZP+nb4P7bdDGRzUEuyiLJKTJ9iAvXiNMDaTWk8aYjgHf
+         6Z6xK8kWoRZ1l+ZUCuVqu1SuzhdgODf8ciTHHDqDD2VC0zKRlplwiW3EqqU4ZQQzuGYk
+         zc2UJt0QWJLVEtrf3uDCISqa3dPwanuSHKXFyR1KhNxZwMqbv52E2pGB43Ml8Q/08hGZ
+         kY9lZEKjy+ZHZPUPZyGApIMuApJKPA/DxQ2Jz9jY7kOF5rswA4JdHct7ExZtX4sPTeip
+         NgyQ8bCkuXhe2SmtCZvg5rpsN1bDMsttBf2FO8GN5EgWiPlCHGlXi+J7vp/ufIlyX2ux
+         +I5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713271825; x=1713876625;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KbLGwITuEtblOKj7PN81xTUn9EbuXq4z1YxI7bfyEy0=;
+        b=JSs3BPBEHy5cT90O9KORLclBEk+wULy2Ypfj/HFdx6LeUZqm43CnA3hJ3LMqMFdfaz
+         BUQZ6Nc5tWDW8oQo6kebrn37fErGxOTPiiRRhuRJp3/JVJ8z9uTqsGnN+1M9+/u82PyM
+         WN7Qkugp3f60jbV1weUmpoaOoWOb+FEX3lp0q+884BIZThkyFiEamJBYLc8OpL5GRfNl
+         6w9Rx7+lm8/5tXLIqcjB9SP2y64ccLRloqphNnZB9UJFn20nDlGahuJcAdyZkSLi7dGg
+         hU4E4ulP9kj5BDfZgd2vd0E27XjBXokvrwv8GiUBk0yzl9kYawdi/wyxF4TstRr9aLba
+         Z6SA==
+X-Forwarded-Encrypted: i=1; AJvYcCWWWPvZmp4HjCSnJjkUshwJmvghpTQRvixjpnT9fdHqlrEvyKdqSO1K4OquqsFVroOh7wuIJ85QYUyCVawVZcCThVELtjMOrP0NM7ISuic=
+X-Gm-Message-State: AOJu0Yx9s+cpk4aPu8xLPZ6+i0OENoGAot/6d6oPKp7g94BoD2RnVziU
+	iLRd1ssGf9whV6oxSjTQoBavn7DvsnHYOhmKT7IdfZ4dYZJbX+2dctoG7g==
+X-Google-Smtp-Source: AGHT+IFJKKC9Ww9D6e212WG1c66Tea5jJjCW/EvP9ATviThjFFhz9pX7/bogm/nLARbPSo9CVHaCRw==
+X-Received: by 2002:a05:620a:1a04:b0:78d:777e:bc11 with SMTP id bk4-20020a05620a1a0400b0078d777ebc11mr16867267qkb.38.1713271824600;
+        Tue, 16 Apr 2024 05:50:24 -0700 (PDT)
+Received: from [10.102.4.159] ([208.195.13.130])
+        by smtp.gmail.com with ESMTPSA id bk37-20020a05620a1a2500b0078d6b2b6fdbsm7458352qkb.133.2024.04.16.05.50.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 16 Apr 2024 05:50:24 -0700 (PDT)
+Message-ID: <d9788e11-b804-42a1-8074-3646e01d8d4d@gmail.com>
+Date: Tue, 16 Apr 2024 05:50:22 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -44,142 +76,77 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
+Subject: Re: ath11k failed to enqueue rx buf: -28
 Content-Language: en-US
-To: Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
- linux-kernel@vger.kernel.org
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-Subject: ath10k: Rekeying PTK for STA 10:06:ed:15:ac:6c but driver can't
- safely do that.
+To: Baochen Qiang <quic_bqiang@quicinc.com>,
+ Jeff Johnson <quic_jjohnson@quicinc.com>,
+ "open list:MEDIATEK MT76 WIRELESS LAN DRIVER"
+ <linux-wireless@vger.kernel.org>
+Cc: "ath11k@lists.infradead.org" <ath11k@lists.infradead.org>
+References: <5c63a3a2-29fe-444c-96f1-f87c89d7af39@gmail.com>
+ <216b223b-e871-42d4-8e53-59dd64efe4b9@quicinc.com>
+ <6e8fe8cf-315c-47bb-b8db-5b17f7323109@quicinc.com>
+ <347dce6b-94c6-4aa3-89ef-25525b4e72db@quicinc.com>
+From: James Prestwood <prestwoj@gmail.com>
+In-Reply-To: <347dce6b-94c6-4aa3-89ef-25525b4e72db@quicinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Dear Linux folks,
 
-
-In a research institution using *eduroam*, I noticed on Dell XPS 13 9360 
-with Debian sid/unstable
-
-     $ lspci -nn -s 3a:00.0 -v
-     3a:00.0 Network controller [0280]: Qualcomm Atheros QCA6174 
-802.11ac Wireless Network Adapter [168c:003e] (rev 32)
-         Subsystem: Rivet Networks Killer Wireless-n/a/ac 1535 Wireless 
-Network Adapter [1a56:1535]
-         Flags: bus master, fast devsel, latency 0, IRQ 137
-         Memory at dc000000 (64-bit, non-prefetchable) [size=2M]
-         Capabilities: <access denied>
-         Kernel driver in use: ath10k_pci
-         Kernel modules: ath10k_pci
-
-that the Wireless connection dropped for a short time, and then 
-reconnected again. Linux 6.9-rc3+ warns:
-
-     [73861.687754] Rekeying PTK for STA 10:06:ed:15:ac:6c but driver 
-can't safely do that.
-
-According to the logs since March 2024, this never happened in other 
-environments.
-
-With wpa_supplicant logs:
-
-```
-[73862.470842] wpa_supplicant[595]: wlp58s0: CTRL-EVENT-EAP-STARTED EAP 
-authentication started
-[73862.485995] wpa_supplicant[595]: wlp58s0: 
-CTRL-EVENT-EAP-PROPOSED-METHOD vendor=0 method=25 -> NAK
-[73862.499998] wpa_supplicant[595]: wlp58s0: 
-CTRL-EVENT-EAP-PROPOSED-METHOD vendor=0 method=21
-[73862.500424] wpa_supplicant[595]: wlp58s0: CTRL-EVENT-EAP-METHOD EAP 
-vendor 0 method 21 (TTLS) selected
-[…]
-[73862.624544] wpa_supplicant[595]: wlp58s0: CTRL-EVENT-EAP-SUCCESS EAP 
-authentication completed successfully
-[73862.626116] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-REMOVED 
-10:06:ed:17:9b:6c 0
-[73862.626436] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-REMOVED 
-10:06:ed:1a:45:8c 0
-[73862.626723] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-REMOVED 
-10:06:ed:19:6f:8c 0
-[73862.626972] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-REMOVED 
-10:06:ed:19:f1:0c 0
-[73862.627211] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-REMOVED 
-10:06:ed:15:ac:63 0
-[73862.627435] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-REMOVED 
-10:06:ed:19:82:6c 0
-[73862.627699] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-REMOVED 
-10:06:ed:17:9b:63 0
-[73862.627911] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-REMOVED 
-10:06:ed:19:f1:03 0
-[73862.628245] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-REMOVED 
-10:06:ed:19:6f:83 0
-[73862.628451] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-REMOVED 
-10:06:ed:17:de:0c 0
-[73862.628645] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-REMOVED 
-10:06:ed:15:ac:6c 0
-[73862.628863] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-ADDED 
-10:06:ed:15:ac:6c 0
-[73862.668477] wpa_supplicant[595]: wlp58s0: WPA: Key negotiation 
-completed with 10:06:ed:15:ac:6c [PTK=CCMP GTK=CCMP]
-[73861.687754] kernel: Rekeying PTK for STA 10:06:ed:15:ac:6c but driver 
-can't safely do that.
-[73864.676479] kernel: wlp58s0: disassociated from 10:06:ed:15:ac:6c 
-(Reason: 15=4WAY_HANDSHAKE_TIMEOUT)
-[73865.736655] wpa_supplicant[595]: wlp58s0: CTRL-EVENT-DISCONNECTED 
-bssid=10:06:ed:15:ac:6c reason=15
-[73865.738236] wpa_supplicant[595]: wlp58s0: CTRL-EVENT-REGDOM-CHANGE 
-init=CORE type=WORLD
-[73865.743914] NetworkManager[37941]: <info>  [1713258751.9001] device 
-(wlp58s0): supplicant interface state: completed -> disconnected
-[73865.745206] NetworkManager[37941]: <info>  [1713258751.9002] device 
-(p2p-dev-wlp58s0): supplicant management interface state: completed -> 
-disconnected
-[73865.843396] NetworkManager[37941]: <info>  [1713258751.9996] device 
-(wlp58s0): supplicant interface state: disconnected -> scanning
-[73865.843901] NetworkManager[37941]: <info>  [1713258751.9997] device 
-(p2p-dev-wlp58s0): supplicant management interface state: disconnected 
--> scanning
-[73866.738215] wpa_supplicant[595]: wlp58s0: CTRL-EVENT-REGDOM-CHANGE 
-init=BEACON_HINT type=UNKNOWN
-[73870.738803] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-ADDED 
-10:06:ed:17:9b:6c 0
-[73870.757221] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-ADDED 
-10:06:ed:1a:45:8c 0
-[73870.757717] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-ADDED 
-10:06:ed:15:ac:63 0
-[73870.758043] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-ADDED 
-10:06:ed:17:9b:63 0
-[73870.760797] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-ADDED 
-10:06:ed:19:f1:03 0
-[73870.761195] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-ADDED 
-10:06:ed:19:6f:8c 0
-[73870.761530] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-ADDED 
-10:06:ed:19:6f:83 0
-[73870.761817] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-ADDED 
-10:06:ed:19:f1:0c 0
-[73870.762121] wpa_supplicant[595]: wlp58s0: PMKSA-CACHE-ADDED 
-10:06:ed:17:de:0c 0
-[73870.795881] wpa_supplicant[595]: wlp58s0: SME: Trying to authenticate 
-with 10:06:ed:17:9b:6c (SSID='eduroam' freq=5280 MHz)
-[73869.865071] kernel: wlp58s0: authenticate with 10:06:ed:17:9b:6c 
-(local address=9c:b6:d0:d1:6a:b1)
-[73869.865097] kernel: wlp58s0: send auth to 10:06:ed:17:9b:6c (try 1/3)
-[73869.866808] kernel: wlp58s0: authenticated
-[73870.869552] wpa_supplicant[595]: wlp58s0: Trying to associate with 
-10:06:ed:17:9b:6c (SSID='eduroam' freq=5280 MHz)
-[73869.916978] kernel: wlp58s0: associate with 10:06:ed:17:9b:6c (try 1/3)
-[73869.922533] kernel: wlp58s0: RX AssocResp from 10:06:ed:17:9b:6c 
-(capab=0x1111 status=0 aid=4)
-[73869.928849] kernel: wlp58s0: associated
-[73870.889860] wpa_supplicant[595]: wlp58s0: Associated with 
-10:06:ed:17:9b:6c
-[73870.890342] wpa_supplicant[595]: wlp58s0: 
-CTRL-EVENT-SUBNET-STATUS-UPDATE status=0
-```
-
-Could something done about that or is it a hardware limitation?
-
-
-Kind regards,
-
-Paul
+On 4/11/24 1:00 AM, Baochen Qiang wrote:
+>
+>
+> On 4/1/2024 11:30 AM, Baochen Qiang wrote:
+>>
+>>
+>> On 3/30/2024 2:39 AM, Jeff Johnson wrote:
+>>> On 3/27/2024 9:25 AM, James Prestwood wrote:
+>>>> Hi,
+>>>>
+>>>> This error was brought to my attention in the kernel logs and I'm
+>>>> wondering if it is of any concern:
+>>>>
+>>>> kernel: ath11k_pci 0000:03:00.0: failed to enqueue rx buf: -28
+>>>>
+>>>> It seems to happen every few minutes or so. I don't notice any bad
+>>>> behavior associated with it per-se, but maybe its an issue of some
+>>>> buffer needing to be increased in size? Does this mean a frame is 
+>>>> being
+>>>> dropped due to no room to receive it?
+>>>>
+>>>> Hardware we are running is:
+>>>>
+>>>> [    4.610399] ath11k_pci 0000:03:00.0: wcn6855 hw2.1
+>>>> [    5.777030] ath11k_pci 0000:03:00.0: chip_id 0x12 chip_family 0xb
+>>>> board_id 0xff soc_id 0x400c1211
+>>>> [    5.777039] ath11k_pci 0000:03:00.0: fw_version 0x1109996e
+>>>> fw_build_timestamp 2023-12-19 11:11 fw_build_id
+>>>> WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.36
+>>>>
+>>>> Thanks,
+>>>>
+>>>> James
+> Hi James, I was not able to reproduce this issue so wondering if you 
+> could help reproduce and collect logs for debug. If OK please first 
+> merge the debug patch which is available in patchwork:
+>
+> https://patchwork.kernel.org/project/linux-wireless/patch/20240411074812.86700-1-quic_bqiang@quicinc.com/ 
+>
+>
+> Please also enable full ath11k log:
+>     modprobe ath11k debug_mask=0xffffffff
+>     modprobe ath11k_pci
+>
+> Once enabled you should see lots of ath11k logs.
+Thank you for looking at this. I'll get these changes in to test but it 
+may take me some time.
+>
+>>>>
+>>>>
+>>>
+>>> + ath11k list to get more specific eyes on this issue
+>>> + bcc to internal list as well
+>>>
+>> I will look into this.
+>>>
 
