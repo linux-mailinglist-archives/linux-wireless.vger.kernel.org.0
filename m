@@ -1,90 +1,163 @@
-Return-Path: <linux-wireless+bounces-6357-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6358-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 896AC8A610F
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 04:31:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D8228A6110
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 04:33:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D7911F21CE0
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 02:31:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8ED361C20A8C
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 02:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 957DAA35;
-	Tue, 16 Apr 2024 02:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 957D0A38;
+	Tue, 16 Apr 2024 02:32:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="osEy2wog"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 233A9A34
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Apr 2024 02:31:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4F2A34
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Apr 2024 02:32:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713234704; cv=none; b=tfd000V06vgRoPnlaVa1Oae4itX5MnA28S5VQVd/Lq2e9kNo8RBtyYEJbewVwPCBx+dReQJgRLADqrkUm88khAyKOeY4edffXVGK6VBhRv0c7wgW2wGKQ+NhuHrW1BFPl/Y+i9bY2LswWZFky41VM/suf1kf7PB1FkyEkXfc9yk=
+	t=1713234776; cv=none; b=tYcDQaYOIv+vlKsI5Rry+5N66SS/wXs0/ZXAfUKjAIjtqKrI4DTTMzFkGwOI0IBF6/oggB2L7c/INQb6o8ecitD55Q9qhsbNBlGyhxgrgea/3teSQL5Aei5JjmYwOIbm3tJAPvIKRoujG/JuF4N/f7hRfo4sA3gio0jVBw9f13Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713234704; c=relaxed/simple;
-	bh=Q2UuYGvdJkkp8CtuRON0NixyuQVh7SPapOyi+vU+G1I=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=NEkVm6unmSvHiBhPw4kpMsILHURyU5RQctBQdbwpBSq8mynJjn+0DW3T3t92Do0VBa1EMSodkx70vR9ZPLMAHGLbuYkAQNbvG3EiZbFRo8DjyfTn5DhIVdB2Sjz16EQ0NW61f1XC+PnVzI9fOYYkP9Ew+hSr1K0fsly/F9pQRJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 43G2VThJ41736597, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 43G2VThJ41736597
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 16 Apr 2024 10:31:29 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 16 Apr 2024 10:31:29 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 16 Apr 2024 10:31:28 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
- RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
- 15.01.2507.035; Tue, 16 Apr 2024 10:31:28 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Plamen Dimitrov <plamen.dimitrov@pevogam.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: Problems with RTL8852BE PCIe 802.11ax Wireless Network Controller and Linux kernel 6.7.7-100.fc38.x86_64
-Thread-Topic: Problems with RTL8852BE PCIe 802.11ax Wireless Network
- Controller and Linux kernel 6.7.7-100.fc38.x86_64
-Thread-Index: AQHajxBK3TMYBDJJU02LKax8Cy6TM7FphqBQgAAfJYCAAAJakA==
-Date: Tue, 16 Apr 2024 02:31:28 +0000
-Message-ID: <efc3e8306e1b417cbb779109a4a5ff54@realtek.com>
-References: <7833fd15-5875-40b8-a20b-a68fa92f814f@pevogam.com>
- <2e67ec1dfc8b420bab05dc025c7c59cf@realtek.com>
- <f8e3d8c6-11ef-4dff-8c4e-d10e8a4006aa@pevogam.com>
-In-Reply-To: <f8e3d8c6-11ef-4dff-8c4e-d10e8a4006aa@pevogam.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1713234776; c=relaxed/simple;
+	bh=7AHkriU1CVNP4ETpEP/VxQCsyjWfLtijP4+QkxHCkvE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=R3YV2SpavWDKuBTAkkGkddKZwTIbpVCqiTNlgt1Tiu/p/lPA74A5J6NZbkn1m6dvwoq5farvBgKHiZwmAdQkRVAoDzCoIf9fiYlD3SjatZOJZRJ1tx1lWTPJX22j3svLpn/H6HqtYoON5PX2LoWEEpV/rsTuCJPHqiGxswf8Yrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=osEy2wog; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43FNlXlc011240;
+	Tue, 16 Apr 2024 02:32:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=JfxBhNcHTp6rosHCfxl1lr6W6uZBHS1zFih12ed4yso=; b=os
+	Ey2wogRQuP4rAaBju+KbijsxMPbChBuqyGCrgRXJ9RUvCUFovRG4Ms9hGJ9kO1Qs
+	wyUwAw7V4lwtwEOUUOPxHyalwbucKzzDO93bXv9spITXgbQ+KU9/uIgIDIMqzSYv
+	NDG+eLewf5SqV+Te2o5FzOn+5RRxuq2Aau4ieAXy//1/q8jyG92/yjb315obuU1Q
+	BCtQsnTP7vInXdKTE9uohDAyF8iiVMoIQkrB1gPCUt94oehtPTzI5dNFFkZ/rVcR
+	9i6p9RqjikpM8RD4uke0Ur+B4NRQ3d48qEtG7l91LY59gCJndZ4YI16xmaW1nE0y
+	JPHRHi/nm7oZpAgUX4Nw==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xh5jx9fa4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Apr 2024 02:32:49 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43G2Wmew004565
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Apr 2024 02:32:48 GMT
+Received: from [10.110.8.16] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 15 Apr
+ 2024 19:32:47 -0700
+Message-ID: <4658e8e9-9720-4622-9cd1-03faf790ea21@quicinc.com>
+Date: Tue, 16 Apr 2024 10:32:45 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V3 0/3] wifi: ath12k: report station mode stats
+To: Jeff Johnson <quic_jjohnson@quicinc.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240414131008.71519-1-quic_lingbok@quicinc.com>
+ <3103b7cf-fa1a-4bfc-ad78-301965b72035@quicinc.com>
+Content-Language: en-US
+From: Lingbo Kong <quic_lingbok@quicinc.com>
+In-Reply-To: <3103b7cf-fa1a-4bfc-ad78-301965b72035@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: Ri2_7CtGdfN1OFgsnvHK_2Yj8P0iGCVl
+X-Proofpoint-ORIG-GUID: Ri2_7CtGdfN1OFgsnvHK_2Yj8P0iGCVl
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-16_01,2024-04-15_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 phishscore=0
+ suspectscore=0 adultscore=0 impostorscore=0 bulkscore=0 lowpriorityscore=0
+ mlxlogscore=999 spamscore=0 mlxscore=0 malwarescore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2404010003
+ definitions=main-2404160013
 
-UGxhbWVuIERpbWl0cm92IDxwbGFtZW4uZGltaXRyb3ZAcGV2b2dhbS5jb20+IHdyb3RlOg0KDQo+
-IA0KPiBJbmRlZWQsIEkgaGFkIHRyaWVkIHRoaXMgYmVmb3JlIGJ1dCBkaWQgbm90IGluY2x1ZGUg
-aXQgaW4gbXkgcmVwb3J0LiBOb3cgSSBkZWNpZGVkIHRvIHJlZG8gZXZlcnl0aGluZw0KPiBqdXN0
-IGluIGNhc2UgYW5kIHRoZSBXaUZpIHN0aWxsIGRpc2FwcGVhcnMgd2l0aGluIGEgZmV3IG1pbnV0
-ZXMgd2l0aCBsb2dzIGxpa2UNCg0KRGlkIHlvdSBtZWFuIGl0IHdvcmtzIGluaXRpYWxseSBidXQg
-V2lGaSBnb3QgbG9zdCBhZnRlciBhIHdoaWxlPw0KUGxlYXNlIGF0dGFjaCB5b3VyIGZ1bGwgbG9n
-IGZyb20gYm9vdCAodmlhIHByaXZhdGUgbWFpbCBpZiB5b3UgaGF2ZSBjb25jZXJuKS4NCg0KQW5v
-dGhlciB0cnkgaXMgdG8gZGlzYWJsZSBwb3dlciBzYXZlIGJ5ICdpdycgY29tbWFuZCByaWdodCBh
-ZnRlciBib290aW5nLCBsaWtlDQogIHN1ZG8gaXcgd2xhbjAgc2V0IHBvd2VyX3NhdmUgb2ZmIA0K
-DQoNCg==
+
+
+On 2024/4/16 0:51, Jeff Johnson wrote:
+> On 4/14/2024 6:10 AM, Lingbo Kong wrote:
+>> Currently, the transmit rate, the receive rate and signal strength of
+>> “iw dev xxx station dump” always show an invalid value.
+>>
+>> This is because ath12k has no logic to handle this relevant information.
+>>
+>> To solve this issue, ath12k parses the information passed by the firmware
+>> and passes it to mac80211.
+>>
+>> After that, "iw dev xxx station dump" show the correct value.
+>> Such as:
+>>
+>> Station 00:03:7f:12:03:03 (on wlo1)
+>>          inactive time:  600 ms
+>>          rx bytes:       4642228
+>>          rx packets:     23796
+>>          tx bytes:       933967
+>>          tx packets:     8761
+>>          tx retries:     66
+>>          tx failed:      0
+>>          beacon loss:    0
+>>          beacon rx:      8925
+>>          rx drop misc:   191
+>>          signal:         -20 dBm
+>>          beacon signal avg:      -18 dBm
+>>          tx bitrate:     1441.1 MBit/s 80MHz EHT-MCS 13 EHT-NSS 2 EHT-GI 0
+>>          tx duration:    0 us
+>>          rx bitrate:     1801.4 MBit/s 80MHz EHT-MCS 11 EHT-NSS 3 EHT-GI 0
+>>          rx duration:    0 us
+>>
+>> v3:
+>> 1.change wmi_vdev_stats_event to wmi_vdev_stats_params
+>>
+>> v2:
+>> 1.change copyright
+>> 2.change name according Naming conventions for structures
+>>
+>> Lingbo Kong (3):
+>>    wifi: ath12k: report station mode transmit rate
+>>    wifi: ath12k: report station mode receive rate for IEEE 802.11be
+>>    wifi: ath12k: report station mode signal strength
+>>
+>>   drivers/net/wireless/ath/ath12k/core.h    |   5 +
+>>   drivers/net/wireless/ath/ath12k/dp_rx.c   |  20 ++-
+>>   drivers/net/wireless/ath/ath12k/dp_rx.h   |   3 +
+> 
+> My Qualcomm Innovation Center copyright checker reports:
+> drivers/net/wireless/ath/ath12k/dp_rx.h copyright missing 2024
+> 
+> However note that "wifi: ath12k: support suspend/resume" is modifying the same
+> file, so if you rebase on that you'll pick up the copyright change
+> 
+
+Ok, thanks for pointing out.
+
+Best regards
+Lingbo Kong
+
+>>   drivers/net/wireless/ath/ath12k/dp_tx.c   | 147 +++++++++++++++++-
+>>   drivers/net/wireless/ath/ath12k/hal_tx.h  |   9 +-
+>>   drivers/net/wireless/ath/ath12k/mac.c     | 180 +++++++++++++++++++++-
+>>   drivers/net/wireless/ath/ath12k/mac.h     |   3 +
+>>   drivers/net/wireless/ath/ath12k/rx_desc.h |   2 +
+>>   drivers/net/wireless/ath/ath12k/wmi.c     | 130 ++++++++++++++++
+>>   drivers/net/wireless/ath/ath12k/wmi.h     |  48 ++++++
+>>   10 files changed, 538 insertions(+), 9 deletions(-)
+> 
 
