@@ -1,106 +1,263 @@
-Return-Path: <linux-wireless+bounces-6404-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6405-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF7E98A714E
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 18:26:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16D268A7196
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 18:41:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D1201C22420
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 16:26:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A12A1F231D2
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 16:41:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0311131BDA;
-	Tue, 16 Apr 2024 16:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA52374EB;
+	Tue, 16 Apr 2024 16:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b8CVKSO6"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="afdWNcE1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C21131BCA
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Apr 2024 16:25:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834C984E11;
+	Tue, 16 Apr 2024 16:41:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713284759; cv=none; b=Kt4g/CRsDXUlx044lMXrk4rf7ry3dJdDRQ9u/sxff10kedAHg7V19VgmhYxkQyg3B66l9dLcDbUCRn6oaYcU33KZfEEHx+ulEupt3I7VpxArs9BX8K9kbUehIuAmm8pp7+wlah3xL5z/aRiackcemGG6LziCPowKkNeL2ullDSc=
+	t=1713285702; cv=none; b=I5AfMB2ggHD9ouU3ORgQ/+MMralNZ6+Tmx0tbfY3Xw0uFUVSI6j/Et0WYZxPmXbv848JIt8A+KKtWly/ujpZjU0f0xXsDpLzpB+k+1K9wzkL11K8b+KHNqQy8JFBYTHA34FUEpYAxal1wsXqmjVP80Ra1GuMLcnjnTbj0O+nIcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713284759; c=relaxed/simple;
-	bh=5NW1DOXe/vrR53Z5kE76RMVXFMmVJjpQH5L2MMqEamk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IGv9v8ovruCYaQGD2WqSPWaR97lfvgVmu8LzAFhFjEuJaIK7M5B4TJOmY5dOyyUwhwrzKodqkKU16mq511/dilwtXSeYx0Axk9hd3ibo+Nf0vy2vKjQUXBPUnqSOABcWMa++JniWveb7lGGvcrUZF7nmr2zhN+2H0duLqAUqvy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b8CVKSO6; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4167fce0a41so31501655e9.0
-        for <linux-wireless@vger.kernel.org>; Tue, 16 Apr 2024 09:25:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713284756; x=1713889556; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=5NW1DOXe/vrR53Z5kE76RMVXFMmVJjpQH5L2MMqEamk=;
-        b=b8CVKSO6xv7sNsVrxu9i1NxvVMWFcgTPeR3BUhBZSFEj5XsOuUitGx9CANZIJwKaEq
-         bqPlRgzRlUkzVFmwLdrFiMT9EwKqRvfmkY3SS9dq7jFaC78OGkm7oOnh+dG2/fwRLOQ/
-         WCkelwSWK0xzE37Bx6dPcxoINelmwHace1KaYwAJvs6zd8Da9k6Vh5kOqjCZvSVp/sRN
-         tyG1yF4ovUdNsMJL5uLh3hGQdFLvL5zqEfO7pNcO4MayS1K1QO30KVKoCWmiNfXCY15l
-         Eh8bts1CZFURYL69wZtNvTX/XyzTQ/lIXicBjy1SqgFU6oPnplGvrCOMCcPjbHtQo3ut
-         RJXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713284756; x=1713889556;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5NW1DOXe/vrR53Z5kE76RMVXFMmVJjpQH5L2MMqEamk=;
-        b=A4K7vTa5oVQICJSrN6VfYBu1dyN3Dw0Yv3Ws3kWO2/a9jzll9RS0HASZLS9WiWDqdZ
-         fJ0WJjCvYmP2dPK43jLYMPqUD9082nPV4dGKil9TAy0kjNVH7GCA6Sx73kgz4WSTIi3w
-         EmfLJ2YV0vhaPgjP2o2SJEvAD038PlY7iULWL0WdGJmtWKIBMxCtENqId17pETw3budm
-         WbjQirMmFHmMj8mL4ZSSX6kOxXfS/RzZzluRWE0F+5mddRbZg5KPi8qeg2k1kpemGuXy
-         bKJaFOyl/8ToeTFYSmU47g5GFdY3mrboxb/38T4nAsYbEZvTf9vsEmERYt7C1xTeYRDl
-         Wb7g==
-X-Forwarded-Encrypted: i=1; AJvYcCV+2djIJ7Vfa6/ecLFPQj+LeVaCMlu5TnNWCfdJGB7zOhJ+a5z+lxBMVLBwgmM3uVQux9bjHO2oJupODcx0qwJf1H1U0BtxRWrP6tX6gFk=
-X-Gm-Message-State: AOJu0YyzlEz1eFdQ/14/CwPAECfE/WSet375DAd+WkwVOCvhpKgn0F1T
-	ynOpq6wMG9rjaHcWWxZLvYIGz8aHVo6WSC0zOMx/iV2ruclM1WLN+VnNRz9gPXCyYTjRCz4Hao3
-	cs1v8l6tsIuXjKHbTo2WwZ9yalVU=
-X-Google-Smtp-Source: AGHT+IH0LKelEx40Euj2U1AEuBvmh9v5x0mvRQSrmegLlDQZcHS0/CRWKWYpQjwLluoPybtFiDjICsCXoCoc5vXXVQo=
-X-Received: by 2002:a5d:59ad:0:b0:343:8097:213d with SMTP id
- p13-20020a5d59ad000000b003438097213dmr3917261wrr.20.1713284756434; Tue, 16
- Apr 2024 09:25:56 -0700 (PDT)
+	s=arc-20240116; t=1713285702; c=relaxed/simple;
+	bh=2BJzWBrTcslv0v3RT/hLn5vwxg4Nr1KG/xr4WmD8ts4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=awiCBmVWJ04WcoIJFv/mC4MszAxsWouX6j/oh9DYk01AF4MeJf1idNqneNxC1dx9+OS8Cp+xXrv15SUy4IBoj+wHpw3S/eJ+3u6ELDGEQYbMPtEorxK+8sKKy77t9bfyKCX+RpWrrbPhU67YFMLTSMzxZ5qIXEsY2cZIxLVhdEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=afdWNcE1; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43GEPt1T032590;
+	Tue, 16 Apr 2024 16:41:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:date:subject:mime-version:content-type
+	:content-transfer-encoding:message-id:to:cc; s=qcppdkim1; bh=mBA
+	fj53NHH6k4XlPZkjXvaFjngclHvL3pD6ZElWb19E=; b=afdWNcE18+HRWOjYM36
+	bgC9qZg1JH4GiOcq7z4FN0e2Gztd6ZNEJ8qU3UxFHTU1i0HvAhVVBJhy6g0siPTd
+	zH5k/1TlllnY92VU5sNtr0lS9NYUev1qa1sf8SCOXj3A/o0H8f2lWI0g+4hldYIG
+	BRB40tVavtt8rrJgBThyRpIzsgW+oc8mBgYVQ4CvETS5bXy6kTUQZ1DpEKrf2Xzx
+	BKKpSRdvyMLXD0ljS1/M5Kjof4kYqyRLrGBNAEnGWOBrjlh8Cu3zI9VyCtHsG0qE
+	9HUi+dZ+sd/pUbqMrAJLkDZVQD93/Vu0HNIYngV6K/SQmykqc2aHAvy5zgBCTufQ
+	X6Q==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xhu3agdhf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Apr 2024 16:41:26 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43GGfPSL021744
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Apr 2024 16:41:26 GMT
+Received: from [169.254.0.1] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 16 Apr
+ 2024 09:41:25 -0700
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Date: Tue, 16 Apr 2024 09:41:19 -0700
+Subject: [PATCH] wifi: ath12k: don't use %pK in dmesg format strings
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAD9ZU8Coc0r3AiWz+rA4eoXuDQBBCAMY0J4w5x-Pa1JEpbmdWA@mail.gmail.com>
- <CAFktD2cp5eXJufdQibxDPGvN2iMfMZKDOunFzxv0TBNLqcMAQg@mail.gmail.com>
- <c68a406361524b6888d973a1e428118b@realtek.com> <CAD9ZU8A8f-aJuH54e+93cZGTckOSu+rYKcnQr0mkc8eq56zedg@mail.gmail.com>
- <fe9d13fd-bf13-4c59-98a7-68fd20d97978@lwfinger.net>
-In-Reply-To: <fe9d13fd-bf13-4c59-98a7-68fd20d97978@lwfinger.net>
-From: Gabriel Tisan <gabriel.tisan@gmail.com>
-Date: Tue, 16 Apr 2024 18:25:45 +0200
-Message-ID: <CAD9ZU8CX-zC=mA-mE_B1ZGa2PCDwiW6qSWFhwvy7wMhu=MMNyA@mail.gmail.com>
-Subject: Re: rtw88: rtw8822cu (LM842) on Raspi4 -> driver get stucked while
- sending data
-To: Larry Finger <Larry.Finger@lwfinger.net>
-Cc: Ping-Ke Shih <pkshih@realtek.com>, Nick Morrow <morrownr@gmail.com>, 
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20240416-pk-v1-1-2c8852743e6d@quicinc.com>
+X-B4-Tracking: v=1; b=H4sIAC+qHmYC/x3M0QpAQBCF4VfRXNtC05JXkYvdNZhkaUZS8u6Wy
+ 6/+c25QEiaFNrtB6GTlLSaUeQZhdnEiw0MyVEWFBZbW7IvBAWuyvvF2REjhLjTy9Z90fbJ3Ssa
+ Li2H+pqvTgwSe5wXiEauobQAAAA==
+To: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
+CC: <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>
+X-Mailer: b4 0.13.0
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: FMbGQQ7tOQ0bNm1Y9TMc19g7Wv1qbf1p
+X-Proofpoint-GUID: FMbGQQ7tOQ0bNm1Y9TMc19g7Wv1qbf1p
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-16_14,2024-04-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ priorityscore=1501 mlxscore=0 adultscore=0 phishscore=0 mlxlogscore=927
+ impostorscore=0 lowpriorityscore=0 clxscore=1015 spamscore=0
+ malwarescore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404160103
 
-> > To be sure, does anyone tested this driver in AP mode for 8822cu ?
->
-> I have no idea if AP mode works for the rtw8822bu. The vendor driver for this
-> device is available at https://github.com/RinCat/RTL88x2BU-Linux-Driver or
-> https://github.com/morrownr/88x2bu-20210702.
->
-> There is a problem with the wireless-next kernel and my rtw88 github repo in
-> that device 0bda:c82c is listed as active for both rtw8822cu and rtw8821cu -
-> certainly a mistake.
-The problem is also in mainline, was introduced by Nick Morrow with this commit:
-wifi: rtw88: Add missing VID/PIDs for 8811CU and 8821CU
+Currently, when debug logs are enabled, messages such as the following
+are found in the kernel log:
 
-Maybe he has a reason.
-He told me to check https://github.com/morrownr/8821cu-20210916
-even if I use a RTL8822CU chipset.
+event mgmt rx skb         pK-error len 209 ftype 00 stype 50
 
-I checked https://github.com/lwfinger/rtw88 regarding AP mode for rtw8822cu
-and I get the same problems like in the inline driver for kernel 6.6
+The "pK-error" comes from using %pK to display an skb address in an
+interrupt context.
+
+Per the guidance in the current "printk-formats" documentation, %pK
+"is only intended when producing content of a file read by userspace
+from e.g. procfs or sysfs, not for dmesg."
+
+So replace %pK with %p in all of the ath12k_dbg() format strings.
+
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+---
+ drivers/net/wireless/ath/ath12k/dp_mon.c |  6 +++---
+ drivers/net/wireless/ath/ath12k/dp_rx.c  |  2 +-
+ drivers/net/wireless/ath/ath12k/htc.c    |  4 ++--
+ drivers/net/wireless/ath/ath12k/mac.c    | 10 +++++-----
+ drivers/net/wireless/ath/ath12k/pci.c    |  2 +-
+ drivers/net/wireless/ath/ath12k/wmi.c    |  2 +-
+ 6 files changed, 13 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
+index 2d56913a75d0..6b0b72477540 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_mon.c
++++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
+@@ -944,7 +944,7 @@ ath12k_dp_mon_rx_merg_msdus(struct ath12k *ar,
+ 			goto err_merge_fail;
+ 
+ 		ath12k_dbg(ab, ATH12K_DBG_DATA,
+-			   "mpdu_buf %pK mpdu_buf->len %u",
++			   "mpdu_buf %p mpdu_buf->len %u",
+ 			   prev_buf, prev_buf->len);
+ 	} else {
+ 		ath12k_dbg(ab, ATH12K_DBG_DATA,
+@@ -958,7 +958,7 @@ ath12k_dp_mon_rx_merg_msdus(struct ath12k *ar,
+ err_merge_fail:
+ 	if (mpdu_buf && decap_format != DP_RX_DECAP_TYPE_RAW) {
+ 		ath12k_dbg(ab, ATH12K_DBG_DATA,
+-			   "err_merge_fail mpdu_buf %pK", mpdu_buf);
++			   "err_merge_fail mpdu_buf %p", mpdu_buf);
+ 		/* Free the head buffer */
+ 		dev_kfree_skb_any(mpdu_buf);
+ 	}
+@@ -1092,7 +1092,7 @@ static void ath12k_dp_mon_rx_deliver_msdu(struct ath12k *ar, struct napi_struct
+ 	spin_unlock_bh(&ar->ab->base_lock);
+ 
+ 	ath12k_dbg(ar->ab, ATH12K_DBG_DATA,
+-		   "rx skb %pK len %u peer %pM %u %s %s%s%s%s%s%s%s%s %srate_idx %u vht_nss %u freq %u band %u flag 0x%x fcs-err %i mic-err %i amsdu-more %i\n",
++		   "rx skb %p len %u peer %pM %u %s %s%s%s%s%s%s%s%s %srate_idx %u vht_nss %u freq %u band %u flag 0x%x fcs-err %i mic-err %i amsdu-more %i\n",
+ 		   msdu,
+ 		   msdu->len,
+ 		   peer ? peer->addr : NULL,
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index 977a8acb736c..2b89a8d2c08f 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -2467,7 +2467,7 @@ static void ath12k_dp_rx_deliver_msdu(struct ath12k *ar, struct napi_struct *nap
+ 	spin_unlock_bh(&ab->base_lock);
+ 
+ 	ath12k_dbg(ab, ATH12K_DBG_DATA,
+-		   "rx skb %pK len %u peer %pM %d %s sn %u %s%s%s%s%s%s%s%s%s rate_idx %u vht_nss %u freq %u band %u flag 0x%x fcs-err %i mic-err %i amsdu-more %i\n",
++		   "rx skb %p len %u peer %pM %d %s sn %u %s%s%s%s%s%s%s%s%s rate_idx %u vht_nss %u freq %u band %u flag 0x%x fcs-err %i mic-err %i amsdu-more %i\n",
+ 		   msdu,
+ 		   msdu->len,
+ 		   peer ? peer->addr : NULL,
+diff --git a/drivers/net/wireless/ath/ath12k/htc.c b/drivers/net/wireless/ath/ath12k/htc.c
+index 23f7428abd95..2f2230f565bb 100644
+--- a/drivers/net/wireless/ath/ath12k/htc.c
++++ b/drivers/net/wireless/ath/ath12k/htc.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2022 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2021-2022, 2024 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ #include <linux/skbuff.h>
+ #include <linux/ctype.h>
+@@ -358,7 +358,7 @@ void ath12k_htc_rx_completion_handler(struct ath12k_base *ab,
+ 		goto out;
+ 	}
+ 
+-	ath12k_dbg(ab, ATH12K_DBG_HTC, "htc rx completion ep %d skb %pK\n",
++	ath12k_dbg(ab, ATH12K_DBG_HTC, "htc rx completion ep %d skb %p\n",
+ 		   eid, skb);
+ 	ep->ep_ops.ep_rx_complete(ab, skb);
+ 
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 09b829dce1b3..42ec834bdc86 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -6630,7 +6630,7 @@ static int ath12k_mac_op_add_chanctx(struct ieee80211_hw *hw,
+ 	ab = ar->ab;
+ 
+ 	ath12k_dbg(ab, ATH12K_DBG_MAC,
+-		   "mac chanctx add freq %u width %d ptr %pK\n",
++		   "mac chanctx add freq %u width %d ptr %p\n",
+ 		   ctx->def.chan->center_freq, ctx->def.width, ctx);
+ 
+ 	mutex_lock(&ar->conf_mutex);
+@@ -6660,7 +6660,7 @@ static void ath12k_mac_op_remove_chanctx(struct ieee80211_hw *hw,
+ 	ab = ar->ab;
+ 
+ 	ath12k_dbg(ab, ATH12K_DBG_MAC,
+-		   "mac chanctx remove freq %u width %d ptr %pK\n",
++		   "mac chanctx remove freq %u width %d ptr %p\n",
+ 		   ctx->def.chan->center_freq, ctx->def.width, ctx);
+ 
+ 	mutex_lock(&ar->conf_mutex);
+@@ -7114,7 +7114,7 @@ static void ath12k_mac_op_change_chanctx(struct ieee80211_hw *hw,
+ 	mutex_lock(&ar->conf_mutex);
+ 
+ 	ath12k_dbg(ab, ATH12K_DBG_MAC,
+-		   "mac chanctx change freq %u width %d ptr %pK changed %x\n",
++		   "mac chanctx change freq %u width %d ptr %p changed %x\n",
+ 		   ctx->def.chan->center_freq, ctx->def.width, ctx, changed);
+ 
+ 	/* This shouldn't really happen because channel switching should use
+@@ -7192,7 +7192,7 @@ ath12k_mac_op_assign_vif_chanctx(struct ieee80211_hw *hw,
+ 	mutex_lock(&ar->conf_mutex);
+ 
+ 	ath12k_dbg(ab, ATH12K_DBG_MAC,
+-		   "mac chanctx assign ptr %pK vdev_id %i\n",
++		   "mac chanctx assign ptr %p vdev_id %i\n",
+ 		   ctx, arvif->vdev_id);
+ 
+ 	arvif->punct_bitmap = ctx->def.punctured;
+@@ -7283,7 +7283,7 @@ ath12k_mac_op_unassign_vif_chanctx(struct ieee80211_hw *hw,
+ 	mutex_lock(&ar->conf_mutex);
+ 
+ 	ath12k_dbg(ab, ATH12K_DBG_MAC,
+-		   "mac chanctx unassign ptr %pK vdev_id %i\n",
++		   "mac chanctx unassign ptr %p vdev_id %i\n",
+ 		   ctx, arvif->vdev_id);
+ 
+ 	WARN_ON(!arvif->is_started);
+diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
+index 14954bc05144..5fa7a3d770ee 100644
+--- a/drivers/net/wireless/ath/ath12k/pci.c
++++ b/drivers/net/wireless/ath/ath12k/pci.c
+@@ -872,7 +872,7 @@ static int ath12k_pci_claim(struct ath12k_pci *ab_pci, struct pci_dev *pdev)
+ 		goto release_region;
+ 	}
+ 
+-	ath12k_dbg(ab, ATH12K_DBG_BOOT, "boot pci_mem 0x%pK\n", ab->mem);
++	ath12k_dbg(ab, ATH12K_DBG_BOOT, "boot pci_mem 0x%p\n", ab->mem);
+ 	return 0;
+ 
+ release_region:
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index a5575ce9eed4..bd393fa032c9 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -5933,7 +5933,7 @@ static void ath12k_mgmt_rx_event(struct ath12k_base *ab, struct sk_buff *skb)
+ 	 */
+ 
+ 	ath12k_dbg(ab, ATH12K_DBG_MGMT,
+-		   "event mgmt rx skb %pK len %d ftype %02x stype %02x\n",
++		   "event mgmt rx skb %p len %d ftype %02x stype %02x\n",
+ 		   skb, skb->len,
+ 		   fc & IEEE80211_FCTL_FTYPE, fc & IEEE80211_FCTL_STYPE);
+ 
+
+---
+base-commit: 448ef71a317cc00e2ec0c1edcefbdf6df4b3e46b
+change-id: 20240416-pk-4d47e6b8b6f4
+
 
