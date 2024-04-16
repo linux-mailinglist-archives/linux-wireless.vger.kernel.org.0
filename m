@@ -1,104 +1,134 @@
-Return-Path: <linux-wireless+bounces-6398-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6399-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 454768A6C0E
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 15:21:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 006FD8A6C21
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 15:23:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2F70281C4C
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 13:21:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F554B22A37
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 13:23:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1732212C481;
-	Tue, 16 Apr 2024 13:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B43112C54B;
+	Tue, 16 Apr 2024 13:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PcQvRfl1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gptTwyKa"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14A612BF29;
-	Tue, 16 Apr 2024 13:21:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A577812AACE;
+	Tue, 16 Apr 2024 13:22:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713273687; cv=none; b=cj2y/ToxzWuDME2+m0FzRBOTZjmFJfh0ElmDAmPAyI5H41l1uZGMSsR0DDUwEU+hmKxL0kuNnko+k0vs5cyI5Pz6So5XnzN8JnA7X5oQ6Za7lU7A/o9soibO6gcoJRCpM0XJR2STUy7ml99I6JYKmQ0oerEiCphL1DvFquJWN/k=
+	t=1713273768; cv=none; b=G+70bwdEw4gaC9PYZD4IGjYYij8A5geZB0X/zL8FHcPBPe03TaunOvuwZs6or1BSK2MxEvLrO2P1RAR+iKWcgwznEgBXrh7gHTFdUSEuptjRCX03PwBPS/LQ8HU8pwrVILs/vcrb6rh1fplb/qD0R/F+xKR8B6T0zyJRnNmOTbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713273687; c=relaxed/simple;
-	bh=Z3szNAXs6ookddwvTqDP6loCkEgNjGn9QA3Y5AYjnD4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JuXX28ezK8ONdgZtjeS4TKaePu4uPlHp0x39BH2SHzjA9alscDPlbnwHWdScOTkUQ2rHYtuJy31SSMW4KWFXFdEdhLPK4B//hUcNlq4p63/fdNsWhLqUWWCteALvAldx8ZweXx/t7+ctf+OrAwOaL40BXJ0AJtKWCjNb+UPe2r4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PcQvRfl1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15684C113CE;
-	Tue, 16 Apr 2024 13:21:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713273686;
-	bh=Z3szNAXs6ookddwvTqDP6loCkEgNjGn9QA3Y5AYjnD4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PcQvRfl1PF1/Kl0BySnWfDqHKFK5MwmrpmyHjJdHuGazVgbWmowxihz+X9Z1ydyV6
-	 WQwFGwvxMPYCFMDwvHitP9bfrnn9N/7OWL8rLRe5hIU1QXetQ+FqBXTf6M2L4Es/Gq
-	 Y9Uvtb+U4nABOQ7FuBRAouvHSMziyxKaXAxvPocg6z7de6skX9QVzplTjqVDgcejaV
-	 I66+RuWPA40e0Y6inNySzxwOIYy1MEG1ji1fso7X3LWcACj4yWBuFTNHMYiWzkkYBU
-	 ie+0XMkKGuWj6Fmr6h93aoRpaG72qvwsuGwhFTatP8S1nnqSBW8GAV6CnYSx7l+HEV
-	 6Fxj87lCsurdg==
-Date: Tue, 16 Apr 2024 08:21:24 -0500
-From: Rob Herring <robh@kernel.org>
-To: Robert Marko <robimarko@gmail.com>
-Cc: kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	jjohnson@kernel.org, linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	ath11k@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] dt-bindings: net: wireless: ath11k: add
- ieee80211-freq-limit property
-Message-ID: <20240416132124.GA2143558-robh@kernel.org>
-References: <20240412162510.29483-1-robimarko@gmail.com>
+	s=arc-20240116; t=1713273768; c=relaxed/simple;
+	bh=1BjZEULlCLvJqv4DjncS8MZEajXmIYaXA1X0dAnpp98=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EdiyNKT6uNYJ5vzyQNSp+znKAHJDEaYELi+785XLY367fMXTQn3l2FrQ6d6NDfV/83+QpMpYPEtKfPNs7w7tec50vA7MUj8IU+51pOZmgg1/yNkyFc0hyVatGrJ8j5MTzsawfa6OFTuBtfTI38WMX+uxicv941Tfb84CnFSIYXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gptTwyKa; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-5dcc4076c13so2909144a12.0;
+        Tue, 16 Apr 2024 06:22:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713273767; x=1713878567; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=NUyFM9i0rtryeQoNW8AUTADCgYG36OPoQZzM4bvcyrg=;
+        b=gptTwyKaPIGx7CbGGFezkEYsD86lxBYlmJnbbfu8ili3c+37vBkjBgOoPQhKFdJKui
+         5QBEg0bnUccKdgICEERjj3Y/jOXLL1aU9fw3LrJIdNZglaneYK8XG8P8cu/Ld27lBmr5
+         uK0xujJhza5a6LX3RagqqfgrZq4Deovj+IqxXoVLA5wwphP7oAhoaQI6BqkzdNT6L6xf
+         hWJmaMJWz0VeFZACYjb7x6QFcxo5syVRIJur/Kd+YiH2w2otxtrVSTXRC6aMvwKu4GAf
+         Ejwq1EzxwiMOpx1yzdiREjtyl9SwrlHSGEFdXoLNAiYe9bIPjdIEMk1FbAStxs1J/Dcz
+         vHMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713273767; x=1713878567;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NUyFM9i0rtryeQoNW8AUTADCgYG36OPoQZzM4bvcyrg=;
+        b=Wpl/7g5QSErpX9GdHB6A++ODVFvDOFKEtQhEfhDOG0NEGxuSdv9SoiwdbLgVK9FzOX
+         e+m/uL3jo8SQJ/zlGTC0+2Ue2bPh4MWB7czn2WyrVKZdm2gBaSNcbo1BgfOf+M1jitzC
+         QbIqffKCjlo96a4TCM9XWC4YE17532tEdihCpIVDJhuWg8auNAtR5YPMMpkgXoCs9GTA
+         WW4HP4x70OdtUTieLRZOQJDc29ioWJr929vAi1ZsfxjFyLtZNPqi7r7oVnVhpuqX7HCb
+         U8B3/YKVT+qFFQTNWhixDmplZpB/IXUsrq0xI/iFwn47uB3NnxodFwWop3eP/pPXX8D1
+         NT1w==
+X-Forwarded-Encrypted: i=1; AJvYcCWfQ4EodvKQXhzeAY9m3r+BgErU9d8NAxygoGuWMsuxwlkLUGUYm5d581SJsn5t2713dUB/mjauj407r644ew13Ct2IZogdxbwNH/gP49eJefbQ//maF/84DqfB8CqAAg+Sr75wdXS/mLxOzM2cwAVMjhbMsCk0aYvftjBTyWZ8smEc4oOUqC72O6E7AFNKaH/N+oP0eDcW2GkXehFkQCvc
+X-Gm-Message-State: AOJu0YwqtAeGxrmRscc2UB4w/Z6rXSxG9o6/DArROqdOto1HqVPSUq2Z
+	6fhOfvwfe5WMOcgEWAVcLyvHeFXh4AFyT1JdMn4fmgTR/A7nfnkCqz1z7qVh/yCW2QiW7z+6/Ms
+	RdRaubMPIL9mkyOUl/xpsM5zKKYk=
+X-Google-Smtp-Source: AGHT+IFP6210waMqO1NN+/uEDyO7Znkn9Ms/B1bjT8WrCAkXIpVxBUQKxtXXNBOYwcbWaGoZpe/UQlzDo69EIq+/22M=
+X-Received: by 2002:a17:90a:ad7:b0:2a2:dcfe:bd69 with SMTP id
+ r23-20020a17090a0ad700b002a2dcfebd69mr3827029pje.13.1713273766756; Tue, 16
+ Apr 2024 06:22:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240412162510.29483-1-robimarko@gmail.com>
+References: <20240412162510.29483-1-robimarko@gmail.com> <20240416132124.GA2143558-robh@kernel.org>
+In-Reply-To: <20240416132124.GA2143558-robh@kernel.org>
+From: Robert Marko <robimarko@gmail.com>
+Date: Tue, 16 Apr 2024 15:22:34 +0200
+Message-ID: <CAOX2RU5tWt-dEA4it1G+LeNawwPqkwdG=vBBgnmdD6CNc4iywA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] dt-bindings: net: wireless: ath11k: add
+ ieee80211-freq-limit property
+To: Rob Herring <robh@kernel.org>
+Cc: kvalo@kernel.org, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, krzysztof.kozlowski+dt@linaro.org, 
+	conor+dt@kernel.org, jjohnson@kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	ath11k@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Apr 12, 2024 at 06:24:08PM +0200, Robert Marko wrote:
-> This is an existing optional property that ieee80211.yaml/cfg80211
-> provides. It's useful to further restrict supported frequencies
-> for a specified device through device-tree.
-> 
-> Signed-off-by: Robert Marko <robimarko@gmail.com>
-> ---
->  .../devicetree/bindings/net/wireless/qcom,ath11k.yaml          | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
-> index 672282cdfc2f..907bbb646614 100644
-> --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
-> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
-> @@ -55,6 +55,8 @@ properties:
->        phandle to a node describing reserved memory (System RAM memory)
->        used by ath11k firmware (see bindings/reserved-memory/reserved-memory.txt)
->  
-> +  ieee80211-freq-limit: true
-> +
+On Tue, 16 Apr 2024 at 15:21, Rob Herring <robh@kernel.org> wrote:
+>
+> On Fri, Apr 12, 2024 at 06:24:08PM +0200, Robert Marko wrote:
+> > This is an existing optional property that ieee80211.yaml/cfg80211
+> > provides. It's useful to further restrict supported frequencies
+> > for a specified device through device-tree.
+> >
+> > Signed-off-by: Robert Marko <robimarko@gmail.com>
+> > ---
+> >  .../devicetree/bindings/net/wireless/qcom,ath11k.yaml          | 3 +++
+> >  1 file changed, 3 insertions(+)
+> >
+> > diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+> > index 672282cdfc2f..907bbb646614 100644
+> > --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+> > +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
+> > @@ -55,6 +55,8 @@ properties:
+> >        phandle to a node describing reserved memory (System RAM memory)
+> >        used by ath11k firmware (see bindings/reserved-memory/reserved-memory.txt)
+> >
+> > +  ieee80211-freq-limit: true
+> > +
+>
+> Drop this and change additionalProperties to unevaluatedProperties.
 
-Drop this and change additionalProperties to unevaluatedProperties.
+Hi Rob,
+This patch series has been dropped as Christian already proposed the
+same before and it was reviewed.
 
->    iommus:
->      minItems: 1
->      maxItems: 2
-> @@ -88,6 +90,7 @@ required:
->  additionalProperties: false
->  
->  allOf:
-> +  - $ref: ieee80211.yaml#
->    - if:
->        properties:
->          compatible:
-> -- 
-> 2.44.0
-> 
+Regards,
+Robert
+>
+> >    iommus:
+> >      minItems: 1
+> >      maxItems: 2
+> > @@ -88,6 +90,7 @@ required:
+> >  additionalProperties: false
+> >
+> >  allOf:
+> > +  - $ref: ieee80211.yaml#
+> >    - if:
+> >        properties:
+> >          compatible:
+> > --
+> > 2.44.0
+> >
 
