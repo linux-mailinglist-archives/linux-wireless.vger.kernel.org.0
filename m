@@ -1,130 +1,146 @@
-Return-Path: <linux-wireless+bounces-6407-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6408-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F8FC8A7615
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 23:08:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E70AC8A77AB
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 00:18:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B718281E74
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 21:08:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CBB61F23E34
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 22:18:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B185A4CB;
-	Tue, 16 Apr 2024 21:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E48B8120A;
+	Tue, 16 Apr 2024 22:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="arJ5KGVQ"
+	dkim=pass (2048-bit key) header.d=LIVE.NL header.i=@LIVE.NL header.b="X47mKIRR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-db5eur01olkn2060.outbound.protection.outlook.com [40.92.64.60])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC7EC59158
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Apr 2024 21:08:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713301693; cv=none; b=Czc88YDQO+bvxkZ3rxQTstbetgEuZ9xX+ihv8ioYiZgltJgNoDRcvxGY7ZUy1/c51xDQdwm7O2ROrwcenHhBKPv7NYte0fpLC37ja/DwXamhbBCZKWb1Bk+Ys0S+2fmgoAoYd9VV49P95DCI7eGHQHLePg7PxfgSqIBwPiiXrEE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713301693; c=relaxed/simple;
-	bh=UtU4N8okJqSAEdf1gnSV4ZXUyH8a1M/0//8qvJWf6cM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=G5QLcRyXMd/z5o+d2D1cPaKMDXGvI02B2BR1CW423Sr2HooXJr/Nj8DiqxhGDadj8n2ISFt89mZRQpDxBtFFwem7mmGeWUGhJNIGPyO75YGq46WswN7og693od/i9O7B1+lfAyYHFwkEfNzo0qc15RBsZj0YvipHhvsMeVgfhv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=arJ5KGVQ; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-516d264d0e4so165172e87.0
-        for <linux-wireless@vger.kernel.org>; Tue, 16 Apr 2024 14:08:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1713301690; x=1713906490; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UtU4N8okJqSAEdf1gnSV4ZXUyH8a1M/0//8qvJWf6cM=;
-        b=arJ5KGVQS2l3pHCWt+SSVMZRDcS3ohbxb5NTEhA/lnOPBqE8TwNQxvHYBSBzYA/Da2
-         jIGozS7S1xtC3FBFW6Rd4+REeDmX85Cpw8G8o+iJYAL9PS9IMWtr+XNVRHrvZvnmnpx7
-         bGPIRwmH/WQ0RbNNoBmspIQXcGyRdzjEVL1oWNcmMNAtVYwMMMJWnyu8JFfXvHB5E9cz
-         BopvktTDI5oo9NRjUY4LpFeWOGCmJX2CgOcx9DQQWWG+NH8hQKFTpxVvy9tSb9u2cwVU
-         I1xIllDoOz6cwN9ObB/0pUMCJKWXeCF840twRtvm3Ot55cUioAzELVybLl3R+PIuycll
-         I5LQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713301690; x=1713906490;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UtU4N8okJqSAEdf1gnSV4ZXUyH8a1M/0//8qvJWf6cM=;
-        b=Xzb4YazqTsqobL3tb6DcEV6iVT5kqurZn7fHCy/19D2ciq6Tvr1UjNGqEYup50AY7Y
-         GygLeKa20SA9YI3T81lW0ZEiYY8AG2/+oHUpEGhQIyZ7EQ3Q1HJRCMxZgWIfShzk8B+l
-         HKlrKElb1tkX0qlQkL6kQJsIa1GJg7tfAwgFNlmJ7g+S1BWV7nMUfhCZxr3FQUz8+thl
-         jjEyZhtMJ8hrEghEd7jUh/fyzcmDkbi6purQj3G5pGe1C9F2gg85iSsfOuQr0/SLTGIT
-         q5W5oq5EC506J3h42rm4XDr62jozHmyEueuyjIm9EIjGFQ28a54ISpC/GHnuhC+OwwMl
-         5h3A==
-X-Forwarded-Encrypted: i=1; AJvYcCWQsFI7annwM69KFnMUFrkX3QDbpYtzEgwr4nuax31SR8V1XkFO9q6arSMiKbZEXYvcEG+kOuMnRxy/vxio4S/pZ8dk7QjrJZmnNuWPJH4=
-X-Gm-Message-State: AOJu0YxzJLbne4iseaVQp2MpF4gyvJiBaCQ9C8A4TBwKMdCGve+OJ/C8
-	cpVjBIlyStgCrsidmJEvK6FGrba+HMGnWUS9BuAIRsaicfDIKbJOsk9PVtBvMVAd76jJHecFALm
-	0Zmfl0KuurSeDXBSqoqshLPjtfH4Hkhq3mXZkPw==
-X-Google-Smtp-Source: AGHT+IE8/UaVIMjV4kmwMH0LjKA/GWyrorfbQqNq2ie3gzWFSDuXaYK3c2mtzJXVYq5vskx9fsdHL6C1Ceqc7XdUXW4=
-X-Received: by 2002:a05:6512:1106:b0:519:3643:c3ee with SMTP id
- l6-20020a056512110600b005193643c3eemr586278lfg.14.1713301689792; Tue, 16 Apr
- 2024 14:08:09 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6907FBB2;
+	Tue, 16 Apr 2024 22:18:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.64.60
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713305920; cv=fail; b=IjoCspran5Gj7hWQ6E5AzhPa2H1ORooIapVJ4ZhrU9r/xOXnXOsXcwXaZfwKWDvUKEX6wwgsYEbKQlYYaQdTM3smCuH/MlVcF/PCwvJZZT/79tK44u/m41rxLh5gipC0AUMyrt1Fa+cT8smnVGj6CxFG7kM+/uyHTHq4IBj85Hk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713305920; c=relaxed/simple;
+	bh=u957a6LCwAD2/M0EcFuqornfr2q+F7TAfyjuhfQHOrU=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=jzWzJPncT9JogTYpo3dW2r5U7WAiKhBf1HKXJVDiaf8PhwyOAKpo8vryRI85ci58Oyffmx3SEsHCARjkzVTCR70bh45SheGHDU1KTIPuzPuZ1AjEQFNmjH9GCp/2UT+CB8X9yK3ZcrYbfMtTMRiSzi2De2lccmbVTuzRtqYAUw4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.nl; spf=pass smtp.mailfrom=live.nl; dkim=pass (2048-bit key) header.d=LIVE.NL header.i=@LIVE.NL header.b=X47mKIRR; arc=fail smtp.client-ip=40.92.64.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=live.nl
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Jiltkx+P5Z7cCruKgq0nPTeoXv5inWN3KpoM0M0mZhzMNOWc0QXwVtAvIjLFHqfxeEv6rasp/TiMtYBAMlB3D85fh9nC41b42TrT4THtyplOC6AaCBGD4gKzJHcsa35Xip4CpCZZcaeMIQz/YfWJ0n0adhpbmK48toj6+YoH/sHGqLiBtlod7lRKZqzRSQs8P+/Ja0a0m40sgkLy9ecnfW0bW24DeQe1UmBYDn/DHCxwB8rDFOzWOmXmCAHXKq33p3/EUnXdyfpOiNWFVx4MYSo5/EVYjAS3Y5VFZI4apY7iN2RXwGwvnKXDU+I6gWnTUw61e9KOmrIPVl360jDK7g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DTlTX/vvZIcrj+Yu/bocf31CSJSToK1l2b195eU/HnM=;
+ b=bJ3fQOMIRjphjKPpiGgVTP6yQ3HJd43g6fvdQ154LU/FT/TCz2vL0T60BSWuX9gA5NTlLop4eTvFm+t9vwjHDj9knd40AkP0qBDnfxITUxX8E5mnlOiOzVK4anM77I1c7+dFRWIBKPpljdkNE6W+2Vg+Dd3eh5el2u2Uzm7j0D4mYLEsqNDs3uTThoI9w0POUE+kCyZTHi8xn088JG1bWAesThynXiUxEx4yJKGgRDcAOsOVMRDGhZYkDFPS4w7M8mp5iB17oQGzj4vfEDK/DrOcn80/DZvgbGZg9m6bin14uqazhpjvQrcAzRG0QbxicK6WSZnwTpWYuY4LdTZ9pQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=LIVE.NL; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DTlTX/vvZIcrj+Yu/bocf31CSJSToK1l2b195eU/HnM=;
+ b=X47mKIRR4JUewDwV7jrTvMtXf08dkZNYoWDTx5LhYrQ3vCcHRyyKQGJfPNQkH/UYBJxqaTsJCyIcTHPmhjWnfnFSF1Medkjl3bkD9bqwFk1F9HSj9kSycxPHEjinsfnwPOzpnf1sJBBk5kS6gS0wRYHY+5suzmQmbYD3HCCU1bg2PgzZq9PHSN2Qol5MWmEpozzpv/m/I25YDvVHlqGDP+lAsM3mN40cuCuwKcAw0Ini3UBvZCNEhRomlz2E/ZamnP2Gdjo391D3tXSZVuf5ALGYJnnMHtQjGtUmqnhBFYmpif6TWhVW+2uEl9ugSQ9pEXYwYTkUJ9nZcqwUIQb7Xw==
+Received: from AM0PR09MB2675.eurprd09.prod.outlook.com (2603:10a6:208:d3::24)
+ by DU2PR09MB5357.eurprd09.prod.outlook.com (2603:10a6:10:276::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.50; Tue, 16 Apr
+ 2024 22:18:35 +0000
+Received: from AM0PR09MB2675.eurprd09.prod.outlook.com
+ ([fe80::6881:178c:bae6:1644]) by AM0PR09MB2675.eurprd09.prod.outlook.com
+ ([fe80::6881:178c:bae6:1644%6]) with mapi id 15.20.7452.049; Tue, 16 Apr 2024
+ 22:18:35 +0000
+From: Paul Geurts <paul_geurts@live.nl>
+To: mgreer@animalcreek.com,
+	krzk@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	conor+dt@kernel.org,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Paul Geurts <paul_geurts@live.nl>
+Subject: [PATCH 0/2] trf7970a: Device tree option for RX gain reduction
+Date: Wed, 17 Apr 2024 00:18:14 +0200
+Message-ID:
+ <AM0PR09MB26758A01161A1146EC4D46B295082@AM0PR09MB2675.eurprd09.prod.outlook.com>
+X-Mailer: git-send-email 2.20.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TMN: [GLGhZnwEeKF6Xu1U1LS4/BZrlQz/uUT/NaUCm8rkdN0yOdjk8onjteufIgKKVtwE]
+X-ClientProxiedBy: AM0PR03CA0093.eurprd03.prod.outlook.com
+ (2603:10a6:208:69::34) To AM0PR09MB2675.eurprd09.prod.outlook.com
+ (2603:10a6:208:d3::24)
+X-Microsoft-Original-Message-ID: <cover.1713305374.git.paul_geurts@live.nl>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240408231727.396452-1-andriy.shevchenko@linux.intel.com>
- <20240408231727.396452-2-andriy.shevchenko@linux.intel.com>
- <CACRpkdYaXVvtt3b9rFxU4ZNShD17Bm4XU9X3h4dY501iJy3kPA@mail.gmail.com>
- <ZhlSaFWlbE6OS7om@smile.fi.intel.com> <CAMRc=Me489H-mTfT1hfUsY47iKwoaVsf6sgkiBwBVkxJOBo9UA@mail.gmail.com>
- <CACRpkdZRp-DFQgb3=Ut27DHd1w11_aEY0HbLjJHob=C5Ek-dyw@mail.gmail.com> <Zh6FkejXcwBTAqIR@smile.fi.intel.com>
-In-Reply-To: <Zh6FkejXcwBTAqIR@smile.fi.intel.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Tue, 16 Apr 2024 23:07:58 +0200
-Message-ID: <CAMRc=MeXV4_MT5_DKYtHqO+324dFJnr+Y1UtR9w9mj-y2OOqAw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] gpiolib: Fix a mess with the GPIO_* flags
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Kent Gibson <warthog618@gmail.com>, 
-	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	Arend van Spriel <arend.vanspriel@broadcom.com>, Kalle Valo <kvalo@kernel.org>, 
-	Charles Keepax <ckeepax@opensource.cirrus.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR09MB2675:EE_|DU2PR09MB5357:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4bfa34bc-e7f5-40e9-d21a-08dc5e63288b
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	m79ddl0QDsdGqXoYUFQN3xrT2Rt6A+HESRTZqL2MeWcosSWf5DNJw+yQIWXjNCxjSnFlSVbRy8gDVPUyBYg4nHGFcSXm1//9NnERBw+c1BgAKX2E2b0ZhB5z3TaIJpkQXS0mHGFj3hHJHGJZRw0W8UxgxB4/QKWt9pz4CCGgW4/jeOXbRrtb9LdR22fIcz4M52l1BubqCPVDKEzCzRtKu23ZjGWocGaOEiAGTtgIl6BcW8K1STyyqIUqJoQaqQoC5uOIXYcXvC67BQ6Zc/M7gjNMiIcLvzhg8urfCA+6f1VelfTOcBz5qJpbFVrH2MeNrWDyrhxojjcyJmctojLq/FlWeWWIfItWmPsbxLt/9bT5PnUxX+9hUW0qq7RUk8e2jidU3Tnc/JaLWJoMz5KWVM9rWw9JM7+Hww1jfO1jXrUK9ScOu3ib/V3ZNMHXwuq8uptZd8b8671ta0CZGa19ljXcvP75hYQ8oScqHCv71Ipq6EJ37h8VvlcZ/PTS5hW+jF2cCyvNKoSMj/NyorXe630h0MKTd5D1yrx8xiVSByuI9O8ErubFqgajcYN0yN5HvIz7pBOowKy1bLS0zZ2jt31488ptfBWJbJDa0/qTo1aAV3cqGeEkxubYEZCyaM2E
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?CyBWYOr5gbzpZhCH3V3M1uyXzCzmVS+khNXPOSOy4MV/GXyu8ueICWr24rHU?=
+ =?us-ascii?Q?F6uzXVK0Y9xzAo3HTciYYVndNtrdAy0ftwPR7xGZKm0AL5CdfDVcXp5/3Wf9?=
+ =?us-ascii?Q?2/+tB5GDA9J23IGRjiQCa7Af3EG6GcHo/19+xpNgdKlqcGXPb6IDWHXLzk9/?=
+ =?us-ascii?Q?AWScvVfsKIObsmtABf8gUnCJhktazVcK9yhCL1YQXkS/RJvDzBJtYB3aU8Oz?=
+ =?us-ascii?Q?/ETU0df01yknvSaL7Qn1XMkHwrnl01sRac6E7PaY0MH+rhS0O1iZCkm5us1W?=
+ =?us-ascii?Q?M0g5W+e+L/s882+wMcHhlqUl2L/xPUTalafGN2gcvRvqhb5lnWT0kTYdwOpc?=
+ =?us-ascii?Q?wTcyS0WRJHOvm9WSkGmQd9iTgegyKMMQe3N8uZUZC6zLKaP87Xb1ON1cmbGk?=
+ =?us-ascii?Q?8tAXe/xknC9UASmX1OMRfAnM5j8gLRhNWr/xeGJjy8RQ8+ZHIybbOJpBawjt?=
+ =?us-ascii?Q?k02aSqurULHpt3zvrlJC4cz/BW956CGm5aYx/9EeKJ6KBxKJhJHmbwuWEyyo?=
+ =?us-ascii?Q?GfXgOe+4kmqjN6vYoR9eMRmwsL4vJBOkLD3DeJXjtM5UApDjtAAEXJvz1oGR?=
+ =?us-ascii?Q?A7eMYFBFMRfke+O13DcpdiFU7wzMuAQaVzJXYmfQVUMM+iA49tymS4QwhtvU?=
+ =?us-ascii?Q?TkHJ/d4z4nZbX8jGj0bLvzdtq4+7p1YpzkHvpLZK3PLuFHFlzlpoKsV0ba3O?=
+ =?us-ascii?Q?DlbTY2SD5TfiRQEqs3nuBc1DJIDBuNelBNYmUVBubkRVK0aUHbVHtI/Ld6lq?=
+ =?us-ascii?Q?oI8iXzw77Q8zNzfw9M7Xy/eRDri4XoxTU48zzaiwZ6nbIdjnu/OnKm6z7f5P?=
+ =?us-ascii?Q?BPOjOob+atOWP1KOQcz9TV9pOra88lQDQzwZR02DBIU0xcBYOS7gZjJKgIds?=
+ =?us-ascii?Q?msCFgrf/GeUPzl2iGsmtJ4E5TZ6B30DjlLtRkmb7IRPi2J0cOnmMQS8ahhm2?=
+ =?us-ascii?Q?k821crl3rFXcgZst0UXTC5vOk3XlhXan0WIwM9vCjCeeFtxFX0QozlU1b19h?=
+ =?us-ascii?Q?3wQYcx5c3Fuu8I05lLJYl87PHxCfzv6B4MD8s54dT7WVvl+m4dYZlZmDxMFb?=
+ =?us-ascii?Q?1oiwpylkeMbFmPh/wYUas34q9Aky4bKVR74McHyIyAhaTZBf2L010pNzu8UR?=
+ =?us-ascii?Q?TYGsak5avz00rEHu0tPpFVwCVq3pq/VQ4doRHU6+MqfUJ0iTIicOAEyxCd8+?=
+ =?us-ascii?Q?pWTM9No3DEZl88rLI8AuaS7PZvXOQRAj0i3RpHIfEDb5lZiPlkqNpiG6zZzu?=
+ =?us-ascii?Q?SPoRBorjALSXUAz0f+emSaDXl8Zc8O4mxac8QODb5a5gC6+DiBYNzvGQdE2d?=
+ =?us-ascii?Q?KHY=3D?=
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-64da6.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4bfa34bc-e7f5-40e9-d21a-08dc5e63288b
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR09MB2675.eurprd09.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2024 22:18:35.7690
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR09MB5357
 
-On Tue, Apr 16, 2024 at 4:05=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> On Tue, Apr 16, 2024 at 02:22:09PM +0200, Linus Walleij wrote:
-> > On Fri, Apr 12, 2024 at 9:44=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev=
-.pl> wrote:
-> >
-> > > IIUC include/dt-bindings/ headers should only be used by DT sources
-> > > and code that parses the OF properties.
-> >
-> > That's what I have come to understand as well.
-> >
-> > I wonder if there is something that can be done to enforce it?
-> >
-> > Ideally the code that parses OF properties should have to
-> > opt in to get access to the <dt-bindings/*> namespace.
->
-> Whatever you, guys, come up with as a solution, can it be fixed sooner th=
-an later?
-> I mean, I would appreciate if somebody got it done for v6.9-rcX/v6.10-rc1=
- so we don't
-> need to look into this again.
->
+Create a device-tree option to be able to reduce the RX antenna gain.
+This reduces the sensitivity of the antenna, making it less susceptible
+to disturbances.
 
-I'm not sure you got what I was saying. I don't think this can be
-fixed quickly. This is just another bunch of technical debt that will
-have to be addressed carefully on a case-by-case basis and run through
-autobuilders in all possible configurations.
+Paul Geurts (2):
+  dt-bindings: net/nfc: ti,trf7970a: Add rx-gain-reduction option
+  NFC: trf7970a: Create device-tree parameter for RX gain reduction
 
-This type of include-related issues is always brittle and will lead to
-build failures if we don't consider our moves.
+ .../bindings/net/nfc/ti,trf7970a.yaml         |  6 ++
+ drivers/nfc/trf7970a.c                        | 86 ++++++++++++++++---
+ 2 files changed, 81 insertions(+), 11 deletions(-)
 
-Bart
+-- 
+2.20.1
+
 
