@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-6368-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6365-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B6A28A62B7
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 07:00:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99CCA8A62B4
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 07:00:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5312228263B
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 05:00:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD79A1C21809
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 05:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE5F539ADD;
-	Tue, 16 Apr 2024 05:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5E3381C4;
+	Tue, 16 Apr 2024 05:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="kLnZ2/y5"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="TSjgKGYL"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8001E3B293
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Apr 2024 05:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29BF3839D
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Apr 2024 05:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713243626; cv=none; b=EyvoOxyON44CU2Iot+RE+QeOLs9wsY9uqrS268z08kE/+C3tS2+YLIn38yezuTFDcxf+A+y/4be2h79RPCxsuWbIOY/Ona319FqB92PR0Oqdqilxnxo4vP62whMBbIs27d9723VeCs5HUlljipNK1y5bl53MIYZ5Ux2GIvPWyBI=
+	t=1713243624; cv=none; b=QPa6+mEEIWTnDrEWxA3zd3oR7kk4ZwBpzUjvWzbdvnDh3xwxRovjLLULFxf0elp4SecMvkRcXVTWyUT+m2CJwTO9xW/uRHEHQQdaeeFVtIllJ+WSp1FLOHE+xTvavFJPTD46R5o4C6vjzdB1TNhWTqKD0Lppf7kkH0gQsmzCdr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713243626; c=relaxed/simple;
-	bh=K6pw06ngeyDVDDKNhUua2YUq+pcqYC+Mx1IOqlyR8Is=;
+	s=arc-20240116; t=1713243624; c=relaxed/simple;
+	bh=T3siPaHYfAJAnMDULOIyViw5MqCb9DFB/92xb+UGgPA=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BNSTfjlErrj8qX5XgW0Oerb1LbHaAhSF/27pyGqx8YUHM6+1a9IolIg5W5C6oyE4532E82RPNCxCIVR0+dV8qUx1y8/2d2a6FBEXD16LHhb/YOita3RUIsoXug6nStOs04styKGHxykHnEXWyosN8YzoJzuDt/QWQkLhFaGqaBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=kLnZ2/y5; arc=none smtp.client-ip=205.220.168.131
+	 MIME-Version:Content-Type; b=ZSTV3xdEAmedLguK0WvUHm849nLu/IgqTLu3MICICtydVaI4Qsm06zecl6kLSJKA+n3RfFlmcsqlnpBTdAaRVYCuInxvxJNUJCG6h61byQrK91LauuWlkT1PGC5gm/SYanqCf8JR5PwH84Tt5oNlLsGTB3n8x0HW64F4JY8S4Os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=TSjgKGYL; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43G3v7aP021630;
-	Tue, 16 Apr 2024 05:00:12 GMT
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43G2FWrj031887;
+	Tue, 16 Apr 2024 05:00:14 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	from:to:cc:subject:date:message-id:in-reply-to:references
 	:mime-version:content-transfer-encoding:content-type; s=
-	qcppdkim1; bh=cjk/WZ3IP6Scep2akuQhco/LxnmKGQ2WeRzCegkRVIQ=; b=kL
-	nZ2/y514qLg4ez8lrI3f1WyWSX/KDrvCmmgNT/h3/Gzi3elI78paUo6AEukzgHmm
-	R37LqGt3e8xGtWwgNv65JFbp7vhqKmywjWxwAWSqyf5mMkruwZh1Pco5mVXMjb8J
-	J+RHmn35EaD+sRxocus/Mdbe3gtV9pNvw43tA1Bfp1Cw6YJAtNAwrcKzcedenGao
-	7nQQgD55nxwShnznI1qh13oaVdSPNV2m9GyULpjSWdIsl4d5kyrQHgRB9NfsRBq5
-	SUxY6pY9rQRd3fMn/pn1y4KnIvcbvMjyBZ3o/VOZdtD10UZJt3k6bEe1CDqLf7BJ
-	PAOvO2oZ3lhYHZLMvEkA==
+	qcppdkim1; bh=AGpAkcuwbU8DK4OYdf1TBbxfwS9h075hrUKnuLy3KMU=; b=TS
+	jgKGYLywvzwWPu9MA6KD+SO3Ifl9v+vyjL8DRIRn6nma6dXy60jOHqQw/VeyVibU
+	gGPM+C7m0BmnLX/2mHFdTnuNK5J+kGNhYFPf4e8zsnlQ1LoCRtBsDeOYPMbl1U1D
+	Sk7sfMSITR3gWvIcnmwvUs1xf4UuyECkllLCGGwO/rMVWvYO8UFAa4OjE5MXu8yQ
+	XiYPhgRlB/HydIex6IHvtGkxquQ8kSW5JDk4cKzRCpBFOoBeD3JwtsRTCk7p7VhT
+	a+5Wy7bFTZQCOzlsPLYJfy0+rg39XnnWCbb7C75iFtmC7NE1G2TY4EghH/MPlakN
+	iTp2d4Y4OysNEmgxXeZw==
 Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xha2m8yxu-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xh8v5h58s-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Apr 2024 05:00:11 +0000 (GMT)
+	Tue, 16 Apr 2024 05:00:13 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43G50BDS000362
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43G50DCW000401
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Apr 2024 05:00:11 GMT
+	Tue, 16 Apr 2024 05:00:13 GMT
 Received: from hu-adisi-blr.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Mon, 15 Apr 2024 22:00:09 -0700
+ 15.2.1544.9; Mon, 15 Apr 2024 22:00:11 -0700
 From: Aditya Kumar Singh <quic_adisi@quicinc.com>
 To: <johannes@sipsolutions.net>
 CC: <linux-wireless@vger.kernel.org>,
         Aditya Kumar Singh
 	<quic_adisi@quicinc.com>
-Subject: [PATCH 5/7] wifi: mac80211: start and finalize color change on link basis
-Date: Tue, 16 Apr 2024 10:29:41 +0530
-Message-ID: <20240416045943.576656-6-quic_adisi@quicinc.com>
+Subject: [PATCH 6/7] wifi: mac80211: add support to call color_change and OBSS collision on a link
+Date: Tue, 16 Apr 2024 10:29:42 +0530
+Message-ID: <20240416045943.576656-7-quic_adisi@quicinc.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240416045943.576656-1-quic_adisi@quicinc.com>
 References: <20240416045943.576656-1-quic_adisi@quicinc.com>
@@ -79,149 +79,224 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 44iIqARBw7Vnf6qKK4RXY64z5rcsXhbJ
-X-Proofpoint-ORIG-GUID: 44iIqARBw7Vnf6qKK4RXY64z5rcsXhbJ
+X-Proofpoint-GUID: Ii-XIcrHoNibJ3hiLV3jYObYbpHaCQAU
+X-Proofpoint-ORIG-GUID: Ii-XIcrHoNibJ3hiLV3jYObYbpHaCQAU
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-04-16_02,2024-04-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- lowpriorityscore=0 suspectscore=0 priorityscore=1501 spamscore=0
- adultscore=0 malwarescore=0 clxscore=1015 phishscore=0 mlxscore=0
- impostorscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2404010003 definitions=main-2404160028
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 malwarescore=0
+ adultscore=0 bulkscore=0 phishscore=0 priorityscore=1501 mlxlogscore=999
+ lowpriorityscore=0 mlxscore=0 clxscore=1015 impostorscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2404010003
+ definitions=main-2404160028
 
-Add changes to start a color change as well as finalize it on link basis
-in order to support switching color with MLO as well.
+Currently ieee80211_color_change_finish() function finalizes color change
+by scheduling a finalizing worker using the deflink. Similarly, function
+ieee80211_obss_color_collision_notify() notifies the mac80211 about color
+collision on deflink. With MLO, there is a need to do it on a given link
+basis.
+
+Pass link ID of the link on which color change needs to be finalized or
+OBSS color collision is detected.
 
 Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
 ---
- net/mac80211/cfg.c | 55 +++++++++++++++++++++++++++++-----------------
- 1 file changed, 35 insertions(+), 20 deletions(-)
+ drivers/net/wireless/ath/ath11k/mac.c         |  2 +-
+ drivers/net/wireless/ath/ath11k/wmi.c         |  3 +-
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   |  2 +-
+ .../net/wireless/mediatek/mt76/mt7996/mcu.c   |  2 +-
+ include/net/mac80211.h                        |  6 ++-
+ net/mac80211/cfg.c                            | 37 ++++++++++++++++---
+ net/mac80211/rx.c                             |  7 ++--
+ 7 files changed, 45 insertions(+), 14 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index c32be587000d..40c3ba6c445b 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -1659,7 +1659,7 @@ void ath11k_mac_bcn_tx_event(struct ath11k_vif *arvif)
+ 	if (vif->bss_conf.color_change_active &&
+ 	    ieee80211_beacon_cntdwn_is_complete(vif, 0)) {
+ 		arvif->bcca_zero_sent = true;
+-		ieee80211_color_change_finish(vif);
++		ieee80211_color_change_finish(vif, 0);
+ 		return;
+ 	}
+ 
+diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+index c74aa3f95658..3761dfce1f64 100644
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -4064,7 +4064,8 @@ ath11k_wmi_obss_color_collision_event(struct ath11k_base *ab, struct sk_buff *sk
+ 
+ 	switch (ev->evt_type) {
+ 	case WMI_BSS_COLOR_COLLISION_DETECTION:
+-		ieee80211_obss_color_collision_notify(arvif->vif, ev->obss_color_bitmap);
++		ieee80211_obss_color_collision_notify(arvif->vif, ev->obss_color_bitmap,
++						      0);
+ 		ath11k_dbg(ab, ATH11K_DBG_WMI,
+ 			   "OBSS color collision detected vdev:%d, event:%d, bitmap:%08llx\n",
+ 			   ev->vdev_id, ev->evt_type, ev->obss_color_bitmap);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index d90f98c50039..6442e3e5d45b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -331,7 +331,7 @@ mt7915_mcu_cca_finish(void *priv, u8 *mac, struct ieee80211_vif *vif)
+ 	if (!vif->bss_conf.color_change_active || vif->type == NL80211_IFTYPE_STATION)
+ 		return;
+ 
+-	ieee80211_color_change_finish(vif);
++	ieee80211_color_change_finish(vif, 0);
+ }
+ 
+ static void
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index b44abe2acc81..163b822a477c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -418,7 +418,7 @@ mt7996_mcu_cca_finish(void *priv, u8 *mac, struct ieee80211_vif *vif)
+ 	if (!vif->bss_conf.color_change_active || vif->type == NL80211_IFTYPE_STATION)
+ 		return;
+ 
+-	ieee80211_color_change_finish(vif);
++	ieee80211_color_change_finish(vif, 0);
+ }
+ 
+ static void
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 41f135a793ab..6be62cc2caf6 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -5612,12 +5612,13 @@ bool ieee80211_beacon_cntdwn_is_complete(struct ieee80211_vif *vif,
+ /**
+  * ieee80211_color_change_finish - notify mac80211 about color change
+  * @vif: &struct ieee80211_vif pointer from the add_interface callback.
++ * @link_id: valid link_id during MLO or 0 for non-MLO
+  *
+  * After a color change announcement was scheduled and the counter in this
+  * announcement hits 1, this function must be called by the driver to
+  * notify mac80211 that the color can be changed
+  */
+-void ieee80211_color_change_finish(struct ieee80211_vif *vif);
++void ieee80211_color_change_finish(struct ieee80211_vif *vif, u8 link_id);
+ 
+ /**
+  * ieee80211_proberesp_get - retrieve a Probe Response template
+@@ -7530,6 +7531,7 @@ ieee80211_get_unsol_bcast_probe_resp_tmpl(struct ieee80211_hw *hw,
+ /**
+  * ieee80211_obss_color_collision_notify - notify userland about a BSS color
+  * collision.
++ * @link_id: valid link_id during MLO or 0 for non-MLO
+  *
+  * @vif: &struct ieee80211_vif pointer from the add_interface callback.
+  * @color_bitmap: a 64 bit bitmap representing the colors that the local BSS is
+@@ -7537,7 +7539,7 @@ ieee80211_get_unsol_bcast_probe_resp_tmpl(struct ieee80211_hw *hw,
+  */
+ void
+ ieee80211_obss_color_collision_notify(struct ieee80211_vif *vif,
+-				      u64 color_bitmap);
++				      u64 color_bitmap, u8 link_id);
+ 
+ /**
+  * ieee80211_is_tx_data - check if frame is a data frame
 diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 13cf4c0f3030..fcba6d28ea36 100644
+index fcba6d28ea36..d654b1900252 100644
 --- a/net/mac80211/cfg.c
 +++ b/net/mac80211/cfg.c
-@@ -4761,26 +4761,27 @@ ieee80211_color_change_bss_config_notify(struct ieee80211_link_data *link,
- 	}
+@@ -4820,23 +4820,48 @@ void ieee80211_color_collision_detection_work(struct work_struct *work)
+ 					     link->link_id);
  }
  
--static int ieee80211_color_change_finalize(struct ieee80211_sub_if_data *sdata)
-+static int ieee80211_color_change_finalize(struct ieee80211_link_data *link)
+-void ieee80211_color_change_finish(struct ieee80211_vif *vif)
++void ieee80211_color_change_finish(struct ieee80211_vif *vif, u8 link_id)
  {
-+	struct ieee80211_sub_if_data *sdata = link->sdata;
- 	struct ieee80211_local *local = sdata->local;
- 	u64 changed = 0;
- 	int err;
- 
- 	lockdep_assert_wiphy(local->hw.wiphy);
- 
--	sdata->vif.bss_conf.color_change_active = false;
-+	link->conf->color_change_active = false;
- 
--	err = ieee80211_set_after_color_change_beacon(&sdata->deflink, &changed);
-+	err = ieee80211_set_after_color_change_beacon(link, &changed);
- 	if (err) {
--		cfg80211_color_change_aborted_notify(sdata->dev, 0);
-+		cfg80211_color_change_aborted_notify(sdata->dev, link->link_id);
- 		return err;
- 	}
- 
--	ieee80211_color_change_bss_config_notify(&sdata->deflink,
--						 sdata->vif.bss_conf.color_change_color,
-+	ieee80211_color_change_bss_config_notify(link,
-+						 link->conf->color_change_color,
- 						 1, changed);
--	cfg80211_color_change_notify(sdata->dev, 0);
-+	cfg80211_color_change_notify(sdata->dev, link->link_id);
- 
- 	return 0;
- }
-@@ -4788,21 +4789,23 @@ static int ieee80211_color_change_finalize(struct ieee80211_sub_if_data *sdata)
- void ieee80211_color_change_finalize_work(struct wiphy *wiphy,
- 					  struct wiphy_work *work)
- {
--	struct ieee80211_sub_if_data *sdata =
--		container_of(work, struct ieee80211_sub_if_data,
--			     deflink.color_change_finalize_work);
-+	struct ieee80211_link_data *link =
-+		container_of(work, struct ieee80211_link_data,
-+			     color_change_finalize_work);
-+	struct ieee80211_sub_if_data *sdata = link->sdata;
-+	struct ieee80211_bss_conf *link_conf = link->conf;
- 	struct ieee80211_local *local = sdata->local;
- 
- 	lockdep_assert_wiphy(local->hw.wiphy);
- 
- 	/* AP might have been stopped while waiting for the lock. */
--	if (!sdata->vif.bss_conf.color_change_active)
-+	if (!link_conf->color_change_active)
- 		return;
- 
- 	if (!ieee80211_sdata_running(sdata))
- 		return;
- 
--	ieee80211_color_change_finalize(sdata);
-+	ieee80211_color_change_finalize(link);
- }
- 
- void ieee80211_color_collision_detection_work(struct work_struct *work)
-@@ -4855,36 +4858,48 @@ ieee80211_color_change(struct wiphy *wiphy, struct net_device *dev,
- {
- 	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
- 	struct ieee80211_local *local = sdata->local;
-+	struct ieee80211_bss_conf *link_conf;
+ 	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
 +	struct ieee80211_link_data *link;
-+	u8 link_id = params->link_id;
- 	u64 changed = 0;
- 	int err;
- 
- 	lockdep_assert_wiphy(local->hw.wiphy);
- 
--	if (sdata->vif.bss_conf.nontransmitted)
++
 +	if (WARN_ON(link_id >= IEEE80211_MLD_MAX_NUM_LINKS))
-+		return -EINVAL;
++		return;
 +
-+	link = wiphy_dereference(wiphy, sdata->link[link_id]);
-+	if (!link)
-+		return -ENOLINK;
++	rcu_read_lock();
 +
-+	link_conf = link->conf;
-+
-+	if (link_conf->nontransmitted)
- 		return -EINVAL;
++	link = rcu_dereference(sdata->link[link_id]);
++	if (WARN_ON(!link)) {
++		rcu_read_unlock();
++		return;
++	}
  
- 	/* don't allow another color change if one is already active or if csa
- 	 * is active
- 	 */
--	if (sdata->vif.bss_conf.color_change_active || sdata->vif.bss_conf.csa_active) {
-+	if (link_conf->color_change_active || link_conf->csa_active) {
- 		err = -EBUSY;
- 		goto out;
+ 	wiphy_work_queue(sdata->local->hw.wiphy,
+-			 &sdata->deflink.color_change_finalize_work);
++			 &link->color_change_finalize_work);
++
++	rcu_read_unlock();
+ }
+ EXPORT_SYMBOL_GPL(ieee80211_color_change_finish);
+ 
+ void
+ ieee80211_obss_color_collision_notify(struct ieee80211_vif *vif,
+-				      u64 color_bitmap)
++				      u64 color_bitmap, u8 link_id)
+ {
+ 	struct ieee80211_sub_if_data *sdata = vif_to_sdata(vif);
+-	struct ieee80211_link_data *link = &sdata->deflink;
++	struct ieee80211_link_data *link;
+ 
+-	if (sdata->vif.bss_conf.color_change_active || sdata->vif.bss_conf.csa_active)
++	if (WARN_ON(link_id >= IEEE80211_MLD_MAX_NUM_LINKS))
++		return;
++
++	rcu_read_lock();
++
++	link = rcu_dereference(sdata->link[link_id]);
++	if (WARN_ON(!link)) {
++		rcu_read_unlock();
++		return;
++	}
++
++	if (link->conf->color_change_active || link->conf->csa_active)
+ 		return;
+ 
+ 	if (delayed_work_pending(&link->color_collision_detect_work))
+@@ -4849,6 +4874,8 @@ ieee80211_obss_color_collision_notify(struct ieee80211_vif *vif,
+ 	ieee80211_queue_delayed_work(&sdata->local->hw,
+ 				     &link->color_collision_detect_work,
+ 				     msecs_to_jiffies(500));
++
++	rcu_read_unlock();
+ }
+ EXPORT_SYMBOL_GPL(ieee80211_obss_color_collision_notify);
+ 
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 4b4cbd8bf35d..e2b561a9a751 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -3361,7 +3361,7 @@ ieee80211_rx_check_bss_color_collision(struct ieee80211_rx_data *rx)
+ 	if (ieee80211_hw_check(&rx->local->hw, DETECTS_COLOR_COLLISION))
+ 		return;
+ 
+-	if (rx->sdata->vif.bss_conf.csa_active)
++	if (rx->link->conf->csa_active)
+ 		return;
+ 
+ 	baselen = mgmt->u.beacon.variable - rx->skb->data;
+@@ -3373,7 +3373,7 @@ ieee80211_rx_check_bss_color_collision(struct ieee80211_rx_data *rx)
+ 				    rx->skb->len - baselen);
+ 	if (ie && ie->datalen >= sizeof(struct ieee80211_he_operation) &&
+ 	    ie->datalen >= ieee80211_he_oper_size(ie->data + 1)) {
+-		struct ieee80211_bss_conf *bss_conf = &rx->sdata->vif.bss_conf;
++		struct ieee80211_bss_conf *bss_conf = rx->link->conf;
+ 		const struct ieee80211_he_operation *he_oper;
+ 		u8 color;
+ 
+@@ -3386,7 +3386,8 @@ ieee80211_rx_check_bss_color_collision(struct ieee80211_rx_data *rx)
+ 				      IEEE80211_HE_OPERATION_BSS_COLOR_MASK);
+ 		if (color == bss_conf->he_bss_color.color)
+ 			ieee80211_obss_color_collision_notify(&rx->sdata->vif,
+-							      BIT_ULL(color));
++							      BIT_ULL(color),
++							      bss_conf->link_id);
  	}
- 
--	err = ieee80211_set_color_change_beacon(&sdata->deflink, params, &changed);
-+	err = ieee80211_set_color_change_beacon(link, params, &changed);
- 	if (err)
- 		goto out;
- 
--	sdata->vif.bss_conf.color_change_active = true;
--	sdata->vif.bss_conf.color_change_color = params->color;
-+	link_conf->color_change_active = true;
-+	link_conf->color_change_color = params->color;
- 
--	cfg80211_color_change_started_notify(sdata->dev, params->count, 0);
-+	cfg80211_color_change_started_notify(sdata->dev, params->count, link_id);
- 
- 	if (changed)
--		ieee80211_color_change_bss_config_notify(&sdata->deflink, 0, 0, changed);
-+		ieee80211_color_change_bss_config_notify(link, 0, 0, changed);
- 	else
- 		/* if the beacon didn't change, we can finalize immediately */
--		ieee80211_color_change_finalize(sdata);
-+		ieee80211_color_change_finalize(link);
- 
- out:
+ }
  
 -- 
 2.25.1
