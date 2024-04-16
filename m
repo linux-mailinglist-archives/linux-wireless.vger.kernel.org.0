@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-6371-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6372-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B35248A64D8
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 09:19:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F8B78A64E9
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 09:20:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E452F1C21E54
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 07:19:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F2FD1F22AD9
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Apr 2024 07:20:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5F013B78B;
-	Tue, 16 Apr 2024 07:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01CB873199;
+	Tue, 16 Apr 2024 07:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UwQANtT0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gXNQpEAa"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C7939863
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Apr 2024 07:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D9171B50
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Apr 2024 07:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713251834; cv=none; b=SppRXaeTZhDICIGV4MNkTJJaNu19ZajZag2YDLhJm0wMgL/sRo7YGOdjn/2RN4BDF/g9daWx6hZ/0CaKwd9NgBOl7T3ggiesbK8nUOk5niJ8RXpUbbiOoHM7SvhQMiCct3T+L8TD5eEZ3JTZn5+j8rtQZJexOoXnP+gBdieUGac=
+	t=1713251965; cv=none; b=jWEz+p5kYf6WOPvOhub5tED4SgXHKaaZOwpIoOkn7cACbyY2l42SI+pzZkCDqcuVXTeME2ZR8VHpoPJdYGozXP77OLzrcO8GYp3N1UH3aK40ixi94Jw/8Rt38oU0cX/4++F21IIZTD93cfxlagcID3nUZty9fHj/qVGYxHl45ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713251834; c=relaxed/simple;
-	bh=pgF5tfPygm4FX7vHgvq0eWcS9uo06XOqLTA2zpWv4Q0=;
+	s=arc-20240116; t=1713251965; c=relaxed/simple;
+	bh=Pr/5HGs/OWtfrjJ1CQ6MGyfV5QClGefOW002TIyUGy4=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=IA0s+cZZIJPwyScGgx8LkZuy8MEto/exeLVzskr4xr9rHak/+ebmoU6VQU5u1OKzEmT0bciNw7IYL5LrGAYpcwb5JPeIYaD4CHHstO3FFIMr622ib9GV8fkSYdmsOweRMvheAItuwJmd7oiU03947Y1iXyGu12hHZkdG7AoEEmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UwQANtT0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C5ECC113CE;
-	Tue, 16 Apr 2024 07:17:12 +0000 (UTC)
+	 Cc:Message-ID:Date; b=fs/G1+G2527yQVSmrNTbg8CG3dQYP70qL4ZwGBgN8D3u8bnrTWNjRsstUmepf5KzCZptSB5zQF8O173a/rXqNsm1EAXadqXOb+r2P5EF0UNe7axnA8MmuppgfnrwyiqdbJ+124aBLB7VY7RJgsCP+X0LnCYuBjlG9a1g6PUnLUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gXNQpEAa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC6E1C113CE;
+	Tue, 16 Apr 2024 07:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713251834;
-	bh=pgF5tfPygm4FX7vHgvq0eWcS9uo06XOqLTA2zpWv4Q0=;
+	s=k20201202; t=1713251965;
+	bh=Pr/5HGs/OWtfrjJ1CQ6MGyfV5QClGefOW002TIyUGy4=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=UwQANtT0V+DX5EMQnuTIkw1Zu69yuO8MASqyjS2TKn/V86BKsiwHQP4MdfeV359+y
-	 oGfZMcuvLED8JDBjxfvSykYA9OjgTkqo/MKsSxEQ4MqYfLf4e7EtSThzbfs47UPakF
-	 6+1fhtOktxyQfwTt5FaJxmUcQ2vzYifKTyBLpzTnks2NgwVQUUyAC2XSFoz2tRM73q
-	 /Q51isVkfJp8fC73dzAuc8Zpv/5IIZWUEodkpjaeTBhUPhsfIemGXa9gkHH4Fhiomv
-	 rgexl1W7ubyZMRo+A7J5Ye36oS+h8GeWkcmtOLqCwMasDIr0kW5m5H31jiIoPU69rQ
-	 l8ju4flwzco+w==
+	b=gXNQpEAafVsoj6NDdvmOeCMGlQYwvZvH1V5/r6WwkESs38dSSrhbeSNTCKRJ08L4S
+	 w1CdX8F2jKYLbyUflgmA/sTbymN5PodrSYUm/Vl20aKbVaFRLDUPgHL2KXDkjKsM9Z
+	 L5/s9CRTdgcJ22fYLWfG740XlKb/TtufIZ3wLNps+KGp4QK5zO65p80ozvw/HpzIsJ
+	 RCnSMkebKPWJIPTY3m5Aa6Tx6DD+Um4KYbiw75P3QSLguRJbgCTPAKw2mS4AhmVdPL
+	 oSCUlQOK3qpr4LAWqYtsZkK1VpWW+7Gedqk8GHgjHh6pTqhse9yWkedmt6H/CPR4yj
+	 +S6wOiza2pq+A==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,54 +49,43 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3] wifi: ath12k: fix mac id extraction when MSDU
- spillover in
- rx error path
+Subject: Re: [PATCH v2] wifi: ath12k: dynamically update peer puncturing
+ bitmap
+ for STA
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240404141538.1277258-1-quic_nithp@quicinc.com>
-References: <20240404141538.1277258-1-quic_nithp@quicinc.com>
-To: Nithyanantham Paramasivam <quic_nithp@quicinc.com>
+In-Reply-To: <20240408083047.22548-1-quic_kangyang@quicinc.com>
+References: <20240408083047.22548-1-quic_kangyang@quicinc.com>
+To: Kang Yang <quic_kangyang@quicinc.com>
 Cc: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
- Karthikeyan Periyasamy
-	<quic_periyasa@quicinc.com>, Nithyanantham Paramasivam
-	<quic_nithp@quicinc.com>
+ <quic_kangyang@quicinc.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <171325183100.4097708.11184145689430531302.kvalo@kernel.org>
-Date: Tue, 16 Apr 2024 07:17:12 +0000 (UTC)
+Message-ID: <171325196269.4097708.17420156398205225314.kvalo@kernel.org>
+Date: Tue, 16 Apr 2024 07:19:24 +0000 (UTC)
 
-Nithyanantham Paramasivam <quic_nithp@quicinc.com> wrote:
+Kang Yang <quic_kangyang@quicinc.com> wrote:
 
-> Currently, in the rx error data path, mac id is extracted from the
-> last 64bits of MSDU end description tag for each entry received in
-> the WBM error ring. Then, each entry will be updated into the MSDU
-> list for further processing. The extracted mac id is valid when a
-> single MSDU is not fragmented and received in the WBM error ring.
+> Every time EHT Operation element changed, mac80211 will parse it and
+> extract the valid puncturing bitmap according to the bandwidth.
 > 
-> In scenarios where the size of a single MSDU received exceeds the
-> descriptor buffer size, resulting in fragmented or spillover MSDU
-> entries into the WBM error ring. In this case, the extracted mac id
-> from each spillover entry is invalid except the last spillover entry
-> of the MSDU. This invalid mac id leads to packet rejection.
+> Current driver only update puncturing bitmap to firmware as vdev
+> parameter. Which can only meet the needs of AP. But STA will also use
+> it as peer parameter. If only update as vdev parameter, might cause
+> firmware crash. QCN9274 is the same.
 > 
-> To address this issue, check if the MSDU continuation flag is set,
-> then extract the valid mac id from the last spillover entry.
-> Propagate the valid mac id to all the spillover entries of the single
-> MSDU in the temporary MSDU list(scatter_msdu_list). Then, update this
-> into the MSDU list (msdu_list) for further processing.
+> So update bandwidth and puncturing bitmap as peer parameters once they
+> changed for STA. Then send them to the firmware by WMI event.
 > 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 > 
-> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-> Signed-off-by: Nithyanantham Paramasivam <quic_nithp@quicinc.com>
-> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-f351772c544b wifi: ath12k: fix mac id extraction when MSDU spillover in rx error path
+0531825408ce wifi: ath12k: dynamically update peer puncturing bitmap for STA
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240404141538.1277258-1-quic_nithp@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240408083047.22548-1-quic_kangyang@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
