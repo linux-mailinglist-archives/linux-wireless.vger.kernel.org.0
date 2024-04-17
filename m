@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-6450-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6451-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 046B58A83EC
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 15:12:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 215648A8400
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 15:15:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 277D21C20D20
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 13:12:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0BFF28570B
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 13:15:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14CC913F428;
-	Wed, 17 Apr 2024 13:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D6813D8AE;
+	Wed, 17 Apr 2024 13:15:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WWPyUSti"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iJAsU7AL"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D515D13F01A;
-	Wed, 17 Apr 2024 13:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E79A13D61A;
+	Wed, 17 Apr 2024 13:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713359527; cv=none; b=DAHfepebwGRbZexIvY5LyTkRS5ecKiNUcVBeBfzPcMQN3poekRFhD+pee4hIeni9SguL/jqjMmfWpTe8MWVsV9e51g9WV6V+6NBoQF0MEiHIHiRd/P024PkZ5umuq+TfwYGSpD08VvFyOdmRCZh0oOBv5fG2wWZwmAKIdwl3yyA=
+	t=1713359722; cv=none; b=b6V8Q31PZ1toXj6gAbEIzEH+qKelMxBvDQD/8Z5CIJDTojv16iVROpFce8Ewg8k2bgaRKnQOVIoh0dWdByFdB2f3m0YG+Ez43+I/qFSvXlbf7etzfAEHUIHbF8YyZ2qhUA7j8g/wqLd3S2LRYYvTPe3M+eRP4f1ilTpjagnoD5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713359527; c=relaxed/simple;
-	bh=kPWeSFcFPXFuvbJls+Y5yQfrhQbbBP7OBjl0oczt/VE=;
+	s=arc-20240116; t=1713359722; c=relaxed/simple;
+	bh=51JP3zFmO8LduqnRmpjjtDDoWC+4X1OXwmn7YXUfOww=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=rwd+CWvyM2l4TwHn9vjxVzOZNHNT4DW5Am79x4dlHwFQ9e2KUU+QAQcyJLKvRFhPV68ZFJkcxHQu1KJdNFNItvYEUtf0q60YL/0ChRcopmOO1ZUOiWSsp8wZg4kZ6MrExHR6e7er/+o7SXeOZdwriVDD+s/Uiqu6fD/ij1tNMKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WWPyUSti; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A2C7C072AA;
-	Wed, 17 Apr 2024 13:12:06 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=tjk6b4p1T5fZaKG9SpMYJD5d9BYhJ4tUXUIgU50HgK0zk7DvX83w1pJKpV9+F9jJrpfFmx9vgVt4rVOYyMzYQJsbGgKAqC8hPLff8tVt5KlTa/AuXRaKLWXk27dMcfTsAI8y5R9gdIq7MbrvUPjNgUFCE/BEsR+p9fhL0gNT7ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iJAsU7AL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5426C072AA;
+	Wed, 17 Apr 2024 13:15:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713359526;
-	bh=kPWeSFcFPXFuvbJls+Y5yQfrhQbbBP7OBjl0oczt/VE=;
+	s=k20201202; t=1713359721;
+	bh=51JP3zFmO8LduqnRmpjjtDDoWC+4X1OXwmn7YXUfOww=;
 	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=WWPyUStiBszPszoPQtDdb0CNNl6hDRgPB23WqyudxCveub9vZbpjPJFAGDQ1Ap16b
-	 cUw27pQGYZFbQAinWJLDBNp737tukgjG6n+jC3suxq2kvvDdBu09I0AEvSeDBTMOzy
-	 rOs40M0g7kD/RlKZAu8S2arsv3Xvj2okMcVKDheLh9N1Cjo0Apw0u82vuM559bnDnU
-	 KGeJTO2JIQOZ1t8Nvjz2SWHm1LNR+RUlFxe4b+wTT/UFyYnWXJubjSJhcCsByqTtMD
-	 hpP2s6MP/kYD9NOsuK4fhriN7YiNAaMpzj3ixUafqS9GEGJH3J4rcPXmoUjmrLCvdN
-	 bs9qax2NrsJ6w==
-Message-ID: <150d467e-3ea6-40fb-8ddf-21d678b150d1@kernel.org>
-Date: Wed, 17 Apr 2024 15:12:05 +0200
+	b=iJAsU7ALIg3r8x8WZhS5rQyQ4D1mOfHq17v4Xc2tWpGxx2nmpIQ1TvTKO/cliV2I6
+	 rYHvBhNmOLipj1i9s1AI+HAAiGnlfToqyZ/4PW9Q0V5nWGiRvT665PRllh5HyFKkQa
+	 bCWa9aJZknXSMGwZQ9Gwzy5vIt4swl1BFCK5zlhRi8RjEK4suQ8jac8uYcaiMwAnZt
+	 m9I4SYGZbP6eoC03DsRJbqxFZn11WS6rsarixZ7MpInqA3hu4KlCCucF6JDZYz+3s/
+	 MrQFAGsFNz8Zl3BmquSs0YOk8qKaJclIFYoc6Gk2A3HtG8PIizPp6vvkIPUczqOfjR
+	 XG8LPyUq86KwA==
+Message-ID: <64ca6d41-8173-4e0e-9467-4fa32db812ec@kernel.org>
+Date: Wed, 17 Apr 2024 15:15:21 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,15 +50,11 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: net/nfc: ti,trf7970a: Add
- rx-gain-reduction option
+Subject: Re: [PATCH] NFC: trf7970a: disable all regulators on removal
 To: Paul Geurts <paul_geurts@live.nl>, mgreer@animalcreek.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, robh@kernel.org, conor+dt@kernel.org,
  linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <cover.1713305374.git.paul_geurts@live.nl>
- <AM0PR09MB267553535F7A85EA639D739C95082@AM0PR09MB2675.eurprd09.prod.outlook.com>
+ linux-kernel@vger.kernel.org
+References: <AM0PR09MB2675EDFD44EC82B6BCBB430F95082@AM0PR09MB2675.eurprd09.prod.outlook.com>
 Content-Language: en-US
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -104,39 +100,52 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <AM0PR09MB267553535F7A85EA639D739C95082@AM0PR09MB2675.eurprd09.prod.outlook.com>
+In-Reply-To: <AM0PR09MB2675EDFD44EC82B6BCBB430F95082@AM0PR09MB2675.eurprd09.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 17/04/2024 00:18, Paul Geurts wrote:
-> Add option to reduce the RX antenna gain to be able to reduce the
-> sensitivity.
+On 16/04/2024 22:28, Paul Geurts wrote:
+> During module probe, regulator 'vin' and 'vdd-io' are used and enabled,
+> but the vdd-io regulator overwrites the 'vin' regulator pointer. During
+> remove, only the vdd-io is disabled, as the vin regulator pointer is not
+> available anymore. When regulator_put() is called during resource
+> cleanup a kernel warning is given, as the regulator is still enabled.
+> 
+> Store the two regulators in separate pointers and disable both the
+> regulators on module remove.
+> 
+> Fixes: 49d22c70aaf0 ("NFC: trf7970a: Add device tree option of 1.8 Volt IO voltage")
 > 
 > Signed-off-by: Paul Geurts <paul_geurts@live.nl>
+
+No blank lines between tags. Please look at existing commits (git log).
+
 > ---
->  Documentation/devicetree/bindings/net/nfc/ti,trf7970a.yaml | 6 ++++++
->  1 file changed, 6 insertions(+)
+>  drivers/nfc/trf7970a.c | 42 +++++++++++++++++++++++-------------------
+>  1 file changed, 23 insertions(+), 19 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/net/nfc/ti,trf7970a.yaml b/Documentation/devicetree/bindings/net/nfc/ti,trf7970a.yaml
-> index d0332eb76ad2..bbd045f6cf04 100644
-> --- a/Documentation/devicetree/bindings/net/nfc/ti,trf7970a.yaml
-> +++ b/Documentation/devicetree/bindings/net/nfc/ti,trf7970a.yaml
-> @@ -55,6 +55,11 @@ properties:
->      description: |
->        Regulator for supply voltage to VIN pin
+> diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
+> index 7eb17f46a815..9e1a34e23af2 100644
+> --- a/drivers/nfc/trf7970a.c
+> +++ b/drivers/nfc/trf7970a.c
+> @@ -424,7 +424,8 @@ struct trf7970a {
+>  	enum trf7970a_state		state;
+>  	struct device			*dev;
+>  	struct spi_device		*spi;
+> -	struct regulator		*regulator;
+> +	struct regulator		*vin_regulator;
+> +	struct regulator		*vddio_regulator;
+>  	struct nfc_digital_dev		*ddev;
+>  	u32				quirks;
+>  	bool				is_initiator;
+> @@ -1883,7 +1884,7 @@ static int trf7970a_power_up(struct trf7970a *trf)
+>  	if (trf->state != TRF7970A_ST_PWR_OFF)
+>  		return 0;
 >  
-> +  rx-gain-reduction:
+> -	ret = regulator_enable(trf->regulator);
+> +	ret = regulator_enable(trf->vin_regulator);
 
-Missing vendor prefix.
-
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: |
-
-Do not need '|' unless you need to preserve formatting.
-
-> +      Specify a RX gain reduction to reduce antenna sensitivity.
-
-Reduction by what? What are the units?
+That does not look like equivalent code. Previously this was vddio, right?
 
 
 Best regards,
