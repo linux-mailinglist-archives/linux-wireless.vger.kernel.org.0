@@ -1,75 +1,57 @@
-Return-Path: <linux-wireless+bounces-6441-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6442-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CADC8A81C1
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 13:12:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BFDB8A81E3
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 13:18:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 793E71C2227C
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 11:12:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8F6DB24487
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 11:18:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 557C713C81D;
-	Wed, 17 Apr 2024 11:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78C8E13C80B;
+	Wed, 17 Apr 2024 11:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="c3Ws1byl"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="vbzjlZ+W"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99DB6D1CE;
-	Wed, 17 Apr 2024 11:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014BC13BC00
+	for <linux-wireless@vger.kernel.org>; Wed, 17 Apr 2024 11:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713352322; cv=none; b=VWhe3DgvcQ6C9agtVaT7AJsolaD3PrLa9AZ7dQiUXOO+ovIaIeNjnzHg89WQRzywTg+/Ig/sjthRjkoR7llvj6Z3YNRNsw4XavD+7xIvOFtcehsR5UaUhLvutAyrxTO7RCr91GsotbphcRgk+UIuPIYaDWaQF+FC809M57/VDvk=
+	t=1713352688; cv=none; b=izcxql+asApHyO/aqyxVubZfVxPy0FxxI3/plhQo0STTs7KtdpqEK25GugFgsfFMnf6pkbi6JSkTW2fAWtEmZq7uqSPQazohogKndzzmxgKZaR8RTSODEgj6lHkFl6X8OBLSAtGWYdT6kah38V0PMjpwKtJFhQvH3fJGL6NTGVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713352322; c=relaxed/simple;
-	bh=BeAGE4NgF1PvvDtuvS7meGY6+y42Zw9trUsDmKq6F20=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Qw261fOcqNi6En31oMtiBs960wOs8PgfyByGa0HwsduAV/UCJm5J2UR+h1ID3qP18R0S8tBAqj//X/W5GDbj3y8gTif19mXy9RliJ7BGUzUTlNBSlqoL8hs9E/RVveN/O3D1Is+oS8b+AxLhwlkQfPACgZWemXI5/7VLRFnfzEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=c3Ws1byl; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1713352688; c=relaxed/simple;
+	bh=PbFTxdXpY7GzbzvB2nZazZXs0kU8w/HploreA7Tbj5k=;
+	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:MIME-Version; b=HIroVefky9Q6j1EUiM5hseKqUWG+7U156OzABPlcKeFX5THXiZYTZ7YyVZewxiQ8RKUBwNGU2lgpojfy8JuOMNP0N+awMheRCKfNcW0FxwWTzxs2bus38yvOLxptB4mYOHFsvtdsSU217MXbE+kkkmVCpSf7Qt72PANd1/2o1Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=vbzjlZ+W; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=j5hzFpqDeiSvh3i5/NNbcyOTjOMmoOjEjWS33BvjzzU=;
-	t=1713352320; x=1714561920; b=c3Ws1bylK3k+IuEn2TbhHtgRWguRUCfV6mjHUU4/IARA+u5
-	wyIYNyPMQ7Rk4VrCjGHHvKuJcbNKlZgreBrqVPnrf53qICKmcALAVuEkCB2Qf52hpGQxLBS/EfghD
-	dM1iG8PWWWaEUIWmNofahxTPWBPwmYIqCvJMkLWLNJbuH0BO8zAPMcboqafSw26Zj1wI2LPDjrChU
-	8/ZvDmohcKFH6t+3AbSWqSZL6B+6icAMuF8/87xLue5uANkrXWHsomEHjWhfQm/cGPbeB+J+NipfY
-	Bay914wPzKk2RdrQWjjH/KXRO+ec6ACJvKJDUWH+FPufIlURK4y5Tno6/tdDwTKg==;
+	Content-Type:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=PbFTxdXpY7GzbzvB2nZazZXs0kU8w/HploreA7Tbj5k=; t=1713352687; x=1714562287; 
+	b=vbzjlZ+WFyyQFs04doPYOpXWgJo12qxz3PTOf+FD1vPUyQ7Lt83Pdb7nRzNBmXD/Je1yL8Lgyr3
+	BH1z04/y1qJjbdG+nXsmi6bSeKNZhxSaEW2sXSRlrUCAeSBJBetStjnKt6T+LdUVIvgVEsMsi01KO
+	deNaNk4F2lbLAGRpFrQ6LfoB6KQFrS6v0F5L6PKWWMCpImWLNKZYloUXr/TLdlzocvUEMJ4GdMbLa
+	cQwfxRrwegtboxw82iArO/1+V+YMsbSloZb+6eVtHQB0nibahWnrB52kk2PrAvZezEBb2BUrJES4A
+	F2O/LkdIluA1c/gwF74qD8B2jMeR80chshnA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1rx3CW-0000000AtjI-1eSv;
-	Wed, 17 Apr 2024 13:11:40 +0200
-Message-ID: <e0d5741ee053c11fe078fc8afe6cf4a92e274095.camel@sipsolutions.net>
-Subject: Re: [PATCH net-next v6 03/10] net: create a dummy net_device
- allocator
+	id 1rx3Ii-0000000Au0N-0M0W;
+	Wed, 17 Apr 2024 13:18:04 +0200
+Message-ID: <fec30176f437d565d4c1dfc4944373f117d75a64.camel@sipsolutions.net>
+Subject: putting future iwlwifi firmware into intel/ ?
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Alexander Lobakin <aleksander.lobakin@intel.com>, Jakub Kicinski
-	 <kuba@kernel.org>, Breno Leitao <leitao@debian.org>
-Cc: davem@davemloft.net, pabeni@redhat.com, edumazet@google.com,
- elder@kernel.org,  linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org,  nbd@nbd.name, sean.wang@mediatek.com,
- Mark-MC.Lee@mediatek.com, lorenzo@kernel.org,  taras.chornyi@plvision.eu,
- ath11k@lists.infradead.org,  ath10k@lists.infradead.org,
- linux-wireless@vger.kernel.org, geomatsi@gmail.com,  kvalo@kernel.org,
- quic_jjohnson@quicinc.com, leon@kernel.org, 
- dennis.dalessandro@cornelisnetworks.com, linux-kernel@vger.kernel.org, 
- netdev@vger.kernel.org, bpf@vger.kernel.org, idosch@idosch.org, Ido
- Schimmel <idosch@nvidia.com>, Jiri Pirko <jiri@resnulli.us>, Simon Horman
- <horms@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Sebastian
- Andrzej Siewior <bigeasy@linutronix.de>
-Date: Wed, 17 Apr 2024 13:11:38 +0200
-In-Reply-To: <ebe80c29-4884-488d-ab83-c020f9c3bc81@intel.com>
-References: <20240411135952.1096696-1-leitao@debian.org>
-	 <20240411135952.1096696-4-leitao@debian.org>
-	 <20240412191626.2e9bfb4a@kernel.org>
-	 <ebe80c29-4884-488d-ab83-c020f9c3bc81@intel.com>
+To: linux-firmware@kernel.org
+Cc: linux-wireless@vger.kernel.org, miriam.rachel.korenblit@intel.com
+Date: Wed, 17 Apr 2024 13:18:03 +0200
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
@@ -81,20 +63,16 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Wed, 2024-04-17 at 12:51 +0200, Alexander Lobakin wrote:
-> Just FYI: kdoc accepts only this pattern:
->=20
->  * @last_param: blah
->  *
->  * Return: blah
->=20
-> NOT
->=20
->  * Returns: blah
+Hi,
 
-Actually, it does accept that, the regex is "returns?". It's just
-documented only as "Return" . IMHO it sometimes reads nicer as "Returns"
-depending on how you phrase it, but ...
+Since I was just looking at some firmware related thing (files for the
+hardware that might be shared between Intel BT and WiFi), I noticed that
+just over 30% of the files/dirs in the top-level firmware tree are
+iwlwifi-* files.
+
+While we can't move the files that older drivers might consume, we could
+e.g. change the driver to look up future versions/future hardware under
+intel/ instead? Would that be worth doing?
 
 johannes
 
