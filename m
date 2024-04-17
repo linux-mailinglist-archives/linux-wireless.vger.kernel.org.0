@@ -1,195 +1,159 @@
-Return-Path: <linux-wireless+bounces-6452-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6453-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9BEE8A843B
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 15:21:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C35578A8589
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 16:04:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71EBA285E6B
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 13:21:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9657BB2829B
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 13:58:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD60713342F;
-	Wed, 17 Apr 2024 13:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C843413DDA8;
+	Wed, 17 Apr 2024 13:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mSqFba8m"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f+ukzmfK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9660813E419
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Apr 2024 13:20:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B3612DD8C
+	for <linux-wireless@vger.kernel.org>; Wed, 17 Apr 2024 13:58:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713360021; cv=none; b=MGAFfG1+UplNVTLufR68eFhr6XT7AWEEW5rQTqwGj3IBdKHEp4Qs26jDgwmk8yymTlqEi8k5q1skKeFX2sZYsBWGnG34vjxmeu3XEsIlpxbtbGEHB5RdpCN9HdQvri2q+7sn/DWT+u5gIAMlg5fwDhvarWBpQWh2c47qQQKibAU=
+	t=1713362302; cv=none; b=h4GbbVX0cBVCUH5p9fCU+4PCF2uwclAKlxHtxMVsVzqWQbIpAruAkhcieaFr3OM13Gd8BjRLJrkicLH7qVuCm3/MWG9z0x8Ti8nAJx/GH8AeWsqHAZQ9qbZomDjf8s/aJdmpEPFIMiMLlrYCejCcG5a1+vdO8GCVk0s5+H94fhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713360021; c=relaxed/simple;
-	bh=Pu6oc8Xw/MU4G9L8d1LgygKXe4I5OTFt1UUwxq7u8SE=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=ZljeEmJYj12+8Vm3eA35IB4nxzklFMy6IDPU+OO7B/FKhqqJpyavcb+q63U96HThyaI8Xs+R9oW4gw2+bNxjflirtLYBR9XW2N6CM8IfI4ZjcdGm6bIQ5uwUpEurDvdf4lheqeIMVPvWQjdm5k54nSEOh0XLIWys648mEEBNhi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mSqFba8m; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713360020; x=1744896020;
-  h=date:from:to:cc:subject:message-id;
-  bh=Pu6oc8Xw/MU4G9L8d1LgygKXe4I5OTFt1UUwxq7u8SE=;
-  b=mSqFba8mrSxLPgczQTEwt65TbAZv8ZxvU0JDN2/Au11tHb+pvFlFp6NO
-   tNOXJ8t2sFEDu6GfDQpTfSmYPg28BKVIPiUsWezJgF1l8EgJsaeyxBxnq
-   cEwzySBpYFzx0+bgEEPZvwjxvn0G4AiNyIyCTSS0aEH5hRyDpgTYCARKJ
-   QZ9yT42uR5dJmG4kK6AZQbM0FEpERu3M/TO+7mK1zEbB8IG0IkWth/GBp
-   Ri2K8re2qT3hcutbZqc+rBc8052MfHQeE2FAwIufymPB334M3GI5YvO7G
-   Fc9lGE9ddOgIWL5LcxKez3AAGLEWNYGiMMN/crwmQoKJI7HwtqVITTHPC
-   w==;
-X-CSE-ConnectionGUID: 6qZL5PDeSEKgSAnE1PuoBA==
-X-CSE-MsgGUID: lBAMUOfKRqyHXe+bl7X7bg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="8979180"
-X-IronPort-AV: E=Sophos;i="6.07,209,1708416000"; 
-   d="scan'208";a="8979180"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2024 06:20:19 -0700
-X-CSE-ConnectionGUID: ZPilbTipRMGFZmh9BD9pkA==
-X-CSE-MsgGUID: EZmDeoFaRmyd8SGjHUZlDw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,209,1708416000"; 
-   d="scan'208";a="22679334"
-Received: from unknown (HELO 23c141fc0fd8) ([10.239.97.151])
-  by fmviesa006.fm.intel.com with ESMTP; 17 Apr 2024 06:20:18 -0700
-Received: from kbuild by 23c141fc0fd8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rx5Cx-0006ca-1E;
-	Wed, 17 Apr 2024 13:20:15 +0000
-Date: Wed, 17 Apr 2024 21:20:12 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
- linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- f236464f1db7bea80075e6e31ac70dc6eb80547f
-Message-ID: <202404172109.o7UIfPso-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1713362302; c=relaxed/simple;
+	bh=Pa4utgYTccJf1liyMmN8RE3wJcfyFW6pn+f8wjHNTYY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kfhQvjShCphK4h6CBsQ84dLtYHakLbNkLSKIRk5vrNK4B6OXinRMCpcjcZluN+4u5Sp8WNmXBP9Y58LWdiyf0K+tljBfa7AVmJqD17EPyhtmEB9bSWYSHA/R6kS5bB8z2Y6YcXAWyWWJcF55zWhkGg4KOJIUSpWiGTeFJKoGDrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f+ukzmfK; arc=none smtp.client-ip=209.85.167.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-3c5ee4ce695so1633492b6e.0
+        for <linux-wireless@vger.kernel.org>; Wed, 17 Apr 2024 06:58:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713362300; x=1713967100; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pg5WNLYsB3WinifJAqg0RF5waYmPebStvdmGjyYhRTo=;
+        b=f+ukzmfKZ9a3U/DF+ubWEJR5eZLvEQhLLfyz18DTH/AKzdUc1vD3S7NacvaK+imIm6
+         1k/MSTpfwujX0TzePrOcaQhUKZ0lx+Oa3iEQcA9BWwvWxpOUDmwht4ZHLR806De2rFLz
+         fOUWdhhPWbZdsZgjdQFNb60KghlrnP9Rk+et/sWrt2IIV18XdEcdA0Pno1Q52k2Jm2TJ
+         sHUAYngw4iXgg2rNygAaJTWt9rK83XD9pbt1ernoi2Y2GagTqnscBHXsnFxEhJUzN7Kl
+         cdNH2gSbpvyt8G4QZ4h0Carle0m8wGPd4UnLahp8e/wlkVyOH0x886BomhUqz6qdbEDP
+         78xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713362300; x=1713967100;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pg5WNLYsB3WinifJAqg0RF5waYmPebStvdmGjyYhRTo=;
+        b=OJQcnaTuLQDToyyjTuje7XaDY9sgsrwhmNzdcVg7QJ3S8HccTwU2gnN3uWSQet51XL
+         Ov0bxcagEtqwO0HUzsmBtdCY47UjwjY2/npDY6y4qOvtlY0KsSQa/VsLzKMiN6CCB1z4
+         cOnDstDrcecBq9FbAt9UDenbbwm9KlA8nHlpUQKkENyBccrfYtI9C7s8M/BBcp6EkXsv
+         iHdvivnE3DiY/KtRBg2EGcM0qUS0/SIATd5tHHjrLQh4e8FbSfs7Pyvy4jH4eXEcvTpg
+         5tKFsVQrghuVhpGFrif6IAqpN+b5NQy4rI0PQl8WqE7IBl0am5wpOjkNPjLG20X7O+o0
+         V8dw==
+X-Gm-Message-State: AOJu0YxhPpSVqz2vzpaCcINTCGbkUrSQSm2gfvU55oCYU2neMHQ3HVQ9
+	lySloIc+YPUuGG4z3fsSzT+qTPb7PtKVm8O7J7b5F8fvskAta+og
+X-Google-Smtp-Source: AGHT+IFBHseeoNdtd8Hh0AsNxb8X5LNp1lJN2YR/81gCsLeyiTY2i8vgV8EFmsvP31gica8t5MpQlg==
+X-Received: by 2002:a05:6808:2228:b0:3c6:1566:af58 with SMTP id bd40-20020a056808222800b003c61566af58mr20204814oib.20.1713362300387;
+        Wed, 17 Apr 2024 06:58:20 -0700 (PDT)
+Received: from ?IPV6:2600:1700:70:f702:9c77:c230:a0ba:a1a1? ([2600:1700:70:f702:9c77:c230:a0ba:a1a1])
+        by smtp.gmail.com with ESMTPSA id b1-20020a056808010100b003c5f54d014dsm2379929oie.51.2024.04.17.06.58.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 17 Apr 2024 06:58:20 -0700 (PDT)
+Message-ID: <b7876373-08d9-4948-a49a-e79f42f3abcb@gmail.com>
+Date: Wed, 17 Apr 2024 08:58:19 -0500
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: putting future iwlwifi firmware into intel/ ?
+Content-Language: en-US
+To: Johannes Berg <johannes@sipsolutions.net>, linux-firmware@kernel.org
+Cc: linux-wireless@vger.kernel.org, miriam.rachel.korenblit@intel.com
+References: <fec30176f437d565d4c1dfc4944373f117d75a64.camel@sipsolutions.net>
+ <9aa64d50-cb4d-4118-bc27-86c23410ff8b@gmail.com>
+ <f65765b29ea7503fbbaa5e047c95a82de6fc2083.camel@sipsolutions.net>
+ <b0e70576-a53f-4d03-a503-ddf1f98bbe9d@gmail.com>
+ <b712f48a3e35221b7ff7f4c8cb495b5159bdd367.camel@sipsolutions.net>
+From: Mario Limonciello <superm1@gmail.com>
+In-Reply-To: <b712f48a3e35221b7ff7f4c8cb495b5159bdd367.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: f236464f1db7bea80075e6e31ac70dc6eb80547f  wifi: wilc1000: convert list management to RCU
 
-elapsed time: 1263m
 
-configs tested: 101
-configs skipped: 4
+On 4/17/24 07:45, Johannes Berg wrote:
+> On Wed, 2024-04-17 at 07:42 -0500, Mario Limonciello wrote:
+>>
+>> On 4/17/24 07:39, Johannes Berg wrote:
+>>> On Wed, 2024-04-17 at 07:31 -0500, Mario Limonciello wrote:
+>>>>
+>>>> On 4/17/24 06:18, Johannes Berg wrote:
+>>>>> Hi,
+>>>>>
+>>>>> Since I was just looking at some firmware related thing (files for the
+>>>>> hardware that might be shared between Intel BT and WiFi), I noticed that
+>>>>> just over 30% of the files/dirs in the top-level firmware tree are
+>>>>> iwlwifi-* files.
+>>>>>
+>>>>> While we can't move the files that older drivers might consume, we could
+>>>>> e.g. change the driver to look up future versions/future hardware under
+>>>>> intel/ instead? Would that be worth doing?
+>>>>>
+>>>>> johannes
+>>>>>
+>>>>
+>>>> How about moving them all now and then creating compat symlinks for
+>>>> older kernels at linux-firmware 'make install' time?
+>>>>
+>>>
+>>> Didn't realize there even was a 'make install' time :-)
+>>>
+>>> But then I guess it'd be simpler in the driver since we could just
+>>> unconditionally add the intel/ prefix to the request_firmware call.
+>>>
+>>> johannes
+>>
+>> Do both.  All the stuff already there add the compat symlinks in linux
+>> firmware so that current and older kernels work with older hardware.
+>>
+>> Any "new firmware" only put in the new path, and add commits to the
+>> kernel to look for "all" firmware in the new path.
+>>
+>> Should hopefully cover everything without too much pain then.
+> 
+> Yeah, I guess. Though not actually sure, do we need to support new
+> kernel + old firmware install?
+> 
+> johannes
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+I'd say you should.  Here's a few examples of why:
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240417   clang
-i386         buildonly-randconfig-002-20240417   gcc  
-i386         buildonly-randconfig-003-20240417   clang
-i386         buildonly-randconfig-004-20240417   gcc  
-i386         buildonly-randconfig-005-20240417   gcc  
-i386         buildonly-randconfig-006-20240417   gcc  
-i386                                defconfig   clang
-i386                  randconfig-001-20240417   clang
-i386                  randconfig-002-20240417   gcc  
-i386                  randconfig-003-20240417   gcc  
-i386                  randconfig-004-20240417   clang
-i386                  randconfig-005-20240417   clang
-i386                  randconfig-006-20240417   clang
-i386                  randconfig-011-20240417   gcc  
-i386                  randconfig-012-20240417   gcc  
-i386                  randconfig-013-20240417   clang
-i386                  randconfig-014-20240417   gcc  
-i386                  randconfig-015-20240417   gcc  
-i386                  randconfig-016-20240417   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64                              defconfig   gcc  
-x86_64                          rhel-8.3-rust   clang
-xtensa                            allnoconfig   gcc  
+1) Kernel documentation says so.  See 
+https://github.com/torvalds/linux/blob/master/Documentation/driver-api/firmware/firmware-usage-guidelines.rst
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+
+2) Let's say you change this in latest linux-firmware and kernel 6.10 
+but don't do a symlink.  A user upgrades to 6.10 and latest 
+linux-firmware but finds a regression.  They're asked to come bisect it, 
+but their kernel 6.9 can no longer work with wifi due to "missing" 
+firmware.  The bisect gets WAY more painful.
+
+3) Some distros do "HWE" kernels (for example Ubuntu).  This means they 
+could do a HWE-6.10 or HWE-6.11 but expect that the exact same 
+linux-firmware package works on all of them.  They could uprev their 
+linux-firmware to the one matching this change but then their "LTS" 
+kernel stops working.
+
+So yes; do the symlinks when you move directories.  It's one line in 
+WHENCE per file that you want a symlink.
 
