@@ -1,54 +1,54 @@
-Return-Path: <linux-wireless+bounces-6434-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6435-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AB378A7FC1
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 11:35:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B60D48A7FC3
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 11:35:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 869C71C21668
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 09:35:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 450581F22708
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 09:35:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DA6C13AD15;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60AAB13AD22;
 	Wed, 17 Apr 2024 09:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="KIaMesHn"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mMvunL/u"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B96B13A885;
-	Wed, 17 Apr 2024 09:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5462213328A;
+	Wed, 17 Apr 2024 09:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713346464; cv=none; b=lUcsV1WiW8zJjCtw09HPRfuocCkkRB7Lsge7bCpi3dHyZANY+awbB974O9yxS3KODtMwx7o6oqC05G6xpRYtOfPN1mnZinhXxIkcNfp/Y0CMwP+/xBZ77SRmgv/s8/xLbls1qKLoaVpPOMK5jUgjiJzyX5bIvuXYforVkjN6CDc=
+	t=1713346464; cv=none; b=oD2eid9jXCki6HwWYLvoYrblog5Fq2PpE6rPknrOUjqqSVkm2/q+XMlIaa48TXzNcIxUaA0m+44HJMK23giyHxlL+aYRgINH2g8CBxHsCja0jd8E7Eas4Sxn7ZRYSfzF9zA1FSkPpR+DfGAHFA7yh62viaAJpWAKjP7vqSmnpFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1713346464; c=relaxed/simple;
-	bh=0/ADeysUK6zcQEDcTdDJA5QqOa1mNX4iXTZev0jcyPI=;
+	bh=OPIN8Oscgip6y7sWgfOIst8fCpHSWskiwXQR9mF0fbs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dCOd9bOcCbcQyyJ8k+qG0hAvlijrP6I4QKcNxph7jm/6Rjqxo4GJExAvHQiZMuZdl/reGq2daY89/bpVlJpn6jtu/ayvxqs3R7ZZuQ/xhe0AJodXWqdoPh3AeB3EPylbdwB729IBBW6SmPSPUA+mHmicaUfkK88pF+NlkKNGUas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=KIaMesHn; arc=none smtp.client-ip=217.70.183.199
+	 In-Reply-To:To:Cc; b=eii8i7tmsvt7zNVeF3Y5EWjVoqHcECLKw2gkLMSoTeySSjjyIjJhmW4Z6TrNSAO/VAA/sDDWD4elOx2sHIV5oejSLFhBHyGQtMvQGuuJuiLPKw3T2rpfXopUjfk+RhC+oATACZov9BQo8OD0vjNA0NLHWkPc5NeBEiCBV9XKRYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=mMvunL/u; arc=none smtp.client-ip=217.70.183.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 75E42FF806;
+Received: by mail.gandi.net (Postfix) with ESMTPSA id E79DEFF80A;
 	Wed, 17 Apr 2024 09:34:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1713346454;
+	t=1713346455;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UL/FZYt1ZDeYd7vr1TRXKJow8zuiDeZ1OlrlaoQyJrs=;
-	b=KIaMesHnGM+QZ4HHU+SLtct92NVgLJLR6l+r128sCBRTosp72UH9pOBFMOO22BJeyGPdnf
-	FfOml01VsVpwSjwFRv8Y8BBOhTXD9dPOsTrfIa3/YKWSPj9owJz/CjFa0a4/kR1xdCtAcL
-	lsHmj0RXhsvlx2VDKsh8fDuND0RZnLyl48kqj3cDkCkjCuMi76Kt2fkpfZdsXD+urP9aT1
-	wGlRbnWGxxBbKJlp7niM2zwjmHICVggzuZcR6Mk6APS/6AuyrlCvnvHISxH0C9TPmzpkmw
-	OTFbMV7EmXaABE4CP4gh+5qR8JnNy5CUKUap3jKSANk54vHdRHP4TKXk82TE/A==
+	bh=o2HMxMyBUkocSmEwLbQzJ8wYnRk7I7+CeeaeUnX21Gg=;
+	b=mMvunL/uLZ3ybm/BwSxNaOAGaljDD6RHCijtR0UXA8ivFIykX99BI9ke6/qKnm+86oa8LG
+	Wg5S1FeG5Lh74597eIhLHTzSfKuBI1W6WGkKb9LYO95qpIcTlXOmVQOvtuex0SGNZ2Cgoc
+	7juxQ7/tMLqVudE0jip3p5guC6MQbAwCadOnOKFbeboKSuMt+vM8mvBZPxGzSwlFcMyaxf
+	0uwdeWbT4vPDGlphPdsJUMK09XOVyL34FuXG8uC07Cp1pGp0CK1fzKjOLoIbIHUj4du5y7
+	lvujVuul4+6hvo8S3G2BjPcs1SLsU5IqYgJGg7k1/07T5/kGC6C6SsRbWokFwQ==
 From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-Date: Wed, 17 Apr 2024 11:34:08 +0200
-Subject: [PATCH 1/6] wifi: wilc1000: set net device registration as last
- step during interface creation
+Date: Wed, 17 Apr 2024 11:34:09 +0200
+Subject: [PATCH 2/6] wifi: wilc1000: register net device only after bus
+ being fully initialized
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -57,7 +57,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240417-mac_addr_at_probe-v1-1-67d6c9b3bc2b@bootlin.com>
+Message-Id: <20240417-mac_addr_at_probe-v1-2-67d6c9b3bc2b@bootlin.com>
 References: <20240417-mac_addr_at_probe-v1-0-67d6c9b3bc2b@bootlin.com>
 In-Reply-To: <20240417-mac_addr_at_probe-v1-0-67d6c9b3bc2b@bootlin.com>
 To: Ajay Singh <ajay.kathat@microchip.com>, 
@@ -68,70 +68,123 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
 X-Mailer: b4 0.13.0
 X-GND-Sasl: alexis.lothore@bootlin.com
 
-net device registration is currently done in wilc_netdev_ifc_init but
-other initialization operations are still done after this registration.
-Since net device is assumed to be usable right after registration, it
-should be the very last step of initialization.
+SDIO/SPI probes functions automatically add a default wlan interface on top
+of registered wiphy, through wilc_cfg80211_init which in turn calls
+wilc_netdev_ifc_init. However, bus is still not fully initialized when we
+register corresponding net device (for example we still miss some private
+driver data pointers), which for example makes it impossible to
+retrieve MAC address from chip (which is supposed to be set on net device
+before its registration) before registering net device. More generally, net
+device registration should not be done until driver has fully initialized
+everything and is ready to handle any operation  on the net device.
 
-Move netdev registration at the very end of wilc_netdev_ifc_init to let
-this function completely initialize netdevice before registering it.
+Prevent net device from being registered so early by doing it at the end of
+probe functions. Apply this logic to both sdio and spi buses.
 
 Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
 ---
- drivers/net/wireless/microchip/wilc1000/netdev.c | 31 ++++++++++++------------
- 1 file changed, 16 insertions(+), 15 deletions(-)
+ drivers/net/wireless/microchip/wilc1000/cfg80211.c | 10 ----------
+ drivers/net/wireless/microchip/wilc1000/sdio.c     | 14 ++++++++++++--
+ drivers/net/wireless/microchip/wilc1000/spi.c      | 11 +++++++++--
+ 3 files changed, 21 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/net/wireless/microchip/wilc1000/netdev.c
-index 73f56f7b002b..acc9b9a64552 100644
---- a/drivers/net/wireless/microchip/wilc1000/netdev.c
-+++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
-@@ -965,16 +965,6 @@ struct wilc_vif *wilc_netdev_ifc_init(struct wilc *wl, const char *name,
- 	vif->priv.wdev.iftype = type;
- 	vif->priv.dev = ndev;
+diff --git a/drivers/net/wireless/microchip/wilc1000/cfg80211.c b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
+index 7d9fb9f2d527..f716981f62ad 100644
+--- a/drivers/net/wireless/microchip/wilc1000/cfg80211.c
++++ b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
+@@ -1773,7 +1773,6 @@ int wilc_cfg80211_init(struct wilc **wilc, struct device *dev, int io_type,
+ 		       const struct wilc_hif_func *ops)
+ {
+ 	struct wilc *wl;
+-	struct wilc_vif *vif;
+ 	int ret, i;
  
--	if (rtnl_locked)
--		ret = cfg80211_register_netdevice(ndev);
--	else
--		ret = register_netdev(ndev);
--
--	if (ret) {
--		ret = -EFAULT;
--		goto error;
+ 	wl = wilc_create_wiphy(dev);
+@@ -1802,18 +1801,9 @@ int wilc_cfg80211_init(struct wilc **wilc, struct device *dev, int io_type,
+ 		ret = -ENOMEM;
+ 		goto free_cfg;
+ 	}
+-	vif = wilc_netdev_ifc_init(wl, "wlan%d", WILC_STATION_MODE,
+-				   NL80211_IFTYPE_STATION, false);
+-	if (IS_ERR(vif)) {
+-		ret = PTR_ERR(vif);
+-		goto free_hq;
 -	}
--
- 	ndev->needs_free_netdev = true;
- 	vif->iftype = vif_type;
- 	vif->idx = wilc_get_available_idx(wl);
-@@ -985,13 +975,24 @@ struct wilc_vif *wilc_netdev_ifc_init(struct wilc *wl, const char *name,
- 	mutex_unlock(&wl->vif_mutex);
- 	synchronize_rcu();
  
--	return vif;
+ 	return 0;
+ 
+-free_hq:
+-	destroy_workqueue(wl->hif_workqueue);
 -
--error:
- 	if (rtnl_locked)
--		cfg80211_unregister_netdevice(ndev);
-+		ret = cfg80211_register_netdevice(ndev);
- 	else
--		unregister_netdev(ndev);
-+		ret = register_netdev(ndev);
+ free_cfg:
+ 	wilc_wlan_cfg_deinit(wl);
+ 
+diff --git a/drivers/net/wireless/microchip/wilc1000/sdio.c b/drivers/net/wireless/microchip/wilc1000/sdio.c
+index 52a770c5e76f..a841dad08410 100644
+--- a/drivers/net/wireless/microchip/wilc1000/sdio.c
++++ b/drivers/net/wireless/microchip/wilc1000/sdio.c
+@@ -136,9 +136,11 @@ static int wilc_sdio_cmd53(struct wilc *wilc, struct sdio_cmd53 *cmd)
+ static int wilc_sdio_probe(struct sdio_func *func,
+ 			   const struct sdio_device_id *id)
+ {
++	struct wilc_sdio *sdio_priv;
++	struct wilc_vif *vif;
+ 	struct wilc *wilc;
+ 	int ret;
+-	struct wilc_sdio *sdio_priv;
 +
-+	if (ret) {
-+		ret = -EFAULT;
-+		goto error_remove_vif;
+ 
+ 	sdio_priv = kzalloc(sizeof(*sdio_priv), GFP_KERNEL);
+ 	if (!sdio_priv)
+@@ -176,9 +178,17 @@ static int wilc_sdio_probe(struct sdio_func *func,
+ 	}
+ 	clk_prepare_enable(wilc->rtc_clk);
+ 
++	vif = wilc_netdev_ifc_init(wilc, "wlan%d", WILC_STATION_MODE,
++				   NL80211_IFTYPE_STATION, false);
++	if (IS_ERR(vif)) {
++		ret = PTR_ERR(vif);
++		goto clk_disable_unprepare;
 +	}
 +
-+	return vif;
-+
-+error_remove_vif:
-+	mutex_lock(&wl->vif_mutex);
-+	list_del_rcu(&vif->list);
-+	wl->vif_num -= 1;
-+	mutex_unlock(&wl->vif_mutex);
-+	synchronize_rcu();
- 	free_netdev(ndev);
- 	return ERR_PTR(ret);
- }
+ 	dev_info(&func->dev, "Driver Initializing success\n");
+ 	return 0;
+-
++clk_disable_unprepare:
++	clk_disable_unprepare(wilc->rtc_clk);
+ dispose_irq:
+ 	irq_dispose_mapping(wilc->dev_irq_num);
+ 	wilc_netdev_cleanup(wilc);
+diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/wireless/microchip/wilc1000/spi.c
+index 61c3572ce321..add0e70a09ea 100644
+--- a/drivers/net/wireless/microchip/wilc1000/spi.c
++++ b/drivers/net/wireless/microchip/wilc1000/spi.c
+@@ -206,9 +206,10 @@ static void wilc_wlan_power(struct wilc *wilc, bool on)
+ 
+ static int wilc_bus_probe(struct spi_device *spi)
+ {
+-	int ret;
+-	struct wilc *wilc;
+ 	struct wilc_spi *spi_priv;
++	struct wilc_vif *vif;
++	struct wilc *wilc;
++	int ret;
+ 
+ 	spi_priv = kzalloc(sizeof(*spi_priv), GFP_KERNEL);
+ 	if (!spi_priv)
+@@ -250,6 +251,12 @@ static int wilc_bus_probe(struct spi_device *spi)
+ 		goto power_down;
+ 
+ 	wilc_wlan_power(wilc, false);
++	vif = wilc_netdev_ifc_init(wilc, "wlan%d", WILC_STATION_MODE,
++				   NL80211_IFTYPE_STATION, false);
++	if (IS_ERR(vif)) {
++		ret = PTR_ERR(vif);
++		goto power_down;
++	}
+ 	return 0;
+ 
+ power_down:
 
 -- 
 2.44.0
