@@ -1,123 +1,114 @@
-Return-Path: <linux-wireless+bounces-6456-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6457-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80D5E8A85A8
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 16:14:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11C898A85E0
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 16:22:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD7331C2090B
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 14:14:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91844B213D3
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 14:22:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35EA13FD6F;
-	Wed, 17 Apr 2024 14:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58E9612FF9E;
+	Wed, 17 Apr 2024 14:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="igbjQYsL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YBh2soYK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A4213F444
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Apr 2024 14:14:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F9652F86
+	for <linux-wireless@vger.kernel.org>; Wed, 17 Apr 2024 14:22:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713363284; cv=none; b=C54cZwPHshsdIqx6tCQMmh0+LvnE8THvA27xu3ZHYANipMM/kMlFqAYnWelfLVrL6QTfQWsg41CWVlUE9WhQbMtNCgSqwxupeZzeN1oV8BhY/iKEK/id/3tdhyUYSzTkzHldy5s7wLfFJ1m/mqodLKJiOAT+5OUAGk5amb4mcDk=
+	t=1713363767; cv=none; b=BLhChKgy3DHLWVBMV46wvLxthBsb32YBkSIzImuL1rmELS2K8BMzY5Vr/IXfQmpAmjQK+hEo+EXHf7mnzQB/xFNQb5C2gf6qiQZWyz930QIEqXyHsuFCO3yc1EJuR+wvYEvS6hxm//GDctac4UtzjR0Q7tkEOcvH6lGZaWGZeMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713363284; c=relaxed/simple;
-	bh=pK1V4Mzr7kOcWEn6kxf4fxSzfwUd+I6Z9/arnLQ5HEo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IG1kfgIeIzLumgOq6h5368+4dPuZIds2pefAjI1ZWNK9vYbR7xk4An/esh/KueS0urFl7XYOAIP874V4pK053ttuXcQMUDwuGPLPetSA0JbQq3zYDzlckOzROlQnbX0Mdtq+ZtSB1gwiABHh7wwXCbFodUJymo5Z4cR5wB6dHJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=igbjQYsL; arc=none smtp.client-ip=209.85.161.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5ac90ad396dso2222449eaf.3
-        for <linux-wireless@vger.kernel.org>; Wed, 17 Apr 2024 07:14:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713363282; x=1713968082; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=GjawpEZOcDH/6R+eopMAGA1z4x5Ko0AY4+QCsVzXPgQ=;
-        b=igbjQYsLvWU+kRiuu3LSs7BuZKM7TQ+8z95JAUFNN6+sd4B/dA8T69n3peUWUSiMWI
-         9pHMiakXQJtJqKZuxXH47p0tDmoAOzE2+8OAGgfqScHjC/QAgKv7g6ncliyTyjKPddmL
-         zDZvCq2RjxvIExPQbOjPRuVmzN58QFpBkFULe184Ou39KUnop3e1BNwUUVdqRDN6uYfb
-         XFVpJ3sDt2uWg7GtHZ1WcDrpaggXRM1aQqtDAUD0tQqqlsxl8iBAqr0Hw6xmnogymepA
-         AkrHJRgIfl17Ul9VqHzVbSSRDIgNukqGr4gcJiOdgrASlzhDP5gBrc+MKTzcL58IYzWw
-         K8qw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713363282; x=1713968082;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GjawpEZOcDH/6R+eopMAGA1z4x5Ko0AY4+QCsVzXPgQ=;
-        b=RIzr7UfMExIfHOexIswfPqYYOD8Y1ltgAoZJ19mWCJn56UPGW3F87uqIUUeNpWFQaO
-         4n7h1cz5Q7pckt+Y8Op4AwsANp83D2IHIMe069RvhmxbzVep2nhKZGM6SiL4EhO0Lv6l
-         pclrO4dmLLfBFMCB3QWhXKJSFJ6rabHHtSMKcUldVF8OTG/Mpja+XjBpWaWtqrcVCknb
-         36yw8l9fIu/PKVTZGjJ/jS8Bhu5JgQojGKXuqg2RDKfMrZ9ZXGaKUl7OELbZSRkKa8ep
-         E+qm5PNNoH10S0P0V+e2UtvDDFXp1tJMNSFQWutb/Lta4RExnR9EAUSkMfj03Z9a8BtB
-         7rGA==
-X-Gm-Message-State: AOJu0YwWUfXZHJconRBycgtr1hFxCj0FuIlyVD+mNxZ/UFpL4KX+VbEa
-	hEVdeItI0XFXOK9agmOlCD65EqjOrHnc5/DObhqi6zDtxMb0lJqt
-X-Google-Smtp-Source: AGHT+IE+ue6diJmzXmTPNAmaD2gap1v+6Y50xqsM5TCQVPDQ0//1F+etzxC8z/etHBZhebo/yqYB0g==
-X-Received: by 2002:a05:6820:c13:b0:5ac:6891:cee7 with SMTP id eh19-20020a0568200c1300b005ac6891cee7mr13334930oob.3.1713363282337;
-        Wed, 17 Apr 2024 07:14:42 -0700 (PDT)
-Received: from ?IPV6:2600:1700:70:f702:9c77:c230:a0ba:a1a1? ([2600:1700:70:f702:9c77:c230:a0ba:a1a1])
-        by smtp.gmail.com with ESMTPSA id v18-20020a4a8c52000000b005acd675194asm647068ooj.8.2024.04.17.07.14.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Apr 2024 07:14:42 -0700 (PDT)
-Message-ID: <9f0163ae-75bc-4a65-bc92-c9ae181ad83c@gmail.com>
-Date: Wed, 17 Apr 2024 09:14:41 -0500
+	s=arc-20240116; t=1713363767; c=relaxed/simple;
+	bh=h1ZKhUHRAA/7rGO40L17WijIMpSW0//PNJPxU+MELtI=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=F5cyKJEgdK/gjDAdRLpEuLBeGzPlI1h7qyfBemG6bWlaUeRyrSsedNQJucrR8PQ+t/mUShXzpDkhnTmChNO2VpaDdymeTKELf2jfYmp4sNFvffA//2zpZHzOgbGPt25blAuQjztU+dOHUyXeM6auYKtX3GyZIOQkdnhF/gZCgYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YBh2soYK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B79C5C072AA;
+	Wed, 17 Apr 2024 14:22:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713363766;
+	bh=h1ZKhUHRAA/7rGO40L17WijIMpSW0//PNJPxU+MELtI=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=YBh2soYKFd6gFBPbsEczZTamnMWHUvjGMfxHklgeGzfOQJwVnjDy1SVnH0Yk/4T//
+	 mx7JariBsi/IPzmNRGKiMDIWTLAt2Trw3RJIFK9vL44k7T9guFCXs1YONA+B+XDBc/
+	 sfz9gfesFmjJPBxpToUwuuRFnIagmw3Cs3zy9mN0W0/0t/7ARddnjQsl5pIUlsU4KD
+	 e+9e5WXhrbLPhSY3BfCjY+PMxaKxYEfIpPWZyinpIbBpDCWZcMNsC84qEmePtXcHRB
+	 8s7k+J1yqRfAG+xW8SG85tGeMSkas/bP4TBBs6dI957sLjSOaTxY/dLyRZUelsJHCH
+	 j7AFyJkeu6/gg==
+From: Kalle Valo <kvalo@kernel.org>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Baochen Qiang <quic_bqiang@quicinc.com>,  <ath12k@lists.infradead.org>,
+  <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH 00/10] wifi: ath12k: support suspend/resume
+References: <20240412060620.27519-1-quic_bqiang@quicinc.com>
+	<aea9f68d-4862-439c-a52f-d6463e6edca9@quicinc.com>
+Date: Wed, 17 Apr 2024 17:22:43 +0300
+In-Reply-To: <aea9f68d-4862-439c-a52f-d6463e6edca9@quicinc.com> (Jeff
+	Johnson's message of "Fri, 12 Apr 2024 11:05:00 -0700")
+Message-ID: <87r0f4vzkc.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: putting future iwlwifi firmware into intel/ ?
-Content-Language: en-US
-To: Johannes Berg <johannes@sipsolutions.net>, linux-firmware@kernel.org
-Cc: linux-wireless@vger.kernel.org, miriam.rachel.korenblit@intel.com
-References: <fec30176f437d565d4c1dfc4944373f117d75a64.camel@sipsolutions.net>
- <9aa64d50-cb4d-4118-bc27-86c23410ff8b@gmail.com>
- <f65765b29ea7503fbbaa5e047c95a82de6fc2083.camel@sipsolutions.net>
- <b0e70576-a53f-4d03-a503-ddf1f98bbe9d@gmail.com>
- <b712f48a3e35221b7ff7f4c8cb495b5159bdd367.camel@sipsolutions.net>
- <b7876373-08d9-4948-a49a-e79f42f3abcb@gmail.com>
- <2278e0d1026ed336559adbc9ffbf6e945eba422e.camel@sipsolutions.net>
-From: Mario Limonciello <superm1@gmail.com>
-In-Reply-To: <2278e0d1026ed336559adbc9ffbf6e945eba422e.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
+Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 
+> On 4/11/2024 11:06 PM, Baochen Qiang wrote:
+>
+>> Now that the MHI&QRTR patches [1] are merged, we can add
+>> suspend/resume support for ath12k.
+>> 
+>> The whole design is quite similar to that in ath11k: firmware
+>> is powered down when going to suspend and powered up when
+>> resume, this makes hibernation work as well in addition to
+>> suspend.
+>> 
+>> To summary, this series first does some preparations in the
+>> first 8 patches. Then in patch [9/10] suspend/resume callbacks
+>> are implemented. And at last in [10/10] we enable suspend/resume
+>> functionality for WCN7850 because it's the only chip supporting
+>> it for now.
+>> 
+>> [1] https://lore.kernel.org/linux-wireless/20240305021320.3367-1-quic_bqiang@quicinc.com/
+>> 
+>> Baochen Qiang (10):
+>>   wifi: ath12k: rearrange IRQ enable/disable in reset path
+>>   wifi: ath12k: remove MHI LOOPBACK channels
+>>   wifi: ath12k: do not dump SRNG statistics during resume
+>>   wifi: ath12k: fix warning on DMA ring capabilities event
+>>   wifi: ath12k: decrease MHI channel buffer length to 8KB
+>>   wifi: ath12k: flush all packets before suspend
+>>   wifi: ath12k: no need to handle pktlog during suspend/resume
+>>   wifi: ath12k: avoid stopping mac80211 queues in ath12k_core_restart()
+>>   wifi: ath12k: support suspend/resume
+>>   wifi: ath12k: change supports_suspend to true for WCN7850
+>> 
+>>  drivers/net/wireless/ath/ath12k/core.c  | 108 ++++++++++++++----------
+>>  drivers/net/wireless/ath/ath12k/core.h  |   4 +
+>>  drivers/net/wireless/ath/ath12k/dp_rx.c |  48 -----------
+>>  drivers/net/wireless/ath/ath12k/dp_rx.h |   2 -
+>
+> My Qualcomm Innovation Center copyright checker reports:
+> drivers/net/wireless/ath/ath12k/dp_rx.h copyright missing 2024
 
-On 4/17/24 09:09, Johannes Berg wrote:
-> On Wed, 2024-04-17 at 08:58 -0500, Mario Limonciello wrote:
->>>
->>> Yeah, I guess. Though not actually sure, do we need to support new
->>> kernel + old firmware install?
->>
->> I'd say you should.  Here's a few examples of why:
-> 
-> Right, agree.
-> 
->> So yes; do the symlinks when you move directories.  It's one line in
->> WHENCE per file that you want a symlink.
->>
-> 
-> That doesn't achieve it though. It means the driver needs to try for the
-> file in intel/ and then fall back without the intel/ if it's not found.
-> 
-> Or just look for new files in intel/ and old files without intel/, but
-> then you don't really need the file move/symlinks?
-> 
-> johannes
+I fixed this in the pending branch:
 
-It's probably easiest to look in intel/ and then fallback to the 
-toplevel path if -ENOENT and try again.
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=6b928df55a671d2c9a15edc746f6b42ef544928e
 
-Like Kalle mentioned, wait a few years and then tear out the fallback 
-code and the symlink creation.
+Jeff, what do you think of the patchset? Is it ready to take?
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
