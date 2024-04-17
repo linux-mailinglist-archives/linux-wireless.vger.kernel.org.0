@@ -1,154 +1,195 @@
-Return-Path: <linux-wireless+bounces-6451-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6452-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 215648A8400
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 15:15:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9BEE8A843B
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 15:21:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0BFF28570B
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 13:15:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71EBA285E6B
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 13:21:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D6813D8AE;
-	Wed, 17 Apr 2024 13:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD60713342F;
+	Wed, 17 Apr 2024 13:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iJAsU7AL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mSqFba8m"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E79A13D61A;
-	Wed, 17 Apr 2024 13:15:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9660813E419
+	for <linux-wireless@vger.kernel.org>; Wed, 17 Apr 2024 13:20:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713359722; cv=none; b=b6V8Q31PZ1toXj6gAbEIzEH+qKelMxBvDQD/8Z5CIJDTojv16iVROpFce8Ewg8k2bgaRKnQOVIoh0dWdByFdB2f3m0YG+Ez43+I/qFSvXlbf7etzfAEHUIHbF8YyZ2qhUA7j8g/wqLd3S2LRYYvTPe3M+eRP4f1ilTpjagnoD5w=
+	t=1713360021; cv=none; b=MGAFfG1+UplNVTLufR68eFhr6XT7AWEEW5rQTqwGj3IBdKHEp4Qs26jDgwmk8yymTlqEi8k5q1skKeFX2sZYsBWGnG34vjxmeu3XEsIlpxbtbGEHB5RdpCN9HdQvri2q+7sn/DWT+u5gIAMlg5fwDhvarWBpQWh2c47qQQKibAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713359722; c=relaxed/simple;
-	bh=51JP3zFmO8LduqnRmpjjtDDoWC+4X1OXwmn7YXUfOww=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=tjk6b4p1T5fZaKG9SpMYJD5d9BYhJ4tUXUIgU50HgK0zk7DvX83w1pJKpV9+F9jJrpfFmx9vgVt4rVOYyMzYQJsbGgKAqC8hPLff8tVt5KlTa/AuXRaKLWXk27dMcfTsAI8y5R9gdIq7MbrvUPjNgUFCE/BEsR+p9fhL0gNT7ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iJAsU7AL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5426C072AA;
-	Wed, 17 Apr 2024 13:15:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713359721;
-	bh=51JP3zFmO8LduqnRmpjjtDDoWC+4X1OXwmn7YXUfOww=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=iJAsU7ALIg3r8x8WZhS5rQyQ4D1mOfHq17v4Xc2tWpGxx2nmpIQ1TvTKO/cliV2I6
-	 rYHvBhNmOLipj1i9s1AI+HAAiGnlfToqyZ/4PW9Q0V5nWGiRvT665PRllh5HyFKkQa
-	 bCWa9aJZknXSMGwZQ9Gwzy5vIt4swl1BFCK5zlhRi8RjEK4suQ8jac8uYcaiMwAnZt
-	 m9I4SYGZbP6eoC03DsRJbqxFZn11WS6rsarixZ7MpInqA3hu4KlCCucF6JDZYz+3s/
-	 MrQFAGsFNz8Zl3BmquSs0YOk8qKaJclIFYoc6Gk2A3HtG8PIizPp6vvkIPUczqOfjR
-	 XG8LPyUq86KwA==
-Message-ID: <64ca6d41-8173-4e0e-9467-4fa32db812ec@kernel.org>
-Date: Wed, 17 Apr 2024 15:15:21 +0200
+	s=arc-20240116; t=1713360021; c=relaxed/simple;
+	bh=Pu6oc8Xw/MU4G9L8d1LgygKXe4I5OTFt1UUwxq7u8SE=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=ZljeEmJYj12+8Vm3eA35IB4nxzklFMy6IDPU+OO7B/FKhqqJpyavcb+q63U96HThyaI8Xs+R9oW4gw2+bNxjflirtLYBR9XW2N6CM8IfI4ZjcdGm6bIQ5uwUpEurDvdf4lheqeIMVPvWQjdm5k54nSEOh0XLIWys648mEEBNhi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mSqFba8m; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713360020; x=1744896020;
+  h=date:from:to:cc:subject:message-id;
+  bh=Pu6oc8Xw/MU4G9L8d1LgygKXe4I5OTFt1UUwxq7u8SE=;
+  b=mSqFba8mrSxLPgczQTEwt65TbAZv8ZxvU0JDN2/Au11tHb+pvFlFp6NO
+   tNOXJ8t2sFEDu6GfDQpTfSmYPg28BKVIPiUsWezJgF1l8EgJsaeyxBxnq
+   cEwzySBpYFzx0+bgEEPZvwjxvn0G4AiNyIyCTSS0aEH5hRyDpgTYCARKJ
+   QZ9yT42uR5dJmG4kK6AZQbM0FEpERu3M/TO+7mK1zEbB8IG0IkWth/GBp
+   Ri2K8re2qT3hcutbZqc+rBc8052MfHQeE2FAwIufymPB334M3GI5YvO7G
+   Fc9lGE9ddOgIWL5LcxKez3AAGLEWNYGiMMN/crwmQoKJI7HwtqVITTHPC
+   w==;
+X-CSE-ConnectionGUID: 6qZL5PDeSEKgSAnE1PuoBA==
+X-CSE-MsgGUID: lBAMUOfKRqyHXe+bl7X7bg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="8979180"
+X-IronPort-AV: E=Sophos;i="6.07,209,1708416000"; 
+   d="scan'208";a="8979180"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2024 06:20:19 -0700
+X-CSE-ConnectionGUID: ZPilbTipRMGFZmh9BD9pkA==
+X-CSE-MsgGUID: EZmDeoFaRmyd8SGjHUZlDw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,209,1708416000"; 
+   d="scan'208";a="22679334"
+Received: from unknown (HELO 23c141fc0fd8) ([10.239.97.151])
+  by fmviesa006.fm.intel.com with ESMTP; 17 Apr 2024 06:20:18 -0700
+Received: from kbuild by 23c141fc0fd8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rx5Cx-0006ca-1E;
+	Wed, 17 Apr 2024 13:20:15 +0000
+Date: Wed, 17 Apr 2024 21:20:12 +0800
+From: kernel test robot <lkp@intel.com>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+ linux-wireless@vger.kernel.org
+Subject: [wireless-next:main] BUILD SUCCESS
+ f236464f1db7bea80075e6e31ac70dc6eb80547f
+Message-ID: <202404172109.o7UIfPso-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] NFC: trf7970a: disable all regulators on removal
-To: Paul Geurts <paul_geurts@live.nl>, mgreer@animalcreek.com,
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <AM0PR09MB2675EDFD44EC82B6BCBB430F95082@AM0PR09MB2675.eurprd09.prod.outlook.com>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <AM0PR09MB2675EDFD44EC82B6BCBB430F95082@AM0PR09MB2675.eurprd09.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 16/04/2024 22:28, Paul Geurts wrote:
-> During module probe, regulator 'vin' and 'vdd-io' are used and enabled,
-> but the vdd-io regulator overwrites the 'vin' regulator pointer. During
-> remove, only the vdd-io is disabled, as the vin regulator pointer is not
-> available anymore. When regulator_put() is called during resource
-> cleanup a kernel warning is given, as the regulator is still enabled.
-> 
-> Store the two regulators in separate pointers and disable both the
-> regulators on module remove.
-> 
-> Fixes: 49d22c70aaf0 ("NFC: trf7970a: Add device tree option of 1.8 Volt IO voltage")
-> 
-> Signed-off-by: Paul Geurts <paul_geurts@live.nl>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: f236464f1db7bea80075e6e31ac70dc6eb80547f  wifi: wilc1000: convert list management to RCU
 
-No blank lines between tags. Please look at existing commits (git log).
+elapsed time: 1263m
 
-> ---
->  drivers/nfc/trf7970a.c | 42 +++++++++++++++++++++++-------------------
->  1 file changed, 23 insertions(+), 19 deletions(-)
-> 
-> diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
-> index 7eb17f46a815..9e1a34e23af2 100644
-> --- a/drivers/nfc/trf7970a.c
-> +++ b/drivers/nfc/trf7970a.c
-> @@ -424,7 +424,8 @@ struct trf7970a {
->  	enum trf7970a_state		state;
->  	struct device			*dev;
->  	struct spi_device		*spi;
-> -	struct regulator		*regulator;
-> +	struct regulator		*vin_regulator;
-> +	struct regulator		*vddio_regulator;
->  	struct nfc_digital_dev		*ddev;
->  	u32				quirks;
->  	bool				is_initiator;
-> @@ -1883,7 +1884,7 @@ static int trf7970a_power_up(struct trf7970a *trf)
->  	if (trf->state != TRF7970A_ST_PWR_OFF)
->  		return 0;
->  
-> -	ret = regulator_enable(trf->regulator);
-> +	ret = regulator_enable(trf->vin_regulator);
+configs tested: 101
+configs skipped: 4
 
-That does not look like equivalent code. Previously this was vddio, right?
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   clang
+arm                              allyesconfig   gcc  
+arm                                 defconfig   clang
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20240417   clang
+i386         buildonly-randconfig-002-20240417   gcc  
+i386         buildonly-randconfig-003-20240417   clang
+i386         buildonly-randconfig-004-20240417   gcc  
+i386         buildonly-randconfig-005-20240417   gcc  
+i386         buildonly-randconfig-006-20240417   gcc  
+i386                                defconfig   clang
+i386                  randconfig-001-20240417   clang
+i386                  randconfig-002-20240417   gcc  
+i386                  randconfig-003-20240417   gcc  
+i386                  randconfig-004-20240417   clang
+i386                  randconfig-005-20240417   clang
+i386                  randconfig-006-20240417   clang
+i386                  randconfig-011-20240417   gcc  
+i386                  randconfig-012-20240417   gcc  
+i386                  randconfig-013-20240417   clang
+i386                  randconfig-014-20240417   gcc  
+i386                  randconfig-015-20240417   gcc  
+i386                  randconfig-016-20240417   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+riscv                            allmodconfig   clang
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   clang
+riscv                               defconfig   clang
+s390                             allmodconfig   clang
+s390                              allnoconfig   clang
+s390                             allyesconfig   gcc  
+s390                                defconfig   clang
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   gcc  
+um                                  defconfig   clang
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   clang
+x86_64                            allnoconfig   clang
+x86_64                           allyesconfig   clang
+x86_64                              defconfig   gcc  
+x86_64                          rhel-8.3-rust   clang
+xtensa                            allnoconfig   gcc  
 
-Best regards,
-Krzysztof
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
