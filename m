@@ -1,196 +1,183 @@
-Return-Path: <linux-wireless+bounces-6462-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6463-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E48D8A8A2E
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 19:29:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A535C8A8B3C
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 20:40:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 318901C21B84
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 17:29:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AE9828788B
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 18:40:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1404E171657;
-	Wed, 17 Apr 2024 17:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58F87101C8;
+	Wed, 17 Apr 2024 18:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nYgKAmRb"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="umcjkzaV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD47171099
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Apr 2024 17:29:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B805BF519
+	for <linux-wireless@vger.kernel.org>; Wed, 17 Apr 2024 18:40:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713374967; cv=none; b=aTgKQLiJGD3QzYF0Vmxk4UDolU/q3uE2w3MN9k+J49OV/ZLcD5NAd8zZsApXGJbkv9NbaBMHW9bIEhg0k/faziytFk/kdqtucFeeVmkZT252yU6H6Dj7RQEQ8neFdj0akeQke/XOKxtFituJcTcPl4DXWPR+Z7MtgIgphS4nFBE=
+	t=1713379207; cv=none; b=OACSW4YI5RLsHremXcvA4s+jHEEUCgD12taUHQmhEfvFrY0gdcoEy/cT/U5Z0jTcguABFV2JX/k//NGO/7Xw8URRh5ZP/w5xvjXznZXaf/qPjFZi/X6HDdg2xOabLrF82M7SgF2GPRPvzTT6w8KMW7zUsjglnGHY7mFlFsTVgUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713374967; c=relaxed/simple;
-	bh=v8tDy/4yAUVu2IlNW8qGRdsTkYl3wnI8HGYtsN6hC+o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mdQnX4YGF7jjchP0WIWOk6ixDgn3tWxfiHunKetm5av0hkbfpuktf9BuF5h2VT3uE2wgnIIUQ7A/wyuN8rK5Qr9dX3whaoQKqp/lgwVX2lxlFN08TBjmWXmPb8Dy+utgWUz158RVeQfBMYCHkNxp1qIgINuY4i1Kr3QpirPHVNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nYgKAmRb; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-56e37503115so5206062a12.1
-        for <linux-wireless@vger.kernel.org>; Wed, 17 Apr 2024 10:29:24 -0700 (PDT)
+	s=arc-20240116; t=1713379207; c=relaxed/simple;
+	bh=OhXYRkHlutJXyjU0T9+kwMcG8LQ8HZDcv6iWC6fQg0Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EjoI8Pbtb+rT9DiVpfFmK9ZMIkyQLhhHZa4e9e7AZZh8EFJ+RASHojxbeVeBN+4vg4C9eOHS9tKbVX0IhdFPjN5ypR4dQLrCIgMbiStzrZZWaAN8udEpYqKPkga/TrhYAmfNpT59rRZqYoFm28qhMcMr+I1bGGfWq6Hg42H5xk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=umcjkzaV; arc=none smtp.client-ip=209.85.208.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2d4a8bddc21so1057271fa.0
+        for <linux-wireless@vger.kernel.org>; Wed, 17 Apr 2024 11:40:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713374963; x=1713979763; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5Mh1QuTaHfLsxhEJdgf+KYAyjWD7nnGf9n1i9P2Bbg8=;
-        b=nYgKAmRb05L+Umjc06XZxdjrolsJ1JuKwZROlJeGVdPvr5cHN0gLAI9dFYnP4Ztt8l
-         xzructWcQCLU1/3r/WN5ndzxU6LEriKnQVEC3GcvGCamXDIPorJeLTyr15Evjftwm6mD
-         olGsK/8KzrxMtJsc2SlAg4XziKms0p4L80eyTDwUcCcuaD5riMgM4cA17PuRbjXmKiAd
-         2WsQhE0KgGWVo0LmKo04j5+nnO72SE1dRv54vTq253DV/vqim6071Ry+Z8rvf4h2g4ro
-         cIuAIUxKuWMyg6CUbp1hJqxy5/gyF+Cef1v7F8cQ3SwCNvQZybqTvD40XCqlBq5ntnsO
-         UfJw==
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1713379204; x=1713984004; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=R07SR/oel+G1qKlnViSta7s+zv+5bXS+VJuTgJczuYo=;
+        b=umcjkzaVTNG+gtVI1EI484dB5LeE0bVaErV9j4wL7Ey9sG5qfRvnU0zPg980T5+q+T
+         jgOC2Sr3rbjdSLS470TiYqKxkxw7IjbEhzCtuuI/6rvJ9bLVE+tYM7eCQJ1xXt2y35Q4
+         U5qWq5javu4ogbMJXxWPrqmanUnJp5IrOSmGLadjLS+sUvquB3G/OftgVThInu+DHxxc
+         Cg+qZGlsKyFx9rz7sytfY2C7hMDTAoQM1uVAPm2WEgquj1FmM271rwO/qNEnm8XgIq81
+         bW2IGTOxONVs1nf3EBF6fDPRVR+eYj/MpN8zlVfPIr6TIvyIPPMVqn83LT6N9zlwm1eg
+         V3mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713374963; x=1713979763;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5Mh1QuTaHfLsxhEJdgf+KYAyjWD7nnGf9n1i9P2Bbg8=;
-        b=rsOGsx96wMTSDXSoXvflwSOl6jf7HEi11JKD8xAbXBGK1CbrSonRAA9Zgu0Ehu+4NJ
-         44Y9jGLVlc95OkKv+pCiJRKLBV0M5XBgdYx/1zxOWb0eCpRjWRVBeRTOYMZdDZfhzwzV
-         eEoDm0p0rNVV57CCc6dDUApJbxHbaCgioUtkj3wfbrSFaet6Dm5IEJ60opaiaWbJSKCQ
-         IxNugfa1/bu2tUFZAT5Yb2HVHwC4vyYqgWQzjiiAft5My96XvKfbk9FZi9Q//nwE5blZ
-         Fg3JrNzAGpqPv29+ma+M3jIEEQks76m+zAReR3aegMuswb4xsnXCVQkdgKp8gucwjnTG
-         bmTg==
-X-Forwarded-Encrypted: i=1; AJvYcCVoQH8kzmHJNRPD/PJsR7aXgnNxXbx95c9/jtyi6abTPeTkXbdj0UZy74GXX3mfIzl9oy0kcVdUuCZXoVQ7hTKW25DUzyquONPEpepxeno=
-X-Gm-Message-State: AOJu0YzK/Q5vUfcJJ3xsdtTmWf4tNwRFVqGdwsN3tSN+83u5WPekh9mh
-	K3p+F81KhlTp1QRa+cPHRxeHzo39FWpxx0cV8D6LN1dkrlqPoh6m
-X-Google-Smtp-Source: AGHT+IFquOZ+uSG6OqiTG42UlOv/K6k5R7rVvznOxNIHe75EviZKGyRqiZL+tzk3jy+0Fdoiy+fJrQ==
-X-Received: by 2002:a17:907:bb90:b0:a51:e5ac:7b7 with SMTP id xo16-20020a170907bb9000b00a51e5ac07b7mr84833ejc.71.1713374962447;
-        Wed, 17 Apr 2024 10:29:22 -0700 (PDT)
-Received: from [192.168.1.50] ([79.113.154.240])
-        by smtp.gmail.com with ESMTPSA id gf14-20020a170906e20e00b00a51e6222200sm8376733ejb.156.2024.04.17.10.29.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Apr 2024 10:29:22 -0700 (PDT)
-Message-ID: <fb3c2dcd-f9ea-434d-beaa-be3bdceb611e@gmail.com>
-Date: Wed, 17 Apr 2024 20:29:20 +0300
+        d=1e100.net; s=20230601; t=1713379204; x=1713984004;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=R07SR/oel+G1qKlnViSta7s+zv+5bXS+VJuTgJczuYo=;
+        b=Z5uFfgJ7tUixU8xKVcuKWLitFz+8T3esltoVwHk/L2PQ3U7abrF+RBvK7vFaM/xy2Q
+         4B0esIAIogTOHo11J9sgr80gRAM/2Xdw21aCubC5erDAi/NSeHNzqHF5Pr6kXFMC5pbU
+         DwjQGX2pISkqbP8sDssBCWCcyYJZTUTzDC2HtaZdwc1Xe0I6/o3jvKpK+LPaCZZKd6j2
+         y8Gd5OzJe7xlYnLHp6zMJv3pSv69ozJYhGnWGZ3IN9EU8SsDqKFR+MV5K99noQjqJWdR
+         UQNyKbXMLnyKJK+29g04aALjgrMNxebklHgMBq1u3pAM0IExhvhoji4PrOX7Gb+gAAiP
+         voPg==
+X-Forwarded-Encrypted: i=1; AJvYcCVczXHtLQ3LpFSlgbZqlqjT0fzvvI02k4Y/d7LGN7rjfa3XOSwt+9hFste1syIlGFJrNA+vwG0voJ8quVBErXIOOAElx/qkX+fHV4Lhias=
+X-Gm-Message-State: AOJu0YwZ+dXgXaomNN/+FhaPEmpkmsJ686VmCW0Riiwm35ks+WyGGMS+
+	MyJqHZfr5eKErlTcnwquAxYLtodbPOBzohat6nseWYAVDFPI2FGayQUGNvUkk9tnY8lhPWfmKCf
+	l3R1+Lq+5wt+L1LxNMdQ/VPNXHM4O+oa/A9BbQA==
+X-Google-Smtp-Source: AGHT+IEcpfs5dpdJJqkCkXSkIR3lyitrJXuKfTPscTjfOwhlfTaeK+LO1vx1F850KkaaLSUV5ElUSJ1vut4ebqszoJs=
+X-Received: by 2002:a19:740a:0:b0:513:5fb0:c5ad with SMTP id
+ v10-20020a19740a000000b005135fb0c5admr89280lfe.17.1713379203946; Wed, 17 Apr
+ 2024 11:40:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 6/6] wifi: rtlwifi: Adjust rtl8192d-common for USB
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Larry Finger <Larry.Finger@lwfinger.net>,
- Stefan Lippers-Hollmann <s.l-h@gmx.de>,
- Christian Hewitt <chewitt@libreelec.tv>
-References: <561cc9e4-3ddc-40cd-a076-2c14c44eea87@gmail.com>
- <2d0d22e1-c4c5-46cb-8d54-63a4a16d22c6@gmail.com>
- <44aae72b9e2c441f9d667d98d0e779f6@realtek.com>
-Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <44aae72b9e2c441f9d667d98d0e779f6@realtek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20240408231727.396452-1-andriy.shevchenko@linux.intel.com>
+ <20240408231727.396452-2-andriy.shevchenko@linux.intel.com>
+ <CACRpkdYaXVvtt3b9rFxU4ZNShD17Bm4XU9X3h4dY501iJy3kPA@mail.gmail.com>
+ <ZhlSaFWlbE6OS7om@smile.fi.intel.com> <CAMRc=Me489H-mTfT1hfUsY47iKwoaVsf6sgkiBwBVkxJOBo9UA@mail.gmail.com>
+ <CACRpkdZRp-DFQgb3=Ut27DHd1w11_aEY0HbLjJHob=C5Ek-dyw@mail.gmail.com>
+ <Zh6FkejXcwBTAqIR@smile.fi.intel.com> <CAMRc=MeXV4_MT5_DKYtHqO+324dFJnr+Y1UtR9w9mj-y2OOqAw@mail.gmail.com>
+ <Zh-MMAjf6hhNOCpL@smile.fi.intel.com>
+In-Reply-To: <Zh-MMAjf6hhNOCpL@smile.fi.intel.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Wed, 17 Apr 2024 20:39:52 +0200
+Message-ID: <CAMRc=MfJdfwP7=a3govCcj8XHR7uPwCf2BA+BiWqif74pW5u8A@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] gpiolib: Fix a mess with the GPIO_* flags
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Kent Gibson <warthog618@gmail.com>, 
+	linux-gpio@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com, 
+	Mika Westerberg <mika.westerberg@linux.intel.com>, 
+	Arend van Spriel <arend.vanspriel@broadcom.com>, Kalle Valo <kvalo@kernel.org>, 
+	Charles Keepax <ckeepax@opensource.cirrus.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 17/04/2024 10:33, Ping-Ke Shih wrote:
-> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
-> 
->> A few of the shared functions need small changes for the USB driver:
->>  - firmware loading
->>  - efuse reading
->>  - rate mask updating
->>  - rf register reading
->>  - initial gain for scanning
->>
->> Also, add a few macros to wifi.h, add some new members to struct
->> rtl_priv, and initialise rtlhal.interfaceindex for USB devices.
->>
->> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
->> ---
->> v5:
->>  - No change.
->>
->> v4:
->>  - Update the commit message.
->>  - Move _rtl92d_pci_lock and _rtl92d_pci_unlock to phy_common.h to
->>    silence a checkpatch warning.
->>  - Move rate_mask declaration higher (sorted by length).
->>  - Add some bit definitions to reg.h.
->>  - Add to struct rtl_priv the things shared by the two USB interfaces
->>    of a dual MAC RTL8192DU:
->>         u32 *curveindex_2g;
->>         u32 *curveindex_5g;
->>         struct mutex *mutex_for_power_on_off;
->>         struct mutex *mutex_for_hw_init;
->>
->> v3:
->>  - Silence sparse warnings about locks in phy_common.c by using helper
->>    functions _rtl92d_pci_lock() and _rtl92d_pci_unlock().
->>
->> v2:
->>  - Delete the macro IS_NORMAL_CHIP. It wasn't actually used.
->>  - Add RTL_USB_DELAY_FACTOR macro.
->>  - Use FEN_CPUEN macro.
->>  - Make params_pci and params_usb arrays static const, and make
->>    rtl_get_hwinfo() take a const pointer.
->>  - Put the rate mask, macid, etc. in a struct in
->>    rtl92de_update_hal_rate_mask().
->>  - Use sizeof(rtlpriv->rate_mask) in memcpy instead of hardcoded 5.
->>  - Rename temp variable to phy_ctrl.
->>  - Define _TXDMA_*_MAP and _HPQ, _LPQ, _PUBQ macros using GENMASK and
->>    remove the leading underscore.
->>  - Delete _NPQ macro because it's not very useful.
-> 
-> [...]
-> 
-> 
->> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/fw_common.h
->> b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/fw_common.h
->> index 33b8ba363ca2..3d994238985f 100644
->> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/fw_common.h
->> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/fw_common.h
->> @@ -25,6 +25,16 @@
->>  #define GET_FIRMWARE_HDR_SUB_VER(__fwhdr)              \
->>         le32_get_bits(*(__le32 *)((__fwhdr) + 4), GENMASK(23, 16))
->>
->> +#define RAID_MASK               GENMASK(31, 28)
->> +#define RATE_MASK_MASK          GENMASK(27, 0)
->> +#define SHORT_GI_MASK           BIT(5)
->> +#define MACID_MASK              GENMASK(4, 0)
->> +
->> +struct rtl92d_rate_mask_h2c {
->> +       __le32 rate_mask_and_raid;
->> +       u8 macid_and_short_gi;
->> +} __packed;
->> +
-> 
-> You asked me to drop a patch that looks very like this. Is this part correct?
-> 
+On Wed, Apr 17, 2024 at 10:45=E2=80=AFAM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Tue, Apr 16, 2024 at 11:07:58PM +0200, Bartosz Golaszewski wrote:
+> > On Tue, Apr 16, 2024 at 4:05=E2=80=AFPM Andy Shevchenko
+> > <andriy.shevchenko@linux.intel.com> wrote:
+> > >
+> > > On Tue, Apr 16, 2024 at 02:22:09PM +0200, Linus Walleij wrote:
+> > > > On Fri, Apr 12, 2024 at 9:44=E2=80=AFPM Bartosz Golaszewski <brgl@b=
+gdev.pl> wrote:
+> > > >
+> > > > > IIUC include/dt-bindings/ headers should only be used by DT sourc=
+es
+> > > > > and code that parses the OF properties.
+> > > >
+> > > > That's what I have come to understand as well.
+> > > >
+> > > > I wonder if there is something that can be done to enforce it?
+> > > >
+> > > > Ideally the code that parses OF properties should have to
+> > > > opt in to get access to the <dt-bindings/*> namespace.
+> > >
+> > > Whatever you, guys, come up with as a solution, can it be fixed soone=
+r than later?
+> > > I mean, I would appreciate if somebody got it done for v6.9-rcX/v6.10=
+-rc1 so we don't
+> > > need to look into this again.
+> >
+> > I'm not sure you got what I was saying. I don't think this can be
+> > fixed quickly. This is just another bunch of technical debt that will
+> > have to be addressed carefully on a case-by-case basis and run through
+> > autobuilders in all possible configurations.
+> >
+> > This type of include-related issues is always brittle and will lead to
+> > build failures if we don't consider our moves.
+>
+> I proposed a quick fix which was rejected. I think this is still doable i=
+n a
+> few steps:
+>
 
-Yes, it is correct in rtl8192d-common. This is what rtl92d_fill_h2c_cmd()
-expects. It was not correct in rtl8xxxu because rtl8xxxu_gen1_h2c_cmd()
-expects something else.
+You having proposed a quick fix is not a reason for me to either apply
+it immediately OR equally promptly provide a proper solution myself.
 
-> [...]
-> 
->> @@ -2768,6 +2773,12 @@ struct rtl_priv {
->>          */
->>         bool use_new_trx_flow;
->>
->> +       /* For dual MAC RTL8192DU, things shared by the 2 USB interfaces */
->> +       u32 *curveindex_2g;
->> +       u32 *curveindex_5g;
->> +       struct mutex *mutex_for_power_on_off; /* for power on/off */
->> +       struct mutex *mutex_for_hw_init; /* for hardware init */
-> 
-> It would be better to introduce these locks along with consumers. Then, I will
-> not miss to review them carefully.
-> 
+> - align constant values in DT and enum
+> - drop usage of DT in the kernel code (That's what you want IIUC, however
+>   I disagree with this from technical perspective as DT constants can be =
+used
+>   in the code as long as they are mapped 1:1 to what code does. That's cu=
+rrent
+>   state of affairs. OTOH semantically this may be an issue.)
 
-Okay, I will remove them from this patch set.
+It's against the convention of only using dt-bindings headers as I
+described before. I disagree with your proposition and it seems to me
+Linus backed me up on this.
 
-> By the way, I don't review remaining patches of v4 until this new (smaller)
-> patchset gets merged. 
-> 
+> - restore enum usage treewide (?)
+>
+> Again, the problem now is only in open source / open drain configurations
+> and there are only a few users of these flags _in kernel_. I do not see
+> why it can not be done in one or two evenings time range.
+>
 
-That makes sense.
+So you know what needs doing. I'm at a conference now, I'll be off for
+a week in April and I also have another conference scheduled for May.
+If you believe this needs addressing urgently, then I suggest you do
+it right. Otherwise, I'll get to it when I have the time.
+Unfortunately my TODO list runneth over. :(
+
+But I have to say, I suspect it won't be as easy as you present it
+because we have so many build configs that may fail.
+
+> P.S>
+> Most of the time I spent when prepared the proposed fix is digging the hi=
+story
+> and trying to understand how comes that we have desynchronisation of the =
+values
+> over the time. The output of that is the list of Fixes tags.
+>
+
+Thank you, this history is useful and should make its way into git
+history when we fix this issue.
+
+Bart
 
