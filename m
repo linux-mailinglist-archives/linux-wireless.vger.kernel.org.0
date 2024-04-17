@@ -1,136 +1,155 @@
-Return-Path: <linux-wireless+bounces-6425-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6426-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 434C18A7E38
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 10:28:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 759358A7E98
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 10:46:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BD041C2133C
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 08:28:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BD2C1F23428
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 08:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143AA7F47D;
-	Wed, 17 Apr 2024 08:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDB62127E17;
+	Wed, 17 Apr 2024 08:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FZRoAsQz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O4TxVyDj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E30867F479
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Apr 2024 08:28:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F475139F;
+	Wed, 17 Apr 2024 08:45:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713342487; cv=none; b=eUoV41ryyoCh9JF3pVm+kl4qL+4cr111H3195FyDYmJG2/t/vo9OAiYm8+kGJ/V/sis5FIMj7g98ULyxbjDT8uODakSTd9uTZSOuet51Rz+XRikmQasRyditRtbSnNzLClEPAHXX8fMGnPoVGVfGIV/sofoW9wbN3g68287iqu8=
+	t=1713343555; cv=none; b=mJaMjywzc+juoQ1c8vZ4KzeJO/L2Zsuf9bevbsjHehMxaCR4wMhol1AjeJXbF0mz9Yj25Cn2Szc/LRHsTGS/BZquuY/PZG/F5xHXb4gUITKCM0WUWRRq/utH1MpxIClOkp8PzW2SoP8sGMCgNfrV3VB+xhbQoRDISgX19BZLyiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713342487; c=relaxed/simple;
-	bh=8HKqBkuK9XOWdikq79nMUvBa5Kdfk7JgGBOxMUWGla0=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=OX5UBqUk7giMe+B5NTKTDEOSNvMIuXm31YO/H0Vw4P2fsHZHnN4yK4tZ21qqpz/fBDZwKE6nOTP6Yu2G30v3E+iJmO8s5LDmg69DHweyLj606Bvfuu08CAcpxsXad/ulUPjuJFDJwW8f0wctoCVEIyQTi+gbhjcwNX6mrBu8qXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FZRoAsQz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F545C072AA;
-	Wed, 17 Apr 2024 08:28:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713342486;
-	bh=8HKqBkuK9XOWdikq79nMUvBa5Kdfk7JgGBOxMUWGla0=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=FZRoAsQzfVFPIVc8ShADl2wgyVlTUlAuauDMu+AU4uDigfkzruGEP9Zw80wdJqGdb
-	 yGaR3smloupIqLZgQYWGY2xrslQI2lGibi8PlQRYs7QvyjtRUWpTIJMuR3y1UpnTsk
-	 0yRQDwKtnU4jFZg7hsJax3OhVz7ViJr1B2m96//ci8I2hQbsQd0+0lWPqnAYcuLuQp
-	 JPw3UHIJxHOjLPA5O1syNwCRdkuwIxMduP6lssRuCEsJr83R6c3SeY133iIRb64sj4
-	 XrUVcqzU+71Qw64qK5gC0EbsgRsRp/o9hYHsuEtqtUGcv0mx4ib5EWPtEsX+8WZAWm
-	 LDfVvJlhdAzzw==
-From: Kalle Valo <kvalo@kernel.org>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: Martin Kaistra <martin.kaistra@linutronix.de>,
-  "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,  Jes
- Sorensen <Jes.Sorensen@gmail.com>,  Sebastian Andrzej Siewior
- <bigeasy@linutronix.de>,  Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: Re: [PATCH] wifi: rtl8xxxu: enable MFP support
-References: <20240314164850.86432-1-martin.kaistra@linutronix.de>
-	<fa903f58-2362-49a1-9880-2b3fcbe1869e@gmail.com>
-	<5b3af47c-7efb-4ca3-93bd-06c682dfc84f@linutronix.de>
-	<1cbb57c2-3d8f-4932-9132-d46a871c944b@gmail.com>
-	<1e600703-1208-4adb-a486-2a770cff55ed@linutronix.de>
-	<55d21b23c729465a9c5116cb2a9dc9f5@realtek.com>
-Date: Wed, 17 Apr 2024 11:28:02 +0300
-In-Reply-To: <55d21b23c729465a9c5116cb2a9dc9f5@realtek.com> (Ping-Ke Shih's
-	message of "Wed, 17 Apr 2024 07:23:57 +0000")
-Message-ID: <87v84gwfzh.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1713343555; c=relaxed/simple;
+	bh=DGDR1TQ4GEjxmU4I2WPT0qXg9Na4g1DIFeR8IF/YkD0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=as9avO8z9rZHw/F6aCZ/gwB8pdPExHPDYwfsoqOv7toRKZtqkyNaCsVlrC+JitdBlXsjpOEx2Ipy6XRX/jYha5kqnBmSyAYdSts/6nWtug3D0WskcJTl2/tRfyDU5gRscbFaQnYvY1ka9Pj6xrJjLeqSKnGa3eg3I/+9wJyvK2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O4TxVyDj; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713343554; x=1744879554;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=DGDR1TQ4GEjxmU4I2WPT0qXg9Na4g1DIFeR8IF/YkD0=;
+  b=O4TxVyDjf8GNGl0zqJOWEPEqjxdJ9iba+xWO6bn18OHZGAMr6VU2Odin
+   W1/W6+NlRM+FjbhnVrImw93fYzWLNhRfl/eyD6xki6HbAu0zzuS+BnloW
+   +T0o4gLEeFAU/CcLMxSrYkmr0EpcgPUOnJXKMeyGIBQJKUKLAwwtvzw94
+   N/z3DeC9cMLXonDIoYR7mA9RF1Cmtj5FslQIcGMWsL2ire0ANcUV/tztn
+   omDH857puFHCLCIy3fdIYNCIVDXM7pguBLb04knnwqE2VFiKXseTYBBCW
+   /Eee2jjB3sFVdWoNTCdanzbAr0ymiF/deLle5bsLm8zPXiRm6eO9U3Sum
+   g==;
+X-CSE-ConnectionGUID: S6D2uqSZSemEaRVoq8TyIQ==
+X-CSE-MsgGUID: lo/vW5hFT3SG50PRULtfvA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="9042939"
+X-IronPort-AV: E=Sophos;i="6.07,208,1708416000"; 
+   d="scan'208";a="9042939"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2024 01:45:46 -0700
+X-CSE-ConnectionGUID: ECKDBFvHTOS9kjeT29b6JQ==
+X-CSE-MsgGUID: VqHYRbHcT+eYQVnX3Br7UQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,208,1708416000"; 
+   d="scan'208";a="53520463"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2024 01:45:40 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rx0vA-00000004y1K-2EOo;
+	Wed, 17 Apr 2024 11:45:36 +0300
+Date: Wed, 17 Apr 2024 11:45:36 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Kent Gibson <warthog618@gmail.com>, linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>
+Subject: Re: [PATCH v2 1/2] gpiolib: Fix a mess with the GPIO_* flags
+Message-ID: <Zh-MMAjf6hhNOCpL@smile.fi.intel.com>
+References: <20240408231727.396452-1-andriy.shevchenko@linux.intel.com>
+ <20240408231727.396452-2-andriy.shevchenko@linux.intel.com>
+ <CACRpkdYaXVvtt3b9rFxU4ZNShD17Bm4XU9X3h4dY501iJy3kPA@mail.gmail.com>
+ <ZhlSaFWlbE6OS7om@smile.fi.intel.com>
+ <CAMRc=Me489H-mTfT1hfUsY47iKwoaVsf6sgkiBwBVkxJOBo9UA@mail.gmail.com>
+ <CACRpkdZRp-DFQgb3=Ut27DHd1w11_aEY0HbLjJHob=C5Ek-dyw@mail.gmail.com>
+ <Zh6FkejXcwBTAqIR@smile.fi.intel.com>
+ <CAMRc=MeXV4_MT5_DKYtHqO+324dFJnr+Y1UtR9w9mj-y2OOqAw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMRc=MeXV4_MT5_DKYtHqO+324dFJnr+Y1UtR9w9mj-y2OOqAw@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Ping-Ke Shih <pkshih@realtek.com> writes:
+On Tue, Apr 16, 2024 at 11:07:58PM +0200, Bartosz Golaszewski wrote:
+> On Tue, Apr 16, 2024 at 4:05 PM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> >
+> > On Tue, Apr 16, 2024 at 02:22:09PM +0200, Linus Walleij wrote:
+> > > On Fri, Apr 12, 2024 at 9:44 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+> > >
+> > > > IIUC include/dt-bindings/ headers should only be used by DT sources
+> > > > and code that parses the OF properties.
+> > >
+> > > That's what I have come to understand as well.
+> > >
+> > > I wonder if there is something that can be done to enforce it?
+> > >
+> > > Ideally the code that parses OF properties should have to
+> > > opt in to get access to the <dt-bindings/*> namespace.
+> >
+> > Whatever you, guys, come up with as a solution, can it be fixed sooner than later?
+> > I mean, I would appreciate if somebody got it done for v6.9-rcX/v6.10-rc1 so we don't
+> > need to look into this again.
+> 
+> I'm not sure you got what I was saying. I don't think this can be
+> fixed quickly. This is just another bunch of technical debt that will
+> have to be addressed carefully on a case-by-case basis and run through
+> autobuilders in all possible configurations.
+> 
+> This type of include-related issues is always brittle and will lead to
+> build failures if we don't consider our moves.
 
-> Hi Kalle,
->
-> Martin Kaistra <martin.kaistra@linutronix.de> wrote:
->
->> Hi Ping-Ke,
->> 
->> Am 15.04.24 um 21:14 schrieb Bitterblue Smith:
->> > On 15/04/2024 09:49, Martin Kaistra wrote:
->> >> Am 14.04.24 um 13:32 schrieb Bitterblue Smith:
->> >>> On 14/03/2024 18:48, Martin Kaistra wrote:
->> >>>
->> >>> Also, won't you send the patch to the stable tree?
->> >>
->> >> The rtl8xxxu driver previously did not have the MFP_CAPABLE flag
->> >> set. As I am adding new functionality
->> (support for WPA3), I don't think this should go to stable.
->> >
->> > Without your patch I can't connect to my phone's hotspot
->> > when it uses WPA3:
->> >
->> > Apr 08 12:50:57 ideapad2 wpa_supplicant[1231]: nl80211: kernel
->> > reports: key setting validation failed
->> > Apr 08 12:50:57 ideapad2 wpa_supplicant[1231]: wlp3s0f3u2: WPA:
->> > Failed to configure IGTK to the driver
->> > Apr 08 12:50:57 ideapad2 wpa_supplicant[1231]: wlp3s0f3u2: RSN:
->> > Failed to configure IGTK
->> >
->> > It doesn't say anything about WPA3 or management frame
->> > protection, just prints those unhelpful errors and tries
->> > to connect over and over again. To me that looks more like
->> > fixing a bug than adding new functionality. It's just sad
->> > that people need to install kernel 6.10+ in order to support
->> > WPA3, when the patch is so small.
->> 
->> I would like to know your opinion on this. imho this patch should not go to
->> stable and I would therefore propose to just send a patch to improve the checks.
->> If you as a maintainer however say, you would like to see this in stable, then I
->> will send a revert and a new patch.
->> 
->
-> We have a question about MFP support to stable tree. rtl8xxxu never supports MFP,
-> and recently we have a small patch (10+ LOC) to enable that. I feel we should
-> treat it as new feature, not add to stable tree. But as Bitterblue mentioned,
-> it looks like a bug. Need your opinion.
+I proposed a quick fix which was rejected. I think this is still doable in a
+few steps:
 
-I assume you are talking about this patch:
+- align constant values in DT and enum
+- drop usage of DT in the kernel code (That's what you want IIUC, however
+  I disagree with this from technical perspective as DT constants can be used
+  in the code as long as they are mapped 1:1 to what code does. That's current
+  state of affairs. OTOH semantically this may be an issue.)
+- restore enum usage treewide (?)
 
-https://lore.kernel.org/all/20240314164850.86432-1-martin.kaistra@linutronix.de/
+Again, the problem now is only in open source / open drain configurations
+and there are only a few users of these flags _in kernel_. I do not see
+why it can not be done in one or two evenings time range.
 
-I have no strong opinion here. To me it also looks like a new feature
-but it might fall within "Serious issues as reported by a user of a
-distribution kernel may also be considered if they fix a notable
-performance or interactivity issue" stable kernel rule:
-
-https://docs.kernel.org/process/stable-kernel-rules.html
-
-Maybe go with 'Option 2'? That is, wait for the commit to go to Linus'
-tree, send a mail to stable maintainers explaining the situation and let
-them decide. But I would be fine with 'Option 1' as well, your call :)
+P.S>
+Most of the time I spent when prepared the proposed fix is digging the history
+and trying to understand how comes that we have desynchronisation of the values
+over the time. The output of that is the list of Fixes tags.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+With Best Regards,
+Andy Shevchenko
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
