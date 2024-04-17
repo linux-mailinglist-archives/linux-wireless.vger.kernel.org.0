@@ -1,175 +1,233 @@
-Return-Path: <linux-wireless+bounces-6415-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6416-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C7558A7C72
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 08:43:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BF068A7C86
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 08:48:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F1991C20C24
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 06:43:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E06BC2800AF
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 06:48:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEA4369DFB;
-	Wed, 17 Apr 2024 06:43:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HQzq+KV2";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="231D2Ezm"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF4912AF0A;
+	Wed, 17 Apr 2024 06:48:36 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA16369E00
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Apr 2024 06:43:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B7EB653
+	for <linux-wireless@vger.kernel.org>; Wed, 17 Apr 2024 06:48:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713336191; cv=none; b=MOOTrDY6tlb1xxgF2Yl2oRctG0l864ygD6xqsT/xCy3keyV+6QCna5Gwc4WwPoUtFFLsi1MhVbdOcdeDLa+CUymsoQgIEVUdvsv8OpUr9aGChqHXbzQGUI+8PZ24XGLzN/qmcXPu1aInIbrX/kVKhDuWPKxiuHRuWl/qo9en/XM=
+	t=1713336516; cv=none; b=g9irkHvKALSAkreppZFB/3pMVQOOPKKHAtDs8uB0/fHo1LHOrAEj9Im0npKpprUpC9EH25EVaWb8qyayA2bPJ0GIc2sqQMreoAWL3Xpsh7hfksrZDSKtI9cXfWsbc647h6s/h/zgXcfb1Op5U0N9mmqqDXUpwL+35dOfLq9rs8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713336191; c=relaxed/simple;
-	bh=qpXG6c9nKFMFcTDmiwpa1n483isIcGbGV8i2/xh0Nd0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gAtOCVfu/sBmsFcewznGp4/wcI1r2d4Sl4Mc6Egoxv0f00LDQ7yyheX/Euiv6kA+zEXUZ8dEkQ0oRjk6PC17MFH596wnfL3Q0wH8TMdynZC5ZpkAICbLd/IPxrNzfZntOIe8bgybXIfWwl8ajHFg133xhKNc5sE5MHn3txeCWTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HQzq+KV2; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=231D2Ezm; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Message-ID: <1e600703-1208-4adb-a486-2a770cff55ed@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1713336187;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G8uE3hpgLkK5pbQDO1A+Ebli5C3uvi7V2VlAtSxPk4E=;
-	b=HQzq+KV2uM85YCM7Bl/hWSKvZmCnF15cXhUksGed8AJ6bqYaqNAXvfLl+YSS7P7ooMdrb+
-	V2HAVKjTFbk8asyFE2SQ1gtRdUWqNdvNHwZ0TxSFmxpFrFUVbN1/xdhJRp/DUBZ2Nvawn5
-	irnH0inmkIEkjFsPN+jzkw56IoUCAbvN7oM6QFsNAoTr7I9AIvuyZN7OTbIz85cSpBFnmo
-	BncVzEHtOz6Qn8pN+HqVhi2uy6GOo+Zm4W/sqQgl0AO3ps3wlYzn6fTCuc+FUAxTsIZiTd
-	EjRnfqxgYDnkNyWUA+jqzUW3edXJWhrhyJM+dayi1NC1li18nk2ETydR1em31A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1713336187;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G8uE3hpgLkK5pbQDO1A+Ebli5C3uvi7V2VlAtSxPk4E=;
-	b=231D2EzmJdfgd0/9Jy2Z+57Wx+X65FbQ2/ukUwxK40gUz9qIQiyftlh8w3bSePPuPXUrsD
-	cZ3Bsoz21+SF8vCA==
-Date: Wed, 17 Apr 2024 08:43:07 +0200
+	s=arc-20240116; t=1713336516; c=relaxed/simple;
+	bh=3jMyrtLuoOpDpEvi0WCfKu9ES50E4vtSxqJKwO35WA8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=VOnFQDAjeBsBAGzSY4OrJKOwUjlQteKCY7qdHG9SP/W9r7qcsmk/At9GE01Ax0KWLuzDhc17nIj/1J8FD9S/b5o12DL5Hc9JPditdcvTBlDV8qwxKZyTdiSOLrADH96v/UeJCMEQ/fk+zTx9TSKlTYMtzPbG6a+sTNming1ZKXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 43H6m6lV53096366, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 43H6m6lV53096366
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 17 Apr 2024 14:48:06 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 17 Apr 2024 14:48:07 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 17 Apr 2024 14:48:06 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
+ 15.01.2507.035; Wed, 17 Apr 2024 14:48:06 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: Larry Finger <Larry.Finger@lwfinger.net>,
+        Stefan Lippers-Hollmann
+	<s.l-h@gmx.de>,
+        Christian Hewitt <chewitt@libreelec.tv>
+Subject: RE: [PATCH v5 5/6] wifi: rtlwifi: Clean up rtl8192d-common a bit
+Thread-Topic: [PATCH v5 5/6] wifi: rtlwifi: Clean up rtl8192d-common a bit
+Thread-Index: AQHaj3OR2Cu1t3yVw02tbAbaTVD7B7FrxRgQ
+Date: Wed, 17 Apr 2024 06:48:06 +0000
+Message-ID: <72bd1a7172154d4e9a79678e5151cdf3@realtek.com>
+References: <561cc9e4-3ddc-40cd-a076-2c14c44eea87@gmail.com>
+ <4e47c56c-4b7f-4ae6-84b9-05f0cac97dac@gmail.com>
+In-Reply-To: <4e47c56c-4b7f-4ae6-84b9-05f0cac97dac@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] wifi: rtl8xxxu: enable MFP support
-To: linux-wireless@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>
-Cc: Jes Sorensen <Jes.Sorensen@gmail.com>, Kalle Valo <kvalo@kernel.org>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Bitterblue Smith <rtl8821cerfe2@gmail.com>
-References: <20240314164850.86432-1-martin.kaistra@linutronix.de>
- <fa903f58-2362-49a1-9880-2b3fcbe1869e@gmail.com>
- <5b3af47c-7efb-4ca3-93bd-06c682dfc84f@linutronix.de>
- <1cbb57c2-3d8f-4932-9132-d46a871c944b@gmail.com>
-Content-Language: de-DE
-From: Martin Kaistra <martin.kaistra@linutronix.de>
-In-Reply-To: <1cbb57c2-3d8f-4932-9132-d46a871c944b@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-Hi Ping-Ke,
-
-Am 15.04.24 um 21:14 schrieb Bitterblue Smith:
-> On 15/04/2024 09:49, Martin Kaistra wrote:
->> Am 14.04.24 um 13:32 schrieb Bitterblue Smith:
->>> On 14/03/2024 18:48, Martin Kaistra wrote:
->>>> In order to connect to networks which require 802.11w, add the
->>>> MFP_CAPABLE flag and let mac80211 do the actual crypto in software.
->>>>
->>>> When a robust management frames is received, rx_dec->swdec is not set,
->>>> even though the HW did not decrypt it. Extend the check and don't set
->>>> RX_FLAG_DECRYPTED for these frames in order to use SW decryption.
->>>>
->>>> Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
->>>> ---
->>>>    drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 9 +++++++--
->>>>    1 file changed, 7 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
->>>> index 4a49f8f9d80f2..870bd952f5902 100644
->>>> --- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
->>>> +++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
->>>> @@ -6473,7 +6473,9 @@ int rtl8xxxu_parse_rxdesc16(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
->>>>                rx_status->mactime = rx_desc->tsfl;
->>>>                rx_status->flag |= RX_FLAG_MACTIME_START;
->>>>    -            if (!rx_desc->swdec)
->>>> +            if (!rx_desc->swdec &&
->>>> +                !(_ieee80211_is_robust_mgmt_frame(hdr) &&
->>>> +                  ieee80211_has_protected(hdr->frame_control)))
->>>>                    rx_status->flag |= RX_FLAG_DECRYPTED;
->>>>                if (rx_desc->crc32)
->>>>                    rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
->>>> @@ -6578,7 +6580,9 @@ int rtl8xxxu_parse_rxdesc24(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
->>>>                rx_status->mactime = rx_desc->tsfl;
->>>>                rx_status->flag |= RX_FLAG_MACTIME_START;
->>>>    -            if (!rx_desc->swdec)
->>>> +            if (!rx_desc->swdec &&
->>>> +                !(_ieee80211_is_robust_mgmt_frame(hdr) &&
->>>> +                  ieee80211_has_protected(hdr->frame_control)))
->>>>                    rx_status->flag |= RX_FLAG_DECRYPTED;
->>>>                if (rx_desc->crc32)
->>>>                    rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
->>>> @@ -7998,6 +8002,7 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
->>>>        ieee80211_hw_set(hw, HAS_RATE_CONTROL);
->>>>        ieee80211_hw_set(hw, SUPPORT_FAST_XMIT);
->>>>        ieee80211_hw_set(hw, AMPDU_AGGREGATION);
->>>> +    ieee80211_hw_set(hw, MFP_CAPABLE);
->>>>          wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
->>>>    
->>>
->>> I ran into this problem recently with rtl8192du:
->>> https://lore.kernel.org/linux-wireless/ed12ec17-ae6e-45fa-a72f-23e0a34654da@gmail.com/
->>>
->>> Does the same fix work for you in rtl8xxxu? Checking the "security"
->>> field of the RX descriptor is simpler than calling two functions.
->>> Sorry to bother you when the patch is already applied.
->>
->> Thanks for the hint. I tried to do something similar to what has been done in other rtlwifi drivers and missed the solution in rtw88, which is probably better:
->>
->> rtlwifi/rtl8188ee/trx.c
->> rtlwifi/rtl8192ce/trx.c
->> rtlwifi/rtl8192ee/trx.c
->> rtlwifi/rtl8192se/trx.c
->> rtlwifi/rtl8723ae/trx.c
->> rtlwifi/rtl8723be/trx.c
->> rtlwifi/rtl8821ae/trx.c
->>
->> Shouldn't it be changed in these locations as well?
->>
->> I will do a test for rtl8xxxu and if it is successful send a new patch.
->>
->>>
->>> Also, won't you send the patch to the stable tree?
->>
->> The rtl8xxxu driver previously did not have the MFP_CAPABLE flag set. As I am adding new functionality (support for WPA3), I don't think this should go to stable.
-> 
-> Without your patch I can't connect to my phone's hotspot
-> when it uses WPA3:
-> 
-> Apr 08 12:50:57 ideapad2 wpa_supplicant[1231]: nl80211: kernel reports: key setting validation failed
-> Apr 08 12:50:57 ideapad2 wpa_supplicant[1231]: wlp3s0f3u2: WPA: Failed to configure IGTK to the driver
-> Apr 08 12:50:57 ideapad2 wpa_supplicant[1231]: wlp3s0f3u2: RSN: Failed to configure IGTK
-> 
-> It doesn't say anything about WPA3 or management frame
-> protection, just prints those unhelpful errors and tries
-> to connect over and over again. To me that looks more like
-> fixing a bug than adding new functionality. It's just sad
-> that people need to install kernel 6.10+ in order to support
-> WPA3, when the patch is so small.
-
-I would like to know your opinion on this. imho this patch should not go to 
-stable and I would therefore propose to just send a patch to improve the checks.
-If you as a maintainer however say, you would like to see this in stable, then I 
-will send a revert and a new patch.
-
-Martin
+Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KDQo+IElt
+cHJvdmUgcmVhZGFiaWxpdHk6DQo+ICAqIGFkZCBlbXB0eSBsaW5lcw0KPiAgKiB1c2UgYWJzX2Rp
+ZmYgaW4gcnRsOTJkX2RtX3R4cG93ZXJfdHJhY2tpbmdfY2FsbGJhY2tfdGhlcm1hbG1ldGVyDQo+
+ICAqIHJvbGwgdXAgcmVwZWF0ZWQgc3RhdGVtZW50cyBpbnRvIGEgZm9yIGxvb3AgaW4NCj4gICAg
+cnRsOTJkX2RtX3R4cG93ZXJfdHJhY2tpbmdfY2FsbGJhY2tfdGhlcm1hbG1ldGVyDQo+ICAqIHNo
+b3J0ZW4gbGluZXMgYnkgcmVwbGFjaW5nIG1hbnkgaW5zdGFuY2VzIG9mICJydGxwcml2LT5kbSIg
+d2l0aCAiZG0iDQo+ICAgIHBvaW50ZXIgaW4gcnRsOTJkX2RtX3R4cG93ZXJfdHJhY2tpbmdfY2Fs
+bGJhY2tfdGhlcm1hbG1ldGVyDQo+ICAqIHNvcnQgc29tZSBkZWNsYXJhdGlvbnMgYnkgbGVuZ3Ro
+DQo+ICAqIHJlZmFjdG9yIF9ydGw5MmRfZ2V0X3R4cG93ZXJfd3JpdGV2YWxfYnlfcmVndWxhdG9y
+eSBhIGxpdHRsZQ0KPiANCj4gRGVsZXRlIHVudXNlZCBzdHJ1Y3RzIHRhZ19keW5hbWljX2luaXRf
+Z2Fpbl9vcGVyYXRpb25fdHlwZV9kZWZpbml0aW9uDQo+IGFuZCBzd2F0Lg0KPiANCj4gU2ltcGxp
+ZnkgcnRsOTJkX2ZpbGxfaDJjX2NtZCBhIGxpdHRsZSBhbmQgZGVsZXRlIGEgcG9pbnRsZXNzIHdy
+YXBwZXINCj4gZnVuY3Rpb24uDQo+IA0KDQpbLi4uXQ0KDQo+IEBAIC0xMzcsMTYgKzEzNSwxOCBA
+QCBzdGF0aWMgdm9pZCBydGw5MmRfZG1fcnhnYWluX3RyYWNraW5nX3RoZXJtYWxtZXRlcihzdHJ1
+Y3QgaWVlZTgwMjExX2h3ICpodykNCj4gICAgICAgICAgICAgICAgIDB4MDUsIDB4MDQsIDB4MDQs
+IDB4MDMsIDB4MDINCj4gICAgICAgICB9Ow0KPiAgICAgICAgIHN0cnVjdCBydGxfcHJpdiAqcnRs
+cHJpdiA9IHJ0bF9wcml2KGh3KTsNCj4gKyAgICAgICBpbnQgaSwgaWR4Ow0KPiAgICAgICAgIHUz
+MiB1NHRtcDsNCj4gLSAgICAgICBpbnQgaTsNCj4gDQo+IC0gICAgICAgdTR0bXAgPSAoaW5kZXhf
+bWFwcGluZ1socnRscHJpdi0+ZWZ1c2UuZWVwcm9tX3RoZXJtYWxtZXRlciAtDQo+IC0gICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgcnRscHJpdi0+ZG0udGhlcm1hbHZhbHVlX3J4Z2Fpbild
+KSA8PCAxMjsNCj4gKyAgICAgICBpZHggPSBydGxwcml2LT5lZnVzZS5lZXByb21fdGhlcm1hbG1l
+dGVyIC0gcnRscHJpdi0+ZG0udGhlcm1hbHZhbHVlX3J4Z2FpbjsNCj4gKyAgICAgICB1NHRtcCA9
+IGluZGV4X21hcHBpbmdbaWR4XSA8PCAxMjsNCj4gKw0KPiAgICAgICAgIHJ0bF9kYmcocnRscHJp
+diwgQ09NUF9QT1dFUl9UUkFDS0lORywgREJHX0xPVUQsDQo+ICAgICAgICAgICAgICAgICAiPT09
+PiBSeCBHYWluICV4XG4iLCB1NHRtcCk7DQo+ICsNCj4gICAgICAgICBmb3IgKGkgPSBSRjkwX1BB
+VEhfQTsgaSA8IHJ0bHByaXYtPnBoeS5udW1fdG90YWxfcmZwYXRoOyBpKyspDQo+ICAgICAgICAg
+ICAgICAgICBydGxfc2V0X3JmcmVnKGh3LCBpLCAweDNDLCBSRlJFR19PRkZTRVRfTUFTSywNCj4g
+LSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKHJ0bHByaXYtPnBoeS5yZWdfcmYzY1tpXSAm
+ICh+KDB4RjAwMCkpKSB8IHU0dG1wKTsNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+KHJ0bHByaXYtPnBoeS5yZWdfcmYzY1tpXSAmIH4weEYwMDApIHwgdTR0bXApOw0KDQpUaGVyZSBh
+cmUgc2ltaWxhciBpbnN0YW5jZXMgbGlrZSAndG1wMWJ5dGUgJj0gfihCSVQoMCkpOycNCk1heWJl
+LCB5b3UgY2FuIHVzZSBjb2NjaW5lbGxlIChzcGF0Y2gpIGFzIGhlbHBlciB0byBjb252ZXJ0IGFs
+bCBvZiB0aGVtLg0KDQpbLi4uXQ0KDQo+IEBAIC03MTMsMjIgKzY5NiwxNyBAQCB2b2lkIHJ0bDky
+ZF9kbV9mYWxzZV9hbGFybV9jb3VudGVyX3N0YXRpc3RpY3Moc3RydWN0IGllZWU4MDIxMV9odyAq
+aHcpDQo+ICAgICAgICAgICAgICAgICBmYWxzZWFsbV9jbnQtPmNudF9jY2tfZmFpbCA9IDA7DQo+
+ICAgICAgICAgfQ0KPiANCj4gLSAgICAgICAvKiByZXNldCBmYWxzZSBhbGFybSBjb3VudGVyIHJl
+Z2lzdGVycyAqLw0KPiAtICAgICAgIGZhbHNlYWxtX2NudC0+Y250X2FsbCA9IGZhbHNlYWxtX2Nu
+dC0+Y250X2Zhc3RfZnN5bmNfZmFpbCArDQo+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgZmFsc2VhbG1fY250LT5jbnRfc2Jfc2VhcmNoX2ZhaWwgKw0KPiAtICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIGZhbHNlYWxtX2NudC0+Y250X3Bhcml0eV9mYWlsICsNCj4gLSAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICBmYWxzZWFsbV9jbnQtPmNudF9yYXRlX2lsbGVnYWwg
+Kw0KPiAtICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGZhbHNlYWxtX2NudC0+Y250X2Ny
+YzhfZmFpbCArDQo+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZmFsc2VhbG1fY250
+LT5jbnRfbWNzX2ZhaWwgKw0KPiArICAgICAgIGZhbHNlYWxtX2NudC0+Y250X2FsbCA9IGZhbHNl
+YWxtX2NudC0+Y250X29mZG1fZmFpbCArDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgZmFsc2VhbG1fY250LT5jbnRfY2NrX2ZhaWw7DQoNCk5vdCBzdXJlIHdoeSB5b3UgZGlkIHRo
+aXMgY2hhbmdlLg0KDQpbLi4uXQ0KDQo+IEBAIC0yMjgsMzUgKzIzOCwyNSBAQCBzdGF0aWMgdm9p
+ZCBfcnRsOTJkX2ZpbGxfaDJjX2NvbW1hbmQoc3RydWN0IGllZWU4MDIxMV9odyAqaHcsDQo+ICAg
+ICAgICAgICAgICAgICAgICAgICAgIGJyZWFrOw0KPiAgICAgICAgICAgICAgICAgfQ0KPiAgICAg
+ICAgIH0NCj4gKw0KPiAgICAgICAgIHdoaWxlICghYndyaXRlX3N1Y2Nlc3MpIHsNCj4gICAgICAg
+ICAgICAgICAgIHdhaXRfd3JpdGVoMmNfbGltbWl0LS07DQo+ICAgICAgICAgICAgICAgICBpZiAo
+d2FpdF93cml0ZWgyY19saW1taXQgPT0gMCkgew0KPiAgICAgICAgICAgICAgICAgICAgICAgICBw
+cl9lcnIoIldyaXRlIEgyQyBmYWlsIGJlY2F1c2Ugbm8gdHJpZ2dlciBmb3IgRlcgSU5UIVxuIik7
+DQo+ICAgICAgICAgICAgICAgICAgICAgICAgIGJyZWFrOw0KPiAgICAgICAgICAgICAgICAgfQ0K
+PiArDQo+ICAgICAgICAgICAgICAgICBib3hudW0gPSBydGxoYWwtPmxhc3RfaG1lYm94bnVtOw0K
+PiAgICAgICAgICAgICAgICAgc3dpdGNoIChib3hudW0pIHsNCj4gLSAgICAgICAgICAgICAgIGNh
+c2UgMDoNCj4gLSAgICAgICAgICAgICAgICAgICAgICAgYm94X3JlZyA9IFJFR19ITUVCT1hfMDsN
+Cj4gLSAgICAgICAgICAgICAgICAgICAgICAgYm94X2V4dHJlZyA9IFJFR19ITUVCT1hfRVhUXzA7
+DQo+IC0gICAgICAgICAgICAgICAgICAgICAgIGJyZWFrOw0KPiAtICAgICAgICAgICAgICAgY2Fz
+ZSAxOg0KPiAtICAgICAgICAgICAgICAgICAgICAgICBib3hfcmVnID0gUkVHX0hNRUJPWF8xOw0K
+PiAtICAgICAgICAgICAgICAgICAgICAgICBib3hfZXh0cmVnID0gUkVHX0hNRUJPWF9FWFRfMTsN
+Cj4gLSAgICAgICAgICAgICAgICAgICAgICAgYnJlYWs7DQo+IC0gICAgICAgICAgICAgICBjYXNl
+IDI6DQo+IC0gICAgICAgICAgICAgICAgICAgICAgIGJveF9yZWcgPSBSRUdfSE1FQk9YXzI7DQo+
+IC0gICAgICAgICAgICAgICAgICAgICAgIGJveF9leHRyZWcgPSBSRUdfSE1FQk9YX0VYVF8yOw0K
+PiAtICAgICAgICAgICAgICAgICAgICAgICBicmVhazsNCj4gLSAgICAgICAgICAgICAgIGNhc2Ug
+MzoNCj4gLSAgICAgICAgICAgICAgICAgICAgICAgYm94X3JlZyA9IFJFR19ITUVCT1hfMzsNCj4g
+LSAgICAgICAgICAgICAgICAgICAgICAgYm94X2V4dHJlZyA9IFJFR19ITUVCT1hfRVhUXzM7DQo+
+ICsgICAgICAgICAgICAgICBjYXNlIDAgLi4uIDM6DQo+ICsgICAgICAgICAgICAgICAgICAgICAg
+IGJveF9yZWcgPSBSRUdfSE1FQk9YXzAgKyBib3hudW0gKiA0Ow0KPiArICAgICAgICAgICAgICAg
+ICAgICAgICBib3hfZXh0cmVnID0gUkVHX0hNRUJPWF9FWFRfMCArIGJveG51bSAqIDI7DQoNClNo
+b3VsZCBiZSAiKiA0IiBhcyB3ZWxsPw0KDQpib3hfZXh0cmVnID0gUkVHX0hNRUJPWF9FWFRfMCAr
+IGJveG51bSAqIDQ7DQoNCj4gICAgICAgICAgICAgICAgICAgICAgICAgYnJlYWs7DQo+ICAgICAg
+ICAgICAgICAgICBkZWZhdWx0Og0KPiAtICAgICAgICAgICAgICAgICAgICAgICBwcl9lcnIoInN3
+aXRjaCBjYXNlICUjeCBub3QgcHJvY2Vzc2VkXG4iLA0KPiAtICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgYm94bnVtKTsNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgcHJfZXJyKCJzd2l0
+Y2ggY2FzZSAlI3ggbm90IHByb2Nlc3NlZFxuIiwgYm94bnVtKTsNCj4gICAgICAgICAgICAgICAg
+ICAgICAgICAgYnJlYWs7DQo+ICAgICAgICAgICAgICAgICB9DQo+ICsNCj4gICAgICAgICAgICAg
+ICAgIGlzZndfcmVhZCA9IF9ydGw5MmRfY2hlY2tfZndfcmVhZF9sYXN0X2gyYyhodywgYm94bnVt
+KTsNCj4gICAgICAgICAgICAgICAgIHdoaWxlICghaXNmd19yZWFkKSB7DQo+ICAgICAgICAgICAg
+ICAgICAgICAgICAgIHdhaXRfaDJjX2xpbW1pdC0tOw0KPiBAQCAtMjY2LDc4ICsyNjYsNjMgQEAg
+c3RhdGljIHZvaWQgX3J0bDkyZF9maWxsX2gyY19jb21tYW5kKHN0cnVjdCBpZWVlODAyMTFfaHcg
+Kmh3LA0KPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYm94bnVtKTsN
+Cj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBicmVhazsNCj4gICAgICAgICAgICAg
+ICAgICAgICAgICAgfQ0KPiArDQo+ICAgICAgICAgICAgICAgICAgICAgICAgIHVkZWxheSgxMCk7
+DQo+ICsNCj4gICAgICAgICAgICAgICAgICAgICAgICAgaXNmd19yZWFkID0gX3J0bDkyZF9jaGVj
+a19md19yZWFkX2xhc3RfaDJjKGh3LCBib3hudW0pOw0KPiAgICAgICAgICAgICAgICAgICAgICAg
+ICB1MWJfdG1wID0gcnRsX3JlYWRfYnl0ZShydGxwcml2LCAweDFCRik7DQo+ICAgICAgICAgICAg
+ICAgICAgICAgICAgIHJ0bF9kYmcocnRscHJpdiwgQ09NUF9DTUQsIERCR19MT1VELA0KPiAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICJXYWl0aW5nIGZvciBGVyByZWFkIGNsZWFyIEhN
+RUJveCglZCkhISEgMHgxQkYgPSAlMnhcbiIsDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgYm94bnVtLCB1MWJfdG1wKTsNCj4gICAgICAgICAgICAgICAgIH0NCj4gKw0KPiAgICAg
+ICAgICAgICAgICAgaWYgKCFpc2Z3X3JlYWQpIHsNCj4gICAgICAgICAgICAgICAgICAgICAgICAg
+cnRsX2RiZyhydGxwcml2LCBDT01QX0NNRCwgREJHX0xPVUQsDQo+ICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIldyaXRlIEgyQyByZWdpc3RlciBCT1hbJWRdIGZhaWwhISEhISBGdyBk
+byBub3QgcmVhZC5cbiIsDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYm94bnVt
+KTsNCj4gICAgICAgICAgICAgICAgICAgICAgICAgYnJlYWs7DQo+ICAgICAgICAgICAgICAgICB9
+DQo+ICsNCj4gICAgICAgICAgICAgICAgIG1lbXNldChib3hjb250ZW50LCAwLCBzaXplb2YoYm94
+Y29udGVudCkpOw0KPiAgICAgICAgICAgICAgICAgbWVtc2V0KGJveGV4dGNvbnRlbnQsIDAsIHNp
+emVvZihib3hleHRjb250ZW50KSk7DQo+ICAgICAgICAgICAgICAgICBib3hjb250ZW50WzBdID0g
+ZWxlbWVudF9pZDsNCj4gKw0KPiAgICAgICAgICAgICAgICAgcnRsX2RiZyhydGxwcml2LCBDT01Q
+X0NNRCwgREJHX0xPVUQsDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICJXcml0ZSBlbGVtZW50
+X2lkIGJveF9yZWcoJTR4KSA9ICUyeFxuIiwNCj4gICAgICAgICAgICAgICAgICAgICAgICAgYm94
+X3JlZywgZWxlbWVudF9pZCk7DQo+ICsNCj4gICAgICAgICAgICAgICAgIHN3aXRjaCAoY21kX2xl
+bikgew0KPiAtICAgICAgICAgICAgICAgY2FzZSAxOg0KPiAtICAgICAgICAgICAgICAgICAgICAg
+ICBib3hjb250ZW50WzBdICY9IH4oQklUKDcpKTsNCj4gLSAgICAgICAgICAgICAgICAgICAgICAg
+bWVtY3B5KGJveGNvbnRlbnQgKyAxLCBjbWRidWZmZXIgKyBidWZfaW5kZXgsIDEpOw0KPiAtICAg
+ICAgICAgICAgICAgICAgICAgICBmb3IgKGlkeCA9IDA7IGlkeCA8IDQ7IGlkeCsrKQ0KPiAtICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIHJ0bF93cml0ZV9ieXRlKHJ0bHByaXYsIGJveF9y
+ZWcgKyBpZHgsDQo+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgYm94Y29udGVudFtpZHhdKTsNCj4gLSAgICAgICAgICAgICAgICAgICAgICAgYnJlYWs7DQo+
+IC0gICAgICAgICAgICAgICBjYXNlIDI6DQo+IC0gICAgICAgICAgICAgICAgICAgICAgIGJveGNv
+bnRlbnRbMF0gJj0gfihCSVQoNykpOw0KPiAtICAgICAgICAgICAgICAgICAgICAgICBtZW1jcHko
+Ym94Y29udGVudCArIDEsIGNtZGJ1ZmZlciArIGJ1Zl9pbmRleCwgMik7DQo+IC0gICAgICAgICAg
+ICAgICAgICAgICAgIGZvciAoaWR4ID0gMDsgaWR4IDwgNDsgaWR4KyspDQo+IC0gICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgcnRsX3dyaXRlX2J5dGUocnRscHJpdiwgYm94X3JlZyArIGlk
+eCwNCj4gLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBib3hj
+b250ZW50W2lkeF0pOw0KPiAtICAgICAgICAgICAgICAgICAgICAgICBicmVhazsNCj4gLSAgICAg
+ICAgICAgICAgIGNhc2UgMzoNCj4gLSAgICAgICAgICAgICAgICAgICAgICAgYm94Y29udGVudFsw
+XSAmPSB+KEJJVCg3KSk7DQo+IC0gICAgICAgICAgICAgICAgICAgICAgIG1lbWNweShib3hjb250
+ZW50ICsgMSwgY21kYnVmZmVyICsgYnVmX2luZGV4LCAzKTsNCj4gLSAgICAgICAgICAgICAgICAg
+ICAgICAgZm9yIChpZHggPSAwOyBpZHggPCA0OyBpZHgrKykNCj4gLSAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICBydGxfd3JpdGVfYnl0ZShydGxwcml2LCBib3hfcmVnICsgaWR4LA0KPiAt
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJveGNvbnRlbnRb
+aWR4XSk7DQo+IC0gICAgICAgICAgICAgICAgICAgICAgIGJyZWFrOw0KPiAtICAgICAgICAgICAg
+ICAgY2FzZSA0Og0KPiAtICAgICAgICAgICAgICAgICAgICAgICBib3hjb250ZW50WzBdIHw9IChC
+SVQoNykpOw0KPiAtICAgICAgICAgICAgICAgICAgICAgICBtZW1jcHkoYm94ZXh0Y29udGVudCwg
+Y21kYnVmZmVyICsgYnVmX2luZGV4LCAyKTsNCj4gLSAgICAgICAgICAgICAgICAgICAgICAgbWVt
+Y3B5KGJveGNvbnRlbnQgKyAxLCBjbWRidWZmZXIgKyBidWZfaW5kZXggKyAyLCAyKTsNCj4gLSAg
+ICAgICAgICAgICAgICAgICAgICAgZm9yIChpZHggPSAwOyBpZHggPCAyOyBpZHgrKykNCj4gLSAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICBydGxfd3JpdGVfYnl0ZShydGxwcml2LCBib3hf
+ZXh0cmVnICsgaWR4LA0KPiAtICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIGJveGV4dGNvbnRlbnRbaWR4XSk7DQo+ICsgICAgICAgICAgICAgICBjYXNlIDEgLi4u
+IDM6DQo+ICsgICAgICAgICAgICAgICAgICAgICAgIGJveGNvbnRlbnRbMF0gJj0gfkJJVCg3KTsN
+Cj4gKyAgICAgICAgICAgICAgICAgICAgICAgbWVtY3B5KGJveGNvbnRlbnQgKyAxLCBjbWRidWZm
+ZXIsIGNtZF9sZW4pOw0KPiArDQo+ICAgICAgICAgICAgICAgICAgICAgICAgIGZvciAoaWR4ID0g
+MDsgaWR4IDwgNDsgaWR4KyspDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcnRs
+X3dyaXRlX2J5dGUocnRscHJpdiwgYm94X3JlZyArIGlkeCwNCj4gICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICBib3hjb250ZW50W2lkeF0pOw0KPiAgICAgICAg
+ICAgICAgICAgICAgICAgICBicmVhazsNCj4gLSAgICAgICAgICAgICAgIGNhc2UgNToNCj4gLSAg
+ICAgICAgICAgICAgICAgICAgICAgYm94Y29udGVudFswXSB8PSAoQklUKDcpKTsNCj4gLSAgICAg
+ICAgICAgICAgICAgICAgICAgbWVtY3B5KGJveGV4dGNvbnRlbnQsIGNtZGJ1ZmZlciArIGJ1Zl9p
+bmRleCwgMik7DQo+IC0gICAgICAgICAgICAgICAgICAgICAgIG1lbWNweShib3hjb250ZW50ICsg
+MSwgY21kYnVmZmVyICsgYnVmX2luZGV4ICsgMiwgMyk7DQo+ICsgICAgICAgICAgICAgICBjYXNl
+IDQgLi4uIDU6DQo+ICsgICAgICAgICAgICAgICAgICAgICAgIGJveGNvbnRlbnRbMF0gfD0gQklU
+KDcpOw0KPiArICAgICAgICAgICAgICAgICAgICAgICBtZW1jcHkoYm94ZXh0Y29udGVudCwgY21k
+YnVmZmVyLCAyKTsNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgbWVtY3B5KGJveGNvbnRlbnQg
+KyAxLCBjbWRidWZmZXIgKyAyLCBjbWRfbGVuIC0gMik7DQoNCkFmdGVyIHJlYWRpbmcgdGhlc2Ug
+c3RhdGVtZW50cyBvZiAiY2FzZSA0Li4uNSIsIEkgZXZlbnR1YWxseSBrbm93IGhvdyBCSVQoNykg
+d29ya3MuDQpXaXRoIEJJVCg3KSBhZGRpdGlvbmFsIHR3byBjb21tYW5kIGJ1ZmZlcnMgYXJlIGlu
+dHJvZHVjZWQsIGFuZCBhcmd1bWVudFswLi4uMV0gYXJlDQpwdXQgaW50byB0aGUgbmV3IGJ1ZmZl
+cnMuIE1heWJlLCB3ZSBjYW4gYWRkIGEgY29tbWVudCB0byBoZWxwIHBlb3BsZSB0byB1bmRlcnN0
+YW5kDQp0aGlzIHBhcnQuDQoNCmNhc2UgMS4uLjMNCiAgQk9YOiAgICAgIHwgSUQgfCBBMCB8IEEx
+IHwgQTIgfA0KICBCT1hfRVhUOiAgLS0tIE4vQSAtLS0tLS0NCg0KY2FzZSA0Li4uNQ0KICAqIElE
+IGV4dCA9IElEIHwgQklUKDcpDQogIEJPWDogICAgICB8IElEIGV4dCB8IEEyIHwgQTMgfCBBNCB8
+DQogIEJPWF9FWFQ6ICB8IEEwICAgICB8IEExIHwNCg0KWy4uLl0NCg0KDQo=
 
