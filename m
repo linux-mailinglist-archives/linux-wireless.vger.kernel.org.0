@@ -1,53 +1,64 @@
-Return-Path: <linux-wireless+bounces-6429-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6430-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD95E8A7EFA
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 11:01:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4296A8A7FB7
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 11:34:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89BB5281256
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 09:01:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0067B283E8F
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 09:34:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FEF4127B40;
-	Wed, 17 Apr 2024 09:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404C5130482;
+	Wed, 17 Apr 2024 09:34:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QRFBuSeQ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bFVMEgX7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3D46E613
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Apr 2024 09:01:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB0D12F59A
+	for <linux-wireless@vger.kernel.org>; Wed, 17 Apr 2024 09:34:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713344471; cv=none; b=THCM56a52jN+Z44mQ/xmi+gScf6tEV8HIBH6Kb03aNQa4gxwH4u9sARovIL78dHrIRJTxc0VvVUEbhtTJ8ErWGSuHiMBsGGHFt6+/ijtd7hNd9JTwc3/3zmazmauKl1sZOkO2X2VQ6ag2RgjuFXreNioJVO7IHm5kAy2GsrPEJo=
+	t=1713346449; cv=none; b=fDXJ3hi6F/HLJFeUTT5X6PwFLksxOrMK+1dyblyFWt7aQ2dYUjGX4fRaX1729slGDil4LibnWwQfHMS+Tg0oFg4anRWcponzMaMQ6BT6o4haZ0cBtFI3rdwnnN/ccdaqz+YDxmTQ/w4IjaCJbhxCRI1YtutEneopZVZ7QePup+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713344471; c=relaxed/simple;
-	bh=e9SSBma6jlKqvwC3OvKN5raP3ZdwsZuZ59ls0XCOua0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GB9nkyeGckyQJ4G5gYjs8AyhqOA7PbSJu/hHPhJK/F1b62Lrj5SMWKZdnA0CuR2X1GFyNoscHuhzrNriFoQ9UpENV+Y9GZEXxOPKXQRaVEktn+2WaG3/PTINFiA2/kTeZqj9Ff+3VMe3boqMbp3EeJqqs4kO+/ORjmnKHBjMJ48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 43H913EE03193486, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 43H913EE03193486
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Apr 2024 17:01:03 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 17 Apr 2024 17:01:04 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 17 Apr
- 2024 17:01:03 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <kevin_yang@realtek.com>
-Subject: [PATCH 2/2] wifi: rtw89: 8922a: fix argument to hal_reset in bb_cfg_txrx_path
-Date: Wed, 17 Apr 2024 17:00:58 +0800
-Message-ID: <20240417090058.42663-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1713346449; c=relaxed/simple;
+	bh=fo3O80t7FzhxlckXKx8SFuEEjYelxI1xaPtVHGSyxTw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lbxjXr6GSombTM8ACR3zLjfUQXPAGU3X86AbidiGz/c+SEzhCzCPY2X/EEYPsBERu9sSz9ago98Tv4sVBend/rUgBprk479+3bwyyOt6MwYsE+BV5JNyOXrllId3aJVwgVpKY6R0A4B5NPESB5Q/S5QzpgRCrG7Uhli3vlAjnFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QRFBuSeQ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bFVMEgX7; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Martin Kaistra <martin.kaistra@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1713346446;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=XPc4/z3TTkt+0V8zuUS+V5Q4uGmxbl3sXcnzTTjUGRs=;
+	b=QRFBuSeQnqP+aKPLVVlrAHfX7NnP9fHLcs+sB5q3DxkJZK8fc6fxS/Vt8PeoJgSY360OEt
+	XvIQtKUTJCr5o6cIgF80ZmQLL15cCOm2+1RJxG2tGFIQZIz/p7zQ4RF15lOB7CnnszA/Qp
+	VcH4wl9p5JeUe0b/5P2qZYPtwENe+7vZdJKjpiyclt+Q49KWNYXF3v4ejk4inxW0q1nPMT
+	yeWZP3/jvEA/szlUcyqcXW666tPQ9nAACazoe+ilna6FFWr5DnAKbsydMlVkX/Nftj/FW2
+	owLJbhuMLA2aQuAp9sirmZU1NDpQ8H5yOmwaXBNVBlZre/sUVBTJT1lOY/CBIg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1713346446;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=XPc4/z3TTkt+0V8zuUS+V5Q4uGmxbl3sXcnzTTjUGRs=;
+	b=bFVMEgX7rGMbV55a4BYYEzQZAQ//uefdJFv1ZjG24nzfdPRkmMI5LENm0cNAcxgllYl6m7
+	aZZPih1weOeMYRDQ==
+To: linux-wireless@vger.kernel.org
+Cc: Jes Sorensen <Jes.Sorensen@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH 0/2] wifi: rtl8xxxu: WPA3 support
+Date: Wed, 17 Apr 2024 11:33:50 +0200
+Message-Id: <20240417093352.1840632-1-martin.kaistra@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -55,34 +66,21 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+As discussed in [1], here are the new patches for supporting WPA3 SAE in
+the rtl8xxxu driver. Tested with 8188fu.
 
-When hal_reset on MAC_1/PHY_1, we should pass tx_en1 instead of tx_en0.
+[1] https://lore.kernel.org/linux-wireless/eefdf5e598eb4e758130d416793ad9d7@realtek.com/
 
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/rtw8922a.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Martin Kaistra (2):
+  Revert "wifi: rtl8xxxu: enable MFP support"
+  wifi: rtl8xxxu: enable MFP support
 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922a.c b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-index 1d0b6de0eeab..3b3ea3a7c19a 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-@@ -2126,7 +2126,7 @@ static void rtw8922a_bb_cfg_txrx_path(struct rtw89_dev *rtwdev)
- 	rtw8922a_hal_reset(rtwdev, RTW89_PHY_0, RTW89_MAC_0, band, &tx_en0, false);
- 	if (rtwdev->dbcc_en)
- 		rtw8922a_hal_reset(rtwdev, RTW89_PHY_1, RTW89_MAC_1, band,
--				   &tx_en0, false);
-+				   &tx_en1, false);
- }
- 
- static u8 rtw8922a_get_thermal(struct rtw89_dev *rtwdev, enum rtw89_rf_path rf_path)
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h      | 9 +++++++++
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 6 ++----
+ 2 files changed, 11 insertions(+), 4 deletions(-)
+
 -- 
-2.25.1
+2.39.2
 
 
