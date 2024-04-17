@@ -1,148 +1,120 @@
-Return-Path: <linux-wireless+bounces-6432-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6433-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5E668A7FB9
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 11:34:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E61818A7FC0
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 11:34:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BC691F22111
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 09:34:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4F201C216F0
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Apr 2024 09:34:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72011327E5;
-	Wed, 17 Apr 2024 09:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25B712F375;
+	Wed, 17 Apr 2024 09:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Q0MiUKkD";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="c/A7I8SO"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="WfOmZAiP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A42112FB3E;
-	Wed, 17 Apr 2024 09:34:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A4513AA2E;
+	Wed, 17 Apr 2024 09:34:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713346449; cv=none; b=o22FmE9wmRHlRH8gkwtP3o2zwJgfW7mhebbi9rv0vYd4ljHts65tOejNn0/AseVCQPk0WkT2dLiuRzkvedK5ehuKb++io7csUd/RT6Na0SInDZB/C1tHBR0MDcyQ7QikSeHaQF0H0qlp6u4iEFaJU0wsOXxjff9Q3e6rtB5Ap44=
+	t=1713346463; cv=none; b=UYDtpxTmFMlIPAOYJLL3/p29G3MLq1BJdTdXMWtnbKogsEy0IoSTMVi1aYlZz55iWk7UnL/2a3gFDdtA/AFGIq/GBdpMA/y2VaCZMkd9PlU0HkrTVY/BHeuJ8eVvt0jIgKkNe+4uBJYmKCmLk5wpx2+BRdjGhMJKwGA6xGla9Uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713346449; c=relaxed/simple;
-	bh=kN90jndgiFO0MC3EhH/pmTsVnzp2fc8W39rYQDRB/HQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=leCwAaMOzwMF9WhS02B9qoX9yAvAd8oR7Ys4/JjqIyxe2upWUXXWS3IjJPn+Ygo0GRhfgA70fUOe9mAoHFAtEpfU4BOKShObQtj3pasUvSSEw/dVOLbtIjtU1wl070Syol2kpFcJQOLLwD2PU78r85yvGMrrha1zAZrpoU6HN/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Q0MiUKkD; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=c/A7I8SO; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Martin Kaistra <martin.kaistra@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1713346446;
+	s=arc-20240116; t=1713346463; c=relaxed/simple;
+	bh=IA6NeFKMpm8UaFyMn2FIPCKOpK3ratJvAaNDp/C02dw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=D7XeiSfs5B/kcAJK0WzQvX0uNtBK2+rn8IYw5w5lwpoBkApWirA1VA3OJsMt6Jwuj9h/yMg0Q3NlVOGRCv8I09+nnxWAwHMT5nohLOs4B75FLStYpfA91HrzbEClIfY3d/wzKx8CcBQhy0swfnudUOCTbaAIRvBiiVGAa1hViXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=WfOmZAiP; arc=none smtp.client-ip=217.70.183.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C978BFF805;
+	Wed, 17 Apr 2024 09:34:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1713346454;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WXHMgCoxkvQpet00Q19cxZJkOm1T4p+LzBOkMzDbXOE=;
-	b=Q0MiUKkDHTYfWXT3LH1rsuYBwNEsZ4h/JYly1ASppJC4iFAiFuILpgcvBOjj1U5I1T717p
-	lqHS2225EGbzHpq7VfKBKFmjKefk7QdJMGq1//hkid1eun3rw4z+rkUbL0iKzEdjXONu2U
-	Plw1hyyqTMNIv1+xAxft29bYXsJWaRr2o++F5VAC9RNrWo8X4Mr2ZM2SsQ+O1NFblTOtuT
-	tFRlUKfLuOABVa430G0qzYZTIhHBKD1i8pPkgRRdLT4gb7xvcHUfsnCtTstleUx7uGi9cQ
-	YnB16FF777MtAsRXu2gqcvr79CyzDeORtbEdnF1zxxeJxyveifNor8TZ/a43tg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1713346446;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WXHMgCoxkvQpet00Q19cxZJkOm1T4p+LzBOkMzDbXOE=;
-	b=c/A7I8SOMI3vyvSmsclkbn2uLOeRruiCLrU3ZeV022vdkIHCQyvoKTmSrjPdG6ZekeLkv5
-	fWXj5Hh68F+eq/CQ==
-To: linux-wireless@vger.kernel.org
-Cc: Jes Sorensen <Jes.Sorensen@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] wifi: rtl8xxxu: enable MFP support
-Date: Wed, 17 Apr 2024 11:33:52 +0200
-Message-Id: <20240417093352.1840632-3-martin.kaistra@linutronix.de>
-In-Reply-To: <20240417093352.1840632-1-martin.kaistra@linutronix.de>
-References: <20240417093352.1840632-1-martin.kaistra@linutronix.de>
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=g9mywsyvFR+b2b90l5RvO1Xzk1fJrXNUaUXrvGwRgyw=;
+	b=WfOmZAiPZ7GcKuFhHLznzEDA8WJs5xUY6URYtJzb0IJIpMl4rA6slSAxNpfR1L53nOaEYh
+	N9OC/6NmzFaANx3FAMDYw1kRpUIQ7DH4HEuftSXwruN3B/C2WpBeC/d38w5HnQeioqOdRC
+	Uq36FPA2lwb85cQ89uuA+PSXm3h8eS5ouaOGso9LyZkpBJe/2OE5kzv1M3LfzxT+ob/Y0C
+	McQpFBv53ooQLQ+NcYMtf/EdKSU5XiTMBEgMgfwW6m+a5D8XaIxKoV8L+MH08mU3sgLbEe
+	7+xiNZLLvUOXOlxX4KSiXDYmdVCdHgtYuv1u44X6hMbP8BJyQUccrxDxdyhvWw==
+From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Subject: [PATCH 0/6] wifi: wilc1000: fix default mac address
+Date: Wed, 17 Apr 2024 11:34:07 +0200
+Message-Id: <20240417-mac_addr_at_probe-v1-0-67d6c9b3bc2b@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAI+XH2YC/x3MSQqAMAxA0atI1hZsHBZeRaR0iJqFVVIRoXh3i
+ 8u3+D9DImFKMFYZhG5OfMQCXVfgNxtXUhyKARtsNaJWu/XGhiDGXuaUw5FqvRuarnPY6wClO4U
+ Wfv7nNL/vB+d/HQtjAAAA
+To: Ajay Singh <ajay.kathat@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Kalle Valo <kvalo@kernel.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>, 
+ Heiko Thiery <heiko.thiery@gmail.com>
+X-Mailer: b4 0.13.0
+X-GND-Sasl: alexis.lothore@bootlin.com
 
-In order to connect to networks which require 802.11w, add the
-MFP_CAPABLE flag and let mac80211 do the actual crypto in software.
+This series aims to fix invalid mac address issue raised by Thiery Heiko
+([1]). WILC1000 mac address is currently not set until device is opened, at
+which point firmware is loaded and started. This results in default mac
+address being 00:00:00:00:00:00.
 
-When a robust management frame is received, rx_dec->swdec is not set,
-even though the HW did not decrypt it. Extend the check and don't set
-RX_FLAG_DECRYPTED for these frames in order to use SW decryption.
+This series, based on an initial patch from Ajay, reads the MAC address
+from chip eFuse whenever we set the first interface (at probe time). To do
+so, we need to ensure that any bus communication is properly initialized,
+so the first commits slightly rearrange/fix initialization/registration
+order to allow to read MAC address properly.
+Based on the tests I did during this series adjustments, there are still a
+few corner cased not properly handled, especially when dealing with two
+interfaces on top of the same wphy, but it fixes at least the user-facing
+mac address for those interfaces so user space network managers are not
+confused anymore.
 
-Use the security flag in the RX descriptor for this purpose, like it is
-done in the rtw88 driver.
+[1] https://lore.kernel.org/netdev/CAEyMn7aV-B4OEhHR4Ad0LM3sKCz1-nDqSb9uZNmRWR-hMZ=z+A@mail.gmail.com/
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
 ---
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h      | 9 +++++++++
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 7 +++++--
- 2 files changed, 14 insertions(+), 2 deletions(-)
+Ajay Singh (1):
+      wifi: wilc1000: read MAC address from fuse at probe
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-index fd92d23c43d91..4f2615dbfd0f0 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-@@ -122,6 +122,15 @@ enum rtl8xxxu_rx_type {
- 	RX_TYPE_ERROR = -1
- };
- 
-+enum rtw_rx_desc_enc {
-+	RX_DESC_ENC_NONE	= 0,
-+	RX_DESC_ENC_WEP40	= 1,
-+	RX_DESC_ENC_TKIP_WO_MIC	= 2,
-+	RX_DESC_ENC_TKIP_MIC	= 3,
-+	RX_DESC_ENC_AES		= 4,
-+	RX_DESC_ENC_WEP104	= 5,
-+};
-+
- struct rtl8xxxu_rxdesc16 {
- #ifdef __LITTLE_ENDIAN
- 	u32 pktlen:14;
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 4a49f8f9d80f2..b15a30a54259e 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -6473,7 +6473,8 @@ int rtl8xxxu_parse_rxdesc16(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
- 			rx_status->mactime = rx_desc->tsfl;
- 			rx_status->flag |= RX_FLAG_MACTIME_START;
- 
--			if (!rx_desc->swdec)
-+			if (!rx_desc->swdec &&
-+			    rx_desc->security != RX_DESC_ENC_NONE)
- 				rx_status->flag |= RX_FLAG_DECRYPTED;
- 			if (rx_desc->crc32)
- 				rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
-@@ -6578,7 +6579,8 @@ int rtl8xxxu_parse_rxdesc24(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
- 			rx_status->mactime = rx_desc->tsfl;
- 			rx_status->flag |= RX_FLAG_MACTIME_START;
- 
--			if (!rx_desc->swdec)
-+			if (!rx_desc->swdec &&
-+			    rx_desc->security != RX_DESC_ENC_NONE)
- 				rx_status->flag |= RX_FLAG_DECRYPTED;
- 			if (rx_desc->crc32)
- 				rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
-@@ -7998,6 +8000,7 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
- 	ieee80211_hw_set(hw, HAS_RATE_CONTROL);
- 	ieee80211_hw_set(hw, SUPPORT_FAST_XMIT);
- 	ieee80211_hw_set(hw, AMPDU_AGGREGATION);
-+	ieee80211_hw_set(hw, MFP_CAPABLE);
- 
- 	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
- 
+Alexis Lothoré (5):
+      wifi: wilc1000: set net device registration as last step during interface creation
+      wifi: wilc1000: register net device only after bus being fully initialized
+      wifi: wilc1000: set wilc_set_mac_address parameter as const
+      wifi: wilc1000: add function to read mac address from eFuse
+      wifi: wilc1000: make sdio deinit function really deinit the sdio card
+
+ drivers/net/wireless/microchip/wilc1000/cfg80211.c | 10 ---
+ drivers/net/wireless/microchip/wilc1000/fw.h       | 13 ++++
+ drivers/net/wireless/microchip/wilc1000/hif.c      |  4 +-
+ drivers/net/wireless/microchip/wilc1000/hif.h      |  2 +-
+ drivers/net/wireless/microchip/wilc1000/netdev.c   | 71 ++++++++++++----------
+ drivers/net/wireless/microchip/wilc1000/netdev.h   |  2 +
+ drivers/net/wireless/microchip/wilc1000/sdio.c     | 71 +++++++++++++++++++++-
+ drivers/net/wireless/microchip/wilc1000/spi.c      | 17 +++++-
+ drivers/net/wireless/microchip/wilc1000/wlan.c     | 48 +++++++++++++++
+ drivers/net/wireless/microchip/wilc1000/wlan.h     |  1 +
+ 10 files changed, 191 insertions(+), 48 deletions(-)
+---
+base-commit: db5037bd459adeba309af1f97fd5c9b6a0788b2a
+change-id: 20231221-mac_addr_at_probe-3cb6044b251d
+
+Best regards,
 -- 
-2.39.2
+Alexis Lothoré, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
