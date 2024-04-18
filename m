@@ -1,110 +1,83 @@
-Return-Path: <linux-wireless+bounces-6496-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6498-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D16648A9381
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 08:47:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D763C8A939C
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 08:58:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F3131C20BC4
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 06:47:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1517B1C20B9B
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 06:58:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB2639FDD;
-	Thu, 18 Apr 2024 06:47:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="P4J551ql";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lh9guobA"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABDAB1D68F;
+	Thu, 18 Apr 2024 06:58:06 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2530381CC;
-	Thu, 18 Apr 2024 06:47:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+Received: from mail.holtmann.org (coyote.holtmann.net [212.227.132.17])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837ED36AF2;
+	Thu, 18 Apr 2024 06:58:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.132.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713422855; cv=none; b=t8ZYOlqXdhilNPm121JnfiQ3qxVNy5lqVdRiEhssPgi/EYOXAyAh0F5f+DkdMzamWKuEQFzvdR+PMZ7l78ePQhjB01w277bmcJLRu8NIc4xdkknMdnm5W9foCAzZ+CN/PXXbAOowR6qj95j9V12YO5bc4VWCrq5h0pnACob6SPg=
+	t=1713423486; cv=none; b=NwgYk4l8REAjBbEa9jenxfPYVlLpwRkQrMlYdyywBOFZYGhC2ZeoE8fX6nYo0WIwpP9nVP0kquRyLFqabWUY7PFE6xVuPRWcSgX7AzsjqY8IVKk2TRq+iYbzZ690UDM8+2sI4gN+6qOm7gEplyhxj1QF0D6VmMCxi+WWWcZMLX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713422855; c=relaxed/simple;
-	bh=yYirnyn1Rz0m0IOArDH012oqC2U07n7jEdGYlLv2ll0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JvZDSTvDrfOI6U17U+lymPvU8iH5DSegTEpKZ/vtaha2bCgkKfbkpEOJf1kIufys2iZnR0GKgJ+Zeb7338lcFnE6lxMhogLBAUHD/JS2NOM82i9cF/plGWQLEZlR8+mIGmjLngpuU1FivB2epINZZgju15VadHQj3Dgg5f7BApo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=P4J551ql; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lh9guobA; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Message-ID: <137a9ecb-d5de-4471-bbc1-32986b735f28@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1713422851;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=U/FMRRhZOgYFkdYDsjKnSzxaUyT83xh8rf7YnnW3dWM=;
-	b=P4J551qlI/ttMRlrZTJq0KLT1ZvkMp5q6kKHPH9fhzcw1qVvCm42BFT+jwkDumoHmRKsDt
-	5zzc+1nbxdHyZwv4PoaH+mBjMidWvBGOxQgeO9ByrfvQ/pN3KPqKjCWhMvKqCBmiSKV6IR
-	3LnTMk2a4WhjDXviv4iRHBs88Jrw43i1xGEawhmxGO7KViETc0gZsoVqZuP9qnVldLfUpg
-	1awPRGsBcLOUl79KT0DJ1Rp8IcXjgbnLHKbWFo+OeGw75hG6GuvxWZQjXl+pu8h05bJqtz
-	8AV8/raIF0F3I4jgyNFHTesPb3DUbtMgqzkIhCpfLDT82isBTCKFUvT+Wb38Fg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1713422851;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=U/FMRRhZOgYFkdYDsjKnSzxaUyT83xh8rf7YnnW3dWM=;
-	b=lh9guobAWLFJ2MOcFFwzD4H7YDvL20RZ5ez681MpBmbecxhVPHwrudprxkUoPON128WBbw
-	uJ05Zr8VJsxUTKAw==
-Date: Thu, 18 Apr 2024 08:47:31 +0200
+	s=arc-20240116; t=1713423486; c=relaxed/simple;
+	bh=fE/M2BBdmiOv3+JeGI7/kOBvg7/Tz6STSa9jybDFZGs=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=pUGFzEGbBc6CIIezxyCuo8pKqKIjwYkc2ubxg+jhlXdabot700J24BoAKD7h/torMdsFug8ib2dFy7uW0ea/tt0OFUW/QRO3Oj/8DgJs98eG+MeShgg7iNJiW2EKujGipJlpwX/y77oAa74BOhI21of0fZVXe7far6hFG1E8HGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=holtmann.org; spf=pass smtp.mailfrom=holtmann.org; arc=none smtp.client-ip=212.227.132.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=holtmann.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=holtmann.org
+Received: from smtpclient.apple (p4fefc49c.dip0.t-ipconnect.de [79.239.196.156])
+	by mail.holtmann.org (Postfix) with ESMTPSA id C3228CECC5;
+	Thu, 18 Apr 2024 08:48:08 +0200 (CEST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Subject: Re: [PATCH 2/2] wifi: rtl8xxxu: enable MFP support
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Jes Sorensen <Jes.Sorensen@gmail.com>,
- Bitterblue Smith <rtl8821cerfe2@gmail.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20240417093352.1840632-1-martin.kaistra@linutronix.de>
- <20240417093352.1840632-3-martin.kaistra@linutronix.de>
- <6a1571aadad1486eb83a19437e1d2437@realtek.com>
-Content-Language: de-DE
-From: Martin Kaistra <martin.kaistra@linutronix.de>
-In-Reply-To: <6a1571aadad1486eb83a19437e1d2437@realtek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
+Subject: Re: [PATCH v10 0/2] wifi: mwifiex: add code to support host mlme
+From: Marcel Holtmann <marcel@holtmann.org>
+In-Reply-To: <20240418060626.431202-1-yu-hao.lin@nxp.com>
+Date: Thu, 18 Apr 2024 08:47:58 +0200
+Cc: linux-wireless@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>,
+ briannorris@chromium.org,
+ Kalle Valo <kvalo@kernel.org>,
+ francesco@dolcini.it,
+ tsung-hsien.hsieh@nxp.com,
+ rafael.beims@toradex.com,
+ Francesco Dolcini <francesco.dolcini@toradex.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <0ED16BAB-6E7D-487C-BBCA-E63FEF37C60D@holtmann.org>
+References: <20240418060626.431202-1-yu-hao.lin@nxp.com>
+To: David Lin <yu-hao.lin@nxp.com>
+X-Mailer: Apple Mail (2.3774.500.171.1.1)
 
-Am 18.04.24 um 02:19 schrieb Ping-Ke Shih:
-> Martin Kaistra <martin.kaistra@linutronix.de> wrote:
-> 
->>
->> In order to connect to networks which require 802.11w, add the
->> MFP_CAPABLE flag and let mac80211 do the actual crypto in software.
->>
->> When a robust management frame is received, rx_dec->swdec is not set,
->> even though the HW did not decrypt it. Extend the check and don't set
->> RX_FLAG_DECRYPTED for these frames in order to use SW decryption.
->>
->> Use the security flag in the RX descriptor for this purpose, like it is
->> done in the rtw88 driver.
->>
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
-> 
-> I would like to change subject to
-> "wifi: rtl8xxxu: enable MFP support with security flag of RX descriptor",
-> because the same subject as former patch cause confusing. I can change that
-> during committing.
-> 
-> Others are good to me.
-> 
+Hi David,
 
-ok, subject change is fine for me.
-I just noticed though, that I named the enum "rtw_rx_desc_enc" instead of the 
-probably more appropriate "rtl8xxxu_rx_desc_enc". Should I change that?
+> With host mlme:
+> Tested-by: <rafael.beims@toradex.com> #Verdin AM62 IW416 SD
+> Without host mlme:
+> Tested-by: Francesco Dolcini <francesco.dolcini@toradex.com> # =
+88W8997-SD
+>=20
+> This series add host based MLME support to the mwifiex driver, this
+> enables WPA3 support in both client and AP mode.
+> To enable WPA3, a firmware with corresponding V2 Key API support is
+> required.
+> The feature is currently only enabled on NXP IW416 (SD8978), and it
+> was internally validated by NXP QA team. Other NXP Wi-Fi chips
+> supported in current mwifiex are not affected by this change.
 
-Martin
+I am a bit confused here. If this is just for WPA3 support, then =
+wasn=E2=80=99t
+this suppose to be solved with external_auth support?
+
+Regards
+
+Marcel
+
 
