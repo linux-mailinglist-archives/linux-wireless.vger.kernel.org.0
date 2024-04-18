@@ -1,300 +1,241 @@
-Return-Path: <linux-wireless+bounces-6488-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6489-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E2ED8A914A
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 04:51:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6160A8A9198
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 05:37:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93AA4B20B05
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 02:51:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 197192834E6
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 03:37:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 419C8286AF;
-	Thu, 18 Apr 2024 02:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70F71537E0;
+	Thu, 18 Apr 2024 03:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gJS8EQ/B"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="bzYRuEtQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2057.outbound.protection.outlook.com [40.107.20.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6D063D5
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Apr 2024 02:50:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713408659; cv=none; b=vE7cPVzJv4GRtYoUx7XJigJugkCR7qvX54pixpBuXcLsSNTfqUaO6Y0+2wtTTRSEvU7wfwSTjAAbhQTQaeo3Cgj+z2w8ffld8DLYaTpcnvnQFmvpceMpp9S4DOuejxSyz0/R0sxXZ4LtVqIjf/fq1e6+nH+YVWaCDw4Dk5VMV+4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713408659; c=relaxed/simple;
-	bh=3Rc6752rBiGPr/0xv5ZCsFWyNqVQsj4KsbGFchAYx5g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=huqeADIOKKx+svgnlbX1R63GGOSdySx7D2OUGWC5xuWlUpi/qeAPzbMLe/ggZCxQN6Bgie3gMvjgqzS577ruBi35jLHLtWeevnUEwTpsAVh6Fj6ybAyGH2DD7U8uA5oaAAQmKuStiwmrl3pFJqrHqvSz8/QH2pWK1whigiU2PCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gJS8EQ/B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E485C072AA
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Apr 2024 02:50:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713408658;
-	bh=3Rc6752rBiGPr/0xv5ZCsFWyNqVQsj4KsbGFchAYx5g=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=gJS8EQ/BmnbFiUwfoXAjRwo6hApEJnsqydF038OLMNXnK1JEPEjuL4hQ6elXgffSC
-	 phxPICNCuuqItPnFQrez7sQP6gInIEDv9TAJZheGjrCuJr/MZszmm0V7l5x+aZFZCr
-	 DieYyttO4OBffTnznTiGXdmNhdmdb18JoOoN2hQhAcVOAqSQFWqRUapmsNoG7oCgEC
-	 d8TFvlOWd1ZnhfaNxgeYAtCxSazk71jUI2274n8fF5BbPLO79z7m4gvngx3cx5CeS9
-	 JPbkL2ThM2PpR9bxgST0PvmY6pXF8eyDoFC7G/Tbgdl1KxwZqwXMk/uScXlzPhY0DP
-	 dvw3z1hkenZkw==
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2dac628f08fso1098021fa.3
-        for <linux-wireless@vger.kernel.org>; Wed, 17 Apr 2024 19:50:58 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXD4irMOjGxxV5tvUoY+JCIjcA8tskrJJ8iebgRtFW32O3hNnncyS/78jEPkJNEQecEERynr2SXyGSlQ4fOSB523ZZy5TGL0P/xJFXfOBU=
-X-Gm-Message-State: AOJu0YxKzX/mofwU6NpSPU7Y1LKAQKOWNxulkJkEI3sryJBXRYyXaCcC
-	PY10XanMBKFKZ9MaiZjpHZ7qhrnifFgyMHv05Vr/X2vz6gFgEwlzdex5hPQgO1oOQfHHKFtjYGr
-	7VYdSj2FEViAn0MKzjmD6oHSmL+Y=
-X-Google-Smtp-Source: AGHT+IGUOvWaUZzO3Cqsw5rBu/1uEhhnaWW6uCRk/Vqkwg/ZtKgqBoU0TSeGs/4NOQfyZwTP/TUo0vnbwJ1YrDERKJg=
-X-Received: by 2002:ac2:599d:0:b0:516:d6b5:7caf with SMTP id
- w29-20020ac2599d000000b00516d6b57cafmr514839lfn.6.1713408656259; Wed, 17 Apr
- 2024 19:50:56 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7FBA38DDB;
+	Thu, 18 Apr 2024 03:37:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.57
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713411462; cv=fail; b=FWa44pkVCNu1BcwQ+39ZGT3BCkaG1k0VX5HzOSxsOxBS5jOIBAAWQR5SDeqkI5R8PRIQrlMe05N61Bb7FvQM+3YPZlwSewEkNI1ZfYZyDsKa4wLCpkzj2voHvSwK+cI1UNLsIgd57ekwgT1TLgCsweK4pn8aEg8o6p05qTmvHTU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713411462; c=relaxed/simple;
+	bh=i3kSwYnInDGXu04pHRIXU2p7dqxZiTKPhCaY/UcWte0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=hmh/yLfWJ0iiPjEQgbr71Y9A1Gx3udPYhCmJJ7oe1ILmiUholrUsup/y6wLJVS+kFumUeZDoprEPpVs87m98iPhuZ6xFio1a+pZmmsqpVku3t1Z5VZ0JjoNVU7VjW/obTfQ7UPctTxVzZrnKjavrV7jckf2ElBLY8p5bfyLEeis=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=bzYRuEtQ; arc=fail smtp.client-ip=40.107.20.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=KDfUNnHX0nfMu+/Bf0nzzr9vvxaCwJiNXsWJVOOllZZWAoovIcI+siXB1wuCisYV7DdsaR2LxBp+fvdtrlnxRhtYrps7A8KtzMnUEga9NTJq4kOzGuODswkBefcQB/94iwTRK+t7myLp4ULUphe2xmxwl2pMB1XhKqsYm4TPOmF4f0nTnqGVGn03EG4/GOeAt1rvIXtVU4nw7OV74p2YYV6XzlkAk3Fm8LLZ4896m81hmU1Wq0hWDMBSL+tjU0v2lVNOGw35H3Dp0q0T/5F1wojq7gvpEh/xcXoRZ3UJXzzR5btCtuwdN6oNpj7OKd5+ypQNNFvwyr3F75GMULCe0Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=C5QPyWyU269ya3AXy0GQQHhyosC/kg3sAKWou1I3oA4=;
+ b=Csrql3m7mtB3+vZil9+Oe9Il7jZDX38CLvczLrgNVil5Gn0ZmjKRtPNQ39cUeVcxT3C2zbWSjBvE/hFr5YssY3uvjO4fvjV6FA0RNtk0Txroz/As2j9QqEbxp0doBhs1FfHB0vjw/il5C2R8JsyO+uxOAiGyqr/Z/61dnHs+cCVE2E5Y54sM4KggLe2pAt8fF/ntKZhkG6GzP7Lv0AuMef9Nt2EGkLJcX3zGLwozfP+JsFYKjvF2OEF5ltwC+OHHqZVb98WO+5EvoP4pw4D4sIGltb0LnYiCoe+PGNerDZvRKyeSjjGkRCZc81IfKwIgbws7scz3u1nyWkXIkEEDPw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=C5QPyWyU269ya3AXy0GQQHhyosC/kg3sAKWou1I3oA4=;
+ b=bzYRuEtQGei004kuQQISIHHVG3NGuGSqDKsqH8xjBsZy+eSdnHZ1pJ9I+db13tLf2FvTVhAemg6h/sEWNM5xF5UoYVsUf6b14j23d3qThCESDphtoKRz7aTJzC+4x9Ua/ERxdYa+BOmI6ykPrObhOBU4oP81SuDJHIIxWDMn//c=
+Received: from PA4PR04MB9638.eurprd04.prod.outlook.com (2603:10a6:102:273::20)
+ by PAXPR04MB9518.eurprd04.prod.outlook.com (2603:10a6:102:22d::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.39; Thu, 18 Apr
+ 2024 03:37:35 +0000
+Received: from PA4PR04MB9638.eurprd04.prod.outlook.com
+ ([fe80::2274:2bca:7778:b464]) by PA4PR04MB9638.eurprd04.prod.outlook.com
+ ([fe80::2274:2bca:7778:b464%7]) with mapi id 15.20.7472.037; Thu, 18 Apr 2024
+ 03:37:35 +0000
+From: David Lin <yu-hao.lin@nxp.com>
+To: David Lin <yu-hao.lin@nxp.com>, Brian Norris <briannorris@chromium.org>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kvalo@kernel.org" <kvalo@kernel.org>, "francesco@dolcini.it"
+	<francesco@dolcini.it>, Pete Hsieh <tsung-hsien.hsieh@nxp.com>, Francesco
+ Dolcini <francesco.dolcini@toradex.com>
+Subject: RE: [EXT] Re: [PATCH v9 2/2] wifi: mwifiex: add host mlme for AP mode
+Thread-Topic: [EXT] Re: [PATCH v9 2/2] wifi: mwifiex: add host mlme for AP
+ mode
+Thread-Index: AQHab2oqV1El38Ap00yuI3DpHpR6T7E5l5eAgAM6irCAMNJAYA==
+Date: Thu, 18 Apr 2024 03:37:35 +0000
+Message-ID:
+ <PA4PR04MB9638A61A144364C3567AEA76D10E2@PA4PR04MB9638.eurprd04.prod.outlook.com>
+References: <20240306020053.18054-1-yu-hao.lin@nxp.com>
+ <20240306020053.18054-3-yu-hao.lin@nxp.com> <ZfTrm7bxMykHO-M-@google.com>
+ <PA4PR04MB9638D5722670E38B5691B948D12D2@PA4PR04MB9638.eurprd04.prod.outlook.com>
+In-Reply-To:
+ <PA4PR04MB9638D5722670E38B5691B948D12D2@PA4PR04MB9638.eurprd04.prod.outlook.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PA4PR04MB9638:EE_|PAXPR04MB9518:EE_
+x-ms-office365-filtering-correlation-id: f0c22837-6c9f-4038-f11d-08dc5f58e315
+x-ld-processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ IR3TWl4FovYZEVMJ4JoexUPPtf4FG/DsqGOrejvBSgX5W9E3e4xHLlOCMViOmOjF269xD4MR2jtDPisboH28Hg/E5nKE+eTNoPFG46rX6ZUQLlJ2GoRhqGptko2Blk4hZ9MnFCLN1GPEmVPfOqY9YGKeRE1bhlmRrKG4YrLD+EZVD2CdIHjDsym+4FJxbxZzLnfDlTM3Ey+sLsWEaLteaXjv796dGd8QaA0VNa9PGCwhVWawJeunPtrnEBur6KbHwak9b2BiDew3iiUqx7ZEj0oo7HUc6WAAZ7+XCJNS8/+0XLGSZKuLISR08Dug21JTNfHtArq1+sCs42sFlafOg/9eiXDRpmwyacBP156TwcBDrzO+MWEsR/HXiPOGyWq4cR4UfdWYEBUAYRnYYAXWOkAdyGuo5GnrIFSNdiJreSCuH56iOlTIebtEpOcsi7mxyN8tf3gTVDAVfPOz11ixvRbF6cPJ8iMMKWBtzTk8eW4Fw7xnk45ZdkuemeLeixmD9gLUbxWlPx3A5i1p/irOkuvfdEFdGZKYyD9o3F/Q9AmdkajJZ1BaacHsMR6s0isSRcP9R4S+b3Qw4Rqd3Fivb/c/4bryMcp+cqp7gIPXuiQ5sZq8SbDzfm4IisLt5x6lnDy+gyFJxOi+BOOcq3MDeISt7Pvfvr9I+UQTLLj81SIgrO4zG5hEOIiIcv6HhiTCoPx25L9v/CtxV8JzbX0QIuiidylQPNmPr0RNvMMyVoA=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(376005)(38070700009);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?tLSyVGe11HqmV6ikSH5uDORkqpctTP7PKk9r3jmsJq1BysdFFElLq8eWd0Vm?=
+ =?us-ascii?Q?og0scfxA6aQzSY90e9k+pgZj0MSdOV1hxp1qohRYPvIbmNRZ+h+wbvDP2vrK?=
+ =?us-ascii?Q?pyJ8o1yiHQzFpfo3ved0kcXzc9X/xzQZJzQBak5yilEjtt+5tBzRxPooDogn?=
+ =?us-ascii?Q?43WqikY1ZtjK0z4SVTpKJo0VN1Rt4gAQpclOt6RXH3aVpIbOb4f0Jvdk7wbu?=
+ =?us-ascii?Q?DA+BV10e2ZN574nGAJkR3yklcJMiIC8soMQ6yLn0xvG3PFWBF/rmxQA4TVoV?=
+ =?us-ascii?Q?TkXEm5tEEVdEPYTSL13fmriuVbLypGYINAqqeHFRvLVtv95jNRNqCWT5D/1e?=
+ =?us-ascii?Q?JireKQHbNzuBwIotxRvmcb5QVY20XizubpSLotibFfX5ka1uGDdEwjworgpH?=
+ =?us-ascii?Q?0MCiet7mzXYApT6XKe4+zH6ra216Ov+/UTwoCgYFXZ4DeKLVozB/yh7NEHd9?=
+ =?us-ascii?Q?7lFjcULwPlkg1OgSDIaEwoG3TmSHDYRH7asqqwqZUiFk8i0fUsR2sF4c+MyN?=
+ =?us-ascii?Q?k4GLxJiewALZw8mmiQkid4wod5HewK6dOJnCDY0kCHVmMMXuDNmjXNWW8Zsu?=
+ =?us-ascii?Q?a8LQAVSBjaAwFvztmMpEIPA/k7f51AoZvx28H58EN+0wA3yveF8813YcnDB5?=
+ =?us-ascii?Q?ogakD6W3pVpGQ3Dqf5nG+0mvEUKDoUKEKGZPkIqmE6N1UrwQF1vI9OB3Dwhv?=
+ =?us-ascii?Q?9Lesovk4SQ6JlLgYYfZdR4KlLlyDdiruO7fSNtodMwGl1ONGidC2c4wnPEQO?=
+ =?us-ascii?Q?6J5O6XF1RIrrLtQLJO9Q7xlYrLis5CRW3uvnPV9dJWIv7C70v1asSiW2yru4?=
+ =?us-ascii?Q?Ep+ags8qZE4ndhTStCdtU4j6gF7A03mriR4q4pfMS6oWDqYpUZh/cKYFUP7Q?=
+ =?us-ascii?Q?m7KyG+r45g+bqKquE0hJaWts8c0lazplnL73sNJQAjHR1DQc8zXY3JYo33d9?=
+ =?us-ascii?Q?M92uCB7uY7ZaZyUJ4kA0BezQ7vPUVfG+/+DshkyQoz4mIN07oEWqHxOGN3K/?=
+ =?us-ascii?Q?V/3BpMRMT3ihbDX9q68lQ4X+TFBVhAMBfvYSMciCArm0FsksuABdmex+KIvR?=
+ =?us-ascii?Q?UL5LINykkcp7NI7CUKYxl4BUnMNRTt+4BKHmxYDLm3kn5KnJeyXrszIcdSqn?=
+ =?us-ascii?Q?0TH3X/w064MfQnPnhJTDzb3SBt/xK0Pv/ZpFyo/CccwzKgyO7Qk627JNW5c0?=
+ =?us-ascii?Q?7XI5+aXSLgzePqwB+Q1YA543DfkxxbGYJjIRCgJlQCTMB9EV9k3V8C3rTaaS?=
+ =?us-ascii?Q?lbOQCgfI/ukCr813AoXQmIcB0t2Dl0uLn1MpiVyd/U21BYmxneD6QcPI+iyB?=
+ =?us-ascii?Q?GWCuSAltamXJWnBZ0N1r5+6KQUmgM2b6LDYrcbImgOh+wj+pmNCfr/1rVPUv?=
+ =?us-ascii?Q?rBpxQeoi1sbxS6xg1wMxGcCl2Fqgwy7t9Vs9bXNek4NnZA1K+PXQ/9P1oCj8?=
+ =?us-ascii?Q?X8CDWuih2UP4OhHmdFzDLCYoAUQr/yDeH9aT2kg28FFfB13rjoM9JzPHRQYb?=
+ =?us-ascii?Q?MG2pH+BIMqm5N0xdNk/esFCz8k0aOFk41cBMpG0ro+et4fCQTRNpMDy79kT5?=
+ =?us-ascii?Q?X+M82R6mQ4oJK3X53euFWn08dJ7spz89ZKrod0uV?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <608cc2bb1c10c2f53a6bf26711bf49fe2c491e59.1712806947.git.quan.zhou@mediatek.com>
- <CAGp9LzqVGHGriqpC-NTnOtvNNz5o-hXD=HcTCptHfXBD9bnfPQ@mail.gmail.com> <37ab8a32893ea9a1cbc33b6dae26b57127ea4e16.camel@mediatek.com>
-In-Reply-To: <37ab8a32893ea9a1cbc33b6dae26b57127ea4e16.camel@mediatek.com>
-From: Sean Wang <sean.wang@kernel.org>
-Date: Wed, 17 Apr 2024 19:50:42 -0700
-X-Gmail-Original-Message-ID: <CAGp9Lzq6g8YQ=_eZHJX4qQjv-F2anGnPw8f88rHD2Vo1iwiGWg@mail.gmail.com>
-Message-ID: <CAGp9Lzq6g8YQ=_eZHJX4qQjv-F2anGnPw8f88rHD2Vo1iwiGWg@mail.gmail.com>
-Subject: Re: [PATCH v2] wifi: mt76: mt7921e: add LED control support
-To: =?UTF-8?B?UXVhbiBaaG91ICjlkajlhagp?= <Quan.Zhou@mediatek.com>
-Cc: "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>, 
-	=?UTF-8?B?U2hlbmd4aSBYdSAo5b6Q6IOc5ZacKQ==?= <shengxi.xu@mediatek.com>, 
-	=?UTF-8?B?RGVyZW4gV3UgKOatpuW+t+S7gSk=?= <Deren.Wu@mediatek.com>, 
-	=?UTF-8?B?U2hheW5lIENoZW4gKOmZs+i7kuS4nik=?= <Shayne.Chen@mediatek.com>, 
-	"nbd@nbd.name" <nbd@nbd.name>, "lorenzo@kernel.org" <lorenzo@kernel.org>, Sean Wang <Sean.Wang@mediatek.com>, 
-	=?UTF-8?B?SGFvIFpoYW5nICjlvKDmtakp?= <hao.zhang@mediatek.com>, 
-	Ryder Lee <Ryder.Lee@mediatek.com>, 
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9638.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f0c22837-6c9f-4038-f11d-08dc5f58e315
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Apr 2024 03:37:35.0979
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: do9jzOMCeIsb6ti/z8B3X0xV2AXzwUPq/0tRxVp+4jDW7i60oFU9xk9NLEVTSDNMK75+vwIoT42VTL4MusIJLw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9518
 
-On Wed, Apr 17, 2024 at 6:43=E2=80=AFPM Quan Zhou (=E5=91=A8=E5=85=A8) <Qua=
-n.Zhou@mediatek.com> wrote:
->
-> On Wed, 2024-04-17 at 15:06 -0700, Sean Wang wrote:
+> From: David Lin <yu-hao.lin@nxp.com>
+> Sent: Monday, March 18, 2024 10:04 AM
+> To: Brian Norris <briannorris@chromium.org>
+> Cc: linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org;
+> kvalo@kernel.org; francesco@dolcini.it; Pete Hsieh
+> <tsung-hsien.hsieh@nxp.com>; Francesco Dolcini
+> <francesco.dolcini@toradex.com>
+> Subject: RE: [EXT] Re: [PATCH v9 2/2] wifi: mwifiex: add host mlme for AP
+> mode
+> >=20
+> > From: Brian Norris <briannorris@chromium.org>
+> > Sent: Saturday, March 16, 2024 8:45 AM
+> > To: David Lin <yu-hao.lin@nxp.com>
+> > Cc: linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org;
+> > kvalo@kernel.org; francesco@dolcini.it; Pete Hsieh
+> > <tsung-hsien.hsieh@nxp.com>; Francesco Dolcini
+> > <francesco.dolcini@toradex.com>
+> > Subject: [EXT] Re: [PATCH v9 2/2] wifi: mwifiex: add host mlme for AP
+> > mode
 > >
-> > External email : Please do not click links or open attachments until
-> > you have verified the sender or the content.
-> >  HI Quan,
+> > Caution: This is an external email. Please take care when clicking
+> > links or opening attachments. When in doubt, report the message using
+> > the 'Report this email' button
 > >
-> > On Wed, Apr 10, 2024 at 11:00=E2=80=AFPM Quan Zhou <quan.zhou@mediatek.=
-com>
-> > wrote:
-> > >
-> > > From: Hao Zhang <hao.zhang@mediatek.com>
-> > >
-> > > Introduce wifi LED switch control, add flow to Control a wifi
-> > > gpio pin based on the status of WIFI radio, if the pin is connected
-> > > to an LED, the LED will indicate the status of the WiFi radio.
-> > >
-> > > Signed-off-by: Hao Zhang <hao.zhang@mediatek.com>
-> > > Co-developed-by: Quan Zhou <quan.zhou@mediatek.com>
-> > > Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
-> > > ---
-> > > v2:
-> > >  fix to avoid wake device when Hardware interface not pcie
-> > > ---
-> > >  .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  1 +
-> > >  .../net/wireless/mediatek/mt76/mt7921/main.c  | 27
-> > ++++++++++++++++++-
-> > >  .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 14 ++++++++++
-> > >  .../wireless/mediatek/mt76/mt7921/mt7921.h    |  5 ++++
-> > >  .../net/wireless/mediatek/mt76/mt7921/pci.c   |  8 +++++-
-> > >  5 files changed, 53 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-> > b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-> > > index 836cc4d5b1d2..4c2de556dee1 100644
-> > > --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-> > > +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-> > > @@ -1189,6 +1189,7 @@ enum {
-> > >         MCU_EXT_CMD_EFUSE_ACCESS =3D 0x01,
-> > >         MCU_EXT_CMD_RF_REG_ACCESS =3D 0x02,
-> > >         MCU_EXT_CMD_RF_TEST =3D 0x04,
-> > > +       MCU_EXT_CMD_ID_RADIO_ON_OFF_CTRL =3D 0x05,
-> > >         MCU_EXT_CMD_PM_STATE_CTRL =3D 0x07,
-> > >         MCU_EXT_CMD_CHANNEL_SWITCH =3D 0x08,
-> > >         MCU_EXT_CMD_SET_TX_POWER_CTRL =3D 0x11,
-> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> > b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> > > index ca36de34171b..ea6a113b7b36 100644
-> > > --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> > > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> > > @@ -242,6 +242,15 @@ int __mt7921_start(struct mt792x_phy *phy)
-> > >
-> > >         ieee80211_queue_delayed_work(mphy->hw, &mphy->mac_work,
-> > >                                      MT792x_WATCHDOG_TIME);
-> > > +       if (mt76_is_mmio(mphy->dev)) {
 > >
-> > I guess the led control MCU command is not limited to PCIe devices,
-> > they should be able to be extended even on MT7921 USB and SDIO
-> > devices, right ? if so, I think we can drop the MMIO limitation
-> > condition to support more scenarios and to make it easier to
-> > understand.
-> >
-> Hi Sean,
->
-> This software flow involves chip GPIO control and is related to the
-> module's circuit design. Only the PCIe module can provide support for
-> this, so can't drop.
-
-Hi Quan,
-
-Thanks for clearing that up quickly. I guess we can add it just for
-MT7921E. I have another question: Will the new command you added work
-with older firmware, or is it made only for the most recent firmware?
-I'm worried it might not be compatible with the older MT7921 firmware.
-
-                   Sean
->
-> > > +               err =3D mt7921_mcu_radio_led_ctrl(phy->dev,
-> > EXT_CMD_RADIO_LED_CTRL_ENABLE);
-> > > +               if (err)
-> > > +                       return err;
-> > > +
-> > > +               err =3D mt7921_mcu_radio_led_ctrl(phy->dev,
-> > EXT_CMD_RADIO_ON_LED);
-> > > +               if (err)
-> > > +                       return err;
-> > > +       }
+> > On Wed, Mar 06, 2024 at 10:00:53AM +0800, David Lin wrote:
+> > > Add host based MLME to enable WPA3 functionalities in AP mode.
+> > > This feature required a firmware with the corresponding V2 Key API
+> > > support. The feature (WPA3) is currently enabled and verified only
+> > > on IW416. Also, verified no regression with change when host MLME is
+> > > disabled.
 > > >
-> > >         return 0;
-> > >  }
-> > > @@ -259,6 +268,22 @@ static int mt7921_start(struct ieee80211_hw
-> > *hw)
-> > >         return err;
+> > > Signed-off-by: David Lin <yu-hao.lin@nxp.com>
+> > > Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> >
+> > Quick pass for now; nothing jumps out at me today, but I'll give a
+> > better look/Ack next week:
+> >
+> > > --- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+> > > +++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+> >
+> >
+> > > @@ -3951,12 +3974,43 @@
+> > mwifiex_cfg80211_tdls_cancel_chan_switch(struct wiphy *wiphy,
+> > >       }
 > > >  }
 > > >
-> > > +static void mt7921_stop(struct ieee80211_hw *hw)
-> > > +{
-> > > +       struct mt792x_dev *dev =3D mt792x_hw_dev(hw);
-> > > +       int err =3D 0;
+> > > +static int
+> > > +mwifiex_cfg80211_uap_add_station(struct mwifiex_private *priv,
+> > > +const u8
+> > *mac,
+> > > +                              struct station_parameters *params) {
+> > > +     struct mwifiex_sta_info add_sta;
+> > > +     int ret;
 > > > +
-> > > +       if (mt76_is_mmio(&dev->mt76)) {
-> > > +               mt792x_mutex_acquire(dev);
-> > > +               err =3D mt7921_mcu_radio_led_ctrl(dev,
-> > EXT_CMD_RADIO_OFF_LED);
-> > > +               mt792x_mutex_release(dev);
-> > > +               if (err)
-> > > +                       return;
-> > > +       }
+> > > +     memcpy(add_sta.peer_mac, mac, ETH_ALEN);
+> > > +     add_sta.params =3D params;
 > > > +
-> > > +       mt792x_stop(hw);
+> > > +     ret =3D mwifiex_send_cmd(priv, HostCmd_CMD_ADD_NEW_STATION,
+> > > +                            HostCmd_ACT_ADD_STA, 0, (void
+> > *)&add_sta,
+> > > + true);
+> > > +
+> > > +     if (!ret) {
+> > > +             struct station_info *sinfo;
+> > > +
+> > > +             sinfo =3D kzalloc(sizeof(*sinfo), GFP_KERNEL);
+> >
+> > Couldn't this just be stack allocation?
+> >
+> >                 struct staion_info sinfo;
+> >
+> >                 cfg80211_new_sta(priv->netdev, mac, &sinfo,
+> > GFP_KERNEL);
+> >
+> > I'm not sure you need to kzalloc() something here, if you're freeing
+> > it a few lines later.
+> >
+>=20
+> Will modify it in patch v10.
+>=20
+
+This modification will let stack overflow. Patch v10 will keep original cod=
+e.
+
+> >
+> > > +             if (!sinfo)
+> > > +                     return -ENOMEM;
+> > > +
+> > > +             cfg80211_new_sta(priv->netdev, mac, sinfo,
+> GFP_KERNEL);
+> > > +             kfree(sinfo);
+> > > +     }
+> > > +
+> > > +     return ret;
 > > > +}
-> > > +
-> > >  static int
-> > >  mt7921_add_interface(struct ieee80211_hw *hw, struct ieee80211_vif
-> > *vif)
-> > >  {
-> > > @@ -1372,7 +1397,7 @@ static void mt7921_mgd_complete_tx(struct
-> > ieee80211_hw *hw,
-> > >  const struct ieee80211_ops mt7921_ops =3D {
-> > >         .tx =3D mt792x_tx,
-> > >         .start =3D mt7921_start,
-> > > -       .stop =3D mt792x_stop,
-> > > +       .stop =3D mt7921_stop,
-> > >         .add_interface =3D mt7921_add_interface,
-> > >         .remove_interface =3D mt792x_remove_interface,
-> > >         .config =3D mt7921_config,
-> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-> > b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-> > > index 8b4ce32a2cd1..2ebf0ffe78d5 100644
-> > > --- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-> > > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-> > > @@ -606,6 +606,20 @@ int mt7921_run_firmware(struct mt792x_dev
-> > *dev)
-> > >  }
-> > >  EXPORT_SYMBOL_GPL(mt7921_run_firmware);
-> > >
-> > > +int mt7921_mcu_radio_led_ctrl(struct mt792x_dev *dev, u8 value)
-> > > +{
-> > > +       struct {
-> > > +               u8 ctrlid;
-> > > +               u8 rsv[3];
-> > > +       } __packed req =3D {
-> > > +               .ctrlid =3D value,
-> > > +       };
-> > > +
-> > > +       return mt76_mcu_send_msg(&dev->mt76,
-> > MCU_EXT_CMD(ID_RADIO_ON_OFF_CTRL),
-> > > +                               &req, sizeof(req), false);
-> > > +}
-> > > +EXPORT_SYMBOL_GPL(mt7921_mcu_radio_led_ctrl);
-> > > +
-> > >  int mt7921_mcu_set_tx(struct mt792x_dev *dev, struct ieee80211_vif
-> > *vif)
-> > >  {
-> > >         struct mt792x_vif *mvif =3D (struct mt792x_vif *)vif-
-> > >drv_priv;
-> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-> > b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-> > > index 3016636d18c6..07023eb9e5b5 100644
-> > > --- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-> > > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-> > > @@ -27,6 +27,10 @@
-> > >  #define MCU_UNI_EVENT_ROC  0x27
-> > >  #define MCU_UNI_EVENT_CLC  0x80
-> > >
-> > > +#define EXT_CMD_RADIO_LED_CTRL_ENABLE   0x1
-> > > +#define EXT_CMD_RADIO_ON_LED            0x2
-> > > +#define EXT_CMD_RADIO_OFF_LED           0x3
-> > > +
-> > >  enum {
-> > >         UNI_ROC_ACQUIRE,
-> > >         UNI_ROC_ABORT,
-> > > @@ -196,6 +200,7 @@ int mt7921_mcu_fw_log_2_host(struct mt792x_dev
-> > *dev, u8 ctrl);
-> > >  void mt7921_mcu_rx_event(struct mt792x_dev *dev, struct sk_buff
-> > *skb);
-> > >  int mt7921_mcu_set_rxfilter(struct mt792x_dev *dev, u32 fif,
-> > >                             u8 bit_op, u32 bit_map);
-> > > +int mt7921_mcu_radio_led_ctrl(struct mt792x_dev *dev, u8 value);
-> > >
-> > >  static inline u32
-> > >  mt7921_reg_map_l1(struct mt792x_dev *dev, u32 addr)
-> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-> > b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-> > > index 0b69b225bc16..f768e9389ac6 100644
-> > > --- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-> > > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-> > > @@ -427,6 +427,10 @@ static int mt7921_pci_suspend(struct device
-> > *device)
-> > >         wait_event_timeout(dev->wait,
-> > >                            !dev->regd_in_progress, 5 * HZ);
-> > >
-> > > +       err =3D mt7921_mcu_radio_led_ctrl(dev,
-> > EXT_CMD_RADIO_OFF_LED);
-> > > +       if (err < 0)
-> > > +               goto restore_suspend;
-> > > +
-> > >         err =3D mt76_connac_mcu_set_hif_suspend(mdev, true);
-> > >         if (err)
-> > >                 goto restore_suspend;
-> > > @@ -525,9 +529,11 @@ static int mt7921_pci_resume(struct device
-> > *device)
-> > >                 mt76_connac_mcu_set_deep_sleep(&dev->mt76, false);
-> > >
-> > >         err =3D mt76_connac_mcu_set_hif_suspend(mdev, false);
-> > > +       if (err < 0)
-> > > +               goto failed;
-> > >
-> > >         mt7921_regd_update(dev);
-> > > -
-> > > +       err =3D mt7921_mcu_radio_led_ctrl(dev, EXT_CMD_RADIO_ON_LED);
-> > >  failed:
-> > >         pm->suspended =3D false;
-> > >
-> > > --
-> > > 2.18.0
-> > >
-> > >
+> >
+> > Brian
+
 
