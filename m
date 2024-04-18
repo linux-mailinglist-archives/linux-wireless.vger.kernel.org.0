@@ -1,238 +1,300 @@
-Return-Path: <linux-wireless+bounces-6487-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6488-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E95E58A9114
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 04:13:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E2ED8A914A
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 04:51:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 771F5B2262C
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 02:13:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93AA4B20B05
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 02:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B17C7481D3;
-	Thu, 18 Apr 2024 02:13:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 419C8286AF;
+	Thu, 18 Apr 2024 02:50:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gJS8EQ/B"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2A93BBD8
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Apr 2024 02:13:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6D063D5
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Apr 2024 02:50:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713406391; cv=none; b=eRfxBtqdVcJlaZ726BQ/T4IKc+8r01Ax2P/2FibLo/LeJs1gMHVFZURdjce3hp1Y3KD7iR6/YjlEY+gHep6fFZkgNPR80YWwT3gNqIHo71tayRnHjcGgCrgcrm56MN2/aD/0rOjFPiHLby0pH/7wG2FZ8SaAh6kjOzYzjE9Lg74=
+	t=1713408659; cv=none; b=vE7cPVzJv4GRtYoUx7XJigJugkCR7qvX54pixpBuXcLsSNTfqUaO6Y0+2wtTTRSEvU7wfwSTjAAbhQTQaeo3Cgj+z2w8ffld8DLYaTpcnvnQFmvpceMpp9S4DOuejxSyz0/R0sxXZ4LtVqIjf/fq1e6+nH+YVWaCDw4Dk5VMV+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713406391; c=relaxed/simple;
-	bh=rzngPV3U/5Av8lItqevJmYTZM94wh1rUtiKRkcgx7P4=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y9S0/QpYcjuJbgOkKDAF586DVYQdHgCm4fOeBIscmr3eL1HjO8dyvVApcoeqZl2kBJbd2Nii2fI9+xbaG6bM9w+Nkb+JpRgXOaGh8GLlXUskAJMB/o9u4KMt9RCUts3fhTFIs069nKvvVYrI4Rd63jPbsu13qY5DgNZyD290+70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 43I2D8mjC3994773, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 43I2D8mjC3994773
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Apr 2024 10:13:08 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 18 Apr 2024 10:13:08 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 18 Apr
- 2024 10:13:07 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <ku920601@realtek.com>
-Subject: [PATCH 9/9] wifi: rtw89: coex: Re-order the index for the report from firmware
-Date: Thu, 18 Apr 2024 10:12:07 +0800
-Message-ID: <20240418021207.32173-10-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240418021207.32173-1-pkshih@realtek.com>
-References: <20240418021207.32173-1-pkshih@realtek.com>
+	s=arc-20240116; t=1713408659; c=relaxed/simple;
+	bh=3Rc6752rBiGPr/0xv5ZCsFWyNqVQsj4KsbGFchAYx5g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=huqeADIOKKx+svgnlbX1R63GGOSdySx7D2OUGWC5xuWlUpi/qeAPzbMLe/ggZCxQN6Bgie3gMvjgqzS577ruBi35jLHLtWeevnUEwTpsAVh6Fj6ybAyGH2DD7U8uA5oaAAQmKuStiwmrl3pFJqrHqvSz8/QH2pWK1whigiU2PCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gJS8EQ/B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E485C072AA
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Apr 2024 02:50:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713408658;
+	bh=3Rc6752rBiGPr/0xv5ZCsFWyNqVQsj4KsbGFchAYx5g=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=gJS8EQ/BmnbFiUwfoXAjRwo6hApEJnsqydF038OLMNXnK1JEPEjuL4hQ6elXgffSC
+	 phxPICNCuuqItPnFQrez7sQP6gInIEDv9TAJZheGjrCuJr/MZszmm0V7l5x+aZFZCr
+	 DieYyttO4OBffTnznTiGXdmNhdmdb18JoOoN2hQhAcVOAqSQFWqRUapmsNoG7oCgEC
+	 d8TFvlOWd1ZnhfaNxgeYAtCxSazk71jUI2274n8fF5BbPLO79z7m4gvngx3cx5CeS9
+	 JPbkL2ThM2PpR9bxgST0PvmY6pXF8eyDoFC7G/Tbgdl1KxwZqwXMk/uScXlzPhY0DP
+	 dvw3z1hkenZkw==
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2dac628f08fso1098021fa.3
+        for <linux-wireless@vger.kernel.org>; Wed, 17 Apr 2024 19:50:58 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXD4irMOjGxxV5tvUoY+JCIjcA8tskrJJ8iebgRtFW32O3hNnncyS/78jEPkJNEQecEERynr2SXyGSlQ4fOSB523ZZy5TGL0P/xJFXfOBU=
+X-Gm-Message-State: AOJu0YxKzX/mofwU6NpSPU7Y1LKAQKOWNxulkJkEI3sryJBXRYyXaCcC
+	PY10XanMBKFKZ9MaiZjpHZ7qhrnifFgyMHv05Vr/X2vz6gFgEwlzdex5hPQgO1oOQfHHKFtjYGr
+	7VYdSj2FEViAn0MKzjmD6oHSmL+Y=
+X-Google-Smtp-Source: AGHT+IGUOvWaUZzO3Cqsw5rBu/1uEhhnaWW6uCRk/Vqkwg/ZtKgqBoU0TSeGs/4NOQfyZwTP/TUo0vnbwJ1YrDERKJg=
+X-Received: by 2002:ac2:599d:0:b0:516:d6b5:7caf with SMTP id
+ w29-20020ac2599d000000b00516d6b57cafmr514839lfn.6.1713408656259; Wed, 17 Apr
+ 2024 19:50:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+References: <608cc2bb1c10c2f53a6bf26711bf49fe2c491e59.1712806947.git.quan.zhou@mediatek.com>
+ <CAGp9LzqVGHGriqpC-NTnOtvNNz5o-hXD=HcTCptHfXBD9bnfPQ@mail.gmail.com> <37ab8a32893ea9a1cbc33b6dae26b57127ea4e16.camel@mediatek.com>
+In-Reply-To: <37ab8a32893ea9a1cbc33b6dae26b57127ea4e16.camel@mediatek.com>
+From: Sean Wang <sean.wang@kernel.org>
+Date: Wed, 17 Apr 2024 19:50:42 -0700
+X-Gmail-Original-Message-ID: <CAGp9Lzq6g8YQ=_eZHJX4qQjv-F2anGnPw8f88rHD2Vo1iwiGWg@mail.gmail.com>
+Message-ID: <CAGp9Lzq6g8YQ=_eZHJX4qQjv-F2anGnPw8f88rHD2Vo1iwiGWg@mail.gmail.com>
+Subject: Re: [PATCH v2] wifi: mt76: mt7921e: add LED control support
+To: =?UTF-8?B?UXVhbiBaaG91ICjlkajlhagp?= <Quan.Zhou@mediatek.com>
+Cc: "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>, 
+	=?UTF-8?B?U2hlbmd4aSBYdSAo5b6Q6IOc5ZacKQ==?= <shengxi.xu@mediatek.com>, 
+	=?UTF-8?B?RGVyZW4gV3UgKOatpuW+t+S7gSk=?= <Deren.Wu@mediatek.com>, 
+	=?UTF-8?B?U2hheW5lIENoZW4gKOmZs+i7kuS4nik=?= <Shayne.Chen@mediatek.com>, 
+	"nbd@nbd.name" <nbd@nbd.name>, "lorenzo@kernel.org" <lorenzo@kernel.org>, Sean Wang <Sean.Wang@mediatek.com>, 
+	=?UTF-8?B?SGFvIFpoYW5nICjlvKDmtakp?= <hao.zhang@mediatek.com>, 
+	Ryder Lee <Ryder.Lee@mediatek.com>, 
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Ching-Te Ku <ku920601@realtek.com>
+On Wed, Apr 17, 2024 at 6:43=E2=80=AFPM Quan Zhou (=E5=91=A8=E5=85=A8) <Qua=
+n.Zhou@mediatek.com> wrote:
+>
+> On Wed, 2024-04-17 at 15:06 -0700, Sean Wang wrote:
+> >
+> > External email : Please do not click links or open attachments until
+> > you have verified the sender or the content.
+> >  HI Quan,
+> >
+> > On Wed, Apr 10, 2024 at 11:00=E2=80=AFPM Quan Zhou <quan.zhou@mediatek.=
+com>
+> > wrote:
+> > >
+> > > From: Hao Zhang <hao.zhang@mediatek.com>
+> > >
+> > > Introduce wifi LED switch control, add flow to Control a wifi
+> > > gpio pin based on the status of WIFI radio, if the pin is connected
+> > > to an LED, the LED will indicate the status of the WiFi radio.
+> > >
+> > > Signed-off-by: Hao Zhang <hao.zhang@mediatek.com>
+> > > Co-developed-by: Quan Zhou <quan.zhou@mediatek.com>
+> > > Signed-off-by: Quan Zhou <quan.zhou@mediatek.com>
+> > > ---
+> > > v2:
+> > >  fix to avoid wake device when Hardware interface not pcie
+> > > ---
+> > >  .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  1 +
+> > >  .../net/wireless/mediatek/mt76/mt7921/main.c  | 27
+> > ++++++++++++++++++-
+> > >  .../net/wireless/mediatek/mt76/mt7921/mcu.c   | 14 ++++++++++
+> > >  .../wireless/mediatek/mt76/mt7921/mt7921.h    |  5 ++++
+> > >  .../net/wireless/mediatek/mt76/mt7921/pci.c   |  8 +++++-
+> > >  5 files changed, 53 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+> > b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+> > > index 836cc4d5b1d2..4c2de556dee1 100644
+> > > --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+> > > +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
+> > > @@ -1189,6 +1189,7 @@ enum {
+> > >         MCU_EXT_CMD_EFUSE_ACCESS =3D 0x01,
+> > >         MCU_EXT_CMD_RF_REG_ACCESS =3D 0x02,
+> > >         MCU_EXT_CMD_RF_TEST =3D 0x04,
+> > > +       MCU_EXT_CMD_ID_RADIO_ON_OFF_CTRL =3D 0x05,
+> > >         MCU_EXT_CMD_PM_STATE_CTRL =3D 0x07,
+> > >         MCU_EXT_CMD_CHANNEL_SWITCH =3D 0x08,
+> > >         MCU_EXT_CMD_SET_TX_POWER_CTRL =3D 0x11,
+> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> > b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> > > index ca36de34171b..ea6a113b7b36 100644
+> > > --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> > > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> > > @@ -242,6 +242,15 @@ int __mt7921_start(struct mt792x_phy *phy)
+> > >
+> > >         ieee80211_queue_delayed_work(mphy->hw, &mphy->mac_work,
+> > >                                      MT792x_WATCHDOG_TIME);
+> > > +       if (mt76_is_mmio(mphy->dev)) {
+> >
+> > I guess the led control MCU command is not limited to PCIe devices,
+> > they should be able to be extended even on MT7921 USB and SDIO
+> > devices, right ? if so, I think we can drop the MMIO limitation
+> > condition to support more scenarios and to make it easier to
+> > understand.
+> >
+> Hi Sean,
+>
+> This software flow involves chip GPIO control and is related to the
+> module's circuit design. Only the PCIe module can provide support for
+> this, so can't drop.
 
-The report index has changed, correct the index for the corresponding
-firmware version.
+Hi Quan,
 
-Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/coex.c | 40 ++++++++++++++++-------
- drivers/net/wireless/realtek/rtw89/core.h |  7 +++-
- 2 files changed, 35 insertions(+), 12 deletions(-)
+Thanks for clearing that up quickly. I guess we can add it just for
+MT7921E. I have another question: Will the new command you added work
+with older firmware, or is it made only for the most recent firmware?
+I'm worried it might not be compatible with the older MT7921 firmware.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
-index 15f1c133c70a..1649cb2e217f 100644
---- a/drivers/net/wireless/realtek/rtw89/coex.c
-+++ b/drivers/net/wireless/realtek/rtw89/coex.c
-@@ -134,70 +134,70 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
- 	 .fcxstep = 7,   .fcxnullsta = 7, .fcxmreg = 7,  .fcxgpiodbg = 7,
- 	 .fcxbtver = 7,  .fcxbtscan = 7,  .fcxbtafh = 7, .fcxbtdevinfo = 7,
- 	 .fwlrole = 8,   .frptmap = 3,    .fcxctrl = 7,  .fcxinit = 7,
--	 .drvinfo_type = 1, .info_buf = 1800, .max_role_num = 6,
-+	 .fwevntrptl = 1, .drvinfo_type = 1, .info_buf = 1800, .max_role_num = 6,
- 	},
- 	{RTL8851B, RTW89_FW_VER_CODE(0, 29, 29, 0),
- 	 .fcxbtcrpt = 105, .fcxtdma = 3,    .fcxslots = 1, .fcxcysta = 5,
- 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 2,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 2,  .fcxbtafh = 2, .fcxbtdevinfo = 1,
- 	 .fwlrole = 2,   .frptmap = 3,    .fcxctrl = 1,  .fcxinit = 0,
--	 .drvinfo_type = 0, .info_buf = 1800, .max_role_num = 6,
-+	 .fwevntrptl = 0, .drvinfo_type = 0, .info_buf = 1800, .max_role_num = 6,
- 	},
- 	{RTL8852C, RTW89_FW_VER_CODE(0, 27, 57, 0),
- 	 .fcxbtcrpt = 4, .fcxtdma = 3,    .fcxslots = 1, .fcxcysta = 3,
- 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 1,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 1,  .fcxbtafh = 2, .fcxbtdevinfo = 1,
- 	 .fwlrole = 1,   .frptmap = 3,    .fcxctrl = 1,  .fcxinit = 0,
--	 .drvinfo_type = 0, .info_buf = 1280, .max_role_num = 5,
-+	 .fwevntrptl = 0, .drvinfo_type = 0, .info_buf = 1280, .max_role_num = 5,
- 	},
- 	{RTL8852C, RTW89_FW_VER_CODE(0, 27, 42, 0),
- 	 .fcxbtcrpt = 4, .fcxtdma = 3,    .fcxslots = 1, .fcxcysta = 3,
- 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 1,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 1,  .fcxbtafh = 2, .fcxbtdevinfo = 1,
- 	 .fwlrole = 1,   .frptmap = 2,    .fcxctrl = 1,  .fcxinit = 0,
--	 .drvinfo_type = 0, .info_buf = 1280, .max_role_num = 5,
-+	 .fwevntrptl = 0, .drvinfo_type = 0, .info_buf = 1280, .max_role_num = 5,
- 	},
- 	{RTL8852C, RTW89_FW_VER_CODE(0, 27, 0, 0),
- 	 .fcxbtcrpt = 4, .fcxtdma = 3,    .fcxslots = 1, .fcxcysta = 3,
- 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 1,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 1,  .fcxbtafh = 1, .fcxbtdevinfo = 1,
- 	 .fwlrole = 1,   .frptmap = 2,    .fcxctrl = 1,  .fcxinit = 0,
--	 .drvinfo_type = 0, .info_buf = 1280, .max_role_num = 5,
-+	 .fwevntrptl = 0, .drvinfo_type = 0, .info_buf = 1280, .max_role_num = 5,
- 	},
- 	{RTL8852B, RTW89_FW_VER_CODE(0, 29, 29, 0),
- 	 .fcxbtcrpt = 105, .fcxtdma = 3,  .fcxslots = 1, .fcxcysta = 5,
- 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 2,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 2,  .fcxbtafh = 2, .fcxbtdevinfo = 1,
- 	 .fwlrole = 2,   .frptmap = 3,    .fcxctrl = 1,  .fcxinit = 0,
--	 .drvinfo_type = 0, .info_buf = 1800, .max_role_num = 6,
-+	 .fwevntrptl = 0, .drvinfo_type = 0, .info_buf = 1800, .max_role_num = 6,
- 	},
- 	{RTL8852B, RTW89_FW_VER_CODE(0, 29, 14, 0),
- 	 .fcxbtcrpt = 5, .fcxtdma = 3,    .fcxslots = 1, .fcxcysta = 4,
- 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 1,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 1,  .fcxbtafh = 2, .fcxbtdevinfo = 1,
- 	 .fwlrole = 1,   .frptmap = 3,    .fcxctrl = 1,  .fcxinit = 0,
--	 .drvinfo_type = 0, .info_buf = 1800, .max_role_num = 6,
-+	 .fwevntrptl = 0, .drvinfo_type = 0, .info_buf = 1800, .max_role_num = 6,
- 	},
- 	{RTL8852B, RTW89_FW_VER_CODE(0, 27, 0, 0),
- 	 .fcxbtcrpt = 4, .fcxtdma = 3,    .fcxslots = 1, .fcxcysta = 3,
- 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 1,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 1,  .fcxbtafh = 1, .fcxbtdevinfo = 1,
- 	 .fwlrole = 1,   .frptmap = 1,    .fcxctrl = 1,  .fcxinit = 0,
--	 .drvinfo_type = 0, .info_buf = 1280, .max_role_num = 5,
-+	 .fwevntrptl = 0, .drvinfo_type = 0, .info_buf = 1280, .max_role_num = 5,
- 	},
- 	{RTL8852A, RTW89_FW_VER_CODE(0, 13, 37, 0),
- 	 .fcxbtcrpt = 4, .fcxtdma = 3,    .fcxslots = 1, .fcxcysta = 3,
- 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 1,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 1,  .fcxbtafh = 2, .fcxbtdevinfo = 1,
- 	 .fwlrole = 1,   .frptmap = 3,    .fcxctrl = 1,  .fcxinit = 0,
--	 .drvinfo_type = 0, .info_buf = 1280, .max_role_num = 5,
-+	 .fwevntrptl = 0, .drvinfo_type = 0, .info_buf = 1280, .max_role_num = 5,
- 	},
- 	{RTL8852A, RTW89_FW_VER_CODE(0, 13, 0, 0),
- 	 .fcxbtcrpt = 1, .fcxtdma = 1,    .fcxslots = 1, .fcxcysta = 2,
- 	 .fcxstep = 2,   .fcxnullsta = 1, .fcxmreg = 1,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 1,  .fcxbtafh = 1, .fcxbtdevinfo = 1,
- 	 .fwlrole = 0,   .frptmap = 0,    .fcxctrl = 0,  .fcxinit = 0,
--	 .drvinfo_type = 0, .info_buf = 1024, .max_role_num = 5,
-+	 .fwevntrptl = 0, .drvinfo_type = 0, .info_buf = 1024, .max_role_num = 5,
- 	},
- 
- 	/* keep it to be the last as default entry */
-@@ -206,7 +206,7 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
- 	 .fcxstep = 2,   .fcxnullsta = 1, .fcxmreg = 1,  .fcxgpiodbg = 1,
- 	 .fcxbtver = 1,  .fcxbtscan = 1,  .fcxbtafh = 1, .fcxbtdevinfo = 1,
- 	 .fwlrole = 0,   .frptmap = 0,    .fcxctrl = 0,  .fcxinit = 0,
--	 .drvinfo_type = 0, .info_buf = 1024, .max_role_num = 5,
-+	 .fwevntrptl = 0, .drvinfo_type = 0, .info_buf = 1024, .max_role_num = 5,
- 	},
- };
- 
-@@ -1205,6 +1205,22 @@ static void _update_bt_report(struct rtw89_dev *rtwdev, u8 rpt_type, u8 *pfinfo)
- 	}
- }
- 
-+static void rtw89_btc_fw_rpt_evnt_ver(struct rtw89_dev *rtwdev, u8 *index)
-+{
-+	struct rtw89_btc *btc = &rtwdev->btc;
-+	const struct rtw89_btc_ver *ver = btc->ver;
-+
-+	if (ver->fwevntrptl == 1)
-+		return;
-+
-+	if (*index <= __BTC_RPT_TYPE_V0_SAME)
-+		return;
-+	else if (*index <= __BTC_RPT_TYPE_V0_MAX)
-+		(*index)++;
-+	else
-+		*index = BTC_RPT_TYPE_MAX;
-+}
-+
- #define BTC_LEAK_AP_TH 10
- #define BTC_CYSTA_CHK_PERIOD 100
- 
-@@ -1252,6 +1268,8 @@ static u32 _chk_btc_report(struct rtw89_dev *rtwdev,
- 		    "[BTC], %s(): rpt_type:%d\n",
- 		    __func__, rpt_type);
- 
-+	rtw89_btc_fw_rpt_evnt_ver(rtwdev, &rpt_type);
-+
- 	switch (rpt_type) {
- 	case BTC_RPT_TYPE_CTRL:
- 		pcinfo = &pfwinfo->rpt_ctrl.cinfo;
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 774050aa21c7..9da8be9927d3 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -2856,6 +2856,7 @@ enum btf_fw_event_report {
- 	BTC_RPT_TYPE_CYSTA,
- 	BTC_RPT_TYPE_STEP,
- 	BTC_RPT_TYPE_NULLSTA,
-+	BTC_RPT_TYPE_FDDT, /* added by ver->fwevntrptl == 1 */
- 	BTC_RPT_TYPE_MREG,
- 	BTC_RPT_TYPE_GPIO_DBG,
- 	BTC_RPT_TYPE_BT_VER,
-@@ -2863,7 +2864,10 @@ enum btf_fw_event_report {
- 	BTC_RPT_TYPE_BT_AFH,
- 	BTC_RPT_TYPE_BT_DEVICE,
- 	BTC_RPT_TYPE_TEST,
--	BTC_RPT_TYPE_MAX = 31
-+	BTC_RPT_TYPE_MAX = 31,
-+
-+	__BTC_RPT_TYPE_V0_SAME = BTC_RPT_TYPE_NULLSTA,
-+	__BTC_RPT_TYPE_V0_MAX = 12,
- };
- 
- enum rtw_btc_btf_reg_type {
-@@ -3005,6 +3009,7 @@ struct rtw89_btc_ver {
- 	u8 fcxctrl;
- 	u8 fcxinit;
- 
-+	u8 fwevntrptl;
- 	u8 drvinfo_type;
- 	u16 info_buf;
- 	u8 max_role_num;
--- 
-2.25.1
-
+                   Sean
+>
+> > > +               err =3D mt7921_mcu_radio_led_ctrl(phy->dev,
+> > EXT_CMD_RADIO_LED_CTRL_ENABLE);
+> > > +               if (err)
+> > > +                       return err;
+> > > +
+> > > +               err =3D mt7921_mcu_radio_led_ctrl(phy->dev,
+> > EXT_CMD_RADIO_ON_LED);
+> > > +               if (err)
+> > > +                       return err;
+> > > +       }
+> > >
+> > >         return 0;
+> > >  }
+> > > @@ -259,6 +268,22 @@ static int mt7921_start(struct ieee80211_hw
+> > *hw)
+> > >         return err;
+> > >  }
+> > >
+> > > +static void mt7921_stop(struct ieee80211_hw *hw)
+> > > +{
+> > > +       struct mt792x_dev *dev =3D mt792x_hw_dev(hw);
+> > > +       int err =3D 0;
+> > > +
+> > > +       if (mt76_is_mmio(&dev->mt76)) {
+> > > +               mt792x_mutex_acquire(dev);
+> > > +               err =3D mt7921_mcu_radio_led_ctrl(dev,
+> > EXT_CMD_RADIO_OFF_LED);
+> > > +               mt792x_mutex_release(dev);
+> > > +               if (err)
+> > > +                       return;
+> > > +       }
+> > > +
+> > > +       mt792x_stop(hw);
+> > > +}
+> > > +
+> > >  static int
+> > >  mt7921_add_interface(struct ieee80211_hw *hw, struct ieee80211_vif
+> > *vif)
+> > >  {
+> > > @@ -1372,7 +1397,7 @@ static void mt7921_mgd_complete_tx(struct
+> > ieee80211_hw *hw,
+> > >  const struct ieee80211_ops mt7921_ops =3D {
+> > >         .tx =3D mt792x_tx,
+> > >         .start =3D mt7921_start,
+> > > -       .stop =3D mt792x_stop,
+> > > +       .stop =3D mt7921_stop,
+> > >         .add_interface =3D mt7921_add_interface,
+> > >         .remove_interface =3D mt792x_remove_interface,
+> > >         .config =3D mt7921_config,
+> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+> > b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+> > > index 8b4ce32a2cd1..2ebf0ffe78d5 100644
+> > > --- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+> > > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+> > > @@ -606,6 +606,20 @@ int mt7921_run_firmware(struct mt792x_dev
+> > *dev)
+> > >  }
+> > >  EXPORT_SYMBOL_GPL(mt7921_run_firmware);
+> > >
+> > > +int mt7921_mcu_radio_led_ctrl(struct mt792x_dev *dev, u8 value)
+> > > +{
+> > > +       struct {
+> > > +               u8 ctrlid;
+> > > +               u8 rsv[3];
+> > > +       } __packed req =3D {
+> > > +               .ctrlid =3D value,
+> > > +       };
+> > > +
+> > > +       return mt76_mcu_send_msg(&dev->mt76,
+> > MCU_EXT_CMD(ID_RADIO_ON_OFF_CTRL),
+> > > +                               &req, sizeof(req), false);
+> > > +}
+> > > +EXPORT_SYMBOL_GPL(mt7921_mcu_radio_led_ctrl);
+> > > +
+> > >  int mt7921_mcu_set_tx(struct mt792x_dev *dev, struct ieee80211_vif
+> > *vif)
+> > >  {
+> > >         struct mt792x_vif *mvif =3D (struct mt792x_vif *)vif-
+> > >drv_priv;
+> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+> > b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+> > > index 3016636d18c6..07023eb9e5b5 100644
+> > > --- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+> > > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
+> > > @@ -27,6 +27,10 @@
+> > >  #define MCU_UNI_EVENT_ROC  0x27
+> > >  #define MCU_UNI_EVENT_CLC  0x80
+> > >
+> > > +#define EXT_CMD_RADIO_LED_CTRL_ENABLE   0x1
+> > > +#define EXT_CMD_RADIO_ON_LED            0x2
+> > > +#define EXT_CMD_RADIO_OFF_LED           0x3
+> > > +
+> > >  enum {
+> > >         UNI_ROC_ACQUIRE,
+> > >         UNI_ROC_ABORT,
+> > > @@ -196,6 +200,7 @@ int mt7921_mcu_fw_log_2_host(struct mt792x_dev
+> > *dev, u8 ctrl);
+> > >  void mt7921_mcu_rx_event(struct mt792x_dev *dev, struct sk_buff
+> > *skb);
+> > >  int mt7921_mcu_set_rxfilter(struct mt792x_dev *dev, u32 fif,
+> > >                             u8 bit_op, u32 bit_map);
+> > > +int mt7921_mcu_radio_led_ctrl(struct mt792x_dev *dev, u8 value);
+> > >
+> > >  static inline u32
+> > >  mt7921_reg_map_l1(struct mt792x_dev *dev, u32 addr)
+> > > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+> > b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+> > > index 0b69b225bc16..f768e9389ac6 100644
+> > > --- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+> > > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+> > > @@ -427,6 +427,10 @@ static int mt7921_pci_suspend(struct device
+> > *device)
+> > >         wait_event_timeout(dev->wait,
+> > >                            !dev->regd_in_progress, 5 * HZ);
+> > >
+> > > +       err =3D mt7921_mcu_radio_led_ctrl(dev,
+> > EXT_CMD_RADIO_OFF_LED);
+> > > +       if (err < 0)
+> > > +               goto restore_suspend;
+> > > +
+> > >         err =3D mt76_connac_mcu_set_hif_suspend(mdev, true);
+> > >         if (err)
+> > >                 goto restore_suspend;
+> > > @@ -525,9 +529,11 @@ static int mt7921_pci_resume(struct device
+> > *device)
+> > >                 mt76_connac_mcu_set_deep_sleep(&dev->mt76, false);
+> > >
+> > >         err =3D mt76_connac_mcu_set_hif_suspend(mdev, false);
+> > > +       if (err < 0)
+> > > +               goto failed;
+> > >
+> > >         mt7921_regd_update(dev);
+> > > -
+> > > +       err =3D mt7921_mcu_radio_led_ctrl(dev, EXT_CMD_RADIO_ON_LED);
+> > >  failed:
+> > >         pm->suspended =3D false;
+> > >
+> > > --
+> > > 2.18.0
+> > >
+> > >
 
