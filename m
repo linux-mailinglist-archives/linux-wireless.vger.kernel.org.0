@@ -1,133 +1,106 @@
-Return-Path: <linux-wireless+bounces-6471-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6472-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC5638A900B
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 02:29:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 052BE8A900C
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 02:31:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D4371F21796
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 00:29:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 655ABB21FDA
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 00:31:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CEBD628;
-	Thu, 18 Apr 2024 00:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6BB0817;
+	Thu, 18 Apr 2024 00:31:34 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE32382
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Apr 2024 00:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67487811
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Apr 2024 00:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713400173; cv=none; b=oVZY1r9k7Dn2ywA2YdkEAKgbX9LIaduz5zm8J737XOerQj2NO12tIsMdVufbFUJ4n4P9oDPI2HvUnXH1Zj8Z9fcOrD8RfkrcouJWWNT5Y7yxtFnwICO/gv8x1MNSWD2SO5o2fG8bDglj0Lv/QhM1iOLU/+MYur93f+eB7vc/sIU=
+	t=1713400294; cv=none; b=GbNy+tEu7Ink9VJnyl7+1eA/DTVzuXa+qNN/WmILYwr1vIzFqtH3ziBJWnkNTsxvCGNYFjIMXYBKZ3o94M/5F13ZdokUUXCpf5nlSobzmYZ3B36MD00VcFT39xSN3cMyJLdGnd/XgwkIzJnu4Kp+hptz0Nfizb5Bvq0ou0okbI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713400173; c=relaxed/simple;
-	bh=zghP/jhQX2RjmR5Z+BVeRuSQhQKlB+FrGMUouwN0KGA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fLUE85N+vifyMcpITMZsuhNvUnj1dWBb3fJFK3ggjjgUzxdbVYDBhdHD9mizqlBxB6iDo79I5r8CZbFZYTI37fZysCabIHevHGCXFObpwMZTgvpIwW0UailXcjHCgBM+vq0aReEnRIDCL7lcRLKmuNM0PX7vKE1HL6fxWcsBZnQ=
+	s=arc-20240116; t=1713400294; c=relaxed/simple;
+	bh=yqnpbjDYuzuCewsCKp6K+kvB+OfCN6NvNDqK/mbHuB4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=qzMnwV9KVUHnIPHdYccZHD9nQg3g8Sk/VuOeIF1/Oi36+AQ9WrPLODQBKTtN9fyYvj34IdcN9ltEim+tmS4DKkz35yQmX6ZawZLUSkj3nCA1afFcFpfaLR2J5RXc7Vh+yy3ddCHhKyAdl3yEtkeszSjNLOUCwYW353gSVVuTu64=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 43I0TQpoC3883303, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 43I0TQpoC3883303
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 43I0VRLt83884637, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 43I0VRLt83884637
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 18 Apr 2024 08:29:26 +0800
+	Thu, 18 Apr 2024 08:31:27 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 18 Apr 2024 08:29:26 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 18 Apr
- 2024 08:29:26 +0800
+ 15.1.2507.35; Thu, 18 Apr 2024 08:31:28 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 18 Apr 2024 08:31:27 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
+ 15.01.2507.035; Thu, 18 Apr 2024 08:31:27 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <lewis.robbins2@gmail.com>
-Subject: [PATCH v2] wifi: rtw88: suppress messages of failed to flush queue
-Date: Thu, 18 Apr 2024 08:29:16 +0800
-Message-ID: <20240418002916.5965-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+To: Lewis Robbins <lewis.robbins2@gmail.com>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH] wifi: rtw88: suppress messages of failed to flush queue
+Thread-Topic: [PATCH] wifi: rtw88: suppress messages of failed to flush queue
+Thread-Index: AQHakGhMPXSMmu1HQU6i74qytbmsgrFsgmkAgACrxzA=
+Date: Thu, 18 Apr 2024 00:31:27 +0000
+Message-ID: <fc6072f3deda43eeb138356f973631b6@realtek.com>
+References: <20240417014036.11234-1-pkshih@realtek.com>
+ <20240417221451.43964-2-lewis.robbins2@gmail.com>
+In-Reply-To: <20240417221451.43964-2-lewis.robbins2@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
 
-Driver throws messages when scanning with a lot of traffic, because packets
-in TX buffer can not be transmitted in time. Since this is a common
-occurrence, change them to debug message with special debug mask that
-developers can turn on this mask by default for further analysis.
+Lewis Robbins <lewis.robbins2@gmail.com> wrote:
 
-Cc: Lewis Robbins <lewis.robbins2@gmail.com>
-Tested-by: Lewis Robbins <lewis.robbins2@gmail.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
-v2: modify comment along with changes
----
- drivers/net/wireless/realtek/rtw88/debug.h | 1 +
- drivers/net/wireless/realtek/rtw88/mac.c   | 5 +++--
- drivers/net/wireless/realtek/rtw88/pci.c   | 3 ++-
- 3 files changed, 6 insertions(+), 3 deletions(-)
+> Thanks, I tested it for 30 minutes and didn't receive any superfluous war=
+ning message. Only thing I could
+> find was the comment above not reflecting the (new) debug print (but very=
+ nit-picky from me).
+>=20
+> Acked-by: Lewis Robbins <lewis.robbins2@gmail.com>
 
-diff --git a/drivers/net/wireless/realtek/rtw88/debug.h b/drivers/net/wireless/realtek/rtw88/debug.h
-index f20c0471c82a..eb69006c463e 100644
---- a/drivers/net/wireless/realtek/rtw88/debug.h
-+++ b/drivers/net/wireless/realtek/rtw88/debug.h
-@@ -26,6 +26,7 @@ enum rtw_debug_mask {
- 	RTW_DBG_STATE		= 0x00020000,
- 	RTW_DBG_SDIO		= 0x00040000,
- 
-+	RTW_DBG_UNEXP		= 0x80000000,
- 	RTW_DBG_ALL		= 0xffffffff
- };
- 
-diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
-index 699ae3048c6b..0dba8aae7716 100644
---- a/drivers/net/wireless/realtek/rtw88/mac.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac.c
-@@ -1039,14 +1039,15 @@ static void __rtw_mac_flush_prio_queue(struct rtw_dev *rtwdev,
- 		msleep(20);
- 	}
- 
--	/* priority queue is still not empty, throw a warning,
-+	/* priority queue is still not empty, throw a debug message
- 	 *
- 	 * Note that if we want to flush the tx queue when having a lot of
- 	 * traffic (ex, 100Mbps up), some of the packets could be dropped.
- 	 * And it requires like ~2secs to flush the full priority queue.
- 	 */
- 	if (!drop)
--		rtw_warn(rtwdev, "timed out to flush queue %d\n", prio_queue);
-+		rtw_dbg(rtwdev, RTW_DBG_UNEXP,
-+			"timed out to flush queue %d\n", prio_queue);
- }
- 
- static void rtw_mac_flush_prio_queues(struct rtw_dev *rtwdev,
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
-index 9986a4cb37eb..7a093f3d5f74 100644
---- a/drivers/net/wireless/realtek/rtw88/pci.c
-+++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -729,7 +729,8 @@ static void __pci_flush_queue(struct rtw_dev *rtwdev, u8 pci_q, bool drop)
- 	}
- 
- 	if (!drop)
--		rtw_warn(rtwdev, "timed out to flush pci tx ring[%d]\n", pci_q);
-+		rtw_dbg(rtwdev, RTW_DBG_UNEXP,
-+			"timed out to flush pci tx ring[%d]\n", pci_q);
- }
- 
- static void __rtw_pci_flush_queues(struct rtw_dev *rtwdev, u32 pci_queues,
--- 
-2.25.1
+Acked-by is used by maintainers, so I used your Tested-by by v2. [1]
+
+>=20
+> diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wirel=
+ess/realtek/rtw88/mac.c
+> index 9038e2311596..3d1a886262d8 100644
+> --- a/drivers/net/wireless/realtek/rtw88/mac.c
+> +++ b/drivers/net/wireless/realtek/rtw88/mac.c
+> @@ -1026,7 +1026,7 @@ static void __rtw_mac_flush_prio_queue(struct rtw_d=
+ev *rtwdev,
+>                 msleep(20);
+>         }
+>=20
+> -       /* priority queue is still not empty, throw a warning,
+> +       /* priority queue is still not empty, throw a debug message
+
+Thanks for pointing this.=20
+
+>          *
+>          * Note that if we want to flush the tx queue when having a lot o=
+f
+>          * traffic (ex, 100Mbps up), some of the packets could be dropped=
+.
+
+[1] https://lore.kernel.org/linux-wireless/20240418002916.5965-1-pkshih@rea=
+ltek.com/T/#u
 
 
