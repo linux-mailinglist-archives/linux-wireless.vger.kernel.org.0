@@ -1,258 +1,141 @@
-Return-Path: <linux-wireless+bounces-6540-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6541-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 948288AA2B0
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 21:26:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B50A68AA459
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 22:51:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C331FB21296
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 19:26:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A4651F22C0B
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 20:51:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C526417B4F1;
-	Thu, 18 Apr 2024 19:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2507319067B;
+	Thu, 18 Apr 2024 20:49:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=LIVE.NL header.i=@LIVE.NL header.b="f9mXujrn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jdw1Jtfg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02olkn2096.outbound.protection.outlook.com [40.92.49.96])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A9F1EA74;
-	Thu, 18 Apr 2024 19:26:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.49.96
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713468384; cv=fail; b=Lsiud632uGPhynrbkO/doiszG1TCCthusDGlIIh/U7rv8bK5d+rGkzK2NPCN0EQGwTJ14woLqS6at7xM+55mszYcdb14Ai3MjJ49y3o1verNGERoYrJZ4sCiQ8Y1lqETLfcgpx9Rwu4fdEcmqUrmaV+EE2jwGXm/AZ6J/8LhstM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713468384; c=relaxed/simple;
-	bh=xF+qmHv0WeCn5dP4yJjwI0JKijafRqi24s5JsxrEqOg=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=dRs62+6QXbmPshziE1bt4/V2vCuguQECPK2Xze0QYIQGdaBQbQ671PGzg1cHwUspIs+9AM+tcIxUxOS/EaQu0xu6sTfQjN/oI/6wf25DJK+eDLO6EtEdr8ZlQNmJbT+LOCE0sbPDac4tC7AnFrBQHhNPJ+ggcUezbBB9xIfYr5k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.nl; spf=pass smtp.mailfrom=live.nl; dkim=pass (2048-bit key) header.d=LIVE.NL header.i=@LIVE.NL header.b=f9mXujrn; arc=fail smtp.client-ip=40.92.49.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=live.nl
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UWVCS2Gzv2qbw+kWdBOB536POl0YWDPbKc8KPsiYTeeqOme0lDcOjZ05BRZxLS5HKFD2faPJFeOWQDOdMSOz10CgCBsHLJZ6G1bxhLbeZ/q63iYwY25bdiKBZxwVKqoe3uYfFBNtYJpfVMnpnSffI6G4eu7wiT/HaohdI9Yb3pcnfrGOR5ButUomlHEXXpnvjZDnhE9DqErwnOMSeHnN88aBg/Pr57tEBwam8S0JBsN5KB8PxJJ9g3W7JMGSLrPNisczZUz2YTdFppimOwilg04T92GQsxOYHJ+yjb078XP/G81Hlld0uKBUFIXsL7vfsP1l0E5d5UzhXyao2Wcecw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hBvcj55h1U2bNNLqD+rejW+HJwxvv3oQ8Wne4mZ/z5E=;
- b=LtrQ4+GtPzEqFXbuWnpK/8jTUUPCelteusHx1vfYzMEuAWH04LmtNWkbvDkXxMY/ruHCAblOX7Wt3KqCo3GD+/E0PDXSxOOOCqFMGbKF3qPrXsplywMMitvyo3CM9XRwHUAX8LbTx84NhK1J3XD4VD2sZiLbMEafWavpdM8P/s6SO1KvTClE3qbcaLh729Z0wEsnbqM5swOeHQwrbJX0rvhc8L6msOcPCAj6XKsPlG/FXePgqnfNaf8mfBid/+wXoRrrnpKqa/XvhIHV8MW0e+MRwkU0zNJLt/O6ROLlXzZEHhuO6kuxWpyo8V283sS0NNTJDn2ZpYSz7ALSiyp/PA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=LIVE.NL; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hBvcj55h1U2bNNLqD+rejW+HJwxvv3oQ8Wne4mZ/z5E=;
- b=f9mXujrnduQ0EMlRUIFjMIa8eIx6vvREkQVXAQaOmKQyNVR/vFJXX/QgjYhfcfeQXVuDoRFfv/1zkkdU5dkIHTJMt4FcywRvTkqdAudWmyXuA8a3NbqwdNFtU74G/lDtEOJoCqvlpEUboPxUxwkVexQcNZwP2nGDcompxGbBRLa0ATrNbWnNGpSaKjKMHM4KvojOpLHLi+vB1gt2FQOmArVhtspTallj88XYJFkd0cDofpZdIaYal8pQhRL6V8do4dhXgTgufzCgey3vMquTjFCU4ugzzAmz9WoQzhvLYc5sxD2sclA7DCKm8EPaLnHAUyAHjJ6Ua4irBS00RJ/TOA==
-Received: from DB7PR09MB2684.eurprd09.prod.outlook.com (2603:10a6:10:4d::14)
- by PA2PR09MB7014.eurprd09.prod.outlook.com (2603:10a6:102:406::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.50; Thu, 18 Apr
- 2024 19:26:20 +0000
-Received: from DB7PR09MB2684.eurprd09.prod.outlook.com
- ([fe80::b1cf:c248:d141:19e9]) by DB7PR09MB2684.eurprd09.prod.outlook.com
- ([fe80::b1cf:c248:d141:19e9%4]) with mapi id 15.20.7472.037; Thu, 18 Apr 2024
- 19:26:13 +0000
-From: Paul Geurts <paul_geurts@live.nl>
-To: mgreer@animalcreek.com,
-	krzk@kernel.org,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Paul Geurts <paul_geurts@live.nl>
-Subject: [PATCH v2] NFC: trf7970a: disable all regulators on removal
-Date: Thu, 18 Apr 2024 21:25:38 +0200
-Message-ID:
- <DB7PR09MB26847A4EBF88D9EDFEB1DA0F950E2@DB7PR09MB2684.eurprd09.prod.outlook.com>
-X-Mailer: git-send-email 2.39.2
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-TMN: [UbqrPdS+bZuXMCVm575ZqH+mNFlvgbxyjnJEdZPEzK4M8PHCWBKxWAeR7UT+iLED]
-X-ClientProxiedBy: AM0PR03CA0102.eurprd03.prod.outlook.com
- (2603:10a6:208:69::43) To DB7PR09MB2684.eurprd09.prod.outlook.com
- (2603:10a6:10:4d::14)
-X-Microsoft-Original-Message-ID: <20240418192537.2520-1-paul_geurts@live.nl>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E515817A938;
+	Thu, 18 Apr 2024 20:49:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713473354; cv=none; b=C1DrA1f7PLB9zUvri0I6nxrV+PS0fd+9UIHU+a+hdCGgTBUG6eSujD/j4MTVVTBLae8jYetag9WGpHjKFG+7PRVBrqozQPhyuebi4IieOs2ydGNkXusHp4u6Qc6f2Fq7BPpiLDfUpohB3wQdpAvNXz4WVH1DwyIQePyDgVzRmnY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713473354; c=relaxed/simple;
+	bh=w0Wvi82vp9bUUFVc6RsXvhAdVyPYcbSALA6wo86ifr8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=TsAx9hsc8+6Js6IS7H8d7iOjpgnnbQY583STuT00RHCXJl0UIZSifYK5IxP4qMP3klhgoTK+5Uhb1tQ/qN4auV3gvJWt25+wiKmWwWi3aY4WO1b74LyhWlPvS1pQSVp6FaNklVJ+bWStAQzHKszTtv7rIUjzVRgsIgc6fSgP9DA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jdw1Jtfg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509A3C113CC;
+	Thu, 18 Apr 2024 20:49:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713473353;
+	bh=w0Wvi82vp9bUUFVc6RsXvhAdVyPYcbSALA6wo86ifr8=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=jdw1JtfgHEBQMFaE+Ppm4WQeIoINYtkdOlYw2gW8elSLpYIEOeUAD0ZmFtnd/4DXk
+	 xncrqSuY0Vu0PFpGAp3RXXieZgoVSW9QA10vHLy5lSGMUEn0DeFzTk1hTLDtOXZXL2
+	 CzUfil+oWrb+BqQf2sv98ejtfDXq1O19TDFD6hADvzEXxoZOA1o84HPmi5t0QSN1RU
+	 JMt0/3zVJ7JDHoce8QGj9cRop+udpd5RXEz8A8/0rHkW6bJhwxPGieuoF0b08Kt08m
+	 2Vn9F3enbpQAfCcPWjUOS0NfINqD1ZEdspJIjhZkCR0bqtG5AbliDCSHzJ9QQycqqg
+	 S2VtPshukkDhw==
+Message-ID: <8d30868b-9870-4b17-b471-263156f5ab9e@kernel.org>
+Date: Thu, 18 Apr 2024 22:49:12 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB7PR09MB2684:EE_|PA2PR09MB7014:EE_
-X-MS-Office365-Filtering-Correlation-Id: c5f36bb1-520a-4bf0-e445-08dc5fdd68af
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	TEF1WnB6xPE7f4ZMopsdsfz4TbOdIp/3c7z/FPRs8XVeRHRUV4VCZnydpbG+LzLLjwZiZbf5GSCMXf+CrKn7j/MiWpZvj5tdGFkJfZh1Zf0INIyjRGfl7prdR2iyRdbmtW+Rt6gxe9Svial/NkEuoDI8JdX5GKzWPlEt9Khr7I4SzwMgxd1Rd4TccPviwc4XH+1zhqCMCpImqFXOcFN2IxRG6qIrHTgpb+7iq2vnlHgbpNwcH0wakUXR4/Q0lgcgW0zf1BitnzdaJVeTqYZaVG9nA/J3dLYTHvY2jTs4w1tlsPv7Gzda4WeRpAQJanSFD60hU+Bhu+/lhCvJKOj98qqTLTE4GPocjcFBnyRxwmQ2KNbq10Sf8ChVZ5WO3BMsQ05VEsrzJigepRVDaigElgG+cx2OsasAhObH2uzHVp17DPk9rVxmDC1Ht7TXPiru8sP/xU+TYOw3tGy0Cz2LnR/aNLaMETwEwi/kc+HFnyDNgQp8HcMIijSUYSoh64EGi0JChlcXWfI6Bqv33z9LOvQAiKkH2L+GHMEVFOqDp1VdOf73gFIas0G8keVK+L5MKApSl467HLhi8K6dBfQtvOjwu2VkwN6yvb+6b89F3+5m3d1qG3zWlP/ljCaGUi4I
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ZskxeuYEy0NiR0iSjyc+bSl5hNofVCBCfmIqUJBiKxE3YOjgMFpwXz8dJ3ZA?=
- =?us-ascii?Q?lLULF2H61OjHJQrpZ6md7xICWVSFA7fgogqWxQN5EZNTTRl+zDBcwlF58n6Z?=
- =?us-ascii?Q?4LRKn907FP35OQ7a1QD1G1Y9f/GQbHgP5VM+ugJUuJPHI2XRjG6oHMn5SetE?=
- =?us-ascii?Q?YBH4qiqsyQOT3H04LO6JLM+Xl/GRJUATYWIAEpsZCAK1ooq3wKpA3QYE+Sm1?=
- =?us-ascii?Q?GZbCruBPe76/hsMMlB3eW+vME/blLpHaGSkLbiSTeKZaxSbCoS5AkBcJE8Tq?=
- =?us-ascii?Q?ewr18JUNbpY8PlBse6TKlPyGHUVd/nNvptjhgF8taN2IP/O2j0N41FMF7LGR?=
- =?us-ascii?Q?RV7X0XxhSZTk1UTAWJaXebhZ/N9Y16/Q8cqgJ+GKK2iFAJFAcE1b6JzcbEqg?=
- =?us-ascii?Q?kx16imxJA25sXoHyR2ccQ5VpjHOG6iDX+Hbt72rTZ3H+U/HW4+UvbEaSLPDe?=
- =?us-ascii?Q?WjnHkWRjaA0MDdwh7dG+d134RIet6TxuIZvVHNc063fGI5loxjxyP3m8FSkr?=
- =?us-ascii?Q?Tl8uTAbQE6AsD05+GxN4rXQpi5gz8ndWPwn/68HOZMphzqqQd/C2xodZfUz3?=
- =?us-ascii?Q?I5cyaF7Z9+1thnBd9Lpvm59CoNMnoqyl8Tu9Mai3CuGCgnA1zXju9wlShJZ3?=
- =?us-ascii?Q?/7qo5mMPjU0MVttyJniMuDZIEgy3pxCUwK+96Wvqe1lb1kh4pQv4YoxCs/vT?=
- =?us-ascii?Q?BBSPGQFivgPyjziRiwr7GnpUeBmX7aDniHlCr4dDq5A9Pxnu+Zg3oEpQbiO1?=
- =?us-ascii?Q?Gs4a1XVuMmd25ErSgcj/sx2Kp1/TuYFuL9LzY6TQ/uC88jrpwqRvPUO5ZOof?=
- =?us-ascii?Q?rV49E7+OPdQJ+MgrpuTO1d3OSNeDpzKb12Y3SwM2gx+RdELbOkEaRaC5dhGP?=
- =?us-ascii?Q?xF4DqRq7YbLj7C+nxWzsKBeEVun0m6ZpCSXWjR2oDucz4EQcw5akwgJViMq7?=
- =?us-ascii?Q?2pSA62sly66/y5ttRnfqCv49OvcAEWYfiwmXg4onr/pZWwARIxYBuO8Zpd1j?=
- =?us-ascii?Q?2cAWuo+onZ+Ma54XVqRl2VRA7uJJ1IdvQoFeSLG0eqX/q2s5dd5PGY8mknCO?=
- =?us-ascii?Q?Y4/3q1ZfpXyVS/BYMyK1xRpULJ1zrYZ4ceShdqEHv9q7hIHjfIQx0aGJfprK?=
- =?us-ascii?Q?a+Z8sVIPzukXWzhs4z3MWownE3Pux987eWLSLPm/xPka0FkIV1Ilr++1hOM2?=
- =?us-ascii?Q?TGJDPyq8VJQGTbaY/rZcif9iYp3wCf/bKJS6j4jTlaaB0e0Ng/zJU1UL+0yU?=
- =?us-ascii?Q?+scKJjPwfwD8dTVj0Nkgx9POF7fh3/uVuQLYcXZj0/+BwBtwggJn64AFIUO5?=
- =?us-ascii?Q?Nss=3D?=
-X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-64da6.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: c5f36bb1-520a-4bf0-e445-08dc5fdd68af
-X-MS-Exchange-CrossTenant-AuthSource: DB7PR09MB2684.eurprd09.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Apr 2024 19:26:13.1956
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR09MB7014
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] NFC: trf7970a: disable all regulators on removal
+To: Paul Geurts <paul_geurts@live.nl>, mgreer@animalcreek.com,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <DB7PR09MB26847A4EBF88D9EDFEB1DA0F950E2@DB7PR09MB2684.eurprd09.prod.outlook.com>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <DB7PR09MB26847A4EBF88D9EDFEB1DA0F950E2@DB7PR09MB2684.eurprd09.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-During module probe, regulator 'vin' and 'vdd-io' are used and enabled,
-but the vdd-io regulator overwrites the 'vin' regulator pointer. During
-remove, only the vdd-io is disabled, as the vin regulator pointer is not
-available anymore. When regulator_put() is called during resource
-cleanup a kernel warning is given, as the regulator is still enabled.
+On 18/04/2024 21:25, Paul Geurts wrote:
+> During module probe, regulator 'vin' and 'vdd-io' are used and enabled,
+> but the vdd-io regulator overwrites the 'vin' regulator pointer. During
+> remove, only the vdd-io is disabled, as the vin regulator pointer is not
+> available anymore. When regulator_put() is called during resource
+> cleanup a kernel warning is given, as the regulator is still enabled.
+> 
+> Store the two regulators in separate pointers and disable both the
+> regulators on module remove.
+> 
+> Fixes: 49d22c70aaf0 ("NFC: trf7970a: Add device tree option of 1.8 Volt IO voltage")
+> Signed-off-by: Paul Geurts <paul_geurts@live.nl>
 
-Store the two regulators in separate pointers and disable both the
-regulators on module remove.
+This is a friendly reminder during the review process.
 
-Fixes: 49d22c70aaf0 ("NFC: trf7970a: Add device tree option of 1.8 Volt IO voltage")
-Signed-off-by: Paul Geurts <paul_geurts@live.nl>
----
-V1 -> V2: Removed blank line between Fixes and Signed-off-by tag
+It looks like you received a tag and forgot to add it.
 
- drivers/nfc/trf7970a.c | 42 +++++++++++++++++++++++-------------------
- 1 file changed, 23 insertions(+), 19 deletions(-)
+If you do not know the process, here is a short explanation:
+Please add Acked-by/Reviewed-by/Tested-by tags when posting new
+versions, under or above your Signed-off-by tag. Tag is "received", when
+provided in a message replied to you on the mailing list. Tools like b4
+can help here. However, there's no need to repost patches *only* to add
+the tags. The upstream maintainer will do that for tags received on the
+version they apply.
 
-diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
-index 7eb17f46a815..9e1a34e23af2 100644
---- a/drivers/nfc/trf7970a.c
-+++ b/drivers/nfc/trf7970a.c
-@@ -424,7 +424,8 @@ struct trf7970a {
- 	enum trf7970a_state		state;
- 	struct device			*dev;
- 	struct spi_device		*spi;
--	struct regulator		*regulator;
-+	struct regulator		*vin_regulator;
-+	struct regulator		*vddio_regulator;
- 	struct nfc_digital_dev		*ddev;
- 	u32				quirks;
- 	bool				is_initiator;
-@@ -1883,7 +1884,7 @@ static int trf7970a_power_up(struct trf7970a *trf)
- 	if (trf->state != TRF7970A_ST_PWR_OFF)
- 		return 0;
- 
--	ret = regulator_enable(trf->regulator);
-+	ret = regulator_enable(trf->vin_regulator);
- 	if (ret) {
- 		dev_err(trf->dev, "%s - Can't enable VIN: %d\n", __func__, ret);
- 		return ret;
-@@ -1926,7 +1927,7 @@ static int trf7970a_power_down(struct trf7970a *trf)
- 	if (trf->en2_gpiod && !(trf->quirks & TRF7970A_QUIRK_EN2_MUST_STAY_LOW))
- 		gpiod_set_value_cansleep(trf->en2_gpiod, 0);
- 
--	ret = regulator_disable(trf->regulator);
-+	ret = regulator_disable(trf->vin_regulator);
- 	if (ret)
- 		dev_err(trf->dev, "%s - Can't disable VIN: %d\n", __func__,
- 			ret);
-@@ -2065,37 +2066,37 @@ static int trf7970a_probe(struct spi_device *spi)
- 	mutex_init(&trf->lock);
- 	INIT_DELAYED_WORK(&trf->timeout_work, trf7970a_timeout_work_handler);
- 
--	trf->regulator = devm_regulator_get(&spi->dev, "vin");
--	if (IS_ERR(trf->regulator)) {
--		ret = PTR_ERR(trf->regulator);
-+	trf->vin_regulator = devm_regulator_get(&spi->dev, "vin");
-+	if (IS_ERR(trf->vin_regulator)) {
-+		ret = PTR_ERR(trf->vin_regulator);
- 		dev_err(trf->dev, "Can't get VIN regulator: %d\n", ret);
- 		goto err_destroy_lock;
- 	}
- 
--	ret = regulator_enable(trf->regulator);
-+	ret = regulator_enable(trf->vin_regulator);
- 	if (ret) {
- 		dev_err(trf->dev, "Can't enable VIN: %d\n", ret);
- 		goto err_destroy_lock;
- 	}
- 
--	uvolts = regulator_get_voltage(trf->regulator);
-+	uvolts = regulator_get_voltage(trf->vin_regulator);
- 	if (uvolts > 4000000)
- 		trf->chip_status_ctrl = TRF7970A_CHIP_STATUS_VRS5_3;
- 
--	trf->regulator = devm_regulator_get(&spi->dev, "vdd-io");
--	if (IS_ERR(trf->regulator)) {
--		ret = PTR_ERR(trf->regulator);
-+	trf->vddio_regulator = devm_regulator_get(&spi->dev, "vdd-io");
-+	if (IS_ERR(trf->vddio_regulator)) {
-+		ret = PTR_ERR(trf->vddio_regulator);
- 		dev_err(trf->dev, "Can't get VDD_IO regulator: %d\n", ret);
--		goto err_destroy_lock;
-+		goto err_disable_vin_regulator;
- 	}
- 
--	ret = regulator_enable(trf->regulator);
-+	ret = regulator_enable(trf->vddio_regulator);
- 	if (ret) {
- 		dev_err(trf->dev, "Can't enable VDD_IO: %d\n", ret);
--		goto err_destroy_lock;
-+		goto err_disable_vin_regulator;
- 	}
- 
--	if (regulator_get_voltage(trf->regulator) == 1800000) {
-+	if (regulator_get_voltage(trf->vddio_regulator) == 1800000) {
- 		trf->io_ctrl = TRF7970A_REG_IO_CTRL_IO_LOW;
- 		dev_dbg(trf->dev, "trf7970a config vdd_io to 1.8V\n");
- 	}
-@@ -2108,7 +2109,7 @@ static int trf7970a_probe(struct spi_device *spi)
- 	if (!trf->ddev) {
- 		dev_err(trf->dev, "Can't allocate NFC digital device\n");
- 		ret = -ENOMEM;
--		goto err_disable_regulator;
-+		goto err_disable_vddio_regulator;
- 	}
- 
- 	nfc_digital_set_parent_dev(trf->ddev, trf->dev);
-@@ -2137,8 +2138,10 @@ static int trf7970a_probe(struct spi_device *spi)
- 	trf7970a_shutdown(trf);
- err_free_ddev:
- 	nfc_digital_free_device(trf->ddev);
--err_disable_regulator:
--	regulator_disable(trf->regulator);
-+err_disable_vddio_regulator:
-+	regulator_disable(trf->vddio_regulator);
-+err_disable_vin_regulator:
-+	regulator_disable(trf->vin_regulator);
- err_destroy_lock:
- 	mutex_destroy(&trf->lock);
- 	return ret;
-@@ -2157,7 +2160,8 @@ static void trf7970a_remove(struct spi_device *spi)
- 	nfc_digital_unregister_device(trf->ddev);
- 	nfc_digital_free_device(trf->ddev);
- 
--	regulator_disable(trf->regulator);
-+	regulator_disable(trf->vddio_regulator);
-+	regulator_disable(trf->vin_regulator);
- 
- 	mutex_destroy(&trf->lock);
- }
--- 
-2.39.2
+https://elixir.bootlin.com/linux/v6.5-rc3/source/Documentation/process/submitting-patches.rst#L577
+
+If a tag was not added on purpose, please state why and what changed.
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Best regards,
+Krzysztof
 
 
