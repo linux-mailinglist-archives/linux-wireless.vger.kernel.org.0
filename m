@@ -1,83 +1,109 @@
-Return-Path: <linux-wireless+bounces-6498-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6497-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D763C8A939C
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 08:58:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C0338A938F
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 08:54:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1517B1C20B9B
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 06:58:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DDCA1C20BC6
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 06:54:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABDAB1D68F;
-	Thu, 18 Apr 2024 06:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC832D057;
+	Thu, 18 Apr 2024 06:54:28 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.holtmann.org (coyote.holtmann.net [212.227.132.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837ED36AF2;
-	Thu, 18 Apr 2024 06:58:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.132.17
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B896BF9E9;
+	Thu, 18 Apr 2024 06:54:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713423486; cv=none; b=NwgYk4l8REAjBbEa9jenxfPYVlLpwRkQrMlYdyywBOFZYGhC2ZeoE8fX6nYo0WIwpP9nVP0kquRyLFqabWUY7PFE6xVuPRWcSgX7AzsjqY8IVKk2TRq+iYbzZ690UDM8+2sI4gN+6qOm7gEplyhxj1QF0D6VmMCxi+WWWcZMLX8=
+	t=1713423268; cv=none; b=vFttEhXWzo1L7iHG9bd+RPfmQcZqefjAaRZB6rJXxx3ShZHEJXr8TNGWk600tlMofSZ8TXocHJRFaWmj/z1ts7mfvE/5Ch00gJ03Ff6Vn/8BeDHFCobplfjkdraCBvoFaQdE35mjJjGuYvFl9knrk/428DWwG1Mvdt1hrkQxqeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713423486; c=relaxed/simple;
-	bh=fE/M2BBdmiOv3+JeGI7/kOBvg7/Tz6STSa9jybDFZGs=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=pUGFzEGbBc6CIIezxyCuo8pKqKIjwYkc2ubxg+jhlXdabot700J24BoAKD7h/torMdsFug8ib2dFy7uW0ea/tt0OFUW/QRO3Oj/8DgJs98eG+MeShgg7iNJiW2EKujGipJlpwX/y77oAa74BOhI21of0fZVXe7far6hFG1E8HGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=holtmann.org; spf=pass smtp.mailfrom=holtmann.org; arc=none smtp.client-ip=212.227.132.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=holtmann.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=holtmann.org
-Received: from smtpclient.apple (p4fefc49c.dip0.t-ipconnect.de [79.239.196.156])
-	by mail.holtmann.org (Postfix) with ESMTPSA id C3228CECC5;
-	Thu, 18 Apr 2024 08:48:08 +0200 (CEST)
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1713423268; c=relaxed/simple;
+	bh=mhYZZNbDMNOgWfIaFRUNGRT0avxSypQAg5nsiFDhP7Y=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=slwY82MCAmR9oQdpO0zG+OrIZFvLCdTfeZCmQZtRfihVA6S5XSdeVpTicfT3ByZqPJ7MATJepNCOu2sB3HL2IEJRYi7JudU5RAfOsGhSbrpALLMBr7BVQEPMO3MO4MdhjH8nsePkEcOPEsC3l6RXVOnFRHxCS0qh4yMue7DxZ/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 43I6sFHP1037130, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 43I6sFHP1037130
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 18 Apr 2024 14:54:15 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 18 Apr 2024 14:54:16 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 18 Apr 2024 14:54:16 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
+ 15.01.2507.035; Thu, 18 Apr 2024 14:54:16 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Martin Kaistra <martin.kaistra@linutronix.de>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Bitterblue Smith
+	<rtl8821cerfe2@gmail.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH 2/2] wifi: rtl8xxxu: enable MFP support
+Thread-Topic: [PATCH 2/2] wifi: rtl8xxxu: enable MFP support
+Thread-Index: AQHakKpmN+k3bxFC206ySgnAPq76G7FtKcXg///nXICAAIdW0A==
+Date: Thu, 18 Apr 2024 06:54:16 +0000
+Message-ID: <d697a217e5a747f29c2c23bf6eb275b2@realtek.com>
+References: <20240417093352.1840632-1-martin.kaistra@linutronix.de>
+ <20240417093352.1840632-3-martin.kaistra@linutronix.de>
+ <6a1571aadad1486eb83a19437e1d2437@realtek.com>
+ <137a9ecb-d5de-4471-bbc1-32986b735f28@linutronix.de>
+In-Reply-To: <137a9ecb-d5de-4471-bbc1-32986b735f28@linutronix.de>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
-Subject: Re: [PATCH v10 0/2] wifi: mwifiex: add code to support host mlme
-From: Marcel Holtmann <marcel@holtmann.org>
-In-Reply-To: <20240418060626.431202-1-yu-hao.lin@nxp.com>
-Date: Thu, 18 Apr 2024 08:47:58 +0200
-Cc: linux-wireless@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>,
- briannorris@chromium.org,
- Kalle Valo <kvalo@kernel.org>,
- francesco@dolcini.it,
- tsung-hsien.hsieh@nxp.com,
- rafael.beims@toradex.com,
- Francesco Dolcini <francesco.dolcini@toradex.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <0ED16BAB-6E7D-487C-BBCA-E63FEF37C60D@holtmann.org>
-References: <20240418060626.431202-1-yu-hao.lin@nxp.com>
-To: David Lin <yu-hao.lin@nxp.com>
-X-Mailer: Apple Mail (2.3774.500.171.1.1)
+MIME-Version: 1.0
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-Hi David,
-
-> With host mlme:
-> Tested-by: <rafael.beims@toradex.com> #Verdin AM62 IW416 SD
-> Without host mlme:
-> Tested-by: Francesco Dolcini <francesco.dolcini@toradex.com> # =
-88W8997-SD
->=20
-> This series add host based MLME support to the mwifiex driver, this
-> enables WPA3 support in both client and AP mode.
-> To enable WPA3, a firmware with corresponding V2 Key API support is
-> required.
-> The feature is currently only enabled on NXP IW416 (SD8978), and it
-> was internally validated by NXP QA team. Other NXP Wi-Fi chips
-> supported in current mwifiex are not affected by this change.
-
-I am a bit confused here. If this is just for WPA3 support, then =
-wasn=E2=80=99t
-this suppose to be solved with external_auth support?
-
-Regards
-
-Marcel
-
+TWFydGluIEthaXN0cmEgPG1hcnRpbi5rYWlzdHJhQGxpbnV0cm9uaXguZGU+IHdyb3RlOg0KPiBB
+bSAxOC4wNC4yNCB1bSAwMjoxOSBzY2hyaWViIFBpbmctS2UgU2hpaDoNCj4gPiBNYXJ0aW4gS2Fp
+c3RyYSA8bWFydGluLmthaXN0cmFAbGludXRyb25peC5kZT4gd3JvdGU6DQo+ID4NCj4gPj4NCj4g
+Pj4gSW4gb3JkZXIgdG8gY29ubmVjdCB0byBuZXR3b3JrcyB3aGljaCByZXF1aXJlIDgwMi4xMXcs
+IGFkZCB0aGUNCj4gPj4gTUZQX0NBUEFCTEUgZmxhZyBhbmQgbGV0IG1hYzgwMjExIGRvIHRoZSBh
+Y3R1YWwgY3J5cHRvIGluIHNvZnR3YXJlLg0KPiA+Pg0KPiA+PiBXaGVuIGEgcm9idXN0IG1hbmFn
+ZW1lbnQgZnJhbWUgaXMgcmVjZWl2ZWQsIHJ4X2RlYy0+c3dkZWMgaXMgbm90IHNldCwNCj4gPj4g
+ZXZlbiB0aG91Z2ggdGhlIEhXIGRpZCBub3QgZGVjcnlwdCBpdC4gRXh0ZW5kIHRoZSBjaGVjayBh
+bmQgZG9uJ3Qgc2V0DQo+ID4+IFJYX0ZMQUdfREVDUllQVEVEIGZvciB0aGVzZSBmcmFtZXMgaW4g
+b3JkZXIgdG8gdXNlIFNXIGRlY3J5cHRpb24uDQo+ID4+DQo+ID4+IFVzZSB0aGUgc2VjdXJpdHkg
+ZmxhZyBpbiB0aGUgUlggZGVzY3JpcHRvciBmb3IgdGhpcyBwdXJwb3NlLCBsaWtlIGl0IGlzDQo+
+ID4+IGRvbmUgaW4gdGhlIHJ0dzg4IGRyaXZlci4NCj4gPj4NCj4gPj4gQ2M6IHN0YWJsZUB2Z2Vy
+Lmtlcm5lbC5vcmcNCj4gPj4gU2lnbmVkLW9mZi1ieTogTWFydGluIEthaXN0cmEgPG1hcnRpbi5r
+YWlzdHJhQGxpbnV0cm9uaXguZGU+DQo+ID4NCj4gPiBJIHdvdWxkIGxpa2UgdG8gY2hhbmdlIHN1
+YmplY3QgdG8NCj4gPiAid2lmaTogcnRsOHh4eHU6IGVuYWJsZSBNRlAgc3VwcG9ydCB3aXRoIHNl
+Y3VyaXR5IGZsYWcgb2YgUlggZGVzY3JpcHRvciIsDQo+ID4gYmVjYXVzZSB0aGUgc2FtZSBzdWJq
+ZWN0IGFzIGZvcm1lciBwYXRjaCBjYXVzZSBjb25mdXNpbmcuIEkgY2FuIGNoYW5nZSB0aGF0DQo+
+ID4gZHVyaW5nIGNvbW1pdHRpbmcuDQo+ID4NCj4gPiBPdGhlcnMgYXJlIGdvb2QgdG8gbWUuDQo+
+ID4NCj4gDQo+IG9rLCBzdWJqZWN0IGNoYW5nZSBpcyBmaW5lIGZvciBtZS4NCj4gSSBqdXN0IG5v
+dGljZWQgdGhvdWdoLCB0aGF0IEkgbmFtZWQgdGhlIGVudW0gInJ0d19yeF9kZXNjX2VuYyIgaW5z
+dGVhZCBvZiB0aGUNCj4gcHJvYmFibHkgbW9yZSBhcHByb3ByaWF0ZSAicnRsOHh4eHVfcnhfZGVz
+Y19lbmMiLiBTaG91bGQgSSBjaGFuZ2UgdGhhdD8NCg0KSSBtaXNzZWQgdGhhdC4gUGxlYXNlIGRv
+IGl0IGFuZCBjaGFuZ2UgdGhlIHN1YmplY3QgYnkgdGhlIHdheS4gVGhhbmtzLg0KDQpQaW5nLUtl
+DQoNCg==
 
