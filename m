@@ -1,48 +1,72 @@
-Return-Path: <linux-wireless+bounces-6541-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6542-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B50A68AA459
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 22:51:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 585168AA53E
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Apr 2024 00:02:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A4651F22C0B
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 20:51:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB3431F21E98
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 22:02:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2507319067B;
-	Thu, 18 Apr 2024 20:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B070019DF47;
+	Thu, 18 Apr 2024 22:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jdw1Jtfg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JSWxytiQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E515817A938;
-	Thu, 18 Apr 2024 20:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2CAF199EBD
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Apr 2024 22:02:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713473354; cv=none; b=C1DrA1f7PLB9zUvri0I6nxrV+PS0fd+9UIHU+a+hdCGgTBUG6eSujD/j4MTVVTBLae8jYetag9WGpHjKFG+7PRVBrqozQPhyuebi4IieOs2ydGNkXusHp4u6Qc6f2Fq7BPpiLDfUpohB3wQdpAvNXz4WVH1DwyIQePyDgVzRmnY=
+	t=1713477762; cv=none; b=lPgKdNoWbMJODrSuX3+mx3DmhdVj92L3/ZFTETzRg4FCMABiEtTri2NH2TWZh8ieTvNdkcb7+ZjoF7LoMF/jz4VLGzqB5MwA37JBw05EeiDBdznfISi+ZBVZF6m3jhcrbMZlEhxEGF7T6pnLMtdIzO31oucdlRUTzvK22FVwSls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713473354; c=relaxed/simple;
-	bh=w0Wvi82vp9bUUFVc6RsXvhAdVyPYcbSALA6wo86ifr8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=TsAx9hsc8+6Js6IS7H8d7iOjpgnnbQY583STuT00RHCXJl0UIZSifYK5IxP4qMP3klhgoTK+5Uhb1tQ/qN4auV3gvJWt25+wiKmWwWi3aY4WO1b74LyhWlPvS1pQSVp6FaNklVJ+bWStAQzHKszTtv7rIUjzVRgsIgc6fSgP9DA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jdw1Jtfg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509A3C113CC;
-	Thu, 18 Apr 2024 20:49:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713473353;
-	bh=w0Wvi82vp9bUUFVc6RsXvhAdVyPYcbSALA6wo86ifr8=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=jdw1JtfgHEBQMFaE+Ppm4WQeIoINYtkdOlYw2gW8elSLpYIEOeUAD0ZmFtnd/4DXk
-	 xncrqSuY0Vu0PFpGAp3RXXieZgoVSW9QA10vHLy5lSGMUEn0DeFzTk1hTLDtOXZXL2
-	 CzUfil+oWrb+BqQf2sv98ejtfDXq1O19TDFD6hADvzEXxoZOA1o84HPmi5t0QSN1RU
-	 JMt0/3zVJ7JDHoce8QGj9cRop+udpd5RXEz8A8/0rHkW6bJhwxPGieuoF0b08Kt08m
-	 2Vn9F3enbpQAfCcPWjUOS0NfINqD1ZEdspJIjhZkCR0bqtG5AbliDCSHzJ9QQycqqg
-	 S2VtPshukkDhw==
-Message-ID: <8d30868b-9870-4b17-b471-263156f5ab9e@kernel.org>
-Date: Thu, 18 Apr 2024 22:49:12 +0200
+	s=arc-20240116; t=1713477762; c=relaxed/simple;
+	bh=AUS4GUa/eyU3v5BB4Tn9qBYrwByKBJUOjGzR1LjtoqE=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=BvrWqlYK4cUNQw4IVMw4hUrhMC8r8HUMP46wA/cNiNLgqUxFUk2Bz79D7q0MxVfCkTUL0sguwiLbTDJooOQGqr/B4jhyvs9XheU0s3Ws+Tggaes5tQvVn5MtR93moBzDeAIo+bir/aYsW8xbxrMtIeMZDZtkIlIexj+WtFW4HRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JSWxytiQ; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-56e47843cc7so1311792a12.0
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Apr 2024 15:02:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713477759; x=1714082559; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Gd6LP3ZQM+LufYB8qKxbCffUrLgE9kSOf27rHY5oThY=;
+        b=JSWxytiQCTDeSxZ0KKNk5D+P9x1pLL6U4q2+L32/f5Nvvw0OV4ACJ9Qp0g+Jp8TzbQ
+         fL87abZwA3W2BPN16ZBmoYc0lebuxlyS+tpiddQOuSDjkDASSKVb3qEhpeZ3EsgRbGI9
+         DfR0zXS14hk9BXZ+mSAVPNOxao+OeAd95L3YToDduHjfzUMX+ViKj1ZAwYMdz/I6Z9Bg
+         3AutyEfwRxLCYSbHG030eMtwwhTXWyvGdHKoIpSAnsYwp9xagG2/6FBWKSkPYvKESAuU
+         qwb1smcXaCck6WjTIXDu2aQg6mS2zPebP9Yz0/Fi9Iq3IjSg83fMTen/zGx6KUCtNUT4
+         H4Zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713477759; x=1714082559;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Gd6LP3ZQM+LufYB8qKxbCffUrLgE9kSOf27rHY5oThY=;
+        b=puhf++uEnFbNXE/AGSRVMj9hYyVl4y9zByyQdz9cSJO558EvMU7Jpjl5XWBKU9GaU/
+         DGE+stW+nCnMR7MhISxb4jG8GaYFYUdCIrs3XW2eZO1G7XrmqG0xa10pEkyH6khymGne
+         rNrGrcvUcYDpFnCjxQKOxjm2vjer5IpN6z+OXbKAQnbGHd2kUCgLAHtdJw6Yr7eKLfE5
+         8yqOl61CIr47VkR7NX18GSlIJDM6kYsgRE1+Ocv3MA3KOlYSf8NcDWDpaeuR/5zgp3mp
+         UVGZnmcO1sEqac2ZWQmCy+Uv7ECmUyZnKTmMRn1h449pJ4IpLt20uWU8WoePThMVFyQt
+         Pezw==
+X-Gm-Message-State: AOJu0YwaMjWKW91ImNYJ3aEYzHVaYVgEBgMPxsw0KbYlq+fFLYBmHf+b
+	AI0eWM41UZlJZzfJhWIvA+ceyGNzxdZA1n0bFw0nS+xq0Fs2wo5hC4quuTZR
+X-Google-Smtp-Source: AGHT+IGIaUQWmSF5AxGQdkCtFEseFJg2Vbg2SXA2/vOWE0RHKPHc180WoLyPIg9sFfiqIBqWwYN/yw==
+X-Received: by 2002:a50:871e:0:b0:56e:3774:749b with SMTP id i30-20020a50871e000000b0056e3774749bmr195643edb.42.1713477758798;
+        Thu, 18 Apr 2024 15:02:38 -0700 (PDT)
+Received: from [192.168.1.50] ([79.113.154.240])
+        by smtp.gmail.com with ESMTPSA id fg7-20020a056402548700b005704957a968sm1359989edb.13.2024.04.18.15.02.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Apr 2024 15:02:38 -0700 (PDT)
+Message-ID: <a53ed8b9-27fc-4871-a20a-ad42c6d210d3@gmail.com>
+Date: Fri, 19 Apr 2024 01:02:37 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,92 +74,169 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] NFC: trf7970a: disable all regulators on removal
-To: Paul Geurts <paul_geurts@live.nl>, mgreer@animalcreek.com,
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <DB7PR09MB26847A4EBF88D9EDFEB1DA0F950E2@DB7PR09MB2684.eurprd09.prod.outlook.com>
 Content-Language: en-US
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <DB7PR09MB26847A4EBF88D9EDFEB1DA0F950E2@DB7PR09MB2684.eurprd09.prod.outlook.com>
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Jes Sorensen <Jes.Sorensen@gmail.com>, Ping-Ke Shih <pkshih@realtek.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH 1/2] wifi: rtl8xxxu: Add separate MAC init table for RTL8192CU
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 18/04/2024 21:25, Paul Geurts wrote:
-> During module probe, regulator 'vin' and 'vdd-io' are used and enabled,
-> but the vdd-io regulator overwrites the 'vin' regulator pointer. During
-> remove, only the vdd-io is disabled, as the vin regulator pointer is not
-> available anymore. When regulator_put() is called during resource
-> cleanup a kernel warning is given, as the regulator is still enabled.
-> 
-> Store the two regulators in separate pointers and disable both the
-> regulators on module remove.
-> 
-> Fixes: 49d22c70aaf0 ("NFC: trf7970a: Add device tree option of 1.8 Volt IO voltage")
-> Signed-off-by: Paul Geurts <paul_geurts@live.nl>
+Until now RTL8192CU family was using the MAC init table from RTL8723AU,
+but these tables are not identical in the two vendor drivers. Import
+the correct table for RTL8192CU.
 
-This is a friendly reminder during the review process.
+Also move the existing MAC init table to rtl8xxxu_8723a.c, which is
+the only remaining user.
 
-It looks like you received a tag and forgot to add it.
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+---
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu.h  |  1 -
+ .../realtek/rtl8xxxu/rtl8xxxu_8192c.c         | 28 ++++++++++++++++++-
+ .../realtek/rtl8xxxu/rtl8xxxu_8723a.c         | 27 +++++++++++++++++-
+ .../wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 25 -----------------
+ 4 files changed, 53 insertions(+), 28 deletions(-)
 
-If you do not know the process, here is a short explanation:
-Please add Acked-by/Reviewed-by/Tested-by tags when posting new
-versions, under or above your Signed-off-by tag. Tag is "received", when
-provided in a message replied to you on the mailing list. Tools like b4
-can help here. However, there's no need to repost patches *only* to add
-the tags. The upstream maintainer will do that for tags received on the
-version they apply.
-
-https://elixir.bootlin.com/linux/v6.5-rc3/source/Documentation/process/submitting-patches.rst#L577
-
-If a tag was not added on purpose, please state why and what changed.
-
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-Best regards,
-Krzysztof
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+index fd92d23c43d9..74a3ad18b4b3 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
+@@ -2022,7 +2022,6 @@ struct rtl8xxxu_fileops {
+ 
+ extern int rtl8xxxu_debug;
+ 
+-extern const struct rtl8xxxu_reg8val rtl8xxxu_gen1_mac_init_table[];
+ extern const u32 rtl8xxxu_iqk_phy_iq_bb_reg[];
+ u8 rtl8xxxu_read8(struct rtl8xxxu_priv *priv, u16 addr);
+ u16 rtl8xxxu_read16(struct rtl8xxxu_priv *priv, u16 addr);
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c
+index 3ee7d8f87da6..e54978ca7171 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c
+@@ -77,6 +77,32 @@ static struct rtl8xxxu_power_base rtl8188r_power_base = {
+ 	.reg_0868 = 0x00020204,
+ };
+ 
++static const struct rtl8xxxu_reg8val rtl8192cu_mac_init_table[] = {
++	{0x420, 0x80}, {0x423, 0x00}, {0x430, 0x00}, {0x431, 0x00},
++	{0x432, 0x00}, {0x433, 0x01}, {0x434, 0x04}, {0x435, 0x05},
++	{0x436, 0x06}, {0x437, 0x07}, {0x438, 0x00}, {0x439, 0x00},
++	{0x43a, 0x00}, {0x43b, 0x01}, {0x43c, 0x04}, {0x43d, 0x05},
++	{0x43e, 0x06}, {0x43f, 0x07}, {0x440, 0x5d}, {0x441, 0x01},
++	{0x442, 0x00}, {0x444, 0x15}, {0x445, 0xf0}, {0x446, 0x0f},
++	{0x447, 0x00}, {0x458, 0x41}, {0x459, 0xa8}, {0x45a, 0x72},
++	{0x45b, 0xb9}, {0x460, 0x66}, {0x461, 0x66}, {0x462, 0x08},
++	{0x463, 0x03}, {0x4c8, 0xff}, {0x4c9, 0x08}, {0x4cc, 0xff},
++	{0x4cd, 0xff}, {0x4ce, 0x01}, {0x500, 0x26}, {0x501, 0xa2},
++	{0x502, 0x2f}, {0x503, 0x00}, {0x504, 0x28}, {0x505, 0xa3},
++	{0x506, 0x5e}, {0x507, 0x00}, {0x508, 0x2b}, {0x509, 0xa4},
++	{0x50a, 0x5e}, {0x50b, 0x00}, {0x50c, 0x4f}, {0x50d, 0xa4},
++	{0x50e, 0x00}, {0x50f, 0x00}, {0x512, 0x1c}, {0x514, 0x0a},
++	{0x515, 0x10}, {0x516, 0x0a}, {0x517, 0x10}, {0x51a, 0x16},
++	{0x524, 0x0f}, {0x525, 0x4f}, {0x546, 0x40}, {0x547, 0x00},
++	{0x550, 0x10}, {0x551, 0x10}, {0x559, 0x02}, {0x55a, 0x02},
++	{0x55d, 0xff}, {0x605, 0x30}, {0x608, 0x0e}, {0x609, 0x2a},
++	{0x652, 0x20}, {0x652, 0x20}, {0x63c, 0x08}, {0x63d, 0x08},
++	{0x63e, 0x0c}, {0x63f, 0x0c}, {0x66e, 0x05}, {0x700, 0x21},
++	{0x701, 0x43}, {0x702, 0x65}, {0x703, 0x87}, {0x708, 0x21},
++	{0x709, 0x43}, {0x70a, 0x65}, {0x70b, 0x87},
++	{0xffff, 0xff},
++};
++
+ static const struct rtl8xxxu_rfregval rtl8192cu_radioa_2t_init_table[] = {
+ 	{0x00, 0x00030159}, {0x01, 0x00031284},
+ 	{0x02, 0x00098000}, {0x03, 0x00018c63},
+@@ -621,7 +647,7 @@ struct rtl8xxxu_fileops rtl8192cu_fops = {
+ 	.trxff_boundary = 0x27ff,
+ 	.pbp_rx = PBP_PAGE_SIZE_128,
+ 	.pbp_tx = PBP_PAGE_SIZE_128,
+-	.mactable = rtl8xxxu_gen1_mac_init_table,
++	.mactable = rtl8192cu_mac_init_table,
+ 	.total_page_num = TX_TOTAL_PAGE_NUM,
+ 	.page_num_hi = TX_PAGE_NUM_HI_PQ,
+ 	.page_num_lo = TX_PAGE_NUM_LO_PQ,
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c
+index ad1bb9377ca2..bf8c34af781f 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c
+@@ -54,6 +54,31 @@ static struct rtl8xxxu_power_base rtl8723a_power_base = {
+ 	.reg_0868 = 0x02040608,
+ };
+ 
++static const struct rtl8xxxu_reg8val rtl8723au_mac_init_table[] = {
++	{0x420, 0x80}, {0x423, 0x00}, {0x430, 0x00}, {0x431, 0x00},
++	{0x432, 0x00}, {0x433, 0x01}, {0x434, 0x04}, {0x435, 0x05},
++	{0x436, 0x06}, {0x437, 0x07}, {0x438, 0x00}, {0x439, 0x00},
++	{0x43a, 0x00}, {0x43b, 0x01}, {0x43c, 0x04}, {0x43d, 0x05},
++	{0x43e, 0x06}, {0x43f, 0x07}, {0x440, 0x5d}, {0x441, 0x01},
++	{0x442, 0x00}, {0x444, 0x15}, {0x445, 0xf0}, {0x446, 0x0f},
++	{0x447, 0x00}, {0x458, 0x41}, {0x459, 0xa8}, {0x45a, 0x72},
++	{0x45b, 0xb9}, {0x460, 0x66}, {0x461, 0x66}, {0x462, 0x08},
++	{0x463, 0x03}, {0x4c8, 0xff}, {0x4c9, 0x08}, {0x4cc, 0xff},
++	{0x4cd, 0xff}, {0x4ce, 0x01}, {0x500, 0x26}, {0x501, 0xa2},
++	{0x502, 0x2f}, {0x503, 0x00}, {0x504, 0x28}, {0x505, 0xa3},
++	{0x506, 0x5e}, {0x507, 0x00}, {0x508, 0x2b}, {0x509, 0xa4},
++	{0x50a, 0x5e}, {0x50b, 0x00}, {0x50c, 0x4f}, {0x50d, 0xa4},
++	{0x50e, 0x00}, {0x50f, 0x00}, {0x512, 0x1c}, {0x514, 0x0a},
++	{0x515, 0x10}, {0x516, 0x0a}, {0x517, 0x10}, {0x51a, 0x16},
++	{0x524, 0x0f}, {0x525, 0x4f}, {0x546, 0x40}, {0x547, 0x00},
++	{0x550, 0x10}, {0x551, 0x10}, {0x559, 0x02}, {0x55a, 0x02},
++	{0x55d, 0xff}, {0x605, 0x30}, {0x608, 0x0e}, {0x609, 0x2a},
++	{0x652, 0x20}, {0x63c, 0x0a}, {0x63d, 0x0a}, {0x63e, 0x0e},
++	{0x63f, 0x0e}, {0x66e, 0x05}, {0x700, 0x21}, {0x701, 0x43},
++	{0x702, 0x65}, {0x703, 0x87}, {0x708, 0x21}, {0x709, 0x43},
++	{0x70a, 0x65}, {0x70b, 0x87}, {0xffff, 0xff},
++};
++
+ static const struct rtl8xxxu_rfregval rtl8723au_radioa_1t_init_table[] = {
+ 	{0x00, 0x00030159}, {0x01, 0x00031284},
+ 	{0x02, 0x00098000}, {0x03, 0x00039c63},
+@@ -518,7 +543,7 @@ struct rtl8xxxu_fileops rtl8723au_fops = {
+ 	.trxff_boundary = 0x27ff,
+ 	.pbp_rx = PBP_PAGE_SIZE_128,
+ 	.pbp_tx = PBP_PAGE_SIZE_128,
+-	.mactable = rtl8xxxu_gen1_mac_init_table,
++	.mactable = rtl8723au_mac_init_table,
+ 	.total_page_num = TX_TOTAL_PAGE_NUM,
+ 	.page_num_hi = TX_PAGE_NUM_HI_PQ,
+ 	.page_num_lo = TX_PAGE_NUM_LO_PQ,
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index fac7824ae727..82037a1f3dfc 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -132,31 +132,6 @@ static struct ieee80211_supported_band rtl8xxxu_supported_band = {
+ 	.n_bitrates = ARRAY_SIZE(rtl8xxxu_rates),
+ };
+ 
+-const struct rtl8xxxu_reg8val rtl8xxxu_gen1_mac_init_table[] = {
+-	{0x420, 0x80}, {0x423, 0x00}, {0x430, 0x00}, {0x431, 0x00},
+-	{0x432, 0x00}, {0x433, 0x01}, {0x434, 0x04}, {0x435, 0x05},
+-	{0x436, 0x06}, {0x437, 0x07}, {0x438, 0x00}, {0x439, 0x00},
+-	{0x43a, 0x00}, {0x43b, 0x01}, {0x43c, 0x04}, {0x43d, 0x05},
+-	{0x43e, 0x06}, {0x43f, 0x07}, {0x440, 0x5d}, {0x441, 0x01},
+-	{0x442, 0x00}, {0x444, 0x15}, {0x445, 0xf0}, {0x446, 0x0f},
+-	{0x447, 0x00}, {0x458, 0x41}, {0x459, 0xa8}, {0x45a, 0x72},
+-	{0x45b, 0xb9}, {0x460, 0x66}, {0x461, 0x66}, {0x462, 0x08},
+-	{0x463, 0x03}, {0x4c8, 0xff}, {0x4c9, 0x08}, {0x4cc, 0xff},
+-	{0x4cd, 0xff}, {0x4ce, 0x01}, {0x500, 0x26}, {0x501, 0xa2},
+-	{0x502, 0x2f}, {0x503, 0x00}, {0x504, 0x28}, {0x505, 0xa3},
+-	{0x506, 0x5e}, {0x507, 0x00}, {0x508, 0x2b}, {0x509, 0xa4},
+-	{0x50a, 0x5e}, {0x50b, 0x00}, {0x50c, 0x4f}, {0x50d, 0xa4},
+-	{0x50e, 0x00}, {0x50f, 0x00}, {0x512, 0x1c}, {0x514, 0x0a},
+-	{0x515, 0x10}, {0x516, 0x0a}, {0x517, 0x10}, {0x51a, 0x16},
+-	{0x524, 0x0f}, {0x525, 0x4f}, {0x546, 0x40}, {0x547, 0x00},
+-	{0x550, 0x10}, {0x551, 0x10}, {0x559, 0x02}, {0x55a, 0x02},
+-	{0x55d, 0xff}, {0x605, 0x30}, {0x608, 0x0e}, {0x609, 0x2a},
+-	{0x652, 0x20}, {0x63c, 0x0a}, {0x63d, 0x0a}, {0x63e, 0x0e},
+-	{0x63f, 0x0e}, {0x66e, 0x05}, {0x700, 0x21}, {0x701, 0x43},
+-	{0x702, 0x65}, {0x703, 0x87}, {0x708, 0x21}, {0x709, 0x43},
+-	{0x70a, 0x65}, {0x70b, 0x87}, {0xffff, 0xff},
+-};
+-
+ static const struct rtl8xxxu_reg32val rtl8723a_phy_1t_init_table[] = {
+ 	{0x800, 0x80040000}, {0x804, 0x00000003},
+ 	{0x808, 0x0000fc00}, {0x80c, 0x0000000a},
+-- 
+2.44.0
 
 
