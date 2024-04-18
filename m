@@ -1,259 +1,300 @@
-Return-Path: <linux-wireless+bounces-6518-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6519-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19CFF8A96BA
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 11:52:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5A6A8A97A7
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 12:43:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B6531F21191
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 09:52:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A6162830DB
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 10:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C097A15B555;
-	Thu, 18 Apr 2024 09:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7600315CD44;
+	Thu, 18 Apr 2024 10:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="UozJv7/A"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="A/jUpLTg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF9647D3F4
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Apr 2024 09:52:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9843B15AD9B
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Apr 2024 10:43:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713433949; cv=none; b=WE7AL5tLh8X/NySn4fv1QpvXHqGhLUac9Qa0yGP3n532MTnPssl/aOMw1vp117y0/ToFh4BYz0HuibU0fs/CJTK9XraU8Zs3sD6I6ojCP7T+mf61PRZzGAv2WxZUkykeeIpeq146VOSHkgR+noBbg62EM5Y2sBUG2Riqo6GLJVg=
+	t=1713437008; cv=none; b=MBOlzi7Dw0j0+E1adEXwkyNx9EuBQq02ymxI1T8osHU5hUPFbCJ4s47vdJ+QHAv4XYiB9UA9f8RBkUVtKs4meG1yoNXEZv4e2+glx+2RrCvskA7AK/I4ANkCZGhff9KPe3rSOPwnRnSFIZ4JrND66GJd+QAnqi0U4F/dDF19BDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713433949; c=relaxed/simple;
-	bh=MGqDm7cEQtVMPiIluCZ1f+2BDUCC3L535CNKEMd1HdQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nCtumsIHws2XXacJfE1csnqslM/qY6sB49pHvmZMcbGRiMVhnZfU2U+YCvDAeCyYIawH5CY5ZwcLUZm+zkTXo7ij7p4z3ZsMgvCQZ7bdjeAJ4KwFKfg2Op7/tgFtTFmq0ini0sxKTFJwiwMARoQkefxPPMH3furYMYLy8VyqdHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=UozJv7/A; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=lVYYvRN8hZ2D3mejaFz5xMJsV70q9KWlkis0OVyKy5Q=;
-	t=1713433948; x=1714643548; b=UozJv7/AHVsY2KKr9zQjmfpMRpcDoQgKVbLUMQ42uP5hcQ8
-	mNqBeAV+ojrYWFgpMvA7Lo3F2fPWy7j+krI2O3HOxrKAEU8hXvR5nucypxQrea5/mrKG0d7e1b5Ab
-	MX07WJq/o6YaFkXoLAvN6cBScsJ9vm+qxCwnLnXn5mgr6/HpcaUtgAM6ZMz97ww3WbH6i6hUFenHu
-	8HKOYtXOnJaGjk8ERSmOSA0s0ehL3S05rX86kylni3lCqewcUqV078GENg6BOuITDsp7F9R+hqHtg
-	k4LOoEe7awSFt40PaKV7efcpWXQI91WHP5bfsArQQIdw4L1bHWVFYQroKmJdiZ8Q==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rxORM-0000000CM0y-47MX;
-	Thu, 18 Apr 2024 11:52:25 +0200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Benjamin Berg <benjamin.berg@intel.com>,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH wireless-next 3/3] wifi: mac80211: keep mac80211 consistent on link activation failure
-Date: Thu, 18 Apr 2024 11:52:21 +0200
-Message-ID: <20240418115219.1129e89f4b55.I6299678353e50e88b55c99b0bce15c64b52c2804@changeid>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240418115219.94ea84c8ee1e.I0b247dbc0cd937ae6367bc0fc7e8d156b5d5f9b1@changeid>
-References: <20240418115219.94ea84c8ee1e.I0b247dbc0cd937ae6367bc0fc7e8d156b5d5f9b1@changeid>
+	s=arc-20240116; t=1713437008; c=relaxed/simple;
+	bh=yOxd9jaTIuipLJlawJXzbtqtnJYKOzC78LLPmPgDJz0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ZU/PyDVgMG31TGg15RlRuoT9S9j87rOResibm6U0Gw3STA9FSobg+NT+ahXdChWj4mj+7oltV1gxE9gkzHY/ZVjJvZ4RaUKFsKbeUZzCb9DxrqcNS1MmbDw95Sb6CoflFKgikXRGLc42uvpZ20BaimdtYIAJSNlb5hFSF2QOWMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=A/jUpLTg; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43I4J4bm025706;
+	Thu, 18 Apr 2024 10:43:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=re8g6eksaN5KrvXzinPxQ8HXeSH+98qJt2yAot5kHBQ=; b=A/
+	jUpLTgnOyWndHHw8XiTsD5/c5uROklCxbY42Z+xLf57HKPeAuTWmk/lcQfIab220
+	1OI4gFmLNxJ2OmByquLik93huwkxu2tduJBilf4YQjhgtNJw2A93E/4gloxcwsjy
+	vbJLTyKevZ6ZhdfVvDuP6MowDjiGD0dHkNqBXLXEtJIB6tT1enF0c3+JLyY6ujV0
+	UY2SNEOFJxybGRZOUh8xmINY9dswXT5fiSPC5MXLLZqmt8AJD6WOxq97E49+nRYS
+	JCx44yMBlt1ddkSjlxpVa+CVyM5Ia8frQHQV9A9Cix/9qsqUKSPh0dswWrp4otRs
+	QuEhc26XTHq6y4TyWJug==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xju9m0vvd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Apr 2024 10:43:19 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43IAhIVa002827
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Apr 2024 10:43:18 GMT
+Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 18 Apr
+ 2024 03:43:17 -0700
+Message-ID: <3f5c8df8-a513-4e04-9aac-57ca44295891@quicinc.com>
+Date: Thu, 18 Apr 2024 18:43:16 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/10] wifi: ath12k: support suspend/resume
+To: Jeff Johnson <quic_jjohnson@quicinc.com>, Kalle Valo <kvalo@kernel.org>
+CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20240412060620.27519-1-quic_bqiang@quicinc.com>
+ <aea9f68d-4862-439c-a52f-d6463e6edca9@quicinc.com>
+ <87r0f4vzkc.fsf@kernel.org>
+ <b428c741-adbe-41c2-b353-a74b574d12d4@quicinc.com>
+ <bbe13506-d8cb-4e3d-9d10-617b77bf042b@quicinc.com>
+Content-Language: en-US
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+In-Reply-To: <bbe13506-d8cb-4e3d-9d10-617b77bf042b@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: UVXMelX-PDreG4ELETXwj-O7f74pvJKX
+X-Proofpoint-ORIG-GUID: UVXMelX-PDreG4ELETXwj-O7f74pvJKX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-18_08,2024-04-17_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 bulkscore=0
+ suspectscore=0 malwarescore=0 mlxscore=0 spamscore=0 adultscore=0
+ priorityscore=1501 mlxlogscore=999 lowpriorityscore=0 impostorscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404180076
 
-From: Benjamin Berg <benjamin.berg@intel.com>
 
-In the unlikely event that link_use_channel fails while activating a
-link, mac80211 would go into a bad state. Unfortunately, we cannot
-completely avoid failures from drivers in this case.
+On 4/18/2024 2:06 PM, Jeff Johnson wrote:
+> On 4/17/2024 4:32 PM, Jeff Johnson wrote:
+>> On 4/17/2024 7:22 AM, Kalle Valo wrote:
+>>> Jeff Johnson <quic_jjohnson@quicinc.com> writes:
+>>>> My Qualcomm Innovation Center copyright checker reports:
+>>>> drivers/net/wireless/ath/ath12k/dp_rx.h copyright missing 2024
+>>> I fixed this in the pending branch:
+>>>
+>>> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/=
+?h=3Dpending&id=3D6b928df55a671d2c9a15edc746f6b42ef544928e
+>>>
+>>> Jeff, what do you think of the patchset? Is it ready to take?
+>> My laptop didn't boot with this patchset in place, let me debug.
+> I was originally trying to test with the entire 'pending' branch, but m=
+y
+> laptop crashes during initial boot.
+>
+> So I just tested with master+the hibernation patchset, and upon resume =
+I'm
+> getting a bunch of the following:
+>
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: mhi mhi0: Requested to power=
+ ON
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: mhi mhi0: Power on setup suc=
+cess
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: mhi mhi0: Wait for device to=
+ enter SBL or Mission mode
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: ath12k_pci 0000:03:00.0: mhi=
+ notify status reason MHI_CB_EE_MISSION_MODE
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: ath12k_pci 0000:03:00.0: qmi=
+ wifi fw qmi service connected
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: ath12k_pci 0000:03:00.0: no =
+valid response from PHY capability, choose default num_phy 2
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: ath12k_pci 0000:03:00.0: qmi=
+ firmware request memory request
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: ath12k_pci 0000:03:00.0: qmi=
+ mem seg type 1 size 7077888
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: ath12k_pci 0000:03:00.0: qmi=
+ mem seg type 4 size 8454144
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: ath12k_pci 0000:03:00.0: qmi=
+ dma allocation failed (7077888 B type 1), will try later with small size=
 
-However, what we can do is to just continue internally anyway and assume
-the driver is going to trigger a recovery flow from its side. Doing that
-means that we at least have a consistent state in mac80211 allowing such
-a recovery flow to succeed.
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: BUG: Bad page state in proce=
+ss kworker/u16:54  pfn:36e80
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: page: refcount:1 mapcount:0 =
+mapping:0000000000000000 index:0x0 pfn:0x36e80
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: flags: 0xfffffe0000000(node=3D=
+0|zone=3D1|lastcpupid=3D0x3fffff)
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: page_type: 0xffffffff()
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: raw: 000fffffe0000000 000000=
+0000000000 dead000000000122 0000000000000000
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: raw: 0000000000000000 000000=
+0000000000 00000001ffffffff 0000000000000000
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: page dumped because: nonzero=
+ _refcount
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: Modules linked in: ccm micha=
+el_mic bnep amdgpu snd_hda_codec_hdmi amdxcp drm_exec gpu_sched binfmt_mi=
+sc qrtr_mhi nls_iso8859_1 i915 qrtr ath12k qmi_helpers mac80211 snd_ctl_l=
+ed ledtrig_audio radeon snd_hda_codec_realtek snd_hda_codec_generic snd_h=
+da_scodec_component intel_rapl_msr intel_rapl_common snd_hda_intel snd_in=
+tel_dspcfg x86_pkg_temp_thermal snd_intel_sdw_acpi intel_powerclamp snd_h=
+da_codec mei_hdcp uvcvideo snd_hda_core cfg80211 snd_hwdep snd_pcm drm_su=
+balloc_helper coretemp drm_ttm_helper drm_buddy videobuf2_vmalloc btusb c=
+rct10dif_pclmul uvc ttm ghash_clmulni_intel btrtl sha512_ssse3 videobuf2_=
+memops btintel sha256_ssse3 snd_seq_midi btbcm sha1_ssse3 snd_seq_midi_ev=
+ent drm_display_helper aesni_intel videobuf2_v4l2 snd_rawmidi videodev bt=
+mtk cec snd_seq bluetooth crypto_simd cryptd rc_core videobuf2_common snd=
+_seq_device rapl drm_kms_helper libarc4 mc snd_timer intel_cstate mhi snd=
+ i2c_algo_bit ecdh_generic mei_me ecc joydev input_leds soundcore mei ser=
+io_raw at24 wmi_bmof mac_hid wireless_hotkey
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  tpm_infineon sch_fq_codel m=
+sr parport_pc ppdev lp drm parport efi_pstore ip_tables x_tables autofs4 =
+cdc_ether usbnet mii rtsx_pci_sdmmc crc32_pclmul video e1000e i2c_i801 ps=
+mouse rtsx_pci ahci i2c_smbus libahci xhci_pci lpc_ich xhci_pci_renesas w=
+mi
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: CPU: 2 PID: 55152 Comm: kwor=
+ker/u16:54 Not tainted 6.9.0-rc3-wt-ath+ #28
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: Hardware name: Hewlett-Packa=
+rd HP ZBook 14 G2/2216, BIOS M71 Ver. 01.31 02/24/2020
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: Workqueue: qmi_msg_handler q=
+mi_data_ready_work [qmi_helpers]
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: Call Trace:
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  <TASK>
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  dump_stack_lvl+0x70/0x90
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  dump_stack+0x14/0x20
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  bad_page+0x71/0x100
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  free_page_is_bad_report+0x8=
+6/0x90
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  __free_pages_ok+0x3b3/0x410=
 
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/mac80211/chan.c        | 35 +++++++++++++++++++++++------------
- net/mac80211/ieee80211_i.h | 12 +++++++++++-
- net/mac80211/link.c        | 21 ++++++++++++++++++---
- 3 files changed, 52 insertions(+), 16 deletions(-)
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  __free_pages+0xe7/0x110
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  dma_direct_free+0xb9/0x180
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  dma_free_attrs+0x3f/0x60
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  ath12k_qmi_free_target_mem_=
+chunk+0x75/0x140 [ath12k]
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  ath12k_qmi_msg_mem_request_=
+cb+0x1fb/0x370 [ath12k]
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  qmi_invoke_handler+0xa3/0xd=
+0 [qmi_helpers]
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  qmi_handle_message+0x6f/0x1=
+90 [qmi_helpers]
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  qmi_data_ready_work+0x288/0=
+x460 [qmi_helpers]
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  ? raw_spin_rq_unlock+0x14/0=
+x40
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  process_one_work+0x1a0/0x3f=
+0
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  worker_thread+0x351/0x500
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  ? __pfx_worker_thread+0x10/=
+0x10
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  kthread+0xf8/0x130
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  ? __pfx_kthread+0x10/0x10
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  ret_from_fork+0x40/0x60
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  ? __pfx_kthread+0x10/0x10
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  ret_from_fork_asm+0x1a/0x30=
 
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index 2c338014ded5..dedf11eeb43c 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -688,7 +688,8 @@ static int ieee80211_add_chanctx(struct ieee80211_local *local,
- static struct ieee80211_chanctx *
- ieee80211_new_chanctx(struct ieee80211_local *local,
- 		      const struct ieee80211_chan_req *chanreq,
--		      enum ieee80211_chanctx_mode mode)
-+		      enum ieee80211_chanctx_mode mode,
-+		      bool assign_on_failure)
- {
- 	struct ieee80211_chanctx *ctx;
- 	int err;
-@@ -700,10 +701,12 @@ ieee80211_new_chanctx(struct ieee80211_local *local,
- 		return ERR_PTR(-ENOMEM);
- 
- 	err = ieee80211_add_chanctx(local, ctx);
--	if (err) {
-+	if (!assign_on_failure && err) {
- 		kfree(ctx);
- 		return ERR_PTR(err);
- 	}
-+	/* We ignored a driver error, see _ieee80211_set_active_links */
-+	WARN_ON_ONCE(err && !local->in_reconfig);
- 
- 	list_add_rcu(&ctx->list, &local->chanctx_list);
- 	return ctx;
-@@ -809,7 +812,8 @@ static void ieee80211_recalc_radar_chanctx(struct ieee80211_local *local,
- }
- 
- static int ieee80211_assign_link_chanctx(struct ieee80211_link_data *link,
--					 struct ieee80211_chanctx *new_ctx)
-+					 struct ieee80211_chanctx *new_ctx,
-+					 bool assign_on_failure)
- {
- 	struct ieee80211_sub_if_data *sdata = link->sdata;
- 	struct ieee80211_local *local = sdata->local;
-@@ -836,7 +840,11 @@ static int ieee80211_assign_link_chanctx(struct ieee80211_link_data *link,
- 		ieee80211_recalc_chanctx_min_def(local, new_ctx, link);
- 
- 		ret = drv_assign_vif_chanctx(local, sdata, link->conf, new_ctx);
--		if (!ret) {
-+		if (assign_on_failure || !ret) {
-+			/* Need to continue, see _ieee80211_set_active_links */
-+			WARN_ON_ONCE(ret && !local->in_reconfig);
-+			ret = 0;
-+
- 			/* succeeded, so commit it to the data structures */
- 			conf = &new_ctx->conf;
- 			list_add(&link->assigned_chanctx_list,
-@@ -1046,7 +1054,8 @@ int ieee80211_link_reserve_chanctx(struct ieee80211_link_data *link,
- 	new_ctx = ieee80211_find_reservation_chanctx(local, chanreq, mode);
- 	if (!new_ctx) {
- 		if (ieee80211_can_create_new_chanctx(local)) {
--			new_ctx = ieee80211_new_chanctx(local, chanreq, mode);
-+			new_ctx = ieee80211_new_chanctx(local, chanreq, mode,
-+							false);
- 			if (IS_ERR(new_ctx))
- 				return PTR_ERR(new_ctx);
- 		} else {
-@@ -1302,7 +1311,7 @@ ieee80211_link_use_reserved_assign(struct ieee80211_link_data *link)
- 	list_del(&link->reserved_chanctx_list);
- 	link->reserved_chanctx = NULL;
- 
--	err = ieee80211_assign_link_chanctx(link, new_ctx);
-+	err = ieee80211_assign_link_chanctx(link, new_ctx, false);
- 	if (err) {
- 		if (ieee80211_chanctx_refcount(local, new_ctx) == 0)
- 			ieee80211_free_chanctx(local, new_ctx, false);
-@@ -1698,7 +1707,7 @@ void __ieee80211_link_release_channel(struct ieee80211_link_data *link,
- 		ieee80211_link_unreserve_chanctx(link);
- 	}
- 
--	ieee80211_assign_link_chanctx(link, NULL);
-+	ieee80211_assign_link_chanctx(link, NULL, false);
- 	if (ieee80211_chanctx_refcount(local, ctx) == 0)
- 		ieee80211_free_chanctx(local, ctx, skip_idle_recalc);
- 
-@@ -1709,9 +1718,10 @@ void __ieee80211_link_release_channel(struct ieee80211_link_data *link,
- 		ieee80211_vif_use_reserved_switch(local);
- }
- 
--int ieee80211_link_use_channel(struct ieee80211_link_data *link,
--			       const struct ieee80211_chan_req *chanreq,
--			       enum ieee80211_chanctx_mode mode)
-+int _ieee80211_link_use_channel(struct ieee80211_link_data *link,
-+				const struct ieee80211_chan_req *chanreq,
-+				enum ieee80211_chanctx_mode mode,
-+				bool assign_on_failure)
- {
- 	struct ieee80211_sub_if_data *sdata = link->sdata;
- 	struct ieee80211_local *local = sdata->local;
-@@ -1749,7 +1759,8 @@ int ieee80211_link_use_channel(struct ieee80211_link_data *link,
- 	if (ctx)
- 		reserved = true;
- 	else
--		ctx = ieee80211_new_chanctx(local, chanreq, mode);
-+		ctx = ieee80211_new_chanctx(local, chanreq, mode,
-+					    assign_on_failure);
- 	if (IS_ERR(ctx)) {
- 		ret = PTR_ERR(ctx);
- 		goto out;
-@@ -1757,7 +1768,7 @@ int ieee80211_link_use_channel(struct ieee80211_link_data *link,
- 
- 	ieee80211_link_update_chanreq(link, chanreq);
- 
--	ret = ieee80211_assign_link_chanctx(link, ctx);
-+	ret = ieee80211_assign_link_chanctx(link, ctx, assign_on_failure);
- 
- 	if (reserved) {
- 		/* remove reservation */
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 81a9c5b7642d..317164219e02 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -2553,9 +2553,19 @@ bool ieee80211_chanreq_identical(const struct ieee80211_chan_req *a,
- 				 const struct ieee80211_chan_req *b);
- 
- int __must_check
-+_ieee80211_link_use_channel(struct ieee80211_link_data *link,
-+			    const struct ieee80211_chan_req *req,
-+			    enum ieee80211_chanctx_mode mode,
-+			    bool assign_on_failure);
-+
-+static inline int __must_check
- ieee80211_link_use_channel(struct ieee80211_link_data *link,
- 			   const struct ieee80211_chan_req *req,
--			   enum ieee80211_chanctx_mode mode);
-+			   enum ieee80211_chanctx_mode mode)
-+{
-+	return _ieee80211_link_use_channel(link, req, mode, false);
-+}
-+
- int __must_check
- ieee80211_link_reserve_chanctx(struct ieee80211_link_data *link,
- 			       const struct ieee80211_chan_req *req,
-diff --git a/net/mac80211/link.c b/net/mac80211/link.c
-index 43f9672fc7f1..af0321408a97 100644
---- a/net/mac80211/link.c
-+++ b/net/mac80211/link.c
-@@ -404,9 +404,24 @@ static int _ieee80211_set_active_links(struct ieee80211_sub_if_data *sdata,
- 
- 		link = sdata_dereference(sdata->link[link_id], sdata);
- 
--		ret = ieee80211_link_use_channel(link,
--						 &link->conf->chanreq,
--						 IEEE80211_CHANCTX_SHARED);
-+		/*
-+		 * This call really should not fail. Unfortunately, it appears
-+		 * that this may happen occasionally with some drivers. Should
-+		 * it happen, we are stuck in a bad place as going backwards is
-+		 * not really feasible.
-+		 *
-+		 * So lets just tell link_use_channel that it must not fail to
-+		 * assign the channel context (from mac80211's perspective) and
-+		 * assume the driver is going to trigger a recovery flow if it
-+		 * had a failure.
-+		 * That really is not great nor guaranteed to work. But at least
-+		 * the internal mac80211 state remains consistent and there is
-+		 * a chance that we can recover.
-+		 */
-+		ret = _ieee80211_link_use_channel(link,
-+						  &link->conf->chanreq,
-+						  IEEE80211_CHANCTX_SHARED,
-+						  true);
- 		WARN_ON_ONCE(ret);
- 
- 		ieee80211_mgd_set_link_qos_params(link);
--- 
-2.44.0
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  </TASK>
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: Disabling lock debugging due=
+ to kernel taint
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: BUG: Bad page state in proce=
+ss kworker/u16:54  pfn:36f00
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: page: refcount:1 mapcount:0 =
+mapping:0000000000000000 index:0x0 pfn:0x36f00
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: flags: 0xfffffe0000000(node=3D=
+0|zone=3D1|lastcpupid=3D0x3fffff)
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: page_type: 0xffffffff()
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: raw: 000fffffe0000000 000000=
+0000000000 dead000000000122 0000000000000000
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: raw: 0000000000000000 000000=
+0000000000 00000001ffffffff 0000000000000000
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: page dumped because: nonzero=
+ _refcount
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: Modules linked in: ccm micha=
+el_mic bnep amdgpu snd_hda_codec_hdmi amdxcp drm_exec gpu_sched binfmt_mi=
+sc qrtr_mhi nls_iso8859_1 i915 qrtr ath12k qmi_helpers mac80211 snd_ctl_l=
+ed ledtrig_audio radeon snd_hda_codec_realtek snd_hda_codec_generic snd_h=
+da_scodec_component intel_rapl_msr intel_rapl_common snd_hda_intel snd_in=
+tel_dspcfg x86_pkg_temp_thermal snd_intel_sdw_acpi intel_powerclamp snd_h=
+da_codec mei_hdcp uvcvideo snd_hda_core cfg80211 snd_hwdep snd_pcm drm_su=
+balloc_helper coretemp drm_ttm_helper drm_buddy videobuf2_vmalloc btusb c=
+rct10dif_pclmul uvc ttm ghash_clmulni_intel btrtl sha512_ssse3 videobuf2_=
+memops btintel sha256_ssse3 snd_seq_midi btbcm sha1_ssse3 snd_seq_midi_ev=
+ent drm_display_helper aesni_intel videobuf2_v4l2 snd_rawmidi videodev bt=
+mtk cec snd_seq bluetooth crypto_simd cryptd rc_core videobuf2_common snd=
+_seq_device rapl drm_kms_helper libarc4 mc snd_timer intel_cstate mhi snd=
+ i2c_algo_bit ecdh_generic mei_me ecc joydev input_leds soundcore mei ser=
+io_raw at24 wmi_bmof mac_hid wireless_hotkey
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  tpm_infineon sch_fq_codel m=
+sr parport_pc ppdev lp drm parport efi_pstore ip_tables x_tables autofs4 =
+cdc_ether usbnet mii rtsx_pci_sdmmc crc32_pclmul video e1000e i2c_i801 ps=
+mouse rtsx_pci ahci i2c_smbus libahci xhci_pci lpc_ich xhci_pci_renesas w=
+mi
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: CPU: 2 PID: 55152 Comm: kwor=
+ker/u16:54 Tainted: G    B              6.9.0-rc3-wt-ath+ #28
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: Hardware name: Hewlett-Packa=
+rd HP ZBook 14 G2/2216, BIOS M71 Ver. 01.31 02/24/2020
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: Workqueue: qmi_msg_handler q=
+mi_data_ready_work [qmi_helpers]
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel: Call Trace:
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  <TASK>
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  dump_stack_lvl+0x70/0x90
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  dump_stack+0x14/0x20
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  bad_page+0x71/0x100
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  free_page_is_bad_report+0x8=
+6/0x90
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  __free_pages_ok+0x3b3/0x410=
 
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  __free_pages+0xe7/0x110
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  dma_direct_free+0xb9/0x180
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  dma_free_attrs+0x3f/0x60
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  ath12k_qmi_free_target_mem_=
+chunk+0x75/0x140 [ath12k]
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  ath12k_qmi_msg_mem_request_=
+cb+0x1fb/0x370 [ath12k]
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  qmi_invoke_handler+0xa3/0xd=
+0 [qmi_helpers]
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  qmi_handle_message+0x6f/0x1=
+90 [qmi_helpers]
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  qmi_data_ready_work+0x288/0=
+x460 [qmi_helpers]
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  ? raw_spin_rq_unlock+0x14/0=
+x40
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  process_one_work+0x1a0/0x3f=
+0
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  worker_thread+0x351/0x500
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  ? __pfx_worker_thread+0x10/=
+0x10
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  kthread+0xf8/0x130
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  ? __pfx_kthread+0x10/0x10
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  ret_from_fork+0x40/0x60
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  ? __pfx_kthread+0x10/0x10
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  ret_from_fork_asm+0x1a/0x30=
+
+> Apr 17 21:38:04 qca-HP-ZBook-14-G2 kernel:  </TASK>
+
+Thanks for testing. I am able to reproduce this issue (although not exact=
+ly same crash signature) after disabling DMA remap. Just submit below pat=
+ch to fix this issue, please help review.
+
+=C2=A0=C2=A0=C2=A0=C2=A0 wifi: ath12k: fix kernel crash during resume
+
+>
+>
 
