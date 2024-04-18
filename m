@@ -1,63 +1,79 @@
-Return-Path: <linux-wireless+bounces-6538-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6539-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B8D18AA17F
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 19:53:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E72AF8AA249
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 20:48:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2529A281972
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 17:53:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 163E61C20923
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Apr 2024 18:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD7C716C864;
-	Thu, 18 Apr 2024 17:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A0A4D10A;
+	Thu, 18 Apr 2024 18:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="j2F6Kfcx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QdGk1yOV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267F9839E3
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Apr 2024 17:53:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE4E17AD67;
+	Thu, 18 Apr 2024 18:48:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713462782; cv=none; b=Kc1tjb0FoD+/6T4Wpj7POpZvHQEvT4/gpkBlE8Kc86oTh4sPSF8SknUTKWLSeOJNpMlpfI8tAwmr77VNkQoIfVgz0MCF41EwjhJpBB3N1m/OMKqqneeqDLSRI+/Ok7r41fecPW0tdpe7K9ivZpBm/718Ah8JgijzGRqqPs1N4Hg=
+	t=1713466125; cv=none; b=AEGoHb9KInj/fsn8vhltchN3SKX38VICIF1JObFTiLUtM/jCZHzTeD/J3JsVhGp1Lo2IL7GJq0UOQpdzddzQLoFh3zshZKMr0x1CIYIs4ZtKuHJKEzWIyJPV9sNVzCnKFY7Wstecnd0/nlISqR5brZPCq867IXYi6j5BSRgpX8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713462782; c=relaxed/simple;
-	bh=+oBFLmYYdnYdhHrJ61MDOO559YjJWSSZMsZCsv4bCV4=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
-	 In-Reply-To:Content-Type; b=QA3qFCDx7RExN/kb3wySWvkWPGF9eIX6C2JgHQow86WcBOOs1Cwim6coO9P2r5Ojhb+zj69bO0N+ckhXV04k0ZYtVaIhlLQlTdJHHdZzYK5pd960Q7BoTBvhzaoz1ugukqcx9UKrY3wrAzP3zZCrIqUMgEvf0oFx22oC38VxT2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=j2F6Kfcx; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43IE0D10015491;
-	Thu, 18 Apr 2024 17:52:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:from:to:cc:references
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=dz85mNbsScx0oCTKuf5RUVtvYV+yQpkJcRmPH3pjbSk=; b=j2
-	F6KfcxOq82NuooEslqsdMBMFJ8drL5fBQRN6kajPz+wMFtFgP3h51Jgl2IV94o8l
-	cV8tdaUp3X6hlpRB964UzA+uayGk9xP9iPgp/U91k8yuAj7hRiAtn9Ys07i7/Pq6
-	EFHTJrliDV0G/d0w9fRai437ml2gPIEoyijIfNZ+e1oD0zLBWAto7tGhmX141Twj
-	+mCsuOOmneVoQjw/nMxk6d4bFiBKjqhWRMx7I2pVwR8wmJeNnMyTwmJYyw70PW3e
-	URYQGf+kBdiKgIteKQWf4FrnnYzLGsWwKhK05CoFSjnzpP8ZLiTP7ugJ9WgISd73
-	LMYwHqfAKzfutjFKhNRQ==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xk4vm8kq3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 18 Apr 2024 17:52:55 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43IHqsle007957
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 18 Apr 2024 17:52:54 GMT
-Received: from [10.110.20.198] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 18 Apr
- 2024 10:52:54 -0700
-Message-ID: <514da0bc-f9f6-41fb-9e3e-72677394695f@quicinc.com>
-Date: Thu, 18 Apr 2024 10:52:53 -0700
+	s=arc-20240116; t=1713466125; c=relaxed/simple;
+	bh=W5ulwgdUrJHJyD6YLuoUZA+UwpWoOeowPGuclddyjXc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=T1/GRTiinAjfCVIQv3CW/ZuHCd5X/1tvBDtCKXcf7t9Ahz2uLELqhI51irgERzueriTxcOUYimELta+nanMoswZOkyUJDagkfz+U7VAdkxRN4QVMAeHzXhsKyqslbkLMrZchLEOXFGd61dRii47NivXn8WRP7fm5AevR3eLY4ZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QdGk1yOV; arc=none smtp.client-ip=209.85.208.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2d8b2389e73so15037751fa.3;
+        Thu, 18 Apr 2024 11:48:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713466122; x=1714070922; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JHiNbmJba67zCpDm1cRbfEhy21gaCwmHq3i30H1PcAM=;
+        b=QdGk1yOVIb+Ug499fXhfwasYsNq2Ui4mhsEdVq3RxbHY9NoHHbVXvrBs9n/jZsN6v2
+         IgtcCwfE/y8TCWlJwYwgO/2kekQsYm0sFpnU6fvs2xRkGoDeVNTXxAIWy5fdC9At+fKY
+         FkCscbEyUkfHRDw1swsqdUO2uAATujRdZ2aGDSmBUYZZ4c0fc5WYuwH60E4ffk5pV5ku
+         OzkC44Wwm4QIbX49lb7Fx7CEB8DsZyk8bVuoDXWTM3H98uj6GCou7/Ku+uL4WlkOg7mf
+         v2wBAwfwlqtBPM7ZJWGfuxwGwe0d3S7rqY8yiqenLLibqMnNRMqaSO4w+XvfBZzjgz8L
+         c4HA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713466122; x=1714070922;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JHiNbmJba67zCpDm1cRbfEhy21gaCwmHq3i30H1PcAM=;
+        b=DY+uIbL6qD8LTg2C0UsQS5lgJDgAQ2WjeYHbThFxkRFKr+IVI5H0XKxrHbM+jNO+4f
+         19W8o7/lSt8r50496pc85kaMWN2z1lfZ6960Kf0dBi3/64ULVroGQEYqek1TDkcDURwa
+         y7OvWs00ayR0G4ZwzFuilzZ+5HV1Ni/cTrYTQaWYD8kJ/0uNGSouPs//zhT1XkiP1bSd
+         NJCt2wjZvvq5il4949CAyDPz1e3M+LJcOlgoCLySeKGxwbDiODphbqGVpOyYW9o3cpz4
+         SQuAnHgAzAIaInD0ydl0l9435NYNAXdglGjgD2mQG4c37C/LAAawEOOf6CkCWeesXddf
+         OIsg==
+X-Forwarded-Encrypted: i=1; AJvYcCXo4/W4tkxnHUkZlxsFDswns6rbKpHSBuNi8A6j7RmsSa4hNaXu7zUG8T/WYL3V0i3PVpTwnPXSasYr8aXH73oRJMDtCHiw0hrNZKL7
+X-Gm-Message-State: AOJu0Yw41G1fe4LA449oOqbzTz9zYcpZmFMQYurNbvbGclpm1TiTUHY0
+	dPBhJqN93zJLYukZqw1Wx+9RKnNTGXHl6Qcqrbs0mE6qVxw9DEsa
+X-Google-Smtp-Source: AGHT+IEDbiohkd5JSALTW+YmWcjHO6CO4lNYFjNvUSJLQGztz7zC86Pw5cHxWAIt7b2WCX3Cy4mFRw==
+X-Received: by 2002:a05:6512:512:b0:516:c099:e798 with SMTP id o18-20020a056512051200b00516c099e798mr2058601lfb.31.1713466121631;
+        Thu, 18 Apr 2024 11:48:41 -0700 (PDT)
+Received: from shift.daheim (p200300d5ff0fec0050f496fffe46beef.dip0.t-ipconnect.de. [2003:d5:ff0f:ec00:50f4:96ff:fe46:beef])
+        by smtp.gmail.com with ESMTPSA id ah2-20020a1709069ac200b00a4e393b6349sm1222385ejc.5.2024.04.18.11.48.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Apr 2024 11:48:41 -0700 (PDT)
+Received: from localhost.daheim ([127.0.0.1])
+	by shift.daheim with esmtp (Exim 4.97)
+	(envelope-from <chunkeey@gmail.com>)
+	id 1rxWnn-00000001Oik-19oY;
+	Thu, 18 Apr 2024 20:48:40 +0200
+Message-ID: <e17f3c8e-3f1b-42d6-9d30-7fe21699b632@gmail.com>
+Date: Thu, 18 Apr 2024 20:48:40 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,75 +81,115 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath12k: Fix Tx Completion Ring(WBM2SW) Setup
- Failure
-Content-Language: en-US
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-To: Nithyanantham Paramasivam <quic_nithp@quicinc.com>,
-        <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240409190922.4180631-1-quic_nithp@quicinc.com>
- <c5dec609-493a-4246-b006-aa905edfdac3@quicinc.com>
-In-Reply-To: <c5dec609-493a-4246-b006-aa905edfdac3@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH] wifi: carl9170: add a proper sanity check for endpoints
+To: Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+ Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ syzkaller-bugs@googlegroups.com, lvc-project@linuxtesting.org,
+ syzbot+0ae4804973be759fa420@syzkaller.appspotmail.com
+References: <20240407131109.26212-1-n.zhandarovich@fintech.ru>
+Content-Language: de-DE
+From: Christian Lamparter <chunkeey@gmail.com>
+In-Reply-To: <20240407131109.26212-1-n.zhandarovich@fintech.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: dYzQvRMXIznRtG_OfGlI_pUAiZk4Ivks
-X-Proofpoint-GUID: dYzQvRMXIznRtG_OfGlI_pUAiZk4Ivks
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-18_15,2024-04-17_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 malwarescore=0
- spamscore=0 impostorscore=0 bulkscore=0 clxscore=1015 suspectscore=0
- lowpriorityscore=0 mlxlogscore=769 mlxscore=0 priorityscore=1501
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2404180127
 
-On 4/10/2024 1:25 PM, Jeff Johnson wrote:
-> On 4/9/2024 12:09 PM, Nithyanantham Paramasivam wrote:
->> We observe intermittent ping failures from the access point (AP) to
->> station (STA) in any mode(AP-STA or Mesh) configured. Specifically,
->> the transmission completion status is not received at Tx completion
->> ring id-4(WBM2SW ring4) for the packets transmitted via TCL DATA
->> ring id-3. This prevents freeing up Tx descriptors and leads
->> to buffer exhaustion.
->>
->> Currently, during initialization of the WBM2SW ring, we are directly
->> mapping the ring number to the ring mask to obtain the ring mask
->> group index. This approach is causing setup failures for WBM2SW
->> ring-4. Similarly, during runtime, when receiving incoming
->> transmission completion status, the validation of the ring number by
->> mapping the interrupted ring mask. This is resulting in
->> validation failure. Thereby preventing entry into the completion
->> handler(ath12k_dp_tx_completion_handler()).
->>
->> The existing design assumed that the ring numbers would always be
->> sequential and could be directly mapped with the ring mask. However,
->> this assumption does not hold true for WBM2SW ring-4. Therefore,
->> modify the design such that, instead of mapping the ring number,
->> the ring ID is mapped with the ring mask.
->>
->> According to this design:
->> 1. During initialization of the WBM2SW ring, mapping the ring ID
->> to the ring mask will ensure obtaining the correct ring mask group
->> ID.
->> 2. During runtime, validating the interrupted ring mask group ID
->> within the transmission completion group is sufficient. This
->> approach allows the ring ID to be derived from the interrupted ring
->> mask and enables entry into the completion handler.
->>
->> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
->>
->> Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
->> Signed-off-by: Nithyanantham Paramasivam <quic_nithp@quicinc.com>
-> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+On 4/7/24 3:11 PM, Nikita Zhandarovich wrote:
+> Syzkaller reports [1] hitting a warning which is caused by presence
+> of a wrong endpoint type at the URB sumbitting stage. While there
+> was a check for a specific 4th endpoint, since it can switch types
+> between bulk and interrupt, other endpoints are trusted implicitly.
+> Similar warning is triggered in a couple of other syzbot issues [2].
 > 
+> Fix the issue by doing a comprehensive check of all endpoints
+> taking into account difference between high- and full-speed
+> configuration.
 > 
-Please remove my Acked-by.
+> This patch has not been tested on real hardware.
+> 
+> [1] Syzkaller report:
+> ...
+> WARNING: CPU: 0 PID: 4721 at drivers/usb/core/urb.c:504 usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
+> ...
+> Call Trace:
+>   <TASK>
+>   carl9170_usb_send_rx_irq_urb+0x273/0x340 drivers/net/wireless/ath/carl9170/usb.c:504
+>   carl9170_usb_init_device drivers/net/wireless/ath/carl9170/usb.c:939 [inline]
+>   carl9170_usb_firmware_finish drivers/net/wireless/ath/carl9170/usb.c:999 [inline]
+>   carl9170_usb_firmware_step2+0x175/0x240 drivers/net/wireless/ath/carl9170/usb.c:1028
+>   request_firmware_work_func+0x130/0x240 drivers/base/firmware_loader/main.c:1107
+>   process_one_work+0x9bf/0x1710 kernel/workqueue.c:2289
+>   worker_thread+0x669/0x1090 kernel/workqueue.c:2436
+>   kthread+0x2e8/0x3a0 kernel/kthread.c:376
+>   ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
+>   </TASK>
+> 
+> [2] Related syzkaller crashes:
+> Link: https://syzkaller.appspot.com/bug?extid=e394db78ae0b0032cb4d
+> Link: https://syzkaller.appspot.com/bug?extid=9468df99cb63a4a4c4e1
+> 
+> Reported-and-tested-by: syzbot+0ae4804973be759fa420@syzkaller.appspotmail.com
+> Fixes: a84fab3cbfdc ("carl9170: 802.11 rx/tx processing and usb backend")
+> Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-I've bisected a kernel crash on my laptop to this patch
+This was tricky. USB 2.0 works and was easy to test.
+But I had to hunt down a FULLSPEED USB Host for this.
+The driver loads on with a OHCI Host (Silicon Image, Inc. USB0673 (rev 06))
+
+So, I think this would work. But see my comments below.
+
+> ---
+> P.S. as AR9170_USB_EP_CMD endpoint can switch between bulk and int,
+> I failed to find a prettier solution to this problem. Will be glad
+> to hear if there is a better option...
+> 
+>   drivers/net/wireless/ath/carl9170/usb.c | 27 +++++++++++++++++++++++++++
+>   1 file changed, 27 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/ath/carl9170/usb.c b/drivers/net/wireless/ath/carl9170/usb.c
+> index c4edf8355941..66d2ad561fd3 100644
+> --- a/drivers/net/wireless/ath/carl9170/usb.c
+> +++ b/drivers/net/wireless/ath/carl9170/usb.c
+> @@ -1069,6 +1069,33 @@ static int carl9170_usb_probe(struct usb_interface *intf,
+>   			ar->usb_ep_cmd_is_bulk = true;
+>   	}
+>   
+> +	/* Verify that all expected endpoints are present */
+> +	if (ar->usb_ep_cmd_is_bulk) {
+> +		u8 bulk_ep_addr[] = {
+> +			AR9170_USB_EP_RX | USB_DIR_IN,
+> +			AR9170_USB_EP_TX | USB_DIR_OUT,
+> +			AR9170_USB_EP_CMD | USB_DIR_OUT,
+> +			0};
+> +		u8 int_ep_addr[] = {
+> +			AR9170_USB_EP_IRQ | USB_DIR_IN,
+> +			0};
+> +		if (!usb_check_bulk_endpoints(intf, bulk_ep_addr) ||
+> +		    !usb_check_int_endpoints(intf, int_ep_addr))
+> +			return -ENODEV;
+
+Please call carl9170_free(ar); before returning here.
+Otherwise the "ar" will memleak'ed.
+
+> +	} else {
+> +		u8 bulk_ep_addr[] = {
+> +			AR9170_USB_EP_RX | USB_DIR_IN,
+> +			AR9170_USB_EP_TX | USB_DIR_OUT,
+> +			0};
+> +		u8 int_ep_addr[] = {
+> +			AR9170_USB_EP_IRQ | USB_DIR_IN,
+> +			AR9170_USB_EP_CMD | USB_DIR_OUT,
+> +			0};
+> +		if (!usb_check_bulk_endpoints(intf, bulk_ep_addr) ||
+> +		    !usb_check_int_endpoints(intf, int_ep_addr))
+> +			return -ENODEV;
+
+Same here.
+
+> +	}
+> +
+>   	usb_set_intfdata(intf, ar);
+>   	SET_IEEE80211_DEV(ar->hw, &intf->dev);
+>   
 
 
