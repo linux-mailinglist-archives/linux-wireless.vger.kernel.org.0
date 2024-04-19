@@ -1,73 +1,73 @@
-Return-Path: <linux-wireless+bounces-6571-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6572-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE08F8AAF79
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Apr 2024 15:36:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05C1F8AAF7D
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Apr 2024 15:37:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 657452842ED
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Apr 2024 13:36:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B18C0281C82
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Apr 2024 13:37:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969FB86278;
-	Fri, 19 Apr 2024 13:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD0785C62;
+	Fri, 19 Apr 2024 13:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LQTgmdox"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nn9jzP7l"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39EB1E867
-	for <linux-wireless@vger.kernel.org>; Fri, 19 Apr 2024 13:36:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A524128366
+	for <linux-wireless@vger.kernel.org>; Fri, 19 Apr 2024 13:37:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713533781; cv=none; b=P7DWheEJepTOg5mpgYn0dkahFevsFMrOAAWIxpqvw+Ua8iSWACGvueT7GGLuTFVdPkdJVkCuo/82AflMbNQlm1C/MdygPo0SyVUJTfQTzac9/qfZ6J2EU0Q/Nm8v9t+X0544mfdLEGlxCRT1hP8bZPXlf7rKzZtW1Bpgr1cx+PM=
+	t=1713533825; cv=none; b=WchzkwgWHUxM5HDujSkKfxOnnWzYoD532uOpuZLupJvdJLEPLQhPYLNj8FTO6QFr885whWsnZ6H7ef4iaK/Z82T+7KVVNsI5D7rGwdcO7WXTEFiNKnG3jrUSgprF+c5Kao27A1sSaXal1FitfdrWJ45Pwp/64280uOMWa4NuH0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713533781; c=relaxed/simple;
-	bh=H/fDmkuWcGZE398ZUR+nuzSFjRcaUj0e7ji2syCM3XU=;
+	s=arc-20240116; t=1713533825; c=relaxed/simple;
+	bh=voAGSZT3IIbwh1HM/cylSPtngeiK1NWN8O/QDGM9HTo=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=ltv43G71z0oEJ6lU9k8agaEY+0zas5KcKJaDXmGEsVPuFNA/lfYCrseGJo4mfjmT7wFhSBmK/PLMDbldF5twlnujepPnreRsb9SsCZC28fzuhq6MJdOKm+doUO6KaKAdjvyMMowfuhlR8OkNTWGqkEM9HoZaMGAY+mr6xxaCpN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LQTgmdox; arc=none smtp.client-ip=209.85.208.43
+	 In-Reply-To:Content-Type; b=F2MnI1rACsh3DhNM2eWCvajJd6l3/8AB9mOAz1txeQO+6sF9PRFKO48hjzDuJFhY7yD/Xp7wLmvr35Sx+5khujZ744SV04Vm4bIznmHqAevWmR7/aLGzxtGvOEBH5yKU8ZNrdHSZkuj4A+ajJb2joytS8MXppG9FpdyBMhhUlkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nn9jzP7l; arc=none smtp.client-ip=209.85.208.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-571ba432477so2080913a12.1
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Apr 2024 06:36:19 -0700 (PDT)
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2da08b07157so26060941fa.1
+        for <linux-wireless@vger.kernel.org>; Fri, 19 Apr 2024 06:37:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713533778; x=1714138578; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1713533822; x=1714138622; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=yDN1u1MTA7i+7tP+k9O28kzd/+AN89B3ZIXa0MvQiJ0=;
-        b=LQTgmdoxG6455TVf0AqTXp+MdEM9MoMHIvUeC78DLuWtecQT16PTnx/9+lRk6nRl1t
-         so/bTsZtLUlPq2Adt/qs6uroQrcTCy0UD0uFfnCVaABS6DwmeoZ9Eztr3v7w9I/zZS51
-         FpvIadM2g7r/c31bnF25zKjq1nYBskSIiGWiP2COgN/Rhr3Lg+WIO7/EzHiWV5wCIcg7
-         NIzVCUmnm81sY/XJuEMGsXR210dqqqUnkyhm5AncHThZkA2J89pHdWxlXI5DjKgXdEgk
-         7cSpQBZwIbq9wsqVu9Jx8CFgKPIYThEcGzH66zc8aVbZEljNkerpPTe3+CGdqWhWdC1y
-         FfuQ==
+        bh=dHwjUzThZIbrhMkcs9A58doZowYvE9GFstHSRpfCbVY=;
+        b=Nn9jzP7lQ/Vw1KZ/dtFtHTO/WqCDrFZOJd4GR7hfUsoyzNiaFvlUADGiKgMb3Sxxxe
+         ODU0oAvMjDdJs4/FfGPnYPuiPPJDWB2PFPLAYz0kxGrjwjr2ChIVSww0BHLkUXc4YOSp
+         xJNx0+vFN54qOizuZzc1kWRzn6P4yulCe5QF1jKhYdUvKl6ZfudPZed2fdY8jxd9t701
+         GD/hc8yOJDVAhfsflSCDS0U6q68aHB9zhUFHGfKDZNJRyeUuImMQXcay3y0IowoxL6V+
+         Ws/vMe87EG0BAQ9HjJs9cuf8QTu/qB3Wjc0IF3Xx/Tbfos+m8W9o4CJLccTEY3JwMm1W
+         yOrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713533778; x=1714138578;
+        d=1e100.net; s=20230601; t=1713533822; x=1714138622;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yDN1u1MTA7i+7tP+k9O28kzd/+AN89B3ZIXa0MvQiJ0=;
-        b=mtqNdqLvfSck7iebM8+KTZ1exxwJ3Qp/eyGOI+p3xdQntRwt/9zzePyZ2MS6tLEXUw
-         HFnZFe+jrtz+A4imfVTfNHE7/bRWLXr9zN4Q0fhN5xZEXPUJ04QkYyM2zxoLf3m7291f
-         p/PtuzMG0g3ICX/+ZNnNChlPEhSgO2h74z5fzKR+IpJ7hBpmrhv7+lXmll5PDfnvf+yB
-         3UCkfM+xeLIr0Au8Mct5E9bf3m1UznRaU+el2YK7sAv7vqYTPJWn7XSw6bu7Bb4SmNyw
-         ZLn9Teie73wzX2GzD6SkJX/ZkKMP7P6tNaGQ5xmohambrse2dZWesrngFxrOpU2YRNZp
-         LcXg==
-X-Gm-Message-State: AOJu0YyNGBF7tKNB5AHBvZhDGky5yYNn9v6ful1YFmSwgBPfJTABNTKg
-	eynq5XsY21cKeek8I2gad5y9zf5z4Z9jtY8izNtUsV6aFDEhVGaqmXMrLBdl
-X-Google-Smtp-Source: AGHT+IEJLM1VrhadbKVRyrf/m4to2eJnUGUlV8QphSKsaQrkUfMoni6/PQwgAiSw22YV6MfDw5xQ3A==
-X-Received: by 2002:a50:ab56:0:b0:565:dfac:a686 with SMTP id t22-20020a50ab56000000b00565dfaca686mr1389459edc.38.1713533778104;
-        Fri, 19 Apr 2024 06:36:18 -0700 (PDT)
+        bh=dHwjUzThZIbrhMkcs9A58doZowYvE9GFstHSRpfCbVY=;
+        b=FGnoLc7qtLpPQrXuaV9ta0c8ifLFvEAx/UrmW9HTqJY/W0+vhtWkuJwCBOboJMrj4j
+         9zqzKMF4XUYGlViP4j9e+nDzj3nRTCcgQcnmdVodNo82OZNdNSnIlbaJhiP1EJlplFS8
+         y0qAh2u12bbYfbRt99mm42QzwKXlKfmviy/1iy111Bi1AG6Ispb80P7RLppmLbEzfTFa
+         k+XkY+TsoxsFaoIG94C3kzN45f1kKHiciRPaVe+/mMz3ikglwT0SecytBJozay7QpdJ5
+         bP2KtMmKe9EC+fkKahuMFdtaD7CAYbpwsQW3fUBfLuJNyxXO7exDhwcbTNbHm9a8Olyw
+         A9FQ==
+X-Gm-Message-State: AOJu0YxjuQ1Q3gW8hdz3ZyySZzQ5hqUhtmPyjtMYtBsN4jVGWMuv5CBb
+	Zot+GCA260Tgr55UjCNiJITb0Czkpm5FVGINrzX02W+hYYafwpuyKjb7leBA
+X-Google-Smtp-Source: AGHT+IFDKLMdH6Pz5N0l/TEXKhjKDx/PNbYlaxeER4MKT7ArE2hUaqAofSmabt8cZhzvwbncBCbOxg==
+X-Received: by 2002:a2e:8ed0:0:b0:2dc:fc58:9d74 with SMTP id e16-20020a2e8ed0000000b002dcfc589d74mr402539ljl.37.1713533821961;
+        Fri, 19 Apr 2024 06:37:01 -0700 (PDT)
 Received: from [192.168.1.50] ([79.113.154.240])
-        by smtp.gmail.com with ESMTPSA id d6-20020a50fb06000000b005705e7ee65esm2142843edq.56.2024.04.19.06.36.17
+        by smtp.gmail.com with ESMTPSA id qu20-20020a170907111400b00a5242ec4573sm2174840ejb.29.2024.04.19.06.37.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Apr 2024 06:36:17 -0700 (PDT)
-Message-ID: <86487e41-bed9-42e0-8ac1-ecc75f1a1f84@gmail.com>
-Date: Fri, 19 Apr 2024 16:36:17 +0300
+        Fri, 19 Apr 2024 06:37:01 -0700 (PDT)
+Message-ID: <825a2dd4-66a4-4aa4-9a5a-7351b8a28046@gmail.com>
+Date: Fri, 19 Apr 2024 16:37:00 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,7 +75,8 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH v6 2/6] wifi: rtlwifi: rtl8192de: Fix low speed with WPA3-SAE
+Subject: [PATCH v6 3/6] wifi: rtlwifi: rtl8192de: Fix endianness issue in RX
+ path
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 Cc: Ping-Ke Shih <pkshih@realtek.com>,
@@ -88,15 +89,18 @@ In-Reply-To: <9d54a192-d389-4a56-9286-2e7721cbbc27@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Some (all?) management frames are incorrectly reported to mac80211 as
-decrypted when actually the hardware did not decrypt them. This results
-in speeds 3-5 times lower than expected, 20-30 Mbps instead of 100
-Mbps.
+Structs rx_desc_92d and rx_fwinfo_92d will not work for big endian
+systems.
 
-Fix this by checking the encryption type field of the RX descriptor.
-rtw88 does the same thing.
+Delete rx_desc_92d because it's big and barely used, and instead use
+the get_rx_desc_rxmcs and get_rx_desc_rxht functions, which work on big
+endian systems too.
 
-This fix was tested only with rtl8192du, which will use the same code.
+Fix rx_fwinfo_92d by duplicating four of its members in the correct
+order.
+
+Tested only with RTL8192DU, which will use the same code.
+Tested only on a little endian system.
 
 Cc: stable@vger.kernel.org
 Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
@@ -105,71 +109,157 @@ v6:
  - No change.
 
 v5:
- - No change.
-
-v4:
- - Patch is new in v4.
+ - Patch is new in v5.
 ---
- .../net/wireless/realtek/rtlwifi/rtl8192de/trx.c   |  5 ++---
- .../net/wireless/realtek/rtlwifi/rtl8192de/trx.h   | 14 ++++++++++++++
- 2 files changed, 16 insertions(+), 3 deletions(-)
+ .../wireless/realtek/rtlwifi/rtl8192de/trx.c  | 16 ++---
+ .../wireless/realtek/rtlwifi/rtl8192de/trx.h  | 65 ++-----------------
+ 2 files changed, 15 insertions(+), 66 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
-index 192982ec8152..30b262c3f6d0 100644
+index 30b262c3f6d0..cbc7b4dbea9a 100644
 --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
 +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
-@@ -413,7 +413,8 @@ bool rtl92de_rx_query_desc(struct ieee80211_hw *hw,	struct rtl_stats *stats,
- 	stats->icv = (u16)get_rx_desc_icv(pdesc);
- 	stats->crc = (u16)get_rx_desc_crc32(pdesc);
- 	stats->hwerror = (stats->crc | stats->icv);
--	stats->decrypted = !get_rx_desc_swdec(pdesc);
-+	stats->decrypted = !get_rx_desc_swdec(pdesc) &&
-+			   get_rx_desc_enc_type(pdesc) != RX_DESC_ENC_NONE;
- 	stats->rate = (u8)get_rx_desc_rxmcs(pdesc);
- 	stats->shortpreamble = (u16)get_rx_desc_splcp(pdesc);
- 	stats->isampdu = (bool)(get_rx_desc_paggr(pdesc) == 1);
-@@ -426,8 +427,6 @@ bool rtl92de_rx_query_desc(struct ieee80211_hw *hw,	struct rtl_stats *stats,
- 	rx_status->band = hw->conf.chandef.chan->band;
- 	if (get_rx_desc_crc32(pdesc))
- 		rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
--	if (!get_rx_desc_swdec(pdesc))
--		rx_status->flag |= RX_FLAG_DECRYPTED;
- 	if (get_rx_desc_bw(pdesc))
- 		rx_status->bw = RATE_INFO_BW_40;
- 	if (get_rx_desc_rxht(pdesc))
+@@ -35,7 +35,7 @@ static long _rtl92de_translate_todbm(struct ieee80211_hw *hw,
+ 
+ static void _rtl92de_query_rxphystatus(struct ieee80211_hw *hw,
+ 				       struct rtl_stats *pstats,
+-				       struct rx_desc_92d *pdesc,
++				       __le32 *pdesc,
+ 				       struct rx_fwinfo_92d *p_drvinfo,
+ 				       bool packet_match_bssid,
+ 				       bool packet_toself,
+@@ -50,8 +50,10 @@ static void _rtl92de_query_rxphystatus(struct ieee80211_hw *hw,
+ 	u8 i, max_spatial_stream;
+ 	u32 rssi, total_rssi = 0;
+ 	bool is_cck_rate;
++	u8 rxmcs;
+ 
+-	is_cck_rate = RX_HAL_IS_CCK_RATE(pdesc->rxmcs);
++	rxmcs = get_rx_desc_rxmcs(pdesc);
++	is_cck_rate = rxmcs <= DESC_RATE11M;
+ 	pstats->packet_matchbssid = packet_match_bssid;
+ 	pstats->packet_toself = packet_toself;
+ 	pstats->packet_beacon = packet_beacon;
+@@ -157,8 +159,8 @@ static void _rtl92de_query_rxphystatus(struct ieee80211_hw *hw,
+ 		pstats->rx_pwdb_all = pwdb_all;
+ 		pstats->rxpower = rx_pwr_all;
+ 		pstats->recvsignalpower = rx_pwr_all;
+-		if (pdesc->rxht && pdesc->rxmcs >= DESC_RATEMCS8 &&
+-		    pdesc->rxmcs <= DESC_RATEMCS15)
++		if (get_rx_desc_rxht(pdesc) && rxmcs >= DESC_RATEMCS8 &&
++		    rxmcs <= DESC_RATEMCS15)
+ 			max_spatial_stream = 2;
+ 		else
+ 			max_spatial_stream = 1;
+@@ -364,7 +366,7 @@ static void _rtl92de_process_phyinfo(struct ieee80211_hw *hw,
+ static void _rtl92de_translate_rx_signal_stuff(struct ieee80211_hw *hw,
+ 					       struct sk_buff *skb,
+ 					       struct rtl_stats *pstats,
+-					       struct rx_desc_92d *pdesc,
++					       __le32 *pdesc,
+ 					       struct rx_fwinfo_92d *p_drvinfo)
+ {
+ 	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
+@@ -440,9 +442,7 @@ bool rtl92de_rx_query_desc(struct ieee80211_hw *hw,	struct rtl_stats *stats,
+ 	if (phystatus) {
+ 		p_drvinfo = (struct rx_fwinfo_92d *)(skb->data +
+ 						     stats->rx_bufshift);
+-		_rtl92de_translate_rx_signal_stuff(hw,
+-						   skb, stats,
+-						   (struct rx_desc_92d *)pdesc,
++		_rtl92de_translate_rx_signal_stuff(hw, skb, stats, pdesc,
+ 						   p_drvinfo);
+ 	}
+ 	/*rx_status->qual = stats->signal; */
 diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h
-index 2992668c156c..f189ee2d9be2 100644
+index f189ee2d9be2..2d4887490f00 100644
 --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h
 +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.h
-@@ -14,6 +14,15 @@
- #define USB_HWDESC_HEADER_LEN			32
- #define CRCLENGTH				4
+@@ -394,10 +394,17 @@ struct rx_fwinfo_92d {
+ 	u8 csi_target[2];
+ 	u8 sigevm;
+ 	u8 max_ex_pwr;
++#ifdef __LITTLE_ENDIAN
+ 	u8 ex_intf_flag:1;
+ 	u8 sgi_en:1;
+ 	u8 rxsc:2;
+ 	u8 reserve:4;
++#else
++	u8 reserve:4;
++	u8 rxsc:2;
++	u8 sgi_en:1;
++	u8 ex_intf_flag:1;
++#endif
+ } __packed;
  
-+enum rtl92d_rx_desc_enc {
-+	RX_DESC_ENC_NONE	= 0,
-+	RX_DESC_ENC_WEP40	= 1,
-+	RX_DESC_ENC_TKIP_WO_MIC	= 2,
-+	RX_DESC_ENC_TKIP_MIC	= 3,
-+	RX_DESC_ENC_AES		= 4,
-+	RX_DESC_ENC_WEP104	= 5,
-+};
-+
- /* macros to read/write various fields in RX or TX descriptors */
+ struct tx_desc_92d {
+@@ -502,64 +509,6 @@ struct tx_desc_92d {
+ 	u32 reserve_pass_pcie_mm_limit[4];
+ } __packed;
  
- static inline void set_tx_desc_pkt_size(__le32 *__pdesc, u32 __val)
-@@ -246,6 +255,11 @@ static inline u32 get_rx_desc_drv_info_size(__le32 *__pdesc)
- 	return le32_get_bits(*__pdesc, GENMASK(19, 16));
- }
- 
-+static inline u32 get_rx_desc_enc_type(__le32 *__pdesc)
-+{
-+	return le32_get_bits(*__pdesc, GENMASK(22, 20));
-+}
-+
- static inline u32 get_rx_desc_shift(__le32 *__pdesc)
- {
- 	return le32_get_bits(*__pdesc, GENMASK(25, 24));
+-struct rx_desc_92d {
+-	u32 length:14;
+-	u32 crc32:1;
+-	u32 icverror:1;
+-	u32 drv_infosize:4;
+-	u32 security:3;
+-	u32 qos:1;
+-	u32 shift:2;
+-	u32 phystatus:1;
+-	u32 swdec:1;
+-	u32 lastseg:1;
+-	u32 firstseg:1;
+-	u32 eor:1;
+-	u32 own:1;
+-
+-	u32 macid:5;
+-	u32 tid:4;
+-	u32 hwrsvd:5;
+-	u32 paggr:1;
+-	u32 faggr:1;
+-	u32 a1_fit:4;
+-	u32 a2_fit:4;
+-	u32 pam:1;
+-	u32 pwr:1;
+-	u32 moredata:1;
+-	u32 morefrag:1;
+-	u32 type:2;
+-	u32 mc:1;
+-	u32 bc:1;
+-
+-	u32 seq:12;
+-	u32 frag:4;
+-	u32 nextpktlen:14;
+-	u32 nextind:1;
+-	u32 rsvd:1;
+-
+-	u32 rxmcs:6;
+-	u32 rxht:1;
+-	u32 amsdu:1;
+-	u32 splcp:1;
+-	u32 bandwidth:1;
+-	u32 htc:1;
+-	u32 tcpchk_rpt:1;
+-	u32 ipcchk_rpt:1;
+-	u32 tcpchk_valid:1;
+-	u32 hwpcerr:1;
+-	u32 hwpcind:1;
+-	u32 iv0:16;
+-
+-	u32 iv1;
+-
+-	u32 tsfl;
+-
+-	u32 bufferaddress;
+-	u32 bufferaddress64;
+-
+-} __packed;
+-
+ void rtl92de_tx_fill_desc(struct ieee80211_hw *hw,
+ 			  struct ieee80211_hdr *hdr, u8 *pdesc,
+ 			  u8 *pbd_desc_tx, struct ieee80211_tx_info *info,
 -- 
 2.44.0
+
 
 
