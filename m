@@ -1,114 +1,154 @@
-Return-Path: <linux-wireless+bounces-6561-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6562-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1A648AA962
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Apr 2024 09:43:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D00568AA9B4
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Apr 2024 10:04:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34936B222FD
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Apr 2024 07:43:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83F551F229F2
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Apr 2024 08:04:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383F4C15D;
-	Fri, 19 Apr 2024 07:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04BEB4087F;
+	Fri, 19 Apr 2024 08:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="ajSLl262"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="niHti/pR"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFEE72206B
-	for <linux-wireless@vger.kernel.org>; Fri, 19 Apr 2024 07:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA53E321D
+	for <linux-wireless@vger.kernel.org>; Fri, 19 Apr 2024 08:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713512592; cv=none; b=My0zRDU5BTLTttGvZAhQ9E6+xVZDPEPcKV4f/AZsA8IFaz4ASRLoNM4lBJwkykC+2PZk8SO+IMvnoAKlxMs3Lyt7rqJGXB3XJ7f2EYA4mmOBm07YJinecxthmx4+zTFFxRht8QDxxEK1bIkCVcUvDelZmwRuGP+4E3gwxyM8BH4=
+	t=1713513868; cv=none; b=ObalEt3UJwjRJFx4JGrkPquLQ45agtq2NPK0Wtl1tnJZUvWSDRau4/sNeL5rQKRaw5wgRG7LF8jxgwqqGty0mxEmu16cHKB66qETpISyRn+3REKZdzfodpXbz0DSXyYI7NneTCSw5cNZnvAf92OybNWsJMGJLxlU3M23ubVtaNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713512592; c=relaxed/simple;
-	bh=y1DUzpsBEur7ad1gljySPteHN8itsxYpd5n6qfv6VMM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gnTGb+/QDq9FWyYvukVCiR0Olo3mJiYgcyZ0+dY75X0G1jwzYRUhgLTcAurSuDfn+chbEEuCOPqU1GUQ/ZCb+n7/QQjkzFzBTzCRug5r/XRH90SOjWCageaNB7+OVHO06VOKr9Oug9vw6Qd0wwO8W4QlEztlWkWsWQzyPv+VDwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=ajSLl262; arc=none smtp.client-ip=46.4.11.11
+	s=arc-20240116; t=1713513868; c=relaxed/simple;
+	bh=pwQoLMNiYnqPoLkIgFsB+LxJ+7PZoxXl6sDTXYI2CKo=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=l79CJl3aU+WuaWtlK0KOptv8REXuPgyW0lQahssyI5SH+rYF0XdIV0I1D5kHKrVhCZiqMaovIxo04WdmCy1Lngq1U8qOVGrSDprkBmDs2oWEyS6gKHsmPOKU29JnOdsUDHfMg0EvvfGHn7jJVJY+1Xo8LPjt7RVo5SF2BfT3dXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=niHti/pR; arc=none smtp.client-ip=46.4.11.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=eCCJwcOwDMi+uBG9Ep9SmW6RW/D4XxJnpJ0is2Omqgo=; b=ajSLl262vVfiCF8CRRdVfUCilL
-	laoqDYgN0/hMr5WMqsI4HRsP6mFErp+LSfuV9pAQiASv9SZ36DwF01+FgkjWnngHc0TDIGFb5Pc+D
-	Em9t+I60lN/xxhj/4meWfxWuDq+rowwstzY1LP/jp7rNAFCwP4c0O74WDzo6LQ/oH/p8=;
-Received: from [2a01:599:123:e10b:9920:bcd0:407c:1305] (helo=nf.local)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=6RHQwN/XmyMZaCybuD5NUpBm9SsKHXN9amEraIrLL88=; b=niHti/pRU48Cr8plpOSOjGPLsO
+	/gfNoNpDADDNw8QptPo8yK9NEDhle7bvVEHl/Y8UWCSwIrX11oOP9+4bj7agqyKNQn8MeIMxg+3IF
+	CYZNcE7SFj2GVcO5D7EC7fJUCXf0xsKtMetKp6AQ1mPA1RKithpFXsdsfOK/Y4Pcpgkg=;
+Received: from [2a01:599:123:e10b:9920:bcd0:407c:1305] (helo=localhost.localdomain)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
 	(Exim 4.96)
 	(envelope-from <nbd@nbd.name>)
-	id 1rxitZ-003Xeg-1N;
-	Fri, 19 Apr 2024 09:42:53 +0200
-Message-ID: <f0fde96d-f105-45a0-a0da-97e7d38d54bb@nbd.name>
-Date: Fri, 19 Apr 2024 09:42:52 +0200
+	id 1rxjEP-003Y2w-0A
+	for linux-wireless@vger.kernel.org;
+	Fri, 19 Apr 2024 10:04:25 +0200
+From: Felix Fietkau <nbd@nbd.name>
+To: linux-wireless@vger.kernel.org
+Subject: [PATCH] wifi: mt76: make const arrays in functions static
+Date: Fri, 19 Apr 2024 10:04:18 +0200
+Message-ID: <20240419080418.12980-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: mt76: mt7925: ensure 4-byte alignment for suspend &
- wow command
-To: Sean Wang <sean.wang@kernel.org>,
- Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-Cc: lorenzo@kernel.org, deren.wu@mediatek.com, Sean.Wang@mediatek.com,
- Soul.Huang@mediatek.com, Leon.Yen@mediatek.com, Eric-SY.Chang@mediatek.com,
- km.lin@mediatek.com, robin.chiu@mediatek.com, ch.yeh@mediatek.com,
- posh.sun@mediatek.com, Quan.Zhou@mediatek.com, Ryder.Lee@mediatek.com,
- Shayne.Chen@mediatek.com, linux-wireless@vger.kernel.org,
- linux-mediatek@lists.infradead.org
-References: <20240307110815.527-1-mingyen.hsieh@mediatek.com>
- <CAGp9LzqHS5Mdge1V37NGY3MFLwxA8YhRSymB+ijw-5u=Uk-66g@mail.gmail.com>
-From: Felix Fietkau <nbd@nbd.name>
-Content-Language: en-US
-Autocrypt: addr=nbd@nbd.name; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
- cL98efvrjdstUfTCP2pfetyN
-In-Reply-To: <CAGp9LzqHS5Mdge1V37NGY3MFLwxA8YhRSymB+ijw-5u=Uk-66g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 18.04.24 00:21, Sean Wang wrote:
-> Hi nbd,
-> 
-> I'm aware that the patch has been merged into the mt76 tree though.
-> Could you assist in updating the commit message for the patch in the
-> mt76 tree by including the appropriate "Fixes" tag and CC to the
-> stable tree? like Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add
-> Mediatek Wi-Fi7 driver for mt7925 chips")  Otherwise, the mt7925
-> cannot operate correctly.
->        Sean
+Reduces size by avoiding duplicates
 
-Sure, no problem. It's updated in my tree now.
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c  | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/mcu.c  | 4 ++--
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c  | 4 ++--
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c  | 2 +-
+ 5 files changed, 7 insertions(+), 7 deletions(-)
 
-- Felix
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 5650f1bb8742..18ba20cf4bd0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -1193,7 +1193,7 @@ mt7915_mcu_sta_bfer_tlv(struct mt7915_dev *dev, struct sk_buff *skb,
+ 	int tx_ant = hweight8(phy->mt76->chainmask) - 1;
+ 	struct sta_rec_bf *bf;
+ 	struct tlv *tlv;
+-	const u8 matrix[4][4] = {
++	static const u8 matrix[4][4] = {
+ 		{0, 0, 0, 0},
+ 		{1, 1, 0, 0},	/* 2x1, 2x2, 2x3, 2x4 */
+ 		{2, 4, 4, 0},	/* 3x1, 3x2, 3x3, 3x4 */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index 8b4ce32a2cd1..6a3a448db75a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -1100,12 +1100,12 @@ int mt7921_mcu_config_sniffer(struct mt792x_vif *vif,
+ {
+ 	struct cfg80211_chan_def *chandef = &ctx->def;
+ 	int freq1 = chandef->center_freq1, freq2 = chandef->center_freq2;
+-	const u8 ch_band[] = {
++	static const u8 ch_band[] = {
+ 		[NL80211_BAND_2GHZ] = 1,
+ 		[NL80211_BAND_5GHZ] = 2,
+ 		[NL80211_BAND_6GHZ] = 3,
+ 	};
+-	const u8 ch_width[] = {
++	static const u8 ch_width[] = {
+ 		[NL80211_CHAN_WIDTH_20_NOHT] = 0,
+ 		[NL80211_CHAN_WIDTH_20] = 0,
+ 		[NL80211_CHAN_WIDTH_40] = 0,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index bd37cb8d734b..652a9accc43c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -1768,12 +1768,12 @@ int mt7925_mcu_config_sniffer(struct mt792x_vif *vif,
+ 	struct cfg80211_chan_def *chandef = ctx ? &ctx->def : &mphy->chandef;
+ 	int freq1 = chandef->center_freq1, freq2 = chandef->center_freq2;
+ 
+-	const u8 ch_band[] = {
++	static const u8 ch_band[] = {
+ 		[NL80211_BAND_2GHZ] = 1,
+ 		[NL80211_BAND_5GHZ] = 2,
+ 		[NL80211_BAND_6GHZ] = 3,
+ 	};
+-	const u8 ch_width[] = {
++	static const u8 ch_width[] = {
+ 		[NL80211_CHAN_WIDTH_20_NOHT] = 0,
+ 		[NL80211_CHAN_WIDTH_20] = 0,
+ 		[NL80211_CHAN_WIDTH_40] = 0,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index 338ff10b121d..21373bd2a813 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -450,7 +450,7 @@ mt7996_conf_tx(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	       const struct ieee80211_tx_queue_params *params)
+ {
+ 	struct mt7996_vif *mvif = (struct mt7996_vif *)vif->drv_priv;
+-	const u8 mq_to_aci[] = {
++	static const u8 mq_to_aci[] = {
+ 		[IEEE80211_AC_VO] = 3,
+ 		[IEEE80211_AC_VI] = 2,
+ 		[IEEE80211_AC_BE] = 0,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 4f8e656b2cae..4bd74e182973 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -1656,7 +1656,7 @@ mt7996_mcu_sta_bfer_tlv(struct mt7996_dev *dev, struct sk_buff *skb,
+ 	int tx_ant = hweight8(phy->mt76->chainmask) - 1;
+ 	struct sta_rec_bf *bf;
+ 	struct tlv *tlv;
+-	const u8 matrix[4][4] = {
++	static const u8 matrix[4][4] = {
+ 		{0, 0, 0, 0},
+ 		{1, 1, 0, 0},	/* 2x1, 2x2, 2x3, 2x4 */
+ 		{2, 4, 4, 0},	/* 3x1, 3x2, 3x3, 3x4 */
+-- 
+2.44.0
 
 
