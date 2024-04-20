@@ -1,74 +1,74 @@
-Return-Path: <linux-wireless+bounces-6603-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6604-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9455E8ABBF1
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Apr 2024 16:09:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51C488ABCD4
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Apr 2024 20:52:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E0DDB20A69
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Apr 2024 14:09:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12A6C281364
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Apr 2024 18:52:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B32B20304;
-	Sat, 20 Apr 2024 14:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DAD0168CC;
+	Sat, 20 Apr 2024 18:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="fa/3oJK2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RMq7zgVE"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D951CD25
-	for <linux-wireless@vger.kernel.org>; Sat, 20 Apr 2024 14:09:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7546D205E16
+	for <linux-wireless@vger.kernel.org>; Sat, 20 Apr 2024 18:52:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713622143; cv=none; b=AlustSMkp1kWhOT1DwBfo9cmuogpAup6XNbgm9Qqso+VRPvb/X18bF/rRg6Zi2kD2UpUeNDVPXduGizsc9tlJtTVT3mz3zKA6TP1WGUOg4HsCOwpD/G/q/UxAPO5uYaWrFjQxg+RBhEpqxOzj18CQGpcgIPprtpkmetgFzAt1DQ=
+	t=1713639153; cv=none; b=I93esBP6HK/8umFmFx9P9ff3X7XxcHmUVSvTrNXNenbvHykP6T56kYs71433NDc1f4gOmlcZL3aP/xyCSHt3nwL/graBSCpvfHOtW1mc+mCTJMBT+PgRH8YqyJQ/jzsiS7DhrUJ8UUGTqiGaUxK8PLTvR9yQXuGSCZohw1B+P5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713622143; c=relaxed/simple;
-	bh=CQ9TOxDT53E+ODgLBzyBYUDSATjdnB9DCxtWlR3LOWU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=jejg1lz0h//Qgdicx7gZC722qoSnfw+dyO7yUR60YoH87yRhv6iLZFCBW2Zj5kMlExIxANIYMbpaRz8rClFrMdc0bakUjECmucIz4VM0WysUHTfWvSVbjCzD9hG53IKNpEj/ZJxKJXQvjj0C55LBMzco1v06xqS3uEt+VJos8Ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=fa/3oJK2; arc=none smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-51ae315bb20so715169e87.1
-        for <linux-wireless@vger.kernel.org>; Sat, 20 Apr 2024 07:09:01 -0700 (PDT)
+	s=arc-20240116; t=1713639153; c=relaxed/simple;
+	bh=S9ggd7NT2okWKf6R65ZxzHhTyID9ko/w22VpbIXk7A0=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:References:
+	 In-Reply-To:Content-Type; b=imdmMQ1q8I29cOrc9NBwTUBJL7dINjIisQg7+f7LOdEy5/nIbR0DDloD2utirvbbVTRM3U92KDrr18JNZFpRGNvfLsT9AS+vC8s1sHrNSc+TMK2Cy0GsThGJyLMeGAnfh+G/Zdr4aHFYICblDjOp4rHtK83mW1jFMJ+H0NfHGis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RMq7zgVE; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-34a7e47d164so1100619f8f.3
+        for <linux-wireless@vger.kernel.org>; Sat, 20 Apr 2024 11:52:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1713622140; x=1714226940; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=MgVP7bwsBg/Q1ktkX1toe/peQcmtS6Se8iElstUjkhk=;
-        b=fa/3oJK2xmqKwSYm9J78eaE7Z86rQpqtNQ17CVM0w+sGZYURADDFRtczQN59sNk4iW
-         Ti2enL+AKlfHBmYcnmxmsqkiMS4YQGX4UFA3SD08eYSSbpkvOaSW2+AA10QDB6pJYjJt
-         Y7h02nO43FC2o3qo5C79FBAoT8lEwwosmnjorj+ZgY4/WvebPS4hKef00CpDomR/MxXZ
-         cOOVwC5SVHnk3TLekk5hQn8yetsDOdAhRgWdGZw4aa38mjYofFql91lb2yFiu3Q4Xlcv
-         JHYf8hikRDMEYh3onFfr4nhpPaZNB3VrDf3nOhl1fdqnjANieAqM0dSbcz6qcLLMppfJ
-         RCAQ==
+        d=gmail.com; s=20230601; t=1713639149; x=1714243949; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :to:subject:from:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=icllaj3GtgRBKNT1A2DiXh1/rtxQ4f7lkqRmyecqcVw=;
+        b=RMq7zgVEUn+xsf/LoS0p1T7QFaNAGYxtIr7HpMJVr+edr96uqibzhHrjOrxydL4ZXF
+         Xy3f2A7q4ZnedZrykeW5xHEFk5hZ2x/VNpjtW5wg95EHfiOoEg1fbZrhsLpZV4g8rXLH
+         /pYq6ykv3DZ0m8uXckuOVySWlAg1Xo7TkE12cP94Bnk6Zo13lBbrHm6cTGpIi77/Dn6O
+         Y/J+rlCSazkPH6EZI0crTBXNfDSjKReRuUZXAvR7tBBXBnUv+cdfiyWYjhS/VgXCCKvk
+         BJXEiBnRUdcps7yRN4gnr7zEwSpuRLYg/2GxGvP5TNxSo4cykvqX26DPGU63chsaO6+S
+         ErTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713622140; x=1714226940;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1713639149; x=1714243949;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :to:subject:from:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MgVP7bwsBg/Q1ktkX1toe/peQcmtS6Se8iElstUjkhk=;
-        b=i6nczJ2syl3r0L1qaXksaTbxbcMPk4ewIncC5oiSIpFV7uFZdVhGKEZY6wZZQJhHbY
-         v3SMU6e6bIHO4I0O1BxueJ2sXMhL5RfYC/h/pmGHciNbPm9+TSp6ebiQZEe62mG3NKl5
-         d50rcP7K9OiZCOMhMQE3bNEgf/ywaMbxse8rD/KzTy7rFBX4paYhGvl2m+1vzdG68jH1
-         Y6btCFW8owdHpvqU6d7rV+cgIrJnhhN9Zo3UeMumZUUx6Yikr9LDXKGLh8pEZHAIj8hZ
-         Pv6WAs/vBvFoiSq0JvXwFHaSaJZD+JEmNzxF8ElsX9bTF6XsCJRTjprE6KezOwooxao4
-         ZFqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUTj02b2n7P99fVq1FRONPGMiqa2iYMZ4bwc9WKgy/aCYdBupZyIcFz/lFc3/YBRKBcvYsFIADIX5AzzuoKursJIDLCdxLAcfjllBX1feo=
-X-Gm-Message-State: AOJu0Yz2uM9Zk532vNmnSzXRkuNek/Y4fZy4pYndr4MhAzhfSAZRVLl4
-	YTRRmcoqvhIAkEVjPUrtdvvVFF0dfP31RYV+2H1ok3mS0HX3Mr7ACg013H9e
-X-Google-Smtp-Source: AGHT+IH4dlOQAb1OfckkjkUmlvEKMdatc4+qFdeh6uwhrNDyh2x+CFJ3Fkuapf72040RPlsge97YdA==
-X-Received: by 2002:a05:6512:210d:b0:51a:ece1:6ae6 with SMTP id q13-20020a056512210d00b0051aece16ae6mr737394lfr.51.1713622139287;
-        Sat, 20 Apr 2024 07:08:59 -0700 (PDT)
-Received: from [192.168.200.7] (p3ee2b231.dip0.t-ipconnect.de. [62.226.178.49])
-        by smtp.gmail.com with ESMTPSA id w34-20020a0565120b2200b00518df6c9d07sm1150317lfu.24.2024.04.20.07.08.58
+        bh=icllaj3GtgRBKNT1A2DiXh1/rtxQ4f7lkqRmyecqcVw=;
+        b=hpStfs/21rklgcvVucshyMOgFqe+rucyN8uIuWhTmJpbamgHdl98iuht9pZp1mrphW
+         mqhgoDwpcF/KATLFyCsagcJFSzrF5RHEWfD0ao7Yxn5dSqxqW9nDSmFyXzjsDWGx79yD
+         8VVDVZDDxc5W5FnzjATE0OAxgGHZQMBbaX3pVGg8b1KZmLZBwmT7UCGa3KBpCpkWWTUF
+         xrOwnw7AK+h9SN8qeHg7VtK2DDMXboRXxb/jkqC0LL0g9oVVAwCqCf0Hj2ciG+2YaTJe
+         Tyghxj/sXtk2E2hpdAhUmMa2hJkY92783o2R8gF23Mw6lh7EHEnAAp989sN8rvIRBYQd
+         iEEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU7jfc88U6r2JRtoEmzvl67kA2hXFwmuqCyQCVdCR4jeuf9LezUqV1Lzv5L+aeKcyU8xGWDXCNbdE3D/NmDlsR3tr0WVcdqynIP3ENdcp0=
+X-Gm-Message-State: AOJu0Yy7XtXFW9YdR9YNmM76kzeBkZbfIxxD7a0W/4Z89j33asHvEuns
+	xYkP67mL0EWiI4Q+Al2ZaCGIu3pAvWVLmp9ZANaCRhXzEyOI/KYiAHQMrv2J
+X-Google-Smtp-Source: AGHT+IHsDQecoAGl/3fM3STKSTX0uqard8NDVcQutV+5Uf7jaTf3OU9eLIwMUqzcAAItAUmCqjfL+Q==
+X-Received: by 2002:a5d:554e:0:b0:346:b778:eaa7 with SMTP id g14-20020a5d554e000000b00346b778eaa7mr4362948wrw.18.1713639148718;
+        Sat, 20 Apr 2024 11:52:28 -0700 (PDT)
+Received: from [192.168.1.50] ([79.113.154.240])
+        by smtp.gmail.com with ESMTPSA id cd19-20020a170906b35300b00a4673706b4dsm3685168ejb.78.2024.04.20.11.52.28
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 20 Apr 2024 07:08:58 -0700 (PDT)
-Message-ID: <c6e00544-dbde-4b59-8d43-912b04a3f824@message-id.googlemail.com>
-Date: Sat, 20 Apr 2024 16:08:57 +0200
+        Sat, 20 Apr 2024 11:52:28 -0700 (PDT)
+Message-ID: <195b36bc-adbe-4b83-adf6-2ea2d6b7cd9d@gmail.com>
+Date: Sat, 20 Apr 2024 21:52:27 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -76,51 +76,62 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: 6.9 iwlwifi regression: Thinkpad 480 no Wifi
-To: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
-References: <8c3f3a43-ac65-4bd1-9563-cb8d9192b0ce@message-id.googlemail.com>
- <8fe50dcfc5159994c5976a406e27bb1df03ca0fb.camel@sipsolutions.net>
-From: Stefan Seyfried <stefan.seyfried@googlemail.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: Re: RTL8188EU driver for Illumos
+To: Carsten Grzemba <grzemba@contac-dt.de>, linux-wireless@vger.kernel.org
+References: <bf57fa6d629f.6622e8c3@contac-dt.de>
 Content-Language: en-US
-In-Reply-To: <8fe50dcfc5159994c5976a406e27bb1df03ca0fb.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <bf57fa6d629f.6622e8c3@contac-dt.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Hi Johannes,
+On 19/04/2024 22:57, Carsten Grzemba wrote:
+> Currently I try to create a driver for RL8188EU chip for Illumos.   As template serves    the RTWN driver of freeBSD   .   The starting base is the URTWN driver for RTL8192CU for Solaris from http://freenicdrivers.la.coocan.jp  . 
 
-Am 20.04.24 um 15:44 schrieb Johannes Berg:
-> On Sat, 2024-04-20 at 09:44 +0200, Stefan Seyfried wrote:
->> Hello,
->>
->> I'm running a Thinkpad T480, lspci reports
->> 03:00.0 0280: 8086:24fd (rev 78)
->> Network controller: Intel Corporation Wireless 8265 / 8275 (rev 78)
->> Subsystem: Intel Corporation Dual Band Wireless-AC 8265 [Windstorm Peak]
->>
->> Using 6.8 kernels, everything is fine (the first kernel I ever used on
->> this machine was 6.8.1 from openSUSE Tumbleweed).
->>
->> Since 6.9-rc1 (using precompiled SUSE Kernel-of-the-day), wireless just
->> does not work.
->>
->> Nothing suspicious in dmesg, NetworkManager does nothing and a manual
->>
->> mixi:~ # ip link set up dev wlp3s0
->> RTNETLINK answers: Invalid argument
+Hi! Good luck, haha.
+
+> The driver works so far that WiFi scan and the registration to an AP works.   I see data packages arriving on the interface.  
+>  
+> However, no data package go outside, so that no IP connecting can be built up.    
+>    
+> It is strange to me that communication with the AP works, but not to other stations.    I suspect that the problem lies in the configuration of the TX descriptor.   However, I lack the knowledge of the meaning of the individual bits.   Is there a developer documentation for the TRL8188E chip public available?   
+
+The official driver is probably the only documentation you
+will find. This is the newest version I know of:
+https://github.com/ivanovborislav/rtl8188eu/
+
+This one is older but it's updated for the latest kernel:
+https://github.com/lwfinger/rtl8188eu/tree/v5.2.2.4
+
+> It s possible to check if the firmware can not interpret the TX descriptor properly?  
+>  
+> When comparing the descriptor with FreeBSD, different settings are noticed in DWORD5 (OFFSET 20) (data rate, RTS rate).   Can these be the cause of not sending the data packet?    
+
+If it can transmit management frames but not data frames,
+you may be using the wrong TX queue (bits 0x1f00 in dword1
+of the TX descriptor), or the wrong USB endpoint.
+
+>    
+> The current state of my work is avail at: https://github.com/cgrzemba/illumos-gate/tree/15014-urtwn-8188-3
+>    
+> I would be very happy if you could help me.   
 > 
-> I think you may need this fix:
-> 
-> https://lore.kernel.org/r/20240420154435.dce72db5d5e3.Ic40b454b24f1c7b380a1eedf67455d9cf2f58541@changeid
 
-Yes, this fixes it (applied manually, just built iwlmvm, rebooted into 
-6.9-rc4 and loaded the patched module => wifi is happy :-)
+Some things I noticed are missing from your driver:
 
-Thanks, saved my weekend :-)
+https://github.com/ivanovborislav/rtl8188eu/blob/163badb4564be50ce11aa3e6fdd2e18f3e4c4b90/hal/rtl8188e/usb/usb_halinit.c#L1335
 
--- 
-Stefan Seyfried
+https://github.com/ivanovborislav/rtl8188eu/blob/163badb4564be50ce11aa3e6fdd2e18f3e4c4b90/hal/rtl8188e/rtl8188e_hal_init.c#L2764
 
-"For a successful technology, reality must take precedence over
-  public relations, for nature cannot be fooled." -- Richard Feynman
+I think it will save you a lot of headaches if you make your
+driver perform exactly the same register writes as the
+official driver does in the chip init/deinit functions. (You
+can probably delete "#define CONFIG_IOL" and use the official
+driver as reference without that stuff. rtl8xxxu works without
+that.)
+
+>    
+> Kind regards
+>    
 
 
