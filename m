@@ -1,102 +1,95 @@
-Return-Path: <linux-wireless+bounces-6601-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6602-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D98E8ABBD4
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Apr 2024 15:44:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EAF58ABBD5
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Apr 2024 15:45:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE549281768
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Apr 2024 13:44:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC6F6B20E3A
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Apr 2024 13:45:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 698281805E;
-	Sat, 20 Apr 2024 13:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6778D1805E;
+	Sat, 20 Apr 2024 13:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ev3Qdbc/"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="jzaP9wIO"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CB217C72
-	for <linux-wireless@vger.kernel.org>; Sat, 20 Apr 2024 13:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7EE17C72
+	for <linux-wireless@vger.kernel.org>; Sat, 20 Apr 2024 13:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713620690; cv=none; b=U2nwJckCOxo6He6940P+5jBswzm4BngSZSl6HeGeAyZacaRv6bTqpfi1yGHB0DP4+H4GxfBT0zLti+iK4PnDQh1CR9WCsKEAKJj1fCeK4of63iISN/PZbLNHctDQCJywimStY4iNaCbN6RyNj60M96s6UMOmZxvYbAohfaWHkKw=
+	t=1713620703; cv=none; b=NunO/i3/a2qvScJPKqINdBedZKAiaU6Sefs5EoRVu3rJgk9FRt3Ap1JYKHmOiov+J/LM6CQwfVb6Tpa/mLIL/vswyT0njDvZSyRspnrTX/m8PMchB7TokVnpL3ftEQx1gj5bNFDYtDPBsBSRLNp5u1bzf4d1T3KO1K6XO4RRiYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713620690; c=relaxed/simple;
-	bh=RhbpoDQu7dGjKu0YbieETI7Y60muw1VC+nLLDElU58E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H6GLwAgyeF3K5RcbUNkuGKX/PIDiXRFdre+2K5XZ2+zI2nVl2fD+LqJA+PuDrQi8mWqPmDMT2l/GQBwIh0efZbr52JsNawTgEBVCILSDCTFA0OTDCJajP49Io/TZqJIF6U/MF1fJIXKwWCvyH7cVOFaHW+iMxTLYiv6N/I+UD9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ev3Qdbc/; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1713620703; c=relaxed/simple;
+	bh=zdm9KRduGP4P/it+k99aheBqGjEloiRzkkcDe9PwGtA=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Jj8JrEXDXaLm7R+1cHgBAHU0rE9aPdHZa5JvWyMDyx/tGvQ9z9C1aqi1lu/Bq7BK+ya5bCtmf4VVfghMsfEdNzNoo2oQGGH/F7hCvrKMtdPLKiiVJXpvh4FJFM7ZaZj4lrtgcWcV3G1uLjqjrlUmiHbR+hOQE8gVaV2RecE78CY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=jzaP9wIO; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=Ie079eXeRS6hxQiA+t2imb7PP/7IY1YSsUgdtPBvm0U=; t=1713620687; x=1714830287; 
-	b=ev3Qdbc/kyzdrBXVVaXltZ0jMZzoqa8o0Gzfn6RBXDrKxaVVO34HAHod+7L5ynufl9IxEXJ150e
-	hTd8xS5kOxz3E40aVw0tV3FBN1/jpOrLJDxt1nRRiRSlKyp5NLDAGB3sMRkRFjd1hK//p8Nh7xIi0
-	fIYTTihP2pN5nPcKG8/3Aaef8V+T/yIrYBMSrDYUrkWbFOR4NqezMyMUBapM4p4vPSEI7jqzw1r9u
-	VebY/1x/pR3zXIJKyNbVMJTl3cxst03l2UTpXYP3q6Cbja+RUIt0bjIGGnKxIGRrYmATlK19dMro0
-	6SFRWoK3vONpnQ6N468XQS7SNsTMXwk5BXAQ==;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=zdm9KRduGP4P/it+k99aheBqGjEloiRzkkcDe9PwGtA=;
+	t=1713620701; x=1714830301; b=jzaP9wIOuOv4reaOCWTeCNujw0Lf46fFCONZ54VPTBLHENx
+	+PQ0FR+zbAAWxeJ3IutAmanNS5Z9UCTWzE8xH11Ki32m7BPiMSzbthrguz2j2T6AmG6l8C4/h3agd
+	7qlaa7AGuOtGGjo1021vL5S6RpRcxSAXjxbZCylvSaJq7dJbFfGfKSKArENOC1lZ7UJ7I5Czl6nG+
+	d34QZZzAdsNb4oi2pxAtkT4cmPh5AOtmVJt9+2iDySaUw3fNc9cT7o5iGVQOn+xDb1BXcatLI/7vb
+	ZsrJ4yGsLOisU/2MV9vSOMWo8/bVtBq46+dFnYoMVUNYlf8fXtbApDdL0CVoAQNQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1ryB1C-0000000FlMr-0pNB;
-	Sat, 20 Apr 2024 15:44:38 +0200
+	id 1ryB1W-0000000FlNp-2029;
+	Sat, 20 Apr 2024 15:44:58 +0200
+Message-ID: <8fe50dcfc5159994c5976a406e27bb1df03ca0fb.camel@sipsolutions.net>
+Subject: Re: 6.9 iwlwifi regression: Thinkpad 480 no Wifi
 From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] wifi: iwlwifi: mvm: fix link ID management
-Date: Sat, 20 Apr 2024 15:44:36 +0200
-Message-ID: <20240420154435.dce72db5d5e3.Ic40b454b24f1c7b380a1eedf67455d9cf2f58541@changeid>
-X-Mailer: git-send-email 2.44.0
+To: Stefan Seyfried <stefan.seyfried@googlemail.com>, 
+	linux-wireless@vger.kernel.org
+Date: Sat, 20 Apr 2024 15:44:57 +0200
+In-Reply-To: <8c3f3a43-ac65-4bd1-9563-cb8d9192b0ce@message-id.googlemail.com>
+References: <8c3f3a43-ac65-4bd1-9563-cb8d9192b0ce@message-id.googlemail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Sat, 2024-04-20 at 09:44 +0200, Stefan Seyfried wrote:
+> Hello,
+>=20
+> I'm running a Thinkpad T480, lspci reports
+> 03:00.0 0280: 8086:24fd (rev 78)
+> Network controller: Intel Corporation Wireless 8265 / 8275 (rev 78)
+> Subsystem: Intel Corporation Dual Band Wireless-AC 8265 [Windstorm Peak]
+>=20
+> Using 6.8 kernels, everything is fine (the first kernel I ever used on=
+=20
+> this machine was 6.8.1 from openSUSE Tumbleweed).
+>=20
+> Since 6.9-rc1 (using precompiled SUSE Kernel-of-the-day), wireless just=
+=20
+> does not work.
+>=20
+> Nothing suspicious in dmesg, NetworkManager does nothing and a manual
+>=20
+> mixi:~ # ip link set up dev wlp3s0
+> RTNETLINK answers: Invalid argument
 
-On older (pre-MLD API) devices, we started also calling
-iwl_mvm_set_link_mapping()/iwl_mvm_unset_link_mapping(),
-but of course not also iwl_mvm_remove_link(). Since the
-link ID was only released in iwl_mvm_remove_link() this
-causes us to run out of FW link IDs very quickly. Fix
-it by releasing the link ID correctly.
+I think you may need this fix:
 
-Fixes: a8b5d4809b50 ("wifi: iwlwifi: mvm: Configure the link mapping for non-MLD FW")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/mvm/link.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+https://lore.kernel.org/r/20240420154435.dce72db5d5e3.Ic40b454b24f1c7b380a1=
+eedf67455d9cf2f58541@changeid
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/link.c b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-index 9f69e04594e4..fe5bba8561d0 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-@@ -279,6 +279,7 @@ int iwl_mvm_unset_link_mapping(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 
- 	RCU_INIT_POINTER(mvm->link_id_to_link_conf[link_info->fw_link_id],
- 			 NULL);
-+	iwl_mvm_release_fw_link_id(mvm, link_info->fw_link_id);
- 	return 0;
- }
- 
-@@ -296,7 +297,6 @@ int iwl_mvm_remove_link(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 		return 0;
- 
- 	cmd.link_id = cpu_to_le32(link_info->fw_link_id);
--	iwl_mvm_release_fw_link_id(mvm, link_info->fw_link_id);
- 	link_info->fw_link_id = IWL_MVM_FW_LINK_ID_INVALID;
- 	cmd.spec_link_id = link_conf->link_id;
- 	cmd.phy_id = cpu_to_le32(FW_CTXT_INVALID);
--- 
-2.44.0
-
+johannes
 
