@@ -1,137 +1,215 @@
-Return-Path: <linux-wireless+bounces-6604-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6605-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51C488ABCD4
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Apr 2024 20:52:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6183F8AC04E
+	for <lists+linux-wireless@lfdr.de>; Sun, 21 Apr 2024 19:37:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12A6C281364
-	for <lists+linux-wireless@lfdr.de>; Sat, 20 Apr 2024 18:52:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19885280D93
+	for <lists+linux-wireless@lfdr.de>; Sun, 21 Apr 2024 17:37:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DAD0168CC;
-	Sat, 20 Apr 2024 18:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5345325742;
+	Sun, 21 Apr 2024 17:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RMq7zgVE"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="b4tin19Y"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7546D205E16
-	for <linux-wireless@vger.kernel.org>; Sat, 20 Apr 2024 18:52:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7829D18637
+	for <linux-wireless@vger.kernel.org>; Sun, 21 Apr 2024 17:37:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713639153; cv=none; b=I93esBP6HK/8umFmFx9P9ff3X7XxcHmUVSvTrNXNenbvHykP6T56kYs71433NDc1f4gOmlcZL3aP/xyCSHt3nwL/graBSCpvfHOtW1mc+mCTJMBT+PgRH8YqyJQ/jzsiS7DhrUJ8UUGTqiGaUxK8PLTvR9yQXuGSCZohw1B+P5c=
+	t=1713721048; cv=none; b=epMzlxUZhYR+eiSbylzD4J9MeFVLjTdRjJh2sSsBO9V4w8IRebARyT+1Ji6Kbpo+SKWYovoB/yfQyuz3Hw/4q1GTaWiKdnvP8A6XvPabIt2eFNFw1WOHKHZg4wn6weqlAJkxrxBEDgv2E5fQ+s8wihbWMISV6MOXeINnEUoOmDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713639153; c=relaxed/simple;
-	bh=S9ggd7NT2okWKf6R65ZxzHhTyID9ko/w22VpbIXk7A0=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:References:
-	 In-Reply-To:Content-Type; b=imdmMQ1q8I29cOrc9NBwTUBJL7dINjIisQg7+f7LOdEy5/nIbR0DDloD2utirvbbVTRM3U92KDrr18JNZFpRGNvfLsT9AS+vC8s1sHrNSc+TMK2Cy0GsThGJyLMeGAnfh+G/Zdr4aHFYICblDjOp4rHtK83mW1jFMJ+H0NfHGis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RMq7zgVE; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-34a7e47d164so1100619f8f.3
-        for <linux-wireless@vger.kernel.org>; Sat, 20 Apr 2024 11:52:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713639149; x=1714243949; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:subject:from:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=icllaj3GtgRBKNT1A2DiXh1/rtxQ4f7lkqRmyecqcVw=;
-        b=RMq7zgVEUn+xsf/LoS0p1T7QFaNAGYxtIr7HpMJVr+edr96uqibzhHrjOrxydL4ZXF
-         Xy3f2A7q4ZnedZrykeW5xHEFk5hZ2x/VNpjtW5wg95EHfiOoEg1fbZrhsLpZV4g8rXLH
-         /pYq6ykv3DZ0m8uXckuOVySWlAg1Xo7TkE12cP94Bnk6Zo13lBbrHm6cTGpIi77/Dn6O
-         Y/J+rlCSazkPH6EZI0crTBXNfDSjKReRuUZXAvR7tBBXBnUv+cdfiyWYjhS/VgXCCKvk
-         BJXEiBnRUdcps7yRN4gnr7zEwSpuRLYg/2GxGvP5TNxSo4cykvqX26DPGU63chsaO6+S
-         ErTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713639149; x=1714243949;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:subject:from:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=icllaj3GtgRBKNT1A2DiXh1/rtxQ4f7lkqRmyecqcVw=;
-        b=hpStfs/21rklgcvVucshyMOgFqe+rucyN8uIuWhTmJpbamgHdl98iuht9pZp1mrphW
-         mqhgoDwpcF/KATLFyCsagcJFSzrF5RHEWfD0ao7Yxn5dSqxqW9nDSmFyXzjsDWGx79yD
-         8VVDVZDDxc5W5FnzjATE0OAxgGHZQMBbaX3pVGg8b1KZmLZBwmT7UCGa3KBpCpkWWTUF
-         xrOwnw7AK+h9SN8qeHg7VtK2DDMXboRXxb/jkqC0LL0g9oVVAwCqCf0Hj2ciG+2YaTJe
-         Tyghxj/sXtk2E2hpdAhUmMa2hJkY92783o2R8gF23Mw6lh7EHEnAAp989sN8rvIRBYQd
-         iEEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU7jfc88U6r2JRtoEmzvl67kA2hXFwmuqCyQCVdCR4jeuf9LezUqV1Lzv5L+aeKcyU8xGWDXCNbdE3D/NmDlsR3tr0WVcdqynIP3ENdcp0=
-X-Gm-Message-State: AOJu0Yy7XtXFW9YdR9YNmM76kzeBkZbfIxxD7a0W/4Z89j33asHvEuns
-	xYkP67mL0EWiI4Q+Al2ZaCGIu3pAvWVLmp9ZANaCRhXzEyOI/KYiAHQMrv2J
-X-Google-Smtp-Source: AGHT+IHsDQecoAGl/3fM3STKSTX0uqard8NDVcQutV+5Uf7jaTf3OU9eLIwMUqzcAAItAUmCqjfL+Q==
-X-Received: by 2002:a5d:554e:0:b0:346:b778:eaa7 with SMTP id g14-20020a5d554e000000b00346b778eaa7mr4362948wrw.18.1713639148718;
-        Sat, 20 Apr 2024 11:52:28 -0700 (PDT)
-Received: from [192.168.1.50] ([79.113.154.240])
-        by smtp.gmail.com with ESMTPSA id cd19-20020a170906b35300b00a4673706b4dsm3685168ejb.78.2024.04.20.11.52.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 20 Apr 2024 11:52:28 -0700 (PDT)
-Message-ID: <195b36bc-adbe-4b83-adf6-2ea2d6b7cd9d@gmail.com>
-Date: Sat, 20 Apr 2024 21:52:27 +0300
+	s=arc-20240116; t=1713721048; c=relaxed/simple;
+	bh=61BtVlKExzJfMd8Tehd1JAfEWlammHtAUQaMijv4JjA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pot3+BqSijno1cAViTtMIbNRkmkpzrgQr+OCjMTow1r1yQ8XePcd4RpNbQVvFKtfP3otTliqYV4sPCqDXc21JMCwEek3hAFclHcAiLBBqZOMJ+LU1iMLyLeXctYc4Aa5/lpQlwaG2+r6rxvyhspEY3X7tFsXIbrJtx/AjDUHaDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=b4tin19Y; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43LHNGEt030738;
+	Sun, 21 Apr 2024 17:37:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=bMACCxL
+	/JAYqSr+fsJsG3zIjPA1Z377tUDjZ7FK6H/g=; b=b4tin19YF9Uq8vS3myvMh7t
+	+OPsdz2Iuakmy4NeHBhOOlNYbFR3oy99FCex7IeDPVUNBHou6czCFNVnwrtxEgRC
+	ngDgY1qAM2bBGt0kbwxT2Lrr3aCxZLl+IedxK0g1WM1Wp5APHfeJO8T7VgP4d6Kd
+	sYAzXx9t32CEwEGI1lUUATchpg3vDJbWEEPvhkV3jf2Fb1fH2z9kKoXiK5IaFHL+
+	BWaJcTRcnAXPHcHEtROw8W6oJL+gTD8qiUAkmnUuw7FfUE3iVlKfDpDwa0Nlxgm3
+	+7CeB2RTJlJWSZN10jwFIbdeA8tOwG65Nw3qop1WsMmix/4W2dicvniwjK06MEA=
+	=
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xm63a2efc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 21 Apr 2024 17:37:16 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43LHbEXe031533
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 21 Apr 2024 17:37:14 GMT
+Received: from hu-kathirve-hyd.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Sun, 21 Apr 2024 10:37:13 -0700
+From: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Karthikeyan Kathirvel
+	<quic_kathirve@quicinc.com>
+Subject: [PATCH v2] wifi: ath12k: drop failed transmitted frames from metric calculation.
+Date: Sun, 21 Apr 2024 23:06:59 +0530
+Message-ID: <20240421173659.53674-1-quic_kathirve@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: Re: RTL8188EU driver for Illumos
-To: Carsten Grzemba <grzemba@contac-dt.de>, linux-wireless@vger.kernel.org
-References: <bf57fa6d629f.6622e8c3@contac-dt.de>
-Content-Language: en-US
-In-Reply-To: <bf57fa6d629f.6622e8c3@contac-dt.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: FCFIPwsSE2Yy-tEWL8BafYPFJqNuA76s
+X-Proofpoint-ORIG-GUID: FCFIPwsSE2Yy-tEWL8BafYPFJqNuA76s
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-21_16,2024-04-19_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
+ bulkscore=0 mlxlogscore=999 clxscore=1015 mlxscore=0 malwarescore=0
+ adultscore=0 lowpriorityscore=0 spamscore=0 impostorscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404210110
 
-On 19/04/2024 22:57, Carsten Grzemba wrote:
-> Currently I try to create a driver for RL8188EU chip for Illumos.   As template serves    the RTWN driver of freeBSD   .   The starting base is the URTWN driver for RTL8192CU for Solaris from http://freenicdrivers.la.coocan.jp  . 
+In mesh node traffic, internal firmware-transmitted failures are
+reported as transmitted failures in mesh metric calculation, leading
+to the breakage of the mesh link.
 
-Hi! Good luck, haha.
+Fix the issue by dropping the internal firmware-transmitted failures
+before updating the TX completion status to mac80211, in order to
+prevent false failure averaging in mesh metric calculation.
 
-> The driver works so far that WiFi scan and the registration to an AP works.   I see data packages arriving on the interface.  
->  
-> However, no data package go outside, so that no IP connecting can be built up.    
->    
-> It is strange to me that communication with the AP works, but not to other stations.    I suspect that the problem lies in the configuration of the TX descriptor.   However, I lack the knowledge of the meaning of the individual bits.   Is there a developer documentation for the TRL8188E chip public available?   
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 
-The official driver is probably the only documentation you
-will find. This is the newest version I know of:
-https://github.com/ivanovborislav/rtl8188eu/
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+---
+v2:
+	Addressed Jeff's review comments
+		- Updated copyrights of hal_desc.h to 2024
+		- nits addressed
+---
+ drivers/net/wireless/ath/ath12k/dp_tx.c    | 38 ++++++++++++++++------
+ drivers/net/wireless/ath/ath12k/hal_desc.h | 22 ++++++++++++-
+ 2 files changed, 49 insertions(+), 11 deletions(-)
 
-This one is older but it's updated for the latest kernel:
-https://github.com/lwfinger/rtl8188eu/tree/v5.2.2.4
+diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
+index 9b6d7d72f57c..423afdad98e3 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_tx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
+@@ -481,18 +481,36 @@ static void ath12k_dp_tx_complete_msdu(struct ath12k *ar,
+ 	/* skip tx rate update from ieee80211_status*/
+ 	info->status.rates[0].idx = -1;
+ 
+-	if (ts->status == HAL_WBM_TQM_REL_REASON_FRAME_ACKED &&
+-	    !(info->flags & IEEE80211_TX_CTL_NO_ACK)) {
+-		info->flags |= IEEE80211_TX_STAT_ACK;
+-		info->status.ack_signal = ATH12K_DEFAULT_NOISE_FLOOR +
+-					  ts->ack_rssi;
+-		info->status.flags = IEEE80211_TX_STATUS_ACK_SIGNAL_VALID;
++	switch (ts->status) {
++	case HAL_WBM_TQM_REL_REASON_FRAME_ACKED:
++		if (!(info->flags & IEEE80211_TX_CTL_NO_ACK)) {
++			info->flags |= IEEE80211_TX_STAT_ACK;
++			info->status.ack_signal = ATH12K_DEFAULT_NOISE_FLOOR +
++						  ts->ack_rssi;
++			info->status.flags = IEEE80211_TX_STATUS_ACK_SIGNAL_VALID;
++		}
++		break;
++	case HAL_WBM_TQM_REL_REASON_CMD_REMOVE_TX:
++		if (info->flags & IEEE80211_TX_CTL_NO_ACK) {
++			info->flags |= IEEE80211_TX_STAT_NOACK_TRANSMITTED;
++			break;
++		}
++		fallthrough;
++	case HAL_WBM_TQM_REL_REASON_CMD_REMOVE_MPDU:
++	case HAL_WBM_TQM_REL_REASON_DROP_THRESHOLD:
++	case HAL_WBM_TQM_REL_REASON_CMD_REMOVE_AGED_FRAMES:
++		/* The failure status is due to internal firmware tx failure
++		 * hence drop the frame; do not update the status of frame to
++		 * the upper layer
++		 */
++		dev_kfree_skb_any(msdu);
++		goto exit;
++	default:
++		ath12k_dbg(ab, ATH12K_DBG_DP_TX, "tx frame is not acked status %d\n",
++			   ts->status);
++		break;
+ 	}
+ 
+-	if (ts->status == HAL_WBM_TQM_REL_REASON_CMD_REMOVE_TX &&
+-	    (info->flags & IEEE80211_TX_CTL_NO_ACK))
+-		info->flags |= IEEE80211_TX_STAT_NOACK_TRANSMITTED;
+-
+ 	/* NOTE: Tx rate status reporting. Tx completion status does not have
+ 	 * necessary information (for example nss) to build the tx rate.
+ 	 * Might end up reporting it out-of-band from HTT stats.
+diff --git a/drivers/net/wireless/ath/ath12k/hal_desc.h b/drivers/net/wireless/ath/ath12k/hal_desc.h
+index 63340256d3f6..71e8c8a091ae 100644
+--- a/drivers/net/wireless/ath/ath12k/hal_desc.h
++++ b/drivers/net/wireless/ath/ath12k/hal_desc.h
+@@ -1,7 +1,7 @@
+ /* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2022 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ #include "core.h"
+ 
+@@ -2048,6 +2048,19 @@ struct hal_wbm_release_ring {
+  *	fw with fw_reason2.
+  * @HAL_WBM_TQM_REL_REASON_CMD_REMOVE_RESEAON3: Remove command initiated by
+  *	fw with fw_reason3.
++ * @HAL_WBM_TQM_REL_REASON_CMD_DISABLE_QUEUE: Remove command initiated by
++ *	fw with disable queue.
++ * @HAL_WBM_TQM_REL_REASON_CMD_TILL_NONMATCHING: Remove command initiated by
++ *	fw to remove all mpdu until 1st non-match.
++ * @HAL_WBM_TQM_REL_REASON_DROP_THRESHOLD: Dropped due to drop threshold
++ *	criteria
++ * @HAL_WBM_TQM_REL_REASON_DROP_LINK_DESC_UNAVAIL: Dropped due to link desc
++ *	not available
++ * @HAL_WBM_TQM_REL_REASON_DROP_OR_INVALID_MSDU: Dropped due drop bit set or
++ *	null flow
++ * @HAL_WBM_TQM_REL_REASON_MULTICAST_DROP: Dropped due mcast drop set for VDEV
++ * @HAL_WBM_TQM_REL_REASON_VDEV_MISMATCH_DROP: Dropped due to being set with
++ *	'TCL_drop_reason'
+  */
+ enum hal_wbm_tqm_rel_reason {
+ 	HAL_WBM_TQM_REL_REASON_FRAME_ACKED,
+@@ -2058,6 +2071,13 @@ enum hal_wbm_tqm_rel_reason {
+ 	HAL_WBM_TQM_REL_REASON_CMD_REMOVE_RESEAON1,
+ 	HAL_WBM_TQM_REL_REASON_CMD_REMOVE_RESEAON2,
+ 	HAL_WBM_TQM_REL_REASON_CMD_REMOVE_RESEAON3,
++	HAL_WBM_TQM_REL_REASON_CMD_DISABLE_QUEUE,
++	HAL_WBM_TQM_REL_REASON_CMD_TILL_NONMATCHING,
++	HAL_WBM_TQM_REL_REASON_DROP_THRESHOLD,
++	HAL_WBM_TQM_REL_REASON_DROP_LINK_DESC_UNAVAIL,
++	HAL_WBM_TQM_REL_REASON_DROP_OR_INVALID_MSDU,
++	HAL_WBM_TQM_REL_REASON_MULTICAST_DROP,
++	HAL_WBM_TQM_REL_REASON_VDEV_MISMATCH_DROP,
+ };
+ 
+ struct hal_wbm_buffer_ring {
 
-> It s possible to check if the firmware can not interpret the TX descriptor properly?  
->  
-> When comparing the descriptor with FreeBSD, different settings are noticed in DWORD5 (OFFSET 20) (data rate, RTS rate).   Can these be the cause of not sending the data packet?    
-
-If it can transmit management frames but not data frames,
-you may be using the wrong TX queue (bits 0x1f00 in dword1
-of the TX descriptor), or the wrong USB endpoint.
-
->    
-> The current state of my work is avail at: https://github.com/cgrzemba/illumos-gate/tree/15014-urtwn-8188-3
->    
-> I would be very happy if you could help me.   
-> 
-
-Some things I noticed are missing from your driver:
-
-https://github.com/ivanovborislav/rtl8188eu/blob/163badb4564be50ce11aa3e6fdd2e18f3e4c4b90/hal/rtl8188e/usb/usb_halinit.c#L1335
-
-https://github.com/ivanovborislav/rtl8188eu/blob/163badb4564be50ce11aa3e6fdd2e18f3e4c4b90/hal/rtl8188e/rtl8188e_hal_init.c#L2764
-
-I think it will save you a lot of headaches if you make your
-driver perform exactly the same register writes as the
-official driver does in the chip init/deinit functions. (You
-can probably delete "#define CONFIG_IOL" and use the official
-driver as reference without that stuff. rtl8xxxu works without
-that.)
-
->    
-> Kind regards
->    
+base-commit: 363e7193eaf258fe7f04e8db560bd8a282a12cd9
+-- 
+2.34.1
 
 
