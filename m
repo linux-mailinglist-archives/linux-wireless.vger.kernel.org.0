@@ -1,74 +1,63 @@
-Return-Path: <linux-wireless+bounces-6680-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6681-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 980878AD349
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Apr 2024 19:25:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ED388AD384
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Apr 2024 19:51:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F7ECB21970
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Apr 2024 17:25:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF9852863E4
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Apr 2024 17:51:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030221534EF;
-	Mon, 22 Apr 2024 17:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A4A0153BED;
+	Mon, 22 Apr 2024 17:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D4toDFpL"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="kr8Lpnaa"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1CD146A6A
-	for <linux-wireless@vger.kernel.org>; Mon, 22 Apr 2024 17:25:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F917152197
+	for <linux-wireless@vger.kernel.org>; Mon, 22 Apr 2024 17:51:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713806707; cv=none; b=XQWRyBXu/oPcmrQRqLri2FGy1akiQ2gJXj0tBifwiX9hR2Vaso6LaxZ1LCEX3TZPHcmnkE7R8Z0iriPLa3Zi/NL7nvUax5r1SWai5JhS31+z1TetY0XYYVNY5EtXY2bQRxJtR4DyxNYT190Yk/MXRBclml2UsDLbTEv+0j1aRnw=
+	t=1713808311; cv=none; b=VlBdh4AMlVJJmPcY4zlK1/2WRcWlg7USLXHC0gRu9hpYAo1rVHOYS6tTMEf29psxjRD5xo0rX3Vg2xgDqq0mvywbgqRWkLup+cb9huTVVjyi//G5TpnX0Y/IlM/7UhvNq/+9xtYtQfjNS/VPuQwH56CPsa5CylD1Xdocs4gNgRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713806707; c=relaxed/simple;
-	bh=7eJ7TQkbfD3YTD4LF10qmURKt0hnPyOFJ7iMKFqBwuo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uKtkN6hJjdguhnIbsfO2ajInkT/HaJAnsp7WU0LHb/dNLFZIKBe5F+wytE4bODK2/D+cnTXBjqdSOJ2jEhiB0uuZTJkr4Z0186fOKyYvoTy7UN2DiNnTLs4GCTOWVMfCLauV4BlItZzX6SX+7yvYf0MnCQhU/6cHUsdr8G9VFT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D4toDFpL; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a52aa665747so568945666b.2
-        for <linux-wireless@vger.kernel.org>; Mon, 22 Apr 2024 10:25:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713806705; x=1714411505; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=FmiBryrvqKrNbkCzf4o4d6sE0hBrYpo3F79VTyWBcC4=;
-        b=D4toDFpLCQ+4Q1Dnkq+DpPMYiLVcnK45tRn7FfXrnuThTTKI4bd4d772iRmQE4YbMx
-         4AV5Owj/HLJq4dQe+yNq0ULYwESB7cBspIE2DBoBq2SnOy1B6tfwnixWRdQkL8HyNVlG
-         bprro5Q/bXBs/o1ACDQr3r5LL2qbaaupipfjqpeWMosKCGNP78+8YS2VMAWXb+K+uXwO
-         vgnL7aefS7r7kZQdNqgIkQZHt8ALpRMFjvcdAB5pmBTVDfLxXLm6+7wgoiKHVfjhHTY8
-         DwrlrwxFTIbLNfTBwZmNP/roYn8Q/xwJwCLyRlT+xta2PFo6g0G43ake5WntvK694P4y
-         LeCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713806705; x=1714411505;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FmiBryrvqKrNbkCzf4o4d6sE0hBrYpo3F79VTyWBcC4=;
-        b=MpHwAKAYqVRSDgLxtw3c93nAtYsFHm+3l7Sj97bfsx2ppL/yaB9VUpLHJWUIqKrFgl
-         NaOn2ngwSftGj2Nu0BLIfmA03GJN0P+5/sm9AiIOin8wHrzVm+kjK/fnKaixjNfwjhTm
-         EJLz30KOVPOjET0vdlA47xL2wSEmylfC9F2nLPSHo4aE/9iv+hDSaJaI6EPzkPZhCdY4
-         OpdYu41iAZiN9LVMnDYZSvACpmKXkNiBGEJk/6CRPrzZwCoNW2ngbQrZMQQxduABWzse
-         AZQmZ7jcqdkrX+eyqMwUBRpgGKXSvKiBCd95+GOIHo+Iy7NFuKpAw6eYauqTviyEfzbm
-         RqRA==
-X-Forwarded-Encrypted: i=1; AJvYcCWECcuHSYkwax8Sm5lW34sUpf9uLVJd7MSXBuWjBlK3imriWlTZK8hhbsHOGVACh9Yue5ZwdD3QQvynP5NuKwovYiOiqg56wmq6fAQ16Vk=
-X-Gm-Message-State: AOJu0YxVkDtGJvgEqZt6W8B66wtuM2raGlPPXAbaYkVR9MCcq2sHODA/
-	P+F0PB4AQDE8u8eDcHdKTpLtDF4zujMxdEmWOrnKDraKdk8X0UDJ
-X-Google-Smtp-Source: AGHT+IGDez0B8YH8kRNiTQcLZITM8YqVMcnhSHJfMo5lVnQ8zpsezZHVZbOUvbStNRbMbd7ACH3tGg==
-X-Received: by 2002:a17:906:c144:b0:a55:ac00:63f7 with SMTP id dp4-20020a170906c14400b00a55ac0063f7mr3805679ejc.15.1713806704434;
-        Mon, 22 Apr 2024 10:25:04 -0700 (PDT)
-Received: from [192.168.1.50] ([79.113.154.240])
-        by smtp.gmail.com with ESMTPSA id qs29-20020a170906459d00b00a5197fa2970sm5976593ejc.25.2024.04.22.10.25.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Apr 2024 10:25:04 -0700 (PDT)
-Message-ID: <509ded5b-6b31-4750-9f87-4d080ea4f71a@gmail.com>
-Date: Mon, 22 Apr 2024 20:25:03 +0300
+	s=arc-20240116; t=1713808311; c=relaxed/simple;
+	bh=s04089sxmZATzgjRbffY8gkh+VT/7Wj111OI4qfiL1s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=PcMe5DxHoS1jIyVVxJb32g5cNwVbdgx92xZW+9tURMzakn2wg6lJMdolQL8oGA18xqJVWP3QxmMI6jWDL4wbN1TOS0z5CR4zUMZdLSbYdj966G1qLeX28oyoHe3UgLULFmaNaYrZR2kwKDOXfjXcxcUeqzQnUVeOTUIBsb+Qks4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=kr8Lpnaa; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43MEKeWQ025428;
+	Mon, 22 Apr 2024 17:51:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=Ce9ixlufvOniWp6BK9xsrtg8SNp8Ht860qQ/XEhJ5Z0=; b=kr
+	8Lpnaa+W7otCf+uFF+7cYt1ydbf3vgyG/DBojulVS6gj6G5MqqynrIurm2Z0M0k3
+	CxHJcezaoekrp671IkwLHEBeEllsRq1GXdA8yj+M7jXwkMiAmDfPMl1L6hFZE+d2
+	1ovfQ+X6839ApAcHLHah79aaddA2UIM9HGuWhFQ0ppcwkt3GO9oR063FP/RJLbjl
+	k5FATA/qdP3lgKlFxft+hs3q4Uu6ReXToiIQFDoP4hr5Cm4fGVJlXQYsrwJQ0Nny
+	N2vT408wd3tmQ64XVHGB5bJh4z+xcdDOgY7mhwSUXSTfvWuPHS/biqUrfmA227NR
+	uGdzen8QP9sueoNWsOsw==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xnsjggk84-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Apr 2024 17:51:45 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43MHpiBf009030
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Apr 2024 17:51:44 GMT
+Received: from [10.227.110.203] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 22 Apr
+ 2024 10:51:44 -0700
+Message-ID: <d71312e3-0500-4959-a348-75c16c4e5bc9@quicinc.com>
+Date: Mon, 22 Apr 2024 10:51:43 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -76,62 +65,44 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/6] wifi: rtlwifi: Move code from rtl8192de to
- rtl8192d-common
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Larry Finger <Larry.Finger@lwfinger.net>,
- Stefan Lippers-Hollmann <s.l-h@gmx.de>,
- Christian Hewitt <chewitt@libreelec.tv>
-References: <9d54a192-d389-4a56-9286-2e7721cbbc27@gmail.com>
- <459a193c-ce2e-4b89-827c-ff6721c470e0@gmail.com>
- <4e7bb78f7dad4383bc98f4a94a2c9b48@realtek.com>
+Subject: Re: [PATCH 01/10] wifi: ath12k: rearrange IRQ enable/disable in reset
+ path
 Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <4e7bb78f7dad4383bc98f4a94a2c9b48@realtek.com>
-Content-Type: text/plain; charset=UTF-8
+To: Baochen Qiang <quic_bqiang@quicinc.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240412060620.27519-1-quic_bqiang@quicinc.com>
+ <20240412060620.27519-2-quic_bqiang@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240412060620.27519-2-quic_bqiang@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: k0J4c4Eh3gyfaPFZ6cKffVC0OMxAbRCe
+X-Proofpoint-ORIG-GUID: k0J4c4Eh3gyfaPFZ6cKffVC0OMxAbRCe
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-22_09,2024-04-22_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
+ phishscore=0 mlxlogscore=526 lowpriorityscore=0 adultscore=0 mlxscore=0
+ impostorscore=0 spamscore=0 malwarescore=0 priorityscore=1501 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2404010003
+ definitions=main-2404220075
 
-On 22/04/2024 05:55, Ping-Ke Shih wrote:
-> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->> Create the new module rtl8192d-common and move some code into it from
->> rtl8192de. Now the rtl8192de driver (PCI) and the new rtl8192du driver
->> (USB) can share some of the code.
->>
->> This is mostly the code that required little effort to make it
->> shareable. There are a few more functions which they could share, with
->> more changes.
->>
->> Add phy_iq_calibrate member to struct rtl_hal_ops to allow moving the
->> TX power tracking code from dm.c.
->>
->> The other changes in this patch are adjusting whitespace, renaming some
->> functions, making some arrays const, and making checkpatch.pl less
->> unhappy.
->>
->> rtl8192de is compile-tested only. rtl8192d-common is tested with the
->> new rtl8192du driver.
->>
->> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+On 4/11/2024 11:06 PM, Baochen Qiang wrote:
+> For non-WoW suspend/resume, ath12k host powers down whole hardware
+> when suspend and powers up it when resume, the code path it goes
+> through is very like the ath12k reset logic.
 > 
-> [..]
+> In order to reuse that logic, rearrange IRQ handling in the reset
+> path.
 > 
->> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/main.c
->> @@ -0,0 +1,9 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +/* Copyright(c) 2009-2012  Realtek Corporation.*/
->> +
->> +#include "../wifi.h"
->> +#include <linux/module.h>
->> +
->> +MODULE_AUTHOR("Realtek WlanFAE <wlanfae@realtek.com>");
->> +MODULE_LICENSE("GPL");
->> +MODULE_DESCRIPTION("Realtek 8192D 802.11an common routines");
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 > 
-> Not sure why you emphasize '802.11an' instead of just '802.11n'.
-> 
-> 
+> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-I saw somewhere a dual-band chip described as 802.11an.
-It seemed like a good idea. Should I change it?
 
