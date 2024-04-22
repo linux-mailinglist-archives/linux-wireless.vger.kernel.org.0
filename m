@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-6629-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6631-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FE738AC3BC
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Apr 2024 07:34:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D92C8AC3BD
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Apr 2024 07:34:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD9EC1F2280B
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Apr 2024 05:34:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 895CA1F22894
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Apr 2024 05:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0DBE10A19;
-	Mon, 22 Apr 2024 05:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BEA518C38;
+	Mon, 22 Apr 2024 05:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Y7GamofV"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="klQ7ElEF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4931313FF6
-	for <linux-wireless@vger.kernel.org>; Mon, 22 Apr 2024 05:34:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFBDF18AED
+	for <linux-wireless@vger.kernel.org>; Mon, 22 Apr 2024 05:34:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713764083; cv=none; b=mtYcsBTCSWelQ1opDihciV3ZLkw0S72VZTcMMJc/0lNyHp07AghC584x/CKeUrbgld5EL/WNpVzCu7jLeaz+CXAg7DTJ2nP+Z3VT285nMcIAw0POq0RGGXOnGmkKqUfTT+fZ/TqKBq8966fDKd/J95iJr9sQtHERfV2ccvYf1Ag=
+	t=1713764088; cv=none; b=jjYl7d79pAv3VqmTfTHDDIVYXDFxQcJfYA1vzYKR3K/V/9FKnO1+F+O1k0q/QmyZQgABy2lfMfMBKIf970ZvtGX93K4E5puLdzBVF1zM90P68I44cGfzH4eRLBxD+AsmvB34JlVDIOAtybKXDj7QfFoIoDEIDZRviRwpVou2a7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713764083; c=relaxed/simple;
-	bh=yzeqepyXWU/vEjX9M179f6nIQbbV0MLYa8Bcn5e9wPA=;
+	s=arc-20240116; t=1713764088; c=relaxed/simple;
+	bh=lFl9k+5aUsAVbKFNnEW5+HEPvjHbW551OLeR2904Ja4=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lvdIORQFmbXVYJMuH3kl+M5tv4ubVn/rA/ZZwCMJgHI2WzgM4QsOys7OJEWA0fZRbVDbPqhOaJthfHyQHF8FIeklk7uSGA6BOFgenNLCxrOL/AiWmjgx9Lr8L97NP2ENbB8u+ZBz6HVQvrtX6zQ2xTxFLpmN+3kNWvkoXPq4HrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Y7GamofV; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version:Content-Type; b=AsjqF0mVXV9A/GtsQNvUPOonpAYMgMPox0pIQbdecdP1PTcY07ZGlKW/qFa988R6DYLjA+yUjDakFRMbP4QLaAhcaFU7XcTaeg239NidUtUam65tE4NJjL0W3QWiulsiOticCxAs7fPdsDqo9TbrO4KCZgDU31aM2TMTjvTfW9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=klQ7ElEF; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43M3RIbj012370;
-	Mon, 22 Apr 2024 05:34:38 GMT
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43M4quxi024387;
+	Mon, 22 Apr 2024 05:34:43 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	from:to:cc:subject:date:message-id:in-reply-to:references
 	:mime-version:content-transfer-encoding:content-type; s=
-	qcppdkim1; bh=cHSQQHm2NIIlYdEmhO9I2NYFHJpIEnEZV376uD5wwmI=; b=Y7
-	GamofVFXKjAnZXKSTlPIIXEkTQfr3jYhu2iPb2w+YsmTDPTzqyryW+td318Iv5dd
-	NH4ShfVI8a359FbZZwXnFwP/aIj7LVU8V/PxPX7dlhvSdM260WOeyN+hZXV9GRyw
-	7yOocErJN2tPw7h3PjapBp1mvvb2A/2mqCC5nNgncKQyxcoF2nDvNq5ESwY1hZXW
-	P5dTRK4eynkp1fRSlEY0AeMRbX0sErh4E8eCTKy1d4O0wtjDkRSggh4a+VHguzv1
-	vlelGZ6cjG2Gmr0IyXxkb+F3103T/O9uTsB1s8+MnNDpBBsDQbQNl2tY2zCtUIC9
-	0fn/sszJ0xMYypQAEZHQ==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xm5a73b1b-1
+	qcppdkim1; bh=jFCcSOQcwxDBXHLAYbZNnCLmLWWilFDa7gVoMb44tck=; b=kl
+	Q7ElEF1diahdnStY9FwpBWI6gD+DU5hqhA4gCsndJ7N900IARa3IuHZal8sbcF49
+	BnLBbeAK5lNyqYa9tDdOJ6mqagp8rl3En0UF+AcvKIV9qVSEOy4Z2FnVKK29x5dV
+	dcTpwRdPeCaPBHHvL5RrvIJ1JtrVu+3avFVI08haeBeK3ah74HFcvBvbjKuCQAhh
+	47Tis1x4eeq/D8FxQh14Yht73oWlR2sj3odTc2S+BiPQOKVCk8Rz3jEHmiYrkbQa
+	mXSqA1Vzn27XSUImg2D3vkN+C2KzTMYTDxRPuRvY8SVphLt4Fs6u1pgHvlw4cimz
+	vO+zJ+nnaPnhq4BjlWzQ==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xned0gbgu-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 22 Apr 2024 05:34:38 +0000 (GMT)
+	Mon, 22 Apr 2024 05:34:42 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43M5YbD3015992
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43M5YdjL006268
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 22 Apr 2024 05:34:37 GMT
+	Mon, 22 Apr 2024 05:34:39 GMT
 Received: from hu-adisi-blr.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Sun, 21 Apr 2024 22:34:35 -0700
+ 15.2.1544.9; Sun, 21 Apr 2024 22:34:37 -0700
 From: Aditya Kumar Singh <quic_adisi@quicinc.com>
 To: <johannes@sipsolutions.net>
 CC: <linux-wireless@vger.kernel.org>,
         Aditya Kumar Singh
 	<quic_adisi@quicinc.com>
-Subject: [PATCH v2 3/7] wifi: mac80211: handle set color_change/after_color_change beacon on per link basis
-Date: Mon, 22 Apr 2024 11:04:08 +0530
-Message-ID: <20240422053412.2024075-4-quic_adisi@quicinc.com>
+Subject: [PATCH v2 4/7] wifi: mac80211: handle color_change_abort and bss_config_notify on per link
+Date: Mon, 22 Apr 2024 11:04:09 +0530
+Message-ID: <20240422053412.2024075-5-quic_adisi@quicinc.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240422053412.2024075-1-quic_adisi@quicinc.com>
 References: <20240422053412.2024075-1-quic_adisi@quicinc.com>
@@ -79,119 +79,101 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: dt0kGCr03jeUleeGQliA0KFf523hBLOn
-X-Proofpoint-ORIG-GUID: dt0kGCr03jeUleeGQliA0KFf523hBLOn
+X-Proofpoint-ORIG-GUID: rVz9hdRrQ4WejhFAHQnfiJZeaubp7Tfg
+X-Proofpoint-GUID: rVz9hdRrQ4WejhFAHQnfiJZeaubp7Tfg
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-04-22_02,2024-04-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- priorityscore=1501 impostorscore=0 malwarescore=0 clxscore=1015
- spamscore=0 bulkscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0
- phishscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2404220024
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 phishscore=0
+ mlxlogscore=999 mlxscore=0 suspectscore=0 adultscore=0 lowpriorityscore=0
+ malwarescore=0 impostorscore=0 spamscore=0 bulkscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2404010003
+ definitions=main-2404220025
 
-In order to support color change with MLO, there is a need to handle the
-functions ieee80211_set_color_change_beacon() and
-ieee80211_set_after_color_change_beacon() on a per link basis.
-
-Implement this by making the function argument accept the link data
-instead of the sdata.
+With MLO, there is a requirement to handle functions
+ieee80211_color_change_abort() and
+ieee80211_color_change_bss_config_notify() on a per link basis.
 
 Currently, deflink would only be passed. Proper link data will be passed in
 a subsequent change.
 
 Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
 ---
- net/mac80211/cfg.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ net/mac80211/cfg.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
 diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 6eee239d5909..3ae7c409ac77 100644
+index 3ae7c409ac77..5339a8e884ac 100644
 --- a/net/mac80211/cfg.c
 +++ b/net/mac80211/cfg.c
-@@ -4666,20 +4666,22 @@ static int ieee80211_set_sar_specs(struct wiphy *wiphy,
+@@ -3918,13 +3918,13 @@ static int ieee80211_set_csa_beacon(struct ieee80211_link_data *link_data,
+ 	return 0;
+ }
+ 
+-static void ieee80211_color_change_abort(struct ieee80211_sub_if_data  *sdata)
++static void ieee80211_color_change_abort(struct ieee80211_link_data *link)
+ {
+-	sdata->vif.bss_conf.color_change_active = false;
++	link->conf->color_change_active = false;
+ 
+-	ieee80211_free_next_beacon(&sdata->deflink);
++	ieee80211_free_next_beacon(link);
+ 
+-	cfg80211_color_change_aborted_notify(sdata->dev, 0);
++	cfg80211_color_change_aborted_notify(link->sdata->dev, link->link_id);
  }
  
  static int
--ieee80211_set_after_color_change_beacon(struct ieee80211_sub_if_data *sdata,
-+ieee80211_set_after_color_change_beacon(struct ieee80211_link_data *link,
- 					u64 *changed)
+@@ -4008,7 +4008,7 @@ __ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
+ 
+ 	/* if there is a color change in progress, abort it */
+ 	if (link_conf->color_change_active)
+-		ieee80211_color_change_abort(sdata);
++		ieee80211_color_change_abort(link_data);
+ 
+ 	err = ieee80211_set_csa_beacon(link_data, params, &changed);
+ 	if (err) {
+@@ -4737,16 +4737,18 @@ ieee80211_set_color_change_beacon(struct ieee80211_link_data *link,
+ }
+ 
+ static void
+-ieee80211_color_change_bss_config_notify(struct ieee80211_sub_if_data *sdata,
++ieee80211_color_change_bss_config_notify(struct ieee80211_link_data *link,
+ 					 u8 color, int enable, u64 changed)
  {
 +	struct ieee80211_sub_if_data *sdata = link->sdata;
 +
- 	switch (sdata->vif.type) {
- 	case NL80211_IFTYPE_AP: {
- 		int ret;
+ 	lockdep_assert_wiphy(sdata->local->hw.wiphy);
  
--		if (!sdata->deflink.u.ap.next_beacon)
-+		if (!link->u.ap.next_beacon)
- 			return -EINVAL;
+-	sdata->vif.bss_conf.he_bss_color.color = color;
+-	sdata->vif.bss_conf.he_bss_color.enabled = enable;
++	link->conf->he_bss_color.color = color;
++	link->conf->he_bss_color.enabled = enable;
+ 	changed |= BSS_CHANGED_HE_BSS_COLOR;
  
--		ret = ieee80211_assign_beacon(sdata, &sdata->deflink,
--					      sdata->deflink.u.ap.next_beacon,
-+		ret = ieee80211_assign_beacon(sdata, link,
-+					      link->u.ap.next_beacon,
- 					      NULL, NULL, changed);
--		ieee80211_free_next_beacon(&sdata->deflink);
-+		ieee80211_free_next_beacon(link);
+-	ieee80211_link_info_change_notify(sdata, &sdata->deflink, changed);
++	ieee80211_link_info_change_notify(sdata, link, changed);
  
- 		if (ret < 0)
- 			return ret;
-@@ -4695,18 +4697,19 @@ ieee80211_set_after_color_change_beacon(struct ieee80211_sub_if_data *sdata,
- }
- 
- static int
--ieee80211_set_color_change_beacon(struct ieee80211_sub_if_data *sdata,
-+ieee80211_set_color_change_beacon(struct ieee80211_link_data *link,
- 				  struct cfg80211_color_change_settings *params,
- 				  u64 *changed)
- {
-+	struct ieee80211_sub_if_data *sdata = link->sdata;
- 	struct ieee80211_color_change_settings color_change = {};
- 	int err;
- 
- 	switch (sdata->vif.type) {
- 	case NL80211_IFTYPE_AP:
--		sdata->deflink.u.ap.next_beacon =
-+		link->u.ap.next_beacon =
- 			cfg80211_beacon_dup(&params->beacon_next);
--		if (!sdata->deflink.u.ap.next_beacon)
-+		if (!link->u.ap.next_beacon)
- 			return -ENOMEM;
- 
- 		if (params->count <= 1)
-@@ -4718,11 +4721,11 @@ ieee80211_set_color_change_beacon(struct ieee80211_sub_if_data *sdata,
- 			params->counter_offset_presp;
- 		color_change.count = params->count;
- 
--		err = ieee80211_assign_beacon(sdata, &sdata->deflink,
-+		err = ieee80211_assign_beacon(sdata, link,
- 					      &params->beacon_color_change,
- 					      NULL, &color_change, changed);
- 		if (err < 0) {
--			ieee80211_free_next_beacon(&sdata->deflink);
-+			ieee80211_free_next_beacon(link);
- 			return err;
- 		}
- 		break;
-@@ -4770,7 +4773,7 @@ static int ieee80211_color_change_finalize(struct ieee80211_sub_if_data *sdata)
- 
- 	sdata->vif.bss_conf.color_change_active = false;
- 
--	err = ieee80211_set_after_color_change_beacon(sdata, &changed);
-+	err = ieee80211_set_after_color_change_beacon(&sdata->deflink, &changed);
- 	if (err) {
- 		cfg80211_color_change_aborted_notify(sdata->dev, 0);
+ 	if (!sdata->vif.bss_conf.nontransmitted && sdata->vif.mbssid_tx_vif) {
+ 		struct ieee80211_sub_if_data *child;
+@@ -4779,7 +4781,7 @@ static int ieee80211_color_change_finalize(struct ieee80211_sub_if_data *sdata)
  		return err;
-@@ -4870,7 +4873,7 @@ ieee80211_color_change(struct wiphy *wiphy, struct net_device *dev,
- 		goto out;
  	}
  
--	err = ieee80211_set_color_change_beacon(sdata, params, &changed);
-+	err = ieee80211_set_color_change_beacon(&sdata->deflink, params, &changed);
- 	if (err)
- 		goto out;
+-	ieee80211_color_change_bss_config_notify(sdata,
++	ieee80211_color_change_bss_config_notify(&sdata->deflink,
+ 						 sdata->vif.bss_conf.color_change_color,
+ 						 1, changed);
+ 	cfg80211_color_change_notify(sdata->dev, 0);
+@@ -4883,7 +4885,7 @@ ieee80211_color_change(struct wiphy *wiphy, struct net_device *dev,
+ 	cfg80211_color_change_started_notify(sdata->dev, params->count, 0);
  
+ 	if (changed)
+-		ieee80211_color_change_bss_config_notify(sdata, 0, 0, changed);
++		ieee80211_color_change_bss_config_notify(&sdata->deflink, 0, 0, changed);
+ 	else
+ 		/* if the beacon didn't change, we can finalize immediately */
+ 		ieee80211_color_change_finalize(sdata);
 -- 
 2.34.1
 
