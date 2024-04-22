@@ -1,114 +1,97 @@
-Return-Path: <linux-wireless+bounces-6640-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6641-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FBBC8AC54A
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Apr 2024 09:22:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC0E18AC59A
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Apr 2024 09:30:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 978A91C20AD6
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Apr 2024 07:22:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EA2C1C20D04
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Apr 2024 07:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B8E1495F0;
-	Mon, 22 Apr 2024 07:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBCF74D9EA;
+	Mon, 22 Apr 2024 07:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KMT2N4++"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="YVoZ+T9e"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB59C8F3
-	for <linux-wireless@vger.kernel.org>; Mon, 22 Apr 2024 07:16:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 008F7C8F3;
+	Mon, 22 Apr 2024 07:29:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713770186; cv=none; b=ZEr2kacmDfCpiB72Xuu17IT5p72HkQhvJfA6EK29l96Lz3dKDRzfNmT4yNojn1pEI/z8F4hbZwZdFkItI5iSE+10Rb0GhIr4N1Y6nmynsBBdiJlx1FVMRHkIfmon9/uBXhCIhN4U1RXwWMtq1K9xrhD5w5HWh8S627rLiKgQBLY=
+	t=1713770983; cv=none; b=cUDW+3s4xegODOBe/Y6ozVsOHWB0Kc/QNvUDccqWyjgXZI5b6C85gUWJWW0Pr5V27BnvQe/jVGKuyQd2qUqC0vBmjOVdxnSbD7nuc/HiMrvK+j75U6KKoOpGmpDGnPffczAlSgmN3xIDvhDrTEhL3j/Tl9s0pmQniAW9jl1qXFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713770186; c=relaxed/simple;
-	bh=J7dZFmAv+93dDhYolGELXJSEN4VNpt23HfVHjyK8Bpw=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=kcE2Da94Q96gtOhZGSIZ/fXimrcOq1/3/v7o0te5zCBCiDLI2NyvxbTFTkW7c0D7mSr2TgNvXA0RGAlOOMX28Y10ENm6VSUazEwrnMnZw+zqdRUKq2/rbwvxw1Chm9o41pF5WfuaP8QejX9P+tBzSD6CnLs1hNf56DPtDMRXHNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KMT2N4++; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76923C113CC;
-	Mon, 22 Apr 2024 07:16:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713770185;
-	bh=J7dZFmAv+93dDhYolGELXJSEN4VNpt23HfVHjyK8Bpw=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=KMT2N4++JFVKNhBitPPrb8AqxqRXWUTzWYA5vL4rZjV3MDh44/9207CQBiQ6PGtbx
-	 PzbU43dywqTwTDoIFZw22MoXM1jDb0P4nav1SxiM1DbJeIyJAu7cTM5Tvt0fCiKFYZ
-	 d/NB/9AXnUgFuj17RQ2Sh2+OuIy1Xzw+aOGvVwx8X7Sl1BxkoNnT/Ua4aSsvl6jvm7
-	 yV/iVZCpzYeKvVyQW7bEAi5iUiNd0VrQulRRdbYuy5JM1e+iJ4w+D2l15sXHubXzY9
-	 7fBATMWlZ4ENOsJ95/R0N5bg2pUgmXatrTs6XCC6bF/ovg0ZUgWB8QM3NJqEhP/GYQ
-	 dvz+cY7tGOnfA==
-From: Kalle Valo <kvalo@kernel.org>
-To: Lingbo Kong <quic_lingbok@quicinc.com>
-Cc: <ath12k@lists.infradead.org>,  Jeff Johnson <quic_jjohnson@quicinc.com>,
-  <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v8 0/4] wifi: ath12k: ACPI support
-References: <91cbda07-0b93-4e0b-adaa-cd9b078a91b8@quicinc.com>
-	<be016fbf-0198-4fe1-84f8-cfb0bf00dc4b@quicinc.com>
-Date: Mon, 22 Apr 2024 10:16:22 +0300
-In-Reply-To: <be016fbf-0198-4fe1-84f8-cfb0bf00dc4b@quicinc.com> (Lingbo Kong's
-	message of "Fri, 19 Apr 2024 17:39:32 +0800")
-Message-ID: <877cgpx3y1.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1713770983; c=relaxed/simple;
+	bh=UUlGK4PQumY+T7kadQ2PjXiq/o3GP7g8bhWr7C7icG0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OINTJEr+xka7j/5nb5lr6HzeW03s8luLkIJOYWZzF/7EOyYyK8RU1MvnTjK8c4MPHiIvZ9rpGZ/JEedSNwO5Rx2B1CvNoLnqe7OtXK/zInumHE9pGwzbL84XG60REVAXAPC0wl2YF4nF2sayTGo95XU0iawyJOQ3KHExxFSxLgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=YVoZ+T9e; arc=none smtp.client-ip=115.124.30.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1713770972; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=eTYBpn4kM6qD+5ULLW976eOqqUt2i6JW5gCkcrmMFlo=;
+	b=YVoZ+T9eR9JgIpFsC6Zl3HkzEDqEmx9AJseX9UiN+CWpoKl6HwWErMRKDsP7XBtDW5uweS4XHOpJ3QqxgaGm4MO8x5/6nm6N2zOM+9piNH32UUrbJoS3OdolVNHy1Q2g6Ru73sI5aNWqA1nUwbJMewzWHayu1D9jtOQIF3+7d6U=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R531e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046051;MF=jiapeng.chong@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0W5.r20R_1713770963;
+Received: from localhost(mailfrom:jiapeng.chong@linux.alibaba.com fp:SMTPD_---0W5.r20R_1713770963)
+          by smtp.aliyun-inc.com;
+          Mon, 22 Apr 2024 15:29:32 +0800
+From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+To: pkshih@realtek.com
+Cc: kvalo@kernel.org,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+	Abaci Robot <abaci@linux.alibaba.com>
+Subject: [PATCH v2] wifi: rtw89: Remove the redundant else branch in the function rtw89_phy_get_kpath
+Date: Mon, 22 Apr 2024 15:29:22 +0800
+Message-Id: <20240422072922.50940-1-jiapeng.chong@linux.alibaba.com>
+X-Mailer: git-send-email 2.20.1.7.g153144c
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Lingbo Kong <quic_lingbok@quicinc.com> writes:
+The assignment of the else and if branches is the same in the "case:
+MLO_2_PLUS_0_1RF" branch of the function rtw89_phy_get_kpath, so we
+remove it and add comments here to make the code easier to understand.
 
-> On 2024/4/19 14:30, Lingbo Kong wrote:
->>  > -------- Forwarded Message --------
->>  > Subject: Re: [PATCH v8 0/4] wifi: ath12k: ACPI support
->>  > Date: Fri, 19 Apr 2024 07:16:07 +0300
->>  > From: Kalle Valo <kvalo@kernel.org>
->>  > To: Jeff Johnson <quic_jjohnson@quicinc.com>
->>  > CC: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org
->>  >
->>  > Jeff Johnson <quic_jjohnson@quicinc.com> writes:
->>  >
->>  > > On 4/18/2024 9:20 AM, Kalle Valo wrote:
->>  > >
->>  > >> From: Kalle Valo <quic_kvalo@quicinc.com>
->>  > >>
->>  > >> Through reading ACPI tables, implement Time-Average-SAR(TAS), BIOS
->>  > >> SAR, configuration of CCA threshold and band edge channel power
->>  > functionalities.
->>  > >> This is enabled only on WCN7850.
->>  > >>
->>  > >> TODO:
->>  > >>
->>  > >> * test with ACPI support in hardware (I don't have such hardware),
->>  > especially
->>  > >>=C2=A0=C2=A0 suspend and hibernation
->>  >
->>  > [...]
->>  >
->>  > > I can verify this doesn't crash my system, but apparently my ACPI
->>  > > doesn't have the underlying settings, so cannot verify actual
->>  > > functionality
->>  >
->>  > Thanks for testing. I hope Lingbo has a device with proper ACPI
->> settings.
->>  >
->> yes, I'll apply these patch then test it.
->>=20
->
-> Hi, kalle, i've applied this patchset, set ACPI correctly, then ACPI's
-> functionality is right.
+./drivers/net/wireless/realtek/rtw89/phy.c:6406:2-4: WARNING: possible condition with no effect (if == else).
 
-Nice, thanks for testing.
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=8812
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+---
+Changes in v2:
+  -Add code comments, modify commit subject, and content description.
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
+ drivers/net/wireless/realtek/rtw89/phy.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index eaa18140d1a8..a82b4c56a6f4 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -6403,10 +6403,8 @@ enum rtw89_rf_path_bit rtw89_phy_get_kpath(struct rtw89_dev *rtwdev,
+ 			return RF_D;
+ 	case MLO_0_PLUS_2_1RF:
+ 	case MLO_2_PLUS_0_1RF:
+-		if (phy_idx == RTW89_PHY_0)
+-			return RF_AB;
+-		else
+-			return RF_AB;
++		/* for both PHY 0/1 */
++		return RF_AB;
+ 	case MLO_0_PLUS_2_2RF:
+ 	case MLO_2_PLUS_0_2RF:
+ 	case MLO_2_PLUS_2_2RF:
+-- 
+2.20.1.7.g153144c
+
 
