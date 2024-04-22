@@ -1,226 +1,102 @@
-Return-Path: <linux-wireless+bounces-6660-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6661-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70C238ACD0F
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Apr 2024 14:44:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 252CF8ACD37
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Apr 2024 14:47:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F88D1C214FB
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Apr 2024 12:44:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDD08285388
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Apr 2024 12:47:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7721D153571;
-	Mon, 22 Apr 2024 12:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F90B54FB8;
+	Mon, 22 Apr 2024 12:46:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="R7zdDku6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF2314E2FD;
-	Mon, 22 Apr 2024 12:40:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F69414A4C7
+	for <linux-wireless@vger.kernel.org>; Mon, 22 Apr 2024 12:46:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713789613; cv=none; b=Fexl4rWVbqYCC7HKVH+u66z7C2UAG8jbrgE9+FvZ/kvjtsZSPVQL8fvacmfM6XczpKhO9tLGKCtlNDJYTMhtJd9xxL2sJbjO2UNlX7kCozoz7WQX6PeRCbWW7JzqT5y8N/9tox8drKGACa/F0q1eCgK0V06EF0MzSrVNY0vwSSo=
+	t=1713790019; cv=none; b=hamQ1ICBhOHT2CG50mSITRQfTJ0mQsUJZBsMm3alZz+eBuiTx9LngWjVL+Zy4IJYS7uTJiFC2CQqt14RO/WVuEZ+XGa6NVxiTRUnM2G5/4cAMQQ67mZ6zKsoG3WdlxryUKEMHEQtZEZyQ29K7OXwZU8FboJPwcVhCX5iELtd6wQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713789613; c=relaxed/simple;
-	bh=C2/enydAC2YCsBNnm5NUTUC6WvB4CkjpCpQsFsdVyag=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lzPDE4ytmM/oy66RC3vpdagTRQGiE/icfqUwwKV7RFkWH5YqyfH2OGbDm0JUfqUQzfhKRXp54mr7ymIkVZywtpSHylo2gG9DrQ6xwmKjh7xzZtvPQxGPAr4EeQJR+odylTiPv57AsXca9pSVby6De+jnmYLQF2KuHDYHMfcwFzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5720d52eb10so809705a12.0;
-        Mon, 22 Apr 2024 05:40:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713789610; x=1714394410;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xrYnp1tDsZ0sxZFnn5u9gBZrt+Gb2bRXco5M67sATos=;
-        b=sJwTRuwAnhIuk2NaLokJx42mvtDH6cZC9YvLlaE3/k0tkW6vCPOuOfY/WqVmBkknSB
-         c9OBmqG8VfHA8/78MdocR1zSmX0kByQiXjTqWh34SD6uEi0sg/jo15D2F5vVycpDBppz
-         AeTsASpd0KZ3Gtks2dsESn9Xv6FnDUxtJ1UWhejguWz6YqFsElecVumCxHaukLHPWlnY
-         hPTCIba+hndY/ZH3lw+sh2U8GfQwqSxV4VphlttYdixBwhKUWlaUGJvj60w5Ldb45eCM
-         Uyx4rKCSKd/ryoYMcPWvNUCtcjHDwVJh+c9d1GPOYSXHdEUEGWqJgHnpP8CcgAd49nTQ
-         KcsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX+2LlRiDpA/hN/BOQAfWB0lX7oWMHEMXFa0AH7K5JEuhp9qXzgQ5n2H1h27qklElRxHWw5fOZLk+fiUGclnAp4AhN2/sUDRzxwtMz47Xy7urPDoCvsS8qhxsu0T/MBZuDmjoXx5XbLV4AsqYRtI/xJiLUSGL4rCLWla4IDZhKXi+gw+ZurmS8UTKeRtSDWc0bS7keqTUyVAUY=
-X-Gm-Message-State: AOJu0YwQYIm8qKQNktNhgrBgBW9ufEGZOw6h0qARPeGi/ueQjefwW0FO
-	9qL3Ju/2XBNClLsfwhpTm1FwYAOCiZkzP3n7NFJqYMRHk/MkSCjD
-X-Google-Smtp-Source: AGHT+IGrZgag9UeQefghQLPV+ku8otAJz6U28ozWysOWpOYWi3aSs0tMI8tAitrA/dkQ2iNnyOPaxQ==
-X-Received: by 2002:a50:8e5b:0:b0:56b:cfef:b2de with SMTP id 27-20020a508e5b000000b0056bcfefb2demr6802703edx.26.1713789609790;
-        Mon, 22 Apr 2024 05:40:09 -0700 (PDT)
-Received: from localhost (fwdproxy-lla-007.fbsv.net. [2a03:2880:30ff:7::face:b00c])
-        by smtp.gmail.com with ESMTPSA id q10-20020a056402248a00b0056fe7c5475bsm5505410eda.10.2024.04.22.05.40.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Apr 2024 05:40:09 -0700 (PDT)
-From: Breno Leitao <leitao@debian.org>
-To: aleksander.lobakin@intel.com,
-	kuba@kernel.org,
-	davem@davemloft.net,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	elder@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	nbd@nbd.name,
-	sean.wang@mediatek.com,
-	Mark-MC.Lee@mediatek.com,
-	lorenzo@kernel.org,
-	taras.chornyi@plvision.eu,
-	ath11k@lists.infradead.org,
-	ath10k@lists.infradead.org,
-	linux-wireless@vger.kernel.org,
-	geomatsi@gmail.com,
-	kvalo@kernel.org,
-	Jeff Johnson <jjohnson@kernel.org>
-Cc: quic_jjohnson@quicinc.com,
-	leon@kernel.org,
-	dennis.dalessandro@cornelisnetworks.com,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	idosch@idosch.org,
-	leitao@debian.org,
-	angelogioacchino.delregno@collabora.com,
-	matthias.bgg@gmail.com
-Subject: [PATCH net-next v7 10/10] wifi: ath11k: allocate dummy net_device dynamically
-Date: Mon, 22 Apr 2024 05:39:03 -0700
-Message-ID: <20240422123921.854943-11-leitao@debian.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240422123921.854943-1-leitao@debian.org>
-References: <20240422123921.854943-1-leitao@debian.org>
+	s=arc-20240116; t=1713790019; c=relaxed/simple;
+	bh=0/qAVmZW1zs2Q1B856gFYfcLnIFFYhaTAdS6PK43XyQ=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=DbGTbEtpPdmYW6Uuit7GE4a1Qi8UTKPQBbvrza/ai7sByqI82EeRtD2AicZcg99pgzHmE0i26tDsyucnLOuLWGV5yMothZekZZaa8yTLUslyH8iu/78Fw0CyPq/SRZA5ILOi3aSJy/XEC2cMeQO7QrnrBwzXTdXH7AXcq69w6DY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=R7zdDku6; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43M9OnUh026499;
+	Mon, 22 Apr 2024 12:46:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:from:to:cc:references
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=ALDfA2ZDxAlRxWBlXQMCIynW5wm9GKrgPTnQ6O7BQRg=; b=R7
+	zdDku654Q8h0oQMYma4sCyzbg6UKn6MkZ8lCbTHptk98+sHxFsSV30cClKwxGFZK
+	KTlDlJIK+HDelDqX983StrDwWTkbFhDjV9d74kxhblwt2+joSARYUtOxSrsRYqeC
+	S3FjBPK6AGEO37C4R1q1GmZ98cvjYIDv9ijE1DGs5DxVAqrwGTI+5kgLfTZEaaDt
+	14/gHrf+ptfh24sR4xLbjjtA2r3ZkODo5+AtuVNGUMuLwpJV5Ox9933IhdgxgPpG
+	RdT0PKXIdExcTvXHx8F3caiP1iANLtJ+32zKUo6Sm2jF1VokLe4a1eJmSsQ8tpqc
+	MSeoRA7nN2ydXK2HbtcA==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xnn82ggs8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Apr 2024 12:46:53 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43MCkrNT011947
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Apr 2024 12:46:53 GMT
+Received: from [10.216.22.65] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 22 Apr
+ 2024 05:46:51 -0700
+Message-ID: <3f62b373-cbdc-4dc3-ac74-7868692d755d@quicinc.com>
+Date: Mon, 22 Apr 2024 18:16:47 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7/7] wifi: mac80211_hwsim: add support for BSS color
+From: Aditya Kumar Singh <quic_adisi@quicinc.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240416045943.576656-1-quic_adisi@quicinc.com>
+ <20240416045943.576656-8-quic_adisi@quicinc.com>
+ <01fc6041e04b05ac6909a9818c9a890628542373.camel@sipsolutions.net>
+ <99cbc879-3cbd-4c35-b5dd-991f8871607e@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <99cbc879-3cbd-4c35-b5dd-991f8871607e@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: yhgcKI8uw_HTHhhv_4wIsM0dvCkaMXud
+X-Proofpoint-ORIG-GUID: yhgcKI8uw_HTHhhv_4wIsM0dvCkaMXud
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-22_09,2024-04-22_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ mlxlogscore=867 priorityscore=1501 clxscore=1015 suspectscore=0
+ lowpriorityscore=0 bulkscore=0 adultscore=0 spamscore=0 phishscore=0
+ mlxscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404220057
 
-Embedding net_device into structures prohibits the usage of flexible
-arrays in the net_device structure. For more details, see the discussion
-at [1].
+On 4/22/24 14:18, Aditya Kumar Singh wrote:
+> I have added hw_sim test cases to test and validate it (non-MLO or HE 
+> scenario as well as MLO).
 
-Un-embed the net_device from struct ath11k_ext_irq_grp by converting it
-into a pointer. Then use the leverage alloc_netdev() to allocate the
-net_device object at ath11k_ahb_config_ext_irq() for ahb, and
-ath11k_pcic_ext_irq_config() for pcic.
-
-The free of the device occurs at ath11k_ahb_free_ext_irq() for the ahb
-case, and ath11k_pcic_free_ext_irq() for the pcic case.
-
-[1] https://lore.kernel.org/all/20240229225910.79e224cf@kernel.org/
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Tested-by: Kalle Valo <kvalo@kernel.org>
----
- drivers/net/wireless/ath/ath11k/ahb.c  |  9 +++++++--
- drivers/net/wireless/ath/ath11k/core.h |  2 +-
- drivers/net/wireless/ath/ath11k/pcic.c | 21 +++++++++++++++++----
- 3 files changed, 25 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
-index 7c0a23517949..7f3f6479d553 100644
---- a/drivers/net/wireless/ath/ath11k/ahb.c
-+++ b/drivers/net/wireless/ath/ath11k/ahb.c
-@@ -442,6 +442,7 @@ static void ath11k_ahb_free_ext_irq(struct ath11k_base *ab)
- 			free_irq(ab->irq_num[irq_grp->irqs[j]], irq_grp);
+Here is the hostapd change -
  
- 		netif_napi_del(&irq_grp->napi);
-+		free_netdev(irq_grp->napi_ndev);
- 	}
- }
- 
-@@ -533,8 +534,12 @@ static int ath11k_ahb_config_ext_irq(struct ath11k_base *ab)
- 
- 		irq_grp->ab = ab;
- 		irq_grp->grp_id = i;
--		init_dummy_netdev(&irq_grp->napi_ndev);
--		netif_napi_add(&irq_grp->napi_ndev, &irq_grp->napi,
-+
-+		irq_grp->napi_ndev = alloc_netdev_dummy(0);
-+		if (!irq_grp->napi_ndev)
-+			return -ENOMEM;
-+
-+		netif_napi_add(irq_grp->napi_ndev, &irq_grp->napi,
- 			       ath11k_ahb_ext_grp_napi_poll);
- 
- 		for (j = 0; j < ATH11K_EXT_IRQ_NUM_MAX; j++) {
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index b3fb74a226fb..590307ca7a11 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -174,7 +174,7 @@ struct ath11k_ext_irq_grp {
- 	u64 timestamp;
- 	bool napi_enabled;
- 	struct napi_struct napi;
--	struct net_device napi_ndev;
-+	struct net_device *napi_ndev;
- };
- 
- enum ath11k_smbios_cc_type {
-diff --git a/drivers/net/wireless/ath/ath11k/pcic.c b/drivers/net/wireless/ath/ath11k/pcic.c
-index add4db4c50bc..79eb3f9c902f 100644
---- a/drivers/net/wireless/ath/ath11k/pcic.c
-+++ b/drivers/net/wireless/ath/ath11k/pcic.c
-@@ -316,6 +316,7 @@ static void ath11k_pcic_free_ext_irq(struct ath11k_base *ab)
- 			free_irq(ab->irq_num[irq_grp->irqs[j]], irq_grp);
- 
- 		netif_napi_del(&irq_grp->napi);
-+		free_netdev(irq_grp->napi_ndev);
- 	}
- }
- 
-@@ -558,7 +559,7 @@ ath11k_pcic_get_msi_irq(struct ath11k_base *ab, unsigned int vector)
- 
- static int ath11k_pcic_ext_irq_config(struct ath11k_base *ab)
- {
--	int i, j, ret, num_vectors = 0;
-+	int i, j, n, ret, num_vectors = 0;
- 	u32 user_base_data = 0, base_vector = 0;
- 	unsigned long irq_flags;
- 
-@@ -578,8 +579,11 @@ static int ath11k_pcic_ext_irq_config(struct ath11k_base *ab)
- 
- 		irq_grp->ab = ab;
- 		irq_grp->grp_id = i;
--		init_dummy_netdev(&irq_grp->napi_ndev);
--		netif_napi_add(&irq_grp->napi_ndev, &irq_grp->napi,
-+		irq_grp->napi_ndev = alloc_netdev_dummy(0);
-+		if (!irq_grp->napi_ndev)
-+			return -ENOMEM;
-+
-+		netif_napi_add(irq_grp->napi_ndev, &irq_grp->napi,
- 			       ath11k_pcic_ext_grp_napi_poll);
- 
- 		if (ab->hw_params.ring_mask->tx[i] ||
-@@ -601,8 +605,13 @@ static int ath11k_pcic_ext_irq_config(struct ath11k_base *ab)
- 			int vector = (i % num_vectors) + base_vector;
- 			int irq = ath11k_pcic_get_msi_irq(ab, vector);
- 
--			if (irq < 0)
-+			if (irq < 0) {
-+				for (n = 0; n <= i; n++) {
-+					irq_grp = &ab->ext_irq_grp[n];
-+					free_netdev(irq_grp->napi_ndev);
-+				}
- 				return irq;
-+			}
- 
- 			ab->irq_num[irq_idx] = irq;
- 
-@@ -615,6 +624,10 @@ static int ath11k_pcic_ext_irq_config(struct ath11k_base *ab)
- 			if (ret) {
- 				ath11k_err(ab, "failed request irq %d: %d\n",
- 					   vector, ret);
-+				for (n = 0; n <= i; n++) {
-+					irq_grp = &ab->ext_irq_grp[n];
-+					free_netdev(irq_grp->napi_ndev);
-+				}
- 				return ret;
- 			}
- 		}
--- 
-2.43.0
-
+https://patchwork.ozlabs.org/project/hostap/list/?series=403938&archive=both&state=*
 
