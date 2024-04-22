@@ -1,63 +1,74 @@
-Return-Path: <linux-wireless+bounces-6677-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6678-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE1788AD2D7
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Apr 2024 18:58:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F4008AD32C
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Apr 2024 19:13:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BC741C2129A
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Apr 2024 16:58:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BA902811D4
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Apr 2024 17:13:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E34F6153824;
-	Mon, 22 Apr 2024 16:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1077015218D;
+	Mon, 22 Apr 2024 17:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QKhUZ9Gn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hGbrb+Du"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88BB115382C
-	for <linux-wireless@vger.kernel.org>; Mon, 22 Apr 2024 16:57:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FAC22EB11
+	for <linux-wireless@vger.kernel.org>; Mon, 22 Apr 2024 17:13:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713805080; cv=none; b=PqjtaFHjUq+hoFX4qbj/I93IWEwjZg/28tjnVkIQgHYpvicpmYNBUsZ9tzSISbvqB8lK2Ob8H2SA/MsxzSAy/wEQ+FVmGygzhmSQcx4zaFM+I09c8qtwn452RSLicXKlN3TJ/lgZr6jcYgnwSskhIISO6BlexclBoPS5eThApXo=
+	t=1713806034; cv=none; b=OdILsTM4Gc1HiF5C2/QBHjBNSdr6kjuhIjTrAK8V1kx+1JwsrI+XQofZl4IBx8XimvTlB9kYCHh/GW7vlh3Kx2Qr8kbctw0IQeaVBbMiaQyi49F6QZ8izwXdzOJMgX6qtMGTZbw48r/g7PawzdjK55wIEM+v7ECl3nKAU/U7dzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713805080; c=relaxed/simple;
-	bh=aeUXVU5MRcmpq6U7tBIWCdV7ObEQ8k1muvYq1v6Yhwc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=RFmz/Yct9F7z3fU3Q0UHy8y8MQU10g7j/lB40ZuGwd5EGmIqbFalr0lg/UL8xDh1iujCWROavRWWtYbsn3qSho3nSbM87hLl5BnGCU+wnukPnsA8zXTaPiKE+j6HDckhxQU3RfdhHVkfLUNGoPy82HuInTYKoNVmkrczhiGOGLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=QKhUZ9Gn; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43MGRkcF001569;
-	Mon, 22 Apr 2024 16:57:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=1TPiGsUqwlDfQHmD+CiUPo3WK8MQ0v+EyrDGMk0Rk/s=; b=QK
-	hUZ9GnIu7dWX6u6pyE5LZ8O0tYguN+athW6G8xQPUrgSrd/vH69tXbJyg80FJxgo
-	/e5hjGV8y62EvZQstoGRIRABwqjicu4PMe6tezJlenICBJci3x4SAcEtNCRhKMuh
-	TVoOVJFukpWZXv8/bsBczufRTip09j1J8jP614VG+7jvpsEzA7/bXfmpr4abMJF+
-	kaDB+3iZXHW93WU+hRJtYhESpoqFrrO69/WOrHiEfFjZQO3Q/bzjFDS21hxGVAbY
-	tW4dbVLdcUgcj6Bngs6l7fd1Rqy2nGbGHO3uuSiaB4p/479hM6oLiITuNyRe4gvu
-	3dnsDuxP9+GlrGflY2/Q==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xnn82s4hq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 22 Apr 2024 16:57:54 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43MGvrZK029301
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 22 Apr 2024 16:57:53 GMT
-Received: from [10.50.37.13] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 22 Apr
- 2024 09:57:50 -0700
-Message-ID: <f4c65f7e-ccc7-4a0b-a6e8-df56d5c19d7f@quicinc.com>
-Date: Mon, 22 Apr 2024 22:27:45 +0530
+	s=arc-20240116; t=1713806034; c=relaxed/simple;
+	bh=Xzuprcfd8BuqGOD1b/jfi8Bn72sNv4VrnIwsOi4IY68=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qznPmZ06PatQZlZZ4gDpIUBo+l0UUkB1UDNYYG5rLPXX3Zu0Q2NZ7SN3OgQqH3OLMw62nT/axghw0pA2+MHc7ee6qeMJzszrELwxeQutLrva9/Qcejn2WBVJc2m6ln31t+tCP0JeEBluMIz7j4WrJ4ecbeR72mIO+6Po0iyjGig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hGbrb+Du; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-343b7c015a8so3995108f8f.1
+        for <linux-wireless@vger.kernel.org>; Mon, 22 Apr 2024 10:13:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713806031; x=1714410831; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QYnna7lmknvrZBxY80gpqRvL2K75DJ9W5gF4KmJKFw4=;
+        b=hGbrb+DuNnPxmhzYXye/o4x2pwss5BS5FWMgAZyG+kq7uQ2+QEBKK9IgSJnfLYMmep
+         8FuAlQQnGAnmRHfoe/yR1qDwJH9n+lRalblmuWVeTKY4W+o6dUA8TdTaqRqugsArZd47
+         Isea6xAGxvGAQNpdn/u+O3uN225G/uO0yhBItySq/iRchZgUh/RugLDHA/XY53tK26SC
+         FpC6wi5waRJeVc1ggIWynUa6ahSBv8i7IfF81rJCPIDkTH/3pvwNNKQFDHzfwKY2RJzT
+         6a6AU325PSswgbqb5zxklU4KPUxz8C6k3HaKW2cnPxlT+7g2Tl10YvLSY5pm539S4qQi
+         brBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713806031; x=1714410831;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QYnna7lmknvrZBxY80gpqRvL2K75DJ9W5gF4KmJKFw4=;
+        b=jL9p7N4h1ZUboBsOWMlrpyTHZZc3/djrEgT3zEYnBekPPqWdCZ8/mnyAwIGd3dMi+K
+         5Mlmpo0cUP7hViUR9VXxSTGfc1atBcYe6pD+okQH/pg3BFQJMesKxV0dLQmtNTsdQs1d
+         kJ/fp7yJpEyfU/yhX1M9vngvdKVi779yY+Kon8lKXgn/owgfNQ3URcKayhuH2zPy9dLw
+         S9fnU4TQJ09iF/kiwEDPognI9rUzTy+CQJ11pApiAD4y40V5LNoewj/5aBNZZ+0FnFIv
+         dageflI/2kSDa7bPkwAW3wNNa+NsAjaV09rvUpbaChyjPMx3fKEQmkCHo5+hpeWvcTR/
+         PGiA==
+X-Forwarded-Encrypted: i=1; AJvYcCWAPF7aUIEsbJ8aAN9qS5v3rh8R5bOfqSinBKIPeslvQeryONbtFck0hWKG49AbRPLsEMzVee1v1GQmYswmj93W7YvMxT59mkLcwyun3Rs=
+X-Gm-Message-State: AOJu0Ywh6j2ueChKkp09ROX9bNwwU8V64UR36GecGBUclMvw7YVOEXsW
+	9c9Okowd8xLzQ5U9uJgoLEDchQTp606hUhO5GHpu00H9vEhtOVWF
+X-Google-Smtp-Source: AGHT+IFfzDPKi9ModWeG9SvD74HyeSAwy2xHjShidoNuYpX/MEC0BpoxX6TI6ATeJUaITHetbsFkRA==
+X-Received: by 2002:adf:b199:0:b0:346:65dd:55f1 with SMTP id q25-20020adfb199000000b0034665dd55f1mr6452653wra.31.1713806030572;
+        Mon, 22 Apr 2024 10:13:50 -0700 (PDT)
+Received: from [192.168.1.50] ([79.113.154.240])
+        by smtp.gmail.com with ESMTPSA id t18-20020a05600c199200b00417ee784fcasm17314416wmq.45.2024.04.22.10.13.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 Apr 2024 10:13:50 -0700 (PDT)
+Message-ID: <67e46592-c521-411c-b23c-4fb2da30e3f5@gmail.com>
+Date: Mon, 22 Apr 2024 20:13:49 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,92 +76,65 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath12k: drop failed transmitted frames from metric
- calculation.
-To: Nicolas Escande <nico.escande@gmail.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240419170314.3117623-1-quic_kathirve@quicinc.com>
- <D0QHV8UV73N5.2N5E3MH37JQW7@gmail.com>
+Subject: Re: [PATCH v6 6/6] wifi: rtlwifi: Adjust rtl8192d-common for USB
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Larry Finger <Larry.Finger@lwfinger.net>,
+ Stefan Lippers-Hollmann <s.l-h@gmx.de>,
+ Christian Hewitt <chewitt@libreelec.tv>
+References: <9d54a192-d389-4a56-9286-2e7721cbbc27@gmail.com>
+ <45848eb2-9c52-4aac-b7b0-b584955e41d7@gmail.com>
+ <f080fd27b21147869e8b923891d5dcff@realtek.com>
 Content-Language: en-US
-From: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
-In-Reply-To: <D0QHV8UV73N5.2N5E3MH37JQW7@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <f080fd27b21147869e8b923891d5dcff@realtek.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: Lm9Oh1CLxx70fl5EU5rVNJDgfl-JA8wa
-X-Proofpoint-ORIG-GUID: Lm9Oh1CLxx70fl5EU5rVNJDgfl-JA8wa
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-22_09,2024-04-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
- suspectscore=0 adultscore=0 clxscore=1011 bulkscore=0 malwarescore=0
- spamscore=0 impostorscore=0 priorityscore=1501 mlxlogscore=999
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2404220071
 
-
-
-On 4/22/2024 1:35 PM, Nicolas Escande wrote:
-> On Fri Apr 19, 2024 at 7:03 PM CEST, Karthikeyan Kathirvel wrote:
-> [...]
->> diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
->> index 9b6d7d72f57c..164431b7eb4e 100644
->> --- a/drivers/net/wireless/ath/ath12k/dp_tx.c
->> +++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
->> @@ -481,18 +481,36 @@ static void ath12k_dp_tx_complete_msdu(struct ath12k *ar,
->>   	/* skip tx rate update from ieee80211_status*/
->>   	info->status.rates[0].idx = -1;
->>   
->> -	if (ts->status == HAL_WBM_TQM_REL_REASON_FRAME_ACKED &&
->> -	    !(info->flags & IEEE80211_TX_CTL_NO_ACK)) {
->> -		info->flags |= IEEE80211_TX_STAT_ACK;
->> -		info->status.ack_signal = ATH12K_DEFAULT_NOISE_FLOOR +
->> -					  ts->ack_rssi;
->> -		info->status.flags = IEEE80211_TX_STATUS_ACK_SIGNAL_VALID;
->> +	switch (ts->status) {
->> +	case HAL_WBM_TQM_REL_REASON_FRAME_ACKED:
->> +		if (!(info->flags & IEEE80211_TX_CTL_NO_ACK)) {
->> +			info->flags |= IEEE80211_TX_STAT_ACK;
->> +			info->status.ack_signal = ATH12K_DEFAULT_NOISE_FLOOR +
->> +						  ts->ack_rssi;
->> +			info->status.flags = IEEE80211_TX_STATUS_ACK_SIGNAL_VALID;
->> +		}
->> +		break;
->> +	case HAL_WBM_TQM_REL_REASON_CMD_REMOVE_TX:
->> +		if (info->flags & IEEE80211_TX_CTL_NO_ACK) {
->> +			info->flags |= IEEE80211_TX_STAT_NOACK_TRANSMITTED;
->> +			break;
->> +		}
->> +		fallthrough;
->> +	case HAL_WBM_TQM_REL_REASON_CMD_REMOVE_MPDU:
->> +	case HAL_WBM_TQM_REL_REASON_DROP_THRESHOLD:
->> +	case HAL_WBM_TQM_REL_REASON_CMD_REMOVE_AGED_FRAMES:
->> +		/* The failure status is due to internal firmware tx failure
->> +		 * hence drop the frame do not update the status of frame to
->> +		 * the upper layer
->> +		 */
->> +		dev_kfree_skb_any(msdu);
-> Shouldn't this be ieee80211_free_txskb ? I'm not clear when to use which.
-Yes, there is an internal patch is in pipeline, that will take care of 
-addressing all dev_kfree_skb_any() to ieee80211_free_txskb() in 
-ath12k_dp_tx_complete_msdu(), this patch doesn't take care of that.
->> +		goto exit;
->> +	default:
->> +		ath12k_dbg(ab, ATH12K_DBG_DP_TX, "tx frame is not acked status %d\n",
->> +			   ts->status);
->> +		break;
->>   	}
->>   
->> -	if (ts->status == HAL_WBM_TQM_REL_REASON_CMD_REMOVE_TX &&
->> -	    (info->flags & IEEE80211_TX_CTL_NO_ACK))
->> -		info->flags |= IEEE80211_TX_STAT_NOACK_TRANSMITTED;
->> -
->>   	/* NOTE: Tx rate status reporting. Tx completion status does not have
->>   	 * necessary information (for example nss) to build the tx rate.
->>   	 * Might end up reporting it out-of-band from HTT stats.
+On 22/04/2024 06:39, Ping-Ke Shih wrote:
+> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>> A few of the shared functions need small changes for the USB driver:
+>>  - firmware loading
+>>  - efuse reading
+>>  - rate mask updating
+>>  - rf register reading
+>>  - initial gain for scanning
+>>
+>> Also, add a few macros to wifi.h and initialise rtlhal.interfaceindex
+>> for USB devices.
+>>
+>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 > 
-> Thanks
+> [...]
+> 
+>> @@ -965,12 +983,20 @@ static void rtl92de_update_hal_rate_mask(struct ieee80211_hw *hw,
+>>                 break;
+>>         }
+>>
+>> -       value[0] = (ratr_bitmap & 0x0fffffff) | (ratr_index << 28);
+>> -       value[1] = macid | (shortgi ? 0x20 : 0x00) | 0x80;
+>> +       le32p_replace_bits(&rate_mask.rate_mask_and_raid, ratr_bitmap, RATE_MASK_MASK);
+>> +       le32p_replace_bits(&rate_mask.rate_mask_and_raid, ratr_index, RAID_MASK);
+>> +       u8p_replace_bits(&rate_mask.macid_and_short_gi, macid, MACID_MASK);
+>> +       u8p_replace_bits(&rate_mask.macid_and_short_gi, shortgi, SHORT_GI_MASK);
+>> +       u8p_replace_bits(&rate_mask.macid_and_short_gi, 1, BIT(7));
+>> +
+>>         rtl_dbg(rtlpriv, COMP_RATR, DBG_DMESG,
+>> -               "ratr_bitmap :%x value0:%x value1:%x\n",
+>> -               ratr_bitmap, value[0], value[1]);
+>> -       rtl92d_fill_h2c_cmd(hw, H2C_RA_MASK, 5, (u8 *)value);
+>> +               "Rate_index:%x, ratr_val:%x, %5phC\n",
+>> +               ratr_index, ratr_bitmap, &rate_mask);
+>> +       memcpy(rtlpriv->rate_mask, &rate_mask, sizeof(rtlpriv->rate_mask));
+>> +       /* rtl92d_fill_h2c_cmd() does USB I/O and will result in a
+>> +        * "scheduled while atomic" if called directly
+>> +        */
+>> +       schedule_work(&rtlpriv->works.fill_h2c_cmd);
+> 
+> This function will be used by both PCI and USB, right? But, 
+> only USB initialize/cancel rtlpriv->works.fill_h2c_cmd. 
+> 
+
+You're right, I didn't notice that. I will fix it the easy way:
+call rtl92d_fill_h2c_cmd() for PCI and schedule_work() for USB.
 
