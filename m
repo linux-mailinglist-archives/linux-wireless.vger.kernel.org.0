@@ -1,215 +1,163 @@
-Return-Path: <linux-wireless+bounces-6605-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6606-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6183F8AC04E
-	for <lists+linux-wireless@lfdr.de>; Sun, 21 Apr 2024 19:37:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B1858AC278
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Apr 2024 02:56:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19885280D93
-	for <lists+linux-wireless@lfdr.de>; Sun, 21 Apr 2024 17:37:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF58AB20A16
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Apr 2024 00:56:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5345325742;
-	Sun, 21 Apr 2024 17:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 816F810F4;
+	Mon, 22 Apr 2024 00:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="b4tin19Y"
+	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="ceCPMWlZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7829D18637
-	for <linux-wireless@vger.kernel.org>; Sun, 21 Apr 2024 17:37:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D75481E;
+	Mon, 22 Apr 2024 00:56:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713721048; cv=none; b=epMzlxUZhYR+eiSbylzD4J9MeFVLjTdRjJh2sSsBO9V4w8IRebARyT+1Ji6Kbpo+SKWYovoB/yfQyuz3Hw/4q1GTaWiKdnvP8A6XvPabIt2eFNFw1WOHKHZg4wn6weqlAJkxrxBEDgv2E5fQ+s8wihbWMISV6MOXeINnEUoOmDo=
+	t=1713747391; cv=none; b=qehBZ8V0kEKSXG+JsrLPOGHmCVVo/sIBRqPKSYFHO9URDz6iBE/wdAeupMocjVqcslQt+NhZKsvD8ZfLVrWNRuvC45PJKQTnLoy/P8oK16S85BJBpFEujzrG2Z+e/6ZCslQzkNNZEtBfeO3w6fSnfEUVi6mpDDkEAm+MmRZ2Abk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713721048; c=relaxed/simple;
-	bh=61BtVlKExzJfMd8Tehd1JAfEWlammHtAUQaMijv4JjA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pot3+BqSijno1cAViTtMIbNRkmkpzrgQr+OCjMTow1r1yQ8XePcd4RpNbQVvFKtfP3otTliqYV4sPCqDXc21JMCwEek3hAFclHcAiLBBqZOMJ+LU1iMLyLeXctYc4Aa5/lpQlwaG2+r6rxvyhspEY3X7tFsXIbrJtx/AjDUHaDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=b4tin19Y; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43LHNGEt030738;
-	Sun, 21 Apr 2024 17:37:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding:content-type; s=qcppdkim1; bh=bMACCxL
-	/JAYqSr+fsJsG3zIjPA1Z377tUDjZ7FK6H/g=; b=b4tin19YF9Uq8vS3myvMh7t
-	+OPsdz2Iuakmy4NeHBhOOlNYbFR3oy99FCex7IeDPVUNBHou6czCFNVnwrtxEgRC
-	ngDgY1qAM2bBGt0kbwxT2Lrr3aCxZLl+IedxK0g1WM1Wp5APHfeJO8T7VgP4d6Kd
-	sYAzXx9t32CEwEGI1lUUATchpg3vDJbWEEPvhkV3jf2Fb1fH2z9kKoXiK5IaFHL+
-	BWaJcTRcnAXPHcHEtROw8W6oJL+gTD8qiUAkmnUuw7FfUE3iVlKfDpDwa0Nlxgm3
-	+7CeB2RTJlJWSZN10jwFIbdeA8tOwG65Nw3qop1WsMmix/4W2dicvniwjK06MEA=
-	=
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xm63a2efc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 21 Apr 2024 17:37:16 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43LHbEXe031533
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 21 Apr 2024 17:37:14 GMT
-Received: from hu-kathirve-hyd.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Sun, 21 Apr 2024 10:37:13 -0700
-From: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Karthikeyan Kathirvel
-	<quic_kathirve@quicinc.com>
-Subject: [PATCH v2] wifi: ath12k: drop failed transmitted frames from metric calculation.
-Date: Sun, 21 Apr 2024 23:06:59 +0530
-Message-ID: <20240421173659.53674-1-quic_kathirve@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1713747391; c=relaxed/simple;
+	bh=371jyJprDRfHOmCH/Fxpr8y4E1O0YN2AgmEBCXGdqEQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=iaL9FKynvJYw0Eq5CFMdQfJIx8QyrSivTjeMuo/+U07kKIuXDQb4UKFrJp37m5DLyDZ+ZXFGYVaeO8pvCvOIVm92WRRC52gpLHOztPfRybkhtqGgNekUSMIP+wYmr4X22CpstcEdzB78++J3E0//L7Indb/eYNwJn/U+LhAcxhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=ceCPMWlZ; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1713747385;
+	bh=o2iiRfsgDlxie7Sw96O890/W7qDYXB9sJMVK0j1DSqY=;
+	h=Date:From:To:Cc:Subject:From;
+	b=ceCPMWlZI1hKoou3tOvDZFlglDWoeB2cC2dgP9246mKnjDagMNCCjyMKQi5izduYl
+	 nyQ3VxLupN1H4LqyS5Cq0a0OunCZKzW0g0veL+COrgECXh5/BkvQyYJQHtW/RJ74vX
+	 Q11LLYY4T9/t+H+d3zU9nBnoNRayPIC1vtcF4FH/dHmcfVByXSkS4pDz+dHV7FxMcZ
+	 K94WcPJwCMxOYt7MTP2vpoacgN5ai9ahqRw06SilNrnWvV3qUmJ+N6rPxsaUfRgYVs
+	 qp6JoHL9vOk7jv3CKogKYWDrppFvfBS3A9H/Gs03D70fQCNROakJn8/iNi4Mfy9jgi
+	 C6yENISOEWJVQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VN6JS24rfz4wcb;
+	Mon, 22 Apr 2024 10:56:24 +1000 (AEST)
+Date: Mon, 22 Apr 2024 10:56:23 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Kalle Valo <kvalo@kernel.org>, Johannes Berg <johannes@sipsolutions.net>
+Cc: Wireless <linux-wireless@vger.kernel.org>, Johannes Berg
+ <johannes.berg@intel.com>, Linux Kernel Mailing List
+ <linux-kernel@vger.kernel.org>, Linux Next Mailing List
+ <linux-next@vger.kernel.org>
+Subject: linux-next: manual merge of the wireless-next tree with the
+ wireless tree
+Message-ID: <20240422105623.7b1fbda2@canb.auug.org.au>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: FCFIPwsSE2Yy-tEWL8BafYPFJqNuA76s
-X-Proofpoint-ORIG-GUID: FCFIPwsSE2Yy-tEWL8BafYPFJqNuA76s
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-21_16,2024-04-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
- bulkscore=0 mlxlogscore=999 clxscore=1015 mlxscore=0 malwarescore=0
- adultscore=0 lowpriorityscore=0 spamscore=0 impostorscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2404210110
+Content-Type: multipart/signed; boundary="Sig_/P0JkuJR6=UOwV3U=MCBrQxx";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 
-In mesh node traffic, internal firmware-transmitted failures are
-reported as transmitted failures in mesh metric calculation, leading
-to the breakage of the mesh link.
+--Sig_/P0JkuJR6=UOwV3U=MCBrQxx
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Fix the issue by dropping the internal firmware-transmitted failures
-before updating the TX completion status to mac80211, in order to
-prevent false failure averaging in mesh metric calculation.
+Hi all,
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+Today's linux-next merge of the wireless-next tree got a conflict in:
 
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
----
-v2:
-	Addressed Jeff's review comments
-		- Updated copyrights of hal_desc.h to 2024
-		- nits addressed
----
- drivers/net/wireless/ath/ath12k/dp_tx.c    | 38 ++++++++++++++++------
- drivers/net/wireless/ath/ath12k/hal_desc.h | 22 ++++++++++++-
- 2 files changed, 49 insertions(+), 11 deletions(-)
+  net/mac80211/chan.c
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
-index 9b6d7d72f57c..423afdad98e3 100644
---- a/drivers/net/wireless/ath/ath12k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
-@@ -481,18 +481,36 @@ static void ath12k_dp_tx_complete_msdu(struct ath12k *ar,
- 	/* skip tx rate update from ieee80211_status*/
- 	info->status.rates[0].idx = -1;
- 
--	if (ts->status == HAL_WBM_TQM_REL_REASON_FRAME_ACKED &&
--	    !(info->flags & IEEE80211_TX_CTL_NO_ACK)) {
--		info->flags |= IEEE80211_TX_STAT_ACK;
--		info->status.ack_signal = ATH12K_DEFAULT_NOISE_FLOOR +
--					  ts->ack_rssi;
--		info->status.flags = IEEE80211_TX_STATUS_ACK_SIGNAL_VALID;
-+	switch (ts->status) {
-+	case HAL_WBM_TQM_REL_REASON_FRAME_ACKED:
-+		if (!(info->flags & IEEE80211_TX_CTL_NO_ACK)) {
-+			info->flags |= IEEE80211_TX_STAT_ACK;
-+			info->status.ack_signal = ATH12K_DEFAULT_NOISE_FLOOR +
-+						  ts->ack_rssi;
-+			info->status.flags = IEEE80211_TX_STATUS_ACK_SIGNAL_VALID;
-+		}
-+		break;
-+	case HAL_WBM_TQM_REL_REASON_CMD_REMOVE_TX:
-+		if (info->flags & IEEE80211_TX_CTL_NO_ACK) {
-+			info->flags |= IEEE80211_TX_STAT_NOACK_TRANSMITTED;
-+			break;
-+		}
-+		fallthrough;
-+	case HAL_WBM_TQM_REL_REASON_CMD_REMOVE_MPDU:
-+	case HAL_WBM_TQM_REL_REASON_DROP_THRESHOLD:
-+	case HAL_WBM_TQM_REL_REASON_CMD_REMOVE_AGED_FRAMES:
-+		/* The failure status is due to internal firmware tx failure
-+		 * hence drop the frame; do not update the status of frame to
-+		 * the upper layer
-+		 */
-+		dev_kfree_skb_any(msdu);
-+		goto exit;
-+	default:
-+		ath12k_dbg(ab, ATH12K_DBG_DP_TX, "tx frame is not acked status %d\n",
-+			   ts->status);
-+		break;
- 	}
- 
--	if (ts->status == HAL_WBM_TQM_REL_REASON_CMD_REMOVE_TX &&
--	    (info->flags & IEEE80211_TX_CTL_NO_ACK))
--		info->flags |= IEEE80211_TX_STAT_NOACK_TRANSMITTED;
--
- 	/* NOTE: Tx rate status reporting. Tx completion status does not have
- 	 * necessary information (for example nss) to build the tx rate.
- 	 * Might end up reporting it out-of-band from HTT stats.
-diff --git a/drivers/net/wireless/ath/ath12k/hal_desc.h b/drivers/net/wireless/ath/ath12k/hal_desc.h
-index 63340256d3f6..71e8c8a091ae 100644
---- a/drivers/net/wireless/ath/ath12k/hal_desc.h
-+++ b/drivers/net/wireless/ath/ath12k/hal_desc.h
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: BSD-3-Clause-Clear */
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2022 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- #include "core.h"
- 
-@@ -2048,6 +2048,19 @@ struct hal_wbm_release_ring {
-  *	fw with fw_reason2.
-  * @HAL_WBM_TQM_REL_REASON_CMD_REMOVE_RESEAON3: Remove command initiated by
-  *	fw with fw_reason3.
-+ * @HAL_WBM_TQM_REL_REASON_CMD_DISABLE_QUEUE: Remove command initiated by
-+ *	fw with disable queue.
-+ * @HAL_WBM_TQM_REL_REASON_CMD_TILL_NONMATCHING: Remove command initiated by
-+ *	fw to remove all mpdu until 1st non-match.
-+ * @HAL_WBM_TQM_REL_REASON_DROP_THRESHOLD: Dropped due to drop threshold
-+ *	criteria
-+ * @HAL_WBM_TQM_REL_REASON_DROP_LINK_DESC_UNAVAIL: Dropped due to link desc
-+ *	not available
-+ * @HAL_WBM_TQM_REL_REASON_DROP_OR_INVALID_MSDU: Dropped due drop bit set or
-+ *	null flow
-+ * @HAL_WBM_TQM_REL_REASON_MULTICAST_DROP: Dropped due mcast drop set for VDEV
-+ * @HAL_WBM_TQM_REL_REASON_VDEV_MISMATCH_DROP: Dropped due to being set with
-+ *	'TCL_drop_reason'
-  */
- enum hal_wbm_tqm_rel_reason {
- 	HAL_WBM_TQM_REL_REASON_FRAME_ACKED,
-@@ -2058,6 +2071,13 @@ enum hal_wbm_tqm_rel_reason {
- 	HAL_WBM_TQM_REL_REASON_CMD_REMOVE_RESEAON1,
- 	HAL_WBM_TQM_REL_REASON_CMD_REMOVE_RESEAON2,
- 	HAL_WBM_TQM_REL_REASON_CMD_REMOVE_RESEAON3,
-+	HAL_WBM_TQM_REL_REASON_CMD_DISABLE_QUEUE,
-+	HAL_WBM_TQM_REL_REASON_CMD_TILL_NONMATCHING,
-+	HAL_WBM_TQM_REL_REASON_DROP_THRESHOLD,
-+	HAL_WBM_TQM_REL_REASON_DROP_LINK_DESC_UNAVAIL,
-+	HAL_WBM_TQM_REL_REASON_DROP_OR_INVALID_MSDU,
-+	HAL_WBM_TQM_REL_REASON_MULTICAST_DROP,
-+	HAL_WBM_TQM_REL_REASON_VDEV_MISMATCH_DROP,
- };
- 
- struct hal_wbm_buffer_ring {
+between commit:
 
-base-commit: 363e7193eaf258fe7f04e8db560bd8a282a12cd9
--- 
-2.34.1
+  89884459a0b9 ("wifi: mac80211: fix idle calculation with multi-link")
 
+from the wireless tree and commit:
+
+  87f5500285fb ("wifi: mac80211: simplify ieee80211_assign_link_chanctx()")
+
+from the wireless-next tree.
+
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+diff --cc net/mac80211/chan.c
+index 4e0c1a6e509f,dedf11eeb43c..380695fdc32f
+--- a/net/mac80211/chan.c
++++ b/net/mac80211/chan.c
+@@@ -800,8 -819,7 +819,8 @@@ static int ieee80211_assign_link_chanct
+  	struct ieee80211_local *local =3D sdata->local;
+  	struct ieee80211_chanctx_conf *conf;
+  	struct ieee80211_chanctx *curr_ctx =3D NULL;
+ +	bool new_idle;
+- 	int ret =3D 0;
++ 	int ret;
+ =20
+  	if (WARN_ON(sdata->vif.type =3D=3D NL80211_IFTYPE_NAN))
+  		return -EOPNOTSUPP;
+@@@ -822,17 -840,24 +841,22 @@@
+  		ieee80211_recalc_chanctx_min_def(local, new_ctx, link);
+ =20
+  		ret =3D drv_assign_vif_chanctx(local, sdata, link->conf, new_ctx);
+- 		if (ret)
+- 			goto out;
+-=20
+- 		conf =3D &new_ctx->conf;
+- 		list_add(&link->assigned_chanctx_list,
+- 			 &new_ctx->assigned_links);
++ 		if (assign_on_failure || !ret) {
++ 			/* Need to continue, see _ieee80211_set_active_links */
++ 			WARN_ON_ONCE(ret && !local->in_reconfig);
++ 			ret =3D 0;
++=20
++ 			/* succeeded, so commit it to the data structures */
++ 			conf =3D &new_ctx->conf;
++ 			list_add(&link->assigned_chanctx_list,
++ 				 &new_ctx->assigned_links);
++ 		}
++ 	} else {
++ 		ret =3D 0;
+  	}
+ =20
+- out:
+  	rcu_assign_pointer(link->conf->chanctx_conf, conf);
+ =20
+ -	sdata->vif.cfg.idle =3D !conf;
+ -
+  	if (curr_ctx && ieee80211_chanctx_num_assigned(local, curr_ctx) > 0) {
+  		ieee80211_recalc_chanctx_chantype(local, curr_ctx);
+  		ieee80211_recalc_smps_chanctx(local, curr_ctx);
+
+--Sig_/P0JkuJR6=UOwV3U=MCBrQxx
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmYltbcACgkQAVBC80lX
+0GxfBAf/TGFiNoDJ4g3bno2FzMVTWyL/dQDogND/PFuxrVZLDHZcFn8sHXOclrfn
+I5PRAXTs6J7X3zYtrmoQyJN/BuhkAocmDtHPgFTx1BAnrO42/GmbKC1/SpWdG47V
+JxwX/s16So6O2sGNKCDFpyVcjAAFkeZvRX4td6XJNkLA6zH0LIABVzWYzsw3Bg//
+R3Vi8wsjkcrqGD8DEdheyw54bSKnNSxIFan4/1ivIsmvDWDpEkwGof2fKTbY/3XJ
+KgVjOFmrzC071pmhplBzmQDA0f5AaTV3wTuB3GeY/89aajf6lvN+/QNGXZXWbo3o
+kk+ON7Ib/KGj/+z/RAlmEuNvUBaekQ==
+=aLjw
+-----END PGP SIGNATURE-----
+
+--Sig_/P0JkuJR6=UOwV3U=MCBrQxx--
 
