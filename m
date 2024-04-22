@@ -1,99 +1,119 @@
-Return-Path: <linux-wireless+bounces-6670-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6671-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71A088ACDF7
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Apr 2024 15:15:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77CC28ACFC2
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Apr 2024 16:44:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1081FB2345C
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Apr 2024 13:15:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CFED1F21B9A
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Apr 2024 14:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CAE314F128;
-	Mon, 22 Apr 2024 13:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DC5815219D;
+	Mon, 22 Apr 2024 14:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H7DzM5Ei"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="H5l1rqA5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF0614EC67;
-	Mon, 22 Apr 2024 13:15:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC4E14F124
+	for <linux-wireless@vger.kernel.org>; Mon, 22 Apr 2024 14:42:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713791716; cv=none; b=Jc7vUndLtg9cxmb7ymqsdcEHqjgkGQrr4Fkei7bulY406dpoCrqfGzXQ/+GA37GD2Z21/MX3jGpw+V1jOzNDZ2GBB+w9jfYFnTxTdwDpXvDt+kbZm6ItBi4HwmqGHkDaOVvcrVusKCvEciyxigN3ArrcDv7zx5xV1jBjNgriomk=
+	t=1713796966; cv=none; b=q7gLj6s5wn6Qa8wvC/9Kyz40FokUnQCDBrxxkwGsH7jIPSXuAb9HYBhU7muyGzgv9GeuGKOYUaiqW7vLugIlIfggOu8zYQZfUsX67DPfwviv0VVY+GZl7U2GqJahmlF9zJQYd24hXT0ORorNoo6xPPlD5jR7oul9ONfjEhGD9NQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713791716; c=relaxed/simple;
-	bh=Eio/1AEc7ubO0FasZh46qzObS9lQSnNE57hP8qhc5Ss=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hgeui5wni9UgOwxjCC+LBq0FUOO/btUn3lKSL/tbMBz+FSta301EFY6hqWQkfSmlIb4hBJ4LOy9mBzBeUF09xWYbPr7qaqJkZ7akBziDDr2YRJeopO9H/SPLqSfzmk0v8s7wM50mu3IpGl0nhsq+oP8E4x/HCz1qz3X8GnzE42U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H7DzM5Ei; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7718EC113CC;
-	Mon, 22 Apr 2024 13:15:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713791715;
-	bh=Eio/1AEc7ubO0FasZh46qzObS9lQSnNE57hP8qhc5Ss=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H7DzM5Eib4LTUdtI8EUX/6yzxsvNX3ccwNEngynGV/pqCi6g4O+IrzcTi5u3Q/5nQ
-	 wgmR/xx7BLiImCXH1RCOIttNXHQt2ZViIBDMqnn7VgGTn3mxDiiTD6yVuaLuVNJKz1
-	 r+59rFVB21rdOC87v5yC4KnSiplLLhFAacJaIedNz7v19D7yMyIDqcwRTTF01NAlYH
-	 pRQeGREO1CKoHDZqJT/MhFg2ZpGixj4D54c0TrnH25TVvr0l5ib7ijZYrFD2BM1hfb
-	 0D5LfRU0B0vzHsAOE9cvoHRN44CM+npJ14iC6PTiZK7X/WxJjAWw+Js1j3lzZ9v0lH
-	 80BV6ACi7rN5A==
-From: Bjorn Andersson <andersson@kernel.org>
-To: Kalle Valo <kvalo@kernel.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: ath10k@lists.infradead.org,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: (subset) [PATCH RFC v2 0/4] wifi: ath10k: support board-specific firmware overrides
-Date: Mon, 22 Apr 2024 08:15:12 -0500
-Message-ID: <171379170888.1217989.8167751161214805581.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240306-wcn3990-firmware-path-v2-0-f89e98e71a57@linaro.org>
-References: <20240306-wcn3990-firmware-path-v2-0-f89e98e71a57@linaro.org>
+	s=arc-20240116; t=1713796966; c=relaxed/simple;
+	bh=qKlleNWESbSuOmVfyGCJTjidAo/z0liXZdOg/zVRudg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Oii/lwJDsWBJtU0xUUzjm3QDV7nvx7kuClowjVoEX/5VpmlTaPb0Ef2569glnW3W4dTSWNV8MZpHIfdT3X1nLcgydR1CT+9PJ/Mlafvspkl0ol/FiX2wMRj7+5U063F56BiR6TRQ5e1nyhDH9CtTSmWlOVetSiPZ/BGjYsGMrOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=H5l1rqA5; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43M9ObG5025795;
+	Mon, 22 Apr 2024 14:42:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=x/zEVgxPKSdqrMJCwVoTCE40GZRD5t3DQ7qTAS76jXc=; b=H5
+	l1rqA5uyuggKdNvYKahje42WH1t7E2edjH3R66+1ugrZUhw1a/Qdm+8Hxd4lv9Ts
+	FiVUZ7bboX8X5yI2vzoLlpCl3RSsLn4wi48WemB7qfgYIbbL/4LEj1lDl4ptgqqn
+	87DcWrY7no1naO7gXxabMIxFFRW3gxJ1owmsAjmi3foeDQtVq2a+7jEh9IfLhn9H
+	HuOqUuAHbImdACZDau9JNvUgFjfXhT93Rk2ax7qmDCuffZUWJnYwGv73cNZUGN28
+	fZVX2AtqfTRFXNCgMs0a7089Grv44pjdrwbDjITjfTPNzk0SsVwBFa5dR3smcF2+
+	K0qWTdVJXexzXaCfz7gw==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xnn82gsu7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Apr 2024 14:42:40 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43MEge7u025723
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Apr 2024 14:42:40 GMT
+Received: from [10.227.110.203] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 22 Apr
+ 2024 07:42:39 -0700
+Message-ID: <57a5d352-76fe-4aba-972e-e1e288d0a55a@quicinc.com>
+Date: Mon, 22 Apr 2024 07:42:39 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] wifi: ath12k: read single_chip_mlo_support parameter
+ from QMI PHY capability
+Content-Language: en-US
+To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240418125609.3867730-1-quic_rajkbhag@quicinc.com>
+ <20240418125609.3867730-2-quic_rajkbhag@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240418125609.3867730-2-quic_rajkbhag@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: popMfKOIbFKj85uim34XIy0RzsjVBSDE
+X-Proofpoint-ORIG-GUID: popMfKOIbFKj85uim34XIy0RzsjVBSDE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-22_09,2024-04-22_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ mlxlogscore=999 priorityscore=1501 clxscore=1015 suspectscore=0
+ lowpriorityscore=0 bulkscore=0 adultscore=0 spamscore=0 phishscore=0
+ mlxscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404220064
 
-
-On Wed, 06 Mar 2024 10:16:44 +0200, Dmitry Baryshkov wrote:
-> On WCN3990 platforms actual firmware, wlanmdsp.mbn, is sideloaded to the
-> modem DSP via the TQFTPserv. These MBN files are signed by the device
-> vendor, can only be used with the particular SoC or device.
+On 4/18/2024 5:56 AM, Raj Kumar Bhagat wrote:
+> New parameter 'single_chip_mlo_support' was added in QMI PHY
+> capability response message. This is an optional parameter added
+> in QCN9274 firmware. This parameter states if the firmware
+> supports Single-Link Operation (SLO) and Multi-Link Operation (MLO)
+> within the same device.
 > 
-> Unfortunately different firmware versions come with different features.
-> For example firmware for SDM845 doesn't use single-chan-info-per-channel
-> feature, while firmware for QRB2210 / QRB4210 requires that feature.
+> If single_chip_mlo_support = 1, then intra device SLO/MLO is supported
+> in the firmware.
+> If single_chip_mlo_support = 0, then intra device SLO/MLO is not
+> supported in the firmware.
 > 
-> [...]
+> Hence, add support to read 'single_chip_mlo_support' parameter from
+> the QMI PHY capability response message.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00209-QCAHKSWPL_SILICONZ-1
 
-Applied, thanks!
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
-[3/4] arm64: dts: qcom: qrb2210-rb1: add firmware-name qualifier to WiFi node
-      commit: 57ce4b27a12c827a24aaa18aa444bcb8733cb053
-[4/4] arm64: dts: qcom: qrb4210-rb1: add firmware-name qualifier to WiFi node
-      commit: 673b174b5b2ca2fb99fe52bf7bad3cc348432170
+> 
+> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+
 
