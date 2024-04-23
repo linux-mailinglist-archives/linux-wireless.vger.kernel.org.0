@@ -1,93 +1,99 @@
-Return-Path: <linux-wireless+bounces-6696-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6697-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A22D8ADB4A
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Apr 2024 02:53:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41E1A8ADB76
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Apr 2024 03:21:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 046A82826EA
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Apr 2024 00:53:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC7F41F222E7
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Apr 2024 01:21:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1F68D26A;
-	Tue, 23 Apr 2024 00:53:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QKeJML2k"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CA20125C0;
+	Tue, 23 Apr 2024 01:21:27 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E27322A;
-	Tue, 23 Apr 2024 00:53:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.nfschina.com (unknown [42.101.60.195])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id C2BB710949;
+	Tue, 23 Apr 2024 01:21:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=42.101.60.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713833591; cv=none; b=RV/gUoRB3m0wlo1cn8jCD/2Spf1jMR2m/KAZZKnqMLbYZqZlq4HFXED5Js+aLeOb6hLCF4EruLQKAIzbVbMuHw0XXdFpWlurpL4hP1rwVdDjeWd5wBmkjP/3kJJmXHs5Ry+IVRjUdYr7Lcc9/qVoeeM1dW+Fhe6Or2v5xX9Y88g=
+	t=1713835286; cv=none; b=D4TNkmIXOKSfoN5OYWll78fN02EgJ4dtlPBkUp2k7QXmSlDoDR/rzzKTEkMoRjpaGuppsUpDvGbepq9+b991O7sBaTLRX9uWiZkIwltDLTwIwW6TsuQR2S5Cz2cUHBEq9N5FaZ8zYFEnGaf/faTHvjp6KQtlfWdM6MEevc+1SMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713833591; c=relaxed/simple;
-	bh=LRUpSH5+qSQEKPv+C6482zv9PMbA+2tteYA9bEobWsI=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=nzBBUXbd4DErFlHTwySDqF5C8stCkQqOMtIU5qp/ZfoeiHZK3A+VUSFABVy7tQBVyuJLuVPrl0LR8hJqNHHdD/NKvg0Chk0e3+ecbJW9II4xXwHxOanPuzQH+GWYYMQ0hCFqCxh/KgtR1dFta4RnsC6xadV+wwX96TRvKBrnApE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QKeJML2k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 60CA3C32782;
-	Tue, 23 Apr 2024 00:53:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713833591;
-	bh=LRUpSH5+qSQEKPv+C6482zv9PMbA+2tteYA9bEobWsI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=QKeJML2kLFdRwFbQyUT88vDF7urP0elHRbl5BKzOUaa7s3jnfqyf3sQg5fWVkbVDL
-	 IT6T33q6Tj16r8ei319KXGNDtNnlxSnCeYQfDIQffk0j5sFZk0yGBHwgmEoMQyqtMB
-	 aNv+a2idtLCZ/M4M83GmoOpHIDgpwBmn6wrj8a/mhelqj0BXLWR/wOE+IeVVyTpViP
-	 +VVFjG8UdwjIvVHwR4bD3+MhYNG0BC0WvpSYCzhi/6GyTyYYW3cKrIbYiO9SCzIH0p
-	 ULy7BmmaKTwn6aYXp+1zxgUiKLWHy6USxCNqKFijgncE+t/C35HsUZmcWthQMQa+AK
-	 4oMxRabDKmQNA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 50F35C433A2;
-	Tue, 23 Apr 2024 00:53:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1713835286; c=relaxed/simple;
+	bh=VTGFvad64cVAJMNUZ8WORJx7AJhyjOaOK5Po0AOfSHU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type; b=VWKAzWYQwBifHktcMKooq1WUAB6y7FLbXjBINhRvVCzHHXmFrTHXy+bQ4ZeLMCQrb75F83blIspszuISgkGz3lOe/pCKWcuczxHp75nGbiJK3pA36vGXzI2wHv8IN9mNx47dM1Z/1ikmuXCQvJNWBV3f5bMNnVR8k6oFA6VNvqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com; spf=pass smtp.mailfrom=nfschina.com; arc=none smtp.client-ip=42.101.60.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nfschina.com
+Received: from [172.30.11.106] (unknown [180.167.10.98])
+	by mail.nfschina.com (Maildata Gateway V2.8.8) with ESMTPSA id E0A936083C8B3;
+	Tue, 23 Apr 2024 09:21:11 +0800 (CST)
+Message-ID: <3621bf61-732a-c2bc-c135-fbba299f8f57@nfschina.com>
+Date: Tue, 23 Apr 2024 09:21:11 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2] NFC: trf7970a: disable all regulators on removal
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <171383359132.888.4974153862608179534.git-patchwork-notify@kernel.org>
-Date: Tue, 23 Apr 2024 00:53:11 +0000
-References: <DB7PR09MB26847A4EBF88D9EDFEB1DA0F950E2@DB7PR09MB2684.eurprd09.prod.outlook.com>
-In-Reply-To: <DB7PR09MB26847A4EBF88D9EDFEB1DA0F950E2@DB7PR09MB2684.eurprd09.prod.outlook.com>
-To: Paul Geurts <paul_geurts@live.nl>
-Cc: mgreer@animalcreek.com, krzk@kernel.org, linux-wireless@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH wireless v2] wifi: ath10k: Fix an error code problem in
+ ath10k_dbg_sta_write_peer_debug_trigger()
+Content-Language: en-US
+To: Kalle Valo <kvalo@kernel.org>
+Cc: quic_jjohnson@quicinc.com, jjohnson@kernel.org, nathan@kernel.org,
+ ndesaulniers@google.com, morbo@google.com, justinstitt@google.com,
+ c_mkenna@qti.qualcomm.com, linux-wireless@vger.kernel.org,
+ ath10k@lists.infradead.org, linux-kernel@vger.kernel.org,
+ llvm@lists.linux.dev, kernel-janitors@vger.kernel.org
+X-MD-Sfrom: suhui@nfschina.com
+X-MD-SrcIP: 180.167.10.98
+From: Su Hui <suhui@nfschina.com>
+In-Reply-To: <878r15j3bt.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On 2024/4/22 14:53, Kalle Valo wrote:
+> Su Hui <suhui@nfschina.com> writes:
+>
+>> Clang Static Checker (scan-build) Warning:
+>> drivers/net/wireless/ath/ath10k/debugfs_sta.c:line 429, column 3
+>> Value stored to 'ret' is never read.
+>>
+>> Return 'ret' rather than 'count' when 'ret' stores an error code.
+>> By the way, remove some useless code.
+>>
+>> Fixes: ee8b08a1be82 ("ath10k: add debugfs support to get per peer tids log via tracing")
+>> Signed-off-by: Su Hui <suhui@nfschina.com>
+>> ---
+>> v2:
+>>   - remove the initializer change.
+>>
+>>   drivers/net/wireless/ath/ath10k/debugfs_sta.c | 6 ++----
+>>   1 file changed, 2 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/ath/ath10k/debugfs_sta.c b/drivers/net/wireless/ath/ath10k/debugfs_sta.c
+>> index 394bf3c32abf..c1198e9027ae 100644
+>> --- a/drivers/net/wireless/ath/ath10k/debugfs_sta.c
+>> +++ b/drivers/net/wireless/ath/ath10k/debugfs_sta.c
+>> @@ -432,14 +432,12 @@ ath10k_dbg_sta_write_peer_debug_trigger(struct file *file,
+>>   
+>>   	ret = ath10k_wmi_peer_set_param(ar, arsta->arvif->vdev_id, sta->addr,
+>>   					ar->wmi.peer_param->debug, peer_debug_trigger);
+>> -	if (ret) {
+>> +	if (ret)
+>>   		ath10k_warn(ar, "failed to set param to trigger peer tid logs for station ret: %d\n",
+>>   			    ret);
+>> -		goto out;
+>> -	}
+> Minimal changes with one logical change per patch, please. I'll remove
+> this part in the pending branch.
+>
+Sorry for this, thanks for your help!
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Thu, 18 Apr 2024 21:25:38 +0200 you wrote:
-> During module probe, regulator 'vin' and 'vdd-io' are used and enabled,
-> but the vdd-io regulator overwrites the 'vin' regulator pointer. During
-> remove, only the vdd-io is disabled, as the vin regulator pointer is not
-> available anymore. When regulator_put() is called during resource
-> cleanup a kernel warning is given, as the regulator is still enabled.
-> 
-> Store the two regulators in separate pointers and disable both the
-> regulators on module remove.
-> 
-> [...]
-
-Here is the summary with links:
-  - [v2] NFC: trf7970a: disable all regulators on removal
-    https://git.kernel.org/netdev/net/c/6bea4f03c6a4
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Su Hui
 
 
