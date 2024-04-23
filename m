@@ -1,134 +1,156 @@
-Return-Path: <linux-wireless+bounces-6713-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6714-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3125D8AE361
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Apr 2024 13:06:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39E5C8AE3B7
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Apr 2024 13:21:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88723B21E95
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Apr 2024 11:06:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A93AB20F8A
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Apr 2024 11:21:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 025FE7D3E3;
-	Tue, 23 Apr 2024 11:06:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B04612EB;
+	Tue, 23 Apr 2024 11:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a+DtIO96"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="W4FF6b0R"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D897BB19
-	for <linux-wireless@vger.kernel.org>; Tue, 23 Apr 2024 11:06:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DD760279
+	for <linux-wireless@vger.kernel.org>; Tue, 23 Apr 2024 11:21:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713870378; cv=none; b=tla+ElJFwZ9cVyo4/fk/7QpG8n+M6SL04F1o/bETdHuB5V11SZC3r5+sb+iB3hN9GsSMGF2Q/SM6cyt4BMSHXzmfGCEfKcewfEFz41OE3QBliV7+Vt3FEwSjsC/YWRt+NFxT9PbPmVm6Ug4nkb/N3VWYZ2cLazTGDHuLcd2xvtI=
+	t=1713871271; cv=none; b=kSL33H6qKpO0ggImpvQ7UBn3Yn2w1DsfBUb2NRjl/DPd8WFxNbws5cMcP2miD799jYSLNxhF0QzISqiRPNbPVjO0/QeAc74G9BLNmDwtwSiAuOqUXXUJxDRmTyhGxqL8VFBZ/R+93Zr/pV6vWt25JhxvtaMH4whCP8zjnzY5fmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713870378; c=relaxed/simple;
-	bh=+NlcJltyE83VIE3KB2EX8PPq1Vb0hWvgLHugQDq8ff0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WqS3R3dOaWQCn90Vd16Uw+u8SxaJEJpmof4JFBWBND7T1O0CQEhBjZLsIbG+Rt9KGBz5bXuXxs9g3SxMPC/JpSkgUc/LIfzeeIdiYSczmj7cPtzYgu+F2lrHqrh0dPTJbgIyE8v9h2sz1rRdA84q4Tft/20cdMvXq6ZZlmr1lxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a+DtIO96; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a5200afe39eso603794866b.1
-        for <linux-wireless@vger.kernel.org>; Tue, 23 Apr 2024 04:06:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713870376; x=1714475176; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Inp/UEu3xOIHeD6jpiR508FFw8sFX8psh5ZxVd98CZY=;
-        b=a+DtIO96wkK0EkcQhAPod23QBhej8JvT9715UQjUrp5sFhiFr+GV1G+BCKavMqXVCI
-         crbIKIRyY1NSz7DWT6AZvAGNKLJgsyqedgcXuoUq1tTZJpRCQc4fOiE17naJsiyxYfTj
-         XLJ6f8MMR/kZivP+oxxb9KbByCd4n6K9ZxIPaPGbtcTMe/6wgl4Ek56E5qfR5I9oYWsv
-         3WgL6tChh2wC5nkN3AtLJeApuY8Fcxs8aiQQWWrI8d5pUEnQPbvVroFZkbkFYVwn5K0f
-         NxIiqf3guq8Dnn8+5dfSCpCABmKmr4ZXceIY7ie4jswrsF0C/lNKxd5GOezE7U4UC9b1
-         gApA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713870376; x=1714475176;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Inp/UEu3xOIHeD6jpiR508FFw8sFX8psh5ZxVd98CZY=;
-        b=eaAE6szl0KhiwBfoUy6w7S4rZ5lw8nB+UDoSQG8j5KEE3mvJFp6KbbLr/+ZAeBSdb4
-         COXyudwSoMLvgWe729rcOe59snmXNFQFPMtLSW8BIboIy3Ee1MozjRXxpbr595VAL5H3
-         I381Q/4DnI85iJ7IiDuEMZCfgYiTOA2zhdoUA6wQNf1ZDQQTZ1hNeTd3oCnme4SjChSB
-         X+o0L/BNfOvs6llLD36OaFVryo87XZ1RI1VJsAwPu3qVSbbWiAV2xpzCbIobByxyCJ52
-         FmGYxKnbWMTKQi13vHJh13XDyJFlsMQ7sehofCUDOvJFff69bwAUNVzbc1b/1JcdTIzq
-         5yCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUdmC2C8HDLwb7mnP76a7Bku+lTXeku1lLJogLOzjygX55xE2lqslMbz2/1jQwd5iTrxvtrqTZyZO6j23H7C1RtAiN3cTAYN59HyCF7WZU=
-X-Gm-Message-State: AOJu0Yx7t2/iixKq/yADZqJgFoeWWT2gwhAsqG1oQxOmXypsQlnfFm7c
-	ae9t8x4mFFSq8ueLiaH5cqdvHNCVzIu4WvitQewJvom61ICSqBmNmMdO8BL/
-X-Google-Smtp-Source: AGHT+IEGEFBqU9yJiupbnFZ8APim7tEVHTE4pywBOk0V5w38uo7r+nJhCBTl8NbeJoEX1xRbF8hRpQ==
-X-Received: by 2002:a17:906:240a:b0:a55:ba01:7cf8 with SMTP id z10-20020a170906240a00b00a55ba017cf8mr4625787eja.40.1713870373909;
-        Tue, 23 Apr 2024 04:06:13 -0700 (PDT)
-Received: from [192.168.1.50] ([79.113.154.240])
-        by smtp.gmail.com with ESMTPSA id k11-20020a17090632cb00b00a46a2779475sm6874469ejk.101.2024.04.23.04.06.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Apr 2024 04:06:13 -0700 (PDT)
-Message-ID: <937ed41e-6915-426b-8098-01e95c8554c0@gmail.com>
-Date: Tue, 23 Apr 2024 14:06:12 +0300
+	s=arc-20240116; t=1713871271; c=relaxed/simple;
+	bh=TSj5LeYjkpK9XNI4Yvas4e5knCrKA+ZPbN7x3+5ThhY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Ngbtb9e6BSSt9UEW1NfBMlN7kyFXdn/CnxJzS9f9pV5tbOf/7VRFFSYhpCneOVk3AeadKApzOVXNBvAeLCaJ4majOHdFmUNIX0XyGeNN39++ox3CsfXXhKUcGP/SwKG6g33kMfgcCQuWNiVi146cnvL7NOcrLM6E8MpfvFB8rXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=W4FF6b0R; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=TSj5LeYjkpK9XNI4Yvas4e5knCrKA+ZPbN7x3+5ThhY=;
+	t=1713871268; x=1715080868; b=W4FF6b0R3ND8zXBgPmRhFHFyP7hBTMuc2zxzaDOk3VznLod
+	0b8CPyVyKwKep976Thn4K6BHMgRfUJVebh60SHbJWUQ57vXv9VjdXBBKVpfySRlY4orCe8K6PMm5Z
+	KfNO0mezfOc5VDtMte+79vbD7/lOUEKSZbCYJUBK2eVS4F/kKECksOsvn09sYKMZEg1c2zYU47qU7
+	afvVjQiMyln3ng2gGz/KYNNuCSa4T2aMPRjxLanrMVLQtTBOveajLU2wzBtPHYddF4jg4Vog/+G4k
+	VQDNOKquYm5bu5faoAqeWI/yr9xHoyf+PvujqjLThQTEYe6EEjGOTqRv+ipMDUHQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rzECt-000000025Sw-2Tpu;
+	Tue, 23 Apr 2024 13:21:03 +0200
+Message-ID: <757f417d63a750e84ab883b500becc2773e9ff17.camel@sipsolutions.net>
+Subject: Re: [PATCH v2] wifi: mac80211: Update bssid indicator with real BSS
+ numbers
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Allen Ye =?UTF-8?Q?=28=E8=91=89=E8=8A=B7=E5=8B=B3=29?=
+ <Allen.Ye@mediatek.com>, "linux-wireless@vger.kernel.org"
+ <linux-wireless@vger.kernel.org>, "lorenzo@kernel.org" <lorenzo@kernel.org>
+Cc: "lorenzo.bianconi@redhat.com" <lorenzo.bianconi@redhat.com>, 
+	"nbd@nbd.name"
+	 <nbd@nbd.name>, Evelyn Tsai =?UTF-8?Q?=28=E8=94=A1=E7=8F=8A=E9=88=BA=29?=
+	 <Evelyn.Tsai@mediatek.com>, Money Wang
+	=?UTF-8?Q?=28=E7=8E=8B=E4=BF=A1=E5=AE=89=29?=
+	 <Money.Wang@mediatek.com>, "linux-mediatek@lists.infradead.org"
+	 <linux-mediatek@lists.infradead.org>
+Date: Tue, 23 Apr 2024 13:21:02 +0200
+In-Reply-To: <c23373d71eff81ea043783edff0345502bb2e299.camel@mediatek.com>
+References: <20231208063820.25983-1-allen.ye@mediatek.com>
+	 <65d21336e8f7e180352403a3e894aeaf27a22cab.camel@sipsolutions.net>
+	 <c23373d71eff81ea043783edff0345502bb2e299.camel@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/6] wifi: rtlwifi: Move code from rtl8192de to
- rtl8192d-common
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Larry Finger <Larry.Finger@lwfinger.net>,
- Stefan Lippers-Hollmann <s.l-h@gmx.de>,
- Christian Hewitt <chewitt@libreelec.tv>
-References: <9d54a192-d389-4a56-9286-2e7721cbbc27@gmail.com>
- <459a193c-ce2e-4b89-827c-ff6721c470e0@gmail.com>
- <4e7bb78f7dad4383bc98f4a94a2c9b48@realtek.com>
- <509ded5b-6b31-4750-9f87-4d080ea4f71a@gmail.com>
- <054791df5141422fb0f8220eaeb66ff3@realtek.com>
-Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <054791df5141422fb0f8220eaeb66ff3@realtek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 
-On 23/04/2024 03:48, Ping-Ke Shih wrote:
-> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->> On 22/04/2024 05:55, Ping-Ke Shih wrote:
->>> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->>>> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/main.c
->>>> @@ -0,0 +1,9 @@
->>>> +// SPDX-License-Identifier: GPL-2.0
->>>> +/* Copyright(c) 2009-2012  Realtek Corporation.*/
->>>> +
->>>> +#include "../wifi.h"
->>>> +#include <linux/module.h>
->>>> +
->>>> +MODULE_AUTHOR("Realtek WlanFAE <wlanfae@realtek.com>");
->>>> +MODULE_LICENSE("GPL");
->>>> +MODULE_DESCRIPTION("Realtek 8192D 802.11an common routines");
->>>
->>> Not sure why you emphasize '802.11an' instead of just '802.11n'.
->>>
->>>
->>
->> I saw somewhere a dual-band chip described as 802.11an.
->> It seemed like a good idea. Should I change it?
-> 
-> 
-> I'm not sure what '802.11an' defines, but this old chip should not support that.
-> Then, maybe '802.11an' here means '802.11a/802.11n', but I still don't know the
-> relation with dual-band chip.
-> 
-> FYI:
-> 802.11a: 5GHz band, CCK/OFDM
-> 802.11b: 2GHz band, CCK
-> 802.11g: 2GHz band, CCK/OFDM
-> 802.11n: 2/5GHz bands, HT
-> 
+On Wed, 2023-12-27 at 09:38 +0000, Allen Ye (=E8=91=89=E8=8A=B7=E5=8B=B3) w=
+rote:
+> >=20
+> > We should have Lorenzo here, he wrote the original code.
 
-Ohh, right, there is probably something officially called
-"802.11an". I will change it back then.
+Actually John/Aloka at least also did ... so whatever.
+
+
+All this only _really_ matters I think when you have EMA, right?
+
+
+> The number of BSS is not equal to MBSSID element count plus 1 because
+> there might be multiple nontransmitted BSSID profile subelements in one
+> MBSSID element.
+
+Yes.
+
+Actually it's even more confusing:
+
+> Also, one nontransmitted BSSID profile subelement might
+> be fragmented across two MBSSID elements if the length of the
+> subelement exceeds 255 octets.
+
+True; however, in this case, a single entry in the
+NL80211_ATTR_MBSSID_ELEMS array (and thus in mbssid_ies) must contain
+both MBSSID elements together, so it's only counted once still. More
+importantly, otherwise we would split them across two frames with EMA,
+which is wrong.
+
+So really mbssid_ies / NL80211_ATTR_MBSSID_ELEMS is *not* the list of
+MBSSID elements as they should appear in the frame, individually, but an
+array of *sets* of MBSSID elements.
+
+For example:
+
+mbssid_ies[0] =3D mbssid_elem(profile1, profile2), mbssid_elem(profile3)
+mbssid_ies[1] =3D mbssid_elem(profile4_part1), mbssid_elem(profile4_part2)
+
+when you have EMA with periodicity 2, and 4 non-transmitted BSSes where
+the first two are small and fit into one element, number 3 is bigger and
+needs its own, and number 4 needs to be split ...
+
+
+> > But this seems fishy to me, if you look into the element itself,
+> > you're going to have to do some validation on it?
+
+I stand by this though.
+
+> > And what about fragmentation?
+
+But not this :)
+
+> Whether the subelement is aggregated or fragmented, the MaxBSSID
+> Indicator field would be the same for the multiple BSSID set.
+
+Right.
+
+> Therefore, we directly retrieve this field from the element.
+
+Yeah, makes sense.
+
+> For example, there are five BSSes in one multiple BSSID set, one
+> transmitted and four non-transmitted BSSes. We might use just two
+> MBSSID elements to store all the non-transmitted BSS information. Here
+> the MaxBSSID Indicator is 3 in both MBSSID elements. However, the
+> element cnt is 2 and if we use the original method to calculate the
+> BSSID Indicator we will get 2 which is wrong.
+
+Right.
+
+Anyway, I think I agree, but can you please add some validation of this
+to cfg80211 as a first patch, and also document all this better in the
+commit message? Optional, but some additional nl80211 documention would
+be very nice.
+
+Thanks,
+johannes
 
