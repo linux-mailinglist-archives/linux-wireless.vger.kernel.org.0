@@ -1,145 +1,273 @@
-Return-Path: <linux-wireless+bounces-6704-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6705-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 098B48ADD0C
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Apr 2024 07:09:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 462188ADF20
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Apr 2024 10:03:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A79DDB2157F
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Apr 2024 05:09:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB0FC28877C
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Apr 2024 08:03:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66997200C7;
-	Tue, 23 Apr 2024 05:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC7853393;
+	Tue, 23 Apr 2024 08:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Y6X/RtlG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mgPtDm2E"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A34541CA82
-	for <linux-wireless@vger.kernel.org>; Tue, 23 Apr 2024 05:09:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6A4482FA;
+	Tue, 23 Apr 2024 08:01:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713848985; cv=none; b=n399+ULTQsPM56NjkBamzLhZoOodwNrgTw8FvhmiZVEMbqXZPXx30JZ8q8OIdIu6OME1fpE8liLNVvm9dakekRwg/ipkK22onMYHoI7Pt9NFr/TW8GhvNg+du+kfS6PwsLQ7D3i2w9w7Xgx33TSsxuetA9052yrQ/Z2bcTxFXt0=
+	t=1713859274; cv=none; b=fg4mIfjkzbi4kY1vlRRUEpXZTqtNyXf9FB/2A0tDQ9iTIb2mVs+8clVqP+M21iUhr8ydrAkRXHnro5QtrNCYbyxiDS6M0naxdELXVhtDmZ2jjTmUc53btvFF6dDa6m++c4ZoaQWSSuKQem8RgJIMmWYN8llNOXX1rsT6hTQ4Dv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713848985; c=relaxed/simple;
-	bh=76zFPKayLt9p86r1q65wqtDVU+MJLwkIJ8SSaV6s7qM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=SSNzDNr+kbK9vfZwMouja3JptWBStL61564mLZkIR1n1UErgOwEbM/mchB/GBGNsm9eqr1feveZLGHByu+iQpigido+gdfveCnGPzpiFBLoYgYqaIILJFWUEWwK/Bd+0jp61iYH22LtFekA5/VAsWjF/BpVAxatbyJhY1pT/gKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Y6X/RtlG; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43N59RpL016427;
-	Tue, 23 Apr 2024 05:09:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=fjfZQ+j1LmSBlFJ3VFT7nHwKfB3EHWUMJJqY8bMYWEQ=; b=Y6
-	X/RtlGuDrKwBdskmDqM8COEx+m5GybdV0mYE+4GPknde8ZWYvoAmyfbV6Dj7IhhD
-	wfHg1rDYAmzRC2D8rHelY63Mp2H3tJ1JPbBLcrVfbSE42q8g2sp4+2WZkOsdK/zv
-	zhEZhb7uFXxNHUKomUOEem47i6WgyDjw6v/tD0w3Kk2StpNf5d+x8e+74Xu3MLcx
-	baSvWrcaWTJkiJM8t1Z0ehQqyw394EH9/mAJhlOD4vk+yDSI7X9ElaqPoKfAxUFN
-	8tg+DjEW3hpZN6OP0ZDUEJYECgvRxH4YXiEK5YrC/CID9A5sfMJtUK7HKtB9zjaG
-	y+rKarmyeOwok+M+Jh+g==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xnvtn92je-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 Apr 2024 05:09:27 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43N59Pqo007453
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 Apr 2024 05:09:25 GMT
-Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 22 Apr
- 2024 22:09:24 -0700
-Message-ID: <c87b00a7-4890-4a96-8242-95d52c16f4d2@quicinc.com>
-Date: Tue, 23 Apr 2024 13:09:22 +0800
+	s=arc-20240116; t=1713859274; c=relaxed/simple;
+	bh=ng7XtkcAIPwnIKea44bTa7GURBeQsl+FW+nGtuaX67E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VYQ1SArBBi2ipq7MbMJYs8+SFIrf2s0msm450dYuBJrpiaIbSZMADeNXYB8MstSu7f2Az6kXhJMvF13isoq7YWE/CIt8ltk6F94QLjS9xwSp5aCUsaPCa+ofz1n3UHJgZfW7GaSquwGII7mLFS2Ya7gIby9QXedKiR0Y1aMHpos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mgPtDm2E; arc=none smtp.client-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2dae975d0dcso63863191fa.1;
+        Tue, 23 Apr 2024 01:01:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713859268; x=1714464068; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9+PI63vp8dcetV6uo5/jONMF2OhlOcMYFOX5cPVZ17Q=;
+        b=mgPtDm2Ehj4z8QcLNIEPqg5/Y8mrz7e9zhjdUfPsGXN5njuK2aC2J6E0sypEQ8MWFF
+         ns1UizAsy84TNndzHtV71QyFPygEw9Rldq9PRtrac+Ek2ZbbpEW5P0agN6fzKR+B/6rY
+         9mBBPfbuDko9NbDAyyFzfuRVzY6yQfY2Ha0AqceZdkKQtn2cocWsVxO43gXE2a66/yWP
+         /wm2sAssYkZt76foQlrfEaITevnX0u9KmiwRofidc1NduvKu+xlj5L/oMZRUT6xZjAiC
+         5yAJkCfP8fhLwrBbyN7kFufTs9bUXpWHnNQHhtTNDJmyDCpe/3EGYwnVn2p1K8f3Gr+t
+         0oQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713859268; x=1714464068;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9+PI63vp8dcetV6uo5/jONMF2OhlOcMYFOX5cPVZ17Q=;
+        b=b2Gln+XUY7df6sa77yInTItdMyGGd1rGYUTboGahHu74X+f5fjlP6kO2ZvfJ+iILlo
+         w91yFBLsG2fi1VETK8Ib1QauviCeHeDoObh0BnerGjhXHkroUTk1jVWmCD94NriIJKp9
+         Rcty+48fMRjKBTLZUOZw1Jwze6sMRJv0YYNMFXA013FcuNJoPPHIMnR0Fb68l8+irJTa
+         0OwdnA0Dph9Cm3idLEj3a8BQoPNkpIAOTEO6a8WAtlqf2W8L/Z1qQ3gSjEzyVO/9RCyw
+         f1Ar8L8zbUPFMJR2cu6QHnwHma2Szly5YVL5q+kVNBz62+lsXt/5o3jx6uBdkv7C58vp
+         WvWg==
+X-Forwarded-Encrypted: i=1; AJvYcCVIL/J544EQ2mAcMJ+6XpuzBxT/Gf3kh358HpPzXpLT5EG7pZ18SAJCrdjiKPkU4AwRlXCx5npoxvHqqja80buE6dnJrMMbaFOa779TjkYp9RsqFaHoX7He3U99C9VY/1yXH89oqvecmzoz9bM=
+X-Gm-Message-State: AOJu0Yzl6vh9TFISVUQ3xWhbLaAm5kYEbjgZPJWSQunVsR1PwVngX5OA
+	KfwCqjFdPTLW5RBuA5HitYTZQtM9iR4bG5dBxuuikNJAeS2pWKWEL0cvIV5i3WNETAL/sbzeX5k
+	bzFTPP8mF9Bmjyd4LDy2rdDNEf7w=
+X-Google-Smtp-Source: AGHT+IEcmF0yT1ETaoCyLgOqrkAYjlhww58t93fSkt375JfUnoJWJ3GcHmsSGYh7sJSBawrbvEwuvXJS97WHGKDcPH0=
+X-Received: by 2002:a2e:9683:0:b0:2da:7944:9521 with SMTP id
+ q3-20020a2e9683000000b002da79449521mr500848lji.25.1713859267424; Tue, 23 Apr
+ 2024 01:01:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath12k: fix kernel crash during resume
-To: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <quic_jjohnson@quicinc.com>
-CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20240419034034.2842-1-quic_bqiang@quicinc.com>
- <87cyqmhtoi.fsf@kernel.org> <87frvivufg.fsf@kernel.org>
- <87h6ftv8w6.fsf@kernel.org>
- <5f63982a-eba9-4c5d-8ac0-52970316f940@quicinc.com>
- <88a1ab50-3dea-406e-adcb-b02786ce7f30@quicinc.com>
- <e409e282-3f6d-42e2-ac6d-7602e3ef1b87@quicinc.com>
- <87cyqgvhv7.fsf@kernel.org>
-Content-Language: en-US
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <87cyqgvhv7.fsf@kernel.org>
+References: <20240417-mac_addr_at_probe-v1-0-67d6c9b3bc2b@bootlin.com> <20240417-mac_addr_at_probe-v1-6-67d6c9b3bc2b@bootlin.com>
+In-Reply-To: <20240417-mac_addr_at_probe-v1-6-67d6c9b3bc2b@bootlin.com>
+From: Heiko Thiery <heiko.thiery@gmail.com>
+Date: Tue, 23 Apr 2024 10:00:55 +0200
+Message-ID: <CAEyMn7aZy+RAo3m=idPi0P152UO+WPm0sfQFdDrUpwmeuUgYBQ@mail.gmail.com>
+Subject: Re: [PATCH 6/6] wifi: wilc1000: read MAC address from fuse at probe
+To: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Cc: Ajay Singh <ajay.kathat@microchip.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Kalle Valo <kvalo@kernel.org>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: a9BCVn8ZQTBM9_M7pvC7anPhl_u6hSjB
-X-Proofpoint-ORIG-GUID: a9BCVn8ZQTBM9_M7pvC7anPhl_u6hSjB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-23_02,2024-04-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- lowpriorityscore=0 mlxlogscore=969 phishscore=0 priorityscore=1501
- mlxscore=0 adultscore=0 bulkscore=0 spamscore=0 malwarescore=0
- impostorscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2404010003 definitions=main-2404230013
+Content-Transfer-Encoding: quoted-printable
 
+Hi Alexis, All
 
+Am Mi., 17. Apr. 2024 um 11:34 Uhr schrieb Alexis Lothor=C3=A9
+<alexis.lothore@bootlin.com>:
+>
+> From: Ajay Singh <ajay.kathat@microchip.com>
+>
+> The default netdev interface exposed by WILC1000 is registered at probe,
+> but the chip mac address is not known until ndo_open, which will load and
+> start chip firmware and then retrieve stored MAC address from it. As a
+> consequence, the interface has uninitialized value (00:00:00:00:00) until=
+ a
+> user brings up the interface.
+>
+> Fix MAC address at probe by setting the following steps:
+> - at probe, read MAC address directly from fuse
+> - whenever a new netdevice is created, apply saved mac address (which can
+>   be a user-provided address, or the eFuse Mac address if no address has
+>   been passed by user)
+> - whenever an interface is brought up for the first time (and so the
+>   firmware is loaded and started), enforce netdevice mac address to the
+>   chip (in case user has changed it)
+>
+> Reported-by: Heiko Thiery <heiko.thiery@gmail.com>
+> Closes: https://lore.kernel.org/netdev/CAEyMn7aV-B4OEhHR4Ad0LM3sKCz1-nDqS=
+b9uZNmRWR-hMZ=3Dz+A@mail.gmail.com/T/
+> Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
+> Co-developed-by: Alexis Lothor=C3=A9 <alexis.lothore@bootlin.com>
+> Signed-off-by: Alexis Lothor=C3=A9 <alexis.lothore@bootlin.com>
 
-On 4/23/2024 12:10 PM, Kalle Valo wrote:
-> Jeff Johnson <quic_jjohnson@quicinc.com> writes:
-> 
->> On 4/22/2024 11:41 AM, Jeff Johnson wrote:
->>> On 4/22/2024 8:41 AM, Jeff Johnson wrote:
->>>> On 4/22/2024 6:12 AM, Kalle Valo wrote:
->>>>> To avoid breaking git bisect I now reshuffled the pending branch so that
->>>>> 'wifi: ath12k: fix kernel crash during resume' is before the suspend
->>>>> patchset and my plan is to commit the patches in same order. Does this
->>>>> make sense for everyone?
->>>>>
->>>>> I had a simple conflict in ath12k_core_reset() in these commits:
->>>>>
->>>>> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=052a6a7c74ae4f20a31a632184f4439edcb0f40c
->>>>>
->>>>> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=6bc740619993535cb64c4dcebb83c66acd506763
->>>>>
->>>>> Please check my changes.
-Looks good to me.
+I applied the series on next and tested it on my env. It looks good.
 
->>>>>
->>>> These look OK to me.
->>>> I'll test the pending branch on my laptop
->>>
->>> pending branch crashes on my laptop
->>> let me bisect
->>
->> ok, that was user error.
->>
->> I had updated my workspace on my VM but not on my actual laptop, and the old
->> pending branch on my laptop contained the follow patch which I've already
->> flagged as bad (and is not present in the current pending branch):
->>
->> wifi: ath12k: Fix Tx Completion Ring(WBM2SW) Setup Failure
->>
->> I updated my laptop to:
->> 5085843538af (origin/pending, pending) wifi: ath12k: report station mode
->> signal strength
->>
->> And everything in that pending branch works fine, including hotspot.
-> 
-> Thanks for testing. Unless no objections from Baochen I'll then apply
-> this fix and the suspend patches.
-No objection from me, kalle.
-> 
+Tested-by: Heiko Thiery <heiko.thiery@gmail.com>
+
+Thank you!
+Heiko
+
+> ---
+>  drivers/net/wireless/microchip/wilc1000/netdev.c | 38 ++++++++++++++----=
+------
+>  drivers/net/wireless/microchip/wilc1000/sdio.c   | 14 +++++++++
+>  drivers/net/wireless/microchip/wilc1000/spi.c    |  6 ++++
+>  3 files changed, 42 insertions(+), 16 deletions(-)
+>
+> diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/n=
+et/wireless/microchip/wilc1000/netdev.c
+> index 5ab448d0b643..f1fbc6e8a82a 100644
+> --- a/drivers/net/wireless/microchip/wilc1000/netdev.c
+> +++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
+> @@ -588,7 +588,6 @@ static int wilc_mac_open(struct net_device *ndev)
+>         struct wilc *wl =3D vif->wilc;
+>         int ret =3D 0;
+>         struct mgmt_frame_regs mgmt_regs =3D {};
+> -       u8 addr[ETH_ALEN] __aligned(2);
+>
+>         if (!wl || !wl->dev) {
+>                 netdev_err(ndev, "device not ready\n");
+> @@ -607,25 +606,19 @@ static int wilc_mac_open(struct net_device *ndev)
+>                 return ret;
+>         }
+>
+> -       wilc_set_operation_mode(vif, wilc_get_vif_idx(vif), vif->iftype,
+> -                               vif->idx);
+> -
+> -       if (is_valid_ether_addr(ndev->dev_addr)) {
+> -               ether_addr_copy(addr, ndev->dev_addr);
+> -               wilc_set_mac_address(vif, addr);
+> -       } else {
+> -               wilc_get_mac_address(vif, addr);
+> -               eth_hw_addr_set(ndev, addr);
+> -       }
+>         netdev_dbg(ndev, "Mac address: %pM\n", ndev->dev_addr);
+> -
+> -       if (!is_valid_ether_addr(ndev->dev_addr)) {
+> -               netdev_err(ndev, "Wrong MAC address\n");
+> +       ret =3D wilc_set_mac_address(vif, ndev->dev_addr);
+> +       if (ret) {
+> +               netdev_err(ndev, "Failed to enforce MAC address in chip")=
+;
+>                 wilc_deinit_host_int(ndev);
+> -               wilc_wlan_deinitialize(ndev);
+> -               return -EINVAL;
+> +               if (!wl->open_ifcs)
+> +                       wilc_wlan_deinitialize(ndev);
+> +               return ret;
+>         }
+>
+> +       wilc_set_operation_mode(vif, wilc_get_vif_idx(vif), vif->iftype,
+> +                               vif->idx);
+> +
+>         mgmt_regs.interface_stypes =3D vif->mgmt_reg_stypes;
+>         /* so we detect a change */
+>         vif->mgmt_reg_stypes =3D 0;
+> @@ -941,6 +934,7 @@ struct wilc_vif *wilc_netdev_ifc_init(struct wilc *wl=
+, const char *name,
+>                                       int vif_type, enum nl80211_iftype t=
+ype,
+>                                       bool rtnl_locked)
+>  {
+> +       u8 mac_address[ETH_ALEN];
+>         struct net_device *ndev;
+>         struct wilc_vif *vif;
+>         int ret;
+> @@ -969,6 +963,18 @@ struct wilc_vif *wilc_netdev_ifc_init(struct wilc *w=
+l, const char *name,
+>         vif->iftype =3D vif_type;
+>         vif->idx =3D wilc_get_available_idx(wl);
+>         vif->mac_opened =3D 0;
+> +
+> +       memcpy(mac_address, wl->nv_mac_address, ETH_ALEN);
+> +       /* WILC firmware uses locally administered MAC address for the
+> +        * second virtual interface (bit 1 of first byte set), but
+> +        * since it is possibly not loaded/running yet, reproduce this be=
+havior
+> +        * in the driver during interface creation.
+> +        */
+> +       if (vif->idx)
+> +               mac_address[0] |=3D 0x2;
+> +
+> +       eth_hw_addr_set(vif->ndev, mac_address);
+> +
+>         mutex_lock(&wl->vif_mutex);
+>         list_add_tail_rcu(&vif->list, &wl->vif_list);
+>         wl->vif_num +=3D 1;
+> diff --git a/drivers/net/wireless/microchip/wilc1000/sdio.c b/drivers/net=
+/wireless/microchip/wilc1000/sdio.c
+> index 04d6565df2cb..e6e20c86b791 100644
+> --- a/drivers/net/wireless/microchip/wilc1000/sdio.c
+> +++ b/drivers/net/wireless/microchip/wilc1000/sdio.c
+> @@ -24,6 +24,9 @@ MODULE_DEVICE_TABLE(sdio, wilc_sdio_ids);
+>
+>  #define WILC_SDIO_BLOCK_SIZE 512
+>
+> +static int wilc_sdio_init(struct wilc *wilc, bool resume);
+> +static int wilc_sdio_deinit(struct wilc *wilc);
+> +
+>  struct wilc_sdio {
+>         bool irq_gpio;
+>         u32 block_size;
+> @@ -178,6 +181,16 @@ static int wilc_sdio_probe(struct sdio_func *func,
+>         }
+>         clk_prepare_enable(wilc->rtc_clk);
+>
+> +       wilc_sdio_init(wilc, false);
+> +
+> +       ret =3D wilc_load_mac_from_nv(wilc);
+> +       if (ret) {
+> +               pr_err("Can not retrieve MAC address from chip\n");
+> +               goto clk_disable_unprepare;
+> +       }
+> +
+> +       wilc_sdio_deinit(wilc);
+> +
+>         vif =3D wilc_netdev_ifc_init(wilc, "wlan%d", WILC_STATION_MODE,
+>                                    NL80211_IFTYPE_STATION, false);
+>         if (IS_ERR(vif)) {
+> @@ -187,6 +200,7 @@ static int wilc_sdio_probe(struct sdio_func *func,
+>
+>         dev_info(&func->dev, "Driver Initializing success\n");
+>         return 0;
+> +
+>  clk_disable_unprepare:
+>         clk_disable_unprepare(wilc->rtc_clk);
+>  dispose_irq:
+> diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/=
+wireless/microchip/wilc1000/spi.c
+> index add0e70a09ea..5ff940c53ad9 100644
+> --- a/drivers/net/wireless/microchip/wilc1000/spi.c
+> +++ b/drivers/net/wireless/microchip/wilc1000/spi.c
+> @@ -250,6 +250,12 @@ static int wilc_bus_probe(struct spi_device *spi)
+>         if (ret)
+>                 goto power_down;
+>
+> +       ret =3D wilc_load_mac_from_nv(wilc);
+> +       if (ret) {
+> +               pr_err("Can not retrieve MAC address from chip\n");
+> +               goto power_down;
+> +       }
+> +
+>         wilc_wlan_power(wilc, false);
+>         vif =3D wilc_netdev_ifc_init(wilc, "wlan%d", WILC_STATION_MODE,
+>                                    NL80211_IFTYPE_STATION, false);
+>
+> --
+> 2.44.0
+>
 
