@@ -1,125 +1,183 @@
-Return-Path: <linux-wireless+bounces-6721-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6722-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD4678AE5BB
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Apr 2024 14:13:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D26A08AE739
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Apr 2024 15:00:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60B4D1F22838
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Apr 2024 12:13:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89A8B1F263BF
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Apr 2024 13:00:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1595485285;
-	Tue, 23 Apr 2024 12:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB6D12F36B;
+	Tue, 23 Apr 2024 12:59:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c+DisPx4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF1B7E761
-	for <linux-wireless@vger.kernel.org>; Tue, 23 Apr 2024 12:13:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7027D12D1FE;
+	Tue, 23 Apr 2024 12:59:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713874414; cv=none; b=bMr3nqrzTOZxaMxymWiHuV0gOXrGByVIyAHbI3BLoC1BCT0aUUYlUaQ8xdROsnglPxkXYBhPRQEYColw7BX4D6/ULimdQ4aBdCFtAS35MN+wIR/a16/xTWqdr8fNh8DaW+VmtAZEvr5/iojHbIv88EOI+oRUUhz5wK4O4LhmTSQ=
+	t=1713877190; cv=none; b=pIxKwBLjP2078MMLICU5auTnRM4v6NWut4B+aganhxgw2PEFF5wJ/RPFFAeyq823o5+lw165NCcgkIX/zlUPRKmBN9+4nMK3fM667r7Nlsa/I7RJlYX0NnaBEnCFpin4u4pcy66XKQv7dxC04ks3F+hLP/GXOMX3Op68YYBJuEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713874414; c=relaxed/simple;
-	bh=N2Iue3YlegBnmej9FrHZEg2EQxdT0j+hPR496TRqaiE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A/aP2cxrvtb4eqxlo6pleo+2mY25I242I89fg4DI6samd1jfdbXjHfBYhcA3xcEbVdhOoOf1Mzz3mYJXOxdzO1ytXOY0Ah5SPB4Xzq4225XVCwthxAqdco/7e9T6QxjZSrf0a5QxZ5zJCwHMexLG2LmwTemM6QqWSvItxN3tOC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 43NCDSpL41225456, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 43NCDSpL41225456
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Tue, 23 Apr 2024 20:13:28 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 23 Apr 2024 20:13:29 +0800
-Received: from [127.0.1.1] (172.16.20.182) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 23 Apr
- 2024 20:13:21 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <damon.chen@realtek.com>
-Subject: [PATCH 2/2] wifi: rtw89: 8852b: update hardware parameters for RFE type 5
-Date: Tue, 23 Apr 2024 20:12:47 +0800
-Message-ID: <20240423121247.24714-2-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240423121247.24714-1-pkshih@realtek.com>
-References: <20240423121247.24714-1-pkshih@realtek.com>
+	s=arc-20240116; t=1713877190; c=relaxed/simple;
+	bh=7GaZ6z1KKQVx9no+OijvvNIpBImultry935P5y+8rrg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nR6W4s0mIqKZosfFZ2b4X0IvA4iCWf0F6cGdeBYjVnk8On62WrTLMD1UkWSD0qorBsr+2xrARVbKSCaaR6KnUf9cVFGPovT8AIrV3z9pjV/mgv2CoiEhg9bIy1tpzrPOhnPrzuJ7eouDEG4GgIsnb1b3SUlBQNokz18dzdim7BM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c+DisPx4; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713877189; x=1745413189;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=7GaZ6z1KKQVx9no+OijvvNIpBImultry935P5y+8rrg=;
+  b=c+DisPx4rsM/mrtJ91h88DS7/feoN8Fkdza5gaOzAD0utGm9Le6Zijik
+   C5PHlvTT1Zihv0oCyPjs8CdqOUPyGQ2NpbCvRLPUkHd8UbMgra9Ksk1dh
+   N2Hq2znjpFqjBNsyIThD1siisG0Q3rxIWJtsjtXQWgiSI+WkYoKZRsdIp
+   bT9ztrZR4EQq2BSoiSfzwRaD2RdEG6H1rOSQKwFi1bHGjUI+fXX5xjxqy
+   WBJkhVZPI1hwzohAuEZ92+G4E7PTPS/L6Lb0TZiqL7bRedlniI5LDX6Yl
+   kVfLF8cHaQZ3TzX/0OlUhNxMsi+PdrBXW6iGmf4Wn/LUnd9s1mo1/6Zbf
+   g==;
+X-CSE-ConnectionGUID: dyKndjrwQxq+kcTUAXbWOw==
+X-CSE-MsgGUID: roOEnrO3SL6bNWMGgqL1pQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11052"; a="9328019"
+X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; 
+   d="scan'208";a="9328019"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2024 05:59:48 -0700
+X-CSE-ConnectionGUID: 01aWmH+7Q+CCrRKT+QYgSg==
+X-CSE-MsgGUID: rztc+s70S7aCZwMDAP6Htg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; 
+   d="scan'208";a="24963915"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2024 05:59:46 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rzFkM-00000000L2U-23F1;
+	Tue, 23 Apr 2024 15:59:42 +0300
+Date: Tue, 23 Apr 2024 15:59:42 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Kalle Valo <kvalo@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Alban Bedel <albeu@free.fr>, Bartosz Golaszewski <brgl@bgdev.pl>,
+	Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@toke.dk>,
+	linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
+	linux-gpio@vger.kernel.org
+Subject: Re: [PATCH v2] wifi: ath9k: Obtain system GPIOS from descriptors
+Message-ID: <Ziewvkh_Hd2j5hHF@smile.fi.intel.com>
+References: <20240423-descriptors-wireless-v2-1-6d1d03b30bfa@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240423-descriptors-wireless-v2-1-6d1d03b30bfa@linaro.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-RFE type 5 of 8852B is a type of hardware module, which can use different
-external components, so update register settings accordingly.
+On Tue, Apr 23, 2024 at 02:12:33PM +0200, Linus Walleij wrote:
+> The ath9k has an odd use of system-wide GPIOs: if the chip
+> does not have internal GPIO capability, it will try to obtain a
+> GPIO line from the system GPIO controller:
+> 
+>   if (BIT(gpio) & ah->caps.gpio_mask)
+>         ath9k_hw_gpio_cfg_wmac(...);
+>   else if (AR_SREV_SOC(ah))
+>         ath9k_hw_gpio_cfg_soc(ah, gpio, out, label);
+> 
+> Where ath9k_hw_gpio_cfg_soc() will attempt to issue
+> gpio_request_one() passing the local GPIO number of the controller
+> (0..31) to gpio_request_one().
+> 
+> This is somewhat peculiar and possibly even dangerous: there is
+> nowadays no guarantee of the numbering of these system-wide
+> GPIOs, and assuming that GPIO 0..31 as used by ath9k would
+> correspond to GPIOs 0..31 on the system as a whole seems a bit
+> wild.
+> 
+> Register all 32 GPIOs at index 0..31 directly in the ATH79K
+> GPIO driver and associate with WIFI if and only if we are probing
+> ATH79K wifi from the AHB bus (used for SoCs).
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/reg.h      |  3 +++
- drivers/net/wireless/realtek/rtw89/rtw8852b.c | 12 ++++++++++++
- 2 files changed, 15 insertions(+)
+...
 
-diff --git a/drivers/net/wireless/realtek/rtw89/reg.h b/drivers/net/wireless/realtek/rtw89/reg.h
-index 0c0d3c84b178..01cbd0312102 100644
---- a/drivers/net/wireless/realtek/rtw89/reg.h
-+++ b/drivers/net/wireless/realtek/rtw89/reg.h
-@@ -235,6 +235,9 @@
- 
- #define R_AX_SPSANA_ON_CTRL1 0x0224
- 
-+#define R_AX_SPS_ANA_ON_CTRL2 0x0228
-+#define RTL8852B_RFE_05_SPS_ANA 0x4A82
-+
- #define R_AX_WLAN_XTAL_SI_CTRL 0x0270
- #define B_AX_WL_XTAL_SI_CMD_POLL BIT(31)
- #define B_AX_BT_XTAL_SI_ERR_FLAG BIT(30)
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-index 85908c55baa9..9b8f1d06512e 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-@@ -390,6 +390,14 @@ static const struct rtw89_btc_fbtc_mreg rtw89_btc_8852b_mon_reg[] = {
- static const u8 rtw89_btc_8852b_wl_rssi_thres[BTC_WL_RSSI_THMAX] = {70, 60, 50, 40};
- static const u8 rtw89_btc_8852b_bt_rssi_thres[BTC_BT_RSSI_THMAX] = {50, 40, 30, 20};
- 
-+static void rtw8852b_pwr_sps_ana(struct rtw89_dev *rtwdev)
-+{
-+	struct rtw89_efuse *efuse = &rtwdev->efuse;
-+
-+	if (efuse->rfe_type == 0x5)
-+		rtw89_write16(rtwdev, R_AX_SPS_ANA_ON_CTRL2, RTL8852B_RFE_05_SPS_ANA);
-+}
-+
- static int rtw8852b_pwr_on_func(struct rtw89_dev *rtwdev)
- {
- 	u32 val32;
-@@ -522,6 +530,10 @@ static int rtw8852b_pwr_off_func(struct rtw89_dev *rtwdev)
- 	u32 val32;
- 	u32 ret;
- 
-+	/* Only do once during probe stage after reading efuse */
-+	if (!test_bit(RTW89_FLAG_PROBE_DONE, rtwdev->flags))
-+		rtw8852b_pwr_sps_ana(rtwdev);
-+
- 	ret = rtw89_mac_write_xtal_si(rtwdev, XTAL_SI_ANAPAR_WL, XTAL_SI_RFC2RF,
- 				      XTAL_SI_RFC2RF);
- 	if (ret)
+> +/*
+> + * This registers all of the ath79k GPIOs as descriptors to be picked
+> + * directly from the ATH79K wifi driver if the two are jitted together
+> + * in the same SoC.
+> + */
+> +#define ATH79K_WIFI_DESCS 32
+> +static int ath79_gpio_register_wifi_descriptors(struct device *dev,
+> +						const char *label)
+> +{
+> +	struct gpiod_lookup_table *lookup;
+> +	int i;
+
+unsigned ?
+
+> +	/* Create a gpiod lookup using gpiochip-local offsets + 1 for NULL */
+> +        lookup = devm_kzalloc(dev,
+> +			      struct_size(lookup, table, ATH79K_WIFI_DESCS + 1),
+> +			      GFP_KERNEL);
+
+> +
+
+Besides unneeded blank line the above has a broken indentation.
+
+> +	if (!lookup)
+> +		return -ENOMEM;
+> +
+> +	lookup->dev_id = "ath9k";
+> +
+> +	for (i = 0; i < ATH79K_WIFI_DESCS; i++) {
+
+> +		lookup->table[i] = (struct gpiod_lookup)
+
+This is not needed as GPIO_LOOKUP_IDX() is a compound literal.
+
+> +			GPIO_LOOKUP_IDX(label, 0, NULL, i,
+> +					GPIO_ACTIVE_HIGH);
+
+Hence:
+
+		lookup->table[i] =
+			GPIO_LOOKUP_IDX(label, 0, NULL, i, GPIO_ACTIVE_HIGH);
+
+> +	}
+> +
+> +	gpiod_add_lookup_table(lookup);
+> +
+> +	return 0;
+> +}
+
+...
+
+> +	/* Obtains a system specific GPIO descriptor from another GPIO controller */
+> +	gpiod = devm_gpiod_get_index(ah->dev, NULL, gpio, flags);
+
+> +
+
+Unneeded blank line.
+
+> +	if (IS_ERR(gpiod)) {
+> +		err = PTR_ERR(gpiod);
+>  		ath_err(ath9k_hw_common(ah), "request GPIO%d failed:%d\n",
+>  			gpio, err);
+>  		return;
+>  	}
+
 -- 
-2.25.1
+With Best Regards,
+Andy Shevchenko
+
 
 
