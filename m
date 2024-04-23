@@ -1,95 +1,151 @@
-Return-Path: <linux-wireless+bounces-6710-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6711-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF7B58AE135
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Apr 2024 11:43:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3638D8AE183
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Apr 2024 11:59:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 718CD1F22AFE
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Apr 2024 09:43:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8142284F82
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Apr 2024 09:59:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A1C25915C;
-	Tue, 23 Apr 2024 09:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5EA7605CE;
+	Tue, 23 Apr 2024 09:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EXDtNpoB"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="qAcT6BMt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2E859151
-	for <linux-wireless@vger.kernel.org>; Tue, 23 Apr 2024 09:42:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 651551E863;
+	Tue, 23 Apr 2024 09:59:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713865371; cv=none; b=oS8gQw+yaslg5Qkhkt+HFGgwR247OrgYv4oapCH0uIa2WT62cVg+QVB/C3StXCC8TxX7Lv4ZKmQHKzfAubmp2DQdqXq4HBjoX/t/xvbzvzrsWX5Ma5o1pjGDaxugFo7C9scQb6GtIHbjcvO/U3GDN3IcpNpGoKSKd6oKxDK+LRg=
+	t=1713866357; cv=none; b=GvCH0aBlx9IF2cBX3WkUiijb5fn4VY+/93gyRg2XFw7M2fgZjSsbzJElNXT3weSPhzz2+klT4eQ6NA3iubPF/KaKjRv8ksKM9TUZP2DBa4lPueTq6xsmJPUxmVo0viCZOWYak2rk47zp/+CEEQ0OxJRb3zA5KZHH8ixCA2G2ngI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713865371; c=relaxed/simple;
-	bh=0NEJcL4Fu4kFtcHzsuxbPRyIY+LtD3O0HgV9YNRZ+30=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=O8yFgaTsfbLPK/naHLANRvApQCU9m7RhiuJ+FRMwxb4WaFhr0fVRKdAOMSOETVCy1ij+ZL6/sAuIQ2xwHKVHoBGeuaNeqN/w3ewwNngp6LKEvfZu1/nTtN70OCulto6ctEkktAaYjOjeV9tnT/nZTnNrSQ3AgWI+EGO+c7ccVYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EXDtNpoB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B1C8C116B1;
-	Tue, 23 Apr 2024 09:42:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713865371;
-	bh=0NEJcL4Fu4kFtcHzsuxbPRyIY+LtD3O0HgV9YNRZ+30=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=EXDtNpoBkeaGMvmR58Cp8HKlK7Y+VEj7m0q4Z2wFw/L3xmcTS0NjD8P4mN7Wfwc7a
-	 S1dRwwOFlFqXF9ZXeuy/IhEU3s7a5LdpzWiIYdb7rmLUQp5DiszD3qcMDYcy6nXqvB
-	 nGtYAVmTU1gMlMzvgK5aEUoRC7W9VT4vYObxANT9U89A5/4qzrjNujnczJF2Ypa3XL
-	 rVfDopcUdqFA3XCKMzUUpNztu5/2XffZN9RBkIPLbt81uBuRBjz0hTzOmMQ70Gj8ZQ
-	 HvewLxMTozHPJMK6l2TCbhQ7mOsWI4RCs1xek3RJrXhojPtyh1rYxS5+WFf35xTueT
-	 XPd56HJhjEFkQ==
-From: Kalle Valo <kvalo@kernel.org>
-To: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
-Cc: Nicolas Escande <nico.escande@gmail.com>,  <ath12k@lists.infradead.org>,
-  <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH] wifi: ath12k: drop failed transmitted frames from
- metric calculation.
-References: <20240419170314.3117623-1-quic_kathirve@quicinc.com>
-	<D0QHV8UV73N5.2N5E3MH37JQW7@gmail.com>
-	<f4c65f7e-ccc7-4a0b-a6e8-df56d5c19d7f@quicinc.com>
-Date: Tue, 23 Apr 2024 12:42:48 +0300
-In-Reply-To: <f4c65f7e-ccc7-4a0b-a6e8-df56d5c19d7f@quicinc.com> (Karthikeyan
-	Kathirvel's message of "Mon, 22 Apr 2024 22:27:45 +0530")
-Message-ID: <874jbsv2hz.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1713866357; c=relaxed/simple;
+	bh=/9R+h6X+vZp7jCAWC8iiBTXqDopMPtVBVc0rTbp+Ecg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VOduE7q7rWbDnUBL26ruuN89GISE2wHkc3VOfgyVxcIy/b3rDO0uLt2S6nerIMutos0IItB5VaA992wyfh3RHBM76qpX/ZQlXFPMbfmaLeLibWDbhXG6lV2g3eqxLbmlgh0ys8pZzOTaJmEbhqKB6fvAJnmH1DxX0LFOvmFnfzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=qAcT6BMt; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=n/Zk6ZEKvt2M7IEMMBqsu9H/VFuTDxgT/eViZ5CqB0A=; t=1713866355; x=1715075955; 
+	b=qAcT6BMtvcO/K4ZNxjQNCPZ+3XKyQpVHgTQTeGdgbpdWeNrAEMnHfAz6HEj6GV1yBRHnY6Hm9+A
+	NPWgLq7L2RsocJKBZsWCS45qiSWQImDG09G1DxEwL3Y8U0UNGatS82hzoU/OPe/2VFGmtvSHKJ8mB
+	OM06TyABRqYNjwk5I6OXqKHzCxMXg6jTZoMyICrYB2dPh0WAGPdCRolSVEGKjgLr722/ZKc8qtj08
+	bBPDJFGDsEj4cRZI5zb/oP6Es1tiP57f+p+fr4VcJR6HDPCI0q+RmLRnraAqgH7mrTcOWrOSx7JWK
+	mSON+IWI0DuepgHUR6xEISYJ+MjL2SzfU9Gg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rzCvg-000000022yu-3A5Y;
+	Tue, 23 Apr 2024 11:59:12 +0200
+From: Johannes Berg <johannes@sipsolutions.net>
+To: netdev@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Subject: pull-request: wireless-2024-04-23
+Date: Tue, 23 Apr 2024 11:57:37 +0200
+Message-ID: <20240423095910.11779-3-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-Karthikeyan Kathirvel <quic_kathirve@quicinc.com> writes:
+Hi,
 
-> On 4/22/2024 1:35 PM, Nicolas Escande wrote:
->> On Fri Apr 19, 2024 at 7:03 PM CEST, Karthikeyan Kathirvel wrote:
->>
->>> +	case HAL_WBM_TQM_REL_REASON_CMD_REMOVE_MPDU:
->>> +	case HAL_WBM_TQM_REL_REASON_DROP_THRESHOLD:
->>> +	case HAL_WBM_TQM_REL_REASON_CMD_REMOVE_AGED_FRAMES:
->>> +		/* The failure status is due to internal firmware tx failure
->>> +		 * hence drop the frame do not update the status of frame to
->>> +		 * the upper layer
->>> +		 */
->>> +		dev_kfree_skb_any(msdu);
->>
->> Shouldn't this be ieee80211_free_txskb ? I'm not clear when to use
->> which.
->
-> Yes, there is an internal patch is in pipeline, that will take care of
-> addressing all dev_kfree_skb_any() to ieee80211_free_txskb() in
-> ath12k_dp_tx_complete_msdu(), this patch doesn't take care of that.
+Probably should've sent some of this earlier, but here we are
+now. Mostly stack fixes, but one important (link ID management)
+fix for iwlwifi as well, where older devices were completely
+broken.
 
-Let's not add new bugs knowingly. Please fix this patch to use
-ieee80211_free_txskb(), that is much more reliable than waiting for some
-other patch.
+Please pull and let us know if there's any problem.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Thanks,
+johannes
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
+
+The following changes since commit 50108c352db70405b3d71d8099d0b3adc3b3352c:
+
+  Merge tag 'net-6.9-rc2' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2024-03-28 13:09:37 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2024-04-23
+
+for you to fetch changes up to 91112fc6212a9be6f3be636d885df9c17395e1a4:
+
+  wifi: iwlwifi: mvm: fix link ID management (2024-04-22 09:42:25 +0200)
+
+----------------------------------------------------------------
+Fixes for the current cycle:
+ * ath11k: convert to correct RCU iteration of IPv6 addresses
+ * iwlwifi: link ID, FW API version, scanning and PASN fixes
+ * cfg80211: NULL-deref and tracing fixes
+ * mac80211: connection mode, mesh fast-TX, multi-link and
+             various other small fixes
+
+----------------------------------------------------------------
+Avraham Stern (1):
+      wifi: iwlwifi: mvm: remove old PASN station when adding a new one
+
+Felix Fietkau (1):
+      wifi: mac80211: split mesh fast tx cache into local/proxied/forwarded
+
+Igor Artemiev (1):
+      wifi: cfg80211: fix the order of arguments for trace events of the tx_rx_evt class
+
+Johannes Berg (12):
+      wifi: mac80211: check EHT/TTLM action frame length
+      wifi: mac80211: don't use rate mask for scanning
+      Revert "wifi: iwlwifi: bump FW API to 90 for BZ/SC devices"
+      wifi: mac80211: fix idle calculation with multi-link
+      wifi: mac80211: mlme: re-parse with correct mode
+      wifi: mac80211: mlme: fix memory leak
+      wifi: mac80211: mlme: re-parse if AP mode is less than client
+      wifi: nl80211: don't free NULL coalescing rule
+      wifi: mac80211_hwsim: init peer measurement result
+      wifi: mac80211: remove link before AP
+      wifi: mac80211: fix unaligned le16 access
+      wifi: iwlwifi: mvm: fix link ID management
+
+Kalle Valo (1):
+      wifi: ath11k: use RCU when accessing struct inet6_dev::ac_list
+
+Miri Korenblit (1):
+      wifi: iwlwifi: mvm: return uid from iwl_mvm_build_scan_cmd
+
+Richard Kinder (1):
+      wifi: mac80211: ensure beacon is non-S1G prior to extracting the beacon timestamp field
+
+ drivers/net/wireless/ath/ath11k/mac.c              |  4 ++-
+ drivers/net/wireless/intel/iwlwifi/cfg/bz.c        |  2 +-
+ drivers/net/wireless/intel/iwlwifi/cfg/sc.c        |  2 +-
+ .../net/wireless/intel/iwlwifi/mvm/ftm-initiator.c |  2 ++
+ drivers/net/wireless/intel/iwlwifi/mvm/link.c      |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c      |  3 +-
+ drivers/net/wireless/virtual/mac80211_hwsim.c      |  2 +-
+ include/net/mac80211.h                             |  3 ++
+ net/mac80211/chan.c                                | 27 +++++++++++++---
+ net/mac80211/mesh.c                                |  8 ++++-
+ net/mac80211/mesh.h                                | 36 ++++++++++++++++++++--
+ net/mac80211/mesh_pathtbl.c                        | 31 +++++++++++++------
+ net/mac80211/mlme.c                                | 31 +++++++++++++------
+ net/mac80211/rate.c                                |  6 +++-
+ net/mac80211/rx.c                                  | 17 ++++++++--
+ net/mac80211/scan.c                                |  1 +
+ net/mac80211/tx.c                                  | 13 +++++---
+ net/wireless/nl80211.c                             |  2 ++
+ net/wireless/trace.h                               |  4 +--
+ 19 files changed, 152 insertions(+), 44 deletions(-)
 
