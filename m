@@ -1,119 +1,110 @@
-Return-Path: <linux-wireless+bounces-6766-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6767-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5DB88B0810
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 13:11:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 910CD8B0902
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 14:17:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 791061F23521
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 11:11:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA837B21AB2
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 12:16:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7268715B0ED;
-	Wed, 24 Apr 2024 11:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9247815ADAD;
+	Wed, 24 Apr 2024 12:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lLRpz56F"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pun7+FC1"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DDD515ADBC;
-	Wed, 24 Apr 2024 11:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7A215ADA8
+	for <linux-wireless@vger.kernel.org>; Wed, 24 Apr 2024 12:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713957032; cv=none; b=lLlyj+LRTh1Sc7cylkYC44DDysd1GAUcuO+vgqXJ0UgFP1gIs/8K6WfPKDArs+MVYiCwMnUJZMTitff4vj1/6stwVJMsWYDoj9zEHZs/h9E8Idf90gZatYsEsOylSv5rqeJcohjtXYcn93O+YLEm5v0+Zr0IxMBsOgxJXgxTK8o=
+	t=1713961013; cv=none; b=jaFmqOcKvbUX80vJro4RPzbufMOOZgWBIIFqM4h8rpnGHZ7ms49oa3FjM9KngohgKX3m+vEs1MWqq63zzx9L+NQz7SC07AAYar1eExFmFoZSd95/+bKtR+mR6gEr8fkMp/RTDAC7lr1DgZHMWJyWxUFdVMuzNk9vZaSIAWasLT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713957032; c=relaxed/simple;
-	bh=5gH5c9GDDi9WLsKl6Z7sGCJeqtsVrGwX2qo4yjbesBQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=dg6ghaoKeDVST+B9NflYTEASFoXyO8NnPfJFS03QhDLapRcS0BO8CdCMUngg0XC4fQEjPmDvAD/gjftxxiKmDECFNYJRSDl27UennCUjSkpvQY/2godHFtOPgObeIlbuAr6kpEncYMDiY/PinoRwHBj44eXADoUYdi+WBCZoau0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lLRpz56F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C9438C4AF16;
-	Wed, 24 Apr 2024 11:10:31 +0000 (UTC)
+	s=arc-20240116; t=1713961013; c=relaxed/simple;
+	bh=OX1on8q3Ad03sND9POMGUlaAeb8HEwb6ksC2BxoGMGU=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=A0HpvRR/0v1OCpFkn5hZFtVXxQwtycnWMGhUB4cA1/sqkUc/tpcBVqIC2eOJRRd1AueZ7MPrmbtkRP1jzBxULAhRWE64FkmGrRVseD7j9CiegS3dQlW1uM4N2HRBULqDf1DRqrdsu5IVbyBvm5NCTZUzdjPd4nNAxRU5U27cfHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pun7+FC1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1347AC32782;
+	Wed, 24 Apr 2024 12:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713957031;
-	bh=5gH5c9GDDi9WLsKl6Z7sGCJeqtsVrGwX2qo4yjbesBQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=lLRpz56F9j55d+6+qu39aNUTMLy7csK6asaF+R997D3H77neV+fKWIP1P0g9HC7MX
-	 vGJzItw+ps3IDad3rYSXgqM1wQcZ92403W39GmvmGPSo4K3DqEchhOSBKmn3WmEzn8
-	 uWggEcPmCuqGgl3/IfYvFqD7ygaPulhp64ijkE8vgY5UDpOSfTu8/rnaAs1sxvS4lz
-	 D/qRuYL9JdEKYX8aSTSV4yd8zwI/wxWow/6s5PCtgnmOLYujO0BSP5opoGCyF/EjSZ
-	 n+KSCP7uroT83MKzNEyHF9oin4czDsVB0TennMitDo/oVxQUBgSAB6N6LjfJZ7Yq07
-	 0z+uVazcvXK+Q==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id BADCCCF21D8;
-	Wed, 24 Apr 2024 11:10:31 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1713961013;
+	bh=OX1on8q3Ad03sND9POMGUlaAeb8HEwb6ksC2BxoGMGU=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=Pun7+FC189HqJhl6WcjO1UjNciuekhr5SuR4olEM8WJaflIO5OcXBY3Cg/23DZfc7
+	 cCwWkvIfyVwegxRfkPCmEF0EmRa2SThUyhrTmXMwqE2nIXLRrR8fnuBpn//qsSWuQs
+	 kEtT+qy6LKa86KIBAMLM13OtkgGMcHJTdFWWqO4iZqkHNXaXOI0hMGS1Tq3UQYlzLi
+	 ELYzYbqCPfv+ykzhjnvnWqNGMsw6/O3kGe5GhTtPM+Q32ESd3qBqtUf/MykRPGktw2
+	 pldpuqZCgHi/7l5EzZuxFgg/KmI+iS8wVze60G5FjLeAD32sOrMKEQIjZaHSvgt3NC
+	 Rbbh29Yhc+77A==
+From: Kalle Valo <kvalo@kernel.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+  ath12k@lists.infradead.org,  linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] wifi: ath12k: Add lock to protect the hardware
+ state
+References: <20240424065646.1666166-1-quic_periyasa@quicinc.com>
+	<20240424065646.1666166-4-quic_periyasa@quicinc.com>
+	<517caf852d37b3803bcf087a6b575f2ecdb5ba10.camel@sipsolutions.net>
+	<87il07t7zq.fsf@kernel.org>
+	<3dc4339f5c3f603027c2214058e7e3251652a7f0.camel@sipsolutions.net>
+	<87edavt7h8.fsf@kernel.org>
+	<0bfbb5549b48296e6219488d47caccd10e818700.camel@sipsolutions.net>
+Date: Wed, 24 Apr 2024 15:16:50 +0300
+In-Reply-To: <0bfbb5549b48296e6219488d47caccd10e818700.camel@sipsolutions.net>
+	(Johannes Berg's message of "Wed, 24 Apr 2024 11:52:22 +0200")
+Message-ID: <87a5ljt0p9.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v7 00/10] allocate dummy device dynamically
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <171395703175.12181.16297886360257972212.git-patchwork-notify@kernel.org>
-Date: Wed, 24 Apr 2024 11:10:31 +0000
-References: <20240422123921.854943-1-leitao@debian.org>
-In-Reply-To: <20240422123921.854943-1-leitao@debian.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: aleksander.lobakin@intel.com, kuba@kernel.org, davem@davemloft.net,
- pabeni@redhat.com, edumazet@google.com, elder@kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- nbd@nbd.name, sean.wang@mediatek.com, Mark-MC.Lee@mediatek.com,
- lorenzo@kernel.org, taras.chornyi@plvision.eu, ath11k@lists.infradead.org,
- ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
- geomatsi@gmail.com, kvalo@kernel.org, matthias.bgg@gmail.com,
- angelogioacchino.delregno@collabora.com, quic_jjohnson@quicinc.com,
- leon@kernel.org, dennis.dalessandro@cornelisnetworks.com,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org,
- idosch@idosch.org
+Content-Type: text/plain
 
-Hello:
+Johannes Berg <johannes@sipsolutions.net> writes:
 
-This series was applied to netdev/net-next.git (main)
-by David S. Miller <davem@davemloft.net>:
+> On Wed, 2024-04-24 at 12:50 +0300, Kalle Valo wrote:
+>> Johannes Berg <johannes@sipsolutions.net> writes:
+>> 
+>> > On Wed, 2024-04-24 at 12:39 +0300, Kalle Valo wrote:
+>> > > 
+>> > > Exactly. Swithing to use wiphy_lock() definitely one of my longterm
+>> > > goals in ath12k. I already started working on switching ath12k to use
+>> > > wiphy_lock() but IIRC I got blocked by not being able to call
+>> > > wiphy_delayed_work_cancel() without taking wiphy_lock.
+>> > 
+>> > That's because I didn't want to have an async version, but theoretically
+>> > we could have a version of it that just cancels the timer. If you don't
+>> > hold the wiphy mutex already you could even wait for it to finish. It
+>> > just adds more complexity there, and I was trying to make it all a lot
+>> > more obvious :)
+>> 
+>> Yeah, understandable. I think changing ath12k WMI event handling to use
+>> wiphy_work makes sense, running them in tasklet context feels overkill.
+>
+> Maybe. Note that the wiphy lock _can_ create delays etc. here, if you're
+> doing other configuration work at the same time, or similar. Though I
+> guess eventually you need locking there anyway, to access the HW. So it
+> can be a bit of a trade-off.
+>
+> I expect this will evolve over time even in mac80211, though so far we
+> haven't seen any bad effect from it.
 
-On Mon, 22 Apr 2024 05:38:53 -0700 you wrote:
-> struct net_device shouldn't be embedded into any structure, instead,
-> the owner should use the private space to embed their state into
-> net_device.
-> 
-> But, in some cases the net_device is embedded inside the private
-> structure, which blocks the usage of zero-length arrays inside
-> net_device.
-> 
-> [...]
+Good point. And now that I think of this more I don't think we can use
+wiphy_work with WMI events as we are waiting some events while holding
+wiphy_lock, that would end up as deadlock. So most likely we need to use
+a normal workqueue with WMI events and take wiphy_lock manually in
+certain cases. But I'll need to investigate more and do some
+experiments.
 
-Here is the summary with links:
-  - [net-next,v7,01/10] net: core: Fix documentation
-    https://git.kernel.org/netdev/net-next/c/c6e7f276841d
-  - [net-next,v7,02/10] net: free_netdev: exit earlier if dummy
-    https://git.kernel.org/netdev/net-next/c/f8d05679fb3f
-  - [net-next,v7,03/10] net: create a dummy net_device allocator
-    https://git.kernel.org/netdev/net-next/c/c661050f93d3
-  - [net-next,v7,04/10] net: marvell: prestera: allocate dummy net_device dynamically
-    https://git.kernel.org/netdev/net-next/c/ec24c06eb312
-  - [net-next,v7,05/10] net: mediatek: mtk_eth_sock: allocate dummy net_device dynamically
-    https://git.kernel.org/netdev/net-next/c/b209bd6d0bff
-  - [net-next,v7,06/10] net: ipa: allocate dummy net_device dynamically
-    https://git.kernel.org/netdev/net-next/c/1bdab0ee635d
-  - [net-next,v7,07/10] net: ibm/emac: allocate dummy net_device dynamically
-    https://git.kernel.org/netdev/net-next/c/2eb5e25d8495
-  - [net-next,v7,08/10] wifi: qtnfmac: Use netdev dummy allocator helper
-    https://git.kernel.org/netdev/net-next/c/4a8b77eff7e5
-  - [net-next,v7,09/10] wifi: ath10k: allocate dummy net_device dynamically
-    https://git.kernel.org/netdev/net-next/c/57738dab12d9
-  - [net-next,v7,10/10] wifi: ath11k: allocate dummy net_device dynamically
-    https://git.kernel.org/netdev/net-next/c/bca592ead825
-
-You are awesome, thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
