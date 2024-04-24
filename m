@@ -1,105 +1,101 @@
-Return-Path: <linux-wireless+bounces-6760-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6761-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CB058B03E9
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 10:11:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72C658B0630
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 11:39:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E298C2823F2
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 08:11:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 295591F2262D
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 09:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14CE6158212;
-	Wed, 24 Apr 2024 08:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 923F0158A39;
+	Wed, 24 Apr 2024 09:39:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WNzwHM8g"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.holtmann.org (coyote.holtmann.net [212.227.132.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E569A158202;
-	Wed, 24 Apr 2024 08:11:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.132.17
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69DCA1EF1A
+	for <linux-wireless@vger.kernel.org>; Wed, 24 Apr 2024 09:39:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713946290; cv=none; b=YNsTecWaG9ODwxfnhhYn/ZKIdvOa3YW7zotNWxygjZwZBtldQTJqtM3t11DHvFffga8ry/jImls3nDeJLZuViJaZRuqeAJj1InOAW7KVjWrT6JNudRwoggOsskiw9YK3PQ9j14TVDCDtisHnNRFmT773P/FZ0ezpPdpQTXfUMW4=
+	t=1713951565; cv=none; b=t1NzRRYOcO7ag57Umulb8zkQmsGX7KE1E9mxD4VIoXMkbKMQbs4q35iLxtde3luq1jkpGN4d086y3FDjmWJSIViu2M0hKKbQx2QdyMqBm5FuBXZ6pBBsUzz8+pmSzyVSKLILxHIu7kcJi1oAHMjad9AhpX5IDm5VN9fmN81W6pM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713946290; c=relaxed/simple;
-	bh=7HDc/MqVQCPWa5gWooNoBrslr6ONAaNmJF3PdVsJytY=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=GLUkwtRApVLeUjBqXMUSE7NwQ8PutXnIFSO5V+4kw592Gg4uqbzBxDV6VxJTw5v5xXx6P2AyPdxygU/GJOXzj8oAIG27x4dA1lhgWifeJGOggQh0iUnqg1JxO7UT5tlXV9PKzMgvJndefuv2RLozM9itD0U9YEANXzv9v3PF5g8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=holtmann.org; spf=pass smtp.mailfrom=holtmann.org; arc=none smtp.client-ip=212.227.132.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=holtmann.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=holtmann.org
-Received: from smtpclient.apple (p4fefc49c.dip0.t-ipconnect.de [79.239.196.156])
-	by mail.holtmann.org (Postfix) with ESMTPSA id 979D1CECBE;
-	Wed, 24 Apr 2024 10:11:20 +0200 (CEST)
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1713951565; c=relaxed/simple;
+	bh=GUIlLkif8keejqDQqKOkW9EQrA1+ijV1H3EyKQjskfw=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=Q07KiI/WJtloFiOKMH8NYJnQc2J4ZGi11ckuFxBee+b0WwmJYKdawSb/sga1IyqI+CDf7mbssZ0XFchKfC8kg83PUDFcJMI7o0Pk7yC8ah69fb8W/IBaVB89XUsm99CLTp8nmYQvi5QY3QgTXlJkiWAz4ciNCHbicXW9jsXDsKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WNzwHM8g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C2FC113CE;
+	Wed, 24 Apr 2024 09:39:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713951564;
+	bh=GUIlLkif8keejqDQqKOkW9EQrA1+ijV1H3EyKQjskfw=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=WNzwHM8gw8qQj5lZ9kTqaCfk+IsJoUwzTwOqm2LQleRnp1evX4zvo7ieb0J7NFL3W
+	 rx2YlMTL32rBqESPwHshSYhc6BBYocL3kah1koOKQlCHgfHEj85gRlib3DfVBo54L/
+	 n7Bt78Kswcv0jBNPiKcG8lVad/nghY5mJSVUnynz7JjPN2FH9IW7Ez2tJfqEEZRgBr
+	 n8yqLp9ihF6LhcdzwvwiN1iau7V+cdYn01Zx5QlgEWKwmEj0oryF4ghGRE5GKf1rbL
+	 AT6qwnNvOfOPhh27XQPy9sHVvtRWFNqlvXu1zu/lRhQXo/g/ZJ90FvTP3VIvemdxyH
+	 ScPrYPy8znSCw==
+From: Kalle Valo <kvalo@kernel.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+  ath12k@lists.infradead.org,  linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] wifi: ath12k: Add lock to protect the hardware
+ state
+References: <20240424065646.1666166-1-quic_periyasa@quicinc.com>
+	<20240424065646.1666166-4-quic_periyasa@quicinc.com>
+	<517caf852d37b3803bcf087a6b575f2ecdb5ba10.camel@sipsolutions.net>
+Date: Wed, 24 Apr 2024 12:39:21 +0300
+In-Reply-To: <517caf852d37b3803bcf087a6b575f2ecdb5ba10.camel@sipsolutions.net>
+	(Johannes Berg's message of "Wed, 24 Apr 2024 09:28:20 +0200")
+Message-ID: <87il07t7zq.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
-Subject: Re: [EXT] [PATCH v10 0/2] wifi: mwifiex: add code to support host
- mlme
-From: Marcel Holtmann <marcel@holtmann.org>
-In-Reply-To: <PA4PR04MB96389E67F826216C44FE19FFD1112@PA4PR04MB9638.eurprd04.prod.outlook.com>
-Date: Wed, 24 Apr 2024 10:11:10 +0200
-Cc: Brian Norris <briannorris@chromium.org>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>,
- Kalle Valo <kvalo@kernel.org>,
- "francesco@dolcini.it" <francesco@dolcini.it>,
- Pete Hsieh <tsung-hsien.hsieh@nxp.com>,
- "rafael.beims" <rafael.beims@toradex.com>,
- Francesco Dolcini <francesco.dolcini@toradex.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <C8F76484-1359-437B-85BF-C646A21F7BCE@holtmann.org>
-References: <20240418060626.431202-1-yu-hao.lin@nxp.com>
- <0ED16BAB-6E7D-487C-BBCA-E63FEF37C60D@holtmann.org>
- <PA4PR04MB963815B9FDA6119683A28CADD10E2@PA4PR04MB9638.eurprd04.prod.outlook.com>
- <6CB59E09-F34E-4986-AA88-8EC4EE5E71DF@holtmann.org>
- <PA4PR04MB9638B62BC25F773C6922A4BCD10D2@PA4PR04MB9638.eurprd04.prod.outlook.com>
- <ZiLlPOvKlfCySZwF@google.com>
- <PA4PR04MB96383D46C1187C237DFC7988D1122@PA4PR04MB9638.eurprd04.prod.outlook.com>
- <PA4PR04MB96389E67F826216C44FE19FFD1112@PA4PR04MB9638.eurprd04.prod.outlook.com>
-To: David Lin <yu-hao.lin@nxp.com>
-X-Mailer: Apple Mail (2.3774.500.171.1.1)
+MIME-Version: 1.0
+Content-Type: text/plain
 
-Hi David,
+Johannes Berg <johannes@sipsolutions.net> writes:
 
-> Johannes agreed that cfg80211 is the correct way for the development =
-of mwifiex
-> (mac80211 can't offload association process to driver/FW).
+> On Wed, 2024-04-24 at 12:26 +0530, Karthikeyan Periyasamy wrote:
+>> Currently, hardware state is not protected across the reconfigure
+>> operations. However, in single wiphy models, multiple radio/links is
+>> exposed as a MAC hardware (ieee80211_hw) through the driver hardware
+>> abstraction (ath12k_hw) layer. In such scenario, we need to protect
+>> hardware state across the multiple radio/link at the driver hardware
+>> abstraction (ath12k_hw) layer. Therefore, introduce a new mutex in
+>> the ath12k_hw layer.
+>> 
+>
+> It's your driver, but ... it would seem _simpler_ to do locking across
+> the hw with a single wiphy model, because everything (except currently
+> for ath12k_core_reset and ath12k_core_restart) already holds the wiphy
+> mutex. You can probably move those to wiphy work.
+>
+> I'd avoid doing lock explosion like we had in mac80211, it's going to
+> come back and bite you eventually :)
 
-that was never my question here.
+Exactly. Swithing to use wiphy_lock() definitely one of my longterm
+goals in ath12k. I already started working on switching ath12k to use
+wiphy_lock() but IIRC I got blocked by not being able to call
+wiphy_delayed_work_cancel() without taking wiphy_lock. One way to solve
+that might be to convert WMI event handling to use wiphy work but didn't
+have the time to work on that so I put it on the backborner. I should
+resurrect that branch and submit it as RFC.
 
-> This patch is used to fully leverage SME of wpa_supplicant and hostapd =
-which can complete the missing WPA3 feature of mwifiex.
-> The patch series had been reviewed and discussed. It looks like there =
-is no more comments for patch v10.
-> I wonder can patch v10 be accepted by you?
+But for the time being I think we need to add another mutex to ath12k, I
+don't want to block Karthikeyan for too long.
 
-If your hardware is a FullMac hardware then what is the point in now =
-separating
-auth/assoc out. Is this done just for WPA3 or also for WPA2/WPA1. Are =
-you no
-longer a FullMac hardware?
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-You keep saying that you just want to support WPA3 and if previously the =
-HW
-worked as FullMac hardware, then external_auth should be the way to go =
-for
-having SAE handled by wpa_supplicant (or iwd for that matter).
-
-Now if you are fully embracing to auth/assoc and we can remove the =
-support
-for the connect ops, then lets do it. However I don=E2=80=99t see =
-anything properly
-described in the commit message. You keep saying WPA3 support and =
-nothing
-else explain what the new Key V2 API of the firmware would do.
-
-Regards
-
-Marcel
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
