@@ -1,285 +1,290 @@
-Return-Path: <linux-wireless+bounces-6796-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6797-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3C8D8B14C9
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 22:41:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DECDD8B14DD
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 22:48:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79FF2281756
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 20:41:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C79E1C22C45
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 20:48:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 577A674420;
-	Wed, 24 Apr 2024 20:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE66415696B;
+	Wed, 24 Apr 2024 20:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="kJqGNWUT"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iUb7cQHR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E411772F
-	for <linux-wireless@vger.kernel.org>; Wed, 24 Apr 2024 20:41:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 191A91772F
+	for <linux-wireless@vger.kernel.org>; Wed, 24 Apr 2024 20:48:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713991291; cv=none; b=FU79Q2FzA7AVPK3UffxeGyJasHcygMPE/3zBW1V1jf1eNSAiLNXTs4x22a8rE3K2VIelzZCsZ2wO/3gORBZ0/AwmGgWSPpahg914jmgDK54XFSYDBzo4rpL0GcKWttRnTPQM38YoT4PgS6c5Tfc//g995Nb5X2cnEgPIHwEfMyo=
+	t=1713991697; cv=none; b=FHD5DZzFno7rB8X/x0vdWKuoN28IXjC5sEwQ3MUxoqG3NIVp/BQgSYdxyTwlyIcagXB4iSifER8qiytuhNvUufIklyeBN6vtfd6FzrGYJEnrY+W5Ftxa/nJjjJRPmJtd6UtZM2HtB+ocoj2fXk84aTtwVqqp5+iYdJnIgXi47vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713991291; c=relaxed/simple;
-	bh=l106K6ffnXwHbvBvff91s32R50w0to/hZ98kOev3HZE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=mrQQxZg8yMEc81rdPU/Z2vTqnDhtmZJuTT8zh5zQawaB3pzYv7RJ9xT9hhrihglWocpdMEr1a6+FrNdTpJXDELTx0eglJzTXdB5jezOA3h47ziH4zCrErV/J46kv7Voq7BMVvxIeTgA0yrdkx/viTDsh5LyGGSdYxkX77UlTQyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=kJqGNWUT; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43OImQsR013756;
-	Wed, 24 Apr 2024 20:41:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=I4zdxIaOlPF4GMGz9H61w98Z3pA8EJcZSaATnh6k2Ps=; b=kJ
-	qGNWUTJVayHvdb8FhWGj+x43knY9fX01ehvd/aUNgJONjKJZGKwJFGjea5lGQyAg
-	2yOZEOA5rTj5R/BPTgmzo1jLyD0q1CX9zxQpz2E3BAJJODs59kCEzKvcuGJa2Nv9
-	cq7ZVNjCXGqDjp83ghkHWlWe5B4mYbgl/ffSTbc64IoYQhSW/9zG6415ZffsQciT
-	Yg3jPjCYBzOOKe7so40PgavbrM52v73YyVfFt1et379GGq6PidaiYtQqb6oJjWo5
-	VBwZjTrRWvSYFQ9nB2Xdvs1R55QufZkpVJAeVEnEjplXcJJ8wuLhTH0F2xxhMfsE
-	xIdte0a3WuCuthlMf53w==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xpv9dj4y1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Apr 2024 20:41:26 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43OKfQlf027973
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Apr 2024 20:41:26 GMT
-Received: from [10.110.61.159] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 24 Apr
- 2024 13:41:25 -0700
-Message-ID: <833facaa-6b8d-4301-84e1-bef1980f26b6@quicinc.com>
-Date: Wed, 24 Apr 2024 13:41:25 -0700
+	s=arc-20240116; t=1713991697; c=relaxed/simple;
+	bh=APvvGfjt6M4RGHG68kcPHxSbyBNeXdPdp01IWBW2Xh8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bh//XbDQhcTvwqLmWSV7jz0rBHSFUeGJOyzErnzmF1LSFMEBT97gnhPicOz0gGyTjkKMtQ/L6lmAQfbfXh6HOyVozOM8sORCKUhv0bFmJ7mB3z5OiuHqyW6uo0XO15P++Qr8dfOk9x1mdmQyZ+2Zu4IfuAHx5Ka9zV+BJTHO0m8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iUb7cQHR; arc=none smtp.client-ip=209.85.219.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-dc25e12cc63so1304152276.0
+        for <linux-wireless@vger.kernel.org>; Wed, 24 Apr 2024 13:48:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1713991695; x=1714596495; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=l1pZWiUWl1nMefgATaw3YsOhf+pqCV2nzomHBQjDgDo=;
+        b=iUb7cQHRdPzSnLuOtQ10HQPxCXShHqlw84cVDllBYOK9PLxLXNpUcxPkGcxvBUu73J
+         hUmjPh0vxM8sawc1ymMSsanW8e05vYq5DQYUDciIRe4XmvrQaH38QOyruo0CWffkX4En
+         mZB0xm5MDcAx31d278omLoglYOBSzYO+dK1pSLTLH3AOtKqmDv9fIJ9Hh6yeLwA6jWxC
+         QEyVY8wJ1E4VhNsls+RKbnKQEA1F8ElpoSn75M4+2nTj9K7MhfyuVpjDPncxY0ydFrZ8
+         +eb1VbadOtXSSLQzh/s59jVAaQ9N5JNW2u5VFl8+ByPR3FPM26Am5gp3ADe0Vplq8JhC
+         9W6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713991695; x=1714596495;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=l1pZWiUWl1nMefgATaw3YsOhf+pqCV2nzomHBQjDgDo=;
+        b=kYMzMfDgFta+Wvk5J2HMePzvjMgo0mMz4yzpsM59YVSqgzqHaav+oAaAKjaZFc6szm
+         lPKR015xJwbCy/BnEpx5WcoFWh1aBLx4KU9adsiRHHrA4ILkdylCFZGtJ5Wr8r84N/Md
+         6qv0J4s4osHvtlQWMO+9vYYikVyA20K4NjRkybtX5vuvSXXqFmonHI+dbD9gbqfegSCq
+         rL3uYY0bHqEcX41qZMDzlh7x1H5HMOaSj0buD6W3ggfdNewpwXtthMRSFHESd9Z8QoND
+         TwatBzpkglNM1eVE7mF9/3mrWjIhtIHN8PchQFhUpdbPVJ8riqNeYOD4Xb3VmacXtt4u
+         6tVg==
+X-Forwarded-Encrypted: i=1; AJvYcCWb4RYB8/fsEEvfxwmiDCuXBxb0y9HGE+kUEOpLV/L9yG4O+g5mvCrwHpPSB9gcN/1oFxARa1KNQecnOqdw3D3658krIQvqeBCEUAmlgdU=
+X-Gm-Message-State: AOJu0YxhndUMRqAYpLvU071g7nhUNWrQpgEr9OO/0+XX1kE4i3rhymNV
+	ObR4anRLcd1pxuHLqoN5WdthGC+jcLoejUVHFBVYgybnBpK41EwhW6HdA/6UKj9Hd6BrgRICWhm
+	+/GuEoKEX3Hci9LurTxKMVb9QbH5qdWu9C6m6QQ==
+X-Google-Smtp-Source: AGHT+IFoGSJUlBELzEJjb2GiElbJgSl6N/By/Nucv+WQf0ab/sVj/6V4J/pp7hLNpClrwGLOjUJdwEmao5p/n9i55u8=
+X-Received: by 2002:a25:ae85:0:b0:dcc:623e:1b5d with SMTP id
+ b5-20020a25ae85000000b00dcc623e1b5dmr621667ybj.31.1713991695065; Wed, 24 Apr
+ 2024 13:48:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] wifi: ath12k: Add lock to protect the hardware
- state
-Content-Language: en-US
-To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
-        <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240424065646.1666166-1-quic_periyasa@quicinc.com>
- <20240424065646.1666166-4-quic_periyasa@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240424065646.1666166-4-quic_periyasa@quicinc.com>
+References: <20240410124628.171783-1-brgl@bgdev.pl> <20240410124628.171783-2-brgl@bgdev.pl>
+In-Reply-To: <20240410124628.171783-2-brgl@bgdev.pl>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Wed, 24 Apr 2024 23:48:03 +0300
+Message-ID: <CAA8EJpq81Z4YH1apTidntwcfpsL3YjgMM_y+G0=waaoPjRL-Cw@mail.gmail.com>
+Subject: Re: [PATCH v7 01/16] regulator: dt-bindings: describe the PMU module
+ of the QCA6390 package
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Kalle Valo <kvalo@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konrad.dybcio@linaro.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+	Mark Brown <broonie@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Saravana Kannan <saravanak@google.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Arnd Bergmann <arnd@arndb.de>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Alex Elder <elder@linaro.org>, 
+	Srini Kandagatla <srinivas.kandagatla@linaro.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Abel Vesa <abel.vesa@linaro.org>, 
+	Manivannan Sadhasivam <mani@kernel.org>, Lukas Wunner <lukas@wunner.de>, Amit Pundir <amit.pundir@linaro.org>, 
+	Xilin Wu <wuxilin123@gmail.com>, linux-bluetooth@vger.kernel.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-pci@vger.kernel.org, linux-pm@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: neaH_oqqSgs_soJ-71bA4F5RJqTQ8JXK
-X-Proofpoint-ORIG-GUID: neaH_oqqSgs_soJ-71bA4F5RJqTQ8JXK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-04-24_17,2024-04-24_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- priorityscore=1501 mlxscore=0 malwarescore=0 suspectscore=0
- impostorscore=0 mlxlogscore=999 bulkscore=0 clxscore=1015 phishscore=0
- adultscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2404010003 definitions=main-2404240104
 
-On 4/23/2024 11:56 PM, Karthikeyan Periyasamy wrote:
-> Currently, hardware state is not protected across the reconfigure
-> operations. However, in single wiphy models, multiple radio/links is
-> exposed as a MAC hardware (ieee80211_hw) through the driver hardware
-> abstraction (ath12k_hw) layer. In such scenario, we need to protect
-> hardware state across the multiple radio/link at the driver hardware
-> abstraction (ath12k_hw) layer. Therefore, introduce a new mutex in
-> the ath12k_hw layer.
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> 
-> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+On Wed, 10 Apr 2024 at 15:46, Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+>
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>
+> The QCA6390 package contains discreet modules for WLAN and Bluetooth. They
+> are powered by the Power Management Unit (PMU) that takes inputs from the
+> host and provides LDO outputs. This document describes this module.
+>
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> Acked-by: Mark Brown <broonie@kernel.org>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 > ---
->  drivers/net/wireless/ath/ath12k/core.c |  4 ++++
->  drivers/net/wireless/ath/ath12k/core.h |  6 ++++++
->  drivers/net/wireless/ath/ath12k/mac.c  | 29 ++++++++++++++++++++++++--
->  3 files changed, 37 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-> index a685cfd6fd92..e9aabdb9341c 100644
-> --- a/drivers/net/wireless/ath/ath12k/core.c
-> +++ b/drivers/net/wireless/ath/ath12k/core.c
-> @@ -1048,6 +1048,8 @@ static void ath12k_core_post_reconfigure_recovery(struct ath12k_base *ab)
->  		if (!ah || ah->state == ATH12K_HW_STATE_OFF)
->  			continue;
->  
-> +		mutex_lock(&ah->hw_mutex);
+>  .../bindings/regulator/qcom,qca6390-pmu.yaml  | 151 ++++++++++++++++++
+>  1 file changed, 151 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/regulator/qcom,qca6390-pmu.yaml
+>
+> diff --git a/Documentation/devicetree/bindings/regulator/qcom,qca6390-pmu.yaml b/Documentation/devicetree/bindings/regulator/qcom,qca6390-pmu.yaml
+> new file mode 100644
+> index 000000000000..9d39ff9a75fd
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/regulator/qcom,qca6390-pmu.yaml
+> @@ -0,0 +1,151 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/regulator/qcom,qca6390-pmu.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
->  		switch (ah->state) {
->  		case ATH12K_HW_STATE_ON:
->  			ah->state = ATH12K_HW_STATE_RESTARTING;
-> @@ -1078,6 +1080,8 @@ static void ath12k_core_post_reconfigure_recovery(struct ath12k_base *ab)
->  				    "device is wedged, will not restart hw %d\n", i);
->  			break;
->  		}
+> +title: Qualcomm Technologies, Inc. QCA6390 PMU Regulators
 > +
-> +		mutex_unlock(&ah->hw_mutex);
->  	}
->  
->  	complete(&ab->driver_recovery);
-> diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-> index eff1093fbb6e..3e3e157b6c56 100644
-> --- a/drivers/net/wireless/ath/ath12k/core.h
-> +++ b/drivers/net/wireless/ath/ath12k/core.h
-> @@ -634,11 +634,17 @@ struct ath12k {
->  struct ath12k_hw {
->  	struct ieee80211_hw *hw;
->  	struct ath12k_base *ab;
+> +maintainers:
+> +  - Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 > +
-> +	/* Protect the write operation of the hardware state ath12k_hw::state
-> +	 * between hardware start<=>reconfigure<=>stop transitions.
-> +	 */
-> +	struct mutex hw_mutex;
->  	enum ath12k_hw_state state;
->  	bool regd_updated;
->  	bool use_6ghz_regd;
->  	u8 num_radio;
->  
-> +	/* Keep last */
->  	struct ath12k radio[] __aligned(sizeof(void *));
->  };
->  
-> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-> index 8b003c18796d..3dc95d36b6a2 100644
-> --- a/drivers/net/wireless/ath/ath12k/mac.c
-> +++ b/drivers/net/wireless/ath/ath12k/mac.c
-> @@ -5546,10 +5546,13 @@ static void ath12k_mac_wait_reconfigure(struct ath12k_base *ab)
->  
->  static int ath12k_mac_start(struct ath12k *ar)
->  {
-> +	struct ath12k_hw *ah = ar->ah;
->  	struct ath12k_base *ab = ar->ab;
->  	struct ath12k_pdev *pdev = ar->pdev;
->  	int ret;
->  
-> +	lockdep_assert_held(&ah->hw_mutex);
+> +description:
+> +  The QCA6390 package contains discreet modules for WLAN and Bluetooth. They
+> +  are powered by the Power Management Unit (PMU) that takes inputs from the
+> +  host and provides LDO outputs. This document describes this module.
 > +
->  	mutex_lock(&ar->conf_mutex);
->  
->  	ret = ath12k_wmi_pdev_set_param(ar, WMI_PDEV_PARAM_PMF_QOS,
-> @@ -5664,6 +5667,8 @@ static int ath12k_mac_op_start(struct ieee80211_hw *hw)
->  
->  	ath12k_drain_tx(ah);
->  
-> +	mutex_lock(&ah->hw_mutex);
+> +properties:
+> +  compatible:
+> +    const: qcom,qca6390-pmu
+> +
+> +  vddaon-supply:
+> +    description: VDD_AON supply regulator handle
+> +
+> +  vddpmu-supply:
+> +    description: VDD_PMU supply regulator handle
+> +
+> +  vddrfa0p95-supply:
+> +    description: VDD_RFA_0P95 supply regulator handle
+> +
+> +  vddrfa1p3-supply:
+> +    description: VDD_RFA_1P3 supply regulator handle
+> +
+> +  vddrfa1p9-supply:
+> +    description: VDD_RFA_1P9 supply regulator handle
+> +
+> +  vddpcie1p3-supply:
+> +    description: VDD_PCIE_1P3 supply regulator handle<S-Del>
+> +
+> +  vddpcie1p9-supply:
+> +    description: VDD_PCIE_1P9 supply regulator handle
+> +
+> +  vddio-supply:
+> +    description: VDD_IO supply regulator handle
+> +
+> +  wlan-enable-gpios:
+> +    maxItems: 1
+> +    description: GPIO line enabling the ATH11K WLAN module supplied by the PMU
+> +
+> +  bt-enable-gpios:
+> +    maxItems: 1
+> +    description: GPIO line enabling the ATH11K Bluetooth module supplied by the PMU
 
-since this is always unlocked just before we return, it is a good candidate
-for the cleanup.h functionality. just change this to:
-	guard(mutex)(&ah->hw_mutex);
-
-and remove all of the other edits to this function. the mutex will always be
-unlocked when the function returns
+As a side node, I think we should also steal swctrl pin from the
+bluetooth device node. It represents the status of the PMU and as such
+it is not BT-specific.
 
 > +
->  	switch (ah->state) {
->  	case ATH12K_HW_STATE_OFF:
->  		ah->state = ATH12K_HW_STATE_ON;
-> @@ -5678,7 +5683,8 @@ static int ath12k_mac_op_start(struct ieee80211_hw *hw)
->  		ah->state = ATH12K_HW_STATE_OFF;
->  
->  		WARN_ON(1);
-> -		return -EINVAL;
-> +		ret = -EINVAL;
-> +		goto err;
->  	}
->  
->  	for_each_ar(ah, ar, i) {
-> @@ -5692,6 +5698,8 @@ static int ath12k_mac_op_start(struct ieee80211_hw *hw)
->  		}
->  	}
->  
-> +	mutex_unlock(&ah->hw_mutex);
+> +  regulators:
+> +    type: object
+> +    description:
+> +      LDO outputs of the PMU
 > +
->  	return 0;
->  
->  fail_start:
-> @@ -5700,6 +5708,8 @@ static int ath12k_mac_op_start(struct ieee80211_hw *hw)
->  		ath12k_mac_stop(ar);
->  	}
->  
-> +err:
-> +	mutex_unlock(&ah->hw_mutex);
->  	return ret;
->  }
->  
-> @@ -5762,9 +5772,12 @@ int ath12k_mac_rfkill_enable_radio(struct ath12k *ar, bool enable)
->  
->  static void ath12k_mac_stop(struct ath12k *ar)
->  {
-> +	struct ath12k_hw *ah = ar->ah;
->  	struct htt_ppdu_stats_info *ppdu_stats, *tmp;
->  	int ret;
->  
-> +	lockdep_assert_held(&ah->hw_mutex);
+> +    patternProperties:
+> +      "^ldo[0-9]$":
+> +        $ref: regulator.yaml#
+> +        type: object
+> +        unevaluatedProperties: false
 > +
->  	mutex_lock(&ar->conf_mutex);
->  	ret = ath12k_mac_config_mon_status_default(ar, false);
->  	if (ret && (ret != -EOPNOTSUPP))
-> @@ -5800,10 +5813,14 @@ static void ath12k_mac_op_stop(struct ieee80211_hw *hw)
->  
->  	ath12k_drain_tx(ah);
->  
-> +	mutex_lock(&ah->hw_mutex);
+> +    additionalProperties: false
 > +
->  	ah->state = ATH12K_HW_STATE_OFF;
->  
->  	for_each_ar(ah, ar, i)
->  		ath12k_mac_stop(ar);
+> +required:
+> +  - compatible
+> +  - regulators
 > +
-> +	mutex_unlock(&ah->hw_mutex);
->  }
->  
->  static u8
-> @@ -7848,8 +7865,12 @@ ath12k_mac_op_reconfig_complete(struct ieee80211_hw *hw,
->  	if (reconfig_type != IEEE80211_RECONFIG_TYPE_RESTART)
->  		return;
->  
-> -	if (ah->state != ATH12K_HW_STATE_RESTARTED)
-> +	mutex_lock(&ah->hw_mutex);
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: qcom,qca6390-pmu
+> +    then:
+> +      required:
+> +        - vddaon-supply
+> +        - vddpmu-supply
+> +        - vddrfa0p95-supply
+> +        - vddrfa1p3-supply
+> +        - vddrfa1p9-supply
+> +        - vddpcie1p3-supply
+> +        - vddpcie1p9-supply
+> +        - vddio-supply
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    pmu {
+> +        compatible = "qcom,qca6390-pmu";
+> +
+> +        pinctrl-names = "default";
+> +        pinctrl-0 = <&bt_en_state>, <&wlan_en_state>;
+> +
+> +        vddaon-supply = <&vreg_s6a_0p95>;
+> +        vddpmu-supply = <&vreg_s2f_0p95>;
+> +        vddrfa0p95-supply = <&vreg_s2f_0p95>;
+> +        vddrfa1p3-supply = <&vreg_s8c_1p3>;
+> +        vddrfa1p9-supply = <&vreg_s5a_1p9>;
+> +        vddpcie1p3-supply = <&vreg_s8c_1p3>;
+> +        vddpcie1p9-supply = <&vreg_s5a_1p9>;
+> +        vddio-supply = <&vreg_s4a_1p8>;
+> +
+> +        wlan-enable-gpios = <&tlmm 20 GPIO_ACTIVE_HIGH>;
+> +        bt-enable-gpios = <&tlmm 21 GPIO_ACTIVE_HIGH>;
+> +
+> +        regulators {
+> +            vreg_pmu_rfa_cmn: ldo0 {
+> +                regulator-name = "vreg_pmu_rfa_cmn";
+> +            };
+> +
+> +            vreg_pmu_aon_0p59: ldo1 {
+> +                regulator-name = "vreg_pmu_aon_0p59";
+> +            };
+> +
+> +            vreg_pmu_wlcx_0p8: ldo2 {
+> +                regulator-name = "vreg_pmu_wlcx_0p8";
+> +            };
+> +
+> +            vreg_pmu_wlmx_0p85: ldo3 {
+> +                regulator-name = "vreg_pmu_wlmx_0p85";
+> +            };
+> +
+> +            vreg_pmu_btcmx_0p85: ldo4 {
+> +                regulator-name = "vreg_pmu_btcmx_0p85";
+> +            };
+> +
+> +            vreg_pmu_rfa_0p8: ldo5 {
+> +                regulator-name = "vreg_pmu_rfa_0p8";
+> +            };
+> +
+> +            vreg_pmu_rfa_1p2: ldo6 {
+> +                regulator-name = "vreg_pmu_rfa_1p2";
+> +            };
+> +
+> +            vreg_pmu_rfa_1p7: ldo7 {
+> +                regulator-name = "vreg_pmu_rfa_1p7";
+> +            };
+> +
+> +            vreg_pmu_pcie_0p9: ldo8 {
+> +                regulator-name = "vreg_pmu_pcie_0p9";
+> +            };
+> +
+> +            vreg_pmu_pcie_1p8: ldo9 {
+> +                regulator-name = "vreg_pmu_pcie_1p8";
+> +            };
+> +        };
+> +    };
+> --
+> 2.40.1
+>
 
-another good candidate for
-	guard(mutex)(&ah->hw_mutex);
 
-> +
-> +	if (ah->state != ATH12K_HW_STATE_RESTARTED) {
-> +		mutex_unlock(&ah->hw_mutex);
->  		return;
-> +	}
->  
->  	ah->state = ATH12K_HW_STATE_ON;
->  	ieee80211_wake_queues(hw);
-> @@ -7904,6 +7925,8 @@ ath12k_mac_op_reconfig_complete(struct ieee80211_hw *hw,
->  
->  		mutex_unlock(&ar->conf_mutex);
->  	}
-> +
-> +	mutex_unlock(&ah->hw_mutex);
->  }
->  
->  static void
-> @@ -8850,6 +8873,8 @@ static struct ath12k_hw *ath12k_mac_hw_allocate(struct ath12k_base *ab,
->  	ah->ab = ab;
->  	ah->num_radio = num_pdev_map;
->  
-> +	mutex_init(&ah->hw_mutex);
-> +
->  	for (i = 0; i < num_pdev_map; i++) {
->  		ab = pdev_map[i].ab;
->  		pdev_idx = pdev_map[i].pdev_idx;
-
+-- 
+With best wishes
+Dmitry
 
