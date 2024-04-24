@@ -1,119 +1,141 @@
-Return-Path: <linux-wireless+bounces-6769-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6770-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 131068B09BF
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 14:32:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BCDE8B0B1B
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 15:37:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 459AF1C240CA
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 12:32:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C64AF1F22C42
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 13:37:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A38AB2F52;
-	Wed, 24 Apr 2024 12:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B72CF15EFC2;
+	Wed, 24 Apr 2024 13:33:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="hYguyXVC"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Uiohh11P"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688871E528
-	for <linux-wireless@vger.kernel.org>; Wed, 24 Apr 2024 12:32:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A17515EFBF
+	for <linux-wireless@vger.kernel.org>; Wed, 24 Apr 2024 13:33:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713961949; cv=none; b=hu7ioS80MCCfB+Q+mgDzdOE+Zsx9i/bSSXjd5htgD2GFNzWhd81YCcxw0nFFD8LgWy8h2GnMVkUJJUL281Ud9d08eTmOk7wUliNSttlsAdGpq5qVRbfbxF+FAgGrzt38rQ5SOpIBbOs6OiXfmBS1FFrcM7CV2FYXRh6NTgKRy6c=
+	t=1713965616; cv=none; b=u/2/JYQgy6jgeIVgScI4SGKUqKHyirDNWW+DxqNf9Xm453+Kc3liqlUcSFQP9vSe/J5jg5p1RajXyhvVsvLSRAcN4JXDzB055UT+Eddm6JWfoFreMYnt/HmfNMZ+KHA67eyJA2GWLK2aBBSa5V7x02RY3NZsqkm4KTjwqbQtKsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713961949; c=relaxed/simple;
-	bh=LYEsWdL4GUnssBeOlDMCbFKVyTLdGrPhv3ZaXpKqbPA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QjIlekWp0qq1pSGu9B32BWFLuHAzcDAMDgljzSrS7yiW0L3M+PkeZ3fEZkUWU/FFJYutSNdlnmjP/RSeqIjtnj2EPO7YQilL2dnpVqn4Avj51sfC2fiBvF8sMEMqD7b7ZY+lRiRJ068kiVSW30kgQctKi7l2GaT1iPkQ38Y74l0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=hYguyXVC; arc=none smtp.client-ip=80.241.56.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4VPdWr2bjzz9spZ;
-	Wed, 24 Apr 2024 14:26:32 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1713961592;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ocen2Pswahg44tyFdWzmonpZBfzUoCyyDptpctSisNc=;
-	b=hYguyXVCMkevSlAI9zbuEYJT2RyA0TslxzTC/flPcZWcuUbMEJW+Sbav34bYwafr48j2FL
-	WV7Al0nutqKdqxtqpZsQGxybVM2AKP/9XdL5oB+TYtUQZ2gY0IYhoEU8Rfq/Isz+fS/bYT
-	FAJouDEMKWkj3htU0N2WccqnkPo8P6duFdbz/OMiMGPEAS76L2zrPmvs+qu+CkKDiqKrBu
-	agb/NaO03WJw8bFTFI8Bxdu4ueBNAa0e8mbw03U8syOESqcvcAB9R5BWSgU/g0pgLuBJOB
-	BPqye9UkYW//N4UsOHPUoJkQGZo2YyKB2F+sDMW547VUH00Jpqai7CMkWodS0g==
-Message-ID: <d13260ee-e9f5-49fc-b8ea-78c9424c460e@mailbox.org>
-Date: Wed, 24 Apr 2024 14:26:30 +0200
+	s=arc-20240116; t=1713965616; c=relaxed/simple;
+	bh=yfKnRicF1t1beWdKe0Cxnk3zC7C8moxZz/Dj5koDfdg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ccgtN8MXTR5pE+gxhRgc6d2Ibcp3ZH/8AQDhk+3fY/8QQVj4CiXXsRf7ZqMm+0XAeSvjDW095RH40RNr3Iw+3UDFEVroI6i6xKYBcLrD1zWUaOMSt9SDCf20Rd8BqX3L4Ujj4yURIc8V+9SaU1pCPp5hYITYrjskUaIlyWvpavE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Uiohh11P; arc=none smtp.client-ip=209.85.128.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-61500da846fso46391197b3.1
+        for <linux-wireless@vger.kernel.org>; Wed, 24 Apr 2024 06:33:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1713965614; x=1714570414; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Jc7SzQ2rFd1yOXtRir0afWZyCYP8A5E33YvodhVoINM=;
+        b=Uiohh11PM9gX02tczklc5JcyjX9IQ5U/MipEUt2pMQyyAAEEVh92u4WTNBDrnQ+uuC
+         34nwHcaZ0ZCA1PWciJIk5GaSdcU9X/BvOvR3vp9Yzp9Wz3yFF1TjCGduyZTdI/KRfHnq
+         aDENIInlZ3rF++5Qe7gZAVlZcTZ/H8MF1UBRTnuQVLKWu3KYqOzFxywSIhIcsG+5sM9G
+         R+l8H5G6ytPtzfYREJN48DZzWF3+LgX4WWukjE18zkfcT6XpoUXq8WXskIPp7vFCmi3X
+         qzsil6VSc7C5y+HrhBRha/USjUGayPzkaj8T0gPQnZNDaOUpmSHsid140hklp7prkM9V
+         bsaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713965614; x=1714570414;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Jc7SzQ2rFd1yOXtRir0afWZyCYP8A5E33YvodhVoINM=;
+        b=vOtJPmIFm3Pp2o9c3lgO/OCAAqA+JMKXUqSoKBqhv133YoeQL/UwZVBe+I0w7EJuWo
+         aCqFUSIzc3KkskjL2hIhgAkMLdGJtHOT9iKlUhopQAnGSpRrjmhaEqYjy9LvLpj8Lfgt
+         lMGb7c86OlmhI+CvNkc432eVGyMc3dMNPmsLDoxutCbkk9OO4yemXgvpS56BNIMdfnZU
+         xrSVTjllLS18GeprAvGsrd+4ndnRAu8yBTGlB8UYjAXdnyzscJg1+xwJPHNS+jCGQBGb
+         70Co1mFLZw4ZoySGHHpm7k/HXFttmDftAFBVJHPAbTASmtgVlUtfCedSMIboBSwZCYf6
+         R+Xg==
+X-Forwarded-Encrypted: i=1; AJvYcCV87uX1gQFIliZhmnrQURO6A4vdnERDACFfSLpljuXD804glPvlCBs8gy3Jde02r6uMQYSr1gsF0SE+SAp3uDsPg/YaBz8+gHXflOBT2L0=
+X-Gm-Message-State: AOJu0YwKKBOZkMLqoat9YqQG8DNXXyikROxCYJLTnbksRAkL5T2cOy9W
+	E0vSzAUCzONdb0UBOcPUWbaZk/nAVKTnrpJ6gQSwdm8yONUz/A4UAhdHanhcNf7AvPN/jDW308X
+	sziY2WsL1l4IuiPGw325ZJfi4FWlOd+en2xAv2Q==
+X-Google-Smtp-Source: AGHT+IE8QrCc26Q5VHRiKgg2cj7tbF2iPJOAPFAsbXJakKBSPK+XP9cjRfoklyulE62TV9SW0c2EGNVo4hQ8l8eP4sM=
+X-Received: by 2002:a05:6902:110e:b0:dca:c369:fac2 with SMTP id
+ o14-20020a056902110e00b00dcac369fac2mr3013394ybu.3.1713965614110; Wed, 24 Apr
+ 2024 06:33:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] wifi: iwlwifi: mvm: fix link ID management
-Content-Language: en-US
-To: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-References: <20240420154435.dce72db5d5e3.Ic40b454b24f1c7b380a1eedf67455d9cf2f58541@changeid>
-From: Tor Vic <torvic9@mailbox.org>
-In-Reply-To: <20240420154435.dce72db5d5e3.Ic40b454b24f1c7b380a1eedf67455d9cf2f58541@changeid>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MBO-RS-META: 7em8th45ys7abjod6ifj95tzcnfndoqi
-X-MBO-RS-ID: f0c7217f281fdc8d27e
+References: <20240130-wcn3990-board-fw-v1-0-738f7c19a8c8@linaro.org>
+ <CAA8EJprsjs8SWZmpTisyQcAZ9VC8g3_GEEc1hhp8bMZrm-hyaw@mail.gmail.com> <875xww3tv8.fsf@kernel.org>
+In-Reply-To: <875xww3tv8.fsf@kernel.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Wed, 24 Apr 2024 16:33:22 +0300
+Message-ID: <CAA8EJpp32a9G19TnaO_-JtO3TAwi6VkwPq0mJkfxj2Gmw=xsYg@mail.gmail.com>
+Subject: Re: [PATCH 0/3] wifi: ath10k: fix board file loading for wcn3990 devices
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>, ath10k@lists.infradead.org, 
+	linux-wireless@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	Yongqin Liu <yongqin.liu@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
+On Fri, 5 Apr 2024 at 14:57, Kalle Valo <kvalo@kernel.org> wrote:
+>
+> Dmitry Baryshkov <dmitry.baryshkov@linaro.org> writes:
+>
+> > On Tue, 30 Jan 2024 at 08:47, Dmitry Baryshkov
+> > <dmitry.baryshkov@linaro.org> wrote:
+> >
+> >>
+> >> The ath10k driver fails to properly handle fallback from board-2.bin to
+> >> board.bin for WCN3990 cards. This happens because the
+> >> ath10k_hw_params_list doesn't include .fw.board* parameters for the
+> >> WCN3990 platform.
+> >>
+> >> Add board data configuration for WCN3990. While we are at it, merge
+> >> common pieces of BDF support: drop .board and .eboard names from struct
+> >> ath10k_hw_params_fw and use the common name instead.
+> >>
+> >> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> >> ---
+> >> Dmitry Baryshkov (3):
+> >>       wifi: ath10k: populate board data for WCN3990
+> >>       wifi: ath10k: drop chip-specific board data file name
+> >>       wifi: ath10k: drop fw.eboard file name
+> >>
+> >>  drivers/net/wireless/ath/ath10k/core.c      | 32 ++++-------------------------
+> >>  drivers/net/wireless/ath/ath10k/hw.h        | 14 ++-----------
+> >>  drivers/net/wireless/ath/ath10k/pci.c       | 10 ++++-----
+> >>  drivers/net/wireless/ath/ath10k/targaddrs.h |  3 +++
+> >>  4 files changed, 14 insertions(+), 45 deletions(-)
+> >> ---
+> >> base-commit: 596764183be8ebb13352b281a442a1f1151c9b06
+> >> change-id: 20240129-wcn3990-board-fw-a2d97507a712
+> >
+> > Kalle, Jeff, is there anything pending on me on this series?
+>
+> This is in my queue (Deferred state):
+>
+> https://patchwork.kernel.org/project/linux-wireless/list/?series=821157&state=*&order=date
+>
+> Unfortunately there is not really much time for ath10k nowadays so there
+> will be delays.
+>
+> --
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
+Please excuse me, can we get at least patch 1? It fixes an actual
+issue with WCN3990 which prevents us from testing board data files (or
+adding new boards) without fixing board-2.bin first. The driver
+ignores board.bin even if it is present on rootfs.
 
-On 4/20/24 15:44, Johannes Berg wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
-> 
-> On older (pre-MLD API) devices, we started also calling
-> iwl_mvm_set_link_mapping()/iwl_mvm_unset_link_mapping(),
-> but of course not also iwl_mvm_remove_link(). Since the
-> link ID was only released in iwl_mvm_remove_link() this
-> causes us to run out of FW link IDs very quickly. Fix
-> it by releasing the link ID correctly.
-> 
-> Fixes: a8b5d4809b50 ("wifi: iwlwifi: mvm: Configure the link mapping for non-MLD FW")
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> ---
->   drivers/net/wireless/intel/iwlwifi/mvm/link.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/link.c b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-> index 9f69e04594e4..fe5bba8561d0 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-> @@ -279,6 +279,7 @@ int iwl_mvm_unset_link_mapping(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
->   
->   	RCU_INIT_POINTER(mvm->link_id_to_link_conf[link_info->fw_link_id],
->   			 NULL);
-> +	iwl_mvm_release_fw_link_id(mvm, link_info->fw_link_id);
->   	return 0;
->   }
->   
-> @@ -296,7 +297,6 @@ int iwl_mvm_remove_link(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
->   		return 0;
->   
->   	cmd.link_id = cpu_to_le32(link_info->fw_link_id);
-> -	iwl_mvm_release_fw_link_id(mvm, link_info->fw_link_id);
->   	link_info->fw_link_id = IWL_MVM_FW_LINK_ID_INVALID;
->   	cmd.spec_link_id = link_conf->link_id;
->   	cmd.phy_id = cpu_to_le32(FW_CTXT_INVALID);
-
-
-Hi,
-
-this patch fixes the issue on my old ThinkPad with
-
-   Network controller: Intel Corporation Wireless 8265 / 8275 (rev 78)
-
-Tested-by: Tor Vic <torvic9@mailbox.org>
+-- 
+With best wishes
+Dmitry
 
