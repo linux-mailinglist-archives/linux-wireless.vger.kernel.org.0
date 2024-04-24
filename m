@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-6795-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6796-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4101F8B1472
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 22:21:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3C8D8B14C9
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 22:41:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 735981C225B0
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 20:21:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79FF2281756
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 20:41:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486B41422CB;
-	Wed, 24 Apr 2024 20:20:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 577A674420;
+	Wed, 24 Apr 2024 20:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="icP8IPvc"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="kJqGNWUT"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0731448C8
-	for <linux-wireless@vger.kernel.org>; Wed, 24 Apr 2024 20:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E411772F
+	for <linux-wireless@vger.kernel.org>; Wed, 24 Apr 2024 20:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713990030; cv=none; b=qxpwIAx75sPx0wKNZxLc3wReUj8eWdZ1ysleGrc3BAvZ/XJY8JJidxTIS9/ew+KzYiHOx/5hatcAiVevXXEnhQ2Ka4PPeRNt+p5HqXBWUthEhAG7gvIeKNAakfNXFts2fvtI4YJIWRnAMUv8YI3wrXNJvSTonTrZ/FFKUBkW93E=
+	t=1713991291; cv=none; b=FU79Q2FzA7AVPK3UffxeGyJasHcygMPE/3zBW1V1jf1eNSAiLNXTs4x22a8rE3K2VIelzZCsZ2wO/3gORBZ0/AwmGgWSPpahg914jmgDK54XFSYDBzo4rpL0GcKWttRnTPQM38YoT4PgS6c5Tfc//g995Nb5X2cnEgPIHwEfMyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713990030; c=relaxed/simple;
-	bh=l2udyfgKaXUFc0e2tQrC5Sp/lMIsW2uJtVVLQ7Pflpg=;
+	s=arc-20240116; t=1713991291; c=relaxed/simple;
+	bh=l106K6ffnXwHbvBvff91s32R50w0to/hZ98kOev3HZE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=FjTKxRgpeMfoHn7QloQxkSdmUyiLZyPiM+dg7cqIoEYV5VjMrww1FJtop+95wn19grU3IMXAUgjKFCwWP5joJdRW2AaRqC/VCeOCpQUp7GcKZMopZoBxlaDhobw34GS+zzlMKewrHVhL4jzer6RFD7HvlZpP0epQMJYNSqvkAvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=icP8IPvc; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=mrQQxZg8yMEc81rdPU/Z2vTqnDhtmZJuTT8zh5zQawaB3pzYv7RJ9xT9hhrihglWocpdMEr1a6+FrNdTpJXDELTx0eglJzTXdB5jezOA3h47ziH4zCrErV/J46kv7Voq7BMVvxIeTgA0yrdkx/viTDsh5LyGGSdYxkX77UlTQyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=kJqGNWUT; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43OKGmu7026098;
-	Wed, 24 Apr 2024 20:20:25 GMT
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43OImQsR013756;
+	Wed, 24 Apr 2024 20:41:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	message-id:date:mime-version:subject:to:cc:references:from
 	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=Ucx0wDmOUHj45w6/3QbWPivsLi/pgZ0EZ8g+RMdugKk=; b=ic
-	P8IPvcriQh4b4yFCMRNEdtsuesiMtd3XZQ3658gyGFceXTy2zg4gOEsjlfhV4Lwx
-	yD7gYfhOrmayhhhoiZx52C5DG1xcdbED0px1SZlWo0UJrUoQ49DFB47Sk3zX68UB
-	GKy6LLJ6x7LPNp0hVmZUylRDSBbniWtnrw57K1Iv3vnOZL0Abpn2WQ8gFgZbYmsc
-	XUAYnYBxHLanfjfMELPc/wuHEiyVcVpTyWhPZHzi1kS1Nl9sSXiTtdl+1og6So3P
-	UUdR/WaTIQSHhQyT/0z7m7ZXdhnkPE3fQvhCmAVJEFYSyDq+09dEu+/F9/3Qi+Il
-	H2s2oSuFOF1bhPXTFG9g==
+	qcppdkim1; bh=I4zdxIaOlPF4GMGz9H61w98Z3pA8EJcZSaATnh6k2Ps=; b=kJ
+	qGNWUTJVayHvdb8FhWGj+x43knY9fX01ehvd/aUNgJONjKJZGKwJFGjea5lGQyAg
+	2yOZEOA5rTj5R/BPTgmzo1jLyD0q1CX9zxQpz2E3BAJJODs59kCEzKvcuGJa2Nv9
+	cq7ZVNjCXGqDjp83ghkHWlWe5B4mYbgl/ffSTbc64IoYQhSW/9zG6415ZffsQciT
+	Yg3jPjCYBzOOKe7so40PgavbrM52v73YyVfFt1et379GGq6PidaiYtQqb6oJjWo5
+	VBwZjTrRWvSYFQ9nB2Xdvs1R55QufZkpVJAeVEnEjplXcJJ8wuLhTH0F2xxhMfsE
+	xIdte0a3WuCuthlMf53w==
 Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xpv9dj3t3-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xpv9dj4y1-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Apr 2024 20:20:25 +0000 (GMT)
+	Wed, 24 Apr 2024 20:41:26 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43OKKO5i004409
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43OKfQlf027973
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Apr 2024 20:20:25 GMT
+	Wed, 24 Apr 2024 20:41:26 GMT
 Received: from [10.110.61.159] (10.80.80.8) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 24 Apr
- 2024 13:20:24 -0700
-Message-ID: <7813db11-2445-4af3-910f-f3232af873aa@quicinc.com>
-Date: Wed, 24 Apr 2024 13:20:24 -0700
+ 2024 13:41:25 -0700
+Message-ID: <833facaa-6b8d-4301-84e1-bef1980f26b6@quicinc.com>
+Date: Wed, 24 Apr 2024 13:41:25 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,70 +65,221 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] wifi: ath12k: Refactor the hardware recovery
- procedure
+Subject: Re: [PATCH v2 3/3] wifi: ath12k: Add lock to protect the hardware
+ state
 Content-Language: en-US
 To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
         <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>
 References: <20240424065646.1666166-1-quic_periyasa@quicinc.com>
- <20240424065646.1666166-2-quic_periyasa@quicinc.com>
+ <20240424065646.1666166-4-quic_periyasa@quicinc.com>
 From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240424065646.1666166-2-quic_periyasa@quicinc.com>
+In-Reply-To: <20240424065646.1666166-4-quic_periyasa@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: qNC5T4oR7RuEz5bjBuQXPw3d8cxodAD2
-X-Proofpoint-ORIG-GUID: qNC5T4oR7RuEz5bjBuQXPw3d8cxodAD2
+X-Proofpoint-GUID: neaH_oqqSgs_soJ-71bA4F5RJqTQ8JXK
+X-Proofpoint-ORIG-GUID: neaH_oqqSgs_soJ-71bA4F5RJqTQ8JXK
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
  definitions=2024-04-24_17,2024-04-24_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
  priorityscore=1501 mlxscore=0 malwarescore=0 suspectscore=0
- impostorscore=0 mlxlogscore=641 bulkscore=0 clxscore=1015 phishscore=0
+ impostorscore=0 mlxlogscore=999 bulkscore=0 clxscore=1015 phishscore=0
  adultscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2404010003 definitions=main-2404240101
+ scancount=1 engine=8.19.0-2404010003 definitions=main-2404240104
 
 On 4/23/2024 11:56 PM, Karthikeyan Periyasamy wrote:
-> Currently, in multi-wiphy models, the recovery handler access mac80211
-> HW from the radio/link structure. This will be incorrect for single wiphy
-> model, as they will hold multiple link/radio structures. To fix this,
-> access mac80211 HW based on the number of hardware in the SoC/chip. This
-> approach makes the recovery handler compatible with both multi wiphy and
-> single wiphy models.
+> Currently, hardware state is not protected across the reconfigure
+> operations. However, in single wiphy models, multiple radio/links is
+> exposed as a MAC hardware (ieee80211_hw) through the driver hardware
+> abstraction (ath12k_hw) layer. In such scenario, we need to protect
+> hardware state across the multiple radio/link at the driver hardware
+> abstraction (ath12k_hw) layer. Therefore, introduce a new mutex in
+> the ath12k_hw layer.
 > 
 > Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 > 
 > Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-[...]
-> @@ -1006,35 +1005,34 @@ static void ath12k_core_pre_reconfigure_recovery(struct ath12k_base *ab)
->  		set_bit(ATH12K_FLAG_CRASH_FLUSH, &ab->dev_flags);
->  
->  	for (i = 0; i < ab->num_hw; i++) {
-> -		if (!ab->ah[i])
-> +		ah = ab->ah[i];
-> +		if (!ah)
+> ---
+>  drivers/net/wireless/ath/ath12k/core.c |  4 ++++
+>  drivers/net/wireless/ath/ath12k/core.h |  6 ++++++
+>  drivers/net/wireless/ath/ath12k/mac.c  | 29 ++++++++++++++++++++++++--
+>  3 files changed, 37 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
+> index a685cfd6fd92..e9aabdb9341c 100644
+> --- a/drivers/net/wireless/ath/ath12k/core.c
+> +++ b/drivers/net/wireless/ath/ath12k/core.c
+> @@ -1048,6 +1048,8 @@ static void ath12k_core_post_reconfigure_recovery(struct ath12k_base *ab)
+>  		if (!ah || ah->state == ATH12K_HW_STATE_OFF)
 >  			continue;
 >  
-> -		ah = ab->ah[i];
->  		ieee80211_stop_queues(ah->hw);
-> -	}
+> +		mutex_lock(&ah->hw_mutex);
+> +
+>  		switch (ah->state) {
+>  		case ATH12K_HW_STATE_ON:
+>  			ah->state = ATH12K_HW_STATE_RESTARTING;
+> @@ -1078,6 +1080,8 @@ static void ath12k_core_post_reconfigure_recovery(struct ath12k_base *ab)
+>  				    "device is wedged, will not restart hw %d\n", i);
+>  			break;
+>  		}
+> +
+> +		mutex_unlock(&ah->hw_mutex);
+>  	}
 >  
-> -	for (i = 0; i < ab->num_radios; i++) {
-> -		pdev = &ab->pdevs[i];
-> -		ar = pdev->ar;
-> -		if (!ar || ar->state == ATH12K_STATE_OFF)
-> -			continue;
-> +		for (j = 0; j < ah->num_radio; j++) {
-> +			ar = &ah->radio[j];
-> +			if (!ar || ar->state == ATH12K_STATE_OFF)
+>  	complete(&ab->driver_recovery);
+> diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+> index eff1093fbb6e..3e3e157b6c56 100644
+> --- a/drivers/net/wireless/ath/ath12k/core.h
+> +++ b/drivers/net/wireless/ath/ath12k/core.h
+> @@ -634,11 +634,17 @@ struct ath12k {
+>  struct ath12k_hw {
+>  	struct ieee80211_hw *hw;
+>  	struct ath12k_base *ab;
+> +
+> +	/* Protect the write operation of the hardware state ath12k_hw::state
+> +	 * between hardware start<=>reconfigure<=>stop transitions.
+> +	 */
+> +	struct mutex hw_mutex;
+>  	enum ath12k_hw_state state;
+>  	bool regd_updated;
+>  	bool use_6ghz_regd;
+>  	u8 num_radio;
+>  
+> +	/* Keep last */
+>  	struct ath12k radio[] __aligned(sizeof(void *));
+>  };
+>  
+> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+> index 8b003c18796d..3dc95d36b6a2 100644
+> --- a/drivers/net/wireless/ath/ath12k/mac.c
+> +++ b/drivers/net/wireless/ath/ath12k/mac.c
+> @@ -5546,10 +5546,13 @@ static void ath12k_mac_wait_reconfigure(struct ath12k_base *ab)
+>  
+>  static int ath12k_mac_start(struct ath12k *ar)
+>  {
+> +	struct ath12k_hw *ah = ar->ah;
+>  	struct ath12k_base *ab = ar->ab;
+>  	struct ath12k_pdev *pdev = ar->pdev;
+>  	int ret;
+>  
+> +	lockdep_assert_held(&ah->hw_mutex);
+> +
+>  	mutex_lock(&ar->conf_mutex);
+>  
+>  	ret = ath12k_wmi_pdev_set_param(ar, WMI_PDEV_PARAM_PMF_QOS,
+> @@ -5664,6 +5667,8 @@ static int ath12k_mac_op_start(struct ieee80211_hw *hw)
+>  
+>  	ath12k_drain_tx(ah);
+>  
+> +	mutex_lock(&ah->hw_mutex);
 
-remove !ar test, result of & operation can't be NULL
+since this is always unlocked just before we return, it is a good candidate
+for the cleanup.h functionality. just change this to:
+	guard(mutex)(&ah->hw_mutex);
 
-> +				continue;
+and remove all of the other edits to this function. the mutex will always be
+unlocked when the function returns
+
+> +
+>  	switch (ah->state) {
+>  	case ATH12K_HW_STATE_OFF:
+>  		ah->state = ATH12K_HW_STATE_ON;
+> @@ -5678,7 +5683,8 @@ static int ath12k_mac_op_start(struct ieee80211_hw *hw)
+>  		ah->state = ATH12K_HW_STATE_OFF;
+>  
+>  		WARN_ON(1);
+> -		return -EINVAL;
+> +		ret = -EINVAL;
+> +		goto err;
+>  	}
+>  
+>  	for_each_ar(ah, ar, i) {
+> @@ -5692,6 +5698,8 @@ static int ath12k_mac_op_start(struct ieee80211_hw *hw)
+>  		}
+>  	}
+>  
+> +	mutex_unlock(&ah->hw_mutex);
+> +
+>  	return 0;
+>  
+>  fail_start:
+> @@ -5700,6 +5708,8 @@ static int ath12k_mac_op_start(struct ieee80211_hw *hw)
+>  		ath12k_mac_stop(ar);
+>  	}
+>  
+> +err:
+> +	mutex_unlock(&ah->hw_mutex);
+>  	return ret;
+>  }
+>  
+> @@ -5762,9 +5772,12 @@ int ath12k_mac_rfkill_enable_radio(struct ath12k *ar, bool enable)
+>  
+>  static void ath12k_mac_stop(struct ath12k *ar)
+>  {
+> +	struct ath12k_hw *ah = ar->ah;
+>  	struct htt_ppdu_stats_info *ppdu_stats, *tmp;
+>  	int ret;
+>  
+> +	lockdep_assert_held(&ah->hw_mutex);
+> +
+>  	mutex_lock(&ar->conf_mutex);
+>  	ret = ath12k_mac_config_mon_status_default(ar, false);
+>  	if (ret && (ret != -EOPNOTSUPP))
+> @@ -5800,10 +5813,14 @@ static void ath12k_mac_op_stop(struct ieee80211_hw *hw)
+>  
+>  	ath12k_drain_tx(ah);
+>  
+> +	mutex_lock(&ah->hw_mutex);
+> +
+>  	ah->state = ATH12K_HW_STATE_OFF;
+>  
+>  	for_each_ar(ah, ar, i)
+>  		ath12k_mac_stop(ar);
+> +
+> +	mutex_unlock(&ah->hw_mutex);
+>  }
+>  
+>  static u8
+> @@ -7848,8 +7865,12 @@ ath12k_mac_op_reconfig_complete(struct ieee80211_hw *hw,
+>  	if (reconfig_type != IEEE80211_RECONFIG_TYPE_RESTART)
+>  		return;
+>  
+> -	if (ah->state != ATH12K_HW_STATE_RESTARTED)
+> +	mutex_lock(&ah->hw_mutex);
+
+another good candidate for
+	guard(mutex)(&ah->hw_mutex);
+
+> +
+> +	if (ah->state != ATH12K_HW_STATE_RESTARTED) {
+> +		mutex_unlock(&ah->hw_mutex);
+>  		return;
+> +	}
+>  
+>  	ah->state = ATH12K_HW_STATE_ON;
+>  	ieee80211_wake_queues(hw);
+> @@ -7904,6 +7925,8 @@ ath12k_mac_op_reconfig_complete(struct ieee80211_hw *hw,
+>  
+>  		mutex_unlock(&ar->conf_mutex);
+>  	}
+> +
+> +	mutex_unlock(&ah->hw_mutex);
+>  }
+>  
+>  static void
+> @@ -8850,6 +8873,8 @@ static struct ath12k_hw *ath12k_mac_hw_allocate(struct ath12k_base *ab,
+>  	ah->ab = ab;
+>  	ah->num_radio = num_pdev_map;
+>  
+> +	mutex_init(&ah->hw_mutex);
+> +
+>  	for (i = 0; i < num_pdev_map; i++) {
+>  		ab = pdev_map[i].ab;
+>  		pdev_idx = pdev_map[i].pdev_idx;
 
 
