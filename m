@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-6772-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6773-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 479258B0EA6
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 17:39:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D362D8B0ED5
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 17:43:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4382B2C075
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 15:35:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 110321C236E0
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 15:43:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1A215EFC2;
-	Wed, 24 Apr 2024 15:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44ED215EFDB;
+	Wed, 24 Apr 2024 15:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mKyP6/lw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AXzZwUfS"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE86415ECE4
-	for <linux-wireless@vger.kernel.org>; Wed, 24 Apr 2024 15:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E741422AF;
+	Wed, 24 Apr 2024 15:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713972869; cv=none; b=V6TQ7jg/jDbHfObqOQjorl+81WhzeHaPO1a9BqcDW7bgrcIKiN70TDIeCNPfqXqafJPhoKhNBnp/GjM3EfXy2R4cc2ot6XzaMUIUHaOo6nu4dditTROlL3DoIIPT2imwFFkJnNH86OeOUZ8fZLq64KYL+KWZk8u21abECWbMUro=
+	t=1713973225; cv=none; b=hOdWGvAJ0K2vObTjkL4llivvkNWDP6wm8K1Yknk6FZ8SDJf1bU97xiGW1HU5caRd6LXgBdStlSdPWz2nKxI4vABWdPo8oRWhwEMGLyguQhDvmy4QcQky6pJE84rE0h2zgwPclJOqEhaBwvmslttTyLCtSdS8ukGuxY1p91ewTBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713972869; c=relaxed/simple;
-	bh=b4bU31v1VY2Hs/KRS6Y47Mb61FbQN5DRav97Js/jzKE=;
+	s=arc-20240116; t=1713973225; c=relaxed/simple;
+	bh=AC95m6JL1F7JZG8sItYB3WOCvHcTlGuxSvUXzc4cQXo=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=BwXxJjWM040CgDq9+8dvw7tWhXoiOSSWZ8AqKWW9bCDg9HjJjleNwSvUPtbIChLmpw8IDMQ5TQrJXxVUMzhJc1gAAfv1TmKfjRCyT/wHutHilKu5wpWu8wbxeb2iA25XkzMtFf4+DnjrqafZlwYxIAbv+V7Qlg/zE3RA4h5jloE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mKyP6/lw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F4B7C113CD;
-	Wed, 24 Apr 2024 15:34:27 +0000 (UTC)
+	 Cc:Message-ID:Date; b=ja+JXnbjBIlVZ7TXGgz4hGe5vKEIcmtQrYTMe+JK4pJzXmdEFM0JxyAymF1vROZLTB+TQBTfdJMBrB4/iHeiJvD54e14hAxMZLn98LqgM6dZVhOnyHE9+tjy38etL7tW2I4ogF66z8QYI2xVXqNDz/n4NSEoEatFOSANW+WtlhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AXzZwUfS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96481C113CD;
+	Wed, 24 Apr 2024 15:40:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713972868;
-	bh=b4bU31v1VY2Hs/KRS6Y47Mb61FbQN5DRav97Js/jzKE=;
+	s=k20201202; t=1713973224;
+	bh=AC95m6JL1F7JZG8sItYB3WOCvHcTlGuxSvUXzc4cQXo=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=mKyP6/lwuEHuIbB2l2yu9aUoa/0T5UwS6ctMVe2yJpAKqfxoLWldSvKDSOtqAlZjt
-	 7EKlp/d4veOLuLPRekjfIOqstFLZlUSUeukutGSPLciE4JHWxeCiw3oq1t0oDeM0Hm
-	 D4fnNfbeEaxwW3PgP2TMG4PP8CfZG/SVnXdgbC7poJ8Rf+v2wJVrc2jMD+hPNsqZry
-	 bGIzSj14mDXoD6y23N9TiIHHqkr5soQ9MqQ3JlHqiIT/CFs4RNWEzSlnAwCdvKSN31
-	 UdYZYrYE6j97WeZZUgMDl1uSt5PnXRYFP3L5FAGDxl1/rsfSLfAzVy+rDWwT3CG3xz
-	 3HUEn3j/0oBkA==
+	b=AXzZwUfSlS63aY5NOuVanxUFc/7T2ibF20bWJKX5r7af+OvugTESTc8663kvPxhQv
+	 qyX2aUQXJUbWwyxmKga4BZ6Is04QHw9kUbxIThssBEtwu1ts2ZaNFJztqwnmh/zhiD
+	 G+s0mBzyM1uFIwFqd6FrXMjFWZa6ELu8hIUPi9gpx2iHulSbOp/jd2HA4kPlrqxnVB
+	 NXKEIn3g7LRh3oh89GFmbZ4LXf/HYT9A20nwKidgZ2JjiIs4ENj9uJGgTHdaah57le
+	 mW12s6BkIw8IYPiUXUoVDGI+V9LnICatyTiFSG/+g1SnQQMVMSC8MZl+cmjYHtziej
+	 5DmIXM0WF1dRg==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,49 +49,42 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/2] wifi: ath12k: read single_chip_mlo_support parameter
- from
- QMI PHY capability
+Subject: Re: [PATCH wireless v2] wifi: ath10k: Fix an error code problem in
+ ath10k_dbg_sta_write_peer_debug_trigger()
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240418125609.3867730-2-quic_rajkbhag@quicinc.com>
-References: <20240418125609.3867730-2-quic_rajkbhag@quicinc.com>
-To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-Cc: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
- Raj Kumar Bhagat
-	<quic_rajkbhag@quicinc.com>
+In-Reply-To: <20240422034243.938962-1-suhui@nfschina.com>
+References: <20240422034243.938962-1-suhui@nfschina.com>
+To: Su Hui <suhui@nfschina.com>
+Cc: quic_jjohnson@quicinc.com, jjohnson@kernel.org, nathan@kernel.org,
+ ndesaulniers@google.com, morbo@google.com, justinstitt@google.com,
+ Su Hui <suhui@nfschina.com>, c_mkenna@qti.qualcomm.com,
+ linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+ linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+ kernel-janitors@vger.kernel.org
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <171397286596.2560403.7467583806686493830.kvalo@kernel.org>
-Date: Wed, 24 Apr 2024 15:34:27 +0000 (UTC)
+Message-ID: <171397321994.2567832.9996590005061868676.kvalo@kernel.org>
+Date: Wed, 24 Apr 2024 15:40:21 +0000 (UTC)
 
-Raj Kumar Bhagat <quic_rajkbhag@quicinc.com> wrote:
+Su Hui <suhui@nfschina.com> wrote:
 
-> New parameter 'single_chip_mlo_support' was added in QMI PHY
-> capability response message. This is an optional parameter added
-> in QCN9274 firmware. This parameter states if the firmware
-> supports Single-Link Operation (SLO) and Multi-Link Operation (MLO)
-> within the same device.
+> Clang Static Checker (scan-build) warns:
 > 
-> If single_chip_mlo_support = 1, then intra device SLO/MLO is supported
-> in the firmware.
-> If single_chip_mlo_support = 0, then intra device SLO/MLO is not
-> supported in the firmware.
+> drivers/net/wireless/ath/ath10k/debugfs_sta.c:line 429, column 3
+> Value stored to 'ret' is never read.
 > 
-> Hence, add support to read 'single_chip_mlo_support' parameter from
-> the QMI PHY capability response message.
+> Return 'ret' rather than 'count' when 'ret' stores an error code.
 > 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00209-QCAHKSWPL_SILICONZ-1
-> 
-> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+> Fixes: ee8b08a1be82 ("ath10k: add debugfs support to get per peer tids log via tracing")
+> Signed-off-by: Su Hui <suhui@nfschina.com>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-2 patches applied to ath-next branch of ath.git, thanks.
+Patch applied to ath-next branch of ath.git, thanks.
 
-ae6ec4a38aa4 wifi: ath12k: read single_chip_mlo_support parameter from QMI PHY capability
-da3cbd88e780 wifi: ath12k: set mlo_capable_flags based on QMI PHY capability
+c511a9c12674 wifi: ath10k: Fix an error code problem in ath10k_dbg_sta_write_peer_debug_trigger()
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240418125609.3867730-2-quic_rajkbhag@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240422034243.938962-1-suhui@nfschina.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
