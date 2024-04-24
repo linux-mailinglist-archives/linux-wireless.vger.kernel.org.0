@@ -1,90 +1,105 @@
-Return-Path: <linux-wireless+bounces-6759-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6760-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF6D88B0336
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 09:28:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CB058B03E9
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 10:11:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 371B4B26C21
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 07:28:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E298C2823F2
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 08:11:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C51B3157E62;
-	Wed, 24 Apr 2024 07:28:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="kxZupPxP"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14CE6158212;
+	Wed, 24 Apr 2024 08:11:30 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F542154BF4
-	for <linux-wireless@vger.kernel.org>; Wed, 24 Apr 2024 07:28:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+Received: from mail.holtmann.org (coyote.holtmann.net [212.227.132.17])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E569A158202;
+	Wed, 24 Apr 2024 08:11:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.132.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713943708; cv=none; b=V3qO8lFk4rbqNGSrhie0fN7Wh4Nwzfgvf3b+qq0hfO/XuM7l9/2lPgIfkpr/Vlwu474R963GozT+kxW0K9mlIAQ9vUy4Y/I3vbOmY7mYGBzJkuuBUf2Obo041gWMCLAQHy6j09nysgYdRk1WFShPT0hx6Ci6PAip2trMbxAIrVg=
+	t=1713946290; cv=none; b=YNsTecWaG9ODwxfnhhYn/ZKIdvOa3YW7zotNWxygjZwZBtldQTJqtM3t11DHvFffga8ry/jImls3nDeJLZuViJaZRuqeAJj1InOAW7KVjWrT6JNudRwoggOsskiw9YK3PQ9j14TVDCDtisHnNRFmT773P/FZ0ezpPdpQTXfUMW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713943708; c=relaxed/simple;
-	bh=XX5ZBXN6Sz9rNOKRXlE1sizd9rwXNODWEDVONeQGMr8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DKrnZB8hL+lSZm0Hh8d2WlW9i3tZrnOF4LOBP1bouLrA8/YF6lUzzZlF88n1vBfpd7p9PbVr6Ouv7p+U3xvHiuIfNvs2dfiforw3bEMxaCs93BX6Vp7j1ogsw1EBUYsYxD1ldVjhbyrX/opLLUl1/Nq+bhp/mXvRM60NJ2hJQhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=kxZupPxP; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=XX5ZBXN6Sz9rNOKRXlE1sizd9rwXNODWEDVONeQGMr8=;
-	t=1713943706; x=1715153306; b=kxZupPxPFMOG/p4bDodYHuGxGnaR1fqWmixlt1ZW3reoXlL
-	AY+ngJGaGm/n/tpFojf4/2Z5MJ427C2D7176dwJVtaUgMm1KlxNTsZJJgPiqAC8EuIwTdM5pQTEqi
-	ZcqndTNtzZ5S1kcbqaFIjU/FZK5oA+feH/NvDpy2Sjs9J8dzRfbk/XK2fORSUORSalD74ZEAw8UfQ
-	FzquhNCqiX9DyClQzXdhuSxMrZ5B01XG4Y7TVASA+bZvZQCghiCfnqhKzNbNkuYorW0z2vggdZlJ2
-	HpWTHOKConpgu3hQsZzlgrd/qcHGyIXqal9dsbOhpYPKGo5aR3sy9fI692hQerfQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rzX3F-00000003PGm-3UIo;
-	Wed, 24 Apr 2024 09:28:22 +0200
-Message-ID: <517caf852d37b3803bcf087a6b575f2ecdb5ba10.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 3/3] wifi: ath12k: Add lock to protect the hardware
- state
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>, 
-	ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-Date: Wed, 24 Apr 2024 09:28:20 +0200
-In-Reply-To: <20240424065646.1666166-4-quic_periyasa@quicinc.com>
-References: <20240424065646.1666166-1-quic_periyasa@quicinc.com>
-	 <20240424065646.1666166-4-quic_periyasa@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	s=arc-20240116; t=1713946290; c=relaxed/simple;
+	bh=7HDc/MqVQCPWa5gWooNoBrslr6ONAaNmJF3PdVsJytY=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=GLUkwtRApVLeUjBqXMUSE7NwQ8PutXnIFSO5V+4kw592Gg4uqbzBxDV6VxJTw5v5xXx6P2AyPdxygU/GJOXzj8oAIG27x4dA1lhgWifeJGOggQh0iUnqg1JxO7UT5tlXV9PKzMgvJndefuv2RLozM9itD0U9YEANXzv9v3PF5g8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=holtmann.org; spf=pass smtp.mailfrom=holtmann.org; arc=none smtp.client-ip=212.227.132.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=holtmann.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=holtmann.org
+Received: from smtpclient.apple (p4fefc49c.dip0.t-ipconnect.de [79.239.196.156])
+	by mail.holtmann.org (Postfix) with ESMTPSA id 979D1CECBE;
+	Wed, 24 Apr 2024 10:11:20 +0200 (CEST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
+Subject: Re: [EXT] [PATCH v10 0/2] wifi: mwifiex: add code to support host
+ mlme
+From: Marcel Holtmann <marcel@holtmann.org>
+In-Reply-To: <PA4PR04MB96389E67F826216C44FE19FFD1112@PA4PR04MB9638.eurprd04.prod.outlook.com>
+Date: Wed, 24 Apr 2024 10:11:10 +0200
+Cc: Brian Norris <briannorris@chromium.org>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>,
+ Kalle Valo <kvalo@kernel.org>,
+ "francesco@dolcini.it" <francesco@dolcini.it>,
+ Pete Hsieh <tsung-hsien.hsieh@nxp.com>,
+ "rafael.beims" <rafael.beims@toradex.com>,
+ Francesco Dolcini <francesco.dolcini@toradex.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <C8F76484-1359-437B-85BF-C646A21F7BCE@holtmann.org>
+References: <20240418060626.431202-1-yu-hao.lin@nxp.com>
+ <0ED16BAB-6E7D-487C-BBCA-E63FEF37C60D@holtmann.org>
+ <PA4PR04MB963815B9FDA6119683A28CADD10E2@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <6CB59E09-F34E-4986-AA88-8EC4EE5E71DF@holtmann.org>
+ <PA4PR04MB9638B62BC25F773C6922A4BCD10D2@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <ZiLlPOvKlfCySZwF@google.com>
+ <PA4PR04MB96383D46C1187C237DFC7988D1122@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <PA4PR04MB96389E67F826216C44FE19FFD1112@PA4PR04MB9638.eurprd04.prod.outlook.com>
+To: David Lin <yu-hao.lin@nxp.com>
+X-Mailer: Apple Mail (2.3774.500.171.1.1)
 
-On Wed, 2024-04-24 at 12:26 +0530, Karthikeyan Periyasamy wrote:
-> Currently, hardware state is not protected across the reconfigure
-> operations. However, in single wiphy models, multiple radio/links is
-> exposed as a MAC hardware (ieee80211_hw) through the driver hardware
-> abstraction (ath12k_hw) layer. In such scenario, we need to protect
-> hardware state across the multiple radio/link at the driver hardware
-> abstraction (ath12k_hw) layer. Therefore, introduce a new mutex in
-> the ath12k_hw layer.
->=20
+Hi David,
 
-It's your driver, but ... it would seem _simpler_ to do locking across
-the hw with a single wiphy model, because everything (except currently
-for ath12k_core_reset and ath12k_core_restart) already holds the wiphy
-mutex. You can probably move those to wiphy work.
+> Johannes agreed that cfg80211 is the correct way for the development =
+of mwifiex
+> (mac80211 can't offload association process to driver/FW).
 
-I'd avoid doing lock explosion like we had in mac80211, it's going to
-come back and bite you eventually :)
+that was never my question here.
 
-johannes
+> This patch is used to fully leverage SME of wpa_supplicant and hostapd =
+which can complete the missing WPA3 feature of mwifiex.
+> The patch series had been reviewed and discussed. It looks like there =
+is no more comments for patch v10.
+> I wonder can patch v10 be accepted by you?
+
+If your hardware is a FullMac hardware then what is the point in now =
+separating
+auth/assoc out. Is this done just for WPA3 or also for WPA2/WPA1. Are =
+you no
+longer a FullMac hardware?
+
+You keep saying that you just want to support WPA3 and if previously the =
+HW
+worked as FullMac hardware, then external_auth should be the way to go =
+for
+having SAE handled by wpa_supplicant (or iwd for that matter).
+
+Now if you are fully embracing to auth/assoc and we can remove the =
+support
+for the connect ops, then lets do it. However I don=E2=80=99t see =
+anything properly
+described in the commit message. You keep saying WPA3 support and =
+nothing
+else explain what the new Key V2 API of the firmware would do.
+
+Regards
+
+Marcel
+
 
