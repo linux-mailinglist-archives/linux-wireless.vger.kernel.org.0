@@ -1,57 +1,67 @@
-Return-Path: <linux-wireless+bounces-6774-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6775-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 939DE8B1172
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 19:48:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD4098B1260
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 20:31:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 502A62891FA
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 17:48:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFB021C23D63
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 18:31:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1F4316D4DD;
-	Wed, 24 Apr 2024 17:48:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="RCVIIhv7"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CDBD17557B;
+	Wed, 24 Apr 2024 18:24:06 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.164])
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3F616D304
-	for <linux-wireless@vger.kernel.org>; Wed, 24 Apr 2024 17:47:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.164
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9A316EBFF;
+	Wed, 24 Apr 2024 18:24:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713980880; cv=none; b=QBBsgDWdh0CpkBbBejW20lDP7iw3vZ/jH5tT5g1nomQgOvdtMXTWdqPaR3/m1iiE4nHhWunrdfMeN+XPpP7mhsEnTvvNqVcVLXtslwebC2uYxcqVp6Mu7Uk23iSH65hPC8tww2VI+NbIMZOQJr2uYVnKGJc5Lyk+A795GZKvXVU=
+	t=1713983046; cv=none; b=iuRnU3cdtdYbs/aBkFjxWKPOp8waOVenAU6Za3hypb9+zqGCYESQD+gfawb41cXpOf4g27mi9C0OTqQ/Imt8CSLhvqTEzwm7fySfpNgUGOBcV1BHljffDofSyZp2SuwYTqjTAxUVQWdz3fFNsbFseAdjEzCDqPix7IGJUPMHVsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713980880; c=relaxed/simple;
-	bh=bpt0fCmvC8aYvMc38k1GDWNovdOlMKvziGKoo34H8T8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H9CFU+tJzw1N6EZ1PjIABRjW1Q23CTT6H2sm8SCmbCBdN2vXVg90QHBtyCpKmGgY1UO7C4pqBEMxelpXeLco9ATgBk5K48VOr+NqQ1FpXNOgZnz9IFxSxjbEFmJLi1BRPWz9ujcmiHA3EwseTNPhEpusDjmPXtCNGlllxWVlF8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=RCVIIhv7; arc=none smtp.client-ip=67.231.154.164
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail2.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 9CA13940073
-	for <linux-wireless@vger.kernel.org>; Wed, 24 Apr 2024 17:47:51 +0000 (UTC)
-Received: from ben-dt5.candelatech.com (unknown [50.251.239.81])
-	by mail3.candelatech.com (Postfix) with ESMTP id 10DF313C2B0;
-	Wed, 24 Apr 2024 10:47:51 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 10DF313C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1713980871;
-	bh=bpt0fCmvC8aYvMc38k1GDWNovdOlMKvziGKoo34H8T8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=RCVIIhv71ur4lTMzfjOULHTQC07ybGr76IliuUJd426RwXPxboCQPXrTl4KTOvj6m
-	 G5IAEOn6TByhjpRQ0wWV5ey+EzgTcCFwzPScDMobIGkgUXHTUgyRV40XDeIaKQxADJ
-	 nNMlyr8ELkWMhU12alDBI/1x4NXDkL9GwFSY7/CA=
-From: greearb@candelatech.com
-To: linux-wireless@vger.kernel.org
-Cc: Ben Greear <greearb@candelatech.com>
-Subject: [PATCH] wifi: iwlwifi:  Use request_module_nowait
-Date: Wed, 24 Apr 2024 10:47:48 -0700
-Message-ID: <20240424174748.957641-1-greearb@candelatech.com>
-X-Mailer: git-send-email 2.42.0
+	s=arc-20240116; t=1713983046; c=relaxed/simple;
+	bh=Nq2r/xSMTKTi9jtSRejmw3Y+UjmxAmLt/U8EyeA1a8w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SrAOMoYaMl80KQadMSGNGJk9y1P2WdDMqSFL4ZqVdexjUl0NyKJI/b2FCcwxlNxvZ2Kd5DyqGjvrhVpObzMqrrCUqDk37PQ7jp06pS/Q4j4WQZuqBkIRKuXHpO7wU+KSVR0uzwMTN9+LMNcUwHNlR2/Y7utP84/MMTcKpAJevns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2dd6c14d000so1437201fa.0;
+        Wed, 24 Apr 2024 11:24:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713983043; x=1714587843;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NBHxa/dhAV/9oWKxfTbAVhvzTVzXkONqk+9xtsxO6s4=;
+        b=ZPcDRn50bw8dQWu765xFNTvI0+ICCIUUBp5ItlHsV1DmT43tZ/pQnhXhpDEHQU46Zo
+         WptDjmoE3fKq0LLLCBEGcJJFHa/ZljVknmK4swJ6lTJSGHYtUxzLkwydBayT6PqQfxs/
+         mC6hS6+yEQNT707NUsyTF2FEo9qGc2gWvpKlEhxx0QKNbt9VMTyE2jvVQPXBGz0cAR0w
+         aMTiPs1JSDQBcgaKAUnTo6TLT8Qqqkjzr8B+fNmIbRRlHE5lR1jEEUxRAsm1zEReZFjh
+         77xnOpUQm2/8G0H3nKMRReYE7f5NdNb89RVZ50qlx+SjB92esVmKyPRrDL0AgpS0b7wh
+         hJTA==
+X-Forwarded-Encrypted: i=1; AJvYcCUlnUwlbcgjSsjzti+eBgzZK+dluthwDgSRBO+XiX2j2fj/cIl6locBQ5dky+awUTVgGX1q+fN7FygIuP42EUbmYQ0ZYSS1n5BGYrdAkdiN7uhY3zDPDsss5PCcuM3fL4rqiHhw5s1En1Op1iY=
+X-Gm-Message-State: AOJu0YyTDYJYyjt18EBrECornjGD7z5TuDqZsfTlMiWu4v1dnPK9ngSP
+	hfTd0d890C25mxFsdXH+3qpQAjDritGdZpsvH8H3ICarO09dO05hSGvdpQ==
+X-Google-Smtp-Source: AGHT+IFDIB5hiF3emblc38AiRWGTrPAmQvq/oxLDBOAerlKusVDaocqu4PyucwRkOdRO0cu3Z4IeBQ==
+X-Received: by 2002:a2e:838b:0:b0:2de:809c:c670 with SMTP id x11-20020a2e838b000000b002de809cc670mr1567225ljg.49.1713983042412;
+        Wed, 24 Apr 2024 11:24:02 -0700 (PDT)
+Received: from localhost (fwdproxy-lla-001.fbsv.net. [2a03:2880:30ff:1::face:b00c])
+        by smtp.gmail.com with ESMTPSA id g22-20020a056402091600b005721f9fbb60sm2259610edz.63.2024.04.24.11.24.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Apr 2024 11:24:02 -0700 (PDT)
+From: Breno Leitao <leitao@debian.org>
+To: Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>
+Cc: leit@meta.com,
+	linux-wireless@vger.kernel.org (open list:REALTEK WIRELESS DRIVER (rtw89)),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH wireless] wifi: rtw89: Un-embed dummy device
+Date: Wed, 24 Apr 2024 11:23:49 -0700
+Message-ID: <20240424182351.3936556-1-leitao@debian.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -59,43 +69,97 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MDID: 1713980872-ZnH42ZWtKhjg
-X-MDID-O:
- us5;at1;1713980872;ZnH42ZWtKhjg;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
 
-From: Ben Greear <greearb@candelatech.com>
+Embedding net_device into structures prohibits the usage of flexible
+arrays in the net_device structure. For more details, see the discussion
+at [1].
 
-This appears to work around a deadlock regression that came in
-with the LED merge in 6.9.
+Un-embed the net_device from the private struct by converting it
+into a pointer. Then use the leverage the new alloc_netdev_dummy()
+helper to allocate and initialize dummy devices.
 
-The deadlock happens on my system with 24 iwlwifi radios, so maybe
-it something like all worker threads are busy and some work that needs
-to complete cannot complete.
+[1] https://lore.kernel.org/all/20240229225910.79e224cf@kernel.org/
 
-For reference, see mail to lkml with subject
-"6.9.0-rc2+ kernel hangs on boot (bisected, maybe LED related)"
-
-Fixes: f5c31bcf604d ("Merge tag 'leds-next-6.9' of git://git.kernel.org/pub/scm/linux/kernel/git/lee/leds")
-
-Signed-off-by: Ben Greear <greearb@candelatech.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/core.c | 11 ++++++++---
+ drivers/net/wireless/realtek/rtw89/core.h |  4 ++--
+ drivers/net/wireless/realtek/rtw89/pci.c  |  6 +++++-
+ 3 files changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-index 4696d73c8971..993177e1de27 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-@@ -1744,7 +1744,7 @@ static void iwl_req_fw_callback(const struct firmware *ucode_raw, void *context)
- 	 * or hangs loading.
- 	 */
- 	if (load_module)
--		request_module("%s", op->name);
-+		request_module_nowait("%s", op->name);
- 	failure = false;
- 	goto free;
+PS: This is compile-tested only due to lack of hardware.
+
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index d474b8d5df3d..ade3e2a953a1 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -2485,11 +2485,15 @@ void rtw89_core_napi_stop(struct rtw89_dev *rtwdev)
+ }
+ EXPORT_SYMBOL(rtw89_core_napi_stop);
  
+-void rtw89_core_napi_init(struct rtw89_dev *rtwdev)
++int rtw89_core_napi_init(struct rtw89_dev *rtwdev)
+ {
+-	init_dummy_netdev(&rtwdev->netdev);
+-	netif_napi_add(&rtwdev->netdev, &rtwdev->napi,
++	rtwdev->netdev = alloc_netdev_dummy(0);
++	if (!rtwdev->netdev)
++		return -ENOMEM;
++
++	netif_napi_add(rtwdev->netdev, &rtwdev->napi,
+ 		       rtwdev->hci.ops->napi_poll);
++	return 0;
+ }
+ EXPORT_SYMBOL(rtw89_core_napi_init);
+ 
+@@ -2497,6 +2501,7 @@ void rtw89_core_napi_deinit(struct rtw89_dev *rtwdev)
+ {
+ 	rtw89_core_napi_stop(rtwdev);
+ 	netif_napi_del(&rtwdev->napi);
++	free_netdev(rtwdev->netdev);
+ }
+ EXPORT_SYMBOL(rtw89_core_napi_deinit);
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index fc1ed8612cf1..e206a2186747 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -5239,7 +5239,7 @@ struct rtw89_dev {
+ 	struct rtw89_wow_param wow;
+ 
+ 	/* napi structure */
+-	struct net_device netdev;
++	struct net_device *netdev;
+ 	struct napi_struct napi;
+ 	int napi_budget_countdown;
+ 
+@@ -6211,7 +6211,7 @@ void rtw89_core_query_rxdesc_v2(struct rtw89_dev *rtwdev,
+ 				u8 *data, u32 data_offset);
+ void rtw89_core_napi_start(struct rtw89_dev *rtwdev);
+ void rtw89_core_napi_stop(struct rtw89_dev *rtwdev);
+-void rtw89_core_napi_init(struct rtw89_dev *rtwdev);
++int rtw89_core_napi_init(struct rtw89_dev *rtwdev);
+ void rtw89_core_napi_deinit(struct rtw89_dev *rtwdev);
+ int rtw89_core_sta_add(struct rtw89_dev *rtwdev,
+ 		       struct ieee80211_vif *vif,
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
+index 19001130ad94..ef41c3a83b4a 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -4201,7 +4201,11 @@ int rtw89_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	rtw89_pci_link_cfg(rtwdev);
+ 	rtw89_pci_l1ss_cfg(rtwdev);
+ 
+-	rtw89_core_napi_init(rtwdev);
++	ret = rtw89_core_napi_init(rtwdev);
++	if (ret) {
++		rtw89_err(rtwdev, "failed to init napi\n");
++		goto err_clear_resource;
++	}
+ 
+ 	ret = rtw89_pci_request_irq(rtwdev, pdev);
+ 	if (ret) {
 -- 
-2.42.0
+2.43.0
 
 
