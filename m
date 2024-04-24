@@ -1,290 +1,170 @@
-Return-Path: <linux-wireless+bounces-6797-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6798-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DECDD8B14DD
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 22:48:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1F6F8B15B6
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 00:01:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C79E1C22C45
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 20:48:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8A1A286D2F
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Apr 2024 22:01:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE66415696B;
-	Wed, 24 Apr 2024 20:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72EC7156F46;
+	Wed, 24 Apr 2024 22:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iUb7cQHR"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Ec4e+S8E"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 191A91772F
-	for <linux-wireless@vger.kernel.org>; Wed, 24 Apr 2024 20:48:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37E01581F4
+	for <linux-wireless@vger.kernel.org>; Wed, 24 Apr 2024 22:01:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713991697; cv=none; b=FHD5DZzFno7rB8X/x0vdWKuoN28IXjC5sEwQ3MUxoqG3NIVp/BQgSYdxyTwlyIcagXB4iSifER8qiytuhNvUufIklyeBN6vtfd6FzrGYJEnrY+W5Ftxa/nJjjJRPmJtd6UtZM2HtB+ocoj2fXk84aTtwVqqp5+iYdJnIgXi47vc=
+	t=1713996068; cv=none; b=fuYwqoWoI0pjE1mRZIDDb/d85F34y1888MGn9gXD2Kc6vrCwt7A+2olLmN5xoZ1lt03jCQKMqMWz+qVAOKeNKECjJUr36HRlBT71pLJObCLyBjJ4vWzmbijXC2/KPT4JwqkLuJOHapdEu+W5uPRxaEKvMJ3+Dprtvlss1jh1vuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713991697; c=relaxed/simple;
-	bh=APvvGfjt6M4RGHG68kcPHxSbyBNeXdPdp01IWBW2Xh8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bh//XbDQhcTvwqLmWSV7jz0rBHSFUeGJOyzErnzmF1LSFMEBT97gnhPicOz0gGyTjkKMtQ/L6lmAQfbfXh6HOyVozOM8sORCKUhv0bFmJ7mB3z5OiuHqyW6uo0XO15P++Qr8dfOk9x1mdmQyZ+2Zu4IfuAHx5Ka9zV+BJTHO0m8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iUb7cQHR; arc=none smtp.client-ip=209.85.219.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-dc25e12cc63so1304152276.0
-        for <linux-wireless@vger.kernel.org>; Wed, 24 Apr 2024 13:48:15 -0700 (PDT)
+	s=arc-20240116; t=1713996068; c=relaxed/simple;
+	bh=waLAn1oU6Dl+2buXX+0Cf1qjI968BHqs+nK0WlFL0+k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ohyMKDDZQexS+rbHAavPrPES41Wxx51wN98xHrrBMPHeraRlmfTCelobDq+NAIDVH9elC7j3O/oGiXoelxZfppdBRR11n1hduAgl73uT/9ebU5WW3rUGRrYReRrR59eIK4Z3ZhWpiAFcbuiy4uTlBoHNGIPFTfT39+RVEZgyygI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Ec4e+S8E; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-6ece8991654so402968b3a.3
+        for <linux-wireless@vger.kernel.org>; Wed, 24 Apr 2024 15:01:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713991695; x=1714596495; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=l1pZWiUWl1nMefgATaw3YsOhf+pqCV2nzomHBQjDgDo=;
-        b=iUb7cQHRdPzSnLuOtQ10HQPxCXShHqlw84cVDllBYOK9PLxLXNpUcxPkGcxvBUu73J
-         hUmjPh0vxM8sawc1ymMSsanW8e05vYq5DQYUDciIRe4XmvrQaH38QOyruo0CWffkX4En
-         mZB0xm5MDcAx31d278omLoglYOBSzYO+dK1pSLTLH3AOtKqmDv9fIJ9Hh6yeLwA6jWxC
-         QEyVY8wJ1E4VhNsls+RKbnKQEA1F8ElpoSn75M4+2nTj9K7MhfyuVpjDPncxY0ydFrZ8
-         +eb1VbadOtXSSLQzh/s59jVAaQ9N5JNW2u5VFl8+ByPR3FPM26Am5gp3ADe0Vplq8JhC
-         9W6w==
+        d=chromium.org; s=google; t=1713996065; x=1714600865; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9XS2AFiWkdDHUYi+lDUVnXX0MXLWYjT4idfLw+m+o3A=;
+        b=Ec4e+S8E6n4ym/MHlENxHfNb2qxUTgWasN7SDwg14AlPZThmhjrY1QkiPXPIfYmlVN
+         th4WNn06TB1BWBzEbO/zdjjKvlIFLo9DgnsXmUsefhTfVwhMCyDqoPj+e8mb9fqf+z6g
+         J2Vf5U9jZWEThvRA36HZ10y68O/2P0PqVrnp8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713991695; x=1714596495;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1713996065; x=1714600865;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=l1pZWiUWl1nMefgATaw3YsOhf+pqCV2nzomHBQjDgDo=;
-        b=kYMzMfDgFta+Wvk5J2HMePzvjMgo0mMz4yzpsM59YVSqgzqHaav+oAaAKjaZFc6szm
-         lPKR015xJwbCy/BnEpx5WcoFWh1aBLx4KU9adsiRHHrA4ILkdylCFZGtJ5Wr8r84N/Md
-         6qv0J4s4osHvtlQWMO+9vYYikVyA20K4NjRkybtX5vuvSXXqFmonHI+dbD9gbqfegSCq
-         rL3uYY0bHqEcX41qZMDzlh7x1H5HMOaSj0buD6W3ggfdNewpwXtthMRSFHESd9Z8QoND
-         TwatBzpkglNM1eVE7mF9/3mrWjIhtIHN8PchQFhUpdbPVJ8riqNeYOD4Xb3VmacXtt4u
-         6tVg==
-X-Forwarded-Encrypted: i=1; AJvYcCWb4RYB8/fsEEvfxwmiDCuXBxb0y9HGE+kUEOpLV/L9yG4O+g5mvCrwHpPSB9gcN/1oFxARa1KNQecnOqdw3D3658krIQvqeBCEUAmlgdU=
-X-Gm-Message-State: AOJu0YxhndUMRqAYpLvU071g7nhUNWrQpgEr9OO/0+XX1kE4i3rhymNV
-	ObR4anRLcd1pxuHLqoN5WdthGC+jcLoejUVHFBVYgybnBpK41EwhW6HdA/6UKj9Hd6BrgRICWhm
-	+/GuEoKEX3Hci9LurTxKMVb9QbH5qdWu9C6m6QQ==
-X-Google-Smtp-Source: AGHT+IFoGSJUlBELzEJjb2GiElbJgSl6N/By/Nucv+WQf0ab/sVj/6V4J/pp7hLNpClrwGLOjUJdwEmao5p/n9i55u8=
-X-Received: by 2002:a25:ae85:0:b0:dcc:623e:1b5d with SMTP id
- b5-20020a25ae85000000b00dcc623e1b5dmr621667ybj.31.1713991695065; Wed, 24 Apr
- 2024 13:48:15 -0700 (PDT)
+        bh=9XS2AFiWkdDHUYi+lDUVnXX0MXLWYjT4idfLw+m+o3A=;
+        b=EKLJnKCc6B1H6rxwGflm3ZrA/vJqBHo7jSD68zZcznBEDGFP4dKR0noxAHLloZTwms
+         ijtyiVzmgMNmJHmYVsO+2z4DRTjP6pkWVHghetVjH/G/qmP20HcO882KiGIn6D/u7HRx
+         pIZCVPaFnSSZI1tKeEJ4nvmWZMugXhLq6Uool98CxsFtFAM/Ep9Eb4GoYDYKY+lO7JKl
+         RrqFHn8Q/hXzBsb5oTP8YMRcK0h9oPAi9FrNeZ2mhVY6V8wMG8AD7Cy6CStPFlhVYjFC
+         e7HjYGYOTLpwnF5C7GhtvKnOkbk7HkzIQEpwNVp65Ueo1s3+ZFeFnLScvSQgUfiDvgk3
+         7Seg==
+X-Forwarded-Encrypted: i=1; AJvYcCXGjvXDVe+8V+ploB8Mwg17Dyr4FHc06hzpzkESWrsWEiybavi5eZyW/N0t4OSIC8fliouTK1rxNpIIDH80Jy+DXJd9H1Mi6F7Ozr0Amxs=
+X-Gm-Message-State: AOJu0YzcQ/Jg3gpuZl4aeNUwmlCWA8i2v8AJDDZRSUwcOr05gqYubAZr
+	fDYBI8j1ZIZzUZefNo2LEVomjeF7SGiIH6Jx2vSAwcuPUy4zRgvU6/thfh2kng==
+X-Google-Smtp-Source: AGHT+IFMUnlkU6FVaZoF0o6oZfpmlht2NNx99MnGarXZG9dKHk5wWrfHzN2g4QEO7Yn+LdKEu4QaYw==
+X-Received: by 2002:a05:6a20:9714:b0:1a7:5100:7559 with SMTP id hr20-20020a056a20971400b001a751007559mr4241899pzc.32.1713996064358;
+        Wed, 24 Apr 2024 15:01:04 -0700 (PDT)
+Received: from www.outflux.net ([198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id s80-20020a632c53000000b005fe2f66f89fsm6705904pgs.75.2024.04.24.15.01.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Apr 2024 15:01:03 -0700 (PDT)
+From: Kees Cook <keescook@chromium.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Kees Cook <keescook@chromium.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH] wifi: nl80211: Avoid address calculations via out of bounds array indexing
+Date: Wed, 24 Apr 2024 15:01:01 -0700
+Message-Id: <20240424220057.work.819-kees@kernel.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240410124628.171783-1-brgl@bgdev.pl> <20240410124628.171783-2-brgl@bgdev.pl>
-In-Reply-To: <20240410124628.171783-2-brgl@bgdev.pl>
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Wed, 24 Apr 2024 23:48:03 +0300
-Message-ID: <CAA8EJpq81Z4YH1apTidntwcfpsL3YjgMM_y+G0=waaoPjRL-Cw@mail.gmail.com>
-Subject: Re: [PATCH v7 01/16] regulator: dt-bindings: describe the PMU module
- of the QCA6390 package
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Kalle Valo <kvalo@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
-	Konrad Dybcio <konrad.dybcio@linaro.org>, Liam Girdwood <lgirdwood@gmail.com>, 
-	Mark Brown <broonie@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Saravana Kannan <saravanak@google.com>, Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Arnd Bergmann <arnd@arndb.de>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Alex Elder <elder@linaro.org>, 
-	Srini Kandagatla <srinivas.kandagatla@linaro.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Abel Vesa <abel.vesa@linaro.org>, 
-	Manivannan Sadhasivam <mani@kernel.org>, Lukas Wunner <lukas@wunner.de>, Amit Pundir <amit.pundir@linaro.org>, 
-	Xilin Wu <wuxilin123@gmail.com>, linux-bluetooth@vger.kernel.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-pci@vger.kernel.org, linux-pm@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2212; i=keescook@chromium.org;
+ h=from:subject:message-id; bh=waLAn1oU6Dl+2buXX+0Cf1qjI968BHqs+nK0WlFL0+k=;
+ b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBmKYEcGRd/NCbnia73KALIWqr9Xdn0xKPvk2IDg
+ sZ+kbxaAWuJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCZimBHAAKCRCJcvTf3G3A
+ Jgl6D/sE+uKc6xZceXhHihXJHkcePsJVuhgwr7dKlPZMuFQwxhFMONW4l1jvB75ZZOOEHWK2SiT
+ bjAv30r5kIeB9IIiN9xYvRhMc5OmThRriaNKUEWLKBJFIq4ifOYSlhkmV59bwpgbsHdSHf9cMcn
+ i3D0oCGMp5tuCntEZdJknOlPPyfOHpFogpECCCeZ3rx0DaK0HZgxH4/8BuH+zygO2WQF2nMGLIa
+ rMUoU7iOGLm2F9VBKaCZlIliIh5asQfSQf3xG8vhyNB4e+8Ln2NTYC3CDWdrmzQ0tqaWrOLaOmM
+ IpBKbf9f5kKvKDqxlDsotpoovA1H0bHx8xhVhIK2jBeW6zyAeCM202g+n9fTtOVgtN6jp1RjqGt
+ bfy9b7t/2sbrv6A20wG0Xmc73nZenBnbGUX0ALnXTsAMmtnUu4MtEq+wTNtAnLy17CnfHShiHMG
+ aCud8tlty5gc6YeDXdBdAPTXXmOw/qJ0VldaIg1GeCDtxGPhrdPd+72R0n09Dlt6WvRkEbPJnCi
+ UyKCMU3wHTxz1kjMycrI7IJW6h39YPxS4fpX6YR7BOd3M+9IbxPciQMjLecb+zmbJpW3GUaOywn
+ N0ZZw4YHMVNqrwt569MVc/BLAzLda52Usw7rv1JQXNFQk3/WpJqdfiPMepFkEbEq7lBNhnPflh3
+ HQSxXOf KpyuyZkQ==
+X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
+Content-Transfer-Encoding: 8bit
 
-On Wed, 10 Apr 2024 at 15:46, Bartosz Golaszewski <brgl@bgdev.pl> wrote:
->
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->
-> The QCA6390 package contains discreet modules for WLAN and Bluetooth. They
-> are powered by the Power Management Unit (PMU) that takes inputs from the
-> host and provides LDO outputs. This document describes this module.
->
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> Acked-by: Mark Brown <broonie@kernel.org>
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> ---
->  .../bindings/regulator/qcom,qca6390-pmu.yaml  | 151 ++++++++++++++++++
->  1 file changed, 151 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/regulator/qcom,qca6390-pmu.yaml
->
-> diff --git a/Documentation/devicetree/bindings/regulator/qcom,qca6390-pmu.yaml b/Documentation/devicetree/bindings/regulator/qcom,qca6390-pmu.yaml
-> new file mode 100644
-> index 000000000000..9d39ff9a75fd
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/regulator/qcom,qca6390-pmu.yaml
-> @@ -0,0 +1,151 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/regulator/qcom,qca6390-pmu.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Qualcomm Technologies, Inc. QCA6390 PMU Regulators
-> +
-> +maintainers:
-> +  - Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> +
-> +description:
-> +  The QCA6390 package contains discreet modules for WLAN and Bluetooth. They
-> +  are powered by the Power Management Unit (PMU) that takes inputs from the
-> +  host and provides LDO outputs. This document describes this module.
-> +
-> +properties:
-> +  compatible:
-> +    const: qcom,qca6390-pmu
-> +
-> +  vddaon-supply:
-> +    description: VDD_AON supply regulator handle
-> +
-> +  vddpmu-supply:
-> +    description: VDD_PMU supply regulator handle
-> +
-> +  vddrfa0p95-supply:
-> +    description: VDD_RFA_0P95 supply regulator handle
-> +
-> +  vddrfa1p3-supply:
-> +    description: VDD_RFA_1P3 supply regulator handle
-> +
-> +  vddrfa1p9-supply:
-> +    description: VDD_RFA_1P9 supply regulator handle
-> +
-> +  vddpcie1p3-supply:
-> +    description: VDD_PCIE_1P3 supply regulator handle<S-Del>
-> +
-> +  vddpcie1p9-supply:
-> +    description: VDD_PCIE_1P9 supply regulator handle
-> +
-> +  vddio-supply:
-> +    description: VDD_IO supply regulator handle
-> +
-> +  wlan-enable-gpios:
-> +    maxItems: 1
-> +    description: GPIO line enabling the ATH11K WLAN module supplied by the PMU
-> +
-> +  bt-enable-gpios:
-> +    maxItems: 1
-> +    description: GPIO line enabling the ATH11K Bluetooth module supplied by the PMU
+Before request->channels[] can be used, request->n_channels must be set.
+Additionally, address calculations for memory after the "channels" array
+need to be calculated from the allocation base ("request") rather than
+via the first "out of bounds" index of "channels", otherwise run-time
+bounds checking will throw a warning.
 
-As a side node, I think we should also steal swctrl pin from the
-bluetooth device node. It represents the status of the PMU and as such
-it is not BT-specific.
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Fixes: e3eac9f32ec0 ("wifi: cfg80211: Annotate struct cfg80211_scan_request with __counted_by")
+Signed-off-by: Kees Cook <keescook@chromium.org>
+---
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: linux-wireless@vger.kernel.org
+Cc: netdev@vger.kernel.org
+---
+ net/wireless/nl80211.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-> +
-> +  regulators:
-> +    type: object
-> +    description:
-> +      LDO outputs of the PMU
-> +
-> +    patternProperties:
-> +      "^ldo[0-9]$":
-> +        $ref: regulator.yaml#
-> +        type: object
-> +        unevaluatedProperties: false
-> +
-> +    additionalProperties: false
-> +
-> +required:
-> +  - compatible
-> +  - regulators
-> +
-> +allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: qcom,qca6390-pmu
-> +    then:
-> +      required:
-> +        - vddaon-supply
-> +        - vddpmu-supply
-> +        - vddrfa0p95-supply
-> +        - vddrfa1p3-supply
-> +        - vddrfa1p9-supply
-> +        - vddpcie1p3-supply
-> +        - vddpcie1p9-supply
-> +        - vddio-supply
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    pmu {
-> +        compatible = "qcom,qca6390-pmu";
-> +
-> +        pinctrl-names = "default";
-> +        pinctrl-0 = <&bt_en_state>, <&wlan_en_state>;
-> +
-> +        vddaon-supply = <&vreg_s6a_0p95>;
-> +        vddpmu-supply = <&vreg_s2f_0p95>;
-> +        vddrfa0p95-supply = <&vreg_s2f_0p95>;
-> +        vddrfa1p3-supply = <&vreg_s8c_1p3>;
-> +        vddrfa1p9-supply = <&vreg_s5a_1p9>;
-> +        vddpcie1p3-supply = <&vreg_s8c_1p3>;
-> +        vddpcie1p9-supply = <&vreg_s5a_1p9>;
-> +        vddio-supply = <&vreg_s4a_1p8>;
-> +
-> +        wlan-enable-gpios = <&tlmm 20 GPIO_ACTIVE_HIGH>;
-> +        bt-enable-gpios = <&tlmm 21 GPIO_ACTIVE_HIGH>;
-> +
-> +        regulators {
-> +            vreg_pmu_rfa_cmn: ldo0 {
-> +                regulator-name = "vreg_pmu_rfa_cmn";
-> +            };
-> +
-> +            vreg_pmu_aon_0p59: ldo1 {
-> +                regulator-name = "vreg_pmu_aon_0p59";
-> +            };
-> +
-> +            vreg_pmu_wlcx_0p8: ldo2 {
-> +                regulator-name = "vreg_pmu_wlcx_0p8";
-> +            };
-> +
-> +            vreg_pmu_wlmx_0p85: ldo3 {
-> +                regulator-name = "vreg_pmu_wlmx_0p85";
-> +            };
-> +
-> +            vreg_pmu_btcmx_0p85: ldo4 {
-> +                regulator-name = "vreg_pmu_btcmx_0p85";
-> +            };
-> +
-> +            vreg_pmu_rfa_0p8: ldo5 {
-> +                regulator-name = "vreg_pmu_rfa_0p8";
-> +            };
-> +
-> +            vreg_pmu_rfa_1p2: ldo6 {
-> +                regulator-name = "vreg_pmu_rfa_1p2";
-> +            };
-> +
-> +            vreg_pmu_rfa_1p7: ldo7 {
-> +                regulator-name = "vreg_pmu_rfa_1p7";
-> +            };
-> +
-> +            vreg_pmu_pcie_0p9: ldo8 {
-> +                regulator-name = "vreg_pmu_pcie_0p9";
-> +            };
-> +
-> +            vreg_pmu_pcie_1p8: ldo9 {
-> +                regulator-name = "vreg_pmu_pcie_1p8";
-> +            };
-> +        };
-> +    };
-> --
-> 2.40.1
->
-
-
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index f391b4055944..f1ed0981147e 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -9163,6 +9163,7 @@ static int nl80211_trigger_scan(struct sk_buff *skb, struct genl_info *info)
+ 	struct wiphy *wiphy;
+ 	int err, tmp, n_ssids = 0, n_channels, i;
+ 	size_t ie_len, size;
++	size_t ssids_offset, ie_offset;
+ 
+ 	wiphy = &rdev->wiphy;
+ 
+@@ -9208,21 +9209,20 @@ static int nl80211_trigger_scan(struct sk_buff *skb, struct genl_info *info)
+ 		return -EINVAL;
+ 
+ 	size = struct_size(request, channels, n_channels);
++	ssids_offset = size;
+ 	size = size_add(size, array_size(sizeof(*request->ssids), n_ssids));
++	ie_offset = size;
+ 	size = size_add(size, ie_len);
+ 	request = kzalloc(size, GFP_KERNEL);
+ 	if (!request)
+ 		return -ENOMEM;
++	request->n_channels = n_channels;
+ 
+ 	if (n_ssids)
+-		request->ssids = (void *)&request->channels[n_channels];
++		request->ssids = (void *)request + ssids_offset;
+ 	request->n_ssids = n_ssids;
+-	if (ie_len) {
+-		if (n_ssids)
+-			request->ie = (void *)(request->ssids + n_ssids);
+-		else
+-			request->ie = (void *)(request->channels + n_channels);
+-	}
++	if (ie_len)
++		request->ie = (void *)request + ie_offset;
+ 
+ 	i = 0;
+ 	if (scan_freqs) {
 -- 
-With best wishes
-Dmitry
+2.34.1
+
 
