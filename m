@@ -1,133 +1,163 @@
-Return-Path: <linux-wireless+bounces-6850-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6851-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D321B8B25B1
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 17:52:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D15158B25CC
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 17:58:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7388C1F21677
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 15:52:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A655B29A35
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 15:57:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2744A14A096;
-	Thu, 25 Apr 2024 15:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3302514BF9B;
+	Thu, 25 Apr 2024 15:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cpl17gQJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SHNmKsX9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1314149E05;
-	Thu, 25 Apr 2024 15:52:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E6414B08F;
+	Thu, 25 Apr 2024 15:57:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714060355; cv=none; b=PZQ+eS4LGn4Gb5b9nXgzx1qaEDt7GaM0bY2cZurD1rYdKEAEOgDYMJjA55QyQL6mkEEh+5KTayXHtGgx5lGIROd8R3sEs4xTBWEhfa5Q/9NtPjdBb/LjwH0xLAOaLu0hVQ7ODQIsW69iM5SXD2i9Sne/zfHLePmJPt4kWQenO4c=
+	t=1714060658; cv=none; b=uSti427uWI62Z+KI0DUWUbX3k1uW7drzb7pQ+Q+qsYIgVMLqGXG/hP9AFupIxn4rQjCIuGhj95FeGzvp7dCls24tV7KDFK+/eQlSoVHq1uWzwFMcKi4NKgHpc8h/HIRn14oLBW0+gTgWnp5L/f/9a/KingVCMihiis7kuy+xihw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714060355; c=relaxed/simple;
-	bh=B7Wmbm/n62aWiRnQINEzBVkAKyQUnC6b/81Q7ziiERY=;
-	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=aRd8BzGo2lT3xojBB7M5n7Fpq5q63jHrriqlCly+5PqCcuXCWnkEv3FnKPlT6YWsSixTAc6puEXiU7MN1uujaSSGDFJT/ZX9JfRwsKQTGpHxVFMvocfZmrDgR63n8NIBcyxWjHrB0zoFy4bQSiqhBtO2N8YkhuYkNLNfrl0meLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cpl17gQJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C0A0C113CC;
-	Thu, 25 Apr 2024 15:52:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714060354;
-	bh=B7Wmbm/n62aWiRnQINEzBVkAKyQUnC6b/81Q7ziiERY=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=Cpl17gQJo6f4S7YharycS9+9clLcvEGJCo+FiOgL/rhae/OTS7MktDX8WQIQIGqCN
-	 8cfsMuvqx2rAc2a1lJdXw/7TJg9OCxIc4ytRRqd6TZ8y25XSeMEbPU0bbUCcIOpAsa
-	 kXH2VCrv6fCSrMB6T5AAzrXxkgoRpNjveXo1gFuY2gOJXWAtrJWjCrwnVDZ9Wmo8AV
-	 TOhdpKNVp7W2phgu5yAMqLeeHxktFBlma6kwbRvWkaN6tZA45jSumM/GLcHiZpBDi9
-	 dp4DhGY5HgUFEZTJTBEvJFy/H6AdlIzxK3xH7eL/jctWgm7GcZQAcovaeeTgAirA33
-	 kZq0Q+wqC2zOQ==
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1714060658; c=relaxed/simple;
+	bh=xp/u9E8lqrYHDy7ZttytiOWmxGZSKR2QflsGnvBD7Zw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=kJgvnZ+un7ilRIMCybde1Fr++mpW2i1h05SRERDZq2f+e/rPeR082ltMpuRkXbJEWYLvXDme6gEVKKJZfIYUodi9y+xix+IfHcWC5O/j/41+tDOeu5QbViHQw3YR37RpQn8yQDdjud+zzJO52tOMzY5RK5MB+J9GZF84oRPbK60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SHNmKsX9; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-41adf3580dbso7250365e9.0;
+        Thu, 25 Apr 2024 08:57:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714060655; x=1714665455; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZWIDlM3skqmviOGyQzKHYQKwZg26rYhvxBIOzuWaC4M=;
+        b=SHNmKsX9c3ju/PD0NAuXt0MnYhuuqqwybxyzYgPlN3/EdhSeO1xHqIqmW1TADMIiqK
+         PidPDi3lotkECfBh8BSWfbQXYdG9RqaTDRsnCisMnZVsxAu51haQQ0pjFpmy3pQtON/e
+         XS2XMx6eHexSQfQT+251lTfWy6RCCAq7tOkZJTZq7qwtC25k6yoQYGg9pfCc17FluD6Y
+         BSRGVtOyAy9XlvUJttf/AGvQUlnoyxbscP/PZVHIEj+rvXR7H2F0UyBDpT8sOWo7CZB0
+         wpqYN0sFU79LDHyVheKvvPtI+wLwgz1HIlTwIjexNFGzKNx1bz/cC1rtW9mVAdMnhV2p
+         7Rmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714060655; x=1714665455;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZWIDlM3skqmviOGyQzKHYQKwZg26rYhvxBIOzuWaC4M=;
+        b=cw7lLXLYo+fdeisqGbM5tWBDhCt57+7poml6Nd58bgqFOprcsFhwKENPznEQrHHcn3
+         3L4rKet7qA9ekpnjMSw0pkfzl75ldljO1Kw4bqeMi2Mk8YKfWsfiP5jg+QLKdu0jiaXC
+         sn/Cv5J8BhiYYeMbbHopgkKTO2Gf6kbiqfrGq6nsdCYsXM2JD0ZRNMCEl0421M0qr9FP
+         WuzOJq6cM2RsOeHWE/HCMzO/BDe2C/3kJVtmGHv+qo+o+2MkGeU08qjEOt527ChAeOxK
+         OVQC4AjIXM5A7sAnFw6zJATPD3tqAuSwkQu5OIV+J8Dqec4edYIrZAVjuGBfkJPdCq4T
+         G9WA==
+X-Forwarded-Encrypted: i=1; AJvYcCWhbC1Y8oET0uI/KDwXLvH9uQmiRDZEI9iwW/8obhRvnnTZe2E9NDU234VlujbVzkbrOO8unouCvHmJTY2aTxAxD+q4PeVI0U7uR4rJr0ePBp/NntDM2RxGC6iY1OJ1T5lSjUW8V1CczGRLyDk=
+X-Gm-Message-State: AOJu0YwegSrMxOsumvuMBJ4fkwXDVh01mIC3VGrmBfnSnAwGqoZwds4D
+	F71TPcRRS7jdlLToa8VATlpj9A0KU5e+g75oVwylqVjvUHyjRRPY
+X-Google-Smtp-Source: AGHT+IGHN98h4hd/cOWqFkCJCVdijy1N1kO6cKmT4goq4/ZvLxsODGUwryYAgd3HoGnHKA6vu+o/GQ==
+X-Received: by 2002:a05:600c:3c9e:b0:41b:34d3:42a5 with SMTP id bg30-20020a05600c3c9e00b0041b34d342a5mr186450wmb.1.1714060654705;
+        Thu, 25 Apr 2024 08:57:34 -0700 (PDT)
+Received: from localhost (craw-09-b2-v4wan-169726-cust2117.vm24.cable.virginm.net. [92.238.24.70])
+        by smtp.gmail.com with ESMTPSA id t13-20020a05600c450d00b00417f700eaeasm28159076wmo.22.2024.04.25.08.57.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Apr 2024 08:57:34 -0700 (PDT)
+From: Colin Ian King <colin.i.king@gmail.com>
+To: Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Su Hui <suhui@nfschina.com>,
+	linux-wireless@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH][next] wifi: rtlwifi: rtl8723be: Make read-only arrays static const
+Date: Thu, 25 Apr 2024 16:57:33 +0100
+Message-Id: <20240425155733.114423-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] wifi: ar5523: enable proper endpoint verification
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240408121425.29392-1-n.zhandarovich@fintech.ru>
-References: <20240408121425.29392-1-n.zhandarovich@fintech.ru>
-To: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Cc: Nikita Zhandarovich <n.zhandarovich@fintech.ru>, Wu Yunchuan
-	<yunchuan@nfschina.com>, Johannes Berg <johannes.berg@intel.com>, "Breno
- Leitao" <leitao@debian.org>, <linux-wireless@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>,
- <syzbot+1bc2c2afd44f820a669f@syzkaller.appspotmail.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <171406032921.2967849.6111681305541795423.kvalo@kernel.org>
-Date: Thu, 25 Apr 2024 15:52:23 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-Nikita Zhandarovich <n.zhandarovich@fintech.ru> wrote:
+Don't populate the read-only arrays cck_rates, ofdm_rates, ht_rates_1t and
+channel_all on the stack at run time, instead make them static const and
+clean up the formatting.
 
-> Syzkaller reports [1] hitting a warning about an endpoint in use
-> not having an expected type to it.
-> 
-> Fix the issue by checking for the existence of all proper
-> endpoints with their according types intact.
-> 
-> Sadly, this patch has not been tested on real hardware.
-> 
-> [1] Syzkaller report:
-> ------------[ cut here ]------------
-> usb 1-1: BOGUS urb xfer, pipe 3 != type 1
-> WARNING: CPU: 0 PID: 3643 at drivers/usb/core/urb.c:504 usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
-> ...
-> Call Trace:
->  <TASK>
->  ar5523_cmd+0x41b/0x780 drivers/net/wireless/ath/ar5523/ar5523.c:275
->  ar5523_cmd_read drivers/net/wireless/ath/ar5523/ar5523.c:302 [inline]
->  ar5523_host_available drivers/net/wireless/ath/ar5523/ar5523.c:1376 [inline]
->  ar5523_probe+0x14b0/0x1d10 drivers/net/wireless/ath/ar5523/ar5523.c:1655
->  usb_probe_interface+0x30f/0x7f0 drivers/usb/core/driver.c:396
->  call_driver_probe drivers/base/dd.c:560 [inline]
->  really_probe+0x249/0xb90 drivers/base/dd.c:639
->  __driver_probe_device+0x1df/0x4d0 drivers/base/dd.c:778
->  driver_probe_device+0x4c/0x1a0 drivers/base/dd.c:808
->  __device_attach_driver+0x1d4/0x2e0 drivers/base/dd.c:936
->  bus_for_each_drv+0x163/0x1e0 drivers/base/bus.c:427
->  __device_attach+0x1e4/0x530 drivers/base/dd.c:1008
->  bus_probe_device+0x1e8/0x2a0 drivers/base/bus.c:487
->  device_add+0xbd9/0x1e90 drivers/base/core.c:3517
->  usb_set_configuration+0x101d/0x1900 drivers/usb/core/message.c:2170
->  usb_generic_driver_probe+0xbe/0x100 drivers/usb/core/generic.c:238
->  usb_probe_device+0xd8/0x2c0 drivers/usb/core/driver.c:293
->  call_driver_probe drivers/base/dd.c:560 [inline]
->  really_probe+0x249/0xb90 drivers/base/dd.c:639
->  __driver_probe_device+0x1df/0x4d0 drivers/base/dd.c:778
->  driver_probe_device+0x4c/0x1a0 drivers/base/dd.c:808
->  __device_attach_driver+0x1d4/0x2e0 drivers/base/dd.c:936
->  bus_for_each_drv+0x163/0x1e0 drivers/base/bus.c:427
->  __device_attach+0x1e4/0x530 drivers/base/dd.c:1008
->  bus_probe_device+0x1e8/0x2a0 drivers/base/bus.c:487
->  device_add+0xbd9/0x1e90 drivers/base/core.c:3517
->  usb_new_device.cold+0x685/0x10ad drivers/usb/core/hub.c:2573
->  hub_port_connect drivers/usb/core/hub.c:5353 [inline]
->  hub_port_connect_change drivers/usb/core/hub.c:5497 [inline]
->  port_event drivers/usb/core/hub.c:5653 [inline]
->  hub_event+0x26cb/0x45d0 drivers/usb/core/hub.c:5735
->  process_one_work+0x9bf/0x1710 kernel/workqueue.c:2289
->  worker_thread+0x669/0x1090 kernel/workqueue.c:2436
->  kthread+0x2e8/0x3a0 kernel/kthread.c:376
->  ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:306
->  </TASK>
-> 
-> Reported-and-tested-by: syzbot+1bc2c2afd44f820a669f@syzkaller.appspotmail.com
-> Fixes: b7d572e1871d ("ar5523: Add new driver")
-> Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ .../wireless/realtek/rtlwifi/rtl8723be/phy.c  | 45 +++++++++++--------
+ 1 file changed, 26 insertions(+), 19 deletions(-)
 
-Does anyone have a real device to test this? I have had so much problems with
-syzbot fixes in the past that I'm hesitant to take such patches without
-testing.
-
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c
+index 094cb36153f5..13e689037acc 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c
+@@ -1110,16 +1110,22 @@ static void _rtl8723be_phy_set_txpower_index(struct ieee80211_hw *hw,
+ void rtl8723be_phy_set_txpower_level(struct ieee80211_hw *hw, u8 channel)
+ {
+ 	struct rtl_efuse *rtlefuse = rtl_efuse(rtl_priv(hw));
+-	u8 cck_rates[]  = {DESC92C_RATE1M, DESC92C_RATE2M,
+-			   DESC92C_RATE5_5M, DESC92C_RATE11M};
+-	u8 ofdm_rates[]  = {DESC92C_RATE6M, DESC92C_RATE9M,
+-			    DESC92C_RATE12M, DESC92C_RATE18M,
+-			    DESC92C_RATE24M, DESC92C_RATE36M,
+-			    DESC92C_RATE48M, DESC92C_RATE54M};
+-	u8 ht_rates_1t[]  = {DESC92C_RATEMCS0, DESC92C_RATEMCS1,
+-			     DESC92C_RATEMCS2, DESC92C_RATEMCS3,
+-			     DESC92C_RATEMCS4, DESC92C_RATEMCS5,
+-			     DESC92C_RATEMCS6, DESC92C_RATEMCS7};
++	static const u8 cck_rates[]  = {
++		DESC92C_RATE1M, DESC92C_RATE2M,
++		DESC92C_RATE5_5M, DESC92C_RATE11M
++	};
++	static const u8 ofdm_rates[]  = {
++		DESC92C_RATE6M, DESC92C_RATE9M,
++		DESC92C_RATE12M, DESC92C_RATE18M,
++		DESC92C_RATE24M, DESC92C_RATE36M,
++		DESC92C_RATE48M, DESC92C_RATE54M
++	};
++	static const u8 ht_rates_1t[]  = {
++		DESC92C_RATEMCS0, DESC92C_RATEMCS1,
++		DESC92C_RATEMCS2, DESC92C_RATEMCS3,
++		DESC92C_RATEMCS4, DESC92C_RATEMCS5,
++		DESC92C_RATEMCS6, DESC92C_RATEMCS7
++	};
+ 	u8 i;
+ 	u8 power_index;
+ 
+@@ -2155,15 +2161,16 @@ static void _rtl8723be_phy_iq_calibrate(struct ieee80211_hw *hw,
+ 
+ static u8 _get_right_chnl_place_for_iqk(u8 chnl)
+ {
+-	u8 channel_all[TARGET_CHNL_NUM_2G_5G] = {
+-			1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+-			13, 14, 36, 38, 40, 42, 44, 46,
+-			48, 50, 52, 54, 56, 58, 60, 62, 64,
+-			100, 102, 104, 106, 108, 110,
+-			112, 114, 116, 118, 120, 122,
+-			124, 126, 128, 130, 132, 134, 136,
+-			138, 140, 149, 151, 153, 155, 157,
+-			159, 161, 163, 165};
++	static const u8 channel_all[TARGET_CHNL_NUM_2G_5G] = {
++		1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
++		13, 14, 36, 38, 40, 42, 44, 46,
++		48, 50, 52, 54, 56, 58, 60, 62, 64,
++		100, 102, 104, 106, 108, 110,
++		112, 114, 116, 118, 120, 122,
++		124, 126, 128, 130, 132, 134, 136,
++		138, 140, 149, 151, 153, 155, 157,
++		159, 161, 163, 165
++	};
+ 	u8 place = chnl;
+ 
+ 	if (chnl > 14) {
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240408121425.29392-1-n.zhandarovich@fintech.ru/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.39.2
 
 
