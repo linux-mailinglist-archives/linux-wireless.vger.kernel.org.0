@@ -1,326 +1,236 @@
-Return-Path: <linux-wireless+bounces-6845-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6846-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D5F38B2039
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 13:29:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B52898B20A8
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 13:48:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82AF92893E5
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 11:29:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED695B22D8D
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 11:48:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F318783CCD;
-	Thu, 25 Apr 2024 11:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD61E12AAD1;
+	Thu, 25 Apr 2024 11:48:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="LZMYpqQG"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD0612A177
-	for <linux-wireless@vger.kernel.org>; Thu, 25 Apr 2024 11:29:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82A823763
+	for <linux-wireless@vger.kernel.org>; Thu, 25 Apr 2024 11:48:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714044579; cv=none; b=Gfw529JhY4DLsy0UtuCE43f8ah0QAAJXWWlsiBbg6+L5ghRClpw/1cLux/XUsDPoN7WW8d+hTjULuOBrjWefSN2g8Vl6mEvP+oNmv01P3UPYnEl/KJy8s22CSXt6bapyB/oqk5WgkIvv/DXRw+QgrPbkoEuubIeMJb/uaFl9IPU=
+	t=1714045688; cv=none; b=p6Wg6Vk7i54crXhbw7gvX0YZBeR3E/6c48sIPanIzGptYuX5dUo32fGjxckdjAVkd7qYUaI4mhW5EJip5cwxAptvxq6MkJMZM+JlYGGS/7cmYcGjYeiQ+G3YIeQa51EUkAj8Hv8EEpKAf9f41DNL+/GoFUbZSL83iT7zYFr6tGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714044579; c=relaxed/simple;
-	bh=Y12EvOeEJLOlFzrIANMotfbZ4QSqef+wz2fX7hCMjqg=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rlhA0Rbdv3asDRj528JFQBBCXYTU5h5wz3iLVZ1r95bjxXAciUHQh13wxgESTok6I1lCYlTbUulJHAFXKGw45kAqHalJ53jEuLHOUoQoaCEZybMNuKvK/CtyKAPmMErZQoVKZ1R7KAhRcmKv8Asom10hxFqT6daGiH2rGodxV9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 43PBTaqbE3482377, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 43PBTaqbE3482377
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Thu, 25 Apr 2024 19:29:36 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 25 Apr 2024 19:29:36 +0800
-Received: from [127.0.1.1] (172.16.16.129) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 25 Apr
- 2024 19:29:35 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <gary.chang@realtek.com>, <timlee@realtek.com>
-Subject: [PATCH 12/12] wifi: rtw89: wow: add ARP offload feature
-Date: Thu, 25 Apr 2024 19:28:16 +0800
-Message-ID: <20240425112816.26431-13-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240425112816.26431-1-pkshih@realtek.com>
-References: <20240425112816.26431-1-pkshih@realtek.com>
+	s=arc-20240116; t=1714045688; c=relaxed/simple;
+	bh=czEEt7zYbzwtUk3Jnvwb8pUXpFp5uV5owT4rfXD0kFI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cu2zatvuJH23NT44HqwH7LZ7zzSE8sj59R9CWspsVSxfYfpxHbsmCWz3dk4C+dLTm1XmVWy45twQrM69FSHv+TJABtcY0NDKbie0OoRpVzUtYHBwHuW2FhmurKny6JXv8TyPN3CCXpkARUgd/aGx8XUmtz+287zbGVJuXbZZ1kQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=LZMYpqQG; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2a68a2b3747so647478a91.3
+        for <linux-wireless@vger.kernel.org>; Thu, 25 Apr 2024 04:48:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1714045686; x=1714650486; darn=vger.kernel.org;
+        h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LkKMLsJDsa5dxEW5hO4GM25fefXo+/pUj3Vex9tqShE=;
+        b=LZMYpqQGYh2zuAh6Rik7TNq7Ew6ntHqoCvhRUsnhN7lSycRCbfXm3ma4p/IgN6xExt
+         jpR8LineI/dh1Kur2kDIBkv112toYwum1eLKSGATxrl1Kx1Yqqff4ZcU5AIxArxe4UKP
+         tCZGwrr4z88GL+kzvICniLrdaGDPwu1SIVX+Q=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714045686; x=1714650486;
+        h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=LkKMLsJDsa5dxEW5hO4GM25fefXo+/pUj3Vex9tqShE=;
+        b=RVFIXBi9Wc3NX2uZUQ6dPV1MmnN6BwxYMIuLYn0GQGMH9ZRHJIkDEJkeDEBnqfdDpx
+         EGxaUFDbneIvCgQnkiQVEv/nsrvUycWLEZewnxjpQcTSFchVlYV040LJqmFTM39iYn2A
+         eJQ7MAz/kjoHc3PvHYumtMgMA50sLHF0V+b0Fww6t4O4H+P5wtGP5mx9UK8NqXYkB79s
+         f0ZYatMaebzKfoIIDh10SLsOxmI4lv59yENbOTRoE5iiN9PS8S+0N1kccaJkKZfV1LuY
+         zZSaLTffSzeYntLZHTLKIcWBfFLVb8iqbkqmxErr93WRXb7u8WNr04vZOyZMVXbje/g3
+         R1DA==
+X-Forwarded-Encrypted: i=1; AJvYcCVpDUBpwHR8ngoOkfqJ1he+7vhgCF34UqIlF3MRr6mu1/TaCw0scXohEY25llxMnN1dsETiZiiNFFU8u3l2CFEYn0kPgh+Ubp+Qowz7Fb0=
+X-Gm-Message-State: AOJu0YyOeRaGdsj5TNJ1fWd/iyV6Y12n76OCA2E8aiJ3wXLfi6vZwn8d
+	TOfyN1sfk+DYWczOkb9Fws5XuGzkEWb5ZD/SfuJt9voFtyAo6hToJwtpaXAeuw==
+X-Google-Smtp-Source: AGHT+IG4rxEoIT1sBKl5Z42Y50ieKK3O8ZT5Q8SWBYDNTcpJotrlTjKFDFPiM81bAuQoMRFF1zo6zQ==
+X-Received: by 2002:a17:90a:6048:b0:2a5:5a2c:6066 with SMTP id h8-20020a17090a604800b002a55a2c6066mr5240829pjm.37.1714045686169;
+        Thu, 25 Apr 2024 04:48:06 -0700 (PDT)
+Received: from [10.176.68.61] ([192.19.176.250])
+        by smtp.gmail.com with ESMTPSA id i8-20020a17090a718800b002a2e6152f55sm14478447pjk.25.2024.04.25.04.48.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Apr 2024 04:48:04 -0700 (PDT)
+Message-ID: <65b37377-3bde-4f09-aae9-ca721494e981@broadcom.com>
+Date: Thu, 25 Apr 2024 13:47:59 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: brcmsmac: ampdu: remove unused cb_del_ampdu_pars
+ struct
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+ Kalle Valo <kvalo@kernel.org>
+Cc: linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+ linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+ brcm80211-dev-list.pdl@broadcom.com
+References: <fa3b190b6e9cba65ecc36fc93121c6ed8704f704.1714036681.git.christophe.jaillet@wanadoo.fr>
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
+Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
+ 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
+In-Reply-To: <fa3b190b6e9cba65ecc36fc93121c6ed8704f704.1714036681.git.christophe.jaillet@wanadoo.fr>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="00000000000046e53d0616ea5c36"
 
-From: Chin-Yen Lee <timlee@realtek.com>
+--00000000000046e53d0616ea5c36
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Add H2C command and offload template packet to allow firmware send ARP
-response in WoWLAN mode. Then, firmware in WoWLAN mode can interactive
-with peer that issue ARP request to query MAC address.
+On 4/25/2024 11:22 AM, Christophe JAILLET wrote:
+> struct cb_del_ampdu_pars was added in the initial commit 5b435de0d7868
+> ("net: wireless: add brcm80211 drivers") and its only usage was removed in
+> commit e041f65d5f00 ("brcmsmac: Remove internal tx queue").
+> 
+> Remove the structure definition now. This saves a few lines of code.
 
-Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/core.h     |   1 +
- drivers/net/wireless/realtek/rtw89/fw.c       | 108 ++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/fw.h       |  14 +++
- drivers/net/wireless/realtek/rtw89/mac80211.c |   3 +
- drivers/net/wireless/realtek/rtw89/wow.c      |   8 ++
- 5 files changed, 134 insertions(+)
+Thanks. Looks good to me.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 1aa25a3f3659..e03645bb27b7 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -3341,6 +3341,7 @@ struct rtw89_vif {
- 	u8 port;
- 	u8 mac_addr[ETH_ALEN];
- 	u8 bssid[ETH_ALEN];
-+	__be32 ip_addr;
- 	u8 phy_idx;
- 	u8 mac_idx;
- 	u8 net_type;
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 444badc3eede..044a5b90c7f4 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -2,6 +2,7 @@
- /* Copyright(c) 2019-2020  Realtek Corporation
-  */
- 
-+#include <linux/if_arp.h>
- #include "cam.h"
- #include "chan.h"
- #include "coex.h"
-@@ -26,6 +27,17 @@ struct rtw89_sa_query {
- 	u8 action;
- } __packed __aligned(2);
- 
-+struct rtw89_arp_rsp {
-+	struct ieee80211_hdr_3addr addr;
-+	u8 llc_hdr[sizeof(rfc1042_header)];
-+	__be16 llc_type;
-+	struct arphdr arp_hdr;
-+	u8 sender_hw[ETH_ALEN];
-+	__be32 sender_ip;
-+	u8 target_hw[ETH_ALEN];
-+	__be32 target_ip;
-+} __packed __aligned(2);
-+
- static const u8 mss_signature[] = {0x4D, 0x53, 0x53, 0x4B, 0x50, 0x4F, 0x4F, 0x4C};
- 
- union rtw89_fw_element_arg {
-@@ -2223,6 +2235,48 @@ static struct sk_buff *rtw89_sa_query_get(struct rtw89_dev *rtwdev,
- 	return skb;
- }
- 
-+static struct sk_buff *rtw89_arp_response_get(struct rtw89_dev *rtwdev,
-+					      struct rtw89_vif *rtwvif)
-+{
-+	struct rtw89_wow_param *rtw_wow = &rtwdev->wow;
-+	struct rtw89_arp_rsp *arp_skb;
-+	struct arphdr *arp_hdr;
-+	struct sk_buff *skb;
-+	__le16 fc;
-+
-+	skb = dev_alloc_skb(sizeof(struct rtw89_arp_rsp));
-+	if (!skb)
-+		return NULL;
-+
-+	arp_skb = skb_put_zero(skb, sizeof(*arp_skb));
-+
-+	if (rtw_wow->ptk_alg)
-+		fc = cpu_to_le16(IEEE80211_FTYPE_DATA | IEEE80211_FCTL_TODS |
-+				 IEEE80211_FCTL_PROTECTED);
-+	else
-+		fc = cpu_to_le16(IEEE80211_FTYPE_DATA | IEEE80211_FCTL_TODS);
-+
-+	arp_skb->addr.frame_control = fc;
-+	ether_addr_copy(arp_skb->addr.addr1, rtwvif->bssid);
-+	ether_addr_copy(arp_skb->addr.addr2, rtwvif->mac_addr);
-+	ether_addr_copy(arp_skb->addr.addr3, rtwvif->bssid);
-+
-+	memcpy(arp_skb->llc_hdr, rfc1042_header, sizeof(rfc1042_header));
-+	arp_skb->llc_type = htons(ETH_P_ARP);
-+
-+	arp_hdr = &arp_skb->arp_hdr;
-+	arp_hdr->ar_hrd = htons(ARPHRD_ETHER);
-+	arp_hdr->ar_pro = htons(ETH_P_IP);
-+	arp_hdr->ar_hln = ETH_ALEN;
-+	arp_hdr->ar_pln = 4;
-+	arp_hdr->ar_op = htons(ARPOP_REPLY);
-+
-+	ether_addr_copy(arp_skb->sender_hw, rtwvif->mac_addr);
-+	arp_skb->sender_ip = rtwvif->ip_addr;
-+
-+	return skb;
-+}
-+
- static int rtw89_fw_h2c_add_general_pkt(struct rtw89_dev *rtwdev,
- 					struct rtw89_vif *rtwvif,
- 					enum rtw89_fw_pkt_ofld_type type,
-@@ -2256,6 +2310,9 @@ static int rtw89_fw_h2c_add_general_pkt(struct rtw89_dev *rtwdev,
- 	case RTW89_PKT_OFLD_TYPE_SA_QUERY:
- 		skb = rtw89_sa_query_get(rtwdev, rtwvif);
- 		break;
-+	case RTW89_PKT_OFLD_TYPE_ARP_RSP:
-+		skb = rtw89_arp_response_get(rtwdev, rtwvif);
-+		break;
- 	default:
- 		goto err;
- 	}
-@@ -6390,6 +6447,57 @@ int rtw89_fw_h2c_keep_alive(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
- 	return ret;
- }
- 
-+int rtw89_fw_h2c_arp_offload(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
-+			     bool enable)
-+{
-+	struct rtw89_h2c_arp_offload *h2c;
-+	u32 len = sizeof(*h2c);
-+	struct sk_buff *skb;
-+	u8 pkt_id = 0;
-+	int ret;
-+
-+	if (enable) {
-+		ret = rtw89_fw_h2c_add_general_pkt(rtwdev, rtwvif,
-+						   RTW89_PKT_OFLD_TYPE_ARP_RSP,
-+						   &pkt_id);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, len);
-+	if (!skb) {
-+		rtw89_err(rtwdev, "failed to alloc skb for arp offload\n");
-+		return -ENOMEM;
-+	}
-+
-+	skb_put(skb, len);
-+	h2c = (struct rtw89_h2c_arp_offload *)skb->data;
-+
-+	h2c->w0 = le32_encode_bits(enable, RTW89_H2C_ARP_OFFLOAD_W0_ENABLE) |
-+		  le32_encode_bits(0, RTW89_H2C_ARP_OFFLOAD_W0_ACTION) |
-+		  le32_encode_bits(rtwvif->mac_id, RTW89_H2C_ARP_OFFLOAD_W0_MACID) |
-+		  le32_encode_bits(pkt_id, RTW89_H2C_ARP_OFFLOAD_W0_PKT_ID);
-+
-+	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
-+			      H2C_CAT_MAC,
-+			      H2C_CL_MAC_WOW,
-+			      H2C_FUNC_ARP_OFLD, 0, 1,
-+			      len);
-+
-+	ret = rtw89_h2c_tx(rtwdev, skb, false);
-+	if (ret) {
-+		rtw89_err(rtwdev, "failed to send h2c\n");
-+		goto fail;
-+	}
-+
-+	return 0;
-+
-+fail:
-+	dev_kfree_skb_any(skb);
-+
-+	return ret;
-+}
-+
- #define H2C_DISCONNECT_DETECT_LEN 8
- int rtw89_fw_h2c_disconnect_detect(struct rtw89_dev *rtwdev,
- 				   struct rtw89_vif *rtwvif, bool enable)
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index 5e51267558ad..4151c9d566bd 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.h
-+++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -2025,6 +2025,17 @@ struct rtw89_h2c_wow_gtk_ofld {
- #define RTW89_H2C_WOW_GTK_OFLD_W1_PMF_BIP_SEC_ALGO GENMASK(9, 8)
- #define RTW89_H2C_WOW_GTK_OFLD_W1_ALGO_AKM_SUIT GENMASK(17, 10)
- 
-+struct rtw89_h2c_arp_offload {
-+	__le32 w0;
-+	__le32 w1;
-+} __packed;
-+
-+#define RTW89_H2C_ARP_OFFLOAD_W0_ENABLE BIT(0)
-+#define RTW89_H2C_ARP_OFFLOAD_W0_ACTION BIT(1)
-+#define RTW89_H2C_ARP_OFFLOAD_W0_MACID GENMASK(23, 16)
-+#define RTW89_H2C_ARP_OFFLOAD_W0_PKT_ID GENMASK(31, 24)
-+#define RTW89_H2C_ARP_OFFLOAD_W1_CONTENT GENMASK(31, 0)
-+
- enum rtw89_btc_btf_h2c_class {
- 	BTFC_SET = 0x10,
- 	BTFC_GET = 0x11,
-@@ -3919,6 +3930,7 @@ enum rtw89_wow_h2c_func {
- 	H2C_FUNC_DISCONNECT_DETECT	= 0x1,
- 	H2C_FUNC_WOW_GLOBAL		= 0x2,
- 	H2C_FUNC_GTK_OFLD		= 0x3,
-+	H2C_FUNC_ARP_OFLD		= 0x4,
- 	H2C_FUNC_WAKEUP_CTRL		= 0x8,
- 	H2C_FUNC_WOW_CAM_UPD		= 0xC,
- 	H2C_FUNC_AOAC_REPORT_REQ	= 0xD,
-@@ -4436,6 +4448,8 @@ int rtw89_fw_h2c_wow_wakeup_ctrl(struct rtw89_dev *rtwdev,
- 				 struct rtw89_vif *rtwvif, bool enable);
- int rtw89_fw_h2c_keep_alive(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
- 			    bool enable);
-+int rtw89_fw_h2c_arp_offload(struct rtw89_dev *rtwdev,
-+			     struct rtw89_vif *rtwvif, bool enable);
- int rtw89_fw_h2c_disconnect_detect(struct rtw89_dev *rtwdev,
- 				   struct rtw89_vif *rtwvif, bool enable);
- int rtw89_fw_h2c_wow_global(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
-diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
-index 2fd23f79544d..ca4938eed23c 100644
---- a/drivers/net/wireless/realtek/rtw89/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
-@@ -473,6 +473,9 @@ static void rtw89_ops_bss_info_changed(struct ieee80211_hw *hw,
- 	if (changed & BSS_CHANGED_PS)
- 		rtw89_recalc_lps(rtwdev);
- 
-+	if (changed & BSS_CHANGED_ARP_FILTER)
-+		rtwvif->ip_addr = vif->cfg.arp_addr_list[0];
-+
- 	mutex_unlock(&rtwdev->mutex);
- }
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/wow.c b/drivers/net/wireless/realtek/rtw89/wow.c
-index 434b29ae8ae9..fa61484c3839 100644
---- a/drivers/net/wireless/realtek/rtw89/wow.c
-+++ b/drivers/net/wireless/realtek/rtw89/wow.c
-@@ -1320,6 +1320,10 @@ static int rtw89_wow_fw_start(struct rtw89_dev *rtwdev)
- 		goto out;
- 	}
- 
-+	ret = rtw89_fw_h2c_arp_offload(rtwdev, rtwvif, true);
-+	if (ret)
-+		rtw89_warn(rtwdev, "wow: failed to enable arp offload\n");
-+
- 	ret = rtw89_wow_cfg_wake(rtwdev, true);
- 	if (ret) {
- 		rtw89_err(rtwdev, "wow: failed to config wake\n");
-@@ -1362,6 +1366,10 @@ static int rtw89_wow_fw_stop(struct rtw89_dev *rtwdev)
- 		goto out;
- 	}
- 
-+	ret = rtw89_fw_h2c_arp_offload(rtwdev, rtwvif, false);
-+	if (ret)
-+		rtw89_warn(rtwdev, "wow: failed to disable arp offload\n");
-+
- 	rtw89_wow_key_clear(rtwdev);
- 	rtw89_fw_release_general_pkt_list(rtwdev, true);
- 
--- 
-2.25.1
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+> Compile tested only
+> ---
+>   drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c | 6 ------
+>   1 file changed, 6 deletions(-)
 
+--00000000000046e53d0616ea5c36
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
+Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
+HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
+KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
+Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
+dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
+OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
+MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
+BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
+ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
+zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
+sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
+BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
+N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
+p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
+YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCfSOdmqDy3KsFQQO+5
+qshRzgyQCg0yhNAh28cfyx/mRjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yNDA0MjUxMTQ4MDZaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEANtSmO3GZMPbPlsrzCzC+52X3Y5W7bXiNnb5M
+LI9G/T1BvgUkSqa8G+CB4Wk/dfJPaqlFjT98tEZLkgyrFhNtksl6FDppr/xSLWf7uSz4Ocx23JLT
+mz/IBRdtkglLiQCdgLkk2LOUMeZnH+mTsNVMCJRWjkQNpfKmeoXI1V1b0LuIKdOOvxpG2Y9BJoS3
+slXc5wv5ixjSuu9QPCo5DnCpvyY35wk+b400cTmb1m3+knmc/yncZ+WwQ6OAIfGtS029vsPoIo6a
+fqOnMaKiU9w2b96fhnwU/o/kd+YmE57WVIyO7ZwsCpieVZIuz9pK5Uwp7N6b4AgDvFKDFBJD7+kD
+WA==
+--00000000000046e53d0616ea5c36--
 
