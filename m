@@ -1,132 +1,109 @@
-Return-Path: <linux-wireless+bounces-6828-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6829-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C26B8B1E47
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 11:44:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 096CE8B1EB4
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 12:04:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCDACB27482
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 09:44:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3DFD281A41
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 10:04:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A84384DFB;
-	Thu, 25 Apr 2024 09:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66AF18614D;
+	Thu, 25 Apr 2024 10:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="fg7stGuB"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="QlStIszc"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-14.smtpout.orange.fr [80.12.242.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DCEB84D2C
-	for <linux-wireless@vger.kernel.org>; Thu, 25 Apr 2024 09:44:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4654684FA9;
+	Thu, 25 Apr 2024 10:03:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714038253; cv=none; b=k52WQDwGVH6LH16SD4iLmyYu/wPYWjSCgOgE3ybelMOAhVKLNZhFkq7mpfZvGiSIj6gWpOgF9RGcTed9f16yRbrAVLD2VRzwWc+apDv0Co/GxsyIf0mfYQ8ZtBX6153wEjthWsIneX1+tYuSo6xbSNjLplbkIXaVJnej0+ex+Uk=
+	t=1714039435; cv=none; b=pN/kjsZ9PrBRh1+D05nvR5VYUlocbQ3gN24sPrdc7Cm4VZCg15HWev19Fd4jY6SnjvF091BEJQ2OR3llAXt6Vldc0ry+2+0aTy/UMe/oa9vfKbV/hUtFl/CJZRTTj0cjGOohNtforxCJditFSLdg7EtTT7Y6yCI+lRqd6s1M/WI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714038253; c=relaxed/simple;
-	bh=QKm3cjQglVoIagl9NWdKZo12+gkQBKI3oWMzyS1j3aI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YM0wOIeB24ulI7SoiHeQohxHQk7kdH945gkdA+nbqRBJA2YQGq7Q1sUsg5lYamf95kiGqbr4pBx6EgN3gCQwpNGQM291myjp4sVRfuI7BgqdTrAPdXyqt5rGc5bkUnLE1ILdknsUqas0Y+egFgV2vl0GfhuLIAXIrxt3TIH+uoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=fg7stGuB; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 575d887802e811ef935d6952f98a51a9-20240425
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=dLDkQf2vaEkGIxazc+FMQzXIVTV0+ydf8M//rJxA6KM=;
-	b=fg7stGuBmNdhbEVzjpurSIYfflff5n62P/OdVApj8dNGy+VnDRkhnlQ3G15meq5a4+FGr+gPXFas30AsWZb+XlJNAU5DzmTWx3QUqziRh6C9iwpj2xmgKIgGVggH4g+ZHGKicORRdJUDq7rPxMPmCOaFynq6sb2J+Z48R957Fxs=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.38,REQID:2b610a08-f9d1-47ab-bc62-b0fb64d1a973,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:82c5f88,CLOUDID:423857fb-ed05-4274-9204-014369d201e8,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
-	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-UUID: 575d887802e811ef935d6952f98a51a9-20240425
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
-	(envelope-from <deren.wu@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 677973463; Thu, 25 Apr 2024 17:43:59 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Thu, 25 Apr 2024 17:43:58 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Thu, 25 Apr 2024 17:43:58 +0800
-From: Deren Wu <deren.wu@mediatek.com>
-To: Chen-Yu Tsai <wens@kernel.org>
-CC: <wireless-regdb@lists.infradead.org>, linux-wireless
-	<linux-wireless@vger.kernel.org>, linux-mediatek
-	<linux-mediatek@lists.infradead.org>, Deren Wu <deren.wu@mediatek.com>
-Subject: [PATCH] wireless-regdb: Update regulatory rules for Taiwan (TW) on 6GHz
-Date: Thu, 25 Apr 2024 17:43:13 +0800
-Message-ID: <8f7c6ecd8e2cd15d277435719bf993217d40f12d.1714038069.git.deren.wu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+	s=arc-20240116; t=1714039435; c=relaxed/simple;
+	bh=7GYrDHi2wc98+LxSD11rnonpx3B7ff5rAPOELGHgubk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FCaTz8+Kfxc3h5qa7LrxzCSng1ZD7EsDQbCrrzyGbkorTVFVgflZPSprfDONwRkUqaGvwrMQQdWc3LvlszRNIRkRJuAlxvqwh2lHz2yVXS1EpAt/qApTtpAV6wsZWMH5yze7Fw/jc0zBKkzVlIOVqk2K0u94sPaxnOYJAjEAm+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=QlStIszc; arc=none smtp.client-ip=80.12.242.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from localhost.localdomain ([86.243.17.157])
+	by smtp.orange.fr with ESMTPA
+	id zvxAr3Z51CEcGzvxAryaUS; Thu, 25 Apr 2024 12:03:45 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1714039425;
+	bh=4dV+3BwCxRrU83DUCeOBwVJF38fNi8MvgvnSmXXVELI=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=QlStIszc4Xr3fHlScsb3ATG/XjVV5B9xVmfLF6iB1o7JoWR0q8XYFM7FE3eMFe0Op
+	 xPGV5wq9+VY0SF/Fm2CO/kLK+VE6dqkVKW2jNJOrzni20viGhc0ORVD7gr/Z12D4WX
+	 s1JxBsRX0vkLfI3eXcbeiEPO6yhw1f3mY9EjjZ0/rdf/jjIGnfPo19KutPamSsRije
+	 I6UiAXYy6S6ZxVr1U4A+NTmMsckpci6Y2Ne002NU+AHp/MGRy1Hqg9eq9UULY3paRi
+	 6/RIuzaisV0Oc+csj4vopJNZU9TcB8g/84a+udD5r8FMtOfW/tjbUXNSL3aE+YOO2q
+	 vPoe4D0iZepPw==
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 25 Apr 2024 12:03:45 +0200
+X-ME-IP: 86.243.17.157
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com
+Subject: [PATCH] wifi: brcmfmac: remove unused brcmf_usb_image struct
+Date: Thu, 25 Apr 2024 12:03:18 +0200
+Message-ID: <23afd8c1733ad087ce2399a07a30d689aef861d5.1714039373.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK: N
+Content-Transfer-Encoding: 8bit
 
-The Ministry of Transportation and Communications in Taiwan has updated
-its frequency allocation rules [1], now including the 5945 ~ 6425 MHz
-range for Low Power Indoor (LPI) and Very Low Power (VLP) devices. As
-only one power rule can be applied to a specific frequency range, we
-choose the LPI devices with a power limit of 23 dBm. There is no Dynamic
-Frequency Selection (DFS) requirement.
+struct brcmf_usb_image was added in the initial commit 71bb244ba2fd5
+("brcm80211: fmac: add USB support for bcm43235/6/8 chipsets") and updated
+in commit 803599d40418 ("brcmfmac: store usb fw images in local linked
+list.")
 
-Also update the section information for the 2.4/5/60 GHz bands
-with reference [1].
+Its only usage was removed in commit 52f98a57d8c1 ("brcmfmac: remove
+firmware list from USB driver").
 
-[1] LP0002 Low-power Radio-frequency Devices Technical Regulations
-    2024/Feb/06
-    https://www.ncc.gov.tw/chinese/files/24020/538_49880_240206_3.pdf
+Remove the structure definition now. This saves a few lines of code.
 
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- db.txt | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+Compile tested only
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/db.txt b/db.txt
-index fdc2c13..6981930 100644
---- a/db.txt
-+++ b/db.txt
-@@ -1724,12 +1724,12 @@ country TT: DFS-FCC
- # Table of Frequency Allocations of Republic of China (Taiwan) / Feb 2017:
- #   https://www.motc.gov.tw/websitedowndoc?file=post/201702221012200.doc& \
- #	filedisplay=Table%2Bof%2Bradio%2Bfrequency%2Ballocation.doc
--# LP0002 Low-power Radio-frequency Devices Technical Regulations / 23 Aug 2016:
--#   http://www.ncc.gov.tw/english/show_file.aspx?table_name=news&file_sn=681
-+# LP0002 Low-power Radio-frequency Devices Technical Regulations / 6 Feb 2024:
-+#   https://www.ncc.gov.tw/chinese/files/24020/538_49880_240206_3.pdf
- country TW: DFS-FCC
--	# 2.4g band, LP0002 section 3.10.1
-+	# 2.4g band, LP0002 section 4.10.1
- 	(2400 - 2483.5 @ 40), (30)
--	# 5g U-NII band, LP0002 section 4.7
-+	# 5g U-NII band, LP0002 section 5.7
- 	# 5.15 ~ 5.25 GHz: 30 dBm for master mode, 23 dBm for clients
- 	(5150 - 5250 @ 80), (23), AUTO-BW
- 	(5250 - 5350 @ 80), (23), DFS, AUTO-BW
-@@ -1739,7 +1739,9 @@ country TW: DFS-FCC
- 	# happy and be able to use channel 144.
- 	(5470 - 5730 @ 160), (23), DFS
- 	(5725 - 5850 @ 80), (30)
--	# 60g band, LP0002 section 3.13.1.1 (3)(C), EIRP=40dBm(43dBm peak)
-+	# 6g band, LP0002 section 5.13.1.1, EIRP=23dBm
-+	(5945 - 6425 @ 320), (23), NO-OUTDOOR
-+	# 60g band, LP0002 section 4.13.1.1 (1)(A), EIRP=40dBm(43dBm peak)
- 	(57000 - 66000 @ 2160), (40)
-  
- country TZ:
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+index 0ccf735316c2..9a105e6debe1 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+@@ -117,13 +117,6 @@ struct bootrom_id_le {
+ 	__le32 boardrev;	/* Board revision */
+ };
+ 
+-struct brcmf_usb_image {
+-	struct list_head list;
+-	s8 *fwname;
+-	u8 *image;
+-	int image_len;
+-};
+-
+ struct brcmf_usbdev_info {
+ 	struct brcmf_usbdev bus_pub; /* MUST BE FIRST */
+ 	spinlock_t qlock;
 -- 
-2.18.0
+2.44.0
 
 
