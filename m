@@ -1,76 +1,71 @@
-Return-Path: <linux-wireless+bounces-6827-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6828-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 668158B1E43
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 11:42:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C26B8B1E47
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 11:44:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E5BD281678
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 09:42:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCDACB27482
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 09:44:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5161884FCD;
-	Thu, 25 Apr 2024 09:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A84384DFB;
+	Thu, 25 Apr 2024 09:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cC5k7vw8"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="fg7stGuB"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D9584FA5;
-	Thu, 25 Apr 2024 09:42:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DCEB84D2C
+	for <linux-wireless@vger.kernel.org>; Thu, 25 Apr 2024 09:44:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714038147; cv=none; b=X4hQOJySgxzyoxd/Jpgkf+aidx/U+AKC+D/QovpDogYuDh/yr+ry+Wcf3DJKVTJLtOFGPzaFqx6Pft5UQ5b7SbBMxkkU6fkyO9jNP07dMs7XR9st8txoSBNT1NxrcMjauOMM8MzOyPO65hGccBQtGIiEoxCNbi24ouZlrXNZbIk=
+	t=1714038253; cv=none; b=k52WQDwGVH6LH16SD4iLmyYu/wPYWjSCgOgE3ybelMOAhVKLNZhFkq7mpfZvGiSIj6gWpOgF9RGcTed9f16yRbrAVLD2VRzwWc+apDv0Co/GxsyIf0mfYQ8ZtBX6153wEjthWsIneX1+tYuSo6xbSNjLplbkIXaVJnej0+ex+Uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714038147; c=relaxed/simple;
-	bh=3T9FjsUymGNFdluw54Z0v54M1QVaVyL3oEp/dxeaIlg=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=ogMNLaK0O+bmhAFXV6P2lQhEN+5M3V0VY7juCrt93o+9uNZt24CKOP3OQSSVfDff7BW58svp59H79PnzxA3xxJ8WRLDJoH1VpI67I5Ro1TRsjGSmgiRP2LYYdENACsEPPOk1NSmwsPH+cZ2qLh+VGchC34ITkm5sqQcNbr2ivy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cC5k7vw8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD23C113CC;
-	Thu, 25 Apr 2024 09:42:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714038146;
-	bh=3T9FjsUymGNFdluw54Z0v54M1QVaVyL3oEp/dxeaIlg=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=cC5k7vw8ltoalYvDhw0Jk6rN6jkchple0+rnrvgR+80LMeiwhC7qraCbaq5wl53v5
-	 Xhw49PZ7Ulsh0qB7iFzNSR2Y7ziceOxydyqP7+hniRpox875fDZUJwqH1BMJHHPb/E
-	 nUNiAR+NkWWY/MJuG/eLOTrdjCt/FHTRwLA7ZQZMawUjeA4GnPv0gaPBjal3nFaUm4
-	 b8w1o8GCivxXCXnzE7l+qeVrErJH6vHFnwJIV9hsdhclc2+Lnkt/guc/I9hx8RfhTo
-	 r1IYqbCKAZ7MtT40/G4seDFTQPsnLmED+pvHyzloW76OZrQGPReFfKsgCS+VgKTSSV
-	 9LBhzNUN/C67A==
-From: Kalle Valo <kvalo@kernel.org>
-To: Marc Gonzalez <mgonzalez@freebox.fr>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,  Konrad Dybcio
- <konrad.dybcio@linaro.org>,  Krzysztof Kozlowski
- <krzysztof.kozlowski@linaro.org>,  Jeff Johnson
- <quic_jjohnson@quicinc.com>,  ath10k <ath10k@lists.infradead.org>,
-  wireless <linux-wireless@vger.kernel.org>,  DT
- <devicetree@vger.kernel.org>,  MSM <linux-arm-msm@vger.kernel.org>,  Rob
- Herring <robh+dt@kernel.org>,  Conor Dooley <conor+dt@kernel.org>,
-  Pierre-Hugues Husson <phhusson@freebox.fr>,  Arnaud Vrac
- <avrac@freebox.fr>,  Bjorn Andersson <andersson@kernel.org>,  Jami
- Kettunen <jamipkettunen@gmail.com>,  Marijn Suijten
- <marijn.suijten@somainline.org>,  Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
-Subject: Re: [PATCH v2 3/3] arm64: dts: qcom: msm8998: set
- qcom,no-msa-ready-indicator for wifi
-References: <fd26ce4a-a9f3-4ada-8d46-ed36fb2456ca@freebox.fr>
-	<5cdad89c-282a-4df5-a286-b8404bc4dd81@freebox.fr>
-	<252618e8-9e80-4774-a96c-caa7f838ef01@linaro.org>
-	<502322f1-4f66-4922-bc4e-46bacac23410@linaro.org>
-	<0ca1221b-b707-450f-877d-ca07a601624d@freebox.fr>
-	<CAA8EJppeREj-0g9oGCzzKx5ywhg1mgmJR1q8yvXKN7N45do1Xg@mail.gmail.com>
-	<87ttkh49xi.fsf@kernel.org>
-	<e804b257-4dc0-45f1-a5c5-66bda51cf296@freebox.fr>
-	<87h6gh406w.fsf@kernel.org>
-	<ad5e178b-cd64-4a87-8994-f917993f3bbb@freebox.fr>
-Date: Thu, 25 Apr 2024 12:42:20 +0300
-In-Reply-To: <ad5e178b-cd64-4a87-8994-f917993f3bbb@freebox.fr> (Marc
-	Gonzalez's message of "Mon, 8 Apr 2024 17:53:01 +0200")
-Message-ID: <871q6tu6bn.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1714038253; c=relaxed/simple;
+	bh=QKm3cjQglVoIagl9NWdKZo12+gkQBKI3oWMzyS1j3aI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YM0wOIeB24ulI7SoiHeQohxHQk7kdH945gkdA+nbqRBJA2YQGq7Q1sUsg5lYamf95kiGqbr4pBx6EgN3gCQwpNGQM291myjp4sVRfuI7BgqdTrAPdXyqt5rGc5bkUnLE1ILdknsUqas0Y+egFgV2vl0GfhuLIAXIrxt3TIH+uoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=fg7stGuB; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 575d887802e811ef935d6952f98a51a9-20240425
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=dLDkQf2vaEkGIxazc+FMQzXIVTV0+ydf8M//rJxA6KM=;
+	b=fg7stGuBmNdhbEVzjpurSIYfflff5n62P/OdVApj8dNGy+VnDRkhnlQ3G15meq5a4+FGr+gPXFas30AsWZb+XlJNAU5DzmTWx3QUqziRh6C9iwpj2xmgKIgGVggH4g+ZHGKicORRdJUDq7rPxMPmCOaFynq6sb2J+Z48R957Fxs=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.38,REQID:2b610a08-f9d1-47ab-bc62-b0fb64d1a973,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:82c5f88,CLOUDID:423857fb-ed05-4274-9204-014369d201e8,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+	RL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
+X-UUID: 575d887802e811ef935d6952f98a51a9-20240425
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
+	(envelope-from <deren.wu@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 677973463; Thu, 25 Apr 2024 17:43:59 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Thu, 25 Apr 2024 17:43:58 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Thu, 25 Apr 2024 17:43:58 +0800
+From: Deren Wu <deren.wu@mediatek.com>
+To: Chen-Yu Tsai <wens@kernel.org>
+CC: <wireless-regdb@lists.infradead.org>, linux-wireless
+	<linux-wireless@vger.kernel.org>, linux-mediatek
+	<linux-mediatek@lists.infradead.org>, Deren Wu <deren.wu@mediatek.com>
+Subject: [PATCH] wireless-regdb: Update regulatory rules for Taiwan (TW) on 6GHz
+Date: Thu, 25 Apr 2024 17:43:13 +0800
+Message-ID: <8f7c6ecd8e2cd15d277435719bf993217d40f12d.1714038069.git.deren.wu@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -78,72 +73,60 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
+X-MTK: N
 
-Marc Gonzalez <mgonzalez@freebox.fr> writes:
+The Ministry of Transportation and Communications in Taiwan has updated
+its frequency allocation rules [1], now including the 5945 ~ 6425 MHz
+range for Low Power Indoor (LPI) and Very Low Power (VLP) devices. As
+only one power rule can be applied to a specific frequency range, we
+choose the LPI devices with a power limit of 23 dBm. There is no Dynamic
+Frequency Selection (DFS) requirement.
 
-> On 04/04/2024 17:28, Kalle Valo wrote:
->
->> Marc Gonzalez wrote:
->> 
->>> On 04/04/2024 13:57, Kalle Valo wrote:
->>>
->>>> Dmitry Baryshkov wrote:
->>>>
->>>>> I'd say, we should take a step back and actually verify how this was
->>>>> handled in the vendor kernel.
->>>>
->>>> One comment related to this: usually vendor driver and firmware branches
->>>> go "hand in hand", meaning that a version of driver supports only one
->>>> specific firmware branch. And there can be a lot of branches. So even if
->>>> one branch might have a check for something specific, there are no
->>>> guarantees what the other N+1 branches do :/
->>>
->>> The consequences and ramifications of the above comment are not clear to me.
->>>
->>> Does this mean:
->>> "It is pointless to analyze a given version (or even several versions)
->>> of the vendor driver downstream, because there are exist a large number
->>> of variations of the code." ?
->> 
->> I was trying to say that because the design philosophy between vendor
->> drivers and upstream drivers is very different, we can't 100% trust
->> vendor drivers. It's a very good idea to check what vendor drivers do
->> but we just need to be careful before making any conclusions. Testing
->> real hardware (and corresponding firmware) is the most reliable way to
->> know how different products/firmware work, unfortunately.
->> 
->>> And thus, "it is nonsensical to try to "align" the mainline driver to
->>> "the" vendor driver, as there is no single "vendor driver"" ?
->> 
->> No no, I'm not saying that. I have suffered this "N+1 different firmware
->> branches behaving slighly differently" problem since ath6kl days so for
->> me this is business as usual, sadly. I'm sure we can find a solution for
->> ath10k.
->
-> Hello Kalle,
->
-> I can spin a v3, no problem.
->
-> Do you prefer:
->
-> Option A = never waiting for the MSA_READY indicator for ANYONE
-> Option B = not waiting for the MSA_READY indicator when
-> qcom,no-msa-ready-indicator is defined
-> Option C = not waiting for the MSA_READY indicator for certain
-> platforms (based on root compatible)
-> Option D = some other solution not yet discussed
+Also update the section information for the 2.4/5/60 GHz bands
+with reference [1].
 
-After firmware-N.bin solution didn't work (sorry about that!) my
-prerence is option B.
+[1] LP0002 Low-power Radio-frequency Devices Technical Regulations
+    2024/Feb/06
+    https://www.ncc.gov.tw/chinese/files/24020/538_49880_240206_3.pdf
 
-> Dmitry has tested Option A on 5 platforms, where it does not induce regressions.
-> I worked on msm8998, where Option A (or any equivalent) unbreaks WiFi.
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+---
+ db.txt | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-What do you mean here? Are you saying that option A works on all
-devices? I'm guessing I'm misunderstanding something.
-
+diff --git a/db.txt b/db.txt
+index fdc2c13..6981930 100644
+--- a/db.txt
++++ b/db.txt
+@@ -1724,12 +1724,12 @@ country TT: DFS-FCC
+ # Table of Frequency Allocations of Republic of China (Taiwan) / Feb 2017:
+ #   https://www.motc.gov.tw/websitedowndoc?file=post/201702221012200.doc& \
+ #	filedisplay=Table%2Bof%2Bradio%2Bfrequency%2Ballocation.doc
+-# LP0002 Low-power Radio-frequency Devices Technical Regulations / 23 Aug 2016:
+-#   http://www.ncc.gov.tw/english/show_file.aspx?table_name=news&file_sn=681
++# LP0002 Low-power Radio-frequency Devices Technical Regulations / 6 Feb 2024:
++#   https://www.ncc.gov.tw/chinese/files/24020/538_49880_240206_3.pdf
+ country TW: DFS-FCC
+-	# 2.4g band, LP0002 section 3.10.1
++	# 2.4g band, LP0002 section 4.10.1
+ 	(2400 - 2483.5 @ 40), (30)
+-	# 5g U-NII band, LP0002 section 4.7
++	# 5g U-NII band, LP0002 section 5.7
+ 	# 5.15 ~ 5.25 GHz: 30 dBm for master mode, 23 dBm for clients
+ 	(5150 - 5250 @ 80), (23), AUTO-BW
+ 	(5250 - 5350 @ 80), (23), DFS, AUTO-BW
+@@ -1739,7 +1739,9 @@ country TW: DFS-FCC
+ 	# happy and be able to use channel 144.
+ 	(5470 - 5730 @ 160), (23), DFS
+ 	(5725 - 5850 @ 80), (30)
+-	# 60g band, LP0002 section 3.13.1.1 (3)(C), EIRP=40dBm(43dBm peak)
++	# 6g band, LP0002 section 5.13.1.1, EIRP=23dBm
++	(5945 - 6425 @ 320), (23), NO-OUTDOOR
++	# 60g band, LP0002 section 4.13.1.1 (1)(A), EIRP=40dBm(43dBm peak)
+ 	(57000 - 66000 @ 2160), (40)
+  
+ country TZ:
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.18.0
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
