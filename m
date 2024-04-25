@@ -1,63 +1,72 @@
-Return-Path: <linux-wireless+bounces-6864-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6865-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACFAF8B27D2
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 20:02:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 031D08B27DF
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 20:08:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE559B2457C
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 18:02:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B36AE28226A
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 18:08:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2810814EC53;
-	Thu, 25 Apr 2024 18:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1895E14EC42;
+	Thu, 25 Apr 2024 18:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="fRVxcZEP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kh2gxFpa"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB5914F9E7
-	for <linux-wireless@vger.kernel.org>; Thu, 25 Apr 2024 18:02:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5630014EC41
+	for <linux-wireless@vger.kernel.org>; Thu, 25 Apr 2024 18:08:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714068137; cv=none; b=pHjmcwp4TKqJv0doxu5ny9/t6dkhHV4Te4OMbIPamsUIA8yLL0mMtquF1y+ycubjjIrEzgTFjL+U7SDy1T9XOeAe5hxpiFN4YA7j3lgBpuf9DvSF9doO3JUbO5XJ4wpnq2rnqT2GxetKsfvpir/jjUD2ZLeE7PFBK6q/kTT95So=
+	t=1714068504; cv=none; b=TPvk2+76YXLkMm6/TSy2FQugBzqGf3XtcxTVmr2YaoCXxy6D5akL1V7+0RhIGgLycmIo3toGZ8JBQpTa9mOdwHDPNX1a6SXYBYBe2lRASjJdKqI+wHgauPm95dq+qRPgZEKwqxNBYolSB9FdJ3FsId3SzZqm2OaezQimKbOJsJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714068137; c=relaxed/simple;
-	bh=IA99BHuqLrsELFSR0psGIutYgpnPcIAscHrogo2x7kw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=h5tL63n99SpG7F2RapZTJCtGBjfZyPWNg7m3t4dWw5vOhjKHAYmMuPoB3DMyk5bHykNXKPi1uRvabJVL4O0wru/4JngR5WV+cQYrlBPBBL26XytrQxlyvWu9ToRcYfh6i1hW0SUwV4RDCmI5U9tFeOYD5pWFc+jw/pj2mER9NFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=fRVxcZEP; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43P9wccu030769;
-	Thu, 25 Apr 2024 18:02:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=85pKbVDjhJPOQX2m4EyatzAdR3L6uwClLPrOHfj/1QM=; b=fR
-	VxcZEP6LOiFVGMVVMBQnMLDgADBF5MjHF8iLjag7FZ1Mh42r6+ac5SH4PuvS5vFu
-	k1qZ44XCZcOihKcqemH9g7N0CxlEOg24F/WM5ajkrr/5QRMy+C6V3q46AFBganud
-	mk1lpefKQ4aV6A+WGXCwvXUBcbyi1WgFEU40pYxxrQj63Rjxa/vToWmGCCLrYqqR
-	8DeXwlpFQD7ioj7wpu6d7IFHGAOBOc/PKTLCcyoFTGvDKl+CZt8Y1qTcRhePt4O/
-	R49DORl06blX6rnSKbMI9KHr0PxYtDjde3JiEgM7S4bpgb+VI3paFSkRatyoPBsY
-	1iGMSlx1/dDfzRDAwAbg==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xqn0whg4v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 25 Apr 2024 18:02:13 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43PI2CfW031380
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 25 Apr 2024 18:02:12 GMT
-Received: from [10.110.61.159] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 25 Apr
- 2024 11:02:12 -0700
-Message-ID: <abefe407-4b06-4ee3-8394-417598f69f07@quicinc.com>
-Date: Thu, 25 Apr 2024 11:02:11 -0700
+	s=arc-20240116; t=1714068504; c=relaxed/simple;
+	bh=2cKlU2rAJXqDLaZdq56VgkfQh6p8Z8BXPzwwbRHw5Us=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=Nz6Td0C7GRdvWoPqPAOoJKMWcVHeqb8PMyF64i1/igZMM6skGALu0My4HZVSbLDIDG/bOmxkF6WTm7qvMfaur8xDmiHKZlHEplF/5/Bc3XSauJLQ8O+8L0JjI4jeNqJzsMg+mDIbDBMBJ6Yq5ExUcSMxNmTqvg+vFN6DM50Rqco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kh2gxFpa; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a4702457ccbso177768766b.3
+        for <linux-wireless@vger.kernel.org>; Thu, 25 Apr 2024 11:08:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714068500; x=1714673300; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-language:cc:to:subject:from
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1slGjMmQjqh+0ydmyuyl9wGslqdVPhV7jOcfzHCbQAs=;
+        b=kh2gxFpa1Em72b1vjtaTHFuPEGKTyCmfoS9yPnZd8G2UxXHcdPfR1ATQmhY1BIye3t
+         UKFrZ/5syx1T1ZlobLPrkd4D6NNLf60NrSsKedzlRR8ZwWkxSPXY/5Ll+Mp+jpocmXdE
+         PKQCzUbN3Y4vKx1NHk3aDgQU3OP1U45XSqHyvzMEznXGM/fAW1nbohZbMsPTp3hGjPgF
+         YrqqZA1u+GlFKpmQ92LwyzJpkbUkwOQMwNHxomcOCXk3QLIHg7um13j3rKN1umwScgC3
+         +pwXbW9q6x11ZzplkdCc12XzkAcnMfaqGYZIXeJPb3B3IW0mzIE1rBVgTVoFDCgnkK0x
+         0C9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714068500; x=1714673300;
+        h=content-transfer-encoding:content-language:cc:to:subject:from
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=1slGjMmQjqh+0ydmyuyl9wGslqdVPhV7jOcfzHCbQAs=;
+        b=IUVyW2l1lO5zyqr6dixR1jH+vfWPxL/O//YFy6RxD9Gr5+8LUNWr2bqKbnAJ7IECBO
+         WAm1eb9WVj/x+sSIZmtdqMh69CCXvwNWDfT8kJ6sOzervyUM2k0G4wmVBDO0lFpWGdRc
+         z3GJKn/1di7d60w11CAhTRCmSeuFP+uu9BebhGBbi4QNHj/jyDoSFVxdd+rIOrWaQnca
+         Wd/Nj2TsgImrcSZK5/p5BM9wj4UBE/l4F4YRCQ59BM/KDht1GdnSnaesZWcQlfs+plgK
+         WNCHb0FQHsFIBIpJm7dgtEurhCeuGt+RgElHgbmt0fErlL9YG/cVAXaB1DiwT8Hg/Ui9
+         hHqw==
+X-Gm-Message-State: AOJu0YwRj90dy9H314zxPhIwFyUIzUwPWTVBxoTRZNaIWN8bQ3fRmgpm
+	k+OQ8mvzTKmT6UcWIm4nQIBxUQVv/136DLzKhuUm7Erb927LQGr3tkRt3B0o
+X-Google-Smtp-Source: AGHT+IFQdzw+tadpUfRNhVn6Ny8y+KCxguJ2xFtALGFVQPKtn1N4aA72ftVs0CtuwnLvR2g8q7wcZg==
+X-Received: by 2002:a17:906:2543:b0:a55:be99:60d5 with SMTP id j3-20020a170906254300b00a55be9960d5mr330286ejb.23.1714068500291;
+        Thu, 25 Apr 2024 11:08:20 -0700 (PDT)
+Received: from [192.168.1.50] ([79.113.154.240])
+        by smtp.gmail.com with ESMTPSA id qt11-20020a170906eceb00b00a55ab2630c3sm6007439ejb.38.2024.04.25.11.08.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Apr 2024 11:08:20 -0700 (PDT)
+Message-ID: <72231f87-60fd-4d87-8cf4-ee2967f22dd2@gmail.com>
+Date: Thu, 25 Apr 2024 21:08:18 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,59 +74,125 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3 6/6] wifi: ath12k: support SMPS configuration for 6 GHz
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH v7 0/6] wifi: rtlwifi: Move common code from rtl8192de to
+ rtl8192d-common
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>,
+ Larry Finger <Larry.Finger@lwfinger.net>,
+ Stefan Lippers-Hollmann <s.l-h@gmx.de>,
+ Christian Hewitt <chewitt@libreelec.tv>
 Content-Language: en-US
-To: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>,
-        <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240424191141.32549-1-quic_pradeepc@quicinc.com>
- <20240424191141.32549-7-quic_pradeepc@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240424191141.32549-7-quic_pradeepc@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: b0S97NYwPWE3jU26F6HG_dQt9ST6B9S-
-X-Proofpoint-GUID: b0S97NYwPWE3jU26F6HG_dQt9ST6B9S-
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-04-25_17,2024-04-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1015
- impostorscore=0 malwarescore=0 phishscore=0 suspectscore=0 mlxscore=0
- mlxlogscore=999 lowpriorityscore=0 bulkscore=0 spamscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2404250130
 
-On 4/24/2024 12:11 PM, Pradeep Kumar Chitrapu wrote:
-> Parse SMPS configuration from IEs and configure. Without this,
-> SMPS is not enabled for 6 GHz band.
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> 
-> Signed-off-by: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-> ---
->  drivers/net/wireless/ath/ath12k/mac.c | 29 ++++++++++++++++++---------
->  1 file changed, 19 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-> index 65688e55c285..44e853893ec5 100644
-> --- a/drivers/net/wireless/ath/ath12k/mac.c
-> +++ b/drivers/net/wireless/ath/ath12k/mac.c
-> @@ -2086,13 +2086,18 @@ static void ath12k_peer_assoc_h_he_6ghz(struct ath12k *ar,
->  				     ampdu_factor)) - 1;
->  }
->  
-> -static inline int ath12k_get_smps_from_capa(const struct ieee80211_sta_ht_cap *ht_cap,
-> -					    int *smps)
+These patches fix some bugs in rtl8192de and move some of the code to
+a new rtl8192d-common module, in order to share that code with the new
+rtl8192du driver.
 
-the inline removal should be fixed in 5/6 since that is where it was added
+v4 of the series included the new rtl8192du driver as well, but it was
+becoming too long. The new driver will be added in another series of
+patches.
 
-> +static int ath12k_get_smps_from_capa(const struct ieee80211_sta_ht_cap *ht_cap,
-> +				     const struct ieee80211_he_6ghz_capa *he_6ghz_capa,
-> +				     int *smps)
+v7:
+ - Call rtl92d_fill_h2c_cmd() in rtl92de_update_hal_rate_mask()
+   directly for PCI, like it was originally.
+ - More details about the changes can be found in each patch.
 
-rest of the patch LGTM
+v6:
+ - More cleanup.
+ - More details about the changes can be found in each patch.
+
+v5:
+ - Fix some endianness issues in rtl8192de.
+ - Clean up the common code a bit.
+ - Drop the patches which added the new driver.
+ - More details about the changes can be found in each patch.
+
+v4:
+ - Fix slow speeds with WPA3-SAE.
+ - Move global variables into struct rtl_priv.
+ - Implement requested changes.
+ - More details about the changes can be found in each patch.
+
+v3:
+ - Fix compilation error and sparse/smatch warnings.
+ - Add another USB ID.
+ - More details about the changes can be found in each patch.
+
+v2:
+ - Add cover letter.
+ - Implement feedback.
+ - Fix more problems reported by checkpatch.
+ - Split the new driver into several patches (4-12) for easier
+   reviewing.
+ - More details about the changes can be found in each patch.
+
+Bitterblue Smith (6):
+  wifi: rtlwifi: rtl8192de: Fix 5 GHz TX power
+  wifi: rtlwifi: rtl8192de: Fix low speed with WPA3-SAE
+  wifi: rtlwifi: rtl8192de: Fix endianness issue in RX path
+  wifi: rtlwifi: Move code from rtl8192de to rtl8192d-common
+  wifi: rtlwifi: Clean up rtl8192d-common a bit
+  wifi: rtlwifi: Adjust rtl8192d-common for USB
+
+ drivers/net/wireless/realtek/rtlwifi/Kconfig  |    4 +
+ drivers/net/wireless/realtek/rtlwifi/Makefile |    1 +
+ drivers/net/wireless/realtek/rtlwifi/cam.c    |    5 +-
+ drivers/net/wireless/realtek/rtlwifi/cam.h    |    6 +-
+ drivers/net/wireless/realtek/rtlwifi/efuse.c  |    2 +-
+ drivers/net/wireless/realtek/rtlwifi/efuse.h  |    2 +-
+ .../realtek/rtlwifi/rtl8192d/Makefile         |   11 +
+ .../rtlwifi/{rtl8192de => rtl8192d}/def.h     |    0
+ .../realtek/rtlwifi/rtl8192d/dm_common.c      | 1061 ++++++++++++++
+ .../realtek/rtlwifi/rtl8192d/dm_common.h      |   79 ++
+ .../realtek/rtlwifi/rtl8192d/fw_common.c      |  370 +++++
+ .../realtek/rtlwifi/rtl8192d/fw_common.h      |   49 +
+ .../realtek/rtlwifi/rtl8192d/hw_common.c      | 1225 +++++++++++++++++
+ .../realtek/rtlwifi/rtl8192d/hw_common.h      |   24 +
+ .../wireless/realtek/rtlwifi/rtl8192d/main.c  |    9 +
+ .../realtek/rtlwifi/rtl8192d/phy_common.c     |  856 ++++++++++++
+ .../realtek/rtlwifi/rtl8192d/phy_common.h     |  111 ++
+ .../rtlwifi/{rtl8192de => rtl8192d}/reg.h     |  162 ++-
+ .../realtek/rtlwifi/rtl8192d/rf_common.c      |  359 +++++
+ .../realtek/rtlwifi/rtl8192d/rf_common.h      |   13 +
+ .../realtek/rtlwifi/rtl8192d/trx_common.c     |  516 +++++++
+ .../realtek/rtlwifi/rtl8192d/trx_common.h     |  405 ++++++
+ .../wireless/realtek/rtlwifi/rtl8192de/dm.c   | 1072 +--------------
+ .../wireless/realtek/rtlwifi/rtl8192de/dm.h   |   91 +-
+ .../wireless/realtek/rtlwifi/rtl8192de/fw.c   |  375 +----
+ .../wireless/realtek/rtlwifi/rtl8192de/fw.h   |   37 -
+ .../wireless/realtek/rtlwifi/rtl8192de/hw.c   | 1168 +---------------
+ .../wireless/realtek/rtlwifi/rtl8192de/hw.h   |   11 -
+ .../wireless/realtek/rtlwifi/rtl8192de/led.c  |    2 +-
+ .../wireless/realtek/rtlwifi/rtl8192de/phy.c  |  918 +-----------
+ .../wireless/realtek/rtlwifi/rtl8192de/phy.h  |   59 +-
+ .../wireless/realtek/rtlwifi/rtl8192de/rf.c   |  375 +----
+ .../wireless/realtek/rtlwifi/rtl8192de/rf.h   |    5 -
+ .../wireless/realtek/rtlwifi/rtl8192de/sw.c   |   12 +-
+ .../wireless/realtek/rtlwifi/rtl8192de/trx.c  |  515 +------
+ .../wireless/realtek/rtlwifi/rtl8192de/trx.h  |  433 ------
+ drivers/net/wireless/realtek/rtlwifi/usb.c    |    3 +
+ drivers/net/wireless/realtek/rtlwifi/wifi.h   |    6 +
+ 38 files changed, 5364 insertions(+), 4988 deletions(-)
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/Makefile
+ rename drivers/net/wireless/realtek/rtlwifi/{rtl8192de => rtl8192d}/def.h (100%)
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/dm_common.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/dm_common.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/fw_common.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/fw_common.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/hw_common.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/hw_common.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/main.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.h
+ rename drivers/net/wireless/realtek/rtlwifi/{rtl8192de => rtl8192d}/reg.h (90%)
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/rf_common.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/rf_common.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/trx_common.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/trx_common.h
+
+-- 
+2.44.0
+
 
