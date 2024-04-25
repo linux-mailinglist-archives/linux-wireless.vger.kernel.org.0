@@ -1,53 +1,53 @@
-Return-Path: <linux-wireless+bounces-6844-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6845-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C28C78B2038
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 13:29:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D5F38B2039
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 13:29:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 640861F24179
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 11:29:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82AF92893E5
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 11:29:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13B1A12A16C;
-	Thu, 25 Apr 2024 11:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F318783CCD;
+	Thu, 25 Apr 2024 11:29:39 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7024D12AADC
-	for <linux-wireless@vger.kernel.org>; Thu, 25 Apr 2024 11:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD0612A177
+	for <linux-wireless@vger.kernel.org>; Thu, 25 Apr 2024 11:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714044575; cv=none; b=SW2BlfDmRx9FgBEw2xh/HrUJRfdq1LOEWTHcaMopj53E/7lkvAAMmWgg76QejcSRvB1xcggVQMfHMWC1+t1lTLCxBmezjEJze2T0itxufihb6uLC/2FLNtPOXGQar9l0TH9Yi+zz2vTiD6ysdL84yMvvVcuUBIxfGkwnDeQI0jc=
+	t=1714044579; cv=none; b=Gfw529JhY4DLsy0UtuCE43f8ah0QAAJXWWlsiBbg6+L5ghRClpw/1cLux/XUsDPoN7WW8d+hTjULuOBrjWefSN2g8Vl6mEvP+oNmv01P3UPYnEl/KJy8s22CSXt6bapyB/oqk5WgkIvv/DXRw+QgrPbkoEuubIeMJb/uaFl9IPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714044575; c=relaxed/simple;
-	bh=qVsJmO4OdQkpa++CVwtrbeXEpCiPZp8TDzheY3lCRx4=;
+	s=arc-20240116; t=1714044579; c=relaxed/simple;
+	bh=Y12EvOeEJLOlFzrIANMotfbZ4QSqef+wz2fX7hCMjqg=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oEYpKbq/MAcNStau19XCnZBZzAO+9CLKloR9SysYPeHC3YOrdOnZ62qpDw1L+vipovD5+2fqgAz+Fnn7BpuA7btP5yE2rpsGs4AubNvVgqOKVjISKF2yyyXk3E2PhrWcP/rw4Jzg4A/VAifShm5uUwO0sjNjk/1YnRGXhHvx+6w=
+	 MIME-Version:Content-Type; b=rlhA0Rbdv3asDRj528JFQBBCXYTU5h5wz3iLVZ1r95bjxXAciUHQh13wxgESTok6I1lCYlTbUulJHAFXKGw45kAqHalJ53jEuLHOUoQoaCEZybMNuKvK/CtyKAPmMErZQoVKZ1R7KAhRcmKv8Asom10hxFqT6daGiH2rGodxV9c=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 43PBTVs743482374, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 43PBTVs743482374
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 43PBTaqbE3482377, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 43PBTaqbE3482377
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Thu, 25 Apr 2024 19:29:31 +0800
+	for <linux-wireless@vger.kernel.org>; Thu, 25 Apr 2024 19:29:36 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 25 Apr 2024 19:29:31 +0800
+ 15.1.2507.35; Thu, 25 Apr 2024 19:29:36 +0800
 Received: from [127.0.1.1] (172.16.16.129) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 25 Apr
- 2024 19:29:30 +0800
+ 2024 19:29:35 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <gary.chang@realtek.com>, <timlee@realtek.com>
-Subject: [PATCH 11/12] wifi: rtw89: wow: support WEP cipher on WoWLAN
-Date: Thu, 25 Apr 2024 19:28:15 +0800
-Message-ID: <20240425112816.26431-12-pkshih@realtek.com>
+Subject: [PATCH 12/12] wifi: rtw89: wow: add ARP offload feature
+Date: Thu, 25 Apr 2024 19:28:16 +0800
+Message-ID: <20240425112816.26431-13-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240425112816.26431-1-pkshih@realtek.com>
 References: <20240425112816.26431-1-pkshih@realtek.com>
@@ -61,76 +61,265 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-From: Chih-Kang Chang <gary.chang@realtek.com>
+From: Chin-Yen Lee <timlee@realtek.com>
 
-When using the WEP cipher, we need to add the address cam type as all
-unicast mode to let firmware to work. Although WEP only set GTK in
-mac80211, but we need to set both PTK and GTK information to firmware.
+Add H2C command and offload template packet to allow firmware send ARP
+response in WoWLAN mode. Then, firmware in WoWLAN mode can interactive
+with peer that issue ARP request to query MAC address.
 
-Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
+Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/cam.c |  7 +++++--
- drivers/net/wireless/realtek/rtw89/wow.c | 13 +++++++++++++
- 2 files changed, 18 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.h     |   1 +
+ drivers/net/wireless/realtek/rtw89/fw.c       | 108 ++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/fw.h       |  14 +++
+ drivers/net/wireless/realtek/rtw89/mac80211.c |   3 +
+ drivers/net/wireless/realtek/rtw89/wow.c      |   8 ++
+ 5 files changed, 134 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/cam.c b/drivers/net/wireless/realtek/rtw89/cam.c
-index e334b0c8ec5b..1864f543a6c6 100644
---- a/drivers/net/wireless/realtek/rtw89/cam.c
-+++ b/drivers/net/wireless/realtek/rtw89/cam.c
-@@ -150,8 +150,6 @@ static int rtw89_cam_get_addr_cam_key_idx(struct rtw89_addr_cam_entry *addr_cam,
- 	case RTW89_ADDR_CAM_SEC_NONE:
- 		return -EINVAL;
- 	case RTW89_ADDR_CAM_SEC_ALL_UNI:
--		if (!(key->flags & IEEE80211_KEY_FLAG_PAIRWISE))
--			return -EINVAL;
- 		idx = find_first_zero_bit(addr_cam->sec_cam_map,
- 					  RTW89_SEC_CAM_IN_ADDR_CAM);
- 		if (idx >= RTW89_SEC_CAM_IN_ADDR_CAM)
-@@ -232,6 +230,11 @@ static int rtw89_cam_attach_sec_cam(struct rtw89_dev *rtwdev,
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 1aa25a3f3659..e03645bb27b7 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -3341,6 +3341,7 @@ struct rtw89_vif {
+ 	u8 port;
+ 	u8 mac_addr[ETH_ALEN];
+ 	u8 bssid[ETH_ALEN];
++	__be32 ip_addr;
+ 	u8 phy_idx;
+ 	u8 mac_idx;
+ 	u8 net_type;
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index 444badc3eede..044a5b90c7f4 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -2,6 +2,7 @@
+ /* Copyright(c) 2019-2020  Realtek Corporation
+  */
  
- 	rtwvif = (struct rtw89_vif *)vif->drv_priv;
- 	addr_cam = rtw89_get_addr_cam_of(rtwvif, rtwsta);
++#include <linux/if_arp.h>
+ #include "cam.h"
+ #include "chan.h"
+ #include "coex.h"
+@@ -26,6 +27,17 @@ struct rtw89_sa_query {
+ 	u8 action;
+ } __packed __aligned(2);
+ 
++struct rtw89_arp_rsp {
++	struct ieee80211_hdr_3addr addr;
++	u8 llc_hdr[sizeof(rfc1042_header)];
++	__be16 llc_type;
++	struct arphdr arp_hdr;
++	u8 sender_hw[ETH_ALEN];
++	__be32 sender_ip;
++	u8 target_hw[ETH_ALEN];
++	__be32 target_ip;
++} __packed __aligned(2);
 +
-+	if (key->cipher == WLAN_CIPHER_SUITE_WEP40 ||
-+	    key->cipher == WLAN_CIPHER_SUITE_WEP104)
-+		addr_cam->sec_ent_mode = RTW89_ADDR_CAM_SEC_ALL_UNI;
+ static const u8 mss_signature[] = {0x4D, 0x53, 0x53, 0x4B, 0x50, 0x4F, 0x4F, 0x4C};
+ 
+ union rtw89_fw_element_arg {
+@@ -2223,6 +2235,48 @@ static struct sk_buff *rtw89_sa_query_get(struct rtw89_dev *rtwdev,
+ 	return skb;
+ }
+ 
++static struct sk_buff *rtw89_arp_response_get(struct rtw89_dev *rtwdev,
++					      struct rtw89_vif *rtwvif)
++{
++	struct rtw89_wow_param *rtw_wow = &rtwdev->wow;
++	struct rtw89_arp_rsp *arp_skb;
++	struct arphdr *arp_hdr;
++	struct sk_buff *skb;
++	__le16 fc;
 +
- 	ret = rtw89_cam_get_addr_cam_key_idx(addr_cam, sec_cam, key, &key_idx);
- 	if (ret) {
- 		rtw89_err(rtwdev, "failed to get addr cam key idx %d, %d\n",
++	skb = dev_alloc_skb(sizeof(struct rtw89_arp_rsp));
++	if (!skb)
++		return NULL;
++
++	arp_skb = skb_put_zero(skb, sizeof(*arp_skb));
++
++	if (rtw_wow->ptk_alg)
++		fc = cpu_to_le16(IEEE80211_FTYPE_DATA | IEEE80211_FCTL_TODS |
++				 IEEE80211_FCTL_PROTECTED);
++	else
++		fc = cpu_to_le16(IEEE80211_FTYPE_DATA | IEEE80211_FCTL_TODS);
++
++	arp_skb->addr.frame_control = fc;
++	ether_addr_copy(arp_skb->addr.addr1, rtwvif->bssid);
++	ether_addr_copy(arp_skb->addr.addr2, rtwvif->mac_addr);
++	ether_addr_copy(arp_skb->addr.addr3, rtwvif->bssid);
++
++	memcpy(arp_skb->llc_hdr, rfc1042_header, sizeof(rfc1042_header));
++	arp_skb->llc_type = htons(ETH_P_ARP);
++
++	arp_hdr = &arp_skb->arp_hdr;
++	arp_hdr->ar_hrd = htons(ARPHRD_ETHER);
++	arp_hdr->ar_pro = htons(ETH_P_IP);
++	arp_hdr->ar_hln = ETH_ALEN;
++	arp_hdr->ar_pln = 4;
++	arp_hdr->ar_op = htons(ARPOP_REPLY);
++
++	ether_addr_copy(arp_skb->sender_hw, rtwvif->mac_addr);
++	arp_skb->sender_ip = rtwvif->ip_addr;
++
++	return skb;
++}
++
+ static int rtw89_fw_h2c_add_general_pkt(struct rtw89_dev *rtwdev,
+ 					struct rtw89_vif *rtwvif,
+ 					enum rtw89_fw_pkt_ofld_type type,
+@@ -2256,6 +2310,9 @@ static int rtw89_fw_h2c_add_general_pkt(struct rtw89_dev *rtwdev,
+ 	case RTW89_PKT_OFLD_TYPE_SA_QUERY:
+ 		skb = rtw89_sa_query_get(rtwdev, rtwvif);
+ 		break;
++	case RTW89_PKT_OFLD_TYPE_ARP_RSP:
++		skb = rtw89_arp_response_get(rtwdev, rtwvif);
++		break;
+ 	default:
+ 		goto err;
+ 	}
+@@ -6390,6 +6447,57 @@ int rtw89_fw_h2c_keep_alive(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
+ 	return ret;
+ }
+ 
++int rtw89_fw_h2c_arp_offload(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
++			     bool enable)
++{
++	struct rtw89_h2c_arp_offload *h2c;
++	u32 len = sizeof(*h2c);
++	struct sk_buff *skb;
++	u8 pkt_id = 0;
++	int ret;
++
++	if (enable) {
++		ret = rtw89_fw_h2c_add_general_pkt(rtwdev, rtwvif,
++						   RTW89_PKT_OFLD_TYPE_ARP_RSP,
++						   &pkt_id);
++		if (ret)
++			return ret;
++	}
++
++	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, len);
++	if (!skb) {
++		rtw89_err(rtwdev, "failed to alloc skb for arp offload\n");
++		return -ENOMEM;
++	}
++
++	skb_put(skb, len);
++	h2c = (struct rtw89_h2c_arp_offload *)skb->data;
++
++	h2c->w0 = le32_encode_bits(enable, RTW89_H2C_ARP_OFFLOAD_W0_ENABLE) |
++		  le32_encode_bits(0, RTW89_H2C_ARP_OFFLOAD_W0_ACTION) |
++		  le32_encode_bits(rtwvif->mac_id, RTW89_H2C_ARP_OFFLOAD_W0_MACID) |
++		  le32_encode_bits(pkt_id, RTW89_H2C_ARP_OFFLOAD_W0_PKT_ID);
++
++	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
++			      H2C_CAT_MAC,
++			      H2C_CL_MAC_WOW,
++			      H2C_FUNC_ARP_OFLD, 0, 1,
++			      len);
++
++	ret = rtw89_h2c_tx(rtwdev, skb, false);
++	if (ret) {
++		rtw89_err(rtwdev, "failed to send h2c\n");
++		goto fail;
++	}
++
++	return 0;
++
++fail:
++	dev_kfree_skb_any(skb);
++
++	return ret;
++}
++
+ #define H2C_DISCONNECT_DETECT_LEN 8
+ int rtw89_fw_h2c_disconnect_detect(struct rtw89_dev *rtwdev,
+ 				   struct rtw89_vif *rtwvif, bool enable)
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
+index 5e51267558ad..4151c9d566bd 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.h
++++ b/drivers/net/wireless/realtek/rtw89/fw.h
+@@ -2025,6 +2025,17 @@ struct rtw89_h2c_wow_gtk_ofld {
+ #define RTW89_H2C_WOW_GTK_OFLD_W1_PMF_BIP_SEC_ALGO GENMASK(9, 8)
+ #define RTW89_H2C_WOW_GTK_OFLD_W1_ALGO_AKM_SUIT GENMASK(17, 10)
+ 
++struct rtw89_h2c_arp_offload {
++	__le32 w0;
++	__le32 w1;
++} __packed;
++
++#define RTW89_H2C_ARP_OFFLOAD_W0_ENABLE BIT(0)
++#define RTW89_H2C_ARP_OFFLOAD_W0_ACTION BIT(1)
++#define RTW89_H2C_ARP_OFFLOAD_W0_MACID GENMASK(23, 16)
++#define RTW89_H2C_ARP_OFFLOAD_W0_PKT_ID GENMASK(31, 24)
++#define RTW89_H2C_ARP_OFFLOAD_W1_CONTENT GENMASK(31, 0)
++
+ enum rtw89_btc_btf_h2c_class {
+ 	BTFC_SET = 0x10,
+ 	BTFC_GET = 0x11,
+@@ -3919,6 +3930,7 @@ enum rtw89_wow_h2c_func {
+ 	H2C_FUNC_DISCONNECT_DETECT	= 0x1,
+ 	H2C_FUNC_WOW_GLOBAL		= 0x2,
+ 	H2C_FUNC_GTK_OFLD		= 0x3,
++	H2C_FUNC_ARP_OFLD		= 0x4,
+ 	H2C_FUNC_WAKEUP_CTRL		= 0x8,
+ 	H2C_FUNC_WOW_CAM_UPD		= 0xC,
+ 	H2C_FUNC_AOAC_REPORT_REQ	= 0xD,
+@@ -4436,6 +4448,8 @@ int rtw89_fw_h2c_wow_wakeup_ctrl(struct rtw89_dev *rtwdev,
+ 				 struct rtw89_vif *rtwvif, bool enable);
+ int rtw89_fw_h2c_keep_alive(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
+ 			    bool enable);
++int rtw89_fw_h2c_arp_offload(struct rtw89_dev *rtwdev,
++			     struct rtw89_vif *rtwvif, bool enable);
+ int rtw89_fw_h2c_disconnect_detect(struct rtw89_dev *rtwdev,
+ 				   struct rtw89_vif *rtwvif, bool enable);
+ int rtw89_fw_h2c_wow_global(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
+diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
+index 2fd23f79544d..ca4938eed23c 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
+@@ -473,6 +473,9 @@ static void rtw89_ops_bss_info_changed(struct ieee80211_hw *hw,
+ 	if (changed & BSS_CHANGED_PS)
+ 		rtw89_recalc_lps(rtwdev);
+ 
++	if (changed & BSS_CHANGED_ARP_FILTER)
++		rtwvif->ip_addr = vif->cfg.arp_addr_list[0];
++
+ 	mutex_unlock(&rtwdev->mutex);
+ }
+ 
 diff --git a/drivers/net/wireless/realtek/rtw89/wow.c b/drivers/net/wireless/realtek/rtw89/wow.c
-index f85f622893ba..434b29ae8ae9 100644
+index 434b29ae8ae9..fa61484c3839 100644
 --- a/drivers/net/wireless/realtek/rtw89/wow.c
 +++ b/drivers/net/wireless/realtek/rtw89/wow.c
-@@ -310,6 +310,16 @@ static void rtw89_wow_get_key_info_iter(struct ieee80211_hw *hw,
- 		if (ret)
- 			goto err;
- 		break;
-+	case WLAN_CIPHER_SUITE_WEP40:
-+	case WLAN_CIPHER_SUITE_WEP104:
-+		/* WEP only set group key in mac80211, but fw need to set
-+		 * both of pairwise key and group key.
-+		 */
-+		rtw_wow->ptk_alg = cipher_info->fw_alg;
-+		rtw_wow->ptk_keyidx = key->keyidx;
-+		rtw_wow->gtk_alg = cipher_info->fw_alg;
-+		key_info->gtk_keyidx = key->keyidx;
-+		break;
- 	default:
- 		rtw89_debug(rtwdev, RTW89_DBG_WOW, "unsupport cipher %x\n",
- 			    key->cipher);
-@@ -375,6 +385,9 @@ static void rtw89_wow_set_key_info_iter(struct ieee80211_hw *hw,
- 				goto err;
- 		}
- 		break;
-+	case WLAN_CIPHER_SUITE_WEP40:
-+	case WLAN_CIPHER_SUITE_WEP104:
-+		break;
- 	default:
- 		rtw89_debug(rtwdev, RTW89_DBG_WOW, "unsupport cipher %x\n",
- 			    key->cipher);
+@@ -1320,6 +1320,10 @@ static int rtw89_wow_fw_start(struct rtw89_dev *rtwdev)
+ 		goto out;
+ 	}
+ 
++	ret = rtw89_fw_h2c_arp_offload(rtwdev, rtwvif, true);
++	if (ret)
++		rtw89_warn(rtwdev, "wow: failed to enable arp offload\n");
++
+ 	ret = rtw89_wow_cfg_wake(rtwdev, true);
+ 	if (ret) {
+ 		rtw89_err(rtwdev, "wow: failed to config wake\n");
+@@ -1362,6 +1366,10 @@ static int rtw89_wow_fw_stop(struct rtw89_dev *rtwdev)
+ 		goto out;
+ 	}
+ 
++	ret = rtw89_fw_h2c_arp_offload(rtwdev, rtwvif, false);
++	if (ret)
++		rtw89_warn(rtwdev, "wow: failed to disable arp offload\n");
++
+ 	rtw89_wow_key_clear(rtwdev);
+ 	rtw89_fw_release_general_pkt_list(rtwdev, true);
+ 
 -- 
 2.25.1
 
