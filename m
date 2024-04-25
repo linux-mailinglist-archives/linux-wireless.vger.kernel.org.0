@@ -1,104 +1,149 @@
-Return-Path: <linux-wireless+bounces-6826-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6827-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0387C8B1DEE
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 11:26:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 668158B1E43
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 11:42:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34CE41C240D5
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 09:26:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E5BD281678
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 09:42:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C3E484FDE;
-	Thu, 25 Apr 2024 09:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5161884FCD;
+	Thu, 25 Apr 2024 09:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="SQCW1HKM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cC5k7vw8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from msa.smtpout.orange.fr (out-69.smtpout.orange.fr [193.252.22.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C8A12C463;
-	Thu, 25 Apr 2024 09:22:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.22.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D9584FA5;
+	Thu, 25 Apr 2024 09:42:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714036940; cv=none; b=EsUNzV2Lgbqbbb6iTblvpl4lEB76nihqxMpC9KAreIaaeiPzQ6taeZfehpuiNXkYoMCMz/VDJYrTjJjdKFud75jy8ffy+7QbcKj7Ns9Xgls4QXjv/jTU3ZaPYCVDE3VkO2a7gZ6Eir1X0Q50tSSdbHO32GTY27MwXIk6lDqpI/0=
+	t=1714038147; cv=none; b=X4hQOJySgxzyoxd/Jpgkf+aidx/U+AKC+D/QovpDogYuDh/yr+ry+Wcf3DJKVTJLtOFGPzaFqx6Pft5UQ5b7SbBMxkkU6fkyO9jNP07dMs7XR9st8txoSBNT1NxrcMjauOMM8MzOyPO65hGccBQtGIiEoxCNbi24ouZlrXNZbIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714036940; c=relaxed/simple;
-	bh=RYYr6S3bqZ2+QnlX4wSrGo/4TtP3354taVowvs3jNII=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UXCCymyVtN+oKJSaA9La/8H2Csi6N+Dz6Cf6RP/b9HG49l3aLPJRNs36jhIegvMuVkF1Cr37YWjMzVdbn1suafCWvj2nXq/4tZF8G2KpfGJ7u++QXTWs/E+DUzgWVZ3N9Rledc5tN2/sPkZrkouK+SjkE4if8Zp0mnhv7OHuBZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=SQCW1HKM; arc=none smtp.client-ip=193.252.22.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from localhost.localdomain ([86.243.17.157])
-	by smtp.orange.fr with ESMTPA
-	id zvJ0rM6x8hCCizvJ0ro486; Thu, 25 Apr 2024 11:22:14 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1714036935;
-	bh=0dK7ZlaT22HaVkIUWpHsgyaYXot/beEkT5cEKEbeojE=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=SQCW1HKMP2RBYzYCQ9nkbddK3Vl/LthtQ7dKCnfdETna+aKi4FfaaUqhjWm6ayYGY
-	 NyQ4QSZgttrMpJaFgSiNKL/EO/xWEOt/dxiqX1HjBzOp9mgMzBQRTx5LAOUTWNGDfp
-	 9hRD7JheJKT0+eIUYLv715wKaiAbiHbJO3bL8Uzvekczvv1mCZPRYH73c+yZg8ry+c
-	 dHtgpWcG/bksAZVi5Mhx7jcle7xYOxdY4O74umVekR1zqmvvIsjqxw0fPQ1kuM9FvG
-	 FVgrGw8kwGuqIw29mw9A5Zwes+wur4j6leRnzax6zFgSo2riqMmOpz6862PPva/e1K
-	 YJLdTPqn8H7rQ==
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 25 Apr 2024 11:22:15 +0200
-X-ME-IP: 86.243.17.157
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	linux-wireless@vger.kernel.org,
-	brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com
-Subject: [PATCH] wifi: brcmsmac: ampdu: remove unused cb_del_ampdu_pars struct
-Date: Thu, 25 Apr 2024 11:22:03 +0200
-Message-ID: <fa3b190b6e9cba65ecc36fc93121c6ed8704f704.1714036681.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.44.0
+	s=arc-20240116; t=1714038147; c=relaxed/simple;
+	bh=3T9FjsUymGNFdluw54Z0v54M1QVaVyL3oEp/dxeaIlg=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=ogMNLaK0O+bmhAFXV6P2lQhEN+5M3V0VY7juCrt93o+9uNZt24CKOP3OQSSVfDff7BW58svp59H79PnzxA3xxJ8WRLDJoH1VpI67I5Ro1TRsjGSmgiRP2LYYdENACsEPPOk1NSmwsPH+cZ2qLh+VGchC34ITkm5sqQcNbr2ivy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cC5k7vw8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD23C113CC;
+	Thu, 25 Apr 2024 09:42:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714038146;
+	bh=3T9FjsUymGNFdluw54Z0v54M1QVaVyL3oEp/dxeaIlg=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=cC5k7vw8ltoalYvDhw0Jk6rN6jkchple0+rnrvgR+80LMeiwhC7qraCbaq5wl53v5
+	 Xhw49PZ7Ulsh0qB7iFzNSR2Y7ziceOxydyqP7+hniRpox875fDZUJwqH1BMJHHPb/E
+	 nUNiAR+NkWWY/MJuG/eLOTrdjCt/FHTRwLA7ZQZMawUjeA4GnPv0gaPBjal3nFaUm4
+	 b8w1o8GCivxXCXnzE7l+qeVrErJH6vHFnwJIV9hsdhclc2+Lnkt/guc/I9hx8RfhTo
+	 r1IYqbCKAZ7MtT40/G4seDFTQPsnLmED+pvHyzloW76OZrQGPReFfKsgCS+VgKTSSV
+	 9LBhzNUN/C67A==
+From: Kalle Valo <kvalo@kernel.org>
+To: Marc Gonzalez <mgonzalez@freebox.fr>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,  Konrad Dybcio
+ <konrad.dybcio@linaro.org>,  Krzysztof Kozlowski
+ <krzysztof.kozlowski@linaro.org>,  Jeff Johnson
+ <quic_jjohnson@quicinc.com>,  ath10k <ath10k@lists.infradead.org>,
+  wireless <linux-wireless@vger.kernel.org>,  DT
+ <devicetree@vger.kernel.org>,  MSM <linux-arm-msm@vger.kernel.org>,  Rob
+ Herring <robh+dt@kernel.org>,  Conor Dooley <conor+dt@kernel.org>,
+  Pierre-Hugues Husson <phhusson@freebox.fr>,  Arnaud Vrac
+ <avrac@freebox.fr>,  Bjorn Andersson <andersson@kernel.org>,  Jami
+ Kettunen <jamipkettunen@gmail.com>,  Marijn Suijten
+ <marijn.suijten@somainline.org>,  Jeffrey Hugo <jeffrey.l.hugo@gmail.com>
+Subject: Re: [PATCH v2 3/3] arm64: dts: qcom: msm8998: set
+ qcom,no-msa-ready-indicator for wifi
+References: <fd26ce4a-a9f3-4ada-8d46-ed36fb2456ca@freebox.fr>
+	<5cdad89c-282a-4df5-a286-b8404bc4dd81@freebox.fr>
+	<252618e8-9e80-4774-a96c-caa7f838ef01@linaro.org>
+	<502322f1-4f66-4922-bc4e-46bacac23410@linaro.org>
+	<0ca1221b-b707-450f-877d-ca07a601624d@freebox.fr>
+	<CAA8EJppeREj-0g9oGCzzKx5ywhg1mgmJR1q8yvXKN7N45do1Xg@mail.gmail.com>
+	<87ttkh49xi.fsf@kernel.org>
+	<e804b257-4dc0-45f1-a5c5-66bda51cf296@freebox.fr>
+	<87h6gh406w.fsf@kernel.org>
+	<ad5e178b-cd64-4a87-8994-f917993f3bbb@freebox.fr>
+Date: Thu, 25 Apr 2024 12:42:20 +0300
+In-Reply-To: <ad5e178b-cd64-4a87-8994-f917993f3bbb@freebox.fr> (Marc
+	Gonzalez's message of "Mon, 8 Apr 2024 17:53:01 +0200")
+Message-ID: <871q6tu6bn.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-struct cb_del_ampdu_pars was added in the initial commit 5b435de0d7868
-("net: wireless: add brcm80211 drivers") and its only usage was removed in
-commit e041f65d5f00 ("brcmsmac: Remove internal tx queue").
+Marc Gonzalez <mgonzalez@freebox.fr> writes:
 
-Remove the structure definition now. This saves a few lines of code.
+> On 04/04/2024 17:28, Kalle Valo wrote:
+>
+>> Marc Gonzalez wrote:
+>> 
+>>> On 04/04/2024 13:57, Kalle Valo wrote:
+>>>
+>>>> Dmitry Baryshkov wrote:
+>>>>
+>>>>> I'd say, we should take a step back and actually verify how this was
+>>>>> handled in the vendor kernel.
+>>>>
+>>>> One comment related to this: usually vendor driver and firmware branches
+>>>> go "hand in hand", meaning that a version of driver supports only one
+>>>> specific firmware branch. And there can be a lot of branches. So even if
+>>>> one branch might have a check for something specific, there are no
+>>>> guarantees what the other N+1 branches do :/
+>>>
+>>> The consequences and ramifications of the above comment are not clear to me.
+>>>
+>>> Does this mean:
+>>> "It is pointless to analyze a given version (or even several versions)
+>>> of the vendor driver downstream, because there are exist a large number
+>>> of variations of the code." ?
+>> 
+>> I was trying to say that because the design philosophy between vendor
+>> drivers and upstream drivers is very different, we can't 100% trust
+>> vendor drivers. It's a very good idea to check what vendor drivers do
+>> but we just need to be careful before making any conclusions. Testing
+>> real hardware (and corresponding firmware) is the most reliable way to
+>> know how different products/firmware work, unfortunately.
+>> 
+>>> And thus, "it is nonsensical to try to "align" the mainline driver to
+>>> "the" vendor driver, as there is no single "vendor driver"" ?
+>> 
+>> No no, I'm not saying that. I have suffered this "N+1 different firmware
+>> branches behaving slighly differently" problem since ath6kl days so for
+>> me this is business as usual, sadly. I'm sure we can find a solution for
+>> ath10k.
+>
+> Hello Kalle,
+>
+> I can spin a v3, no problem.
+>
+> Do you prefer:
+>
+> Option A = never waiting for the MSA_READY indicator for ANYONE
+> Option B = not waiting for the MSA_READY indicator when
+> qcom,no-msa-ready-indicator is defined
+> Option C = not waiting for the MSA_READY indicator for certain
+> platforms (based on root compatible)
+> Option D = some other solution not yet discussed
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-Compile tested only
----
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c | 6 ------
- 1 file changed, 6 deletions(-)
+After firmware-N.bin solution didn't work (sorry about that!) my
+prerence is option B.
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c
-index e859075db716..c3376f887114 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/ampdu.c
-@@ -143,12 +143,6 @@ struct ampdu_info {
- 	struct brcms_fifo_info fifo_tb[NUM_FFPLD_FIFO];
- };
- 
--/* used for flushing ampdu packets */
--struct cb_del_ampdu_pars {
--	struct ieee80211_sta *sta;
--	u16 tid;
--};
--
- static void brcms_c_scb_ampdu_update_max_txlen(struct ampdu_info *ampdu, u8 dur)
- {
- 	u32 rate, mcs;
+> Dmitry has tested Option A on 5 platforms, where it does not induce regressions.
+> I worked on msm8998, where Option A (or any equivalent) unbreaks WiFi.
+
+What do you mean here? Are you saying that option A works on all
+devices? I'm guessing I'm misunderstanding something.
+
 -- 
-2.44.0
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
