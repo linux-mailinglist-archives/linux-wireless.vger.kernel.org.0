@@ -1,301 +1,153 @@
-Return-Path: <linux-wireless+bounces-6819-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6820-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 092898B1B54
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 08:58:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 518F98B1CD2
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 10:29:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D945B210A9
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 06:58:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E73861F22C3E
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 08:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB3D039ADD;
-	Thu, 25 Apr 2024 06:58:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="WV4QyOWs"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24EF76F06A;
+	Thu, 25 Apr 2024 08:29:28 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8709038F83
-	for <linux-wireless@vger.kernel.org>; Thu, 25 Apr 2024 06:58:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF3A6E5FE;
+	Thu, 25 Apr 2024 08:29:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714028316; cv=none; b=V/PXxOxIrGpx2lI+jVxwoM7+ozWtxG1bB/n1nsUstFTGHOMtDLV3YcAwYjxXpaSDg+jXD/Ihl9ssJaaMbJM7YW+mg5hlqH26ZOgG4xkF+2cnE/QIvhD853VReQWGKsD4RtX1QVPGzKG/MJaTIZpm1EBF9zlbEh12f1jDRgDFjG4=
+	t=1714033768; cv=none; b=j3hKDSjt9PmFiUYsQchR3og7otM1vfdIGIvaRbkJn4lnS+RY6FESQW9CHMzCjfpEvVlGO5qHX67Z0i6kqAr6Azyg1p0Grxt52vwFY3k0K1s6LTy8zsRL3HaUTnxdRoo/boX9zNtctQ9R2vhBMFi/xeYqGsQgH55RF+FWFM5kpuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714028316; c=relaxed/simple;
-	bh=ylzc6TmhvEeAB3YZiRKsxTP53vpxypEeYBQe08iQ1h4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=dXuzwlTlbw8naXHuos8ssDKnimR5vIaGxiiuBle6X2G7StUwtNKw+wY6RaHyivG1YKil5odlm7Wpwp7+ck2uRgP3EjdnUGs9oBGWBw1t+dmX98Rpq6TK9WP3vmPRoNFc0vg2e8jTDqC8SDPLkS2XKjLojH3A+C7ZmAaJ39rMOGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=WV4QyOWs; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43P2kQju023123;
-	Thu, 25 Apr 2024 06:58:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=45VIrV65xa70qkS9uSCG4Bi37IQm33T1S5jV4fVewfc=; b=WV
-	4QyOWsJltVhQpYoLQS62rAAxbY5LjggDPlhaMBH9rfhAsuMoNdmreeRw1KvuZsbw
-	/A6wV9W+tb7/4bEIXTwyUX94dD1n5bSssUIVnlMi8TRyOCZrf/YV3d2qEzTdZDYM
-	HeIrMuhQnc+nAnxgTys8enwmd5OfOGHxIYihg+Z99hyxzT8wISFn4138NknD0LtT
-	FJLNtCr8NOFAGCIbQsvw5l9UCyPtM+ZxDyY329sDy0nsg1CFD354lFXd78htiMWD
-	LtZNYfJe2VEcxCz3R8K3QooajM/feSRhfqz/P5SUHRS0B8hLyvm23j9DOTN7QBVd
-	RXbR8O2zmuVqjgf+EsZw==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xqenggp8t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 25 Apr 2024 06:58:28 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43P6wRr1026020
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 25 Apr 2024 06:58:27 GMT
-Received: from [10.152.205.142] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 24 Apr
- 2024 23:58:25 -0700
-Message-ID: <9ccdf330-f501-ed5f-f85c-4a5d08cd889a@quicinc.com>
-Date: Thu, 25 Apr 2024 12:28:21 +0530
+	s=arc-20240116; t=1714033768; c=relaxed/simple;
+	bh=/ZDatUVmmNOdDrKLhq3beVPyjGPY9UgKPG6KHF+s2Q4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fw6JG3mddCqftA2oM1Z5B4r5he2YD8NIdJr4a6zUKw1yJxjyPQOm8LypcKCHFiYH2AUAG3L5cGDWyDHovK447XyHTlURe8D6cXAr0OB3cGYDeYsZbRHOeByTpcaNggaTz7qcckSemiZzZZsjeT8z5gEJgqsF2Zj2iQm+Y6zYdEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a556d22fa93so75503166b.3;
+        Thu, 25 Apr 2024 01:29:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714033764; x=1714638564;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=f1/XovmdTy3VI68h9IXSaCtLx7m6jOBMvbb2UerIghU=;
+        b=Jj//RuRsgmq72zZDUJuf0oTZ0SWyRz7oGhr+EJhnXT/W4jZmTJs1HWZrYufBQAZIvc
+         9Ix1c+xxWGtLzdrslHjx77qb+dUqJnGTMttBhS2TTrIFPgSvQmyy2WidfWCKQoJnZsCE
+         +eh6K2XhhHkYMZJMyJTVInHR5HDdKjt4ITOZkanWiLeCGAXol72DZhAdUReHU42z+CvV
+         N0H8cvRB/eFj02biepnM8QAuSyDXXNhEyNrkzA59GMIkeOb3gcoWge1D6lJuLT7/MLes
+         khugpBENXyegLB2ctmSmjsmLHuNbuEiflESWxqADAoA6dqJkJbdWd04xlKw3aep1BTTi
+         jkAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW2tz0dirmweHDfp9RhJvruLduHqrVLYDdc9Wpx/Xfvc/SIOF6Avcc/3BNH+hZV+RjaqouZPI4zKklkZ9ow7P2wMVGP8YShhdRoqhd+RNwdoxmaE/qs0sFBMABAQPVdnVwBbiElpjeL/VoYqsY=
+X-Gm-Message-State: AOJu0Yz9daj83aXrz3hFksFjD/P2ypHc8vGt9ftwfiTc5bos2WDXdqw9
+	tEcaEK/r3GbvRWS93frWhF6diFQ4WXdbERO56PCykC6XxtG7L0VG
+X-Google-Smtp-Source: AGHT+IEW9CcgF7YqLEK7bW3ejg1NJU2GzXyM13uyiLbEvob+9GOKkwQHD3THqynRBX/b2miBq0W6pA==
+X-Received: by 2002:a17:907:7241:b0:a58:aa82:778d with SMTP id ds1-20020a170907724100b00a58aa82778dmr1285050ejc.63.1714033764017;
+        Thu, 25 Apr 2024 01:29:24 -0700 (PDT)
+Received: from localhost (fwdproxy-lla-004.fbsv.net. [2a03:2880:30ff:4::face:b00c])
+        by smtp.gmail.com with ESMTPSA id og19-20020a1709071dd300b00a58bef9e471sm55766ejc.111.2024.04.25.01.29.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Apr 2024 01:29:23 -0700 (PDT)
+From: Breno Leitao <leitao@debian.org>
+To: Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>
+Cc: leit@meta.com,
+	linux-wireless@vger.kernel.org (open list:REALTEK WIRELESS DRIVER (rtw88)),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH wireless-next] wifi: rtw88: Un-embed dummy device
+Date: Thu, 25 Apr 2024 01:29:09 -0700
+Message-ID: <20240425082910.2824393-1-leitao@debian.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v2 3/3] wifi: ath12k: Add lock to protect the hardware
- state
-Content-Language: en-US
-To: Jeff Johnson <quic_jjohnson@quicinc.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240424065646.1666166-1-quic_periyasa@quicinc.com>
- <20240424065646.1666166-4-quic_periyasa@quicinc.com>
- <833facaa-6b8d-4301-84e1-bef1980f26b6@quicinc.com>
-From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-In-Reply-To: <833facaa-6b8d-4301-84e1-bef1980f26b6@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: bD9_hHjxrp-dxW3XkcdpO2XPIXjXEXrT
-X-Proofpoint-GUID: bD9_hHjxrp-dxW3XkcdpO2XPIXjXEXrT
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-04-25_06,2024-04-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- mlxlogscore=999 priorityscore=1501 mlxscore=0 phishscore=0 adultscore=0
- bulkscore=0 lowpriorityscore=0 spamscore=0 clxscore=1015 malwarescore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2404250047
 
+Embedding net_device into structures prohibits the usage of flexible
+arrays in the net_device structure. For more details, see the discussion
+at [1].
 
+Un-embed the net_device from the private struct by converting it
+into a pointer. Then use the leverage the new alloc_netdev_dummy()
+helper to allocate and initialize dummy devices.
 
-On 4/25/2024 2:11 AM, Jeff Johnson wrote:
-> On 4/23/2024 11:56 PM, Karthikeyan Periyasamy wrote:
->> Currently, hardware state is not protected across the reconfigure
->> operations. However, in single wiphy models, multiple radio/links is
->> exposed as a MAC hardware (ieee80211_hw) through the driver hardware
->> abstraction (ath12k_hw) layer. In such scenario, we need to protect
->> hardware state across the multiple radio/link at the driver hardware
->> abstraction (ath12k_hw) layer. Therefore, introduce a new mutex in
->> the ath12k_hw layer.
->>
->> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
->>
->> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
->> ---
->>   drivers/net/wireless/ath/ath12k/core.c |  4 ++++
->>   drivers/net/wireless/ath/ath12k/core.h |  6 ++++++
->>   drivers/net/wireless/ath/ath12k/mac.c  | 29 ++++++++++++++++++++++++--
->>   3 files changed, 37 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
->> index a685cfd6fd92..e9aabdb9341c 100644
->> --- a/drivers/net/wireless/ath/ath12k/core.c
->> +++ b/drivers/net/wireless/ath/ath12k/core.c
->> @@ -1048,6 +1048,8 @@ static void ath12k_core_post_reconfigure_recovery(struct ath12k_base *ab)
->>   		if (!ah || ah->state == ATH12K_HW_STATE_OFF)
->>   			continue;
->>   
->> +		mutex_lock(&ah->hw_mutex);
->> +
->>   		switch (ah->state) {
->>   		case ATH12K_HW_STATE_ON:
->>   			ah->state = ATH12K_HW_STATE_RESTARTING;
->> @@ -1078,6 +1080,8 @@ static void ath12k_core_post_reconfigure_recovery(struct ath12k_base *ab)
->>   				    "device is wedged, will not restart hw %d\n", i);
->>   			break;
->>   		}
->> +
->> +		mutex_unlock(&ah->hw_mutex);
->>   	}
->>   
->>   	complete(&ab->driver_recovery);
->> diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
->> index eff1093fbb6e..3e3e157b6c56 100644
->> --- a/drivers/net/wireless/ath/ath12k/core.h
->> +++ b/drivers/net/wireless/ath/ath12k/core.h
->> @@ -634,11 +634,17 @@ struct ath12k {
->>   struct ath12k_hw {
->>   	struct ieee80211_hw *hw;
->>   	struct ath12k_base *ab;
->> +
->> +	/* Protect the write operation of the hardware state ath12k_hw::state
->> +	 * between hardware start<=>reconfigure<=>stop transitions.
->> +	 */
->> +	struct mutex hw_mutex;
->>   	enum ath12k_hw_state state;
->>   	bool regd_updated;
->>   	bool use_6ghz_regd;
->>   	u8 num_radio;
->>   
->> +	/* Keep last */
->>   	struct ath12k radio[] __aligned(sizeof(void *));
->>   };
->>   
->> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
->> index 8b003c18796d..3dc95d36b6a2 100644
->> --- a/drivers/net/wireless/ath/ath12k/mac.c
->> +++ b/drivers/net/wireless/ath/ath12k/mac.c
->> @@ -5546,10 +5546,13 @@ static void ath12k_mac_wait_reconfigure(struct ath12k_base *ab)
->>   
->>   static int ath12k_mac_start(struct ath12k *ar)
->>   {
->> +	struct ath12k_hw *ah = ar->ah;
->>   	struct ath12k_base *ab = ar->ab;
->>   	struct ath12k_pdev *pdev = ar->pdev;
->>   	int ret;
->>   
->> +	lockdep_assert_held(&ah->hw_mutex);
->> +
->>   	mutex_lock(&ar->conf_mutex);
->>   
->>   	ret = ath12k_wmi_pdev_set_param(ar, WMI_PDEV_PARAM_PMF_QOS,
->> @@ -5664,6 +5667,8 @@ static int ath12k_mac_op_start(struct ieee80211_hw *hw)
->>   
->>   	ath12k_drain_tx(ah);
->>   
->> +	mutex_lock(&ah->hw_mutex);
-> 
-> since this is always unlocked just before we return, it is a good candidate
-> for the cleanup.h functionality. just change this to:
-> 	guard(mutex)(&ah->hw_mutex);
-> 
-> and remove all of the other edits to this function. the mutex will always be
-> unlocked when the function returns
-> 
+[1] https://lore.kernel.org/all/20240229225910.79e224cf@kernel.org/
 
-sure, will address this comment in the next version of the patch.
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ drivers/net/wireless/realtek/rtw88/pci.c | 17 +++++++++++++----
+ drivers/net/wireless/realtek/rtw88/pci.h |  2 +-
+ 2 files changed, 14 insertions(+), 5 deletions(-)
 
+PS: This is compile-tested only due to lack of hardware to do better
+testing.
 
->> +
->>   	switch (ah->state) {
->>   	case ATH12K_HW_STATE_OFF:
->>   		ah->state = ATH12K_HW_STATE_ON;
->> @@ -5678,7 +5683,8 @@ static int ath12k_mac_op_start(struct ieee80211_hw *hw)
->>   		ah->state = ATH12K_HW_STATE_OFF;
->>   
->>   		WARN_ON(1);
->> -		return -EINVAL;
->> +		ret = -EINVAL;
->> +		goto err;
->>   	}
->>   
->>   	for_each_ar(ah, ar, i) {
->> @@ -5692,6 +5698,8 @@ static int ath12k_mac_op_start(struct ieee80211_hw *hw)
->>   		}
->>   	}
->>   
->> +	mutex_unlock(&ah->hw_mutex);
->> +
->>   	return 0;
->>   
->>   fail_start:
->> @@ -5700,6 +5708,8 @@ static int ath12k_mac_op_start(struct ieee80211_hw *hw)
->>   		ath12k_mac_stop(ar);
->>   	}
->>   
->> +err:
->> +	mutex_unlock(&ah->hw_mutex);
->>   	return ret;
->>   }
->>   
->> @@ -5762,9 +5772,12 @@ int ath12k_mac_rfkill_enable_radio(struct ath12k *ar, bool enable)
->>   
->>   static void ath12k_mac_stop(struct ath12k *ar)
->>   {
->> +	struct ath12k_hw *ah = ar->ah;
->>   	struct htt_ppdu_stats_info *ppdu_stats, *tmp;
->>   	int ret;
->>   
->> +	lockdep_assert_held(&ah->hw_mutex);
->> +
->>   	mutex_lock(&ar->conf_mutex);
->>   	ret = ath12k_mac_config_mon_status_default(ar, false);
->>   	if (ret && (ret != -EOPNOTSUPP))
->> @@ -5800,10 +5813,14 @@ static void ath12k_mac_op_stop(struct ieee80211_hw *hw)
->>   
->>   	ath12k_drain_tx(ah);
->>   
->> +	mutex_lock(&ah->hw_mutex);
->> +
->>   	ah->state = ATH12K_HW_STATE_OFF;
->>   
->>   	for_each_ar(ah, ar, i)
->>   		ath12k_mac_stop(ar);
->> +
->> +	mutex_unlock(&ah->hw_mutex);
->>   }
->>   
->>   static u8
->> @@ -7848,8 +7865,12 @@ ath12k_mac_op_reconfig_complete(struct ieee80211_hw *hw,
->>   	if (reconfig_type != IEEE80211_RECONFIG_TYPE_RESTART)
->>   		return;
->>   
->> -	if (ah->state != ATH12K_HW_STATE_RESTARTED)
->> +	mutex_lock(&ah->hw_mutex);
-> 
-> another good candidate for
-> 	guard(mutex)(&ah->hw_mutex);
-
-sure, will address this comment in the next version of the patch.
-
-> 
->> +
->> +	if (ah->state != ATH12K_HW_STATE_RESTARTED) {
->> +		mutex_unlock(&ah->hw_mutex);
->>   		return;
->> +	}
->>   
->>   	ah->state = ATH12K_HW_STATE_ON;
->>   	ieee80211_wake_queues(hw);
->> @@ -7904,6 +7925,8 @@ ath12k_mac_op_reconfig_complete(struct ieee80211_hw *hw,
->>   
->>   		mutex_unlock(&ar->conf_mutex);
->>   	}
->> +
->> +	mutex_unlock(&ah->hw_mutex);
->>   }
->>   
->>   static void
->> @@ -8850,6 +8873,8 @@ static struct ath12k_hw *ath12k_mac_hw_allocate(struct ath12k_base *ab,
->>   	ah->ab = ab;
->>   	ah->num_radio = num_pdev_map;
->>   
->> +	mutex_init(&ah->hw_mutex);
->> +
->>   	for (i = 0; i < num_pdev_map; i++) {
->>   		ab = pdev_map[i].ab;
->>   		pdev_idx = pdev_map[i].pdev_idx;
-> 
-
+diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
+index 9986a4cb37eb..4ff4f875cefb 100644
+--- a/drivers/net/wireless/realtek/rtw88/pci.c
++++ b/drivers/net/wireless/realtek/rtw88/pci.c
+@@ -1681,12 +1681,16 @@ static int rtw_pci_napi_poll(struct napi_struct *napi, int budget)
+ 	return work_done;
+ }
+ 
+-static void rtw_pci_napi_init(struct rtw_dev *rtwdev)
++static int rtw_pci_napi_init(struct rtw_dev *rtwdev)
+ {
+ 	struct rtw_pci *rtwpci = (struct rtw_pci *)rtwdev->priv;
+ 
+-	init_dummy_netdev(&rtwpci->netdev);
+-	netif_napi_add(&rtwpci->netdev, &rtwpci->napi, rtw_pci_napi_poll);
++	rtwpci->netdev = alloc_netdev_dummy(0);
++	if (!rtwpci->netdev)
++		return -ENOMEM;
++
++	netif_napi_add(rtwpci->netdev, &rtwpci->napi, rtw_pci_napi_poll);
++	return 0;
+ }
+ 
+ static void rtw_pci_napi_deinit(struct rtw_dev *rtwdev)
+@@ -1695,6 +1699,7 @@ static void rtw_pci_napi_deinit(struct rtw_dev *rtwdev)
+ 
+ 	rtw_pci_napi_stop(rtwdev);
+ 	netif_napi_del(&rtwpci->napi);
++	free_netdev(rtwpci->netdev);
+ }
+ 
+ int rtw_pci_probe(struct pci_dev *pdev,
+@@ -1744,7 +1749,11 @@ int rtw_pci_probe(struct pci_dev *pdev,
+ 		goto err_pci_declaim;
+ 	}
+ 
+-	rtw_pci_napi_init(rtwdev);
++	ret = rtw_pci_napi_init(rtwdev);
++	if (ret) {
++		rtw_err(rtwdev, "failed to setup NAPI\n");
++		goto err_pci_declaim;
++	}
+ 
+ 	ret = rtw_chip_info_setup(rtwdev);
+ 	if (ret) {
+diff --git a/drivers/net/wireless/realtek/rtw88/pci.h b/drivers/net/wireless/realtek/rtw88/pci.h
+index 0c37efd8c66f..13988db1cb4c 100644
+--- a/drivers/net/wireless/realtek/rtw88/pci.h
++++ b/drivers/net/wireless/realtek/rtw88/pci.h
+@@ -215,7 +215,7 @@ struct rtw_pci {
+ 	bool running;
+ 
+ 	/* napi structure */
+-	struct net_device netdev;
++	struct net_device *netdev;
+ 	struct napi_struct napi;
+ 
+ 	u16 rx_tag;
 -- 
-Karthikeyan Periyasamy
---
-கார்த்திகேயன் பெரியசாமி
+2.43.0
+
 
