@@ -1,53 +1,53 @@
-Return-Path: <linux-wireless+bounces-6835-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6836-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 367338B202E
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 13:28:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A4EC8B202F
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 13:29:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC7AE288F6C
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 11:28:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0609A1F227DD
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Apr 2024 11:29:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2B912A16C;
-	Thu, 25 Apr 2024 11:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B67A12A16C;
+	Thu, 25 Apr 2024 11:28:57 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0008983CCD
-	for <linux-wireless@vger.kernel.org>; Thu, 25 Apr 2024 11:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80AFE83CCD
+	for <linux-wireless@vger.kernel.org>; Thu, 25 Apr 2024 11:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714044532; cv=none; b=M3TChyyrtyM8r7v8KCRs+s9Sv9kEalUt1cPVfzXfM4ya+UsQcilvxwRlp8c4OleWOqNG3HOTjepvZz9Yzb/eTrpLZoWCgSy//ISoMHOr120Um2JgnczGIraXPTTQ8KYvqd/vMp3DjM3aO5QcSb0CL0QQAsXe5gczxWDY/2OY+MI=
+	t=1714044537; cv=none; b=sy9OeWL/8WWSNwSfJOdwk0+mtX9RXsUm8+aDpuJiCUd//aFtnt262rm8di0dRwqhZXF0kn4kwEj39oxc+d+J6M0D79qszkwcYBqeEoee7zAyB356CKmi01pL5htiqBrRKDCA477TIjFVKM8avrfNmEeuoKPeNCb9LcwHlQ8MB3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714044532; c=relaxed/simple;
-	bh=WKXRFEY/FAdH6+wuPAxppGrfKMglAxG4tZ4jCJ/EY1M=;
+	s=arc-20240116; t=1714044537; c=relaxed/simple;
+	bh=DuEpIJEjZuAvjoQEqq7CEIlmPAeM0uAxweGeMT5OzYo=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Pnv/93oZBVxyXLWjnq4F3XLs6iZk2l7mYI1FlgR5zVeO1jIi5cVwjs2XhRecvIsU6gWfc4hsmw1FpGdgbtem/DSK5R8ht6rG1x/bOaKjN0cruA/C/jtZRB+VJTCwpU58YJRnZ2m3fPoLtQszdx6EHKDCewulwSRb/sASqP0r+u8=
+	 MIME-Version:Content-Type; b=YLdd4QkDAJla+bHNhZqsfs2YcBXt4Dp4Oc6oZYDtwJ50Y37BEy/PfP69LV7bpj5L9cjMv1v53g83harlG7VEnE4Nlr4n7l6IAybmih1r29GSDFQlruuf6ZwHfvQ9xA4V52ykw1AoJsxIduxu9OGUu1upDDvzhdmyPbZZ89m5j1U=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 43PBSmGsA3482257, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 43PBSmGsA3482257
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 43PBSqC423482263, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 43PBSqC423482263
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Thu, 25 Apr 2024 19:28:48 +0800
+	for <linux-wireless@vger.kernel.org>; Thu, 25 Apr 2024 19:28:52 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 25 Apr 2024 19:28:48 +0800
+ 15.1.2507.35; Thu, 25 Apr 2024 19:28:52 +0800
 Received: from [127.0.1.1] (172.16.16.129) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 25 Apr
- 2024 19:28:47 +0800
+ 2024 19:28:52 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <gary.chang@realtek.com>, <timlee@realtek.com>
-Subject: [PATCH 02/12] wifi: rtw89: wow: refine WoWLAN flows of HCI interrupts and low power mode
-Date: Thu, 25 Apr 2024 19:28:06 +0800
-Message-ID: <20240425112816.26431-3-pkshih@realtek.com>
+Subject: [PATCH 03/12] wifi: rtw89: wow: parsing Auth Key Management from associate request
+Date: Thu, 25 Apr 2024 19:28:07 +0800
+Message-ID: <20240425112816.26431-4-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240425112816.26431-1-pkshih@realtek.com>
 References: <20240425112816.26431-1-pkshih@realtek.com>
@@ -61,106 +61,110 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
 
 From: Chih-Kang Chang <gary.chang@realtek.com>
 
-After enabling packet offload, the TX will be stuck after resume from
-WoWLAN mode. And the 8852c gets error messages like
+Need Auth Key Management(AKM) to let firmware to generate appropriate
+EAPoL packet for GTK rekey. The AKM is present in the association request
+RSN IE to indicate which cipher that station selected.
 
-rtw89_8852ce 0000:04:00.0: No busy txwd pages available
-rtw89_8852ce 0000:04:00.0: queue 0 txwd 100 is not idle
-rtw89_8852ce 0000:04:00.0: queue 0 txwd 101 is not idle
-rtw89_8852ce 0000:04:00.0: queue 0 txwd 102 is not idle
-rtw89_8852ce 0000:04:00.0: queue 0 txwd 103 is not idle
-
-If suspend/resume many times that firmware will download failed and
-disconnection.
-
-To fix these issues, We removed the rtw89_hci_disable_intr() and
-rtw89_hci_enable_intr() during rtw89_wow_swap_fw() to prevent add packet
-offload can't receive c2h back due to interrupt disable. Only 8852C and
-8922A needs to disable interrupt before downloading fw.
-
-Furthermore, we avoid using low power HCI mode on WoWLAN mode, to prevent
-interrupt enabled, then get interrupt and calculate RXBD mismatched due to
-software RXBD index already reset but hardware RXBD index not yet.
-
-Fixes: 5c12bb66b79d ("wifi: rtw89: refine packet offload flow")
 Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/ps.c  |  3 ++-
- drivers/net/wireless/realtek/rtw89/wow.c | 12 ++++++++++--
- 2 files changed, 12 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtw89/core.c |  3 +++
+ drivers/net/wireless/realtek/rtw89/core.h |  1 +
+ drivers/net/wireless/realtek/rtw89/wow.c  | 15 +++++++++++++++
+ drivers/net/wireless/realtek/rtw89/wow.h  | 17 +++++++++++++++++
+ 4 files changed, 36 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/ps.c b/drivers/net/wireless/realtek/rtw89/ps.c
-index 31290d8cb7f7..92074b73ebeb 100644
---- a/drivers/net/wireless/realtek/rtw89/ps.c
-+++ b/drivers/net/wireless/realtek/rtw89/ps.c
-@@ -55,7 +55,8 @@ static void rtw89_ps_power_mode_change_with_hci(struct rtw89_dev *rtwdev,
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index dda69e8d114d..ce5126ed876e 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -18,6 +18,7 @@
+ #include "ser.h"
+ #include "txrx.h"
+ #include "util.h"
++#include "wow.h"
  
- static void rtw89_ps_power_mode_change(struct rtw89_dev *rtwdev, bool enter)
+ static bool rtw89_disable_ps_mode;
+ module_param_named(disable_ps_mode, rtw89_disable_ps_mode, bool, 0644);
+@@ -254,6 +255,8 @@ static void rtw89_traffic_stats_accu(struct rtw89_dev *rtwdev,
+ 				     struct sk_buff *skb, bool tx)
  {
--	if (rtwdev->chip->low_power_hci_modes & BIT(rtwdev->ps_mode))
-+	if (rtwdev->chip->low_power_hci_modes & BIT(rtwdev->ps_mode) &&
-+	    !test_bit(RTW89_FLAG_WOWLAN, rtwdev->flags))
- 		rtw89_ps_power_mode_change_with_hci(rtwdev, enter);
- 	else
- 		rtw89_mac_power_mode_change(rtwdev, enter);
+ 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
++	if (tx && ieee80211_is_assoc_req(hdr->frame_control))
++		rtw89_wow_parse_akm(rtwdev, skb);
+ 
+ 	if (!ieee80211_is_data(hdr->frame_control))
+ 		return;
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 9da8be9927d3..834e19c533ae 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -5161,6 +5161,7 @@ struct rtw89_wow_param {
+ 	DECLARE_BITMAP(flags, RTW89_WOW_FLAG_NUM);
+ 	struct rtw89_wow_cam_info patterns[RTW89_MAX_PATTERN_NUM];
+ 	u8 pattern_cnt;
++	u8 akm;
+ };
+ 
+ struct rtw89_mcc_limit {
 diff --git a/drivers/net/wireless/realtek/rtw89/wow.c b/drivers/net/wireless/realtek/rtw89/wow.c
-index f7e96fcbbaba..ea555f29442d 100644
+index ea555f29442d..dcae75128c71 100644
 --- a/drivers/net/wireless/realtek/rtw89/wow.c
 +++ b/drivers/net/wireless/realtek/rtw89/wow.c
-@@ -458,14 +458,17 @@ static int rtw89_wow_swap_fw(struct rtw89_dev *rtwdev, bool wow)
- 	struct rtw89_wow_param *rtw_wow = &rtwdev->wow;
- 	struct ieee80211_vif *wow_vif = rtw_wow->wow_vif;
- 	struct rtw89_vif *rtwvif = (struct rtw89_vif *)wow_vif->drv_priv;
-+	enum rtw89_core_chip_id chip_id = rtwdev->chip->chip_id;
- 	const struct rtw89_chip_info *chip = rtwdev->chip;
- 	bool include_bb = !!chip->bbmcu_nr;
-+	bool disable_intr_for_dlfw = false;
- 	struct ieee80211_sta *wow_sta;
- 	struct rtw89_sta *rtwsta = NULL;
- 	bool is_conn = true;
- 	int ret;
+@@ -12,6 +12,21 @@
+ #include "util.h"
+ #include "wow.h"
  
--	rtw89_hci_disable_intr(rtwdev);
-+	if (chip_id == RTL8852C || chip_id == RTL8922A)
-+		disable_intr_for_dlfw = true;
- 
- 	wow_sta = ieee80211_find_sta(wow_vif, rtwvif->bssid);
- 	if (wow_sta)
-@@ -473,12 +476,18 @@ static int rtw89_wow_swap_fw(struct rtw89_dev *rtwdev, bool wow)
- 	else
- 		is_conn = false;
- 
-+	if (disable_intr_for_dlfw)
-+		rtw89_hci_disable_intr(rtwdev);
++void rtw89_wow_parse_akm(struct rtw89_dev *rtwdev, struct sk_buff *skb)
++{
++	struct ieee80211_mgmt *mgmt = (struct ieee80211_mgmt *)skb->data;
++	struct rtw89_wow_param *rtw_wow = &rtwdev->wow;
++	const u8 *rsn, *ies = mgmt->u.assoc_req.variable;
++	struct rtw89_rsn_ie *rsn_ie;
 +
- 	ret = rtw89_fw_download(rtwdev, fw_type, include_bb);
- 	if (ret) {
- 		rtw89_warn(rtwdev, "download fw failed\n");
- 		return ret;
- 	}
- 
-+	if (disable_intr_for_dlfw)
-+		rtw89_hci_enable_intr(rtwdev);
++	rsn = cfg80211_find_ie(WLAN_EID_RSN, ies, skb->len);
++	if (!rsn)
++		return;
 +
- 	rtw89_phy_init_rf_reg(rtwdev, true);
++	rsn_ie = (struct rtw89_rsn_ie *)rsn;
++	rtw_wow->akm = rsn_ie->akm_cipher_suite.type;
++}
++
+ static void rtw89_wow_leave_deep_ps(struct rtw89_dev *rtwdev)
+ {
+ 	__rtw89_leave_ps_mode(rtwdev);
+diff --git a/drivers/net/wireless/realtek/rtw89/wow.h b/drivers/net/wireless/realtek/rtw89/wow.h
+index a2f7b2e3cdb4..1fbb112c4c1a 100644
+--- a/drivers/net/wireless/realtek/rtw89/wow.h
++++ b/drivers/net/wireless/realtek/rtw89/wow.h
+@@ -15,7 +15,24 @@ enum rtw89_wake_reason {
+ 	RTW89_WOW_RSN_RX_NLO = 0x55,
+ };
  
- 	ret = rtw89_fw_h2c_role_maintain(rtwdev, rtwvif, rtwsta,
-@@ -524,7 +533,6 @@ static int rtw89_wow_swap_fw(struct rtw89_dev *rtwdev, bool wow)
- 		rtw89_phy_rfk_pre_ntfy_and_wait(rtwdev, RTW89_PHY_0, 5);
++struct rtw89_cipher_suite {
++	u8 oui[3];
++	u8 type;
++} __packed;
++
++struct rtw89_rsn_ie {
++	u8 tag_number;
++	u8 tag_length;
++	__le16 rsn_version;
++	struct rtw89_cipher_suite group_cipher_suite;
++	__le16 pairwise_cipher_suite_cnt;
++	struct rtw89_cipher_suite pairwise_cipher_suite;
++	__le16 akm_cipher_suite_cnt;
++	struct rtw89_cipher_suite akm_cipher_suite;
++} __packed;
++
+ int rtw89_wow_suspend(struct rtw89_dev *rtwdev, struct cfg80211_wowlan *wowlan);
+ int rtw89_wow_resume(struct rtw89_dev *rtwdev);
++void rtw89_wow_parse_akm(struct rtw89_dev *rtwdev, struct sk_buff *skb);
  
- 	rtw89_mac_hw_mgnt_sec(rtwdev, wow);
--	rtw89_hci_enable_intr(rtwdev);
- 
- 	return 0;
- }
+ #endif
 -- 
 2.25.1
 
