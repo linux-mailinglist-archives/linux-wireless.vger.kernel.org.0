@@ -1,79 +1,52 @@
-Return-Path: <linux-wireless+bounces-6930-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6931-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 206E38B3872
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 15:29:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB6F78B399F
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 16:19:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B215B23161
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 13:29:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CF431C22EC0
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 14:19:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17674146D62;
-	Fri, 26 Apr 2024 13:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AF011487DF;
+	Fri, 26 Apr 2024 14:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LVaWxPPx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ms9yoBnE"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC4D13E88A;
-	Fri, 26 Apr 2024 13:29:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D0F42A99
+	for <linux-wireless@vger.kernel.org>; Fri, 26 Apr 2024 14:19:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714138168; cv=none; b=nn6wz86aMQwaDJcal8pkQCg6a38ekpfpyQtfZb7G6VS6o6dkMPI8UGkMYIZTyQZm2pTjRQNC5hG5Y/mm4n0UQGkE0CRb3TU45KtcTzrEWz9+uG6U0vqk7YNUG2QIXmx5WQTSGlerf2gNvrg0xJJugc4aLHsSNrM0juaeiMOiA5M=
+	t=1714141183; cv=none; b=nLOrzyZAc2yztdTKMu4xzkgiBM6XNKIQ7GFYMQDncZWz0CxsZo2n+4YFJhGOrgHBxLm1n7fe7b6DwCnq8fd9VJBxh5uU7OJKKdtpdhlwYUjR0ubOD2Ha9gQz3LilmV4ft6ZC9ha+IV1S3kFKa9anfOm1i5hPmdIhaIvGJKU98qY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714138168; c=relaxed/simple;
-	bh=sSXrIPk8dN5BzLgwnptVn5b+rd6IY6uVXxvm3G8/Uq8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rZh3d0Qop0sZWp+mGPpJ4n6YPN6E+YxAe7noL/ba6i7Pi2rLzHN7KbKOD23t0pFTnu63s5ZTSFdB6MXVWjxPX8MM46npv0OiBqPO9JiX3GpUzQwffnvOz+dY4BRvLg8hfOThISNMfjK0vdcLHg9lidEp9uh8xf/wjRx0gVwXlTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LVaWxPPx; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1e9ec116e17so72265ad.3;
-        Fri, 26 Apr 2024 06:29:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714138166; x=1714742966; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=FbA6cjhW6J46GsVq8JXfhJHiSKYbkxI3o0KCxsENyUU=;
-        b=LVaWxPPxGkwTHW3CBi6LG50UqzX7c7w8G2vrYV8+HtfZb5BMIMP4x9+G2HQ6Bz7BIJ
-         ImU/Qr+AOFckftAEhhMftnbYg7V3j89kDwOAVpB/cta4G9dKtLE8T7h3hJwBBIIJIOA9
-         mmOOiRIGahaHJxuEY3NXKrpxeQF7P29yWbzl5S9fpBwl571fsuufJzv6ratnmPMwi99R
-         5sA+yX+btoEGT2TpXBxhoQ73MseUREkyIYRShE/g5Wy/vHf17W7FEgvqvYChNyP8MGhP
-         HDQQ5yG4JT6LOMtoPeQNykuveT5fWQCw0Nysy9SDRlu/DXdrJi1VdksBNqRqYeBTURpj
-         Ipfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714138166; x=1714742966;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FbA6cjhW6J46GsVq8JXfhJHiSKYbkxI3o0KCxsENyUU=;
-        b=UUq0x4cK4Tnfwr7jHl73Xt9yubbezJ5DRTM+XWbPnNVXTBsnelv2t0jwL40y7ZIwhe
-         WbH1A8U41DXeoeIAUBZ2AcVaZJobqGF3P8CMTuXE3LYSPSAZd2DlO2rq3IuobZLRyITr
-         yXCSWY8flFtzXD5qkItcaW5eYRLutcxV4xjof79FLhHmGytmDBFSOQLW9y2iHe9/PWFL
-         v1kXA385HyEAEttggK73NJ1lXufDPzQQ5+onw2F2uoa0zfTAyU7bfSeB7C+LOqNh0fhf
-         0rtH3xDWLsAiRaFug7eaQDyxgpM7NBJ8OY/TaaLf5LxufSSgDaicoWISNigRZR2k+VgY
-         9y0w==
-X-Forwarded-Encrypted: i=1; AJvYcCXaqHtvXF9z4hL3/0tIKdUbvvdz2j5BhG3FXfQ1fN6N/m/lr1D7eKSWLVk8e47lonI6xspV07Ub0tR/qTyo2hhGgGA4zOIpPo6LR/mP
-X-Gm-Message-State: AOJu0YzG3tPaaCqa6YLzZongNcAn23Bf+J35wm4wnR+r+ZGwyQ77oDKn
-	TWZqh43G/PMz5t76MqrihukvV7xRl8vn5CDMKW15OHGzZ2qQ0gQd5f/aty1a
-X-Google-Smtp-Source: AGHT+IHbCFFOdLNerbGeyj1ohy0a1+wtk1eKruqicxbRJhK26cUaFGUlNPl2UqApQ+U2qFaSaWVH6w==
-X-Received: by 2002:a05:6a21:99a6:b0:1aa:68c4:3271 with SMTP id ve38-20020a056a2199a600b001aa68c43271mr3608647pzb.3.1714138165801;
-        Fri, 26 Apr 2024 06:29:25 -0700 (PDT)
-Received: from vaxr-BM6660-BM6360.. ([2001:288:7001:2703:751f:9418:61f4:229e])
-        by smtp.gmail.com with ESMTPSA id k124-20020a633d82000000b005f7d61ec8afsm12912141pga.91.2024.04.26.06.29.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Apr 2024 06:29:25 -0700 (PDT)
-From: I Hsin Cheng <richard120310@gmail.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	I Hsin Cheng <richard120310@gmail.com>
-Subject: [PATCH] wireless: Fix typo descibing to describing
-Date: Fri, 26 Apr 2024 21:29:11 +0800
-Message-Id: <20240426132911.16255-1-richard120310@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1714141183; c=relaxed/simple;
+	bh=U1yctsxw+RuNXfjL+hS5+IFs4tZTl/e1WrfQdKuPb0o=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Y/hF2Er3naA4aFRN27ekw9uHw3n3rkowK6sdJFypaGX2L0N5dphnxP2b+ykTzPB59P7PBZPP7kl8iXbXLKHfFZXQfAVEVaBDYLf8Ztq5VxVunm73T66mDtqJlIXIFshiyQ1ooaLixseOHM86ZYV+T9nVgMITur18POvhZQhOzvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ms9yoBnE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C010AC113CD;
+	Fri, 26 Apr 2024 14:19:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714141182;
+	bh=U1yctsxw+RuNXfjL+hS5+IFs4tZTl/e1WrfQdKuPb0o=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ms9yoBnEtqD8yqBN40QdRZFOzOcoshDDEfnRw5iuRO0VznhCllcfpNImRHc+sZ2Hk
+	 aDpqvjM9ad4LLp9EGjiZuOrWt6i1NPyB1gA+Ac+PTSisIzMFKAoEUTupRjF9gNkjiv
+	 WXul0YlYgCiptobqNsAidxCgmqkf+7mGHSNGbQ9dhE9ofxNpG82BafNmaMQQ8ZOs/6
+	 ErXt86zRduRq6fVbi9RCi98HAnSpXW9hy9FX1eoI91H2mpr3ad8URAyXDiodDyLO/O
+	 WZn0FrFJ/35nq8gEHGvbqm0/yLGgjieSclddUuC09vlLPKJC+2BELmONYemrcTdPWI
+	 918+YyCXxeUTg==
+From: Kalle Valo <kvalo@kernel.org>
+To: pkshih@realtek.com
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH 1/2] wifi: rtl8xxxu: remove some unused includes
+Date: Fri, 26 Apr 2024 17:19:38 +0300
+Message-Id: <20240426141939.3881678-1-kvalo@kernel.org>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -82,28 +55,243 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Fixed a typo in the comment description from "descibing" to
-"describing".
+I noticed by random that rtl8xxxu includes linux/wireless.h even though it
+doesn't need it. While investigating a bit more I found even more unused
+include files:
 
-Signed-off-by: I Hsin Cheng <richard120310@gmail.com>
+#include <linux/init.h>
+#include <linux/sched.h>
+#include <linux/ethtool.h>
+
+It looks like that the includes are just copied to every file without checking
+if the file really needs the include. So more includes could be removed but
+that would need more careful analysis per each file.
+
+No functional changes, compile tested only.
+
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
 ---
- include/uapi/linux/wireless.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188e.c | 4 ----
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c | 4 ----
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c | 4 ----
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c | 4 ----
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c | 4 ----
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8710b.c | 4 ----
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c | 4 ----
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c | 4 ----
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c  | 4 ----
+ 9 files changed, 36 deletions(-)
 
-diff --git a/include/uapi/linux/wireless.h b/include/uapi/linux/wireless.h
-index 3c2ad5fae..5df03b595 100644
---- a/include/uapi/linux/wireless.h
-+++ b/include/uapi/linux/wireless.h
-@@ -28,7 +28,7 @@
-  * change dynamically (while the driver is running) some parameters.
-  *
-  * The ioctl mechanimsm are copied from standard devices ioctl.
-- * We have the list of command plus a structure descibing the
-+ * We have the list of command plus a structure describing the
-  * data exchanged...
-  * Note that to add these ioctl, I was obliged to modify :
-  *	# net/core/dev.c (two place + add include)
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188e.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188e.c
+index afe9cc1b49dc..43735ca70b7c 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188e.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188e.c
+@@ -13,9 +13,7 @@
+  * additional 8xxx chips like the 8192cu, 8188cus, etc.
+  */
+ 
+-#include <linux/init.h>
+ #include <linux/kernel.h>
+-#include <linux/sched.h>
+ #include <linux/errno.h>
+ #include <linux/slab.h>
+ #include <linux/module.h>
+@@ -24,8 +22,6 @@
+ #include <linux/usb.h>
+ #include <linux/netdevice.h>
+ #include <linux/etherdevice.h>
+-#include <linux/ethtool.h>
+-#include <linux/wireless.h>
+ #include <linux/firmware.h>
+ #include <linux/moduleparam.h>
+ #include <net/mac80211.h>
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+index 464216d007ce..9043e548518f 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
+@@ -11,9 +11,7 @@
+  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
+  */
+ 
+-#include <linux/init.h>
+ #include <linux/kernel.h>
+-#include <linux/sched.h>
+ #include <linux/errno.h>
+ #include <linux/slab.h>
+ #include <linux/module.h>
+@@ -22,8 +20,6 @@
+ #include <linux/usb.h>
+ #include <linux/netdevice.h>
+ #include <linux/etherdevice.h>
+-#include <linux/ethtool.h>
+-#include <linux/wireless.h>
+ #include <linux/firmware.h>
+ #include <linux/moduleparam.h>
+ #include <net/mac80211.h>
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c
+index ddf2d9707338..49eb1d0a6019 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c
+@@ -13,9 +13,7 @@
+  * additional 8xxx chips like the 8192cu, 8188cus, etc.
+  */
+ 
+-#include <linux/init.h>
+ #include <linux/kernel.h>
+-#include <linux/sched.h>
+ #include <linux/errno.h>
+ #include <linux/slab.h>
+ #include <linux/module.h>
+@@ -24,8 +22,6 @@
+ #include <linux/usb.h>
+ #include <linux/netdevice.h>
+ #include <linux/etherdevice.h>
+-#include <linux/ethtool.h>
+-#include <linux/wireless.h>
+ #include <linux/firmware.h>
+ #include <linux/moduleparam.h>
+ #include <net/mac80211.h>
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
+index 63b73ace27ec..26132b6b9331 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
+@@ -13,9 +13,7 @@
+  * additional 8xxx chips like the 8192cu, 8188cus, etc.
+  */
+ 
+-#include <linux/init.h>
+ #include <linux/kernel.h>
+-#include <linux/sched.h>
+ #include <linux/errno.h>
+ #include <linux/slab.h>
+ #include <linux/module.h>
+@@ -24,8 +22,6 @@
+ #include <linux/usb.h>
+ #include <linux/netdevice.h>
+ #include <linux/etherdevice.h>
+-#include <linux/ethtool.h>
+-#include <linux/wireless.h>
+ #include <linux/firmware.h>
+ #include <linux/moduleparam.h>
+ #include <net/mac80211.h>
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
+index 21e4204769d0..9f1d4a6ee210 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
+@@ -11,9 +11,7 @@
+  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
+  */
+ 
+-#include <linux/init.h>
+ #include <linux/kernel.h>
+-#include <linux/sched.h>
+ #include <linux/errno.h>
+ #include <linux/slab.h>
+ #include <linux/module.h>
+@@ -22,8 +20,6 @@
+ #include <linux/usb.h>
+ #include <linux/netdevice.h>
+ #include <linux/etherdevice.h>
+-#include <linux/ethtool.h>
+-#include <linux/wireless.h>
+ #include <linux/firmware.h>
+ #include <linux/moduleparam.h>
+ #include <net/mac80211.h>
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8710b.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8710b.c
+index 46d57510e9fc..aa27ac4f828b 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8710b.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8710b.c
+@@ -11,9 +11,7 @@
+  * Copyright(c) 2007 - 2011 Realtek Corporation. All rights reserved.
+  */
+ 
+-#include <linux/init.h>
+ #include <linux/kernel.h>
+-#include <linux/sched.h>
+ #include <linux/errno.h>
+ #include <linux/slab.h>
+ #include <linux/module.h>
+@@ -22,8 +20,6 @@
+ #include <linux/usb.h>
+ #include <linux/netdevice.h>
+ #include <linux/etherdevice.h>
+-#include <linux/ethtool.h>
+-#include <linux/wireless.h>
+ #include <linux/firmware.h>
+ #include <linux/moduleparam.h>
+ #include <net/mac80211.h>
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c
+index bf8c34af781f..965c8c3662a6 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c
+@@ -13,9 +13,7 @@
+  * additional 8xxx chips like the 8192cu, 8188cus, etc.
+  */
+ 
+-#include <linux/init.h>
+ #include <linux/kernel.h>
+-#include <linux/sched.h>
+ #include <linux/errno.h>
+ #include <linux/slab.h>
+ #include <linux/module.h>
+@@ -24,8 +22,6 @@
+ #include <linux/usb.h>
+ #include <linux/netdevice.h>
+ #include <linux/etherdevice.h>
+-#include <linux/ethtool.h>
+-#include <linux/wireless.h>
+ #include <linux/firmware.h>
+ #include <linux/moduleparam.h>
+ #include <net/mac80211.h>
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
+index 6653f43973cf..3355d8e97870 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
+@@ -13,9 +13,7 @@
+  * additional 8xxx chips like the 8192cu, 8188cus, etc.
+  */
+ 
+-#include <linux/init.h>
+ #include <linux/kernel.h>
+-#include <linux/sched.h>
+ #include <linux/errno.h>
+ #include <linux/slab.h>
+ #include <linux/module.h>
+@@ -24,8 +22,6 @@
+ #include <linux/usb.h>
+ #include <linux/netdevice.h>
+ #include <linux/etherdevice.h>
+-#include <linux/ethtool.h>
+-#include <linux/wireless.h>
+ #include <linux/firmware.h>
+ #include <linux/moduleparam.h>
+ #include <net/mac80211.h>
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index e72f35a40ab3..54f955b01475 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -13,9 +13,7 @@
+  * additional 8xxx chips like the 8192cu, 8188cus, etc.
+  */
+ 
+-#include <linux/init.h>
+ #include <linux/kernel.h>
+-#include <linux/sched.h>
+ #include <linux/errno.h>
+ #include <linux/slab.h>
+ #include <linux/module.h>
+@@ -24,8 +22,6 @@
+ #include <linux/usb.h>
+ #include <linux/netdevice.h>
+ #include <linux/etherdevice.h>
+-#include <linux/ethtool.h>
+-#include <linux/wireless.h>
+ #include <linux/firmware.h>
+ #include <linux/moduleparam.h>
+ #include <net/mac80211.h>
+
+base-commit: 4ea11e4db3550ee655b411b43498552e8c6ead01
 -- 
-2.34.1
+2.39.2
 
 
