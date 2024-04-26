@@ -1,119 +1,130 @@
-Return-Path: <linux-wireless+bounces-6922-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6923-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5070C8B33E0
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 11:25:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A83A58B340B
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 11:32:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 830CE1C21C82
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 09:25:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A12BCB22A20
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 09:32:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0F913C838;
-	Fri, 26 Apr 2024 09:25:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Lhs7L8qr"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA95D13D53C;
+	Fri, 26 Apr 2024 09:32:06 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968FC13D53D
-	for <linux-wireless@vger.kernel.org>; Fri, 26 Apr 2024 09:25:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B8471C02;
+	Fri, 26 Apr 2024 09:32:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714123540; cv=none; b=X3z3S+MY3dU0OZ14gb/hIAcAv9hZkSEDP1lN0J4cEYWw0RcWj3j41r0/OFmX5ZoBGMSYkANs4dh4e47tR/7VYELeIJKH3cMiaY6cEFE+id0biBY+tvZGlervrSwfb0rz0W0deMLK7SfFptb4tr43WSnlsxNTXTk9YIS1tJ2HUmw=
+	t=1714123926; cv=none; b=GQ7DSHDZQGXpHk5kwZyuuOvVEUpXFIqf/boL2kS7RjKEnfyVs8lu9ZVyIqudCIbUA5ruPZcsN0PwUsSOBo6D6Rcg4Gf7KX+9cckuvP+BtJz6iQti5ikXY7TLswPP9RscQlxTK8EDGO9nR9KsR0edC+wriOPiNuoFaRRN4cnJRSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714123540; c=relaxed/simple;
-	bh=g3Mk5QLvG1pPzlQSMEsaMIna+muaiiRpig72hJH+AL8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lpxE12EFFtr7tU4jU5tGHVUjvgmCPdnE4+R/v418xdk4BqkqoMx7FjmZAoQ9pXIY3leXLRDD5Kx3m1EbFt5u5Id6pznPHa2o5chzXy3QnmcC29SlmaEiekTGpPl+wRYDGlDCcGG0fC14FlI3ozJdy6T09VkgEZ0BLemXUf9NwNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Lhs7L8qr; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43Q8jJRT010019;
-	Fri, 26 Apr 2024 09:25:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version:content-type; s=
-	qcppdkim1; bh=czEYNIOf1KwJm+opD9kgX945vx9cWNbmsN5hmQ+rB48=; b=Lh
-	s7L8qrS4Z7zHZZC/rKUBrJpXF2zv9pQNvpAL0U3V8mSUnXjMeD7ox2OHinCkZstA
-	nqz5VG1xS4QAhMehdvdmAfrtUxlVA4LE4E0yZSqekbsle2Ft/f82DGOcQTJcwDV3
-	89T/mHlNh5GG3MOXDGlcBRCYYJl0SXyDZuNJI/Map8PRL9jQoOLLr6r9yYTyATMf
-	X6CA4doSY5aWVOoIUTvI4zHreYfZQP+QSIhetmSTWUbszQpI0WrmkFAObsOOlrpv
-	Zuo3F8NyBB/PtT+/z9RR9FQRmvDZQ/v6QXLDbD9gZmidVvU0pzY/vLoyMGmfFQuQ
-	Nnr2Kz7/6idqelAp3eBg==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xr3591d3a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 26 Apr 2024 09:25:31 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43Q9PSaW008776
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 26 Apr 2024 09:25:28 GMT
-Received: from hu-deng-lv.qualcomm.com (10.49.16.6) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Fri, 26 Apr 2024 02:25:27 -0700
-From: Xin Deng <quic_deng@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, <quic_deng@quicinc.com>
-Subject: [PATCH v3] wifi: cfg80211: Clear mlo_links info when STA disconnect
-Date: Fri, 26 Apr 2024 02:25:01 -0700
-Message-ID: <20240426092501.8592-1-quic_deng@quicinc.com>
-X-Mailer: git-send-email 2.17.1
+	s=arc-20240116; t=1714123926; c=relaxed/simple;
+	bh=rWF4T1ptwSPqA7KfHBNu5E0FUQmnrOyU/QxzFxfeU0E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rgh1OQXlJaWmBKrc3RL60algPvEtfnDCLhj9TVWV0MrJZ3cxHxtsVaP/37hlTvH5tm9qpdS9+zRPch4DvRouNtF2DA9uYh+N5OzK4fVYnrhH/dbxICw5MMYeAnBcTFTLoqFZssvYjRhjl/hUe4rDtC99qjLaHjuUgcwGqnGx6Xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-572229f196cso2268297a12.2;
+        Fri, 26 Apr 2024 02:32:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714123923; x=1714728723;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8gBPNnUV2Yn9Is2h8W1Y2Sei5FTqscCR/HpPNQnVetk=;
+        b=Y02dI7QcjHStm87Ep2hhhx9VrV+rf6qAPitzHCNTBmt+WuXTPOQxAUDb//sdgyzTEF
+         UnsDERmnQa+ZJRaqiC3wLIvvtA2OvAWLsYwitYjO9wAWTbnqC49pzxb71d0ooLEqreJc
+         IfmwmIOMzbr4nQrwJ92eiGtoOWKWrEqU36ZXmr/sMDyK5zVOC41B/bOZv3O+EEET70Ck
+         JB9OcAwTWVMHEb+Egtf1Tbp4C+6LQqWwz5UMofkw5yL0X+JMrhwRwKnBg/xNPwsFj/w3
+         i/TNS8VrYLWgx7bwabdqiNfDC+/y//+Vr8AhE+H0dfch3Sd+WkrJs82rUf5u6fjb8Cbz
+         VpPw==
+X-Forwarded-Encrypted: i=1; AJvYcCVFHKA4jMDKmeLcKDN/c0UVSYc5BTGgwPULNbiTljYtt5+GzMzxeU88Mb6SEz9tzadRdvfgqQN3em/4iKuySZCZz3PVSzie1hOfAVhV
+X-Gm-Message-State: AOJu0YzrYCJPLoXtwWB5FSfJoZgPNA9M2nUh9aAONXm3fEpYmzke8iFh
+	Mt8RfY/4gsdy6zc16VB1t20xZvRylMdPwCKvHwP7eKA3VQfcJ+fK
+X-Google-Smtp-Source: AGHT+IGjErk/3ApxpRPSTqyt/IYR+02NI5iRozuFmjFtbV2BdHu34uBHIEzirvS3Cd+uFy76rSRa8w==
+X-Received: by 2002:a05:6402:229a:b0:572:5f53:816f with SMTP id cw26-20020a056402229a00b005725f53816fmr18669edb.37.1714123923193;
+        Fri, 26 Apr 2024 02:32:03 -0700 (PDT)
+Received: from localhost (fwdproxy-lla-008.fbsv.net. [2a03:2880:30ff:8::face:b00c])
+        by smtp.gmail.com with ESMTPSA id cn18-20020a0564020cb200b00571bfc97b79sm9535631edb.55.2024.04.26.02.32.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Apr 2024 02:32:02 -0700 (PDT)
+From: Breno Leitao <leitao@debian.org>
+To: kvalo@kernel.org,
+	Igor Mitsyanko <imitsyanko@quantenna.com>,
+	Sergey Matyukevich <geomatsi@gmail.com>
+Cc: linux-wireless@vger.kernel.org,
+	kuba@kernel.org,
+	Johannes Berg <johannes.berg@intel.com>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH wireless 1/2] wifi: qtnfmac: Move stats allocation to core
+Date: Fri, 26 Apr 2024 02:31:48 -0700
+Message-ID: <20240426093156.2002258-1-leitao@debian.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: fdxBifZ78GzdNDDPC9asGb4ap06TOhch
-X-Proofpoint-ORIG-GUID: fdxBifZ78GzdNDDPC9asGb4ap06TOhch
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-04-26_09,2024-04-26_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 spamscore=0
- impostorscore=0 lowpriorityscore=0 priorityscore=1501 adultscore=0
- clxscore=1015 mlxscore=0 suspectscore=0 phishscore=0 mlxlogscore=999
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2404260060
+Content-Transfer-Encoding: 8bit
 
-wdev->valid_links is not cleared when upper layer disconnect from a
-wdev->AP MLD. It has been observed that this would prevent offchannel
-operations like remain-on-channel which would be needed for user space
-operations with Public Action frame.
-Clear the wdev->valid_links when STA disconnect.
+With commit 34d21de99cea9 ("net: Move {l,t,d}stats allocation to core and
+convert veth & vrf"), stats allocation could be done on net core instead
+of this driver.
 
-Signed-off-by: Xin Deng <quic_deng@quicinc.com>
+With this new approach, the driver doesn't have to bother with error
+handling (allocation failure checking, making sure free happens in the
+right spot, etc). This is core responsibility now.
+
+Move qtnfmac driver to leverage the core allocation.
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
-v2:
-        - Change wdev->valid_links = 0 to cfg80211_wdev_release_bsses();
-v3:
-        - Change wdev->valid_links = 0 to __cfg80211_diesconnected();
----
- net/wireless/sme.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/quantenna/qtnfmac/core.c | 15 +--------------
+ 1 file changed, 1 insertion(+), 14 deletions(-)
 
-diff --git a/net/wireless/sme.c b/net/wireless/sme.c
-index 82e3ce42206c..a8ad55f11133 100644
---- a/net/wireless/sme.c
-+++ b/net/wireless/sme.c
-@@ -1353,6 +1353,7 @@ void __cfg80211_disconnected(struct net_device *dev, const u8 *ie,
- 		return;
+PS: This is compile-tested only due to lack of hardware.
+
+diff --git a/drivers/net/wireless/quantenna/qtnfmac/core.c b/drivers/net/wireless/quantenna/qtnfmac/core.c
+index 677bac835330..0aa4b1d14809 100644
+--- a/drivers/net/wireless/quantenna/qtnfmac/core.c
++++ b/drivers/net/wireless/quantenna/qtnfmac/core.c
+@@ -196,22 +196,8 @@ static int qtnf_netdev_port_parent_id(struct net_device *ndev,
+ 	return 0;
+ }
  
- 	cfg80211_wdev_release_bsses(wdev);
-+	wdev->valid_links = 0;
- 	wdev->connected = false;
- 	wdev->u.client.ssid_len = 0;
- 	wdev->conn_owner_nlportid = 0;
-
-base-commit: 8027a466a77a288eccd2d11868f504e24231f3b7
+-static int qtnf_netdev_alloc_pcpu_stats(struct net_device *dev)
+-{
+-	dev->tstats = netdev_alloc_pcpu_stats(struct pcpu_sw_netstats);
+-
+-	return dev->tstats ? 0 : -ENOMEM;
+-}
+-
+-static void qtnf_netdev_free_pcpu_stats(struct net_device *dev)
+-{
+-	free_percpu(dev->tstats);
+-}
+-
+ /* Network device ops handlers */
+ const struct net_device_ops qtnf_netdev_ops = {
+-	.ndo_init = qtnf_netdev_alloc_pcpu_stats,
+-	.ndo_uninit = qtnf_netdev_free_pcpu_stats,
+ 	.ndo_open = qtnf_netdev_open,
+ 	.ndo_stop = qtnf_netdev_close,
+ 	.ndo_start_xmit = qtnf_netdev_hard_start_xmit,
+@@ -483,6 +469,7 @@ int qtnf_core_net_attach(struct qtnf_wmac *mac, struct qtnf_vif *vif,
+ 	dev->watchdog_timeo = QTNF_DEF_WDOG_TIMEOUT;
+ 	dev->tx_queue_len = 100;
+ 	dev->ethtool_ops = &qtnf_ethtool_ops;
++	dev->pcpu_stat_type = NETDEV_PCPU_STAT_TSTATS;
+ 
+ 	if (qtnf_hwcap_is_set(&mac->bus->hw_info, QLINK_HW_CAPAB_HW_BRIDGE))
+ 		dev->needed_tailroom = sizeof(struct qtnf_frame_meta_info);
 -- 
-2.17.1
+2.43.0
 
 
