@@ -1,63 +1,79 @@
-Return-Path: <linux-wireless+bounces-6934-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6935-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46AAC8B3A56
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 16:47:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 487D08B3D81
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 19:02:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF204281521
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 14:47:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B66EE1F2178F
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 17:02:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0C79147C63;
-	Fri, 26 Apr 2024 14:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B6A157492;
+	Fri, 26 Apr 2024 17:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="UN3zRWOi"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X0yt03ZE"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2145114533D
-	for <linux-wireless@vger.kernel.org>; Fri, 26 Apr 2024 14:47:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5846F156F38;
+	Fri, 26 Apr 2024 17:02:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714142849; cv=none; b=Mvfrkb1SiByz7pjDEafFDK0JNU8uFdJHAKuOTy36CFKXfqGYZSgcnuqHw1dRfst+Mn8ZMp3T3dmAhFc/tY5ynhJypdth5c9Ra1q7k01L4cF3bxf7aM0lEA6HCbnRQ4jYgntUSxThgDvf5gabgGyzGocnED17kLN7seHYfDp3WOw=
+	t=1714150945; cv=none; b=hS6wjOVPWBmyszKvWIC7CSqC3P3TB+Z8k0EpLseip11Lx36HBLVcqlsW92l/sIK6P0/b9IIVoLz4JHbDcMb+4zDI4wx1q2UwgXhucCGPMOI4jYNkA7L4ja4nTGEC1kI0ZDxY9zR59PAvM6WOxePFHkBTP9dAMa8ChqATG2MVHkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714142849; c=relaxed/simple;
-	bh=mhTsvTECbgMueIie+VUva/eoBqSFRc9F3LIMk7Rzov8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=pStx/0nmJlw5LdukQn3MJg6rG1rOL0cqvlXo9RrACwxXmJYU36ZU/YEn+lP+V0t5LXRB3KAbR7kt2atYqeqAwLY7SwUSn6s24BsAXaM1hiCPkcL7DBRtpevgiaWYuh2hy0URvu6ndx0LIpLgzGliWYe3fX08MNHz70NL9NPv3Yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=UN3zRWOi; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43QDDCSW016595;
-	Fri, 26 Apr 2024 14:47:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=bvOnzxvx0r7m8j8MJGOhNdJ/MtnT50SXgfeDgZXCLbM=; b=UN
-	3zRWOiKLxK7biGIqJ2rTbtPO4IowwWd399oGam4jtWAiJqlKmBWGyuqvqSkT6Ehk
-	27VKU1e8Yb/DRlrr9PLHqdyHhSF7QwmK2+o+hO2Y+7X65bu0wnFnaxypF1tc77lt
-	HYga1DmmRXnHR3jvXRvIN/6cyRCgIvWHPWJLlYOfk8sQ/cF3s8YTLYT+tqH4Aty0
-	jyrjoJ3egoEAVtrXeIFZiRDomZx8skE7hSWr6Yw6fAsfGWe5dOIAZrUFK9KrFND0
-	LhZ8RHAR/swK5e2u0VKbwj27kR56tDkqzDLbqBUNBnP8aiZGe8Wgs2xMvZISKXN7
-	4JqB6MN0Pj2K9VWjzR2w==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xr35et53h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 26 Apr 2024 14:47:23 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43QElMbW004278
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 26 Apr 2024 14:47:22 GMT
-Received: from [10.110.19.58] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 26 Apr
- 2024 07:47:22 -0700
-Message-ID: <b6935c08-5a7e-4c88-93a8-522f1226a274@quicinc.com>
-Date: Fri, 26 Apr 2024 07:47:21 -0700
+	s=arc-20240116; t=1714150945; c=relaxed/simple;
+	bh=VhZ9zjZaO7LINR6YAIwrCSbyI2+ZARznckY9vuhthDM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JW/fNqoPbWUIuxdlLHx1bmtxZpHvfTSkXO89kXadLJRG/KeRcjKWYNavs49y43KB1wwmUInOeIg+THV5y6EhiqkGFV68nT/KYeiV+wJqf7rPYsirmQxIVISLbEMQw6ae+2H4Nx3s0ZfL0BgAFKgMLgBLv17qbjKnkWw7fz9VWao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X0yt03ZE; arc=none smtp.client-ip=209.85.208.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2db13ca0363so37979921fa.3;
+        Fri, 26 Apr 2024 10:02:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714150941; x=1714755741; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=94b5nhJx7HeqEEQnpwKUjZGcBHBH+uVSAHwjzfZ5Zfk=;
+        b=X0yt03ZE02zCwGqHwpcKR4+/edmITJG5IpAxSS4o8M3FgLF2U4WjoLvVi5qsBEEXmA
+         oXKxBxWfTeSaApeB/KB/CfqxPS/lPKBxqoaFpwjg5rNpTrySgz8EBWfQVn/XtMoKY72k
+         oh081R95b7pLpWGPej4OjBFhOKjWILxp2zidUK1Fd1dpGLRy9I6OakcJlJ5QAvG1iTKr
+         biVJGyrg7rvGmaXF023GfzSZT4DPEep2AFEBuVBAonaZ0wFVEWhLMED/LrI+ccvDnso/
+         9V7xebis840cbCehfP/dUQecH8dwQkSUWm1uGyGgDJE26spq2Fx15vlJn8cQUOfs3kLe
+         V4pA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714150941; x=1714755741;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=94b5nhJx7HeqEEQnpwKUjZGcBHBH+uVSAHwjzfZ5Zfk=;
+        b=ovkFNWexC1AD+8HjG6k5SHtGx6ZqI0FsaT6EOHrYzkC7ehh6E4klWgGqR3Hr5Rv2fY
+         U/prPzi+/v8hXfvUc2BH/05iArdWc3QnM87COAV85pw8eVwun9A3k0s/gZRh+a+20igY
+         TxmMhyr2YvLq2tbW9q0g/TA7QGZYyL7ndjSsRPx/LJ6vAfnf46UdvzJldj/8qEG1IcNH
+         SAFKg2zJsJpGFc3NN2L/Sp4r/5gTmOec9g8rqtaCQYp1O62JkTI25by2AIwXR/sJtLw2
+         XWCoj/2oriAKomBhxDv29ZClfES4FzE5l7aWJU9dbOsBSJCeFljoLiSBijO70J8Jk+5i
+         SVkA==
+X-Forwarded-Encrypted: i=1; AJvYcCXgfoO3+j31PNInFVvq5iQ7HQJ2ZsxMoW5xTJ/tKUBcr+ia7aCDRAJKghdS+tNnYO2qNdHY751M9gc0S1bvgWHsi0kdPA9zwtU3LWrpmA2v02S/QfTdTTZ5gphsKvDAMj56J0zDbQjdM905BS0=
+X-Gm-Message-State: AOJu0Ywm4of2XIlkY66adjU2UrW0WpBHIwQBnBvbbb4JFX5rZA6bbevG
+	N1/vn2xum4rW52W4UBqovTefh7Mik0WqtDozfqrJPEr9QhZ0Ub+u
+X-Google-Smtp-Source: AGHT+IGz8Oca8uHRUytGyraY/KLQssW324dKwoaO9XtyQAowq9712KVvWGe5HoV42URlhp/rRoWYPA==
+X-Received: by 2002:a2e:9a8d:0:b0:2d4:49d1:38e with SMTP id p13-20020a2e9a8d000000b002d449d1038emr2601582lji.28.1714150940972;
+        Fri, 26 Apr 2024 10:02:20 -0700 (PDT)
+Received: from shift.daheim (p200300d5ff467e0050f496fffe46beef.dip0.t-ipconnect.de. [2003:d5:ff46:7e00:50f4:96ff:fe46:beef])
+        by smtp.gmail.com with ESMTPSA id r20-20020a170906705400b00a555ef55ab5sm10759607ejj.218.2024.04.26.10.02.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Apr 2024 10:02:20 -0700 (PDT)
+Received: from localhost.daheim ([127.0.0.1])
+	by shift.daheim with esmtp (Exim 4.97)
+	(envelope-from <chunkeey@gmail.com>)
+	id 1s0Pt6-00000000NXv-1VrT;
+	Fri, 26 Apr 2024 19:02:19 +0200
+Message-ID: <bef4b45b-ec56-4c6d-88c8-cdb943f42342@gmail.com>
+Date: Fri, 26 Apr 2024 19:02:19 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,62 +81,82 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: ath12k: fix flush failure in recovery scenarios
-Content-Language: en-US
-To: Baochen Qiang <quic_bqiang@quicinc.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240426015434.94840-1-quic_bqiang@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240426015434.94840-1-quic_bqiang@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH v2] wifi: carl9170: add a proper sanity check for
+ endpoints
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ syzkaller-bugs@googlegroups.com, lvc-project@linuxtesting.org,
+ syzbot+0ae4804973be759fa420@syzkaller.appspotmail.com
+References: <20240422183355.3785-1-n.zhandarovich@fintech.ru>
+ <ccbdc170-149d-442c-8167-2b05c8cf93b2@gmail.com> <8734r8sorx.fsf@kernel.org>
+Content-Language: de-DE, en-US
+From: Christian Lamparter <chunkeey@gmail.com>
+In-Reply-To: <8734r8sorx.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: f8jfrVYj6xjV8EYi1wU3Kxuh_O2dWNfA
-X-Proofpoint-ORIG-GUID: f8jfrVYj6xjV8EYi1wU3Kxuh_O2dWNfA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-04-26_12,2024-04-26_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=999
- lowpriorityscore=0 malwarescore=0 spamscore=0 bulkscore=0 impostorscore=0
- phishscore=0 priorityscore=1501 clxscore=1015 suspectscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2404010003
- definitions=main-2404260099
 
-On 4/25/2024 6:54 PM, Baochen Qiang wrote:
-> Commit eaf9f17b861b ("wifi: ath12k: relocate ath12k_dp_pdev_pre_alloc()
-> call") moves ath12k_dp_pdev_pre_alloc() from ath12k_core_start() to
-> ath12k_mac_allocate(), resulting in ath12k_mac_flush() failure in
-> recovery scenarios:
+On 4/26/24 6:58 AM, Kalle Valo wrote:
+> Christian Lamparter <chunkeey@gmail.com> writes:
 > 
-> [ 6849.684104] ath12k_pci 0000:04:00.0: pdev 0 successfully recovered
-> [ 6854.907320] ath12k_pci 0000:04:00.0: failed to flush transmit queue 0
-> [ 6860.027353] ath12k_pci 0000:04:00.0: failed to flush transmit queue 0
-> [ 6865.143385] ath12k_pci 0000:04:00.0: failed to flush transmit queue 0
+>> On 4/22/24 8:33 PM, Nikita Zhandarovich wrote:
+>>> Syzkaller reports [1] hitting a warning which is caused by presence
+>>> of a wrong endpoint type at the URB sumbitting stage. While there
+>>> was a check for a specific 4th endpoint, since it can switch types
+>>> between bulk and interrupt, other endpoints are trusted implicitly.
+>>> Similar warning is triggered in a couple of other syzbot issues [2].
+>>> Fix the issue by doing a comprehensive check of all endpoints
+>>> taking into account difference between high- and full-speed
+>>> configuration.
+>>> This patch has not been tested on real hardware.
+>>
+>> Oh, I've tested the original patch on real hardware ;). You can remove that line.
 > 
-> This is because, with ath12k_dp_pdev_pre_alloc() moved to ath12k_mac_allocate(),
-> dp->num_tx_pending is not reset due to ATH12K_FLAG_REGISTERED set in
-> recovery scenarios.
+> BTW I can remove that line, no need to resend because of this.
 > 
-> So a possible fix would be to reset that counter at some proper point,
-> just like the old design. But considering that the counter tracks number
-> of packets pending to be freed or returned to mac80211, forcefully reset
-> it might make it hard to expose some real issues. For example if somehow
-> ath12k fails to free/return some TX packets, we don't know that because
-> no warnings any more.
-> 
-> That is to say we should not reset that counter during recovery (which is
-> already done due to above commit), instead should decrease it each time
-> a packet is freed/returned. Currently almost each related function has
-> this logic implemented, except ath12k_dp_cc_cleanup(). So add the same
-> there to fix this issue.
-> 
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> 
-> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
+finished testing v2 - it works, no surprise.
+
+high-speed:
+| [  188.470363] usb 3-14: new high-speed USB device number 4 using xhci_hcd
+| [  188.661053] usb 3-14: New USB device found, idVendor=0846, idProduct=9010, bcdDevice= 1.06
+| [  188.661056] usb 3-14: New USB device strings: Mfr=16, Product=32, SerialNumber=48
+| [  188.661058] usb 3-14: Product: USB2.0 WLAN
+| [  188.661059] usb 3-14: Manufacturer: ATHER
+| [  188.661060] usb 3-14: SerialNumber: 12345
+| [  188.783843] usb 3-14: reset high-speed USB device number 4 using xhci_hcd
+| [  188.963408] usb 3-14: driver   API: 1.9.9 2016-02-15 [1-1]
+| [  188.963412] usb 3-14: firmware API: 1.9.6 2012-07-07
+| [  189.298218] ath: EEPROM regdomain: 0x0
+| [  189.298221] ath: EEPROM indicates default country code should be used
+| [  189.298222] ath: doing EEPROM country->regdmn map search
+| [  189.298223] ath: country maps to regdmn code: 0x3a
+| [  189.298224] ath: Country alpha2 being used: US
+| [  189.298225] ath: Regpair used: 0x3a
+| [  189.298290] ieee80211 phy2: Selected rate control algorithm 'minstrel_ht'
+| [  189.301463] usb 3-14: Atheros AR9170 is registered as 'phy2'
+
+full-speed:
+| [  205.743314] usb 4-2: new full-speed USB device number 3 using ohci-pci
+| [  205.990614] usb 4-2: not running at top speed; connect to a high speed hub
+| [  206.029618] usb 4-2: New USB device found, idVendor=0cf3, idProduct=1002, bcdDevice= 1.06
+| [  206.029621] usb 4-2: New USB device strings: Mfr=16, Product=32, SerialNumber=48
+| [  206.029622] usb 4-2: Product: USB2.0 WLAN
+| [  206.029623] usb 4-2: Manufacturer: ATHER
+| [  206.029624] usb 4-2: SerialNumber: 12345
+| [  206.209969] usb 4-2: reset full-speed USB device number 3 using ohci-pci
+| [  206.471776] usb 4-2: driver   API: 1.9.9 2016-02-15 [1-1]
+| [  206.471779] usb 4-2: firmware API: 1.9.6 2012-07-07
+| [  206.885680] ath: EEPROM regdomain: 0x809c
+| [  206.885684] ath: EEPROM indicates we should expect a country code
+| [  206.885686] ath: doing EEPROM country->regdmn map search
+| [  206.885687] ath: country maps to regdmn code: 0x52
+| [  206.885689] ath: Country alpha2 being used: CN
+| [  206.885691] ath: Regpair used: 0x52
+| [  206.885794] ieee80211 phy3: Selected rate control algorithm 'minstrel_ht'
+| [  206.888834] input: phy3 WPS Button as /devices/pci0000:00/0000:00:1c.3/0000:05:00.0/0000:06:01.0/usb4/4-2/4-2:1.0/ieee80211/phy3/input17
+| [  206.892694] usb 4-2: Atheros AR9170 is registered as 'phy3'
+
+
+Tested-by: Christian Lamparter <chunkeey@gmail.com>
 
