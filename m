@@ -1,78 +1,78 @@
-Return-Path: <linux-wireless+bounces-6929-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6930-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8B5A8B378E
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 14:56:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 206E38B3872
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 15:29:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DD451F229AF
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 12:56:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B215B23161
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 13:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B5BE146A90;
-	Fri, 26 Apr 2024 12:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17674146D62;
+	Fri, 26 Apr 2024 13:29:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DOeSJ8+e"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LVaWxPPx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4669F13E88A;
-	Fri, 26 Apr 2024 12:56:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC4D13E88A;
+	Fri, 26 Apr 2024 13:29:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714136166; cv=none; b=EhAgJwsvSBxop5XDL+rRlhFvRhj+/D3lAqF83X0Yu6ofI4KGepzhBdRiWuybqS3f95gCFpne03EFVh/imRChRgG7AuwOAXjAPfpMI6Wl0+cHhszsGAD4qXf10d4dppByueRBJ/1EDhCPr6x8/Gk7EjoZ3CAqzINe2BjJPIgsmIQ=
+	t=1714138168; cv=none; b=nn6wz86aMQwaDJcal8pkQCg6a38ekpfpyQtfZb7G6VS6o6dkMPI8UGkMYIZTyQZm2pTjRQNC5hG5Y/mm4n0UQGkE0CRb3TU45KtcTzrEWz9+uG6U0vqk7YNUG2QIXmx5WQTSGlerf2gNvrg0xJJugc4aLHsSNrM0juaeiMOiA5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714136166; c=relaxed/simple;
-	bh=e24+6ar6f8THt7ttNJUQUkzg2x4kPeF6cikcX2osWII=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JiuZRtyEozYtYL+gOeiNGV9VR8KAOnjP/AuRPwmzL90BZLk5k+D894H4nus9nQMsdmNCl+4V7vgC93/4IlRMBogMJ0xs/QxeEHDUwbpf1hyc0+WsJccVgm9MY/ymHeVOcuIQdFISpdKWkghCDTgnsbSu+cpJBgSPILIQq97T/NU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DOeSJ8+e; arc=none smtp.client-ip=209.85.216.41
+	s=arc-20240116; t=1714138168; c=relaxed/simple;
+	bh=sSXrIPk8dN5BzLgwnptVn5b+rd6IY6uVXxvm3G8/Uq8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rZh3d0Qop0sZWp+mGPpJ4n6YPN6E+YxAe7noL/ba6i7Pi2rLzHN7KbKOD23t0pFTnu63s5ZTSFdB6MXVWjxPX8MM46npv0OiBqPO9JiX3GpUzQwffnvOz+dY4BRvLg8hfOThISNMfjK0vdcLHg9lidEp9uh8xf/wjRx0gVwXlTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LVaWxPPx; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2a2cced7482so530365a91.0;
-        Fri, 26 Apr 2024 05:56:05 -0700 (PDT)
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1e9ec116e17so72265ad.3;
+        Fri, 26 Apr 2024 06:29:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714136164; x=1714740964; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1714138166; x=1714742966; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uX907XxOordYUAxSgHq5czawxQqlBIx+KQKIi98LRxg=;
-        b=DOeSJ8+e7SXLs4lo/wbLr559mHAernnZG+rjgw4C+wgyrJPHu44UefVq58fspoCQp+
-         Y0rk3lovEDh1LJvfhI2/Cz55uSo/BEtMPMaxmfv0WCHsQauL/CuI3C7wXgSAoibwBFXk
-         PmU9qs29v9143Z3zYSJu0slR+fm0yRxBLWQYtYVGvBav6BRUaIcZLPXP/nuKvZUQODVw
-         R7Mnbl5jhow6KdFaUbfboeIMQ77aQSSEXdLbNWAuquL4J8NIhUna67G3d2TO3cmfnnhd
-         v5lOJPiMgMol3BIOyTGPrY4At2EkK5HLIE8X0ox3Z0ykmDJe/pKscGkpPsvtYxKoSbCA
-         qLtg==
+        bh=FbA6cjhW6J46GsVq8JXfhJHiSKYbkxI3o0KCxsENyUU=;
+        b=LVaWxPPxGkwTHW3CBi6LG50UqzX7c7w8G2vrYV8+HtfZb5BMIMP4x9+G2HQ6Bz7BIJ
+         ImU/Qr+AOFckftAEhhMftnbYg7V3j89kDwOAVpB/cta4G9dKtLE8T7h3hJwBBIIJIOA9
+         mmOOiRIGahaHJxuEY3NXKrpxeQF7P29yWbzl5S9fpBwl571fsuufJzv6ratnmPMwi99R
+         5sA+yX+btoEGT2TpXBxhoQ73MseUREkyIYRShE/g5Wy/vHf17W7FEgvqvYChNyP8MGhP
+         HDQQ5yG4JT6LOMtoPeQNykuveT5fWQCw0Nysy9SDRlu/DXdrJi1VdksBNqRqYeBTURpj
+         Ipfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714136164; x=1714740964;
+        d=1e100.net; s=20230601; t=1714138166; x=1714742966;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=uX907XxOordYUAxSgHq5czawxQqlBIx+KQKIi98LRxg=;
-        b=PjVENzGW1jEb4ENi6M67LISsI2VuW8cQ7fhHDCsmQcReneXd+/+1ohdF20A4Z7zbac
-         WQ57rhr5WfzyGPIQHxuxH4Xzo2c1eG/SpmlYYvOJgtqTpU9/QpJsEqEY3GWCdmHwij52
-         TRkd+B7Jw+JMTbwRYmc+T+P+wzspGM8CLeH7qS10iC2uA9z9Yuc2e3ymDO86+Sjz/yly
-         mjKaICFIRxsIiWLnmEKFdAB+XISAnaCFye2cZr4Xdr8J6G9UsCWl/H6YcW7nvzYt4IGl
-         MrSuhA1IhN9ikn2XjSuCfnk8kbh/VlYRigp3/Rz7ueAgfXCFtSFF0eaFMjAjakZiZLXc
-         czgg==
-X-Forwarded-Encrypted: i=1; AJvYcCW/YPfohe7wnpdmkOf955UQaQVdZC75bH9NaP5M7/OMjmqgGf5o4WUgw++ftt3xOvKSAltkr9vR9TXTjXiz2OgCWLE2oWMcMGNzcfF6
-X-Gm-Message-State: AOJu0YydklYcK/xTVlggXspw2HFadSz0x3oDFkBv88/vY0W/HDaV90lk
-	iQT/OBfu+BvotoNc2YVa8evXXnTo5howtYtDarDOB1IjXVgs/I+AQK2PY2XG
-X-Google-Smtp-Source: AGHT+IEk3bPUEuIWOFK/L2xF1SwAh2qRi9ToB9DKYF51AccL8jUZkrbygWE4ULy0YFXns7FHJDPz0w==
-X-Received: by 2002:a17:90b:30d7:b0:2a7:aa52:5568 with SMTP id hi23-20020a17090b30d700b002a7aa525568mr2531461pjb.0.1714136164442;
-        Fri, 26 Apr 2024 05:56:04 -0700 (PDT)
+        bh=FbA6cjhW6J46GsVq8JXfhJHiSKYbkxI3o0KCxsENyUU=;
+        b=UUq0x4cK4Tnfwr7jHl73Xt9yubbezJ5DRTM+XWbPnNVXTBsnelv2t0jwL40y7ZIwhe
+         WbH1A8U41DXeoeIAUBZ2AcVaZJobqGF3P8CMTuXE3LYSPSAZd2DlO2rq3IuobZLRyITr
+         yXCSWY8flFtzXD5qkItcaW5eYRLutcxV4xjof79FLhHmGytmDBFSOQLW9y2iHe9/PWFL
+         v1kXA385HyEAEttggK73NJ1lXufDPzQQ5+onw2F2uoa0zfTAyU7bfSeB7C+LOqNh0fhf
+         0rtH3xDWLsAiRaFug7eaQDyxgpM7NBJ8OY/TaaLf5LxufSSgDaicoWISNigRZR2k+VgY
+         9y0w==
+X-Forwarded-Encrypted: i=1; AJvYcCXaqHtvXF9z4hL3/0tIKdUbvvdz2j5BhG3FXfQ1fN6N/m/lr1D7eKSWLVk8e47lonI6xspV07Ub0tR/qTyo2hhGgGA4zOIpPo6LR/mP
+X-Gm-Message-State: AOJu0YzG3tPaaCqa6YLzZongNcAn23Bf+J35wm4wnR+r+ZGwyQ77oDKn
+	TWZqh43G/PMz5t76MqrihukvV7xRl8vn5CDMKW15OHGzZ2qQ0gQd5f/aty1a
+X-Google-Smtp-Source: AGHT+IHbCFFOdLNerbGeyj1ohy0a1+wtk1eKruqicxbRJhK26cUaFGUlNPl2UqApQ+U2qFaSaWVH6w==
+X-Received: by 2002:a05:6a21:99a6:b0:1aa:68c4:3271 with SMTP id ve38-20020a056a2199a600b001aa68c43271mr3608647pzb.3.1714138165801;
+        Fri, 26 Apr 2024 06:29:25 -0700 (PDT)
 Received: from vaxr-BM6660-BM6360.. ([2001:288:7001:2703:751f:9418:61f4:229e])
-        by smtp.gmail.com with ESMTPSA id o16-20020a17090aac1000b002a27132ac02sm14485568pjq.2.2024.04.26.05.56.02
+        by smtp.gmail.com with ESMTPSA id k124-20020a633d82000000b005f7d61ec8afsm12912141pga.91.2024.04.26.06.29.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Apr 2024 05:56:03 -0700 (PDT)
+        Fri, 26 Apr 2024 06:29:25 -0700 (PDT)
 From: I Hsin Cheng <richard120310@gmail.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	I Hsin Cheng <richard120310@gmail.com>
-Subject: [PATCH] wireless: Fix typo mechanimsm to mechanism
-Date: Fri, 26 Apr 2024 20:55:40 +0800
-Message-Id: <20240426125540.14084-1-richard120310@gmail.com>
+Subject: [PATCH] wireless: Fix typo descibing to describing
+Date: Fri, 26 Apr 2024 21:29:11 +0800
+Message-Id: <20240426132911.16255-1-richard120310@gmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -82,8 +82,8 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Fixed a typo in the comment description from "mechanimsm" to
-"mechanism".
+Fixed a typo in the comment description from "descibing" to
+"describing".
 
 Signed-off-by: I Hsin Cheng <richard120310@gmail.com>
 ---
@@ -91,18 +91,18 @@ Signed-off-by: I Hsin Cheng <richard120310@gmail.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/include/uapi/linux/wireless.h b/include/uapi/linux/wireless.h
-index 3c2ad5fae..b0d911f20 100644
+index 3c2ad5fae..5df03b595 100644
 --- a/include/uapi/linux/wireless.h
 +++ b/include/uapi/linux/wireless.h
-@@ -27,7 +27,7 @@
-  * better than command line options of insmod because we may want to
+@@ -28,7 +28,7 @@
   * change dynamically (while the driver is running) some parameters.
   *
-- * The ioctl mechanimsm are copied from standard devices ioctl.
-+ * The ioctl mechanism are copied from standard devices ioctl.
-  * We have the list of command plus a structure descibing the
+  * The ioctl mechanimsm are copied from standard devices ioctl.
+- * We have the list of command plus a structure descibing the
++ * We have the list of command plus a structure describing the
   * data exchanged...
   * Note that to add these ioctl, I was obliged to modify :
+  *	# net/core/dev.c (two place + add include)
 -- 
 2.34.1
 
