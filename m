@@ -1,260 +1,133 @@
-Return-Path: <linux-wireless+bounces-6932-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6933-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27D2A8B39A0
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 16:19:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C416E8B39F4
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 16:28:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7D9A1F22AFB
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 14:19:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22629B23BDE
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 14:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7BD148841;
-	Fri, 26 Apr 2024 14:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F91C14A600;
+	Fri, 26 Apr 2024 14:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WyfbHN5q"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="KnUgEL9B"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F073914883D
-	for <linux-wireless@vger.kernel.org>; Fri, 26 Apr 2024 14:19:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C9114884B
+	for <linux-wireless@vger.kernel.org>; Fri, 26 Apr 2024 14:26:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714141184; cv=none; b=FiM62C3SuP+Yy+mx2H6jUSEJhX3tIcDjMnZBGySjhGmKi1DIa/NESdDtUTXF8ZXbq2gOd++zntSU6gLtQ7Ch2XMYVVtqX4mZlfwmtnqtpaS7QmcsFcz8Q1ZgbUxzGNIGiATA/Yf4Q4AYLCgAkqOVQyVcLWx5NayH+UoGOjjfIoE=
+	t=1714141603; cv=none; b=fb6XlSqI4SSLoa4prh0wS1fl8PmADdwAJUPHkQFxoB8KiS1h2QpNHxmiH0gYIkyXcDCShTD+47Ryj68vnL8EIo0gIvHFEysohlK7touXU1OyE6PS1rYn3JJv9vrH4GpRCUhIYWxZfqya1u4xWP1426nZPwot1zGvqCRq8o+3daw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714141184; c=relaxed/simple;
-	bh=E7TBgb6ue82VILbNkgNwb9i+LvaUwjT2HIEcgBsHIiE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=C896e7DPd0rJv+TNMshM3rOAy1T/O5NbfMJXFTfhdMKY61MbOWResBDL6zufT9HG++49QEVJDDEG05GKQ0hoW7L6XB+/qwMgsqcL1+F1CFMu9gvLPoSTdLry31KlyF+fpVxWhcJQB/7sr6ZRnS68yk39dS2gaYM55StGob1rEwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WyfbHN5q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE3DCC116B1;
-	Fri, 26 Apr 2024 14:19:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714141183;
-	bh=E7TBgb6ue82VILbNkgNwb9i+LvaUwjT2HIEcgBsHIiE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WyfbHN5q1ATeQW8HXTFk1IuUIB5G/4BVO1999xl8fT8qNO13LGH5cqwyfLDKwLdxw
-	 ygzCOvssz/30qgQIsuSk6ZWA2uIW0c2bWY8ikqim6cxi2SxrKp0dV93w8V+U6JLPKw
-	 HM1peor5d1AHaaK+S6xeulOuSBv3zkH+S/+RuMCgpDp52zRVTkmY9/U+NaBHdZmRDF
-	 vyc4MqINpMRQtst7xxDuciRnpIdnIc+L79b1qgxG9bMeVlhe0vMQUgxcgQK373skNH
-	 JtVu7we5nA9jZvO+dB6NBBsPUTqPyMBJG/fyykU3WqyJvcSKWFPUiEQwFh8mnXCmmi
-	 my1Mlq0jmgphQ==
-From: Kalle Valo <kvalo@kernel.org>
-To: pkshih@realtek.com
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 2/2] wifi: rtl8xxxu: remove rtl8xxxu_ prefix from filenames
-Date: Fri, 26 Apr 2024 17:19:39 +0300
-Message-Id: <20240426141939.3881678-2-kvalo@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240426141939.3881678-1-kvalo@kernel.org>
-References: <20240426141939.3881678-1-kvalo@kernel.org>
+	s=arc-20240116; t=1714141603; c=relaxed/simple;
+	bh=Q36UTtyChLbp/tP2u+r5MvIl6k3n22K2y/PmAKl/t8w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=UZA4h2swNA+w95SKFj8mW/SKD3FhJpXsToSgTvMFWS0X9qgOetLXkDpa7OOff4KFNffmn1kbZNK32J59DKGcS9bjffLsTSQbWI9LFZqT0m5UkdCVwop4xZa9vh50LdxSqucJulXuXCdun5ASfcVaLJPy8ldMSKJuY8OTu6RV6Tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=KnUgEL9B; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43QE0NdT018165;
+	Fri, 26 Apr 2024 14:26:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=bxpfBaSY7XWTED3Ye4K61KzTz8WRpqE4sxVVo0t+tJ8=; b=Kn
+	UgEL9BJOOa1EycoAAiaa4iaIOT9EdSQn+VOa3cVWBJQ/+VjnVQgq0xEJcOsgybLO
+	fOJqc59Go0Trky0ZrZSnQgifUGMU1yGTgt65+EP3h7EorOuvfVQul0DnBcOMrWT/
+	F6T86x4CtgOeJf/jtQJGpfxit9b43/v913qz4INDgGl4nOjNbKTKxx6l6nIxRX63
+	5UDf+gunmtzgQsg2JjuSk5Vi3ls2s27ZsX+HdLAUQZPnHS6nu17UHZ0lhQovVz8Z
+	ktaEOBd2iQRbQQNaQIiwBJ8SbjMfLP/Kw382BXAsMAXi1MlBX5aft4kYtMQv+m04
+	BlBtJS9gbTtpYjEaDS1g==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xrdmr025g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 26 Apr 2024 14:26:34 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43QEQXI0005043
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 26 Apr 2024 14:26:33 GMT
+Received: from [10.110.19.58] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 26 Apr
+ 2024 07:26:32 -0700
+Message-ID: <e5500935-6ef4-4717-9d94-3136da197262@quicinc.com>
+Date: Fri, 26 Apr 2024 07:26:32 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 8/8] wifi: ath12k: move ath12k_hw from per soc to group
+Content-Language: en-US
+To: Ping-Ke Shih <pkshih@realtek.com>,
+        Harshitha Prem
+	<quic_hprem@quicinc.com>,
+        "ath12k@lists.infradead.org"
+	<ath12k@lists.infradead.org>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+References: <20240425055759.1181165-1-quic_hprem@quicinc.com>
+ <20240425055759.1181165-9-quic_hprem@quicinc.com>
+ <a02ee04a-23af-4103-bb0e-2b989a59342d@quicinc.com>
+ <6e2df4425fe442ce8c6a1afd56dbc4da@realtek.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <6e2df4425fe442ce8c6a1afd56dbc4da@realtek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: cT-Qn61J_oZrcZH_mxAbOrwnKjz9_GLR
+X-Proofpoint-GUID: cT-Qn61J_oZrcZH_mxAbOrwnKjz9_GLR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-04-26_12,2024-04-26_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
+ priorityscore=1501 spamscore=0 lowpriorityscore=0 impostorscore=0
+ mlxlogscore=867 mlxscore=0 bulkscore=0 phishscore=0 clxscore=1015
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404260096
 
-The driver is already in a directory named rtl8xxxu, there's no need to
-duplicate that in the filename as well. Now file listing looks a lot more
-reasonable:
+On 4/25/2024 7:33 PM, Ping-Ke Shih wrote:
+> Hi Jeff,
+> 
+> Jeff Johnson <quic_jjohnson@quicinc.com> wrote:
+>>
+>> On 4/24/2024 10:57 PM, Harshitha Prem wrote:
+>>> From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+>>>
+>>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+>>>
+>>> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+>>> Signed-off-by: Harshitha Prem <quic_hprem@quicinc.com>
+>>
+>> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+>>
+>> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+>>
+> 
+> Will patchwork take 'Tested-on' tag you added automatically? Or you have a
+> local script to add that tag. I use pwclient to grab this patch, but only
+> your acked-by is added automatically. 
+> 
+> I have this question just because I want to refine my workflow of patchwork.
+> 
+> Ping-Ke
+> 
 
-8188e.c  8192c.c  8192f.c  8723a.c  core.c   Makefile  rtl8xxxu.h
-8188f.c  8192e.c  8710b.c  8723b.c  Kconfig  regs.h
+Tested-on: is not an 'official' upstream tag -- it is our own invention. That
+is why there is a blank line between those tags and the official tags. So
+those tags are always managed manually.
 
-No functional changes, compile tested only.
-
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
----
- .../wireless/realtek/rtl8xxxu/{rtl8xxxu_8188e.c => 8188e.c} | 2 +-
- .../wireless/realtek/rtl8xxxu/{rtl8xxxu_8188f.c => 8188f.c} | 2 +-
- .../wireless/realtek/rtl8xxxu/{rtl8xxxu_8192c.c => 8192c.c} | 2 +-
- .../wireless/realtek/rtl8xxxu/{rtl8xxxu_8192e.c => 8192e.c} | 2 +-
- .../wireless/realtek/rtl8xxxu/{rtl8xxxu_8192f.c => 8192f.c} | 2 +-
- .../wireless/realtek/rtl8xxxu/{rtl8xxxu_8710b.c => 8710b.c} | 2 +-
- .../wireless/realtek/rtl8xxxu/{rtl8xxxu_8723a.c => 8723a.c} | 2 +-
- .../wireless/realtek/rtl8xxxu/{rtl8xxxu_8723b.c => 8723b.c} | 2 +-
- drivers/net/wireless/realtek/rtl8xxxu/Makefile              | 6 +++---
- .../wireless/realtek/rtl8xxxu/{rtl8xxxu_core.c => core.c}   | 2 +-
- .../wireless/realtek/rtl8xxxu/{rtl8xxxu_regs.h => regs.h}   | 0
- 11 files changed, 12 insertions(+), 12 deletions(-)
- rename drivers/net/wireless/realtek/rtl8xxxu/{rtl8xxxu_8188e.c => 8188e.c} (99%)
- rename drivers/net/wireless/realtek/rtl8xxxu/{rtl8xxxu_8188f.c => 8188f.c} (99%)
- rename drivers/net/wireless/realtek/rtl8xxxu/{rtl8xxxu_8192c.c => 8192c.c} (99%)
- rename drivers/net/wireless/realtek/rtl8xxxu/{rtl8xxxu_8192e.c => 8192e.c} (99%)
- rename drivers/net/wireless/realtek/rtl8xxxu/{rtl8xxxu_8192f.c => 8192f.c} (99%)
- rename drivers/net/wireless/realtek/rtl8xxxu/{rtl8xxxu_8710b.c => 8710b.c} (99%)
- rename drivers/net/wireless/realtek/rtl8xxxu/{rtl8xxxu_8723a.c => 8723a.c} (99%)
- rename drivers/net/wireless/realtek/rtl8xxxu/{rtl8xxxu_8723b.c => 8723b.c} (99%)
- rename drivers/net/wireless/realtek/rtl8xxxu/{rtl8xxxu_core.c => core.c} (99%)
- rename drivers/net/wireless/realtek/rtl8xxxu/{rtl8xxxu_regs.h => regs.h} (100%)
-
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188e.c b/drivers/net/wireless/realtek/rtl8xxxu/8188e.c
-similarity index 99%
-rename from drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188e.c
-rename to drivers/net/wireless/realtek/rtl8xxxu/8188e.c
-index 43735ca70b7c..60fb0bffd4ed 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188e.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/8188e.c
-@@ -26,7 +26,7 @@
- #include <linux/moduleparam.h>
- #include <net/mac80211.h>
- #include "rtl8xxxu.h"
--#include "rtl8xxxu_regs.h"
-+#include "regs.h"
- 
- static const struct rtl8xxxu_reg8val rtl8188e_mac_init_table[] = {
- 	{0x026, 0x41}, {0x027, 0x35}, {0x040, 0x00}, {0x421, 0x0f},
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c b/drivers/net/wireless/realtek/rtl8xxxu/8188f.c
-similarity index 99%
-rename from drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
-rename to drivers/net/wireless/realtek/rtl8xxxu/8188f.c
-index 9043e548518f..296370414134 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8188f.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/8188f.c
-@@ -24,7 +24,7 @@
- #include <linux/moduleparam.h>
- #include <net/mac80211.h>
- #include "rtl8xxxu.h"
--#include "rtl8xxxu_regs.h"
-+#include "regs.h"
- 
- static const struct rtl8xxxu_reg8val rtl8188f_mac_init_table[] = {
- 	{0x024, 0xDF}, {0x025, 0x07}, {0x02B, 0x1C}, {0x283, 0x20},
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c b/drivers/net/wireless/realtek/rtl8xxxu/8192c.c
-similarity index 99%
-rename from drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c
-rename to drivers/net/wireless/realtek/rtl8xxxu/8192c.c
-index 49eb1d0a6019..b1c5a9971617 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192c.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/8192c.c
-@@ -26,7 +26,7 @@
- #include <linux/moduleparam.h>
- #include <net/mac80211.h>
- #include "rtl8xxxu.h"
--#include "rtl8xxxu_regs.h"
-+#include "regs.h"
- 
- #ifdef CONFIG_RTL8XXXU_UNTESTED
- static struct rtl8xxxu_power_base rtl8192c_power_base = {
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c b/drivers/net/wireless/realtek/rtl8xxxu/8192e.c
-similarity index 99%
-rename from drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-rename to drivers/net/wireless/realtek/rtl8xxxu/8192e.c
-index 26132b6b9331..562173176c60 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192e.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/8192e.c
-@@ -26,7 +26,7 @@
- #include <linux/moduleparam.h>
- #include <net/mac80211.h>
- #include "rtl8xxxu.h"
--#include "rtl8xxxu_regs.h"
-+#include "regs.h"
- 
- static const struct rtl8xxxu_reg8val rtl8192e_mac_init_table[] = {
- 	{0x011, 0xeb}, {0x012, 0x07}, {0x014, 0x75}, {0x303, 0xa7},
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c b/drivers/net/wireless/realtek/rtl8xxxu/8192f.c
-similarity index 99%
-rename from drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
-rename to drivers/net/wireless/realtek/rtl8xxxu/8192f.c
-index 9f1d4a6ee210..843ff0269b39 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8192f.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/8192f.c
-@@ -24,7 +24,7 @@
- #include <linux/moduleparam.h>
- #include <net/mac80211.h>
- #include "rtl8xxxu.h"
--#include "rtl8xxxu_regs.h"
-+#include "regs.h"
- 
- static const struct rtl8xxxu_reg8val rtl8192f_mac_init_table[] = {
- 	{0x420, 0x00},	{0x422, 0x78},	{0x428, 0x0a},	{0x429, 0x10},
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8710b.c b/drivers/net/wireless/realtek/rtl8xxxu/8710b.c
-similarity index 99%
-rename from drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8710b.c
-rename to drivers/net/wireless/realtek/rtl8xxxu/8710b.c
-index aa27ac4f828b..ea1cb0d8554e 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8710b.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/8710b.c
-@@ -24,7 +24,7 @@
- #include <linux/moduleparam.h>
- #include <net/mac80211.h>
- #include "rtl8xxxu.h"
--#include "rtl8xxxu_regs.h"
-+#include "regs.h"
- 
- static const struct rtl8xxxu_reg8val rtl8710b_mac_init_table[] = {
- 	{0x421, 0x0F}, {0x428, 0x0A}, {0x429, 0x10}, {0x430, 0x00},
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c b/drivers/net/wireless/realtek/rtl8xxxu/8723a.c
-similarity index 99%
-rename from drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c
-rename to drivers/net/wireless/realtek/rtl8xxxu/8723a.c
-index 965c8c3662a6..9f03bf163c97 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723a.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/8723a.c
-@@ -26,7 +26,7 @@
- #include <linux/moduleparam.h>
- #include <net/mac80211.h>
- #include "rtl8xxxu.h"
--#include "rtl8xxxu_regs.h"
-+#include "regs.h"
- 
- static struct rtl8xxxu_power_base rtl8723a_power_base = {
- 	.reg_0e00 = 0x0a0c0c0c,
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c b/drivers/net/wireless/realtek/rtl8xxxu/8723b.c
-similarity index 99%
-rename from drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-rename to drivers/net/wireless/realtek/rtl8xxxu/8723b.c
-index 3355d8e97870..0880049373b0 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_8723b.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/8723b.c
-@@ -26,7 +26,7 @@
- #include <linux/moduleparam.h>
- #include <net/mac80211.h>
- #include "rtl8xxxu.h"
--#include "rtl8xxxu_regs.h"
-+#include "regs.h"
- 
- static const struct rtl8xxxu_reg8val rtl8723b_mac_init_table[] = {
- 	{0x02f, 0x30}, {0x035, 0x00}, {0x039, 0x08}, {0x04e, 0xe0},
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/Makefile b/drivers/net/wireless/realtek/rtl8xxxu/Makefile
-index fa466589eccb..580a2fa675ee 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/Makefile
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/Makefile
-@@ -1,6 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0-only
- obj-$(CONFIG_RTL8XXXU)	+= rtl8xxxu.o
- 
--rtl8xxxu-y	:= rtl8xxxu_core.o rtl8xxxu_8192e.o rtl8xxxu_8723b.o \
--		   rtl8xxxu_8723a.o rtl8xxxu_8192c.o rtl8xxxu_8188f.o \
--		   rtl8xxxu_8188e.o rtl8xxxu_8710b.o rtl8xxxu_8192f.o
-+rtl8xxxu-y	:= core.o 8192e.o 8723b.o \
-+		   8723a.o 8192c.o 8188f.o \
-+		   8188e.o 8710b.o 8192f.o
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-similarity index 99%
-rename from drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-rename to drivers/net/wireless/realtek/rtl8xxxu/core.c
-index 54f955b01475..cda05a6e4772 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-@@ -26,7 +26,7 @@
- #include <linux/moduleparam.h>
- #include <net/mac80211.h>
- #include "rtl8xxxu.h"
--#include "rtl8xxxu_regs.h"
-+#include "regs.h"
- 
- #define DRIVER_NAME "rtl8xxxu"
- 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h b/drivers/net/wireless/realtek/rtl8xxxu/regs.h
-similarity index 100%
-rename from drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_regs.h
-rename to drivers/net/wireless/realtek/rtl8xxxu/regs.h
--- 
-2.39.2
+/jeff
 
 
