@@ -1,79 +1,63 @@
-Return-Path: <linux-wireless+bounces-6935-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6936-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 487D08B3D81
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 19:02:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED1668B42C4
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 Apr 2024 01:42:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B66EE1F2178F
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 17:02:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5449A282027
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 23:42:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B6A157492;
-	Fri, 26 Apr 2024 17:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 499233B782;
+	Fri, 26 Apr 2024 23:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X0yt03ZE"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="bA2zcwAD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5846F156F38;
-	Fri, 26 Apr 2024 17:02:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C393A1CD
+	for <linux-wireless@vger.kernel.org>; Fri, 26 Apr 2024 23:42:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714150945; cv=none; b=hS6wjOVPWBmyszKvWIC7CSqC3P3TB+Z8k0EpLseip11Lx36HBLVcqlsW92l/sIK6P0/b9IIVoLz4JHbDcMb+4zDI4wx1q2UwgXhucCGPMOI4jYNkA7L4ja4nTGEC1kI0ZDxY9zR59PAvM6WOxePFHkBTP9dAMa8ChqATG2MVHkQ=
+	t=1714174953; cv=none; b=QfoqbPVRDgXhbnvNt6C4RPg6V65uDkwA1GmqTGFFhbvmKBaucJE/nLPnEK8wqpcB2rEgTdnVKfoXrQnFFSw24ZK6XToHfRBYGv+F3aPD4uVhAcIynxsymcpad1Rnwc2XWJn9W31SNs61+dakIX6JqIwn6CiI6xJ+kcE5tuStvZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714150945; c=relaxed/simple;
-	bh=VhZ9zjZaO7LINR6YAIwrCSbyI2+ZARznckY9vuhthDM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JW/fNqoPbWUIuxdlLHx1bmtxZpHvfTSkXO89kXadLJRG/KeRcjKWYNavs49y43KB1wwmUInOeIg+THV5y6EhiqkGFV68nT/KYeiV+wJqf7rPYsirmQxIVISLbEMQw6ae+2H4Nx3s0ZfL0BgAFKgMLgBLv17qbjKnkWw7fz9VWao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X0yt03ZE; arc=none smtp.client-ip=209.85.208.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2db13ca0363so37979921fa.3;
-        Fri, 26 Apr 2024 10:02:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714150941; x=1714755741; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=94b5nhJx7HeqEEQnpwKUjZGcBHBH+uVSAHwjzfZ5Zfk=;
-        b=X0yt03ZE02zCwGqHwpcKR4+/edmITJG5IpAxSS4o8M3FgLF2U4WjoLvVi5qsBEEXmA
-         oXKxBxWfTeSaApeB/KB/CfqxPS/lPKBxqoaFpwjg5rNpTrySgz8EBWfQVn/XtMoKY72k
-         oh081R95b7pLpWGPej4OjBFhOKjWILxp2zidUK1Fd1dpGLRy9I6OakcJlJ5QAvG1iTKr
-         biVJGyrg7rvGmaXF023GfzSZT4DPEep2AFEBuVBAonaZ0wFVEWhLMED/LrI+ccvDnso/
-         9V7xebis840cbCehfP/dUQecH8dwQkSUWm1uGyGgDJE26spq2Fx15vlJn8cQUOfs3kLe
-         V4pA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714150941; x=1714755741;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=94b5nhJx7HeqEEQnpwKUjZGcBHBH+uVSAHwjzfZ5Zfk=;
-        b=ovkFNWexC1AD+8HjG6k5SHtGx6ZqI0FsaT6EOHrYzkC7ehh6E4klWgGqR3Hr5Rv2fY
-         U/prPzi+/v8hXfvUc2BH/05iArdWc3QnM87COAV85pw8eVwun9A3k0s/gZRh+a+20igY
-         TxmMhyr2YvLq2tbW9q0g/TA7QGZYyL7ndjSsRPx/LJ6vAfnf46UdvzJldj/8qEG1IcNH
-         SAFKg2zJsJpGFc3NN2L/Sp4r/5gTmOec9g8rqtaCQYp1O62JkTI25by2AIwXR/sJtLw2
-         XWCoj/2oriAKomBhxDv29ZClfES4FzE5l7aWJU9dbOsBSJCeFljoLiSBijO70J8Jk+5i
-         SVkA==
-X-Forwarded-Encrypted: i=1; AJvYcCXgfoO3+j31PNInFVvq5iQ7HQJ2ZsxMoW5xTJ/tKUBcr+ia7aCDRAJKghdS+tNnYO2qNdHY751M9gc0S1bvgWHsi0kdPA9zwtU3LWrpmA2v02S/QfTdTTZ5gphsKvDAMj56J0zDbQjdM905BS0=
-X-Gm-Message-State: AOJu0Ywm4of2XIlkY66adjU2UrW0WpBHIwQBnBvbbb4JFX5rZA6bbevG
-	N1/vn2xum4rW52W4UBqovTefh7Mik0WqtDozfqrJPEr9QhZ0Ub+u
-X-Google-Smtp-Source: AGHT+IGz8Oca8uHRUytGyraY/KLQssW324dKwoaO9XtyQAowq9712KVvWGe5HoV42URlhp/rRoWYPA==
-X-Received: by 2002:a2e:9a8d:0:b0:2d4:49d1:38e with SMTP id p13-20020a2e9a8d000000b002d449d1038emr2601582lji.28.1714150940972;
-        Fri, 26 Apr 2024 10:02:20 -0700 (PDT)
-Received: from shift.daheim (p200300d5ff467e0050f496fffe46beef.dip0.t-ipconnect.de. [2003:d5:ff46:7e00:50f4:96ff:fe46:beef])
-        by smtp.gmail.com with ESMTPSA id r20-20020a170906705400b00a555ef55ab5sm10759607ejj.218.2024.04.26.10.02.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Apr 2024 10:02:20 -0700 (PDT)
-Received: from localhost.daheim ([127.0.0.1])
-	by shift.daheim with esmtp (Exim 4.97)
-	(envelope-from <chunkeey@gmail.com>)
-	id 1s0Pt6-00000000NXv-1VrT;
-	Fri, 26 Apr 2024 19:02:19 +0200
-Message-ID: <bef4b45b-ec56-4c6d-88c8-cdb943f42342@gmail.com>
-Date: Fri, 26 Apr 2024 19:02:19 +0200
+	s=arc-20240116; t=1714174953; c=relaxed/simple;
+	bh=xQ5cvB/IykyVHlBrVv5nAv3hMHJuVl5MICkmoWEKdfQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=R9Y6uDL5fuDiM5a12QoXl19BRzUOaIz1CfuSbldrgbIVToIrh/usAGQu3Aeqm/YrDY35qM3foAIjlx3OuSdMPSoRDi1qccUQEwBPbW6pY7tOWy+Vy0vsZk5JgvQhz3iGFLpONR2wMZZrr5lpLtM9/P+T1whUSSn3QtGDh266fBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=bA2zcwAD; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43QMTfum026679;
+	Fri, 26 Apr 2024 23:42:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=aRY/RZMc/3INa+zmPsFIGXrzZeeosFmug48uKm0/Iho=; b=bA
+	2zcwADef2wQxLCTqHgydvJ7ve14VSr8GOjUGpM7B2d6hF8yIAV/Qo21bhFJ7+L0y
+	/fTK4BcRjBoYRt8ngeLp/H4KzuijPsOEHDKWPuSWETyrFiezV3TfIgLpDz+5451U
+	zvSUfiacaX9Zr0L3Yjiv48PM6KddLXUwB52KaZRUA31ydkSsyPHKSE/ukP1smcOk
+	46XsjUQl/c40zMktBtiWmahGmTUcw9kxyXlO9OzOflQ6KaWnVwDS1WOeQLAFa74B
+	Yu3ODpPR6Cft1+SFlc8yy4zvgVYwizyXstDHPogJnRmBhnqWHml45ROrZHpxwcB3
+	fROYicCEGxCmrU01tEJw==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xr88fhvjf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 26 Apr 2024 23:42:23 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43QNgNQD014138
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 26 Apr 2024 23:42:23 GMT
+Received: from [10.227.91.203] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 26 Apr
+ 2024 16:42:22 -0700
+Message-ID: <198e317f-a849-4fe2-8080-3d1834d07481@quicinc.com>
+Date: Fri, 26 Apr 2024 16:42:22 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -81,82 +65,96 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: carl9170: add a proper sanity check for
- endpoints
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- syzkaller-bugs@googlegroups.com, lvc-project@linuxtesting.org,
- syzbot+0ae4804973be759fa420@syzkaller.appspotmail.com
-References: <20240422183355.3785-1-n.zhandarovich@fintech.ru>
- <ccbdc170-149d-442c-8167-2b05c8cf93b2@gmail.com> <8734r8sorx.fsf@kernel.org>
-Content-Language: de-DE, en-US
-From: Christian Lamparter <chunkeey@gmail.com>
-In-Reply-To: <8734r8sorx.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v3 07/10] wifi: ath12k: add support for setting fixed HE
+ rate/GI/LTF
+Content-Language: en-US
+To: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <quic_jjohnson@quicinc.com>
+CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        "Muna
+ Sinada" <quic_msinada@quicinc.com>
+References: <20240424201959.935-1-quic_pradeepc@quicinc.com>
+ <20240424201959.935-8-quic_pradeepc@quicinc.com>
+ <72bc6772-8bf7-427d-8f03-01e8dbf30d0c@quicinc.com>
+ <87y190fulv.fsf@kernel.org>
+From: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
+In-Reply-To: <87y190fulv.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: Np6wtzd7dsvfKjCt2n7XefWjG8mXNSSP
+X-Proofpoint-GUID: Np6wtzd7dsvfKjCt2n7XefWjG8mXNSSP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-04-26_20,2024-04-26_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
+ lowpriorityscore=0 mlxscore=0 phishscore=0 mlxlogscore=999 spamscore=0
+ bulkscore=0 adultscore=0 malwarescore=0 impostorscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2404010003
+ definitions=main-2404260167
 
-On 4/26/24 6:58 AM, Kalle Valo wrote:
-> Christian Lamparter <chunkeey@gmail.com> writes:
+
+
+On 4/26/2024 12:31 AM, Kalle Valo wrote:
+> Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 > 
->> On 4/22/24 8:33 PM, Nikita Zhandarovich wrote:
->>> Syzkaller reports [1] hitting a warning which is caused by presence
->>> of a wrong endpoint type at the URB sumbitting stage. While there
->>> was a check for a specific 4th endpoint, since it can switch types
->>> between bulk and interrupt, other endpoints are trusted implicitly.
->>> Similar warning is triggered in a couple of other syzbot issues [2].
->>> Fix the issue by doing a comprehensive check of all endpoints
->>> taking into account difference between high- and full-speed
->>> configuration.
->>> This patch has not been tested on real hardware.
+>> On 4/24/2024 1:19 PM, Pradeep Kumar Chitrapu wrote:
+>>> Add support to set fixed HE rate/GI/LTF values using nl80211.
+>>> Reuse parts of the existing code path already used for HT/VHT
+>>> to implement the new helpers symmetrically, similar to how
+>>> HT/VHT is handled.
+>>>
+>>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+>>>
+>>> Co-developed-by: Muna Sinada <quic_msinada@quicinc.com>
+>>> Signed-off-by: Muna Sinada <quic_msinada@quicinc.com>
+>>> Signed-off-by: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
+>>> ---
 >>
->> Oh, I've tested the original patch on real hardware ;). You can remove that line.
+>> [...]
+>>
+>>> @@ -7753,7 +8034,20 @@ ath12k_mac_bitrate_mask_get_single_nss(struct ath12k *ar,
+>>>   			return false;
+>>>   	}
+>>>   
+>>> -	if (ht_nss_mask != vht_nss_mask)
+>>> +	he_mcs_map = le16_to_cpu(ath12k_mac_get_tx_mcs_map(&sband->iftype_data->he_cap));
+>>
+>> drivers/net/wireless/ath/ath12k/mac.c:8041:22: warning: incorrect type in argument 1 (different address spaces)
+>> drivers/net/wireless/ath/ath12k/mac.c:8041:22:    expected struct ieee80211_sta_he_cap const *he_cap
+>> drivers/net/wireless/ath/ath12k/mac.c:8041:22:    got struct ieee80211_sta_he_cap const [noderef] __iftype_data *
 > 
-> BTW I can remove that line, no need to resend because of this.
+> ALWAYS run ath12k-check, we wrote the tool for a reason. Skipping these
+> tests is disrespect for maintainers' time and a great way to get your
+> patches to the bottom of the queue.
 > 
+Hi Kalle
 
-finished testing v2 - it works, no surprise.
+I did run ath12k-check but I don't see these errors. Trying to see if 
+this is due to version differences. will update further once I have more 
+information on this.
 
-high-speed:
-| [  188.470363] usb 3-14: new high-speed USB device number 4 using xhci_hcd
-| [  188.661053] usb 3-14: New USB device found, idVendor=0846, idProduct=9010, bcdDevice= 1.06
-| [  188.661056] usb 3-14: New USB device strings: Mfr=16, Product=32, SerialNumber=48
-| [  188.661058] usb 3-14: Product: USB2.0 WLAN
-| [  188.661059] usb 3-14: Manufacturer: ATHER
-| [  188.661060] usb 3-14: SerialNumber: 12345
-| [  188.783843] usb 3-14: reset high-speed USB device number 4 using xhci_hcd
-| [  188.963408] usb 3-14: driver   API: 1.9.9 2016-02-15 [1-1]
-| [  188.963412] usb 3-14: firmware API: 1.9.6 2012-07-07
-| [  189.298218] ath: EEPROM regdomain: 0x0
-| [  189.298221] ath: EEPROM indicates default country code should be used
-| [  189.298222] ath: doing EEPROM country->regdmn map search
-| [  189.298223] ath: country maps to regdmn code: 0x3a
-| [  189.298224] ath: Country alpha2 being used: US
-| [  189.298225] ath: Regpair used: 0x3a
-| [  189.298290] ieee80211 phy2: Selected rate control algorithm 'minstrel_ht'
-| [  189.301463] usb 3-14: Atheros AR9170 is registered as 'phy2'
+This is version I ran:
+qca-swiss-army-knife/tools/scripts/ath12k/ath12k-check --version
+ath12k-check (md5sum cb8a85242f2ec7343f6f94af9fa5ebb2)
 
-full-speed:
-| [  205.743314] usb 4-2: new full-speed USB device number 3 using ohci-pci
-| [  205.990614] usb 4-2: not running at top speed; connect to a high speed hub
-| [  206.029618] usb 4-2: New USB device found, idVendor=0cf3, idProduct=1002, bcdDevice= 1.06
-| [  206.029621] usb 4-2: New USB device strings: Mfr=16, Product=32, SerialNumber=48
-| [  206.029622] usb 4-2: Product: USB2.0 WLAN
-| [  206.029623] usb 4-2: Manufacturer: ATHER
-| [  206.029624] usb 4-2: SerialNumber: 12345
-| [  206.209969] usb 4-2: reset full-speed USB device number 3 using ohci-pci
-| [  206.471776] usb 4-2: driver   API: 1.9.9 2016-02-15 [1-1]
-| [  206.471779] usb 4-2: firmware API: 1.9.6 2012-07-07
-| [  206.885680] ath: EEPROM regdomain: 0x809c
-| [  206.885684] ath: EEPROM indicates we should expect a country code
-| [  206.885686] ath: doing EEPROM country->regdmn map search
-| [  206.885687] ath: country maps to regdmn code: 0x52
-| [  206.885689] ath: Country alpha2 being used: CN
-| [  206.885691] ath: Regpair used: 0x52
-| [  206.885794] ieee80211 phy3: Selected rate control algorithm 'minstrel_ht'
-| [  206.888834] input: phy3 WPS Button as /devices/pci0000:00/0000:00:1c.3/0000:05:00.0/0000:06:01.0/usb4/4-2/4-2:1.0/ieee80211/phy3/input17
-| [  206.892694] usb 4-2: Atheros AR9170 is registered as 'phy3'
+python:         3.6.9 (default, Mar 10 2023, 16:46:00)
+[GCC 8.4.0]
+host gcc:       gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0
+config cc:      gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0
+sparse:         v0.6.4
+checkpatch.pl:  Version: 0.32 (md5sum 12ea394e9bf27280f30a684ff937cc57)
+gtags:          gtags (GNU GLOBAL) 6.6.2
 
 
-Tested-by: Christian Lamparter <chunkeey@gmail.com>
+I see some notes like below this in all files:
+drivers/net/wireless/ath/ath12k/mac.c: note: in included file (through 
+include/linux/bitops.h, include/linux/kernel.h, include/net/mac80211.h):
+drivers/net/wireless/ath/ath12k/mac.c: note: in included file (through 
+include/linux/bitops.h, include/linux/kernel.h, include/net/mac80211.h):
+
+Thanks
+Pradeep
 
