@@ -1,151 +1,109 @@
-Return-Path: <linux-wireless+bounces-6928-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6929-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A47978B3677
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 13:24:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B5A8B378E
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 14:56:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D67F2851BC
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 11:24:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DD451F229AF
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 12:56:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F9B0144D3C;
-	Fri, 26 Apr 2024 11:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B5BE146A90;
+	Fri, 26 Apr 2024 12:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j+ccKbVZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DOeSJ8+e"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9CB13F01A
-	for <linux-wireless@vger.kernel.org>; Fri, 26 Apr 2024 11:24:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4669F13E88A;
+	Fri, 26 Apr 2024 12:56:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714130664; cv=none; b=ED4W6eVDFm2yez2V8++6oFaYgvMr/Q2eXutqUV1Qo5PID8G65zJuLNXJyq5YC/kqSok6r7OkQxjkhE4ZkkAaeSVlE+JqZ960VT3i9FDSwR0Fk5zqvAB9ZAQg4miLU8gqapVjWVax8/JLlp00ulriN6oxh9NgfQJy0tzitLUjBCM=
+	t=1714136166; cv=none; b=EhAgJwsvSBxop5XDL+rRlhFvRhj+/D3lAqF83X0Yu6ofI4KGepzhBdRiWuybqS3f95gCFpne03EFVh/imRChRgG7AuwOAXjAPfpMI6Wl0+cHhszsGAD4qXf10d4dppByueRBJ/1EDhCPr6x8/Gk7EjoZ3CAqzINe2BjJPIgsmIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714130664; c=relaxed/simple;
-	bh=R9JX84BXKQf4UHZRk81RPQG7Gd4aJssAqnYn3UH2Ef8=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=NSvYs6lQ5iAARnUH61Y8mPppKhhOlq0tqeV2Fg+1o+DbXARnKdVIk1EKmLe97d2Ixtc9fmWnlkGZa56S69Gd36SkAT+3fKvIaNnvn/X/QswXBgFgaTTn+XtOSmGybRfYkyrnCZ6PyH+MG+h8dWScbnyeOlaFX+LvFHOGKXImMHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j+ccKbVZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF223C113CD;
-	Fri, 26 Apr 2024 11:24:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714130663;
-	bh=R9JX84BXKQf4UHZRk81RPQG7Gd4aJssAqnYn3UH2Ef8=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=j+ccKbVZI0l10IW8Vlgc6LbKc7gEG8ExC8lik04Y0zdQbiVfZdcXbFYoeo/CfdaJh
-	 fFlwlrWdlEUqzzULPbCif5e8w7201DTFNIKQnNjpIxc9CmJuTzf/vygG4LZya98U/E
-	 +abl9PL2/BaXEx6q4vPrjXES/e2jNaIjUD5XWolwVoOnUDsnkv6Uwq9E9c9n0nUMiX
-	 5ZZf6RLBhDwG28sVTHSxCAZ1STBk68gHfiw2xS/FjvVH2NkNOXKx4UwFqz0no39Et4
-	 /bmo2vdcu3XlVhLeOUouWENjRA/ui99sZT4BVsV+9dqUeWjBXGkwVlqrJdKGrhGF/C
-	 d1OPcWelWMCAg==
-From: Kalle Valo <kvalo@kernel.org>
-To: Lingbo Kong <quic_lingbok@quicinc.com>
-Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v4 1/3] wifi: ath12k: report station mode transmit rate
-References: <20240419032122.7009-1-quic_lingbok@quicinc.com>
-	<20240419032122.7009-2-quic_lingbok@quicinc.com>
-	<87r0etsp6u.fsf@kernel.org>
-	<c01db4fc-03a0-41f6-9f16-bfa3b2c08007@quicinc.com>
-Date: Fri, 26 Apr 2024 14:24:21 +0300
-In-Reply-To: <c01db4fc-03a0-41f6-9f16-bfa3b2c08007@quicinc.com> (Lingbo Kong's
-	message of "Fri, 26 Apr 2024 16:01:19 +0800")
-Message-ID: <87r0esqsd6.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1714136166; c=relaxed/simple;
+	bh=e24+6ar6f8THt7ttNJUQUkzg2x4kPeF6cikcX2osWII=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JiuZRtyEozYtYL+gOeiNGV9VR8KAOnjP/AuRPwmzL90BZLk5k+D894H4nus9nQMsdmNCl+4V7vgC93/4IlRMBogMJ0xs/QxeEHDUwbpf1hyc0+WsJccVgm9MY/ymHeVOcuIQdFISpdKWkghCDTgnsbSu+cpJBgSPILIQq97T/NU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DOeSJ8+e; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2a2cced7482so530365a91.0;
+        Fri, 26 Apr 2024 05:56:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714136164; x=1714740964; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=uX907XxOordYUAxSgHq5czawxQqlBIx+KQKIi98LRxg=;
+        b=DOeSJ8+e7SXLs4lo/wbLr559mHAernnZG+rjgw4C+wgyrJPHu44UefVq58fspoCQp+
+         Y0rk3lovEDh1LJvfhI2/Cz55uSo/BEtMPMaxmfv0WCHsQauL/CuI3C7wXgSAoibwBFXk
+         PmU9qs29v9143Z3zYSJu0slR+fm0yRxBLWQYtYVGvBav6BRUaIcZLPXP/nuKvZUQODVw
+         R7Mnbl5jhow6KdFaUbfboeIMQ77aQSSEXdLbNWAuquL4J8NIhUna67G3d2TO3cmfnnhd
+         v5lOJPiMgMol3BIOyTGPrY4At2EkK5HLIE8X0ox3Z0ykmDJe/pKscGkpPsvtYxKoSbCA
+         qLtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714136164; x=1714740964;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uX907XxOordYUAxSgHq5czawxQqlBIx+KQKIi98LRxg=;
+        b=PjVENzGW1jEb4ENi6M67LISsI2VuW8cQ7fhHDCsmQcReneXd+/+1ohdF20A4Z7zbac
+         WQ57rhr5WfzyGPIQHxuxH4Xzo2c1eG/SpmlYYvOJgtqTpU9/QpJsEqEY3GWCdmHwij52
+         TRkd+B7Jw+JMTbwRYmc+T+P+wzspGM8CLeH7qS10iC2uA9z9Yuc2e3ymDO86+Sjz/yly
+         mjKaICFIRxsIiWLnmEKFdAB+XISAnaCFye2cZr4Xdr8J6G9UsCWl/H6YcW7nvzYt4IGl
+         MrSuhA1IhN9ikn2XjSuCfnk8kbh/VlYRigp3/Rz7ueAgfXCFtSFF0eaFMjAjakZiZLXc
+         czgg==
+X-Forwarded-Encrypted: i=1; AJvYcCW/YPfohe7wnpdmkOf955UQaQVdZC75bH9NaP5M7/OMjmqgGf5o4WUgw++ftt3xOvKSAltkr9vR9TXTjXiz2OgCWLE2oWMcMGNzcfF6
+X-Gm-Message-State: AOJu0YydklYcK/xTVlggXspw2HFadSz0x3oDFkBv88/vY0W/HDaV90lk
+	iQT/OBfu+BvotoNc2YVa8evXXnTo5howtYtDarDOB1IjXVgs/I+AQK2PY2XG
+X-Google-Smtp-Source: AGHT+IEk3bPUEuIWOFK/L2xF1SwAh2qRi9ToB9DKYF51AccL8jUZkrbygWE4ULy0YFXns7FHJDPz0w==
+X-Received: by 2002:a17:90b:30d7:b0:2a7:aa52:5568 with SMTP id hi23-20020a17090b30d700b002a7aa525568mr2531461pjb.0.1714136164442;
+        Fri, 26 Apr 2024 05:56:04 -0700 (PDT)
+Received: from vaxr-BM6660-BM6360.. ([2001:288:7001:2703:751f:9418:61f4:229e])
+        by smtp.gmail.com with ESMTPSA id o16-20020a17090aac1000b002a27132ac02sm14485568pjq.2.2024.04.26.05.56.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Apr 2024 05:56:03 -0700 (PDT)
+From: I Hsin Cheng <richard120310@gmail.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	I Hsin Cheng <richard120310@gmail.com>
+Subject: [PATCH] wireless: Fix typo mechanimsm to mechanism
+Date: Fri, 26 Apr 2024 20:55:40 +0800
+Message-Id: <20240426125540.14084-1-richard120310@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-Lingbo Kong <quic_lingbok@quicinc.com> writes:
+Fixed a typo in the comment description from "mechanimsm" to
+"mechanism".
 
-> On 2024/4/25 18:37, Kalle Valo wrote:
->> Lingbo Kong <quic_lingbok@quicinc.com> writes:
->> 
->>> Currently, the transmit rate of "iw dev xxx station dump" command
->>> always show an invalid value.
->>>
->>> To address this issue, ath12k parse the info of transmit complete
->>> report from firmware and indicate the transmit rate to mac80211.
->>>
->>> This patch affects the station mode of WCN7850 and QCN9274.
->>>
->>> After that, "iw dev xxx station dump" show the correct transmit rate.
->>> Such as:
->>>
->>> Station 00:03:7f:12:03:03 (on wlo1)
->>>          inactive time:  872 ms
->>>          rx bytes:       219111
->>>          rx packets:     1133
->>>          tx bytes:       53767
->>>          tx packets:     462
->>>          tx retries:     51
->>>          tx failed:      0
->>>          beacon loss:    0
->>>          beacon rx:      403
->>>          rx drop misc:   74
->>>          signal:         -95 dBm
->>>          beacon signal avg:      -18 dBm
->>>          tx bitrate:     1441.1 MBit/s 80MHz EHT-MCS 13 EHT-NSS 2 EHT-GI 0
->>>
->>> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
->>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.2.1-00201-QCAHKSWPL_SILICONZ-1
->>>
->>> Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
->> [...]
->> 
->>> +static void ath12k_dp_tx_update(struct ath12k *ar, struct hal_tx_status *ts)
->>> +{
->>> +	if (ar->last_ppdu_id != 0) {
->>> +		if (ar->last_ppdu_id == ts->ppdu_id ||
->>> +		    ar->cached_ppdu_id == ar->last_ppdu_id)
->>> +			ar->cached_ppdu_id = ar->last_ppdu_id;
->>> +
->>> +		ath12k_dp_tx_update_txcompl(ar, ts);
->>> +	}
->>> +
->>> +	ar->last_ppdu_id = ts->ppdu_id;
->>> +}
->> A code comment would help a lot. Why is ar->cached_ppdu_id needed
->> here?
->> And if 'ar->cached_ppdu_id == ar->last_ppdu_id' is true why do then
->> do
->> 'ar->cached_ppdu_id = ar->last_ppdu_id'? The value of ar->cached_ppdu_id
->> is not changing here (unless I'm missing something).
->> Also I'm worried about locking. How is access to ar->last_ppdu_id
->> and
->> ar->cached_ppdu_id protected?
->> 
->
-> Thanks for pointing to this.
-> you're right, the ar->cached_ppdu_id haven't used in here, so need to
-> delete it.
-> i missed something in here.
->
-> So, change the ath12k_dp_tx_update(struct ath12k *ar, struct
-> hal_tx_status *ts) to
-> static void ath12k_dp_tx_update(struct ath12k *ar, struct hal_tx_status *ts)
-> {
-> 	if (ts->flags & HAL_TX_STATUS_FLAGS_FIRST_MSDU) {
-> 		if (ar->last_ppdu_id != 0)
-> 			ath12k_dp_tx_update_txcompl(ar, ts);
-> 		ar->last_ppdu_id = ts->ppdu_id;
-> 	}
-> }
+Signed-off-by: I Hsin Cheng <richard120310@gmail.com>
+---
+ include/uapi/linux/wireless.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Access to ar->last_ppdu_id still looks racy to me.
-
-And why do we need to track last_ppdu_id? I don't have time to start
-investigating that right now, a code comment explaining that would help
-a lot.
-
+diff --git a/include/uapi/linux/wireless.h b/include/uapi/linux/wireless.h
+index 3c2ad5fae..b0d911f20 100644
+--- a/include/uapi/linux/wireless.h
++++ b/include/uapi/linux/wireless.h
+@@ -27,7 +27,7 @@
+  * better than command line options of insmod because we may want to
+  * change dynamically (while the driver is running) some parameters.
+  *
+- * The ioctl mechanimsm are copied from standard devices ioctl.
++ * The ioctl mechanism are copied from standard devices ioctl.
+  * We have the list of command plus a structure descibing the
+  * data exchanged...
+  * Note that to add these ioctl, I was obliged to modify :
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.34.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
