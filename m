@@ -1,109 +1,89 @@
-Return-Path: <linux-wireless+bounces-6924-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6925-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA89F8B340F
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 11:32:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B13E38B355E
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 12:36:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5E0BB232CE
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 09:32:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E460F1C2176A
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Apr 2024 10:36:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3315113FD82;
-	Fri, 26 Apr 2024 09:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15E07E573;
+	Fri, 26 Apr 2024 10:36:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sF+2+kM/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8634B13F45D;
-	Fri, 26 Apr 2024 09:32:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F970548FD;
+	Fri, 26 Apr 2024 10:36:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714123930; cv=none; b=BwswTP3G8o/H0kmNlx7F6kb6gxZha1gPb8H68ZRJs4XIMqPmRRUMC6w/lkDmPO9M7nTKhxo8Xke42pK6lrTlMhpLP6jte6kEsDazOq2YxAg9A4T/6NC9GKtlN/hQkk6fnpvSfbv5X5npCk1PblpMyhPOVstHm2IK856C3speCKk=
+	t=1714127765; cv=none; b=Lw7S/9diOCyKVV0F8clLcFfDq9Ev7sA3ewFz87IiYloIbA4LdiXRN8qjyoW6Llyt/etTbuO+wKh3g5dRClowpbr4i3WPceuY7g2iMb6nQBRIwSynAeQ+JEy0lUO7YY2egW50F9U4WHiEtV8geQ1YkbDp1p1Y7TsLLI2V/dQBZ0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714123930; c=relaxed/simple;
-	bh=lrNuWaHK5BdyB8pVP8kuJCm68c1uOozItiB7SfFwPIg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N0hLe9uZCPOZCJ2cNcknzQKmD6DBgFjpPSJfK/JcOUmvzlWx1Z0gL9/Ljt/la5Kc3gGbpb/bXYRohggcjkvrH5npheT9qsFb7C2HBARCcUmal9PhAIMi6G3JRz7G2q2jO4uwnZYSmLubqvydyYtM8y97/04JR3s20mE5/5Zasd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a55ab922260so262259266b.3;
-        Fri, 26 Apr 2024 02:32:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714123927; x=1714728727;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KB47YEskg0YsuvufIWkNOdLy1BfCNPRDkJhRY5gUXJc=;
-        b=iPOnWxxuSlPgCS/PaJSkO8d6TJCc2emkhnJ3PfRlMJZfdmldfbjkIvoktQnT72lONP
-         7cR3DV3wDXuGIczdYxkjallA+u4xPSJsdDtuf7XQ5kMRYXeJmN6RLwH1p1WiWcjufD5d
-         uq9mpRtvi7ce7WY2fHDqo34CdkRmebDT0a2wF7dWxoA1xS4CFquEnWE9heqac7ncypbe
-         84wmudoyhksFQ++tXSDpOIgB2iOkGTZGKfcKE6Y43Oft0xFysAtKqfgni9QDcnBR97nR
-         DirHrj7R99hb0L8wAru+YVlMoU9+5jPs86HrN7tDUVF4ZSFQSirnBrhOk/DdGGYxs0a9
-         qUkw==
-X-Forwarded-Encrypted: i=1; AJvYcCX9x43ccFexcW/+UoDTK5DrJYvcP1QftmtpjXosAIQyZjUXyueHHGj/9unduu2WFeOcyZlmZstCTEgXlX4t5Ns7xSaIs9SKrObxrfes
-X-Gm-Message-State: AOJu0YzaFRLWs5QbiuoOgdZd5m6F3udSbYiZKFyQkqZlghvCDhXzKQyv
-	lc6QUfgpsG38fidYCf5GPmgionG2NakUIGDI1wCJej9ix2M+Vidr
-X-Google-Smtp-Source: AGHT+IFRY4i8ripmmRgmZcMA4dCbq+M0SBXKAURjKWqCOr/9ZZ0ocBXIuwONrHVrNX7KKn7K4WqV8A==
-X-Received: by 2002:a17:906:c12:b0:a58:9e89:7d91 with SMTP id s18-20020a1709060c1200b00a589e897d91mr1406081ejf.42.1714123926789;
-        Fri, 26 Apr 2024 02:32:06 -0700 (PDT)
-Received: from localhost (fwdproxy-lla-009.fbsv.net. [2a03:2880:30ff:9::face:b00c])
-        by smtp.gmail.com with ESMTPSA id z12-20020a170906270c00b00a55895c7f50sm8897398ejc.151.2024.04.26.02.32.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Apr 2024 02:32:06 -0700 (PDT)
-From: Breno Leitao <leitao@debian.org>
-To: kvalo@kernel.org,
-	Igor Mitsyanko <imitsyanko@quantenna.com>,
-	Sergey Matyukevich <geomatsi@gmail.com>
-Cc: linux-wireless@vger.kernel.org,
-	kuba@kernel.org,
-	Johannes Berg <johannes.berg@intel.com>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH wireless 2/2] wifi: qtnfmac: Remove generic .ndo_get_stats64
-Date: Fri, 26 Apr 2024 02:31:49 -0700
-Message-ID: <20240426093156.2002258-2-leitao@debian.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240426093156.2002258-1-leitao@debian.org>
-References: <20240426093156.2002258-1-leitao@debian.org>
+	s=arc-20240116; t=1714127765; c=relaxed/simple;
+	bh=5GbSiISWqXdxMOYUKun0/blFRS45P1mdzUfrz6DdkJg=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=teg7kUlLOtmIdozeoHz4iDEPb5QQS1VMAuuJpWpNjGtPfRm75TNApWEIu03VmDv95bp4Dlxkdrhrc56GnLwPSjqiAox8GqDHoVufSsGaiKZpi4XB9+PO3vcDIM6YcSv1mGMhrTfLhw7VzSygjqEc2b19DHesdiDApG+WDTv1K4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sF+2+kM/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A483C113CD;
+	Fri, 26 Apr 2024 10:36:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714127765;
+	bh=5GbSiISWqXdxMOYUKun0/blFRS45P1mdzUfrz6DdkJg=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=sF+2+kM/vFG9jzWULCXQng2/XkOSD/JemoeosZOe5W8ALNHW9RI63aMoQ0NWYN/UD
+	 OPQFKDUdej+HXwoQkevYJKZ/hpsGNXLHg3qAOMJI2h7rUmV2DcpCS0w9T8J5YHNjyd
+	 Isvp+lUN0B/ztREZCsEYnrZqovMB0TvEV1kWaYE3mRj7ncEmV6bDRufq4sh15EhFO0
+	 V1uMpJdR1GQ6Yv5PvwwMkU6nfTRzE2nHGQpNHP1lJ7LGz7SFiwGabnns348avTwcTQ
+	 yu+2menCctwat50Rsc3UEihdit/ZfxgYbM2z5NDo5mIZuSFzrhjvyOBu7i2OOi0uxl
+	 gitIrfEc7tA7g==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] wifi: brcmsmac: ampdu: remove unused cb_del_ampdu_pars
+ struct
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: 
+ <fa3b190b6e9cba65ecc36fc93121c6ed8704f704.1714036681.git.christophe.jaillet@wanadoo.fr>
+References: 
+ <fa3b190b6e9cba65ecc36fc93121c6ed8704f704.1714036681.git.christophe.jaillet@wanadoo.fr>
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Arend van Spriel <arend.vanspriel@broadcom.com>,
+ linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+ linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+ brcm80211-dev-list.pdl@broadcom.com
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <171412776163.3463676.6942143016366715125.kvalo@kernel.org>
+Date: Fri, 26 Apr 2024 10:36:03 +0000 (UTC)
 
-Commit 3e2f544dd8a33 ("net: get stats64 if device if driver is
-configured") moved the callback to dev_get_tstats64() to net core, so,
-unless the driver is doing some custom stats collection, it does not
-need to set .ndo_get_stats64.
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-Since this driver is now relying in NETDEV_PCPU_STAT_TSTATS, then, it
-doesn't need to set the dev_get_tstats64() generic .ndo_get_stats64
-function pointer.
+> struct cb_del_ampdu_pars was added in the initial commit 5b435de0d7868
+> ("net: wireless: add brcm80211 drivers") and its only usage was removed in
+> commit e041f65d5f00 ("brcmsmac: Remove internal tx queue").
+> 
+> Remove the structure definition now. This saves a few lines of code.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- drivers/net/wireless/quantenna/qtnfmac/core.c | 1 -
- 1 file changed, 1 deletion(-)
+Patch applied to wireless-next.git, thanks.
 
-PS: This is compile-tested only due to lack of hardware.
+931c98463082 wifi: brcmsmac: ampdu: remove unused cb_del_ampdu_pars struct
 
-diff --git a/drivers/net/wireless/quantenna/qtnfmac/core.c b/drivers/net/wireless/quantenna/qtnfmac/core.c
-index 0aa4b1d14809..825b05dd3271 100644
---- a/drivers/net/wireless/quantenna/qtnfmac/core.c
-+++ b/drivers/net/wireless/quantenna/qtnfmac/core.c
-@@ -202,7 +202,6 @@ const struct net_device_ops qtnf_netdev_ops = {
- 	.ndo_stop = qtnf_netdev_close,
- 	.ndo_start_xmit = qtnf_netdev_hard_start_xmit,
- 	.ndo_tx_timeout = qtnf_netdev_tx_timeout,
--	.ndo_get_stats64 = dev_get_tstats64,
- 	.ndo_set_mac_address = qtnf_netdev_set_mac_address,
- 	.ndo_get_port_parent_id = qtnf_netdev_port_parent_id,
- };
 -- 
-2.43.0
+https://patchwork.kernel.org/project/linux-wireless/patch/fa3b190b6e9cba65ecc36fc93121c6ed8704f704.1714036681.git.christophe.jaillet@wanadoo.fr/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
 
