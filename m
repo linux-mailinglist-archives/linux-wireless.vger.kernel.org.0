@@ -1,149 +1,133 @@
-Return-Path: <linux-wireless+bounces-6944-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6945-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC6D58B48DB
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Apr 2024 00:46:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FCF78B4965
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Apr 2024 05:30:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E469D1C20B7C
-	for <lists+linux-wireless@lfdr.de>; Sat, 27 Apr 2024 22:46:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BC42281F45
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Apr 2024 03:30:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA6350A73;
-	Sat, 27 Apr 2024 22:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3DA51854;
+	Sun, 28 Apr 2024 03:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="VohSSa96"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="MNDSwu7B"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FC61E54D
-	for <linux-wireless@vger.kernel.org>; Sat, 27 Apr 2024 22:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCBCD15A4
+	for <linux-wireless@vger.kernel.org>; Sun, 28 Apr 2024 03:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714257978; cv=none; b=Kz54NEykbiZjaQoa5PR8x6J8rRsmB3FRKEOyvc6Y+rv6+mNI1TiaQfNDgoTG055JPj9BhKHutju0IOfmrSEn6o5uQynm6hSfrpbPvUbf/M/Hx1wxiFddwVA0RL7bOnPH5dqIYm3/O4+L/h/t8dhXnIKF6lp5Li6ZYACK55I72+E=
+	t=1714275001; cv=none; b=nios6ZYgbvjFAHtA+tTAkoqNCDDSeiqA67BIdcrAWLJyWuGdtbGh05YNDJNNVlSD223MMm3CSTxWVq5AyfIvGW1FQtc0sCf5eMPRS3gnpd8wo7XPyc21bLDOa/VXWncWta9xdWNeEXTX913SVG2k47FP8A+QGrztT0vD+1y4GO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714257978; c=relaxed/simple;
-	bh=yxsRpPQi1f0WbPAt34qqYC3tr3Jql0RoGwu/g7uJ3iE=;
+	s=arc-20240116; t=1714275001; c=relaxed/simple;
+	bh=VBHqlf3W/N9yjKmA06lk5RRxI4feGafU0fk/oxracDg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=h7RaAe3hzEwJA+Jf5LUxfKyfddyr/yH15whxnXQGvSREBB3TyUMqEPdFiHIhqosz12r2cZwLFi94ZdcwixOkZL5s84w5ndifzean95RTB+6qRisRp2gXWBCdyXQAAFxqmjJLnvutOsax1l29GH6i4p6v6xwk1wcMz50Aef+sZ4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=VohSSa96; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:Content-Type; b=LIU3RBLnPaPvmDuWAhPuVZSp7XewZy2U7HGMyDuBKisdUIyq9GNwYlORgjWLSEY8UCspoJub2pANCRuFChQxSaQDfyEIr6Hg2frgIj95GaBEGnnOKuzh5T+GT1+LqZB0xD6YHFlM/YkQyxjedU9NNoIsgZFHUroeqyyXG9ClkTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=MNDSwu7B; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43RMk3dl012914;
-	Sat, 27 Apr 2024 22:46:03 GMT
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43S3TsgA018332;
+	Sun, 28 Apr 2024 03:29:54 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	message-id:date:mime-version:subject:to:cc:references:from
 	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=44xxfJtOsHmK/8rspywyrfc8Y5MiR+Ebqvd5b3xlx/Y=; b=Vo
-	hSSa965Z5daqZpCmzJHOrqInl1PO0fORhLltx6AHqEHfzbOh7REAfuHsIadIPp+Y
-	M8hU+zFcdYq8qqpEdCcgQ5L9q9yRwQ6jiTh09drfs7fYCxTEVkfigI2oWmQoOFay
-	WNQHjVhLF8iIalKYQz+tpk7CaKqDwpMjOgtaof1tPy/uTMeqT9/gWausT6SrSfq1
-	M5MykftuFP1ACyHdjbwim0pPF77eLJEX+YGNuFVZhSgpmHfpr+X8oxhWzj07ziZr
-	d+y3rVYaQbLyrIHxvcMJZ7O/eBL2iXKfYtbwa30TpuII2wl2Q2lE8/avJ4zF66ZZ
-	Pl+gAUx1PFvKSZgo3BeQ==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xrpqrs6b8-1
+	qcppdkim1; bh=cO8Mvl5OAgu+1BhISJ6VFybtPEk+K+33daikX9jiGX0=; b=MN
+	DSwu7Bmv+GoGQFgu8JEhzzWr+GngA2qlIR8IZCuKWGmj6N2r9eNXY3Z4EG2w4f97
+	ABibXeTGCka78vK7rzVDYby8vDthjwClamymvSAltNXHPrkMQ8Z7DrowVajZ1T5D
+	GNG+wPKwEVtUJ38mReGHulUd/AWUZtfJ5DcSs2WjOr5wjkapkat73vgZOS5IAeSy
+	XVVFNu0ERQch1wUXIuigSLmqntdK72LHe9TguQrPDFLY3YIWqnTIa0XrQzJiF95h
+	F4zq2viRMdM2vVWjh2eH7gondHh51nUnwDJXKOK7MO0gHWAZPj43OdU1MCYMKNxt
+	NgSk79q6ocoMMvalgNFQ==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xrrcch970-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 27 Apr 2024 22:46:03 +0000 (GMT)
+	Sun, 28 Apr 2024 03:29:54 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43RMk1Ve032294
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43S3Tihv022767
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 27 Apr 2024 22:46:01 GMT
-Received: from [10.110.48.199] (10.80.80.8) by nalasex01a.na.qualcomm.com
+	Sun, 28 Apr 2024 03:29:44 GMT
+Received: from [10.216.63.219] (10.80.80.8) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Sat, 27 Apr
- 2024 15:46:01 -0700
-Message-ID: <c8812227-ae90-4bbe-9fd3-425b61e36838@quicinc.com>
-Date: Sat, 27 Apr 2024 15:46:00 -0700
+ 2024 20:29:42 -0700
+Message-ID: <4cea96f8-399c-0974-4d9c-21bf5eda143f@quicinc.com>
+Date: Sun, 28 Apr 2024 08:59:38 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv3] wifi: ath11k: skip status ring entry processing
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCHv2 0/3] wifi: ath12k: Remove unsupported and unused ring
+ configurations
 Content-Language: en-US
 To: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>,
-        <ath11k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Venkateswara Naralasetty
-	<quic_vnaralas@quicinc.com>,
-        kernel test robot <lkp@intel.com>
-References: <20240427091248.2013946-1-quic_tamizhr@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240427091248.2013946-1-quic_tamizhr@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240427162644.2470886-1-quic_tamizhr@quicinc.com>
+From: Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>
+In-Reply-To: <20240427162644.2470886-1-quic_tamizhr@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: WQ3E0SGEn0RO1c_nW-U1XYCxuJzdiWEw
-X-Proofpoint-ORIG-GUID: WQ3E0SGEn0RO1c_nW-U1XYCxuJzdiWEw
+X-Proofpoint-ORIG-GUID: PXJTaAtXO_19WwF7yoSbqqXVB0ZXAmNH
+X-Proofpoint-GUID: PXJTaAtXO_19WwF7yoSbqqXVB0ZXAmNH
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-04-27_22,2024-04-26_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- priorityscore=1501 impostorscore=0 suspectscore=0 clxscore=1015
- mlxlogscore=626 malwarescore=0 bulkscore=0 mlxscore=0 adultscore=0
- lowpriorityscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2404010003 definitions=main-2404270170
+ definitions=2024-04-27_24,2024-04-26_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 adultscore=0
+ suspectscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501
+ impostorscore=0 mlxlogscore=925 clxscore=1011 bulkscore=0 mlxscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404280023
 
-On 4/27/2024 2:12 AM, Tamizh Chelvam Raja wrote:
-> From: Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
-> 
-> If STATUS_BUFFER_DONE is not set for a monitor status ring entry,
-> we don't process the status ring until STATUS_BUFFER_DONE set
-> for that status ring entry.
-> 
-> During LMAC reset it may happen that hardware will not write
-> STATUS_BUFFER_DONE tlv in status buffer, in that case we end up
-> waiting for STATUS_BUFFER_DONE leading to backpressure on monitor
-> status ring.
-> 
-> To fix the issue, when HP(Head Pointer) + 1 entry is peeked and if DMA
-> is not done and if HP + 2 entry's DMA done is set,
-> replenish HP + 1 entry and start processing in next interrupt.
-> If HP + 2 entry's DMA done is not set, poll onto HP + 1 entry DMA
-> done to be set.
-> 
-> Also, during monitor attach HP points to the end of the ring and
-> TP(Tail Pointer) points to the start of the ring.
-> Using ath11k_hal_srng_src_peek() may result in processing invalid buffer
-> for the very first interrupt. Since, HW starts writing buffer from TP.
-> 
-> To avoid this issue call ath11k_hal_srng_src_next_peek() instead of
-> calling ath11k_hal_srng_src_peek().
-> 
-> Tested-on: IPQ5018 hw1.0 AHB WLAN.HK.2.6.0.1-00861-QCAHKSWPL_SILICONZ-1
-> 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202303281719.CvnPkOiK-lkp@intel.com/
 
-I believe these are misleading. LKP didn't find the problem you are fixing, it
-found a problem in the implementation of the patch.
-So I would move these below the "---" so the LKP knows the issue it found is
-fixed, but the git history isn't itself isn't misleading
 
-> Signed-off-by: Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
-> Co-developed-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
-> Signed-off-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
-> ---
-> v3:
->   * Rebased on top of ToT
+On 4/27/2024 9:56 PM, Tamizh Chelvam Raja wrote:
+> Currently in driver doing memory allocation for tx_monitor,
+> tcl_cmd_ring and tcl_status ring. Here driver support for
+> tx_monitor mode is not there and memory for tcl_cmd and tcl_status
+> rings are allocated by firmware and it uses that memory instead of
+> host allocated. So avoid these unused ring setup configuration.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> 
+> Tamizh Chelvam Raja (3):
+>    wifi: ath12k: fix calling correct function for rx monitor mode
+>    wifi: ath12k: Remove unsupported tx monitor handling
+>    wifi: ath12k: Remove unused tcl_*_ring configuration
+> 
 > v2:
->   * Fixed compilation warning Reported-by: kernel test robot <lkp@intel.com>
+>    * Rebased on top of ToT
 > 
->  drivers/net/wireless/ath/ath11k/dp_rx.c | 88 ++++++++++++++++++++++---
->  drivers/net/wireless/ath/ath11k/hal.c   | 14 ++++
->  drivers/net/wireless/ath/ath11k/hal.h   |  2 +
+>   drivers/net/wireless/ath/ath12k/dp.c     | 16 -------
+>   drivers/net/wireless/ath/ath12k/dp.h     |  2 -
+>   drivers/net/wireless/ath/ath12k/dp_mon.c | 40 +----------------
+>   drivers/net/wireless/ath/ath12k/dp_rx.c  | 56 ------------------------
+>   drivers/net/wireless/ath/ath12k/dp_tx.c  | 44 +------------------
+>   drivers/net/wireless/ath/ath12k/dp_tx.h  |  1 -
+>   6 files changed, 2 insertions(+), 157 deletions(-)
+> 
+> 
 
-My Qualcomm Innovation Center copyright checker reports:
-drivers/net/wireless/ath/ath11k/dp_rx.c copyright missing 2024
-drivers/net/wireless/ath/ath11k/hal.c copyright missing 2024
+It nice to see code removal in general :)
+But I've also seen some concerns internally around code removal
+especially when the code will have to be re-added in future while
+properly supporting the feature. I guess the cover letter
+may need to clarify those concerns at least for internal review.
 
+Other than that, the series LGTM
+
+Vasanth
 
