@@ -1,161 +1,147 @@
-Return-Path: <linux-wireless+bounces-7006-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7007-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 049508B62E6
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 21:53:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 926AC8B64AC
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 23:35:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D0101C21B6A
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 19:53:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EDF9AB208FC
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 21:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F22613AD30;
-	Mon, 29 Apr 2024 19:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D6D1836E5;
+	Mon, 29 Apr 2024 21:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="b8d14gqH"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="hip7ilIJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40453128807
-	for <linux-wireless@vger.kernel.org>; Mon, 29 Apr 2024 19:52:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050FB1836D3
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Apr 2024 21:34:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714420373; cv=none; b=CQesmSQlgDmv+IY5EV+d3XF64HwnQvXstnXp4kfoOOZVxAHiv/brKm7lH6++D4bR5ylXA7uWPaUcjfKpBkQkJKMY2Dr8gpyWMU+qDoK+9Gl9exILp01Vjc7MqzImJLztg46YyYGcA7YQ4HBlnvkimO5NTbGj/9Swq0jTWXM2OLM=
+	t=1714426499; cv=none; b=K60+RZ5OqD3kKLbwcaPkWY1eDQtRkMonrjBBo1lRf42wCX5M4X3qt41PeDD9/LjQ8HmQVFj+qmcYSKx+Jj076UNXyJJ/jGf9jvRwVbWLQEOxfn8LjrxbJuW6jbWusk0NZkztF97NUm58IrYrEZvb6mwoOIZccwAap83vmDAMCf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714420373; c=relaxed/simple;
-	bh=TNV8us/6NnA8JuXeuStfxViNa9eMxew5hUMJ0dTnbaY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YvlZq8o2gVrZtA28vpr8aCVBq54a5Os5ezUhUPg//xeCtYd9SpHZTpsTF5+03keV/uCX8Sf0hdMyfGX+S882eAnIvGEwwDhO4m7NguUdR97qQnnwYPVIz7EL3w4xZ6SxsLXfkn/610GFSMuvtpvWSxwSG/jsapuYJIH6+eCOLa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=b8d14gqH; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1e3ca546d40so41438125ad.3
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Apr 2024 12:52:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1714420370; x=1715025170; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DzuTy06wG7m8jkWQy8dNk6D9cIiYm7VWueBizCkNUFc=;
-        b=b8d14gqHNWCF0f8BhxPqSzkHHqNIBlOLXLYfa4S8GdtbMGSgpgbh47meFNWoNdRVE3
-         HM1YhUlkEDsYPOvv9OobJt0/s8NLlLGLAejMNlQOBpvcgSHEMnGjieu1G+NWrh5Vod/c
-         3Tvdasf00vkevGXcPP4nauuvrfFqbWvUDFrUs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714420370; x=1715025170;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DzuTy06wG7m8jkWQy8dNk6D9cIiYm7VWueBizCkNUFc=;
-        b=WnyGjo9/tyDS+j88TJC2aDkaJ1mGnyb2z0TKTrSG9MZTgbM4+1pATYMcpaEj0UaOME
-         jxx6UNHqQlvj+DmyxOx3gtg2bJbDWmwyjpXDwRHvJh53vUl6+jW7dPwNMfhfPducAKFK
-         yqSQRI5WYKc+2/yefxoiOV/kbq+onOPvz/per4736ooW4JbdObRdRR3hLtvrEisssQ67
-         jftBWjLDzn9GxEop8S375mqb8LbVtxgLh7F/d3/PkinaacGt7EaiXjF6sWXVDHVcvWQJ
-         52s9S/mNjhqVtRY0xI1m4Nd0IplY66JeAtsrPXBi+simJmjQR4G3L+Ullg9Wo6eJGwVh
-         LiIA==
-X-Forwarded-Encrypted: i=1; AJvYcCWt3BeiwVhbaCcrzQmsr7P5UkP1O2bvCbYq2zqqXMAkCKqXpRE4V+Ho/XkZnnN8MtXFiTSXdxE1cXzRwwjDAlmaWLhK1twM2JwTxha33Ro=
-X-Gm-Message-State: AOJu0Yz0B3IHlSE7w3diWsGUK6SqFI+gfDBpJnl73YVwqxtewUts9HzZ
-	ct+oALNOK8qZt8Xse9Ldkf2TCsAAoWmd6GhVDZcR9dPEn1myI1UXM3qM/Qgs+g==
-X-Google-Smtp-Source: AGHT+IH6R15V6HIyl661wmHcOEZXcog7rxy3zKQh4WZRVF2N9wXnAwIZ5BHVnBVQzm3UTDvQLLyBiQ==
-X-Received: by 2002:a17:903:230f:b0:1eb:22fb:6793 with SMTP id d15-20020a170903230f00b001eb22fb6793mr853821plh.39.1714420370630;
-        Mon, 29 Apr 2024 12:52:50 -0700 (PDT)
-Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id x9-20020a170902a38900b001eb0dd08d96sm6549425pla.57.2024.04.29.12.52.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Apr 2024 12:52:50 -0700 (PDT)
-Date: Mon, 29 Apr 2024 12:52:49 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v2][next] wifi: wil6210: wmi: Use __counted_by() in
- struct wmi_set_link_monitor_cmd and avoid -Wfamnae warning
-Message-ID: <202404291251.9CBC42E481@keescook>
-References: <ZgSTCmdP+omePvWg@neat>
- <171222554691.1806092.8730005090791383928.kvalo@kernel.org>
- <202404291008.51DB333F@keescook>
- <877cggqdwb.fsf@kernel.org>
- <202404291109.331E1704@keescook>
- <87bk5sf003.fsf@kernel.org>
+	s=arc-20240116; t=1714426499; c=relaxed/simple;
+	bh=2MpRLTeAyMax/HMOmz7YGX2/zJq/XFJjiiJlf4K8ey8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=U36B2VL3eosBzagsyPJqLVvqGyFlht6x/vy5mM4GIAqu93Ynml3zuXp59VO7ia3WlXj2ND0rGTDVu3HBRMdpoQoLwSVT1UvMbI9H32DOrGr4eTEYIIQuRKXEKQkNJy1ng+7SMb0hrkW9QGlS+HbcPzJRSPxFSV1j6bkFxbuBVI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=hip7ilIJ; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43TFlGJ0023904;
+	Mon, 29 Apr 2024 21:34:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=rUV3JVycPxekOYpjyDyrJnPKorXzYimfkLXMlcfIj3w=; b=hi
+	p7ilIJ3qiWeX0SorvyBOLS6NyN5kKe8n5jr9WxSmT5eVUd1f0x1hMfloDBiGU7i8
+	Uo6XxzoNqSmjCpsAEtUPDlGxhQJBBXo9JCuPSc8y13c/eMdjagidkgwSQwcKiSPZ
+	g3AT14nAlbalPY76XdyqKVaIJgmTg3SKNGpaTf6pfTOa953JXgDIP+ScWxtuulWg
+	lP3lQ5p+IPdyiIwLLDEGSi357BGINdBaebQIuvlTbI1rgiLuOhj4jRv+dub3g2G5
+	63Fkfv/6d6Vrl29hA+9VDp6EGbWe/ePwZl1CLQ7dAjvBVXXACqRX0p9EGPnWAh5c
+	nLI3p78VLOS+RY2DirBA==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xtbv8ap71-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 29 Apr 2024 21:34:51 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43TLYoB6005167
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 29 Apr 2024 21:34:50 GMT
+Received: from [10.110.13.147] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 29 Apr
+ 2024 14:34:50 -0700
+Message-ID: <adb4e20d-a6e5-4508-a3d6-9c46a1aeebaa@quicinc.com>
+Date: Mon, 29 Apr 2024 14:34:49 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87bk5sf003.fsf@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] wifi: ath12k: Add support to enable debugfs_htt_stats
+Content-Language: en-US
+To: Ramya Gnanasekar <quic_rgnanase@quicinc.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240429173825.2369355-1-quic_rgnanase@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240429173825.2369355-1-quic_rgnanase@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: GOuRtY2OrP6ZReW4bshUinfzVco5eLbW
+X-Proofpoint-GUID: GOuRtY2OrP6ZReW4bshUinfzVco5eLbW
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-04-29_19,2024-04-29_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxlogscore=999
+ mlxscore=0 impostorscore=0 malwarescore=0 spamscore=0 bulkscore=0
+ priorityscore=1501 lowpriorityscore=0 phishscore=0 adultscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404290143
 
-On Mon, Apr 29, 2024 at 10:21:32PM +0300, Kalle Valo wrote:
-> Kees Cook <keescook@chromium.org> writes:
+On 4/29/2024 10:38 AM, Ramya Gnanasekar wrote:
+> Bring in the basic infrastructure necessary for enabling htt_stats via debugfs.
+> Patch series bring support to request stats type to firmware,
+> dump the stats and request to reset the stats from firmware.
 > 
-> > On Mon, Apr 29, 2024 at 08:25:56PM +0300, Kalle Valo wrote:
-> >
-> >> Kees Cook <keescook@chromium.org> writes:
-> >> 
-> >> > On Thu, Apr 04, 2024 at 10:12:28AM +0000, Kalle Valo wrote:
-> >> >
-> >> >> "Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
-> >> >> 
-> >> >> > Prepare for the coming implementation by GCC and Clang of the
-> >> >> > __counted_by attribute. Flexible array members annotated with
-> >> >> > __counted_by can have their accesses bounds-checked at run-time
-> >> >> > via CONFIG_UBSAN_BOUNDS (for array indexing) and CONFIG_FORTIFY_SOURCE
-> >> >> > (for strcpy/memcpy-family functions).
-> >> >> > 
-> >> >> > Also, -Wflex-array-member-not-at-end is coming in GCC-14, and we are
-> >> >> > getting ready to enable it globally.
-> >> >> > 
-> >> >> > So, use the `DEFINE_FLEX()` helper for an on-stack definition of
-> >> >> > a flexible structure where the size of the flexible-array member
-> >> >> > is known at compile-time, and refactor the rest of the code,
-> >> >> > accordingly.
-> >> >> > 
-> >> >> > So, with these changes, fix the following warning:
-> >> >> > drivers/net/wireless/ath/wil6210/wmi.c:4018:49: warning: structure
-> >> >> > containing a flexible array member is not at the end of another
-> >> >> > structure [-Wflex-array-member-not-at-end]
-> >> >> > 
-> >> >> > Link: https://github.com/KSPP/linux/issues/202
-> >> >> > Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> >> >> > Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-> >> >> > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-> >> >> 
-> >> >> Patch applied to ath-next branch of ath.git, thanks.
-> >> >> 
-> >> >> cbb0697e0ded wifi: wil6210: wmi: Use __counted_by() in struct
-> >> >> wmi_set_link_monitor_cmd and avoid -Wfamnae warning
-> >> >
-> >> > Hi,
-> >> >
-> >> > I was just walking through our patch tracker and noticed that I don't
-> >> > see this patch include in -next yet (as of next-20240429). Is there a
-> >> > flush of the ath-next queue planned soon? Or did I miss some change?
-> >> 
-> >> Yeah, wireless-next was pulled last week so most likely we will create
-> >> ath-next pull request this week.
-> >> 
-> >> BTW we are planning to move ath.git to a new location, rename branches
-> >> etc. I think we'll see if we can also setup it so that it can be pulled
-> >> to linux-next, so that you don't need to ask this every time ;)
-> >> 
-> >> (Just joking of course, there a lot of benefits from having the tree in
-> >> linux-next)
-> >
-> > Ah-ha! Thanks. Yeah, sorry if I keep asking about that. It's different
-> > from other trees, so it doesn't stick in my head. :) I should keep
-> > better notes!
+> Schema with one ath12k device:
 > 
-> BTW I think all vendor specific wireless driver trees are not pulled to
-> linux-next: iwlwifi, mt76, rtw (Realtek) and ath. So with all of these it will
-> take a while before the commit is in linux-next.
+> ath12k
+> `-- pci-0000:06:00.0
+>     |-- mac0
+>         `-- htt_stats
+>         |-- htt_stats_type
+>         |-- htt_stats_reset
+> 
+> Dinesh Karthikeyan (3):
+>   wifi: ath12k: Add support to enable debugfs_htt_stats
+>   wifi: ath12k: Add htt_stats_dump file ops support
+>   wifi: ath12k: Add support to parse requested stats_type
+> 
+> Ramya Gnanasekar (1):
+>   wifi: ath12k: Dump additional Tx PDEV HTT stats
+> 
+>  drivers/net/wireless/ath/ath12k/Makefile      |   2 +-
+>  drivers/net/wireless/ath/ath12k/core.h        |  11 +
+>  drivers/net/wireless/ath/ath12k/debugfs.c     |   3 +
+>  .../wireless/ath/ath12k/debugfs_htt_stats.c   | 713 ++++++++++++++++++
+>  .../wireless/ath/ath12k/debugfs_htt_stats.h   | 300 ++++++++
+>  drivers/net/wireless/ath/ath12k/dp_rx.c       |  10 +-
+>  drivers/net/wireless/ath/ath12k/dp_rx.h       |   4 +
+>  7 files changed, 1038 insertions(+), 5 deletions(-)
+>  create mode 100644 drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
+>  create mode 100644 drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
+> 
+> 
+> base-commit: 326f8f68f28b0b831233acfabffb486a5b0f4717
 
-How long is "a while"? And if the latency can be reduced for these, it'd
-be nice since it would allow for longer bake-time in -next.
+testing on my laptop
 
--- 
-Kees Cook
+good news is the files are being populated:
+# ls /sys/kernel/debug/ath12k/pci-0000\:03\:00.0/mac0/
+dfs_simulate_radar  htt_stats  htt_stats_reset  htt_stats_type
+
+bad news is:
+# echo 1 > /sys/kernel/debug/ath12k/pci-0000\:03\:00.0/mac0/htt_stats_type
+# cat /sys/kernel/debug/ath12k/pci-0000\:03\:00.0/mac0/htt_stats
+cat: '/sys/kernel/debug/ath12k/pci-0000:03:00.0/mac0/htt_stats': Connection timed out
+
+journalctl shows:
+Apr 29 14:17:16 qca-HP-ZBook-14-G2 kernel: ath12k_pci 0000:03:00.0: htc rx completion ep 2 skb ffff8c4e50e5ed00
+Apr 29 14:17:19 qca-HP-ZBook-14-G2 kernel: ath12k_pci 0000:03:00.0: stats request timed out
+
+so something isn't right, at least for WCN7850
+
+has this been tested with upstream kernel?
+
 
