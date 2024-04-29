@@ -1,369 +1,164 @@
-Return-Path: <linux-wireless+bounces-6976-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6977-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0C778B53E0
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 11:11:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C21948B5443
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 11:29:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BF301F21F72
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 09:11:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1B50B21D82
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 09:29:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 196F3C2C8;
-	Mon, 29 Apr 2024 09:11:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Vls3wlYG"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1894E22EF8;
+	Mon, 29 Apr 2024 09:29:24 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0072612E7F
-	for <linux-wireless@vger.kernel.org>; Mon, 29 Apr 2024 09:11:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686B02E639
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Apr 2024 09:29:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714381901; cv=none; b=aTQUtbllaK8+qxQdDgvb24oo/F1NcY/RxJ6SQFkoqs8fjQFTZVtQL30rRxlhSjgnQZsJdBOmWbH09PELkEgy2Y3u/2V+eHHvNf80QBM4OzHp5jqBT4jGmaqN2ZKqBfl3UP0uqxNWPiIjhzyDkxvxxldC8rU3US0MBT9dYqHsK1U=
+	t=1714382964; cv=none; b=MdNTr7z4Z87EuXBfxsHegfz7OTyMXMRUJzb9ptxWw2Y5jKjHvkWdyCB7Q0TQfm9k2H4Zta4hk1jWW+g2CsEB0qb8xq7M+vxZSFrTk4cra147B5Meypp1r4IcN38B8Hxh8SIdkin7SRTs3RIKS1S9zQ3s2xkOsWLZPMXLykKzZ4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714381901; c=relaxed/simple;
-	bh=wQ0P9rNLrvbURaTcfxEDZO6wt+nM2S1bsINTqWgzmh4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=oo4qSlqXrLBD5PTA1Vgon9F8zh9lkSZwtXsj7a21FO36fuvUSC+utml1a9ehqicw86gWUwmnUH0+fVVVadzlkU0qi/oYiyB2zghB5w0lub6DdIUEB4UKIMgnnV+g+j7FB9bs6t+S93TQZFTkbM9eZBQmT3RXfZADJVt3MWVXaPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Vls3wlYG; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43T5r0B6032240;
-	Mon, 29 Apr 2024 09:11:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=4xyHY7wd/bX2Xwf0zhA52uK17c59w6dliOUhtUTbVoQ=; b=Vl
-	s3wlYGSmrliGjJL3upWHC2O1Je3ujUmCIWRdMURKlIckkgZivcJfyGJ9QGT24tf5
-	WbKAkObzOWfaOYHePwqURYsh2s39wrFFc4qast9rZHTwCBabU7zqS0z+KZg5ULYR
-	UjNXVBLrqwUum1RbvNJmwYsdDiPMEFUtoffQl2Etq6J0qINVgymPP4K+/z0RCGLp
-	nEGpojudmj8TsvJhaP8gYcbLbI+eJRsdSAMZfBF4Ryz+mb3qesR37gMwm9ycPyKn
-	EuK/lJbFYR5cr/4PfLiVrPOMEw1UCurNfNAd23iYxf3OM/Vov0dh9btgSAzAVm+s
-	L/u6sK2ljO9MNBlnDj/w==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xt2sersk7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 29 Apr 2024 09:11:31 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43T9BUDV008214
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 29 Apr 2024 09:11:30 GMT
-Received: from [10.152.205.142] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 29 Apr
- 2024 02:11:28 -0700
-Message-ID: <f974973d-5797-39c2-fddf-c928755c76a9@quicinc.com>
-Date: Mon, 29 Apr 2024 14:41:24 +0530
+	s=arc-20240116; t=1714382964; c=relaxed/simple;
+	bh=q45+hjjmLxml1aJNtwd5XFVUIciX6r6bmdXOp91wvSo=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Y/C1FR6GDl9jWDAlLIS1NvodIk+3RR4I+0bXJLCC66QKIHbmmDP98bFVK3SmW6Krs97XDMrSqmY7M9Y5EM0/VA2TiWd3b24xXlRs19qjnGIW+W6CrSzDER2zsTib+r4C0QtKbBU+/9c4Yvz86H4m1g3jLjp4bgE27+8JKyAPLzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-36c549faf9eso236965ab.2
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Apr 2024 02:29:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714382961; x=1714987761;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=hJ+5Yb2Ln58wiDSoBQwENTmi0SaJH0WHD9oB1lDL3Cs=;
+        b=kK5K8VhdiUx/FtLdshSTB/CV7dkZM2FoGykyT8EOEken7zf0CUf9FnXzRCriLAi64s
+         dGncJd098q9Fs4S+aqe7n5lZRXpVMYjwwLeXCM+QYGAlSeWoyZwph2A2uH9aPixUit0X
+         YdAkJyTuLXVOba79sO67ZQM9MyK9xMnZIvHftPAJzi9hY3Hatda9Cq0WsX61WAxbd+mJ
+         SlJH7lVePXIyusaO7HjogsW6aHVjvRdQhLnkuu4y48DbPsk8MOX+ss37X90ETG4UwBb0
+         tD2FscC9GNczkzBiC6DLQWlELpxg2mW4Sq54X3C2W2/b8WEToUPI8poc2Be28YW5G12T
+         Y4Og==
+X-Forwarded-Encrypted: i=1; AJvYcCWQSKrjMYGd40DJDBLVEAw7WIBy3D6T1gyB10lgEgPYmiqImLKBQx6CPU7QtFOFL314bQxGVIS1fyT/zOk7i8DGEf/bHkexM2o3OVUC9nE=
+X-Gm-Message-State: AOJu0YxLsxeDRcJMX0GZvvbf2aSUEFzYdm4oKWM1Z/9Sj8U8pG/GZBMl
+	CWmIwlV71bUMZnX0RAcj+D7V9xP6vU4oyckHXIJqIjb7kmEvAA+i2z0EBuQ3f5I8RnGkTRy/KJ0
+	2aMFMXQqM94YhXjcJrOJCF4hvhiCGHyAkaiQgi5JEHc0NAyFtfWA7HCw=
+X-Google-Smtp-Source: AGHT+IGOSnK61WCYmFa2d18gGFKctUlhzvIRl1iR74ZajCvsYB5LqaVvQwzRqZSp1JoOOne0FxaTR9iW9re5ONjKvGOV33tYi3hj
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v4 1/3] wifi: ath12k: report station mode transmit rate
-Content-Language: en-US
-To: Lingbo Kong <quic_lingbok@quicinc.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240419032122.7009-1-quic_lingbok@quicinc.com>
- <20240419032122.7009-2-quic_lingbok@quicinc.com>
-From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-In-Reply-To: <20240419032122.7009-2-quic_lingbok@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: NSvqusHxBTy7DVJbBzFuVAwH-idUB-ZE
-X-Proofpoint-ORIG-GUID: NSvqusHxBTy7DVJbBzFuVAwH-idUB-ZE
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-04-29_06,2024-04-26_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 spamscore=0
- impostorscore=0 lowpriorityscore=0 adultscore=0 mlxlogscore=999
- malwarescore=0 suspectscore=0 clxscore=1015 mlxscore=0 priorityscore=1501
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2404290057
+X-Received: by 2002:a05:6e02:12eb:b0:36b:3c17:28d0 with SMTP id
+ l11-20020a056e0212eb00b0036b3c1728d0mr238702iln.6.1714382961663; Mon, 29 Apr
+ 2024 02:29:21 -0700 (PDT)
+Date: Mon, 29 Apr 2024 02:29:21 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000070759a061738e388@google.com>
+Subject: [syzbot] [wireless?] WARNING in _ieee80211_change_chanctx
+From: syzbot <syzbot+bc0f5b92cc7091f45fb6@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, johannes@sipsolutions.net, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+
+Hello,
+
+syzbot found the following issue on:
+
+HEAD commit:    e88c4cfcb7b8 Merge tag 'for-6.9-rc5-tag' of git://git.kern..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=12aea028980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=545d4b3e07d6ccbc
+dashboard link: https://syzkaller.appspot.com/bug?extid=bc0f5b92cc7091f45fb6
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/cc2737f2e766/disk-e88c4cfc.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/c53581da70d1/vmlinux-e88c4cfc.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/c90cde48e98f/bzImage-e88c4cfc.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+bc0f5b92cc7091f45fb6@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 3146 at net/mac80211/chan.c:501 _ieee80211_change_chanctx+0x363/0x11c0 net/mac80211/chan.c:501
+Modules linked in:
+CPU: 0 PID: 3146 Comm: syz-executor.2 Not tainted 6.9.0-rc5-syzkaller-00042-ge88c4cfcb7b8 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+RIP: 0010:_ieee80211_change_chanctx+0x363/0x11c0 net/mac80211/chan.c:501
+Code: 0f 8e 1a 0c 00 00 8b 7b 08 48 c7 c6 00 e3 4f 8c 49 89 fc e8 5f d5 33 f7 41 83 fc 05 76 0f 41 83 fc 0d 74 09 e8 0e da 33 f7 90 <0f> 0b 90 e8 05 da 33 f7 48 8b 74 24 10 ba 01 00 00 00 48 8b 3c 24
+RSP: 0018:ffffc90003376e20 EFLAGS: 00010287
+RAX: 0000000000001a65 RBX: ffffc90003376fd0 RCX: ffffc90004012000
+RDX: 0000000000040000 RSI: ffffffff8a59e842 RDI: 0000000000000005
+RBP: ffff88807b6f80b6 R08: 0000000000000005 R09: 000000000000000d
+R10: 0000000000000006 R11: 0000000000000000 R12: 0000000000000006
+R13: 0000000000000000 R14: ffff88805de532f8 R15: ffff88807b6f8000
+FS:  00007f75cdf286c0(0000) GS:ffff8880b9400000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b2d823000 CR3: 0000000040486000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000003
+DR3: 0000000000000000 DR6: 00000000ffff0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ ieee80211_change_chanctx net/mac80211/chan.c:547 [inline]
+ ieee80211_recalc_chanctx_chantype+0x69c/0x870 net/mac80211/chan.c:773
+ ieee80211_link_change_chanreq+0x7aa/0xd70 net/mac80211/chan.c:1920
+ ieee80211_set_ap_chanwidth+0x181/0x320 net/mac80211/cfg.c:4343
+ rdev_set_ap_chanwidth net/wireless/rdev-ops.h:1136 [inline]
+ __nl80211_set_channel+0x4cb/0x990 net/wireless/nl80211.c:3418
+ nl80211_set_wiphy+0xcc8/0x2d00 net/wireless/nl80211.c:3575
+ genl_family_rcv_msg_doit+0x202/0x2f0 net/netlink/genetlink.c:1113
+ genl_family_rcv_msg net/netlink/genetlink.c:1193 [inline]
+ genl_rcv_msg+0x565/0x800 net/netlink/genetlink.c:1208
+ netlink_rcv_skb+0x16b/0x440 net/netlink/af_netlink.c:2559
+ genl_rcv+0x28/0x40 net/netlink/genetlink.c:1217
+ netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
+ netlink_unicast+0x542/0x820 net/netlink/af_netlink.c:1361
+ netlink_sendmsg+0x8b8/0xd70 net/netlink/af_netlink.c:1905
+ sock_sendmsg_nosec net/socket.c:730 [inline]
+ __sock_sendmsg net/socket.c:745 [inline]
+ ____sys_sendmsg+0xab5/0xc90 net/socket.c:2584
+ ___sys_sendmsg+0x135/0x1e0 net/socket.c:2638
+ __sys_sendmsg+0x117/0x1f0 net/socket.c:2667
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcf/0x260 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f75cd27dea9
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 e1 20 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f75cdf280c8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007f75cd3abf80 RCX: 00007f75cd27dea9
+RDX: 0000000000000000 RSI: 0000000020000200 RDI: 0000000000000004
+RBP: 00007f75cd2ca4a4 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 000000000000000b R14: 00007f75cd3abf80 R15: 00007ffd05dbb2b8
+ </TASK>
 
 
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-On 4/19/2024 8:51 AM, Lingbo Kong wrote:
-> Currently, the transmit rate of "iw dev xxx station dump" command
-> always show an invalid value.
-> 
-> To address this issue, ath12k parse the info of transmit complete
-> report from firmware and indicate the transmit rate to mac80211.
-> 
-> This patch affects the station mode of WCN7850 and QCN9274.
-> 
-> After that, "iw dev xxx station dump" show the correct transmit rate.
-> Such as:
-> 
-> Station 00:03:7f:12:03:03 (on wlo1)
->          inactive time:  872 ms
->          rx bytes:       219111
->          rx packets:     1133
->          tx bytes:       53767
->          tx packets:     462
->          tx retries:     51
->          tx failed:      0
->          beacon loss:    0
->          beacon rx:      403
->          rx drop misc:   74
->          signal:         -95 dBm
->          beacon signal avg:      -18 dBm
->          tx bitrate:     1441.1 MBit/s 80MHz EHT-MCS 13 EHT-NSS 2 EHT-GI 0
-> 
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.2.1-00201-QCAHKSWPL_SILICONZ-1
-> 
-> Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
-> ---
-> v4:
-> 1.change ATH12K_EHT_MCS_MAX from 13 to 15
-> 
-> v3:
-> no change
-> 
-> v2:
-> 1.change copyright
-> 
->   drivers/net/wireless/ath/ath12k/core.h   |   2 +
->   drivers/net/wireless/ath/ath12k/dp_rx.h  |   3 +
->   drivers/net/wireless/ath/ath12k/dp_tx.c  | 147 ++++++++++++++++++++++-
->   drivers/net/wireless/ath/ath12k/hal_tx.h |   9 +-
->   drivers/net/wireless/ath/ath12k/mac.c    | 124 +++++++++++++++++++
->   drivers/net/wireless/ath/ath12k/mac.h    |   4 +-
->   6 files changed, 282 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-> index 5d3c1fb632b0..b2ddd1e6fb14 100644
-> --- a/drivers/net/wireless/ath/ath12k/core.h
-> +++ b/drivers/net/wireless/ath/ath12k/core.h
-> @@ -74,6 +74,7 @@ enum wme_ac {
->   #define ATH12K_HT_MCS_MAX	7
->   #define ATH12K_VHT_MCS_MAX	9
->   #define ATH12K_HE_MCS_MAX	11
-> +#define ATH12K_EHT_MCS_MAX	15
->   
->   enum ath12k_crypt_mode {
->   	/* Only use hardware crypto engine */
-> @@ -448,6 +449,7 @@ struct ath12k_sta {
->   	struct ath12k_rx_peer_stats *rx_stats;
->   	struct ath12k_wbm_tx_stats *wbm_tx_stats;
->   	u32 bw_prev;
-> +	u32 peer_nss;
->   };
->   
->   #define ATH12K_MIN_5G_FREQ 4150
-> diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.h b/drivers/net/wireless/ath/ath12k/dp_rx.h
-> index 2ff421160181..1543788c0da7 100644
-> --- a/drivers/net/wireless/ath/ath12k/dp_rx.h
-> +++ b/drivers/net/wireless/ath/ath12k/dp_rx.h
-> @@ -79,6 +79,9 @@ static inline u32 ath12k_he_gi_to_nl80211_he_gi(u8 sgi)
->   	case RX_MSDU_START_SGI_3_2_US:
->   		ret = NL80211_RATE_INFO_HE_GI_3_2;
->   		break;
-> +	default:
-> +		ret = NL80211_RATE_INFO_HE_GI_0_8;
-> +		break;
->   	}
->   
->   	return ret;
-> diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
-> index 9b6d7d72f57c..74ef4c7a72c1 100644
-> --- a/drivers/net/wireless/ath/ath12k/dp_tx.c
-> +++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
-> @@ -8,6 +8,8 @@
->   #include "dp_tx.h"
->   #include "debug.h"
->   #include "hw.h"
-> +#include "peer.h"
-> +#include "mac.h"
->   
->   static enum hal_tcl_encap_type
->   ath12k_dp_tx_get_encap_type(struct ath12k_vif *arvif, struct sk_buff *skb)
-> @@ -443,6 +445,125 @@ ath12k_dp_tx_process_htt_tx_complete(struct ath12k_base *ab,
->   	}
->   }
->   
-> +static void ath12k_dp_tx_update_txcompl(struct ath12k *ar, struct hal_tx_status *ts)
-> +{
-> +	struct ath12k_base *ab = ar->ab;
-> +	struct ath12k_peer *peer;
-> +	struct ath12k_sta *arsta;
-> +	struct ieee80211_sta *sta;
-> +	u16 rate;
-> +	u8 rate_idx = 0;
-> +	int ret;
-> +
-> +	spin_lock_bh(&ab->base_lock);
-> +
-> +	peer = ath12k_peer_find_by_id(ab, ts->peer_id);
-> +	if (!peer || !peer->sta) {
-> +		ath12k_dbg(ab, ATH12K_DBG_DP_TX,
-> +			   "failed to find the peer by id %u\n", ts->peer_id);
-> +		goto err_out;
-> +	}
-> +
-> +	sta = peer->sta;
-> +	arsta = ath12k_sta_to_arsta(sta);
-> +
-> +	memset(&arsta->txrate, 0, sizeof(arsta->txrate));
-> +
-> +	/* This is to prefer choose the real NSS value arsta->last_txrate.nss,
-> +	 * if it is invalid, then choose the NSS value while assoc.
-> +	 */
-> +	if (arsta->last_txrate.nss)
-> +		arsta->txrate.nss = arsta->last_txrate.nss;
-> +	else
-> +		arsta->txrate.nss = arsta->peer_nss;
-> +
-> +	if (ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11A ||
-> +	    ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11B) {
-> +		ret = ath12k_mac_hw_ratecode_to_legacy_rate(ts->mcs,
-> +							    ts->pkt_type,
-> +							    &rate_idx,
-> +							    &rate);
-> +		if (ret < 0) {
-> +			ath12k_warn(ab, "Invalid tx legacy rate %d\n", ret);
-> +			goto err_out;
-> +		}
-> +
-> +		arsta->txrate.legacy = rate;
-> +	} else if (ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11N) {
-> +		if (ts->mcs > ATH12K_HT_MCS_MAX) {
-> +			ath12k_warn(ab, "Invalid HT mcs index %d\n", ts->mcs);
-> +			goto err_out;
-> +		}
-> +
-> +		if (arsta->txrate.nss != 0)
-> +			arsta->txrate.mcs = ts->mcs + 8 * (arsta->txrate.nss - 1);
-> +
-> +		arsta->txrate.flags = RATE_INFO_FLAGS_MCS;
-> +
-> +		if (ts->sgi)
-> +			arsta->txrate.flags |= RATE_INFO_FLAGS_SHORT_GI;
-> +	} else if (ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11AC) {
-> +		if (ts->mcs > ATH12K_VHT_MCS_MAX) {
-> +			ath12k_warn(ab, "Invalid VHT mcs index %d\n", ts->mcs);
-> +			goto err_out;
-> +		}
-> +
-> +		arsta->txrate.mcs = ts->mcs;
-> +		arsta->txrate.flags = RATE_INFO_FLAGS_VHT_MCS;
-> +
-> +		if (ts->sgi)
-> +			arsta->txrate.flags |= RATE_INFO_FLAGS_SHORT_GI;
-> +	} else if (ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11AX) {
-> +		if (ts->mcs > ATH12K_HE_MCS_MAX) {
-> +			ath12k_warn(ab, "Invalid HE mcs index %d\n", ts->mcs);
-> +			goto err_out;
-> +		}
-> +
-> +		arsta->txrate.mcs = ts->mcs;
-> +		arsta->txrate.flags = RATE_INFO_FLAGS_HE_MCS;
-> +		arsta->txrate.he_gi = ath12k_he_gi_to_nl80211_he_gi(ts->sgi);
-> +	} else if (ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11BE) {
-> +		if (ts->mcs > ATH12K_EHT_MCS_MAX) {
-> +			ath12k_warn(ab, "Invalid EHT mcs index %d\n", ts->mcs);
-> +			goto err_out;
-> +		}
-> +
-> +		arsta->txrate.mcs = ts->mcs;
-> +		arsta->txrate.flags = RATE_INFO_FLAGS_EHT_MCS;
-> +		arsta->txrate.eht_gi = ath12k_mac_eht_gi_to_nl80211_eht_gi(ts->sgi);
-> +	}
-> +
-> +	arsta->txrate.bw = ath12k_mac_bw_to_mac80211_bw(ts->bw);
-> +
-> +	if (ts->ofdma && ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11AX) {
-> +		arsta->txrate.bw = RATE_INFO_BW_HE_RU;
-> +		arsta->txrate.he_ru_alloc =
-> +			ath12k_mac_he_ru_tones_to_nl80211_he_ru_alloc(ts->ru_tones);
-> +	}
-> +
-> +	if (ts->ofdma && ts->pkt_type == HAL_TX_RATE_STATS_PKT_TYPE_11BE) {
-> +		arsta->txrate.bw = RATE_INFO_BW_EHT_RU;
-> +		arsta->txrate.eht_ru_alloc =
-> +			ath12k_mac_eht_ru_tones_to_nl80211_eht_ru_alloc(ts->ru_tones);
-> +	}
-> +
-> +err_out:
-> +	spin_unlock_bh(&ab->base_lock);
-> +}
-> +
-> +static void ath12k_dp_tx_update(struct ath12k *ar, struct hal_tx_status *ts)
-> +{
-> +	if (ar->last_ppdu_id != 0) {
-> +		if (ar->last_ppdu_id == ts->ppdu_id ||
-> +		    ar->cached_ppdu_id == ar->last_ppdu_id)
-> +			ar->cached_ppdu_id = ar->last_ppdu_id;
-> +
-> +		ath12k_dp_tx_update_txcompl(ar, ts);
-> +	}
-> +
-> +	ar->last_ppdu_id = ts->ppdu_id;
-> +}
-> +
->   static void ath12k_dp_tx_complete_msdu(struct ath12k *ar,
->   				       struct sk_buff *msdu,
->   				       struct hal_tx_status *ts)
-> @@ -498,6 +619,8 @@ static void ath12k_dp_tx_complete_msdu(struct ath12k *ar,
->   	 * Might end up reporting it out-of-band from HTT stats.
->   	 */
->   
-> +	ath12k_dp_tx_update(ar, ts);
-> +
->   	ieee80211_tx_status_skb(ath12k_ar_to_hw(ar), msdu);
->   
->   exit:
-> @@ -522,10 +645,26 @@ static void ath12k_dp_tx_status_parse(struct ath12k_base *ab,
->   
->   	ts->ppdu_id = le32_get_bits(desc->info1,
->   				    HAL_WBM_COMPL_TX_INFO1_TQM_STATUS_NUMBER);
-> -	if (le32_to_cpu(desc->rate_stats.info0) & HAL_TX_RATE_STATS_INFO0_VALID)
-> -		ts->rate_stats = le32_to_cpu(desc->rate_stats.info0);
-> -	else
-> -		ts->rate_stats = 0;
-> +
-> +	if (le32_to_cpu(desc->info2) & HAL_WBM_COMPL_TX_INFO2_FIRST_MSDU)
-> +		ts->flags |= HAL_TX_STATUS_FLAGS_FIRST_MSDU;
-> +
-> +	ts->peer_id = le32_get_bits(desc->info3, HAL_WBM_COMPL_TX_INFO3_PEER_ID);
-> +
-> +	if (le32_to_cpu(desc->rate_stats.info0) & HAL_TX_RATE_STATS_INFO0_VALID) {
-> +		ts->pkt_type = le32_get_bits(desc->rate_stats.info0,
-> +					     HAL_TX_RATE_STATS_INFO0_PKT_TYPE);
-> +		ts->mcs = le32_get_bits(desc->rate_stats.info0,
-> +					HAL_TX_RATE_STATS_INFO0_MCS);
-> +		ts->sgi = le32_get_bits(desc->rate_stats.info0,
-> +					HAL_TX_RATE_STATS_INFO0_SGI);
-> +		ts->bw = le32_get_bits(desc->rate_stats.info0,
-> +				       HAL_TX_RATE_STATS_INFO0_BW);
-> +		ts->ru_tones = le32_get_bits(desc->rate_stats.info0,
-> +					     HAL_TX_RATE_STATS_INFO0_TONES_IN_RU);
-> +		ts->ofdma = le32_get_bits(desc->rate_stats.info0,
-> +					  HAL_TX_RATE_STATS_INFO0_OFDMA_TX);
-> +	}
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-Why multiple read from dma mapped area say desc->rate_stats.info0 lead 
-to increase in CPU cycles. Instead you do one read from dma mapped area 
-desc->rate_stats.info0 and classify into your own data structure ?
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
-And the info0 classification used within the 
-ath12k_dp_tx_update_txcompl(), so you can do the classification within 
-this API.
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
 
--- 
-Karthikeyan Periyasamy
---
-கார்த்திகேயன் பெரியசாமி
+If you want to undo deduplication, reply with:
+#syz undup
 
