@@ -1,118 +1,135 @@
-Return-Path: <linux-wireless+bounces-7004-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7005-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C00E28B6151
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 20:46:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 043818B61EE
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 21:21:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C804B20CC7
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 18:46:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99CA31F24B22
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 19:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF4E13AA31;
-	Mon, 29 Apr 2024 18:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DDBA13AD18;
+	Mon, 29 Apr 2024 19:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="k4wVrQRk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c0RFfydn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D993913AA27
-	for <linux-wireless@vger.kernel.org>; Mon, 29 Apr 2024 18:46:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE9012B73;
+	Mon, 29 Apr 2024 19:21:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714416376; cv=none; b=WwG5VZuhTx8ZDU42PkJcmcaSg8/y0uDSxS5uaddjRpC7LKWj7gfqRZE+XqCDCtceN++hf/ZqcDcrfmDscYivP3tRlcVMNMsI+iXvERVRJ+Xd0y/pLop7ku8xwv5NNhfqmOkMQvHzNjHOPc4GKGiAHNu9O1IRWjfPwzwwEEe4MuM=
+	t=1714418496; cv=none; b=lvZJ5CwUEjJYo7WOh6O/F1pmQZWUIZ/5BfsYOHuKFxPvhDDr0OpZXcD21k4hYO+egFQJWwC1goHepvcwH8WEAWrfw4K973LCzaeyeAiKnuMC2lhCzib9fdvOSUKyHbuqvIdGAu5hmDF5Hf22GoVjLDF4SZHdjlsinjSeD++T/08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714416376; c=relaxed/simple;
-	bh=cs2Pv15TqWrl1COlAIqTWJgQE68plIKJMSrjvIlqafo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=b1aIIrZ5QRaUhH6PpEaM30RJQlGLbq/LKjN6JOsrBbT3PUGvXOHsQJ7QOj05Wwk19Rorx6fj4PVSHwud+Ds/tq/cDhHUx1kzdfYLwyAugthTQCaqBb3P5caUKJ9s5LUQCXORcWKgEI4uaEMWAERtMDF1zshj0tcdpwiC5TQ8cL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=k4wVrQRk; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43THqxn2025648;
-	Mon, 29 Apr 2024 18:46:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=JhfC0FKN1/e9C+cslhqrtC283YJ4UQDA0JWyc3sUgs0=; b=k4
-	wVrQRkjnEmcDmZlsfxu8Y8mY01X5/gde165mm54YIV9Ct5RR1eAcTaFqum35Lq+O
-	jjO0Tcc/supspGqOtlltj+MAYek25KQXTeZb/o/DfE3Mpgvssezn4m5cdAgN8XDO
-	RdSpGq/fw5EiqOCeoMWQc77XslVNd5x4gA0h8KZTfKMFKFAlzcuHl5MT17Ef50Ia
-	hmafmroxCymumV+HCMyqYZQM4lOuQjI/jxd8WCE2+JDFV2PQAx1QUyvXcVLT/SoP
-	4k6SCx7fUpj8jQUo7i5yTxwyxNmtzseX0HAjfm5UXDrg2nPTTiSoBKLWu6VkPNrY
-	Zsi89nFhggjjqzNZttRA==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xtaf2jh7d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 29 Apr 2024 18:46:10 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43TIk9QC015212
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 29 Apr 2024 18:46:09 GMT
-Received: from [10.110.13.147] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 29 Apr
- 2024 11:46:09 -0700
-Message-ID: <e1d428ee-0a16-4fc6-be0b-4c41036ff919@quicinc.com>
-Date: Mon, 29 Apr 2024 11:46:08 -0700
+	s=arc-20240116; t=1714418496; c=relaxed/simple;
+	bh=vOAjXkqV/BW5BFMy/FugtkSomI+lCtbQeeOuE8DfZRM=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=o7M6vKzttgiUZ2NiTYYY2BbTwhmAeBvbC+rkkoNY6DMw0kvSHOBeV+AIhHfxzzMvCx5hP39HMwt31Eo094rkLxCPLiYrsG6s7SBRpfQlKlctQTDsFUlOkfbZOMqIerkcUPqvxT00dHtPcTCxMYwUKRwvUpa9/6nSXpJ0vSMCsOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c0RFfydn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4AEC4AF1A;
+	Mon, 29 Apr 2024 19:21:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714418495;
+	bh=vOAjXkqV/BW5BFMy/FugtkSomI+lCtbQeeOuE8DfZRM=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=c0RFfydnB/AYsCs+tTB8U2TfsP/SkMCXDKAFCcdiWgHbk9DVIikiajKo42GI80Bzb
+	 /QcXx4KflBBZyWAeym9CEbXh/qGHPhuo7Kco+c4KcJOVSQfcjg8guWhTHkP6/XUAcE
+	 +a+iNmYng8SmHShJOR9wjrONK4D8wB0vcsl9QKtk40PyINjGLtMMfZA0nnwOvNc/sd
+	 QYzzm5UP/ZEykBARAwTm9RqCCMl878CnBECYblsWQUZQ9P92P/3v2fri6fLCQ+OMqM
+	 +9Hs6zv0xovtrYn/RH8NSfiX3dOsovbAgZeZB7xrY/KI1Uji9+RKNjMW96pmwxovVL
+	 0cQwguLbnWKUw==
+From: Kalle Valo <kvalo@kernel.org>
+To: Kees Cook <keescook@chromium.org>
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>,  Jeff Johnson
+ <quic_jjohnson@quicinc.com>,  linux-wireless@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v2][next] wifi: wil6210: wmi: Use __counted_by() in
+ struct wmi_set_link_monitor_cmd and avoid -Wfamnae warning
+References: <ZgSTCmdP+omePvWg@neat>
+	<171222554691.1806092.8730005090791383928.kvalo@kernel.org>
+	<202404291008.51DB333F@keescook> <877cggqdwb.fsf@kernel.org>
+	<202404291109.331E1704@keescook>
+Date: Mon, 29 Apr 2024 22:21:32 +0300
+In-Reply-To: <202404291109.331E1704@keescook> (Kees Cook's message of "Mon, 29
+	Apr 2024 11:09:43 -0700")
+Message-ID: <87bk5sf003.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/2] wifi: ath12k: drop failed transmitted frames from
- metric calculation
-Content-Language: en-US
-To: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>,
-        <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240429114841.413901-1-quic_kathirve@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240429114841.413901-1-quic_kathirve@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: UozGWburqt9uSqU_56ypRCiCrQ5vzJPh
-X-Proofpoint-GUID: UozGWburqt9uSqU_56ypRCiCrQ5vzJPh
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-04-29_16,2024-04-29_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- phishscore=0 spamscore=0 malwarescore=0 suspectscore=0 mlxscore=0
- clxscore=1015 adultscore=0 impostorscore=0 bulkscore=0 priorityscore=1501
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2404290122
+Content-Type: text/plain
 
-On 4/29/2024 4:48 AM, Karthikeyan Kathirvel wrote:
-> - Use ieee80211_free_txskb() instead of dev_kfree_skb_any().
-> - Drop failed transmitted frames from mesh metric calculation to avoid
-> false link metric averaging.
-> 
-> Karthikeyan Kathirvel (1):
->   wifi: ath12k: drop failed transmitted frames from metric calculation.
-> 
-> Sven Eckelmann (1):
->   wifi: ath12k: Don't drop tx_status in failure case
-> 
->  drivers/net/wireless/ath/ath12k/dp_tx.c    | 43 ++++++++++++++++------
->  drivers/net/wireless/ath/ath12k/hal_desc.h | 22 ++++++++++-
->  2 files changed, 52 insertions(+), 13 deletions(-)
-> 
-> 
-> base-commit: 363e7193eaf258fe7f04e8db560bd8a282a12cd9
+Kees Cook <keescook@chromium.org> writes:
 
-'b4' is barfing on this series since you posted 3 patches instead of 2:
-[PATCH v3 1/2] wifi: ath12k: Don't drop tx_status in failure case
-[PATCH v3 1/2] wifi: ath12k: Don't drop tx_status when peer cannot be found
-[PATCH v3 2/2] wifi: ath12k: drop failed transmitted frames from metric calculation.
+> On Mon, Apr 29, 2024 at 08:25:56PM +0300, Kalle Valo wrote:
+>
+>> Kees Cook <keescook@chromium.org> writes:
+>> 
+>> > On Thu, Apr 04, 2024 at 10:12:28AM +0000, Kalle Valo wrote:
+>> >
+>> >> "Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
+>> >> 
+>> >> > Prepare for the coming implementation by GCC and Clang of the
+>> >> > __counted_by attribute. Flexible array members annotated with
+>> >> > __counted_by can have their accesses bounds-checked at run-time
+>> >> > via CONFIG_UBSAN_BOUNDS (for array indexing) and CONFIG_FORTIFY_SOURCE
+>> >> > (for strcpy/memcpy-family functions).
+>> >> > 
+>> >> > Also, -Wflex-array-member-not-at-end is coming in GCC-14, and we are
+>> >> > getting ready to enable it globally.
+>> >> > 
+>> >> > So, use the `DEFINE_FLEX()` helper for an on-stack definition of
+>> >> > a flexible structure where the size of the flexible-array member
+>> >> > is known at compile-time, and refactor the rest of the code,
+>> >> > accordingly.
+>> >> > 
+>> >> > So, with these changes, fix the following warning:
+>> >> > drivers/net/wireless/ath/wil6210/wmi.c:4018:49: warning: structure
+>> >> > containing a flexible array member is not at the end of another
+>> >> > structure [-Wflex-array-member-not-at-end]
+>> >> > 
+>> >> > Link: https://github.com/KSPP/linux/issues/202
+>> >> > Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+>> >> > Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+>> >> > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+>> >> 
+>> >> Patch applied to ath-next branch of ath.git, thanks.
+>> >> 
+>> >> cbb0697e0ded wifi: wil6210: wmi: Use __counted_by() in struct
+>> >> wmi_set_link_monitor_cmd and avoid -Wfamnae warning
+>> >
+>> > Hi,
+>> >
+>> > I was just walking through our patch tracker and noticed that I don't
+>> > see this patch include in -next yet (as of next-20240429). Is there a
+>> > flush of the ath-next queue planned soon? Or did I miss some change?
+>> 
+>> Yeah, wireless-next was pulled last week so most likely we will create
+>> ath-next pull request this week.
+>> 
+>> BTW we are planning to move ath.git to a new location, rename branches
+>> etc. I think we'll see if we can also setup it so that it can be pulled
+>> to linux-next, so that you don't need to ask this every time ;)
+>> 
+>> (Just joking of course, there a lot of benefits from having the tree in
+>> linux-next)
+>
+> Ah-ha! Thanks. Yeah, sorry if I keep asking about that. It's different
+> from other trees, so it doesn't stick in my head. :) I should keep
+> better notes!
 
-Why are there two different 1/2 patches?
+BTW I think all vendor specific wireless driver trees are not pulled to
+linux-next: iwlwifi, mt76, rtw (Realtek) and ath. So with all of these it will
+take a while before the commit is in linux-next.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
