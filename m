@@ -1,164 +1,182 @@
-Return-Path: <linux-wireless+bounces-6977-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6978-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C21948B5443
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 11:29:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B79B8B5447
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 11:30:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1B50B21D82
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 09:29:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF9711F21D4B
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 09:30:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1894E22EF8;
-	Mon, 29 Apr 2024 09:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB3D428DD5;
+	Mon, 29 Apr 2024 09:29:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="OWYQtlYF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686B02E639
-	for <linux-wireless@vger.kernel.org>; Mon, 29 Apr 2024 09:29:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A47C2838E
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Apr 2024 09:29:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714382964; cv=none; b=MdNTr7z4Z87EuXBfxsHegfz7OTyMXMRUJzb9ptxWw2Y5jKjHvkWdyCB7Q0TQfm9k2H4Zta4hk1jWW+g2CsEB0qb8xq7M+vxZSFrTk4cra147B5Meypp1r4IcN38B8Hxh8SIdkin7SRTs3RIKS1S9zQ3s2xkOsWLZPMXLykKzZ4Y=
+	t=1714382980; cv=none; b=C3WbpMKOSb0UR4tOKFQtlfYmqY9YeOUIUbL6jusU9KQK+RrIT2EbJlegZvtHZEQnmPDuPL8bU7hg707fVZkFLD5q3O9eY/YzdLO+rL6UU/ur+Hrq6Wv8dBnhCIrCfnoRN640TZY7wUvIj4i2E3d4FQGbl7rb5J6z00DxPMZXEXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714382964; c=relaxed/simple;
-	bh=q45+hjjmLxml1aJNtwd5XFVUIciX6r6bmdXOp91wvSo=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Y/C1FR6GDl9jWDAlLIS1NvodIk+3RR4I+0bXJLCC66QKIHbmmDP98bFVK3SmW6Krs97XDMrSqmY7M9Y5EM0/VA2TiWd3b24xXlRs19qjnGIW+W6CrSzDER2zsTib+r4C0QtKbBU+/9c4Yvz86H4m1g3jLjp4bgE27+8JKyAPLzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-36c549faf9eso236965ab.2
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Apr 2024 02:29:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714382961; x=1714987761;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=hJ+5Yb2Ln58wiDSoBQwENTmi0SaJH0WHD9oB1lDL3Cs=;
-        b=kK5K8VhdiUx/FtLdshSTB/CV7dkZM2FoGykyT8EOEken7zf0CUf9FnXzRCriLAi64s
-         dGncJd098q9Fs4S+aqe7n5lZRXpVMYjwwLeXCM+QYGAlSeWoyZwph2A2uH9aPixUit0X
-         YdAkJyTuLXVOba79sO67ZQM9MyK9xMnZIvHftPAJzi9hY3Hatda9Cq0WsX61WAxbd+mJ
-         SlJH7lVePXIyusaO7HjogsW6aHVjvRdQhLnkuu4y48DbPsk8MOX+ss37X90ETG4UwBb0
-         tD2FscC9GNczkzBiC6DLQWlELpxg2mW4Sq54X3C2W2/b8WEToUPI8poc2Be28YW5G12T
-         Y4Og==
-X-Forwarded-Encrypted: i=1; AJvYcCWQSKrjMYGd40DJDBLVEAw7WIBy3D6T1gyB10lgEgPYmiqImLKBQx6CPU7QtFOFL314bQxGVIS1fyT/zOk7i8DGEf/bHkexM2o3OVUC9nE=
-X-Gm-Message-State: AOJu0YxLsxeDRcJMX0GZvvbf2aSUEFzYdm4oKWM1Z/9Sj8U8pG/GZBMl
-	CWmIwlV71bUMZnX0RAcj+D7V9xP6vU4oyckHXIJqIjb7kmEvAA+i2z0EBuQ3f5I8RnGkTRy/KJ0
-	2aMFMXQqM94YhXjcJrOJCF4hvhiCGHyAkaiQgi5JEHc0NAyFtfWA7HCw=
-X-Google-Smtp-Source: AGHT+IGOSnK61WCYmFa2d18gGFKctUlhzvIRl1iR74ZajCvsYB5LqaVvQwzRqZSp1JoOOne0FxaTR9iW9re5ONjKvGOV33tYi3hj
+	s=arc-20240116; t=1714382980; c=relaxed/simple;
+	bh=1Hs25f0SosnY4FdXqxT+mr9bCWJ9mWcu48mdhzh1Nng=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=QxFLgF7B0p1Y/ngOw4sZA/sffJweAXyqvhf3fN/s3XygH7K+vpT1mmSHRPCZqDTuJ9ZNSwn4clq9Fq87ZHtGsT7XK4SNrg9zF2e2GW9fThCUQj06c12Qyp2/KKqZ9sMahJQi68+voZtJcirJHj3hLgdMwVbwUa2L9FkqUHk3A5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=OWYQtlYF; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43T4v6jM006218;
+	Mon, 29 Apr 2024 09:29:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=qdzIKNvzAr2Ce3WtJ5WUlnDVSTi+37ZIZxXbIyubkXE=; b=OW
+	YQtlYF4pusHACr5YoQRLJKUXVKgE5swvtbbRQCzMQa29v/VnVdU+ohjgDntkEmOA
+	cMwqZV0PuK8IFwrGXglq8HlhklRXI4RRlvD/E0qM4QmAJrzzXwU22Kr7i5GplNpw
+	g8PgKQeeMv99X2k9KGiRMss5KCf2XBw+kj8lAG34Bxzw/wkKHPSLay+4cUyp/Zkq
+	KHNMVxv1S/ROaI/QV9zL8lkneCms5aGjKLvEX00aVn/Xh/kzlnItfidrZFseGsXQ
+	u8J0Gt+ts8cZ/4sVyq/15Cx6fDYSKZYAJ6e6MJB3Og0GGjf5bqbXfTX4lIFPhjnx
+	MY6EAVAxccRwAhE2mU4A==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xrq2k3dxp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 29 Apr 2024 09:29:28 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43T9TRsw014159
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 29 Apr 2024 09:29:27 GMT
+Received: from [10.38.244.135] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 29 Apr
+ 2024 02:29:25 -0700
+Message-ID: <0a6b96a1-cc02-4251-9d96-9684b25654d9@quicinc.com>
+Date: Mon, 29 Apr 2024 17:29:22 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:12eb:b0:36b:3c17:28d0 with SMTP id
- l11-20020a056e0212eb00b0036b3c1728d0mr238702iln.6.1714382961663; Mon, 29 Apr
- 2024 02:29:21 -0700 (PDT)
-Date: Mon, 29 Apr 2024 02:29:21 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <00000000000070759a061738e388@google.com>
-Subject: [syzbot] [wireless?] WARNING in _ieee80211_change_chanctx
-From: syzbot <syzbot+bc0f5b92cc7091f45fb6@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@google.com, johannes@sipsolutions.net, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-
-Hello,
-
-syzbot found the following issue on:
-
-HEAD commit:    e88c4cfcb7b8 Merge tag 'for-6.9-rc5-tag' of git://git.kern..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=12aea028980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=545d4b3e07d6ccbc
-dashboard link: https://syzkaller.appspot.com/bug?extid=bc0f5b92cc7091f45fb6
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/cc2737f2e766/disk-e88c4cfc.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/c53581da70d1/vmlinux-e88c4cfc.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/c90cde48e98f/bzImage-e88c4cfc.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+bc0f5b92cc7091f45fb6@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 3146 at net/mac80211/chan.c:501 _ieee80211_change_chanctx+0x363/0x11c0 net/mac80211/chan.c:501
-Modules linked in:
-CPU: 0 PID: 3146 Comm: syz-executor.2 Not tainted 6.9.0-rc5-syzkaller-00042-ge88c4cfcb7b8 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
-RIP: 0010:_ieee80211_change_chanctx+0x363/0x11c0 net/mac80211/chan.c:501
-Code: 0f 8e 1a 0c 00 00 8b 7b 08 48 c7 c6 00 e3 4f 8c 49 89 fc e8 5f d5 33 f7 41 83 fc 05 76 0f 41 83 fc 0d 74 09 e8 0e da 33 f7 90 <0f> 0b 90 e8 05 da 33 f7 48 8b 74 24 10 ba 01 00 00 00 48 8b 3c 24
-RSP: 0018:ffffc90003376e20 EFLAGS: 00010287
-RAX: 0000000000001a65 RBX: ffffc90003376fd0 RCX: ffffc90004012000
-RDX: 0000000000040000 RSI: ffffffff8a59e842 RDI: 0000000000000005
-RBP: ffff88807b6f80b6 R08: 0000000000000005 R09: 000000000000000d
-R10: 0000000000000006 R11: 0000000000000000 R12: 0000000000000006
-R13: 0000000000000000 R14: ffff88805de532f8 R15: ffff88807b6f8000
-FS:  00007f75cdf286c0(0000) GS:ffff8880b9400000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000001b2d823000 CR3: 0000000040486000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000003
-DR3: 0000000000000000 DR6: 00000000ffff0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- ieee80211_change_chanctx net/mac80211/chan.c:547 [inline]
- ieee80211_recalc_chanctx_chantype+0x69c/0x870 net/mac80211/chan.c:773
- ieee80211_link_change_chanreq+0x7aa/0xd70 net/mac80211/chan.c:1920
- ieee80211_set_ap_chanwidth+0x181/0x320 net/mac80211/cfg.c:4343
- rdev_set_ap_chanwidth net/wireless/rdev-ops.h:1136 [inline]
- __nl80211_set_channel+0x4cb/0x990 net/wireless/nl80211.c:3418
- nl80211_set_wiphy+0xcc8/0x2d00 net/wireless/nl80211.c:3575
- genl_family_rcv_msg_doit+0x202/0x2f0 net/netlink/genetlink.c:1113
- genl_family_rcv_msg net/netlink/genetlink.c:1193 [inline]
- genl_rcv_msg+0x565/0x800 net/netlink/genetlink.c:1208
- netlink_rcv_skb+0x16b/0x440 net/netlink/af_netlink.c:2559
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1217
- netlink_unicast_kernel net/netlink/af_netlink.c:1335 [inline]
- netlink_unicast+0x542/0x820 net/netlink/af_netlink.c:1361
- netlink_sendmsg+0x8b8/0xd70 net/netlink/af_netlink.c:1905
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg net/socket.c:745 [inline]
- ____sys_sendmsg+0xab5/0xc90 net/socket.c:2584
- ___sys_sendmsg+0x135/0x1e0 net/socket.c:2638
- __sys_sendmsg+0x117/0x1f0 net/socket.c:2667
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcf/0x260 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f75cd27dea9
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 e1 20 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f75cdf280c8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007f75cd3abf80 RCX: 00007f75cd27dea9
-RDX: 0000000000000000 RSI: 0000000020000200 RDI: 0000000000000004
-RBP: 00007f75cd2ca4a4 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 000000000000000b R14: 00007f75cd3abf80 R15: 00007ffd05dbb2b8
- </TASK>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/3] wifi: ath12k: report station mode transmit rate
+To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240419032122.7009-1-quic_lingbok@quicinc.com>
+ <20240419032122.7009-2-quic_lingbok@quicinc.com>
+ <f974973d-5797-39c2-fddf-c928755c76a9@quicinc.com>
+Content-Language: en-US
+From: Lingbo Kong <quic_lingbok@quicinc.com>
+In-Reply-To: <f974973d-5797-39c2-fddf-c928755c76a9@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 1CraaGubrEWZUAWhbY4C2qmKQvJYCedZ
+X-Proofpoint-GUID: 1CraaGubrEWZUAWhbY4C2qmKQvJYCedZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-04-29_07,2024-04-26_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=999
+ impostorscore=0 adultscore=0 malwarescore=0 mlxscore=0 priorityscore=1501
+ suspectscore=0 phishscore=0 lowpriorityscore=0 clxscore=1015 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2404010003
+ definitions=main-2404290059
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+On 2024/4/29 17:11, Karthikeyan Periyasamy wrote:
+> 
+> 
+> On 4/19/2024 8:51 AM, Lingbo Kong wrote:
+>> Currently, the transmit rate of "iw dev xxx station dump" command
+>> always show an invalid value.
+>>
+>> To address this issue, ath12k parse the info of transmit complete
+>> report from firmware and indicate the transmit rate to mac80211.
+>>
+>> This patch affects the station mode of WCN7850 and QCN9274.
+>>
+>> After that, "iw dev xxx station dump" show the correct transmit rate.
+>> Such as:
+>>
+>> Station 00:03:7f:12:03:03 (on wlo1)
+>>          inactive time:  872 ms
+>>          rx bytes:       219111
+>>          rx packets:     1133
+>>          tx bytes:       53767
+>>          tx packets:     462
+>>          tx retries:     51
+>>          tx failed:      0
+>>          beacon loss:    0
+>>          beacon rx:      403
+>>          rx drop misc:   74
+>>          signal:         -95 dBm
+>>          beacon signal avg:      -18 dBm
+>>          tx bitrate:     1441.1 MBit/s 80MHz EHT-MCS 13 EHT-NSS 2 
+>> EHT-GI 0
+>>
+>> Tested-on: WCN7850 hw2.0 PCI 
+>> WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.2.1-00201-QCAHKSWPL_SILICONZ-1
+>>
+>> Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
+[...]
+>> @@ -522,10 +645,26 @@ static void ath12k_dp_tx_status_parse(struct 
+>> ath12k_base *ab,
+>>       ts->ppdu_id = le32_get_bits(desc->info1,
+>>                       HAL_WBM_COMPL_TX_INFO1_TQM_STATUS_NUMBER);
+>> -    if (le32_to_cpu(desc->rate_stats.info0) & 
+>> HAL_TX_RATE_STATS_INFO0_VALID)
+>> -        ts->rate_stats = le32_to_cpu(desc->rate_stats.info0);
+>> -    else
+>> -        ts->rate_stats = 0;
+>> +
+>> +    if (le32_to_cpu(desc->info2) & HAL_WBM_COMPL_TX_INFO2_FIRST_MSDU)
+>> +        ts->flags |= HAL_TX_STATUS_FLAGS_FIRST_MSDU;
+>> +
+>> +    ts->peer_id = le32_get_bits(desc->info3, 
+>> HAL_WBM_COMPL_TX_INFO3_PEER_ID);
+>> +
+>> +    if (le32_to_cpu(desc->rate_stats.info0) & 
+>> HAL_TX_RATE_STATS_INFO0_VALID) {
+>> +        ts->pkt_type = le32_get_bits(desc->rate_stats.info0,
+>> +                         HAL_TX_RATE_STATS_INFO0_PKT_TYPE);
+>> +        ts->mcs = le32_get_bits(desc->rate_stats.info0,
+>> +                    HAL_TX_RATE_STATS_INFO0_MCS);
+>> +        ts->sgi = le32_get_bits(desc->rate_stats.info0,
+>> +                    HAL_TX_RATE_STATS_INFO0_SGI);
+>> +        ts->bw = le32_get_bits(desc->rate_stats.info0,
+>> +                       HAL_TX_RATE_STATS_INFO0_BW);
+>> +        ts->ru_tones = le32_get_bits(desc->rate_stats.info0,
+>> +                         HAL_TX_RATE_STATS_INFO0_TONES_IN_RU);
+>> +        ts->ofdma = le32_get_bits(desc->rate_stats.info0,
+>> +                      HAL_TX_RATE_STATS_INFO0_OFDMA_TX);
+>> +    }
+> 
+> 
+> Why multiple read from dma mapped area say desc->rate_stats.info0 lead 
+> to increase in CPU cycles. Instead you do one read from dma mapped area 
+> desc->rate_stats.info0 and classify into your own data structure ?
+> 
+> And the info0 classification used within the 
+> ath12k_dp_tx_update_txcompl(), so you can do the classification within 
+> this API.
+> 
+yes, thanks for pointing of this.
+i will apply it in next version:),
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+Best regards
+Lingbo Kong
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
