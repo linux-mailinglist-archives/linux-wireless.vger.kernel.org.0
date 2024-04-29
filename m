@@ -1,148 +1,159 @@
-Return-Path: <linux-wireless+bounces-7002-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7003-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 307588B60E5
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 20:09:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 092648B60EA
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 20:13:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63AC9B20D6B
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 18:09:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53EB628235E
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 18:13:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E944128399;
-	Mon, 29 Apr 2024 18:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5CDD127E2A;
+	Mon, 29 Apr 2024 18:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="lsuajCu9"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="GbofPrrU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790998614C
-	for <linux-wireless@vger.kernel.org>; Mon, 29 Apr 2024 18:09:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3594E8614C
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Apr 2024 18:12:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714414187; cv=none; b=H4j4VcScKDrCPyAWNlsnP7C6FRNk7YI64nINchnnAQMYrk1ca6JEMUVkL3S21z14LhGWGgpVhHAxa1Lzj207VLSik0EHcRcjwHsHwdYKZnPgKb0VYKi6nBjxdmEyV0KRepvfl7HrQRPGQx0yhQCCffNMELB+wWCffUv96Hiu30E=
+	t=1714414377; cv=none; b=Xj7OP4OnxXpE58euiA5b6nHnn6CuDBcNUABZhig412vH/1Xr/r2AKwxOVde5B/ZW9EBuUMy0f6rB+lUB+AXprndLGe91p9+/lpCC91rjRdDFH28Uns1hNfPFPTt191wJf+fbEI/wTkHh4rRzCRnOcf0xBuQwDMH0b4SYs7C6BGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714414187; c=relaxed/simple;
-	bh=Z2LOlsSUnMgywQTJQ+7IHJraqyXovy/jnHsooFxUr2Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rEtUovddXuyS8LdkvZL2s8JgkHfLZKM7wKIXQcUqLYa4pw2+hOHdBtOmBUefYLq8y1HraraAWmw9IwUkO4qIxBDihUUp4EZ9DFdMNdTzSd/bwJV62mNt6g1xcf3qkfa/It4Nfq9xGY/27EezBRzPajOqehPCVlb+tpJa/CToWjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=lsuajCu9; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1e8f68f8e0dso34546945ad.3
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Apr 2024 11:09:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1714414185; x=1715018985; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+37QTrLTPLr7Kc5c3JRWh1bRwAteHaqsrzK+UmsL3Bk=;
-        b=lsuajCu9lzKisZS0vlaiK3l5CfrLPvM3MsxE/vnIpIx4TJCjD5I+Hh1uo8HaxWmdTY
-         N04Wn1cCkUUmtK0GaLpxqw9x3ymfL1bVgJ3U7Yh+OCwBQN/1bMZfDiLzQDjPQOEbVE51
-         fy37YznGKXXXAyGK4sdIIr9ks+PrxxlCl64U0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714414185; x=1715018985;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+37QTrLTPLr7Kc5c3JRWh1bRwAteHaqsrzK+UmsL3Bk=;
-        b=T9E4tIMSdFX+pc7TLSoMcXVXm9sIdJIewS+AiJeES32tMDJv+JKZ3MT6FQAEe9psSP
-         3m5o8mDvsML/1I8jGCGbVu1MJ8caVPJZAM1TiHBzEWw/H7bDwRMesopXHTXUekahdM+L
-         P0vb/NjcZ3D4szZvyNCyMxT26QVI+eQYcbkKUorSVejvUAZ8ERWN8URbjSNFhICf7hui
-         RDdz9PbO1rwB0Rw8hn/s0TeHtfAz8itw5mBMk2SCdq+tGfpJjMMBft+qRhuxiKMm1SNI
-         LjzbJyo3Igyie5GoH0Yie5Z28PthmvYR228XLSb6ajB9WypEmpjabOWDKHKOaaU31thW
-         Z7Iw==
-X-Forwarded-Encrypted: i=1; AJvYcCXyr98+R/iuycE8PQcQBvFgBE+7yjb6q3ZWkZ22KN6Jw0pNabichOfGiFAy3XGVB1Jf+b9IEn4/dvm31GaC0vgsegg57OCq64PLdey8W5Y=
-X-Gm-Message-State: AOJu0YxlfRgYbWFT5xJ6tgdD+Q7YsO3Pxa7tO135gQ4oC1SHCFgcE75L
-	r8R4fj6pmresEzXG7tC3mG+QYAVVnD1oB8R4i27nfYsC4sQwwbOBns6mq5wCqQ==
-X-Google-Smtp-Source: AGHT+IF8MAuCWI9xQ1t4CFM/UvinhLq/MLyEW/f0X3d0CRIcumGhC4JUlpaad0Aw8KATz6oAmbvB4Q==
-X-Received: by 2002:a17:903:22c5:b0:1eb:e40:3e07 with SMTP id y5-20020a17090322c500b001eb0e403e07mr9620367plg.62.1714414184798;
-        Mon, 29 Apr 2024 11:09:44 -0700 (PDT)
-Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id h8-20020a170902704800b001e868e29fabsm20585009plt.251.2024.04.29.11.09.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Apr 2024 11:09:44 -0700 (PDT)
-Date: Mon, 29 Apr 2024 11:09:43 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v2][next] wifi: wil6210: wmi: Use __counted_by() in
- struct wmi_set_link_monitor_cmd and avoid -Wfamnae warning
-Message-ID: <202404291109.331E1704@keescook>
-References: <ZgSTCmdP+omePvWg@neat>
- <171222554691.1806092.8730005090791383928.kvalo@kernel.org>
- <202404291008.51DB333F@keescook>
- <877cggqdwb.fsf@kernel.org>
+	s=arc-20240116; t=1714414377; c=relaxed/simple;
+	bh=bq5B3Szi6GFa6zLoqh/4W1bgsRBUOMYkD+MqFiqI4sI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=uyluLT+j8fbFC/zFnas6CllwVSYykBtFEjDNqhkGF6E1PbdyqIlP9RJMoSpzoOUs13jW13sZj0YHKjkuuGisJ8Ka8yuYU98xJqjzZlAIH3nygne7OsSvxPLtARfUnJDrTb3q5MosaWWVp63Zl9GhDnVUCTY7br2Xe992Vq9gDMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=GbofPrrU; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43TFQUqu026819;
+	Mon, 29 Apr 2024 18:12:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=ET2AF7MnhTJkIxUl0KoC2YIy+Id2W9y0QPi0t4QPA2w=; b=Gb
+	ofPrrUEguuAjYZeoER7VgPvepvVQSusr54gk902muA9A9CrOZOwAAIw00JJYqIa6
+	IcChs8mgF7CpjLNsQ6T8dD0NvEkxuGeF/bB5+8fAjl+27m089mpDnmQugX+cPspO
+	XZgZcBhr2If2oiRqMp/TlogrWdBwh0poQaffUG0CQLQLdUusa7EBQHRKJxFHCwNE
+	o+p885gIp3MTfX2aENu1kfjRT+OQ3N/UGlFfVLBhVxzt9cEOnnWOzqdFiyOvejxC
+	EIh+aBwVhxdDQda3j51zdU7u2ZxJY3zs7iw9YtEg2rnB1gJqAtP2q4jiu1bp6n2M
+	9KJ4i69knZHtkoAiP2XQ==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xt5xkb5ax-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 29 Apr 2024 18:12:51 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43TICoSN006191
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 29 Apr 2024 18:12:50 GMT
+Received: from [10.110.13.147] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 29 Apr
+ 2024 11:12:49 -0700
+Message-ID: <35f114c4-1ff7-4a4b-aadf-ed147f19e170@quicinc.com>
+Date: Mon, 29 Apr 2024 11:12:49 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <877cggqdwb.fsf@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv5] wifi: ath11k: skip status ring entry processing
+To: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>,
+        <ath11k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Venkateswara Naralasetty
+	<quic_vnaralas@quicinc.com>
+References: <20240429073624.736147-1-quic_tamizhr@quicinc.com>
+Content-Language: en-US
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240429073624.736147-1-quic_tamizhr@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: I4XlDA3evLPhq4-CIwhkaqXDILi6BAhW
+X-Proofpoint-GUID: I4XlDA3evLPhq4-CIwhkaqXDILi6BAhW
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-04-29_16,2024-04-29_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ mlxscore=0 adultscore=0 impostorscore=0 lowpriorityscore=0 spamscore=0
+ suspectscore=0 priorityscore=1501 phishscore=0 mlxlogscore=947
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404290117
 
-On Mon, Apr 29, 2024 at 08:25:56PM +0300, Kalle Valo wrote:
-> Kees Cook <keescook@chromium.org> writes:
+On 4/29/2024 12:36 AM, Tamizh Chelvam Raja wrote:
+> From: Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
 > 
-> > On Thu, Apr 04, 2024 at 10:12:28AM +0000, Kalle Valo wrote:
-> >
-> >> "Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
-> >> 
-> >> > Prepare for the coming implementation by GCC and Clang of the
-> >> > __counted_by attribute. Flexible array members annotated with
-> >> > __counted_by can have their accesses bounds-checked at run-time
-> >> > via CONFIG_UBSAN_BOUNDS (for array indexing) and CONFIG_FORTIFY_SOURCE
-> >> > (for strcpy/memcpy-family functions).
-> >> > 
-> >> > Also, -Wflex-array-member-not-at-end is coming in GCC-14, and we are
-> >> > getting ready to enable it globally.
-> >> > 
-> >> > So, use the `DEFINE_FLEX()` helper for an on-stack definition of
-> >> > a flexible structure where the size of the flexible-array member
-> >> > is known at compile-time, and refactor the rest of the code,
-> >> > accordingly.
-> >> > 
-> >> > So, with these changes, fix the following warning:
-> >> > drivers/net/wireless/ath/wil6210/wmi.c:4018:49: warning: structure
-> >> > containing a flexible array member is not at the end of another
-> >> > structure [-Wflex-array-member-not-at-end]
-> >> > 
-> >> > Link: https://github.com/KSPP/linux/issues/202
-> >> > Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> >> > Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-> >> > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-> >> 
-> >> Patch applied to ath-next branch of ath.git, thanks.
-> >> 
-> >> cbb0697e0ded wifi: wil6210: wmi: Use __counted_by() in struct
-> >> wmi_set_link_monitor_cmd and avoid -Wfamnae warning
-> >
-> > Hi,
-> >
-> > I was just walking through our patch tracker and noticed that I don't
-> > see this patch include in -next yet (as of next-20240429). Is there a
-> > flush of the ath-next queue planned soon? Or did I miss some change?
+> If STATUS_BUFFER_DONE is not set for a monitor status ring entry,
+> we don't process the status ring until STATUS_BUFFER_DONE set
+> for that status ring entry.
 > 
-> Yeah, wireless-next was pulled last week so most likely we will create
-> ath-next pull request this week.
+> During LMAC reset it may happen that hardware will not write
+> STATUS_BUFFER_DONE tlv in status buffer, in that case we end up
+> waiting for STATUS_BUFFER_DONE leading to backpressure on monitor
+> status ring.
 > 
-> BTW we are planning to move ath.git to a new location, rename branches
-> etc. I think we'll see if we can also setup it so that it can be pulled
-> to linux-next, so that you don't need to ask this every time ;)
+> To fix the issue, when HP(Head Pointer) + 1 entry is peeked and if DMA
+> is not done and if HP + 2 entry's DMA done is set,
+> replenish HP + 1 entry and start processing in next interrupt.
+> If HP + 2 entry's DMA done is not set, poll onto HP + 1 entry DMA
+> done to be set.
 > 
-> (Just joking of course, there a lot of benefits from having the tree in
-> linux-next)
+> Also, during monitor attach HP points to the end of the ring and
+> TP(Tail Pointer) points to the start of the ring.
+> Using ath11k_hal_srng_src_peek() may result in processing invalid buffer
+> for the very first interrupt. Since, HW starts writing buffer from TP.
+> 
+> To avoid this issue call ath11k_hal_srng_src_next_peek() instead of
+> calling ath11k_hal_srng_src_peek().
+> 
+> Tested-on: IPQ5018 hw1.0 AHB WLAN.HK.2.6.0.1-00861-QCAHKSWPL_SILICONZ-1
+> 
+> Signed-off-by: Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
+> Co-developed-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
+> Signed-off-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
 
-Ah-ha! Thanks. Yeah, sorry if I keep asking about that. It's different
-from other trees, so it doesn't stick in my head. :) I should keep
-better notes!
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
--- 
-Kees Cook
+however note...
+
+> +
+> +				/* If done status is missing:
+> +				 * 1. As per MAC team's suggestion,
+> +				 *    when HP + 1 entry is peeked and if DMA
+> +				 *    is not done and if HP + 2 entry's DMA done
+> +				 *    is set. skip HP + 1 entry and
+> +				 *    start processing in next interrupt.
+> +				 * 2. If HP + 2 entry's DMA done is not set,
+> +				 *    poll onto HP + 1 entry DMA done to be set.
+> +				 *    Check status for same buffer for next time
+> +				 *    dp_rx_mon_status_srng_process
+> +				 */
+> +
+> +				reap_status = ath11k_dp_rx_mon_handle_status_buf_done(ab, srng,
+> +										      rx_ring);
+
+ath11k-check reports:
+
+drivers/net/wireless/ath/ath11k/dp_rx.c:3116: line length of 95 exceeds 90 columns
+drivers/net/wireless/ath/ath11k/dp_rx.c:3117: line length of 95 exceeds 90 columns
+
+Kalle, in this case we may want to make an exception since I don't think there
+is a clean way to fix this other than refactoring.
+
+FWIW I'd like to see this function refactored to avoid the excessive
+indentation, but that should be a separate exercise.
+
+/jeff
 
