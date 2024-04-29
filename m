@@ -1,129 +1,162 @@
-Return-Path: <linux-wireless+bounces-6985-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6986-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60D368B575F
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 14:03:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F4CE8B5774
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 14:08:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BD66282F6C
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 12:03:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8B091F20F1A
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 12:08:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF959535C1;
-	Mon, 29 Apr 2024 12:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D8853383;
+	Mon, 29 Apr 2024 12:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="OfOWaGls"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aD4g/j6n"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E2E53E33
-	for <linux-wireless@vger.kernel.org>; Mon, 29 Apr 2024 12:03:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A825338D
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Apr 2024 12:08:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714392190; cv=none; b=Dk0GlO6DbClvPca5d5lwX7GnBwhGnVK6BmRdQ2iYsHyYAl60XiydqwRwYrXqHB0RYpt5bzOP//jvyjLq8Y3vQGo62Ney3FU36ux90JvPS28mZn5kCiEVI+zb6VNaox+WpDWd7zecM4YwVEPK6LBe+QmipKxNugdN5pVs0jJVP7E=
+	t=1714392519; cv=none; b=S82WW/KtDVJh++nAFOsaZkrexStStRUn95uXsXmuIZo+mYW14Epx/pu60/+mad8ZPyHiZRjY1luxFpVwqHZ38Tyj78YLkY4npGowdRMv0jI/Q7XTqQx912WVd3wYqz4ENVYpA0q8CO95uTOMTJgs4JTsO1v4M4PFyZ8bYO2uAZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714392190; c=relaxed/simple;
-	bh=vftSGFpv9sp0DvAreoTdzRHdoVnENU1KMMZljiMxJ98=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c2FunC/vs6mQx8ypzTkEpkYmIHkiKZJhcYD/3AVbjmfCTedZA4ChYOus52L10MFKd/mQCnSUxx79inf/5qcf7ALkkn1oqYvOFuszMvTpLb8BfKLp4m6udvoALJUAZJ9dx8BNomvCnoSm/1vdyEniiJrhHa3GtnY7Agw9EZThZIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=OfOWaGls; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1714391699;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H+eupiIIC3zcFVNwOSflZiCwKLV+wdtCtjNUcI/UrXQ=;
-	b=OfOWaGlsrxHQUtnjPxjUGxcgZl4smIQfKE9ivJdnbTn0x6uFS2VWkErWoe7ZZKuKT5BcO9
-	HBumQi5kw/CsApcKqEqF3PogADmqGMtJQx4sNaVpjSu/B+lJvagcoyJGzF/X6hO4ZiaJrt
-	PSwN4Tg0aCxCiGwypJfI2S6ISXOkktk=
-From: Sven Eckelmann <sven@narfation.org>
-To: ath12k@lists.infradead.org,
- Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
-Cc: linux-wireless@vger.kernel.org, Sarika Sharma <quic_sarishar@quicinc.com>,
- Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
-Subject: Re: [PATCH v3 1/2] wifi: ath12k: Don't drop tx_status in failure case
-Date: Mon, 29 Apr 2024 13:54:54 +0200
-Message-ID: <2323473.ElGaqSPkdT@ripper>
-In-Reply-To: <20240429114841.413901-2-quic_kathirve@quicinc.com>
-References:
- <20240429114841.413901-1-quic_kathirve@quicinc.com>
- <20240429114841.413901-2-quic_kathirve@quicinc.com>
+	s=arc-20240116; t=1714392519; c=relaxed/simple;
+	bh=hh6xj8ii1wDcrGKus6DtblItp0E3LrAfUVATj9Jdzm8=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=DJHABUOfP+HrvcNAh6ukjteZp8+FrfNYoZmsu1rJ/OkAuwsEr6OFqpeqsEP5/WKR6RftmIPxENqX5zs+pwOEfY0wMlwtZHHaz3fucPiq0+qs/KnJEPHWw954VsBxgYHspPCk2cySb5fpNPIn/Z7gEPlt03qFDNxumnKG60TNOjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aD4g/j6n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A27DC113CD;
+	Mon, 29 Apr 2024 12:08:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714392518;
+	bh=hh6xj8ii1wDcrGKus6DtblItp0E3LrAfUVATj9Jdzm8=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=aD4g/j6nXYrnakOEglCmYtL+66dpVhLJFzIFPol4DVictXYOxxfzP/YSK9t/6Cj6u
+	 y4FWm+ySQx0yow74y1+uF26tfubAEzPYwRFA3mSjvrNrG4vF/bcohEsalCZB4NI9g2
+	 UXIVJEGCks4yIrMK8hPPQwmHL9KbSQgaVYyXbfEHNWpp2JAiTGe4ZQOh3muoX9rqS5
+	 58QgfmQGY6ekH2Xqd51dRcAQkDjGuaggwHvnrwzScynMam2YvASkiMfpyiHODMv/R9
+	 t2qeVR8Zjq5Aw894FaRaCLso/rjukBTwEce/qRaYAxWUkHZULL3ZkegCVDQgCSbVa7
+	 yFff6t9SXyy6Q==
+From: Kalle Valo <kvalo@kernel.org>
+To: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,  <ath12k@lists.infradead.org>,
+  <linux-wireless@vger.kernel.org>,  "Muna Sinada"
+ <quic_msinada@quicinc.com>
+Subject: Re: [PATCH v3 07/10] wifi: ath12k: add support for setting fixed HE
+ rate/GI/LTF
+References: <20240424201959.935-1-quic_pradeepc@quicinc.com>
+	<20240424201959.935-8-quic_pradeepc@quicinc.com>
+	<72bc6772-8bf7-427d-8f03-01e8dbf30d0c@quicinc.com>
+	<87y190fulv.fsf@kernel.org>
+	<198e317f-a849-4fe2-8080-3d1834d07481@quicinc.com>
+Date: Mon, 29 Apr 2024 15:08:35 +0300
+In-Reply-To: <198e317f-a849-4fe2-8080-3d1834d07481@quicinc.com> (Pradeep Kumar
+	Chitrapu's message of "Fri, 26 Apr 2024 16:42:22 -0700")
+Message-ID: <87sez4fk1o.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart4887899.GXAFRqVoOG";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Type: text/plain
 
---nextPart4887899.GXAFRqVoOG
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-Date: Mon, 29 Apr 2024 13:54:54 +0200
-Message-ID: <2323473.ElGaqSPkdT@ripper>
-In-Reply-To: <20240429114841.413901-2-quic_kathirve@quicinc.com>
-MIME-Version: 1.0
+Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com> writes:
 
-On Monday, 29 April 2024 13:48:39 CEST Karthikeyan Kathirvel wrote:
-> From: Sven Eckelmann <sven@narfation.org>
-> 
-> When a station idles for a long time, hostapd will try to send
-> a QoS Null frame to the station as "poll". NL80211_CMD_PROBE_CLIENT
-> is used for this purpose.
-> And the skb will be added to ack_status_frame - waiting for a
-> completion via ieee80211_report_ack_skb().
-> 
-> But when the peer was already removed before the tx_complete arrives,
-> the peer will be missing. And when using dev_kfree_skb_any (instead
-> of going through mac80211), the entry will stay inside
-> ack_status_frames thus not clean up related information in its
-> internal data structures. This IDR will therefore run full after
-> 8K request were generated for such clients.
-> At this point, the access point will then just stall and not allow
-> any new clients because idr_alloc() for ack_status_frame will fail.
-> 
-> ieee80211_free_txskb() on the other hand will (when required) call
-> ieee80211_report_ack_skb() and make sure that (when required) remove
-> the entry from the ack_status_frame and clean up related
-> information in its internal data structures.
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> On 4/26/2024 12:31 AM, Kalle Valo wrote:
+>> Jeff Johnson <quic_jjohnson@quicinc.com> writes:
+>> 
+>>> On 4/24/2024 1:19 PM, Pradeep Kumar Chitrapu wrote:
+>>>> Add support to set fixed HE rate/GI/LTF values using nl80211.
+>>>> Reuse parts of the existing code path already used for HT/VHT
+>>>> to implement the new helpers symmetrically, similar to how
+>>>> HT/VHT is handled.
+>>>>
+>>>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+>>>>
+>>>> Co-developed-by: Muna Sinada <quic_msinada@quicinc.com>
+>>>> Signed-off-by: Muna Sinada <quic_msinada@quicinc.com>
+>>>> Signed-off-by: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
+>>>> ---
+>>>
+>>> [...]
+>>>
+>>>> @@ -7753,7 +8034,20 @@ ath12k_mac_bitrate_mask_get_single_nss(struct ath12k *ar,
+>>>>   			return false;
+>>>>   	}
+>>>>   -	if (ht_nss_mask != vht_nss_mask)
+>>>> +	he_mcs_map = le16_to_cpu(ath12k_mac_get_tx_mcs_map(&sband->iftype_data->he_cap));
+>>>
+>>> drivers/net/wireless/ath/ath12k/mac.c:8041:22: warning: incorrect type in argument 1 (different address spaces)
+>>> drivers/net/wireless/ath/ath12k/mac.c:8041:22:    expected struct ieee80211_sta_he_cap const *he_cap
+>>> drivers/net/wireless/ath/ath12k/mac.c:8041:22:    got struct ieee80211_sta_he_cap const [noderef] __iftype_data *
+>> ALWAYS run ath12k-check, we wrote the tool for a reason. Skipping
+>> these
+>> tests is disrespect for maintainers' time and a great way to get your
+>> patches to the bottom of the queue.
+>> 
+> Hi Kalle
+>
+> I did run ath12k-check but I don't see these errors. Trying to see if
+> this is due to version differences. will update further once I have
+> more information on this.
+>
+> This is version I ran:
+> qca-swiss-army-knife/tools/scripts/ath12k/ath12k-check --version
+> ath12k-check (md5sum cb8a85242f2ec7343f6f94af9fa5ebb2)
+>
+> python:         3.6.9 (default, Mar 10 2023, 16:46:00)
+> [GCC 8.4.0]
+> host gcc:       gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0
+> config cc:      gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0
+> sparse:         v0.6.4
+> checkpatch.pl:  Version: 0.32 (md5sum 12ea394e9bf27280f30a684ff937cc57)
+> gtags:          gtags (GNU GLOBAL) 6.6.2
 
-Thanks for porting and testing both patches on ath12k.
+Your sparse is too old, you need to get the latest from git:
 
-Kind regards,
-	Sven
+https://docs.kernel.org/dev-tools/sparse.html#getting-sparse
 
---nextPart4887899.GXAFRqVoOG
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+Also your GCC is really old, I strongly recommend to use GCC 13.2. You
+can get it here:
 
------BEGIN PGP SIGNATURE-----
+https://mirrors.edge.kernel.org/pub/tools/crosstool/
 
-iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAmYvio4ACgkQXYcKB8Em
-e0bp6A//YzB2dprLEdV27QypAs5E3l/3pnIf+iSCoH0DuZApGLCt3IyS6Q6cLtMJ
-6TuHe4995GhjVVmvD2p9g+MAfcD5olfJVFKB5QUb8wdgQtKwiSoDeKUkxVCM+1EM
-TeHYdTcDBCJqnGwR06+BECdk+pWfh7zli3L/8UyLbCX3dlFGvaZAo1Hmu0N+nTbN
-ALyc6PtyZPWOMYJTbZEBZ145BNHOW2adz15dDCdiSmcRcZLugmm6fDZwAwPadZkr
-vthJ0yVR/yF+uMPrCH9mKa5fWVjV2GI6he1ioY+6GprJ5KOZzG5K3UGKdBrjydcZ
-eGx+t8LZqc9wPU4TyaOG3S7IF4INLI0WaJFTEMAoyQEHQHzvP4OuR+YvAOtNqbvL
-PJOA6HW68tFIZHidq+rVReOZirLhC7cdNV/iK/iyWremwJJX0mFT9OsIa5aIXzEH
-Cn2O6sCHfKEgMZrsy0yRtLXcrmsakupqYyYnsjyHGZy35bPIbXDdFaE0TLNwLx1T
-Y/1PNvOMlv1laH65Xzrw+W1IABsfiUIB7+ipCEchGljwR2rO9nXamaFoA2XjT5iz
-OAoT5qe5UPxvHpssfFn3swT8ALsjVx7MuCbiWgvx86/CEbNnbL/f/+k4wkGLJPIr
-TILIfybyNUutmbI6og9C7szeE0yzsX6y6/Y00JzEedI1Ui6m8CA=
-=ZGBz
------END PGP SIGNATURE-----
+Why on earth are you using Ubuntu 18.04? It's end of life was a year
+ago.
 
---nextPart4887899.GXAFRqVoOG--
+And please also update ath12k-check. This is what I have:
 
+$ ath12k-check --version
+ath12k-check (md5sum c5567fc8aaede613275e8cafea6ed7cd)
 
+python:         3.11.2 (main, Mar 13 2023, 12:18:29) [GCC 12.2.0]
+host gcc:       gcc (Debian 12.2.0-14) 12.2.0
+config cc:      x86_64-linux-gcc (GCC) 13.2.0
+sparse:         v0.6.4-39-gce1a6720f69e
+checkpatch.pl:  Version: 0.32 (md5sum 77c655474ed7622c0077caf2f0d7c440)
+gtags:          gtags (Global) 6.6.9
 
+> I see some notes like below this in all files:
+> drivers/net/wireless/ath/ath12k/mac.c: note: in included file (through
+> include/linux/bitops.h, include/linux/kernel.h,
+> include/net/mac80211.h):
+> drivers/net/wireless/ath/ath12k/mac.c: note: in included file (through
+> include/linux/bitops.h, include/linux/kernel.h,
+> include/net/mac80211.h):
+
+Jeff and me are extra careful that there are no warnings in ath12k, in
+fact in wireless-next the whole wireless subsystem has no sparse
+warnings. So if you ever see warnings please report them to maintainers
+ASAP.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
