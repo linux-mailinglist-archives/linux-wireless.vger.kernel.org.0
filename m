@@ -1,115 +1,129 @@
-Return-Path: <linux-wireless+bounces-6993-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6994-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DA6F8B5FA6
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 19:07:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16D6A8B5FB4
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 19:10:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 088EC282EF0
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 17:07:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1B281F25414
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 17:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019A58626E;
-	Mon, 29 Apr 2024 17:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF33283CBA;
+	Mon, 29 Apr 2024 17:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FZY2kFOf"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="frNC7ypk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE76986260;
-	Mon, 29 Apr 2024 17:07:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485808626A
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Apr 2024 17:10:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714410423; cv=none; b=hPIZ0eYYlqWDF6KZ8ZEY9ui/IY2zX9l1DMbwu0B41q+c29cd1jvgikjPgFZcHGqllTFvLNadw29vOpY49JR5rZLbOExE7eCaX2m7/4JwzXBOZXYfpKzS3a7kpD7xgxW1EANFpdLJjqVkcYqO6E8SjQtWFMCFMOCGKJNzSAMc0Hg=
+	t=1714410649; cv=none; b=XXv1cF5jNdM9zU3Vvz0OZLQWV77BKLhUAC0dc6rWqvaL/wnF/05KDk7CwA4aUXhF+VGIWrHZZdsNmTRh4Ujb1nKaJTaaNA1hTIO82CEmZAbx8H4VBUb2PLlBtzoJWBwKv592jWaHi1gFF9HHx1HmNg3f5JLs8krjA5wH4/8mF88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714410423; c=relaxed/simple;
-	bh=EIzrA7raKowYk/Gh9aT2i443/RBNMTyOgVQ4r1yOGGY=;
-	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=XpivBR7k76JSmYpLt2hvklnFphxDtbP1Qk1O/6vrXC02y8Tz6eQy1gwvaXOas5VP4+KbUS4X+xjJpYByeRPHIH1InVlWzpgxAR8eGAynAZeB18QQAhAwDJOruzRpjBviQ22AdOqRVeYbRbVCSuK9xiAs9MNa5CP8DU0MPgGr0QE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FZY2kFOf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BF84C113CD;
-	Mon, 29 Apr 2024 17:07:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714410422;
-	bh=EIzrA7raKowYk/Gh9aT2i443/RBNMTyOgVQ4r1yOGGY=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=FZY2kFOfhjpqCaYkpX4F3j3DWpENVTxwpF2fweIEBEGdECKV+SwgweTbII6b57mlq
-	 zmbZbgiTbB6eHq0sslxTBxjVgwhN3+E937qzytwB/vv7FQbIwo81CjcjjNp867sEJ4
-	 ltIA7dtbDTw2tBnuyuXBFPvmg3oU7xU8hyJTiKVoo5FmfIbPK1LV9PjlAbkLzUVZ//
-	 ChMNv3U+cx1YMbAqDwIGFvVFsae0sqNmgT9IqKf5NutWum7FPHW1ilSpWw48uzIM8o
-	 lkIQnE14lp0KnKtbpl3qfdTcPEk1vWuIO2jPoEos9qQ4Wg8QTpukBnXramsi80UbGD
-	 OMbBRvY26A6tQ==
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1714410649; c=relaxed/simple;
+	bh=0jNTl45Cs7ezsUWeAWbPmvCWgF+22Evr0a+0tU6atao=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fQo9SZZr6+kTwgp0eKLz25vmw2B3XBCokD4TJoarkyShx3qh1KkI/QzSfdWlW0o2rIkxb47mwO7HFW15LevEnvCnhcbEoL5V0d+Ux5AFqWH8nq9adNMpShOSWuaz38lErCrhvOCHPdKLi9ApbG7SG5gFaeimczbyqB9GK9V2c9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=frNC7ypk; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-5cf2d73a183so4145342a12.1
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Apr 2024 10:10:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1714410647; x=1715015447; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=oZRgSAbzG7KcvdiTauEibDNnc/WC+ObXBWTvwKd5YyQ=;
+        b=frNC7ypk1oXy4cYOUkEh1xrUZaaHRoAmacK25JOYs6LaD2a0j0PVUxBhwPNtoo+kz0
+         fNI89O/2zo91YhFv3vITF6WmgBZiQLg535I5N3VbhJjbTa+ZInayKi2hMpVb9Nku4A9W
+         aCk06kZU1kUVBczu5Uddf++oFugHe8ZPo8JlI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714410647; x=1715015447;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oZRgSAbzG7KcvdiTauEibDNnc/WC+ObXBWTvwKd5YyQ=;
+        b=MwETxfjKRsjuPsHXZBLksX+FPJpV1d4hYG6BsDRlHPfB8nPrXQmVV7zhUxvUdZWRm7
+         uQY7wed4CIQ1KgcPzAPyN8Cmtx0+tQptwEr2ySNHFmdbHKJdQN/BfkCWCIjrht3jIV91
+         2hYkMZ5IOTw+iICIBC27imrNDPEMdkOSdoHAtVnKzCRWRVymzceSC7kOTsL7fbmRbuzw
+         gqvAJyt/crj5q2qq6Xx0NMzpU2+zaXMsACzO6735wWhTM7dwL/pnGQQQaqknrdKSC2In
+         0TZT63CKNagLnlrWGAW9zvahBCuCxfpi4FaAztxW0RMZdBOHjl67Uv6ziw44KKTu8koL
+         2VPA==
+X-Forwarded-Encrypted: i=1; AJvYcCUEiXqRA6z4T/cISnBcRZpHmGaKguySYEQxQJ7sBwaOe6Eb9Uki0w7Y2ZhmBhyS/O1o5EaRXUeDJbd73YpwItKWH1FI8I9Y5G5R/GYgdKw=
+X-Gm-Message-State: AOJu0Yz6DTQIr7TUPgql0EcjINiRKy7GC1ISIgEOaOd+D0eWQVdjZjgA
+	HCBXZjVVigd4FbMFlQCsN7Rv6TqbVJm/8879w1LHlF2Sr1vrv5FJwbdB8NNAhw==
+X-Google-Smtp-Source: AGHT+IGj3Lb7QLmCDgTM2Q+YDthSN8UMWEbIVz5Z0H2XtkJT6q8gWsIvscYSHoZhP1Lgml101nzTDA==
+X-Received: by 2002:a17:90b:270d:b0:2a2:6244:32b5 with SMTP id px13-20020a17090b270d00b002a2624432b5mr368408pjb.11.1714410647531;
+        Mon, 29 Apr 2024 10:10:47 -0700 (PDT)
+Received: from www.outflux.net ([198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id m14-20020a17090a668e00b002a6e67e197dsm19363447pjj.45.2024.04.29.10.10.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Apr 2024 10:10:46 -0700 (PDT)
+Date: Mon, 29 Apr 2024 10:10:46 -0700
+From: Kees Cook <keescook@chromium.org>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v2][next] wifi: wil6210: wmi: Use __counted_by() in
+ struct wmi_set_link_monitor_cmd and avoid -Wfamnae warning
+Message-ID: <202404291008.51DB333F@keescook>
+References: <ZgSTCmdP+omePvWg@neat>
+ <171222554691.1806092.8730005090791383928.kvalo@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] wifi: carl9170: add a proper sanity check for
- endpoints
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240422183355.3785-1-n.zhandarovich@fintech.ru>
-References: <20240422183355.3785-1-n.zhandarovich@fintech.ru>
-To: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Cc: Christian Lamparter <chunkeey@googlemail.com>,
- Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
- <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <syzkaller-bugs@googlegroups.com>, <lvc-project@linuxtesting.org>,
- <syzbot+0ae4804973be759fa420@syzkaller.appspotmail.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <171441041857.3988917.8424866883496462665.kvalo@kernel.org>
-Date: Mon, 29 Apr 2024 17:07:00 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <171222554691.1806092.8730005090791383928.kvalo@kernel.org>
 
-Nikita Zhandarovich <n.zhandarovich@fintech.ru> wrote:
+On Thu, Apr 04, 2024 at 10:12:28AM +0000, Kalle Valo wrote:
+> "Gustavo A. R. Silva" <gustavoars@kernel.org> wrote:
+> 
+> > Prepare for the coming implementation by GCC and Clang of the
+> > __counted_by attribute. Flexible array members annotated with
+> > __counted_by can have their accesses bounds-checked at run-time
+> > via CONFIG_UBSAN_BOUNDS (for array indexing) and CONFIG_FORTIFY_SOURCE
+> > (for strcpy/memcpy-family functions).
+> > 
+> > Also, -Wflex-array-member-not-at-end is coming in GCC-14, and we are
+> > getting ready to enable it globally.
+> > 
+> > So, use the `DEFINE_FLEX()` helper for an on-stack definition of
+> > a flexible structure where the size of the flexible-array member
+> > is known at compile-time, and refactor the rest of the code,
+> > accordingly.
+> > 
+> > So, with these changes, fix the following warning:
+> > drivers/net/wireless/ath/wil6210/wmi.c:4018:49: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> > 
+> > Link: https://github.com/KSPP/linux/issues/202
+> > Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> > Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> 
+> Patch applied to ath-next branch of ath.git, thanks.
+> 
+> cbb0697e0ded wifi: wil6210: wmi: Use __counted_by() in struct wmi_set_link_monitor_cmd and avoid -Wfamnae warning
 
-> Syzkaller reports [1] hitting a warning which is caused by presence
-> of a wrong endpoint type at the URB sumbitting stage. While there
-> was a check for a specific 4th endpoint, since it can switch types
-> between bulk and interrupt, other endpoints are trusted implicitly.
-> Similar warning is triggered in a couple of other syzbot issues [2].
-> 
-> Fix the issue by doing a comprehensive check of all endpoints
-> taking into account difference between high- and full-speed
-> configuration.
-> 
-> [1] Syzkaller report:
-> ...
-> WARNING: CPU: 0 PID: 4721 at drivers/usb/core/urb.c:504 usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
-> ...
-> Call Trace:
->  <TASK>
->  carl9170_usb_send_rx_irq_urb+0x273/0x340 drivers/net/wireless/ath/carl9170/usb.c:504
->  carl9170_usb_init_device drivers/net/wireless/ath/carl9170/usb.c:939 [inline]
->  carl9170_usb_firmware_finish drivers/net/wireless/ath/carl9170/usb.c:999 [inline]
->  carl9170_usb_firmware_step2+0x175/0x240 drivers/net/wireless/ath/carl9170/usb.c:1028
->  request_firmware_work_func+0x130/0x240 drivers/base/firmware_loader/main.c:1107
->  process_one_work+0x9bf/0x1710 kernel/workqueue.c:2289
->  worker_thread+0x669/0x1090 kernel/workqueue.c:2436
->  kthread+0x2e8/0x3a0 kernel/kthread.c:376
->  ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:308
->  </TASK>
-> 
-> [2] Related syzkaller crashes:
-> Link: https://syzkaller.appspot.com/bug?extid=e394db78ae0b0032cb4d
-> Link: https://syzkaller.appspot.com/bug?extid=9468df99cb63a4a4c4e1
-> 
-> Reported-and-tested-by: syzbot+0ae4804973be759fa420@syzkaller.appspotmail.com
-> Fixes: a84fab3cbfdc ("carl9170: 802.11 rx/tx processing and usb backend")
-> Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-> Acked-By: Christian Lamparter <chunkeey@gmail.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Hi,
 
-Patch applied to ath-next branch of ath.git, thanks.
+I was just walking through our patch tracker and noticed that I don't
+see this patch include in -next yet (as of next-20240429). Is there a
+flush of the ath-next queue planned soon? Or did I miss some change?
 
-b6dd09b3dac8 wifi: carl9170: add a proper sanity check for endpoints
+Thanks!
+
+-Kees
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240422183355.3785-1-n.zhandarovich@fintech.ru/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Kees Cook
 
