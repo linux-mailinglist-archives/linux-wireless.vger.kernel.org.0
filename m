@@ -1,107 +1,137 @@
-Return-Path: <linux-wireless+bounces-6958-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6959-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1BA18B4F9A
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 04:55:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4EBF8B5030
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 06:26:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89BCE1F217D9
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 02:55:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 885331F21716
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 04:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BE2D79F5;
-	Mon, 29 Apr 2024 02:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3B338F6E;
+	Mon, 29 Apr 2024 04:26:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="pHLlooPG"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DDB079E1
-	for <linux-wireless@vger.kernel.org>; Mon, 29 Apr 2024 02:55:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032268F6A
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Apr 2024 04:26:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714359307; cv=none; b=OcoNzcagbhcRGKcTVWdhR9P5doWBYaveJc4smeEocVr/KKv0KqxGAcRTVfBrbGrNOuij42UOBvvSrHHEiKaiCoc/FxlNyMEx/BxDsdcfCpw40dB8D5xqO2ryTNRTE4Hu89Xri6qfrRTTw3UFS+oDGBXMXWqdhOB4EWCRU56sa6k=
+	t=1714364773; cv=none; b=ado3+fTm0GD2VoQUve+9PP312wNbx8GzTjeG6oTjbLGcsQPSNZxPBUUOEhpTcCpsIv0vxJZ6m65N1MMIf07nybIxeXvU2dwHwdgsitINGJCSz59GaBZOV51XFcGa8pw4clpME1ksoLCb2XWA/fXxxUxV0NjHzgUf5G6oUFR3eMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714359307; c=relaxed/simple;
-	bh=LJqXLclgEXWgEq0wmjImzwHdCg/LLYPoRcBx7CxfuU0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:Content-Type:
-	 MIME-Version; b=MKvc/os6Oxiu2OoDD3PNKAVgRhXJm5/WI23UH5x1aJDsqHCAvGqKuZFdVyGnrlp7QUiIrWQ62MtYOEg1HH9VY8jl0a5imY37qqNWMCn2kndMf5KWhXXh14mA40r/5LSQsqiIHglwx9dcGTpzyTxb8yUCPmr4fhEwmMWTtuvoKS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 43T2st7aB2984716, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 43T2st7aB2984716
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 29 Apr 2024 10:54:55 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 29 Apr 2024 10:54:55 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 29 Apr 2024 10:54:55 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
- RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
- 15.01.2507.035; Mon, 29 Apr 2024 10:54:55 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Kalle Valo <kvalo@kernel.org>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH 1/2] wifi: rtl8xxxu: remove some unused includes
-Thread-Topic: [PATCH 1/2] wifi: rtl8xxxu: remove some unused includes
-Thread-Index: AQHal+TKjpgPPiYrQUiGyEHZzIn5BLF+gaLggAAORjA=
-Date: Mon, 29 Apr 2024 02:54:55 +0000
-Message-ID: <2a9fdafb5b5843c58cb080f8933b1e0a@realtek.com>
-References: <20240426141939.3881678-1-kvalo@kernel.org> 
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1714364773; c=relaxed/simple;
+	bh=DItHKFvS5X7tHsmnH/VJZ2520F30bXr/2KwEitz3R00=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=pikGk9o/fJDvQLJbZQL8YbWnUmhjbI/tVszwrwNVQbFrf9mdiEzvugj+nIN2YDC5RyouLDTldO+g+xNBzEgT+axTL5NVgBhxL1idsViPQA6t3GF+E2D7tNogJqasZ9PsZGRlsclMyVLF4mRadKmApbziyjrzM81/OYdef7PU2n0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=pHLlooPG; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43T3xNQV018489;
+	Mon, 29 Apr 2024 04:25:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=528m1WBys0h/T5fu3za+Edk+b8XQSJAHr/04TXkqC/g=; b=pH
+	LlooPGMkeUlcC+6QtD3VQpt1BnIudcdo+6mTyBHla/R0O+as8IfJzd/jqrvPEVF+
+	c553eVmWJbq8BbiHQwJxPKUrrakojMbYNYl1Se5jSF5VOhtyhzRQYBJLBg+3wpfG
+	92BJQs1/jXjTw21MFLsixv4T0Ei1xmLJC5sMzjVgt+MWJbCiBvlbzQEfwNbDJi0a
+	LxUs2HTQjpXiKhE8hn4O4Rhal8g87hQOod1q/901ftLlies+yUGubp2K1Ml8oEvR
+	QiJ0uwEOF5gUek7zZkFF0LMCGbFRDYh1Fy/UY8pc0kzVoEOnFctlj1l0IcAG33em
+	Q+mNOllLh3P+XtHzCeiQ==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xrry4jnam-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 29 Apr 2024 04:25:30 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43T4PSQR010445
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 29 Apr 2024 04:25:28 GMT
+Received: from [10.151.41.48] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Sun, 28 Apr
+ 2024 21:25:27 -0700
+Message-ID: <4f567b1a-aebc-709c-5303-ecbeb5cebc30@quicinc.com>
+Date: Mon, 29 Apr 2024 09:54:41 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.0
+Subject: Re: [PATCHv2 0/3] wifi: ath12k: Remove unsupported and unused ring
+ configurations
+Content-Language: en-US
+To: Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240427162644.2470886-1-quic_tamizhr@quicinc.com>
+ <4cea96f8-399c-0974-4d9c-21bf5eda143f@quicinc.com>
+From: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
+In-Reply-To: <4cea96f8-399c-0974-4d9c-21bf5eda143f@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: pVMBjLGJPUUXmAZ0bR6kgFLs-XWnlZic
+X-Proofpoint-ORIG-GUID: pVMBjLGJPUUXmAZ0bR6kgFLs-XWnlZic
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-04-29_01,2024-04-26_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 adultscore=0
+ clxscore=1015 impostorscore=0 phishscore=0 lowpriorityscore=0
+ priorityscore=1501 mlxlogscore=850 suspectscore=0 mlxscore=0
+ malwarescore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404290027
 
-Ping-Ke Shih wrote:
-> Kalle Valo <kvalo@kernel.org> wrote:
-> > I noticed by random that rtl8xxxu includes linux/wireless.h even though=
- it
-> > doesn't need it. While investigating a bit more I found even more unuse=
-d
-> > include files:
-> >
-> > #include <linux/init.h>
-> > #include <linux/sched.h>
-> > #include <linux/ethtool.h>
-> >
-> > It looks like that the includes are just copied to every file without c=
-hecking
-> > if the file really needs the include. So more includes could be removed=
- but
-> > that would need more careful analysis per each file.
->=20
-> I can do that. My ways will be to create an empty (new) C file to examine
-> every driver's header file can be included individually, and then try-and=
--error
-> to remove includes from existing C files.
-
-I made a patch [1] followed above ways based on these two patches.
-
->=20
-> However, this driver uses #ifdef. I will check if autoconf.h is included.
-
-Make script of kernel will automatically include include/linux/kconfig.h, s=
-o
-I didn't need extra works for #ifdef.
-
-[1] https://lore.kernel.org/linux-wireless/20240429024711.30992-1-pkshih@re=
-altek.com/T/#u
-
+On 4/28/2024 8:59 AM, Vasanthakumar Thiagarajan wrote:
+> 
+> 
+> On 4/27/2024 9:56 PM, Tamizh Chelvam Raja wrote:
+>> Currently in driver doing memory allocation for tx_monitor,
+>> tcl_cmd_ring and tcl_status ring. Here driver support for
+>> tx_monitor mode is not there and memory for tcl_cmd and tcl_status
+>> rings are allocated by firmware and it uses that memory instead of
+>> host allocated. So avoid these unused ring setup configuration.
+>>
+>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+>>
+>> Tamizh Chelvam Raja (3):
+>>    wifi: ath12k: fix calling correct function for rx monitor mode
+>>    wifi: ath12k: Remove unsupported tx monitor handling
+>>    wifi: ath12k: Remove unused tcl_*_ring configuration
+>>
+>> v2:
+>>    * Rebased on top of ToT
+>>
+>>   drivers/net/wireless/ath/ath12k/dp.c     | 16 -------
+>>   drivers/net/wireless/ath/ath12k/dp.h     |  2 -
+>>   drivers/net/wireless/ath/ath12k/dp_mon.c | 40 +----------------
+>>   drivers/net/wireless/ath/ath12k/dp_rx.c  | 56 ------------------------
+>>   drivers/net/wireless/ath/ath12k/dp_tx.c  | 44 +------------------
+>>   drivers/net/wireless/ath/ath12k/dp_tx.h  |  1 -
+>>   6 files changed, 2 insertions(+), 157 deletions(-)
+>>
+>>
+> 
+> It nice to see code removal in general :)
+> But I've also seen some concerns internally around code removal
+> especially when the code will have to be re-added in future while
+> properly supporting the feature. I guess the cover letter
+> may need to clarify those concerns at least for internal review.
+> 
+This is mainly to avoid unnecessary memory allocation for the unused rings.
+And this can be added in the future while enabling the feature.
+> Other than that, the series LGTM
+> > Vasanth
+Tamizh
 
