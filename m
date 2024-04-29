@@ -1,165 +1,86 @@
-Return-Path: <linux-wireless+bounces-6950-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-6951-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA79C8B4BE3
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Apr 2024 15:03:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06BB48B4F02
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 02:47:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7793828194D
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Apr 2024 13:03:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A49CB219B6
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Apr 2024 00:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 496616A353;
-	Sun, 28 Apr 2024 13:03:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="VOFpnd+r"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22179387;
+	Mon, 29 Apr 2024 00:47:49 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.8])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF6BFF516
-	for <linux-wireless@vger.kernel.org>; Sun, 28 Apr 2024 13:02:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.8
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945BF7F
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Apr 2024 00:47:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714309381; cv=none; b=auQNG5fK+hD9pvfrTp6+ysFKA1lKcdDKlpRdG+s9aljaj7nS2cc5AqiGEJ8d+8McTabyzMx16kCnOAhYWeDt1HziH/jF9s0jMyMKQz3Xjum8BR8XZ95mvHh/FsCv/OeKS2frQdiphBi4v40hau+giuD6CJl2S02yEwZvsUJf2SU=
+	t=1714351669; cv=none; b=h/wNz76e7XxLWYQvbOp3CqPgDfMHo51H3fIBx9mRZAKmy4tTkc6XRHW7PFx02POsuboa5dmU3t/yaRTqDzwtBPahSlmbRuCNbyXj97hivFODvjCkxUvdwLud9ePdxIaYT48jPrbH7cgEWv1iZHt0Jq+KACPMj88RspOT3+cVz28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714309381; c=relaxed/simple;
-	bh=R3O2JQfBP6xEEacrSvG0spb5D3MayLGlMWNIPKdaF9c=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=nY8xoCqdkjy4xUzBf4lRb2JS2c15Iv1FFvAaIOhh6rpQ+Q8dwHFatgYFN9fQe1g8cT3Ghxme/uiBuHSpmmnuIkoKejJzmqcVX6njOmHmf/7h6ig/OYmrMHP7qdke/823gu8lEAM9uh/ySmZ3/br5ucRTyGypvErgyow0KpXrfJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=VOFpnd+r; arc=none smtp.client-ip=220.197.31.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Content-Type:Mime-Version:Subject:From:Date:
-	Message-Id; bh=R0inuKM4+8aVSpQ081PkQgT7KM/xiGQY+z5xhcTASgM=; b=V
-	OFpnd+r/FQUkvb81/uhi5++6W5N7pMegUWTGi5dv74y/Fg0CTkVS0hokLO6oTYC6
-	uQwu2a8biHBTeBb1aShHefG0P59EHeyFNNCJvHgbgGHD4GymWeHKWqWP7xzjdxBF
-	qB98aq2TiglcYC9zjLarutaffkhIolWyTBKTKVGPLM=
-Received: from smtpclient.apple (unknown [120.231.220.21])
-	by gzga-smtp-mta-g0-4 (Coremail) with SMTP id _____wDn75zkSC5mdEJvAA--.49303S3;
-	Sun, 28 Apr 2024 21:02:29 +0800 (CST)
-Content-Type: text/plain;
-	charset=us-ascii
+	s=arc-20240116; t=1714351669; c=relaxed/simple;
+	bh=Aa8WIq+HIgyfRhiCuY4ULdJPE5ytQViGn5sKfRl0Z2w=;
+	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type:Message-ID:Date; b=O2t2g8Cgt27p9uF19QCZSRgvmVgP/+ZUJBiGrFlUZTxQn78htn6ABe4t+/+8JjguqEdfUDU3kO/AjTG/Bd2pRHnWPs6WNbFRez9DAAfjczyQTpbIw/HnxHtFrmJJG0Ni2aX4tIH+5WYm+v9NGrDJfHJn6Q3UaQ+K7Mxs4uyJYaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 43T0lgzuF2840007, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 43T0lgzuF2840007
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Apr 2024 08:47:42 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Mon, 29 Apr 2024 08:47:43 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 29 Apr
+ 2024 08:47:42 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
+CC: <damon.chen@realtek.com>
+Subject: Re: [PATCH 1/2] wifi: rtw89: fix CTS transmission issue with center frequency deviation
+In-Reply-To: <20240423121247.24714-1-pkshih@realtek.com>
+References: <20240423121247.24714-1-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 15.0 \(3693.20.0.1.32\))
-Subject: Re: [PATCHv3] wifi: ath11k: skip status ring entry processing
-From: Meiyong Yu <meiyong.yu@126.com>
-In-Reply-To: <A8B8371F-2FF4-45C7-9BEA-BE7FD5CA288F@126.com>
-Date: Sun, 28 Apr 2024 21:02:28 +0800
-Cc: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>,
- ath11k@lists.infradead.org,
- linux-wireless@vger.kernel.org,
- Venkateswara Naralasetty <quic_vnaralas@quicinc.com>,
- kernel test robot <lkp@intel.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <22DBEF03-83C8-460D-AF50-E1DE0038C072@126.com>
-References: <20240427091248.2013946-1-quic_tamizhr@quicinc.com>
- <c8812227-ae90-4bbe-9fd3-425b61e36838@quicinc.com>
- <A8B8371F-2FF4-45C7-9BEA-BE7FD5CA288F@126.com>
-To: Jeff Johnson <quic_jjohnson@quicinc.com>
-X-Mailer: Apple Mail (2.3693.20.0.1.32)
-X-CM-TRANSID:_____wDn75zkSC5mdEJvAA--.49303S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWxGw1fJFy7ZFyxAw4UZw4UCFg_yoW5urW5pa
-	ySqFsIkr95Jryxtr4SqFZ7CF15twsYqr9rGr1fC34UWF4q9a4SgFnFgrWUWF98CFW5Ga4j
-	vF4jqw1kKayqy3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UUnY7UUUUU=
-X-CM-SenderInfo: 5phl501qjo53a6rslhhfrp/1tbiTh-OhmVLaYj0TwABss
+MIME-Version: 1.0
+Content-Type: text/plain
+Message-ID: <e0712b7f-ff1d-49e0-8863-c6edc20ecbbd@RTEXMBS04.realtek.com.tw>
+Date: Mon, 29 Apr 2024 08:47:42 +0800
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
+> From: Kuan-Chung Chen <damon.chen@realtek.com>
+> 
+> The CTS cannot be received by the peer due to center frequency
+> deviation. This issue can be solved by correct settings to
+> transmit proper CTS.
+> 
+> Signed-off-by: Kuan-Chung Chen <damon.chen@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-> On Apr 28, 2024, at 8:54 PM, Meiyong Yu <meiyong.yu@126.com> wrote:
->=20
->=20
->=20
->> On Apr 28, 2024, at 6:46 AM, Jeff Johnson <quic_jjohnson@quicinc.com> =
-wrote:
->>=20
->> On 4/27/2024 2:12 AM, Tamizh Chelvam Raja wrote:
->>> From: Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
->>>=20
->>> If STATUS_BUFFER_DONE is not set for a monitor status ring entry,
->>> we don't process the status ring until STATUS_BUFFER_DONE set
->>> for that status ring entry.
->>>=20
->>> During LMAC reset it may happen that hardware will not write
->>> STATUS_BUFFER_DONE tlv in status buffer, in that case we end up
->>> waiting for STATUS_BUFFER_DONE leading to backpressure on monitor
->>> status ring.
->>>=20
->=20
-> Can you known the LMAC reset event, if you can known, you can set all =
-the ring entry
-> status  to done after reset is done, and the logic of code will be =
-more clear.
->=20
+2 patch(es) applied to rtw-next branch of rtw.git, thanks.
 
-If sene of the LMAC reset event is asynchronous, You can do this:
-  1) when  LMAC init than set  a value to the new add global variabe =
-lmac_life_cycle_id
-  2) before add tlv to ring, set lmac_life_cycle_id to tlv
-  3) when LMAC reset event is trigger, increase the value of =
-lmac_life_cycle_id=20
- 4) when get the status of tlv in ring(must delay for same period to =
-ensure the real send ring is already send),=20
-    check the value  lmac_life_cycle_id  in tlv, if it smaller than the  =
-global one set tlv status to DONE=20
+7be73dc106a9 wifi: rtw89: fix CTS transmission issue with center frequency deviation
+3ef60f44830a wifi: rtw89: 8852b: update hardware parameters for RFE type 5
 
-
->>> To fix the issue, when HP(Head Pointer) + 1 entry is peeked and if =
-DMA
->>> is not done and if HP + 2 entry's DMA done is set,
->>> replenish HP + 1 entry and start processing in next interrupt.
->>> If HP + 2 entry's DMA done is not set, poll onto HP + 1 entry DMA
->>> done to be set.
->>>=20
->>> Also, during monitor attach HP points to the end of the ring and
->>> TP(Tail Pointer) points to the start of the ring.
->>> Using ath11k_hal_srng_src_peek() may result in processing invalid =
-buffer
->>> for the very first interrupt. Since, HW starts writing buffer from =
-TP.
->>>=20
->>> To avoid this issue call ath11k_hal_srng_src_next_peek() instead of
->>> calling ath11k_hal_srng_src_peek().
->>>=20
->>> Tested-on: IPQ5018 hw1.0 AHB =
-WLAN.HK.2.6.0.1-00861-QCAHKSWPL_SILICONZ-1
->>>=20
->>> Reported-by: kernel test robot <lkp@intel.com>
->>> Closes: =
-https://lore.kernel.org/oe-kbuild-all/202303281719.CvnPkOiK-lkp@intel.com/=
-
->>=20
->> I believe these are misleading. LKP didn't find the problem you are =
-fixing, it
->> found a problem in the implementation of the patch.
->> So I would move these below the "---" so the LKP knows the issue it =
-found is
->> fixed, but the git history isn't itself isn't misleading
->>=20
->>> Signed-off-by: Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
->>> Co-developed-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
->>> Signed-off-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
->>> ---
->>> v3:
->>> * Rebased on top of ToT
->>> v2:
->>> * Fixed compilation warning Reported-by: kernel test robot =
-<lkp@intel.com>
->>>=20
->>> drivers/net/wireless/ath/ath11k/dp_rx.c | 88 =
-++++++++++++++++++++++---
->>> drivers/net/wireless/ath/ath11k/hal.c   | 14 ++++
->>> drivers/net/wireless/ath/ath11k/hal.h   |  2 +
->>=20
->> My Qualcomm Innovation Center copyright checker reports:
->> drivers/net/wireless/ath/ath11k/dp_rx.c copyright missing 2024
->> drivers/net/wireless/ath/ath11k/hal.c copyright missing 2024
->>=20
->=20
+---
+https://github.com/pkshih/rtw.git
 
 
