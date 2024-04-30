@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-7048-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7049-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46E008B7740
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 15:35:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03C388B774E
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 15:37:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 789551C20922
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 13:35:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C0EAB23BB9
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 13:37:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0644A171640;
-	Tue, 30 Apr 2024 13:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E9C1171E45;
+	Tue, 30 Apr 2024 13:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BV4jsJ5L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C9EMHaxg"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D630842AA5
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Apr 2024 13:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E3316F859;
+	Tue, 30 Apr 2024 13:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714484142; cv=none; b=luTIFN5J3CdCBfDVR/dXpLoqACF7dMOOMrR4r0XNTgMBwmSn8h6vQ/pm0SOjXZS8wXExyL2ORSH/dcMu+8UdjpIaN9j6oal+E1p+fXkKu2ykrc007RGJ2uTZFIr9ipmPKH6IkF9cCQGJI5Q+lV0cUFj5GLe7QUZ4+BYIuZbvtmQ=
+	t=1714484245; cv=none; b=tkCV9g03QfEd8GvRJkzQwweXS3KRezU6VQW1Mmna6rzr7ZWCWx8U2KSiKBUUfac8Osz3eGJ/5z0zs1nrEBumZy9ZZ6mn3MhYObo1/SIf9GnUsOfOCxTjDB7CG8VXYIPLPMohb8sUrdqVo0LqEJa44Oik4PiADockgVQKexMWImY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714484142; c=relaxed/simple;
-	bh=BS4Ex7IDF8ZvIW9lV3JywjDVj9PSW7RLDN20me3TgKw=;
+	s=arc-20240116; t=1714484245; c=relaxed/simple;
+	bh=y5evCM8bH+FCtnusnsHECbkq6iUTlw3xWVjkltMpl3A=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=eqcE8mksYCetSM6nCWv96HZXI5GpQ0UF1rnDo+Rin8JwlC6nVsN17cuUkWSwPVsnEVVO+2xwASx/HJ4hK1cv9up0os7LI/TmXcyXiQE2BDtrzLa4qugciPy8xpWV2XkVhnZxRdqHSYwgGHNr0i4S3UpZtffwRUGj/z0VybK/Eys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BV4jsJ5L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E7FC4AF18;
-	Tue, 30 Apr 2024 13:35:41 +0000 (UTC)
+	 Cc:Message-ID:Date; b=e8PRmQAiC+MahP+gxRC6hnvho7PopWM2E+dzh1stuSFPNew+rAvfKGy/3pnJ+SLMKwMa5zRH7TZTV71WVuPi3kz8Fmre5bx91UtvBNVTxG6KHMsZnK4knoofXYyS1CZpAYLD/MJMkNlISL+uYNNiob+5hk+FyGB1kpwlqRbujeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C9EMHaxg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92B8DC4AF18;
+	Tue, 30 Apr 2024 13:37:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714484142;
-	bh=BS4Ex7IDF8ZvIW9lV3JywjDVj9PSW7RLDN20me3TgKw=;
+	s=k20201202; t=1714484244;
+	bh=y5evCM8bH+FCtnusnsHECbkq6iUTlw3xWVjkltMpl3A=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=BV4jsJ5LPmBqPzC0gnQHzmHg0GRz1qo4abBCZ40VXLW9WuWMK1s64EG/lpXzsWc+8
-	 2C0gVt7lMECrN8aM833fiAtyBAlSjeK93putnuQDzB1X4YOGlPqW5xzF6sC7xJ9a/Q
-	 If3pf5iZhCiif2fFSm/QISn0Lt78/5qB2r2IgOm0RR03yQVe+pbWrDrEh3qHzGYi8t
-	 dOb8xro1hlEUREsGqzx+4rBN0m7roJC+OMpUjLQIT20zsbbjEFZhn9ee7YG8aqrSh4
-	 eipef7bTxQ63oio702XMvDp1Dfnw1yAyGZ5E13u8wROWACbjqlV2DyeWHtPIIsm2ez
-	 4L3CGBDLRoFrw==
+	b=C9EMHaxgK/1Sqyn2OLj3vbwWoou0zsYNsbMFw9Rw53B2N62qiGcxh03aW9mrusTMr
+	 Gjvqq0RcGvMsvK39H9eDlkNayson7heNTuZHa921A77j/lozmmf0zOYb0Zd27lyl1e
+	 9XCWuyLTcVWyILbzep9GWS+ntylkKcJerQRIPZ9CDvRgrcyFbqw1QvuIdMieSN7ToZ
+	 qZbZqoGJMHW9H0DOS2eczlgEOuqOZwYkfXKcfS8fwrim1DCqm0Y9DXk/IhwQ1WhCsk
+	 S6JPkp0tSFgDo1rtF6kOISWl6ItqH5PC31/JauV6Dr4371/cjF8hLmnaYvOXA2MZsN
+	 /BdaNliVIC3cg==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,59 +49,85 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] wifi: ath12k: fix flush failure in recovery scenarios
+Subject: Re: [PATCH v2] wifi: ar5523: enable proper endpoint verification
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240426015434.94840-1-quic_bqiang@quicinc.com>
-References: <20240426015434.94840-1-quic_bqiang@quicinc.com>
-To: Baochen Qiang <quic_bqiang@quicinc.com>
-Cc: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
- <quic_bqiang@quicinc.com>
+In-Reply-To: <20240408121425.29392-1-n.zhandarovich@fintech.ru>
+References: <20240408121425.29392-1-n.zhandarovich@fintech.ru>
+To: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Cc: Nikita Zhandarovich <n.zhandarovich@fintech.ru>, Wu Yunchuan
+	<yunchuan@nfschina.com>, Johannes Berg <johannes.berg@intel.com>, "Breno
+ Leitao" <leitao@debian.org>, <linux-wireless@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>,
+ <syzbot+1bc2c2afd44f820a669f@syzkaller.appspotmail.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <171448413940.313333.15685357327905271227.kvalo@kernel.org>
-Date: Tue, 30 Apr 2024 13:35:41 +0000 (UTC)
+Message-ID: <171448424101.313333.6825523466600682181.kvalo@kernel.org>
+Date: Tue, 30 Apr 2024 13:37:22 +0000 (UTC)
 
-Baochen Qiang <quic_bqiang@quicinc.com> wrote:
+Nikita Zhandarovich <n.zhandarovich@fintech.ru> wrote:
 
-> Commit eaf9f17b861b ("wifi: ath12k: relocate ath12k_dp_pdev_pre_alloc()
-> call") moves ath12k_dp_pdev_pre_alloc() from ath12k_core_start() to
-> ath12k_mac_allocate(), resulting in ath12k_mac_flush() failure in
-> recovery scenarios:
+> Syzkaller reports [1] hitting a warning about an endpoint in use
+> not having an expected type to it.
 > 
-> [ 6849.684104] ath12k_pci 0000:04:00.0: pdev 0 successfully recovered
-> [ 6854.907320] ath12k_pci 0000:04:00.0: failed to flush transmit queue 0
-> [ 6860.027353] ath12k_pci 0000:04:00.0: failed to flush transmit queue 0
-> [ 6865.143385] ath12k_pci 0000:04:00.0: failed to flush transmit queue 0
+> Fix the issue by checking for the existence of all proper
+> endpoints with their according types intact.
 > 
-> This is because, with ath12k_dp_pdev_pre_alloc() moved to ath12k_mac_allocate(),
-> dp->num_tx_pending is not reset due to ATH12K_FLAG_REGISTERED set in
-> recovery scenarios.
+> Sadly, this patch has not been tested on real hardware.
 > 
-> So a possible fix would be to reset that counter at some proper point,
-> just like the old design. But considering that the counter tracks number
-> of packets pending to be freed or returned to mac80211, forcefully reset
-> it might make it hard to expose some real issues. For example if somehow
-> ath12k fails to free/return some TX packets, we don't know that because
-> no warnings any more.
+> [1] Syzkaller report:
+> ------------[ cut here ]------------
+> usb 1-1: BOGUS urb xfer, pipe 3 != type 1
+> WARNING: CPU: 0 PID: 3643 at drivers/usb/core/urb.c:504 usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
+> ...
+> Call Trace:
+>  <TASK>
+>  ar5523_cmd+0x41b/0x780 drivers/net/wireless/ath/ar5523/ar5523.c:275
+>  ar5523_cmd_read drivers/net/wireless/ath/ar5523/ar5523.c:302 [inline]
+>  ar5523_host_available drivers/net/wireless/ath/ar5523/ar5523.c:1376 [inline]
+>  ar5523_probe+0x14b0/0x1d10 drivers/net/wireless/ath/ar5523/ar5523.c:1655
+>  usb_probe_interface+0x30f/0x7f0 drivers/usb/core/driver.c:396
+>  call_driver_probe drivers/base/dd.c:560 [inline]
+>  really_probe+0x249/0xb90 drivers/base/dd.c:639
+>  __driver_probe_device+0x1df/0x4d0 drivers/base/dd.c:778
+>  driver_probe_device+0x4c/0x1a0 drivers/base/dd.c:808
+>  __device_attach_driver+0x1d4/0x2e0 drivers/base/dd.c:936
+>  bus_for_each_drv+0x163/0x1e0 drivers/base/bus.c:427
+>  __device_attach+0x1e4/0x530 drivers/base/dd.c:1008
+>  bus_probe_device+0x1e8/0x2a0 drivers/base/bus.c:487
+>  device_add+0xbd9/0x1e90 drivers/base/core.c:3517
+>  usb_set_configuration+0x101d/0x1900 drivers/usb/core/message.c:2170
+>  usb_generic_driver_probe+0xbe/0x100 drivers/usb/core/generic.c:238
+>  usb_probe_device+0xd8/0x2c0 drivers/usb/core/driver.c:293
+>  call_driver_probe drivers/base/dd.c:560 [inline]
+>  really_probe+0x249/0xb90 drivers/base/dd.c:639
+>  __driver_probe_device+0x1df/0x4d0 drivers/base/dd.c:778
+>  driver_probe_device+0x4c/0x1a0 drivers/base/dd.c:808
+>  __device_attach_driver+0x1d4/0x2e0 drivers/base/dd.c:936
+>  bus_for_each_drv+0x163/0x1e0 drivers/base/bus.c:427
+>  __device_attach+0x1e4/0x530 drivers/base/dd.c:1008
+>  bus_probe_device+0x1e8/0x2a0 drivers/base/bus.c:487
+>  device_add+0xbd9/0x1e90 drivers/base/core.c:3517
+>  usb_new_device.cold+0x685/0x10ad drivers/usb/core/hub.c:2573
+>  hub_port_connect drivers/usb/core/hub.c:5353 [inline]
+>  hub_port_connect_change drivers/usb/core/hub.c:5497 [inline]
+>  port_event drivers/usb/core/hub.c:5653 [inline]
+>  hub_event+0x26cb/0x45d0 drivers/usb/core/hub.c:5735
+>  process_one_work+0x9bf/0x1710 kernel/workqueue.c:2289
+>  worker_thread+0x669/0x1090 kernel/workqueue.c:2436
+>  kthread+0x2e8/0x3a0 kernel/kthread.c:376
+>  ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:306
+>  </TASK>
 > 
-> That is to say we should not reset that counter during recovery (which is
-> already done due to above commit), instead should decrease it each time
-> a packet is freed/returned. Currently almost each related function has
-> this logic implemented, except ath12k_dp_cc_cleanup(). So add the same
-> there to fix this issue.
-> 
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> 
-> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Reported-and-tested-by: syzbot+1bc2c2afd44f820a669f@syzkaller.appspotmail.com
+> Fixes: b7d572e1871d ("ar5523: Add new driver")
+> Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-24de1b7b231c wifi: ath12k: fix flush failure in recovery scenarios
+e120b6388d7d wifi: ar5523: enable proper endpoint verification
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240426015434.94840-1-quic_bqiang@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240408121425.29392-1-n.zhandarovich@fintech.ru/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
