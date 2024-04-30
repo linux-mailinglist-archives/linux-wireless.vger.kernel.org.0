@@ -1,138 +1,94 @@
-Return-Path: <linux-wireless+bounces-7045-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7047-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD3388B771E
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 15:31:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F1168B773F
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 15:35:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E0531F22EE8
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 13:31:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDE31286EDD
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 13:35:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B34B4172BA7;
-	Tue, 30 Apr 2024 13:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F129171E6E;
+	Tue, 30 Apr 2024 13:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="HHbJU2x/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OAqdjBUk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60AEA171E71;
-	Tue, 30 Apr 2024 13:30:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08559171E66
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Apr 2024 13:34:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714483843; cv=none; b=LcneuFrNz9acDhMzsoN1TiB2bYGTp8SnbGY3/ud9ZqKGt5fnEMDGM/jficwvB/JOAxbHIh7a7V3I7m4LorBfZFl2hX889opqfR4pF52uu1gUpBCZ/kl2hAsPw9XgJD4AmlzyPSxymnEgdwLXItC+fq9hva2fPWMLM7902gYH2DI=
+	t=1714484054; cv=none; b=Hcke7Pqy9jTxZp4VOdenPEiIEV/Sq28K5Ix5YaLKwAshRlNLw2+HD7ZQuZTSiWeA1H8ePU/AT07KQhEqzQVqqFpuTkWc17fz1Uga7yDlPEeoSAgm3ABh8JskfCtTDpFQdd+cyb0k6sUFiMF8NZkeYLs0TSiGgJFopiefzgKAMEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714483843; c=relaxed/simple;
-	bh=borJX4t19zR6/d5a/i0cmTDNpYwXouDfXF+UgpH+p0U=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=eu2mQ+p8Azia4/m2qoDAjCa8wO8iX/nBr72dUESqR1wxECMvz72psKR7j5MnSYhnH+KT9oTy+4PxhIp8INc8a/GIFnnxjoQUfoJCKRUOlPoogy6znNBvx/57q8cchWar7uL72yasdE5Q8Bu1+WiVpSJfyDi3fNIQyRlikMOddv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=HHbJU2x/; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43U9CJsr021247;
-	Tue, 30 Apr 2024 13:30:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:date:subject:mime-version:content-type
-	:content-transfer-encoding:message-id:references:in-reply-to:to
-	:cc; s=qcppdkim1; bh=2PVzTHHVAjkyFPDFVLKR/oC7LQ6dDML+tHqJ0mDUlP8
-	=; b=HHbJU2x/U6KYK8nWsvhFS0n2VN028ZMaPVQ1ZpXqz3I6hFN52n2uO9UF2Uo
-	8YBW69wASn0FCZnaOjs/oXkC9pwxAhkqa9um6TyYz/Bl9a7mnPsp5LwubqnlD6vw
-	75gFzoNmPlIsZh+ylqdxfhJsOGRWiFPNwD0IA4rqYxWhAVuuWGGaDeLa0tt+FAMw
-	esB4stYrnvDvs8+IXobQTx0HpV4Q7Mz6Pby33X+Ncj+YXemCbjU8UgKeyrF0efcT
-	krxin5rd6Xqs+5IqEHntlWOrMDNcshhR5uMCuWjmgkhDNjUu+D+8sduGN9HzeOOe
-	x1BHRY0QGuL6/9vkH4aHEe0595w==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xthgvu18b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Apr 2024 13:30:29 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43UDURxP015173
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Apr 2024 13:30:28 GMT
-Received: from [169.254.0.1] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 30 Apr
- 2024 06:30:27 -0700
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Date: Tue, 30 Apr 2024 06:30:21 -0700
-Subject: [PATCH 2/2] wifi: ath11k: unmap the CE in ath11k_ahb_probe() error
- path
+	s=arc-20240116; t=1714484054; c=relaxed/simple;
+	bh=wzkgOC/aglpW7s76rCyOHqSnMmdZuP+WCPsYrPnKeCI=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=abA10PgJsj3tGom2UIsfnHh3YNpQeBSFuJxAJm9Sl1ztsOTvrgZ3MwfI1yYlSZJiAPhGuun/I2EwaAGWGYKnrlyXKaajQfd/VJOAvbBerZQaT5AQlz0SmxLegxGjvCWVORTYYgck7ra62y3H2p1c80cnb9pReVTMrbEbxJRgy7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OAqdjBUk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF01C2BBFC;
+	Tue, 30 Apr 2024 13:34:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714484053;
+	bh=wzkgOC/aglpW7s76rCyOHqSnMmdZuP+WCPsYrPnKeCI=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=OAqdjBUkiwsyC1dBNip2NOKXIgcstY8Ih155Gn0+4H5UJa/jTkD+/b2g6q5NJk7kO
+	 mK/1s4bZV1gdIe0bHLhRl3sR13y8Gmrol5uAiLWfcMIfIXftAW/QoVR2CZ3J56QaXR
+	 mSlbksess+JMZvgJnGBgAaYFtAcWbk8WfjxJT5d/hY5anqkIDNBvzIqYJ5QcgUldho
+	 DKYwvDbi4xEM5iWcH7+fyoBeq5o7YMA9zp9HUg3X334KqV4Sr2NcjnuQhGAHbJgIuJ
+	 LiQjhd2AeteON3Sk5rLKJmx5WpFU6p8d7S2TTYChCGOGrkLTwB/j63crv7uIj7hHb7
+	 3/Fm4fLRrD/jw==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20240430-ce-unmap-v1-2-e468328f95d9@quicinc.com>
-References: <20240430-ce-unmap-v1-0-e468328f95d9@quicinc.com>
-In-Reply-To: <20240430-ce-unmap-v1-0-e468328f95d9@quicinc.com>
-To: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
-CC: <linux-wireless@vger.kernel.org>, <ath11k@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>
-X-Mailer: b4 0.13.0
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: oTS4Gx5qsPdXtT4Dxe896P3OVQjQXNR7
-X-Proofpoint-GUID: oTS4Gx5qsPdXtT4Dxe896P3OVQjQXNR7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-04-30_07,2024-04-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
- adultscore=0 mlxscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0
- mlxlogscore=957 priorityscore=1501 phishscore=0 malwarescore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2404300095
+Subject: Re: [PATCH] wifi: ath12k: check M3 buffer size as well whey trying to
+ reuse it
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20240425021740.29221-1-quic_bqiang@quicinc.com>
+References: <20240425021740.29221-1-quic_bqiang@quicinc.com>
+To: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+ <quic_bqiang@quicinc.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <171448405111.313333.6267220944906708635.kvalo@kernel.org>
+Date: Tue, 30 Apr 2024 13:34:12 +0000 (UTC)
 
-Currently, in ath11k_ahb_probe(), if a failure occurs after
-ath11k_ahb_ce_remap() is called, and if hw_params->ce_remap is
-enabled, the CE register memory is not unmapped. So add a call to
-ath11k_ahb_ce_unmap() in the error path.
+Baochen Qiang <quic_bqiang@quicinc.com> wrote:
 
-This issue was identified by smatch/smatch_scripts/kchecker:
+> Currently in recovery/resume cases, we do not free M3 buffer but
+> instead will reuse it. This is done by checking m3_mem->vaddr: if it
+> is not NULL we believe M3 buffer is ready and go ahead to reuse it.
+> 
+> Note that m3_mem->size is not checked. This is safe for now because
+> currently M3 reuse logic only gets executed in recovery/resume cases
+> and the size keeps unchanged in either of them.
+> 
+> However ideally the size should be checked as well, to make the code
+> safer. So add the check there. Now if that check fails, free old M3
+> buffer and reallocate a new one.
+> 
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
+> 
+> Fixes: 303c017821d8 ("wifi: ath12k: fix kernel crash during resume")
+> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-drivers/net/wireless/ath/ath11k/ahb.c:1218 ath11k_ahb_probe() warn: 'ab->mem_ce' from ioremap() not released on lines: 1218.
+Patch applied to ath-next branch of ath.git, thanks.
 
-Since this is a rare error path with no simple way to test, and since
-the change is trivial to review, compile tested only.
-
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/ahb.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
-index aa62ed710090..ef0ede16aac8 100644
---- a/drivers/net/wireless/ath/ath11k/ahb.c
-+++ b/drivers/net/wireless/ath/ath11k/ahb.c
-@@ -1177,7 +1177,7 @@ static int ath11k_ahb_probe(struct platform_device *pdev)
- 
- 	ret = ath11k_ahb_fw_resources_init(ab);
- 	if (ret)
--		goto err_core_free;
-+		goto err_ce_unmap;
- 
- 	ret = ath11k_ahb_setup_smp2p_handle(ab);
- 	if (ret)
-@@ -1229,6 +1229,9 @@ static int ath11k_ahb_probe(struct platform_device *pdev)
- err_fw_deinit:
- 	ath11k_ahb_fw_resource_deinit(ab);
- 
-+err_ce_unmap:
-+	ath11k_ahb_ce_unmap(ab);
-+
- err_core_free:
- 	ath11k_core_free(ab);
- 	platform_set_drvdata(pdev, NULL);
+05090ae82f44 wifi: ath12k: check M3 buffer size as well whey trying to reuse it
 
 -- 
-2.42.0
+https://patchwork.kernel.org/project/linux-wireless/patch/20240425021740.29221-1-quic_bqiang@quicinc.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
 
