@@ -1,134 +1,158 @@
-Return-Path: <linux-wireless+bounces-7049-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7050-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03C388B774E
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 15:37:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A49FB8B7791
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 15:48:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C0EAB23BB9
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 13:37:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FD542835AE
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 13:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E9C1171E45;
-	Tue, 30 Apr 2024 13:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52471171E53;
+	Tue, 30 Apr 2024 13:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C9EMHaxg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f3lICaCL"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E3316F859;
-	Tue, 30 Apr 2024 13:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ECF517167F
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Apr 2024 13:48:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714484245; cv=none; b=tkCV9g03QfEd8GvRJkzQwweXS3KRezU6VQW1Mmna6rzr7ZWCWx8U2KSiKBUUfac8Osz3eGJ/5z0zs1nrEBumZy9ZZ6mn3MhYObo1/SIf9GnUsOfOCxTjDB7CG8VXYIPLPMohb8sUrdqVo0LqEJa44Oik4PiADockgVQKexMWImY=
+	t=1714484934; cv=none; b=kvZzvXgpCZ/EJB0fYlkOQu3taTWHIbcgYt3IAxAiopVY4vwdwVyQgmzLIlb4h+Mt6e49M2zexmlBpFsktS0N38AU8ouyJHMshrn6QMLIAbrc8KqLJalCEvitfYIvsNrL5CT6h7PczSQKWOG6ZdV1pRUS4Z4X+2BlKbTQQ0/bv2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714484245; c=relaxed/simple;
-	bh=y5evCM8bH+FCtnusnsHECbkq6iUTlw3xWVjkltMpl3A=;
-	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=e8PRmQAiC+MahP+gxRC6hnvho7PopWM2E+dzh1stuSFPNew+rAvfKGy/3pnJ+SLMKwMa5zRH7TZTV71WVuPi3kz8Fmre5bx91UtvBNVTxG6KHMsZnK4knoofXYyS1CZpAYLD/MJMkNlISL+uYNNiob+5hk+FyGB1kpwlqRbujeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C9EMHaxg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92B8DC4AF18;
-	Tue, 30 Apr 2024 13:37:22 +0000 (UTC)
+	s=arc-20240116; t=1714484934; c=relaxed/simple;
+	bh=6WTKqUfG5kN4YNoATVxd08lZG8BIH87ncCi8h2kONA8=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=XBibyX+m31ki+3zpH7iQN4xG+Vm5TFANFyJe/KXLZE7yJKmonqGxQkDmc20INmzIh5GOJ6wpoeaq6d1eDCpnGRqVJGdz6B4ucAUIuSFS7wY/4hKrVadPxPTtAIv5rBDERDq0MH5OjIDYYVgqwH352ePvYBRVNkZntwIzTybsY5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f3lICaCL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94350C4AF18;
+	Tue, 30 Apr 2024 13:48:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714484244;
-	bh=y5evCM8bH+FCtnusnsHECbkq6iUTlw3xWVjkltMpl3A=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=C9EMHaxgK/1Sqyn2OLj3vbwWoou0zsYNsbMFw9Rw53B2N62qiGcxh03aW9mrusTMr
-	 Gjvqq0RcGvMsvK39H9eDlkNayson7heNTuZHa921A77j/lozmmf0zOYb0Zd27lyl1e
-	 9XCWuyLTcVWyILbzep9GWS+ntylkKcJerQRIPZ9CDvRgrcyFbqw1QvuIdMieSN7ToZ
-	 qZbZqoGJMHW9H0DOS2eczlgEOuqOZwYkfXKcfS8fwrim1DCqm0Y9DXk/IhwQ1WhCsk
-	 S6JPkp0tSFgDo1rtF6kOISWl6ItqH5PC31/JauV6Dr4371/cjF8hLmnaYvOXA2MZsN
-	 /BdaNliVIC3cg==
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1714484933;
+	bh=6WTKqUfG5kN4YNoATVxd08lZG8BIH87ncCi8h2kONA8=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=f3lICaCLV6tAhH0BT5FnBShhKYOpmQZQHyzJv08Or7dA7e3pL0b38kuL8uypgQUYU
+	 9uNgvcu0ER+CJQ6GPd/CpuVytPWDpP/n36QXUuUZf/GZdBLQx168XBYhXtJfymads9
+	 kyEWLJbUwDvZSSleY9j106wHlgcgXI6YZSu8mEAECCyOqjiP0CfyCVMB0sSGyqKHHU
+	 ZUf/6kuQ4Uljd/R2vwyIrAaBVfWSF4BlsSyTjVsZjQCPdz3xl1iWEU5s1iKtxHLYNI
+	 LOsKLuWDAIPwlZPfhviMdvqx38VP/NkdEAQgRFfTL8DUheyshiciXgK/VWWG/T3tTq
+	 3NGPBu0kOld+g==
+From: Kalle Valo <kvalo@kernel.org>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>,
+  <ath11k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>,
+  Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
+Subject: Re: [PATCHv5] wifi: ath11k: skip status ring entry processing
+References: <20240429073624.736147-1-quic_tamizhr@quicinc.com>
+	<35f114c4-1ff7-4a4b-aadf-ed147f19e170@quicinc.com>
+Date: Tue, 30 Apr 2024 16:48:50 +0300
+In-Reply-To: <35f114c4-1ff7-4a4b-aadf-ed147f19e170@quicinc.com> (Jeff
+	Johnson's message of "Mon, 29 Apr 2024 11:12:49 -0700")
+Message-ID: <87cyq7ota5.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] wifi: ar5523: enable proper endpoint verification
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240408121425.29392-1-n.zhandarovich@fintech.ru>
-References: <20240408121425.29392-1-n.zhandarovich@fintech.ru>
-To: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Cc: Nikita Zhandarovich <n.zhandarovich@fintech.ru>, Wu Yunchuan
-	<yunchuan@nfschina.com>, Johannes Berg <johannes.berg@intel.com>, "Breno
- Leitao" <leitao@debian.org>, <linux-wireless@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>,
- <syzbot+1bc2c2afd44f820a669f@syzkaller.appspotmail.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <171448424101.313333.6825523466600682181.kvalo@kernel.org>
-Date: Tue, 30 Apr 2024 13:37:22 +0000 (UTC)
+Content-Type: text/plain
 
-Nikita Zhandarovich <n.zhandarovich@fintech.ru> wrote:
+Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 
-> Syzkaller reports [1] hitting a warning about an endpoint in use
-> not having an expected type to it.
-> 
-> Fix the issue by checking for the existence of all proper
-> endpoints with their according types intact.
-> 
-> Sadly, this patch has not been tested on real hardware.
-> 
-> [1] Syzkaller report:
-> ------------[ cut here ]------------
-> usb 1-1: BOGUS urb xfer, pipe 3 != type 1
-> WARNING: CPU: 0 PID: 3643 at drivers/usb/core/urb.c:504 usb_submit_urb+0xed6/0x1880 drivers/usb/core/urb.c:504
-> ...
-> Call Trace:
->  <TASK>
->  ar5523_cmd+0x41b/0x780 drivers/net/wireless/ath/ar5523/ar5523.c:275
->  ar5523_cmd_read drivers/net/wireless/ath/ar5523/ar5523.c:302 [inline]
->  ar5523_host_available drivers/net/wireless/ath/ar5523/ar5523.c:1376 [inline]
->  ar5523_probe+0x14b0/0x1d10 drivers/net/wireless/ath/ar5523/ar5523.c:1655
->  usb_probe_interface+0x30f/0x7f0 drivers/usb/core/driver.c:396
->  call_driver_probe drivers/base/dd.c:560 [inline]
->  really_probe+0x249/0xb90 drivers/base/dd.c:639
->  __driver_probe_device+0x1df/0x4d0 drivers/base/dd.c:778
->  driver_probe_device+0x4c/0x1a0 drivers/base/dd.c:808
->  __device_attach_driver+0x1d4/0x2e0 drivers/base/dd.c:936
->  bus_for_each_drv+0x163/0x1e0 drivers/base/bus.c:427
->  __device_attach+0x1e4/0x530 drivers/base/dd.c:1008
->  bus_probe_device+0x1e8/0x2a0 drivers/base/bus.c:487
->  device_add+0xbd9/0x1e90 drivers/base/core.c:3517
->  usb_set_configuration+0x101d/0x1900 drivers/usb/core/message.c:2170
->  usb_generic_driver_probe+0xbe/0x100 drivers/usb/core/generic.c:238
->  usb_probe_device+0xd8/0x2c0 drivers/usb/core/driver.c:293
->  call_driver_probe drivers/base/dd.c:560 [inline]
->  really_probe+0x249/0xb90 drivers/base/dd.c:639
->  __driver_probe_device+0x1df/0x4d0 drivers/base/dd.c:778
->  driver_probe_device+0x4c/0x1a0 drivers/base/dd.c:808
->  __device_attach_driver+0x1d4/0x2e0 drivers/base/dd.c:936
->  bus_for_each_drv+0x163/0x1e0 drivers/base/bus.c:427
->  __device_attach+0x1e4/0x530 drivers/base/dd.c:1008
->  bus_probe_device+0x1e8/0x2a0 drivers/base/bus.c:487
->  device_add+0xbd9/0x1e90 drivers/base/core.c:3517
->  usb_new_device.cold+0x685/0x10ad drivers/usb/core/hub.c:2573
->  hub_port_connect drivers/usb/core/hub.c:5353 [inline]
->  hub_port_connect_change drivers/usb/core/hub.c:5497 [inline]
->  port_event drivers/usb/core/hub.c:5653 [inline]
->  hub_event+0x26cb/0x45d0 drivers/usb/core/hub.c:5735
->  process_one_work+0x9bf/0x1710 kernel/workqueue.c:2289
->  worker_thread+0x669/0x1090 kernel/workqueue.c:2436
->  kthread+0x2e8/0x3a0 kernel/kthread.c:376
->  ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:306
->  </TASK>
-> 
-> Reported-and-tested-by: syzbot+1bc2c2afd44f820a669f@syzkaller.appspotmail.com
-> Fixes: b7d572e1871d ("ar5523: Add new driver")
-> Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> On 4/29/2024 12:36 AM, Tamizh Chelvam Raja wrote:
+>
+>> From: Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
+>> 
+>> If STATUS_BUFFER_DONE is not set for a monitor status ring entry,
+>> we don't process the status ring until STATUS_BUFFER_DONE set
+>> for that status ring entry.
+>> 
+>> During LMAC reset it may happen that hardware will not write
+>> STATUS_BUFFER_DONE tlv in status buffer, in that case we end up
+>> waiting for STATUS_BUFFER_DONE leading to backpressure on monitor
+>> status ring.
+>> 
+>> To fix the issue, when HP(Head Pointer) + 1 entry is peeked and if DMA
+>> is not done and if HP + 2 entry's DMA done is set,
+>> replenish HP + 1 entry and start processing in next interrupt.
+>> If HP + 2 entry's DMA done is not set, poll onto HP + 1 entry DMA
+>> done to be set.
+>> 
+>> Also, during monitor attach HP points to the end of the ring and
+>> TP(Tail Pointer) points to the start of the ring.
+>> Using ath11k_hal_srng_src_peek() may result in processing invalid buffer
+>> for the very first interrupt. Since, HW starts writing buffer from TP.
+>> 
+>> To avoid this issue call ath11k_hal_srng_src_next_peek() instead of
+>> calling ath11k_hal_srng_src_peek().
+>> 
+>> Tested-on: IPQ5018 hw1.0 AHB WLAN.HK.2.6.0.1-00861-QCAHKSWPL_SILICONZ-1
+>> 
+>> Signed-off-by: Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
+>> Co-developed-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
+>> Signed-off-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
+>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+>
+> however note...
+>
+>> +
+>> +				/* If done status is missing:
+>> +				 * 1. As per MAC team's suggestion,
+>> +				 *    when HP + 1 entry is peeked and if DMA
+>> +				 *    is not done and if HP + 2 entry's DMA done
+>> +				 *    is set. skip HP + 1 entry and
+>> +				 *    start processing in next interrupt.
+>> +				 * 2. If HP + 2 entry's DMA done is not set,
+>> +				 *    poll onto HP + 1 entry DMA done to be set.
+>> +				 *    Check status for same buffer for next time
+>> +				 *    dp_rx_mon_status_srng_process
+>> +				 */
+>> +
+>> + reap_status = ath11k_dp_rx_mon_handle_status_buf_done(ab, srng,
+>> + rx_ring);
+>
+> ath11k-check reports:
+>
+> drivers/net/wireless/ath/ath11k/dp_rx.c:3116: line length of 95 exceeds 90 columns
+> drivers/net/wireless/ath/ath11k/dp_rx.c:3117: line length of 95 exceeds 90 columns
 
-Patch applied to ath-next branch of ath.git, thanks.
+Tamizh, please ALWAYS run ath11k-check. We are wasting time for trivial
+stuff like this.
 
-e120b6388d7d wifi: ar5523: enable proper endpoint verification
+> Kalle, in this case we may want to make an exception since I don't think there
+> is a clean way to fix this other than refactoring.
+
+The new function name looked quite long so I shortened it to
+ath11k_dp_rx_mon_buf_done() and the warning is now gone. Does that look
+reasonable name?
+
+Also I removed one unrelated change and removed unnecessary else. Please
+check my changes:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=6e88d559268779107715008c51e006f7a5f62045
+
+But now I noticed that the warning message needs some work:
+
+ath11k_warn(ab, "mon status DONE not set %lx, buf_id %d\n",
+	    FIELD_GET(HAL_TLV_HDR_TAG, tlv->tl),
+	    buf_id);
+
+Please use understandable warning and error messages in plain english.
+Any suggestions? I can edit the commit in the pending branch.
+
+> FWIW I'd like to see this function refactored to avoid the excessive
+> indentation, but that should be a separate exercise.
+
+Indeed, the indentation in this function is getting close to the limit.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240408121425.29392-1-n.zhandarovich@fintech.ru/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
 
