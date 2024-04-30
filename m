@@ -1,150 +1,110 @@
-Return-Path: <linux-wireless+bounces-7024-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7028-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF5C38B6A06
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 07:48:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D39798B6A90
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 08:39:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11F6E1C21006
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 05:48:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83B091F2171A
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 06:39:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D9E175BD;
-	Tue, 30 Apr 2024 05:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57E52199D9;
+	Tue, 30 Apr 2024 06:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="TFHvqNzE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d9i1p07A"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2338175A7
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Apr 2024 05:48:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D5A19477;
+	Tue, 30 Apr 2024 06:39:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714456107; cv=none; b=TQMgAGYEZt8pWJZttY6FO0H75mM904KPX2tI7ZaOspT9RYtuKsRPo5q0xUhLUgduTPud9wyuz/aRcL6dsn67hTvrrKsFX6wImBoULMb61FRTGPJ6Zx6kRP51PeZ0KnL+ScGRCFNmdFT58Yy4jUVcf/EUhglL0I9u/MNTqUe7UT4=
+	t=1714459174; cv=none; b=aFBZJp4RLHZYW55VOfiK96UbIuHnDg7GACcMWK+3xdiUB+ul+XzlTrsqH+4PY6xNdEGMxxBEctoZDlVRj8s2pnScInms2PNGQk9Krv5rTnS1SYO5ydovzLDdC2lVzEybVWMlj1cCmIRiGVZ6D1erYJ/qevK00TMZZlJfjxVelAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714456107; c=relaxed/simple;
-	bh=tj8ZHXdmVjjkmzfTTEgXjndv6kXaRku5inSgU4XQAUc=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uPNeXyGln43oW+aec8OcZ1eiezlY1y+ckpwUtlluogUpB6Pdr4KfZXB8kWO9iZRJeaU0mtzeOSlUjJlyCgHK5DtcK0JvTJPdxfivJDUpa9Z0/ayObDQYN/VkahCSIXt8NCHGIhVrZz5Lcf1xawQcOa+SECl01w1YqIz52doFWdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=TFHvqNzE; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43U4T7tu032242;
-	Tue, 30 Apr 2024 05:48:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding:content-type; s=
-	qcppdkim1; bh=2/3ZE7OKDAMMRzmdSaJRPraIPqXd9bNiUxmfhwEheS8=; b=TF
-	HvqNzEyODf7/nOrLBNL7gSu9hss/dXx7ncV2WfskDZllbQCyPB+KCUQJgJPNc2jr
-	A+f4myrBJ724W/Tmq7o9DpzBomiiLWr5uLiGd79F+44AI/HcyyWSte7mPvD02M+7
-	iI11o5LyAMAgOtMJ6vvzURotnG4CLZmAU/bYqLSvC7tQVn0/YaydJ9OQfm38r3VO
-	vcjQJugwWYrONYgXEAMilsScqzJ8FQt0jbIhnl8T6j1T5RmXqeTPxi2L0Z0rAbJs
-	e/+Vslcj/H0lCy6qRSUO0e5GcMzsADs6uyXXhB40Sf77ifkEwbEMS1yBGMNlKNv8
-	XypvHBZmpeLvCzwB1RNQ==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xtsnm86qy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Apr 2024 05:48:23 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43U5mM1d013474
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Apr 2024 05:48:22 GMT
-Received: from hu-periyasa-blr.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Mon, 29 Apr 2024 22:48:20 -0700
-From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Karthikeyan Periyasamy
-	<quic_periyasa@quicinc.com>
-Subject: [PATCH 4/4] wifi: ath12k: add multi device support for WBM idle ring buffer setup
-Date: Tue, 30 Apr 2024 11:17:59 +0530
-Message-ID: <20240430054759.722620-5-quic_periyasa@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240430054759.722620-1-quic_periyasa@quicinc.com>
-References: <20240430054759.722620-1-quic_periyasa@quicinc.com>
+	s=arc-20240116; t=1714459174; c=relaxed/simple;
+	bh=oqnLXrIFCIxkLdU3yGt5+mmee31pq5ZWUdGnKAC//2Y=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=ED0fxCMvgafT+GbchuNZBTTzYsSzRMGoLTUabKYSKmEdDgAU5sbq3KhuAIG76HVQFEUB3C3NFbgIva5eOJ+p83UjiEEjuGfrZsGJDOa+Y/lWUfPuLH3fduVB4El4otmZce4PZqxNncWsxZSazlssZzWvuBHLy9CTvDHpYJVWM3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d9i1p07A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51FDAC2BBFC;
+	Tue, 30 Apr 2024 06:39:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714459173;
+	bh=oqnLXrIFCIxkLdU3yGt5+mmee31pq5ZWUdGnKAC//2Y=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=d9i1p07Aca+YWhFilcHBrCXtPHtGcJx8kthc0StbqTMZrqBtVGMJqiTBqBdbGQvRP
+	 hpl6YozRPgM604gTXkL2bWDOHwRQThwiGuQAQ+TD1HftHWCePUbzRXtD/kkAw9hl/1
+	 w6Qhlva/Rqny8+ncRVfMZ+5nlmlEobcWMNi9Dml15E+q8XUr0DMl6TcbSEFd7SHRkO
+	 9tdopBqtqwaCgjYEILSLLC/YnAeGDZKSApiRkNzxvxSABGn5UPACL3WQZTbgPk0osf
+	 zDrqMQaBKB+MDLl4qf8qOhDwo3/8ktquodGSmDosA6q4dwzKa0t8/7atnx/5nTO3rl
+	 l0F1JX1iFEpvA==
+From: Kalle Valo <kvalo@kernel.org>
+To: Kees Cook <keescook@chromium.org>
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>,  Jeff Johnson
+ <quic_jjohnson@quicinc.com>,  linux-wireless@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v2][next] wifi: wil6210: wmi: Use __counted_by() in
+ struct wmi_set_link_monitor_cmd and avoid -Wfamnae warning
+References: <ZgSTCmdP+omePvWg@neat>
+	<171222554691.1806092.8730005090791383928.kvalo@kernel.org>
+	<202404291008.51DB333F@keescook> <877cggqdwb.fsf@kernel.org>
+	<202404291109.331E1704@keescook> <87bk5sf003.fsf@kernel.org>
+	<202404291251.9CBC42E481@keescook>
+Date: Tue, 30 Apr 2024 09:39:30 +0300
+In-Reply-To: <202404291251.9CBC42E481@keescook> (Kees Cook's message of "Mon,
+	29 Apr 2024 12:52:49 -0700")
+Message-ID: <87y18vpd5p.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 18cwh1pTeIiJbfYCi865oOBF-b8xMb6K
-X-Proofpoint-ORIG-GUID: 18cwh1pTeIiJbfYCi865oOBF-b8xMb6K
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-04-30_02,2024-04-29_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
- suspectscore=0 malwarescore=0 spamscore=0 lowpriorityscore=0
- impostorscore=0 adultscore=0 mlxlogscore=869 phishscore=0 bulkscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2404300040
 
-Currently, inter device MLO is not supported. Therefore, the WBM idle ring
-buffers choose the implicit return buffer manager (DEV0_IDLE_DESC_LIST).
-However, this implicit return buffer manager design not meeting the
-requirements to support inter device MLO. In inter device MLO, multiple
-devices participate. The device specific WBM idle ring buffers transmit
-to multiple device REO rings. To distinguish between device specific WBM
-idle buffers, the setup configuration need to choose a different return
-buffer manager based on the unique identifier (device index).
+Kees Cook <keescook@chromium.org> writes:
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+>> >> > I was just walking through our patch tracker and noticed that I don't
+>> >> > see this patch include in -next yet (as of next-20240429). Is there a
+>> >> > flush of the ath-next queue planned soon? Or did I miss some change?
+>> >> 
+>> >> Yeah, wireless-next was pulled last week so most likely we will create
+>> >> ath-next pull request this week.
+>> >> 
+>> >> BTW we are planning to move ath.git to a new location, rename branches
+>> >> etc. I think we'll see if we can also setup it so that it can be pulled
+>> >> to linux-next, so that you don't need to ask this every time ;)
+>> >> 
+>> >> (Just joking of course, there a lot of benefits from having the tree in
+>> >> linux-next)
+>> >
+>> > Ah-ha! Thanks. Yeah, sorry if I keep asking about that. It's different
+>> > from other trees, so it doesn't stick in my head. :) I should keep
+>> > better notes!
+>> 
+>> BTW I think all vendor specific wireless driver trees are not pulled to
+>> linux-next: iwlwifi, mt76, rtw (Realtek) and ath. So with all of these it will
+>> take a while before the commit is in linux-next.
+>
+> How long is "a while"?
 
-Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/dp.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+The cadence can be anything from 1-4 times per release (~8 weeks).
+Depends on the maintainer, how busy we are etc.
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
-index 9b9e86cdb380..5812df436d53 100644
---- a/drivers/net/wireless/ath/ath12k/dp.c
-+++ b/drivers/net/wireless/ath/ath12k/dp.c
-@@ -1582,6 +1582,24 @@ static int ath12k_dp_reoq_lut_setup(struct ath12k_base *ab)
- 	return 0;
- }
- 
-+static enum hal_rx_buf_return_buf_manager
-+ath12k_dp_get_idle_link_rbm(struct ath12k_base *ab)
-+{
-+	switch (ab->device_id) {
-+	case 0:
-+		return HAL_RX_BUF_RBM_WBM_DEV0_IDLE_DESC_LIST;
-+	case 1:
-+		return HAL_RX_BUF_RBM_WBM_DEV1_IDLE_DESC_LIST;
-+	case 2:
-+		return HAL_RX_BUF_RBM_WBM_DEV2_IDLE_DESC_LIST;
-+	default:
-+		ath12k_warn(ab, "invalid %d device id, so choose default rbm\n",
-+			    ab->device_id);
-+		WARN_ON(1);
-+		return HAL_RX_BUF_RBM_WBM_DEV0_IDLE_DESC_LIST;
-+	}
-+}
-+
- int ath12k_dp_alloc(struct ath12k_base *ab)
- {
- 	struct ath12k_dp *dp = &ab->dp;
-@@ -1598,7 +1616,7 @@ int ath12k_dp_alloc(struct ath12k_base *ab)
- 	spin_lock_init(&dp->reo_cmd_lock);
- 
- 	dp->reo_cmd_cache_flush_count = 0;
--	dp->idle_link_rbm = HAL_RX_BUF_RBM_WBM_DEV0_IDLE_DESC_LIST;
-+	dp->idle_link_rbm = ath12k_dp_get_idle_link_rbm(ab);
- 
- 	ret = ath12k_wbm_idle_ring_setup(ab, &n_link_desc);
- 	if (ret) {
+> And if the latency can be reduced for these, it'd be nice since it
+> would allow for longer bake-time in -next.
+
+Sure but our time is limited, as always :) There's extra overhead with
+linux-next, like the rule that no updates during the merge window, so I
+can understand why some maintainers have not included their tree to
+linux-next builds.
+
 -- 
-2.34.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
