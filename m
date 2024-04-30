@@ -1,115 +1,124 @@
-Return-Path: <linux-wireless+bounces-7029-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7030-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B841A8B6AA5
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 08:43:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C9298B6C01
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 09:42:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA4421C20E2E
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 06:43:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0C991F225A4
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 07:42:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A50B73B2AD;
-	Tue, 30 Apr 2024 06:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F1C179A7;
+	Tue, 30 Apr 2024 07:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P9evOk1w"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="h8EGiuqC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FAC63B1A2
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Apr 2024 06:42:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C59D211C
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Apr 2024 07:42:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714459371; cv=none; b=erVVd2UP9IGWEkShKTi+jewfc615xdQlhqkPkMKVfR5penCmik0D2p+vf42pMfcnliX1R+uqKvHmd+vsZSt9JsPfRnv0fqMTfXAS2GF5WEEiEPtb0++uW0mqDnHL2MmaOTgExvfPjD2hbSYEreUq1T942kYmCvv41fwh96J4g7M=
+	t=1714462959; cv=none; b=a83w0m2BOyUDUHbThmPejRjGDF1z2bhr7E4zD1KbgJFREiSTYBH6PigHwzPs2mKo/M9FAA34CD16JGRr2okm1+vjQOCAUCzp10vUTWrJBaF8FrJ/gG3ZbyMmjZxTFdAwQ9RhnHGkdgUduTrQoItYi8LxJYYEjm4eLMYlhCFJkOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714459371; c=relaxed/simple;
-	bh=fdQHboO+wwZXDX18KuhgKPneJcVoTv3BPscY3vNMF9M=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=hams9crthQcwP5ZXWnD68gs2S3EUtXeWzBPc3StMR3HEeyD76hpfuoRIOGR8di38dduHpmoTT4lu7dk24m3hhfdzq0wXTi62AYQ6Cj6lRwVyCrFu0RJ2Z1krnup1ErrJ089jXTkNK8kLC47ZWRt8wLbSxA6TQcM+mQbhJEqqHew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P9evOk1w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D221FC2BBFC;
-	Tue, 30 Apr 2024 06:42:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714459371;
-	bh=fdQHboO+wwZXDX18KuhgKPneJcVoTv3BPscY3vNMF9M=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=P9evOk1wfx3V5Yyau4PBE3WTeaJ6877CHJVLIU6aT0VxPQHMNI+hHRV2rQ4y5vTjJ
-	 ZsmA6WKpMt2ToYqnjE+DMUL0Aij11nuTCr23vRnVJTlgSokXQmZVPELHK8IaTvk954
-	 Y9j8Zi8R1YlJXvhTkS0dmlDVTXsbtOpEIWwbIJrJdMorfZSf4gpa5ve4F3sFV9IgF3
-	 HLOCTWIlR/egsRRv/njCEQEYqsF7xKXGe96gXE7tOiXr0S/Zai3l8Jvk4qw7LLZPP2
-	 9Z9W/fqGOEHNuhdXRvrOi/Oeh20eKDUgCMrQg0Kjialr5h/71eJTHNGBDYgkFfRq22
-	 CUtfCYwBelm2g==
-From: Kalle Valo <kvalo@kernel.org>
-To: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,  <ath12k@lists.infradead.org>,
-  <linux-wireless@vger.kernel.org>,  Muna Sinada <quic_msinada@quicinc.com>
-Subject: Re: [PATCH v3 07/10] wifi: ath12k: add support for setting fixed HE
- rate/GI/LTF
-References: <20240424201959.935-1-quic_pradeepc@quicinc.com>
-	<20240424201959.935-8-quic_pradeepc@quicinc.com>
-	<72bc6772-8bf7-427d-8f03-01e8dbf30d0c@quicinc.com>
-	<87y190fulv.fsf@kernel.org>
-	<198e317f-a849-4fe2-8080-3d1834d07481@quicinc.com>
-	<87sez4fk1o.fsf@kernel.org>
-	<51073e2c-2138-4957-a78c-2708c7742451@quicinc.com>
-Date: Tue, 30 Apr 2024 09:42:47 +0300
-In-Reply-To: <51073e2c-2138-4957-a78c-2708c7742451@quicinc.com> (Pradeep Kumar
-	Chitrapu's message of "Mon, 29 Apr 2024 18:41:37 -0700")
-Message-ID: <87ttjjpd08.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1714462959; c=relaxed/simple;
+	bh=zZP+larKlWgQAYDSWMCVCiXuMGZF4xtPCRBztubuV7o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=eDkOgndo7tjrcH3ioKAaF4W6PhMHjUdJ3GQOTWg+xMOyVaOPBVhUgVgwVYby3vqiwbaNNBoycXivm5bLkme/ov9s7ffzjA85j8ysMb74RoY8JkaNKDQaAk5dg/rIXp3aPpVt+TKF/+DxgldcV0jhrVtR9qwKjm/MVDkdDPiEa5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=h8EGiuqC; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43U7CMH2006602;
+	Tue, 30 Apr 2024 07:42:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=GSJXyLojc95CzlRegySG57zpsU09ycjRFGSiB4YgGH8=; b=h8
+	EGiuqC36/gPUEemVrOUrwisrgrDM9EEYnuxlF7S3xO4jVx/gB0u3Y4RucJpCas1l
+	jQjdAinF7l+5bG2F7C1ofEBRKo+ybhV+P3LsjobGyRHghcMfp1g81r3ljX85RcqV
+	b3QQKyWRA0QCcziOEXzmoOwOd5MBwWEJjQg8wz91aiSx2DfOGYoSYsGr+PXmI40B
+	ELGMF0yd751Fx7DS55KLun5zQQ2eMln4ZcRAUT+EyZwTd6IYh6lN3GeyM8eEK+o/
+	uGa9N1+h+v7xxx4gz/AWa7dir+iw4KFGPW6DRUs9l9jaxluMEVLq09aBk/LWb8V6
+	BAE7lWUB/zdi14sYEnvA==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xtv1hr20w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Apr 2024 07:42:31 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43U7gUpI018029
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Apr 2024 07:42:30 GMT
+Received: from [10.151.40.42] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 30 Apr
+ 2024 00:42:29 -0700
+Message-ID: <e7d71f62-9de1-413f-9695-96aa490daf63@quicinc.com>
+Date: Tue, 30 Apr 2024 13:12:23 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/2] wifi: ath12k: drop failed transmitted frames from
+ metric calculation
+To: Jeff Johnson <quic_jjohnson@quicinc.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240429114841.413901-1-quic_kathirve@quicinc.com>
+ <e1d428ee-0a16-4fc6-be0b-4c41036ff919@quicinc.com>
+Content-Language: en-US
+From: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+In-Reply-To: <e1d428ee-0a16-4fc6-be0b-4c41036ff919@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: wKG-tLe4c69ARYUve4t-GjdCeokUSn97
+X-Proofpoint-ORIG-GUID: wKG-tLe4c69ARYUve4t-GjdCeokUSn97
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-04-30_04,2024-04-29_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 adultscore=0
+ spamscore=0 clxscore=1015 suspectscore=0 impostorscore=0 phishscore=0
+ bulkscore=0 mlxscore=0 malwarescore=0 lowpriorityscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404300055
 
-Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com> writes:
 
->>> I did run ath12k-check but I don't see these errors. Trying to see if
->>> this is due to version differences. will update further once I have
->>> more information on this.
->>>
->>> This is version I ran:
->>> qca-swiss-army-knife/tools/scripts/ath12k/ath12k-check --version
->>> ath12k-check (md5sum cb8a85242f2ec7343f6f94af9fa5ebb2)
->>>
->>> python:         3.6.9 (default, Mar 10 2023, 16:46:00)
->>> [GCC 8.4.0]
->>> host gcc:       gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0
->>> config cc:      gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0
->>> sparse:         v0.6.4
->>> checkpatch.pl:  Version: 0.32 (md5sum 12ea394e9bf27280f30a684ff937cc57)
->>> gtags:          gtags (GNU GLOBAL) 6.6.2
->> Your sparse is too old, you need to get the latest from git:
->> https://docs.kernel.org/dev-tools/sparse.html#getting-sparse
->
-> Thanks Kalle and Jeff for sharing the tool versions required..
-> I am able to see the errors reported now..
-> will fix and respin the series..
->
-> ath12k-check (md5sum cb8a85242f2ec7343f6f94af9fa5ebb2)
->
-> python:         3.6.9 (default, Mar 10 2023, 16:46:00)
-> [GCC 8.4.0]
-> host gcc:       gcc (GCC) 13.2.0
-> config cc:      gcc (GCC) 13.2.0
-> sparse:         v0.6.4-66-g0196afe16a50
-> checkpatch.pl:  Version: 0.32 (md5sum 12ea394e9bf27280f30a684ff937cc57)
-> gtags:          gtags (GNU GLOBAL) 6.6.2
 
-I added a section about tools to the wiki:
-
-https://wireless.wiki.kernel.org/en/users/drivers/ath10k/codingstyle#tools
-
-Feedback very welcome, it's important that our documentation is
-understandable for new developers.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+On 4/30/2024 12:16 AM, Jeff Johnson wrote:
+> On 4/29/2024 4:48 AM, Karthikeyan Kathirvel wrote:
+>> - Use ieee80211_free_txskb() instead of dev_kfree_skb_any().
+>> - Drop failed transmitted frames from mesh metric calculation to avoid
+>> false link metric averaging.
+>>
+>> Karthikeyan Kathirvel (1):
+>>    wifi: ath12k: drop failed transmitted frames from metric calculation.
+>>
+>> Sven Eckelmann (1):
+>>    wifi: ath12k: Don't drop tx_status in failure case
+>>
+>>   drivers/net/wireless/ath/ath12k/dp_tx.c    | 43 ++++++++++++++++------
+>>   drivers/net/wireless/ath/ath12k/hal_desc.h | 22 ++++++++++-
+>>   2 files changed, 52 insertions(+), 13 deletions(-)
+>>
+>>
+>> base-commit: 363e7193eaf258fe7f04e8db560bd8a282a12cd9
+> 
+> 'b4' is barfing on this series since you posted 3 patches instead of 2:
+> [PATCH v3 1/2] wifi: ath12k: Don't drop tx_status in failure case
+> [PATCH v3 1/2] wifi: ath12k: Don't drop tx_status when peer cannot be found
+> [PATCH v3 2/2] wifi: ath12k: drop failed transmitted frames from metric calculation.
+> 
+> Why are there two different 1/2 patches?
+Uploaded an invalid patch by mistake, have removed it in next version v4 
+and also replaced a dev_kfree_skb_any() by ieee80211_free_txskb() in 
+ath12k_dp_tx_free_txbuf(),
 
