@@ -1,158 +1,162 @@
-Return-Path: <linux-wireless+bounces-7050-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7051-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A49FB8B7791
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 15:48:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F1248B7A4B
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 16:43:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FD542835AE
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 13:48:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FA3A1C221A3
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 14:43:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52471171E53;
-	Tue, 30 Apr 2024 13:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3BE1176FB2;
+	Tue, 30 Apr 2024 14:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f3lICaCL"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="TJMZu+7n"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ECF517167F
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Apr 2024 13:48:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D46017555C;
+	Tue, 30 Apr 2024 14:39:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714484934; cv=none; b=kvZzvXgpCZ/EJB0fYlkOQu3taTWHIbcgYt3IAxAiopVY4vwdwVyQgmzLIlb4h+Mt6e49M2zexmlBpFsktS0N38AU8ouyJHMshrn6QMLIAbrc8KqLJalCEvitfYIvsNrL5CT6h7PczSQKWOG6ZdV1pRUS4Z4X+2BlKbTQQ0/bv2E=
+	t=1714487993; cv=none; b=EnYZHL7Urlvi6ovq2fTh9tkOC/E4R1nnL2cBs524/aKPq5V+pzFK26sGlWV8DinQFSu9WlFqG0QldGgEDdHCI2sTM4X8OOMFD7IM0WotDMc8JNIf/qcTg5fXbxD5Qs13ZkBuIIbbeQXBvySnLTfb2+QqF5RrDeEvLZ+FJIaH0iQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714484934; c=relaxed/simple;
-	bh=6WTKqUfG5kN4YNoATVxd08lZG8BIH87ncCi8h2kONA8=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=XBibyX+m31ki+3zpH7iQN4xG+Vm5TFANFyJe/KXLZE7yJKmonqGxQkDmc20INmzIh5GOJ6wpoeaq6d1eDCpnGRqVJGdz6B4ucAUIuSFS7wY/4hKrVadPxPTtAIv5rBDERDq0MH5OjIDYYVgqwH352ePvYBRVNkZntwIzTybsY5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f3lICaCL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94350C4AF18;
-	Tue, 30 Apr 2024 13:48:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714484933;
-	bh=6WTKqUfG5kN4YNoATVxd08lZG8BIH87ncCi8h2kONA8=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=f3lICaCLV6tAhH0BT5FnBShhKYOpmQZQHyzJv08Or7dA7e3pL0b38kuL8uypgQUYU
-	 9uNgvcu0ER+CJQ6GPd/CpuVytPWDpP/n36QXUuUZf/GZdBLQx168XBYhXtJfymads9
-	 kyEWLJbUwDvZSSleY9j106wHlgcgXI6YZSu8mEAECCyOqjiP0CfyCVMB0sSGyqKHHU
-	 ZUf/6kuQ4Uljd/R2vwyIrAaBVfWSF4BlsSyTjVsZjQCPdz3xl1iWEU5s1iKtxHLYNI
-	 LOsKLuWDAIPwlZPfhviMdvqx38VP/NkdEAQgRFfTL8DUheyshiciXgK/VWWG/T3tTq
-	 3NGPBu0kOld+g==
-From: Kalle Valo <kvalo@kernel.org>
-To: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>,
-  <ath11k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>,
-  Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
-Subject: Re: [PATCHv5] wifi: ath11k: skip status ring entry processing
-References: <20240429073624.736147-1-quic_tamizhr@quicinc.com>
-	<35f114c4-1ff7-4a4b-aadf-ed147f19e170@quicinc.com>
-Date: Tue, 30 Apr 2024 16:48:50 +0300
-In-Reply-To: <35f114c4-1ff7-4a4b-aadf-ed147f19e170@quicinc.com> (Jeff
-	Johnson's message of "Mon, 29 Apr 2024 11:12:49 -0700")
-Message-ID: <87cyq7ota5.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1714487993; c=relaxed/simple;
+	bh=gqkY2QFAlC0+b/I0lNB+iDtQckNA/CV5PcO13hRdINw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=VvaOu5SGBgqcaKzw3eVOpI16sySPCcIIkYGazGhoheRuM4d5wi6DBeZQvXIlEoGwestamvGXPTWilEEBOqIs1ByYACcaarsfRA1it9N0cFZJR8ABxsXFWu0NAxrtLmn/AX+SnbZ+1GZreUH6z2bI+cGLn95Fyc1SJqnfKBstB4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=TJMZu+7n; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43U7B9oS031377;
+	Tue, 30 Apr 2024 14:39:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=xRmTvtPx6sCG/uARUIsnlYBSKLHeX9cIeBWJC2FBX4M=; b=TJ
+	MZu+7nkGRZex2qIubmsqiLkha9m4nBLsN2xAe83y7TuJc+Cb3WUfhsIMBOHE65qF
+	n7xECvV5X4KrZOexRiadspBj6Vb/YNNOzPkEYv+Ei1gdufZ1Vw4wGSsTJINm2JE+
+	vLdv/gyB/GjBHrm17ezGhzmN4Wx26Ls0CHg6yyUZf4TuRNWQQk/ZxCrXvx3SkIg9
+	hFc5cLq1ZLr7mFvTNj1/kA6aOd15IOmnA71OzJ2jEecCF+T91+rTnovF4ii9zfym
+	95iLabFkOw4t86GFxDLiLrMMvDYCEUtqBmw4uyzDARzGYjeJ1hQwWIPx7DwUxxeH
+	1zvK0xkfXrEPgBQLVdYw==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xtv1hs433-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Apr 2024 14:39:36 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43UEdZou008329
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Apr 2024 14:39:35 GMT
+Received: from [10.110.13.147] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 30 Apr
+ 2024 07:39:34 -0700
+Message-ID: <17aa40b0-2e18-41f0-bfb3-b3c7e098ff75@quicinc.com>
+Date: Tue, 30 Apr 2024 07:39:33 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/3] dt-bindings: net: wireless: ath10k: add
+ qcom,no-msa-ready-indicator prop
+Content-Language: en-US
+To: Marc Gonzalez <mgonzalez@freebox.fr>, Kalle Valo <kvalo@kernel.org>,
+        ath10k <ath10k@lists.infradead.org>
+CC: wireless <linux-wireless@vger.kernel.org>,
+        DT
+	<devicetree@vger.kernel.org>, MSM <linux-arm-msm@vger.kernel.org>,
+        "Rob
+ Herring" <robh+dt@kernel.org>,
+        Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Pierre-Hugues Husson <phhusson@freebox.fr>,
+        Arnaud Vrac <avrac@freebox.fr>, Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio
+	<konrad.dybcio@linaro.org>,
+        Jami Kettunen <jamipkettunen@gmail.com>,
+        "Jeffrey
+ Hugo" <quic_jhugo@quicinc.com>,
+        Dmitry Baryshkov
+	<dmitry.baryshkov@linaro.org>,
+        Alexey Minnekhanov
+	<alexeymin@postmarketos.org>
+References: <ebbda69c-63c1-4003-bf97-c3adf3ccb9e3@freebox.fr>
+ <54ac2295-36b4-49fc-9583-a10db8d9d5d6@freebox.fr>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <54ac2295-36b4-49fc-9583-a10db8d9d5d6@freebox.fr>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: TcCmJlj1I7Tv5Qt7qJfaw6fB1_k7K08E
+X-Proofpoint-ORIG-GUID: TcCmJlj1I7Tv5Qt7qJfaw6fB1_k7K08E
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-04-30_08,2024-04-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 adultscore=0
+ spamscore=0 clxscore=1011 suspectscore=0 impostorscore=0 phishscore=0
+ bulkscore=0 mlxscore=0 malwarescore=0 lowpriorityscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404300103
 
-Jeff Johnson <quic_jjohnson@quicinc.com> writes:
+On 4/29/2024 7:04 AM, Marc Gonzalez wrote:
+> The ath10k driver waits for an "MSA_READY" indicator
+> to complete initialization. If the indicator is not
+> received, then the device remains unusable.
+> 
+> cf. ath10k_qmi_driver_event_work()
+> 
+> Several msm8998-based devices are affected by this issue.
+> Oddly, it seems safe to NOT wait for the indicator, and
+> proceed immediately when QMI_EVENT_SERVER_ARRIVE.
+> 
+> Jeff Johnson wrote:
+> 
+>   The feedback I received was "it might be ok to change all ath10k qmi
+>   to skip waiting for msa_ready", and it was pointed out that ath11k
+>   (and ath12k) do not wait for it.
+> 
+>   However with so many deployed devices, "might be ok" isn't a strong
+>   argument for changing the default behavior.
+> 
+> Kalle Valo first suggested setting a bit in firmware-5.bin to trigger
+> work-around in the driver. However, firmware-5.bin is parsed too late.
+> So we are stuck with a DT property.
+> 
+> Signed-off-by: Pierre-Hugues Husson <phhusson@freebox.fr>
+> Signed-off-by: Marc Gonzalez <mgonzalez@freebox.fr>
+> ---
+>  Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml
+> index 9b3ef4bc37325..9070a41f7fc07 100644
+> --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml
+> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml
+> @@ -122,6 +122,11 @@ properties:
+>        Whether to skip executing an SCM call that reassigns the memory
+>        region ownership.
+>  
+> +  qcom,no-msa-ready-indicator:
+> +    type: boolean
+> +    description:
+> +      Don't wait for MSA_READY indicator to complete init.
+> +
+>    qcom,smem-states:
+>      $ref: /schemas/types.yaml#/definitions/phandle-array
+>      description: State bits used by the AP to signal the WLAN Q6.
+with SOB cleaned up:
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-> On 4/29/2024 12:36 AM, Tamizh Chelvam Raja wrote:
->
->> From: Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
->> 
->> If STATUS_BUFFER_DONE is not set for a monitor status ring entry,
->> we don't process the status ring until STATUS_BUFFER_DONE set
->> for that status ring entry.
->> 
->> During LMAC reset it may happen that hardware will not write
->> STATUS_BUFFER_DONE tlv in status buffer, in that case we end up
->> waiting for STATUS_BUFFER_DONE leading to backpressure on monitor
->> status ring.
->> 
->> To fix the issue, when HP(Head Pointer) + 1 entry is peeked and if DMA
->> is not done and if HP + 2 entry's DMA done is set,
->> replenish HP + 1 entry and start processing in next interrupt.
->> If HP + 2 entry's DMA done is not set, poll onto HP + 1 entry DMA
->> done to be set.
->> 
->> Also, during monitor attach HP points to the end of the ring and
->> TP(Tail Pointer) points to the start of the ring.
->> Using ath11k_hal_srng_src_peek() may result in processing invalid buffer
->> for the very first interrupt. Since, HW starts writing buffer from TP.
->> 
->> To avoid this issue call ath11k_hal_srng_src_next_peek() instead of
->> calling ath11k_hal_srng_src_peek().
->> 
->> Tested-on: IPQ5018 hw1.0 AHB WLAN.HK.2.6.0.1-00861-QCAHKSWPL_SILICONZ-1
->> 
->> Signed-off-by: Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
->> Co-developed-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
->> Signed-off-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
->
-> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
->
-> however note...
->
->> +
->> +				/* If done status is missing:
->> +				 * 1. As per MAC team's suggestion,
->> +				 *    when HP + 1 entry is peeked and if DMA
->> +				 *    is not done and if HP + 2 entry's DMA done
->> +				 *    is set. skip HP + 1 entry and
->> +				 *    start processing in next interrupt.
->> +				 * 2. If HP + 2 entry's DMA done is not set,
->> +				 *    poll onto HP + 1 entry DMA done to be set.
->> +				 *    Check status for same buffer for next time
->> +				 *    dp_rx_mon_status_srng_process
->> +				 */
->> +
->> + reap_status = ath11k_dp_rx_mon_handle_status_buf_done(ab, srng,
->> + rx_ring);
->
-> ath11k-check reports:
->
-> drivers/net/wireless/ath/ath11k/dp_rx.c:3116: line length of 95 exceeds 90 columns
-> drivers/net/wireless/ath/ath11k/dp_rx.c:3117: line length of 95 exceeds 90 columns
-
-Tamizh, please ALWAYS run ath11k-check. We are wasting time for trivial
-stuff like this.
-
-> Kalle, in this case we may want to make an exception since I don't think there
-> is a clean way to fix this other than refactoring.
-
-The new function name looked quite long so I shortened it to
-ath11k_dp_rx_mon_buf_done() and the warning is now gone. Does that look
-reasonable name?
-
-Also I removed one unrelated change and removed unnecessary else. Please
-check my changes:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=6e88d559268779107715008c51e006f7a5f62045
-
-But now I noticed that the warning message needs some work:
-
-ath11k_warn(ab, "mon status DONE not set %lx, buf_id %d\n",
-	    FIELD_GET(HAL_TLV_HDR_TAG, tlv->tl),
-	    buf_id);
-
-Please use understandable warning and error messages in plain english.
-Any suggestions? I can edit the commit in the pending branch.
-
-> FWIW I'd like to see this function refactored to avoid the excessive
-> indentation, but that should be a separate exercise.
-
-Indeed, the indentation in this function is getting close to the limit.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
