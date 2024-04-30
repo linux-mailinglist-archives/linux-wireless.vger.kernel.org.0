@@ -1,128 +1,129 @@
-Return-Path: <linux-wireless+bounces-7022-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7023-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E1218B6950
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 06:07:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ACFE8B6A05
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 07:48:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB14D284B92
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 04:07:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C72A4283083
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 05:48:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2DA11737;
-	Tue, 30 Apr 2024 04:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5053CC14F;
+	Tue, 30 Apr 2024 05:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GtE4DjU8"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mVklaYbl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3A511185;
-	Tue, 30 Apr 2024 04:06:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E5E1758C
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Apr 2024 05:48:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714450016; cv=none; b=CdJrj+1aiyyyXr5K0GBZGerxESludHLx5B2DjxeoJ+kY84XOluT/ekAVZ1oMm1LnOkwLNQcqTi94olqXaZKiryBHhMlscyl4/UZkIxmWGGIYuFacvF4XnQ46MFz3LSzKaIPZLPNEQKzPj6LW0H4C+vQN7J5k5aBEqZNEHPwBRvE=
+	t=1714456107; cv=none; b=umGOEF0ccKS99pcRyRwpjguK+S1ofWOCJ5XzhzfLB+0JqYVOZ+Uar2gtRWLZG459LZfjUPu7HNrq/0IT5H0H9YgeDBWWoZLOzezRTRZN/EFIeQTjO/LJpgRFVCo96+SgUSAPtWfYjAu73sGaW6BEI0X0zKnN4OgGC6pFs8P3JrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714450016; c=relaxed/simple;
-	bh=iBhXqbeiDrU6vv91AowziuD116kMDvclTlVrNyh/zr8=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=oKnZpKP8wYtRkDl5vy1X7Eo9AY+QT2VlUj5UyZuOvFh29aOw4mMj4FJzw0gBf+1GqKi/miOmXVrZW9CvTU0T7CH2YDrukBzX+/FdC6MYUyMuQDYbfYEI+DsQ9+S6reDKFgYqJSWP0UuZ2sgXw9bwatUbaev73y5QUfXkhqPh6CY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GtE4DjU8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4EACC2BBFC;
-	Tue, 30 Apr 2024 04:06:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714450015;
-	bh=iBhXqbeiDrU6vv91AowziuD116kMDvclTlVrNyh/zr8=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=GtE4DjU8iLxl3H9D5LkIqL2GVzZMxFBhLgElWpKzFjUA+HP4I5n/m2Mqhs4sBRFn9
-	 ZEc1QwHnrDz7HicN+VzY7aGfWyMOOAOb8sNTHN2MxU+gT+V3pOmchYFK9tDzeQa21I
-	 TaAjfFWhGtpruZUeMHNCtMjuvOjZVlGdBXDU1Z+Iu0Q1yZswRm1XrM2EbMwoOouT7h
-	 0a4mHArM756gqH5aiaiN379suahUH/hZurVx6W6dl3dTaZYn77qo3ORr4BjROJyuVO
-	 24titcThvMTOsg7+N5TKcamLmNyjIoVcA5RoRm/YsCbS5oEPLLhCOPh6SAy04xvIhv
-	 xf+urDRscN3pg==
-From: Kalle Valo <kvalo@kernel.org>
-To: Bjorn Andersson <quic_bjorande@quicinc.com>
-Cc: Marc Gonzalez <mgonzalez@freebox.fr>,  Jeff Johnson
- <quic_jjohnson@quicinc.com>,  ath10k <ath10k@lists.infradead.org>,
-  wireless <linux-wireless@vger.kernel.org>,  DT
- <devicetree@vger.kernel.org>,  MSM <linux-arm-msm@vger.kernel.org>,  Rob
- Herring <robh+dt@kernel.org>,  "Krzysztof Kozlowski"
- <krzysztof.kozlowski+dt@linaro.org>,  Conor Dooley <conor+dt@kernel.org>,
-  Pierre-Hugues Husson <phhusson@freebox.fr>,  "Arnaud Vrac"
- <avrac@freebox.fr>,  Bjorn Andersson <andersson@kernel.org>,  "Konrad
- Dybcio" <konrad.dybcio@linaro.org>,  Jami Kettunen
- <jamipkettunen@gmail.com>,  Jeffrey Hugo <quic_jhugo@quicinc.com>,  Dmitry
- Baryshkov <dmitry.baryshkov@linaro.org>,  Alexey Minnekhanov
- <alexeymin@postmarketos.org>
-Subject: Re: [PATCH v3 1/3] dt-bindings: net: wireless: ath10k: add
- qcom,no-msa-ready-indicator prop
-References: <ebbda69c-63c1-4003-bf97-c3adf3ccb9e3@freebox.fr>
-	<54ac2295-36b4-49fc-9583-a10db8d9d5d6@freebox.fr>
-	<ZjBV+th9DmnNLhnN@hu-bjorande-lv.qualcomm.com>
-Date: Tue, 30 Apr 2024 07:06:49 +0300
-In-Reply-To: <ZjBV+th9DmnNLhnN@hu-bjorande-lv.qualcomm.com> (Bjorn Andersson's
-	message of "Mon, 29 Apr 2024 19:22:50 -0700")
-Message-ID: <8734r3qysm.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1714456107; c=relaxed/simple;
+	bh=qVcgBWjJKrFcdCJFY6Oy3NmAWbgCxSp1CUOagyxrpn0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ndBBMVWrhUmnFNTu1lEgHV7u6m9Kd9uFbsbu51rWjmChorJwbGJ0I3/KY1MPryQNt/zPWopQxK+534/AAj4aabIpnnaT8TyE9xQzd+zhYzVvCPAXPZ5DgCEG6iHZUyc4sn5XhE1wOtVtEIN6Lak25IUuhe0kbefKmDCes4lxXs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=mVklaYbl; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43U49lIm022193;
+	Tue, 30 Apr 2024 05:48:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=13j3o0w
+	pKKEex9/Mpqwhfgs3weNPfKWZt/RNfDqxUCE=; b=mVklaYblJI47dtHgWdrtbsn
+	x1SbMNc3DWoTZn8t28+DT9isZaWNf4BW4ax7rw9DqVuHLGE+38Iaip0QJ3kqaq/w
+	dUnEH/9hSZ2Samt9B/u7aFa6DdUWodR3Ri38QYFc5wxvDIIkjKSuZUjZ4JDvJgf7
+	Qo581nO/CO8vEW1+vyd2CdrOnCvCb+s3HHL7WIZNa/U3Db05+gYyZfHUly9HHwVt
+	CqJaWZ0Q0rnUFJY4+pNNoNSL2qu8v3YpokEbUqIz9sS96/ZLjvnCtmMaDBT+JeHc
+	DubiQvg6jCEhVH6lzvDX84RN16cgr5N3T6SaMMmlpI4afimHDoIRtdJjQZh9mZw=
+	=
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xtrep0cdr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Apr 2024 05:48:15 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43U5mFJ4020623
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Apr 2024 05:48:15 GMT
+Received: from hu-periyasa-blr.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Mon, 29 Apr 2024 22:48:13 -0700
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Karthikeyan Periyasamy
+	<quic_periyasa@quicinc.com>
+Subject: [PATCH 0/4] wifi: ath12k: Add multi device support for WBM idle ring buffer setup
+Date: Tue, 30 Apr 2024 11:17:55 +0530
+Message-ID: <20240430054759.722620-1-quic_periyasa@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: ezlRTT8Qp8Hd37SBzJY81z88ixpO8_Fs
+X-Proofpoint-ORIG-GUID: ezlRTT8Qp8Hd37SBzJY81z88ixpO8_Fs
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-04-30_02,2024-04-29_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
+ spamscore=0 suspectscore=0 mlxlogscore=674 mlxscore=0 phishscore=0
+ clxscore=1015 malwarescore=0 bulkscore=0 lowpriorityscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404300040
 
-Bjorn Andersson <quic_bjorande@quicinc.com> writes:
+Refactor the WBM idle ring buffer setup to scalable for inter device
+multi-link operation.
 
-> On Mon, Apr 29, 2024 at 04:04:51PM +0200, Marc Gonzalez wrote:
->
->> The ath10k driver waits for an "MSA_READY" indicator
->> to complete initialization. If the indicator is not
->> received, then the device remains unusable.
->> 
->> cf. ath10k_qmi_driver_event_work()
->> 
->> Several msm8998-based devices are affected by this issue.
->> Oddly, it seems safe to NOT wait for the indicator, and
->> proceed immediately when QMI_EVENT_SERVER_ARRIVE.
->> 
->> Jeff Johnson wrote:
->> 
->>   The feedback I received was "it might be ok to change all ath10k qmi
->>   to skip waiting for msa_ready", and it was pointed out that ath11k
->>   (and ath12k) do not wait for it.
->> 
->>   However with so many deployed devices, "might be ok" isn't a strong
->>   argument for changing the default behavior.
->> 
->> Kalle Valo first suggested setting a bit in firmware-5.bin to trigger
->> work-around in the driver. However, firmware-5.bin is parsed too late.
->> So we are stuck with a DT property.
->> 
->> Signed-off-by: Pierre-Hugues Husson <phhusson@freebox.fr>
->> Signed-off-by: Marc Gonzalez <mgonzalez@freebox.fr>
->
-> This says "Pierre-Hugues certifies the origin of the patch" then "Marc
-> certifies the origin of the patch". This would have to imply that
-> Pierre-Hugues authored the patch, but you're listed as the author...
->
-> Perhaps a suitable answer to this question would be to add
-> "Co-developed-by: Pierre-Hugues ..." above his s-o-b, which implies that
-> the two of you jointly came up with this and both certify the origin.
+Note: This patchset rebased on top of below patch series
+ [PATCH v2 0/8] wifi: ath12k: Introduce device group abstraction
+ Link: https://lore.kernel.org/all/20240425055759.1181165-1-quic_hprem@quicinc.com/
 
-BTW I can add that in the pending branch, no need to resend because of
-this. Just need guidance from Marc.
+Karthikeyan Periyasamy (4):
+  wifi: ath12k: Replace "chip" with "device" in hal Rx return buffer
+    manager
+  wifi: ath12k: Refactor idle ring descriptor setup
+  wifi: ath12k: use device index to advertise MLO parameter
+  wifi: ath12k: add multi device support for WBM idle ring buffer setup
 
-> Other than that, I think this looks good, so please upon addressing this
-> problem feel free to add my:
->
-> Reviewed-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+ drivers/net/wireless/ath/ath12k/core.c  | 10 +++++++++
+ drivers/net/wireless/ath/ath12k/dp.c    | 27 ++++++++++++++++++++++---
+ drivers/net/wireless/ath/ath12k/dp.h    |  1 +
+ drivers/net/wireless/ath/ath12k/dp_rx.c |  5 +++--
+ drivers/net/wireless/ath/ath12k/hal.c   |  5 +++--
+ drivers/net/wireless/ath/ath12k/hal.h   | 21 ++++++++++---------
+ drivers/net/wireless/ath/ath12k/qmi.c   |  4 ++--
+ 7 files changed, 54 insertions(+), 19 deletions(-)
 
-Thanks, I'll then add this as well.
 
+base-commit: 861928281f22a08e3d258ebcfe7159d729ec07d4
+prerequisite-patch-id: 4bc84a4f5b10ebc28db60c5167abdaf343a1619d
+prerequisite-patch-id: ea87d2f46dbd5e7c82d5df02934906e219aa8388
+prerequisite-patch-id: e08d8632dcde9e891d37b538832b4ecfed140d9e
+prerequisite-patch-id: bc2c9455c9175c27b8b68f6f41d468b258007478
+prerequisite-patch-id: 00966c65589af8a50078fea94630cbe355f0dacf
+prerequisite-patch-id: 4bd8ce903cd89ae536109922f65f128ed1d4307c
+prerequisite-patch-id: 54fe8eb540a77804c8befeb695b61756c133b56f
+prerequisite-patch-id: 06244ca08d9bed3834dc5315470a19d096d749ee
+prerequisite-patch-id: 8e7575808b1c498d81b606777153e0e2d4ee99bd
+prerequisite-patch-id: 1baa4ce64b2054e82e117cfbe29f85870def37c7
+prerequisite-patch-id: 733cb4a1e0d02079820d8306a3da88fe2d35b06c
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.34.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
