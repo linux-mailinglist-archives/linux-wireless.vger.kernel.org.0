@@ -1,62 +1,63 @@
-Return-Path: <linux-wireless+bounces-7028-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7029-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D39798B6A90
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 08:39:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B841A8B6AA5
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 08:43:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83B091F2171A
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 06:39:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA4421C20E2E
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 06:43:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57E52199D9;
-	Tue, 30 Apr 2024 06:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A50B73B2AD;
+	Tue, 30 Apr 2024 06:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d9i1p07A"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P9evOk1w"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D5A19477;
-	Tue, 30 Apr 2024 06:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FAC63B1A2
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Apr 2024 06:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714459174; cv=none; b=aFBZJp4RLHZYW55VOfiK96UbIuHnDg7GACcMWK+3xdiUB+ul+XzlTrsqH+4PY6xNdEGMxxBEctoZDlVRj8s2pnScInms2PNGQk9Krv5rTnS1SYO5ydovzLDdC2lVzEybVWMlj1cCmIRiGVZ6D1erYJ/qevK00TMZZlJfjxVelAM=
+	t=1714459371; cv=none; b=erVVd2UP9IGWEkShKTi+jewfc615xdQlhqkPkMKVfR5penCmik0D2p+vf42pMfcnliX1R+uqKvHmd+vsZSt9JsPfRnv0fqMTfXAS2GF5WEEiEPtb0++uW0mqDnHL2MmaOTgExvfPjD2hbSYEreUq1T942kYmCvv41fwh96J4g7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714459174; c=relaxed/simple;
-	bh=oqnLXrIFCIxkLdU3yGt5+mmee31pq5ZWUdGnKAC//2Y=;
+	s=arc-20240116; t=1714459371; c=relaxed/simple;
+	bh=fdQHboO+wwZXDX18KuhgKPneJcVoTv3BPscY3vNMF9M=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=ED0fxCMvgafT+GbchuNZBTTzYsSzRMGoLTUabKYSKmEdDgAU5sbq3KhuAIG76HVQFEUB3C3NFbgIva5eOJ+p83UjiEEjuGfrZsGJDOa+Y/lWUfPuLH3fduVB4El4otmZce4PZqxNncWsxZSazlssZzWvuBHLy9CTvDHpYJVWM3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d9i1p07A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51FDAC2BBFC;
-	Tue, 30 Apr 2024 06:39:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hams9crthQcwP5ZXWnD68gs2S3EUtXeWzBPc3StMR3HEeyD76hpfuoRIOGR8di38dduHpmoTT4lu7dk24m3hhfdzq0wXTi62AYQ6Cj6lRwVyCrFu0RJ2Z1krnup1ErrJ089jXTkNK8kLC47ZWRt8wLbSxA6TQcM+mQbhJEqqHew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P9evOk1w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D221FC2BBFC;
+	Tue, 30 Apr 2024 06:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714459173;
-	bh=oqnLXrIFCIxkLdU3yGt5+mmee31pq5ZWUdGnKAC//2Y=;
+	s=k20201202; t=1714459371;
+	bh=fdQHboO+wwZXDX18KuhgKPneJcVoTv3BPscY3vNMF9M=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=d9i1p07Aca+YWhFilcHBrCXtPHtGcJx8kthc0StbqTMZrqBtVGMJqiTBqBdbGQvRP
-	 hpl6YozRPgM604gTXkL2bWDOHwRQThwiGuQAQ+TD1HftHWCePUbzRXtD/kkAw9hl/1
-	 w6Qhlva/Rqny8+ncRVfMZ+5nlmlEobcWMNi9Dml15E+q8XUr0DMl6TcbSEFd7SHRkO
-	 9tdopBqtqwaCgjYEILSLLC/YnAeGDZKSApiRkNzxvxSABGn5UPACL3WQZTbgPk0osf
-	 zDrqMQaBKB+MDLl4qf8qOhDwo3/8ktquodGSmDosA6q4dwzKa0t8/7atnx/5nTO3rl
-	 l0F1JX1iFEpvA==
+	b=P9evOk1wfx3V5Yyau4PBE3WTeaJ6877CHJVLIU6aT0VxPQHMNI+hHRV2rQ4y5vTjJ
+	 ZsmA6WKpMt2ToYqnjE+DMUL0Aij11nuTCr23vRnVJTlgSokXQmZVPELHK8IaTvk954
+	 Y9j8Zi8R1YlJXvhTkS0dmlDVTXsbtOpEIWwbIJrJdMorfZSf4gpa5ve4F3sFV9IgF3
+	 HLOCTWIlR/egsRRv/njCEQEYqsF7xKXGe96gXE7tOiXr0S/Zai3l8Jvk4qw7LLZPP2
+	 9Z9W/fqGOEHNuhdXRvrOi/Oeh20eKDUgCMrQg0Kjialr5h/71eJTHNGBDYgkFfRq22
+	 CUtfCYwBelm2g==
 From: Kalle Valo <kvalo@kernel.org>
-To: Kees Cook <keescook@chromium.org>
-Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>,  Jeff Johnson
- <quic_jjohnson@quicinc.com>,  linux-wireless@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v2][next] wifi: wil6210: wmi: Use __counted_by() in
- struct wmi_set_link_monitor_cmd and avoid -Wfamnae warning
-References: <ZgSTCmdP+omePvWg@neat>
-	<171222554691.1806092.8730005090791383928.kvalo@kernel.org>
-	<202404291008.51DB333F@keescook> <877cggqdwb.fsf@kernel.org>
-	<202404291109.331E1704@keescook> <87bk5sf003.fsf@kernel.org>
-	<202404291251.9CBC42E481@keescook>
-Date: Tue, 30 Apr 2024 09:39:30 +0300
-In-Reply-To: <202404291251.9CBC42E481@keescook> (Kees Cook's message of "Mon,
-	29 Apr 2024 12:52:49 -0700")
-Message-ID: <87y18vpd5p.fsf@kernel.org>
+To: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,  <ath12k@lists.infradead.org>,
+  <linux-wireless@vger.kernel.org>,  Muna Sinada <quic_msinada@quicinc.com>
+Subject: Re: [PATCH v3 07/10] wifi: ath12k: add support for setting fixed HE
+ rate/GI/LTF
+References: <20240424201959.935-1-quic_pradeepc@quicinc.com>
+	<20240424201959.935-8-quic_pradeepc@quicinc.com>
+	<72bc6772-8bf7-427d-8f03-01e8dbf30d0c@quicinc.com>
+	<87y190fulv.fsf@kernel.org>
+	<198e317f-a849-4fe2-8080-3d1834d07481@quicinc.com>
+	<87sez4fk1o.fsf@kernel.org>
+	<51073e2c-2138-4957-a78c-2708c7742451@quicinc.com>
+Date: Tue, 30 Apr 2024 09:42:47 +0300
+In-Reply-To: <51073e2c-2138-4957-a78c-2708c7742451@quicinc.com> (Pradeep Kumar
+	Chitrapu's message of "Mon, 29 Apr 2024 18:41:37 -0700")
+Message-ID: <87ttjjpd08.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -66,42 +67,46 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Kees Cook <keescook@chromium.org> writes:
+Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com> writes:
 
->> >> > I was just walking through our patch tracker and noticed that I don't
->> >> > see this patch include in -next yet (as of next-20240429). Is there a
->> >> > flush of the ath-next queue planned soon? Or did I miss some change?
->> >> 
->> >> Yeah, wireless-next was pulled last week so most likely we will create
->> >> ath-next pull request this week.
->> >> 
->> >> BTW we are planning to move ath.git to a new location, rename branches
->> >> etc. I think we'll see if we can also setup it so that it can be pulled
->> >> to linux-next, so that you don't need to ask this every time ;)
->> >> 
->> >> (Just joking of course, there a lot of benefits from having the tree in
->> >> linux-next)
->> >
->> > Ah-ha! Thanks. Yeah, sorry if I keep asking about that. It's different
->> > from other trees, so it doesn't stick in my head. :) I should keep
->> > better notes!
->> 
->> BTW I think all vendor specific wireless driver trees are not pulled to
->> linux-next: iwlwifi, mt76, rtw (Realtek) and ath. So with all of these it will
->> take a while before the commit is in linux-next.
+>>> I did run ath12k-check but I don't see these errors. Trying to see if
+>>> this is due to version differences. will update further once I have
+>>> more information on this.
+>>>
+>>> This is version I ran:
+>>> qca-swiss-army-knife/tools/scripts/ath12k/ath12k-check --version
+>>> ath12k-check (md5sum cb8a85242f2ec7343f6f94af9fa5ebb2)
+>>>
+>>> python:         3.6.9 (default, Mar 10 2023, 16:46:00)
+>>> [GCC 8.4.0]
+>>> host gcc:       gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0
+>>> config cc:      gcc (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0
+>>> sparse:         v0.6.4
+>>> checkpatch.pl:  Version: 0.32 (md5sum 12ea394e9bf27280f30a684ff937cc57)
+>>> gtags:          gtags (GNU GLOBAL) 6.6.2
+>> Your sparse is too old, you need to get the latest from git:
+>> https://docs.kernel.org/dev-tools/sparse.html#getting-sparse
 >
-> How long is "a while"?
+> Thanks Kalle and Jeff for sharing the tool versions required..
+> I am able to see the errors reported now..
+> will fix and respin the series..
+>
+> ath12k-check (md5sum cb8a85242f2ec7343f6f94af9fa5ebb2)
+>
+> python:         3.6.9 (default, Mar 10 2023, 16:46:00)
+> [GCC 8.4.0]
+> host gcc:       gcc (GCC) 13.2.0
+> config cc:      gcc (GCC) 13.2.0
+> sparse:         v0.6.4-66-g0196afe16a50
+> checkpatch.pl:  Version: 0.32 (md5sum 12ea394e9bf27280f30a684ff937cc57)
+> gtags:          gtags (GNU GLOBAL) 6.6.2
 
-The cadence can be anything from 1-4 times per release (~8 weeks).
-Depends on the maintainer, how busy we are etc.
+I added a section about tools to the wiki:
 
-> And if the latency can be reduced for these, it'd be nice since it
-> would allow for longer bake-time in -next.
+https://wireless.wiki.kernel.org/en/users/drivers/ath10k/codingstyle#tools
 
-Sure but our time is limited, as always :) There's extra overhead with
-linux-next, like the rule that no updates during the merge window, so I
-can understand why some maintainers have not included their tree to
-linux-next builds.
+Feedback very welcome, it's important that our documentation is
+understandable for new developers.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
