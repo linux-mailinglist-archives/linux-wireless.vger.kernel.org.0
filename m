@@ -1,275 +1,201 @@
-Return-Path: <linux-wireless+bounces-7055-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7056-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37BB88B7AEA
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 17:04:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 582048B7B44
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 17:14:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E328628674E
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 15:03:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37E43B233D2
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Apr 2024 15:14:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F80113D275;
-	Tue, 30 Apr 2024 15:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 595C6152799;
+	Tue, 30 Apr 2024 15:14:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="BR6UIp7l"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D84777111
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Apr 2024 15:02:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46B412C491
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Apr 2024 15:14:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714489349; cv=none; b=bNJzwd6/RdtUkE4XzpNccz9JlhKZ+hC/y9okEmpidJlqaqauaEvOZcWzWBy2HppykRBjRPvdFaGC+oNjzx0mkYyE4Z3pDyWeS6yUj4FpypQ3CpFsnv4R7k40yoO14kHhjyok9a6KHBxOE5wivw9xbC/IGpW7d7vYkhTQpc+9pog=
+	t=1714490068; cv=none; b=n/LPeNmPaCr5rfnPQD/2jqGDWxms706+R36NnYX1q1dxXZnM1Vs8SoS3rNCXIo8wagOhtsQL71wGJieNg93a73sa0OhV9SY1yl2QUBX5I/r5QhwPE3hJbeElSdjtHTmmitvminGaEMc3vfbR3Exz18swwkSjRtK1NegoknFA0GA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714489349; c=relaxed/simple;
-	bh=7rmPFQ3DT++fNxZ0G1yoLQAgk3hBR6DMm4fIql/kEjE=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Bd16+K0kUtto7HBQGq8XqexwljMHLgfOUTCozl3ainB7IHQ75kzkCKfojh++zgOoaJ6MimpqHDtPwCVtxo897gKzFnR9r+hh2tJJLuNAxjM8MDKYQb0N4Je82wscEQtrem5VnklGT24xswdTbzi0TKGNI+5nmuee3v63/BPnRH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-36c4184ee5dso30187215ab.1
-        for <linux-wireless@vger.kernel.org>; Tue, 30 Apr 2024 08:02:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714489346; x=1715094146;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1ALJp+yxeJq2OA0p5gmt6WimV/9suDz8TH5aPp/0mBQ=;
-        b=c1JaSmJFvNzz7XL+E00RkCBMUTxj8Mp2mNwW1ZaPUOC6x/1oS9Yvd4RXev78DKBsTm
-         C9OeATzVdjU4OdCdr4fVK/LgJB8j82Pj9cztJgSu1Aj4/v7pWDwbHMA1BNJ+Fcl09cQZ
-         lE18chKKDui7WScHtL6JMOdzcq4bMgI2eQXr8j6GIuNAZmQD9ZL+xOkoQbHZp4RfAEl2
-         CqAcDVRXj6EzWI3RJRJhOTYEBBrmxvVmdlH92GdPklPa5awvEibKi0dHJ1zKeXprM6um
-         VTG8jlBDgqzjbp1yNRi6G4KiS3cWlBq+hMalaDxKuza3/uK/BtxqNTV6Br/IqVmsduw8
-         LrUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXHnlCr9eMrwTP8Z48BDMdXHVeuIOJOhGFR2Q3pvxVjXHchTSwyVq+W/XbO4RdHx1o5DEzDfswwUSYYmAe06M6xLsri+6esX6yFfpC+6X4=
-X-Gm-Message-State: AOJu0YzGTaBfQRe2szJD26nSS720S6TThBC0JzsFVWRfOiBNlJKuOJJc
-	4bJpNv+m4KL3Y9gkZwQIx53s5JHkgoVbYhXaEgFcuGc573v8WbzyHCETwzUg5mDmNMOcAvoZFQ4
-	8uQZR+PoydPVkAPUWTXZlf/Trg1EwFhWtzDPz/2XTwkpC2otqSXjkYPQ=
-X-Google-Smtp-Source: AGHT+IEodTkEwipf14NIaP2rVFtJwuOooYDO+mCGtrYaqcuLYsZ6rxdrtUA0sg1WCkbZS08IdThoiKQoUc6Tfbj+3lUyVNUXfyoC
+	s=arc-20240116; t=1714490068; c=relaxed/simple;
+	bh=gxDUM0FdwmvoIw9hMFqq0Sj5yL40KzW7xYVp1TpmdQU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=V2g0Ly6CWtoUKc8dNtmdJrAh0E9+btjyJWIxGiJk047J1dIWt6CEjoJtUQR+1+UjCunptYzkwRYwnx+WAqC4wS//dQxYDsYFmP4FdBw0vd/n9U+Qqe4fJshmHpXd5gO2WszlHwM7dPO1QCDVRGnQAyVBhF+YdNJhEHIySSG0NnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=BR6UIp7l; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 43UBLMxa005772;
+	Tue, 30 Apr 2024 15:14:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=BovKqYsHOlN/fkcFtWHYlqka+3aJqkEDksOokCh45lk=; b=BR
+	6UIp7lbR1KQMfhZi0aZL0FJ8e9ztQdBq1AzLJQ9MZ73aJKq6OduGePZZ8OTczBrX
+	39q2PXnoo2zIGjyDIBktVAX/hiWklssTGdO15UnO9Q9ktuV43hXbMFXF3Me49Sv8
+	aft7i+tliC5L0nZNYNbLKP44+bXqlFl7LaJSEfkfRuQPYoY475kSs1f6ILN4Z/ui
+	S6Uvr+dPT4fhSxwMfuUIPWGblgwrrbIg0a2j3y0lRnQxEZtZEjZi/31OsxpLUV4m
+	9z+/CmOiivBoeQQ9Hk5aC/bv2oSzyFr12uXnB14C/8yyFb3+UI3ySYTE9EeYZfGr
+	Gal58iGUYUmnr6cy4Jmw==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xtyptgk4v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Apr 2024 15:14:18 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43UFEHeG012880
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Apr 2024 15:14:17 GMT
+Received: from [10.110.13.147] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 30 Apr
+ 2024 08:14:17 -0700
+Message-ID: <4f9abe89-a004-45e8-b369-5c2b39bff440@quicinc.com>
+Date: Tue, 30 Apr 2024 08:14:16 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:154e:b0:36c:2976:3012 with SMTP id
- j14-20020a056e02154e00b0036c29763012mr569569ilu.2.1714489345740; Tue, 30 Apr
- 2024 08:02:25 -0700 (PDT)
-Date: Tue, 30 Apr 2024 08:02:25 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000006ca6cc061751a86a@google.com>
-Subject: [syzbot] [wireless?] [usb?] INFO: trying to register non-static key
- in skb_dequeue (3)
-From: syzbot <syzbot+2660b9135e6144ca41a5@syzkaller.appspotmail.com>
-To: kvalo@kernel.org, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, pkshih@realtek.com, 
-	syzkaller-bugs@googlegroups.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv5] wifi: ath11k: skip status ring entry processing
+Content-Language: en-US
+To: Kalle Valo <kvalo@kernel.org>
+CC: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>,
+        <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        "Venkateswara
+ Naralasetty" <quic_vnaralas@quicinc.com>
+References: <20240429073624.736147-1-quic_tamizhr@quicinc.com>
+ <35f114c4-1ff7-4a4b-aadf-ed147f19e170@quicinc.com>
+ <87cyq7ota5.fsf@kernel.org>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <87cyq7ota5.fsf@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: IxOl8azAW5fZFLpzJN6DJ9ThyKNjs4Nl
+X-Proofpoint-ORIG-GUID: IxOl8azAW5fZFLpzJN6DJ9ThyKNjs4Nl
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-04-30_08,2024-04-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
+ priorityscore=1501 adultscore=0 clxscore=1015 mlxscore=0 suspectscore=0
+ malwarescore=0 impostorscore=0 lowpriorityscore=0 mlxlogscore=910
+ spamscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404300108
 
-Hello,
+On 4/30/2024 6:48 AM, Kalle Valo wrote:
+> Jeff Johnson <quic_jjohnson@quicinc.com> writes:
+> 
+>> On 4/29/2024 12:36 AM, Tamizh Chelvam Raja wrote:
+>>
+>>> From: Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
+>>>
+>>> If STATUS_BUFFER_DONE is not set for a monitor status ring entry,
+>>> we don't process the status ring until STATUS_BUFFER_DONE set
+>>> for that status ring entry.
+>>>
+>>> During LMAC reset it may happen that hardware will not write
+>>> STATUS_BUFFER_DONE tlv in status buffer, in that case we end up
+>>> waiting for STATUS_BUFFER_DONE leading to backpressure on monitor
+>>> status ring.
+>>>
+>>> To fix the issue, when HP(Head Pointer) + 1 entry is peeked and if DMA
+>>> is not done and if HP + 2 entry's DMA done is set,
+>>> replenish HP + 1 entry and start processing in next interrupt.
+>>> If HP + 2 entry's DMA done is not set, poll onto HP + 1 entry DMA
+>>> done to be set.
+>>>
+>>> Also, during monitor attach HP points to the end of the ring and
+>>> TP(Tail Pointer) points to the start of the ring.
+>>> Using ath11k_hal_srng_src_peek() may result in processing invalid buffer
+>>> for the very first interrupt. Since, HW starts writing buffer from TP.
+>>>
+>>> To avoid this issue call ath11k_hal_srng_src_next_peek() instead of
+>>> calling ath11k_hal_srng_src_peek().
+>>>
+>>> Tested-on: IPQ5018 hw1.0 AHB WLAN.HK.2.6.0.1-00861-QCAHKSWPL_SILICONZ-1
+>>>
+>>> Signed-off-by: Venkateswara Naralasetty <quic_vnaralas@quicinc.com>
+>>> Co-developed-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
+>>> Signed-off-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
+>>
+>> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+>>
+>> however note...
+>>
+>>> +
+>>> +				/* If done status is missing:
+>>> +				 * 1. As per MAC team's suggestion,
+>>> +				 *    when HP + 1 entry is peeked and if DMA
+>>> +				 *    is not done and if HP + 2 entry's DMA done
+>>> +				 *    is set. skip HP + 1 entry and
+>>> +				 *    start processing in next interrupt.
+>>> +				 * 2. If HP + 2 entry's DMA done is not set,
+>>> +				 *    poll onto HP + 1 entry DMA done to be set.
+>>> +				 *    Check status for same buffer for next time
+>>> +				 *    dp_rx_mon_status_srng_process
+>>> +				 */
+>>> +
+>>> + reap_status = ath11k_dp_rx_mon_handle_status_buf_done(ab, srng,
+>>> + rx_ring);
+>>
+>> ath11k-check reports:
+>>
+>> drivers/net/wireless/ath/ath11k/dp_rx.c:3116: line length of 95 exceeds 90 columns
+>> drivers/net/wireless/ath/ath11k/dp_rx.c:3117: line length of 95 exceeds 90 columns
+> 
+> Tamizh, please ALWAYS run ath11k-check. We are wasting time for trivial
+> stuff like this.
+> 
+>> Kalle, in this case we may want to make an exception since I don't think there
+>> is a clean way to fix this other than refactoring.
+> 
+> The new function name looked quite long so I shortened it to
+> ath11k_dp_rx_mon_buf_done() and the warning is now gone. Does that look
+> reasonable name?
+> 
+> Also I removed one unrelated change and removed unnecessary else. Please
+> check my changes:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=6e88d559268779107715008c51e006f7a5f62045
 
-syzbot found the following issue on:
+So looking at the 'pending' change I have the observation that
+ath11k_dp_rx_mon_buf_done() only returns one of two values:
+DP_MON_STATUS_NO_DMA
+DP_MON_STATUS_REPLINISH
 
-HEAD commit:    3f12222a4beb usb: dwc3: core: Fix compile warning on s390 ..
-git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
-console output: https://syzkaller.appspot.com/x/log.txt?x=12dee6d8980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=6fe204286ac73e15
-dashboard link: https://syzkaller.appspot.com/bug?extid=2660b9135e6144ca41a5
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=127fb7bb180000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=118eeccf180000
+And the return value handling has explicit handling for those values, without
+any logic for other values:
++				if (reap_status == DP_MON_STATUS_NO_DMA)
++					continue;
++
++				if (reap_status == DP_MON_STATUS_REPLINISH) {
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/25a4e2e32205/disk-3f12222a.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/e02cf02ad7b9/vmlinux-3f12222a.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/41deb6e53302/bzImage-3f12222a.xz
+if we only expect these two values to ever be returned, then we could remove
+the testing for DP_MON_STATUS_REPLINISH since, it it isn't NO_DMA then it must
+be REPLINISH
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+2660b9135e6144ca41a5@syzkaller.appspotmail.com
+Also after this patch is merged, can we have a spelling correcting patch:
+s/REPLINISH/REPLENISH/
 
-usb 1-1: reg 0xfe64, usbctrl_vendorreq TimeOut! status:0xffffffb9 value=0x0 reqtype=0xc0
-rtl_usb: rx_max_size 15360, rx_urb_num 8, in_ep 0
-rtl8192cu: Loading firmware rtlwifi/rtl8192cufw_TMSC.bin
-usb 1-1: USB disconnect, device number 2
-INFO: trying to register non-static key.
-The code is fine but needs lockdep annotation, or maybe
-you didn't initialize this object before use?
-turning off the locking correctness validator.
-CPU: 0 PID: 589 Comm: kworker/0:2 Not tainted 6.9.0-rc5-syzkaller-00105-g3f12222a4beb #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
-Workqueue: usb_hub_wq hub_event
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:114
- assign_lock_key kernel/locking/lockdep.c:976 [inline]
- register_lock_class+0xc2a/0x1230 kernel/locking/lockdep.c:1289
- __lock_acquire+0x111/0x3b30 kernel/locking/lockdep.c:5014
- lock_acquire kernel/locking/lockdep.c:5754 [inline]
- lock_acquire+0x1b1/0x560 kernel/locking/lockdep.c:5719
- __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
- _raw_spin_lock_irqsave+0x3a/0x60 kernel/locking/spinlock.c:162
- skb_dequeue+0x20/0x180 net/core/skbuff.c:3835
- rtl_usb_cleanup drivers/net/wireless/realtek/rtlwifi/usb.c:706 [inline]
- rtl_usb_deinit drivers/net/wireless/realtek/rtlwifi/usb.c:721 [inline]
- rtl_usb_disconnect+0x49e/0x830 drivers/net/wireless/realtek/rtlwifi/usb.c:1051
- usb_unbind_interface+0x1e8/0x970 drivers/usb/core/driver.c:461
- device_remove drivers/base/dd.c:568 [inline]
- device_remove+0x122/0x170 drivers/base/dd.c:560
- __device_release_driver drivers/base/dd.c:1270 [inline]
- device_release_driver_internal+0x44a/0x610 drivers/base/dd.c:1293
- bus_remove_device+0x22f/0x420 drivers/base/bus.c:574
- device_del+0x396/0xa10 drivers/base/core.c:3909
- usb_disable_device+0x36c/0x7f0 drivers/usb/core/message.c:1418
- usb_disconnect+0x2e1/0x920 drivers/usb/core/hub.c:2305
- hub_port_connect drivers/usb/core/hub.c:5361 [inline]
- hub_port_connect_change drivers/usb/core/hub.c:5661 [inline]
- port_event drivers/usb/core/hub.c:5821 [inline]
- hub_event+0x1be4/0x4f50 drivers/usb/core/hub.c:5903
- process_one_work+0x9a9/0x1ac0 kernel/workqueue.c:3254
- process_scheduled_works kernel/workqueue.c:3335 [inline]
- worker_thread+0x6c8/0xf70 kernel/workqueue.c:3416
- kthread+0x2c1/0x3a0 kernel/kthread.c:388
- ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
-BUG: unable to handle page fault for address: ffffffffffffffd8
-#PF: supervisor write access in kernel mode
-#PF: error_code(0x0002) - not-present page
-PGD 82a2067 P4D 82a2067 PUD 82a4067 PMD 0 
-Oops: 0002 [#1] PREEMPT SMP KASAN PTI
-CPU: 0 PID: 589 Comm: kworker/0:2 Not tainted 6.9.0-rc5-syzkaller-00105-g3f12222a4beb #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
-Workqueue: usb_hub_wq hub_event
-RIP: 0010:arch_atomic_fetch_add arch/x86/include/asm/atomic.h:97 [inline]
-RIP: 0010:raw_atomic_fetch_add_relaxed include/linux/atomic/atomic-arch-fallback.h:749 [inline]
-RIP: 0010:atomic_fetch_add_relaxed include/linux/atomic/atomic-instrumented.h:253 [inline]
-RIP: 0010:__refcount_add include/linux/refcount.h:184 [inline]
-RIP: 0010:__refcount_inc include/linux/refcount.h:241 [inline]
-RIP: 0010:refcount_inc include/linux/refcount.h:258 [inline]
-RIP: 0010:kref_get include/linux/kref.h:45 [inline]
-RIP: 0010:usb_get_urb.part.0+0x1c/0x90 drivers/usb/core/urb.c:114
-Code: 90 90 90 90 90 90 90 90 90 90 90 90 90 90 55 48 89 fd 53 bb 01 00 00 00 e8 81 19 2d fd be 04 00 00 00 48 89 ef e8 d4 02 7f fd <f0> 0f c1 5d 00 31 ff 89 de e8 46 14 2d fd 85 db 74 47 e8 5d 19 2d
-RSP: 0018:ffffc900019cf6b0 EFLAGS: 00010046
-RAX: 0000000000000001 RBX: 0000000000000001 RCX: ffffffff8425b71c
-RDX: fffffbfffffffffc RSI: 0000000000000004 RDI: ffffffffffffffd8
-RBP: ffffffffffffffd8 R08: 0000000000000001 R09: fffffbfffffffffb
-R10: ffffffffffffffdb R11: 0000000000000001 R12: ffff888118830228
-R13: ffffffffffffffd8 R14: ffff888118830288 R15: dffffc0000000000
-FS:  0000000000000000(0000) GS:ffff8881f6400000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffffffffffffd8 CR3: 0000000116906000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- usb_get_urb drivers/usb/core/urb.c:816 [inline]
- usb_kill_anchored_urbs+0xa5/0x380 drivers/usb/core/urb.c:819
- rtl_usb_cleanup drivers/net/wireless/realtek/rtlwifi/usb.c:713 [inline]
- rtl_usb_deinit drivers/net/wireless/realtek/rtlwifi/usb.c:721 [inline]
- rtl_usb_disconnect+0x4d1/0x830 drivers/net/wireless/realtek/rtlwifi/usb.c:1051
- usb_unbind_interface+0x1e8/0x970 drivers/usb/core/driver.c:461
- device_remove drivers/base/dd.c:568 [inline]
- device_remove+0x122/0x170 drivers/base/dd.c:560
- __device_release_driver drivers/base/dd.c:1270 [inline]
- device_release_driver_internal+0x44a/0x610 drivers/base/dd.c:1293
- bus_remove_device+0x22f/0x420 drivers/base/bus.c:574
- device_del+0x396/0xa10 drivers/base/core.c:3909
- usb_disable_device+0x36c/0x7f0 drivers/usb/core/message.c:1418
- usb_disconnect+0x2e1/0x920 drivers/usb/core/hub.c:2305
- hub_port_connect drivers/usb/core/hub.c:5361 [inline]
- hub_port_connect_change drivers/usb/core/hub.c:5661 [inline]
- port_event drivers/usb/core/hub.c:5821 [inline]
- hub_event+0x1be4/0x4f50 drivers/usb/core/hub.c:5903
- process_one_work+0x9a9/0x1ac0 kernel/workqueue.c:3254
- process_scheduled_works kernel/workqueue.c:3335 [inline]
- worker_thread+0x6c8/0xf70 kernel/workqueue.c:3416
- kthread+0x2c1/0x3a0 kernel/kthread.c:388
- ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
-Modules linked in:
-CR2: ffffffffffffffd8
----[ end trace 0000000000000000 ]---
-RIP: 0010:arch_atomic_fetch_add arch/x86/include/asm/atomic.h:97 [inline]
-RIP: 0010:raw_atomic_fetch_add_relaxed include/linux/atomic/atomic-arch-fallback.h:749 [inline]
-RIP: 0010:atomic_fetch_add_relaxed include/linux/atomic/atomic-instrumented.h:253 [inline]
-RIP: 0010:__refcount_add include/linux/refcount.h:184 [inline]
-RIP: 0010:__refcount_inc include/linux/refcount.h:241 [inline]
-RIP: 0010:refcount_inc include/linux/refcount.h:258 [inline]
-RIP: 0010:kref_get include/linux/kref.h:45 [inline]
-RIP: 0010:usb_get_urb.part.0+0x1c/0x90 drivers/usb/core/urb.c:114
-Code: 90 90 90 90 90 90 90 90 90 90 90 90 90 90 55 48 89 fd 53 bb 01 00 00 00 e8 81 19 2d fd be 04 00 00 00 48 89 ef e8 d4 02 7f fd <f0> 0f c1 5d 00 31 ff 89 de e8 46 14 2d fd 85 db 74 47 e8 5d 19 2d
-RSP: 0018:ffffc900019cf6b0 EFLAGS: 00010046
-RAX: 0000000000000001 RBX: 0000000000000001 RCX: ffffffff8425b71c
-RDX: fffffbfffffffffc RSI: 0000000000000004 RDI: ffffffffffffffd8
-RBP: ffffffffffffffd8 R08: 0000000000000001 R09: fffffbfffffffffb
-R10: ffffffffffffffdb R11: 0000000000000001 R12: ffff888118830228
-R13: ffffffffffffffd8 R14: ffff888118830288 R15: dffffc0000000000
-FS:  0000000000000000(0000) GS:ffff8881f6400000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffffffffffffd8 CR3: 0000000116906000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-----------------
-Code disassembly (best guess):
-   0:	90                   	nop
-   1:	90                   	nop
-   2:	90                   	nop
-   3:	90                   	nop
-   4:	90                   	nop
-   5:	90                   	nop
-   6:	90                   	nop
-   7:	90                   	nop
-   8:	90                   	nop
-   9:	90                   	nop
-   a:	90                   	nop
-   b:	90                   	nop
-   c:	90                   	nop
-   d:	90                   	nop
-   e:	55                   	push   %rbp
-   f:	48 89 fd             	mov    %rdi,%rbp
-  12:	53                   	push   %rbx
-  13:	bb 01 00 00 00       	mov    $0x1,%ebx
-  18:	e8 81 19 2d fd       	call   0xfd2d199e
-  1d:	be 04 00 00 00       	mov    $0x4,%esi
-  22:	48 89 ef             	mov    %rbp,%rdi
-  25:	e8 d4 02 7f fd       	call   0xfd7f02fe
-* 2a:	f0 0f c1 5d 00       	lock xadd %ebx,0x0(%rbp) <-- trapping instruction
-  2f:	31 ff                	xor    %edi,%edi
-  31:	89 de                	mov    %ebx,%esi
-  33:	e8 46 14 2d fd       	call   0xfd2d147e
-  38:	85 db                	test   %ebx,%ebx
-  3a:	74 47                	je     0x83
-  3c:	e8                   	.byte 0xe8
-  3d:	5d                   	pop    %rbp
-  3e:	19                   	.byte 0x19
-  3f:	2d                   	.byte 0x2d
++					ath11k_warn(ab, "mon status DONE not set %lx, buf_id %d\n",
++						    FIELD_GET(HAL_TLV_HDR_TAG, tlv->tl),
++						    buf_id);
+
+I don't think we should log anything here. we already warn before calling the
+new function. if we get here it means the next buffer had DONE set so we can
+replenish the current buffer
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
