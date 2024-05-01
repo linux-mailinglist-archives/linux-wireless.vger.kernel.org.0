@@ -1,302 +1,251 @@
-Return-Path: <linux-wireless+bounces-7080-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7083-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E15CD8B8DD7
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 May 2024 18:14:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D857B8B8E9B
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 May 2024 18:56:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1016D1C20F6D
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 May 2024 16:14:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 079CD1C215CC
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 May 2024 16:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D7AD12FB36;
-	Wed,  1 May 2024 16:14:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="kcSSArMF"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B52D18C08;
+	Wed,  1 May 2024 16:56:08 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from APC01-TYZ-obe.outbound.protection.outlook.com (mail-tyzapc01olkn2076.outbound.protection.outlook.com [40.92.107.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E62814012;
-	Wed,  1 May 2024 16:14:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.107.76
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714580093; cv=fail; b=pmz1sx24bBJ53CRZQsrajSLWYaTRTL/MYvzsfcn1k23/qgsg90XxAnApZngfZUpSBy9iA7wrPjlnObCtE/NzAl+FtKkHkJzK2n54VYWl0uyH5C/W8/zPXWkSG+8HLPE5f2w8ZXnysELOcmG4hRNg08K6VIr+EwhCFJ/tNC0AC9g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714580093; c=relaxed/simple;
-	bh=Q9OGUmiTFsjd+9O0xdXLrQUgv+Oq337rNyQ1BijPpBE=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Wmvam3m3UlyJhOIMc2OSF5ETYpvoaBpNS7XWyi5GuwavVJJJum83hQggrcM8dTErsk4itVlC9f6t4k5wbC40xKH5q8X9V7uyIObUOdrc0OZg0XIDb20iDHNk7UGD8hx9DoU48c44b3VA0LEbhGc1oLfJUjgwivoc0VfHxcrxIc0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=kcSSArMF; arc=fail smtp.client-ip=40.92.107.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YMEdP6v082bZTrB87E51xQnG0zZd/Fpe6QjnW+IxqCIalhDO1ca+Er5u8b5pz5Yd27/VjDyZrpWfcQnhCSRrqwiRHjPY+kNFJcSZHb6sM0ANZQbKHGZ6lz4YWcKYnVc78ggajGFzLIOYaDa3zed7Hls2OkyF2mjE6TMeT5nBHCwYQ/pXtUZsDrHsz4ur+U1WZvQofZzs+IQsBJb0isvdwWGpa09P5+PWZ2+eZ8Bvtg502CzYYW+kf6pZWycb15hfRJl0cA05YSTg8yEtTUK0ySAe7QhvwiopuiTCQ0q15+58z63YZ8SPhQ9y9KryOCFrZaiNrfrW60kaOP6jG8wtQw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rbOtTebtzu/cATU3j7GOnrL+wt4Ra0sZePsLBZFPSAM=;
- b=Y4LPMo77ft/HeCpf1mjAMkjD6p0QgSEMWHFJi9+GYPlCtuDat15cRJA8v4Lc/2oJj8UegUIxZoqVya7lC4Dhftx8EmR+FYxvlSNwdXV8MbrqVKnM99YpbSAlKFNZetSndeTXRIscpru7RHw1f4zMNHvz6/VlxGsveG8U/OFYr2cby3yn8Naeoxz2Yhwz2vm/iE8zF0v0YRjz/2GYVurvlAauvldtCD7UlRiHt+MPHflFrT//u5t6GtYtmE+MvK27XrN5aHIUwWDTqM9PuGyjo5ZwLAUVZrk8rg1GomAX35JpwMKv+BLMp3uXoOzY6XsjtFe5X+LDFIwXl7IrWacywA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rbOtTebtzu/cATU3j7GOnrL+wt4Ra0sZePsLBZFPSAM=;
- b=kcSSArMFXmR5Afu97BoqcLLu8YM1lYwHWdY6Bw1zJpi6Cjp2kGe7gefc8gPBxmhb7gY0WfhLCobP8Li7xQCI+pCE0RA4+22mgpJDj85VR9qc+VomRbUvMgQXL6rYR3fiW3P+0SH4sH7xvFWRabXxU9l4QGvinLZkb1zeO8uu2KjnhhoypNKgN1uo/DReipTkGw1RVr3sIyrvmN0mbUjJEgAYSrcgezlDNpvNSnqP8wDaajTPsi9CU0XCxY2RYDkTZJ8/yHL+ZVGgh/1qOldkpAlXCn9DyoqOtJQ+YNhY4g7ByGV1W9HDgMhtQotGzGYjE1bFGUNCHTjwehXjlCQsWA==
-Received: from TYZPR01MB5556.apcprd01.prod.exchangelabs.com
- (2603:1096:400:363::9) by KL1PR01MB4861.apcprd01.prod.exchangelabs.com
- (2603:1096:820:bd::8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.36; Wed, 1 May
- 2024 16:14:48 +0000
-Received: from TYZPR01MB5556.apcprd01.prod.exchangelabs.com
- ([fe80::3641:305b:41e2:6094]) by TYZPR01MB5556.apcprd01.prod.exchangelabs.com
- ([fe80::3641:305b:41e2:6094%4]) with mapi id 15.20.7519.031; Wed, 1 May 2024
- 16:14:47 +0000
-From: Ziyang Huang <hzyitc@outlook.com>
-To: kvalo@kernel.org
-Cc: jjohnson@kernel.org,
-	linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Ziyang Huang <hzyitc@outlook.com>
-Subject: [PATCH] wifi: ath11k: fix remapped ce accessing issue on 64bit OS
-Date: Thu,  2 May 2024 00:14:31 +0800
-Message-ID:
- <TYZPR01MB55563B3A689D54D18179E5B4C9192@TYZPR01MB5556.apcprd01.prod.exchangelabs.com>
-X-Mailer: git-send-email 2.40.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-TMN: [XtZR7T2ItLH2/vhgRbeIdkBzNBJGxOQl5AEEcc+XwbsTRErPTIfZ7Q==]
-X-ClientProxiedBy: SJ0PR05CA0210.namprd05.prod.outlook.com
- (2603:10b6:a03:330::35) To TYZPR01MB5556.apcprd01.prod.exchangelabs.com
- (2603:1096:400:363::9)
-X-Microsoft-Original-Message-ID: <20240501161431.1021275-1-hzyitc@outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49591168BD;
+	Wed,  1 May 2024 16:56:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1714582568; cv=none; b=lRnzSlGEXzYFBXUAVarqV2yhRApp3CktdYSxASDIYXfDtRYBvDhFk82DgIWpH9CCPffJYAEIzBqrq4WbcHgOa205kXidW763v/Tq9myyp4nAHS+L5uAZaLYiwWHBzylUN2XVYvEpLmesnSB0OkOsE+xAq1CFgPr8HIaPhlwdi3s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1714582568; c=relaxed/simple;
+	bh=TcDzC1URqfIGLzJLPDLTzwckLUr9NbwS3Ma6ukNQrZY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kIEIG7G4vgMk0xr7k30lt2IoqX7+m+xFgDOApSRuxPvEeKe2/MZ3J3uyfSkd8iA9zaJOUn0D8uMaPtGyUGKQ6PHbNBlopbj8vw1Rg18Cxo8PsLVPk8F794WUI2dhp0ajh09biTKUlgKx83P/HxIit+5aEiItCdXkv7dKNcPuD+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-56e56ee8d5cso8981039a12.2;
+        Wed, 01 May 2024 09:56:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714582564; x=1715187364;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SZyGPQjH8Nh0r2HrUHxBLid/Ouu1r0VmzmfrZnEPyNs=;
+        b=R8o6HvZCcCP2SyIJF4k6fpRr1tlsoP+AhXrIeupjmRFZbnOx7tZqQtNWME6TXoTEsg
+         6MS5wnaJfJbMsEFg/X2pQVwvwPGXjSsptHWXDq7cGxtuPV4kvtU+7l6zRGMLT1Ny7lQu
+         1wBkjJyQNq9YkjA45vUoG4aPd5z0FHAeSjQMTFfTuMGaFhYsFx033KJhWjrdaRVwWbyy
+         cz4FTz4ckHEBjxQTwjy39U1YdSjwb91ESB50c3xq7Vb9qWDD6c7qakp7bO2zePvPq9zo
+         peNyuQOlHv9z6oIcFvCvn/Csrlx93X8pXp8LGyOBfGRl3okFQH92eovrXDqmj9lKypPF
+         LFlg==
+X-Forwarded-Encrypted: i=1; AJvYcCXJ/c6EP+1kPDhotGI+1t/7fKAqi3pu88Q5SxrFyD+kMq51G82PV4BCTvcevVm7c2dzIrGcvJawDQvbVpOyR5o5Da7/rYrWJNicwA9F5dT66vxEQ5FNILn/VasLn/VIwv8kT+T8gRIZmviHgsg=
+X-Gm-Message-State: AOJu0YytyKgzXDngrZpJRTTlWjx/nJ8P83OZfzzq0PBzXubTt4jaRhEq
+	9qCZVw70B3KP/m3oeB+jgiNy8xGj77PImYpCYs+D3pcVnNa4dTzn
+X-Google-Smtp-Source: AGHT+IFiNeAXFLvqrJqj/JpJnaQ1VuTj5HIQczid62EJDQa/xpeqnynka7fbVfl2mZvp0wxYEEevxA==
+X-Received: by 2002:a50:8adb:0:b0:572:42ac:9b19 with SMTP id k27-20020a508adb000000b0057242ac9b19mr2532186edk.0.1714582564313;
+        Wed, 01 May 2024 09:56:04 -0700 (PDT)
+Received: from localhost (fwdproxy-lla-005.fbsv.net. [2a03:2880:30ff:5::face:b00c])
+        by smtp.gmail.com with ESMTPSA id 15-20020a508e0f000000b005726e5e8765sm5205429edw.3.2024.05.01.09.56.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 May 2024 09:56:03 -0700 (PDT)
+From: Breno Leitao <leitao@debian.org>
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Kalle Valo <kvalo@kernel.org>
+Cc: netdev@vger.kernel.org,
+	Kees Cook <keescook@chromium.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Alon Giladi <alon.giladi@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Avraham Stern <avraham.stern@intel.com>,
+	linux-wireless@vger.kernel.org (open list:INTEL WIRELESS WIFI LINK (iwlwifi)),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH wireless-next v2] wifi: iwlwifi: pcie: allocate dummy net_device dynamically
+Date: Wed,  1 May 2024 09:54:04 -0700
+Message-ID: <20240501165417.3406039-1-leitao@debian.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYZPR01MB5556:EE_|KL1PR01MB4861:EE_
-X-MS-Office365-Filtering-Correlation-Id: 64080f89-70d8-4249-f575-08dc69f9d1c6
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|461199019|440099019|3412199016|1710799017;
-X-Microsoft-Antispam-Message-Info:
-	ZKMLRtZJQr1bbi0ZJNBSo+VwLg1D0P9kcCQrUCHXZ7xAZAsRBf0eOGS4BDFd179ep9M0BUuTIWSGrLGd96vr1pSlcvvRFOJA1hr0fIyiP3G5miCph6UHVJ8uH05qgoIMPFMJIwlC0QMMIQZEvzet/SaexPIyGXZFJO01V93JAwjAcR0kpY/4TxTsuibjA6d1gjPdywH32B5HZ6fx/J9ce31bQi6b97QrX00bRjlZTA9Mp63ouonUmcJJz5CtRANY4jLvy0WmXJpZZ7sPImhTc5AivSnhUeKnsIO1NrRbw2CAON1/0GRIYqAlHSbQ9mLvrGaJAqMY9kmfWq7uVHDlYLeeJWvjtB6smv60QBKi08prQ952553tfOjZkDcrUhWAp+yDAVeCQbajMHJwwILbvA+RvXzTKugr10Bzh9uQnoEVhw/rmtQ4NX5XoXSDIvhRQNXqzcnDog10BoXpI8GR1dv3eQ3VauTqO1BHYrmAh0i2NmgZ1XJ2kUjFX5GAFl4ZSDZef+TILFo3m3cGXOGv50oSAG/e5KG6AX2kf6D2e8qAvW4CyYMhf6MxBGB1dDrfYFT/sTDhG9VU84lQSLtIZklvB/DmhUIrP9pqD6vUYj7v6C264blQqiwW81jW+7kY
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?V0PGIaAaAo5aOxC48rE1Uf0b2e5dnwsglDJWOuPYgIyCUKqtoJCc6hR5vxXA?=
- =?us-ascii?Q?tGOfzQB8BKOhIs7stmux0zADF6EbaICjQf12XQTLImWR79CL+RDsuI/UjzsY?=
- =?us-ascii?Q?P2oyGn/g62Sse733CeUasWjxlUVBv3VmhZTkmLgwAlygOcymNt8NLhGybFXF?=
- =?us-ascii?Q?lQ65rcRzJsZDU4+EO/MtDpRWhuD6naUSG1Htk/qeNYjLnH0tFHArvxqfGGLi?=
- =?us-ascii?Q?76IGIF2zzX0/E70UXfcqDmKSBx9JF64Un4WvyHgW+RJHB+IBn1KZqthbxDrg?=
- =?us-ascii?Q?dxqNjLk7FJedNI/FLeh7ZVf9A72MxszBfZaycd+JyNcsKs6FNIPbHhqkTs79?=
- =?us-ascii?Q?6SDYs1OBbzKAEXqVux6Ot/1uMB8babtquOkfdhDNXhPY4MjCwOXShqNN8i63?=
- =?us-ascii?Q?mAEIhEDt4u1KpRfBm/bw4y/Amg2LqHd8URijw/MqpeUt3BKZT54Rn+5PmIyu?=
- =?us-ascii?Q?vwb0x5AepWip+Ox0estaBr5YABJTmDC6r6ggMfhBhI9ZEj/8HE9cNBv93UjK?=
- =?us-ascii?Q?6ABJsn2QGVMp2zD6Ex239X+ic4yapxcNrQ1AA/vXeiUuzKWlJKHoyImeDknj?=
- =?us-ascii?Q?anNpvp2w6WNcOdmqmm3EN7UEOWMQbGHRdzCXCr2VVNsW7NXNBzcprIHP5lri?=
- =?us-ascii?Q?iMtOQCOKVTsNyvtZ6uiNcZnpYCbA7HHRLUs+/b8bM5GWV/dH9NEiilI9bXTg?=
- =?us-ascii?Q?eMsj4dpiSjQ1ia4VmQYXmKC55SrnzHPye/4p70UjKl6yG37nYyDMNI/bW+PN?=
- =?us-ascii?Q?wK14482NuVilN0XXc2mIAkoVMZqyRmbVNi2aZDks1cgiGRcqI/svYcZBeZpA?=
- =?us-ascii?Q?nBvVeCQEBvv2EVkc67bOnzkNpIuEeMozLMehBgb6//JRg0fXeeJSBOdtQM1J?=
- =?us-ascii?Q?i43Lrw0X5ezgphheEswRH/MtiASvz5wsOX8MS/EGFauxvjVoJNz/+BDLTs0P?=
- =?us-ascii?Q?oYTp8AAueE4pNH96LPRe6BcQDnTCqulmXHG1YEvIbNXaxs6dOnrJcHPiyPOB?=
- =?us-ascii?Q?te/lh6a+gMJgiCYOCafIxsA73n1k3PTNDkAE5aVqvUiHbgV+ctQo4Ype3RDD?=
- =?us-ascii?Q?7ENSVyjbt/o7s8x9VQpubkTfLdf1l4kiJKWDq+CtrxlQ3q+OUhNeW7IjmoAG?=
- =?us-ascii?Q?GYZ7N8HcWji5ZMILT2M1qv1rddGZKcHmJC4kMCWDmtPhEp+QGzZm2/X9l7bl?=
- =?us-ascii?Q?ZYSGfg/qclncHvoWVRK/lZGS15vQRyT0PLxaSEXbvocJlEXM4RN2YYAzQVHe?=
- =?us-ascii?Q?WDoNBJkVujhK44WNJyU9FetLHLoEqFbnSN5D5TVJEQ=3D=3D?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 64080f89-70d8-4249-f575-08dc69f9d1c6
-X-MS-Exchange-CrossTenant-AuthSource: TYZPR01MB5556.apcprd01.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 May 2024 16:14:47.1453
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: KL1PR01MB4861
+Content-Transfer-Encoding: 8bit
 
-On 64bit OS, when ab->mem_ce is lower than or 4G far away from ab->mem,
-u32 is not enough to store the offsets, which makes ath11k_ahb_read32()
-and ath11k_ahb_write32() access incorrect address and causes Data Abort
-Exception.
+struct net_device shouldn't be embedded into any structure, instead,
+the owner should use the priv space to embed their state into net_device.
 
-Let's use the high bits of offsets to decide where to access, which is
-similar as ath11k_pci_get_window_start() done. In the future, we can merge
-these functions for unified regs accessing.
+Embedding net_device into structures prohibits the usage of flexible
+arrays in the net_device structure. For more details, see the discussion
+at [1].
 
-Signed-off-by: Ziyang Huang <hzyitc@outlook.com>
+Un-embed the net_device from struct iwl_trans_pcie by converting it
+into a pointer. Then use the leverage alloc_netdev() to allocate the
+net_device object at iwl_trans_pcie_alloc.
+
+The private data of net_device becomes a pointer for the struct
+iwl_trans_pcie, so, it is easy to get back to the iwl_trans_pcie parent
+given the net_device object.
+
+[1] https://lore.kernel.org/all/20240229225910.79e224cf@kernel.org/
+
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
- drivers/net/wireless/ath/ath11k/ahb.c | 34 ++++++++++++++++++++-------
- drivers/net/wireless/ath/ath11k/hal.c | 17 +++++---------
- drivers/net/wireless/ath/ath11k/hw.c  | 14 +++++------
- drivers/net/wireless/ath/ath11k/hw.h  |  7 +++++-
- 4 files changed, 45 insertions(+), 27 deletions(-)
+Changelog:
 
-diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
-index 7c0a23517949..9e59b4de93a9 100644
---- a/drivers/net/wireless/ath/ath11k/ahb.c
-+++ b/drivers/net/wireless/ath/ath11k/ahb.c
-@@ -198,12 +198,30 @@ static const struct ath11k_pci_ops ath11k_ahb_pci_ops_wcn6750 = {
+v2:
+ * replaced the alloc_netdev() with the proper dummy allocator
+   alloc_netdev_dummy().
+
+v1:
+ * https://lore.kernel.org/all/20240307174843.1719130-1-leitao@debian.org/
+
+---
+ .../wireless/intel/iwlwifi/pcie/internal.h    |  2 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c  | 11 +++++---
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   | 27 ++++++++++++-------
+ 3 files changed, 27 insertions(+), 13 deletions(-)
+
+
+PS: This is compiled-tested only due to lack of hardware.
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+index 7805a42948af..a7eebe400b5b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+@@ -386,7 +386,7 @@ struct iwl_trans_pcie {
+ 	dma_addr_t iml_dma_addr;
+ 	struct iwl_trans *trans;
  
- static inline u32 ath11k_ahb_read32(struct ath11k_base *ab, u32 offset)
+-	struct net_device napi_dev;
++	struct net_device *napi_dev;
+ 
+ 	/* INT ICT Table */
+ 	__le32 *ict_tbl;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+index 9c2461ba13c5..984d7bcd381f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+@@ -1000,6 +1000,11 @@ void iwl_pcie_rx_init_rxb_lists(struct iwl_rxq *rxq)
+ 
+ static int iwl_pcie_rx_handle(struct iwl_trans *trans, int queue, int budget);
+ 
++static inline struct iwl_trans_pcie *iwl_netdev_to_trans_pcie(struct net_device *dev)
++{
++	return *(struct iwl_trans_pcie **)netdev_priv(dev);
++}
++
+ static int iwl_pcie_napi_poll(struct napi_struct *napi, int budget)
  {
--	return ioread32(ab->mem + offset);
-+	switch (offset & ATH11K_REG_TYPE_MASK) {
-+	case ATH11K_REG_TYPE_NORMAL:
-+		return ioread32(ab->mem + FIELD_GET(ATH11K_REG_OFFSET_MASK, offset));
-+	case ATH11K_REG_TYPE_CE:
-+		return ioread32(ab->mem_ce + FIELD_GET(ATH11K_REG_OFFSET_MASK, offset));
-+	default:
-+		BUG();
-+		return 0;
-+	}
- }
+ 	struct iwl_rxq *rxq = container_of(napi, struct iwl_rxq, napi);
+@@ -1007,7 +1012,7 @@ static int iwl_pcie_napi_poll(struct napi_struct *napi, int budget)
+ 	struct iwl_trans *trans;
+ 	int ret;
  
- static inline void ath11k_ahb_write32(struct ath11k_base *ab, u32 offset, u32 value)
+-	trans_pcie = container_of(napi->dev, struct iwl_trans_pcie, napi_dev);
++	trans_pcie = iwl_netdev_to_trans_pcie(napi->dev);
+ 	trans = trans_pcie->trans;
+ 
+ 	ret = iwl_pcie_rx_handle(trans, rxq->id, budget);
+@@ -1034,7 +1039,7 @@ static int iwl_pcie_napi_poll_msix(struct napi_struct *napi, int budget)
+ 	struct iwl_trans *trans;
+ 	int ret;
+ 
+-	trans_pcie = container_of(napi->dev, struct iwl_trans_pcie, napi_dev);
++	trans_pcie = iwl_netdev_to_trans_pcie(napi->dev);
+ 	trans = trans_pcie->trans;
+ 
+ 	ret = iwl_pcie_rx_handle(trans, rxq->id, budget);
+@@ -1131,7 +1136,7 @@ static int _iwl_pcie_rx_init(struct iwl_trans *trans)
+ 			if (trans_pcie->msix_enabled)
+ 				poll = iwl_pcie_napi_poll_msix;
+ 
+-			netif_napi_add(&trans_pcie->napi_dev, &rxq->napi,
++			netif_napi_add(trans_pcie->napi_dev, &rxq->napi,
+ 				       poll);
+ 			napi_enable(&rxq->napi);
+ 		}
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+index 6c76b2dd6878..d5a887b3a4bb 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+@@ -1986,13 +1986,6 @@ static void iwl_trans_pcie_configure(struct iwl_trans *trans,
+ 	trans->command_groups = trans_cfg->command_groups;
+ 	trans->command_groups_size = trans_cfg->command_groups_size;
+ 
+-	/* Initialize NAPI here - it should be before registering to mac80211
+-	 * in the opmode but after the HW struct is allocated.
+-	 * As this function may be called again in some corner cases don't
+-	 * do anything if NAPI was already initialized.
+-	 */
+-	if (trans_pcie->napi_dev.reg_state != NETREG_DUMMY)
+-		init_dummy_netdev(&trans_pcie->napi_dev);
+ 
+ 	trans_pcie->fw_reset_handshake = trans_cfg->fw_reset_handshake;
+ }
+@@ -2074,6 +2067,8 @@ void iwl_trans_pcie_free(struct iwl_trans *trans)
+ 		iwl_pcie_free_ict(trans);
+ 	}
+ 
++	free_netdev(trans_pcie->napi_dev);
++
+ 	iwl_pcie_free_invalid_tx_cmd(trans);
+ 
+ 	iwl_pcie_free_fw_monitor(trans);
+@@ -3594,7 +3589,7 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
+ 			       const struct pci_device_id *ent,
+ 			       const struct iwl_cfg_trans_params *cfg_trans)
  {
--	iowrite32(value, ab->mem + offset);
-+	switch (offset & ATH11K_REG_TYPE_MASK) {
-+	case ATH11K_REG_TYPE_NORMAL:
-+		iowrite32(value, ab->mem + FIELD_GET(ATH11K_REG_OFFSET_MASK, offset));
-+		break;
-+	case ATH11K_REG_TYPE_CE:
-+		iowrite32(value, ab->mem_ce + FIELD_GET(ATH11K_REG_OFFSET_MASK, offset));
-+		break;
-+	default:
-+		BUG();
-+		break;
+-	struct iwl_trans_pcie *trans_pcie;
++	struct iwl_trans_pcie *trans_pcie, **priv;
+ 	struct iwl_trans *trans;
+ 	int ret, addr_size;
+ 	const struct iwl_trans_ops *ops = &trans_ops_pcie_gen2;
+@@ -3623,6 +3618,18 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
+ 
+ 	trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+ 
++	/* Initialize NAPI here - it should be before registering to mac80211
++	 * in the opmode but after the HW struct is allocated.
++	 */
++	trans_pcie->napi_dev = alloc_netdev_dummy(sizeof(struct iwl_trans_pcie *));
++	if (!trans_pcie->napi_dev) {
++		ret = -ENOMEM;
++		goto out_free_trans;
 +	}
- }
++	/* The private struct in netdev is a pointer to struct iwl_trans_pcie */
++	priv = netdev_priv(trans_pcie->napi_dev);
++	*priv = trans_pcie;
++
+ 	trans_pcie->trans = trans;
+ 	trans_pcie->opmode_down = true;
+ 	spin_lock_init(&trans_pcie->irq_lock);
+@@ -3637,7 +3644,7 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
+ 						   WQ_HIGHPRI | WQ_UNBOUND, 0);
+ 	if (!trans_pcie->rba.alloc_wq) {
+ 		ret = -ENOMEM;
+-		goto out_free_trans;
++		goto out_free_ndev;
+ 	}
+ 	INIT_WORK(&trans_pcie->rba.rx_alloc, iwl_pcie_rx_allocator_work);
  
- static void ath11k_ahb_kill_tasklets(struct ath11k_base *ab)
-@@ -275,9 +293,9 @@ static void ath11k_ahb_ce_irq_enable(struct ath11k_base *ab, u16 ce_id)
- 	const struct ce_ie_addr *ce_ie_addr = ab->hw_params.ce_ie_addr;
- 	u32 ie1_reg_addr, ie2_reg_addr, ie3_reg_addr;
- 
--	ie1_reg_addr = ce_ie_addr->ie1_reg_addr + ATH11K_CE_OFFSET(ab);
--	ie2_reg_addr = ce_ie_addr->ie2_reg_addr + ATH11K_CE_OFFSET(ab);
--	ie3_reg_addr = ce_ie_addr->ie3_reg_addr + ATH11K_CE_OFFSET(ab);
-+	ie1_reg_addr = ce_ie_addr->ie1_reg_addr;
-+	ie2_reg_addr = ce_ie_addr->ie2_reg_addr;
-+	ie3_reg_addr = ce_ie_addr->ie3_reg_addr;
- 
- 	ce_attr = &ab->hw_params.host_ce_config[ce_id];
- 	if (ce_attr->src_nentries)
-@@ -296,9 +314,9 @@ static void ath11k_ahb_ce_irq_disable(struct ath11k_base *ab, u16 ce_id)
- 	const struct ce_ie_addr *ce_ie_addr = ab->hw_params.ce_ie_addr;
- 	u32 ie1_reg_addr, ie2_reg_addr, ie3_reg_addr;
- 
--	ie1_reg_addr = ce_ie_addr->ie1_reg_addr + ATH11K_CE_OFFSET(ab);
--	ie2_reg_addr = ce_ie_addr->ie2_reg_addr + ATH11K_CE_OFFSET(ab);
--	ie3_reg_addr = ce_ie_addr->ie3_reg_addr + ATH11K_CE_OFFSET(ab);
-+	ie1_reg_addr = ce_ie_addr->ie1_reg_addr;
-+	ie2_reg_addr = ce_ie_addr->ie2_reg_addr;
-+	ie3_reg_addr = ce_ie_addr->ie3_reg_addr;
- 
- 	ce_attr = &ab->hw_params.host_ce_config[ce_id];
- 	if (ce_attr->src_nentries)
-diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
-index f3d04568c221..f9ba2f821108 100644
---- a/drivers/net/wireless/ath/ath11k/hal.c
-+++ b/drivers/net/wireless/ath/ath11k/hal.c
-@@ -1233,20 +1233,16 @@ static int ath11k_hal_srng_create_config(struct ath11k_base *ab)
- 	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_TCL_REG + HAL_TCL_STATUS_RING_HP;
- 
- 	s = &hal->srng_config[HAL_CE_SRC];
--	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_CE0_SRC_REG(ab) + HAL_CE_DST_RING_BASE_LSB +
--		ATH11K_CE_OFFSET(ab);
--	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_CE0_SRC_REG(ab) + HAL_CE_DST_RING_HP +
--		ATH11K_CE_OFFSET(ab);
-+	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_CE0_SRC_REG(ab) + HAL_CE_DST_RING_BASE_LSB;
-+	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_CE0_SRC_REG(ab) + HAL_CE_DST_RING_HP;
- 	s->reg_size[0] = HAL_SEQ_WCSS_UMAC_CE1_SRC_REG(ab) -
- 		HAL_SEQ_WCSS_UMAC_CE0_SRC_REG(ab);
- 	s->reg_size[1] = HAL_SEQ_WCSS_UMAC_CE1_SRC_REG(ab) -
- 		HAL_SEQ_WCSS_UMAC_CE0_SRC_REG(ab);
- 
- 	s = &hal->srng_config[HAL_CE_DST];
--	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_CE0_DST_REG(ab) + HAL_CE_DST_RING_BASE_LSB +
--		ATH11K_CE_OFFSET(ab);
--	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_CE0_DST_REG(ab) + HAL_CE_DST_RING_HP +
--		ATH11K_CE_OFFSET(ab);
-+	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_CE0_DST_REG(ab) + HAL_CE_DST_RING_BASE_LSB;
-+	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_CE0_DST_REG(ab) + HAL_CE_DST_RING_HP;
- 	s->reg_size[0] = HAL_SEQ_WCSS_UMAC_CE1_DST_REG(ab) -
- 		HAL_SEQ_WCSS_UMAC_CE0_DST_REG(ab);
- 	s->reg_size[1] = HAL_SEQ_WCSS_UMAC_CE1_DST_REG(ab) -
-@@ -1254,9 +1250,8 @@ static int ath11k_hal_srng_create_config(struct ath11k_base *ab)
- 
- 	s = &hal->srng_config[HAL_CE_DST_STATUS];
- 	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_CE0_DST_REG(ab) +
--		HAL_CE_DST_STATUS_RING_BASE_LSB + ATH11K_CE_OFFSET(ab);
--	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_CE0_DST_REG(ab) + HAL_CE_DST_STATUS_RING_HP +
--		ATH11K_CE_OFFSET(ab);
-+		HAL_CE_DST_STATUS_RING_BASE_LSB;
-+	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_CE0_DST_REG(ab) + HAL_CE_DST_STATUS_RING_HP;
- 	s->reg_size[0] = HAL_SEQ_WCSS_UMAC_CE1_DST_REG(ab) -
- 		HAL_SEQ_WCSS_UMAC_CE0_DST_REG(ab);
- 	s->reg_size[1] = HAL_SEQ_WCSS_UMAC_CE1_DST_REG(ab) -
-diff --git a/drivers/net/wireless/ath/ath11k/hw.c b/drivers/net/wireless/ath/ath11k/hw.c
-index caa6dc12a790..58f39a7eaa1c 100644
---- a/drivers/net/wireless/ath/ath11k/hw.c
-+++ b/drivers/net/wireless/ath/ath11k/hw.c
-@@ -2268,9 +2268,9 @@ const struct ce_ie_addr ath11k_ce_ie_addr_ipq8074 = {
- };
- 
- const struct ce_ie_addr ath11k_ce_ie_addr_ipq5018 = {
--	.ie1_reg_addr = CE_HOST_IPQ5018_IE_ADDRESS - HAL_IPQ5018_CE_WFSS_REG_BASE,
--	.ie2_reg_addr = CE_HOST_IPQ5018_IE_2_ADDRESS - HAL_IPQ5018_CE_WFSS_REG_BASE,
--	.ie3_reg_addr = CE_HOST_IPQ5018_IE_3_ADDRESS - HAL_IPQ5018_CE_WFSS_REG_BASE,
-+	.ie1_reg_addr = ATH11K_REG_TYPE_CE + CE_HOST_IPQ5018_IE_ADDRESS - HAL_IPQ5018_CE_WFSS_REG_BASE,
-+	.ie2_reg_addr = ATH11K_REG_TYPE_CE + CE_HOST_IPQ5018_IE_2_ADDRESS - HAL_IPQ5018_CE_WFSS_REG_BASE,
-+	.ie3_reg_addr = ATH11K_REG_TYPE_CE + CE_HOST_IPQ5018_IE_3_ADDRESS - HAL_IPQ5018_CE_WFSS_REG_BASE,
- };
- 
- const struct ce_remap ath11k_ce_remap_ipq5018 = {
-@@ -2801,13 +2801,13 @@ const struct ath11k_hw_regs ipq5018_regs = {
- 	.hal_reo_status_hp = 0x00003070,
- 
- 	/* WCSS relative address */
--	.hal_seq_wcss_umac_ce0_src_reg = 0x08400000
-+	.hal_seq_wcss_umac_ce0_src_reg = ATH11K_REG_TYPE_CE + 0x08400000
- 		- HAL_IPQ5018_CE_WFSS_REG_BASE,
--	.hal_seq_wcss_umac_ce0_dst_reg = 0x08401000
-+	.hal_seq_wcss_umac_ce0_dst_reg = ATH11K_REG_TYPE_CE + 0x08401000
- 		- HAL_IPQ5018_CE_WFSS_REG_BASE,
--	.hal_seq_wcss_umac_ce1_src_reg = 0x08402000
-+	.hal_seq_wcss_umac_ce1_src_reg = ATH11K_REG_TYPE_CE + 0x08402000
- 		- HAL_IPQ5018_CE_WFSS_REG_BASE,
--	.hal_seq_wcss_umac_ce1_dst_reg = 0x08403000
-+	.hal_seq_wcss_umac_ce1_dst_reg = ATH11K_REG_TYPE_CE + 0x08403000
- 		- HAL_IPQ5018_CE_WFSS_REG_BASE,
- 
- 	/* WBM Idle address */
-diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
-index 14ef4eb48f80..44593b38fc85 100644
---- a/drivers/net/wireless/ath/ath11k/hw.h
-+++ b/drivers/net/wireless/ath/ath11k/hw.h
-@@ -81,7 +81,12 @@
- #define ATH11K_M3_FILE			"m3.bin"
- #define ATH11K_REGDB_FILE_NAME		"regdb.bin"
- 
--#define ATH11K_CE_OFFSET(ab)	(ab->mem_ce - ab->mem)
-+#define ATH11K_REG_TYPE_MASK		GENMASK(31, 28)
-+#define  ATH11K_REG_TYPE(x)		FIELD_PREP_CONST(ATH11K_REG_TYPE_MASK, x)
-+#define  ATH11K_REG_TYPE_NORMAL		ATH11K_REG_TYPE(0)
-+#define  ATH11K_REG_TYPE_DP		ATH11K_REG_TYPE(1)
-+#define  ATH11K_REG_TYPE_CE		ATH11K_REG_TYPE(2)
-+#define ATH11K_REG_OFFSET_MASK		GENMASK(27, 0)
- 
- enum ath11k_hw_rate_cck {
- 	ATH11K_HW_RATE_CCK_LP_11M = 0,
+@@ -3757,6 +3764,8 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
+ 	iwl_pcie_free_ict(trans);
+ out_no_pci:
+ 	destroy_workqueue(trans_pcie->rba.alloc_wq);
++out_free_ndev:
++	free_netdev(trans_pcie->napi_dev);
+ out_free_trans:
+ 	iwl_trans_free(trans);
+ 	return ERR_PTR(ret);
 -- 
-2.40.1
+2.43.0
 
 
