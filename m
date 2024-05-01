@@ -1,116 +1,114 @@
-Return-Path: <linux-wireless+bounces-7078-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7079-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D8648B8BF3
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 May 2024 16:38:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2EAC8B8D42
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 May 2024 17:37:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31791284CF5
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 May 2024 14:38:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CECD28B079
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 May 2024 15:37:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B33ED12E6A;
-	Wed,  1 May 2024 14:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDED1C2FD;
+	Wed,  1 May 2024 15:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mYxZQvm+"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="UB99ii33"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97351DA24
-	for <linux-wireless@vger.kernel.org>; Wed,  1 May 2024 14:38:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7B412F395
+	for <linux-wireless@vger.kernel.org>; Wed,  1 May 2024 15:34:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714574306; cv=none; b=lZt6DN5ESRsVFlNchDipEy1Dttk+8aTrK3wsksKV+BzI1rr0N3V9f/Hch+cU0NFwlAgWVeAjPOfwINbZCwFXr9kgb5n43Nq8VxyX16CHfOfqWqkwPFQtSHohY8oYj6ReLRYtPzlH/BkhN5p84xmoP8yleWtOEJ3tMI2Ouu3jvnM=
+	t=1714577675; cv=none; b=LGPHTFsAR+N1aGO8GiiI+3b54Oo1gDilZ39EZdSB1AePMKzag2Mfl3uX12//AiAb+V/RL2KwNS8NVGG2hwBVTZRnoijxSZauHydthDm+SlNaaQzcM1JG9qrlV59t0lxrTRXn28TlIPE1hN1w9DDvCIe4okc+gGmmWjLE3S/KZvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714574306; c=relaxed/simple;
-	bh=SWLdma+jpiPY1r633JyGL5ZvVwl/diBWjEZruh4IVCE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qhn3NOo6zvGNjGqWjhwjunquwM7JwAZzkjYFZ2ds8RiPPe6dvCtLi4WnKLw8l04YZUDgZVCIA+9bIgQq8QkWHlAfSM+RtCK2E5xOge5v+uV+88S5Z2gvbSV/gz1m+SODpVMKUpw05kRH4AZNt8GpXH6Hjl0L35IZLMv+7hjXXtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mYxZQvm+; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714574305; x=1746110305;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=SWLdma+jpiPY1r633JyGL5ZvVwl/diBWjEZruh4IVCE=;
-  b=mYxZQvm+oz+hGMoIkT3jrQIHfmiw2p+KI5qFTeiX4nF+8zCGHo2joZsq
-   vLkFWyJsMcgiZN9EFogLhy3cWRnK8XuIofWfiUiZvOcl595ISsSLtew22
-   pjVAupJb19RGDXoEzSE0r5jAZIG2myNWx2BxG2ByU6Frnng/crThCMPz0
-   djU5c0Ag3llmkQtZqJESHKRlZgVmenKJ2MbKDD2Kkgmhz2gscaeZHWD/H
-   Nymf5Qka0YlZ47jWzfwNLmAMzs4k4jlMl/l+ZaESqDDx4Ptm6PHcBHwUA
-   oaperpufo/EnKvIGQEKUJhB0bHoUAC6ZbioH0tM50u8IqpM7g6+XcrP84
-   w==;
-X-CSE-ConnectionGUID: wh8IGEiWSVWB71nmeAXMkA==
-X-CSE-MsgGUID: HwgrhLymSaytLCZjG9n1CQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11061"; a="10131817"
-X-IronPort-AV: E=Sophos;i="6.07,245,1708416000"; 
-   d="scan'208";a="10131817"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 May 2024 07:38:24 -0700
-X-CSE-ConnectionGUID: XdEIc8J+Q6+xvkTtpreZBA==
-X-CSE-MsgGUID: oyUktwx1RWSO23ScbI8JOQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,245,1708416000"; 
-   d="scan'208";a="64279285"
-Received: from lkp-server01.sh.intel.com (HELO e434dd42e5a1) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 01 May 2024 07:38:23 -0700
-Received: from kbuild by e434dd42e5a1 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1s2B6C-0009c8-1m;
-	Wed, 01 May 2024 14:38:20 +0000
-Date: Wed, 1 May 2024 22:37:46 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, gary.chang@realtek.com,
-	timlee@realtek.com
-Subject: Re: [PATCH 03/12] wifi: rtw89: wow: parsing Auth Key Management from
- associate request
-Message-ID: <202405012221.MONGVGmf-lkp@intel.com>
-References: <20240425112816.26431-4-pkshih@realtek.com>
+	s=arc-20240116; t=1714577675; c=relaxed/simple;
+	bh=D9LeN0TAZoJmsUtu4onnzt9IlTNREDZHvNECBAzhUgU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=h0EmA5/9yoHqk+XjrlASqauHo8n6WzU3Lm0ckUbD9T4a1Cy9gO3Pbxxia1Dd9I0cvMt71frHkbeW0RC/0oXMsKem8lpu6AzzS7UDanGffzUlJP5lnmWLjMhL9e+LXw+I/R057H5OMkyMLXG+pkga32JitUNfMzjbzSYtJENi+po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=UB99ii33; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 441Bnx9q009312;
+	Wed, 1 May 2024 15:34:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=d3z4gnYwvECJLlfvck2YkKbkaGeicKfs2PQmY7Pzr3U=; b=UB
+	99ii33f76hz1+A0dvnwJIkXkm840biV7iRJqVomEqKWQEKJ/UEwv2Xw1Cczjr0AN
+	Z2P3P1txWaxrlKoABxPPXMXpmUTjqSzNhSCVq/UR5ACEXH/GNPQeD0DnbN9/KMAm
+	yfcxdb9NhuUxwuASRtW9wZGOqU+FjUe2mPmRuSvNIKz4kxFCTq0H4RkzdABmchiQ
+	0aXge/BdklzFn2/A3khV2qXldIUSq/gVOnygrOlcbyHgXlXhypKRpG7Lu0GC5Md5
+	h+5WmmT/3fZUQFsiLPQJsvPF2R4E4wWs3/RMlrvvIUEHEINSDZTbeOhsNzBEn61z
+	dmLfxi+WzzbLXbsd9EUQ==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xueu91570-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 01 May 2024 15:34:10 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 441FY951012602
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 1 May 2024 15:34:09 GMT
+Received: from [10.216.57.16] (10.80.80.8) by nalasex01c.na.qualcomm.com
+ (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 1 May 2024
+ 08:34:07 -0700
+Message-ID: <824269da-c69d-668b-4e6b-d0453c4572c1@quicinc.com>
+Date: Wed, 1 May 2024 21:04:04 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240425112816.26431-4-pkshih@realtek.com>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.0
+Subject: Re: [PATCH v2 0/8] wifi: ath12k: Introduce device group abstraction
+To: Kalle Valo <kvalo@kernel.org>
+CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20240425055759.1181165-1-quic_hprem@quicinc.com>
+ <87le4voyka.fsf@kernel.org>
+Content-Language: en-US
+From: Harshitha Prem <quic_hprem@quicinc.com>
+In-Reply-To: <87le4voyka.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: mcvGBRj7deCRL4nfIv3UFSfP-uUAA35b
+X-Proofpoint-ORIG-GUID: mcvGBRj7deCRL4nfIv3UFSfP-uUAA35b
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-01_15,2024-04-30_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ mlxlogscore=804 malwarescore=0 lowpriorityscore=0 priorityscore=1501
+ clxscore=1015 mlxscore=0 impostorscore=0 adultscore=0 bulkscore=0
+ phishscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2405010110
 
-Hi Ping-Ke,
 
-kernel test robot noticed the following build errors:
 
-[auto build test ERROR on wireless-next/main]
-[also build test ERROR on wireless/main linus/master v6.9-rc6 next-20240501]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+On 4/30/2024 5:24 PM, Kalle Valo wrote:
+> 47] WARNING: possible circular locking dependency detected
+> [  147.211599] 6.9.0-rc5-wt-ath+ #1403 Not tainted
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ping-Ke-Shih/wifi-rtw89-wow-send-RFK-pre-nofity-H2C-command-in-WoWLAN-mode/20240425-193126
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-patch link:    https://lore.kernel.org/r/20240425112816.26431-4-pkshih%40realtek.com
-patch subject: [PATCH 03/12] wifi: rtw89: wow: parsing Auth Key Management from associate request
-config: alpha-randconfig-r051-20240501 (https://download.01.org/0day-ci/archive/20240501/202405012221.MONGVGmf-lkp@intel.com/config)
-compiler: alpha-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240501/202405012221.MONGVGmf-lkp@intel.com/reproduce)
+Thank you, Kalle, for sharing the full logs. Unfortunately, I did not 
+see this warning in my testbed with QCN9274.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202405012221.MONGVGmf-lkp@intel.com/
+Seems like during rmmod case, ath12k_core_soc_destroy() is invoked with 
+ag->mutex lock which in-turn invokes ath12k_qmi_deinit_service() where 
+cancel_work_sync for qmi events are called. So, if 
+ATH12K_QMI_EVENT_FW_READY was in queue during rmmod, it would hit a 
+deadlock as in core start it requires ag->mutex lock. But, this scenario 
+is quite unlikely to occur where rmmod and FW_READY event are going to 
+be in parallel. Nevertheless, it has to be addressed. I will check 
+further on this warning and see how to address this.
 
-All errors (new ones prefixed by >>):
-
-   alpha-linux-ld: drivers/net/wireless/realtek/rtw89/core.o: in function `rtw89_traffic_stats_accu':
->> (.text+0x11e8): undefined reference to `rtw89_wow_parse_akm'
->> alpha-linux-ld: (.text+0x11f8): undefined reference to `rtw89_wow_parse_akm'
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks,
+Harshitha
 
