@@ -1,114 +1,302 @@
-Return-Path: <linux-wireless+bounces-7079-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7080-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2EAC8B8D42
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 May 2024 17:37:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E15CD8B8DD7
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 May 2024 18:14:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CECD28B079
-	for <lists+linux-wireless@lfdr.de>; Wed,  1 May 2024 15:37:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1016D1C20F6D
+	for <lists+linux-wireless@lfdr.de>; Wed,  1 May 2024 16:14:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDED1C2FD;
-	Wed,  1 May 2024 15:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D7AD12FB36;
+	Wed,  1 May 2024 16:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="UB99ii33"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="kcSSArMF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from APC01-TYZ-obe.outbound.protection.outlook.com (mail-tyzapc01olkn2076.outbound.protection.outlook.com [40.92.107.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7B412F395
-	for <linux-wireless@vger.kernel.org>; Wed,  1 May 2024 15:34:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714577675; cv=none; b=LGPHTFsAR+N1aGO8GiiI+3b54Oo1gDilZ39EZdSB1AePMKzag2Mfl3uX12//AiAb+V/RL2KwNS8NVGG2hwBVTZRnoijxSZauHydthDm+SlNaaQzcM1JG9qrlV59t0lxrTRXn28TlIPE1hN1w9DDvCIe4okc+gGmmWjLE3S/KZvY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714577675; c=relaxed/simple;
-	bh=D9LeN0TAZoJmsUtu4onnzt9IlTNREDZHvNECBAzhUgU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=h0EmA5/9yoHqk+XjrlASqauHo8n6WzU3Lm0ckUbD9T4a1Cy9gO3Pbxxia1Dd9I0cvMt71frHkbeW0RC/0oXMsKem8lpu6AzzS7UDanGffzUlJP5lnmWLjMhL9e+LXw+I/R057H5OMkyMLXG+pkga32JitUNfMzjbzSYtJENi+po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=UB99ii33; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 441Bnx9q009312;
-	Wed, 1 May 2024 15:34:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=d3z4gnYwvECJLlfvck2YkKbkaGeicKfs2PQmY7Pzr3U=; b=UB
-	99ii33f76hz1+A0dvnwJIkXkm840biV7iRJqVomEqKWQEKJ/UEwv2Xw1Cczjr0AN
-	Z2P3P1txWaxrlKoABxPPXMXpmUTjqSzNhSCVq/UR5ACEXH/GNPQeD0DnbN9/KMAm
-	yfcxdb9NhuUxwuASRtW9wZGOqU+FjUe2mPmRuSvNIKz4kxFCTq0H4RkzdABmchiQ
-	0aXge/BdklzFn2/A3khV2qXldIUSq/gVOnygrOlcbyHgXlXhypKRpG7Lu0GC5Md5
-	h+5WmmT/3fZUQFsiLPQJsvPF2R4E4wWs3/RMlrvvIUEHEINSDZTbeOhsNzBEn61z
-	dmLfxi+WzzbLXbsd9EUQ==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xueu91570-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 01 May 2024 15:34:10 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 441FY951012602
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 1 May 2024 15:34:09 GMT
-Received: from [10.216.57.16] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 1 May 2024
- 08:34:07 -0700
-Message-ID: <824269da-c69d-668b-4e6b-d0453c4572c1@quicinc.com>
-Date: Wed, 1 May 2024 21:04:04 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E62814012;
+	Wed,  1 May 2024 16:14:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.107.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1714580093; cv=fail; b=pmz1sx24bBJ53CRZQsrajSLWYaTRTL/MYvzsfcn1k23/qgsg90XxAnApZngfZUpSBy9iA7wrPjlnObCtE/NzAl+FtKkHkJzK2n54VYWl0uyH5C/W8/zPXWkSG+8HLPE5f2w8ZXnysELOcmG4hRNg08K6VIr+EwhCFJ/tNC0AC9g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1714580093; c=relaxed/simple;
+	bh=Q9OGUmiTFsjd+9O0xdXLrQUgv+Oq337rNyQ1BijPpBE=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Wmvam3m3UlyJhOIMc2OSF5ETYpvoaBpNS7XWyi5GuwavVJJJum83hQggrcM8dTErsk4itVlC9f6t4k5wbC40xKH5q8X9V7uyIObUOdrc0OZg0XIDb20iDHNk7UGD8hx9DoU48c44b3VA0LEbhGc1oLfJUjgwivoc0VfHxcrxIc0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=kcSSArMF; arc=fail smtp.client-ip=40.92.107.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=YMEdP6v082bZTrB87E51xQnG0zZd/Fpe6QjnW+IxqCIalhDO1ca+Er5u8b5pz5Yd27/VjDyZrpWfcQnhCSRrqwiRHjPY+kNFJcSZHb6sM0ANZQbKHGZ6lz4YWcKYnVc78ggajGFzLIOYaDa3zed7Hls2OkyF2mjE6TMeT5nBHCwYQ/pXtUZsDrHsz4ur+U1WZvQofZzs+IQsBJb0isvdwWGpa09P5+PWZ2+eZ8Bvtg502CzYYW+kf6pZWycb15hfRJl0cA05YSTg8yEtTUK0ySAe7QhvwiopuiTCQ0q15+58z63YZ8SPhQ9y9KryOCFrZaiNrfrW60kaOP6jG8wtQw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rbOtTebtzu/cATU3j7GOnrL+wt4Ra0sZePsLBZFPSAM=;
+ b=Y4LPMo77ft/HeCpf1mjAMkjD6p0QgSEMWHFJi9+GYPlCtuDat15cRJA8v4Lc/2oJj8UegUIxZoqVya7lC4Dhftx8EmR+FYxvlSNwdXV8MbrqVKnM99YpbSAlKFNZetSndeTXRIscpru7RHw1f4zMNHvz6/VlxGsveG8U/OFYr2cby3yn8Naeoxz2Yhwz2vm/iE8zF0v0YRjz/2GYVurvlAauvldtCD7UlRiHt+MPHflFrT//u5t6GtYtmE+MvK27XrN5aHIUwWDTqM9PuGyjo5ZwLAUVZrk8rg1GomAX35JpwMKv+BLMp3uXoOzY6XsjtFe5X+LDFIwXl7IrWacywA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rbOtTebtzu/cATU3j7GOnrL+wt4Ra0sZePsLBZFPSAM=;
+ b=kcSSArMFXmR5Afu97BoqcLLu8YM1lYwHWdY6Bw1zJpi6Cjp2kGe7gefc8gPBxmhb7gY0WfhLCobP8Li7xQCI+pCE0RA4+22mgpJDj85VR9qc+VomRbUvMgQXL6rYR3fiW3P+0SH4sH7xvFWRabXxU9l4QGvinLZkb1zeO8uu2KjnhhoypNKgN1uo/DReipTkGw1RVr3sIyrvmN0mbUjJEgAYSrcgezlDNpvNSnqP8wDaajTPsi9CU0XCxY2RYDkTZJ8/yHL+ZVGgh/1qOldkpAlXCn9DyoqOtJQ+YNhY4g7ByGV1W9HDgMhtQotGzGYjE1bFGUNCHTjwehXjlCQsWA==
+Received: from TYZPR01MB5556.apcprd01.prod.exchangelabs.com
+ (2603:1096:400:363::9) by KL1PR01MB4861.apcprd01.prod.exchangelabs.com
+ (2603:1096:820:bd::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.36; Wed, 1 May
+ 2024 16:14:48 +0000
+Received: from TYZPR01MB5556.apcprd01.prod.exchangelabs.com
+ ([fe80::3641:305b:41e2:6094]) by TYZPR01MB5556.apcprd01.prod.exchangelabs.com
+ ([fe80::3641:305b:41e2:6094%4]) with mapi id 15.20.7519.031; Wed, 1 May 2024
+ 16:14:47 +0000
+From: Ziyang Huang <hzyitc@outlook.com>
+To: kvalo@kernel.org
+Cc: jjohnson@kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath11k@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Ziyang Huang <hzyitc@outlook.com>
+Subject: [PATCH] wifi: ath11k: fix remapped ce accessing issue on 64bit OS
+Date: Thu,  2 May 2024 00:14:31 +0800
+Message-ID:
+ <TYZPR01MB55563B3A689D54D18179E5B4C9192@TYZPR01MB5556.apcprd01.prod.exchangelabs.com>
+X-Mailer: git-send-email 2.40.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TMN: [XtZR7T2ItLH2/vhgRbeIdkBzNBJGxOQl5AEEcc+XwbsTRErPTIfZ7Q==]
+X-ClientProxiedBy: SJ0PR05CA0210.namprd05.prod.outlook.com
+ (2603:10b6:a03:330::35) To TYZPR01MB5556.apcprd01.prod.exchangelabs.com
+ (2603:1096:400:363::9)
+X-Microsoft-Original-Message-ID: <20240501161431.1021275-1-hzyitc@outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.0
-Subject: Re: [PATCH v2 0/8] wifi: ath12k: Introduce device group abstraction
-To: Kalle Valo <kvalo@kernel.org>
-CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20240425055759.1181165-1-quic_hprem@quicinc.com>
- <87le4voyka.fsf@kernel.org>
-Content-Language: en-US
-From: Harshitha Prem <quic_hprem@quicinc.com>
-In-Reply-To: <87le4voyka.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: mcvGBRj7deCRL4nfIv3UFSfP-uUAA35b
-X-Proofpoint-ORIG-GUID: mcvGBRj7deCRL4nfIv3UFSfP-uUAA35b
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-01_15,2024-04-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- mlxlogscore=804 malwarescore=0 lowpriorityscore=0 priorityscore=1501
- clxscore=1015 mlxscore=0 impostorscore=0 adultscore=0 bulkscore=0
- phishscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2405010110
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TYZPR01MB5556:EE_|KL1PR01MB4861:EE_
+X-MS-Office365-Filtering-Correlation-Id: 64080f89-70d8-4249-f575-08dc69f9d1c6
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|461199019|440099019|3412199016|1710799017;
+X-Microsoft-Antispam-Message-Info:
+	ZKMLRtZJQr1bbi0ZJNBSo+VwLg1D0P9kcCQrUCHXZ7xAZAsRBf0eOGS4BDFd179ep9M0BUuTIWSGrLGd96vr1pSlcvvRFOJA1hr0fIyiP3G5miCph6UHVJ8uH05qgoIMPFMJIwlC0QMMIQZEvzet/SaexPIyGXZFJO01V93JAwjAcR0kpY/4TxTsuibjA6d1gjPdywH32B5HZ6fx/J9ce31bQi6b97QrX00bRjlZTA9Mp63ouonUmcJJz5CtRANY4jLvy0WmXJpZZ7sPImhTc5AivSnhUeKnsIO1NrRbw2CAON1/0GRIYqAlHSbQ9mLvrGaJAqMY9kmfWq7uVHDlYLeeJWvjtB6smv60QBKi08prQ952553tfOjZkDcrUhWAp+yDAVeCQbajMHJwwILbvA+RvXzTKugr10Bzh9uQnoEVhw/rmtQ4NX5XoXSDIvhRQNXqzcnDog10BoXpI8GR1dv3eQ3VauTqO1BHYrmAh0i2NmgZ1XJ2kUjFX5GAFl4ZSDZef+TILFo3m3cGXOGv50oSAG/e5KG6AX2kf6D2e8qAvW4CyYMhf6MxBGB1dDrfYFT/sTDhG9VU84lQSLtIZklvB/DmhUIrP9pqD6vUYj7v6C264blQqiwW81jW+7kY
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?V0PGIaAaAo5aOxC48rE1Uf0b2e5dnwsglDJWOuPYgIyCUKqtoJCc6hR5vxXA?=
+ =?us-ascii?Q?tGOfzQB8BKOhIs7stmux0zADF6EbaICjQf12XQTLImWR79CL+RDsuI/UjzsY?=
+ =?us-ascii?Q?P2oyGn/g62Sse733CeUasWjxlUVBv3VmhZTkmLgwAlygOcymNt8NLhGybFXF?=
+ =?us-ascii?Q?lQ65rcRzJsZDU4+EO/MtDpRWhuD6naUSG1Htk/qeNYjLnH0tFHArvxqfGGLi?=
+ =?us-ascii?Q?76IGIF2zzX0/E70UXfcqDmKSBx9JF64Un4WvyHgW+RJHB+IBn1KZqthbxDrg?=
+ =?us-ascii?Q?dxqNjLk7FJedNI/FLeh7ZVf9A72MxszBfZaycd+JyNcsKs6FNIPbHhqkTs79?=
+ =?us-ascii?Q?6SDYs1OBbzKAEXqVux6Ot/1uMB8babtquOkfdhDNXhPY4MjCwOXShqNN8i63?=
+ =?us-ascii?Q?mAEIhEDt4u1KpRfBm/bw4y/Amg2LqHd8URijw/MqpeUt3BKZT54Rn+5PmIyu?=
+ =?us-ascii?Q?vwb0x5AepWip+Ox0estaBr5YABJTmDC6r6ggMfhBhI9ZEj/8HE9cNBv93UjK?=
+ =?us-ascii?Q?6ABJsn2QGVMp2zD6Ex239X+ic4yapxcNrQ1AA/vXeiUuzKWlJKHoyImeDknj?=
+ =?us-ascii?Q?anNpvp2w6WNcOdmqmm3EN7UEOWMQbGHRdzCXCr2VVNsW7NXNBzcprIHP5lri?=
+ =?us-ascii?Q?iMtOQCOKVTsNyvtZ6uiNcZnpYCbA7HHRLUs+/b8bM5GWV/dH9NEiilI9bXTg?=
+ =?us-ascii?Q?eMsj4dpiSjQ1ia4VmQYXmKC55SrnzHPye/4p70UjKl6yG37nYyDMNI/bW+PN?=
+ =?us-ascii?Q?wK14482NuVilN0XXc2mIAkoVMZqyRmbVNi2aZDks1cgiGRcqI/svYcZBeZpA?=
+ =?us-ascii?Q?nBvVeCQEBvv2EVkc67bOnzkNpIuEeMozLMehBgb6//JRg0fXeeJSBOdtQM1J?=
+ =?us-ascii?Q?i43Lrw0X5ezgphheEswRH/MtiASvz5wsOX8MS/EGFauxvjVoJNz/+BDLTs0P?=
+ =?us-ascii?Q?oYTp8AAueE4pNH96LPRe6BcQDnTCqulmXHG1YEvIbNXaxs6dOnrJcHPiyPOB?=
+ =?us-ascii?Q?te/lh6a+gMJgiCYOCafIxsA73n1k3PTNDkAE5aVqvUiHbgV+ctQo4Ype3RDD?=
+ =?us-ascii?Q?7ENSVyjbt/o7s8x9VQpubkTfLdf1l4kiJKWDq+CtrxlQ3q+OUhNeW7IjmoAG?=
+ =?us-ascii?Q?GYZ7N8HcWji5ZMILT2M1qv1rddGZKcHmJC4kMCWDmtPhEp+QGzZm2/X9l7bl?=
+ =?us-ascii?Q?ZYSGfg/qclncHvoWVRK/lZGS15vQRyT0PLxaSEXbvocJlEXM4RN2YYAzQVHe?=
+ =?us-ascii?Q?WDoNBJkVujhK44WNJyU9FetLHLoEqFbnSN5D5TVJEQ=3D=3D?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 64080f89-70d8-4249-f575-08dc69f9d1c6
+X-MS-Exchange-CrossTenant-AuthSource: TYZPR01MB5556.apcprd01.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 May 2024 16:14:47.1453
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: KL1PR01MB4861
 
+On 64bit OS, when ab->mem_ce is lower than or 4G far away from ab->mem,
+u32 is not enough to store the offsets, which makes ath11k_ahb_read32()
+and ath11k_ahb_write32() access incorrect address and causes Data Abort
+Exception.
 
+Let's use the high bits of offsets to decide where to access, which is
+similar as ath11k_pci_get_window_start() done. In the future, we can merge
+these functions for unified regs accessing.
 
-On 4/30/2024 5:24 PM, Kalle Valo wrote:
-> 47] WARNING: possible circular locking dependency detected
-> [  147.211599] 6.9.0-rc5-wt-ath+ #1403 Not tainted
+Signed-off-by: Ziyang Huang <hzyitc@outlook.com>
+---
+ drivers/net/wireless/ath/ath11k/ahb.c | 34 ++++++++++++++++++++-------
+ drivers/net/wireless/ath/ath11k/hal.c | 17 +++++---------
+ drivers/net/wireless/ath/ath11k/hw.c  | 14 +++++------
+ drivers/net/wireless/ath/ath11k/hw.h  |  7 +++++-
+ 4 files changed, 45 insertions(+), 27 deletions(-)
 
-Thank you, Kalle, for sharing the full logs. Unfortunately, I did not 
-see this warning in my testbed with QCN9274.
+diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
+index 7c0a23517949..9e59b4de93a9 100644
+--- a/drivers/net/wireless/ath/ath11k/ahb.c
++++ b/drivers/net/wireless/ath/ath11k/ahb.c
+@@ -198,12 +198,30 @@ static const struct ath11k_pci_ops ath11k_ahb_pci_ops_wcn6750 = {
+ 
+ static inline u32 ath11k_ahb_read32(struct ath11k_base *ab, u32 offset)
+ {
+-	return ioread32(ab->mem + offset);
++	switch (offset & ATH11K_REG_TYPE_MASK) {
++	case ATH11K_REG_TYPE_NORMAL:
++		return ioread32(ab->mem + FIELD_GET(ATH11K_REG_OFFSET_MASK, offset));
++	case ATH11K_REG_TYPE_CE:
++		return ioread32(ab->mem_ce + FIELD_GET(ATH11K_REG_OFFSET_MASK, offset));
++	default:
++		BUG();
++		return 0;
++	}
+ }
+ 
+ static inline void ath11k_ahb_write32(struct ath11k_base *ab, u32 offset, u32 value)
+ {
+-	iowrite32(value, ab->mem + offset);
++	switch (offset & ATH11K_REG_TYPE_MASK) {
++	case ATH11K_REG_TYPE_NORMAL:
++		iowrite32(value, ab->mem + FIELD_GET(ATH11K_REG_OFFSET_MASK, offset));
++		break;
++	case ATH11K_REG_TYPE_CE:
++		iowrite32(value, ab->mem_ce + FIELD_GET(ATH11K_REG_OFFSET_MASK, offset));
++		break;
++	default:
++		BUG();
++		break;
++	}
+ }
+ 
+ static void ath11k_ahb_kill_tasklets(struct ath11k_base *ab)
+@@ -275,9 +293,9 @@ static void ath11k_ahb_ce_irq_enable(struct ath11k_base *ab, u16 ce_id)
+ 	const struct ce_ie_addr *ce_ie_addr = ab->hw_params.ce_ie_addr;
+ 	u32 ie1_reg_addr, ie2_reg_addr, ie3_reg_addr;
+ 
+-	ie1_reg_addr = ce_ie_addr->ie1_reg_addr + ATH11K_CE_OFFSET(ab);
+-	ie2_reg_addr = ce_ie_addr->ie2_reg_addr + ATH11K_CE_OFFSET(ab);
+-	ie3_reg_addr = ce_ie_addr->ie3_reg_addr + ATH11K_CE_OFFSET(ab);
++	ie1_reg_addr = ce_ie_addr->ie1_reg_addr;
++	ie2_reg_addr = ce_ie_addr->ie2_reg_addr;
++	ie3_reg_addr = ce_ie_addr->ie3_reg_addr;
+ 
+ 	ce_attr = &ab->hw_params.host_ce_config[ce_id];
+ 	if (ce_attr->src_nentries)
+@@ -296,9 +314,9 @@ static void ath11k_ahb_ce_irq_disable(struct ath11k_base *ab, u16 ce_id)
+ 	const struct ce_ie_addr *ce_ie_addr = ab->hw_params.ce_ie_addr;
+ 	u32 ie1_reg_addr, ie2_reg_addr, ie3_reg_addr;
+ 
+-	ie1_reg_addr = ce_ie_addr->ie1_reg_addr + ATH11K_CE_OFFSET(ab);
+-	ie2_reg_addr = ce_ie_addr->ie2_reg_addr + ATH11K_CE_OFFSET(ab);
+-	ie3_reg_addr = ce_ie_addr->ie3_reg_addr + ATH11K_CE_OFFSET(ab);
++	ie1_reg_addr = ce_ie_addr->ie1_reg_addr;
++	ie2_reg_addr = ce_ie_addr->ie2_reg_addr;
++	ie3_reg_addr = ce_ie_addr->ie3_reg_addr;
+ 
+ 	ce_attr = &ab->hw_params.host_ce_config[ce_id];
+ 	if (ce_attr->src_nentries)
+diff --git a/drivers/net/wireless/ath/ath11k/hal.c b/drivers/net/wireless/ath/ath11k/hal.c
+index f3d04568c221..f9ba2f821108 100644
+--- a/drivers/net/wireless/ath/ath11k/hal.c
++++ b/drivers/net/wireless/ath/ath11k/hal.c
+@@ -1233,20 +1233,16 @@ static int ath11k_hal_srng_create_config(struct ath11k_base *ab)
+ 	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_TCL_REG + HAL_TCL_STATUS_RING_HP;
+ 
+ 	s = &hal->srng_config[HAL_CE_SRC];
+-	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_CE0_SRC_REG(ab) + HAL_CE_DST_RING_BASE_LSB +
+-		ATH11K_CE_OFFSET(ab);
+-	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_CE0_SRC_REG(ab) + HAL_CE_DST_RING_HP +
+-		ATH11K_CE_OFFSET(ab);
++	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_CE0_SRC_REG(ab) + HAL_CE_DST_RING_BASE_LSB;
++	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_CE0_SRC_REG(ab) + HAL_CE_DST_RING_HP;
+ 	s->reg_size[0] = HAL_SEQ_WCSS_UMAC_CE1_SRC_REG(ab) -
+ 		HAL_SEQ_WCSS_UMAC_CE0_SRC_REG(ab);
+ 	s->reg_size[1] = HAL_SEQ_WCSS_UMAC_CE1_SRC_REG(ab) -
+ 		HAL_SEQ_WCSS_UMAC_CE0_SRC_REG(ab);
+ 
+ 	s = &hal->srng_config[HAL_CE_DST];
+-	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_CE0_DST_REG(ab) + HAL_CE_DST_RING_BASE_LSB +
+-		ATH11K_CE_OFFSET(ab);
+-	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_CE0_DST_REG(ab) + HAL_CE_DST_RING_HP +
+-		ATH11K_CE_OFFSET(ab);
++	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_CE0_DST_REG(ab) + HAL_CE_DST_RING_BASE_LSB;
++	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_CE0_DST_REG(ab) + HAL_CE_DST_RING_HP;
+ 	s->reg_size[0] = HAL_SEQ_WCSS_UMAC_CE1_DST_REG(ab) -
+ 		HAL_SEQ_WCSS_UMAC_CE0_DST_REG(ab);
+ 	s->reg_size[1] = HAL_SEQ_WCSS_UMAC_CE1_DST_REG(ab) -
+@@ -1254,9 +1250,8 @@ static int ath11k_hal_srng_create_config(struct ath11k_base *ab)
+ 
+ 	s = &hal->srng_config[HAL_CE_DST_STATUS];
+ 	s->reg_start[0] = HAL_SEQ_WCSS_UMAC_CE0_DST_REG(ab) +
+-		HAL_CE_DST_STATUS_RING_BASE_LSB + ATH11K_CE_OFFSET(ab);
+-	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_CE0_DST_REG(ab) + HAL_CE_DST_STATUS_RING_HP +
+-		ATH11K_CE_OFFSET(ab);
++		HAL_CE_DST_STATUS_RING_BASE_LSB;
++	s->reg_start[1] = HAL_SEQ_WCSS_UMAC_CE0_DST_REG(ab) + HAL_CE_DST_STATUS_RING_HP;
+ 	s->reg_size[0] = HAL_SEQ_WCSS_UMAC_CE1_DST_REG(ab) -
+ 		HAL_SEQ_WCSS_UMAC_CE0_DST_REG(ab);
+ 	s->reg_size[1] = HAL_SEQ_WCSS_UMAC_CE1_DST_REG(ab) -
+diff --git a/drivers/net/wireless/ath/ath11k/hw.c b/drivers/net/wireless/ath/ath11k/hw.c
+index caa6dc12a790..58f39a7eaa1c 100644
+--- a/drivers/net/wireless/ath/ath11k/hw.c
++++ b/drivers/net/wireless/ath/ath11k/hw.c
+@@ -2268,9 +2268,9 @@ const struct ce_ie_addr ath11k_ce_ie_addr_ipq8074 = {
+ };
+ 
+ const struct ce_ie_addr ath11k_ce_ie_addr_ipq5018 = {
+-	.ie1_reg_addr = CE_HOST_IPQ5018_IE_ADDRESS - HAL_IPQ5018_CE_WFSS_REG_BASE,
+-	.ie2_reg_addr = CE_HOST_IPQ5018_IE_2_ADDRESS - HAL_IPQ5018_CE_WFSS_REG_BASE,
+-	.ie3_reg_addr = CE_HOST_IPQ5018_IE_3_ADDRESS - HAL_IPQ5018_CE_WFSS_REG_BASE,
++	.ie1_reg_addr = ATH11K_REG_TYPE_CE + CE_HOST_IPQ5018_IE_ADDRESS - HAL_IPQ5018_CE_WFSS_REG_BASE,
++	.ie2_reg_addr = ATH11K_REG_TYPE_CE + CE_HOST_IPQ5018_IE_2_ADDRESS - HAL_IPQ5018_CE_WFSS_REG_BASE,
++	.ie3_reg_addr = ATH11K_REG_TYPE_CE + CE_HOST_IPQ5018_IE_3_ADDRESS - HAL_IPQ5018_CE_WFSS_REG_BASE,
+ };
+ 
+ const struct ce_remap ath11k_ce_remap_ipq5018 = {
+@@ -2801,13 +2801,13 @@ const struct ath11k_hw_regs ipq5018_regs = {
+ 	.hal_reo_status_hp = 0x00003070,
+ 
+ 	/* WCSS relative address */
+-	.hal_seq_wcss_umac_ce0_src_reg = 0x08400000
++	.hal_seq_wcss_umac_ce0_src_reg = ATH11K_REG_TYPE_CE + 0x08400000
+ 		- HAL_IPQ5018_CE_WFSS_REG_BASE,
+-	.hal_seq_wcss_umac_ce0_dst_reg = 0x08401000
++	.hal_seq_wcss_umac_ce0_dst_reg = ATH11K_REG_TYPE_CE + 0x08401000
+ 		- HAL_IPQ5018_CE_WFSS_REG_BASE,
+-	.hal_seq_wcss_umac_ce1_src_reg = 0x08402000
++	.hal_seq_wcss_umac_ce1_src_reg = ATH11K_REG_TYPE_CE + 0x08402000
+ 		- HAL_IPQ5018_CE_WFSS_REG_BASE,
+-	.hal_seq_wcss_umac_ce1_dst_reg = 0x08403000
++	.hal_seq_wcss_umac_ce1_dst_reg = ATH11K_REG_TYPE_CE + 0x08403000
+ 		- HAL_IPQ5018_CE_WFSS_REG_BASE,
+ 
+ 	/* WBM Idle address */
+diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
+index 14ef4eb48f80..44593b38fc85 100644
+--- a/drivers/net/wireless/ath/ath11k/hw.h
++++ b/drivers/net/wireless/ath/ath11k/hw.h
+@@ -81,7 +81,12 @@
+ #define ATH11K_M3_FILE			"m3.bin"
+ #define ATH11K_REGDB_FILE_NAME		"regdb.bin"
+ 
+-#define ATH11K_CE_OFFSET(ab)	(ab->mem_ce - ab->mem)
++#define ATH11K_REG_TYPE_MASK		GENMASK(31, 28)
++#define  ATH11K_REG_TYPE(x)		FIELD_PREP_CONST(ATH11K_REG_TYPE_MASK, x)
++#define  ATH11K_REG_TYPE_NORMAL		ATH11K_REG_TYPE(0)
++#define  ATH11K_REG_TYPE_DP		ATH11K_REG_TYPE(1)
++#define  ATH11K_REG_TYPE_CE		ATH11K_REG_TYPE(2)
++#define ATH11K_REG_OFFSET_MASK		GENMASK(27, 0)
+ 
+ enum ath11k_hw_rate_cck {
+ 	ATH11K_HW_RATE_CCK_LP_11M = 0,
+-- 
+2.40.1
 
-Seems like during rmmod case, ath12k_core_soc_destroy() is invoked with 
-ag->mutex lock which in-turn invokes ath12k_qmi_deinit_service() where 
-cancel_work_sync for qmi events are called. So, if 
-ATH12K_QMI_EVENT_FW_READY was in queue during rmmod, it would hit a 
-deadlock as in core start it requires ag->mutex lock. But, this scenario 
-is quite unlikely to occur where rmmod and FW_READY event are going to 
-be in parallel. Nevertheless, it has to be addressed. I will check 
-further on this warning and see how to address this.
-
-Thanks,
-Harshitha
 
