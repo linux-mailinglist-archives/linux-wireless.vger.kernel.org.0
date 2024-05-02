@@ -1,58 +1,58 @@
-Return-Path: <linux-wireless+bounces-7106-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7107-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C98748B94FC
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 May 2024 09:03:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 323EA8B9504
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 May 2024 09:05:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80CBB1F21970
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 May 2024 07:03:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C43D1C20C3D
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 May 2024 07:05:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F9C01CD3C;
-	Thu,  2 May 2024 07:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669A121A04;
+	Thu,  2 May 2024 07:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JVuQzr6m"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oRqGX9Fx"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15CBE1CA80;
-	Thu,  2 May 2024 07:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7DC1CD32;
+	Thu,  2 May 2024 07:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714633396; cv=none; b=SL3Kh7RPjQe2z9GUtM/Ttj5L2XI7GH2Q64oTML5CA4UIdJjzCdgwDv63Q/e3iv4glJYAGfo1GDmNLsl+tXp84GxDEHJNiXUYqPrgpmyWKaNzn0cpBwwCGXaoHWBoSkH8wOUubTlIEMSHOuOoRwwJ10qvdYcj7VBo3gps6F+JD2E=
+	t=1714633541; cv=none; b=fccELQUodKFdTD9JNFC/Q74a5X+0Z+/JC1pU+z1nS9yDliDV6bZitJ49XXfmTusWVLEZiHO1VYvEwuoy49AT++nK/mnKhrnlQTe9fqLJbPSDPS6t7Rq/lgrqORId7SY41OwQK6KqbL10hKyfgat3T8qmtYN9Zr4YRC518C0WQhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714633396; c=relaxed/simple;
-	bh=eZHA6dycMEhndlQBEwkVSIH+8uMnPz6SrubKX8jZyiM=;
+	s=arc-20240116; t=1714633541; c=relaxed/simple;
+	bh=qohn0+wgZK8fW1L5cozppymgAyY5UyPVH1hNxyFm7eU=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=sxrvH5AGYtyKksU/blHRFlMbcRksQc9KJgE5m1DhdtZp4RU75At+izsA1nssMCE1E4fJZtiBtgrtWiXI9GH52UmCG80CMnHmdRefuQT9jXJDrtMEr5zzq5Lg3VHAoExhbABQq9pT2fqCkmOnKb1L5jEoeBN1pJr4NbOCg1TtrkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JVuQzr6m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44ECDC116B1;
-	Thu,  2 May 2024 07:03:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YRQ8bOGerjxTyiiS97QkNvgC4EVkXGQS0+tZ/ZdegEFCz2JqkeJxc5YzkEryN2Fe0rqKudOl1D+Zv9chhpTHlyghzgMDHs9HzBDXwChaZKttNBOCyFwtJPhF9EMKGdjWPKSVVS8oq649cYP2rEYa7ajvA0JaSOzDmNh7IQvHT1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oRqGX9Fx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57CB4C116B1;
+	Thu,  2 May 2024 07:05:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714633395;
-	bh=eZHA6dycMEhndlQBEwkVSIH+8uMnPz6SrubKX8jZyiM=;
+	s=k20201202; t=1714633540;
+	bh=qohn0+wgZK8fW1L5cozppymgAyY5UyPVH1hNxyFm7eU=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=JVuQzr6mEr/MJO50qsI7l1mXlXYnodA4CvgsULnCDa8KchLuwMW0knDcr7zxRRMVE
-	 I0AdOqI6zxy5MRAipH9IBl/MBaISNGUCeTA63HmRKY/6CCpT5g+cVlcQuQUCO8Gmg5
-	 WHSO/CCH39RqdORWIOtWc90DbXVgun3Q87Ta9Y8HJjzFItcJgHK4SdkhexVaFxiT9S
-	 Wz80Srs9r1WaaZODKHlFMfZxeG22a0/W5jI66C/l1mY+QA9bVl6UTDV6nas/8lwK8O
-	 whcGVM+cId3hrxY8/fxC+4BDGiIp90d9ukPRLrDQuubzmpBfOIkAEUHabFz9Q2Txwp
-	 I865jPQt9MpLw==
+	b=oRqGX9FxmLIFyp9Bj3JGwc+u09C7EFFuKGwAASNv4wI1ZecH8gJiEifMEwVgOmiyX
+	 3ukJLI8BFq4b5Bm/t6P2NyP3eFpDt1ymuOO1Q1Ti9QuFKuNnM+Zt6ShK3WDBtUBhdH
+	 JqCy1IprTP8X+NzlXZRb97dGg6iZZgD7fbqxlpwe9rilg43LBzPtoJrgq/ohjORFhS
+	 A6wrkUXcbDN3+OWOo2boPlvWB8+RBeSI39lHsDcsvCsXbnPKnh57RL/Oon7OZAofAc
+	 pl1tOc6XriZ1t6L5TtbjxGoerBIckRM8/KxWvpbaiiHcWhV8OIKJoDpkXsK6Dgw0Z1
+	 I917sxhoe5jNA==
 From: Kalle Valo <kvalo@kernel.org>
-To: Larry Finger <Larry.Finger@lwfinger.net>
-Cc: Ziyang Huang <hzyitc@outlook.com>,  jjohnson@kernel.org,
-  linux-wireless@vger.kernel.org,  ath11k@lists.infradead.org,
-  linux-kernel@vger.kernel.org
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Ziyang Huang <hzyitc@outlook.com>,  <jjohnson@kernel.org>,
+  <linux-wireless@vger.kernel.org>,  <ath11k@lists.infradead.org>,
+  <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH] wifi: ath11k: fix remapped ce accessing issue on 64bit OS
 References: <TYZPR01MB55563B3A689D54D18179E5B4C9192@TYZPR01MB5556.apcprd01.prod.exchangelabs.com>
-	<22b0713e-49f2-482a-b145-e460b5632a7c@lwfinger.net>
-Date: Thu, 02 May 2024 10:03:12 +0300
-In-Reply-To: <22b0713e-49f2-482a-b145-e460b5632a7c@lwfinger.net> (Larry
-	Finger's message of "Wed, 1 May 2024 11:55:08 -0500")
-Message-ID: <874jbgg0gf.fsf@kernel.org>
+	<6336ffc7-d8ae-4cfd-8b66-d6d91cb0d15e@quicinc.com>
+Date: Thu, 02 May 2024 10:05:37 +0300
+In-Reply-To: <6336ffc7-d8ae-4cfd-8b66-d6d91cb0d15e@quicinc.com> (Jeff
+	Johnson's message of "Wed, 1 May 2024 09:56:15 -0700")
+Message-ID: <87zft8elry.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -62,34 +62,10 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Larry Finger <Larry.Finger@lwfinger.net> writes:
+Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 
-> On 5/1/24 11:14 AM, Ziyang Huang wrote:
->
->> On 64bit OS, when ab->mem_ce is lower than or 4G far away from ab->mem,
->> u32 is not enough to store the offsets, which makes ath11k_ahb_read32()
->> and ath11k_ahb_write32() access incorrect address and causes Data Abort
->> Exception.
->> Let's use the high bits of offsets to decide where to access, which
->> is
->> similar as ath11k_pci_get_window_start() done. In the future, we can merge
->> these functions for unified regs accessing.
->> Signed-off-by: Ziyang Huang <hzyitc@outlook.com>
->> ---
->>   drivers/net/wireless/ath/ath11k/ahb.c | 34 ++++++++++++++++++++-------
->>   drivers/net/wireless/ath/ath11k/hal.c | 17 +++++---------
->>   drivers/net/wireless/ath/ath11k/hw.c  | 14 +++++------
->>   drivers/net/wireless/ath/ath11k/hw.h  |  7 +++++-
->>   4 files changed, 45 insertions(+), 27 deletions(-)
->> diff --git a/drivers/net/wireless/ath/ath11k/ahb.c
->> b/drivers/net/wireless/ath/ath11k/ahb.c
->> index 7c0a23517949..9e59b4de93a9 100644
->> --- a/drivers/net/wireless/ath/ath11k/ahb.c
->> +++ b/drivers/net/wireless/ath/ath11k/ahb.c
->> @@ -198,12 +198,30 @@ static const struct ath11k_pci_ops ath11k_ahb_pci_ops_wcn6750 = {
->>     static inline u32 ath11k_ahb_read32(struct ath11k_base *ab, u32
->> offset)
->>   {
+>>  static inline u32 ath11k_ahb_read32(struct ath11k_base *ab, u32 offset)
+>>  {
 >> -	return ioread32(ab->mem + offset);
 >> +	switch (offset & ATH11K_REG_TYPE_MASK) {
 >> +	case ATH11K_REG_TYPE_NORMAL:
@@ -99,11 +75,11 @@ Larry Finger <Larry.Finger@lwfinger.net> writes:
 >> +	default:
 >> +		BUG();
 >
-> Do you really want to crash the system here? A dev_warn() or something
-> similar would log the situation. I suspect this case is never taken,
-> but a system crash is not a good response if it is.
+> you can WARN but you can't BUG (and even WARN is being discouraged)
 
-Correct, BUG() is more or less banned from all wireless code.
+Yeah, even WARN() is risky especially in a function like this. It can
+cause so much log messages so that the wathdog can trigger and reboot
+the host.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
