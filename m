@@ -1,230 +1,287 @@
-Return-Path: <linux-wireless+bounces-7114-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7115-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 366588B9983
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 May 2024 12:58:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B02E8B9E03
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 May 2024 18:01:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5885B1C20E10
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 May 2024 10:58:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC2D81F249C5
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 May 2024 16:01:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E25E5E091;
-	Thu,  2 May 2024 10:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B79EC15CD78;
+	Thu,  2 May 2024 16:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="gRn+03ME"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DzqLAwE8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from nbd.name (nbd.name [46.4.11.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34CD656B7B
-	for <linux-wireless@vger.kernel.org>; Thu,  2 May 2024 10:58:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934F115AD83
+	for <linux-wireless@vger.kernel.org>; Thu,  2 May 2024 16:01:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714647485; cv=none; b=psqki7l92mSzWIsaaT1wOQ7Htb3rxqMK8lml0kpgn7d8tI0tppoa2w7PFXNe4H3n27qa3V8E0f0u3rdh9Q2P5XKLg8x5Kib03R8KRzJq1wvpzrgIBlK/2DWosHDkTOyA0m7fKOKAATv0IOjY62HIjruIxX+cxBJzJXAaYAH878A=
+	t=1714665690; cv=none; b=PR9jbQw4pJnriyS0GL20Lms+LqA3ZHKwI5rvHDdMg5kh5fm7as2d2jkvAUs+Xhof/UIK1q9KBVFWXQA1W/9ffA6lO5MR/eW36JODLkC3/p98E3IWmafhkwuzqVpkBIP+1TpiElptMcb114plrUd92PB9PeA2ZSfRsW8Mg7mSyj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714647485; c=relaxed/simple;
-	bh=ia8hPV2IbcGwlS4CeYAYNXH8fOLMwQynPYih8l0/Ud8=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=MmgIjP1Zii4PmzlMML4II25PJo6nxHTRM0OnJDpffaMC5ZEoxiFzxBub9Mq4cla1wqM0pCllUy4BUkjv5UM09ccxIxqRFJlCOE+sP/2dinquukNuMVgzXrSVCCSK5OO9I2dVym9WHNeDikbm0c47XPQV97GwhHskPlp9O1SzSAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=gRn+03ME; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:Content-Type:Cc:To:Subject:From:
-	MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=qAPaIam6WStPPZ7XWEQGe4rMeNMhsDXupHNAZnJSlY4=; b=gRn+03MEMkOWydusipQL1xo44L
-	lK0M3cR93Wwmyk2bBwlosyInXnnwBA9ZCLpPQ+UvOvwPVrW2M8X2WGBFetewTaFbacwNC5e4Gzz4q
-	ROV8sQ6rvH75V4nlYhUcY+cvXPHw3lzUAwmfeChS9CQpeWCrMNrveBAnjlsLddz801Ss=;
-Received: from p54ae9c93.dip0.t-ipconnect.de ([84.174.156.147] helo=nf.local)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96)
-	(envelope-from <nbd@nbd.name>)
-	id 1s2U8W-00BNjR-0F;
-	Thu, 02 May 2024 12:58:00 +0200
-Message-ID: <cca7fa77-17d0-46ff-98e3-db8b7cd8505c@nbd.name>
-Date: Thu, 2 May 2024 12:57:59 +0200
+	s=arc-20240116; t=1714665690; c=relaxed/simple;
+	bh=mAkEKC+KPNUQKffUdp+OAqvjQHSIAy4Tm31PH1AZidw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mS2OXY6V7IdzF2LNXCeXOisaKvdNIbNH3x5qLcGxKgQyPje07nBkJR+KtV/3oLHnTAVGmDaVkQa+DL3Ch0hIvU9E4dVm/ps26iWSSE86/c0aHXn1JcKHaQGRkZp17jOOOy0XBIxwJGGQKlPKXGjvOFnyPvI12aPu3fFGrGyGcqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DzqLAwE8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFBAAC113CC;
+	Thu,  2 May 2024 16:01:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714665690;
+	bh=mAkEKC+KPNUQKffUdp+OAqvjQHSIAy4Tm31PH1AZidw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=DzqLAwE89Woo7orI5OKHMbaUTLMLjmv4AE9rJuHIKSuhMewy0F/W0deXpEbNzU8mq
+	 wicYKRmk7nIzxq6oqedCJHhLWlbCN3CjcsBjClAsszQog6Ju8BGaXrCv2LEY/Uy1ii
+	 o6cL/WYuSYSL0lpAx4ABfdaocKZ++prQ9jFW/eNr4gDNB0hgOudFEJpep8VBI+ozeq
+	 qfZhg3pSb2ioIvSImNAO+Azge/OQ+deMCatjfUZlghM61Jy8ZtwDwt5E6wd+E12TGJ
+	 zqXrPoeiMduRdXfiuMX+nNOATW3M7Gx3fAXt/Z49NkctiJCLs2gVNw4b52oPwA/PI4
+	 xMcVTbAUD7uHg==
+From: Kalle Valo <kvalo@kernel.org>
+To: linux-wireless@vger.kernel.org
+Cc: ath10k@lists.infradead.org, ath11k@lists.infradead.org,
+ ath12k@lists.infradead.org, quic_jjohnson@quicinc.com
+Subject: pull-request: ath-next-20240502
+Date: Thu, 02 May 2024 19:01:26 +0300
+Message-ID: <87bk5onqy1.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Felix Fietkau <nbd@nbd.name>
-Subject: pull request: mt76 2024-05-02
-To: Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless <linux-wireless@vger.kernel.org>
-Content-Language: en-US
-Autocrypt: addr=nbd@nbd.name; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
- cL98efvrjdstUfTCP2pfetyN
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-Hi Kalle,
+Hi,
 
-here's my first request for 6.10
+Please pull, more information in the tag below.
 
-- Felix
+Kalle
 
-The following changes since commit 8886b6d681f28d838cb30ace8ce73f8b96bc927d:
+The following changes since commit 57a03d83f229126b0aab6f305821358755c7b130:
 
-   wifi: qtnfmac: Remove generic .ndo_get_stats64 (2024-05-02 10:20:04 +0300)
+  Merge branch 'mlxsw-preparations-for-improving-performance' (2024-04-03 19:50:44 -0700)
 
 are available in the Git repository at:
 
-   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2024-05-02
+  git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git tags/ath-next-20240502
 
-for you to fetch changes up to 59f4c57306bae62f66356556cfbdd40444683c09:
+for you to fetch changes up to bf76b144fe53c7f0de9e294947d903fc7724776f:
 
-   wifi: mt76: enable spectrum management (2024-05-02 12:47:05 +0200)
-
-----------------------------------------------------------------
-mt76 patches for 6.10
-
-- fixes
-- mt7603 stability improvements
-- mt7921 LED control
-- mt7925 EHT radiotap support
+  wifi: ath12k: fix the problem that down grade phy mode operation (2024-05-02 13:15:38 +0300)
 
 ----------------------------------------------------------------
-Andy Shevchenko (1):
-       wifi: mt76: mt7915: Remove unused of_gpio.h
+ath.git patches for v6.10
 
-Ben Greear (1):
-       wifi: mt76: mt7915: add missing chanctx ops
+ath12k
 
-Bo Jiao (1):
-       wifi: mt76: mt7915: only set MT76_MCU_RESET for the main phy
+* debugfs support
 
-Chad Monroe (1):
-       wifi: mt76: mt7996: fix size of txpower MCU command
+* dfs_simulate_radar debugfs file
 
-Deren Wu (2):
-       wifi: mt76: mt7921: introduce mt7920 PCIe support
-       wifi: mt76: mt7925: add EHT radiotap support in monitor mode
+* disable Wireless Extensions
 
-Felix Fietkau (10):
-       wifi: mt76: mt7915: initialize rssi on adding stations
-       wifi: mt76: replace skb_put with skb_put_zero
-       wifi: mt76: fix tx packet loss when scanning on DBDC
-       wifi: mt76: mt7996: only set MT76_MCU_RESET for the main phy
-       wifi: mt76: mt7915: add fallback in case of missing precal data
-       wifi: mt76: mt7603: fix tx queue of loopback packets
-       wifi: mt76: mt7603: add wpdma tx eof flag for PSE client reset
-       wifi: mt76: connac: use muar idx 0xe for non-mt799x as well
-       wifi: mt76: make const arrays in functions static
-       wifi: mt76: enable spectrum management
+* suspend and hibernation support
 
-Hao Zhang (1):
-       wifi: mt76: mt7921e: add LED control support
+* ACPI support
 
-Henry Yen (2):
-       wifi: mt76: mt7915: fix bogus Tx/Rx airtime duration values
-       wifi: mt76: mt7996: fix non-main BSS no beacon issue for MBSS scenario
+* refactoring in preparation of multi-link support
 
-Howard Hsu (4):
-       wifi: mt76: mt7915: fix HE PHY capabilities IE for station mode
-       wifi: mt76: connac: enable HW CSO module for mt7996
-       wifi: mt76: mt7996: fix potential memory leakage when reading chip temperature
-       wifi: mt76: connac: enable critical packet mode support for mt7992
+ath11k
 
-Leon Yen (1):
-       wifi: mt76: mt7921s: fix potential hung tasks during chip recovery
+* support hibernation (required changes in qrtr and MHI subsystems)
 
-Lorenzo Bianconi (2):
-       wifi: mt76: mt7996: fix uninitialized variable in mt7996_irq_tasklet()
-       wifi: mt76: sdio: move mcu queue size check inside critical section
+* ieee80211-freq-limit Device Tree property support
 
-MeiChia Chiu (1):
-       wifi: mt76: mt7915: add support for disabling in-band discovery
+ath10k
 
-Michael-CY Lee (1):
-       wifi: mt76: mt7996: let upper layer handle MGMT frame protection
+* firmware-name Device Tree property support
 
-Ming Yen Hsieh (1):
-       wifi: mt76: mt7925: ensure 4-byte alignment for suspend & wow command
+----------------------------------------------------------------
+Arnd Bergmann (2):
+      wifi: carl9170: re-fix fortified-memset warning
+      wifi: ath9k: work around memset overflow warning
 
-Muhammad Usama Anjum (1):
-       wifi: mt76: connac: check for null before dereferencing
+Baochen Qiang (16):
+      bus: mhi: host: Add mhi_power_down_keep_dev() API to support system suspend/hibernation
+      net: qrtr: support suspend/hibernation
+      wifi: ath11k: support hibernation
+      wifi: ath12k: fix kernel crash during resume
+      wifi: ath12k: rearrange IRQ enable/disable in reset path
+      wifi: ath12k: remove MHI LOOPBACK channels
+      wifi: ath12k: do not dump SRNG statistics during resume
+      wifi: ath12k: fix warning on DMA ring capabilities event
+      wifi: ath12k: decrease MHI channel buffer length to 8KB
+      wifi: ath12k: flush all packets before suspend
+      wifi: ath12k: no need to handle pktlog during suspend/resume
+      wifi: ath12k: avoid stopping mac80211 queues in ath12k_core_restart()
+      wifi: ath12k: support suspend/resume
+      wifi: ath12k: change supports_suspend to true for WCN7850
+      wifi: ath12k: check M3 buffer size as well whey trying to reuse it
+      wifi: ath12k: fix flush failure in recovery scenarios
 
-Peter Chiu (3):
-       wifi: mt76: mt7915: fix mcu command format for mt7915 tx stats
-       wifi: mt76: mt7915: add mt7986, mt7916 and mt7981 pre-calibration
-       wifi: mt76: mt7996: set RCPI value in rate control command
+Christian Lamparter (2):
+      dt-bindings: net: wireless: ath11k: add ieee80211-freq-limit property
+      wifi: ath11k: add support DT ieee80211-freq-limit
 
-Rong Yan (1):
-       wifi: mt76: mt7921: cqm rssi low/high event notify
+Christophe JAILLET (1):
+      wifi: ath11k: Fix error handling in ath11k_wmi_p2p_noa_event()
 
-Shayne Chen (2):
-       wifi: mt76: mt7996: disable rx header translation for BMC entry
-       wifi: mt76: connac: use peer address for station BMC entry
+Dmitry Baryshkov (5):
+      dt-bindings: net: wireless: ath10k: describe firmware-name property
+      wifi: ath10k: support board-specific firmware overrides
+      wifi: ath10k: populate board data for WCN3990
+      wifi: ath10k: drop chip-specific board data file name
+      wifi: ath10k: drop fw.eboard file name
 
-StanleyYP Wang (1):
-       wifi: mt76: mt7996: add sanity checks for background radar trigger
+Gustavo A. R. Silva (2):
+      wifi: wil6210: cfg80211: Use __counted_by() in struct wmi_start_scan_cmd and avoid some -Wfamnae warnings
+      wifi: wil6210: wmi: Use __counted_by() in struct wmi_set_link_monitor_cmd and avoid -Wfamnae warning
 
-  drivers/net/wireless/mediatek/mt76/dma.c              |   5 +++--
-  drivers/net/wireless/mediatek/mt76/mac80211.c         |   1 +
-  drivers/net/wireless/mediatek/mt76/mt76.h             |   4 ++--
-  drivers/net/wireless/mediatek/mt76/mt7603/dma.c       |  46 ++++++++++++++++++++++++++++-------------
-  drivers/net/wireless/mediatek/mt76/mt7603/mac.c       |   1 +
-  drivers/net/wireless/mediatek/mt76/mt76_connac.h      |  10 ++++++++-
-  drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.c |  85 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h |  22 ++++++++++++++++++++
-  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c  |  22 +++++++++++++-------
-  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h  |  15 ++++++++++++++
-  drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c    |  29 ++++++++++++++------------
-  drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h    |  47 +++++++++++++++++++++++++++++++++++++++---
-  drivers/net/wireless/mediatek/mt76/mt7915/init.c      |  10 ++++++---
-  drivers/net/wireless/mediatek/mt76/mt7915/mac.c       |  15 +++++++++-----
-  drivers/net/wireless/mediatek/mt76/mt7915/main.c      |  10 ++++++++-
-  drivers/net/wireless/mediatek/mt76/mt7915/mcu.c       | 158 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----------------------------------
-  drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h    |   4 ++++
-  drivers/net/wireless/mediatek/mt76/mt7915/soc.c       |   1 -
-  drivers/net/wireless/mediatek/mt76/mt7921/mac.c       |   2 ++
-  drivers/net/wireless/mediatek/mt76/mt7921/main.c      |  32 ++++++++++++++++++++++++++++-
-  drivers/net/wireless/mediatek/mt76/mt7921/mcu.c       |  79 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
-  drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h    |   6 ++++++
-  drivers/net/wireless/mediatek/mt76/mt7921/pci.c       |  19 ++++++++++++++---
-  drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c   |   2 --
-  drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c  |   2 --
-  drivers/net/wireless/mediatek/mt76/mt7925/mac.c       |  15 ++++++++++++--
-  drivers/net/wireless/mediatek/mt76/mt7925/mcu.c       |   4 ++--
-  drivers/net/wireless/mediatek/mt76/mt7925/mcu.h       |   2 +-
-  drivers/net/wireless/mediatek/mt76/mt792x.h           |   7 +++++++
-  drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c   |   5 +++++
-  drivers/net/wireless/mediatek/mt76/mt7996/mac.c       |   8 ++------
-  drivers/net/wireless/mediatek/mt76/mt7996/main.c      |  34 ++++++++++++++++++++++---------
-  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c       |  69 ++++++++++++++++++++++++++++++++++++++++++++++++++------------
-  drivers/net/wireless/mediatek/mt76/mt7996/mmio.c      |   2 +-
-  drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h    |   4 +++-
-  drivers/net/wireless/mediatek/mt76/sdio.c             |  17 ++++++++++------
-  drivers/net/wireless/mediatek/mt76/testmode.c         |   2 +-
-  drivers/net/wireless/mediatek/mt76/tx.c               |   2 +-
-  drivers/net/wireless/mediatek/mt76/usb.c              |   3 ++-
-  39 files changed, 656 insertions(+), 145 deletions(-)
+Jeff Johnson (3):
+      wifi: ath11k: fix hal_rx_buf_return_buf_manager documentation
+      wifi: ath12k: fix hal_rx_buf_return_buf_manager documentation
+      wifi: ath12k: don't use %pK in dmesg format strings
+
+Kalle Valo (2):
+      Merge branch 'mhi-immutable' of git://git.kernel.org/pub/scm/linux/kernel/git/mani/mhi into ath-next
+      wifi: ath12k: enable WIPHY_FLAG_DISABLE_WEXT
+
+Kang Yang (2):
+      wifi: ath12k: dynamically update peer puncturing bitmap for STA
+      wifi: ath12k: add support to handle beacon miss for WCN7850
+
+Karthikeyan Kathirvel (1):
+      wifi: ath12k: fix out-of-bound access of qmi_invoke_handler()
+
+Karthikeyan Periyasamy (9):
+      wifi: ath12k: extend the link capable flag
+      wifi: ath12k: fix link capable flags
+      wifi: ath12k: correct the capital word typo
+      wifi: ath12k: add multiple radio support in a single MAC HW un/register
+      wifi: ath12k: fix mac id extraction when MSDU spillover in rx error path
+      wifi: ath12k: avoid redundant code in Rx cookie conversion init
+      wifi: ath12k: Refactor the hardware cookie conversion init
+      wifi: ath12k: displace the Tx and Rx descriptor in cookie conversion table
+      wifi: ath12k: Refactor data path cmem init
+
+Krzysztof Kozlowski (1):
+      wifi: ath6kl: sdio: simplify module initialization
+
+Lingbo Kong (5):
+      wifi: ath12k: ACPI TAS support
+      wifi: ath12k: ACPI SAR support
+      wifi: ath12k: ACPI CCA threshold support
+      wifi: ath12k: ACPI band edge channel power support
+      wifi: ath12k: fix the problem that down grade phy mode operation
+
+Miaoqing Pan (1):
+      wifi: ath12k: fix missing endianness conversion in wmi_vdev_create_cmd()
+
+Nikita Zhandarovich (2):
+      wifi: carl9170: add a proper sanity check for endpoints
+      wifi: ar5523: enable proper endpoint verification
+
+Raj Kumar Bhagat (2):
+      wifi: ath12k: read single_chip_mlo_support parameter from QMI PHY capability
+      wifi: ath12k: set mlo_capable_flags based on QMI PHY capability
+
+Ramasamy Kaliappan (1):
+      wifi: ath12k: initial debugfs support
+
+Ramya Gnanasekar (1):
+      wifi: ath12k: debugfs: radar simulation support
+
+Sriram R (11):
+      wifi: ath12k: Modify add and remove chanctx ops for single wiphy support
+      wifi: ath12k: modify ath12k mac start/stop ops for single wiphy
+      wifi: ath12k: vdev statemachine changes for single wiphy
+      wifi: ath12k: scan statemachine changes for single wiphy
+      wifi: ath12k: fetch correct radio based on vdev status
+      wifi: ath12k: Cache vdev configs before vdev create
+      wifi: ath12k: Add additional checks for vif and sta iterators
+      wifi: ath12k: modify regulatory support for single wiphy architecture
+      wifi: ath12k: Modify set and get antenna mac ops for single wiphy
+      wifi: ath12k: Modify rts threshold mac op for single wiphy
+      wifi: ath12k: support get_survey mac op for single wiphy
+
+Su Hui (1):
+      wifi: ath10k: Fix an error code problem in ath10k_dbg_sta_write_peer_debug_trigger()
+
+Thiraviyam Mariyappan (1):
+      wifi: ath12k: enable service flag for survey dump stats
+
+ .../bindings/net/wireless/qcom,ath10k.yaml         |    6 +
+ .../bindings/net/wireless/qcom,ath11k.yaml         |    3 +
+ drivers/bus/mhi/host/internal.h                    |    4 +-
+ drivers/bus/mhi/host/pm.c                          |   42 +-
+ drivers/net/wireless/ath/ar5523/ar5523.c           |   14 +
+ drivers/net/wireless/ath/ath.h                     |    6 +-
+ drivers/net/wireless/ath/ath10k/core.c             |   43 +-
+ drivers/net/wireless/ath/ath10k/core.h             |    2 +
+ drivers/net/wireless/ath/ath10k/debugfs_sta.c      |    2 +-
+ drivers/net/wireless/ath/ath10k/hw.h               |   14 +-
+ drivers/net/wireless/ath/ath10k/pci.c              |   10 +-
+ drivers/net/wireless/ath/ath10k/snoc.c             |    3 +
+ drivers/net/wireless/ath/ath10k/targaddrs.h        |    3 +
+ drivers/net/wireless/ath/ath11k/ahb.c              |    6 +-
+ drivers/net/wireless/ath/ath11k/core.c             |  113 +-
+ drivers/net/wireless/ath/ath11k/core.h             |    6 +-
+ drivers/net/wireless/ath/ath11k/hal.h              |    2 +-
+ drivers/net/wireless/ath/ath11k/hif.h              |   14 +-
+ drivers/net/wireless/ath/ath11k/mac.c              |    1 +
+ drivers/net/wireless/ath/ath11k/mhi.c              |   12 +-
+ drivers/net/wireless/ath/ath11k/mhi.h              |    5 +-
+ drivers/net/wireless/ath/ath11k/pci.c              |   44 +-
+ drivers/net/wireless/ath/ath11k/qmi.c              |    2 +-
+ drivers/net/wireless/ath/ath11k/wmi.c              |   18 +-
+ drivers/net/wireless/ath/ath12k/Kconfig            |    9 +
+ drivers/net/wireless/ath/ath12k/Makefile           |    2 +
+ drivers/net/wireless/ath/ath12k/acpi.c             |  394 +++++++
+ drivers/net/wireless/ath/ath12k/acpi.h             |   76 ++
+ drivers/net/wireless/ath/ath12k/core.c             |  123 ++-
+ drivers/net/wireless/ath/ath12k/core.h             |   95 +-
+ drivers/net/wireless/ath/ath12k/debugfs.c          |   90 ++
+ drivers/net/wireless/ath/ath12k/debugfs.h          |   30 +
+ drivers/net/wireless/ath/ath12k/dp.c               |   90 +-
+ drivers/net/wireless/ath/ath12k/dp.h               |    5 +-
+ drivers/net/wireless/ath/ath12k/dp_mon.c           |    6 +-
+ drivers/net/wireless/ath/ath12k/dp_rx.c            |  104 +-
+ drivers/net/wireless/ath/ath12k/dp_rx.h            |    4 +-
+ drivers/net/wireless/ath/ath12k/hal.h              |    2 +-
+ drivers/net/wireless/ath/ath12k/hif.h              |   14 +-
+ drivers/net/wireless/ath/ath12k/htc.c              |    4 +-
+ drivers/net/wireless/ath/ath12k/hw.c               |   12 +-
+ drivers/net/wireless/ath/ath12k/hw.h               |    4 +
+ drivers/net/wireless/ath/ath12k/mac.c              | 1147 ++++++++++++++++----
+ drivers/net/wireless/ath/ath12k/mac.h              |    4 +
+ drivers/net/wireless/ath/ath12k/mhi.c              |   92 +-
+ drivers/net/wireless/ath/ath12k/mhi.h              |    5 +-
+ drivers/net/wireless/ath/ath12k/p2p.c              |    3 +-
+ drivers/net/wireless/ath/ath12k/p2p.h              |    1 +
+ drivers/net/wireless/ath/ath12k/pci.c              |   43 +-
+ drivers/net/wireless/ath/ath12k/pci.h              |    2 +-
+ drivers/net/wireless/ath/ath12k/qmi.c              |  109 +-
+ drivers/net/wireless/ath/ath12k/qmi.h              |    4 +
+ drivers/net/wireless/ath/ath12k/reg.c              |   55 +-
+ drivers/net/wireless/ath/ath12k/wmi.c              |  195 +++-
+ drivers/net/wireless/ath/ath12k/wmi.h              |   67 +-
+ drivers/net/wireless/ath/ath6kl/sdio.c             |   20 +-
+ drivers/net/wireless/ath/ath9k/main.c              |    3 +-
+ drivers/net/wireless/ath/carl9170/tx.c             |    3 +-
+ drivers/net/wireless/ath/carl9170/usb.c            |   32 +
+ drivers/net/wireless/ath/wil6210/cfg80211.c        |   21 +-
+ drivers/net/wireless/ath/wil6210/wmi.c             |   19 +-
+ drivers/net/wireless/ath/wil6210/wmi.h             |    4 +-
+ include/linux/mhi.h                                |   18 +-
+ net/qrtr/mhi.c                                     |   46 +
+ 64 files changed, 2656 insertions(+), 676 deletions(-)
+ create mode 100644 drivers/net/wireless/ath/ath12k/acpi.c
+ create mode 100644 drivers/net/wireless/ath/ath12k/acpi.h
+ create mode 100644 drivers/net/wireless/ath/ath12k/debugfs.c
+ create mode 100644 drivers/net/wireless/ath/ath12k/debugfs.h
 
