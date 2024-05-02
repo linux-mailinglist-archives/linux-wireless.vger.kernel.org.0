@@ -1,63 +1,74 @@
-Return-Path: <linux-wireless+bounces-7123-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7124-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECE648BA046
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 May 2024 20:27:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CFB58BA111
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 May 2024 21:27:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7695A1F22105
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 May 2024 18:27:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 283E428385B
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 May 2024 19:27:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B89DA173335;
-	Thu,  2 May 2024 18:27:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D39817B507;
+	Thu,  2 May 2024 19:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="E2gpWDER"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SGYiwi4L"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F382B173333
-	for <linux-wireless@vger.kernel.org>; Thu,  2 May 2024 18:27:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF7B171066;
+	Thu,  2 May 2024 19:27:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714674451; cv=none; b=hsnpZm/RVFr9X9QuL2Lo8lmnOrp4OtQy1J7j6TG9qLmJN/CygIyfKSpcsYK2j9EY+Okb87Kzc1kd8gQTNoCf+Dyb+6qrW9qD/1vFD1FLbrlAdPJ+hXmN0whFf9n+mZJ+yObBMB5F7e/Fb8JpTwNkoFb6yFQYmqBW+C/IzOgtskw=
+	t=1714678036; cv=none; b=pZxoRudUuYD+ONAj2GBQB6F+GRHuX1yxrIh6K3X3jCZmUolKFgoyEm4u07D1jrRWQRKDdo5LOf8f2L+KBpH1mC9mIV3kdUW6CWPuBG4v35p3hV8lCSsZOgba51G7tA422cjYa5NHskiJzqRxPozx5Ll/CdzOx61tHHOvnPOiysg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714674451; c=relaxed/simple;
-	bh=dY3EjCo247J8dLlUd1/RKRLUiyJQ7e9ePN5NLQ7poPw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=RUvpOWqXuYdeJrDdsYTFTdSW+4FzhdlCOcmBKwNx7upvZoATC8P0f9vqIN9gHWvT8FkJcG2v3npVU1/stneeLAs9phA4ZgtpXwM20SS4kayZYgO0VmHelTohrTc0J8HGINnyeaHuHqjzKkTXrLaPU+G0uULi6yTthlblIVDeF2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=E2gpWDER; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 442BGW1g025124;
-	Thu, 2 May 2024 18:27:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=/kxfyxK+8vuyCHXX0FmJ3EELg8p/F71v+4YFZg4/kr4=; b=E2
-	gpWDERDJ60v0VfxYktQxMdcX5/3vPK3ZwLQP9bFhuDlihZLPvZpuoOrm5BspJDyz
-	4YxdD2MInBo8cWsMIdHxf4HkmgE7W3vXIWbRVqFZYfYisA17oWm0VDSbK5V/0AVj
-	zQmxSJ18mbY56c0QdqfyqlH7CVMdcpT/jcIUcJCzb1bQi+IonplzLstK66n5U7aq
-	uBitGWsNWRdqRAzHQS+XfXiZhHR5uf1rlf7ynruCHLp3jzcXVlzoAuciNbyjSwmc
-	uKvi21+7Z2eGnuuOxWG9Z+8xVaPFZTDfiYeJ1snYn63jHxrRqvl7cT2Gqtdfz2tp
-	zZALbIp83StoWhX5zjCQ==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xv01tt08r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 02 May 2024 18:27:23 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 442IRM1J012342
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 2 May 2024 18:27:22 GMT
-Received: from [10.110.94.246] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 2 May 2024
- 11:27:21 -0700
-Message-ID: <1b260786-310c-4143-bf78-7afce33f05fe@quicinc.com>
-Date: Thu, 2 May 2024 11:27:21 -0700
+	s=arc-20240116; t=1714678036; c=relaxed/simple;
+	bh=QbczoPrifkh7vgCscDvY8svclrvHS6duuU5pa69+I/c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GK9hr47caS9gv29i6Wah4rARRKBngxcJuNffxt399nn5V6/04Im/kpvBn9cERObKQJHtCMugITrB9i50Y+npyN9W/W5+y2sd4nkUzc2BxNX2irQCvIKSuR892+KVXF1OHGN2jP+XL1dz4u8F9mIkEu/wfBqz4qalOhMl0f2PBec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SGYiwi4L; arc=none smtp.client-ip=209.85.167.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-51f036e9f4dso1581634e87.3;
+        Thu, 02 May 2024 12:27:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714678032; x=1715282832; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WtKJAto7Q3Nrk05RW97KRPIs8n7BxL20FUpybZ4BUYg=;
+        b=SGYiwi4LtGw4Epev6rVv/7uTzYlIAha4m5W76q6ZKI/mOD6lTDxtFO64eNjLVxK3RC
+         mDzWbcCkdyUnOqFmM/LwIihDmt7DiIFt6A+tGNpl0A+TlC6uFOCwYo0PtLVwUIRlGimV
+         VPbx08BALBBbgGso6vIDBuYiJ1Oyt80sxVxsHq6jj/spm+w+mlAF2UEdDey5tYVPnbz8
+         kNZzhZJMTlxb2usZ+S4DxLhsoBivA2swKAYuawZhZE5xmiFL5/n426kjN7woUiv8Q/yC
+         1t9Mb1wmW4bvjEt3POzYB+9XeFoOJioW3KYiAC+UzeWC/L4mcaRnmCRhEI5cN+O4dPKs
+         JuYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714678032; x=1715282832;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WtKJAto7Q3Nrk05RW97KRPIs8n7BxL20FUpybZ4BUYg=;
+        b=VfpoNzC0RMPn25CqpUx6ZeknVEs8NTdhIrZwXjr85b86q3sKX63O9Tt9jrtHLRaP7M
+         47nav5mbw/ISL+xZCXkceazgYvkkCPQZNYvxuy/kHGHMNfxFNgQNoq025G7acFw772NQ
+         onVZhAvRis/rCsqw0BFXZtxn1AP+FR7cudXEc0JMka9Ph0mGWtt0N8D+Iu2Jq+JzC92P
+         iDwWHLDXZhvcSrO2tVbgVT6v9eSM9sgdbykJpUVd7un/ibViTw2DRWj+AcV1E9pQvM/0
+         C4kQsZGxNoeSUURN+zU0j+Xf9qRod8fJ0peC9zHpCBxQjT5WxKh3A794Uu/XEUdtVzyc
+         QOWw==
+X-Forwarded-Encrypted: i=1; AJvYcCU+jo3LUXUlpq9qOnesOdRsRV4QPO9hoYwV7+sK1jwylv+1OxKp+AsxQ4QHig8b7fUi271NAoQwqS1/PJKHr6EzDim2+qR8LDTp10oZAI+SsrkU5gbY2z7jzX6+psm6FwvY+sbByjhMOh12Ru8=
+X-Gm-Message-State: AOJu0YwM25HO38PgT56d/WJPYIkdscznadgnH4AVB01H9o8GdVZxnK8v
+	3itxk6JCmpUkpLhWbL9nE+b8ZyEZ/GoyEZIlEF81GetVFKSoWsA9lczEmw==
+X-Google-Smtp-Source: AGHT+IFFNDxSJm2KpR0fG5ZXjxpbPk+Pv4p9QZiBiaQUu/wqpNaZUPQ+qYlm5jagNz+nyDjmWHB11A==
+X-Received: by 2002:ac2:428a:0:b0:518:dfed:f021 with SMTP id m10-20020ac2428a000000b00518dfedf021mr494477lfh.24.1714678032304;
+        Thu, 02 May 2024 12:27:12 -0700 (PDT)
+Received: from [192.168.1.105] ([188.113.43.9])
+        by smtp.gmail.com with ESMTPSA id s12-20020a19ad4c000000b0051c5570f573sm277186lfd.23.2024.05.02.12.27.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 02 May 2024 12:27:11 -0700 (PDT)
+Message-ID: <b3999eec-e370-4c85-80b9-759f25ed98bf@gmail.com>
+Date: Thu, 2 May 2024 22:27:31 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,133 +76,51 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] wifi: ath12k: prepare vif data structure for MLO
- handling
+Subject: Re: [PATCH] wifi: ath11k: fix remapped ce accessing issue on 64bit OS
+To: Jeff Johnson <quic_jjohnson@quicinc.com>,
+ Ziyang Huang <hzyitc@outlook.com>, kvalo@kernel.org
+Cc: jjohnson@kernel.org, linux-wireless@vger.kernel.org,
+ ath11k@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <TYZPR01MB55563B3A689D54D18179E5B4C9192@TYZPR01MB5556.apcprd01.prod.exchangelabs.com>
+ <6336ffc7-d8ae-4cfd-8b66-d6d91cb0d15e@quicinc.com>
 Content-Language: en-US
-To: Rameshkumar Sundaram <quic_ramess@quicinc.com>,
-        <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, Sriram R <quic_srirrama@quicinc.com>
-References: <20240502171240.927155-1-quic_ramess@quicinc.com>
- <20240502171240.927155-2-quic_ramess@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240502171240.927155-2-quic_ramess@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
+From: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+In-Reply-To: <6336ffc7-d8ae-4cfd-8b66-d6d91cb0d15e@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: Y7vochsQf8wqIyPjaup7I4z66RrFeuzC
-X-Proofpoint-GUID: Y7vochsQf8wqIyPjaup7I4z66RrFeuzC
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-02_10,2024-05-02_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
- spamscore=0 lowpriorityscore=0 impostorscore=0 phishscore=0 adultscore=0
- priorityscore=1501 mlxscore=0 malwarescore=0 mlxlogscore=999 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2404010003
- definitions=main-2405020122
 
-On 5/2/2024 10:12 AM, Rameshkumar Sundaram wrote:
-> From: Sriram R <quic_srirrama@quicinc.com>
-> 
-> To prepare the driver for MLO support, split the driver vif
-> data structure to scale for multiple links. This requires changing
-> the use of arvif to per link and not per hw which can now
-> comprise of multiple links.
-> Also since most configurations from mac80211 are done per link, do refactoring
-> of the driver functions to apply these configurations at link level.
-> 
-> Split ath12k_vif which is the driver private of ieee80211_vif to store
-> link specific information as ath12k_link_vif. For default use cases
-> the ath12k vif will have a preallocated link vif called deflink which will
-> be used by non ML and the first link vif of ML vif.
-> 
-> With MLO Support to be added, remaining link vifs will be allocated during
-> channel assignment where vdev create/start happens. These link vifs will be
-> freed during interface down.
-> 
->        		Current ath12k_vif(arvif) structure
-> 
->              +---------------+      +---------------+     +---------------+
->              | ieee80211_vif |      | ieee80211_vif |     | ieee80211_vif |
->              | private data  |      | private data  |     | private data  |
->              |               |      |               |     |               |
->              |  ath12k_vif   |      |  ath12k_vif   |     |  ath12k_vif   |
->              |  (arvif)      |      |  (arvif)      |     |  (arvif)      |
->              |               |      |               |     |               |
->              |  +----------+ |      |  +----------+ |     |  +----------+ |
->              |  |*ar (2GHz)| |      |  |*ar (5GHz)| |     |  |*ar (2GHz)| |
->              |  +----------+ |      |  +----------+ |     |  +----------+ |
->              |               |      |               |     |               |
->              +---------------+      +---------------+     +---------------+
-> 
->        	Proposed ath12k_vif(ahvif) containing ath12k_link_vif(s) (arvif)
->        	(deflink is preallocated member which is always the first link if
->        	 ieee80211_vif is MLD and is the only link otherwise)
-> 
->        			+---------------------------------+
->        			|     ieee80211_vif               |
->        			|     private data                |
->        			|                                 |
->        			|   ath12k_vif(ahvif)             |
->        			|                                 |
->        			| +-------------------------------+
->        			| |ath12k_link_vif deflink (arvif)|
->        			| |        +---------------+      |
->        			| |        | *ar(2GHz)     |      |
->        			| +-------------------------------+
->        			| +-------------------------------+
->        			| |  ath12k_link_vif *link (arvif)|
->        			| |        +---------------+      |
->        			| |        | *ar(5GHz)     |      |
->        			| +-------------------------------+
->        			| +-------------------------------+
->        			| |  ath12k_link_vif *link (arvif)|
->        			| |        +---------------+      |
->        			| |        | *ar(6GHz)     |      |
->        			| +-------------------------------+
->        			|                                 |
->        			+---------------------------------+
-> 
-> To refactor existing ath12k_vif to make use of link vifs, following
-> changes are made,
-> 
->  1. ath12k_vif now called by variable name ahvif stores multiple
->  arvifs(ah12k_link_vif) and also has a back pointer to ieee80211_vif.
-> 
->  2. In this patch set, only deflink is used to be on par with the
->  existing code. When MLO support is added the link id will be used to
->  fetch the arvif.
-> 
->  3. For mac80211 ops which doesn't use specific link_id, the config or info
->  is common for the vif, hence apply the config to all link vifs.
->  The links_map in the ahvif, will be used to identify all the link vifs that
->  are setup.
-> 
->  4. Change ath12k_vif_to_arvif() as ath12k_vif_to_ahvif() to fetch the
->  hw level vif. The link vif can be fetched from ahvif->link[], or the
->  deflink can be accessed via ahvif->deflink. API to access link
->  vif(arvif) by passing link_id can be introduced with MLO Support.
-> 
->  5. The ieee80211_vif can be accessed from ahvif using ath12k_vif_to_vif()
-> 
-> Locking:
->  Currently modifications to members of arvif and arsta are protected by ar->conf_mutex
->  and it stays as such.
->  Now with these hw level structure (ahvif) being introduced, any modifications
->  to its members and link objects (i.e., arvifs[] which are dynamically allocated)
->  needs to be protected for writing and ah->conf_mutex is used for the same.
->  Also, atomic contexts(say WMI events and certain mac_ops) that we currently have in driver
->  will not(shouldn't be allowed) do any modifications but can read them and
->  rcu_read_lock() is used for the same.
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-> 
-> Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
-> Co-developed-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
-> Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Hi Jeff,
 
+On 01.05.2024 19:56, Jeff Johnson wrote:
+> On 5/1/2024 9:14 AM, Ziyang Huang wrote:
+>> On 64bit OS, when ab->mem_ce is lower than or 4G far away from ab->mem,
+>> u32 is not enough to store the offsets, which makes ath11k_ahb_read32()
+>> and ath11k_ahb_write32() access incorrect address and causes Data Abort
+>> Exception.
+> 
+> Are you actually observing this issue?
+> Or is this a hypothetical situation?
+
+Yep. This is the real issue. I faced it on IPQ5018 with 64bits kernel.
+
+>> Let's use the high bits of offsets to decide where to access, which is
+>> similar as ath11k_pci_get_window_start() done. In the future, we can merge
+>> these functions for unified regs accessing.
+> 
+> Performing unnecessary tests and masking for every ioread/write operation will
+> potentially impact performance.
+> 
+> What other fixes were considered (i.e. did you consider making all the
+> register addresses u64?)
+
+Probably, making argument u64 could also be too much. I/O address space 
+of this chip fits 4GB so u32 should be enough. I have a bit different 
+fix for this bug. It introduces an indirect call for the CE registers 
+access and a dedicated set of accessing functions for chips that has the 
+CE region outside the main I/O area. I am going to publish it in a 
+couple of weeks, when I will come from a trip. The patch still needs 
+some polishing.
+
+--
+Sergey
 
