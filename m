@@ -1,94 +1,112 @@
-Return-Path: <linux-wireless+bounces-7105-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7106-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42C798B93A3
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 May 2024 05:19:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C98748B94FC
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 May 2024 09:03:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 657F21C2135B
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 May 2024 03:19:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80CBB1F21970
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 May 2024 07:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 164F818AF4;
-	Thu,  2 May 2024 03:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F9C01CD3C;
+	Thu,  2 May 2024 07:03:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JVuQzr6m"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E9314292;
-	Thu,  2 May 2024 03:19:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15CBE1CA80;
+	Thu,  2 May 2024 07:03:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714619950; cv=none; b=BgKkCa53sC/OfYhQocu9ntiNAQzfcVQJcjVlGqJ/4Mc9/Kaim91xYUXSspY0js1zi9p7iVctgYLckbFJ0rQcJ+zqjMlOwcOwxfi0r/yZCLbqzGOTZBgeiPBQ97sfaD6as1LosIEVzOMEyIkuSgFPVrFEZksQeI3UTiOdK/VZ1Pg=
+	t=1714633396; cv=none; b=SL3Kh7RPjQe2z9GUtM/Ttj5L2XI7GH2Q64oTML5CA4UIdJjzCdgwDv63Q/e3iv4glJYAGfo1GDmNLsl+tXp84GxDEHJNiXUYqPrgpmyWKaNzn0cpBwwCGXaoHWBoSkH8wOUubTlIEMSHOuOoRwwJ10qvdYcj7VBo3gps6F+JD2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714619950; c=relaxed/simple;
-	bh=ns/XDlQAITvMcfVm1pszbVe1D2/+KAbdo5UWjSlJtso=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=luEqVCPUFBEsAI1aUxyCuCvvHqOGED/4l1j8/bSIMZhKOfzu5jDDejrFoxpi2sp8abzLHS+bRV9bIcWqEh8FSX5YRasD9WVIP2Y6bvy3ELMryU4wBabeM0oAnbMB9m5pNYgu4vhyqNk3V3YphzWefjD0mFELE8MpUJqH0WQWwJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4423J2Zc82061968, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 4423J2Zc82061968
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 2 May 2024 11:19:02 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 2 May 2024 11:19:02 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 2 May 2024 11:19:02 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
- RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
- 15.01.2507.035; Thu, 2 May 2024 11:19:02 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Kalle Valo
-	<kvalo@kernel.org>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>
-Subject: RE: [PATCH][next] wifi: rtlwifi: Remove unused structs and avoid multiple -Wfamnae warnings
-Thread-Topic: [PATCH][next] wifi: rtlwifi: Remove unused structs and avoid
- multiple -Wfamnae warnings
-Thread-Index: AQHanBi/DxB0vdBiBEWl5nZVbN0KOLGDRp4A
-Date: Thu, 2 May 2024 03:19:02 +0000
-Message-ID: <2ebbd858571e4358ad4d3dfd0ceb4b73@realtek.com>
-References: <ZjLFIa31BGPVCGh1@neat>
-In-Reply-To: <ZjLFIa31BGPVCGh1@neat>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1714633396; c=relaxed/simple;
+	bh=eZHA6dycMEhndlQBEwkVSIH+8uMnPz6SrubKX8jZyiM=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=sxrvH5AGYtyKksU/blHRFlMbcRksQc9KJgE5m1DhdtZp4RU75At+izsA1nssMCE1E4fJZtiBtgrtWiXI9GH52UmCG80CMnHmdRefuQT9jXJDrtMEr5zzq5Lg3VHAoExhbABQq9pT2fqCkmOnKb1L5jEoeBN1pJr4NbOCg1TtrkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JVuQzr6m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44ECDC116B1;
+	Thu,  2 May 2024 07:03:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714633395;
+	bh=eZHA6dycMEhndlQBEwkVSIH+8uMnPz6SrubKX8jZyiM=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=JVuQzr6mEr/MJO50qsI7l1mXlXYnodA4CvgsULnCDa8KchLuwMW0knDcr7zxRRMVE
+	 I0AdOqI6zxy5MRAipH9IBl/MBaISNGUCeTA63HmRKY/6CCpT5g+cVlcQuQUCO8Gmg5
+	 WHSO/CCH39RqdORWIOtWc90DbXVgun3Q87Ta9Y8HJjzFItcJgHK4SdkhexVaFxiT9S
+	 Wz80Srs9r1WaaZODKHlFMfZxeG22a0/W5jI66C/l1mY+QA9bVl6UTDV6nas/8lwK8O
+	 whcGVM+cId3hrxY8/fxC+4BDGiIp90d9ukPRLrDQuubzmpBfOIkAEUHabFz9Q2Txwp
+	 I865jPQt9MpLw==
+From: Kalle Valo <kvalo@kernel.org>
+To: Larry Finger <Larry.Finger@lwfinger.net>
+Cc: Ziyang Huang <hzyitc@outlook.com>,  jjohnson@kernel.org,
+  linux-wireless@vger.kernel.org,  ath11k@lists.infradead.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] wifi: ath11k: fix remapped ce accessing issue on 64bit OS
+References: <TYZPR01MB55563B3A689D54D18179E5B4C9192@TYZPR01MB5556.apcprd01.prod.exchangelabs.com>
+	<22b0713e-49f2-482a-b145-e460b5632a7c@lwfinger.net>
+Date: Thu, 02 May 2024 10:03:12 +0300
+In-Reply-To: <22b0713e-49f2-482a-b145-e460b5632a7c@lwfinger.net> (Larry
+	Finger's message of "Wed, 1 May 2024 11:55:08 -0500")
+Message-ID: <874jbgg0gf.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Type: text/plain
 
-Gustavo A. R. Silva <gustavoars@kernel.org> wrote:
-> Wflex-array-member-not-at-end is coming in GCC-14, and we are getting
-> ready to enable it globally.
->=20
-> So, remove unused structs and fix the following
-> -Wflex-array-member-not-at-end warnings:
->=20
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Larry Finger <Larry.Finger@lwfinger.net> writes:
 
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+> On 5/1/24 11:14 AM, Ziyang Huang wrote:
+>
+>> On 64bit OS, when ab->mem_ce is lower than or 4G far away from ab->mem,
+>> u32 is not enough to store the offsets, which makes ath11k_ahb_read32()
+>> and ath11k_ahb_write32() access incorrect address and causes Data Abort
+>> Exception.
+>> Let's use the high bits of offsets to decide where to access, which
+>> is
+>> similar as ath11k_pci_get_window_start() done. In the future, we can merge
+>> these functions for unified regs accessing.
+>> Signed-off-by: Ziyang Huang <hzyitc@outlook.com>
+>> ---
+>>   drivers/net/wireless/ath/ath11k/ahb.c | 34 ++++++++++++++++++++-------
+>>   drivers/net/wireless/ath/ath11k/hal.c | 17 +++++---------
+>>   drivers/net/wireless/ath/ath11k/hw.c  | 14 +++++------
+>>   drivers/net/wireless/ath/ath11k/hw.h  |  7 +++++-
+>>   4 files changed, 45 insertions(+), 27 deletions(-)
+>> diff --git a/drivers/net/wireless/ath/ath11k/ahb.c
+>> b/drivers/net/wireless/ath/ath11k/ahb.c
+>> index 7c0a23517949..9e59b4de93a9 100644
+>> --- a/drivers/net/wireless/ath/ath11k/ahb.c
+>> +++ b/drivers/net/wireless/ath/ath11k/ahb.c
+>> @@ -198,12 +198,30 @@ static const struct ath11k_pci_ops ath11k_ahb_pci_ops_wcn6750 = {
+>>     static inline u32 ath11k_ahb_read32(struct ath11k_base *ab, u32
+>> offset)
+>>   {
+>> -	return ioread32(ab->mem + offset);
+>> +	switch (offset & ATH11K_REG_TYPE_MASK) {
+>> +	case ATH11K_REG_TYPE_NORMAL:
+>> +		return ioread32(ab->mem + FIELD_GET(ATH11K_REG_OFFSET_MASK, offset));
+>> +	case ATH11K_REG_TYPE_CE:
+>> +		return ioread32(ab->mem_ce + FIELD_GET(ATH11K_REG_OFFSET_MASK, offset));
+>> +	default:
+>> +		BUG();
+>
+> Do you really want to crash the system here? A dev_warn() or something
+> similar would log the situation. I suspect this case is never taken,
+> but a system crash is not a good response if it is.
 
+Correct, BUG() is more or less banned from all wireless code.
 
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
