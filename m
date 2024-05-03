@@ -1,257 +1,136 @@
-Return-Path: <linux-wireless+bounces-7129-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7130-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95B208BA66F
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 May 2024 06:53:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 192278BA72C
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 May 2024 08:40:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 239D01F20FD4
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 May 2024 04:53:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 425EC1C2155F
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 May 2024 06:40:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD4E0139560;
-	Fri,  3 May 2024 04:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA5C4139CE9;
+	Fri,  3 May 2024 06:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Cgdfyd2d"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="NJAnpq4B"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F8C137C36
-	for <linux-wireless@vger.kernel.org>; Fri,  3 May 2024 04:53:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98574848D;
+	Fri,  3 May 2024 06:39:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714711998; cv=none; b=SJVHHg3ev+jH9n3znUBxB6hkf18GwVDarlTdVyJ6c6A8Cp4Jw+H8RJPvS8b7232+2wGnN6mVs/imJXze5mmw9ajwOqbrmta6sPk5DDZJawb1Yye5/5ncUPJvJhDj4Oblsoq56jmAAFXVWC2xdT7NJhOkdykHhzQjPsRSgc6ARpQ=
+	t=1714718400; cv=none; b=j8i5LHj5h5Z5U3eLCsIvuEYPqqSKVO4usec9uwdzIJ+/rRe05ajDh4eurKN5BLWsZAs0GEEzVdKLfzI2AsZ9olQLw/BashPdjnp1OlJOiQPFnGLw59UsSCNrB8BUxok+Qaq2gHP8dor2BlqqzRXUlzE0t+RTT3BbtH5zWUcRAmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714711998; c=relaxed/simple;
-	bh=qdL9wvQrK0sEEG0K0il7Kk+Q1xeKmfkFe4OFhBhUh6w=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=d/Sa5V/Zr1lzi8XQQrltQwuj7bTAGZyVlAviYesgGw9gAXjz7zP8mzj/5BbzfCiIkasbDoQ0D4dif3MWNsBGcLlr3IiPLPl+vhq3LsnplgAG7mY+YoNDBeNjKQawEAaVWQ3NsR/UG2Op4T8Ddhl2O+8sxKCKSIWeF+CItdSXeqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Cgdfyd2d; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714711997; x=1746247997;
-  h=date:from:to:cc:subject:message-id;
-  bh=qdL9wvQrK0sEEG0K0il7Kk+Q1xeKmfkFe4OFhBhUh6w=;
-  b=Cgdfyd2dAtsjXT3PYQPoGqBIqGb9R1yEoz27EzVW0UD4CtfhjenpqGAO
-   vtj2pqiEubAcl1YYhZnu61XnFc4Vp1zKjBJZ79fjK1A9RBtEeV17AUEn9
-   /jsz8kj/zwVVKYlSvUYPSjC9L4jVlU1FJcNqRc90Du8zWoGG+xvsgjMKE
-   ubqTgabN5BmWxfT5qACVQ/mfCIYQ9VduQ4yINdjCC4D7nlAan7ssdxnBY
-   tNBAyNUobqGxZ/MNGfysA2TOfpQI8ehssxkF+KqpEqmBeDF6FQt5ziHFa
-   AgZXm4XruIYt3HAgo6IN0R3Fd7ZcwzwLQ3vAuzXsfWYPz5358BsyyH7xd
-   A==;
-X-CSE-ConnectionGUID: X/ao+9+zRxq1eUDgVJSj4A==
-X-CSE-MsgGUID: dxeZWTh+RjuMe+kLMcpMDA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11062"; a="28045340"
-X-IronPort-AV: E=Sophos;i="6.07,247,1708416000"; 
-   d="scan'208";a="28045340"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2024 21:53:16 -0700
-X-CSE-ConnectionGUID: pzujeiYySgyB7pYFnRXoUQ==
-X-CSE-MsgGUID: +nSRV7DMQjW75mzm7VA+NQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,247,1708416000"; 
-   d="scan'208";a="27944017"
-Received: from lkp-server01.sh.intel.com (HELO e434dd42e5a1) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 02 May 2024 21:53:15 -0700
-Received: from kbuild by e434dd42e5a1 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1s2kv2-000BJe-0A;
-	Fri, 03 May 2024 04:53:12 +0000
-Date: Fri, 03 May 2024 12:52:33 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
- linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- 8886b6d681f28d838cb30ace8ce73f8b96bc927d
-Message-ID: <202405031231.hef7uBxV-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1714718400; c=relaxed/simple;
+	bh=qo6gNNSP/j6kpY7IcyU/qgjiBE3W7wIKyPUWxhxHQMM=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=k8y29M12sIE11cd8XFCdSXvJw0Loycr4IJ5nJvb1BdYO8V4qJczh94wZ3Y9TED7XexNIJ257KSzfSNZGgV4dMSMzCoNPysNTmpIaHX7kadGedjaPFlPcYZiIwseYak+jxb3UO04cXCYOqfEHLLvRusF8dp84sr5Uo4BoJb0sjyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=NJAnpq4B; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:References:Reply-To:Cc:To:From:Subject:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	In-Reply-To:References; bh=7zeNTz9dZI8LnTBatn2bq2v7BK5j7Weg7XVPNxsiLDY=;
+	t=1714718398; x=1715150398; b=NJAnpq4B1bewI3YJelHuwEV9QLPjvu03d1It33hpGYLBcCP
+	OB1SqFG7MfSffK7ZkFICBKsJtmJlNcIwdUL1o6gO/VcBN223Z3cZmsM7gmYVFYdxTDNMR1bgoFx7c
+	TcZ++0ZAa8aCL4uHg3tPhIJU/Xtw2Fs2VTIp0WRXcBUuEz0wSKuHlmMeKw+sgPpnKihAtrZgQxQ2a
+	p3VYOZl7FXwAFOumB7N7qfOwxjHqzJ+tL+rRBT1BeskWWNi4igfWqCTkgmqAsTSRquesFlu2FYl1w
+	QTF/E7j2XJVeTkpoXTg1xkBOA1IWRwsTSdbKcBUEfXuaHvSZazzpj3Lajk8nDAiA==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1s2lwZ-0004pK-RV; Fri, 03 May 2024 07:58:51 +0200
+Message-ID: <82fde49f-5dc8-47de-b220-83f9d7555485@leemhuis.info>
+Date: Fri, 3 May 2024 07:58:51 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [regression] Tri-band AMD RZ608 (MediaTek MT7921K) has 6GHz band
+ disabled in kernel 6.8 despite working in <=6.6
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
+ Ryder Lee <ryder.lee@mediatek.com>
+Cc: Kalle Valo <kvalo@kernel.org>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>,
+ "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
+ Linux kernel regressions list <regressions@lists.linux.dev>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>,
+ Linux regressions mailing list <regressions@lists.linux.dev>
+References: <e17e5bf2-657a-4a22-a925-94db95fe8ca1@leemhuis.info>
+Content-Language: en-US, de-DE
+In-Reply-To: <e17e5bf2-657a-4a22-a925-94db95fe8ca1@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1714718398;42eb24cc;
+X-HE-SMSGID: 1s2lwZ-0004pK-RV
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: 8886b6d681f28d838cb30ace8ce73f8b96bc927d  wifi: qtnfmac: Remove generic .ndo_get_stats64
+On 18.04.24 10:48, Linux regression tracking (Thorsten Leemhuis) wrote:
+>
+> mt7921 maintainers, I noticed a report about a regression in
+> bugzilla.kernel.org related to your driver. As many (most?) kernel
+> developers don't keep an eye on bugzilla, I decided to write this mail.
+> To quote from https://bugzilla.kernel.org/show_bug.cgi?id=218731 :
 
-elapsed time: 1221m
+FWIW, the reporter meanwhile confirmed that this happens with 6.9-rc6.
+No bisection so far
 
-configs tested: 163
-configs skipped: 4
+Mt7921 maintainers, so you have any idea what might be wrong? Or is this
+a situation along the lines of "uhhps, we screwed up somewhere (hardware
+detection, regulatory stuff, ...) and had to fix this, which leads to this".
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                     nsimosci_hs_defconfig   gcc  
-arc                   randconfig-001-20240503   gcc  
-arc                   randconfig-002-20240503   gcc  
-arc                           tb10x_defconfig   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                        multi_v5_defconfig   gcc  
-arm                   randconfig-001-20240503   clang
-arm                   randconfig-002-20240503   clang
-arm                   randconfig-003-20240503   clang
-arm                   randconfig-004-20240503   gcc  
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                 randconfig-001-20240503   clang
-arm64                 randconfig-002-20240503   gcc  
-arm64                 randconfig-003-20240503   clang
-arm64                 randconfig-004-20240503   clang
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20240503   gcc  
-csky                  randconfig-002-20240503   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-hexagon               randconfig-001-20240503   clang
-hexagon               randconfig-002-20240503   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240503   clang
-i386         buildonly-randconfig-002-20240503   clang
-i386         buildonly-randconfig-003-20240503   gcc  
-i386         buildonly-randconfig-004-20240503   gcc  
-i386         buildonly-randconfig-005-20240503   gcc  
-i386         buildonly-randconfig-006-20240503   clang
-i386                                defconfig   clang
-i386                  randconfig-001-20240503   gcc  
-i386                  randconfig-002-20240503   clang
-i386                  randconfig-003-20240503   clang
-i386                  randconfig-004-20240503   gcc  
-i386                  randconfig-005-20240503   clang
-i386                  randconfig-006-20240503   clang
-i386                  randconfig-011-20240503   clang
-i386                  randconfig-012-20240503   gcc  
-i386                  randconfig-013-20240503   gcc  
-i386                  randconfig-014-20240503   gcc  
-i386                  randconfig-015-20240503   gcc  
-i386                  randconfig-016-20240503   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20240503   gcc  
-loongarch             randconfig-002-20240503   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20240503   gcc  
-nios2                 randconfig-002-20240503   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                randconfig-001-20240503   gcc  
-parisc                randconfig-002-20240503   gcc  
-parisc64                         alldefconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc               randconfig-001-20240503   clang
-powerpc               randconfig-002-20240503   clang
-powerpc               randconfig-003-20240503   gcc  
-powerpc64             randconfig-001-20240503   clang
-powerpc64             randconfig-002-20240503   clang
-powerpc64             randconfig-003-20240503   clang
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-riscv                 randconfig-001-20240503   gcc  
-riscv                 randconfig-002-20240503   gcc  
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-s390                  randconfig-001-20240503   gcc  
-s390                  randconfig-002-20240503   gcc  
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                    randconfig-001-20240503   gcc  
-sh                    randconfig-002-20240503   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64               randconfig-001-20240503   gcc  
-sparc64               randconfig-002-20240503   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                    randconfig-001-20240503   clang
-um                    randconfig-002-20240503   clang
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-001-20240503   gcc  
-x86_64       buildonly-randconfig-002-20240503   gcc  
-x86_64       buildonly-randconfig-003-20240503   gcc  
-x86_64       buildonly-randconfig-004-20240503   clang
-x86_64       buildonly-randconfig-005-20240503   gcc  
-x86_64       buildonly-randconfig-006-20240503   clang
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20240503   clang
-x86_64                randconfig-002-20240503   clang
-x86_64                randconfig-003-20240503   clang
-x86_64                randconfig-004-20240503   gcc  
-x86_64                randconfig-005-20240503   gcc  
-x86_64                randconfig-006-20240503   clang
-x86_64                randconfig-011-20240503   clang
-x86_64                randconfig-012-20240503   clang
-x86_64                randconfig-013-20240503   clang
-x86_64                randconfig-014-20240503   clang
-x86_64                randconfig-015-20240503   clang
-x86_64                randconfig-016-20240503   clang
-x86_64                randconfig-071-20240503   clang
-x86_64                randconfig-072-20240503   clang
-x86_64                          rhel-8.3-rust   clang
-xtensa                            allnoconfig   gcc  
-xtensa                randconfig-001-20240503   gcc  
-xtensa                randconfig-002-20240503   gcc  
+#regzbot poke
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>> On kernel 6.6.27-1-lts, running `iw list` shows that 6GHz channels are supported:>
+>> [...]
+>> Similarly, discovering and connecting to 6GHz APs works fine.
+>>
+>> However, in recent kernel 6.8.5, running `iw list` shows that 6GHz channels are disabled:
+>>
+>> [...]
+>>
+>> And scanning or connecting to 6GHz APs does not work. 
+>>
+>> There's nothing in `dmesg` that differs between boots of the two kernels. On 6.8.5, 6GHz band doesn't work like it did on previous kernels. 
+>>
+>> I can provide more logs or help debug the issue if needed.
+> 
+> See the ticket for more details. Note, you have to use bugzilla to reach
+> the reporter, as I sadly[1] can not CCed them in mails like this.
+> 
+> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+> --
+> Everything you wanna know about Linux kernel regression tracking:
+> https://linux-regtracking.leemhuis.info/about/#tldr
+> If I did something stupid, please tell me, as explained on that page.
+> 
+> [1] because bugzilla.kernel.org tells users upon registration their
+> "email address will never be displayed to logged out users"
+> 
+> P.S.: let me use this mail to also add the report to the list of tracked
+> regressions to ensure it's doesn't fall through the cracks:
+> 
+> #regzbot introduced: v6.6..v6.8.5
+> #regzbot title: wifi drivers: mt7921: 6GHz band stopped working
+> #regzbot from: AlexDeLorenzo.dev
+> #regzbot duplicate: https://bugzilla.kernel.org/show_bug.cgi?id=218731
+> #regzbot ignore-activity
+> 
+> 
 
