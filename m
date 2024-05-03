@@ -1,171 +1,157 @@
-Return-Path: <linux-wireless+bounces-7136-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7137-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 700A38BAA31
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 May 2024 11:53:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 228418BAA77
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 May 2024 12:05:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F01231F2216A
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 May 2024 09:53:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 566ABB20E11
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 May 2024 10:05:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A41E14F9CC;
-	Fri,  3 May 2024 09:53:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CxfEmklb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7DF814F9FB;
+	Fri,  3 May 2024 10:04:53 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B5614F9D5
-	for <linux-wireless@vger.kernel.org>; Fri,  3 May 2024 09:53:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDCBE14F9E8;
+	Fri,  3 May 2024 10:04:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714730018; cv=none; b=IF9e/dy+5YSJQaG/6MuqTELte/LniALzuPT0RUXcK6VeWX6F5St2dQtTSfXQjI5IMIWVHet46cVdupY2QHzxOaNk5CZLvYqPqfL7tHdyt+9NXwb9E5t0mPMzpnZ8RI3/OVxam7L96TNbY2R5SRGM+tJZz3H2dvGLsivb2HME1pI=
+	t=1714730693; cv=none; b=Eo4AddBY1VHJP8HPNfl9ThcGI+Ab68Lh5FBdzf1kgNkzVB5nCb8j6YFSP+Plyp9rlsO9mRgCxVrWsmsLTbqU7O+rf3HnefSMT/TznSPkWP9XTz3E6y/X1sTpKiFpTSsK4K/ClnwKDi6F9JMCCwwc1ILNiX9PWDTTOMQtw93xyxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714730018; c=relaxed/simple;
-	bh=v8LKdn1fON9bNe4WuzRPKpaAZektEcdWLcvzwR79wV8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Oo14N1WT+NQXuooK/vgk1vFlmqklsBFLYL5bW1eweM+nwnpn2Zq79T2fnAlgTwhc9105sYHeLuehuw9AB7JHHp4MH4oHlfuIrfIC9cULPv1GvIBFV5ds2alvKEdyzUhZnAACH7Tap7CKvTlTGnlxd0z79JRIqKBUtMogOAoDokA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CxfEmklb; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1714730693; c=relaxed/simple;
+	bh=qACal944bQbWQEFiDpgDFJ/ewySer9S+1JK+mVUz6TM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eUZsDhIlM9GUDTUzpmmsVpuQYdxyxt1vILKzLAgYjUdIFVkYwzSTQ3yAB+eEjMkcFYffCkO3PhRWhVjgCttcO6RiCg2lmy+adRc9hg6CyFLY9tkPP/UFAvniER+S1TpuI5+ZviVVuXScD5LEofXE0ZPY/6nSeRR4dChAZkqjFog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2e1fa1f1d9bso25739321fa.0
-        for <linux-wireless@vger.kernel.org>; Fri, 03 May 2024 02:53:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714730015; x=1715334815; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=NTxJ5I+PcoW4oFy8Sa+TL9F9Y9ux6cGLAnfUmiQYi98=;
-        b=CxfEmklbdjiY7JlUcBFBrtB3ecCiH68Cw8uGcyLSNrPLYe71yaTw6qKf9ILYmKsTiO
-         HwC8uXtVzQK22tsZ56sYzChIvvnrWDZzJr7JoqVRlOZvqRsKCYoxOhFqb7IG12aQlq9M
-         hENfy5zghYs8U8ue0ajgimnDwHQeuZaC9TAWTzIl/v15LQ/PWeGSHfyQ6WhJCaBR0XQ6
-         tjho5DUYyod+7mk7CWgx5THxPlToIamPC0J5HwsGgWaTItF8XvNyK54/T3ximL1DfNPK
-         GT4BKJ6wzGcmog9uFVk73HH6M/UOvMRofWx420KQ6xF4nGfurj1r2Clz/uLJLCV4PG0n
-         LuJw==
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-56c5d05128dso24911a12.0;
+        Fri, 03 May 2024 03:04:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714730015; x=1715334815;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NTxJ5I+PcoW4oFy8Sa+TL9F9Y9ux6cGLAnfUmiQYi98=;
-        b=NV6rLhiGhfgCU1u7OLOs12eb8RTP3PNn96bUmj1IemNGQt/l6wYH2hymkbRpjmbkIz
-         peSNJKZB0S1g4lrzafSjjh6lKrY6d+28ABjuHxWX/vmyGN1q+sA0+uzPrS2/bxjKbWYs
-         kAAhn09UNJEmzr/oi9T1dnNdh4ouJklVy7cgMUdxG7krfcOtZCH3my6+qPerAZTFdPQ7
-         AJDcxbqDs3pCdqUlR8ZHqLWwndhqEBkDuT/SYtx2SBqT/5Lu5lFv2zGlTKWnckSVFt6k
-         g8JHmARMrlGOaxUmN0xtEq+59i1Z/So3E7soChjcgyttOEoR+SoZka0HxO54rH7SiVGm
-         6hBg==
-X-Forwarded-Encrypted: i=1; AJvYcCUbajo6Y/FXM9mAqPE7Vg/jy81hMrHmnzf6IBNyTjCvO6aqxPTrmCTnwtiwLTJGBn2UbiLLJhRJmIC9M1yk0+Bt5FtAxUnmsZXZ8Ah1OH0=
-X-Gm-Message-State: AOJu0YwiI/XTuQ+WYHymTzIOX2+Srdww4LJfVUoPA8BisJH3ujblCimT
-	NsqmZdRCb+ZDgQc/pzb+tZGGhF+LbMH0BfkFuQTbL1aBMgSLncml
-X-Google-Smtp-Source: AGHT+IHCWKd72WzOQNpBhg/HYiE8c3lPb3E7DCRMLi1Dolgj31heKju6JR56qjfzeqTmPbnmkLPt9w==
-X-Received: by 2002:a2e:a551:0:b0:2d8:5af9:90c5 with SMTP id e17-20020a2ea551000000b002d85af990c5mr2287581ljn.39.1714730014491;
-        Fri, 03 May 2024 02:53:34 -0700 (PDT)
-Received: from [192.168.1.50] ([79.113.154.240])
-        by smtp.gmail.com with ESMTPSA id lc5-20020a170906f90500b00a599c783c04sm31537ejb.20.2024.05.03.02.53.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 May 2024 02:53:34 -0700 (PDT)
-Message-ID: <cb7db549-23bf-4c9d-be1d-4480eb8f2b77@gmail.com>
-Date: Fri, 3 May 2024 12:53:32 +0300
+        d=1e100.net; s=20230601; t=1714730690; x=1715335490;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=e8adb3W1BmkNUKKb1fEwqwjiASLtL+TBOu09daXzuP4=;
+        b=aiReQ8vB5dA/mUd5aKxEchvFSsVandyEDL8E/HdxlhIfEMS9oHwh+fwY3V0c9b6ScX
+         ZGPQNVpHzwsLy7dK+UTkS7gACCUd8Xj78WxOGoq87b1greYZp9FtKvZOuHnW21kKIZmb
+         doDa9yHZdPglgnaE/vOCSXk5QvzL5XZdbq/vNoiDp129HE1IxJbRRK+IQVe2kpF5zNar
+         787LKQWgFgKYDmIkQjwI6PgoPcX1oR8yxinmA88VkQjZ6pX6KxrbNqU5pXd4kNjZhYlF
+         8Ne+c9+Kep0cqsejhm1Kk2JOns1n+F7wreRzDPGOwHnoTzB4oVYCzmH+mK8VC3S2klYd
+         Ag5g==
+X-Forwarded-Encrypted: i=1; AJvYcCUnX33j7ThMgixgvsZk3ADrrsui7mSK68L961w1/dCKvdx5/a3xPn5Dp6sdq5p2kXHG8M4PWXpuBx/IcU/BJtLBCMEQkXLD1V6pb5D/BLutZ6knxXQNoFsnNkfDVylUDpRIQzmppsJv3vpJ1RY=
+X-Gm-Message-State: AOJu0YzI9sPFKpfp0yNxFiicIgMoesI3ewqTqEnr7pEApOeWu1oRJY4L
+	T2TEeMrtVDzsVehNEQ72n/w6Bn6QA0QEPH8QXK9qFyVLS8Te20z/EU1flQ==
+X-Google-Smtp-Source: AGHT+IFPf0CsqCaKdeCEgTGaKjbBlZc73fEjsXVrU0FhdVphBZ6Wbe4pceZhVttNvEkA48TuIAipCg==
+X-Received: by 2002:a50:9fa8:0:b0:56e:60d:9b16 with SMTP id c37-20020a509fa8000000b0056e060d9b16mr1350536edf.6.1714730689864;
+        Fri, 03 May 2024 03:04:49 -0700 (PDT)
+Received: from localhost (fwdproxy-lla-008.fbsv.net. [2a03:2880:30ff:8::face:b00c])
+        by smtp.gmail.com with ESMTPSA id q28-20020a50aa9c000000b00572469a7948sm1559882edc.45.2024.05.03.03.04.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 May 2024 03:04:49 -0700 (PDT)
+From: Breno Leitao <leitao@debian.org>
+To: Kalle Valo <kvalo@kernel.org>,
+	Jeff Johnson <jjohnson@kernel.org>
+Cc: netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org (open list:NETWORKING DRIVERS (WIRELESS)),
+	ath12k@lists.infradead.org (open list:QUALCOMM ATH12K WIRELESS DRIVER),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH wireless-next] wifi: ath12k: allocate dummy net_device dynamically
+Date: Fri,  3 May 2024 03:04:39 -0700
+Message-ID: <20240503100440.6066-1-leitao@debian.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: rtw88: usb: Simplify rtw_usb_write_data
-To: Larry Finger <Larry.Finger@lwfinger.net>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>, Sascha Hauer <sha@pengutronix.de>
-References: <681e03c1-d19e-44de-bc45-e71ce14c5ed2@gmail.com>
- <a4307823-f834-4cea-8206-6e966bb091ff@lwfinger.net>
-Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <a4307823-f834-4cea-8206-6e966bb091ff@lwfinger.net>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 03/05/2024 01:18, Larry Finger wrote:
-> On 5/2/24 4:23 PM, Bitterblue Smith wrote:
->> The skb created in this function always has the same headroom,
->> the chip's TX descriptor size. Use chip->tx_pkt_desc_sz directly.
->>
->> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
->> ---
->> This is the patch I promised earlier:
->> https://lore.kernel.org/linux-wireless/cae2d330-a4fb-4570-9dde-09684af23ffd@gmail.com/
->> ---
->>   drivers/net/wireless/realtek/rtw88/usb.c | 14 +++++---------
->>   1 file changed, 5 insertions(+), 9 deletions(-)
->>
->> diff --git a/usb.c b/usb.c
->> index 1dfe7c6ae4ba..ff57976b9d3b 100644
->> --- a/usb.c
->> +++ b/usb.c
->> @@ -440,23 +440,21 @@ static int rtw_usb_write_data(struct rtw_dev *rtwdev,
->>   {
->>       const struct rtw_chip_info *chip = rtwdev->chip;
->>       struct sk_buff *skb;
->> -    unsigned int desclen, headsize, size;
->> +    unsigned int size;
->>       u8 qsel;
->>       int ret = 0;
->>          size =pkt_info->tx_pkt_size;
->>       qsel = pkt_info->qsel;
->> -    desclen = chip->tx_pkt_desc_sz;
->> -    headsize = pkt_info->offset ? pkt_info->offset : desclen;
->>   -    skb = dev_alloc_skb(headsize + size);
->> +    skb = dev_alloc_skb(chip->tx_pkt_desc_sz + size);
->>       if (unlikely(!skb))
->>           return -ENOMEM;
->>   -    skb_reserve(skb, headsize);
->> +    skb_reserve(skb, chip->tx_pkt_desc_sz);
->>       skb_put_data(skb, buf, size);
->> -    skb_push(skb, headsize);
->> -    memset(skb->data, 0, headsize);
->> +    skb_push(skb, chip->tx_pkt_desc_sz);
->> +    memset(skb->data, 0, chip->tx_pkt_desc_sz);
->>       rtw_tx_fill_tx_desc(pkt_info, skb);
->>       rtw_tx_fill_txdesc_checksum(rtwdev, pkt_info, skb->data);
->>   @@ -471,12 +469,10 @@ static int rtw_usb_write_data(struct rtw_dev *rtwdev,
->>   static int rtw_usb_write_data_rsvd_page(struct rtw_dev *rtwdev, u8 *buf,
->>                       u32 size)
->>   {
->> -    const struct rtw_chip_info *chip = rtwdev->chip;
->>       struct rtw_tx_pkt_info pkt_info = {0};
->>         pkt_info.tx_pkt_size = size;
->>       pkt_info.qsel = TX_DESC_QSEL_BEACON;
->> -    pkt_info.offset = chip->tx_pkt_desc_sz;
->>         return rtw_usb_write_data(rtwdev, &pkt_info, buf);
->>   }
-> 
-> This patch doesn't work. When I add it and start an 8822bu, I get:
-> 
-> [   46.695755] usb 3-6: new high-speed USB device number 4 using xhci_hcd
-> [   46.844397] usb 3-6: New USB device found, idVendor=0bda, idProduct=b82c, bcdDevice= 2.10
-> [   46.844404] usb 3-6: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-> [   46.844406] usb 3-6: Product: 802.11ac NIC
-> [   46.844408] usb 3-6: Manufacturer: Realtek
-> [   46.844410] usb 3-6: SerialNumber: 123456
-> [   47.524214] rtw_8822bu 3-6:1.2: Firmware version 27.2.0, H2C version 13
-> [   47.573043] rtw_8822bu 3-6:1.2: error beacon valid
-> [   47.573165] rtw_8822bu 3-6:1.2: failed to download rsvd page
-> [   47.573488] rtw_8822bu 3-6:1.2: failed to download firmware
-> [   47.576745] rtw_8822bu 3-6:1.2: failed to setup chip efuse info
-> [   47.576750] rtw_8822bu 3-6:1.2: failed to setup chip information
-> [   47.577302] rtw_8822bu 3-6:1.2: probe with driver rtw_8822bu failed with error -16
-> 
-> When I added code to test if chip->tx_pkt_desc_sz was equal to pkt_info->tx_pkt_size at entry, it reported that there was a difference.
-> 
-> This patch may work for some of the devices, but clearly not for all.
-> 
-> NACK.
-> 
-> Larry
+Embedding net_device into structures prohibits the usage of flexible
+arrays in the net_device structure. For more details, see the discussion
+at [1].
 
-Thank you for testing. Indeed, the second hunk is breaking
-the firmware upload.
+Un-embed the net_device from struct ath12k_ext_irq_grp by converting it
+into a pointer. Then use the leverage alloc_netdev_dummy() to allocate
+the net_device object at ath12k_pci_ext_irq_config().
+
+The free of the device occurs at ath12k_pci_free_ext_irq().
+
+[1] https://lore.kernel.org/all/20240229225910.79e224cf@kernel.org/
+
+This is *very* similar to the same changes in ath11k commit
+bca592ead82528b ("wifi: ath11k: allocate dummy net_device dynamically")
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ drivers/net/wireless/ath/ath12k/core.h |  2 +-
+ drivers/net/wireless/ath/ath12k/pci.c  | 14 +++++++++++---
+ 2 files changed, 12 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+index 97e5a0ccd233..71c67f47d0ad 100644
+--- a/drivers/net/wireless/ath/ath12k/core.h
++++ b/drivers/net/wireless/ath/ath12k/core.h
+@@ -144,7 +144,7 @@ struct ath12k_ext_irq_grp {
+ 	u32 grp_id;
+ 	u64 timestamp;
+ 	struct napi_struct napi;
+-	struct net_device napi_ndev;
++	struct net_device *napi_ndev;
+ };
+ 
+ struct ath12k_smbios_bdf {
+diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
+index 14954bc05144..322f0ad1b12d 100644
+--- a/drivers/net/wireless/ath/ath12k/pci.c
++++ b/drivers/net/wireless/ath/ath12k/pci.c
+@@ -350,6 +350,7 @@ static void ath12k_pci_free_ext_irq(struct ath12k_base *ab)
+ 			free_irq(ab->irq_num[irq_grp->irqs[j]], irq_grp);
+ 
+ 		netif_napi_del(&irq_grp->napi);
++		free_netdev(irq_grp->napi_ndev);
+ 	}
+ }
+ 
+@@ -560,7 +561,7 @@ static irqreturn_t ath12k_pci_ext_interrupt_handler(int irq, void *arg)
+ static int ath12k_pci_ext_irq_config(struct ath12k_base *ab)
+ {
+ 	struct ath12k_pci *ab_pci = ath12k_pci_priv(ab);
+-	int i, j, ret, num_vectors = 0;
++	int i, j, n, ret, num_vectors = 0;
+ 	u32 user_base_data = 0, base_vector = 0, base_idx;
+ 
+ 	base_idx = ATH12K_PCI_IRQ_CE0_OFFSET + CE_COUNT_MAX;
+@@ -577,8 +578,11 @@ static int ath12k_pci_ext_irq_config(struct ath12k_base *ab)
+ 
+ 		irq_grp->ab = ab;
+ 		irq_grp->grp_id = i;
+-		init_dummy_netdev(&irq_grp->napi_ndev);
+-		netif_napi_add(&irq_grp->napi_ndev, &irq_grp->napi,
++		irq_grp->napi_ndev = alloc_netdev_dummy(0);
++		if (!irq_grp->napi_ndev)
++			return -ENOMEM;
++
++		netif_napi_add(irq_grp->napi_ndev, &irq_grp->napi,
+ 			       ath12k_pci_ext_grp_napi_poll);
+ 
+ 		if (ab->hw_params->ring_mask->tx[i] ||
+@@ -611,6 +615,10 @@ static int ath12k_pci_ext_irq_config(struct ath12k_base *ab)
+ 			if (ret) {
+ 				ath12k_err(ab, "failed request irq %d: %d\n",
+ 					   vector, ret);
++				for (n = 0; n <= i; n++) {
++					irq_grp = &ab->ext_irq_grp[n];
++					free_netdev(irq_grp->napi_ndev);
++				}
+ 				return ret;
+ 			}
+ 		}
+-- 
+2.43.0
+
 
