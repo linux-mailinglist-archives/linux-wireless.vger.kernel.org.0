@@ -1,81 +1,109 @@
-Return-Path: <linux-wireless+bounces-7143-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7144-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF8848BAD21
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 May 2024 15:06:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 797718BAD3F
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 May 2024 15:11:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E8AD1F2133D
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 May 2024 13:06:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19E821F2151C
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 May 2024 13:11:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED68C57CAF;
-	Fri,  3 May 2024 13:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A34E1534E0;
+	Fri,  3 May 2024 13:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qXRtC9GC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PSP5BKdN"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9EA314267
-	for <linux-wireless@vger.kernel.org>; Fri,  3 May 2024 13:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2610A1514E4
+	for <linux-wireless@vger.kernel.org>; Fri,  3 May 2024 13:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714741596; cv=none; b=tdL/djY0DkpasVpUttIXAeillINdJONHoDlgZYlaUhsGLt0o3ln1Usuq4Muny3JNO7qLOoUmjSiFrGuTQoUgCji1L9KKMAGb6EDFlNVYuYcg0zk7gDfvxq7M/Dj4fA8CVjOJ8D8w4ejpR9oeOpi6LSo+RhCGHZ0v5DuGuTR/73U=
+	t=1714741889; cv=none; b=JAIt444pwurumpY5BUqWLQSe4PSUKFXW76TJZezC8aWDynJJmp/nXCsIgs14r3+HTj3F4twR2fPMG/gxQKdpUfrdhDc6tdm4HVoESMrbRmDfr47Vm3e36zNVeFhP+fOfpVAVStHGwLxOOLzYNVmf9VlUyh/dwnVdPbiwGeZMQFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714741596; c=relaxed/simple;
-	bh=SRmvWzK8jEuViapsQ3ifsfszxPfXHhP+Zm1iIUVn/L8=;
-	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=qOg+kDpISMJUOYaPlApHlzXFIA8+7NAEzgHJlBjVCtADu4Cq2BdlfBUij32ULq3Kj57+FNUkRdi8kGXt1OHMR24TyvhZUQZ2qA1UNW1g9+6BJtx8OIRJOF9wf3NcIceFnaWIgGbFgL/r9FPaUnpRKbZuL2Cn9uDH0JJ96hS730I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qXRtC9GC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C370C116B1;
-	Fri,  3 May 2024 13:06:35 +0000 (UTC)
+	s=arc-20240116; t=1714741889; c=relaxed/simple;
+	bh=5404OLBra5zpvBGKgxF26R374GnojqrH4m9tPxLxqB4=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=Sa7tJs74iE0lXUIZ/zqyCry/QiJMwZRWRyXYYT12SA4gQhvxSCJvr7i6d/8B4UoANbluEZDh7bVuCiYu8BWrjipXjf2d6WWDhANNbH/K/egQjeS+K4BEd8wy3BM6zE/PptwS33ai4W8es+ZP9d+K8ehaow8w8TQ6fvBP9xWKDHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PSP5BKdN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A172C2BBFC;
+	Fri,  3 May 2024 13:11:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714741596;
-	bh=SRmvWzK8jEuViapsQ3ifsfszxPfXHhP+Zm1iIUVn/L8=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=qXRtC9GCbdwZ3q3o8uocC5py4noP3cw/quhHGzN71jDzKgyOgt20olICEGBQjgSgo
-	 BYPZo7Rw7MzcmIEmF6iWCCah7YDbaA++jWmKdkRr0X4EbLbm5PNw2kKtp9UytOCabP
-	 9PoPHyK5KiVmVH5jvvO1m+PdDI6brS0sJ8HOGwuFQcaeaqO0/Ieyrcg3ZHK9ERIiRT
-	 7NspTzUW5tjw+vF4kis0aJKwVg+uhgq4zZxFdDi/hJgxLilWtbSle1P1HzDgtuzWL7
-	 gvK199Z3xIGpUEklsgjdy08BeZGgSjuZN8LdvB5bJnXr2GR/rteqSLBs7/85I7N++l
-	 wYvsjYr2Rytqw==
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1714741888;
+	bh=5404OLBra5zpvBGKgxF26R374GnojqrH4m9tPxLxqB4=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=PSP5BKdNjOhzRw2cMZ21Ayfon+vBr27dKHmm+CWtsDxLrGrcPv+g0Piji/HEbRnJR
+	 VDZ/S6Qn1MEHCx3tHi95qpKkL7eDOznhsZZWaKl3ppAFF9/zmi22ZDD9tCRx/7C6V9
+	 0odGXcgXmSCXt1h4CEhV89nI+ZIf5lg4Wz/51eejQUY8jludGYlhSKu3RsFmQTGTf+
+	 Ps4qWYF+3qURu9pL3+G3UpFVFWX2qwpi1VVsX1T4Hj0ZV48DHfyMHfWQrH6Y5jXFVL
+	 RlWNrRxmXBwMnrRR2hrJ9wsYIsX2ZkezffnXMZfT5Yn0GXooMNoxSCaYrputOsFJFL
+	 mra5tJcelz8rQ==
+From: Kalle Valo <kvalo@kernel.org>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>,
+  <ath11k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>,
+  "Venkateswara Naralasetty" <quic_vnaralas@quicinc.com>
+Subject: Re: [PATCHv5] wifi: ath11k: skip status ring entry processing
+References: <20240429073624.736147-1-quic_tamizhr@quicinc.com>
+	<35f114c4-1ff7-4a4b-aadf-ed147f19e170@quicinc.com>
+	<87cyq7ota5.fsf@kernel.org>
+	<4f9abe89-a004-45e8-b369-5c2b39bff440@quicinc.com>
+Date: Fri, 03 May 2024 16:11:25 +0300
+In-Reply-To: <4f9abe89-a004-45e8-b369-5c2b39bff440@quicinc.com> (Jeff
+	Johnson's message of "Tue, 30 Apr 2024 08:14:16 -0700")
+Message-ID: <871q6jnipu.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 2/2] wifi: ath11k: ath11k_mac_op_ipv6_changed(): use
- list_for_each_entry()
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240411165516.4070649-3-kvalo@kernel.org>
-References: <20240411165516.4070649-3-kvalo@kernel.org>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <171474159354.1512332.8542536125854078524.kvalo@kernel.org>
-Date: Fri,  3 May 2024 13:06:35 +0000 (UTC)
+Content-Type: text/plain
 
-Kalle Valo <kvalo@kernel.org> wrote:
+Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 
-> Simplify the loop by using list_for_each_entry(). No functional changes.
-> 
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.37
-> 
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+>> Also I removed one unrelated change and removed unnecessary else. Please
+>> check my changes:
+>> 
+>> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=6e88d559268779107715008c51e006f7a5f62045
+>
+> So looking at the 'pending' change I have the observation that
+> ath11k_dp_rx_mon_buf_done() only returns one of two values:
+> DP_MON_STATUS_NO_DMA
+> DP_MON_STATUS_REPLINISH
+>
+> And the return value handling has explicit handling for those values, without
+> any logic for other values:
+> +				if (reap_status == DP_MON_STATUS_NO_DMA)
+> +					continue;
+> +
+> +				if (reap_status == DP_MON_STATUS_REPLINISH) {
+>
+> if we only expect these two values to ever be returned, then we could remove
+> the testing for DP_MON_STATUS_REPLINISH since, it it isn't NO_DMA then it must
+> be REPLINISH
 
-Patch applied to ath-next branch of ath.git, thanks.
+Nice, I simplified this error handling now. Less indentation now which
+is much better.
 
-f41c7cab8727 wifi: ath11k: ath11k_mac_op_ipv6_changed(): use list_for_each_entry()
+> + ath11k_warn(ab, "mon status DONE not set %lx, buf_id %d\n",
+> + FIELD_GET(HAL_TLV_HDR_TAG, tlv->tl),
+> +						    buf_id);
+>
+> I don't think we should log anything here. we already warn before calling the
+> new function. if we get here it means the next buffer had DONE set so we can
+> replenish the current buffer
+
+Yeah, I removed the warning altogether. Please check my changes:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=49c28a9720959fb5daf702fe1732a716f3cff15c
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240411165516.4070649-3-kvalo@kernel.org/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
 
