@@ -1,301 +1,308 @@
-Return-Path: <linux-wireless+bounces-7164-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7165-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 122B08BBB7C
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 May 2024 14:44:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F1068BBB88
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 May 2024 14:47:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 352951C20CC8
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 May 2024 12:44:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B38A01C20D30
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 May 2024 12:46:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58CF31C695;
-	Sat,  4 May 2024 12:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 815B24A1C;
+	Sat,  4 May 2024 12:46:56 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFA74A1C
-	for <linux-wireless@vger.kernel.org>; Sat,  4 May 2024 12:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2945D22331
+	for <linux-wireless@vger.kernel.org>; Sat,  4 May 2024 12:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714826654; cv=none; b=fEYB2CSXXrEEicF83RoDvD/TBaZ/uGzYbBpBWcrVEtClIvxzX78wCPHVchF4JndDL4nleoRPUGWsR+2ud/Uz1eg6yacggJSLN8JeFQnhb2hlR+Uqsu8R6nZuy3e/pCDRiTTFJryrW+IyaHqViG34q8otlxWiNcLwgOP06gEMp5Y=
+	t=1714826816; cv=none; b=GJxzXIfbQa+e0YfRnFgrp2RrSoi3RzgHDhnr4RQsGAiNK93A8b2gG+l3V4yp1POs4B0RCGqaHnu8y0VBfTftq4cq3aA1ybF37oXUB0z0503bYs7OOaMd/5YWLgidJBb6h0sZCU4PPRjnd57YtjSVoQbhmno55OpPnBO66Djdufk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714826654; c=relaxed/simple;
-	bh=dBmalUrriOqenWODGTAidco780JevmcDEHNypLQWPmM=;
-	h=From:To:Subject:MIME-Version:Content-Type:Message-ID:Date; b=ZL0LjgHWuqoE6YSMym7I+dp8+o4JZ8mz7nikbeyLYRN0pJB3jfUplJ4HdfKY0/jG20SS9eBrM3lTofDLJDZWlocERHqmDvF4ylgrjkvyvkLpqBgOvE2EuiuBti3TBHWgOYv+t5p+3dfDG3+5Rl4HrYpOt/DgaBo1eN6jrnjkomU=
+	s=arc-20240116; t=1714826816; c=relaxed/simple;
+	bh=9vb0UVIsDzKG4dnbFo70wlD0CkQqm4G2IaVGb+dFTjc=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=pFWTzrPs48Kyb15G1z3CnD9O6YrATfqCJ67Mti5d7nBNbSLoSUBP1EpLpEh+FFyXv20edIUK1SgRm6Jbn333tYEpn1TjENMQdwdOE94P7yA0AQy9vOr6ay8LmXF7Q4ZQLCN2BErwlwDQINgwfZk2JCbCcLUyDT6tiWdR1EUaqJY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 444CGa9fA237257, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 444CGa9fA237257
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Sat, 4 May 2024 20:16:36 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 444CcOyjD247079, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 444CcOyjD247079
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 4 May 2024 20:38:24 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Sat, 4 May 2024 20:16:36 +0800
-Received: from [127.0.1.1] (172.16.16.175) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Sat, 4 May
- 2024 20:16:36 +0800
+ 15.1.2507.35; Sat, 4 May 2024 20:38:25 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Sat, 4 May 2024 20:38:24 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
+ 15.01.2507.035; Sat, 4 May 2024 20:38:24 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: "kvalo@kernel.org" <kvalo@kernel.org>
 Subject: pull-request: rtw-next-2024-05-04-v2
+Thread-Topic: pull-request: rtw-next-2024-05-04-v2
+Thread-Index: AQHanh/05R4cZUrWJE6er5GzYkVWsw==
+Date: Sat, 4 May 2024 12:38:24 +0000
+Message-ID: <5bcdada1edb90839b2bd206e86dfd11c64cd467c.camel@realtek.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+user-agent: Evolution 3.36.1-2 
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <53B1164E5184E84EAB0605508FC6A7FE@realtek.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Message-ID: <2ea1dde1-1baf-481d-9783-33b94c113521@RTEXMBS04.realtek.com.tw>
-Date: Sat, 4 May 2024 20:16:36 +0800
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-Hi,
-
-This is v2 pull-request of rtw-next, which additionally fixes GCC
-uninitialized warning, to wireless-next tree, more info below.
-
-Thanks
-Ping-Ke
-
----
-
-The following changes since commit a35b36e6ee5dcf323d846ec3881159e4af90c9b4:
-
-  wifi: mac80211: extend IEEE80211_KEY_FLAG_GENERATE_MMIE to other ciphers (2024-04-08 20:52:28 +0200)
-
-are available in the Git repository at:
-
-  https://github.com/pkshih/rtw.git tags/rtw-next-2024-05-04-v2
-
-for you to fetch changes up to 82b85a836a5911ccde97fcbfb642279f5b680ed0:
-
-  wifi: rtlwifi: 8192d: initialize rate_mask in rtl92de_update_hal_rate_mask() (2024-05-04 20:05:14 +0800)
-
-----------------------------------------------------------------
-rtw-next patches for v6.10
-
-Major changes are listed as below
-
-rtl8xxxu:
-
- - remove rtl8xxxu_ prefix from filename
- - cleanup includes of header files
-
-rtlwifi:
-
- - adjust code to share with coming support of rtl8192du
-
-rtw89:
-
- - complete features of new WiFi 7 chip 8922AE including BT-coexistence
-   and WoWLAN
- - use BIOS ACPI settings to set TX power and channels
-
-----------------------------------------------------------------
-Bitterblue Smith (10):
-      wifi: rtl8xxxu: Fix the TX power of RTL8192CU, RTL8723AU
-      wifi: rtl8xxxu: Add separate MAC init table for RTL8192CU
-      wifi: rtl8xxxu: Add LED control code for RTL8192CU family
-      wifi: rtl8xxxu: Add LED control code for RTL8723BU
-      wifi: rtlwifi: rtl8192de: Fix 5 GHz TX power
-      wifi: rtlwifi: rtl8192de: Fix low speed with WPA3-SAE
-      wifi: rtlwifi: rtl8192de: Fix endianness issue in RX path
-      wifi: rtlwifi: Move code from rtl8192de to rtl8192d-common
-      wifi: rtlwifi: Clean up rtl8192d-common a bit
-      wifi: rtlwifi: Adjust rtl8192d-common for USB
-
-Chia-Yuan Li (1):
-      wifi: rtw89: 8852c: refine power sequence to imporve power consumption
-
-Chih-Kang Chang (10):
-      wifi: rtw89: wow: refine WoWLAN flows of HCI interrupts and low power mode
-      wifi: rtw89: wow: parsing Auth Key Management from associate request
-      wifi: rtw89: wow: prepare PTK GTK info from mac80211
-      wifi: rtw89: use struct to access firmware command h2c_dctl_sec_cam_v1
-      wifi: rtw89: use struct to fill H2C of WoWLAN global configuration
-      wifi: rtw89: wow: construct EAPoL packet for GTK rekey offload
-      wifi: rtw89: wow: add GTK rekey feature related H2C commands
-      wifi: rtw89: wow: update latest PTK GTK info to mac80211 after resume
-      wifi: rtw89: wow: support 802.11w PMF IGTK rekey
-      wifi: rtw89: wow: support WEP cipher on WoWLAN
-
-Chin-Yen Lee (3):
-      wifi: rtw89: reset AFEDIG register in power off sequence
-      wifi: rtw89: wow: send RFK pre-nofity H2C command in WoWLAN mode
-      wifi: rtw89: wow: add ARP offload feature
-
-Ching-Te Ku (17):
-      wifi: rtw89: coex: Allow Bluetooth doing traffic during Wi-Fi scan
-      wifi: rtw89: coex: Add v7 firmware cycle status report
-      wifi: rtw89: coex: Add version 3 report map of H2C command
-      wifi: rtw89: coex: Add PTA path control condition for chip RTL8922A
-      wifi: rtw89: coex: Update Bluetooth polluted Wi-Fi TX logic
-      wifi: rtw89: coex: Add register monitor report v7 format
-      wifi: rtw89: coex: Add GPIO signal control version 7
-      wifi: rtw89: coex: Add coexistence firmware control report version 8
-      wifi: rtw89: coex: Re-order the index for the report from firmware
-      wifi: rtw89: coex: Add Wi-Fi null data status version 7
-      wifi: rtw89: coex: Add Bluetooth scan parameter report version 7
-      wifi: rtw89: coex: Add Bluetooth frequency hopping map version 7
-      wifi: rtw89: coex: Add Bluetooth version report version 7
-      wifi: rtw89: coex: Fix unexpected value in version 7 slot parameter
-      wifi: rtw89: coex: Add Wi-Fi role v8 condition when set Bluetooth channel
-      wifi: rtw89: coex: Add Wi-Fi role v8 condition when set BTG control
-      wifi: rtw89: coex: Check and enable reports after run coex
-
-Colin Ian King (1):
-      wifi: rtlwifi: rtl8723be: Make read-only arrays static const
-
-Gustavo A. R. Silva (1):
-      wifi: rtlwifi: Remove unused structs and avoid multiple -Wfamnae warnings
-
-Jiapeng Chong (1):
-      wifi: rtw89: Remove the redundant else branch in the function rtw89_phy_get_kpath
-
-Kalle Valo (2):
-      wifi: rtl8xxxu: remove some unused includes
-      wifi: rtl8xxxu: remove rtl8xxxu_ prefix from filenames
-
-Kuan-Chung Chen (1):
-      wifi: rtw89: fix CTS transmission issue with center frequency deviation
-
-Martin Kaistra (2):
-      Revert "wifi: rtl8xxxu: enable MFP support"
-      wifi: rtl8xxxu: enable MFP support with security flag of RX descriptor
-
-Ping-Ke Shih (6):
-      wifi: rtw89: pci: correct TX resource checking for PCI DMA channel of firmware command
-      wifi: rtw88: suppress messages of failed to flush queue
-      wifi: rtw89: 8852b: update hardware parameters for RFE type 5
-      wifi: rtl8xxxu: cleanup includes
-      wifi: rtw89: correct aSIFSTime for 6GHz band
-      wifi: rtlwifi: 8192d: initialize rate_mask in rtl92de_update_hal_rate_mask()
-
-Zong-Zhe Yang (10):
-      wifi: rtw89: sar: correct TX power boundary for MAC domain
-      wifi: rtw89: fw: scan offload prohibit all 6 GHz channel if no 6 GHz sband
-      wifi: rtw89: 8852c: update TX power tables to R69.1 (1 of 2)
-      wifi: rtw89: 8852c: update TX power tables to R69.1 (2 of 2)
-      wifi: rtw89: regd: block 6 GHz by policy if not specific country
-      wifi: rtw89: regd: extend policy of UNII-4 for IC regulatory
-      wifi: rtw89: acpi: process 6 GHz SP policy from ACPI DSM
-      wifi: rtw89: regd: handle policy of 6 GHz SP according to BIOS
-      wifi: rtw89: set WIPHY_FLAG_DISABLE_WEXT before MLO
-      wifi: rtw89: 8922a: fix argument to hal_reset in bb_cfg_txrx_path
-
- .../realtek/rtl8xxxu/{rtl8xxxu_8188e.c => 8188e.c} |   18 +-
- .../realtek/rtl8xxxu/{rtl8xxxu_8188f.c => 8188f.c} |   18 +-
- .../realtek/rtl8xxxu/{rtl8xxxu_8192c.c => 8192c.c} |   67 +-
- .../realtek/rtl8xxxu/{rtl8xxxu_8192e.c => 8192e.c} |   18 +-
- .../realtek/rtl8xxxu/{rtl8xxxu_8192f.c => 8192f.c} |   18 +-
- .../realtek/rtl8xxxu/{rtl8xxxu_8710b.c => 8710b.c} |   18 +-
- .../realtek/rtl8xxxu/{rtl8xxxu_8723a.c => 8723a.c} |   45 +-
- .../realtek/rtl8xxxu/{rtl8xxxu_8723b.c => 8723b.c} |   41 +-
- drivers/net/wireless/realtek/rtl8xxxu/Makefile     |    6 +-
- .../realtek/rtl8xxxu/{rtl8xxxu_core.c => core.c}   |   75 +-
- .../realtek/rtl8xxxu/{rtl8xxxu_regs.h => regs.h}   |    0
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h   |   13 +-
- drivers/net/wireless/realtek/rtlwifi/Kconfig       |    4 +
- drivers/net/wireless/realtek/rtlwifi/Makefile      |    1 +
- drivers/net/wireless/realtek/rtlwifi/cam.c         |    5 +-
- drivers/net/wireless/realtek/rtlwifi/cam.h         |    6 +-
- drivers/net/wireless/realtek/rtlwifi/efuse.c       |    2 +-
- drivers/net/wireless/realtek/rtlwifi/efuse.h       |    2 +-
- .../net/wireless/realtek/rtlwifi/rtl8192d/Makefile |   11 +
- .../realtek/rtlwifi/{rtl8192de => rtl8192d}/def.h  |    0
- .../wireless/realtek/rtlwifi/rtl8192d/dm_common.c  | 1061 ++++++++
- .../wireless/realtek/rtlwifi/rtl8192d/dm_common.h  |   79 +
- .../wireless/realtek/rtlwifi/rtl8192d/fw_common.c  |  370 +++
- .../wireless/realtek/rtlwifi/rtl8192d/fw_common.h  |   49 +
- .../wireless/realtek/rtlwifi/rtl8192d/hw_common.c  | 1225 +++++++++
- .../wireless/realtek/rtlwifi/rtl8192d/hw_common.h  |   24 +
- .../net/wireless/realtek/rtlwifi/rtl8192d/main.c   |    9 +
- .../wireless/realtek/rtlwifi/rtl8192d/phy_common.c |  856 +++++++
- .../wireless/realtek/rtlwifi/rtl8192d/phy_common.h |  111 +
- .../realtek/rtlwifi/{rtl8192de => rtl8192d}/reg.h  |  162 +-
- .../wireless/realtek/rtlwifi/rtl8192d/rf_common.c  |  359 +++
- .../wireless/realtek/rtlwifi/rtl8192d/rf_common.h  |   13 +
- .../wireless/realtek/rtlwifi/rtl8192d/trx_common.c |  516 ++++
- .../wireless/realtek/rtlwifi/rtl8192d/trx_common.h |  405 +++
- .../net/wireless/realtek/rtlwifi/rtl8192de/dm.c    | 1072 +-------
- .../net/wireless/realtek/rtlwifi/rtl8192de/dm.h    |   91 +-
- .../net/wireless/realtek/rtlwifi/rtl8192de/fw.c    |  375 +--
- .../net/wireless/realtek/rtlwifi/rtl8192de/fw.h    |   37 -
- .../net/wireless/realtek/rtlwifi/rtl8192de/hw.c    | 1168 +--------
- .../net/wireless/realtek/rtlwifi/rtl8192de/hw.h    |   11 -
- .../net/wireless/realtek/rtlwifi/rtl8192de/led.c   |    2 +-
- .../net/wireless/realtek/rtlwifi/rtl8192de/phy.c   |  918 +------
- .../net/wireless/realtek/rtlwifi/rtl8192de/phy.h   |   59 +-
- .../net/wireless/realtek/rtlwifi/rtl8192de/rf.c    |  375 +--
- .../net/wireless/realtek/rtlwifi/rtl8192de/rf.h    |    5 -
- .../net/wireless/realtek/rtlwifi/rtl8192de/sw.c    |   12 +-
- .../net/wireless/realtek/rtlwifi/rtl8192de/trx.c   |  515 +---
- .../net/wireless/realtek/rtlwifi/rtl8192de/trx.h   |  433 ----
- .../net/wireless/realtek/rtlwifi/rtl8723be/phy.c   |   45 +-
- drivers/net/wireless/realtek/rtlwifi/usb.c         |    3 +
- drivers/net/wireless/realtek/rtlwifi/wifi.h        |   33 +-
- drivers/net/wireless/realtek/rtw88/debug.h         |    1 +
- drivers/net/wireless/realtek/rtw88/mac.c           |    5 +-
- drivers/net/wireless/realtek/rtw88/pci.c           |    3 +-
- drivers/net/wireless/realtek/rtw89/acpi.c          |   47 +
- drivers/net/wireless/realtek/rtw89/acpi.h          |   21 +-
- drivers/net/wireless/realtek/rtw89/cam.c           |  120 +-
- drivers/net/wireless/realtek/rtw89/cam.h           |   71 +-
- drivers/net/wireless/realtek/rtw89/coex.c          | 1002 +++++++-
- drivers/net/wireless/realtek/rtw89/coex.h          |   36 +
- drivers/net/wireless/realtek/rtw89/core.c          |   13 +-
- drivers/net/wireless/realtek/rtw89/core.h          |  242 +-
- drivers/net/wireless/realtek/rtw89/fw.c            |  338 ++-
- drivers/net/wireless/realtek/rtw89/fw.h            |  466 +---
- drivers/net/wireless/realtek/rtw89/mac.c           |   50 +-
- drivers/net/wireless/realtek/rtw89/mac.h           |    7 +
- drivers/net/wireless/realtek/rtw89/mac80211.c      |   28 +-
- drivers/net/wireless/realtek/rtw89/mac_be.c        |    5 +
- drivers/net/wireless/realtek/rtw89/pci.c           |    3 +-
- drivers/net/wireless/realtek/rtw89/phy.c           |    6 +-
- drivers/net/wireless/realtek/rtw89/ps.c            |    3 +-
- drivers/net/wireless/realtek/rtw89/reg.h           |    3 +
- drivers/net/wireless/realtek/rtw89/regd.c          |  156 +-
- drivers/net/wireless/realtek/rtw89/rtw8851b.c      |    1 +
- drivers/net/wireless/realtek/rtw89/rtw8852b.c      |   14 +
- drivers/net/wireless/realtek/rtw89/rtw8852c.c      |   12 +-
- .../net/wireless/realtek/rtw89/rtw8852c_table.c    | 2616 --------------------
- drivers/net/wireless/realtek/rtw89/rtw8922a.c      |    2 +-
- drivers/net/wireless/realtek/rtw89/sar.h           |    4 +-
- drivers/net/wireless/realtek/rtw89/wow.c           |  716 +++++-
- drivers/net/wireless/realtek/rtw89/wow.h           |   57 +
- 81 files changed, 8371 insertions(+), 8438 deletions(-)
- rename drivers/net/wireless/realtek/rtl8xxxu/{rtl8xxxu_8188e.c => 8188e.c} (99%)
- rename drivers/net/wireless/realtek/rtl8xxxu/{rtl8xxxu_8188f.c => 8188f.c} (99%)
- rename drivers/net/wireless/realtek/rtl8xxxu/{rtl8xxxu_8192c.c => 8192c.c} (90%)
- rename drivers/net/wireless/realtek/rtl8xxxu/{rtl8xxxu_8192e.c => 8192e.c} (99%)
- rename drivers/net/wireless/realtek/rtl8xxxu/{rtl8xxxu_8192f.c => 8192f.c} (99%)
- rename drivers/net/wireless/realtek/rtl8xxxu/{rtl8xxxu_8710b.c => 8710b.c} (99%)
- rename drivers/net/wireless/realtek/rtl8xxxu/{rtl8xxxu_8723a.c => 8723a.c} (90%)
- rename drivers/net/wireless/realtek/rtl8xxxu/{rtl8xxxu_8723b.c => 8723b.c} (98%)
- rename drivers/net/wireless/realtek/rtl8xxxu/{rtl8xxxu_core.c => core.c} (98%)
- rename drivers/net/wireless/realtek/rtl8xxxu/{rtl8xxxu_regs.h => regs.h} (100%)
- create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/Makefile
- rename drivers/net/wireless/realtek/rtlwifi/{rtl8192de => rtl8192d}/def.h (100%)
- create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/dm_common.c
- create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/dm_common.h
- create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/fw_common.c
- create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/fw_common.h
- create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/hw_common.c
- create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/hw_common.h
- create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/main.c
- create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.c
- create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/phy_common.h
- rename drivers/net/wireless/realtek/rtlwifi/{rtl8192de => rtl8192d}/reg.h (90%)
- create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/rf_common.c
- create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/rf_common.h
- create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/trx_common.c
- create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192d/trx_common.h
+SGksDQoNClRoaXMgaXMgdjIgcHVsbC1yZXF1ZXN0IG9mIHJ0dy1uZXh0LCB3aGljaCBhZGRpdGlv
+bmFsbHkgZml4ZXMgR0NDDQp1bmluaXRpYWxpemVkIHdhcm5pbmcsIHRvIHdpcmVsZXNzLW5leHQg
+dHJlZSwgbW9yZSBpbmZvIGJlbG93Lg0KDQpUaGFua3MNClBpbmctS2UNCg0KLS0tDQoNClRoZSBm
+b2xsb3dpbmcgY2hhbmdlcyBzaW5jZSBjb21taXQgYTM1YjM2ZTZlZTVkY2YzMjNkODQ2ZWMzODgx
+MTU5ZTRhZjkwYzliNDoNCg0KICB3aWZpOiBtYWM4MDIxMTogZXh0ZW5kIElFRUU4MDIxMV9LRVlf
+RkxBR19HRU5FUkFURV9NTUlFIHRvIG90aGVyIGNpcGhlcnMgKDIwMjQtMDQtMDggMjA6NTI6MjgN
+CiswMjAwKQ0KDQphcmUgYXZhaWxhYmxlIGluIHRoZSBHaXQgcmVwb3NpdG9yeSBhdDoNCg0KICBo
+dHRwczovL2dpdGh1Yi5jb20vcGtzaGloL3J0dy5naXQgdGFncy9ydHctbmV4dC0yMDI0LTA1LTA0
+LXYyDQoNCmZvciB5b3UgdG8gZmV0Y2ggY2hhbmdlcyB1cCB0byA4MmI4NWE4MzZhNTkxMWNjZGU5
+N2ZjYmZiNjQyMjc5ZjViNjgwZWQwOg0KDQogIHdpZmk6IHJ0bHdpZmk6IDgxOTJkOiBpbml0aWFs
+aXplIHJhdGVfbWFzayBpbiBydGw5MmRlX3VwZGF0ZV9oYWxfcmF0ZV9tYXNrKCkgKDIwMjQtMDUt
+MDQgMjA6MDU6MTQNCiswODAwKQ0KDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQpydHctbmV4dCBwYXRjaGVzIGZvciB2Ni4x
+MA0KDQpNYWpvciBjaGFuZ2VzIGFyZSBsaXN0ZWQgYXMgYmVsb3cNCg0KcnRsOHh4eHU6DQoNCiAt
+IHJlbW92ZSBydGw4eHh4dV8gcHJlZml4IGZyb20gZmlsZW5hbWUNCiAtIGNsZWFudXAgaW5jbHVk
+ZXMgb2YgaGVhZGVyIGZpbGVzDQoNCnJ0bHdpZmk6DQoNCiAtIGFkanVzdCBjb2RlIHRvIHNoYXJl
+IHdpdGggY29taW5nIHN1cHBvcnQgb2YgcnRsODE5MmR1DQoNCnJ0dzg5Og0KDQogLSBjb21wbGV0
+ZSBmZWF0dXJlcyBvZiBuZXcgV2lGaSA3IGNoaXAgODkyMkFFIGluY2x1ZGluZyBCVC1jb2V4aXN0
+ZW5jZQ0KICAgYW5kIFdvV0xBTg0KIC0gdXNlIEJJT1MgQUNQSSBzZXR0aW5ncyB0byBzZXQgVFgg
+cG93ZXIgYW5kIGNoYW5uZWxzDQoNCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCkJpdHRlcmJsdWUgU21pdGggKDEwKToNCiAg
+ICAgIHdpZmk6IHJ0bDh4eHh1OiBGaXggdGhlIFRYIHBvd2VyIG9mIFJUTDgxOTJDVSwgUlRMODcy
+M0FVDQogICAgICB3aWZpOiBydGw4eHh4dTogQWRkIHNlcGFyYXRlIE1BQyBpbml0IHRhYmxlIGZv
+ciBSVEw4MTkyQ1UNCiAgICAgIHdpZmk6IHJ0bDh4eHh1OiBBZGQgTEVEIGNvbnRyb2wgY29kZSBm
+b3IgUlRMODE5MkNVIGZhbWlseQ0KICAgICAgd2lmaTogcnRsOHh4eHU6IEFkZCBMRUQgY29udHJv
+bCBjb2RlIGZvciBSVEw4NzIzQlUNCiAgICAgIHdpZmk6IHJ0bHdpZmk6IHJ0bDgxOTJkZTogRml4
+IDUgR0h6IFRYIHBvd2VyDQogICAgICB3aWZpOiBydGx3aWZpOiBydGw4MTkyZGU6IEZpeCBsb3cg
+c3BlZWQgd2l0aCBXUEEzLVNBRQ0KICAgICAgd2lmaTogcnRsd2lmaTogcnRsODE5MmRlOiBGaXgg
+ZW5kaWFubmVzcyBpc3N1ZSBpbiBSWCBwYXRoDQogICAgICB3aWZpOiBydGx3aWZpOiBNb3ZlIGNv
+ZGUgZnJvbSBydGw4MTkyZGUgdG8gcnRsODE5MmQtY29tbW9uDQogICAgICB3aWZpOiBydGx3aWZp
+OiBDbGVhbiB1cCBydGw4MTkyZC1jb21tb24gYSBiaXQNCiAgICAgIHdpZmk6IHJ0bHdpZmk6IEFk
+anVzdCBydGw4MTkyZC1jb21tb24gZm9yIFVTQg0KDQpDaGlhLVl1YW4gTGkgKDEpOg0KICAgICAg
+d2lmaTogcnR3ODk6IDg4NTJjOiByZWZpbmUgcG93ZXIgc2VxdWVuY2UgdG8gaW1wb3J2ZSBwb3dl
+ciBjb25zdW1wdGlvbg0KDQpDaGloLUthbmcgQ2hhbmcgKDEwKToNCiAgICAgIHdpZmk6IHJ0dzg5
+OiB3b3c6IHJlZmluZSBXb1dMQU4gZmxvd3Mgb2YgSENJIGludGVycnVwdHMgYW5kIGxvdyBwb3dl
+ciBtb2RlDQogICAgICB3aWZpOiBydHc4OTogd293OiBwYXJzaW5nIEF1dGggS2V5IE1hbmFnZW1l
+bnQgZnJvbSBhc3NvY2lhdGUgcmVxdWVzdA0KICAgICAgd2lmaTogcnR3ODk6IHdvdzogcHJlcGFy
+ZSBQVEsgR1RLIGluZm8gZnJvbSBtYWM4MDIxMQ0KICAgICAgd2lmaTogcnR3ODk6IHVzZSBzdHJ1
+Y3QgdG8gYWNjZXNzIGZpcm13YXJlIGNvbW1hbmQgaDJjX2RjdGxfc2VjX2NhbV92MQ0KICAgICAg
+d2lmaTogcnR3ODk6IHVzZSBzdHJ1Y3QgdG8gZmlsbCBIMkMgb2YgV29XTEFOIGdsb2JhbCBjb25m
+aWd1cmF0aW9uDQogICAgICB3aWZpOiBydHc4OTogd293OiBjb25zdHJ1Y3QgRUFQb0wgcGFja2V0
+IGZvciBHVEsgcmVrZXkgb2ZmbG9hZA0KICAgICAgd2lmaTogcnR3ODk6IHdvdzogYWRkIEdUSyBy
+ZWtleSBmZWF0dXJlIHJlbGF0ZWQgSDJDIGNvbW1hbmRzDQogICAgICB3aWZpOiBydHc4OTogd293
+OiB1cGRhdGUgbGF0ZXN0IFBUSyBHVEsgaW5mbyB0byBtYWM4MDIxMSBhZnRlciByZXN1bWUNCiAg
+ICAgIHdpZmk6IHJ0dzg5OiB3b3c6IHN1cHBvcnQgODAyLjExdyBQTUYgSUdUSyByZWtleQ0KICAg
+ICAgd2lmaTogcnR3ODk6IHdvdzogc3VwcG9ydCBXRVAgY2lwaGVyIG9uIFdvV0xBTg0KDQpDaGlu
+LVllbiBMZWUgKDMpOg0KICAgICAgd2lmaTogcnR3ODk6IHJlc2V0IEFGRURJRyByZWdpc3RlciBp
+biBwb3dlciBvZmYgc2VxdWVuY2UNCiAgICAgIHdpZmk6IHJ0dzg5OiB3b3c6IHNlbmQgUkZLIHBy
+ZS1ub2ZpdHkgSDJDIGNvbW1hbmQgaW4gV29XTEFOIG1vZGUNCiAgICAgIHdpZmk6IHJ0dzg5OiB3
+b3c6IGFkZCBBUlAgb2ZmbG9hZCBmZWF0dXJlDQoNCkNoaW5nLVRlIEt1ICgxNyk6DQogICAgICB3
+aWZpOiBydHc4OTogY29leDogQWxsb3cgQmx1ZXRvb3RoIGRvaW5nIHRyYWZmaWMgZHVyaW5nIFdp
+LUZpIHNjYW4NCiAgICAgIHdpZmk6IHJ0dzg5OiBjb2V4OiBBZGQgdjcgZmlybXdhcmUgY3ljbGUg
+c3RhdHVzIHJlcG9ydA0KICAgICAgd2lmaTogcnR3ODk6IGNvZXg6IEFkZCB2ZXJzaW9uIDMgcmVw
+b3J0IG1hcCBvZiBIMkMgY29tbWFuZA0KICAgICAgd2lmaTogcnR3ODk6IGNvZXg6IEFkZCBQVEEg
+cGF0aCBjb250cm9sIGNvbmRpdGlvbiBmb3IgY2hpcCBSVEw4OTIyQQ0KICAgICAgd2lmaTogcnR3
+ODk6IGNvZXg6IFVwZGF0ZSBCbHVldG9vdGggcG9sbHV0ZWQgV2ktRmkgVFggbG9naWMNCiAgICAg
+IHdpZmk6IHJ0dzg5OiBjb2V4OiBBZGQgcmVnaXN0ZXIgbW9uaXRvciByZXBvcnQgdjcgZm9ybWF0
+DQogICAgICB3aWZpOiBydHc4OTogY29leDogQWRkIEdQSU8gc2lnbmFsIGNvbnRyb2wgdmVyc2lv
+biA3DQogICAgICB3aWZpOiBydHc4OTogY29leDogQWRkIGNvZXhpc3RlbmNlIGZpcm13YXJlIGNv
+bnRyb2wgcmVwb3J0IHZlcnNpb24gOA0KICAgICAgd2lmaTogcnR3ODk6IGNvZXg6IFJlLW9yZGVy
+IHRoZSBpbmRleCBmb3IgdGhlIHJlcG9ydCBmcm9tIGZpcm13YXJlDQogICAgICB3aWZpOiBydHc4
+OTogY29leDogQWRkIFdpLUZpIG51bGwgZGF0YSBzdGF0dXMgdmVyc2lvbiA3DQogICAgICB3aWZp
+OiBydHc4OTogY29leDogQWRkIEJsdWV0b290aCBzY2FuIHBhcmFtZXRlciByZXBvcnQgdmVyc2lv
+biA3DQogICAgICB3aWZpOiBydHc4OTogY29leDogQWRkIEJsdWV0b290aCBmcmVxdWVuY3kgaG9w
+cGluZyBtYXAgdmVyc2lvbiA3DQogICAgICB3aWZpOiBydHc4OTogY29leDogQWRkIEJsdWV0b290
+aCB2ZXJzaW9uIHJlcG9ydCB2ZXJzaW9uIDcNCiAgICAgIHdpZmk6IHJ0dzg5OiBjb2V4OiBGaXgg
+dW5leHBlY3RlZCB2YWx1ZSBpbiB2ZXJzaW9uIDcgc2xvdCBwYXJhbWV0ZXINCiAgICAgIHdpZmk6
+IHJ0dzg5OiBjb2V4OiBBZGQgV2ktRmkgcm9sZSB2OCBjb25kaXRpb24gd2hlbiBzZXQgQmx1ZXRv
+b3RoIGNoYW5uZWwNCiAgICAgIHdpZmk6IHJ0dzg5OiBjb2V4OiBBZGQgV2ktRmkgcm9sZSB2OCBj
+b25kaXRpb24gd2hlbiBzZXQgQlRHIGNvbnRyb2wNCiAgICAgIHdpZmk6IHJ0dzg5OiBjb2V4OiBD
+aGVjayBhbmQgZW5hYmxlIHJlcG9ydHMgYWZ0ZXIgcnVuIGNvZXgNCg0KQ29saW4gSWFuIEtpbmcg
+KDEpOg0KICAgICAgd2lmaTogcnRsd2lmaTogcnRsODcyM2JlOiBNYWtlIHJlYWQtb25seSBhcnJh
+eXMgc3RhdGljIGNvbnN0DQoNCkd1c3Rhdm8gQS4gUi4gU2lsdmEgKDEpOg0KICAgICAgd2lmaTog
+cnRsd2lmaTogUmVtb3ZlIHVudXNlZCBzdHJ1Y3RzIGFuZCBhdm9pZCBtdWx0aXBsZSAtV2ZhbW5h
+ZSB3YXJuaW5ncw0KDQpKaWFwZW5nIENob25nICgxKToNCiAgICAgIHdpZmk6IHJ0dzg5OiBSZW1v
+dmUgdGhlIHJlZHVuZGFudCBlbHNlIGJyYW5jaCBpbiB0aGUgZnVuY3Rpb24gcnR3ODlfcGh5X2dl
+dF9rcGF0aA0KDQpLYWxsZSBWYWxvICgyKToNCiAgICAgIHdpZmk6IHJ0bDh4eHh1OiByZW1vdmUg
+c29tZSB1bnVzZWQgaW5jbHVkZXMNCiAgICAgIHdpZmk6IHJ0bDh4eHh1OiByZW1vdmUgcnRsOHh4
+eHVfIHByZWZpeCBmcm9tIGZpbGVuYW1lcw0KDQpLdWFuLUNodW5nIENoZW4gKDEpOg0KICAgICAg
+d2lmaTogcnR3ODk6IGZpeCBDVFMgdHJhbnNtaXNzaW9uIGlzc3VlIHdpdGggY2VudGVyIGZyZXF1
+ZW5jeSBkZXZpYXRpb24NCg0KTWFydGluIEthaXN0cmEgKDIpOg0KICAgICAgUmV2ZXJ0ICJ3aWZp
+OiBydGw4eHh4dTogZW5hYmxlIE1GUCBzdXBwb3J0Ig0KICAgICAgd2lmaTogcnRsOHh4eHU6IGVu
+YWJsZSBNRlAgc3VwcG9ydCB3aXRoIHNlY3VyaXR5IGZsYWcgb2YgUlggZGVzY3JpcHRvcg0KDQpQ
+aW5nLUtlIFNoaWggKDYpOg0KICAgICAgd2lmaTogcnR3ODk6IHBjaTogY29ycmVjdCBUWCByZXNv
+dXJjZSBjaGVja2luZyBmb3IgUENJIERNQSBjaGFubmVsIG9mIGZpcm13YXJlIGNvbW1hbmQNCiAg
+ICAgIHdpZmk6IHJ0dzg4OiBzdXBwcmVzcyBtZXNzYWdlcyBvZiBmYWlsZWQgdG8gZmx1c2ggcXVl
+dWUNCiAgICAgIHdpZmk6IHJ0dzg5OiA4ODUyYjogdXBkYXRlIGhhcmR3YXJlIHBhcmFtZXRlcnMg
+Zm9yIFJGRSB0eXBlIDUNCiAgICAgIHdpZmk6IHJ0bDh4eHh1OiBjbGVhbnVwIGluY2x1ZGVzDQog
+ICAgICB3aWZpOiBydHc4OTogY29ycmVjdCBhU0lGU1RpbWUgZm9yIDZHSHogYmFuZA0KICAgICAg
+d2lmaTogcnRsd2lmaTogODE5MmQ6IGluaXRpYWxpemUgcmF0ZV9tYXNrIGluIHJ0bDkyZGVfdXBk
+YXRlX2hhbF9yYXRlX21hc2soKQ0KDQpab25nLVpoZSBZYW5nICgxMCk6DQogICAgICB3aWZpOiBy
+dHc4OTogc2FyOiBjb3JyZWN0IFRYIHBvd2VyIGJvdW5kYXJ5IGZvciBNQUMgZG9tYWluDQogICAg
+ICB3aWZpOiBydHc4OTogZnc6IHNjYW4gb2ZmbG9hZCBwcm9oaWJpdCBhbGwgNiBHSHogY2hhbm5l
+bCBpZiBubyA2IEdIeiBzYmFuZA0KICAgICAgd2lmaTogcnR3ODk6IDg4NTJjOiB1cGRhdGUgVFgg
+cG93ZXIgdGFibGVzIHRvIFI2OS4xICgxIG9mIDIpDQogICAgICB3aWZpOiBydHc4OTogODg1MmM6
+IHVwZGF0ZSBUWCBwb3dlciB0YWJsZXMgdG8gUjY5LjEgKDIgb2YgMikNCiAgICAgIHdpZmk6IHJ0
+dzg5OiByZWdkOiBibG9jayA2IEdIeiBieSBwb2xpY3kgaWYgbm90IHNwZWNpZmljIGNvdW50cnkN
+CiAgICAgIHdpZmk6IHJ0dzg5OiByZWdkOiBleHRlbmQgcG9saWN5IG9mIFVOSUktNCBmb3IgSUMg
+cmVndWxhdG9yeQ0KICAgICAgd2lmaTogcnR3ODk6IGFjcGk6IHByb2Nlc3MgNiBHSHogU1AgcG9s
+aWN5IGZyb20gQUNQSSBEU00NCiAgICAgIHdpZmk6IHJ0dzg5OiByZWdkOiBoYW5kbGUgcG9saWN5
+IG9mIDYgR0h6IFNQIGFjY29yZGluZyB0byBCSU9TDQogICAgICB3aWZpOiBydHc4OTogc2V0IFdJ
+UEhZX0ZMQUdfRElTQUJMRV9XRVhUIGJlZm9yZSBNTE8NCiAgICAgIHdpZmk6IHJ0dzg5OiA4OTIy
+YTogZml4IGFyZ3VtZW50IHRvIGhhbF9yZXNldCBpbiBiYl9jZmdfdHhyeF9wYXRoDQoNCiAuLi4v
+cmVhbHRlay9ydGw4eHh4dS97cnRsOHh4eHVfODE4OGUuYyA9PiA4MTg4ZS5jfSB8ICAgMTggKy0N
+CiAuLi4vcmVhbHRlay9ydGw4eHh4dS97cnRsOHh4eHVfODE4OGYuYyA9PiA4MTg4Zi5jfSB8ICAg
+MTggKy0NCiAuLi4vcmVhbHRlay9ydGw4eHh4dS97cnRsOHh4eHVfODE5MmMuYyA9PiA4MTkyYy5j
+fSB8ICAgNjcgKy0NCiAuLi4vcmVhbHRlay9ydGw4eHh4dS97cnRsOHh4eHVfODE5MmUuYyA9PiA4
+MTkyZS5jfSB8ICAgMTggKy0NCiAuLi4vcmVhbHRlay9ydGw4eHh4dS97cnRsOHh4eHVfODE5MmYu
+YyA9PiA4MTkyZi5jfSB8ICAgMTggKy0NCiAuLi4vcmVhbHRlay9ydGw4eHh4dS97cnRsOHh4eHVf
+ODcxMGIuYyA9PiA4NzEwYi5jfSB8ICAgMTggKy0NCiAuLi4vcmVhbHRlay9ydGw4eHh4dS97cnRs
+OHh4eHVfODcyM2EuYyA9PiA4NzIzYS5jfSB8ICAgNDUgKy0NCiAuLi4vcmVhbHRlay9ydGw4eHh4
+dS97cnRsOHh4eHVfODcyM2IuYyA9PiA4NzIzYi5jfSB8ICAgNDEgKy0NCiBkcml2ZXJzL25ldC93
+aXJlbGVzcy9yZWFsdGVrL3J0bDh4eHh1L01ha2VmaWxlICAgICB8ICAgIDYgKy0NCiAuLi4vcmVh
+bHRlay9ydGw4eHh4dS97cnRsOHh4eHVfY29yZS5jID0+IGNvcmUuY30gICB8ICAgNzUgKy0NCiAu
+Li4vcmVhbHRlay9ydGw4eHh4dS97cnRsOHh4eHVfcmVncy5oID0+IHJlZ3MuaH0gICB8ICAgIDAN
+CiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bDh4eHh1L3J0bDh4eHh1LmggICB8ICAg
+MTMgKy0NCiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvS2NvbmZpZyAgICAg
+ICB8ICAgIDQgKw0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9NYWtlZmls
+ZSAgICAgIHwgICAgMSArDQogZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL2Nh
+bS5jICAgICAgICAgfCAgICA1ICstDQogZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3
+aWZpL2NhbS5oICAgICAgICAgfCAgICA2ICstDQogZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRl
+ay9ydGx3aWZpL2VmdXNlLmMgICAgICAgfCAgICAyICstDQogZHJpdmVycy9uZXQvd2lyZWxlc3Mv
+cmVhbHRlay9ydGx3aWZpL2VmdXNlLmggICAgICAgfCAgICAyICstDQogLi4uL25ldC93aXJlbGVz
+cy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MmQvTWFrZWZpbGUgfCAgIDExICsNCiAuLi4vcmVhbHRl
+ay9ydGx3aWZpL3tydGw4MTkyZGUgPT4gcnRsODE5MmR9L2RlZi5oICB8ICAgIDANCiAuLi4vd2ly
+ZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkL2RtX2NvbW1vbi5jICB8IDEwNjEgKysrKysr
+KysNCiAuLi4vd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkL2RtX2NvbW1vbi5oICB8
+ICAgNzkgKw0KIC4uLi93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MmQvZndfY29tbW9u
+LmMgIHwgIDM3MCArKysNCiAuLi4vd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkL2Z3
+X2NvbW1vbi5oICB8ICAgNDkgKw0KIC4uLi93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5
+MmQvaHdfY29tbW9uLmMgIHwgMTIyNSArKysrKysrKysNCiAuLi4vd2lyZWxlc3MvcmVhbHRlay9y
+dGx3aWZpL3J0bDgxOTJkL2h3X2NvbW1vbi5oICB8ICAgMjQgKw0KIC4uLi9uZXQvd2lyZWxlc3Mv
+cmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkL21haW4uYyAgIHwgICAgOSArDQogLi4uL3dpcmVsZXNz
+L3JlYWx0ZWsvcnRsd2lmaS9ydGw4MTkyZC9waHlfY29tbW9uLmMgfCAgODU2ICsrKysrKysNCiAu
+Li4vd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkL3BoeV9jb21tb24uaCB8ICAxMTEg
+Kw0KIC4uLi9yZWFsdGVrL3J0bHdpZmkve3J0bDgxOTJkZSA9PiBydGw4MTkyZH0vcmVnLmggIHwg
+IDE2MiArLQ0KIC4uLi93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MmQvcmZfY29tbW9u
+LmMgIHwgIDM1OSArKysNCiAuLi4vd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkL3Jm
+X2NvbW1vbi5oICB8ICAgMTMgKw0KIC4uLi93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5
+MmQvdHJ4X2NvbW1vbi5jIHwgIDUxNiArKysrDQogLi4uL3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lm
+aS9ydGw4MTkyZC90cnhfY29tbW9uLmggfCAgNDA1ICsrKw0KIC4uLi9uZXQvd2lyZWxlc3MvcmVh
+bHRlay9ydGx3aWZpL3J0bDgxOTJkZS9kbS5jICAgIHwgMTA3MiArLS0tLS0tLQ0KIC4uLi9uZXQv
+d2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkZS9kbS5oICAgIHwgICA5MSArLQ0KIC4u
+Li9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkZS9mdy5jICAgIHwgIDM3NSAr
+LS0NCiAuLi4vbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9ydGw4MTkyZGUvZncuaCAgICB8
+ICAgMzcgLQ0KIC4uLi9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkZS9ody5j
+ICAgIHwgMTE2OCArLS0tLS0tLS0NCiAuLi4vbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9y
+dGw4MTkyZGUvaHcuaCAgICB8ICAgMTEgLQ0KIC4uLi9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3
+aWZpL3J0bDgxOTJkZS9sZWQuYyAgIHwgICAgMiArLQ0KIC4uLi9uZXQvd2lyZWxlc3MvcmVhbHRl
+ay9ydGx3aWZpL3J0bDgxOTJkZS9waHkuYyAgIHwgIDkxOCArLS0tLS0tDQogLi4uL25ldC93aXJl
+bGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MmRlL3BoeS5oICAgfCAgIDU5ICstDQogLi4uL25l
+dC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MmRlL3JmLmMgICAgfCAgMzc1ICstLQ0K
+IC4uLi9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkZS9yZi5oICAgIHwgICAg
+NSAtDQogLi4uL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MmRlL3N3LmMgICAg
+fCAgIDEyICstDQogLi4uL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MmRlL3Ry
+eC5jICAgfCAgNTE1ICstLS0NCiAuLi4vbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9ydGw4
+MTkyZGUvdHJ4LmggICB8ICA0MzMgLS0tLQ0KIC4uLi9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3
+aWZpL3J0bDg3MjNiZS9waHkuYyAgIHwgICA0NSArLQ0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3Jl
+YWx0ZWsvcnRsd2lmaS91c2IuYyAgICAgICAgIHwgICAgMyArDQogZHJpdmVycy9uZXQvd2lyZWxl
+c3MvcmVhbHRlay9ydGx3aWZpL3dpZmkuaCAgICAgICAgfCAgIDMzICstDQogZHJpdmVycy9uZXQv
+d2lyZWxlc3MvcmVhbHRlay9ydHc4OC9kZWJ1Zy5oICAgICAgICAgfCAgICAxICsNCiBkcml2ZXJz
+L25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L21hYy5jICAgICAgICAgICB8ICAgIDUgKy0NCiBk
+cml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3BjaS5jICAgICAgICAgICB8ICAgIDMg
+Ky0NCiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L2FjcGkuYyAgICAgICAgICB8
+ICAgNDcgKw0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvYWNwaS5oICAgICAg
+ICAgIHwgICAyMSArLQ0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvY2FtLmMg
+ICAgICAgICAgIHwgIDEyMCArLQ0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkv
+Y2FtLmggICAgICAgICAgIHwgICA3MSArLQ0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsv
+cnR3ODkvY29leC5jICAgICAgICAgIHwgMTAwMiArKysrKysrLQ0KIGRyaXZlcnMvbmV0L3dpcmVs
+ZXNzL3JlYWx0ZWsvcnR3ODkvY29leC5oICAgICAgICAgIHwgICAzNiArDQogZHJpdmVycy9uZXQv
+d2lyZWxlc3MvcmVhbHRlay9ydHc4OS9jb3JlLmMgICAgICAgICAgfCAgIDEzICstDQogZHJpdmVy
+cy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9jb3JlLmggICAgICAgICAgfCAgMjQyICstDQog
+ZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9mdy5jICAgICAgICAgICAgfCAgMzM4
+ICsrLQ0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvZncuaCAgICAgICAgICAg
+IHwgIDQ2NiArLS0tDQogZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9tYWMuYyAg
+ICAgICAgICAgfCAgIDUwICstDQogZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9t
+YWMuaCAgICAgICAgICAgfCAgICA3ICsNCiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0
+dzg5L21hYzgwMjExLmMgICAgICB8ICAgMjggKy0NCiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFs
+dGVrL3J0dzg5L21hY19iZS5jICAgICAgICB8ICAgIDUgKw0KIGRyaXZlcnMvbmV0L3dpcmVsZXNz
+L3JlYWx0ZWsvcnR3ODkvcGNpLmMgICAgICAgICAgIHwgICAgMyArLQ0KIGRyaXZlcnMvbmV0L3dp
+cmVsZXNzL3JlYWx0ZWsvcnR3ODkvcGh5LmMgICAgICAgICAgIHwgICAgNiArLQ0KIGRyaXZlcnMv
+bmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvcHMuYyAgICAgICAgICAgIHwgICAgMyArLQ0KIGRy
+aXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvcmVnLmggICAgICAgICAgIHwgICAgMyAr
+DQogZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9yZWdkLmMgICAgICAgICAgfCAg
+MTU2ICstDQogZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9ydHc4ODUxYi5jICAg
+ICAgfCAgICAxICsNCiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3J0dzg4NTJi
+LmMgICAgICB8ICAgMTQgKw0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvcnR3
+ODg1MmMuYyAgICAgIHwgICAxMiArLQ0KIC4uLi9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9y
+dHc4ODUyY190YWJsZS5jICAgIHwgMjYxNiAtLS0tLS0tLS0tLS0tLS0tLS0tLQ0KIGRyaXZlcnMv
+bmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvcnR3ODkyMmEuYyAgICAgIHwgICAgMiArLQ0KIGRy
+aXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvc2FyLmggICAgICAgICAgIHwgICAgNCAr
+LQ0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvd293LmMgICAgICAgICAgIHwg
+IDcxNiArKysrKy0NCiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3dvdy5oICAg
+ICAgICAgICB8ICAgNTcgKw0KIDgxIGZpbGVzIGNoYW5nZWQsIDgzNzEgaW5zZXJ0aW9ucygrKSwg
+ODQzOCBkZWxldGlvbnMoLSkNCiByZW5hbWUgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9y
+dGw4eHh4dS97cnRsOHh4eHVfODE4OGUuYyA9PiA4MTg4ZS5jfSAoOTklKQ0KIHJlbmFtZSBkcml2
+ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bDh4eHh1L3tydGw4eHh4dV84MTg4Zi5jID0+IDgx
+ODhmLmN9ICg5OSUpDQogcmVuYW1lIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsOHh4
+eHUve3J0bDh4eHh1XzgxOTJjLmMgPT4gODE5MmMuY30gKDkwJSkNCiByZW5hbWUgZHJpdmVycy9u
+ZXQvd2lyZWxlc3MvcmVhbHRlay9ydGw4eHh4dS97cnRsOHh4eHVfODE5MmUuYyA9PiA4MTkyZS5j
+fSAoOTklKQ0KIHJlbmFtZSBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bDh4eHh1L3ty
+dGw4eHh4dV84MTkyZi5jID0+IDgxOTJmLmN9ICg5OSUpDQogcmVuYW1lIGRyaXZlcnMvbmV0L3dp
+cmVsZXNzL3JlYWx0ZWsvcnRsOHh4eHUve3J0bDh4eHh1Xzg3MTBiLmMgPT4gODcxMGIuY30gKDk5
+JSkNCiByZW5hbWUgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGw4eHh4dS97cnRsOHh4
+eHVfODcyM2EuYyA9PiA4NzIzYS5jfSAoOTAlKQ0KIHJlbmFtZSBkcml2ZXJzL25ldC93aXJlbGVz
+cy9yZWFsdGVrL3J0bDh4eHh1L3tydGw4eHh4dV84NzIzYi5jID0+IDg3MjNiLmN9ICg5OCUpDQog
+cmVuYW1lIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsOHh4eHUve3J0bDh4eHh1X2Nv
+cmUuYyA9PiBjb3JlLmN9ICg5OCUpDQogcmVuYW1lIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0
+ZWsvcnRsOHh4eHUve3J0bDh4eHh1X3JlZ3MuaCA9PiByZWdzLmh9ICgxMDAlKQ0KIGNyZWF0ZSBt
+b2RlIDEwMDY0NCBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MmQv
+TWFrZWZpbGUNCiByZW5hbWUgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3ty
+dGw4MTkyZGUgPT4gcnRsODE5MmR9L2RlZi5oICgxMDAlKQ0KIGNyZWF0ZSBtb2RlIDEwMDY0NCBk
+cml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MmQvZG1fY29tbW9uLmMN
+CiBjcmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZp
+L3J0bDgxOTJkL2RtX2NvbW1vbi5oDQogY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvbmV0L3dp
+cmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9ydGw4MTkyZC9md19jb21tb24uYw0KIGNyZWF0ZSBtb2Rl
+IDEwMDY0NCBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE5MmQvZndf
+Y29tbW9uLmgNCiBjcmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRl
+ay9ydGx3aWZpL3J0bDgxOTJkL2h3X2NvbW1vbi5jDQogY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZl
+cnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9ydGw4MTkyZC9od19jb21tb24uaA0KIGNy
+ZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRs
+ODE5MmQvbWFpbi5jDQogY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvbmV0L3dpcmVsZXNzL3Jl
+YWx0ZWsvcnRsd2lmaS9ydGw4MTkyZC9waHlfY29tbW9uLmMNCiBjcmVhdGUgbW9kZSAxMDA2NDQg
+ZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkL3BoeV9jb21tb24u
+aA0KIHJlbmFtZSBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkve3J0bDgxOTJk
+ZSA9PiBydGw4MTkyZH0vcmVnLmggKDkwJSkNCiBjcmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy9u
+ZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkL3JmX2NvbW1vbi5jDQogY3JlYXRl
+IG1vZGUgMTAwNjQ0IGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9ydGw4MTky
+ZC9yZl9jb21tb24uaA0KIGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL25ldC93aXJlbGVzcy9y
+ZWFsdGVrL3J0bHdpZmkvcnRsODE5MmQvdHJ4X2NvbW1vbi5jDQogY3JlYXRlIG1vZGUgMTAwNjQ0
+IGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS9ydGw4MTkyZC90cnhfY29tbW9u
+LmgNCg==
 
