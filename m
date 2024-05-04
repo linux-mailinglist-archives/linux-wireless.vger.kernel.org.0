@@ -1,151 +1,96 @@
-Return-Path: <linux-wireless+bounces-7152-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7153-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67A618BB1EA
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 May 2024 19:47:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16B4A8BB8A0
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 May 2024 02:13:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97E591C20F1B
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 May 2024 17:47:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FA461C21637
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 May 2024 00:13:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0DFE23CB;
-	Fri,  3 May 2024 17:47:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Id2lUXS4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 144A2629;
+	Sat,  4 May 2024 00:13:02 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19B6481D1
-	for <linux-wireless@vger.kernel.org>; Fri,  3 May 2024 17:47:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2238A36D
+	for <linux-wireless@vger.kernel.org>; Sat,  4 May 2024 00:12:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714758455; cv=none; b=mnQg1CgZcxXkzLiLn6XOJb1YzHPmlMDtOZcIoqU9ZUK+QUAkdYimo3VrXQ8A2elrdBoJ1D6o6v20UE6S14aQAN4bbGhocioHcbcGcUt+BnJ/CD/nNfWiZh4YrF5ajFHD09O2Vcm9B1qUP3MwyXeiMH4fWUG/EJh2EgNvvMbAIGA=
+	t=1714781582; cv=none; b=Rj5ZQSCFeOhzZw0+NOql0JGVY6HNarBMtsYHmrefENCf2IERwhQ3Vi8u3uQNsmrBkieiI3l20+Ed4fgy0TiUK8BYjyuTHdTeZYXk/NUcSHUVuU00wuxNiO2OWvUyBIfwL5pIgm2TgHtFPVDZ8XGDobSuPqzDR6O/oOc5QtxjYC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714758455; c=relaxed/simple;
-	bh=MVV8+UaMpXYZgOnoAimyyKAbi+gSMicY83cmeXF+a5k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BRCirpWDTBEi78jjH1PGlbyZbASWGbi+SaZVla3E3lavWdHp0qXX3tXlj7OvkKQmX9mCczL1axFO8wr61NwuGuAi0JGtxMzKzxrE2F2dVt3fIUCvGMpX3IG0fhqqqt+4Z0axcisFJdsTUc/vkKNNbCJiI12QxKbrkBaUP8AQwUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lwfinger.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Id2lUXS4; arc=none smtp.client-ip=209.85.160.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lwfinger.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-23e78ef3de7so321400fac.1
-        for <linux-wireless@vger.kernel.org>; Fri, 03 May 2024 10:47:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714758453; x=1715363253; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=qcAVLbiFIkNm0FXsR6QtwGfyL/MOypgXNcuzEe7ryAg=;
-        b=Id2lUXS4DB10QZmqzp1UC6U3t+GZyfhwPoXbuvd50/jtWevBM2IREVOSjgCs2b7jLe
-         qGMfQ5ZlOxAU8xQXbedgP8XNDo/q4sSgSVboMF1prU8TVRYiMx7JWPBBee8sd5ydPMbi
-         eUIxGTaN7dVCMb0H4TTKkkyj3ArN0WtWJNgnUbpj9G9lT18FNN3/N+gSjMpdMJiGfbmU
-         dXUYOscjBDfssxCYPmFcFoS2ouK5SOJLakO6jIokPBGLFa42K5E4JUc/XNZWnEmzn2Ck
-         tgOiMQJX7ZK//IEYtkDMClDjkKspJGZ+hRfCQSLN2009EaJvWT26cKGOPJ0n0ngSu3MP
-         BWBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714758453; x=1715363253;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qcAVLbiFIkNm0FXsR6QtwGfyL/MOypgXNcuzEe7ryAg=;
-        b=WzHx7OcpNO7My4VbyFaHsu0IJASjZOqCF9OaLlIFDd2cqO4be1y97oM+L1ngc0AMm1
-         9cw/0A0B3niluU9EjQXu4PHWfPjuBad4SiZz2ohfqeoWiTUeExr8Gr6yqpVL81O0c06v
-         xsqZ//QWCruQwH5DasnjHuoLOQxnKwjY9rrTBX8iwESRjL5mnV9ZmZSjP6aMYltsWLAu
-         Xi7dqNQ/1vcVq895TvseNXc9zOo6WkLwPgX6krHbtW5J9zMjfCw+pLECTtBLDwiHD3i+
-         jv1ng6Sh1tYf2sQtjK18EAA9SHsPFHrgnf9sCfvRDCuCRXlVBc9+oTDd0S2DvVaqxhN4
-         LCQw==
-X-Forwarded-Encrypted: i=1; AJvYcCXIgONVIm4ZJxHuk303aTUMM+vaCQwsJ5n8JTQERf3N652A5QOmslIxMLUl7zWMvC1VNyFIxHb4F0rKDl9+biC29lm3cTUugc2yVzbV6t8=
-X-Gm-Message-State: AOJu0YxRtxaXyEzvKjGndCVOwr5/ROyDoNSNWIIzv9eIdQcA8JXd6Bs/
-	2+XW1af6cCzDNHy3lSa+LnF0/eBFF9UZJhPjbyqluB5XboDH//vE
-X-Google-Smtp-Source: AGHT+IFQekfVQo6HmLPZ5PFIM4jI1L/1CW7xzhffFuDRVUbiSaKlgVD76VjL2/k+lpSspB+cQ7aL8Q==
-X-Received: by 2002:a05:6870:d1ca:b0:23d:79c3:5627 with SMTP id b10-20020a056870d1ca00b0023d79c35627mr3979453oac.36.1714758452924;
-        Fri, 03 May 2024 10:47:32 -0700 (PDT)
-Received: from [192.168.0.189] ([216.130.59.33])
-        by smtp.gmail.com with ESMTPSA id mm17-20020a0568700e9100b0023bd97fa06bsm687696oab.43.2024.05.03.10.47.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 May 2024 10:47:32 -0700 (PDT)
-Sender: Larry Finger <larry.finger@gmail.com>
-Message-ID: <6af77250-505c-430d-901b-dec4e7e3d009@lwfinger.net>
-Date: Fri, 3 May 2024 12:47:23 -0500
+	s=arc-20240116; t=1714781582; c=relaxed/simple;
+	bh=Ur5gnyUWT2z8w8z3AX3jafnqqK85C4TwnyAk3CeAUnE=;
+	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type:Message-ID:Date; b=ghPTDGKV2Sw2jg+pCAxtixpOsGEB9M9Or8kbAekVHLqUzkUldGTe7V57eg/dkGsKuheGIaHx9g2QHX+laxgp06UeCN59bIH+WdUX9nY8ea1Z3iXdmfnQiEFFWwAfrGs8/Y3XjwA4EjL+E6n9A02H3Rtg2nvivwi2u/HU1vJLD6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4440Cuu264006461, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 4440Cuu264006461
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Sat, 4 May 2024 08:12:56 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Sat, 4 May 2024 08:12:56 +0800
+Received: from [127.0.1.1] (172.16.16.175) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Sat, 4 May
+ 2024 08:12:55 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
+CC: <gary.chang@realtek.com>, <timlee@realtek.com>
+Subject: Re: [PATCH v2 01/12] wifi: rtw89: wow: send RFK pre-nofity H2C command in WoWLAN mode
+In-Reply-To: <20240502022505.28966-2-pkshih@realtek.com>
+References: <20240502022505.28966-1-pkshih@realtek.com> <20240502022505.28966-2-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: rtw88: usb: Simplify rtw_usb_write_data
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>, Sascha Hauer <sha@pengutronix.de>
-References: <2479507e-3946-492f-857e-83e54969aad2@gmail.com>
-Content-Language: en-US
-From: Larry Finger <Larry.Finger@lwfinger.net>
-In-Reply-To: <2479507e-3946-492f-857e-83e54969aad2@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+Message-ID: <57b44415-5dc6-42cb-8962-58db7f5ae7ab@RTEXMBS04.realtek.com.tw>
+Date: Sat, 4 May 2024 08:12:55 +0800
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-On 5/3/24 5:53 AM, Bitterblue Smith wrote:
-> The skb created in this function always has the same headroom,
-> the chip's TX descriptor size. (pkt_info->offset is set by
-> rtw_usb_write_data_rsvd_page() to chip->tx_pkt_desc_sz.) Use
-> chip->tx_pkt_desc_sz directly.
+Ping-Ke Shih <pkshih@realtek.com> wrote:
+
+> From: Chin-Yen Lee <timlee@realtek.com>
 > 
-> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-> ---
-> v2:
->   - Don't touch rtw_usb_write_data_rsvd_page(). It needs to set
->     pkt_info.offset after all, otherwise RTL8822BU and RTL8821CU fail
->     to upload the firmware:
+> 802.11be WiFi chips need a RFK (RF calibration) notify H2C command after
+> downloading WoWLAN firmware to make sure RF TX/RX work fine when leaving
+> power save mode, so add it to correct RF TX/RX in WoWLAN mode.
 > 
-> ---
->   drivers/net/wireless/realtek/rtw88/usb.c | 12 +++++-------
->   1 file changed, 5 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
-> index 1dfe7c6ae4ba..a28f35a03b26 100644
-> --- a/drivers/net/wireless/realtek/rtw88/usb.c
-> +++ b/drivers/net/wireless/realtek/rtw88/usb.c
-> @@ -440,23 +440,21 @@ static int rtw_usb_write_data(struct rtw_dev *rtwdev,
->   {
->   	const struct rtw_chip_info *chip = rtwdev->chip;
->   	struct sk_buff *skb;
-> -	unsigned int desclen, headsize, size;
-> +	unsigned int size;
->   	u8 qsel;
->   	int ret = 0;
->   
->   	size = pkt_info->tx_pkt_size;
->   	qsel = pkt_info->qsel;
-> -	desclen = chip->tx_pkt_desc_sz;
-> -	headsize = pkt_info->offset ? pkt_info->offset : desclen;
->   
-> -	skb = dev_alloc_skb(headsize + size);
-> +	skb = dev_alloc_skb(chip->tx_pkt_desc_sz + size);
->   	if (unlikely(!skb))
->   		return -ENOMEM;
->   
-> -	skb_reserve(skb, headsize);
-> +	skb_reserve(skb, chip->tx_pkt_desc_sz);
->   	skb_put_data(skb, buf, size);
-> -	skb_push(skb, headsize);
-> -	memset(skb->data, 0, headsize);
-> +	skb_push(skb, chip->tx_pkt_desc_sz);
-> +	memset(skb->data, 0, chip->tx_pkt_desc_sz);
->   	rtw_tx_fill_tx_desc(pkt_info, skb);
->   	rtw_tx_fill_txdesc_checksum(rtwdev, pkt_info, skb->data);
->   
+> Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-This one works with the 8822bu.
+12 patch(es) applied to rtw-next branch of rtw.git, thanks.
 
-Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
+a79264e8c7d3 wifi: rtw89: wow: send RFK pre-nofity H2C command in WoWLAN mode
+baaf806e4632 wifi: rtw89: wow: refine WoWLAN flows of HCI interrupts and low power mode
+92790c4e50d2 wifi: rtw89: wow: parsing Auth Key Management from associate request
+803a96f477be wifi: rtw89: wow: prepare PTK GTK info from mac80211
+9076bf365e13 wifi: rtw89: use struct to access firmware command h2c_dctl_sec_cam_v1
+786737b6b708 wifi: rtw89: use struct to fill H2C of WoWLAN global configuration
+ed9a3c0d4dd9 wifi: rtw89: wow: construct EAPoL packet for GTK rekey offload
+0291633afef8 wifi: rtw89: wow: add GTK rekey feature related H2C commands
+ff53fce5c78b wifi: rtw89: wow: update latest PTK GTK info to mac80211 after resume
+940cd99625de wifi: rtw89: wow: support 802.11w PMF IGTK rekey
+e765370fdced wifi: rtw89: wow: support WEP cipher on WoWLAN
+58ed86e1666b wifi: rtw89: wow: add ARP offload feature
 
-Thanks,
-
-Larry
+---
+https://github.com/pkshih/rtw.git
 
 
