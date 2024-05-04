@@ -1,89 +1,119 @@
-Return-Path: <linux-wireless+bounces-7160-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7161-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A9A08BBAA1
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 May 2024 13:16:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 357B08BBAA6
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 May 2024 13:19:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF8BE1F21382
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 May 2024 11:16:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 384351C20D41
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 May 2024 11:19:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 730BB171CC;
-	Sat,  4 May 2024 11:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 916981B812;
+	Sat,  4 May 2024 11:19:28 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2104689
-	for <linux-wireless@vger.kernel.org>; Sat,  4 May 2024 11:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D2B18C3D
+	for <linux-wireless@vger.kernel.org>; Sat,  4 May 2024 11:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714821414; cv=none; b=UIwvOwbJTmQ9pDb9dWiTowwjyfIliok9IQXECs6sB1c1V+BQMhq4Y83g2T8gWyRp8vpzQPw3xoAIWEXpWCOzpQR2YNlwfGNkxN6v/ySpSG8zFsiZYpS+N+Q5tQ9mcH/0PVOKLgmpDTMVLf5T03hggsAX08WxLU91rajTySJwt6g=
+	t=1714821568; cv=none; b=QqpOSU3herHil/MLw091hYgIr233EJQp/797zkZ93Sx6MaiGGxAnb+4z1W0gycZYRWYfo90FuprmgQI1E1sqQFxID7wZwCbe+8wJnESkmzMe9ZpYdCjDAm4GuegxYtdFlRlt7r0ceKg8eF0kMFQl7qD63kH95gNdKIkKuKtFlhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714821414; c=relaxed/simple;
-	bh=KQPBwJJGR9SSDUhy3pED0/NQQ1eaLsqyXTaUqmRCPnA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ch/qBrETfY3owsXQk8fhXsQ6+YkierouOfrxpruT42gC+DfoHpOQ0J5sqjJh3zJ5tCmub8/qGrbb5Sy07wD2G5PoMMSmQ40QniZx2r3Cmu3FbCQMLLQ9yRA5QriV4ngqbjAqN3wd5Z+J//zit3w4DKubooxmTLoXThZQ3qFEyEs=
+	s=arc-20240116; t=1714821568; c=relaxed/simple;
+	bh=IkaCTM8ZOoAL9UcNF7S5h0VYV9IUC8ipKJGvXAfOmfM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BWgogCHu6YB3nx9oOV5ImUjHKbjwmhHqlr/eLJar4bWTgtDpkJOYS6XoqcLu2VgF5EsdTo8qE+3AnRq+4s8CVX1/AeF5vX9hOb6fr9CHSet61PWtuDH7DZ/ONTt40oDqPSBcQpX22VBgPNF0Y75qh5sqFvq5V8Rdsi/ZeK/i7y4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 444BGbRV2196857, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 444BGbRV2196857
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 444BJMrQ4197679, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 444BJMrQ4197679
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 4 May 2024 19:16:37 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Sat, 4 May 2024 19:16:37 +0800
+	Sat, 4 May 2024 19:19:22 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Sat, 4 May 2024 19:16:37 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
- RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
- 15.01.2507.035; Sat, 4 May 2024 19:16:37 +0800
+ 15.1.2507.35; Sat, 4 May 2024 19:19:22 +0800
+Received: from [127.0.1.1] (172.16.16.175) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Sat, 4 May
+ 2024 19:19:22 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: "kvalo@kernel.org" <kvalo@kernel.org>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: pull-request: rtw-next-2024-05-04
-Thread-Topic: pull-request: rtw-next-2024-05-04
-Thread-Index: AQHanbtZT6OtPHricEuEHKld+5GqvLGGIpqAgABE2wA=
-Date: Sat, 4 May 2024 11:16:37 +0000
-Message-ID: <03e00a7f47c86323f34748853ba38859b4d52695.camel@realtek.com>
-References: <333d56f0-ef24-4946-958d-e804cf9c733b@RTEXMBS04.realtek.com.tw>
-	 <171480660387.2072516.10612946227059882367.kvalo@kernel.org>
-In-Reply-To: <171480660387.2072516.10612946227059882367.kvalo@kernel.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-user-agent: Evolution 3.36.1-2 
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <2FD014AEBCD3524A81168E74B5B54884@realtek.com>
-Content-Transfer-Encoding: base64
+To: <linux-wireless@vger.kernel.org>
+CC: <rtl8821cerfe2@gmail.com>
+Subject: [PATCH] wifi: rtlwifi: 8192d: initialize rate_mask in rtl92de_update_hal_rate_mask()
+Date: Sat, 4 May 2024 19:19:16 +0800
+Message-ID: <20240504111916.31445-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
 
-T24gU2F0LCAyMDI0LTA1LTA0IGF0IDA3OjEwICswMDAwLCBLYWxsZSBWYWxvIHdyb3RlOg0KPiAN
-Cj4gZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkL2h3X2NvbW1v
-bi5jOjk4NjoyOg0KPiAuL2luY2x1ZGUvbGludXgvYml0ZmllbGQuaDoxODk6MTU6IHdhcm5pbmc6
-ICdyYXRlX21hc2snIGlzIHVzZWQgdW5pbml0aWFsaXplZCBbLVd1bmluaXRpYWxpemVkXQ0KPiAN
-Cg0KSSBoYXZlIHVwZGF0ZWQgZ2NjIHRvIDEzLjIuMSAobG9jYWwgYnVpbGQpLCBidXQgc3RpbGwg
-Y2FuJ3Qgc2VlIHRoaXMgd2FybmluZy4NClRoZW4sIEkgZm9yY2UgdG8gYWRkIC1XdW5pbml0aWFs
-aXplZCBhbmQgZGVsZXRlIC1Xbm8tbWF5YmUtdW5pbml0aWFsaXplZA0KbG9jYWxseSwgYW5kIEkg
-Y2FuIHNlZSB0aGlzIHdhcm5pbmcgKGJ1dCAtV21heWJlLXVuaW5pdGlhbGl6ZWQgaW5zdGVhZCku
-DQoNCkkgZGlkIHN1c3BlY3Qgd2lyZWxlc3MtbmV4dCB0cmVlIGRvZXMgbW9yZSBjb21waWxlciBv
-cHRpb25zLCBzbyBJIGFsc28NCnRyaWVkIHRvIG1lcmdlIHRoZSB0cmVlLCBidXQgc3RpbGwgdGhl
-IHNhbWUuDQoNClRvIHByZXZlbnQgYmxvY2tpbmcgcHVsbC1yZXF1ZXN0LCBJIHdvdWxkIG1ha2Ug
-cGF0Y2ggYW5kIHNlbmQgcHVsbC1yZXF1ZXN0DQpieSB5b3VyIGZpbmRpbmcuIEkgd2lsbCBjb250
-aW51ZSB0byBkaWcgdGhlIGNhdXNlIGFmdGVyd2FyZC4gDQoNClBpbmctS2UgDQoNCg0KDQo=
+le32p_replace_bits() only updates partial bits of rate_mask, and gcc warns
+below. Set initial value to avoid warnings, and prevent random value of
+missed bits (bit 6 of rate_mask.macid_and_short_gi).
+
+In file included from ./include/linux/fortify-string.h:5,
+                 from ./include/linux/string.h:369,
+                 from ./include/linux/bitmap.h:13,
+                 from ./include/linux/cpumask.h:13,
+                 from ./include/linux/sched.h:16,
+                 from drivers/net/wireless/realtek/rtlwifi/rtl8192d/../wifi.h:9,
+                 from drivers/net/wireless/realtek/rtlwifi/rtl8192d/hw_common.c:4:
+In function 'le32p_replace_bits',
+    inlined from 'rtl92de_update_hal_rate_mask.isra' at drivers/net/wireless/realtek/rtlwifi/rtl8192d/hw_common.c:986:2:
+./include/linux/bitfield.h:189:15: warning: 'rate_mask' is used uninitialized [-Wuninitialized]
+  189 |         *p = (*p & ~to(field)) | type##_encode_bits(val, field);        \
+      |               ^~
+./include/linux/bitfield.h:196:9: note: in expansion of macro '____MAKE_OP'
+  196 |         ____MAKE_OP(le##size,u##size,cpu_to_le##size,le##size##_to_cpu) \
+      |         ^~~~~~~~~~~
+./include/linux/bitfield.h:201:1: note: in expansion of macro '__MAKE_OP'
+  201 | __MAKE_OP(32)
+      | ^~~~~~~~~
+drivers/net/wireless/realtek/rtlwifi/rtl8192d/hw_common.c: In function 'rtl92de_update_hal_rate_mask.isra':
+drivers/net/wireless/realtek/rtlwifi/rtl8192d/hw_common.c:863:37: note: 'rate_mask' declared here
+  863 |         struct rtl92d_rate_mask_h2c rate_mask;
+      |                                     ^~~~~~~~~
+
+Fixes: 014bba73b525 ("wifi: rtlwifi: Adjust rtl8192d-common for USB")
+Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtlwifi/rtl8192d/hw_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/hw_common.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/hw_common.c
+index 920bfb4eaaef..6570d5e168e9 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/hw_common.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/hw_common.c
+@@ -857,10 +857,10 @@ static void rtl92de_update_hal_rate_mask(struct ieee80211_hw *hw,
+ {
+ 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+ 	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
++	struct rtl92d_rate_mask_h2c rate_mask = {};
+ 	struct rtl_priv *rtlpriv = rtl_priv(hw);
+ 	struct rtl_phy *rtlphy = &rtlpriv->phy;
+ 	struct rtl_sta_info *sta_entry = NULL;
+-	struct rtl92d_rate_mask_h2c rate_mask;
+ 	enum wireless_mode wirelessmode;
+ 	bool shortgi = false;
+ 	u8 curshortgi_40mhz;
+-- 
+2.25.1
+
 
