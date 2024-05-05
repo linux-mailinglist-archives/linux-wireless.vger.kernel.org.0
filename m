@@ -1,71 +1,69 @@
-Return-Path: <linux-wireless+bounces-7186-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7187-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C473F8BBF74
-	for <lists+linux-wireless@lfdr.de>; Sun,  5 May 2024 08:20:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 327578BBF75
+	for <lists+linux-wireless@lfdr.de>; Sun,  5 May 2024 08:20:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80118281D40
-	for <lists+linux-wireless@lfdr.de>; Sun,  5 May 2024 06:20:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 558B01C20AE1
+	for <lists+linux-wireless@lfdr.de>; Sun,  5 May 2024 06:20:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F18E6B65D;
-	Sun,  5 May 2024 06:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91135AD32;
+	Sun,  5 May 2024 06:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IHUXS5zX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h1AaobuQ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E343D8E
-	for <linux-wireless@vger.kernel.org>; Sun,  5 May 2024 06:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8706FB9
+	for <linux-wireless@vger.kernel.org>; Sun,  5 May 2024 06:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714890029; cv=none; b=vE+pWwHOTpfztHJN18u30RNRYVV8XR0bFw41ryzbzH6sFr73t970rqYiJJz+064Mjrdc+x16SyDLjVCp/RVMg/ULc0u8DZ2F8Bblt6fBtJ5/4exDzrC3lKghIUVTcWWwjmAzhcG/hm1rAtsRPME138mzYL2FUz+tBw3TWBHXv9o=
+	t=1714890030; cv=none; b=W9iGu/XiTp9TO5wGzl9vnykB7mPj5V9ck2bx3fsaIiy8xabEkYp9k8l5W9urqMSq1JqAaf5C1mCwgLAcuuXnxS0AnwyD+/OR62nSSOf3sp3V/OKEO0+j8ciiZlfKJG0bKwjDq0gnKZCdbjH+bqnMpjjpFnROF/ngo4Z1qHI1ZR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714890029; c=relaxed/simple;
-	bh=IpzZkqjNl3mS+lPxyhm6GOD8ZurtwivI7bPhR9dVVus=;
+	s=arc-20240116; t=1714890030; c=relaxed/simple;
+	bh=XShRLm5EvFM3vQ4Kpn4WVXyIfB16VncYCzrERvcQbVk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JT8/ZMbdkqw5mVkC79dN6X1aMRMs0wEmpMt1lYmSwTqy2tXILEpGLbrQgPXz9OgbTRIfPcHiqHCHqI9TJRHgZkft5xFfZ0so8x8pHZVuggfUUbP2aHpe19Km/1A9npxf2efKHXPDBQgTWAyMQzdIZE2AWm0LAgBym6s4RGflilc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IHUXS5zX; arc=none smtp.client-ip=192.198.163.12
+	 MIME-Version; b=TpLPcqf1RsbyNhxA+v4Dnv8CuhMvHo5EHH4mmnkBDwsgTkWcd9OOLDO6/KZKEIlBjff9WvNnsDpYNlVBMRAEpH6j9m6md+9vuVRwCkJ1G81ChSGOcBYw+T5qJCfTk/HCS37NlR80Q5TqzUZvLGKIi9VV1/z7BsQcDU//vWOir/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h1AaobuQ; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714890028; x=1746426028;
+  t=1714890029; x=1746426029;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=IpzZkqjNl3mS+lPxyhm6GOD8ZurtwivI7bPhR9dVVus=;
-  b=IHUXS5zXHCpp8CGpOJujfUiRZnagKmc56oeLsSwXezx1TeiUFnUDxrdP
-   vTMAvvKf1u1jFfj82KFW9qxXx/CcAWlB35KCIQoJTsRPJjPh27nkiSddn
-   scQjElbdZrkZackC9TJWXB36GVM9BTgI+e5GroRYMFNDOPKIG5WNZq+Ii
-   J2MPnH3EoVjCXoepdD1r4gshhEuDiTUq913vQjPWT7STLnV+e28fC0NTV
-   PjipFeF38NHZoPyDP5zos2cgab4h7FlTAsN2eObxjgB3r6sCTxa2mufm9
-   ywZ5RTZR5nHadyrBcO08SyWJLMNhX2qnx27zx3jJYZUFmHyI5OP/EdCwp
-   A==;
-X-CSE-ConnectionGUID: NmIQNgZYTv2qieWVxnpC6A==
-X-CSE-MsgGUID: J7NETpWrQIuJFMNZ5w98NA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11063"; a="14461821"
+  bh=XShRLm5EvFM3vQ4Kpn4WVXyIfB16VncYCzrERvcQbVk=;
+  b=h1AaobuQvWhuRgiigpoaxPQSi6bniwLoDoeYRqHJ3dKIHmLleli+ni9b
+   qhhtzM9d+qqCnRsWIOYKe1AdGBRt+54j4YKy/Se2qwZuJg60ofm65jwl8
+   /I/AQ6JAxwTZbLcXo7r+xI2M6hvGA4n91uLRJjYejTX1prVJciF7fvEBz
+   gRbuZauq1pJN3LbQH+QQxvzoRIK13XbuvJCz65yqTkbGXXOx95QlwXrXz
+   Bj9q58dIk5BW+tdkH0FY2oOjMWK5PiwwzZp55cHl4uRI8kiH2VndGmD6E
+   SGpfKge1MY7/2T35jfq0IwIjn505qhzPAqj7PbJ5DhnCOqE9NuMzw7ae6
+   g==;
+X-CSE-ConnectionGUID: /EuMkwnBS6GciuMoJIRiAg==
+X-CSE-MsgGUID: NVkiKukQSmOmy8DGQ7BIKg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11063"; a="14461823"
 X-IronPort-AV: E=Sophos;i="6.07,255,1708416000"; 
-   d="scan'208";a="14461821"
+   d="scan'208";a="14461823"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2024 23:20:27 -0700
-X-CSE-ConnectionGUID: enVE9kuJRPyzrZlSyFEFug==
-X-CSE-MsgGUID: 6MwLzZldQwaV/icVXonjwA==
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2024 23:20:29 -0700
+X-CSE-ConnectionGUID: LsBlShIiSAquzgDaTF/6Lw==
+X-CSE-MsgGUID: 8OxpTaV0TOucDv+TEhPdvg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,255,1708416000"; 
-   d="scan'208";a="27903614"
+   d="scan'208";a="27903615"
 Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2024 23:20:26 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2024 23:20:28 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Ilan Peer <ilan.peer@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 08/15] wifi: iwlwifi: mvm: trigger link selection upon TTLM start/end
-Date: Sun,  5 May 2024 09:19:52 +0300
-Message-Id: <20240505091420.ed2b386566a8.I0168e61da86b2027633743aaf5d97e483991f0dc@changeid>
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH 09/15] wifi: iwlwifi: mvm: avoid always prefering single-link
+Date: Sun,  5 May 2024 09:19:53 +0300
+Message-Id: <20240505091420.4614e6891dbd.Ie40eae0dd99d82ba60dea5b6dbcd42dcdf16b90d@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240505061959.825245-1-miriam.rachel.korenblit@intel.com>
 References: <20240505061959.825245-1-miriam.rachel.korenblit@intel.com>
@@ -78,36 +76,34 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-When non default TTLM is applied, mac80211 may force us to use a specific
-link (For example, if the only active link becomes a dormant link,
-mac80211 will pick the first usable link and set it as active).
-When default TTLM is applied, we have new usable links that we might want
-to select. Therefore, trigger MLO scan and link selection upon change in
-TTLM.
+The new link selection algorithm uses defaults values for BSS load if
+the BSS Load element was not published by the AP.
+For 6 GHz, that value is 0. So if the best link is 6 GHz, the EMLSR
+grade to always be equal to the grade of the best link,
+and then the best link grade is getting a bonus of 10 percent, meaning
+that we will never activate EMLSR.
+Change the logic to not give a bonus for the best link.
 
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/link.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-index 305f194ae7b2..31669996ecce 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-@@ -879,6 +879,11 @@ static void iwl_mvm_mld_vif_cfg_changed_station(struct iwl_mvm *mvm,
- 		if (ret)
- 			IWL_ERR(mvm, "failed to update power mode\n");
- 	}
-+
-+	if (changes & (BSS_CHANGED_MLD_VALID_LINKS | BSS_CHANGED_MLD_TTLM) &&
-+	    ieee80211_vif_is_mld(vif) && mvmvif->authorized)
-+		wiphy_delayed_work_queue(mvm->hw->wiphy,
-+					 &mvmvif->mlo_int_scan_wk, 0);
- }
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/link.c b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
+index 79f048f54a21..9d7f9e5be253 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/link.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
+@@ -727,8 +727,8 @@ void iwl_mvm_select_links(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
+ 	if (hweight16(new_active_links) <= 1)
+ 		goto set_active;
  
- static void
+-	/* prefer single link over marginal eSR improvement */
+-	if (best_link->grade * 110 / 100 >= max_esr_grade) {
++	/* For equal grade - prefer EMLSR */
++	if (best_link->grade > max_esr_grade) {
+ 		primary_link = best_link->link_id;
+ 		new_active_links = BIT(best_link->link_id);
+ 	}
 -- 
 2.34.1
 
