@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-7208-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7210-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D3388BC808
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 09:05:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 583CC8BC80C
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 09:05:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55F531C212BC
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 07:05:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97336B21565
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 07:05:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0901140369;
-	Mon,  6 May 2024 07:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 074EF1411CD;
+	Mon,  6 May 2024 07:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H3c/9DqT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y++LpdaB"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33AE184DFA
-	for <linux-wireless@vger.kernel.org>; Mon,  6 May 2024 07:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 796A913FD91
+	for <linux-wireless@vger.kernel.org>; Mon,  6 May 2024 07:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714979104; cv=none; b=PG0+vDEe1MxCjFt1K6fqLLxBIAL8mroJ7lO0SHP3C+MsjJ9wvWQ3bktZC7heF1RxkU4/rIsgwxFLFEXaeHjhV49N7oezQUe3tNhjtM94aiN0I0ZMnM+TJn2b13fihhXpvtW9ZdCoT2YthV5lpSoqZm/xzfr5RuuKp91Abq2jHbU=
+	t=1714979105; cv=none; b=Wf8hqqxmd/WylLzo89IDwAp07r9EsacZH6Cp2h/bYkOgjqxufXSmcQAzbaohvJpRPX6I67Y7PBkJIkp5pzRDgwd760jY18g5jNPN3Pj0R8cM7dohP20zppnwMrizj/6XpG/22enrUmAQb077a+txY1lo/g6aXi2ra3YwCYt1/RQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714979104; c=relaxed/simple;
-	bh=jRVwnHxKIwZHdZWVps26pPuLu5rVFlQanT1/nnl7FaA=;
+	s=arc-20240116; t=1714979105; c=relaxed/simple;
+	bh=AqQH/GmZLgWLn3OVToXxN/DbFag72mVpGqijOf7Fj74=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YtOWOtHS8xcl62x7ciTUxGr1kGdlAp0p1OzzhqLIChaxuEpASBdk5HeF8ia1yuHP5K2z1wPh7dLcoNgvbYJK9BDLWMx2XZKppwPwcJzm7HcHbS1TdObY4yTxotgHCP342+AuycOdN/bdeCj4h15rAo5TH3725zyeCWZQTsqkUdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H3c/9DqT; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=RPByD1+De+fbsEvAGZbZbwYuZKHSFxLp3Vx5l4+gVJhROzhqUVkZnYEmSJTWkjqHC9CDhFKaY/GjuIB4VcCUryQLLiFLB6cI/qSPqLFsOdCLzPUz6rhwYEnvwCvJtOtPSd3WIfWAqpcJmuHGQ+8ZkaWwvnbTZS/xiuz9DlRgvrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y++LpdaB; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714979104; x=1746515104;
+  t=1714979105; x=1746515105;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=jRVwnHxKIwZHdZWVps26pPuLu5rVFlQanT1/nnl7FaA=;
-  b=H3c/9DqTkyyNjVeKKMY1QB3iqEKbvypm/J+KUGCNCfRMXDFEPfWmaPJI
-   Ip9JtzBJUGnBjlApRXN0qyHPDAM5HhJre0cUsXzKZcNJZdxO675EzQrLn
-   fx/SXJSPfW3HCeI3qt1iJqyocjV91+XzKLegK5JNS4qfuddYSFQS1LxGv
-   HaPilMr/zI259Ac6TZaG5MLI7HxouIq38peJIU4f46frwMsl9pj1KBdeg
-   4Ygu7y+nR9VgpiVFo/ei2aWJrH5lOXlkI2C3PE2yVmXIxcWHQxWaHUCEq
-   TlJB/aPEqeKUCox6Y87HnXwk1yPuKmjDI/azk5Nm2e2IOi85aFAZaBI+s
-   w==;
-X-CSE-ConnectionGUID: EhWtTNMRQE+F35PX1SSuMQ==
-X-CSE-MsgGUID: wsua3YY+QhqLwlHEqeI86w==
-X-IronPort-AV: E=McAfee;i="6600,9927,11064"; a="10638243"
+  bh=AqQH/GmZLgWLn3OVToXxN/DbFag72mVpGqijOf7Fj74=;
+  b=Y++LpdaBN2bOKqtOuqA/Sbd2SHsVf+imtFNbRwVuyarpS4mUFEVv1uWG
+   DO+tivGgDtJSUhhR9fCt1i/7fl2KTWV3HMZtNHq1EwPLWOjJB9mHX1dKf
+   qPGXdkTwQMB4xJ25J24mfVruMx3M1RRLMzw8c9u/2mSJT5E1YB06qbfKt
+   oUyf3cn1bGaY+ETPFiGUQO4GtuVJGL2I2BnTxEqdYg0n78fhUGQVUHTi3
+   jzeEKSK2EnatnRdMTTTpNhg0Gm74AcXIAiIeMxahKeLQQDd5wrmT1bNBP
+   6d4PWJRvksXk/QrulwPfjR0ykhu3OfOruPqanYCWfpQEu0QbOX8JQ5D3B
+   Q==;
+X-CSE-ConnectionGUID: 6z4hE7tAT4qEEYK6atUz+A==
+X-CSE-MsgGUID: +ZGgDS1STPqwl31bzfZ8XA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11064"; a="10638246"
 X-IronPort-AV: E=Sophos;i="6.07,257,1708416000"; 
-   d="scan'208";a="10638243"
+   d="scan'208";a="10638246"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 00:04:49 -0700
-X-CSE-ConnectionGUID: vMktc04KQ0aFJY38zgpbfQ==
-X-CSE-MsgGUID: gFXadkw6SDeDZPwf/hUNgg==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 00:04:50 -0700
+X-CSE-ConnectionGUID: 0f6VkE8iS0ubl1y3gmygyQ==
+X-CSE-MsgGUID: ZWFJwRsmTqKYtVPJcnSB5w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,257,1708416000"; 
-   d="scan'208";a="59264958"
+   d="scan'208";a="59264978"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 00:04:47 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 00:04:48 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 11/15] wifi: iwlwifi: mvm: align UATS naming with firmware
-Date: Mon,  6 May 2024 10:04:15 +0300
-Message-Id: <20240506095953.b0dfe17d5f44.I8f5f5a831c7b934ce3140f838315827c018103bb@changeid>
+	striebit <shaul.triebitz@intel.com>
+Subject: [PATCH 12/15] wifi: iwlwifi: mvm: add beacon template version 14
+Date: Mon,  6 May 2024 10:04:16 +0300
+Message-Id: <20240506095953.76957de93810.I2c718b0d648f2559fe1337df39915c5e772856bc@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240506070419.1821330-1-miriam.rachel.korenblit@intel.com>
 References: <20240506070419.1821330-1-miriam.rachel.korenblit@intel.com>
@@ -77,102 +77,79 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: striebit <shaul.triebitz@intel.com>
 
-The firmware has different names for this, which is confusing
-as even the convention of having the firmware name in a comment
-after the struct definition wasn't met here. Fix the naming,
-but keep UATS in some of it since that's the BIOS name.
+In version 14 tim_size became the offset of the
+broadcast TWT IE.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: striebit <shaul.triebitz@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h | 10 +++++-----
- drivers/net/wireless/intel/iwlwifi/fw/runtime.h     |  2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c         |  9 +++++----
- 3 files changed, 11 insertions(+), 10 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/api/tx.h    | 13 +++++++++----
+ drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  7 +++++++
+ 2 files changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h b/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h
-index c9c0329f5778..a08497a04733 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/nvm-reg.h
-@@ -46,9 +46,9 @@ enum iwl_regulatory_and_nvm_subcmd_ids {
- 	SAR_OFFSET_MAPPING_TABLE_CMD = 0x4,
- 
- 	/**
--	 * @UATS_TABLE_CMD: &struct iwl_uats_table_cmd
-+	 * @MCC_ALLOWED_AP_TYPE_CMD: &struct iwl_mcc_allowed_ap_type_cmd
- 	 */
--	UATS_TABLE_CMD = 0x5,
-+	MCC_ALLOWED_AP_TYPE_CMD = 0x5,
- 
- 	/**
- 	 * @PNVM_INIT_COMPLETE_NTFY: &struct iwl_pnvm_init_complete_ntfy
-@@ -701,13 +701,13 @@ struct iwl_pnvm_init_complete_ntfy {
- #define UATS_TABLE_COL_SIZE	13
- 
- /**
-- * struct iwl_uats_table_cmd - struct for UATS_TABLE_CMD
-+ * struct iwl_mcc_allowed_ap_type_cmd - struct for MCC_ALLOWED_AP_TYPE_CMD
-  * @offset_map: mapping a mcc to UHB AP type support (UATS) allowed
-  * @reserved: reserved
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h b/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
+index d9e4c75403b8..bbd176d88820 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
+ /*
+- * Copyright (C) 2012-2014, 2018-2023 Intel Corporation
++ * Copyright (C) 2012-2014, 2018-2024 Intel Corporation
+  * Copyright (C) 2016-2017 Intel Deutschland GmbH
   */
--struct iwl_uats_table_cmd {
-+struct iwl_mcc_allowed_ap_type_cmd {
- 	u8 offset_map[UATS_TABLE_ROW_SIZE][UATS_TABLE_COL_SIZE];
- 	__le16 reserved;
--} __packed; /* UATS_TABLE_CMD_S_VER_1 */
-+} __packed; /* MCC_ALLOWED_AP_TYPE_CMD_API_S_VER_1 */
+ #ifndef __iwl_fw_api_tx_h__
+@@ -793,7 +793,8 @@ enum iwl_mac_beacon_flags {
+  * @reserved: reserved
+  * @link_id: the firmware id of the link that will use this beacon
+  * @tim_idx: the offset of the tim IE in the beacon
+- * @tim_size: the length of the tim IE
++ * @tim_size: the length of the tim IE (version < 14)
++ * @btwt_offset: offset to the broadcast TWT IE if present (version >= 14)
+  * @ecsa_offset: offset to the ECSA IE if present
+  * @csa_offset: offset to the CSA IE if present
+  * @frame: the template of the beacon frame
+@@ -805,14 +806,18 @@ struct iwl_mac_beacon_cmd {
+ 	__le32 reserved;
+ 	__le32 link_id;
+ 	__le32 tim_idx;
+-	__le32 tim_size;
++	union {
++		__le32 tim_size;
++		__le32 btwt_offset;
++	};
+ 	__le32 ecsa_offset;
+ 	__le32 csa_offset;
+ 	struct ieee80211_hdr frame[];
+ } __packed; /* BEACON_TEMPLATE_CMD_API_S_VER_10,
+ 	     * BEACON_TEMPLATE_CMD_API_S_VER_11,
+ 	     * BEACON_TEMPLATE_CMD_API_S_VER_12,
+-	     * BEACON_TEMPLATE_CMD_API_S_VER_13
++	     * BEACON_TEMPLATE_CMD_API_S_VER_13,
++	     * BEACON_TEMPLATE_CMD_API_S_VER_14
+ 	     */
  
- #endif /* __iwl_fw_api_nvm_reg_h__ */
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-index 4204e999bbf2..9122f9a1260a 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-@@ -182,7 +182,7 @@ struct iwl_fw_runtime {
- 	u8 ppag_ver;
- 	struct iwl_sar_offset_mapping_cmd sgom_table;
- 	bool sgom_enabled;
--	struct iwl_uats_table_cmd uats_table;
-+	struct iwl_mcc_allowed_ap_type_cmd uats_table;
- 	u8 uefi_tables_lock_status;
- 	bool uats_enabled;
- };
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 74b299139391..e7f5978ef2d7 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -494,7 +494,7 @@ static void iwl_mvm_uats_init(struct iwl_mvm *mvm)
- 	int ret;
- 	struct iwl_host_cmd cmd = {
- 		.id = WIDE_ID(REGULATORY_AND_NVM_GROUP,
--			      UATS_TABLE_CMD),
-+			      MCC_ALLOWED_AP_TYPE_CMD),
- 		.flags = 0,
- 		.data[0] = &mvm->fwrt.uats_table,
- 		.len[0] =  sizeof(mvm->fwrt.uats_table),
-@@ -516,7 +516,7 @@ static void iwl_mvm_uats_init(struct iwl_mvm *mvm)
- 					IWL_FW_CMD_VER_UNKNOWN);
- 	if (cmd_ver != 1) {
- 		IWL_DEBUG_RADIO(mvm,
--				"UATS_TABLE_CMD ver %d not supported\n",
-+				"MCC_ALLOWED_AP_TYPE_CMD ver %d not supported\n",
- 				cmd_ver);
- 		return;
- 	}
-@@ -529,9 +529,10 @@ static void iwl_mvm_uats_init(struct iwl_mvm *mvm)
+ struct iwl_beacon_notif {
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+index 2718db5aa3f5..5a06f887769a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+@@ -1163,6 +1163,13 @@ static int iwl_mvm_mac_ctxt_send_beacon_v9(struct iwl_mvm *mvm,
+ 						   WLAN_EID_EXT_CHANSWITCH_ANN,
+ 						   beacon->len));
  
- 	ret = iwl_mvm_send_cmd(mvm, &cmd);
- 	if (ret < 0)
--		IWL_ERR(mvm, "failed to send UATS_TABLE_CMD (%d)\n", ret);
-+		IWL_ERR(mvm, "failed to send MCC_ALLOWED_AP_TYPE_CMD (%d)\n",
-+			ret);
- 	else
--		IWL_DEBUG_RADIO(mvm, "UATS_TABLE_CMD sent to FW\n");
-+		IWL_DEBUG_RADIO(mvm, "MCC_ALLOWED_AP_TYPE_CMD sent to FW\n");
++	if (vif->type == NL80211_IFTYPE_AP &&
++	    iwl_fw_lookup_cmd_ver(mvm->fw, BEACON_TEMPLATE_CMD, 0) >= 14)
++		beacon_cmd.btwt_offset =
++			cpu_to_le32(iwl_mvm_find_ie_offset(beacon->data,
++							   WLAN_EID_S1G_TWT,
++							   beacon->len));
++
+ 	return iwl_mvm_mac_ctxt_send_beacon_cmd(mvm, beacon, &beacon_cmd,
+ 						sizeof(beacon_cmd));
  }
- 
- static int iwl_mvm_sgom_init(struct iwl_mvm *mvm)
 -- 
 2.34.1
 
