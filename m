@@ -1,49 +1,73 @@
-Return-Path: <linux-wireless+bounces-7215-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7216-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F53B8BCBFD
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 12:27:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C0B58BCC23
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 12:39:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D213281A88
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 10:27:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42FABB22D02
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 10:39:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E4E71422A2;
-	Mon,  6 May 2024 10:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDFA5757FC;
+	Mon,  6 May 2024 10:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lexina.in header.i=@lexina.in header.b="Zl01kahb"
+	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="gZrOyVWT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx.adeep.su (mx.adeep.su [185.250.0.168])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C8643AA5
-	for <linux-wireless@vger.kernel.org>; Mon,  6 May 2024 10:27:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.250.0.168
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D998757F8
+	for <linux-wireless@vger.kernel.org>; Mon,  6 May 2024 10:39:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714991236; cv=none; b=ZWZw4zEd9DjHYekNpyiNwDVewY//UW3VBmxkQ5KJLqPg6rqy7b/eLfZa6tT6BmH+ULPG3l9eQqnIFZzSGwAFW2DL/0dur06eDP+ZHP++SvOI9FjeGXROnevxysntVHBRwYjOQD3FIYp9llK5dKO7VTQ0LWvyoVlBP37UsXa5C7o=
+	t=1714991975; cv=none; b=FT7OvTyw/WsB5xKxB6DFbXJ7SpIRJXf/S7NttX+IdH/JlrnDduZo6u1wsrTQu+oGyN0U8IEihTd2d4D/HQy9d4U6GIlo/aAU84lCXUyq4tkH/LRmmnwKtsnaC0tttju3x5nBmzJ6HU23+IV5A+1Klns0O6Lv6Ozz/0VuJUmgyxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714991236; c=relaxed/simple;
-	bh=DfN492fKmG1pp25meJrAB38A+ZDkgZq55ub0q3Xa70E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BiyQipIAbxBBYJ9avKsMhKoNHOmP1pGtTnxPM46EQrF8JRDyb8JWQou/uFGEdJn8DrjldvPBj8gg897Cgcm+ORaZAcEmwruE5UXke6f6/jCsoSbOy8Q92YTymZLX9lDcCiKes1moe8HIfmvnGAtfLxJtbCEGqC1rcWba7owRKrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=lexina.in; spf=pass smtp.mailfrom=lexina.in; dkim=pass (2048-bit key) header.d=lexina.in header.i=@lexina.in header.b=Zl01kahb; arc=none smtp.client-ip=185.250.0.168
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=lexina.in
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lexina.in
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6F9001ACD94;
-	Mon,  6 May 2024 13:18:51 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lexina.in; s=dkim;
-	t=1714990734; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references:autocrypt;
-	bh=IdbaLjdHg8YxmoZY/jSQEL3mh/7+ZA7VZjLJnU6RGvQ=;
-	b=Zl01kahbi04nip26rC0Y9J1vKQJIVMHAIR1+h0pCjhJqK3Dell2iJ3SBq4Jp7+j/0RTP9h
-	nIfCV8pM3mzYWlK4gfvbPh36LC8UrbPxIH5fjifViED+nWxDkIMVQDg8JLZnkQoW6ZD8nc
-	mQUSYH/J3U7vdk32VO7ESQM9I9QWyO3XL+Bj9liD2DSGyQ+TyzmDnY6t9kzTQmR21sz2Ap
-	mun2WNJiuyNaYNSKvBtAzrRufTL2cXHMQDVv2EZw5c3+Cpt4MjPG9D/S4GEfg1C2FZYI5Z
-	BR0MCqtcJ1aSZf/LB6Kj99s2zGkGyyIsQSkCeLbxnXhXlSInUsV26jmGhSdjgw==
-Message-ID: <a30c323a-d09a-4ea3-952b-26adf909b069@lexina.in>
-Date: Mon, 6 May 2024 13:18:48 +0300
+	s=arc-20240116; t=1714991975; c=relaxed/simple;
+	bh=VCaKT5u8lTLVTjXueD0jCJ5iZBZGDGU+D3AGpglbVzs=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=HwGDKXPdBB0OimRtBuNuX8/RtJNgK1mZ6NCIFH/iFh/0Gdcn0Eq1rYjzZB2b1zOvt5ZorJ8DwudbkpHUaLP4KbwwiwoYTqkWHca+xN2uD/rS3J37P3909DDv1+E6O/ED/KxLHqKwnOy5iSH9ZbmcJAxr1/75267yIOeNITo3oS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=gZrOyVWT; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a59a9d66a51so359783366b.2
+        for <linux-wireless@vger.kernel.org>; Mon, 06 May 2024 03:39:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1714991971; x=1715596771; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=kaZ3b+wA8MZ5j8DpPLxbQdJidq7dsWbxXymGm0E7eaE=;
+        b=gZrOyVWTENpaMGslLhdPvqLVxXNhtbtFWf3JU9x9j+2URHXq+uyzi6m4aHjHYYO2mQ
+         DIAkDZ0jKM+zTbzkFgfdjWxybEWMFPJXtO69ED4QdCqSbvcNg8JgB1msaY/uPoCpXzT/
+         Bs9wJoeGgukaJC+bdk1kz03vCc4YEvXF69qjKg9M2vO3lC6njIB2J9YeSlpMETTNFOnC
+         AyDlaZG/rAZtNANYfbd0Rtefe/H0cr9iJiyl2hOCqKl0W9IJQMJNIDz0EQ/z8JVxQqlZ
+         guXJrks0hB6+xuKRHl9btYArEBytF36L1cp9AZrSICoSAIIyaYFNwgAO+sANqyx5FqL/
+         1V/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714991971; x=1715596771;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kaZ3b+wA8MZ5j8DpPLxbQdJidq7dsWbxXymGm0E7eaE=;
+        b=RuY2sk7NG5X/J2ThlRoPNrDv5MHQ+CAldaScDputvcomajo626jtWKyUmlB4z+DiKj
+         +ySj9Y8pjbDUnoaFfiWxjD2IoCUIoSwi67vRBk/IOC2V8lEDT6G5V5Je7a7/SgdoiNIG
+         ZHyB+n34RPL497mLk+5I7ESMyuDKIkGhpfKJPQJJ2UgO5XANkPqwIWWAoM/BWJjExRC7
+         MffcvBRp6P/FanxxJIpWnXdLZUD0itltba9FHPD5l6C98SCOdkof0byZDvc5OVX1nfE7
+         2z/ne4sV1cELTxa2wUV0JPOZDi5LQ1ik4ky5PCnGZPPVyqGzexp4dpa25EawTNHaqX7l
+         ATaw==
+X-Gm-Message-State: AOJu0YxqtViaSYwMSM9CoRC9GoNmKHVP8qTb5aBzw20+zn3v3tegklDf
+	z+wRgZHno93RCGBEusWlJoom9IW1VlPkZ/hwM4xFURB64j3wA3ZwTuU4db7yqUA=
+X-Google-Smtp-Source: AGHT+IGx9LmYxtU/pPmXwTNmUrrwCTPVyDDzwM65RRchtvkrvBiT8EBHMSY9rEMAgxT0sUZSnIarQA==
+X-Received: by 2002:a17:907:94c1:b0:a59:cdc9:6fe1 with SMTP id dn1-20020a17090794c100b00a59cdc96fe1mr1817914ejc.19.1714991970848;
+        Mon, 06 May 2024 03:39:30 -0700 (PDT)
+Received: from [192.168.108.81] (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id ao17-20020a170907359100b00a59c3024258sm1809387ejc.84.2024.05.06.03.39.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 May 2024 03:39:30 -0700 (PDT)
+Message-ID: <02592b09-8ab5-42ab-bd6b-6db79722d708@freebox.fr>
+Date: Mon, 6 May 2024 12:39:29 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -51,95 +75,76 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: rtw88: rtl8822cs AP mode not working
-To: Gabriel Tisan <gabriel.tisan@gmail.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <36972ff5-0c48-4bd2-8f9a-9649bfa24225@lexina.in>
- <11c7333aee0d45fd9fbfc65f6e2a3aa2@realtek.com>
- <216e8522-fa56-4d54-ae32-74c6008a2075@lexina.in>
- <0969b1ca039e423dbcc41de18db023c6@realtek.com>
- <cc54a8b2-2fea-406c-8d4a-24ddfd34f983@lexina.in>
- <0be52db8941c4e609bfda6c69a14184e@realtek.com>
- <CAFBinCDT2Pj_BYqCtk+i7y8LPU2qwah-4Scdq29ONBqs3wt0pQ@mail.gmail.com>
- <8192e59807e14525b821317a5f550ea4@realtek.com>
- <CAFBinCBf2XM-W8-_YEGXydy4kLHHar7Fv5=GoKddjE9f0hTkAw@mail.gmail.com>
- <e4ccf840-a38c-455e-af75-5f4db8a97702@lexina.in>
- <CAD9ZU8C1mf92UH1_k4bB5yTr8yXLX_0CDZHFz+Yh6Z0MQZLs=w@mail.gmail.com>
- <131edbb8-be69-4766-b7af-49ec9232eb3c@lexina.in>
- <CAD9ZU8DBn_pmkAX2JkBh2_HPe08pGRx6n+8i0TgKq3xXa2+2eQ@mail.gmail.com>
-Content-Language: en-US, ru-RU
-From: Viacheslav <adeep@lexina.in>
-Autocrypt: addr=adeep@lexina.in; keydata=
- xsDNBF+1fsQBDADh4przgt1LU4l+B6rIWel42Mg3hgdgbZ2nlIkKnaaNLXkm5rK0EJJeStd7
- 8sxsdk9n7UQFB3mkmgjc89zyAG+CDG/+KZQMWOsc5IvWlDebKlefieyvf9yvV4qcQTeudr3C
- CgUxq8qsp1fDX9jdSjz5/OMJKrxCElMxLxJTFF+FHtWvUIMr4txesE8NP7f7VnIYILEeMM8q
- gvptNUrWQr6KTv4XnRD/BvsRZJWnQ/a5MzMGQWzw7LeT4vhV4lYqJsXmxbGLUOKi+5ZpslR3
- Ffby2kdL1Xyq6Y7Gi70RhUpKP0xGJ6gDVs6SjFSb9UxgrjwNBWZcFeSJkc6pR5JbgbYMRvdA
- W5CNnA8TzdfhPgO3HEDFlsVqberSBI/tMiwHWPze7jkv7ttx/Wg9+RZybFfCkGm4XvKh7aP4
- jG3Td43mqhyHGzOd/EUxNITebqxqpEJTmRCisgpjr3M76aht4UFz11tP/QEuCrpDX0bOMPYA
- 4aohmhw5FLyWUPg0JllH6kEAEQEAAc0SIDxhZGVlcEBsZXhpbmEuaW4+wsDwBBMBCgAaBAsJ
- CAcCFQoCFgECGQEFgl+1fsQCngECmwMACgkQ7jaxEAJajfrgvAwA051C6jUKS6Wp4oy2Or0i
- B1HXCDDaCS2zgWDCa+nuI+8qVDzTx0TAlurt+S3AUv8+DHjkc4XjEHtDdigabp2nGsk51w3C
- WyGD7NKUQz8/mpN7Fb2OV79etE3PTMayUrXRZh7ZuvQ7vkUemKM8rRw0PFPu3kqwZPDPapYH
- rPyJZjnNFuvFULli/xIcc8+WklaYgOKg4nmsVBT4NigiV2Y4Mb4yVBWl58mErRH5pv08NYb4
- 1JFD2FZnTGhEeumQDl9p6Kd+rZETRgkMEHw+HMwdXl5ZXv5ci4NTigiH77UvfN8FetuAdl3x
- 6EM+1bJkgab6TMyWdNPPmF6e5BPHtBduk9gzmU5+xUlTbur0gun662oFi1oWwbAqhBDueDyL
- xCi8qjycOJaehBcPRtksQeTZrp+fDYne7hq3ywMBdlqhdz4Sfm7urLHvA/bApgJKlWylkqkl
- sG82QPh63ZnNw2lORTGEQTO3tBMY5RLKnrvZjtZR7W06pVZXyQQXZceEmpCazsDNBF+1fsQB
- DACy2kiiKt2bTSl4u/z1en+BhP16c/RbjnDXVkbapyZRCf3OmjfpRXprje4Z0+HAHReWgnOc
- sC6vNk+SWimoE/qyXQTNnUDS7KYdFaof14UmU2rA9pf1oXHOgMRzlwinCe+6NCgkjsqOr3e5
- 8XNo+cxmQy1bhHt1LDwixBFU6v65umJpZAVUd1F624wU+UeRZCjymMB80ePxF9ppnfcYc+Yp
- aM70LFwDzxCmeLGv0uMb0jfgJ8j2k2LS5nOQ4AX+WoOb98vFuqW7oYA9oCCKDG0Gp/w9QxG5
- RKjMytZIUxQA2JDq0jUN90pK0mtZJn7/Dr8GRM+W+UpeKiK7wW9iTFH+hTIRtbCC8vO8JDGz
- umW65BFtZfH2cEQDU2nbdsf/SstszPDMuyDiCHmxh8MKN/fn55osvJvjXgqpsH48tz9O7262
- P5xK4nMpsWWj7W6OhHGTQTHgMrKsiYoDx9+5NGt8n+MbLO5DUvyOSvfAiE+hRaf97R9vtoSy
- BoyahDXmCH0AEQEAAcLA3wQYAQoACQWCX7V+xAKbDAAKCRDuNrEQAlqN+ra3C/95TV1Fjy//
- t6FvNIgLy0e+5LnTegejiCaGbxklGFIWkGamX/DOm3QF+ZaKsoXUf/kmpL10dnsExiGHTeGw
- 7zR8+rOkVnK6fq0ady43a7RxKP5nW0pDVclTvsAWr1CcdFrCVpH2idj7fjtAmZlMbuiEMXoo
- kaDXdhJtS60VrwS4xUlw4ZPQjMZdQdvpu4vGtZUfJr+8vJ757d9N3EGpFUrk+5QWozjktLVm
- gdQ0nlD9ji3RpwjhQWCIoi6GmdWpfdj3LzDO/DwWRLlz8iAdZG3pHSGsCmM2MJ16HbPnsSxr
- YrKwM/HVpqTSVsprnQogPL/xM0AH11uAbqNvIvm6sUkEmx2kdBzTKjY0YdSkpUgTauWn13bg
- Ay+0xfqxRvYBSsHpWpnSnsI12861OVGnYsnB8gJlJLSQjOl3Kwq36MeWbAg6Bs4PnNU4i+uO
- rz9PJ4vHmMYfmMDJLYWJI6pcLyAoZSE/bSTLaRV73/zjtlX85mtEL3fvh6G342uRCvAwqgI=
-In-Reply-To: <CAD9ZU8DBn_pmkAX2JkBh2_HPe08pGRx6n+8i0TgKq3xXa2+2eQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Subject: Re: [PATCH v3 3/3] arm64: dts: qcom: msm8998: set
+ qcom,no-msa-ready-indicator for wifi
+From: Marc Gonzalez <mgonzalez@freebox.fr>
+To: Bjorn Andersson <andersson@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+ Jeff Johnson <quic_jjohnson@quicinc.com>, ath10k <ath10k@lists.infradead.org>
+Cc: wireless <linux-wireless@vger.kernel.org>, DT
+ <devicetree@vger.kernel.org>, MSM <linux-arm-msm@vger.kernel.org>,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Pierre-Hugues Husson <phhusson@freebox.fr>, Arnaud Vrac <avrac@freebox.fr>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>,
+ Jami Kettunen <jamipkettunen@gmail.com>,
+ Jeffrey Hugo <quic_jhugo@quicinc.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+ Alexey Minnekhanov <alexeymin@postmarketos.org>
+References: <ebbda69c-63c1-4003-bf97-c3adf3ccb9e3@freebox.fr>
+ <0914f96e-fcfd-4088-924a-fc1991bce75f@freebox.fr>
+Content-Language: en-US
+In-Reply-To: <0914f96e-fcfd-4088-924a-fc1991bce75f@freebox.fr>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Seems that was github morrownr/8821cu-20210916 repo.
+On 29/04/2024 16:07, Marc Gonzalez wrote:
 
-see 
-https://github.com/armbian/build/blob/2c0fef166f78962500fecfb6a2208550cc897fb5/lib/functions/compilation/patch/drivers_network.sh#L257
-
-06/05/2024 12.38, Gabriel Tisan wrote:
-> I tested again and I could confirm that rtw88 does not send any beacon
-> in AP mode.
-> Once again, maybe you could tell me which repo of the driver rtl8821cu
-> you tested successfully in AP mode.
+> The ath10k driver waits for an "MSA_READY" indicator
+> to complete initialization. If the indicator is not
+> received, then the device remains unusable.
 > 
-> On Thu, Apr 18, 2024 at 12:55 PM Viacheslav <adeep@lexina.in> wrote:
->>
->>
->>
->> 18/04/2024 09.58, Gabriel Tisan wrote:
->>> @ Viacheslav:
->>> Can you please tell me which repo did you use when your run USB 8821cu
->>> successfully in AP mode ?
->>>   From your log bellow it seems that is not the mainline driver rtw88_8821cu.
->>>
->>> On Wed, Jan 17, 2024 at 10:49 AM Viacheslav <adeep@lexina.in> wrote:
->>>> I have USB RTL8821CU. It works in AP mode:
->>>>
->>>> [511809.841083] usb 1-1.4: New USB device found, idVendor=0bda,
->>>> idProduct=c820, bcdDevice= 2.00
->>>> [511809.841111] usb 1-1.4: New USB device strings: Mfr=1, Product=2,
->>>> SerialNumber=3
->>>> [511809.841118] usb 1-1.4: Product: 802.11ac NIC
->>>> [511809.841124] usb 1-1.4: Manufacturer: Realtek
->>>> [511809.841130] usb 1-1.4: SerialNumber: 123456
->>>> [511809.973789] usbcore: registered new interface driver btusb
->>>> [511810.432057] usbcore: registered new interface driver rtl8821cu
->>
->> Damn, I thought the rtw88 driver had been picked up, but now I see that
->> it hasn't. I will test again and report back with the results.
+> cf. ath10k_qmi_driver_event_work()
+> 
+> Several msm8998-based devices are affected by this issue.
+> Oddly, it seems safe to NOT wait for the indicator, and
+> proceed immediately when QMI_EVENT_SERVER_ARRIVE.
+> 
+> Jeff Johnson wrote:
+> 
+>   The feedback I received was "it might be ok to change all ath10k qmi
+>   to skip waiting for msa_ready", and it was pointed out that ath11k
+>   (and ath12k) do not wait for it.
+> 
+>   However with so many deployed devices, "might be ok" isn't a strong
+>   argument for changing the default behavior.
+> 
+> cf. also
+> https://wiki.postmarketos.org/wiki/Qualcomm_Snapdragon_835_(MSM8998)#WLAN
+> 
+> Signed-off-by: Marc Gonzalez <mgonzalez@freebox.fr>
+> ---
+>  arch/arm64/boot/dts/qcom/msm8998.dtsi | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+> index 67b8374ddf02f..4e6245095adfc 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+> @@ -3234,6 +3234,7 @@ wifi: wifi@18800000 {
+>  			iommus = <&anoc2_smmu 0x1900>,
+>  				 <&anoc2_smmu 0x1901>;
+>  			qcom,snoc-host-cap-8bit-quirk;
+> +			qcom,no-msa-ready-indicator;
+>  		};
+>  	};
+>  };
+
+
+Bjorn,
+
+This patch is supposed to go through your tree, right?
+
+Regards
+
 
