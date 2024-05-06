@@ -1,69 +1,73 @@
-Return-Path: <linux-wireless+bounces-7197-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7198-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B6058BC7FD
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 09:04:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDA928BC7FE
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 09:04:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CB721C2124A
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 07:04:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C92F1F22157
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 07:04:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6336CDBF;
-	Mon,  6 May 2024 07:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FEBC4F20E;
+	Mon,  6 May 2024 07:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EcUQxlI9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BEnuNCKP"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E638A4F20E
-	for <linux-wireless@vger.kernel.org>; Mon,  6 May 2024 07:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2698D4F88E
+	for <linux-wireless@vger.kernel.org>; Mon,  6 May 2024 07:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714979070; cv=none; b=aT7UdyW6yL2F0hdCriZMAMAYosQcb087lYIehe3RhSlvBY+BOQ3bElOPmIWqd4sNIRlOF2a/z4HI3Ek/xJ1F0jd9rieHe1JKHPPM9zkfG9u2hu/xjXCtHA+aNBtJXAl4dzHwfuvrIiRKcbLnRyxRSMYDAUJKGL1vr/Pi5UgZYJY=
+	t=1714979072; cv=none; b=CriG9jHhk5InVgw0PwjHBgjnveXYDRroAlO+UJlzuDtHbFDyGOh5GgMP6V/30BCssgcARg3ire5aDZvfWjJnT6MFuTJ21yiYgbtH1ASZb10oKvKp0E0UwifpXpH64nOkHPmkRF2UulORUj9X7STLpCo11rTj9MAc9ua8uCxy2v0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714979070; c=relaxed/simple;
-	bh=ta9K0/HQb0UEoWJuEzMwIQOCDw2LaOw8WGUMvOwROXM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SopcA4Y6lBQOMUP48lv0XNhiNyiXaqnW1e1HD+b9S8SHrRjVNs58sIfwkl13HfIyGh5qpt7bkZl/rSZBfUe01/qTJugj3cSW9nocDWVXxh7EiSzT9vvItixwdMRPyRS7X+6SRX9k/TTjv689syVWCBOlwZ53Tv9EZlNx7mHqFE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EcUQxlI9; arc=none smtp.client-ip=198.175.65.21
+	s=arc-20240116; t=1714979072; c=relaxed/simple;
+	bh=ZLoTURKTxY74alA2+UqptR0K2hc7FGiSBgbZayJb6aA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Tw9mlqZhFShjZ9KAD8dfrN14j8OuOI8WhBcN23KcEUL2FxqUtT8fwSL8Gp3lhGul8ZURv1TxIeQ5BW/bXZ2Pjmn4yBFaAtRv9zW3iu9zrSxrDVYtEhIyiMMh+BLZ9ovP1QBVSEfxa4ZmRGQ9Hd7drkWr6w671x6weINxWa/GX24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BEnuNCKP; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714979068; x=1746515068;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=ta9K0/HQb0UEoWJuEzMwIQOCDw2LaOw8WGUMvOwROXM=;
-  b=EcUQxlI9RM5CaJBWDLVR8YLfrvT8zUZYedq5c7P/+sGLwYWwRNuQ8s82
-   rYSYWKzuUrIj+ic6KQQxDvsT+RSxydpLZ3j6aHaCWRZbSihkGoxAK3fF0
-   Daa6/UCefKEJyNj6u5Tzq+4EgFz5PdY61Ie3Lyt0chJtmZK7ZPd/x8oRa
-   AThYCJVq/JXLIqQtq0eaBAZv7T+qQ6hVwLXbWTaFo6LtE2iNER9hMTGoP
-   D6QiRZQIC8//45ShsY61ZLi+L/tqxtZB44IRIhhn+UiEOYIxlcMXaJUaT
-   xhoix+q+I7PjI3E7lGN65dAZCcY5vVT7JyxSkXMFeecWWbvnT8utRauwA
-   w==;
-X-CSE-ConnectionGUID: 5FoJot8cQqeKt+dsENJYXA==
-X-CSE-MsgGUID: hOPRmy32TJu9fONYV8hY/w==
-X-IronPort-AV: E=McAfee;i="6600,9927,11064"; a="10638113"
+  t=1714979071; x=1746515071;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=ZLoTURKTxY74alA2+UqptR0K2hc7FGiSBgbZayJb6aA=;
+  b=BEnuNCKPISwHQgFufbUOnLYF7Q76yOwqX6SCJIa9RrKOc1qzrA+xbGds
+   ZYFU4XYGdckyInHA6EZHast9X1PBVpIOLgnMOjZZRDmFRlXxWc95WmlS+
+   DBjIOcsWwhtVQu1dXbj3/eIKWP9hqPRQiLSGCJRGmHcWDVOEUf4iwrNHW
+   Ke+8FT0cGslfKx4YPJme4b3lrxNXBLtkeFKNOOZHN/8v2yQPFVd1esVnL
+   J7OtArEpeRKbHogCpXQis27jhaLwNdIFTPtXxep2R8CD01MaO9utKIWsE
+   hG5vfO5LvFA48Ial/f9fyqv2JGJUFsmTXzQLcGpHoknF3qN9DmnZGUrfZ
+   A==;
+X-CSE-ConnectionGUID: +J7JuTGkQNWo3v6ee119Kg==
+X-CSE-MsgGUID: dFJKzMLnTFa2XLExJWWMjA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11064"; a="10638136"
 X-IronPort-AV: E=Sophos;i="6.07,257,1708416000"; 
-   d="scan'208";a="10638113"
+   d="scan'208";a="10638136"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 00:04:27 -0700
-X-CSE-ConnectionGUID: ZLQ0NWrlSB2d2XuF5dJjaQ==
-X-CSE-MsgGUID: ORG5Q4alSc2O3Gy/vyA86w==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 00:04:30 -0700
+X-CSE-ConnectionGUID: pJU3m0HMS9SQfkX+1PQmZg==
+X-CSE-MsgGUID: UpRc3/37TxuJu8U2MK6AOw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,257,1708416000"; 
-   d="scan'208";a="59264793"
+   d="scan'208";a="59264837"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 00:04:26 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 00:04:28 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 00/15] wifi: iwlwifi: updates - 2024-05-06
-Date: Mon,  6 May 2024 10:04:04 +0300
-Message-Id: <20240506070419.1821330-1-miriam.rachel.korenblit@intel.com>
+Cc: linux-wireless@vger.kernel.org,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 01/15] wifi: iwlwifi: mvm: use already determined cmd_id
+Date: Mon,  6 May 2024 10:04:05 +0300
+Message-Id: <20240506095953.f894ede03b26.I18f03c272b1c0807767f2713f3ffbb2941c57d9b@changeid>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240506070419.1821330-1-miriam.rachel.korenblit@intel.com>
+References: <20240506070419.1821330-1-miriam.rachel.korenblit@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -73,69 +77,45 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Johannes Berg <johannes.berg@intel.com>
 
-This patch set includes iwlwifi patches intended for v6.10. It contains
-a few features, bugfixes and cleanups.
+In iwl_mvm_rs_fw_rate_init() we have a variable cmd_id that
+holds the command ID, so we can just use that instead of the
+various calculations of it.
 
-Thanks,
-Miri
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-Benjamin Berg (2):
-  wifi: iwlwifi: mvm: add the firmware API for channel survey
-  wifi: iwlwifi: mvm: record and return channel survey information
-
-Daniel Gabay (2):
-  wifi: iwlwifi: Force SCU_ACTIVE for specific platforms
-  wifi: iwlwifi: Ensure prph_mac dump includes all addresses
-
-Ilan Peer (1):
-  wifi: iwlwifi: mvm: Fix race in scan completion
-
-Johannes Berg (2):
-  wifi: iwlwifi: mvm: use already determined cmd_id
-  wifi: iwlwifi: mvm: align UATS naming with firmware
-
-Miri Korenblit (4):
-  wifi: iwlwifi: mvm: fix primary link setting
-  wifi: iwlwifi: bump FW API to 90 for BZ/SC devices
-  wifi: iwlwifi: mvm: exit EMLSR if secondary link is not used
-  wifi: iwlwifi: mvm: don't request statistics in restart
-
-Yedidya Benshimol (3):
-  wifi: iwlwifi: mvm: Add active EMLSR blocking reasons prints
-  wifi: iwlwifi: mvm: add a debugfs for reading EMLSR blocking reasons
-  wifi: iwlwifi: mvm: Add a print for invalid link pair due to bandwidth
-
-striebit (1):
-  wifi: iwlwifi: mvm: add beacon template version 14
-
- drivers/net/wireless/intel/iwlwifi/cfg/bz.c   |   2 +-
- drivers/net/wireless/intel/iwlwifi/cfg/sc.c   |   2 +-
- .../wireless/intel/iwlwifi/fw/api/nvm-reg.h   |  10 +-
- .../net/wireless/intel/iwlwifi/fw/api/scan.h  |  33 ++-
- .../net/wireless/intel/iwlwifi/fw/api/tx.h    |  13 +-
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c   |   9 +-
- .../net/wireless/intel/iwlwifi/fw/runtime.h   |   2 +-
- .../intel/iwlwifi/iwl-context-info-gen3.h     |   5 +-
- .../wireless/intel/iwlwifi/mvm/debugfs-vif.c  |  41 ++-
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |   9 +-
- drivers/net/wireless/intel/iwlwifi/mvm/link.c |  72 +++--
- .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |   7 +
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  72 ++++-
- .../wireless/intel/iwlwifi/mvm/mld-mac80211.c |   2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  41 +++
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  32 ++-
- .../net/wireless/intel/iwlwifi/mvm/rs-fw.c    |   9 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rx.c   |  37 ++-
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 270 ++++++++++++++++--
- .../wireless/intel/iwlwifi/mvm/tests/Makefile |   2 +-
- .../wireless/intel/iwlwifi/mvm/tests/scan.c   | 110 +++++++
- .../net/wireless/intel/iwlwifi/mvm/utils.c    |   7 +
- .../intel/iwlwifi/pcie/ctxt-info-gen3.c       |  31 +-
- 23 files changed, 717 insertions(+), 101 deletions(-)
- create mode 100644 drivers/net/wireless/intel/iwlwifi/mvm/tests/scan.c
-
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
+index 00860feefa7a..3ba62fb2c85e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
+@@ -654,10 +654,7 @@ void iwl_mvm_rs_fw_rate_init(struct iwl_mvm *mvm,
+ 	 */
+ 	sta->deflink.agg.max_amsdu_len = max_amsdu_len;
+ 
+-	cmd_ver = iwl_fw_lookup_cmd_ver(mvm->fw,
+-					WIDE_ID(DATA_PATH_GROUP,
+-						TLC_MNG_CONFIG_CMD),
+-					0);
++	cmd_ver = iwl_fw_lookup_cmd_ver(mvm->fw, cmd_id, 0);
+ 	IWL_DEBUG_RATE(mvm, "TLC CONFIG CMD, sta_id=%d, max_ch_width=%d, mode=%d\n",
+ 		       cfg_cmd.sta_id, cfg_cmd.max_ch_width, cfg_cmd.mode);
+ 	IWL_DEBUG_RATE(mvm, "TLC CONFIG CMD, chains=0x%X, ch_wid_supp=%d, flags=0x%X\n",
+@@ -693,9 +690,7 @@ void iwl_mvm_rs_fw_rate_init(struct iwl_mvm *mvm,
+ 		u16 cmd_size = sizeof(cfg_cmd_v3);
+ 
+ 		/* In old versions of the API the struct is 4 bytes smaller */
+-		if (iwl_fw_lookup_cmd_ver(mvm->fw,
+-					  WIDE_ID(DATA_PATH_GROUP,
+-						  TLC_MNG_CONFIG_CMD), 0) < 3)
++		if (iwl_fw_lookup_cmd_ver(mvm->fw, cmd_id, 0) < 3)
+ 			cmd_size -= 4;
+ 
+ 		ret = iwl_mvm_send_cmd_pdu(mvm, cmd_id, CMD_ASYNC, cmd_size,
 -- 
 2.34.1
 
