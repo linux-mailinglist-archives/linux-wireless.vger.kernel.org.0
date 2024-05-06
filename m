@@ -1,159 +1,109 @@
-Return-Path: <linux-wireless+bounces-7254-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7255-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F36BB8BD5EC
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 21:56:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB9368BD5FB
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 21:59:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9546D1F22A22
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 19:56:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64F34B20A65
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 19:59:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BAA215B10E;
-	Mon,  6 May 2024 19:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95F4415ADBE;
+	Mon,  6 May 2024 19:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="U2fDjDRG"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="oXPINUF0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC09915B0EA
-	for <linux-wireless@vger.kernel.org>; Mon,  6 May 2024 19:55:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C5A158873
+	for <linux-wireless@vger.kernel.org>; Mon,  6 May 2024 19:59:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715025352; cv=none; b=mImUt2H7kceq/Fa6wkg/RP5H8E+ft7U7tfp7b9Nf6QEkpuPIgG7vsJodV9LG5yhvU4+dSmEIAn4ybGZhTFlaEwDnO62xi36SmEDxgQHdnZE0im0Q7+TksTVJEpP+PyCPawyZaZ5tR+YlbHTlcZstsExduTs3pj20xYb0EH9PXEw=
+	t=1715025586; cv=none; b=HE1FU35fE4iSrxLq67gUbQT8nhXxgd+kQngoTm3G7NimI7MbEbhLtRbGQoa70mNEY8ZuRdlPaHCQ3h3geCa7GeZzQAuBZZ433uktck/iJ7LwNqmgnMJDHAnAQBNWm6Ny2BdihM25Zxi7vcIRsY4WVzTUjOdNxvhSCO9w501Lt4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715025352; c=relaxed/simple;
-	bh=kvSQaOgFsSO5D8bzs5eW3nVVKhG3jzfxToGchngpd1E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZAzOLhA1wFm5rLTnamfQLglX7UKFwLuFPHY/NX8teDEN2KfOOJRtxXpYtr/gF13i1BtEAGtr7nXbfPYPWKN7F47KnWPRHURTnom+7etYk66un3h3ZxVnzyVkiON3MHeJkkpRi6oxiqXjb8VS0ttXUMp58lhUSnwYx56PAcXdAdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=U2fDjDRG; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=rNeapsk451lAvrsk8HiDljg4BOIvjs4trPTzCw1kv2s=;
-	t=1715025350; x=1716234950; b=U2fDjDRG72srKmNY+bJeYXFExjk5Mr4lEIMSUVBx6g5PJRQ
-	7R54XGfeEG3/1gpXY71JtRhBS6Ni5UcucGqJeG8uEVZfG1h1U8/cOns17RguWxStUUOpZOsawfA5j
-	9yvtktFv1M96dYQFs3deCAHOyF1Dlb/56yCFWIZNP75n1B4FbTEaAqPYjOFm7zS7Bm9hz5D212Ds3
-	pi+HMf7dY+kqurAysxljZpyAiSwo7g7IWSyj27tAhckj0S8DWnCeH1s+jsg4i0DzPQ6LrBag5p4gc
-	DiPwzfmDB3qZNKH1i2BFkDwEEsBTioF3AqmVCL2KsQdyQyDBxt2Q3fmydlk3ZQ4Q==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1s44R9-00000008Cj6-2kmC;
-	Mon, 06 May 2024 21:55:47 +0200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH 4/4] wifi: mac80211: refactor chanreq.ap setting
-Date: Mon,  6 May 2024 21:54:52 +0200
-Message-ID: <20240506215543.5cd6a209e58a.I3be318959d9e2df5dccd2d0938c3d2fcc6688030@changeid>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240506195543.104411-6-johannes@sipsolutions.net>
-References: <20240506195543.104411-6-johannes@sipsolutions.net>
+	s=arc-20240116; t=1715025586; c=relaxed/simple;
+	bh=RjELKrBwYzxauMZqdYXkfAbg5Mjeurz47M18RdS0ZG4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=LD6QCxwhmcNuyD3FHxZUMkQ7fAy2xRU8xPTbgmVNNE5DyVS16FPAy0OVVN+u1Rm59rfoDdsMZGdgEpcSXtBBXwdkmRLxvke7oPdKToF0CRUL7dUq+m4HqYOF3jZUtPGyRD3ZsnfniHDFx+sS5hRNguljL2bKfhT9zkGezYAG3Ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=oXPINUF0; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 446HtbAG026861;
+	Mon, 6 May 2024 19:59:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=znCC9Wj8UrFkjd8KrMGgvDVcqjr7DGjW5JkzK6S/3wE=; b=oX
+	PINUF0NW5KB+fAaa8MeWh9+Fh5D9rxLg4MH2RYpbYdDbPfVJ6gF3N7Of4XgM/to2
+	OkpnIkidVrYBG1Ofqr1Ucrjar2z2xluA+EwfJeCEkS7LSaCpktFVaA8rMekSbf5j
+	twpG+eWmyvmQaYma4UDDm6aYE0fJY92ymGmEgFGdgZwqYwuzYtREgYZ4JBZpRA4m
+	AzxpErIUIEJEz4RBP/xhbcH1rEIIEK/GOkZlvsfAvrHaQi5T+zX61B2NurdxO7w5
+	/nhfTN++0H3WdDExO6j73SWEG5KxHbQK+4FglF4h7RUxtoH6ycT9FKqJzi2hH6LU
+	WuJuQbFyrCl2keWzWzOg==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xxw9a972b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 06 May 2024 19:59:40 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 446JxTpt022143
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 6 May 2024 19:59:29 GMT
+Received: from [10.110.82.245] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 6 May 2024
+ 12:59:29 -0700
+Message-ID: <1dc900a6-b972-4a86-995c-c0b965792cdd@quicinc.com>
+Date: Mon, 6 May 2024 12:59:28 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath12k: avoid double SW2HW_MACID conversion
+Content-Language: en-US
+To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240506173017.597715-1-quic_periyasa@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240506173017.597715-1-quic_periyasa@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: _E_ur83NNsYkF3i1HgqtMcIRvL9YcWeJ
+X-Proofpoint-ORIG-GUID: _E_ur83NNsYkF3i1HgqtMcIRvL9YcWeJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-06_14,2024-05-06_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ lowpriorityscore=0 phishscore=0 mlxscore=0 suspectscore=0 impostorscore=0
+ priorityscore=1501 bulkscore=0 mlxlogscore=698 spamscore=0 adultscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2405060145
 
-From: Johannes Berg <johannes.berg@intel.com>
-
-There are now three places setting up chanreq.ap which always
-depends on the mode (EHT being used or not) and override flag.
-Refactor that code into a common function with a comment, to
-make that clearer.
-
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/mac80211/mlme.c | 43 +++++++++++++++++++++++++++++--------------
- 1 file changed, 29 insertions(+), 14 deletions(-)
-
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 77d690323006..ef3280fafbe9 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -789,6 +789,29 @@ static void ieee80211_rearrange_tpe(struct ieee80211_parsed_tpe *tpe,
- 	}
- }
- 
-+/*
-+ * The AP part of the channel request is used to distinguish settings
-+ * to the device used for wider bandwidth OFDMA. This is used in the
-+ * channel context code to assign two channel contexts even if they're
-+ * both for the same channel, if the AP bandwidths are incompatible.
-+ * If not EHT (or driver override) then ap.chan == NULL indicates that
-+ * there's no wider BW OFDMA used.
-+ */
-+static void ieee80211_set_chanreq_ap(struct ieee80211_sub_if_data *sdata,
-+				     struct ieee80211_chan_req *chanreq,
-+				     struct ieee80211_conn_settings *conn,
-+				     struct cfg80211_chan_def *ap_chandef)
-+{
-+	chanreq->ap.chan = NULL;
-+
-+	if (conn->mode < IEEE80211_CONN_MODE_EHT)
-+		return;
-+	if (sdata->vif.driver_flags & IEEE80211_VIF_IGNORE_OFDMA_WIDER_BW)
-+		return;
-+
-+	chanreq->ap = *ap_chandef;
-+}
-+
- static struct ieee802_11_elems *
- ieee80211_determine_chan_mode(struct ieee80211_sub_if_data *sdata,
- 			      struct ieee80211_conn_settings *conn,
-@@ -886,12 +909,7 @@ ieee80211_determine_chan_mode(struct ieee80211_sub_if_data *sdata,
- 
- 	chanreq->oper = *ap_chandef;
- 
--	/* wider-bandwidth OFDMA is only done in EHT */
--	if (conn->mode >= IEEE80211_CONN_MODE_EHT &&
--	    !(sdata->vif.driver_flags & IEEE80211_VIF_IGNORE_OFDMA_WIDER_BW))
--		chanreq->ap = *ap_chandef;
--	else
--		chanreq->ap.chan = NULL;
-+	ieee80211_set_chanreq_ap(sdata, chanreq, conn, ap_chandef);
- 
- 	while (!ieee80211_chandef_usable(sdata, &chanreq->oper,
- 					 IEEE80211_CHAN_DISABLED)) {
-@@ -999,11 +1017,9 @@ static int ieee80211_config_bw(struct ieee80211_link_data *link,
- 		return -EINVAL;
- 	}
- 
--	chanreq.ap = ap_chandef;
- 	chanreq.oper = ap_chandef;
--	if (link->u.mgd.conn.mode < IEEE80211_CONN_MODE_EHT ||
--	    sdata->vif.driver_flags & IEEE80211_VIF_IGNORE_OFDMA_WIDER_BW)
--		chanreq.ap.chan = NULL;
-+	ieee80211_set_chanreq_ap(sdata, &chanreq, &link->u.mgd.conn,
-+				 &ap_chandef);
- 
- 	/*
- 	 * if HT operation mode changed store the new one -
-@@ -2535,10 +2551,9 @@ ieee80211_sta_process_chanswitch(struct ieee80211_link_data *link,
- 
- 	link->u.mgd.csa.ap_chandef = csa_ie.chanreq.ap;
- 
--	link->csa.chanreq = csa_ie.chanreq;
--	if (link->u.mgd.conn.mode < IEEE80211_CONN_MODE_EHT ||
--	    sdata->vif.driver_flags & IEEE80211_VIF_IGNORE_OFDMA_WIDER_BW)
--		link->csa.chanreq.ap.chan = NULL;
-+	link->csa.chanreq.oper = csa_ie.chanreq.oper;
-+	ieee80211_set_chanreq_ap(sdata, &link->csa.chanreq, &link->u.mgd.conn,
-+				 &csa_ie.chanreq.ap);
- 
- 	if (chanctx) {
- 		res = ieee80211_link_reserve_chanctx(link, &link->csa.chanreq,
--- 
-2.44.0
+On 5/6/2024 10:30 AM, Karthikeyan Periyasamy wrote:
+> Currently, ath12k_wmi_pdev_dma_ring_cfg() fails due to an invalid pdev_id
+> parameter passed to the WMI_PDEV_DMA_RING_CFG_REQ_CMDID WMI command. This
+> invalid pdev_id is caused by a double conversion of the MAC ID. Since the
+> the caller of ath12k_wmi_pdev_dma_ring_cfg() already performs the MAC ID
+> conversion, it is unnecessary to do it again within the function. To fix
+> this, remove the software (SW) to hardware (HW) MAC ID conversion from
+> ath12k_wmi_pdev_dma_ring_cfg() to avoid this redundant conversion.
+> 
+> Found in code review.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> 
+> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
 
