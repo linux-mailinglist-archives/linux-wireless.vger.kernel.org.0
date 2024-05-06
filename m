@@ -1,124 +1,81 @@
-Return-Path: <linux-wireless+bounces-7212-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7213-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E4D08BC811
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 09:06:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C18E98BC86E
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 09:35:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDF37281A37
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 07:06:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D403280E9B
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 07:35:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBDA31420BB;
-	Mon,  6 May 2024 07:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3247128374;
+	Mon,  6 May 2024 07:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WgnZgFqa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VGxAoTY5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF5D1411D2
-	for <linux-wireless@vger.kernel.org>; Mon,  6 May 2024 07:05:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EED7127E3B
+	for <linux-wireless@vger.kernel.org>; Mon,  6 May 2024 07:35:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714979113; cv=none; b=iPdKQ+b/ytfMuIK5Kc2c3uQ0e8/NsHbMa/PIxf4CWsSk1ffHKIcbCRCRO3Zw89ZNs9wR1fDhJ8LY476v31QJaXgluHCdq5CR81oY1iK2y5QtGQNUljXgBu9rZg3hhg5aHMzH1Hj6zls8dBeQGiSVtz5O2yjFW7hASlwr2rLbNv0=
+	t=1714980927; cv=none; b=JpWImVKoEIoPVrPaSUrSijTLg4oVhsxpzNs4HhAm7PMHeZ9q/R6XaQGYOnjJzJUxW8Rhp6QbWObkrpLcDCbD0KE7kerb96ZAlqW7DrLs2+n72UNEAJnpFwlQ8UDqfVOdtqUxUMqncGt4LQuJrBaFITcR/zTH/7U6fD8OdiRCIcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714979113; c=relaxed/simple;
-	bh=lDyyMbX2KSSAd9eXyMw8vJtuphu3BM/G1JlzRaTQe6w=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oHmeD5mHbM0+pk/BxTt0xwHMUFXaC+/EdZJy5E70vgDXIXWHcIJmUNuB+IXtrvhF5kNdJvxo5VcK/EodZ1HO28RF8rDlwOo9dHeL9CjhlAdluG1oyPUeLJ+CTEgmtBnCaAjWqFvHF3d3SE0Y+X4Ca85k3pzWH3tHwjmynt+B/xE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WgnZgFqa; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714979112; x=1746515112;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=lDyyMbX2KSSAd9eXyMw8vJtuphu3BM/G1JlzRaTQe6w=;
-  b=WgnZgFqaxY7nj6G0x9nhKeM6O1V8ZqpdCXng9c3mfaVFCfI2KgvZ3V7Y
-   AXDi+UuHfCiIq8/BFmMV9fGa6ac2PJ2Kf/RVMTh+R/yQdJqmo3P5JemJb
-   Cpa5/R/Fo4R5T9IJcGUQkkzqKzKpRjZrSZiAG3A95VCls2HVFDNNuh0R/
-   6tDykVafNb4h+0eweOt31afBqp6OpiRX197WkIZSq6/CQdWL+BE6MoqaH
-   5pelgPJM9CDiure9eHidRFpPFJyj/vB5Ieh4WSN8v7jqc+VlTXZqc5iqm
-   izGXwrRIt+nOXa/GXuQhu3j8+gyzD3p1sV1DDTFrm3WZdfM7oy8vAR+VR
-   w==;
-X-CSE-ConnectionGUID: HdzEpT83RRaaUbA8+Xi2sQ==
-X-CSE-MsgGUID: jDkp5ZEJTxqZT88ehK1aXw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11064"; a="10638272"
-X-IronPort-AV: E=Sophos;i="6.07,257,1708416000"; 
-   d="scan'208";a="10638272"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 00:04:54 -0700
-X-CSE-ConnectionGUID: E+tfNewQR2G+dxfDaLtjzQ==
-X-CSE-MsgGUID: Sfz5taGNT7iYfRuzao9pDQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,257,1708416000"; 
-   d="scan'208";a="59265016"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 00:04:52 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Daniel Gabay <daniel.gabay@intel.com>,
-	Eilon Rinat <eilon.rinat@intel.com>
-Subject: [PATCH 15/15] wifi: iwlwifi: Ensure prph_mac dump includes all addresses
-Date: Mon,  6 May 2024 10:04:19 +0300
-Message-Id: <20240506095953.31fa9ce91a1c.Ia0c86f70c7a6874c15ffc6f8235aa88530208546@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240506070419.1821330-1-miriam.rachel.korenblit@intel.com>
-References: <20240506070419.1821330-1-miriam.rachel.korenblit@intel.com>
+	s=arc-20240116; t=1714980927; c=relaxed/simple;
+	bh=9XEVjGDto9xzx8sforPJDmq9OK8fTvs7CX8OymuYdq8=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=cZ75o4iHsbJ98eYG6eWekVYfXHwTwTsB5vrn20NR75AdZmoXh+TrfCApDQHJtNq5oG2/dhSISiFy5KDui4n8koKs2P+aQKrz6YrG6fOTWWIdzUocauqgFPsIIOHmt7Omc39Yad7EnoUsTXK5xsUWRv77LlcvftRqWLthduP74aM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VGxAoTY5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A90AEC116B1;
+	Mon,  6 May 2024 07:35:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714980927;
+	bh=9XEVjGDto9xzx8sforPJDmq9OK8fTvs7CX8OymuYdq8=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=VGxAoTY570igKe19Iv6Cu7xdkx4bqWAIAyi41uaxPDMCcBqXEPdhPCTy44w02ZRKB
+	 Fm/oouM4ZvuXsBCnrUbn51svEtKbgYm6DTq5xl1YHEqHh1wiC7MY1jrkIRUZMvO7I6
+	 RAJkoif/HjD/wKQYxpDCu6q3Ixm9aSukxyMnVaAS+PwIVb0Lsy9gktnMh64Xf1WdLq
+	 4ap3YakxETZECKnDXFTsZ8gl2T7wf3KURWIJR31ajFaokZ0KnPICR8BqmdbyR3WVn8
+	 fzGbtSQVPg/mtxb8YMQzt6QqzVvwzb2eOpuEsR/nGSkYjB7yx8Xxyk1SvBgUvYtz6+
+	 m3TP9PGus7lfg==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: Re: pull-request: rtw-next-2024-05-04-v2
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <2ea1dde1-1baf-481d-9783-33b94c113521@RTEXMBS04.realtek.com.tw>
+References: <2ea1dde1-1baf-481d-9783-33b94c113521@RTEXMBS04.realtek.com.tw>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: <linux-wireless@vger.kernel.org>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <171498092457.3511823.3975770225507699815.kvalo@kernel.org>
+Date: Mon,  6 May 2024 07:35:26 +0000 (UTC)
 
-From: Daniel Gabay <daniel.gabay@intel.com>
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-In prph_mac_iter, ensure that all required addresses are dumped
-even if a read fails. Currently, if a read fails, the region dump
-is stopped, preventing the creation of prph_mac.lst.
+> Hi,
+> 
+> This is v2 pull-request of rtw-next, which additionally fixes GCC
+> uninitialized warning, to wireless-next tree, more info below.
+> 
+> Thanks
+> Ping-Ke
 
-By dumping all addresses even if a read fails, we can accurately
-determine which addresses were successfully read and which were not.
+Pulled, thanks.
 
-Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
-Reviewed-by: Eilon Rinat <eilon.rinat@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+2d6c71776056 Merge tag 'rtw-next-2024-05-04-v2' of https://github.com/pkshih/rtw
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index fe4e1bea30bb..945ffc083d25 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -1026,17 +1026,12 @@ static int iwl_dump_ini_prph_mac_iter_common(struct iwl_fw_runtime *fwrt,
- {
- 	struct iwl_fw_ini_error_dump_range *range = range_ptr;
- 	__le32 *val = range->data;
--	u32 prph_val;
- 	int i;
- 
- 	range->internal_base_addr = cpu_to_le32(addr);
- 	range->range_data_size = size;
--	for (i = 0; i < le32_to_cpu(size); i += 4) {
--		prph_val = iwl_read_prph(fwrt->trans, addr + i);
--		if (iwl_trans_is_hw_error_value(prph_val))
--			return -EBUSY;
--		*val++ = cpu_to_le32(prph_val);
--	}
-+	for (i = 0; i < le32_to_cpu(size); i += 4)
-+		*val++ = cpu_to_le32(iwl_read_prph(fwrt->trans, addr + i));
- 
- 	return sizeof(*range) + le32_to_cpu(range->range_data_size);
- }
 -- 
-2.34.1
+https://patchwork.kernel.org/project/linux-wireless/patch/2ea1dde1-1baf-481d-9783-33b94c113521@RTEXMBS04.realtek.com.tw/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
 
