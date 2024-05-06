@@ -1,34 +1,34 @@
-Return-Path: <linux-wireless+bounces-7209-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7211-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F1E48BC80B
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 09:05:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36E498BC80D
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 09:05:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F909B217E8
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 07:05:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82F69B21871
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 07:05:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE36784DFA;
-	Mon,  6 May 2024 07:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD101411DE;
+	Mon,  6 May 2024 07:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZdbDsCHA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="acA9Ygrd"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD847D06E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E2F140370
 	for <linux-wireless@vger.kernel.org>; Mon,  6 May 2024 07:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714979105; cv=none; b=BCt1JNS+UGS4mJfUD+iJZ6tpM9SgqE8bW6GsX94SR8NqBfERUZY2at+t50YmA2dXf0LmHAeS5ZNkQgonJvkg4ndYyfPWzRxjDbPoXvmmv9A4tniME5RzyzBPecZ4q+YbKshjncRxC8CyNtqR5a3ZEMMrVSzs9ZI8vDbrneQfQ0w=
+	t=1714979106; cv=none; b=t6VsoPiPXnytnspusW6umUdehKvCKUl/ZQFA+IEDNW5O+2Qw+/iAR5EFvuXTNLCD2G93ZO7Z2lLOz7vKh6o2ctuIfnTigechr+30FsRkAvIA6FBqIuybbjWs4Ww8hGL3fdMCYd70LNGLU271ubudSORBYjZw01ClMXt2N4fwwI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714979105; c=relaxed/simple;
-	bh=ugG6CR6kXKPeohpjZd46oi+5QmHPp68lpjv2CKY87Os=;
+	s=arc-20240116; t=1714979106; c=relaxed/simple;
+	bh=Wk9y+J+sqxjHcaiMv9mqpmeWgO4t83WZipC7Zie8W6s=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=av51ih9PbOXY6sm1go6r+d6GyHJ9xUTXv1OKvbwm2KzvE8l4VsrGmWE+SRNmOqxFGgDlPUe+Z/48uvP5ORwbw4Wj7xLtMOAF0s6Y9al/LM0QIyQnq80Sj933+faIL/NJgv1y0CO3IbGn83oO+ifHDfynLk4aERFy/69rU/q4jlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZdbDsCHA; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=FdB8zOUSZxDp4cgZMEpFeq2zJcrl84jYSRXU/Il3QKK8qAnJoQgjN0lreOGndnzRzb2uIGcGujQn7nMWK6tIV9QT6Tc2pfx1EkTVXRQ+C1TDooDekUZAkM1m3axdKL7dvGReTpUewHpHwX6Qh01PqW0E88lQLybQkhpvp7+Fjbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=acA9Ygrd; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
@@ -36,35 +36,35 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   t=1714979105; x=1746515105;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ugG6CR6kXKPeohpjZd46oi+5QmHPp68lpjv2CKY87Os=;
-  b=ZdbDsCHAusP42+EJ6FuHSGkcjKM+GklZ8GrQ1++c/1hwkkthK0SmdBZ3
-   NHZRda9ufCdtvBsnlPbQqJ6K4YtMvnsnJGaTBu/Y2hqQN9+Rfk20AmeRY
-   gtlZIlT/4AodsNln89z0swB3jrHA1IkqMqXXdSK5TEzW8Ff9Iuyewtksc
-   jloFy2enLUmDfdFApJfmoyXTzD9YRGuH1BQBypaFp/3BjW/wxxz/PnS1j
-   T5h5jVyz3p0//vhQPTUpXdSP0cXroZxym1uCqSmSU57r2QhxzKy+NVCQo
-   I/ph99DlCO4bVCWoY3gInNajZZQls9fUnbyHU8e+5fZ7vhc6zFUofNOzv
-   Q==;
-X-CSE-ConnectionGUID: VWMGHNeJQOSaenQWkH6ZwQ==
-X-CSE-MsgGUID: jtI65bg4Q2uevUMcgfLN6Q==
-X-IronPort-AV: E=McAfee;i="6600,9927,11064"; a="10638255"
+  bh=Wk9y+J+sqxjHcaiMv9mqpmeWgO4t83WZipC7Zie8W6s=;
+  b=acA9YgrdXhBWfKxCc1KMjuJq+BXRzNH5V0+IoP/w+rHolYGWfmMm/s66
+   zAnnXBhk9xT8iiH55RpevYVV6dt9Rrhvgnp7dJVaLCz2PRjN3s1jcjV7D
+   7ByYrhBu1fyjIQRaplMd3NRfvRorfL2++3KNvrYwmR5bOCnvRa/vHaD8C
+   CCaMJZV2vnHJ+ZOumfdmhEzxRK68XUmmp1AmoIzINkbSLGN3EeqVyPsdq
+   wg2PE7Cg7mRXSjbdfZDvNvYWR4PUQ80OtD1WmpPgsfgfWTExCtCP61QQ7
+   FAMTlUGqlpIGoPEj1X18lrDRM6kI8XYf6ZIJmLJDq+ZhV44RQisofdxJu
+   g==;
+X-CSE-ConnectionGUID: YU1fe8F2TgmkLzWWWz8sXg==
+X-CSE-MsgGUID: lIvntxz9RrOwInJADrSggQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11064"; a="10638261"
 X-IronPort-AV: E=Sophos;i="6.07,257,1708416000"; 
-   d="scan'208";a="10638255"
+   d="scan'208";a="10638261"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 00:04:51 -0700
-X-CSE-ConnectionGUID: ztRjRzwiQC2+Rdg8XPM2fA==
-X-CSE-MsgGUID: my3XMPq3SU2UTYhY1y9RHA==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 00:04:52 -0700
+X-CSE-ConnectionGUID: EebA4DnRQ+OaYmgGzjus4A==
+X-CSE-MsgGUID: nGBknR/PSTCJ/kjZikhlIw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,257,1708416000"; 
-   d="scan'208";a="59264998"
+   d="scan'208";a="59265007"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 00:04:49 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 00:04:51 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 13/15] wifi: iwlwifi: mvm: exit EMLSR if secondary link is not used
-Date: Mon,  6 May 2024 10:04:17 +0300
-Message-Id: <20240506095953.99ad1d71e9b9.Ide825433488ec809773efdc36937e3089d0012df@changeid>
+Subject: [PATCH 14/15] wifi: iwlwifi: mvm: don't request statistics in restart
+Date: Mon,  6 May 2024 10:04:18 +0300
+Message-Id: <20240506095953.16638dec9f7b.I093514312179bae566ad8d73ffb0355c6eee288a@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240506070419.1821330-1-miriam.rachel.korenblit@intel.com>
 References: <20240506070419.1821330-1-miriam.rachel.korenblit@intel.com>
@@ -77,127 +77,37 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-Exit EMLSR mode if the secondary link is not used enough for Rx/Tx
+During restart mac80211 notifies the driver about the association,
+(if we was associated before the restart) which causes the driver to
+request statistics from the FW. This causes to an immediate exit from
+EMLSR after the restart is done, when the statistics notif is handled.
+(too low TPT). There is no point in requesting statistics wnyway, since
+the FW just started and don't have any.
 
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/link.c |  3 +-
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  2 +
- drivers/net/wireless/intel/iwlwifi/mvm/rx.c   | 37 ++++++++++++++++++-
- 3 files changed, 40 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/utils.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/link.c b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-index b0568c74a15b..b4ba5f81f20c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-@@ -15,7 +15,8 @@
- 	HOW(EXIT_LOW_RSSI)		\
- 	HOW(EXIT_COEX)			\
- 	HOW(EXIT_BANDWIDTH)		\
--	HOW(EXIT_CSA)
-+	HOW(EXIT_CSA)			\
-+	HOW(EXIT_LINK_USAGE)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
+index 74452b2112b0..47283a358ffd 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
+@@ -435,6 +435,13 @@ int iwl_mvm_request_statistics(struct iwl_mvm *mvm, bool clear)
+ 					   IWL_FW_CMD_VER_UNKNOWN);
+ 	int ret;
  
- static const char *const iwl_mvm_esr_states_names[] = {
- #define NAME_ENTRY(x) [ilog2(IWL_MVM_ESR_##x)] = #x,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index b96568f5640c..1f58c727fa63 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -369,6 +369,7 @@ struct iwl_mvm_vif_link_info {
-  * @IWL_MVM_ESR_EXIT_BANDWIDTH: Bandwidths of primary and secondry links
-  *	preventing the enablement of EMLSR
-  * @IWL_MVM_ESR_EXIT_CSA: CSA happened, so exit EMLSR
-+ * @IWL_MVM_ESR_EXIT_LINK_USAGE: Exit EMLSR due to low tpt on secondary link
-  */
- enum iwl_mvm_esr_state {
- 	IWL_MVM_ESR_BLOCKED_PREVENTION	= 0x1,
-@@ -381,6 +382,7 @@ enum iwl_mvm_esr_state {
- 	IWL_MVM_ESR_EXIT_COEX		= 0x40000,
- 	IWL_MVM_ESR_EXIT_BANDWIDTH	= 0x80000,
- 	IWL_MVM_ESR_EXIT_CSA		= 0x100000,
-+	IWL_MVM_ESR_EXIT_LINK_USAGE	= 0x200000,
- };
- 
- #define IWL_MVM_BLOCK_ESR_REASONS 0xffff
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
-index 36083905457b..4fa8066a89b6 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
-@@ -951,12 +951,19 @@ iwl_mvm_stat_iterator_all_links(struct iwl_mvm *mvm,
- 	}
- }
- 
-+#define SEC_LINK_MIN_PERC 10
-+#define SEC_LINK_MIN_TX 3000
-+#define SEC_LINK_MIN_RX 400
-+
- static void iwl_mvm_update_esr_mode_tpt(struct iwl_mvm *mvm)
- {
- 	struct ieee80211_vif *bss_vif = iwl_mvm_get_bss_vif(mvm);
- 	struct iwl_mvm_vif *mvmvif;
- 	struct iwl_mvm_sta *mvmsta;
- 	unsigned long total_tx = 0, total_rx = 0;
-+	unsigned long sec_link_tx = 0, sec_link_rx = 0;
-+	u8 sec_link_tx_perc, sec_link_rx_perc;
-+	u8 sec_link;
- 
- 	lockdep_assert_held(&mvm->mutex);
- 
-@@ -973,6 +980,13 @@ static void iwl_mvm_update_esr_mode_tpt(struct iwl_mvm *mvm)
- 	if (!mvmsta->mpdu_counters)
- 		return;
- 
-+	/* Get the FW ID of the secondary link */
-+	sec_link = iwl_mvm_get_other_link(bss_vif,
-+					  iwl_mvm_get_primary_link(bss_vif));
-+	if (WARN_ON(!mvmvif->link[sec_link]))
-+		return;
-+	sec_link = mvmvif->link[sec_link]->fw_link_id;
-+
- 	/* Sum up RX and TX MPDUs from the different queues/links */
- 	for (int q = 0; q < mvm->trans->num_rx_queues; q++) {
- 		spin_lock_bh(&mvmsta->mpdu_counters[q].lock);
-@@ -982,6 +996,10 @@ static void iwl_mvm_update_esr_mode_tpt(struct iwl_mvm *mvm)
- 			total_tx += mvmsta->mpdu_counters[q].per_link[link].tx;
- 			total_rx += mvmsta->mpdu_counters[q].per_link[link].rx;
- 		}
-+
-+		sec_link_tx += mvmsta->mpdu_counters[q].per_link[sec_link].tx;
-+		sec_link_rx += mvmsta->mpdu_counters[q].per_link[sec_link].rx;
-+
- 		/*
- 		 * In EMLSR we have statistics every 5 seconds, so we can reset
- 		 * the counters upon every statistics notification.
-@@ -994,9 +1012,26 @@ static void iwl_mvm_update_esr_mode_tpt(struct iwl_mvm *mvm)
- 
- 	/* If we don't have enough MPDUs - exit EMLSR */
- 	if (total_tx < IWL_MVM_ENTER_ESR_TPT_THRESH &&
--	    total_rx < IWL_MVM_ENTER_ESR_TPT_THRESH)
-+	    total_rx < IWL_MVM_ENTER_ESR_TPT_THRESH) {
- 		iwl_mvm_block_esr(mvm, bss_vif, IWL_MVM_ESR_BLOCKED_TPT,
- 				  iwl_mvm_get_primary_link(bss_vif));
-+		return;
-+	}
-+
-+	/* Calculate the percentage of the secondary link TX/RX */
-+	sec_link_tx_perc = total_tx ? sec_link_tx * 100 / total_tx : 0;
-+	sec_link_rx_perc = total_rx ? sec_link_rx * 100 / total_rx : 0;
-+
 +	/*
-+	 * The TX/RX percentage is checked only if it exceeds the required
-+	 * minimum. In addition, RX is checked only if the TX check failed.
++	 * Don't request statistics during restart, they'll not have any useful
++	 * information right after restart, nor is clearing needed
 +	 */
-+	if ((total_tx > SEC_LINK_MIN_TX &&
-+	     sec_link_tx_perc < SEC_LINK_MIN_PERC) ||
-+	    (total_rx > SEC_LINK_MIN_RX &&
-+	     sec_link_rx_perc < SEC_LINK_MIN_PERC))
-+		iwl_mvm_exit_esr(mvm, bss_vif, IWL_MVM_ESR_EXIT_LINK_USAGE,
-+				 iwl_mvm_get_primary_link(bss_vif));
- }
++	if (test_bit(IWL_MVM_STATUS_IN_HW_RESTART, &mvm->status))
++		return 0;
++
+ 	if (cmd_ver != IWL_FW_CMD_VER_UNKNOWN)
+ 		return iwl_mvm_request_system_statistics(mvm, clear, cmd_ver);
  
- void iwl_mvm_handle_rx_system_oper_stats(struct iwl_mvm *mvm,
 -- 
 2.34.1
 
