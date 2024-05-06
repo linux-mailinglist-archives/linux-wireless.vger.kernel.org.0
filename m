@@ -1,151 +1,113 @@
-Return-Path: <linux-wireless+bounces-7217-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7218-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F23E48BCD9B
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 14:17:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B42D38BCED6
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 15:19:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 837142857E2
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 12:17:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EBB9280CEE
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 13:19:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D6FE143897;
-	Mon,  6 May 2024 12:16:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qIffkB5C"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9841979DDB;
+	Mon,  6 May 2024 13:18:36 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f70.google.com (mail-io1-f70.google.com [209.85.166.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522FD14262C;
-	Mon,  6 May 2024 12:16:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2957603A
+	for <linux-wireless@vger.kernel.org>; Mon,  6 May 2024 13:18:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714997808; cv=none; b=rXmm806uSBG5hyRwjNrad/8+e1qL2klW7IUQrT7eAqfUGtkf8D2M3LrHLt7JAVA2nWuvQkdlaFR3swzFMgzQSZw+Ogrs30rO+0xus2K+KuD3C1P09qDQ5d9KGd6ygHOruWd4N1Xzqc3AhhzMQEFCz/LViU8HUQqSglYvjYntY/M=
+	t=1715001516; cv=none; b=TX2z2esxLlMH44NhXbC8jwc6e8G0wPr9/d6BCoX5FLuS9RHgNS+zJfNyOmBBbe799rn1Hpys/IW0PFNDx4IWqCR0V9222qBP8pYlz5ujsV7QtU5WGG80QllbPwpgKAmo1cJORx3419ibxGJC3BHEgMXmCn4Z7knhbQ/v2hUSouo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714997808; c=relaxed/simple;
-	bh=imW+tOmQLVq8kGToLptxFdeea7wI9xfeY1vCN4uPZuw=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=JpUSGapWTb3s34TGBgv/zMOyejZ2BR09gks+Val381wmcwGpn4yqi8V9vs6FtpeQhW0oVw1pxMVzee1ZkzUNIqwE7XquOyT3otDq3pG1jqGZQUEebfPbNKZ1vzm/N33RkUB9QoyGJYVnhrKX/aRYpBpQT7cl+ci7q9MvH8loCPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qIffkB5C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB935C116B1;
-	Mon,  6 May 2024 12:16:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714997807;
-	bh=imW+tOmQLVq8kGToLptxFdeea7wI9xfeY1vCN4uPZuw=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=qIffkB5CzbpmgYvIlqOZw40xo0i/2sgi+EIaWIL/LDuqWYhPeMgtVXR0uJQb77FCZ
-	 Fc+luNUhSVsdItlyHjU+Y9ZOiouUgwpCUtdeggTEecnvjcMOzqrbMoyib3IzQp3yQV
-	 nsTdrAak3IUZe5De9szGwODR59R3C1Y4u8IQaRhjTZw3OuPPILRQRT9EEkbJcUJHYu
-	 iqwO7fGrg9puWWbUfX658Tqf0b/koh/V6yKK36CpjjFc0s+0skyEibCEFKliJFtGO4
-	 woQf8dAkmVFx4NTsmz0CkBws16hddpjW6CQGpqPzXxBjGsPIfVVKbyJfx4ZekDlN1h
-	 jWxiNdkZy83uQ==
-From: Kalle Valo <kvalo@kernel.org>
-To: Marc Gonzalez <mgonzalez@freebox.fr>
-Cc: Bjorn Andersson <quic_bjorande@quicinc.com>,  Jeff Johnson
- <quic_jjohnson@quicinc.com>,  ath10k <ath10k@lists.infradead.org>,
-  wireless <linux-wireless@vger.kernel.org>,  DT
- <devicetree@vger.kernel.org>,  MSM <linux-arm-msm@vger.kernel.org>,  Rob
- Herring <robh+dt@kernel.org>,  Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>,  Conor Dooley <conor+dt@kernel.org>,
-  Pierre-Hugues Husson <phhusson@freebox.fr>,  Arnaud Vrac
- <avrac@freebox.fr>,  Bjorn Andersson <andersson@kernel.org>,  Konrad
- Dybcio <konrad.dybcio@linaro.org>,  Jami Kettunen
- <jamipkettunen@gmail.com>,  Jeffrey Hugo <quic_jhugo@quicinc.com>,  Dmitry
- Baryshkov <dmitry.baryshkov@linaro.org>,  Alexey Minnekhanov
- <alexeymin@postmarketos.org>
-Subject: Re: [PATCH v3 1/3] dt-bindings: net: wireless: ath10k: add
- qcom,no-msa-ready-indicator prop
-References: <ebbda69c-63c1-4003-bf97-c3adf3ccb9e3@freebox.fr>
-	<54ac2295-36b4-49fc-9583-a10db8d9d5d6@freebox.fr>
-	<ZjBV+th9DmnNLhnN@hu-bjorande-lv.qualcomm.com>
-	<8734r3qysm.fsf@kernel.org>
-	<b6a1eadf-477d-48a8-bf39-ac3c3191e929@freebox.fr>
-Date: Mon, 06 May 2024 15:16:41 +0300
-In-Reply-To: <b6a1eadf-477d-48a8-bf39-ac3c3191e929@freebox.fr> (Marc
-	Gonzalez's message of "Tue, 30 Apr 2024 13:10:45 +0200")
-Message-ID: <87fruvm8ye.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1715001516; c=relaxed/simple;
+	bh=c0Vge8iTB4Lpbpsuu3+m+8p+N7McCY3fFZYh0TSFI1k=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=qlnIkOXUN3WIimzicDAaSq2DvtsD1F5hf2d6Mks5FB8fo03no9I8n2MBbVpfOMiVnoTqiHf3WgLNDSTqAu3uW2MLVVpSvO8HzX9UmaFlIani2QAJJuDqjIoE+z9OCy/PEsFF0Nx9NbAVYe3JTFGc0BPNbswlPJm9HzyVKmFljkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f70.google.com with SMTP id ca18e2360f4ac-7ddf08e17e4so153148539f.0
+        for <linux-wireless@vger.kernel.org>; Mon, 06 May 2024 06:18:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715001514; x=1715606314;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sDXohloZ5MfuZXfB1DDbljelq8gj5pZm9laaAT/1VtU=;
+        b=iHoSAHni/zgz7TYV6xp2oC3QcKRjLxdvrqvTUMZmtqkuwwM72Ahy7BlQV9Aak7EAiA
+         7Keo/SlGf6LeI10VrcgdPxI96bHtK7vW7Yfk+AL9AUXhlzUWXuSCZMTt4ZeZIpCBmbhX
+         g0q0dgsKMYV3cRDv8EkpZxPIf5jPfnLE0AjjnocLh4dd9ZC0KORRjSm/oNXlQG/BDAkz
+         ktHQ9xnQ7wuB1c1RzX4bOkIXdZkqQU8NK9XHp1FvdqwA6jOWknUjZfypj60/t+fznzD+
+         MLl/pTHvI0gzHENNREYi0n7c9nEabplJo/boh2iMBuihyN6z++6KG+x7Gg7MatJUuHTp
+         2waQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVswm7zMFrMJJEoOdfUie2LQ2171RaiGMppfnkCdJz2zztFj+xCkyVTMx3oTbnM36V4FXbsn36mZmX1HbsJichMVesOzPwtujMwn+eKHK4=
+X-Gm-Message-State: AOJu0YytwuLYpKBRTwsPqcTfDSUN7PAJXL8MchtLahAnzSy5Ha04Jjk+
+	ti4HoarEzFJE6JTXNwYna3XZnfEVYhwWMS8yMpgO1NfI+Ngm2sm6hIc7nDbdTIvpQUh6Xkb0OBh
+	sBy179H5bNp/r9lzwrrNn0lhvVC4jn4sGlmJXyI0rW6j9smHKGw1hMtk=
+X-Google-Smtp-Source: AGHT+IG8fqvQzKK0Ndvb55M8AEuR45mSb8N9eJk1/kfk+AJ8UD/zRmP3RQCdND34lbZorwZshYw4n9A2jtESUdb4TIuax8CXRf67
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-Received: by 2002:a05:6638:8426:b0:488:6017:abb6 with SMTP id
+ iq38-20020a056638842600b004886017abb6mr450659jab.2.1715001514173; Mon, 06 May
+ 2024 06:18:34 -0700 (PDT)
+Date: Mon, 06 May 2024 06:18:34 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000000ab1040617c8e8da@google.com>
+Subject: [syzbot] Monthly wireless report (May 2024)
+From: syzbot <syzbot+list0eee01f891cd031c3139@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Marc Gonzalez <mgonzalez@freebox.fr> writes:
+Hello wireless maintainers/developers,
 
-> On 30/04/2024 06:06, Kalle Valo wrote:
->
->> Bjorn Andersson wrote:
->> 
->>> On Mon, Apr 29, 2024 at 04:04:51PM +0200, Marc Gonzalez wrote:
->>>
->>>> The ath10k driver waits for an "MSA_READY" indicator
->>>> to complete initialization. If the indicator is not
->>>> received, then the device remains unusable.
->>>>
->>>> cf. ath10k_qmi_driver_event_work()
->>>>
->>>> Several msm8998-based devices are affected by this issue.
->>>> Oddly, it seems safe to NOT wait for the indicator, and
->>>> proceed immediately when QMI_EVENT_SERVER_ARRIVE.
->>>>
->>>> Jeff Johnson wrote:
->>>>
->>>>   The feedback I received was "it might be ok to change all ath10k qmi
->>>>   to skip waiting for msa_ready", and it was pointed out that ath11k
->>>>   (and ath12k) do not wait for it.
->>>>
->>>>   However with so many deployed devices, "might be ok" isn't a strong
->>>>   argument for changing the default behavior.
->>>>
->>>> Kalle Valo first suggested setting a bit in firmware-5.bin to trigger
->>>> work-around in the driver. However, firmware-5.bin is parsed too late.
->>>> So we are stuck with a DT property.
->>>>
->>>> Signed-off-by: Pierre-Hugues Husson <phhusson@freebox.fr>
->>>> Signed-off-by: Marc Gonzalez <mgonzalez@freebox.fr>
->>>
->>> This says "Pierre-Hugues certifies the origin of the patch" then "Marc
->>> certifies the origin of the patch". This would have to imply that
->>> Pierre-Hugues authored the patch, but you're listed as the author...
->>>
->>> Perhaps a suitable answer to this question would be to add
->>> "Co-developed-by: Pierre-Hugues ..." above his s-o-b, which implies that
->>> the two of you jointly came up with this and both certify the origin.
->> 
->> BTW I can add that in the pending branch, no need to resend because of
->> this. Just need guidance from Marc.
->
-> I typed this patch all by myself with my grubby little paws.
-> You can drop PH's S-o-b.
->
->>> Other than that, I think this looks good, so please upon addressing this
->>> problem feel free to add my:
->>>
->>> Reviewed-by: Bjorn Andersson <quic_bjorande@quicinc.com>
->> 
->> Thanks, I'll then add this as well.
->
-> Cool. Almost there :)
+This is a 31-day syzbot report for the wireless subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/wireless
 
-All I need is an ack from DT maintainers for this patch.
+During the period, 2 new issues were detected and 0 were fixed.
+In total, 28 issues are still open and 124 have been fixed so far.
 
-DT maintainers: I think this is the best option and I can't think of any
-other solution so I would prefer to take this approach to our ath.git
-tree if it's ok for you.
+Some of the still happening issues:
 
-IIRC someone suggested testing for firmware version string but I suspect
-that has the same problem as the firmware-N.bin approach: ath10k gets
-the firmware version too late. And besides it's difficult to maintain
-such a list in ath10k, it would always need kernel updates when there's
-a new firmware etc.
+Ref  Crashes Repro Title
+<1>  8381    Yes   WARNING in ieee80211_link_info_change_notify (2)
+                   https://syzkaller.appspot.com/bug?extid=de87c09cc7b964ea2e23
+<2>  7730    Yes   WARNING in __ieee80211_beacon_get
+                   https://syzkaller.appspot.com/bug?extid=18c783c5cf6a781e3e2c
+<3>  4438    Yes   WARNING in __cfg80211_ibss_joined (2)
+                   https://syzkaller.appspot.com/bug?extid=7f064ba1704c2466e36d
+<4>  3478    Yes   WARNING in ieee80211_rx_list
+                   https://syzkaller.appspot.com/bug?extid=8830db5d3593b5546d2e
+<5>  879     Yes   WARNING in ar5523_submit_rx_cmd/usb_submit_urb
+                   https://syzkaller.appspot.com/bug?extid=6101b0c732dea13ea55b
+<6>  774     Yes   WARNING in ieee80211_start_next_roc
+                   https://syzkaller.appspot.com/bug?extid=c3a167b5615df4ccd7fb
+<7>  79      Yes   WARNING in ieee80211_free_ack_frame (2)
+                   https://syzkaller.appspot.com/bug?extid=ac648b0525be1feba506
+<8>  10      Yes   INFO: task hung in reg_check_chans_work (6)
+                   https://syzkaller.appspot.com/bug?extid=b87c222546179f4513a7
+<9>  7       Yes   WARNING in drv_remove_interface
+                   https://syzkaller.appspot.com/bug?extid=2e5c1e55b9e5c28a3da7
+<10> 5       Yes   UBSAN: array-index-out-of-bounds in htc_issue_send
+                   https://syzkaller.appspot.com/bug?extid=93cbd5fbb85814306ba1
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
+
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
 
