@@ -1,109 +1,105 @@
-Return-Path: <linux-wireless+bounces-7255-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7256-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB9368BD5FB
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 21:59:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D54F48BD6C7
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 23:20:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64F34B20A65
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 19:59:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8ABA41F24003
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 21:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95F4415ADBE;
-	Mon,  6 May 2024 19:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 499E6156258;
+	Mon,  6 May 2024 21:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="oXPINUF0"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="MGYjaG7t"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C5A158873
-	for <linux-wireless@vger.kernel.org>; Mon,  6 May 2024 19:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B9115B553
+	for <linux-wireless@vger.kernel.org>; Mon,  6 May 2024 21:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715025586; cv=none; b=HE1FU35fE4iSrxLq67gUbQT8nhXxgd+kQngoTm3G7NimI7MbEbhLtRbGQoa70mNEY8ZuRdlPaHCQ3h3geCa7GeZzQAuBZZ433uktck/iJ7LwNqmgnMJDHAnAQBNWm6Ny2BdihM25Zxi7vcIRsY4WVzTUjOdNxvhSCO9w501Lt4w=
+	t=1715030433; cv=none; b=NLmTkh9E9qeKGOQjEQlVplvFsdK5PapigXe6eWLBpJbUj0Occ5as321auQimqkwvbOUDadQUkqIh1gp1hcc0lwSenjW43sB+ZXOQaPDDaDpkVbnnDk2jaDq9jEhlRe0lb5WqSREJS8X5F+Wke/bndur1Cy1yQdkuHgGqiqPnzVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715025586; c=relaxed/simple;
-	bh=RjELKrBwYzxauMZqdYXkfAbg5Mjeurz47M18RdS0ZG4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=LD6QCxwhmcNuyD3FHxZUMkQ7fAy2xRU8xPTbgmVNNE5DyVS16FPAy0OVVN+u1Rm59rfoDdsMZGdgEpcSXtBBXwdkmRLxvke7oPdKToF0CRUL7dUq+m4HqYOF3jZUtPGyRD3ZsnfniHDFx+sS5hRNguljL2bKfhT9zkGezYAG3Ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=oXPINUF0; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1715030433; c=relaxed/simple;
+	bh=Z8UjTnz5BAC2AgLjBkClsOpFXVkLf6DXP7ngjUEfYh0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=obw8LT/elqBqiX+exydb8AOz1E0D0rMyTg9Opff83gI35nnB71W+nl9JYEWXWuUHNeXpvqMeiMl/PlGbThp+MZvMdj/TeUGiszyl0+38eciDZuKv6mnI2H++UM+OJngbwdy/TfS3BRs/VmT+0OPwCvoeI64c4DKWMHewTH5SgQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=MGYjaG7t; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 446HtbAG026861;
-	Mon, 6 May 2024 19:59:40 GMT
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 446J9x9n031767;
+	Mon, 6 May 2024 21:20:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=znCC9Wj8UrFkjd8KrMGgvDVcqjr7DGjW5JkzK6S/3wE=; b=oX
-	PINUF0NW5KB+fAaa8MeWh9+Fh5D9rxLg4MH2RYpbYdDbPfVJ6gF3N7Of4XgM/to2
-	OkpnIkidVrYBG1Ofqr1Ucrjar2z2xluA+EwfJeCEkS7LSaCpktFVaA8rMekSbf5j
-	twpG+eWmyvmQaYma4UDDm6aYE0fJY92ymGmEgFGdgZwqYwuzYtREgYZ4JBZpRA4m
-	AzxpErIUIEJEz4RBP/xhbcH1rEIIEK/GOkZlvsfAvrHaQi5T+zX61B2NurdxO7w5
-	/nhfTN++0H3WdDExO6j73SWEG5KxHbQK+4FglF4h7RUxtoH6ycT9FKqJzi2hH6LU
-	WuJuQbFyrCl2keWzWzOg==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xxw9a972b-1
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=lTgXVZ2
+	M12/ebLSRTcLP5G68+Xc4vk749Y5vRzWCua4=; b=MGYjaG7ttKraVKGK2xlseS3
+	IHtNUOqz5FFg8GDUkWC/XSMbRLfC/FjYrxUyz6qW4ED+QXMeqwTx+DffO5dfPubu
+	fCbTWNnnOhSTXC4CAq65OvqPIXhqWZXKiOSHS83p7xfYtZFSzyQw4zBRxnPrGJCX
+	hC3vcIGMdQ4kxyafx9g5ZZ4jiwkzoCvle6WQWizXDLY+XnDq2rnhrvyA5HI2sRCD
+	pqxEMq4mTtXfpNCPzMaAHs8FI9x8GR8l4K2y+pQSApja0yG0fNXc0aOmIF6LG2Dv
+	hqxof3WAtg7jCC9K9GiVWMkBQTu91/6bAkwdAJXVcscuCEw9mHODxEM6BcsCIqg=
+	=
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xxwqds9cw-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 May 2024 19:59:40 +0000 (GMT)
+	Mon, 06 May 2024 21:20:27 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 446JxTpt022143
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 446LKQiF018531
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 6 May 2024 19:59:29 GMT
-Received: from [10.110.82.245] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 6 May 2024
- 12:59:29 -0700
-Message-ID: <1dc900a6-b972-4a86-995c-c0b965792cdd@quicinc.com>
-Date: Mon, 6 May 2024 12:59:28 -0700
+	Mon, 6 May 2024 21:20:26 GMT
+Received: from msinada-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Mon, 6 May 2024 14:20:26 -0700
+From: Muna Sinada <quic_msinada@quicinc.com>
+To: <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>, Muna Sinada <quic_msinada@quicinc.com>
+Subject: [PATCH 0/2] Allow VLAN unicast packets to take 8023 xmit path
+Date: Mon, 6 May 2024 14:20:12 -0700
+Message-ID: <20240506212014.670423-1-quic_msinada@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath12k: avoid double SW2HW_MACID conversion
-Content-Language: en-US
-To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
-        <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240506173017.597715-1-quic_periyasa@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240506173017.597715-1-quic_periyasa@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: _E_ur83NNsYkF3i1HgqtMcIRvL9YcWeJ
-X-Proofpoint-ORIG-GUID: _E_ur83NNsYkF3i1HgqtMcIRvL9YcWeJ
+X-Proofpoint-ORIG-GUID: DSljRMfuu14XY76Q-o300jkEKXoytz86
+X-Proofpoint-GUID: DSljRMfuu14XY76Q-o300jkEKXoytz86
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-06_14,2024-05-06_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- lowpriorityscore=0 phishscore=0 mlxscore=0 suspectscore=0 impostorscore=0
- priorityscore=1501 bulkscore=0 mlxlogscore=698 spamscore=0 adultscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2405060145
+ definitions=2024-05-06_15,2024-05-06_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
+ lowpriorityscore=0 priorityscore=1501 impostorscore=0 phishscore=0
+ adultscore=0 mlxscore=0 spamscore=0 bulkscore=0 malwarescore=0
+ mlxlogscore=410 suspectscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2404010003 definitions=main-2405060155
 
-On 5/6/2024 10:30 AM, Karthikeyan Periyasamy wrote:
-> Currently, ath12k_wmi_pdev_dma_ring_cfg() fails due to an invalid pdev_id
-> parameter passed to the WMI_PDEV_DMA_RING_CFG_REQ_CMDID WMI command. This
-> invalid pdev_id is caused by a double conversion of the MAC ID. Since the
-> the caller of ath12k_wmi_pdev_dma_ring_cfg() already performs the MAC ID
-> conversion, it is unnecessary to do it again within the function. To fix
-> this, remove the software (SW) to hardware (HW) MAC ID conversion from
-> ath12k_wmi_pdev_dma_ring_cfg() to avoid this redundant conversion.
-> 
-> Found in code review.
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> 
-> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Allow VLAN unicast packets to take the 8023 xmit path when
+encapsulation offload is enabled. This allows AP VLAN unicast
+packets to have encapsulation and encryption handled in hardware
+
+Before doing so, relocate __ieee80211_subif_start_xmit() definition to
+allow it to call ieee80211_8023_xmit()
+
+Muna Sinada (2):
+  wifi: mac80211: relocate __ieee80211_subif_start_xmit() definition
+  wifi: mac80211: VLAN unicast packets take 8023 xmit path
+
+ net/mac80211/tx.c | 177 +++++++++++++++++++++++++---------------------
+ 1 file changed, 95 insertions(+), 82 deletions(-)
+
+-- 
+2.34.1
 
 
