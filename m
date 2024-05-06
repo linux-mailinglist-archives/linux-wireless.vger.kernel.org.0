@@ -1,33 +1,33 @@
-Return-Path: <linux-wireless+bounces-7238-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7239-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBA3E8BD53D
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 21:12:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CC4D8BD53F
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 21:13:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92C99281E7D
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 19:12:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8080283086
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 19:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31FB5158D95;
-	Mon,  6 May 2024 19:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A106115821F;
+	Mon,  6 May 2024 19:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="UBoO94JG"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="jkOrm4Hh"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F3115572C
-	for <linux-wireless@vger.kernel.org>; Mon,  6 May 2024 19:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1863D15572C
+	for <linux-wireless@vger.kernel.org>; Mon,  6 May 2024 19:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715022727; cv=none; b=psldQ7VuwEs1yQPjvjviIu4omTKYEtzN1MyWRp1rBET+RgS9mKFWSgd9FrvvpvVZEFgHbR+8lDFmsxMBmE25kJ5m6prFLMCJZmlpQwhBbDoz4GwdyVgqrgNt+hVA3eAik/CiOVYrYgwcB7NPwUBHHNdeOp7UOG1cAp1DREeOG/0=
+	t=1715022798; cv=none; b=U3FrkZjZFkuObj9dQfWVSBscsWxBCst6P68tHAcg7qgutGzSmbBVJ+AHT8rEMlpM2DnGZfiWqrx0MmEvRyLziWfKxpqDgMox9WJGw5Eh2XatW2UT77OF0bueOTQ0FErQu8m1Gm91ZRnhezOrP7Am2+YZKlqOrgZOR8NXvELgYpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715022727; c=relaxed/simple;
-	bh=L/PkHj+pMsi0K1q6dTJUAkB1uVJ2m2r7wB++8YyEDfk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZrxPzUDUHcWTAVnvgxIsUEWB1EvmDmW7CL/eJOBXmn5o7oCng3TkiNg7weH0MVx/UXMpjDqrMcJAOpPyocCbZ979Zt3e3CjZmAxnBRNaBaE6AxcSqsvEOEzEsAD664VWSCCWK/iu4IplwFA1fl/XqeM74z8Wh3u7/Gdfao9IvE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=UBoO94JG; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1715022798; c=relaxed/simple;
+	bh=k+ma0tzUjEjDl1M5LDhaETcztR79r+pNLcGVl1dqxkE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VOC1iY3Etvr8kL7o3msSt62aiIH7zj8aFzEwELT5iOocsNpOhLwe4ANDweKbyDzq2/VrfHXOxEfvJnd3j4m0xfOxEr5r6Slf5FSw016SZ/atPRkmcE8HKnJ/r1zjAZ7v4idXf2hPA68NHnvFx6wp0sfKA+t0hmEwDAwWsaoEjP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=jkOrm4Hh; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -35,24 +35,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
 	Resent-Message-ID:In-Reply-To:References;
-	bh=QtfIGuDdDrojIF9YOp5yzZ31nhq53McENukWYemk+30=; t=1715022725; x=1716232325; 
-	b=UBoO94JGFMBBP5iPjBOKldCVguQ+5yTXHJtmETUNUSvZ6cwumiypQH0f9qne9jxh7PnAGrMg4pb
-	5I2z46y47SqUCr1vVaH27M2Cbhdqk3tMStjUI1IKwZkqaLGRCUnNQlVfpYGBV7LR7xxqz24MbtUWF
-	/EDdihYyxVpUb6s8ovG7zeqOBBBhn4jW46C//DHlbnnJkcATlfmJzVi/4lURysj1Lflq+x0LpsTG+
-	sc+z/vaGFkhMTFopdO6m7j5/wvbC6FuwRE0kpuoDHAQUvA7wTnvVfur4zEF0fm2vlwC1ocz3wPVFc
-	SSL/3Xd07ZOlNXC4/+p9N/4EFK3KPBbNAi5g==;
+	bh=KrN2K6zKpRrOCNF2Xk1wQSCpKoxp6meRBmJRZFchyLI=; t=1715022797; x=1716232397; 
+	b=jkOrm4Hh6wHbW9yNg3bNO7IuUc1fNRf/4fnaZ5qJG/XF/HH7sg18uv+mWl9fPxRorAe/Vd26rQW
+	48/BcSR0Vzj4vfz8fIWLgkAdDh2CHtTO7BIaCKgc6LwK7BBUJRv8zt5SjcLiUCenUSaUkrxHZfTiH
+	ZqKnU/u2OkiwHUFdIuOjiGvaRokH+G5pefgXqAi8s1bw92UaowfYe1xXugndCD11VfMDcoIhi02b/
+	6D8XyQabn65QoOPxVAa+QUhaQuhLHGCR3LVNDuzg2qp+A4oNrQ72S8GOLxdpVTK0tJsp7W8Ka6zhk
+	l7hp06+djTuw3eMg5DWz9HCj4B1BmeSPcH+A==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1s43ko-000000089rf-0A6p;
-	Mon, 06 May 2024 21:12:02 +0200
+	id 1s43lx-000000089xJ-31N9;
+	Mon, 06 May 2024 21:13:14 +0200
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>,
 	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH] wifi: cfg80211: restrict operation during radar detection
-Date: Mon,  6 May 2024 21:11:59 +0200
-Message-ID: <20240506211158.ae8dca3d0d6c.I7c70a66a5fbdbc63a78fee8a34f31d1995491bc3@changeid>
+Subject: [PATCH] wifi: mac80211: move radar detect work to sdata
+Date: Mon,  6 May 2024 21:13:12 +0200
+Message-ID: <20240506211311.43bd82c6da04.Ib39bec3aa198d137385f081e7e1910dcbde3aa1b@changeid>
 X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -64,114 +64,147 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Just like it's not currently possible to start radar
-detection while already operating, it shouldn't be
-possible to start operating while radar detection is
-running. Fix that.
-
-Also, improve the check whether operating (carrier
-might not be up if e.g. attempting to join IBSS).
+At some point we thought perhaps this could be per link, but
+really that didn't happen, and it's confusing. Radar detection
+still uses the deflink to allocate the channel, but the work
+need not be there. Move it back.
 
 Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/wireless/ibss.c    |  5 ++++-
- net/wireless/mesh.c    |  5 ++++-
- net/wireless/nl80211.c | 21 +++++++++++++++------
- 3 files changed, 23 insertions(+), 8 deletions(-)
+ net/mac80211/cfg.c         | 6 +++---
+ net/mac80211/ieee80211_i.h | 3 ++-
+ net/mac80211/iface.c       | 4 +++-
+ net/mac80211/link.c        | 2 --
+ net/mac80211/mlme.c        | 9 ++++-----
+ net/mac80211/util.c        | 2 +-
+ 6 files changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/net/wireless/ibss.c b/net/wireless/ibss.c
-index 9f02ee5f08be..34e5acff3935 100644
---- a/net/wireless/ibss.c
-+++ b/net/wireless/ibss.c
-@@ -3,7 +3,7 @@
-  * Some IBSS support code for cfg80211.
-  *
-  * Copyright 2009	Johannes Berg <johannes@sipsolutions.net>
-- * Copyright (C) 2020-2023 Intel Corporation
-+ * Copyright (C) 2020-2024 Intel Corporation
-  */
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index b08e5d7687e3..76c26de5da13 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1666,7 +1666,7 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev,
  
- #include <linux/etherdevice.h>
-@@ -94,6 +94,9 @@ int __cfg80211_join_ibss(struct cfg80211_registered_device *rdev,
+ 	if (sdata->wdev.cac_started) {
+ 		chandef = link_conf->chanreq.oper;
+-		wiphy_delayed_work_cancel(wiphy, &link->dfs_cac_timer_work);
++		wiphy_delayed_work_cancel(wiphy, &sdata->dfs_cac_timer_work);
+ 		cfg80211_cac_event(sdata->dev, &chandef,
+ 				   NL80211_RADAR_CAC_ABORTED,
+ 				   GFP_KERNEL);
+@@ -3466,7 +3466,7 @@ static int ieee80211_start_radar_detection(struct wiphy *wiphy,
+ 	if (err)
+ 		goto out_unlock;
  
- 	lockdep_assert_held(&rdev->wiphy.mtx);
+-	wiphy_delayed_work_queue(wiphy, &sdata->deflink.dfs_cac_timer_work,
++	wiphy_delayed_work_queue(wiphy, &sdata->dfs_cac_timer_work,
+ 				 msecs_to_jiffies(cac_time_ms));
  
-+	if (wdev->cac_started)
-+		return -EBUSY;
+  out_unlock:
+@@ -3487,7 +3487,7 @@ static void ieee80211_end_cac(struct wiphy *wiphy,
+ 		 * will no longer be true
+ 		 */
+ 		wiphy_delayed_work_cancel(wiphy,
+-					  &sdata->deflink.dfs_cac_timer_work);
++					  &sdata->dfs_cac_timer_work);
+ 
+ 		if (sdata->wdev.cac_started) {
+ 			ieee80211_link_release_channel(&sdata->deflink);
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index eb62b7d4b4f7..d51aa96f2948 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1059,7 +1059,6 @@ struct ieee80211_link_data {
+ 	int ap_power_level; /* in dBm */
+ 
+ 	bool radar_required;
+-	struct wiphy_delayed_work dfs_cac_timer_work;
+ 
+ 	union {
+ 		struct ieee80211_link_data_managed mgd;
+@@ -1158,6 +1157,8 @@ struct ieee80211_sub_if_data {
+ 	struct ieee80211_link_data deflink;
+ 	struct ieee80211_link_data __rcu *link[IEEE80211_MLD_MAX_NUM_LINKS];
+ 
++	struct wiphy_delayed_work dfs_cac_timer_work;
 +
- 	if (wdev->u.ibss.ssid_len)
- 		return -EALREADY;
+ 	/* for ieee80211_set_active_links_async() */
+ 	struct wiphy_work activate_links_work;
+ 	u16 desired_active_links;
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index dc42902e2693..1ef4b6dc3730 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -554,7 +554,7 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
+ 	wiphy_work_cancel(local->hw.wiphy,
+ 			  &sdata->deflink.color_change_finalize_work);
+ 	wiphy_delayed_work_cancel(local->hw.wiphy,
+-				  &sdata->deflink.dfs_cac_timer_work);
++				  &sdata->dfs_cac_timer_work);
  
-diff --git a/net/wireless/mesh.c b/net/wireless/mesh.c
-index 83306979fbe2..aaca65b66af4 100644
---- a/net/wireless/mesh.c
-+++ b/net/wireless/mesh.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- /*
-  * Portions
-- * Copyright (C) 2022-2023 Intel Corporation
-+ * Copyright (C) 2022-2024 Intel Corporation
-  */
- #include <linux/ieee80211.h>
- #include <linux/export.h>
-@@ -127,6 +127,9 @@ int __cfg80211_join_mesh(struct cfg80211_registered_device *rdev,
- 	if (!rdev->ops->join_mesh)
- 		return -EOPNOTSUPP;
+ 	if (sdata->wdev.cac_started) {
+ 		chandef = sdata->vif.bss_conf.chanreq.oper;
+@@ -1746,6 +1746,8 @@ static void ieee80211_setup_sdata(struct ieee80211_sub_if_data *sdata,
+ 	wiphy_work_init(&sdata->work, ieee80211_iface_work);
+ 	wiphy_work_init(&sdata->activate_links_work,
+ 			ieee80211_activate_links_work);
++	wiphy_delayed_work_init(&sdata->dfs_cac_timer_work,
++				ieee80211_dfs_cac_timer_work);
  
-+	if (wdev->cac_started)
-+		return -EBUSY;
-+
- 	if (!setup->chandef.chan) {
- 		/* if no channel explicitly given, use preset channel */
- 		setup->chandef = wdev->u.mesh.preset_chandef;
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 3c0bca4238d3..71cbe5d15994 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -5937,6 +5937,9 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
- 	if (!rdev->ops->start_ap)
- 		return -EOPNOTSUPP;
+ 	switch (type) {
+ 	case NL80211_IFTYPE_P2P_GO:
+diff --git a/net/mac80211/link.c b/net/mac80211/link.c
+index af0321408a97..f57282488222 100644
+--- a/net/mac80211/link.c
++++ b/net/mac80211/link.c
+@@ -45,8 +45,6 @@ void ieee80211_link_init(struct ieee80211_sub_if_data *sdata,
+ 			  ieee80211_color_collision_detection_work);
+ 	INIT_LIST_HEAD(&link->assigned_chanctx_list);
+ 	INIT_LIST_HEAD(&link->reserved_chanctx_list);
+-	wiphy_delayed_work_init(&link->dfs_cac_timer_work,
+-				ieee80211_dfs_cac_timer_work);
  
-+	if (wdev->cac_started)
-+		return -EBUSY;
-+
- 	if (wdev->links[link_id].ap.beacon_interval)
- 		return -EALREADY;
+ 	if (!deflink) {
+ 		switch (sdata->vif.type) {
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index a481728d78c7..04a125a9ffd1 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -2602,16 +2602,15 @@ void ieee80211_dynamic_ps_timer(struct timer_list *t)
  
-@@ -9929,6 +9932,17 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
+ void ieee80211_dfs_cac_timer_work(struct wiphy *wiphy, struct wiphy_work *work)
+ {
+-	struct ieee80211_link_data *link =
+-		container_of(work, struct ieee80211_link_data,
++	struct ieee80211_sub_if_data *sdata =
++		container_of(work, struct ieee80211_sub_if_data,
+ 			     dfs_cac_timer_work.work);
+-	struct cfg80211_chan_def chandef = link->conf->chanreq.oper;
+-	struct ieee80211_sub_if_data *sdata = link->sdata;
++	struct cfg80211_chan_def chandef = sdata->vif.bss_conf.chanreq.oper;
  
- 	flush_delayed_work(&rdev->dfs_update_channels_wk);
+ 	lockdep_assert_wiphy(sdata->local->hw.wiphy);
  
-+	switch (wdev->iftype) {
-+	case NL80211_IFTYPE_AP:
-+	case NL80211_IFTYPE_P2P_GO:
-+	case NL80211_IFTYPE_MESH_POINT:
-+	case NL80211_IFTYPE_ADHOC:
-+		break;
-+	default:
-+		/* caution - see cfg80211_beaconing_iface_active() below */
-+		return -EINVAL;
-+	}
-+
- 	wiphy_lock(wiphy);
+ 	if (sdata->wdev.cac_started) {
+-		ieee80211_link_release_channel(link);
++		ieee80211_link_release_channel(&sdata->deflink);
+ 		cfg80211_cac_event(sdata->dev, &chandef,
+ 				   NL80211_RADAR_CAC_FINISHED,
+ 				   GFP_KERNEL);
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 0b893e958959..30d3efedaa8e 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -3461,7 +3461,7 @@ void ieee80211_dfs_cac_cancel(struct ieee80211_local *local)
+ 		 * will no longer be true
+ 		 */
+ 		wiphy_delayed_work_cancel(local->hw.wiphy,
+-					  &sdata->deflink.dfs_cac_timer_work);
++					  &sdata->dfs_cac_timer_work);
  
- 	dfs_region = reg_get_dfs_region(wiphy);
-@@ -9959,12 +9973,7 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
- 		goto unlock;
- 	}
- 
--	if (netif_carrier_ok(dev)) {
--		err = -EBUSY;
--		goto unlock;
--	}
--
--	if (wdev->cac_started) {
-+	if (cfg80211_beaconing_iface_active(wdev) || wdev->cac_started) {
- 		err = -EBUSY;
- 		goto unlock;
- 	}
+ 		if (sdata->wdev.cac_started) {
+ 			chandef = sdata->vif.bss_conf.chanreq.oper;
 -- 
 2.44.0
 
