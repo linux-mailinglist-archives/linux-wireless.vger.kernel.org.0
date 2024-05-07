@@ -1,234 +1,189 @@
-Return-Path: <linux-wireless+bounces-7260-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7264-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07E818BDA05
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 06:07:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA9F58BDA66
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 06:58:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2278E1C20ECA
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 04:07:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A146B281065
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 04:58:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 399043D0BD;
-	Tue,  7 May 2024 04:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7350073174;
+	Tue,  7 May 2024 04:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SEzySht3"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="RG1nQa0D"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B395A93C
-	for <linux-wireless@vger.kernel.org>; Tue,  7 May 2024 04:07:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A4326F060
+	for <linux-wireless@vger.kernel.org>; Tue,  7 May 2024 04:57:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715054840; cv=none; b=BmWwWg63Hv+v2I4o241H+e4p/GxX59TRjuuHk5z6dOxKKTJW8O/9CoTGZN4nyCXDcwi0WP6v+x6XrJgMx+vUFsWqa3ZuPgfoMrPkEfyonIWZ4+bBPOEt79orYtItD3THutpjTIMTs3PN4szKGecqvoXZiAB1lPlXZTjvg8baws8=
+	t=1715057859; cv=none; b=Vdk0d9WKLl22NUNKoTCdAhBoLHUQbB6LuM7F+Gt/f/74KKoJT4puk7YNhTLNmWxgWkbSySKTX0nz4qeylCWU6OlSTUXMEvUNqrMuLRh6UFcQWophQsCnnX9in+r7DNAIT/d4cuigPQsH3GD94girsnA2t43TFwWz1fZmXjxUgsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715054840; c=relaxed/simple;
-	bh=mKD5mWQgK0n303Vrh+UA5cj2ENGUjqXrWcJj81qoFJc=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=mdKhpJ2e5Ybryejo8OGNolZjPoJA0IL32sH4yaPVHz2YtQmM47isp2Yd83jhTmmJXDBkWZ2cHxMYeibqw52yqzKdxbW6QvFpchhO54RiPuo+p2od9VsfRZ5CGAysuOs8ndfV9CZRh5iO/oONnfIxT8blxb81OdRWKt5aXJeVsOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SEzySht3; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715054838; x=1746590838;
-  h=date:from:to:cc:subject:message-id;
-  bh=mKD5mWQgK0n303Vrh+UA5cj2ENGUjqXrWcJj81qoFJc=;
-  b=SEzySht3wKok6C1f/gP5biy/CSmK39DXQPzQEpQ4UQPv5D7Gsvr530MU
-   Luw1En5wlApGouEtQDFJ0hJt8bR64RFJpC+fXgGBgV4r0mqVCCITmRmZ+
-   x1QljjSOaAh/r2F79AW5F7a9ZPCEz7vhITaP2p0QJ2/XzEHnNqedgT0j9
-   fuY1Hgnk5D2bzCv6AG4HbGwfDrlsv9WE+gai/mdszRmEBiHksnWHhJLWU
-   UAyhztKxIS8Obz7ALu1HpowjzeA3G7ILaqmnZZYnDd1plP8Q6eaEaxFIP
-   534WZ6afJu9YXBkJoawgATQfLattx//rf9ee45BEunIxMio8jXeWFXSAI
-   g==;
-X-CSE-ConnectionGUID: +IV/fqUJQyyYtEsJvoOYig==
-X-CSE-MsgGUID: nuqXn0VkTn6knX609zlWJg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="33330731"
-X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; 
-   d="scan'208";a="33330731"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 21:07:18 -0700
-X-CSE-ConnectionGUID: e/zHWR8OQzSLIyxNjbhrcA==
-X-CSE-MsgGUID: QycckoCqSEGzQIjNWkxWVQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; 
-   d="scan'208";a="32847906"
-Received: from lkp-server01.sh.intel.com (HELO f8b243fe6e68) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 06 May 2024 21:07:16 -0700
-Received: from kbuild by f8b243fe6e68 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1s4C6k-0001Il-18;
-	Tue, 07 May 2024 04:07:14 +0000
-Date: Tue, 07 May 2024 12:06:34 +0800
-From: kernel test robot <lkp@intel.com>
-To: Johannes Berg <johannes.berg@intel.com>
-Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- 9875b54762a7055bc59c436950c73dd112765e6c
-Message-ID: <202405071232.qpXPIdAF-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1715057859; c=relaxed/simple;
+	bh=+5mG7SNeNQ4h0F5hQ6fjl7a9neHBXaLN0NYyMQTMXFA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lj50GgWeXUJUCZ7Tn79lV6RaLGyTSIXgRuPCdT/+QR2dVd9NfnANWxAdkZu1MsVAUblAsmo9Kd1j2dhgrftXEq2LntElDUnKK17apM+Ox5LBPG602pn210pLOmAPWxMXUgQ0DKuIz6IQRRpwbWJjfNIdDCZDJrsG9fkeUOsVn/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=RG1nQa0D; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4474mP6h032470;
+	Tue, 7 May 2024 04:57:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding; s=qcppdkim1; bh=S6jXuR4aOb4rAx00Qe+Q
+	Dmn/4bc4jKOzslcWAsdrPY8=; b=RG1nQa0DMoClRb7t9BEqqxG4qjWW2HxTGDBd
+	H2HTa3S9lDi2mjL5RS68Z7k8rpNhB7anR6bUNvHHo+qNM8IR1R1eh8jXMWXhvAxs
+	IBjcCRdNgjM9sYQFzFZrHgnvk5smKdsl74XDfT+OvalJbmxxDx9qmNX6KpcsQYFC
+	4J+DKCqZtBcGL5a4T7RNA0lM+5bByuvs1GLeAdpQMn0zlhbQnpSUg4lx6UAFAX93
+	cVRFfBWQxsqCBueuuxKESBmr0UwfYCjGqX6wCr9o1Ie7ConF2nEdfE1Lz/2eroqO
+	zLu715PMEebfPYxaZua2SdgGSFKHlMCoicLy9wjFOpmVLdNSrA==
+Received: from apblrppmta01.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xyc9b04ne-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 May 2024 04:57:32 +0000 (GMT)
+Received: from pps.filterd (APBLRPPMTA01.qualcomm.com [127.0.0.1])
+	by APBLRPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 4474vB78003514;
+	Tue, 7 May 2024 04:57:11 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 3xwe3kn4xm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 May 2024 04:57:11 +0000
+Received: from APBLRPPMTA01.qualcomm.com (APBLRPPMTA01.qualcomm.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4474vBR7003508;
+	Tue, 7 May 2024 04:57:11 GMT
+Received: from hu-devc-blr-u22-a.qualcomm.com (hu-hprem-blr.qualcomm.com [10.190.108.75])
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 4474vB1i003506
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 May 2024 04:57:11 +0000
+Received: by hu-devc-blr-u22-a.qualcomm.com (Postfix, from userid 4146166)
+	id 8C21F4114D; Tue,  7 May 2024 10:27:10 +0530 (+0530)
+From: Harshitha Prem <quic_hprem@quicinc.com>
+To: ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, Harshitha Prem <quic_hprem@quicinc.com>
+Subject: [PATCH v4 0/8] wifi: ath12k: Introduce device group abstraction
+Date: Tue,  7 May 2024 10:26:54 +0530
+Message-Id: <20240507045702.2858954-1-quic_hprem@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: Aq4FtAMi5-b92tkqJ0Ksdzf-45maeWAo
+X-Proofpoint-ORIG-GUID: Aq4FtAMi5-b92tkqJ0Ksdzf-45maeWAo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-07_02,2024-05-06_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
+ bulkscore=0 phishscore=0 clxscore=1015 suspectscore=0 mlxlogscore=703
+ malwarescore=0 mlxscore=0 lowpriorityscore=0 spamscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2405070033
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: 9875b54762a7055bc59c436950c73dd112765e6c  wifi: iwlwifi: Ensure prph_mac dump includes all addresses
+To support multi-link operation, multiple devices with different bands say
+2 GHz or 5 GHz or 6 GHz can be combined together as a group and provide
+an abstraction to mac80211.
 
-elapsed time: 773m
+Device group abstraction - when there are multiple devices that are
+connected by any means of communication interface between them, then these
+devices can be combined together as a single group using a group id to form
+a group abstraction. In ath12k driver, this abstraction would be named as
+ath12k_hw_group (ag).
 
-configs tested: 141
-configs skipped: 3
+Please find below illustration of device group abstraction with two
+devices.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+                 Grouping of multiple devices (in future)
++------------------------------------------------------------------------+
+|  +-------------------------------------+       +-------------------+   |
+|  |   +-----------+ | | +-----------+   |       |   +-----------+   |   |
+|  |   | ar (2GHz) | | | | ar (5GHz) |   |       |   | ar (6GHz) |   |   |
+|  |   +-----------+ | | +-----------+   |       |   +-----------+   |   |
+|  |          ath12k_base (ab)           |       | ath12k_base (ab)  |   |
+|  |         (Dual band device)          |       |                   |   |
+|  +-------------------------------------+       +-------------------+   |
+|                 ath12k_hw_group (ag) based on group id                 |
++------------------------------------------------------------------------+
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20240507   gcc  
-arc                   randconfig-002-20240507   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                   randconfig-001-20240507   gcc  
-arm                   randconfig-002-20240507   clang
-arm                   randconfig-003-20240507   gcc  
-arm                   randconfig-004-20240507   clang
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                 randconfig-001-20240507   clang
-arm64                 randconfig-002-20240507   clang
-arm64                 randconfig-003-20240507   clang
-arm64                 randconfig-004-20240507   clang
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20240507   gcc  
-csky                  randconfig-002-20240507   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-hexagon               randconfig-001-20240507   clang
-hexagon               randconfig-002-20240507   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-001-20240507   clang
-i386         buildonly-randconfig-002-20240507   clang
-i386         buildonly-randconfig-003-20240507   clang
-i386         buildonly-randconfig-004-20240507   gcc  
-i386         buildonly-randconfig-005-20240507   gcc  
-i386         buildonly-randconfig-006-20240507   clang
-i386                                defconfig   clang
-i386                  randconfig-001-20240507   clang
-i386                  randconfig-002-20240507   gcc  
-i386                  randconfig-003-20240507   clang
-i386                  randconfig-004-20240507   clang
-i386                  randconfig-005-20240507   clang
-i386                  randconfig-006-20240507   clang
-i386                  randconfig-011-20240507   gcc  
-i386                  randconfig-012-20240507   clang
-i386                  randconfig-013-20240507   clang
-i386                  randconfig-014-20240507   gcc  
-i386                  randconfig-015-20240507   gcc  
-i386                  randconfig-016-20240507   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20240507   gcc  
-loongarch             randconfig-002-20240507   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20240507   gcc  
-nios2                 randconfig-002-20240507   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                randconfig-001-20240507   gcc  
-parisc                randconfig-002-20240507   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc               randconfig-001-20240507   gcc  
-powerpc               randconfig-002-20240507   clang
-powerpc               randconfig-003-20240507   clang
-powerpc64             randconfig-001-20240507   gcc  
-powerpc64             randconfig-002-20240507   gcc  
-powerpc64             randconfig-003-20240507   clang
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-riscv                 randconfig-001-20240507   clang
-riscv                 randconfig-002-20240507   gcc  
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-s390                  randconfig-001-20240507   gcc  
-s390                  randconfig-002-20240507   clang
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sh                    randconfig-001-20240507   gcc  
-sh                    randconfig-002-20240507   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-001-20240507   clang
-x86_64       buildonly-randconfig-002-20240507   clang
-x86_64       buildonly-randconfig-003-20240507   clang
-x86_64       buildonly-randconfig-004-20240507   clang
-x86_64       buildonly-randconfig-005-20240507   clang
-x86_64       buildonly-randconfig-006-20240507   gcc  
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20240507   gcc  
-x86_64                randconfig-002-20240507   clang
-x86_64                          rhel-8.3-rust   clang
-xtensa                            allnoconfig   gcc  
+Say for example, device 1 has two radios (2 GHz and 5 GHz band) and
+device 2 has one radio (6 GHz).
 
+In existing code -
+        device 1 will have two hardware abstractions hw1 (2 GHz) and hw2
+        (5 GHz) will be registered separately to mac80211 as phy0 and phy1
+        respectively. Similarly, device 2 will register its hw (6GHz) as
+        phy2 to mac80211.
+
+In future, with multi-link abstraction
+
+        combination 1 - Different group id for device1 and device 2
+                Device 1 will create a single hardware abstraction hw1
+                (2 GHz and  5 GHz) and will be registered to mac80211 as
+                phy0. similarly, device 2 will register its hardware
+                (6 GHz) to mac80211 as phy1.
+
+        combination 2 - Same group id for device1 and device 2
+                Both device details are combined together as a group, say
+                group1, with single hardware abstraction of radios 2 GHz,
+                5 GHz and 6 GHz band details and will be registered to
+                mac80211 as phy0.
+
+Add base infrastructure changes to add device grouping abstraction with
+a single device.
+
+This patch series brings the base code changes with following order:
+        1. Refactor existing code which would facilitate in introducing
+           device group abstraction.
+        2. Create a device group abstraction during device probe.
+        3. Start the device group only after QMI firmware ready event is
+           received for all the devices that are combined in the group.
+        4. Move the hardware abstractions (ath12k_hw - ah) from device
+           (ath12k_base - ab) to device group abstraction (ag) as it would
+           ease in having different combinations of group abstraction that
+           can be registered to mac80211.
+
+v4:
+  - Modified the cover letter
+v3:
+  - Removed depends-on tag of "wifi: ath12k: Refactor the hardware recovery
+    procedures" as it is merged to ToT
+  - Addressed the deadlock warning seen during rmmod.
+
+v2:
+ - Rebased to ToT
+
+Karthikeyan Periyasamy (8):
+  wifi: ath12k: Refactor core start api
+  wifi: ath12k: Add helpers to get or set ath12k_hw
+  wifi: ath12k: Add ath12k_get_num_hw api
+  wifi: ath12k: Introduce QMI firmware ready flag
+  wifi: ath12k: move ATH12K_FLAG_REGISTERED flag set to mac_register api
+  wifi: ath12k: Introduce device group abstraction
+  wifi: ath12k: refactor core start based on hardware group
+  wifi: ath12k: move ath12k_hw from per soc to group
+
+ drivers/net/wireless/ath/ath12k/core.c | 433 +++++++++++++++++++++----
+ drivers/net/wireless/ath/ath12k/core.h |  87 ++++-
+ drivers/net/wireless/ath/ath12k/mac.c  | 108 ++++--
+ drivers/net/wireless/ath/ath12k/mac.h  |   9 +-
+ drivers/net/wireless/ath/ath12k/pci.c  |   2 +
+ drivers/net/wireless/ath/ath12k/qmi.c  |  10 +-
+ 6 files changed, 534 insertions(+), 115 deletions(-)
+
+
+base-commit: 2c4d8e19cf060744a9db466ffbaea13ab37f25ca
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
 
