@@ -1,98 +1,86 @@
-Return-Path: <linux-wireless+bounces-7280-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7281-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D34908BE01B
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 12:49:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B66FC8BE05C
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 12:56:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 889FE1F23227
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 10:49:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E874D1C2213B
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 10:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 151C11514D4;
-	Tue,  7 May 2024 10:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B30FF152E0F;
+	Tue,  7 May 2024 10:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="JOGXTRwM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oRSHGPst"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9BDF14F100;
-	Tue,  7 May 2024 10:46:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6B01514D4;
+	Tue,  7 May 2024 10:54:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715078821; cv=none; b=SIaAf1U9Wr8Nf+9UVNK9i7G3U+mXWgvSjesIvFUteq54+pDnLcjHVwG8vBIm2hKiRLpUnsUqxHPj+jHMap+KRD6ylx16/5GQpNlm3MFWYzm4WNFG7k8HS2BVFbt2gt3ZsQXbnE09HYl0+JMt7/5oEU3kx2Pu7wzPgmKW5B85/Uc=
+	t=1715079265; cv=none; b=CMZcBI2tIrBzratrMIEaP6XtvKIhTDFBcZBtdQhyicQmcG3KNeuaEKRXiQ23j+mH+5EiIc+fmA9a/f2llQ0bivxCckNRA5WHhS2LP4bOUxryI4GSN7yq/viiggngUvXTAvsN/ZItuMHbgEzZPS0VYUh/guTe/ts+BnK/3LMKFKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715078821; c=relaxed/simple;
-	bh=E25vMthg3vqCpG+5zSE+AGNII/5x83tzP1t01yygGhw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jJQdez2qLdZpKSlPM5uIaCEfNqzAY5UFYVenHUM5fL0lxPhhlquQevjdGRyyFDg3gD6HDV6pwwcB7r20C8iDQlOZaxn7p+KHvd+rXohd6yvHs7TIlN8AtX7P7dmIcuhuWUJ1sGCw21FgSvdens2uVsQ1P0eXpFF/t7mAAKdgtpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=JOGXTRwM; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=E25vMthg3vqCpG+5zSE+AGNII/5x83tzP1t01yygGhw=;
-	t=1715078817; x=1716288417; b=JOGXTRwMyMWrvYnvWFxB5FrsebDM2UbKoW5UJ1/M+IS5FKx
-	SLAtQ+ggip1Fle+eQsaZGwmw6Ggar32LEIIlQufAIrZFIKZqohzdNs0SUHQgZz1j2QMfXdvLubk2V
-	4ujasEp/Vpcd8u/W1F8oIT5DzdleY/tjgM5GALv38xw2yU6hWAQZcJpK0X2rP+r3XYehY7eZOfNNZ
-	ufQkVb77+w8ebBBRwJG22HR6LY2GAYOHWvHjlmwOmHAi7czzE/ANT/qjGGqineI3bs+TSoIQvJr8W
-	FhnPvAVCJl7o8OYJkWLSiYkN5SYvOb+gk7E9wMvCK6d5vc6ALOv4jAgglQK5yVmQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1s4ILQ-00000009X6J-0VJr;
-	Tue, 07 May 2024 12:46:48 +0200
-Message-ID: <10256004963b6e1a1813c6f07c5d21abfc843070.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: nl80211: Avoid address calculations via out of
- bounds array indexing
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Nathan Chancellor <nathan@kernel.org>, Kees Cook <keescook@chromium.org>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>,  linux-wireless@vger.kernel.org,
- netdev@vger.kernel.org, Jeff Johnson <quic_jjohnson@quicinc.com>, "Gustavo
- A. R. Silva" <gustavoars@kernel.org>,  linux-kernel@vger.kernel.org,
- linux-hardening@vger.kernel.org
-Date: Tue, 07 May 2024 12:46:46 +0200
-In-Reply-To: <20240425181342.GA657080@dev-arch.thelio-3990X>
-References: <20240424220057.work.819-kees@kernel.org>
-	 <20240425181342.GA657080@dev-arch.thelio-3990X>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	s=arc-20240116; t=1715079265; c=relaxed/simple;
+	bh=x3+TjIsYg6xVZcpqHsEC6+vHNVSJS+vbAGLYUkgzoHY=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=tFRGOQgcZonpDCAW6Gk9HbFdpxDRqBBTfLeDrTkCmvoDzIYrZ/6ITHI9pY+50X2oJRs5hb7Od81nyJzOr57uqjBvqM9BEnvQPFgAWRcw/o5P3p0YrGwThczMuo1/efMstiPMHbOW3Nr1DLLoKvSHmxoRgcsgr6F7BcG+tMyWxwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oRSHGPst; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B813BC2BBFC;
+	Tue,  7 May 2024 10:54:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715079265;
+	bh=x3+TjIsYg6xVZcpqHsEC6+vHNVSJS+vbAGLYUkgzoHY=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=oRSHGPstoXLM047W8nTxzF4tFZ7raDGOAmpEJB9rhPiCcoLHBjWwoJHmZdtkfxVdT
+	 QlvDSgvEJ0EqXM8xPMHtTlgczZ5QHkPZ3fPmGCCKqB3hMo+Hg9TczVvCyVRUhZ5KS0
+	 lW4QVQBKoYUw0pfodhxPlPviHpbaAwWaKmGQQ+ru/UK9uLfQMvXuDy0XwvifE8iM/s
+	 uy+ts1jMRRXeEf0A0meDdPNcItDiu6+r0YdalFc2DvKJhOdZw/XLrvET70SLOvLDAD
+	 y4Fs984dyHSmDEy5VsJQpr5U5NlrD3NTo5lutoEo0wKZ0ZRYwnqHuZxI7hS2aPEbmv
+	 Mvd9r2RSrNLYw==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/2] wifi: ath12k: fix misspelling of "dma" in
+ num_rxmda_per_pdev
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: 
+ <20240504-ath12k_dp_rxdma_ring_sel_config_wcn7850-ret-v1-1-44d2843a2857@quicinc.com>
+References: 
+ <20240504-ath12k_dp_rxdma_ring_sel_config_wcn7850-ret-v1-1-44d2843a2857@quicinc.com>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Jeff Johnson <jjohnson@kernel.org>, <linux-wireless@vger.kernel.org>,
+ <ath12k@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+ Jeff Johnson <quic_jjohnson@quicinc.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <171507926213.4120318.15441054563934456845.kvalo@kernel.org>
+Date: Tue,  7 May 2024 10:54:23 +0000 (UTC)
 
-On Thu, 2024-04-25 at 11:13 -0700, Nathan Chancellor wrote:
-> On Wed, Apr 24, 2024 at 03:01:01PM -0700, Kees Cook wrote:
-> > Before request->channels[] can be used, request->n_channels must be set=
-.
-> > Additionally, address calculations for memory after the "channels" arra=
-y
-> > need to be calculated from the allocation base ("request") rather than
-> > via the first "out of bounds" index of "channels", otherwise run-time
-> > bounds checking will throw a warning.
-> >=20
-> > Reported-by: Nathan Chancellor <nathan@kernel.org>
-> > Fixes: e3eac9f32ec0 ("wifi: cfg80211: Annotate struct cfg80211_scan_req=
-uest with __counted_by")
-> > Signed-off-by: Kees Cook <keescook@chromium.org>
->=20
-> Tested-by: Nathan Chancellor <nathan@kernel.org>
->=20
+Jeff Johnson <quic_jjohnson@quicinc.com> wrote:
 
-How do you get this tested? We have the same, and more, bugs in
-cfg80211_scan_6ghz() which I'm fixing right now, but no idea how to
-actually get the checks done?
+> The ath12k_hw_params member num_rxmda_per_pdev contains a misspelling
+> of "dma" so fix it.
+> 
+> No functional changes, compile tested only.
+> 
+> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-johannes
+There was a trivial conflict in ath12k_dp_rx_pdev_srng_free(), please check my changes:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=238d04b67c32e99181b0249bb847b11ce702960b
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20240504-ath12k_dp_rxdma_ring_sel_config_wcn7850-ret-v1-1-44d2843a2857@quicinc.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
