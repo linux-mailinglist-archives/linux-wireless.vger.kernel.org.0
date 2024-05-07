@@ -1,259 +1,234 @@
-Return-Path: <linux-wireless+bounces-7259-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7260-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59D088BD820
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 01:18:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07E818BDA05
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 06:07:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 413A7B2202B
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 May 2024 23:18:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2278E1C20ECA
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 04:07:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 505D415B126;
-	Mon,  6 May 2024 23:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 399043D0BD;
+	Tue,  7 May 2024 04:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="JrYXxXx8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SEzySht3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B35E132C1C
-	for <linux-wireless@vger.kernel.org>; Mon,  6 May 2024 23:18:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B395A93C
+	for <linux-wireless@vger.kernel.org>; Tue,  7 May 2024 04:07:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715037495; cv=none; b=PdpuIGwgVT0Woe0XkfhUh462zq5UZ8F47XxVIAJ+3Q30Iu1IR3lLlPDF/px+2sucxnsU0OtGSFrKWAyPniYlDD+yfH0YC7z4n5ojsu0p+5OPF51O5KxL9qD7BWezttI3hdKmJImLNfjfoCREJoY7RgUJ+VBKGXrBM9VceE8AKek=
+	t=1715054840; cv=none; b=BmWwWg63Hv+v2I4o241H+e4p/GxX59TRjuuHk5z6dOxKKTJW8O/9CoTGZN4nyCXDcwi0WP6v+x6XrJgMx+vUFsWqa3ZuPgfoMrPkEfyonIWZ4+bBPOEt79orYtItD3THutpjTIMTs3PN4szKGecqvoXZiAB1lPlXZTjvg8baws8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715037495; c=relaxed/simple;
-	bh=yNEJUHp7YmsyZbZI2eLJ3KfwmGPdkW1BbZFJ+46ye0w=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=f2SM4mhnO0Nqrk8PEzfTmBfMKptQoi77ObyU5tAxhc4SY5aMwx+SOzG7YBuJPGwThzMwcQik4iUFXA8t1Dzo7e1mzUBi+Qpd/Hl0/TklP4s12NbAMYRAv5sCVBLYEZYyqFElbX6VtBuNCU6FLiKdmGuOfyHUUV7v9kL9Bzuuf0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=JrYXxXx8; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 446MWJO1023824;
-	Mon, 6 May 2024 23:18:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding:content-type; s=qcppdkim1; bh=P5EUndn
-	OkQh9AQNB/pesB358zdmpfK2xqtxUJXvDrdE=; b=JrYXxXx896B8QNQKOw0o0WR
-	TFgHuUuA2ONN92vQdiMmVbVaw9GynbK78hrFX6qJBZ6Av1KHeEealA191EFck2Sw
-	mnrQmXv6HVcH5cQSB4o4TEJOlviCnCMj+zdJE5HoY3OsmYnfgpccCeSVq9FPmHU0
-	JoxWn1nSBcokrGBcqxvVoSsIJPed3cQpvsFDYGT1ubUcEdKu4Y8Z9zbQDlLRCMqz
-	PC0It3U+E22bB36bEThR7BB1MKjPsP2+hMCMUxONZhyl/loMhdrVQbK1czunw2NY
-	8x4malUqID0eWbMrJQNTQJej/r2zzJuMx6DXNG+UJnqd5pobYhIwaUCW7rI02Bw=
-	=
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xxxj1h947-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 May 2024 23:18:06 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 446NI5o4002183
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 6 May 2024 23:18:05 GMT
-Received: from msinada-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Mon, 6 May 2024 16:18:05 -0700
-From: Muna Sinada <quic_msinada@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, Muna Sinada <quic_msinada@quicinc.com>
-Subject: [PATCH] wifi: ath12k: Add Dynamic VLAN support
-Date: Mon, 6 May 2024 16:17:52 -0700
-Message-ID: <20240506231752.942567-1-quic_msinada@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1715054840; c=relaxed/simple;
+	bh=mKD5mWQgK0n303Vrh+UA5cj2ENGUjqXrWcJj81qoFJc=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=mdKhpJ2e5Ybryejo8OGNolZjPoJA0IL32sH4yaPVHz2YtQmM47isp2Yd83jhTmmJXDBkWZ2cHxMYeibqw52yqzKdxbW6QvFpchhO54RiPuo+p2od9VsfRZ5CGAysuOs8ndfV9CZRh5iO/oONnfIxT8blxb81OdRWKt5aXJeVsOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SEzySht3; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1715054838; x=1746590838;
+  h=date:from:to:cc:subject:message-id;
+  bh=mKD5mWQgK0n303Vrh+UA5cj2ENGUjqXrWcJj81qoFJc=;
+  b=SEzySht3wKok6C1f/gP5biy/CSmK39DXQPzQEpQ4UQPv5D7Gsvr530MU
+   Luw1En5wlApGouEtQDFJ0hJt8bR64RFJpC+fXgGBgV4r0mqVCCITmRmZ+
+   x1QljjSOaAh/r2F79AW5F7a9ZPCEz7vhITaP2p0QJ2/XzEHnNqedgT0j9
+   fuY1Hgnk5D2bzCv6AG4HbGwfDrlsv9WE+gai/mdszRmEBiHksnWHhJLWU
+   UAyhztKxIS8Obz7ALu1HpowjzeA3G7ILaqmnZZYnDd1plP8Q6eaEaxFIP
+   534WZ6afJu9YXBkJoawgATQfLattx//rf9ee45BEunIxMio8jXeWFXSAI
+   g==;
+X-CSE-ConnectionGUID: +IV/fqUJQyyYtEsJvoOYig==
+X-CSE-MsgGUID: nuqXn0VkTn6knX609zlWJg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11065"; a="33330731"
+X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; 
+   d="scan'208";a="33330731"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2024 21:07:18 -0700
+X-CSE-ConnectionGUID: e/zHWR8OQzSLIyxNjbhrcA==
+X-CSE-MsgGUID: QycckoCqSEGzQIjNWkxWVQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,260,1708416000"; 
+   d="scan'208";a="32847906"
+Received: from lkp-server01.sh.intel.com (HELO f8b243fe6e68) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 06 May 2024 21:07:16 -0700
+Received: from kbuild by f8b243fe6e68 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1s4C6k-0001Il-18;
+	Tue, 07 May 2024 04:07:14 +0000
+Date: Tue, 07 May 2024 12:06:34 +0800
+From: kernel test robot <lkp@intel.com>
+To: Johannes Berg <johannes.berg@intel.com>
+Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+Subject: [wireless-next:main] BUILD SUCCESS
+ 9875b54762a7055bc59c436950c73dd112765e6c
+Message-ID: <202405071232.qpXPIdAF-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: InGLVV6XD9UlxdEtsOln4T6rYS9bHgUB
-X-Proofpoint-ORIG-GUID: InGLVV6XD9UlxdEtsOln4T6rYS9bHgUB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-06_17,2024-05-06_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- phishscore=0 malwarescore=0 clxscore=1011 adultscore=0 mlxlogscore=999
- impostorscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0 spamscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2405060169
 
-Add support for dynamic VLAN. VLAN group traffic is encapsulated and
-encrypted in mac80211 and driver needs to set flags for the VLAN group
-traffic to skip hardware encapsulation and encryption.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: 9875b54762a7055bc59c436950c73dd112765e6c  wifi: iwlwifi: Ensure prph_mac dump includes all addresses
 
-VLAN group traffic utilizes ext MSDU and HTT Metadata to set
-encapsulation type to RAW and encryption type to OPEN in order to
-inform firmware to skip hardware encapsulation and encryption.
+elapsed time: 773m
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+configs tested: 141
+configs skipped: 3
 
-Signed-off-by: Muna Sinada <quic_msinada@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/dp_tx.c    | 60 ++++++++++++++++++++++
- drivers/net/wireless/ath/ath12k/hal_desc.h | 25 +++++++++
- drivers/net/wireless/ath/ath12k/hw.c       |  6 ++-
- 3 files changed, 89 insertions(+), 2 deletions(-)
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
-index a7c7a868c14c..2a7c312ad3f9 100644
---- a/drivers/net/wireless/ath/ath12k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
-@@ -124,6 +124,44 @@ static void ath12k_hal_tx_cmd_ext_desc_setup(struct ath12k_base *ab,
- 						 HAL_TX_MSDU_EXT_INFO1_ENCRYPT_TYPE);
- }
- 
-+#define HTT_META_DATA_ALIGNMENT 0x8
-+
-+static void *ath12k_dp_metadata_align_skb(struct sk_buff *skb, u8 tail_len)
-+{
-+	struct sk_buff *tail;
-+	void *metadata;
-+
-+	if (unlikely(skb_cow_data(skb, tail_len, &tail) < 0))
-+		return NULL;
-+
-+	metadata = pskb_put(skb, tail, tail_len);
-+	memset(metadata, 0, tail_len);
-+	return metadata;
-+}
-+
-+/* Preparing HTT Metadata when utilized with ext MSDU */
-+static int ath12k_dp_prepare_htt_metadata(struct sk_buff *skb)
-+{
-+	struct hal_tx_msdu_metadata *desc_ext;
-+	u8 htt_desc_size;
-+	/* Size rounded of multiple of 8 bytes */
-+	u8 htt_desc_size_aligned;
-+
-+	htt_desc_size = sizeof(struct hal_tx_msdu_metadata);
-+	htt_desc_size_aligned = ALIGN(htt_desc_size, HTT_META_DATA_ALIGNMENT);
-+
-+	desc_ext = ath12k_dp_metadata_align_skb(skb, htt_desc_size_aligned);
-+	if (!desc_ext)
-+		return -ENOMEM;
-+
-+	desc_ext->info0 = le32_encode_bits(1, HAL_TX_MSDU_METADATA_INFO0_ENCRYPT_FLAG) |
-+			  le32_encode_bits(0, HAL_TX_MSDU_METADATA_INFO0_ENCRYPT_TYPE) |
-+			  le32_encode_bits(1,
-+					   HAL_TX_MSDU_METADATA_INFO0_HOST_TX_DESC_POOL);
-+
-+	return 0;
-+}
-+
- int ath12k_dp_tx(struct ath12k *ar, struct ath12k_vif *arvif,
- 		 struct sk_buff *skb)
- {
-@@ -145,6 +183,7 @@ int ath12k_dp_tx(struct ath12k *ar, struct ath12k_vif *arvif,
- 	u8 ring_selector, ring_map = 0;
- 	bool tcl_ring_retry;
- 	bool msdu_ext_desc = false;
-+	bool add_htt_metadata = false;
- 
- 	if (test_bit(ATH12K_FLAG_CRASH_FLUSH, &ar->ab->dev_flags))
- 		return -ESHUTDOWN;
-@@ -248,6 +287,18 @@ int ath12k_dp_tx(struct ath12k *ar, struct ath12k_vif *arvif,
- 		goto fail_remove_tx_buf;
- 	}
- 
-+	if (!test_bit(ATH12K_FLAG_HW_CRYPTO_DISABLED, &ar->ab->dev_flags) &&
-+	    !(skb_cb->flags & ATH12K_SKB_HW_80211_ENCAP) &&
-+	    !(skb_cb->flags & ATH12K_SKB_CIPHER_SET) &&
-+	    ieee80211_has_protected(hdr->frame_control)) {
-+		/* Add metadata for sw encrypted vlan group traffic */
-+		add_htt_metadata = true;
-+		msdu_ext_desc = true;
-+		ti.flags0 |= u32_encode_bits(1, HAL_TCL_DATA_CMD_INFO2_TO_FW);
-+		ti.encap_type = HAL_TCL_ENCAP_TYPE_RAW;
-+		ti.encrypt_type = HAL_ENCRYPT_TYPE_OPEN;
-+	}
-+
- 	tx_desc->skb = skb;
- 	tx_desc->mac_id = ar->pdev_idx;
- 	ti.desc_id = tx_desc->desc_id;
-@@ -269,6 +320,15 @@ int ath12k_dp_tx(struct ath12k *ar, struct ath12k_vif *arvif,
- 		msg = (struct hal_tx_msdu_ext_desc *)skb_ext_desc->data;
- 		ath12k_hal_tx_cmd_ext_desc_setup(ab, msg, &ti);
- 
-+		if (add_htt_metadata) {
-+			ret = ath12k_dp_prepare_htt_metadata(skb_ext_desc);
-+			if (ret < 0) {
-+				ath12k_dbg(ab, ATH12K_DBG_DP_TX,
-+					   "Failed to add HTT meta data, dropping packet\n");
-+				goto fail_unmap_dma;
-+			}
-+		}
-+
- 		ti.paddr = dma_map_single(ab->dev, skb_ext_desc->data,
- 					  skb_ext_desc->len, DMA_TO_DEVICE);
- 		ret = dma_mapping_error(ab->dev, ti.paddr);
-diff --git a/drivers/net/wireless/ath/ath12k/hal_desc.h b/drivers/net/wireless/ath/ath12k/hal_desc.h
-index 814c02f876d6..3e472e0edbcb 100644
---- a/drivers/net/wireless/ath/ath12k/hal_desc.h
-+++ b/drivers/net/wireless/ath/ath12k/hal_desc.h
-@@ -2984,4 +2984,29 @@ struct hal_mon_dest_desc {
-  *	updated by SRNG.
-  */
- 
-+#define HAL_TX_MSDU_METADATA_INFO0_ENCRYPT_FLAG		BIT(8)
-+#define HAL_TX_MSDU_METADATA_INFO0_ENCRYPT_TYPE		GENMASK(16, 15)
-+#define HAL_TX_MSDU_METADATA_INFO0_HOST_TX_DESC_POOL	BIT(31)
-+
-+struct hal_tx_msdu_metadata {
-+	__le32 info0;
-+	__le32 rsvd3[6];
-+} __packed;
-+
-+/* hal_tx_msdu_metadata
-+ * valid_encrypt_type
-+ *		if set, encrypt type is valid
-+ * encrypt_type
-+ *		0 = NO_ENCRYPT,
-+ *		1 = ENCRYPT,
-+ *		2 ~ 3 - Reserved
-+ * host_tx_desc_pool
-+ *		If set, Firmware allocates tx_descriptors
-+ *		in WAL_BUFFERID_TX_HOST_DATA_EXP,instead
-+ *		of WAL_BUFFERID_TX_TCL_DATA_EXP.
-+ *		Use cases:
-+ *		Any time firmware uses TQM-BYPASS for Data
-+ *		TID, firmware expect host to set this bit.
-+ */
-+
- #endif /* ATH12K_HAL_DESC_H */
-diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/ath/ath12k/hw.c
-index f4c827015821..e089e08408af 100644
---- a/drivers/net/wireless/ath/ath12k/hw.c
-+++ b/drivers/net/wireless/ath/ath12k/hw.c
-@@ -891,7 +891,8 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
- 
- 		.interface_modes = BIT(NL80211_IFTYPE_STATION) |
- 					BIT(NL80211_IFTYPE_AP) |
--					BIT(NL80211_IFTYPE_MESH_POINT),
-+					BIT(NL80211_IFTYPE_MESH_POINT) |
-+					BIT(NL80211_IFTYPE_AP_VLAN),
- 		.supports_monitor = false,
- 
- 		.idle_ps = false,
-@@ -1036,7 +1037,8 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
- 
- 		.interface_modes = BIT(NL80211_IFTYPE_STATION) |
- 					BIT(NL80211_IFTYPE_AP) |
--					BIT(NL80211_IFTYPE_MESH_POINT),
-+					BIT(NL80211_IFTYPE_MESH_POINT) |
-+					BIT(NL80211_IFTYPE_AP_VLAN),
- 		.supports_monitor = false,
- 
- 		.idle_ps = false,
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                   randconfig-001-20240507   gcc  
+arc                   randconfig-002-20240507   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   clang
+arm                              allyesconfig   gcc  
+arm                                 defconfig   clang
+arm                   randconfig-001-20240507   gcc  
+arm                   randconfig-002-20240507   clang
+arm                   randconfig-003-20240507   gcc  
+arm                   randconfig-004-20240507   clang
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20240507   clang
+arm64                 randconfig-002-20240507   clang
+arm64                 randconfig-003-20240507   clang
+arm64                 randconfig-004-20240507   clang
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240507   gcc  
+csky                  randconfig-002-20240507   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+hexagon               randconfig-001-20240507   clang
+hexagon               randconfig-002-20240507   clang
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20240507   clang
+i386         buildonly-randconfig-002-20240507   clang
+i386         buildonly-randconfig-003-20240507   clang
+i386         buildonly-randconfig-004-20240507   gcc  
+i386         buildonly-randconfig-005-20240507   gcc  
+i386         buildonly-randconfig-006-20240507   clang
+i386                                defconfig   clang
+i386                  randconfig-001-20240507   clang
+i386                  randconfig-002-20240507   gcc  
+i386                  randconfig-003-20240507   clang
+i386                  randconfig-004-20240507   clang
+i386                  randconfig-005-20240507   clang
+i386                  randconfig-006-20240507   clang
+i386                  randconfig-011-20240507   gcc  
+i386                  randconfig-012-20240507   clang
+i386                  randconfig-013-20240507   clang
+i386                  randconfig-014-20240507   gcc  
+i386                  randconfig-015-20240507   gcc  
+i386                  randconfig-016-20240507   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+loongarch             randconfig-001-20240507   gcc  
+loongarch             randconfig-002-20240507   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+nios2                 randconfig-001-20240507   gcc  
+nios2                 randconfig-002-20240507   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc                randconfig-001-20240507   gcc  
+parisc                randconfig-002-20240507   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+powerpc               randconfig-001-20240507   gcc  
+powerpc               randconfig-002-20240507   clang
+powerpc               randconfig-003-20240507   clang
+powerpc64             randconfig-001-20240507   gcc  
+powerpc64             randconfig-002-20240507   gcc  
+powerpc64             randconfig-003-20240507   clang
+riscv                            allmodconfig   clang
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   clang
+riscv                               defconfig   clang
+riscv                 randconfig-001-20240507   clang
+riscv                 randconfig-002-20240507   gcc  
+s390                             allmodconfig   clang
+s390                              allnoconfig   clang
+s390                             allyesconfig   gcc  
+s390                                defconfig   clang
+s390                  randconfig-001-20240507   gcc  
+s390                  randconfig-002-20240507   clang
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sh                    randconfig-001-20240507   gcc  
+sh                    randconfig-002-20240507   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   gcc  
+um                                  defconfig   clang
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   clang
+x86_64                            allnoconfig   clang
+x86_64                           allyesconfig   clang
+x86_64       buildonly-randconfig-001-20240507   clang
+x86_64       buildonly-randconfig-002-20240507   clang
+x86_64       buildonly-randconfig-003-20240507   clang
+x86_64       buildonly-randconfig-004-20240507   clang
+x86_64       buildonly-randconfig-005-20240507   clang
+x86_64       buildonly-randconfig-006-20240507   gcc  
+x86_64                              defconfig   gcc  
+x86_64                randconfig-001-20240507   gcc  
+x86_64                randconfig-002-20240507   clang
+x86_64                          rhel-8.3-rust   clang
+xtensa                            allnoconfig   gcc  
+
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
