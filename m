@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-7297-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7298-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A7068BEAB4
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 19:41:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76DDF8BEAD2
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 19:50:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCFB52853AC
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 17:41:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B2B9285BB1
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 17:50:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7793940BE2;
-	Tue,  7 May 2024 17:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96122E570;
+	Tue,  7 May 2024 17:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="JkT4v/39"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="NFIHYhft"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B150E15B12E
-	for <linux-wireless@vger.kernel.org>; Tue,  7 May 2024 17:41:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B837462
+	for <linux-wireless@vger.kernel.org>; Tue,  7 May 2024 17:49:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715103687; cv=none; b=b0olzbMGXw6lNW/b76FrZtbpqEyE8JaG7ECy/nrYZ2Fz9QOXco6Jz444rIevWJzSlqz3C47+OExVh2Fraq2ZeXuNdj9i7cY7WoyfI9nX0zDpMC02Szti5+afZVjBN/z8NJdpb9aLV1S3lJRM8heSMyYuTUB5Fco5PeC1uPjs1x0=
+	t=1715104201; cv=none; b=ur+AGIGHldshnQ8bYAuZRnt2Ymt3u2U2xSiXsLQVL9/RVLPBbvQa0KFSEQNrZHvtMUklcM+ytc0EhGRjJ5vUh6PKMv25TA6lt+f/I3bXn+o+1sMUGJ/auUjo7F4Ie9woiJiKlMhLKEB2Htv1AMbwhzIoGKPfxCI8mUSRvKcltVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715103687; c=relaxed/simple;
-	bh=sJ5SP2s99IJ5iYO2zEuudkqfQEYjcTYSC+LG+C3laMY=;
+	s=arc-20240116; t=1715104201; c=relaxed/simple;
+	bh=CU+pdJj2x1GnxLNKndOBCjeUEScMYfjaV2/y0gDeYu8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=gV1H2eYdK2Jw7KGNkxFSzrxTpZTaDHXgy0PHTmCDzVIHXaz+UsVxUotXgwoxPEx34GLX6Tmz/PbDE6SKSg2s+mbE5SqDOADFel6rU23PFyXbVhMByFmijq1R7+f2S+bOBG9FrxP9rINpv27XALTrHuWpIi8e7WPmkiuNg7OMAE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=JkT4v/39; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=QZp6TZ0OgLSunpL+IMhrn3eaVivFHlzYX6nP9FsFCmmpwptyxC8NbKzq5UtjYcmFcACUOBK/iJW9pu3WUKH2NuluQt4cDKI322LUUPaUWjhIypY9dWH985yN7Qe02kd84nLJosA8c9iyaI/ejHZrMuwH0daBxhNYbpSlUTI1RrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=NFIHYhft; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4479P4WJ012911;
-	Tue, 7 May 2024 17:41:20 GMT
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 447EQp0n025144;
+	Tue, 7 May 2024 17:49:56 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	message-id:date:mime-version:subject:to:cc:references:from
 	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=OLPoy15YP0uYtalQJN/5cYg0t4TZgW+mxfsdwSS7O6A=; b=Jk
-	T4v/39E2RnQKDsPBfCfRmfAfw6QimqQf/gDC/SoIGkzfThc786X4e0Bzvp74hN+G
-	cCdW4LM3xsRhzk2jl7Od4NoS64eizsr2PCBVq0g2sV+pLMFVUatPNPw2Szov1slb
-	d8mZcAtEMxmcq3voK81TpdTBrwKBLP8S5tfNYDM8MjGCnpTksNtm00t38rD9HPC7
-	3Oql1uPkp7aqN9BIsQ36RgTAHBnfHd123Qu28uQ+d+J7zSkPMjqtm86eVdE7NZLJ
-	Nu5ozkjGtg+k3PU1k9pkga/JKIXgR1tFCjS2SoXKkyg11jbP8H+0CToL7pOvPc0M
-	JvZKuFTNkDrtBQsZXLfA==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xyf9ghqhc-1
+	qcppdkim1; bh=OBkfIof8ByzTgdHLZRwZMDneNRnZ7I14Vjy/IR4YdKA=; b=NF
+	IHYhftFdyh+qNmyt/9yyQw+guYaybXNHdAj4INyJb6bflRxMxbOWkYy7v0GQXPCE
+	RvX58+3aayTvmutG1O9GHR+ESrZ+pJi//3ABoXwdZCESamJkcsxOhAeocbnqsua+
+	Jlyg2GzV+DbFirwGrHTvW9UY3OUvoc4xiwX/mg7GogKBNrlHL9PaHH/jEI26cWHm
+	BjR4UwwuH1Foo5uyuU4WREkIR2Zt6PwUgrmVCefYOxiuvmCTCZOX1jz2K9LNCgXJ
+	F33cdUwD0I7n1GXf/AR9zZAjs5E0PsG9P7Hc7j5uYSgmmqHpvs/17vEcLVWQvL4c
+	3czAm46o+QeVpImp0cKw==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xyp2frjq9-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 May 2024 17:41:20 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 447HfJHG006206
+	Tue, 07 May 2024 17:49:55 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 447Hnsar008787
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 7 May 2024 17:41:19 GMT
-Received: from [10.50.36.33] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+	Tue, 7 May 2024 17:49:54 GMT
+Received: from [10.216.56.31] (10.80.80.8) by nalasex01c.na.qualcomm.com
+ (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 7 May 2024
- 10:41:18 -0700
-Message-ID: <73eac931-3090-3e65-e7db-8649231e8ede@quicinc.com>
-Date: Tue, 7 May 2024 23:11:14 +0530
+ 10:49:53 -0700
+Message-ID: <3e40056e-4e32-86dd-4d1c-ab5d6c19d94f@quicinc.com>
+Date: Tue, 7 May 2024 23:19:48 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,232 +65,131 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH RFC] wifi: cfg80211: Refactor interface combination input
- parameter
+ Thunderbird/102.9.1
+Subject: Re: [RFC v2 0/2] wifi: nl80211/mac80211 Handle BSS critical update
 Content-Language: en-US
 To: Johannes Berg <johannes@sipsolutions.net>
 CC: <linux-wireless@vger.kernel.org>
-References: <20240427031503.22870-1-quic_periyasa@quicinc.com>
- <3f8e4d6d0f2facde80ad82b5b3060eb0af0958a4.camel@sipsolutions.net>
-From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-In-Reply-To: <3f8e4d6d0f2facde80ad82b5b3060eb0af0958a4.camel@sipsolutions.net>
+References: <20240403162225.3096228-1-quic_rrchinan@quicinc.com>
+ <226dad2f0736d9b5c3313943dce93f57cb6f4b2a.camel@sipsolutions.net>
+From: Rathees Kumar R Chinannan <quic_rrchinan@quicinc.com>
+In-Reply-To: <226dad2f0736d9b5c3313943dce93f57cb6f4b2a.camel@sipsolutions.net>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: lm6kRj52t8JTeVqMA3JddcQXi5lp42Z3
-X-Proofpoint-GUID: lm6kRj52t8JTeVqMA3JddcQXi5lp42Z3
+X-Proofpoint-GUID: UWGd4gh8dS1LEroaJH8vhek2Zz9ieoX8
+X-Proofpoint-ORIG-GUID: UWGd4gh8dS1LEroaJH8vhek2Zz9ieoX8
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
  definitions=2024-05-07_10,2024-05-06_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- lowpriorityscore=0 adultscore=0 bulkscore=0 impostorscore=0 mlxscore=0
- phishscore=0 mlxlogscore=999 malwarescore=0 suspectscore=0 clxscore=1015
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2405070122
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 priorityscore=1501
+ lowpriorityscore=0 suspectscore=0 adultscore=0 spamscore=0 phishscore=0
+ impostorscore=0 bulkscore=0 clxscore=1015 mlxlogscore=999 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2404010003
+ definitions=main-2405070123
 
 
 
-On 5/7/2024 3:17 PM, Johannes Berg wrote:
-> On Sat, 2024-04-27 at 08:45 +0530, Karthikeyan Periyasamy wrote:
->> Currently, the interface combination input parameter num_different_channels
->> and iftype_num are directly filled in by the caller under the assumption
->> that all channels and interfaces belong to a single hardware device. This
->> assumption is incorrect for multi-device interface combinations because
->> each device supports a different set of channels and interfaces. As
->> discussed in [1], need to refactor the input parameters to encode enough
->> data to handle both single and multiple device interface combinations.
->> This can be achieved by encoding the frequency and interface type under
->> the interface entity itself. With this new input parameter structure, the
->> cfg80211 can classify and construct the device parameters, then verify them
->> against the device specific interface combinations.
-
-...
-
-
+On 5/3/2024 2:57 PM, Johannes Berg wrote:
+> On Wed, 2024-04-03 at 21:52 +0530, Rathees Kumar R Chinannan wrote:
+>> When a critical update occurs to any of elements inside beacon frame, AP
+>> shall increment BSS Parameters Change Count(BPCC) subfield and set the
+>> Critical Update flag subfield of the Capability Information to notify
+>> client that the critical update occurred on AP. Refer section "35.3.10
+>> BSS parameter critical update procedure" on IEEE P802.11be D4.0 for
+>> details.
+>>
+>> On beacon offload case, change in CU parameters should be sent to user
+>> space either before or along with probe or assoc request frame receive
+>> to ensure that user space uses latest CU values and BPCC while generating
+>> response to the received frames. So, add the critical update parameters
+>> as a new attribute to existing NL80211_CMD_FRAME command instead of
+>> sending this on a separate NL80211 event.
+>>
+>> Add an ieee80211_critical_update() API to send the parameters to cfg80211
+>> and call it when event received from firmware to update critical
+>> parameters to user space.
 > 
->> - * @num_different_channels: the number of different channels we want
->> - *	to use for verification
->>    * @radar_detect: a bitmap where each bit corresponds to a channel
->>    *	width where radar detection is needed, as in the definition of
->>    *	&struct ieee80211_iface_combination.@radar_detect_widths
->> - * @iftype_num: array with the number of interfaces of each interface
->> - *	type.  The index is the interface type as specified in &enum
->> - *	nl80211_iftype.
->>    * @new_beacon_int: set this to the beacon interval of a new interface
->>    *	that's not operating yet, if such is to be checked as part of
->>    *	the verification
->> + * @ifaces: array with the number of interface parameter use for verification
->> + * @num_iface: the length of the @ifaces interface parameter
->>    */
->>   struct iface_combination_params {
->> -	int num_different_channels;
->>   	u8 radar_detect;
->> -	int iftype_num[NUM_NL80211_IFTYPES];
->>   	u32 new_beacon_int;
->> +	const struct iface_combination_interface *ifaces;
->> +	u16 num_iface;
+> Somewhat more conceptually, I wonder if we should really handle this
+> hybrid approach? You're offloading the beacon updates, why not offload
+> the probe/assoc response cases as well? Are they really _that_ much more
+> complex? What does the hostapd code for this look like?
 > 
-> The "new_beacon_int" also needs to be for a specific link, witha a
-> specific freq, so you can check for *that* part of the wiphy? Similarly
-> for radar_detect?
-
-Make sense, will address this comment in the next version.
-
 > 
->> +	if (iftype != NL80211_IFTYPE_UNSPECIFIED || chandef) {
->> +		struct iface_combination_interface *iface;
->> +
->> +		iface = &ifaces[params.num_iface];
->> +		iface->iftype = iftype;
->> +
->> +		if (chandef && cfg80211_chandef_valid(chandef)) {
->> +			iface->links[0].freq = chandef->chan->center_freq;
->> +			iface->num_link++;
->>   		}
+> Also, as we already discussed, this is fundamentally racy today, and
+> that cannot be fixed unless you really put it all into the firmware,
+> directly in the TX path, which is probably never going to happen.
 > 
-> Not sure I understand this.
-
-
-Previously both channel and interface creation are validated by 
-independent parameter as below
-
-        if (chandef)
-                params.num_different_channels = 1;
-
-        if (iftype != NL80211_IFTYPE_UNSPECIFIED)
-                params.iftype_num[iftype] = 1;
-
-
-But in the new input parameter num_different_channels is replace by link 
-specific freq parameter again this is tied within interface entity.
-So in either of the above scenario, we have to fill interface entity and 
-the link entity is populate only for valid chandef.
-
-
-
+> So under the assumption that it already *is* racy, I'm not entirely sure
+> I see where this is needed at all?
 > 
->> @@ -4009,14 +4029,37 @@ int ieee80211_check_combinations(struct ieee80211_sub_if_data *sdata,
->>   					    wdev_iter->iftype, 0, 1))
->>   			continue;
->>   
->> -		params.iftype_num[wdev_iter->iftype]++;
->> +		iface = &ifaces[params.num_iface];
->> +		iface->iftype = wdev_iter->iftype;
->> +
->> +		rcu_read_lock();
->> +		for_each_vif_active_link(&sdata_iter->vif, link_conf, link_id) {
->> +			struct ieee80211_chanctx_conf *chanctx_conf;
->> +			struct iface_combination_iface_link *link;
->> +
->> +			chanctx_conf = rcu_dereference(link_conf->chanctx_conf);
->> +			if (chanctx_conf &&
->> +			    cfg80211_chandef_valid(&chanctx_conf->def)) {
+> You're basically handling two (kinds of) values here:
 > 
-> Why the valid check, btw? How could that possibly *not* be valid?
+>   1a) CSA counters: these are today handled in mac80211, and we've
+>       already decided that we need to handle them also in mac80211 (and
+>       get offsets to the partner links from hostapd a la
+>       NL80211_ATTR_CSA_C_OFFSETS_TX).
+>       Yeah this is still racy, but you can't fix that without offloading
+>       it all anyway.
 > 
-
-Only added for the precaution before accessing "chanctx_conf->def.chan" 
-pointer.
-
-what do you think ?
-
->> +				link = &iface->links[iface->num_link];
->> +				link->freq = chanctx_conf->def.chan->center_freq;
->> +				iface->num_link++;
->> +			}
->> +		}
->> +		rcu_read_unlock();
+>   1b) BCCA counters: these are missing today, but that should be fixed,
+>       and then it's just the same as 1a.
 > 
-> when you also have this?
+>   2) BSS parameter change count and critical update flag: are these
+>      really actually completely by the firmware? I'm not sure how that's
+>      necessary, since hostapd initiates all the relevant operations? So
+>      not sure why you need these at all, couldn't hostapd track this and
+>      you just copy it across to the other links?
 > 
-> But maybe separating out actual logic changes in mac80211 to a separate
-> patch would be good.
+> So for 1a/1b I don't even think we should push this to hostapd, it's not
+> necessary and it will just cause more API fragmentation, because already
+> *know* that we have to do things like NL80211_ATTR_CSA_C_OFFSETS_TX for
+> other devices (and hwsim) for this, just more complex.
 > 
-
-Previously the concurrent channel populated from chanctx list as below.
-
-         list_for_each_entry(ctx, &local->chanctx_list, list) {
-                 if (ctx->replace_state == 
-IEEE80211_CHANCTX_WILL_BE_REPLACED)
-                         continue;
-                 params.radar_detect |=
-                         ieee80211_chanctx_radar_detect(local, ctx);
-                if (ctx->mode == IEEE80211_CHANCTX_EXCLUSIVE) {
-                        params.num_different_channels++;
-                        continue;
-        }
-
-You want to have the below change of populating concurrent channel 
-populate logic from the active links in a separate patch first ?
-
-+               rcu_read_lock();
-+               for_each_vif_active_link(&sdata_iter->vif, link_conf, 
-link_id) {
-+                       struct ieee80211_chanctx_conf *chanctx_conf;
-+                       struct iface_combination_iface_link *link;
-+
-+                       chanctx_conf = 
-rcu_dereference(link_conf->chanctx_conf);
-+                       if (chanctx_conf &&
-+                           cfg80211_chandef_valid(&chanctx_conf->def)) {
-+                               params.num_different_channels++;
-+                       }
-+               }
-+               rcu_read_unlock();
-
-
->>   	list_for_each_entry_rcu(sdata, &local->interfaces, list)
->> -		params.iftype_num[sdata->wdev.iftype]++;
->> +		total_iface++;
->> +
->> +	if (!total_iface)
->> +		goto skip;
->> +
->> +	ifaces = kcalloc(total_iface, sizeof(*ifaces), GFP_KERNEL);
->> +	if (!ifaces)
->> +		return -ENOMEM;
->> +
->> +	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
->> +		struct iface_combination_interface *iface;
->> +
->> +		if (params.num_iface >= total_iface)
->> +			continue;
->> +
->> +		iface = &ifaces[params.num_iface];
->> +		iface->iftype = sdata->wdev.iftype;
->> +
->> +		rcu_read_lock();
->> +		for_each_vif_active_link(&sdata->vif, link_conf, link_id) {
->> +			struct ieee80211_chanctx_conf *chanctx_conf;
->> +			struct iface_combination_iface_link *link;
->> +
->> +			chanctx_conf = rcu_dereference(link_conf->chanctx_conf);
->> +			if (chanctx_conf &&
->> +			    cfg80211_chandef_valid(&chanctx_conf->def)) {
->> +				link = &iface->links[iface->num_link];
->> +				link->freq = chanctx_conf->def.chan->center_freq;
->> +				iface->num_link++;
->> +			}
->> +		}
->> +		rcu_read_unlock();
->> +
->> +		params.num_iface++;
->> +	}
+> Thus, I don't think this is right. We can handle your case the same way,
+> and you don't even need the NL80211_EXT_FEATURE_CRITICAL_UPDATE_OFFLOAD
+> flag right now, by just pushing the offsets into the kernel and handling
+> the values coming from the firmware by filling in at the right offsets.
+> Could perhaps get the offsets down into the driver and do it there, or
+> just handle it in mac80211, not sure.
 > 
-> Please don't add the same code twice.
+> But this then doesn't fragment the API here, because hostapd will just
+> give all the offsets, and the below stack (mac80211/driver/fw/hwsim)
+> will fill the values.
+>
+In case of MBSSID configuration, hostapd has to provide multiple offsets 
+to update these counters on BMLE per-STA profile for each non-TX MBSSID 
+profile when CSA/BCCA triggered on any of partner links.
 
-Will make a helper function and reuse in the needed area o avoid 
-redundant code.
+To avoid providing multiple offsets, this approach is used to pass the 
+counter values to hostapd and use it while generating the probe/assoc 
+response frame.
 
-Will address this comment in the next version.
+> Not sure about the BPCC and critical update flag, but let's think about
+> how that would be handled on other hardware? It feels to me right now
+> that hostapd should already be in control and know this, and not need
+> any indications (it does control all links), but maybe I'm wrong (or
+> there's just some extra case the firmware might do) and it doesn't, but
+Yes, firmware is handling some extra cases and maintain synchronization 
+among partner links and it maintains BPCC value and set/clear critical 
+flag based on TBTT timer. Hence we are passing these values also to user 
+space.
+
+> then let's also consider how that would be handled in other hardware (or
+> think about hwsim instead), and find API that doesn't fragment so much.
+>
 
 
--- 
-Karthikeyan Periyasamy
---
-கார்த்திகேயன் பெரியசாமி
+Sure, will check this.
+
+> Yes we'll always fragment whether or not the partner link beacons need
+> updating, but it shouldn't need all those different paths for everything
+> else too.
+>
+
+
+> johannes
 
