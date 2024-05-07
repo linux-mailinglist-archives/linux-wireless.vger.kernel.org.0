@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-7296-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7297-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49A348BEA86
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 19:26:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A7068BEAB4
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 19:41:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3F3428503E
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 17:26:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCFB52853AC
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 17:41:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B52415F40C;
-	Tue,  7 May 2024 17:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7793940BE2;
+	Tue,  7 May 2024 17:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="b65Rx6Rf"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="JkT4v/39"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7CA510E6
-	for <linux-wireless@vger.kernel.org>; Tue,  7 May 2024 17:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B150E15B12E
+	for <linux-wireless@vger.kernel.org>; Tue,  7 May 2024 17:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715102774; cv=none; b=VTKsOQ5xASb3E3G03Bxa/sCWu8o6ttxqM6NOM//PITxeroi9HDc7RS05pWK5mikG9ag+C4fozTlIjndLoBX6KfEcHfxXzPReTv0BVLYNgPNEth6/Fz5vbxKNqbKJan0zHicyU+v5a4sAaFtU3F9bi4ORT+FUg5V9jFZGFytQubY=
+	t=1715103687; cv=none; b=b0olzbMGXw6lNW/b76FrZtbpqEyE8JaG7ECy/nrYZ2Fz9QOXco6Jz444rIevWJzSlqz3C47+OExVh2Fraq2ZeXuNdj9i7cY7WoyfI9nX0zDpMC02Szti5+afZVjBN/z8NJdpb9aLV1S3lJRM8heSMyYuTUB5Fco5PeC1uPjs1x0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715102774; c=relaxed/simple;
-	bh=qzn19EfhwkqCAaf4N+r3etPjFzEa86J/goUtzGl+m5Y=;
-	h=Message-ID:Date:MIME-Version:Subject:References:From:To:CC:
-	 In-Reply-To:Content-Type; b=t/EsH4HbFXi2yfXniazGUjFcmgMb2GRvHs2+oqHDk8wy3YGrtRpE6wAbQxk5oZg27XfTVdvGM1MkWQuUX2IF519IYwNrJ3zkQnDZoJaHx/Bo/OfOTdNiEGeCUGYd28NV6Jv9dXeOtN+ThrsLEbcfhzNbvMZDTv1Yoqw9dstowXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=b65Rx6Rf; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1715103687; c=relaxed/simple;
+	bh=sJ5SP2s99IJ5iYO2zEuudkqfQEYjcTYSC+LG+C3laMY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=gV1H2eYdK2Jw7KGNkxFSzrxTpZTaDHXgy0PHTmCDzVIHXaz+UsVxUotXgwoxPEx34GLX6Tmz/PbDE6SKSg2s+mbE5SqDOADFel6rU23PFyXbVhMByFmijq1R7+f2S+bOBG9FrxP9rINpv27XALTrHuWpIi8e7WPmkiuNg7OMAE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=JkT4v/39; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 447Fuj9m026465;
-	Tue, 7 May 2024 17:26:07 GMT
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4479P4WJ012911;
+	Tue, 7 May 2024 17:41:20 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:references:from:to:cc
+	message-id:date:mime-version:subject:to:cc:references:from
 	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=WMZcKaJ4TXcrpgjByjaEuDrj9Sgaym0AFTXxwoze/ng=; b=b6
-	5Rx6Rfmmc2bMfaAk+YA+ku3R939LgDhnRpohplqD93a8ZWYsqOYlsO1NRPSRf72C
-	sCbz+g953PSDA2wtv9hKGmZvEL64pFnJhIBltzgL3ooldiwWSVxCS9XjU2XLLrbG
-	HnPFanR93xBwCBlx+cvt2bG59Fp0y3udNyQ+229IQAM2llC2xs1IYPzwd0ANu19i
-	t9PnLtJJpCFEsH1KX0klmIO6qM8UEUozAAs6bv5iVAjWosIRabMmWHBfGsPPLruB
-	ZZUBB27S3LjuUWbyvVY/D60M8ZBygjsikGy1ueJzeSIA2gxaKJpZgHluBxHgSua8
-	EJ3rKvY4a1Iy3FYyWD/g==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xyf9ghpgw-1
+	qcppdkim1; bh=OLPoy15YP0uYtalQJN/5cYg0t4TZgW+mxfsdwSS7O6A=; b=Jk
+	T4v/39E2RnQKDsPBfCfRmfAfw6QimqQf/gDC/SoIGkzfThc786X4e0Bzvp74hN+G
+	cCdW4LM3xsRhzk2jl7Od4NoS64eizsr2PCBVq0g2sV+pLMFVUatPNPw2Szov1slb
+	d8mZcAtEMxmcq3voK81TpdTBrwKBLP8S5tfNYDM8MjGCnpTksNtm00t38rD9HPC7
+	3Oql1uPkp7aqN9BIsQ36RgTAHBnfHd123Qu28uQ+d+J7zSkPMjqtm86eVdE7NZLJ
+	Nu5ozkjGtg+k3PU1k9pkga/JKIXgR1tFCjS2SoXKkyg11jbP8H+0CToL7pOvPc0M
+	JvZKuFTNkDrtBQsZXLfA==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xyf9ghqhc-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 May 2024 17:26:07 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 447HQ653020548
+	Tue, 07 May 2024 17:41:20 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 447HfJHG006206
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 7 May 2024 17:26:06 GMT
-Received: from [10.216.56.31] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
+	Tue, 7 May 2024 17:41:19 GMT
+Received: from [10.50.36.33] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 7 May 2024
- 10:26:04 -0700
-Message-ID: <45e98a80-9a32-fe1a-2780-ae704b95082a@quicinc.com>
-Date: Tue, 7 May 2024 22:55:50 +0530
+ 10:41:18 -0700
+Message-ID: <73eac931-3090-3e65-e7db-8649231e8ede@quicinc.com>
+Date: Tue, 7 May 2024 23:11:14 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,301 +65,232 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Subject: Re: [RFC v2 1/2] wifi: nl80211: Add attribute to send critical update
- parameters
-References: <20240403162225.3096228-1-quic_rrchinan@quicinc.com>
- <20240403162225.3096228-2-quic_rrchinan@quicinc.com>
- <292247f4b838356b0c4e3ded2ff9fdbabd682040.camel@sipsolutions.net>
+ Thunderbird/102.15.1
+Subject: Re: [PATCH RFC] wifi: cfg80211: Refactor interface combination input
+ parameter
 Content-Language: en-US
-From: Rathees Kumar R Chinannan <quic_rrchinan@quicinc.com>
 To: Johannes Berg <johannes@sipsolutions.net>
 CC: <linux-wireless@vger.kernel.org>
-In-Reply-To: <292247f4b838356b0c4e3ded2ff9fdbabd682040.camel@sipsolutions.net>
+References: <20240427031503.22870-1-quic_periyasa@quicinc.com>
+ <3f8e4d6d0f2facde80ad82b5b3060eb0af0958a4.camel@sipsolutions.net>
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+In-Reply-To: <3f8e4d6d0f2facde80ad82b5b3060eb0af0958a4.camel@sipsolutions.net>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: hcr9V-p_IhOS2N5lQHkyL5sMJtjsYEAb
-X-Proofpoint-GUID: hcr9V-p_IhOS2N5lQHkyL5sMJtjsYEAb
+X-Proofpoint-ORIG-GUID: lm6kRj52t8JTeVqMA3JddcQXi5lp42Z3
+X-Proofpoint-GUID: lm6kRj52t8JTeVqMA3JddcQXi5lp42Z3
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
  definitions=2024-05-07_10,2024-05-06_02,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
  lowpriorityscore=0 adultscore=0 bulkscore=0 impostorscore=0 mlxscore=0
- phishscore=0 mlxlogscore=999 malwarescore=0 suspectscore=0 clxscore=1011
+ phishscore=0 mlxlogscore=999 malwarescore=0 suspectscore=0 clxscore=1015
  priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2405070120
+ engine=8.19.0-2404010003 definitions=main-2405070122
 
 
 
-On 5/3/2024 2:42 PM, Johannes Berg wrote:
-> On Wed, 2024-04-03 at 21:52 +0530, Rathees Kumar R Chinannan wrote:
->> Add NL80211_ATTR_RXMGMT_CRITICAL_UPDATE attribute to send critical
->> update parameters to hostapd on NL80211_CMD_FRAME.
->>
->> User space application requires these CU params to update fields on probe
->> and assoc response frame. So, during probe or assoc request frame receive,
->> send these params as a new attribute on existing NL80211_CMD_FRAME for
->> AP MLD.
->>
->> Change in CU parameters should be sent to user space either before or
->> along with probe or assoc request frame receive to ensure that user space
->> uses latest CU values and BPCC while generating response to the received
->> frames. So, add the critical update parameters as a new attribute to
->> existing NL80211_CMD_FRAME command instead of sending this on a separate
->> NL80211 event.
->>
->> Based on the suggestion received on below link, add extended feature
->> NL80211_EXT_FEATURE_CRITICAL_UPDATE_OFFLOAD flag if driver handles
->> synchronization among all the links and update critical information on
->> partner link beacon for AP MLD and user space can update critical
->> information only on impacted link beacon template. Add this critical
->> update attribute on NL80211_CMD_FRAME only when this flag is set
->> by driver.
->>
->> Link: https://lore.kernel.org/all/df711a5978b84856a54953a32e4b05923b48870a.camel@sipsolutions.net/
-> 
-> I'm not sure we're interpreting this the same way ;-)
-> 
-> At least now that I'm reading it again, I was thinking in that thread
-> about how beacons on partner links are updated. That whole thread was
-> about handling that?
->
-yes, it is about beacon update on partner links.
+On 5/7/2024 3:17 PM, Johannes Berg wrote:
+> On Sat, 2024-04-27 at 08:45 +0530, Karthikeyan Periyasamy wrote:
+>> Currently, the interface combination input parameter num_different_channels
+>> and iftype_num are directly filled in by the caller under the assumption
+>> that all channels and interfaces belong to a single hardware device. This
+>> assumption is incorrect for multi-device interface combinations because
+>> each device supports a different set of channels and interfaces. As
+>> discussed in [1], need to refactor the input parameters to encode enough
+>> data to handle both single and multiple device interface combinations.
+>> This can be achieved by encoding the frequency and interface type under
+>> the interface entity itself. With this new input parameter structure, the
+>> cfg80211 can classify and construct the device parameters, then verify them
+>> against the device specific interface combinations.
 
->> Suggested-by: Johannes Berg <johannes@sipsolutions.net>
->> Signed-off-by: Rathees Kumar R Chinannan <quic_rrchinan@quicinc.com>
->> ---
->>   include/net/cfg80211.h       |  10 +++
->>   include/uapi/linux/nl80211.h | 104 +++++++++++++++++++++++++++++
->>   net/wireless/nl80211.c       | 123 ++++++++++++++++++++++++++++++++++-
->>   3 files changed, 236 insertions(+), 1 deletion(-)
->>
->> diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
->> index 2e2be4fd2bb6..496a9d4956de 100644
->> --- a/include/net/cfg80211.h
->> +++ b/include/net/cfg80211.h
->> @@ -6142,7 +6142,11 @@ void wiphy_delayed_work_flush(struct wiphy *wiphy,
->>    *	unprotected beacon report
->>    * @links: array of %IEEE80211_MLD_MAX_NUM_LINKS elements containing @addr
->>    *	@ap and @client for each link
->> + * @links.ap.bpcc: Bss param change count value for each link
-> 
-> BSS
-> 
-Sure, will correct this.
+...
 
->> + * @links.ap.switch_count: CSA/BCCA count for each link
-> 
-> Had to think about BCCA a bit too much ... maybe explain it? :)
-> 
-> Also can someone actually be trying to do channel switch and color
-> change at the same time?
->
-Currently kernel doesn't allow another color change if one is already 
-active or if CSA is active. Similarly, during channel switch if there is 
-a color change in progress, it will get aborted.
 
->> + * @links.ap.critical_flag: Critical update flag for each link
->>    * @valid_links: bitmap describing what elements of @links are valid
->> + * @critical_update: critical params updated on any wdev link
 > 
-> Why have two critical indications? And they're even named differently?
-> I'd probably rename the inner to 'critical_update' and remove the outer,
-> it's easy to loop over (valid) links?
-> 
-Sure, will remove the second one and iterate valid links for the same.
-
->>   static inline const u8 *wdev_address(struct wireless_dev *wdev)
->> @@ -8340,6 +8348,7 @@ void cfg80211_conn_failed(struct net_device *dev, const u8 *mac_addr,
->>    * @flags: flags, as defined in &enum nl80211_rxmgmt_flags
->>    * @rx_tstamp: Hardware timestamp of frame RX in nanoseconds
->>    * @ack_tstamp: Hardware timestamp of ack TX in nanoseconds
->> + * @critical_update: critical params updated for the received frame
+>> - * @num_different_channels: the number of different channels we want
+>> - *	to use for verification
+>>    * @radar_detect: a bitmap where each bit corresponds to a channel
+>>    *	width where radar detection is needed, as in the definition of
+>>    *	&struct ieee80211_iface_combination.@radar_detect_widths
+>> - * @iftype_num: array with the number of interfaces of each interface
+>> - *	type.  The index is the interface type as specified in &enum
+>> - *	nl80211_iftype.
+>>    * @new_beacon_int: set this to the beacon interval of a new interface
+>>    *	that's not operating yet, if such is to be checked as part of
+>>    *	the verification
+>> + * @ifaces: array with the number of interface parameter use for verification
+>> + * @num_iface: the length of the @ifaces interface parameter
 >>    */
->>   struct cfg80211_rx_info {
->>   	int freq;
->> @@ -8351,6 +8360,7 @@ struct cfg80211_rx_info {
->>   	u32 flags;
->>   	u64 rx_tstamp;
->>   	u64 ack_tstamp;
->> +	bool critical_update;
+>>   struct iface_combination_params {
+>> -	int num_different_channels;
+>>   	u8 radar_detect;
+>> -	int iftype_num[NUM_NL80211_IFTYPES];
+>>   	u32 new_beacon_int;
+>> +	const struct iface_combination_interface *ifaces;
+>> +	u16 num_iface;
 > 
-> Not sure what this means?
-> 
-This flag will be set on mac80211 when critical parameters are received 
-on driver along with probe/assoc request frame receive.
->> + * @NL80211_ATTR_RXMGMT_CRITICAL_UPDATE: This is a nested attribute for driver
->> + *	supporting critical update feature for AP MLD. When used with
->> + *	%NL80211_CMD_FRAME it contains attribute defined in &enum nl80211_cu_attrs
->> + *	to send critical update params for list of MLDs. Driver adds this attribute
->> + *	only for probe, assoc and reassoc request frame. User-space can use these
->> + *	params to update CU fields on corresponding response frame. This attribute
->> + *	is needed only on beacon offload case and it is not needed on beacon
->> + *	non-offload case since user space itself has these data.
-> 
-> The wording of "beacon offload" vs. "beacon non-offload" seems, at best,
-> imprecise? This should be about offloading partner link updates, or
-> something like that?
-> 
-Sure, will update this.
+> The "new_beacon_int" also needs to be for a specific link, witha a
+> specific freq, so you can check for *that* part of the wiphy? Similarly
+> for radar_detect?
 
-> Also I find this API a bit confusing, why is this sent in an RX frame
-> notification, which is stateless today, but you only send it once on the
-> first RX notification after it was set. Is that some kind of
-> optimisation?
->
-Yes, it is sent not only on first RX notification, it is sent later as 
-well if there is a change in the value received from driver when 
-compared to previous values.
+Make sense, will address this comment in the next version.
 
-> I'd think it would make more sense to send a separate notification of
-> the data, and then you don't even need to store the data in the wdev.
 > 
-> Maybe then if we find out that it updates too frequently, we can defer
-> that separate notification (e.g. create the SKB for it, store a pointer
-> to that, and send it only on the first frame RX).
+>> +	if (iftype != NL80211_IFTYPE_UNSPECIFIED || chandef) {
+>> +		struct iface_combination_interface *iface;
+>> +
+>> +		iface = &ifaces[params.num_iface];
+>> +		iface->iftype = iftype;
+>> +
+>> +		if (chandef && cfg80211_chandef_valid(chandef)) {
+>> +			iface->links[0].freq = chandef->chan->center_freq;
+>> +			iface->num_link++;
+>>   		}
 > 
-CU parameters should be sent to user space either before or
-along with probe or assoc request frame receive to ensure that user 
-space uses latest CU values and BPCC while generating response to the 
-received frames.
-Do you recommend to send it as separate NL80211 command before handling 
-these management frame RX ? Please suggest.
+> Not sure I understand this.
 
->> @@ -3401,6 +3410,7 @@ enum nl80211_attrs {
+
+Previously both channel and interface creation are validated by 
+independent parameter as below
+
+        if (chandef)
+                params.num_different_channels = 1;
+
+        if (iftype != NL80211_IFTYPE_UNSPECIFIED)
+                params.iftype_num[iftype] = 1;
+
+
+But in the new input parameter num_different_channels is replace by link 
+specific freq parameter again this is tied within interface entity.
+So in either of the above scenario, we have to fill interface entity and 
+the link entity is populate only for valid chandef.
+
+
+
+> 
+>> @@ -4009,14 +4029,37 @@ int ieee80211_check_combinations(struct ieee80211_sub_if_data *sdata,
+>>   					    wdev_iter->iftype, 0, 1))
+>>   			continue;
 >>   
->>   	NL80211_ATTR_ASSOC_SPP_AMSDU,
->>   
->> +	NL80211_ATTR_RXMGMT_CRITICAL_UPDATE,
->>   	/* add attributes here, update the policy in nl80211.c */
-> 
-> nit: blank line
->
-Sure, will correct this.
-
->> + * @NL80211_EXT_FEATURE_CRITICAL_UPDATE_OFFLOAD: User space sets critical
->> + *	information only on impacted link through @NL80211_CMD_SET_BEACON.
->> + *	Driver/Device handles synchronization among all the links and update
->> + *	critical information on partner link beacon in case of MLD.
-> 
-> That's not really _quite_ what this implies today.
-> 
-> I mean, yeah, that's the idea, but you're actually using it for
-> something else. I don't even mind, but maybe it'd make sense to put this
-> into a separate patch, that starts building out the infrastructure for
-> handling all of this, simply with this for starters to say "not needed
-> in this case"?
-> 
-> (I think maybe I'm missing the broader picture a bit in these patches)
-> 
-ok, will raise a separate patch for this feature flag.
-And patch to add critical update information on impacted link during set 
-beacon template is still under review.
-
->> +/*
->> + * Critical update attribute length for a MLD list with two nested
->> + * attributes. Each nla_nest_start() reserves four bytes.
->> + */
->> +#define NL80211_CU_ATTR_MLDS_LEN	8
-> ...
->> +#define NL80211_CU_ATTR_MLD_LEN		16
-> ...
->> +#define NL80211_CU_ATTR_LINK_LEN	32
-> 
-> Please don't do that, use nla_attr_size() or something?
-> 
-> But maybe anyway we can find a better representation.
-> 
-Sure, will check this.
-
->> +/**
->> + * nl80211_cu_attrs - critical update attributes
->> + *
->> + *
-> 
-> nit: double blank line
-> 
-Ok
-
->> + * @__NL80211_CU_ATTR_INVALID: invalid
->> + * @NL80211_CU_ATTR_MLDS: nested attribute specifying list of MLDs,
->> + * see &enum nl80211_cu_mld_attrs
->> + * @__NL80211_CU_ATTR_LAST: internal use
->> + * @NL80211_CU_ATTR_MAX: maximum critical update attribute
->> + */
->> +enum nl80211_cu_attrs {
->> +	__NL80211_CU_ATTR_INVALID,
+>> -		params.iftype_num[wdev_iter->iftype]++;
+>> +		iface = &ifaces[params.num_iface];
+>> +		iface->iftype = wdev_iter->iftype;
 >> +
->> +	NL80211_CU_ATTR_MLDS,
+>> +		rcu_read_lock();
+>> +		for_each_vif_active_link(&sdata_iter->vif, link_conf, link_id) {
+>> +			struct ieee80211_chanctx_conf *chanctx_conf;
+>> +			struct iface_combination_iface_link *link;
 >> +
->> +	/* keep last */
->> +	__NL80211_CU_ATTR_LAST,
->> +	NL80211_CU_ATTR_MAX = __NL80211_CU_ATTR_LAST - 1
->> +};
+>> +			chanctx_conf = rcu_dereference(link_conf->chanctx_conf);
+>> +			if (chanctx_conf &&
+>> +			    cfg80211_chandef_valid(&chanctx_conf->def)) {
 > 
-> But I'm not sure why you need this level anyway?
+> Why the valid check, btw? How could that possibly *not* be valid?
 > 
-> Why would you need to represent multiple MLDs for a single interface?
-> You've tagged it to RX (see above for comments on that) but that's per
-> interface anyway, so certainly per MLD?
->
-If multiple vaps are created on a radio, then on MBSSID IE for each Non 
-TX BSSID profile, we have to update CU bits & BPCC on Multi link 
-element. These non-TX vaps can be part of different MLDs, so we need to 
-pass the critical information for all MLDs instead of single MLD.
 
->> +++ b/net/wireless/nl80211.c
->> @@ -468,6 +468,25 @@ static const struct netlink_range_validation nl80211_punct_bitmap_range = {
->>   	.max = 0xffff,
->>   };
->>   
->> +static const struct nla_policy
->> +link_policy[NL80211_CU_MLD_LINK_ATTR_MAX + 1] = {
->> +	[NL80211_CU_MLD_LINK_ATTR_ID] = { .type = NLA_U8 },
->> +	[NL80211_CU_MLD_LINK_ATTR_CRITICAL_FLAG] = { .type = NLA_FLAG },
->> +	[NL80211_CU_MLD_LINK_ATTR_BPCC] = { .type = NLA_U8 },
->> +	[NL80211_CU_MLD_LINK_ATTR_SWITCH_COUNT] = { .type = NLA_U8 },
->> +};
->> +
->> +static const struct nla_policy
->> +mld_policy[NL80211_CU_MLD_ATTR_MAX + 1] = {
->> +	[NL80211_CU_MLD_ATTR_IFINDEX] = { .type = NLA_U32 },
->> +	[NL80211_CU_MLD_ATTR_LINKS] = NLA_POLICY_NESTED(link_policy),
->> +};
->> +
->> +static const struct nla_policy
->> +cu_policy[NL80211_CU_ATTR_MAX + 1] = {
->> +	[NL80211_CU_ATTR_MLDS] = NLA_POLICY_NESTED(mld_policy),
->> +};
->> +
->>   static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
->>   	[0] = { .strict_start_type = NL80211_ATTR_HE_OBSS_PD },
->>   	[NL80211_ATTR_WIPHY] = { .type = NLA_U32 },
->> @@ -826,6 +845,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
->>   	[NL80211_ATTR_MLO_TTLM_DLINK] = NLA_POLICY_EXACT_LEN(sizeof(u16) * 8),
->>   	[NL80211_ATTR_MLO_TTLM_ULINK] = NLA_POLICY_EXACT_LEN(sizeof(u16) * 8),
->>   	[NL80211_ATTR_ASSOC_SPP_AMSDU] = { .type = NLA_FLAG },
->> +	[NL80211_ATTR_RXMGMT_CRITICAL_UPDATE] = NLA_POLICY_NESTED(cu_policy),
-> 
-> All of these are outgoing though, so probably shouldn't even have a
-> policy (which implies NLA_REJECT, i.e. not used incoming)?
-> 
-Sure, will remove this change.
+Only added for the precaution before accessing "chanctx_conf->def.chan" 
+pointer.
 
->> -	msg = nlmsg_new(100 + info->len, gfp);
->> +	if (wiphy_ext_feature_isset(
->> +		    wdev->wiphy,
->> +		    NL80211_EXT_FEATURE_CRITICAL_UPDATE_OFFLOAD) &&
->> +	    info->critical_update)
-> 
-> I don't even see how the flag check is needed here, since it relies on
-> the driver setting info->critical_update?
-> 
-> johannes
+what do you think ?
 
-Sure, will remove this flag check.
+>> +				link = &iface->links[iface->num_link];
+>> +				link->freq = chanctx_conf->def.chan->center_freq;
+>> +				iface->num_link++;
+>> +			}
+>> +		}
+>> +		rcu_read_unlock();
+> 
+> when you also have this?
+> 
+> But maybe separating out actual logic changes in mac80211 to a separate
+> patch would be good.
+> 
+
+Previously the concurrent channel populated from chanctx list as below.
+
+         list_for_each_entry(ctx, &local->chanctx_list, list) {
+                 if (ctx->replace_state == 
+IEEE80211_CHANCTX_WILL_BE_REPLACED)
+                         continue;
+                 params.radar_detect |=
+                         ieee80211_chanctx_radar_detect(local, ctx);
+                if (ctx->mode == IEEE80211_CHANCTX_EXCLUSIVE) {
+                        params.num_different_channels++;
+                        continue;
+        }
+
+You want to have the below change of populating concurrent channel 
+populate logic from the active links in a separate patch first ?
+
++               rcu_read_lock();
++               for_each_vif_active_link(&sdata_iter->vif, link_conf, 
+link_id) {
++                       struct ieee80211_chanctx_conf *chanctx_conf;
++                       struct iface_combination_iface_link *link;
++
++                       chanctx_conf = 
+rcu_dereference(link_conf->chanctx_conf);
++                       if (chanctx_conf &&
++                           cfg80211_chandef_valid(&chanctx_conf->def)) {
++                               params.num_different_channels++;
++                       }
++               }
++               rcu_read_unlock();
+
+
+>>   	list_for_each_entry_rcu(sdata, &local->interfaces, list)
+>> -		params.iftype_num[sdata->wdev.iftype]++;
+>> +		total_iface++;
+>> +
+>> +	if (!total_iface)
+>> +		goto skip;
+>> +
+>> +	ifaces = kcalloc(total_iface, sizeof(*ifaces), GFP_KERNEL);
+>> +	if (!ifaces)
+>> +		return -ENOMEM;
+>> +
+>> +	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
+>> +		struct iface_combination_interface *iface;
+>> +
+>> +		if (params.num_iface >= total_iface)
+>> +			continue;
+>> +
+>> +		iface = &ifaces[params.num_iface];
+>> +		iface->iftype = sdata->wdev.iftype;
+>> +
+>> +		rcu_read_lock();
+>> +		for_each_vif_active_link(&sdata->vif, link_conf, link_id) {
+>> +			struct ieee80211_chanctx_conf *chanctx_conf;
+>> +			struct iface_combination_iface_link *link;
+>> +
+>> +			chanctx_conf = rcu_dereference(link_conf->chanctx_conf);
+>> +			if (chanctx_conf &&
+>> +			    cfg80211_chandef_valid(&chanctx_conf->def)) {
+>> +				link = &iface->links[iface->num_link];
+>> +				link->freq = chanctx_conf->def.chan->center_freq;
+>> +				iface->num_link++;
+>> +			}
+>> +		}
+>> +		rcu_read_unlock();
+>> +
+>> +		params.num_iface++;
+>> +	}
+> 
+> Please don't add the same code twice.
+
+Will make a helper function and reuse in the needed area o avoid 
+redundant code.
+
+Will address this comment in the next version.
+
+
+-- 
+Karthikeyan Periyasamy
+--
+கார்த்திகேயன் பெரியசாமி
 
