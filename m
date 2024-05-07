@@ -1,164 +1,139 @@
-Return-Path: <linux-wireless+bounces-7293-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7294-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 290588BE789
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 17:35:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC4398BE796
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 17:41:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4485282B53
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 15:35:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E21E41C236C2
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 15:41:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 327C91649DA;
-	Tue,  7 May 2024 15:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04EAA168B08;
+	Tue,  7 May 2024 15:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="NdOcOwIQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aCpWWx52"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776C41635B4
-	for <linux-wireless@vger.kernel.org>; Tue,  7 May 2024 15:35:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA811649C8
+	for <linux-wireless@vger.kernel.org>; Tue,  7 May 2024 15:41:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715096146; cv=none; b=ljWGUX8suwbWn2eM0SKiBm/+ch31un+S3dqQEIT57CgQHw9T5RjyAL++snmH+XztnzNNr6Okp3OT5u0PLgBETQTez7ry5JVANJRbTgDifAza0DtIERDZ662eMBRPAOU1sW9slhTqNLB6AFPddVdiAgLlrndxL3DuxHLQOwXmfHI=
+	t=1715096480; cv=none; b=MB3igxm2wrUFAXvEOMdhY9ivFkFSVI8id8uuVEdFgeXOKw3hu4fG05uj6Vm18vuw9w3ph7oSJJNK3ZUKN5qKkqfnPh1xvB/W+JOeg0bD0i89qUfBtTUd+Gv2LYl/Zl4REGIF4AtroiHC9/7LndcBFlaPnZBBbN3/LJDL7AxWd0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715096146; c=relaxed/simple;
-	bh=DdJlUscjfkKDHBd70hz9KfvMc++xiFOi79NHEYsSlH0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=r/opBK62dEji9rxJvZYkiTdE6HFckOJiQsxKOa3ew6y/AostQgsMHfQwQe7U5mKc/M7NvixQyQdFnyrNzFp6oej+mK5Aicn8Zk0xFkcWzqNIXpQZ+H5XJvaIUMLycUjWWG3AHQ9thb43zANK0CNkr04JtXViu/dg8eXQ4bPIv54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=NdOcOwIQ; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 447AhhqS015015;
-	Tue, 7 May 2024 15:35:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=7R6rjNwzGiuvFdAewTMFC9E8Qtuv1nnDY7lBgEbiPAw=; b=Nd
-	OcOwIQXL45xUBJQq06cCq+SwSMKVSuIJWugx1ZLNs3QG1lyBXldc4PtfE2Wr2E1g
-	GdOkUbYyiq/gQm4u9RIGxdOQZVSAibNr/xwF27gjiVl4FKR7NuEksxeCKi2xaeJc
-	6oHg6exq6A9/vb26uziljA7lCy+98wjTGTzmcfvPNjemVmb0mMMKoj9QKDOvgGGt
-	elh+jeyirUV5vU4QdWfJYMBfMZkTqhQZFdCvYoSEzos6EUbJFrHXytHP9Oq7i+Cz
-	lFv26Hc2bnwzf6Bvkr6Fp0IyyCYO/gckMJ8H5hXJyA+FMJL/zHsO9cYofHSSQuJ+
-	lFkaI+6LnoUskXpfIBaA==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xygjn97es-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 May 2024 15:35:34 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 447FZY8E015774
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 7 May 2024 15:35:34 GMT
-Received: from [10.50.36.33] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 7 May 2024
- 08:35:32 -0700
-Message-ID: <3dfdc7c9-ae1e-c6c4-9018-0b97aa26c37a@quicinc.com>
-Date: Tue, 7 May 2024 21:05:29 +0530
+	s=arc-20240116; t=1715096480; c=relaxed/simple;
+	bh=aE+kaQPAah4Dcjpm1i07io+My5mBVg5XQ5w7U/wMEDA=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=nuyjlsXz19RKprCgjfbc3q9GPD1TFjPoIyWG/b9f2RLPFiI9SfaihyCEEMvRZvztHt4Nky3kl3CYkkXO7mmCrTI853XhQg1om1eQ2rnPKKMfbxV+gLMTpF3ua5+AjIFqLZPD1RkT+fMdrjUvr5tr77u6jPv9TKJ8FcB4pX+C8RI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aCpWWx52; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244A0C2BBFC;
+	Tue,  7 May 2024 15:41:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715096479;
+	bh=aE+kaQPAah4Dcjpm1i07io+My5mBVg5XQ5w7U/wMEDA=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=aCpWWx52W0k+cS0jciM7Sbxn1e7alWt5CQgZdTfRQmOst0/yfIgc2wBjMdmYm1+Ny
+	 8WmMBu5f810pi8opESxsmDqD+La4I2j6RNWt06GwdbjQfED3DiWmaTJVLcOgOA29Nz
+	 0tx5itsNGPFMvoMhErEUfbsMSPAhn0SkS8Ra18b2ZWfo91pXI+iehhzAfSyoF3EZpj
+	 Kz+9QxeEmFyrdeboCf17v9uat0LWKkXbX+mIYjmp5OfPr7qPig++mfpcMY5gxGe8sN
+	 97kSkfS7C/qaYaZFClUSzgWSmoMhNAcGlN7T3cFpH96eMVdNfAcM0SwegoBSNzsfr5
+	 Zs/+G+lsRzJDg==
+From: Kalle Valo <kvalo@kernel.org>
+To: Harshitha Prem <quic_hprem@quicinc.com>
+Cc: ath12k@lists.infradead.org,  linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v4 0/8] wifi: ath12k: Introduce device group abstraction
+References: <20240507045702.2858954-1-quic_hprem@quicinc.com>
+Date: Tue, 07 May 2024 18:41:17 +0300
+In-Reply-To: <20240507045702.2858954-1-quic_hprem@quicinc.com> (Harshitha
+	Prem's message of "Tue, 7 May 2024 10:26:54 +0530")
+Message-ID: <87bk5hmxya.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH RFC] wifi: cfg80211: Refactor interface combination input
- parameter
-Content-Language: en-US
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240427031503.22870-1-quic_periyasa@quicinc.com>
- <3f8e4d6d0f2facde80ad82b5b3060eb0af0958a4.camel@sipsolutions.net>
-From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-In-Reply-To: <3f8e4d6d0f2facde80ad82b5b3060eb0af0958a4.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: oxLJRNj3_Jz9U2yTSFnO0QxLnk3_FNAn
-X-Proofpoint-ORIG-GUID: oxLJRNj3_Jz9U2yTSFnO0QxLnk3_FNAn
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-07_09,2024-05-06_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 spamscore=0
- mlxscore=0 adultscore=0 impostorscore=0 clxscore=1015 bulkscore=0
- phishscore=0 mlxlogscore=921 priorityscore=1501 lowpriorityscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2404010003 definitions=main-2405070108
+Content-Type: text/plain
 
+Harshitha Prem <quic_hprem@quicinc.com> writes:
 
+> To support multi-link operation, multiple devices with different bands say
+> 2 GHz or 5 GHz or 6 GHz can be combined together as a group and provide
+> an abstraction to mac80211.
+>
+> Device group abstraction - when there are multiple devices that are
+> connected by any means of communication interface between them, then these
+> devices can be combined together as a single group using a group id to form
+> a group abstraction. In ath12k driver, this abstraction would be named as
+> ath12k_hw_group (ag).
+>
+> Please find below illustration of device group abstraction with two
+> devices.
+>
+>                  Grouping of multiple devices (in future)
+> +------------------------------------------------------------------------+
+> |  +-------------------------------------+       +-------------------+   |
+> |  |   +-----------+ | | +-----------+   |       |   +-----------+   |   |
+> |  |   | ar (2GHz) | | | | ar (5GHz) |   |       |   | ar (6GHz) |   |   |
+> |  |   +-----------+ | | +-----------+   |       |   +-----------+   |   |
+> |  |          ath12k_base (ab)           |       | ath12k_base (ab)  |   |
+> |  |         (Dual band device)          |       |                   |   |
+> |  +-------------------------------------+       +-------------------+   |
+> |                 ath12k_hw_group (ag) based on group id                 |
+> +------------------------------------------------------------------------+
+>
+> Say for example, device 1 has two radios (2 GHz and 5 GHz band) and
+> device 2 has one radio (6 GHz).
+>
+> In existing code -
+>         device 1 will have two hardware abstractions hw1 (2 GHz) and hw2
+>         (5 GHz) will be registered separately to mac80211 as phy0 and phy1
+>         respectively. Similarly, device 2 will register its hw (6GHz) as
+>         phy2 to mac80211.
+>
+> In future, with multi-link abstraction
+>
+>         combination 1 - Different group id for device1 and device 2
+>                 Device 1 will create a single hardware abstraction hw1
+>                 (2 GHz and  5 GHz) and will be registered to mac80211 as
+>                 phy0. similarly, device 2 will register its hardware
+>                 (6 GHz) to mac80211 as phy1.
+>
+>         combination 2 - Same group id for device1 and device 2
+>                 Both device details are combined together as a group, say
+>                 group1, with single hardware abstraction of radios 2 GHz,
+>                 5 GHz and 6 GHz band details and will be registered to
+>                 mac80211 as phy0.
+>
+> Add base infrastructure changes to add device grouping abstraction with
+> a single device.
+>
+> This patch series brings the base code changes with following order:
+>         1. Refactor existing code which would facilitate in introducing
+>            device group abstraction.
+>         2. Create a device group abstraction during device probe.
+>         3. Start the device group only after QMI firmware ready event is
+>            received for all the devices that are combined in the group.
+>         4. Move the hardware abstractions (ath12k_hw - ah) from device
+>            (ath12k_base - ab) to device group abstraction (ag) as it would
+>            ease in having different combinations of group abstraction that
+>            can be registered to mac80211.
+>
+> v4:
+>   - Modified the cover letter
+> v3:
+>   - Removed depends-on tag of "wifi: ath12k: Refactor the hardware recovery
+>     procedures" as it is merged to ToT
+>   - Addressed the deadlock warning seen during rmmod.
 
-On 5/7/2024 3:17 PM, Johannes Berg wrote:
-> On Sat, 2024-04-27 at 08:45 +0530, Karthikeyan Periyasamy wrote:
->> Currently, the interface combination input parameter num_different_channels
->> and iftype_num are directly filled in by the caller under the assumption
->> that all channels and interfaces belong to a single hardware device. This
->> assumption is incorrect for multi-device interface combinations because
->> each device supports a different set of channels and interfaces. As
->> discussed in [1], need to refactor the input parameters to encode enough
->> data to handle both single and multiple device interface combinations.
->> This can be achieved by encoding the frequency and interface type under
->> the interface entity itself. With this new input parameter structure, the
->> cfg80211 can classify and construct the device parameters, then verify them
->> against the device specific interface combinations.
-
-...
-
-> 
->> +/**
->> + * struct iface_combination_iface_link - Interface combination link parameter
->> + *
->> + * Used to pass link specific interface combination parameters
->> + *
->> + * @freq: center frequency used for verification against the different channels
->> + */
->> +struct iface_combination_iface_link {
->> +	u32 freq;
->> +};
->> +
->> +/**
->> + * struct iface_combination_interface - Interface parameter for iface combination
->> + *
->> + * Used to pass interface specific parameter for iface combination
->> + *
->> + * @iftype: interface type as specified in &enum nl80211_iftype.
->> + * @links: array with the number of link parameter used for verification
->> + * @num_link: the length of the @links parameter used in this interface
->> + */
->> +struct iface_combination_interface {
->> +	enum nl80211_iftype iftype;
->> +	struct iface_combination_iface_link links[IEEE80211_MLD_MAX_NUM_LINKS];
->> +	u8 num_link;
-> 
-> Might be simpler (for the producers at least, but not really much more
-> difficult for the consumer) to just remove num_link, use the link ID as
-> the index, and declare freq==0 means unused?
-
-Previously user able to check the iface combination with the new 
-interface/channel creation independently with separate input parameter 
-as below without knowing the frequency of the interface.
-
-        params.num_different_channels = 1;
-
-        for_each_vap(...)
-              params.iftype_num[iftype]++;
-
-
-when the user not aware of the channel but still they want to check the 
-new channel creation possible scenario, in that case they just fill the 
-dummy freq as zero and fill the num_link as 1 for all the interfaces.
-
-So freq=0 is used here.
-
+Thanks, after a quick test I don't see the warning anymore.
 
 -- 
-Karthikeyan Periyasamy
---
-கார்த்திகேயன் பெரியசாமி
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
