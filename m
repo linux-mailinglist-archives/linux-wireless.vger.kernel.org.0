@@ -1,55 +1,71 @@
-Return-Path: <linux-wireless+bounces-7294-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7295-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC4398BE796
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 17:41:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88B8B8BE9FC
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 19:03:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E21E41C236C2
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 15:41:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 458EB284799
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 17:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04EAA168B08;
-	Tue,  7 May 2024 15:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A436B672;
+	Tue,  7 May 2024 17:03:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aCpWWx52"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fp62IfUq"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA811649C8
-	for <linux-wireless@vger.kernel.org>; Tue,  7 May 2024 15:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B698F72;
+	Tue,  7 May 2024 17:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715096480; cv=none; b=MB3igxm2wrUFAXvEOMdhY9ivFkFSVI8id8uuVEdFgeXOKw3hu4fG05uj6Vm18vuw9w3ph7oSJJNK3ZUKN5qKkqfnPh1xvB/W+JOeg0bD0i89qUfBtTUd+Gv2LYl/Zl4REGIF4AtroiHC9/7LndcBFlaPnZBBbN3/LJDL7AxWd0g=
+	t=1715101397; cv=none; b=Fs+JO+13ldgryiHzWqr7Idz0K4tFl9nPllDBmsrlQVc3wu33SpuZrpAcZ/KhbpLbdiuSEHg5BGRMYOWb2fyB731/LPN+wJwS26hixagJbIj27AXa82cZyFtUjNg4hgv35OeYy0cQhv6amfWRmF52/66epUYA+9R5EA6bakmMxvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715096480; c=relaxed/simple;
-	bh=aE+kaQPAah4Dcjpm1i07io+My5mBVg5XQ5w7U/wMEDA=;
+	s=arc-20240116; t=1715101397; c=relaxed/simple;
+	bh=JY4JlehBy4I/fksm3Z77C48WISuUolTNAQAzgcu5WVw=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=nuyjlsXz19RKprCgjfbc3q9GPD1TFjPoIyWG/b9f2RLPFiI9SfaihyCEEMvRZvztHt4Nky3kl3CYkkXO7mmCrTI853XhQg1om1eQ2rnPKKMfbxV+gLMTpF3ua5+AjIFqLZPD1RkT+fMdrjUvr5tr77u6jPv9TKJ8FcB4pX+C8RI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aCpWWx52; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244A0C2BBFC;
-	Tue,  7 May 2024 15:41:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=m7Jh16jwZl2io2E4TTxNfWoF6Wd2AMNHTsVJUfkG8EJ23soDcVTy1ZxV6rKUgmT0XeTCagzcL7uScDHDUdrvSCstUTS9AO+XIXmr+Sof/VEnXdZw9qrwe05LGJwFniPwM2heMBDsdCoGMcyI/aASXyj2CykKTAIvrhmvxfGdxbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fp62IfUq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE9CC4AF18;
+	Tue,  7 May 2024 17:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715096479;
-	bh=aE+kaQPAah4Dcjpm1i07io+My5mBVg5XQ5w7U/wMEDA=;
+	s=k20201202; t=1715101396;
+	bh=JY4JlehBy4I/fksm3Z77C48WISuUolTNAQAzgcu5WVw=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=aCpWWx52W0k+cS0jciM7Sbxn1e7alWt5CQgZdTfRQmOst0/yfIgc2wBjMdmYm1+Ny
-	 8WmMBu5f810pi8opESxsmDqD+La4I2j6RNWt06GwdbjQfED3DiWmaTJVLcOgOA29Nz
-	 0tx5itsNGPFMvoMhErEUfbsMSPAhn0SkS8Ra18b2ZWfo91pXI+iehhzAfSyoF3EZpj
-	 Kz+9QxeEmFyrdeboCf17v9uat0LWKkXbX+mIYjmp5OfPr7qPig++mfpcMY5gxGe8sN
-	 97kSkfS7C/qaYaZFClUSzgWSmoMhNAcGlN7T3cFpH96eMVdNfAcM0SwegoBSNzsfr5
-	 Zs/+G+lsRzJDg==
+	b=Fp62IfUqShXQVdU1revI8fTwgbnsu4WNnpZmfjuXU8QFdOUdob8A4Pfh+h74pxmnw
+	 vxlSzB3e8dJIBEdUcTdWZEFbofHH0FZ54LOcv5GV8mfBAppBrjYVzRLHVY1bqOyM0A
+	 afAwTi9FZ++FiB2uIzZKj7xVHMj4S92gqYXsPr/R7Hfw/i4/cY3tFidnfFgtp5ZHGx
+	 WJg7GgkmFZh17431vQAB9QX6DyHwOC3v07uyLGiXhX0bwXoX5giD23BLV4adigUwIb
+	 +9YLuRDccxFzSyUXDM/nl/blj1RxMuiePMOxVakHcF1PAouVEp4VeclsoipJEE7Rgf
+	 31juf237oj2Jw==
 From: Kalle Valo <kvalo@kernel.org>
-To: Harshitha Prem <quic_hprem@quicinc.com>
-Cc: ath12k@lists.infradead.org,  linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v4 0/8] wifi: ath12k: Introduce device group abstraction
-References: <20240507045702.2858954-1-quic_hprem@quicinc.com>
-Date: Tue, 07 May 2024 18:41:17 +0300
-In-Reply-To: <20240507045702.2858954-1-quic_hprem@quicinc.com> (Harshitha
-	Prem's message of "Tue, 7 May 2024 10:26:54 +0530")
-Message-ID: <87bk5hmxya.fsf@kernel.org>
+To: Marc Gonzalez <mgonzalez@freebox.fr>
+Cc: Bjorn Andersson <quic_bjorande@quicinc.com>,  Jeff Johnson
+ <quic_jjohnson@quicinc.com>,  ath10k <ath10k@lists.infradead.org>,
+  wireless <linux-wireless@vger.kernel.org>,  DT
+ <devicetree@vger.kernel.org>,  MSM <linux-arm-msm@vger.kernel.org>,  Rob
+ Herring <robh+dt@kernel.org>,  Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>,  Conor Dooley <conor+dt@kernel.org>,
+  Pierre-Hugues Husson <phhusson@freebox.fr>,  Arnaud Vrac
+ <avrac@freebox.fr>,  Bjorn Andersson <andersson@kernel.org>,  Konrad
+ Dybcio <konrad.dybcio@linaro.org>,  Jami Kettunen
+ <jamipkettunen@gmail.com>,  Jeffrey Hugo <quic_jhugo@quicinc.com>,  Dmitry
+ Baryshkov <dmitry.baryshkov@linaro.org>,  Alexey Minnekhanov
+ <alexeymin@postmarketos.org>
+Subject: Re: [PATCH v3 1/3] dt-bindings: net: wireless: ath10k: add
+ qcom,no-msa-ready-indicator prop
+References: <ebbda69c-63c1-4003-bf97-c3adf3ccb9e3@freebox.fr>
+	<54ac2295-36b4-49fc-9583-a10db8d9d5d6@freebox.fr>
+	<ZjBV+th9DmnNLhnN@hu-bjorande-lv.qualcomm.com>
+	<8734r3qysm.fsf@kernel.org>
+	<b6a1eadf-477d-48a8-bf39-ac3c3191e929@freebox.fr>
+Date: Tue, 07 May 2024 20:03:10 +0300
+In-Reply-To: <b6a1eadf-477d-48a8-bf39-ac3c3191e929@freebox.fr> (Marc
+	Gonzalez's message of "Tue, 30 Apr 2024 13:10:45 +0200")
+Message-ID: <874jb9mu5t.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -59,78 +75,63 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Harshitha Prem <quic_hprem@quicinc.com> writes:
+Marc Gonzalez <mgonzalez@freebox.fr> writes:
 
-> To support multi-link operation, multiple devices with different bands say
-> 2 GHz or 5 GHz or 6 GHz can be combined together as a group and provide
-> an abstraction to mac80211.
+> On 30/04/2024 06:06, Kalle Valo wrote:
 >
-> Device group abstraction - when there are multiple devices that are
-> connected by any means of communication interface between them, then these
-> devices can be combined together as a single group using a group id to form
-> a group abstraction. In ath12k driver, this abstraction would be named as
-> ath12k_hw_group (ag).
+>> Bjorn Andersson wrote:
+>> 
+>>> On Mon, Apr 29, 2024 at 04:04:51PM +0200, Marc Gonzalez wrote:
+>>>
+>>>> The ath10k driver waits for an "MSA_READY" indicator
+>>>> to complete initialization. If the indicator is not
+>>>> received, then the device remains unusable.
+>>>>
+>>>> cf. ath10k_qmi_driver_event_work()
+>>>>
+>>>> Several msm8998-based devices are affected by this issue.
+>>>> Oddly, it seems safe to NOT wait for the indicator, and
+>>>> proceed immediately when QMI_EVENT_SERVER_ARRIVE.
+>>>>
+>>>> Jeff Johnson wrote:
+>>>>
+>>>>   The feedback I received was "it might be ok to change all ath10k qmi
+>>>>   to skip waiting for msa_ready", and it was pointed out that ath11k
+>>>>   (and ath12k) do not wait for it.
+>>>>
+>>>>   However with so many deployed devices, "might be ok" isn't a strong
+>>>>   argument for changing the default behavior.
+>>>>
+>>>> Kalle Valo first suggested setting a bit in firmware-5.bin to trigger
+>>>> work-around in the driver. However, firmware-5.bin is parsed too late.
+>>>> So we are stuck with a DT property.
+>>>>
+>>>> Signed-off-by: Pierre-Hugues Husson <phhusson@freebox.fr>
+>>>> Signed-off-by: Marc Gonzalez <mgonzalez@freebox.fr>
+>>>
+>>> This says "Pierre-Hugues certifies the origin of the patch" then "Marc
+>>> certifies the origin of the patch". This would have to imply that
+>>> Pierre-Hugues authored the patch, but you're listed as the author...
+>>>
+>>> Perhaps a suitable answer to this question would be to add
+>>> "Co-developed-by: Pierre-Hugues ..." above his s-o-b, which implies that
+>>> the two of you jointly came up with this and both certify the origin.
+>> 
+>> BTW I can add that in the pending branch, no need to resend because of
+>> this. Just need guidance from Marc.
 >
-> Please find below illustration of device group abstraction with two
-> devices.
->
->                  Grouping of multiple devices (in future)
-> +------------------------------------------------------------------------+
-> |  +-------------------------------------+       +-------------------+   |
-> |  |   +-----------+ | | +-----------+   |       |   +-----------+   |   |
-> |  |   | ar (2GHz) | | | | ar (5GHz) |   |       |   | ar (6GHz) |   |   |
-> |  |   +-----------+ | | +-----------+   |       |   +-----------+   |   |
-> |  |          ath12k_base (ab)           |       | ath12k_base (ab)  |   |
-> |  |         (Dual band device)          |       |                   |   |
-> |  +-------------------------------------+       +-------------------+   |
-> |                 ath12k_hw_group (ag) based on group id                 |
-> +------------------------------------------------------------------------+
->
-> Say for example, device 1 has two radios (2 GHz and 5 GHz band) and
-> device 2 has one radio (6 GHz).
->
-> In existing code -
->         device 1 will have two hardware abstractions hw1 (2 GHz) and hw2
->         (5 GHz) will be registered separately to mac80211 as phy0 and phy1
->         respectively. Similarly, device 2 will register its hw (6GHz) as
->         phy2 to mac80211.
->
-> In future, with multi-link abstraction
->
->         combination 1 - Different group id for device1 and device 2
->                 Device 1 will create a single hardware abstraction hw1
->                 (2 GHz and  5 GHz) and will be registered to mac80211 as
->                 phy0. similarly, device 2 will register its hardware
->                 (6 GHz) to mac80211 as phy1.
->
->         combination 2 - Same group id for device1 and device 2
->                 Both device details are combined together as a group, say
->                 group1, with single hardware abstraction of radios 2 GHz,
->                 5 GHz and 6 GHz band details and will be registered to
->                 mac80211 as phy0.
->
-> Add base infrastructure changes to add device grouping abstraction with
-> a single device.
->
-> This patch series brings the base code changes with following order:
->         1. Refactor existing code which would facilitate in introducing
->            device group abstraction.
->         2. Create a device group abstraction during device probe.
->         3. Start the device group only after QMI firmware ready event is
->            received for all the devices that are combined in the group.
->         4. Move the hardware abstractions (ath12k_hw - ah) from device
->            (ath12k_base - ab) to device group abstraction (ag) as it would
->            ease in having different combinations of group abstraction that
->            can be registered to mac80211.
->
-> v4:
->   - Modified the cover letter
-> v3:
->   - Removed depends-on tag of "wifi: ath12k: Refactor the hardware recovery
->     procedures" as it is merged to ToT
->   - Addressed the deadlock warning seen during rmmod.
+> I typed this patch all by myself with my grubby little paws.
+> You can drop PH's S-o-b.
 
-Thanks, after a quick test I don't see the warning anymore.
+Thanks. Please check that my modifications in the pending branch are
+correct:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=3aec20a8e797b28d32e75291cc070d5913bf6dab
+
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=df5b4bec31b0736a453d507762c5b3d098d5c733
+
+I can freely edit commits in the pending branch, it's just a temporary
+branch for testing.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
