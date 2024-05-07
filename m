@@ -1,51 +1,51 @@
-Return-Path: <linux-wireless+bounces-7305-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7306-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAEDA8BF06C
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 May 2024 01:05:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5D348BF0B9
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 May 2024 01:10:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4AECEB2347C
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 23:05:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 640C4B24DAA
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 23:10:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4988130E27;
-	Tue,  7 May 2024 22:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DB497FBBD;
+	Tue,  7 May 2024 23:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dBZ84uHN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qKoPkmRv"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7900130AFF;
-	Tue,  7 May 2024 22:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E342D8615A;
+	Tue,  7 May 2024 23:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715122756; cv=none; b=JH0sCLPTZTkiPj/7/vR25XHm+UDHKLs5TT49swC6Qc3rBzXUedaLLineG7NpdxT3ZGdpMMjccKseanfwhSTLWCwDojn8pVe5EFPzXkGrj0S1TxwuCpQwQCTBLKurWxljdL8pIMS+aXIhBXZs9vnkWetU8IJ/YnkqzzKg5dnceCw=
+	t=1715122834; cv=none; b=uUA/9L9Ee0R7kT6hv5hZM3BiGxcGpGjDzqFKCu18BQnl1pmn2+rahe31CnYBSSLzeeSSg0ny22kd2sRXMSJV78oLF4mRdrDsJ6S1SgolTI35K2ezApkmDRpTzhsYy5H52xfYxU6JFfJ41w5vZCIgllcQlzdkaaaVtJp7DJ3Kf2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715122756; c=relaxed/simple;
-	bh=Z0nBQAKgx03CRJ0iYriHi2duVA4l1ZIJOhuz5ALaiZM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lRo8/F68e3q4FgLWEYDtYuVEOmr//rmw+kNNdp0qJwGNGUyZrfHJ55byaCgDSH9iu5Si8RzYf/9pvkBTq8jizr6G3Ezgd1yZdeNVAA2B6g9YvKbXt0ORHRuNdcloJpm4PWGGbQn7rCm8O68aUvlI8qFjkh3qHn+MkaeJkRF5MQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dBZ84uHN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8BABC2BBFC;
-	Tue,  7 May 2024 22:59:14 +0000 (UTC)
+	s=arc-20240116; t=1715122834; c=relaxed/simple;
+	bh=98HYj9zMKjJs+cuYRpU9Bwz/MbyiZQ0aL8seVXY3MRs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Rh8YqfTEP+QIW+ClCReqlcMZSOS8Ikzb4Z7C4tn+HjLd6QKWsl7dRp3zxifiPOwxdLYnBY+3D5/sQgFW7Ejge4OfOevryxAXKUW6TfP3Ftx0T4o/6OZO98ofU2Pg3/5bnQrdQZqWBvh/e0MwNdB+d35UDQwGgVAO9an0DV6n16E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qKoPkmRv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 664E1C2BBFC;
+	Tue,  7 May 2024 23:00:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715122756;
-	bh=Z0nBQAKgx03CRJ0iYriHi2duVA4l1ZIJOhuz5ALaiZM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dBZ84uHNimT1iYUEu/m6Cu7uDv0zOSMg6VXX02TwYUF0a2vSGpzvs6kBt9GYC6H9u
-	 bVpB6b9ubJXQiVSQAe3M+Tuu/XBVBJ5FB3YlYlS0GSr1fYhkwNZjHw2va+TNYMFPgb
-	 MMymHnoz4U/cPyxNM1JXVEvlQuEYKq4Mwvlh2jVaOB2i+iefoxykpMln6zsi3RDmV3
-	 70MFkkZKYfuU/s3M3kN8PZMmia6wsq5yLm+oMQmBk329XiCQo/yEwmQKGTos6BXzpU
-	 +uk/L8rXBVeTOcZOyf4W0E7bHpEKvtvDwfy3ye6kMVrUM8CiQAR883XxNxWhrp12Ja
-	 MhYnnk8j/gWdQ==
+	s=k20201202; t=1715122833;
+	bh=98HYj9zMKjJs+cuYRpU9Bwz/MbyiZQ0aL8seVXY3MRs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=qKoPkmRvpxYijXUMbfwJpZVYoT6hS99sYmkVL+ClaYd4nuC0nwhIhOyfoA5cx62Ji
+	 +Pwz2FUqFSJINpyUppBOiMOB4AueZpZh4ciprQyyXOZJQa4rG3AT0Fypif5RFEvhz0
+	 3V0UVGGjOZi8UU1m50Qs4OvLS/Q9yp7/9vqx/nFRLFf689Kmt6ZMSzR3hngoezzCWG
+	 2dunvAJ6U0UHT70a4zJ96tnhqdJXzaLhWt8WeSO6F1jHcDpTpp7e1JxTsIN0tfUqZ7
+	 NzrPF3T8dr8ft+PAjbcHbVahmNWlYXVv0yUfNk4V8j6BqPrGiBLuOIGnOQnjWFmUOV
+	 Xk8RpG+9God6w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Igor Artemiev <Igor.A.Artemiev@mcst.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	syzbot+fdc5123366fb9c3fdc6d@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
 	Sasha Levin <sashal@kernel.org>,
 	johannes@sipsolutions.net,
 	davem@davemloft.net,
@@ -54,12 +54,10 @@ Cc: Igor Artemiev <Igor.A.Artemiev@mcst.ru>,
 	pabeni@redhat.com,
 	linux-wireless@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 03/19] wifi: cfg80211: fix the order of arguments for trace events of the tx_rx_evt class
-Date: Tue,  7 May 2024 18:58:25 -0400
-Message-ID: <20240507225910.390914-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 01/12] wifi: mac80211: don't use rate mask for scanning
+Date: Tue,  7 May 2024 19:00:03 -0400
+Message-ID: <20240507230031.391436-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240507225910.390914-1-sashal@kernel.org>
-References: <20240507225910.390914-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -68,50 +66,120 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.30
+X-stable-base: Linux 6.1.90
 Content-Transfer-Encoding: 8bit
 
-From: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 9ef369973cd2c97cce3388d2c0c7e3c056656e8a ]
+[ Upstream commit ab9177d83c040eba58387914077ebca56f14fae6 ]
 
-The declarations of the tx_rx_evt class and the rdev_set_antenna event
-use the wrong order of arguments in the TP_ARGS macro.
+The rate mask is intended for use during operation, and
+can be set to only have masks for the currently active
+band. As such, it cannot be used for scanning which can
+be on other bands as well.
 
-Fix the order of arguments in the TP_ARGS macro.
+Simply ignore the rate masks during scanning to avoid
+warnings from incorrect settings.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Igor Artemiev <Igor.A.Artemiev@mcst.ru>
-Link: https://msgid.link/20240405152431.270267-1-Igor.A.Artemiev@mcst.ru
+Reported-by: syzbot+fdc5123366fb9c3fdc6d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=fdc5123366fb9c3fdc6d
+Co-developed-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Tested-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://msgid.link/20240326220854.9594cbb418ca.I7f86c0ba1f98cf7e27c2bacf6c2d417200ecea5c@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/trace.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/net/mac80211.h |  3 +++
+ net/mac80211/rate.c    |  6 +++++-
+ net/mac80211/scan.c    |  1 +
+ net/mac80211/tx.c      | 13 +++++++++----
+ 4 files changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/net/wireless/trace.h b/net/wireless/trace.h
-index 617c0d0dfa963..9c767b91e15d1 100644
---- a/net/wireless/trace.h
-+++ b/net/wireless/trace.h
-@@ -1747,7 +1747,7 @@ TRACE_EVENT(rdev_return_void_tx_rx,
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 43173204d6d5e..87a4f334c22a8 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -885,6 +885,8 @@ enum mac80211_tx_info_flags {
+  *	of their QoS TID or other priority field values.
+  * @IEEE80211_TX_CTRL_MCAST_MLO_FIRST_TX: first MLO TX, used mostly internally
+  *	for sequence number assignment
++ * @IEEE80211_TX_CTRL_SCAN_TX: Indicates that this frame is transmitted
++ *	due to scanning, not in normal operation on the interface.
+  * @IEEE80211_TX_CTRL_MLO_LINK: If not @IEEE80211_LINK_UNSPECIFIED, this
+  *	frame should be transmitted on the specific link. This really is
+  *	only relevant for frames that do not have data present, and is
+@@ -905,6 +907,7 @@ enum mac80211_tx_control_flags {
+ 	IEEE80211_TX_CTRL_NO_SEQNO		= BIT(7),
+ 	IEEE80211_TX_CTRL_DONT_REORDER		= BIT(8),
+ 	IEEE80211_TX_CTRL_MCAST_MLO_FIRST_TX	= BIT(9),
++	IEEE80211_TX_CTRL_SCAN_TX		= BIT(10),
+ 	IEEE80211_TX_CTRL_MLO_LINK		= 0xf0000000,
+ };
  
- DECLARE_EVENT_CLASS(tx_rx_evt,
- 	TP_PROTO(struct wiphy *wiphy, u32 tx, u32 rx),
--	TP_ARGS(wiphy, rx, tx),
-+	TP_ARGS(wiphy, tx, rx),
- 	TP_STRUCT__entry(
- 		WIPHY_ENTRY
- 		__field(u32, tx)
-@@ -1764,7 +1764,7 @@ DECLARE_EVENT_CLASS(tx_rx_evt,
+diff --git a/net/mac80211/rate.c b/net/mac80211/rate.c
+index 9d33fd2377c88..a2bc9c5d92b8b 100644
+--- a/net/mac80211/rate.c
++++ b/net/mac80211/rate.c
+@@ -877,6 +877,7 @@ void ieee80211_get_tx_rates(struct ieee80211_vif *vif,
+ 	struct ieee80211_sub_if_data *sdata;
+ 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+ 	struct ieee80211_supported_band *sband;
++	u32 mask = ~0;
  
- DEFINE_EVENT(tx_rx_evt, rdev_set_antenna,
- 	TP_PROTO(struct wiphy *wiphy, u32 tx, u32 rx),
--	TP_ARGS(wiphy, rx, tx)
-+	TP_ARGS(wiphy, tx, rx)
- );
+ 	rate_control_fill_sta_table(sta, info, dest, max_rates);
  
- DECLARE_EVENT_CLASS(wiphy_netdev_id_evt,
+@@ -889,9 +890,12 @@ void ieee80211_get_tx_rates(struct ieee80211_vif *vif,
+ 	if (ieee80211_is_tx_data(skb))
+ 		rate_control_apply_mask(sdata, sta, sband, dest, max_rates);
+ 
++	if (!(info->control.flags & IEEE80211_TX_CTRL_SCAN_TX))
++		mask = sdata->rc_rateidx_mask[info->band];
++
+ 	if (dest[0].idx < 0)
+ 		__rate_control_send_low(&sdata->local->hw, sband, sta, info,
+-					sdata->rc_rateidx_mask[info->band]);
++					mask);
+ 
+ 	if (sta)
+ 		rate_fixup_ratelist(vif, sband, info, dest, max_rates);
+diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
+index c37e2576f1c13..933d02d7c1284 100644
+--- a/net/mac80211/scan.c
++++ b/net/mac80211/scan.c
+@@ -647,6 +647,7 @@ static void ieee80211_send_scan_probe_req(struct ieee80211_sub_if_data *sdata,
+ 				cpu_to_le16(IEEE80211_SN_TO_SEQ(sn));
+ 		}
+ 		IEEE80211_SKB_CB(skb)->flags |= tx_flags;
++		IEEE80211_SKB_CB(skb)->control.flags |= IEEE80211_TX_CTRL_SCAN_TX;
+ 		ieee80211_tx_skb_tid_band(sdata, skb, 7, channel->band);
+ 	}
+ }
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 3d62e8b718740..419baf8efddea 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -720,11 +720,16 @@ ieee80211_tx_h_rate_ctrl(struct ieee80211_tx_data *tx)
+ 	txrc.bss_conf = &tx->sdata->vif.bss_conf;
+ 	txrc.skb = tx->skb;
+ 	txrc.reported_rate.idx = -1;
+-	txrc.rate_idx_mask = tx->sdata->rc_rateidx_mask[info->band];
+ 
+-	if (tx->sdata->rc_has_mcs_mask[info->band])
+-		txrc.rate_idx_mcs_mask =
+-			tx->sdata->rc_rateidx_mcs_mask[info->band];
++	if (unlikely(info->control.flags & IEEE80211_TX_CTRL_SCAN_TX)) {
++		txrc.rate_idx_mask = ~0;
++	} else {
++		txrc.rate_idx_mask = tx->sdata->rc_rateidx_mask[info->band];
++
++		if (tx->sdata->rc_has_mcs_mask[info->band])
++			txrc.rate_idx_mcs_mask =
++				tx->sdata->rc_rateidx_mcs_mask[info->band];
++	}
+ 
+ 	txrc.bss = (tx->sdata->vif.type == NL80211_IFTYPE_AP ||
+ 		    tx->sdata->vif.type == NL80211_IFTYPE_MESH_POINT ||
 -- 
 2.43.0
 
