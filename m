@@ -1,73 +1,63 @@
-Return-Path: <linux-wireless+bounces-7283-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7284-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7997A8BE0A9
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 13:07:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69EC48BE0DB
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 13:20:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DDD01F217FE
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 11:07:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 202C81F24DD5
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 May 2024 11:20:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DFF21514C9;
-	Tue,  7 May 2024 11:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA51522E;
+	Tue,  7 May 2024 11:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DjbvWXXS"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="j7jGJq7q"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E25DAD5D
-	for <linux-wireless@vger.kernel.org>; Tue,  7 May 2024 11:07:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6DB9152170
+	for <linux-wireless@vger.kernel.org>; Tue,  7 May 2024 11:20:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715080022; cv=none; b=CefLx42uU0Q0lcpfEANvWcfO4yyqsGcgAEqGnnbLl5W3hkDOh2cR+HzRAIrC+5MfbFNrR4aDvlypiHdLWz+2YN+yhSCFTNyTSnf/ux2YyaE/EdJ9tuMhGAVJstxcWxe8tN13Vg0CmXNv6ezd1zvgIkVn6jCXOzJfDfVIxD8B0eI=
+	t=1715080844; cv=none; b=VmpBQbUtO+icM83nNkXcB7v7A5dOLmQfzZKn8/bZ76373ZlyB5oIrYKXOYndlr3V16FOub9pKcZ5pGqR5482FsmicrIO/dsHJ34odgMTL9Jw4s8ouZzrtA7wi1tSifYcPGWZ6Zl8hxfIKe3o3+M0ktopF/8C5gNbtZ8GBiBIPlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715080022; c=relaxed/simple;
-	bh=0wthStaM0L1IEMjidKAObMHjHCckB8nsQgt387187UE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W4pM2RjCz0HrgD3vQ8SAfypygVJOrak36iLhAfsI6lR4zgc1fUPOC3ISHYgiqe87tGkex9IAnhxCUFcJAw0KqkBpQSkHm5/m6gBreyw1igHPltW/ZQ46rFhicAbqdLmyvcIO4RcZT9yaQiaUQcYPAWfm8LtTP4w8S9zgllzbMpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DjbvWXXS; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-51f60817e34so3452053e87.2
-        for <linux-wireless@vger.kernel.org>; Tue, 07 May 2024 04:07:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1715080018; x=1715684818; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vu3E57enROBhkqZ25vaLZg3w8R1eCilIpWi4uX7bS5I=;
-        b=DjbvWXXSHAEEzyvHkXXH/E7lcMDOaq9rKhpNeikRSahjxHmcdpE+aZbSTZRFd0Hh2x
-         W2BIQOkswQRIsP5zr5Cq5dY0lOO4et3Wau+e6qL6iwn3eOwPK7FytbFKHmUGamT4FGiV
-         E1WKBrj/N35fgoYt4ycwNW9UK8WKvgGfjMjT3ugrWPM+O93DJi8+YGRQKzA+HfKfF1fq
-         rbRWkb4/w+wyTDEyRZPdfCDJO/HXep8UNfUtK1L7O+AXgzBXMQeqiBZqEWpwWruZr+kH
-         TW0wVCt/fQiC0nZIjweWbrOmLIgyYSKyNIwq8cOVET077Q0BgQCdMisKFdFWjQDPqY92
-         W9Lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715080018; x=1715684818;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vu3E57enROBhkqZ25vaLZg3w8R1eCilIpWi4uX7bS5I=;
-        b=aVg3FQciK8rBTLdW8VKop/C72aW8E4Fx/QCMx85Gg9bCNilD66HFRDjzszEfayurAE
-         za5pCKc4N3Wi5Mldsf6rOA7vTMIfSKW5XohqPsAqFZovZUPQXIEyul3/FOoEf0fVKCU3
-         bDk6Je/dw3w4is1ygCqN9hNpc3Fkb4qbnRMp+LpoBPxoqAFYgdo4OTi9qoARoLkzYN4r
-         fioVxivdzSHqWoJ1aP7VpoCxTLsXT0GD42Obeawy5iNOrjMDQs+RubnnGZKqI/qtE7id
-         UJF3/Bg8ECYqxu+xJgSRVUowaikF4P4yplLmNu0AV7Cnrm4H+U8s1ShHaX5BkBqClmSz
-         pecw==
-X-Gm-Message-State: AOJu0YwHx0B1ZRhQmG7jcjmL1sMiNvmsBFiNmA615i0mqrcAIJ+427AN
-	0ym3z6br/pn6cMkpYQKdXTCarwlY2N+xo3sHKatKa5HewvyuNoxnTHADi6haqZA=
-X-Google-Smtp-Source: AGHT+IExp0qXNrJyw996e89disi8phPXmFYED+G9fNF42W0b5gF5pUVkJQl64hC5epdp7ic0/3TADw==
-X-Received: by 2002:a2e:9153:0:b0:2da:15cf:1e23 with SMTP id q19-20020a2e9153000000b002da15cf1e23mr7938406ljg.17.1715080018522;
-        Tue, 07 May 2024 04:06:58 -0700 (PDT)
-Received: from [172.30.205.144] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
-        by smtp.gmail.com with ESMTPSA id e3-20020a2e9e03000000b002d6daf3b41fsm1906226ljk.101.2024.05.07.04.06.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 May 2024 04:06:57 -0700 (PDT)
-Message-ID: <e1d66d4a-baf7-4f17-b214-be7e7432f53c@linaro.org>
-Date: Tue, 7 May 2024 13:06:54 +0200
+	s=arc-20240116; t=1715080844; c=relaxed/simple;
+	bh=8O5DK7lqHd5v2k1czkNSES4P9wu933bk8ufARyH5dzs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=MbeLXfzascKxiqv4WHUy0mbLt6G3MPItePrWwf21/vQQgDeePBToMkFlr5jbzM7vQveI3iXrLJj3giLO143YFwU7tDuIHuNJ73aykN+3GJn8FItsYZNK2brzROQqjqIQOmThHLFWdV2zMeqmaTJswT1xZCRo0EmTvJkgwPzPw9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=j7jGJq7q; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 447AuYAR022792;
+	Tue, 7 May 2024 11:20:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=StWBNV/pEUVac1VskfbognEZZQrm/yz5f41jUW5WZJM=; b=j7
+	jGJq7qPC0HEppxXKzl9zrL7dL1lfBtV0koXgqD8MYun3x7oWb9IFtOsEbTbiNA1/
+	wZoLnha1JYtNJQNHvBCEv7EZwwKc2JIkE98hWlqCc/moxJJXL6nHEWF00zAVSuCb
+	WoZGv+MaVMsQYTZGku/86TPFPm/WfgU0aTjmVcNzN6PPq+K3oas8bcoD6+pE+ARs
+	UVeQcje+Fbsw19JAudd0MVoN6h+9Qb+M10sKZM480RYH5xkoArBVzZQ+pkjVgjWz
+	p+gwllYGYtZ14hZ0xTYu3m5VM1veiF3Ksp9OxVx6EL0PvUigVYp3Je6zSu5nls5q
+	c+GzltgRObRCfBJbB3Rw==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xyj5h85bn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 May 2024 11:20:34 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 447BKWhE010498
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 7 May 2024 11:20:32 GMT
+Received: from [10.253.76.74] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 7 May 2024
+ 04:20:31 -0700
+Message-ID: <430d0e14-bc60-4872-ace7-2328532bcfc0@quicinc.com>
+Date: Tue, 7 May 2024 19:20:29 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,81 +65,55 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/3] arm64: dts: qcom: msm8998: set
- qcom,no-msa-ready-indicator for wifi
-To: Marc Gonzalez <mgonzalez@freebox.fr>,
- Bjorn Andersson <andersson@kernel.org>, Kalle Valo <kvalo@kernel.org>,
- Jeff Johnson <quic_jjohnson@quicinc.com>, ath10k <ath10k@lists.infradead.org>
-Cc: wireless <linux-wireless@vger.kernel.org>, DT
- <devicetree@vger.kernel.org>, MSM <linux-arm-msm@vger.kernel.org>,
- Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Pierre-Hugues Husson <phhusson@freebox.fr>, Arnaud Vrac <avrac@freebox.fr>,
- Jami Kettunen <jamipkettunen@gmail.com>,
- Jeffrey Hugo <quic_jhugo@quicinc.com>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Alexey Minnekhanov <alexeymin@postmarketos.org>
-References: <ebbda69c-63c1-4003-bf97-c3adf3ccb9e3@freebox.fr>
- <0914f96e-fcfd-4088-924a-fc1991bce75f@freebox.fr>
- <02592b09-8ab5-42ab-bd6b-6db79722d708@freebox.fr>
+Subject: Re: [PATCH 4/5] wifi: ath12k: remove redundant peer delete
+To: Kalle Valo <kvalo@kernel.org>
+CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20240429081525.983-5-quic_kangyang@quicinc.com>
+ <171507720282.3827098.15356808712274335251.kvalo@kernel.org>
 Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <02592b09-8ab5-42ab-bd6b-6db79722d708@freebox.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Kang Yang <quic_kangyang@quicinc.com>
+In-Reply-To: <171507720282.3827098.15356808712274335251.kvalo@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: UDh7yU130P7CtqozbWGj4OOp-NGvpfFf
+X-Proofpoint-GUID: UDh7yU130P7CtqozbWGj4OOp-NGvpfFf
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-07_05,2024-05-06_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 phishscore=0
+ mlxscore=0 impostorscore=0 bulkscore=0 priorityscore=1501 adultscore=0
+ suspectscore=0 lowpriorityscore=0 mlxlogscore=909 spamscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2405070078
 
 
 
-On 5/6/24 12:39, Marc Gonzalez wrote:
-> On 29/04/2024 16:07, Marc Gonzalez wrote:
+On 5/7/2024 6:20 PM, Kalle Valo wrote:
+> kangyang <quic_kangyang@quicinc.com> wrote:
 > 
->> The ath10k driver waits for an "MSA_READY" indicator
->> to complete initialization. If the indicator is not
->> received, then the device remains unusable.
+>> Firmware will create internal peer for monitor mode. For host no need to
+>> do peer create and peer delete.
 >>
->> cf. ath10k_qmi_driver_event_work()
+>> So remove related code.
 >>
->> Several msm8998-based devices are affected by this issue.
->> Oddly, it seems safe to NOT wait for the indicator, and
->> proceed immediately when QMI_EVENT_SERVER_ARRIVE.
+>> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 >>
->> Jeff Johnson wrote:
->>
->>    The feedback I received was "it might be ok to change all ath10k qmi
->>    to skip waiting for msa_ready", and it was pointed out that ath11k
->>    (and ath12k) do not wait for it.
->>
->>    However with so many deployed devices, "might be ok" isn't a strong
->>    argument for changing the default behavior.
->>
->> cf. also
->> https://wiki.postmarketos.org/wiki/Qualcomm_Snapdragon_835_(MSM8998)#WLAN
->>
->> Signed-off-by: Marc Gonzalez <mgonzalez@freebox.fr>
->> ---
->>   arch/arm64/boot/dts/qcom/msm8998.dtsi | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
->> index 67b8374ddf02f..4e6245095adfc 100644
->> --- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
->> +++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
->> @@ -3234,6 +3234,7 @@ wifi: wifi@18800000 {
->>   			iommus = <&anoc2_smmu 0x1900>,
->>   				 <&anoc2_smmu 0x1901>;
->>   			qcom,snoc-host-cap-8bit-quirk;
->> +			qcom,no-msa-ready-indicator;
->>   		};
->>   	};
->>   };
+>> Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
+>> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+>> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 > 
+> What about QCN9274? The commit message doesn't mention that at all. Is it safe
+> to assume that QCN9274 firmware acts the same?
 > 
-> Bjorn,
-> 
-> This patch is supposed to go through your tree, right?
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-Konrad
+The first judgement 'ab->hw_params->vdev_start_delay' only works for 
+WCN7850. It won't affect QCN9274.
+
+Sorry, i should mention.
+
 
