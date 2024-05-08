@@ -1,116 +1,137 @@
-Return-Path: <linux-wireless+bounces-7346-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7349-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C6448C032B
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 May 2024 19:33:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 516908C0342
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 May 2024 19:37:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D11C1F20F8F
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 May 2024 17:33:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 062491F22811
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 May 2024 17:37:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB91912B153;
-	Wed,  8 May 2024 17:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21AEB38F9A;
+	Wed,  8 May 2024 17:37:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="C1hS5wSh"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Ab2EFthF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A96012AAE1
-	for <linux-wireless@vger.kernel.org>; Wed,  8 May 2024 17:32:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876CC1C6AD
+	for <linux-wireless@vger.kernel.org>; Wed,  8 May 2024 17:37:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715189523; cv=none; b=Ym8FJBWTlYi7ay/CzrXeLX8XChvoxiwmXmZP8yMKYs0fC3YzC98Lm+tSfHsI72JFaUfXU82YWYiGPlEw5O2Wc1/StIXZlbgaQ8rbTos0VVDKxmPW2tcu3rE4IsVS2/xNgiZBFGAcjN3g+5I0EbWYxKFD1x7mf/wJrwIvOSwelAs=
+	t=1715189841; cv=none; b=usVFd0u7FiJdLXQ5j+IYUZDaSznprbkLH6tgX8p7gFMAv7fnxSMvj09nliyTgfKMtFMqC3YJwo/XD/42hH6zx3D4FQ7KzUWEHiokaVWFGg2yfTtGD3WR9FA98Vd0LG8l12B9UI46poVPkBSXuoqpKjowNnBGWYaPMhWuesZH4wI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715189523; c=relaxed/simple;
-	bh=h71adRGMua6fsLcVFc0iWoshhPMTSlTYWP/WRSPlKSI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MHLNvkrjRytbFHYAVrQVO4ycWaYo3AQuaesLJBpWZIIeIQlTniMaN8Um5YWrQfaUe8fX9ox1M+em4uN3vhJ0pmZqy/+yEvGDxmcveIg6cgpe0bVpgljqVDANPcUUlG4UV6NgcywfdnwxqCwEvnfuPLYM1fXPf2llTpbQBSqeQCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=C1hS5wSh; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a59cf8140d0so945969666b.3
-        for <linux-wireless@vger.kernel.org>; Wed, 08 May 2024 10:32:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1715189520; x=1715794320; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=H03hzERz4JoxgCmruYHpPPyb6baJd5J6GUwTegv6RDc=;
-        b=C1hS5wShF8UKL/XzZm+OfSjiyV3Xo/1DrH96UfZtT7ZNqubcuT1ngUN3bmOOMC6ACG
-         g4mxmo4IecwCzLvhVSNykGLjciDCb67jl3hyA+s23pb9Flw2Olryz6VgTbhHWe95c1gA
-         0lIyOo0jvnxyv4M3pFHkuFjT6Pn6AyYXkeRBl2bdYndebgX2gZWFCc7tgxGwmYp/lv0A
-         q0p57mbAJEMqE4fO6B3SV/HnqDsjMAxU9FFuh3lnDJTtZsANO7T0wLUqNkCawHamsdED
-         VkVSp5EDGz32GFOSZTGiUGWwNL7iKow9d+7zd2VDbD4z3PU0RoADiABmlu7qSzRLA9xw
-         F+bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715189520; x=1715794320;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H03hzERz4JoxgCmruYHpPPyb6baJd5J6GUwTegv6RDc=;
-        b=r5MIr/+T6IVBBf5tYe0uCikKdsTE3McZkbHA7ltdVbPzcqPXhlPf5FQO6mCzxmr8Zy
-         EOIETA+bEgWqV9Pl9mYVphzZXQh6BcVIzA5g1ksvXIvlWrR5i7j7R8LiN+7eIB2JUcz7
-         4+ZBgUPPYxR16jsr/pNG60xAKd3Bu7NR6cd2GLucBPcbfQQvs1uyyziMhF0ivqtq5CIO
-         dAzD9KWpEzdHmFzxhyk/p0gazbLXGQ6f63gwkyHHOA3DnfmUIPKu7HCtzDPgfX0lmuM/
-         PrpmChG0/tld33VPWB+MeAPkGoVVuEFVdGYZP/JewLqU5uSrD7INcNZ6FIa9CB62Np2w
-         Pr/w==
-X-Forwarded-Encrypted: i=1; AJvYcCUeLEs+NQegVzgNy8Pg7SnsfBiHfp46rvGyQawunu+gKoVB1jprU/VycH0ZS7KZBWFrrY4RiYWrPcl2AhjLBhY0Uwf6fmG2viTYHtlN9hQ=
-X-Gm-Message-State: AOJu0YwbjcQpxtsrGX9fqJQ4TIVONqVrQJ4Dxvs69xCVYUJPi9zU30Q0
-	wGysSdKSDrhbfC40UH6UkgROnDMry+KBX1vXgo6L4QHAkBxvx95wFvvrz/WMmEU=
-X-Google-Smtp-Source: AGHT+IGSX5KYRRlOmtsIHtQh+KlGgLx9KF2+R8ni4Fasp/0KFSTJ1kLt8TkaHr7EIcs++L0+0+8LZg==
-X-Received: by 2002:a50:9ec8:0:b0:56b:fd17:3522 with SMTP id 4fb4d7f45d1cf-5731d9b5d13mr2395210a12.14.1715189520241;
-        Wed, 08 May 2024 10:32:00 -0700 (PDT)
-Received: from localhost ([102.222.70.76])
-        by smtp.gmail.com with ESMTPSA id u1-20020aa7d541000000b00572eebbfc61sm4848712edr.35.2024.05.08.10.31.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 May 2024 10:31:59 -0700 (PDT)
-Date: Wed, 8 May 2024 20:31:56 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: quic_bqiang@quicinc.com, linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org
-Subject: Re: [bug report] wifi: ath12k: flush all packets before suspend
-Message-ID: <d642bb50-5d79-4968-a001-13bd075c70b0@moroto.mountain>
-References: <7a96ca11-80b5-4751-8cfc-fa637f3aa63a@moroto.mountain>
- <1abbdd0c-d4cf-4e24-9b68-d732b07300ff@quicinc.com>
+	s=arc-20240116; t=1715189841; c=relaxed/simple;
+	bh=Axj5pk5/asVJ9TXF42fqj5ai041778l59nyuGCAfjkc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=djWTWqAoQQcPE7H1VTVe175uyCBpyyra6Ch251Hj3Z80e26/Ms/Rcnh/jF9x17urmr9aohN0zVdQ6682zf9GSZfJSikiLsWf3c5Ngg55+ViTDxMKHrYKcTDZ3WYr5FtlX2blx8dCkzjyAnR/0PzxR3JpJhC/8zc2MNV4s8S90A0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Ab2EFthF; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 448AiLEI006645;
+	Wed, 8 May 2024 17:37:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version:content-type; s=
+	qcppdkim1; bh=tlHSrKHW/bkhBx4e3jrASEpXIdGjrGwuavKa/JJWfVU=; b=Ab
+	2EFthF4IGVAhes3dhGyv74i2It7d/kJhdlB8beq34TX/I6JA22Y/sdZWFLdRG88v
+	wQK5syp2NWYlKPl+2mh2ovwTnvyjxL1Clrp23tB42CrucCh0xm8MAwGegG8WBPYm
+	isnAwh4k3BaicERPb2ceI7LG3qIFV34dPjshA0LCoe7GKt+s2tkapx5Tpq/RvAS0
+	EKh5yyGlzJinesYyATkWGh39FllCiGk7RvqTI9UIUQM84ZpZtBwlFVus4mGDoawL
+	knZkUeVE4qf/Dt0rkASfoP4y5M8iUol5cl56NA1SWtocZpTZIbZiKdoO9CWvKuML
+	ObZRb9tbNgTuQkb5/OEg==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y07wfryuk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 May 2024 17:37:08 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 448Hb66r009051
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 8 May 2024 17:37:06 GMT
+Received: from pradeepc2-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Wed, 8 May 2024 10:37:06 -0700
+From: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Pradeep Kumar Chitrapu
+	<quic_pradeepc@quicinc.com>
+Subject: [PATCH V5 0/6] bug fixes and enhancements to 6 GHz band support
+Date: Wed, 8 May 2024 10:36:49 -0700
+Message-ID: <20240508173655.22191-1-quic_pradeepc@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1abbdd0c-d4cf-4e24-9b68-d732b07300ff@quicinc.com>
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: JlN_jJU3zWklfUd22Uv0z6FCGn22KauT
+X-Proofpoint-ORIG-GUID: JlN_jJU3zWklfUd22Uv0z6FCGn22KauT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-08_09,2024-05-08_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
+ spamscore=0 priorityscore=1501 suspectscore=0 bulkscore=0 phishscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 malwarescore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405010000
+ definitions=main-2405080127
 
-On Wed, May 08, 2024 at 09:51:33AM -0700, Jeff Johnson wrote:
-> On 5/8/2024 5:29 AM, Dan Carpenter wrote:
-> > Hello Baochen Qiang,
-> > 
-> > Commit 692921ead832 ("wifi: ath12k: flush all packets before
-> > suspend") from Apr 22, 2024 (linux-next), leads to the following
-> > Smatch static checker warning:
-> > 
-> > 	drivers/net/wireless/ath/ath12k/core.c:58 ath12k_core_suspend()
-> > 	warn: sleeping in atomic context
-> 
-> Hi Dan,
-> I'm not seeing this as part of my standard make W=1 C=1
-> 
-> What do I need to do in order to see this?
-> build_kernel_data.sh ??
->
+In 6 GHz band, add support for
+1. channel 2.
+2. Fix packet drop issues.
+3. AMPDU aggregation
+4. SMPS configuration
 
-Yeah.  This is a smatch warning that requires build_kernel_data.sh
-(probably you have to build several times which takes forever).  The
-might_sleep() is in synchronize_net().
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
-It's better to do run time testing.  If you run with
-CONFIG_DEBUG_ATOMIC_SLEEP=y
-then it will trigger a stack trace.
+changes in v5:
+ - update commit desscription in patch 5/6
+ - rebase
 
-regards,
-dan carpenter
+changes in V4:
+ - add back missed changes between V2 and V3 - details below
+ - add acked-by tag for patches 1/6, 2/6, 3/6, 4/6
+ - add back missed tested-by tags per patch in V3
+ - Add back missed patch portion to handle disabling SMPS
+   configuration in 6GHz for WCN7850 in 6 GHz band in 6/6.
+ - capitilize smps to SMPS in patch 5/6
+
+changes in v3:
+ - address review comments for fixing ath12k-check issues.
+
+changes in v2:
+ - Disable smps for WCN7850 after review comment from Boachen
+ - Added Tested-on tag for WCN7850
+
+Pradeep Kumar Chitrapu (6):
+  wifi: ath12k: add channel 2 into 6 GHz channel list
+  wifi: ath12k: Correct 6 GHz frequency value in rx status
+  wifi: ath12k: fix survey dump collection in 6 GHz
+  wifi: ath12k: add 6 GHz params in peer assoc command
+  wifi: ath12k: refactor SMPS configuration
+  wifi: ath12k: support SMPS configuration for 6 GHz
+
+ drivers/net/wireless/ath/ath12k/core.h  |   2 +-
+ drivers/net/wireless/ath/ath12k/dp_rx.c |   9 +-
+ drivers/net/wireless/ath/ath12k/hw.c    |   3 +
+ drivers/net/wireless/ath/ath12k/hw.h    |   1 +
+ drivers/net/wireless/ath/ath12k/mac.c   | 122 ++++++++++++++++++++----
+ drivers/net/wireless/ath/ath12k/wmi.c   |  10 +-
+ 6 files changed, 122 insertions(+), 25 deletions(-)
+
+
+base-commit: 69b8a1a48efe2f1d921336cf00dc70db68873550
+-- 
+2.17.1
+
 
