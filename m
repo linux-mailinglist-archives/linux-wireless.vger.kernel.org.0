@@ -1,73 +1,73 @@
-Return-Path: <linux-wireless+bounces-7336-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7337-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC2B88BFB52
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 May 2024 12:53:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D10B8BFB58
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 May 2024 12:54:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B0361F2309A
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 May 2024 10:53:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA8DC1F2384C
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 May 2024 10:54:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2C2781721;
-	Wed,  8 May 2024 10:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 368A37EF1E;
+	Wed,  8 May 2024 10:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AWNZUHS6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XqnugLrs"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E6E28004D
-	for <linux-wireless@vger.kernel.org>; Wed,  8 May 2024 10:53:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6277A15D
+	for <linux-wireless@vger.kernel.org>; Wed,  8 May 2024 10:54:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715165594; cv=none; b=K48Ero3ONK0eYSblIEwdYgtuxzx11xLtggIptQgIsu6E+4RtJV351z5H6Xn7p3iu4MWyb9XX+xHiI5srbPAosqOmxJZT2SMIO9AVC0wGd4/bAlPpFeXjYn9Zqaeley3zmjoqBmEFDL0iuG08Up4wwbvufzTjOnfwFAol7hcxKhs=
+	t=1715165644; cv=none; b=SnmZU/zfKFM/B8oKJk6uRq6xG1Stes7aGoV1ZNPxqQJjo3aaecaqs9ornW10/isPIybejlHMzJgSxWAaAJ7L+yo2zwgH7Hee8W7imzU4j+jAcSNlgRbtlXsTk4KqklYyvLkPMUMiL5gL2Nh+eOnuFNx+BkZybFUTIW9rGqM6cNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715165594; c=relaxed/simple;
-	bh=xItuV9Gr2oCsOY2UL7pHLtRpMjVSrRMrfPKRDIpv7MA=;
+	s=arc-20240116; t=1715165644; c=relaxed/simple;
+	bh=4/+tgVgOQb4plfmMVmaO7P0o+6CqUP/nivLwvWUVpX0=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=d3+hZ3kGMh2LqdZ0EMYSicJwnDDWPohyZHcZp8zzHr+/lPjVeNaWvE+CSY3sKFM9xUbFaeoS5ypeHK9lnhv8pIH7fTiGj9anNQsnNtjOIqagfy6HynJwPVJCZhN5k6QzaUpaOnwBYVX1npgQjCTEraQMCCisUggFrjo6BdQiYYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AWNZUHS6; arc=none smtp.client-ip=209.85.218.54
+	 In-Reply-To:Content-Type; b=VyLd+7n58ZShCDwwr8BlmqqAEAuiN0w1YVfbegGuijZNKY85E4gUOTUns6iS9lynkUjNKJ8xjUK2tNl2KLVoEZ6Aj3GqqDUBrRVuCS/s3nU9AdqfIZf6f9ECRor5PHyZBl1JzvnobBPil8BDD3FBm7aeP0r1oYAUXztn578dsUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XqnugLrs; arc=none smtp.client-ip=209.85.218.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a59b49162aeso917201566b.3
-        for <linux-wireless@vger.kernel.org>; Wed, 08 May 2024 03:53:12 -0700 (PDT)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a4702457ccbso1109518866b.3
+        for <linux-wireless@vger.kernel.org>; Wed, 08 May 2024 03:54:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715165591; x=1715770391; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1715165641; x=1715770441; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=4dFzgkgDd6Sn/drI0KYVuVbo2niKrZFW/DqHq/5zaYg=;
-        b=AWNZUHS6OxNwQGxYEQrIvZMK+AWuf2hWNn96nVu/IaprwKadnCN/zyMZccJQphWxq8
-         vRedFttrZmfEpQDtNKVtyOP9lyIpmOM1erw24ZADAed9lSFDMhbrOgJya1OG04+ODxMp
-         nPAtpTgmhFM4fFNaXjsLWVpw2xKez8o+zekRcaKrcnNyERSiPyXNoh8Lq5bX3CEM3/Il
-         Iq4b1Gowx/GKK9ylHgoPkz6PzTIKrzi62qGZeCxahzdDY7rblvDWHOGqbpXb6X/bFz+R
-         /qvpaBkcW7SYc0XkgwERaHIRw1/briQL+LfYuqgea3Ye+4Axy/WGm2xF1C6I5bS15iZ5
-         MBzA==
+        bh=Q8zJKY0+xBAA06bC/t4VFA1AYJ+XB0lxbZhPo4cr2Uw=;
+        b=XqnugLrs1yZMWwWxiTQvVE3QVX0n7GHm9ArUZK1hZTqX4PKxS5w2IWHZbJ/bxFm3XP
+         5bOr4aEF1RDlGQOQ4TtuIs6VYfph5X0xp43ij9CJV1tS4h4tMeLANYLf59/Wm2O03Yus
+         RzpHYpueO1L++tevYA7gX1ssFynngFeU5YTFdeRmI5ko/d+OhGtSgT4dYzGvlxfBrzHQ
+         H7RTr/4jLyHLSRuG+vtsAyJmB0QKZJVbheRl/xYLqRQsG8qVJbHd0GKra6L6d/yn978x
+         Xrj3yiRlJqOs8T/z51OaUE9jRaHtcbxnFjDi6Wq+E2Va31Raifxy3P1SI7dQt0fpEcWL
+         /O3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715165591; x=1715770391;
+        d=1e100.net; s=20230601; t=1715165641; x=1715770441;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4dFzgkgDd6Sn/drI0KYVuVbo2niKrZFW/DqHq/5zaYg=;
-        b=eHvZACQ3teBvD8pGLLmzGEGDq1RvtGznSWOPlIqVVVSwmrXiRGBxboyLtUdjinukjA
-         F+V7Rml9jeUpw5vYEvhUzK9ZxEBNOCFJtqK9VSh2e+noadVOL63MbHX6a2IXRfWOItH+
-         hNPqpECjIXvwD/Xz/T8Pd2x+xu2aUPmuJsQHDK7pJxMP8QPj4ODicvqTrV3nL/qzdEBg
-         bq+QNoUOQBkcderFKpmnVnsTRZlCA9P4ILVXzlNQWUHvyXyfrS9M1LaRrrZZEpY68PAL
-         wOCNxpYciPDxUEAZLc0c4GvIuL+JVDKKR6jMDdkvC9B/QT5nJ2njsDGKn57jGWmzcvtK
-         L6mw==
-X-Gm-Message-State: AOJu0YywtLTnA0Xbe5oRYJNhakHWb1yxfm4Z6Vv9EhLUZhurB/TxNPz+
-	fzCqTl72czzjc06mcwplzmpOpZJN5jOEIm3/0YwmicHkZQ6ftOMSntkFGuFz
-X-Google-Smtp-Source: AGHT+IFlE9n/50n3/I4NMtu1bhWXEQFAVTDypZzAVnwyqRj3ooG8beAKmMJZv9PXv1HgCgcvC9MH6g==
-X-Received: by 2002:a17:906:4a11:b0:a59:ad15:6133 with SMTP id a640c23a62f3a-a59fb9dd014mr128790066b.71.1715165590976;
-        Wed, 08 May 2024 03:53:10 -0700 (PDT)
+        bh=Q8zJKY0+xBAA06bC/t4VFA1AYJ+XB0lxbZhPo4cr2Uw=;
+        b=G4g17TAUF+NuD6Dta9Q3V6lrluwBBED6ZPEEr95iXEuzZucPKNKyn1HY6z1vlFQutU
+         5cmKQXN0P04w1kEAcWqFvLkDOnDooa/xyFmOXi2ur8MRvh463WHcXVFT09qNiNxA2HIl
+         YHQWfpbeL5AtH8/9B/ZIu3ASbZxMHcgr11AVBFambTloBk+KKTOCmubV/QzfEFyvWapP
+         vOXUEZtdbFOyXGb0+6R5ePrkX6jZciV1+a1a/WeGkBn1JL3hD/+c3/jbkkOHK4XAFlxY
+         D4U4lIJVFVCXzMy+XTahLcItH7WJW7wk7zC/YzpY7GwWHeFgnVDnye4rd1H7mIkxEpnx
+         MRYw==
+X-Gm-Message-State: AOJu0YxTKYr3djyRTGKIyjL2SXx8EaNB6NwaAT9sT25o0ZZ2HthxcYSB
+	dCwwQGeXQ3t0uHgeHwsqOpyyAK7u9YqeHHNN/sWMSJCNbTKFapRSN4IdrmuK
+X-Google-Smtp-Source: AGHT+IGZdmBBzalELGvIakvvMxMvQQeMBjpkUr7WRWJPUGB6FWSbflgNbm+VzL0ZtA5HPojG4yiLIQ==
+X-Received: by 2002:a50:c04e:0:b0:571:fc6b:966c with SMTP id 4fb4d7f45d1cf-5731d9ce54dmr1649679a12.13.1715165640898;
+        Wed, 08 May 2024 03:54:00 -0700 (PDT)
 Received: from [192.168.1.50] ([79.113.154.240])
-        by smtp.gmail.com with ESMTPSA id qs34-20020a17090645a200b00a59af52e92esm4974337ejc.217.2024.05.08.03.53.10
+        by smtp.gmail.com with ESMTPSA id c21-20020aa7df15000000b005727bdb1eafsm7370772edy.40.2024.05.08.03.54.00
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 May 2024 03:53:10 -0700 (PDT)
-Message-ID: <efcc510f-b631-4b44-8b2d-42d501d6ba4e@gmail.com>
-Date: Wed, 8 May 2024 13:53:09 +0300
+        Wed, 08 May 2024 03:54:00 -0700 (PDT)
+Message-ID: <2eddf524-30bf-4c24-8687-9c27b6d0004e@gmail.com>
+Date: Wed, 8 May 2024 13:53:59 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,7 +75,8 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH v5 08/11] wifi: rtlwifi: Add rtl8192du/dm.{c,h}
+Subject: [PATCH v5 09/11] wifi: rtlwifi: Constify
+ rtl_hal_cfg.{ops,usb_interface_cfg} and rtl_priv.cfg
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 Cc: Ping-Ke Shih <pkshih@realtek.com>,
@@ -88,8 +89,8 @@ In-Reply-To: <254558da-ea8b-40ea-bd5a-83d13796744f@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-These contain functions related to the dynamic mechanism, which runs
-every two seconds to adjust to changes in the environment.
+This allows the drivers to declare the structs rtl_hal_cfg, rtl_hal_ops,
+and rtl_hal_usbint_cfg as const.
 
 Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 ---
@@ -97,167 +98,100 @@ v5:
  - No change.
 
 v4:
- - Replace tab with space in rtl8192du/dm.h.
- - Fix dm.h header guard.
- - Delete unused UNDEC_SM_PWDB macro.
-
-v3:
- - No change.
-
-v2:
- - Patch is new in v2, split from patch 3/3 in v1.
+ - Patch is new in v4.
 ---
- .../wireless/realtek/rtlwifi/rtl8192du/dm.c   | 123 ++++++++++++++++++
- .../wireless/realtek/rtlwifi/rtl8192du/dm.h   |  10 ++
- 2 files changed, 133 insertions(+)
- create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/dm.c
- create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/dm.h
+ drivers/net/wireless/realtek/rtlwifi/base.c         | 2 +-
+ drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c | 3 +--
+ drivers/net/wireless/realtek/rtlwifi/usb.c          | 2 +-
+ drivers/net/wireless/realtek/rtlwifi/usb.h          | 2 +-
+ drivers/net/wireless/realtek/rtlwifi/wifi.h         | 6 +++---
+ 5 files changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192du/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/dm.c
-new file mode 100644
-index 000000000000..add909f7726f
---- /dev/null
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/dm.c
-@@ -0,0 +1,123 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright(c) 2009-2012  Realtek Corporation.*/
-+
-+#include "../wifi.h"
-+#include "../base.h"
-+#include "../core.h"
-+#include "../rtl8192d/reg.h"
-+#include "../rtl8192d/def.h"
-+#include "../rtl8192d/dm_common.h"
-+#include "../rtl8192d/fw_common.h"
-+#include "../rtl8192d/phy_common.h"
-+#include "phy.h"
-+#include "dm.h"
-+#include "fw.h"
-+
-+static void rtl92d_dm_init_1r_cca(struct ieee80211_hw *hw)
-+{
-+	struct rtl_priv *rtlpriv = rtl_priv(hw);
-+	struct ps_t *dm_pstable = &rtlpriv->dm_pstable;
-+
-+	dm_pstable->pre_ccastate = CCA_MAX;
-+	dm_pstable->cur_ccasate = CCA_MAX;
-+}
-+
-+static void rtl92d_dm_1r_cca(struct ieee80211_hw *hw)
-+{
-+	struct rtl_priv *rtlpriv = rtl_priv(hw);
-+	struct ps_t *dm_pstable = &rtlpriv->dm_pstable;
-+	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
-+	int pwdb = rtlpriv->dm_digtable.min_undec_pwdb_for_dm;
-+
-+	if (rtlhal->macphymode != SINGLEMAC_SINGLEPHY ||
-+	    rtlhal->current_bandtype != BAND_ON_5G)
-+		return;
-+
-+	if (pwdb != 0) {
-+		if (dm_pstable->pre_ccastate == CCA_2R ||
-+		    dm_pstable->pre_ccastate == CCA_MAX)
-+			dm_pstable->cur_ccasate = (pwdb >= 35) ? CCA_1R : CCA_2R;
-+		else
-+			dm_pstable->cur_ccasate = (pwdb <= 30) ? CCA_2R : CCA_1R;
-+	} else {
-+		dm_pstable->cur_ccasate = CCA_MAX;
-+	}
-+
-+	if (dm_pstable->pre_ccastate == dm_pstable->cur_ccasate)
-+		return;
-+
-+	rtl_dbg(rtlpriv, COMP_BB_POWERSAVING, DBG_TRACE,
-+		"Old CCA state: %d new CCA state: %d\n",
-+		dm_pstable->pre_ccastate, dm_pstable->cur_ccasate);
-+
-+	if (dm_pstable->cur_ccasate == CCA_1R) {
-+		if (rtlpriv->phy.rf_type == RF_2T2R)
-+			rtl_set_bbreg(hw, ROFDM0_TRXPATHENABLE, MASKBYTE0, 0x13);
-+		else /* Is this branch reachable? */
-+			rtl_set_bbreg(hw, ROFDM0_TRXPATHENABLE, MASKBYTE0, 0x23);
-+	} else { /* CCA_2R or CCA_MAX */
-+		rtl_set_bbreg(hw, ROFDM0_TRXPATHENABLE, MASKBYTE0, 0x33);
-+	}
-+}
-+
-+static void rtl92d_dm_pwdb_monitor(struct ieee80211_hw *hw)
-+{
-+	struct rtl_priv *rtlpriv = rtl_priv(hw);
-+	const u32 max_macid = 32;
-+	u32 temp;
-+
-+	/* AP & ADHOC & MESH will return tmp */
-+	if (rtlpriv->mac80211.opmode != NL80211_IFTYPE_STATION)
-+		return;
-+
-+	/* Indicate Rx signal strength to FW. */
-+	if (rtlpriv->dm.useramask) {
-+		temp = rtlpriv->dm.undec_sm_pwdb << 16;
-+		temp |= max_macid << 8;
-+
-+		rtl92d_fill_h2c_cmd(hw, H2C_RSSI_REPORT, 3, (u8 *)(&temp));
-+	} else {
-+		rtl_write_byte(rtlpriv, 0x4fe, (u8)rtlpriv->dm.undec_sm_pwdb);
-+	}
-+}
-+
-+void rtl92du_dm_init(struct ieee80211_hw *hw)
-+{
-+	struct rtl_priv *rtlpriv = rtl_priv(hw);
-+
-+	rtlpriv->dm.dm_type = DM_TYPE_BYDRIVER;
-+	rtl_dm_diginit(hw, 0x20);
-+	rtlpriv->dm_digtable.rx_gain_max = DM_DIG_FA_UPPER;
-+	rtlpriv->dm_digtable.rx_gain_min = DM_DIG_FA_LOWER;
-+	rtl92d_dm_init_edca_turbo(hw);
-+	rtl92d_dm_init_1r_cca(hw);
-+	rtl92d_dm_init_rate_adaptive_mask(hw);
-+	rtl92d_dm_initialize_txpower_tracking(hw);
-+}
-+
-+void rtl92du_dm_watchdog(struct ieee80211_hw *hw)
-+{
-+	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
-+	bool fw_current_inpsmode = false;
-+	bool fwps_awake = true;
-+
-+	/* 1. RF is OFF. (No need to do DM.)
-+	 * 2. Fw is under power saving mode for FwLPS.
-+	 *    (Prevent from SW/FW I/O racing.)
-+	 * 3. IPS workitem is scheduled. (Prevent from IPS sequence
-+	 *    to be swapped with DM.
-+	 * 4. RFChangeInProgress is TRUE.
-+	 *    (Prevent from broken by IPS/HW/SW Rf off.)
-+	 */
-+
-+	if (ppsc->rfpwr_state == ERFON && !fw_current_inpsmode &&
-+	    fwps_awake && !ppsc->rfchange_inprogress) {
-+		rtl92d_dm_pwdb_monitor(hw);
-+		rtl92d_dm_false_alarm_counter_statistics(hw);
-+		rtl92d_dm_find_minimum_rssi(hw);
-+		rtl92d_dm_dig(hw);
-+		rtl92d_dm_check_txpower_tracking_thermal_meter(hw);
-+		rtl92d_dm_check_edca_turbo(hw);
-+		rtl92d_dm_1r_cca(hw);
-+	}
-+}
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192du/dm.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/dm.h
-new file mode 100644
-index 000000000000..1373db2fd87d
---- /dev/null
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/dm.h
-@@ -0,0 +1,10 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/* Copyright(c) 2009-2012  Realtek Corporation.*/
-+
-+#ifndef __RTL92DU_DM_H__
-+#define __RTL92DU_DM_H__
-+
-+void rtl92du_dm_init(struct ieee80211_hw *hw);
-+void rtl92du_dm_watchdog(struct ieee80211_hw *hw);
-+
-+#endif
+diff --git a/drivers/net/wireless/realtek/rtlwifi/base.c b/drivers/net/wireless/realtek/rtlwifi/base.c
+index 1a8d715b7c07..aab4605de9c4 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/base.c
++++ b/drivers/net/wireless/realtek/rtlwifi/base.c
+@@ -2272,7 +2272,7 @@ static void rtl_c2h_content_parsing(struct ieee80211_hw *hw,
+ 				    struct sk_buff *skb)
+ {
+ 	struct rtl_priv *rtlpriv = rtl_priv(hw);
+-	struct rtl_hal_ops *hal_ops = rtlpriv->cfg->ops;
++	const struct rtl_hal_ops *hal_ops = rtlpriv->cfg->ops;
+ 	const struct rtl_btc_ops *btc_ops = rtlpriv->btcoexist.btc_ops;
+ 	u8 cmd_id, cmd_len;
+ 	u8 *cmd_buf = NULL;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
+index 48be7e346efc..c9b9e2bc90cc 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/sw.c
+@@ -53,8 +53,6 @@ static int rtl92cu_init_sw_vars(struct ieee80211_hw *hw)
+ 	} else {
+ 		fw_name = "rtlwifi/rtl8192cufw_TMSC.bin";
+ 	}
+-	/* provide name of alternative file */
+-	rtlpriv->cfg->alt_fw_name = "rtlwifi/rtl8192cufw.bin";
+ 	pr_info("Loading firmware %s\n", fw_name);
+ 	rtlpriv->max_fw_size = 0x4000;
+ 	err = request_firmware_nowait(THIS_MODULE, 1,
+@@ -160,6 +158,7 @@ static struct rtl_hal_usbint_cfg rtl92cu_interface_cfg = {
+ 
+ static struct rtl_hal_cfg rtl92cu_hal_cfg = {
+ 	.name = "rtl92c_usb",
++	.alt_fw_name = "rtlwifi/rtl8192cufw.bin",
+ 	.ops = &rtl8192cu_hal_ops,
+ 	.mod_params = &rtl92cu_mod_params,
+ 	.usb_interface_cfg = &rtl92cu_interface_cfg,
+diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
+index 2ea72d9e3957..b6d300bec1e9 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/usb.c
++++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
+@@ -937,7 +937,7 @@ static const struct rtl_intf_ops rtl_usb_ops = {
+ 
+ int rtl_usb_probe(struct usb_interface *intf,
+ 		  const struct usb_device_id *id,
+-		  struct rtl_hal_cfg *rtl_hal_cfg)
++		  const struct rtl_hal_cfg *rtl_hal_cfg)
+ {
+ 	int err;
+ 	struct ieee80211_hw *hw = NULL;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.h b/drivers/net/wireless/realtek/rtlwifi/usb.h
+index 12529afc0510..b66d6f9ae564 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/usb.h
++++ b/drivers/net/wireless/realtek/rtlwifi/usb.h
+@@ -136,7 +136,7 @@ struct rtl_usb_priv {
+ 
+ int rtl_usb_probe(struct usb_interface *intf,
+ 		  const struct usb_device_id *id,
+-		  struct rtl_hal_cfg *rtl92cu_hal_cfg);
++		  const struct rtl_hal_cfg *rtl92cu_hal_cfg);
+ void rtl_usb_disconnect(struct usb_interface *intf);
+ int rtl_usb_suspend(struct usb_interface *pusb_intf, pm_message_t message);
+ int rtl_usb_resume(struct usb_interface *pusb_intf);
+diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+index 6a8212fd36af..ae6e351bc83c 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
++++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+@@ -2356,9 +2356,9 @@ struct rtl_hal_cfg {
+ 	bool write_readback;
+ 	char *name;
+ 	char *alt_fw_name;
+-	struct rtl_hal_ops *ops;
++	const struct rtl_hal_ops *ops;
+ 	struct rtl_mod_params *mod_params;
+-	struct rtl_hal_usbint_cfg *usb_interface_cfg;
++	const struct rtl_hal_usbint_cfg *usb_interface_cfg;
+ 	enum rtl_spec_ver spec_ver;
+ 
+ 	/*this map used for some registers or vars
+@@ -2707,7 +2707,7 @@ struct rtl_priv {
+ 	/* hal_cfg : for diff cards
+ 	 * intf_ops : for diff interrface usb/pcie
+ 	 */
+-	struct rtl_hal_cfg *cfg;
++	const struct rtl_hal_cfg *cfg;
+ 	const struct rtl_intf_ops *intf_ops;
+ 
+ 	/* this var will be set by set_bit,
 -- 
 2.44.0
 
