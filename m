@@ -1,185 +1,170 @@
-Return-Path: <linux-wireless+bounces-7327-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7328-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFC3F8BF9D8
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 May 2024 11:54:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B13C8BFB3D
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 May 2024 12:47:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BDEE28670F
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 May 2024 09:54:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D63222817F0
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 May 2024 10:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A07757F7;
-	Wed,  8 May 2024 09:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9762B81AA2;
+	Wed,  8 May 2024 10:46:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TS+U1S5d"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080ED54679;
-	Wed,  8 May 2024 09:54:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D050C81721
+	for <linux-wireless@vger.kernel.org>; Wed,  8 May 2024 10:46:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715162076; cv=none; b=hbkiy7mhRIlKA9t5amG8Tt00jVGjdVAdxnIzuXUuP2ISx85j9atNDRB153iwQdIUA9dxZQQu2HsixLYxkCDUvNaxGWYJMHqQnalpjuNXHarq91y89GpmsPiXmgKEX7wLhvJGF6VzibalrYQ4aOcxQxLidFp+amjAUUQhfb8WpvY=
+	t=1715165211; cv=none; b=rU3szzuCGPxCk8GblapIlPnccHOBq8lyYCXZCqU4Spjvobvt2TcPKYH8Mz9JiRFgvK4R0rEUfNgQJ2ChgJFpg0ECn6KRKSEnE/PoWhydHleQsZqUApQ5hDqCR3eXPvrrAk6r0t4WkrgezVk5ixnLWMwybwB+iSWqOWt/g/Yx7R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715162076; c=relaxed/simple;
-	bh=FfA5dF31garZW/tk3DQl+spTHY7RrowSCt5gDZ9Om5k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EL3URdUFxNswfWu89eqgUIrgtfQ/sJ6hROy9rHX5NYs3BShUlm6JeUzTEPWLbbemddnMzGsyJcgM4DwAotsg0V07awZEfniFke+DkzHomIm2EzzcbDHelPnrVD2KMJ93ARL4yIvL8RZU9cgCb8ByllPQgl5Zf9UwsYIbzIURu0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+	s=arc-20240116; t=1715165211; c=relaxed/simple;
+	bh=zXT+xq4Mvi907WjjhIn0J/rkMuLsPNfDBT9+UFpxLg4=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=ojwfBLOT7xpyXGb5fZEVq/zgWk3fDID/f/j37Fxy9feYf1pgr7JOkMcVEI2/TQDQvUPz2x3v/ruP2mwCNWjWUa9cgJwDTZgfpSm/WuxcBEZMrHVPByqtlynQBlCSe/zrU8ZSppwlKZY7VfG6GesG/GqmiNBK9YXoKdgtysDolyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TS+U1S5d; arc=none smtp.client-ip=209.85.208.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-51f3761c96aso5359673e87.3;
-        Wed, 08 May 2024 02:54:34 -0700 (PDT)
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2e3f6166e4aso38504961fa.1
+        for <linux-wireless@vger.kernel.org>; Wed, 08 May 2024 03:46:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1715165208; x=1715770008; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-language:cc:to:subject:from
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Yw6l9kJ6NcclEoT52Lub3HV9611mkhU543TWOCO7J4Y=;
+        b=TS+U1S5dCFaoZYhlNDxLu+/DV8OMWqtQ/usFQbOs8ikRK/TsfCz79Uby5YoD0ef+gd
+         00jagkRdOc5N+4H4xNTNxeZGdtf+W//fPeXIGviovf6NFtKjetNCnQclFj5E8td5L09C
+         D1ik398g0bYcvTB3BmDK6pMe7y5vlTndInpAMvvJFgJlrHNA4g8XS8dbG11YMx2V2UEY
+         k6uhQO/2J9aYjdNHi01vO13VIN74cLqfeTgkvN0c8HZglk67ZxpbFVVXF6/hUNkPgXb0
+         JZFqDW1JwU5eciOQYHLALwMudnjVA2ee840rgSICHEKZffuZoQ49fI5dGHYfpv297nMQ
+         JCGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715162073; x=1715766873;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sD2/6sPlr7JEw5uhBN364YYJFLTnmVMqOaL4BzfWeD8=;
-        b=JK9dtjL3KcLGjrM7+kmQQsDY0Y5AqzmConde9oSepmQmv7OIfQymaJjU+w/+DUJa+v
-         Z5hghzEAynwFe1JwOL/AHM9ObQDy7TFA1W/nOUPf4UK6+BfIfRb8DsjZu3NqUNTDOb49
-         JC7R0Gf/Tg2ggCWgFBTO4Pl0//WFlxiiuhyYxs71tDYhZZsWFFZ36MD3hHXnrIJSn9pq
-         7oxrWUt86U63tv+YLjwfOc640O4umls3wXNIHGxOk2i0dnjHfoq94zk5VrYjBAhnawsh
-         kzMQUNVn5a/9ofUMsObz2uh7zRAelLAYlDwrwyFgtY4zCI1OGQXqpovH5mID27mlpTXm
-         yRgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWaVnDQcksz/jsxekU//CEQIjcPRMYzjSX4DPSmHhWS9NjEtnX92F+JvAGCk+bTPFPdOm000lC6pm9wCh984+xGwsQxIFsSigPKIFdD/LUqlxMKwtIlYOgYi0lZAPysEHNEtYlVELVL7yUah44=
-X-Gm-Message-State: AOJu0YywGncSVmDtpr54G2+potKreOQsD2wQQa8aMZ8KRG2H4T2sLXBh
-	yv0j3HRGEbJnYZfyD2XB/DAFuhl6Z02Mf8jAnnbBynvcpRM+NsvTmMgtPg==
-X-Google-Smtp-Source: AGHT+IHmCf5LAkl84GP171Zeb9C+hU+YlcxP1NLnZdtmzr65qLJvoOCAVJfs5QJwFe5Cm/IGPVi37w==
-X-Received: by 2002:ac2:5929:0:b0:51d:a1ab:98bc with SMTP id 2adb3069b0e04-5217c3733cfmr1876163e87.2.1715162072909;
-        Wed, 08 May 2024 02:54:32 -0700 (PDT)
-Received: from localhost (fwdproxy-lla-119.fbsv.net. [2a03:2880:30ff:77::face:b00c])
-        by smtp.gmail.com with ESMTPSA id d19-20020a17090648d300b00a5a06effd3fsm379569ejt.221.2024.05.08.02.54.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 May 2024 02:54:32 -0700 (PDT)
-From: Breno Leitao <leitao@debian.org>
-To: horms@kernel.org,
-	Kalle Valo <kvalo@kernel.org>,
-	Jeff Johnson <jjohnson@kernel.org>
-Cc: netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org (open list:NETWORKING DRIVERS (WIRELESS)),
-	ath12k@lists.infradead.org (open list:QUALCOMM ATH12K WIRELESS DRIVER),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH wireless-next v2] wifi: ath12k: allocate dummy net_device dynamically
-Date: Wed,  8 May 2024 02:54:09 -0700
-Message-ID: <20240508095410.1923198-1-leitao@debian.org>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1715165208; x=1715770008;
+        h=content-transfer-encoding:content-language:cc:to:subject:from
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Yw6l9kJ6NcclEoT52Lub3HV9611mkhU543TWOCO7J4Y=;
+        b=XXb1mqtwBpHBj9Vntv/tJFsRnFCKUnYfLFb7Xzp2CxQ2J2mq23Cd4fRYx75SPP//KZ
+         O9fDazUxioJMr2hHra7klQXnTQIef08F+gCH31w/epbTgv+DVPDbcR9zRXfxOPG0yFfx
+         3JKOuWwinoNQKGHt6OqVlBkkSnTks/Z5cf8eoQOQRJeLCYrQHzf5tBTRf/3JfMHDYr7V
+         OouKkgEVvoxW9jVMn3AwK3iiff6iDRBALO67sCEcoDrRpow+zuOXfaDbNe1ukJLIMReY
+         2zYOYxJk+0qs2ee7nS0q5XG5xIpHP2aEyA4hu2HvOiQHU2Q8FqirAzCdTuhj7qDY9jbZ
+         O99A==
+X-Gm-Message-State: AOJu0YwGCDV0W0G65Gcz9CjTOrye+BwKGVDsS0HYbRokj9rptVnNbSNx
+	iV3wxmm+YOKuOxB2teix9Vka3pZUubFYfZIU0uv9n09RtVwVsmT/zP0wBQBI
+X-Google-Smtp-Source: AGHT+IH1uvSTfFqVyS2+XGUA6xD2+a4QHPlGaBaM9cvVTppUDwH/Z8iYT0A8j1B7rX5UwSO2LmQW/g==
+X-Received: by 2002:ac2:4291:0:b0:51d:3675:6a06 with SMTP id 2adb3069b0e04-5217cf3cbdfmr1606261e87.66.1715165207539;
+        Wed, 08 May 2024 03:46:47 -0700 (PDT)
+Received: from [192.168.1.50] ([79.113.154.240])
+        by smtp.gmail.com with ESMTPSA id p2-20020ac24ec2000000b0051e1b40c17bsm2475125lfr.258.2024.05.08.03.46.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 May 2024 03:46:47 -0700 (PDT)
+Message-ID: <254558da-ea8b-40ea-bd5a-83d13796744f@gmail.com>
+Date: Wed, 8 May 2024 13:46:45 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH v5 00/11] wifi: rtlwifi: Add new rtl8192du driver
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>,
+ Larry Finger <Larry.Finger@lwfinger.net>,
+ Stefan Lippers-Hollmann <s.l-h@gmx.de>,
+ Christian Hewitt <chewitt@libreelec.tv>
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Embedding net_device into structures prohibits the usage of flexible
-arrays in the net_device structure. For more details, see the discussion
-at [1].
+These patches add a driver for the RTL8192DU chip.
 
-Un-embed the net_device from struct ath12k_ext_irq_grp by converting it
-into a pointer. Then use the leverage alloc_netdev_dummy() to allocate
-the net_device object at ath12k_pci_ext_irq_config().
+Power saving is disabled by default because it's not working.
 
-The free of the device occurs at ath12k_pci_free_ext_irq().
+Dual MAC chips are not tested.
 
-[1] https://lore.kernel.org/all/20240229225910.79e224cf@kernel.org/
+Until Ping-Ke Shih will add the firmware to the linux-firmware
+repository, the driver can be tested with the firmware from Larry
+Finger's repository:
+https://github.com/lwfinger/rtl8192du/blob/master/rtl8192dufw.bin
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
-Changelog:
- v2:
-	* Free all the allocated dummy devices if one of them fails to
-	  be allocated (in ath12k_pci_ext_irq_config()), as
-	  pointed by by Simon Horman.
----
- drivers/net/wireless/ath/ath12k/core.h |  2 +-
- drivers/net/wireless/ath/ath12k/pci.c  | 27 +++++++++++++++++++++-----
- 2 files changed, 23 insertions(+), 6 deletions(-)
+v4 of the series also included the creation of the rtl8192d-common
+module, but it was becoming too long. rtl8192d-common was sent
+separately and it's merged already.
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index 47dde4401210..6671219c3567 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -146,7 +146,7 @@ struct ath12k_ext_irq_grp {
- 	u32 grp_id;
- 	u64 timestamp;
- 	struct napi_struct napi;
--	struct net_device napi_ndev;
-+	struct net_device *napi_ndev;
- };
- 
- struct ath12k_smbios_bdf {
-diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
-index 16af046c33d9..ac75e8e3916b 100644
---- a/drivers/net/wireless/ath/ath12k/pci.c
-+++ b/drivers/net/wireless/ath/ath12k/pci.c
-@@ -350,6 +350,7 @@ static void ath12k_pci_free_ext_irq(struct ath12k_base *ab)
- 			free_irq(ab->irq_num[irq_grp->irqs[j]], irq_grp);
- 
- 		netif_napi_del(&irq_grp->napi);
-+		free_netdev(irq_grp->napi_ndev);
- 	}
- }
- 
-@@ -560,8 +561,9 @@ static irqreturn_t ath12k_pci_ext_interrupt_handler(int irq, void *arg)
- static int ath12k_pci_ext_irq_config(struct ath12k_base *ab)
- {
- 	struct ath12k_pci *ab_pci = ath12k_pci_priv(ab);
--	int i, j, ret, num_vectors = 0;
-+	int i, j, n, ret, num_vectors = 0;
- 	u32 user_base_data = 0, base_vector = 0, base_idx;
-+	struct ath12k_ext_irq_grp *irq_grp;
- 
- 	base_idx = ATH12K_PCI_IRQ_CE0_OFFSET + CE_COUNT_MAX;
- 	ret = ath12k_pci_get_user_msi_assignment(ab, "DP",
-@@ -572,13 +574,18 @@ static int ath12k_pci_ext_irq_config(struct ath12k_base *ab)
- 		return ret;
- 
- 	for (i = 0; i < ATH12K_EXT_IRQ_GRP_NUM_MAX; i++) {
--		struct ath12k_ext_irq_grp *irq_grp = &ab->ext_irq_grp[i];
-+		irq_grp = &ab->ext_irq_grp[i];
- 		u32 num_irq = 0;
- 
- 		irq_grp->ab = ab;
- 		irq_grp->grp_id = i;
--		init_dummy_netdev(&irq_grp->napi_ndev);
--		netif_napi_add(&irq_grp->napi_ndev, &irq_grp->napi,
-+		irq_grp->napi_ndev = alloc_netdev_dummy(0);
-+		if (!irq_grp->napi_ndev) {
-+			ret = -ENOMEM;
-+			goto fail_allocate;
-+		}
-+
-+		netif_napi_add(irq_grp->napi_ndev, &irq_grp->napi,
- 			       ath12k_pci_ext_grp_napi_poll);
- 
- 		if (ab->hw_params->ring_mask->tx[i] ||
-@@ -611,13 +618,23 @@ static int ath12k_pci_ext_irq_config(struct ath12k_base *ab)
- 			if (ret) {
- 				ath12k_err(ab, "failed request irq %d: %d\n",
- 					   vector, ret);
--				return ret;
-+				goto fail_request;
- 			}
- 		}
- 		ath12k_pci_ext_grp_disable(irq_grp);
- 	}
- 
- 	return 0;
-+
-+fail_request:
-+	/* i ->napi_ndev was properly allocated. Free it also */
-+	i += 1;
-+fail_allocate:
-+	for (n = 0; n < i; n++) {
-+		irq_grp = &ab->ext_irq_grp[n];
-+		free_netdev(irq_grp->napi_ndev);
-+	}
-+	return ret;
- }
- 
- static int ath12k_pci_set_irq_affinity_hint(struct ath12k_pci *ab_pci,
+v5:
+ - Call it 802.11n instead of 802.11an in the module description and
+   Kconfig.
+ - Patch 2 is new.
+
+Bitterblue Smith (11):
+  wifi: rtlwifi: Add rtl8192du/table.{c,h}
+  wifi: rtlwifi: Add new members to struct rtl_priv for RTL8192DU
+  wifi: rtlwifi: Add rtl8192du/hw.{c,h}
+  wifi: rtlwifi: Add rtl8192du/phy.{c,h}
+  wifi: rtlwifi: Add rtl8192du/trx.{c,h}
+  wifi: rtlwifi: Add rtl8192du/rf.{c,h}
+  wifi: rtlwifi: Add rtl8192du/fw.{c,h} and rtl8192du/led.{c,h}
+  wifi: rtlwifi: Add rtl8192du/dm.{c,h}
+  wifi: rtlwifi: Constify rtl_hal_cfg.{ops,usb_interface_cfg} and
+    rtl_priv.cfg
+  wifi: rtlwifi: Add rtl8192du/sw.{c,h}
+  wifi: rtlwifi: Enable the new rtl8192du driver
+
+ drivers/net/wireless/realtek/rtlwifi/Kconfig  |   12 +
+ drivers/net/wireless/realtek/rtlwifi/Makefile |    1 +
+ drivers/net/wireless/realtek/rtlwifi/base.c   |    2 +-
+ .../wireless/realtek/rtlwifi/rtl8192cu/sw.c   |    3 +-
+ .../realtek/rtlwifi/rtl8192du/Makefile        |   13 +
+ .../wireless/realtek/rtlwifi/rtl8192du/dm.c   |  123 +
+ .../wireless/realtek/rtlwifi/rtl8192du/dm.h   |   10 +
+ .../wireless/realtek/rtlwifi/rtl8192du/fw.c   |   65 +
+ .../wireless/realtek/rtlwifi/rtl8192du/fw.h   |    9 +
+ .../wireless/realtek/rtlwifi/rtl8192du/hw.c   | 1232 +++++++
+ .../wireless/realtek/rtlwifi/rtl8192du/hw.h   |   24 +
+ .../wireless/realtek/rtlwifi/rtl8192du/led.c  |   10 +
+ .../wireless/realtek/rtlwifi/rtl8192du/led.h  |    9 +
+ .../wireless/realtek/rtlwifi/rtl8192du/phy.c  | 3181 +++++++++++++++++
+ .../wireless/realtek/rtlwifi/rtl8192du/phy.h  |   32 +
+ .../wireless/realtek/rtlwifi/rtl8192du/rf.c   |  244 ++
+ .../wireless/realtek/rtlwifi/rtl8192du/rf.h   |   11 +
+ .../wireless/realtek/rtlwifi/rtl8192du/sw.c   |  397 ++
+ .../realtek/rtlwifi/rtl8192du/table.c         | 1725 +++++++++
+ .../realtek/rtlwifi/rtl8192du/table.h         |   29 +
+ .../wireless/realtek/rtlwifi/rtl8192du/trx.c  |  377 ++
+ .../wireless/realtek/rtlwifi/rtl8192du/trx.h  |   60 +
+ drivers/net/wireless/realtek/rtlwifi/usb.c    |    2 +-
+ drivers/net/wireless/realtek/rtlwifi/usb.h    |    2 +-
+ drivers/net/wireless/realtek/rtlwifi/wifi.h   |   12 +-
+ 25 files changed, 7577 insertions(+), 8 deletions(-)
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/Makefile
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/dm.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/dm.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/fw.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/fw.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/led.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/led.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/rf.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/rf.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/sw.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/trx.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/trx.h
+
 -- 
-2.43.0
+2.44.0
 
 
