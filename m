@@ -1,273 +1,308 @@
-Return-Path: <linux-wireless+bounces-7366-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7367-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 914328C07A4
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 May 2024 01:28:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CB0E8C083C
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 May 2024 02:07:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADD2A1C210C4
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 May 2024 23:28:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FB781C21117
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 May 2024 00:07:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 957F712DD8A;
-	Wed,  8 May 2024 23:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC93E63D;
+	Thu,  9 May 2024 00:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="GP0hGO7q";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="EiFoXAR+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jHPxWM+l"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41868626D
-	for <linux-wireless@vger.kernel.org>; Wed,  8 May 2024 23:28:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715210899; cv=fail; b=lu6EfvqjVujwWYjIJcypI/98OifkIetNCh4Z6xwYjKvWgmG6AeyB2FRRWruCibpvaEddcqPeOoxBFxGgcMHf0WuOB3Av8KaUqNcKAFXf+U+KSkn3UxiTJrYfjRSwGXqhhd2BBwCao97/cLcrhgbiI7/NCMfixr2hlQphH5PcJOU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715210899; c=relaxed/simple;
-	bh=POR/xj2KC4Zu9vswVUAseHZM0VNtAWINIWIGGR1WqjA=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=ZkGhD/xEhzeNkQFL8sTtWRq8YqtiKZzUBaJgj9Cm72dYjJZxFclbBYNpmIHZRtMi34rqrmWhAUJp+zOqZb6HNaITzVG50/u1j8UMfN2Gbgrjzm7klYqfqfafaJAltfiVm9Jvgb5/7+/zclhFYxv2vLn1rLO/C1Ij7aYADG4ccho=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=GP0hGO7q; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=EiFoXAR+; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 448Mu3Xx002426;
-	Wed, 8 May 2024 23:27:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-11-20;
- bh=8PKLcwoixRLnaIgi+SpR6M+g57VchW5Nx9+Zdy4tEnA=;
- b=GP0hGO7qr24pvcwD8KYMJbLPAtWDXnCN4JPbqYGM7qaGJU+VxmSufjK1GRydgQ05t8Qm
- VYOispJhGxgV/MAS2UAfmZpjqo1DvY5NGbVdEjfdIhynEi2qNM2cRBq7qvvAqhWJ+caM
- KQgTTRmzbj2QClzaXnFKY3fP7wa7X/chK6V6rQVfHkb1jMjPN+TQNohcQL9ltWdrrkDH
- mzpcIG3bFzca1ii437rFYuMKkDKbeAQCFHOhBSv6o8IhmXJbzWX3WQ9tDFXjOAdAk4Th
- yqBVyuCF+X8kbrs11N5qq/ENwBlQ/zw9vs9mEZXbV3MZW/qrOxlDBjmRIhVYDKFKCu4f yQ== 
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3y0je4r19r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 08 May 2024 23:27:44 +0000
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 448LW8vD031112;
-	Wed, 8 May 2024 23:27:43 GMT
-Received: from nam02-bn1-obe.outbound.protection.outlook.com (mail-bn1nam02lp2040.outbound.protection.outlook.com [104.47.51.40])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3xysfjf43k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 08 May 2024 23:27:43 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mxSDJi58BQKcsx2LlqG1uMi95wjTuzA499krsNLJYmFd3xxuJ3l6eQnXnmXEGEx6bE9zO5H/ePWiKHrNMGJflPvXMHjO65NtBJI39+pYjf4gMqB+QQMEU5xCCR4S9mikTsRcOx6mLPg37TID4dPpqhi8oGtk3kI5dQhdfC6rgRmIU0BxcrveEZeuB4dvBGqz2NU2qC6BUlOINltHOHIma8CNtXEDBaoOw0n65Pjtiy0sg1WJRuVUbi3cPpNKw4pbjwZY1coeb14U9vpxtQllVhwSkTxbTnASPMBWFMjvCZZ4XDXgvZU/EkTk3kURVSdXPYlUy/PzCzi7M1HlBQUe7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8PKLcwoixRLnaIgi+SpR6M+g57VchW5Nx9+Zdy4tEnA=;
- b=nc+XXWomA5Ptgu1wki8VjdzyG2b42xo65diN3WW7R4Tl5GwKkkaW9aJosvdkG4Oip1YRor+aBGGZXhfHsde1uw4K9r7r3qReORypJPT/Amv7SdfwyTNWmjXYSaKEhyUbCHvaI6y+8mc5DLM/pIFrrmZY4mZtBnykuQbgefmzC2bAxgI0L7Ri5uk+abd38rgu3wyC6yP4VpTzd/rNY3TcXCPODyD4w+QshCQ2VWOW0NbLo4Z5k+d1oFKjfT8YopE0I9BJEUqxTE8OubX6ehx25kQ49Pv7Q0pCzkd99ZS6/OK6fU1yZm83ThHNpHt+y1l93VBKlTrSeLKt63Dtm0DDZQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049B929AF;
+	Thu,  9 May 2024 00:07:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715213262; cv=none; b=fC87fcK0PPwSoe4NqCexojROfKSTE1yfq/1yGUOG2snUcfIAkcAvPnxRg24PKZT76SRFkh22sSSA0wh/Q9imROZkucXiCkqu7ccoGAcqqqhsko3vOywTijAmHSibA7B9IUNTOh2ot4vMK17WPHHzGjyyGLFFN4f/8EXiSPYQPDc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715213262; c=relaxed/simple;
+	bh=ziz23AkMGWZ+RssWHGSdyXLJGozhK/cIidFihX1yxa8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=hhBg3pHi540P4EYrffvn8LkLR60+GaBX18PHgLIm4Mz8SY2E9wcDt6gMzm3K604mpSZW225WHG2fo0l+wcUWmJq5pqA0cUJZuA4bC752XNk2Xhr7DSPuUPHG4Dqk75uXfuw9a8yzpuoXq1TWPLtpTXibkcevJz6ZCBZB819849w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jHPxWM+l; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1ee7963db64so1962795ad.1;
+        Wed, 08 May 2024 17:07:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8PKLcwoixRLnaIgi+SpR6M+g57VchW5Nx9+Zdy4tEnA=;
- b=EiFoXAR+/p8j+qqzNSlME3fpr+gh7eAtoOnFvh6LixXnYRVBy5U3O3hVl6k+E54kipfW5BwInBXLJirCO7nWmOHFYnWxrvROsRFnC6KAxwSBxjqU7YGCaExNl6h4qYkbRMDn1smSFmtbk7sApgKDyHrnBff6j9qR8ZuDClI8s4E=
-Received: from DM6PR10MB3817.namprd10.prod.outlook.com (2603:10b6:5:1fd::22)
- by MW5PR10MB5689.namprd10.prod.outlook.com (2603:10b6:303:19a::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.46; Wed, 8 May
- 2024 23:27:41 +0000
-Received: from DM6PR10MB3817.namprd10.prod.outlook.com
- ([fe80::a996:a7a7:bc4c:b960]) by DM6PR10MB3817.namprd10.prod.outlook.com
- ([fe80::a996:a7a7:bc4c:b960%4]) with mapi id 15.20.7544.046; Wed, 8 May 2024
- 23:27:40 +0000
-Message-ID: <667bb700-1cef-4969-85e7-cf2e9e5be7c2@oracle.com>
-Date: Wed, 8 May 2024 16:27:36 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [External] : Re: Buffer overrun error found in brcm80211 driver
- code
-To: Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org,
-        "John W. Linville"
- <linville@tuxdriver.com>
-References: <8292faa6-a2f6-4b43-8d60-9eeba85aa6b1@oracle.com>
- <c8d8ac40-d4d5-417b-a67a-8b1fb016d2ca@broadcom.com>
-Content-Language: en-US
-From: samasth.norway.ananda@oracle.com
-In-Reply-To: <c8d8ac40-d4d5-417b-a67a-8b1fb016d2ca@broadcom.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BY5PR16CA0021.namprd16.prod.outlook.com
- (2603:10b6:a03:1a0::34) To DM6PR10MB3817.namprd10.prod.outlook.com
- (2603:10b6:5:1fd::22)
+        d=gmail.com; s=20230601; t=1715213260; x=1715818060; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vGEElrW4zdUy7dtECvgDhnXjdZon9OGFjF5E8y51Mh4=;
+        b=jHPxWM+l0LDiY9itrBbyBPXwBa6oj6toOb0Id4Ckt8+VIfLq9tiKsxU51Gmi+w9O6h
+         qZ1IpsQOzp4vIMWCCuZWVkHS1ZEWWO4AnrdfRl/Pc1/xQLA6wJ//5HQAswwmhdPhFsax
+         FZpdt6XarsJu9kFVmleTuhXRL6UdUMrJXwpYRiVh/jPJRHOR9stL98lIsKD+TbWSFMze
+         tZzw4cWVKXAf1vEMQzsrTTF0jHtcuqM9hC6mXQt0F3puc8Hzv+dIt9Dct4R/yGSXfctD
+         eFq1Fx8uO+0vgs/wnchdyAfG4UQtFLE52mitlKM0xa3ivGBF6IblXZdk6Yj2JFLFSb1q
+         NuNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715213260; x=1715818060;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vGEElrW4zdUy7dtECvgDhnXjdZon9OGFjF5E8y51Mh4=;
+        b=OQL5qH8X0edG/R8oPfJ6IcQF25resY69Ix9R1u1lh/Glri3esmWgoA5nm1zluXGMbr
+         n4W7thw09Av+KcSSh3LPoOMSuyY1MsdWQny/SF50tCN/GHhNmv+rjRSS3HzLpSMJU5kg
+         68q/RSxkfjZ5fPshSCV8PFvnYtsUW/ctxsK+1QyoLfEaVggDbsJmYmy+G+GaGD2h70fx
+         JIhj6O6HXs1d3lpiFWJCPfZU8CDftbkZRXDR7+LAQCPZyzDG1JPYcVI2tcgFjszNcJzC
+         aZvvy3u6Xhrujxlb1ybiHSpPGWvhzMWiNFS4h5n0QYb9/wlRrU7zyt4uI9K1saC59XfD
+         VMQw==
+X-Forwarded-Encrypted: i=1; AJvYcCWt3FnWJtOivmWYSHCLoqjtIP++GxRJflyPhzl9jn1jQnxYZolYcFTrubmun0X/uMh3qGGzfkfg4k1upfXF5vl3N9d9ZIocKLnFo2fU6dLSYJpJsg6kD6VUDUAhaTvkqm5GX3uVskU=
+X-Gm-Message-State: AOJu0YwRI+rQ2ZwM/Goj6eOzZFc41KBHLvB9FuX0O+0Nm7m8TD0uUlCP
+	IPQXPi77rAsrMjp6M7yog1msn8l6TeRNoQemksU3z09c2ILlxpSupbM7AQ==
+X-Google-Smtp-Source: AGHT+IGuTfY4dxsdyAj7jPrFPVNxHB3OtFAT9jeLcvtOyffxMoM6l3jz7Z94QMuju6OtLpGNBYkDZg==
+X-Received: by 2002:a17:903:120e:b0:1eb:7bc7:8855 with SMTP id d9443c01a7336-1eeb017cf52mr49536975ad.2.1715213260040;
+        Wed, 08 May 2024 17:07:40 -0700 (PDT)
+Received: from archie.me ([103.124.138.155])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1ef0c2566ccsm1166555ad.294.2024.05.08.17.07.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 May 2024 17:07:39 -0700 (PDT)
+Received: by archie.me (Postfix, from userid 1000)
+	id C785018462DC5; Thu, 09 May 2024 07:07:36 +0700 (WIB)
+Date: Thu, 9 May 2024 07:07:36 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Networking <netdev@vger.kernel.org>,
+	Linux Wireless <linux-wireless@vger.kernel.org>
+Cc: Jouni Malinen <jouni.malinen@atheros.com>,
+	"John W. Linville" <linville@tuxdriver.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jannik =?utf-8?B?R2zDvGNrZXJ0?= <jannik.glueckert@gmail.com>
+Subject: Fwd: UBSAN: array-index-out-of-bounds in net/wireless/nl80211.c and
+ net/mac80211/scan.c
+Message-ID: <ZjwTyGqcey0HXxTT@archie.me>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR10MB3817:EE_|MW5PR10MB5689:EE_
-X-MS-Office365-Filtering-Correlation-Id: f86f08b8-77a3-4040-9899-08dc6fb67398
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|366007|376005;
-X-Microsoft-Antispam-Message-Info: 
-	=?utf-8?B?amV5dk93Szc1QWxBM1Bnd3Mya3RDd3d3R0dDSmdsQ1NXUWM5U0FhdEdMOVlX?=
- =?utf-8?B?TkdzQWNJbFNmREIzZ2hkNUs0THNQbzdva0ZWTEZKMTJlUWJEeDhkZml6STh2?=
- =?utf-8?B?SVZqa1lLenBjS1lsdmMxa3FVSDAvVjlvS1psMFNRWndVQ3pnSzR6d0xSQW9U?=
- =?utf-8?B?ODdBeWhsMkFYZ0ZEYUszS2h4WHNHNTFhQ0FQSktvcDhzTDNSSE5zOTBqTXh0?=
- =?utf-8?B?L0k1QzZDTFI1TjNUT3RBNXVyNGJZYXFPQmRQZlFtZ1M1RFUxODNxY3hZSjFh?=
- =?utf-8?B?bWdFR0E5ZjBCL2d2MFI4SWtmZUJNdlJSUjdKa013c2ZJRUNjUXhnMVBabFIy?=
- =?utf-8?B?OVJMenVWRm9iOVBKaitUbVlJRVlNNGVOSFk2WVZHd2JwU0ptMmxISWU0R1Nk?=
- =?utf-8?B?dkFaeUEwVnNQYVlGNGhQTGwwUEJ0d1JIWmorY3dGMWZkTzJzNlphdWNFT2Nl?=
- =?utf-8?B?ZnQrSlV6dlNVaGN2aFlEQWVwcUlnVmNTQXpia3pnbUZEUkhkVVkwQ0lkNWZW?=
- =?utf-8?B?VUZObzZMYVQ3TVJSNUNzd25RcmNPMEljNTY5RVdQVWVwZHhScU5RclNNZjUx?=
- =?utf-8?B?RjhmU2paMy9LaUlJZFkzTEU4RTB5c21GY0FFdW1ERHg2dTVrTGRiZmkxWC9h?=
- =?utf-8?B?NE1WQjh3bWVRVHBidmczSFpjVDJWSGJacVZSaGc2Y1NQM1JLYzVEMkJNd3dZ?=
- =?utf-8?B?ckxMM1VpU2ZWZy91dG4xQTAyeEYyZmpiMUpVbnkwWkxpSkJvY3o5bk5sSG9T?=
- =?utf-8?B?bEVSZEZpK2hEaThVRFl3dWo0NzJlRnltUU01dTZRMEhDNnZjVWZnQzRGYXJO?=
- =?utf-8?B?Rmg2TFdHYjl6U3diOU8vZ1pTNlhNM2tIOG5uMDF1Z05wOFhQY1hMNGFTQ0VX?=
- =?utf-8?B?RjJ3c0gxek1ZSnVIbGpRdGEvUHRKOVkzNWcrWUMrVTFyUWJab29ZWisyNkNZ?=
- =?utf-8?B?QW5FSU1Sa3B1djFVNWN1N0kvVkNlMWtUZGE3TnpFVDhpak40cklCaktIdjFm?=
- =?utf-8?B?UzZPZG5TOXcxMEltVkFiNXduSmZVb1ZiR2cyQkhOMGdBTlZYaDB4ZVY2WjVF?=
- =?utf-8?B?cys4WERPZHNxd29KZlRGbW5BM0dGQmZLTjc1QWRyMHExdWZlV2YzVXlXZ1RY?=
- =?utf-8?B?TVNGeTRXalc4dGpOaFFZclNLdTFrNHVLeG5hV0dUWXo2bU0xZmR1VVVyMm1K?=
- =?utf-8?B?R3BGNWhHbWZ3d1FPc1hRUmJwdlFhaTR2MUgvY2g0aDRzS0Nkb1BCdlNCQnRO?=
- =?utf-8?B?blF3OUd1WERKaEVYK2srZ0hsbWR3L1p2MThRVldiNG5QZFVFSmN6bkVWSTMz?=
- =?utf-8?B?c1d5eGdzdk5BMjVTSDNlRk0xOFB4dlUvOXQwandhTERSeUZOY041Nmh2WllX?=
- =?utf-8?B?Vlc3dHZSZ09qalZaUHJ2V04rVlZza0NNa0VYUmU2UjlBYnZJSThwVm5xNVVv?=
- =?utf-8?B?eTNaUnBhdWxISmRudTlFcXZWeHRvRDZ5Qlp6bDZiaWt5K3FRdXBUbDBlbEUv?=
- =?utf-8?B?MmJQWWpGNk9hQmVzMTB1SW5Gc1BsYUg1NjVBVEdOZFY2eTV0MlZBa0k0VDMw?=
- =?utf-8?B?UkZFcGxNQmk3WkFRNW1OVS9BSkRKNy8yZm5heVBhSXZUWlJkWThRWkg3Q0Ro?=
- =?utf-8?B?MDBJOVhvS3VSSksvbnBLVEl4ekZhWWxIT2JxRWt0ZTlqYmloWU1abXU1blo4?=
- =?utf-8?B?YVBCbUx5STQwQm14MEZ6M1lWMjhoMkhWZEFMR0ZwZGxTdlNoU0ZKSVdBPT0=?=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR10MB3817.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(366007)(376005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?dHMxV3BVbGdWdE5QTjdIZEhKclFBN0FpbGVyTzEveW1wRjh6MDIxQ1AzZzJ4?=
- =?utf-8?B?UE5FVHNDUW9GQXVHVWU4d0grc3NPbTVma29ibFFhOFlUaDYwZjhCZ0EvcWhI?=
- =?utf-8?B?a25ZRDZrWWNhZ2pjWlZKSFk2VVFPWnN4RWcwNmJBN0JUa0hPVURYNXZBOEFo?=
- =?utf-8?B?QWhDUGNRZlNxZ250akpyN2lFdUEyblJQYVB1U3BkNW4wYXlTS01ZcXp0OE81?=
- =?utf-8?B?eVl4dVluUUVWaklXdGhBWWRKVjhjSExLMFRwMlVIMHV3TjUrak1OSnVjU0ln?=
- =?utf-8?B?RkhHVWc0TmpMV3RTQmRqeSs3VzlCR01RRlZ2dEdMek5kbTJwWGFlcElIOFBl?=
- =?utf-8?B?RVVGaU1FMFBWUDlBRndxdDF5ZXRKZ1NobFdtQkEzT2xWVmRUUkdSUk9UZWJM?=
- =?utf-8?B?b2NEU3pJekNVNlBmcGhHWFZlNlFNWEhLSGcxUWhwb2lUY1UrdXJBQWlaRVBl?=
- =?utf-8?B?aTJBQS9acWxLeGhkNjllcWsyRVdGK3V4VFFqbVpQRjZiQk82UVFpbmtIc2xy?=
- =?utf-8?B?S3RqZDZlN3oxRHpJTm02eDNhWlN2SHZsVG9abytEbDlDaHdDYlFuSUQxelhn?=
- =?utf-8?B?bnRXZWo2ejAyOWJ0SVhTeUxWWnpEcmJhU0lFalZXT1hzMzM1cVdaZ3l3N3Rk?=
- =?utf-8?B?bnMxbVVIdWIwRlFwTm9QUzdDQlhVTU0wMVA4bUdzeldmeEg2aVUxdkE5QjZD?=
- =?utf-8?B?UDIrUEV1TGkyamw3SzBoV2g3LzJjdWFuUzUwM201bE9kSUlQS3RaN0tuVkxK?=
- =?utf-8?B?VHV5WDVvRVRsWkp0bENhMlUyOTAvdU96WnFtaVBpYUZvY3RuRHhoWEE1T1Mw?=
- =?utf-8?B?ampRYlZkSnhRaWo2eG1lWlpKWXE1ZTIzSzdCTXlaTG1NODVnRzBCalVjV2dn?=
- =?utf-8?B?ckxYYTdHUTBjaGNEaTZCNE5JNU1VM0F3MzRiK3JPRUs3YWNmWnUxTi9TeEpE?=
- =?utf-8?B?Ky9UbnJxR09WVG9uZVJDSUV5RTRGWkRYMVQ2RXYxZFBJSk9rWW5CVG1GL3px?=
- =?utf-8?B?OWRRVGhSNTRJQkFYR3AyNHJreXJYeEplNzlaUzQrQ3daWFl0M0lKM2syNC9t?=
- =?utf-8?B?bjhsN3o1bnRWRDZ0RzQxWGpzZjBwWnpNeVRBTjMvY2haazFsSzJpVUxPY3Qz?=
- =?utf-8?B?UUllTWtmall1Z3FvTVV0dk9uZnJCeWdmNUlrYzM5TE9WNHcyT2FKRzJyR2E0?=
- =?utf-8?B?UGtKUUlpaUM2REg5Q0VSREFmOUtEZ0Z3Y2FwOHNDc1MzellpLzBLNStvYVJH?=
- =?utf-8?B?bUlzM0E3UDE1MTBPay9YbFR6U2dneEh5TE1PK0ZidGUwb1lPM1luT0w4bSs1?=
- =?utf-8?B?L1NjazlsaTFqRWRFc1hvMHN2R3ZHdk1IdysySktPYUJ1SUV4R2JSWFZ3anpH?=
- =?utf-8?B?WENxa1hjd3hXay8vMGVHQy8rd25QeElVWGFXdGVoS0c5YVZMWTlWZHNwNTNS?=
- =?utf-8?B?V04vSWR4MmNncWpTQ05MRERpbU9QL3NBdUV0WmxYWG1lWno0VE1pUWRMVFVw?=
- =?utf-8?B?djkvVlY4U2xDSXJzZ05reVVZOVdqRU5FSHRHWTNmRkFVNjBhNXByditJVVlW?=
- =?utf-8?B?aEFVVTRVU1FpUjNrQzdCUHpDNFZmZkxib0d3VFExWmc1Z0FjeVljZ3pZNjNz?=
- =?utf-8?B?WXl5T2FmaUNJTkNIM3B0TGt6dGVXSWYvbnBFaFdRa2RlSDlOUlIzZWxlY0Fk?=
- =?utf-8?B?bzNmVTB1UTluWEp1MDI4QnpqQTBoeWlNWkQ5STRERWNUdzRuL1dIN1JLM1c1?=
- =?utf-8?B?ZHdYcTdvWXVNcXdzdWFkaWFNclNGQWRuQjl6SE0rS3JOZVVEK0haUzdKT0pN?=
- =?utf-8?B?ek9oWlM5OGRNcVNyT0UrK2dnYzhzdjQvSkZyMmw5aWh6WndxQmc1WEp4d2E5?=
- =?utf-8?B?c0V1TmdueUNSRWppb2F0UnZwdVJoR3BRMGtIUTl6ZFNVNzZFWjhhbzdaaUEr?=
- =?utf-8?B?TWhNeEVld3p1am5mWVR4UjZyYmxyOWJ2NmI4WGtLWjdKQk43b2hOY3lpTlBp?=
- =?utf-8?B?aTl2M0l0aGF5MHMyYTNHM0hZSk1wNnZDMFB5eko3UlBaL3VNRjhxTW9yZzk2?=
- =?utf-8?B?L2QzY01aNEh5YldWM1lqMWRsT2pLQmRrMzJWZjltb3VPLzJPRkx5SENPVDE3?=
- =?utf-8?B?bStZM09CRG5pZWR5M1hYVlVVci9BWkNkSzNTZStYQWpZU3hnRE45aFY4OHVS?=
- =?utf-8?Q?VbBXfCSSU0gBIi9qP9tNfvo=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
-	+OV5b+8ZkaDS5HxVmRpntNqauKtSOGl828f1/ujLzwwvG/ny0mVjSHrXZasIR8J6zhrof/8eKP0bH7UWOtZP+3ss01RpasPVYnIUqQEWm0y5MpCHnui7HtwQ2e1+uCclT9IhCD5690VK6Hz4dfP0z/gxp9XIXKo/bWoijKa+Qfuh+JzvyGwZ41XmgehgAS/e7pXXpqjy92iLzKNPC+dqyZAVLuqI9e00ViijpbEAPuUkPqeQai3E7KyC9Zs35NbujtXtxJTVRuxun5KACX5AS/Bo4UGqTXa8WoCjITDBxRYLLF7QMjBuNbqzB3ZKZZdrgr4LiSQXF1NfYQVoReeoGKKiMuS3SOuEzHpwl0C4ALu4KlQBFhzjKEbnkTcB7DpcdgRtUBhQ1HPMZfgPxFvwCAM63CvfmtAGXropFzELTfg75KsSfDfGcSEaCKMLsKyceNYJsdP8y4CaYTTRlRZFtyznsZzjKGVeZ9+rcganC+IvshgYGubSFLvAO3jzK4EJbvUT+f3lr+PVFcSYgpu/zOHxoo6QaddI5XAf2BAIfvLdWyB29yaskO0JqcCPA2r24JGR/c56Qfgl/1LoKsm409sb+pNPGz7sY4C5vhina6s=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f86f08b8-77a3-4040-9899-08dc6fb67398
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR10MB3817.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2024 23:27:40.0985
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CZL1Zz9t8ITxd4ZaD6jJNnk+/hkdrFJAQDRsgCq6Qh0C8l9QD+TP3O4GDSIEsxy4oB0eL7uuD/gVm17Zi+HnHJdIDvhhH4GXH1jnSBkQfd+Q0mFO1XHFVNp4wlxIy0Bu
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR10MB5689
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-08_09,2024-05-08_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxlogscore=999
- adultscore=0 suspectscore=0 malwarescore=0 phishscore=0 spamscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2405010000 definitions=main-2405080175
-X-Proofpoint-ORIG-GUID: T6siaI2hqBb148VODvEi7YPGHUAOCcC0
-X-Proofpoint-GUID: T6siaI2hqBb148VODvEi7YPGHUAOCcC0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="uVq9w8jupfQiwLWt"
+Content-Disposition: inline
 
 
+--uVq9w8jupfQiwLWt
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 5/7/24 12:09 PM, Arend van Spriel wrote:
-> - moved John to Cc: as he passed the wireless maintainer role to Kalle 
-> long ago.
-> 
-> On 5/6/2024 9:03 PM, samasth.norway.ananda@oracle.com wrote:
->> Hi,
->>
->>
->> I came across an issue reported by an internal static analysis tool 
->> when tested on the code for brcm80211 driver.
->>
->> The commit which introduced is -
->> 5b435de0d786869c95d1962121af0d7df2542009
->> ("net: wireless: add brcm80211 drivers")
->>
->>
->> In the file -
->> drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
->>
->> within the function wlc_lcnphy_tx_iqlo_cal()
->>
->> we assign value to band_idx as below
->> band_idx = (CHSPEC_IS5G(pi->radio_chanspec) ? 1 : 0);
->>  From this band_idx could be either 1 or 0.
->>
->> But when we look at the array iqcal_gainparams_numgains_lcnphy[] at
->> drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_lcn.c
->>
->> We can notice that it is initialized with only one value in it.
->>
->> static const u16 iqcal_gainparams_numgains_lcnphy[1] = {
->>      ARRAY_SIZE(tbl_iqcal_gainparams_lcnphy_2G),
->> };
->>
->>
->> So, when we try to access iqcal_gainparams_numgains_lcnphy[band_idx]
->> within the for loop in the same function we could be reading a wrong 
->> value of  iqcal_gainparams_numgains_lcnphy[1]
->>
->> Do you have any suggestion on how we can resolve this?
->> Is it possible to keep band_idx to just 0?
-> 
-> Hi Samasth,
-> 
-> Did some digging through the code and the only device for which the LCN 
-> phy code is used is the BCM4313 which is a 2G-only device. Hence the 
-> band_idx in the code you pointed out will never be 1. My suggestion 
-> would be to get rid on band_idx and always use 0 instead and add:
-> 
-> if (WARN_ON(CHSPEC_IS5G(pi->radio_chanspec)))
->      return;
-> 
-> before the kmalloc_array() call at the beginning of the function.
+Hi,
 
-Thanks for looking into it Arend.
-I will work on a patch and make the changes as you suggested. Will send 
-it out for review soon.
+Jannik Gl=C3=BCckert <jannik.glueckert@gmail.com> reported on Bugzilla arra=
+y index
+out-of-bounds catched by ubsan along with full kernel trace dump (see
+https://bugzilla.kernel.org/show_bug.cgi?id=3D218810):
 
-Samasth.
-> 
-> Regards,
-> Arend
+> I am seeing multiple array-index-out-of-bounds related to `ieee80211_chan=
+nel[]` iteration.
+>=20
+> This is with a Mediatek MT7921 chipset.
+> I have only tested with kernel 6.8.9, but I don't see any channel index r=
+elated fixes in master.
+>=20
+> This was discovered as part of Gentoo Hardened enabling CONFIG_UBSAN_ARRA=
+Y_BOUNDS
+>=20
+>=20
+> [  106.194465] UBSAN: array-index-out-of-bounds in /var/tmp/portage/sys-k=
+ernel/gentoo-kernel-6.8.9/work/linux-6.8/net/wireless/nl80211.c:9203:29
+> [  106.195063] index 42 is out of range for type 'struct ieee80211_channe=
+l *[]'
+> [  106.195599] CPU: 11 PID: 4166 Comm: wpa_supplicant Not tainted 6.8.9-g=
+entoo-dist-hardened #1
+> [  106.196038] Hardware name: ASUS System Product Name/TUF GAMING B650M-P=
+LUS WIFI, BIOS 2214 01/02/2024
+> [  106.196485] Call Trace:
+> [  106.196913]  <TASK>
+> [  106.197439]  dump_stack_lvl+0x71/0x90
+> [  106.197899]  __ubsan_handle_out_of_bounds+0xed/0x160
+> [  106.198420]  nl80211_exit+0x7c3f/0x21f70 [cfg80211]
+> [  106.198917]  genl_family_rcv_msg_doit+0xea/0x150
+> [  106.198922]  genl_rcv_msg+0x234/0x260
+> [  106.198923]  ? nl80211_exit+0x40/0x21f70 [cfg80211]
+> [  106.198930]  ? nl80211_exit+0x7290/0x21f70 [cfg80211]
+> [  106.200847]  ? nl80211_exit+0x290/0x21f70 [cfg80211]
+> [  106.200854]  ? __cfi_genl_rcv_msg+0x10/0x10
+> [  106.200856]  netlink_rcv_skb+0xff/0x140
+> [  106.200859]  genl_rcv+0x28/0x40
+> [  106.200860]  netlink_unicast+0x265/0x390
+> [  106.200862]  netlink_sendmsg+0x381/0x440
+> [  106.200865]  __sock_sendmsg+0x94/0xb0
+> [  106.200868]  ____sys_sendmsg+0x1c3/0x250
+> [  106.200871]  ___sys_sendmsg+0x293/0x2d0
+> [  106.200873]  ? do_sock_setsockopt+0xf5/0x190
+> [  106.200879]  __se_sys_sendmsg+0x102/0x140
+> [  106.200882]  do_syscall_64+0x8e/0x170
+> [  106.200884]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [  106.200886]  ? do_syscall_64+0x9a/0x170
+> [  106.200889]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [  106.200890]  ? do_user_addr_fault+0x506/0x6b0
+> [  106.200892]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [  106.200893]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [  106.200895]  entry_SYSCALL_64_after_hwframe+0x78/0x80
+> [  106.200896] RIP: 0033:0x7fe10ad2fde4
+> [  106.200911] Code: 89 02 b8 ff ff ff ff eb af 66 2e 0f 1f 84 00 00 00 0=
+0 00 0f 1f 00 f3 0f 1e fa 80 3d 85 e5 0c 00 00 74 13 b8 2e 00 00 00 0f 05 <=
+48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 53 48 83 ec 20 89 54 24 1c 48
+> [  106.200912] RSP: 002b:00007ffe72950598 EFLAGS: 00000202 ORIG_RAX: 0000=
+00000000002e
+> [  106.200913] RAX: ffffffffffffffda RBX: 000055e0ceb8d180 RCX: 00007fe10=
+ad2fde4
+> [  106.200914] RDX: 0000000000000000 RSI: 00007ffe729505f8 RDI: 000000000=
+0000005
+> [  106.200915] RBP: 0000000000000000 R08: 0000000000000004 R09: 000000000=
+0000001
+> [  106.200915] R10: 00007ffe72950688 R11: 0000000000000202 R12: 000055e0c=
+eb8d090
+> [  106.200916] R13: 0000000000000000 R14: 000055e0ceb8d180 R15: 00007ffe7=
+29505f8
+> [  106.200918]  </TASK>
+>=20
+>=20
+> [  106.200924] UBSAN: array-index-out-of-bounds in /var/tmp/portage/sys-k=
+ernel/gentoo-kernel-6.8.9/work/linux-6.8/net/wireless/nl80211.c:9252:5
+> [  106.200926] index 0 is out of range for type 'struct ieee80211_channel=
+ *[]'
+> [  106.200926] CPU: 11 PID: 4166 Comm: wpa_supplicant Not tainted 6.8.9-g=
+entoo-dist-hardened #1
+> [  106.200928] Hardware name: ASUS System Product Name/TUF GAMING B650M-P=
+LUS WIFI, BIOS 2214 01/02/2024
+> [  106.200928] Call Trace:
+> [  106.200929]  <TASK>
+> [  106.200930]  dump_stack_lvl+0x71/0x90
+> [  106.200932]  __ubsan_handle_out_of_bounds+0xed/0x160
+> [  106.200936]  nl80211_exit+0x7643/0x21f70 [cfg80211]
+> [  106.200947]  genl_family_rcv_msg_doit+0xea/0x150
+> [  106.200950]  genl_rcv_msg+0x234/0x260
+> [  106.200952]  ? nl80211_exit+0x40/0x21f70 [cfg80211]
+> [  106.200960]  ? nl80211_exit+0x7290/0x21f70 [cfg80211]
+> [  106.200966]  ? nl80211_exit+0x290/0x21f70 [cfg80211]
+> [  106.200976]  ? __cfi_genl_rcv_msg+0x10/0x10
+> [  106.200978]  netlink_rcv_skb+0xff/0x140
+> [  106.200981]  genl_rcv+0x28/0x40
+> [  106.200982]  netlink_unicast+0x265/0x390
+> [  106.200985]  netlink_sendmsg+0x381/0x440
+> [  106.200988]  __sock_sendmsg+0x94/0xb0
+> [  106.200990]  ____sys_sendmsg+0x1c3/0x250
+> [  106.200993]  ___sys_sendmsg+0x293/0x2d0
+> [  106.200994]  ? do_sock_setsockopt+0xf5/0x190
+> [  106.201000]  __se_sys_sendmsg+0x102/0x140
+> [  106.201003]  do_syscall_64+0x8e/0x170
+> [  106.201004]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [  106.201006]  ? do_syscall_64+0x9a/0x170
+> [  106.201010]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [  106.201011]  ? do_user_addr_fault+0x506/0x6b0
+> [  106.201014]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [  106.201015]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [  106.201017]  entry_SYSCALL_64_after_hwframe+0x78/0x80
+> [  106.201018] RIP: 0033:0x7fe10ad2fde4
+> [  106.201021] Code: 89 02 b8 ff ff ff ff eb af 66 2e 0f 1f 84 00 00 00 0=
+0 00 0f 1f 00 f3 0f 1e fa 80 3d 85 e5 0c 00 00 74 13 b8 2e 00 00 00 0f 05 <=
+48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 53 48 83 ec 20 89 54 24 1c 48
+> [  106.201022] RSP: 002b:00007ffe72950598 EFLAGS: 00000202 ORIG_RAX: 0000=
+00000000002e
+> [  106.201023] RAX: ffffffffffffffda RBX: 000055e0ceb8d180 RCX: 00007fe10=
+ad2fde4
+> [  106.201024] RDX: 0000000000000000 RSI: 00007ffe729505f8 RDI: 000000000=
+0000005
+> [  106.201025] RBP: 0000000000000000 R08: 0000000000000004 R09: 000000000=
+0000001
+> [  106.201026] R10: 00007ffe72950688 R11: 0000000000000202 R12: 000055e0c=
+eb8d090
+> [  106.201026] R13: 0000000000000000 R14: 000055e0ceb8d180 R15: 00007ffe7=
+29505f8
+> [  106.201029]  </TASK>
+>=20
+>=20
+> [  106.201036] UBSAN: array-index-out-of-bounds in /var/tmp/portage/sys-k=
+ernel/gentoo-kernel-6.8.9/work/linux-6.8/net/mac80211/scan.c:364:4
+> [  106.201037] index 0 is out of range for type 'struct ieee80211_channel=
+ *[]'
+> [  106.201038] CPU: 11 PID: 4166 Comm: wpa_supplicant Not tainted 6.8.9-g=
+entoo-dist-hardened #1
+> [  106.201039] Hardware name: ASUS System Product Name/TUF GAMING B650M-P=
+LUS WIFI, BIOS 2214 01/02/2024
+> [  106.201040] Call Trace:
+> [  106.201040]  <TASK>
+> [  106.201041]  dump_stack_lvl+0x71/0x90
+> [  106.201043]  __ubsan_handle_out_of_bounds+0xed/0x160
+> [  106.201046]  ieee80211_sched_scan_stopped+0x42a/0x720 [mac80211]
+> [  106.201062]  ? vprintk_emit+0x2b4/0x340
+> [  106.201064]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [  106.201065]  ? __kmalloc+0x1e8/0x430
+> [  106.201068]  __ieee80211_start_scan+0x4fa/0xb90 [mac80211]
+> [  106.201081]  cfg80211_scan+0x22d/0x1270 [cfg80211]
+> [  106.201091]  nl80211_exit+0x7bde/0x21f70 [cfg80211]
+> [  106.201101]  genl_family_rcv_msg_doit+0xea/0x150
+> [  106.201105]  genl_rcv_msg+0x234/0x260
+> [  106.201106]  ? nl80211_exit+0x40/0x21f70 [cfg80211]
+> [  106.201112]  ? nl80211_exit+0x7290/0x21f70 [cfg80211]
+> [  106.201118]  ? nl80211_exit+0x290/0x21f70 [cfg80211]
+> [  106.201124]  ? __cfi_genl_rcv_msg+0x10/0x10
+> [  106.201125]  netlink_rcv_skb+0xff/0x140
+> [  106.201128]  genl_rcv+0x28/0x40
+> [  106.201129]  netlink_unicast+0x265/0x390
+> [  106.201131]  netlink_sendmsg+0x381/0x440
+> [  106.201133]  __sock_sendmsg+0x94/0xb0
+> [  106.201134]  ____sys_sendmsg+0x1c3/0x250
+> [  106.201136]  ___sys_sendmsg+0x293/0x2d0
+> [  106.201137]  ? do_sock_setsockopt+0xf5/0x190
+> [  106.201142]  __se_sys_sendmsg+0x102/0x140
+> [  106.201145]  do_syscall_64+0x8e/0x170
+> [  106.201147]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [  106.201148]  ? do_syscall_64+0x9a/0x170
+> [  106.201152]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [  106.201153]  ? do_user_addr_fault+0x506/0x6b0
+> [  106.201155]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [  106.201157]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [  106.201159]  entry_SYSCALL_64_after_hwframe+0x78/0x80
+> [  106.201160] RIP: 0033:0x7fe10ad2fde4
+> [  106.201162] Code: 89 02 b8 ff ff ff ff eb af 66 2e 0f 1f 84 00 00 00 0=
+0 00 0f 1f 00 f3 0f 1e fa 80 3d 85 e5 0c 00 00 74 13 b8 2e 00 00 00 0f 05 <=
+48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 53 48 83 ec 20 89 54 24 1c 48
+> [  106.201163] RSP: 002b:00007ffe72950598 EFLAGS: 00000202 ORIG_RAX: 0000=
+00000000002e
+> [  106.201165] RAX: ffffffffffffffda RBX: 000055e0ceb8d180 RCX: 00007fe10=
+ad2fde4
+> [  106.201165] RDX: 0000000000000000 RSI: 00007ffe729505f8 RDI: 000000000=
+0000005
+> [  106.201166] RBP: 0000000000000000 R08: 0000000000000004 R09: 000000000=
+0000001
+> [  106.201167] R10: 00007ffe72950688 R11: 0000000000000202 R12: 000055e0c=
+eb8d090
+> [  106.201168] R13: 0000000000000000 R14: 000055e0ceb8d180 R15: 00007ffe7=
+29505f8
+> [  106.201170]  </TASK>
+
+Thanks.
+
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--uVq9w8jupfQiwLWt
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZjwTwQAKCRD2uYlJVVFO
+o3WkAQCHGn43HO2WTzTmn+NztzAimlbwnmkbpLDeCML2Zk/qjwD/bBw/OzIlKi+V
+2WLVY4dUrX8Ha8koZlcToM1iGNsbSAM=
+=JIIK
+-----END PGP SIGNATURE-----
+
+--uVq9w8jupfQiwLWt--
 
