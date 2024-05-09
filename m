@@ -1,104 +1,266 @@
-Return-Path: <linux-wireless+bounces-7370-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7371-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F6718C0A6E
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 May 2024 06:23:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 467C58C0AAE
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 May 2024 06:50:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 403941C20E26
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 May 2024 04:23:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91BBFB225A9
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 May 2024 04:50:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 700AA147C6F;
-	Thu,  9 May 2024 04:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2BE1148FF9;
+	Thu,  9 May 2024 04:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="bYNy9nQp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NvxKDsfN"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AFCCD26D
-	for <linux-wireless@vger.kernel.org>; Thu,  9 May 2024 04:23:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0EBF148858;
+	Thu,  9 May 2024 04:50:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715228588; cv=none; b=hGpqMxn6/XUoYo8PshcFS8H1Z3dBxMNV6cPsFt+GyGuC3z9X76Fg2vew0QYkKlBy8b8l/BfqZ3vtYXxItZIaL9YsdJR466bXo3uXgPug3pTHb4NjfTo6PBX3XqS0N9vWPna3ypE1OIOFwv+dAdPWDgj6DxPDx68/EmIkbkh3eWU=
+	t=1715230245; cv=none; b=MtnzE7pt6ah2haATxJa7bjhmLBazxUHepsEXTOPKvze7Q2oIpsWMyz3c17T68Hw/8FHbRFCFRGad20BWUN94lZjkoCtes0AdbAzF5dTABoch5m216qigAfA5TkEMumBnzTrbNNZNP+UQMCvh8/AhuJUMqUlkALKeQwV7gGxUfWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715228588; c=relaxed/simple;
-	bh=B+Pqiio8rouKqw0u2Yz4tw0lqGIVlCH6/rh6kM8pTCI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=s9QQhsstaf1VrXSF246HpgCQISG7hsiVjvT7WU6IvMXe1u0DtCwzIm4jEzJ7qCZ/QZromQ4EiinR3HQjU4fW7j3RPrbme+x1huBMX6GwgQAqKpLj5K9WzIWl5Ao+Y8AME/V7zxkMqFGZc0jZfib9mZCabztgyMJ2o2tW8N9pG+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=bYNy9nQp; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4491tqNG021431;
-	Thu, 9 May 2024 04:23:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=J8JbVFtP3tF9xOR9zx0M/q/VKzZHQdLU9i9++yVm2YI=; b=bY
-	Ny9nQp/WHmDA4xK/gE5q8NsGZLPK+a9eiO5EkbqAcJW84TGDblUaTl4yUhmRONZI
-	e9PWfB3toX8nadupjTjG45s9Jqxds0JTMQYIv/EfgtD7CQgIGp562vVYe5CBYSDR
-	fkdo4jOq1u+QKoJ+RNa76kbT4PH4KaPRvGv3vw8ECzwYyVbBKlvIP5NLSP9eCNh4
-	eorCqD5zEHHzYjGWO36gtq2cX8CuVj8hgwhEGyESbwgE3VBF6sH3nJ2uYiAf1nYJ
-	l0iHgJQ4qru5sWvoLCcnyf2RI11uq9DnQPT68SYjLJ9RWhE3cI7pGVFyxlWFwmf6
-	rj/x2hOnTk2UxpUpHqDw==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y09g5hqdu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 May 2024 04:23:01 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4494N04R005656
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 9 May 2024 04:23:00 GMT
-Received: from [10.216.41.86] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 8 May 2024
- 21:22:58 -0700
-Message-ID: <4dd39edb-cd23-482a-8c94-b09142d92198@quicinc.com>
-Date: Thu, 9 May 2024 09:52:55 +0530
+	s=arc-20240116; t=1715230245; c=relaxed/simple;
+	bh=wFESnTy0F2sgYYS9+vYDpTJInEkSFXUMZ76AJIzXpvY=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=GQ4s6TDILWv2QJlrdKU4gZnDyntPa0KY28otlI8xBS2RCYTsVjhIEsA0exm0qr/oLLh7gLL9wmK8EMSWaHedirj02RrJgG2tSB0fMIRtXWCaEubOG/tM11G9PfWOju3KNSB3+6w+LvXf/1yCVCBT/9n4JBrF7G3FK3SqU2fVz1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NvxKDsfN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B4A7C116B1;
+	Thu,  9 May 2024 04:50:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715230245;
+	bh=wFESnTy0F2sgYYS9+vYDpTJInEkSFXUMZ76AJIzXpvY=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=NvxKDsfN6UImjQWlzi7xAxnJQIZpvXG1BWLQ66KpVcU9fYTfdB84eob+wsavsVwa+
+	 mF1ANfm6ObO7OdPopGGCc6dLAEhVkzmy8M56l6QtjD8RBgCTX8ohO7htkQD5bVQUsF
+	 qmWjx6J5rUXdRmK06+lsKB1XSXjjdIHwsiFYfzEGjOhos1TH0wqjqKAwYA5B1ZJvPU
+	 6PqImjBBNUzlKmWN+vQF+Vox5PEf1Hx1amtJxz8a8IWiIMwtLA5nH3HQp6/9gR7Z15
+	 EUz8W/2WN8d0jueRfdBn299hPu2aL7ZjJxSARsavTRdDgjdg4YKs6NyfZTFW+NGrFe
+	 ZmYrcvccwtbJg==
+From: Kalle Valo <kvalo@kernel.org>
+To: Ansuel Smith <ansuelsmth@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,  Eric Dumazet
+ <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni
+ <pabeni@redhat.com>,  linux-kernel@vger.kernel.org,
+  ath10k@lists.infradead.org,  linux-wireless@vger.kernel.org,
+  netdev@vger.kernel.org,  Sebastian Gottschall <s.gottschall@dd-wrt.com>,
+  Steve deRosier <derosier@cal-sierra.com>,  Stefan Lippers-Hollmann
+ <s.l-h@gmx.de>
+Subject: Re: [PATCH v14] ath10k: add LED and GPIO controlling support for
+ various chipsets
+References: <20230611080505.17393-1-ansuelsmth@gmail.com>
+	<878rcjbaqs.fsf@kernel.org>
+	<648cdebb.5d0a0220.be7f8.a096@mx.google.com>
+	<648ded2a.df0a0220.b78de.4603@mx.google.com>
+	<CA+_ehUzzVq_sVTgVCM+r=oLp=GNn-6nJRBG=bndJjrRDhCodaw@mail.gmail.com>
+Date: Thu, 09 May 2024 07:50:40 +0300
+In-Reply-To: <CA+_ehUzzVq_sVTgVCM+r=oLp=GNn-6nJRBG=bndJjrRDhCodaw@mail.gmail.com>
+	(Ansuel Smith's message of "Mon, 21 Aug 2023 12:46:00 +0200")
+Message-ID: <87v83nlhb3.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: mac80211: move radar detect work to sdata
-To: Johannes Berg <johannes@sipsolutions.net>,
-        <linux-wireless@vger.kernel.org>
-CC: Johannes Berg <johannes.berg@intel.com>,
-        Miriam Rachel Korenblit
-	<miriam.rachel.korenblit@intel.com>
-References: <20240506211311.43bd82c6da04.Ib39bec3aa198d137385f081e7e1910dcbde3aa1b@changeid>
-Content-Language: en-US
-From: Aditya Kumar Singh <quic_adisi@quicinc.com>
-In-Reply-To: <20240506211311.43bd82c6da04.Ib39bec3aa198d137385f081e7e1910dcbde3aa1b@changeid>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: _wHXDokk0uFzHyzHigRM_aNS4sNgZ1iG
-X-Proofpoint-GUID: _wHXDokk0uFzHyzHigRM_aNS4sNgZ1iG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-08_10,2024-05-08_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- clxscore=1011 malwarescore=0 adultscore=0 mlxscore=0 spamscore=0
- impostorscore=0 priorityscore=1501 mlxlogscore=822 suspectscore=0
- bulkscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405010000 definitions=main-2405090027
+Content-Type: text/plain
 
-On 5/7/24 00:43, Johannes Berg wrote:
-> At some point we thought perhaps this could be per link, but
-> really that didn't happen, and it's confusing. Radar detection
-> still uses the deflink to allocate the channel, but the work
-> need not be there. Move it back.
+Ansuel Smith <ansuelsmth@gmail.com> writes:
 
-I'm currently working on MLO DFS support. It is better if the work can 
-be left in per link structure. With proper support, instead of deflink 
-it will use appropriate link.
+> Il giorno sab 17 giu 2023 alle ore 19:28 Christian Marangi
+> <ansuelsmth@gmail.com> ha scritto:
+>
+>>
+>> On Fri, Jun 16, 2023 at 01:35:04PM +0200, Christian Marangi wrote:
+>> > On Fri, Jun 16, 2023 at 08:03:23PM +0300, Kalle Valo wrote:
+>> > > Christian Marangi <ansuelsmth@gmail.com> writes:
+>> > >
+>> > > > From: Sebastian Gottschall <s.gottschall@dd-wrt.com>
+>> > > >
+>> > > > Adds LED and GPIO Control support for 988x, 9887, 9888, 99x0, 9984
+>> > > > based chipsets with on chipset connected led's using WMI Firmware API.
+>> > > > The LED device will get available named as "ath10k-phyX" at sysfs and
+>> > > > can be controlled with various triggers.
+>> > > > Adds also debugfs interface for gpio control.
+>> > > >
+>> > > > Signed-off-by: Sebastian Gottschall <s.gottschall@dd-wrt.com>
+>> > > > Reviewed-by: Steve deRosier <derosier@cal-sierra.com>
+>> > > > [kvalo: major reorg and cleanup]
+>> > > > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+>> > > > [ansuel: rebase and small cleanup]
+>> > > > Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+>> > > > Tested-by: Stefan Lippers-Hollmann <s.l-h@gmx.de>
+>> > > > ---
+>> > > >
+>> > > > Hi,
+>> > > > this is a very old patch from 2018 that somehow was talked till 2020
+>> > > > with Kavlo asked to rebase and resubmit and nobody did.
+>> > > > So here we are in 2023 with me trying to finally have this upstream.
+>> > > >
+>> > > > A summarize of the situation.
+>> > > > - The patch is from years in OpenWRT. Used by anything that has ath10k
+>> > > >   card and a LED connected.
+>> > > > - This patch is also used by the fw variant from Candela Tech with no
+>> > > >   problem reported.
+>> > > > - It was pointed out that this caused some problem with ipq4019 SoC
+>> > > >   but the problem was actually caused by a different bug related to
+>> > > >   interrupts.
+>> > > >
+>> > > > I honestly hope we can have this feature merged since it's really
+>> > > > funny to have something that was so near merge and jet still not
+>> > > > present and with devices not supporting this simple but useful
+>> > > > feature.
+>> > >
+>> > > Indeed, we should finally get this in. Thanks for working on it.
+>> > >
+>> > > I did some minor changes to the patch, they are in my pending branch:
+>> > >
+>> > > https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=686464864538158f22842dc49eddea6fa50e59c1
+>> > >
+>> > > My comments below, please review my changes. No need to resend because
+>> > > of these.
+>> > >
+>> >
+>> > Hi,
+>> > very happy this is going further.
+>> >
+>> > > > --- a/drivers/net/wireless/ath/ath10k/Kconfig
+>> > > > +++ b/drivers/net/wireless/ath/ath10k/Kconfig
+>> > > > @@ -67,6 +67,23 @@ config ATH10K_DEBUGFS
+>> > > >
+>> > > >     If unsure, say Y to make it easier to debug problems.
+>> > > >
+>> > > > +config ATH10K_LEDS
+>> > > > + bool "Atheros ath10k LED support"
+>> > > > + depends on ATH10K
+>> > > > + select MAC80211_LEDS
+>> > > > + select LEDS_CLASS
+>> > > > + select NEW_LEDS
+>> > > > + default y
+>> > > > + help
+>> > > > +   This option enables LEDs support for chipset LED pins.
+>> > > > +   Each pin is connected via GPIO and can be controlled using
+>> > > > +   WMI Firmware API.
+>> > > > +
+>> > > > +   The LED device will get available named as "ath10k-phyX" at sysfs and
+>> > > > +           can be controlled with various triggers.
+>> > > > +
+>> > > > +   Say Y, if you have LED pins connected to the ath10k wireless card.
+>> > >
+>> > > I'm not sure anymore if we should ask anything from the user, better to
+>> > > enable automatically if LED support is enabled in the kernel. So I
+>> > > simplified this to:
+>> > >
+>> > > config ATH10K_LEDS
+>> > >     bool
+>> > >     depends on ATH10K
+>> > >     depends on LEDS_CLASS=y || LEDS_CLASS=MAC80211
+>> > >     default y
+>> > >
+>> > > This follows what mt76 does:
+>> > >
+>> > > config MT76_LEDS
+>> > >     bool
+>> > >     depends on MT76_CORE
+>> > >     depends on LEDS_CLASS=y || MT76_CORE=LEDS_CLASS
+>> > >     default y
+>> > >
+>> >
+>> > I remember there was the same discussion in a previous series. OK for me
+>> > for making this by default, only concern is any buildbot error (if any)
+>> >
+>> > Anyway OK for the change.
+>> >
+>> > > > @@ -65,6 +66,7 @@ static const struct ath10k_hw_params
+>> > > > ath10k_hw_params_list[] = {
+>> > > >           .dev_id = QCA988X_2_0_DEVICE_ID,
+>> > > >           .bus = ATH10K_BUS_PCI,
+>> > > >           .name = "qca988x hw2.0",
+>> > > > +         .led_pin = 1,
+>> > > >           .patch_load_addr = QCA988X_HW_2_0_PATCH_LOAD_ADDR,
+>> > > >           .uart_pin = 7,
+>> > > >           .cc_wraparound_type = ATH10K_HW_CC_WRAP_SHIFTED_ALL,
+>> > >
+>> > > I prefer following the field order from struct ath10k_hw_params
+>> > > declaration and also setting fields explicitly to zero (even though
+>> > > there are gaps still) so I changed that for every entry.
+>> > >
+>> >
+>> > Thanks for the change, np for me.
+>> >
+>> > > > +int ath10k_leds_register(struct ath10k *ar)
+>> > > > +{
+>> > > > + int ret;
+>> > > > +
+>> > > > + if (ar->hw_params.led_pin == 0)
+>> > > > +         /* leds not supported */
+>> > > > +         return 0;
+>> > > > +
+>> > > > + snprintf(ar->leds.label, sizeof(ar->leds.label), "ath10k-%s",
+>> > > > +          wiphy_name(ar->hw->wiphy));
+>> > > > + ar->leds.wifi_led.active_low = 1;
+>> > > > + ar->leds.wifi_led.gpio = ar->hw_params.led_pin;
+>> > > > + ar->leds.wifi_led.name = ar->leds.label;
+>> > > > + ar->leds.wifi_led.default_state = LEDS_GPIO_DEFSTATE_KEEP;
+>> > > > +
+>> > > > + ar->leds.cdev.name = ar->leds.label;
+>> > > > + ar->leds.cdev.brightness_set_blocking = ath10k_leds_set_brightness_blocking;
+>> > > > +
+>> > > > + /* FIXME: this assignment doesn't make sense as it's NULL, remove it? */
+>> > > > + ar->leds.cdev.default_trigger = ar->leds.wifi_led.default_trigger;
+>> > >
+>> > > But what to do with this FIXME?
+>> > >
+>> >
+>> > It was pushed by you in v13.
+>> >
+>> > I could be wrong but your idea was to prepare for future support of
+>> > other patch that would set the default_trigger to the mac80211 tpt.
+>> >
+>> > We might got both confused by default_trigger and default_state.
+>> > default_trigger is actually never set and is NULL (actually it's 0)
+>> >
+>> > We have other 2 patch that adds tpt rates for the mac80211 LED trigger
+>> > and set this trigger as the default one but honestly I would chose a
+>> > different implementation than hardcoding everything.
+>> >
+>> > If it's ok for you, I would drop the comment and the default_trigger and
+>> > I will send a follow-up patch to this adding DT support by using
+>> > led_classdev_register_ext and defining init_data.
+>> > (and this indirectly would permit better LED naming and defining of
+>> > default-trigger in DT)
+>> >
+>> > Also ideally I will also send a patch for default_state following
+>> > standard LED implementation. (to set default_state in DT)
+>> >
+>> > I would prefer this approach as the LED patch already took way too much
+>> > time and I think it's better to merge this initial version and then
+>> > improve it.
+>>
+>> If you want to check out I attached the 2 patch (one dt-bindings and the
+>> one for the code) that I will submit when this will be merged (the
+>> change is with the assumption that the FIXME line is dropped)
+>>
+>> Tested and works correctly with my use case of wifi card attached with
+>> pcie. This implementation permits to declare the default trigger in DT
+>> instead of hardcoding.
+>>
+>
+> Any news with this? Did I notice the LEDs patch are still in pending...
+
+Sorry for the delay but finally I looked at this again. I decided to
+just remove the fixme and otherwise it looks good for me. Please check
+my changes:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=688130a66ed49f20ca0ce02c3987f6a474f7c93a
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
