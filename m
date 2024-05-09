@@ -1,134 +1,104 @@
-Return-Path: <linux-wireless+bounces-7369-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7370-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 070808C0A21
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 May 2024 05:26:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F6718C0A6E
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 May 2024 06:23:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DB59B20B7F
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 May 2024 03:26:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 403941C20E26
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 May 2024 04:23:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B7313C3CC;
-	Thu,  9 May 2024 03:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 700AA147C6F;
+	Thu,  9 May 2024 04:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="EdWzuf2i"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="bYNy9nQp"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15301D517
-	for <linux-wireless@vger.kernel.org>; Thu,  9 May 2024 03:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AFCCD26D
+	for <linux-wireless@vger.kernel.org>; Thu,  9 May 2024 04:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715225180; cv=none; b=elvf1OCioYKOR7TW8YOboRXoZtTyouZkL84yrKudnI3xDGLkVb3BE/Xy+lV+Sf644U91+UxTsMgpcVtY1hcl11Dy7M9xqiHoVJEHvC1ehsa62J37aZFwKHZ/A3XGbc+zfSXdr7MRC9hsFPx1TOFx24rcxuGntSvRVQGZw4fKSyk=
+	t=1715228588; cv=none; b=hGpqMxn6/XUoYo8PshcFS8H1Z3dBxMNV6cPsFt+GyGuC3z9X76Fg2vew0QYkKlBy8b8l/BfqZ3vtYXxItZIaL9YsdJR466bXo3uXgPug3pTHb4NjfTo6PBX3XqS0N9vWPna3ypE1OIOFwv+dAdPWDgj6DxPDx68/EmIkbkh3eWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715225180; c=relaxed/simple;
-	bh=jKTOhPP6b5Ck+3mH/n0VMKp8wQ5oiHkg6PkehbiclOI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=aX6hlVUDMEhnO4JnxyJFCNHTP+kAZFiK6vvEITnxp8dFGZWRQuYV7I2Y25AAFFz9YGqoAQnYLz1c3Jpbd3hDMHKmSBCMnDovBZLQ6n6fDMt5ykp4sE32GEj4Wl3wSivQQG5YyiF6ONP47plVGVfTrAEXfPlpM50/n2CqLM4YicE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=EdWzuf2i; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1715228588; c=relaxed/simple;
+	bh=B+Pqiio8rouKqw0u2Yz4tw0lqGIVlCH6/rh6kM8pTCI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=s9QQhsstaf1VrXSF246HpgCQISG7hsiVjvT7WU6IvMXe1u0DtCwzIm4jEzJ7qCZ/QZromQ4EiinR3HQjU4fW7j3RPrbme+x1huBMX6GwgQAqKpLj5K9WzIWl5Ao+Y8AME/V7zxkMqFGZc0jZfib9mZCabztgyMJ2o2tW8N9pG+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=bYNy9nQp; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4493EBbI019996;
-	Thu, 9 May 2024 03:26:13 GMT
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4491tqNG021431;
+	Thu, 9 May 2024 04:23:01 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding:content-type; s=qcppdkim1; bh=2A4Acau
-	x+InIT2i7filZkPJggrulB0AG9EJ3jKfZ+JA=; b=EdWzuf2iXA3T9E8sgzdhcMC
-	HvdDrdVCcfVABTwKljivq4rr/rTIkdrvbb84mirNfTbt1MNTydbmqko+yCKS9djK
-	0bA44lfKpJveOnROsJKG5Hs4BhI2KEDZBzxhJMpOmbcBdVzDcXrXBiMO8wiP4yNF
-	3zg44SXwyddnaqF9HM/BursJPWfW7fyLA1hGurF94aKbCH/j/ohMDLWT/74KvKFV
-	Bejbs9kxDlwFDFEDr0v3NFt/vDT9bdpDW53FmHSJXIM8IRPPe/OooZPlbUSKCFIt
-	UM6MzOheJNL7iOHStXevUmniBLnaW5Nu9EBJoHpzglCvUlqujUnbZBfrasarOgg=
-	=
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y09g5hmpb-1
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=J8JbVFtP3tF9xOR9zx0M/q/VKzZHQdLU9i9++yVm2YI=; b=bY
+	Ny9nQp/WHmDA4xK/gE5q8NsGZLPK+a9eiO5EkbqAcJW84TGDblUaTl4yUhmRONZI
+	e9PWfB3toX8nadupjTjG45s9Jqxds0JTMQYIv/EfgtD7CQgIGp562vVYe5CBYSDR
+	fkdo4jOq1u+QKoJ+RNa76kbT4PH4KaPRvGv3vw8ECzwYyVbBKlvIP5NLSP9eCNh4
+	eorCqD5zEHHzYjGWO36gtq2cX8CuVj8hgwhEGyESbwgE3VBF6sH3nJ2uYiAf1nYJ
+	l0iHgJQ4qru5sWvoLCcnyf2RI11uq9DnQPT68SYjLJ9RWhE3cI7pGVFyxlWFwmf6
+	rj/x2hOnTk2UxpUpHqDw==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y09g5hqdu-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 May 2024 03:26:13 +0000 (GMT)
+	Thu, 09 May 2024 04:23:01 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4493QCSp023867
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4494N04R005656
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 9 May 2024 03:26:12 GMT
-Received: from hu-adisi-blr.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Wed, 8 May 2024 20:26:11 -0700
-From: Aditya Kumar Singh <quic_adisi@quicinc.com>
-To: <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>,
-        Aditya Kumar Singh
-	<quic_adisi@quicinc.com>
-Subject: [PATCH] wifi: mac80211: pass proper link id for channel switch started notification
-Date: Thu, 9 May 2024 08:55:55 +0530
-Message-ID: <20240509032555.263933-1-quic_adisi@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	Thu, 9 May 2024 04:23:00 GMT
+Received: from [10.216.41.86] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 8 May 2024
+ 21:22:58 -0700
+Message-ID: <4dd39edb-cd23-482a-8c94-b09142d92198@quicinc.com>
+Date: Thu, 9 May 2024 09:52:55 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: mac80211: move radar detect work to sdata
+To: Johannes Berg <johannes@sipsolutions.net>,
+        <linux-wireless@vger.kernel.org>
+CC: Johannes Berg <johannes.berg@intel.com>,
+        Miriam Rachel Korenblit
+	<miriam.rachel.korenblit@intel.com>
+References: <20240506211311.43bd82c6da04.Ib39bec3aa198d137385f081e7e1910dcbde3aa1b@changeid>
+Content-Language: en-US
+From: Aditya Kumar Singh <quic_adisi@quicinc.com>
+In-Reply-To: <20240506211311.43bd82c6da04.Ib39bec3aa198d137385f081e7e1910dcbde3aa1b@changeid>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: tomZHFZvn3KidhXOVs8zhnhlBk9lsUSm
-X-Proofpoint-GUID: tomZHFZvn3KidhXOVs8zhnhlBk9lsUSm
+X-Proofpoint-ORIG-GUID: _wHXDokk0uFzHyzHigRM_aNS4sNgZ1iG
+X-Proofpoint-GUID: _wHXDokk0uFzHyzHigRM_aNS4sNgZ1iG
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
  definitions=2024-05-08_10,2024-05-08_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- clxscore=1015 malwarescore=0 adultscore=0 mlxscore=0 spamscore=0
- impostorscore=0 priorityscore=1501 mlxlogscore=999 suspectscore=0
+ clxscore=1011 malwarescore=0 adultscore=0 mlxscore=0 spamscore=0
+ impostorscore=0 priorityscore=1501 mlxlogscore=822 suspectscore=0
  bulkscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405010000 definitions=main-2405090022
+ engine=8.19.0-2405010000 definitions=main-2405090027
 
-Original changes[1] posted is having proper changes. However, at the same
-time, there was chandef puncturing changes which had a conflict with this.
-While applying, two errors crept in -
-   a) Whitespace error.
-   b) Link ID being passed to channel switch started notifier function is
-      0. However proper link ID is present in the function.
+On 5/7/24 00:43, Johannes Berg wrote:
+> At some point we thought perhaps this could be per link, but
+> really that didn't happen, and it's confusing. Radar detection
+> still uses the deflink to allocate the channel, but the work
+> need not be there. Move it back.
 
-Fix these now.
-
-[1] https://lore.kernel.org/all/20240130140918.1172387-5-quic_adisi@quicinc.com/
-
-Fixes: 1a96bb4e8a79 ("wifi: mac80211: start and finalize channel switch on link basis")
-Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
----
- net/mac80211/cfg.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index b08e5d7687e3..1d427f1915ca 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -4016,7 +4016,7 @@ __ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
- 		goto out;
- 	}
- 
--	link_data->csa_chanreq = chanreq; 
-+	link_data->csa_chanreq = chanreq;
- 	link_conf->csa_active = true;
- 
- 	if (params->block_tx &&
-@@ -4027,7 +4027,7 @@ __ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
- 	}
- 
- 	cfg80211_ch_switch_started_notify(sdata->dev,
--					  &link_data->csa_chanreq.oper, 0,
-+					  &link_data->csa_chanreq.oper, link_id,
- 					  params->count, params->block_tx);
- 
- 	if (changed) {
-
-base-commit: 1d60eabb82694e58543e2b6366dae3e7465892a5
--- 
-2.34.1
-
+I'm currently working on MLO DFS support. It is better if the work can 
+be left in per link structure. With proper support, instead of deflink 
+it will use appropriate link.
 
