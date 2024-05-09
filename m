@@ -1,67 +1,67 @@
-Return-Path: <linux-wireless+bounces-7396-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7397-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E6318C1291
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 May 2024 18:15:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7F088C129B
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 May 2024 18:17:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61E4E1C21AAE
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 May 2024 16:15:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F42A1F22438
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 May 2024 16:17:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71CE216F85C;
-	Thu,  9 May 2024 16:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A7DE16F851;
+	Thu,  9 May 2024 16:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="g0wgfIJc"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="kIZEgMNH"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817A916F8E9
-	for <linux-wireless@vger.kernel.org>; Thu,  9 May 2024 16:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C704216F832
+	for <linux-wireless@vger.kernel.org>; Thu,  9 May 2024 16:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715271295; cv=none; b=jHQVjWyBrKvBpc82KHV7DRSsv/wVnKdi3LFAQf059paNQCvfsF416XYgvj27pwf8n+PTbUeAtJEIx43w4/HnWwoO15HlyqkjC/kO2lHb/ixAipYYX1ZtMQyt7t+9wHDBJpyIrXuReTsDOXo813kL8Ef5rkIapZZ5ChIMxBnmcjc=
+	t=1715271417; cv=none; b=ZQwo0I/dm/ISYJ7ymRChEiLb9vpkhAQImEYXysOZ9X5xHxKsypbmC2Ykd3zDM/iaov3vlptMbTCb30Mfse1UuHJR8M9v2TWoQs+Ztr1Gwwyxxfm5LWj923nS+fD6CGH4edO+lM7LfMJPxuDAUApr9xGp2T9TsR3degDzdqFn/3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715271295; c=relaxed/simple;
+	s=arc-20240116; t=1715271417; c=relaxed/simple;
 	bh=DcZuVDVhobipACYJ6cHnahE7k6zx6/vzKGF0YXYk5Ao=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=rS5Ptq2rrtVBTBD8v0DbzORMOG+67NpDFQj3nvcrej8OLVIUeEQ6M9guBj9LcNurUm5Vq7kFMTZD0lBrlW8rYqBC55EEGMZwjswxTiHue2gIeR2iU3L2zpqDvfzc3t7+vN1TaQL4zvkk2A1wifNRRswpNe0Mghd3TFbPdULs7Tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=g0wgfIJc; arc=none smtp.client-ip=205.220.180.131
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CRp+QM77QLE6ntePPUwGuyTHE/UK/4I9tCFt4NwPPgPzzCxDDV00XW9Qw0LSqv3aEDg3zBGmt04MFUfSAKs8RbBwfvOYUPkZCL8AlYoX1KfXeMdIQroSXuH7/lb9+C0c5hDPFxJJ/XB9YOv3M+migWr8T5MRV/UjR4XTrjyGHa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=kIZEgMNH; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4497AMPU022947;
-	Thu, 9 May 2024 16:14:51 GMT
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 449Cbdlt013927;
+	Thu, 9 May 2024 16:16:51 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	from:to:cc:subject:date:message-id:mime-version:content-type; s=
-	qcppdkim1; bh=SSZ4YJLXxW2IfOkAreUAvF48rQZiDXvH7ID/LwZINTE=; b=g0
-	wgfIJc9sW3SFoviYuWSYQnlF1m2/iFdDx2RxEBFr/vvfagYTzmrEMnSkKUxrC1Os
-	YAL7C6wWu/fa9QylgYfdFIUVNXjE6jQ6mF8MCaNMbCo5a4aqM5cbOzTLCiz/M/xt
-	JdEBZTfpkSttTno4ASs2iY3/AK2xUTCg15soz8wII4TrBPVvqs8eQ/VnpYEUd4t3
-	kGDdKH/KUBJz/C9onaNHamilZEwbBRC2bRdAtqfLZiudRV8ZCdYArWIEXGiMzPkz
-	9ibMfMlbzhVeqqXBBqcJtk6Z6YstlwH++FPi4sWHmm481uZJr77iUlKKJX3PFnuP
-	aFHETTyreubdBY/LgHng==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y09frb39y-1
+	qcppdkim1; bh=SSZ4YJLXxW2IfOkAreUAvF48rQZiDXvH7ID/LwZINTE=; b=kI
+	ZEgMNHqLkDY7QwLu/EOc+tAcnrtf5+oxt6vGq2HukcOjztH2yvrnF2wLGNgSI2Mw
+	jcs0KGpfVcVY1g0pH9i1u9uhCTUgvY4t/6MIekIom2RVSmAIao189rlqT1BXmr0x
+	by8BYdEhZmhc40zL42GgVhs1IcMskJe/jmUZVwbjxw//XsXBBHF8z+JS1e4xjOFT
+	3nbO5g5QCTmwPZY/YCZvW9RsqHxfBD6yIjBGn09nbd10wPxhUIaQZs9pBS4aZRxe
+	huyVMAD8vPnTDpYhk4hNyOTJ4X/cdzZbM7lrxnk0AooP+xinK2ewKFwhdjPkPbSZ
+	Jf3kCF3DMBVSM+dA58Ew==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y09frb3fd-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 May 2024 16:14:51 +0000 (GMT)
+	Thu, 09 May 2024 16:16:51 +0000 (GMT)
 Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 449GEnwe031584
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 449GGoVD002935
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 9 May 2024 16:14:49 GMT
+	Thu, 9 May 2024 16:16:50 GMT
 Received: from hu-nithp-blr.qualcomm.com (10.80.80.8) by
  nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Thu, 9 May 2024 09:14:48 -0700
+ 15.2.1544.9; Thu, 9 May 2024 09:16:48 -0700
 From: Nithyanantham Paramasivam <quic_nithp@quicinc.com>
-To: <--to=ath12k@lists.infradead.org>
+To: <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>,
         Nithyanantham Paramasivam
 	<quic_nithp@quicinc.com>
 Subject: [PATCH] wifi: ath12k: Fix Tx Completion Ring(WBM2SW) Setup Failure
-Date: Thu, 9 May 2024 21:43:39 +0530
-Message-ID: <20240509161339.3512084-1-quic_nithp@quicinc.com>
+Date: Thu, 9 May 2024 21:46:31 +0530
+Message-ID: <20240509161631.3520506-1-quic_nithp@quicinc.com>
 X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -74,16 +74,16 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01b.na.qualcomm.com (10.47.209.197)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: TF2nH-UJwr1y5q5tVhFVn_OqXe2KTa9y
-X-Proofpoint-GUID: TF2nH-UJwr1y5q5tVhFVn_OqXe2KTa9y
+X-Proofpoint-ORIG-GUID: HP17jdKDUbm1FDCZDb6A1cSQLMsX1TLN
+X-Proofpoint-GUID: HP17jdKDUbm1FDCZDb6A1cSQLMsX1TLN
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
  definitions=2024-05-09_08,2024-05-09_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- malwarescore=0 mlxscore=0 mlxlogscore=999 priorityscore=1501 clxscore=1011
+ malwarescore=0 mlxscore=0 mlxlogscore=980 priorityscore=1501 clxscore=1011
  spamscore=0 lowpriorityscore=0 bulkscore=0 phishscore=0 adultscore=0
  suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405010000 definitions=main-2405090110
+ engine=8.19.0-2405010000 definitions=main-2405090111
 
 We observe intermittent ping failures from the access point (AP) to
 station (STA) in any mode(AP-STA or Mesh) configured. Specifically,
