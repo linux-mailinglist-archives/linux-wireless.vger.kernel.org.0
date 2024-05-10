@@ -1,69 +1,71 @@
-Return-Path: <linux-wireless+bounces-7470-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7471-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 417B18C2662
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 16:09:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B99E8C2663
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 16:09:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B50F0B2350E
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 14:08:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0824DB2361F
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 14:09:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2F00171E41;
-	Fri, 10 May 2024 14:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76A70171E7C;
+	Fri, 10 May 2024 14:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fnvFeQqE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NRGi0tiO"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E96A171E54
-	for <linux-wireless@vger.kernel.org>; Fri, 10 May 2024 14:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EE2171E61
+	for <linux-wireless@vger.kernel.org>; Fri, 10 May 2024 14:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715350031; cv=none; b=FqdVFGtIaTOntdyZAa4nKYsqanSQ65t/9qZKSyW6T3Q1bMic8xm2vNBMEB7wcMlUynxSPnfahdbd66HMr28Wfxa7D1yspVKVX2d8s5fDsK/h1qIwl9Vl0EUelAocaUySJJU1EnzUfJWeZUHUbozBLY4xD4z1/PRKH78bFVaC9UA=
+	t=1715350033; cv=none; b=K8aTLeEnFAOslWnp6b0I/xY6AYskj3ISexg65xHSmVPoGiAkts6SVqXNkJX26jlxPbOIl2cwUOfHqqMEXCybPteF4ApvAGdcE7a2e4xdX+w39ejMmbwzH6bBpmdWrMnHQmRGEY2UMNdEiHXyF4PxSo47lu9B4HwtMjXhUMUs72w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715350031; c=relaxed/simple;
-	bh=cVl7xL+li1upr2/hoHaQWEvNvL3sO6aaPXd7UJLwUPY=;
+	s=arc-20240116; t=1715350033; c=relaxed/simple;
+	bh=QSc/7E5BhoUPb8uyhk1R27PsivVec6FiuYt5YixMIhU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uuZ/QK4EPFXxCWwpHqMl4eKWQd9wv/mwVOpkzaPUzs7osnOYkcT+82hmF2yGrzWaU/DlE5/d2XiuG+nnBsK/iifJN9vqdpe19vsmRWj1uH9jGjOwMQcH/f2MfpdguJlrIo4MIH5A5yxpIPp7QF89Aku7b9SSjtUjf2fjuOKyy7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fnvFeQqE; arc=none smtp.client-ip=198.175.65.15
+	 MIME-Version; b=UE5uIrl54C0fYSRtObbA9C9p65UAp7E2tnEsvWZk8OA2UO72oX4XcnNBh4qMtO+cZUi3XT09JUA8qtXqLuQBDKMNk/C/m4fGXB39UE+OGwapR1LSNHGIxxCQz/y9iM+2O8pbGsHBd233CFXKaJJO2DZbtYegWQtP0xWtbrxt2Y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NRGi0tiO; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715350030; x=1746886030;
+  t=1715350032; x=1746886032;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=cVl7xL+li1upr2/hoHaQWEvNvL3sO6aaPXd7UJLwUPY=;
-  b=fnvFeQqElQhw5vvTf/KPSvGi/4rzgmPUF0tiHmdHeeQ+sXeOQ9yP3io2
-   KnWokuSdS2vxZdxRxlQy0ponGOAmP4ycPLIBq7gdnAUdJPbnoH1HlR0Gg
-   HXlSabIoJVFeOObaQkp5TTqg2Vh37wLx+pnyj9lG68Xa9eLRJsNQaUMY7
-   lbJ/gYoJsD8sBePFkeMvK12tU+17DBOsI56p+wWh1+tRCloKZanzFWODu
-   DaGjpd0hryfKyAkztkDll+xcKNiTCnRTHzyZeU/SPFb5pj84+UgdE1QjE
-   mGZRLwHNsTA6AWuKC4eeX8yJGLzJ8KWgffn5lfqaHz74xFt/dTUfV7u+d
-   w==;
-X-CSE-ConnectionGUID: zrPibQ5USAK2TIbYY2Vcpw==
-X-CSE-MsgGUID: cRGx41aYT/itM2sEjwookw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11068"; a="15125587"
+  bh=QSc/7E5BhoUPb8uyhk1R27PsivVec6FiuYt5YixMIhU=;
+  b=NRGi0tiOZCw72u1vxp3Kqo0kin4cHpgmwzMabfKx3ADpU10wzwjEpmza
+   VFL0obE4SacWC54mOuWTjWXKAVIsUVWs1S628baKilEdAcEHaFP+JTQTr
+   Eu/r3t9NbszkvyVHY25aAKxRZ6b15pBGhP+2x7SHCCSQA2nAgIGsNbVG9
+   zMiHMYv9kwFtsZ2uU0fqtGCdb8PicbBqQdnYbjXjU1ri/JDPXP0GRR6ud
+   qqW3CgWJN4tWUeeUnnG9CIbMbLXVwafWaGcH95K7yYQioTlkfcf8X9V8T
+   /JNo8mcRWh0z87CqEGU7GTlnepeeLHCBAEsdMXXP9bs4RSWIKeNHLt35H
+   A==;
+X-CSE-ConnectionGUID: uS5+TMbRTsuA1dNnnpU2rA==
+X-CSE-MsgGUID: XYodZbBqQIi44DNIXeLKaQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11068"; a="15125595"
 X-IronPort-AV: E=Sophos;i="6.08,151,1712646000"; 
-   d="scan'208";a="15125587"
+   d="scan'208";a="15125595"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2024 07:07:09 -0700
-X-CSE-ConnectionGUID: BugP9L5eRzGDk4Do97H+tg==
-X-CSE-MsgGUID: d0Ru8/UMTH6GCg3MzX6hmA==
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2024 07:07:11 -0700
+X-CSE-ConnectionGUID: te6+elvUQqK602VZqnE96Q==
+X-CSE-MsgGUID: iVe8kYeTTtWl4gIREmB+NQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,151,1712646000"; 
-   d="scan'208";a="67101881"
+   d="scan'208";a="67101895"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2024 07:07:09 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2024 07:07:10 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 10/14] wifi: iwlwifi: mvm: call ieee80211_sta_recalc_aggregates on amsdu size update
-Date: Fri, 10 May 2024 17:06:37 +0300
-Message-Id: <20240510170500.632ee6612a79.Ice3a536a4cbfe60d0edfa231fcb79ee7ab9495dd@changeid>
+Cc: linux-wireless@vger.kernel.org,
+	Andrei Otcheretianski <andrei.otcheretianski@intel.com>,
+	Luciano Coelho <luciano.coelho@intel.com>
+Subject: [PATCH 11/14] wifi: iwlwifi: mvm: Don't set NO_HT40+/- flags on 6 GHz band
+Date: Fri, 10 May 2024 17:06:38 +0300
+Message-Id: <20240510170500.b0d51b2229f8.I092e21cde43320ffc2eff17f5748ff9c87c87fcf@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240510140641.1895860-1-miriam.rachel.korenblit@intel.com>
 References: <20240510140641.1895860-1-miriam.rachel.korenblit@intel.com>
@@ -76,34 +78,43 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-The driver needs to call this function when the amsdu size changes.
+From: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
 
+These flags are not needed on 6 GHz channels, and anyway they were set
+incorrectly.
+This in turn resulted in alternating channel flags, preventing reg domain
+rules to be merged together, so cfg80211 couldn't even send them to the
+user space, as the regulatory domain was too large.
+Fix it.
+
+Signed-off-by: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
+Reviewed-by: Luciano Coelho <luciano.coelho@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
-index 031b5e70d181..05715e5af6ab 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
-@@ -514,6 +514,8 @@ void iwl_mvm_tlc_update_notif(struct iwl_mvm *mvm,
- 				link_sta->agg.max_tid_amsdu_len[i] = 1;
- 		}
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+index 149903f52567..cf5c9500af8c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
+@@ -1625,11 +1625,15 @@ static u32 iwl_nvm_get_regdom_bw_flags(const u16 *nvm_chan,
+ 			flags &= ~NL80211_RRF_NO_HT40PLUS;
+ 		if (nvm_chan[ch_idx] >= FIRST_2GHZ_HT_MINUS)
+ 			flags &= ~NL80211_RRF_NO_HT40MINUS;
+-	} else if (nvm_flags & NVM_CHANNEL_40MHZ) {
++	} else if (ch_idx < NUM_2GHZ_CHANNELS + NUM_5GHZ_CHANNELS &&
++		   nvm_flags & NVM_CHANNEL_40MHZ) {
+ 		if ((ch_idx - NUM_2GHZ_CHANNELS) % 2 == 0)
+ 			flags &= ~NL80211_RRF_NO_HT40PLUS;
+ 		else
+ 			flags &= ~NL80211_RRF_NO_HT40MINUS;
++	} else if (nvm_flags & NVM_CHANNEL_40MHZ) {
++		flags &= ~NL80211_RRF_NO_HT40PLUS;
++		flags &= ~NL80211_RRF_NO_HT40MINUS;
+ 	}
  
-+		ieee80211_sta_recalc_aggregates(sta);
-+
- 		IWL_DEBUG_RATE(mvm,
- 			       "AMSDU update. AMSDU size: %d, AMSDU selected size: %d, AMSDU TID bitmap 0x%X\n",
- 			       le32_to_cpu(notif->amsdu_size), size,
-@@ -654,6 +656,7 @@ void iwl_mvm_rs_fw_rate_init(struct iwl_mvm *mvm,
- 	 * that only vht/ht is used and also set it as station max amsdu
- 	 */
- 	link_sta->agg.max_amsdu_len = max_amsdu_len;
-+	ieee80211_sta_recalc_aggregates(sta);
- 
- 	cfg_cmd.max_tx_op = cpu_to_le16(mvmvif->max_tx_op);
- 
+ 	if (!(nvm_flags & NVM_CHANNEL_80MHZ))
 -- 
 2.34.1
 
