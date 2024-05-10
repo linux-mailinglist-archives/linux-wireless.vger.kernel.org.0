@@ -1,72 +1,69 @@
-Return-Path: <linux-wireless+bounces-7466-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7467-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51DA78C265E
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 16:08:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83B2F8C265F
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 16:08:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFC6AB2476A
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 14:08:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 233EF1F238AB
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 14:08:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B953C171647;
-	Fri, 10 May 2024 14:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D6C17165F;
+	Fri, 10 May 2024 14:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VydY1lwh"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LAOgZ6mD"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2A217165F
-	for <linux-wireless@vger.kernel.org>; Fri, 10 May 2024 14:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59AF5171660
+	for <linux-wireless@vger.kernel.org>; Fri, 10 May 2024 14:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715350025; cv=none; b=a+KQthJ3gXftnQE/ZyXZ5XW6Qusbj8+TWPdzMtwvGo8FYJdkJX/BcxzXihnQcPI+NRdZ+1GX5brgUR/xWglR93weh1sQUBPf1vLX1RE9TGpg7VQQW39okkQV4kdOMn+H5im6dqgwohBeXqxCSifmztR3eh401pT7m8cNyMgwU2I=
+	t=1715350026; cv=none; b=bRgX7MXNvMqQk0Zgsie9UcXBPFdHoqCSvY9HVc4yqoqo/yuRzdlF2RBiT6ESJBv8nwwFJh+8tUF9HqzzpONei80NG7SHHVRO+AYLN5cBwzBAceFo6RH734kiA5uoK7tGWzR5L8t6R6IYUiimE9pk9qo07gCk/eHqOgU0As81nck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715350025; c=relaxed/simple;
-	bh=CQlKQPxOfp8/xPapgHY+mhPBxqVn4qT97bD/6KDVCns=;
+	s=arc-20240116; t=1715350026; c=relaxed/simple;
+	bh=kRd0jDwrY/AVet4fGeuDlJWbZIOPkSzf5UiSS2tYpOg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bbvYemM1qHlBNywvOWNVg6gscGRv4FGk0e4mIunMbz43KhboTl1viShxE47gZVv3sl3so7I6+aeBOG1wMa8Y00uzk8k54BU1QWDOteXll8hORG+3WOrwjIW4aVt3NVYuOdpS5VvnqjNIVGzXyBXGRO2og4RnIR5og0QomsS5Res=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VydY1lwh; arc=none smtp.client-ip=198.175.65.15
+	 MIME-Version; b=q2uMMpLy0xFDKItVbSh8UGShkOQiod/RsTyP8Etz6NKzPDQulzRLRu3z/GZe/VugbPsV88Jt/QHfGlcLdId8AuBrXAUuT+7ycJhg21gtQ/ILlarf+WUFeGK5GHM9DStQb5agAtPHFoKDODAg4+v8oRxTftuXPFR+mSv1iQrOLlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LAOgZ6mD; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715350024; x=1746886024;
+  t=1715350025; x=1746886025;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=CQlKQPxOfp8/xPapgHY+mhPBxqVn4qT97bD/6KDVCns=;
-  b=VydY1lwhDTiIz5sXp2yjyfBczbD2NTEHmzmzEp3aRRM5wOvK7P+bZVug
-   iNM+9a2KM/Nx5ngnk+oDoftfCdzOJbwqmaM+T/tdNPHD2k4dqq81yte0D
-   qNzfjd6xlP9+p4VQ/s4JnGSLGEM+DoNfbgGcZ3JjgIBnpLlwWGinhI3C8
-   Xe7Czr5HjS342j8hBUKcWbmH/3ho6xlS5zzCpzISTToQRItQBBO+2rEuA
-   gxW6pYezl7Aeaq6z4eyslfwvHnmmcrvJ1Kir89y+3g9Tgmap4nQZhTS+n
-   AFnICLfqKqXrSc1B6+/Gouw3UYAf6HQvxfZKSxETaYtBxEYE3YW4z2OfV
+  bh=kRd0jDwrY/AVet4fGeuDlJWbZIOPkSzf5UiSS2tYpOg=;
+  b=LAOgZ6mDdbt3c9FEv+ghDcgwv3TA4P3xzWnh8EzoqLYeub3RKVkzVYZw
+   Kh2ThXQZ37wkF+ExMJ1+TEIFVqcVVW0KCgk0CKivjCYKpdZL86UVou7C0
+   w6c5DO80xQNCKH8hBJfZir9q4xOzY/NdKVnWI07EQPPZIJfHmKyCfo2QE
+   +fVS3+SE8KRnpuWHnNh2GWxKa8CRQYH9AGS64vkrxtbBacVRBD1RDH7sZ
+   Stwfx9++TYULxZKvPsgIy2RDWqdWz/+KHV1IcxBIarDtOmpeFWeefAtBv
+   1YipMwmZDpfxwibLMoN5+Zl3l/nqfgdFrJYOAruqDeMmmBONKR0urRdAo
    A==;
-X-CSE-ConnectionGUID: m5J15w/5QNOqEbSJgCXqIw==
-X-CSE-MsgGUID: ASpawjAgSyyoLn67e1vYIw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11068"; a="15125561"
+X-CSE-ConnectionGUID: hMUMQRhBRWWqJ8lPLvpQ+Q==
+X-CSE-MsgGUID: hxwyQjQcTQOltDjbuGLUNg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11068"; a="15125568"
 X-IronPort-AV: E=Sophos;i="6.08,151,1712646000"; 
-   d="scan'208";a="15125561"
+   d="scan'208";a="15125568"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2024 07:07:04 -0700
-X-CSE-ConnectionGUID: WY5n7HKuSS+Zl79bACDHng==
-X-CSE-MsgGUID: tqk7X3pDQ7qMls0XMibFlw==
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2024 07:07:05 -0700
+X-CSE-ConnectionGUID: gRKoLEyRT7KIatrNyOUSjg==
+X-CSE-MsgGUID: 2owrbChbTBeB9MrrDgrG5g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,151,1712646000"; 
-   d="scan'208";a="67101865"
+   d="scan'208";a="67101866"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2024 07:07:02 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2024 07:07:04 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>, Kaufman@web.codeaurora.org,
-	Liad <liad.kaufman@intel.com>, Coelho@web.codeaurora.org,
-	Luciano <luciano.coelho@intel.com>
-Subject: [PATCH 06/14] iwlwifi: mvm: revert gen2 TX A-MPDU size to 64
-Date: Fri, 10 May 2024 17:06:33 +0300
-Message-Id: <20240510170500.52f7b4cf83aa.If47e43adddf7fe250ed7f5571fbb35d8221c7c47@changeid>
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH 07/14] wifi: iwlwifi: mvm: define link_sta in the relevant scope
+Date: Fri, 10 May 2024 17:06:34 +0300
+Message-Id: <20240510170500.e0a1dd285d9a.Id5ff16fb98af0c5f533aed6b5ec3cc856401e488@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240510140641.1895860-1-miriam.rachel.korenblit@intel.com>
 References: <20240510140641.1895860-1-miriam.rachel.korenblit@intel.com>
@@ -79,42 +76,35 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+the link_sta pointer is now only used inside this if, so define it inside
+its scope.
 
-We don't actually support >64 even for HE devices, so revert
-back to 64. This fixes an issue where the session is refused
-because the queue is configured differently from the actual
-session later.
-
-Fixes: 514c30696fbc ("iwlwifi: add support for IEEE802.11ax")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Kaufman, Liad <liad.kaufman@intel.com>
-Reviewed-by: Coelho, Luciano <luciano.coelho@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/rs.h | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs.h b/drivers/net/wireless/intel/iwlwifi/mvm/rs.h
-index 376b23b409dc..6cd4ec4d8f34 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rs.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs.h
-@@ -122,13 +122,8 @@ enum {
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+index d78af2928152..8bbef4454399 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+@@ -2032,7 +2032,6 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
+ 	u32 len;
+ 	u32 pkt_len = iwl_rx_packet_payload_len(pkt);
+ 	struct ieee80211_sta *sta = NULL;
+-	struct ieee80211_link_sta *link_sta = NULL;
+ 	struct sk_buff *skb;
+ 	u8 crypt_len = 0;
+ 	u8 sta_id = le32_get_bits(desc->status, IWL_RX_MPDU_STATUS_STA_ID);
+@@ -2185,6 +2184,8 @@ void iwl_mvm_rx_mpdu_mq(struct iwl_mvm *mvm, struct napi_struct *napi,
  
- #define LINK_QUAL_AGG_FRAME_LIMIT_DEF	(63)
- #define LINK_QUAL_AGG_FRAME_LIMIT_MAX	(63)
--/*
-- * FIXME - various places in firmware API still use u8,
-- * e.g. LQ command and SCD config command.
-- * This should be 256 instead.
-- */
--#define LINK_QUAL_AGG_FRAME_LIMIT_GEN2_DEF	(255)
--#define LINK_QUAL_AGG_FRAME_LIMIT_GEN2_MAX	(255)
-+#define LINK_QUAL_AGG_FRAME_LIMIT_GEN2_DEF	(64)
-+#define LINK_QUAL_AGG_FRAME_LIMIT_GEN2_MAX	(64)
- #define LINK_QUAL_AGG_FRAME_LIMIT_MIN	(0)
- 
- #define LQ_SIZE		2	/* 2 mode tables:  "Active" and "Search" */
+ 	if (desc->status & cpu_to_le32(IWL_RX_MPDU_STATUS_SRC_STA_FOUND)) {
+ 		if (!WARN_ON_ONCE(sta_id >= mvm->fw->ucode_capa.num_stations)) {
++			struct ieee80211_link_sta *link_sta;
++
+ 			sta = rcu_dereference(mvm->fw_id_to_mac_id[sta_id]);
+ 			if (IS_ERR(sta))
+ 				sta = NULL;
 -- 
 2.34.1
 
