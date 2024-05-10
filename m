@@ -1,558 +1,313 @@
-Return-Path: <linux-wireless+bounces-7439-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7440-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB3BF8C1FA2
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 10:23:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2997C8C2015
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 10:53:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 828CF282EAE
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 08:22:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC9201F21975
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 08:53:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC23149C51;
-	Fri, 10 May 2024 08:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB3377119;
+	Fri, 10 May 2024 08:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="B6fBUWGb"
+	dkim=pass (1024-bit key) header.d=dd-wrt.com header.i=@dd-wrt.com header.b="sNnoAgxC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.as201155.net (mail.as201155.net [185.84.6.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA0E1FA4
-	for <linux-wireless@vger.kernel.org>; Fri, 10 May 2024 08:22:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C1313C827
+	for <linux-wireless@vger.kernel.org>; Fri, 10 May 2024 08:53:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.84.6.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715329376; cv=none; b=rEfQPon5i69WlbdpFXm2aA5MgOGixs++1YXYDhHDxoOD8iQZDeWfJjU/jSvZEa5fstSmcoLvrgIHb0CSSGMBdChYo3+aucarpNw7Xh2RekdRimoFevu2Gc1BpthZcsSPk4HeCY9dz94qHxSXxquI63vS2Rx7gVEFSQpmYeuVNt0=
+	t=1715331219; cv=none; b=Igwkt+OUJRXhXrQEoQrt6I+orWSR4epoK8gYzdzCmBhGenoE7L+8O6Ll3QMh+UqgsuNleK9vvQGM0wQxh8p7inzQr/ePCGHwPYvpSoEXr6he/ndfK/4qLRAA1SfciFksgV4hVbTgCErpCgC8M1epmSbT7Oqu5UYDymaIj8WFBYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715329376; c=relaxed/simple;
-	bh=4BrdtXALMBFR5fWtmmMhwOKWfVtyzZmxtFQXJjcqA+w=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=YbljPeQ8K9jzIQdPFGLTsbfPR4aSSaPCZVpiI1GiNeesrxeCTKHxNQ2p34kPWOXzpviV+ErYGJKeCBdIrY6vxUcL6k1vrzito4s3oRGXIXaV2SK6n+CGYAhsN0JScF5kaZDQZEW4sWeuh9GfHvVxqVkQ11Cysfei7id9LNBtDw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=B6fBUWGb; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-51fdc9af005so2779923e87.3
-        for <linux-wireless@vger.kernel.org>; Fri, 10 May 2024 01:22:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1715329372; x=1715934172; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RJYW2yUsDK+rQ7kYscbP7Cvbto0NCRhsjdmn+T6jF4Q=;
-        b=B6fBUWGb+Klv6Ec6KubvJf/gOXXZuu/V2OxD2eSNP/8zAfcFzOAZTOQd+teIy/fxdU
-         oz8lpi/Ck/IXDlmq6KBJYcwMzZLZxQ7f9EcKrGgSxVuXUBh9JDBlGRqWkrxHOoAwQXam
-         85jBy3loxzqDEVHTZmdMT3OKuZJCuquj2jxlpHbyH/gty+a4E79nsa8fJYa72065q8C/
-         EnM4DVsoaVB24qkAm4ys5QkPGtZMoumSHVunA6t9YNHTa4UUj96TePsm5sBNN1wleb5G
-         KJQMZ654Hzuva4Lpt9ENs4iBjsjvuOWeh4YWKf5OatUVgR2EbMqfGID3a/ooQ/79am8z
-         Gpvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715329372; x=1715934172;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=RJYW2yUsDK+rQ7kYscbP7Cvbto0NCRhsjdmn+T6jF4Q=;
-        b=TfqfUBgFlamLfJQ/gwlkpk0uceYnJ0psdA9Ebp71cZoMZejLqJzd+pTDlXu4Ol7yKl
-         1GYHriykIu84wRVZHK/4oz8oq3pMMPUbx5mY88jSTE74BXAbAfrexYlGxBJOUkR6hjEi
-         Ln0xZsMnx8AeBmMHbczkcZiG6nDXhKUUvnWu76NtYpWbYWugpZgH7creYY4RrtxzxtRU
-         P9iLbCwaocYgIgYfaEN4YyG8Bne3M70MQnSvDuhF/FzPbAqRXnzG8ZCi6OhYsMqkYjsn
-         3L1bE5g/r5HY8RzRgVtBdszc1NY5I0Hm3FHsZKLg8R1BDPcFpJHB61RXmMEhovyjK5P6
-         8Ycw==
-X-Gm-Message-State: AOJu0YzLxzVCT/Lnt+Wb0JRG2MRqQLpM6+7cV3qJAx8AnzIztgxjhfbS
-	n4yQTWwcchHgnka4CHBCSvIdVHIOvo4Yl5yRIOqB9kQhtt6hYT8RSPBS2+ju63M=
-X-Google-Smtp-Source: AGHT+IFdNmco0bSoaWMZ09RnI1nHEBD10eKv1VtenhBfKDb3dkCGuWbTzoyxAQYbz08wkBePu0LxbQ==
-X-Received: by 2002:a05:6512:444:b0:51f:3e0c:ace3 with SMTP id 2adb3069b0e04-5220fd7c6bdmr1763658e87.16.1715329371862;
-        Fri, 10 May 2024 01:22:51 -0700 (PDT)
-Received: from localhost (2a02-a210-20ba-5a00-9ceb-707b-2d57-26f7.cable.dynamic.v6.ziggo.nl. [2a02:a210:20ba:5a00:9ceb:707b:2d57:26f7])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a179c7dd4sm157412066b.139.2024.05.10.01.22.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 May 2024 01:22:51 -0700 (PDT)
+	s=arc-20240116; t=1715331219; c=relaxed/simple;
+	bh=8kMvzTWQsyHILcUOzdfNUPWiJJKGl3cncGowDiDKyo8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dRrsXti9+2Vu/bAgaG16ewKgALYxrfIRf2oW8KPqe3Lj0jjlDrKtQAkkcPBSlFWsmQD9ygtO3P4NA5jYEfq619zyWrPxFgODfLE90+SdY4M37E9/DAvJQYcOzvxQwZ3bCj+8MFKw/ly9f1p4FCEde8M5ictuiRQxwnt7Tdaw2hQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dd-wrt.com; spf=pass smtp.mailfrom=dd-wrt.com; dkim=pass (1024-bit key) header.d=dd-wrt.com header.i=@dd-wrt.com header.b=sNnoAgxC; arc=none smtp.client-ip=185.84.6.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dd-wrt.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dd-wrt.com
+Received: from smtps.newmedia-net.de ([2a05:a1c0:0:de::167]:35894 helo=webmail.newmedia-net.de)
+	by mail.as201155.net with esmtps  (TLS1) tls TLS_RSA_WITH_AES_256_CBC_SHA
+	(Exim 4.97.1)
+	(envelope-from <s.gottschall@dd-wrt.com>)
+	id 1s5M0T-0000000010E-1SBk;
+	Fri, 10 May 2024 10:53:33 +0200
+X-SASI-Hits: CTE_7BIT 0.000000, DKIM_ALIGNS 0.000000, DKIM_SIGNATURE 0.000000,
+	ECARD_WORD 0.000000, HTML_00_01 0.050000, HTML_00_10 0.050000,
+	IN_REP_TO 0.000000, LEGITIMATE_SIGNS 0.000000,
+	MSGID_SAMEAS_FROM_HEX_844412 0.100000, MSG_THREAD 0.000000,
+	MULTIPLE_RCPTS 0.100000, MULTIPLE_REAL_RCPTS 0.000000,
+	NO_FUR_HEADER 0.000000, OUTBOUND 0.000000, OUTBOUND_SOPHOS 0.000000,
+	REFERENCES 0.000000, SENDER_NO_AUTH 0.000000, SUSP_DH_NEG 0.000000,
+	URI_WITH_PATH_ONLY 0.000000, __ANY_URI 0.000000, __BODY_NO_MAILTO 0.000000,
+	__BOUNCE_CHALLENGE_SUBJ 0.000000, __BOUNCE_NDR_SUBJ_EXEMPT 0.000000,
+	__BULK_NEGATE 0.000000, __CC_NAME 0.000000, __CC_NAME_DIFF_FROM_ACC 0.000000,
+	__CC_REAL_NAMES 0.000000, __CP_URI_IN_BODY 0.000000, __CT 0.000000,
+	__CTE 0.000000, __CT_TEXT_PLAIN 0.000000, __DKIM_ALIGNS_1 0.000000,
+	__DKIM_ALIGNS_2 0.000000, __DQ_NEG_DOMAIN 0.000000, __DQ_NEG_HEUR 0.000000,
+	__DQ_NEG_IP 0.000000, __FORWARDED_MSG 0.000000,
+	__FRAUD_BODY_WEBMAIL 0.000000, __FRAUD_WEBMAIL 0.000000,
+	__FUR_RDNS_SOPHOS 0.000000, __HAS_CC_HDR 0.000000, __HAS_FROM 0.000000,
+	__HAS_MSGID 0.000000, __HAS_REFERENCES 0.000000, __HTTPS_URI 0.000000,
+	__INVOICE_MULTILINGUAL 0.000000, __IN_REP_TO 0.000000, __MAIL_CHAIN 0.000000,
+	__MAIL_CHAIN_OLD 0.000000, __MIME_BOUND_CHARSET 0.000000,
+	__MIME_TEXT_ONLY 0.000000, __MIME_TEXT_P 0.000000, __MIME_TEXT_P1 0.000000,
+	__MIME_VERSION 0.000000, __MOZILLA_USER_AGENT 0.000000,
+	__MSGID_HEX_844412 0.000000, __MULTIPLE_RCPTS_CC_X2 0.000000,
+	__MULTIPLE_RCPTS_TO_X2 0.000000, __MULTIPLE_URI_TEXT 0.000000,
+	__NO_HTML_TAG_RAW 0.000000, __OUTBOUND_SOPHOS_FUR 0.000000,
+	__OUTBOUND_SOPHOS_FUR_IP 0.000000, __OUTBOUND_SOPHOS_FUR_RDNS 0.000000,
+	__PHISH_PHRASE10_D 0.000000, __PHISH_SPEAR_SUBJ_TEAM 0.000000,
+	__RCVD_PASS 0.000000, __REFERENCES 0.000000, __SANE_MSGID 0.000000,
+	__SCAN_D_NEG 0.000000, __SCAN_D_NEG2 0.000000, __SCAN_D_NEG_HEUR 0.000000,
+	__SCAN_D_NEG_HEUR2 0.000000, __SUBJ_ALPHA_END 0.000000,
+	__SUBJ_ALPHA_NEGATE 0.000000, __SUBJ_REPLY 0.000000,
+	__TO_MALFORMED_2 0.000000, __TO_NAME 0.000000,
+	__TO_NAME_DIFF_FROM_ACC 0.000000, __TO_REAL_NAMES 0.000000,
+	__URI_IN_BODY 0.000000, __URI_MAILTO 0.000000, __URI_NOT_IMG 0.000000,
+	__URI_NO_WWW 0.000000, __URI_NS 0.000000, __URI_WITH_PATH 0.000000,
+	__USER_AGENT 0.000000, __X_MAILSCANNER 0.000000
+X-SASI-Probability: 8%
+X-SASI-RCODE: 200
+X-SASI-Version: Antispam-Engine: 5.1.4, AntispamData: 2024.5.10.82716
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=dd-wrt.com; s=mikd;
+	h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID; bh=+D0lJ6XGvB7RcRH/OwONvFz4A82ou2NnW/z7IzLDnFQ=;
+	b=sNnoAgxClLp/fkgfhDTVqufBvQ0NJOtEXvL9p03lZeTBFEVUcqONW/W81dZyoR6H4yns3IJ6hCcWK2CP7UQj7tMlV4SUwx91cmsIvuVYsdwCmoeP374mj57+5oHkosYOPmeT6OWvmCb/BIjcVdJAsnzQvTHfUlZutvElQden8GY=;
+Message-ID: <81137bf1-09a3-42ca-a9d6-fefeba693c05@dd-wrt.com>
+Date: Fri, 10 May 2024 10:53:07 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 10 May 2024 10:22:50 +0200
-Message-Id: <D15TIIDIIESY.D1EKKJLZINMA@fairphone.com>
-Cc: <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 1/2] wifi: ath11k: supports 2 station interfaces
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Carl Huang" <quic_cjhuang@quicinc.com>, <ath11k@lists.infradead.org>
-X-Mailer: aerc 0.17.0
-References: <20230714023801.2621802-1-quic_cjhuang@quicinc.com>
- <20230714023801.2621802-2-quic_cjhuang@quicinc.com>
-In-Reply-To: <20230714023801.2621802-2-quic_cjhuang@quicinc.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v14] ath10k: add LED and GPIO controlling support for
+ various chipsets
+To: Christian Marangi <ansuelsmth@gmail.com>, Kalle Valo <kvalo@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
+ ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+ netdev@vger.kernel.org, Steve deRosier <derosier@cal-sierra.com>,
+ Stefan Lippers-Hollmann <s.l-h@gmx.de>
+References: <20230611080505.17393-1-ansuelsmth@gmail.com>
+ <878rcjbaqs.fsf@kernel.org> <648cdebb.5d0a0220.be7f8.a096@mx.google.com>
+ <648ded2a.df0a0220.b78de.4603@mx.google.com>
+ <CA+_ehUzzVq_sVTgVCM+r=oLp=GNn-6nJRBG=bndJjrRDhCodaw@mail.gmail.com>
+ <87v83nlhb3.fsf@kernel.org> <663c9fc7.050a0220.5fb3a.4e87@mx.google.com>
+From: Sebastian Gottschall <s.gottschall@dd-wrt.com>
+In-Reply-To: <663c9fc7.050a0220.5fb3a.4e87@mx.google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass (webmail.newmedia-net.de: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=s.gottschall@dd-wrt.com; helo=webmail.newmedia-net.de;
+X-SA-Exim-Connect-IP: 127.0.0.1
+X-SA-Exim-Mail-From: s.gottschall@dd-wrt.com
+X-SA-Exim-Scanned: No (on webmail.newmedia-net.de); SAEximRunCond expanded to false
+X-NMN-MailScanner-Information: Please contact the ISP for more information
+X-NMN-MailScanner-ID: 1s5M08-000Cnb-2J
+X-NMN-MailScanner: Found to be clean
+X-NMN-MailScanner-From: s.gottschall@dd-wrt.com
+X-Received:  from localhost.localdomain ([127.0.0.1] helo=webmail.newmedia-net.de)
+	by webmail.newmedia-net.de with esmtp (Exim 4.72)
+	(envelope-from <s.gottschall@dd-wrt.com>)
+	id 1s5M08-000Cnb-2J; Fri, 10 May 2024 10:53:12 +0200
 
-On Fri Jul 14, 2023 at 4:38 AM CEST, Carl Huang wrote:
-> Add hardware parameter support_dual_stations to indicate
-> whether 2 station interfaces are supported. For chips which
-> support this feature, limit total number of AP interface and
-> mesh point to 1. The max interfaces are 3 for such chips.
+
+Am 09.05.2024 um 12:04 schrieb Christian Marangi:
+> On Thu, May 09, 2024 at 07:50:40AM +0300, Kalle Valo wrote:
+>> Ansuel Smith <ansuelsmth@gmail.com> writes:
+>>
+>>> Il giorno sab 17 giu 2023 alle ore 19:28 Christian Marangi
+>>> <ansuelsmth@gmail.com> ha scritto:
+>>>
+>>>> On Fri, Jun 16, 2023 at 01:35:04PM +0200, Christian Marangi wrote:
+>>>>> On Fri, Jun 16, 2023 at 08:03:23PM +0300, Kalle Valo wrote:
+>>>>>> Christian Marangi <ansuelsmth@gmail.com> writes:
+>>>>>>
+>>>>>>> From: Sebastian Gottschall <s.gottschall@dd-wrt.com>
+>>>>>>>
+>>>>>>> Adds LED and GPIO Control support for 988x, 9887, 9888, 99x0, 9984
+>>>>>>> based chipsets with on chipset connected led's using WMI Firmware API.
+>>>>>>> The LED device will get available named as "ath10k-phyX" at sysfs and
+>>>>>>> can be controlled with various triggers.
+>>>>>>> Adds also debugfs interface for gpio control.
+>>>>>>>
+>>>>>>> Signed-off-by: Sebastian Gottschall <s.gottschall@dd-wrt.com>
+>>>>>>> Reviewed-by: Steve deRosier <derosier@cal-sierra.com>
+>>>>>>> [kvalo: major reorg and cleanup]
+>>>>>>> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+>>>>>>> [ansuel: rebase and small cleanup]
+>>>>>>> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+>>>>>>> Tested-by: Stefan Lippers-Hollmann <s.l-h@gmx.de>
+>>>>>>> ---
+>>>>>>>
+>>>>>>> Hi,
+>>>>>>> this is a very old patch from 2018 that somehow was talked till 2020
+>>>>>>> with Kavlo asked to rebase and resubmit and nobody did.
+>>>>>>> So here we are in 2023 with me trying to finally have this upstream.
+>>>>>>>
+>>>>>>> A summarize of the situation.
+>>>>>>> - The patch is from years in OpenWRT. Used by anything that has ath10k
+>>>>>>>    card and a LED connected.
+>>>>>>> - This patch is also used by the fw variant from Candela Tech with no
+>>>>>>>    problem reported.
+>>>>>>> - It was pointed out that this caused some problem with ipq4019 SoC
+>>>>>>>    but the problem was actually caused by a different bug related to
+>>>>>>>    interrupts.
+>>>>>>>
+>>>>>>> I honestly hope we can have this feature merged since it's really
+>>>>>>> funny to have something that was so near merge and jet still not
+>>>>>>> present and with devices not supporting this simple but useful
+>>>>>>> feature.
+>>>>>> Indeed, we should finally get this in. Thanks for working on it.
+>>>>>>
+>>>>>> I did some minor changes to the patch, they are in my pending branch:
+>>>>>>
+>>>>>> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=686464864538158f22842dc49eddea6fa50e59c1
+>>>>>>
+>>>>>> My comments below, please review my changes. No need to resend because
+>>>>>> of these.
+>>>>>>
+>>>>> Hi,
+>>>>> very happy this is going further.
+>>>>>
+>>>>>>> --- a/drivers/net/wireless/ath/ath10k/Kconfig
+>>>>>>> +++ b/drivers/net/wireless/ath/ath10k/Kconfig
+>>>>>>> @@ -67,6 +67,23 @@ config ATH10K_DEBUGFS
+>>>>>>>
+>>>>>>>      If unsure, say Y to make it easier to debug problems.
+>>>>>>>
+>>>>>>> +config ATH10K_LEDS
+>>>>>>> + bool "Atheros ath10k LED support"
+>>>>>>> + depends on ATH10K
+>>>>>>> + select MAC80211_LEDS
+>>>>>>> + select LEDS_CLASS
+>>>>>>> + select NEW_LEDS
+>>>>>>> + default y
+>>>>>>> + help
+>>>>>>> +   This option enables LEDs support for chipset LED pins.
+>>>>>>> +   Each pin is connected via GPIO and can be controlled using
+>>>>>>> +   WMI Firmware API.
+>>>>>>> +
+>>>>>>> +   The LED device will get available named as "ath10k-phyX" at sysfs and
+>>>>>>> +           can be controlled with various triggers.
+>>>>>>> +
+>>>>>>> +   Say Y, if you have LED pins connected to the ath10k wireless card.
+>>>>>> I'm not sure anymore if we should ask anything from the user, better to
+>>>>>> enable automatically if LED support is enabled in the kernel. So I
+>>>>>> simplified this to:
+>>>>>>
+>>>>>> config ATH10K_LEDS
+>>>>>>      bool
+>>>>>>      depends on ATH10K
+>>>>>>      depends on LEDS_CLASS=y || LEDS_CLASS=MAC80211
+>>>>>>      default y
+>>>>>>
+>>>>>> This follows what mt76 does:
+>>>>>>
+>>>>>> config MT76_LEDS
+>>>>>>      bool
+>>>>>>      depends on MT76_CORE
+>>>>>>      depends on LEDS_CLASS=y || MT76_CORE=LEDS_CLASS
+>>>>>>      default y
+>>>>>>
+>>>>> I remember there was the same discussion in a previous series. OK for me
+>>>>> for making this by default, only concern is any buildbot error (if any)
+>>>>>
+>>>>> Anyway OK for the change.
+>>>>>
+>>>>>>> @@ -65,6 +66,7 @@ static const struct ath10k_hw_params
+>>>>>>> ath10k_hw_params_list[] = {
+>>>>>>>            .dev_id = QCA988X_2_0_DEVICE_ID,
+>>>>>>>            .bus = ATH10K_BUS_PCI,
+>>>>>>>            .name = "qca988x hw2.0",
+>>>>>>> +         .led_pin = 1,
+>>>>>>>            .patch_load_addr = QCA988X_HW_2_0_PATCH_LOAD_ADDR,
+>>>>>>>            .uart_pin = 7,
+>>>>>>>            .cc_wraparound_type = ATH10K_HW_CC_WRAP_SHIFTED_ALL,
+>>>>>> I prefer following the field order from struct ath10k_hw_params
+>>>>>> declaration and also setting fields explicitly to zero (even though
+>>>>>> there are gaps still) so I changed that for every entry.
+>>>>>>
+>>>>> Thanks for the change, np for me.
+>>>>>
+>>>>>>> +int ath10k_leds_register(struct ath10k *ar)
+>>>>>>> +{
+>>>>>>> + int ret;
+>>>>>>> +
+>>>>>>> + if (ar->hw_params.led_pin == 0)
+>>>>>>> +         /* leds not supported */
+>>>>>>> +         return 0;
+>>>>>>> +
+>>>>>>> + snprintf(ar->leds.label, sizeof(ar->leds.label), "ath10k-%s",
+>>>>>>> +          wiphy_name(ar->hw->wiphy));
+>>>>>>> + ar->leds.wifi_led.active_low = 1;
+>>>>>>> + ar->leds.wifi_led.gpio = ar->hw_params.led_pin;
+>>>>>>> + ar->leds.wifi_led.name = ar->leds.label;
+>>>>>>> + ar->leds.wifi_led.default_state = LEDS_GPIO_DEFSTATE_KEEP;
+>>>>>>> +
+>>>>>>> + ar->leds.cdev.name = ar->leds.label;
+>>>>>>> + ar->leds.cdev.brightness_set_blocking = ath10k_leds_set_brightness_blocking;
+>>>>>>> +
+>>>>>>> + /* FIXME: this assignment doesn't make sense as it's NULL, remove it? */
+>>>>>>> + ar->leds.cdev.default_trigger = ar->leds.wifi_led.default_trigger;
+>>>>>> But what to do with this FIXME?
+>>>>>>
+>>>>> It was pushed by you in v13.
+>>>>>
+>>>>> I could be wrong but your idea was to prepare for future support of
+>>>>> other patch that would set the default_trigger to the mac80211 tpt.
+>>>>>
+>>>>> We might got both confused by default_trigger and default_state.
+>>>>> default_trigger is actually never set and is NULL (actually it's 0)
+>>>>>
+>>>>> We have other 2 patch that adds tpt rates for the mac80211 LED trigger
+>>>>> and set this trigger as the default one but honestly I would chose a
+>>>>> different implementation than hardcoding everything.
+>>>>>
+>>>>> If it's ok for you, I would drop the comment and the default_trigger and
+>>>>> I will send a follow-up patch to this adding DT support by using
+>>>>> led_classdev_register_ext and defining init_data.
+>>>>> (and this indirectly would permit better LED naming and defining of
+>>>>> default-trigger in DT)
+>>>>>
+>>>>> Also ideally I will also send a patch for default_state following
+>>>>> standard LED implementation. (to set default_state in DT)
+>>>>>
+>>>>> I would prefer this approach as the LED patch already took way too much
+>>>>> time and I think it's better to merge this initial version and then
+>>>>> improve it.
+>>>> If you want to check out I attached the 2 patch (one dt-bindings and the
+>>>> one for the code) that I will submit when this will be merged (the
+>>>> change is with the assumption that the FIXME line is dropped)
+>>>>
+>>>> Tested and works correctly with my use case of wifi card attached with
+>>>> pcie. This implementation permits to declare the default trigger in DT
+>>>> instead of hardcoding.
+>>>>
+>>> Any news with this? Did I notice the LEDs patch are still in pending...
+>> Sorry for the delay but finally I looked at this again. I decided to
+>> just remove the fixme and otherwise it looks good for me. Please check
+>> my changes:
+>>
+>> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=688130a66ed49f20ca0ce02c3987f6a474f7c93a
+>>
+> All ok for me, Just I notice the ATH10K_LEDS is not exposed anymore? Is
+> that intended?
 >
-> The chips affected are:
->  QCA6390 hw2.0
->  WCN6855 hw2.0
->  WCN6855 hw2.1
-> Other chips are not affected.
->
-> For affected chips, remove radar_detect_widths because now
-> num_different_channels is set to 2. radar_detect_widths can
-> be set only when num_different_channels is 1. See mac80211
-> function wiphy_verify_combinations for details.
->
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ=
-_LITE-3
+> Aside from this very happy that we are finally finishing with this long
+> lasting feature!
 
-Hi Carl,
+since ATH10K_LEDS is no exposed option anymore. how is this feature 
+enabled then? Its not selected by any dependency
 
-Unfortunately this commit breaks wifi on a QCM6490 smartphone
-(qcm6490-fairphone-fp5) and makes the board crash.
-
-Reverting this commit (plus for conflict resolution 5dc9d1a55e95 ("wifi:
-ath11k: add support for QCA2066") and 24395ec11707 ("wifi: ath11k:
-provide address list if chip supports 2 stations")) makes wifi work
-again.
-
-Here's the crash log:
-
-[   43.458118] ath11k 17a10040.wifi: Adding to iommu group 11
-[   43.459075] ath11k 17a10040.wifi: wcn6750 hw1.0
-[   43.461219] remoteproc remoteproc2: powering up 8a00000.remoteproc
-[   43.490363] remoteproc remoteproc2: Booting fw image qcom/qcm6490/fairph=
-one5/wpss.mbn, size 7435056
-[   43.614039] remoteproc remoteproc2: remote processor 8a00000.remoteproc =
-is now up
-[   43.746227] ath11k 17a10040.wifi: chip_id 0x1 chip_family 0xb board_id 0=
-xff soc_id 0xffffffff
-[   43.746262] ath11k 17a10040.wifi: fw_version 0x1011855b fw_build_timesta=
-mp 2023-09-03 07:43 fw_build_id WLAN.MSL.1.0.1-01371-QCAMSLSWPLZ-1
-[   53.116443] qcom_q6v5_pas 8a00000.remoteproc: fatal error received: cmno=
-s_thread.c:4645:Asserted in cmnos_allocram.c:cmnos_allocram_base_with_align=
-ment_recurse:497 with Args:0x3,0x3,0x0
-[   53.116503] remoteproc remoteproc2: crash detected in 8a00000.remoteproc=
-: type fatal error
-[   53.116734] remoteproc remoteproc2: handling crash #1 in 8a00000.remotep=
-roc
-[   53.116749] remoteproc remoteproc2: recovering 8a00000.remoteproc
-[   53.125088] ath11k 17a10040.wifi: failed to send WMI_PDEV_SET_PARAM cmd
-[   53.125116] ath11k 17a10040.wifi: failed to enable PMF QOS: (-108
-[   53.125167] remoteproc remoteproc2: stopped remote processor 8a00000.rem=
-oteproc
-[   53.127827] ath11k 17a10040.wifi: failed to send WMI_PDEV_SET_PARAM cmd
-[   53.127848] ath11k 17a10040.wifi: failed to enable PMF QOS: (-108
-[   53.258990] remoteproc remoteproc2: remote processor 8a00000.remoteproc =
-is now up
-[   53.390288] ath11k 17a10040.wifi: chip_id 0x1 chip_family 0xb board_id 0=
-xff soc_id 0xffffffff
-[   53.390319] ath11k 17a10040.wifi: fw_version 0x1011855b fw_build_timesta=
-mp 2023-09-03 07:43 fw_build_id WLAN.MSL.1.0.1-01371-QCAMSLSWPLZ-1
-[   53.404765] ath11k 17a10040.wifi: Last interrupt received for each CE:
-[   53.404789] ath11k 17a10040.wifi: CE_id 0 pipe_num 0 580ms before
-[   53.404804] ath11k 17a10040.wifi: CE_id 1 pipe_num 1 476ms before
-[   53.404818] ath11k 17a10040.wifi: CE_id 2 pipe_num 2 476ms before
-[   53.404831] ath11k 17a10040.wifi: CE_id 3 pipe_num 3 580ms before
-[   53.404844] ath11k 17a10040.wifi: CE_id 5 pipe_num 5 4294720700ms before
-[   53.404858] ath11k 17a10040.wifi: CE_id 7 pipe_num 7 4294720700ms before
-[   53.404871] ath11k 17a10040.wifi: CE_id 8 pipe_num 8 4294720700ms before
-[   53.404883] ath11k 17a10040.wifi:=20
-               Last interrupt received for each group:
-[   53.404894] ath11k 17a10040.wifi: group_id 0 4294720700ms before
-[   53.404907] ath11k 17a10040.wifi: group_id 1 4294720700ms before
-[   53.404918] ath11k 17a10040.wifi: group_id 2 4294720700ms before
-[   53.404929] ath11k 17a10040.wifi: group_id 3 4294720700ms before
-[   53.404940] ath11k 17a10040.wifi: group_id 4 4294720700ms before
-[   53.404952] ath11k 17a10040.wifi: group_id 5 4294720700ms before
-[   53.404964] ath11k 17a10040.wifi: group_id 6 4294720700ms before
-[   53.404976] ath11k 17a10040.wifi: group_id 7 4294720700ms before
-[   53.404987] ath11k 17a10040.wifi: group_id 8 4294720700ms before
-[   53.404998] ath11k 17a10040.wifi: group_id 9 4294720700ms before
-[   53.405009] ath11k 17a10040.wifi: group_id 10 4294720700ms before
-[   53.405021] ath11k 17a10040.wifi: dst srng id 0 tp 0, cur hp 0, cached h=
-p 0 last hp 0 napi processed before 4294720700ms
-[   53.405037] ath11k 17a10040.wifi: dst srng id 1 tp 0, cur hp 0, cached h=
-p 0 last hp 0 napi processed before 4294720700ms
-[   53.405052] ath11k 17a10040.wifi: dst srng id 2 tp 0, cur hp 0, cached h=
-p 0 last hp 0 napi processed before 4294720700ms
-[   53.405066] ath11k 17a10040.wifi: dst srng id 3 tp 0, cur hp 0, cached h=
-p 0 last hp 0 napi processed before 4294720700ms
-[   53.405082] ath11k 17a10040.wifi: dst srng id 4 tp 0, cur hp 0, cached h=
-p 0 last hp 0 napi processed before 4294720700ms
-[   53.405097] ath11k 17a10040.wifi: src srng id 5 hp 0, reap_hp 248, cur t=
-p 0, cached tp 0 last tp 0 napi processed before 4294720700ms
-[   53.405114] ath11k 17a10040.wifi: src srng id 8 hp 0, reap_hp 2550, cur =
-tp 0, cached tp 0 last tp 0 napi processed before 4294720700ms
-[   53.405130] ath11k 17a10040.wifi: dst srng id 9 tp 0, cur hp 0, cached h=
-p 0 last hp 0 napi processed before 4294720700ms
-[   53.405145] ath11k 17a10040.wifi: src srng id 16 hp 0, reap_hp 16376, cu=
-r tp 0, cached tp 0 last tp 0 napi processed before 4294720700ms
-[   53.405162] ath11k 17a10040.wifi: src srng id 17 hp 0, reap_hp 16376, cu=
-r tp 0, cached tp 0 last tp 0 napi processed before 4294720700ms
-[   53.405179] ath11k 17a10040.wifi: src srng id 18 hp 0, reap_hp 16376, cu=
-r tp 0, cached tp 0 last tp 0 napi processed before 4294720700ms
-[   53.405196] ath11k 17a10040.wifi: src srng id 24 hp 0, reap_hp 248, cur =
-tp 0, cached tp 0 last tp 0 napi processed before 4294720700ms
-[   53.405213] ath11k 17a10040.wifi: dst srng id 25 tp 0, cur hp 0, cached =
-hp 0 last hp 0 napi processed before 4294720700ms
-[   53.405228] ath11k 17a10040.wifi: src srng id 32 hp 12, reap_hp 8, cur t=
-p 12, cached tp 12 last tp 8 napi processed before 580ms
-[   53.405244] ath11k 17a10040.wifi: src srng id 35 hp 4, reap_hp 0, cur tp=
- 4, cached tp 4 last tp 0 napi processed before 580ms
-[   53.405260] ath11k 17a10040.wifi: src srng id 36 hp 20, reap_hp 0, cur t=
-p 20, cached tp 12 last tp 12 napi processed before 460ms
-[   53.405276] ath11k 17a10040.wifi: src srng id 39 hp 0, reap_hp 124, cur =
-tp 0, cached tp 0 last tp 0 napi processed before 4294720700ms
-[   53.405294] ath11k 17a10040.wifi: src srng id 57 hp 1022, reap_hp 1022, =
-cur tp 2, cached tp 2 last tp 2 napi processed before 476ms
-[   53.405310] ath11k 17a10040.wifi: src srng id 58 hp 18, reap_hp 18, cur =
-tp 22, cached tp 22 last tp 22 napi processed before 476ms
-[   53.405327] ath11k 17a10040.wifi: src srng id 61 hp 1020, reap_hp 1020, =
-cur tp 0, cached tp 0 last tp 0 napi processed before 584ms
-[   53.405345] ath11k 17a10040.wifi: dst srng id 81 tp 4, cur hp 4, cached =
-hp 4 last hp 4 napi processed before 476ms
-[   53.405361] ath11k 17a10040.wifi: dst srng id 82 tp 44, cur hp 44, cache=
-d hp 44 last hp 44 napi processed before 476ms
-[   53.405378] ath11k 17a10040.wifi: dst srng id 85 tp 0, cur hp 0, cached =
-hp 0 last hp 0 napi processed before 4294720700ms
-[   53.405394] ath11k 17a10040.wifi: src srng id 104 hp 65532, reap_hp 6553=
-2, cur tp 0, cached tp 0 last tp 0 napi processed before 588ms
-[   53.405411] ath11k 17a10040.wifi: src srng id 105 hp 0, reap_hp 504, cur=
- tp 0, cached tp 0 last tp 0 napi processed before 4294720700ms
-[   53.405427] ath11k 17a10040.wifi: dst srng id 106 tp 0, cur hp 0, cached=
- hp 0 last hp 0 napi processed before 4294720700ms
-[   53.405443] ath11k 17a10040.wifi: dst srng id 108 tp 0, cur hp 0, cached=
- hp 0 last hp 0 napi processed before 4294720700ms
-[   53.405458] ath11k 17a10040.wifi: dst srng id 109 tp 0, cur hp 0, cached=
- hp 0 last hp 0 napi processed before 4294720700ms
-[   53.405474] ath11k 17a10040.wifi: dst srng id 110 tp 0, cur hp 0, cached=
- hp 0 last hp 0 napi processed before 4294720700ms
-[   53.405491] ath11k 17a10040.wifi: src srng id 128 hp 8190, reap_hp 8190,=
- cur tp 0, cached tp 0 last tp 0 napi processed before 464ms
-[   53.405507] ath11k 17a10040.wifi: src srng id 129 hp 0, reap_hp 2046, cu=
-r tp 0, cached tp 0 last tp 0 napi processed before 4294720700ms
-[   53.405525] ath11k 17a10040.wifi: src srng id 132 hp 2046, reap_hp 2046,=
- cur tp 0, cached tp 0 last tp 0 napi processed before 460ms
-[   53.405542] ath11k 17a10040.wifi: dst srng id 133 tp 0, cur hp 0, cached=
- hp 0 last hp 0 napi processed before 4294720700ms
-[   53.747641] qcom_q6v5_pas 8a00000.remoteproc: fatal error received: plat=
-form_msl.c:513:PCIE ACMT error debug0 0x6030, debug1 0x101
-[   53.747677] remoteproc remoteproc2: crash detected in 8a00000.remoteproc=
-: type fatal error
-[   53.747864] remoteproc remoteproc2: handling crash #2 in 8a00000.remotep=
-roc
-[   53.747875] remoteproc remoteproc2: recovering 8a00000.remoteproc
-[   53.758632] remoteproc remoteproc2: stopped remote processor 8a00000.rem=
-oteproc
-[   53.886889] remoteproc remoteproc2: remote processor 8a00000.remoteproc =
-is now up
-[   54.017475] ath11k 17a10040.wifi: chip_id 0x1 chip_family 0xb board_id 0=
-xff soc_id 0xffffffff
-[   54.017505] ath11k 17a10040.wifi: fw_version 0x1011855b fw_build_timesta=
-mp 2023-09-03 07:43 fw_build_id WLAN.MSL.1.0.1-01371-QCAMSLSWPLZ-1
-[   54.027605] ath11k 17a10040.wifi: Last interrupt received for each CE:
-[   54.027627] ath11k 17a10040.wifi: CE_id 0 pipe_num 0 1204ms before
-[   54.027642] ath11k 17a10040.wifi: CE_id 1 pipe_num 1 1100ms before
-[   54.027655] ath11k 17a10040.wifi: CE_id 2 pipe_num 2 1100ms before
-[   54.027667] ath11k 17a10040.wifi: CE_id 3 pipe_num 3 1204ms before
-[   54.027680] ath11k 17a10040.wifi: CE_id 5 pipe_num 5 4294721324ms before
-[   54.027692] ath11k 17a10040.wifi: CE_id 7 pipe_num 7 4294721324ms before
-[   54.027704] ath11k 17a10040.wifi: CE_id 8 pipe_num 8 4294721324ms before
-[   54.027716] ath11k 17a10040.wifi:=20
-               Last interrupt received for each group:
-[   54.027726] ath11k 17a10040.wifi: group_id 0 4294721324ms before
-[   54.027738] ath11k 17a10040.wifi: group_id 1 4294721324ms before
-[   54.027749] ath11k 17a10040.wifi: group_id 2 4294721324ms before
-[   54.027760] ath11k 17a10040.wifi: group_id 3 4294721324ms before
-[   54.027771] ath11k 17a10040.wifi: group_id 4 4294721324ms before
-[   54.027782] ath11k 17a10040.wifi: group_id 5 4294721324ms before
-[   54.027794] ath11k 17a10040.wifi: group_id 6 4294721324ms before
-[   54.027805] ath11k 17a10040.wifi: group_id 7 4294721324ms before
-[   54.027816] ath11k 17a10040.wifi: group_id 8 4294721324ms before
-[   54.027827] ath11k 17a10040.wifi: group_id 9 4294721324ms before
-[   54.027838] ath11k 17a10040.wifi: group_id 10 4294721324ms before
-[   54.027850] ath11k 17a10040.wifi: dst srng id 4 tp 0, cur hp 0, cached h=
-p 0 last hp 0 napi processed before 4294721324ms
-[   54.027866] ath11k 17a10040.wifi: src srng id 5 hp 0, reap_hp 248, cur t=
-p 0, cached tp 0 last tp 0 napi processed before 4294721324ms
-[   54.027882] ath11k 17a10040.wifi: src srng id 8 hp 0, reap_hp 2550, cur =
-tp 0, cached tp 0 last tp 0 napi processed before 4294721324ms
-[   54.027898] ath11k 17a10040.wifi: dst srng id 9 tp 0, cur hp 0, cached h=
-p 0 last hp 0 napi processed before 4294721324ms
-[   54.027914] ath11k 17a10040.wifi: src srng id 16 hp 0, reap_hp 16376, cu=
-r tp 0, cached tp 0 last tp 0 napi processed before 4294721324ms
-[   54.027930] ath11k 17a10040.wifi: src srng id 17 hp 0, reap_hp 16376, cu=
-r tp 0, cached tp 0 last tp 0 napi processed before 4294721324ms
-[   54.027947] ath11k 17a10040.wifi: src srng id 18 hp 0, reap_hp 16376, cu=
-r tp 0, cached tp 0 last tp 0 napi processed before 4294721324ms
-[   54.027964] ath11k 17a10040.wifi: src srng id 24 hp 0, reap_hp 248, cur =
-tp 0, cached tp 0 last tp 0 napi processed before 4294721324ms
-[   54.027980] ath11k 17a10040.wifi: dst srng id 25 tp 0, cur hp 0, cached =
-hp 0 last hp 0 napi processed before 4294721324ms
-[   54.027997] ath11k 17a10040.wifi: src srng id 32 hp 0, reap_hp 60, cur t=
-p 0, cached tp 0 last tp 0 napi processed before 4294721324ms
-[   54.028014] ath11k 17a10040.wifi: src srng id 35 hp 0, reap_hp 124, cur =
-tp 0, cached tp 0 last tp 0 napi processed before 4294721324ms
-[   54.028030] ath11k 17a10040.wifi: src srng id 36 hp 0, reap_hp 8188, cur=
- tp 0, cached tp 0 last tp 0 napi processed before 4294721324ms
-[   54.028045] ath11k 17a10040.wifi: src srng id 39 hp 0, reap_hp 124, cur =
-tp 0, cached tp 0 last tp 0 napi processed before 4294721324ms
-[   54.028063] ath11k 17a10040.wifi: src srng id 57 hp 1020, reap_hp 1020, =
-cur tp 0, cached tp 0 last tp 0 napi processed before 440ms
-[   54.028079] ath11k 17a10040.wifi: src srng id 58 hp 1020, reap_hp 1020, =
-cur tp 0, cached tp 0 last tp 0 napi processed before 436ms
-[   54.028095] ath11k 17a10040.wifi: src srng id 61 hp 1020, reap_hp 1020, =
-cur tp 0, cached tp 0 last tp 0 napi processed before 436ms
-[   54.028112] ath11k 17a10040.wifi: dst srng id 81 tp 0, cur hp 0, cached =
-hp 0 last hp 0 napi processed before 4294721324ms
-[   54.028128] ath11k 17a10040.wifi: dst srng id 82 tp 0, cur hp 0, cached =
-hp 0 last hp 0 napi processed before 4294721324ms
-[   54.028143] ath11k 17a10040.wifi: dst srng id 85 tp 0, cur hp 0, cached =
-hp 0 last hp 0 napi processed before 4294721324ms
-[   54.028160] ath11k 17a10040.wifi: src srng id 104 hp 65532, reap_hp 6553=
-2, cur tp 0, cached tp 0 last tp 0 napi processed before 448ms
-[   54.028177] ath11k 17a10040.wifi: src srng id 105 hp 0, reap_hp 504, cur=
- tp 0, cached tp 0 last tp 0 napi processed before 4294721324ms
-[   54.028194] ath11k 17a10040.wifi: dst srng id 106 tp 0, cur hp 0, cached=
- hp 0 last hp 0 napi processed before 4294721324ms
-[   54.028210] ath11k 17a10040.wifi: dst srng id 108 tp 0, cur hp 0, cached=
- hp 0 last hp 0 napi processed before 4294721324ms
-[   54.028226] ath11k 17a10040.wifi: dst srng id 109 tp 0, cur hp 0, cached=
- hp 0 last hp 0 napi processed before 4294721324ms
-[   54.028242] ath11k 17a10040.wifi: dst srng id 110 tp 0, cur hp 0, cached=
- hp 0 last hp 0 napi processed before 4294721324ms
-[   54.622819] ath11k 17a10040.wifi: failed to receive control response com=
-pletion, polling..
-[   55.646232] ath11k 17a10040.wifi: ctl_resp never came in (-110)
-[   55.646259] ath11k 17a10040.wifi: failed to connect to HTC: -110
-[   55.653201] ath11k 17a10040.wifi: failed to start core: -110
-
-
-Let me know if you need any more information.
-
-Regards
-Luca
+Sebastian
 
 >
-> Signed-off-by: Carl Huang <quic_cjhuang@quicinc.com>
-> ---
->  drivers/net/wireless/ath/ath11k/core.c | 14 ++++--
->  drivers/net/wireless/ath/ath11k/hw.c   |  2 +-
->  drivers/net/wireless/ath/ath11k/hw.h   |  1 +
->  drivers/net/wireless/ath/ath11k/mac.c  | 62 +++++++++++++++++---------
->  4 files changed, 53 insertions(+), 26 deletions(-)
->
-> diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireles=
-s/ath/ath11k/core.c
-> index bebfd342e28b..739a8d13d57d 100644
-> --- a/drivers/net/wireless/ath/ath11k/core.c
-> +++ b/drivers/net/wireless/ath/ath11k/core.c
-> @@ -120,6 +120,7 @@ static const struct ath11k_hw_params ath11k_hw_params=
-[] =3D {
->  		.tcl_ring_retry =3D true,
->  		.tx_ring_size =3D DP_TCL_DATA_RING_SIZE,
->  		.smp2p_wow_exit =3D false,
-> +		.support_dual_stations =3D false,
->  	},
->  	{
->  		.hw_rev =3D ATH11K_HW_IPQ6018_HW10,
-> @@ -202,6 +203,7 @@ static const struct ath11k_hw_params ath11k_hw_params=
-[] =3D {
->  		.tx_ring_size =3D DP_TCL_DATA_RING_SIZE,
->  		.smp2p_wow_exit =3D false,
->  		.support_fw_mac_sequence =3D false,
-> +		.support_dual_stations =3D false,
->  	},
->  	{
->  		.name =3D "qca6390 hw2.0",
-> @@ -251,7 +253,7 @@ static const struct ath11k_hw_params ath11k_hw_params=
-[] =3D {
->  		.cold_boot_calib =3D false,
->  		.cbcal_restart_fw =3D false,
->  		.fw_mem_mode =3D 0,
-> -		.num_vdevs =3D 16 + 1,
-> +		.num_vdevs =3D 2 + 1,
->  		.num_peers =3D 512,
->  		.supports_suspend =3D true,
->  		.hal_desc_sz =3D sizeof(struct hal_rx_desc_ipq8074),
-> @@ -286,6 +288,7 @@ static const struct ath11k_hw_params ath11k_hw_params=
-[] =3D {
->  		.tx_ring_size =3D DP_TCL_DATA_RING_SIZE,
->  		.smp2p_wow_exit =3D false,
->  		.support_fw_mac_sequence =3D true,
-> +		.support_dual_stations =3D true,
->  	},
->  	{
->  		.name =3D "qcn9074 hw1.0",
-> @@ -367,6 +370,7 @@ static const struct ath11k_hw_params ath11k_hw_params=
-[] =3D {
->  		.tx_ring_size =3D DP_TCL_DATA_RING_SIZE,
->  		.smp2p_wow_exit =3D false,
->  		.support_fw_mac_sequence =3D false,
-> +		.support_dual_stations =3D false,
->  	},
->  	{
->  		.name =3D "wcn6855 hw2.0",
-> @@ -416,7 +420,7 @@ static const struct ath11k_hw_params ath11k_hw_params=
-[] =3D {
->  		.cold_boot_calib =3D false,
->  		.cbcal_restart_fw =3D false,
->  		.fw_mem_mode =3D 0,
-> -		.num_vdevs =3D 16 + 1,
-> +		.num_vdevs =3D 2 + 1,
->  		.num_peers =3D 512,
->  		.supports_suspend =3D true,
->  		.hal_desc_sz =3D sizeof(struct hal_rx_desc_wcn6855),
-> @@ -451,6 +455,7 @@ static const struct ath11k_hw_params ath11k_hw_params=
-[] =3D {
->  		.tx_ring_size =3D DP_TCL_DATA_RING_SIZE,
->  		.smp2p_wow_exit =3D false,
->  		.support_fw_mac_sequence =3D true,
-> +		.support_dual_stations =3D true,
->  	},
->  	{
->  		.name =3D "wcn6855 hw2.1",
-> @@ -498,7 +503,7 @@ static const struct ath11k_hw_params ath11k_hw_params=
-[] =3D {
->  		.cold_boot_calib =3D false,
->  		.cbcal_restart_fw =3D false,
->  		.fw_mem_mode =3D 0,
-> -		.num_vdevs =3D 16 + 1,
-> +		.num_vdevs =3D 2 + 1,
->  		.num_peers =3D 512,
->  		.supports_suspend =3D true,
->  		.hal_desc_sz =3D sizeof(struct hal_rx_desc_wcn6855),
-> @@ -533,6 +538,7 @@ static const struct ath11k_hw_params ath11k_hw_params=
-[] =3D {
->  		.tx_ring_size =3D DP_TCL_DATA_RING_SIZE,
->  		.smp2p_wow_exit =3D false,
->  		.support_fw_mac_sequence =3D true,
-> +		.support_dual_stations =3D true,
->  	},
->  	{
->  		.name =3D "wcn6750 hw1.0",
-> @@ -613,6 +619,7 @@ static const struct ath11k_hw_params ath11k_hw_params=
-[] =3D {
->  		.tx_ring_size =3D DP_TCL_DATA_RING_SIZE_WCN6750,
->  		.smp2p_wow_exit =3D true,
->  		.support_fw_mac_sequence =3D true,
-> +		.support_dual_stations =3D false,
->  	},
->  	{
->  		.hw_rev =3D ATH11K_HW_IPQ5018_HW10,
-> @@ -693,6 +700,7 @@ static const struct ath11k_hw_params ath11k_hw_params=
-[] =3D {
->  		.tx_ring_size =3D DP_TCL_DATA_RING_SIZE,
->  		.smp2p_wow_exit =3D false,
->  		.support_fw_mac_sequence =3D false,
-> +		.support_dual_stations =3D false,
->  	},
->  };
-> =20
-> diff --git a/drivers/net/wireless/ath/ath11k/hw.c b/drivers/net/wireless/=
-ath/ath11k/hw.c
-> index d7b5ec6e6904..3b56ba1b8534 100644
-> --- a/drivers/net/wireless/ath/ath11k/hw.c
-> +++ b/drivers/net/wireless/ath/ath11k/hw.c
-> @@ -58,7 +58,7 @@ static void ath11k_hw_wcn6855_tx_mesh_enable(struct ath=
-11k_base *ab,
->  static void ath11k_init_wmi_config_qca6390(struct ath11k_base *ab,
->  					   struct target_resource_config *config)
->  {
-> -	config->num_vdevs =3D 4;
-> +	config->num_vdevs =3D ab->hw_params.num_vdevs;
->  	config->num_peers =3D 16;
->  	config->num_tids =3D 32;
-> =20
-> diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/=
-ath/ath11k/hw.h
-> index f5533630a7f9..40ed5608fe81 100644
-> --- a/drivers/net/wireless/ath/ath11k/hw.h
-> +++ b/drivers/net/wireless/ath/ath11k/hw.h
-> @@ -225,6 +225,7 @@ struct ath11k_hw_params {
->  	u32 tx_ring_size;
->  	bool smp2p_wow_exit;
->  	bool support_fw_mac_sequence;
-> +	bool support_dual_stations;
->  };
-> =20
->  struct ath11k_hw_ops {
-> diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless=
-/ath/ath11k/mac.c
-> index 8c77ade49437..3a9494bc944c 100644
-> --- a/drivers/net/wireless/ath/ath11k/mac.c
-> +++ b/drivers/net/wireless/ath/ath11k/mac.c
-> @@ -9287,28 +9287,46 @@ static int ath11k_mac_setup_iface_combinations(st=
-ruct ath11k *ar)
->  		return -ENOMEM;
->  	}
-> =20
-> -	limits[0].max =3D 1;
-> -	limits[0].types |=3D BIT(NL80211_IFTYPE_STATION);
-> -
-> -	limits[1].max =3D 16;
-> -	limits[1].types |=3D BIT(NL80211_IFTYPE_AP);
-> -
-> -	if (IS_ENABLED(CONFIG_MAC80211_MESH) &&
-> -	    ab->hw_params.interface_modes & BIT(NL80211_IFTYPE_MESH_POINT))
-> -		limits[1].types |=3D BIT(NL80211_IFTYPE_MESH_POINT);
-> -
-> -	combinations[0].limits =3D limits;
-> -	combinations[0].n_limits =3D n_limits;
-> -	combinations[0].max_interfaces =3D 16;
-> -	combinations[0].num_different_channels =3D 1;
-> -	combinations[0].beacon_int_infra_match =3D true;
-> -	combinations[0].beacon_int_min_gcd =3D 100;
-> -	combinations[0].radar_detect_widths =3D BIT(NL80211_CHAN_WIDTH_20_NOHT)=
- |
-> -						BIT(NL80211_CHAN_WIDTH_20) |
-> -						BIT(NL80211_CHAN_WIDTH_40) |
-> -						BIT(NL80211_CHAN_WIDTH_80) |
-> -						BIT(NL80211_CHAN_WIDTH_80P80) |
-> -						BIT(NL80211_CHAN_WIDTH_160);
-> +	if (ab->hw_params.support_dual_stations) {
-> +		limits[0].max =3D 2;
-> +		limits[0].types |=3D BIT(NL80211_IFTYPE_STATION);
-> +
-> +		limits[1].max =3D 1;
-> +		limits[1].types |=3D BIT(NL80211_IFTYPE_AP);
-> +		if (IS_ENABLED(CONFIG_MAC80211_MESH) &&
-> +		    ab->hw_params.interface_modes & BIT(NL80211_IFTYPE_MESH_POINT))
-> +			limits[1].types |=3D BIT(NL80211_IFTYPE_MESH_POINT);
-> +
-> +		combinations[0].limits =3D limits;
-> +		combinations[0].n_limits =3D 2;
-> +		combinations[0].max_interfaces =3D ab->hw_params.num_vdevs;
-> +		combinations[0].num_different_channels =3D 2;
-> +		combinations[0].beacon_int_infra_match =3D true;
-> +		combinations[0].beacon_int_min_gcd =3D 100;
-> +	} else {
-> +		limits[0].max =3D 1;
-> +		limits[0].types |=3D BIT(NL80211_IFTYPE_STATION);
-> +
-> +		limits[1].max =3D 16;
-> +		limits[1].types |=3D BIT(NL80211_IFTYPE_AP);
-> +
-> +		if (IS_ENABLED(CONFIG_MAC80211_MESH) &&
-> +		    ab->hw_params.interface_modes & BIT(NL80211_IFTYPE_MESH_POINT))
-> +			limits[1].types |=3D BIT(NL80211_IFTYPE_MESH_POINT);
-> +
-> +		combinations[0].limits =3D limits;
-> +		combinations[0].n_limits =3D 2;
-> +		combinations[0].max_interfaces =3D 16;
-> +		combinations[0].num_different_channels =3D 1;
-> +		combinations[0].beacon_int_infra_match =3D true;
-> +		combinations[0].beacon_int_min_gcd =3D 100;
-> +		combinations[0].radar_detect_widths =3D BIT(NL80211_CHAN_WIDTH_20_NOHT=
-) |
-> +							BIT(NL80211_CHAN_WIDTH_20) |
-> +							BIT(NL80211_CHAN_WIDTH_40) |
-> +							BIT(NL80211_CHAN_WIDTH_80) |
-> +							BIT(NL80211_CHAN_WIDTH_80P80) |
-> +							BIT(NL80211_CHAN_WIDTH_160);
-> +	}
-> =20
->  	ar->hw->wiphy->iface_combinations =3D combinations;
->  	ar->hw->wiphy->n_iface_combinations =3D 1;
-
 
