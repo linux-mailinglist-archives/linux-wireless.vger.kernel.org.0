@@ -1,377 +1,173 @@
-Return-Path: <linux-wireless+bounces-7424-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7426-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CE698C1D93
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 07:08:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 969E88C1DD0
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 07:46:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13447281810
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 05:08:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 022D31F21BA3
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 05:46:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 327D915B152;
-	Fri, 10 May 2024 05:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D57D152790;
+	Fri, 10 May 2024 05:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mIGLouoJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bnxDnORN"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79BC6149C6A
-	for <linux-wireless@vger.kernel.org>; Fri, 10 May 2024 05:08:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF213308A
+	for <linux-wireless@vger.kernel.org>; Fri, 10 May 2024 05:46:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715317708; cv=none; b=c2/gnaLVl50l0gmT0CcJp2Ccy9g76ET4LAgaUzNqFkZGqlOL1ee3MFjFiFIIBu80GSSrv8JMRQ1BE12PMnf77Hg5+sh77+d7NzVHjsrZUEQPMe4mWXXq8QpZG37ii1C4zS7wdWeGzB14xPl/8RDTJDpRxqiEr5VrRdSYw2WVjjo=
+	t=1715320014; cv=none; b=RdcQW4hTWItnvj4gmw9trX+PKtYMgvTTuWqLG5wp3BcFM9VlimeTiP2C+GYr7NMC8Xbr6RxvoxJbelXftlG6G03QbWLI5l8dcO5/wpsahwNbX+tx6m5tl3eg7A2X9v42/50cN2EC0fDA8RF08ngaqiiQByBIz7jMQBR2TxNXzU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715317708; c=relaxed/simple;
-	bh=OTPa/ezBkFrYShokGtEOFjt+h2EmWbg8tuFVy1ikhfg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Sax/E3aM4kZJETtThLoV9x78+mAj7pjn2Ngxsv6Lz7fYEFkx/BX00sINxo8MGp3kTh4b4rubwi4Z21vt5cLivEyuH8BAlFvR1lCqa6e09JUjIGi8NVixc/kpUCMLSgmmh2Ke4ZGSeSr9n8hclKdt0UZ3VHXQRT6jDQFZC2o7DDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=mIGLouoJ; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44A2th5W000742;
-	Fri, 10 May 2024 05:08:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding; s=qcppdkim1; bh=ECcDCvk
-	QxXKd5fI3eSu3404fMwi7JW1/XM0h76p03OQ=; b=mIGLouoJq5JG53GnJq16XmO
-	i2FKGUybg02zUReB0b39o32TfHk6IUSMecfZIUnx7XE91mj+TqmW0XkiOvq8qnKs
-	QD47f5UwvY9jlJun/VOgOjMa9/1HaXRgGT2WiTejCpXouqEEkqv4UKhPaqAY+D/J
-	2FUR2dUaptOFDMaME+SFMahLruiaXU2vL+Wq01WcoUJqvlhkYwWUNa4bYNMR0l3u
-	cz/0cNYsBGG8YuMX6rrcrHN+npNZY7675e+VJ7+WaVUUyWjrCTdkcN+HtUpe2/72
-	YmNdTToYtWxYPGi5NDVDbzQq/rNSC0Wf3PAnLGGRZoKQ951be/yv1CZsgZtqh5g=
-	=
-Received: from apblrppmta02.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y16w0rkgj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 May 2024 05:08:14 +0000 (GMT)
-Received: from pps.filterd (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 44A58BC0031867;
-	Fri, 10 May 2024 05:08:11 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 3xwe3krc5g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 May 2024 05:08:11 +0000
-Received: from APBLRPPMTA02.qualcomm.com (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44A58BjT031861;
-	Fri, 10 May 2024 05:08:11 GMT
-Received: from hu-devc-blr-u22-a.qualcomm.com (hu-rgnanase-blr.qualcomm.com [10.190.106.79])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 44A58A7d031856
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 May 2024 05:08:11 +0000
-Received: by hu-devc-blr-u22-a.qualcomm.com (Postfix, from userid 2378837)
-	id 172C741198; Fri, 10 May 2024 10:38:09 +0530 (+0530)
-From: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
-To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org,
-        Ramya Gnanasekar <quic_rgnanase@quicinc.com>
-Subject: [PATCH v2 5/5] wifi: ath12k: Dump additional Tx PDEV HTT stats
-Date: Fri, 10 May 2024 10:38:06 +0530
-Message-Id: <20240510050806.514126-6-quic_rgnanase@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240510050806.514126-1-quic_rgnanase@quicinc.com>
-References: <20240510050806.514126-1-quic_rgnanase@quicinc.com>
+	s=arc-20240116; t=1715320014; c=relaxed/simple;
+	bh=rcPaPnKk+iFn9AnHFer/KKOc36I6qxypoUmBLcXj73g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sGukRxRXgpk7hiKPKygqjGftXipWWrUUsLFbe54BmQW5++DkUUNVAqajyhOOEJkKhhZDZ6hHnVQXGjT5t12I73RmGTAciocBS9HuGTnCKqJHjpPEW/I8h1U4m9REcBszn2GS5c7IDB9Lz05e7zQVOT6LdliyK14mPg3V6o61RMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bnxDnORN; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1715320010; x=1746856010;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=rcPaPnKk+iFn9AnHFer/KKOc36I6qxypoUmBLcXj73g=;
+  b=bnxDnORN4U4xOG8sJ1sG7mI07E2muqKOmbqZ9wBsBhpJUQs4E0yp4I7w
+   Q962J0sJwcu9LAmRlVIH729LlRYjjDcT8PTIUldewaaYH2EzFnyBJ+i1a
+   DBoxocNkpC34JjCEXjfGVdl4NgOIDz42HkOnvpOfLjx1PADULQV9G8drv
+   S3RjNmGMZ1GG4Ucz/y2qaahOaLzbgySO5j8wlcFGr5LXZQMQMdWBi3KnB
+   QjfEDASq00T1i4rqes7Z822UPLXPczfmFA0MpIaRz7909I9ArwhegQMSf
+   aIzazcea2qJzyHOJ6fZjWDWptPxFyl67YZOYxf2/Ks2+tUahNJ/dIstoK
+   Q==;
+X-CSE-ConnectionGUID: dhXkkmZJRDeRLWNl7XF+/Q==
+X-CSE-MsgGUID: Q7wD7y04RCmKCHDZ83i5rg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11068"; a="22680664"
+X-IronPort-AV: E=Sophos;i="6.08,150,1712646000"; 
+   d="scan'208";a="22680664"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2024 22:46:50 -0700
+X-CSE-ConnectionGUID: tqNUfs8FRMedccdK213YrA==
+X-CSE-MsgGUID: MgS7hzvdRU6FJvFuUKLZJQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,150,1712646000"; 
+   d="scan'208";a="60350491"
+Received: from lkp-server01.sh.intel.com (HELO f8b243fe6e68) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 09 May 2024 22:46:48 -0700
+Received: from kbuild by f8b243fe6e68 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1s5J5h-0005mb-2G;
+	Fri, 10 May 2024 05:46:45 +0000
+Date: Fri, 10 May 2024 13:46:02 +0800
+From: kernel test robot <lkp@intel.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, Ping-Ke Shih <pkshih@realtek.com>,
+	Larry Finger <Larry.Finger@lwfinger.net>,
+	Stefan Lippers-Hollmann <s.l-h@gmx.de>,
+	Christian Hewitt <chewitt@libreelec.tv>
+Subject: Re: [PATCH v5 11/11] wifi: rtlwifi: Enable the new rtl8192du driver
+Message-ID: <202405101334.ODz4AccN-lkp@intel.com>
+References: <0fb5c4d9-d43c-4aa2-b483-c0104995fa9e@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: ShGztngfHXhWSIEd20_3rc_wgGW6S_It
-X-Proofpoint-ORIG-GUID: ShGztngfHXhWSIEd20_3rc_wgGW6S_It
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-10_03,2024-05-10_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 bulkscore=0
- malwarescore=0 suspectscore=0 adultscore=0 mlxlogscore=999 phishscore=0
- mlxscore=0 lowpriorityscore=0 clxscore=1015 impostorscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405010000 definitions=main-2405100034
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0fb5c4d9-d43c-4aa2-b483-c0104995fa9e@gmail.com>
 
-Support to dump additional Tx PDEV stats through HTT stats debugfs.
-Following stats dump are supported:
-        1. PDEV control path stat to dump Tx management frame count
-        2. Tx PDEV SIFS histogram stats
-        3. Tx MU MIMO PPDU stats for 802.11ac, 802.11ax and 802.11be
+Hi Bitterblue,
 
-Sample Output:
---------------
-echo 1 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats_type
-cat /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats
-HTT_TX_PDEV_STATS_CMN_TLV:
-mac_id = 0
-comp_delivered = 0
-self_triggers = 13
-......
-......
-HTT_TX_PDEV_STATS_CTRL_PATH_TX_STATS:
-fw_tx_mgmt_subtype =  0:1, 1:0, 2:0, 3:0, 4:38, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:1, 12:0, 13:7, 14:0, 15:0,
+kernel test robot noticed the following build errors:
 
-HTT_TX_PDEV_STATS_SIFS_HIST_TLV:
-sifs_hist_status =  0:237, 1:185, 2:1, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
+[auto build test ERROR on wireless-next/main]
+[also build test ERROR on next-20240509]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-HTT_TX_PDEV_MU_PPDU_DISTRIBUTION_STATS:
-ac_mu_mimo_num_seq_posted_nr4 = 0
-ac_mu_mimo_num_ppdu_posted_per_burst_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
-ac_mu_mimo_num_ppdu_completed_per_burst_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
-ac_mu_mimo_num_seq_term_status_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0,
+url:    https://github.com/intel-lab-lkp/linux/commits/Bitterblue-Smith/wifi-rtlwifi-Add-rtl8192du-table-c-h/20240508-185621
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+patch link:    https://lore.kernel.org/r/0fb5c4d9-d43c-4aa2-b483-c0104995fa9e%40gmail.com
+patch subject: [PATCH v5 11/11] wifi: rtlwifi: Enable the new rtl8192du driver
+config: mips-allyesconfig (https://download.01.org/0day-ci/archive/20240510/202405101334.ODz4AccN-lkp@intel.com/config)
+compiler: mips-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240510/202405101334.ODz4AccN-lkp@intel.com/reproduce)
 
-ac_mu_mimo_num_seq_posted_nr8 = 0
-ac_mu_mimo_num_ppdu_posted_per_burst_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
-ac_mu_mimo_num_ppdu_completed_per_burst_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
-ac_mu_mimo_num_seq_term_status_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0,
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202405101334.ODz4AccN-lkp@intel.com/
 
-ax_mu_mimo_num_seq_posted_nr4 = 0
-ax_mu_mimo_num_ppdu_posted_per_burst_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
-ax_mu_mimo_num_ppdu_completed_per_burst_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
-ax_mu_mimo_num_seq_term_status_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0,
+All errors (new ones prefixed by >>):
 
-ax_mu_mimo_num_seq_posted_nr8 = 0
-ax_mu_mimo_num_ppdu_posted_per_burst_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
-ax_mu_mimo_num_ppdu_completed_per_burst_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
-ax_mu_mimo_num_seq_term_status_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0,
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/fw.o: in function `rtl92d_download_fw':
+>> fw.c:(.text.rtl92d_download_fw+0x0): multiple definition of `rtl92d_download_fw'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/fw.o:fw.c:(.text.rtl92d_download_fw+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.o: in function `rtl92de_set_check_bssid':
+>> hw.c:(.text.rtl92de_set_check_bssid+0x0): multiple definition of `rtl92de_set_check_bssid'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/hw.o:hw.c:(.text.rtl92de_set_check_bssid+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.o: in function `rtl92de_set_network_type':
+>> hw.c:(.text.rtl92de_set_network_type+0x0): multiple definition of `rtl92de_set_network_type'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/hw.o:hw.c:(.text.rtl92de_set_network_type+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.o: in function `rtl92d_linked_set_reg':
+>> hw.c:(.text.rtl92d_linked_set_reg+0x0): multiple definition of `rtl92d_linked_set_reg'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/hw.o:hw.c:(.text.rtl92d_linked_set_reg+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.o: in function `rtl92de_enable_interrupt':
+>> hw.c:(.text.rtl92de_enable_interrupt+0x0): multiple definition of `rtl92de_enable_interrupt'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/hw.o:hw.c:(.text.rtl92de_enable_interrupt+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.o: in function `rtl92de_disable_interrupt':
+>> hw.c:(.text.rtl92de_disable_interrupt+0x0): multiple definition of `rtl92de_disable_interrupt'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/hw.o:hw.c:(.text.rtl92de_disable_interrupt+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.o: in function `rtl92de_set_beacon_related_registers':
+>> hw.c:(.text.rtl92de_set_beacon_related_registers+0x0): multiple definition of `rtl92de_set_beacon_related_registers'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/hw.o:hw.c:(.text.rtl92de_set_beacon_related_registers+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.o: in function `rtl92de_set_beacon_interval':
+>> hw.c:(.text.rtl92de_set_beacon_interval+0x0): multiple definition of `rtl92de_set_beacon_interval'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/hw.o:hw.c:(.text.rtl92de_set_beacon_interval+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.o: in function `rtl92de_update_interrupt_mask':
+>> hw.c:(.text.rtl92de_update_interrupt_mask+0x0): multiple definition of `rtl92de_update_interrupt_mask'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/hw.o:hw.c:(.text.rtl92de_update_interrupt_mask+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/led.o: in function `rtl92de_led_control':
+>> led.c:(.text.rtl92de_led_control+0x0): multiple definition of `rtl92de_led_control'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/led.o:led.c:(.text.rtl92de_led_control+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.o: in function `rtl92d_phy_query_bb_reg':
+>> phy.c:(.text.rtl92d_phy_query_bb_reg+0x0): multiple definition of `rtl92d_phy_query_bb_reg'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.o:phy.c:(.text.rtl92d_phy_query_bb_reg+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.o: in function `rtl92d_phy_set_bb_reg':
+>> phy.c:(.text.rtl92d_phy_set_bb_reg+0x0): multiple definition of `rtl92d_phy_set_bb_reg'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.o:phy.c:(.text.rtl92d_phy_set_bb_reg+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.o: in function `rtl92d_phy_mac_config':
+>> phy.c:(.text.rtl92d_phy_mac_config+0x0): multiple definition of `rtl92d_phy_mac_config'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.o:phy.c:(.text.rtl92d_phy_mac_config+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.o: in function `rtl92d_phy_bb_config':
+>> phy.c:(.text.rtl92d_phy_bb_config+0x0): multiple definition of `rtl92d_phy_bb_config'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.o:phy.c:(.text.rtl92d_phy_bb_config+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.o: in function `rtl92d_phy_rf_config':
+>> phy.c:(.text.rtl92d_phy_rf_config+0x0): multiple definition of `rtl92d_phy_rf_config'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.o:phy.c:(.text.rtl92d_phy_rf_config+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.o: in function `rtl92d_phy_config_rf_with_headerfile':
+>> phy.c:(.text.rtl92d_phy_config_rf_with_headerfile+0x0): multiple definition of `rtl92d_phy_config_rf_with_headerfile'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.o:phy.c:(.text.rtl92d_phy_config_rf_with_headerfile+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.o: in function `rtl92d_phy_set_bw_mode':
+>> phy.c:(.text.rtl92d_phy_set_bw_mode+0x0): multiple definition of `rtl92d_phy_set_bw_mode'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.o:phy.c:(.text.rtl92d_phy_set_bw_mode+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.o: in function `rtl92d_phy_iq_calibrate':
+>> phy.c:(.text.rtl92d_phy_iq_calibrate+0x0): multiple definition of `rtl92d_phy_iq_calibrate'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.o:phy.c:(.text.rtl92d_phy_iq_calibrate+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.o: in function `rtl92d_phy_reload_iqk_setting':
+>> phy.c:(.text.rtl92d_phy_reload_iqk_setting+0x0): multiple definition of `rtl92d_phy_reload_iqk_setting'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.o:phy.c:(.text.rtl92d_phy_reload_iqk_setting+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.o: in function `rtl92d_phy_lc_calibrate':
+>> phy.c:(.text.rtl92d_phy_lc_calibrate+0x0): multiple definition of `rtl92d_phy_lc_calibrate'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.o:phy.c:(.text.rtl92d_phy_lc_calibrate+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.o: in function `rtl92d_phy_ap_calibrate':
+   phy.c:(.text.rtl92d_phy_ap_calibrate+0x0): multiple definition of `rtl92d_phy_ap_calibrate'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.o:phy.c:(.text.rtl92d_phy_ap_calibrate+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.o: in function `rtl92d_phy_set_rf_power_state':
+   phy.c:(.text.rtl92d_phy_set_rf_power_state+0x0): multiple definition of `rtl92d_phy_set_rf_power_state'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.o:phy.c:(.text.rtl92d_phy_set_rf_power_state+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.o: in function `rtl92d_phy_set_poweron':
+   phy.c:(.text.rtl92d_phy_set_poweron+0x0): multiple definition of `rtl92d_phy_set_poweron'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.o:phy.c:(.text.rtl92d_phy_set_poweron+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.o: in function `rtl92d_update_bbrf_configuration':
+   phy.c:(.text.rtl92d_update_bbrf_configuration+0x0): multiple definition of `rtl92d_update_bbrf_configuration'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.o:phy.c:(.text.rtl92d_update_bbrf_configuration+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.o: in function `rtl92d_phy_sw_chnl':
+   phy.c:(.text.rtl92d_phy_sw_chnl+0x0): multiple definition of `rtl92d_phy_sw_chnl'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.o:phy.c:(.text.rtl92d_phy_sw_chnl+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.o: in function `rtl92d_phy_check_poweroff':
+   phy.c:(.text.rtl92d_phy_check_poweroff+0x0): multiple definition of `rtl92d_phy_check_poweroff'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.o:phy.c:(.text.rtl92d_phy_check_poweroff+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/rf.o: in function `rtl92d_phy_enable_anotherphy':
+   rf.c:(.text.rtl92d_phy_enable_anotherphy+0x0): multiple definition of `rtl92d_phy_enable_anotherphy'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/rf.o:rf.c:(.text.rtl92d_phy_enable_anotherphy+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/rf.o: in function `rtl92d_phy_powerdown_anotherphy':
+   rf.c:(.text.rtl92d_phy_powerdown_anotherphy+0x0): multiple definition of `rtl92d_phy_powerdown_anotherphy'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/rf.o:rf.c:(.text.rtl92d_phy_powerdown_anotherphy+0x0): first defined here
+   mips-linux-ld: drivers/net/wireless/realtek/rtlwifi/rtl8192du/rf.o: in function `rtl92d_phy_rf6052_config':
+   rf.c:(.text.rtl92d_phy_rf6052_config+0x0): multiple definition of `rtl92d_phy_rf6052_config'; drivers/net/wireless/realtek/rtlwifi/rtl8192de/rf.o:rf.c:(.text.rtl92d_phy_rf6052_config+0x0): first defined here
 
-be_mu_mimo_num_seq_posted_nr4 = 0
-be_mu_mimo_num_ppdu_posted_per_burst_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
-be_mu_mimo_num_ppdu_completed_per_burst_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
-be_mu_mimo_num_seq_term_status_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0,
-
-be_mu_mimo_num_seq_posted_nr8 = 0
-be_mu_mimo_num_ppdu_posted_per_burst_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
-be_mu_mimo_num_ppdu_completed_per_burst_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
-be_mu_mimo_num_seq_term_status_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0,
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
----
- .../wireless/ath/ath12k/debugfs_htt_stats.c   | 126 ++++++++++++++++++
- .../wireless/ath/ath12k/debugfs_htt_stats.h   |  39 ++++++
- 2 files changed, 165 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-index 0be20e4f4097..b4b58e49c33b 100644
---- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-+++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-@@ -242,6 +242,123 @@ htt_print_tx_pdev_stats_sifs_tlv(const void *tag_buf,
- 	stats_req->buf_len = len;
- }
- 
-+static inline void
-+ath12k_htt_print_tx_pdev_mu_ppdu_dist_stats_tlv(const void *tag_buf,
-+						struct debug_htt_stats_req *stats_req)
-+{
-+	const struct ath12k_htt_tx_pdev_mu_ppdu_dist_stats_tlv *htt_stats_buf = tag_buf;
-+	char *mode;
-+	u8 j, hw_mode, i, str_buf_len;
-+	u8 *buf = stats_req->buf;
-+	u32 len = stats_req->buf_len;
-+	u32 buf_len = ATH12K_HTT_STATS_BUF_SIZE;
-+	u32 stats_value;
-+	u8 max_ppdu = ATH12K_HTT_STATS_MAX_NUM_MU_PPDU_PER_BURST;
-+	u8 max_sched = ATH12K_HTT_STATS_MAX_NUM_SCHED_STATUS;
-+	char str_buf[ATH12K_HTT_MAX_STRING_LEN];
-+
-+	hw_mode = le32_to_cpu(htt_stats_buf->hw_mode);
-+
-+	switch (hw_mode) {
-+	case ATH12K_HTT_STATS_HWMODE_AC:
-+		len += scnprintf(buf + len, buf_len - len,
-+				 "HTT_TX_PDEV_MU_PPDU_DISTRIBUTION_STATS:\n");
-+		mode = "ac";
-+		break;
-+	case ATH12K_HTT_STATS_HWMODE_AX:
-+		mode = "ax";
-+		break;
-+	case ATH12K_HTT_STATS_HWMODE_BE:
-+		mode = "be";
-+		break;
-+	default:
-+		return;
-+	}
-+
-+	for (i = 0; i < ATH12K_HTT_STATS_NUM_NR_BINS ; i++) {
-+		len += scnprintf(buf + len, buf_len - len,
-+				 "%s_mu_mimo_num_seq_posted_nr%u = %u\n", mode,
-+				 ((i + 1) * 4), htt_stats_buf->num_seq_posted[i]);
-+		str_buf_len = 0;
-+		memset(str_buf, 0x0, sizeof(str_buf));
-+		for (j = 0; j < ATH12K_HTT_STATS_MAX_NUM_MU_PPDU_PER_BURST ; j++) {
-+			stats_value = le32_to_cpu(htt_stats_buf->num_ppdu_posted_per_burst
-+						  [i * max_ppdu + j]);
-+			str_buf_len += scnprintf(&str_buf[str_buf_len],
-+						ATH12K_HTT_MAX_STRING_LEN - str_buf_len,
-+						" %u:%u,", j, stats_value);
-+		}
-+		len += scnprintf(buf + len, buf_len - len,
-+				 "%s_mu_mimo_num_ppdu_posted_per_burst_nr%u = %s\n",
-+				 mode, ((i + 1) * 4), str_buf);
-+		str_buf_len = 0;
-+		memset(str_buf, 0x0, sizeof(str_buf));
-+		for (j = 0; j < ATH12K_HTT_STATS_MAX_NUM_MU_PPDU_PER_BURST ; j++) {
-+			stats_value = le32_to_cpu(htt_stats_buf->num_ppdu_cmpl_per_burst
-+						  [i * max_ppdu + j]);
-+			str_buf_len += scnprintf(&str_buf[str_buf_len],
-+						ATH12K_HTT_MAX_STRING_LEN - str_buf_len,
-+						" %u:%u,", j, stats_value);
-+		}
-+		len += scnprintf(buf + len, buf_len - len,
-+				 "%s_mu_mimo_num_ppdu_completed_per_burst_nr%u = %s\n",
-+				 mode, ((i + 1) * 4), str_buf);
-+		str_buf_len = 0;
-+		memset(str_buf, 0x0, sizeof(str_buf));
-+		for (j = 0; j < ATH12K_HTT_STATS_MAX_NUM_SCHED_STATUS ; j++) {
-+			stats_value = le32_to_cpu(htt_stats_buf->num_seq_term_status
-+						  [i * max_sched + j]);
-+			str_buf_len += scnprintf(&str_buf[str_buf_len],
-+						ATH12K_HTT_MAX_STRING_LEN - str_buf_len,
-+						" %u:%u,", j, stats_value);
-+		}
-+		len += scnprintf(buf + len, buf_len - len,
-+				 "%s_mu_mimo_num_seq_term_status_nr%u = %s\n\n",
-+				 mode, ((i + 1) * 4), str_buf);
-+	}
-+
-+	stats_req->buf_len = len;
-+}
-+
-+static inline void
-+ath12k_htt_print_tx_pdev_stats_sifs_hist_tlv(const void *tag_buf,
-+					     u16 tag_len,
-+					     struct debug_htt_stats_req *stats_req)
-+{
-+	const struct ath12k_htt_tx_pdev_stats_sifs_hist_tlv *htt_stats_buf = tag_buf;
-+	u8 *buf = stats_req->buf;
-+	u32 len = stats_req->buf_len;
-+	u32 buf_len = ATH12K_HTT_STATS_BUF_SIZE;
-+	u16 num_elems = min_t(u16, (tag_len >> 2),
-+			      ATH12K_HTT_TX_PDEV_MAX_SIFS_BURST_HIST_STATS);
-+
-+	len += scnprintf(buf + len, buf_len - len,
-+			 "HTT_TX_PDEV_STATS_SIFS_HIST_TLV:\n");
-+
-+	len += print_array_to_buf(buf, len, "sifs_hist_status",
-+				  htt_stats_buf->sifs_hist_status, num_elems);
-+
-+	stats_req->buf_len = len;
-+}
-+
-+static inline void
-+ath12k_htt_print_pdev_ctrl_path_tx_stats_tlv(const void *tag_buf,
-+					     struct debug_htt_stats_req *stats_req)
-+{
-+	const struct ath12k_htt_pdev_ctrl_path_tx_stats_tlv *htt_stats_buf = tag_buf;
-+	u8 *buf = stats_req->buf;
-+	u32 len = stats_req->buf_len;
-+	u32 buf_len = ATH12K_HTT_STATS_BUF_SIZE;
-+
-+	len += scnprintf(buf + len, buf_len - len,
-+			 "HTT_TX_PDEV_STATS_CTRL_PATH_TX_STATS:\n");
-+	len += print_array_to_buf(buf, len, "fw_tx_mgmt_subtype",
-+				 htt_stats_buf->fw_tx_mgmt_subtype,
-+				 ATH12K_HTT_STATS_SUBTYPE_MAX);
-+
-+	stats_req->buf_len = len;
-+}
-+
- static int ath12k_dbg_htt_ext_stats_parse(struct ath12k_base *ab,
- 					  u16 tag, u16 len, const void *tag_buf,
- 					  void *user_data)
-@@ -261,6 +378,15 @@ static int ath12k_dbg_htt_ext_stats_parse(struct ath12k_base *ab,
- 	case HTT_STATS_TX_PDEV_FLUSH_TAG:
- 		htt_print_tx_pdev_stats_flush_tlv(tag_buf, len, stats_req);
- 		break;
-+	case HTT_STATS_TX_PDEV_SIFS_HIST_TAG:
-+		ath12k_htt_print_tx_pdev_stats_sifs_hist_tlv(tag_buf, len, stats_req);
-+		break;
-+	case HTT_STATS_PDEV_CTRL_PATH_TX_STATS_TAG:
-+		ath12k_htt_print_pdev_ctrl_path_tx_stats_tlv(tag_buf, stats_req);
-+		break;
-+	case HTT_STATS_MU_PPDU_DIST_TAG:
-+		ath12k_htt_print_tx_pdev_mu_ppdu_dist_stats_tlv(tag_buf, stats_req);
-+		break;
- 	default:
- 		break;
- 	}
-diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
-index 477ae75f8175..885630fdcb37 100644
---- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
-+++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
-@@ -11,6 +11,8 @@
- #define ATH12K_HTT_STATS_COOKIE_LSB		GENMASK_ULL(31, 0)
- #define ATH12K_HTT_STATS_COOKIE_MSB		GENMASK_ULL(63, 32)
- #define ATH12K_HTT_STATS_MAGIC_VALUE		0xF0F0F0F0
-+#define ATH12K_HTT_STATS_SUBTYPE_MAX		16
-+#define ATH12K_HTT_MAX_STRING_LEN		256
- 
- #define ATH12K_HTT_STATS_RESET_BITMAP32_OFFSET(_idx)	((_idx) & 0x1f)
- #define ATH12K_HTT_STATS_RESET_BITMAP64_OFFSET(_idx)	((_idx) & 0x3f)
-@@ -133,6 +135,9 @@ enum ath12k_dbg_htt_tlv_tag {
- 	HTT_STATS_TX_PDEV_UNDERRUN_TAG			= 1,
- 	HTT_STATS_TX_PDEV_SIFS_TAG			= 2,
- 	HTT_STATS_TX_PDEV_FLUSH_TAG			= 3,
-+	HTT_STATS_TX_PDEV_SIFS_HIST_TAG			= 67,
-+	HTT_STATS_PDEV_CTRL_PATH_TX_STATS_TAG		= 102,
-+	HTT_STATS_MU_PPDU_DIST_TAG			= 129,
- 
- 	HTT_STATS_MAX_TAG,
- };
-@@ -142,6 +147,18 @@ enum ath12k_dbg_htt_tlv_tag {
- #define ATH12K_HTT_TX_PDEV_MAX_SIFS_BURST_STATS		9
- #define ATH12K_HTT_TX_PDEV_MAX_FLUSH_REASON_STATS	150
- 
-+/* MU MIMO distribution stats is a 2-dimensional array
-+ * with dimension one denoting stats for nr4[0] or nr8[1]
-+ */
-+#define ATH12K_HTT_STATS_NUM_NR_BINS			2
-+#define ATH12K_HTT_STATS_MAX_NUM_MU_PPDU_PER_BURST	10
-+#define ATH12K_HTT_TX_PDEV_MAX_SIFS_BURST_HIST_STATS	10
-+#define ATH12K_HTT_STATS_MAX_NUM_SCHED_STATUS		9
-+#define ATH12K_HTT_STATS_NUM_SCHED_STATUS_WORDS		\
-+	(ATH12K_HTT_STATS_NUM_NR_BINS * ATH12K_HTT_STATS_MAX_NUM_SCHED_STATUS)
-+#define ATH12K_HTT_STATS_MU_PPDU_PER_BURST_WORDS	\
-+	(ATH12K_HTT_STATS_NUM_NR_BINS * ATH12K_HTT_STATS_MAX_NUM_MU_PPDU_PER_BURST)
-+
- enum ath12k_htt_tx_pdev_underrun_enum {
- 	HTT_STATS_TX_PDEV_NO_DATA_UNDERRUN		= 0,
- 	HTT_STATS_TX_PDEV_DATA_UNDERRUN_BETWEEN_MPDU	= 1,
-@@ -258,4 +275,26 @@ struct ath12k_htt_tx_pdev_stats_sifs_tlv {
- 	DECLARE_FLEX_ARRAY(__le32, sifs_status);
- } __packed;
- 
-+struct ath12k_htt_pdev_ctrl_path_tx_stats_tlv {
-+	__le32 fw_tx_mgmt_subtype[ATH12K_HTT_STATS_SUBTYPE_MAX];
-+} __packed;
-+
-+struct ath12k_htt_tx_pdev_stats_sifs_hist_tlv {
-+	DECLARE_FLEX_ARRAY(__le32, sifs_hist_status);
-+} __packed;
-+
-+enum ath12k_htt_stats_hw_mode {
-+	ATH12K_HTT_STATS_HWMODE_AC = 0,
-+	ATH12K_HTT_STATS_HWMODE_AX = 1,
-+	ATH12K_HTT_STATS_HWMODE_BE = 2,
-+};
-+
-+struct ath12k_htt_tx_pdev_mu_ppdu_dist_stats_tlv {
-+	__le32 hw_mode;
-+	__le32 num_seq_term_status[ATH12K_HTT_STATS_NUM_SCHED_STATUS_WORDS];
-+	__le32 num_ppdu_cmpl_per_burst[ATH12K_HTT_STATS_MU_PPDU_PER_BURST_WORDS];
-+	__le32 num_seq_posted[ATH12K_HTT_STATS_NUM_NR_BINS];
-+	__le32 num_ppdu_posted_per_burst[ATH12K_HTT_STATS_MU_PPDU_PER_BURST_WORDS];
-+} __packed;
-+
- #endif
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
