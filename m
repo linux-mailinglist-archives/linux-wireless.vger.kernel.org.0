@@ -1,117 +1,104 @@
-Return-Path: <linux-wireless+bounces-7446-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7447-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0967D8C21EE
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 12:19:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD6B38C22B3
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 13:05:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A4AC1C20A6A
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 10:19:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D7ED284743
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 11:05:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2491B168AE9;
-	Fri, 10 May 2024 10:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0077F16D31E;
+	Fri, 10 May 2024 11:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a23nI+g4"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="OUZSqGm1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09392233B;
-	Fri, 10 May 2024 10:18:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D31E150992;
+	Fri, 10 May 2024 11:05:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715336339; cv=none; b=rVLIOR7DJuJ646ujwHJ5fBMgZ/bva+TLIbzSvbvTxhoH4znrBi4uNS1xZ5Yc6mAnwBkZOLbVjRik84wQxWh5+l7J9q8atj+C9FNf+MzDEDU86qdiusJXUWhLEXCMD3rEXOqQgqZkgrKvp8oMSNVFrJV45prHwFJO6P5AXwuE0Uk=
+	t=1715339114; cv=none; b=jYutWZKMr1o9U5W72EO97rCArGWGW88eKNPwDpgcA8FJrgswlPQ/mI+OBT0WHN1hLUGmvvrvdcM6pMqTmEDX9aBtILU5R3EbU/GPlqJC4D6EXzEdfmFU1TcXdjwxe+EFyPPRfmS/1AtOCcT4Xkb2EsqpjJ61aFsRWBYEfZxSdzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715336339; c=relaxed/simple;
-	bh=Yiu+qkyJjBmS6HAy7q+jESZdM+IpPiaNYPekdHCehtE=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=Mn8bCegXRtSDuhrODReTrh/D5s0tzr7ntW4vrQCIiAz0nclj/XXBeKfMpUNHIpdLVZn2L1DfAn8RDCNMf+cVtLxD5bL4AfeGj+78nYRvGyie8Xy2Kjg3UGcyfflCccqqpA77FRd9o6zN2BIxo5SfsaTCstbGs8GjAp7Bsk++JX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a23nI+g4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 573D9C32783;
-	Fri, 10 May 2024 10:18:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715336338;
-	bh=Yiu+qkyJjBmS6HAy7q+jESZdM+IpPiaNYPekdHCehtE=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=a23nI+g4n1oFGG/z7seERI3vuJEHB65S2SinVvd9/DkwNDlh/i8EvTXTsrED695cr
-	 iXJ0hgWJuJ4uNJiHmk37g+XDhLIe+YqJcIlB6126AQhF88h6lvkA5P2LL3+ByQxziA
-	 SL2ce8BMpstt1K08z/XFk5puZLq0J3EVMdm86fkwQWn/VcbcSBO3a1b1MY8vb6is30
-	 THuGraOiNB5pdZ18cjqwIbfUACx0CXqXlZBPQ1Q1RGIGnyZ8ZaVNY3SbXHeOB63dka
-	 0tmUua8EcJH9j3ljGBfPA30Xgxy8sQdGbT7wBNUoNIv+rWYRht4WrJdrFJyRz/1nIX
-	 HSjrtFysFXnHw==
-From: Kalle Valo <kvalo@kernel.org>
-To: "Luca Weiss" <luca.weiss@fairphone.com>
-Cc: "Carl Huang" <quic_cjhuang@quicinc.com>,  <ath11k@lists.infradead.org>,
-  <linux-wireless@vger.kernel.org>,
-    regressions@lists.linux.dev
-Subject: Re: [PATCH 1/2] wifi: ath11k: supports 2 station interfaces
-References: <20230714023801.2621802-1-quic_cjhuang@quicinc.com>
-	<20230714023801.2621802-2-quic_cjhuang@quicinc.com>
-	<D15TIIDIIESY.D1EKKJLZINMA@fairphone.com>
-Date: Fri, 10 May 2024 13:18:55 +0300
-In-Reply-To: <D15TIIDIIESY.D1EKKJLZINMA@fairphone.com> (Luca Weiss's message
-	of "Fri, 10 May 2024 10:22:50 +0200")
-Message-ID: <87jzk2km0g.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1715339114; c=relaxed/simple;
+	bh=tydwP5A3OPrgNyBAKfKX/KIV43KM+TOnhyDYU5r2RY8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NWtJU/0nyB9MJGmOQOIE3Edyi+xEttY0FvH12e3kwzRlRD9AVjwvRxk99JQzDEUB+BCCa6mpgRRdA5MNTJngm6HEVHKX6gK7WuUVGoI9qqgKzwboQlIlP0Q8BwLti8KIN3bXIl58UXvM1hwPSAzaisfLAuDqKrprqZ3mWAM+ezw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=OUZSqGm1; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 2CF7B1FE20;
+	Fri, 10 May 2024 13:05:02 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1715339102;
+	bh=n+vro3UQ/j2LdI39fnWzlmxREsNKNpHEcj7IkmRy0HE=; h=From:To:Subject;
+	b=OUZSqGm1rDswBuxd9yZuLD302EQO6bkAO6NinsrDgIB+xrBCHmi+N/xq6FtbCJmU0
+	 VHMIySZQKQ0LjWRrsqL1rO20m/cu6cVRFzTYZJ2rCQUP/c+J7F43ZR4CGxpMKQNs5f
+	 PJThnA2ywtyi7HCnjUpGXAt4FcvlQt2588X5jIGrus+8L+Q8iDP+D+u3IEixT3ti3p
+	 YZ3+TqiZQGlzo/uOfKJsxRjbxdDTeRi+2mlmrKIzL9GaxJOJW0Mvf9hRKMgaXj9zYN
+	 t4qCAjedETI2sfpVAewmxl4eeu10TOEhxlpumTGacNxu4qVbbWO0t+YNxQ5o69qYV9
+	 vpPoP6bWVkR/A==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Brian Norris <briannorris@chromium.org>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Kalle Valo <kvalo@kernel.org>
+Cc: Rafael Beims <rafael.beims@toradex.com>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	tsung-hsien.hsieh@nxp.com,
+	David Lin <yu-hao.lin@nxp.com>,
+	stable@vger.kernel.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: [PATCH v1] wifi: mwifiex: Fix interface type change
+Date: Fri, 10 May 2024 13:04:58 +0200
+Message-Id: <20240510110458.15475-1-francesco@dolcini.it>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-"Luca Weiss" <luca.weiss@fairphone.com> writes:
+From: Rafael Beims <rafael.beims@toradex.com>
 
-> On Fri Jul 14, 2023 at 4:38 AM CEST, Carl Huang wrote:
->> Add hardware parameter support_dual_stations to indicate
->> whether 2 station interfaces are supported. For chips which
->> support this feature, limit total number of AP interface and
->> mesh point to 1. The max interfaces are 3 for such chips.
->>
->> The chips affected are:
->>  QCA6390 hw2.0
->>  WCN6855 hw2.0
->>  WCN6855 hw2.1
->> Other chips are not affected.
->>
->> For affected chips, remove radar_detect_widths because now
->> num_different_channels is set to 2. radar_detect_widths can
->> be set only when num_different_channels is 1. See mac80211
->> function wiphy_verify_combinations for details.
->>
->> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
->
-> Hi Carl,
->
-> Unfortunately this commit breaks wifi on a QCM6490 smartphone
-> (qcm6490-fairphone-fp5) and makes the board crash.
->
-> Reverting this commit (plus for conflict resolution 5dc9d1a55e95 ("wifi:
-> ath11k: add support for QCA2066") and 24395ec11707 ("wifi: ath11k:
-> provide address list if chip supports 2 stations")) makes wifi work
-> again.
+When changing the interface type we also need to update the bss_num, the
+driver private data is searched based on a unique (bss_type, bss_num)
+tuple, therefore every time bss_type changes, bss_num must also change.
 
-Thanks for the report. So the broken commit is:
+This fixes for example an issue in which, after the mode changed, a
+wireless scan on the changed interface would not finish, leading to
+repeated -EBUSY messages to userspace when other scan requests were
+sent.
 
-f019f4dff2e4 wifi: ath11k: support 2 station interfaces
+Fixes: c606008b7062 ("mwifiex: Properly initialize private structure on interface type changes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Rafael Beims <rafael.beims@toradex.com>
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+---
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-This went into v6.9-rc1 so I'm guessing that WCN6750 support will be
-fully broken in v6.9? Not good. And most likely Linus will release v6.9
-on Sunday so it's too late to get a fix included in the final release.
-
-Carl, can you fix this ASAP? Or should we just revert the broken
-commits?
-
-Adding this to our regression tracking:
-
-#regzbot introduced: f019f4dff2e4 ^
-#regzbot title: ath11k: WCN6750 firmware crashes during initialisation
-
+diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+index b909a7665e9c..155eb0fab12a 100644
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -926,6 +926,8 @@ mwifiex_init_new_priv_params(struct mwifiex_private *priv,
+ 		return -EOPNOTSUPP;
+ 	}
+ 
++	priv->bss_num = mwifiex_get_unused_bss_num(adapter, priv->bss_type);
++
+ 	spin_lock_irqsave(&adapter->main_proc_lock, flags);
+ 	adapter->main_locked = false;
+ 	spin_unlock_irqrestore(&adapter->main_proc_lock, flags);
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.39.2
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
