@@ -1,77 +1,84 @@
-Return-Path: <linux-wireless+bounces-7480-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7481-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B59AF8C274A
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 17:05:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D55B8C2857
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 17:59:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6EA01C215C2
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 15:05:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C9D41C23415
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 15:59:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC7A17106E;
-	Fri, 10 May 2024 15:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3CCE172BDC;
+	Fri, 10 May 2024 15:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nP+gHqxR"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PSofYpy8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE98112C53F
-	for <linux-wireless@vger.kernel.org>; Fri, 10 May 2024 15:05:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCDB171E6A
+	for <linux-wireless@vger.kernel.org>; Fri, 10 May 2024 15:59:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715353542; cv=none; b=MRZotyFMmWyHEzXGVHO32RuyPqxTBJwue8ko2gGSjk3wcGckdx2cQkXg32itcZVCFtshf9P0RKd0BPMLpnYviXC5gNuiQlVgqSj/zlwVzkL8Q2i6EXKxCw+2tbmvFykb6Kov9a7YCVpIS/0cHxoxy0zbkfddmalP3EoB90f9CH8=
+	t=1715356759; cv=none; b=Byg56iNXvVewIsZydMFaGSWPLrb/KrVyRdCIVHf/58Tilblf1eApqlTCJyMk1BxDJLxfi4BoZmr84HPDfHjDeFR7dGHJptubiTzyghUV5ZR1sp4pSEDMTko6HQi1uLH7U8WoNswtgW/27yi2lp9lUgQf36gy6VgrIp60VD0zK1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715353542; c=relaxed/simple;
-	bh=QJaALQV7MbXQwjR8hRV79wji1xck01AMI7+bfXTKIqc=;
+	s=arc-20240116; t=1715356759; c=relaxed/simple;
+	bh=J+92hXnaFjj8CDjvSEIof2zLpu6lXiMuInC1wXs3yNw=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=lFcsmJckLA2+aga00V9ybw1OOT2xtdhdFfLrWmM1jnwbc5J3g/jqqY5wHBFJH3H2Kip00MZIE5kxokB6sF9IbWpsPC9pq4l4/fK/Tr4fp+GH6khjoM2pglS2dO7K7a1iLOAXgIpz2UxZ0uJsDuOOJS7ccxiJiqdzbvl5fgttnRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nP+gHqxR; arc=none smtp.client-ip=209.85.218.54
+	 Content-Disposition; b=MQ5Qp6woTl5993GwtTzGwSZHE9sawDOF/Rj1nH33XZFp7X5NnUysT4c6GvTQKoj/d47KRLTwqfpBQmabpoZpiXO6XHVibri77jTF3KTGWc4JWn9jPj9w6OGDXj4ahjjwSxFElzndbGTkLh+d3wh+dJqigKavdXn9eC9dQEwDeC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PSofYpy8; arc=none smtp.client-ip=209.85.167.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a59a64db066so561296066b.3
-        for <linux-wireless@vger.kernel.org>; Fri, 10 May 2024 08:05:40 -0700 (PDT)
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-51ffff16400so3680949e87.2
+        for <linux-wireless@vger.kernel.org>; Fri, 10 May 2024 08:59:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1715353539; x=1715958339; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1715356755; x=1715961555; darn=vger.kernel.org;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=pNpTMmChh82NLuGK3ZH9f0+BWskXnK3a62sBkKDp8+0=;
-        b=nP+gHqxRSfXzrpAq145WERbBCD3/n890kSHcVSSi7zYi7QLcUuCENRa+YBuJvkqng2
-         AAP/PJ7PPaKWS9c8szFFnFdEIBgmczE++ACvhCJpBB6HDPAE6Ys5UlldiodUXOk+oNwS
-         kICe7CgTAdeHGfeRqvXEN3eIuGurO5fGUD1ZX9fTMZM7+PsbbdTeuxYctzsU/dvQDRZq
-         UUoS05pnjXC6aE5LpLJgQUOE4k8R57sST3o8hUsxv0gkBOLsKLsEFXx6VKLdWNOQrvcn
-         45lLJshmAqTajpCXuOWX7DtMtJcE3wz17upogXoX7x5BNZXy51Z9xXnr1IB/FgNHzM6B
-         p7zA==
+        bh=kaC1FX9IaWOSYR6DDBjH2nZIpL4z+ve32+mPw2UdL5w=;
+        b=PSofYpy8tvGE5zb3ymsZk9L69zp7ezzNQCuG7ObpKZfXzfTeldyQLCfGIuHwu9LhbK
+         7coOwZ/LG5Xfuf9PE8DQOo5gjG8+YBYLR/XKYk8E+B3MbDsxGyRNWo+tgseMVlockNgw
+         i2SjRnv/tU69R7Kv+s7OBUJhwQaaBjxYDM/07SR15Tp+6PevlTqsEb0RTNfNY7joTAdP
+         EVF62fbV2Xnq36R6V9P1bnwgU+D50J+/9RLpn/h/KGZQ+mik1wWRRl107Jm9q2ir/xcc
+         4R3jEnWP6ehvfh6JgXLdnzvIijP3DBmU/+uUJZ+H/HZV+QoNB6+dXe7d3JL+GVI1+P4Q
+         YsJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715353539; x=1715958339;
+        d=1e100.net; s=20230601; t=1715356755; x=1715961555;
         h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pNpTMmChh82NLuGK3ZH9f0+BWskXnK3a62sBkKDp8+0=;
-        b=bS0XQGFIi73Oq1JQeoYydDuifLc653ppc07k3MRWIa4LnaZluTH2mX12EpnW6i67Hm
-         z/vkw/PHFMblMXOd6yIfjPaKU/zoPWGZQYVykKM/Yj/9swnBzbifcMsqJWuk+Arm+GuS
-         oubWfXxKO5JxfD6KIe4tsYUKBkl3nojMHZgtS3bu1RcI9TDgTzgqDX1kEklYa5CY0dlO
-         nXupwW8lqTUg68Zqy2Aokc3InP89NSpszYjbq4uqR62mOJf5bsySTUxLMjVjhw0rIwum
-         bl/hRYsAKbDQI1N48ki7otSQ94mbuG0EsoLonHFiT9SBore0FLQZk7xrtHUVtWY1jipk
-         bNdA==
-X-Gm-Message-State: AOJu0YxX1sITYZa3BIOZbK6xwdczFMWgjv6XNFJfHvkdZxMN191b3+Tz
-	sRlDtP/IUQaK9svI0g/8fgqU4qpW4A611OukUqVu8nUcGyM/NZ7yB5U0/2cHwmBvkQnvjNg5YHn
-	J
-X-Google-Smtp-Source: AGHT+IHa7OZocXWGwXgZYGwxqhRHhseAD29kYbZx9ShqNVaWYVnLzVemZA3M5bPWX1BmfNwBncN7ZQ==
-X-Received: by 2002:a17:906:69d7:b0:a59:c681:6314 with SMTP id a640c23a62f3a-a5a2d5cd7admr178179466b.42.1715353538936;
-        Fri, 10 May 2024 08:05:38 -0700 (PDT)
+        bh=kaC1FX9IaWOSYR6DDBjH2nZIpL4z+ve32+mPw2UdL5w=;
+        b=Lmo624KA+D5xEYdHRZshBrH1DKOc79JLmzatk7jBFcx7J/FqnVkKMMWTTgRtclO0Vb
+         33tFeIb02glqnatBNSfCP12zC3NBy3D4YzeVkSpqQ3NbtP/v4n4ZqMOSeRVPGfcbvE9A
+         3zrlEQB4U8xmiaLQlNCJ60+K/v3SmvJ7Gd4cNNN9ou5bkUvs1DSCz5CSWY/3wFvxVYKv
+         6Kl+P4KbH4mUI9dYPwoqJTXjy88BlM1TVYGjac5xXGyFiKs+Gb2aJ0+gOfAR2zsIskoA
+         TzOtIM37eZak5FOkPgC/9/4NLXUQ8Rg1WdUfYBTGw04aY7PfCcKFntc7yj04mpykaKa7
+         6VnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXCEV29gYqXX83kmsZYIIdtjlBJOKvKv+yoL0ZNsxVZh3AkASnc67NOBxlcYhnxc128vmcxXKG37OYegMuSYJ7/ZAzwed8jt/47aBODEX4=
+X-Gm-Message-State: AOJu0YwJ3MsmqLOn7BZiKZIL45/ix6ziNrsh1fPcOw18ZPzTfHasS0Dd
+	P5dCVtYMVDa5SmghZfJyDrwE+cEsZjoSc6PdPgs+PaNiqAVPvkk3HwBbzVP54C4=
+X-Google-Smtp-Source: AGHT+IEM5bdqaeGgx8w3nkjhWpAJfZyjTMZG+ycwOpy9UjbCyzEqZdbDt8dL5b4mlC40ps7Lrh/MMg==
+X-Received: by 2002:a05:6512:4003:b0:522:221:d19d with SMTP id 2adb3069b0e04-5220fd7bfccmr3137814e87.15.1715356755115;
+        Fri, 10 May 2024 08:59:15 -0700 (PDT)
 Received: from localhost ([102.222.70.76])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a1789247csm189892666b.82.2024.05.10.08.05.38
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a17b0125bsm199199366b.143.2024.05.10.08.59.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 May 2024 08:05:38 -0700 (PDT)
-Date: Fri, 10 May 2024 18:05:35 +0300
+        Fri, 10 May 2024 08:59:14 -0700 (PDT)
+Date: Fri, 10 May 2024 18:59:10 +0300
 From: Dan Carpenter <dan.carpenter@linaro.org>
-To: yedidya.ben.shimol@intel.com
-Cc: linux-wireless@vger.kernel.org
-Subject: [bug report] wifi: iwlwifi: mvm: Block EMLSR when a p2p/softAP vif
- is active
-Message-ID: <c115d43e-9087-407b-832a-9e6925b882ac@moroto.mountain>
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Cc: Kalle Valo <kvalo@kernel.org>, Johannes Berg <johannes.berg@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Avraham Stern <avraham.stern@intel.com>,
+	Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+Subject: [PATCH] wifi: iwlwifi: mvm: fix uninitialized variables in debugfs
+ code
+Message-ID: <466baaa2-4996-4193-b681-d847d181a961@moroto.mountain>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -80,78 +87,37 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
 
-Hello Yedidya Benshimol,
+The sscanf() function doesn't return negatives, it returns the number
+of the number of input items successfully matched.  Fix the error
+checking to avoid some uninitialized variable bugs.
 
-Commit a1efeb823084 ("wifi: iwlwifi: mvm: Block EMLSR when a
-p2p/softAP vif is active") from May 5, 2024 (linux-next), leads to
-the following Smatch static checker warning:
+Fixes: e5bf75dc46e1 ("wifi: iwlwifi: mvm: add a debugfs for (un)blocking EMLSR")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-	drivers/net/wireless/intel/iwlwifi/mvm/time-event.c:1277 iwl_mvm_stop_roc()
-	warn: inconsistent returns '&mvm->mutex'.
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
+index 17c97dfbc62a..88e78c798017 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
+@@ -762,11 +762,9 @@ static ssize_t iwl_dbgfs_esr_disable_reason_write(struct ieee80211_vif *vif,
+ 	struct iwl_mvm *mvm = mvmvif->mvm;
+ 	u32 reason;
+ 	u8 block;
+-	int ret;
+ 
+-	ret = sscanf(buf, "%u %hhu", &reason, &block);
+-	if (ret < 0)
+-		return ret;
++	if (sscanf(buf, "%u %hhu", &reason, &block) != 2)
++		return -EINVAL;
+ 
+ 	if (hweight16(reason) != 1 || !(reason & IWL_MVM_BLOCK_ESR_REASONS))
+ 		return -EINVAL;
+-- 
+2.43.0
 
-drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-    1225 void iwl_mvm_stop_roc(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
-    1226 {
-    1227         struct iwl_mvm_vif *mvmvif;
-    1228         struct iwl_mvm_time_event_data *te_data;
-    1229 
-    1230         mutex_lock(&mvm->mutex);
-    1231 
-    1232         if (fw_has_capa(&mvm->fw->ucode_capa,
-    1233                         IWL_UCODE_TLV_CAPA_SESSION_PROT_CMD)) {
-    1234                 mvmvif = iwl_mvm_vif_from_mac80211(vif);
-    1235                 te_data = &mvmvif->time_event_data;
-    1236 
-    1237                 if (vif->type == NL80211_IFTYPE_P2P_DEVICE) {
-    1238                         if (te_data->id >= SESSION_PROTECT_CONF_MAX_ID) {
-    1239                                 IWL_DEBUG_TE(mvm,
-    1240                                              "No remain on channel event\n");
-    1241                                 return;
-
-Call mutex_unlock(&mvm->mutex) or iwl_mvm_cleanup_roc() before returning?
-
-    1242                         }
-    1243 
-    1244                         iwl_mvm_cancel_session_protection(mvm, vif,
-    1245                                                           te_data->id,
-    1246                                                           te_data->link_id);
-    1247                 } else {
-    1248                         iwl_mvm_roc_station_remove(mvm, mvmvif);
-    1249                 }
-    1250                 goto cleanup_roc;
-    1251         }
-    1252 
-    1253         te_data = iwl_mvm_get_roc_te(mvm);
-    1254         if (!te_data) {
-    1255                 IWL_WARN(mvm, "No remain on channel event\n");
-    1256                 return;
-
-Here too.
-
-    1257         }
-    1258 
-    1259         mvmvif = iwl_mvm_vif_from_mac80211(te_data->vif);
-    1260 
-    1261         if (te_data->vif->type == NL80211_IFTYPE_P2P_DEVICE)
-    1262                 iwl_mvm_remove_time_event(mvm, mvmvif, te_data);
-    1263         else
-    1264                 iwl_mvm_remove_aux_roc_te(mvm, mvmvif, te_data);
-    1265 
-    1266 cleanup_roc:
-    1267         /*
-    1268          * In case we get here before the ROC event started,
-    1269          * (so the status bit isn't set) set it here so iwl_mvm_cleanup_roc will
-    1270          * cleanup things properly
-    1271          */
-    1272         set_bit(vif->type == NL80211_IFTYPE_P2P_DEVICE ?
-    1273                 IWL_MVM_STATUS_ROC_RUNNING : IWL_MVM_STATUS_ROC_AUX_RUNNING,
-    1274                 &mvm->status);
-    1275 
-    1276         /* Mutex is released inside this function */
---> 1277         iwl_mvm_cleanup_roc(mvm);
-    1278 }
-
-regards,
-dan carpenter
 
