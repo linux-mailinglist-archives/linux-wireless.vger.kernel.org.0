@@ -1,69 +1,59 @@
-Return-Path: <linux-wireless+bounces-7458-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7459-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAF4A8C2612
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 15:52:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 591268C2621
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 15:57:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 284B11C2191D
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 13:52:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C6531F2280D
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 13:57:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67E1412CD8F;
-	Fri, 10 May 2024 13:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F47212C49C;
+	Fri, 10 May 2024 13:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CdTIbV3p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HNmFT3id"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D50712C46B;
-	Fri, 10 May 2024 13:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550CE5027F;
+	Fri, 10 May 2024 13:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715349136; cv=none; b=nssW72WKJe7s5AQMjTtpI9Ph2G7n50zDPkwGxELBFHjKK9hbNp60A9Hr+nQnZ+fkMmBxcTGAdO4DYHs9HLlu0QNdXU2UZn2YNsyMtsh4FXaq4+IhcmudMXONWEuRfAFRpmKdEji+kpCSVxFI2B8QfzZRbXWtzn1twDFCQGS+wGM=
+	t=1715349434; cv=none; b=QPB8adnUwWtGvV/ayiFwH1xUhtiWDO5hKuckfrUWjUxfGr8e0LgiaHj35fBas7343VR4cSiBGInM5ZIk9ksr+PxOpYmRZ610PG0bH6jF8q1o7WGLflaHAnW1S+Fjnonrdpwdv4hGOX8VoNmfWCNVhaotWs/04fKFynbSPyyCJog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715349136; c=relaxed/simple;
-	bh=P03mPsNFGR0/RNBmpmCMETYGOpewXcdJhDQnp92x98U=;
+	s=arc-20240116; t=1715349434; c=relaxed/simple;
+	bh=SRZxgrNyAWX83L2b3Fpq/g2RtgbTj4vvYCwVMmud+JA=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=RdToRcoMLJhLFfSeALD9wMw59LWr+hiO6Q14FTRysi/LZzIfSJwN9l3Dwc+wSn1+ifQrXCbPWB+GmpQirR56oCkACHhO3wfA6djQmcFHDHPerrmWqe2rj5ReW8dclXzddCW+mwn4PJbNilPqjWaJjtaPuc5jwdSQTuPMUoWObCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CdTIbV3p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0484C32781;
-	Fri, 10 May 2024 13:52:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gt5roPR8/K2+rUnQwWNHknALn57Ndtx81br7FsEzYiUasG0nhUROYtsHdxWJQvl7YoBnSTIoktgeo178RoeF5l40mUTdWiOghBoJWya2gR6fVHHTN/NnYh6zaEiQfhUpuqCQ3S0fLRAJe8QDWwxFQNqw64q4wo7D/IaxEIvPMck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HNmFT3id; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E710C2BBFC;
+	Fri, 10 May 2024 13:57:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715349135;
-	bh=P03mPsNFGR0/RNBmpmCMETYGOpewXcdJhDQnp92x98U=;
+	s=k20201202; t=1715349433;
+	bh=SRZxgrNyAWX83L2b3Fpq/g2RtgbTj4vvYCwVMmud+JA=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=CdTIbV3p+4e9dZYYzb9p0raW2kJxdErUtvbB2gTyAlJgbePLaNavSF0S+hRtzQvJv
-	 giA7CUdN2YZIOrk7XANyrFY5jsFCDzKxHXQZpHQGR1fp1Rod9/9XPQEuumQYSe1sZA
-	 1nAY/DLONdV+kC3ws88a7/6D5wCLzwQzyIWzG36sWz3EQSt2g6X8RsArbllW9jORcJ
-	 XJjrNAh5Hlv7JwWB+zX/POAWBGZglSTpJ0O8FqsYHc6ZBnHv6wY4owV2OOVdyv2zkx
-	 bXo/67Gzzo878XtRdQDgTa/2OViokNXOj50RP4qPSvGeeXyzfBT1/JPujSSXHzU6ca
-	 WZgiTxD7fU92Q==
+	b=HNmFT3idLNTooLyZJ486hvxgou+od5G9023yjgOVltyGiaE56GRH48CPaDwIA3R2Z
+	 HhaHTK6R42/ngFDoytf2Ur13J1x1BqDZtiIMTzieOdwZLoaHULUPD3tmRmPKBVcvrA
+	 ZY3cT84MF5guo6rmueyeDIUpObpyZ7Zd5GG5aGsyyOQcYkxWuwrK6S09HP5Gna6QJb
+	 yOn3z1bWfvCVCM+sCI4gCd2+kaLAW6GWzQ7X8u1QPpLXCY7d9lN8/rKEGYde39tzyw
+	 XU5BVjuLw/i/hvdUd8XMs1BHuoWE34km7tYbVbB4saaojn3Pm3hIF9dCrpbyyCWAza
+	 E2cZLkIibhWDQ==
 From: Kalle Valo <kvalo@kernel.org>
-To: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: Ansuel Smith <ansuelsmth@gmail.com>,  "David S. Miller"
- <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
- Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,
-  <linux-kernel@vger.kernel.org>,  <ath10k@lists.infradead.org>,
-  <linux-wireless@vger.kernel.org>,  <netdev@vger.kernel.org>,  Sebastian
- Gottschall <s.gottschall@dd-wrt.com>,  Steve deRosier
- <derosier@cal-sierra.com>,  Stefan Lippers-Hollmann <s.l-h@gmx.de>
-Subject: Re: [PATCH v14] ath10k: add LED and GPIO controlling support for
- various chipsets
-References: <20230611080505.17393-1-ansuelsmth@gmail.com>
-	<878rcjbaqs.fsf@kernel.org>
-	<648cdebb.5d0a0220.be7f8.a096@mx.google.com>
-	<648ded2a.df0a0220.b78de.4603@mx.google.com>
-	<CA+_ehUzzVq_sVTgVCM+r=oLp=GNn-6nJRBG=bndJjrRDhCodaw@mail.gmail.com>
-	<87v83nlhb3.fsf@kernel.org>
-	<7585e7c3-8be6-45a6-96b3-ecb4b98b12d8@quicinc.com>
-	<cce2700c-e54f-4a50-b3f0-0b8a82b961a4@quicinc.com>
-Date: Fri, 10 May 2024 16:52:11 +0300
-In-Reply-To: <cce2700c-e54f-4a50-b3f0-0b8a82b961a4@quicinc.com> (Jeff
-	Johnson's message of "Thu, 9 May 2024 09:48:08 -0700")
-Message-ID: <875xvllqpg.fsf@kernel.org>
+To: Carl Huang <quic_cjhuang@quicinc.com>
+Cc: Luca Weiss <luca.weiss@fairphone.com>,  <ath11k@lists.infradead.org>,
+  <linux-wireless@vger.kernel.org>,  <regressions@lists.linux.dev>
+Subject: Re: [PATCH 1/2] wifi: ath11k: supports 2 station interfaces
+References: <20230714023801.2621802-1-quic_cjhuang@quicinc.com>
+	<20230714023801.2621802-2-quic_cjhuang@quicinc.com>
+	<D15TIIDIIESY.D1EKKJLZINMA@fairphone.com> <87jzk2km0g.fsf@kernel.org>
+	<93c15c59-f24c-4472-ae7e-969fd1e3bfec@quicinc.com>
+Date: Fri, 10 May 2024 16:57:10 +0300
+In-Reply-To: <93c15c59-f24c-4472-ae7e-969fd1e3bfec@quicinc.com> (Carl Huang's
+	message of "Fri, 10 May 2024 20:03:28 +0800")
+Message-ID: <871q69lqh5.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -73,36 +63,64 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Jeff Johnson <quic_jjohnson@quicinc.com> writes:
+Carl Huang <quic_cjhuang@quicinc.com> writes:
 
-> On 5/9/2024 9:37 AM, Jeff Johnson wrote:
->> On 5/8/2024 9:50 PM, Kalle Valo wrote:
->>> Sorry for the delay but finally I looked at this again. I decided to
->>> just remove the fixme and otherwise it looks good for me. Please check
->>> my changes:
+> On 2024/5/10 18:18, Kalle Valo wrote:
+>> "Luca Weiss" <luca.weiss@fairphone.com> writes:
+>> 
+>>> On Fri Jul 14, 2023 at 4:38 AM CEST, Carl Huang wrote:
+>>>> Add hardware parameter support_dual_stations to indicate
+>>>> whether 2 station interfaces are supported. For chips which
+>>>> support this feature, limit total number of AP interface and
+>>>> mesh point to 1. The max interfaces are 3 for such chips.
+>>>>
+>>>> The chips affected are:
+>>>>   QCA6390 hw2.0
+>>>>   WCN6855 hw2.0
+>>>>   WCN6855 hw2.1
+>>>> Other chips are not affected.
+>>>>
+>>>> For affected chips, remove radar_detect_widths because now
+>>>> num_different_channels is set to 2. radar_detect_widths can
+>>>> be set only when num_different_channels is 1. See mac80211
+>>>> function wiphy_verify_combinations for details.
+>>>>
+>>>> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
 >>>
->>> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=688130a66ed49f20ca0ce02c3987f6a474f7c93a
+>>> Hi Carl,
 >>>
->> 
->> I have a question about the copyrights in the two new files:
->> + * Copyright (c) 2018-2023, The Linux Foundation. All rights reserved.
->> 
->> My understanding is that Qualcomm's affiliation with Linux Foundation via Code
->> Aurora ended in December 2021, and hence any contributions in 2022-2023 should
->> be the copyright of Qualcomm Innovation Center, Inc.
->> 
->> 
+>>> Unfortunately this commit breaks wifi on a QCM6490 smartphone
+>>> (qcm6490-fairphone-fp5) and makes the board crash.
+>>>
+>>> Reverting this commit (plus for conflict resolution 5dc9d1a55e95 ("wifi:
+>>> ath11k: add support for QCA2066") and 24395ec11707 ("wifi: ath11k:
+>>> provide address list if chip supports 2 stations")) makes wifi work
+>>> again.
+>> Thanks for the report. So the broken commit is:
+>> f019f4dff2e4 wifi: ath11k: support 2 station interfaces
+>> This went into v6.9-rc1 so I'm guessing that WCN6750 support will be
+>> fully broken in v6.9? Not good. And most likely Linus will release v6.9
+>> on Sunday so it's too late to get a fix included in the final release.
+>> Carl, can you fix this ASAP? Or should we just revert the broken
+>> commits?
+>> Adding this to our regression tracking:
+>> #regzbot introduced: f019f4dff2e4 ^
+>> #regzbot title: ath11k: WCN6750 firmware crashes during initialisation
 >
-> ok it seems like Kalle's v13 had:
->  + * Copyright (c) 2018, The Linux Foundation. All rights reserved.
->
-> and Ansuel's v14 has:
->  + * Copyright (c) 2018-2023, The Linux Foundation. All rights reserved.
->
-> So Ansuel, is your work on behalf of The Linux Foundation?
+> Kalle, looks we're not able to fix it before Sunday as I don't have
+> WCN6750 setup to verify the fix.
 
-BTW in the pending branch I can change the copyright back to original so
-no need to resend because of this. But I'll need guidance from Ansuel.
+We are so late in the cycle that we would have to send the fix directly
+to Linus and ask him to apply the fix before he tags the release. I
+prefer that we are on the safe side here and send the fix to v6.10-rc1
+via the usual route (the wireless tree). We get more testing time that
+way.
+
+> The fix could be to define a dedicated function
+> ath11k_init_wmi_config_wcn6750() for WCN6750. I'll send the patch out
+> so others like Luca can have a try.
+
+Thanks for the quick patches!
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
