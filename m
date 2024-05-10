@@ -1,192 +1,166 @@
-Return-Path: <linux-wireless+bounces-7413-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7414-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2590B8C1C63
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 04:27:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33E8E8C1CBE
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 05:06:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF574282EAF
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 02:27:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DA5C1F225B8
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 03:06:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FBCE13B797;
-	Fri, 10 May 2024 02:27:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="YWE2ar88"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37073148FE2;
+	Fri, 10 May 2024 03:05:05 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39E933EE
-	for <linux-wireless@vger.kernel.org>; Fri, 10 May 2024 02:27:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EDEA148844
+	for <linux-wireless@vger.kernel.org>; Fri, 10 May 2024 03:05:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715308025; cv=none; b=FIK/xq8jcGPgf5dFdWnJDxiQ0urhys1av7ZBNWnJ48TTpIS7gOx+cQ4DPo97to0BU169Ri/2bw+muaHnkOA49fJE17It59XKZWOvM5wzyAT5N7RBuAc20AJ5MvLOXdxt4z3tW0b1Gc/CEHwoPDEwUWVS6QERCRaIAOZ6AXatYec=
+	t=1715310305; cv=none; b=PNqja/P8czjWeUVifaTq4PRLh0G8kf5TuukYpuJI9oxDD4wd/JJZYr0A9c5z3UribwVtcc4dWLBt0JtYtBsfabY5BIVVhNCNWh7m/xRsTqVOMQsU6Y7Yok+8QyAY2F+t5FZpYWxWcLYTqr/f0BMc6UJtuxmvXRpPYZYjXqTPcaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715308025; c=relaxed/simple;
-	bh=MlVrxxO0AG/8j5nDgzdVUogzuVSCroog/IeiuHevcFY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=SuZcniZhnbLPj2ad0r6O5tujp3juJiASvk5JsWlAJGiLyUeb72KjxRbt4HjaoIsLGV5FsMn3zgSJQ/TMZhrNgqMCtqxPp7zYfCJ1uYt5rVscooXjGygH03QeNpSIiwiulFVhMJxbpJHmwfoj0uPMJM6Ld2uVg/V07TSmCHcJMIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=YWE2ar88; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44A1Alsm011053;
-	Fri, 10 May 2024 02:26:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=tEodmfjJziCXjegYb0WlKoqu8wX3ySG6oOpOZTf0pXc=; b=YW
-	E2ar88uhI3B609MRKlmn0TQTCtSNsBHIDPhKUos1pD8uQjcwCK+3eO/hUjpnTknn
-	gadd763PLJ+eMJe16KssRqBIdI2CtSxCqyWDz+tBY6iHOX4uBQ4d1xBL7Gw/ALEL
-	eHDp06Tqb7SK7nk01iwOt80EsdfmDAi1vOmkwRxmdbDbDHAxGBZr7IW6hFZcNg4n
-	NiFe4gToAkNdfk/F7cRoowsfxs8DrstDmD4LtXRE02hFi5AcFk/FRLaDVehfy+/0
-	/OHt9o7uy21dqSbBZn7x/6HLXZHjRf4BO+U2vuS1gOy41Iowr/ZfvamFgQpIa8uV
-	2Gf4kbYk7TZLkJnKIRXg==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y16w20c0c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 May 2024 02:26:52 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44A2QpZ7005864
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 May 2024 02:26:51 GMT
-Received: from [10.110.100.57] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 9 May 2024
- 19:26:50 -0700
-Message-ID: <32270967-c1c8-4681-a282-f33defede3fb@quicinc.com>
-Date: Thu, 9 May 2024 19:26:50 -0700
+	s=arc-20240116; t=1715310305; c=relaxed/simple;
+	bh=LtDvyTWO1VGmxv/4fTTohhpQMZw/jIAZin7RAHpgPkw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=iCnSe94RzBVT1XH4daLIbksBQJOIpnXB6wZSfVOsAplY8531z3Xyr8nvGrMjPw5f4WvsPZMzn/6UUtboYBdQhaLw0S2O7vtYu7q1i53yk3rbxUvMa0ihwiiMUEnle1QbNqUIcmcZpW6EuWb93EKXIYl6g5Dq1BvxXHdYagxfSZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 44A34fJ022284420, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 44A34fJ022284420
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 10 May 2024 11:04:41 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 10 May 2024 11:04:42 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 10 May 2024 11:04:41 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
+ 15.01.2507.035; Fri, 10 May 2024 11:04:41 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: Larry Finger <Larry.Finger@lwfinger.net>,
+        Stefan Lippers-Hollmann
+	<s.l-h@gmx.de>,
+        Christian Hewitt <chewitt@libreelec.tv>
+Subject: RE: [PATCH v5 03/11] wifi: rtlwifi: Add rtl8192du/hw.{c,h}
+Thread-Topic: [PATCH v5 03/11] wifi: rtlwifi: Add rtl8192du/hw.{c,h}
+Thread-Index: AQHaoTVZRe2AKQHe4kKE1cdb+1P5krGPvR6g
+Date: Fri, 10 May 2024 03:04:41 +0000
+Message-ID: <31f28650173d40cf85fb57f87949eef7@realtek.com>
+References: <254558da-ea8b-40ea-bd5a-83d13796744f@gmail.com>
+ <d5d52f8d-585d-43a6-a5e6-076f24ba8410@gmail.com>
+In-Reply-To: <d5d52f8d-585d-43a6-a5e6-076f24ba8410@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/8] wifi: ath12k: Introduce device group abstraction
-Content-Language: en-US
-To: Harshitha Prem <quic_hprem@quicinc.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240507045702.2858954-1-quic_hprem@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240507045702.2858954-1-quic_hprem@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: BWSTjHXI56f6o8f6HzEICQZ36GAWhLSL
-X-Proofpoint-ORIG-GUID: BWSTjHXI56f6o8f6HzEICQZ36GAWhLSL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-10_01,2024-05-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- suspectscore=0 clxscore=1015 phishscore=0 impostorscore=0 mlxscore=0
- lowpriorityscore=0 spamscore=0 bulkscore=0 malwarescore=0
- priorityscore=1501 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2405010000 definitions=main-2405100015
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-On 5/6/2024 9:56 PM, Harshitha Prem wrote:
-> To support multi-link operation, multiple devices with different bands say
-> 2 GHz or 5 GHz or 6 GHz can be combined together as a group and provide
-> an abstraction to mac80211.
-> 
-> Device group abstraction - when there are multiple devices that are
-> connected by any means of communication interface between them, then these
-> devices can be combined together as a single group using a group id to form
-> a group abstraction. In ath12k driver, this abstraction would be named as
-> ath12k_hw_group (ag).
-> 
-> Please find below illustration of device group abstraction with two
-> devices.
-> 
->                  Grouping of multiple devices (in future)
-> +------------------------------------------------------------------------+
-> |  +-------------------------------------+       +-------------------+   |
-> |  |   +-----------+ | | +-----------+   |       |   +-----------+   |   |
-> |  |   | ar (2GHz) | | | | ar (5GHz) |   |       |   | ar (6GHz) |   |   |
-> |  |   +-----------+ | | +-----------+   |       |   +-----------+   |   |
-> |  |          ath12k_base (ab)           |       | ath12k_base (ab)  |   |
-> |  |         (Dual band device)          |       |                   |   |
-> |  +-------------------------------------+       +-------------------+   |
-> |                 ath12k_hw_group (ag) based on group id                 |
-> +------------------------------------------------------------------------+
-> 
-> Say for example, device 1 has two radios (2 GHz and 5 GHz band) and
-> device 2 has one radio (6 GHz).
-> 
-> In existing code -
->         device 1 will have two hardware abstractions hw1 (2 GHz) and hw2
->         (5 GHz) will be registered separately to mac80211 as phy0 and phy1
->         respectively. Similarly, device 2 will register its hw (6GHz) as
->         phy2 to mac80211.
-> 
-> In future, with multi-link abstraction
-> 
->         combination 1 - Different group id for device1 and device 2
->                 Device 1 will create a single hardware abstraction hw1
->                 (2 GHz and  5 GHz) and will be registered to mac80211 as
->                 phy0. similarly, device 2 will register its hardware
->                 (6 GHz) to mac80211 as phy1.
-> 
->         combination 2 - Same group id for device1 and device 2
->                 Both device details are combined together as a group, say
->                 group1, with single hardware abstraction of radios 2 GHz,
->                 5 GHz and 6 GHz band details and will be registered to
->                 mac80211 as phy0.
-> 
-> Add base infrastructure changes to add device grouping abstraction with
-> a single device.
-> 
-> This patch series brings the base code changes with following order:
->         1. Refactor existing code which would facilitate in introducing
->            device group abstraction.
->         2. Create a device group abstraction during device probe.
->         3. Start the device group only after QMI firmware ready event is
->            received for all the devices that are combined in the group.
->         4. Move the hardware abstractions (ath12k_hw - ah) from device
->            (ath12k_base - ab) to device group abstraction (ag) as it would
->            ease in having different combinations of group abstraction that
->            can be registered to mac80211.
-> 
-> v4:
->   - Modified the cover letter
-> v3:
->   - Removed depends-on tag of "wifi: ath12k: Refactor the hardware recovery
->     procedures" as it is merged to ToT
->   - Addressed the deadlock warning seen during rmmod.
-> 
-> v2:
->  - Rebased to ToT
-> 
-> Karthikeyan Periyasamy (8):
->   wifi: ath12k: Refactor core start api
->   wifi: ath12k: Add helpers to get or set ath12k_hw
->   wifi: ath12k: Add ath12k_get_num_hw api
->   wifi: ath12k: Introduce QMI firmware ready flag
->   wifi: ath12k: move ATH12K_FLAG_REGISTERED flag set to mac_register api
->   wifi: ath12k: Introduce device group abstraction
->   wifi: ath12k: refactor core start based on hardware group
->   wifi: ath12k: move ath12k_hw from per soc to group
-> 
->  drivers/net/wireless/ath/ath12k/core.c | 433 +++++++++++++++++++++----
->  drivers/net/wireless/ath/ath12k/core.h |  87 ++++-
->  drivers/net/wireless/ath/ath12k/mac.c  | 108 ++++--
->  drivers/net/wireless/ath/ath12k/mac.h  |   9 +-
->  drivers/net/wireless/ath/ath12k/pci.c  |   2 +
->  drivers/net/wireless/ath/ath12k/qmi.c  |  10 +-
->  6 files changed, 534 insertions(+), 115 deletions(-)
-> 
-> 
-> base-commit: 2c4d8e19cf060744a9db466ffbaea13ab37f25ca
-
-Gentle reminder that when you post a new version of a previous patchset you
-should propagate any Acked-by/Reviewed-by/Tested-by/etc tags given to the
-previous patches unless the patches were modified significantly enough to
-render those tags invalid (in which case document that in the cover letter).
-
-/jeff
+Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBUaGVz
+ZSBjb250YWluIG1vc3RseSBoYXJkd2FyZSBpbml0L2RlaW5pdCByb3V0aW5lcyBmb3IgUlRMODE5
+MkRVLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogQml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZl
+MkBnbWFpbC5jb20+DQoNClsuLi5dDQoNCj4gLS0tDQo+ICAuLi4vd2lyZWxlc3MvcmVhbHRlay9y
+dGx3aWZpL3J0bDgxOTJkdS9ody5jICAgfCAxMjMyICsrKysrKysrKysrKysrKysrDQo+ICAuLi4v
+d2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkdS9ody5oICAgfCAgIDI0ICsNCj4gIDIg
+ZmlsZXMgY2hhbmdlZCwgMTI1NiBpbnNlcnRpb25zKCspDQo+ICBjcmVhdGUgbW9kZSAxMDA2NDQg
+ZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkdS9ody5jDQo+ICBj
+cmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0
+bDgxOTJkdS9ody5oDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVh
+bHRlay9ydGx3aWZpL3J0bDgxOTJkdS9ody5jDQo+IGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVh
+bHRlay9ydGx3aWZpL3J0bDgxOTJkdS9ody5jDQo+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0DQo+IGlu
+ZGV4IDAwMDAwMDAwMDAwMC4uMTRhM2U0Njg1ZGVlDQo+IC0tLSAvZGV2L251bGwNCj4gKysrIGIv
+ZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxOTJkdS9ody5jDQo+IEBA
+IC0wLDAgKzEsMTIzMiBAQA0KPiArLy8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAN
+Cj4gKy8qIENvcHlyaWdodChjKSAyMDA5LTIwMTIgIFJlYWx0ZWsgQ29ycG9yYXRpb24uKi8NCg0K
+UGxlYXNlIGNoYW5nZSB5ZWFyIHRvIDIwMjQgYWNyb3NzIHRoaXMgcGF0Y2hzZXQuIA0KDQo+ICsN
+Cj4gKyNpbmNsdWRlICIuLi93aWZpLmgiDQo+ICsjaW5jbHVkZSAiLi4vZWZ1c2UuaCINCj4gKyNp
+bmNsdWRlICIuLi9iYXNlLmgiDQo+ICsjaW5jbHVkZSAiLi4vcmVnZC5oIg0KPiArI2luY2x1ZGUg
+Ii4uL2NhbS5oIg0KPiArI2luY2x1ZGUgIi4uL3BzLmgiDQo+ICsjaW5jbHVkZSAiLi4vcGNpLmgi
+DQo+ICsjaW5jbHVkZSAiLi4vdXNiLmgiDQo+ICsjaW5jbHVkZSAiLi4vcnRsODE5MmQvcmVnLmgi
+DQo+ICsjaW5jbHVkZSAiLi4vcnRsODE5MmQvZGVmLmgiDQo+ICsjaW5jbHVkZSAiLi4vcnRsODE5
+MmQvZG1fY29tbW9uLmgiDQo+ICsjaW5jbHVkZSAiLi4vcnRsODE5MmQvZndfY29tbW9uLmgiDQo+
+ICsjaW5jbHVkZSAiLi4vcnRsODE5MmQvaHdfY29tbW9uLmgiDQo+ICsjaW5jbHVkZSAiLi4vcnRs
+ODE5MmQvcGh5X2NvbW1vbi5oIg0KPiArI2luY2x1ZGUgInBoeS5oIg0KPiArI2luY2x1ZGUgImRt
+LmgiDQo+ICsjaW5jbHVkZSAiZncuaCINCj4gKyNpbmNsdWRlICJsZWQuaCINCj4gKyNpbmNsdWRl
+ICJody5oIg0KPiArI2luY2x1ZGUgInRyeC5oIg0KPiArDQo+ICtzdGF0aWMgdm9pZCBfcnRsOTJk
+ZV9zZXRfYmNuX2N0cmxfcmVnKHN0cnVjdCBpZWVlODAyMTFfaHcgKmh3LA0KPiArICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIHU4IHNldF9iaXRzLCB1OCBjbGVhcl9iaXRzKQ0K
+DQpIZXJlIGlzIDgxOTJkdSwgc28gcHJlZml4IHNob3VsZCBub3QgODE5MmRlLiBBbHNvIHJ0bDky
+ZF9saW5rZWRfc2V0X3JlZygpIHNob3VsZA0KYmUgdXNlZCBpbiBjb21tb24gZmlsZSwgc28gd2Ug
+c2hvdWxkIHVzZSBydGw5MmR1X2xpbmtlZF9zZXRfcmVnKCkgaW5zdGVhZC4NClBsZWFzZSBhcHBs
+eSB0aGlzIHJ1bGUgYWNyb3NzIHBhdGNoc2V0LiANCg0KPiArew0KPiArICAgICAgIHN0cnVjdCBy
+dGxfdXNiICpydGx1c2IgPSBydGxfdXNiZGV2KHJ0bF91c2Jwcml2KGh3KSk7DQo+ICsgICAgICAg
+c3RydWN0IHJ0bF9wcml2ICpydGxwcml2ID0gcnRsX3ByaXYoaHcpOw0KPiArDQo+ICsgICAgICAg
+cnRsdXNiLT5yZWdfYmNuX2N0cmxfdmFsIHw9IHNldF9iaXRzOw0KPiArICAgICAgIHJ0bHVzYi0+
+cmVnX2Jjbl9jdHJsX3ZhbCAmPSB+Y2xlYXJfYml0czsNCj4gKyAgICAgICBydGxfd3JpdGVfYnl0
+ZShydGxwcml2LCBSRUdfQkNOX0NUUkwsICh1OClydGx1c2ItPnJlZ19iY25fY3RybF92YWwpOw0K
+PiArfQ0KPiArDQoNClsuLi5dDQoNCj4gKw0KPiArdm9pZCBydGw5MmR1X3NldF9od19yZWcoc3Ry
+dWN0IGllZWU4MDIxMV9odyAqaHcsIHU4IHZhcmlhYmxlLCB1OCAqdmFsKQ0KPiArew0KPiArICAg
+ICAgIHN0cnVjdCBydGxfcHJpdiAqcnRscHJpdiA9IHJ0bF9wcml2KGh3KTsNCj4gKyAgICAgICBz
+dHJ1Y3QgcnRsX21hYyAqbWFjID0gcnRsX21hYyhydGxwcml2KTsNCj4gKw0KPiArICAgICAgIHN3
+aXRjaCAodmFyaWFibGUpIHsNCj4gKyAgICAgICBjYXNlIEhXX1ZBUl9BQ19QQVJBTTogew0KPiAr
+ICAgICAgICAgICAgICAgcnRsOTJkX2RtX2luaXRfZWRjYV90dXJibyhodyk7DQo+ICsgICAgICAg
+ICAgICAgICBicmVhazsNCj4gKyAgICAgICB9DQoNCk5vIG5lZWQgcGFyZW50aGVzaXMgZm9yIHRo
+aXMgc2luZ2xlIHN0YXRlbWVudC4gDQoNClsuLi5dDQoNCg0KPiArDQo+ICtzdGF0aWMgYm9vbCBf
+cnRsOTJkZV9sbHRfdGFibGVfaW5pdChzdHJ1Y3QgaWVlZTgwMjExX2h3ICpodywgdTggdHhwa3Ri
+dWZfYm5keSkNCj4gK3sNCj4gKyAgICAgICBzdHJ1Y3QgcnRsX3ByaXYgKnJ0bHByaXYgPSBydGxf
+cHJpdihodyk7DQo+ICsgICAgICAgdW5zaWduZWQgc2hvcnQgaTsNCj4gKyAgICAgICBib29sIHN0
+YXR1czsNCj4gKyAgICAgICB1OCBtYXhwYWdlOw0KPiArDQo+ICsgICAgICAgaWYgKHJ0bHByaXYt
+PnJ0bGhhbC5tYWNwaHltb2RlID09IFNJTkdMRU1BQ19TSU5HTEVQSFkpDQo+ICsgICAgICAgICAg
+ICAgICBtYXhwYWdlID0gMjU1Ow0KPiArICAgICAgIGVsc2UNCj4gKyAgICAgICAgICAgICAgIG1h
+eHBhZ2UgPSAxMjc7DQo+ICsNCj4gKyAgICAgICBmb3IgKGkgPSAwOyBpIDwgKHR4cGt0YnVmX2Ju
+ZHkgLSAxKTsgaSsrKSB7DQo+ICsgICAgICAgICAgICAgICBzdGF0dXMgPSBydGw5MmRlX2xsdF93
+cml0ZShodywgaSwgaSArIDEpOw0KPiArICAgICAgICAgICAgICAgaWYgKCFzdGF0dXMpDQo+ICsg
+ICAgICAgICAgICAgICAgICAgICAgIHJldHVybiBzdGF0dXM7DQo+ICsgICAgICAgfQ0KPiArDQo+
+ICsgICAgICAgLyogZW5kIG9mIGxpc3QgKi8NCj4gKyAgICAgICBzdGF0dXMgPSBydGw5MmRlX2xs
+dF93cml0ZShodywgdHhwa3RidWZfYm5keSAtIDEsIDB4RkYpOw0KPiArICAgICAgIGlmICghc3Rh
+dHVzKQ0KPiArICAgICAgICAgICAgICAgcmV0dXJuIHN0YXR1czsNCj4gKw0KPiArICAgICAgIC8q
+IE1ha2UgdGhlIG90aGVyIHBhZ2VzIGFzIHJpbmcgYnVmZmVyICovDQo+ICsgICAgICAgLyogVGhp
+cyByaW5nIGJ1ZmZlciBpcyB1c2VkIGFzIGJlYWNvbiBidWZmZXIgaWYgd2UgKi8NCj4gKyAgICAg
+ICAvKiBjb25maWcgdGhpcyBNQUMgYXMgdHdvIE1BQyB0cmFuc2Zlci4gKi8NCj4gKyAgICAgICAv
+KiBPdGhlcndpc2UgdXNlZCBhcyBsb2NhbCBsb29wYmFjayBidWZmZXIuICAqLw0KDQpCZSBzaW5n
+bGUgb25lIGJsb2NrIGNvbW1lbnQuIA0KDQoiLi4uIGxvb3BiYWNrIGJ1ZmZlci4gICIgY29udGFp
+bnMgdHdvIHRyYWlsaW5nIHNwYWNlcy4gDQoNClsuLi5dDQoNCj4gKw0KPiAraW50IHJ0bDkyZHVf
+aHdfaW5pdChzdHJ1Y3QgaWVlZTgwMjExX2h3ICpodykNCj4gK3sNCj4gKyAgICAgICBzdHJ1Y3Qg
+cnRsX3VzYl9wcml2ICp1c2JfcHJpdiA9IHJ0bF91c2Jwcml2KGh3KTsNCj4gKyAgICAgICBzdHJ1
+Y3QgcnRsX3VzYiAqcnRsdXNiID0gcnRsX3VzYmRldih1c2JfcHJpdik7DQo+ICsgICAgICAgc3Ry
+dWN0IHJ0bF9wcml2ICpydGxwcml2ID0gcnRsX3ByaXYoaHcpOw0KPiArICAgICAgIHN0cnVjdCBy
+dGxfcHNfY3RsICpwcHNjID0gcnRsX3BzYyhydGxwcml2KTsNCj4gKyAgICAgICBzdHJ1Y3QgcnRs
+X2hhbCAqcnRsaGFsID0gcnRsX2hhbChydGxwcml2KTsNCj4gKyAgICAgICBzdHJ1Y3QgcnRsX21h
+YyAqbWFjID0gcnRsX21hYyhydGxwcml2KTsNCj4gKyAgICAgICBzdHJ1Y3QgcnRsX3BoeSAqcnRs
+cGh5ID0gJnJ0bHByaXYtPnBoeTsNCj4gKyAgICAgICB1OCB2YWw4LCB0eHBrdGJ1Zl9ibmR5Ow0K
+PiArICAgICAgIHVuc2lnbmVkIGxvbmcgZmxhZ3M7DQo+ICsgICAgICAgaW50IGVyciwgaTsNCj4g
+KyAgICAgICB1MzIgdmFsMzI7DQo+ICsgICAgICAgdTE2IHZhbDE2Ow0KPiArDQo+ICsgICAgICAg
+LyogQXMgdGhpcyBmdW5jdGlvbiBjYW4gdGFrZSBhIHZlcnkgbG9uZyB0aW1lDQo+ICsgICAgICAg
+ICogYW5kIGNhbiBiZSBjYWxsZWQgd2l0aCBpcnFzIGRpc2FibGVkLCByZWVuYWJsZSB0aGUgaXJx
+cw0KPiArICAgICAgICAqIHRvIGxldCB0aGUgb3RoZXIgZGV2aWNlcyBjb250aW51ZSBiZWluZyBz
+ZXJ2aWNlZC4NCj4gKyAgICAgICAgKg0KPiArICAgICAgICAqIEl0IGlzIHNhZmUgZG9pbmcgc28g
+c2luY2Ugb3VyIG93biBpbnRlcnJ1cHRzIHdpbGwgb25seSBiZSBlbmFibGVkDQo+ICsgICAgICAg
+ICogaW4gYSBzdWJzZXF1ZW50IHN0ZXAuDQo+ICsgICAgICAgICovDQo+ICsgICAgICAgbG9jYWxf
+c2F2ZV9mbGFncyhmbGFncyk7DQo+ICsgICAgICAgbG9jYWxfaXJxX2VuYWJsZSgpOw0KDQpJIHRo
+aW5rIHlvdSBqdXN0IGNvcHkgYW5kIHBhc3RlIHRoaXMgY2h1bmsuIEkgd29uZGVyIGlmIFVTQiBo
+YXMgdGhlIHNhbWUgYmVoYXZpb3I/DQpEcml2ZXIgZm9yY2UgdG8gZW5hYmxlIElSUSBpcyB3ZWly
+ZCB0byBtZS4gUGxlYXNlIGNoZWNrIEkgdGhpcyBpcyByZWFsbHkgY2FsbGVkDQp3aXRoIGlycSBk
+aXNhYmxlZD8gSWYgbm90LCB3ZSBjYW4gcmVtb3ZlIHRoZW0uDQoNClsuLi5dDQoNCj4gKyAgICAg
+ICBsb2NhbF9pcnFfZGlzYWJsZSgpOw0KPiArICAgICAgIGxvY2FsX2lycV9yZXN0b3JlKGZsYWdz
+KTsNCj4gKw0KPiArICAgICAgIHJldHVybiBlcnI7DQo+ICt9DQo+ICsNCg0KDQo=
 
