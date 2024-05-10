@@ -1,260 +1,106 @@
-Return-Path: <linux-wireless+bounces-7454-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7455-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4429E8C255D
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 15:04:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 722DC8C2565
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 15:09:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67AD11C20AB1
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 13:04:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AFDA28330C
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 13:09:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA8F127E01;
-	Fri, 10 May 2024 13:04:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Efni5ABK"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C256127E01;
+	Fri, 10 May 2024 13:09:54 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC6D5E099;
-	Fri, 10 May 2024 13:04:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F13537E8
+	for <linux-wireless@vger.kernel.org>; Fri, 10 May 2024 13:09:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715346261; cv=none; b=eF7LFlgPV2taEp1I/FIhqRXU6XkBn4OBj1QdOJS2ZxDcx0Q+9Kv8LOQDVnI7LPkqq2OY/Xg5+Lbq+6GrvzvPpmo0Cs3z3G1k4+B4tbatLlk4Rabz67EsrnBAlnQjEO6E3WzvWgShRWlW5CDkbn+e/bSDzKWC2BEKdAxQymijccM=
+	t=1715346594; cv=none; b=P3lQQOySrEpSf991DPrgDuSNUSCzGaJbfUg3mJSgMgduw9wulR7DCNNbf9BiZ3b9K4SJo1Ry/2fsHfq6huG2elI+Pk1qz4JcBYkh+T3VsOLlooJPSLVcYlnFGJiHqkBb8UPeuh9m83v4pkHxIRTI7O+eVOeRiFrrwIYlbrgblP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715346261; c=relaxed/simple;
-	bh=Dw8L8eZBtaQm/RhUW4Qdw6yEwtJ2BgiUeEHmTXbJQT0=;
-	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=b/e0wppKSqvMzKnQTIrPNhD0MplWSe2LmlPjiW0d6YXm6X3u95oq/uSBSlKOotGpr81WEqbcY2va/mbjky+5d1q/7SsZttv5DzbFqLsYAjzLvspR683a7psPBnYU4n/PUt4LsJJwAlF9W+OCCCOWk2cUNmiG6/js62CCyC1Yw1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Efni5ABK; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44A2u9du019772;
-	Fri, 10 May 2024 13:04:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:cc:subject:to:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=6ciBEr91BthWrBkA1+Q08rrfel/AWetQxbWTdmHHWTk=; b=Ef
-	ni5ABKp7PdzHsOx7YIPB1ULax7dc5nI6ntf9ynv+UywEQjVMGWhY3gfOM7euTCj+
-	pgWnuoYA8sohGRoz1TvKhf+4R0CK5eUk3q0UKaBCM19KNxfEaJh5SrMbuO+scX0N
-	rI1EbBzvPkFLMAGmrkabDXn5V32SfwxWcVcO5D3BZU4mqTcJiqVo418fDxw/WPgl
-	s5LKORj4oTZWEDCicYJJ8Z1vEP5QFW1GQ9W7QEKuqZAqlWpQmzK2Zgti+9Md4VOV
-	Eaz7vhxm1MyxevWjYygZGOL8Wjq/rzaSdCVVs9bc9Xq2DyS9e9p6Xva3HvT0TS0/
-	K9mRKuy8EM00sf79ajMg==
-Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y16w1hhju-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 May 2024 13:04:11 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44AD4AUT024270
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 May 2024 13:04:10 GMT
-Received: from [10.231.194.144] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 10 May
- 2024 06:04:09 -0700
-Message-ID: <4d60ccf3-455d-4189-9100-d35488b00236@quicinc.com>
-Date: Fri, 10 May 2024 21:04:06 +0800
+	s=arc-20240116; t=1715346594; c=relaxed/simple;
+	bh=7dewnmOMFjSoEipQ3NImE9Br09V7z2RNbqwIVXXx2Ps=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Tmoj+n3Q1+jKB0VA57AV3k8UWFalRD1XxMIuu9AXiK17ItEN9Tr1w7xHjnKbLSo6Rj6A9xbngyfBtZ131zecFh5reuPVI9xW2W60P2/yInBdsa3/9nfa6WSwLGViIuwgUcGtGCsQWMmBOnUrLp1qYOdR1mZftshSJ1EVK1XXypU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 44AD9k0aA2845324, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 44AD9k0aA2845324
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Fri, 10 May 2024 21:09:46 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 10 May 2024 21:09:46 +0800
+Received: from [127.0.1.1] (172.16.20.230) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 10 May
+ 2024 21:09:45 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+CC: <gary.chang@realtek.com>
+Subject: [PATCH] wifi: rtw89: fix HW scan abort not completed issue
+Date: Fri, 10 May 2024 21:09:34 +0800
+Message-ID: <20240510130934.5825-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-CC: <quic_cjhuang@quicinc.com>, <ath11k@lists.infradead.org>,
-        <linux-wireless@vger.kernel.org>, <regressions@lists.linux.dev>
-Subject: Re: [PATCH 1/2] wifi: ath11k: supports 2 station interfaces
-To: Kalle Valo <kvalo@kernel.org>, Luca Weiss <luca.weiss@fairphone.com>
-References: <20230714023801.2621802-1-quic_cjhuang@quicinc.com>
- <20230714023801.2621802-2-quic_cjhuang@quicinc.com>
- <D15TIIDIIESY.D1EKKJLZINMA@fairphone.com> <87jzk2km0g.fsf@kernel.org>
- <93c15c59-f24c-4472-ae7e-969fd1e3bfec@quicinc.com>
-Content-Language: en-US
-From: Carl Huang <quic_cjhuang@quicinc.com>
-In-Reply-To: <93c15c59-f24c-4472-ae7e-969fd1e3bfec@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 7gLfDyWbJEHC47QhIfqDhFL5OXg6Pt0p
-X-Proofpoint-GUID: 7gLfDyWbJEHC47QhIfqDhFL5OXg6Pt0p
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-10_08,2024-05-10_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
- lowpriorityscore=0 priorityscore=1501 bulkscore=0 malwarescore=0
- mlxlogscore=999 mlxscore=0 impostorscore=0 clxscore=1015 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405010000 definitions=main-2405100093
+Content-Type: text/plain
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
+From: Chih-Kang Chang <gary.chang@realtek.com>
 
+When scan happens before suspending, rtw89_hw_scan_complete() might
+happen after suspend flow. This causes the scan to be unable to
+properly indicate scan completion to mac80211 before suspending. To
+fix this issue, we modify to execute rtw89_hw_scan_complete() when
+rtw89_hw_scan_abort() is called, regardless of result of
+rtw89_hw_scan_offload().
 
-On 2024/5/10 20:03, Carl Huang wrote:
-> 
-> 
-> On 2024/5/10 18:18, Kalle Valo wrote:
->> "Luca Weiss" <luca.weiss@fairphone.com> writes:
->>
->>> On Fri Jul 14, 2023 at 4:38 AM CEST, Carl Huang wrote:
->>>> Add hardware parameter support_dual_stations to indicate
->>>> whether 2 station interfaces are supported. For chips which
->>>> support this feature, limit total number of AP interface and
->>>> mesh point to 1. The max interfaces are 3 for such chips.
->>>>
->>>> The chips affected are:
->>>>   QCA6390 hw2.0
->>>>   WCN6855 hw2.0
->>>>   WCN6855 hw2.1
->>>> Other chips are not affected.
->>>>
->>>> For affected chips, remove radar_detect_widths because now
->>>> num_different_channels is set to 2. radar_detect_widths can
->>>> be set only when num_different_channels is 1. See mac80211
->>>> function wiphy_verify_combinations for details.
->>>>
->>>> Tested-on: WCN6855 hw2.0 PCI 
->>>> WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
->>>
->>> Hi Carl,
->>>
->>> Unfortunately this commit breaks wifi on a QCM6490 smartphone
->>> (qcm6490-fairphone-fp5) and makes the board crash.
->>>
->>> Reverting this commit (plus for conflict resolution 5dc9d1a55e95 ("wifi:
->>> ath11k: add support for QCA2066") and 24395ec11707 ("wifi: ath11k:
->>> provide address list if chip supports 2 stations")) makes wifi work
->>> again.
->>
->> Thanks for the report. So the broken commit is:
->>
->> f019f4dff2e4 wifi: ath11k: support 2 station interfaces
->>
->> This went into v6.9-rc1 so I'm guessing that WCN6750 support will be
->> fully broken in v6.9? Not good. And most likely Linus will release v6.9
->> on Sunday so it's too late to get a fix included in the final release.
->>
->> Carl, can you fix this ASAP? Or should we just revert the broken
->> commits?
->>
->> Adding this to our regression tracking:
->>
->> #regzbot introduced: f019f4dff2e4 ^
->> #regzbot title: ath11k: WCN6750 firmware crashes during initialisation
->>
-> Kalle, looks we're not able to fix it before Sunday as I don't have 
-> WCN6750 setup to verify the fix. The fix could be to define a dedicated 
-> function ath11k_init_wmi_config_wcn6750() for WCN6750. I'll send the 
-> patch out so others like Luca can have a try.
-> 
-Sorry, I have problem to run "git send-email" as it prompts "5.7.60 
-SMTP; Client does not have permissions to send as this sender".
-
-The patch looks like:
-
- From 19bb7f1377a5e3c5d42ab2bedbaf9e976c1068b4 Mon Sep 17 00:00:00 2001
-From: Carl Huang <quic_cjhuang@quicinc.com>
-Date: Fri, 10 May 2024 19:40:37 +0800
-Subject: [PATCH] wifi:ath11k: fix WCN6750 firmware crash
-
-WCN6750 firmware crashed because of vdev_number changed to 3 from 4
-in commit f019f4dff2e4("wifi: ath11k: support 2 station interfaces").
-
-Fix it by defining a separate function ath11k_init_wmi_config_wcn6750()
-for WCN6750 to initialize its' specific parameters.
-
-Fixes: f019f4dff2e4 ("wifi: ath11k: support 2 station interfaces")
-Tested-on: WCN6855 hw2.0 PCI 
-WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
-
-Signed-off-by: Carl Huang <quic_cjhuang@quicinc.com>
+Cc: stable@vger.kernel.org
+Fixes: bcbefbd032df ("wifi: rtw89: add wait/completion for abort scan")
+Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
-  drivers/net/wireless/ath/ath11k/hw.c | 49 +++++++++++++++++++++++++++-
-  1 file changed, 48 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/fw.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/hw.c 
-b/drivers/net/wireless/ath/ath11k/hw.c
-index caa6dc12a790..df8822ac3be1 100644
---- a/drivers/net/wireless/ath/ath11k/hw.c
-+++ b/drivers/net/wireless/ath/ath11k/hw.c
-@@ -102,6 +102,53 @@ static void ath11k_init_wmi_config_qca6390(struct 
-ath11k_base *ab,
-  	config->flag1 |= WMI_RSRC_CFG_FLAG1_BSS_CHANNEL_INFO_64;
-  }
-
-+static void ath11k_init_wmi_config_wcn6750(struct ath11k_base *ab,
-+					   struct target_resource_config *config)
-+{
-+	config->num_vdevs = 4;
-+	config->num_peers = 16;
-+	config->num_tids = 32;
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index 044a5b90c7f4..e9aa5bdeb5d7 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -6212,7 +6212,7 @@ void rtw89_hw_scan_complete(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
+ 		.aborted = aborted,
+ 	};
+ 
+-	if (!vif)
++	if (!vif || !rtwdev->scanning)
+ 		return;
+ 
+ 	rtw89_write32_mask(rtwdev,
+@@ -6245,7 +6245,9 @@ void rtw89_hw_scan_abort(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif)
+ 
+ 	ret = rtw89_hw_scan_offload(rtwdev, vif, false);
+ 	if (ret)
+-		rtw89_hw_scan_complete(rtwdev, vif, true);
++		rtw89_warn(rtwdev, "rtw89_hw_scan_offload failed ret %d\n", ret);
 +
-+	config->num_offload_peers = 3;
-+	config->num_offload_reorder_buffs = 3;
-+	config->num_peer_keys = TARGET_NUM_PEER_KEYS;
-+	config->ast_skid_limit = TARGET_AST_SKID_LIMIT;
-+	config->tx_chain_mask = (1 << ab->target_caps.num_rf_chains) - 1;
-+	config->rx_chain_mask = (1 << ab->target_caps.num_rf_chains) - 1;
-+	config->rx_timeout_pri[0] = TARGET_RX_TIMEOUT_LO_PRI;
-+	config->rx_timeout_pri[1] = TARGET_RX_TIMEOUT_LO_PRI;
-+	config->rx_timeout_pri[2] = TARGET_RX_TIMEOUT_LO_PRI;
-+	config->rx_timeout_pri[3] = TARGET_RX_TIMEOUT_HI_PRI;
-+	config->rx_decap_mode = TARGET_DECAP_MODE_NATIVE_WIFI;
-+	config->scan_max_pending_req = TARGET_SCAN_MAX_PENDING_REQS;
-+	config->bmiss_offload_max_vdev = TARGET_BMISS_OFFLOAD_MAX_VDEV;
-+	config->roam_offload_max_vdev = TARGET_ROAM_OFFLOAD_MAX_VDEV;
-+	config->roam_offload_max_ap_profiles = 
-TARGET_ROAM_OFFLOAD_MAX_AP_PROFILES;
-+	config->num_mcast_groups = 0;
-+	config->num_mcast_table_elems = 0;
-+	config->mcast2ucast_mode = 0;
-+	config->tx_dbg_log_size = TARGET_TX_DBG_LOG_SIZE;
-+	config->num_wds_entries = 0;
-+	config->dma_burst_size = 0;
-+	config->rx_skip_defrag_timeout_dup_detection_check = 0;
-+	config->vow_config = TARGET_VOW_CONFIG;
-+	config->gtk_offload_max_vdev = 2;
-+	config->num_msdu_desc = 0x400;
-+	config->beacon_tx_offload_max_vdev = 2;
-+	config->rx_batchmode = TARGET_RX_BATCHMODE;
-+
-+	config->peer_map_unmap_v2_support = 0;
-+	config->use_pdev_id = 1;
-+	config->max_frag_entries = 0xa;
-+	config->num_tdls_vdevs = 0x1;
-+	config->num_tdls_conn_table_entries = 8;
-+	config->beacon_tx_offload_max_vdev = 0x2;
-+	config->num_multicast_filter_entries = 0x20;
-+	config->num_wow_filters = 0x16;
-+	config->num_keep_alive_pattern = 0;
-+	config->flag1 |= WMI_RSRC_CFG_FLAG1_BSS_CHANNEL_INFO_64;
-+}
-+
-  static void ath11k_hw_ipq8074_reo_setup(struct ath11k_base *ab)
-  {
-  	u32 reo_base = HAL_SEQ_WCSS_UMAC_REO_REG;
-@@ -1102,7 +1149,7 @@ const struct ath11k_hw_ops wcn6855_ops = {
-
-  const struct ath11k_hw_ops wcn6750_ops = {
-  	.get_hw_mac_from_pdev_id = ath11k_hw_ipq8074_mac_from_pdev_id,
--	.wmi_init_config = ath11k_init_wmi_config_qca6390,
-+	.wmi_init_config = ath11k_init_wmi_config_wcn6750,
-  	.mac_id_to_pdev_id = ath11k_hw_mac_id_to_pdev_id_qca6390,
-  	.mac_id_to_srng_id = ath11k_hw_mac_id_to_srng_id_qca6390,
-  	.tx_mesh_enable = ath11k_hw_qcn9074_tx_mesh_enable,
++	rtw89_hw_scan_complete(rtwdev, vif, true);
+ }
+ 
+ static bool rtw89_is_any_vif_connected_or_connecting(struct rtw89_dev *rtwdev)
 -- 
-2.34.1
-
-
-Hi Luca, could you help apply this patch and retest?
-
-Hi Kalle, could you help send this patch if Luca verifies it works?
-
-
+2.25.1
 
 
