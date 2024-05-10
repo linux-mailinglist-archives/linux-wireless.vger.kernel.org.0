@@ -1,67 +1,67 @@
-Return-Path: <linux-wireless+bounces-7430-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7433-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFF628C1E5B
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 08:48:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F74F8C1E5E
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 08:48:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F4941C20B1A
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 06:48:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 326991C210B2
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 06:48:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A2714BF92;
-	Fri, 10 May 2024 06:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE91115E7F8;
+	Fri, 10 May 2024 06:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Bb845khQ"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="O3ljszpI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6FB20309
-	for <linux-wireless@vger.kernel.org>; Fri, 10 May 2024 06:48:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94991155354
+	for <linux-wireless@vger.kernel.org>; Fri, 10 May 2024 06:48:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715323690; cv=none; b=ICXC+g5+Q0Z3t/foXdgdIPbrdGqm8ObkdOrtg9azMJV70Ntf+ZLMUQwcXJqhlYttuhYSKo0M7A9cYHf+Org49llm3Z3tjnitRX8oe+5I6pfxe/1pSOdvWfKy8bo3XfVlL/M2Gm6UJNunB25POheHqLO3LfWtipREDfXNgHIPvZc=
+	t=1715323692; cv=none; b=IaSoZR6fiPoJ9AyvZzF99ZzVhOdIKF0tFwRJxrZ/pRbuJNn9yZlEMFoOG8N8Zev4lZvragfGZtJDdnuKnHgvtjQBRKuO8Zu0yY7HddiUhQHTEyLuI9ZRLWbMoJGFG/YYJXPsRmeRxYt/Jzl9P8N8bVQ16M4ya88MnYUae1VYPbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715323690; c=relaxed/simple;
-	bh=+48iJP+lYD0Uz/QnOqdkuNd0QP0diP8PKqWKN7moPMo=;
+	s=arc-20240116; t=1715323692; c=relaxed/simple;
+	bh=lIk9mpepp0qORf0jN0JRISPSj+rFr/JdzVtB+jBAhLk=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fo4Og721yFhtdua7KLmUr098obwKdSuX1kNC3w3XBAZqG7piYwriKDxbthQ0GFdT4v33f8N20p6KYmRbbfLadFfbDMYnfTSoFtgtJLr75W2cjMao8csscEE7RU4yEOuGm/9I4dt8ZVtbHpLAIzb392GSXj0MIvW6dgwKWnY6Slw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Bb845khQ; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version:Content-Type; b=ajJ9clmY9i4owdHuhf12zL/MKC89bBY0gcEK3mrdyKXzFnhQCoYsEvLOwME71lnBL9p+voLBF1c6NweVSxfJKHONNwE8z1GuMf9X8p10CAqd0lG9z/Pq0z6PR+EoYQ7j9bWLSgrZJnf244hB7qxow1GqOibKz9n1B1pGseBcXC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=O3ljszpI; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44A2tgF6019378;
-	Fri, 10 May 2024 06:48:02 GMT
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44A2tiUe009455;
+	Fri, 10 May 2024 06:48:04 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	from:to:cc:subject:date:message-id:in-reply-to:references
 	:mime-version:content-transfer-encoding:content-type; s=
-	qcppdkim1; bh=lgbNZ7S62RUjqUbtJRzDJjzqXfBjtUjveVFsviUlZvU=; b=Bb
-	845khQZr6YelfTAwPPwlSVJ/2LmPYCDn+klXvpRXNDUzXTF7bm+HrET8AlRpyFWD
-	nyAtirnLsXret5P6JaklgHTEaCpmm6U/TIV49zeMCksk+6xdxMHjaTwWNNyEEqDl
-	HAytZIJmUbwU/h6s12f+M8gJ6IjzReMR78Qy+azRf/VAlErZLqeyRz0peJ0x1lji
-	zwuNNY2W7rok9AMEVaf3eiwGJu2CCHnzDSZzyCVEbQ78QtNV/EhkTWDiLSdfuXp+
-	7SiAHYdvdZMQZ7LsOBIccJfHcT+ipv3ZGkBzrV9qhVXVV1gt3m16HkZZJVQp40+d
-	//zzofO7fYvi5dQipV7A==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y16w1gstf-1
+	qcppdkim1; bh=7Q242Y2zjciJxz1hgOE4n04V9D6oRNCr9rmtBbPcm6Q=; b=O3
+	ljszpI16UXi4aN2pnrbvapwGOXP/BlAmP3xWOfzCHBlCrlZcntU9Sni/KTDibaRE
+	DdFcb8jFTtB+IKE38/Uo2eZoyQ4dmHhCayRGxAvFn2J+8hTCdsnyXtAfDixQ6ZoX
+	TK46sR2CpNb9ruQqBZzif2ROSDfllxCeVhnvZ3cJyiCQwShryhE8ov2+0bW3OcaK
+	bjtPyviO8h01CvKreK+WT4e/wYKaJtACAaI+fRux5HF+7MUIfYTjX05evX0yPSN0
+	IZSIczzHJx0HfTrtlFgbCznKnzr0nzqfdWf6pSpW11NQ02LU+BNGRVreGRrL3P+y
+	nbyur5RHKmnWWscQLuWA==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y16w28t8h-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 May 2024 06:48:02 +0000 (GMT)
+	Fri, 10 May 2024 06:48:03 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44A6m1ZA005790
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44A6m3tJ023169
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 May 2024 06:48:01 GMT
+	Fri, 10 May 2024 06:48:03 GMT
 Received: from bqiang-SFF.qca.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Thu, 9 May 2024 23:47:59 -0700
+ 15.2.1544.9; Thu, 9 May 2024 23:48:01 -0700
 From: Baochen Qiang <quic_bqiang@quicinc.com>
 To: <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>, <quic_bqiang@quicinc.com>
-Subject: [PATCH 1/7] wifi: ath12k: implement WoW enable and wakeup commands
-Date: Fri, 10 May 2024 14:47:42 +0800
-Message-ID: <20240510064748.369452-2-quic_bqiang@quicinc.com>
+Subject: [PATCH 2/7] wifi: ath12k: add basic WoW functionalities
+Date: Fri, 10 May 2024 14:47:43 +0800
+Message-ID: <20240510064748.369452-3-quic_bqiang@quicinc.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240510064748.369452-1-quic_bqiang@quicinc.com>
 References: <20240510064748.369452-1-quic_bqiang@quicinc.com>
@@ -77,170 +77,238 @@ X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: -LLu7DCvL_q1-6zPETVRyUzPESj8YQgH
-X-Proofpoint-GUID: -LLu7DCvL_q1-6zPETVRyUzPESj8YQgH
+X-Proofpoint-GUID: ZfVZ3nTF2S99eUKkV-mgYyXiT808RFcK
+X-Proofpoint-ORIG-GUID: ZfVZ3nTF2S99eUKkV-mgYyXiT808RFcK
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
  definitions=2024-05-10_04,2024-05-10_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
- lowpriorityscore=0 priorityscore=1501 bulkscore=0 malwarescore=0
- mlxlogscore=999 mlxscore=0 impostorscore=0 clxscore=1015 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ bulkscore=0 impostorscore=0 priorityscore=1501 malwarescore=0 phishscore=0
+ adultscore=0 suspectscore=0 spamscore=0 clxscore=1015 mlxlogscore=999
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2405010000 definitions=main-2405100047
 
-Implement WoW enable and WoW wakeup commands which are needed
-for suspend/resume.
+Implement basic WoW functionalities such as magic-packet, disconnect
+and pattern. The logic is very similar to ath11k.
+
+When WoW is configured, ath12k_core_suspend and ath12k_core_resume
+are skipped (by checking ar->state) as we are not allowed to power
+cycle firmware.
 
 Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
 
 Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/Makefile |   1 +
- drivers/net/wireless/ath/ath12k/core.c   |   2 +
- drivers/net/wireless/ath/ath12k/core.h   |   4 +
- drivers/net/wireless/ath/ath12k/wmi.c    | 104 ++++++++++++++
- drivers/net/wireless/ath/ath12k/wmi.h    | 174 +++++++++++++++++++++++
- drivers/net/wireless/ath/ath12k/wow.c    |  74 ++++++++++
- drivers/net/wireless/ath/ath12k/wow.h    |  30 ++++
- 7 files changed, 389 insertions(+)
- create mode 100644 drivers/net/wireless/ath/ath12k/wow.c
- create mode 100644 drivers/net/wireless/ath/ath12k/wow.h
+ drivers/net/wireless/ath/ath12k/core.c |  46 ++-
+ drivers/net/wireless/ath/ath12k/core.h |   5 +
+ drivers/net/wireless/ath/ath12k/htc.c  |   6 +
+ drivers/net/wireless/ath/ath12k/mac.c  |  14 +
+ drivers/net/wireless/ath/ath12k/wmi.c  | 143 +++++++++
+ drivers/net/wireless/ath/ath12k/wmi.h  |  63 ++++
+ drivers/net/wireless/ath/ath12k/wow.c  | 416 +++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath12k/wow.h  |  32 ++
+ 8 files changed, 717 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/Makefile b/drivers/net/wireless/ath/ath12k/Makefile
-index d42480db7463..f0dcc933aa95 100644
---- a/drivers/net/wireless/ath/ath12k/Makefile
-+++ b/drivers/net/wireless/ath/ath12k/Makefile
-@@ -26,6 +26,7 @@ ath12k-y += core.o \
- ath12k-$(CONFIG_ATH12K_DEBUGFS) += debugfs.o
- ath12k-$(CONFIG_ACPI) += acpi.o
- ath12k-$(CONFIG_ATH12K_TRACING) += trace.o
-+ath12k-$(CONFIG_PM) += wow.o
- 
- # for tracing framework to find trace.h
- CFLAGS_trace.o := -I$(src)
 diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index 9482d5db71e7..9bc0547cf01c 100644
+index 9bc0547cf01c..44ebed0403e1 100644
 --- a/drivers/net/wireless/ath/ath12k/core.c
 +++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -16,6 +16,7 @@
- #include "hif.h"
- #include "fw.h"
- #include "debugfs.h"
-+#include "wow.h"
- 
- unsigned int ath12k_debug_mask;
- module_param_named(debug_mask, ath12k_debug_mask, uint, 0644);
-@@ -1262,6 +1263,7 @@ struct ath12k_base *ath12k_core_alloc(struct device *dev, size_t priv_size,
- 	timer_setup(&ab->rx_replenish_retry, ath12k_ce_rx_replenish_retry, 0);
- 	init_completion(&ab->htc_suspend);
- 	init_completion(&ab->restart_completed);
-+	init_completion(&ab->wow.wakeup_completed);
- 
- 	ab->dev = dev;
- 	ab->hif.bus = bus;
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index bb6c1b562baf..a2aa6d7162a5 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -766,6 +766,10 @@ struct ath12k_base {
- 		const struct ath12k_hif_ops *ops;
- 	} hif;
- 
-+	struct {
-+		struct completion wakeup_completed;
-+	} wow;
-+
- 	struct ath12k_ce ce;
- 	struct timer_list rx_replenish_retry;
- 	struct ath12k_hal hal;
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index 7a52d2082b79..2aa00d5154c8 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -6999,6 +6999,65 @@ static void ath12k_wmi_twt_disable_event(struct ath12k_base *ab,
- 	kfree(tb);
+@@ -43,14 +43,38 @@ static int ath12k_core_rfkill_config(struct ath12k_base *ab)
+ 	return ret;
  }
  
-+static int ath12k_wmi_wow_wakeup_host_parse(struct ath12k_base *ab,
-+					    u16 tag, u16 len,
-+					    const void *ptr, void *data)
-+{
-+	const struct wmi_wow_ev_pg_fault_param *pf_param;
-+	const struct wmi_wow_ev_param *param;
-+	struct wmi_wow_ev_arg *arg = data;
-+	int pf_len;
+-int ath12k_core_suspend(struct ath12k_base *ab)
++/* Check if we need to continue with suspend/resume operation.
++ * Return:
++ *	a negative value: error happens and don't continue.
++ *	0:  no error but don't continue.
++ *	positive value: no error and do continue.
++ */
++static int ath12k_core_continue_suspend_resume(struct ath12k_base *ab)
+ {
+ 	struct ath12k *ar;
+-	int ret, i;
+ 
+ 	if (!ab->hw_params->supports_suspend)
+ 		return -EOPNOTSUPP;
+ 
++	/* so far single_pdev_only chips have supports_suspend as true
++	 * so pass 0 as a dummy pdev_id here.
++	 */
++	ar = ab->pdevs[0].ar;
++	if (!ar || !ar->ah || ar->ah->state != ATH12K_HW_STATE_OFF)
++		return 0;
 +
-+	switch (tag) {
-+	case WMI_TAG_WOW_EVENT_INFO:
-+		param = ptr;
-+		arg->wake_reason = le32_to_cpu(param->wake_reason);
-+		ath12k_dbg(ab, ATH12K_DBG_WMI, "wow wakeup host reason %d %s\n",
-+			   arg->wake_reason, wow_reason(arg->wake_reason));
-+		break;
-+
-+	case WMI_TAG_ARRAY_BYTE:
-+		if (arg && arg->wake_reason == WOW_REASON_PAGE_FAULT) {
-+			pf_param = ptr;
-+			pf_len = le32_to_cpu(pf_param->len);
-+			if (pf_len > len - sizeof(pf_len) ||
-+			    pf_len < 0) {
-+				ath12k_warn(ab, "invalid page fault buffer len %d\n",
-+					    pf_len);
-+				return -EINVAL;
-+			}
-+			ath12k_dbg(ab, ATH12K_DBG_WMI, "wow data_len = %d\n",
-+				   pf_len);
-+			ath12k_dbg_dump(ab, ATH12K_DBG_WMI,
-+					"wow_event_info_type packet present",
-+					"wow_pg_fault ",
-+					pf_param->data,
-+					pf_len);
-+		}
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	return 0;
++	return 1;
 +}
 +
-+static void ath12k_wmi_event_wow_wakeup_host(struct ath12k_base *ab, struct sk_buff *skb)
++int ath12k_core_suspend(struct ath12k_base *ab)
 +{
-+	struct wmi_wow_ev_arg arg = { };
++	struct ath12k *ar;
++	int ret, i;
++
++	ret = ath12k_core_continue_suspend_resume(ab);
++	if (ret <= 0)
++		return ret;
++
+ 	rcu_read_lock();
+ 	for (i = 0; i < ab->num_radios; i++) {
+ 		ar = ath12k_mac_get_ar_by_pdev_id(ab, i);
+@@ -84,8 +108,11 @@ EXPORT_SYMBOL(ath12k_core_suspend);
+ 
+ int ath12k_core_suspend_late(struct ath12k_base *ab)
+ {
+-	if (!ab->hw_params->supports_suspend)
+-		return -EOPNOTSUPP;
 +	int ret;
 +
-+	ret = ath12k_wmi_tlv_iter(ab, skb->data, skb->len,
-+				  ath12k_wmi_wow_wakeup_host_parse,
-+				  &arg);
-+	if (ret) {
-+		ath12k_warn(ab, "failed to parse wmi wow tlv: %d\n", ret);
-+		return;
-+	}
-+
-+	complete(&ab->wow.wakeup_completed);
++	ret = ath12k_core_continue_suspend_resume(ab);
++	if (ret <= 0)
++		return ret;
+ 
+ 	ath12k_hif_irq_disable(ab);
+ 	ath12k_hif_ce_irq_disable(ab);
+@@ -100,8 +127,9 @@ int ath12k_core_resume_early(struct ath12k_base *ab)
+ {
+ 	int ret;
+ 
+-	if (!ab->hw_params->supports_suspend)
+-		return -EOPNOTSUPP;
++	ret = ath12k_core_continue_suspend_resume(ab);
++	if (ret <= 0)
++		return ret;
+ 
+ 	reinit_completion(&ab->restart_completed);
+ 	ret = ath12k_hif_power_up(ab);
+@@ -115,9 +143,11 @@ EXPORT_SYMBOL(ath12k_core_resume_early);
+ int ath12k_core_resume(struct ath12k_base *ab)
+ {
+ 	long time_left;
++	int ret;
+ 
+-	if (!ab->hw_params->supports_suspend)
+-		return -EOPNOTSUPP;
++	ret = ath12k_core_continue_suspend_resume(ab);
++	if (ret <= 0)
++		return ret;
+ 
+ 	time_left = wait_for_completion_timeout(&ab->restart_completed,
+ 						ATH12K_RESET_TIMEOUT_HZ);
+diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+index a2aa6d7162a5..40774561ff6f 100644
+--- a/drivers/net/wireless/ath/ath12k/core.h
++++ b/drivers/net/wireless/ath/ath12k/core.h
+@@ -27,6 +27,7 @@
+ #include "dbring.h"
+ #include "fw.h"
+ #include "acpi.h"
++#include "wow.h"
+ 
+ #define SM(_v, _f) (((_v) << _f##_LSB) & _f##_MASK)
+ 
+@@ -607,6 +608,9 @@ struct ath12k {
+ 	struct work_struct wmi_mgmt_tx_work;
+ 	struct sk_buff_head wmi_mgmt_tx_queue;
+ 
++	struct ath12k_wow wow;
++	struct completion target_suspend;
++	bool target_suspend_ack;
+ 	struct ath12k_per_peer_tx_stats peer_tx_stats;
+ 	struct list_head ppdu_stats_info;
+ 	u32 ppdu_stat_list_depth;
+@@ -768,6 +772,7 @@ struct ath12k_base {
+ 
+ 	struct {
+ 		struct completion wakeup_completed;
++		u32 wmi_conf_rx_decap_mode;
+ 	} wow;
+ 
+ 	struct ath12k_ce ce;
+diff --git a/drivers/net/wireless/ath/ath12k/htc.c b/drivers/net/wireless/ath/ath12k/htc.c
+index 2f2230f565bb..d13616bf07f4 100644
+--- a/drivers/net/wireless/ath/ath12k/htc.c
++++ b/drivers/net/wireless/ath/ath12k/htc.c
+@@ -244,6 +244,11 @@ static void ath12k_htc_suspend_complete(struct ath12k_base *ab, bool ack)
+ 	complete(&ab->htc_suspend);
+ }
+ 
++static void ath12k_htc_wakeup_from_suspend(struct ath12k_base *ab)
++{
++	ath12k_dbg(ab, ATH12K_DBG_BOOT, "boot wakeup from suspend is received\n");
 +}
 +
- static void ath12k_wmi_op_rx(struct ath12k_base *ab, struct sk_buff *skb)
+ void ath12k_htc_rx_completion_handler(struct ath12k_base *ab,
+ 				      struct sk_buff *skb)
  {
- 	struct wmi_cmd_hdr *cmd_hdr;
-@@ -7119,6 +7178,9 @@ static void ath12k_wmi_op_rx(struct ath12k_base *ab, struct sk_buff *skb)
- 	case WMI_DIAG_EVENTID:
- 		ath12k_wmi_diag_event(ab, skb);
- 		break;
-+	case WMI_WOW_WAKEUP_HOST_EVENTID:
-+		ath12k_wmi_event_wow_wakeup_host(ab, skb);
-+		break;
- 	/* TODO: Add remaining events */
- 	default:
- 		ath12k_dbg(ab, ATH12K_DBG_WMI, "Unknown eventid: 0x%x\n", id);
-@@ -7328,3 +7390,45 @@ void ath12k_wmi_detach(struct ath12k_base *ab)
+@@ -349,6 +354,7 @@ void ath12k_htc_rx_completion_handler(struct ath12k_base *ab,
+ 			ath12k_htc_suspend_complete(ab, false);
+ 			break;
+ 		case ATH12K_HTC_MSG_WAKEUP_FROM_SUSPEND_ID:
++			ath12k_htc_wakeup_from_suspend(ab);
+ 			break;
+ 		default:
+ 			ath12k_warn(ab, "ignoring unsolicited htc ep0 event %u\n",
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 96dc5c2e096f..68f3d9a1789e 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -15,6 +15,8 @@
+ #include "dp_rx.h"
+ #include "peer.h"
+ #include "debugfs.h"
++#include "hif.h"
++#include "wow.h"
  
- 	ath12k_wmi_free_dbring_caps(ab);
+ #define CHAN2G(_channel, _freq, _flags) { \
+ 	.band                   = NL80211_BAND_2GHZ, \
+@@ -8248,6 +8250,12 @@ static const struct ieee80211_ops ath12k_ops = {
+ 	.sta_statistics			= ath12k_mac_op_sta_statistics,
+ 	.remain_on_channel              = ath12k_mac_op_remain_on_channel,
+ 	.cancel_remain_on_channel       = ath12k_mac_op_cancel_remain_on_channel,
++
++#ifdef CONFIG_PM
++	.suspend			= ath12k_wow_op_suspend,
++	.resume				= ath12k_wow_op_resume,
++	.set_wakeup			= ath12k_wow_op_set_wakeup,
++#endif
+ };
+ 
+ static void ath12k_mac_update_ch_list(struct ath12k *ar,
+@@ -8757,6 +8765,12 @@ static int ath12k_mac_hw_register(struct ath12k_hw *ah)
+ 		ieee80211_hw_set(hw, SUPPORT_FAST_XMIT);
+ 	}
+ 
++	ret = ath12k_wow_init(ar);
++	if (ret) {
++		ath12k_warn(ar->ab, "failed to init wow: %d\n", ret);
++		goto err_free_if_combs;
++	}
++
+ 	ret = ieee80211_register_hw(hw);
+ 	if (ret) {
+ 		ath12k_err(ab, "ieee80211 registration failed: %d\n", ret);
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index 2aa00d5154c8..4e6cb0f99c7a 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -3690,6 +3690,7 @@ int ath12k_wmi_cmd_init(struct ath12k_base *ab)
+ 		arg.res_cfg.is_reg_cc_ext_event_supported = true;
+ 
+ 	ab->hw_params->wmi_init(ab, &arg.res_cfg);
++	ab->wow.wmi_conf_rx_decap_mode = arg.res_cfg.rx_decap_mode;
+ 
+ 	arg.num_mem_chunks = wmi_ab->num_mem_chunks;
+ 	arg.hw_mode_id = wmi_ab->preferred_hw_mode;
+@@ -7432,3 +7433,145 @@ int ath12k_wmi_wow_enable(struct ath12k *ar)
+ 
+ 	return ath12k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_ENABLE_CMDID);
  }
 +
-+int ath12k_wmi_wow_host_wakeup_ind(struct ath12k *ar)
++int ath12k_wmi_wow_add_wakeup_event(struct ath12k *ar, u32 vdev_id,
++				    enum wmi_wow_wakeup_event event,
++				    u32 enable)
 +{
-+	struct wmi_wow_host_wakeup_cmd *cmd;
++	struct wmi_wow_add_del_event_cmd *cmd;
 +	struct sk_buff *skb;
 +	size_t len;
 +
@@ -249,342 +317,701 @@ index 7a52d2082b79..2aa00d5154c8 100644
 +	if (!skb)
 +		return -ENOMEM;
 +
-+	cmd = (struct wmi_wow_host_wakeup_cmd *)skb->data;
-+	cmd->tlv_header = ath12k_wmi_tlv_cmd_hdr(WMI_TAG_WOW_HOSTWAKEUP_FROM_SLEEP_CMD,
++	cmd = (struct wmi_wow_add_del_event_cmd *)skb->data;
++	cmd->tlv_header = ath12k_wmi_tlv_cmd_hdr(WMI_TAG_WOW_ADD_DEL_EVT_CMD,
 +						 sizeof(*cmd));
++	cmd->vdev_id = cpu_to_le32(vdev_id);
++	cmd->is_add = cpu_to_le32(enable);
++	cmd->event_bitmap = cpu_to_le32((1 << event));
 +
-+	ath12k_dbg(ar->ab, ATH12K_DBG_WMI, "wmi tlv wow host wakeup ind\n");
++	ath12k_dbg(ar->ab, ATH12K_DBG_WMI, "wmi tlv wow add wakeup event %s enable %d vdev_id %d\n",
++		   wow_wakeup_event(event), enable, vdev_id);
 +
-+	return ath12k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_HOSTWAKEUP_FROM_SLEEP_CMDID);
++	return ath12k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_ENABLE_DISABLE_WAKE_EVENT_CMDID);
 +}
 +
-+int ath12k_wmi_wow_enable(struct ath12k *ar)
++int ath12k_wmi_wow_add_pattern(struct ath12k *ar, u32 vdev_id, u32 pattern_id,
++			       const u8 *pattern, const u8 *mask,
++			       int pattern_len, int pattern_offset)
 +{
-+	struct wmi_wow_enable_cmd *cmd;
++	struct wmi_wow_add_pattern_cmd *cmd;
++	struct wmi_wow_bitmap_pattern_params *bitmap;
++	struct wmi_tlv *tlv;
 +	struct sk_buff *skb;
-+	int len;
++	void *ptr;
++	size_t len;
++
++	len = sizeof(*cmd) +
++	      sizeof(*tlv) +			/* array struct */
++	      sizeof(*bitmap) +			/* bitmap */
++	      sizeof(*tlv) +			/* empty ipv4 sync */
++	      sizeof(*tlv) +			/* empty ipv6 sync */
++	      sizeof(*tlv) +			/* empty magic */
++	      sizeof(*tlv) +			/* empty info timeout */
++	      sizeof(*tlv) + sizeof(u32);	/* ratelimit interval */
++
++	skb = ath12k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
++	if (!skb)
++		return -ENOMEM;
++
++	/* cmd */
++	ptr = skb->data;
++	cmd = ptr;
++	cmd->tlv_header = ath12k_wmi_tlv_cmd_hdr(WMI_TAG_WOW_ADD_PATTERN_CMD,
++						 sizeof(*cmd));
++	cmd->vdev_id = cpu_to_le32(vdev_id);
++	cmd->pattern_id = cpu_to_le32(pattern_id);
++	cmd->pattern_type = cpu_to_le32(WOW_BITMAP_PATTERN);
++
++	ptr += sizeof(*cmd);
++
++	/* bitmap */
++	tlv = ptr;
++	tlv->header = ath12k_wmi_tlv_hdr(WMI_TAG_ARRAY_STRUCT, sizeof(*bitmap));
++
++	ptr += sizeof(*tlv);
++
++	bitmap = ptr;
++	bitmap->tlv_header = ath12k_wmi_tlv_cmd_hdr(WMI_TAG_WOW_BITMAP_PATTERN_T,
++						    sizeof(*bitmap));
++	memcpy(bitmap->patternbuf, pattern, pattern_len);
++	memcpy(bitmap->bitmaskbuf, mask, pattern_len);
++	bitmap->pattern_offset = cpu_to_le32(pattern_offset);
++	bitmap->pattern_len = cpu_to_le32(pattern_len);
++	bitmap->bitmask_len = cpu_to_le32(pattern_len);
++	bitmap->pattern_id = cpu_to_le32(pattern_id);
++
++	ptr += sizeof(*bitmap);
++
++	/* ipv4 sync */
++	tlv = ptr;
++	tlv->header = ath12k_wmi_tlv_hdr(WMI_TAG_ARRAY_STRUCT, 0);
++
++	ptr += sizeof(*tlv);
++
++	/* ipv6 sync */
++	tlv = ptr;
++	tlv->header = ath12k_wmi_tlv_hdr(WMI_TAG_ARRAY_STRUCT, 0);
++
++	ptr += sizeof(*tlv);
++
++	/* magic */
++	tlv = ptr;
++	tlv->header = ath12k_wmi_tlv_hdr(WMI_TAG_ARRAY_STRUCT, 0);
++
++	ptr += sizeof(*tlv);
++
++	/* pattern info timeout */
++	tlv = ptr;
++	tlv->header = ath12k_wmi_tlv_hdr(WMI_TAG_ARRAY_UINT32, 0);
++
++	ptr += sizeof(*tlv);
++
++	/* ratelimit interval */
++	tlv = ptr;
++	tlv->header = ath12k_wmi_tlv_hdr(WMI_TAG_ARRAY_UINT32, sizeof(u32));
++
++	ath12k_dbg(ar->ab, ATH12K_DBG_WMI, "wmi tlv wow add pattern vdev_id %d pattern_id %d pattern_offset %d pattern_len %d\n",
++		   vdev_id, pattern_id, pattern_offset, pattern_len);
++
++	ath12k_dbg_dump(ar->ab, ATH12K_DBG_WMI, NULL, "wow pattern: ",
++			bitmap->patternbuf, pattern_len);
++	ath12k_dbg_dump(ar->ab, ATH12K_DBG_WMI, NULL, "wow bitmask: ",
++			bitmap->bitmaskbuf, pattern_len);
++
++	return ath12k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_ADD_WAKE_PATTERN_CMDID);
++}
++
++int ath12k_wmi_wow_del_pattern(struct ath12k *ar, u32 vdev_id, u32 pattern_id)
++{
++	struct wmi_wow_del_pattern_cmd *cmd;
++	struct sk_buff *skb;
++	size_t len;
 +
 +	len = sizeof(*cmd);
 +	skb = ath12k_wmi_alloc_skb(ar->wmi->wmi_ab, len);
 +	if (!skb)
 +		return -ENOMEM;
 +
-+	cmd = (struct wmi_wow_enable_cmd *)skb->data;
-+	cmd->tlv_header = ath12k_wmi_tlv_cmd_hdr(WMI_TAG_WOW_ENABLE_CMD,
++	cmd = (struct wmi_wow_del_pattern_cmd *)skb->data;
++	cmd->tlv_header = ath12k_wmi_tlv_cmd_hdr(WMI_TAG_WOW_DEL_PATTERN_CMD,
 +						 sizeof(*cmd));
++	cmd->vdev_id = cpu_to_le32(vdev_id);
++	cmd->pattern_id = cpu_to_le32(pattern_id);
++	cmd->pattern_type = cpu_to_le32(WOW_BITMAP_PATTERN);
 +
-+	cmd->enable = cpu_to_le32(1);
-+	cmd->pause_iface_config = cpu_to_le32(WOW_IFACE_PAUSE_ENABLED);
-+	ath12k_dbg(ar->ab, ATH12K_DBG_WMI, "wmi tlv wow enable\n");
++	ath12k_dbg(ar->ab, ATH12K_DBG_WMI, "wmi tlv wow del pattern vdev_id %d pattern_id %d\n",
++		   vdev_id, pattern_id);
 +
-+	return ath12k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_ENABLE_CMDID);
++	return ath12k_wmi_cmd_send(ar->wmi, skb, WMI_WOW_DEL_WAKE_PATTERN_CMDID);
 +}
 diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
-index 496866673aea..039090ce692a 100644
+index 039090ce692a..0dacd1e2ee67 100644
 --- a/drivers/net/wireless/ath/ath12k/wmi.h
 +++ b/drivers/net/wireless/ath/ath12k/wmi.h
-@@ -4868,6 +4868,178 @@ struct wmi_twt_disable_event {
- 	__le32 status;
- } __packed;
+@@ -5012,6 +5012,62 @@ static inline const char *wow_reason(enum wmi_wow_wake_reason reason)
  
-+/* WOW structures */
-+enum wmi_wow_wakeup_event {
-+	WOW_BMISS_EVENT = 0,
-+	WOW_BETTER_AP_EVENT,
-+	WOW_DEAUTH_RECVD_EVENT,
-+	WOW_MAGIC_PKT_RECVD_EVENT,
-+	WOW_GTK_ERR_EVENT,
-+	WOW_FOURWAY_HSHAKE_EVENT,
-+	WOW_EAPOL_RECVD_EVENT,
-+	WOW_NLO_DETECTED_EVENT,
-+	WOW_DISASSOC_RECVD_EVENT,
-+	WOW_PATTERN_MATCH_EVENT,
-+	WOW_CSA_IE_EVENT,
-+	WOW_PROBE_REQ_WPS_IE_EVENT,
-+	WOW_AUTH_REQ_EVENT,
-+	WOW_ASSOC_REQ_EVENT,
-+	WOW_HTT_EVENT,
-+	WOW_RA_MATCH_EVENT,
-+	WOW_HOST_AUTO_SHUTDOWN_EVENT,
-+	WOW_IOAC_MAGIC_EVENT,
-+	WOW_IOAC_SHORT_EVENT,
-+	WOW_IOAC_EXTEND_EVENT,
-+	WOW_IOAC_TIMER_EVENT,
-+	WOW_DFS_PHYERR_RADAR_EVENT,
-+	WOW_BEACON_EVENT,
-+	WOW_CLIENT_KICKOUT_EVENT,
-+	WOW_EVENT_MAX,
-+};
+ #undef C2S
+ 
++#define WOW_DEFAULT_BITMAP_PATTERN_SIZE		148
++#define WOW_DEFAULT_BITMASK_SIZE		148
 +
-+enum wmi_wow_interface_cfg {
-+	WOW_IFACE_PAUSE_ENABLED,
-+	WOW_IFACE_PAUSE_DISABLED
-+};
++#define WOW_MIN_PATTERN_SIZE	1
++#define WOW_MAX_PATTERN_SIZE	148
++#define WOW_MAX_PKT_OFFSET	128
++#define WOW_HDR_LEN	(sizeof(struct ieee80211_hdr_3addr) + \
++	sizeof(struct rfc1042_hdr))
++#define WOW_MAX_REDUCE	(WOW_HDR_LEN - sizeof(struct ethhdr) - \
++	offsetof(struct ieee80211_hdr_3addr, addr1))
 +
-+#define C2S(x) case x: return #x
-+
-+static inline const char *wow_wakeup_event(enum wmi_wow_wakeup_event ev)
-+{
-+	switch (ev) {
-+	C2S(WOW_BMISS_EVENT);
-+	C2S(WOW_BETTER_AP_EVENT);
-+	C2S(WOW_DEAUTH_RECVD_EVENT);
-+	C2S(WOW_MAGIC_PKT_RECVD_EVENT);
-+	C2S(WOW_GTK_ERR_EVENT);
-+	C2S(WOW_FOURWAY_HSHAKE_EVENT);
-+	C2S(WOW_EAPOL_RECVD_EVENT);
-+	C2S(WOW_NLO_DETECTED_EVENT);
-+	C2S(WOW_DISASSOC_RECVD_EVENT);
-+	C2S(WOW_PATTERN_MATCH_EVENT);
-+	C2S(WOW_CSA_IE_EVENT);
-+	C2S(WOW_PROBE_REQ_WPS_IE_EVENT);
-+	C2S(WOW_AUTH_REQ_EVENT);
-+	C2S(WOW_ASSOC_REQ_EVENT);
-+	C2S(WOW_HTT_EVENT);
-+	C2S(WOW_RA_MATCH_EVENT);
-+	C2S(WOW_HOST_AUTO_SHUTDOWN_EVENT);
-+	C2S(WOW_IOAC_MAGIC_EVENT);
-+	C2S(WOW_IOAC_SHORT_EVENT);
-+	C2S(WOW_IOAC_EXTEND_EVENT);
-+	C2S(WOW_IOAC_TIMER_EVENT);
-+	C2S(WOW_DFS_PHYERR_RADAR_EVENT);
-+	C2S(WOW_BEACON_EVENT);
-+	C2S(WOW_CLIENT_KICKOUT_EVENT);
-+	C2S(WOW_EVENT_MAX);
-+	default:
-+		return NULL;
-+	}
-+}
-+
-+enum wmi_wow_wake_reason {
-+	WOW_REASON_UNSPECIFIED = -1,
-+	WOW_REASON_NLOD = 0,
-+	WOW_REASON_AP_ASSOC_LOST,
-+	WOW_REASON_LOW_RSSI,
-+	WOW_REASON_DEAUTH_RECVD,
-+	WOW_REASON_DISASSOC_RECVD,
-+	WOW_REASON_GTK_HS_ERR,
-+	WOW_REASON_EAP_REQ,
-+	WOW_REASON_FOURWAY_HS_RECV,
-+	WOW_REASON_TIMER_INTR_RECV,
-+	WOW_REASON_PATTERN_MATCH_FOUND,
-+	WOW_REASON_RECV_MAGIC_PATTERN,
-+	WOW_REASON_P2P_DISC,
-+	WOW_REASON_WLAN_HB,
-+	WOW_REASON_CSA_EVENT,
-+	WOW_REASON_PROBE_REQ_WPS_IE_RECV,
-+	WOW_REASON_AUTH_REQ_RECV,
-+	WOW_REASON_ASSOC_REQ_RECV,
-+	WOW_REASON_HTT_EVENT,
-+	WOW_REASON_RA_MATCH,
-+	WOW_REASON_HOST_AUTO_SHUTDOWN,
-+	WOW_REASON_IOAC_MAGIC_EVENT,
-+	WOW_REASON_IOAC_SHORT_EVENT,
-+	WOW_REASON_IOAC_EXTEND_EVENT,
-+	WOW_REASON_IOAC_TIMER_EVENT,
-+	WOW_REASON_ROAM_HO,
-+	WOW_REASON_DFS_PHYERR_RADADR_EVENT,
-+	WOW_REASON_BEACON_RECV,
-+	WOW_REASON_CLIENT_KICKOUT_EVENT,
-+	WOW_REASON_PAGE_FAULT = 0x3a,
-+	WOW_REASON_DEBUG_TEST = 0xFF,
-+};
-+
-+static inline const char *wow_reason(enum wmi_wow_wake_reason reason)
-+{
-+	switch (reason) {
-+	C2S(WOW_REASON_UNSPECIFIED);
-+	C2S(WOW_REASON_NLOD);
-+	C2S(WOW_REASON_AP_ASSOC_LOST);
-+	C2S(WOW_REASON_LOW_RSSI);
-+	C2S(WOW_REASON_DEAUTH_RECVD);
-+	C2S(WOW_REASON_DISASSOC_RECVD);
-+	C2S(WOW_REASON_GTK_HS_ERR);
-+	C2S(WOW_REASON_EAP_REQ);
-+	C2S(WOW_REASON_FOURWAY_HS_RECV);
-+	C2S(WOW_REASON_TIMER_INTR_RECV);
-+	C2S(WOW_REASON_PATTERN_MATCH_FOUND);
-+	C2S(WOW_REASON_RECV_MAGIC_PATTERN);
-+	C2S(WOW_REASON_P2P_DISC);
-+	C2S(WOW_REASON_WLAN_HB);
-+	C2S(WOW_REASON_CSA_EVENT);
-+	C2S(WOW_REASON_PROBE_REQ_WPS_IE_RECV);
-+	C2S(WOW_REASON_AUTH_REQ_RECV);
-+	C2S(WOW_REASON_ASSOC_REQ_RECV);
-+	C2S(WOW_REASON_HTT_EVENT);
-+	C2S(WOW_REASON_RA_MATCH);
-+	C2S(WOW_REASON_HOST_AUTO_SHUTDOWN);
-+	C2S(WOW_REASON_IOAC_MAGIC_EVENT);
-+	C2S(WOW_REASON_IOAC_SHORT_EVENT);
-+	C2S(WOW_REASON_IOAC_EXTEND_EVENT);
-+	C2S(WOW_REASON_IOAC_TIMER_EVENT);
-+	C2S(WOW_REASON_ROAM_HO);
-+	C2S(WOW_REASON_DFS_PHYERR_RADADR_EVENT);
-+	C2S(WOW_REASON_BEACON_RECV);
-+	C2S(WOW_REASON_CLIENT_KICKOUT_EVENT);
-+	C2S(WOW_REASON_PAGE_FAULT);
-+	C2S(WOW_REASON_DEBUG_TEST);
-+	default:
-+		return NULL;
-+	}
-+}
-+
-+#undef C2S
-+
-+struct wmi_wow_enable_cmd {
++struct wmi_wow_bitmap_pattern_params {
 +	__le32 tlv_header;
-+	__le32 enable;
-+	__le32 pause_iface_config;
-+	__le32 flags;
-+}  __packed;
-+
-+struct wmi_wow_host_wakeup_cmd {
-+	__le32 tlv_header;
-+	__le32 reserved;
++	u8 patternbuf[WOW_DEFAULT_BITMAP_PATTERN_SIZE];
++	u8 bitmaskbuf[WOW_DEFAULT_BITMASK_SIZE];
++	__le32 pattern_offset;
++	__le32 pattern_len;
++	__le32 bitmask_len;
++	__le32 pattern_id;
 +} __packed;
 +
-+struct wmi_wow_ev_param {
++struct wmi_wow_add_pattern_cmd {
++	__le32 tlv_header;
 +	__le32 vdev_id;
-+	__le32 flag;
-+	__le32 wake_reason;
-+	__le32 data_len;
++	__le32 pattern_id;
++	__le32 pattern_type;
 +} __packed;
 +
-+struct wmi_wow_ev_pg_fault_param {
-+	__le32 len;
-+	u8 data[];
++struct wmi_wow_del_pattern_cmd {
++	__le32 tlv_header;
++	__le32 vdev_id;
++	__le32 pattern_id;
++	__le32 pattern_type;
 +} __packed;
 +
-+struct wmi_wow_ev_arg {
-+	enum wmi_wow_wake_reason wake_reason;
++enum wmi_tlv_pattern_type {
++	WOW_PATTERN_MIN = 0,
++	WOW_BITMAP_PATTERN = WOW_PATTERN_MIN,
++	WOW_IPV4_SYNC_PATTERN,
++	WOW_IPV6_SYNC_PATTERN,
++	WOW_WILD_CARD_PATTERN,
++	WOW_TIMER_PATTERN,
++	WOW_MAGIC_PATTERN,
++	WOW_IPV6_RA_PATTERN,
++	WOW_IOAC_PKT_PATTERN,
++	WOW_IOAC_TMR_PATTERN,
++	WOW_PATTERN_MAX
 +};
 +
- void ath12k_wmi_init_qcn9274(struct ath12k_base *ab,
- 			     struct ath12k_wmi_resource_config_arg *config);
- void ath12k_wmi_init_wcn7850(struct ath12k_base *ab,
-@@ -5020,4 +5192,6 @@ ath12k_wmi_mac_phy_get_hw_link_id(const struct ath12k_wmi_mac_phy_caps_params *p
- 			     WMI_CAPS_PARAMS_HW_LINK_ID);
- }
++struct wmi_wow_add_del_event_cmd {
++	__le32 tlv_header;
++	__le32 vdev_id;
++	__le32 is_add;
++	__le32 event_bitmap;
++} __packed;
++
+ struct wmi_wow_enable_cmd {
+ 	__le32 tlv_header;
+ 	__le32 enable;
+@@ -5194,4 +5250,11 @@ ath12k_wmi_mac_phy_get_hw_link_id(const struct ath12k_wmi_mac_phy_caps_params *p
  
-+int ath12k_wmi_wow_host_wakeup_ind(struct ath12k *ar);
-+int ath12k_wmi_wow_enable(struct ath12k *ar);
+ int ath12k_wmi_wow_host_wakeup_ind(struct ath12k *ar);
+ int ath12k_wmi_wow_enable(struct ath12k *ar);
++int ath12k_wmi_wow_del_pattern(struct ath12k *ar, u32 vdev_id, u32 pattern_id);
++int ath12k_wmi_wow_add_pattern(struct ath12k *ar, u32 vdev_id, u32 pattern_id,
++			       const u8 *pattern, const u8 *mask,
++			       int pattern_len, int pattern_offset);
++int ath12k_wmi_wow_add_wakeup_event(struct ath12k *ar, u32 vdev_id,
++				    enum wmi_wow_wakeup_event event,
++				    u32 enable);
  #endif
 diff --git a/drivers/net/wireless/ath/ath12k/wow.c b/drivers/net/wireless/ath/ath12k/wow.c
-new file mode 100644
-index 000000000000..98e36fc87fa6
---- /dev/null
+index 98e36fc87fa6..bab4419b13b2 100644
+--- a/drivers/net/wireless/ath/ath12k/wow.c
 +++ b/drivers/net/wireless/ath/ath12k/wow.c
-@@ -0,0 +1,74 @@
-+// SPDX-License-Identifier: BSD-3-Clause-Clear
-+/*
-+ * Copyright (c) 2020 The Linux Foundation. All rights reserved.
-+ * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+ */
+@@ -7,12 +7,22 @@
+ #include <linux/delay.h>
+ 
+ #include "mac.h"
 +
-+#include <linux/delay.h>
++#include <net/mac80211.h>
+ #include "core.h"
+ #include "hif.h"
+ #include "debug.h"
+ #include "wmi.h"
+ #include "wow.h"
+ 
++static const struct wiphy_wowlan_support ath12k_wowlan_support = {
++	.flags = WIPHY_WOWLAN_DISCONNECT |
++		 WIPHY_WOWLAN_MAGIC_PKT,
++	.pattern_min_len = WOW_MIN_PATTERN_SIZE,
++	.pattern_max_len = WOW_MAX_PATTERN_SIZE,
++	.max_pkt_offset = WOW_MAX_PKT_OFFSET,
++};
 +
-+#include "mac.h"
-+#include "core.h"
-+#include "hif.h"
-+#include "debug.h"
-+#include "wmi.h"
-+#include "wow.h"
+ int ath12k_wow_enable(struct ath12k *ar)
+ {
+ 	struct ath12k_base *ab = ar->ab;
+@@ -72,3 +82,409 @@ int ath12k_wow_wakeup(struct ath12k *ar)
+ 
+ 	return 0;
+ }
 +
-+int ath12k_wow_enable(struct ath12k *ar)
++static int ath12k_wow_vif_cleanup(struct ath12k_vif *arvif)
 +{
-+	struct ath12k_base *ab = ar->ab;
++	struct ath12k *ar = arvif->ar;
 +	int i, ret;
 +
-+	clear_bit(ATH12K_FLAG_HTC_SUSPEND_COMPLETE, &ab->dev_flags);
-+
-+	for (i = 0; i < ATH12K_WOW_RETRY_NUM; i++) {
-+		reinit_completion(&ab->htc_suspend);
-+
-+		ret = ath12k_wmi_wow_enable(ar);
++	for (i = 0; i < WOW_EVENT_MAX; i++) {
++		ret = ath12k_wmi_wow_add_wakeup_event(ar, arvif->vdev_id, i, 0);
 +		if (ret) {
-+			ath12k_warn(ab, "failed to issue wow enable: %d\n", ret);
++			ath12k_warn(ar->ab, "failed to issue wow wakeup for event %s on vdev %i: %d\n",
++				    wow_wakeup_event(i), arvif->vdev_id, ret);
++			return ret;
++		}
++	}
++
++	for (i = 0; i < ar->wow.max_num_patterns; i++) {
++		ret = ath12k_wmi_wow_del_pattern(ar, arvif->vdev_id, i);
++		if (ret) {
++			ath12k_warn(ar->ab, "failed to delete wow pattern %d for vdev %i: %d\n",
++				    i, arvif->vdev_id, ret);
++			return ret;
++		}
++	}
++
++	return 0;
++}
++
++static int ath12k_wow_cleanup(struct ath12k *ar)
++{
++	struct ath12k_vif *arvif;
++	int ret;
++
++	lockdep_assert_held(&ar->conf_mutex);
++
++	list_for_each_entry(arvif, &ar->arvifs, list) {
++		ret = ath12k_wow_vif_cleanup(arvif);
++		if (ret) {
++			ath12k_warn(ar->ab, "failed to clean wow wakeups on vdev %i: %d\n",
++				    arvif->vdev_id, ret);
++			return ret;
++		}
++	}
++
++	return 0;
++}
++
++/* Convert a 802.3 format to a 802.11 format.
++ *         +------------+-----------+--------+----------------+
++ * 802.3:  |dest mac(6B)|src mac(6B)|type(2B)|     body...    |
++ *         +------------+-----------+--------+----------------+
++ *                |__         |_______    |____________  |________
++ *                   |                |                |          |
++ *         +--+------------+----+-----------+---------------+-----------+
++ * 802.11: |4B|dest mac(6B)| 6B |src mac(6B)|  8B  |type(2B)|  body...  |
++ *         +--+------------+----+-----------+---------------+-----------+
++ */
++static void
++ath12k_wow_convert_8023_to_80211(struct ath12k *ar,
++				 const struct cfg80211_pkt_pattern *eth_pattern,
++				 struct ath12k_pkt_pattern *i80211_pattern)
++{
++	size_t r1042_eth_ofs = offsetof(struct rfc1042_hdr, eth_type);
++	size_t a1_ofs = offsetof(struct ieee80211_hdr_3addr, addr1);
++	size_t a3_ofs = offsetof(struct ieee80211_hdr_3addr, addr3);
++	size_t i80211_hdr_len = sizeof(struct ieee80211_hdr_3addr);
++	size_t prot_ofs = offsetof(struct ethhdr, h_proto);
++	size_t src_ofs = offsetof(struct ethhdr, h_source);
++	u8 eth_bytemask[WOW_MAX_PATTERN_SIZE] = {};
++	const u8 *eth_pat = eth_pattern->pattern;
++	int eth_pat_len = eth_pattern->pattern_len;
++	int eth_pkt_ofs = eth_pattern->pkt_offset;
++	u8 *bytemask = i80211_pattern->bytemask;
++	u8 *pat = i80211_pattern->pattern;
++	int pat_len = 0;
++	int pkt_ofs = 0;
++	int delta;
++	int i;
++
++	/* convert bitmask to bytemask */
++	for (i = 0; i < eth_pat_len; i++)
++		if (eth_pattern->mask[i / 8] & BIT(i % 8))
++			eth_bytemask[i] = 0xff;
++
++	if (eth_pkt_ofs < ETH_ALEN) {
++		pkt_ofs = eth_pkt_ofs + a1_ofs;
++
++		if (eth_pkt_ofs + eth_pat_len < ETH_ALEN) {
++			memcpy(pat, eth_pat, eth_pat_len);
++			memcpy(bytemask, eth_bytemask, eth_pat_len);
++
++			pat_len = eth_pat_len;
++		} else if (eth_pkt_ofs + eth_pat_len < prot_ofs) {
++			memcpy(pat, eth_pat, ETH_ALEN - eth_pkt_ofs);
++			memcpy(bytemask, eth_bytemask, ETH_ALEN - eth_pkt_ofs);
++
++			delta = eth_pkt_ofs + eth_pat_len - src_ofs;
++			memcpy(pat + a3_ofs - pkt_ofs,
++			       eth_pat + ETH_ALEN - eth_pkt_ofs,
++			       delta);
++			memcpy(bytemask + a3_ofs - pkt_ofs,
++			       eth_bytemask + ETH_ALEN - eth_pkt_ofs,
++			       delta);
++
++			pat_len = a3_ofs - pkt_ofs + delta;
++		} else {
++			memcpy(pat, eth_pat, ETH_ALEN - eth_pkt_ofs);
++			memcpy(bytemask, eth_bytemask, ETH_ALEN - eth_pkt_ofs);
++
++			memcpy(pat + a3_ofs - pkt_ofs,
++			       eth_pat + ETH_ALEN - eth_pkt_ofs,
++			       ETH_ALEN);
++			memcpy(bytemask + a3_ofs - pkt_ofs,
++			       eth_bytemask + ETH_ALEN - eth_pkt_ofs,
++			       ETH_ALEN);
++
++			delta = eth_pkt_ofs + eth_pat_len - prot_ofs;
++			memcpy(pat + i80211_hdr_len + r1042_eth_ofs - pkt_ofs,
++			       eth_pat + prot_ofs - eth_pkt_ofs,
++			       delta);
++			memcpy(bytemask + i80211_hdr_len + r1042_eth_ofs - pkt_ofs,
++			       eth_bytemask + prot_ofs - eth_pkt_ofs,
++			       delta);
++
++			pat_len = i80211_hdr_len + r1042_eth_ofs - pkt_ofs + delta;
++		}
++	} else if (eth_pkt_ofs < prot_ofs) {
++		pkt_ofs = eth_pkt_ofs - ETH_ALEN + a3_ofs;
++
++		if (eth_pkt_ofs + eth_pat_len < prot_ofs) {
++			memcpy(pat, eth_pat, eth_pat_len);
++			memcpy(bytemask, eth_bytemask, eth_pat_len);
++
++			pat_len = eth_pat_len;
++		} else {
++			memcpy(pat, eth_pat, prot_ofs - eth_pkt_ofs);
++			memcpy(bytemask, eth_bytemask, prot_ofs - eth_pkt_ofs);
++
++			delta = eth_pkt_ofs + eth_pat_len - prot_ofs;
++			memcpy(pat + i80211_hdr_len + r1042_eth_ofs - pkt_ofs,
++			       eth_pat +  prot_ofs - eth_pkt_ofs,
++			       delta);
++			memcpy(bytemask + i80211_hdr_len + r1042_eth_ofs - pkt_ofs,
++			       eth_bytemask + prot_ofs - eth_pkt_ofs,
++			       delta);
++
++			pat_len =  i80211_hdr_len + r1042_eth_ofs - pkt_ofs + delta;
++		}
++	} else {
++		pkt_ofs = eth_pkt_ofs - prot_ofs + i80211_hdr_len + r1042_eth_ofs;
++
++		memcpy(pat, eth_pat, eth_pat_len);
++		memcpy(bytemask, eth_bytemask, eth_pat_len);
++
++		pat_len = eth_pat_len;
++	}
++
++	i80211_pattern->pattern_len = pat_len;
++	i80211_pattern->pkt_offset = pkt_ofs;
++}
++
++static int ath12k_vif_wow_set_wakeups(struct ath12k_vif *arvif,
++				      struct cfg80211_wowlan *wowlan)
++{
++	const struct cfg80211_pkt_pattern *patterns = wowlan->patterns;
++	struct ath12k *ar = arvif->ar;
++	unsigned long wow_mask = 0;
++	int pattern_id = 0;
++	int ret, i;
++
++	/* Setup requested WOW features */
++	switch (arvif->vdev_type) {
++	case WMI_VDEV_TYPE_IBSS:
++		__set_bit(WOW_BEACON_EVENT, &wow_mask);
++		fallthrough;
++	case WMI_VDEV_TYPE_AP:
++		__set_bit(WOW_DEAUTH_RECVD_EVENT, &wow_mask);
++		__set_bit(WOW_DISASSOC_RECVD_EVENT, &wow_mask);
++		__set_bit(WOW_PROBE_REQ_WPS_IE_EVENT, &wow_mask);
++		__set_bit(WOW_AUTH_REQ_EVENT, &wow_mask);
++		__set_bit(WOW_ASSOC_REQ_EVENT, &wow_mask);
++		__set_bit(WOW_HTT_EVENT, &wow_mask);
++		__set_bit(WOW_RA_MATCH_EVENT, &wow_mask);
++		break;
++	case WMI_VDEV_TYPE_STA:
++		if (wowlan->disconnect) {
++			__set_bit(WOW_DEAUTH_RECVD_EVENT, &wow_mask);
++			__set_bit(WOW_DISASSOC_RECVD_EVENT, &wow_mask);
++			__set_bit(WOW_BMISS_EVENT, &wow_mask);
++			__set_bit(WOW_CSA_IE_EVENT, &wow_mask);
++		}
++
++		if (wowlan->magic_pkt)
++			__set_bit(WOW_MAGIC_PKT_RECVD_EVENT, &wow_mask);
++		break;
++	default:
++		break;
++	}
++
++	for (i = 0; i < wowlan->n_patterns; i++) {
++		const struct cfg80211_pkt_pattern *eth_pattern = &patterns[i];
++		struct ath12k_pkt_pattern new_pattern = {};
++
++		if (WARN_ON(eth_pattern->pattern_len > WOW_MAX_PATTERN_SIZE))
++			return -EINVAL;
++
++		if (ar->ab->wow.wmi_conf_rx_decap_mode ==
++		    ATH12K_HW_TXRX_NATIVE_WIFI) {
++			ath12k_wow_convert_8023_to_80211(ar, eth_pattern,
++							 &new_pattern);
++
++			if (WARN_ON(new_pattern.pattern_len > WOW_MAX_PATTERN_SIZE))
++				return -EINVAL;
++		} else {
++			memcpy(new_pattern.pattern, eth_pattern->pattern,
++			       eth_pattern->pattern_len);
++
++			/* convert bitmask to bytemask */
++			for (i = 0; i < eth_pattern->pattern_len; i++)
++				if (eth_pattern->mask[i / 8] & BIT(i % 8))
++					new_pattern.bytemask[i] = 0xff;
++
++			new_pattern.pattern_len = eth_pattern->pattern_len;
++			new_pattern.pkt_offset = eth_pattern->pkt_offset;
++		}
++
++		ret = ath12k_wmi_wow_add_pattern(ar, arvif->vdev_id,
++						 pattern_id,
++						 new_pattern.pattern,
++						 new_pattern.bytemask,
++						 new_pattern.pattern_len,
++						 new_pattern.pkt_offset);
++		if (ret) {
++			ath12k_warn(ar->ab, "failed to add pattern %i to vdev %i: %d\n",
++				    pattern_id,
++				    arvif->vdev_id, ret);
 +			return ret;
 +		}
 +
-+		ret = wait_for_completion_timeout(&ab->htc_suspend, 3 * HZ);
-+		if (ret == 0) {
-+			ath12k_warn(ab,
-+				    "timed out while waiting for htc suspend completion\n");
-+			return -ETIMEDOUT;
-+		}
-+
-+		if (test_bit(ATH12K_FLAG_HTC_SUSPEND_COMPLETE, &ab->dev_flags))
-+			/* success, suspend complete received */
-+			return 0;
-+
-+		ath12k_warn(ab, "htc suspend not complete, retrying (try %d)\n",
-+			    i);
-+		msleep(ATH12K_WOW_RETRY_WAIT_MS);
++		pattern_id++;
++		__set_bit(WOW_PATTERN_MATCH_EVENT, &wow_mask);
 +	}
 +
-+	ath12k_warn(ab, "htc suspend not complete, failing after %d tries\n", i);
++	for (i = 0; i < WOW_EVENT_MAX; i++) {
++		if (!test_bit(i, &wow_mask))
++			continue;
++		ret = ath12k_wmi_wow_add_wakeup_event(ar, arvif->vdev_id, i, 1);
++		if (ret) {
++			ath12k_warn(ar->ab, "failed to enable wakeup event %s on vdev %i: %d\n",
++				    wow_wakeup_event(i), arvif->vdev_id, ret);
++			return ret;
++		}
++	}
 +
-+	return -ETIMEDOUT;
++	return 0;
 +}
 +
-+int ath12k_wow_wakeup(struct ath12k *ar)
++static int ath12k_wow_set_wakeups(struct ath12k *ar,
++				  struct cfg80211_wowlan *wowlan)
 +{
-+	struct ath12k_base *ab = ar->ab;
++	struct ath12k_vif *arvif;
 +	int ret;
 +
-+	reinit_completion(&ab->wow.wakeup_completed);
++	lockdep_assert_held(&ar->conf_mutex);
 +
-+	ret = ath12k_wmi_wow_host_wakeup_ind(ar);
++	list_for_each_entry(arvif, &ar->arvifs, list) {
++		ret = ath12k_vif_wow_set_wakeups(arvif, wowlan);
++		if (ret) {
++			ath12k_warn(ar->ab, "failed to set wow wakeups on vdev %i: %d\n",
++				    arvif->vdev_id, ret);
++			return ret;
++		}
++	}
++
++	return 0;
++}
++
++int ath12k_wow_op_suspend(struct ieee80211_hw *hw,
++			  struct cfg80211_wowlan *wowlan)
++{
++	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
++	struct ath12k *ar = ath12k_ah_to_ar(ah, 0);
++	int ret;
++
++	mutex_lock(&ar->conf_mutex);
++
++	ret =  ath12k_wow_cleanup(ar);
 +	if (ret) {
-+		ath12k_warn(ab, "failed to send wow wakeup indication: %d\n",
++		ath12k_warn(ar->ab, "failed to clear wow wakeup events: %d\n",
 +			    ret);
-+		return ret;
++		goto exit;
 +	}
 +
-+	ret = wait_for_completion_timeout(&ab->wow.wakeup_completed, 3 * HZ);
-+	if (ret == 0) {
-+		ath12k_warn(ab, "timed out while waiting for wow wakeup completion\n");
-+		return -ETIMEDOUT;
++	ret = ath12k_wow_set_wakeups(ar, wowlan);
++	if (ret) {
++		ath12k_warn(ar->ab, "failed to set wow wakeup events: %d\n",
++			    ret);
++		goto cleanup;
 +	}
++
++	ret = ath12k_mac_wait_tx_complete(ar);
++	if (ret) {
++		ath12k_warn(ar->ab, "failed to wait tx complete: %d\n", ret);
++		goto cleanup;
++	}
++
++	ret = ath12k_wow_enable(ar);
++	if (ret) {
++		ath12k_warn(ar->ab, "failed to start wow: %d\n", ret);
++		goto cleanup;
++	}
++
++	ath12k_hif_irq_disable(ar->ab);
++	ath12k_hif_ce_irq_disable(ar->ab);
++
++	ret = ath12k_hif_suspend(ar->ab);
++	if (ret) {
++		ath12k_warn(ar->ab, "failed to suspend hif: %d\n", ret);
++		goto wakeup;
++	}
++
++	goto exit;
++
++wakeup:
++	ath12k_wow_wakeup(ar);
++
++cleanup:
++	ath12k_wow_cleanup(ar);
++
++exit:
++	mutex_unlock(&ar->conf_mutex);
++	return ret ? 1 : 0;
++}
++
++void ath12k_wow_op_set_wakeup(struct ieee80211_hw *hw, bool enabled)
++{
++	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
++	struct ath12k *ar = ath12k_ah_to_ar(ah, 0);
++
++	mutex_lock(&ar->conf_mutex);
++	device_set_wakeup_enable(ar->ab->dev, enabled);
++	mutex_unlock(&ar->conf_mutex);
++}
++
++int ath12k_wow_op_resume(struct ieee80211_hw *hw)
++{
++	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
++	struct ath12k *ar = ath12k_ah_to_ar(ah, 0);
++	int ret;
++
++	mutex_lock(&ar->conf_mutex);
++
++	ret = ath12k_hif_resume(ar->ab);
++	if (ret) {
++		ath12k_warn(ar->ab, "failed to resume hif: %d\n", ret);
++		goto exit;
++	}
++
++	ath12k_hif_ce_irq_enable(ar->ab);
++	ath12k_hif_irq_enable(ar->ab);
++
++	ret = ath12k_wow_wakeup(ar);
++	if (ret)
++		ath12k_warn(ar->ab, "failed to wakeup from wow: %d\n", ret);
++
++exit:
++	if (ret) {
++		switch (ah->state) {
++		case ATH12K_HW_STATE_ON:
++			ah->state = ATH12K_HW_STATE_RESTARTING;
++			ret = 1;
++			break;
++		case ATH12K_HW_STATE_OFF:
++		case ATH12K_HW_STATE_RESTARTING:
++		case ATH12K_HW_STATE_RESTARTED:
++		case ATH12K_HW_STATE_WEDGED:
++			ath12k_warn(ar->ab, "encountered unexpected device state %d on resume, cannot recover\n",
++				    ah->state);
++			ret = -EIO;
++			break;
++		}
++	}
++
++	mutex_unlock(&ar->conf_mutex);
++	return ret;
++}
++
++int ath12k_wow_init(struct ath12k *ar)
++{
++	if (WARN_ON(!test_bit(WMI_TLV_SERVICE_WOW, ar->wmi->wmi_ab->svc_map)))
++		return -EINVAL;
++
++	ar->wow.wowlan_support = ath12k_wowlan_support;
++
++	if (ar->ab->wow.wmi_conf_rx_decap_mode == ATH12K_HW_TXRX_NATIVE_WIFI) {
++		ar->wow.wowlan_support.pattern_max_len -= WOW_MAX_REDUCE;
++		ar->wow.wowlan_support.max_pkt_offset -= WOW_MAX_REDUCE;
++	}
++
++	ar->wow.max_num_patterns = ATH12K_WOW_PATTERNS;
++	ar->wow.wowlan_support.n_patterns = ar->wow.max_num_patterns;
++	ar->ah->hw->wiphy->wowlan = &ar->wow.wowlan_support;
++
++	device_set_wakeup_capable(ar->ab->dev, true);
 +
 +	return 0;
 +}
 diff --git a/drivers/net/wireless/ath/ath12k/wow.h b/drivers/net/wireless/ath/ath12k/wow.h
-new file mode 100644
-index 000000000000..6817ceaa4cfe
---- /dev/null
+index 6817ceaa4cfe..af9be5fadcc3 100644
+--- a/drivers/net/wireless/ath/ath12k/wow.h
 +++ b/drivers/net/wireless/ath/ath12k/wow.h
-@@ -0,0 +1,30 @@
-+/* SPDX-License-Identifier: BSD-3-Clause-Clear */
-+/*
-+ * Copyright (c) 2020 The Linux Foundation. All rights reserved.
-+ * Copyright (c) 2022, 2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+ */
+@@ -9,14 +9,46 @@
+ 
+ #define ATH12K_WOW_RETRY_NUM		10
+ #define ATH12K_WOW_RETRY_WAIT_MS	200
++#define ATH12K_WOW_PATTERNS		22
 +
-+#ifndef ATH12K_WOW_H
-+#define ATH12K_WOW_H
++struct ath12k_wow {
++	u32 max_num_patterns;
++	struct completion wakeup_completed;
++	struct wiphy_wowlan_support wowlan_support;
++};
 +
-+#define ATH12K_WOW_RETRY_NUM		10
-+#define ATH12K_WOW_RETRY_WAIT_MS	200
++struct ath12k_pkt_pattern {
++	u8 pattern[WOW_MAX_PATTERN_SIZE];
++	u8 bytemask[WOW_MAX_PATTERN_SIZE];
++	int pattern_len;
++	int pkt_offset;
++};
 +
-+#ifdef CONFIG_PM
-+
-+int ath12k_wow_enable(struct ath12k *ar);
-+int ath12k_wow_wakeup(struct ath12k *ar);
-+
-+#else
-+
-+static inline int ath12k_wow_enable(struct ath12k *ar)
++struct rfc1042_hdr {
++	u8 llc_dsap;
++	u8 llc_ssap;
++	u8 llc_ctrl;
++	u8 snap_oui[3];
++	__be16 eth_type;
++} __packed;
+ 
+ #ifdef CONFIG_PM
+ 
++int ath12k_wow_init(struct ath12k *ar);
++int ath12k_wow_op_suspend(struct ieee80211_hw *hw,
++			  struct cfg80211_wowlan *wowlan);
++int ath12k_wow_op_resume(struct ieee80211_hw *hw);
++void ath12k_wow_op_set_wakeup(struct ieee80211_hw *hw, bool enabled);
+ int ath12k_wow_enable(struct ath12k *ar);
+ int ath12k_wow_wakeup(struct ath12k *ar);
+ 
+ #else
+ 
++static inline int ath12k_wow_init(struct ath12k *ar)
 +{
 +	return 0;
 +}
 +
-+static inline int ath12k_wow_wakeup(struct ath12k *ar)
-+{
-+	return 0;
-+}
-+#endif /* CONFIG_PM */
-+#endif /* ATH12K_WOW_H */
+ static inline int ath12k_wow_enable(struct ath12k *ar)
+ {
+ 	return 0;
 -- 
 2.25.1
 
