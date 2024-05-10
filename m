@@ -1,207 +1,114 @@
-Return-Path: <linux-wireless+bounces-7456-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7457-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C798E8C25A9
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 15:26:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D5F38C260D
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 15:51:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 544C8285710
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 13:26:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E3691C213BD
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 May 2024 13:51:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E54127E0D;
-	Fri, 10 May 2024 13:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71C2E12C550;
+	Fri, 10 May 2024 13:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="dXEetvEQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OI2Z35V+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0853C5339E
-	for <linux-wireless@vger.kernel.org>; Fri, 10 May 2024 13:26:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413FA12BF39;
+	Fri, 10 May 2024 13:50:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715347606; cv=none; b=p6M67Kn2AYCq+bp3iXyOEgfKSJYRyVXAvkLbVltwwSiVMGAHmG0eP76aV5RiyYdr1wcDoptTC/hGw4z+0yXnboiY3EOTO2w1jMlbJ9T2ytcS4lcIRbKko76iBUZwRh2mXRUgLvKaW9t22QXb0LpTecdSkkDLtNIChWc7YKtftiU=
+	t=1715349057; cv=none; b=rro70WPxsL7XHT+rKRLHE2jRqeuZgrdOUkCQoCMSFRxA4C08bUQy/OxEcoAuuAJbYmNpj2fNIjUkWTIdjXQxNs0TN0plHcLUIMR9eRXM7yduKeIcmUVg6f39KX+3e9K6OHzYpC/BqGKhTNjIwRaXKYQ9oroLnPvbfY+7DBLtik8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715347606; c=relaxed/simple;
-	bh=5d4vHDkLSPfLDV5AI9wfw6UEj/DZJ5Yv6/66yBGcwXE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=X8LlvVIra2Lplcbh5LggFKzIeN8tQGOyxWBYTAK+2dTNFru42wO7fbqLIllBXpefX60LV9KVIamSj077rxNI8Uj3dNlIF8k0qTvlVCxsih9uBt81KywnKX5UBt6cBIFlvlpgpktg5dPEiDelTMa/xBafD2s3ZiBWDRiTIQMZgK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=dXEetvEQ; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a59a64db066so526517166b.3
-        for <linux-wireless@vger.kernel.org>; Fri, 10 May 2024 06:26:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1715347603; x=1715952403; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0iIlXXeFM7yBqzEBZlBlI1pxa1tOOAauSQu/IN4LvIo=;
-        b=dXEetvEQ1WBtETVHEWou8PMjwjZUodkJnC6XMb59qh/2Iphs6ToCmfNQTRgfAWkcEy
-         eReRyt4u/vC8v0cbq0VbY6tcNg5R+WV9a0Nhh8FGjwEP7QDVl/8GeBFwnD+JEbuWS5Wk
-         9Arzzf4W1fB2yt0s/u1OL1YJlminwynV76ga/f7hg5g9ajEttiNR+6Ej1+oJ1Q8i1Ne+
-         pHoqOVn3zqZtk7COA2qlLZiYpu875JTHlHRYnBbJRfCY142QimSd7CA70EoN5m13p9bT
-         A3HHHAGfUvO2XMZ+4nIHud03YKAuoEOYKD246EPY+AB0W8YVWI0lf5phcClNOzn+UDV1
-         +CxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715347603; x=1715952403;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=0iIlXXeFM7yBqzEBZlBlI1pxa1tOOAauSQu/IN4LvIo=;
-        b=DlDjjj3ZHUekFnw1Qfn81dhQqWOZxbE+SzaFynq1RyxFJ3R1Cq9IYn56IjvYA/jprx
-         Bm6YBKqOHof6Bb5UjeSfGmJ0/HeupQ/Ua0YCALcbKkfRTzZCzEfpBFLR9lci32zSmsib
-         mRHnKAMSQjD5kvOnE+H9zaee94ry9HJaCKY3b5ntKVs7fHp/emdY4As7ArVMZ+4P8X89
-         6Vgdza9AYwbDB5HHK67G6Jw7IPi/SxuyHLqWQmVfilVLo/JBaHP5AMZlyd1eM7O/bf/j
-         R+9eF+7P0NcgzmIu6B/p4q6H7gpkxhe3nVU8Fm0d+aLFczvJsUvaOyO00yDKYV1Q/IVb
-         4lsg==
-X-Forwarded-Encrypted: i=1; AJvYcCWi79t6McQfeAJP348TVk7STdB/xb6KKu0JCCzud+uEqnhaklbXrLhT//+jO0VCkMKOhCAq++JQO7f70DDGEA2o+Vu8B57vWQAUWVJMB3o=
-X-Gm-Message-State: AOJu0YwpKp+iu4Ve6nbQLk45uhBgeCQzRTCFfaRckHSed1oco/JJdXhv
-	FjqdpjSel8frNONhxugYMUGDA0N7gjMjML+nX1B4iVG+R1twq99QjGj8RJWpAEM=
-X-Google-Smtp-Source: AGHT+IGTi4pxk95vdybc0kHmR4dKJTKOp0Y7wf8e3ELehw3lkLTRS1ItaNDJRp+5wnTDxpAHk3wDmg==
-X-Received: by 2002:a17:906:3183:b0:a59:b784:ced4 with SMTP id a640c23a62f3a-a5a2d67873fmr189388166b.75.1715347603450;
-        Fri, 10 May 2024 06:26:43 -0700 (PDT)
-Received: from localhost (2a02-a210-20ba-5a00-9ceb-707b-2d57-26f7.cable.dynamic.v6.ziggo.nl. [2a02:a210:20ba:5a00:9ceb:707b:2d57:26f7])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a179c7d2bsm183791166b.120.2024.05.10.06.26.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 May 2024 06:26:43 -0700 (PDT)
+	s=arc-20240116; t=1715349057; c=relaxed/simple;
+	bh=1o5pwPx9wrewqRpso30hR7MfPzjEudJwCui/sX1m3SY=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=MTOjQDoDdllmFL3JwA7Z61KRLVXzwjUnAus8ivv33j09RRhrpiBzheXjqWDpvea3tCX9jvoAulvBpSHmOrmVYurolX3kdd/GswN9u4/wxXRZG25RxSmovqR1sYuUtQVQ1jt5YpuyvGLXpazQmgghyIKAgAe2Jzwf8kYrK3zF7Jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OI2Z35V+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 328D6C113CC;
+	Fri, 10 May 2024 13:50:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715349056;
+	bh=1o5pwPx9wrewqRpso30hR7MfPzjEudJwCui/sX1m3SY=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=OI2Z35V+XCNTV1UDJaNCiVB+oz/Nl7JOH5NMPltS4N0lFk7kFn/c5zRHQoSC8Z4qh
+	 Zu+Yv2b93c6mXPMeMfjo7x32z2RaCH15eSpxMemdO2p7aMrEDR97wk+XMNttsAO0yI
+	 WyqixIrBrcZINuOTeoNdr9tF3VCGLbB6YJuaU7L3MdRPtrlvDAoKaEYgRDb/HZSKfZ
+	 GQYvhnj+/iFIsHrO3VoRRY3n5rXt+KEb+h+d2FClI+qu/PvYV0Br8eB+zmYKJ3bfm5
+	 3dRNQ6E267bfPRfncksQ92R+Wck/iBwS/8eCtGQbVati6pDgYrhyd/bQ7uV6nBQtu5
+	 JkgqRABfTlhBQ==
+From: Kalle Valo <kvalo@kernel.org>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,  Eric Dumazet
+ <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni
+ <pabeni@redhat.com>,  linux-kernel@vger.kernel.org,
+  ath10k@lists.infradead.org,  linux-wireless@vger.kernel.org,
+  netdev@vger.kernel.org,  Sebastian Gottschall <s.gottschall@dd-wrt.com>,
+  Steve deRosier <derosier@cal-sierra.com>,  Stefan Lippers-Hollmann
+ <s.l-h@gmx.de>
+Subject: Re: [PATCH v14] ath10k: add LED and GPIO controlling support for
+ various chipsets
+References: <20230611080505.17393-1-ansuelsmth@gmail.com>
+	<878rcjbaqs.fsf@kernel.org>
+	<648cdebb.5d0a0220.be7f8.a096@mx.google.com>
+	<648ded2a.df0a0220.b78de.4603@mx.google.com>
+	<CA+_ehUzzVq_sVTgVCM+r=oLp=GNn-6nJRBG=bndJjrRDhCodaw@mail.gmail.com>
+	<87v83nlhb3.fsf@kernel.org>
+	<663c9fc7.050a0220.5fb3a.4e87@mx.google.com>
+Date: Fri, 10 May 2024 16:50:52 +0300
+In-Reply-To: <663c9fc7.050a0220.5fb3a.4e87@mx.google.com> (Christian Marangi's
+	message of "Thu, 9 May 2024 12:04:52 +0200")
+Message-ID: <87a5kxlqrn.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 10 May 2024 15:26:42 +0200
-Message-Id: <D15ZZ5V3YU6Z.10FO9XK11WXFB@fairphone.com>
-Cc: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
- <regressions@lists.linux.dev>
-Subject: Re: [PATCH 1/2] wifi: ath11k: supports 2 station interfaces
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Carl Huang" <quic_cjhuang@quicinc.com>, "Kalle Valo" <kvalo@kernel.org>
-X-Mailer: aerc 0.17.0
-References: <20230714023801.2621802-1-quic_cjhuang@quicinc.com>
- <20230714023801.2621802-2-quic_cjhuang@quicinc.com>
- <D15TIIDIIESY.D1EKKJLZINMA@fairphone.com> <87jzk2km0g.fsf@kernel.org>
- <93c15c59-f24c-4472-ae7e-969fd1e3bfec@quicinc.com>
- <4d60ccf3-455d-4189-9100-d35488b00236@quicinc.com>
-In-Reply-To: <4d60ccf3-455d-4189-9100-d35488b00236@quicinc.com>
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Fri May 10, 2024 at 3:04 PM CEST, Carl Huang wrote:
+Christian Marangi <ansuelsmth@gmail.com> writes:
 
-<snip>
+>> 
+>> Sorry for the delay but finally I looked at this again. I decided to
+>> just remove the fixme and otherwise it looks good for me. Please check
+>> my changes:
+>> 
+>> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=688130a66ed49f20ca0ce02c3987f6a474f7c93a
+>>
+>
+> All ok for me, Just I notice the ATH10K_LEDS is not exposed anymore? Is
+> that intended?
 
-> > Kalle, looks we're not able to fix it before Sunday as I don't have=20
-> > WCN6750 setup to verify the fix. The fix could be to define a dedicated=
-=20
-> > function ath11k_init_wmi_config_wcn6750() for WCN6750. I'll send the=20
-> > patch out so others like Luca can have a try.
-> >=20
-> Sorry, I have problem to run "git send-email" as it prompts "5.7.60=20
-> SMTP; Client does not have permissions to send as this sender".
->
-> The patch looks like:
->
->  From 19bb7f1377a5e3c5d42ab2bedbaf9e976c1068b4 Mon Sep 17 00:00:00 2001
-> From: Carl Huang <quic_cjhuang@quicinc.com>
-> Date: Fri, 10 May 2024 19:40:37 +0800
-> Subject: [PATCH] wifi:ath11k: fix WCN6750 firmware crash
->
-> WCN6750 firmware crashed because of vdev_number changed to 3 from 4
-> in commit f019f4dff2e4("wifi: ath11k: support 2 station interfaces").
->
-> Fix it by defining a separate function ath11k_init_wmi_config_wcn6750()
-> for WCN6750 to initialize its' specific parameters.
->
-> Fixes: f019f4dff2e4 ("wifi: ath11k: support 2 station interfaces")
-> Tested-on: WCN6855 hw2.0 PCI=20
-> WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
->
-> Signed-off-by: Carl Huang <quic_cjhuang@quicinc.com>
+Yes. It follows the same idea as other wireless drivers do, for example iwlwifi:
 
-This seems to work fine also.
+config IWLWIFI_LEDS
+	bool
+	depends on LEDS_CLASS=y || LEDS_CLASS=MAC80211
+	depends on IWLMVM || IWLDVM
+	select LEDS_TRIGGERS
+	select MAC80211_LEDS
+	default y
 
-Tested-on: wcn6750 hw1.0 AHB WLAN.MSL.1.0.1-01371-QCAMSLSWPLZ-1
+So what this patch now does:
 
-Regards
-Luca
+config ATH10K_LEDS
+	bool
+	depends on ATH10K
+	depends on LEDS_CLASS=y || LEDS_CLASS=MAC80211
+	default y
 
-> ---
->   drivers/net/wireless/ath/ath11k/hw.c | 49 +++++++++++++++++++++++++++-
->   1 file changed, 48 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/net/wireless/ath/ath11k/hw.c=20
-> b/drivers/net/wireless/ath/ath11k/hw.c
-> index caa6dc12a790..df8822ac3be1 100644
-> --- a/drivers/net/wireless/ath/ath11k/hw.c
-> +++ b/drivers/net/wireless/ath/ath11k/hw.c
-> @@ -102,6 +102,53 @@ static void ath11k_init_wmi_config_qca6390(struct=20
-> ath11k_base *ab,
->   	config->flag1 |=3D WMI_RSRC_CFG_FLAG1_BSS_CHANNEL_INFO_64;
->   }
->
-> +static void ath11k_init_wmi_config_wcn6750(struct ath11k_base *ab,
-> +					   struct target_resource_config *config)
-> +{
-> +	config->num_vdevs =3D 4;
-> +	config->num_peers =3D 16;
-> +	config->num_tids =3D 32;
-> +
-> +	config->num_offload_peers =3D 3;
-> +	config->num_offload_reorder_buffs =3D 3;
-> +	config->num_peer_keys =3D TARGET_NUM_PEER_KEYS;
-> +	config->ast_skid_limit =3D TARGET_AST_SKID_LIMIT;
-> +	config->tx_chain_mask =3D (1 << ab->target_caps.num_rf_chains) - 1;
-> +	config->rx_chain_mask =3D (1 << ab->target_caps.num_rf_chains) - 1;
-> +	config->rx_timeout_pri[0] =3D TARGET_RX_TIMEOUT_LO_PRI;
-> +	config->rx_timeout_pri[1] =3D TARGET_RX_TIMEOUT_LO_PRI;
-> +	config->rx_timeout_pri[2] =3D TARGET_RX_TIMEOUT_LO_PRI;
-> +	config->rx_timeout_pri[3] =3D TARGET_RX_TIMEOUT_HI_PRI;
-> +	config->rx_decap_mode =3D TARGET_DECAP_MODE_NATIVE_WIFI;
-> +	config->scan_max_pending_req =3D TARGET_SCAN_MAX_PENDING_REQS;
-> +	config->bmiss_offload_max_vdev =3D TARGET_BMISS_OFFLOAD_MAX_VDEV;
-> +	config->roam_offload_max_vdev =3D TARGET_ROAM_OFFLOAD_MAX_VDEV;
-> +	config->roam_offload_max_ap_profiles =3D=20
-> TARGET_ROAM_OFFLOAD_MAX_AP_PROFILES;
-> +	config->num_mcast_groups =3D 0;
-> +	config->num_mcast_table_elems =3D 0;
-> +	config->mcast2ucast_mode =3D 0;
-> +	config->tx_dbg_log_size =3D TARGET_TX_DBG_LOG_SIZE;
-> +	config->num_wds_entries =3D 0;
-> +	config->dma_burst_size =3D 0;
-> +	config->rx_skip_defrag_timeout_dup_detection_check =3D 0;
-> +	config->vow_config =3D TARGET_VOW_CONFIG;
-> +	config->gtk_offload_max_vdev =3D 2;
-> +	config->num_msdu_desc =3D 0x400;
-> +	config->beacon_tx_offload_max_vdev =3D 2;
-> +	config->rx_batchmode =3D TARGET_RX_BATCHMODE;
-> +
-> +	config->peer_map_unmap_v2_support =3D 0;
-> +	config->use_pdev_id =3D 1;
-> +	config->max_frag_entries =3D 0xa;
-> +	config->num_tdls_vdevs =3D 0x1;
-> +	config->num_tdls_conn_table_entries =3D 8;
-> +	config->beacon_tx_offload_max_vdev =3D 0x2;
-> +	config->num_multicast_filter_entries =3D 0x20;
-> +	config->num_wow_filters =3D 0x16;
-> +	config->num_keep_alive_pattern =3D 0;
-> +	config->flag1 |=3D WMI_RSRC_CFG_FLAG1_BSS_CHANNEL_INFO_64;
-> +}
-> +
->   static void ath11k_hw_ipq8074_reo_setup(struct ath11k_base *ab)
->   {
->   	u32 reo_base =3D HAL_SEQ_WCSS_UMAC_REO_REG;
-> @@ -1102,7 +1149,7 @@ const struct ath11k_hw_ops wcn6855_ops =3D {
->
->   const struct ath11k_hw_ops wcn6750_ops =3D {
->   	.get_hw_mac_from_pdev_id =3D ath11k_hw_ipq8074_mac_from_pdev_id,
-> -	.wmi_init_config =3D ath11k_init_wmi_config_qca6390,
-> +	.wmi_init_config =3D ath11k_init_wmi_config_wcn6750,
->   	.mac_id_to_pdev_id =3D ath11k_hw_mac_id_to_pdev_id_qca6390,
->   	.mac_id_to_srng_id =3D ath11k_hw_mac_id_to_srng_id_qca6390,
->   	.tx_mesh_enable =3D ath11k_hw_qcn9074_tx_mesh_enable,
+The idea being that if LEDS_CLASS is enabled then ATH10K_LEDS is
+automatically enabled. But please let us know if something is wrong
+here.
 
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
