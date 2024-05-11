@@ -1,132 +1,119 @@
-Return-Path: <linux-wireless+bounces-7504-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7505-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B5D08C31CA
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 May 2024 16:18:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDE538C327A
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 May 2024 18:34:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62C30B2105E
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 May 2024 14:17:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BF6B2823C6
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 May 2024 16:34:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D8E5339D;
-	Sat, 11 May 2024 14:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369A114285;
+	Sat, 11 May 2024 16:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TqM1BgWD"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="XDymT0I1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-18.smtpout.orange.fr [80.12.242.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF21748CF2;
-	Sat, 11 May 2024 14:17:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990E34A39;
+	Sat, 11 May 2024 16:34:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715437074; cv=none; b=TrusXJgXp2L0+FTVX0Tk06NjevQh5BShwWpcV5xWxaPD3dDhcSpUxi2jAgWWA+W4LgoTo+AzaBT+U1sUGt3dUGljxKtQf9oRY0kffBGTvvoV/9AGxdgpCI0Yig9fwc+YhJ/H3lFM5cdqyPLfV49XttL/rU2U6QUtZQXdxTLwL5Q=
+	t=1715445247; cv=none; b=WjUmFx+McFxd9g2Lzp19JyYnmsvLj04Oi0wuaQJTFe5TB7qE8exocMlFYvrr2rmJeRBnXuMbosrqkH3uVrovgc9U2z7d4GAgjZzjv3JmuRPqKncsZSHr+fFWXww90hpdBDdkjztQgHvvhza8r1NGLZwkRVfkbubCu7a2IQqXX8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715437074; c=relaxed/simple;
-	bh=EEBCqK5E1wZs2A/4KHOy61zV7Y1b/PZvFjgpu25QQqE=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=Y+5D93uarAeznVoyF8CAJSjoDGWLOSVm7PXozMJt1LZW8CgvFZVKxw8iO1m7RlPDOLKTVI63Umq8ffYa0w2Xu9xIehGHAKXsL7XlRhMOf7Y/ybhAh+mIVtdEDLln/JH4+ukXQA9fFu89tzzFDfqLKqIg7gx5BNRUIoUcuLkYRc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TqM1BgWD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 948D4C2BBFC;
-	Sat, 11 May 2024 14:17:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715437074;
-	bh=EEBCqK5E1wZs2A/4KHOy61zV7Y1b/PZvFjgpu25QQqE=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=TqM1BgWDA0KdcYSZvtLpJgrd/7d+I/gdzuPjuhtqEadAjSKu0O00IKqatTDB1CBEK
-	 KnmvK9WyEIN5Idc/2G/IU0DSsgObFsy70Nsvy2dbXO/py7MFovEmBtbWUKaYw3HjPm
-	 cpE4f4MY/gpFvNIKs7esFqd+saBi1L6WpueGOI5v23gY4iBNC3YO3TmDweLNFfdOeX
-	 2dpqh3w0g7/2tKgBYgPpbKuyq+IV9O3OmLB44fBKQrPTGo39NISa6q0s7g14pwMqpF
-	 D8x5Gus2pWumffpeeX4kV73iK/hBbSmqcZQ9qSEdqawKlb/7zYTdkdtS+Ee7jHuD/w
-	 lq8kWMF2f4qGg==
-From: Kalle Valo <kvalo@kernel.org>
-To: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: Christian Marangi <ansuelsmth@gmail.com>,  "David S. Miller"
- <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
- Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,
-  <linux-kernel@vger.kernel.org>,  <ath10k@lists.infradead.org>,
-  <linux-wireless@vger.kernel.org>,  <netdev@vger.kernel.org>,  Sebastian
- Gottschall <s.gottschall@dd-wrt.com>,  Steve deRosier
- <derosier@cal-sierra.com>,  Stefan Lippers-Hollmann <s.l-h@gmx.de>
-Subject: Re: [PATCH v14] ath10k: add LED and GPIO controlling support for
- various chipsets
-References: <20230611080505.17393-1-ansuelsmth@gmail.com>
-	<878rcjbaqs.fsf@kernel.org>
-	<648cdebb.5d0a0220.be7f8.a096@mx.google.com>
-	<648ded2a.df0a0220.b78de.4603@mx.google.com>
-	<CA+_ehUzzVq_sVTgVCM+r=oLp=GNn-6nJRBG=bndJjrRDhCodaw@mail.gmail.com>
-	<87v83nlhb3.fsf@kernel.org>
-	<7585e7c3-8be6-45a6-96b3-ecb4b98b12d8@quicinc.com>
-	<cce2700c-e54f-4a50-b3f0-0b8a82b961a4@quicinc.com>
-	<663e2bd9.5d0a0220.d970d.cbf8@mx.google.com>
-	<a56bd4f9-d76b-4924-a901-554d71ea17bd@quicinc.com>
-Date: Sat, 11 May 2024 17:17:49 +0300
-In-Reply-To: <a56bd4f9-d76b-4924-a901-554d71ea17bd@quicinc.com> (Jeff
-	Johnson's message of "Fri, 10 May 2024 07:54:23 -0700")
-Message-ID: <87seyojuuq.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1715445247; c=relaxed/simple;
+	bh=Iv617nSHxfFn8mG/1prVYlXPiE/zW6Z5PPRt+mc8e50=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MCLhdkpJkAPbISmn9Md/VhNn6XN8P21H1kENEDH5TO5iZtDN6qi18NOok8iQeuvF96yy4Z2iiYaMop0McTtoCarePdXO9mNdgxcjVjK7inqCB/yjpQLcyccKdmsHxlVtG5ejl4Z/6ySfhyghQb0wg4Bb2G06AyquhtI5KiKGzIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=XDymT0I1; arc=none smtp.client-ip=80.12.242.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from localhost.localdomain ([86.243.17.157])
+	by smtp.orange.fr with ESMTPA
+	id 5peUsjqa5MXQT5peUssoYd; Sat, 11 May 2024 18:32:52 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1715445172;
+	bh=3b7/z6XLiDoS2qLZLRUO85qwKU6ZlvHpSybGTWjg1HM=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=XDymT0I1WGs+i/KIj4lSkhEw4cQqjWvpGW9hwM0sU/4HQVUtZ8ItkzlIL1ZrWgkjJ
+	 lhvhAkO9YYd5ePvexnNS6fXCj2zizb8fYaRjDAA+0yKspCvmN3ai/iEjwV+Fplkx+G
+	 WbNO2QJscGsxngGerrwMOw1CGMSFQF5wJOz8SO/2Qsx+6eyg8RBu3l3CQJFe3NM433
+	 xF63Kz9FLvPb+r4uF6enBEeTDPbdvVYezwFokJB+Ha8bPwjOrDM9shq82gSuYaIKmT
+	 nroEYTQwu1JnuRibM1h+6A2k1IN75qM9UzLY1A6ChP+c5NrxpjXdvWb9/V8xxdl7NO
+	 71QXGnhnKRv4A==
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 11 May 2024 18:32:52 +0200
+X-ME-IP: 86.243.17.157
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: gregkh@linuxfoundation.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	johannes@sipsolutions.net,
+	philipp.g.hortmann@gmail.com,
+	tdavies@darkphysics.net,
+	garyrookard@fastmail.org,
+	straube.linux@gmail.com
+Cc: linux-staging@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH 0/3] lib80211: Constify struct lib80211_crypto_ops
+Date: Sat, 11 May 2024 18:32:37 +0200
+Message-ID: <cover.1715443223.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.45.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-Jeff Johnson <quic_jjohnson@quicinc.com> writes:
+This serie constify struct lib80211_crypto_ops. This sutructure is
+mostly some function pointers, so having it in a read-only section
+when possible is safer.
 
-> On 5/10/2024 7:14 AM, Christian Marangi wrote:
->
->> On Thu, May 09, 2024 at 09:48:08AM -0700, Jeff Johnson wrote:
->>> On 5/9/2024 9:37 AM, Jeff Johnson wrote:
->>>> On 5/8/2024 9:50 PM, Kalle Valo wrote:
->>>>> Sorry for the delay but finally I looked at this again. I decided to
->>>>> just remove the fixme and otherwise it looks good for me. Please check
->>>>> my changes:
->>>>>
->>>>> https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=688130a66ed49f20ca0ce02c3987f6a474f7c93a
->>>>>
->>>>
->>>> I have a question about the copyrights in the two new files:
->>>> + * Copyright (c) 2018-2023, The Linux Foundation. All rights reserved.
->>>>
->>>> My understanding is that Qualcomm's affiliation with Linux Foundation via Code
->>>> Aurora ended in December 2021, and hence any contributions in 2022-2023 should
->>>> be the copyright of Qualcomm Innovation Center, Inc.
->>>>
->>>>
->>>
->>> ok it seems like Kalle's v13 had:
->>>  + * Copyright (c) 2018, The Linux Foundation. All rights reserved.
->>>
->>> and Ansuel's v14 has:
->>>  + * Copyright (c) 2018-2023, The Linux Foundation. All rights reserved.
->>>
->>> So Ansuel, is your work on behalf of The Linux Foundation?
->>>
->> 
->> When I resubmitted this at times, I just updated the copyright to the
->> current year so I guess it was wrong doing that?
->> 
->> As you can see from the copyright header this patch went all around and
->> I think at the end (around 2018) the Linux copyright was added as it was
->> submitted upstream. (can't remember if maintainers were asking that)
->> 
->> So me watching the old year and resubmitting it, just updated the date.
->> 
->> Soo I think we should revert to 2018?
->> 
->
-> Yes, in this case changing the Linux Foundation copyright back to 2018 is correct.
 
-I changed it now back to 2018, please check:
+The 1st patch, update some function prototypes and data structures in
+lib80211.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=5eff06bef76b6d4e1553c2d4978025c329d8db35
+The 2nd patch constifies some struct lib80211_crypto_ops in lib80211.
+This moves some data to a read-only section, so increase overall
+security.
+
+The 3rd patch does the same for staging/rtl8192e.
+
+Note that the functions have looked in staging/rtl8192e look really
+similar to the ones in lib80211. Maybe it could be removed in favor of
+the latter.
+
+
+Each patch in the serie has been compile tested ony.
+
+Christophe JAILLET (3):
+  lib80211: Handle const struct lib80211_crypto_ops in lib80211
+  lib80211: Constify struct lib80211_crypto_ops
+  staging: rtl8192e: Constify struct lib80211_crypto_ops
+
+ drivers/staging/rtl8192e/rtllib_crypt_ccmp.c |  2 +-
+ drivers/staging/rtl8192e/rtllib_crypt_tkip.c |  2 +-
+ drivers/staging/rtl8192e/rtllib_crypt_wep.c  |  2 +-
+ drivers/staging/rtl8192e/rtllib_wx.c         |  2 +-
+ include/net/lib80211.h                       |  8 ++++----
+ net/wireless/lib80211.c                      | 10 +++++-----
+ net/wireless/lib80211_crypt_ccmp.c           |  2 +-
+ net/wireless/lib80211_crypt_tkip.c           |  2 +-
+ net/wireless/lib80211_crypt_wep.c            |  2 +-
+ 9 files changed, 16 insertions(+), 16 deletions(-)
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.45.0
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
