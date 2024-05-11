@@ -1,196 +1,166 @@
-Return-Path: <linux-wireless+bounces-7499-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7500-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA6938C2F39
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 May 2024 05:10:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C58C8C2F3B
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 May 2024 05:12:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6951B1F22834
-	for <lists+linux-wireless@lfdr.de>; Sat, 11 May 2024 03:10:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37374B22D6D
+	for <lists+linux-wireless@lfdr.de>; Sat, 11 May 2024 03:12:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B6E22F1C;
-	Sat, 11 May 2024 03:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 954712376A;
+	Sat, 11 May 2024 03:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="eDtrDfg3"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="YYTDL263"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3319A24205
-	for <linux-wireless@vger.kernel.org>; Sat, 11 May 2024 03:10:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0775F12B95;
+	Sat, 11 May 2024 03:12:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715397013; cv=none; b=kGWw7Fu40K80Onpv0qiStVGXoXH32IYiiiahtA4dQFHads9as5t5xq+gj9rWE9ly8IVrGLcchUG2kVCN1UK7Tkp2Yep2TY41mBp38X2RteNGi0bWIvDqrRhhXFrPE5p7M2Ft4uPWF6IXJj/IgF/1/6kc8mMAi+r33lybltIKNhQ=
+	t=1715397160; cv=none; b=g/TxWJCKkWz111jAuXzH5esQ2r4a6GwPFmRJCxsR+aYleu5oRQupS/M4a8fEBblqc2UEzGucZzUvOSkzuDdBq/InRO34o7cx2TaB8bRVgMdq9vOD7HT1AA51F1RjKGu1W4DPZedzIw6IKecL2mXRt/9v67UxHEVosB1++pgmqug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715397013; c=relaxed/simple;
-	bh=VorbdE/x38/O3ZQY3iYAzXxGnGhLxYlmfKxk3GcOdLg=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=T00gCxFqqgsCHb0hjAMk2jrBJIYLyMN46ILT+SOphKck4SnkD/Fd2Gv2Q9huswXf/WmdM8DvNkj7o1wm0YDCNHS76GEhqtNeGdhq5LOiA1Q6fSlBslY/ZKOZ/Fz9FJ7/1Uy4o3cCVzNPls8/Qq0K1QiOx17pfFBh6KiNOpgazEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=eDtrDfg3; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1715397160; c=relaxed/simple;
+	bh=+TT7KyEefz4oXXELIawQi7Y1J1t7XFWHVVyzGOsACCE=;
+	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=svxIqX8GFx04i5WlVQeWztuGCfaATH26ZpxB2K+N3VNJijQGwIj+FU4qC3pzDfgNCcYTVwzrwXNi3X3PJ21t+PLhEV/1PH20KeafbrNQZLJc5NMVlLE03k9F1INtEP0qqmG7+XAbTz051ncoJaRHVczlRlpLcgetRErEWJJqGNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=YYTDL263; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44B1jOr4026729;
-	Sat, 11 May 2024 03:10:06 GMT
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44B2qv49029832;
+	Sat, 11 May 2024 03:12:32 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding:content-type; s=qcppdkim1; bh=Xk2cGdM
-	d7Ex2FhBzTUBvKQRUUuz9cmQUhT7TWmA3yqk=; b=eDtrDfg38tkQIgqqA2oTZk2
-	ah/nZXcIzhiFwJoC/hXHMn+W1sW4DVk6R3oYga6OHRLdGF9b5RQc96G/aAMymB9Z
-	RPrlU7pk5t2sStB4+jTGvvculzMX+mVIdTNricpl6Qc/F7OUSeuAw+nt6FlrjUpI
-	0iBK54Msh/yHKAEQzbFMR8hlIV/xsG2XN+7rbXY5VbOD0DmdK9zZEqSKFrxGM7Xv
-	Gqsm5pkIlUlRgqcY17PshWATeZDmerXLG5yrCVlq8iODMUMW+gp0bOLe6H2sHt4y
-	M9TDHkP8bHd+pIuSAYqdmKVwqzEjuDrsiyc8kg8nfDwQJBv6dq+LUdwb/g+4wHw=
-	=
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y1y9kr2ur-1
+	message-id:date:mime-version:cc:subject:to:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=SQbJvDTDrl02dIQQnb7RNH6pl73AWqV5I1YMx8caNSA=; b=YY
+	TDL263pXNpDRLoK4C/+t2mnuJ+xVi4gOCzDh882QjlaXXT9vK8zZsrOxp7N+nCkf
+	bbYmVcWPkM4k99GJzYmnm3awYEU8um++WbmU0p4mHoLhErEb2uHUaCOp24iWv4ob
+	O+edczKfZPSubs+Crm7PB0Xbn3w7iNHo61DIepkYWUGB/5v6C921wJQho/Q2gijN
+	z+4MUSa7cwVYL4XyeGlmwdzvaYnh+j1Z/80q4K2KTWK53eDHQooBAES+9pP6T74H
+	vHAGa/OBKUaT5Kg+2Iy1mDVufIpNs3IQ9GutyR3AnIYVAT9/ustomAiOgfCvyjQ8
+	avVo/wvewfagc1PTq2hA==
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y208vr0q2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 11 May 2024 03:10:06 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44B3A5Vm022017
+	Sat, 11 May 2024 03:12:32 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44B3CUE9001504
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 11 May 2024 03:10:05 GMT
-Received: from lingbok-Birman-PHX.lan (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Fri, 10 May 2024 20:10:04 -0700
-From: Lingbo Kong <quic_lingbok@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, <quic_lingbok@quicinc.com>
-Subject: [PATCH] wifi: ath12k: fix the issue that calculation of ack signal strength
-Date: Sat, 11 May 2024 11:09:17 +0800
-Message-ID: <20240511030917.65811-1-quic_lingbok@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	Sat, 11 May 2024 03:12:30 GMT
+Received: from [10.253.8.22] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 10 May
+ 2024 20:12:28 -0700
+Message-ID: <4e21e556-527f-4d1e-aa29-cacec14155af@quicinc.com>
+Date: Sat, 11 May 2024 11:12:26 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
+User-Agent: Mozilla Thunderbird
+CC: <quic_cjhuang@quicinc.com>, Luca Weiss <luca.weiss@fairphone.com>,
+        <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <regressions@lists.linux.dev>
+Subject: Re: [PATCH 1/2] wifi: ath11k: supports 2 station interfaces
+To: Kalle Valo <kvalo@kernel.org>
+References: <20230714023801.2621802-1-quic_cjhuang@quicinc.com>
+ <20230714023801.2621802-2-quic_cjhuang@quicinc.com>
+ <D15TIIDIIESY.D1EKKJLZINMA@fairphone.com> <87jzk2km0g.fsf@kernel.org>
+ <93c15c59-f24c-4472-ae7e-969fd1e3bfec@quicinc.com>
+ <871q69lqh5.fsf@kernel.org>
+Content-Language: en-US
+From: Carl Huang <quic_cjhuang@quicinc.com>
+In-Reply-To: <871q69lqh5.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 63CQD_hcXsaRlQoW1gyxvpSyx8oysLEt
-X-Proofpoint-GUID: 63CQD_hcXsaRlQoW1gyxvpSyx8oysLEt
+X-Proofpoint-ORIG-GUID: 0RwQJzx9_jyYlKQP-grVuROwfwo3bdnS
+X-Proofpoint-GUID: 0RwQJzx9_jyYlKQP-grVuROwfwo3bdnS
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
  definitions=2024-05-10_18,2024-05-10_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
- priorityscore=1501 malwarescore=0 phishscore=0 mlxscore=0 suspectscore=0
- spamscore=0 clxscore=1015 impostorscore=0 adultscore=0 lowpriorityscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405010000 definitions=main-2405110023
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxscore=0
+ lowpriorityscore=0 phishscore=0 impostorscore=0 mlxlogscore=999
+ clxscore=1015 malwarescore=0 suspectscore=0 priorityscore=1501 spamscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405010000 definitions=main-2405110022
 
-Currently, the calculation of ack signal strength is incorrect.
 
-This is because before calculating the ack signal strength, ath12k need
-to determine whether the hardware and firmware support db2dbm, if the
-hardware and firmware support db2dbm, do not need to add noise floor,
-otherwise, need to add noise floor.
 
-Besides, the value of ack_rssi passed by firmware to ath12k should be a
-signed number, so change its type to s8.
+On 2024/5/10 21:57, Kalle Valo wrote:
+> Carl Huang <quic_cjhuang@quicinc.com> writes:
+> 
+>> On 2024/5/10 18:18, Kalle Valo wrote:
+>>> "Luca Weiss" <luca.weiss@fairphone.com> writes:
+>>>
+>>>> On Fri Jul 14, 2023 at 4:38 AM CEST, Carl Huang wrote:
+>>>>> Add hardware parameter support_dual_stations to indicate
+>>>>> whether 2 station interfaces are supported. For chips which
+>>>>> support this feature, limit total number of AP interface and
+>>>>> mesh point to 1. The max interfaces are 3 for such chips.
+>>>>>
+>>>>> The chips affected are:
+>>>>>    QCA6390 hw2.0
+>>>>>    WCN6855 hw2.0
+>>>>>    WCN6855 hw2.1
+>>>>> Other chips are not affected.
+>>>>>
+>>>>> For affected chips, remove radar_detect_widths because now
+>>>>> num_different_channels is set to 2. radar_detect_widths can
+>>>>> be set only when num_different_channels is 1. See mac80211
+>>>>> function wiphy_verify_combinations for details.
+>>>>>
+>>>>> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
+>>>>
+>>>> Hi Carl,
+>>>>
+>>>> Unfortunately this commit breaks wifi on a QCM6490 smartphone
+>>>> (qcm6490-fairphone-fp5) and makes the board crash.
+>>>>
+>>>> Reverting this commit (plus for conflict resolution 5dc9d1a55e95 ("wifi:
+>>>> ath11k: add support for QCA2066") and 24395ec11707 ("wifi: ath11k:
+>>>> provide address list if chip supports 2 stations")) makes wifi work
+>>>> again.
+>>> Thanks for the report. So the broken commit is:
+>>> f019f4dff2e4 wifi: ath11k: support 2 station interfaces
+>>> This went into v6.9-rc1 so I'm guessing that WCN6750 support will be
+>>> fully broken in v6.9? Not good. And most likely Linus will release v6.9
+>>> on Sunday so it's too late to get a fix included in the final release.
+>>> Carl, can you fix this ASAP? Or should we just revert the broken
+>>> commits?
+>>> Adding this to our regression tracking:
+>>> #regzbot introduced: f019f4dff2e4 ^
+>>> #regzbot title: ath11k: WCN6750 firmware crashes during initialisation
+>>
+>> Kalle, looks we're not able to fix it before Sunday as I don't have
+>> WCN6750 setup to verify the fix.
+> 
+> We are so late in the cycle that we would have to send the fix directly
+> to Linus and ask him to apply the fix before he tags the release. I
+> prefer that we are on the safe side here and send the fix to v6.10-rc1
+> via the usual route (the wireless tree). We get more testing time that
+> way.
+> 
+No problem, Kalle.
 
-This patch affects QCN9274 and WCN7850 because they have the same issue.
+I think more tags are needed like Tested-on WCN6750 and Tested-by Luca.
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+I'll send out the formal patch next week.
 
-Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/dp_tx.c  | 14 ++++++++++----
- drivers/net/wireless/ath/ath12k/dp_tx.h  |  2 +-
- drivers/net/wireless/ath/ath12k/hal_tx.h |  4 ++--
- 3 files changed, 13 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
-index a22fa43c87ec..57bfa1b54655 100644
---- a/drivers/net/wireless/ath/ath12k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
-@@ -374,6 +374,8 @@ ath12k_dp_tx_htt_tx_complete_buf(struct ath12k_base *ab,
- 	struct ieee80211_tx_info *info;
- 	struct ath12k_skb_cb *skb_cb;
- 	struct ath12k *ar;
-+	bool db2dbm = test_bit(WMI_TLV_SERVICE_HW_DB2DBM_CONVERSION_SUPPORT,
-+			       ab->wmi_ab.svc_map);
- 
- 	skb_cb = ATH12K_SKB_CB(msdu);
- 	info = IEEE80211_SKB_CB(msdu);
-@@ -393,8 +395,9 @@ ath12k_dp_tx_htt_tx_complete_buf(struct ath12k_base *ab,
- 	if (ts->acked) {
- 		if (!(info->flags & IEEE80211_TX_CTL_NO_ACK)) {
- 			info->flags |= IEEE80211_TX_STAT_ACK;
--			info->status.ack_signal = ATH12K_DEFAULT_NOISE_FLOOR +
--						  ts->ack_rssi;
-+			info->status.ack_signal = ts->ack_rssi;
-+			if (!db2dbm)
-+				info->status.ack_signal += ATH12K_DEFAULT_NOISE_FLOOR;
- 			info->status.flags = IEEE80211_TX_STATUS_ACK_SIGNAL_VALID;
- 		} else {
- 			info->flags |= IEEE80211_TX_STAT_NOACK_TRANSMITTED;
-@@ -451,6 +454,8 @@ static void ath12k_dp_tx_complete_msdu(struct ath12k *ar,
- 	struct ath12k_hw *ah = ar->ah;
- 	struct ieee80211_tx_info *info;
- 	struct ath12k_skb_cb *skb_cb;
-+	bool db2dbm = test_bit(WMI_TLV_SERVICE_HW_DB2DBM_CONVERSION_SUPPORT,
-+			       ab->wmi_ab.svc_map);
- 
- 	if (WARN_ON_ONCE(ts->buf_rel_source != HAL_WBM_REL_SRC_MODULE_TQM)) {
- 		/* Must not happen */
-@@ -486,8 +491,9 @@ static void ath12k_dp_tx_complete_msdu(struct ath12k *ar,
- 	case HAL_WBM_TQM_REL_REASON_FRAME_ACKED:
- 		if (!(info->flags & IEEE80211_TX_CTL_NO_ACK)) {
- 			info->flags |= IEEE80211_TX_STAT_ACK;
--			info->status.ack_signal = ATH12K_DEFAULT_NOISE_FLOOR +
--						  ts->ack_rssi;
-+			info->status.ack_signal = ts->ack_rssi;
-+			if (!db2dbm)
-+				info->status.ack_signal += ATH12K_DEFAULT_NOISE_FLOOR;
- 			info->status.flags = IEEE80211_TX_STATUS_ACK_SIGNAL_VALID;
- 		}
- 		break;
-diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.h b/drivers/net/wireless/ath/ath12k/dp_tx.h
-index 7faa81faf6a7..55ff8cc721e3 100644
---- a/drivers/net/wireless/ath/ath12k/dp_tx.h
-+++ b/drivers/net/wireless/ath/ath12k/dp_tx.h
-@@ -12,7 +12,7 @@
- 
- struct ath12k_dp_htt_wbm_tx_status {
- 	bool acked;
--	int ack_rssi;
-+	s8 ack_rssi;
- };
- 
- int ath12k_dp_tx_htt_h2t_ver_req_msg(struct ath12k_base *ab);
-diff --git a/drivers/net/wireless/ath/ath12k/hal_tx.h b/drivers/net/wireless/ath/ath12k/hal_tx.h
-index 7c837094a6f7..3cf5973771d7 100644
---- a/drivers/net/wireless/ath/ath12k/hal_tx.h
-+++ b/drivers/net/wireless/ath/ath12k/hal_tx.h
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: BSD-3-Clause-Clear */
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2022 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2022, 2024 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #ifndef ATH12K_HAL_TX_H
-@@ -57,7 +57,7 @@ struct hal_tx_info {
- struct hal_tx_status {
- 	enum hal_wbm_rel_src_module buf_rel_source;
- 	enum hal_wbm_tqm_rel_reason status;
--	u8 ack_rssi;
-+	s8 ack_rssi;
- 	u32 flags; /* %HAL_TX_STATUS_FLAGS_ */
- 	u32 ppdu_id;
- 	u8 try_cnt;
-
-base-commit: 1025c616ee13372f3803b158abb1d87ef368ae3d
--- 
-2.34.1
-
+>> The fix could be to define a dedicated function
+>> ath11k_init_wmi_config_wcn6750() for WCN6750. I'll send the patch out
+>> so others like Luca can have a try.
+> 
+> Thanks for the quick patches!
+> 
 
