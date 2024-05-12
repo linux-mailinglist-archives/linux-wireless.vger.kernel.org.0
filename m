@@ -1,63 +1,74 @@
-Return-Path: <linux-wireless+bounces-7550-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7551-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E16368C3682
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 May 2024 14:28:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF00B8C36D6
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 May 2024 16:35:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D82DB2182F
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 May 2024 12:28:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB62B1C20A51
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 May 2024 14:35:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0B48210FB;
-	Sun, 12 May 2024 12:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29E44134A9;
+	Sun, 12 May 2024 14:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="S2B3oO0O"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jla4XvEH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE650210E4
-	for <linux-wireless@vger.kernel.org>; Sun, 12 May 2024 12:28:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68BAD81E
+	for <linux-wireless@vger.kernel.org>; Sun, 12 May 2024 14:35:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715516920; cv=none; b=RYmPAmIN6FFKY70y0OME0x/ufNro1Ap5NvVu+95/jI6NAYK/Q06d/kY2jW049xcCP7WdtY70oesHRJZ9RIhpS5l7oz5xu9b1dz7EPV2vKujrngqBa7yevl0uK3CNGsyMrWUM7AXTMG5hpcxwrc8uQvVnKwKlkpAcEFsHWYFQueg=
+	t=1715524504; cv=none; b=s+BxbIzNpONpbIT+Ds8ZjaZw/vI0vryDOCz1HeYuDHuJGLUZAG3m0j78351s3OG4DWS5elQu6+4dhw6Z7YjC63S5cLZuAbWXDsMUGFDX1yKyXSBNAyOeUD4qwRUo+wHhRuS4rkgRLLYWifdZo1p9aeSnB9GGdJXwJcj28Puhw4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715516920; c=relaxed/simple;
-	bh=3zsZck2oIjbs0GoQu6yupDyMAmHSE94P11FKPr7DA8g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Fpggq+une6kRocLEjg4zmgz+1XlyNoP2QY8Aw475O09QmQHkUwrjvQZ2j448RDWmBa8j98OkQsZKUv9bFD8ScM99XbqNB3LsHg0h75/k3T1rg2QYv01/7uMjME3jhid+h8+yW22DTQIB//c2T+IrGVXzubrtSNcSz7ydZabZLtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=S2B3oO0O; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44C70DnF005907;
-	Sun, 12 May 2024 12:28:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=uh+n5DS/orZEViM9u57KNZm4CTwaavbqONfvUIl4YWY=; b=S2
-	B3oO0OPkQuZKoM4tuGKK8DxydjKWrSj8HOmJmLxRz/kcAE7TntDA85ysjfwpxOkH
-	L+v3LJCCbVzWgOUE0Jv8NVSo+OZmUETMYuTwbQdtUvtRCWCkhtfO257UW4eeR+aN
-	mNd7k9rp8hyGcDTSel7ow4VN1x7lmnUUcr+o9EpCAo/1izt10EU+84Ulnh7Jr5Mn
-	O5vL9TB5udhmfta/J4uF7K99DCoaLmCN5AI5EtHdvyVM4K1UgT0KwOBtFIe5Poix
-	13HRsh3QaHQIrUaxyKTnuFx102MdUSwIyygvsPZMGR5MAks0Y0ixClwh/820x7kI
-	SNlDDWLkgF+be8fDdWkg==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y200f9r3u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 12 May 2024 12:28:32 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44CCSVO8002982
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 12 May 2024 12:28:31 GMT
-Received: from [10.216.54.142] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Sun, 12 May
- 2024 05:28:29 -0700
-Message-ID: <b1cf7a1c-7f96-4c00-a9b5-da5f2648fe7c@quicinc.com>
-Date: Sun, 12 May 2024 17:58:24 +0530
+	s=arc-20240116; t=1715524504; c=relaxed/simple;
+	bh=vFo/WHJUpcDJYbY56AHislEeWBXvTJ9iqlUoNOqUul8=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=N17L7tncaSN02hRRvJiT5R2z1XPvIkzxEkff26Mfs6i8mAdYr4eURQlkytycUoN+x39nqUw0/68V6KsyzCOAb4TckjdYpQaaFkwCpljU44PL6AqZ4wzOX4a4cStbp0hh2wBEBG5wEOO8zMNM0KtpGZcmcHDUDbOMHMG8pgQ/5f0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jla4XvEH; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-51f40b5e059so3925833e87.0
+        for <linux-wireless@vger.kernel.org>; Sun, 12 May 2024 07:35:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1715524500; x=1716129300; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=niaysg7B7xEWomnDf71NtODzsnVk4Nu2wzRETW00zcI=;
+        b=Jla4XvEHnnZ4F9NEoFZRfle4hCgGwNDo+LkF/W8PhDGIFoHNK+X27S4g7maGH/MYlQ
+         F6wLIHoRClsrsak1Iyfm9ii8leYJw6v7B5D5hCLUz5sWpBvDGtPS36OpQqgmdmsD8Shm
+         WCAnzN/AlgQaIswBMSJx+ao84EVNzvoEgIDbfW8lD2wsBlOK3Fm7E+jGU3lneGtMQwLH
+         GnMQVuto/cyQm3a8aV8P5ws3BEKLNvMMx7QxKY/MqUkPFQ6ze3Hgt1pRdTA0gQJyWLIg
+         DJAtSJEa/iqCIsfY///2sLfCU+/+XEjrMHSNZOKMsFAFeEnht4V31iK0xJ08zpAN/0Ep
+         DetQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715524500; x=1716129300;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=niaysg7B7xEWomnDf71NtODzsnVk4Nu2wzRETW00zcI=;
+        b=pff1mFAzZpDKGzz8QmGRTBgBdmvYgqm6QHQDveezO3lG9zElg4zDwZ+q5gyQaRxpyI
+         I9xlgaC3MZaXnBgv9XLL1M1dn0jgIbdBE2UDhXDIan3vUt50pIIaQ74Fm+3ElMDMaasg
+         mHeyDn3aKiiE9nbfcs02krJC29lmVA8lmMzZMPB5fUdnrL+Udvhg4cXE41B9mVA1mbaP
+         Z66Lg8Fh3irsCGL06Jly2F9b94oOzfY8kZ6Ktuw5zDJBv2ssb4E0DjnuYp+dl+KKjRdQ
+         jms1n03bJNr6bn9FDknReEK2ABJ52vhUakF2QG5g/Mb0fwL75BUu36p+e7Mat9dBTydu
+         gqxg==
+X-Forwarded-Encrypted: i=1; AJvYcCVUrZKcFb2DirjVg91jp6CUWNy6Uxg/LdIAN5wZ6p8dMmy9lNJLF96Goj90DxxIrBNPGQvTQZ5vL2cHZxgUmhiD0bn+hks+vRHpR5Laqtw=
+X-Gm-Message-State: AOJu0YxOd1YEzL81GVlD3FT49BFY/Q4SgjRia1cEp9uOsPD/WyeQrry5
+	IMD2EwsexPFNrbyABdBgJdTD4Ms3eZ1bGm/bHIT9NL1K6/IZ9ZKu
+X-Google-Smtp-Source: AGHT+IEWGLwbkhAJ5QnIqpTVTs/ZuR9yv9/WsEFL+L+dqj9QaAifwfTtM9/3yddsWhxLyDsA/7g6aQ==
+X-Received: by 2002:ac2:4db1:0:b0:51b:ebe0:a91a with SMTP id 2adb3069b0e04-5220fc73566mr4577331e87.36.1715524499970;
+        Sun, 12 May 2024 07:34:59 -0700 (PDT)
+Received: from [192.168.1.50] ([79.113.154.240])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5733bea65edsm4833460a12.7.2024.05.12.07.34.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 12 May 2024 07:34:59 -0700 (PDT)
+Message-ID: <d104ea7f-5a88-4081-a651-c25a88a2acf7@gmail.com>
+Date: Sun, 12 May 2024 17:34:58 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,63 +76,69 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: mac80211: move radar detect work to sdata
-To: Johannes Berg <johannes@sipsolutions.net>,
-        <linux-wireless@vger.kernel.org>
-CC: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-References: <20240506211311.43bd82c6da04.Ib39bec3aa198d137385f081e7e1910dcbde3aa1b@changeid>
- <4dd39edb-cd23-482a-8c94-b09142d92198@quicinc.com>
- <88b36efce036ad4f0316ffb434a5352bbe4f1599.camel@sipsolutions.net>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: Re: [PATCH v5 03/11] wifi: rtlwifi: Add rtl8192du/hw.{c,h}
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Larry Finger <Larry.Finger@lwfinger.net>,
+ Stefan Lippers-Hollmann <s.l-h@gmx.de>,
+ Christian Hewitt <chewitt@libreelec.tv>
+References: <254558da-ea8b-40ea-bd5a-83d13796744f@gmail.com>
+ <d5d52f8d-585d-43a6-a5e6-076f24ba8410@gmail.com>
+ <31f28650173d40cf85fb57f87949eef7@realtek.com>
 Content-Language: en-US
-From: Aditya Kumar Singh <quic_adisi@quicinc.com>
-In-Reply-To: <88b36efce036ad4f0316ffb434a5352bbe4f1599.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+In-Reply-To: <31f28650173d40cf85fb57f87949eef7@realtek.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: SK5jHw2-JVut4oxaBLwJmTnAsv_Dbl_w
-X-Proofpoint-ORIG-GUID: SK5jHw2-JVut4oxaBLwJmTnAsv_Dbl_w
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-12_08,2024-05-10_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- malwarescore=0 mlxscore=0 priorityscore=1501 bulkscore=0 adultscore=0
- suspectscore=0 mlxlogscore=999 clxscore=1015 lowpriorityscore=0
- spamscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405010000 definitions=main-2405120093
 
-On 5/10/24 19:57, Johannes Berg wrote:
-> On Thu, 2024-05-09 at 09:52 +0530, Aditya Kumar Singh wrote:
->> On 5/7/24 00:43, Johannes Berg wrote:
->>> At some point we thought perhaps this could be per link, but
->>> really that didn't happen, and it's confusing. Radar detection
->>> still uses the deflink to allocate the channel, but the work
->>> need not be there. Move it back.
->>
->> I'm currently working on MLO DFS support. It is better if the work can
->> be left in per link structure. With proper support, instead of deflink
->> it will use appropriate link.
+On 10/05/2024 06:04, Ping-Ke Shih wrote:
+> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
 > 
-> A number of patches I have actually depend on this (though only by
-> patch, not semantically), so it might be better to leave it and just
-> move it back.
-
-Oh I see :)
-
+>> +
+>> +int rtl92du_hw_init(struct ieee80211_hw *hw)
+>> +{
+>> +       struct rtl_usb_priv *usb_priv = rtl_usbpriv(hw);
+>> +       struct rtl_usb *rtlusb = rtl_usbdev(usb_priv);
+>> +       struct rtl_priv *rtlpriv = rtl_priv(hw);
+>> +       struct rtl_ps_ctl *ppsc = rtl_psc(rtlpriv);
+>> +       struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+>> +       struct rtl_mac *mac = rtl_mac(rtlpriv);
+>> +       struct rtl_phy *rtlphy = &rtlpriv->phy;
+>> +       u8 val8, txpktbuf_bndy;
+>> +       unsigned long flags;
+>> +       int err, i;
+>> +       u32 val32;
+>> +       u16 val16;
+>> +
+>> +       /* As this function can take a very long time
+>> +        * and can be called with irqs disabled, reenable the irqs
+>> +        * to let the other devices continue being serviced.
+>> +        *
+>> +        * It is safe doing so since our own interrupts will only be enabled
+>> +        * in a subsequent step.
+>> +        */
+>> +       local_save_flags(flags);
+>> +       local_irq_enable();
 > 
-> In any case, your work will likely have (simple) conflicts in some
-> places with the other patches I posted.
-
-Yes correct. Those are minor as far as I saw them and those seems fine 
-as well. But this one, felt like I will be reverting it soon so if 
-possible let's not merge it unless it is affecting the code base.
-
+> I think you just copy and paste this chunk. I wonder if USB has the same behavior?
+> Driver force to enable IRQ is weird to me. Please check I this is really called
+> with irq disabled? If not, we can remove them.
 > 
-> But we have a couple of weeks to decide, I guess, given the release is
-> around the corner.
+
+Yes, I copied that. Removing it from rtl8192du makes no
+difference for me. I'm not sure how to check if the function
+is called with irq disabled. Is it raw_irqs_disabled() ?
+It returns 0 for me.
+
+> [...]
 > 
-Sure. I'm doing testing as of now with my changes so it will take some 
-time to appear here. If your changes gets merged by then, I will rebase it.
+>> +       local_irq_disable();
+>> +       local_irq_restore(flags);
+>> +
+>> +       return err;
+>> +}
+>> +
+> 
+> 
+
 
