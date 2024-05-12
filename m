@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-7525-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7526-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C120D8C3510
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 May 2024 06:32:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 975B78C3511
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 May 2024 06:32:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69F781F21554
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 May 2024 04:32:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5442B281CC0
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 May 2024 04:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A6481EEFC;
-	Sun, 12 May 2024 04:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A01DE208AD;
+	Sun, 12 May 2024 04:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d3jZax+E"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I8L989wx"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FDD1E4B0
-	for <linux-wireless@vger.kernel.org>; Sun, 12 May 2024 04:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A0D1EB37
+	for <linux-wireless@vger.kernel.org>; Sun, 12 May 2024 04:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715488307; cv=none; b=uPJoDi0Tp3uxddcJzSAi/3ZK3o6bNfauM/WacBm7VO6f48kT1G6vEi/SyDUQ5XBBnkOIUfxn+kJQFcpTqK7+d2Qva0eMbqn6ouFrCMv5qmaHaR/tcAHZxwCUMYcBhGUvi2QnhHW1G4PwPQPf6574ntEBqDfAw+iU/twSjlnLAv4=
+	t=1715488308; cv=none; b=bmmeKcd301LxH+sI0qlr4rQcyasIdXItvMvzgAnMph0faZatPRd6SCaZbYcwZ9dqGQ5ATM+cqUz+29I1VZEtxmrHlUfQ+gwQGkWFe/OkBxkr+X9sHmhLC00pG3XWKkDO3sD1YrvfRpME13oBmWFd/NR+6/Kx+MG7UnVHk0NGxdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715488307; c=relaxed/simple;
-	bh=dDFCy/3W4Gm9FhtPzS4rE0ksb5M0igjNp+kgIjWUsyY=;
+	s=arc-20240116; t=1715488308; c=relaxed/simple;
+	bh=t0K/uWPQqJua7x7knKr97pAvGWy1B5d06Qre1Rxe+1g=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gDjYQQO71ys/qhF0jGDq+saGNzNuSoPzyBQrrpipPrGtjPB56CCGErPjbBEX2Ts5I3VzhizonKfY93Tbz+LhWv6Y8JQKFNtpFFOF8PC+8RPVuaWYkxURBHvg/Yp0ow82b0O/c4Dra9VpWmWduMxyMfMkKZXD+sxFtgCVIKCfsag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d3jZax+E; arc=none smtp.client-ip=192.198.163.17
+	 MIME-Version; b=W6DXtOo93GyTyHx1q0pvfUM6JFa4wlGj8XaWEvqkmzYzhNAOSKBch9d8KvpSxM5GRnfRopRr+y3cqTQ9wkGnSsMVN8JZIObNuuTy3Nszh8U1KhI4pwxv9ed5p4k74AR5WjyK5p6/p29LsWgH3x+3j0aFAUxoT7Q39zFlzGjuvJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I8L989wx; arc=none smtp.client-ip=192.198.163.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715488306; x=1747024306;
+  t=1715488307; x=1747024307;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=dDFCy/3W4Gm9FhtPzS4rE0ksb5M0igjNp+kgIjWUsyY=;
-  b=d3jZax+Er4tFvFWvJ465/k3jzZ/buIQDYRZdOCKWcuInc2ClABs1g6Wt
-   RF0fSx7qyiXhQ7t2DNubtYdE6zth8HiG3IqQBJ//ZdnB3f55h5RWM99WO
-   ftrUkdIncR4MbOjexHsYgUXwN4EMgyb57qs0FS+j3QPRnkLHVi+MTVjQk
-   zzaOx6TSIyUBIt9bp3T7VP2vNNcYPQfcJGaQr7cFIxnTRwJdhGUFwTI7O
-   KvIyCC0MK3JyGM1QmWp0TvYpIoFpMDyO7R4alrZLh7rauZG1bHiWJCM5e
-   VYQHqOtp+tdHBZZ7QT9yMO9X7vqMaqnKa2sRFeiAAL+Vqqr4KiumWgsXa
+  bh=t0K/uWPQqJua7x7knKr97pAvGWy1B5d06Qre1Rxe+1g=;
+  b=I8L989wxsiTY8NSfDouvy7FK+RWoVHl0GsKA18raUm5pEteOJMQGLmGg
+   Obnr4Oq9ADTLACncyEyu6Laoiq7f2xmHIet4dhortKE4oLwIVoVND1ptB
+   LaMoP+aYfDDkCbdixCZdNTBLiORwnsT1L9c8vof8ywZjTc0do1Fyv9q/l
+   mWsc8eBk63yaDwN2BxyMtYIC4AVU3JyIV2To1nAqiPR7X0fjIywwtzbOa
+   F1Eflc/9KN5CGjm51uZwHl6e9qZUh6Y23BKRqav34sJg6ZMgQNj8I1g43
+   ZIfMYCgbhU9XPeeMJD7MS0Sunx2hWfnJ5ehh63e/OC20RP8vczoO4t47j
    A==;
-X-CSE-ConnectionGUID: RyEi8sVXSnmyxBRx7Aen+Q==
-X-CSE-MsgGUID: VWShgQiyRrCjxUYSkQxxJw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11070"; a="11323870"
+X-CSE-ConnectionGUID: mX6TqMb9RBecUYh3aqm17w==
+X-CSE-MsgGUID: APE2kn/AQjKQCk5NTldl/A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11070"; a="11323872"
 X-IronPort-AV: E=Sophos;i="6.08,155,1712646000"; 
-   d="scan'208";a="11323870"
+   d="scan'208";a="11323872"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2024 21:31:45 -0700
-X-CSE-ConnectionGUID: SJzu38AQR6y9icpiF7tEbg==
-X-CSE-MsgGUID: abcTtjArQk23779tqmc7cw==
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2024 21:31:46 -0700
+X-CSE-ConnectionGUID: j5udjB2hQ5GO7rJyQikmbg==
+X-CSE-MsgGUID: viOr3XYvQD6oODWqXuaOrQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,155,1712646000"; 
-   d="scan'208";a="34532196"
+   d="scan'208";a="34532201"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2024 21:31:43 -0700
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2024 21:31:45 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Benjamin Berg <benjamin.berg@intel.com>
-Subject: [PATCH 14/16] wifi: iwlwifi: mvm: use vif P2P type helper
-Date: Sun, 12 May 2024 07:31:08 +0300
-Message-Id: <20240512072733.15a00a812c1b.I5ffee795d960c9beda46a934f5b4c70acde112f9@changeid>
+	Yedidya Benshimol <yedidya.ben.shimol@intel.com>
+Subject: [PATCH 15/16] wifi: iwlwifi: mvm: Handle BIGTK cipher in kek_kck cmd
+Date: Sun, 12 May 2024 07:31:09 +0300
+Message-Id: <20240512072733.f429f618a46b.Ie9b581652b74bd7806980364d59e1b2e78e682c0@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240512043110.3413383-1-miriam.rachel.korenblit@intel.com>
 References: <20240512043110.3413383-1-miriam.rachel.korenblit@intel.com>
@@ -77,39 +77,51 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
 
-Use ieee80211_vif_type_p2p instead of checking for IFTYPE_AP in
-combination with vif->p2p.
+The BIGTK cipher field was added to the kek_kck_material_cmd
+but wasn't assigned. Fix that by differentiating between the
+IGTK/BIGTK keys and assign the ciphers fields accordingly.
 
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index a7ec172eeade..695b5ba3d023 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -208,7 +208,7 @@ static void iwl_mvm_scan_iterator(void *_data, u8 *mac,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+index 0f954e506d62..00dadd133ed3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+@@ -595,6 +595,12 @@ static void iwl_mvm_wowlan_gtk_type_iter(struct ieee80211_hw *hw,
+ 					 void *_data)
+ {
+ 	struct wowlan_key_gtk_type_iter *data = _data;
++	__le32 *cipher = NULL;
++
++	if (key->keyidx == 4 || key->keyidx == 5)
++		cipher = &data->kek_kck_cmd->igtk_cipher;
++	if (key->keyidx == 6 || key->keyidx == 7)
++		cipher = &data->kek_kck_cmd->bigtk_cipher;
  
- 	curr_mvmvif = iwl_mvm_vif_from_mac80211(data->current_vif);
- 
--	if (vif->type == NL80211_IFTYPE_AP && vif->p2p &&
-+	if (ieee80211_vif_type_p2p(vif) == NL80211_IFTYPE_P2P_GO &&
- 	    mvmvif->deflink.phy_ctxt && curr_mvmvif->deflink.phy_ctxt &&
- 	    mvmvif->deflink.phy_ctxt->id != curr_mvmvif->deflink.phy_ctxt->id)
- 		data->is_dcm_with_p2p_go = true;
-@@ -2875,7 +2875,7 @@ static void iwl_mvm_scan_respect_p2p_go_iter(void *_data, u8 *mac,
- 	if (vif == data->current_vif)
+ 	switch (key->cipher) {
+ 	default:
+@@ -606,10 +612,13 @@ static void iwl_mvm_wowlan_gtk_type_iter(struct ieee80211_hw *hw,
  		return;
- 
--	if (vif->type == NL80211_IFTYPE_AP && vif->p2p) {
-+	if (ieee80211_vif_type_p2p(vif) == NL80211_IFTYPE_P2P_GO) {
- 		u32 link_id;
- 
- 		for (link_id = 0;
+ 	case WLAN_CIPHER_SUITE_BIP_GMAC_256:
+ 	case WLAN_CIPHER_SUITE_BIP_GMAC_128:
+-		data->kek_kck_cmd->igtk_cipher = cpu_to_le32(STA_KEY_FLG_GCMP);
++		if (cipher)
++			*cipher = cpu_to_le32(STA_KEY_FLG_GCMP);
+ 		return;
+ 	case WLAN_CIPHER_SUITE_AES_CMAC:
+-		data->kek_kck_cmd->igtk_cipher = cpu_to_le32(STA_KEY_FLG_CCM);
++	case WLAN_CIPHER_SUITE_BIP_CMAC_256:
++		if (cipher)
++			*cipher = cpu_to_le32(STA_KEY_FLG_CCM);
+ 		return;
+ 	case WLAN_CIPHER_SUITE_CCMP:
+ 		if (!sta)
 -- 
 2.34.1
 
