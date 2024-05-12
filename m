@@ -1,109 +1,135 @@
-Return-Path: <linux-wireless+bounces-7528-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7529-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC55D8C351A
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 May 2024 06:59:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 444BA8C3550
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 May 2024 09:25:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B924281E13
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 May 2024 04:59:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B52AA1F21533
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 May 2024 07:25:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF00EC2E9;
-	Sun, 12 May 2024 04:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F191078B;
+	Sun, 12 May 2024 07:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K2RvvymM"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="ltzOaz+m"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from out.smtpout.orange.fr (out-18.smtpout.orange.fr [193.252.22.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085D0BE6C
-	for <linux-wireless@vger.kernel.org>; Sun, 12 May 2024 04:59:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28240B64B;
+	Sun, 12 May 2024 07:25:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.22.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715489946; cv=none; b=UN9hk2LjDNLHJz4Ychg5cYAX8ZxbnT/Mxxy4naz0l3rq/goxbElkKXvoyB5V0/LSnkdiU8qT/sV3WxdfKVr2x3bUObTBI37WPCTrZcPllALDOyF1PvQRvhJDdhtkUEEZhCukdv0XLN11eOdAobt7CTmX+xpdCf42NcgXbHb8tlY=
+	t=1715498748; cv=none; b=XYEgfe2gvUjqG6DQzNnbo8gjOzqAPruAQIkcNsReoSsU08YkNO5WL/eCdFJvDB6OOPNYFugu5OaNLGW3efaJMwz2uJi4tkLPgH4ZbiTlINBopkNnIbguxis31Ji6cmmuo/Yleu9olaNznoaKDaHahSn4I+FQEBYgvdjyKxuq95c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715489946; c=relaxed/simple;
-	bh=lKu2QzwTHEfmelCnaUJPWqkXOpPDee2hQooz87hp6Ls=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nCj1KRyuB6UAPaOC8Q95nVfREWwGtGI6y6KKR+yzppqhF1IpIhZpkzUfdvVlBYd7GQjRGduSv7MDwbfVsxCiZRvOpFA02FqJE5chCim/4SuXYPCW75KCxUIxLVrpLSXkCcdvu9b8wkJSFBCIU078xjTC8bhrHR6xWfKry/uaG7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K2RvvymM; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715489945; x=1747025945;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=lKu2QzwTHEfmelCnaUJPWqkXOpPDee2hQooz87hp6Ls=;
-  b=K2RvvymMobXJFtpWylFE6Gvpds/xYsYEGs70FSrGSlcj6IN19UHKjTXJ
-   Gc6gui0A3KRPeE/Y+eXru99KAXxf79yov1ImLvdJ3KAcuMSQALGIF5mtk
-   TKGjs3anKvpeV4sD6QhBMvOdOdDdkGQH5wuVHETUxm+5NK+QDZ0gVDb1g
-   OEW7+UqdxSj21D31psxAyRlSp7+ey3KSmApfolFI185HHlC1NKcwtgWxY
-   56UOBg/JopX5258fkC4g2qspSeJdg27oqwtrJrYxOBfyIs1IinH8LoJnr
-   bLw9rqJ0tum/9H+W+9BXGUrQyIfI28u7yeB8T6b+ofEIIFIw+HcbqugjK
-   w==;
-X-CSE-ConnectionGUID: 3UpxryD6SMSv9UpaHvmWKw==
-X-CSE-MsgGUID: fZ34zGdFSHuHHSn//xtn3g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11070"; a="22843944"
-X-IronPort-AV: E=Sophos;i="6.08,155,1712646000"; 
-   d="scan'208";a="22843944"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2024 21:59:04 -0700
-X-CSE-ConnectionGUID: 3sDlXxtuQiy37m1DPEXaaA==
-X-CSE-MsgGUID: plIHNvEHT3eThajPCr1iKA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,155,1712646000"; 
-   d="scan'208";a="30416695"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2024 21:59:03 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH v2] wifi: iwlwifi: mvm: leave a print in the logs when we call fw_nmi()
-Date: Sun, 12 May 2024 07:58:57 +0300
-Message-Id: <20240512075822.e2558de222dc.Idd81777c47264e6f557b086625895c1dc2f667f3@changeid>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1715498748; c=relaxed/simple;
+	bh=PPOMNBV3Glw3iN++/hQQpbxp0F4wKqd1XkP6JbbUKcY=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=LcBsDFjhGODUZdbw6etwUQtZIlQK/cPxLd+bMtZWwveUMlXpakm8pkoQIebqPkacfx8BCVALpoZgzeT0CArEebPwCE/dL9/Fr/Cg8whUKcT9rEqInNqqpmX1ATFM0wq8reqdVBfQUDNE60yZExQBwDO18cmwpb+cosSjAdPpRPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=ltzOaz+m; arc=none smtp.client-ip=193.252.22.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from [192.168.1.37] ([86.243.17.157])
+	by smtp.orange.fr with ESMTPA
+	id 63aWscRyh5iYZ63aWsqXbh; Sun, 12 May 2024 09:25:44 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1715498744;
+	bh=RtPvSUrEN3BQtMhBvVSB3q+A6lvRVAHJyIYgMiIAyuA=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To;
+	b=ltzOaz+mHuccNQ8uLvFrW8QIw/2+AI910JD6hnDR0t7mSWSePkhzjJhHCf04FjjDc
+	 GB1RxrMy1mk+wtP5VzJ9FR9yLKC5+GiaNtPwm1w52FE09HWTIbgfF7ofgHVIbKS1xa
+	 8gZa8zWHMyAo4QV7QfjkYwLYIDAtf/g64Blpoz/uVg1+MD9rzSlJgwZoVUv3v0cUmG
+	 opuqrjsWyx1j8lCmRn5BF6ygtl8Vgn6VP8Sqn9Ok7wjDN7jrZI/q1jZiaKTftvNe5t
+	 DvlVTDSgycQrNobLKdSOCuzsaOV7vvGFShjShTj3/tKsQxBmQ5j1w3yVNjQ8kjLKPY
+	 bXSso4icrIOtg==
+X-ME-Helo: [192.168.1.37]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 12 May 2024 09:25:44 +0200
+X-ME-IP: 86.243.17.157
+Message-ID: <5dd2eceb-4108-4071-b7b5-1fcac0a9d2ef@wanadoo.fr>
+Date: Sun, 12 May 2024 09:25:40 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] lib80211: Handle const struct lib80211_crypto_ops in
+ lib80211
+From: Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Simon Horman <horms@kernel.org>
+Cc: gregkh@linuxfoundation.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, johannes@sipsolutions.net,
+ philipp.g.hortmann@gmail.com, tdavies@darkphysics.net,
+ garyrookard@fastmail.org, straube.linux@gmail.com,
+ linux-staging@lists.linux.dev, netdev@vger.kernel.org,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel-janitors@vger.kernel.org
+References: <cover.1715443223.git.christophe.jaillet@wanadoo.fr>
+ <d6306f7c76015653e9539ddbcd1ed74d1681a98f.1715443223.git.christophe.jaillet@wanadoo.fr>
+ <20240511203104.GW2347895@kernel.org>
+ <b6042eae-88cd-4f95-88d8-d1812c2930de@wanadoo.fr>
+Content-Language: en-MW
+In-Reply-To: <b6042eae-88cd-4f95-88d8-d1812c2930de@wanadoo.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-When we crash the firmware, we need to know why we decided to do so.
-Almost all the callsites of iwl_force_nmi() print something in the logs
-that explain why the driver decided to crash the firmware.
-Debugfs doesn't print anything and it is then hard to understand why the
-firmware has crashed.
-Add a simple print in the debugfs hook to ease the debug.
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
-v2: Removed the "Reviewed by" line
- drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c | 2 ++
- 1 file changed, 2 insertions(+)
+Le 11/05/2024 à 23:47, Christophe JAILLET a écrit :
+> Le 11/05/2024 à 22:31, Simon Horman a écrit :
+>> On Sat, May 11, 2024 at 06:32:38PM +0200, Christophe JAILLET wrote:
+>>> lib80211_register_crypto_ops() and lib80211_unregister_crypto_ops() 
+>>> don't
+>>> modify their "struct lib80211_crypto_ops *ops" argument. So, it can be
+>>> declared as const.
+>>>
+>>> Doing so, some adjustments are needed to also constify some date in
+>>> "struct lib80211_crypt_data", "struct lib80211_crypto_alg" and the
+>>> return value of lib80211_get_crypto_ops().
+>>>
+>>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>>> ---
+>>> Compile tested only.
+>>
+>> Hi Christophe,
+>>
+>> Unfortunately allmodconfig W=1 build on x86_64 with Clang says:
+>>
+>> .../libipw_wx.c:587:6: error: assigning to 'struct lib80211_crypto_ops 
+>> *' from 'const struct lib80211_crypto_ops *' discards qualifiers 
+>> [-Werror,-Wincompatible-pointer-types-discards-qualifiers]
+>>   587 |         ops = lib80211_get_crypto_ops(alg);
+>>       |             ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>> .../libipw_wx.c:590:7: error: assigning to 'struct lib80211_crypto_ops 
+>> *' from 'const struct lib80211_crypto_ops *' discards qualifiers 
+>> [-Werror,-Wincompatible-pointer-types-discards-qualifiers]
+>>   590 |                 ops = lib80211_get_crypto_ops(alg);
+>>       |                     ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>>
+> 
+> Hi,
+> 
+> I'll dig more tomorrow, but I don't see this error (with gcc), even with 
+> W=1.
+> 
+> The following part of the patch is here to avoid the exact compilation 
+> error that you see.
+> 
+> Strange.
+> 
+> CJ
+> 
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-index 79f4ac8cbc72..96c9382b98fb 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-@@ -1396,6 +1396,8 @@ static ssize_t iwl_dbgfs_fw_nmi_write(struct iwl_mvm *mvm, char *buf,
- 	if (!iwl_mvm_firmware_running(mvm))
- 		return -EIO;
- 
-+	IWL_ERR(mvm, "Triggering an NMI from debugfs\n");
-+
- 	if (count == 6 && !strcmp(buf, "nolog\n"))
- 		set_bit(IWL_MVM_STATUS_SUPPRESS_ERROR_LOG_ONCE, &mvm->status);
- 
--- 
-2.34.1
+Ok, got it.
+Thanks for the pointer.
 
+I don't know how I missed this one. :(
+
+I'll send a v2.
+
+CJ
 
