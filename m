@@ -1,72 +1,64 @@
-Return-Path: <linux-wireless+bounces-7567-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7571-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E8CC8C37F8
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 May 2024 20:35:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD29F8C380E
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 May 2024 20:50:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C9B2B20FCD
-	for <lists+linux-wireless@lfdr.de>; Sun, 12 May 2024 18:35:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 980BD281FBD
+	for <lists+linux-wireless@lfdr.de>; Sun, 12 May 2024 18:50:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7856957323;
-	Sun, 12 May 2024 18:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B480944369;
+	Sun, 12 May 2024 18:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="PMmBdroF"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="VDbXEzMm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9359F54FB5
-	for <linux-wireless@vger.kernel.org>; Sun, 12 May 2024 18:34:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.248
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30AF4436B
+	for <linux-wireless@vger.kernel.org>; Sun, 12 May 2024 18:50:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715538844; cv=none; b=SCKsGDN7yqHekL/vBhTYrkSH5BS9zZbUdBf/6Hu2N7CGuKxOrm8wHLoB31IJkNHTLH/nWHkAHrSHr8sRvWkDBUBvhVecscgiFfxchJECpZilc44t0gwMLcCskoycDHJOxWMru+b4AtI1H15KbwWpXfaoeivU3zdyviOZzJfvaB4=
+	t=1715539814; cv=none; b=lnjX5LZQjL3ShFnWcvC/IWypIFYe91x9xfbnxeTTeOGdSjLF/uOCp+F8eJ9VMK8IpbFRs5Og3BWolS5lxUIAZnbf1AKzuffGoPqO1myRRL9QmiNVV120uzzcwA7kIoQNQBn6Qg4jLKUkp1ccsVRTvb7Pr159D8dBCIHqd+FCXHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715538844; c=relaxed/simple;
-	bh=wkBWpFDikxFMwD8eegS5ivYjmB4g7lcLoia+jdI0LpM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GAMsQxPM/VJuEoXQG31/HAezrf1svlzdj/kINcq4Wgba/CzWs3BeeNWyvwmwjswwdLjxM2Rba93jH4/b4zC2GpXKqQistoN4QT5SvIUhY/B08EpTNbrZzqgSl2jEcALkjhVdfg8sxHK7phFPxl9S63/4SSPie0TIM94r0r2ZvkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=PMmBdroF; arc=none smtp.client-ip=198.47.23.248
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-	by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 44CIXwSC006181;
-	Sun, 12 May 2024 13:33:58 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1715538839;
-	bh=8WCTjPgWrJGAPbWLFUIE5sj5ZRa4/KGXfJDdzIU8MZE=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=PMmBdroFhGXv8YO0CCuwoFw+Oi2HVcBWKAILqpO2xkPQVmy3kI6md3B3CRdbrbbEb
-	 Z6Q6Q7Ao89Cos8VNmYqXINy9wTfM+3B7NjJ2QmdUQuAQWPy73Xxc4ET1RA6EyxAyV2
-	 RK3ehc+42Tf+xT7HFPlUNe/rYUc9bFqWxutmRsKE=
-Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
-	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 44CIXwcY096129
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Sun, 12 May 2024 13:33:58 -0500
-Received: from DLEE115.ent.ti.com (157.170.170.26) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Sun, 12
- May 2024 13:33:58 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Sun, 12 May 2024 13:33:58 -0500
-Received: from localhost (uda0389739.dhcp.ti.com [137.167.1.114])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 44CIXv0s074950;
-	Sun, 12 May 2024 13:33:58 -0500
-From: <michael.nemanov@ti.com>
-To: <kvalo@kernel.org>, <linux-wireless@vger.kernel.org>
-CC: <sabeeh-khan@ti.com>, Michael Nemanov <Michael.Nemanov@ti.com>,
-        Michael
- Nemanov <michael.nemanov@ti.com>
-Subject: [RFC PATCH 17/17] Add Kconfig, Makefile and integrate into wireless/ti folder
-Date: Sun, 12 May 2024 21:32:47 +0300
-Message-ID: <20240512183247.2190242-18-michael.nemanov@ti.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240512183247.2190242-1-michael.nemanov@ti.com>
-References: <20240512183247.2190242-1-michael.nemanov@ti.com>
+	s=arc-20240116; t=1715539814; c=relaxed/simple;
+	bh=2/uT8JxozBPSDl5GUwJ2iTMTythpxS1KSIbHMy5kWAo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qtaE5ydACFR7T3Y8eluh5zjZvDR8gRT56vJrOVa8AbI+AIHLbWH2KrEZOamaAPp6iMlOmb891V/k/raC0UwLlvKhyB5Bv/O1IyBT1Ob4YZz6Fypq8N/Vn2kpGKV90kHpUjXKihSogxv6TdDh6E2pVBYdzB5L3hiIkbp6+MnwVEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=VDbXEzMm; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 03A6087F68;
+	Sun, 12 May 2024 20:50:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1715539804;
+	bh=gvJCFtX/l45I3Jri+Dcv7igav8HsPzomgbJlEGKa3aE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=VDbXEzMmNybf168lypL912HPVc/A7AxBsrpkVH2aaVwhVFXhB+Xnvvrxll8D6Gze/
+	 k148kUQPhsMfbUukD+a8/T3de9MZ4qw1nlXnUjCDtwRYLnVI42Zpwl5E18tcwLZTqP
+	 Ux43CNXAgbduUYte4cWbBCt/Bpbml9H8aBRgMjHZNBa15TmUd/3c05w+wyrkU7Hvyn
+	 AW1xyB62CuRaAldVv4Q4LarMb5+lN7CQ4ewVh8phH/115BudusyOH4txB6T0h6kQ5R
+	 iieGyRid0bQAsGH7lizFXR463figH4Um3VBPHo6FjmvIFMnN0SSx4Wf6DEkCFxIkLk
+	 3u7jb8MkiJn4g==
+From: Marek Vasut <marex@denx.de>
+To: linux-wireless@vger.kernel.org
+Cc: Marek Vasut <marex@denx.de>,
+	Abhishek Naik <abhishek.naik@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: [PATCH] iwlwifi: mvm: Ignore NVM write status 0x1000
+Date: Sun, 12 May 2024 20:48:37 +0200
+Message-ID: <20240512184932.25831-1-marex@denx.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -74,90 +66,49 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-From: Michael Nemanov <Michael.Nemanov@ti.com>
+When loading custom NVM file on Wireless-AC 9260 160MHz, REV=0x324
+8086:2526 (rev 29) Subsystem: 8086:001c firmware version 46.6b541b68.0
+9260-th-b0-jf-b0-46.ucode , the NVM_WRITE_OPCODE return status is 0x1000
+for all sections. What does this mean is unknown, however clearing the
+top 4 bits permits the NVM to be written and the card operates as it
+should.
 
-Signed-off-by: Michael Nemanov <michael.nemanov@ti.com>
+Hexdump of the iNVM file is below, the iNVM file overrides antenna
+settings to only use AUX antenna and disables MIMO .
+00000000  54 4c 50 2a 2a 4d 56 4e  2c 11 00 00 08 10 21 20
+00000010  c0 00 00 02 03 03 02 11  2f 00 00 00 00 00 00 00
+00000020  00 00 00 00
+
+Signed-off-by: Marek Vasut <marex@denx.de>
 ---
- drivers/net/wireless/ti/Kconfig         |  1 +
- drivers/net/wireless/ti/Makefile        |  1 +
- drivers/net/wireless/ti/cc33xx/Kconfig  | 24 ++++++++++++++++++++++++
- drivers/net/wireless/ti/cc33xx/Makefile | 10 ++++++++++
- 4 files changed, 36 insertions(+)
- create mode 100644 drivers/net/wireless/ti/cc33xx/Kconfig
- create mode 100644 drivers/net/wireless/ti/cc33xx/Makefile
+Cc: Abhishek Naik <abhishek.naik@intel.com>
+Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Cc: Gregory Greenman <gregory.greenman@intel.com>
+Cc: Johannes Berg <johannes.berg@intel.com>
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Cc: linux-wireless@vger.kernel.org
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/nvm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ti/Kconfig b/drivers/net/wireless/ti/Kconfig
-index 3fcd9e395f72..fa7214d6018c 100644
---- a/drivers/net/wireless/ti/Kconfig
-+++ b/drivers/net/wireless/ti/Kconfig
-@@ -14,6 +14,7 @@ if WLAN_VENDOR_TI
- source "drivers/net/wireless/ti/wl1251/Kconfig"
- source "drivers/net/wireless/ti/wl12xx/Kconfig"
- source "drivers/net/wireless/ti/wl18xx/Kconfig"
-+source "drivers/net/wireless/ti/cc33xx/Kconfig"
- 
- # keep last for automatic dependencies
- source "drivers/net/wireless/ti/wlcore/Kconfig"
-diff --git a/drivers/net/wireless/ti/Makefile b/drivers/net/wireless/ti/Makefile
-index 05ee016594f8..9e028a91ec30 100644
---- a/drivers/net/wireless/ti/Makefile
-+++ b/drivers/net/wireless/ti/Makefile
-@@ -3,3 +3,4 @@ obj-$(CONFIG_WLCORE)			+= wlcore/
- obj-$(CONFIG_WL12XX)			+= wl12xx/
- obj-$(CONFIG_WL1251)			+= wl1251/
- obj-$(CONFIG_WL18XX)			+= wl18xx/
-+obj-$(CONFIG_CC33XX)			+= cc33xx/
-\ No newline at end of file
-diff --git a/drivers/net/wireless/ti/cc33xx/Kconfig b/drivers/net/wireless/ti/cc33xx/Kconfig
-new file mode 100644
-index 000000000000..0c3ff97dacc7
---- /dev/null
-+++ b/drivers/net/wireless/ti/cc33xx/Kconfig
-@@ -0,0 +1,24 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+config CC33XX
-+	tristate "TI CC33XX support"
-+	depends on MAC80211
-+	select FW_LOADER
-+	help
-+	  This module contains the main code for TI CC33XX WLAN chips. It abstracts
-+	  hardware-specific differences among different chipset families.
-+	  Each chipset family needs to implement its own lower-level module
-+	  that will depend on this module for the common code.
-+
-+	  If you choose to build a module, it will be called cc33xx. Say N if
-+	  unsure.
-+
-+config CC33XX_SDIO
-+	tristate "TI CC33XX SDIO support"
-+	depends on CC33XX && MMC
-+	help
-+	  This module adds support for the SDIO interface of adapters using
-+	  TI CC33XX WLAN chipsets.  Select this if your platform is using
-+	  the SDIO bus.
-+
-+	  If you choose to build a module, it'll be called cc33xx_sdio.
-+	  Say N if unsure.
-diff --git a/drivers/net/wireless/ti/cc33xx/Makefile b/drivers/net/wireless/ti/cc33xx/Makefile
-new file mode 100644
-index 000000000000..7066ab22471a
---- /dev/null
-+++ b/drivers/net/wireless/ti/cc33xx/Makefile
-@@ -0,0 +1,10 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+cc33xx-objs		= main.o cmd.o io.o event.o tx.o rx.o ps.o acx.o \
-+			  boot.o init.o debugfs.o scan.o
-+
-+cc33xx_sdio-objs	= sdio.o
-+
-+cc33xx-$(CONFIG_NL80211_TESTMODE)	+= testmode.o
-+obj-$(CONFIG_CC33XX)				+= cc33xx.o
-+obj-$(CONFIG_CC33XX_SDIO)			+= cc33xx_sdio.o
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
+index ae81772228813..29342b9a6743e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
+@@ -59,7 +59,7 @@ static int iwl_nvm_write_chunk(struct iwl_mvm *mvm, u16 section,
+ 	pkt = cmd.resp_pkt;
+ 	/* Extract & check NVM write response */
+ 	nvm_resp = (void *)pkt->data;
+-	if (le16_to_cpu(nvm_resp->status) != READ_NVM_CHUNK_SUCCEED) {
++	if ((le16_to_cpu(nvm_resp->status) & 0xfff) != READ_NVM_CHUNK_SUCCEED) {
+ 		IWL_ERR(mvm,
+ 			"NVM access write command failed for section %u (status = 0x%x)\n",
+ 			section, le16_to_cpu(nvm_resp->status));
 -- 
-2.25.1
+2.43.0
 
 
