@@ -1,82 +1,112 @@
-Return-Path: <linux-wireless+bounces-7599-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7600-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8CB28C4351
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 16:35:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53ABD8C43CD
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 17:07:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E9301F21990
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 14:35:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EF231C20A96
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 15:07:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F023EEC7;
-	Mon, 13 May 2024 14:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8085D1DDC5;
+	Mon, 13 May 2024 15:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=163.com header.i=@163.com header.b="Sq//C1p7"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="j7Zjeioy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1383DEC0
-	for <linux-wireless@vger.kernel.org>; Mon, 13 May 2024 14:35:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09A157C97
+	for <linux-wireless@vger.kernel.org>; Mon, 13 May 2024 15:06:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715610924; cv=none; b=gZQkcXVnS45cAz2iTwM+tl9VvyySAd4UpG9ju9hGBJQj7giZ7dX86Qf5C/C0+LwPk9TZfGqBLAc7oysGq+QGcjHKMMIUTmXqben2BfddIXWABnFqRiZHUia+gi8MhhJWApzzEP6qxY18btgvI1xTyHiSOupVUY6wKtLUh3sz+8w=
+	t=1715612815; cv=none; b=J9qMt18L7Va23ZeCDgjEFuyo0DFyY3HVlKCU8XzfJVeLCx4pGjncLhAaeMUQgtV4nMp5tMljcOPcP26I1I7NyZvtDR4/9apbhHe7r5ldF6ZNUZePrQjMkQEa9SnDvhDYiJkMLKaHD6lYqca4/Hh3hEQNdmfbTdJHTlge/cWmZQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715610924; c=relaxed/simple;
-	bh=PFnpTfOL55B98whOBYqeX5GtqS8lO3C48yZIUQx7zyc=;
-	h=Date:From:To:Cc:Subject:Content-Type:MIME-Version:Message-ID; b=iYjqQ28u570TBWPK87vTXjdErndYYAfQUOXt4XbJG3DaEMQCf7mRQfXyqiPmaNau7yEfPzFkaiRtnGRjQqyUJccgwEJtSphkALUi5UZ7AqOK+L7h94x8nx8xka2qgZwbc5DwSto/7rPQf90N9Q2+Ny4qRF7b8FFx5KBu3yAq+Zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=fail (1024-bit key) header.d=163.com header.i=@163.com header.b=Sq//C1p7 reason="signature verification failed"; arc=none smtp.client-ip=117.135.210.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=9nzg/fErxEjKWjyhShJtIW1S2P310lBM8cdNG0yqw2E=; b=S
-	q//C1p7vO9sEZTIzIOaq5C79zEs67w1lOgXscsJi2RfqBaGaAGTChO1TTrjDwk0i
-	bWm1rtp0gHw2qnFB9fQo4WdclAZpvefL0GX30KgT3oVok01B8IDg+Hc4S0J98bqZ
-	0ZVOpEWhGclYEweVc9mJIgCJy40l3qa3zUAw7ry9UY=
-Received: from congei42$163.com ( [159.226.94.118] ) by
- ajax-webmail-wmsvr-40-139 (Coremail) ; Mon, 13 May 2024 22:34:45 +0800
- (CST)
-Date: Mon, 13 May 2024 22:34:45 +0800 (CST)
-From: sicong <congei42@163.com>
-To: nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com, 
-	shayne.chen@mediatek.com, sean.wang@mediatek.com, kvalo@kernel.org, 
-	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com
-Cc: linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-Subject: [PATCH v1] wifi: mt76: mt7615: fix null pointer dereference bug
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20230109(dcb5de15)
- Copyright (c) 2002-2024 www.mailtech.cn 163com
-X-NTES-SC: AL_Qu2aB/qav0Aj4yOdYOkfm0YUj+44Wsa4uvgk2YJeOpt4jBHo2yEbXHxAJUH3z96DCxCKmxuUSSZ39+txcKNgZYAKsjYvNC++oOzKkizu8n3qqQ==
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	s=arc-20240116; t=1715612815; c=relaxed/simple;
+	bh=yRLKQtJMHk/KHyK5GJ9hiBA/zwIirWhmcUm/w3Yo7w8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=urDKgea0aEdjMaHmYEjleCPrMtdK9DlL/YacTXHzkXOjMPSE1nIgu0NzfzdGDzpu5A13hrrmWzfnJKCXpV5Gz3UTLuku9x1pfrlA6g4yEFZqakma0axoHjSDOP50TT+Q9mfeUP+Dd7aGhD+1ovriyrPlU9TnqCx2oBtBIDHUEUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=j7Zjeioy; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id AA83B88210;
+	Mon, 13 May 2024 17:06:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1715612812;
+	bh=7pKzpnFZTfg1XkoB392nlEwWJtKSc4VJ7EameRTBfnA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=j7Zjeioy6HuZARpb+upPamIrPhySUfzMMVys3MJ8ncnW20MbDLwCYMQjyj2VHOQuv
+	 6ErjQncn6BoKv7inqO9GQJIA6VrBDJw6ZU3wvqGvKIHGuRC4IjiBrVcmiihyH19P+W
+	 N5RzSj4bcvmboc6mzwY3SW4zL6vNR3fZFP7NmI6cXhs+iG/B9T4FbgEN048ef5rhiO
+	 u5IUOfMM3YhxC2ycMwB5xbSoOltA1VwVrJeTFLiOeWY/bWbehU6PHiKshT2NNY+Dri
+	 UYEHTvdTY0SQmawARx5UcrnxGaJl47YP6Tf1TmpLZjgFHe0Cwedx8P6T+dqRA0qjUn
+	 13eHSeNiVrwXw==
+Message-ID: <3fb87569-61af-4779-a468-5e91d50482b3@denx.de>
+Date: Mon, 13 May 2024 16:44:40 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <6206228d.bdee.18f72609cf4.Coremail.congei42@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:_____wD3f8MFJUJmWPQkAA--.696W
-X-CM-SenderInfo: 5frqwvrlusqiywtou0bp/1tbizQfd8mV4HLKD6AAKs3
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iwlwifi: mvm: Ignore NVM write status 0x1000
+To: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Abhishek Naik <abhishek.naik@intel.com>,
+ "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>,
+ Gregory Greenman <gregory.greenman@intel.com>,
+ "Berg, Johannes" <johannes.berg@intel.com>, Kalle Valo <kvalo@kernel.org>
+References: <20240512184932.25831-1-marex@denx.de>
+ <MW5PR11MB5810BC2C41C580237BAD3958A3E22@MW5PR11MB5810.namprd11.prod.outlook.com>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <MW5PR11MB5810BC2C41C580237BAD3958A3E22@MW5PR11MB5810.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-RnVuY3Rpb24gbXQ3NjE1X2NvcmVkdW1wX3dvcmsgd2lsbCBjYWxsIHZ6YWxsb2MgdG8gYWxsb2Nh
-dGUgYSBsYXJnZSBhbW91bnQKb2YgbWVtb3J5IHNwYWNlLCB0aGUgc2l6ZSBvZiB3aGljaCBpcyAx
-MzAwS0IuIFRoZXJlIHNob3VsZCBiZSBhIG51bGwKcG9pbnRlciBjaGVjayBhZnRlciB2emFsbG9j
-LiBPdGhlcndpc2UsIHdoZW4gdGhlIG1lbW9yeSBhbGxvY2F0aW9uIGZhaWxzCmFuZCByZXR1cm5z
-IE5VTEwsIHRoZSBmdW5jdGlvbiB3aWxsIGNhdXNlIGtlcm5lbCBjcmFzaC4KCkZpeGVzOiBkZTc5
-MTA5ODQ1OWQgKCJ3aWZpOiBtdDc2OiBtdDc2MTU6IGZpeCBudWxsIHBvaW50ZXIgZGVyZWZlcmVu
-Y2UgYnVnIikKU2lnbmVkLW9mZi1ieTogU2ljb25nIEh1YW5nIDxjb25nZWk0MkAxNjMuY29tPgot
-LS0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3NjE1L21hYy5jIHwgMyAr
-KysKIDEgZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKykKCmRpZmYgLS1naXQgYS9kcml2ZXJz
-L25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210NzYxNS9tYWMuYyBiL2RyaXZlcnMvbmV0L3dp
-cmVsZXNzL21lZGlhdGVrL210NzYvbXQ3NjE1L21hYy5jCmluZGV4IDdiYTc4OTgzNGU4ZC4uMDRl
-YjUyOTA0NTIwIDEwMDY0NAotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2
-L210NzYxNS9tYWMuYworKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2L210
-NzYxNS9tYWMuYwpAQCAtMjM0MSw2ICsyMzQxLDkgQEAgdm9pZCBtdDc2MTVfY29yZWR1bXBfd29y
-ayhzdHJ1Y3Qgd29ya19zdHJ1Y3QgKndvcmspCiAJfQogCiAJZHVtcCA9IHZ6YWxsb2MoTVQ3Nl9D
-T05OQUNfQ09SRURVTVBfU1opOworCWlmKCFkdW1wKQorCQlyZXR1cm47CisKIAlkYXRhID0gZHVt
-cDsKIAogCXdoaWxlICh0cnVlKSB7Ci0tIAoyLjM0LjE=
+On 5/13/24 9:26 AM, Korenblit, Miriam Rachel wrote:
+> 
+>> -----Original Message-----
+>> From: Marek Vasut <marex@denx.de>
+>> Sent: Sunday, 12 May 2024 21:49
+>> To: linux-wireless@vger.kernel.org
+>> Cc: Marek Vasut <marex@denx.de>; Abhishek Naik <abhishek.naik@intel.com>;
+>> Grumbach, Emmanuel <emmanuel.grumbach@intel.com>; Gregory Greenman
+>> <gregory.greenman@intel.com>; Berg, Johannes <johannes.berg@intel.com>;
+>> Kalle Valo <kvalo@kernel.org>; Korenblit, Miriam Rachel
+>> <miriam.rachel.korenblit@intel.com>
+>> Subject: [PATCH] iwlwifi: mvm: Ignore NVM write status 0x1000
+>>
+>> When loading custom NVM file on Wireless-AC 9260 160MHz, REV=0x324
+>> 8086:2526 (rev 29) Subsystem: 8086:001c firmware version 46.6b541b68.0 9260-
+>> th-b0-jf-b0-46.ucode , the NVM_WRITE_OPCODE return status is 0x1000 for all
+>> sections. What does this mean is unknown, however clearing the top 4 bits
+>> permits the NVM to be written and the card operates as it should.
+>>
+>> Hexdump of the iNVM file is below, the iNVM file overrides antenna settings to
+>> only use AUX antenna and disables MIMO .
+> 
+> The custom NVM is meant for internal use only.
+
+But why does NVM loading not work without this patch ?
+
+> To override antenna settings please use the nl80211 command: NL80211_CMD_SET_WIPHY
+> You can use the 'iw set antenna' command.
+
+I need to use only the AUX antenna and disable MIMO entirely, the 'iw 
+set antenna' didn't work, the custom NVM fragment does work.
+
+But I do need this extra patch to load the NVM fragment.
+
+Is the patch correct ? Why is the 0x1000 returned and why does it have 
+to be masked out ?
 
