@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-7592-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7593-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55D7E8C42E6
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 16:12:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2E0F8C42ED
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 16:13:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10702280DED
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 14:12:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DC672814FD
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 14:13:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C7415380F;
-	Mon, 13 May 2024 14:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC282153819;
+	Mon, 13 May 2024 14:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fD/teDXb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L1Qq5mYV"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED06A1E497;
-	Mon, 13 May 2024 14:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88143153817
+	for <linux-wireless@vger.kernel.org>; Mon, 13 May 2024 14:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715609555; cv=none; b=ZP6jyDRCXw9IX3a3mDXLGkEHP9gw16q85LHjVKynZ1NOZKBg8RXcDoTNOqvXs8eDbKKt9DsK3f+wbDRHuHAFE+NpNcZ6tww4q5SWnb7vuS5r2PJB+MbL2dmy5y7sUQbh/gxOfvhN1RAmvF+baToBjW0w+tvDPS23gmSh34gFQPw=
+	t=1715609586; cv=none; b=GIva9OK4h711PJjfTPvWCCgON66cdl9yVksBcktCxJxN/EbrUyvLTvaGElfkbPeKdsGMsiFogWQkYs65fgxS+aziRmhUi65dhzlBBGFydsT6VBr1fj/NTBQvXl4SCayz9lT8qWV4tfU9ex/nopRaX4DFl59FAPIttazv3idJfSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715609555; c=relaxed/simple;
-	bh=cfVkEuuf1nm+2kNAircxmCV5OVM0lYdc8fwZJMocSJw=;
+	s=arc-20240116; t=1715609586; c=relaxed/simple;
+	bh=k5hs2jo2DPrq9jeuC5BRr/1EQid+vELuPYJpggcc5IQ=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=Cfus86E/4sRGVPB8EUKWJDjM1ZrWS9TAHPbLKfWbZIikazUKJFJqEiLuneKwtegO+4B/CjtYQvl2D5FRlaOcRcabcz5HPYQtTYGlWayRlpHazZL39MtuMS2+MZkBkRBaNhStIPdX2y36avSicXeLswP83HXH+eR1eVUXJvLJneI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fD/teDXb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59F4C32782;
-	Mon, 13 May 2024 14:12:32 +0000 (UTC)
+	 Cc:Message-ID:Date; b=nR+juo7YfC45/rfS5L8Z/Zr5dkm7PcriP6Rw8CcyQUERJ6tZGdtlMBmQmnOXbuR9LwlgweD5okwyRJA0ala6NdPYLsTF4Ju1hnEkDNv/ZooUMo+Uy1gzJOeZ9gge7z7BYLtPXnQpXfIeltFRJKubtr0BeAJKo79K5jOLA82c1co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L1Qq5mYV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C15C113CC;
+	Mon, 13 May 2024 14:13:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715609554;
-	bh=cfVkEuuf1nm+2kNAircxmCV5OVM0lYdc8fwZJMocSJw=;
+	s=k20201202; t=1715609586;
+	bh=k5hs2jo2DPrq9jeuC5BRr/1EQid+vELuPYJpggcc5IQ=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=fD/teDXbT0HGcM7y9LjRgxQ5GQ2qDLPuOfKqqrGThMjiDPVKzLgiP3X0wbLDSQdxs
-	 9oM1dd8FDmvO7fVpOHIzYtXVBkusb2DSkBiSWxBSXvVznbHXkYCgGJtFUJxCGq54tq
-	 ctEX3zIqiUKQuSyLdqnOWq+c5mD88YODZ2x/EG4YDXMLCFgtvfKA100coopPNjo8Rm
-	 EdMufQe5hHDNZvBUBX22S1RxJcuF3knWWLOFxVM6fuhiv18AozQG03reW+O4da8Yjm
-	 6RGecGnBmPu3hmeiZLViIhfdgjZ9c3gsQkle9RGjPU5bS4nTaio5VvFwpPxyuFdiCA
-	 hUO8r4FSMdJ8g==
+	b=L1Qq5mYVBoc2UN8qllh8m7QnNxhAHiG7Cg8s1/7TIzQATUIaLh1o1OUvpbldPsQ4g
+	 90FPj9leTVU3TVz84LGLh1W046yr3TLFFHgRg/r8LuTsvGCkI/gL7QoXL7kZt2sb/t
+	 qzbxIlONTmpwYFRVCYXS4sCM6QQFswiE99TjgCdCo1t7EbLaDUXVoBwPnBUqvA963B
+	 AJknkyjHOZVbQePq7lPJFZo33UMPL07Gg2jarhM6PUHSFWyOdvM8LA1ly+YsusMSIy
+	 p9947eIwt5/rV503ZhSF6U9bPOq5K5IgnwUizuAi+tNPNROOrkkIJ8UMYp5PFDh/L/
+	 hq80FusdIrdVQ==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,44 +49,42 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 1/2] wifi: ath12k: initialize 'ret' in
- ath12k_qmi_load_file_target_mem()
+Subject: Re: [PATCH] wifi: ath12k: avoid double SW2HW_MACID conversion
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240504-qmi_load_file_target_mem-v1-1-069fc44c45eb@quicinc.com>
-References: <20240504-qmi_load_file_target_mem-v1-1-069fc44c45eb@quicinc.com>
-To: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: Jeff Johnson <jjohnson@kernel.org>, <linux-wireless@vger.kernel.org>,
- <ath12k@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
- <ath11k@lists.infradead.org>, Jeff Johnson
-	<quic_jjohnson@quicinc.com>
+In-Reply-To: <20240506173017.597715-1-quic_periyasa@quicinc.com>
+References: <20240506173017.597715-1-quic_periyasa@quicinc.com>
+To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Cc: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+ Karthikeyan Periyasamy
+	<quic_periyasa@quicinc.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <171560955084.1690511.16227061715514007364.kvalo@kernel.org>
-Date: Mon, 13 May 2024 14:12:32 +0000 (UTC)
+Message-ID: <171560958344.1690511.4558865719984074214.kvalo@kernel.org>
+Date: Mon, 13 May 2024 14:13:05 +0000 (UTC)
 
-Jeff Johnson <quic_jjohnson@quicinc.com> wrote:
+Karthikeyan Periyasamy <quic_periyasa@quicinc.com> wrote:
 
-> smatch flagged the following issue:
+> Currently, ath12k_wmi_pdev_dma_ring_cfg() fails due to an invalid pdev_id
+> parameter passed to the WMI_PDEV_DMA_RING_CFG_REQ_CMDID WMI command. This
+> invalid pdev_id is caused by a double conversion of the MAC ID. Since the
+> the caller of ath12k_wmi_pdev_dma_ring_cfg() already performs the MAC ID
+> conversion, it is unnecessary to do it again within the function. To fix
+> this, remove the software (SW) to hardware (HW) MAC ID conversion from
+> ath12k_wmi_pdev_dma_ring_cfg() to avoid this redundant conversion.
 > 
-> drivers/net/wireless/ath/ath12k/qmi.c:2619 ath12k_qmi_load_file_target_mem() error: uninitialized symbol 'ret'.
+> Found in code review.
 > 
-> The reality is that 'ret' is initialized in every path through
-> ath12k_qmi_load_file_target_mem() except one, the case where the input
-> 'len' is 0, and hence the "while (remaining)" loop is never entered.
-> But to make sure this case is also handled, add an initializer to the
-> declaration of 'ret'.
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 > 
-> No functional changes, compile tested only.
-> 
-> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-2 patches applied to ath-next branch of ath.git, thanks.
+Patch applied to ath-next branch of ath.git, thanks.
 
-bb0b0a6b96e6 wifi: ath12k: initialize 'ret' in ath12k_qmi_load_file_target_mem()
-199f149e97dc wifi: ath11k: initialize 'ret' in ath11k_qmi_load_file_target_mem()
+2db7a82fd150 wifi: ath12k: avoid double SW2HW_MACID conversion
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240504-qmi_load_file_target_mem-v1-1-069fc44c45eb@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240506173017.597715-1-quic_periyasa@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
