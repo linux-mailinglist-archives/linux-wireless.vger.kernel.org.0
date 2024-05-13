@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-7615-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7616-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 246638C488A
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 22:56:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEE0B8C48E7
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 23:34:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2C5F282D8C
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 20:56:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8AD42B23DCB
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 21:33:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 090B380BF7;
-	Mon, 13 May 2024 20:56:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DA7B86126;
+	Mon, 13 May 2024 21:33:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="NKC7EGaM"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="NHBZlh3P"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92AD029D02
-	for <linux-wireless@vger.kernel.org>; Mon, 13 May 2024 20:56:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2288612E
+	for <linux-wireless@vger.kernel.org>; Mon, 13 May 2024 21:33:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715633780; cv=none; b=AsQNly5VWJ30FQm+u1BXIzYbxNFtC5aN7PVQloY1EO230PPiU+wAczwNN0pP6yj+eo27oqNNsNlQiFo6rEVJbpygIF2YZXcUPzKXVigarmg1qaSsdj4ZBEAx6np6p6ZYqkebYQvID0QcrP4/lpBrJ5LBgsxEOQLD6ZUxL8gBu5E=
+	t=1715636016; cv=none; b=uQ6eb4CWB2tN6phn2rZ9acYf1s3QJULs7AtUxLexG47qni5+IYO8b8txG2CNxxQfxTlxtbdERUe1TM43dbT5KgdAI1LMwaElL8vZ+jhqx5b0CEOfv3TXYSXIakzheZLeeEMZc+YDkEk2wgHactZS+6t6lb1M64/0M5yW/g+5/sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715633780; c=relaxed/simple;
-	bh=P3fOCsfQAItlT+/mXPDxKaHXs/F+4sQ/DzKW4E5bTQg=;
+	s=arc-20240116; t=1715636016; c=relaxed/simple;
+	bh=HDTAPHpB5vBc5+NuPOKA7FKQSbIuytc81Af2qEatYQg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=RqrzSkDWihG61+4yDE9sGAKnR7H41fp2f4pkqPbPRHYL4nn/M9Lrgs7qEGJx2rOOp6B2p46F25FeEKbchZHaTjXoPDQmuoxoAMbrisqkPxEqnNiRZy279JP/H6Cem5Uc5c/bXa8lGTTU1zEstllnd3A5XjYRM6eC2nY/ZVWtsXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=NKC7EGaM; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=Ai+oUPy4jp+prTAzK6l8ADetzD28uIBXjT01QoqR2OCQATd6zI7qYMPSDWHrPWxyLpXaGdu2/7jDl1kZPytFYjzx77oQsP48nrkpQ3QhGKQrfQdOf23xgV5xIJmqf2TYiFQKl/cXZLg6yj3BhYYJ2Y634+gZQsG+0yujpbPs+UI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=NHBZlh3P; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44DJ8vbo021552;
-	Mon, 13 May 2024 20:56:17 GMT
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44DJ8dPO018863;
+	Mon, 13 May 2024 21:33:22 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	message-id:date:mime-version:subject:to:cc:references:from
 	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=zTjuj5JDBZneHV80Tm96RWdngRKZ2JXEyDbmE+JokQk=; b=NK
-	C7EGaMQk5bFg3iUoFBu9GCtkKPiXDnjvaQ8sREU0Mbq/ptLhmVQIX2bXOi/J/TNP
-	9r+j1Aeat2od+oR7HvhY4VIEZ4o9JygYc6h9MpNa4p4C5czwASVZm15HspbSJyiM
-	icoIULdU+VmgENMIxSO1FB633WoB+V+jb7GzhJAw3aOxinY6R/b0dKn9Va7HpreK
-	Icg5DrA06T4Q8PGN0DTbtM26++39mO3pziO47IgphJrVQBR9DYAGcN2TBe+G1juF
-	XZaZsIjSyztexVld5LzrTb0mrDLP5lLcfMCO7lZ0b4OkwQJIZCinHw+zuuMKscKF
-	FOJQkTkbrKlzBZHlIHrA==
+	qcppdkim1; bh=UIfdthUrUP3mcVeXO2qkv82/5p6EWQ7UmA1Ol7NcGH4=; b=NH
+	BZlh3PktC8IOcwyEaWXrn3om6xqAEXrds+l0Ftvf4mqi89joi/9DAkAwtUmrzhJh
+	/DY2Y/rAZvRJ+SLT1tn7yYyXbzNiRrO9XCsCMJtirbMHskNTlolxk50XZHWg00NV
+	qHGnZMbKAaXCQ3aQdX44sXAk64kKRqd7gij5u62NbGSXNkDP5oMbu1p24noP10J4
+	kaMCLHk3OdH3aW/UZFOcdgv2KKEim+0ayQmRnOWPy4rnLn/VKj4uefrR/39LT2oz
+	c7AcSAPe5HNmBIcusPU35kKE8VBy8JE7wZmoXrTYY3hoi2rGAkEMHEdivCoLLlSa
+	EZZQqJf+vr4zJrG0l2IA==
 Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y21y7vg1b-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y20rtck1j-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 May 2024 20:56:16 +0000 (GMT)
+	Mon, 13 May 2024 21:33:21 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44DKuFVN021928
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44DLXK6L003662
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 May 2024 20:56:15 GMT
+	Mon, 13 May 2024 21:33:20 GMT
 Received: from [10.110.0.4] (10.80.80.8) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 13 May
- 2024 13:56:15 -0700
-Message-ID: <15047448-4fb1-4024-8d62-1922e8f15940@quicinc.com>
-Date: Mon, 13 May 2024 13:56:15 -0700
+ 2024 14:33:19 -0700
+Message-ID: <927a397d-7070-4d64-9247-84a7cbae07d9@quicinc.com>
+Date: Mon, 13 May 2024 14:33:18 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,50 +65,40 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V4 10/10] wifi: ath12k: add extended NSS bandwidth support
- for 160 MHz
+Subject: Re: [PATCH V5 5/6] wifi: ath12k: refactor SMPS configuration
 Content-Language: en-US
 To: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>,
         <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>
-References: <20240508002055.17705-1-quic_pradeepc@quicinc.com>
- <20240508002055.17705-11-quic_pradeepc@quicinc.com>
+References: <20240508173655.22191-1-quic_pradeepc@quicinc.com>
+ <20240508173655.22191-6-quic_pradeepc@quicinc.com>
 From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240508002055.17705-11-quic_pradeepc@quicinc.com>
+In-Reply-To: <20240508173655.22191-6-quic_pradeepc@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: gdMFGgMUORq1dkVVBEeV1PXeb_JtvKXU
-X-Proofpoint-GUID: gdMFGgMUORq1dkVVBEeV1PXeb_JtvKXU
+X-Proofpoint-ORIG-GUID: 3aq2xaRg_uKAV9dmVmYPvFvXfd4k4een
+X-Proofpoint-GUID: 3aq2xaRg_uKAV9dmVmYPvFvXfd4k4een
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
  definitions=2024-05-13_15,2024-05-10_02,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- impostorscore=0 malwarescore=0 phishscore=0 spamscore=0 bulkscore=0
- priorityscore=1501 adultscore=0 suspectscore=0 clxscore=1015
- mlxlogscore=999 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405010000 definitions=main-2405130143
+ suspectscore=0 bulkscore=0 clxscore=1015 mlxscore=0 malwarescore=0
+ adultscore=0 spamscore=0 priorityscore=1501 phishscore=0 mlxlogscore=797
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405010000 definitions=main-2405130147
 
-On 5/7/2024 5:20 PM, Pradeep Kumar Chitrapu wrote:
-> Currently rx and tx MCS map for 160 MHz under HE capabilities
-> are not updating properly, when 160 MHz is configured with NSS
-> lesser than max NSS support. Fix this by utilizing
-> nss_ratio_enabled and nss_ratio_info fields sent by firmware
-> in service ready event.
-> 
-> However, if firmware advertises EXT NSS BW support in VHT caps
-> as 1(1x2) and when nss_ratio_info indicates 1:1, reset the EXT
-> NSS BW Support in VHT caps to 0 which indicates 1x1. This is
-> to avoid incorrectly chosing 1:2 NSS ratio when using the
-
-s/chosing /choosing /
-
-> default VHT caps advertised by firmware.
+On 5/8/2024 10:36 AM, Pradeep Kumar Chitrapu wrote:
+> Move fetching SMPS value to a new function and use u16_get_bits
+> to extract it from capabilities. This will help in extending the
+> functionality when SMPS support in 6 GHz band gets added in
+> subsequent patches.
 > 
 > Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 > 
 > Signed-off-by: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
 Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
