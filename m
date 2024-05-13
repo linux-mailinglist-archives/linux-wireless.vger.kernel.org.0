@@ -1,161 +1,117 @@
-Return-Path: <linux-wireless+bounces-7580-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7581-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0CB98C3DA8
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 10:58:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D0FB8C3EDA
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 12:27:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F36C31C21102
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 08:58:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4863428630A
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 10:27:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA7D14206B;
-	Mon, 13 May 2024 08:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 027AB14A0A6;
+	Mon, 13 May 2024 10:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="bMFjdLmz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MJGTQjaX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4605F2B9D1
-	for <linux-wireless@vger.kernel.org>; Mon, 13 May 2024 08:58:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8FD146A9F
+	for <linux-wireless@vger.kernel.org>; Mon, 13 May 2024 10:27:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715590712; cv=none; b=TIaBmSCXwV/9meeHRnALsTgdg8/NgDprS9LYFfOFQiHAmF4odfZHkEFlz1acFlDWHM4yT8Y7VHCudr02/qYkiLn9MDZvFYRILjWRuhQo5MDO44S+hrPHRAj4P7Z+oxr+d71/Lahf2npptHK0XeUcnzV47/ClaCJKVnx9UAePnMo=
+	t=1715596043; cv=none; b=IK7oU+WCdfeZY8UlG2LN1EdhOM4+Yw9Wwr4k871VgHe5hryknwa5qpDfGAQ1NZpIGpnEd/H84Ae39ddWnkRbE0WiApYRwlCBeQN7bEkbXgZ0MLrEQlPnVwbZoNFZkb0eDHAwm1n+0bGWOqzorQSlOGOlGdbicVfFueHeQHgwD9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715590712; c=relaxed/simple;
-	bh=dGyUKZqpBDN/CMwIYzyDdDHAeKa/o3GF0BtsDwlkiDQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iCFMYIccEUPpgS3TDyb2dXgmfqPhHMf8Q3IV4I2XFf3TcaTuxeS21Ax9RdtoAVfpqHVDq/ax/NFvZ+ANuS9AgACD5GDOI1uMIQnNY5RL0m2KyW6wve5LsaOmQjtZtv1eL0OGa0Jj2Z6jiLp+23/5isSpy3BVZtVwVfhBl8Os1Ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=bMFjdLmz; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 123241BF20C;
-	Mon, 13 May 2024 08:58:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1715590707;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s1xSN4hl2fRg6lqHRL3evbDa3rGly7LE7/ezLFYhDDo=;
-	b=bMFjdLmzeR0WZ+ykCRTxCNhok5BaoNpvSJDWVX7rPtXgMZ8pqzVxFVvjSye1libf+T57rF
-	oU1N1k3hC5h0jyy24THHDztmzDmv/hf9CqU05DbPd1oNteaaAPEoce6hM5qr9e0noAwwuX
-	dwq6mwJ7fvUY3qT1fi1vVeaKCf//kuCYu/dMQRBO01QHA8D3uWTa/I6TfTtHDKr+Dohelu
-	GyhFEdOYQL5Qyb/kyKQ5Cg9qs08N5/enIevBMFtYKe5I+eBymatgui2hRaDGLUGnCYBvfJ
-	KuVF7NwmJSIUac+AtZPwjkOHDSSeCyjsTjtz6YHEA3RDbeHiNc1lxEgelVoprA==
-Message-ID: <3c136f96-83b9-4989-92a6-9e7cf79d7e5c@bootlin.com>
-Date: Mon, 13 May 2024 10:58:26 +0200
+	s=arc-20240116; t=1715596043; c=relaxed/simple;
+	bh=q4WJxsOWT3aJ+hzdHuCuTRFHMQXbZfueobQN1tuM4Xk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=k8FcCMJCPViam3z3ww5wLVrRu/+xgYKw68dxfbVXX6FSAcDmJe8gavmrxp0Kh26YJkEBIS9DXNg6vJMzLdKIKoWtoVvRTJmm4VcISVwf4xe0yKX9cb7GV+PBFyHmbo2ABOX8ee6QgaqXx9BEQSvd8B1RU8TDBb3cbPGoA/R6PMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MJGTQjaX; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1715596042; x=1747132042;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=q4WJxsOWT3aJ+hzdHuCuTRFHMQXbZfueobQN1tuM4Xk=;
+  b=MJGTQjaXS4nk2Df51CBqyN5Yur1iWP9CDPZD8eMM1am+Eggal1woRKGO
+   O67jYtJb010zXmivi0oyzInQMuMlx0m2bcTmc1p35aG9l1mXhyhjvJtrg
+   /GhE9RxsFVjQsNEjNFyYOfHbNSEyYiOhNPXS6M30B2EFO7AvsG7BYfsaR
+   7wx02hO7sGlfRjUkwYY+XWoOCCJbrfCN0/NCdM4/gKdxAuGSRbW9RTkoI
+   xrMIq6yGmcaxF9iObmLxYbQ6aR1INu3zoodTMm65dG+REvlSIcaY1axym
+   wDLiHSmgSi5e+FJvXApyr6b6X76Ap9mV58/XibVKl2eFzoAtj18a3FP9A
+   w==;
+X-CSE-ConnectionGUID: 8Vr0bPs8T3CMfAecwtIZMw==
+X-CSE-MsgGUID: FKdbikVjR5eqGOCxJfinmA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11071"; a="22928646"
+X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; 
+   d="scan'208";a="22928646"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2024 03:27:22 -0700
+X-CSE-ConnectionGUID: fonezLBWQRS5nKAoY8Uv8A==
+X-CSE-MsgGUID: NicYJtNaQaaXSvvgXkR4kQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; 
+   d="scan'208";a="53516394"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2024 03:27:20 -0700
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH 0/7] wifi: iwlwifi: bugfixes for fixes tree 13-05-24
+Date: Mon, 13 May 2024 13:27:07 +0300
+Message-Id: <20240513102714.469087-1-miriam.rachel.korenblit@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: AW: wilc1000: error when transferring large files
-To: Heiko Thiery <Heiko.Thiery@kontron.com>,
- BUKSHA Kirill <kirill.buksha@axians.rs>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Ajay Kathat <ajay.kathat@microchip.com>,
- "Heiko Thiery (heiko.thiery@gmail.com)" <heiko.thiery@gmail.com>,
- "kvalo@kernel.org" <kvalo@kernel.org>
-References: <3b0aa2d8-4e3e-4e50-8c04-f3a2637bb18d@axians.rs>
- <PAXPR10MB4948B9B69A8D9964B60BB5F68DE52@PAXPR10MB4948.EURPRD10.PROD.OUTLOOK.COM>
-From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <PAXPR10MB4948B9B69A8D9964B60BB5F68DE52@PAXPR10MB4948.EURPRD10.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset=UTF-8
+Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: alexis.lothore@bootlin.com
 
-Hello Heiko,
+Hi,
 
-sorry for the late reply, I was away from computer most of the previous week.
-
-On 5/8/24 08:36, Heiko Thiery wrote:
-> Hi Alexis,
-> 
->> Hello,
->>
->> I'm part of a team working on a BSP for a board with a WILC1000 module from Microchip (connected via SDIO interface). Currently we are having issues when transferring large files over a WiFi connection. Here is our steps to reproduce:
->>
->> # generating file to transfer
->> dd if=/dev/random of=./test_300mb_file bs=1M count=300
->>
->> # transferring a file from a linux laptop to the test board
->> scp test_300mb_file user@192.168.1.25:~/
->>
->> During transmission, the connection speed drops to almost zero and returns to usual values after a while. At the moment of the drop, we see the following messages in the kernel log:
->>
->> ------------------------------------
->> [  138.016229] NOHZ tick-stop error: Non-RCU local softirq work is pending, handler #08!!!
->> [  140.001682] NOHZ tick-stop error: Non-RCU local softirq work is pending, handler #08!!!
->> [  140.009719] NOHZ tick-stop error: Non-RCU local softirq work is pending, handler #08!!!
->> [  142.003636] NOHZ tick-stop error: Non-RCU local softirq work is pending, handler #08!!!
->> [  142.011670] NOHZ tick-stop error: Non-RCU local softirq work is pending, handler #08!!!
->> [  144.006676] NOHZ tick-stop error: Non-RCU local softirq work is pending, handler #08!!!
->> [  144.014709] NOHZ tick-stop error: Non-RCU local softirq work is pending, handler #08!!!
->> [  146.007049] NOHZ tick-stop error: Non-RCU local softirq work is pending, handler #08!!!
->> [  146.015082] NOHZ tick-stop error: Non-RCU local softirq work is pending, handler #08!!!
->> [  156.123890] mmc0: Timeout waiting for hardware interrupt.
->> [  156.129318] mmc0: sdhci: ============ SDHCI REGISTER DUMP ===========
->> [  156.135764] mmc0: sdhci: Sys addr:  0x4cef1400 | Version:  0x00000002
->> [  156.142211] mmc0: sdhci: Blk size:  0x00000170 | Blk cnt:  0x00000001
->> [  156.148655] mmc0: sdhci: Argument:  0x14000170 | Trn mode: 0x00000013
->> [  156.155102] mmc0: sdhci: Present:   0x01d88a0a | Host ctl: 0x00000013
->> [  156.161547] mmc0: sdhci: Power:     0x00000002 | Blk gap:  0x00000080
->> [  156.167992] mmc0: sdhci: Wake-up:   0x00000008 | Clock:    0x0000003f
->> [  156.174438] mmc0: sdhci: Timeout:   0x0000008f | Int stat: 0x00000000
->> [  156.180883] mmc0: sdhci: Int enab:  0x107f100b | Sig enab: 0x107f100b
->> [  156.187330] mmc0: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000502
->> [  156.193776] mmc0: sdhci: Caps:      0x07eb0000 | Caps_1:   0x0000b407
->> [  156.200223] mmc0: sdhci: Cmd:       0x0000353a | Max curr: 0x00ffffff
->> [  156.206669] mmc0: sdhci: Resp[0]:   0x00001000 | Resp[1]:  0x00000000
->> [  156.213113] mmc0: sdhci: Resp[2]:   0x00000000 | Resp[3]:  0x00000000
->> [  156.219557] mmc0: sdhci: Host ctl2: 0x00000000
->> [  156.224005] mmc0: sdhci: ADMA Err:  0x00000007 | ADMA Ptr: 0x40881200
->> [  156.230450] mmc0: sdhci-esdhc-imx: ========= ESDHC IMX DEBUG STATUS DUMP =========
->> [  156.238024] mmc0: sdhci-esdhc-imx: cmd debug status:  0x3100
->> [  156.243687] mmc0: sdhci-esdhc-imx: data debug status:  0x3200
->> [  156.249438] mmc0: sdhci-esdhc-imx: trans debug status:  0x3300
->> [  156.255276] mmc0: sdhci-esdhc-imx: dma debug status:  0x3400
->> [  156.260938] mmc0: sdhci-esdhc-imx: adma debug status:  0x35b4
->> [  156.266690] mmc0: sdhci-esdhc-imx: fifo debug status:  0x3610
->> [  156.272439] mmc0: sdhci-esdhc-imx: async fifo debug status:  0x3751
->> [  156.278710] mmc0: sdhci: ============================================
->> [  156.287352] wilc1000_sdio mmc0:0001:1: wilc_sdio_cmd53..failed, err(-110)
->> [  156.294177] wilc1000_sdio mmc0:0001:1: Failed cmd53 [0], bytes read...
->> ------------------------------------
-> 
-> since you are also using the WILC1000 device, I wanted to ask if you have ever seen such behavior?
-> As Kirill wrote, with newer kernel versions it only occurs with longer transfers.
-
-I remember having seen a few time the described behavior (speed dropping to 0,
-then resuming normally during iperf sessions) but not the associated logs. Maybe
-my kernel configuration is different enough from Kirill's one, especially
-regarding the tick configuration. Can I have the corresponding defconfig ?
-
-For the second part of the logs (starting from "Timeout waiting for hardware
-interrupt), I have seen them, but never in "nominal" operation, only when
-unplugging the module during operation (I am working with wilc1000 sd, which is
-a kind of "hotpluggable" wilc 1000 in SD/MMC port).
-
-I am wondering if this scp transfer may make the chip reach a memory limit,
-especially since you observe the issue less frequently with newer kernel. I
-remember some patches from Microchip team mitigating issue about this on tx side
-(a08bb28f6eb6 ("wifi: wilc1000: add back-off algorithm to balance tx queue
-packets")). That's only a wild thought of course, and the face issue certainly
-needs some new fix even if it is indeed this patch reducing the issue frequency
+Resending the fixes of the latest patchset as a fixes patchset,
+these patches needs to go to the fixes tree.
 
 Thanks,
+Miri
 
-Alexis
+Ayala Beker (1):
+  wifi: iwlwifi: mvm: properly set 6 GHz channel direct probe option
+
+Benjamin Berg (1):
+  wifi: iwlwifi: mvm: remove stale STA link data during restart
+
+Emmanuel Grumbach (1):
+  wifi: iwlwifi: mvm: don't read past the mfuart notifcation
+
+Ilan Peer (1):
+  wifi: iwlwifi: mvm: Fix scan abort handling with HW rfkill
+
+Johannes Berg (1):
+  wifi: iwlwifi: mvm: handle BA session teardown in RF-kill
+
+Miri Korenblit (1):
+  wifi: iwlwifi: mvm: check n_ssids before accessing the ssids
+
+Yedidya Benshimol (1):
+  wifi: iwlwifi: mvm: Handle BIGTK cipher in kek_kck cmd
+
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c   | 13 ++++++-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 10 -----
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 39 ++++++++++++++++++-
+ .../net/wireless/intel/iwlwifi/mvm/mld-sta.c  | 13 ++++---
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 12 ++++--
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c  | 12 ++++--
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.h  |  5 +++
+ 7 files changed, 77 insertions(+), 27 deletions(-)
 
 -- 
-Alexis Lothoré, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.34.1
 
 
