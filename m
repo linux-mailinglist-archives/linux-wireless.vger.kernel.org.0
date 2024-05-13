@@ -1,96 +1,87 @@
-Return-Path: <linux-wireless+bounces-7590-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7591-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DFC68C40A5
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 14:24:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 157C08C41C9
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 15:23:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F3091C21E98
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 12:24:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6BD8B241A7
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 13:23:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 311E514F119;
-	Mon, 13 May 2024 12:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BC2C15216F;
+	Mon, 13 May 2024 13:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="D8Hm/MyC"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="LMMcKOQ3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D50414EC5E
-	for <linux-wireless@vger.kernel.org>; Mon, 13 May 2024 12:24:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948D91514E5
+	for <linux-wireless@vger.kernel.org>; Mon, 13 May 2024 13:23:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715603065; cv=none; b=uVq3WRPtArcfU4AdSLe0+qn5s8AgK8mIHamDvGdFgEszYCWJUcr/Ndb+AWngw+w9Zow3TuDd2l6bldOaJ1ecOAz6LQQ8MX6VDEfxCUPKi41SkTodWAROFd1MtBPu8xtSELVjZ1pV4td3JjaB1rMWF6eSNcdgSSVbZlKZYyzPMLU=
+	t=1715606606; cv=none; b=IeTcRGLIQFXrOFgCTnBuyYRf0sQ/5quX4rmuSBZ64d3Y3haJZz/4L3lX7pXFNgr51TJan+i4HKeiJqboXU/mHCeowf47Mq+VimV/Nbi20l8dcYJQZ4E2YAswX5/eIOd8vrOOwIO3Eq2bJthngdEf4Qfov690mUQOWL9rAxYkf2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715603065; c=relaxed/simple;
-	bh=nmEbUsWqZoLoKkGCEi5+yD7HIB+4LIhHoKsOYVUVX9Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TNzRMx3grdEPQhaU1R4UaeW0DzIKWLRLb9I8e17LC2xWGPjLHSRU24B/QldRaO0epPd+Sjoj/jI8AyhFJhMexZPrhuC4ddatTxEXXwWmnqlm5urhWdS0CX7u2MxvlU938BbErXGGPgUV6dSIKb192y3MBvPS7B4XgJnfn1UyUiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=D8Hm/MyC; arc=none smtp.client-ip=220.197.31.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=fXvZV
-	y+O0FXOwaoVLJHn7SMWSPa7OrLUhbpPfhZ4/e8=; b=D8Hm/MyCPnHJihPxUCHiI
-	P1HSTNEkpHjBo1Kl3c6zL2djILhqLO8vGi+XVR5Pf7U3CqY7Noey5cRHv1FSt5HU
-	7Dz6htONyX1b9UlIJ8BfbDgR0HGTV8EIwkl+Q16i38MalqWQeZSvCbCEZj8m6lVn
-	vrj49TR2K73YVUDXYkYoRY=
-Received: from flipped.. (unknown [159.226.94.118])
-	by gzga-smtp-mta-g2-1 (Coremail) with SMTP id _____wD3f6dEBkJm50hfEQ--.9117S2;
-	Mon, 13 May 2024 20:23:33 +0800 (CST)
-From: Sicong Huang <congei42@163.com>
-To: nbd@nbd.name,
-	ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	kvalo@kernel.org,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com
-Cc: linux-wireless@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	Sicong Huang <congei42@163.com>
-Subject: [PATCH v1] wifi: mt76: mt7615: fix null pointer dereference bug
-Date: Mon, 13 May 2024 20:23:29 +0800
-Message-Id: <20240513122329.170380-1-congei42@163.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1715606606; c=relaxed/simple;
+	bh=t1H7HAV/m+hR/GfN+DOdTuWAsHyeaN+y7Y2Agzg+V3g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hrTFGBlOuciGeTDlvovjD78hTqrNLZgGJAZRIofnbArwoQklL60K+C4qC804/h2o27whWBZHeSCZJ3aMblEJHnkuuCoo72PWDzZQA3CX6UJcn5xduBx8h3NGz7tju92hL97Wd5bZ2edEer/zwjqY1Etu3FatxiLlfYx/nQTBpRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=LMMcKOQ3; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1715606603;
+	bh=t1H7HAV/m+hR/GfN+DOdTuWAsHyeaN+y7Y2Agzg+V3g=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LMMcKOQ3nlPAVjMUrM1mld35tSehSr7BGfqtvdlQKDFpi6n4rxqWcS9xLZmVOUvJ1
+	 I7O+uXDfjLyDUrSjcsKOrPp8SbJX3S4IWdSDkOr433V0PWMwORrZizwJw5KVGv+GFI
+	 y7u2GhIZt09nZaPkZD3USVNuE9/oohZqsnrnck46YWQRSraK0uOTdqk+g7xPkY6xG6
+	 WJmVw5657EyAnvdSXi0RrO12zwDbj4sEhrWSRgr1CSBpZLz3dine/oL0O7XEpuM5Uv
+	 Zqxbou4d8phP41CaVoENSNBhfRRzqt2gXCDcczfPNXSYxgMNzxChJb7P4Mr/ILMcdj
+	 7d8D9spaLz8kA==
+Received: from [IPV6:fd00::2a:39ce] (cola.collaboradmins.com [IPv6:2a01:4f8:1c1c:5717::1])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 2CE553782017;
+	Mon, 13 May 2024 13:23:23 +0000 (UTC)
+Message-ID: <dd997ba8-3d66-422a-b5df-ff2c0e6b96d1@collabora.com>
+Date: Mon, 13 May 2024 15:23:22 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3f6dEBkJm50hfEQ--.9117S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrZryDKr1rKr17WrykJry3CFg_yoWfCwb_WF
-	WkuF1ftw18Gr1kKr42vr4xArW0k395Za48W3sIqrWSq39rJFZrGryavr9rGrZrCrn2vrW3
-	Gr1DJFyrX39IvjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUjvtCDUUUUU==
-X-CM-SenderInfo: 5frqwvrlusqiywtou0bp/xtbBFQfd8mXAlaaUfQAAsC
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] wifi: mt76: mt7615: fix null pointer dereference bug
+To: Sicong Huang <congei42@163.com>, nbd@nbd.name, ryder.lee@mediatek.com,
+ shayne.chen@mediatek.com, sean.wang@mediatek.com, kvalo@kernel.org,
+ matthias.bgg@gmail.com
+Cc: linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
+References: <20240513122329.170380-1-congei42@163.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Content-Language: en-US
+In-Reply-To: <20240513122329.170380-1-congei42@163.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Function mt7615_coredump_work will call vzalloc to allocate a large amount
-of memory space, the size of which is 1300KB. There should be a null
-pointer check after vzalloc. Otherwise, when the memory allocation fails
-and returns NULL, the function will cause a Kernel crash.
+Il 13/05/24 14:23, Sicong Huang ha scritto:
+> Function mt7615_coredump_work will call vzalloc to allocate a large amount
+> of memory space, the size of which is 1300KB. There should be a null
+> pointer check after vzalloc. Otherwise, when the memory allocation fails
 
-Signed-off-by: Sicong Huang <congei42@163.com>
----
- drivers/net/wireless/mediatek/mt76/mt7615/mac.c | 3 +++
- 1 file changed, 3 insertions(+)
+Otherwise, if the memory allocation fails ...
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index 7ba789834e8d..04eb52904520 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -2341,6 +2341,9 @@ void mt7615_coredump_work(struct work_struct *work)
- 	}
- 
- 	dump = vzalloc(MT76_CONNAC_COREDUMP_SZ);
-+	if(!dump)
-+		return;
-+
- 	data = dump;
- 
- 	while (true) {
--- 
-2.34.1
+> and returns NULL, the function will cause a Kernel crash.
+>  > Signed-off-by: Sicong Huang <congei42@163.com>
+
+Please add the relevant Fixes tag and resend.
+
+Cheers,
+Angelo
 
 
