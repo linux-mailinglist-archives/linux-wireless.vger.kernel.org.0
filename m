@@ -1,126 +1,101 @@
-Return-Path: <linux-wireless+bounces-7588-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7589-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A797A8C3EE2
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 12:27:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 748638C3FCF
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 13:27:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9E931C22984
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 10:27:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4E5C1C21451
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 11:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB1014A4C4;
-	Mon, 13 May 2024 10:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB4B14C590;
+	Mon, 13 May 2024 11:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OdgnKe6T"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="tr0jJKID"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E58B14A0A6
-	for <linux-wireless@vger.kernel.org>; Mon, 13 May 2024 10:27:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BAA514C58E
+	for <linux-wireless@vger.kernel.org>; Mon, 13 May 2024 11:27:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.248
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715596052; cv=none; b=qRCTB0S9c4CJ4Rpmg9Fyt0irToZM8PSa6EVgwFZjxbXa/1RJKTy6K/xVaSiLRllynVtD12hvY4yKqCsL1kexhI14XkwJKa1GMnoGWVKzeQVI4j9i777LwywlScel2EsV0kCb8riQJYglS4fJ67eZBVxHbA6a0o76pvsdVymnAjQ=
+	t=1715599666; cv=none; b=iZIqJW82qc05UQPmYRNDX4khc5cuyosWyEbUJpaultjZptD9xIQpoZyvv1Ph2wWn3WC+nOPQZlbKtjeVs+QfcTj83ZKeMI2ZHGCintqipsRqhGw5bDs1lTpFfgn5j4HCtLp0hDROM4dathurYNTVVM5ZSTRoirYNsXjOwMg5KmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715596052; c=relaxed/simple;
-	bh=u6kcOh1bm9cWMobY6O4a/TWDMNd/isGc9OGoEF17NaQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cwScQPZVTYuaGuiAG5z4tJ0NGW69RzUr2Tr6pbV2YUbAzjvpA2/hJZBW1wVvXV8E92NyCTx8qGszY/iRPFL7C6/vM6IMBJzZVE3BeO1QqUPvabl+7dQ3Fks0xtizSaaurqjv2v3dgpNo1ka0pgeXDB01xk7OfjAsBe5y2L5AqEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OdgnKe6T; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715596052; x=1747132052;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=u6kcOh1bm9cWMobY6O4a/TWDMNd/isGc9OGoEF17NaQ=;
-  b=OdgnKe6TuREFXkLbX2v0zb558CkAIBIQ9iyW3smYTKTnbNAKYtmwN5/Z
-   4opdk2iOdO+npb3NLwKe1FHwQRfmBoxwzSw5hslCGdBnBHlbq4xVIC5yB
-   i+G76qMMu1fnoHQ9VnVoiF/n35fYHgWjDHWhnr3//itgB9MJZkqORFRam
-   CIoFPNQHtI8hZStP6EBbgyLzbC5b7+dEGZmXaKnejCTGMIMGuwMxddL4x
-   kCfP9vogk2t7CAC1oDoSs1F9rePznojvUtT2rJZVmbhZFD0P3YFwKJqnw
-   +Dwl/BCNGQTT8kr5pkBjkVCOKYTfDqgEzMMJ+rXuAKLV/gdiEEcelZnQq
-   w==;
-X-CSE-ConnectionGUID: ow6ZFIscSY6GiVPGRRThRQ==
-X-CSE-MsgGUID: 3BpVt1U5SjC/FEvltg9hug==
-X-IronPort-AV: E=McAfee;i="6600,9927,11071"; a="22928672"
-X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; 
-   d="scan'208";a="22928672"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2024 03:27:31 -0700
-X-CSE-ConnectionGUID: I+HkdxuKRbOUKNuP04wGzg==
-X-CSE-MsgGUID: wzt1AtFJQv6/SCaXL5IKXA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; 
-   d="scan'208";a="53516424"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2024 03:27:29 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 7/7] wifi: iwlwifi: mvm: don't read past the mfuart notifcation
-Date: Mon, 13 May 2024 13:27:14 +0300
-Message-Id: <20240513132416.ba82a01a559e.Ia91dd20f5e1ca1ad380b95e68aebf2794f553d9b@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240513102714.469087-1-miriam.rachel.korenblit@intel.com>
-References: <20240513102714.469087-1-miriam.rachel.korenblit@intel.com>
+	s=arc-20240116; t=1715599666; c=relaxed/simple;
+	bh=lNSjlbL5gaLvZ3AfzOsKvy+wLOnaG3uXFqnM9YBX3lU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=hIWWIU0qWtlnT/6DuuPVzUmLarRMTQeBCQGSjL/uHAoNaGiBS8DRR1IKEJFptUUFpvHKvXskWVU/3eIaNpOHlnr9YwnRvXkpoL+v4KS8VbhOvxVfqLyVPLSMHkP42YPRvVUkq9tIBihTa3CXl6Xzz15PlLb0iCquOMnbVvLa/Uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=tr0jJKID; arc=none smtp.client-ip=198.47.23.248
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 44DBRe1t104999;
+	Mon, 13 May 2024 06:27:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1715599660;
+	bh=2cXAMNZ7LUcMh/T60xJfG9QB3qZS2qy199RQ/bm4vTM=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=tr0jJKID5HucJmTo3f1x1sDBtiacstnqtv2iB2DO4W27d1qLrTTxIlopDinbR0Y26
+	 kP7fdWAfilL/VHAgLgvlW8YhPkOsx3/C2S+nNAbFYhtTd+VfijmcaIch3yx4zp48z4
+	 uJOIDyP7sClnZUgdVKfZ4K1icqPG0KzPj3/KOpGY=
+Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 44DBReJO120527
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 13 May 2024 06:27:40 -0500
+Received: from DFLE102.ent.ti.com (10.64.6.23) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 13
+ May 2024 06:27:40 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE102.ent.ti.com
+ (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Mon, 13 May 2024 06:27:40 -0500
+Received: from [10.250.145.232] ([10.250.145.232])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 44DBRcAr055255;
+	Mon, 13 May 2024 06:27:38 -0500
+Message-ID: <8c301a6d-a5a5-4821-82a8-5ea241b5159d@ti.com>
+Date: Mon, 13 May 2024 14:27:37 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 00/17] wifi: cc33xx: Add driver for new TI CC33xx
+ wireless device family
+To: Kalle Valo <kvalo@kernel.org>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Khan,
+ Sabeeh" <sabeeh-khan@ti.com>
+References: <20240512183247.2190242-1-michael.nemanov@ti.com>
+ <87cypqjjpw.fsf@kernel.org>
+Content-Language: en-US
+From: "Nemanov, Michael" <michael.nemanov@ti.com>
+In-Reply-To: <87cypqjjpw.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-In case the firmware sends a notification that claims it has more data
-than it has, we will read past that was allocated for the notification.
-Remove the print of the buffer, we won't see it by default. If needed,
-we can see the content with tracing.
+On 5/13/2024 9:42 AM, Kalle Valo wrote:
+[...]
+> I didn't review this yet but decided to do some build testing and it
+> doesn't even build:
+>
+> drivers/net/wireless/ti/cc33xx/debugfs.c: In function 'cc33xx_debugfs_add_files_helper':
+> drivers/net/wireless/ti/cc33xx/debugfs.h:37:37: error: 'cc' undeclared (first use in this function)
+>
+> I also see some warnings from GCC. I pushed the patches to a pending
+> branch so most likely you get reports from kbuild bot:
 
-This was reported by KFENCE.
+[...]
 
-Fixes: bdccdb854f2f ("iwlwifi: mvm: support MFUART dump in case of MFUART assert")
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 10 ----------
- 1 file changed, 10 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index e1c2b7fc92ab..c56212c2c306 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -94,20 +94,10 @@ void iwl_mvm_mfu_assert_dump_notif(struct iwl_mvm *mvm,
- {
- 	struct iwl_rx_packet *pkt = rxb_addr(rxb);
- 	struct iwl_mfu_assert_dump_notif *mfu_dump_notif = (void *)pkt->data;
--	__le32 *dump_data = mfu_dump_notif->data;
--	int n_words = le32_to_cpu(mfu_dump_notif->data_size) / sizeof(__le32);
--	int i;
- 
- 	if (mfu_dump_notif->index_num == 0)
- 		IWL_INFO(mvm, "MFUART assert id 0x%x occurred\n",
- 			 le32_to_cpu(mfu_dump_notif->assert_id));
--
--	for (i = 0; i < n_words; i++)
--		IWL_DEBUG_INFO(mvm,
--			       "MFUART assert dump, dword %u: 0x%08x\n",
--			       le16_to_cpu(mfu_dump_notif->index_num) *
--			       n_words + i,
--			       le32_to_cpu(dump_data[i]));
- }
- 
- static bool iwl_alive_fn(struct iwl_notif_wait_data *notif_wait,
--- 
-2.34.1
+Sorry, I did not test with CONFIG_CFG80211_CERTIFICATION_ONUS=y and 
+missed it. I will also make sure to build with W=1 and fix everything it 
+throws.
 
 
