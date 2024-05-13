@@ -1,70 +1,71 @@
-Return-Path: <linux-wireless+bounces-7587-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7588-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F40228C3EE1
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 12:27:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A797A8C3EE2
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 12:27:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30AF21C218C7
-	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 10:27:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9E931C22984
+	for <lists+linux-wireless@lfdr.de>; Mon, 13 May 2024 10:27:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F8714A4D1;
-	Mon, 13 May 2024 10:27:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB1014A4C4;
+	Mon, 13 May 2024 10:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UZOYI9p+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OdgnKe6T"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59E914A4C1
-	for <linux-wireless@vger.kernel.org>; Mon, 13 May 2024 10:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E58B14A0A6
+	for <linux-wireless@vger.kernel.org>; Mon, 13 May 2024 10:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715596051; cv=none; b=RdHuLZqu96M3OwItXpngaEE8PLwlzsOpstwPT0Xt7ZvX5CkLtJokfeX1GiRS7K3GNj8bNFkpNZWuAurnbR09KxpvjbH+Q4k3NgNcHoWqDI3wooNSszOTQgonm3zqnWdYrLQah/7Lt/Ub+geXGZhVVdcBoi+GxPHlOndHcM8K2x8=
+	t=1715596052; cv=none; b=qRCTB0S9c4CJ4Rpmg9Fyt0irToZM8PSa6EVgwFZjxbXa/1RJKTy6K/xVaSiLRllynVtD12hvY4yKqCsL1kexhI14XkwJKa1GMnoGWVKzeQVI4j9i777LwywlScel2EsV0kCb8riQJYglS4fJ67eZBVxHbA6a0o76pvsdVymnAjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715596051; c=relaxed/simple;
-	bh=FeymIdh95AzLVdL9RdeqDlwnsvZjtmwH9DYKFA8kNus=;
+	s=arc-20240116; t=1715596052; c=relaxed/simple;
+	bh=u6kcOh1bm9cWMobY6O4a/TWDMNd/isGc9OGoEF17NaQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=AVtooISzc3u1Os5i8YEI9GTk6wesHs5DBXABgAVq+ab58obIwT8iF25OGe1KDGptnXoHGHWfovyWkwShUT+nmakIh9b/iz3sLXGlVajHNvPb37xv4/YgffZOfqLaYWvEzBASCnKXnZjDRU+yV7VTFwGSNft3eNMArgtNwGRKVqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UZOYI9p+; arc=none smtp.client-ip=198.175.65.12
+	 MIME-Version; b=cwScQPZVTYuaGuiAG5z4tJ0NGW69RzUr2Tr6pbV2YUbAzjvpA2/hJZBW1wVvXV8E92NyCTx8qGszY/iRPFL7C6/vM6IMBJzZVE3BeO1QqUPvabl+7dQ3Fks0xtizSaaurqjv2v3dgpNo1ka0pgeXDB01xk7OfjAsBe5y2L5AqEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OdgnKe6T; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1715596050; x=1747132050;
+  t=1715596052; x=1747132052;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=FeymIdh95AzLVdL9RdeqDlwnsvZjtmwH9DYKFA8kNus=;
-  b=UZOYI9p+v92WJ3T1sQmX51oBGn66ir+SpO7uPyNahQasHSnCy/S/IXih
-   bVadRihxnaw3JyM8O3JCjdu5v/e1ciz39VO8B403t6MpU6TB9nuNNToYY
-   SnzgOcD0Rfvojg04e5wVjMEm6MV3wJAnkjJ/bbZWtq8CYb1nhRbBGaG4S
-   DRnbqctsE78Og071YKCJ4HyNptl6JxAy+WHgZZ5Yvd46PQ4Mjos3edg30
-   1hXMsiLv42uh6uaIG8ffI/jSqSYRxrs2mV9pF5YJG7B+EG9g9khMPS2QF
-   WaP7dkKZPDXZ6rkrmQUqgZ9G0SYOtnyRnpef13FYr8D4Yvp76wCLN5YDS
-   Q==;
-X-CSE-ConnectionGUID: TJsYucinTaCaBNX5bmI4GA==
-X-CSE-MsgGUID: 9WRJUTJKSuCohDi8bTeUJw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11071"; a="22928667"
+  bh=u6kcOh1bm9cWMobY6O4a/TWDMNd/isGc9OGoEF17NaQ=;
+  b=OdgnKe6TuREFXkLbX2v0zb558CkAIBIQ9iyW3smYTKTnbNAKYtmwN5/Z
+   4opdk2iOdO+npb3NLwKe1FHwQRfmBoxwzSw5hslCGdBnBHlbq4xVIC5yB
+   i+G76qMMu1fnoHQ9VnVoiF/n35fYHgWjDHWhnr3//itgB9MJZkqORFRam
+   CIoFPNQHtI8hZStP6EBbgyLzbC5b7+dEGZmXaKnejCTGMIMGuwMxddL4x
+   kCfP9vogk2t7CAC1oDoSs1F9rePznojvUtT2rJZVmbhZFD0P3YFwKJqnw
+   +Dwl/BCNGQTT8kr5pkBjkVCOKYTfDqgEzMMJ+rXuAKLV/gdiEEcelZnQq
+   w==;
+X-CSE-ConnectionGUID: ow6ZFIscSY6GiVPGRRThRQ==
+X-CSE-MsgGUID: 3BpVt1U5SjC/FEvltg9hug==
+X-IronPort-AV: E=McAfee;i="6600,9927,11071"; a="22928672"
 X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; 
-   d="scan'208";a="22928667"
+   d="scan'208";a="22928672"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2024 03:27:30 -0700
-X-CSE-ConnectionGUID: ExJ+Ww6wRaeInX5pV9j4xw==
-X-CSE-MsgGUID: J32SQDG6TQaPA7mtieyvGg==
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2024 03:27:31 -0700
+X-CSE-ConnectionGUID: I+HkdxuKRbOUKNuP04wGzg==
+X-CSE-MsgGUID: wzt1AtFJQv6/SCaXL5IKXA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,158,1712646000"; 
-   d="scan'208";a="53516419"
+   d="scan'208";a="53516424"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2024 03:27:28 -0700
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2024 03:27:29 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Ilan Peer <ilan.peer@intel.com>
-Subject: [PATCH 6/7] wifi: iwlwifi: mvm: Fix scan abort handling with HW rfkill
-Date: Mon, 13 May 2024 13:27:13 +0300
-Message-Id: <20240513132416.8cbe2f8c1a97.Iffe235c12a919dafec88eef399eb1f7bae2c5bdb@changeid>
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 7/7] wifi: iwlwifi: mvm: don't read past the mfuart notifcation
+Date: Mon, 13 May 2024 13:27:14 +0300
+Message-Id: <20240513132416.ba82a01a559e.Ia91dd20f5e1ca1ad380b95e68aebf2794f553d9b@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240513102714.469087-1-miriam.rachel.korenblit@intel.com>
 References: <20240513102714.469087-1-miriam.rachel.korenblit@intel.com>
@@ -77,44 +78,48 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-When HW rfkill is toggled to disable the RF, the flow to stop scan is
-called. When trying to send the command to abort the scan, since
-HW rfkill is toggled, the command is not sent due to rfkill being
-asserted, and -ERFKILL is returned from iwl_trans_send_cmd(), but this
-is silently ignored in iwl_mvm_send_cmd() and thus the scan abort flow
-continues to wait for scan complete notification and fails. Since it
-fails, the UID to type mapping is not cleared, and thus a warning is
-later fired when trying to stop the interface.
+In case the firmware sends a notification that claims it has more data
+than it has, we will read past that was allocated for the notification.
+Remove the print of the buffer, we won't see it by default. If needed,
+we can see the content with tracing.
 
-To fix this, modify the UMAC scan abort flow to force sending the
-scan abort command even when in rfkill, so stop the FW from accessing
-the radio etc.
+This was reported by KFENCE.
 
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Fixes: bdccdb854f2f ("iwlwifi: mvm: support MFUART dump in case of MFUART assert")
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index bed2cd81f8b5..18134e06b021 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -3249,10 +3249,11 @@ static int iwl_mvm_umac_scan_abort(struct iwl_mvm *mvm, int type)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index e1c2b7fc92ab..c56212c2c306 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -94,20 +94,10 @@ void iwl_mvm_mfu_assert_dump_notif(struct iwl_mvm *mvm,
+ {
+ 	struct iwl_rx_packet *pkt = rxb_addr(rxb);
+ 	struct iwl_mfu_assert_dump_notif *mfu_dump_notif = (void *)pkt->data;
+-	__le32 *dump_data = mfu_dump_notif->data;
+-	int n_words = le32_to_cpu(mfu_dump_notif->data_size) / sizeof(__le32);
+-	int i;
  
- 	ret = iwl_mvm_send_cmd_pdu(mvm,
- 				   WIDE_ID(IWL_ALWAYS_LONG_GROUP, SCAN_ABORT_UMAC),
--				   0, sizeof(cmd), &cmd);
-+				   CMD_SEND_IN_RFKILL, sizeof(cmd), &cmd);
- 	if (!ret)
- 		mvm->scan_uid_status[uid] = type << IWL_MVM_SCAN_STOPPING_SHIFT;
- 
-+	IWL_DEBUG_SCAN(mvm, "Scan abort: ret=%d\n", ret);
- 	return ret;
+ 	if (mfu_dump_notif->index_num == 0)
+ 		IWL_INFO(mvm, "MFUART assert id 0x%x occurred\n",
+ 			 le32_to_cpu(mfu_dump_notif->assert_id));
+-
+-	for (i = 0; i < n_words; i++)
+-		IWL_DEBUG_INFO(mvm,
+-			       "MFUART assert dump, dword %u: 0x%08x\n",
+-			       le16_to_cpu(mfu_dump_notif->index_num) *
+-			       n_words + i,
+-			       le32_to_cpu(dump_data[i]));
  }
  
+ static bool iwl_alive_fn(struct iwl_notif_wait_data *notif_wait,
 -- 
 2.34.1
 
