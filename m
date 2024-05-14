@@ -1,144 +1,109 @@
-Return-Path: <linux-wireless+bounces-7628-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7631-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23AA08C4C0E
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2024 07:50:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E6F38C4C5B
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2024 08:34:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8DE91F246FA
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2024 05:50:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F4531C20C54
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2024 06:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D6E218633;
-	Tue, 14 May 2024 05:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C6A8F9CC;
+	Tue, 14 May 2024 06:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="b098mQF6"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="OkdtwIEB"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0CB718643
-	for <linux-wireless@vger.kernel.org>; Tue, 14 May 2024 05:49:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A3FD2FA
+	for <linux-wireless@vger.kernel.org>; Tue, 14 May 2024 06:34:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715665798; cv=none; b=XWwR1/pVJxbTajsyNITYupq5/HNoAz1lYhbqx2ve1GeKyQ5rM4xQfVkr/5MnOvp5D9TKHfTZEfOAx4I5hOqAIz21SRqHuWLuCh0rmcxqd4wX4tXRcSVa6CyIuHrdkXO04TvhCX9HOb61KW9Jxjd/SaNg0PxpHoOJf/+LOvpkjKk=
+	t=1715668487; cv=none; b=KrJeH0Y96tObHV1Ovp5COv7atSVX1fXBCcpC4wHUKyqOQlu8iG+BmGUEHjHlSpMrhXTLHCAdXwgSN+hSOQSeq5D8U3RLTPPXOLHIJ2kcy1rdj8vUuudYcja7VgfYWGdZVZ9J8SuIKH5WrE2mgfi28y6iHHhpAI+C/0ga6UILFyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715665798; c=relaxed/simple;
-	bh=N7yQDXUwAdMII/0o6Jb7o7sMy9XOiB5X0F3FoWxeWrE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mYyfmQ/MSC++t91Ok48n0fy1pa5zJCjOO1p5c8GLJAsEjgyxXJAkCTVTXo7rdT50KLhc8+pzPf77owTKY9cU7dEXU7fgEsMU+UWxnbWqDRghv+dKb2vaWWSVh08klwcdjFGy0pFDsRm/z4kqtZS8evMqCF69TQtJVej8mi5bQFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=b098mQF6; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-6f489e64eb3so3665667b3a.1
-        for <linux-wireless@vger.kernel.org>; Mon, 13 May 2024 22:49:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1715665796; x=1716270596; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rk/9cCSuKPAzQ7d7k8DYOmgE1U27tp+avu7N/6VE0BI=;
-        b=b098mQF6X9bHmfJOj2UMxXvYNCOYEBZ7lxcJloMkNOepgQOJE/fvCx5/jMqxkaF/Ye
-         t9mmXKtCU4cLwUTnndJ/bvhsoq7dFNVbVqXewwDusQpQ0JVEqVdHc2GDUK5HWCc17s7O
-         0adQnUHRagfAp3L4ShnKjCCiuHsOJpZZUhSDY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715665796; x=1716270596;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rk/9cCSuKPAzQ7d7k8DYOmgE1U27tp+avu7N/6VE0BI=;
-        b=Ux7dOmzXQt4uV/+36hbotSM8JbqLdX6OHg5fVDLWrt85wrLR0HLUKGI5QojkfzCMs9
-         +W3Jm+8RVhEZts9Reiym6/KqSBMJRRfC34cFF9z/mvTO5YHmlp2va9qOFvLKSODoqyB+
-         X3lK8RMKy7khwX/nZiR12ofxNTeLRVGo8P6QVqS1xVgIU6VRUdgkprrnPDueGs/h9JgY
-         WfgnT9trOY4opjKeyxkti/X/toWhd1SIEjvWWbk3+jOgPw5bmInu+KzndW9U1kWMlpOh
-         2Ha+MOZ+6oWQ3r8SicvdEUywKxn8ndSFqwa8g0YoAGatzi9hg2E9k6yzLygAHyPaJ5Ja
-         HxVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVklwTvc/3qfIaJfP1Pfwi3FJUPo5ASj80ro8/wv7NKlRDFxE/cpY3kh26dnLkhr0/1SL1Wy1oONrRQMz0JWih+gWBGJjnapDH2BsyV1rY=
-X-Gm-Message-State: AOJu0YzRLdSHyoYBjH6gWKYIcq5z+ecM9wWALu1NpXZjQvQsxb5C4nqJ
-	Z4viSGlXvXtuYZIgh1j7m297YZhpDZeOPUcXcmKg5+U9nyuiBXQYsQv5uwK4jg==
-X-Google-Smtp-Source: AGHT+IEPTKz5GyCkr08NrFCu81IdrD63NGlNxv736d9HhFlB58SSNTeMeE90nf4HCldQN4VyiI9ANQ==
-X-Received: by 2002:a05:6a00:2d8e:b0:6e6:946b:a983 with SMTP id d2e1a72fcca58-6f4e02ac8e1mr13440522b3a.10.1715665796214;
-        Mon, 13 May 2024 22:49:56 -0700 (PDT)
-Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-6f4d2ae0f7fsm8289079b3a.120.2024.05.13.22.49.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 May 2024 22:49:55 -0700 (PDT)
-Date: Mon, 13 May 2024 22:49:54 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Sam James <sam@gentoo.org>
-Cc: chunkeey@gmail.com, chunkeey@googlemail.com, davem@davemloft.net,
-	edumazet@google.com, helmut.schaa@googlemail.com,
-	johannes@sipsolutions.net, kernel@quicinc.com, kuba@kernel.org,
-	kvalo@kernel.org, linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-	pabeni@redhat.com, pkshih@realtek.com, quic_jjohnson@quicinc.com,
-	stf_xl@wp.pl, toke@toke.dk
-Subject: Re: [PATCH v2 2/2] mac80211: Use flexible array in struct
- ieee80211_tim_ie
-Message-ID: <202405132245.017023A@keescook>
-References: <202308301529.AC90A9EF98@keescook>
- <87jzjxgfnt.fsf@gentoo.org>
+	s=arc-20240116; t=1715668487; c=relaxed/simple;
+	bh=HLnxb2+sTfYRApc2m9zJvRT2VYUJbhzl9w3AqwLBg+o=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lJUYzEcfeRkvmvJOSP7/cqrXRQDiU7c+0r38mZWrKHy9ERijpkuwu/7CRp0+KTXJjO+tIMJaUeRcf8B3/SGMwzEGK9gtAceZJkeaoEz+/JclYgWVf4mdD7LDRQ9JIewzM7elwIGnO+qK79Lp03ApNJN/Cndn1mygLBpijp9Fd44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=OkdtwIEB; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44DJ8d4W028172;
+	Tue, 14 May 2024 06:34:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=6p7T2aF
+	az5WsyP8sgTfL4t1EQoKqf/w+ySFzF0roSbU=; b=OkdtwIEBkv+RF8kA09wpt00
+	gCwxsXahqXLGnWlk1owS2xOLsD2qlL1BlB+i9MPzSzi2fIa29PEZ0obRWfvSt458
+	EC2rSTTqY5Sd2kuuTANQa0Q3CFo5nNFXOuxBqKS6028NAHd4+s8ne3mGw+8+neiJ
+	Q0mNHMqv2dPOZJN/6x1WJD2B4u6nDrPuzS0fsIRwt/Wy4iIJgg1XIYviNY4yQWIu
+	/2yrAG9CITXSP3Lx5lmh8akX2FoEmDFVnGxcJibkrQWDTKNXogCLDWVe0D/ViKfz
+	B/eFIHAzy07j7MVGcaXBrRZqSTBNMZxE5+q5TYdLTD2tb9IT5NEn1JaGQaVDgAA=
+	=
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y1yp5dg74-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 May 2024 06:34:36 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44E6YZ18032275
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 May 2024 06:34:35 GMT
+Received: from hu-periyasa-blr.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Mon, 13 May 2024 23:34:33 -0700
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Karthikeyan Periyasamy
+	<quic_periyasa@quicinc.com>
+Subject: [PATCH v2 0/2] wifi: ath12k: Refactor MAX_RADIOS definition
+Date: Tue, 14 May 2024 12:04:10 +0530
+Message-ID: <20240514063412.3483723-1-quic_periyasa@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87jzjxgfnt.fsf@gentoo.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: DtBVEIhLThSeXy0nksGl7wnv27YR32y0
+X-Proofpoint-ORIG-GUID: DtBVEIhLThSeXy0nksGl7wnv27YR32y0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-14_02,2024-05-10_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 bulkscore=0 suspectscore=0 clxscore=1015
+ lowpriorityscore=0 spamscore=0 malwarescore=0 phishscore=0 adultscore=0
+ mlxlogscore=516 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405010000 definitions=main-2405140044
 
-On Tue, May 14, 2024 at 05:51:02AM +0100, Sam James wrote:
-> I think I've just hit this, unless it's been fixed since and it's just
-> similar.
-> 
-> ```
-> [  291.051876] ================================================================================
-> [  291.051892] UBSAN: array-index-out-of-bounds in /var/tmp/portage/sys-kernel/gentoo-kernel-6.6.30/work/linux-6.6/include/linux/ieee80211.h:4455:28
-> [  291.051901] index 1 is out of range for type 'u8 [1]'
-> [  291.051908] CPU: 2 PID: 627 Comm: kworker/2:3 Not tainted 6.6.30-gentoo-dist-hardened #1
-> [  291.051917] Hardware name: ASUSTeK COMPUTER INC. UX305FA/UX305FA, BIOS UX305FA.216 04/17/2019
-> [  291.051922] Workqueue: events cfg80211_wiphy_work [cfg80211]
-> [  291.052082] Call Trace:
-> [  291.052088]  <TASK>
-> [  291.052096] dump_stack_lvl (lib/dump_stack.c:107) 
-> [  291.052114] __ubsan_handle_out_of_bounds (lib/ubsan.c:218 (discriminator 1) lib/ubsan.c:348 (discriminator 1)) 
-> [  291.052130] ieee80211_rx_mgmt_beacon (include/linux/ieee80211.h:4455 net/mac80211/mlme.c:6047) mac80211
+Remove the duplicate definition and use the correct max value.
 
-This looks like it's this line in ieee80211_rx_mgmt_beacon():
+v2:
+ wifi: ath12k: use correct MAX_RADIOS
+	- Updated the detail information in the commit message
 
-            ieee80211_check_tim(elems->tim, elems->tim_len, vif_cfg->aid)) {
+Karthikeyan Periyasamy (2):
+  wifi: ath12k: remove duplicate definition of MAX_RADIOS
+  wifi: ath12k: use correct MAX_RADIOS
 
-which is:
+ drivers/net/wireless/ath/ath12k/core.h | 2 --
+ drivers/net/wireless/ath/ath12k/wmi.h  | 2 +-
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-static inline bool ieee80211_check_tim(const struct ieee80211_tim_ie *tim,
-                                       u8 tim_len, u16 aid)
-{ ...
-        return !!(tim->virtual_map[index] & mask);
-                  ^^^^^^^^^^^^^^^^^^^^^^^
-}
 
-UBSAN says it's because the array is defined as "virtual_map[1]":
-
-struct ieee80211_tim_ie {
-        u8 dtim_count;
-        u8 dtim_period;
-        u8 bitmap_ctrl;
-        /* variable size: 1 - 251 bytes */
-        u8 virtual_map[1];
-} __packed;
-
-This was fixed in
-
-	commit 2ae5c9248e06 ("wifi: mac80211: Use flexible array in struct ieee80211_tim_ie")
-
-which was part of the v6.7 release.
-
-> (It was a fun mini-adventure to get the trace usable and I should send
-> some patches to decode_stacktrace.sh, I think...)
-
-Please do! :)
-
+base-commit: 0ef7606c6012f05a1f5398e3a1964c35eb9c08a4
 -- 
-Kees Cook
+2.34.1
+
 
