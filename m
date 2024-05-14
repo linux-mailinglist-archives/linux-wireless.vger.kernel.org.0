@@ -1,235 +1,249 @@
-Return-Path: <linux-wireless+bounces-7654-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7655-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95BAF8C5917
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2024 17:52:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD7168C5A00
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2024 19:02:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5032628440F
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2024 15:52:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23D931F22737
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2024 17:02:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9A5A180A68;
-	Tue, 14 May 2024 15:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99A7E158213;
+	Tue, 14 May 2024 17:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="D4wd31aG"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="lxkakiOE"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570F617EBA9;
-	Tue, 14 May 2024 15:51:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D851A17F38D
+	for <linux-wireless@vger.kernel.org>; Tue, 14 May 2024 17:02:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715701893; cv=none; b=uGGuRYnuQt6BJkZVXSC5JhTS+N1/1y6VSaWhz7J1D8MyRMYVYJNK3R+140dCFcttaKmMdvWFd/aMUHT0reXOoTOhqRz8cEMzlYE6iihopeY58q1xWWq9uBX4QzZZBfL6SawbNrF/HKksuktkgPKKfrFKi154u6V3a8z9Mv/LMY0=
+	t=1715706156; cv=none; b=s2y5xyCHnruBvqyS984emVepdDYFoOnkOxMHaYQAWVcYmIuox6I+AZBhJ+tttmgWh7wSBZAoBYxWqpzcVBaMD5Ch3A1VVZHsZjFvOKFJD0v40pSxzwoQdNcQwgYnklG8q2XGRVdpM0YPgQH8sPi0gI0mlJFFPITuLxFfRru/S3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715701893; c=relaxed/simple;
-	bh=wgjBRltNMkgyiHUnfn56CYOWH+y55q5EPCYwOVEoFJc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=C9yovJKB1Q4odJ4EPcdWSJyRm4UXwLiemf3MOHt63ggggmA8sWN3NZMt7tnOa80hWNvpNAXrRJCEyJYaVMoQNL9h8M7px8qmWH1RglmdjE1PFD5R6IThzvbmDcHZFeNvxeAFKK4d8MRqBk3XWieKVBAHTeWeKVE0Mthz7pPiknM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=D4wd31aG; arc=none smtp.client-ip=217.70.183.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3FB811C0009;
-	Tue, 14 May 2024 15:51:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1715701889;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Eq3Rjgw28L31fvGfHlWTTsb6g3gG5Rbyf4qVPui9ZPw=;
-	b=D4wd31aGiCjZyWIF3+DC4F3X7veT54su8J22YS7wOvyv/hWS72PK/RT82D053N/V6VROPp
-	+jrAyBme0SlJhyLwsDjW2/p3l1V6UUyfplZ7FKjxHM+hBs56voGdSFFSIYlSOJjpNbqMjW
-	O9MW99a3hEImnLBV7/Mx4NENM4kNFc/IlpMwWroq8RejtHabVUT9JL3DHo2D7OtBot+y2B
-	NYLP3UmTKzAbDrRVETyDWEPsNpYoGuUBO0CSVb+0aO0K+QTPyaOo9tLJEva05vddo6d3iv
-	CCcJFStjdlmivkRAQQSVV2XHU7sqUcYCen50lSpbZe4wAyD7v5UXHUQ5pHmpKw==
-From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-Date: Tue, 14 May 2024 17:51:24 +0200
-Subject: [PATCH v2 6/6] wifi: wilc1000: read MAC address from fuse at probe
+	s=arc-20240116; t=1715706156; c=relaxed/simple;
+	bh=Z94cRtc9r8BTxQBWD0XNriKC3wuNMExi6UZ6LTmyffU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=gOcyrGSZEkVF+8VpeWh52uZWbbi+//qHDdBfZzeIpsiVJJ3BteFYO/AHidSOvSYWsfrBxS2WeCFHsMe2wq9xltHhWGZYi20jXJJ/oMful30C4i19E6TdrPfXw+TYcPq1AXNqg6QKdFOrtemLWpVCxp8Em1eu/+X7OqHq6XlYkDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=lxkakiOE; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44EH2C05013294;
+	Tue, 14 May 2024 17:02:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=WT9xjKDbFudmxXVQCTT/Z3m5wd7z5t5okcQzrzk8Yhc=; b=lx
+	kakiOEjEOKX9nAvpIAuGRNkfFXbO1tbqAGgpYjhcHxg6X/+uashQ1eux6RE+6vsL
+	Fx8PdizihbMkjm4ez+DTLVWcidXj8ddWMG7cdvoviguZuWz9dEZoq2WO3i15LzbI
+	+N+BdS+ZuNSfhSSGQAc7n6rpE56/ALM7nVB/9vsWp7SvR/meR0+aTZmWKhYT01FC
+	z73IVinAgL04q5GOY7dqKq8z5FeWDBuZ4dnwDfVSAr8dChScOVqavuLugoJJMKK0
+	YKQ0v7vvb7a0DZOUF6fSutlkJPAbiKyeE1bBX3KdSiPwPG2W2OrcLEnntFJcQd1u
+	Gk78+Xn0++rUNJLF9e3A==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y1ymq716w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 May 2024 17:02:13 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44EH2AbO007974
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 May 2024 17:02:10 GMT
+Received: from [10.110.0.4] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 14 May
+ 2024 10:02:09 -0700
+Message-ID: <27d7b0d8-5e1b-4df1-987a-159b559b85d8@quicinc.com>
+Date: Tue, 14 May 2024 10:02:09 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240514-mac_addr_at_probe-v2-6-afef09f1cd10@bootlin.com>
-References: <20240514-mac_addr_at_probe-v2-0-afef09f1cd10@bootlin.com>
-In-Reply-To: <20240514-mac_addr_at_probe-v2-0-afef09f1cd10@bootlin.com>
-To: Ajay Singh <ajay.kathat@microchip.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Kalle Valo <kvalo@kernel.org>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Heiko Thiery <Heiko.Thiery@kontron.com>, 
- Heiko Thiery <heiko.thiery@gmail.com>, 
- =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-X-Mailer: b4 0.13.0
-X-GND-Sasl: alexis.lothore@bootlin.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath12k: support average ack rssi in station dump
+Content-Language: en-US
+To: Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Sivashankari Madhavan
+	<quic_sivamadh@quicinc.com>
+References: <20240514124949.2197384-1-quic_ssreeela@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240514124949.2197384-1-quic_ssreeela@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: t1xuQZMNLysgXRKlff_VZdi0D46fBe21
+X-Proofpoint-ORIG-GUID: t1xuQZMNLysgXRKlff_VZdi0D46fBe21
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-14_10,2024-05-14_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1015
+ bulkscore=0 malwarescore=0 mlxlogscore=999 priorityscore=1501 phishscore=0
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 suspectscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405010000
+ definitions=main-2405140119
 
-From: Ajay Singh <ajay.kathat@microchip.com>
+On 5/14/2024 5:49 AM, Sowmiya Sree Elavalagan wrote:
+> From: Sivashankari Madhavan <quic_sivamadh@quicinc.com>
+> 
+> Currently, the ACK RSSI value is not shown in station dump. Enable WMI
+> resource flag for ACK RSSI in WMI INIT command to add ACK RSSI value in
+> management TX completion event from WMI. Update ACK RSSI value obtained
+> in management and data frame completion path to ieee80211_tx_info. Also
+> advertise NL80211_EXT_FEATURE_ACK_SIGNAL_SUPPORT flag during hardware
+> register to mac80211 layer so that ACK RSSI is added to station dump
+> message.
+> 
+> Example output :
+> Station 00:03:7f:12:cc:cc (on wlo1)
+>         inactive time:  600 ms
+>         rx bytes:       288106
+>         rx packets:     1446
+>         tx bytes:       41818
+>         tx packets:     342
+>         tx retries:     64
+>         tx failed:      0
+>         beacon loss:    0
+>         beacon rx:      602
+>         rx drop misc:   51
+>         signal:         0 dBm
+>         beacon signal avg:      -44 dBm
+>         tx duration:    0 us
+>         rx bitrate:     1441.1 MBit/s 80MHz HE-MCS 9 HE-NSS 3 HE-GI 0 HE-DCM 0
+>         rx duration:    0 us
+>         last ack signal:-51 dBm
+>         avg ack signal: -50 dBm
+>         authorized:     yes
+>         .......
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> 
+> Signed-off-by: Sivashankari Madhavan <quic_sivamadh@quicinc.com>
+> Signed-off-by: Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>
+> 
+> Depends-On: wifi: ath12k: fix the issue that calculation of ack signal strength
+>  https://patchwork.kernel.org/project/linux-wireless/patch/20240511030917.65811-1-quic_lingbok@quicinc.com/
 
-The default netdev interface exposed by WILC1000 is registered at probe,
-but the chip mac address is not known until ndo_open, which will load and
-start chip firmware and then retrieve stored MAC address from it. As a
-consequence, the interface has uninitialized value (00:00:00:00:00) until a
-user brings up the interface.
+Does your patch not need to consider whether or not
+WMI_TLV_SERVICE_HW_DB2DBM_CONVERSION_SUPPORT is enabled?
 
-Fix MAC address at probe by setting the following steps:
-- at probe, read MAC address directly from fuse
-- whenever a new netdevice is created, apply saved mac address (which can
-  be a user-provided address, or the eFuse Mac address if no address has
-  been passed by user)
-- whenever an interface is brought up for the first time (and so the
-  firmware is loaded and started), enforce netdevice mac address to the
-  chip (in case user has changed it)
-
-Reported-by: Heiko Thiery <heiko.thiery@gmail.com>
-Closes: https://lore.kernel.org/netdev/CAEyMn7aV-B4OEhHR4Ad0LM3sKCz1-nDqSb9uZNmRWR-hMZ=z+A@mail.gmail.com/T/
-Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
-Co-developed-by: Alexis Lothoré <alexis.lothore@bootlin.com>
-Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
-Tested-by: Heiko Thiery <heiko.thiery@gmail.com>
----
- drivers/net/wireless/microchip/wilc1000/netdev.c | 38 ++++++++++++++----------
- drivers/net/wireless/microchip/wilc1000/sdio.c   | 14 +++++++++
- drivers/net/wireless/microchip/wilc1000/spi.c    |  6 ++++
- 3 files changed, 42 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/net/wireless/microchip/wilc1000/netdev.c
-index 2ee3d9827826..4e2698528a49 100644
---- a/drivers/net/wireless/microchip/wilc1000/netdev.c
-+++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
-@@ -588,7 +588,6 @@ static int wilc_mac_open(struct net_device *ndev)
- 	struct wilc *wl = vif->wilc;
- 	int ret = 0;
- 	struct mgmt_frame_regs mgmt_regs = {};
--	u8 addr[ETH_ALEN] __aligned(2);
- 
- 	if (!wl || !wl->dev) {
- 		netdev_err(ndev, "device not ready\n");
-@@ -607,25 +606,19 @@ static int wilc_mac_open(struct net_device *ndev)
- 		return ret;
- 	}
- 
--	wilc_set_operation_mode(vif, wilc_get_vif_idx(vif), vif->iftype,
--				vif->idx);
--
--	if (is_valid_ether_addr(ndev->dev_addr)) {
--		ether_addr_copy(addr, ndev->dev_addr);
--		wilc_set_mac_address(vif, addr);
--	} else {
--		wilc_get_mac_address(vif, addr);
--		eth_hw_addr_set(ndev, addr);
--	}
- 	netdev_dbg(ndev, "Mac address: %pM\n", ndev->dev_addr);
--
--	if (!is_valid_ether_addr(ndev->dev_addr)) {
--		netdev_err(ndev, "Wrong MAC address\n");
-+	ret = wilc_set_mac_address(vif, ndev->dev_addr);
-+	if (ret) {
-+		netdev_err(ndev, "Failed to enforce MAC address in chip");
- 		wilc_deinit_host_int(ndev);
--		wilc_wlan_deinitialize(ndev);
--		return -EINVAL;
-+		if (!wl->open_ifcs)
-+			wilc_wlan_deinitialize(ndev);
-+		return ret;
- 	}
- 
-+	wilc_set_operation_mode(vif, wilc_get_vif_idx(vif), vif->iftype,
-+				vif->idx);
-+
- 	mgmt_regs.interface_stypes = vif->mgmt_reg_stypes;
- 	/* so we detect a change */
- 	vif->mgmt_reg_stypes = 0;
-@@ -941,6 +934,7 @@ struct wilc_vif *wilc_netdev_ifc_init(struct wilc *wl, const char *name,
- 				      int vif_type, enum nl80211_iftype type,
- 				      bool rtnl_locked)
- {
-+	u8 mac_address[ETH_ALEN];
- 	struct net_device *ndev;
- 	struct wilc_vif *vif;
- 	int ret;
-@@ -969,6 +963,18 @@ struct wilc_vif *wilc_netdev_ifc_init(struct wilc *wl, const char *name,
- 	vif->iftype = vif_type;
- 	vif->idx = wilc_get_available_idx(wl);
- 	vif->mac_opened = 0;
-+
-+	memcpy(mac_address, wl->nv_mac_address, ETH_ALEN);
-+	/* WILC firmware uses locally administered MAC address for the
-+	 * second virtual interface (bit 1 of first byte set), but
-+	 * since it is possibly not loaded/running yet, reproduce this behavior
-+	 * in the driver during interface creation.
-+	 */
-+	if (vif->idx)
-+		mac_address[0] |= 0x2;
-+
-+	eth_hw_addr_set(vif->ndev, mac_address);
-+
- 	mutex_lock(&wl->vif_mutex);
- 	list_add_tail_rcu(&vif->list, &wl->vif_list);
- 	wl->vif_num += 1;
-diff --git a/drivers/net/wireless/microchip/wilc1000/sdio.c b/drivers/net/wireless/microchip/wilc1000/sdio.c
-index 04d6565df2cb..e6e20c86b791 100644
---- a/drivers/net/wireless/microchip/wilc1000/sdio.c
-+++ b/drivers/net/wireless/microchip/wilc1000/sdio.c
-@@ -24,6 +24,9 @@ MODULE_DEVICE_TABLE(sdio, wilc_sdio_ids);
- 
- #define WILC_SDIO_BLOCK_SIZE 512
- 
-+static int wilc_sdio_init(struct wilc *wilc, bool resume);
-+static int wilc_sdio_deinit(struct wilc *wilc);
-+
- struct wilc_sdio {
- 	bool irq_gpio;
- 	u32 block_size;
-@@ -178,6 +181,16 @@ static int wilc_sdio_probe(struct sdio_func *func,
- 	}
- 	clk_prepare_enable(wilc->rtc_clk);
- 
-+	wilc_sdio_init(wilc, false);
-+
-+	ret = wilc_load_mac_from_nv(wilc);
-+	if (ret) {
-+		pr_err("Can not retrieve MAC address from chip\n");
-+		goto clk_disable_unprepare;
-+	}
-+
-+	wilc_sdio_deinit(wilc);
-+
- 	vif = wilc_netdev_ifc_init(wilc, "wlan%d", WILC_STATION_MODE,
- 				   NL80211_IFTYPE_STATION, false);
- 	if (IS_ERR(vif)) {
-@@ -187,6 +200,7 @@ static int wilc_sdio_probe(struct sdio_func *func,
- 
- 	dev_info(&func->dev, "Driver Initializing success\n");
- 	return 0;
-+
- clk_disable_unprepare:
- 	clk_disable_unprepare(wilc->rtc_clk);
- dispose_irq:
-diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/wireless/microchip/wilc1000/spi.c
-index add0e70a09ea..5ff940c53ad9 100644
---- a/drivers/net/wireless/microchip/wilc1000/spi.c
-+++ b/drivers/net/wireless/microchip/wilc1000/spi.c
-@@ -250,6 +250,12 @@ static int wilc_bus_probe(struct spi_device *spi)
- 	if (ret)
- 		goto power_down;
- 
-+	ret = wilc_load_mac_from_nv(wilc);
-+	if (ret) {
-+		pr_err("Can not retrieve MAC address from chip\n");
-+		goto power_down;
-+	}
-+
- 	wilc_wlan_power(wilc, false);
- 	vif = wilc_netdev_ifc_init(wilc, "wlan%d", WILC_STATION_MODE,
- 				   NL80211_IFTYPE_STATION, false);
-
--- 
-2.44.0
+> ---
+>  drivers/net/wireless/ath/ath12k/dp_tx.c |  2 ++
+>  drivers/net/wireless/ath/ath12k/mac.c   |  1 +
+>  drivers/net/wireless/ath/ath12k/wmi.c   | 15 +++++++++++----
+>  drivers/net/wireless/ath/ath12k/wmi.h   |  3 +++
+>  4 files changed, 17 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
+> index 32496015cf9a..43bdb49d08e2 100644
+> --- a/drivers/net/wireless/ath/ath12k/dp_tx.c
+> +++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
+> @@ -541,6 +541,8 @@ static void ath12k_dp_tx_status_parse(struct ath12k_base *ab,
+>  
+>  	ts->ppdu_id = le32_get_bits(desc->info1,
+>  				    HAL_WBM_COMPL_TX_INFO1_TQM_STATUS_NUMBER);
+> +	ts->ack_rssi = le32_get_bits(desc->info2,
+> +				     HAL_WBM_COMPL_TX_INFO2_ACK_FRAME_RSSI);
+>  	if (le32_to_cpu(desc->rate_stats.info0) & HAL_TX_RATE_STATS_INFO0_VALID)
+>  		ts->rate_stats = le32_to_cpu(desc->rate_stats.info0);
+>  	else
+> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+> index 96dc5c2e096f..1f4739269544 100644
+> --- a/drivers/net/wireless/ath/ath12k/mac.c
+> +++ b/drivers/net/wireless/ath/ath12k/mac.c
+> @@ -8733,6 +8733,7 @@ static int ath12k_mac_hw_register(struct ath12k_hw *ah)
+>  
+>  	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
+>  	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_STA_TX_PWR);
+> +	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_ACK_SIGNAL_SUPPORT);
+>  
+>  	wiphy->cipher_suites = cipher_suites;
+>  	wiphy->n_cipher_suites = ARRAY_SIZE(cipher_suites);
+> diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+> index 3004c7463be9..fe909d866539 100644
+> --- a/drivers/net/wireless/ath/ath12k/wmi.c
+> +++ b/drivers/net/wireless/ath/ath12k/wmi.c
+> @@ -3468,7 +3468,8 @@ ath12k_wmi_copy_resource_config(struct ath12k_wmi_resource_config_params *wmi_cf
+>  	wmi_cfg->max_bssid_rx_filters = cpu_to_le32(tg_cfg->max_bssid_rx_filters);
+>  	wmi_cfg->use_pdev_id = cpu_to_le32(tg_cfg->use_pdev_id);
+>  	wmi_cfg->flag1 = cpu_to_le32(tg_cfg->atf_config |
+> -				     WMI_RSRC_CFG_FLAG1_BSS_CHANNEL_INFO_64);
+> +				     WMI_RSRC_CFG_FLAG1_BSS_CHANNEL_INFO_64 |
+> +				     WMI_RSRC_CFG_FLAG1_ACK_RSSI);
+>  	wmi_cfg->peer_map_unmap_version = cpu_to_le32(tg_cfg->peer_map_unmap_version);
+>  	wmi_cfg->sched_params = cpu_to_le32(tg_cfg->sched_params);
+>  	wmi_cfg->twt_ap_pdev_count = cpu_to_le32(tg_cfg->twt_ap_pdev_count);
+> @@ -5134,7 +5135,7 @@ static int ath12k_pull_mgmt_rx_params_tlv(struct ath12k_base *ab,
+>  }
+>  
+>  static int wmi_process_mgmt_tx_comp(struct ath12k *ar, u32 desc_id,
+> -				    u32 status)
+> +				    u32 status, u32 ack_rssi)
+>  {
+>  	struct sk_buff *msdu;
+>  	struct ieee80211_tx_info *info;
+> @@ -5158,8 +5159,11 @@ static int wmi_process_mgmt_tx_comp(struct ath12k *ar, u32 desc_id,
+>  	dma_unmap_single(ar->ab->dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
+>  
+>  	info = IEEE80211_SKB_CB(msdu);
+> -	if ((!(info->flags & IEEE80211_TX_CTL_NO_ACK)) && !status)
+> +	if ((!(info->flags & IEEE80211_TX_CTL_NO_ACK)) && !status) {
+>  		info->flags |= IEEE80211_TX_STAT_ACK;
+> +		info->status.ack_signal = ack_rssi;
+> +		info->status.flags |= IEEE80211_TX_STATUS_ACK_SIGNAL_VALID;
+> +	}
+>  
+>  	ieee80211_tx_status_irqsafe(ath12k_ar_to_hw(ar), msdu);
+>  
+> @@ -5200,6 +5204,8 @@ static int ath12k_pull_mgmt_tx_compl_param_tlv(struct ath12k_base *ab,
+>  	param->pdev_id = ev->pdev_id;
+>  	param->desc_id = ev->desc_id;
+>  	param->status = ev->status;
+> +	param->ppdu_id = ev->ppdu_id;
+> +	param->ack_rssi = ev->ack_rssi;
+>  
+>  	kfree(tb);
+>  	return 0;
+> @@ -6110,7 +6116,8 @@ static void ath12k_mgmt_tx_compl_event(struct ath12k_base *ab, struct sk_buff *s
+>  	}
+>  
+>  	wmi_process_mgmt_tx_comp(ar, le32_to_cpu(tx_compl_param.desc_id),
+> -				 le32_to_cpu(tx_compl_param.status));
+> +				 le32_to_cpu(tx_compl_param.status),
+> +				 le32_to_cpu(tx_compl_param.ack_rssi));
+>  
+>  	ath12k_dbg(ab, ATH12K_DBG_MGMT,
+>  		   "mgmt tx compl ev pdev_id %d, desc_id %d, status %d",
+> diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
+> index 496866673aea..7ebd52a7ebb8 100644
+> --- a/drivers/net/wireless/ath/ath12k/wmi.h
+> +++ b/drivers/net/wireless/ath/ath12k/wmi.h
+> @@ -2410,6 +2410,7 @@ struct wmi_init_cmd {
+>  #define WMI_RSRC_CFG_HOST_SVC_FLAG_REG_CC_EXT_SUPPORT_BIT 4
+>  #define WMI_RSRC_CFG_FLAGS2_RX_PEER_METADATA_VERSION		GENMASK(5, 4)
+>  #define WMI_RSRC_CFG_FLAG1_BSS_CHANNEL_INFO_64	BIT(5)
+> +#define WMI_RSRC_CFG_FLAG1_ACK_RSSI BIT(18)
+>  
+>  struct ath12k_wmi_resource_config_params {
+>  	__le32 tlv_header;
+> @@ -4180,6 +4181,8 @@ struct wmi_mgmt_tx_compl_event {
+>  	__le32 desc_id;
+>  	__le32 status;
+>  	__le32 pdev_id;
+> +	__le32 ppdu_id;
+> +	__le32 ack_rssi;
+>  } __packed;
+>  
+>  struct wmi_scan_event {
 
 
