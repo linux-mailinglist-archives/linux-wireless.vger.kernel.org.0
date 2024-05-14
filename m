@@ -1,243 +1,118 @@
-Return-Path: <linux-wireless+bounces-7637-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7638-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66C078C5631
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2024 14:50:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 114138C569B
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2024 15:10:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CEE6AB21C2E
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2024 12:50:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A48EEB21AB0
+	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2024 13:10:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 103F347F5D;
-	Tue, 14 May 2024 12:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B30991422D6;
+	Tue, 14 May 2024 13:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="c12DlqAG"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ABow6UCU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1DD1879
-	for <linux-wireless@vger.kernel.org>; Tue, 14 May 2024 12:50:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548EA1411DB;
+	Tue, 14 May 2024 13:09:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715691019; cv=none; b=SOcGHdnmAo6W4cznKyfPYJH3QGoi0znYno1Krts+R5+Qb9jL/ka/PQFVm+1u/wbTEm7krnEj0b82PZ+jzt6ree2jqfluyCzTgV/0zKN75W5dqbdKPM9C87nL47x/VjDS4kK++33rK4NNJ4oRBJaLIKSNrm/fZhQxCc4aLqkXzNE=
+	t=1715692174; cv=none; b=TS0Pf91AeGNvQnxOj18J1+tqUG9NM0sVLvL0R3/3HtqFnsJYkfCv7G49e4H7GGFVuosNvCt7zHtwq5tRC+mwXVrksIWY/vWvFG87KO2d86fqZiOd+nkWtzMGsr8EjDFgkrBVMPLusfIbClZO911NBFR6Ukz9y0doe3XMopgstxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715691019; c=relaxed/simple;
-	bh=+tHBIIzmTCTWm0UmLugkmh7RfsXv1ibeBsIMia2zGdo=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sxHFmLGkRJO5X9z1y2Uy07lf8AhxjmhuzcnKund9OWbljlrqcxI4c69Nu5GO1eoL8QgIBNAKSSg5qUGzbHWHr4HMklNQPVosgJe3RZhFbP88kKhrojGkUDej1929kvDW2wDPUjCHOzuGW4HeR1mK4d2Hfivu3nnJlszvoVIcZm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=c12DlqAG; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44E8PXIU017496;
-	Tue, 14 May 2024 12:50:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding:content-type; s=qcppdkim1; bh=MOVpGdQ
-	8FxzcRFJ8lhvgSsrZNmMtP5un52qVGsr3Vb8=; b=c12DlqAGnClRNI/x3mgVuwb
-	Xgyr0FBfsOByOQc9wifophPhFCdc9o4oxNmnvDaKFxYYfZVJ8WsShVW+d7O3w4J6
-	zvTGkLepHyhrtod3Ggw7dx4I8/bPm86ABFxXlOq5Iyo+i8tcdj1LJ0wca5Q1Omir
-	uE4SBhFheeltUFVUYCyhkbKTxbXK+pm5k1sFyXODAUbLkykIPmfEygOjPpTvib4J
-	GoQwXHF2oVW2IZfAcsDz00iMuyb5SV8mEnvlYAFGiXaSb8AhafGOjifm3p33O+U+
-	m6gkJ3Bk7TaeivFhfNrh1GHUmVHphukDUEFlit1/CC+OJ7mZB+hCWQ8pT3J23ig=
-	=
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y20w1x8b1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 May 2024 12:50:12 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44ECoB9u024298
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 14 May 2024 12:50:11 GMT
-Received: from hu-ssreeela-blr.qualcomm.com (10.80.80.8) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Tue, 14 May 2024 05:50:09 -0700
-From: Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Sivashankari Madhavan
-	<quic_sivamadh@quicinc.com>,
-        Sowmiya Sree Elavalagan
-	<quic_ssreeela@quicinc.com>
-Subject: [PATCH] wifi: ath12k: support average ack rssi in station dump
-Date: Tue, 14 May 2024 18:19:49 +0530
-Message-ID: <20240514124949.2197384-1-quic_ssreeela@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1715692174; c=relaxed/simple;
+	bh=WQXVJuUter3IICEpN6ZuyqFUO2+Lf+4sBc8m7CrrHX4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DfP/tlyKV4rj59YLfE7zj2tnhu+MvuhHBmN8cw3B2yn5RJxPeQKt94Ps65iMDAw/nQrrKq773dMbKmTMNtcwPaMUQGdJ8Hlk192ZEuVCmb1RpbnvL2ss6zDoMFNLt1n/WnN2EHruKDJyA6wAxHoKJ8h1kWA1wYN2bEYEsYJUYSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ABow6UCU; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 00FA460002;
+	Tue, 14 May 2024 13:09:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1715692170;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8DZyeKSJbCNjlJ0OhBvh+xCLA4DX/WKG0IiWWke/Gaw=;
+	b=ABow6UCUzEaSrG6RDTBUxcVxPwxR3TBoKZBWQgHbrrBf6a3kbHe9gPb5iGw6/3gpXsrupF
+	Tj0FOKo7c5YdKngbhBP7+NpnowjMBUefBZ4zWtd5zyj9mhbvItswDc6nQWCvzfS9rje85Y
+	HJ+hXCmz6v0xkKXDxmrngU+/6kfmUw9r9fMxp5pbIRPu4lJ5urFMuXzh6jaP7mNngnTU06
+	8nvwaasRbPmqryaxUj3kJ5uvlO0VA/goUP9/bWD6+ypJgMiEhh7cD2BVfh/13sjm+7kxuQ
+	EeVt2XYbKcRzK6uKUCyJx4xUtJZKMbjqsUvmc1mnBIs/b1uwWx4ayo6VO1k/0A==
+Message-ID: <3f53441d-b8b0-448a-aaaa-fb7e64aa86c0@bootlin.com>
+Date: Tue, 14 May 2024 15:09:29 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/6] wifi: wilc1000: set net device registration as last
+ step during interface creation
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Ajay Singh <ajay.kathat@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240417-mac_addr_at_probe-v1-1-67d6c9b3bc2b@bootlin.com>
+ <171569074600.2017278.13914732662896657638.kvalo@kernel.org>
+From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <171569074600.2017278.13914732662896657638.kvalo@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: Hw5dxXIoZJdZTKzL9i3rw7XkReZgQ5Ox
-X-Proofpoint-GUID: Hw5dxXIoZJdZTKzL9i3rw7XkReZgQ5Ox
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-14_06,2024-05-14_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- mlxlogscore=999 mlxscore=0 phishscore=0 adultscore=0 suspectscore=0
- clxscore=1011 priorityscore=1501 bulkscore=0 spamscore=0
- lowpriorityscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2405010000 definitions=main-2405140091
+X-GND-Sasl: alexis.lothore@bootlin.com
 
-From: Sivashankari Madhavan <quic_sivamadh@quicinc.com>
+Hello Kalle,
 
-Currently, the ACK RSSI value is not shown in station dump. Enable WMI
-resource flag for ACK RSSI in WMI INIT command to add ACK RSSI value in
-management TX completion event from WMI. Update ACK RSSI value obtained
-in management and data frame completion path to ieee80211_tx_info. Also
-advertise NL80211_EXT_FEATURE_ACK_SIGNAL_SUPPORT flag during hardware
-register to mac80211 layer so that ACK RSSI is added to station dump
-message.
+On 5/14/24 14:45, Kalle Valo wrote:
+> Alexis Lothoré <alexis.lothore@bootlin.com> wrote:
+> 
+>> net device registration is currently done in wilc_netdev_ifc_init but
+>> other initialization operations are still done after this registration.
+>> Since net device is assumed to be usable right after registration, it
+>> should be the very last step of initialization.
+>>
+>> Move netdev registration at the very end of wilc_netdev_ifc_init to let
+>> this function completely initialize netdevice before registering it.
+>>
+>> Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+> 
+> I see errors:
+> 
+> ERROR: modpost: "wilc_load_mac_from_nv" [drivers/net/wireless/microchip/wilc1000/wilc1000-sdio.ko] undefined!
+> ERROR: modpost: "wilc_netdev_ifc_init" [drivers/net/wireless/microchip/wilc1000/wilc1000-sdio.ko] undefined!
+> ERROR: modpost: "wilc_load_mac_from_nv" [drivers/net/wireless/microchip/wilc1000/wilc1000-spi.ko] undefined!
+> ERROR: modpost: "wilc_netdev_ifc_init" [drivers/net/wireless/microchip/wilc1000/wilc1000-spi.ko] undefined!
+> make[2]: *** [scripts/Makefile.modpost:145: Module.symvers] Error 1
+> make[1]: *** [/home/kvalo/projects/personal/wireless-drivers/src/wireless-next/Makefile:1871: modpost] Error 2
+> make: *** [Makefile:240: __sub-make] Error 2
+> 
+> 6 patches set to Changes Requested.
+> 
+> 13633102 [1/6] wifi: wilc1000: set net device registration as last step during interface creation
+> 13633103 [2/6] wifi: wilc1000: register net device only after bus being fully initialized
+> 13633104 [3/6] wifi: wilc1000: set wilc_set_mac_address parameter as const
+> 13633105 [4/6] wifi: wilc1000: add function to read mac address from eFuse
+> 13633106 [5/6] wifi: wilc1000: make sdio deinit function really deinit the sdio card
+> 13633107 [6/6] wifi: wilc1000: read MAC address from fuse at probe
 
-Example output :
-Station 00:03:7f:12:cc:cc (on wlo1)
-        inactive time:  600 ms
-        rx bytes:       288106
-        rx packets:     1446
-        tx bytes:       41818
-        tx packets:     342
-        tx retries:     64
-        tx failed:      0
-        beacon loss:    0
-        beacon rx:      602
-        rx drop misc:   51
-        signal:         0 dBm
-        beacon signal avg:      -44 dBm
-        tx duration:    0 us
-        rx bitrate:     1441.1 MBit/s 80MHz HE-MCS 9 HE-NSS 3 HE-GI 0 HE-DCM 0
-        rx duration:    0 us
-        last ack signal:-51 dBm
-        avg ack signal: -50 dBm
-        authorized:     yes
-        .......
+Shame on me, I missed those basic errors since I worked with drivers as built-in
+instead of modules. I'll update my workflow and send a v2.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+Thanks,
 
-Signed-off-by: Sivashankari Madhavan <quic_sivamadh@quicinc.com>
-Signed-off-by: Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>
-
-Depends-On: wifi: ath12k: fix the issue that calculation of ack signal strength
- https://patchwork.kernel.org/project/linux-wireless/patch/20240511030917.65811-1-quic_lingbok@quicinc.com/
----
- drivers/net/wireless/ath/ath12k/dp_tx.c |  2 ++
- drivers/net/wireless/ath/ath12k/mac.c   |  1 +
- drivers/net/wireless/ath/ath12k/wmi.c   | 15 +++++++++++----
- drivers/net/wireless/ath/ath12k/wmi.h   |  3 +++
- 4 files changed, 17 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
-index 32496015cf9a..43bdb49d08e2 100644
---- a/drivers/net/wireless/ath/ath12k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
-@@ -541,6 +541,8 @@ static void ath12k_dp_tx_status_parse(struct ath12k_base *ab,
- 
- 	ts->ppdu_id = le32_get_bits(desc->info1,
- 				    HAL_WBM_COMPL_TX_INFO1_TQM_STATUS_NUMBER);
-+	ts->ack_rssi = le32_get_bits(desc->info2,
-+				     HAL_WBM_COMPL_TX_INFO2_ACK_FRAME_RSSI);
- 	if (le32_to_cpu(desc->rate_stats.info0) & HAL_TX_RATE_STATS_INFO0_VALID)
- 		ts->rate_stats = le32_to_cpu(desc->rate_stats.info0);
- 	else
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 96dc5c2e096f..1f4739269544 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -8733,6 +8733,7 @@ static int ath12k_mac_hw_register(struct ath12k_hw *ah)
- 
- 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
- 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_STA_TX_PWR);
-+	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_ACK_SIGNAL_SUPPORT);
- 
- 	wiphy->cipher_suites = cipher_suites;
- 	wiphy->n_cipher_suites = ARRAY_SIZE(cipher_suites);
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index 3004c7463be9..fe909d866539 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -3468,7 +3468,8 @@ ath12k_wmi_copy_resource_config(struct ath12k_wmi_resource_config_params *wmi_cf
- 	wmi_cfg->max_bssid_rx_filters = cpu_to_le32(tg_cfg->max_bssid_rx_filters);
- 	wmi_cfg->use_pdev_id = cpu_to_le32(tg_cfg->use_pdev_id);
- 	wmi_cfg->flag1 = cpu_to_le32(tg_cfg->atf_config |
--				     WMI_RSRC_CFG_FLAG1_BSS_CHANNEL_INFO_64);
-+				     WMI_RSRC_CFG_FLAG1_BSS_CHANNEL_INFO_64 |
-+				     WMI_RSRC_CFG_FLAG1_ACK_RSSI);
- 	wmi_cfg->peer_map_unmap_version = cpu_to_le32(tg_cfg->peer_map_unmap_version);
- 	wmi_cfg->sched_params = cpu_to_le32(tg_cfg->sched_params);
- 	wmi_cfg->twt_ap_pdev_count = cpu_to_le32(tg_cfg->twt_ap_pdev_count);
-@@ -5134,7 +5135,7 @@ static int ath12k_pull_mgmt_rx_params_tlv(struct ath12k_base *ab,
- }
- 
- static int wmi_process_mgmt_tx_comp(struct ath12k *ar, u32 desc_id,
--				    u32 status)
-+				    u32 status, u32 ack_rssi)
- {
- 	struct sk_buff *msdu;
- 	struct ieee80211_tx_info *info;
-@@ -5158,8 +5159,11 @@ static int wmi_process_mgmt_tx_comp(struct ath12k *ar, u32 desc_id,
- 	dma_unmap_single(ar->ab->dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
- 
- 	info = IEEE80211_SKB_CB(msdu);
--	if ((!(info->flags & IEEE80211_TX_CTL_NO_ACK)) && !status)
-+	if ((!(info->flags & IEEE80211_TX_CTL_NO_ACK)) && !status) {
- 		info->flags |= IEEE80211_TX_STAT_ACK;
-+		info->status.ack_signal = ack_rssi;
-+		info->status.flags |= IEEE80211_TX_STATUS_ACK_SIGNAL_VALID;
-+	}
- 
- 	ieee80211_tx_status_irqsafe(ath12k_ar_to_hw(ar), msdu);
- 
-@@ -5200,6 +5204,8 @@ static int ath12k_pull_mgmt_tx_compl_param_tlv(struct ath12k_base *ab,
- 	param->pdev_id = ev->pdev_id;
- 	param->desc_id = ev->desc_id;
- 	param->status = ev->status;
-+	param->ppdu_id = ev->ppdu_id;
-+	param->ack_rssi = ev->ack_rssi;
- 
- 	kfree(tb);
- 	return 0;
-@@ -6110,7 +6116,8 @@ static void ath12k_mgmt_tx_compl_event(struct ath12k_base *ab, struct sk_buff *s
- 	}
- 
- 	wmi_process_mgmt_tx_comp(ar, le32_to_cpu(tx_compl_param.desc_id),
--				 le32_to_cpu(tx_compl_param.status));
-+				 le32_to_cpu(tx_compl_param.status),
-+				 le32_to_cpu(tx_compl_param.ack_rssi));
- 
- 	ath12k_dbg(ab, ATH12K_DBG_MGMT,
- 		   "mgmt tx compl ev pdev_id %d, desc_id %d, status %d",
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
-index 496866673aea..7ebd52a7ebb8 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.h
-+++ b/drivers/net/wireless/ath/ath12k/wmi.h
-@@ -2410,6 +2410,7 @@ struct wmi_init_cmd {
- #define WMI_RSRC_CFG_HOST_SVC_FLAG_REG_CC_EXT_SUPPORT_BIT 4
- #define WMI_RSRC_CFG_FLAGS2_RX_PEER_METADATA_VERSION		GENMASK(5, 4)
- #define WMI_RSRC_CFG_FLAG1_BSS_CHANNEL_INFO_64	BIT(5)
-+#define WMI_RSRC_CFG_FLAG1_ACK_RSSI BIT(18)
- 
- struct ath12k_wmi_resource_config_params {
- 	__le32 tlv_header;
-@@ -4180,6 +4181,8 @@ struct wmi_mgmt_tx_compl_event {
- 	__le32 desc_id;
- 	__le32 status;
- 	__le32 pdev_id;
-+	__le32 ppdu_id;
-+	__le32 ack_rssi;
- } __packed;
- 
- struct wmi_scan_event {
+Alexis
 -- 
-2.34.1
+Alexis Lothoré, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
