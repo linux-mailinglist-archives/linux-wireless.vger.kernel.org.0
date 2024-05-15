@@ -1,115 +1,108 @@
-Return-Path: <linux-wireless+bounces-7677-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7678-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E11AC8C61E1
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 May 2024 09:40:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B29B58C61F6
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 May 2024 09:44:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 926D41F21A1A
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 May 2024 07:40:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E10F31C20E6D
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 May 2024 07:44:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FC4F446A9;
-	Wed, 15 May 2024 07:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D2C4CB5B;
+	Wed, 15 May 2024 07:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="zv407TC0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sOe8MBb0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD7B41C84;
-	Wed, 15 May 2024 07:40:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4122D4CB23;
+	Wed, 15 May 2024 07:44:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715758852; cv=none; b=ioXpm2CaEP7CMz5uSMTsfWLR0GeA/om7K/2ig3Yb0of/WKmihVKRbnrNabUpWrqSKRS/+W2PcLIyPCq1xiUvfP+P2/nRIj0shDh26A46xPpNpmcV03N/TctFMmupMIZ0H5lnbYNmlo1jKR0EeItVf6p5P21WvgVxfcJ6i7C11aw=
+	t=1715759076; cv=none; b=uhOqbkFu3Xoi5IhsV/7NWXNZ3w9Ev26eBGRGhgKzDtQlW7dUfVLUipbW7/vmCMhR9TWCRVwrbJZP6Rix7PN5i7uVtzhj9OmItcKJQwo9VmQnDGm4YRFqxlqx4dV/Oj2I8TDOo/yu6KeNg7TPwgNHIdkczSVCrxM61zVW/Tp8dFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715758852; c=relaxed/simple;
-	bh=tm9iZ5Vsk/yIko8E+mwizjkCNZhxhwBScDzHvZpwOPE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ujjrOyXbRx0sIts7GEgzq9AWPaoqMORGnVcG4SsJ49QGyE6Ym7Eem90cM/dXhNCBkshzv6v2rrrIKMKPtNDiqpCnAvicm+d8+WxwX0K3+rNDNdes4BTgt3a1byE6uxOixdNFewFA/FteFiq9kWz08ILmKUYvRPQu8kNJhSBu3Kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=zv407TC0; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=aGfHdT97q06/TBHLdt84bAk2QjFXy+qL8wCDQ3NgfeQ=;
-	t=1715758850; x=1716190850; b=zv407TC0WXz9WWrZX7H/CfF4T5FsumdLLIpWt0962j+FVKW
-	d0uqc2IWsD4AKZqcj2joRAa2uJilOYYv8Fa0I2YSV6HcaDSbM7MHgEA+ibBKT+rcWidxMLivpSC60
-	d9bCuvY5E6206qKvxY1VvWC8BlAV1vwanVEDiVdE5U41T36r2jbVj5w4n4WzptJx8ms/8x3ddCTxO
-	GQAIlVBIoHdge/sZ/c418+7+n9YVYrqw7Vo1kV53dSWnZQtRTVVrgMHaZLU56Itz/wQzcSWaJEnmR
-	sKo5vVpXH14+4fJ64u6anoF5R0/rfg30dqGPJtIA5vM51BTAKGdHahCsVrEg/Ldw==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1s79Fh-00045X-MQ; Wed, 15 May 2024 09:40:41 +0200
-Message-ID: <a603a67b-6703-4f63-93ee-98a05c605d02@leemhuis.info>
-Date: Wed, 15 May 2024 09:40:40 +0200
+	s=arc-20240116; t=1715759076; c=relaxed/simple;
+	bh=bvTKlTmj4iTQSjVMzLXaiH2Pp4nfPaIIc8afPGUhn9g=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=MqhM2lK+69Frg6rDY/fDJ35M6RpFidoMtXphLXqxR3OC5YKm7KVGNf9Orx71ulRig80ZdG295m+X2ESa97Ng6I/VrY4J52DTjh1ovpbECMj0cqhdEC1ZDYWC6a1fRxr5/TvbWO3mFcZrXmmOw4SJ7roSyIbT5qUyXr2nX8SryZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sOe8MBb0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F155C116B1;
+	Wed, 15 May 2024 07:44:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715759075;
+	bh=bvTKlTmj4iTQSjVMzLXaiH2Pp4nfPaIIc8afPGUhn9g=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=sOe8MBb0GMi8B6RNArHYHnn2wmfj8iW153/Op1yqauk4dwL3qiShXk37OjJymaY2B
+	 WmrRoXZup873BV0nAf7ZQ/H7SDXcuzuKT0Z3AshBZi3VRcxGRMQyG225K1gySZ8/QA
+	 VTcs2IYcK6Wu+mFudlUkszb852+Ws3TcaZxeQg+d02OVf9cI6H/6gaxiVdL1S01iTC
+	 qfT9+OiXmn6MJWgLekN4pSs/QoyO593MpHoINMWfTx6KbMUfbLAN5Y+xtWDrFm5buq
+	 IYd7O33mYQHVb2pfhi0/uTIgqRRlvgz6PmN4LcYSbyPQptHEr8plLSmk/c6P8QuxF8
+	 Gm8GpBFV3DP8A==
+From: Kalle Valo <kvalo@kernel.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Oleksandr Natalenko <oleksandr@natalenko.name>,
+  linux-kernel@vger.kernel.org,  linux-wireless@vger.kernel.org,  "Linux
+ regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.info>,
+  linux-mediatek@lists.infradead.org,
+  linux-arm-kernel@lists.infradead.org,  Felix Fietkau <nbd@nbd.name>,
+  Lorenzo Bianconi <lorenzo@kernel.org>,  Ryder Lee
+ <ryder.lee@mediatek.com>,  Shayne Chen <shayne.chen@mediatek.com>,  Sean
+ Wang <sean.wang@mediatek.com>,  Matthias Brugger <matthias.bgg@gmail.com>,
+  AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+  Peter Chiu <chui-hao.chiu@mediatek.com>,  StanleyYP Wang
+ <StanleyYP.Wang@mediatek.com>,  Linux regressions mailing list
+ <regressions@lists.linux.dev>
+Subject: Re: [REGRESSION] MT7915E doesn't work any more with v6.9
+References: <6061263.lOV4Wx5bFT@natalenko.name>
+	<2341660.ElGaqSPkdT@natalenko.name>
+	<60fe8df750a74331b8a54a76d55d5e8349ac46b4.camel@sipsolutions.net>
+Date: Wed, 15 May 2024 10:44:30 +0300
+In-Reply-To: <60fe8df750a74331b8a54a76d55d5e8349ac46b4.camel@sipsolutions.net>
+	(Johannes Berg's message of "Wed, 15 May 2024 08:23:35 +0200")
+Message-ID: <87zfsrcye9.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] MT7915E doesn't work any more with v6.9
-To: Oleksandr Natalenko <oleksandr@natalenko.name>,
- linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
- Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
- Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>,
- Sean Wang <sean.wang@mediatek.com>, Kalle Valo <kvalo@kernel.org>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Peter Chiu <chui-hao.chiu@mediatek.com>,
- StanleyYP Wang <StanleyYP.Wang@mediatek.com>,
- Linux regressions mailing list <regressions@lists.linux.dev>
-References: <6061263.lOV4Wx5bFT@natalenko.name>
- <2341660.ElGaqSPkdT@natalenko.name>
- <60fe8df750a74331b8a54a76d55d5e8349ac46b4.camel@sipsolutions.net>
- <2200096.irdbgypaU6@natalenko.name>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <2200096.irdbgypaU6@natalenko.name>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1715758850;64bb5be7;
-X-HE-SMSGID: 1s79Fh-00045X-MQ
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 15.05.24 09:15, Oleksandr Natalenko wrote:
-> On středa 15. května 2024 8:23:35, SELČ Johannes Berg wrote:
->> On Wed, 2024-05-15 at 00:51 +0200, Oleksandr Natalenko wrote:
->>> Also /cc Johannes because of this commit:
->>>
->>> 6092077ad09ce wifi: mac80211: introduce 'channel request'
->>>
->>> On středa 15. května 2024 0:43:40, SELČ Oleksandr Natalenko wrote:
->>>> Hello Felix, Lorenzo et al.
->>>>
->>>> With v6.9 kernel the following card:
->>>>
->>>> 01:00.0 Unclassified device [0002]: MEDIATEK Corp. MT7915E 802.11ax PCI Express Wireless Network Adapter [14c3:7915]
->>>> doesn't work any more. Upon mt7915e module insertion the following splat happens:
->>
->> 6.9 didn't get commit 2f7cf3b61d85 ("wifi: mt76: mt7915: add missing
->> chanctx ops")? Huh?
+Johannes Berg <johannes@sipsolutions.net> writes:
 
-FWIW, seems there was and earlier report about this that I missed:
-https://lore.kernel.org/all/CAAMvbhGHe4PM5M=JJZRQ2m5_aVZ=4DPG76MT+q5qi3HA+7_wzQ@mail.gmail.com/
+> On Wed, 2024-05-15 at 00:51 +0200, Oleksandr Natalenko wrote:
+>> Also /cc Johannes because of this commit:
+>>=20
+>> 6092077ad09ce wifi: mac80211: introduce 'channel request'
+>>=20
+>> On st=C5=99eda 15. kv=C4=9Btna 2024 0:43:40, SEL=C4=8C Oleksandr Natalen=
+ko wrote:
+>> > Hello Felix, Lorenzo et al.
+>> >=20
+>> > With v6.9 kernel the following card:
+>> >=20
+>> > 01:00.0 Unclassified device [0002]: MEDIATEK Corp. MT7915E 802.11ax PC=
+I Express Wireless Network Adapter [14c3:7915]
+>> >=20
+>> > doesn't work any more. Upon mt7915e module insertion the following spl=
+at happens:
+>> >=20
+>
+> 6.9 didn't get commit 2f7cf3b61d85 ("wifi: mt76: mt7915: add missing
+> chanctx ops")? Huh?
 
-> Yes, you are right, this commit is not present in v6.9, and I can find it in the "next" branch only.
-> 
-> I can also confirm this commit fixes the regression for me.
+Ah, it will be only in v6.10-rc1. Oleksandr, can you try this commit:
 
-So all we need to resolve this is to ask Greg to pick up the patch for
-the next 6.9.y. release? Then I'll take care of that in a few hours,
-unless somebody else does it first or I get some kind of "might be a bad
-idea for now" signal from anyone.
+https://git.kernel.org/linus/2f7cf3b61d85
 
-Ciao, Thorsten
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
 
