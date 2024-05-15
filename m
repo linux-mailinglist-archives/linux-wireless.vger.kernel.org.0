@@ -1,57 +1,57 @@
-Return-Path: <linux-wireless+bounces-7674-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7672-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C1B78C61DC
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 May 2024 09:39:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06AC08C61DA
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 May 2024 09:39:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D1611C20DF3
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 May 2024 07:39:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0C10B22AB6
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 May 2024 07:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF5B4CB55;
-	Wed, 15 May 2024 07:39:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25FA3487A5;
+	Wed, 15 May 2024 07:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="qqF5BFkr"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="FyhkqvhR"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE26C47F6B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D4B47F65
 	for <linux-wireless@vger.kernel.org>; Wed, 15 May 2024 07:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715758750; cv=none; b=aJ+0/PYjGx01aZvLkZt4EFn0SqcKNm8fmHq2zzAcTRH9wWJoNQRIEZr7HQq8f6WxbCpy6ASn/I57jsGzwqukhO1aJq8Xn0UA4pgoXQz1jSm5XD4jG/VzC3v+TtZvrSPjyHwIQG5FZmTMwfpiep6P0cSDuFhdI3NQfOm8H8ffJCE=
+	t=1715758749; cv=none; b=MGZ8y1OABExIppQOvtr3buqxMCkz6ir3g5TVgOrW3Yq4WXjSHAyDOqBX/UXUE83/5/+9Eve9P1ilYZjkdLJJ75CxjMBvdsrDvpYvXmuq3UlJMgrWoLY7f1teW3epmmWErVAAUPIjkWUqNa6qR460Fb3f1fkaK7AUwEJl8QiIfQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715758750; c=relaxed/simple;
-	bh=/vYzJ8uW0U8WGjO8T6DSaItwayf/3m+8W5gVtxez3Ts=;
+	s=arc-20240116; t=1715758749; c=relaxed/simple;
+	bh=SM8ELfmV9u2nQkNMOr5fKc1VuePA5bLJ4/WwZ1WJiQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ibEWnebpCXyt1LYkf7xRuAHwXN6S8lfcWAVVRS+CGzP9F37BzMOJ+35DaFvaTpTRuQUsa3eFEBO+TSqY87JgojDVNoC7H+MIPDhh9cH+5/9fOz9Gmjt5KPUJ7vhfLJdnOxhB+NP80+L/xMxtp40xE3mLiWjN60a2rKlUZ0WgEm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=qqF5BFkr; arc=none smtp.client-ip=168.119.38.16
+	 MIME-Version; b=UymRjY3PqgnXBcCm/mjaArYCT0Foim+9FS7AUv1t75ptzW4/2BA/m/md8Wj7UZ4VuUKLVSTwBzlh96hBgdlvcOv0ki87XyQqgIGQpnnFXqneQMprqPN9KxLz5038SxVgGbO3xNr4ODsq079FFKKNDWSbyRse5vVYPby7Bgf9hwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=FyhkqvhR; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=d2nDvE9Q1rLmr+4YaSee4dJNpj6KauiaAeURSi6HZjs=;
-	t=1715758747; x=1716968347; b=qqF5BFkr+abvQizBBHj61cf7bNxWFmuWOVOEuMUt3feCpUO
-	Sf/VS+H1XG1+zU+WYR5fKumK3Uc3qA2EN7fDO0f6obkz6FgfJooK17yov4IIMS5hU7Unzms3yO+qN
-	0Q+FaNPiIzUtzD81m2Gw1gwAmpT7Jw/DC62hXolCVXG53iWQMTAYdMkmitTer9UFekmLCebqoPVg+
-	K1WbI9/Xm2j2jtJWyZHWlRY50tstAehnmV5xEmM2Qzbe6AujkqwkgfjhWiqYSe4coEukZpbUzDOQl
-	gyx+JA5GEUQauo2o0DehY/TQj7aIKgme4sRl98lRdQR3HHnqSwz70TwfvFzVY4aQ==;
+	Resent-Cc:Resent-Message-ID; bh=PYQ2vBrL0Etnw1spfHKb3QrP/OeXH0iSYL3MeUP3DIw=;
+	t=1715758747; x=1716968347; b=FyhkqvhR/YVOoD3zH86aOR6JjL+cvjXZ/EYqMc7XY5D7v5K
+	FqSO4hrmDdNgVr3T43A3UrPzdB3TRpCBFGKHaIeIApl7MX1DWuyw3Knj1B/fPWypIr5n+4MqDgRcK
+	DmMphoeYjTiWzxYZiKUsAqOjZT98NNNlXnWe2Y/9ShcetTGumPEpDPolTEta3gyd8bByWTXMLIJ0A
+	2IokPram9Hl2plaPIuXZiF1vpWV8HRUXYYsf0iBaZ/Fe32BD16c+AvOxKyvZ/nuDCUyfGD8RD974V
+	PNJjiSz1mqhpP9uokW3HsCIaiCwI5riPLzTcDcANoKzZIZyEuUoxj5+DAAnlB/PA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1s79E8-000000063rL-1yf4;
-	Wed, 15 May 2024 09:39:04 +0200
+	id 1s79E9-000000063rL-0I4x;
+	Wed, 15 May 2024 09:39:05 +0200
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 2/6] wifi: ieee80211: add missing doc short descriptions
-Date: Wed, 15 May 2024 09:38:36 +0200
-Message-ID: <20240515093852.16f4355e918e.I940276a4fb006ada68ab1a3e6077e3229fff0f14@changeid>
+Subject: [PATCH 3/6] wifi: radiotap: document ieee80211_get_radiotap_len() return value
+Date: Wed, 15 May 2024 09:38:37 +0200
+Message-ID: <20240515093852.143aadfdb094.I8795ec1e8cfd7106d58325fb514bae92625fb45c@changeid>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240515073852.11273-8-johannes@sipsolutions.net>
 References: <20240515073852.11273-8-johannes@sipsolutions.net>
@@ -65,55 +65,26 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-Some structures erroneously don't have a short description,
-add the missing descriptions.
+Document the return value of ieee80211_get_radiotap_len() in
+the proper kernel-doc format.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- include/linux/ieee80211.h | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ include/net/ieee80211_radiotap.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index de2dce743ee2..713266ce48a7 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -1101,7 +1101,7 @@ enum ieee80211_vht_opmode_bits {
- };
- 
+diff --git a/include/net/ieee80211_radiotap.h b/include/net/ieee80211_radiotap.h
+index 925bac726a92..91762faecc13 100644
+--- a/include/net/ieee80211_radiotap.h
++++ b/include/net/ieee80211_radiotap.h
+@@ -582,6 +582,7 @@ enum ieee80211_radiotap_eht_usig_tb {
  /**
-- * enum ieee80211_s1g_chanwidth
-+ * enum ieee80211_s1g_chanwidth - S1G channel widths
-  * These are defined in IEEE802.11-2016ah Table 10-20
-  * as BSS Channel Width
-  *
-@@ -4145,7 +4145,7 @@ enum ieee80211_idle_options {
- };
- 
- /**
-- * struct ieee80211_bss_max_idle_period_ie
-+ * struct ieee80211_bss_max_idle_period_ie - BSS max idle period element struct
-  *
-  * This structure refers to "BSS Max idle period element"
-  *
-@@ -4180,7 +4180,7 @@ enum ieee80211_sa_query_action {
- };
- 
- /**
-- * struct ieee80211_bssid_index
-+ * struct ieee80211_bssid_index - multiple BSSID index element structure
-  *
-  * This structure refers to "Multiple BSSID-index element"
-  *
-@@ -4195,7 +4195,8 @@ struct ieee80211_bssid_index {
- };
- 
- /**
-- * struct ieee80211_multiple_bssid_configuration
-+ * struct ieee80211_multiple_bssid_configuration - multiple BSSID configuration
-+ *	element structure
-  *
-  * This structure refers to "Multiple BSSID Configuration element"
-  *
+  * ieee80211_get_radiotap_len - get radiotap header length
+  * @data: pointer to the header
++ * Return: the radiotap header length
+  */
+ static inline u16 ieee80211_get_radiotap_len(const char *data)
+ {
 -- 
 2.45.0
 
