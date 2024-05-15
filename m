@@ -1,181 +1,156 @@
-Return-Path: <linux-wireless+bounces-7659-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7660-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E6798C5DDE
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 May 2024 00:51:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 413AE8C5F03
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 May 2024 03:52:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FF91282A7E
-	for <lists+linux-wireless@lfdr.de>; Tue, 14 May 2024 22:51:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB5AE281CA6
+	for <lists+linux-wireless@lfdr.de>; Wed, 15 May 2024 01:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8541181D08;
-	Tue, 14 May 2024 22:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B82E18635;
+	Wed, 15 May 2024 01:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=natalenko.name header.i=@natalenko.name header.b="VG/cQyQn"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="J7nUaJL1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from prime.voidband.net (prime.voidband.net [199.247.17.104])
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4F11DDEE;
-	Tue, 14 May 2024 22:51:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.247.17.104
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C29182DA
+	for <linux-wireless@vger.kernel.org>; Wed, 15 May 2024 01:52:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715727112; cv=none; b=jSIM83B+TxB9pNOkSgrEpVzoeIOELXs+Ip9RVkGcXST+943ngo9NS6EOhsPOWx5V651JOnE2R+6kP4OLRB46bIcgX5RFLXxnuA1HK+L3uD/3oBcuU/FYXUqKYFs/fvAzGzda/qbWAQ11UhU711/SEEh5hrywYGp/2cwf5kxv2Ss=
+	t=1715737925; cv=none; b=iiPWqwl+w3G7UIfmP3ZZDTzenyuNVovXl8ODMQ5FZeFKvqV7cVkUTyhuq+5sO7I/RbDBnu0pUjzTKF6HEZrN731U6XdHs/v3ttYtLvu3NiaTwwk5/A1ejTOta7BTNAcoGtEXBb6hwzaJu/pJ9N1nBAqGNlQsjlCBQ29b2vS6+xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715727112; c=relaxed/simple;
-	bh=uRxlDnelWdvGg7i9x9hTB/zJNxGNpEoVorUMP1xDlGY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bXXN8SZ6BscD8zSy1MOTH/Z/BpbOBdKXt0oIwz9zc+ApiQdk7rQh5brtBdP5G20mHfSmyKGnfTQgxyoU8kWOmoY01D4p0oXDXme/V+U7vgKcWEMejWt9yAqzLhUKIcND6jBFFtn95Vq70D1dllSPTbezv/96HahB6JhCsYwX3D4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=natalenko.name; spf=pass smtp.mailfrom=natalenko.name; dkim=pass (1024-bit key) header.d=natalenko.name header.i=@natalenko.name header.b=VG/cQyQn; arc=none smtp.client-ip=199.247.17.104
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=natalenko.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=natalenko.name
-Received: from spock.localnet (unknown [94.142.239.106])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by prime.voidband.net (Postfix) with ESMTPSA id 2A87A6356CD1;
-	Wed, 15 May 2024 00:51:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
-	s=dkim-20170712; t=1715727109;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=M/yx0LBa6BWxJcFbM41dPpkzsmx1uZjRYOaKe6bmwRA=;
-	b=VG/cQyQnDLqz4Fw5M0R4xhc1in07k4Ww03a7FezDAlyes8JWwfW5sBdVy8dvEoTncQ6VeG
-	p+BiQ+Cqvw4BQpgs0wDisTtmgrqbn+eu8S1OBM/qx7xYn3cQMIYZm15hfuCh9buSUMtAtR
-	Bsn2gGRXMVYx/EosG8muwRDltjZR8D0=
-From: Oleksandr Natalenko <oleksandr@natalenko.name>
-To: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
- "Linux regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.info>
-Cc: linux-mediatek@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
- Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>,
- Sean Wang <sean.wang@mediatek.com>, Kalle Valo <kvalo@kernel.org>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Peter Chiu <chui-hao.chiu@mediatek.com>,
- StanleyYP Wang <StanleyYP.Wang@mediatek.com>,
- Linux regressions mailing list <regressions@lists.linux.dev>,
- Johannes Berg <johannes.berg@intel.com>
-Subject: Re: [REGRESSION] MT7915E doesn't work any more with v6.9
-Date: Wed, 15 May 2024 00:51:38 +0200
-Message-ID: <2341660.ElGaqSPkdT@natalenko.name>
-In-Reply-To: <6061263.lOV4Wx5bFT@natalenko.name>
-References: <6061263.lOV4Wx5bFT@natalenko.name>
+	s=arc-20240116; t=1715737925; c=relaxed/simple;
+	bh=C1hJMDeF1AnALarVIMssBMSPUM+VqvZu9M3X9Ln4sr4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BxmktmHrhLSxVNS/jAzXpCQDTHQ1ZjN/DMHFO5qFLrauU+Xzp0yyGYRSPDZdJtvFjhh6DpWFr816uSQ95kvaRjQwSptBJvZSjWS2eWRN+YiLGncMxvYm+TFL8W5j57RwIc2uiHnzc3chU49x8Mq2avSP+vh7lZ+V6z/bSPncWBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=J7nUaJL1; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: b74d0234125d11ef8065b7b53f7091ad-20240515
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=rbyWPwZsJd0LcGp8L2yOkHr8OYQvfB61pXQHi/tv948=;
+	b=J7nUaJL1kOPOSDUvJMs8IeGaeu1fvI9iyZmqJGs0a7gWFM653TODKiXszJy3LqHlzv2Y/11W2ac+GdaYrVI5V2Ni+g166CjOdNVt6yXWrxwnHlzYP9TbumlhiYuz5py2xLH1PYiZuwReNnANMAw5dO476KZUzXDzMiX1bqWTgq0=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.38,REQID:665825d0-e336-463f-af18-6f620359c2b7,IP:0,U
+	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-25
+X-CID-META: VersionHash:82c5f88,CLOUDID:bdbe5c87-8d4f-477b-89d2-1e3bdbef96d1,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+	RL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,
+	SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: b74d0234125d11ef8065b7b53f7091ad-20240515
+Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw02.mediatek.com
+	(envelope-from <mingyen.hsieh@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 453240668; Wed, 15 May 2024 09:51:58 +0800
+Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
+ mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Wed, 15 May 2024 09:51:57 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Wed, 15 May 2024 09:51:57 +0800
+From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>
+CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
+	<Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
+	<Eric-SY.Chang@mediatek.com>, <km.lin@mediatek.com>,
+	<robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+	<Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
+	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
+	<linux-mediatek@lists.infradead.org>, Michael Lo <michael.lo@mediatek.com>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Subject: [PATCH] wifi: mt76: mt792x: fix scheduler interference in drv own process
+Date: Wed, 15 May 2024 09:51:55 +0800
+Message-ID: <20240515015155.24931-1-mingyen.hsieh@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart4908084.GXAFRqVoOG";
- micalg="pgp-sha256"; protocol="application/pgp-signature"
+Content-Type: text/plain
 
---nextPart4908084.GXAFRqVoOG
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
-From: Oleksandr Natalenko <oleksandr@natalenko.name>
-Subject: Re: [REGRESSION] MT7915E doesn't work any more with v6.9
-Date: Wed, 15 May 2024 00:51:38 +0200
-Message-ID: <2341660.ElGaqSPkdT@natalenko.name>
-In-Reply-To: <6061263.lOV4Wx5bFT@natalenko.name>
-References: <6061263.lOV4Wx5bFT@natalenko.name>
-MIME-Version: 1.0
+From: Michael Lo <michael.lo@mediatek.com>
 
-Also /cc Johannes because of this commit:
+Add some time to wait for LP engine to complete its operation
+before polling pmctrl register.
 
-6092077ad09ce wifi: mac80211: introduce 'channel request'
+Signed-off-by: Michael Lo <michael.lo@mediatek.com>
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/pci.c  | 3 +++
+ drivers/net/wireless/mediatek/mt76/mt7925/pci.c  | 3 +++
+ drivers/net/wireless/mediatek/mt76/mt792x.h      | 1 +
+ drivers/net/wireless/mediatek/mt76/mt792x_core.c | 6 ++++++
+ 4 files changed, 13 insertions(+)
 
-On st=C5=99eda 15. kv=C4=9Btna 2024 0:43:40, SEL=C4=8C Oleksandr Natalenko =
-wrote:
-> Hello Felix, Lorenzo et al.
->=20
-> With v6.9 kernel the following card:
->=20
-> 01:00.0 Unclassified device [0002]: MEDIATEK Corp. MT7915E 802.11ax PCI E=
-xpress Wireless Network Adapter [14c3:7915]
->=20
-> doesn't work any more. Upon mt7915e module insertion the following splat =
-happens:
->=20
-> mt7915e 0000:01:00.0: enabling device (0000 -> 0002)
-> WARNING: CPU: 3 PID: 1648 at net/mac80211/main.c:794 ieee80211_alloc_hw_n=
-m+0x9a3/0x9f0 [mac80211]
-> Call Trace:
->  <TASK>
->  mt76_alloc_device+0x24/0x290 [mt76 46e2c4f11be089903469a4d6045c71cb7842b=
-4cd]
->  mt7915_mmio_probe+0x33/0x1d0 [mt7915e 9657e1926e619568545a08636674805d5e=
-665c85]
->  mt7915_pci_probe+0xe1/0x3a0 [mt7915e 9657e1926e619568545a08636674805d5e6=
-65c85]
->  pci_device_probe+0xf0/0x2d0
->  really_probe+0xde/0x3b0
->  __driver_probe_device+0x78/0x110
->  driver_probe_device+0x1f/0x130
->  __driver_attach+0x91/0x1e0
->  bus_for_each_dev+0x105/0x160
->  bus_add_driver+0x137/0x270
->  driver_register+0x72/0xd0
->  mt7915_init+0x44/0xff0 [mt7915e 9657e1926e619568545a08636674805d5e665c85]
->  do_one_initcall+0x5b/0x310
->  do_init_module+0x60/0x220
->  init_module_from_file+0x89/0xe0
->  idempotent_init_module+0x121/0x2b0
->  __x64_sys_finit_module+0x5e/0xb0
->  do_syscall_64+0x82/0x160
->  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> mt7915e 0000:01:00.0: probe with driver mt7915e failed with error -12
->=20
-> and the card stays non-functional. Re-inserting the module triggers the s=
-ame behaviour.
->=20
-> The following condition is triggered:
->=20
->  794                 if (WARN_ON(!ops->add_chanctx ||
->  795                             !ops->remove_chanctx ||
->  796                             !ops->change_chanctx ||
->  797                             !ops->assign_vif_chanctx ||
->  798                             !ops->unassign_vif_chanctx))
->  799                         return NULL;
->=20
-> This worked with v6.8 and earlier just fine.
->=20
-> Please help.
->=20
-> Thank you.
->=20
->=20
-
-
-=2D-=20
-Oleksandr Natalenko (post-factum)
---nextPart4908084.GXAFRqVoOG
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEZUOOw5ESFLHZZtOKil/iNcg8M0sFAmZD6voACgkQil/iNcg8
-M0slkBAA30d+dHMeOTWd6mWGNfJP06Ntug/dXjfFyRQeTnRqIXhfp5uTamhIDg1Q
-1lbgClmG3vBtyw5vyYHemn9c3GjAPGSpVO5FvFAb72vHy/84KTfbrNU2jk9czRsP
-kOVx1OxjWnn1wYgK3nJXgV+dVNft6/kphxSUFEtLFfkOR3KBpTCXwram74Dfx2O5
-iK+X6damnucy+KB++AeimhjEY0tuLhXmRP/5me1m8SE5HojbCbBazBV8E/xPmPIx
-Xy3K+mQIN8DZW3PNtVlgGVxwSwCB2Zeta6yfOrAnyt+ifA8mrIk/JeB+30IKFsUo
-wEFc/yapWR1QXUzWK/Q2mi6bYprbHGYPusrrCHh/O3va2PuDvOksClCwaC8B36Lh
-6k7ydaHrTeIH5fqwnCBTDk7Y/WRHQfOpZhuEtfmASXRGOR6nOaHwZoUxxUVr/kTk
-K4SXM7h3A7kBPokz/EsVjWmV4tWmFmpm2XAIj0zP6S7ll8QCa6gZp31dknlezrHX
-/dYvPnVgCf2yZ5ZH6s33lqB9HBj6uxmXKk/UnGSETtY+cEIfpDih6oat9TazyKS1
-naiLMD51BfE+1SjAOokQqcZpFQOEB8eh8+DHK/5NaUh6u87pB9F03GFRaR2nEZvp
-KWDoYnNLBWaEEoaD4fQzx8pbFOgWO88HcaSavorkESHcsE2EEFs=
-=bD45
------END PGP SIGNATURE-----
-
---nextPart4908084.GXAFRqVoOG--
-
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index f768e9389ac6..0f7d5a92f3d0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -339,6 +339,9 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
+ 	bus_ops->rmw = mt7921_rmw;
+ 	dev->mt76.bus = bus_ops;
+ 
++	if (mt7921_disable_aspm)
++		dev->disable_aspm = true;
++
+ 	ret = mt792xe_mcu_fw_pmctrl(dev);
+ 	if (ret)
+ 		goto err_free_dev;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
+index 07b74d492ce1..e7039e312538 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
+@@ -373,6 +373,9 @@ static int mt7925_pci_probe(struct pci_dev *pdev,
+ 	bus_ops->rmw = mt7925_rmw;
+ 	dev->mt76.bus = bus_ops;
+ 
++	if (mt7925_disable_aspm)
++		dev->disable_aspm = true;
++
+ 	ret = __mt792x_mcu_fw_pmctrl(dev);
+ 	if (ret)
+ 		goto err_free_dev;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wireless/mediatek/mt76/mt792x.h
+index 20578497a405..8f913336a668 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x.h
++++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
+@@ -190,6 +190,7 @@ struct mt792x_dev {
+ 	bool fw_assert:1;
+ 	bool has_eht:1;
+ 	bool regd_in_progress:1;
++	bool disable_aspm:1;
+ 	wait_queue_head_t wait;
+ 
+ 	struct work_struct init_work;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+index a405af8d9052..a11e5438a36e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+@@ -766,6 +766,12 @@ int __mt792xe_mcu_drv_pmctrl(struct mt792x_dev *dev)
+ 
+ 	for (i = 0; i < MT792x_DRV_OWN_RETRY_COUNT; i++) {
+ 		mt76_wr(dev, MT_CONN_ON_LPCTL, PCIE_LPCR_HOST_CLR_OWN);
++
++		if (!dev->disable_aspm) {
++			/* wait for LP engine to complete its operation */
++			usleep_range(2000, 3000);
++		}
++
+ 		if (mt76_poll_msec_tick(dev, MT_CONN_ON_LPCTL,
+ 					PCIE_LPCR_HOST_OWN_SYNC, 0, 50, 1))
+ 			break;
+-- 
+2.25.1
 
 
