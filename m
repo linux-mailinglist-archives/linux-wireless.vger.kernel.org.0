@@ -1,169 +1,107 @@
-Return-Path: <linux-wireless+bounces-7721-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7722-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 322A48C6F29
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 May 2024 01:27:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E52B48C6F67
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 May 2024 02:08:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8CA51F2121B
-	for <lists+linux-wireless@lfdr.de>; Wed, 15 May 2024 23:27:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C9621F2426E
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 May 2024 00:08:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACED515B0E2;
-	Wed, 15 May 2024 23:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC12197;
+	Thu, 16 May 2024 00:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q4F8ysOf"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="bbpQrJkw"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8717915B0E1
-	for <linux-wireless@vger.kernel.org>; Wed, 15 May 2024 23:26:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E0815A4
+	for <linux-wireless@vger.kernel.org>; Thu, 16 May 2024 00:08:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715815619; cv=none; b=oimD87/ySrOh7arnyWnA+ll9jnb8FjFHXRT1DvNrlu3VZLLVEMxQmArHNInasT2Mb9JU9f4R3qqvn+fyC3/H5fsGAmBrLBR/qT/Wlh8UWwvUawKCsUnZoJAUmzzge0PJhJrmsP+5HEiPuTsrG1FYu61zuEVhKPfNysQsz/ARFMM=
+	t=1715818113; cv=none; b=Jjy5JzJhv9KvtGYMfdDoXjeV6CRPoM29UKJVDsBW85fIdAJ2U7yCEgWw5tFTNLO8dys2O/0JqT7w36KfI5yBBdzJP/2do2zd5MIdr/4MbesgUWY9tRV0yYSCOlq0jPodL0V1JjUiZfmmRuunsUtdpl9wLPszGriJCb4+t8oCwVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715815619; c=relaxed/simple;
-	bh=Dly9VJssQKlGr4nuNsuWgUhzWU16eHtlmaSmjqzEbtM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=c7E4jBRxJWZhy5MAPUgSVF1EHR5AEV8Wna6nWDinpaFMUEtpTNoHtnDtIMyWghPPri3yTnamEw/VEeFgghJv74au5SmVBn/gVUQpQi1THrYLO44/FeFP7eQ5z+8RucZsJ1PBNDOz6c+ye68X0MgkXoGN1brjXoMw/oTW3ewcQl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q4F8ysOf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21132C116B1
-	for <linux-wireless@vger.kernel.org>; Wed, 15 May 2024 23:26:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715815619;
-	bh=Dly9VJssQKlGr4nuNsuWgUhzWU16eHtlmaSmjqzEbtM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=q4F8ysOfkr92N1KApuAXQfMKIJBEOMG4NHZAuxp3HDd325XnEyrFYls3ZOiQ5mtcF
-	 ybv0ZXtaCjkurb9PmrzV9BmEJWb7D9VqIPHBG9GJfGYlz/iJqh7VnDn1pFwT2Z0VXY
-	 vZYvjErDad16ZZsuNly4sNQ0LjP4GeTmIVBm4irqZq1NTyr8KKY76+GwPY3v3PyHl8
-	 1trFgtQArp2eliFaSbBxolncwiektGIgVoBGlQNEsyOoZSPZHy8O2Qhej5VJicSCHZ
-	 +tsfLTbKE9nzDLR2O1qEh1iwHkSwPCGRCXK04UxI/eEr+qNq17uMkCwZBfJ0qqGfaN
-	 lnjf7kmSdvSWg==
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-574fd0306d0so243674a12.0
-        for <linux-wireless@vger.kernel.org>; Wed, 15 May 2024 16:26:59 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVnW5/wM8Qs2egvvWolqjJt5h58VDtZ1GsYb54KWp8eoxgpKePfmSn93lmLvFi1WNNtNBuDagzXFSKNoz+RmKoJ37y15Rbu1zelNSKc99o=
-X-Gm-Message-State: AOJu0Yyqm0YBcGY5MlvOKgwB/BXyieJVHbKVEBoSAfiwCMnfNOnPp0/J
-	lQeHR6IRo+sznvG+i/ze3Gu2kOP+WW6oNwCUvtJZgiPom1z17Ep6FMRg4BUuISXzY9v93Iq6u2V
-	LaIBNsm0lA0tclkL0WyFZdLQk4rw=
-X-Google-Smtp-Source: AGHT+IG9Xw6qhwjkVuZfgDD8lRq6KGIE3S0/7KdscGUUPCpx9YHwTsEyoDV+3UrO5ntqcmGMtzVO+O95aJyPT3TM4ZA=
-X-Received: by 2002:a17:906:f591:b0:a5a:5bf2:b889 with SMTP id
- a640c23a62f3a-a5a5bf2b8b4mr1196952966b.0.1715815617724; Wed, 15 May 2024
- 16:26:57 -0700 (PDT)
+	s=arc-20240116; t=1715818113; c=relaxed/simple;
+	bh=sNkXRKOfbnx/cMCtlQj/YBxoecOv0i7cFk3rlkKALr0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XgTpYA2ikAitSGka6jq696uQAKDytn+gLaiqff0VaIX3Pp2hKfOydGcCChIJfPNAChBS6UT29otGElnpQOgnfIv4Cjdzl7iMeax3fVoPAKE5ptpDc4B43NjZMBxNHbMlqX5Np4yWC3HO2RHMQqtQCS9m2CQDGnPgPbNiBulel4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=bbpQrJkw; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44FKFrJY027342;
+	Thu, 16 May 2024 00:08:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=biYqAP8
+	dnIMsicL5QWkwCWLjwqsW9s+ULU8BCvd3pDc=; b=bbpQrJkwOc560tx7mDzUTz6
+	ucen+vw1Q8k9mDq/kPRvUTSFSiGn7mLGzWZIGU4IGYSSDfBvKZtjaFjFVbDRVhoC
+	roL4aJk5KR2Yq/8U2tPZuiYoiGU/iVy4FN3cSNpUt52FFsZj/Qf90xr1zHsblFae
+	/5ZDv0LktZNtmOY6zvP7zbJd+tFOnFZKTcwyA4m+lT2fES6C8BECu0IP1xeqtJ7e
+	HXO/FCfIwILtUPn9dQnkJCbss9Lij2dJMWQRZvxz6b1JTp/ONkBA0b/pQ3b2y8CA
+	RKBGJqmiMeHxuA8TH7Rg6xfG+brrA+7UW7UHgbeYE2UttEpxyTdq6akXk+lyXaQ=
+	=
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y42kvvvdn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 May 2024 00:08:27 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44G08Pj8005254
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 May 2024 00:08:25 GMT
+Received: from hu-periyasa-blr.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Wed, 15 May 2024 17:08:23 -0700
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Karthikeyan Periyasamy
+	<quic_periyasa@quicinc.com>
+Subject: [PATCH 0/2] wifi: ath12k: Refactor Rx descriptor buffer CMEM
+Date: Thu, 16 May 2024 05:38:05 +0530
+Message-ID: <20240516000807.1704913-1-quic_periyasa@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240515015155.24931-1-mingyen.hsieh@mediatek.com>
-In-Reply-To: <20240515015155.24931-1-mingyen.hsieh@mediatek.com>
-From: Sean Wang <sean.wang@kernel.org>
-Date: Wed, 15 May 2024 16:26:45 -0700
-X-Gmail-Original-Message-ID: <CAGp9Lzprjai3iyab9WERsEm+Y8o6SgASKmL4tsimhSyjY-nG_Q@mail.gmail.com>
-Message-ID: <CAGp9Lzprjai3iyab9WERsEm+Y8o6SgASKmL4tsimhSyjY-nG_Q@mail.gmail.com>
-Subject: Re: [PATCH] wifi: mt76: mt792x: fix scheduler interference in drv own process
-To: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-Cc: nbd@nbd.name, lorenzo@kernel.org, deren.wu@mediatek.com, 
-	Sean.Wang@mediatek.com, Soul.Huang@mediatek.com, Leon.Yen@mediatek.com, 
-	Eric-SY.Chang@mediatek.com, km.lin@mediatek.com, robin.chiu@mediatek.com, 
-	ch.yeh@mediatek.com, posh.sun@mediatek.com, Quan.Zhou@mediatek.com, 
-	Ryder.Lee@mediatek.com, Shayne.Chen@mediatek.com, 
-	linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	Michael Lo <michael.lo@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 9Q2r5AHiJfV8rs7FAK2EuamuYcaUUvJg
+X-Proofpoint-ORIG-GUID: 9Q2r5AHiJfV8rs7FAK2EuamuYcaUUvJg
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-15_14,2024-05-15_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=4 suspectscore=0 malwarescore=0
+ mlxlogscore=139 phishscore=0 lowpriorityscore=0 bulkscore=0
+ priorityscore=1501 spamscore=4 adultscore=0 mlxscore=4 impostorscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405010000 definitions=main-2405150171
 
-Hi, Mingyen
+Refactor Rx descriptor buffer configuration to scalable for inter device
+Multi-link operation.
 
-On Tue, May 14, 2024 at 6:52=E2=80=AFPM Mingyen Hsieh
-<mingyen.hsieh@mediatek.com> wrote:
->
-> From: Michael Lo <michael.lo@mediatek.com>
->
-> Add some time to wait for LP engine to complete its operation
-> before polling pmctrl register.
->
-> Signed-off-by: Michael Lo <michael.lo@mediatek.com>
-> Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7921/pci.c  | 3 +++
->  drivers/net/wireless/mediatek/mt76/mt7925/pci.c  | 3 +++
->  drivers/net/wireless/mediatek/mt76/mt792x.h      | 1 +
->  drivers/net/wireless/mediatek/mt76/mt792x_core.c | 6 ++++++
->  4 files changed, 13 insertions(+)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt7921/pci.c
-> index f768e9389ac6..0f7d5a92f3d0 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-> @@ -339,6 +339,9 @@ static int mt7921_pci_probe(struct pci_dev *pdev,
->         bus_ops->rmw =3D mt7921_rmw;
->         dev->mt76.bus =3D bus_ops;
->
-> +       if (mt7921_disable_aspm)
-> +               dev->disable_aspm =3D true;
-> +
->         ret =3D mt792xe_mcu_fw_pmctrl(dev);
->         if (ret)
->                 goto err_free_dev;
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt7925/pci.c
-> index 07b74d492ce1..e7039e312538 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
-> @@ -373,6 +373,9 @@ static int mt7925_pci_probe(struct pci_dev *pdev,
->         bus_ops->rmw =3D mt7925_rmw;
->         dev->mt76.bus =3D bus_ops;
->
-> +       if (mt7925_disable_aspm)
-> +               dev->disable_aspm =3D true;
-> +
->         ret =3D __mt792x_mcu_fw_pmctrl(dev);
->         if (ret)
->                 goto err_free_dev;
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wi=
-reless/mediatek/mt76/mt792x.h
-> index 20578497a405..8f913336a668 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt792x.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
-> @@ -190,6 +190,7 @@ struct mt792x_dev {
->         bool fw_assert:1;
->         bool has_eht:1;
->         bool regd_in_progress:1;
-> +       bool disable_aspm:1;
->         wait_queue_head_t wait;
->
->         struct work_struct init_work;
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/n=
-et/wireless/mediatek/mt76/mt792x_core.c
-> index a405af8d9052..a11e5438a36e 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-> @@ -766,6 +766,12 @@ int __mt792xe_mcu_drv_pmctrl(struct mt792x_dev *dev)
->
->         for (i =3D 0; i < MT792x_DRV_OWN_RETRY_COUNT; i++) {
->                 mt76_wr(dev, MT_CONN_ON_LPCTL, PCIE_LPCR_HOST_CLR_OWN);
-> +
-> +               if (!dev->disable_aspm) {
-> +                       /* wait for LP engine to complete its operation *=
-/
-> +                       usleep_range(2000, 3000);
-> +               }
-> +
+Karthikeyan Periyasamy (2):
+  wifi: ath12k: Refactor Rx descriptor CMEM configuration
+  wifi: ath12k: improve the rx descriptor error information
 
-I think we can reduce the extra delay on platforms that don't support
-ASPM. Basically, if the platform doesn't support ASPM, we can get rid
-of the wait.
+ drivers/net/wireless/ath/ath12k/dp.c    | 11 ++++++++---
+ drivers/net/wireless/ath/ath12k/dp.h    |  1 +
+ drivers/net/wireless/ath/ath12k/dp_rx.c |  7 ++++---
+ 3 files changed, 13 insertions(+), 6 deletions(-)
 
->                 if (mt76_poll_msec_tick(dev, MT_CONN_ON_LPCTL,
->                                         PCIE_LPCR_HOST_OWN_SYNC, 0, 50, 1=
-))
->                         break;
-> --
-> 2.25.1
->
->
+
+base-commit: 5b501f801ab443046d5c31881bba21350396e5c5
+-- 
+2.34.1
+
 
