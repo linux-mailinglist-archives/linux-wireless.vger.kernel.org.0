@@ -1,63 +1,75 @@
-Return-Path: <linux-wireless+bounces-7743-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7744-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71ABC8C784C
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 May 2024 16:11:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF8628C791A
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 May 2024 17:14:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 251C8283E15
-	for <lists+linux-wireless@lfdr.de>; Thu, 16 May 2024 14:11:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57E35B2303F
+	for <lists+linux-wireless@lfdr.de>; Thu, 16 May 2024 15:14:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 721F414884E;
-	Thu, 16 May 2024 14:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1706814D444;
+	Thu, 16 May 2024 15:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="a+F85Go7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="etnhsLcF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE4C147C6E;
-	Thu, 16 May 2024 14:11:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F95D14B97C
+	for <linux-wireless@vger.kernel.org>; Thu, 16 May 2024 15:14:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715868705; cv=none; b=NP33OFXmlxwnzKr8WnK2MlJrz/XtwWCXAyFks7bJE68XDJZUsDTTV0Dc8LF9hj1tAxcYt4+KShMphLAYwL59SQgvg/kw8Hb5OY3mEE5cu1vP7LTfiZJ3fjxqWG/aMDGwSJpznNexZrGGJJG/oIAH27JoCg0zxbLFRhKgRB/XAnk=
+	t=1715872478; cv=none; b=kKhHZH7vubLay5FetJK+xl1Zqm4RVCo7ufRW1ugG20lTzZzLGGjmPBtyfi3T3qgSzOWg6yL3lA5ZsTUGfk53h6zo4wAzpUsotxm0peEpC95Gr0QNC5l2UFKQ7x0w7BQI1a9cJtB+QnlaIgdbdReHsD3zY9v1bNZi8PNOLm7hcYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715868705; c=relaxed/simple;
-	bh=KGx3/2R9bI6rAZokzGjcl3x+hQr9GgBS1EfT72qcBWU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=D1sZHeudcNLNAp5GTUADItYNRyTVu//CluHl9kltHe1kZTZbDN+IijhHytMxmaH8SPCNrGtimljZbdyKWF9cf75VkWqAFDxUiSb2x+6G0Yp6o/EBdXIHUMXKsVryDV9w+gB4LgoQEsPq8lPW6TssuzQeSQpmMVXJz5fSUuRVv+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=a+F85Go7; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44G8W20D004133;
-	Thu, 16 May 2024 14:11:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=UZKnD66AxmoU604tuqeyGMWmKSfVPcdT20jTH9y2wuQ=; b=a+
-	F85Go7VZjOnFCn20DUnDOs8/zXvfZBvWdIn3z4tAZr16QKbrjnmyELG+1++C5Zpb
-	qtVSgkvllylinxOq2ovQ0Gi8Sm52jq0unrHX6+rsbMsuT3cNV6BwmeELBT5g7Y4y
-	KcB/N37gSepqgVD9/M+Z2jX2yEFhp/qWXILbfXNOCth/Ast2AkEyNyiNtjE9t6da
-	hmbG2b0MXCZJvHoW4nLwFSLU3bnqCljOiiGRFLBkDmFVBEVQcST8SCS6l5zcSGDT
-	mFTKuS6U37RyWKFiMZaAKHhTle3PTPx8eNdbVZcTPC+/EPPujA5Wm89JU9YgDl6M
-	U718UWfhjh1Igre/9i9w==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y2125kxtp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 May 2024 14:11:34 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44GEBXZH010908
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 May 2024 14:11:33 GMT
-Received: from [10.110.4.82] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 16 May
- 2024 07:11:32 -0700
-Message-ID: <4d72f74a-b2eb-43d3-92a2-1311081ce72c@quicinc.com>
-Date: Thu, 16 May 2024 07:11:31 -0700
+	s=arc-20240116; t=1715872478; c=relaxed/simple;
+	bh=yTx9QCVjTc3cJS5gd5EI44g6bMiB26QiBpBqqOFmVDQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KcXEpU0kNcYQZC8U49h4iaMHhJEVYwt0HlDdOsy7IaxaSh+vZXeHWczAen0QQ2YOPXlBYjpcIgfQBXE7dJPSp+eo12WagXU8DplahFy9H8CWguiQMvwMVZvjH6H0KvbXUpOsOqE8p0fYTnXykS81Ms4bhG6sMoOvSB+AHjhDV5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lwfinger.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=etnhsLcF; arc=none smtp.client-ip=209.85.210.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lwfinger.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-6f0e975f67fso230110a34.0
+        for <linux-wireless@vger.kernel.org>; Thu, 16 May 2024 08:14:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1715872475; x=1716477275; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=QHBZD0nHcCfyiw9Bbc4ONBnZONYpPi/1NYwOVue8Yx0=;
+        b=etnhsLcFnfRaowSrf8PzISeLw9i/KuW9ygyft5gJwIQDy0p64Wa4YejcvWadWKr34g
+         IjRJIlA2ta7S9XkDWDf0p9W0xay/2rBPPeYYgKpvKMuXtOr4SwICG7aJ29wANlPPo/TU
+         Ri9lA+NOswMxxT0caulwvL1/+LmRlrIywHyvGt+kpWICeahv0HUwrOZV3GBdox9fYV0e
+         omSLjqEC+ky890tEsGFLyNDoYEZYgcfvIoqIWQQUnMq1RevP1giJWJflHRHutPUzYybf
+         j70W0TkWRgKChe66VNMnCIPhYA3YkE7/7sVpnE22cSUVUXHFebWof+RHfWzOvfSKFK1c
+         ArcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715872475; x=1716477275;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QHBZD0nHcCfyiw9Bbc4ONBnZONYpPi/1NYwOVue8Yx0=;
+        b=Fz/r2RdcEwAsuTEFiRt0t/ktiPGprbdQCDfNJmTUoO1NwLyxoFNvbVQwsczA1207LZ
+         1N9woQrCI16PDVQswXMbzaTdcGlGoLPicmGFOR4YPpz67xfz1WYMu5UNfJ2W9APZ/Bow
+         2T/jj4n2KyRbYrzttPNhK98JD0dqXR4mRLLjxA8URrVAlibDNNd/8xvCZhzZFatNpxkq
+         eD+NRmqvodSdFzEP+SpSHLx+z62u5Ls13zO2hZoda+dZfFR/uOETSjXElS9jRdRopzJi
+         8zN8SC3KI4r9YJxZnJfXoKvcywjlZ7AkxBFcsvraX9Q3LliGmU5ExuIdVslw+UbHzqq1
+         HG1Q==
+X-Gm-Message-State: AOJu0YzAtnICI/wrEDDBhXUuPvUI01oGcRo+OQN+DXpf1F1XhnTHZ4hl
+	/JdqZfjrlFq+wjwzUd4e4BPkELJLtLZ2ETlF1sPmakCnNpvDZ4HGEDzqdw==
+X-Google-Smtp-Source: AGHT+IHliZgYzZsViYg4Qq+Lv4Hu9rk+BTidjstr9pt5viyIysmoL5oaXDHaraTQIm/h/52I4o0QlQ==
+X-Received: by 2002:a05:6808:278a:b0:3c9:c755:a194 with SMTP id 5614622812f47-3c9c755a31fmr1056116b6e.59.1715872475104;
+        Thu, 16 May 2024 08:14:35 -0700 (PDT)
+Received: from [10.62.118.112] ([216.130.59.33])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3c9a1e75459sm1773849b6e.32.2024.05.16.08.14.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 May 2024 08:14:34 -0700 (PDT)
+Sender: Larry Finger <larry.finger@gmail.com>
+Message-ID: <c97e2856-de5b-4bd2-987d-e40b15d748ae@lwfinger.net>
+Date: Thu, 16 May 2024 10:14:32 -0500
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,46 +77,31 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] wifi: ath11k: supports 2 station interfaces
+Subject: Re: Problem with 8922ae
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: linux-wireless <linux-wireless@vger.kernel.org>
+References: <898f027b-bf08-4f6b-b0c7-623ca5c5f23c@lwfinger.net>
+ <fec7536d76cd469e8fbc375219205d1b@realtek.com>
+ <723e1eed-e706-4533-b33b-a880b9a46fd8@lwfinger.net>
+ <a321afd48004484cb1a598fc4f54556c@realtek.com>
 Content-Language: en-US
-To: Linux regressions mailing list <regressions@lists.linux.dev>,
-        Carl Huang
-	<quic_cjhuang@quicinc.com>
-CC: Luca Weiss <luca.weiss@fairphone.com>, <ath11k@lists.infradead.org>,
-        <linux-wireless@vger.kernel.org>, Kalle Valo <kvalo@kernel.org>
-References: <20230714023801.2621802-1-quic_cjhuang@quicinc.com>
- <20230714023801.2621802-2-quic_cjhuang@quicinc.com>
- <D15TIIDIIESY.D1EKKJLZINMA@fairphone.com> <87jzk2km0g.fsf@kernel.org>
- <93c15c59-f24c-4472-ae7e-969fd1e3bfec@quicinc.com>
- <871q69lqh5.fsf@kernel.org>
- <4e21e556-527f-4d1e-aa29-cacec14155af@quicinc.com>
- <a53e2188-b982-44b7-9dfe-f5dfd6b802ca@leemhuis.info>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <a53e2188-b982-44b7-9dfe-f5dfd6b802ca@leemhuis.info>
-Content-Type: text/plain; charset="UTF-8"
+From: Larry Finger <Larry.Finger@lwfinger.net>
+In-Reply-To: <a321afd48004484cb1a598fc4f54556c@realtek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: VeI4f2Xr1qfpcC9e30nCfGto7vYTYt0S
-X-Proofpoint-ORIG-GUID: VeI4f2Xr1qfpcC9e30nCfGto7vYTYt0S
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-16_07,2024-05-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 spamscore=0
- lowpriorityscore=0 mlxlogscore=979 clxscore=1011 bulkscore=0
- priorityscore=1501 impostorscore=0 phishscore=0 adultscore=0
- suspectscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405010000 definitions=main-2405160099
 
-On 5/16/2024 4:45 AM, Linux regression tracking (Thorsten Leemhuis) wrote:
-> On 11.05.24 05:12, Carl Huang wrote:
->> I'll send out the formal patch next week.
+On 5/15/24 8:16 PM, Ping-Ke Shih wrote:
+> Recently we added WoWLAN and BT-coexistence for 8922AE. I think you didn't use
+> WoWLAN features, so cause might be BT-coexistence. Maybe another try is to turn
+> off BT if you are using.
 > 
-> Hmmm, from here it looks like this did not happen. Did I miss something,
-> is there some reason to reevaluate things again, or did this maybe
-> simply fall through the cracks?
+> I will setup a PC to see if I can reproduce this problem.
+> 
 
-Formal patch is still under internal review
+Ping-Ke,
+
+I am not using BT. I unloaded the BT drivers, and still got the warning.
+
+Larry
+
 
