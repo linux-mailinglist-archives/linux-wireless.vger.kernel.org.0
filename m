@@ -1,131 +1,212 @@
-Return-Path: <linux-wireless+bounces-7803-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7805-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FFBE8C8D93
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 May 2024 23:15:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83B428C8D99
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 May 2024 23:16:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5858B283B40
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 May 2024 21:15:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A69191C20B6C
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 May 2024 21:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 769422208F;
-	Fri, 17 May 2024 21:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A311CAA9;
+	Fri, 17 May 2024 21:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HfMu6Hx6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QPBKFs4m"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18621CAA9
-	for <linux-wireless@vger.kernel.org>; Fri, 17 May 2024 21:15:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA2B393
+	for <linux-wireless@vger.kernel.org>; Fri, 17 May 2024 21:16:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715980515; cv=none; b=mvICoiPbPwiGcMihawjXPyN6LJpdIVUwF4gRtByEWP5hFlzGtuLaEukjXu+KyA3W2sVqhsrS38ZuKOzw3fFSdH3dUfbhoaGKqIEnuCaHHaTp2wzGAAHCKguk+m6h7TCZM7tRvB6dR00vNVvHO3wp4zP8DeC1hUKwRkb6vK+7hC8=
+	t=1715980594; cv=none; b=LpIlEnXQh2Vq/7+tKTw03EdWKGDBk4VkwMpipMgfNRG1kVQfqhtgroqq8mLRkYb74e8ztY4S5QBbSfYreV2Q0pjfF6b5d9HeIeohdJGGKDSkorjrMBLU9Kd1Ixm9wIW+tjRL5J3lzNJiLabcbHBnJkyrNR/hphojoZS+KgExaBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715980515; c=relaxed/simple;
-	bh=N/36exLq4mBUZgL+uR2xVvYiOSDE2yGnebSwyFiSG/I=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=MELsX2pixilmItEEYcsqFoxYOXAhYL8DPK0owHgqhjNRnIFbuY+PzrzE0qv1FBvE0K0Bi3nK/O+3PWY18ECBjYvH50D9XomIOYah2nqZdjVy08ru+qn5ulHjrJOlpzvT1aLzSIfHHSsAaoNVph29QadplasYUT50vyHMgJyaDG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HfMu6Hx6; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-34eb52bfca3so516788f8f.0
-        for <linux-wireless@vger.kernel.org>; Fri, 17 May 2024 14:15:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715980512; x=1716585312; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=7uhv22KFywiyksSinX4TQcoL6wKBthzAn+1mBtunJZw=;
-        b=HfMu6Hx6SHTRiDZMBAWMUiViHEJ08WbZ3k/z84MPXkfujzPiCI23eIhindTlaGx8qg
-         XZGmn61KEwhc3YY2UfjpbsLK2gv92xUvHmFUlepjhVpMX3qjcIBfHYqqxQHgyAxCFFc1
-         gBTdfNe7Phg3RetlMOm0YHa8j5jbgbhgoIthXJD4tJJjJvprJDaXdmWbnSQSGhgiS8GN
-         N2dCNVa+70BFDQHy8NjjNVQ79JfIhzmPn1bYlyVzWmhGXatq4GQOFbzm/sV7RR6/g/2H
-         niU+vhu4+WmWPDft8jY07qh0UY/JBhG3BAkDhYhA/M7kkfXqBu8Q1lJyJscMZBjJL34s
-         oWfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715980512; x=1716585312;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7uhv22KFywiyksSinX4TQcoL6wKBthzAn+1mBtunJZw=;
-        b=rRccWa+US/dRiykCXQRkbEhNDuuHsRsuFKKYTeHx9AlA9rcSxBm7RDNZpcLs6PJhFD
-         6PVUBhJPODZiFR+OaJOUBNWzOAozAoW0CDPDvvpzEhPZ4DaqTDxeygbJRc8LyGna59ON
-         H/SSPoSeub9piFyjAr9OeiNPni8fehldFms+PTazXEsJeVjnFEgAOZYQVt9OT6I/kcen
-         ME1/cdSPr79b8xU/voHxmz9XMI+1v4bp7leJStCD9N7Vi53HAjdImGXDfZqU8ZMRTT0P
-         9SPvrVpweJ6898Iy2NRErliPqwHvg36E33Ye3AfKGPUgJCJIGMb9PJ4U1vxFAM2zqy17
-         OcVA==
-X-Gm-Message-State: AOJu0YxiTuyOBYUHGSdbMgaRsJpjjoATnV0Hf/S7wuXmNBrWDFm0Qxvg
-	ueKPCXkBLPv4tRZjQtZS3grqftgfAiDvpjsc3jOdMVlYd9Kdo20C4yeBop9A
-X-Google-Smtp-Source: AGHT+IF5S2Zb/A0XTw/Wlf9wZte7tOyfX4Cw1M2jJy9glSciCO78y3sHD8/4w8VBh9S2MnP+OgjB8w==
-X-Received: by 2002:a5d:6711:0:b0:352:2700:3f3b with SMTP id ffacd0b85a97d-35227004083mr3669299f8f.34.1715980511975;
-        Fri, 17 May 2024 14:15:11 -0700 (PDT)
-Received: from [192.168.1.50] ([79.113.154.240])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3502b79bda6sm22689773f8f.3.2024.05.17.14.15.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 May 2024 14:15:11 -0700 (PDT)
-Message-ID: <9e515071-e77e-42ca-a5d5-59d41e43c707@gmail.com>
-Date: Sat, 18 May 2024 00:15:10 +0300
+	s=arc-20240116; t=1715980594; c=relaxed/simple;
+	bh=Az2WmG7kaSRcHZviuzZTHXjmAWb5g26gOmG74hwsm/M=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=Uy55DA0se9Fg4gbFBkblPrn0JlaVMI6rMf10JNyvx8cClpEbPYkXvicLE8Ii0IhfIgX5H/aJ4TzQWmcA5LKQNyCpg+RIxwwmZJOVDRWU9FY7T4LoCsBfkpLkwLCESgF6YQ0l8zXzIYTMixXnsDXuIUusRYomTZ51XDhkoKy9Bdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QPBKFs4m; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1715980593; x=1747516593;
+  h=date:from:to:cc:subject:message-id;
+  bh=Az2WmG7kaSRcHZviuzZTHXjmAWb5g26gOmG74hwsm/M=;
+  b=QPBKFs4mtDbSgdyOF9Ex5CblJviNyF35n8sAtnQoy4kVcCl1+XNllE70
+   7Ney8r6gu7U36KCMSSDhyBt6M4+gdR+07zw2IjspUJFOW1t5CWRupd5iq
+   WHn4gbh2hcQpmegTsR0ciWLk+29cK8kS5ix19RFD0uvPSPZd6fogEILtw
+   nO0lhNku9Pc83o/QcynwV4KhW2T0qux07Iv0Mgi8bu8JnmzHFIVGqBq7C
+   APmGBVYxi+UvbhjK4TN7Bs7knHBv6AZ2Wb7OYLtObiDOmYmnLehfm1knW
+   zk0Bx4txRRrr93dRVKdlcbT65NGzyrhDh5uXdNo4/RlSdvmiPCedZbjEd
+   Q==;
+X-CSE-ConnectionGUID: j+7lCt5VRdK5Vm2VAJXU5A==
+X-CSE-MsgGUID: Kd+FuE0jQVmt6Ka856MfRg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="11580578"
+X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; 
+   d="scan'208";a="11580578"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 14:16:32 -0700
+X-CSE-ConnectionGUID: QFfIlWtsQuGtUqiR/0n92A==
+X-CSE-MsgGUID: wLQd847bRpujJwk3B6HOwA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; 
+   d="scan'208";a="36326916"
+Received: from unknown (HELO 108735ec233b) ([10.239.97.151])
+  by fmviesa005.fm.intel.com with ESMTP; 17 May 2024 14:16:31 -0700
+Received: from kbuild by 108735ec233b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1s84wH-00018e-0y;
+	Fri, 17 May 2024 21:16:29 +0000
+Date: Sat, 18 May 2024 05:15:38 +0800
+From: kernel test robot <lkp@intel.com>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+ linux-wireless@vger.kernel.org
+Subject: [wireless-next:main] BUILD SUCCESS
+ a17b9f590f6ec2b9f1b12b1db3bf1d181de6b272
+Message-ID: <202405180536.5S6pbB3D-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH v6 02/11] wifi: rtlwifi: Add new members to struct rtl_priv
- for RTL8192DU
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>,
- Larry Finger <Larry.Finger@lwfinger.net>,
- Stefan Lippers-Hollmann <s.l-h@gmx.de>,
- Christian Hewitt <chewitt@libreelec.tv>
-References: <0c22c048-c372-4596-b2c6-612c6ec7ab77@gmail.com>
-Content-Language: en-US
-In-Reply-To: <0c22c048-c372-4596-b2c6-612c6ec7ab77@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-These are needed for the dual MAC version of RTL8192DU.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: a17b9f590f6ec2b9f1b12b1db3bf1d181de6b272  wifi: mwifiex: Fix interface type change
 
-The two mutexes are used to avoid concurrent access to the hardware
-from the two USB interfaces.
+elapsed time: 721m
 
-The two arrays are filled by one interface during LC calibration and
-accessed by the other interface during channel switching.
+configs tested: 118
+configs skipped: 3
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
----
-v6:
- - Add more information to the commit message.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-v5:
- - Patch is new in v5.
----
- drivers/net/wireless/realtek/rtlwifi/wifi.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+tested configs:
+alpha                             allnoconfig   gcc  
+alpha                            allyesconfig   gcc  
+alpha                               defconfig   gcc  
+arc                              allmodconfig   gcc  
+arc                               allnoconfig   gcc  
+arc                              allyesconfig   gcc  
+arc                                 defconfig   gcc  
+arc                            hsdk_defconfig   gcc  
+arc                   randconfig-001-20240517   gcc  
+arc                   randconfig-002-20240517   gcc  
+arc                           tb10x_defconfig   gcc  
+arc                    vdk_hs38_smp_defconfig   gcc  
+arm                              allmodconfig   gcc  
+arm                               allnoconfig   clang
+arm                              allyesconfig   gcc  
+arm                                 defconfig   clang
+arm                   randconfig-001-20240517   clang
+arm                   randconfig-002-20240517   clang
+arm                   randconfig-003-20240517   clang
+arm                   randconfig-004-20240517   clang
+arm64                            allmodconfig   clang
+arm64                             allnoconfig   gcc  
+arm64                               defconfig   gcc  
+arm64                 randconfig-001-20240517   clang
+arm64                 randconfig-002-20240517   gcc  
+arm64                 randconfig-003-20240517   clang
+arm64                 randconfig-004-20240517   clang
+csky                             allmodconfig   gcc  
+csky                              allnoconfig   gcc  
+csky                             allyesconfig   gcc  
+csky                                defconfig   gcc  
+csky                  randconfig-001-20240517   gcc  
+csky                  randconfig-002-20240517   gcc  
+hexagon                          allmodconfig   clang
+hexagon                           allnoconfig   clang
+hexagon                          allyesconfig   clang
+hexagon                             defconfig   clang
+hexagon               randconfig-001-20240517   clang
+hexagon               randconfig-002-20240517   clang
+i386                             allmodconfig   gcc  
+i386                              allnoconfig   gcc  
+i386                             allyesconfig   gcc  
+i386         buildonly-randconfig-001-20240517   clang
+i386         buildonly-randconfig-002-20240517   clang
+i386         buildonly-randconfig-003-20240517   gcc  
+i386         buildonly-randconfig-004-20240517   clang
+i386         buildonly-randconfig-005-20240517   clang
+i386         buildonly-randconfig-006-20240517   gcc  
+i386                                defconfig   clang
+i386                  randconfig-001-20240517   gcc  
+i386                  randconfig-002-20240517   gcc  
+i386                  randconfig-003-20240517   gcc  
+i386                  randconfig-004-20240517   gcc  
+i386                  randconfig-005-20240517   gcc  
+i386                  randconfig-006-20240517   gcc  
+i386                  randconfig-011-20240517   gcc  
+i386                  randconfig-012-20240517   clang
+i386                  randconfig-013-20240517   gcc  
+i386                  randconfig-014-20240517   gcc  
+i386                  randconfig-015-20240517   clang
+i386                  randconfig-016-20240517   clang
+loongarch                        allmodconfig   gcc  
+loongarch                         allnoconfig   gcc  
+loongarch                           defconfig   gcc  
+m68k                             allmodconfig   gcc  
+m68k                              allnoconfig   gcc  
+m68k                             allyesconfig   gcc  
+m68k                                defconfig   gcc  
+microblaze                       allmodconfig   gcc  
+microblaze                        allnoconfig   gcc  
+microblaze                       allyesconfig   gcc  
+microblaze                          defconfig   gcc  
+mips                              allnoconfig   gcc  
+mips                             allyesconfig   gcc  
+nios2                            allmodconfig   gcc  
+nios2                             allnoconfig   gcc  
+nios2                            allyesconfig   gcc  
+nios2                               defconfig   gcc  
+openrisc                          allnoconfig   gcc  
+openrisc                         allyesconfig   gcc  
+openrisc                            defconfig   gcc  
+parisc                           allmodconfig   gcc  
+parisc                            allnoconfig   gcc  
+parisc                           allyesconfig   gcc  
+parisc                              defconfig   gcc  
+parisc64                            defconfig   gcc  
+powerpc                          allmodconfig   gcc  
+powerpc                           allnoconfig   gcc  
+powerpc                          allyesconfig   clang
+riscv                            allmodconfig   clang
+riscv                             allnoconfig   gcc  
+riscv                            allyesconfig   clang
+riscv                               defconfig   clang
+s390                             allmodconfig   clang
+s390                              allnoconfig   clang
+s390                             allyesconfig   gcc  
+s390                                defconfig   clang
+sh                               allmodconfig   gcc  
+sh                                allnoconfig   gcc  
+sh                               allyesconfig   gcc  
+sh                                  defconfig   gcc  
+sparc                            allmodconfig   gcc  
+sparc                             allnoconfig   gcc  
+sparc                               defconfig   gcc  
+sparc64                          allmodconfig   gcc  
+sparc64                          allyesconfig   gcc  
+sparc64                             defconfig   gcc  
+um                               allmodconfig   clang
+um                                allnoconfig   clang
+um                               allyesconfig   gcc  
+um                                  defconfig   clang
+um                             i386_defconfig   gcc  
+um                           x86_64_defconfig   clang
+x86_64                            allnoconfig   clang
+x86_64                           allyesconfig   clang
+x86_64                              defconfig   gcc  
+x86_64                          rhel-8.3-rust   clang
+xtensa                            allnoconfig   gcc  
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-index 442419568734..6a8212fd36af 100644
---- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-@@ -2746,6 +2746,12 @@ struct rtl_priv {
- 	 */
- 	bool use_new_trx_flow;
- 
-+	/* For dual MAC RTL8192DU, things shared by the 2 USB interfaces */
-+	u32 *curveindex_2g;
-+	u32 *curveindex_5g;
-+	struct mutex *mutex_for_power_on_off; /* for power on/off */
-+	struct mutex *mutex_for_hw_init; /* for hardware init */
-+
- #ifdef CONFIG_PM
- 	struct wiphy_wowlan_support wowlan;
- #endif
 -- 
-2.44.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
