@@ -1,87 +1,90 @@
-Return-Path: <linux-wireless+bounces-7766-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7767-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 554808C80E9
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 May 2024 08:25:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 076CD8C811B
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 May 2024 08:55:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10211282E4A
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 May 2024 06:25:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B13D2282B53
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 May 2024 06:55:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C721B134BF;
-	Fri, 17 May 2024 06:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 268E314A8D;
+	Fri, 17 May 2024 06:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="tk+gIjdr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ekm0KA1N"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B4A134A6;
-	Fri, 17 May 2024 06:25:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E498214280;
+	Fri, 17 May 2024 06:55:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715927135; cv=none; b=CDC+OMVSYHrEjggq5ct3byF/0CdJYcx3dBbjRj+2ntJeCtDvO2eNYoiM0boo9iBaS8KnMgZ4SDUHF/STHvdb8HzwRMoYcM2NIEq8eaLcSqGmkRl/iafQIZ5jaoKBx/ApGSy2HL7d9zKWmZvVnPrQE4ZcnoViz7eIzNXQ4OrQAGE=
+	t=1715928908; cv=none; b=WnizOKiSpo79rIRBJevlY3TX+4hq7u28vYvWtkZn6iaKawIx8UvZRS8xOm4iurViJJxODq1zZd9yi9ey5GW4y7Gr+gmag19DgVLeVuMRHMEjsSvCb3D2I2xSUIX9KRLj1nW8TDD0xh6oHvzFZCLsisk5Q9Kf1Wn5RCAg8hF5Pnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715927135; c=relaxed/simple;
-	bh=qt28qpGihbsLNTy0QXcH6ifyS6+qu1VlVPg9r03RQhY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Yoto5i5D+3PU4geFUPi1iG+Y0m1VIdZQ7+m/70HpksE81gSOipgozfIFwhHMkyxKgjoXbYvsBEDrs5s8M0b8g+UUqYd6BckJyOo2QRpljqdecci3kSv9hGTTNA3HakZRxdZXWqY9fldqDJMZBbTMMXLWzOGXcoAfWwFo/v25x1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=tk+gIjdr; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=qt28qpGihbsLNTy0QXcH6ifyS6+qu1VlVPg9r03RQhY=;
-	t=1715927132; x=1717136732; b=tk+gIjdrr8g9u5ZUUYdHSRIKOd4JG17w4s2NoFRnogztVV8
-	S0z2JARR68+V3lgZQMwqEV6BV94SQiGHcBEaBo0axNfx7WXFf3i2jYS2L3tw2uNaEEuHJkDVUMpN9
-	xtkZNLERmiwppVIegzpN4Cbr6f/3593ecjYD0ukSmZP8yXNDwvrFXZ1AJS9u+8FtFQcZK1Xbz7hZ7
-	0Fx/B11q+/jiy3h6ESPl1Ldz3PAKI6W0EGDz7TpLRkMSYOC9XRD3mBlFG5GSkJue0JHn3EowTprP9
-	aeX5ujB0cKzkWn1y3cEkg4Tvmd1HOrUVQi8xdALnCMIqHAHFpxZFhn4txBm0OGAQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1s7r1p-0000000AVQj-3PVg;
-	Fri, 17 May 2024 08:25:18 +0200
-Message-ID: <e2363a1ca932cf1534f9f006e6cf4f30a8c7a0cd.camel@sipsolutions.net>
-Subject: Re: [PATCH 1/1] wifi: mac80211: Avoid address calculations via out
- of bounds array indexing
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Kenton Groombridge <concord@gentoo.org>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com,  linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-  linux-kernel@vger.kernel.org, keescook@chromium.org, 
- linux-hardening@vger.kernel.org
-Date: Fri, 17 May 2024 08:25:16 +0200
-In-Reply-To: <20240517002352.12717-1-concord@gentoo.org>
-References: <20240517002352.12717-1-concord@gentoo.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	s=arc-20240116; t=1715928908; c=relaxed/simple;
+	bh=SW3ZvHpjpz+gPQr9MPYdbKfCS55xJrzsHF5C2fLpP4A=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=BwA4vaRhLO5BskdpIOgvnFqrb0M9NxZgJ7h0sbtPTiVfBjvav7ri77WgJNXcTZtauk4frUkZx51kZnLnOvqWjgkGJ5vkgNBNJTmpPF/Hk7FRs5lEvUtsZyXRgynhsEw6aQRCeIrM0ZabmE9BH/MH5SwpD1M3ogm61Zd5DtF1ME4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ekm0KA1N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA7AFC2BD10;
+	Fri, 17 May 2024 06:55:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715928907;
+	bh=SW3ZvHpjpz+gPQr9MPYdbKfCS55xJrzsHF5C2fLpP4A=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=Ekm0KA1N3po+VN2nl8FSMBex8fDe067oxg0wA6WvdlgUU58un+aV1gF21ycHzFrse
+	 eHk/2boT+e2eArMJguHCfklPoa6WgJZMabAf0T2arkdy2uwIkOX2n4cbz5stwQ8g34
+	 j4g9t1HYqnhFVvov+MxuBzN6hUg2JS0LM2bp5Xukj3RwBbjvWlltFkpXIoQlGp7nMU
+	 3k3RMri0gA+wPzyiPd7riO9xOkKMTD6CQMX7YrMjB9XA+iMK3lrSFrFyVXzD4mh6N8
+	 a0L0WeIXt0S4znk4ICduCdvMDTSenLJRPct99xMhXuIIZr38cMNaAsJlQ13q9bjxWs
+	 krm+GumiOio+w==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH wireless-next] ath11k: Fix error path in
+ ath11k_pcic_ext_irq_config
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20240508185902.70975-1-leitao@debian.org>
+References: <20240508185902.70975-1-leitao@debian.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: horms@kernel.org, Jeff Johnson <jjohnson@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+ linux-wireless@vger.kernel.org (open list:NETWORKING DRIVERS (WIRELESS)),
+ ath11k@lists.infradead.org (open list:QUALCOMM ATHEROS ATH11K WIRELESS
+ DRIVER), linux-kernel@vger.kernel.org (open list)
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <171592890381.3197586.18328283621008534575.kvalo@kernel.org>
+Date: Fri, 17 May 2024 06:55:05 +0000 (UTC)
 
-On Thu, 2024-05-16 at 20:23 -0400, Kenton Groombridge wrote:
-> req->n_channels must be set before req->channels[] can be used.
-> Additionally, memory addresses after the "channels" array need to be
-> calculated from the allocation base ("request") instead of the first
-> "out of bounds" index of "channels" to avoid a runtime bounds check
-> warning.
+Breno Leitao <leitao@debian.org> wrote:
 
-Thanks. Can you please drop the cfg80211 parts from this to match the
-subject, the code there is broken in other ways too, I have a fix for
-all of that:
-https://patchwork.kernel.org/project/linux-wireless/patch/20240510113738.41=
-90692ef4ee.I0cb19188be17a8abd029805e3373c0a7777c214c@changeid/
+> If one of the dummy allocation fails in ath11k_pcic_ext_irq_config(),
+> the previous allocated devices might leak due to returning without
+> deallocating the devices.
+> 
+> Instead of returning on the error path, deallocate all the previously
+> allocated net_devices and then return.
+> 
+> Fixes: bca592ead825 ("wifi: ath11k: allocate dummy net_device dynamically")
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> Reviewed-by: Simon Horman <horms@kernel.org>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-johannes
+Patch applied to ath-current branch of ath.git, thanks.
+
+637c435f08ea wifi: ath11k: Fix error path in ath11k_pcic_ext_irq_config
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20240508185902.70975-1-leitao@debian.org/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
 
