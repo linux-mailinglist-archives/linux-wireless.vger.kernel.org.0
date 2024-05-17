@@ -1,166 +1,165 @@
-Return-Path: <linux-wireless+bounces-7796-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7797-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 239428C8B28
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 May 2024 19:37:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D028C8BBA
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 May 2024 19:55:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD9C12825D3
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 May 2024 17:37:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE1A82837AF
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 May 2024 17:55:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76E6813E3EE;
-	Fri, 17 May 2024 17:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9646A13E038;
+	Fri, 17 May 2024 17:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="emn3CkST"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q+gXZ9eq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B50213E028;
-	Fri, 17 May 2024 17:36:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E47913E02F;
+	Fri, 17 May 2024 17:43:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715967401; cv=none; b=VGD+W1XxUso2VlvuOvz4lxOKEOG1+CgMdYH21RRFwrGzncpE6uX2rvfoTeeEHPH29OY+v7d//yMlX7Zpm1LmdWg/0Q0Ow6NTNHQM5w2kDcyPbB/vgn1f05c54oSM9ndNq8DwMOIyRgbeC12qwPOBes4JNFpurb5I1nclEbQAOg4=
+	t=1715967793; cv=none; b=CDfM9c95J2babnYf17zN4E4KURJUDTLBGoWqhvErHo/7JzvAmhGr1bCZe7mxjDMDO49ZQznjs6aHxfZV4S7/M9ozCH2g3uENFu2U1zM7TLCCD7AXYHIIXos8Kw7kpImvsKZ1al46N+SIlaBkYTVKdcVhIx9SnCRi3EnM32ZUw0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715967401; c=relaxed/simple;
-	bh=l7K75G8hEZf6Nf3Gd+zb5LouEwarRLauIdJPMoFivlA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HHDU2a+DAWtPRcmt4C6PNdPbseXKcMelAX2wzvQMYCRqxHPakEdRVvQff3WPguwpodBLpV7fPbdCvZ94NfW0WSvQDuc0Gmbi/M37I2hQcmH6pFp7wlAmn5n+co7hQSDkGkpVMKwa0McBxDQvO/xYNevxFiLG7sf4OWnflrwmeZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=emn3CkST; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+	s=arc-20240116; t=1715967793; c=relaxed/simple;
+	bh=cKe09rwHn+hvO59C80d/OIasI62hIJZbA5Eb140c1Vc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MElrFt7i6Dl+2EcKXyRdvPhyU1xw4dE53wB72MZsxcu0dXKbV4aiheppwP14RPkuLYnzVG2UcB/sPQagmvxbP+8FzNvPuigqrcyl2p2unEXeq7LNrQi9ZvEdg9Bpl+ha+lWD4STV/DzUYczhSdEfVNKmDbubNMLAgh+Y+HKHoWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q+gXZ9eq; arc=none smtp.client-ip=209.85.160.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1ee954e0aa6so16680785ad.3;
-        Fri, 17 May 2024 10:36:39 -0700 (PDT)
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-43defa9d4f9so4032151cf.0;
+        Fri, 17 May 2024 10:43:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715967399; x=1716572199; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rzMfxbAB8QJEcJdIySGROcUOqAKXWq8nqUdcExbi1Zk=;
-        b=emn3CkSTmGwb7Ev6REZ9Z3U3XD4Y+jPjdTTKRrd1xunPWgI+cGM6iP3TELOI5V8ATa
-         VbiGe+xcAirEDS5iorMu2B+VEBPivgYYBJAFyyk/dtcE+BdDAEcBR/OSDeMAia+M02aV
-         JtJr53ZjOlMBaf51DPBBJSXIlVEj8/ta7pTQaBfTGVSwemtnu9tMYnJUuHNl2FkBsWa2
-         RY29x4C0oql3h5xd/BScqyiM9KMAjCxcwhA5cszmGMdkeAyAQyWwOl4SEGtmK+Cfk17e
-         ZUmUwjzXpEuOreMImVvNFBtQTMD0YnZzxGLGWYMvA88gK3n/MpOcCwIl6WzZ4yooz3JS
-         JzXA==
+        d=gmail.com; s=20230601; t=1715967791; x=1716572591; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ryqqSgZ4nUH3oYGevXgTxRYsY6XPeTcaQtxxGQHDrRM=;
+        b=Q+gXZ9eqcO6qH6/vWW583ky6VGc1JtBoGrMiigAJdtlRGRNsYPHCMl4OZa9/xpdeXw
+         xGAoHG5GTTKTaj/dit/i5i4WofZFIm347xKwXXf7knKvXQHvWX/NbjwLFCxlnVibYTJx
+         ugcRB3EXs9u1gyBoHg3qW3WuEjG8JvcLk1kRHPz+wt5iD5eXdKHTHwufJh6tKf28RORx
+         GQ8ayoRXz8H4IOxOxWSIr/kDsyWt3gu7KzETgdSO+Kc97A0S0l/PqYvZ96/dtRAgjNBh
+         r7dSVqwxhi1lvkjh+tzC/SaERkbWRjROF9ypviWDlKVs3Cy/OpoeLzRF5skNg8ws7Cmc
+         IgUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715967399; x=1716572199;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rzMfxbAB8QJEcJdIySGROcUOqAKXWq8nqUdcExbi1Zk=;
-        b=tRaBInC5CBZVJiTyNhPeAMF0Mv8ZyhDngT/Ke4lsBz6dnWLTVbrxiYmDGKR3474tHa
-         Jw0S2Pd1w9vB5TttyIKUZ3vkElFqN8D82iwb6kL7vCXbWz+ZO+kOgSp2q2lMeYG13wJ3
-         Pd4jLhwNb/5j//D5V0kA6eEHTeRPM+KlHNN2ZXDOKj2sqnyMigDYM3Yyxzog0n99DW50
-         DbdwYUgj+mBGDnl1Wi3MfB/KObA9dlYM5hJ0VYDOGEqfhhsM9xkE6J3r09MMgCufkcSJ
-         MFPDLIL9Qyg8pNl52R6ymP0RQyefKT1UiQ+E7Y0jutAqKo/SZ6YeNcoI1ileC9aAa4W0
-         uyJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUeikZ+5A7mGmqeVlRxUOHe3Z4BVx7A6SdRIJ9KlcdOS9QSNvCDsre7aHGEDTt/hTkAM3qO0uM2xeP+jtEHZh5JsSeK9A/+tFrYQA1Gt+sOL3ewNO6LlYK9y7DD7mpAtqpfD7DjXB75ufvKHVU6kM3a/elOuYDfutBUvo4a9bI4BCb2VDcyzEXzDexUc9t0in/T8C2XOhPKn7wWpdtpjhPEZSUvfBbj5JIuV5SOt4ozapoAEBa6p9eoNzUqVSV+FTR0IAeRERSnOL6XqGk495fk7J/QsGArESB7IkyWGLl2UfJVr+STIxS8eHdJJiLcNAzso4UUQBPch6E8dfNENIPvXxQAsave+ZjX9aqXjIT96Hz/aHminfcbngd99gozkR8JcHcG37i5SZidszxbbVcf9ugBd6iBJBSvP3YPM6hIvwhrKlXpceN2VyhqUDGta0Y2tQ8Y92YBThBW9tUwaEcwpwLLtnkcoENUdMSzNo1PisKVaRS0s0oNoAWHaeTm033idWAzW8Z6AMcGqpdUZef30iZpnny7DOCCRdx6bdPIPfc8m8lwMbo6DXkdKIQnaqlplZsK6CLKNgppIYSJ7U793bTJTH44UOdcWLKNUTDeK1XJMU+un4iEAjTM4sbk5xfiplNYftumz3+FD+ZUcLZWXKJBMvMx7eT5NA18jT46CIW4oBwdkZsngjutYGEYxbL/3oE5mRVrHB1dgdQB0YljgIrh2vfVWMnSdGUfmhbsUn3exZybXMRR9PJNk7TMh60ZKjaGM3YyEgvEgQVWpZ4sxK1fHIUzkaJHi56sH9Vb1HRQuX6pNOHreK/nEi3g6aW7gIA7T1ww4N6bLeNtZRSJMBfQ7RJIfpa4nB66EJI9p+xXnabbY1FucmTW2fAhf83tzqzRTLEML3+RBqx6xPn5uR2l/K2m0V/YFHhfHKN5kNYIOcc0Y+KpHUPL2A==
-X-Gm-Message-State: AOJu0YyVJKJDHI54++5KLrCtRmLug9WO1yHYT9xtbae1yHeJBFY7OAOO
-	4meyTffhXTst2nI7rjVckVaPWZ7pOCdtS8zLnwvw9MCn/zh6jfsS
-X-Google-Smtp-Source: AGHT+IHJ9PZtASiLb9HJkYrHy1DRhdQlVEuKbRr0NYIRv4Tx+av91BIA0wx1gBcIQQlm9sd2COIQnQ==
-X-Received: by 2002:a17:90a:9606:b0:2b9:a299:928e with SMTP id 98e67ed59e1d1-2b9a29994c9mr10436893a91.24.1715967398710;
-        Fri, 17 May 2024 10:36:38 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2b67105666csm15749258a91.8.2024.05.17.10.36.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 May 2024 10:36:38 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Fri, 17 May 2024 10:36:37 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
-	Linux trace kernel <linux-trace-kernel@vger.kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-	linux-block@vger.kernel.org, linux-cxl@vger.kernel.org,
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	amd-gfx@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
-	freedreno@lists.freedesktop.org, virtualization@lists.linux.dev,
-	linux-rdma@vger.kernel.org, linux-pm@vger.kernel.org,
-	iommu@lists.linux.dev, linux-tegra@vger.kernel.org,
-	netdev@vger.kernel.org, linux-hyperv@vger.kernel.org,
-	ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org, ath12k@lists.infradead.org,
-	brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
-	linux-usb@vger.kernel.org, linux-bcachefs@vger.kernel.org,
-	linux-nfs@vger.kernel.org, ocfs2-devel@lists.linux.dev,
-	linux-cifs@vger.kernel.org, linux-xfs@vger.kernel.org,
-	linux-edac@vger.kernel.org, selinux@vger.kernel.org,
-	linux-btrfs@vger.kernel.org, linux-erofs@lists.ozlabs.org,
-	linux-f2fs-devel@lists.sourceforge.net, linux-hwmon@vger.kernel.org,
-	io-uring@vger.kernel.org, linux-sound@vger.kernel.org,
-	bpf@vger.kernel.org, linux-wpan@vger.kernel.org,
-	dev@openvswitch.org, linux-s390@vger.kernel.org,
-	tipc-discussion@lists.sourceforge.net,
-	Julia Lawall <Julia.Lawall@inria.fr>
-Subject: Re: [PATCH] tracing/treewide: Remove second parameter of
- __assign_str()
-Message-ID: <5080f4c5-e0b3-4c2e-9732-f673d7e6ca66@roeck-us.net>
-References: <20240516133454.681ba6a0@rorschach.local.home>
+        d=1e100.net; s=20230601; t=1715967791; x=1716572591;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ryqqSgZ4nUH3oYGevXgTxRYsY6XPeTcaQtxxGQHDrRM=;
+        b=KMsjruzbGSDV9eIxKwI6C2K3TZZb0qjLP0fXeBy6tn+W0uZwKj/F+jNxuPUdPNbUho
+         9wtd2OKkv79gmpAqLO6EgDOBx1KxV/PZLLz0TrILJIryYMCZ6HgRKUKnw3ZdbcjUx9De
+         UhXVy5XBLN+kQCzpFydxzOFQYtAChTW41nejzYldZm210CbBTdIDv2evlIWmKDyFnqWx
+         LjpHOZiHfX0FwMctGBr2ajNwEKQpsImXJPeyTWo2wiy+vhHNsrPv7DNSX4ipyNDHiyI2
+         XU3/0OBxmMWtimEKqERVnz93nAbxQ0RPzgSfZpsCi4IsSl+850/tIoBXDaHzaYT1IQgY
+         c2tw==
+X-Forwarded-Encrypted: i=1; AJvYcCWIQrkPNd+7buFqrCDDz8g7K5qXNr179nEI83nrJAHMNFsMSYozPKwO2SO1HseVevXpW9WNSPSqNLganToW3ry5cw/Xt8RylYrI9v1DzCnvwEOlx1qSZx3lUObhMEZUIQr1gzZSf3yqyxzEeuk=
+X-Gm-Message-State: AOJu0YyErSdKYHn/BSFwfavPiHdTh1/+xcGNAbf5nx6u62r4cq9LUKMJ
+	4g/xdL4oA3Hgp/XSK5YPuCqZRXFa+04SsJQMobUuknsu2AHhf8g2
+X-Google-Smtp-Source: AGHT+IGgAE1IEXNbRI6p1LgGM0yXpCZR7R1i36UUUKT0OsOO1YDtfrzFBYamNQezxB3WHoNFZC/Hmg==
+X-Received: by 2002:a05:622a:6:b0:43d:f86a:4e3b with SMTP id d75a77b69052e-43dfdd0cc51mr241105931cf.58.1715967790831;
+        Fri, 17 May 2024 10:43:10 -0700 (PDT)
+Received: from [10.7.1.107] (static-74-103-39-5.bltmmd.fios.verizon.net. [74.103.39.5])
+        by smtp.googlemail.com with ESMTPSA id d75a77b69052e-43dfd2dbd68sm102430101cf.12.2024.05.17.10.43.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 May 2024 10:43:10 -0700 (PDT)
+Message-ID: <aa9abbd9-32c7-1f4d-34e8-a07956e775a5@gmail.com>
+Date: Fri, 17 May 2024 13:43:09 -0400
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240516133454.681ba6a0@rorschach.local.home>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [PATCH] thermal: adding check if the thermal firmware is running
+Content-Language: en-US
+To: =?UTF-8?Q?Guilherme_Gi=c3=a1como_Sim=c3=b5es?= <trintaeoitogc@gmail.com>
+Cc: miriam.rachel.korenblit@intel.com, kvalo@kernel.org,
+ rafael.j.wysocki@intel.com, daniel.lezcano@linaro.org,
+ johannes.berg@intel.com, dmantipov@yandex.ru,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240517141655.2797-1-trintaeoitogc@gmail.com>
+ <a1cd16d2-1fbc-6543-c17c-a321ac72a2f3@gmail.com>
+ <CAM_Rzfb8f4ki4UB2+9EtnpJL8oMY6x0q=HmDm92mdbhLQafFOQ@mail.gmail.com>
+From: Jonathan Bither <jonbither@gmail.com>
+In-Reply-To: <CAM_Rzfb8f4ki4UB2+9EtnpJL8oMY6x0q=HmDm92mdbhLQafFOQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, May 16, 2024 at 01:34:54PM -0400, Steven Rostedt wrote:
-> From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
-> 
-> [
->    This is a treewide change. I will likely re-create this patch again in
->    the second week of the merge window of v6.10 and submit it then. Hoping
->    to keep the conflicts that it will cause to a minimum.
-> ]
-> 
-> With the rework of how the __string() handles dynamic strings where it
-> saves off the source string in field in the helper structure[1], the
-> assignment of that value to the trace event field is stored in the helper
-> value and does not need to be passed in again.
-> 
-> This means that with:
-> 
->   __string(field, mystring)
-> 
-> Which use to be assigned with __assign_str(field, mystring), no longer
-> needs the second parameter and it is unused. With this, __assign_str()
-> will now only get a single parameter.
-> 
-> There's over 700 users of __assign_str() and because coccinelle does not
-> handle the TRACE_EVENT() macro I ended up using the following sed script:
-> 
->   git grep -l __assign_str | while read a ; do
->       sed -e 's/\(__assign_str([^,]*[^ ,]\) *,[^;]*/\1)/' $a > /tmp/test-file;
->       mv /tmp/test-file $a;
->   done
-> 
-> I then searched for __assign_str() that did not end with ';' as those
-> were multi line assignments that the sed script above would fail to catch.
-> 
 
-Building csky:allmodconfig (and others) ... failed
---------------
-Error log:
-In file included from include/trace/trace_events.h:419,
-                 from include/trace/define_trace.h:102,
-                 from drivers/cxl/core/trace.h:737,
-                 from drivers/cxl/core/trace.c:8:
-drivers/cxl/core/./trace.h:383:1: error: macro "__assign_str" passed 2 arguments, but takes just 1
-
-This is with the patch applied on top of v6.9-8410-gff2632d7d08e.
-So far that seems to be the only build failure.
-Introduced with commit 6aec00139d3a8 ("cxl/core: Add region info to
-cxl_general_media and cxl_dram events"). Guess we'll see more of those
-towards the end of the commit window.
-
-Guenter
+On 5/17/24 13:25, Guilherme Giácomo Simões wrote:
+> Em sex., 17 de mai. de 2024 às 13:57, Jonathan Bither
+> <jonbither@gmail.com> escreveu:
+>>
+>> On 5/17/24 10:16, Guilherme Giacomo Simoes wrote:
+>>> In the dmesg is showing the message "failed to read out thermal zone"
+>>> as if the temperature read is failed by don't find the thermal zone.
+>>>
+>>> After researching and debugging, I see that this specific error is
+>>> occurrenced because the thermal try read the temperature when is started,
+>>> but the firmware is not running yet.
+>>>
+>>> For more legibiliti i change the tt.c for return EAGAIN when this was occurrence.
+>>> After this change, in my computer I compile and install kernel in /boot
+>>> and in my dmesg the message "failed to read out thermal zone" is not show
+>>> any more.
+>>>
+>>> I would like to thanks for Rafael Wysocki <refael.j.wysocki@intel.com> for
+>>> your suggestions in mu first patch that results in this another patch.
+>>> ---
+>>>    drivers/net/wireless/intel/iwlwifi/mvm/tt.c | 10 ++++++++--
+>>>    1 file changed, 8 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
+>>> index 8083c4b2ab6b..68ab9966330c 100644
+>>> --- a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
+>>> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
+>>> @@ -620,8 +620,14 @@ static int iwl_mvm_tzone_get_temp(struct thermal_zone_device *device,
+>>>
+>>>        mutex_lock(&mvm->mutex);
+>>>
+>>> -     if (!iwl_mvm_firmware_running(mvm) ||
+>>> -         mvm->fwrt.cur_fw_img != IWL_UCODE_REGULAR) {
+>>> +     const int res = iwl_mvm_firmware_running(mvm);
+>>> +
+>>> +     if (!res) {
+>>> +             ret = -EAGAIN;
+>>> +             goto out;
+>>> +     }
+>>> +
+>> You could skip using the res variable and move the mutex lock here and
+>> simplify the above a bit. Ex:
+>>
+>>           int temp;
+>>
+>> -       mutex_lock(&mvm->mutex);
+>> +       if (!iwl_mvm_firmware_running(mvm))
+>> +               return -EAGAIN;
+>>
+>> -       if (!iwl_mvm_firmware_running(mvm) ||
+>> -           mvm->fwrt.cur_fw_img != IWL_UCODE_REGULAR) {
+>> +       mutex_lock(&mvm->mutex);
+>> +       if (mvm->fwrt.cur_fw_img != IWL_UCODE_REGULAR) {
+>>                   ret = -ENODATA;
+>>                   goto out;
+>>           }
+>>
+>>> +     if (mvm->fwrt.cur_fw_img != IWL_UCODE_REGULAR) {
+>>>                ret = -ENODATA;
+>>>                goto out;
+>>>        }
+> Hey Jonathan, Thank you for your suggestion.
+> I sended a v2 patch of this patch
+> https://patchwork.kernel.org/project/linux-wireless/patch/20240517171311.3705-1-trintaeoitogc@gmail.com/
+>
+> If you want, you can send this suggestion in this patch v2.
+Hey Guilherme, no worries.
+>
+> Thanks.
 
