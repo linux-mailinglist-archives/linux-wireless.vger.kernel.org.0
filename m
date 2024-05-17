@@ -1,147 +1,91 @@
-Return-Path: <linux-wireless+bounces-7780-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7781-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A56968C84DE
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 May 2024 12:30:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F00F68C8583
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 May 2024 13:22:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C3871F22B42
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 May 2024 10:30:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CFA71C2311A
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 May 2024 11:22:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36C8B79E4;
-	Fri, 17 May 2024 10:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D42793D541;
+	Fri, 17 May 2024 11:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hifiphile-com.20230601.gappssmtp.com header.i=@hifiphile-com.20230601.gappssmtp.com header.b="APErmqrt"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="OY57J6Cy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E8D3C463
-	for <linux-wireless@vger.kernel.org>; Fri, 17 May 2024 10:30:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FD83D39B
+	for <linux-wireless@vger.kernel.org>; Fri, 17 May 2024 11:22:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715941825; cv=none; b=H3rgPUPM0JBBijwNoY+Qb03tpImbiE9zDCskbWuhbUCDrtse7G13nKx6WntC70vJiFVVUREyzjHGH1DjT3tQHr4pqusBlE+v9TevEohLNEo2ie2NgUifoYzAbStCzAxCBdjMrKbl555FJVmWvB6+l/i+r2QGgnBgtz9P1OjoN1s=
+	t=1715944960; cv=none; b=tFWPsnWtIEYAwz81/0/bQLp21cWgpOHTbdHx4EM99CxPT1/LNl0WSoESK0hrsPRssw34MQyU6a112zIqqxLXwSRMUj35sdxJGEL9GDqKmWUiMlPuIxmYRRZ5Lyeiyllui3DGlYnwBN1RSDAwXbXbhmZyKfooQVcUF41zgpAQno0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715941825; c=relaxed/simple;
-	bh=oAI1ijvpICcuf3OoUxBj4dMmMQM+EPJnB8UWOilvd64=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=krEJVTxreKMwu8muqeATilx/o2RlRXSFuWEqCDU/vZHVRMyPANcwKjFR4izCYhR53Nj2q41VHtG0AoMkt8hK7xXyAFGEbAlqZNXdO6cJSCfzgKFvW6WNoPjluzNCOy6britTigj/2rjJKa7DHfcL7jF5tg6dw0Vn2XvnLezD4Ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hifiphile.com; spf=none smtp.mailfrom=hifiphile.com; dkim=pass (2048-bit key) header.d=hifiphile-com.20230601.gappssmtp.com header.i=@hifiphile-com.20230601.gappssmtp.com header.b=APErmqrt; arc=none smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hifiphile.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=hifiphile.com
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2e3e18c24c1so19722841fa.1
-        for <linux-wireless@vger.kernel.org>; Fri, 17 May 2024 03:30:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=hifiphile-com.20230601.gappssmtp.com; s=20230601; t=1715941821; x=1716546621; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=UBRIuLBToc24VMF+MuWCiYmiRqOpJ/ElqTpxC0jMPZQ=;
-        b=APErmqrtL+gtFeQljPMgxAKHP5So8DiC5cm3x0vTId0M0OzKuPj54ZlTObthnt/T4+
-         O1+9BeJk8GzVHjpC2Fr+rP9ulcflru2Pd4gLLj1cBp1olj62efXIdCePaoDDYXIHaYMS
-         olY3l/7Vm/vebmes/04laglcCsAviSA7ONlXxR1JAznNDajdPx3yjRjyt8cfUoi0UEHW
-         G3mKrT8g87sB9ClHteBbsx0i3x58kfJK16eiBxp2TF4Go5IsFMBw6wZ4n7j8k5wPQpCy
-         kr+Mq4GH3GlXP7xhDjv5/4NZDZeOT9aOEs5mfM4Fu/6wO2J0NC/P3rzjYtUeZovzISYk
-         hs9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715941821; x=1716546621;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=UBRIuLBToc24VMF+MuWCiYmiRqOpJ/ElqTpxC0jMPZQ=;
-        b=S28zdVtKrf8PtR3O8fDVvKnfRp8UDfQvNywTeGP0Tz/xeeUCihWkvoJJSzaTw3ntRV
-         4jslWRDrWvIX/pnK0uc0wnVLEVR2zUVmj1wakys2ojglyANVDI7ojM/kMyLJQnbqsgWd
-         728ATDDNyC1ffiY8ZVNM/0xHE3RwwTHYj2qVFGHTDCP8BIXtiQVyy+OdzvlD6VdhgStM
-         mjR4sv1jKrobEdvelm3hWCseci2ppsm1iV5+Eux6w1o07SjY8sfj5+rOJqrP7Al+7ZgO
-         9bXsXPdt3IxXL8GkHUGsPVRTSlmcPPaFNlwxwRREysThH7l4F1DppIp7CUlLX43GTT62
-         j5hQ==
-X-Gm-Message-State: AOJu0Yz8x8fiQm9OF2jZ5x/4OglF0YB4mavHPUTycBbf3rNrM9/tigQh
-	d57v0UKedGzQmNxg7o1Vk7gkIYRi4MuEfLNPY/GiiwuKVb48CEHuHyJVHXzrLA2JfQ01oQRH2K5
-	HnkMyAkpsth0Htxtw1jPaAtABdssUGk43PHX6yYcuX4Z7QTB6sqdKmw==
-X-Google-Smtp-Source: AGHT+IHj2fKPUSAVZwq4O4fIMuyPhRH/gWFDpEiKulGYopt90NWTNdCd8j4MMxhzghHUxcrdIDfh48rHXs+1gE5XbXc=
-X-Received: by 2002:a05:651c:510:b0:2e2:115b:effd with SMTP id
- 38308e7fff4ca-2e5203a47aamr165526631fa.47.1715941821099; Fri, 17 May 2024
- 03:30:21 -0700 (PDT)
+	s=arc-20240116; t=1715944960; c=relaxed/simple;
+	bh=h+G8DXXFg4cgpZIZxiaSfxT6BbGzCdpGQVw6JN5aAJ8=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=hOvaAKSYMnmXvLiHu/0DONKp8f6e7T9fDCK0jYzauj+FwnnEvxFNPbzBqIETe/KN6UzWqdiEMI20B4CwfW0Ki97+V/G2B1kQmBClA/YlJ39Bt7NkVB8o4fbcQ1Hx87EW8dRveBVX5vr6t1DGZo5Bie/L4fpx8SWPH0L0yE+F4Lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=OY57J6Cy; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=h+G8DXXFg4cgpZIZxiaSfxT6BbGzCdpGQVw6JN5aAJ8=;
+	t=1715944958; x=1717154558; b=OY57J6CyAeg+YSCdPqRbRr/SfBN5Y+kC7JILpzJu9KYi8OY
+	4GWXb4Xn5PscOzqCC4fRmuh8yPmNQvs/GgAf94wq+5reRWEXCXnKgfVNehg+0zKej1l+08W/5bCZ/
+	fT+AprEpp5A5JZxoOiDRJciQO3kCrZDCzAvBqEAEh4B3AD+rKibcxpHe7L08XpyXy61Ufs2dy3SHo
+	x5KFj9VSl0ZXndtj9TvVeCNpfm0f+vGTJvsCEPBx+C/7NGydQanUMtrfaYtIRtzIkLjNMyjvGbpu6
+	+aqV+PlRLnyhyMx+YuESdgI452n1pIqmf1ZeLCTzTWeQG9d9mmvhHaIdU19mC15Q==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1s7vfW-0000000ApXR-3n3r;
+	Fri, 17 May 2024 13:22:35 +0200
+Message-ID: <38abf8474852d1f9b890e1a346f750b7b7b7682a.camel@sipsolutions.net>
+Subject: Re: iw: alignment issue in print_he_capability() on arm926
+From: Johannes Berg <johannes@sipsolutions.net>
+To: admin LI <admin@hifiphile.com>, linux-wireless@vger.kernel.org
+Date: Fri, 17 May 2024 13:22:33 +0200
+In-Reply-To: <CA+GyqeZ976F6Zbcr5oo2_f_ECiy4tqb0vTjtSNtPexO07N-H4A@mail.gmail.com>
+References: 
+	<CA+GyqeZ976F6Zbcr5oo2_f_ECiy4tqb0vTjtSNtPexO07N-H4A@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: admin LI <admin@hifiphile.com>
-Date: Fri, 17 May 2024 12:30:09 +0200
-Message-ID: <CA+GyqeZ976F6Zbcr5oo2_f_ECiy4tqb0vTjtSNtPexO07N-H4A@mail.gmail.com>
-Subject: iw: alignment issue in print_he_capability() on arm926
-To: linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-malware-bazaar: not-scanned
 
-Hello, I'm using iw 5.16 with Yocto kirkstone 4.0.13, kernel 6.1.55 on
-SAM9G25 cpu.
+On Fri, 2024-05-17 at 12:30 +0200, admin LI wrote:
+> Hello, I'm using iw 5.16 with Yocto kirkstone 4.0.13, kernel 6.1.55 on
+> SAM9G25 cpu.
+>=20
+> When I execute `iw wlan0 scan` kernel report many Alignment traps, looks =
+like:
+> Alignment trap: iw (6376) PC=3D0x00461ff8 Instr=3D0xe1f720b2
+> Address=3D0x0048e771 FSR 0x001
+> Alignment trap: iw (6376) PC=3D0x00461ff8 Instr=3D0xe1f720b2
+> Address=3D0x0048e773 FSR 0x001
+> Alignment trap: iw (6376) PC=3D0x004631c8 Instr=3D0xe1d420b0
+> Address=3D0x0048e771 FSR 0x001
+> Alignment trap: iw (6376) PC=3D0x00463190 Instr=3D0xe1d420b0
+> Address=3D0x0048e771 FSR 0x001
+>=20
 
-When I execute `iw wlan0 scan` kernel report many Alignment traps, looks like:
-Alignment trap: iw (6376) PC=0x00461ff8 Instr=0xe1f720b2
-Address=0x0048e771 FSR 0x001
-Alignment trap: iw (6376) PC=0x00461ff8 Instr=0xe1f720b2
-Address=0x0048e773 FSR 0x001
-Alignment trap: iw (6376) PC=0x004631c8 Instr=0xe1d420b0
-Address=0x0048e771 FSR 0x001
-Alignment trap: iw (6376) PC=0x00463190 Instr=0xe1d420b0
-Address=0x0048e771 FSR 0x001
+Is that kind of thing not fixed up there? Does it even matter?
 
-Upon investigation, they came from LDRH instructions inside __print_he_capa().
+But I guess if we want to fix it, we'd really want something like
+get_unaligned_le*() like in the kernel, not manually memcpy() in all the
+code.
 
-There are 2 callers, print_he_info() haven't issue as variables are
-aligned in stack,  but in print_he_capability() u16 variables are
-directly casted from u8 without alignment check.
-
-I tried a tentative fix which works but it's not clean enough to be
-submitted as a patch:
-
----
- util.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
-
-diff --git a/util.c b/util.c
-index 8a2ba10..941c6bf 100644
---- a/util.c
-+++ b/util.c
-@@ -4,6 +4,7 @@
- #include <stdbool.h>
- #include "iw.h"
- #include "nl80211.h"
-+#include <malloc.h>
-
- void mac_addr_n2a(char *mac_addr, const unsigned char *arg)
- {
-@@ -1657,20 +1658,23 @@ void print_eht_info(struct nlattr *nl_iftype, int band)
-
- void print_he_capability(const uint8_t *ie, int len)
- {
-- const void *mac_cap, *phy_cap, *mcs_set;
-+ const __u16 mac_cap[3], phy_cap[6] = {0}, *mcs_set;
-  int mcs_len;
-  int i = 0;
-
-- mac_cap = &ie[i];
-+ memcpy(mac_cap, &ie[i], 6);
-  i += 6;
-
-- phy_cap = &ie[i];
-+ memcpy(phy_cap, &ie[i], 11);
-  i += 11;
-
-- mcs_set = &ie[i];
-  mcs_len = len - i;
-+ mcs_set = memalign(2, mcs_len);
-+ memcpy(mcs_set, &ie[i], mcs_len);
-
-  __print_he_capa(mac_cap, phy_cap - 1, mcs_set, mcs_len, NULL, 0, false);
-+
-+    free(mcs_set);
- }
-
- void iw_hexdump(const char *prefix, const __u8 *buf, size_t size)
--- 
-
-Thanks,
-Zixun LI
+johannes
 
