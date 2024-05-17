@@ -1,200 +1,149 @@
-Return-Path: <linux-wireless+bounces-7799-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7800-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4054A8C8BFE
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 May 2024 20:00:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B0048C8D71
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 May 2024 22:45:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 616FA1C2263B
-	for <lists+linux-wireless@lfdr.de>; Fri, 17 May 2024 18:00:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C38CB1F22747
+	for <lists+linux-wireless@lfdr.de>; Fri, 17 May 2024 20:45:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBC8513E401;
-	Fri, 17 May 2024 18:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23A873C489;
+	Fri, 17 May 2024 20:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HW4kVh7M"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L3cGhsKG"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1121713D88B;
-	Fri, 17 May 2024 18:00:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18C11A2C1E;
+	Fri, 17 May 2024 20:45:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715968829; cv=none; b=PKiO8b30p6OKI1lgCG25MzDZk5FWzMcTYuugkgYe04s+sihlm2tdf9MaMWs+mWG+po142+dGrLf5JlsiuHsMOBBfCtQGvPMMVC+fQa8zRVyqtTUiEY6nTQrKb+mYmYpYO3VV4vtyq3OOfEnTZ1XGNAtMXvef5YbBdlrHxeGjU44=
+	t=1715978738; cv=none; b=LmWvKXIdBEqvUgOnlx1xAIfpi2M+xEvbNWmMTCRw1/BvUEMfv/X5fMBPjXa7ICa/QnpnPKUzLqF+Q3bvuDzLErutUHqdenIrFkFCyaEvZBvBbwHC2+6e3hFxK+fdPK4WNSwDfRy6x1j8kvqtJ2fuH+cUrf1VVYjAoPXlJTHbiiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715968829; c=relaxed/simple;
-	bh=hozAzpQMXObpbdTk7Ibzjpn2uslGrLTRVG5E8LS6QJA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HwH/jvTwkNY1CGaK1H3l3hV6WqCOVqPoj8nYiJPtHZe5aaDzOerBiTgmTk3dloDvfABHjpRX7HuvVTNvzSZeMtn4gtbXZNoDwdXwxAX1FlNVr29CrBfUPzGS0L5TBZG6j4tzEhSCap+JskwXLYlifjKZJSK1JgyV3g55UGCrATg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HW4kVh7M; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1f08442b7bcso17357805ad.1;
-        Fri, 17 May 2024 11:00:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715968827; x=1716573627; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=w/StxRW/VLxGkt1YAzvKzW9ayexnITae0WPMFzYawxM=;
-        b=HW4kVh7Mf1aqJZXkXUCX5NqzIMDENND+Ktu8JZlXTbcrLARq4Fyzu5hfIgcu9+PuXk
-         CzwAEiFryEdp7zEYZ7/kjY3xgqz0AVfUAviZ3qxix3G/MRZzblh3TcDG/y77K5wI4QjU
-         J/RkIYmye0aYTb0f/nC+C2FYHXxqaWSDoHP2HQWFLdxu4Iy74tgchlE5zb+dctwtERMy
-         LesV3t6oNdCrKBrtbW6UZ+0J1f/SId6G3tadCWC0iQDOih0CvZk0/AkeOVjRcrGIKBMO
-         y4S9xD9CM2BG9wvv+E4ikhz0Tyxnz6mLFUEgEnk50X6OyoUMleopoh90qQA1oNVkpieV
-         X9og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715968827; x=1716573627;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w/StxRW/VLxGkt1YAzvKzW9ayexnITae0WPMFzYawxM=;
-        b=IDJs7MTwPOqL4buqDR7+7ZM98t60Mz+C5/S0KPKrmuSV8fqtqQ4iWoykMMlUQxr/tf
-         KUXQ02RnXauWQ3S4uOgFdNfMF8J5lpgC8gZSGE5t7j5SLBpEo/lelgO56/S/gJ1G/sA7
-         l31h/6zg5PE3UTNozPuNewiDxhiE2MUGpRCOxJtQkPd4beVvhGAeR03/LLv5xXF5NOr/
-         vPNZ1L0VjixrsBuZjPDc8KmBWoQ3aPHKoCSlKCX4htlmDo2VK75VC0t/9KeLJzq3617K
-         V4a7jmRcddD2tzg0c0SzVhkwliqX4MiPI1DVg6+hsc7RNmCwvBAkvRUr91jtk2R8PWFu
-         CnOg==
-X-Forwarded-Encrypted: i=1; AJvYcCUy94UqkqeQllkdcJ0YHsgVItz0lPHKJqBqXnAGtSMnEUhQ8n/D8fnzDg4fQ6rxsh+Cx3vxW/WscXujJ4CKrCN6NK2yKhzuFxT0RZFYX1A6e9KfDcInBfIvO5nDCn3RaTMWuazrCpennqNrm3iGLxxfUGRGrvFRlLAMi5Sk3syVzFg+rffpkFBBMmg3IaflCLpqJRLL5v+BR/WHqseN2JNn5HKo0/B1wmeSmoAkkCkkuSkIJvE0Y4QuXmluo6Pjmlo5TRv5CmjhuJEsSxMVgeTEWmPtUxB/gjbrcm6FWYX04nCZArybyp8hCknYe4+HMehRQfY06ZyFkbE3soa8LNe9NaoJ4YMN74bvHW5FfBzkH9WIk8f1Y6h/R3CZH3ZUq2VWdmPOJj7U+HTVU8cg3vhtmrjxWMV41ez/YApwVMindMJDWtwontSU2MgbDkIKGAspHshumJOeS/eBmzhEW5VwcaxE18c0qY+3ykU9O1nBIG8t8tpm9CD1jNAqSyqjJg2X/wBca4Jhk4sV1biIz4E9QQHjWC2Q8lv33YJYxCxL1q6P4WQL2oFQtwv2R36E0yR3Uvup+zIEy/aTxmm2Vmla34FFEp3qiLppDZ+L0g43G03h+5FT0xhT/S26dAnPbZh9ZgOAUCG5Ltq/Eilawi5t0dnrkHDjTWxt612rwg0fxK79K4V76AAgb+rpvyBfw6Qwr19PJoP/dmcrgqQZS+B5AtK5Kr9MWPVX8csgYh3w+EAMeS85leHvalFLRRfomIC5Jnqp7qoDkc/yP1u5kY6kvBqExnM/t/C87bDv+TKY/DcDZKfdJ6NvOlDcjcxc0wZz4G1ljzQ8sIOdO9RQDCjne2R9mbURnm7zWh5CF/K6f1z+dluq7Mn/kfzTYYcz5fBwAC/Uitkp9Og0Bap/iNfP5yYXn5qzgcRO1h51dODYeRfwzf8ZEdeREMpJ4A==
-X-Gm-Message-State: AOJu0YyRMzm/2Xjrt8z7DljUkzB1tV+7rgEbAl7kKiXNm32QWq1Hj6T5
-	CZaiFp6kBqyRjai0CnM2fhX8k569z67BjPY8VNS1RyKKSQXxs+bW
-X-Google-Smtp-Source: AGHT+IGZDVzcY7OCALKn8Hd9OAI6XcssKSQlDPeH3SNH0EqlCaPwK+7ssdLCEtEMxDGdIwihVzJtAg==
-X-Received: by 2002:a17:903:120e:b0:1e4:6519:816d with SMTP id d9443c01a7336-1ef43f51feamr267718025ad.48.1715968827236;
-        Fri, 17 May 2024 11:00:27 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1ef0bf30bfesm159992895ad.175.2024.05.17.11.00.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 May 2024 11:00:26 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <5cff0ff0-48d1-49f8-84f4-bb33571fdf16@roeck-us.net>
-Date: Fri, 17 May 2024 11:00:22 -0700
+	s=arc-20240116; t=1715978738; c=relaxed/simple;
+	bh=gBMpZMWfyzUQArH1dlBEIH4whj5xwu3YOj/Tb2+i0G0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YSS33C2mgnnx8tj+NGG+pQ2Ox5XkhtwLdoijrDhLuEl7XGXmOM6pu37mLfJs/6cTBSQg2IrmfPu3IIR3dozsXEltJvUhNBNWq2eloQ6Zm95vsjG010vs9k7EsMHdfVaNCp+HifWGTVK1NadZ4bHhZJ/2P7EpjNlyEQkzvvn0Ezs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L3cGhsKG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1178C2BD10;
+	Fri, 17 May 2024 20:45:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715978737;
+	bh=gBMpZMWfyzUQArH1dlBEIH4whj5xwu3YOj/Tb2+i0G0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=L3cGhsKGUMzJO6W4/EstavUeJELZ5ekwnE7cgs1Yn7PdX+my8Oyj9ZLXUxvw0rW50
+	 1quIhMJ8qENat703FZDUnlX4WdP4FDoKFbMhwz7djdERi+DgbyeXXZ7ApcNYIS1xca
+	 7xz7+ZZPyKdAPdX/OvnIjA4n15h7+lDF4xkR5Da8xVeThbwn5oRSSdZguL1DpCq1Ct
+	 r89ZNHTb2Yu9lo8JtG+4erZSNzmbHiNCHk5wOZFudIhRvVT2E3Q+h33uPvq7qsU4vT
+	 nf4fZGBvQJfa/kNO3F1XGWRhlRRJudfKeqXTpvVrBdQXeDdcWZFPQ65mC9/YTphQ+B
+	 5od8+ab9nvTCQ==
+Date: Fri, 17 May 2024 21:45:32 +0100
+From: Simon Horman <horms@kernel.org>
+To: Kenton Groombridge <concord@gentoo.org>
+Cc: johannes@sipsolutions.net, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org, Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH v2] wifi: mac80211: Avoid address calculations via out of
+ bounds array indexing
+Message-ID: <20240517204532.GC475595@kernel.org>
+References: <20240517145420.8891-1-concord@gentoo.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tracing/treewide: Remove second parameter of
- __assign_str()
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
- Linux trace kernel <linux-trace-kernel@vger.kernel.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
- linux-block@vger.kernel.org, linux-cxl@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- amd-gfx@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
- freedreno@lists.freedesktop.org, virtualization@lists.linux.dev,
- linux-rdma@vger.kernel.org, linux-pm@vger.kernel.org, iommu@lists.linux.dev,
- linux-tegra@vger.kernel.org, netdev@vger.kernel.org,
- linux-hyperv@vger.kernel.org, ath10k@lists.infradead.org,
- linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
- ath12k@lists.infradead.org, brcm80211@lists.linux.dev,
- brcm80211-dev-list.pdl@broadcom.com, linux-usb@vger.kernel.org,
- linux-bcachefs@vger.kernel.org, linux-nfs@vger.kernel.org,
- ocfs2-devel@lists.linux.dev, linux-cifs@vger.kernel.org,
- linux-xfs@vger.kernel.org, linux-edac@vger.kernel.org,
- selinux@vger.kernel.org, linux-btrfs@vger.kernel.org,
- linux-erofs@lists.ozlabs.org, linux-f2fs-devel@lists.sourceforge.net,
- linux-hwmon@vger.kernel.org, io-uring@vger.kernel.org,
- linux-sound@vger.kernel.org, bpf@vger.kernel.org,
- linux-wpan@vger.kernel.org, dev@openvswitch.org, linux-s390@vger.kernel.org,
- tipc-discussion@lists.sourceforge.net, Julia Lawall <Julia.Lawall@inria.fr>
-References: <20240516133454.681ba6a0@rorschach.local.home>
- <5080f4c5-e0b3-4c2e-9732-f673d7e6ca66@roeck-us.net>
- <20240517134834.43e726dd@gandalf.local.home>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20240517134834.43e726dd@gandalf.local.home>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240517145420.8891-1-concord@gentoo.org>
 
-On 5/17/24 10:48, Steven Rostedt wrote:
-> On Fri, 17 May 2024 10:36:37 -0700
-> Guenter Roeck <linux@roeck-us.net> wrote:
+On Fri, May 17, 2024 at 10:54:20AM -0400, Kenton Groombridge wrote:
+> req->n_channels must be set before req->channels[] can be used.
 > 
->> Building csky:allmodconfig (and others) ... failed
->> --------------
->> Error log:
->> In file included from include/trace/trace_events.h:419,
->>                   from include/trace/define_trace.h:102,
->>                   from drivers/cxl/core/trace.h:737,
->>                   from drivers/cxl/core/trace.c:8:
->> drivers/cxl/core/./trace.h:383:1: error: macro "__assign_str" passed 2 arguments, but takes just 1
->>
->> This is with the patch applied on top of v6.9-8410-gff2632d7d08e.
->> So far that seems to be the only build failure.
->> Introduced with commit 6aec00139d3a8 ("cxl/core: Add region info to
->> cxl_general_media and cxl_dram events"). Guess we'll see more of those
->> towards the end of the commit window.
+> This patch fixes one of the issues encountered in [1].
 > 
-> Looks like I made this patch just before this commit was pulled into
-> Linus's tree.
+> [   83.964252] ------------[ cut here ]------------
+> [   83.964255] UBSAN: array-index-out-of-bounds in net/mac80211/scan.c:364:4
+> [   83.964258] index 0 is out of range for type 'struct ieee80211_channel *[]'
+> [   83.964260] CPU: 0 PID: 1695 Comm: iwd Tainted: G           O    T 6.8.9-gentoo-hardened1 #1
+> [   83.964262] Hardware name: System76 Pangolin/Pangolin, BIOS ARB928_V00.01_T0025ASY1_ms 04/20/2023
+> [   83.964264] Call Trace:
+> [   83.964267]  <TASK>
+> [   83.964269]  dump_stack_lvl+0x3f/0xc0
+> [   83.964274]  __ubsan_handle_out_of_bounds+0xec/0x110
+> [   83.964278]  ieee80211_prep_hw_scan+0x2db/0x4b0
+> [   83.964281]  __ieee80211_start_scan+0x601/0x990
+> [   83.964284]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [   83.964287]  ? cfg80211_scan+0x149/0x250
+> [   83.964291]  nl80211_trigger_scan+0x874/0x980
+> [   83.964295]  genl_family_rcv_msg_doit+0xe8/0x160
+> [   83.964298]  genl_rcv_msg+0x240/0x270
+> [   83.964301]  ? __cfi_nl80211_trigger_scan+0x10/0x10
+> [   83.964302]  ? __cfi_nl80211_post_doit+0x10/0x10
+> [   83.964304]  ? __cfi_nl80211_pre_doit+0x10/0x10
+> [   83.964307]  ? __cfi_genl_rcv_msg+0x10/0x10
+> [   83.964309]  netlink_rcv_skb+0x102/0x130
+> [   83.964312]  genl_rcv+0x23/0x40
+> [   83.964314]  netlink_unicast+0x23b/0x340
+> [   83.964316]  netlink_sendmsg+0x3a9/0x450
+> [   83.964319]  __sys_sendto+0x3ae/0x3c0
+> [   83.964324]  __x64_sys_sendto+0x21/0x40
+> [   83.964326]  do_syscall_64+0x90/0x150
+> [   83.964329]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [   83.964331]  ? syscall_exit_work+0xc2/0xf0
+> [   83.964333]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [   83.964335]  ? syscall_exit_to_user_mode+0x74/0xa0
+> [   83.964337]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [   83.964339]  ? do_syscall_64+0x9c/0x150
+> [   83.964340]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [   83.964342]  ? syscall_exit_to_user_mode+0x74/0xa0
+> [   83.964344]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [   83.964346]  ? do_syscall_64+0x9c/0x150
+> [   83.964347]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [   83.964349]  ? do_syscall_64+0x9c/0x150
+> [   83.964351]  ? srso_alias_return_thunk+0x5/0xfbef5
+u> [   83.964353]  ? syscall_exit_work+0xc2/0xf0
+> [   83.964354]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [   83.964356]  ? syscall_exit_to_user_mode+0x74/0xa0
+> [   83.964358]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [   83.964359]  ? do_syscall_64+0x9c/0x150
+> [   83.964361]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [   83.964362]  ? do_user_addr_fault+0x488/0x620
+> [   83.964366]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [   83.964367]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [   83.964369]  entry_SYSCALL_64_after_hwframe+0x55/0x5d
+> [   83.964372] RIP: 0033:0x6200808578d7
+> [   83.964374] Code: 00 00 90 f3 0f 1e fa 41 56 55 41 89 ce 48 83 ec 28 80 3d 7b f7 0d 00 00 74 29 45 31 c9 45 31 c0 41 89 ca b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 71 48 83 c4 28 5d 41 5e c3 66 0f 1f 84 00 00
+> [   83.964375] RSP: 002b:0000730c4e821530 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+> [   83.964378] RAX: ffffffffffffffda RBX: 000006dbc456c570 RCX: 00006200808578d7
+> [   83.964379] RDX: 000000000000005c RSI: 000006dbc45884f0 RDI: 0000000000000004
+> [   83.964381] RBP: 0000000000000004 R08: 0000000000000000 R09: 0000000000000000
+> [   83.964382] R10: 0000000000000000 R11: 0000000000000246 R12: 000006dbc456c480
+> [   83.964383] R13: 000006dbc456c450 R14: 0000000000000000 R15: 000006dbc456c610
+> [   83.964386]  </TASK>
+> [   83.964386] ---[ end trace ]---
 > 
-> Which is why I'll apply and rerun the above again probably on Tuesday of
-> next week against Linus's latest.
+> [1] https://bugzilla.kernel.org/show_bug.cgi?id=218810
 > 
-> This patch made it through both an allyesconfig and an allmodconfig, but on
-> the commit I had applied it to, which was:
+> v1->v2:
+> - Drop changes in cfg80211 as requested by Johannes
 > 
->    1b294a1f3561 ("Merge tag 'net-next-6.10' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next")
-> 
-> I'll be compiling those two builds after I update it then.
-> 
+> Co-authored-by: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Kenton Groombridge <concord@gentoo.org>
 
-I am currently repeating my test builds with the above errors fixed.
-That should take a couple of hours. I'll let you know how it goes.
+Thanks Kenton,
 
-Guenter
+FWWIW, it seems unfortunate to me that the __counted_by field (n_channels)
+is set some distance away from the allocation of the flex-array (channels)
+whose bounds it checks. It seems it would be pretty easy for a bug in the
+code being updated here to result in an overrun.
 
+But in any case, I think this is an improvement and seems correct to me.
+
+Reviewed-by: Simon Horman <horms@kernel.org>
 
