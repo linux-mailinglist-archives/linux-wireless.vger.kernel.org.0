@@ -1,208 +1,108 @@
-Return-Path: <linux-wireless+bounces-7816-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7817-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43A6B8C8F1E
-	for <lists+linux-wireless@lfdr.de>; Sat, 18 May 2024 03:25:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34A168C8FA1
+	for <lists+linux-wireless@lfdr.de>; Sat, 18 May 2024 06:45:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED7C3282D15
-	for <lists+linux-wireless@lfdr.de>; Sat, 18 May 2024 01:25:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C42A62830C8
+	for <lists+linux-wireless@lfdr.de>; Sat, 18 May 2024 04:45:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0648C6AA7;
-	Sat, 18 May 2024 01:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D42BE65;
+	Sat, 18 May 2024 04:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g0oui8BW"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=s.l-h@gmx.de header.b="VHHaOvfH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D3965C;
-	Sat, 18 May 2024 01:25:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468EC2F43
+	for <linux-wireless@vger.kernel.org>; Sat, 18 May 2024 04:44:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715995513; cv=none; b=SX2g7qNzf5P7MK2kHRCw1Z0cEULKD7HqWqcyNHJrwHM8Y0OlvJG1uC2G4QRKqrfsoYOUS5ilbqXp56YSQzk2v0daM15pinEDD0JPqM1IFwp6WPg1/KKe7nDW/WrGHD/6ljvjqqD0qzFZoTnmvnLa81QokYrd8809GvcBQsLOr5M=
+	t=1716007502; cv=none; b=OrUv9BXS6aLIBIj0e5uCS+WBYNz6C5WikBZSC0RupQMptrOOhNRkXG6Vh+zcI0vAc+V8BQbDeI1RbZFrYNde/YZNkDwsnsPXAu2DAovap6uKglKj2jPPETwGpGs0SarYooBBlBAmwHj/WSDCLOiTdjvOSUoHDyeVlTmY18qRQfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715995513; c=relaxed/simple;
-	bh=c5iU4d0KugAsNiJ78E34UP2hhUUvKxnLdWrV/fkAXuI=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=ZxTMHPXJnbRKgTAe6Exg/038B6vpvCRiAc+Tq+zyLfLBPAAr7dxjDgF2UGaxwMZIcG0CmnHejuohAE4MTRqm65iZ8uDWwB5SNMmIzkYZsPVYd2USdqcKidou6mNozksVW50UIqePe+LXltcJiKis8cMxCjiqQdXTG9iq378/S1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g0oui8BW; arc=none smtp.client-ip=209.85.161.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-5b2a66dce8fso1468743eaf.1;
-        Fri, 17 May 2024 18:25:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715995511; x=1716600311; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=cJqjedwoYcqSzJKmZSEwT+6hVhtxWLfg/8QtauvSdx4=;
-        b=g0oui8BWmxbItAviDcBucf+JrhEomIE1vGwQe2ELqLIPFBsh7qKucLJ4AgLZa7xvh0
-         1W3qPtqFSP2U66sEdLe5kv7PfumH1wGyKH7hUeXTrpD7yy9yXwLUAzgAQry6dPE0cBSH
-         DUKU0UvEsDymG9eGRGIzaafvBHf1R1BgcYfRwY8xNBNwoK5ITYu5P7ozP8z1Obd64aMw
-         HDjibsZPw3sEhJFk1vYBkclXkZbFbH7ch68uDtHKmZEriNYFZ2oGu+Y631CPgn4d3T35
-         v/UxW7WCm9iW2FRVexEWXEJXgYPnFtfpu9y0Mal+XQTg4u41bz3vy//mrS8TeUEcVKrz
-         ohiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715995511; x=1716600311;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cJqjedwoYcqSzJKmZSEwT+6hVhtxWLfg/8QtauvSdx4=;
-        b=SzA1QXlIyd+RL5jz2FYFQxXaHU4fZGIxwu6E7xaOgicIZNByhA05MBJvMWBfY5xxGL
-         42ZGzyMkJfKfR7eG/ZrbUtB5OCdagL0f2irFVOIFeKr8n+PXelPemsWnE53pJH4Sr7Fc
-         BW+4pMpON50JmgRs6BC7jJ+YRBhGCk/Ap6T46hYR42iqsPr7L5TPwzGwgvKSowHgh1+N
-         C7LhiDiaUXQHDKtlTfpqBCXZP6VPYQuEWl4BBn/nAGApjqoj5upIJOS7X3MxZzjG8QUs
-         9kTx707HCrDdeIOAsgyhoZ/BII/WcqLysA/rILiY4IVNewfir/2v3CObDD/f4dcyLBTL
-         c1UA==
-X-Forwarded-Encrypted: i=1; AJvYcCVa6CWuh/KqbbccxrWQavFAGBhtRgr0eQ9ztFhgTSHYv38dPRywjYVBOE+N7LjoRmXyCnFLsbSLloG2YI55xbHvJP7ia7FdSiJX5hs/FIdkktXtPJWZO//6Izgw4HOGfg7XsV1MGecqBQTUNkwllHVJevd+Ug5KdVHxfbT8QamKR024WMNeTGfFuRmX7u2sj/WV8dn4on9vzaTZqhWAbD8oOw22l+zbTJmuUKKAoEfUvVnfNKRy3rrvUFZo3v/LIQzZefcO58hLRz3BJXnqqTX6o0RDr/8zVIo5X+lp5CeT+QJ9ciLpgdh8gKS4iVyQXvRDZ/Qk+rNIbN0thKWDVW4Hv+n3U/XgSSsjaYuZBvobm6n/LT7Z+ZoHQFyVzCfNU4ZgqvTIgtpslVQK7TutLW12mv2+zD9y4o6NC+WmPlIHu5lvtYHL7cPRPrWTXRl3v1hlkwpOfT2Vb6R3Uw6GiZ+RG/pNkQoNudXmmHR7235JMmOD1YT30Xt9N+JLoWbsBzOL3DSv7jtRgNA3u4VXWZOZ835u5SdZWRH3qb8EhoVVr3HMM9nmQir6IeFzT3VdcFn88w2Q33gaGr5SPQ4lji5a1qUtiLdqUZMVX9V/yGez+hnCca8W1wRlkLY07xnbFbBQeK+ncJVGWn+cskHf5sxLQPz22lD8Nd0OXP2BIn3dMiEAbRCNxXNFfr6tplgy4hozWAnUvmtAGpqJT3eWVZfzMQUerbfS7BHrLkIRSQR1bv63Kdngg21MQm8VQB+OLZRXeHGKAMwqUumrEXFQXtpMinyzHNyU1eMJ2UfTF+kmP7lQWxQ0N7etUdtonXNjMDreuEOuWQM7wWRDcOIe2I4rTpPMZ1b4c0eGDykBsFnHDVuSTM7biVAM87+V9UkASNPPmmfA0qDdWw8wqLXVFkhiQG8TUdRQRgQ2znQco9QvqxnVxz9nS+fVIwXbSQ==
-X-Gm-Message-State: AOJu0YyStgOonZLR8P9uFPcLec0CPpRmzncZT/8wJvWZV5mgdBy55THl
-	lgC3OOHhwzJQsuQGpa47XsNxatoNdjT/+gRw/11hYZb5Fsx8Kkh2
-X-Google-Smtp-Source: AGHT+IFRaG5+veBhAS+2oO1Mq9a7mnKgK9vX9unu3cCbE/KbyDzrBjSt084GN8tso2cWg108BqN4VA==
-X-Received: by 2002:a05:6870:a3d2:b0:240:c8ff:c96a with SMTP id 586e51a60fabf-241728fc1damr27553351fac.27.1715995510785;
-        Fri, 17 May 2024 18:25:10 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-6f4d2a66316sm15339938b3a.35.2024.05.17.18.25.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 May 2024 18:25:09 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <64db2b94-edb3-4ea3-87cf-bb91746869e6@roeck-us.net>
-Date: Fri, 17 May 2024 18:25:06 -0700
+	s=arc-20240116; t=1716007502; c=relaxed/simple;
+	bh=GI3RrWaBWkV4cNTeIYZvQWAM7eMhiWJbQne6k2e4F9Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=K0+ReMdBBK/RQ7/KLGsImh+VY5fAFHLB7chbg3NWkjx0TzA0i6N1ZgHa1gXyIFZb6YPTLNbNlqeZAgytgOCe40tn4XTrk4m73WaPSoSBqyBVWJTrED4b1hXxfbgUA687OQPEnrtvdmOby3otOMSNACop5ZYGtYmh3VTggP88AMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=s.l-h@gmx.de header.b=VHHaOvfH; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1716007481; x=1716612281; i=s.l-h@gmx.de;
+	bh=v+e4K64yTFGSTRn+I9ej8kfY2RPSsYoCvmxaQP4k0NI=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:
+	 References:MIME-Version:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=VHHaOvfHvjWqV1C6DMSQkM9rNub3wUobibEXgUkfPDOsjuQdqJzH/m1RVFX/aDIx
+	 PQEiDG2BCr7Hh1BmBpc3h3GRwiQ4LE6mxKGta9Ih6NdKgDCK3WkwpwRHG86151Kua
+	 efStoqBdAhklMJU9alOUhgIewTqaaXF3kmPjvFPpdpRDGiKKc0SIc/Luzdl2eQhXb
+	 d2BGIOcl0km8Po1RdosCi2TCfY8P7rNjfX/wTfbR6OqaM7MXiWeevJX14v7Tn/eKU
+	 I3Tec1nYT68AGJPBtU4FQ9rP6sZPfgsNIhIKb09bT7C6UOCfF7Rt1K7vhxX/2bdq8
+	 SzbROe/sg7Run8w+mQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from mir ([94.31.83.155]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MpUUw-1staUf37JU-00meHW; Sat, 18
+ May 2024 06:44:41 +0200
+Date: Sat, 18 May 2024 06:44:38 +0200
+From: Stefan Lippers-Hollmann <s.l-h@gmx.de>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ Ping-Ke Shih <pkshih@realtek.com>, Larry Finger
+ <Larry.Finger@lwfinger.net>, Christian Hewitt <chewitt@libreelec.tv>
+Subject: Re: [PATCH v6 00/11] wifi: rtlwifi: Add new rtl8192du driver
+Message-ID: <20240518064438.0edf5c07@mir>
+In-Reply-To: <0c22c048-c372-4596-b2c6-612c6ec7ab77@gmail.com>
+References: <0c22c048-c372-4596-b2c6-612c6ec7ab77@gmail.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tracing/treewide: Remove second parameter of
- __assign_str()
-From: Guenter Roeck <linux@roeck-us.net>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
- Linux trace kernel <linux-trace-kernel@vger.kernel.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
- linux-block@vger.kernel.org, linux-cxl@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- amd-gfx@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
- freedreno@lists.freedesktop.org, virtualization@lists.linux.dev,
- linux-rdma@vger.kernel.org, linux-pm@vger.kernel.org, iommu@lists.linux.dev,
- linux-tegra@vger.kernel.org, netdev@vger.kernel.org,
- linux-hyperv@vger.kernel.org, ath10k@lists.infradead.org,
- linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
- ath12k@lists.infradead.org, brcm80211@lists.linux.dev,
- brcm80211-dev-list.pdl@broadcom.com, linux-usb@vger.kernel.org,
- linux-bcachefs@vger.kernel.org, linux-nfs@vger.kernel.org,
- ocfs2-devel@lists.linux.dev, linux-cifs@vger.kernel.org,
- linux-xfs@vger.kernel.org, linux-edac@vger.kernel.org,
- selinux@vger.kernel.org, linux-btrfs@vger.kernel.org,
- linux-erofs@lists.ozlabs.org, linux-f2fs-devel@lists.sourceforge.net,
- linux-hwmon@vger.kernel.org, io-uring@vger.kernel.org,
- linux-sound@vger.kernel.org, bpf@vger.kernel.org,
- linux-wpan@vger.kernel.org, dev@openvswitch.org, linux-s390@vger.kernel.org,
- tipc-discussion@lists.sourceforge.net, Julia Lawall <Julia.Lawall@inria.fr>
-References: <20240516133454.681ba6a0@rorschach.local.home>
- <5080f4c5-e0b3-4c2e-9732-f673d7e6ca66@roeck-us.net>
- <20240517134834.43e726dd@gandalf.local.home>
- <5cff0ff0-48d1-49f8-84f4-bb33571fdf16@roeck-us.net>
-Content-Language: en-US
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <5cff0ff0-48d1-49f8-84f4-bb33571fdf16@roeck-us.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:6DFylh2edYu36yyfAehZAJbEWiXjRstGLcUqmXV6t/iD4IfYsur
+ loxr17JL4IB82g6IeHk329l0AXOiHt9+NjkpO5BcGDLSJtLk7iE51Fm6jcZj2dd0z6p7660
+ VgvzpWDHJkNZ7T3Ba8uzJhUqkDWHSWUXl/eLBCf1FM2nBnTYzGrEad/MS0Xv06lVgmhaGzs
+ uPcC0HdZNtrsapqXFzKhw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:zm40TPmBCb0=;3zJVaSq78srBMktg3WItDz/TaNO
+ J2kMdgaitdlvhiOVUL+Sn5NSq0JFqPJgl6xxr/H66PktiMUZt0G+9k6IaI5aB3MXgknwWHCFx
+ ICWEBGpGZjfWnDVjX150WbJnVu2OzRzIamOY4e43Mbb9sXOf9S7k9cRV76SefEKXbPJL0Bk4p
+ HT0UHIkTWpuk+1nJKQ37O8MT6+69WaxlinVTe7X+bofRl7dwZtH/3N2jGv7Wp9tAwxVw4ySW7
+ 8+wy3uPNsZDM1DYAkWGcIwwD/qUJ54FZJv+6XUCK4C+xu/ZIhB+1VJzBQuhJmxOMIKDjAGNIL
+ mNQsYvh5UUKckwu07+gZkOPkaFbWgZnAop0vH9wyAdTClnlCCygplmkpjMBWHsLkJc+xOg61u
+ vgE/E/NdTSJdrxZVPNkv65QKinb4J3hoQ4ORz7/tR9kpCZH0ufjfy1pDqKghFs0WTT2MKRRIV
+ XFIqp4Zu4Q++r1I3fyix0+H94Vh6IAX3sGKyVU/tRXf6foO8tKOJ+1IKvoOtmBkqIkb+eW8j3
+ uKqR9/52ZOpnAsba6UvgFqF+WGciTgELGddKXTwdzla0GSdLRfcLRM6YyEjT+c1MIrewHZeX2
+ FOHsnQL9fX1wEQqKaDz7gwm4gSN2z9SedRO9RoFGN7PRtJWFz45BUbYv4GN/6XDNp17J54egk
+ k3gXqzsFTdI8jr67mkzm+tVOHDwCW5O+UpJHDlAmxeESCROhFYqkSv0i9UIl1alJfSKUP7A17
+ i88IwlxLslljN9zRAbhq7juENKGvA6785r+PmH6EjA5cvVbjU5h+tUdJELHJxm8rc2pHPr6ZJ
+ NrWEnWs4BwDFky9MAsM5LyZQQ9Ym5TivRro/q++2ybG1k=
 
-On 5/17/24 11:00, Guenter Roeck wrote:
-> On 5/17/24 10:48, Steven Rostedt wrote:
->> On Fri, 17 May 2024 10:36:37 -0700
->> Guenter Roeck <linux@roeck-us.net> wrote:
->>
->>> Building csky:allmodconfig (and others) ... failed
->>> --------------
->>> Error log:
->>> In file included from include/trace/trace_events.h:419,
->>>                   from include/trace/define_trace.h:102,
->>>                   from drivers/cxl/core/trace.h:737,
->>>                   from drivers/cxl/core/trace.c:8:
->>> drivers/cxl/core/./trace.h:383:1: error: macro "__assign_str" passed 2 arguments, but takes just 1
->>>
->>> This is with the patch applied on top of v6.9-8410-gff2632d7d08e.
->>> So far that seems to be the only build failure.
->>> Introduced with commit 6aec00139d3a8 ("cxl/core: Add region info to
->>> cxl_general_media and cxl_dram events"). Guess we'll see more of those
->>> towards the end of the commit window.
->>
->> Looks like I made this patch just before this commit was pulled into
->> Linus's tree.
->>
->> Which is why I'll apply and rerun the above again probably on Tuesday of
->> next week against Linus's latest.
->>
->> This patch made it through both an allyesconfig and an allmodconfig, but on
->> the commit I had applied it to, which was:
->>
->>    1b294a1f3561 ("Merge tag 'net-next-6.10' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next")
->>
->> I'll be compiling those two builds after I update it then.
->>
-> 
-> I am currently repeating my test builds with the above errors fixed.
-> That should take a couple of hours. I'll let you know how it goes.
-> 
+Hi
 
-There are no more build failures caused by this patch after fixing the above
-errors.
+On 2024-05-18, Bitterblue Smith wrote:
+> These patches add a driver for the RTL8192DU chip.
+>
+> Power saving is disabled by default because it's not working.
+>
+> Dual MAC chips are not tested.
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+Just a quick functionality check with v6 (based on top of v7 of the
+common code preparatory patch series), all fine at ~162 MBit/s
+thoughput (5 GHz/ ch52, WPA3SAE, QCN5054 AP, ~3m distance). Steady
+performance, working really well on my Delock 88540 (0bda:8194,
+single-mac).
 
-Guenter
+Tested-by: Stefan Lippers-Hollmann <s.l-h@gmx.de>
 
+Regards
+	Stefan Lippers-Hollmann
 
