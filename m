@@ -1,56 +1,55 @@
-Return-Path: <linux-wireless+bounces-7820-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7821-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4742E8C9039
-	for <lists+linux-wireless@lfdr.de>; Sat, 18 May 2024 11:36:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF9748C903A
+	for <lists+linux-wireless@lfdr.de>; Sat, 18 May 2024 11:39:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76FA61C20DD4
-	for <lists+linux-wireless@lfdr.de>; Sat, 18 May 2024 09:36:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC61B1C20C2D
+	for <lists+linux-wireless@lfdr.de>; Sat, 18 May 2024 09:39:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8E0DDDF;
-	Sat, 18 May 2024 09:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7DD2D518;
+	Sat, 18 May 2024 09:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=wp.pl header.i=@wp.pl header.b="pnOYrEe0"
+	dkim=pass (1024-bit key) header.d=wp.pl header.i=@wp.pl header.b="W9kDv8HM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.12])
+Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349368BEA
-	for <linux-wireless@vger.kernel.org>; Sat, 18 May 2024 09:36:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3C38BEA
+	for <linux-wireless@vger.kernel.org>; Sat, 18 May 2024 09:39:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716024986; cv=none; b=V39K+9+r3fBypNgdOO5Ai4cK/SmNZPBTMZKSb+st2XgSqBbdg6wQO4O966lUbUczdsP153+JTjOG9QGj45p0RdAGcU9NNI6EgVGl+r1XV9pZVnrYMKDKgo8SuwAhyTPUyn0fICqGXAY3JTf8NLeRS0F8g0BLYQIDR9/CtXOYVjs=
+	t=1716025182; cv=none; b=fXpWDCSheZcTxbklfOEK3dFAAk2XChG8+x8qW/zuMIZANE3ZjyBSiu8BHAJoP1zbb1BLet3xV9KgD2F721GMF94qO4E0ma6uK5QU6J67qcqivpLlOAkBqwCY0cfligRL9kev7wz0kGWW1M1s/d1zr60d39voX8ZlfO2uIq8VYKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716024986; c=relaxed/simple;
-	bh=/ff+y6N/bVLEJkZA7IjiDKP1wE0nrhWuCxMNrhj4rx4=;
+	s=arc-20240116; t=1716025182; c=relaxed/simple;
+	bh=GaW6SJ0y5ACHq40Q+snAE/jXdY+9vyZAvZFvfytqnTg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qtnzU+rsWV6mCAOFCbiOr+k0Acw5SrLVF9pM92Iuh9MzJOyRBr/MyMp3N3oa2dwhJGWv8dsFtn3mQpJ7+UzvMiF3KfIwsq9X98gJNmqpP4TozVtMWxiBmNqHpRxMQtMoAvGcn4AlBW3xYauTwIt5f9+Gor+lgIyr3MaeX4Z6Upw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (1024-bit key) header.d=wp.pl header.i=@wp.pl header.b=pnOYrEe0; arc=none smtp.client-ip=212.77.101.12
+	 Content-Type:Content-Disposition:In-Reply-To; b=cOzP4BY9oZ2dFqeipPF4TkKvKhEjQuw9GsIwDpe2sweKQVrrFs5CN6gL5h6HKkmsMkBa9ogfoIewiFd97YVcWB9EHz7EeLFM3hCNJwoXr4IdfEwfhq2+nnAY2JJLtPbWJ2+NLl5V6aZshiqdk0ukWQnFbxnomc1J1lmaEvCptu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (1024-bit key) header.d=wp.pl header.i=@wp.pl header.b=W9kDv8HM; arc=none smtp.client-ip=212.77.101.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
-Received: (wp-smtpd smtp.wp.pl 12094 invoked from network); 18 May 2024 11:29:40 +0200
+Received: (wp-smtpd smtp.wp.pl 15185 invoked from network); 18 May 2024 11:32:57 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
-          t=1716024580; bh=iY9and2fRgy70/SkFGL1EiobywiSyLTQmpLGJth6Z1E=;
+          t=1716024777; bh=gGODbJkICyAxfAiIi+NaeXR7OHBXZUSxs2djsM/glhg=;
           h=From:To:Cc:Subject;
-          b=pnOYrEe04rgwoi5hrFGpXBXtYJockzJPNcQtQEZhmn5PI3VQ1F0ZH8uMbQqw8ahuT
-           kzZ30+U6mXVF7jBhZiUUbgmD+p3u8DHStYvgEafPOPdp/BW8ESq8U9W1PxrQW5gGnR
-           i3r87zXrMkWEyAFRmrlcg7OeIN3K1jQp06HlnedY=
+          b=W9kDv8HMV1ZsvRjYBmjKCUwDXyGk4AqR34arxGtHsmJpRgxGMy2839isrEs7HYHik
+           v9UBjmZV9lBC80Z/h9JF+iwk0WA//Yn1TgUaa4AWdSUsWQh5YuUST0/sMLjpSoN5/o
+           V0zNZhhE0EfTxexzB0FWTST5negBoFkJk+4qUi+k=
 Received: from 89-64-9-76.dynamic.chello.pl (HELO localhost) (stf_xl@wp.pl@[89.64.9.76])
           (envelope-sender <stf_xl@wp.pl>)
           by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <xose.vazquez@gmail.com>; 18 May 2024 11:29:40 +0200
-Date: Sat, 18 May 2024 11:29:39 +0200
+          for <dmantipov@yandex.ru>; 18 May 2024 11:32:57 +0200
+Date: Sat, 18 May 2024 11:32:56 +0200
 From: Stanislaw Gruszka <stf_xl@wp.pl>
-To: Xose Vazquez Perez <xose.vazquez@gmail.com>
-Cc: linux-wireless@vger.kernel.org, Kees Cook <keescook@chromium.org>
-Subject: Re: [WARNING] memcpy: detected field-spanning write (size 1005) of
- single field "&out_cmd->cmd.payload" at
- drivers/net/wireless/intel/iwlegacy/common.c:3173 (size 320)
-Message-ID: <20240518092939.GA643846@wp.pl>
-References: <2c534d01-449a-43f4-9216-eacdb3b35577@gmail.com>
+To: Dmitry Antipov <dmantipov@yandex.ru>
+Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] rt2x00: remove unused delayed work data from link
+ description
+Message-ID: <20240518093256.GB643846@wp.pl>
+References: <20240515152824.143537-1-dmantipov@yandex.ru>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -59,51 +58,48 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2c534d01-449a-43f4-9216-eacdb3b35577@gmail.com>
-X-WP-MailID: e9b5917407e67f223ec504bc876e22cb
+In-Reply-To: <20240515152824.143537-1-dmantipov@yandex.ru>
+X-WP-MailID: e3cfb40634dbc975aaf87e1edd80b6f3
 X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000002 [AVHg]                               
+X-WP-SPAM: NO 0000000 [MWNk]                               
 
-Hi
-
-On Fri, Apr 12, 2024 at 07:48:39PM +0200, Xose Vazquez Perez wrote:
-> Hi,
+On Wed, May 15, 2024 at 06:28:24PM +0300, Dmitry Antipov wrote:
+> Remove unused 'agc_work' and 'vco_work' members of 'struct link'.
+> This follows commit d96324703ffa ("rt2x00: merge agc and vco works
+> with link tuner") where AGC and VCO calibration code was completely
+> redesigned. Compile tested only.
 > 
-> In Fedora kernel 6.8.5-301.fc40.x86_64, dmesg shows:
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+
+
+> ---
+>  drivers/net/wireless/ralink/rt2x00/rt2x00.h | 10 ----------
+>  1 file changed, 10 deletions(-)
 > 
-> [ device: 03:00.0 Network controller [0280]: Intel Corporation PRO/Wireless 4965 AG or AGN [Kedron] Network Connection [8086:4230] (rev 61) ]
+> diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00.h b/drivers/net/wireless/ralink/rt2x00/rt2x00.h
+> index 82af01448a0a..bb648f95dfdd 100644
+> --- a/drivers/net/wireless/ralink/rt2x00/rt2x00.h
+> +++ b/drivers/net/wireless/ralink/rt2x00/rt2x00.h
+> @@ -335,16 +335,6 @@ struct link {
+>  	struct delayed_work watchdog_work;
+>  	unsigned int watchdog_interval;
+>  	unsigned int watchdog;
+> -
+> -	/*
+> -	 * Work structure for scheduling periodic AGC adjustments.
+> -	 */
+> -	struct delayed_work agc_work;
+> -
+> -	/*
+> -	 * Work structure for scheduling periodic VCO calibration.
+> -	 */
+> -	struct delayed_work vco_work;
+>  };
+>  
+>  enum rt2x00_delayed_flags {
+> -- 
+> 2.45.0
 > 
-> Thanks.
-> 
-> [   53.407607] ------------[ cut here ]------------
-> [   53.407622] memcpy: detected field-spanning write (size 1005) of single field "&out_cmd->cmd.payload" at drivers/net/wireless/intel/iwlegacy/common.c:3173 (size 320)
-> [   53.407721] WARNING: CPU: 1 PID: 1632 at drivers/net/wireless/intel/iwlegacy/common.c:3173 il_enqueue_hcmd+0x477/0x560 [iwlegacy]
-
-For CMD_SIZE_HUGE we have allocated 4k, so we do not do anything wrong.
-Except maybe code is convoluted, since we use same structure for
-huge and small il_device_cmd allocations.
-
-But I'm thinking how to fix this fortify warning without refactoring and
-some extra runtime cost ...   
-
-Xose, could you test below patch? I did not tested it, but I think
-it should make this particular warning gone and does not break
-anything. But maybe it will trigger some others fortify warnings.
-
-Regards
-Stanislaw
-
-diff --git a/drivers/net/wireless/intel/iwlegacy/common.c b/drivers/net/wireless/intel/iwlegacy/common.c
-index 9d33a66a49b5..c4ccc5df6419 100644
---- a/drivers/net/wireless/intel/iwlegacy/common.c
-+++ b/drivers/net/wireless/intel/iwlegacy/common.c
-@@ -3170,7 +3170,7 @@ il_enqueue_hcmd(struct il_priv *il, struct il_host_cmd *cmd)
- 		out_meta->callback = cmd->callback;
- 
- 	out_cmd->hdr.cmd = cmd->id;
--	memcpy(&out_cmd->cmd.payload, cmd->data, cmd->len);
-+	memcpy(&out_cmd->hdr.data, cmd->data, cmd->len);
- 
- 	/* At this point, the out_cmd now has all of the incoming cmd
- 	 * information */
 
