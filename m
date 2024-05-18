@@ -1,168 +1,109 @@
-Return-Path: <linux-wireless+bounces-7819-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7820-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 694808C8FC1
-	for <lists+linux-wireless@lfdr.de>; Sat, 18 May 2024 08:01:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4742E8C9039
+	for <lists+linux-wireless@lfdr.de>; Sat, 18 May 2024 11:36:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2722328306A
-	for <lists+linux-wireless@lfdr.de>; Sat, 18 May 2024 06:01:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76FA61C20DD4
+	for <lists+linux-wireless@lfdr.de>; Sat, 18 May 2024 09:36:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E402D518;
-	Sat, 18 May 2024 06:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8E0DDDF;
+	Sat, 18 May 2024 09:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="jIDOw2+c"
+	dkim=pass (1024-bit key) header.d=wp.pl header.i=@wp.pl header.b="pnOYrEe0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D630BD50F
-	for <linux-wireless@vger.kernel.org>; Sat, 18 May 2024 06:01:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349368BEA
+	for <linux-wireless@vger.kernel.org>; Sat, 18 May 2024 09:36:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716012073; cv=none; b=OKgFQR9GTJT9zc5O76ewBwDTI017KnHONp/WnSh1JtH7julVzcn2NhrZngV6JvoBVfhbo1pGMCcRX49qZ1dyibV16Qb9pQC+KoHJf6d0LUSnxP8Y3qrHsodyACl7b3VmPdHiG50j3iOtVOkjWXlZb9DICMVJBnHvK4ArEyNSKLE=
+	t=1716024986; cv=none; b=V39K+9+r3fBypNgdOO5Ai4cK/SmNZPBTMZKSb+st2XgSqBbdg6wQO4O966lUbUczdsP153+JTjOG9QGj45p0RdAGcU9NNI6EgVGl+r1XV9pZVnrYMKDKgo8SuwAhyTPUyn0fICqGXAY3JTf8NLeRS0F8g0BLYQIDR9/CtXOYVjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716012073; c=relaxed/simple;
-	bh=ReLAp5DKKF5bHAK+Z5Um4WKsUk+rSeA81giUFu+BniQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=GOYA3txHCDw5ZCa0baKxFh59CzvYpnrSfzZKJ4Y8fAeHSsszjxS7c3Ro0uv/OD3uyoAyr0+/xYtYvlV2dNm2g/IjvEui4lyB+Lwk6jin8KvWIlJ5oq6w6qTf6o6uwedMiMR2tOc8lqlYrby7WlNRG4dhauR00sjq29HU46r5IwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=jIDOw2+c; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44I54JTm015894;
-	Sat, 18 May 2024 06:01:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=ADxd3IsSbj1Rd0l58LK+hASLWbz+iaZ0QMYPnBX/hcI=; b=jI
-	DOw2+caTjvAxBrCRDc7IjVlkIW9OJrctEWpUFGWdu0akhpiu0o9crlLXtErvefP0
-	vOuEUHmyQDTkzCjERnEgjOd2XTkznV+vsLAaV5xKlGzIbXhWjevDu1ag2gjw+XPa
-	Ta7f9qkx/bmXdDUywiT7G+xHiEZLZpHYCRgi+xNVYmqhQnG6nx/uDr+hwtI1Qfjr
-	pCIrF5M8hC5iVv7Hkc4HjuJ73cBJzjHIVidxii078jl81AGWnCgdUVWTgj3X9OUx
-	XIkXC9fTaerUzTQx+1tUuUzhupejULSHQljzS8U0r33e8Jml4uaOiauOioaT3P2x
-	nMV35WHsF2r69cUb+vzQ==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y6n1p037x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 18 May 2024 06:01:06 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44I613Zu007784
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 18 May 2024 06:01:03 GMT
-Received: from [10.50.55.174] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 17 May
- 2024 23:01:01 -0700
-Message-ID: <6ee09e84-bc20-c053-34f8-dc4bf71587ea@quicinc.com>
-Date: Sat, 18 May 2024 11:30:49 +0530
+	s=arc-20240116; t=1716024986; c=relaxed/simple;
+	bh=/ff+y6N/bVLEJkZA7IjiDKP1wE0nrhWuCxMNrhj4rx4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qtnzU+rsWV6mCAOFCbiOr+k0Acw5SrLVF9pM92Iuh9MzJOyRBr/MyMp3N3oa2dwhJGWv8dsFtn3mQpJ7+UzvMiF3KfIwsq9X98gJNmqpP4TozVtMWxiBmNqHpRxMQtMoAvGcn4AlBW3xYauTwIt5f9+Gor+lgIyr3MaeX4Z6Upw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (1024-bit key) header.d=wp.pl header.i=@wp.pl header.b=pnOYrEe0; arc=none smtp.client-ip=212.77.101.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
+Received: (wp-smtpd smtp.wp.pl 12094 invoked from network); 18 May 2024 11:29:40 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
+          t=1716024580; bh=iY9and2fRgy70/SkFGL1EiobywiSyLTQmpLGJth6Z1E=;
+          h=From:To:Cc:Subject;
+          b=pnOYrEe04rgwoi5hrFGpXBXtYJockzJPNcQtQEZhmn5PI3VQ1F0ZH8uMbQqw8ahuT
+           kzZ30+U6mXVF7jBhZiUUbgmD+p3u8DHStYvgEafPOPdp/BW8ESq8U9W1PxrQW5gGnR
+           i3r87zXrMkWEyAFRmrlcg7OeIN3K1jQp06HlnedY=
+Received: from 89-64-9-76.dynamic.chello.pl (HELO localhost) (stf_xl@wp.pl@[89.64.9.76])
+          (envelope-sender <stf_xl@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <xose.vazquez@gmail.com>; 18 May 2024 11:29:40 +0200
+Date: Sat, 18 May 2024 11:29:39 +0200
+From: Stanislaw Gruszka <stf_xl@wp.pl>
+To: Xose Vazquez Perez <xose.vazquez@gmail.com>
+Cc: linux-wireless@vger.kernel.org, Kees Cook <keescook@chromium.org>
+Subject: Re: [WARNING] memcpy: detected field-spanning write (size 1005) of
+ single field "&out_cmd->cmd.payload" at
+ drivers/net/wireless/intel/iwlegacy/common.c:3173 (size 320)
+Message-ID: <20240518092939.GA643846@wp.pl>
+References: <2c534d01-449a-43f4-9216-eacdb3b35577@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v2 RFC] wifi: cfg80211: Refactor interface combination
- input parameter
-To: <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240518055316.3102746-1-quic_periyasa@quicinc.com>
-Content-Language: en-US
-From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-In-Reply-To: <20240518055316.3102746-1-quic_periyasa@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: Yyjqui_fRDFqzcylnIrwiKTF2S1GmicJ
-X-Proofpoint-GUID: Yyjqui_fRDFqzcylnIrwiKTF2S1GmicJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-05-17_13,2024-05-17_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1015
- priorityscore=1501 suspectscore=0 lowpriorityscore=0 phishscore=0
- mlxscore=0 impostorscore=0 bulkscore=0 mlxlogscore=999 adultscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405010000 definitions=main-2405180031
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2c534d01-449a-43f4-9216-eacdb3b35577@gmail.com>
+X-WP-MailID: e9b5917407e67f223ec504bc876e22cb
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000002 [AVHg]                               
 
+Hi
 
-
-On 5/18/2024 11:23 AM, Karthikeyan Periyasamy wrote:
-> Currently, the interface combination input parameter num_different_channels
-> and iftype_num are directly filled in by the caller under the assumption
-> that all channels and interfaces belong to a single hardware device. This
-> assumption is incorrect for multi-device interface combinations because
-> each device supports a different set of channels and interfaces. As
-> discussed in [1], need to refactor the input parameters to encode enough
-> data to handle both single and multiple device interface combinations.
-> This can be achieved by encoding the frequency parameter under the link
-> entity and interface type parameter under the interface entity, which can
-> hold an array of link entities. This is because, in the MLO scenario, a
-> single interface can support multiple links. With this new input parameter
-> structure, the cfg80211 can classify and construct the device parameters,
-> then verify them against the device specific interface combinations.
+On Fri, Apr 12, 2024 at 07:48:39PM +0200, Xose Vazquez Perez wrote:
+> Hi,
 > 
-> [1]: https://lore.kernel.org/linux-wireless/ca70eeb3cdee1e8c3caee69db595bc8160eb4115.camel@sipsolutions.net/
+> In Fedora kernel 6.8.5-301.fc40.x86_64, dmesg shows:
 > 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> [ device: 03:00.0 Network controller [0280]: Intel Corporation PRO/Wireless 4965 AG or AGN [Kedron] Network Connection [8086:4230] (rev 61) ]
 > 
-> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-> ---
->   v2:
->    - changed the argument of ieee80211_check_combinations()
->    - changed the iface_combination_interface::num_link into
->      iface_combination_interface::valid_links
->    - Moved the new_beacon_int, radar_detect under the iface link param
->    - Moved the ieee80211_link_or_deflink() helper under the util
->    - Moved the ieee80211_link_get_chanctx() helper under the ieee80211_i.h
->    - Removed ieee80211_chanctx_radar_detect()
+> Thanks.
 > 
->   drivers/net/wireless/ath/wil6210/cfg80211.c   |  44 ++-
->   .../broadcom/brcm80211/brcmfmac/cfg80211.c    |  60 +++-
->   .../net/wireless/quantenna/qtnfmac/cfg80211.c |  32 +-
->   include/net/cfg80211.h                        |  51 +++-
->   net/mac80211/cfg.c                            |  40 +--
->   net/mac80211/chan.c                           |  16 +-
->   net/mac80211/ibss.c                           |   7 +-
->   net/mac80211/ieee80211_i.h                    |  20 +-
->   net/mac80211/iface.c                          |   7 +-
->   net/mac80211/util.c                           | 280 +++++++++++++-----
->   net/wireless/util.c                           |  90 ++++--
->   11 files changed, 464 insertions(+), 183 deletions(-)
-> 
+> [   53.407607] ------------[ cut here ]------------
+> [   53.407622] memcpy: detected field-spanning write (size 1005) of single field "&out_cmd->cmd.payload" at drivers/net/wireless/intel/iwlegacy/common.c:3173 (size 320)
+> [   53.407721] WARNING: CPU: 1 PID: 1632 at drivers/net/wireless/intel/iwlegacy/common.c:3173 il_enqueue_hcmd+0x477/0x560 [iwlegacy]
 
-...
+For CMD_SIZE_HUGE we have allocated 4k, so we do not do anything wrong.
+Except maybe code is convoluted, since we use same structure for
+huge and small il_device_cmd allocations.
 
-> +/**
-> + * struct iface_combination_interface - Interface parameter for iface combination
-> + *
-> + * Used to pass interface specific parameter for iface combination
-> + *
-> + * @iftype: interface type as specified in &enum nl80211_iftype.
-> + * @links: array with the number of link parameter used for verification
-> + * @valid_links: bitmap of valid links, or 0 for non-MLO.
+But I'm thinking how to fix this fortify warning without refactoring and
+some extra runtime cost ...   
 
-Will correct the comments for valid_links in the next version. It should 
-be like below
+Xose, could you test below patch? I did not tested it, but I think
+it should make this particular warning gone and does not break
+anything. But maybe it will trigger some others fortify warnings.
 
-@valid_links: bitmap of valid links.
+Regards
+Stanislaw
 
-
-> + */
-> +struct iface_combination_interface {
-> +	enum nl80211_iftype iftype;
-> +	struct iface_combination_iface_link links[IEEE80211_MLD_MAX_NUM_LINKS];
-> +	u16 valid_links;
-> +};
-
--- 
-Karthikeyan Periyasamy
---
-கார்த்திகேயன் பெரியசாமி
+diff --git a/drivers/net/wireless/intel/iwlegacy/common.c b/drivers/net/wireless/intel/iwlegacy/common.c
+index 9d33a66a49b5..c4ccc5df6419 100644
+--- a/drivers/net/wireless/intel/iwlegacy/common.c
++++ b/drivers/net/wireless/intel/iwlegacy/common.c
+@@ -3170,7 +3170,7 @@ il_enqueue_hcmd(struct il_priv *il, struct il_host_cmd *cmd)
+ 		out_meta->callback = cmd->callback;
+ 
+ 	out_cmd->hdr.cmd = cmd->id;
+-	memcpy(&out_cmd->cmd.payload, cmd->data, cmd->len);
++	memcpy(&out_cmd->hdr.data, cmd->data, cmd->len);
+ 
+ 	/* At this point, the out_cmd now has all of the incoming cmd
+ 	 * information */
 
