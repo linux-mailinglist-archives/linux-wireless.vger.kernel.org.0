@@ -1,105 +1,92 @@
-Return-Path: <linux-wireless+bounces-7841-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7842-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 795998C9C90
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2024 13:49:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74AAE8C9CB0
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2024 13:53:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35A47283329
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2024 11:49:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C2B31F21BAF
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2024 11:53:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F85C7711E;
-	Mon, 20 May 2024 11:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF39247F7A;
+	Mon, 20 May 2024 11:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="uhjp+uMG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fETqUVCP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A326977F2F;
-	Mon, 20 May 2024 11:45:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83EB42744A;
+	Mon, 20 May 2024 11:53:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716205543; cv=none; b=oQsV6IuF+hX6WJBBAig/pIJTM2ykXdfOOXlCH+ynVubbdewrdtukhHAxzfHywXtCXl/9pdQvAJzruQaLgNYFEvfoEPP023uhhtak7AYGlmC/4+9YpSWb8Vx9rYAIMUlMonLJAu7rHHHcD0aesPESESpCkhIa2MOfgJJ/siQpNOs=
+	t=1716206033; cv=none; b=PcqQqjZdddnYgLzJBuqGiSuEqpet1ObGjYE/nwu9djhIzRETagSvXxdLKg4sFjCZtumjdVg3l5KEEYF+Uk8Dncc3vrAMKjOMDuaiZPMBMidku8SWWmZQR0kNeFl2uaNzjqHWJstKeIpD4j01pr+fyglR6OeG/tkCakYypFR9LdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716205543; c=relaxed/simple;
-	bh=F3rZG5RorXcLyQ01SqQykrqAbDvDdcRo5CeTiIqlEfs=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FJbWhEAJ4i3LZCCLbcK9ThEcZd15alGFlVk/fO4aFmo3xzNyCqqKMsYkhT2Aqh+KmqyvD5tT4nJOeIOfk9L8CqQgNuU2x/pAhC4qS/tzidJycbm3oMbb6DRSVuOTvXPZ7j9ccqTEZrT+4iVOdwgvJItCaO5EBphx1PF1mjDZfUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=uhjp+uMG; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=KpJ6k4J59qKz0uHRTXxneTJbQDK8g074xXtvyyznLwk=;
-	t=1716205541; x=1717415141; b=uhjp+uMGuc+bFOkFese4kzhquCy2tQ6KSUgx1Hs9K1vLmKy
-	RrzhRbmjY4SgUZC+mQBDqadkkvTYikbZ9CpEHjl2CHP3E4qQtWziQDYBssl7NuiAyhcQAmzY3Bbk6
-	yybQhEV60jmsYse3O2VJhgL7QraYBT8WORoja9HNwS/V36fVDxtmRddob8OUS/TTNQgI1TjwE8+aA
-	6yNlPdIODmaLPF0sB5SaiDSLI4jTJwIX/xz4QuLjEXR8G+mIhde8ouKyxRX22zjGzq8+rxLgeeK7v
-	9GjL3iQ2Of2Km8YuV93gN9lGBAAK962Ycw0bAGOCGqLDQMxOKbXTZgHtqFp41NuA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1s91SU-00000000C2y-1k4V;
-	Mon, 20 May 2024 13:45:38 +0200
-Message-ID: <95f3e147de837b4833e6cf6eb67108f96640af4e.camel@sipsolutions.net>
-Subject: Re: [WARNING] memcpy: detected field-spanning write (size 1005) of
- single field "&out_cmd->cmd.payload" at
- drivers/net/wireless/intel/iwlegacy/common.c:3173 (size 320)
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Stanislaw Gruszka <stf_xl@wp.pl>, Kees Cook <keescook@chromium.org>
-Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>, Xose Vazquez Perez
-	 <xose.vazquez@gmail.com>, linux-wireless@vger.kernel.org, 
-	linux-hardening@vger.kernel.org
-Date: Mon, 20 May 2024 13:45:37 +0200
-In-Reply-To: <20240520073210.GA693073@wp.pl>
-References: <2c534d01-449a-43f4-9216-eacdb3b35577@gmail.com>
-	 <20240518092939.GA643846@wp.pl> <202405181033.6399B7E416@keescook>
-	 <20240520073210.GA693073@wp.pl>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	s=arc-20240116; t=1716206033; c=relaxed/simple;
+	bh=2WwHBbsRsDH0dHOTZXtm084FWAB/MmhOE+E7Q3OpKjs=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=b7Q6wWf2SSnN/GyBEY8F2EXy5EbYeDVd9nsM4wJR+TUNigOPJRGJg9hRw0DD143R+Km96XIoONl0o6pHebWQJ0J6mDrlDyYEfR/6Y5oS3G8XvquHPvGUsjrHOjLEfyPmITGYUd638v5pHSStM+WrojYhY9Hw/4fCSkfprCFmvkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fETqUVCP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 585C4C32786;
+	Mon, 20 May 2024 11:53:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716206033;
+	bh=2WwHBbsRsDH0dHOTZXtm084FWAB/MmhOE+E7Q3OpKjs=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=fETqUVCPRuxgPfRzBudNAVaSdOqbxPlZfQlxuTvVBHVaa1dcu8pLOoCY1ZA3U0DBu
+	 w7Gp1mhLekdmLP9UsT4dXD3YSHmSA8XD8GT0qTyzcfSOeC3L/m+L8QgORrherbCGFN
+	 TVcVE14YFlQ+pr59tR6z5tjhF2MiRZbdWFdOUiCL6v0xvtDEMLcGfCu8I1SvRlc521
+	 5pcoIpFJPwDFsiny3XgqIAuQs0oRZOPu91GbyszpI6ypnbSZPNk4bhl1i73cDA+NP2
+	 pCRyyYevtGZO4wlM+KDUN1tf3SM9HdNx/5evmynHsjLJT8ANMJwJAhwLC2pyOhNkX6
+	 /+pRS7xnOQVPw==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] wifi: ath10k: fix QCOM_RPROC_COMMON dependency
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20240511-ath10k-snoc-dep-v1-1-9666e3af5c27@linaro.org>
+References: <20240511-ath10k-snoc-dep-v1-1-9666e3af5c27@linaro.org>
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Jeff Johnson <jjohnson@kernel.org>, Stephen Boyd <swboyd@chromium.org>,
+ Rakesh Pillai <quic_pillair@quicinc.com>, linux-wireless@vger.kernel.org,
+ ath10k@lists.infradead.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <171620602925.3753090.14163848910895303019.kvalo@kernel.org>
+Date: Mon, 20 May 2024 11:53:51 +0000 (UTC)
 
+Dmitry Baryshkov <dmitry.baryshkov@linaro.org> wrote:
 
-> +++ b/drivers/net/wireless/intel/iwlegacy/commands.h
-> @@ -201,9 +201,6 @@ struct il_cmd_header {
->  	 *  15          unsolicited RX or uCode-originated notification
->  	 */
->  	__le16 sequence;
-> -
-> -	/* command or response/notification data follows immediately */
-> -	u8 data[];
->  } __packed;
+> If ath10k_snoc is built-in, while Qualcomm remoteprocs are built as
+> modules, compilation fails with:
+> 
+> /usr/bin/aarch64-linux-gnu-ld: drivers/net/wireless/ath/ath10k/snoc.o: in function `ath10k_modem_init':
+> drivers/net/wireless/ath/ath10k/snoc.c:1534: undefined reference to `qcom_register_ssr_notifier'
+> /usr/bin/aarch64-linux-gnu-ld: drivers/net/wireless/ath/ath10k/snoc.o: in function `ath10k_modem_deinit':
+> drivers/net/wireless/ath/ath10k/snoc.c:1551: undefined reference to `qcom_unregister_ssr_notifier'
+> 
+> Add corresponding dependency to ATH10K_SNOC Kconfig entry so that it's
+> built as module if QCOM_RPROC_COMMON is built as module too.
+> 
+> Fixes: 747ff7d3d742 ("ath10k: Don't always treat modem stop events as crashes")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-[...]
+Patch applied to ath-current branch of ath.git, thanks.
 
+21ae74e1bf18 wifi: ath10k: fix QCOM_RPROC_COMMON dependency
 
-> -	memcpy(&out_cmd->cmd.payload, cmd->data, cmd->len);
-> +	memcpy(&out_cmd->cmd.raw, cmd->data, cmd->len);
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20240511-ath10k-snoc-dep-v1-1-9666e3af5c27@linaro.org/
 
-[...]
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
-> +++ b/drivers/net/wireless/intel/iwlegacy/common.h
-> @@ -555,6 +555,7 @@ struct il_device_cmd {
->  		u32 val32;
->  		struct il_tx_cmd tx;
->  		u8 payload[DEF_CMD_PAYLOAD_SIZE];
-> +		DECLARE_FLEX_ARRAY(u8, raw);
->=20
-
-I don't think this is right, now the raw comes after
-DEF_CMD_PAYLOAD_SIZE? You want it to be a union with payload, I'd think.
-
-johannes
 
