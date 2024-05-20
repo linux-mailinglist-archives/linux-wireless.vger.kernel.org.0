@@ -1,143 +1,112 @@
-Return-Path: <linux-wireless+bounces-7827-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7828-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9C578C95AA
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 May 2024 19:51:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74EDA8C97FC
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2024 04:42:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7745B1F2109C
-	for <lists+linux-wireless@lfdr.de>; Sun, 19 May 2024 17:51:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A671B1C20AE8
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2024 02:42:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 302674DA14;
-	Sun, 19 May 2024 17:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF0417F5;
+	Mon, 20 May 2024 02:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="TiYdk0p+"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="auug4S7D"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18BF45C1C;
-	Sun, 19 May 2024 17:51:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF74BA40
+	for <linux-wireless@vger.kernel.org>; Mon, 20 May 2024 02:42:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716141103; cv=none; b=U9Ja6rZFxr16/r067Ir/vSYtM5ESTNXI55dJWJHu1tbXiw5iDH+RmTRK3TriQgG0ZAuZjPQB0kIC9+/zLjRl62FHJXVxttzmyRWMDKPjHkM1dFGLXmG/oUKoVinQEy/hlgTsemVoVQUN+foYfwUhTnspXjOLwyfHDd2Etxo9r2c=
+	t=1716172940; cv=none; b=nf3Nmsjs+tKJhcFr5GDlgo+5N5vTT2Ku4qGsq23Fb5t5DNhn45PyAYpVS5eE/U5vhphcFrxQnyE//IKWZx0LA652MjLMrpenX5PAEEwJK79zSWqgo2pfBGYmmGQZFcJu3s8qqzJm3GoBoaD+gWgxlzbos3l6x3qIc7j7Pb6XguU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716141103; c=relaxed/simple;
-	bh=apP8B03jWePnyIhNPpJNd83nCtfVfho0HeEF5bwWnk8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qX2bG5Q/LFxj933AbP6V7Mil8zofmoMvwn0MPy9W0/dECm5JWmGvOuyqFsg44B4OAfk+0PQO0eAkDwzT1Z1BVLQ/c7dV96w5slyBMBBErv3ekCRik904rgL4wxChMYE8QyIHIhfzFM6/w16bElD8iXxhGetz/u267MjVli6rQ+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=TiYdk0p+; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=EuvoHemgpgcqb4JrOqi04wT1VL8bVB7gZbpZmHmGq58=;
-	t=1716141101; x=1716573101; b=TiYdk0p+9Cbh4NORwCOx8+nChvnyMo+mhCY01J/Y0GPPP7M
-	cncRDnLO8Jql50mIhhV9wDC6LYanGEuXVh/u3AiXKHc3Lfei9vxn2JPiJXv4gVH2jqZbiRVG9gnS1
-	on9i2RDeGLOmkXNLCf8Ltp+oy0B8tFiI4HfGYp2L7kieUmypQ/wgmxszTi1943Rd4xM9ulHVX0AZa
-	vdZ8LXag6XmpTW8p2sXewhbjGspJKkp3udVyOP+pLO9JWSHrkmWpnctrP28P85zehKnZF28m8ThuO
-	+x11HyOqCA7ChAJA0mcRFKHBFp95jgu3zmTlt1uTR5z/+NUX0u2EIOfsp+uFcCRQ==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1s8kh2-0003pw-T4; Sun, 19 May 2024 19:51:32 +0200
-Message-ID: <80b102c5-2d49-41ba-a4e3-801e16f7f2bd@leemhuis.info>
-Date: Sun, 19 May 2024 19:51:32 +0200
+	s=arc-20240116; t=1716172940; c=relaxed/simple;
+	bh=3uwOH9Jh+0XaTH7VF/dhMYoJEA9pokEM0LGVqJpY1Gc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Kds6/CICkFeM4adUNxjAJ32AZ1ma+efJM18Ukh6yBmt1F/+MVQXVun8Z+LSy+bAEPLxnukfIV82gC0i+dEFZZsWgYSuJIBYQlgPcLFJdefpUcuuQ/1iD07FdiO/kdc87N5OAVymxNzrnB2rdoWCCYFQIkHk/U6+moWO8cKGmR4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=auug4S7D; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44JNCNne015601;
+	Mon, 20 May 2024 02:42:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=RW3lHWw
+	gaUIdCoh2MB8yVlzTo8lzF7zfG4AEgSLjiRI=; b=auug4S7Dgnf7mCLRa8IdQvH
+	qmnY5O082FnIbbONuVIoHAkyF3SYXexwgx5JzQP8Kh8LO3j0nTRMzyRX5C58sEU7
+	eK7WOPpuwHlpxjle7gIZe0RVbjk5Z33MmQq4IsDiYSTIHj40bFY5Hflu8aqT+5O0
+	F3G3W3BPlu/JDFhj73aE2DLSU1i7HwUebgG5WzOtONBcLCGPsn5q5uMgqLve1gxt
+	dV9roEPaxeuungr9i0iKU9yWxBAV1eQtdwgIj3GEwKeRaQ5AxjcS9Z1LACJ/r7xo
+	7eeYBIZap6CgnUUThMe4c7rTIgOjZWQlZzHyWwiLu+snwZfkuQAEQ9Qb9QlXLfg=
+	=
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y6n3tah8x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 20 May 2024 02:42:09 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44K2fxwR032642
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 20 May 2024 02:41:59 GMT
+Received: from bqiang-SFF.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Sun, 19 May 2024 19:41:58 -0700
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+To: <ath11k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, <quic_bqiang@quicinc.com>
+Subject: [PATCH 0/2] wifi: ath11k: fix wrong regdomain after hibernation
+Date: Mon, 20 May 2024 10:41:46 +0800
+Message-ID: <20240520024148.5472-1-quic_bqiang@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] wifi: ath11k: supports 2 station interfaces
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,
- Linux regressions mailing list <regressions@lists.linux.dev>,
- Carl Huang <quic_cjhuang@quicinc.com>, Luca Weiss
- <luca.weiss@fairphone.com>, ath11k@lists.infradead.org,
- linux-wireless@vger.kernel.org
-References: <20230714023801.2621802-1-quic_cjhuang@quicinc.com>
- <20230714023801.2621802-2-quic_cjhuang@quicinc.com>
- <D15TIIDIIESY.D1EKKJLZINMA@fairphone.com> <87jzk2km0g.fsf@kernel.org>
- <93c15c59-f24c-4472-ae7e-969fd1e3bfec@quicinc.com>
- <871q69lqh5.fsf@kernel.org>
- <4e21e556-527f-4d1e-aa29-cacec14155af@quicinc.com>
- <a53e2188-b982-44b7-9dfe-f5dfd6b802ca@leemhuis.info>
- <4d72f74a-b2eb-43d3-92a2-1311081ce72c@quicinc.com>
- <87fruhggcw.fsf@kernel.org>
- <613ecd58-9f65-4d03-98df-40f3959376d6@leemhuis.info>
- <874jawhopo.fsf@kernel.org>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <874jawhopo.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1716141101;56ef6375;
-X-HE-SMSGID: 1s8kh2-0003pw-T4
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: Kj06P_a5qhp0eJFjSXYcd1F1xRYkSdy1
+X-Proofpoint-ORIG-GUID: Kj06P_a5qhp0eJFjSXYcd1F1xRYkSdy1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-20_01,2024-05-17_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
+ bulkscore=0 priorityscore=1501 malwarescore=0 mlxlogscore=686
+ lowpriorityscore=0 phishscore=0 spamscore=0 impostorscore=0 clxscore=1015
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405010000 definitions=main-2405200020
 
-On 17.05.24 09:39, Kalle Valo wrote:
-> Thorsten Leemhuis <regressions@leemhuis.info> writes:
->> On 17.05.24 07:25, Kalle Valo wrote:
->>> Jeff Johnson <quic_jjohnson@quicinc.com> writes:
->>>> On 5/16/2024 4:45 AM, Linux regression tracking (Thorsten Leemhuis) wrote:
->>>>> On 11.05.24 05:12, Carl Huang wrote:
->>>>>> I'll send out the formal patch next week.
->>>>>
->>>>> Hmmm, from here it looks like this did not happen. Did I miss something,
->>>>> is there some reason to reevaluate things again, or did this maybe
->>>>> simply fall through the cracks?
->>>>
->>>> Formal patch is still under internal review
->>>
->>> BTW I'm also experimenting with regzbot to help me track regressions in
->>> wireless and to avoid missing important fixes.
->>
->> Not sure, but I tend to think that's still too early; better wait a few
->> more months.
-> 
-> FWIW I have been pretty happy so far and would prefer to continue using
-> it with wireless drivers regressions. 
+We got report that regdomain is not correct after hibernation,
+see details in patch 2.
 
-Ohh, in that case just continue!
+To fix it, host needs to restore country code to firmware using
+ath11k_wmi_send_set_current_country_cmd(). There are several places
+where it is called and all of them share the same code snippet. So
+refactor them to make code clean, this is done in the first patch.
+Actual fix comes in the second patch.
 
-> But of course if it's better for you I'll stop for now.
+Baochen Qiang (2):
+  wifi: ath11k: refactor setting country code logic
+  wifi: ath11k: restore country code during resume
 
-No, not at all, making regzbot more useful for subsystem developers and
-maintainers is the next important step, so I'm glad if it already works
-well for you. And if something does not work, just tell me!
+ drivers/net/wireless/ath/ath11k/core.c | 29 ++++++++++++++++----------
+ drivers/net/wireless/ath/ath11k/mac.c  | 13 +++---------
+ drivers/net/wireless/ath/ath11k/reg.c  | 14 +++++++++----
+ drivers/net/wireless/ath/ath11k/reg.h  |  4 ++--
+ 4 files changed, 33 insertions(+), 27 deletions(-)
 
->>> Thorsten, I don't know if you take wishes but it would be nice to have
->>> in regzbot some kind of filtering per subsystem or label. Maybe
->>> something like this:
->>> https://linux-regtracking.leemhuis.info/regzbot/mainline/?subsystem=wireless
->>>
->>> And then a have command for regzbot setting the subsystem (or a label).
->>> That way I could easily see only the wireless related regressions, now
->>> it's harder to find them from the list.
->>
->> I listen to wishes, but in this case the idea is not new: exactly
->> something like this is pretty high on my todo list. But there are still
->> two other things on top of it and requires some major reworks; and I
->> currently also don't find much time to work on the code. :-/ But sooner
->> or later I'll get there!
-> 
-> Trust me, I know how it is :) These are just wishlist stuff and low
-> priority.
 
-Apparently depends on the point of view, as I think it's high priority.
+base-commit: d11f74006da48efd32f6304ef8fcec5894171641
+-- 
+2.25.1
 
-> One more to the wishlist: refreshing the HTML page once an hour or so. I
-> now keep the regzbot page always open and it would be nice to have it
-> up-to-date without pressing CTRL-R. Yes, I'm lazy :)
-
-Added that to the issue tracker to ensure it's not forgotten.
-
-Ciao, Thorsten
 
