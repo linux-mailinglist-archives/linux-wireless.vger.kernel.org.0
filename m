@@ -1,60 +1,65 @@
-Return-Path: <linux-wireless+bounces-7840-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7841-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F37E18C9C3C
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2024 13:41:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 795998C9C90
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2024 13:49:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEDDF280D88
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2024 11:41:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35A47283329
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2024 11:49:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E92A25380C;
-	Mon, 20 May 2024 11:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F85C7711E;
+	Mon, 20 May 2024 11:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="K28xO3jp"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="uhjp+uMG"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1DAC51C28;
-	Mon, 20 May 2024 11:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A326977F2F;
+	Mon, 20 May 2024 11:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716205278; cv=none; b=HG79fCSj4tbqKXHbEiwvBFNozQKoziidzpiIZlYrr6pLJz3w4BDHMWU3zw2rA6a7ETZF0Jg9X/Kx7frea+9uIR+qzvTW6Kytx6y3ZrIgzFXqF+nJluvQfSirGG5vZqYBufG5NtKmqog2BbBEGKGrmmEp/AY3FtUTv2Kfgo+5rKg=
+	t=1716205543; cv=none; b=oQsV6IuF+hX6WJBBAig/pIJTM2ykXdfOOXlCH+ynVubbdewrdtukhHAxzfHywXtCXl/9pdQvAJzruQaLgNYFEvfoEPP023uhhtak7AYGlmC/4+9YpSWb8Vx9rYAIMUlMonLJAu7rHHHcD0aesPESESpCkhIa2MOfgJJ/siQpNOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716205278; c=relaxed/simple;
-	bh=WwTSMnw7dKO/AgFPsWwYsEsVevXMKMS79IXwmEUQ7zI=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gexYpG4i8AIYgHmEW2gJEnAXhcfgTtI57PAMjKSkqC3HDO8SSbGigzWGjvhBLqevl+LK1jEBn9qE4nENyQmcBeW51+uUHKUU2aB9vBjrlhGopiTWeTz/1U3DHPQ5HPy2BViCvFCN4OlnfNrUwpQkfvGW5oJ5iUG2K6mrA2BYGdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=K28xO3jp; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1716205543; c=relaxed/simple;
+	bh=F3rZG5RorXcLyQ01SqQykrqAbDvDdcRo5CeTiIqlEfs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=FJbWhEAJ4i3LZCCLbcK9ThEcZd15alGFlVk/fO4aFmo3xzNyCqqKMsYkhT2Aqh+KmqyvD5tT4nJOeIOfk9L8CqQgNuU2x/pAhC4qS/tzidJycbm3oMbb6DRSVuOTvXPZ7j9ccqTEZrT+4iVOdwgvJItCaO5EBphx1PF1mjDZfUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=uhjp+uMG; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=WwTSMnw7dKO/AgFPsWwYsEsVevXMKMS79IXwmEUQ7zI=;
-	t=1716205276; x=1717414876; b=K28xO3jpLUTFZu/gkC6rtHlD/W1/8WrAhsnqfDQY5hYEPOI
-	2eDhxsxBeq7uppt5WmOAd/O0WSOhJK5vE8xDUlW5ERGBXfdFyN8MEtzllprDaOf6WdYET4EY4fC52
-	1U6nl8Ny2mmmDoz1STgiiVEw66M1BTN1oi7M3sXbNOr646I7Ue/edoeZBwairX3iSn8JhVll1rmSC
-	lGSjSewFpLgYDqQWKk93m7WzOiVNAGt5I2KMuUS1pEhFaywv7vEHqCypUzR4wiKBT4x0a2jtT2EKx
-	6TADHdF78O0upbIfmH23jXiJ0AODt+UEewcZ5fmWdtz8uCWipcZ5jmBWTdL7A6kA==;
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=KpJ6k4J59qKz0uHRTXxneTJbQDK8g074xXtvyyznLwk=;
+	t=1716205541; x=1717415141; b=uhjp+uMGuc+bFOkFese4kzhquCy2tQ6KSUgx1Hs9K1vLmKy
+	RrzhRbmjY4SgUZC+mQBDqadkkvTYikbZ9CpEHjl2CHP3E4qQtWziQDYBssl7NuiAyhcQAmzY3Bbk6
+	yybQhEV60jmsYse3O2VJhgL7QraYBT8WORoja9HNwS/V36fVDxtmRddob8OUS/TTNQgI1TjwE8+aA
+	6yNlPdIODmaLPF0sB5SaiDSLI4jTJwIX/xz4QuLjEXR8G+mIhde8ouKyxRX22zjGzq8+rxLgeeK7v
+	9GjL3iQ2Of2Km8YuV93gN9lGBAAK962Ycw0bAGOCGqLDQMxOKbXTZgHtqFp41NuA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1s91Nx-00000000BbZ-18IN;
-	Mon, 20 May 2024 13:40:57 +0200
-Message-ID: <b7583de35462b06bbfbeb39bf2435bcb5f04be06.camel@sipsolutions.net>
-Subject: Re: [PATCH v1 net] cfg80211: pmsr: use correct nla_get_uX functions
+	id 1s91SU-00000000C2y-1k4V;
+	Mon, 20 May 2024 13:45:38 +0200
+Message-ID: <95f3e147de837b4833e6cf6eb67108f96640af4e.camel@sipsolutions.net>
+Subject: Re: [WARNING] memcpy: detected field-spanning write (size 1005) of
+ single field "&out_cmd->cmd.payload" at
+ drivers/net/wireless/intel/iwlegacy/common.c:3173 (size 320)
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Lin Ma <linma@zju.edu.cn>, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 20 May 2024 13:40:56 +0200
-In-Reply-To: <20240520073311.44117-1-linma@zju.edu.cn>
-References: <20240520073311.44117-1-linma@zju.edu.cn>
+To: Stanislaw Gruszka <stf_xl@wp.pl>, Kees Cook <keescook@chromium.org>
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>, Xose Vazquez Perez
+	 <xose.vazquez@gmail.com>, linux-wireless@vger.kernel.org, 
+	linux-hardening@vger.kernel.org
+Date: Mon, 20 May 2024 13:45:37 +0200
+In-Reply-To: <20240520073210.GA693073@wp.pl>
+References: <2c534d01-449a-43f4-9216-eacdb3b35577@gmail.com>
+	 <20240518092939.GA643846@wp.pl> <202405181033.6399B7E416@keescook>
+	 <20240520073210.GA693073@wp.pl>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
@@ -66,31 +71,35 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-Couple of minor comments:
 
-The subject is missing wifi: prefix.
+> +++ b/drivers/net/wireless/intel/iwlegacy/commands.h
+> @@ -201,9 +201,6 @@ struct il_cmd_header {
+>  	 *  15          unsolicited RX or uCode-originated notification
+>  	 */
+>  	__le16 sequence;
+> -
+> -	/* command or response/notification data follows immediately */
+> -	u8 data[];
+>  } __packed;
 
-On Mon, 2024-05-20 at 15:33 +0800, Lin Ma wrote:
-> The commit 9bb7e0f24e7e ("cfg80211: add peer measurement with FTM
-> initiator API") defines four attributes, which are
+[...]
+
+
+> -	memcpy(&out_cmd->cmd.payload, cmd->data, cmd->len);
+> +	memcpy(&out_cmd->cmd.raw, cmd->data, cmd->len);
+
+[...]
+
+> +++ b/drivers/net/wireless/intel/iwlegacy/common.h
+> @@ -555,6 +555,7 @@ struct il_device_cmd {
+>  		u32 val32;
+>  		struct il_tx_cmd tx;
+>  		u8 payload[DEF_CMD_PAYLOAD_SIZE];
+> +		DECLARE_FLEX_ARRAY(u8, raw);
 >=20
-> - `NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP` with NLA_U8 type
-> - `NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD` with NLA_U16 type
-> - `NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION` with NLA_U8 type
-> - `NL80211_PMSR_FTM_REQ_ATTR_NUM_FTMR_RETRIES` with NLA_U8 type
->=20
-> However, the consumers of these attributes in `pmsr_parse_ftm` blindly
-> all use `nla_get_u32`, which is incorrect. Hence, fix these with correct
-> `nla_get_u8` and `nla_get_u16`.
 
-Maybe mention a bit more clearly that the _policy_ actually defines them
-with those types, so the users are incorrect, vs. a possible scenario
-where the kernel's documentation is just incorrect and we have to keep
-the code as-is for userspace to continue to function.
-
-I believe the changes are correct since the policy wants the right types
-and then on little-endian platforms it'll all work ...
+I don't think this is right, now the raw comes after
+DEF_CMD_PAYLOAD_SIZE? You want it to be a union with payload, I'd think.
 
 johannes
-
 
