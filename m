@@ -1,102 +1,121 @@
-Return-Path: <linux-wireless+bounces-7846-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7847-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23FB18C9F5D
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2024 17:10:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B50C08C9FC3
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2024 17:34:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B641AB22743
-	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2024 15:10:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54C461F21B84
+	for <lists+linux-wireless@lfdr.de>; Mon, 20 May 2024 15:34:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3DC1369AF;
-	Mon, 20 May 2024 15:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA500136E0C;
+	Mon, 20 May 2024 15:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="O2EYmDoW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XixFXTyS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0058928E7;
-	Mon, 20 May 2024 15:10:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9FD55782;
+	Mon, 20 May 2024 15:34:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716217827; cv=none; b=piDhX7ljjbauhHVYGeD2hUnPXDUxvc96cpoWMwC/B2D4eEzXkUMzPJBn36PayF3x4mvCqydmcb1GSFM4IV1YAoMacJCuXJYsGpbhW6N17Xek1zGqOEXpuqX+B2elUU44UEg6oM/Z/XWsaCKp+waiBK0pzlqkkmAkl7ZTGAEyfjM=
+	t=1716219282; cv=none; b=aZd2GaTCv706oI5q+5S31gsONnB5Gj5k3tnqMsHZn13ndj496tOMdFptlGqHYR5o5AutU2CPLB23iStsgZmQ+RwcisoIdsphuZIvYg4t2If7AwVdghfqMClTUGxl3QDzI83uGmi2Zpj+bTA74fZT7ANPbmiQgtBFnyLiYgyBCAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716217827; c=relaxed/simple;
-	bh=FpgQSbHQrq5k+ftN48UvraFvAUIVHl5RxgGpidd+SKk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nyCuHSltlAL+k7D/EkgTDqEYD6jCT3Zjgsr2UBB1otKgiFiY3ZxjgFx4FO/6iYZ/NOQ4OpwdmOEwfGLxvjfmNE7j/aDGytXG5IiiVAtjUnLh6Y6aMOCJsSnfgzYWx6WiO5kvolJ/O9ctNgOQTF10OcNGtqLYUAGVAP94fIR/vXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=O2EYmDoW; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=zbIUu8grEpUBcL1Az/6gF7Vb2ioV7yl0KREtP7MddK0=;
-	t=1716217825; x=1717427425; b=O2EYmDoWm/VrBSl9PtEeOGW5aEsXvs1xLra/4Ghzd9vhipF
-	WJTa1ZW+QodFi4SHIcdH3Gu2UYupkb+b1AEtHZqOssgcTi9a3uuW9uAt42J5XSmOkcbj1j1NFEdD6
-	lWg4c2zP5IlfE+dZIu80rrkiMUUIC6YwivUNygEoksGjbsBw/VKKEigR5XKGlAlBJA/p2StEGwtcg
-	bbyi36r9dk/BZAmcTy47UTIfX1h2cO5T9xYfMpFv6QdHPZnLpdpP04XjUOIBn7y0m7G9CIWw1ixcw
-	XjSYRaftqLDYka/oSqRuGRyh7fxXiGk8dbRiNCqODWCjErFoCZsFmiS06xOwcfSQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1s94eZ-00000000REN-2hkD;
-	Mon, 20 May 2024 17:10:19 +0200
-Message-ID: <daf3e4248061c21db623be84136f3da1da5de513.camel@sipsolutions.net>
-Subject: Re: [WARNING] memcpy: detected field-spanning write (size 1005) of
- single field "&out_cmd->cmd.payload" at
- drivers/net/wireless/intel/iwlegacy/common.c:3173 (size 320)
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Stanislaw Gruszka <stf_xl@wp.pl>
-Cc: Kees Cook <keescook@chromium.org>, "Gustavo A. R. Silva"
-	 <gustavoars@kernel.org>, Xose Vazquez Perez <xose.vazquez@gmail.com>, 
-	linux-wireless@vger.kernel.org, linux-hardening@vger.kernel.org
-Date: Mon, 20 May 2024 17:10:18 +0200
-In-Reply-To: <20240520150857.GA709412@wp.pl>
-References: <2c534d01-449a-43f4-9216-eacdb3b35577@gmail.com>
-	 <20240518092939.GA643846@wp.pl> <202405181033.6399B7E416@keescook>
-	 <20240520073210.GA693073@wp.pl>
-	 <95f3e147de837b4833e6cf6eb67108f96640af4e.camel@sipsolutions.net>
-	 <20240520150857.GA709412@wp.pl>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	s=arc-20240116; t=1716219282; c=relaxed/simple;
+	bh=Iql17hNOkntU/TEX70CbOa8Oc4J0CcgtLaFX5lJfHiU=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=myuiPqFaupde0fs/j41vz0kbSD/hzn2n5/NZk0x/FRAPywGYl8M3rApY8BoB7AdyowVPJjBscBNSJlVZWbeqjKMWWUtDNYGHW5oClAMKzEwq+C4nEjfpy4AzAUPe58bkFSO3/PHqlmjv6RvxO0bBvUbi6wfgsR+h9RQBWiLduew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XixFXTyS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 164BAC32789;
+	Mon, 20 May 2024 15:34:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716219282;
+	bh=Iql17hNOkntU/TEX70CbOa8Oc4J0CcgtLaFX5lJfHiU=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=XixFXTySIXU6MYB/gKzec07HMWEKKFYxZdSlTizu3cEEJboWHNEXIVMOH+N+I3nWd
+	 EN8AWqbYFYeNOrOZzbWf3RRHO2414UsH+e5knfZgrGjcMuQP1fRXJyKs+CuB0DrbJr
+	 6BnGqwdiFNFCIq54LQxiVXV7cIPAnhcGcwlFztw/9rdRrVkBr9F5yTM8dshmO/SsVe
+	 PD8dZ/zeE5s36XgEsS0ZvS6l99vKpyXJW6+GBaeOdUSHfaUasUQltQMzJCYGaIRGKy
+	 vq0rHaQq7vKo2XfDSnqPdQIWFkWOJQl9nl2WVal4dsjL5wtIbKU2ZCQ2HH/Ru3Zuc8
+	 43VWsc7lRk0LQ==
+From: Kalle Valo <kvalo@kernel.org>
+To: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: <ath11k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>,
+  <regressions@lists.linux.dev>
+Subject: Re: [PATCH v2] wifi: ath11k: move power type check to ASSOC stage
+ when connecting to 6 GHz AP
+References: <20240424064019.4847-1-quic_bqiang@quicinc.com>
+	<87wmo0k71i.fsf@kernel.org>
+	<3dc28f34-45cc-4e14-b9ea-1f7b78a6a591@quicinc.com>
+Date: Mon, 20 May 2024 18:34:39 +0300
+In-Reply-To: <3dc28f34-45cc-4e14-b9ea-1f7b78a6a591@quicinc.com> (Baochen
+	Qiang's message of "Fri, 17 May 2024 10:14:08 +0800")
+Message-ID: <87h6esebu8.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain
 
-On Mon, 2024-05-20 at 17:08 +0200, Stanislaw Gruszka wrote:
-> >=20
-> > I don't think this is right, now the raw comes after
-> > DEF_CMD_PAYLOAD_SIZE? You want it to be a union with payload, I'd think=
-.
->=20
-> Not sure if I understand. I think we have union with payload with=20
-> the patch. The structure looks like this:
->=20
-> struct il_device_cmd {
-> 	struct il_cmd_header hdr;	/* uCode API */
-> 	union {
-> 		u32 flags;
-> 		u8 val8;
-> 		u16 val16;
-> 		u32 val32;
-> 		struct il_tx_cmd tx;
-> 		u8 payload[DEF_CMD_PAYLOAD_SIZE];
-> 		DECLARE_FLEX_ARRAY(u8, raw);
-> 	} __packed cmd;
-> } __packed;
->=20
+Baochen Qiang <quic_bqiang@quicinc.com> writes:
 
-Oh, sorry, my bad. I confused the tx_cmd and the cmd_header.
+> On 5/11/2024 5:54 PM, Kalle Valo wrote:
+>> Baochen Qiang <quic_bqiang@quicinc.com> writes:
+>> 
+>>> With commit bc8a0fac8677 ("wifi: mac80211: don't set bss_conf in parsing")
+>>> ath11k fails to connect to 6 GHz AP.
+>>>
+>>> This is because currently ath11k checks AP's power type in
+>>> ath11k_mac_op_assign_vif_chanctx() which would be called in AUTH stage.
+>>> However with above commit power type is not available until ASSOC stage.
+>>> As a result power type check fails and therefore connection fails.
+>>>
+>>> Fix this by moving power type check to ASSOC stage, also move regulatory
+>>> rules update there because it depends on power type.
+>>>
+>>> Tested-on: WCN6855 hw2.0 PCI
+>>> WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
+>>>
+>>> Fixes: bc8a0fac8677 ("wifi: mac80211: don't set bss_conf in parsing")
+>>> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+>> 
+>> Oh, this fell through the cracks. Commit bc8a0fac8677 was introduced in
+>> v6.9-rc1 so I should have sent this to v6.9 but it's too late now. I'll
+>> need to queue this for v6.10 via wireless tree.
+>> 
+>> Adding the regression also to regzbot:
+>> 
+>> #regzbot introduced: bc8a0fac8677
+>> #regzbot title: ath11k: connection to 6 GHz AP fails
+>> 
+> Hi Kalle, with an upcoming patch this regression is expected to be fixed:
+>
+> https://lore.kernel.org/all/20240506214536.310434f55f76.I6aca291ee06265e3f63e0f9024ba19a850b53a33@changeid/#t
+>
+> So here the ath11k fix would not be needed any more once above patch got merged.
 
-johannes
+What happens if we apply both patch 'wifi: ath11k: move power type check
+to ASSOC stage when connecting to 6 GHz AP' and patchset 'wifi:
+mac80211: build TPE handling'? In other words, do they conflict from
+functionality point of view?
+
+I ask because I suspect Johannes is planning to take patchset 'wifi:
+mac80211: build TPE handling' to v6.11 but we should fix the ath11k bug
+in v6.10.
+
+> But I don't have time to test this, so suggest keeping it pending. We
+> could drop it once above analysis got verified.
+
+BTW for some this patch wasn't in the pending branch but it's there now.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
