@@ -1,445 +1,201 @@
-Return-Path: <linux-wireless+bounces-7892-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7893-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE6748CAB40
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2024 11:50:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CD638CAB44
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2024 11:51:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4120EB22CFC
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2024 09:50:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A01D11C215FE
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2024 09:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAAFD6EB62;
-	Tue, 21 May 2024 09:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A7A173183;
+	Tue, 21 May 2024 09:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UlVEIXeF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZE3GwsX2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050F96BB58
-	for <linux-wireless@vger.kernel.org>; Tue, 21 May 2024 09:49:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4696B73535
+	for <linux-wireless@vger.kernel.org>; Tue, 21 May 2024 09:49:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716284990; cv=none; b=TKjxpdFRe6cxqA19nYPWQMTxMofcBk6CLwW6LfSaypwqxEzwfJN0Ama19AKeIlkWEYOXsp5ibOWi0/19Bdhcc4osWsqEDcIUBe+Vl7NJ9TYH5Sl+jAkQJTFbKYz1MjVahJgNf68gS7F5GUtwambvTMW6fLlfszqJBkbFfSP9W+M=
+	t=1716284997; cv=none; b=TLG9oJ4vTdSCp3QT6gnehALJO0tJeWDCksPLQReNOjXczt2TdW5PDhWQEUuXOEmug1POcS2hkNRYfDf0qm4OrSjrWeuDYBQx4wrw23o5JqzNnRBhwio5Qx7RhC5f6WmM6+JxKlYKi0SiZ/AZUGu0OOqugxHEL8FYHs1/iqjjlO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716284990; c=relaxed/simple;
-	bh=cyctKyZ6xv3Jcv1nSJ8Y7GXV2A4M4LjyR/6XGLxRfIA=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=IYR3rtmX5sdkhMWBfrjW6h+VU1e4xaoM4A2OuHkLlNxOJrHQ5TfsrOvyBaMQRXysAeXGnuz/64D9pcWEHZCi3QaPY9FyNtFOm01Nt/U+hlw25zV99lx+sdeCjVG7ShoSsbtQdW7YQU4xPlRXVJf4d8Tc4rys6Tf7i1va55LV+ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=UlVEIXeF; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-57824fa0a8fso449033a12.0
-        for <linux-wireless@vger.kernel.org>; Tue, 21 May 2024 02:49:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1716284987; x=1716889787; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ttQWlXfImZ6VMs6eXr/g1fKwqzPLEk4Ki4n5JP6tD3U=;
-        b=UlVEIXeF9L9VmYBcySFxxm6Zn0A0DmUQkHGoAvQbuTBGaLKYQEQHUY594AhxtSM4Z4
-         t5ho59eXcPy5DlgX6V1bVXdaUw1fCpVI/2o5VdSa3mS/m5f09QiJXgrpzX5uZEePjYeE
-         O4suCcEynHh5bZ67boxxGQJ8N3uJkm7Y3HRtyPStgmGGpzKR0xprTP2udDQivbMvkprh
-         knZCtK5W0XBRIVYws0vYcKs09/U6SkfERQAvInThiv2xBq7LcyUYQAJSYgKQJkaFTPbJ
-         Gw0lMuqCOXyMcV8YtcZe7fYXPVFrgGnmL3l7v3rCLeB648pJmEDtnn4zD2Q2xEXCCuju
-         00Lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716284987; x=1716889787;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ttQWlXfImZ6VMs6eXr/g1fKwqzPLEk4Ki4n5JP6tD3U=;
-        b=Cl9bg+G8j68AOyp1W4SZq94UuDfGYUtbgSHIduQo4hNBVPMXcSwuwb9QYC4bfg4I47
-         ZTnpAQN2Q4Gpsle67W1H4huPFY7zaSZZydg1OHyIfN8yhk2JXs7uDr32w0TcaaNF1vo3
-         JDXnkB3y7NKPS7W5ykcUbd4k/PUectx/57mDCiI2OBkRiXcav/vnqVD93QsdjJ2s2/SV
-         GxfuatsCgFehRl6wa0XnE1KbPnslNDRaqdVu5OF3iMhvO8VpzT5zCIfIotGKyuIp8NFY
-         B8za47j7tY6SPW/iXwKUETu4Oe5fO5mXF1f5E7FSY7i/Zt/q0E1GgAvsUCFu0ZYl/got
-         1/Jw==
-X-Forwarded-Encrypted: i=1; AJvYcCXgK3/O1r8/dz4BWGGrkmcwhX51wUtFLaUMwO9CRhsN1JdhNpIef0xoGOX+sV1Y0kHriUFufnJ+Ept41xYEf5KV0R6vzzyFeusxk/pv9iI=
-X-Gm-Message-State: AOJu0YyYwYJKGKD2Gyb9q2+/Qry9ca6CUoVJP6hg5sv9q9BwS2qloO2r
-	GhIgnqKZdSClW+qB/FN+Yyoeh9+PCnmGdQc4NFoW1gNuIFZ0iNObaQm9vXH4Bj8=
-X-Google-Smtp-Source: AGHT+IGYZltjqowB77AWpArr9RoGUzhswwEoZofmoJx6mtx/FkQZFqOw8katShiW6munDZHWImZ4gg==
-X-Received: by 2002:a17:906:4a49:b0:a59:ba2b:590f with SMTP id a640c23a62f3a-a5a2d67806emr1778800866b.67.1716284987191;
-        Tue, 21 May 2024 02:49:47 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:982:cbb0:adf9:e5d:4c15:f725? ([2a01:e0a:982:cbb0:adf9:e5d:4c15:f725])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5d08d36feasm577491566b.15.2024.05.21.02.49.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 May 2024 02:49:46 -0700 (PDT)
-Message-ID: <a314906d-b297-474d-910c-6634c8c23042@linaro.org>
-Date: Tue, 21 May 2024 11:49:42 +0200
+	s=arc-20240116; t=1716284997; c=relaxed/simple;
+	bh=sm97IK3nGkZ2pmbSic3bAR+DZZxDcLN9M74pZztgUHM=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=JPYYKLKw58WXKtihyUO3CzVLZGwltFH8iolHnbyrhL5g92jPagxfozqsgNrURcGUS5W8XrbV1HV0FQ0djjO7fmFom8jmvhGadoj2Ga7oaaFj/xgW10s+7ra2CwZZbzCTZozNmG2xHcYIJ14tIRuKY23ixGAYnzY4Q/3fBahDAPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZE3GwsX2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E50C32782;
+	Tue, 21 May 2024 09:49:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716284996;
+	bh=sm97IK3nGkZ2pmbSic3bAR+DZZxDcLN9M74pZztgUHM=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=ZE3GwsX2bVYNwmghBtmo2/mDt796/agmEKRC26JBt/UCb1OfdrrcJ4QBJa1xXG37s
+	 gxssy+xJQoB0xhoC9RruPrNqzB4JCkosQsBGSqKQ/7K/xsAhbXDb7RGlv2E6W8XtTv
+	 zZchHMg5g+U9sRX8w3992qt8k3adq4PVoHGguajqk28PIca0QkAAB6+XKLq7zKlQOI
+	 2R//XLbyIZDJw2Dg9eA4sq8ITFiYp0UNF8FZ3uou2lEhxYqt8rrW9R+y9wWkZu9Gl0
+	 WG9xgDAjPfMUaRpwtNwQTifc7RQmhFSF6EgZG4OAC+t+aZfBRZwgM4OFNd6ku/ph6S
+	 uTrSjFuCel5DQ==
+From: Kalle Valo <kvalo@kernel.org>
+To: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH 0/7] wifi: ath12k: add support for WoW
+References: <20240510064748.369452-1-quic_bqiang@quicinc.com>
+Date: Tue, 21 May 2024 12:49:54 +0300
+In-Reply-To: <20240510064748.369452-1-quic_bqiang@quicinc.com> (Baochen
+	Qiang's message of "Fri, 10 May 2024 14:47:41 +0800")
+Message-ID: <87h6ercx4t.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: neil.armstrong@linaro.org
-Reply-To: neil.armstrong@linaro.org
-Subject: Re: [PATCH 06/12] remoteproc: qcom_q6v5_pas: switch to mbn files by
- default
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>,
- Loic Poulain <loic.poulain@linaro.org>, Kalle Valo <kvalo@kernel.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
- linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org,
- Arnd Bergmann <arnd@arndb.de>
-References: <20240521-qcom-firmware-name-v1-0-99a6d32b1e5e@linaro.org>
- <20240521-qcom-firmware-name-v1-6-99a6d32b1e5e@linaro.org>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro
-In-Reply-To: <20240521-qcom-firmware-name-v1-6-99a6d32b1e5e@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 21/05/2024 11:45, Dmitry Baryshkov wrote:
-> We have been pushing userspace to use mbn files by default for ages.
-> As a preparation for making the firmware-name optional, make the driver
-> use .mbn instead of .mdt files by default.
+Baochen Qiang <quic_bqiang@quicinc.com> writes:
 
-I think we should have a mechanism to fallback to .mdt since downstream
-uses split mdt on the devices filesystem.
+> Add support for WoW (Wakeup on Wireless) funtionalities, this including
+> magic-pattern, net-detect, disconnect and patterns, HW data filter, ARP
+> and NS offload, GTK rekey offload.
+>
+> Also enable keepalive before suspend to avoid unexpected kick out by AP.
 
-Perhaps only specify .firmware_name = "adsp" and add a list of allowed extension
-it will try in a loop ?
+There was a simple conflict in ath12k_core_suspend() but I fixed that
+(tag ath-pending-202405210818). But I see new warnings:
 
-Neil
+./include/linux/fortify-string.h:97:33: warning: '__builtin_memcpy' accessing 18446744073709551605 or more bytes at offsets 0 and 0 overlaps 9223372036854775787 bytes at offset -9223372036854775798 [-Wrestrict]
+./include/linux/fortify-string.h:97:33: warning: '__builtin_memcpy' accessing 18446744073709551605 or more bytes at offsets 0 and 0 overlaps 9223372036854775787 bytes at offset -9223372036854775798 [-Wrestrict]
+drivers/net/wireless/ath/ath12k/core.c:69:5: warning: context imbalance in 'ath12k_core_suspend' - different lock contexts for basic block
 
-> 
-> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> ---
->   drivers/remoteproc/qcom_q6v5_pas.c | 76 +++++++++++++++++++-------------------
->   1 file changed, 38 insertions(+), 38 deletions(-)
-> 
-> diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
-> index 54d8005d40a3..4694ec4f038d 100644
-> --- a/drivers/remoteproc/qcom_q6v5_pas.c
-> +++ b/drivers/remoteproc/qcom_q6v5_pas.c
-> @@ -812,7 +812,7 @@ static void adsp_remove(struct platform_device *pdev)
->   
->   static const struct adsp_data adsp_resource_init = {
->   	.crash_reason_smem = 423,
-> -	.firmware_name = "adsp.mdt",
-> +	.firmware_name = "adsp.mbn",
->   	.pas_id = 1,
->   	.auto_boot = true,
->   	.ssr_name = "lpass",
-> @@ -822,7 +822,7 @@ static const struct adsp_data adsp_resource_init = {
->   
->   static const struct adsp_data sdm845_adsp_resource_init = {
->   	.crash_reason_smem = 423,
-> -	.firmware_name = "adsp.mdt",
-> +	.firmware_name = "adsp.mbn",
->   	.pas_id = 1,
->   	.auto_boot = true,
->   	.load_state = "adsp",
-> @@ -833,7 +833,7 @@ static const struct adsp_data sdm845_adsp_resource_init = {
->   
->   static const struct adsp_data sm6350_adsp_resource = {
->   	.crash_reason_smem = 423,
-> -	.firmware_name = "adsp.mdt",
-> +	.firmware_name = "adsp.mbn",
->   	.pas_id = 1,
->   	.auto_boot = true,
->   	.proxy_pd_names = (char*[]){
-> @@ -849,7 +849,7 @@ static const struct adsp_data sm6350_adsp_resource = {
->   
->   static const struct adsp_data sm6375_mpss_resource = {
->   	.crash_reason_smem = 421,
-> -	.firmware_name = "modem.mdt",
-> +	.firmware_name = "modem.mbn",
->   	.pas_id = 4,
->   	.minidump_id = 3,
->   	.auto_boot = false,
-> @@ -864,7 +864,7 @@ static const struct adsp_data sm6375_mpss_resource = {
->   
->   static const struct adsp_data sm8150_adsp_resource = {
->   	.crash_reason_smem = 423,
-> -	.firmware_name = "adsp.mdt",
-> +	.firmware_name = "adsp.mbn",
->   	.pas_id = 1,
->   	.auto_boot = true,
->   	.proxy_pd_names = (char*[]){
-> @@ -879,7 +879,7 @@ static const struct adsp_data sm8150_adsp_resource = {
->   
->   static const struct adsp_data sm8250_adsp_resource = {
->   	.crash_reason_smem = 423,
-> -	.firmware_name = "adsp.mdt",
-> +	.firmware_name = "adsp.mbn",
->   	.pas_id = 1,
->   	.auto_boot = true,
->   	.proxy_pd_names = (char*[]){
-> @@ -895,7 +895,7 @@ static const struct adsp_data sm8250_adsp_resource = {
->   
->   static const struct adsp_data sm8350_adsp_resource = {
->   	.crash_reason_smem = 423,
-> -	.firmware_name = "adsp.mdt",
-> +	.firmware_name = "adsp.mbn",
->   	.pas_id = 1,
->   	.auto_boot = true,
->   	.proxy_pd_names = (char*[]){
-> @@ -911,7 +911,7 @@ static const struct adsp_data sm8350_adsp_resource = {
->   
->   static const struct adsp_data msm8996_adsp_resource = {
->   	.crash_reason_smem = 423,
-> -	.firmware_name = "adsp.mdt",
-> +	.firmware_name = "adsp.mbn",
->   	.pas_id = 1,
->   	.auto_boot = true,
->   	.proxy_pd_names = (char*[]){
-> @@ -925,7 +925,7 @@ static const struct adsp_data msm8996_adsp_resource = {
->   
->   static const struct adsp_data cdsp_resource_init = {
->   	.crash_reason_smem = 601,
-> -	.firmware_name = "cdsp.mdt",
-> +	.firmware_name = "cdsp.mbn",
->   	.pas_id = 18,
->   	.auto_boot = true,
->   	.ssr_name = "cdsp",
-> @@ -935,7 +935,7 @@ static const struct adsp_data cdsp_resource_init = {
->   
->   static const struct adsp_data sdm845_cdsp_resource_init = {
->   	.crash_reason_smem = 601,
-> -	.firmware_name = "cdsp.mdt",
-> +	.firmware_name = "cdsp.mbn",
->   	.pas_id = 18,
->   	.auto_boot = true,
->   	.load_state = "cdsp",
-> @@ -946,7 +946,7 @@ static const struct adsp_data sdm845_cdsp_resource_init = {
->   
->   static const struct adsp_data sm6350_cdsp_resource = {
->   	.crash_reason_smem = 601,
-> -	.firmware_name = "cdsp.mdt",
-> +	.firmware_name = "cdsp.mbn",
->   	.pas_id = 18,
->   	.auto_boot = true,
->   	.proxy_pd_names = (char*[]){
-> @@ -962,7 +962,7 @@ static const struct adsp_data sm6350_cdsp_resource = {
->   
->   static const struct adsp_data sm8150_cdsp_resource = {
->   	.crash_reason_smem = 601,
-> -	.firmware_name = "cdsp.mdt",
-> +	.firmware_name = "cdsp.mbn",
->   	.pas_id = 18,
->   	.auto_boot = true,
->   	.proxy_pd_names = (char*[]){
-> @@ -977,7 +977,7 @@ static const struct adsp_data sm8150_cdsp_resource = {
->   
->   static const struct adsp_data sm8250_cdsp_resource = {
->   	.crash_reason_smem = 601,
-> -	.firmware_name = "cdsp.mdt",
-> +	.firmware_name = "cdsp.mbn",
->   	.pas_id = 18,
->   	.auto_boot = true,
->   	.proxy_pd_names = (char*[]){
-> @@ -992,7 +992,7 @@ static const struct adsp_data sm8250_cdsp_resource = {
->   
->   static const struct adsp_data sc8280xp_nsp0_resource = {
->   	.crash_reason_smem = 601,
-> -	.firmware_name = "cdsp.mdt",
-> +	.firmware_name = "cdsp.mbn",
->   	.pas_id = 18,
->   	.auto_boot = true,
->   	.proxy_pd_names = (char*[]){
-> @@ -1006,7 +1006,7 @@ static const struct adsp_data sc8280xp_nsp0_resource = {
->   
->   static const struct adsp_data sc8280xp_nsp1_resource = {
->   	.crash_reason_smem = 633,
-> -	.firmware_name = "cdsp.mdt",
-> +	.firmware_name = "cdsp.mbn",
->   	.pas_id = 30,
->   	.auto_boot = true,
->   	.proxy_pd_names = (char*[]){
-> @@ -1020,8 +1020,8 @@ static const struct adsp_data sc8280xp_nsp1_resource = {
->   
->   static const struct adsp_data x1e80100_adsp_resource = {
->   	.crash_reason_smem = 423,
-> -	.firmware_name = "adsp.mdt",
-> -	.dtb_firmware_name = "adsp_dtb.mdt",
-> +	.firmware_name = "adsp.mbn",
-> +	.dtb_firmware_name = "adsp_dtb.mbn",
->   	.pas_id = 1,
->   	.dtb_pas_id = 0x24,
->   	.lite_pas_id = 0x1f,
-> @@ -1040,8 +1040,8 @@ static const struct adsp_data x1e80100_adsp_resource = {
->   
->   static const struct adsp_data x1e80100_cdsp_resource = {
->   	.crash_reason_smem = 601,
-> -	.firmware_name = "cdsp.mdt",
-> -	.dtb_firmware_name = "cdsp_dtb.mdt",
-> +	.firmware_name = "cdsp.mbn",
-> +	.dtb_firmware_name = "cdsp_dtb.mbn",
->   	.pas_id = 18,
->   	.dtb_pas_id = 0x25,
->   	.minidump_id = 7,
-> @@ -1060,7 +1060,7 @@ static const struct adsp_data x1e80100_cdsp_resource = {
->   
->   static const struct adsp_data sm8350_cdsp_resource = {
->   	.crash_reason_smem = 601,
-> -	.firmware_name = "cdsp.mdt",
-> +	.firmware_name = "cdsp.mbn",
->   	.pas_id = 18,
->   	.auto_boot = true,
->   	.proxy_pd_names = (char*[]){
-> @@ -1076,7 +1076,7 @@ static const struct adsp_data sm8350_cdsp_resource = {
->   
->   static const struct adsp_data mpss_resource_init = {
->   	.crash_reason_smem = 421,
-> -	.firmware_name = "modem.mdt",
-> +	.firmware_name = "modem.mbn",
->   	.pas_id = 4,
->   	.minidump_id = 3,
->   	.auto_boot = false,
-> @@ -1093,7 +1093,7 @@ static const struct adsp_data mpss_resource_init = {
->   
->   static const struct adsp_data sc8180x_mpss_resource = {
->   	.crash_reason_smem = 421,
-> -	.firmware_name = "modem.mdt",
-> +	.firmware_name = "modem.mbn",
->   	.pas_id = 4,
->   	.auto_boot = false,
->   	.proxy_pd_names = (char*[]){
-> @@ -1108,7 +1108,7 @@ static const struct adsp_data sc8180x_mpss_resource = {
->   
->   static const struct adsp_data msm8996_slpi_resource_init = {
->   	.crash_reason_smem = 424,
-> -	.firmware_name = "slpi.mdt",
-> +	.firmware_name = "slpi.mbn",
->   	.pas_id = 12,
->   	.auto_boot = true,
->   	.proxy_pd_names = (char*[]){
-> @@ -1122,7 +1122,7 @@ static const struct adsp_data msm8996_slpi_resource_init = {
->   
->   static const struct adsp_data sdm845_slpi_resource_init = {
->   	.crash_reason_smem = 424,
-> -	.firmware_name = "slpi.mdt",
-> +	.firmware_name = "slpi.mbn",
->   	.pas_id = 12,
->   	.auto_boot = true,
->   	.proxy_pd_names = (char*[]){
-> @@ -1138,7 +1138,7 @@ static const struct adsp_data sdm845_slpi_resource_init = {
->   
->   static const struct adsp_data wcss_resource_init = {
->   	.crash_reason_smem = 421,
-> -	.firmware_name = "wcnss.mdt",
-> +	.firmware_name = "wcnss.mbn",
->   	.pas_id = 6,
->   	.auto_boot = true,
->   	.ssr_name = "mpss",
-> @@ -1148,7 +1148,7 @@ static const struct adsp_data wcss_resource_init = {
->   
->   static const struct adsp_data sdx55_mpss_resource = {
->   	.crash_reason_smem = 421,
-> -	.firmware_name = "modem.mdt",
-> +	.firmware_name = "modem.mbn",
->   	.pas_id = 4,
->   	.auto_boot = true,
->   	.proxy_pd_names = (char*[]){
-> @@ -1163,7 +1163,7 @@ static const struct adsp_data sdx55_mpss_resource = {
->   
->   static const struct adsp_data sm8450_mpss_resource = {
->   	.crash_reason_smem = 421,
-> -	.firmware_name = "modem.mdt",
-> +	.firmware_name = "modem.mbn",
->   	.pas_id = 4,
->   	.minidump_id = 3,
->   	.auto_boot = false,
-> @@ -1181,8 +1181,8 @@ static const struct adsp_data sm8450_mpss_resource = {
->   
->   static const struct adsp_data sm8550_adsp_resource = {
->   	.crash_reason_smem = 423,
-> -	.firmware_name = "adsp.mdt",
-> -	.dtb_firmware_name = "adsp_dtb.mdt",
-> +	.firmware_name = "adsp.mbn",
-> +	.dtb_firmware_name = "adsp_dtb.mbn",
->   	.pas_id = 1,
->   	.dtb_pas_id = 0x24,
->   	.minidump_id = 5,
-> @@ -1200,8 +1200,8 @@ static const struct adsp_data sm8550_adsp_resource = {
->   
->   static const struct adsp_data sm8550_cdsp_resource = {
->   	.crash_reason_smem = 601,
-> -	.firmware_name = "cdsp.mdt",
-> -	.dtb_firmware_name = "cdsp_dtb.mdt",
-> +	.firmware_name = "cdsp.mbn",
-> +	.dtb_firmware_name = "cdsp_dtb.mbn",
->   	.pas_id = 18,
->   	.dtb_pas_id = 0x25,
->   	.minidump_id = 7,
-> @@ -1220,8 +1220,8 @@ static const struct adsp_data sm8550_cdsp_resource = {
->   
->   static const struct adsp_data sm8550_mpss_resource = {
->   	.crash_reason_smem = 421,
-> -	.firmware_name = "modem.mdt",
-> -	.dtb_firmware_name = "modem_dtb.mdt",
-> +	.firmware_name = "modem.mbn",
-> +	.dtb_firmware_name = "modem_dtb.mbn",
->   	.pas_id = 4,
->   	.dtb_pas_id = 0x26,
->   	.minidump_id = 3,
-> @@ -1243,7 +1243,7 @@ static const struct adsp_data sm8550_mpss_resource = {
->   
->   static const struct adsp_data sc7280_wpss_resource = {
->   	.crash_reason_smem = 626,
-> -	.firmware_name = "wpss.mdt",
-> +	.firmware_name = "wpss.mbn",
->   	.pas_id = 6,
->   	.auto_boot = true,
->   	.proxy_pd_names = (char*[]){
-> @@ -1259,8 +1259,8 @@ static const struct adsp_data sc7280_wpss_resource = {
->   
->   static const struct adsp_data sm8650_cdsp_resource = {
->   	.crash_reason_smem = 601,
-> -	.firmware_name = "cdsp.mdt",
-> -	.dtb_firmware_name = "cdsp_dtb.mdt",
-> +	.firmware_name = "cdsp.mbn",
-> +	.dtb_firmware_name = "cdsp_dtb.mbn",
->   	.pas_id = 18,
->   	.dtb_pas_id = 0x25,
->   	.minidump_id = 7,
-> @@ -1283,8 +1283,8 @@ static const struct adsp_data sm8650_cdsp_resource = {
->   
->   static const struct adsp_data sm8650_mpss_resource = {
->   	.crash_reason_smem = 421,
-> -	.firmware_name = "modem.mdt",
-> -	.dtb_firmware_name = "modem_dtb.mdt",
-> +	.firmware_name = "modem.mbn",
-> +	.dtb_firmware_name = "modem_dtb.mbn",
->   	.pas_id = 4,
->   	.dtb_pas_id = 0x26,
->   	.minidump_id = 3,
-> 
+And in my suspend tests with WCN7850 the kernel crashes (tried two times
+and crashed in both):
 
+[  854.087911] wlan0: associated
+[  854.139498] wlan0: Limiting TX power to 23 (23 - 0) dBm as advertised by <censored>
+[  854.481975] BUG: sleeping function called from invalid context at include/linux/sched/mm.h:315
+[  854.483069] in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 1694, name: wpa_supplicant
+[  854.483524] preempt_count: 0, expected: 0
+[  854.484010] RCU nest depth: 1, expected: 0
+[  854.484416] 2 locks held by wpa_supplicant/1694:
+[  854.484914]  #0: ffffffff9c9e2650 (rtnl_mutex){+.+.}-{3:3}, at: rtnetlink_rcv_msg+0x2c8/0xbf0
+[  854.485512]  #1: ffffffff9c0cd960 (rcu_read_lock){....}-{1:2}, at: atomic_notifier_call_chain+0x28/0x140
+[  854.486290] CPU: 1 PID: 1694 Comm: wpa_supplicant Not tainted 6.9.0-wt-ath+ #1525
+[  854.486707] Hardware name: Intel(R) Client Systems NUC8i7HVK/NUC8i7HVB, BIOS HNKBLi70.86A.0067.2021.0528.1339 05/28/2021
+[  854.487195] Call Trace:
+[  854.487467]  <TASK>
+[  854.487734]  dump_stack_lvl+0xa4/0xe0
+[  854.488049]  dump_stack+0x10/0x20
+[  854.488335]  __might_resched+0x363/0x5a0
+[  854.488628]  ? kmalloc_trace+0x4b/0x2d0
+[  854.488978]  __might_sleep+0xad/0x160
+[  854.489282]  kmalloc_trace+0x264/0x2d0
+[  854.489574]  ? ath12k_mac_arvif_get_arp_ns_offload+0x72/0xd0 [ath12k]
+[  854.490071]  ath12k_mac_arvif_get_arp_ns_offload+0x72/0xd0 [ath12k]
+[  854.490543]  ath12k_mac_op_ipv6_changed+0xc7/0x1470 [ath12k]
+[  854.491117]  ? ieee80211_emulate_change_chanctx+0xe0/0xe0 [mac80211]
+[  854.491909]  ieee80211_ifa6_changed+0x1c7/0x3a0 [mac80211]
+[  854.492663]  notifier_call_chain+0x97/0x310
+[  854.492997]  atomic_notifier_call_chain+0x5d/0x140
+[  854.493322]  inet6addr_notifier_call_chain+0x16/0x20
+[  854.493650]  ipv6_add_addr+0x10ec/0x2160
+[  854.493946]  ? reacquire_held_locks+0x4d0/0x4d0
+[  854.494294]  ? inet6_dump_ifaddr+0x10/0x10
+[  854.494599]  ? ip6_route_add+0x75/0x130
+[  854.494910]  ? __kasan_check_write+0x14/0x20
+[  854.495214]  ? ip6_route_add+0x8b/0x130
+[  854.495525]  addrconf_add_linklocal+0xd6/0x300
+[  854.495965]  ? addrconf_add_linklocal+0xd6/0x300
+[  854.496297]  ? addrconf_dad_start+0x110/0x110
+[  854.499635]  ? addrconf_addr_eui48_base+0x80/0xa0
+[  854.503094]  addrconf_addr_gen.constprop.0+0x155/0x260
+[  854.506223]  ? mutex_unlock+0xd/0x10
+[  854.508461]  ? addrconf_add_linklocal+0x300/0x300
+[  854.510681]  addrconf_init_auto_addrs+0x194/0x4e0
+[  854.512414]  addrconf_notify+0xabe/0xdd0
+[  854.514073]  notifier_call_chain+0x97/0x310
+[  854.515733]  ? __unwind_start+0x1f3/0x3d0
+[  854.517070]  raw_notifier_call_chain+0x11/0x20
+[  854.518407]  call_netdevice_notifiers_info+0x8b/0xf0
+[  854.521761]  netdev_state_change+0xe8/0x120
+[  854.522882]  ? call_netdevice_notifiers_info+0xf0/0xf0
+[  854.524019]  netdev_set_operstate+0xdf/0x130
+[  854.525139]  ? rtnl_put_cacheinfo+0x260/0x260
+[  854.526216]  set_operstate+0x8a/0x150
+[  854.527175]  do_setlink+0xf0e/0x2550
+[  854.528130]  ? rtnl_bridge_getlink+0x870/0x870
+[  854.529078]  ? check_prev_add+0x2330/0x2330
+[  854.530011]  ? mark_lock+0xe6/0x1470
+[  854.530919]  ? check_prev_add+0x2330/0x2330
+[  854.531710]  ? __lock_acquire+0xd43/0x1dd0
+[  854.532491]  ? kasan_print_address_stack_frame+0x1d2/0x230
+[  854.533277]  ? nla_get_range_signed+0x340/0x340
+[  854.534046]  ? __kasan_check_read+0x11/0x20
+[  854.534808]  ? mark_lock+0xe6/0x1470
+[  854.535573]  ? __kasan_check_read+0x11/0x20
+[  854.536292]  ? __nla_validate_parse+0x1d0/0x400
+[  854.536980]  rtnl_setlink+0x217/0x330
+[  854.537650]  ? do_setlink+0x2550/0x2550
+[  854.538355]  ? rtnetlink_rcv_msg+0x2c8/0xbf0
+[  854.539010]  ? mutex_lock_io_nested+0x1270/0x1270
+[  854.539657]  ? reacquire_held_locks+0x4d0/0x4d0
+[  854.540290]  ? lock_sync+0x1a0/0x1a0
+[  854.540981]  ? __this_cpu_preempt_check+0x13/0x20
+[  854.541598]  rtnetlink_rcv_msg+0x315/0xbf0
+[  854.542278]  ? check_prev_add+0x2330/0x2330
+[  854.542894]  ? rtnl_link_fill+0x900/0x900
+[  854.543446]  ? __lock_acquire+0xd43/0x1dd0
+[  854.544037]  netlink_rcv_skb+0x14c/0x400
+[  854.544581]  ? rtnl_link_fill+0x900/0x900
+[  854.545132]  ? netlink_ack+0xd70/0xd70
+[  854.545851]  ? debug_smp_processor_id+0x17/0x20
+[  854.546369]  ? __lock_release.isra.0+0x49c/0xae0
+[  854.546939]  ? netlink_deliver_tap+0x143/0x350
+[  854.547478]  ? netlink_deliver_tap+0x143/0x350
+[  854.548062]  ? __this_cpu_preempt_check+0x13/0x20
+[  854.548620]  ? netlink_deliver_tap+0xc8/0x350
+[  854.549149]  rtnetlink_rcv+0x10/0x20
+[  854.549708]  netlink_unicast+0x45c/0x790
+[  854.550211]  ? netlink_attachskb+0x7f0/0x7f0
+[  854.550802]  netlink_sendmsg+0x7eb/0xdb0
+[  854.551302]  ? netlink_unicast+0x790/0x790
+[  854.551847]  ? unix_ioctl+0x358/0x400
+[  854.552338]  ? selinux_socket_sendmsg+0x31/0x40
+[  854.552873]  ? netlink_unicast+0x790/0x790
+[  854.553360]  __sock_sendmsg+0xc9/0x160
+[  854.553901]  ? sock_do_ioctl+0xcf/0x1e0
+[  854.554387]  __sys_sendto+0x1ca/0x290
+[  854.554925]  ? __ia32_sys_getpeername+0xa0/0xa0
+[  854.555413]  ? ioctl_has_perm.constprop.0.isra.0+0x276/0x430
+[  854.556005]  ? sock_ioctl+0x24d/0x540
+[  854.556497]  ? br_ioctl_call+0x90/0x90
+[  854.557047]  ? selinux_file_ioctl+0x108/0x250
+[  854.557538]  ? debug_smp_processor_id+0x17/0x20
+[  854.558076]  __x64_sys_sendto+0xdb/0x1a0
+[  854.558588]  ? __this_cpu_preempt_check+0x13/0x20
+[  854.559170]  ? lockdep_hardirqs_on+0x7d/0x100
+[  854.559716]  x64_sys_call+0x8a2/0x9e0
+[  854.560209]  do_syscall_64+0x65/0x130
+[  854.560807]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+[  854.561300] RIP: 0033:0x7f0ef17cb750
+[  854.561848] Code: ff eb bc 0f 1f 80 00 00 00 00 f3 0f 1e fa 41 89 ca 64 8b 04 25 18 00 00 00 85 c0 75 1d 45 31 c9 45 31 c0 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 68 c3 0f 1f 80 00 00 00 00 55 48 83 ec 20 48
+[  854.562946] RSP: 002b:00007ffc4306af98 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+[  854.563506] RAX: ffffffffffffffda RBX: 0000000000000006 RCX: 00007f0ef17cb750
+[  854.564122] RDX: 0000000000000028 RSI: 00007ffc4306afb0 RDI: 0000000000000005
+[  854.564738] RBP: 0000556901de3960 R08: 0000000000000000 R09: 0000000000000000
+[  854.565298] R10: 0000000000000000 R11: 0000000000000246 R12: 00000000ffffffff
+[  854.565945] R13: 00007ffc4306afb0 R14: 0000000000000005 R15: 0000556901e2b1f1
+[  854.566522]  </TASK>
+
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
