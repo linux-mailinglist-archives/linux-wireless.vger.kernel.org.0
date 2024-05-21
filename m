@@ -1,147 +1,176 @@
-Return-Path: <linux-wireless+bounces-7878-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7879-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A72998CAA5C
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2024 10:50:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B2608CAAF3
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2024 11:45:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4443C1F21A9E
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2024 08:50:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7FEA1F215C6
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2024 09:45:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C06438DC3;
-	Tue, 21 May 2024 08:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B94296A8D8;
+	Tue, 21 May 2024 09:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XVG5ZsQM"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QatskZQI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984154CDE0
-	for <linux-wireless@vger.kernel.org>; Tue, 21 May 2024 08:50:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA5A40BF5
+	for <linux-wireless@vger.kernel.org>; Tue, 21 May 2024 09:45:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716281447; cv=none; b=KJEfdJKtAuEUZBfLc7OFXiTb3QFo4lzrDq+t4lKP8P0Et4Ter8NR+7yGBgvnyNok4fSRTZ7duTV0AHtIPCrd0KlY7pyOowsYT6HXWi5CoXLi9W01YuTxDi6THESLhYnceuLxswFe/wP+NcnOuzCRdBCFmrTFB5PwTqWn0Sw643g=
+	t=1716284728; cv=none; b=J7cD8POHJEmqmt07axR5Z8lECvxWTcCYDoHCsn6iB5fxVkKnac85Ny4SqLUfA33NPlgRaZQNmGj6JpH1nrCcDtTXLDGlBV+zJzFqLAKOmJL3nnafFxEZ3StpaOFypPTohvLB5b5vyNClEm8LB/gMJVw+NNPLZyJhf6d0xc+yEZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716281447; c=relaxed/simple;
-	bh=yNrNYlo9qmk9OZQyJAR8XVV4pVO1EIrO/iBqlHWIJTc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=NvlgBFm1f3PZzffHEZtBM/T2B88k6ECaZacG/ioRbkH653nlzaIw4a6qp1c/6tKwYphwWaHfK3PoOrANIOgAohDuAwvxD9EwBaffSiuCgpEA9E6GaQ/3UL/5JLs164zHNVbauLQieyH053eh1W7Jw+RteJdTgQ5RaadgPN05/m4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XVG5ZsQM; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4202ca70289so28056365e9.1
-        for <linux-wireless@vger.kernel.org>; Tue, 21 May 2024 01:50:45 -0700 (PDT)
+	s=arc-20240116; t=1716284728; c=relaxed/simple;
+	bh=7qLaoqIIAaTz5fph0kyugjFXnFjLbaUGL7rC2ceDlok=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jlNn0T1jXy+uRnx4IJSzM5o4KlJMEIob7AyKEJeJUhf2UXtOY629eAZBBBH97jWvqXXQTW+IdnTq0Yeo556oi4D1rq3lT1r9IfTClUWRVtB8pt9bwFyOybJprC8uEN+l7sQ+rO559Rur6blD0xrraePSou6iOGKHXChXad1phEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QatskZQI; arc=none smtp.client-ip=209.85.208.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2e72224c395so22293671fa.3
+        for <linux-wireless@vger.kernel.org>; Tue, 21 May 2024 02:45:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716281444; x=1716886244; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/8E6p7Y+ouLSYIiXoIeFn2ZMIwfFJft8t7wvd/QdN3s=;
-        b=XVG5ZsQM1rKvdzZTFYAdSZdXIUxrnV1H+Y31cBIk5SF7vML184g9c9B64Fi6y+8WiP
-         RQwNLzIh2d6t5JYMvRjjXWP+Qbp/3tntIhMTTaNnnmyhFG8x0kGvWx0Z5fQTEZNQO8CO
-         W1JWA2TaLFZS6gbds7JcF5kee6VkYbtLupL2D5K9Py4ZgTQyCoeSYOC3CgU7ulFlvVxI
-         lIdA9nPhGHWzzb09iNYr0g0Ox+NWz4GSDyoQs5Oc3OvH3/Fk9F6RoL41O+zeDhaknkSQ
-         K9ZJppznmPGRt95qDxyo6G1/99mdbF4KBnzQqEdxMst/YE4CftPTVd1ugRTSQR+eT8DB
-         ZWYg==
+        d=linaro.org; s=google; t=1716284725; x=1716889525; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Md+WRwALrBDV2V3shAX8d3uWCybuvTD8xlgzEt6mj3s=;
+        b=QatskZQIbHWGZW+tpnSfL3wmD6MmPZjHIDBDY73stAXPfnCuv39Wimi9Tdu2n4jtDb
+         bnkM9jMHm9VvxAi35ZjlndBBH4+JAVH7u40dsS1omHmyrqV1LcvZLqmguLYj1wwk9bVj
+         nbZKUrny1/6CXq6+hIAJ+J4V94QqYbLhhs5VMKFEM6NoiRGJhTrRPSjhbQTgBMPDNdkz
+         0h3Opsda1oGtmjK9+osG2JU2SFIFcDC/Zi03QNjdeQ7eIbO57pGJMSI4AcjIlPgWJBj0
+         t6KW9M9BipEmEjkTq9/By/twYvlxbnfEn2r5Rfu6Avx4k8QTqKUwF+Run50oCtDXoI3o
+         eEuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716281444; x=1716886244;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=/8E6p7Y+ouLSYIiXoIeFn2ZMIwfFJft8t7wvd/QdN3s=;
-        b=cHCBgMWMaSNnewfbJxjrcpWgyyGXIRkZs4lkGKpaq8KJfM3UQp2AsfIbxvKCNYT/19
-         83iyv3fUB+1KfFWRvPVphuAUdX8v/2b8gR4lHAqC4R7mDMgMyccUtEkGYh6wn1bANlNv
-         9A86H5kbkQcwfQax8Z2Q9x7XE2GDLDBSy579yPbE0FuC0bkWO5avc9Rp/C2FG6Mwxi8x
-         TVqKdqSG6/98MkoFLW1TjRnLF6OW83JVjuTHYu/tDiWLCbLPfA+hntplFjolGRNKvV0u
-         UQnqzrbwgac3yZxRvT2obWWxMY/qY8HRwjwCpXIsrHra/DyswaNPNSIEeqdXTK1tJFus
-         NqxQ==
-X-Gm-Message-State: AOJu0YyxbgTNn4RzhJD++tLUTkR0tgVyBpQt4vqNgxDHIuOyFiM1Ic8k
-	qYDu5PynxOlBcoQOGAUb11YBNY0DImT4HWqTTI+Smoz+Yh2n/3dq
-X-Google-Smtp-Source: AGHT+IEg/FD3vmCrHSoKeq7lm5iF6Dw6sxIoc/VEcAkFAmQqWfIfIBzp/KhMcfxlcqVmlnUr61qRDQ==
-X-Received: by 2002:a05:600c:468c:b0:420:1067:d698 with SMTP id 5b1f17b1804b1-4201067d80bmr222351055e9.23.1716281443688;
-        Tue, 21 May 2024 01:50:43 -0700 (PDT)
-Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-351d3bdad9bsm14709572f8f.46.2024.05.21.01.50.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 May 2024 01:50:43 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1716284725; x=1716889525;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Md+WRwALrBDV2V3shAX8d3uWCybuvTD8xlgzEt6mj3s=;
+        b=kpy1cb4k40SshvklHE9pcPCOIJ1L1ALqgxzEndf0q1dBBclwv6SvXXBF66N78NLLfu
+         YRz9ep34JWggS/GbUpdJuuoH5nNagTRpg40FLpzfgDyhv7u685Hw25vBEHCFyowzcInW
+         awgDJTUst0D/CLRgYBOa9mhQFElBqThgUNSWkjIuHwd876AeqJ5RYeDdPllrR5/9OoeH
+         RpjJNsQBlXB6UBcp2kl1iQJRuruU7mtBb1FpMjORk65R+J91VfOXQPOV3q0Ab9AC+y/D
+         xcozngtGdn5C+6luAu4hSsG6CWifTv0i25YT60kuOFmcPJUuNbdBzhY3KIPyjp+rIZFV
+         OcVw==
+X-Forwarded-Encrypted: i=1; AJvYcCUqPzkbnvkD9IekRXTxtlKWFhDAg7QuKv8Sp0rCWVgfjhRlE0SHvmhvXn//LzMdKJsM0A25BxHzxLA2IdYGzUh22H2lvCI4lL6zdDGhd7I=
+X-Gm-Message-State: AOJu0YxOjRV8Kapny5wXb0TzHZ4Mr6BGlrcQM+JxgeyGh8bWer6cMvw7
+	wae1Vh9E+n6nJXJ4IaG61w7LSYKfpKOqQzxxxuEU5+iU14RIXDjqbXVasO5vuRI=
+X-Google-Smtp-Source: AGHT+IHei8MVuGwNP1mQ+VWZ8la4NiILOnWDAPhCft9QiMk5UUjYW5f5kC0nYQH6ZN+vh0aDQ4fT2g==
+X-Received: by 2002:a05:651c:50f:b0:2df:7ac1:b27 with SMTP id 38308e7fff4ca-2e52006399cmr239371871fa.28.1716284725211;
+        Tue, 21 May 2024 02:45:25 -0700 (PDT)
+Received: from umbar.lan ([192.130.178.91])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2e706ee0a65sm13906261fa.112.2024.05.21.02.45.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 May 2024 02:45:24 -0700 (PDT)
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: [PATCH 00/12] arm64: qcom: autodetect firmware paths
+Date: Tue, 21 May 2024 12:45:20 +0300
+Message-Id: <20240521-qcom-firmware-name-v1-0-99a6d32b1e5e@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 21 May 2024 10:50:42 +0200
-Message-Id: <D1F6ZU89YWPF.X1SZ9JNQNPFC@gmail.com>
-Cc: <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 3/3] wifi: ath12k: fix firmware crash during reo
- reinject
-From: "Nicolas Escande" <nico.escande@gmail.com>
-To: "P Praneesh" <quic_ppranees@quicinc.com>, <ath12k@lists.infradead.org>
-X-Mailer: aerc 0.17.0
-References: <20240520070045.631029-1-quic_ppranees@quicinc.com>
- <20240520070045.631029-4-quic_ppranees@quicinc.com>
-In-Reply-To: <20240520070045.631029-4-quic_ppranees@quicinc.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADBtTGYC/x3MQQqDMBBG4avIrB2IqbHgVYqLwf7RWSS2E6iCe
+ PcGl9/ivZMKTFFobE4y/LToliu6tqF5lbyA9V1N3vneBe/4O2+Jo1raxcBZEliA6Icgz/AQquH
+ HEPW4p6/puv54QBvvZAAAAA==
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, 
+ Loic Poulain <loic.poulain@linaro.org>, Kalle Valo <kvalo@kernel.org>, 
+ Mathieu Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org, 
+ linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org, 
+ Arnd Bergmann <arnd@arndb.de>, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3460;
+ i=dmitry.baryshkov@linaro.org; h=from:subject:message-id;
+ bh=7qLaoqIIAaTz5fph0kyugjFXnFjLbaUGL7rC2ceDlok=;
+ b=owEBbQGS/pANAwAKAYs8ij4CKSjVAcsmYgBmTG0yaDfbXvoevOUjHPs8IuKzmJYGjmc1kguRR
+ zAiKXLcMdeJATMEAAEKAB0WIQRMcISVXLJjVvC4lX+LPIo+Aiko1QUCZkxtMgAKCRCLPIo+Aiko
+ 1UIfB/sE3R07GqWvVQQIOHXBJLGbD/snQft/uArKi60KzVDniDBBl5qB//sKVqDrgc3OWAJcIqA
+ 1RcJbCi4Mxee4Xz73+ryd3ZTjnkLDsBiodcG9KzI0CtjtpgFHlHAc2tMMdrgXbMi+U8tLzLDVBN
+ w7ibw4ArXfhNbEuUTgphqgJPC83Xi77j41x7WENSEaBKKtfv39qBbAI7iyVsravdcFw8lgTzmOg
+ FThYcPmWCgMS6Lxo8zlQ1K5O9skLBZJdhpIpn8qNmy3Q+AULTfMilXHVSYwp9rzXsFAuqBwhym2
+ Gm8oVGyD77ZzYIiUCWRUX7GtOHE+J1iq8/t6xHllnWz+eb9L
+X-Developer-Key: i=dmitry.baryshkov@linaro.org; a=openpgp;
+ fpr=8F88381DD5C873E4AE487DA5199BF1243632046A
 
-On Mon May 20, 2024 at 9:00 AM CEST, P Praneesh wrote:
-> When handling fragmented packets, the ath12k driver reassembles each
-> fragment into a normal packet and then reinjects it into the HW ring.
-> However, a firmware crash occurs during this reinjection process.
-> The issue arises because the driver populates peer metadata in
-> reo_ent_ring->queue_addr_lo, while the firmware expects the physical
-> address obtained from the corresponding peer=E2=80=99s queue descriptor. =
-Fix it
-> by filling peer's queue descriptor's physical address in queue_addr_lo.
->
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00209-QCAHKSWPL_SILICONZ-1
->
-> Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-> ---
->  drivers/net/wireless/ath/ath12k/dp_rx.c | 14 ++++++--------
->  1 file changed, 6 insertions(+), 8 deletions(-)
->
-> diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wirele=
-ss/ath/ath12k/dp_rx.c
-> index 2bfcc19d15ea..2adb6c7d4a42 100644
-> --- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-> +++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-> @@ -2967,7 +2967,7 @@ static int ath12k_dp_rx_h_defrag_reo_reinject(struc=
-t ath12k *ar,
->  	struct hal_srng *srng;
->  	dma_addr_t link_paddr, buf_paddr;
->  	u32 desc_bank, msdu_info, msdu_ext_info, mpdu_info;
-> -	u32 cookie, hal_rx_desc_sz, dest_ring_info0;
-> +	u32 cookie, hal_rx_desc_sz, dest_ring_info0, queue_addr_hi;
->  	int ret;
->  	struct ath12k_rx_desc_info *desc_info;
->  	enum hal_rx_buf_return_buf_manager idle_link_rbm =3D dp->idle_link_rbm;
-> @@ -3060,13 +3060,11 @@ static int ath12k_dp_rx_h_defrag_reo_reinject(str=
-uct ath12k *ar,
->  	reo_ent_ring->rx_mpdu_info.peer_meta_data =3D
->  		reo_dest_ring->rx_mpdu_info.peer_meta_data;
-> =20
-> -	/* Firmware expects physical address to be filled in queue_addr_lo in
-> -	 * the MLO scenario and in case of non MLO peer meta data needs to be
-> -	 * filled.
-> -	 * TODO: Need to handle for MLO scenario.
-> -	 */
-> -	reo_ent_ring->queue_addr_lo =3D reo_dest_ring->rx_mpdu_info.peer_meta_d=
-ata;
-> -	reo_ent_ring->info0 =3D le32_encode_bits(dst_ind,
-> +	reo_ent_ring->queue_addr_lo =3D cpu_to_le32(lower_32_bits(rx_tid->paddr=
-));
-> +	queue_addr_hi =3D upper_32_bits(rx_tid->paddr);
-Shouldn't there be a cpu_to_le32 somewhere here ? It just seems asymetrical
-between the two values extracted from rx_tid->paddr
-> +	reo_ent_ring->info0 =3D le32_encode_bits(queue_addr_hi,
-> +					       HAL_REO_ENTR_RING_INFO0_QUEUE_ADDR_HI) |
-> +			      le32_encode_bits(dst_ind,
->  					       HAL_REO_ENTR_RING_INFO0_DEST_IND);
-> =20
->  	reo_ent_ring->info1 =3D le32_encode_bits(rx_tid->cur_sn,
+This is a followup to the discussion during the Linaro Connect. Remove
+most of the firmware-name properties from the board DT by using
+root node compatible to detect firmware path.
+
+The most obvious change is that the drivers now have to look for the
+MBN firmware files by default, so this might break the case of the user
+simply mounting vendor's firmware partition to /lib/firmware and
+expecting it to work.
+
+Also things are slightly more complex for the platforms like DB845c and
+Qualcomm RB5. These platforms have generic SoC firmware in qcom/sdm845
+and qcom/sm8250 and also the board-specific firmware at
+qcom/sdm845/Thundercomm/DB845C and qcom/sm8250/Thundercomm/RB5
+respectively. Making these boards follow up the scheme would require
+additional symlinks in the firmware dir.
+
++Link: qcom/sdm845/Thundercomm/db845c/a630_zap.mbn -> ../../a630_zap.mbn
++Link: qcom/sm8250/Thundercomm/RB5/a650_zap.mbn -> ../../a650_zap.mbn
++Link: qcom/sdm845/Thundercomm/db845c/adsp.mbn -> ../../adsp.mbn
++Link: qcom/sdm845/Thundercomm/db845c/adspr.jsn -> ../../adspr.jsn
++Link: qcom/sdm845/Thundercomm/db845c/adspua.jsn -> ../../adspua.jsn
++Link: qcom/sdm845/Thundercomm/db845c/cdsp.mbn -> ../../cdsp.mbn
++Link: qcom/sdm845/Thundercomm/db845c/cdspr.jsn -> ../../cdspr.jsn
++Link: qcom/sm8250/Thundercomm/RB5/adsp.mbn -> ../../adsp.mbn
++Link: qcom/sm8250/Thundercomm/RB5/adspr.jsn -> ../../adspr.jsn
++Link: qcom/sm8250/Thundercomm/RB5/adspua.jsn -> ../../adspua.jsn
++Link: qcom/sm8250/Thundercomm/RB5/cdsp.mbn -> ../../cdsp.mbn
++Link: qcom/sm8250/Thundercomm/RB5/cdspr.jsn -> ../../cdspr.jsn
+
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+---
+Dmitry Baryshkov (12):
+      soc: qcom: add firmware name helper
+      wifi: wcn36xx: make use of QCOM_FW_HELPER
+      soc: qcom: wcnss_ctrl: make use of QCOM_FW_HELPER
+      remoteproc: qcom_q6v5_mss: switch to mbn files by default
+      remoteproc: qcom_q6v5_mss: make use of QCOM_FW_HELPER
+      remoteproc: qcom_q6v5_pas: switch to mbn files by default
+      remoteproc: qcom_q6v5_pas: make use of QCOM_FW_HELPER
+      remoteproc: qcom_wcnss: switch to mbn files by default
+      remoteproc: qcom_wcnss: make use of QCOM_FW_HELPER
+      remoteproc: qcom_wcnss: make use of QCOM_FW_HELPER
+      arm64: dts: qcom: apq8016-sbc: drop firmware-name properties
+      arm64: dts: qcom: apq8096-db820c: drop firmware-name properties
+
+ arch/arm64/boot/dts/qcom/apq8016-sbc.dts    |  5 +-
+ arch/arm64/boot/dts/qcom/apq8096-db820c.dts |  2 -
+ drivers/net/wireless/ath/wcn36xx/Kconfig    |  1 +
+ drivers/net/wireless/ath/wcn36xx/main.c     |  5 ++
+ drivers/remoteproc/Kconfig                  |  3 +
+ drivers/remoteproc/qcom_q6v5_mss.c          | 12 +++-
+ drivers/remoteproc/qcom_q6v5_pas.c          | 85 +++++++++++++++-------------
+ drivers/remoteproc/qcom_wcnss.c             |  8 ++-
+ drivers/soc/qcom/Kconfig                    |  6 ++
+ drivers/soc/qcom/Makefile                   |  1 +
+ drivers/soc/qcom/qcom_fw_helper.c           | 86 +++++++++++++++++++++++++++++
+ drivers/soc/qcom/wcnss_ctrl.c               |  9 +++
+ include/linux/soc/qcom/fw_helper.h          | 10 ++++
+ 13 files changed, 187 insertions(+), 46 deletions(-)
+---
+base-commit: 632483ea8004edfadd035de36e1ab2c7c4f53158
+change-id: 20240520-qcom-firmware-name-aeef265a753a
+
+Best regards,
+-- 
+Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
 
