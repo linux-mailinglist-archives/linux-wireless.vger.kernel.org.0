@@ -1,124 +1,166 @@
-Return-Path: <linux-wireless+bounces-7924-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7925-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8E1F8CB458
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2024 21:40:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0983D8CB469
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2024 21:48:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73300282543
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2024 19:40:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B2E91C21BA9
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2024 19:48:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76FD7148859;
-	Tue, 21 May 2024 19:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15F1450A6C;
+	Tue, 21 May 2024 19:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="W0xm7JCs"
+	dkim=pass (1024-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="wel1bhgZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mailo.com (msg-1.mailo.com [213.182.54.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE17433AD;
-	Tue, 21 May 2024 19:40:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF9F50A63;
+	Tue, 21 May 2024 19:48:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.182.54.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716320436; cv=none; b=QlOUm20Sc04yP/yLueAYMYKJpka9Flk0zDf5V0BUmXfUPCAif8Xxhtr3Q4+FQo9Q/3+ENWzMe/xV4HoV0TcG4GUUa4mIQs2x5SwUOe8D4vJYiwtVEevaoZe5gIZmJsBoVCOfjpkw3gGk0KBwFSpp3vqVqPbJipTqGelX2+GQ8iY=
+	t=1716320902; cv=none; b=vCQLEfnKCJPkDTgl6qtpIRQEBtrJlpHfpl84m3BotXoNdBHy4BHYufMFkuSvKUonxQAhBwu5Tm/xNcB4+Vb2TFuqvJTvlW27xBduwaYnyJAUvAlBHvVshGtLvNN8ggwGzQ5i8PdcJfOaEHSIGSSOcdKNyAUvzXGwkkSdizNMfBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716320436; c=relaxed/simple;
-	bh=PSJzz3wBgM4Nov61eoQKU/G3JLPzuVohtgY4OMFxi4c=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dYl/YbwIuVFbJPjAKQzREoioNPQIVvP2PAr1ZZ/Y3SarWLShE4C7E8N6yW2wcMgY/MQrqhqKngT5eEVOh0upxpKUIXBM5vbU4imyh5C4BvbIebMVKo8I/enjSJNEQuQjBu3WuD007VQcjYWRbOvKgqxFO08LltRHJwiZJp3prFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=W0xm7JCs; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44LF9oJu026154;
-	Tue, 21 May 2024 19:40:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	date:from:to:cc:subject:message-id:references:mime-version
-	:content-type:in-reply-to; s=qcppdkim1; bh=nZuM5wFSsss4g1FMYAGG9
-	HP332Eng3D3fi1g85v+vW8=; b=W0xm7JCs2OpfXRlrdSE/erqZ0i2Prsuk6I207
-	mfU8vv8gNPFSyXzlFAiK7OVuESsQyBpzUA1vHP4oiINET1Aa4AX1Ce/HFQjhz4ia
-	j0PNqNlTZRph5i25ytrmkzFTAkEz+sL1OMTJAWmQEPBZkdxvbw+X0iVLiM11E6Bm
-	eS8pjubf/Rlc8HuK8bISK1wlDWEOZgHz9Cr7bgEu56IBveuNi5j9/VnvwWqq9TLO
-	wCnIV3LZFOb9+QajBZUdpMvWtTRDjWrySlXUWCWMW8TB1ClDYwkgDqi6WQyZdY9O
-	1YavNp3AAGm1F3t+Kkd75aLGDLOmtOQN43411FnPeoJqMkESg==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y6pqc74v9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 May 2024 19:40:24 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44LJeNvI013710
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 May 2024 19:40:23 GMT
-Received: from hu-bjorande-lv.qualcomm.com (10.49.16.6) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Tue, 21 May 2024 12:40:22 -0700
-Date: Tue, 21 May 2024 12:40:21 -0700
-From: Bjorn Andersson <quic_bjorande@quicinc.com>
-To: <neil.armstrong@linaro.org>
-CC: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Bjorn Andersson
-	<andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Loic
- Poulain <loic.poulain@linaro.org>, Kalle Valo <kvalo@kernel.org>,
-        Mathieu
- Poirier <mathieu.poirier@linaro.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-msm@vger.kernel.org>, <wcn36xx@lists.infradead.org>,
-        <linux-wireless@vger.kernel.org>, <linux-remoteproc@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, Arnd
- Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH 06/12] remoteproc: qcom_q6v5_pas: switch to mbn files by
- default
-Message-ID: <Zkz4pf00lYCx185i@hu-bjorande-lv.qualcomm.com>
-References: <20240521-qcom-firmware-name-v1-0-99a6d32b1e5e@linaro.org>
- <20240521-qcom-firmware-name-v1-6-99a6d32b1e5e@linaro.org>
- <a314906d-b297-474d-910c-6634c8c23042@linaro.org>
+	s=arc-20240116; t=1716320902; c=relaxed/simple;
+	bh=ClE2otJoZ0W1kPDJn+Gcz9Z/ygh62gvIN22WEfn6lS0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Aw2pmIGKfp+Tuafy7KZt9sYfE7gtH1+Mnte4kEzBX/85Xx6oDnXa/Toza0ZmPyYaHCD1vFg3/mf9WdWPKDThomKKVfpWroSDY78lGZlrP9U0QfAFvsWnE3pPfQ2XjnDGB8km3PLm7aRbOV5EIkc6T9melV3dc5/Hed6vVN1Rv/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=triplefau.lt; dkim=pass (1024-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=wel1bhgZ; arc=none smtp.client-ip=213.182.54.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=triplefau.lt
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=triplefau.lt; s=mailo;
+	t=1716320791; bh=ClE2otJoZ0W1kPDJn+Gcz9Z/ygh62gvIN22WEfn6lS0=;
+	h=X-EA-Auth:From:To:Cc:Subject:Date:Message-Id:X-Mailer:
+	 MIME-Version:Content-Transfer-Encoding;
+	b=wel1bhgZ6illp0Y0+5dESyQY1vo24sQjaYCHDieAvKWCxD9nwVheB4r355r1VH16s
+	 nmgl0yYDUPxqHkiNrG/JauiMAkm5f8bhCzergkJKVPJQ9eWgIqsO8zEmmxZ4HsY4oE
+	 E/FFPCjmLR2aUZE3HZUVl6dhOIpEp6K/+w4HMmnM=
+Received: by b221-6.in.mailobj.net [192.168.90.26] with ESMTP
+	via ip-20.mailobj.net [213.182.54.20]
+	Tue, 21 May 2024 21:46:31 +0200 (CEST)
+X-EA-Auth: bQE2EDSMvwGVfxBwseX4b44Ztx2HnbpDzWTXlEgnWwhFrT9EPv0yeeLkeMa513lQNbDJk9/wPHo/rdrayHYn7GQ9WckV+P8l
+From: Remi Pommarel <repk@triplefau.lt>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Remi Pommarel <repk@triplefau.lt>,
+	Nicolas Escande <nico.escande@gmail.com>,
+	Antonio Quartulli <a@unstable.cc>
+Subject: [PATCH v2] wifi: cfg80211: Lock wiphy in cfg80211_get_station
+Date: Tue, 21 May 2024 21:47:26 +0200
+Message-Id: <983b24a6a176e0800c01aedcd74480d9b551cb13.1716046653.git.repk@triplefau.lt>
+X-Mailer: git-send-email 2.40.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <a314906d-b297-474d-910c-6634c8c23042@linaro.org>
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 3gCDzfA-TlFLM7-69lgS-CJjFqRAVhLw
-X-Proofpoint-GUID: 3gCDzfA-TlFLM7-69lgS-CJjFqRAVhLw
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-05-21_12,2024-05-21_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
- spamscore=0 clxscore=1011 lowpriorityscore=0 phishscore=0
- priorityscore=1501 bulkscore=0 adultscore=0 mlxlogscore=999 malwarescore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405010000 definitions=main-2405210148
+Content-Transfer-Encoding: 8bit
 
-On Tue, May 21, 2024 at 11:49:42AM +0200, neil.armstrong@linaro.org wrote:
-> On 21/05/2024 11:45, Dmitry Baryshkov wrote:
-> > We have been pushing userspace to use mbn files by default for ages.
-> > As a preparation for making the firmware-name optional, make the driver
-> > use .mbn instead of .mdt files by default.
-> 
-> I think we should have a mechanism to fallback to .mdt since downstream
-> uses split mdt on the devices filesystem.
-> 
+Wiphy should be locked before calling rdev_get_station() (see lockdep
+assert in ieee80211_get_station()).
 
-Let's ignore and continue to move away from the split .mdt files.
+This fixes the following kernel NULL dereference:
 
-Combining split files is trivial and removes a class of problems where
-people mix and match their parts. (And worst case you can rename/symlink
-your downstream firmware to match the requested filename)
+ Unable to handle kernel NULL pointer dereference at virtual address 0000000000000050
+ Mem abort info:
+   ESR = 0x0000000096000006
+   EC = 0x25: DABT (current EL), IL = 32 bits
+   SET = 0, FnV = 0
+   EA = 0, S1PTW = 0
+   FSC = 0x06: level 2 translation fault
+ Data abort info:
+   ISV = 0, ISS = 0x00000006
+   CM = 0, WnR = 0
+ user pgtable: 4k pages, 48-bit VAs, pgdp=0000000003001000
+ [0000000000000050] pgd=0800000002dca003, p4d=0800000002dca003, pud=08000000028e9003, pmd=0000000000000000
+ Internal error: Oops: 0000000096000006 [#1] SMP
+ Modules linked in: netconsole dwc3_meson_g12a dwc3_of_simple dwc3 ip_gre gre ath10k_pci ath10k_core ath9k ath9k_common ath9k_hw ath
+ CPU: 0 PID: 1091 Comm: kworker/u8:0 Not tainted 6.4.0-02144-g565f9a3a7911-dirty #705
+ Hardware name: RPT (r1) (DT)
+ Workqueue: bat_events batadv_v_elp_throughput_metric_update
+ pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ pc : ath10k_sta_statistics+0x10/0x2dc [ath10k_core]
+ lr : sta_set_sinfo+0xcc/0xbd4
+ sp : ffff000007b43ad0
+ x29: ffff000007b43ad0 x28: ffff0000071fa900 x27: ffff00000294ca98
+ x26: ffff000006830880 x25: ffff000006830880 x24: ffff00000294c000
+ x23: 0000000000000001 x22: ffff000007b43c90 x21: ffff800008898acc
+ x20: ffff00000294c6e8 x19: ffff000007b43c90 x18: 0000000000000000
+ x17: 445946354d552d78 x16: 62661f7200000000 x15: 57464f445946354d
+ x14: 0000000000000000 x13: 00000000000000e3 x12: d5f0acbcebea978e
+ x11: 00000000000000e3 x10: 000000010048fe41 x9 : 0000000000000000
+ x8 : ffff000007b43d90 x7 : 000000007a1e2125 x6 : 0000000000000000
+ x5 : ffff0000024e0900 x4 : ffff800000a0250c x3 : ffff000007b43c90
+ x2 : ffff00000294ca98 x1 : ffff000006831920 x0 : 0000000000000000
+ Call trace:
+  ath10k_sta_statistics+0x10/0x2dc [ath10k_core]
+  sta_set_sinfo+0xcc/0xbd4
+  ieee80211_get_station+0x2c/0x44
+  cfg80211_get_station+0x80/0x154
+  batadv_v_elp_get_throughput+0x138/0x1fc
+  batadv_v_elp_throughput_metric_update+0x1c/0xa4
+  process_one_work+0x1ec/0x414
+  worker_thread+0x70/0x46c
+  kthread+0xdc/0xe0
+  ret_from_fork+0x10/0x20
+ Code: a9bb7bfd 910003fd a90153f3 f9411c40 (f9402814)
 
-Regards,
-Bjorn
+This happens because STA has time to disconnect and reconnect before
+batadv_v_elp_throughput_metric_update() delayed work gets scheduled. In
+this situation, ath10k_sta_state() can be in the middle of resetting
+arsta data when the work queue get chance to be scheduled and ends up
+accessing it. Locking wiphy prevents that.
+
+Fixes: 7406353d43c8 ("cfg80211: implement cfg80211_get_station cfg80211 API")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Reviewed-by: Nicolas Escande <nico.escande@gmail.com>
+Acked-by: Antonio Quartulli <a@unstable.cc>
+---
+There are mainly no change since v1 it is only resent because both
+linux-wireless and linux-kernel vger mailing list dropped it.
+
+Full thread archive can be found here [0].
+
+Tags from v1 has been added as well as a note on why this lock issue
+could end with NULL pointer derefence.
+
+[0]: https://patchwork.open-mesh.org/project/b.a.t.m.a.n./patch/983b24a6a176e0800c01aedcd74480d9b551cb13.1716046653.git.repk@triplefau.lt/
+---
+ net/wireless/util.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index 2bde8a354631..082c6f9c5416 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -2549,6 +2549,7 @@ int cfg80211_get_station(struct net_device *dev, const u8 *mac_addr,
+ {
+ 	struct cfg80211_registered_device *rdev;
+ 	struct wireless_dev *wdev;
++	int ret;
+ 
+ 	wdev = dev->ieee80211_ptr;
+ 	if (!wdev)
+@@ -2560,7 +2561,11 @@ int cfg80211_get_station(struct net_device *dev, const u8 *mac_addr,
+ 
+ 	memset(sinfo, 0, sizeof(*sinfo));
+ 
+-	return rdev_get_station(rdev, dev, mac_addr, sinfo);
++	wiphy_lock(&rdev->wiphy);
++	ret = rdev_get_station(rdev, dev, mac_addr, sinfo);
++	wiphy_unlock(&rdev->wiphy);
++
++	return ret;
+ }
+ EXPORT_SYMBOL(cfg80211_get_station);
+ 
+-- 
+2.40.0
+
+
+
 
