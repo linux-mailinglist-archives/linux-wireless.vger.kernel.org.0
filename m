@@ -1,58 +1,56 @@
-Return-Path: <linux-wireless+bounces-7874-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7875-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5F298CA976
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2024 09:58:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0ECA8CA984
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2024 10:00:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0F77BB221FA
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2024 07:58:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61C141F21933
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2024 08:00:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ECBD5E22C;
-	Tue, 21 May 2024 07:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E58842A95;
+	Tue, 21 May 2024 08:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AUXgJErR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LKOKV/u5"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0AF5E099
-	for <linux-wireless@vger.kernel.org>; Tue, 21 May 2024 07:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 398D320B3E
+	for <linux-wireless@vger.kernel.org>; Tue, 21 May 2024 08:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716278265; cv=none; b=LcixYHsVY1JWkNQ+ycdld2iKloT4bSE2Aht7ecNepLGSOcumpqFPIA49JSvN3x7wVIakvcpYfYrb9on4boP9Eedol3NQpSrc0JiNwzHb66pfXQTQNTz0pv4Dy2PYMFMtMGofpUa+VqN9qurUj4TElR47bzb8Jikd5aXNrgOAOc4=
+	t=1716278444; cv=none; b=HpRS7sDQJOjCInntZn0nFp6T9rOLs+177LuGG9IeOd4CFEqyXK/n9c/VMQCRozBjHtv91ZeNurKqXTWLu3F+hNzEYNG+Djif+Pp9T0NGwanK95/SRPR9ogzpZX6WSIUDutLsdIg4I/b2GVjCFHnNWSJ9+PFvTRG/O4X+s7jVEUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716278265; c=relaxed/simple;
-	bh=MAdx8Mdn59U5MBMX6ChvO9+b/TWwcpyF+wMtPtUy4X4=;
+	s=arc-20240116; t=1716278444; c=relaxed/simple;
+	bh=OFGokqz3ADKTizuCIWhcKw3hIa9Kg9nWRnUd34o2hHU=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=GjWnpB/VUTKASboXAdr0NyTKZjeFpw/NsCRAycTuJ2INacWGTB11myhZhI6KSMnGVEO60iuU05HjLZdyLzVTTE+7RHuxxJSxbbdnU84M4XhRCQgHCymEwv5MwhE6p2iXN3sparJyPaceb8ZkHruotUxb3xFVy93rAwESkMOkOR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AUXgJErR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD8ACC2BD11;
-	Tue, 21 May 2024 07:57:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JFv5sDTW9Qi5nHJ6CMjseSqOAVZBZhlZY5nOvZZoLTb2LPqJIQ0q5x0hxzjNAx+Ntwz79LS+7SCKT5+vrIiyWrvsCS1hsCCfec9xOvsV61UVmN0xjj8e/5hHOXsH6m4GL73kOYJlUjuBuW/AQsk6BBQOo5eO6TZdH5gTcjCyohc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LKOKV/u5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D5B7C2BD11;
+	Tue, 21 May 2024 08:00:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716278264;
-	bh=MAdx8Mdn59U5MBMX6ChvO9+b/TWwcpyF+wMtPtUy4X4=;
+	s=k20201202; t=1716278443;
+	bh=OFGokqz3ADKTizuCIWhcKw3hIa9Kg9nWRnUd34o2hHU=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=AUXgJErRpQChC99frxsYW/Z8RGKJhzwHy1ZjZktzWV0XH9SiOZPso0FGH4GnjAwqU
-	 +3owAbbqxaxxKJxe/+RWXU68AXW5zMEfBzKf7tqhMzvuBlKQ/gavhfedxyI8eT1DcS
-	 JLI+yN9wddNByT162UzqFv9f9qg68pc60QBpL3rMEr5TTqEGJto7A2YXhJY3wTf+b0
-	 xewdENv/Og0rSSZDqt3lqJbg2DJNgETCmZKX5SWXFP9l97PjhqxrADR9Q+wPd0iCPa
-	 phjcE19mkSFLb0PbwJxZzUkIXQVapzWyiATgLPXANnzsQaMe8M1w0Httpzw+34/ZGq
-	 XN5+Ba72gaE2Q==
+	b=LKOKV/u5wsZVOaPoytUYbO9mB4UKj21WtYUvZVsafG5ZAk63Anxtvu7d1dxm2r4jd
+	 qKXwWo49iN9v2vLHFH6Wg0PtmCP5eI9oRCdmo6imlT3fh2KqrIWTxWWfuXWab/RI1o
+	 awLAsjy/BR9XdIkZXoxjmORgrhnUGqsfwiS1oyOY//e7HjbppJbaR2BkVERAx5E+fN
+	 i+FwjCD2zzUh9zKT2YkGSQb2WhGdSohC//xhiB+GhMj1k2wEI8UYK/G0mA5CAPMNhD
+	 USu66fprpKRPwc8eqgI+kV9F1DBXxl2Qc5a5FdiXjGk5TQr6vJfENmklnl4pEOquEO
+	 Sv6Q0jV0UY0TA==
 From: Kalle Valo <kvalo@kernel.org>
 To: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
-Cc: ath12k@lists.infradead.org,  linux-wireless@vger.kernel.org,  Lingbo
- Kong <quic_lingbok@quicinc.com>
-Subject: Re: [PATCH v2 3/5] wifi: ath12k: Fix Pdev id in HTT stats request
- for WCN7850
+Cc: ath12k@lists.infradead.org,  linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2 5/5] wifi: ath12k: Dump additional Tx PDEV HTT stats
 References: <20240510050806.514126-1-quic_rgnanase@quicinc.com>
-	<20240510050806.514126-4-quic_rgnanase@quicinc.com>
-Date: Tue, 21 May 2024 10:57:42 +0300
-In-Reply-To: <20240510050806.514126-4-quic_rgnanase@quicinc.com> (Ramya
-	Gnanasekar's message of "Fri, 10 May 2024 10:38:04 +0530")
-Message-ID: <87pltfd2bt.fsf@kernel.org>
+	<20240510050806.514126-6-quic_rgnanase@quicinc.com>
+Date: Tue, 21 May 2024 11:00:41 +0300
+In-Reply-To: <20240510050806.514126-6-quic_rgnanase@quicinc.com> (Ramya
+	Gnanasekar's message of "Fri, 10 May 2024 10:38:06 +0530")
+Message-ID: <87le43d26u.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -64,72 +62,101 @@ Content-Type: text/plain
 
 Ramya Gnanasekar <quic_rgnanase@quicinc.com> writes:
 
-> From: Lingbo Kong <quic_lingbok@quicinc.com>
+> Support to dump additional Tx PDEV stats through HTT stats debugfs.
+> Following stats dump are supported:
+>         1. PDEV control path stat to dump Tx management frame count
+>         2. Tx PDEV SIFS histogram stats
+>         3. Tx MU MIMO PPDU stats for 802.11ac, 802.11ax and 802.11be
 >
-> Pdev id from mac phy capabilities will be sent as a part of
-> HTT stats request to firmware. This causes issue with single pdev
-> devices where fimrware does not respond to the stats request
-> sent from host.
+> Sample Output:
+> --------------
+> echo 1 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats_type
+> cat /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats
+> HTT_TX_PDEV_STATS_CMN_TLV:
+> mac_id = 0
+> comp_delivered = 0
+> self_triggers = 13
+> ......
+> ......
+> HTT_TX_PDEV_STATS_CTRL_PATH_TX_STATS:
+> fw_tx_mgmt_subtype =  0:1, 1:0, 2:0, 3:0, 4:38, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:1, 12:0, 13:7, 14:0, 15:0,
 >
-> Single pdev devices firmware expects pdev id as 1 for 5GHz/6GHz
-> phy and 2 for 2GHz band. Handle pdev id for single phy device
-> while sending HTT stats request message to firmware.
+> HTT_TX_PDEV_STATS_SIFS_HIST_TLV:
+> sifs_hist_status =  0:237, 1:185, 2:1, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
+>
+> HTT_TX_PDEV_MU_PPDU_DISTRIBUTION_STATS:
+> ac_mu_mimo_num_seq_posted_nr4 = 0
+> ac_mu_mimo_num_ppdu_posted_per_burst_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
+> ac_mu_mimo_num_ppdu_completed_per_burst_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
+> ac_mu_mimo_num_seq_term_status_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0,
+>
+> ac_mu_mimo_num_seq_posted_nr8 = 0
+> ac_mu_mimo_num_ppdu_posted_per_burst_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
+> ac_mu_mimo_num_ppdu_completed_per_burst_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
+> ac_mu_mimo_num_seq_term_status_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0,
+>
+> ax_mu_mimo_num_seq_posted_nr4 = 0
+> ax_mu_mimo_num_ppdu_posted_per_burst_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
+> ax_mu_mimo_num_ppdu_completed_per_burst_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
+> ax_mu_mimo_num_seq_term_status_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0,
+>
+> ax_mu_mimo_num_seq_posted_nr8 = 0
+> ax_mu_mimo_num_ppdu_posted_per_burst_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
+> ax_mu_mimo_num_ppdu_completed_per_burst_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
+> ax_mu_mimo_num_seq_term_status_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0,
+>
+> be_mu_mimo_num_seq_posted_nr4 = 0
+> be_mu_mimo_num_ppdu_posted_per_burst_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
+> be_mu_mimo_num_ppdu_completed_per_burst_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
+> be_mu_mimo_num_seq_term_status_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0,
+>
+> be_mu_mimo_num_seq_posted_nr8 = 0
+> be_mu_mimo_num_ppdu_posted_per_burst_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
+> be_mu_mimo_num_ppdu_completed_per_burst_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
+> be_mu_mimo_num_seq_term_status_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0,
 >
 > Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 > Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 >
-> Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
 > Signed-off-by: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
 
 [...]
 
-> @@ -1029,7 +1030,12 @@ ath12k_dp_tx_htt_h2t_ext_stats_req(struct ath12k *ar, u8 type,
->  	memset(cmd, 0, sizeof(*cmd));
->  	cmd->hdr.msg_type = HTT_H2T_MSG_TYPE_EXT_STATS_CFG;
->  
-> -	cmd->hdr.pdev_mask = 1 << ar->pdev->pdev_id;
-> +	if (ab->hw_params->single_pdev_only)
-> +		pdev_id = ath12k_mac_get_target_pdev_id(ar);
-> +	else
-> +		pdev_id = ar->pdev->pdev_id;
-
-Wouldn't it be cleaner to have the single_pdev_only check in
-ath12k_mac_get_target_pdev_id()?
-
-> +struct ath12k_vif *ath12k_mac_get_vif_up(struct ath12k_base *ab)
+> +static inline void
+> +ath12k_htt_print_tx_pdev_mu_ppdu_dist_stats_tlv(const void *tag_buf,
+> +						struct debug_htt_stats_req *stats_req)
 > +{
-> +	struct ath12k *ar;
-> +	struct ath12k_pdev *pdev;
-> +	struct ath12k_vif *arvif;
-> +	int i;
+> +	const struct ath12k_htt_tx_pdev_mu_ppdu_dist_stats_tlv *htt_stats_buf = tag_buf;
+> +	char *mode;
+> +	u8 j, hw_mode, i, str_buf_len;
+> +	u8 *buf = stats_req->buf;
+> +	u32 len = stats_req->buf_len;
+> +	u32 buf_len = ATH12K_HTT_STATS_BUF_SIZE;
+> +	u32 stats_value;
+> +	u8 max_ppdu = ATH12K_HTT_STATS_MAX_NUM_MU_PPDU_PER_BURST;
+> +	u8 max_sched = ATH12K_HTT_STATS_MAX_NUM_SCHED_STATUS;
+> +	char str_buf[ATH12K_HTT_MAX_STRING_LEN];
 > +
-> +	for (i = 0; i < ab->num_radios; i++) {
-> +		pdev = &ab->pdevs[i];
-> +		ar = pdev->ar;
-> +		list_for_each_entry(arvif, &ar->arvifs, list) {
-> +			if (arvif->is_up)
-> +				return arvif;
-> +		}
+> +	hw_mode = le32_to_cpu(htt_stats_buf->hw_mode);
+> +
+> +	switch (hw_mode) {
+> +	case ATH12K_HTT_STATS_HWMODE_AC:
+> +		len += scnprintf(buf + len, buf_len - len,
+> +				 "HTT_TX_PDEV_MU_PPDU_DISTRIBUTION_STATS:\n");
+> +		mode = "ac";
+> +		break;
+> +	case ATH12K_HTT_STATS_HWMODE_AX:
+> +		mode = "ax";
+> +		break;
+> +	case ATH12K_HTT_STATS_HWMODE_BE:
+> +		mode = "be";
+> +		break;
+> +	default:
+> +		return;
 > +	}
-> +
-> +	return NULL;
-> +}
 
-I'm not seeing any protection here, is that on purpose?
-
-> +u8 ath12k_mac_get_target_pdev_id(struct ath12k *ar)
-> +{
-> +	struct ath12k_vif *arvif;
-> +
-> +	arvif = ath12k_mac_get_vif_up(ar->ab);
-> +
-> +	if (arvif)
-> +		return ath12k_mac_get_target_pdev_id_from_vif(arvif);
-> +	else
-> +		return ar->ab->fw_pdev[0].pdev_id;
-> +}
-
-No need to have else after return.
+Why are we not adding "HTT_TX_PDEV_MU_PPDU_DISTRIBUTION_STATS:\n" with
+ax and be modes?
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
