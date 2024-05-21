@@ -1,179 +1,148 @@
-Return-Path: <linux-wireless+bounces-7869-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7871-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3292A8CA950
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2024 09:49:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 730648CA95C
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2024 09:51:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 560951C2090A
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2024 07:49:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3D621C20938
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2024 07:51:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E03548EC;
-	Tue, 21 May 2024 07:49:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WjQL6Ekz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAEF050246;
+	Tue, 21 May 2024 07:51:34 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F731548E0
-	for <linux-wireless@vger.kernel.org>; Tue, 21 May 2024 07:49:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [207.46.229.174])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222E442056;
+	Tue, 21 May 2024 07:51:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.46.229.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716277779; cv=none; b=NVJbV3Ol4Ef2/ocF92OrABlwqNhCa/p17PXGWZlZJLAvN09RC/C7JVIfYvPxlzmINSfcINX+Ur2RM4UgApO/wh3hzvhmCCS36q3+IqF84+HPzuaxK2vhi4ZXiu1D7gzgRqojF76Z1CDZQ9+U/HBqRAzIxlZroedqV+JcnPza8yk=
+	t=1716277894; cv=none; b=DBueFVAw/ZIIj4Ifl2BqibnC3L88fHFMaTnyej14E4mSNSZsMVsArFnKa/MaYYEIqLqktuwF4sSdDrYB2vUAwF//s3jtg7lN+xH+K8dvrnEvTQvZGPrIHSjb25HnFO158KWNjvHrDSwE786Pw3o6qkGVqWsNZRVxHSqJMIY1zEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716277779; c=relaxed/simple;
-	bh=1pUKTv82FJURgsr0jI314SPDaLC5Gow+Yuxa7TBb6gY=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=Ek4jgaVdZU/cYMygtbU7EygV7VAUiO7xJQnAKLWr1+03ZA+jZyASlILtQcZcxHDfg85oCqc/8atqQjiRBLRuVSE0K6bWJV4EeADTD6B6iMibQO2mv4GIDFpVnQDy9BeHxBs7zZ0oz5patTbI/2yEeKdtg18MpMT7CAbIaMpN55A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WjQL6Ekz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 052A8C2BD11;
-	Tue, 21 May 2024 07:49:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716277779;
-	bh=1pUKTv82FJURgsr0jI314SPDaLC5Gow+Yuxa7TBb6gY=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=WjQL6EkzTNzIp6IqPBUKkV7iuiiX5ozhGvm+nFryRRfFqIliH2UmoAk40dK9KLi4c
-	 j64vVj/QuaFRyyARbZXnKBifbEcF+xAGEBesPHmTQLupqGu083n8W0z7epYulcU/fj
-	 x4Cjkp1Ckm5vgUnBuRPJXZ3lPg6yJif9NbmmLUbS4ClDMm9+lwAjww8IMSQegtLSD4
-	 EqiMLyFeN7gmDVuxtMkDIHCRha58MiVxLl0CXgDpAxaJQu5lOTXxHTRHKC/9Tnm0rq
-	 cbugK7PhfEkbO2a77xzn5JimRoxd6TBSOoAsWN2rpyphtru3zaW3vl7PTG8JfbOen/
-	 oqEaVpMtJr34g==
-From: Kalle Valo <kvalo@kernel.org>
-To: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
-Cc: ath12k@lists.infradead.org,  linux-wireless@vger.kernel.org,  Dinesh
- Karthikeyan <quic_dinek@quicinc.com>
-Subject: Re: [PATCH v2 1/5] wifi: ath12k: Add support to enable
- debugfs_htt_stats
-References: <20240510050806.514126-1-quic_rgnanase@quicinc.com>
-	<20240510050806.514126-2-quic_rgnanase@quicinc.com>
-Date: Tue, 21 May 2024 10:49:36 +0300
-In-Reply-To: <20240510050806.514126-2-quic_rgnanase@quicinc.com> (Ramya
-	Gnanasekar's message of "Fri, 10 May 2024 10:38:02 +0530")
-Message-ID: <87y183d2pb.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1716277894; c=relaxed/simple;
+	bh=GwBgZ6A2Vqzcd5K1LmY0jwLdyR/P2V7/O9bkM2fxAHE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AQHZtPUUCrScxJhGbXvrdJocaF41tgJ9Pu+TFtRRQUeuRHGJk1Lvzx/D7SUjtNZKJe4EE5bYWs5CcABO/u80Jv/LDhHIjKRkFi2X05rBXxgEjkmAc1m36zdKPX77zyHwu90opRbq2m4sECHOBEw0g+T/jjo2MiOhsiri59lKGtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=207.46.229.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
+Received: from gui.. (unknown [115.206.161.197])
+	by mail-app3 (Coremail) with SMTP id cC_KCgD3T1ZkUkxmSGTSAA--.6741S4;
+	Tue, 21 May 2024 15:51:01 +0800 (CST)
+From: Lin Ma <linma@zju.edu.cn>
+To: johannes@sipsolutions.net,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Lin Ma <linma@zju.edu.cn>
+Subject: [PATCH v2 net] wifi: cfg80211: pmsr: use correct nla_get_uX functions
+Date: Tue, 21 May 2024 15:50:59 +0800
+Message-Id: <20240521075059.47999-1-linma@zju.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:cC_KCgD3T1ZkUkxmSGTSAA--.6741S4
+X-Coremail-Antispam: 1UD129KBjvJXoWxXF1fJF48Xw1DtF45Aw1fZwb_yoW5uFWkpa
+	1kta98tas8J348urykCw18WF9Fgr17Arn5CFW3WF1fCr4vga4Yy347ur4qq3WDA34kW395
+	tr1vy3y8Cw15trDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkl14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4U
+	JVW0owA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
+	tVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
+	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkG
+	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4U
+	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7VUb8hL5UUUU
+	U==
+X-CM-SenderInfo: qtrwiiyqvtljo62m3hxhgxhubq/
 
-Ramya Gnanasekar <quic_rgnanase@quicinc.com> writes:
+The commit 9bb7e0f24e7e ("cfg80211: add peer measurement with FTM
+initiator API") defines four attributes NL80211_PMSR_FTM_REQ_ATTR_
+{NUM_BURSTS_EXP}/{BURST_PERIOD}/{BURST_DURATION}/{FTMS_PER_BURST} in
+following ways.
 
-> From: Dinesh Karthikeyan <quic_dinek@quicinc.com>
->
-> Create debugfs_htt_stats file when ath12k debugfs support is enabled.
-> Add basic ath12k_debugfs_htt_stats_init and handle htt_stats_type
-> file operations.
->
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
->
-> Signed-off-by: Dinesh Karthikeyan <quic_dinek@quicinc.com>
-> Co-developed-by: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
-> Signed-off-by: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
+static const struct nla_policy
+nl80211_pmsr_ftm_req_attr_policy[NL80211_PMSR_FTM_REQ_ATTR_MAX + 1] = {
+    ...
+    [NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP] =
+        NLA_POLICY_MAX(NLA_U8, 15),
+    [NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD] = { .type = NLA_U16 },
+    [NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION] =
+        NLA_POLICY_MAX(NLA_U8, 15),
+    [NL80211_PMSR_FTM_REQ_ATTR_FTMS_PER_BURST] =
+        NLA_POLICY_MAX(NLA_U8, 31),
+    ...
+};
 
-[...]
+That is, those attributes are expected to be NLA_U8 and NLA_U16 types.
+However, the consumers of these attributes in `pmsr_parse_ftm` blindly
+all use `nla_get_u32`, which is incorrect and causes functionality issues
+on little-endian platforms. Hence, fix them with the correct `nla_get_u8`
+and `nla_get_u16` functions.
 
-> +struct ath12k_dbg_htt_stats {
-> +	enum ath12k_dbg_htt_ext_stats_type type;
-> +	u32 cfg_param[4];
-> +	/* protects shared stats req buffer */
-> +	spinlock_t lock;
-> +};
+Fixes: 9bb7e0f24e7e ("cfg80211: add peer measurement with FTM initiator API")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+---
+V1->V2: add wifi prefix in title,
+        mention the policy that defines those attributes as suggested by johannes
 
-Is there a specific reason why a new lock is needed? Why not just use
-struct ath12k::data_lock?
+ net/wireless/pmsr.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-> +
->  struct ath12k_debug {
->  	struct dentry *debugfs_pdev;
-> +	struct ath12k_dbg_htt_stats htt_stats;
->  };
->  
->  struct ath12k_per_peer_tx_stats {
-> diff --git a/drivers/net/wireless/ath/ath12k/debugfs.c b/drivers/net/wireless/ath/ath12k/debugfs.c
-> index 8d8ba951093b..30a80f04d824 100644
-> --- a/drivers/net/wireless/ath/ath12k/debugfs.c
-> +++ b/drivers/net/wireless/ath/ath12k/debugfs.c
-> @@ -6,6 +6,7 @@
->  
->  #include "core.h"
->  #include "debugfs.h"
-> +#include "debugfs_htt_stats.h"
->  
->  static ssize_t ath12k_write_simulate_radar(struct file *file,
->  					   const char __user *user_buf,
-> @@ -87,4 +88,6 @@ void ath12k_debugfs_register(struct ath12k *ar)
->  				    ar->debug.debugfs_pdev, ar,
->  				    &fops_simulate_radar);
->  	}
-> +
-> +	ath12k_debugfs_htt_stats_init(ar);
-
-Let's try to have consistent naming: ath12k_debugfs_htt_stats_register()
-
-> +static ssize_t ath12k_read_htt_stats_type(struct file *file,
-> +					  char __user *user_buf,
-> +					  size_t count, loff_t *ppos)
-> +{
-> +	struct ath12k *ar = file->private_data;
-> +	char buf[32];
-> +	size_t len;
-> +
-> +	len = scnprintf(buf, sizeof(buf), "%u\n", ar->debug.htt_stats.type);
-> +
-> +	return simple_read_from_buffer(user_buf, count, ppos, buf, len);
-> +}
-
-Access to ar->debug.htt_stats.type isn't protected in any way.
-
-> +
-> +static ssize_t ath12k_write_htt_stats_type(struct file *file,
-> +					   const char __user *user_buf,
-> +					   size_t count, loff_t *ppos)
-> +{
-> +	struct ath12k *ar = file->private_data;
-> +	enum ath12k_dbg_htt_ext_stats_type type;
-> +	unsigned int cfg_param[4] = {0};
-> +	int num_args;
-> +
-> +	char *buf __free(kfree) = kzalloc(count, GFP_KERNEL);
-> +	if (!buf)
-> +		return -ENOMEM;
-> +
-> +	if (copy_from_user(buf, user_buf, count))
-> +		return -EFAULT;
-> +
-> +	num_args = sscanf(buf, "%u %u %u %u %u\n", &type, &cfg_param[0],
-> +			  &cfg_param[1], &cfg_param[2], &cfg_param[3]);
-> +	if (!num_args || num_args > 5)
-> +		return -EINVAL;
-> +
-> +	if (type >= ATH12K_DBG_HTT_NUM_EXT_STATS)
-> +		return -E2BIG;
-> +
-> +	if (type == ATH12K_DBG_HTT_EXT_STATS_RESET)
-> +		return -EPERM;
-> +
-> +	ar->debug.htt_stats.type = type;
-> +	ar->debug.htt_stats.cfg_param[0] = cfg_param[0];
-> +	ar->debug.htt_stats.cfg_param[1] = cfg_param[1];
-> +	ar->debug.htt_stats.cfg_param[2] = cfg_param[2];
-> +	ar->debug.htt_stats.cfg_param[3] = cfg_param[3];
-> +
-> +	return count;
-> +}
-
-Same here with both type and cfg_param. Maybe it's ok to skip
-protection, I didn't do analysis yet, but this makes me suspicious.
-
+diff --git a/net/wireless/pmsr.c b/net/wireless/pmsr.c
+index e106dcea3977..c569c37da317 100644
+--- a/net/wireless/pmsr.c
++++ b/net/wireless/pmsr.c
+@@ -56,7 +56,7 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
+ 	out->ftm.burst_period = 0;
+ 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD])
+ 		out->ftm.burst_period =
+-			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD]);
++			nla_get_u16(tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD]);
+ 
+ 	out->ftm.asap = !!tb[NL80211_PMSR_FTM_REQ_ATTR_ASAP];
+ 	if (out->ftm.asap && !capa->ftm.asap) {
+@@ -75,7 +75,7 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
+ 	out->ftm.num_bursts_exp = 0;
+ 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP])
+ 		out->ftm.num_bursts_exp =
+-			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP]);
++			nla_get_u8(tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP]);
+ 
+ 	if (capa->ftm.max_bursts_exponent >= 0 &&
+ 	    out->ftm.num_bursts_exp > capa->ftm.max_bursts_exponent) {
+@@ -88,7 +88,7 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
+ 	out->ftm.burst_duration = 15;
+ 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION])
+ 		out->ftm.burst_duration =
+-			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION]);
++			nla_get_u8(tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION]);
+ 
+ 	out->ftm.ftms_per_burst = 0;
+ 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_FTMS_PER_BURST])
+@@ -107,7 +107,7 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
+ 	out->ftm.ftmr_retries = 3;
+ 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_FTMR_RETRIES])
+ 		out->ftm.ftmr_retries =
+-			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_FTMR_RETRIES]);
++			nla_get_u8(tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_FTMR_RETRIES]);
+ 
+ 	out->ftm.request_lci = !!tb[NL80211_PMSR_FTM_REQ_ATTR_REQUEST_LCI];
+ 	if (out->ftm.request_lci && !capa->ftm.request_lci) {
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.34.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
