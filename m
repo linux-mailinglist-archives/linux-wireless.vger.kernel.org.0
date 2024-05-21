@@ -1,52 +1,63 @@
-Return-Path: <linux-wireless+bounces-7903-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7904-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FFCE8CB0BD
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2024 16:50:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9B348CB21E
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2024 18:27:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 021111F244FA
-	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2024 14:50:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54EA51F218B5
+	for <lists+linux-wireless@lfdr.de>; Tue, 21 May 2024 16:27:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9DE27EEED;
-	Tue, 21 May 2024 14:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C36BA1CD3B;
+	Tue, 21 May 2024 16:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=unstable.cc header.i=a@unstable.cc header.b="g1r8ZGJC"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="P9YAZMZh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from wilbur.contactoffice.com (wilbur.contactoffice.com [212.3.242.68])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BB831E87C;
-	Tue, 21 May 2024 14:50:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.3.242.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272CF4C66;
+	Tue, 21 May 2024 16:27:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716303036; cv=none; b=a/CZXYCqsJBfD0FgqGibQzskUx5XH1HiBkOT4cUOn6qAVlhYHz9w7kVOVGEzYjtbzfRgxicyvodCgVPHkMGldI67cs++AY3BUs62BQelCJWlLmlvYps4azWYHXO9MsnEmwHLeeXl6+/ZR7ZXrw5zEklHp+ivuVwh9l93EJguyr0=
+	t=1716308859; cv=none; b=QChoIN1YfJGKT9QyKR6c2TYgbCFQ2c40gBiBbWESnspGAzkilw0ltgVbicBAG1yNifT5wYXfc21sl10o4A81gzTJb9tbH5lZBdyyM7a5G36aI71lufWd6Kxn6FlOw6MjSfKT3MR2VQB4ivrje1W6hNRR+ByjpLgEoLrkPCLIiTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716303036; c=relaxed/simple;
-	bh=m5joeQgS5ScfS+qukuUUac9hQNUzKQ5pTLsn+sKIlt4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aKTbxAIU0LD3qqByBpGfEYi1ywAtd70Hylo+MVAjbSDa7PYPdZJSmxWpDqqy+YEVmU07vPuXVyIePwrZOnv/wVwfrLpgXVKKRLL7OBDXFHmkrheP/t6EPWTydPziM5JOPRz91TkivlBuA/zbBi9jXWYG/EOBX9rV9TjCzBtcvnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unstable.cc; spf=pass smtp.mailfrom=unstable.cc; dkim=pass (2048-bit key) header.d=unstable.cc header.i=a@unstable.cc header.b=g1r8ZGJC; arc=none smtp.client-ip=212.3.242.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=unstable.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unstable.cc
-Received: from smtpauth2.co-bxl (smtpauth2.co-bxl [10.2.0.24])
-	by wilbur.contactoffice.com (Postfix) with ESMTP id 085FC8BB;
-	Tue, 21 May 2024 16:50:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1716303029;
-	s=20220809-q8oc; d=unstable.cc; i=a@unstable.cc;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:In-Reply-To:Content-Type:Content-Transfer-Encoding;
-	l=2420; bh=MTWDyIfN1nMlCSjPE8NjqxUc6JP4iiU+F5dmQzZPITE=;
-	b=g1r8ZGJCvPKEJVDzNsmbjEr/8t9llqk4+N4hhyd59SoskJ/tnKd4gw9bnZX1W6hg
-	cPhrz8+vGFbnC35LOKEaLPQKAWyhQgt7BfFJXtR0KmBaq7gQKcGwni4OWTnc58Apppv
-	IbRZkeccQZZNu3+5fcK2mC6sInP0giNjk3KIv03+uwMRRzzZg4lhbFezthDktl4QDXo
-	abDSwkVIRsKI0HcfHKtVobpCTvf6QgXBJzR4/XatSr93KNA7NvZduB9/mBvhaN5ps0x
-	Deod4iTikmSVuIUxgWdW1A5lTTJxiW9fL6HfHUibzLyWMfGEDJhhORiZRm1LRGW2QgG
-	/aLeLJILNQ==
-Received: by smtp.mailfence.com with ESMTPSA ; Tue, 21 May 2024 16:50:26 +0200 (CEST)
-Message-ID: <e9a67bc5-4abe-4a91-b2ca-26e64e2abac3@unstable.cc>
-Date: Tue, 21 May 2024 16:51:52 +0200
+	s=arc-20240116; t=1716308859; c=relaxed/simple;
+	bh=qGvYWy8UJJh6MLm0owdO37JBYzdn9AR+NhAl3DKfkvY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Gx1JUV2sbNW4XB29VVL7NcMAtK/OX7o03D4Q2CbdQ7EyBwkISdHxWYlMWYFsqHOLlxE+7ALXD+hH2X0DjeagMC5uKG4cLerNyUuRt6Db+Fjp6qYiljzEkZb17yyZm3acn2278TsqBVY9YE4C7m32ztrSbGn6nw358BR8tvGayk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=P9YAZMZh; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44LAa2UL030497;
+	Tue, 21 May 2024 16:27:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=ub76Tj8brlsc2ZB/ZUH1s+GZ5ZLyF3LbgMsiIZBZWaA=; b=P9
+	YAZMZhGn2rewr+tCO2zCjhX3nTrV7jTMAyh+aayo1UfojBZfnAdf0M1VJqXvw6nX
+	lKIpO566oacCJjjg2ksimxbXaqbLLiJ2TvD87e7ylSdkfcFNN7XT4Bw4OyRQSn14
+	q98xpxfPySiO+hPf5E1ERuJFEiqLsUZI93Ck4u9LdPkt0fx/p3ZbEGQbiUhcZaQk
+	gRXH3KLvcwxbQNunvOVotBHUOG+j4BcCeUJIYj9x9w32PJgEHHAXLUDoelqis3Mg
+	OVzsmTVooxfZiCQh6iW71FM8cxOsg1VLsmY9KbfFfIvWMtqUdqtW7nun3pCaL/J/
+	xWwRS7l0s+xChRQdt9Ag==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y6pq5eda5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 May 2024 16:27:30 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44LGRU5j018432
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 May 2024 16:27:30 GMT
+Received: from [10.110.17.44] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 21 May
+ 2024 09:27:29 -0700
+Message-ID: <0c8dc45d-8869-4455-b6be-1395d2937933@quicinc.com>
+Date: Tue, 21 May 2024 09:27:29 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -54,95 +65,77 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: cfg80211: Lock wiphy in cfg80211_get_station
-To: Remi Pommarel <repk@triplefau.lt>,
- Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, b.a.t.m.a.n@lists.open-mesh.org,
- linux-kernel@vger.kernel.org
-References: <983b24a6a176e0800c01aedcd74480d9b551cb13.1716046653.git.repk@triplefau.lt>
- <cef03d6c-7be8-4527-b38b-eadca2789f9b@unstable.cc> <ZkyQfL6JjJBTHtwN@pilgrim>
+Subject: Re: [PATCH v2] wifi: ath11k: move power type check to ASSOC stage
+ when connecting to 6 GHz AP
 Content-Language: en-US
-From: Antonio Quartulli <a@unstable.cc>
-In-Reply-To: <ZkyQfL6JjJBTHtwN@pilgrim>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Baochen Qiang <quic_bqiang@quicinc.com>, Kalle Valo <kvalo@kernel.org>
+CC: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <regressions@lists.linux.dev>
+References: <20240424064019.4847-1-quic_bqiang@quicinc.com>
+ <87wmo0k71i.fsf@kernel.org>
+ <3dc28f34-45cc-4e14-b9ea-1f7b78a6a591@quicinc.com>
+ <87h6esebu8.fsf@kernel.org>
+ <b6b23a29-78ef-4e4f-8042-e13833fcb1ec@quicinc.com>
+ <878r03eoka.fsf@kernel.org>
+ <e235c2f1-4d52-4a89-9d1b-9d63d0ff4c6f@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <e235c2f1-4d52-4a89-9d1b-9d63d0ff4c6f@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Flag: NO
-X-ContactOffice-Account: com:375058688
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: tQECF9tgjRHs3L06Ew7CM0MRQZmk6C9V
+X-Proofpoint-ORIG-GUID: tQECF9tgjRHs3L06Ew7CM0MRQZmk6C9V
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-05-21_10,2024-05-21_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ malwarescore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501
+ suspectscore=0 spamscore=0 clxscore=1015 mlxlogscore=999 mlxscore=0
+ bulkscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405010000 definitions=main-2405210124
 
-Hi,
-
-On 21/05/2024 14:15, Remi Pommarel wrote:
-> On Tue, May 21, 2024 at 09:43:56AM +0200, Antonio Quartulli wrote:
->> Hi,
->>
->> On 18/05/2024 17:50, Remi Pommarel wrote:
->>> Wiphy should be locked before calling rdev_get_station() (see lockdep
->>> assert in ieee80211_get_station()).
->>
->> Adding the lock is fine as nowadays it is taken in pre_doit and released in
->> post_doit (with some exceptions). Therefore when invoking .get_station from
->> a side path the lock should be taken too.
->>
->> It was actually a05829a7222e9d10c416dd2dbbf3929fe6646b89 that introduced
->> this requirement AFAICS.
+On 5/20/2024 10:27 PM, Baochen Qiang wrote:
 > 
-> IIUC lock requirement was already there before this commit, only it was on
-> rtnl lock to be taken instead of wiphy one.
-
-You're right.
-
 > 
+> On 5/21/2024 1:12 PM, Kalle Valo wrote:
+>> Baochen Qiang <quic_bqiang@quicinc.com> writes:
 >>
+>>> On 5/20/2024 11:34 PM, Kalle Valo wrote:
+>>>> Baochen Qiang <quic_bqiang@quicinc.com> writes:
+>>>>> On 5/11/2024 5:54 PM, Kalle Valo wrote:
+>>>>>
+>>>>>> Oh, this fell through the cracks. Commit bc8a0fac8677 was introduced in
+>>>>>> v6.9-rc1 so I should have sent this to v6.9 but it's too late now. I'll
+>>>>>> need to queue this for v6.10 via wireless tree.
+>>>>>>
+>>>>>> Adding the regression also to regzbot:
+>>>>>>
+>>>>>> #regzbot introduced: bc8a0fac8677
+>>>>>> #regzbot title: ath11k: connection to 6 GHz AP fails
+>>>>>>
+>>>>> Hi Kalle, with an upcoming patch this regression is expected to be fixed:
+>>>>>
+>>>>> https://lore.kernel.org/all/20240506214536.310434f55f76.I6aca291ee06265e3f63e0f9024ba19a850b53a33@changeid/#t
+>>>>>
+>>>>> So here the ath11k fix would not be needed any more once above patch got merged.
+>>>>
+>>>> What happens if we apply both patch 'wifi: ath11k: move power type check
+>>>> to ASSOC stage when connecting to 6 GHz AP' and patchset 'wifi:
+>>>> mac80211: build TPE handling'? In other words, do they conflict from
+>>>> functionality point of view?
 >>>
->>> This fixes the following kernel NULL dereference:
+>>> No functional conflict, 6 GHz AP connection would also succeed with
+>>> both of them applied.
 >>
->> As already said by Johannes, I am not sure it truly fixes this NULL
->> dereference though.
->>
->> Have you checked where in ath10k_sta_statistics this is exactly happening?
->> Do you think some sta was partly released and thus fields were NULLified?
-> 
-> ath10k_sta_statistics+0x10 is associated with the arsta->arvif->ar
-> statement. It crashes because arsta->arvif is NULL.
-> 
-> Here is a scenario that explains the crash where the same sta
-> disconnects then reconnects quickly (e.g. OPEN network):
-> 
-> 
-> CPU0:                                       CPU1:
-> 
-> batadv_v_elp_periodic_work()
->   queue_work(batadv_v_elp_get_throughput)
-> 
->                                              ieee80211_del_station()
->                                              ieee80211_add_station()
->                                               sta_info_insert()
->                                                list_add_tail_rcu()
->                                                ath10k_sta_state()
->                                                 memset(arsta, 0, sizeof(arsta))
-> batadv_v_elp_get_throughput()
->   cfg80211_get_station()
->    ieee80211_get_station() <-- Find sta with its MAC in list
->     ath10k_sta_statistics()
->      arsta->arvif->ar <-- arsta is still zeroed
-> 
-> 
-> In other words if the same sta has enough time to disconnect then
-> reconnect before batadv_v_elp_get_throughput get scheduled, sta could be
-> partially initialized when ath10k_sta_statistics() is called. Locking
-> the wiphy ensure sta is fully initialized if found.
-> 
+>> Ok, thanks. In that case I would like take patch 'wifi: ath11k: move
+>> power type check to ASSOC stage when connecting to 6 GHz AP' to
+>> ath-current branch from which it will go to v6.10. Is that ok for
+>> everyone?
+> Good to me.
 
-We were just wondering how you could get the arvif being NULL and your 
-explanation makes sense.
+Good to me, too
 
-This said, holding the lock is required when invoking get_station via 
-netlink, therefore it's meaningful to hold it even when side invoking it 
-from another module.
-
-Acked-by: Antonio Quartulli <a@unstable.cc>
-
-
--- 
-Antonio Quartulli
 
