@@ -1,271 +1,146 @@
-Return-Path: <linux-wireless+bounces-7963-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7964-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D5948CC523
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 May 2024 18:50:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 427188CC6D0
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 May 2024 21:22:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AE981F23945
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 May 2024 16:50:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFA65282071
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 May 2024 19:22:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10C47D3EF;
-	Wed, 22 May 2024 16:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9A3145B35;
+	Wed, 22 May 2024 19:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="AE5I3rrZ"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="GvZ1JmSf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F004762FF
-	for <linux-wireless@vger.kernel.org>; Wed, 22 May 2024 16:50:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA04D51E;
+	Wed, 22 May 2024 19:22:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716396616; cv=none; b=GJ5OzHT6Nj18c1e13igTnAuRejPSxZIbr10cpTjq7/rIxngbt3tXc8b5okbTLEG2Sm1omQvw/ZTC2mn+G6TG0CjNh6sx6mu4S9xdILfFwGGIhfgiQbD3/fBDkfaYERAnP4k470YHYD2CyIESpYylMiBGJ6t6mwZWN96by+CadfI=
+	t=1716405738; cv=none; b=UC2EoYqIh8pLw/ourwgQgXLxVn1l/n0xbYwz0f4N+QJpk+alJOuBOH4lNpIE6v8aDJxw+ok2lnhC1lpdhEKXShYWPS5W1OWpFfMRyeJhsHAEKggB3+NEkpsXMkK64RnB/VgHdkOq09/VBAUHhOhI/SNbYlfQH/Jp3g7lTN/tX5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716396616; c=relaxed/simple;
-	bh=AbVxxsYs7Zyyb+FvotT8qSB/1GTvQBjuv8nrFEG+iqM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
-	 In-Reply-To:Content-Type; b=T6tw+i6bp+AOmwBrlEpHKBmMpD6p2E+kfLQ0qUCZictch1W+Zr3Bg74FMrxUtXXAjbzBmQOxbDiVoOhH2YDUSNq2u/aX6NuUdmBJIGkNfDv2Mxgo/vnm/X5prTfJoOWFyIjFWLQMFLN+8sCCPzuO5BAtIz2Z9vSEfh74k8wzNag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=AE5I3rrZ; arc=none smtp.client-ip=148.163.129.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
-	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id A1E242C5AE0
-	for <linux-wireless@vger.kernel.org>; Wed, 22 May 2024 16:44:00 +0000 (UTC)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id B29F4C0061;
-	Wed, 22 May 2024 16:43:52 +0000 (UTC)
-Received: from [10.74.46.197] (unknown [109.144.222.147])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 51D7213C2B0;
-	Wed, 22 May 2024 09:43:51 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 51D7213C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1716396232;
-	bh=AbVxxsYs7Zyyb+FvotT8qSB/1GTvQBjuv8nrFEG+iqM=;
-	h=Date:Subject:To:References:Cc:From:In-Reply-To:From;
-	b=AE5I3rrZ0T5pxzZu/FKrEBB7wZFdCUeKmL5cXzlqyF7xZJU0Q2KU5Gz+ZSRNzT08A
-	 cxRzYHBBmvc0+Fj7T5ZfNc1rFvsATAv683QKJDlrHx3aVQhkTRACJjJoTSXXHK9LXt
-	 KbNQIlmQ10x4TULKifQmeLb3z3jFBYl3qCI0EkwI=
-Message-ID: <e9ccc6cd-12da-0684-3993-b7f4e350c4f2@candelatech.com>
-Date: Wed, 22 May 2024 09:43:49 -0700
+	s=arc-20240116; t=1716405738; c=relaxed/simple;
+	bh=0+7xrxHcIqXbOHoXrH88X8Y9k/W+g9wVdubBgA6njtA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=anp9vaEcf6CkQ6UF7QVpO2Jq8gg1q10m7y0aTw8hlzvKCSiNfLk2nqyDSsjZE1sClkhnOXJc22zAnIF2Ia2qBOmbgkcHc51YLfy1/RdHdGOAZhjj+uu0lqR287BDY+6SZBmLRPkTjyyQO6GOldX6BerMHgLcu9z6TIHlTtE0tU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=GvZ1JmSf; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44MAGZHn010057;
+	Wed, 22 May 2024 19:22:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=7Y/RN1PFOa+6BTPyCnx/ocDE9nnxvEeXbmZ9MEkrzO4=; b=Gv
+	Z1JmSfS1vvNVPQTnLGqdl+x9gxWcNFS4ntVe5Eq94REbmTW454DnozK9aOC3zrgC
+	88C413A/v/akbbc2Wo9pS+4jteqrVNTEfZbtmOMRLty7NPxRMI2K0M2yYrbYLRGE
+	qobUyNBFTHj+I9b+S/LrkWX9vxZX+H91rsJrB3/DjkANzM9iqgJeAD/cvtndKmU2
+	9DLHOlmOz7OPuzgzM0dfRv7wTiO/EmaI3865ZeOwliasLDLmzqg/j9bWe9MfmYua
+	2+HU8WMIhgKXBuGqmxn1rDhyYVSj5JvWbEM6X/zBOqYkVv41s+jmp3MbVmecBi8E
+	s49B9m5b37OUOxrWufzg==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y6n4ghuht-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 May 2024 19:22:01 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44MJLx7C018637
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 May 2024 19:21:59 GMT
+Received: from [10.110.17.44] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 22 May
+ 2024 12:21:58 -0700
+Message-ID: <a553622c-7576-4662-abac-68abe7ea7918@quicinc.com>
+Date: Wed, 22 May 2024 12:21:57 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [RFC 1/2] cfg80211: add support for advertising multiple radios
- belonging to a wiphy
-Content-Language: en-MW
-To: Felix Fietkau <nbd@nbd.name>
-References: <20240522123005.41026-1-nbd@nbd.name>
- <4f0d56b4-3911-21fb-1460-7f7ed1301cd3@candelatech.com>
- <8c279839-34da-4a3e-a807-64050d0af6ae@nbd.name>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <8c279839-34da-4a3e-a807-64050d0af6ae@nbd.name>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-MDID: 1716396233-IdBhOcvNRx7T
-X-MDID-O:
- us5;ut7;1716396233;IdBhOcvNRx7T;<greearb@candelatech.com>;340f598122f25443170ac9d27e6a82df
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 09/12] remoteproc: qcom_wcnss: make use of QCOM_FW_HELPER
+Content-Language: en-US
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Bjorn Andersson
+	<andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Loic
+ Poulain <loic.poulain@linaro.org>, Kalle Valo <kvalo@kernel.org>,
+        Mathieu
+ Poirier <mathieu.poirier@linaro.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <wcn36xx@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <linux-remoteproc@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        Arnd
+ Bergmann <arnd@arndb.de>
+References: <20240521-qcom-firmware-name-v1-0-99a6d32b1e5e@linaro.org>
+ <20240521-qcom-firmware-name-v1-9-99a6d32b1e5e@linaro.org>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240521-qcom-firmware-name-v1-9-99a6d32b1e5e@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 6Cd_Uw9DlpwQ2Q_X57Sv7uAZhpOsr7NT
+X-Proofpoint-ORIG-GUID: 6Cd_Uw9DlpwQ2Q_X57Sv7uAZhpOsr7NT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-05-22_10,2024-05-22_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ clxscore=1011 priorityscore=1501 impostorscore=0 bulkscore=0 phishscore=0
+ mlxscore=0 malwarescore=0 suspectscore=0 adultscore=0 mlxlogscore=999
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405010000 definitions=main-2405220134
 
-On 5/22/24 07:46, Felix Fietkau wrote:
-> On 22.05.24 16:23, Ben Greear wrote:
->> On 5/22/24 05:30, Felix Fietkau wrote:
->>> The prerequisite for MLO support in cfg80211/mac80211 is that all the links
->>> participating in MLO must be from the same wiphy/ieee80211_hw. To meet this
->>> expectation, some drivers may need to group multiple discrete hardware each
->>> acting as a link in MLO under single wiphy.
->>> With this change, the bands and supported frequencies of each individual
->>> radio are reported to user space. This allows user space to figure out the
->>> limitations of what combination of channels can be used concurrently.
->>>
->>> Signed-off-by: Felix Fietkau <nbd@nbd.name>
->>> ---
->>>   include/net/cfg80211.h       | 34 ++++++++++++++++
->>>   include/uapi/linux/nl80211.h | 48 +++++++++++++++++++++++
->>>   net/wireless/nl80211.c       | 75 ++++++++++++++++++++++++++++++++++++
->>>   3 files changed, 157 insertions(+)
->>>
->>> diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
->>> index f2ca495ac9f8..58d8375ffa11 100644
->>> --- a/include/net/cfg80211.h
->>> +++ b/include/net/cfg80211.h
->>> @@ -5407,6 +5407,34 @@ struct wiphy_iftype_akm_suites {
->>>       int n_akm_suites;
->>>   };
->>> +/**
->>> + * struct wiphy_radio_freq_range - wiphy frequency range
->>> + * @start_freq:  start range edge frequency (kHz)
->>> + * @end_freq:    end range edge frequency (kHz)
->>> + */
->>> +struct wiphy_radio_freq_range {
->>> +    u32 start_freq;
->>> +    u32 end_freq;
->>> +};
->>> +
->>> +
->>> +/**
->>> + * struct wiphy_radio - This structure describes a physical radio belonging
->>> + * to a wiphy. It is used to describe concurrent-channel capabilities of the
->>> + * phy. Only one channel can be active on the radio described by struct
->>> + * wiphy_radio.
->>> + *
->>> + * @band_mask: Mask of enum nl80211_band describing the bands that the radio
->>> + *    can operate on.
->>> + * @num_freq_range: number of elements in @freq_range
->>> + * @freq_range: frequency range that the radio can operate on (optional)
->>> + */
->>> +struct wiphy_radio {
->>> +    u16 band_mask;
->>> +    u16 n_freq_range;
->>> +    const struct wiphy_radio_freq_range *freq_range;
->>> +};
->>
->> Do you think we might should add the radio_idx in here so that we don't
->> depend on position in the array in case we need to add/remove radios
->> for some reason?
->>
->> Or radio MAC addr or some other more persistent way to detect exactly
->> what this is in user-space?
+On 5/21/2024 2:45 AM, Dmitry Baryshkov wrote:
+> Make the driver use qcom_fw_helper to autodetect the path to the
+> calibration data file.
 > 
-> Why would radios be added/removed at run time?
-
-I'm thinking I might want to have radio(s) work in legacy mode sometimes and then change
-to combined mode.
-
-Another possibility is unrecoverable firmware/radio crashes, where maybe only one of them
-dies and so system could remove the wedged hardware from the radio list
-if it cannot recover.
-
-If putting radios in/out of combined mode is not feasible, then I will instead
-want to be able to pin legacy STA/VAP/monitor ports to specific radios.  It would
-be nice if the radios could be reliably addressed from user-space without having
-to query the frequency band and use that as unique identifier.  Especially if someone
-manages to make something like an mtk7996 that can do more than one radio per frequency
-range.
-
-And, is the hardware discrete enough that if you had two mtk7996 3-radio NICs,
-could you actually do a 6-radio OFDMA configuration with a 'fake' virtual wiphy
-device to hold the underlying wiphys/radios?  If so, having better radio identifier
-would be required at that point I think.
-
+> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> ---
+>  drivers/remoteproc/qcom_wcnss.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
->>>   #define CFG80211_HW_TIMESTAMP_ALL_PEERS    0xffff
->>>   /**
->>> @@ -5625,6 +5653,9 @@ struct wiphy_iftype_akm_suites {
->>>    *    A value of %CFG80211_HW_TIMESTAMP_ALL_PEERS indicates the driver
->>>    *    supports enabling HW timestamping for all peers (i.e. no need to
->>>    *    specify a mac address).
->>> + *
->>> + * @radio: radios belonging to this wiphy
->>> + * @n_radio: number of radios
->>>    */
->>>   struct wiphy {
->>>       struct mutex mtx;
->>> @@ -5775,6 +5806,9 @@ struct wiphy {
->>>       u16 hw_timestamp_max_peers;
->>> +    const struct wiphy_radio *radio;
->>> +    int n_radio;
->>> +
->>>       char priv[] __aligned(NETDEV_ALIGN);
->>>   };
->>> diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
->>> index f917bc6c9b6f..dfb01d673094 100644
->>> --- a/include/uapi/linux/nl80211.h
->>> +++ b/include/uapi/linux/nl80211.h
->>> @@ -3401,6 +3401,8 @@ enum nl80211_attrs {
->>>       NL80211_ATTR_ASSOC_SPP_AMSDU,
->>> +    NL80211_ATTR_RADIOS,
->>> +
->>>       /* add attributes here, update the policy in nl80211.c */
->>>       __NL80211_ATTR_AFTER_LAST,
->>> @@ -7999,4 +8001,50 @@ enum nl80211_ap_settings_flags {
->>>       NL80211_AP_SETTINGS_SA_QUERY_OFFLOAD_SUPPORT    = 1 << 1,
->>>   };
->>> +/**
->>> + * enum nl80211_wiphy_radio_attrs - wiphy radio attributes
->>> + *
->>> + * @__NL80211_WIPHY_RADIO_ATTR_INVALID: Invalid
->>> + *
->>> + * @NL80211_WIPHY_RADIO_ATTR_BAND_MASK: Bitmask of bands supported by this
->>> + *    radio.
->>> + *
->>> + * @NL80211_WIPHY_RADIO_ATTR_FREQ_RANGES: Nested array of frequency ranges
->>> + *    supported by this radio.
->>> + *
->>> + * @__NL80211_WIPHY_RADIO_ATTR_LAST: Internal
->>> + * @NL80211_WIPHY_RADIO_ATTR_MAX: Highest attribute
->>> + */
->>> +enum nl80211_wiphy_radio_attrs {
->>> +    __NL80211_WIPHY_RADIO_ATTR_INVALID,
->>> +
->>> +    NL80211_WIPHY_RADIO_ATTR_BAND_MASK,
->>> +    NL80211_WIPHY_RADIO_ATTR_FREQ_RANGES,
->>> +
->>> +    /* keep last */
->>> +    __NL80211_WIPHY_RADIO_ATTR_LAST,
->>> +    NL80211_WIPHY_RADIO_ATTR_MAX = __NL80211_WIPHY_RADIO_ATTR_LAST - 1,
->>> +};
->>> +
->>> +/**
->>> + * enum nl80211_wiphy_radio_freq_range - wiphy radio frequency range
->>> + *
->>> + * @__NL80211_WIPHY_RADIO_FREQ_ATTR_INVALID: Invalid
->>> + *
->>> + * @NL80211_WIPHY_RADIO_FREQ_ATTR_START: Frequency range start
->>> + * @NL80211_WIPHY_RADIO_FREQ_ATTR_END: Frequency range end
->>> + *
->>> + * @__NL80211_WIPHY_RADIO_FREQ_ATTR_LAST: Internal
->>> + * @NL80211_WIPHY_RADIO_FREQ_ATTR_MAX: Highest attribute
->>> + */
->>> +enum nl80211_wiphy_radio_freq_range {
->>> +    __NL80211_WIPHY_RADIO_FREQ_ATTR_INVALID,
->>> +
->>> +    NL80211_WIPHY_RADIO_FREQ_ATTR_START,
->>> +    NL80211_WIPHY_RADIO_FREQ_ATTR_END,
->>> +
->>> +    __NL80211_WIPHY_RADIO_FREQ_ATTR_LAST,
->>> +    NL80211_WIPHY_RADIO_FREQ_ATTR_MAX = __NL80211_WIPHY_RADIO_FREQ_ATTR_LAST - 1,
->>> +};
->>> +
->>>   #endif /* __LINUX_NL80211_H */
->>> diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
->>> index 3c0bca4238d3..c07abdf104ec 100644
->>> --- a/net/wireless/nl80211.c
->>> +++ b/net/wireless/nl80211.c
->>> @@ -2392,6 +2392,78 @@ static int nl80211_put_mbssid_support(struct wiphy *wiphy, struct sk_buff *msg)
->>>       return -ENOBUFS;
->>>   }
->>> +static int nl80211_put_radio(struct wiphy *wiphy, struct sk_buff *msg, int idx)
->>> +{
->>> +    const struct wiphy_radio *r = &wiphy->radio[idx];
->>
->> Maybe allow radio[] array to be sparse (ie, idx 0 is there, idx 2 is there, idx 1 is NULL
->> because user wants to remove that radio from MLO consideration for whatever reason?
-> 
-> Why should the user want to do this?
-
-unrecoverable radio failures and putting radio into legacy mode...
-
-Thanks,
-Ben
-
-> 
-> - Felix
+> diff --git a/drivers/remoteproc/qcom_wcnss.c b/drivers/remoteproc/qcom_wcnss.c
+> index 421a3943a90d..45fc578ae30b 100644
+> --- a/drivers/remoteproc/qcom_wcnss.c
+> +++ b/drivers/remoteproc/qcom_wcnss.c
+> @@ -23,6 +23,7 @@
+>  #include <linux/regulator/consumer.h>
+>  #include <linux/remoteproc.h>
+>  #include <linux/soc/qcom/mdt_loader.h>
+> +#include <linux/soc/qcom/fw_helper.h>
+>  #include <linux/soc/qcom/smem.h>
+>  #include <linux/soc/qcom/smem_state.h>
+>  
+> @@ -555,8 +556,13 @@ static int wcnss_probe(struct platform_device *pdev)
+>  	if (ret < 0 && ret != -EINVAL)
+>  		return ret;
+>  
+> +	fw_name = qcom_get_board_fw(fw_name);
+> +	if (!fw_name)
+> +		return -ENOMEM;
+> +
+>  	rproc = devm_rproc_alloc(&pdev->dev, pdev->name, &wcnss_ops,
+>  				 fw_name, sizeof(*wcnss));
+> +	kfree(fw_name);
+>  	if (!rproc) {
+>  		dev_err(&pdev->dev, "unable to allocate remoteproc\n");
+>  		return -ENOMEM;
 > 
 
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+can you cleanly bisect to this patch? seems it depends upon patch 10.
+should 09 & 10 be swapped, or perhaps squashed?
 
