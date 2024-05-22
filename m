@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-7961-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7962-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54CA88CC3ED
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 May 2024 17:16:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 522B58CC44C
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 May 2024 17:44:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 857611C210E8
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 May 2024 15:16:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C34F2B21B28
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 May 2024 15:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 186331B815;
-	Wed, 22 May 2024 15:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2F881734;
+	Wed, 22 May 2024 15:44:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="sYKGFHxn"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="TqKuDo6x"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295B846AF;
-	Wed, 22 May 2024 15:15:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.248
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E527D3EF;
+	Wed, 22 May 2024 15:44:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716390957; cv=none; b=J6F6dueW836qCCo0IpFxuXwRwcZhqQmpMz3J7T5jv/qPdk2B9jpLi649sbMz7A6FuOeCaZOY8EdKCK4rzSyy+kzGI9aSM1YB+DrPbp7MH1tDV/QQRX+10M2/O8EKNVyP8grtDs2ux1ejHMRuZmGijlMCbHEfwc8Im+SJYS0V/Ds=
+	t=1716392694; cv=none; b=SGEFguyxYCTjJTwjohqyMk6sw47Xzp4f/OO8Tvkgrwv3AU5btnl4JsyCWbKwmRMprUs8gTK3CAkTPp4DnDeWZ1Mx1Vd8XhHUGLaXKYanqkJS90R+zUhS52UwoDZ0Tcrne4uROOmh6Iw/W0b8qGFSzC093flloDbW8ZYOnZaI1/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716390957; c=relaxed/simple;
-	bh=BLzUQ8V0xeTF+dtdwWRkLWETsEKNM5FXTDRvAzbY51g=;
+	s=arc-20240116; t=1716392694; c=relaxed/simple;
+	bh=oB88OGiBRzAoayxRZBetm6e625rVBGs2HTQ0OrqFGWc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=edQkqmCwoIK2mQawA2H3voQJirKOO4rqOG74K9uACuFOgcvlotdkLtAUukR765FmV0twfv/KlIhkVeLK3+N4jsdCKfcpr9wmo/9F4T/j08HCmt3FXnsYjWi5KUOrk59LOFY5qnqaCdtQ4Odn0L708OLhQ6s5nKvg4TwElU2q28w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=sYKGFHxn; arc=none smtp.client-ip=198.47.23.248
+	 In-Reply-To:Content-Type; b=q75D4VPkwgjg05tINIKB5a4yB/XrZ/IeMx34CCZAlP0PNJA3NfjYNcFO7ZZHw8/Q5NDS3LtHDZEaJfNUwT/5758esYa1ya63FEyOcghr2URnVvQNTZLvn+VkG8MRI363jBqiYWoS92XQM0OvDufJb/wY5lVADJgSkxsax16tUX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=TqKuDo6x; arc=none smtp.client-ip=198.47.23.249
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 44MFFgRS028006;
-	Wed, 22 May 2024 10:15:42 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 44MFif50043991;
+	Wed, 22 May 2024 10:44:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1716390942;
-	bh=uuwFmYRHuiGD48DhV0PDwVMHSAkqVP16xhaWkJZ/WKo=;
+	s=ti-com-17Q1; t=1716392681;
+	bh=f+pEerrIm5HmFx7I6laOSLnzNWBKHizBP6ZI3HxvWK0=;
 	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=sYKGFHxnc9YqXL6iF19U12BZouXomlfSPV2r+iFPvelSJKZX3V9HWtS4vk+dMuVQN
-	 lv0SNQpbcqTwHDso+5VfpKMxoK1HTWOS1czkudYWF97R3o/XPNljTzuPEDnoFqpx1G
-	 IkJ0+p+yG0UWGOsEnDAHytwAbdKgOJLnR5h0aNB8=
-Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 44MFFfas011580
+	b=TqKuDo6xSu0marhlI7MQdWabVwJnrKQPUqF9sr0X9+8AGvvYPzMTUv3l0to17Pf9N
+	 RUQ5zLORNtV+JszAiMCN5DaS084qgHIh1J93udYWAPO8qBd3FJRWK7Xrx8QpLDQGND
+	 5baxfG8MB2KfmXReiBTu/Eaun55OKeRJOIK26DdQ=
+Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 44MFifvo097080
 	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 22 May 2024 10:15:42 -0500
-Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+	Wed, 22 May 2024 10:44:41 -0500
+Received: from DLEE106.ent.ti.com (157.170.170.36) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 22
- May 2024 10:15:41 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+ May 2024 10:44:41 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Wed, 22 May 2024 10:15:41 -0500
+ Frontend Transport; Wed, 22 May 2024 10:44:41 -0500
 Received: from [137.167.6.219] (lt5cg1094w5k.dhcp.ti.com [137.167.6.219])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 44MFFdNX049254;
-	Wed, 22 May 2024 10:15:39 -0500
-Message-ID: <1ab99d82-602e-4c7e-9570-0d9c67719051@ti.com>
-Date: Wed, 22 May 2024 18:15:38 +0300
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 44MFicXH095048;
+	Wed, 22 May 2024 10:44:39 -0500
+Message-ID: <cdb9e99a-d0f5-47f8-9efb-77a661f53928@ti.com>
+Date: Wed, 22 May 2024 18:44:38 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,30 +65,35 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [EXTERNAL] Re: [PATCH 07/17] Add boot.c, boot.h
-To: Krzysztof Kozlowski <krzk@kernel.org>, Breno Leitao <leitao@debian.org>
-CC: Kalle Valo <kvalo@kernel.org>, Johannes Berg <johannes.berg@intel.com>,
+Subject: Re: [PATCH 01/17] Add cc33xx.h, cc33xx_i.h
+To: Krzysztof Kozlowski <krzk@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Breno Leitao <leitao@debian.org>,
         Justin Stitt <justinstitt@google.com>,
         Kees Cook <keescook@chromium.org>, <linux-wireless@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, Sabeeh Khan
-	<sabeeh-khan@ti.com>
+        <linux-kernel@vger.kernel.org>
+CC: Sabeeh Khan <sabeeh-khan@ti.com>
 References: <20240521171841.884576-1-michael.nemanov@ti.com>
- <20240521171841.884576-8-michael.nemanov@ti.com> <Zk2ywFQQ2SuXvPiE@gmail.com>
- <f6ee888b-f4de-4b72-8224-aca4236ab220@kernel.org>
+ <20240521171841.884576-2-michael.nemanov@ti.com>
+ <383554c5-aef5-4c3f-bf67-dfdc83324897@kernel.org>
 Content-Language: en-US
 From: "Nemanov, Michael" <michael.nemanov@ti.com>
-In-Reply-To: <f6ee888b-f4de-4b72-8224-aca4236ab220@kernel.org>
+In-Reply-To: <383554c5-aef5-4c3f-bf67-dfdc83324897@kernel.org>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-On 5/22/2024 2:12 PM, Krzysztof Kozlowski wrote:
-> So neither this nor previous version was ever built...
+On 5/22/2024 12:38 PM, Krzysztof Kozlowski wrote:
+> Please also confirm that you also fixed all warnings from:
+> 1. checkpatch --strict
+> 2. smatch
+> 3. sparse
+> 4. coccinelle/coccicheck
 
-I was building with ARCH=arm. Seems like linux/vmalloc.h is included 
-automatically with this architecture but not others. I'll fix the 
-include and make sure to test with other archs as well.
+I was running checkpatch --strict and sparse. I'll add smatch and 
+coccinelle/coccicheck to the test list as well as testing on other 
+architectures.
 
-Michael.
+Thanks and regards, Michael.
 
 
