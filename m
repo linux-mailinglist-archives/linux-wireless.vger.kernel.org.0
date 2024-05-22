@@ -1,90 +1,143 @@
-Return-Path: <linux-wireless+bounces-7940-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7941-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76E458CBD5A
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 May 2024 10:55:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0345A8CBDE4
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 May 2024 11:35:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7CAC1C2025F
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 May 2024 08:55:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2EA82818C9
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 May 2024 09:35:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE8D97E776;
-	Wed, 22 May 2024 08:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4E7E8120C;
+	Wed, 22 May 2024 09:35:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DWZepHJJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56BD346522;
-	Wed, 22 May 2024 08:55:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AED280C1C;
+	Wed, 22 May 2024 09:35:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716368141; cv=none; b=sPTHUXgbKGlxe/7qpLLpjnkHu4A0R3mmLZFxgOyv9DF/bODEeGg5gfirSsCcINeSClKvFkHXeeNF2ETLUfuSMrSZwC6N3cA+pIfRre8SKxTb6lHVIQDnLzMoUNb3xc0C3bYbATyWxzYFWn2fhDe4eYgdQ4xYMROwEoerr5e85EA=
+	t=1716370512; cv=none; b=tnJd+ge07i7QYDkEXJDcWA0b3F1LeZVoUJrhuNc5KJ76UT230ENYxd7uiyqWCkhNDKh/wv/SN/zTCPQGudT7b2eWuWsIM5oQNfMh9Ml2OKZDlXiOYF2AgNdFxBNwAXfhgueCuGIr5/cYN6obyIWwptJKXSEv4yWW9tkI5qqMLNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716368141; c=relaxed/simple;
-	bh=iWxRNOoqlA4B9l8RxZ8dXMccrb9P5UxJI0CIiL+rYoE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HoKE6os62GOfKhUbtkMvhW+orbf4/kVCkEfIAUmanFDBhcR2dRVrg1yyve6jRkALUltcAhIYrN3JpGkVAwVq4LvsR+OXVb7pzzgsTy4WvZLcgRKwbcof938EOnOanDJWpb/XwGSmCZm4ZMflz8iLktcN5ya6OD9qu1ztpEtAPIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-56e1f3462caso10366996a12.3;
-        Wed, 22 May 2024 01:55:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716368139; x=1716972939;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iWxRNOoqlA4B9l8RxZ8dXMccrb9P5UxJI0CIiL+rYoE=;
-        b=GvI+bWrtnqbaXu3gwztZNpK6gCwcrmaLIEMlUYuYNG1bQGy1IOvNZnV9hQl5j4I3Sr
-         4WY7R1dTtLZDHcGwXJT8l2j8ajuAVPR77FM6FczI8aZpNVWOk5nC3szG647BxJo2DW6K
-         lPngm0guC0ZWMtmThEEsjIV82X4tt0HIOkRUwwJEHEmZG0ai724plhwOJcQiQjFoJ3PF
-         cBbIxDjt8mtru8Puyn3b2oDQTqykw2WVQu4eFoNP09H3kH20FPp+0pdvYyRdJpNHutR6
-         8xKkvCw5SRlCx8MvXg39ih4+mKOPyorYDTDS4n18PwlgcM+vNw9l4IgV9yR1EoKuinUA
-         NY1A==
-X-Forwarded-Encrypted: i=1; AJvYcCWwdT6HpYjsfBCe+SlXCEYvANNDdbOZeSHNOvT4FKAeoZR7D2QN8d0r58IKaga5QNbFFx1uNAeTsVzbSqyT3vHlX3niHdCl0+AImGxUKZROK8HBShFwVthF0kYOnGJPsvzwAWm6JKtgJGOdAGw=
-X-Gm-Message-State: AOJu0YwDZHDU+/AI8Vtq5eQQ49dlJMUNKSLeP+GXhfgszT+y3JjA3FYA
-	jyoA4QX2RXxrM+AkqKL4NJFYNtFz98ZH6KSNak1MBqMZnY1ez7KT
-X-Google-Smtp-Source: AGHT+IGxiQ6bn8qgjERKxdFhyBYHp7N7U2YloEfTv+RcPaRDM8k4WLdgo4je9Mx8sJk96xj9bI3A1w==
-X-Received: by 2002:a17:906:16cc:b0:a5a:15b6:25ab with SMTP id a640c23a62f3a-a6228160d30mr75838166b.61.1716368138553;
-        Wed, 22 May 2024 01:55:38 -0700 (PDT)
-Received: from gmail.com (fwdproxy-lla-007.fbsv.net. [2a03:2880:30ff:7::face:b00c])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a17922159sm1756296666b.97.2024.05.22.01.55.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 May 2024 01:55:38 -0700 (PDT)
-Date: Wed, 22 May 2024 01:55:36 -0700
-From: Breno Leitao <leitao@debian.org>
-To: michael.nemanov@ti.com
-Cc: Kalle Valo <kvalo@kernel.org>, Johannes Berg <johannes.berg@intel.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Kees Cook <keescook@chromium.org>, linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Sabeeh Khan <sabeeh-khan@ti.com>
-Subject: Re: [PATCH 09/17] Add rx.c, rx.h
-Message-ID: <Zk2zCEhs9dDmOoMt@gmail.com>
-References: <20240521171841.884576-1-michael.nemanov@ti.com>
- <20240521171841.884576-10-michael.nemanov@ti.com>
+	s=arc-20240116; t=1716370512; c=relaxed/simple;
+	bh=eLe73X66lUM8ibMxNC3oHU1OPlkpVzsDexRH8SsFIsQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Vz1XRtL7/exrUJKZHzEUxr7I0U4nbGyThIlirVih1m4+Yx+kRTo8TZ9xn+gbvgqhewHcpbcypvaDGaOE8vJv30GyWOlFQakU6URHT4ueyvb0/pI4DePVDroqlTWdXvd4dxJh7j2d9hO0qc5ZAPa6Fb4gFKJOGFXokugSlcC7psY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DWZepHJJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA1A8C32789;
+	Wed, 22 May 2024 09:35:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716370512;
+	bh=eLe73X66lUM8ibMxNC3oHU1OPlkpVzsDexRH8SsFIsQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=DWZepHJJcfuOaIFJ7tQ8mJAwe61k4RxAQxTXxOEu9FOJ/o8WeAo6ZgZ4mt+zX75jR
+	 tU/NiWDY4ZbpIqj8rqNengPVMSjo5S428ZNGXyk8nn67atgcShHnjyXA7MKl3WrRlR
+	 Gd0bfUzUy5gkarILz5Qm5Jo/viUygcbADygkzyzbQO4YOj2rQ81UvQogS/hQx5CckI
+	 oovcqrtWIX3nyYU7Z7qS5wm47KtXToCCKsmFwvPsTk7u+bp0loYFspRA4QUOrfnBGi
+	 SsSO+/lE+gxXIOF+jc5N6WWbVttMzNawsP+t6ZocWNrujuPKHwQ0XKQiEZu4UIgTnl
+	 mM++DXfRnTCGA==
+Message-ID: <1686c1e6-94c6-45c0-adc5-c05d49614d30@kernel.org>
+Date: Wed, 22 May 2024 11:35:06 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240521171841.884576-10-michael.nemanov@ti.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 17/17] Add ti,cc33xx.yaml
+To: michael.nemanov@ti.com, Kalle Valo <kvalo@kernel.org>,
+ Johannes Berg <johannes.berg@intel.com>, Breno Leitao <leitao@debian.org>,
+ Justin Stitt <justinstitt@google.com>, Kees Cook <keescook@chromium.org>,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Sabeeh Khan <sabeeh-khan@ti.com>
+References: <20240521171841.884576-1-michael.nemanov@ti.com>
+ <20240521171841.884576-18-michael.nemanov@ti.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240521171841.884576-18-michael.nemanov@ti.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello Michael,
+On 21/05/2024 19:18, michael.nemanov@ti.com wrote:
+> From: Michael Nemanov <michael.nemanov@ti.com>
 
-On Tue, May 21, 2024 at 08:18:33PM +0300, michael.nemanov@ti.com wrote:
-> diff --git a/drivers/net/wireless/ti/cc33xx/rx.c b/drivers/net/wireless/ti/cc33xx/rx.c
-> new file mode 100644
-> index 000000000000..038b356f50a2
-> --- /dev/null
-> +++ b/drivers/net/wireless/ti/cc33xx/rx.c
+Please use subject prefixes matching the subsystem. You can get them for
+example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
+your patch is touching. For bindings, the preferred subjects are
+explained here:
+https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html#i-for-patch-submitters
 
-> +
-> +int cc33xx_rx_filter_clear_all(struct cc33xx *cc) {}
+Missing commit msg.
 
-You probably want to return an integer in this function here.
+Please use scripts/get_maintainers.pl to get a list of necessary people
+and lists to CC. It might happen, that command when run on an older
+kernel, gives you outdated entries. Therefore please be sure you base
+your patches on recent Linux kernel.
+
+Tools like b4 or scripts/get_maintainer.pl provide you proper list of
+people, so fix your workflow. Tools might also fail if you work on some
+ancient tree (don't, instead use mainline), work on fork of kernel
+(don't, instead use mainline) or you ignore some maintainers (really
+don't). Just use b4 and everything should be fine, although remember
+about `b4 prep --auto-to-cc` if you added new patches to the patchset.
+
+You missed at least devicetree list (maybe more), so this won't be
+tested by automated tooling. Performing review on untested code might be
+a waste of time, thus I will skip this patch entirely till you follow
+the process allowing the patch to be tested.
+
+Please kindly resend and include all necessary To/Cc entries.
+
+Best regards,
+Krzysztof
+
 
