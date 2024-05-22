@@ -1,34 +1,34 @@
-Return-Path: <linux-wireless+bounces-7959-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7960-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73C428CC378
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 May 2024 16:46:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2989E8CC395
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 May 2024 16:55:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8624B20C66
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 May 2024 14:46:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05EF1B20B86
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 May 2024 14:55:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33E4C7489;
-	Wed, 22 May 2024 14:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E124C1C683;
+	Wed, 22 May 2024 14:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="ro1BedV2"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="noWSaB/d"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EE286AD7
-	for <linux-wireless@vger.kernel.org>; Wed, 22 May 2024 14:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F71D18645
+	for <linux-wireless@vger.kernel.org>; Wed, 22 May 2024 14:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716389177; cv=none; b=sd13uskpLluwlUsVe8dFkoKUkIUTsW7CmVCboDqUEs/4qdDKyxJ63lOKPfKpps4bRdYuAt7qUkKo2oa+kBVdHTCQb4+1rtGrfK/1nPnyWCJFQiDtpOPZ1EIvkWrqCwZVtYbrQN/iXNDc1wrC/B4OZ9PajTU11qjpnGocPwy2ooE=
+	t=1716389726; cv=none; b=sIM/FMNR53KJZPBVdBBk7ZZu1APqM4athwXYaQSsCGul5h7TqqXb78kdgGvBws+y/dxJUnE/gTEKKFaKlfbvFBMODidIeoTHNzJL0OiHdSpwlesd3j+RTh03BxkDCYka24UNxtaNGbHenamyUJ8JBMinuNJfJvfIRFmjzXFtNKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716389177; c=relaxed/simple;
-	bh=f85SUoCWHlM1KNi3RKOIvVtFifmL0bDyST3koHENUIc=;
+	s=arc-20240116; t=1716389726; c=relaxed/simple;
+	bh=Qzt6XHpb5ReAf52w5o2e8pFsV+m/C/aM4EH0eIDFo90=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YX/oj6ve1o+toeym1zpEF0eRIXRfMC28HtB1W0BPkjHvu7MPsoGe9+7t0CIC6nyR9VJ9Pg2b/oDZJyb0WAN6xiWCH9mQGstuIbC1XgqzhdxmxTsSXcYlLNWWyLf1rRuf9pSMOPtM5FwS3zvIM0v+UkPpZr8a2p0mZpvJIuoqhVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=ro1BedV2; arc=none smtp.client-ip=46.4.11.11
+	 In-Reply-To:Content-Type; b=lktm9dflPBTOyHwa9KtUGPy+4+YOi6gMTm/ArqnyQeG4Zukb4HPpZxyQ6X1N58E0ipmxZhjGuFd1tIc+J+xxTCKLDN+BntMVDGhEeFmS/qoR/uikBwCf4/T1Cil63C/pLEpkeT42vdARIwxp9iE4kJ4aLyymFIRPkWz+bg+JNow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=noWSaB/d; arc=none smtp.client-ip=46.4.11.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
@@ -37,17 +37,17 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=BhsvpP0eFwT3IK9fQEu8frMoKdfKKpRCgz7yWGrh/us=; b=ro1BedV29ayGtprCpmQ1xW94iF
-	7Zh7eQrlXR9QeCDShSENyghf4sVsK6iiNEyLTWkZffyiimFEcDYgl5vf/QML6nZdXRv2aLcjQr3NM
-	RzVR40zhiS3keb3fQ9Cjs5kE7IFugc67AUXHXl4CRXqq7IJypPVCbmZLWrqSQ4HTNMhw=;
+	bh=QlQYNTVOtmn9v/JjoZiyonEKrkd+v5yLR6uwFRs9G7s=; b=noWSaB/dcT2uT3SCz5Za3/aQQO
+	ypc4dgHsQufzLC1TiSBlt2XluZLSRSMnurnvi1Uwjq4vhNf6zzlHZXo+1UUMHT4EElZOplbseP0JA
+	qHescuVYQg2v3vz7J6GV29XBgEgRMbTmcohKTBcEw0UGpSZkmLgTZ3nmdeVtWlVdKFiA=;
 Received: from p4ff13644.dip0.t-ipconnect.de ([79.241.54.68] helo=nf.local)
 	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.96)
 	(envelope-from <nbd@nbd.name>)
-	id 1s9nEK-003aRb-05;
-	Wed, 22 May 2024 16:46:12 +0200
-Message-ID: <8c279839-34da-4a3e-a807-64050d0af6ae@nbd.name>
-Date: Wed, 22 May 2024 16:46:11 +0200
+	id 1s9nN7-003abS-1F;
+	Wed, 22 May 2024 16:55:17 +0200
+Message-ID: <0dcc9afc-98ed-4f58-a368-79a5242a5bec@nbd.name>
+Date: Wed, 22 May 2024 16:55:16 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -55,14 +55,14 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 1/2] cfg80211: add support for advertising multiple radios
- belonging to a wiphy
-To: Ben Greear <greearb@candelatech.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <20240522123005.41026-1-nbd@nbd.name>
- <4f0d56b4-3911-21fb-1460-7f7ed1301cd3@candelatech.com>
-Content-Language: en-US
+Subject: Re: [PATCH 00/13] wifi: Add multi physical hardware iface combination
+ support
+To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+ ath12k@lists.infradead.org, johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org
+References: <20240328072916.1164195-1-quic_periyasa@quicinc.com>
 From: Felix Fietkau <nbd@nbd.name>
+Content-Language: en-US
 Autocrypt: addr=nbd@nbd.name; keydata=
  xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
  ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
@@ -86,176 +86,49 @@ Autocrypt: addr=nbd@nbd.name; keydata=
  TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
  GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
  cL98efvrjdstUfTCP2pfetyN
-In-Reply-To: <4f0d56b4-3911-21fb-1460-7f7ed1301cd3@candelatech.com>
+In-Reply-To: <20240328072916.1164195-1-quic_periyasa@quicinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 22.05.24 16:23, Ben Greear wrote:
-> On 5/22/24 05:30, Felix Fietkau wrote:
->> The prerequisite for MLO support in cfg80211/mac80211 is that all the links
->> participating in MLO must be from the same wiphy/ieee80211_hw. To meet this
->> expectation, some drivers may need to group multiple discrete hardware each
->> acting as a link in MLO under single wiphy.
->> With this change, the bands and supported frequencies of each individual
->> radio are reported to user space. This allows user space to figure out the
->> limitations of what combination of channels can be used concurrently.
->> 
->> Signed-off-by: Felix Fietkau <nbd@nbd.name>
->> ---
->>   include/net/cfg80211.h       | 34 ++++++++++++++++
->>   include/uapi/linux/nl80211.h | 48 +++++++++++++++++++++++
->>   net/wireless/nl80211.c       | 75 ++++++++++++++++++++++++++++++++++++
->>   3 files changed, 157 insertions(+)
->> 
->> diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
->> index f2ca495ac9f8..58d8375ffa11 100644
->> --- a/include/net/cfg80211.h
->> +++ b/include/net/cfg80211.h
->> @@ -5407,6 +5407,34 @@ struct wiphy_iftype_akm_suites {
->>   	int n_akm_suites;
->>   };
->>   
->> +/**
->> + * struct wiphy_radio_freq_range - wiphy frequency range
->> + * @start_freq:  start range edge frequency (kHz)
->> + * @end_freq:    end range edge frequency (kHz)
->> + */
->> +struct wiphy_radio_freq_range {
->> +	u32 start_freq;
->> +	u32 end_freq;
->> +};
->> +
->> +
->> +/**
->> + * struct wiphy_radio - This structure describes a physical radio belonging
->> + * to a wiphy. It is used to describe concurrent-channel capabilities of the
->> + * phy. Only one channel can be active on the radio described by struct
->> + * wiphy_radio.
->> + *
->> + * @band_mask: Mask of enum nl80211_band describing the bands that the radio
->> + *	can operate on.
->> + * @num_freq_range: number of elements in @freq_range
->> + * @freq_range: frequency range that the radio can operate on (optional)
->> + */
->> +struct wiphy_radio {
->> +	u16 band_mask;
->> +	u16 n_freq_range;
->> +	const struct wiphy_radio_freq_range *freq_range;
->> +};
+On 28.03.24 08:29, Karthikeyan Periyasamy wrote:
+> The prerequisite for MLO support in cfg80211/mac80211 is that all the links
+> participating in MLO must be from the same wiphy/ieee80211_hw. To meet this
+> expectation, some drivers may need to group multiple discrete hardware each
+> acting as a link in MLO under single wiphy. So it required to have some
+> sort of mapping while describing interface combination capabilities for
+> each of the underlying physical hardware. This patch set tries to add an
+> infrastructure to advertise underlying hw specific capabilities like
+> channel and interface combinations.
 > 
-> Do you think we might should add the radio_idx in here so that we don't
-> depend on position in the array in case we need to add/remove radios
-> for some reason?
+> Some of the todos
 > 
-> Or radio MAC addr or some other more persistent way to detect exactly
-> what this is in user-space?
-
-Why would radios be added/removed at run time?
-
->>   #define CFG80211_HW_TIMESTAMP_ALL_PEERS	0xffff
->>   
->>   /**
->> @@ -5625,6 +5653,9 @@ struct wiphy_iftype_akm_suites {
->>    *	A value of %CFG80211_HW_TIMESTAMP_ALL_PEERS indicates the driver
->>    *	supports enabling HW timestamping for all peers (i.e. no need to
->>    *	specify a mac address).
->> + *
->> + * @radio: radios belonging to this wiphy
->> + * @n_radio: number of radios
->>    */
->>   struct wiphy {
->>   	struct mutex mtx;
->> @@ -5775,6 +5806,9 @@ struct wiphy {
->>   
->>   	u16 hw_timestamp_max_peers;
->>   
->> +	const struct wiphy_radio *radio;
->> +	int n_radio;
->> +
->>   	char priv[] __aligned(NETDEV_ALIGN);
->>   };
->>   
->> diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
->> index f917bc6c9b6f..dfb01d673094 100644
->> --- a/include/uapi/linux/nl80211.h
->> +++ b/include/uapi/linux/nl80211.h
->> @@ -3401,6 +3401,8 @@ enum nl80211_attrs {
->>   
->>   	NL80211_ATTR_ASSOC_SPP_AMSDU,
->>   
->> +	NL80211_ATTR_RADIOS,
->> +
->>   	/* add attributes here, update the policy in nl80211.c */
->>   
->>   	__NL80211_ATTR_AFTER_LAST,
->> @@ -7999,4 +8001,50 @@ enum nl80211_ap_settings_flags {
->>   	NL80211_AP_SETTINGS_SA_QUERY_OFFLOAD_SUPPORT	= 1 << 1,
->>   };
->>   
->> +/**
->> + * enum nl80211_wiphy_radio_attrs - wiphy radio attributes
->> + *
->> + * @__NL80211_WIPHY_RADIO_ATTR_INVALID: Invalid
->> + *
->> + * @NL80211_WIPHY_RADIO_ATTR_BAND_MASK: Bitmask of bands supported by this
->> + *	radio.
->> + *
->> + * @NL80211_WIPHY_RADIO_ATTR_FREQ_RANGES: Nested array of frequency ranges
->> + *	supported by this radio.
->> + *
->> + * @__NL80211_WIPHY_RADIO_ATTR_LAST: Internal
->> + * @NL80211_WIPHY_RADIO_ATTR_MAX: Highest attribute
->> + */
->> +enum nl80211_wiphy_radio_attrs {
->> +	__NL80211_WIPHY_RADIO_ATTR_INVALID,
->> +
->> +	NL80211_WIPHY_RADIO_ATTR_BAND_MASK,
->> +	NL80211_WIPHY_RADIO_ATTR_FREQ_RANGES,
->> +
->> +	/* keep last */
->> +	__NL80211_WIPHY_RADIO_ATTR_LAST,
->> +	NL80211_WIPHY_RADIO_ATTR_MAX = __NL80211_WIPHY_RADIO_ATTR_LAST - 1,
->> +};
->> +
->> +/**
->> + * enum nl80211_wiphy_radio_freq_range - wiphy radio frequency range
->> + *
->> + * @__NL80211_WIPHY_RADIO_FREQ_ATTR_INVALID: Invalid
->> + *
->> + * @NL80211_WIPHY_RADIO_FREQ_ATTR_START: Frequency range start
->> + * @NL80211_WIPHY_RADIO_FREQ_ATTR_END: Frequency range end
->> + *
->> + * @__NL80211_WIPHY_RADIO_FREQ_ATTR_LAST: Internal
->> + * @NL80211_WIPHY_RADIO_FREQ_ATTR_MAX: Highest attribute
->> + */
->> +enum nl80211_wiphy_radio_freq_range {
->> +	__NL80211_WIPHY_RADIO_FREQ_ATTR_INVALID,
->> +
->> +	NL80211_WIPHY_RADIO_FREQ_ATTR_START,
->> +	NL80211_WIPHY_RADIO_FREQ_ATTR_END,
->> +
->> +	__NL80211_WIPHY_RADIO_FREQ_ATTR_LAST,
->> +	NL80211_WIPHY_RADIO_FREQ_ATTR_MAX = __NL80211_WIPHY_RADIO_FREQ_ATTR_LAST - 1,
->> +};
->> +
->>   #endif /* __LINUX_NL80211_H */
->> diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
->> index 3c0bca4238d3..c07abdf104ec 100644
->> --- a/net/wireless/nl80211.c
->> +++ b/net/wireless/nl80211.c
->> @@ -2392,6 +2392,78 @@ static int nl80211_put_mbssid_support(struct wiphy *wiphy, struct sk_buff *msg)
->>   	return -ENOBUFS;
->>   }
->>   
->> +static int nl80211_put_radio(struct wiphy *wiphy, struct sk_buff *msg, int idx)
->> +{
->> +	const struct wiphy_radio *r = &wiphy->radio[idx];
+>   - More than one concurrent monitor mode support each operating on
+>     different channels under one ieee80211_hw
+>   - Mechanism for each underlying radio specific configurations like
+>     txpower, channel, etc.
 > 
-> Maybe allow radio[] array to be sparse (ie, idx 0 is there, idx 2 is there, idx 1 is NULL
-> because user wants to remove that radio from MLO consideration for whatever reason?
+> RFC series Link: https://lore.kernel.org/linux-wireless/20220920100518.19705-1-quic_vthiagar@quicinc.com/
 
-Why should the user want to do this?
+FYI, I made a replacement for the wiphy radio hardware reporting parts 
+of this series with a different design:
+https://patchwork.kernel.org/project/linux-wireless/list/?series=855042
+
+The key differences are:
+- Only band bitmask and optionally frequency ranges are provided, so no 
+per-radio channel list
+This is easier to track and vastly reduces the amount of data sent to 
+user space in the wiphy dump
+
+- No integration with ifcomb. I don't really see the need for that one 
+at this point. It can easily be added later if it's actually needed.
+
+- Validation happens in mac80211 instead of cfg80211, because that 
+removes a lot of complexity
+The radio id is tracked per chanctx and only one chanctx per radio is 
+allowed.
+I think if we ever get a non-mac80211 driver that needs multi-radio 
+support, it should just do its own validation, since that's likely going 
+to be less complex than having cfg80211 do it in the first place.
 
 - Felix
-
 
