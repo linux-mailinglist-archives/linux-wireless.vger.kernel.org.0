@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-7942-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7943-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26EA38CBDEE
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 May 2024 11:39:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D58F8CBE72
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 May 2024 11:46:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4271CB21D17
-	for <lists+linux-wireless@lfdr.de>; Wed, 22 May 2024 09:39:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5B24281BA8
+	for <lists+linux-wireless@lfdr.de>; Wed, 22 May 2024 09:46:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3081080607;
-	Wed, 22 May 2024 09:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5406F7F460;
+	Wed, 22 May 2024 09:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L89waZat"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kQ8KSH1v"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C8454720;
-	Wed, 22 May 2024 09:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADC419470;
+	Wed, 22 May 2024 09:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716370737; cv=none; b=dtBa9Li4oOzxwlEXcY6YE4yXjZ/37UnZtZDth7iDf8Z6mm9ZW7xPYlwyFN9r2Rz5U4NIElQIK4K5DOiFkQm6RpDjnQOOdsKKdSwjN+k5k48N2Om3RXPkbxIfxAEjMXksTqabtXfmlHvXJGpvZcKBQuQ0hdCrGu+1D+QASvbuwKQ=
+	t=1716371187; cv=none; b=VttJR0mk4cQNH1KV/XCW8mQwu47kLgCnYAiDvjTNTs58mudqvMMBr1beX7AswNFXPSfZ8N4XnPrBchYX4/TH7G8TlKUn1oXI3MGBgPyW7LWoNk9j4yqTbhMSU56TUnlmYju4fyGXkDVgnQi4UUtOrqclm8AsX8Tcx2G65TXWJHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716370737; c=relaxed/simple;
-	bh=Rphnt9V9HbqTZ6aTAZ5TcMiGGbis4kbzonmzn9RNRhg=;
+	s=arc-20240116; t=1716371187; c=relaxed/simple;
+	bh=QJumkkZR6qagpwpY/H8WHNdfEgsCNhV3ncAsS/9+02Q=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TS4sMOVrs/zNslZuCakIX9wuUYWpD0oZ7DljEObu+HR5nxwjGbK3wniHeSY91HRaVoO/X9oiteUKgTqhrs2UafuW5/nQi+flqsQZadGZMesQ+FV/nV+zMcaxvdmSo4nWOJqNTa33eA1eViu1TpvrxW1F2GSwCKA+cbBnCY3dxIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L89waZat; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6654C2BD11;
-	Wed, 22 May 2024 09:38:53 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=sZDDHOowJVpR44ivTPzFzXxZRtHxtpKiP1tuy/hTd9WXf9JT0rga47iqrDcA6EOEmZ3cAk+rkPSQ9K6sciNHHLjbOVNdnP79U9pmLOrboQWG6YsNKuA1ytEDc39d8490Jxk0SC48TSI9J4J99Zi0Jz96k1980QHV3Nrs1v5+ZyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kQ8KSH1v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB18C2BD11;
+	Wed, 22 May 2024 09:46:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716370736;
-	bh=Rphnt9V9HbqTZ6aTAZ5TcMiGGbis4kbzonmzn9RNRhg=;
+	s=k20201202; t=1716371186;
+	bh=QJumkkZR6qagpwpY/H8WHNdfEgsCNhV3ncAsS/9+02Q=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=L89waZatrRqdyUMYoz2Af9Xkuh+D53JlDGP9YyVtIkY2//rDtKOGLYG9vt3I6uV7c
-	 IbV72fxSMVGATI3pNkahc2MilcZeSKzXpy9hPv0rpGO/qctVITyMfFQgR+06jTJmyu
-	 xjP+xeQ09gKIIT5E3mwj8DAwfeMiriGnZ/YTWJzYvrzr62e0XjFg5KeHj6+H+5KZI0
-	 vuPLjX3/FZ1lo4hYwloyPpTVCcH6voOxNOw5cdc1VdWqlKt4lIQ5j5dBtT/AE0Iohy
-	 LSwycvZemBY3LSmW0UcP4NAx41fJj7TGmjPJ1nfdlCM3wCb/jVkWsr8N/hb/sLbcfJ
-	 JiCgA8BQ1MMLw==
-Message-ID: <383554c5-aef5-4c3f-bf67-dfdc83324897@kernel.org>
-Date: Wed, 22 May 2024 11:38:51 +0200
+	b=kQ8KSH1vGkcgrSK5f25Wb1fxM/+dk3Q5TK7GuUIwfsjKpbgDaSDCHEcL1I4cmODw0
+	 SIbw4QZv2fqFd6L+h62OqAzz4fvt51MFjHs83FDmBSGZl9dSP3Bv6q3f520qh7eATv
+	 ZAK94DvjP09UdWxCXZQIqolL1GnGo3T2vnzdUvHULF+3s9TvYNQzXbx4Qu0aiRisw5
+	 ziiH20rKUP8Z4PvyHROHg5kt6Pc7nMpQRJziicxoQuX2EzXuGWvXWcoX+QpQzH6owz
+	 WjdptlNp3ELfcXQS59MXvJClqB8vL3fErg3jIBGAyftrMaahHyYhdbciVfKtvoRmlo
+	 TjwZ97qqJgndA==
+Message-ID: <cfe33bf1-9df3-4d02-b4ed-e29a430b106d@kernel.org>
+Date: Wed, 22 May 2024 11:46:21 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,14 +50,14 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/17] Add cc33xx.h, cc33xx_i.h
+Subject: Re: [PATCH 08/17] Add main.c
 To: michael.nemanov@ti.com, Kalle Valo <kvalo@kernel.org>,
  Johannes Berg <johannes.berg@intel.com>, Breno Leitao <leitao@debian.org>,
  Justin Stitt <justinstitt@google.com>, Kees Cook <keescook@chromium.org>,
  linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc: Sabeeh Khan <sabeeh-khan@ti.com>
 References: <20240521171841.884576-1-michael.nemanov@ti.com>
- <20240521171841.884576-2-michael.nemanov@ti.com>
+ <20240521171841.884576-9-michael.nemanov@ti.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -103,359 +103,311 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240521171841.884576-2-michael.nemanov@ti.com>
+In-Reply-To: <20240521171841.884576-9-michael.nemanov@ti.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 21/05/2024 19:18, michael.nemanov@ti.com wrote:
 > From: Michael Nemanov <Michael.Nemanov@ti.com>
 > 
-> These are header files with definitions common to the entire driver.
-
-Please use subject prefixes matching the subsystem. You can get them for
-example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
-your patch is touching. For bindings, the preferred subjects are
-explained here:
-https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html#i-for-patch-submitters
-
-
+> General code and structures.
+> Notably:
 > 
-> Signed-off-by: Michael Nemanov <michael.nemanov@ti.com>
-> ---
->  drivers/net/wireless/ti/cc33xx/cc33xx.h   | 481 ++++++++++++++++++++++
->  drivers/net/wireless/ti/cc33xx/cc33xx_i.h | 459 +++++++++++++++++++++
->  2 files changed, 940 insertions(+)
->  create mode 100644 drivers/net/wireless/ti/cc33xx/cc33xx.h
->  create mode 100644 drivers/net/wireless/ti/cc33xx/cc33xx_i.h
-> 
-> diff --git a/drivers/net/wireless/ti/cc33xx/cc33xx.h b/drivers/net/wireless/ti/cc33xx/cc33xx.h
-> new file mode 100644
-> index 000000000000..3a2e56af4da7
-> --- /dev/null
-> +++ b/drivers/net/wireless/ti/cc33xx/cc33xx.h
-> @@ -0,0 +1,481 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only
-> + *
-> + * Copyright (C) 2022-2024 Texas Instruments Incorporated - https://www.ti.com/
-> + */
+
+
+...
+
+> +}
 > +
-> +#ifndef __CC33XX_H__
-> +#define __CC33XX_H__
+> +static int read_version_info(struct cc33xx *cc)
+> +{
+> +	int ret;
 > +
-> +#include "cc33xx_i.h"
-> +#include "rx.h"
+> +	cc33xx_info("Wireless driver version %s", DRV_VERSION);
+
+Drop
+
 > +
-> +/* Wireless Driver Version */
-> +#define DRV_VERSION "1.7.0.108"
+> +	ret = cc33xx_acx_init_get_fw_versions(cc);
+> +	if (ret < 0) {
+> +		cc33xx_error("Get FW version FAILED!");
+> +		return ret;
+> +	}
 > +
-> +/* The maximum number of Tx descriptors in all chip families */
-> +#define CC33XX_MAX_TX_DESCRIPTORS 32
+> +	cc33xx_info("Wireless firmware version %u.%u.%u.%u",
+> +		    cc->all_versions.fw_ver->major_version,
+> +		    cc->all_versions.fw_ver->minor_version,
+> +		    cc->all_versions.fw_ver->api_version,
+> +		    cc->all_versions.fw_ver->build_version);
 > +
-> +#define CC33XX_CMD_MAX_SIZE          (896)
-> +#define CC33XX_INI_PARAM_COMMAND_SIZE (16UL)
-> +#define CC33XX_INI_CMD_MAX_SIZE      (CC33X_CONF_SIZE + CC33XX_INI_PARAM_COMMAND_SIZE + sizeof(int))
+> +	cc33xx_info("Wireless PHY version %u.%u.%u.%u.%u.%u",
+> +		    cc->all_versions.fw_ver->phy_version[5],
+> +		    cc->all_versions.fw_ver->phy_version[4],
+> +		    cc->all_versions.fw_ver->phy_version[3],
+> +		    cc->all_versions.fw_ver->phy_version[2],
+> +		    cc->all_versions.fw_ver->phy_version[1],
+> +		    cc->all_versions.fw_ver->phy_version[0]);
 > +
-> +#define CC33XX_CMD_BUFFER_SIZE ((CC33XX_INI_CMD_MAX_SIZE > CC33XX_CMD_MAX_SIZE)\
-> +				? CC33XX_INI_CMD_MAX_SIZE : CC33XX_CMD_MAX_SIZE)
+> +	cc->all_versions.driver_ver = DRV_VERSION;
+
+Drop
+
 > +
-> +#define CC33XX_NUM_MAC_ADDRESSES 3
+> +	return 0;
+> +}
 > +
-> +#define CC33XX_AGGR_BUFFER_SIZE		(8 * PAGE_SIZE)
+> +static void cc33xx_nvs_cb(const struct firmware *fw, void *context)
+> +{
+> +	struct cc33xx *cc = context;
+> +	struct platform_device *pdev = cc->pdev;
+> +	struct cc33xx_platdev_data *pdev_data = dev_get_platdata(&pdev->dev);
 > +
-> +#define CC33XX_NUM_TX_DESCRIPTORS 32
-> +#define CC33XX_NUM_RX_DESCRIPTORS 32
+> +	int ret;
 > +
-> +#define CC33XX_RX_BA_MAX_SESSIONS 13
+> +	if (fw) {
+> +		cc->nvs_mac_addr = kmemdup(fw->data, fw->size, GFP_KERNEL);
+> +		if (!cc->nvs_mac_addr) {
+> +			cc33xx_error("Could not allocate nvs data");
+> +			goto out;
+> +		}
+> +		cc->nvs_mac_addr_len = fw->size;
+> +	} else if (pdev_data->family->nvs_name) {
+> +		cc33xx_debug(DEBUG_BOOT, "Could not get nvs file %s",
+> +			     pdev_data->family->nvs_name);
+> +		cc->nvs_mac_addr = NULL;
+> +		cc->nvs_mac_addr_len = 0;
+> +	} else {
+> +		cc->nvs_mac_addr = NULL;
+> +		cc->nvs_mac_addr_len = 0;
+> +	}
 > +
-> +#define CC33XX_MAX_AP_STATIONS 16
+> +	ret = cc33xx_setup(cc);
+> +	if (ret < 0)
+> +		goto out_free_nvs;
 > +
-> +struct cc33xx_tx_hw_descr;
-> +struct cc33xx_rx_descriptor;
-> +struct partial_rx_frame;
-> +struct core_fw_status;
-> +struct core_status;
+> +	BUILD_BUG_ON(CC33XX_NUM_TX_DESCRIPTORS > CC33XX_MAX_TX_DESCRIPTORS);
 > +
-> +enum wl_rx_buf_align;
+> +	/* adjust some runtime configuration parameters */
+> +	cc33xx_adjust_conf(cc);
 > +
-> +struct driver_fw_versions {
-> +	const char *driver_ver;
-> +	struct cc33xx_acx_fw_versions *fw_ver;
-> +};
+> +	cc->if_ops = pdev_data->if_ops;
+> +	cc->if_ops->set_irq_handler(cc->dev, irq_wrapper);
 > +
-> +struct cc33xx_stats {
-> +	void *fw_stats;
-> +	unsigned long fw_stats_update;
-> +	unsigned int retry_count;
-> +	unsigned int excessive_retries;
-> +};
+> +	cc33xx_power_off(cc);
 > +
-> +struct cc33xx_ant_diversity {
-> +	u8 diversity_enable;
-> +	s8 rssi_threshold;
-> +	u8 default_antenna;
-> +	u8 padding;
-> +};
+> +	setup_wake_irq(cc);
 > +
-> +struct cc33xx {
-> +	bool initialized;
+> +	ret = cc33xx_init_fw(cc);
+> +	if (ret < 0) {
+> +		cc33xx_error("FW download failed");
+> +		cc33xx_power_off(cc);
+> +		goto out_irq;
+> +	}
+> +
+> +	ret = cc33xx_identify_chip(cc);
+> +	if (ret < 0)
+> +		goto out_irq;
+> +
+> +	ret = read_version_info(cc);
+> +	if (ret < 0)
+> +		goto out_irq;
+> +
+> +	ret = cc33xx_init_ieee80211(cc);
+> +	if (ret)
+> +		goto out_irq;
+> +
+> +	ret = cc33xx_register_hw(cc);
+> +	if (ret)
+> +		goto out_irq;
+> +
+> +	cc->initialized = true;
+> +	cc33xx_notice("loaded");
+
+?!?!?
+
+> +	goto out;
+> +
+> +out_irq:
+> +	if (cc->wakeirq >= 0)
+> +		dev_pm_clear_wake_irq(cc->dev);
+> +	device_init_wakeup(cc->dev, false);
+> +
+> +out_free_nvs:
+> +	kfree(cc->nvs_mac_addr);
+> +
+> +out:
+> +	release_firmware(fw);
+> +	complete_all(&cc->nvs_loading_complete);
+> +	cc33xx_debug(DEBUG_CC33xx, "%s complete", __func__);
+
+NAK, drop. This applies everywhere.
+
+
+> +}
+> +
+> +static int cc33xx_remove(struct platform_device *pdev)
+
+Why remove callback is before probe? Please follow standard driver
+convention. This goes immediately after probe.
+
+> +{
+> +	struct cc33xx_platdev_data *pdev_data = dev_get_platdata(&pdev->dev);
+> +	struct cc33xx *cc = platform_get_drvdata(pdev);
+> +
+> +	set_bit(CC33XX_FLAG_DRIVER_REMOVED, &cc->flags);
+
+?!?!
+
+Your code is seriously buggy if you depend on setting bit in remove
+callback.
+
+> +
+> +	cc->dev->driver->pm = NULL;
+> +
+> +	if (pdev_data->family && pdev_data->family->nvs_name)
+> +		wait_for_completion(&cc->nvs_loading_complete);
+> +
+> +	if (!cc->initialized)
+> +		goto out;
+> +
+> +	if (cc->wakeirq >= 0) {
+> +		dev_pm_clear_wake_irq(cc->dev);
+> +		cc->wakeirq = -ENODEV;
+> +	}
+> +
+> +	device_init_wakeup(cc->dev, false);
+> +	cc33xx_unregister_hw(cc);
+> +	cc33xx_turn_off(cc);
+> +
+> +out:
+> +	cc33xx_free_hw(cc);
+> +	return 0;
+> +}
+> +
+
+
+> +
+> +static int cc33xx_probe(struct platform_device *pdev)
+> +{
+> +	struct cc33xx *cc;
 > +	struct ieee80211_hw *hw;
-> +	bool mac80211_registered;
+> +	struct cc33xx_platdev_data *pdev_data = dev_get_platdata(&pdev->dev);
+> +	const char *nvs_name;
+> +	int ret;
 > +
-> +	struct device *dev;
-> +	struct platform_device *pdev;
-> +
-> +	struct cc33xx_if_operations *if_ops;
-> +
-> +	int wakeirq;
-> +
-> +	spinlock_t cc_lock; /* Protects critical sections */
+> +	cc33xx_debug(DEBUG_CC33xx, "Wireless Driver Version %s", DRV_VERSION);
 
-Which ones. Your comment is entirely useless, just to satisfy checkpatch.
+Drop
 
 > +
-> +	enum cc33xx_state state;
-> +	bool plt;
-> +	enum plt_mode plt_mode;
-> +	u8 plt_role_id;
-> +	u8 fem_manuf;
-> +	u8 last_vif_count;
-> +	struct mutex mutex; /* Protect all CC33xx operations */
+> +	if (!pdev_data) {
+> +		cc33xx_error("can't access platform data");
 
-?!? So double lock?
+Do not use your own print code. Use standard dev_() calls. This applies
+*everywhere*.
 
-> +	struct core_status *core_status;
-> +	u8 last_fw_rls_idx;
-> +	u8 command_result[CC33XX_CMD_MAX_SIZE];
-> +	u16 result_length;
-> +	struct partial_rx_frame partial_rx;
-> +
-> +	unsigned long flags;
-> +
-> +	void *nvs_mac_addr;
-> +	size_t nvs_mac_addr_len;
-> +	struct cc33xx_fw_download *fw_download;
-> +
-> +	struct mac_address addresses[CC33XX_NUM_MAC_ADDRESSES];
-> +
-> +	unsigned long links_map[BITS_TO_LONGS(CC33XX_MAX_LINKS)];
-> +	unsigned long roles_map[BITS_TO_LONGS(CC33XX_MAX_ROLES)];
-> +	unsigned long roc_map[BITS_TO_LONGS(CC33XX_MAX_ROLES)];
-> +	unsigned long rate_policies_map[BITS_TO_LONGS(CC33XX_MAX_RATE_POLICIES)];
-> +
-> +	u8 session_ids[CC33XX_MAX_LINKS];
-> +
-> +	struct list_head wlvif_list;
-> +
-> +	u8 sta_count;
-> +	u8 ap_count;
-> +
-> +	struct cc33xx_acx_mem_map *target_mem_map;
-> +
-> +	/* Accounting for allocated / available TX blocks on HW */
-> +
-> +	u32 tx_blocks_available;
-> +	u32 tx_allocated_blocks;
-> +
-> +	/* Accounting for allocated / available Tx packets in HW */
-> +
-> +	u32 tx_allocated_pkts[NUM_TX_QUEUES];
-> +
-> +	/* Time-offset between host and chipset clocks */
-> +
-> +	/* Frames scheduled for transmission, not handled yet */
-> +	int tx_queue_count[NUM_TX_QUEUES];
-> +	unsigned long queue_stop_reasons[NUM_TX_QUEUES * CC33XX_NUM_MAC_ADDRESSES];
-> +
-> +	/* Frames received, not handled yet by mac80211 */
-> +	struct sk_buff_head deferred_rx_queue;
-> +
-> +	/* Frames sent, not returned yet to mac80211 */
-> +	struct sk_buff_head deferred_tx_queue;
-> +
-> +	struct work_struct tx_work;
-> +	struct workqueue_struct *freezable_wq;
-> +
-> +	/*freezable wq for netstack_work*/
-> +	struct workqueue_struct *freezable_netstack_wq;
-> +
-> +	/* Pending TX frames */
-> +	unsigned long tx_frames_map[BITS_TO_LONGS(CC33XX_MAX_TX_DESCRIPTORS)];
-> +	struct sk_buff *tx_frames[CC33XX_MAX_TX_DESCRIPTORS];
-> +	int tx_frames_cnt;
-> +
-> +	/* FW Rx counter */
-> +	u32 rx_counter;
-> +
-> +	/* Intermediate buffer, used for packet aggregation */
-> +	u8 *aggr_buf;
-> +	u32 aggr_buf_size;
-> +	size_t max_transaction_len;
-> +
-> +	/* Reusable dummy packet template */
-> +	struct sk_buff *dummy_packet;
-> +
-> +	/* Network stack work  */
-> +	struct work_struct netstack_work;
-> +	/* FW log buffer */
-> +	u8 *fwlog;
-> +
-> +	/* Number of valid bytes in the FW log buffer */
-> +	ssize_t fwlog_size;
-> +
-> +	/* Hardware recovery work */
-> +	struct work_struct recovery_work;
-> +
-> +	struct work_struct irq_deferred_work;
-> +
-> +	/* Reg domain last configuration */
-> +	DECLARE_BITMAP(reg_ch_conf_last, 64);
-> +	/* Reg domain pending configuration */
-> +	DECLARE_BITMAP(reg_ch_conf_pending, 64);
-> +
-> +	/* Lock-less list for deferred event handling */
-> +	struct llist_head event_list;
-> +	/* The mbox event mask */
-> +	u32 event_mask;
-> +	/* events to unmask only when ap interface is up */
-> +	u32 ap_event_mask;
-> +
-> +	/* Are we currently scanning */
-> +	struct cc33xx_vif *scan_wlvif;
-> +	struct cc33xx_scan scan;
-> +	struct delayed_work scan_complete_work;
-> +
-> +	struct ieee80211_vif *roc_vif;
-> +	struct delayed_work roc_complete_work;
-> +
-> +	struct cc33xx_vif *sched_vif;
-> +
-> +	u8 mac80211_scan_stopped;
-> +
-> +	/* The current band */
-> +	enum nl80211_band band;
-> +
-> +	/* in dBm */
-> +	int power_level;
-> +
-> +	struct cc33xx_stats stats;
-> +
-> +	__le32 *buffer_32;
-> +
-> +	/* Current chipset configuration */
-> +	struct cc33xx_conf_file conf;
-> +
-> +	bool enable_11a;
-> +
-> +	/* bands supported by this instance of cc33xx */
-> +	struct ieee80211_supported_band bands[CC33XX_NUM_BANDS];
-> +
-> +	/* wowlan trigger was configured during suspend.
-> +	 * (currently, only "ANY" and "PATTERN" trigger is supported)
-> +	 */
-> +
-> +	bool keep_device_power;
-> +
-> +	/* AP-mode - links indexed by HLID. The global and broadcast links
-> +	 * are always active.
-> +	 */
-> +	struct cc33xx_link links[CC33XX_MAX_LINKS];
-> +
-> +	/* number of currently active links */
-> +	int active_link_count;
-> +
-> +	/* AP-mode - a bitmap of links currently in PS mode according to FW */
-> +	unsigned long ap_fw_ps_map;
-> +
-> +	/* AP-mode - a bitmap of links currently in PS mode in mac80211 */
-> +	unsigned long ap_ps_map;
-> +
-> +	/* Quirks of specific hardware revisions */
-> +	unsigned int quirks;
-> +
-> +	/* number of currently active RX BA sessions */
-> +	int ba_rx_session_count;
-> +
-> +	/* AP-mode - number of currently connected stations */
-> +	int active_sta_count;
-> +
-> +	/* last wlvif we transmitted from */
-> +	struct cc33xx_vif *last_wlvif;
-> +
-> +	/* work to fire when Tx is stuck */
-> +	struct delayed_work tx_watchdog_work;
-> +
-> +	/* HW HT (11n) capabilities */
-> +	struct ieee80211_sta_ht_cap ht_cap[CC33XX_NUM_BANDS];
-> +
-> +	/* the current dfs region */
-> +	enum nl80211_dfs_regions dfs_region;
-> +	bool radar_debug_mode;
-> +
-> +	/* RX Data filter rule state - enabled/disabled */
-> +	/* used in CONFIG PM AND W8 Code */
-> +	unsigned long rx_filter_enabled[BITS_TO_LONGS(CC33XX_MAX_RX_FILTERS)];
-> +
-> +	/* mutex for protecting the tx_flush function */
-> +	struct mutex flush_mutex;
-> +
-> +	/* sleep auth value currently configured to FW */
-> +	int sleep_auth;
-> +
-> +	/*ble_enable value - 1=enabled, 0=disabled. */
-> +	int ble_enable;
-> +
-> +	/* parameters for joining a TWT agreement */
-> +	int min_wake_duration_usec;
-> +	int min_wake_interval_mantissa;
-> +	int min_wake_interval_exponent;
-> +	int max_wake_interval_mantissa;
-> +	int max_wake_interval_exponent;
-> +
-> +	/* the number of allocated MAC addresses in this chip */
-> +	int num_mac_addr;
-> +
-> +	/* sta role index - if 0 - wlan0 primary station interface,
-> +	 * if 1 - wlan2 - secondary station interface
-> +	 */
-> +	u8 sta_role_idx;
-> +
-> +	u16 max_cmd_size;
-> +
-> +	struct completion nvs_loading_complete;
-> +	struct completion command_complete;
-> +
-> +	/* dynamic fw traces */
-> +	u32 dynamic_fw_traces;
-> +
-> +	/* buffer for sending commands to FW */
-> +	u8 cmd_buf[CC33XX_CMD_BUFFER_SIZE];
-> +
-> +	/* number of keys requiring extra spare mem-blocks */
-> +	int extra_spare_key_count;
+> +		return -EINVAL;
+> +	}
+> +
+> +	hw = cc33xx_alloc_hw(CC33XX_AGGR_BUFFER_SIZE);
+> +	if (IS_ERR(hw)) {
+> +		cc33xx_error("can't allocate hw");
 
-This entire struct is quite unmanageable...
+Heh? Since when do we print memory allocation failures? Since when
+memory allocation returns ERR ptr?
+
+
+> +		ret = PTR_ERR(hw);
+> +		goto out;
+> +	}
+> +	cc = hw->priv;
+> +	cc->dev = &pdev->dev;
+> +	cc->pdev = pdev;
+> +	platform_set_drvdata(pdev, cc);
+> +
+> +	if (pdev_data->family && pdev_data->family->nvs_name) {
+> +		nvs_name = pdev_data->family->nvs_name;
+> +		ret = request_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT,
+> +					      nvs_name, &pdev->dev, GFP_KERNEL,
+> +					      cc, cc33xx_nvs_cb);
+> +		if (ret < 0) {
+> +			cc33xx_error("request_firmware_nowait failed for %s: %d",
+> +				     nvs_name, ret);
+> +			complete_all(&cc->nvs_loading_complete);
+> +		}
+> +	} else {
+> +		cc33xx_nvs_cb(NULL, cc);
+> +		cc33xx_error("Invalid platform data entry");
+> +		ret = -EINVAL;
+> +	}
+> +
+> +	cc33xx_debug(DEBUG_CC33xx, "WLAN CC33xx platform device probe done");
+
+Drop, tracing/sysfs gices you this. Do not print simple
+success/entry/exit messages.
+
+> +	return ret;
+> +
+> +out:
+> +	return ret;
+> +}
+> +
+> +static const struct platform_device_id cc33xx_id_table[] = {
+> +	{ "cc33xx", 0 },
+> +	{  } /* Terminating Entry */
+
+Drop comment. Obvious.
+
+> +};
+> +MODULE_DEVICE_TABLE(platform, cc33xx_id_table);
+> +
+> +static struct platform_driver cc33xx_driver = {
+> +	.probe		= cc33xx_probe,
+> +	.remove		= cc33xx_remove,
+> +	.id_table	= cc33xx_id_table,
+> +	.driver = {
+> +		.name	= "cc33xx_driver",
+> +	}
+> +};
+> +
+> +u32 cc33xx_debug_level = DEBUG_NO_DATAPATH;
+
+Why this is global? Why u32? Why global variable is defined at the end
+of the file?!?!
 
 > +
-> +	u8 efuse_mac_address[ETH_ALEN];
+> +module_platform_driver(cc33xx_driver);
 > +
-> +	u32 fuse_rom_structure_version;
-> +	u32 device_part_number;
-> +	u32 pg_version;
-> +	u8	disable_5g;
-> +	u8	disable_6g;
+> +module_param_named(debug_level, cc33xx_debug_level, uint, 0600);
+> +MODULE_PARM_DESC(debug_level, "cc33xx debugging level");
+> +
+> +MODULE_PARM_DESC(secure_boot_enable, "Enables secure boot and FW downlaod");
 
-Please fix trivial whitespace issues.
+Eh? why secure boot is module param?
 
-This driver looks like having basic issues unresolved, really basic. I
-advise to get internal TI review first, before you will be using
-community resources for these trivial things.
+> +
+> +module_param_named(fwlog, fwlog_param, charp, 0);
+> +MODULE_PARM_DESC(fwlog, "FW logger options: continuous, dbgpins or disable");
+> +
+> +module_param(no_recovery, int, 0600);
+> +MODULE_PARM_DESC(no_recovery, "Prevent HW recovery. FW will remain stuck.");
+> +
+> +module_param_named(ht_mode, ht_mode_param, charp, 0400);
+> +MODULE_PARM_DESC(ht_mode, "Force HT mode: wide or siso20");
 
-Please also confirm that you also fixed all warnings from:
-1. checkpatch --strict
-2. smatch
-3. sparse
-4. coccinelle/coccicheck
+Does not look like suitable for module params.
 
+> +
+> +MODULE_LICENSE("GPL v2");
+> +MODULE_DESCRIPTION("Texas Instruments CC33xx WLAN driver");
+> +MODULE_AUTHOR("Michael Nemanov <michael.nemanov@ti.com>");
+> +MODULE_AUTHOR("Sabeeh Khan <sabeeh-khan@ti.com>");
+> +
+> +MODULE_VERSION(DRV_VERSION);
+
+Drop.
+
+Perform internal review first. This is really not ready.
 
 
 Best regards,
