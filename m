@@ -1,33 +1,33 @@
-Return-Path: <linux-wireless+bounces-7994-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7995-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A49B8CCFDB
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 12:04:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 727FE8CCFEB
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 12:05:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E0A71C20F19
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 10:04:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F2CA6B21A8F
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 10:05:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2BA13D2A8;
-	Thu, 23 May 2024 10:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F49613CF96;
+	Thu, 23 May 2024 10:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="VtmCJ/mv"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="n4kX0asJ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C59313CA99
-	for <linux-wireless@vger.kernel.org>; Thu, 23 May 2024 10:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C202054FA9;
+	Thu, 23 May 2024 10:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716458639; cv=none; b=ioFXMpEBydcBpz3TxleZnunfSWzmEjUFF7f4ilFxgPvS0AT7NifjbSSBAIZeBFJTdSy48566k1dmvkGXQNnRlepTRop4LroDbUexW2FaTn4GABEMZDSLWrv3mUbZ+P2fieJzys9DXhYuKKVRmSl2kUXKOh1kk6lw6/ACDxtSdB8=
+	t=1716458740; cv=none; b=rE47nz78UqhS8wNX1mzIKOpj93UldfPZHUHNBiB90xBhWRpthBGPwVShH5RVa3Cx54AO3X3SwRZtMgNW9JFO9hAJW8GCKZmGttIIBAc/jFu2kgzDBSt2IR0k1pHzTQu7fqhkgcRoDXjZMCbfWRzUysWj8h2VCI/dE0DqJrrzwFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716458639; c=relaxed/simple;
-	bh=P7962Bbz7IDd0BSPZEWS+AgDkYw+Rd/Hyk79fKdOK2g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Qj3NuuiwS4FQoyn2N66BUVATr00NBt6+itbjFwrZwAAOe0kKmimcHtCyZhmvQ7TixXnh3xflUDd4A9+awePEu1obYruC6iNyLyP8cn0N8aF8V1tHaD4RK7Gkdxd+Df0XnseVB5+3C7mN0XVzZ8go2FuXnZnMFqWiaxuV00e2XaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=VtmCJ/mv; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1716458740; c=relaxed/simple;
+	bh=p93URBzyg0Jvf6+HXExvml57wxsAqkDZrQy+YNck1Ng=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JHkgHx97x998Mq09B3BI3vboO3ELgsSxFl7zxLI4HQc3UFvVC1c7fitDAjHDR0ZJegwANRe3z5roYcJC+LyFhyWdhtq19CbrIQl7LpLnXvPtgQoc6WK3AgJv39XPFl4xC7yA0ZLMP2okL82LgRwJId+8Lvbevhjz+PXOoeOeRTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=n4kX0asJ; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -35,24 +35,25 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
 	Resent-Message-ID:In-Reply-To:References;
-	bh=NdNhGoVC59EX2cDSkBO16q5+J1dp5xpqAxyeGe+9zz4=; t=1716458637; x=1717668237; 
-	b=VtmCJ/mvrRuV3V4vjpiihwkVmI2fK2U8IiV8h1+GJ1n+b+USlT4FSnXNQqf/1lfX3ux/tmdh3J4
-	tw4NBVfBwDSm0jIwteCEwi5sGyET4fQsx8OrI5mSQRGgK5KLri6eAchTpcgaLEa8GnLLmnLGXcF7Z
-	1wgrbxH0otTMPaqAx7jjDZJdAIqXKOwW+L7QAomSI2BU7GQxP8k/dRDKmgDc0SYC7uA7dnM4uFbKR
-	JgzXxqxmMPu46EsCIVAaY5xYTZ3vOBK4atsKHST+Oc9JoCdrUaom8SrDMZykj4GJF0yD4t+kJ5Fvw
-	8zPazlBRXqAA8IwVOoTCGL1Uq4w3B8MOYuOQ==;
+	bh=+P/eQDosxBeUaoWDIKIA4+eNBAo+H3Pt2ohS5winJn8=; t=1716458738; x=1717668338; 
+	b=n4kX0asJ5VHK/o8xyt0yA1fzqiM6IAnp7el2LsnMgqGEBIKf1vXGvd9FytHMoavJurUX/RP8hjD
+	AAZHQsLISk7ZWObjysxw3wl1P+guQrvAi4WlwaHCjDLLFCCdvv7Df/+olxHAJLtd9agwfj03It5GT
+	wpQfW1uDyQpEk44lTNC0LMWRTuS0NbwfmqnHRXCmFT/x0TPEVqcu5FFortgMgubn96F6g+qzYZmDO
+	wd9WHBR2eulKz0lLVVGwbPGpXsjH70W07NCUDge5v86w/muTF1Et6iRuGs0ddu5x51RfGl3bNM6Rk
+	PHN42XIbAaMhnoPJA2D36iQbFoqJFpkuLTYg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1sA5Ig-00000005wEj-0DMk;
-	Thu, 23 May 2024 12:03:54 +0200
+	id 1sA5KJ-00000005wQq-1GL5;
+	Thu, 23 May 2024 12:05:35 +0200
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>,
+	stable@vger.kernel.org,
 	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH] wifi: mac80211: handle HW restart during ROC
-Date: Thu, 23 May 2024 12:03:52 +0200
-Message-ID: <20240523120352.f1924b5411ea.Ifc02a45a5ce23868dc7e428bad8d0e6996dd10f4@changeid>
+Subject: [PATCH] wifi: cfg80211: validate HE operation element parsing
+Date: Thu, 23 May 2024 12:05:33 +0200
+Message-ID: <20240523120533.677025eb4a92.I44c091029ef113c294e8fe8b9bf871bf5dbeeb27@changeid>
 X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -64,112 +65,31 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-If we have a HW restart in the middle of a ROC period,
-then there are two cases:
- - if it's a software ROC, we really don't need to do
-   anything, since the ROC work will still be queued
-   and will run later, albeit with the interruption
-   due to the restart;
- - if it's a hardware ROC, then it may have begun or
-   not, if it did begin already we can only remove it
-   and tell userspace about that.
+Validate that the HE operation element has the correct
+length before parsing it.
 
-In both cases, this fixes the warning that would appear
-in ieee80211_start_next_roc() in this case.
-
-In the case of some drivers such as iwlwifi, the part of
-restarting is never going to happen since the driver will
-cancel the ROC, but flushing the work to ensure nothing
-is pending here will also result in no longer being able
-to trigger the warning in this case.
-
+Cc: stable@vger.kernel.org
+Fixes: 645f3d85129d ("wifi: cfg80211: handle UHB AP and STA power type")
 Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- net/mac80211/ieee80211_i.h |  1 +
- net/mac80211/offchannel.c  | 35 ++++++++++++++++++++++++++++++++++-
- net/mac80211/util.c        |  3 +--
- 3 files changed, 36 insertions(+), 3 deletions(-)
+ net/wireless/scan.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 76965d64a0fa..3fd7b1adbfab 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -1978,6 +1978,7 @@ void ieee80211_offchannel_stop_vifs(struct ieee80211_local *local);
- void ieee80211_offchannel_return(struct ieee80211_local *local);
- void ieee80211_roc_setup(struct ieee80211_local *local);
- void ieee80211_start_next_roc(struct ieee80211_local *local);
-+void ieee80211_reconfig_roc(struct ieee80211_local *local);
- void ieee80211_roc_purge(struct ieee80211_local *local,
- 			 struct ieee80211_sub_if_data *sdata);
- int ieee80211_remain_on_channel(struct wiphy *wiphy, struct wireless_dev *wdev,
-diff --git a/net/mac80211/offchannel.c b/net/mac80211/offchannel.c
-index 65e1e9e971fd..28d03196ef75 100644
---- a/net/mac80211/offchannel.c
-+++ b/net/mac80211/offchannel.c
-@@ -8,7 +8,7 @@
-  * Copyright 2006-2007	Jiri Benc <jbenc@suse.cz>
-  * Copyright 2007, Michael Wu <flamingice@sourmilk.net>
-  * Copyright 2009	Johannes Berg <johannes@sipsolutions.net>
-- * Copyright (C) 2019, 2022-2023 Intel Corporation
-+ * Copyright (C) 2019, 2022-2024 Intel Corporation
-  */
- #include <linux/export.h>
- #include <net/mac80211.h>
-@@ -413,6 +413,39 @@ void ieee80211_start_next_roc(struct ieee80211_local *local)
- 	}
- }
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 127853877a0a..8daed8232b05 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -2128,7 +2128,8 @@ static bool cfg80211_6ghz_power_type_valid(const u8 *ie, size_t ielen,
+ 	struct ieee80211_he_operation *he_oper;
  
-+void ieee80211_reconfig_roc(struct ieee80211_local *local)
-+{
-+	struct ieee80211_roc_work *roc, *tmp;
-+
-+	/*
-+	 * In the software implementation can just continue with the
-+	 * interruption due to reconfig, roc_work is still queued if
-+	 * needed.
-+	 */
-+	if (!local->ops->remain_on_channel)
-+		return;
-+
-+	/* flush work so nothing from the driver is still pending */
-+	wiphy_work_flush(local->hw.wiphy, &local->hw_roc_start);
-+	wiphy_work_flush(local->hw.wiphy, &local->hw_roc_done);
-+
-+	list_for_each_entry_safe(roc, tmp, &local->roc_list, list) {
-+		if (!roc->started)
-+			break;
-+
-+		if (!roc->hw_begun) {
-+			/* it didn't start in HW yet, so we can restart it */
-+			roc->started = false;
-+			continue;
-+		}
-+
-+		/* otherwise destroy it and tell userspace */
-+		ieee80211_roc_notify_destroy(roc);
-+	}
-+
-+	ieee80211_start_next_roc(local);
-+}
-+
- static void __ieee80211_roc_work(struct ieee80211_local *local)
- {
- 	struct ieee80211_roc_work *roc;
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 43625ca87d5e..927f752a0209 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -2175,8 +2175,7 @@ int ieee80211_reconfig(struct ieee80211_local *local)
- 		local->in_reconfig = false;
- 		barrier();
+ 	tmp = cfg80211_find_ext_elem(WLAN_EID_EXT_HE_OPERATION, ie, ielen);
+-	if (tmp && tmp->datalen >= sizeof(*he_oper) + 1) {
++	if (tmp && tmp->datalen >= sizeof(*he_oper) + 1 &&
++	    tmp->datalen >= ieee80211_he_oper_size(tmp->data + 1)) {
+ 		const struct ieee80211_he_6ghz_oper *he_6ghz_oper;
  
--		/* Restart deferred ROCs */
--		ieee80211_start_next_roc(local);
-+		ieee80211_reconfig_roc(local);
- 
- 		/* Requeue all works */
- 		list_for_each_entry(sdata, &local->interfaces, list)
+ 		he_oper = (void *)&tmp->data[1];
 -- 
 2.45.1
 
