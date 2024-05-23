@@ -1,119 +1,106 @@
-Return-Path: <linux-wireless+bounces-8030-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8031-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5A2C8CD8AE
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 18:48:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CFBD8CDD91
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 May 2024 01:20:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A46CE280DCB
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 16:48:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07254287F00
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 23:20:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D08C175A5;
-	Thu, 23 May 2024 16:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6182628D;
+	Thu, 23 May 2024 23:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O7yp5lZ5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kt5F5NZy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB06512E48
-	for <linux-wireless@vger.kernel.org>; Thu, 23 May 2024 16:48:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC43E128365
+	for <linux-wireless@vger.kernel.org>; Thu, 23 May 2024 23:19:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716482919; cv=none; b=KzJc5CuP9fTiiQ2fdLtBTkkWXrr8JR16azfcn238cq+l+e0mcCWnvJW9/5WMR5iDRtEjwWo1R/VjK4H6xYlTkaNGHwIQHloyYQEJiYmLHnep+ilHtF8ZIAv+95LOlQi73vw3MmhES5GawGw7cexlBl5ISAn2IfV9nRjjjkHA9ak=
+	t=1716506397; cv=none; b=QfZWNjeqMCImahioE1VHDPpOqfsobGVDDijCCJ3GkPe0bVyKq71WEnvpDI1K7hoJl50+LRX4IrfPutsTt0XL4lq1JRFp3zqEgzbPdfRIQLrHiKmQ11KOdUTzSj+Z4diIkSgv4iDPg3VMyJypeladUMESqKc8MQSULxOlS+vzfew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716482919; c=relaxed/simple;
-	bh=9gx+ourYVhlhZCxSr2aEDzAYZlVvSbuxXz0Wj09tqhU=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=V9inALMIT1STpDYY2wQinSnZuGlDoW58M+ixWvICEJ93P4POelwNC/WFpDxXpP1cMGScOxiLlaP86G22Ed3tRD/Lidt69Ug41CaWQojlv/8gDhkWA8cBFGJHKo0nExuby4C7RpySAaIJWkkOGshcLMtJfPmQmhOU5o1ubeZFGS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O7yp5lZ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D37C2BD10;
-	Thu, 23 May 2024 16:48:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716482918;
-	bh=9gx+ourYVhlhZCxSr2aEDzAYZlVvSbuxXz0Wj09tqhU=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=O7yp5lZ55fsW8KUCIS0u2s1pKeWrmDcW/sTlyyMAvcFVeH24beuybbofggqUnSTkd
-	 nl08aLzbcLCElkZi4MzYjjUGA2ySOy+jv95k3Rtl0NkU42wb03y56jDjRrPhNQbpYj
-	 TIPjWay4Zj/IhTA5G9COPW8O1r0u61d8BHKiNG9O5l0VMS7RINHzWlb4Q2VIPYrYHI
-	 GDk1Wftwhk5pinTJmpLLsc+M8ZlZiTSNjnkqfaPV4SqbT2Mlnh/eNVispJm3v7w57a
-	 sYAMVTzSC6VH56YCwCeKcWq338FyD/d90nWI5jmqsMeK7sJ9FBG6RNb7ftjR1wBySZ
-	 ctWlQisd7pkvw==
-From: Kalle Valo <kvalo@kernel.org>
-To: Baochen Qiang <quic_bqiang@quicinc.com>
-Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v2 0/7] wifi: ath12k: add support for WoW
-References: <20240523033143.21677-1-quic_bqiang@quicinc.com>
-Date: Thu, 23 May 2024 19:48:35 +0300
-In-Reply-To: <20240523033143.21677-1-quic_bqiang@quicinc.com> (Baochen Qiang's
-	message of "Thu, 23 May 2024 11:31:36 +0800")
-Message-ID: <875xv4bhjw.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1716506397; c=relaxed/simple;
+	bh=ACmX4IEn54SaAC87dL8zEWDwnaff6O+GAz1ga3siCWA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=DcAK2hYxMjXLOJXackncWd/UY5cyigXlEbCCJjhJTtvXCQ8bZ3eYbxE5ZYPDFzfMCJF4lEVgNTh4YNRy6PhyqdQ0S9o+e/kywo3VR4GkmDumyS1OfehZkc0BhpniIV9LYA2ghki/EapAffD9/SpQ71KjlbMPE7I+nOSMSKhobuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kt5F5NZy; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1716506395; x=1748042395;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=ACmX4IEn54SaAC87dL8zEWDwnaff6O+GAz1ga3siCWA=;
+  b=kt5F5NZyyY8j0G8c7tgNAMnYG8tRwm9AfFvSn7hnH542l63pX8wuDUQZ
+   DUALEsUxOk/56P/wi7qFADChyRU8Vao2/S0usrBam8oAWCqtnEX72uU2B
+   3JD6+D3ImYge7ZUOpeIF5wTM6ErQwF2v39mjSDO5uQGgDY41NA5cia9jv
+   5mGEOT1pincHrJglRhD+JmgsU4xni2NUPbG8K3mbZDMDZV5TRiAd9eNZ8
+   k4nIMyszSNANPrdyXbnvlHMyDp7p/pwK+YnyD9SofNTo0HoMAlhDnM8CY
+   iaoj1urkCNITkaQY1re2YvgM5t8mJGU32Tah1+FoO47/XFfYPenrCpPIB
+   Q==;
+X-CSE-ConnectionGUID: 40GN6DkwT4ex1KgzKUsAZw==
+X-CSE-MsgGUID: IInOuIGWQNmEfs4bdUMO2g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11081"; a="11670610"
+X-IronPort-AV: E=Sophos;i="6.08,183,1712646000"; 
+   d="scan'208";a="11670610"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2024 16:19:55 -0700
+X-CSE-ConnectionGUID: GQCow7FCRtCpWe3Lu51isA==
+X-CSE-MsgGUID: 3AgluSv0TPSPlVJ0ktr9rQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,183,1712646000"; 
+   d="scan'208";a="33815267"
+Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
+  by fmviesa008.fm.intel.com with ESMTP; 23 May 2024 16:19:53 -0700
+Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sAHix-0003bt-09;
+	Thu, 23 May 2024 23:19:51 +0000
+Date: Fri, 24 May 2024 07:19:13 +0800
+From: kernel test robot <lkp@intel.com>
+To: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Subject: [wireless-next:main 45/61]
+ drivers/net/wireless/intel/iwlwifi/iwl-nvm-utils.o: warning: objtool:
+ unexpected relocation symbol type in .rela.discard.reachable
+Message-ID: <202405240755.nD7VAvLn-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Baochen Qiang <quic_bqiang@quicinc.com> writes:
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+head:   a92fd2d9327ba877f29753eec15b93072ac300b0
+commit: 6584b9d0aa3234bd8af419e46de1a9648cd34116 [45/61] wifi: iwlwifi: move code from iwl-eeprom-parse to dvm
+config: loongarch-defconfig (https://download.01.org/0day-ci/archive/20240524/202405240755.nD7VAvLn-lkp@intel.com/config)
+compiler: loongarch64-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240524/202405240755.nD7VAvLn-lkp@intel.com/reproduce)
 
-> Add support for WoW (Wakeup on Wireless) funtionalities, this including
-> magic-pattern, net-detect, disconnect and patterns, HW data filter, ARP
-> and NS offload, GTK rekey offload.
->
-> Also enable keepalive before suspend to avoid unexpected kick out by AP.
->
-> v2:
->  - [2/7] wifi: ath12k: add basic WoW functionalities
-> 	1. In ath12k_wow_convert_8023_to_80211(), change to use 'size_t'
-> 	   instead of 'int' to make GCC happy
->  - [5/7] wifi: ath12k: support ARP and NS offload
-> 	1. In ath12k_mac_arvif_get_arp_ns_offload(), change to use
-> 	   GFP_ATOMIC to fix kernel crash due to sleep in invalid context
->  - rebased on ToT
-> 	
-> Baochen Qiang (7):
->   wifi: ath12k: implement WoW enable and wakeup commands
->   wifi: ath12k: add basic WoW functionalities
->   wifi: ath12k: add WoW net-detect functionality
->   wifi: ath12k: implement hardware data filter
->   wifi: ath12k: support ARP and NS offload
->   wifi: ath12k: support GTK rekey offload
->   wifi: ath12k: handle keepalive during WoWLAN suspend and resume
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202405240755.nD7VAvLn-lkp@intel.com/
 
-I see new kmemleak warnings with ath-pending-202405231313, I'm assuming
-it's from this patchset but didn't check. I see a lot of warnings like
-below but I can provide more information tomorrow if needed.
+All warnings (new ones prefixed by >>):
 
-unreferenced object 0xffff88814fa4d800 (size 1024):
-  comm "wpa_supplicant", pid 11989, jiffies 4296591308
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00  ................
-    fe 80 00 00 00 00 00 00 02 03 7f ff fe 37 16 02  .............7..
-  backtrace (crc 3f321b49):
-    [<ffffffff8dbdd8d5>] kmemleak_alloc+0x45/0x80
-    [<ffffffff8b573984>] kmalloc_trace+0x284/0x2d0
-    [<ffffffffc0e634e2>] ath12k_mac_arvif_get_arp_ns_offload+0x72/0xd0 [ath12k]
-    [<ffffffffc0e6b437>] ath12k_mac_op_ipv6_changed+0xc7/0x1470 [ath12k]
-    [<ffffffffc077e797>] ieee80211_ifa6_changed+0x1c7/0x3a0 [mac80211]
-    [<ffffffff8afeb177>] notifier_call_chain+0x97/0x310
-    [<ffffffff8afeb72d>] atomic_notifier_call_chain+0x5d/0x140
-    [<ffffffff8d918796>] inet6addr_notifier_call_chain+0x16/0x20
-    [<ffffffff8d7f193a>] addrconf_ifdown.isra.0+0xa8a/0x1700
-    [<ffffffff8d800895>] addrconf_notify+0x105/0xdd0
-    [<ffffffff8afeb177>] notifier_call_chain+0x97/0x310
-    [<ffffffff8afeb571>] raw_notifier_call_chain+0x11/0x20
-    [<ffffffff8d277e1b>] call_netdevice_notifiers_info+0x8b/0xf0
-    [<ffffffff8d28ec33>] __dev_notify_flags+0x163/0x240
-    [<ffffffff8d290771>] dev_change_flags+0xf1/0x150
-    [<ffffffff8d647406>] devinet_ioctl+0x1116/0x19b0
+>> drivers/net/wireless/intel/iwlwifi/iwl-nvm-utils.o: warning: objtool: unexpected relocation symbol type in .rela.discard.reachable
+--
+>> drivers/net/wireless/intel/iwlwifi/dvm/eeprom.o: warning: objtool: unexpected relocation symbol type in .rela.discard.reachable
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
