@@ -1,52 +1,61 @@
-Return-Path: <linux-wireless+bounces-7984-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7985-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DA4A8CCB3C
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 05:41:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77BF78CCCC5
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 09:08:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21D441C20B3F
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 03:41:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A90801C20C0A
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 07:08:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F11833086;
-	Thu, 23 May 2024 03:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC7C113C9C4;
+	Thu, 23 May 2024 07:08:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l63V8xgk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C35D6282E2
-	for <linux-wireless@vger.kernel.org>; Thu, 23 May 2024 03:41:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B238613C9BE;
+	Thu, 23 May 2024 07:08:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716435677; cv=none; b=RycXKD1iRJ/kdP3HxHeAnfjbOXCK6K0KIKI12jdFptyPFNmQssQJm1TKwedaTFoR5m9U7LrnkAqumDuFKokpMSv6cy399DnGPdzPGJ5vYXdCZfNGCFZV3H+tYS7xPo2khby6NLVdBq5s3lk9u9rO2HHV+HqeTtkUq+HveajovqM=
+	t=1716448134; cv=none; b=YK2jwV045KlG/wMNdB2H9I7szHsengGnLSoiF184YnNKtH1fONKK/ImQgcQMau4xZrrNScH8li8HQO/RsvSaIW65WwpKI2xwKu6Z44TIs627jPaB4zpEo5pBel5vfRVdwhATSMLAHh33a813YNKfHNjWzW4BYd0k21H9Mx3RKo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716435677; c=relaxed/simple;
-	bh=k6m+mRSOp61iUcmhKZUrQ5xxRn7QhGBfVXYrGJVMJgs=;
-	h=From:To:Subject:In-Reply-To:References:MIME-Version:Content-Type:
-	 Message-ID:Date; b=HO1rbH/Q/NJXVYjGgHwhdIIfEB9fJMYSFwp8MI7Vvcf996XjzeGnwMCPerHfcY4IS/AfoYW2FsPsiG8SPvlpLkR1CcoPEA5Pgfzvj4ia+S3EWwmW0f2EDz0eEFL35q8K7ucuVqAYIKHLOJoTm94NUvmVGf/ymknD1cKYqJdUVgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 44N3fC2m9470376, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 44N3fC2m9470376
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Thu, 23 May 2024 11:41:12 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 23 May 2024 11:41:12 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 23 May
- 2024 11:41:12 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH] wifi: rtw89: correct hardware value of nominal packet padding for WiFi 7 chips
-In-Reply-To: <20240517013639.11643-1-pkshih@realtek.com>
-References: <20240517013639.11643-1-pkshih@realtek.com>
+	s=arc-20240116; t=1716448134; c=relaxed/simple;
+	bh=elwm805QhpZ+JSQ57a0ibr5IqKEmbzKJWPEUZdsebmw=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=dK/zOTtfqIItIVOoziYH/CGqvXkppJfF0j6Zos4aKV+7eZ+XoI1UVSBGT7yyIM8++JhqEZ8ioUjC5zf6RBsnIaBUc1dGM8Y/VDqNf2Ns6+nn3UILF+hc/181y0/bJJtHCPorNj7fsnzbi4kTzOFVFaHyDCuSiMy1d51RQFSy1qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l63V8xgk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 410BBC2BD10;
+	Thu, 23 May 2024 07:08:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716448134;
+	bh=elwm805QhpZ+JSQ57a0ibr5IqKEmbzKJWPEUZdsebmw=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=l63V8xgkLsin9j/UsHEcUmVjXnzjfiGdErSNS+oVeeGFrpFugjuh4UK37h6Yjhlxj
+	 czy4pMnIc5RnMYPB8rnUWVCWz2JX+rz4intjIUALmpK+Yvpu/so8YbEsj5ZUeXjeAS
+	 qLJGbkxNKx/5U1LTfOE5f0HkFBiXKJJfRTTWsD2DtrqJ6kh76BD01V1c8taxtSRy/f
+	 4aVWLboQd530xEOtCGW3J8tnW5+MCR+hX1xuvQwkSXDqFmNGF6M1AndjXKhMiPFfcA
+	 mfMarDezHDRT7DMqueb1K9eH6I8OXkqcDStKYF7qsCAx02JHxHERSP+z+9oRXFwGm0
+	 jPe0MsPjYGyPw==
+From: Kalle Valo <kvalo@kernel.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: michael.nemanov@ti.com,  Johannes Berg <johannes.berg@intel.com>,  Breno
+ Leitao <leitao@debian.org>,  Justin Stitt <justinstitt@google.com>,  Kees
+ Cook <keescook@chromium.org>,  linux-wireless@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  Sabeeh Khan <sabeeh-khan@ti.com>
+Subject: Re: [PATCH 13/17] Add conf.h
+References: <20240521171841.884576-1-michael.nemanov@ti.com>
+	<20240521171841.884576-14-michael.nemanov@ti.com>
+	<9ba9d156-ce38-47ba-b0fb-63e6174c3094@kernel.org>
+Date: Thu, 23 May 2024 10:08:50 +0300
+In-Reply-To: <9ba9d156-ce38-47ba-b0fb-63e6174c3094@kernel.org> (Krzysztof
+	Kozlowski's message of "Wed, 22 May 2024 11:48:20 +0200")
+Message-ID: <87r0dtattp.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -54,24 +63,33 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
-Message-ID: <c244db5c-cbf9-4218-9a4b-d5338f2dea0c@RTEXMBS04.realtek.com.tw>
-Date: Thu, 23 May 2024 11:41:12 +0800
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+Krzysztof Kozlowski <krzk@kernel.org> writes:
 
-> The hardware value of 3 for WiFi 7 chips is padding 16 or 20us selected
-> by hardware automatically. Correct the value to resolve interoperability
-> problem. Also define enum to be more readable.
-> 
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> On 21/05/2024 19:18, michael.nemanov@ti.com wrote:
+>> From: Michael Nemanov <Michael.Nemanov@ti.com>
+>> 
+>> Various HW / FW / Driver controls unique for the CC33xx that
+>> can be set by OEMs.
+>> 
+>> Signed-off-by: Michael Nemanov <michael.nemanov@ti.com>
+>> ---
+>>  drivers/net/wireless/ti/cc33xx/conf.h | 1246 +++++++++++++++++++++++++
+>
+> So you are adding one file by another? This does not help review.
+>
+> Add logical chunks, e.g. users of header after the header. Or all
+> headers together. Or some features incrementally, like basic working
+> driver and then feature foo and bar.
 
-1 patch(es) applied to rtw-next branch of rtw.git, thanks.
+For new wireless drivers my recommendation has been to submit for review
+one file per patch but the final driver to be commited would be just one
+patch:
 
-d5b96a4a3159 wifi: rtw89: correct hardware value of nominal packet padding for WiFi 7 chips
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#new_driver
 
----
-https://github.com/pkshih/rtw.git
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
