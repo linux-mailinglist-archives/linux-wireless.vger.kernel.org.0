@@ -1,73 +1,73 @@
-Return-Path: <linux-wireless+bounces-8014-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8015-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FDEC8CD60A
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 16:43:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA1C48CD60B
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 16:44:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AD271C212A1
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 14:43:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C1F21C20DF0
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 14:44:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 312A913E032;
-	Thu, 23 May 2024 14:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F24013E032;
+	Thu, 23 May 2024 14:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NU7cWh5D"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZEe2irax"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E46329CEB
-	for <linux-wireless@vger.kernel.org>; Thu, 23 May 2024 14:43:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B1F29CEB
+	for <linux-wireless@vger.kernel.org>; Thu, 23 May 2024 14:44:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716475424; cv=none; b=YCLMNCi5cJLCpEX7m8eFJWso/ukRqndXeZ4BrqINJbFCYAm/8w/RpZ9yTzO8E88xRRgttf6fCR+ShE18CbzGs5V5dYgKjEoLpgv3zK+t2t9s10xWL17IxiG0i2oGzrayxgLmQ/Yktx93P0xE6HzzoP2EQO46ubquT40EpRN5Rv8=
+	t=1716475455; cv=none; b=qVmOJ0WACLU4OmefkeJS/zp6Srl204txc/qM/bOFCZgU8vyhdE9cCShHBfJSK/I9PyWQn5GSKu5TCZKe/NzKg19mlPTHvk06eFq16Htoo+voGYC8uhyC4AP7sEHPRIzwgBBb2GTcyQUCb8e/MgdmZJFR5lc1H+bjfctsxdYakrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716475424; c=relaxed/simple;
-	bh=aD0t+7I8S6xdqmj//FJ5jRCR1mvDdb/TXZQUgn6auyM=;
+	s=arc-20240116; t=1716475455; c=relaxed/simple;
+	bh=Y+giGp+8qVnhERYYQztDHWrF6lcOnu5Hh2duXsm0yGA=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=IMy0S1v++z3NvQLngjXLs6iLs7NTE//ZBSwx6oQEW5BhddRJypUgcbPDT5IiWsneIxyzBpg04wOMNgFQ4DD7eePSu0k95WqL3Frg7KINj3h0CyhekF8b10XVZvp1wsWI/XUlCnGyGA6Jukjnc87rnHJvV5DtPavcHR29ufoCuFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NU7cWh5D; arc=none smtp.client-ip=209.85.218.44
+	 In-Reply-To:Content-Type; b=GX9xV/mB869aTKDRf7sUCTt5bN3KNoGWR/6sK+NoMJ75hRmnClOuGD2H0ygFq+RzVL7pFGhIyR41W3IranGxmMLS6h2ngz2mTFhmoJCyCG3spDsp2RZxhwwuZ3TSQXrtcd1YyrG476iHKnNVFLMh6XmVGHPzfwe7j/ctbRSkIgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZEe2irax; arc=none smtp.client-ip=209.85.167.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a59ad12efe3so548669266b.3
-        for <linux-wireless@vger.kernel.org>; Thu, 23 May 2024 07:43:41 -0700 (PDT)
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5210684cee6so8413483e87.0
+        for <linux-wireless@vger.kernel.org>; Thu, 23 May 2024 07:44:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716475420; x=1717080220; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1716475451; x=1717080251; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=DUMljYDL9VZcHBgT9mWGsbRE0Woo/KHV4KLGdrEqE2c=;
-        b=NU7cWh5DwF6nBaA0OIEyvbG/gqcZMhjlblxXyYUqgEgfUiso10RyXIuH3XP6aLLitP
-         uFAh6iRSA5ecsL47FZ+OaGuvL6z/3KCksjcPvOsWEPD9rXTU4M324UylkIU0bPRF4XeY
-         bBKpb93uQibijBTXZ1azyW1UBgf4EYp3L8f1/DV+DZFeX6Xfhcv5UIIObqmb3R/JtSmH
-         QbmuzRQb2NtiV5l70OYWVPZHCM6I5p23fjc11a5c0NhHSPFSRid0XhvcPSms94U+MFyT
-         S953N9tmlbOpGSW8In7UyBgrc59tFdUNrdOBGZy2agkEyfpduxQucZhVPJ+qtElPdKoR
-         pffA==
+        bh=4jw7DONQNExq84gdIR88j0G2WjZwDoIKxlqwbRrLidk=;
+        b=ZEe2iraxvxQysX9drRItqfYnPL1ZNGnt9DQIzB5j/WLQZJX1J5rwrfki8GBS78cmXW
+         qQ94nHlVgHheWEfGGVBSxCM8W4ja8H52M3QwIiT1iRSdh2kXGA4pF2eddyoeMaH1jP6t
+         r4GIckaTcDYY/CM2T0Jr+lLJ5na1ziLJbOFOnaLeKZ8ePxS4fgT/5rWL6Nx7x2ojDi4o
+         JCC0qRehYlUp1B5qKS/rK+eolvFNgxk1anlPOPK+eUpyKlPH98K0tCQdZhr6+agiVLFY
+         sG6gay/dAwG09ajTPucyx0aL1p03vl/o++xhPGfeVOv3zVZoeI3Pw8U1QegXnlGasIhD
+         UhLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716475420; x=1717080220;
+        d=1e100.net; s=20230601; t=1716475451; x=1717080251;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DUMljYDL9VZcHBgT9mWGsbRE0Woo/KHV4KLGdrEqE2c=;
-        b=UodzWmHSz1mCHOgtkT9Y+euwT25V07VZ5uBmXZ3AvL3ihncNs7B9OQMpCuWkDmYMI1
-         axhCSxvDMTyocCxRqGPjsxcKnpVYWm/2yE9ydELej/tZOVaaiv0m17nlp8w+ueLjajS4
-         uQV9ixbjhCJZwsa2Lt/s4MzuXdFYkFqf6OIwXYHHic7ZgKvZIUr+S6jWDpur3bzU8OF6
-         x0Etpe36eXWFnFYuBqDHVmhpPsQI0uBpEFBoEi1L0vQyiE/ounOLXFrjayfSdYsV4o+a
-         Qwxa40dh8FsaK2szrYxHHZgi9k7PVlRzNf/Df7G+CZdKFon2a79qONJAxfX4bdhtPLRE
-         EksA==
-X-Gm-Message-State: AOJu0YyIoLmUB05RhJU8QL9WVGSo9DM8WozU9MBQWuCUSFHCPX9u9id1
-	vIMtcXA0aPWhuS6yknMw3QolXgZGHkhtFbBW8fiftj9nH4bF2pX6tUb7gg==
-X-Google-Smtp-Source: AGHT+IGwN6ZTdte0Skt6pu/+Kqx7zgtu8cnqvRc8WnqSapjKr591H+5UiZGjr1GeiCG/BxdRhWdUMQ==
-X-Received: by 2002:a05:6402:3494:b0:578:34a4:261 with SMTP id 4fb4d7f45d1cf-57834a4085emr5069860a12.27.1716475419546;
-        Thu, 23 May 2024 07:43:39 -0700 (PDT)
+        bh=4jw7DONQNExq84gdIR88j0G2WjZwDoIKxlqwbRrLidk=;
+        b=U6864UhA0zuejEngii4YXINhI1PH+Lfh2soENCzCGx6avwR258I5NaLR8ruZXz8Nuf
+         7szd1KFJmsmCrDaM1KUH03umFEl+wRLNS4o1TX+EgW0Ke2eBw2EQ6HisphpnQu/VvnhI
+         y8IX8yYVlU92JPchVP+ItgZLM5xc8aJxFDhZO/xKAn4oMJ3oMZJsB7oexrisCoJi+eKR
+         WYbaxXWBZIqbwYCBiHK2m6IHZH4DG3EVnuul2hKc+InnvPb5rT3V7yqR2sFkh5E7uEFb
+         waLV79odcIdtWWy0uD/EbvmbQ7612HPXQzwSpT2Up3evXr6LI9mxryG4nb5/hjzxR4YR
+         wx5g==
+X-Gm-Message-State: AOJu0Yzmn8pctSpa7I0eMSxCzBf3NH9hPncFIdjrV+0lHO0tNlRRY87+
+	1K1iK93jCBL8RuVOWWNw3JNVble4ec/Err6+Ukts/foIDUL/FS41TMzq+A==
+X-Google-Smtp-Source: AGHT+IH25sbfoAblj1KFxPXzEiYNLpC/VlXGA3TC0HSGK9ujouZEKsgx4sJPmBvp7PVJ72IRkCnyaw==
+X-Received: by 2002:ac2:5201:0:b0:51b:6296:8d1a with SMTP id 2adb3069b0e04-526bf35c916mr3071595e87.29.1716475450677;
+        Thu, 23 May 2024 07:44:10 -0700 (PDT)
 Received: from [192.168.0.50] ([81.196.40.5])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5733c323887sm20174287a12.89.2024.05.23.07.43.38
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a17b0177asm1975227766b.173.2024.05.23.07.44.09
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 May 2024 07:43:38 -0700 (PDT)
-Message-ID: <abe3624d-f986-4a24-966c-67defa962e3f@gmail.com>
-Date: Thu, 23 May 2024 17:43:37 +0300
+        Thu, 23 May 2024 07:44:10 -0700 (PDT)
+Message-ID: <5ea548b9-5ec6-4358-aa5d-94071f2341cb@gmail.com>
+Date: Thu, 23 May 2024 17:44:09 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,7 +75,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH v7 01/12] wifi: rtlwifi: rtl8192d: Use "rtl92d" prefix
+Subject: [PATCH v7 02/12] wifi: rtlwifi: Add rtl8192du/table.{c,h}
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 Cc: Ping-Ke Shih <pkshih@realtek.com>,
@@ -88,701 +88,1755 @@ In-Reply-To: <8805826b-60b9-4026-9509-7d92c3a43577@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Some functions moved from rtl8192de still use the "rtl92de" prefix.
-Rename them.
+These contain the MAC, BB, RF, and AGC initialisation tables for
+RTL8192DU.
 
 Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 ---
 v7:
- - Patch is new in v7.
----
- .../realtek/rtlwifi/rtl8192d/hw_common.c      | 94 +++++++++----------
- .../realtek/rtlwifi/rtl8192d/hw_common.h      | 28 +++---
- .../realtek/rtlwifi/rtl8192d/trx_common.c     | 92 +++++++++---------
- .../realtek/rtlwifi/rtl8192d/trx_common.h     | 16 ++--
- .../wireless/realtek/rtlwifi/rtl8192de/hw.c   | 18 ++--
- .../wireless/realtek/rtlwifi/rtl8192de/sw.c   | 20 ++--
- .../wireless/realtek/rtlwifi/rtl8192de/trx.c  |  2 +-
- 7 files changed, 135 insertions(+), 135 deletions(-)
+ - No change.
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/hw_common.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/hw_common.c
-index 6570d5e168e9..97e0d9c01e0a 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/hw_common.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/hw_common.c
-@@ -14,7 +14,7 @@
- #include "hw_common.h"
- #include "phy_common.h"
- 
--void rtl92de_stop_tx_beacon(struct ieee80211_hw *hw)
-+void rtl92d_stop_tx_beacon(struct ieee80211_hw *hw)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 	u8 tmp1byte;
-@@ -27,9 +27,9 @@ void rtl92de_stop_tx_beacon(struct ieee80211_hw *hw)
- 	tmp1byte &= ~(BIT(0));
- 	rtl_write_byte(rtlpriv, REG_TBTT_PROHIBIT + 2, tmp1byte);
- }
--EXPORT_SYMBOL_GPL(rtl92de_stop_tx_beacon);
-+EXPORT_SYMBOL_GPL(rtl92d_stop_tx_beacon);
- 
--void rtl92de_resume_tx_beacon(struct ieee80211_hw *hw)
-+void rtl92d_resume_tx_beacon(struct ieee80211_hw *hw)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 	u8 tmp1byte;
-@@ -42,7 +42,7 @@ void rtl92de_resume_tx_beacon(struct ieee80211_hw *hw)
- 	tmp1byte |= BIT(0);
- 	rtl_write_byte(rtlpriv, REG_TBTT_PROHIBIT + 2, tmp1byte);
- }
--EXPORT_SYMBOL_GPL(rtl92de_resume_tx_beacon);
-+EXPORT_SYMBOL_GPL(rtl92d_resume_tx_beacon);
- 
- void rtl92d_get_hw_reg(struct ieee80211_hw *hw, u8 variable, u8 *val)
- {
-@@ -285,7 +285,7 @@ void rtl92d_set_hw_reg(struct ieee80211_hw *hw, u8 variable, u8 *val)
- }
- EXPORT_SYMBOL_GPL(rtl92d_set_hw_reg);
- 
--bool rtl92de_llt_write(struct ieee80211_hw *hw, u32 address, u32 data)
-+bool rtl92d_llt_write(struct ieee80211_hw *hw, u32 address, u32 data)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 	bool status = true;
-@@ -307,9 +307,9 @@ bool rtl92de_llt_write(struct ieee80211_hw *hw, u32 address, u32 data)
- 	} while (++count);
- 	return status;
- }
--EXPORT_SYMBOL_GPL(rtl92de_llt_write);
-+EXPORT_SYMBOL_GPL(rtl92d_llt_write);
- 
--void rtl92de_enable_hw_security_config(struct ieee80211_hw *hw)
-+void rtl92d_enable_hw_security_config(struct ieee80211_hw *hw)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 	u8 sec_reg_value;
-@@ -334,16 +334,16 @@ void rtl92de_enable_hw_security_config(struct ieee80211_hw *hw)
- 		"The SECR-value %x\n", sec_reg_value);
- 	rtlpriv->cfg->ops->set_hw_reg(hw, HW_VAR_WPA_CONFIG, &sec_reg_value);
- }
--EXPORT_SYMBOL_GPL(rtl92de_enable_hw_security_config);
-+EXPORT_SYMBOL_GPL(rtl92d_enable_hw_security_config);
- 
- /* don't set REG_EDCA_BE_PARAM here because
-  * mac80211 will send pkt when scan
-  */
--void rtl92de_set_qos(struct ieee80211_hw *hw, int aci)
-+void rtl92d_set_qos(struct ieee80211_hw *hw, int aci)
- {
- 	rtl92d_dm_init_edca_turbo(hw);
- }
--EXPORT_SYMBOL_GPL(rtl92de_set_qos);
-+EXPORT_SYMBOL_GPL(rtl92d_set_qos);
- 
- static enum version_8192d _rtl92d_read_chip_version(struct ieee80211_hw *hw)
- {
-@@ -362,8 +362,8 @@ static enum version_8192d _rtl92d_read_chip_version(struct ieee80211_hw *hw)
- 	return version;
- }
- 
--static void _rtl92de_readpowervalue_fromprom(struct txpower_info *pwrinfo,
--					     u8 *efuse, bool autoloadfail)
-+static void _rtl92d_readpowervalue_fromprom(struct txpower_info *pwrinfo,
-+					    u8 *efuse, bool autoloadfail)
- {
- 	u32 rfpath, eeaddr, group, offset, offset1, offset2;
- 	u8 i, val8;
-@@ -500,8 +500,8 @@ static void _rtl92de_readpowervalue_fromprom(struct txpower_info *pwrinfo,
- 	}
- }
- 
--static void _rtl92de_read_txpower_info(struct ieee80211_hw *hw,
--				       bool autoload_fail, u8 *hwinfo)
-+static void _rtl92d_read_txpower_info(struct ieee80211_hw *hw,
-+				      bool autoload_fail, u8 *hwinfo)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 	struct rtl_efuse *rtlefuse = rtl_efuse(rtl_priv(hw));
-@@ -509,7 +509,7 @@ static void _rtl92de_read_txpower_info(struct ieee80211_hw *hw,
- 	u8 tempval[2], i, pwr, diff;
- 	u32 ch, rfpath, group;
- 
--	_rtl92de_readpowervalue_fromprom(&pwrinfo, hwinfo, autoload_fail);
-+	_rtl92d_readpowervalue_fromprom(&pwrinfo, hwinfo, autoload_fail);
- 	if (!autoload_fail) {
- 		/* bit0~2 */
- 		rtlefuse->eeprom_regulatory = (hwinfo[EEPROM_RF_OPT1] & 0x7);
-@@ -613,8 +613,8 @@ static void _rtl92de_read_txpower_info(struct ieee80211_hw *hw,
- 	}
- }
- 
--static void _rtl92de_read_macphymode_from_prom(struct ieee80211_hw *hw,
--					       u8 *content)
-+static void _rtl92d_read_macphymode_from_prom(struct ieee80211_hw *hw,
-+					      u8 *content)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
-@@ -636,15 +636,15 @@ static void _rtl92de_read_macphymode_from_prom(struct ieee80211_hw *hw,
- 	}
- }
- 
--static void _rtl92de_read_macphymode_and_bandtype(struct ieee80211_hw *hw,
--						  u8 *content)
-+static void _rtl92d_read_macphymode_and_bandtype(struct ieee80211_hw *hw,
-+						 u8 *content)
- {
--	_rtl92de_read_macphymode_from_prom(hw, content);
-+	_rtl92d_read_macphymode_from_prom(hw, content);
- 	rtl92d_phy_config_macphymode(hw);
- 	rtl92d_phy_config_macphymode_info(hw);
- }
- 
--static void _rtl92de_efuse_update_chip_version(struct ieee80211_hw *hw)
-+static void _rtl92d_efuse_update_chip_version(struct ieee80211_hw *hw)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 	enum version_8192d chipver = rtlpriv->rtlhal.version;
-@@ -676,7 +676,7 @@ static void _rtl92de_efuse_update_chip_version(struct ieee80211_hw *hw)
- 	rtlpriv->rtlhal.version = chipver;
- }
- 
--static void _rtl92de_read_adapter_info(struct ieee80211_hw *hw)
-+static void _rtl92d_read_adapter_info(struct ieee80211_hw *hw)
- {
- 	static const int params_pci[] = {
- 		RTL8190_EEPROM_ID, EEPROM_VID, EEPROM_DID,
-@@ -706,8 +706,8 @@ static void _rtl92de_read_adapter_info(struct ieee80211_hw *hw)
- 	if (rtl_get_hwinfo(hw, rtlpriv, HWSET_MAX_SIZE, hwinfo, params))
- 		goto exit;
- 
--	_rtl92de_efuse_update_chip_version(hw);
--	_rtl92de_read_macphymode_and_bandtype(hw, hwinfo);
-+	_rtl92d_efuse_update_chip_version(hw);
-+	_rtl92d_read_macphymode_and_bandtype(hw, hwinfo);
- 
- 	/* Read Permanent MAC address for 2nd interface */
- 	if (rtlhal->interfaceindex != 0)
-@@ -717,7 +717,7 @@ static void _rtl92de_read_adapter_info(struct ieee80211_hw *hw)
- 	rtlpriv->cfg->ops->set_hw_reg(hw, HW_VAR_ETHER_ADDR,
- 				      rtlefuse->dev_addr);
- 	rtl_dbg(rtlpriv, COMP_INIT, DBG_DMESG, "%pM\n", rtlefuse->dev_addr);
--	_rtl92de_read_txpower_info(hw, rtlefuse->autoload_failflag, hwinfo);
-+	_rtl92d_read_txpower_info(hw, rtlefuse->autoload_failflag, hwinfo);
- 
- 	/* Read Channel Plan */
- 	switch (rtlhal->bandset) {
-@@ -739,7 +739,7 @@ static void _rtl92de_read_adapter_info(struct ieee80211_hw *hw)
- 	kfree(hwinfo);
- }
- 
--void rtl92de_read_eeprom_info(struct ieee80211_hw *hw)
-+void rtl92d_read_eeprom_info(struct ieee80211_hw *hw)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 	struct rtl_efuse *rtlefuse = rtl_efuse(rtl_priv(hw));
-@@ -760,15 +760,15 @@ void rtl92de_read_eeprom_info(struct ieee80211_hw *hw)
- 		rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD, "Autoload OK\n");
- 
- 		rtlefuse->autoload_failflag = false;
--		_rtl92de_read_adapter_info(hw);
-+		_rtl92d_read_adapter_info(hw);
- 	} else {
- 		pr_err("Autoload ERR!!\n");
- 	}
- }
--EXPORT_SYMBOL_GPL(rtl92de_read_eeprom_info);
-+EXPORT_SYMBOL_GPL(rtl92d_read_eeprom_info);
- 
--static void rtl92de_update_hal_rate_table(struct ieee80211_hw *hw,
--					  struct ieee80211_sta *sta)
-+static void rtl92d_update_hal_rate_table(struct ieee80211_hw *hw,
-+					 struct ieee80211_sta *sta)
- {
- 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
- 	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
-@@ -851,9 +851,9 @@ static void rtl92de_update_hal_rate_table(struct ieee80211_hw *hw,
- 		rtl_read_dword(rtlpriv, REG_ARFR0));
- }
- 
--static void rtl92de_update_hal_rate_mask(struct ieee80211_hw *hw,
--					 struct ieee80211_sta *sta,
--					 u8 rssi_level, bool update_bw)
-+static void rtl92d_update_hal_rate_mask(struct ieee80211_hw *hw,
-+					struct ieee80211_sta *sta,
-+					u8 rssi_level, bool update_bw)
- {
- 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
- 	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
-@@ -1009,20 +1009,20 @@ static void rtl92de_update_hal_rate_mask(struct ieee80211_hw *hw,
- 		sta_entry->ratr_index = ratr_index;
- }
- 
--void rtl92de_update_hal_rate_tbl(struct ieee80211_hw *hw,
--				 struct ieee80211_sta *sta,
--				 u8 rssi_level, bool update_bw)
-+void rtl92d_update_hal_rate_tbl(struct ieee80211_hw *hw,
-+				struct ieee80211_sta *sta,
-+				u8 rssi_level, bool update_bw)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 
- 	if (rtlpriv->dm.useramask)
--		rtl92de_update_hal_rate_mask(hw, sta, rssi_level, update_bw);
-+		rtl92d_update_hal_rate_mask(hw, sta, rssi_level, update_bw);
- 	else
--		rtl92de_update_hal_rate_table(hw, sta);
-+		rtl92d_update_hal_rate_table(hw, sta);
- }
--EXPORT_SYMBOL_GPL(rtl92de_update_hal_rate_tbl);
-+EXPORT_SYMBOL_GPL(rtl92d_update_hal_rate_tbl);
- 
--void rtl92de_update_channel_access_setting(struct ieee80211_hw *hw)
-+void rtl92d_update_channel_access_setting(struct ieee80211_hw *hw)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
-@@ -1036,9 +1036,9 @@ void rtl92de_update_channel_access_setting(struct ieee80211_hw *hw)
- 		sifs_timer = 0x1010;
- 	rtlpriv->cfg->ops->set_hw_reg(hw, HW_VAR_SIFS, (u8 *)&sifs_timer);
- }
--EXPORT_SYMBOL_GPL(rtl92de_update_channel_access_setting);
-+EXPORT_SYMBOL_GPL(rtl92d_update_channel_access_setting);
- 
--bool rtl92de_gpio_radio_on_off_checking(struct ieee80211_hw *hw, u8 *valid)
-+bool rtl92d_gpio_radio_on_off_checking(struct ieee80211_hw *hw, u8 *valid)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
-@@ -1093,11 +1093,11 @@ bool rtl92de_gpio_radio_on_off_checking(struct ieee80211_hw *hw, u8 *valid)
- 	*valid = 1;
- 	return !ppsc->hwradiooff;
- }
--EXPORT_SYMBOL_GPL(rtl92de_gpio_radio_on_off_checking);
-+EXPORT_SYMBOL_GPL(rtl92d_gpio_radio_on_off_checking);
- 
--void rtl92de_set_key(struct ieee80211_hw *hw, u32 key_index,
--		     u8 *p_macaddr, bool is_group, u8 enc_algo,
--		     bool is_wepkey, bool clear_all)
-+void rtl92d_set_key(struct ieee80211_hw *hw, u32 key_index,
-+		    u8 *p_macaddr, bool is_group, u8 enc_algo,
-+		    bool is_wepkey, bool clear_all)
- {
- 	static const u8 cam_const_addr[4][6] = {
- 		{0x00, 0x00, 0x00, 0x00, 0x00, 0x00},
-@@ -1222,4 +1222,4 @@ void rtl92de_set_key(struct ieee80211_hw *hw, u32 key_index,
- 		}
- 	}
- }
--EXPORT_SYMBOL_GPL(rtl92de_set_key);
-+EXPORT_SYMBOL_GPL(rtl92d_set_key);
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/hw_common.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/hw_common.h
-index 2c07f5cc5766..4da1bab15f36 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/hw_common.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/hw_common.h
-@@ -4,21 +4,21 @@
- #ifndef __RTL92D_HW_COMMON_H__
- #define __RTL92D_HW_COMMON_H__
- 
--void rtl92de_stop_tx_beacon(struct ieee80211_hw *hw);
--void rtl92de_resume_tx_beacon(struct ieee80211_hw *hw);
-+void rtl92d_stop_tx_beacon(struct ieee80211_hw *hw);
-+void rtl92d_resume_tx_beacon(struct ieee80211_hw *hw);
- void rtl92d_get_hw_reg(struct ieee80211_hw *hw, u8 variable, u8 *val);
- void rtl92d_set_hw_reg(struct ieee80211_hw *hw, u8 variable, u8 *val);
--bool rtl92de_llt_write(struct ieee80211_hw *hw, u32 address, u32 data);
--void rtl92de_enable_hw_security_config(struct ieee80211_hw *hw);
--void rtl92de_set_qos(struct ieee80211_hw *hw, int aci);
--void rtl92de_read_eeprom_info(struct ieee80211_hw *hw);
--void rtl92de_update_hal_rate_tbl(struct ieee80211_hw *hw,
--				 struct ieee80211_sta *sta,
--				 u8 rssi_level, bool update_bw);
--void rtl92de_update_channel_access_setting(struct ieee80211_hw *hw);
--bool rtl92de_gpio_radio_on_off_checking(struct ieee80211_hw *hw, u8 *valid);
--void rtl92de_set_key(struct ieee80211_hw *hw, u32 key_index,
--		     u8 *p_macaddr, bool is_group, u8 enc_algo,
--		     bool is_wepkey, bool clear_all);
-+bool rtl92d_llt_write(struct ieee80211_hw *hw, u32 address, u32 data);
-+void rtl92d_enable_hw_security_config(struct ieee80211_hw *hw);
-+void rtl92d_set_qos(struct ieee80211_hw *hw, int aci);
-+void rtl92d_read_eeprom_info(struct ieee80211_hw *hw);
-+void rtl92d_update_hal_rate_tbl(struct ieee80211_hw *hw,
-+				struct ieee80211_sta *sta,
-+				u8 rssi_level, bool update_bw);
-+void rtl92d_update_channel_access_setting(struct ieee80211_hw *hw);
-+bool rtl92d_gpio_radio_on_off_checking(struct ieee80211_hw *hw, u8 *valid);
-+void rtl92d_set_key(struct ieee80211_hw *hw, u32 key_index,
-+		    u8 *p_macaddr, bool is_group, u8 enc_algo,
-+		    bool is_wepkey, bool clear_all);
- 
- #endif
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/trx_common.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/trx_common.c
-index 72d2b7426d82..9f9a34492030 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/trx_common.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/trx_common.c
-@@ -7,8 +7,8 @@
- #include "def.h"
- #include "trx_common.h"
- 
--static long _rtl92de_translate_todbm(struct ieee80211_hw *hw,
--				     u8 signal_strength_index)
-+static long _rtl92d_translate_todbm(struct ieee80211_hw *hw,
-+				    u8 signal_strength_index)
- {
- 	long signal_power;
- 
-@@ -17,13 +17,13 @@ static long _rtl92de_translate_todbm(struct ieee80211_hw *hw,
- 	return signal_power;
- }
- 
--static void _rtl92de_query_rxphystatus(struct ieee80211_hw *hw,
--				       struct rtl_stats *pstats,
--				       __le32 *pdesc,
--				       struct rx_fwinfo_92d *p_drvinfo,
--				       bool packet_match_bssid,
--				       bool packet_toself,
--				       bool packet_beacon)
-+static void _rtl92d_query_rxphystatus(struct ieee80211_hw *hw,
-+				      struct rtl_stats *pstats,
-+				      __le32 *pdesc,
-+				      struct rx_fwinfo_92d *p_drvinfo,
-+				      bool packet_match_bssid,
-+				      bool packet_toself,
-+				      bool packet_beacon)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 	struct rtl_phy *rtlphy = &rtlpriv->phy;
-@@ -203,8 +203,8 @@ static void rtl92d_loop_over_paths(struct ieee80211_hw *hw,
- 	}
- }
- 
--static void _rtl92de_process_ui_rssi(struct ieee80211_hw *hw,
--				     struct rtl_stats *pstats)
-+static void _rtl92d_process_ui_rssi(struct ieee80211_hw *hw,
-+				    struct rtl_stats *pstats)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 	struct rt_smooth_data *ui_rssi;
-@@ -226,15 +226,15 @@ static void _rtl92de_process_ui_rssi(struct ieee80211_hw *hw,
- 	if (ui_rssi->index >= PHY_RSSI_SLID_WIN_MAX)
- 		ui_rssi->index = 0;
- 	tmpval = ui_rssi->total_val / ui_rssi->total_num;
--	rtlpriv->stats.signal_strength = _rtl92de_translate_todbm(hw, (u8)tmpval);
-+	rtlpriv->stats.signal_strength = _rtl92d_translate_todbm(hw, (u8)tmpval);
- 	pstats->rssi = rtlpriv->stats.signal_strength;
- 
- 	if (!pstats->is_cck && pstats->packet_toself)
- 		rtl92d_loop_over_paths(hw, pstats);
- }
- 
--static void _rtl92de_update_rxsignalstatistics(struct ieee80211_hw *hw,
--					       struct rtl_stats *pstats)
-+static void _rtl92d_update_rxsignalstatistics(struct ieee80211_hw *hw,
-+					      struct rtl_stats *pstats)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 	int weighting = 0;
-@@ -249,8 +249,8 @@ static void _rtl92de_update_rxsignalstatistics(struct ieee80211_hw *hw,
- 		5 + pstats->recvsignalpower + weighting) / 6;
- }
- 
--static void _rtl92de_process_pwdb(struct ieee80211_hw *hw,
--				  struct rtl_stats *pstats)
-+static void _rtl92d_process_pwdb(struct ieee80211_hw *hw,
-+				 struct rtl_stats *pstats)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
-@@ -276,7 +276,7 @@ static void _rtl92de_process_pwdb(struct ieee80211_hw *hw,
- 			      (pstats->rx_pwdb_all)) / (RX_SMOOTH_FACTOR);
- 		}
- 		rtlpriv->dm.undec_sm_pwdb = undec_sm_pwdb;
--		_rtl92de_update_rxsignalstatistics(hw, pstats);
-+		_rtl92d_update_rxsignalstatistics(hw, pstats);
- 	}
- }
- 
-@@ -301,8 +301,8 @@ static void rtl92d_loop_over_streams(struct ieee80211_hw *hw,
- 	}
- }
- 
--static void _rtl92de_process_ui_link_quality(struct ieee80211_hw *hw,
--					     struct rtl_stats *pstats)
-+static void _rtl92d_process_ui_link_quality(struct ieee80211_hw *hw,
-+					    struct rtl_stats *pstats)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 	struct rt_smooth_data *ui_link_quality;
-@@ -330,24 +330,24 @@ static void _rtl92de_process_ui_link_quality(struct ieee80211_hw *hw,
- 	rtl92d_loop_over_streams(hw, pstats);
- }
- 
--static void _rtl92de_process_phyinfo(struct ieee80211_hw *hw,
--				     u8 *buffer,
--				     struct rtl_stats *pcurrent_stats)
-+static void _rtl92d_process_phyinfo(struct ieee80211_hw *hw,
-+				    u8 *buffer,
-+				    struct rtl_stats *pcurrent_stats)
- {
- 	if (!pcurrent_stats->packet_matchbssid &&
- 	    !pcurrent_stats->packet_beacon)
- 		return;
- 
--	_rtl92de_process_ui_rssi(hw, pcurrent_stats);
--	_rtl92de_process_pwdb(hw, pcurrent_stats);
--	_rtl92de_process_ui_link_quality(hw, pcurrent_stats);
-+	_rtl92d_process_ui_rssi(hw, pcurrent_stats);
-+	_rtl92d_process_pwdb(hw, pcurrent_stats);
-+	_rtl92d_process_ui_link_quality(hw, pcurrent_stats);
- }
- 
--static void _rtl92de_translate_rx_signal_stuff(struct ieee80211_hw *hw,
--					       struct sk_buff *skb,
--					       struct rtl_stats *pstats,
--					       __le32 *pdesc,
--					       struct rx_fwinfo_92d *p_drvinfo)
-+static void _rtl92d_translate_rx_signal_stuff(struct ieee80211_hw *hw,
-+					      struct sk_buff *skb,
-+					      struct rtl_stats *pstats,
-+					      __le32 *pdesc,
-+					      struct rx_fwinfo_92d *p_drvinfo)
- {
- 	struct rtl_efuse *rtlefuse = rtl_efuse(rtl_priv(hw));
- 	struct rtl_mac *mac = rtl_mac(rtl_priv(hw));
-@@ -375,15 +375,15 @@ static void _rtl92de_translate_rx_signal_stuff(struct ieee80211_hw *hw,
- 	packet_toself = packet_matchbssid &&
- 			ether_addr_equal(praddr, rtlefuse->dev_addr);
- 	packet_beacon = ieee80211_is_beacon(fc);
--	_rtl92de_query_rxphystatus(hw, pstats, pdesc, p_drvinfo,
--				   packet_matchbssid, packet_toself,
--				   packet_beacon);
--	_rtl92de_process_phyinfo(hw, tmp_buf, pstats);
-+	_rtl92d_query_rxphystatus(hw, pstats, pdesc, p_drvinfo,
-+				  packet_matchbssid, packet_toself,
-+				  packet_beacon);
-+	_rtl92d_process_phyinfo(hw, tmp_buf, pstats);
- }
- 
--bool rtl92de_rx_query_desc(struct ieee80211_hw *hw, struct rtl_stats *stats,
--			   struct ieee80211_rx_status *rx_status,
--			   u8 *pdesc8, struct sk_buff *skb)
-+bool rtl92d_rx_query_desc(struct ieee80211_hw *hw, struct rtl_stats *stats,
-+			  struct ieee80211_rx_status *rx_status,
-+			  u8 *pdesc8, struct sk_buff *skb)
- {
- 	__le32 *pdesc = (__le32 *)pdesc8;
- 	struct rx_fwinfo_92d *p_drvinfo;
-@@ -423,17 +423,17 @@ bool rtl92de_rx_query_desc(struct ieee80211_hw *hw, struct rtl_stats *stats,
- 	if (phystatus) {
- 		p_drvinfo = (struct rx_fwinfo_92d *)(skb->data +
- 						     stats->rx_bufshift);
--		_rtl92de_translate_rx_signal_stuff(hw, skb, stats, pdesc,
--						   p_drvinfo);
-+		_rtl92d_translate_rx_signal_stuff(hw, skb, stats, pdesc,
-+						  p_drvinfo);
- 	}
- 	/*rx_status->qual = stats->signal; */
- 	rx_status->signal = stats->recvsignalpower + 10;
- 	return true;
- }
--EXPORT_SYMBOL_GPL(rtl92de_rx_query_desc);
-+EXPORT_SYMBOL_GPL(rtl92d_rx_query_desc);
- 
--void rtl92de_set_desc(struct ieee80211_hw *hw, u8 *pdesc8, bool istx,
--		      u8 desc_name, u8 *val)
-+void rtl92d_set_desc(struct ieee80211_hw *hw, u8 *pdesc8, bool istx,
-+		     u8 desc_name, u8 *val)
- {
- 	__le32 *pdesc = (__le32 *)pdesc8;
- 
-@@ -473,10 +473,10 @@ void rtl92de_set_desc(struct ieee80211_hw *hw, u8 *pdesc8, bool istx,
- 		}
- 	}
- }
--EXPORT_SYMBOL_GPL(rtl92de_set_desc);
-+EXPORT_SYMBOL_GPL(rtl92d_set_desc);
- 
--u64 rtl92de_get_desc(struct ieee80211_hw *hw,
--		     u8 *p_desc8, bool istx, u8 desc_name)
-+u64 rtl92d_get_desc(struct ieee80211_hw *hw,
-+		    u8 *p_desc8, bool istx, u8 desc_name)
- {
- 	__le32 *p_desc = (__le32 *)p_desc8;
- 	u32 ret = 0;
-@@ -513,4 +513,4 @@ u64 rtl92de_get_desc(struct ieee80211_hw *hw,
- 	}
- 	return ret;
- }
--EXPORT_SYMBOL_GPL(rtl92de_get_desc);
-+EXPORT_SYMBOL_GPL(rtl92d_get_desc);
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/trx_common.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/trx_common.h
-index 87d956d771eb..528182b1eba6 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192d/trx_common.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192d/trx_common.h
-@@ -393,13 +393,13 @@ struct rx_fwinfo_92d {
- #endif
- } __packed;
- 
--bool rtl92de_rx_query_desc(struct ieee80211_hw *hw,
--			   struct rtl_stats *stats,
--			   struct ieee80211_rx_status *rx_status,
--			   u8 *pdesc, struct sk_buff *skb);
--void rtl92de_set_desc(struct ieee80211_hw *hw, u8 *pdesc, bool istx,
--		      u8 desc_name, u8 *val);
--u64 rtl92de_get_desc(struct ieee80211_hw *hw,
--		     u8 *p_desc, bool istx, u8 desc_name);
-+bool rtl92d_rx_query_desc(struct ieee80211_hw *hw,
-+			  struct rtl_stats *stats,
-+			  struct ieee80211_rx_status *rx_status,
-+			  u8 *pdesc, struct sk_buff *skb);
-+void rtl92d_set_desc(struct ieee80211_hw *hw, u8 *pdesc, bool istx,
-+		     u8 desc_name, u8 *val);
-+u64 rtl92d_get_desc(struct ieee80211_hw *hw,
-+		    u8 *p_desc, bool istx, u8 desc_name);
- 
- #endif
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/hw.c
-index 73b81e60cfa9..03f4314bdb2e 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/hw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/hw.c
-@@ -181,7 +181,7 @@ void rtl92de_set_hw_reg(struct ieee80211_hw *hw, u8 variable, u8 *val)
- 		u8 btype_ibss = val[0];
- 
- 		if (btype_ibss)
--			rtl92de_stop_tx_beacon(hw);
-+			rtl92d_stop_tx_beacon(hw);
- 		_rtl92de_set_bcn_ctrl_reg(hw, 0, BIT(3));
- 		rtl_write_dword(rtlpriv, REG_TSFTR,
- 				(u32) (mac->tsf & 0xffffffff));
-@@ -189,7 +189,7 @@ void rtl92de_set_hw_reg(struct ieee80211_hw *hw, u8 variable, u8 *val)
- 				(u32) ((mac->tsf >> 32) & 0xffffffff));
- 		_rtl92de_set_bcn_ctrl_reg(hw, BIT(3), 0);
- 		if (btype_ibss)
--			rtl92de_resume_tx_beacon(hw);
-+			rtl92d_resume_tx_beacon(hw);
- 
- 		break;
- 	}
-@@ -295,13 +295,13 @@ static bool _rtl92de_llt_table_init(struct ieee80211_hw *hw)
- 
- 	/* 18.  LLT_table_init(Adapter);  */
- 	for (i = 0; i < (txpktbuf_bndy - 1); i++) {
--		status = rtl92de_llt_write(hw, i, i + 1);
-+		status = rtl92d_llt_write(hw, i, i + 1);
- 		if (!status)
- 			return status;
- 	}
- 
- 	/* end of list */
--	status = rtl92de_llt_write(hw, (txpktbuf_bndy - 1), 0xFF);
-+	status = rtl92d_llt_write(hw, (txpktbuf_bndy - 1), 0xFF);
- 	if (!status)
- 		return status;
- 
-@@ -310,13 +310,13 @@ static bool _rtl92de_llt_table_init(struct ieee80211_hw *hw)
- 	/* config this MAC as two MAC transfer. */
- 	/* Otherwise used as local loopback buffer.  */
- 	for (i = txpktbuf_bndy; i < maxpage; i++) {
--		status = rtl92de_llt_write(hw, i, (i + 1));
-+		status = rtl92d_llt_write(hw, i, (i + 1));
- 		if (!status)
- 			return status;
- 	}
- 
- 	/* Let last entry point to the start entry of ring buffer */
--	status = rtl92de_llt_write(hw, maxpage, txpktbuf_bndy);
-+	status = rtl92d_llt_write(hw, maxpage, txpktbuf_bndy);
- 	if (!status)
- 		return status;
- 
-@@ -688,7 +688,7 @@ int rtl92de_hw_init(struct ieee80211_hw *hw)
- 
- 	/* reset hw sec */
- 	rtl_cam_reset_all_entry(hw);
--	rtl92de_enable_hw_security_config(hw);
-+	rtl92d_enable_hw_security_config(hw);
- 
- 	/* Read EEPROM TX power index and PHY_REG_PG.txt to capture correct */
- 	/* TX power index for different rate set. */
-@@ -742,11 +742,11 @@ static int _rtl92de_set_media_status(struct ieee80211_hw *hw,
- 
- 	if (type == NL80211_IFTYPE_UNSPECIFIED ||
- 	    type == NL80211_IFTYPE_STATION) {
--		rtl92de_stop_tx_beacon(hw);
-+		rtl92d_stop_tx_beacon(hw);
- 		_rtl92de_enable_bcn_sub_func(hw);
- 	} else if (type == NL80211_IFTYPE_ADHOC ||
- 		type == NL80211_IFTYPE_AP) {
--		rtl92de_resume_tx_beacon(hw);
-+		rtl92d_resume_tx_beacon(hw);
- 		_rtl92de_disable_bcn_sub_func(hw);
- 	} else {
- 		rtl_dbg(rtlpriv, COMP_ERR, DBG_WARNING,
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/sw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/sw.c
-index 5f6311c2aac4..f5ce4889523e 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/sw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/sw.c
-@@ -187,7 +187,7 @@ static void rtl92d_deinit_sw_vars(struct ieee80211_hw *hw)
- static struct rtl_hal_ops rtl8192de_hal_ops = {
- 	.init_sw_vars = rtl92d_init_sw_vars,
- 	.deinit_sw_vars = rtl92d_deinit_sw_vars,
--	.read_eeprom_info = rtl92de_read_eeprom_info,
-+	.read_eeprom_info = rtl92d_read_eeprom_info,
- 	.interrupt_recognized = rtl92de_interrupt_recognized,
- 	.hw_init = rtl92de_hw_init,
- 	.hw_disable = rtl92de_card_disable,
-@@ -197,30 +197,30 @@ static struct rtl_hal_ops rtl8192de_hal_ops = {
- 	.disable_interrupt = rtl92de_disable_interrupt,
- 	.set_network_type = rtl92de_set_network_type,
- 	.set_chk_bssid = rtl92de_set_check_bssid,
--	.set_qos = rtl92de_set_qos,
-+	.set_qos = rtl92d_set_qos,
- 	.set_bcn_reg = rtl92de_set_beacon_related_registers,
- 	.set_bcn_intv = rtl92de_set_beacon_interval,
- 	.update_interrupt_mask = rtl92de_update_interrupt_mask,
- 	.get_hw_reg = rtl92de_get_hw_reg,
- 	.set_hw_reg = rtl92de_set_hw_reg,
--	.update_rate_tbl = rtl92de_update_hal_rate_tbl,
-+	.update_rate_tbl = rtl92d_update_hal_rate_tbl,
- 	.fill_tx_desc = rtl92de_tx_fill_desc,
- 	.fill_tx_cmddesc = rtl92de_tx_fill_cmddesc,
--	.query_rx_desc = rtl92de_rx_query_desc,
--	.set_channel_access = rtl92de_update_channel_access_setting,
--	.radio_onoff_checking = rtl92de_gpio_radio_on_off_checking,
-+	.query_rx_desc = rtl92d_rx_query_desc,
-+	.set_channel_access = rtl92d_update_channel_access_setting,
-+	.radio_onoff_checking = rtl92d_gpio_radio_on_off_checking,
- 	.set_bw_mode = rtl92d_phy_set_bw_mode,
- 	.switch_channel = rtl92d_phy_sw_chnl,
- 	.dm_watchdog = rtl92de_dm_watchdog,
- 	.scan_operation_backup = rtl_phy_scan_operation_backup,
- 	.set_rf_power_state = rtl92d_phy_set_rf_power_state,
- 	.led_control = rtl92de_led_control,
--	.set_desc = rtl92de_set_desc,
--	.get_desc = rtl92de_get_desc,
-+	.set_desc = rtl92d_set_desc,
-+	.get_desc = rtl92d_get_desc,
- 	.is_tx_desc_closed = rtl92de_is_tx_desc_closed,
- 	.tx_polling = rtl92de_tx_polling,
--	.enable_hw_sec = rtl92de_enable_hw_security_config,
--	.set_key = rtl92de_set_key,
-+	.enable_hw_sec = rtl92d_enable_hw_security_config,
-+	.set_key = rtl92d_set_key,
- 	.get_bbreg = rtl92d_phy_query_bb_reg,
- 	.set_bbreg = rtl92d_phy_set_bb_reg,
- 	.get_rfreg = rtl92d_phy_query_rf_reg,
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
-index 2b9b352f7783..91bf399c9ef1 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/trx.c
-@@ -292,7 +292,7 @@ bool rtl92de_is_tx_desc_closed(struct ieee80211_hw *hw,
- 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
- 	struct rtl8192_tx_ring *ring = &rtlpci->tx_ring[hw_queue];
- 	u8 *entry = (u8 *)(&ring->desc[ring->idx]);
--	u8 own = (u8)rtl92de_get_desc(hw, entry, true, HW_DESC_OWN);
-+	u8 own = (u8)rtl92d_get_desc(hw, entry, true, HW_DESC_OWN);
- 
- 	/* a beacon packet will only use the first
- 	 * descriptor by defaut, and the own bit may not
+v6:
+ - Update copyright year.
+ - Don't use accessor functions and make the arrays just const, not
+   static const.
+
+v5:
+ - No change.
+
+v4:
+ - Fix table.h header guard.
+ - Make the arrays static const and add accessor functions as suggested
+   by Jeff Johnson.
+
+v3:
+ - No change.
+
+v2:
+ - Patch is new in v2, split from patch 3/3 in v1.
+---
+ .../realtek/rtlwifi/rtl8192du/table.c         | 1675 +++++++++++++++++
+ .../realtek/rtlwifi/rtl8192du/table.h         |   29 +
+ 2 files changed, 1704 insertions(+)
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.h
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.c
+new file mode 100644
+index 000000000000..036701433d85
+--- /dev/null
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.c
+@@ -0,0 +1,1675 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright(c) 2024  Realtek Corporation.*/
++
++#include <linux/types.h>
++
++#include "table.h"
++
++const u32 rtl8192du_phy_reg_2tarray[PHY_REG_2T_ARRAYLENGTH] = {
++	0x800, 0x80040002,
++	0x804, 0x00000003,
++	0x808, 0x0000fc00,
++	0x80c, 0x0000000a,
++	0x810, 0x10001331,
++	0x814, 0x020c3d10,
++	0x818, 0x02200385,
++	0x81c, 0x00000000,
++	0x820, 0x01000100,
++	0x824, 0x00390004,
++	0x828, 0x01000100,
++	0x82c, 0x00390004,
++	0x830, 0x27272727,
++	0x834, 0x27272727,
++	0x838, 0x27272727,
++	0x83c, 0x27272727,
++	0x840, 0x00010000,
++	0x844, 0x00010000,
++	0x848, 0x27272727,
++	0x84c, 0x27272727,
++	0x850, 0x00000000,
++	0x854, 0x00000000,
++	0x858, 0x569a569a,
++	0x85c, 0x0c1b25a4,
++	0x860, 0x66e60250,
++	0x864, 0x061f0150,
++	0x868, 0x27272727,
++	0x86c, 0x272b2b2b,
++	0x870, 0x07000700,
++	0x874, 0x22188000,
++	0x878, 0x08080808,
++	0x87c, 0x0001fff8,
++	0x880, 0xc0083070,
++	0x884, 0x00000cd5,
++	0x888, 0x00000000,
++	0x88c, 0xcc0000c0,
++	0x890, 0x00000800,
++	0x894, 0xfffffffe,
++	0x898, 0x40302010,
++	0x89c, 0x00706050,
++	0x900, 0x00000000,
++	0x904, 0x00000023,
++	0x908, 0x00000000,
++	0x90c, 0x81121313,
++	0xa00, 0x00d047c8,
++	0xa04, 0x80ff000c,
++	0xa08, 0x8c8a8300,
++	0xa0c, 0x2e68120f,
++	0xa10, 0x9500bb78,
++	0xa14, 0x11144028,
++	0xa18, 0x00881117,
++	0xa1c, 0x89140f00,
++	0xa20, 0x1a1b0000,
++	0xa24, 0x090e1317,
++	0xa28, 0x00000204,
++	0xa2c, 0x00d30000,
++	0xa70, 0x101fff00,
++	0xa74, 0x00000007,
++	0xc00, 0x40071d40,
++	0xc04, 0x03a05633,
++	0xc08, 0x001000e4,
++	0xc0c, 0x6c6c6c6c,
++	0xc10, 0x08800000,
++	0xc14, 0x40000100,
++	0xc18, 0x08800000,
++	0xc1c, 0x40000100,
++	0xc20, 0x00000000,
++	0xc24, 0x00000000,
++	0xc28, 0x00000000,
++	0xc2c, 0x00000000,
++	0xc30, 0x69e9ac44,
++	0xc34, 0x469652af,
++	0xc38, 0x49795994,
++	0xc3c, 0x0a979718,
++	0xc40, 0x1f7c403f,
++	0xc44, 0x000100b7,
++	0xc48, 0xec020107,
++	0xc4c, 0x007f037f,
++	0xc50, 0x69543420,
++	0xc54, 0x43bc009e,
++	0xc58, 0x69543420,
++	0xc5c, 0x433c00a8,
++	0xc60, 0x00000000,
++	0xc64, 0x7112848b,
++	0xc68, 0x47c00bff,
++	0xc6c, 0x00000036,
++	0xc70, 0x2c7f000d,
++	0xc74, 0x258610db,
++	0xc78, 0x0000001f,
++	0xc7c, 0x40b95612,
++	0xc80, 0x40000100,
++	0xc84, 0x20f60000,
++	0xc88, 0x40000100,
++	0xc8c, 0xa0e40000,
++	0xc90, 0x00121820,
++	0xc94, 0x00000007,
++	0xc98, 0x00121820,
++	0xc9c, 0x00007f7f,
++	0xca0, 0x00000000,
++	0xca4, 0x00000080,
++	0xca8, 0x00000000,
++	0xcac, 0x00000000,
++	0xcb0, 0x00000000,
++	0xcb4, 0x00000000,
++	0xcb8, 0x00000000,
++	0xcbc, 0x28000000,
++	0xcc0, 0x00000000,
++	0xcc4, 0x00000000,
++	0xcc8, 0x00000000,
++	0xccc, 0x00000000,
++	0xcd0, 0x00000000,
++	0xcd4, 0x00000000,
++	0xcd8, 0x64b11e20,
++	0xcdc, 0xe0767533,
++	0xce0, 0x00222222,
++	0xce4, 0x00000000,
++	0xce8, 0x37644302,
++	0xcec, 0x2f97d40c,
++	0xd00, 0x00080740,
++	0xd04, 0x00020403,
++	0xd08, 0x0000907f,
++	0xd0c, 0x20010201,
++	0xd10, 0xa0633333,
++	0xd14, 0x3333bc43,
++	0xd18, 0x7a8f5b6b,
++	0xd2c, 0xcc979975,
++	0xd30, 0x00000000,
++	0xd34, 0x80608404,
++	0xd38, 0x00000000,
++	0xd3c, 0x00027353,
++	0xd40, 0x00000000,
++	0xd44, 0x00000000,
++	0xd48, 0x00000000,
++	0xd4c, 0x00000000,
++	0xd50, 0x6437140a,
++	0xd54, 0x00000000,
++	0xd58, 0x00000000,
++	0xd5c, 0x30032064,
++	0xd60, 0x4653de68,
++	0xd64, 0x04518a3c,
++	0xd68, 0x00002101,
++	0xd6c, 0x2a201c16,
++	0xd70, 0x1812362e,
++	0xd74, 0x322c2220,
++	0xd78, 0x000e3c24,
++	0xe00, 0x2a2a2a2a,
++	0xe04, 0x2a2a2a2a,
++	0xe08, 0x03902a2a,
++	0xe10, 0x2a2a2a2a,
++	0xe14, 0x2a2a2a2a,
++	0xe18, 0x2a2a2a2a,
++	0xe1c, 0x2a2a2a2a,
++	0xe28, 0x00000000,
++	0xe30, 0x1000dc1f,
++	0xe34, 0x10008c1f,
++	0xe38, 0x02140102,
++	0xe3c, 0x681604c2,
++	0xe40, 0x01007c00,
++	0xe44, 0x01004800,
++	0xe48, 0xfb000000,
++	0xe4c, 0x000028d1,
++	0xe50, 0x1000dc1f,
++	0xe54, 0x10008c1f,
++	0xe58, 0x02140102,
++	0xe5c, 0x28160d05,
++	0xe60, 0x00000010,
++	0xe68, 0x001b25a4,
++	0xe6c, 0x63db25a4,
++	0xe70, 0x63db25a4,
++	0xe74, 0x0c126da4,
++	0xe78, 0x0c126da4,
++	0xe7c, 0x0c126da4,
++	0xe80, 0x0c126da4,
++	0xe84, 0x63db25a4,
++	0xe88, 0x0c126da4,
++	0xe8c, 0x63db25a4,
++	0xed0, 0x63db25a4,
++	0xed4, 0x63db25a4,
++	0xed8, 0x63db25a4,
++	0xedc, 0x001b25a4,
++	0xee0, 0x001b25a4,
++	0xeec, 0x6fdb25a4,
++	0xf14, 0x00000003,
++	0xf1c, 0x00000064,
++	0xf4c, 0x00000004,
++	0xf00, 0x00000300,
++};
++
++const u32 rtl8192du_phy_reg_array_pg[PHY_REG_ARRAY_PG_LENGTH] = {
++	0xe00, 0xffffffff, 0x07090c0c,
++	0xe04, 0xffffffff, 0x01020405,
++	0xe08, 0x0000ff00, 0x00000000,
++	0x86c, 0xffffff00, 0x00000000,
++	0xe10, 0xffffffff, 0x0b0c0c0e,
++	0xe14, 0xffffffff, 0x01030506,
++	0xe18, 0xffffffff, 0x0b0c0d0e,
++	0xe1c, 0xffffffff, 0x01030509,
++	0x830, 0xffffffff, 0x07090c0c,
++	0x834, 0xffffffff, 0x01020405,
++	0x838, 0xffffff00, 0x00000000,
++	0x86c, 0x000000ff, 0x00000000,
++	0x83c, 0xffffffff, 0x0b0c0c0e,
++	0x848, 0xffffffff, 0x01030506,
++	0x84c, 0xffffffff, 0x0b0c0d0e,
++	0x868, 0xffffffff, 0x01030509,
++	0xe00, 0xffffffff, 0x00000000,
++	0xe04, 0xffffffff, 0x00000000,
++	0xe08, 0x0000ff00, 0x00000000,
++	0x86c, 0xffffff00, 0x00000000,
++	0xe10, 0xffffffff, 0x00000000,
++	0xe14, 0xffffffff, 0x00000000,
++	0xe18, 0xffffffff, 0x00000000,
++	0xe1c, 0xffffffff, 0x00000000,
++	0x830, 0xffffffff, 0x00000000,
++	0x834, 0xffffffff, 0x00000000,
++	0x838, 0xffffff00, 0x00000000,
++	0x86c, 0x000000ff, 0x00000000,
++	0x83c, 0xffffffff, 0x00000000,
++	0x848, 0xffffffff, 0x00000000,
++	0x84c, 0xffffffff, 0x00000000,
++	0x868, 0xffffffff, 0x00000000,
++	0xe00, 0xffffffff, 0x04040404,
++	0xe04, 0xffffffff, 0x00020204,
++	0xe08, 0x0000ff00, 0x00000000,
++	0x86c, 0xffffff00, 0x00000000,
++	0xe10, 0xffffffff, 0x06060606,
++	0xe14, 0xffffffff, 0x00020406,
++	0xe18, 0xffffffff, 0x00000000,
++	0xe1c, 0xffffffff, 0x00000000,
++	0x830, 0xffffffff, 0x04040404,
++	0x834, 0xffffffff, 0x00020204,
++	0x838, 0xffffff00, 0x00000000,
++	0x86c, 0x000000ff, 0x00000000,
++	0x83c, 0xffffffff, 0x06060606,
++	0x848, 0xffffffff, 0x00020406,
++	0x84c, 0xffffffff, 0x00000000,
++	0x868, 0xffffffff, 0x00000000,
++	0xe00, 0xffffffff, 0x00000000,
++	0xe04, 0xffffffff, 0x00000000,
++	0xe08, 0x0000ff00, 0x00000000,
++	0x86c, 0xffffff00, 0x00000000,
++	0xe10, 0xffffffff, 0x00000000,
++	0xe14, 0xffffffff, 0x00000000,
++	0xe18, 0xffffffff, 0x00000000,
++	0xe1c, 0xffffffff, 0x00000000,
++	0x830, 0xffffffff, 0x00000000,
++	0x834, 0xffffffff, 0x00000000,
++	0x838, 0xffffff00, 0x00000000,
++	0x86c, 0x000000ff, 0x00000000,
++	0x83c, 0xffffffff, 0x00000000,
++	0x848, 0xffffffff, 0x00000000,
++	0x84c, 0xffffffff, 0x00000000,
++	0x868, 0xffffffff, 0x00000000,
++	0xe00, 0xffffffff, 0x00000000,
++	0xe04, 0xffffffff, 0x00000000,
++	0xe08, 0x0000ff00, 0x00000000,
++	0x86c, 0xffffff00, 0x00000000,
++	0xe10, 0xffffffff, 0x00000000,
++	0xe14, 0xffffffff, 0x00000000,
++	0xe18, 0xffffffff, 0x00000000,
++	0xe1c, 0xffffffff, 0x00000000,
++	0x830, 0xffffffff, 0x00000000,
++	0x834, 0xffffffff, 0x00000000,
++	0x838, 0xffffff00, 0x00000000,
++	0x86c, 0x000000ff, 0x00000000,
++	0x83c, 0xffffffff, 0x00000000,
++	0x848, 0xffffffff, 0x00000000,
++	0x84c, 0xffffffff, 0x00000000,
++	0x868, 0xffffffff, 0x00000000,
++	0xe00, 0xffffffff, 0x04040404,
++	0xe04, 0xffffffff, 0x00020204,
++	0xe08, 0x0000ff00, 0x00000000,
++	0x86c, 0xffffff00, 0x00000000,
++	0xe10, 0xffffffff, 0x00000000,
++	0xe14, 0xffffffff, 0x00000000,
++	0xe18, 0xffffffff, 0x00000000,
++	0xe1c, 0xffffffff, 0x00000000,
++	0x830, 0xffffffff, 0x04040404,
++	0x834, 0xffffffff, 0x00020204,
++	0x838, 0xffffff00, 0x00000000,
++	0x86c, 0x000000ff, 0x00000000,
++	0x83c, 0xffffffff, 0x00000000,
++	0x848, 0xffffffff, 0x00000000,
++	0x84c, 0xffffffff, 0x00000000,
++	0x868, 0xffffffff, 0x00000000,
++	0xe00, 0xffffffff, 0x00000000,
++	0xe04, 0xffffffff, 0x00000000,
++	0xe08, 0x0000ff00, 0x00000000,
++	0x86c, 0xffffff00, 0x00000000,
++	0xe10, 0xffffffff, 0x00000000,
++	0xe14, 0xffffffff, 0x00000000,
++	0xe18, 0xffffffff, 0x00000000,
++	0xe1c, 0xffffffff, 0x00000000,
++	0x830, 0xffffffff, 0x00000000,
++	0x834, 0xffffffff, 0x00000000,
++	0x838, 0xffffff00, 0x00000000,
++	0x86c, 0x000000ff, 0x00000000,
++	0x83c, 0xffffffff, 0x00000000,
++	0x848, 0xffffffff, 0x00000000,
++	0x84c, 0xffffffff, 0x00000000,
++	0x868, 0xffffffff, 0x00000000,
++	0xe00, 0xffffffff, 0x04040404,
++	0xe04, 0xffffffff, 0x00020204,
++	0xe08, 0x0000ff00, 0x00000000,
++	0x86c, 0xffffff00, 0x00000000,
++	0xe10, 0xffffffff, 0x08080808,
++	0xe14, 0xffffffff, 0x00040408,
++	0xe18, 0xffffffff, 0x00000000,
++	0xe1c, 0xffffffff, 0x00000000,
++	0x830, 0xffffffff, 0x04040404,
++	0x834, 0xffffffff, 0x00020204,
++	0x838, 0xffffff00, 0x00000000,
++	0x86c, 0x000000ff, 0x00000000,
++	0x83c, 0xffffffff, 0x08080808,
++	0x848, 0xffffffff, 0x00040408,
++	0x84c, 0xffffffff, 0x00000000,
++	0x868, 0xffffffff, 0x00000000,
++	0xe00, 0xffffffff, 0x04040404,
++	0xe04, 0xffffffff, 0x00020204,
++	0xe08, 0x0000ff00, 0x00000000,
++	0x86c, 0xffffff00, 0x00000000,
++	0xe10, 0xffffffff, 0x08080808,
++	0xe14, 0xffffffff, 0x00040408,
++	0xe18, 0xffffffff, 0x00000000,
++	0xe1c, 0xffffffff, 0x00000000,
++	0x830, 0xffffffff, 0x04040404,
++	0x834, 0xffffffff, 0x00020204,
++	0x838, 0xffffff00, 0x00000000,
++	0x86c, 0x000000ff, 0x00000000,
++	0x83c, 0xffffffff, 0x08080808,
++	0x848, 0xffffffff, 0x00040408,
++	0x84c, 0xffffffff, 0x00000000,
++	0x868, 0xffffffff, 0x00000000,
++	0xe00, 0xffffffff, 0x04040404,
++	0xe04, 0xffffffff, 0x00020204,
++	0xe08, 0x0000ff00, 0x00000000,
++	0x86c, 0xffffff00, 0x00000000,
++	0xe10, 0xffffffff, 0x08080808,
++	0xe14, 0xffffffff, 0x00040408,
++	0xe18, 0xffffffff, 0x00000000,
++	0xe1c, 0xffffffff, 0x00000000,
++	0x830, 0xffffffff, 0x04040404,
++	0x834, 0xffffffff, 0x00020204,
++	0x838, 0xffffff00, 0x00000000,
++	0x86c, 0x000000ff, 0x00000000,
++	0x83c, 0xffffffff, 0x08080808,
++	0x848, 0xffffffff, 0x00040408,
++	0x84c, 0xffffffff, 0x00000000,
++	0x868, 0xffffffff, 0x00000000,
++	0xe00, 0xffffffff, 0x04040404,
++	0xe04, 0xffffffff, 0x00020204,
++	0xe08, 0x0000ff00, 0x00000000,
++	0x86c, 0xffffff00, 0x00000000,
++	0xe10, 0xffffffff, 0x08080808,
++	0xe14, 0xffffffff, 0x00040408,
++	0xe18, 0xffffffff, 0x00000000,
++	0xe1c, 0xffffffff, 0x00000000,
++	0x830, 0xffffffff, 0x04040404,
++	0x834, 0xffffffff, 0x00020204,
++	0x838, 0xffffff00, 0x00000000,
++	0x86c, 0x000000ff, 0x00000000,
++	0x83c, 0xffffffff, 0x08080808,
++	0x848, 0xffffffff, 0x00040408,
++	0x84c, 0xffffffff, 0x00000000,
++	0x868, 0xffffffff, 0x00000000,
++	0xe00, 0xffffffff, 0x04040404,
++	0xe04, 0xffffffff, 0x00020204,
++	0xe08, 0x0000ff00, 0x00000000,
++	0x86c, 0xffffff00, 0x00000000,
++	0xe10, 0xffffffff, 0x08080808,
++	0xe14, 0xffffffff, 0x00040408,
++	0xe18, 0xffffffff, 0x00000000,
++	0xe1c, 0xffffffff, 0x00000000,
++	0x830, 0xffffffff, 0x04040404,
++	0x834, 0xffffffff, 0x00020204,
++	0x838, 0xffffff00, 0x00000000,
++	0x86c, 0x000000ff, 0x00000000,
++	0x83c, 0xffffffff, 0x08080808,
++	0x848, 0xffffffff, 0x00040408,
++	0x84c, 0xffffffff, 0x00000000,
++	0x868, 0xffffffff, 0x00000000,
++	0xe00, 0xffffffff, 0x04040404,
++	0xe04, 0xffffffff, 0x00020204,
++	0xe08, 0x0000ff00, 0x00000000,
++	0x86c, 0xffffff00, 0x00000000,
++	0xe10, 0xffffffff, 0x08080808,
++	0xe14, 0xffffffff, 0x00040408,
++	0xe18, 0xffffffff, 0x00000000,
++	0xe1c, 0xffffffff, 0x00000000,
++	0x830, 0xffffffff, 0x04040404,
++	0x834, 0xffffffff, 0x00020204,
++	0x838, 0xffffff00, 0x00000000,
++	0x86c, 0x000000ff, 0x00000000,
++	0x83c, 0xffffffff, 0x08080808,
++	0x848, 0xffffffff, 0x00040408,
++	0x84c, 0xffffffff, 0x00000000,
++	0x868, 0xffffffff, 0x00000000,
++};
++
++const u32 rtl8192du_radioa_2tarray[RADIOA_2T_ARRAYLENGTH] = {
++	0x000, 0x00030000,
++	0x001, 0x00030000,
++	0x002, 0x00000000,
++	0x003, 0x00018c63,
++	0x004, 0x00018c63,
++	0x008, 0x00084000,
++	0x00b, 0x0001c000,
++	0x00e, 0x00018c67,
++	0x00f, 0x00000851,
++	0x014, 0x00021440,
++	0x018, 0x00017524,
++	0x019, 0x00000000,
++	0x01d, 0x000a1290,
++	0x023, 0x00001558,
++	0x01a, 0x00030a99,
++	0x01b, 0x00040b00,
++	0x01c, 0x000fc339,
++	0x03a, 0x000a57eb,
++	0x03b, 0x00020000,
++	0x03c, 0x000ff454,
++	0x020, 0x0000aa52,
++	0x021, 0x00054000,
++	0x040, 0x0000aa52,
++	0x041, 0x00014000,
++	0x025, 0x000803be,
++	0x026, 0x000fc638,
++	0x027, 0x00077c18,
++	0x028, 0x000de471,
++	0x029, 0x000d7110,
++	0x02a, 0x0008cb04,
++	0x02b, 0x0004128b,
++	0x02c, 0x00001840,
++	0x043, 0x0002444f,
++	0x044, 0x0001adb0,
++	0x045, 0x00056467,
++	0x046, 0x0008992c,
++	0x047, 0x0000452c,
++	0x048, 0x000f9c43,
++	0x049, 0x00002e0c,
++	0x04a, 0x000546eb,
++	0x04b, 0x0008966c,
++	0x04c, 0x0000dde9,
++	0x018, 0x00007401,
++	0x000, 0x00070000,
++	0x012, 0x000dc000,
++	0x012, 0x00090000,
++	0x012, 0x00051000,
++	0x012, 0x00012000,
++	0x013, 0x000287b7,
++	0x013, 0x000247ab,
++	0x013, 0x0002079f,
++	0x013, 0x0001c793,
++	0x013, 0x0001839b,
++	0x013, 0x00014392,
++	0x013, 0x0001019a,
++	0x013, 0x0000c191,
++	0x013, 0x00008194,
++	0x013, 0x000040a0,
++	0x013, 0x00000018,
++	0x015, 0x0000f424,
++	0x015, 0x0004f424,
++	0x015, 0x0008f424,
++	0x016, 0x000e1330,
++	0x016, 0x000a1330,
++	0x016, 0x00061330,
++	0x016, 0x00021330,
++	0x018, 0x00017524,
++	0x000, 0x00070000,
++	0x012, 0x000cf000,
++	0x012, 0x000bc000,
++	0x012, 0x00078000,
++	0x012, 0x00000000,
++	0x013, 0x000287bc,
++	0x013, 0x000247b0,
++	0x013, 0x000203b4,
++	0x013, 0x0001c3a8,
++	0x013, 0x000181b4,
++	0x013, 0x000141a8,
++	0x013, 0x000100b4,
++	0x013, 0x0000c0a8,
++	0x013, 0x0000b030,
++	0x013, 0x00004024,
++	0x013, 0x00000018,
++	0x015, 0x0000f4c3,
++	0x015, 0x0004f4c3,
++	0x015, 0x0008f4c3,
++	0x016, 0x000e085f,
++	0x016, 0x000a085f,
++	0x016, 0x0006085f,
++	0x016, 0x0002085f,
++	0x018, 0x00037524,
++	0x000, 0x00070000,
++	0x012, 0x000cf000,
++	0x012, 0x000bc000,
++	0x012, 0x00078000,
++	0x012, 0x00000000,
++	0x013, 0x000287bc,
++	0x013, 0x000247b0,
++	0x013, 0x000203b4,
++	0x013, 0x0001c3a8,
++	0x013, 0x000181b4,
++	0x013, 0x000141a8,
++	0x013, 0x000100b4,
++	0x013, 0x0000c0a8,
++	0x013, 0x0000b030,
++	0x013, 0x00004024,
++	0x013, 0x00000018,
++	0x015, 0x0000f4c3,
++	0x015, 0x0004f4c3,
++	0x015, 0x0008f4c3,
++	0x016, 0x000e085f,
++	0x016, 0x000a085f,
++	0x016, 0x0006085f,
++	0x016, 0x0002085f,
++	0x018, 0x00057568,
++	0x000, 0x00070000,
++	0x012, 0x000cf000,
++	0x012, 0x000bc000,
++	0x012, 0x00078000,
++	0x012, 0x00000000,
++	0x013, 0x000287bc,
++	0x013, 0x000247b0,
++	0x013, 0x000203b4,
++	0x013, 0x0001c3a8,
++	0x013, 0x000181b4,
++	0x013, 0x000141a8,
++	0x013, 0x000100b4,
++	0x013, 0x0000c0a8,
++	0x013, 0x0000b030,
++	0x013, 0x00004024,
++	0x013, 0x00000018,
++	0x015, 0x0000f4c3,
++	0x015, 0x0004f4c3,
++	0x015, 0x0008f4c3,
++	0x016, 0x000e085f,
++	0x016, 0x000a085f,
++	0x016, 0x0006085f,
++	0x016, 0x0002085f,
++	0x030, 0x0004470f,
++	0x031, 0x00044ff0,
++	0x032, 0x00000070,
++	0x033, 0x000dd480,
++	0x034, 0x000ffac0,
++	0x035, 0x000b80c0,
++	0x036, 0x00077000,
++	0x037, 0x00064ff2,
++	0x038, 0x000e7661,
++	0x039, 0x00000e90,
++	0x000, 0x00030000,
++	0x018, 0x0000f401,
++	0x0fe, 0x00000000,
++	0x0fe, 0x00000000,
++	0x01e, 0x00088009,
++	0x01f, 0x00080003,
++	0x0fe, 0x00000000,
++	0x01e, 0x00088001,
++	0x01f, 0x00080000,
++	0x0fe, 0x00000000,
++	0x018, 0x00097524,
++	0x0fe, 0x00000000,
++	0x0fe, 0x00000000,
++	0x0fe, 0x00000000,
++	0x0fe, 0x00000000,
++	0x02b, 0x00041289,
++	0x0fe, 0x00000000,
++	0x02d, 0x0006aaaa,
++	0x02e, 0x000b4d01,
++	0x02d, 0x00080000,
++	0x02e, 0x00004d02,
++	0x02d, 0x00095555,
++	0x02e, 0x00054d03,
++	0x02d, 0x000aaaaa,
++	0x02e, 0x000b4d04,
++	0x02d, 0x000c0000,
++	0x02e, 0x00004d05,
++	0x02d, 0x000d5555,
++	0x02e, 0x00054d06,
++	0x02d, 0x000eaaaa,
++	0x02e, 0x000b4d07,
++	0x02d, 0x00000000,
++	0x02e, 0x00005108,
++	0x02d, 0x00015555,
++	0x02e, 0x00055109,
++	0x02d, 0x0002aaaa,
++	0x02e, 0x000b510a,
++	0x02d, 0x00040000,
++	0x02e, 0x0000510b,
++	0x02d, 0x00055555,
++	0x02e, 0x0005510c,
++};
++
++const u32 rtl8192du_radiob_2tarray[RADIOB_2T_ARRAYLENGTH] = {
++	0x000, 0x00030000,
++	0x001, 0x00030000,
++	0x002, 0x00000000,
++	0x003, 0x00018c63,
++	0x004, 0x00018c63,
++	0x008, 0x00084000,
++	0x00b, 0x0001c000,
++	0x00e, 0x00018c67,
++	0x00f, 0x00000851,
++	0x014, 0x00021440,
++	0x018, 0x00007401,
++	0x019, 0x00000060,
++	0x01d, 0x000a1290,
++	0x023, 0x00001558,
++	0x01a, 0x00030a99,
++	0x01b, 0x00040b00,
++	0x01c, 0x000fc339,
++	0x03a, 0x000a57eb,
++	0x03b, 0x00020000,
++	0x03c, 0x000ff454,
++	0x020, 0x0000aa52,
++	0x021, 0x00054000,
++	0x040, 0x0000aa52,
++	0x041, 0x00014000,
++	0x025, 0x000803be,
++	0x026, 0x000fc638,
++	0x027, 0x00077c18,
++	0x028, 0x000d1c31,
++	0x029, 0x000d7110,
++	0x02a, 0x000aeb04,
++	0x02b, 0x0004128b,
++	0x02c, 0x00001840,
++	0x043, 0x0002444f,
++	0x044, 0x0001adb0,
++	0x045, 0x00056467,
++	0x046, 0x0008992c,
++	0x047, 0x0000452c,
++	0x048, 0x000f9c43,
++	0x049, 0x00002e0c,
++	0x04a, 0x000546eb,
++	0x04b, 0x0008966c,
++	0x04c, 0x0000dde9,
++	0x018, 0x00007401,
++	0x000, 0x00070000,
++	0x012, 0x000dc000,
++	0x012, 0x00090000,
++	0x012, 0x00051000,
++	0x012, 0x00012000,
++	0x013, 0x000287b7,
++	0x013, 0x000247ab,
++	0x013, 0x0002079f,
++	0x013, 0x0001c793,
++	0x013, 0x0001839b,
++	0x013, 0x00014392,
++	0x013, 0x0001019a,
++	0x013, 0x0000c191,
++	0x013, 0x00008194,
++	0x013, 0x000040a0,
++	0x013, 0x00000018,
++	0x015, 0x0000f424,
++	0x015, 0x0004f424,
++	0x015, 0x0008f424,
++	0x016, 0x000e1330,
++	0x016, 0x000a1330,
++	0x016, 0x00061330,
++	0x016, 0x00021330,
++	0x018, 0x00017524,
++	0x000, 0x00070000,
++	0x012, 0x000cf000,
++	0x012, 0x000bc000,
++	0x012, 0x00078000,
++	0x012, 0x00000000,
++	0x013, 0x000287bc,
++	0x013, 0x000247b0,
++	0x013, 0x000203b4,
++	0x013, 0x0001c3a8,
++	0x013, 0x000181b4,
++	0x013, 0x000141a8,
++	0x013, 0x000100b4,
++	0x013, 0x0000c0a8,
++	0x013, 0x0000b030,
++	0x013, 0x00004024,
++	0x013, 0x00000018,
++	0x015, 0x0000f4c3,
++	0x015, 0x0004f4c3,
++	0x015, 0x0008f4c3,
++	0x016, 0x000e085f,
++	0x016, 0x000a085f,
++	0x016, 0x0006085f,
++	0x016, 0x0002085f,
++	0x018, 0x00037524,
++	0x000, 0x00070000,
++	0x012, 0x000cf000,
++	0x012, 0x000bc000,
++	0x012, 0x00078000,
++	0x012, 0x00000000,
++	0x013, 0x000287bc,
++	0x013, 0x000247b0,
++	0x013, 0x000203b4,
++	0x013, 0x0001c3a8,
++	0x013, 0x000181b4,
++	0x013, 0x000141a8,
++	0x013, 0x000100b4,
++	0x013, 0x0000c0a8,
++	0x013, 0x0000b030,
++	0x013, 0x00004024,
++	0x013, 0x00000018,
++	0x015, 0x0000f4c3,
++	0x015, 0x0004f4c3,
++	0x015, 0x0008f4c3,
++	0x016, 0x000e085f,
++	0x016, 0x000a085f,
++	0x016, 0x0006085f,
++	0x016, 0x0002085f,
++	0x018, 0x00057524,
++	0x000, 0x00070000,
++	0x012, 0x000cf000,
++	0x012, 0x000bc000,
++	0x012, 0x00078000,
++	0x012, 0x00000000,
++	0x013, 0x000287bc,
++	0x013, 0x000247b0,
++	0x013, 0x000203b4,
++	0x013, 0x0001c3a8,
++	0x013, 0x000181b4,
++	0x013, 0x000141a8,
++	0x013, 0x000100b4,
++	0x013, 0x0000c0a8,
++	0x013, 0x0000b030,
++	0x013, 0x00004024,
++	0x013, 0x00000018,
++	0x015, 0x0000f4c3,
++	0x015, 0x0004f4c3,
++	0x015, 0x0008f4c3,
++	0x016, 0x000e085f,
++	0x016, 0x000a085f,
++	0x016, 0x0006085f,
++	0x016, 0x0002085f,
++	0x030, 0x0004470f,
++	0x031, 0x00044ff0,
++	0x032, 0x00000070,
++	0x033, 0x000dd480,
++	0x034, 0x000ffac0,
++	0x035, 0x000b80c0,
++	0x036, 0x00077000,
++	0x037, 0x00064ff2,
++	0x038, 0x000e7661,
++	0x039, 0x00000e90,
++	0x000, 0x00030000,
++	0x018, 0x0000f401,
++	0x0fe, 0x00000000,
++	0x0fe, 0x00000000,
++	0x01e, 0x00088009,
++	0x01f, 0x00080003,
++	0x0fe, 0x00000000,
++	0x01e, 0x00088001,
++	0x01f, 0x00080000,
++	0x0fe, 0x00000000,
++	0x018, 0x00087401,
++	0x0fe, 0x00000000,
++	0x0fe, 0x00000000,
++	0x0fe, 0x00000000,
++	0x02b, 0x00041289,
++	0x0fe, 0x00000000,
++	0x02d, 0x00066666,
++	0x02e, 0x00064001,
++	0x02d, 0x00091111,
++	0x02e, 0x00014002,
++	0x02d, 0x000bbbbb,
++	0x02e, 0x000b4003,
++	0x02d, 0x000e6666,
++	0x02e, 0x00064004,
++	0x02d, 0x00088888,
++	0x02e, 0x00084005,
++	0x02d, 0x0009dddd,
++	0x02e, 0x000d4006,
++	0x02d, 0x000b3333,
++	0x02e, 0x00034007,
++	0x02d, 0x00048888,
++	0x02e, 0x00084408,
++	0x02d, 0x000bbbbb,
++	0x02e, 0x000b4409,
++	0x02d, 0x000e6666,
++	0x02e, 0x0006440a,
++	0x02d, 0x00011111,
++	0x02e, 0x0001480b,
++	0x02d, 0x0003bbbb,
++	0x02e, 0x000b480c,
++	0x02d, 0x00066666,
++	0x02e, 0x0006480d,
++	0x02d, 0x000ccccc,
++	0x02e, 0x000c480e,
++};
++
++const u32 rtl8192du_radioa_2t_int_paarray[RADIOA_2T_INT_PA_ARRAYLENGTH] = {
++	0x000, 0x00030000,
++	0x001, 0x00030000,
++	0x002, 0x00000000,
++	0x003, 0x00018c63,
++	0x004, 0x00018c63,
++	0x008, 0x00084000,
++	0x00b, 0x0001c000,
++	0x00e, 0x00018c67,
++	0x00f, 0x00000851,
++	0x014, 0x00021440,
++	0x018, 0x00017524,
++	0x019, 0x00000000,
++	0x01d, 0x000a1290,
++	0x023, 0x00001558,
++	0x01a, 0x00030a99,
++	0x01b, 0x00040b00,
++	0x01c, 0x000fc339,
++	0x03a, 0x000a57eb,
++	0x03b, 0x00020000,
++	0x03c, 0x000ff455,
++	0x020, 0x0000aa52,
++	0x021, 0x00054000,
++	0x040, 0x0000aa52,
++	0x041, 0x00014000,
++	0x025, 0x000803be,
++	0x026, 0x000fc638,
++	0x027, 0x00077c18,
++	0x028, 0x000de471,
++	0x029, 0x000d7110,
++	0x02a, 0x0008eb04,
++	0x02b, 0x0004128b,
++	0x02c, 0x00001840,
++	0x043, 0x0002444f,
++	0x044, 0x0001adb0,
++	0x045, 0x00056467,
++	0x046, 0x0008992c,
++	0x047, 0x0000452c,
++	0x048, 0x000c0443,
++	0x049, 0x00000730,
++	0x04a, 0x00050f0f,
++	0x04b, 0x000896ef,
++	0x04c, 0x0000ddee,
++	0x018, 0x00007401,
++	0x000, 0x00070000,
++	0x012, 0x000dc000,
++	0x012, 0x00090000,
++	0x012, 0x00051000,
++	0x012, 0x00012000,
++	0x013, 0x000287b7,
++	0x013, 0x000247ab,
++	0x013, 0x0002079f,
++	0x013, 0x0001c793,
++	0x013, 0x0001839b,
++	0x013, 0x00014392,
++	0x013, 0x0001019a,
++	0x013, 0x0000c191,
++	0x013, 0x00008194,
++	0x013, 0x000040a0,
++	0x013, 0x00000018,
++	0x015, 0x0000f424,
++	0x015, 0x0004f424,
++	0x015, 0x0008f424,
++	0x016, 0x000e1330,
++	0x016, 0x000a1330,
++	0x016, 0x00061330,
++	0x016, 0x00021330,
++	0x018, 0x00017524,
++	0x000, 0x00070000,
++	0x012, 0x000cf000,
++	0x012, 0x000bc000,
++	0x012, 0x00078000,
++	0x012, 0x00000000,
++	0x013, 0x000287bf,
++	0x013, 0x000247b3,
++	0x013, 0x000207a7,
++	0x013, 0x0001c79b,
++	0x013, 0x0001839f,
++	0x013, 0x00014393,
++	0x013, 0x00010399,
++	0x013, 0x0000c38d,
++	0x013, 0x00008199,
++	0x013, 0x0000418d,
++	0x013, 0x00000099,
++	0x015, 0x0000f495,
++	0x015, 0x0004f495,
++	0x015, 0x0008f495,
++	0x016, 0x000e1874,
++	0x016, 0x000a1874,
++	0x016, 0x00061874,
++	0x016, 0x00021874,
++	0x018, 0x00037564,
++	0x000, 0x00070000,
++	0x012, 0x000cf000,
++	0x012, 0x000bc000,
++	0x012, 0x00078000,
++	0x012, 0x00000000,
++	0x013, 0x000287bf,
++	0x013, 0x000247b3,
++	0x013, 0x000207a7,
++	0x013, 0x0001c79b,
++	0x013, 0x0001839f,
++	0x013, 0x00014393,
++	0x013, 0x00010399,
++	0x013, 0x0000c38d,
++	0x013, 0x00008199,
++	0x013, 0x0000418d,
++	0x013, 0x00000099,
++	0x015, 0x0000f495,
++	0x015, 0x0004f495,
++	0x015, 0x0008f495,
++	0x016, 0x000e1874,
++	0x016, 0x000a1874,
++	0x016, 0x00061874,
++	0x016, 0x00021874,
++	0x018, 0x00057595,
++	0x000, 0x00070000,
++	0x012, 0x000cf000,
++	0x012, 0x000bc000,
++	0x012, 0x00078000,
++	0x012, 0x00000000,
++	0x013, 0x000287bf,
++	0x013, 0x000247b3,
++	0x013, 0x000207a7,
++	0x013, 0x0001c79b,
++	0x013, 0x0001839f,
++	0x013, 0x00014393,
++	0x013, 0x00010399,
++	0x013, 0x0000c38d,
++	0x013, 0x00008199,
++	0x013, 0x0000418d,
++	0x013, 0x00000099,
++	0x015, 0x0000f495,
++	0x015, 0x0004f495,
++	0x015, 0x0008f495,
++	0x016, 0x000e1874,
++	0x016, 0x000a1874,
++	0x016, 0x00061874,
++	0x016, 0x00021874,
++	0x030, 0x0004470f,
++	0x031, 0x00044ff0,
++	0x032, 0x00000070,
++	0x033, 0x000dd480,
++	0x034, 0x000ffac0,
++	0x035, 0x000b80c0,
++	0x036, 0x00077000,
++	0x037, 0x00064ff2,
++	0x038, 0x000e7661,
++	0x039, 0x00000e90,
++	0x000, 0x00030000,
++	0x018, 0x0000f401,
++	0x0fe, 0x00000000,
++	0x0fe, 0x00000000,
++	0x01e, 0x00088009,
++	0x01f, 0x00080003,
++	0x0fe, 0x00000000,
++	0x01e, 0x00088001,
++	0x01f, 0x00080000,
++	0x0fe, 0x00000000,
++	0x018, 0x00097524,
++	0x0fe, 0x00000000,
++	0x0fe, 0x00000000,
++	0x0fe, 0x00000000,
++	0x0fe, 0x00000000,
++	0x02b, 0x00041289,
++	0x0fe, 0x00000000,
++	0x02d, 0x0006aaaa,
++	0x02e, 0x000b4d01,
++	0x02d, 0x00080000,
++	0x02e, 0x00004d02,
++	0x02d, 0x00095555,
++	0x02e, 0x00054d03,
++	0x02d, 0x000aaaaa,
++	0x02e, 0x000b4d04,
++	0x02d, 0x000c0000,
++	0x02e, 0x00004d05,
++	0x02d, 0x000d5555,
++	0x02e, 0x00054d06,
++	0x02d, 0x000eaaaa,
++	0x02e, 0x000b4d07,
++	0x02d, 0x00000000,
++	0x02e, 0x00005108,
++	0x02d, 0x00015555,
++	0x02e, 0x00055109,
++	0x02d, 0x0002aaaa,
++	0x02e, 0x000b510a,
++	0x02d, 0x00040000,
++	0x02e, 0x0000510b,
++	0x02d, 0x00055555,
++	0x02e, 0x0005510c,
++};
++
++const u32 rtl8192du_radiob_2t_int_paarray[RADIOB_2T_INT_PA_ARRAYLENGTH] = {
++	0x000, 0x00030000,
++	0x001, 0x00030000,
++	0x002, 0x00000000,
++	0x003, 0x00018c63,
++	0x004, 0x00018c63,
++	0x008, 0x00084000,
++	0x00b, 0x0001c000,
++	0x00e, 0x00018c67,
++	0x00f, 0x00000851,
++	0x014, 0x00021440,
++	0x018, 0x00007401,
++	0x019, 0x00000060,
++	0x01d, 0x000a1290,
++	0x023, 0x00001558,
++	0x01a, 0x00030a99,
++	0x01b, 0x00040b00,
++	0x01c, 0x000fc339,
++	0x03a, 0x000a57eb,
++	0x03b, 0x00020000,
++	0x03c, 0x000ff455,
++	0x020, 0x0000aa52,
++	0x021, 0x00054000,
++	0x040, 0x0000aa52,
++	0x041, 0x00014000,
++	0x025, 0x000803be,
++	0x026, 0x000fc638,
++	0x027, 0x00077c18,
++	0x028, 0x000d1c31,
++	0x029, 0x000d7110,
++	0x02a, 0x000aeb04,
++	0x02b, 0x0004128b,
++	0x02c, 0x00001840,
++	0x043, 0x0002444f,
++	0x044, 0x0001adb0,
++	0x045, 0x00056467,
++	0x046, 0x0008992c,
++	0x047, 0x0000452c,
++	0x048, 0x000c0443,
++	0x049, 0x00000730,
++	0x04a, 0x00050f0f,
++	0x04b, 0x000896ef,
++	0x04c, 0x0000ddee,
++	0x018, 0x00007401,
++	0x000, 0x00070000,
++	0x012, 0x000dc000,
++	0x012, 0x00090000,
++	0x012, 0x00051000,
++	0x012, 0x00012000,
++	0x013, 0x000287b7,
++	0x013, 0x000247ab,
++	0x013, 0x0002079f,
++	0x013, 0x0001c793,
++	0x013, 0x0001839b,
++	0x013, 0x00014392,
++	0x013, 0x0001019a,
++	0x013, 0x0000c191,
++	0x013, 0x00008194,
++	0x013, 0x000040a0,
++	0x013, 0x00000018,
++	0x015, 0x0000f424,
++	0x015, 0x0004f424,
++	0x015, 0x0008f424,
++	0x016, 0x000e1330,
++	0x016, 0x000a1330,
++	0x016, 0x00061330,
++	0x016, 0x00021330,
++	0x018, 0x00017524,
++	0x000, 0x00070000,
++	0x012, 0x000cf000,
++	0x012, 0x000bc000,
++	0x012, 0x00078000,
++	0x012, 0x00000000,
++	0x013, 0x000287bf,
++	0x013, 0x000247b3,
++	0x013, 0x000207a7,
++	0x013, 0x0001c79b,
++	0x013, 0x0001839f,
++	0x013, 0x00014393,
++	0x013, 0x00010399,
++	0x013, 0x0000c38d,
++	0x013, 0x00008199,
++	0x013, 0x0000418d,
++	0x013, 0x00000099,
++	0x015, 0x0000f495,
++	0x015, 0x0004f495,
++	0x015, 0x0008f495,
++	0x016, 0x000e1874,
++	0x016, 0x000a1874,
++	0x016, 0x00061874,
++	0x016, 0x00021874,
++	0x018, 0x00037564,
++	0x000, 0x00070000,
++	0x012, 0x000cf000,
++	0x012, 0x000bc000,
++	0x012, 0x00078000,
++	0x012, 0x00000000,
++	0x013, 0x000287bf,
++	0x013, 0x000247b3,
++	0x013, 0x000207a7,
++	0x013, 0x0001c79b,
++	0x013, 0x0001839f,
++	0x013, 0x00014393,
++	0x013, 0x00010399,
++	0x013, 0x0000c38d,
++	0x013, 0x00008199,
++	0x013, 0x0000418d,
++	0x013, 0x00000099,
++	0x015, 0x0000f495,
++	0x015, 0x0004f495,
++	0x015, 0x0008f495,
++	0x016, 0x000e1874,
++	0x016, 0x000a1874,
++	0x016, 0x00061874,
++	0x016, 0x00021874,
++	0x018, 0x00057595,
++	0x000, 0x00070000,
++	0x012, 0x000cf000,
++	0x012, 0x000bc000,
++	0x012, 0x00078000,
++	0x012, 0x00000000,
++	0x013, 0x000287bf,
++	0x013, 0x000247b3,
++	0x013, 0x000207a7,
++	0x013, 0x0001c79b,
++	0x013, 0x0001839f,
++	0x013, 0x00014393,
++	0x013, 0x00010399,
++	0x013, 0x0000c38d,
++	0x013, 0x00008199,
++	0x013, 0x0000418d,
++	0x013, 0x00000099,
++	0x015, 0x0000f495,
++	0x015, 0x0004f495,
++	0x015, 0x0008f495,
++	0x016, 0x000e1874,
++	0x016, 0x000a1874,
++	0x016, 0x00061874,
++	0x016, 0x00021874,
++	0x030, 0x0004470f,
++	0x031, 0x00044ff0,
++	0x032, 0x00000070,
++	0x033, 0x000dd480,
++	0x034, 0x000ffac0,
++	0x035, 0x000b80c0,
++	0x036, 0x00077000,
++	0x037, 0x00064ff2,
++	0x038, 0x000e7661,
++	0x039, 0x00000e90,
++	0x000, 0x00030000,
++	0x018, 0x0000f401,
++	0x0fe, 0x00000000,
++	0x0fe, 0x00000000,
++	0x01e, 0x00088009,
++	0x01f, 0x00080003,
++	0x0fe, 0x00000000,
++	0x01e, 0x00088001,
++	0x01f, 0x00080000,
++	0x0fe, 0x00000000,
++	0x018, 0x00087401,
++	0x0fe, 0x00000000,
++	0x0fe, 0x00000000,
++	0x0fe, 0x00000000,
++	0x02b, 0x00041289,
++	0x0fe, 0x00000000,
++	0x02d, 0x00066666,
++	0x02e, 0x00064001,
++	0x02d, 0x00091111,
++	0x02e, 0x00014002,
++	0x02d, 0x000bbbbb,
++	0x02e, 0x000b4003,
++	0x02d, 0x000e6666,
++	0x02e, 0x00064004,
++	0x02d, 0x00088888,
++	0x02e, 0x00084005,
++	0x02d, 0x0009dddd,
++	0x02e, 0x000d4006,
++	0x02d, 0x000b3333,
++	0x02e, 0x00034007,
++	0x02d, 0x00048888,
++	0x02e, 0x00084408,
++	0x02d, 0x000bbbbb,
++	0x02e, 0x000b4409,
++	0x02d, 0x000e6666,
++	0x02e, 0x0006440a,
++	0x02d, 0x00011111,
++	0x02e, 0x0001480b,
++	0x02d, 0x0003bbbb,
++	0x02e, 0x000b480c,
++	0x02d, 0x00066666,
++	0x02e, 0x0006480d,
++	0x02d, 0x000ccccc,
++	0x02e, 0x000c480e,
++};
++
++const u32 rtl8192du_mac_2tarray[MAC_2T_ARRAYLENGTH] = {
++	0x420, 0x00000080,
++	0x423, 0x00000000,
++	0x430, 0x00000000,
++	0x431, 0x00000000,
++	0x432, 0x00000000,
++	0x433, 0x00000001,
++	0x434, 0x00000004,
++	0x435, 0x00000005,
++	0x436, 0x00000006,
++	0x437, 0x00000007,
++	0x438, 0x00000000,
++	0x439, 0x00000000,
++	0x43a, 0x00000000,
++	0x43b, 0x00000001,
++	0x43c, 0x00000004,
++	0x43d, 0x00000005,
++	0x43e, 0x00000006,
++	0x43f, 0x00000007,
++	0x440, 0x00000050,
++	0x441, 0x00000001,
++	0x442, 0x00000000,
++	0x444, 0x00000015,
++	0x445, 0x000000f0,
++	0x446, 0x0000000f,
++	0x447, 0x00000000,
++	0x462, 0x00000008,
++	0x463, 0x00000003,
++	0x4c8, 0x000000ff,
++	0x4c9, 0x00000008,
++	0x4cc, 0x000000ff,
++	0x4cd, 0x000000ff,
++	0x4ce, 0x00000001,
++	0x500, 0x00000026,
++	0x501, 0x000000a2,
++	0x502, 0x0000002f,
++	0x503, 0x00000000,
++	0x504, 0x00000028,
++	0x505, 0x000000a3,
++	0x506, 0x0000005e,
++	0x507, 0x00000000,
++	0x508, 0x0000002b,
++	0x509, 0x000000a4,
++	0x50a, 0x0000005e,
++	0x50b, 0x00000000,
++	0x50c, 0x0000004f,
++	0x50d, 0x000000a4,
++	0x50e, 0x00000000,
++	0x50f, 0x00000000,
++	0x512, 0x0000001c,
++	0x514, 0x0000000a,
++	0x515, 0x00000010,
++	0x516, 0x0000000a,
++	0x517, 0x00000010,
++	0x51a, 0x00000016,
++	0x524, 0x0000000f,
++	0x525, 0x0000004f,
++	0x546, 0x00000040,
++	0x547, 0x00000000,
++	0x550, 0x00000010,
++	0x551, 0x00000010,
++	0x559, 0x00000002,
++	0x55a, 0x00000002,
++	0x55d, 0x000000ff,
++	0x605, 0x00000080,
++	0x608, 0x0000000e,
++	0x609, 0x0000002a,
++	0x652, 0x00000020,
++	0x63c, 0x0000000a,
++	0x63d, 0x0000000a,
++	0x63e, 0x0000000e,
++	0x63f, 0x0000000e,
++	0x66e, 0x00000005,
++	0x700, 0x00000021,
++	0x701, 0x00000043,
++	0x702, 0x00000065,
++	0x703, 0x00000087,
++	0x708, 0x00000021,
++	0x709, 0x00000043,
++	0x70a, 0x00000065,
++	0x70b, 0x00000087,
++	0x024, 0x0000000d,
++	0x025, 0x00000080,
++	0x026, 0x00000011,
++	0x027, 0x00000000,
++	0x028, 0x00000083,
++	0x029, 0x000000db,
++	0x02a, 0x000000ff,
++	0x02b, 0x00000000,
++	0x014, 0x00000055,
++	0x015, 0x000000a9,
++	0x016, 0x0000008b,
++	0x017, 0x00000008,
++	0x010, 0x00000003,
++	0x011, 0x0000002b,
++	0x012, 0x00000002,
++	0x013, 0x00000049,
++};
++
++const u32 rtl8192du_agctab_array[AGCTAB_ARRAYLENGTH] = {
++	0xc78, 0x7b000001,
++	0xc78, 0x7b010001,
++	0xc78, 0x7b020001,
++	0xc78, 0x7b030001,
++	0xc78, 0x7b040001,
++	0xc78, 0x7b050001,
++	0xc78, 0x7b060001,
++	0xc78, 0x7a070001,
++	0xc78, 0x79080001,
++	0xc78, 0x78090001,
++	0xc78, 0x770a0001,
++	0xc78, 0x760b0001,
++	0xc78, 0x750c0001,
++	0xc78, 0x740d0001,
++	0xc78, 0x730e0001,
++	0xc78, 0x720f0001,
++	0xc78, 0x71100001,
++	0xc78, 0x70110001,
++	0xc78, 0x6f120001,
++	0xc78, 0x6e130001,
++	0xc78, 0x6d140001,
++	0xc78, 0x6c150001,
++	0xc78, 0x6b160001,
++	0xc78, 0x6a170001,
++	0xc78, 0x69180001,
++	0xc78, 0x68190001,
++	0xc78, 0x671a0001,
++	0xc78, 0x661b0001,
++	0xc78, 0x651c0001,
++	0xc78, 0x641d0001,
++	0xc78, 0x631e0001,
++	0xc78, 0x621f0001,
++	0xc78, 0x61200001,
++	0xc78, 0x60210001,
++	0xc78, 0x49220001,
++	0xc78, 0x48230001,
++	0xc78, 0x47240001,
++	0xc78, 0x46250001,
++	0xc78, 0x45260001,
++	0xc78, 0x44270001,
++	0xc78, 0x43280001,
++	0xc78, 0x42290001,
++	0xc78, 0x412a0001,
++	0xc78, 0x402b0001,
++	0xc78, 0x262c0001,
++	0xc78, 0x252d0001,
++	0xc78, 0x242e0001,
++	0xc78, 0x232f0001,
++	0xc78, 0x22300001,
++	0xc78, 0x21310001,
++	0xc78, 0x20320001,
++	0xc78, 0x06330001,
++	0xc78, 0x05340001,
++	0xc78, 0x04350001,
++	0xc78, 0x03360001,
++	0xc78, 0x02370001,
++	0xc78, 0x01380001,
++	0xc78, 0x00390001,
++	0xc78, 0x003a0001,
++	0xc78, 0x003b0001,
++	0xc78, 0x003c0001,
++	0xc78, 0x003d0001,
++	0xc78, 0x003e0001,
++	0xc78, 0x003f0001,
++	0xc78, 0x7b400001,
++	0xc78, 0x7b410001,
++	0xc78, 0x7a420001,
++	0xc78, 0x79430001,
++	0xc78, 0x78440001,
++	0xc78, 0x77450001,
++	0xc78, 0x76460001,
++	0xc78, 0x75470001,
++	0xc78, 0x74480001,
++	0xc78, 0x73490001,
++	0xc78, 0x724a0001,
++	0xc78, 0x714b0001,
++	0xc78, 0x704c0001,
++	0xc78, 0x6f4d0001,
++	0xc78, 0x6e4e0001,
++	0xc78, 0x6d4f0001,
++	0xc78, 0x6c500001,
++	0xc78, 0x6b510001,
++	0xc78, 0x6a520001,
++	0xc78, 0x69530001,
++	0xc78, 0x68540001,
++	0xc78, 0x67550001,
++	0xc78, 0x66560001,
++	0xc78, 0x65570001,
++	0xc78, 0x64580001,
++	0xc78, 0x63590001,
++	0xc78, 0x625a0001,
++	0xc78, 0x615b0001,
++	0xc78, 0x605c0001,
++	0xc78, 0x485d0001,
++	0xc78, 0x475e0001,
++	0xc78, 0x465f0001,
++	0xc78, 0x45600001,
++	0xc78, 0x44610001,
++	0xc78, 0x43620001,
++	0xc78, 0x42630001,
++	0xc78, 0x41640001,
++	0xc78, 0x40650001,
++	0xc78, 0x27660001,
++	0xc78, 0x26670001,
++	0xc78, 0x25680001,
++	0xc78, 0x24690001,
++	0xc78, 0x236a0001,
++	0xc78, 0x226b0001,
++	0xc78, 0x216c0001,
++	0xc78, 0x206d0001,
++	0xc78, 0x206e0001,
++	0xc78, 0x206f0001,
++	0xc78, 0x20700001,
++	0xc78, 0x20710001,
++	0xc78, 0x20720001,
++	0xc78, 0x20730001,
++	0xc78, 0x20740001,
++	0xc78, 0x20750001,
++	0xc78, 0x20760001,
++	0xc78, 0x20770001,
++	0xc78, 0x20780001,
++	0xc78, 0x20790001,
++	0xc78, 0x207a0001,
++	0xc78, 0x207b0001,
++	0xc78, 0x207c0001,
++	0xc78, 0x207d0001,
++	0xc78, 0x207e0001,
++	0xc78, 0x207f0001,
++	0xc78, 0x38000002,
++	0xc78, 0x38010002,
++	0xc78, 0x38020002,
++	0xc78, 0x38030002,
++	0xc78, 0x38040002,
++	0xc78, 0x38050002,
++	0xc78, 0x38060002,
++	0xc78, 0x38070002,
++	0xc78, 0x38080002,
++	0xc78, 0x3c090002,
++	0xc78, 0x3e0a0002,
++	0xc78, 0x400b0002,
++	0xc78, 0x440c0002,
++	0xc78, 0x480d0002,
++	0xc78, 0x4c0e0002,
++	0xc78, 0x500f0002,
++	0xc78, 0x52100002,
++	0xc78, 0x56110002,
++	0xc78, 0x5a120002,
++	0xc78, 0x5e130002,
++	0xc78, 0x60140002,
++	0xc78, 0x60150002,
++	0xc78, 0x60160002,
++	0xc78, 0x62170002,
++	0xc78, 0x62180002,
++	0xc78, 0x62190002,
++	0xc78, 0x621a0002,
++	0xc78, 0x621b0002,
++	0xc78, 0x621c0002,
++	0xc78, 0x621d0002,
++	0xc78, 0x621e0002,
++	0xc78, 0x621f0002,
++	0xc78, 0x32000044,
++	0xc78, 0x32010044,
++	0xc78, 0x32020044,
++	0xc78, 0x32030044,
++	0xc78, 0x32040044,
++	0xc78, 0x32050044,
++	0xc78, 0x32060044,
++	0xc78, 0x34070044,
++	0xc78, 0x35080044,
++	0xc78, 0x36090044,
++	0xc78, 0x370a0044,
++	0xc78, 0x380b0044,
++	0xc78, 0x390c0044,
++	0xc78, 0x3a0d0044,
++	0xc78, 0x3e0e0044,
++	0xc78, 0x420f0044,
++	0xc78, 0x44100044,
++	0xc78, 0x46110044,
++	0xc78, 0x4a120044,
++	0xc78, 0x4e130044,
++	0xc78, 0x50140044,
++	0xc78, 0x55150044,
++	0xc78, 0x5a160044,
++	0xc78, 0x5e170044,
++	0xc78, 0x64180044,
++	0xc78, 0x6e190044,
++	0xc78, 0x6e1a0044,
++	0xc78, 0x6e1b0044,
++	0xc78, 0x6e1c0044,
++	0xc78, 0x6e1d0044,
++	0xc78, 0x6e1e0044,
++	0xc78, 0x6e1f0044,
++	0xc78, 0x6e1f0000,
++};
++
++const u32 rtl8192du_agctab_5garray[AGCTAB_5G_ARRAYLENGTH] = {
++	0xc78, 0x7b000001,
++	0xc78, 0x7b010001,
++	0xc78, 0x7a020001,
++	0xc78, 0x79030001,
++	0xc78, 0x78040001,
++	0xc78, 0x77050001,
++	0xc78, 0x76060001,
++	0xc78, 0x75070001,
++	0xc78, 0x74080001,
++	0xc78, 0x73090001,
++	0xc78, 0x720a0001,
++	0xc78, 0x710b0001,
++	0xc78, 0x700c0001,
++	0xc78, 0x6f0d0001,
++	0xc78, 0x6e0e0001,
++	0xc78, 0x6d0f0001,
++	0xc78, 0x6c100001,
++	0xc78, 0x6b110001,
++	0xc78, 0x6a120001,
++	0xc78, 0x69130001,
++	0xc78, 0x68140001,
++	0xc78, 0x67150001,
++	0xc78, 0x66160001,
++	0xc78, 0x65170001,
++	0xc78, 0x64180001,
++	0xc78, 0x63190001,
++	0xc78, 0x621a0001,
++	0xc78, 0x611b0001,
++	0xc78, 0x601c0001,
++	0xc78, 0x481d0001,
++	0xc78, 0x471e0001,
++	0xc78, 0x461f0001,
++	0xc78, 0x45200001,
++	0xc78, 0x44210001,
++	0xc78, 0x43220001,
++	0xc78, 0x42230001,
++	0xc78, 0x41240001,
++	0xc78, 0x40250001,
++	0xc78, 0x27260001,
++	0xc78, 0x26270001,
++	0xc78, 0x25280001,
++	0xc78, 0x24290001,
++	0xc78, 0x232a0001,
++	0xc78, 0x222b0001,
++	0xc78, 0x212c0001,
++	0xc78, 0x202d0001,
++	0xc78, 0x202e0001,
++	0xc78, 0x202f0001,
++	0xc78, 0x20300001,
++	0xc78, 0x20310001,
++	0xc78, 0x20320001,
++	0xc78, 0x20330001,
++	0xc78, 0x20340001,
++	0xc78, 0x20350001,
++	0xc78, 0x20360001,
++	0xc78, 0x20370001,
++	0xc78, 0x20380001,
++	0xc78, 0x20390001,
++	0xc78, 0x203a0001,
++	0xc78, 0x203b0001,
++	0xc78, 0x203c0001,
++	0xc78, 0x203d0001,
++	0xc78, 0x203e0001,
++	0xc78, 0x203f0001,
++	0xc78, 0x32000044,
++	0xc78, 0x32010044,
++	0xc78, 0x32020044,
++	0xc78, 0x32030044,
++	0xc78, 0x32040044,
++	0xc78, 0x32050044,
++	0xc78, 0x32060044,
++	0xc78, 0x34070044,
++	0xc78, 0x35080044,
++	0xc78, 0x36090044,
++	0xc78, 0x370a0044,
++	0xc78, 0x380b0044,
++	0xc78, 0x390c0044,
++	0xc78, 0x3a0d0044,
++	0xc78, 0x3e0e0044,
++	0xc78, 0x420f0044,
++	0xc78, 0x44100044,
++	0xc78, 0x46110044,
++	0xc78, 0x4a120044,
++	0xc78, 0x4e130044,
++	0xc78, 0x50140044,
++	0xc78, 0x55150044,
++	0xc78, 0x5a160044,
++	0xc78, 0x5e170044,
++	0xc78, 0x64180044,
++	0xc78, 0x6e190044,
++	0xc78, 0x6e1a0044,
++	0xc78, 0x6e1b0044,
++	0xc78, 0x6e1c0044,
++	0xc78, 0x6e1d0044,
++	0xc78, 0x6e1e0044,
++	0xc78, 0x6e1f0044,
++	0xc78, 0x6e1f0000,
++};
++
++const u32 rtl8192du_agctab_2garray[AGCTAB_2G_ARRAYLENGTH] = {
++	0xc78, 0x7b000001,
++	0xc78, 0x7b010001,
++	0xc78, 0x7b020001,
++	0xc78, 0x7b030001,
++	0xc78, 0x7b040001,
++	0xc78, 0x7b050001,
++	0xc78, 0x7b060001,
++	0xc78, 0x7a070001,
++	0xc78, 0x79080001,
++	0xc78, 0x78090001,
++	0xc78, 0x770a0001,
++	0xc78, 0x760b0001,
++	0xc78, 0x750c0001,
++	0xc78, 0x740d0001,
++	0xc78, 0x730e0001,
++	0xc78, 0x720f0001,
++	0xc78, 0x71100001,
++	0xc78, 0x70110001,
++	0xc78, 0x6f120001,
++	0xc78, 0x6e130001,
++	0xc78, 0x6d140001,
++	0xc78, 0x6c150001,
++	0xc78, 0x6b160001,
++	0xc78, 0x6a170001,
++	0xc78, 0x69180001,
++	0xc78, 0x68190001,
++	0xc78, 0x671a0001,
++	0xc78, 0x661b0001,
++	0xc78, 0x651c0001,
++	0xc78, 0x641d0001,
++	0xc78, 0x631e0001,
++	0xc78, 0x621f0001,
++	0xc78, 0x61200001,
++	0xc78, 0x60210001,
++	0xc78, 0x49220001,
++	0xc78, 0x48230001,
++	0xc78, 0x47240001,
++	0xc78, 0x46250001,
++	0xc78, 0x45260001,
++	0xc78, 0x44270001,
++	0xc78, 0x43280001,
++	0xc78, 0x42290001,
++	0xc78, 0x412a0001,
++	0xc78, 0x402b0001,
++	0xc78, 0x262c0001,
++	0xc78, 0x252d0001,
++	0xc78, 0x242e0001,
++	0xc78, 0x232f0001,
++	0xc78, 0x22300001,
++	0xc78, 0x21310001,
++	0xc78, 0x20320001,
++	0xc78, 0x06330001,
++	0xc78, 0x05340001,
++	0xc78, 0x04350001,
++	0xc78, 0x03360001,
++	0xc78, 0x02370001,
++	0xc78, 0x01380001,
++	0xc78, 0x00390001,
++	0xc78, 0x003a0001,
++	0xc78, 0x003b0001,
++	0xc78, 0x003c0001,
++	0xc78, 0x003d0001,
++	0xc78, 0x003e0001,
++	0xc78, 0x003f0001,
++	0xc78, 0x38000002,
++	0xc78, 0x38010002,
++	0xc78, 0x38020002,
++	0xc78, 0x38030002,
++	0xc78, 0x38040002,
++	0xc78, 0x38050002,
++	0xc78, 0x38060002,
++	0xc78, 0x38070002,
++	0xc78, 0x38080002,
++	0xc78, 0x3c090002,
++	0xc78, 0x3e0a0002,
++	0xc78, 0x400b0002,
++	0xc78, 0x440c0002,
++	0xc78, 0x480d0002,
++	0xc78, 0x4c0e0002,
++	0xc78, 0x500f0002,
++	0xc78, 0x52100002,
++	0xc78, 0x56110002,
++	0xc78, 0x5a120002,
++	0xc78, 0x5e130002,
++	0xc78, 0x60140002,
++	0xc78, 0x60150002,
++	0xc78, 0x60160002,
++	0xc78, 0x62170002,
++	0xc78, 0x62180002,
++	0xc78, 0x62190002,
++	0xc78, 0x621a0002,
++	0xc78, 0x621b0002,
++	0xc78, 0x621c0002,
++	0xc78, 0x621d0002,
++	0xc78, 0x621e0002,
++	0xc78, 0x621f0002,
++	0xc78, 0x6e1f0000,
++};
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.h
+new file mode 100644
+index 000000000000..b809ba511320
+--- /dev/null
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.h
+@@ -0,0 +1,29 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright(c) 2024  Realtek Corporation.*/
++
++#ifndef __RTL92DU_TABLE_H__
++#define __RTL92DU_TABLE_H__
++
++#define PHY_REG_2T_ARRAYLENGTH 372
++#define PHY_REG_ARRAY_PG_LENGTH 624
++#define RADIOA_2T_ARRAYLENGTH 378
++#define RADIOB_2T_ARRAYLENGTH 384
++#define RADIOA_2T_INT_PA_ARRAYLENGTH 378
++#define RADIOB_2T_INT_PA_ARRAYLENGTH 384
++#define MAC_2T_ARRAYLENGTH 192
++#define AGCTAB_ARRAYLENGTH 386
++#define AGCTAB_5G_ARRAYLENGTH 194
++#define AGCTAB_2G_ARRAYLENGTH 194
++
++extern const u32 rtl8192du_phy_reg_2tarray[PHY_REG_2T_ARRAYLENGTH];
++extern const u32 rtl8192du_phy_reg_array_pg[PHY_REG_ARRAY_PG_LENGTH];
++extern const u32 rtl8192du_radioa_2tarray[RADIOA_2T_ARRAYLENGTH];
++extern const u32 rtl8192du_radiob_2tarray[RADIOB_2T_ARRAYLENGTH];
++extern const u32 rtl8192du_radioa_2t_int_paarray[RADIOA_2T_INT_PA_ARRAYLENGTH];
++extern const u32 rtl8192du_radiob_2t_int_paarray[RADIOB_2T_INT_PA_ARRAYLENGTH];
++extern const u32 rtl8192du_mac_2tarray[MAC_2T_ARRAYLENGTH];
++extern const u32 rtl8192du_agctab_array[AGCTAB_ARRAYLENGTH];
++extern const u32 rtl8192du_agctab_5garray[AGCTAB_5G_ARRAYLENGTH];
++extern const u32 rtl8192du_agctab_2garray[AGCTAB_2G_ARRAYLENGTH];
++
++#endif
 -- 
 2.45.1
 
