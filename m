@@ -1,33 +1,33 @@
-Return-Path: <linux-wireless+bounces-7993-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7994-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B941A8CCFD6
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 12:02:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A49B8CCFDB
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 12:04:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43F8C1F23750
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 10:02:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E0A71C20F19
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 10:04:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1218054FA9;
-	Thu, 23 May 2024 10:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2BA13D2A8;
+	Thu, 23 May 2024 10:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Ls6OhkrR"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="VtmCJ/mv"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03DA2140E2F
-	for <linux-wireless@vger.kernel.org>; Thu, 23 May 2024 10:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C59313CA99
+	for <linux-wireless@vger.kernel.org>; Thu, 23 May 2024 10:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716458555; cv=none; b=lQYsrsBEr3pZ6maVb/eX3BwJJkD0qbfKsgojft5Ff7O70ghszUjb3drVQhe6z1okW2LYrrs8cYMVfgWl0qX2HqjAbMq7koSs+HmDdmxF5UDMseTecAcmquBHFDH0Go/BlsnSazzDc951DCMQ6BnqUT49IO4EVfM80/pP1EOyTfc=
+	t=1716458639; cv=none; b=ioFXMpEBydcBpz3TxleZnunfSWzmEjUFF7f4ilFxgPvS0AT7NifjbSSBAIZeBFJTdSy48566k1dmvkGXQNnRlepTRop4LroDbUexW2FaTn4GABEMZDSLWrv3mUbZ+P2fieJzys9DXhYuKKVRmSl2kUXKOh1kk6lw6/ACDxtSdB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716458555; c=relaxed/simple;
-	bh=Fb/GDrrb5YDlChX1l/pAMKDPVmFrW4GmcbUrYUA5MV0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i7x+5vpBpqc5UvW0FeRRTfIwza5LNFrZeDihI7o2OQP2vWOI8pxlECMEVk+h9Ja1YA+D0bk+HjogFxIYYHLdVmmUPOVrtnSG6JOmK47dQFYcuP74Tn6D8biKBGLSS69iQPkm4ovUCjsohFCusNNKbOzUpCeLLlAXH7zM0puCs2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Ls6OhkrR; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1716458639; c=relaxed/simple;
+	bh=P7962Bbz7IDd0BSPZEWS+AgDkYw+Rd/Hyk79fKdOK2g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Qj3NuuiwS4FQoyn2N66BUVATr00NBt6+itbjFwrZwAAOe0kKmimcHtCyZhmvQ7TixXnh3xflUDd4A9+awePEu1obYruC6iNyLyP8cn0N8aF8V1tHaD4RK7Gkdxd+Df0XnseVB5+3C7mN0XVzZ8go2FuXnZnMFqWiaxuV00e2XaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=VtmCJ/mv; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -35,24 +35,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
 	Resent-Message-ID:In-Reply-To:References;
-	bh=3sFuL6EXuKeZOXi46aeHAxIwdxLecnUA8C5c1f/Q2V4=; t=1716458553; x=1717668153; 
-	b=Ls6OhkrR5blxO4I2TN4D6f/aqqGJCoEiGvvhCa/V/wzUXoB43gtIOfcIei9y1u8XN6d4tVbUOPA
-	EjdqI3LoTosDe5TKZaQbtvX3y+K33t5F4ZXs+Do9n6pUMTNqp9CiDk8f534XVEjD6bfqqYZrOWxDD
-	AxKZuKBa5ZfJGUWk5DlSVaEGnaYHNPQ/jK2z3/JX+47LlKYD1YdAJDM7vv3em1gZtGWJzMeHUFK5i
-	HK/D2Y3sAkUwuvyxwOjAWZVGv1iBm0RqN7G9jgeQJBCgCo1lrQnlQ78RYBAFWmbuVk5AzZJ+MYLwA
-	rfen92UUMXA16c+vVeYZnDcukAizMLKoXu5w==;
+	bh=NdNhGoVC59EX2cDSkBO16q5+J1dp5xpqAxyeGe+9zz4=; t=1716458637; x=1717668237; 
+	b=VtmCJ/mvrRuV3V4vjpiihwkVmI2fK2U8IiV8h1+GJ1n+b+USlT4FSnXNQqf/1lfX3ux/tmdh3J4
+	tw4NBVfBwDSm0jIwteCEwi5sGyET4fQsx8OrI5mSQRGgK5KLri6eAchTpcgaLEa8GnLLmnLGXcF7Z
+	1wgrbxH0otTMPaqAx7jjDZJdAIqXKOwW+L7QAomSI2BU7GQxP8k/dRDKmgDc0SYC7uA7dnM4uFbKR
+	JgzXxqxmMPu46EsCIVAaY5xYTZ3vOBK4atsKHST+Oc9JoCdrUaom8SrDMZykj4GJF0yD4t+kJ5Fvw
+	8zPazlBRXqAA8IwVOoTCGL1Uq4w3B8MOYuOQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1sA5HH-00000005w2X-45Kb;
-	Thu, 23 May 2024 12:02:28 +0200
+	id 1sA5Ig-00000005wEj-0DMk;
+	Thu, 23 May 2024 12:03:54 +0200
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>,
 	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH v2] wifi: nl80211: clean up coalescing rule handling
-Date: Thu, 23 May 2024 12:02:13 +0200
-Message-ID: <20240523120213.48a40cfb96f9.Ia02bf8f8fefbf533c64c5fa26175848d4a3a7899@changeid>
+Subject: [PATCH] wifi: mac80211: handle HW restart during ROC
+Date: Thu, 23 May 2024 12:03:52 +0200
+Message-ID: <20240523120352.f1924b5411ea.Ifc02a45a5ce23868dc7e428bad8d0e6996dd10f4@changeid>
 X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -64,181 +64,112 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-There's no need to allocate a tiny struct and then
-an array again, just allocate the two together and
-use __counted_by(). Also unify the freeing.
+If we have a HW restart in the middle of a ROC period,
+then there are two cases:
+ - if it's a software ROC, we really don't need to do
+   anything, since the ROC work will still be queued
+   and will run later, albeit with the interruption
+   due to the restart;
+ - if it's a hardware ROC, then it may have begun or
+   not, if it did begin already we can only remove it
+   and tell userspace about that.
+
+In both cases, this fixes the warning that would appear
+in ieee80211_start_next_roc() in this case.
+
+In the case of some drivers such as iwlwifi, the part of
+restarting is never going to happen since the driver will
+cancel the ROC, but flushing the work to ensure nothing
+is pending here will also result in no longer being able
+to trigger the warning in this case.
 
 Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
-v2: don't free embedded rules
----
- include/net/cfg80211.h |  2 +-
- net/wireless/core.c    |  3 ++-
- net/wireless/nl80211.c | 47 ++++++++++++++----------------------------
- net/wireless/nl80211.h |  4 ++--
- 4 files changed, 21 insertions(+), 35 deletions(-)
+ net/mac80211/ieee80211_i.h |  1 +
+ net/mac80211/offchannel.c  | 35 ++++++++++++++++++++++++++++++++++-
+ net/mac80211/util.c        |  3 +--
+ 3 files changed, 36 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index d79180bec7a1..5da9bb0ac6a4 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -3566,8 +3566,8 @@ struct cfg80211_coalesce_rules {
-  * @n_rules: number of rules
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 76965d64a0fa..3fd7b1adbfab 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1978,6 +1978,7 @@ void ieee80211_offchannel_stop_vifs(struct ieee80211_local *local);
+ void ieee80211_offchannel_return(struct ieee80211_local *local);
+ void ieee80211_roc_setup(struct ieee80211_local *local);
+ void ieee80211_start_next_roc(struct ieee80211_local *local);
++void ieee80211_reconfig_roc(struct ieee80211_local *local);
+ void ieee80211_roc_purge(struct ieee80211_local *local,
+ 			 struct ieee80211_sub_if_data *sdata);
+ int ieee80211_remain_on_channel(struct wiphy *wiphy, struct wireless_dev *wdev,
+diff --git a/net/mac80211/offchannel.c b/net/mac80211/offchannel.c
+index 65e1e9e971fd..28d03196ef75 100644
+--- a/net/mac80211/offchannel.c
++++ b/net/mac80211/offchannel.c
+@@ -8,7 +8,7 @@
+  * Copyright 2006-2007	Jiri Benc <jbenc@suse.cz>
+  * Copyright 2007, Michael Wu <flamingice@sourmilk.net>
+  * Copyright 2009	Johannes Berg <johannes@sipsolutions.net>
+- * Copyright (C) 2019, 2022-2023 Intel Corporation
++ * Copyright (C) 2019, 2022-2024 Intel Corporation
   */
- struct cfg80211_coalesce {
--	struct cfg80211_coalesce_rules *rules;
- 	int n_rules;
-+	struct cfg80211_coalesce_rules rules[] __counted_by(n_rules);
- };
- 
- /**
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 61f7cd8a8e9c..7c35349b9596 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -1145,7 +1145,8 @@ void wiphy_unregister(struct wiphy *wiphy)
- 	flush_work(&rdev->background_cac_abort_wk);
- 
- 	cfg80211_rdev_free_wowlan(rdev);
--	cfg80211_rdev_free_coalesce(rdev);
-+	cfg80211_free_coalesce(rdev->coalesce);
-+	rdev->coalesce = NULL;
- }
- EXPORT_SYMBOL(wiphy_unregister);
- 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 6ba988a6f5a2..8ff5f79d446a 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -13897,9 +13897,8 @@ static int nl80211_get_coalesce(struct sk_buff *skb, struct genl_info *info)
- 	return -ENOBUFS;
+ #include <linux/export.h>
+ #include <net/mac80211.h>
+@@ -413,6 +413,39 @@ void ieee80211_start_next_roc(struct ieee80211_local *local)
+ 	}
  }
  
--void cfg80211_rdev_free_coalesce(struct cfg80211_registered_device *rdev)
-+void cfg80211_free_coalesce(struct cfg80211_coalesce *coalesce)
- {
--	struct cfg80211_coalesce *coalesce = rdev->coalesce;
- 	int i, j;
- 	struct cfg80211_coalesce_rules *rule;
- 
-@@ -13908,13 +13907,13 @@ void cfg80211_rdev_free_coalesce(struct cfg80211_registered_device *rdev)
- 
- 	for (i = 0; i < coalesce->n_rules; i++) {
- 		rule = &coalesce->rules[i];
-+		if (!rule)
++void ieee80211_reconfig_roc(struct ieee80211_local *local)
++{
++	struct ieee80211_roc_work *roc, *tmp;
++
++	/*
++	 * In the software implementation can just continue with the
++	 * interruption due to reconfig, roc_work is still queued if
++	 * needed.
++	 */
++	if (!local->ops->remain_on_channel)
++		return;
++
++	/* flush work so nothing from the driver is still pending */
++	wiphy_work_flush(local->hw.wiphy, &local->hw_roc_start);
++	wiphy_work_flush(local->hw.wiphy, &local->hw_roc_done);
++
++	list_for_each_entry_safe(roc, tmp, &local->roc_list, list) {
++		if (!roc->started)
++			break;
++
++		if (!roc->hw_begun) {
++			/* it didn't start in HW yet, so we can restart it */
++			roc->started = false;
 +			continue;
- 		for (j = 0; j < rule->n_patterns; j++)
- 			kfree(rule->patterns[j].mask);
- 		kfree(rule->patterns);
- 	}
--	kfree(coalesce->rules);
- 	kfree(coalesce);
--	rdev->coalesce = NULL;
- }
- 
- static int nl80211_parse_coalesce_rule(struct cfg80211_registered_device *rdev,
-@@ -14012,17 +14011,16 @@ static int nl80211_set_coalesce(struct sk_buff *skb, struct genl_info *info)
++		}
++
++		/* otherwise destroy it and tell userspace */
++		ieee80211_roc_notify_destroy(roc);
++	}
++
++	ieee80211_start_next_roc(local);
++}
++
+ static void __ieee80211_roc_work(struct ieee80211_local *local)
  {
- 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
- 	const struct wiphy_coalesce_support *coalesce = rdev->wiphy.coalesce;
--	struct cfg80211_coalesce new_coalesce = {};
--	struct cfg80211_coalesce *n_coalesce;
--	int err, rem_rule, n_rules = 0, i, j;
-+	struct cfg80211_coalesce *new_coalesce;
-+	int err, rem_rule, n_rules = 0, i;
- 	struct nlattr *rule;
--	struct cfg80211_coalesce_rules *tmp_rule;
+ 	struct ieee80211_roc_work *roc;
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 43625ca87d5e..927f752a0209 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -2175,8 +2175,7 @@ int ieee80211_reconfig(struct ieee80211_local *local)
+ 		local->in_reconfig = false;
+ 		barrier();
  
- 	if (!rdev->wiphy.coalesce || !rdev->ops->set_coalesce)
- 		return -EOPNOTSUPP;
+-		/* Restart deferred ROCs */
+-		ieee80211_start_next_roc(local);
++		ieee80211_reconfig_roc(local);
  
- 	if (!info->attrs[NL80211_ATTR_COALESCE_RULE]) {
--		cfg80211_rdev_free_coalesce(rdev);
-+		cfg80211_free_coalesce(rdev->coalesce);
-+		rdev->coalesce = NULL;
- 		rdev_set_coalesce(rdev, NULL);
- 		return 0;
- 	}
-@@ -14033,47 +14031,34 @@ static int nl80211_set_coalesce(struct sk_buff *skb, struct genl_info *info)
- 	if (n_rules > coalesce->n_rules)
- 		return -EINVAL;
- 
--	new_coalesce.rules = kcalloc(n_rules, sizeof(new_coalesce.rules[0]),
--				     GFP_KERNEL);
--	if (!new_coalesce.rules)
-+	new_coalesce = kzalloc(struct_size(new_coalesce, rules, n_rules),
-+			       GFP_KERNEL);
-+	if (!new_coalesce)
- 		return -ENOMEM;
- 
--	new_coalesce.n_rules = n_rules;
-+	new_coalesce->n_rules = n_rules;
- 	i = 0;
- 
- 	nla_for_each_nested(rule, info->attrs[NL80211_ATTR_COALESCE_RULE],
- 			    rem_rule) {
- 		err = nl80211_parse_coalesce_rule(rdev, rule,
--						  &new_coalesce.rules[i]);
-+						  &new_coalesce->rules[i]);
- 		if (err)
- 			goto error;
- 
- 		i++;
- 	}
- 
--	err = rdev_set_coalesce(rdev, &new_coalesce);
-+	err = rdev_set_coalesce(rdev, new_coalesce);
- 	if (err)
- 		goto error;
- 
--	n_coalesce = kmemdup(&new_coalesce, sizeof(new_coalesce), GFP_KERNEL);
--	if (!n_coalesce) {
--		err = -ENOMEM;
--		goto error;
--	}
--	cfg80211_rdev_free_coalesce(rdev);
--	rdev->coalesce = n_coalesce;
-+	cfg80211_free_coalesce(rdev->coalesce);
-+	rdev->coalesce = new_coalesce;
- 
- 	return 0;
- error:
--	for (i = 0; i < new_coalesce.n_rules; i++) {
--		tmp_rule = &new_coalesce.rules[i];
--		if (!tmp_rule)
--			continue;
--		for (j = 0; j < tmp_rule->n_patterns; j++)
--			kfree(tmp_rule->patterns[j].mask);
--		kfree(tmp_rule->patterns);
--	}
--	kfree(new_coalesce.rules);
-+	cfg80211_free_coalesce(new_coalesce);
- 
- 	return err;
- }
-diff --git a/net/wireless/nl80211.h b/net/wireless/nl80211.h
-index 6376f3a87f8a..ffaab9a92e5b 100644
---- a/net/wireless/nl80211.h
-+++ b/net/wireless/nl80211.h
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- /*
-  * Portions of this file
-- * Copyright (C) 2018, 2020-2022 Intel Corporation
-+ * Copyright (C) 2018, 2020-2024 Intel Corporation
-  */
- #ifndef __NET_WIRELESS_NL80211_H
- #define __NET_WIRELESS_NL80211_H
-@@ -119,7 +119,7 @@ nl80211_radar_notify(struct cfg80211_registered_device *rdev,
- 
- void nl80211_send_ap_stopped(struct wireless_dev *wdev, unsigned int link_id);
- 
--void cfg80211_rdev_free_coalesce(struct cfg80211_registered_device *rdev);
-+void cfg80211_free_coalesce(struct cfg80211_coalesce *coalesce);
- 
- /* peer measurement */
- int nl80211_pmsr_start(struct sk_buff *skb, struct genl_info *info);
+ 		/* Requeue all works */
+ 		list_for_each_entry(sdata, &local->interfaces, list)
 -- 
 2.45.1
 
