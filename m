@@ -1,151 +1,289 @@
-Return-Path: <linux-wireless+bounces-7989-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7990-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 142B38CCD41
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 09:46:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 811DE8CCE0E
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 10:14:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAA262827AC
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 07:46:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10AE61F21071
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 08:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDE513CF8F;
-	Thu, 23 May 2024 07:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F8413C912;
+	Thu, 23 May 2024 08:14:39 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-io1-f79.google.com (mail-io1-f79.google.com [209.85.166.79])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C3539FD6
-	for <linux-wireless@vger.kernel.org>; Thu, 23 May 2024 07:46:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F91714267
+	for <linux-wireless@vger.kernel.org>; Thu, 23 May 2024 08:14:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716450395; cv=none; b=PytOa+OOS7aSSDQaN1ueKml+/sKmbPBT+UPsMD46zIMvDrIw61hmlzztvpFMhCHGWYptbwfk1Ld/99Vp7px4hEmjsGMcgIz6aSVncWk9dYH+qeZCbF0853fEvzPCwfsO9g61xeKa8OC7S8cvWViPmkeyG6RTEHDRyY7b6gim8oo=
+	t=1716452079; cv=none; b=tULktU6qoks81VeDBxe1No3uQmMWhYnqa/GDZYNNvCrENER32L+9nAVbgIpd/Iop/TGfkXleSVhfsNJcRnmVjT69K1S6X+tJusl6BQKIAryjXLhC2ZLQhx/sT3Xu9eLsJE4hcf8Rx80AjiRO0weEm1SDeZnL6gIyNWMY/X1tZTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716450395; c=relaxed/simple;
-	bh=X1IUARsKujsDFRnxlLdxfmtcj0gfHJSfI3M9uf952PM=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=kfhqapFzRMsodSQntwcAkDYM4lwd+xMYV52WWSsD7hXUNQBz6ytOfXcFOY5haHVUVEwXixjgIYabsoDYwj3UiM0AU5Yv1g240rX58MiC9lw2tGfHaWmu3XB+SheXl53S6vDjpYCHs/AL+kEH3Y/AIpwxh5JevK1mFoUdNhcNn2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f79.google.com with SMTP id ca18e2360f4ac-7e1bcad7693so142713739f.1
-        for <linux-wireless@vger.kernel.org>; Thu, 23 May 2024 00:46:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716450393; x=1717055193;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/JSb/i2gD6c9fSgYzXiWuZto76mKs4deQ4sFdwc39TU=;
-        b=kSZUVhtatnZF5ks0Ujjs15He1ffDU2SrD4zGszxcdnN8g6vFMxZ3pKlgBU0EqL7ba2
-         1Azg1SfTi89xNOKaBOPTHeWzGMq4yROkYTqVFXtjwwZOdHrF0UxlNoYogcE4ov0FLR6g
-         XxxypA6DvPjqmTI6BhbWpQGYJwcMKtLgemEIy5k2/t4vg2B6fkRfTLcsID3peHhgLZAG
-         9UorAQl1aNlPYXoRPsMzMFd6F8EQLVWJ4xwOly+a6z0+xGyZhKzWdLvhkbouIoc7fcZM
-         8/8FtnXifeI3T//SDOqnAMV0zEbyRIbcPJxebqs6siaWyIilFVVRrYJ4m11ZtbJ5dPox
-         z/xQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW24hfEgQqB62CUDCUPmlKjycC0Z1Iya5KmpN56flQRdQ7miQxbSeKZZ+Vt8TbEMfi7yn8qW7QKX0zzJPnxCYShuI1XjYYLP+czr+J+jXs=
-X-Gm-Message-State: AOJu0Yw6EWbjdCPde6f9KJ/nJTkN+XYBfe9eeIn3q5BYlbjjYdmsLvv6
-	3mzE6kfdPMPBmrxcXy9ojl3CIRXeQzORb7QZKrSvxxm++P+K7hwsHiiHEuxe1JqMK8cBPRnnxbB
-	fIhHSWndjqBlSi+OomxXJEKFPx4YDvy7JwOELOhJbPg1Wm02aBSiyJbo=
-X-Google-Smtp-Source: AGHT+IFKjr2T2mLKa9hndWc16xzs0P6jYcnPNbb75LC9YUPqzntLRpMQdJ7igxZRkhSbZPGtkMXVaXtQEujlW1OZnVGcLaVHpj5y
+	s=arc-20240116; t=1716452079; c=relaxed/simple;
+	bh=5qprRG3/otVo+YE28OqT+Rg3v9sHirT21jPOKsYV0UU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=T8LaWFau/A58g4pmcTr5ZT0BDzw1NAj4r22joHx52hJzrlcj6q0aEnLwEMrEbeaMPM95d97JyXb1bVluNlBUyTlS4yPBcjJ9wD8CDDyhuip7fsOGFe2o23lcRaoJKaXh+RztjAx0gJ62wWmQ5+nWWk6aQhbEBWGbpKeFiHQCFJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sA3as-0007kE-Fg; Thu, 23 May 2024 10:14:34 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sA3ar-002dSg-QI; Thu, 23 May 2024 10:14:33 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sA3ar-00ByL3-2E;
+	Thu, 23 May 2024 10:14:33 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: linux-wireless@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Brian Norris <briannorris@chromium.org>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Kalle Valo <kvalo@kernel.org>,
+	David Lin <yu-hao.lin@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH] wifi: mwifiex: fix parsing of more than two AKM suites
+Date: Thu, 23 May 2024 10:14:28 +0200
+Message-Id: <20240523081428.2852276-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6638:8619:b0:488:59cc:eb4c with SMTP id
- 8926c6da1cb9f-4afe3b46381mr281202173.3.1716450393710; Thu, 23 May 2024
- 00:46:33 -0700 (PDT)
-Date: Thu, 23 May 2024 00:46:33 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000fdef8706191a3f7b@google.com>
-Subject: [syzbot] [wireless?] WARNING in __rate_control_send_low (2)
-From: syzbot <syzbot+8dd98a9e98ee28dc484a@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@google.com, johannes@sipsolutions.net, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: s.hauer@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
-Hello,
+params->crypto.n_akm_suites seems to be limited to two AKM suites. Once
+there are more they will be passed as extra elements of type WLAN_EID_RSN
+or WLAN_EID_VENDOR_SPECIFIC.
 
-syzbot found the following issue on:
+This takes some snippets from the downstream vendor driver to parse
+these elements and to set the correct protocol and key_mgmt bits to
+enable the desired key managements algorithms in the hardware.
 
-HEAD commit:    4b377b4868ef kprobe/ftrace: fix build error due to bad fun..
-git tree:       net-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=12f96934980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=17ffd15f654c98ba
-dashboard link: https://syzkaller.appspot.com/bug?extid=8dd98a9e98ee28dc484a
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+This patch is not a request for inclusion, more a heads up that there's
+something missing and the question if the approach taken is the right
+one or if there are other preferred ways to fix this issue.
 
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/6f4c61bc9252/disk-4b377b48.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/841f1b24d3a1/vmlinux-4b377b48.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/017b655dca3d/bzImage-4b377b48.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+8dd98a9e98ee28dc484a@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-no supported rates for sta (null) (0xffffffff, band 0) in rate_mask 0x0 with flags 0x0
-WARNING: CPU: 0 PID: 8812 at net/mac80211/rate.c:385 __rate_control_send_low+0x659/0x890 net/mac80211/rate.c:380
-Modules linked in:
-CPU: 0 PID: 8812 Comm: kworker/u8:20 Not tainted 6.9.0-syzkaller-08544-g4b377b4868ef #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
-Workqueue: events_unbound cfg80211_wiphy_work
-RIP: 0010:__rate_control_send_low+0x659/0x890 net/mac80211/rate.c:380
-Code: 8b 14 24 0f 85 de 01 00 00 8b 0a 48 c7 c7 80 69 e1 8c 48 8b 74 24 10 44 89 f2 44 8b 44 24 1c 44 8b 4c 24 0c e8 08 9b 5e f6 90 <0f> 0b 90 90 e9 71 fe ff ff 89 d9 80 e1 07 80 c1 03 38 c1 0f 8c db
-RSP: 0018:ffffc90005d074a0 EFLAGS: 00010246
-RAX: d769b2aeaeba2800 RBX: 000000000000000c RCX: ffff88802e348000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: ffff88807ec45168 R08: ffffffff81585642 R09: fffffbfff1c3995c
-R10: dffffc0000000000 R11: fffffbfff1c3995c R12: 0000000000000800
-R13: 000000000000000c R14: 00000000ffffffff R15: dffffc0000000000
-FS:  0000000000000000(0000) GS:ffff8880b9400000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f61c4d3cd58 CR3: 000000004aca6000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- rate_control_send_low+0x1a8/0x770 net/mac80211/rate.c:405
- rate_control_get_rate+0x20e/0x5e0 net/mac80211/rate.c:921
- ieee80211_tx_h_rate_ctrl+0xc88/0x1a10 net/mac80211/tx.c:763
- invoke_tx_handlers_late+0xb3/0x18e0 net/mac80211/tx.c:1848
- ieee80211_tx+0x2e3/0x470 net/mac80211/tx.c:1969
- __ieee80211_tx_skb_tid_band+0x4e2/0x620 net/mac80211/tx.c:6103
- ieee80211_tx_skb_tid_band net/mac80211/ieee80211_i.h:2266 [inline]
- ieee80211_handle_roc_started+0x267/0x440 net/mac80211/offchannel.c:248
- _ieee80211_start_next_roc+0x7a1/0xb00 net/mac80211/offchannel.c:381
- cfg80211_wiphy_work+0x221/0x260 net/wireless/core.c:437
- process_one_work kernel/workqueue.c:3231 [inline]
- process_scheduled_works+0xa2c/0x1830 kernel/workqueue.c:3312
- worker_thread+0x86d/0xd70 kernel/workqueue.c:3393
- kthread+0x2f0/0x390 kernel/kthread.c:389
- ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
-
-
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ drivers/net/wireless/marvell/mwifiex/fw.h     |   3 +
+ .../net/wireless/marvell/mwifiex/uap_cmd.c    | 149 +++++++++++++++---
+ 2 files changed, 132 insertions(+), 20 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
+index 3adc447b715f6..d576b2d71a6b9 100644
+--- a/drivers/net/wireless/marvell/mwifiex/fw.h
++++ b/drivers/net/wireless/marvell/mwifiex/fw.h
+@@ -415,6 +415,9 @@ enum MWIFIEX_802_11_PRIVACY_FILTER {
+ #define KEY_MGMT_NONE               0x04
+ #define KEY_MGMT_PSK                0x02
+ #define KEY_MGMT_EAP                0x01
++#define KEY_MGMT_PSK_SHA256         0x100
++#define KEY_MGMT_OWE                0x200
++#define KEY_MGMT_SAE                0x400
+ #define CIPHER_TKIP                 0x04
+ #define CIPHER_AES_CCMP             0x08
+ #define VALID_CIPHER_BITMAP         0x0c
+diff --git a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
+index 491e366119096..4b21626e2dd7f 100644
+--- a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
++++ b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
+@@ -9,6 +9,112 @@
+ #include "11ac.h"
+ #include "11n.h"
+ 
++struct wpa_suite_ucast {
++        /* count */
++        u16 count;
++        /** wpa_suite list */
++	__be32 suite[1];
++} __packed;
++
++struct IEEEtypes_Rsn_t {
++        /** Rsn : version */
++        u16 version;
++        /** Rsn : group cipher */
++        __be32 group_cipher;
++        /** Rsn : pairwise cipher */
++        struct wpa_suite_ucast pairwise_cipher;
++} __packed;
++
++static void woal_check_rsn_ie(const struct IEEEtypes_Rsn_t *rsn_ie, int len,
++			      struct mwifiex_uap_bss_param *bss_config, u8 *pairwise_cipher)
++{
++	int left, count, i;
++	struct wpa_suite_ucast *key_mgmt;
++
++	left = len;
++	if (left < (int)sizeof(struct IEEEtypes_Rsn_t))
++		return;
++
++	bss_config->wpa_cfg.group_cipher = 0;
++	*pairwise_cipher = 0;
++	bss_config->key_mgmt = 0;
++
++	/* check the group cipher */
++	switch (be32_to_cpu(rsn_ie->group_cipher)) {
++	case WLAN_CIPHER_SUITE_TKIP:
++		bss_config->wpa_cfg.group_cipher = CIPHER_TKIP;
++		break;
++	case WLAN_CIPHER_SUITE_CCMP:
++		bss_config->wpa_cfg.group_cipher = CIPHER_AES_CCMP;
++		break;
++	default:
++		break;
++	}
++
++	count = le16_to_cpu(rsn_ie->pairwise_cipher.count);
++	for (i = 0; i < count; i++) {
++		switch (be32_to_cpu(rsn_ie->pairwise_cipher.suite[i])) {
++		case WLAN_CIPHER_SUITE_TKIP:
++			*pairwise_cipher |= CIPHER_TKIP;
++			break;
++		case WLAN_CIPHER_SUITE_CCMP:
++			*pairwise_cipher |= CIPHER_AES_CCMP;
++			break;
++		default:
++			break;
++		}
++	}
++	left -= sizeof(struct IEEEtypes_Rsn_t) + (count - 1) * sizeof(__be32);
++	if (left < (int)sizeof(struct wpa_suite_ucast))
++		return;
++
++	key_mgmt = ((void *)rsn_ie + sizeof(struct IEEEtypes_Rsn_t) + (count - 1) * sizeof(__be32));
++	count = le16_to_cpu(key_mgmt->count);
++	if (left < (int)(sizeof(struct wpa_suite_ucast) +
++			 (count - 1) * sizeof(__be32)))
++		return;
++
++	for (i = 0; i < count; i++) {
++		switch (be32_to_cpu(key_mgmt->suite[i])) {
++		case WLAN_AKM_SUITE_8021X:
++			bss_config->key_mgmt |= KEY_MGMT_EAP;
++			break;
++		case WLAN_AKM_SUITE_PSK:
++			bss_config->key_mgmt |= KEY_MGMT_PSK;
++			break;
++		case WLAN_AKM_SUITE_PSK_SHA256:
++			bss_config->key_mgmt |= KEY_MGMT_PSK_SHA256;
++			break;
++		case WLAN_AKM_SUITE_SAE:
++			bss_config->key_mgmt |= KEY_MGMT_SAE;
++			break;
++		case WLAN_AKM_SUITE_OWE:
++			bss_config->key_mgmt |= KEY_MGMT_OWE;
++			break;
++		}
++	}
++}
++
++static void woal_find_wpa_ies(const void *ie, int len, struct mwifiex_uap_bss_param *bss_config)
++{
++	const struct element *e;
++
++	e = cfg80211_find_elem(WLAN_EID_RSN, ie, len);
++	if (e) {
++		woal_check_rsn_ie((void *)e->data, e->datalen, bss_config,
++				  &bss_config->wpa_cfg.pairwise_cipher_wpa2);
++
++		bss_config->protocol |= PROTOCOL_WPA2;
++	}
++
++	e = cfg80211_find_vendor_elem(WLAN_EID_VENDOR_SPECIFIC, 0x1, ie, len);
++	if (e) {
++		woal_check_rsn_ie((void *)e->data, e->datalen, bss_config,
++				  &bss_config->wpa_cfg.pairwise_cipher_wpa);
++		bss_config->protocol |= PROTOCOL_WPA;
++	}
++}
++
+ /* This function parses security related parameters from cfg80211_ap_settings
+  * and sets into FW understandable bss_config structure.
+  */
+@@ -17,6 +123,11 @@ int mwifiex_set_secure_params(struct mwifiex_private *priv,
+ 			      struct cfg80211_ap_settings *params) {
+ 	int i;
+ 	struct mwifiex_wep_key wep_key;
++	const u8 *ie = NULL;
++	int ie_len;
++
++	ie = params->beacon.tail;
++	ie_len = params->beacon.tail_len;
+ 
+ 	if (!params->privacy) {
+ 		bss_config->protocol = PROTOCOL_NO_SECURITY;
+@@ -46,36 +157,34 @@ int mwifiex_set_secure_params(struct mwifiex_private *priv,
+ 
+ 	bss_config->key_mgmt_operation |= KEY_MGMT_ON_HOST;
+ 
++	if (params->crypto.wpa_versions & NL80211_WPA_VERSION_1)
++		bss_config->protocol |= PROTOCOL_WPA;
++	if (params->crypto.wpa_versions & NL80211_WPA_VERSION_2)
++		bss_config->protocol |= PROTOCOL_WPA2;
++
++	woal_find_wpa_ies(ie, ie_len, bss_config);
++
+ 	for (i = 0; i < params->crypto.n_akm_suites; i++) {
++		mwifiex_dbg(priv->adapter, MSG, "suite%d: 0x%08x\n", i, params->crypto.akm_suites[i]);
++
+ 		switch (params->crypto.akm_suites[i]) {
+ 		case WLAN_AKM_SUITE_8021X:
+-			if (params->crypto.wpa_versions &
+-			    NL80211_WPA_VERSION_1) {
+-				bss_config->protocol = PROTOCOL_WPA;
+-				bss_config->key_mgmt = KEY_MGMT_EAP;
+-			}
+-			if (params->crypto.wpa_versions &
+-			    NL80211_WPA_VERSION_2) {
+-				bss_config->protocol |= PROTOCOL_WPA2;
+-				bss_config->key_mgmt = KEY_MGMT_EAP;
+-			}
++			bss_config->key_mgmt |= KEY_MGMT_EAP;
+ 			break;
+ 		case WLAN_AKM_SUITE_PSK:
+-			if (params->crypto.wpa_versions &
+-			    NL80211_WPA_VERSION_1) {
+-				bss_config->protocol = PROTOCOL_WPA;
+-				bss_config->key_mgmt = KEY_MGMT_PSK;
+-			}
+-			if (params->crypto.wpa_versions &
+-			    NL80211_WPA_VERSION_2) {
+-				bss_config->protocol |= PROTOCOL_WPA2;
+-				bss_config->key_mgmt = KEY_MGMT_PSK;
+-			}
++			bss_config->key_mgmt |= KEY_MGMT_PSK;
++			break;
++		case WLAN_AKM_SUITE_PSK_SHA256:
++			bss_config->key_mgmt |= KEY_MGMT_PSK_SHA256;
+ 			break;
+ 		default:
+ 			break;
+ 		}
+ 	}
++
++	mwifiex_dbg(priv->adapter, MSG, "protocol: 0x%08x key_mgmt: 0x%08x\n",
++		    bss_config->protocol, bss_config->key_mgmt);
++
+ 	for (i = 0; i < params->crypto.n_ciphers_pairwise; i++) {
+ 		switch (params->crypto.ciphers_pairwise[i]) {
+ 		case WLAN_CIPHER_SUITE_WEP40:
+-- 
+2.39.2
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
