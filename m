@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-8007-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8008-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57D898CD275
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 14:44:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C756B8CD28D
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 14:48:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14AD92839CE
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 12:44:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45FA5B209AF
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 12:48:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06850149C71;
-	Thu, 23 May 2024 12:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C040113B5B0;
+	Thu, 23 May 2024 12:48:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E8hb/JJq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b1Tppuyf"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75451494A6
-	for <linux-wireless@vger.kernel.org>; Thu, 23 May 2024 12:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0648174C
+	for <linux-wireless@vger.kernel.org>; Thu, 23 May 2024 12:48:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716468254; cv=none; b=omMo4RD7oEt2Mmd5+PL0iEyOBI6lfBrQxoelGWg9wtMQxs723imYNtHBt3PoR/P8hJldm0zB71zMdXsYM+5UackERJk/TH2dzk1mD25egM+K95JO3HvDajyL2cEfS2DF42jXRrZk9E6J2tIANEYndgdTLssghlueGSzfEPg7k1g=
+	t=1716468486; cv=none; b=EhV6V0MWOO70kiO+bdAfB7xNzbhfoLwVikBF6IC1kWGTqmso8wF/5+R7UvVduJtPZWT86becJsv7XI2mC+Ni1k/E+YT16Si+pEneMDPBGAj4pXmthsh6tlgWVDrB7mqa4ewWPip+90dL987+kXjFutNnPj/QOrlQDDVXXw/4u2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716468254; c=relaxed/simple;
-	bh=l7mLZ2DFf3Oq9wE+1CtIHhvmDx4/5DoMK0izVbWUcxs=;
+	s=arc-20240116; t=1716468486; c=relaxed/simple;
+	bh=mw3AjiCutiW5+eW1CEA3+1A3NI+qqQKSV7bBWw+3fjY=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=NqLbBMVV9r5vcN3Z3IzGqQL6rhUyvkmaxO99JbQk5NvCUNIpfDH43x0L/r4MIL7DwsMJuu/f0tGDwBXRA1vGNfHGQqydSBOTAfhaQEwK0JoKzEzBtIx/U59SCUeBVC1moUCpWTbfw242ku4mBqW7xdTstweBJxG3+tkrm7vsYH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E8hb/JJq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EF78C32782;
-	Thu, 23 May 2024 12:44:13 +0000 (UTC)
+	 Cc:Message-ID:Date; b=pvbEKzZ8ArM4bjhJ1qR1OMETGgUe83ihtkSdeqyP+CSFNln7wHaQAZ0Nxubdews/Ck6gnZR3JhAQ58yomXm/NmnuWtT/J3Maq85dE1KrUoyJ9vqVOhGFnqOpVrX9Hzfk49+gMDP/6w9b3e+oNhwlTgsvGGQ5zVm2CVgKh58ijpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b1Tppuyf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F49C2BD10;
+	Thu, 23 May 2024 12:48:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716468254;
-	bh=l7mLZ2DFf3Oq9wE+1CtIHhvmDx4/5DoMK0izVbWUcxs=;
+	s=k20201202; t=1716468486;
+	bh=mw3AjiCutiW5+eW1CEA3+1A3NI+qqQKSV7bBWw+3fjY=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=E8hb/JJqBYJS++YPBpvlmDLeWlW9ZLnjikwGYAqScSV55J5PDnn/BveBugL48T56o
-	 1efXh2COxS9hY5Us4d+n2SlxuNOY+yMiujMCfh/fT+KtAWZ6+iW5vu+G2l0rTQybbA
-	 DGRxobcXrx6+pY0KiJyHp/WJpbAwIY/4eA7lqr3P9Q2Nsnsnn3bU4cZ+GM5nNQrhal
-	 meOCpaMoDDJ4Fijvj14XcOafKvM24gmT9IxEeY/6IOgwquo4gKEA6nREQrkze2GGIw
-	 Tepl2nH4Nu/WEzOdj8/NIbHfzfX0UfmF3l69N/GrsZUG6zuEwyv/uwDoKoh1OW5Hrh
-	 5Qb/yH1oCoqBA==
+	b=b1TppuyfHaDkLG+zR2kEdUMzGxX7W6VLxyicvyEaietYeTmVXKCxmrNFYPYnScRN5
+	 vjJ/lyjEo7xU+Dx1v+LP4LXgW1PK+TYHtNRuamyM0VMNm7YMGzwV8GPRl5752HLoUl
+	 FwQAxtZ0n43T3rYwhNR8eRax+YnrPBkM0vZ/R+tvpAlxTVltVNiOM6RDuvp6i5+L7X
+	 UngRfLRK2P1NCbOH8hLT/6/4o+B+ALR2bZGRvWYXwYFlmtMcCdGqH9QExE6O1/OqKy
+	 UQ0DNSZW9jNKCLb+s8dc23EDaNCD8K1Z61AGhdTVKblztCBw1XBS3CbnzR4nsQBKE9
+	 LbNBOgSvbJ9jg==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,46 +49,45 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: ath11k: fix WCN6750 firmware crash caused by 17
- num_vdevs
+Subject: Re: [PATCH v2] wifi: ath11k: move power type check to ASSOC stage
+ when
+ connecting to 6 GHz AP
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240520030757.2209395-1-quic_cjhuang@quicinc.com>
-References: <20240520030757.2209395-1-quic_cjhuang@quicinc.com>
-To: Carl Huang <quic_cjhuang@quicinc.com>
+In-Reply-To: <20240424064019.4847-1-quic_bqiang@quicinc.com>
+References: <20240424064019.4847-1-quic_bqiang@quicinc.com>
+To: Baochen Qiang <quic_bqiang@quicinc.com>
 Cc: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
- <quic_cjhuang@quicinc.com>
+ <quic_bqiang@quicinc.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <171646825167.213015.5353620054103285361.kvalo@kernel.org>
-Date: Thu, 23 May 2024 12:44:13 +0000 (UTC)
+Message-ID: <171646848396.213015.14022235573584346331.kvalo@kernel.org>
+Date: Thu, 23 May 2024 12:48:05 +0000 (UTC)
 
-Carl Huang <quic_cjhuang@quicinc.com> wrote:
+Baochen Qiang <quic_bqiang@quicinc.com> wrote:
 
-> WCN6750 firmware crashes because of num_vdevs changed from 4 to 17
-> in ath11k_init_wmi_config_qca6390() as the ab->hw_params.num_vdevs
-> is 17. This is caused by commit f019f4dff2e4 ("wifi: ath11k: support
-> 2 station interfaces") which assigns ab->hw_params.num_vdevs directly
-> to config->num_vdevs in ath11k_init_wmi_config_qca6390(), therefore
-> WCN6750 firmware crashes as it can't support such a big num_vdevs.
+> With commit bc8a0fac8677 ("wifi: mac80211: don't set bss_conf in parsing")
+> ath11k fails to connect to 6 GHz AP.
 > 
-> Fix it by assign 3 to num_vdevs in hw_params for WCN6750 as 3 is
-> sufficient too.
+> This is because currently ath11k checks AP's power type in
+> ath11k_mac_op_assign_vif_chanctx() which would be called in AUTH stage.
+> However with above commit power type is not available until ASSOC stage.
+> As a result power type check fails and therefore connection fails.
 > 
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
-> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-01371-QCAMSLSWPLZ-1
+> Fix this by moving power type check to ASSOC stage, also move regulatory
+> rules update there because it depends on power type.
 > 
-> Fixes: f019f4dff2e4 ("wifi: ath11k: support 2 station interfaces")
-> Reported-by: Luca Weiss <luca.weiss@fairphone.com>
-> Tested-by: Luca Weiss <luca.weiss@fairphone.com>
-> Closes: https://lore.kernel.org/r/D15TIIDIIESY.D1EKKJLZINMA@fairphone.com/
-> Signed-off-by: Carl Huang <quic_cjhuang@quicinc.com>
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
+> 
+> Fixes: bc8a0fac8677 ("wifi: mac80211: don't set bss_conf in parsing")
+> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-current branch of ath.git, thanks.
 
-ed281c6ab6eb wifi: ath11k: fix WCN6750 firmware crash caused by 17 num_vdevs
+6e16782d6b4a wifi: ath11k: move power type check to ASSOC stage when connecting to 6 GHz AP
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240520030757.2209395-1-quic_cjhuang@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240424064019.4847-1-quic_bqiang@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
