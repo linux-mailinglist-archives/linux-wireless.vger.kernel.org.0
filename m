@@ -1,199 +1,131 @@
-Return-Path: <linux-wireless+bounces-7973-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-7977-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B58438CCAEA
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 05:05:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFAEE8CCB29
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 05:32:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 205FFB2110C
-	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 03:05:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 615181F22BCF
+	for <lists+linux-wireless@lfdr.de>; Thu, 23 May 2024 03:32:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03A3F2A1B2;
-	Thu, 23 May 2024 03:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59496339A0;
+	Thu, 23 May 2024 03:32:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="GAFn4oxh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F83A34;
-	Thu, 23 May 2024 03:05:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD23239FEB
+	for <linux-wireless@vger.kernel.org>; Thu, 23 May 2024 03:32:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716433529; cv=none; b=YqXRbcHeGBhuDzoT9RYdKICJv8NLMMd7caB6qnDVGh7qjssJNI+BO8zkG7Nq+gkaF3v5Fymo8r19uj0GwrTbawk8d/LvJbBfopEQ7xC2Q07kAq2l5aDi+l10Zopsngf3jr+lqxO3SEBxekDfLe23zSazcBqE3CyLnB7JFuc0mgA=
+	t=1716435134; cv=none; b=nFGAbBdPxklRWLnuE9pTCrsCqCezgEAyvy6QVwtWIniwk7I9/2ONbTfT/jzcoL2wlmrWfqLHOZqSruyhpi1RZd9f0wi/1Nj1pOmh7EsqgRpNvTlyDMpsH937B/UYkskN52ZRXFGKFrrKEPLjlAaLUEqf/Llr9AgVk8GQ5pANvfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716433529; c=relaxed/simple;
-	bh=1vrrouj2B9h5XoTvPjkuIgqi3Fy8+yw106GjxM1Xwjk=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=BsTCIwfQGvHGDcOs3NqOeGzhXjf9F5O1GJtX0CipoitplgjJIyPs/Gu0j3z9U2UK1HSib6tuTtiGynI5mS67LlnXynyMUJi4YKDxoCwu9zfgAx6Wz7AGxqc3DgYDC2DrA03rpGqTEsSLgCQarWvuxyYck0pOvdcWZK9SEmEqX+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 44N35Di24423723, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 44N35Di24423723
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 May 2024 11:05:13 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+	s=arc-20240116; t=1716435134; c=relaxed/simple;
+	bh=g9PvuIf66dPt1CMkDXLO0+4i6bFg/5DymiNv2GUGUpo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KzLiG/NNpPSlUmIGMAYLW9q09mZjQSj5dI62TxUC0tojkGgk3BJKhC5qW8kx+CwTAabUM8uU7xB0dVTczu2WycoDcr7xro12FIU6ejLZ5b3+rEZJ0W1HjZbLXG31jYRsAO7eE64H2StnPlhrpfiBUW/VCdXNBh077d0gK35OwfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=GAFn4oxh; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44N3O4a6016423;
+	Thu, 23 May 2024 03:32:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=WxXak//
+	OqqxTiQnA8bN0kAUMoYOaSwTOo0wZa7TqtTY=; b=GAFn4oxhmsdZSTa/BGzN6hU
+	ojDhL5Q9mOsbvvrScGgRE9gHAQYZKSHcDQAIUsZg7XCo7eZ92UUKWKeaXsTwMnWQ
+	l0isIZNm4+Dap8vU3MlNI/O4RR7BA1Wfpvm6sdyFQ7SnqAhEed0FsyHqHxY5digc
+	b16YM5OnF+muOsO7prDkbE9eRNpCgoA7EBV7J+i0OyF/4AYZaZ1uKVs3uzQTJypA
+	7HyGCMHg0nEYaL6TTU5tai2RLWlZs2NwBv/M7Inc/ulBzi868oKPdLGPCo7+TNU7
+	e1ED9dWGDGWKnhKLTyBPtaf5LPD9LsL4zokc8kEg55VkxlShC2Gp9aUzeIKRRhg=
+	=
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3y6n4gjmf0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 May 2024 03:32:01 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44N3Vx0G011776
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 May 2024 03:31:59 GMT
+Received: from bqiang-SFF.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 23 May 2024 11:05:14 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 23 May 2024 11:05:13 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
- RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
- 15.01.2507.035; Thu, 23 May 2024 11:05:13 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Shichao Lai <phyhac@gmail.com>, Kalle Valo <kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "syzkaller@googlegroups.com" <syzkaller@googlegroups.com>
-Subject: RE: INFO: trying to register non-static key in skb_dequeue
-Thread-Topic: INFO: trying to register non-static key in skb_dequeue
-Thread-Index: AQHarBxzMJWY0Vu27kehlktUAsNdF7GkIKig
-Date: Thu, 23 May 2024 03:05:13 +0000
-Message-ID: <54dbdd605bca48a68ae9a7423b4c994f@realtek.com>
-References: <CAEk6kZuuezkH1dVRJf3EAVZK-83=OpTz62qCugkpTkswj8JF6w@mail.gmail.com>
-In-Reply-To: <CAEk6kZuuezkH1dVRJf3EAVZK-83=OpTz62qCugkpTkswj8JF6w@mail.gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: yes
-Content-Type: multipart/mixed;
-	boundary="_002_54dbdd605bca48a68ae9a7423b4c994frealtekcom_"
+ 15.2.1544.9; Wed, 22 May 2024 20:31:57 -0700
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, <quic_bqiang@quicinc.com>
+Subject: [PATCH v2 0/7] wifi: ath12k: add support for WoW
+Date: Thu, 23 May 2024 11:31:36 +0800
+Message-ID: <20240523033143.21677-1-quic_bqiang@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: sRz82Z0qk_RtXyNloLrVa2MtThv1B1Ek
+X-Proofpoint-ORIG-GUID: sRz82Z0qk_RtXyNloLrVa2MtThv1B1Ek
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-05-23_01,2024-05-22_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ clxscore=1015 priorityscore=1501 impostorscore=0 bulkscore=0 phishscore=0
+ mlxscore=0 malwarescore=0 suspectscore=0 adultscore=0 mlxlogscore=573
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405010000 definitions=main-2405230023
 
---_002_54dbdd605bca48a68ae9a7423b4c994frealtekcom_
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Add support for WoW (Wakeup on Wireless) funtionalities, this including
+magic-pattern, net-detect, disconnect and patterns, HW data filter, ARP
+and NS offload, GTK rekey offload.
 
-U2hpY2hhbyBMYWkgPHBoeWhhY0BnbWFpbC5jb20+ICB3cm90ZToNCj4gSGVsbG8gRGVhciBtYWlu
-dGFpbmVyIQ0KPiBBIG5ldyBidWcgd2FzIGZvdW5kIGJ5IG91ciBtb2RpZmllZCBzeXprYWxsZXIu
-DQo+IA0KPiBLZXJuZWwgdmVyc2lvbjogdjYuOS1yYzcNCj4gQ29tcGlsZXI6IGdjYyAxMS40LjAN
-Cj4gUmVwcm9kdWNlciAmIEtlcm5lbDogYXR0YWNobWVudCANCj4gDQo+ID09PT09PT09PT09PT0g
-DQo+IHVzYiAyLTE6IFVTQiBkaXNjb25uZWN0LCBkZXZpY2UgbnVtYmVyIDc2DQo+IElORk86IHRy
-eWluZyB0byByZWdpc3RlciBub24tc3RhdGljIGtleS4NCj4gVGhlIGNvZGUgaXMgZmluZSBidXQg
-bmVlZHMgbG9ja2RlcCBhbm5vdGF0aW9uLCBvciBtYXliZQ0KPiB5b3UgZGlkbid0IGluaXRpYWxp
-emUgdGhpcyBvYmplY3QgYmVmb3JlIHVzZT8NCj4gdHVybmluZyBvZmYgdGhlIGxvY2tpbmcgY29y
-cmVjdG5lc3MgdmFsaWRhdG9yLg0KDQpJJ20gbm90IGZhbWlsaWFyIHdpdGggc3l6a2FsbGVyLCB3
-aGljaCBzZWVtcyBsaWtlIHRvIGdlbmVyYXRlIGEgVVNCIHBhdHRlcm4NCnRvIHRyaWdnZXIgZHJp
-dmVyIHByb2JlLCBub3QgYSByZWFsIGhhcmR3YXJlLiBJZiBteSB0aG91Z2h0IGlzIGNvcnJlY3Qs
-DQphdHRhY2htZW50IGNvdWxkIGJlIGEgZml4IHRoYXQgY2F1c2VzIGZhaWxlZCB0byBwcm9iZSBk
-ZXZpY2UsIGFuZCB0aGVuDQpub3QgZXhlY3V0ZSBVU0IgZGlzY29ubmVjdGlvbi4gDQoNCkkgdXNl
-ZCB5b3VyIGF0dGFjaGVkIGxpbnV4LXY2LjlfdXNiX2NvbmZpZyB0byBidWlsZCBhIGtlcm5lbCwg
-YnV0IGZhaWxlZA0KdG8gcnVuIG9uIGEgcmVhbCBOQi4gU28gaXMgaXQgcG9zc2libGUgdG8gaGVs
-cCB0ZXN0IG15IGF0dGFjaGVkIHBhdGNoPw0KT3IsIGNhbiBJIHVzZSBhICIgI3N5eiB0ZXN0OiIg
-Y29tbWFuZCB0byB0cmlnZ2VyIHJvYm90IGxpa2UgWzFdPw0KDQpbMV0gaHR0cHM6Ly9sb3JlLmtl
-cm5lbC5vcmcvbGludXgtcmRtYS8zY2M5ZjEyYS1kNjgwLWUwNWMtNzJjNi1kNGNiNTU5ZmU1ZWVA
-bGludXguZGV2L1QvI20yZDM3NDk0OWQ2MmIwMTcwNzQ1NDVjMmYyYTFkZjkyNTFlMGJkZTMyDQoN
-ClBpbmctS2UNCg0K
+Also enable keepalive before suspend to avoid unexpected kick out by AP.
 
---_002_54dbdd605bca48a68ae9a7423b4c994frealtekcom_
-Content-Type: application/octet-stream;
-	name="0001-wifi-rtlwifi-handle-return-value-of-usb-init-TX-RX.patch"
-Content-Description: 0001-wifi-rtlwifi-handle-return-value-of-usb-init-TX-RX.patch
-Content-Disposition: attachment;
-	filename="0001-wifi-rtlwifi-handle-return-value-of-usb-init-TX-RX.patch";
-	size=5123; creation-date="Thu, 23 May 2024 02:53:04 GMT";
-	modification-date="Thu, 23 May 2024 02:53:02 GMT"
-Content-Transfer-Encoding: base64
+v2:
+ - [2/7] wifi: ath12k: add basic WoW functionalities
+	1. In ath12k_wow_convert_8023_to_80211(), change to use 'size_t'
+	   instead of 'int' to make GCC happy
+ - [5/7] wifi: ath12k: support ARP and NS offload
+	1. In ath12k_mac_arvif_get_arp_ns_offload(), change to use
+	   GFP_ATOMIC to fix kernel crash due to sleep in invalid context
+ - rebased on ToT
+	
+Baochen Qiang (7):
+  wifi: ath12k: implement WoW enable and wakeup commands
+  wifi: ath12k: add basic WoW functionalities
+  wifi: ath12k: add WoW net-detect functionality
+  wifi: ath12k: implement hardware data filter
+  wifi: ath12k: support ARP and NS offload
+  wifi: ath12k: support GTK rekey offload
+  wifi: ath12k: handle keepalive during WoWLAN suspend and resume
 
-RnJvbSAwMWRmZTIxZjg0ZGJhMWQzMjY1NTNhZTlkZGI2Y2FiMmUyN2Q5ZjQzIE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4KRGF0
-ZTogVGh1LCAyMyBNYXkgMjAyNCAxMDo0NTowNyArMDgwMApTdWJqZWN0OiBbUEFUQ0hdIHdpZmk6
-IHJ0bHdpZmk6IGhhbmRsZSByZXR1cm4gdmFsdWUgb2YgdXNiIGluaXQgVFgvUlgKCkhhbmRsZSBl
-cnJvciBjb2RlIHRvIGNhdXNlIFVTQiBwcm9iZSBmYWlsdXJlIFVTQiBFUCBudW1iZXIgaXMgdW5l
-eHBlY3RlZCwKb3RoZXJ3aXNlIHdoZW4gVVNCIGRpc2Nvbm5lY3Qgc2tiX2RlcXVldWUoKSBhbiB1
-bml0aWFsaXplZCBza2IgbGlzdCBhbmQKY2F1c2Ugd2FybmluZ3MgYmVsb3cuCgpDb21waWxlIHRl
-c3RlZCBvbmx5LgoKdXNiIDItMTogVVNCIGRpc2Nvbm5lY3QsIGRldmljZSBudW1iZXIgNzYKSU5G
-TzogdHJ5aW5nIHRvIHJlZ2lzdGVyIG5vbi1zdGF0aWMga2V5LgpUaGUgY29kZSBpcyBmaW5lIGJ1
-dCBuZWVkcyBsb2NrZGVwIGFubm90YXRpb24sIG9yIG1heWJlCnlvdSBkaWRuJ3QgaW5pdGlhbGl6
-ZSB0aGlzIG9iamVjdCBiZWZvcmUgdXNlPwp0dXJuaW5nIG9mZiB0aGUgbG9ja2luZyBjb3JyZWN0
-bmVzcyB2YWxpZGF0b3IuCkNQVTogMCBQSUQ6IDU0MDYwIENvbW06IGt3b3JrZXIvMDoxIE5vdCB0
-YWludGVkIDYuOS4wLXJjNyAjMQpIYXJkd2FyZSBuYW1lOiBRRU1VIFN0YW5kYXJkIFBDIChpNDQw
-RlggKyBQSUlYLCAxOTk2KSwgQklPUyByZWwtMS4xNi4yLTAtZ2VhMWI3YTA3MzM5MC1wcmVidWls
-dC5xZW11Lm9yZyAwNC8wMS8yMDE0CldvcmtxdWV1ZTogdXNiX2h1Yl93cSBodWJfZXZlbnQKQ2Fs
-bCBUcmFjZToKIDxUQVNLPgogX19kdW1wX3N0YWNrIGxpYi9kdW1wX3N0YWNrLmM6ODggW2lubGlu
-ZV0KIGR1bXBfc3RhY2tfbHZsKzB4MTE2LzB4MWIwIGxpYi9kdW1wX3N0YWNrLmM6MTE0CiBhc3Np
-Z25fbG9ja19rZXkga2VybmVsL2xvY2tpbmcvbG9ja2RlcC5jOjk3NiBbaW5saW5lXQogcmVnaXN0
-ZXJfbG9ja19jbGFzcysweGMxOC8weGZhMCBrZXJuZWwvbG9ja2luZy9sb2NrZGVwLmM6MTI4OQog
-X19sb2NrX2FjcXVpcmUrMHgxMDgvMHgzYmMwIGtlcm5lbC9sb2NraW5nL2xvY2tkZXAuYzo1MDE0
-CiBsb2NrX2FjcXVpcmUga2VybmVsL2xvY2tpbmcvbG9ja2RlcC5jOjU3NTQgW2lubGluZV0KIGxv
-Y2tfYWNxdWlyZSsweDFiMC8weDU1MCBrZXJuZWwvbG9ja2luZy9sb2NrZGVwLmM6NTcxOQogX19y
-YXdfc3Bpbl9sb2NrX2lycXNhdmUgaW5jbHVkZS9saW51eC9zcGlubG9ja19hcGlfc21wLmg6MTEw
-IFtpbmxpbmVdCiBfcmF3X3NwaW5fbG9ja19pcnFzYXZlKzB4M2QvMHg2MCBrZXJuZWwvbG9ja2lu
-Zy9zcGlubG9jay5jOjE2Mgogc2tiX2RlcXVldWUrMHgyMC8weDE4MCBuZXQvY29yZS9za2J1ZmYu
-YzozODQ2CiBydGxfdXNiX2NsZWFudXAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3
-aWZpL3VzYi5jOjcwNiBbaW5saW5lXQogcnRsX3VzYl9kZWluaXQgZHJpdmVycy9uZXQvd2lyZWxl
-c3MvcmVhbHRlay9ydGx3aWZpL3VzYi5jOjcyMSBbaW5saW5lXQogcnRsX3VzYl9kaXNjb25uZWN0
-KzB4NGE0LzB4ODUwIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnRsd2lmaS91c2IuYzox
-MDUxCiB1c2JfdW5iaW5kX2ludGVyZmFjZSsweDFlOC8weDk4MCBkcml2ZXJzL3VzYi9jb3JlL2Ry
-aXZlci5jOjQ2MQogZGV2aWNlX3JlbW92ZSBkcml2ZXJzL2Jhc2UvZGQuYzo1NjggW2lubGluZV0K
-IGRldmljZV9yZW1vdmUrMHgxMjIvMHgxNzAgZHJpdmVycy9iYXNlL2RkLmM6NTYwCiBfX2Rldmlj
-ZV9yZWxlYXNlX2RyaXZlciBkcml2ZXJzL2Jhc2UvZGQuYzoxMjcwIFtpbmxpbmVdCiBkZXZpY2Vf
-cmVsZWFzZV9kcml2ZXJfaW50ZXJuYWwrMHg0NDMvMHg2MjAgZHJpdmVycy9iYXNlL2RkLmM6MTI5
-MwogYnVzX3JlbW92ZV9kZXZpY2UrMHgyMmYvMHg0MjAgZHJpdmVycy9iYXNlL2J1cy5jOjU3NAog
-ZGV2aWNlX2RlbCsweDM5NS8weDlmMCBkcml2ZXJzL2Jhc2UvY29yZS5jOjM5MDkKIHVzYl9kaXNh
-YmxlX2RldmljZSsweDM2MC8weDdiMCBkcml2ZXJzL3VzYi9jb3JlL21lc3NhZ2UuYzoxNDE4CiB1
-c2JfZGlzY29ubmVjdCsweDJkYi8weDkzMCBkcml2ZXJzL3VzYi9jb3JlL2h1Yi5jOjIzMDUKIGh1
-Yl9wb3J0X2Nvbm5lY3QgZHJpdmVycy91c2IvY29yZS9odWIuYzo1MzYyIFtpbmxpbmVdCiBodWJf
-cG9ydF9jb25uZWN0X2NoYW5nZSBkcml2ZXJzL3VzYi9jb3JlL2h1Yi5jOjU2NjIgW2lubGluZV0K
-IHBvcnRfZXZlbnQgZHJpdmVycy91c2IvY29yZS9odWIuYzo1ODIyIFtpbmxpbmVdCiBodWJfZXZl
-bnQrMHgxZTM5LzB4NGNlMCBkcml2ZXJzL3VzYi9jb3JlL2h1Yi5jOjU5MDQKIHByb2Nlc3Nfb25l
-X3dvcmsrMHg5N2IvMHgxYTkwIGtlcm5lbC93b3JrcXVldWUuYzozMjY3CiBwcm9jZXNzX3NjaGVk
-dWxlZF93b3JrcyBrZXJuZWwvd29ya3F1ZXVlLmM6MzM0OCBbaW5saW5lXQogd29ya2VyX3RocmVh
-ZCsweDY4MC8weGYwMCBrZXJuZWwvd29ya3F1ZXVlLmM6MzQyOQoga3RocmVhZCsweDJjNy8weDNi
-MCBrZXJuZWwva3RocmVhZC5jOjM4OAogcmV0X2Zyb21fZm9yaysweDQ1LzB4ODAgYXJjaC94ODYv
-a2VybmVsL3Byb2Nlc3MuYzoxNDcKIHJldF9mcm9tX2ZvcmtfYXNtKzB4MWEvMHgzMCBhcmNoL3g4
-Ni9lbnRyeS9lbnRyeV82NC5TOjI0NAogPC9UQVNLPgoKTGluazogaHR0cHM6Ly9sb3JlLmtlcm5l
-bC5vcmcvbGludXgtd2lyZWxlc3MvQ0FFazZrWnV1ZXprSDFkVlJKZjNFQVZaSy04Mz1PcFR6NjJx
-Q3Vna3BUa3N3ajhKRjZ3QG1haWwuZ21haWwuY29tL1QvI3UKU2lnbmVkLW9mZi1ieTogUGluZy1L
-ZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+Ci0tLQogZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVh
-bHRlay9ydGx3aWZpL3VzYi5jIHwgMzEgKysrKysrKysrKysrKysrKy0tLS0tLQogMSBmaWxlIGNo
-YW5nZWQsIDIzIGluc2VydGlvbnMoKyksIDggZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvZHJp
-dmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3VzYi5jIGIvZHJpdmVycy9uZXQvd2ly
-ZWxlc3MvcmVhbHRlay9ydGx3aWZpL3VzYi5jCmluZGV4IDJlYTcyZDllMzk1Ny4uNTI1YTkwNzQx
-ZGZiIDEwMDY0NAotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvdXNi
-LmMKKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3VzYi5jCkBAIC0y
-Myw2ICsyMyw4IEBAIE1PRFVMRV9ERVNDUklQVElPTigiVVNCIGJhc2ljIGRyaXZlciBmb3IgcnRs
-d2lmaSIpOwogCiAjZGVmaW5lIE1BWF9VU0JDVFJMX1ZFTkRPUlJFUV9USU1FUwkJMTAKIAorc3Rh
-dGljIHZvaWQgX3J0bF91c2JfY2xlYW51cF90eChzdHJ1Y3QgaWVlZTgwMjExX2h3ICpodyk7CisK
-IHN0YXRpYyB2b2lkIF91c2JjdHJsX3ZlbmRvcnJlcV9zeW5jKHN0cnVjdCB1c2JfZGV2aWNlICp1
-ZGV2LCB1OCByZXF0eXBlLAogCQkJCSAgIHUxNiB2YWx1ZSwgdm9pZCAqcGRhdGEsIHUxNiBsZW4p
-CiB7CkBAIC0yODUsOSArMjg3LDIwIEBAIHN0YXRpYyBpbnQgX3J0bF91c2JfaW5pdChzdHJ1Y3Qg
-aWVlZTgwMjExX2h3ICpodykKIAl9CiAJLyogdXNiIGVuZHBvaW50IG1hcHBpbmcgKi8KIAllcnIg
-PSBydGxwcml2LT5jZmctPnVzYl9pbnRlcmZhY2VfY2ZnLT51c2JfZW5kcG9pbnRfbWFwcGluZyho
-dyk7Ci0JcnRsdXNiLT51c2JfbXFfdG9faHdxID0gIHJ0bHByaXYtPmNmZy0+dXNiX2ludGVyZmFj
-ZV9jZmctPnVzYl9tcV90b19od3E7Ci0JX3J0bF91c2JfaW5pdF90eChodyk7Ci0JX3J0bF91c2Jf
-aW5pdF9yeChodyk7CisJaWYgKGVycikKKwkJcmV0dXJuIGVycjsKKwlydGx1c2ItPnVzYl9tcV90
-b19od3EgPSBydGxwcml2LT5jZmctPnVzYl9pbnRlcmZhY2VfY2ZnLT51c2JfbXFfdG9faHdxOwor
-CWVyciA9IF9ydGxfdXNiX2luaXRfdHgoaHcpOworCWlmIChlcnIpCisJCXJldHVybiBlcnI7CisJ
-ZXJyID0gX3J0bF91c2JfaW5pdF9yeChodyk7CisJaWYgKGVycikKKwkJZ290byBlcnJfb3V0Owor
-CisJcmV0dXJuIDA7CisKK2Vycl9vdXQ6CisJX3J0bF91c2JfY2xlYW51cF90eChodyk7CiAJcmV0
-dXJuIGVycjsKIH0KIApAQCAtNjkxLDE3ICs3MDQsMTMgQEAgc3RhdGljIGludCBydGxfdXNiX3N0
-YXJ0KHN0cnVjdCBpZWVlODAyMTFfaHcgKmh3KQogfQogCiAvKj09PT09PT09PT09PT09PT09PT09
-PT09ICB0eCA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSovCi1zdGF0
-aWMgdm9pZCBydGxfdXNiX2NsZWFudXAoc3RydWN0IGllZWU4MDIxMV9odyAqaHcpCitzdGF0aWMg
-dm9pZCBfcnRsX3VzYl9jbGVhbnVwX3R4KHN0cnVjdCBpZWVlODAyMTFfaHcgKmh3KQogewogCXUz
-MiBpOwogCXN0cnVjdCBza19idWZmICpfc2tiOwogCXN0cnVjdCBydGxfdXNiICpydGx1c2IgPSBy
-dGxfdXNiZGV2KHJ0bF91c2Jwcml2KGh3KSk7CiAJc3RydWN0IGllZWU4MDIxMV90eF9pbmZvICp0
-eGluZm87CiAKLQkvKiBjbGVhbiB1cCByeCBzdHVmZi4gKi8KLQlfcnRsX3VzYl9jbGVhbnVwX3J4
-KGh3KTsKLQotCS8qIGNsZWFuIHVwIHR4IHN0dWZmICovCiAJZm9yIChpID0gMDsgaSA8IFJUTF9V
-U0JfTUFYX0VQX05VTTsgaSsrKSB7CiAJCXdoaWxlICgoX3NrYiA9IHNrYl9kZXF1ZXVlKCZydGx1
-c2ItPnR4X3NrYl9xdWV1ZVtpXSkpKSB7CiAJCQlydGx1c2ItPnVzYl90eF9jbGVhbnVwKGh3LCBf
-c2tiKTsKQEAgLTcxNSw2ICs3MjQsMTIgQEAgc3RhdGljIHZvaWQgcnRsX3VzYl9jbGVhbnVwKHN0
-cnVjdCBpZWVlODAyMTFfaHcgKmh3KQogCXVzYl9raWxsX2FuY2hvcmVkX3VyYnMoJnJ0bHVzYi0+
-dHhfc3VibWl0dGVkKTsKIH0KIAorc3RhdGljIHZvaWQgcnRsX3VzYl9jbGVhbnVwKHN0cnVjdCBp
-ZWVlODAyMTFfaHcgKmh3KQoreworCV9ydGxfdXNiX2NsZWFudXBfcngoaHcpOworCV9ydGxfdXNi
-X2NsZWFudXBfdHgoaHcpOworfQorCiAvKiBXZSBtYXkgYWRkIHNvbWUgc3RydWN0IGludG8gc3Ry
-dWN0IHJ0bF91c2IgbGF0ZXIuIERvIGRlaW5pdCBoZXJlLiAgKi8KIHN0YXRpYyB2b2lkIHJ0bF91
-c2JfZGVpbml0KHN0cnVjdCBpZWVlODAyMTFfaHcgKmh3KQogewotLSAKMi4yNS4xCgo=
+ drivers/net/wireless/ath/ath12k/Makefile |   1 +
+ drivers/net/wireless/ath/ath12k/core.c   |  48 +-
+ drivers/net/wireless/ath/ath12k/core.h   |  37 +
+ drivers/net/wireless/ath/ath12k/htc.c    |   6 +
+ drivers/net/wireless/ath/ath12k/mac.c    | 252 ++++++-
+ drivers/net/wireless/ath/ath12k/mac.h    |   4 +
+ drivers/net/wireless/ath/ath12k/wmi.c    | 719 +++++++++++++++++++
+ drivers/net/wireless/ath/ath12k/wmi.h    | 559 +++++++++++++++
+ drivers/net/wireless/ath/ath12k/wow.c    | 878 +++++++++++++++++++++++
+ drivers/net/wireless/ath/ath12k/wow.h    |  62 ++
+ 10 files changed, 2557 insertions(+), 9 deletions(-)
+ create mode 100644 drivers/net/wireless/ath/ath12k/wow.c
+ create mode 100644 drivers/net/wireless/ath/ath12k/wow.h
 
---_002_54dbdd605bca48a68ae9a7423b4c994frealtekcom_--
+
+base-commit: 429eeef2ed089af1b3aa1983ec00a7591166be27
+-- 
+2.25.1
+
 
