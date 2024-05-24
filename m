@@ -1,190 +1,127 @@
-Return-Path: <linux-wireless+bounces-8051-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8052-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8634E8CEC5F
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 May 2024 00:17:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4BDB8CEC80
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 May 2024 00:55:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 330872827C4
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 May 2024 22:17:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A1322819EA
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 May 2024 22:55:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B511DFFC;
-	Fri, 24 May 2024 22:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9510884A54;
+	Fri, 24 May 2024 22:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="egPoI8j6"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="N8gWPnnw"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CECDF2C6BD;
-	Fri, 24 May 2024 22:17:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65CA5F84F
+	for <linux-wireless@vger.kernel.org>; Fri, 24 May 2024 22:55:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716589059; cv=none; b=HLTHkJDZ+BB1YSMqd3W6z0lktMzmFGCwxGxMFG15gAQvF1NgqfCMvATeI8vbn81GvkyK9wdNmZj0cnFtLo3kcyeyoJT0f+vjkcQsk8ds2ddiKoCAMEVyvrhkz3j/Oa93jwMIvLf/TEc2D9z9+hekYegdLJN7PGmppZV/58xLYCM=
+	t=1716591312; cv=none; b=l+Sonjcy0dTEBf+0yIpja5UKUgSEpkFGMvfcT95k9mwg1VbQouQ5COTDh2zyDtVnZ/lcHBaeb33qs+FcC6NRsMAU2NcBnGNTaVKc6BXMBwjtSVsUSPSw2pPRFtK+hRgw9bJUKyIjRc/c+ui78+SkEgiN2KhV1YbIkv249VRayu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716589059; c=relaxed/simple;
-	bh=M9EArhODLrmkGtQBy/pHxWq4JteMIdZO33MT7+dNYYo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DxbST1fZxYRuEwPbH5bdUno7l8+NQ+XMP4tOWy2py+7bvR2aRRHbyZMFFfUnKisMa21SwCHF53LnHAkkp0IlrZQm5Z5S/CM16oIl0ZZB8GsQFSpF44+/pJh/iu4xDiEv7B+pDJH0V676A/9uIN2AAwlGyaSsyJqhMaF6xng6GJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=egPoI8j6; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716589057; x=1748125057;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=M9EArhODLrmkGtQBy/pHxWq4JteMIdZO33MT7+dNYYo=;
-  b=egPoI8j68C92kvra9TjaZV3uHvk/vTJwDiSqK3zSuF5YkZrjNdSGpv/C
-   rJlXcsrsW3ddfNUEasNT2bgMbiso4lEEp7yyGqG5/ZeYuV4c176kDJkJc
-   Q4zBVekzBm3BaSjXiWNZkq6DmBrbSVQk8VYESaZgTZHV+thTcOj44+juw
-   oZkUA/2VNJtHidCt/fOaJVrNg8zrYv3ZEslycFetOftDALekiqx4fA0RR
-   UsZ+/e31QFrIvY8G2Q6Uz5bBE2XkyKGP1EaCsC8kJtn74zkEYskvQEA9G
-   4AAwcn6E+pIee7V6wE9v4Vs13dXh0Tyk+OYbvXKes2U9taIIq8A4nelqo
-   A==;
-X-CSE-ConnectionGUID: QUlIYGOKQBujuR8bejOYwg==
-X-CSE-MsgGUID: a8Nn2sdrTfO93/htkXStqA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11082"; a="13209453"
-X-IronPort-AV: E=Sophos;i="6.08,186,1712646000"; 
-   d="scan'208";a="13209453"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2024 15:17:36 -0700
-X-CSE-ConnectionGUID: 5lZWG2J3QcmScsKt8SZI3w==
-X-CSE-MsgGUID: MDqR4ITkTKSYoJ8aWSNLAw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,186,1712646000"; 
-   d="scan'208";a="34254867"
-Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
-  by fmviesa010.fm.intel.com with ESMTP; 24 May 2024 15:17:34 -0700
-Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sAdE9-0005xi-0K;
-	Fri, 24 May 2024 22:17:30 +0000
-Date: Sat, 25 May 2024 06:17:20 +0800
-From: kernel test robot <lkp@intel.com>
-To: Sascha Hauer <s.hauer@pengutronix.de>, linux-wireless@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Brian Norris <briannorris@chromium.org>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Kalle Valo <kvalo@kernel.org>, David Lin <yu-hao.lin@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>
-Subject: Re: [PATCH] wifi: mwifiex: fix parsing of more than two AKM suites
-Message-ID: <202405250631.g417GL0g-lkp@intel.com>
-References: <20240523081428.2852276-1-s.hauer@pengutronix.de>
+	s=arc-20240116; t=1716591312; c=relaxed/simple;
+	bh=vFIQk8rk4nhAX1GMl30ET3KpsGu/hdAnGJjqSaqy4vI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jL8I+3L+PCBkvbqUKkejYFUm8YH5pdXQaq2Lrx2CKj6od0av31Ff2Io1UAsvE+nL8HvOOwdtEClCJCeNxx0/Qv5QNUUIcSWzaHqYyQHOZ1SsSGCCSWy6NBVSR8X1T3HTaiFvacNM1fmFkxBCxzkaltdOEBLfEnKXA15fLPN/4aU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=N8gWPnnw; arc=none smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5295d509178so1430091e87.1
+        for <linux-wireless@vger.kernel.org>; Fri, 24 May 2024 15:55:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1716591308; x=1717196108; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vFIQk8rk4nhAX1GMl30ET3KpsGu/hdAnGJjqSaqy4vI=;
+        b=N8gWPnnwKwrp1nYOSPOygvMc60UP/ygxWE+ADcykYV/4C8/qWGfDb26PbK7NvNnI0C
+         ekn44p2UzOLRK/DLIF5laPVSyKXvM3D3OjgbeIsq5VAx08tdhATDwSr0dhUf+AwQTyww
+         hdfV84aiS1Z8FZQIy+mNGEuK+lM8WCGXD9w20=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716591308; x=1717196108;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vFIQk8rk4nhAX1GMl30ET3KpsGu/hdAnGJjqSaqy4vI=;
+        b=S6pwg1e7SmvYY9vVmzZrVIKJc100DxX/zROC2K5zYMt17sq9SiTXkQhRC3wiCQZ7Yw
+         1LueW9HROVP0XG0eX9FXsujPpO9DeG1WVQ6XhaRDQolc863pN7ZKLzsZRcfvaejX7vFI
+         spUsMm6edOMpxO0w44O+yGdx382Ekiwk5vjOWe3s8E+Gac5xB1v1nwJWz/Syu+nvLlPl
+         mwtqZlOkIMNh/zRaKOwzShHxKzWcy/3+KyDbibZpqDDr+DLrBWToISZClwvnn+hMrKii
+         aqmyHc9m8nlZ1ZW7ExuZyT+uL8f4gub3OJ1EBds2GZPE0pp8azLY1m8OEsX2+HOBg/Y+
+         gwMA==
+X-Gm-Message-State: AOJu0YyY87ZBEyXfMrj/dHIT3fDC4uiUAMOySSmiv3lI3v9eXRnmgxrp
+	QnAT/reKMJglbujr5baNWDRzcBmKSNhzi6wzJqhjAg0B4r+zL8PNG3gAE9l/tIDWQSiZ82+x0yz
+	nsA==
+X-Google-Smtp-Source: AGHT+IEfMkb4a5UMjyG8EawCZvxe94YTubpP4wSbY+Hur+gI1141jEgHElzMwaU07NZFKnanWiAEPg==
+X-Received: by 2002:ac2:4343:0:b0:518:9823:601a with SMTP id 2adb3069b0e04-52965f1093amr2930420e87.39.1716591306903;
+        Fri, 24 May 2024 15:55:06 -0700 (PDT)
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com. [209.85.218.54])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a626cc4efb8sm186342066b.100.2024.05.24.15.55.06
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 24 May 2024 15:55:06 -0700 (PDT)
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a626777f74eso161073866b.3
+        for <linux-wireless@vger.kernel.org>; Fri, 24 May 2024 15:55:06 -0700 (PDT)
+X-Received: by 2002:a17:906:35d8:b0:a5a:5c98:c595 with SMTP id
+ a640c23a62f3a-a626511a554mr347429966b.61.1716591305542; Fri, 24 May 2024
+ 15:55:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240523081428.2852276-1-s.hauer@pengutronix.de>
+References: <20240418060626.431202-1-yu-hao.lin@nxp.com> <20240418060626.431202-2-yu-hao.lin@nxp.com>
+ <Zk6TklTIbxZxIWyb@google.com> <PA4PR04MB9638DC958102D07A7B7084B6D1F52@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <CA+ASDXOE2Pwv3kRhwkAd1e3+U8zxZi7cX0TeLDkycQya9xkdPA@mail.gmail.com> <PA4PR04MB963875C85CFFA0EE2E914BEAD1F52@PA4PR04MB9638.eurprd04.prod.outlook.com>
+In-Reply-To: <PA4PR04MB963875C85CFFA0EE2E914BEAD1F52@PA4PR04MB9638.eurprd04.prod.outlook.com>
+From: Brian Norris <briannorris@chromium.org>
+Date: Fri, 24 May 2024 15:54:48 -0700
+X-Gmail-Original-Message-ID: <CA+ASDXMzHRs=CeyVeMbY44ornTa7f8G3ek3bFeyX39QAwr5bog@mail.gmail.com>
+Message-ID: <CA+ASDXMzHRs=CeyVeMbY44ornTa7f8G3ek3bFeyX39QAwr5bog@mail.gmail.com>
+Subject: Re: [EXT] Re: [PATCH v10 1/2] wifi: mwifiex: add host mlme for client mode
+To: David Lin <yu-hao.lin@nxp.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "kvalo@kernel.org" <kvalo@kernel.org>, 
+	"francesco@dolcini.it" <francesco@dolcini.it>, Pete Hsieh <tsung-hsien.hsieh@nxp.com>, 
+	Francesco Dolcini <francesco.dolcini@toradex.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Sascha,
+On Fri, May 24, 2024 at 3:01=E2=80=AFPM David Lin <yu-hao.lin@nxp.com> wrot=
+e:
+> I think it needs time to support probe client. Can we put your suggested =
+comments to the code
+> used to hook probe_client() and add
+>
+> "TODO: support probe client" to mwifiex_cfg80211_probe_client().
 
-kernel test robot noticed the following build warnings:
+Are you suggesting that you plan to actually implement proper
+probe_client support? Did you already do what I suggested, and
+understand why hostapd needs probe_client support? This seems to be a
+common pattern -- that reviewers are asking for you to do your
+research, and it takes several requests before you actually do it.
 
-[auto build test WARNING on wireless-next/main]
-[also build test WARNING on wireless/main linus/master v6.9 next-20240523]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Now that I've tried to do that research for you ... it looks like
+hostapd uses probe_client to augment TX MGMT acks, as a proxy for
+station presence / inactivity. If a station is inactive and
+non-responsive, we disconnect it eventually. So that looks to me like
+probe_client support should actually be optional, if your driver
+reports TX status? And in that case, I'd still recommend you try to
+fix hostapd.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Sascha-Hauer/wifi-mwifiex-fix-parsing-of-more-than-two-AKM-suites/20240523-161947
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-patch link:    https://lore.kernel.org/r/20240523081428.2852276-1-s.hauer%40pengutronix.de
-patch subject: [PATCH] wifi: mwifiex: fix parsing of more than two AKM suites
-config: x86_64-randconfig-122-20240525 (https://download.01.org/0day-ci/archive/20240525/202405250631.g417GL0g-lkp@intel.com/config)
-compiler: gcc-11 (Ubuntu 11.4.0-4ubuntu1) 11.4.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240525/202405250631.g417GL0g-lkp@intel.com/reproduce)
+But if you're really planning to implement proper probe_client
+support, then I suppose the TODO approach is also OK.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202405250631.g417GL0g-lkp@intel.com/
+I'd also request that you please actually do your research when
+reviewers ask questions. I'm frankly not sure why I'm spending my time
+on the above research, when the onus should be on the submitter to
+explain why they're doing what they're doing.
 
-sparse warnings: (new ones prefixed by >>)
->> drivers/net/wireless/marvell/mwifiex/uap_cmd.c:54:17: sparse: sparse: cast to restricted __le16
-   drivers/net/wireless/marvell/mwifiex/uap_cmd.c:72:17: sparse: sparse: cast to restricted __le16
-
-vim +54 drivers/net/wireless/marvell/mwifiex/uap_cmd.c
-
-    27	
-    28	static void woal_check_rsn_ie(const struct IEEEtypes_Rsn_t *rsn_ie, int len,
-    29				      struct mwifiex_uap_bss_param *bss_config, u8 *pairwise_cipher)
-    30	{
-    31		int left, count, i;
-    32		struct wpa_suite_ucast *key_mgmt;
-    33	
-    34		left = len;
-    35		if (left < (int)sizeof(struct IEEEtypes_Rsn_t))
-    36			return;
-    37	
-    38		bss_config->wpa_cfg.group_cipher = 0;
-    39		*pairwise_cipher = 0;
-    40		bss_config->key_mgmt = 0;
-    41	
-    42		/* check the group cipher */
-    43		switch (be32_to_cpu(rsn_ie->group_cipher)) {
-    44		case WLAN_CIPHER_SUITE_TKIP:
-    45			bss_config->wpa_cfg.group_cipher = CIPHER_TKIP;
-    46			break;
-    47		case WLAN_CIPHER_SUITE_CCMP:
-    48			bss_config->wpa_cfg.group_cipher = CIPHER_AES_CCMP;
-    49			break;
-    50		default:
-    51			break;
-    52		}
-    53	
-  > 54		count = le16_to_cpu(rsn_ie->pairwise_cipher.count);
-    55		for (i = 0; i < count; i++) {
-    56			switch (be32_to_cpu(rsn_ie->pairwise_cipher.suite[i])) {
-    57			case WLAN_CIPHER_SUITE_TKIP:
-    58				*pairwise_cipher |= CIPHER_TKIP;
-    59				break;
-    60			case WLAN_CIPHER_SUITE_CCMP:
-    61				*pairwise_cipher |= CIPHER_AES_CCMP;
-    62				break;
-    63			default:
-    64				break;
-    65			}
-    66		}
-    67		left -= sizeof(struct IEEEtypes_Rsn_t) + (count - 1) * sizeof(__be32);
-    68		if (left < (int)sizeof(struct wpa_suite_ucast))
-    69			return;
-    70	
-    71		key_mgmt = ((void *)rsn_ie + sizeof(struct IEEEtypes_Rsn_t) + (count - 1) * sizeof(__be32));
-    72		count = le16_to_cpu(key_mgmt->count);
-    73		if (left < (int)(sizeof(struct wpa_suite_ucast) +
-    74				 (count - 1) * sizeof(__be32)))
-    75			return;
-    76	
-    77		for (i = 0; i < count; i++) {
-    78			switch (be32_to_cpu(key_mgmt->suite[i])) {
-    79			case WLAN_AKM_SUITE_8021X:
-    80				bss_config->key_mgmt |= KEY_MGMT_EAP;
-    81				break;
-    82			case WLAN_AKM_SUITE_PSK:
-    83				bss_config->key_mgmt |= KEY_MGMT_PSK;
-    84				break;
-    85			case WLAN_AKM_SUITE_PSK_SHA256:
-    86				bss_config->key_mgmt |= KEY_MGMT_PSK_SHA256;
-    87				break;
-    88			case WLAN_AKM_SUITE_SAE:
-    89				bss_config->key_mgmt |= KEY_MGMT_SAE;
-    90				break;
-    91			case WLAN_AKM_SUITE_OWE:
-    92				bss_config->key_mgmt |= KEY_MGMT_OWE;
-    93				break;
-    94			}
-    95		}
-    96	}
-    97	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Brian
 
