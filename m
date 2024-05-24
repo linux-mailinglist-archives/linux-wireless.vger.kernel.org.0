@@ -1,105 +1,99 @@
-Return-Path: <linux-wireless+bounces-8039-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8040-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 704FC8CE1BE
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 May 2024 09:49:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA7688CE1E2
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 May 2024 09:58:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 005E2B21B86
-	for <lists+linux-wireless@lfdr.de>; Fri, 24 May 2024 07:49:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D7811F227F0
+	for <lists+linux-wireless@lfdr.de>; Fri, 24 May 2024 07:58:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16F071292C9;
-	Fri, 24 May 2024 07:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C1282892;
+	Fri, 24 May 2024 07:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="xhUi4/3G"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="ZJXtNVAI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738251292C3;
-	Fri, 24 May 2024 07:49:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D5B83CAE;
+	Fri, 24 May 2024 07:58:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716536947; cv=none; b=bkL7A3Q9zT3HTQcl3jCIv8PO+z5mgtRAUIJonfHzTmECQlSEwDwsp1zpV1zSsqpGAz4VjzLvgW+8uCLix2HF5L6gq834e5OChVp6cAiVzuLxTGDQGqpepweGlR9xIGnPJuyRfXhf5CU9iZDxFi5eroGexPJTBUC7YexP442GUi8=
+	t=1716537525; cv=none; b=nV8NyVvJBUm7ZUHuHFvlxbnRfqN5flK1UoYvQwCLBVmG/2XXgRPRcr11jG7ZEi/KZYwx/a86nEGvhe64p6DFc1bCfrhtOIWPLescUtAXS0MQ2wCY4UAp3mzGM0000POe2qhmsxNjnzJf/IkyghcGV7DCpEUqqFcp86IObFjCXVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716536947; c=relaxed/simple;
-	bh=FbAxsDuQqprqbZ3o1qy7Esisf/ahAAzjSyXHO2NFNc4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ehN6u7gW1D4SaLdSnDIG787c/Jm06oH9wFhM/jurHVy7cH1o7VdErz01HCwH8h1o+0YDQu5lQLYrrbUkyZQBSMrm5XnGf38YimOIlTipmnhs1Y0yI2Ml3TB0f+mh4pfXwuCIa27jcwp04CSX0PV4Oer5KoS/TNxrPJfurLjDoZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=xhUi4/3G; arc=none smtp.client-ip=198.47.23.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 44O7mpgB110057;
-	Fri, 24 May 2024 02:48:51 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1716536931;
-	bh=LbV912eUItDCFeujcZ+K3k698C6fxl6NNH6ifgGmUWE=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=xhUi4/3Guvgv7deYfTV+ieGc6o4LiLwhr0YRbqoLRjcUYQHMPqp9PB1/6A32Y6a+Y
-	 v4lT05hmp/OlEb99aon6if5gPgpZcX65R2qN+Zwn4v3f7kUPAy7zcUEC929nLSsjOS
-	 f0whMXr20j64LTMVCiQKC8KJunrMZgC6PcKEVSQU=
-Received: from DLEE102.ent.ti.com (dlee102.ent.ti.com [157.170.170.32])
-	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 44O7mpos042818
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 24 May 2024 02:48:51 -0500
-Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 24
- May 2024 02:48:51 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE105.ent.ti.com
- (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 24 May 2024 02:48:51 -0500
-Received: from [10.250.145.232] ([10.250.145.232])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 44O7mmX2125835;
-	Fri, 24 May 2024 02:48:49 -0500
-Message-ID: <dd8f294b-425c-4e4a-8eaf-026138461941@ti.com>
-Date: Fri, 24 May 2024 10:48:47 +0300
+	s=arc-20240116; t=1716537525; c=relaxed/simple;
+	bh=bqyPMRt9wz028/U8fejcJ/EaS7Tt7i+3cUm/fCpxTb4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rwmoR5CHGskT4/QOZTBF3ttj5cSGvGoeFkFRCu2ovBgjvIK4n7DjCQO5CDHdQ7cooB+5OTefi9wzcNeo3PZQAF0Qt3AYE/v7QXGpLRzp1W8db97134aORueUmbX+NqYZRMoin73rsWiNLva2X0Eh9zTWKvfQqb1moyuRV88VPkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=ZJXtNVAI; arc=none smtp.client-ip=115.124.30.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1716537515; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=07/n6HPUGsrYONlCxyGegVdPDEuAAjDjEBGbwCI4jeE=;
+	b=ZJXtNVAIrEEXn4AWb8v3kCsGxVKYn1ezqcsNc5chOciWmdn1okKrDOLWYoeRFJnvCjTraShAMU31TFS/zL5Y0+pcPzukIavIj90TDxySm1fRxhAAGbNN4vR7cRna6OwNj3hijQPWRVgIgQcs8TtZVgJ7+FvlamRJ6HIGAfxYiSQ=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045046011;MF=jiapeng.chong@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0W75y.OR_1716537505;
+Received: from localhost(mailfrom:jiapeng.chong@linux.alibaba.com fp:SMTPD_---0W75y.OR_1716537505)
+          by smtp.aliyun-inc.com;
+          Fri, 24 May 2024 15:58:34 +0800
+From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+To: pkshih@realtek.com
+Cc: kvalo@kernel.org,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+	Abaci Robot <abaci@linux.alibaba.com>
+Subject: [PATCH] wifi: rtw89: chan: Use swap() instead of open coding it
+Date: Fri, 24 May 2024 15:58:19 +0800
+Message-Id: <20240524075819.2789-1-jiapeng.chong@linux.alibaba.com>
+X-Mailer: git-send-email 2.20.1.7.g153144c
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/17] wifi: cc33xx: Add driver for new TI CC33xx wireless
- device family
-To: Kalle Valo <kvalo@kernel.org>
-CC: Johannes Berg <johannes.berg@intel.com>, Breno Leitao <leitao@debian.org>,
-        Justin Stitt <justinstitt@google.com>,
-        Kees Cook <keescook@chromium.org>, <linux-wireless@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, Sabeeh Khan
-	<sabeeh-khan@ti.com>
-References: <20240521171841.884576-1-michael.nemanov@ti.com>
- <87msohatii.fsf@kernel.org>
-Content-Language: en-US
-From: "Nemanov, Michael" <michael.nemanov@ti.com>
-In-Reply-To: <87msohatii.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Transfer-Encoding: 8bit
 
+Swap is a function interface that provides exchange function. To avoid
+code duplication, we can use swap function.
 
-On 5/23/2024 10:15 AM, Kalle Valo wrote:
-> The community (myself included) has been frustrated that TI has dropped
-> the ball on their existing wireless drivers:
->
-> https://docs.kernel.org/process/maintainers.html#ti-wilink-wireless-drivers
->
-> This kind of behaviour is not exactly building trust. So how is this
-> driver going to be any different?
+./drivers/net/wireless/realtek/rtw89/chan.c:2336:32-33: WARNING opportunity for swap().
 
-I understand the frustration. As the engineer leading the development of 
-the CC33xx driver I can say that CC3300 and CC3301 are the first in a 
-family whose roadmap goes beyond 2030. I can also say that Linux driver 
-support is foundational for this line of products and TI is committed to 
-supporting these devices in the linux-wireless community for at least 10 
-years. Unlike previous drivers, development and maintenance of CC33xx 
-will be done by TI engineers and not a 3rd party. Is this acceptable?
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=9174
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+---
+ drivers/net/wireless/realtek/rtw89/chan.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-Michael.
+diff --git a/drivers/net/wireless/realtek/rtw89/chan.c b/drivers/net/wireless/realtek/rtw89/chan.c
+index 051a3cad6101..3b1997223cc5 100644
+--- a/drivers/net/wireless/realtek/rtw89/chan.c
++++ b/drivers/net/wireless/realtek/rtw89/chan.c
+@@ -2322,7 +2322,6 @@ static void rtw89_swap_sub_entity(struct rtw89_dev *rtwdev,
+ 				  enum rtw89_sub_entity_idx idx2)
+ {
+ 	struct rtw89_hal *hal = &rtwdev->hal;
+-	struct rtw89_sub_entity tmp;
+ 	struct rtw89_vif *rtwvif;
+ 	u8 cur;
+ 
+@@ -2332,9 +2331,7 @@ static void rtw89_swap_sub_entity(struct rtw89_dev *rtwdev,
+ 	hal->sub[idx1].cfg->idx = idx2;
+ 	hal->sub[idx2].cfg->idx = idx1;
+ 
+-	tmp = hal->sub[idx1];
+-	hal->sub[idx1] = hal->sub[idx2];
+-	hal->sub[idx2] = tmp;
++	swap(hal->sub[idx1], hal->sub[idx2]);
+ 
+ 	rtw89_for_each_rtwvif(rtwdev, rtwvif) {
+ 		if (!rtwvif->chanctx_assigned)
+-- 
+2.20.1.7.g153144c
 
 
