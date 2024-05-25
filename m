@@ -1,121 +1,127 @@
-Return-Path: <linux-wireless+bounces-8055-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8056-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B14C18CEE0C
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 May 2024 08:35:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E8F78CEE3C
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 May 2024 10:54:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64272281685
-	for <lists+linux-wireless@lfdr.de>; Sat, 25 May 2024 06:35:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAC8A1F21544
+	for <lists+linux-wireless@lfdr.de>; Sat, 25 May 2024 08:54:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 981D0B660;
-	Sat, 25 May 2024 06:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E7714AB4;
+	Sat, 25 May 2024 08:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BG560QP0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ddZCxgbf"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7E7B65C;
-	Sat, 25 May 2024 06:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F40846A4
+	for <linux-wireless@vger.kernel.org>; Sat, 25 May 2024 08:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716618944; cv=none; b=qQ4uNkffeDwG2wwWJQac/7fkZQE3pQnBukjmYwWnPW3x0lhFo+DPmFkz/cKq3j2Lfo/OxKQthFih2ALagrb3ktw9M1wRyYcTmGcwqZy10sBOdF0EN4f5ujw3wAFkDhZc8DAQ9Dm+AgyT2jsmJSvRIaHOl3mDe/hKa0b0Rrv11LQ=
+	t=1716627294; cv=none; b=JVYhFcIyz8NUTK0HagXPJe59wtS4U/lFgqVnKvSowGedE6VvK8lnDlRdtvyhR2jbkNxfyKab/YoN7wxGEo61fBJyrGA+PCqE8tF3SgO/1y2NkjskJUYyi9P+Z92V6KpYcnvGfea0/6vAPdU26Z3+POmyR/BCAgGOw+M3zENcB68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716618944; c=relaxed/simple;
-	bh=RkSOasl4Cv6gTpeIPkA439lTvWAtTE6MvjOB6/84eGE=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=K6VLmUwtJph/ReOPEjHkgWUT0kPRlaGQXaZncmomfSGA7Ucz8HhVfm8s2RpyqLqPkr5G73l4+UiXj2U8ABNoodFk5/vxESp12cPqh1tTzI6bABDVXhaRCehIEQyTmWQUs5yHquFDeY6R/70K+hVqNi90SjD0ivAJOOolE0ei6mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BG560QP0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C4AC3277B;
-	Sat, 25 May 2024 06:35:40 +0000 (UTC)
+	s=arc-20240116; t=1716627294; c=relaxed/simple;
+	bh=Kpixmm+1/z3WzvujAUF+JyjqlGx9bGig4lkBXVLamCM=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=YXHtYUIYQcjswB1YxY/XZBj6je7u5QVovC+ptb2oFQlzQ01TtTQoyhw7nUCCcPwgifN3q8IcGM7lPBW5OIYkNFEfiLtzEx5yytY2r9/SVolXJrJTleoU91H0JfTDLSQvhTnpw0nOOxhaxCzGwiCNVgIkA7a2fNZb75eXrdyQGLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ddZCxgbf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C87C3277B;
+	Sat, 25 May 2024 08:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716618944;
-	bh=RkSOasl4Cv6gTpeIPkA439lTvWAtTE6MvjOB6/84eGE=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=BG560QP0UQxEWQoWfBDB4EzUDAgarM8NaD1brHxJIl4va5VvnTnDLhgU9RmF3VwJO
-	 lIqke26BqnMsQrX+hQBExNl2u1ydwWB2R6+dPbvW8CBk7MitPiiz1WmfztYHnd4FvJ
-	 eJzYblpUGpZBapkJQ2FUt/zPadAqBvENABxBuWzVSmArPVKFNECKFirLPRp2Gdqto+
-	 fcAO9XwQAl87KnDbQdhlDHG6KIr3q5zGNAVkV0Um2iW1cJASuh5gu9QK1VaOUioKeU
-	 OWMsayQgurS8WIWtxO1DK4VdJgedMmWpB8afQpHzc5MzAx7cGfF4ej0TjPYAF+nfU1
-	 DYZLZH3iDNIAQ==
-From: Kalle Valo <kvalo@kernel.org>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Oleksandr Natalenko <oleksandr@natalenko.name>,
-  linux-kernel@vger.kernel.org,  linux-wireless@vger.kernel.org,  "Linux
- regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.info>,
-  linux-mediatek@lists.infradead.org,
-  linux-arm-kernel@lists.infradead.org,  Felix Fietkau <nbd@nbd.name>,
-  Lorenzo Bianconi <lorenzo@kernel.org>,  Ryder Lee
- <ryder.lee@mediatek.com>,  Shayne Chen <shayne.chen@mediatek.com>,  Sean
- Wang <sean.wang@mediatek.com>,  Matthias Brugger <matthias.bgg@gmail.com>,
-  AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-  Peter Chiu <chui-hao.chiu@mediatek.com>,  StanleyYP Wang
- <StanleyYP.Wang@mediatek.com>,  Linux regressions mailing list
- <regressions@lists.linux.dev>
-Subject: Re: [REGRESSION] MT7915E doesn't work any more with v6.9
-References: <6061263.lOV4Wx5bFT@natalenko.name>
-	<2341660.ElGaqSPkdT@natalenko.name>
-	<60fe8df750a74331b8a54a76d55d5e8349ac46b4.camel@sipsolutions.net>
-	<878qzy9zly.fsf@kernel.org>
-Date: Sat, 25 May 2024 09:35:38 +0300
-In-Reply-To: <878qzy9zly.fsf@kernel.org> (Kalle Valo's message of "Sat, 25 May
-	2024 09:26:01 +0300")
-Message-ID: <874jam9z5x.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=k20201202; t=1716627294;
+	bh=Kpixmm+1/z3WzvujAUF+JyjqlGx9bGig4lkBXVLamCM=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=ddZCxgbfeb9hF6fHQfEj/ybs/PsCQRdF28QbkwR/Mb149qxg/cbi7yWjcLYmJRjkZ
+	 kLX2oo3r70Xu/uNLl2PLBGIo8fSOPgwtzrpPFqZ0MQv9SLpYLv2T7cLVnmSsPvVaM+
+	 dMUJETwnvcCM+jVa1pvhFlf0Fq7rWo0X40YO3OmHHp2yQH75JRieoHMpb0FmNXDWDZ
+	 t+QNqNrcYlgyNzctYo9H4FEgN+zar2Q/z5ON4Gv7ef2BZwn70l3zsg/0uAD6dutIA8
+	 xFBmj+ZyEcBVJzZnwK9kJWV2oDmUwc6VTKERL4pGMrX9XsSSm+9esMVT+7By3FMYbD
+	 dqQevWFon9K9g==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 1/2] wifi: ath12k: Refactor Rx descriptor CMEM
+ configuration
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20240516000807.1704913-2-quic_periyasa@quicinc.com>
+References: <20240516000807.1704913-2-quic_periyasa@quicinc.com>
+To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Cc: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+ Karthikeyan Periyasamy
+	<quic_periyasa@quicinc.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <171662729107.564311.13966579301897980199.kvalo@kernel.org>
+Date: Sat, 25 May 2024 08:54:52 +0000 (UTC)
 
-Kalle Valo <kvalo@kernel.org> writes:
+Karthikeyan Periyasamy <quic_periyasa@quicinc.com> wrote:
 
-> Johannes Berg <johannes@sipsolutions.net> writes:
->
->> On Wed, 2024-05-15 at 00:51 +0200, Oleksandr Natalenko wrote:
->>> Also /cc Johannes because of this commit:
->>>=20
->>> 6092077ad09ce wifi: mac80211: introduce 'channel request'
->>>=20
->>> On st=C5=99eda 15. kv=C4=9Btna 2024 0:43:40, SEL=C4=8C Oleksandr Natale=
-nko wrote:
->>> > Hello Felix, Lorenzo et al.
->>> >=20
->>> > With v6.9 kernel the following card:
->>> >=20
->>> > 01:00.0 Unclassified device [0002]: MEDIATEK Corp. MT7915E
->>> > 802.11ax PCI Express Wireless Network Adapter [14c3:7915]
->>> >=20
->>> > doesn't work any more. Upon mt7915e module insertion the following sp=
-lat happens:
->>> >=20
->>
->> 6.9 didn't get commit 2f7cf3b61d85 ("wifi: mt76: mt7915: add missing
->> chanctx ops")? Huh?
->
-> Yeah, commit 2f7cf3b61d85 should have been taken to wireless tree but it
-> fell through the cracks. I didn't realise that it's an important bugfix
-> and the commit message didn't give any indication of that either.
->
-> But commit 2f7cf3b61d85 is now in Linus' tree so it would be good if
-> someone could submit it to stable releases.
+> Currently, data path Rx descriptor placed in the CMEM memory respective
+> to the Rx offset. This Rx descriptor CMEM placement is not meeting the
+> requirements to support inter device MLO. In inter device MLO, multiple
+> devices participate in a group. The device specific Rx descriptor buffers
+> transmit to multiple device REO rings. To distinguish between device
+> specific Rx descriptor buffers, the CMEM setup configuration need to
+> choose a different placement based on the unique identifier (device index).
+> 
+> Below are the CMEM configuration placement representation:
+> 
+> Intra-Device MLO scenario:
+> 
+>         Device 0                                Device 1
+> 
+>      +-------------+                         +-------------+
+>      |             |                         |             |
+>      |     Tx      |                         |     Tx      |
+>      |             |                         |             |
+>      +-------------+                         +-------------+
+>      |             |                         |             |
+>      |     Rx      |                         |     Rx      |
+>      |             |                         |             |
+>      +-------------+                         +-------------+
+> 
+> Inter-Device MLO scenario:
+> 
+>         Device 0                                Device 1
+> 
+>      +-------------+                         +-------------+
+>      |             |                         |             |
+>      |     Tx      |                         |     Tx      |
+>      |             |                         |             |
+>      +-------------+                         +-------------+
+>      |             |                         |             |
+>      |     Rx      |                         |   Reserved  |
+>      |  Device 0   |                         |             |
+>      |             |                         |             |
+>      +-------------+                         +-------------+
+>      |             |                         |     Rx      |
+>      |   Reserved  |                         |   Device 1  |
+>      |             |                         |             |
+>      +-------------+                         +-------------+
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 HW2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> 
+> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Johannes pointed out to me that the commit is already in stable:
+2 patches applied to ath-next branch of ath.git, thanks.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=
-=3Dlinux-6.9.y&id=3Dddb02739a2be54ed922bce3cb57d5f901590ee70
+4f82a8d5c277 wifi: ath12k: refactor rx descriptor CMEM configuration
+35864b62fa12 wifi: ath12k: improve the rx descriptor error information
 
-So all should be good now.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20240516000807.1704913-2-quic_periyasa@quicinc.com/
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
 
