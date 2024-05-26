@@ -1,119 +1,119 @@
-Return-Path: <linux-wireless+bounces-8069-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8070-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BE978CF6D8
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2024 01:44:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F9A68CF6D9
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2024 01:46:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD8CF1F218C4
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 May 2024 23:44:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9124F1C20D9A
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 May 2024 23:46:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F19F317552;
-	Sun, 26 May 2024 23:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F6711EB3F;
+	Sun, 26 May 2024 23:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BptGGv9u"
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="ORul72eL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73CD41A2C2C
-	for <linux-wireless@vger.kernel.org>; Sun, 26 May 2024 23:44:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1532F46;
+	Sun, 26 May 2024 23:45:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716767067; cv=none; b=Y3JCIP0JsgpjXTnxX/l/oI4TulbjUuBX5Jh2zy1775j351+JBOuIUm1vs3ONh029imWEBOjassypFKLJNOs+G5NxL0M90BBa7QgMzTWZsqQbbkJ7Ej3fI5r51opMRZqSHmZOCygc8Or5fRLpyzgD1XvdGCyOqGUG2k36Lf8H+Bk=
+	t=1716767161; cv=none; b=EntIqJ//1sw0ga2yZP2gqXzxvytJFAohvvv/RrWONIsWSiLXaEH4OVpEd3mf/QH/YrfzcNZRW6aSOulcb+Tz1q41n02RzfsTq0cz9Z8fgyMhAY2Mp83wGgoIyX9H5aSr+fyPN0lWko1grYEj3lVW8UgABJ71j3Jz27F9/Kqpy/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716767067; c=relaxed/simple;
-	bh=EG/v3ldJQ0swnVDamUNHUMEZeKXEvin3Dy0Erpva3sI=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=kM1qdmDKoirTBuDhkyu2JMo1bYDsl/1ueVl9DQvssSRJsoqgDHVsXdlao4SdEGgx8L4d0epZnBkKsIvFk87LkhQaPdsyqq/6WqCPopZhC0tsntbJSpPbc+QLX179ODsNPF72ASsuUKpZK/FA1cw0ZsIefd2wFZ+wJLS4T8lhL4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BptGGv9u; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-529644ec0ebso3470365e87.3
-        for <linux-wireless@vger.kernel.org>; Sun, 26 May 2024 16:44:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716767064; x=1717371864; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=YqcIR8VHl37tK5h7WdSzO/hWbEWN1LVDAobDz25bb6U=;
-        b=BptGGv9uEP3WZo3X2hK4dn2floZgr8qzQz3vaZVZo5vEGdnxiU7CqOaKexGGB0QVeE
-         GUYnMQAyU6ev0GIgp7zXxDi2mEXKBnG1j1tj01PCO4t/HF7ulVWWfkVykNVsdIfQ2dqn
-         3MsgaTECy8rP41JVn0oBzHvpEHOCBl8a5QhtqcWX3RLPWcJAU4RqBGwEgOqzAB1xaXjd
-         ljziXdF0aTaOWA9aDK3pzqOS1jVCzrhg0WgCkkp0ZhRbavQ373VRcwrv0GWBkGLVQnzZ
-         0PK5BppE0+7W3tK+I256kupZxnqj6der9MC7kn7GMkmSV4U5dh3PSzrjZZrss443LRDN
-         vw0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716767064; x=1717371864;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YqcIR8VHl37tK5h7WdSzO/hWbEWN1LVDAobDz25bb6U=;
-        b=J6qAn78C42MgLhTa+/35X2ndZE8jOwtqA8Otbn6URtmGFxVOyguPAWc4Kzfg26i312
-         RixdI170/CP60fBnycGyKII5ar4gno1MA9fwxbgzJOTBi3vh1Q+FXm971Xar6Pdk1R6e
-         ut4iGP/ncb8oG20uCBH/QIinWl5/wyM8VR/44/se7ggSq4J7vc8JJ6r9JnqpTFxgnFsR
-         sUC+fwvEdaOPBozY6UrzkbE+Z3WrG46Rv7XmYutPVXiHmVxHo5DnnTWbpE+pFSJyxn9V
-         2OCbGVAlv8w0VMnexltJP3hXcsUXysu2yL1Y49aaVzfx6YELpq/649YhDNyZqsY4wszA
-         Im/Q==
-X-Gm-Message-State: AOJu0YxUxNuvlAxfX/SuJrkkNo4ZJPoYR6aq9KyqV0ZU09ZvnrjVl4LL
-	xYhZyfSPGROnrzRNNDcLnzkmv3zhSDcR8gaE8diRuPGWiTLKsTVSdup8NskemBfVG3Iob81e7xb
-	TWhjbxS+cFs7nLXpyxQ29I1Rt5Y9MDG8c
-X-Google-Smtp-Source: AGHT+IHfdvRv60BtdhYXAxTuAOpugBrxVCQo1KrMjtHoWKf4cC1bjlif7iwt46DYbZ7WwPvv8TJpwkS5+lg9udN3CLs=
-X-Received: by 2002:a05:6512:1390:b0:522:2ada:c02e with SMTP id
- 2adb3069b0e04-5296736b884mr8578358e87.53.1716767064181; Sun, 26 May 2024
- 16:44:24 -0700 (PDT)
+	s=arc-20240116; t=1716767161; c=relaxed/simple;
+	bh=qXoqmCSRZqsK09WB7t0kMJUs/2SabjKRrcA53Ey6FAM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r2yTRF6JCzXX1y36ZDmnfySVkgUq8eFEP99ogacXZeK0ZaI74t52YdDY3XG0eWgo+M3pZaM0x59aAS1CmAlfSFPnK/MQ/eniVjhJ1VabSQmZjfbmW+hVai5qSKVG6mjzz4KhLz5UCqH4q8MEZ2Zfu9mDvqgP8t7z1LoHXpK6bDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=ORul72eL; arc=none smtp.client-ip=46.235.229.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
+	:Subject; bh=qiDGAoolFCI/rpAmXM4BDJt2JwmP7vG6h5f5QF4zoYY=; b=ORul72eLkU0mjtxe
+	2zuUg98R4TzLgV5yJAc+zJ4LxbhwwEdaW9+GHDuDWzqPc6OzVY/AgwwZCb1vlH8sCbGcgj1RLm8M7
+	Yc4Z+4KHGvoiL01rbYlsZdLM+SH9jEMgn658GIe292JxwRj8LZrh7u3P6hGmXAnhq6HxWaCr8ON94
+	DXZhcgXdQHDLKtLfrTMtTzWvTvZsm1G5GBWSNp11ICPX6aYjbdsCWSas29pEOJ8m8J5rBxa6xU51y
+	lhUc9F5u00V9FVLjJHM+qWfRLgck0X3WkVIfxtrIwTRZwbtZWjLzWKOxc9mA96RHRAFVjBtAyCW1z
+	SFLa6Df62XdntjUbDA==;
+Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
+	by mx.treblig.org with esmtp (Exim 4.96)
+	(envelope-from <linux@treblig.org>)
+	id 1sBNYp-002bmh-2C;
+	Sun, 26 May 2024 23:45:56 +0000
+From: linux@treblig.org
+To: arend.vanspriel@broadcom.com,
+	kvalo@kernel.org
+Cc: linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com,
+	linux-kernel@vger.kernel.org,
+	"Dr. David Alan Gilbert" <linux@treblig.org>
+Subject: [PATCH] wifi: brcm80211: remove unused structs
+Date: Mon, 27 May 2024 00:45:53 +0100
+Message-ID: <20240526234553.286773-1-linux@treblig.org>
+X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: James Dutton <james.dutton@gmail.com>
-Date: Mon, 27 May 2024 00:43:48 +0100
-Message-ID: <CAAMvbhGyheFdWSrDzM_i10n9s06n3G2wX6O_S68VUZyP-a9p+A@mail.gmail.com>
-Subject: [PATCH] wifi: mac80211: add input validation to sta_stats_decode_rate()
-To: linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Validation is required as a result of parameters derived from
-received wifi packets.
+From: "Dr. David Alan Gilbert" <linux@treblig.org>
 
-Signed-off-by: James Courtier-Dutton <james.dutton@gmail.com>
+'brcmf_pcie_core_info' was added in
+commit 9e37f045d5e7 ("brcmfmac: Adding PCIe bus layer support.")
+but never used.
+
+'brcms_c_bit_desc' last use was removed in
+commit cdf4352f5c59 ("brcmsmac: Improve tx trace and debug support").
+
+Remove them.
+
+Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
 ---
- net/mac80211/sta_info.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c | 5 -----
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c | 6 ------
+ 2 files changed, 11 deletions(-)
 
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index da5fdd6f5c85..bab05c6b1bcc 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -2437,11 +2437,26 @@ static void sta_stats_decode_rate(struct
-ieee80211_local *local, u32 rate,
-         int band = STA_STATS_GET(LEGACY_BAND, rate);
-         int rate_idx = STA_STATS_GET(LEGACY_IDX, rate);
-
-+        if (WARN_ON_ONCE(!local))
-+            break;
-+
-+        if (WARN_ON_ONCE(!rinfo))
-+            break;
-+
-+        if (WARN_ON_ONCE(band >= NUM_NL80211_BANDS))
-+            break;
-+
-         sband = local->hw.wiphy->bands[band];
-
-+        if (WARN_ON_ONCE(!sband))
-+            break;
-+
-         if (WARN_ON_ONCE(!sband->bitrates))
-             break;
-
-+        if (WARN_ON_ONCE(rate_idx >= sband->n_bitrates))
-+            break;
-+
-         brate = sband->bitrates[rate_idx].bitrate;
-         if (rinfo->bw == RATE_INFO_BW_5)
-             shift = 2;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+index 06698a714b52..ce482a3877e9 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+@@ -313,11 +313,6 @@ struct brcmf_pcie_shared_info {
+ 	u8 version;
+ };
+ 
+-struct brcmf_pcie_core_info {
+-	u32 base;
+-	u32 wrapbase;
+-};
+-
+ #define BRCMF_OTP_MAX_PARAM_LEN 16
+ 
+ struct brcmf_otp_params {
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
+index 34460b5815d0..4576b18fcd97 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
+@@ -234,12 +234,6 @@
+ /* max # tx status to process in wlc_txstatus() */
+ #define TXSBND				8
+ 
+-/* brcmu_format_flags() bit description structure */
+-struct brcms_c_bit_desc {
+-	u32 bit;
+-	const char *name;
+-};
+-
+ /*
+  * The following table lists the buffer memory allocated to xmt fifos in HW.
+  * the size is in units of 256bytes(one block), total size is HW dependent
 -- 
-2.43.0
+2.45.1
+
 
