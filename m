@@ -1,108 +1,116 @@
-Return-Path: <linux-wireless+bounces-8065-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8066-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97B7A8CF2AC
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 May 2024 08:36:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEE3D8CF44B
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 May 2024 14:42:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3756E1F2124F
-	for <lists+linux-wireless@lfdr.de>; Sun, 26 May 2024 06:36:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6ED981F21143
+	for <lists+linux-wireless@lfdr.de>; Sun, 26 May 2024 12:42:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D841C27;
-	Sun, 26 May 2024 06:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33ACBB676;
+	Sun, 26 May 2024 12:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="sqVx3Tn9"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="aSOs8wsb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CEF71849;
-	Sun, 26 May 2024 06:36:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A026DF43
+	for <linux-wireless@vger.kernel.org>; Sun, 26 May 2024 12:42:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716705381; cv=none; b=Cs3D7LNIsjHhQ79MhEWVRC65TWcSWxm64gY1LIGkDy7lmUdACT76dP05q6nZTqKJx6+2n65v8tLzEskmKDQnqLML0kw9ii0C5XuuSEar3z5pZZMRd8n9BTBCxx7jEcT4lTFJHrDC/hqDvSvD46cNF1HSGc20lsTtkePEBodkoH8=
+	t=1716727369; cv=none; b=SOH5uzUdko8uj37Erah7l1ZyX0FjHjys0YME+7X7V6ILYRKf/DKO6P1jp0WxTsTFIl7VbwB3Eq12uSsrfBvQVBXG5VbFCXuP8ci6ySO6CTU/9JjREWTgv61RgMsnzZT6tni19AhV8GiNusOCG5j72kWkPK5taLjwEtXORj3Ajfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716705381; c=relaxed/simple;
-	bh=dSe/spixs5ApqjgYm/X4+SVSriMdGKzobyY1DlqnnEE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=BxbpDhm0J/dtQjlhDiR1KyeyiydopTG6Ctux+zi+9R5O7AILbPkonnRzoOS1jLQjkUb+AF3oHpHuutI4pvffZTI0KdGgh28EmJ58JuWdfkwgFWQ97EDX+05Tjwkwf2DZMkZBCB9Yi0dLwZP50bRm5XIDXetfeIRzr+jFf06Hl90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=sqVx3Tn9; arc=none smtp.client-ip=198.47.19.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-	by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 44Q6Zllo080701;
-	Sun, 26 May 2024 01:35:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1716705347;
-	bh=6gX7cZSZkx3L27ZPyp9s5Fptuzr9oyyi4A1VrdhCEMM=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=sqVx3Tn9SMYqGNRFi7GQg453kyw5grWzB3wlLIdrYNaZl1gi1/ljZAKCFbWdQfkxV
-	 gJp8DlJRA8goTS+vEQmyytPACJCZOSPQUbmuB60qdw4wtBUQzThJesit+hK5CpbTqb
-	 heD8Ajs45c2rYasz3D0jmI9rD4Gqz0V3bVy7lgYU=
-Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
-	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 44Q6Zl3l105952
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Sun, 26 May 2024 01:35:47 -0500
-Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Sun, 26
- May 2024 01:35:46 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Sun, 26 May 2024 01:35:46 -0500
-Received: from [10.250.145.232] ([10.250.145.232])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 44Q6ZiMn036976;
-	Sun, 26 May 2024 01:35:44 -0500
-Message-ID: <96d5ccb5-660b-4f40-82a3-83495da4f595@ti.com>
-Date: Sun, 26 May 2024 09:35:43 +0300
+	s=arc-20240116; t=1716727369; c=relaxed/simple;
+	bh=uAqQ6XxvUKnoYX2OtMkPTLQo4K1mkOkcQKXErJPlvRA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FhbqU6BfDSI0tE/E6BoqGplreWmzChAFO2mV67zn2s7LRO79dXZQYNge/jNsBjvsNXLfll/Jig4SdrGIvesM3ZvS8lxd0IXLKnAKQIavlRMjfuPhY0u6GK23x9n5JRkF+thJ9yuMU2moISYclL3HHzyeG7ao/YK5njU2SOiHs0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=aSOs8wsb; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44Q9KfxT016949;
+	Sun, 26 May 2024 12:42:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=yYgAqwB0GE+MYff2t8X32i
+	hu/xrKUChLjthQqWLcC98=; b=aSOs8wsbayoCRdhAZdGr0ubv2FDc3iYyWg0SDv
+	8gx6aPNfw1YcfH4asLKKNJ4BU10ZY3yTHlwGWq6FM7wA2kZ4Hp7HYuCy41jYJ3sJ
+	p+1GrfoxVdHwxEB9my4OHaE5pAD+KZ2p+kAgu6C8srmylHU5vweKfQxBJO3VOk4e
+	dlMtj7WksQb+3MfZNTv3FbH6cb2lSQsox/fadkH7dFVDJKuZpd42PNZs+X1vZ+wv
+	atsLjECGnBqfqi2TtDlWQm6TcRTTILu5qB/t/uP91V/C2Ln0HKr4mpfMNVUc+OCF
+	F9GbPiR2OYXeZdxz/9+iHJuNCrvCf6C6p2Qj/ohO1eTrEm1A==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yba0q9qp4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 26 May 2024 12:42:39 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44QCgcVf006228
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 26 May 2024 12:42:38 GMT
+Received: from bqiang-SFF.qca.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Sun, 26 May 2024 05:42:36 -0700
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, <quic_bqiang@quicinc.com>
+Subject: [PATCH] wifi: ath12k: fix memory leak in ath12k_dp_rx_peer_frag_setup()
+Date: Sun, 26 May 2024 20:42:26 +0800
+Message-ID: <20240526124226.24661-1-quic_bqiang@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 17/17] Add ti,cc33xx.yaml
-To: Krzysztof Kozlowski <krzk@kernel.org>, Kalle Valo <kvalo@kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Breno Leitao <leitao@debian.org>,
-        Justin Stitt <justinstitt@google.com>,
-        Kees Cook <keescook@chromium.org>, <linux-wireless@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC: Sabeeh Khan <sabeeh-khan@ti.com>
-References: <20240521171841.884576-1-michael.nemanov@ti.com>
- <20240521171841.884576-18-michael.nemanov@ti.com>
- <1686c1e6-94c6-45c0-adc5-c05d49614d30@kernel.org>
-Content-Language: en-US
-From: "Nemanov, Michael" <michael.nemanov@ti.com>
-In-Reply-To: <1686c1e6-94c6-45c0-adc5-c05d49614d30@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: ALhTeVlk_etlRo1kBnmFUEmKqRwE4HQS
+X-Proofpoint-ORIG-GUID: ALhTeVlk_etlRo1kBnmFUEmKqRwE4HQS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-05-26_04,2024-05-24_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ suspectscore=0 lowpriorityscore=0 impostorscore=0 clxscore=1015 mlxscore=0
+ mlxlogscore=957 malwarescore=0 spamscore=0 adultscore=0 bulkscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2405260106
 
+Currently the resource allocated by crypto_alloc_shash() is not
+freed in case ath12k_peer_find() fails, resulting in memory leak.
 
-On 5/22/2024 12:35 PM, Krzysztof Kozlowski wrote:
-> Missing commit msg.
->
-> Please use scripts/get_maintainers.pl to get a list of necessary people
-> and lists to CC. It might happen, that command when run on an older
-> kernel, gives you outdated entries. Therefore please be sure you base
-> your patches on recent Linux kernel.
->
-> Tools like b4 or scripts/get_maintainer.pl provide you proper list of
-> people, so fix your workflow. Tools might also fail if you work on some
-> ancient tree (don't, instead use mainline), work on fork of kernel
-> (don't, instead use mainline) or you ignore some maintainers (really
-> don't). Just use b4 and everything should be fine, although remember
-> about `b4 prep --auto-to-cc` if you added new patches to the patchset.
+Add crypto_free_shash() to fix it.
 
-I'm working on mainline but was not using scripts/get_maintainers.pl 
-correctly. Will fix the address list for v2 along with proper names for 
-all patches.
+This is found during code review, compile tested only.
 
-Michael.
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+---
+ drivers/net/wireless/ath/ath12k/dp_rx.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index a52b7b273540..cb1f308f096b 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -2742,6 +2742,7 @@ int ath12k_dp_rx_peer_frag_setup(struct ath12k *ar, const u8 *peer_mac, int vdev
+ 	peer = ath12k_peer_find(ab, vdev_id, peer_mac);
+ 	if (!peer) {
+ 		spin_unlock_bh(&ab->base_lock);
++		crypto_free_shash(tfm);
+ 		ath12k_warn(ab, "failed to find the peer to set up fragment info\n");
+ 		return -ENOENT;
+ 	}
+
+base-commit: f8320064a28242448eeb9fece08abd865ea8a226
+-- 
+2.25.1
 
 
