@@ -1,98 +1,125 @@
-Return-Path: <linux-wireless+bounces-8146-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8147-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E0DC8D09E4
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2024 20:30:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E3458D0A19
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2024 20:43:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E5881C21989
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2024 18:30:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F18F11F21216
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2024 18:43:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7277F15FA91;
-	Mon, 27 May 2024 18:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8602815F33A;
+	Mon, 27 May 2024 18:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="qq294NiM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ghlq7X46"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB8915FA80;
-	Mon, 27 May 2024 18:30:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04E6155C81
+	for <linux-wireless@vger.kernel.org>; Mon, 27 May 2024 18:43:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716834641; cv=none; b=KbAoCuu6c6R0nkABdJu8FPhBRi6dRaYabuwCh1q21mdfI8o/EvHUXWtQR8tCYLfOhQt8W2tmusDeU8pfo13kOdm9tMgH+mJs3rp72MtepS1gipTgw9mK4HKRWxZKvKd5RLiuKgb0zsUhLY/AOXDohFDEPMUj/jirHMd5tHP/rlM=
+	t=1716835408; cv=none; b=qQKLSr8SRk5Xf9O41MzJYRSGXNj1lZP+k8u22fWuBLGVM3ktA3nFRgM1Ht6A9dBwesoq21UrkUePfd2Zgd2dYnDOp8Q5qxkQnm7mkiGJzqMVekIIJxfZnGej2HDbnWntP+YzyvLcJ7plkWF/21zPrd/YFDUXGXjJS5uCMnaBknI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716834641; c=relaxed/simple;
-	bh=VNwqDkuFgKjhVHJW0w5JUYp4JYk3Ki4mNKDdPxV9apI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=L/7Q0JlGodyeBsjydn6nD33+zXK9Ma3g+uZ6I0bfivavmp1hj+DQ1emSsMdcuEdyiSjRRGvLUdGW8REIABlAzfzNRP8eRgHapQZcz6ckXW77TIx0OUjdcwHZ2UtsYrwv4Ure9hhAPJ7co7xXil+RY33BjLvKg1fG1rKfqbwMK5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=qq294NiM; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=VNwqDkuFgKjhVHJW0w5JUYp4JYk3Ki4mNKDdPxV9apI=;
-	t=1716834638; x=1718044238; b=qq294NiMW+Umd//R+Iek7poOaRGs2K1N+kxAfA++JAMN4WX
-	AH5YRPm6GZchkqKp4X5SINGVpOC9zRJxk7f3mDYzRPNVQw497X0JsNNIA/67Jgv7GrlnPjvp3oScr
-	R0KC1q0I8yMlBhw4NW17tNI5NMF5W2kf8tzmlYUWLNOJqH2g3AiGzZK9mYVgW7qdE52AK9/CJjeiX
-	wQLap1ly8oRafHyClUxs/Jb/WXhaGwPv940xDmPVHzBGMEIxt/QYiptlezfMKCwyuZCn2HbQrMzqT
-	53613LhEH/eVR2HRldiXAG4n/c72aegBxp41AglEceokZfoHH7KfxEfZMbB2EFZA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1sBf7B-0000000D2t4-0Xcd;
-	Mon, 27 May 2024 20:30:33 +0200
-Message-ID: <98871a58e675aef7ad7f2e5bd3bb2ee526d29d5f.camel@sipsolutions.net>
-Subject: Re: [REGRESSION] MT7915E doesn't work any more with v6.9
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Greg KH <gregkh@linuxfoundation.org>, Kalle Valo <kvalo@kernel.org>
-Cc: Oleksandr Natalenko <oleksandr@natalenko.name>, 
- linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, "Linux
- regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.info>,
- linux-mediatek@lists.infradead.org,  linux-arm-kernel@lists.infradead.org,
- Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Ryder
- Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>, Sean
- Wang <sean.wang@mediatek.com>, Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Peter
- Chiu <chui-hao.chiu@mediatek.com>, StanleyYP Wang
- <StanleyYP.Wang@mediatek.com>,  Linux regressions mailing list
- <regressions@lists.linux.dev>
-Date: Mon, 27 May 2024 20:30:31 +0200
-In-Reply-To: <2024052750-rippling-catty-1cb5@gregkh>
-References: <6061263.lOV4Wx5bFT@natalenko.name>
-	 <2341660.ElGaqSPkdT@natalenko.name>
-	 <60fe8df750a74331b8a54a76d55d5e8349ac46b4.camel@sipsolutions.net>
-	 <878qzy9zly.fsf@kernel.org> <2024052750-rippling-catty-1cb5@gregkh>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	s=arc-20240116; t=1716835408; c=relaxed/simple;
+	bh=ObozJ/fX/wMKC8ihVB1t30sp4uhbT9BgFarEI3msBUE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=d48FWVLPtP8Bf8jfuQzjbIQbx7S8evArRDn8OzkAlbuI7lOpe65OgxgRJ0sTY1BVSeSb7HzEVeazazE2+WsPxgZSWZLQSZ/x/0YFU3cdlxZiF6glCpsixEE57wuSys+zpNpfMZqjm/CFVlg7WPxTOzYE/tcyfuoyWB0Uw667I2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ghlq7X46; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-354f51ac110so47936f8f.0
+        for <linux-wireless@vger.kernel.org>; Mon, 27 May 2024 11:43:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716835405; x=1717440205; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=m0pM93VFwd6SZRSiQasN4poAANKyhUlLcdnlWqPHasQ=;
+        b=Ghlq7X46KXIN1j5E1vU7lh+plEj06+aZq3NTQC37wm7vvuORM/wMcwU7YvFuAUjoBd
+         0eT5/Tfv2EM0YYe+CQyWgOv4KWuoAzusw4sfaDSe0/Vy1hx6nl5+o7JpsiBdUB0HAWYb
+         lK8bBEuKzHEjb3uVAbOVkLEmNFMF8xCJdnrinDEZNs0YJ1pLkz2jYUzW5JjCVjYpn4cl
+         KAOFIlCMoPBH7YeJ2gyd0M0eSu/MYV0nsPmPf6WV/4vHr1YeNwmplBwaesS8j/oExup7
+         yyJ0TeLxGKMXlBQutdXnu9CZfM72rHq9BUh4gFzCt7BgQ8oV0mgikTRySJQd0eyR9O/3
+         wqnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716835405; x=1717440205;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=m0pM93VFwd6SZRSiQasN4poAANKyhUlLcdnlWqPHasQ=;
+        b=oYJWbuqL3bmMgP4ffiVAnRKHy4/Sd6nuGChRB2daXpz1lIFOZUhhXvku7247P5MeaN
+         6P5Rm0hseEW2aXjCBO2IEa70uFfvvaHYXb5re0enKmQUluGF9Vh3Sxbmue5se2R2HFZ6
+         GcuyPjo1j0rdVtJu0A0sxpSz3a7s6HHe/lpEIP23MuQlbACCNOf2jgdarUY+wdPaWkSD
+         DK4I03kg15jOR+VkSSEmYsokjg4PyrIb9MTr4qO6Y4H7S2/eiID1fbbPwMWvaGoEIORD
+         q6O0tqVf8ly9q0BMTbm1ciS8iTnxweWfykIvxN9pTf1IUuHkdjBlPbFH6PCZ2CszFw34
+         Vl5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUSGk9y3P4kar82WOTJ5rvYZ4w4JglUN9+T0+E5UgzoWzWgRubby42P//Wlxf1oNQqOGmAY7ffP45buUC02i4DzEcoVh1FhSy7yHO8fNdg=
+X-Gm-Message-State: AOJu0Yxcx2IqYkZW1za7r2ercBS1ehOHA14B1BdRfukw47RvsIpygbRW
+	1+jMcNPWo4xwJJLQCNmOxjf6H+LeJAk1eF4JAWJJxd/65toidDjL3kVcHg==
+X-Google-Smtp-Source: AGHT+IGNu25FY2jd81Ca4bihn+VJYYBa2DFRLXeYifIuoj+B/C0igZz+T6Doz8Hlb7cI3JXe+aczyw==
+X-Received: by 2002:a05:6000:181c:b0:354:eb62:365a with SMTP id ffacd0b85a97d-3552f4feda5mr7850353f8f.25.1716835404981;
+        Mon, 27 May 2024 11:43:24 -0700 (PDT)
+Received: from [192.168.0.50] ([79.119.240.1])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a626c93707csm520248966b.57.2024.05.27.11.43.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 May 2024 11:43:24 -0700 (PDT)
+Message-ID: <0f1aef25-2b91-408d-aca9-9943dc9367b3@gmail.com>
+Date: Mon, 27 May 2024 21:43:23 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: wifi: rtw88: 8821CU hangs after some number of power-off/on
+ cycles
+To: =?UTF-8?Q?Marcin_=C5=9Alusarz?= <marcin.slusarz@gmail.com>,
+ linux-wireless@vger.kernel.org
+Cc: =?UTF-8?Q?Marcin_=C5=9Alusarz?= <mslusarz@renau.com>
+References: <20240527173454.459264-1-marcin.slusarz@gmail.com>
+Content-Language: en-US
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <20240527173454.459264-1-marcin.slusarz@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, 2024-05-27 at 20:29 +0200, Greg KH wrote:
-> >=20
-> > Yeah, commit 2f7cf3b61d85 should have been taken to wireless tree but i=
-t
-> > fell through the cracks. I didn't realise that it's an important bugfix
-> > and the commit message didn't give any indication of that either.
-> >=20
-> > But commit 2f7cf3b61d85 is now in Linus' tree so it would be good if
-> > someone could submit it to stable releases.
->=20
-> It's already in 6.9.1, does it need to go anywhere else?
->=20
+On 27/05/2024 20:34, Marcin Ślusarz wrote:
+> From: Marcin Ślusarz <mslusarz@renau.com>
+> 
+> If I don't connect to any Wifi network, after around 10 minutes, the device
+> hangs with endless spamming of:
+> rtw_8821cu 1-1:1.2: rtw_usb_reg_sec: reg 0x4e0, usb write 1 fail, status: -71
+> killing both Wifi and Bluetooth part of the device.
+> 
+> On arm, just leaving the wifi device unconnected kills it in up to 20 minutes.
+> If I keep restarting wpa_supplicant I can trigger it within a minute.
+> Looping "ifconfig wlan0 down; ifconfig wlan0 up" also triggers it within a minute.
+> 
+> On x86_64 system the only way I could trigger this was via ifconfig loop,
+> but it took 3 hours and 20 minutes to do it.
+> 
+> The only thing that can "fix" the device is replugging it.
+> 
+> I found out that the reason for those hangs is a power-off+on sequence that's
+> triggered by the above steps.
+> 
+> Disabling power-off for that chip "fixes" the issue. The patches below
+> implement that, but I'm not seriously proposing them for merging.
+> 
+> Marcin Ślusarz (2):
+>   wifi: rtw88: use RTW_FLAG_RUNNING for deciding whether to enter/leave
+>     IPS
+>   wifi: rtw88: disable power offs for 8821C
+> 
+>  drivers/net/wireless/realtek/rtw88/main.c | 14 ++++++++------
+>  drivers/net/wireless/realtek/rtw88/ps.c   |  4 ++--
+>  2 files changed, 10 insertions(+), 8 deletions(-)
+> 
 
-No, but apparently we need a similar commit for mt7915e or something? I
-have no idea why I missed those. I'll take a look tomorrow.
-
-johannes
+The first patch alone doesn't fix it?
 
