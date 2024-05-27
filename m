@@ -1,112 +1,80 @@
-Return-Path: <linux-wireless+bounces-8081-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8082-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 733C88CFC78
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2024 11:10:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A8098CFC7E
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2024 11:11:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B8A11F2269F
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2024 09:10:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 556F4282BB8
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2024 09:11:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC30743AB5;
-	Mon, 27 May 2024 09:10:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GOz4ZYnN"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B8C46A33D;
+	Mon, 27 May 2024 09:10:50 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8286E1A2C36;
-	Mon, 27 May 2024 09:10:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D517139D00
+	for <linux-wireless@vger.kernel.org>; Mon, 27 May 2024 09:10:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716801009; cv=none; b=G4aszYp43En3JX4Wjlh/eN04bFj5ZEZ/RKwpv+YevBshvxnZCZk05kH8AhBcpbauoXFkC3HLwNcZ+czxdB5QpDHVrcX5fuXDtW53gnZ9MocHnF2ikzI0FY51cS0UtrbxwsiDmxSvY2thi6XhgVBHdxkCv2ViNL73j4pdSVolws4=
+	t=1716801050; cv=none; b=iKKi3iyvoXlybL85FlbK0l/gGW64WnO755NczjPck0VOFlcnamsCpTBvD0OxRwxtKhzcEjOD5ln8fKxNt+0RjIvIEQsBEDnfY05/BP4TlP1Bw4MUuh6dLVlp3Acw/XBIF2Kjon59WjEfMxbu/X7m2DeiuwG3Ga3WafoxEg2GqB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716801009; c=relaxed/simple;
-	bh=5dfjpuPYXbW2r5fHBvyR6PsWqCxClj4xZLD90HlUIcU=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=OtwW2QcwZkm8s2EKR+SPVgUaDVoY4znAjusUblQuCarSuS0T6oM2Qdw9KFQTvFasjUf5eD97wG+mIQh7AGlUPSnqIt/dR2LkQUwe6bWMhCMtu+Of2F/JaVlMNJdO4xr87MRJZVmkFJfA5meiTyiAc2GqDpQO4+jcKfYBEXpXRdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GOz4ZYnN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB60C2BBFC;
-	Mon, 27 May 2024 09:10:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716801009;
-	bh=5dfjpuPYXbW2r5fHBvyR6PsWqCxClj4xZLD90HlUIcU=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=GOz4ZYnNLPQeUXck1rJL8XGc1GgaNol/nvQ867oCfdIO1K3hJi+HuJ0crQd7tItCl
-	 Lj2SeG90fwDjE1AgGfPwkwFiVERwhDPeQcSJ7phQNLcKtgh1tZDHiSleY0es/Zn4BO
-	 +Cx8rrq6ppXGWuo0G5NdTOZMCd2zwx2QP8xxV7/3mCopGyvRvV25hPDQl6ZKycb4NL
-	 FiFGpKXjVphtIuHLwO9klyDD1/dWnZvtM4dOsXM06pEQzRimk/YxFRDHRPVWf4R4KH
-	 XZDG6vol+fsqMq0ImxGS6nnUA1oGOoFeyT+RZvPHBKtwnoRO9Pk0itz+fG2ELmiEke
-	 8vXHya6m9a8vQ==
-From: Kalle Valo <kvalo@kernel.org>
-To: Baochen Qiang <quic_bqiang@quicinc.com>
-Cc: Paul Menzel <pmenzel@molgen.mpg.de>,  <linux-wireless@vger.kernel.org>,
-  <ath10k@lists.infradead.org>,  <linux-kernel@vger.kernel.org>,  Hans de
- Goede <hdegoede@redhat.com>
-Subject: Re: ath10k_pci 0000:3a:00.0: Could not init core: -110
-References: <0c544b16-5c0d-4687-9f96-8ff1f3269f79@molgen.mpg.de>
-	<e1bc0bb8-a66e-4e03-bc22-3dc506b6fb59@quicinc.com>
-Date: Mon, 27 May 2024 12:10:05 +0300
-In-Reply-To: <e1bc0bb8-a66e-4e03-bc22-3dc506b6fb59@quicinc.com> (Baochen
-	Qiang's message of "Mon, 27 May 2024 17:00:27 +0800")
-Message-ID: <87sey38vte.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1716801050; c=relaxed/simple;
+	bh=i12Jc/QeCBzaHIMv6FgAUhgJMA6DZw4wzElyzmosddA=;
+	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type:Message-ID:Date; b=o7ZJLo2/bgllygWo0UPLlrHq4kPImn3kx/jA7druASMzawuOFSRDrW/Yhv5Xjdcx6rrWihMml8Js/SayqhAcOsx7JkrtZwOCDIRQUSzuxTZ1eYvK4dAHZUDdy7lYVWSqFWrhFrXIDSR6dIAMAGEwzNRNcGBnVsvnGxlEf/bv+2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 44R9AjenE972188, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 44R9AjenE972188
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Mon, 27 May 2024 17:10:45 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 27 May 2024 17:10:46 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 27 May
+ 2024 17:10:45 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
+CC: <phhuang@realtek.com>
+Subject: Re: [PATCH] wifi: rtw89: Fix P2P behavior for WiFi 7 chips
+In-Reply-To: <20240522024531.11401-1-pkshih@realtek.com>
+References: <20240522024531.11401-1-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+Message-ID: <d745d7a6-2d8d-4f9d-acf1-3af49ac3fed8@RTEXMBS04.realtek.com.tw>
+Date: Mon, 27 May 2024 17:10:45 +0800
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-Baochen Qiang <quic_bqiang@quicinc.com> writes:
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-> On 5/27/2024 4:42 PM, Paul Menzel wrote:
->> Dear Linux folks,
->>=20
->>=20
->> On the Intel Kaby Lake notebook Dell XPS 13 with
->>=20
->> =C2=A0=C2=A0=C2=A0 3a:00.0 Network controller [0280]: Qualcomm Atheros Q=
-CA6174
->> 802.11ac Wireless Network Adapter [168c:003e] (rev 32)
->>=20
->> with at least a self-built Linux 6.9-rc5, on April 26th, 2024, and
->> Linux 6.8.11, today, May 27th, 2024, the error below happened, and
->> the device couldn=E2=80=99t authenticate to a WiFi network until reloadi=
-ng
->> the module *ath10k_core* and *ath10k_pci* (didn=E2=80=99t check just
->> *ath10k_pci*):
->>=20
->> =C2=A0=C2=A0=C2=A0 $ sudo modprobe -r ath10k_pci
->> =C2=A0=C2=A0=C2=A0 $ sudo modprobe -r ath10k_core
->> =C2=A0=C2=A0=C2=A0 $ sudo modprobe ath10k_pci
->>=20
->> ```
->> [=C2=A0=C2=A0 49.441618] ath10k_pci 0000:3a:00.0: wmi service ready even=
-t not received
->> [=C2=A0=C2=A0 49.523814] ath10k_pci 0000:3a:00.0: Could not init core: -=
-110
+> From: Po-Hao Huang <phhuang@realtek.com>
+> 
+> Previously we used CCK rate when scanning for P2P on WiFi 7 chips.
+> Fix this by explicitly setting the rate to OFDM 6Mbps.
+> 
+> Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-[...]
+1 patch(es) applied to rtw-next branch of rtw.git, thanks.
 
-> Are you using a distro kernel? Could you check if below patch merged
-> in your kernel? if not can you merge it and try again?
->
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit=
-/drivers/net/wireless/ath/ath10k?id=3De57b7d62a1b2f496caf0beba81cec3c90fad8=
-0d5
+e88c1714b2c7 wifi: rtw89: Fix P2P behavior for WiFi 7 chips
 
-Paul, if you are feeling brave to try out an -rc this commit is in just
-released v6.10-rc1.
+---
+https://github.com/pkshih/rtw.git
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
 
