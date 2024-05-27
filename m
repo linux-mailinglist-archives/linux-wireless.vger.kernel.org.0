@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-8127-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8128-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 159F98D07FC
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2024 18:17:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E4B98D07FD
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2024 18:17:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C57712A8D77
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2024 16:17:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD5A82A8E5F
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2024 16:17:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 934C516A379;
-	Mon, 27 May 2024 16:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D63FE169393;
+	Mon, 27 May 2024 16:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WvFKXy6B"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JaRT1G+I"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C051169393
-	for <linux-wireless@vger.kernel.org>; Mon, 27 May 2024 16:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC8D16A378
+	for <linux-wireless@vger.kernel.org>; Mon, 27 May 2024 16:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716826004; cv=none; b=geNhdr8JIPyl3guZyB2BMCBYlnAl+si3buOQLIrulOi0jJHrPZP7ic7fbqF9P6Sd2yPwWkT4jfRdWuQqTjZiXxft1QON8D4+gnvogToFcAlylUagKOkubZo6jZI7oAPI4sQ7jku9Z/mxr4OKlQd/IfFA/Kj7gHWoKISqy7MRlMw=
+	t=1716826005; cv=none; b=aSdNpDLOITkTDgkx+snAcQJCRryUj48UOUK+5/BHDY9EEkPOgu1BzDvHNfD5jN8ZtLogKjThgSVinwH+7jcd/7YP/KwjmOuQPjwWff8wK/tFaWpn+Dg4typ7tfuSLKQVdaKqhqCXvK43Blrd6ROAgSDNBzdsPS6tO5jWsAC5IwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716826004; c=relaxed/simple;
-	bh=EOEOq0/iGJoklaiFsdqU39Tz2VxPfldFvYzX4db6yNo=;
+	s=arc-20240116; t=1716826005; c=relaxed/simple;
+	bh=rduEwfeldFbQSu+DyFXro32lUWD4fBdfFwjuxNDKnUU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VkqOtWRGCC6oSznI178NiEAmuClqTlCD/JoXdbsk0nA0O8WfVd18NtBJYjKyXe4BMC0ifOnlekAvfBpfGoDKYLz8tL3cuBIifwkac7V/CTTzHO355UDsMFix6wiMPyNrK41Rx4oO5tyE8NYuatQ/SnqOFAh6EyEcJEr9ZCwkYgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WvFKXy6B; arc=none smtp.client-ip=198.175.65.19
+	 MIME-Version; b=Tlmsx+pIRzYs4nmxer9Mk0SKOBBnxldpYKSbXM4xHFOBtuuFkNY5JiCWkIyF5WZjukZM4lzlyHILMflml38EqNZoG5ckUYBzrYY2ipAx1+W0TwhhQLlgYpSJuxhYX042skl1m+niZXaEwLvEimfygr6RBtgEoojcQ3XTZPxJSRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JaRT1G+I; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716826003; x=1748362003;
+  t=1716826005; x=1748362005;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=EOEOq0/iGJoklaiFsdqU39Tz2VxPfldFvYzX4db6yNo=;
-  b=WvFKXy6B2Jys352+9xR9seKPj/jfxpue9CQxpQr/DpQFAtxOIJU8UgSb
-   NrjIrX/V8vIE/wtmYXfWNTKGPBleJyiBHetESHoaywcpL99T6pAMsvKRS
-   9VxckbyHHgnKizOg/1PnVbE6Sdt9gQgj+mZJ9A8EI326nAAZrLTWcZW46
-   xaaXiXG7/3IvgEDkEGpAqKfx65lqa0d1z0pAhT6P5M0laQeq5UFi1BECl
-   X0sgG1Fq31qOTm+7hYhdaQoEkWx3Kvy+NfZmdkmQi7eo8US7FjDXM/s63
-   nAqphYGEaQfTZyvm9r4piVjoiIWMp8Eiwbrku+CgNjUN6sQQVbY6Yr1Gz
-   g==;
-X-CSE-ConnectionGUID: gbljEAlaRn2WvTdiJCXmdg==
-X-CSE-MsgGUID: gey9k+WJSsyMaEybtxKatA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="13002101"
+  bh=rduEwfeldFbQSu+DyFXro32lUWD4fBdfFwjuxNDKnUU=;
+  b=JaRT1G+I0tTlMaiRQ4uoX3ULx27t0GfCatgjdt81km22b49bRQM9u7Gg
+   9OD4WRLLBj//20Fm7vVzPF0oQFt2qMFku7e18xYUwD2GSa4V1cx1VNYhA
+   6guTtVcWGeFTIFtC0o1g2MBMW+H3Et86voah2gIfZrl4ZpUv/YTCZgtsO
+   2upDUjnSrGxNof1/8m9YsAcjbi8p/UWw17B3nMvndARLhLrcHvwdMl1Lu
+   Q9YnVtcAPKQoV27fhbJrsWuc5IQFkbJZRasGIGpJRCo22enyxWvt1CUnZ
+   qrO1afI+TJyDsc/FtUZUJAtma+DnKAlRQVLAKPVGUcBk1Vs7jIZFRkFre
+   Q==;
+X-CSE-ConnectionGUID: xuN0Yj5xQEiGL0eAtSVRyw==
+X-CSE-MsgGUID: eAlJL3pwQ6+uPcmn4i3zyQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="13002105"
 X-IronPort-AV: E=Sophos;i="6.08,193,1712646000"; 
-   d="scan'208";a="13002101"
+   d="scan'208";a="13002105"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 09:06:43 -0700
-X-CSE-ConnectionGUID: ueQ7FoudQD+uo9uKJoT+CA==
-X-CSE-MsgGUID: WceVv1c2TzCpR3fAL6+Wkw==
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 09:06:45 -0700
+X-CSE-ConnectionGUID: KAEBlLyOQ72j699a3LlBnw==
+X-CSE-MsgGUID: oUFjJ7hISUenVBRqPl3xwA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,193,1712646000"; 
-   d="scan'208";a="35407117"
+   d="scan'208";a="35407120"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 09:06:42 -0700
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 09:06:44 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 13/20] wifi: iwlwifi: mvm: use only beacon BSS load for active links
-Date: Mon, 27 May 2024 19:06:08 +0300
-Message-Id: <20240527190228.6947dc462fa9.I2076961211d6785c8a15b4308e0e87a413148222@changeid>
+Subject: [PATCH 14/20] wifi: iwlwifi: mvm: add debug data for MPDU counting
+Date: Mon, 27 May 2024 19:06:09 +0300
+Message-Id: <20240527190228.77ef3c2654dc.I1796a3995da2a49dd5102d33766af1ad416dd60b@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240527160615.1549563-1-miriam.rachel.korenblit@intel.com>
 References: <20240527160615.1549563-1-miriam.rachel.korenblit@intel.com>
@@ -77,65 +77,65 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+It is hard to debug issues of EMLSR entry/exit due to low throughput.
+Add debug data.
 
-For active links, don't take information that may have been
-received in probe responses, as those are not protected. For
-inactive links, there may not be a choice.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/link.c      | 14 ++++++++++++--
- .../net/wireless/intel/iwlwifi/mvm/tests/links.c   |  1 +
- 2 files changed, 13 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c | 2 ++
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c           | 3 +++
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c          | 3 +++
+ 3 files changed, 8 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/link.c b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-index 0745229c8c37..02a475a1f1b8 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-@@ -492,17 +492,27 @@ iwl_mvm_get_puncturing_factor(const struct ieee80211_bss_conf *link_conf)
- static unsigned int
- iwl_mvm_get_chan_load(struct ieee80211_bss_conf *link_conf)
- {
-+	struct ieee80211_vif *vif = link_conf->vif;
- 	struct iwl_mvm_vif_link_info *mvm_link =
- 		iwl_mvm_vif_from_mac80211(link_conf->vif)->link[link_conf->link_id];
- 	const struct element *bss_load_elem;
- 	const struct ieee80211_bss_load_elem *bss_load;
- 	enum nl80211_band band = link_conf->chanreq.oper.chan->band;
-+	const struct cfg80211_bss_ies *ies;
- 	unsigned int chan_load;
- 	u32 chan_load_by_us;
- 
- 	rcu_read_lock();
--	bss_load_elem = ieee80211_bss_get_elem(link_conf->bss,
--					       WLAN_EID_QBSS_LOAD);
-+	if (ieee80211_vif_link_active(vif, link_conf->link_id))
-+		ies = rcu_dereference(link_conf->bss->beacon_ies);
-+	else
-+		ies = rcu_dereference(link_conf->bss->ies);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+index b2b6dbdcc44f..ebf313e161f4 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+@@ -222,6 +222,8 @@ static void iwl_mvm_restart_mpdu_count(struct iwl_mvm *mvm,
+ 		mvmsta->mpdu_counters[q].window_start = jiffies;
+ 		spin_unlock_bh(&mvmsta->mpdu_counters[q].lock);
+ 	}
 +
-+	if (ies)
-+		bss_load_elem = cfg80211_find_elem(WLAN_EID_QBSS_LOAD,
-+						   ies->data, ies->len);
-+	else
-+		bss_load_elem = NULL;
- 
- 	/* If there isn't BSS Load element, take the defaults */
- 	if (!bss_load_elem ||
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tests/links.c b/drivers/net/wireless/intel/iwlwifi/mvm/tests/links.c
-index 6a680b5d03e0..47b8e7b64ead 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tests/links.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tests/links.c
-@@ -208,6 +208,7 @@ static void setup_link_conf(struct kunit *test)
- 	bss_load->channel_util = params->channel_util;
- 
- 	rcu_assign_pointer(bss.ies, ies);
-+	rcu_assign_pointer(bss.beacon_ies, ies);
++	IWL_DEBUG_STATS(mvm, "MPDU counters are cleared\n");
  }
  
- static void test_link_grading(struct kunit *test)
+ static int iwl_mvm_esr_mode_active(struct iwl_mvm *mvm,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
+index 4fa8066a89b6..b7185ddcca87 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
+@@ -1010,6 +1010,9 @@ static void iwl_mvm_update_esr_mode_tpt(struct iwl_mvm *mvm)
+ 		spin_unlock_bh(&mvmsta->mpdu_counters[q].lock);
+ 	}
+ 
++	IWL_DEBUG_STATS(mvm, "total Tx MPDUs: %ld. total Rx MPDUs: %ld\n",
++			total_tx, total_rx);
++
+ 	/* If we don't have enough MPDUs - exit EMLSR */
+ 	if (total_tx < IWL_MVM_ENTER_ESR_TPT_THRESH &&
+ 	    total_rx < IWL_MVM_ENTER_ESR_TPT_THRESH) {
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+index cc79fe991c26..2a8ad718ce78 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+@@ -4433,6 +4433,7 @@ void iwl_mvm_count_mpdu(struct iwl_mvm_sta *mvm_sta, u8 fw_sta_id, u32 count,
+ 			bool tx, int queue)
+ {
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(mvm_sta->vif);
++	struct iwl_mvm *mvm = mvmvif->mvm;
+ 	struct iwl_mvm_tpt_counter *queue_counter;
+ 	struct iwl_mvm_mpdu_counter *link_counter;
+ 	u32 total_mpdus = 0;
+@@ -4469,6 +4470,8 @@ void iwl_mvm_count_mpdu(struct iwl_mvm_sta *mvm_sta, u8 fw_sta_id, u32 count,
+ 		memset(queue_counter->per_link, 0,
+ 		       sizeof(queue_counter->per_link));
+ 		queue_counter->window_start = jiffies;
++
++		IWL_DEBUG_STATS(mvm, "MPDU counters are cleared\n");
+ 	}
+ 
+ 	for (int i = 0; i < IWL_MVM_FW_MAX_LINK_ID; i++)
 -- 
 2.34.1
 
