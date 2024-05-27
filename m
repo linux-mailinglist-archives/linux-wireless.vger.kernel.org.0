@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-8123-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8124-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E9C78D07F9
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2024 18:17:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC6F8D07FA
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2024 18:17:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC9B72A8A27
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2024 16:17:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE8ED1F21A6B
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2024 16:17:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E89E015EFC8;
-	Mon, 27 May 2024 16:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C4315EFC4;
+	Mon, 27 May 2024 16:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C9S0VpnF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RIWL2OHK"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E76815EFC4
-	for <linux-wireless@vger.kernel.org>; Mon, 27 May 2024 16:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF59C73452
+	for <linux-wireless@vger.kernel.org>; Mon, 27 May 2024 16:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716825998; cv=none; b=rqQZuDAmX78vv2Bxevbz2JziTE284X6yyMfBp8sVSVDw1ck2xLtzMp/uDf93AHVuGxg+KglCk4oNDy1Z/YoAIQ+/R08qGObZakTe0M13L5aQQQQRj2YxTOvk+UiGTGIZRZKV5Bts6R+/XuPDi2BTdJtTMlIgmTOYeya2OHfa0Lw=
+	t=1716826000; cv=none; b=iHaVEjoImgB+fyeZfhNO8ClJcHjzby0AirebSFy8qjPQjhCYHVvagdONb1368QiOS+XpDVF5vlVF2ncXkysbwJpXNBnkK0VUgyNp2I/OnE815DS25at6N94qNTQQu6spt4D1vJwHX9daumE0HGUFXgN8x57xX2kplOUbCzdN+d4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716825998; c=relaxed/simple;
-	bh=euGrkW9C9BReiYgJyxO/H5u2czTaAPCJR+tq2G0J10k=;
+	s=arc-20240116; t=1716826000; c=relaxed/simple;
+	bh=vEUKNlzzJmbrrxSACtO66t3DOJ+wNTHog6bm7AT4qiA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BcwgC7kispFDwDeDImE3vpb3LWUZQ4ZfBFtwwlMDtgVQBcnRwt9GVaTf5ZsS96nvzTNVKcPTzEgK1eCT77xPfd6JC+iIUvw/fN9P5zi4qU2tVaDJvGwoGiQsOAP427gGDdF3cBFr/jNn9N9vaFnTlZ0fcvlE+p7dgpKtzVM0/Ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C9S0VpnF; arc=none smtp.client-ip=198.175.65.19
+	 MIME-Version; b=YSHIQxJgXhwJWC/Hyyw/8nzzRoswoQ7um8EUWde8NxV9XViCiOJ9EWC9ubrMIt25/4y98j7KD2FOv2OWcT4NZE7FRIzTX2B07VFQeEwUT6kQLG2HJMdQD+LRl8t+H+jAc7Dfk9Pv0Rp98GOYrH7aroq0cCO/pYy4NE0vlFPCOrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RIWL2OHK; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716825998; x=1748361998;
+  t=1716825999; x=1748361999;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=euGrkW9C9BReiYgJyxO/H5u2czTaAPCJR+tq2G0J10k=;
-  b=C9S0VpnFyB0CwyVYQcSZwBVYD6OlzGtuCFtb8RONNQjGnWnKVc9W/xqH
-   3Yf9N9oV6PgMpFGDhzIljEF277z1d8bC27opAvBwQZxvZG7QtlX+HHNMi
-   /JbGR4qj4nepkzogA6pJsj4gI6MmM+8tj4fPtR0klZzqp5nwB9s7h1LtZ
-   REWEULp/zDHI84q7Dyyt3Bke1qVe4P64gyBKkV7Mq4zETy7MXPVlHbgpp
-   s97rIDE5jCMKTMhxAf5W/hZk7UH594xAESYqTgtiBuNkCfisevaXNTylW
-   Kl71nC+9ln/71HzOw8GCeQWbSqgEJ1Zx71x2m6W6RLeHazFODoTMdA+U3
-   Q==;
-X-CSE-ConnectionGUID: igvl3rVgS1u9DARcIRT5XA==
-X-CSE-MsgGUID: COGY1XKlQo6zDqzvMek3Qw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="13002089"
+  bh=vEUKNlzzJmbrrxSACtO66t3DOJ+wNTHog6bm7AT4qiA=;
+  b=RIWL2OHKqns5l9ZFdfUIZKhjT3LCzBDetvAyoHVdWOzlDtxsNt1ySNrB
+   2T9AyNvy9WOfdBxipcscJx5Z3CpMkyHdBHUu6rLXoNNi9jenpgnMcrJ2I
+   ZpOo3/jJaaXb6q3ByvBvrxeC50At9vrE1kTh6pXHzpR9N7pntLwaFr6BH
+   GwK7Kp8SssTIKuMSiV4Gjj//V3pvii2jWK0+Qz5muYsJ56w7U4102BOLe
+   LwJfOyWbZf6flQFng7R30s2H6CHMP5ZbiXuCAc11UxcaiCJkBjMs5IaqQ
+   cjqp8KT+gBWX16YgWtxJ15Sl67ikFppD8m+v139zU16PPE3wPxdt0gwx+
+   A==;
+X-CSE-ConnectionGUID: ib78Dt3UT0Gq1qWlxonnBA==
+X-CSE-MsgGUID: QAxkKfx8Qgy4e5bngVmVzQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="13002092"
 X-IronPort-AV: E=Sophos;i="6.08,193,1712646000"; 
-   d="scan'208";a="13002089"
+   d="scan'208";a="13002092"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 09:06:38 -0700
-X-CSE-ConnectionGUID: aJmBKKzYTjmpmlR/y0geAw==
-X-CSE-MsgGUID: bZ1Du0VqSvG4WEzP9NPMUg==
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 09:06:39 -0700
+X-CSE-ConnectionGUID: Q7HD5+FcTvazZM92MGebQA==
+X-CSE-MsgGUID: N/FgTf9VSOOgFF5Vm0nk9g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,193,1712646000"; 
-   d="scan'208";a="35407099"
+   d="scan'208";a="35407102"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 09:06:36 -0700
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 09:06:38 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Avraham Stern <avraham.stern@intel.com>
-Subject: [PATCH 09/20] wifi: iwlwifi: mvm: initiator: move setting the sta_id into a function
-Date: Mon, 27 May 2024 19:06:04 +0300
-Message-Id: <20240527190228.18e3a6a6f1cb.I85e3ee607b3947448532bc16730f8898a11c92b8@changeid>
+Subject: [PATCH 10/20] wifi: iwlwifi: mvm: modify iwl_mvm_ftm_set_secured_ranging() parameters
+Date: Mon, 27 May 2024 19:06:05 +0300
+Message-Id: <20240527190228.56d6aee320b3.I5a52fa93cd791d0229b392a20f076b7cebb110cd@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240527160615.1549563-1-miriam.rachel.korenblit@intel.com>
 References: <20240527160615.1549563-1-miriam.rachel.korenblit@intel.com>
@@ -79,116 +79,131 @@ Content-Transfer-Encoding: 8bit
 
 From: Avraham Stern <avraham.stern@intel.com>
 
-Move setting the target's sta_id (and related flags) into a function
-to support different versions of the target struct.
+Modify iwl_mvm_ftm_set_secured_ranging() parameters to support
+multiple versions of the target struct.
 This is done as preparation for moving to the new range request
 version.
 
 Signed-off-by: Avraham Stern <avraham.stern@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../intel/iwlwifi/mvm/ftm-initiator.c         | 55 ++++++++++---------
- 1 file changed, 30 insertions(+), 25 deletions(-)
+ .../intel/iwlwifi/mvm/ftm-initiator.c         | 54 ++++++++++++-------
+ 1 file changed, 34 insertions(+), 20 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-index 98b1bbfc84bc..8596e6f7d1dc 100644
+index 8596e6f7d1dc..f5bf99f7fc2e 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-@@ -431,9 +431,6 @@ iwl_mvm_ftm_put_target_v2(struct iwl_mvm *mvm,
- 	return 0;
- }
+@@ -40,6 +40,12 @@ struct iwl_mvm_ftm_pasn_entry {
+ 	u32 flags;
+ };
  
--#define FTM_PUT_FLAG(flag)	(target->initiator_ap_flags |= \
--				 cpu_to_le32(IWL_INITIATOR_AP_FLAGS_##flag))
--
- #define FTM_SET_FLAG(flag)	(*flags |= \
- 				 cpu_to_le32(IWL_INITIATOR_AP_FLAGS_##flag))
- 
-@@ -525,21 +522,10 @@ iwl_mvm_ftm_put_target_v4(struct iwl_mvm *mvm,
- 	return 0;
- }
- 
--static int
--iwl_mvm_ftm_put_target(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
--		       struct cfg80211_pmsr_request_peer *peer,
--		       struct iwl_tof_range_req_ap_entry_v6 *target)
-+static int iwl_mvm_ftm_set_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
-+			       struct cfg80211_pmsr_request_peer *peer,
-+			       u8 *sta_id, __le32 *flags)
++struct iwl_mvm_ftm_iter_data {
++	u8 *cipher;
++	u8 *bssid;
++	u8 *tk;
++};
++
+ int iwl_mvm_ftm_add_pasn_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 			     u8 *addr, u32 cipher, u8 *tk, u32 tk_len,
+ 			     u8 *hltk, u32 hltk_len)
+@@ -719,7 +725,7 @@ static void iter(struct ieee80211_hw *hw,
+ 		 struct ieee80211_key_conf *key,
+ 		 void *data)
  {
--	int ret;
--
--	ret = iwl_mvm_ftm_target_chandef_v2(mvm, peer, &target->channel_num,
--					    &target->format_bw,
--					    &target->ctrl_ch_position);
--	if (ret)
--		return ret;
--
--	iwl_mvm_ftm_put_target_common(mvm, peer, target);
--
- 	if (vif->cfg.assoc) {
- 		struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
- 		struct ieee80211_sta *sta;
-@@ -551,8 +537,8 @@ iwl_mvm_ftm_put_target(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 			if (memcmp(peer->addr, link_conf->bssid, ETH_ALEN))
- 				continue;
+-	struct iwl_tof_range_req_ap_entry_v6 *target = data;
++	struct iwl_mvm_ftm_iter_data *target = data;
  
--			target->sta_id = mvmvif->link[link_id]->ap_sta_id;
--			sta = rcu_dereference(mvm->fw_id_to_mac_id[target->sta_id]);
-+			*sta_id = mvmvif->link[link_id]->ap_sta_id;
-+			sta = rcu_dereference(mvm->fw_id_to_mac_id[*sta_id]);
- 			if (WARN_ON_ONCE(IS_ERR_OR_NULL(sta))) {
- 				rcu_read_unlock();
- 				return PTR_ERR_OR_ZERO(sta);
-@@ -560,23 +546,42 @@ iwl_mvm_ftm_put_target(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 	if (!sta || memcmp(sta->addr, target->bssid, ETH_ALEN))
+ 		return;
+@@ -730,16 +736,16 @@ static void iter(struct ieee80211_hw *hw,
+ 		return;
  
- 			if (sta->mfp && (peer->ftm.trigger_based ||
- 					 peer->ftm.non_trigger_based))
--				FTM_PUT_FLAG(PMF);
-+				FTM_SET_FLAG(PMF);
- 			break;
- 		}
- 		rcu_read_unlock();
+ 	memcpy(target->tk, key->key, key->keylen);
+-	target->cipher = iwl_mvm_cipher_to_location_cipher(key->cipher);
+-	WARN_ON(target->cipher == IWL_LOCATION_CIPHER_INVALID);
++	*target->cipher = iwl_mvm_cipher_to_location_cipher(key->cipher);
++	WARN_ON(*target->cipher == IWL_LOCATION_CIPHER_INVALID);
+ }
  
+ static void
+ iwl_mvm_ftm_set_secured_ranging(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+-				struct iwl_tof_range_req_ap_entry_v7 *target)
++				u8 *bssid, u8 *cipher, u8 *hltk, u8 *tk,
++				u8 *rx_pn, u8 *tx_pn, __le32 *flags)
+ {
+ 	struct iwl_mvm_ftm_pasn_entry *entry;
+-	u32 flags = le32_to_cpu(target->initiator_ap_flags);
  #ifdef CONFIG_IWLWIFI_DEBUGFS
- 		if (mvmvif->ftm_unprotected) {
--			target->sta_id = IWL_MVM_INVALID_STA;
--			target->initiator_ap_flags &=
--				~cpu_to_le32(IWL_INITIATOR_AP_FLAGS_PMF);
-+			*sta_id = IWL_MVM_INVALID_STA;
-+			*flags &= ~cpu_to_le32(IWL_INITIATOR_AP_FLAGS_PMF);
- 		}
--
- #endif
- 	} else {
--		target->sta_id = IWL_MVM_INVALID_STA;
-+		*sta_id = IWL_MVM_INVALID_STA;
- 	}
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
  
-+	return 0;
-+}
+@@ -747,35 +753,39 @@ iwl_mvm_ftm_set_secured_ranging(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 		return;
+ #endif
+ 
+-	if (!(flags & (IWL_INITIATOR_AP_FLAGS_NON_TB |
++	if (!(le32_to_cpu(*flags) & (IWL_INITIATOR_AP_FLAGS_NON_TB |
+ 		       IWL_INITIATOR_AP_FLAGS_TB)))
+ 		return;
+ 
+ 	lockdep_assert_held(&mvm->mutex);
+ 
+ 	list_for_each_entry(entry, &mvm->ftm_initiator.pasn_list, list) {
+-		if (memcmp(entry->addr, target->bssid, sizeof(entry->addr)))
++		if (memcmp(entry->addr, bssid, sizeof(entry->addr)))
+ 			continue;
+ 
+-		target->cipher = entry->cipher;
++		*cipher = entry->cipher;
+ 
+ 		if (entry->flags & IWL_MVM_PASN_FLAG_HAS_HLTK)
+-			memcpy(target->hltk, entry->hltk, sizeof(target->hltk));
++			memcpy(hltk, entry->hltk, sizeof(entry->hltk));
+ 		else
+-			memset(target->hltk, 0, sizeof(target->hltk));
++			memset(hltk, 0, sizeof(entry->hltk));
+ 
+ 		if (vif->cfg.assoc &&
+-		    !memcmp(vif->bss_conf.bssid, target->bssid,
+-			    sizeof(target->bssid)))
+-			ieee80211_iter_keys(mvm->hw, vif, iter, target);
+-		else
+-			memcpy(target->tk, entry->tk, sizeof(target->tk));
++		    !memcmp(vif->bss_conf.bssid, bssid, ETH_ALEN)) {
++			struct iwl_mvm_ftm_iter_data target;
 +
-+static int
-+iwl_mvm_ftm_put_target(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
-+		       struct cfg80211_pmsr_request_peer *peer,
-+		       struct iwl_tof_range_req_ap_entry_v6 *target)
-+{
-+	int ret;
-+
-+	ret = iwl_mvm_ftm_target_chandef_v2(mvm, peer, &target->channel_num,
-+					    &target->format_bw,
-+					    &target->ctrl_ch_position);
-+	if (ret)
-+		return ret;
-+
-+	iwl_mvm_ftm_put_target_common(mvm, peer, target);
-+
-+	iwl_mvm_ftm_set_sta(mvm, vif, peer, &target->sta_id,
-+			    &target->initiator_ap_flags);
-+
- 	/*
- 	 * TODO: Beacon interval is currently unknown, so use the common value
- 	 * of 100 TUs.
++			target.cipher = cipher;
++			target.bssid = bssid;
++			target.tk = tk;
++			ieee80211_iter_keys(mvm->hw, vif, iter, &target);
++		} else {
++			memcpy(tk, entry->tk, sizeof(entry->tk));
++		}
+ 
+-		memcpy(target->rx_pn, entry->rx_pn, sizeof(target->rx_pn));
+-		memcpy(target->tx_pn, entry->tx_pn, sizeof(target->tx_pn));
++		memcpy(rx_pn, entry->rx_pn, sizeof(entry->rx_pn));
++		memcpy(tx_pn, entry->tx_pn, sizeof(entry->tx_pn));
+ 
+-		target->initiator_ap_flags |=
+-			cpu_to_le32(IWL_INITIATOR_AP_FLAGS_SECURED);
++		FTM_SET_FLAG(SECURED);
+ 		return;
+ 	}
+ }
+@@ -789,7 +799,11 @@ iwl_mvm_ftm_put_target_v7(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 	if (err)
+ 		return err;
+ 
+-	iwl_mvm_ftm_set_secured_ranging(mvm, vif, target);
++	iwl_mvm_ftm_set_secured_ranging(mvm, vif, target->bssid,
++					&target->cipher, target->hltk,
++					target->tk, target->rx_pn,
++					target->tx_pn,
++					&target->initiator_ap_flags);
+ 	return err;
+ }
+ 
 -- 
 2.34.1
 
