@@ -1,114 +1,100 @@
-Return-Path: <linux-wireless+bounces-8137-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8138-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EAB98D094C
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2024 19:17:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C69678D0952
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2024 19:25:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE8642810F8
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2024 17:17:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68A4F1F21F0B
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2024 17:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B865561FCC;
-	Mon, 27 May 2024 17:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D234361FCC;
+	Mon, 27 May 2024 17:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k5GMWFz8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c/5IZP2p"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A9B1DA58;
-	Mon, 27 May 2024 17:17:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682D017E8FB
+	for <linux-wireless@vger.kernel.org>; Mon, 27 May 2024 17:25:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716830255; cv=none; b=e6EnCoj3wJzzX3QHS7sxiDXY+12ckKH5V91mFLvLsqRMchx5fU03COIwzG9enh0oVoezfSjlE/l/vidlSqcMtYw7CtOgq9Q1Wchqns+w6Q1yalnwYUFRrkWmNkEaBu/CwYBjvbqdKqpZNES4vQNUvCZ2h0ki2HlU27cuesrjQuw=
+	t=1716830737; cv=none; b=g5atfvIgnfzO2KSWneynLUhn9h7RUjgZtegUKQDwOyv02jyEYUZUdsXFdStSeBEI5FZxSR4OrtULdaMB/qqnsXvoJaFWrxzHI9jLSLFwoUBYtZVaBqsgYXL0n90/gE4r+OOY22JEu9/v3+SXCUCwGFmP1KBigSvq0n0vhddUsmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716830255; c=relaxed/simple;
-	bh=1ZMhNL/6A406EwttWRYVsylDBq6qoRLco9BwftzrOLQ=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=UWUJqdfMFWkmL2N8f6DL9Hy7Bt8JANgQc5VUN5XVHzDP2m6irNmexx6b3D32K6pnRWXlgN3aAkqvhW13v1ImnH0DJ4XRJviIKKTdph4wvpEBAJ8zPKKFCmDOl32oXzHwvoe+saRBT5+9O2/1DqAcs3f7lvZ62UI323UqceOMw7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k5GMWFz8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7BF8C2BBFC;
-	Mon, 27 May 2024 17:17:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716830255;
-	bh=1ZMhNL/6A406EwttWRYVsylDBq6qoRLco9BwftzrOLQ=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=k5GMWFz8aO9ZCFimFqIHTeTAc1N8yxkVzx9ZMPBp/bVeyyjjPyrGKF7pAGuJsYO0b
-	 uPWzuMj8TRQ35MV29igdJTQc/+Dmj9n7XtkZ1LbBTsz5bFikCOlVywslG0wh/UvT7b
-	 8tQEHlSd2hE4tUN1Z5Igi8TlZBvwIUJbVRB0InZzEyLtlmJsp5rrcON9PyrKc+l9YO
-	 H2b6+CX+PDZkCAxs77xieNYf8F4ZWsQ4bmMghZsn6N69oT3jLH571JL54MwASeOOEX
-	 9+LUTzO5FJ6XPR/NyNz6YmRvpHHwe61TmkQ5xBumuyDVek5TrtjKdvCdpZzyJG3KKC
-	 Kc4hr9xfKq6ag==
-From: Kalle Valo <kvalo@kernel.org>
-To: marcin.slusarz@gmail.com
-Cc: linux-wireless@vger.kernel.org,  Marcin =?utf-8?Q?=C5=9Alusarz?=
- <mslusarz@renau.com>,
-  Ping-Ke Shih <pkshih@realtek.com>,  Larry Finger
- <Larry.Finger@lwfinger.net>,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wifi: rtw88: schedule rx work after everything is set up
-References: <20240527170137.455671-1-marcin.slusarz@gmail.com>
-Date: Mon, 27 May 2024 20:17:31 +0300
-In-Reply-To: <20240527170137.455671-1-marcin.slusarz@gmail.com> (marcin
-	slusarz's message of "Mon, 27 May 2024 19:01:37 +0200")
-Message-ID: <87jzjf8990.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1716830737; c=relaxed/simple;
+	bh=M80gnXNyU0K0H1n5gSTYhphcy8g5UqLnLOByeU9sRW8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=jjYX8rPGA+hnKKU6BXuZ/o4I4d2VjO8dHjJq20Y47+52lDeQKQmO8d6bkC/duyXIWZaPmnbCC08dlIdpU5lEjMucMD/jFDWPmWpMsC3n6VSC19zlYCDCKLSNL6/G+2jyKUCL+XkVxffqaHRQaD0kFjmXiu1uovmfHA/d5vb9/y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c/5IZP2p; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a6265d47c61so3338966b.0
+        for <linux-wireless@vger.kernel.org>; Mon, 27 May 2024 10:25:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716830735; x=1717435535; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=xumF45D8+wn1dC4xNeYTL4Ch7JGJzVQke69iwN7nD/w=;
+        b=c/5IZP2pZ54qdA0lqMGoch0uUYUS8eCyLyghbGigEo1NBH2alrROvxdsJrLm52SMze
+         e91VZuthBuG4Uzet5bFQ1f41I3scvrI71GcZf5uJgkpLMfTbopTGAd0UoC9J/3MUOhZU
+         /A9wr8K6mV98mOV8xTfOai84ekIBnPl0pmwKfo/J87IUqc5Y6+fFEVCdSjhfo695CgoV
+         RVJBzE6Fv9Anj9bUbzANMe/gyVYCVJtgZg0uRx4TObbD+Cp6GsT5wQtY9t549sDljb+y
+         xgVexBVTpTC5SQIKEJAEMDCcy9eiT7acbAs9jxE1DfS7oQ183ClxpTLXsSdoko05bkiv
+         yMSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716830735; x=1717435535;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xumF45D8+wn1dC4xNeYTL4Ch7JGJzVQke69iwN7nD/w=;
+        b=qfIzSgwL3SaKb+TSRrcjNmzpSG/oTD1bIADOfqZJjf+aOAyZ3cJ9f+kCJfQ30SWeaQ
+         TXCIV72cwoWZNPNv7FUHbxfBa+537qh9THSEyU1k8CZf0sNufhWlIGkDrXhpvjCd5zaL
+         bD8Kaz6Vxl66IfkJY5cm/ol0O2xoFxa+UMxAygNuV1F58oNRSvHyyBJjsfhxa8CFSsxH
+         zGlgugaOeqNKN27YPWzH+tNlHUBfTCqJFiXE+xsbJ3amsyP6Fz6B9k9ByENIfWDgdmXz
+         owwI1N2jZswwD6iUhgARfw0E2IUg+/0TJ6/dODELxq6McOVdvgjnhreJCpBWNtBm50Bo
+         81jw==
+X-Forwarded-Encrypted: i=1; AJvYcCVz7vKXhDlu+FYMUw2Tpj7HGaYvGHi1r+8RATS0E+aEpYgrBKcqc5WccOBCcwkFlT/23D0HhleUu5t8ekSPbizGsQai6kmwVynd3peamJY=
+X-Gm-Message-State: AOJu0Yz/WYPKTyuwjSbJo349HRdYH2Ecnc/w6P3Mm5D9zmVuOwSUqC3+
+	iTE3m35tTjhL4HS58K/h1qVRkp8X7Jc2Qf//cJ8x5l+RzShDX9+f/KvSHA==
+X-Google-Smtp-Source: AGHT+IHzXGeAuYHalkhmUI6m0Prdjz5R0L8RRz9jGaCq72p1zMkrQtmMMldAwUZtFZ8dbwQgjOrzew==
+X-Received: by 2002:a17:906:a894:b0:a59:b376:87b3 with SMTP id a640c23a62f3a-a6264f15c5cmr645076866b.62.1716830734556;
+        Mon, 27 May 2024 10:25:34 -0700 (PDT)
+Received: from [192.168.0.50] ([79.119.240.1])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a626c937b92sm508960866b.68.2024.05.27.10.25.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 May 2024 10:25:34 -0700 (PDT)
+Message-ID: <65f47303-3ce0-44ab-8f06-2b2008847f26@gmail.com>
+Date: Mon, 27 May 2024 20:25:32 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [BUG] rtw88: "rfe 3 isn't supported" on rtw_8812au
+To: Luis Mita <luis@luismita.com>, linux-wireless@vger.kernel.org
+References: <9f4e6ffc-fd82-4404-9009-c784aa3b2ab7@luismita.com>
+ <1e2b1996-26aa-426e-bece-ac74e8d47660@luismita.com>
+Content-Language: en-US
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <1e2b1996-26aa-426e-bece-ac74e8d47660@luismita.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-marcin.slusarz@gmail.com writes:
+On 27/05/2024 17:33, Luis Mita wrote:
+> Hi,
+> 
+> My adapter TP-Link Archer T4UHP doesn't work with the new rtw_8812au driver. Looks like the driver is new, and i'm happy to help testing.
+> 
 
-> From: Marcin =C5=9Alusarz <mslusarz@renau.com>
->
-> Right now it's possible to hit NULL pointer dereference in
-> rtw_rx_fill_rx_status on hw object and/or its fields because
-> initialization routine can start getting USB replies before
-> rtw_dev is fully setup.
->
-> The stack trace looks like this:
->
-> rtw_rx_fill_rx_status
-> rtw8821c_query_rx_desc
-> rtw_usb_rx_handler
-> ...
-> queue_work
-> rtw_usb_read_port_complete
-> ...
-> usb_submit_urb
-> rtw_usb_rx_resubmit
-> rtw_usb_init_rx
-> rtw_usb_probe
->
-> So while we do the async stuff rtw_usb_probe continues and calls
-> rtw_register_hw, which does all kinds of initialization (e.g.
-> via ieee80211_register_hw) that rtw_rx_fill_rx_status relies on.
->
-> Fix this by moving the first usb_submit_urb after everything
-> is set up.
->
-> For me, this bug manifested as:
-> [    8.893177] rtw_8821cu 1-1:1.2: band wrong, packet dropped
-> [    8.910904] rtw_8821cu 1-1:1.2: hw->conf.chandef.chan NULL in rtw_rx_f=
-ill_rx_status
-> because I'm using Larry's backport of rtw88 driver with the NULL
-> checks in rtw_rx_fill_rx_status.
->
-> This should fix:
-> https://marc.info/?l=3Dlinux-wireless&m=3D167907688311943&w=3D2
+Hi, Luis.
 
-Please use permalinks from lore.kernel.org, marc links don't contain the
-Message-Id and are hence unreliable.
-
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+The driver is so new that it's too soon to test it with
+RTL8812AU. I am aware that RFE 3 is not supported yet.
+It will be supported later.
 
