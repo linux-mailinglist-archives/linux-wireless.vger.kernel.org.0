@@ -1,151 +1,84 @@
-Return-Path: <linux-wireless+bounces-8142-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8143-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F6908D096F
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2024 19:35:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 362878D097D
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2024 19:44:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D79801F2233F
-	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2024 17:35:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C12E2B21C83
+	for <lists+linux-wireless@lfdr.de>; Mon, 27 May 2024 17:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912E415EFC5;
-	Mon, 27 May 2024 17:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B063C155CA5;
+	Mon, 27 May 2024 17:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BKn7GVh3"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="sRW98aIf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D910E15ECD3
-	for <linux-wireless@vger.kernel.org>; Mon, 27 May 2024 17:35:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF72E26AE7
+	for <linux-wireless@vger.kernel.org>; Mon, 27 May 2024 17:44:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716831328; cv=none; b=O+OoWz3nhguvFzRpJk5p9m12mzKNNRnntLn3mb171AU9/TcvWsULgM+lo9EmeLFpkWNJpmU3dV19/ImK8uklAj9nf+fdTMlef/yFkpQiHqZMukIRH/jipu2Qv4UvTIKmE/2ZsPwXsRics/fI0AdTVvoR4yZ793B7Fh/50jrq7tg=
+	t=1716831848; cv=none; b=b8AmlG569o8dkzThaF7fU8Kab7wPGxgTfC3/0Vb413fe1DO1Z+mWKmS5spLUCbzmlkg4edOm2hyqerktogGe7ESxYdrhA69XDnqCRNhc1uf7ORBtlMr1PhKLNUwNFLC+dPHPEPiV+yJK448a8912V+FV4DosxDZl8ZDwYoKNKcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716831328; c=relaxed/simple;
-	bh=68yIhEvb9FjH6f0sGFez019la9iLBE+u0nLfuW0IJOI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lsGQmYKHVpcIdguOaSOvvrI5tYsfDcXmtTWu0ThyKqYyytEtmG1q7UWeqYaz2/LHII4WabnmDHBObmgsIgiokcDBVLtz49bymq72/Op71YTjczhDBVU8tcWNxmamMOU2AonJe/ft6HLQwXHcn3o+2GAnP1Ey5Asx+K9/5bPa3ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BKn7GVh3; arc=none smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-529614b8c29so5329945e87.2
-        for <linux-wireless@vger.kernel.org>; Mon, 27 May 2024 10:35:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716831324; x=1717436124; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ebfJZ8PwhlH8q5JiE5pvjuHAQWR0IKg+SwzFXyu6Wqc=;
-        b=BKn7GVh3KHvuFsiq6dR3IsYU54VhZIq34ld1Tex4jHvfL3M/7q2JZlyRpJ5Npx1h2I
-         yEh3Ef/rQsqQ4h7SzwW0YyO3I5ekbKDUaDfRLpmD7DARcKMGmIoC128Vm/QcIyD+fQFa
-         do6DgYGQmWwzZ48PIWZkcaJPMgKCPGlxvh4AvFJWEZRS6HtOA96xnN9qzoIur2r8Hp4F
-         wBAYiC69we9b5xsIB9nlVh9GSKLwJ9a+zK1+AIy/6aKtOYqxxULQmaun+a//TOo614dD
-         WQMagbr9LEZYIiTLjsbCAXZrzteCy/UMVgm1nAlGGJgy4hpv/iFJeILYhZNUx5OgfBXV
-         Su1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716831324; x=1717436124;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ebfJZ8PwhlH8q5JiE5pvjuHAQWR0IKg+SwzFXyu6Wqc=;
-        b=K0Jh+NFKVchyW/ppYquRuQVU6MYL3Ei3TrF4IUUm+I5Z0NNhMaSTiA4WBSewDuRNBx
-         q/j+BRsoA/Ov9iolrflwit0TR4IbheZCBviDGv9hbgr63gL8EJ03AiMOMTVbQ6cnnR8i
-         uBPAlxFY3KuPIwh4pt7CT5hfHbhgairgXonyFoVsB8cCEm8mzDmP8t6HAE3IZurQTqdo
-         NsZ3tsIlBabk8x9EDpFywdgKxEePJH6S4SiYkeXaUS62d34xHp1s2MfSe5cLrzkjsdcS
-         c5hHqOq+6Rwarrwr9CZSIUcN003uI1ExmSscOdfwM6BUBzRiIgrpd5+63xnVjTXgkiqa
-         xOLg==
-X-Gm-Message-State: AOJu0YzafGwP+ZzVAuTW6SfZm8QfB9O9SqbwB7qDJC0eavBwXFMDZDu5
-	o9esNrMDWL8Pho9ag2ilCk9IOU3x7DbEcVcKUOF8wopPYEsp3DTdJ20bba7z
-X-Google-Smtp-Source: AGHT+IErFSVUj4tVBJWqlaEVajfGy3grjY5JvnwAUd1RQtw49FABpAdVH/MhPYi8NPDvGoWFqCh+ZQ==
-X-Received: by 2002:ac2:561c:0:b0:51f:5d1a:b320 with SMTP id 2adb3069b0e04-52967f06cd4mr7572562e87.68.1716831323517;
-        Mon, 27 May 2024 10:35:23 -0700 (PDT)
-Received: from mslusarz-hyperv.mshome.net (1779df417e104.rev.snt.net.pl. [213.192.104.90])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a626cc500a1sm512070466b.125.2024.05.27.10.35.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 May 2024 10:35:23 -0700 (PDT)
-From: =?UTF-8?q?Marcin=20=C5=9Alusarz?= <marcin.slusarz@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: =?UTF-8?q?Marcin=20=C5=9Alusarz?= <mslusarz@renau.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Larry Finger <Larry.Finger@lwfinger.net>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 2/2] wifi: rtw88: disable power offs for 8821C
-Date: Mon, 27 May 2024 19:34:54 +0200
-Message-Id: <20240527173454.459264-3-marcin.slusarz@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240527173454.459264-1-marcin.slusarz@gmail.com>
-References: <20240527173454.459264-1-marcin.slusarz@gmail.com>
+	s=arc-20240116; t=1716831848; c=relaxed/simple;
+	bh=SBlDgzF6mpmZ1Onln0HIXGug87tsPK6zVBEDdeQb8p8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=eTUQNc1jzW3y44ZdxE92lKy/GsqDtr2i47X1FerKp0VLP6/VqR2j/djrRCoQJzQtWAJyVjFY7PBmNs+dw7qcz61GEsO7pdSD+Id+DDt+5ruSaVJfqhaoI6m0hhvVrYeO8VnZ95Ue1MWLGc9AdoKv/0xIJ+xfJqzcLKn/bqDvFeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=sRW98aIf; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=SBlDgzF6mpmZ1Onln0HIXGug87tsPK6zVBEDdeQb8p8=;
+	t=1716831844; x=1718041444; b=sRW98aIfg5UPjDv9iW6sjg1kxr6iSoJwIZrhcsWWrvXMz3K
+	tj9dRJRIiiubJsmYHGgk7qZ6tdI0KEWmxHp2kBsuVYSUOeMtywBLOfjI+ojk6QNiym6TYlPsdZccv
+	tCaWWpfamSv91PhdnluQKTvOEqklzHtFlX1htwq1ljUuhNKSgy24czwpF55mRuJ7Jsm0v9KepR3hc
+	DA0qmHcfqJeV1MtbyH1K42m9Vj7kVOY6wxh7qOluPxzcv9L7QHACgF4t42HhavjoAmCHNdrM3JTOP
+	tr5UuXP4ScMpXRZO4A+rkYLvxt5yl8W3Rghjg9JXD8jiQZrQ970HIRJmQtsyo27w==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1sBeO8-0000000D0C9-1i2Y;
+	Mon, 27 May 2024 19:44:00 +0200
+Message-ID: <56d1c2f223c032b0003029cc4956f1cfffea86ca.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: mac80211: add input validation to
+ sta_stats_decode_rate()
+From: Johannes Berg <johannes@sipsolutions.net>
+To: James Dutton <james.dutton@gmail.com>
+Cc: linux-wireless@vger.kernel.org
+Date: Mon, 27 May 2024 19:43:59 +0200
+In-Reply-To: <CAAMvbhGdhHUxstdrmnD6ZF_iTxOTfbAgj1QiwZMKLOYf9D2Egg@mail.gmail.com>
+References: 
+	<CAAMvbhGyheFdWSrDzM_i10n9s06n3G2wX6O_S68VUZyP-a9p+A@mail.gmail.com>
+	 <f939f9dfb467d7a1daaf1e69b56f8599ef3eceeb.camel@sipsolutions.net>
+	 <CAAMvbhGdhHUxstdrmnD6ZF_iTxOTfbAgj1QiwZMKLOYf9D2Egg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-From: Marcin Ślusarz <mslusarz@renau.com>
+On Mon, 2024-05-27 at 18:14 +0100, James Dutton wrote:
+>=20
+> You mention "certainly not any pointers or the band enum!".
+> How certain are you about that statement? I ask because received wifi
+> packets can and do result in unwelcome values for the pointers here.
+>=20
 
-This chip fails to reliably wake up from power off.
+I really don't see how? Certainly the pointer is _always_ going to be
+defined by the driver calling this, and I've yet to see any hardware
+that actually uses nl80211 band enums directly.
 
-After some number of power off+on cycles, it stops with endless spamming of:
-rtw_8821cu 1-1:1.2: rtw_usb_reg_sec: reg 0x4e0, usb write 1 fail, status: -71
-killing both Wifi and Bluetooth part of the device.
-
-On arm, just leaving the wifi device unconfigured kills it in up to 20 minutes.
-If I keep restarting wpa_supplicant I can trigger it within a minute.
-Looping "ifconfig wlan0 down; ifconfig wlan0 up" also triggers it within a minute.
-
-On x86_64 system the only way I could trigger this was via ifconfig loop,
-but it took 3 hours and 20 minutes to do it.
-
-The only thing that "fixes" the device is replugging it.
-
-Signed-off-by: Marcin Ślusarz <mslusarz@renau.com>
-Cc: Ping-Ke Shih <pkshih@realtek.com>
-Cc: Larry Finger <Larry.Finger@lwfinger.net>
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org
----
- drivers/net/wireless/realtek/rtw88/main.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 7ab7a988b123..e8bfa683d7bb 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -1482,11 +1482,11 @@ void rtw_core_scan_complete(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
- 
- int rtw_core_start(struct rtw_dev *rtwdev)
- {
--	int ret;
--
--	ret = rtw_power_on(rtwdev);
--	if (ret)
--		return ret;
-+	if (!test_bit(RTW_FLAG_POWERON, rtwdev->flags)) {
-+		int ret = rtw_power_on(rtwdev);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	rtw_sec_enable_sec_engine(rtwdev);
- 
-@@ -1534,7 +1534,9 @@ void rtw_core_stop(struct rtw_dev *rtwdev)
- 
- 	mutex_lock(&rtwdev->mutex);
- 
--	rtw_power_off(rtwdev);
-+	/* FIXME: 8821C doesn't wake up from this state from time to time */
-+	if (rtwdev->chip->id != RTW_CHIP_TYPE_8821C)
-+		rtw_power_off(rtwdev);
- }
- 
- static void rtw_init_ht_cap(struct rtw_dev *rtwdev,
--- 
-2.25.1
-
+johannes
 
