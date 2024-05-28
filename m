@@ -1,124 +1,136 @@
-Return-Path: <linux-wireless+bounces-8181-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8182-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 601858D1722
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 11:20:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB8318D1748
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 11:31:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 160FF285C4B
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 09:20:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13A301C22EA2
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 09:31:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF27A140395;
-	Tue, 28 May 2024 09:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72E42158A0F;
+	Tue, 28 May 2024 09:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="xDk3Smty"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="fc3tSgkx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10865140386;
-	Tue, 28 May 2024 09:18:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB0515885F
+	for <linux-wireless@vger.kernel.org>; Tue, 28 May 2024 09:31:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716887903; cv=none; b=NyhgoBa7hkTyXSyt8SyDhCMfhGB5LyX5/qjLUxzdY8NhJuOYod6uKAO/TMIDYGu/JWHkTBNh2TJio6h6N6KcBgR8t37z7MfvKX4rCvpY+FVtXhO6es4FOR4ldpreP1SKfhZgOxrBed42Zv56tzQZAmvwF0xpR8pwISt6AwCuJfM=
+	t=1716888681; cv=none; b=cnr9VTEHQeiqueLgXdg30A1o77PJKRNQdA4sV60N64AGOTDAXb2Z9yjAn8yRmqIIVvUKTHk+YRqyc8HfiGfgz08NSs8dvk/a6wzQbG/gaOqMqrSDPUAQwx0CvaF2ghIKJ3GgG/6eEyhgeBUliaugG27UA8rvxrbzRH+kK/f61n0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716887903; c=relaxed/simple;
-	bh=LKu4LRyGZp0SuwvyOaS9H+olC5GTu4VF+Xc85CYC4ek=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=PLL4LxNo2VxCPdI0UQ3SkL64aB6mRVctGJ3d4SiPwh2HygcX3e5sUoQPpttfxzyaCWG8SC3RaD+nBLSeGBuDAFtSR/R55hmuON87sTVW98p0HN8mkeWDkFXFEI2qAr6e6DT0836Gngnj7OEnvNvKmrsNg9tWCDyDYUegguwlEqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=xDk3Smty; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=FlOsQt51ODlcWfSttNCMN/vZL8f8s6mIoZE3qIAvgdY=; b=xDk3SmtyjuJIz+pzkFgfJlAaJq
-	JdvH9tfZ/3H8bqYWRwMvRrAPoeE52mOi5iw9VYATIfsa09vhaDzpktUgvVlO15ZJTrDs1VrhzAT3Z
-	zQJFkq240k8ZjORkB+wHJpd6n/o211D4bSyoVuPyo57ahuH5BuE+0brCukMzSy+vqDCGZlW3YIXl2
-	tRVShTsTMLAtS3Txi5TgbQ9P/8h7TrGUW+5dSiJBQB3da5kkFC/NEFZUD6fu3Zy69eUygopnDOby1
-	xxE3LCjV7kchdNfCQNUZIGbRKkgviNIfZu+VQKaOR2vxvgK280j8I3hvFdP2w7iKM7HpCgPHJakV9
-	kE0jooaw==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:53394 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1sBsyF-0004Ya-0q;
-	Tue, 28 May 2024 10:18:15 +0100
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1sBsyH-00E8w6-Vu; Tue, 28 May 2024 10:18:18 +0100
-In-Reply-To: <ZlWhH4HleGILuUtN@shell.armlinux.org.uk>
-References: <ZlWhH4HleGILuUtN@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	 Michael Nemanov <michael.nemanov@ti.com>,
-	 linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH wireless-next 8/8] wifi: wl18xx: allow firmwares > 8.9.0.x.58
+	s=arc-20240116; t=1716888681; c=relaxed/simple;
+	bh=jfFX90uZOymu9T8b0XnhNHmoMFCMd1+uiHn8SXAv3+c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BSzgCATX0SEbhRQFzl7DdwlKxBru4h1LkNN5EB8gZvH+xBRo5uQbZ35jvLlAqYCBUP6CYWi0MCCNk8Yes+eV1FC8GNdL1fRG+0PaS6jL7B7qM/1EpnRHeDIjkgR5J9efhlrclgeY5bTdj67d1IjSMkSd+UA1s1LHL3XRihJrH74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=fc3tSgkx; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 98484C000C;
+	Tue, 28 May 2024 09:31:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1716888676;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1MkSEDJwrWNIPR0bchm1t68CwLKFDFfr/6JApuMvURM=;
+	b=fc3tSgkxInE+1aS3Bl7WGkHvPjXSRPg4LrNbrrr+vmxItszOJ0/i4VIPZjkXmgKS1zpdO1
+	piqS71ZMoGizJFriwZ46VsJhEW/WRXqg0J8FZ8XB+Y6KTmGn4kYWjVF4AIJ6+7ssiCB3ra
+	eSOhYYHNQagTWgtXFjMgPofFcLT0tU+w6x6Kp2CSEs6ILuMURWnUhvQ54ie7234dqJ2baW
+	Gvhnlm7zL594KAxqueCjkW/4hMcNZW0IQ6/Zx85P/OokE1Fde8lpjvF7Ifena+12ykr9hY
+	iBT8QhaNdv18rS8GpLzhlm4H4K+6LhhUGGAQH/EmLOwVxwcQpmKlNoXxyE/Dkw==
+Message-ID: <0a9c592d-7db3-454e-a83f-901b1865b414@bootlin.com>
+Date: Tue, 28 May 2024 11:31:16 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [bug report] wifi: wilc1000: convert list management to RCU
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+ "Ajay.Kathat" <Ajay.Kathat@microchip.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+References: <3b46ec7c-baee-49fd-b760-3bc12fb12eaf@moroto.mountain>
+Content-Language: en-US
+From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+In-Reply-To: <3b46ec7c-baee-49fd-b760-3bc12fb12eaf@moroto.mountain>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1sBsyH-00E8w6-Vu@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Tue, 28 May 2024 10:18:17 +0100
+X-GND-Sasl: alexis.lothore@bootlin.com
 
-wlcore firmware versions are structured thusly:
+Hello,
 
-	chip.if-type.major.sub-type.minor
-e.g.	  8    9       0       0     58
+On 5/9/24 15:24, Dan Carpenter wrote:
+> Hello Alexis Lothoré,
+> 
+> Commit f236464f1db7 ("wifi: wilc1000: convert list management to
+> RCU") from Apr 10, 2024 (linux-next), leads to the following Smatch
+> static checker warning:
+> 
+> 	drivers/net/wireless/microchip/wilc1000/mon.c:236 wilc_wfi_init_mon_interface()
+> 	warn: sleeping in atomic context
 
-With WL18xx ignoring the major firmware version, looking for a
-firmware version that conforms to:
+My bad for the extensive delay to fix this. I have been in fact scratching my
+head quite a lot around it. Adding Kalle and Ajay to keep them updated, and
+possibly to get opinions.
 
-	chip >= 8
-	if-type >= 9
-	major (don't care)
-	sub-type (don't care)
-	minor >= 58
+This issue is indeed due to my recent series converting back SRCU to RCU in wilc
+driver (submitted because at this time, there was no obvious reason nor
+documentation about why SRCU was needed). By checking further the consequence, I
+find in fact three issues, and I suspect those to be the original reason for
+SRCU usage in the driver instead of classical RCU. All of them are reproducible
+with runtime checkers enabled regarding RCU and sleeps in atomic sections,
+either by triggering some heavy traffic for the first one, or raising an access
+points for the two others:
 
-Each test is satisfied if the value read from the firmware is greater
-than the minimum, but if it is equal (or we don't care about the
-field), then the next field is checked.
+  - one issue is in wilc_wfi_init_mon_interface (the initial warning raised by
+Dan). This one:
+    - parses the vif list (under RCU) to perform some checks, possibly canceling
+    the interface registration
+    - then registers the monitoring interface (has sleeping calls, especially a
+register_netdevice call)
+    - then if registration is successful, updates appropriate vif to flag it as
+monitoring interface (then leave RCU section)
+  I have a hotfix for this, but not a very satisfying one, which consists in
+splitting the RCU section into two (first and third points), but additionally
+using the vif list lock to make sure vif list has not been altered in-between.
+IMHO this kind of fix just make things worse in the driver, just to tame RCU.
 
-Thus it doesn't recognise 8.9.1.x.0 as being newer than 8.9.0.x.58
-since the major and sub-type numbers are "don't care" and the minor
-needs to be greater or equal to 58.
+  - one issue is in wilc_wlan_txq_filter_dup_tcp_ack (the second warning raised
+by Dan), which calls wait_for_completion_timeout while being in RCU critical
+read. The issue can be properly fixed by just counting the number of packets to
+be dropped inside the critical section, then effectively applying the multiple
+wait_for_completion_timeout _after_ the RCU section.
 
-We need to change the major version from "ignore" to "0" for this later
-firmware to be correctly detected, and allow the dual-firmware version
-support to work.
+  - finally, there is an issue in set_channel ops (cfg80211.c), which fetches
+the first vif (under RCU), and then uses this vif to send appropriate channel
+configuration command (which sleeps at some point). Since used vif here comes
+from the vif list, I don't think it is safe to leave earlier RCU section (vif
+pointer needs to remain valid until command is sent to chip).
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/wireless/ti/wl18xx/wl18xx.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Because of the second point which would bring a not-so-clean fix, and the third
+one for which I still don't have a proper fix, I am considering to submit a
+revert for my RCU conversion series, to come back to SRCU. I don´t know if those
+issues do or do not make SRCU usage more legitimate, but at least I feel like
+really fixing it need slightly larger rework. I will still search for better
+options, but if I do not find any, I will submit the revert.
 
-diff --git a/drivers/net/wireless/ti/wl18xx/wl18xx.h b/drivers/net/wireless/ti/wl18xx/wl18xx.h
-index 7fed96d71b27..de6c671c4be6 100644
---- a/drivers/net/wireless/ti/wl18xx/wl18xx.h
-+++ b/drivers/net/wireless/ti/wl18xx/wl18xx.h
-@@ -13,7 +13,7 @@
- /* minimum FW required for driver */
- #define WL18XX_CHIP_VER		8
- #define WL18XX_IFTYPE_VER	9
--#define WL18XX_MAJOR_VER	WLCORE_FW_VER_IGNORE
-+#define WL18XX_MAJOR_VER	0
- #define WL18XX_SUBTYPE_VER	WLCORE_FW_VER_IGNORE
- #define WL18XX_MINOR_VER	58
- 
+Thanks,
+
+Alexis
+
 -- 
-2.30.2
+Alexis Lothoré, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
