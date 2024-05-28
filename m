@@ -1,121 +1,114 @@
-Return-Path: <linux-wireless+bounces-8192-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8193-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE9BF8D191D
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 13:06:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 564658D19E5
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 13:42:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E914F1C212D2
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 11:06:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12B9C28E159
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 11:42:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9196513C819;
-	Tue, 28 May 2024 11:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B490016C69D;
+	Tue, 28 May 2024 11:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LuhkYiuw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LCY/qlw7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB842745B
-	for <linux-wireless@vger.kernel.org>; Tue, 28 May 2024 11:06:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CCB113CABD;
+	Tue, 28 May 2024 11:42:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716894383; cv=none; b=X+GnfDbaz3vD3q/Ly37pgbYO45TfMFTYmGxZ24IWH3/S8PtWxxgQOL39zjIiZLVnGMwqMBdjOx/cs2u0/nUitNWaKaIQA48gPRRItX95A6j6cwCpi1+kVjaw74OzY1KbnjeQ3M0veU22Hpk5Hd4PocHxN9VAstVhcoK1MDTSJ8k=
+	t=1716896553; cv=none; b=VZVXreWjLi54f6s+NO8rwwT5ZOvLWjC04ePGQzc/H3qjadlWM1v6WRTmhLecIxTNk+lsidZD0UwSOK9ELnq8tHNz7/eTu5EZJzbWs2N2xDkSW6ORCOvcGUdkF2AGTBUoZoi1WbCN+u+puE/vge3XCIKfI9+rxWFeJOdRxa5+PKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716894383; c=relaxed/simple;
-	bh=OFv/XQ7TNpRWDLL7BFsEL4AhJkfJ4AV+GjTSjS5J4hQ=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=cRxVP2CIGeJ9ll17jBnnHpEYLaNuGM7g1A1OpwHiF8WPwnpPjIp0cs14Dno5ABcjZCt1GFxHpc+HYHAfxUO3sJ4X71PUOKrE04hSEKS4gHX1d2asjtHWLm0otLADzaTZNkgH8zepmkr5CszzSjhFsxWWFZLCo6BrlPMosRriovk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LuhkYiuw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B33DC3277B;
-	Tue, 28 May 2024 11:06:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716894383;
-	bh=OFv/XQ7TNpRWDLL7BFsEL4AhJkfJ4AV+GjTSjS5J4hQ=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=LuhkYiuwfZIhwJ7aNOWXnj123F88a3WBjc2t4h5ygqe/3cUwlZt6nLVZo/xhtOQkR
-	 +2bP3WvbicsumVeCdGwTt7Nj+WRjRRIBWzLNTUBZqjNOVU5ss0NHSyCU8aZrbhZKCP
-	 E+cnvGzFCDE3NTnBC98u9FN640clFKmWnT1XWqImO4lZzDP8LUArN7MpAyhl3O9VCN
-	 vbsk7vVJ1o28dAB4+tdAIL8tHHrvx+aUOQKRJXb2Rkf4XLmJ74QEWS+YBbVEzORGz2
-	 +cwhnpuxVEakZUdHDSOrhl7K1cw0sY30xyadZXiHd8TZ8e2157sxU7/QwN/Er4K+E7
-	 hmZzqMxUAdVuw==
-From: Kalle Valo <kvalo@kernel.org>
-To: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
-Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v2 5/5] wifi: ath12k: Dump additional Tx PDEV HTT stats
-References: <20240510050806.514126-1-quic_rgnanase@quicinc.com>
-	<20240510050806.514126-6-quic_rgnanase@quicinc.com>
-	<87le43d26u.fsf@kernel.org>
-	<024e2594-309a-4549-9c69-d527717c5dd4@quicinc.com>
-Date: Tue, 28 May 2024 14:06:20 +0300
-In-Reply-To: <024e2594-309a-4549-9c69-d527717c5dd4@quicinc.com> (Ramya
-	Gnanasekar's message of "Mon, 27 May 2024 15:08:40 +0530")
-Message-ID: <87r0dm6vrn.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1716896553; c=relaxed/simple;
+	bh=sGJmrEh9auOiE3A4aIx6z98vnSFWMxMsIKzLamdhd6c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YGZfe3S+lgUlbFIIKVZ7qLZIiwEcUjPBFrI3UpWTyMtGyacMgWy7c1oxKHKCAJ4uk5fQBRnardtqWsbk4/WMdaLW2bM8itPE92PD8I5HIcW69x/VZv7tGTEkk+R4LnzFUI6zETTjs6YanRWnZAK/nV7ykCCtRrTTrecOHDuSyIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LCY/qlw7; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1f48b825d8cso4990315ad.2;
+        Tue, 28 May 2024 04:42:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716896551; x=1717501351; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JnEXNXS7Fuo888+4R+iNANBlrnAQM4YxC3FEnPxAUGg=;
+        b=LCY/qlw7ensCFFUOIfl6tF9w5Mguqoj8jcF3apHbHyWyCovwVa9Gjacb2cXlnUuxsA
+         f8PDTKGIDFQwWRs8hmMFdvrvy7ifnvd90rXvu7gcTtlmNmA65qAXtVzsKNTjtpLyxW01
+         yq0n6bH+561R1MR5y9n/033XxzIOhyrfLRmqkzZXtEF5iljqKbl7mqju7W+X3zk1nxas
+         ilg7ORFVcUCXjzJvxixLLVcV58UeBtFo7c8s7KjBUmWSze8fPT8YegmEM0KHnJ3ZPnoC
+         UG3InbYWYZRdAfXiNCkCXcr7dhKdNLGTucDaSAFcKCyRUwgLnX0Yxkis4sHdIiIZzXf/
+         /pcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716896551; x=1717501351;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JnEXNXS7Fuo888+4R+iNANBlrnAQM4YxC3FEnPxAUGg=;
+        b=YLyCLIvbwPudllK+K2Np7N5B9+gUQnLb8JiDAtani/V5AHu0ad58qxx7zB9BX2nn3x
+         y8oz0+ShMqPBpSu9e1Q2QGZuCHLetCRkqWwI8EiXRy00HJFFzFfxjpHcatxDXZIvA9RC
+         5AWJWk2pnRXEY5bUmAhZzFhMn5UEXgXIKNUkWd7F+FBLDjDQ5sLXMBbEbpnXQAKvpNiv
+         xp+EVR+B0CMBT2YGf8PClQmaGp0oZsuJT70u2uk+bmjokra63KwgIxWdUPSQYZ/DaSkF
+         oLjKm7IwlZ0rqAGBDAt1I4ySi0jZcrvSUkv3wsG8fFUle08TWJyvth8ra8h03a6Ag+BG
+         xZPg==
+X-Forwarded-Encrypted: i=1; AJvYcCX1dMmma/2/Efqhm+m4GwLwYDKVVZt+SfgaCw5dCvezwdykfdCZFY/Z9uy6of1uYyiks2C5jMGJQwc4kGb2Akkq1Fgk7UhV9OiYI4/F
+X-Gm-Message-State: AOJu0Ywa7z04NgsSZagk+E8RYrcF7ml62GzdKAvwC6msa72VqPF8C6Cz
+	/Ld9y2KeJsBBJRkCWr5bb+M+sJP5II/OvVBOxjmCjyakjMBW9f3L
+X-Google-Smtp-Source: AGHT+IGO5L3Fa32QU5l+BrSfABCdODP/2O1IBTw/BZxrL/qzg2y4CjJobhzCA/43uv5Ek01jZL0Qzw==
+X-Received: by 2002:a17:903:1d0:b0:1f4:962f:633e with SMTP id d9443c01a7336-1f4962f6542mr71297945ad.12.1716896550607;
+        Tue, 28 May 2024 04:42:30 -0700 (PDT)
+Received: from [192.168.1.164] (h69-130-12-20.bendor.broadband.dynamic.tds.net. [69.130.12.20])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f44c75debfsm78387435ad.14.2024.05.28.04.42.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 May 2024 04:42:30 -0700 (PDT)
+Message-ID: <ffd7a57f-8cb9-4f9a-b830-d4659a4de520@gmail.com>
+Date: Tue, 28 May 2024 04:42:29 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: ath10k_pci 0000:3a:00.0: Could not init core: -110
+To: Paul Menzel <pmenzel@molgen.mpg.de>, Kalle Valo <kvalo@kernel.org>,
+ Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>
+References: <0c544b16-5c0d-4687-9f96-8ff1f3269f79@molgen.mpg.de>
+ <e1bc0bb8-a66e-4e03-bc22-3dc506b6fb59@quicinc.com>
+ <87sey38vte.fsf@kernel.org>
+ <96828117-2cf8-4a34-a8e6-78ace96b32d3@molgen.mpg.de>
+Content-Language: en-US
+From: James Prestwood <prestwoj@gmail.com>
+In-Reply-To: <96828117-2cf8-4a34-a8e6-78ace96b32d3@molgen.mpg.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Ramya Gnanasekar <quic_rgnanase@quicinc.com> writes:
+Hi Paul,
 
->>> +static inline void
->>> +ath12k_htt_print_tx_pdev_mu_ppdu_dist_stats_tlv(const void *tag_buf,
->>> +						struct debug_htt_stats_req *stats_req)
->>> +{
->>> + const struct ath12k_htt_tx_pdev_mu_ppdu_dist_stats_tlv
->>> *htt_stats_buf = tag_buf;
->>> +	char *mode;
->>> +	u8 j, hw_mode, i, str_buf_len;
->>> +	u8 *buf = stats_req->buf;
->>> +	u32 len = stats_req->buf_len;
->>> +	u32 buf_len = ATH12K_HTT_STATS_BUF_SIZE;
->>> +	u32 stats_value;
->>> +	u8 max_ppdu = ATH12K_HTT_STATS_MAX_NUM_MU_PPDU_PER_BURST;
->>> +	u8 max_sched = ATH12K_HTT_STATS_MAX_NUM_SCHED_STATUS;
->>> +	char str_buf[ATH12K_HTT_MAX_STRING_LEN];
->>> +
->>> +	hw_mode = le32_to_cpu(htt_stats_buf->hw_mode);
->>> +
->>> +	switch (hw_mode) {
->>> +	case ATH12K_HTT_STATS_HWMODE_AC:
->>> +		len += scnprintf(buf + len, buf_len - len,
->>> +				 "HTT_TX_PDEV_MU_PPDU_DISTRIBUTION_STATS:\n");
->>> +		mode = "ac";
->>> +		break;
->>> +	case ATH12K_HTT_STATS_HWMODE_AX:
->>> +		mode = "ax";
->>> +		break;
->>> +	case ATH12K_HTT_STATS_HWMODE_BE:
->>> +		mode = "be";
->>> +		break;
->>> +	default:
->>> +		return;
->>> +	}
->> 
->> Why are we not adding "HTT_TX_PDEV_MU_PPDU_DISTRIBUTION_STATS:\n" with
->> ax and be modes?
->> 
-> Sorry for the delayed response. I was on OoO for a week.
+> Thank you. I haven’t found out yet, how to reproduce this. I’ll keep 
+> an eye on it.
+>
+This seems like the original bug I reported here:
 
-No worries.
+https://lore.kernel.org/linux-wireless/304ce305-fbe6-420e-ac2a-d61ae5e6ca1a@gmail.com/
 
-> We will receive this TLV for each hw modes. Since
-> "HTT_TX_PDEV_MU_PPDU_DISTRIBUTION_STATS:\n" is header and it would be
-> suffice to print it once, hence added it inside hw mode ac which will be
-> the first hw mode integrated inside the TLV.
+Note its not specific to power save which I originally thought, but you 
+can reproduce it somewhat easily (at least I could) by simply 
+adding/removing the wlan interface in a loop. IIRC even just ifup/ifdown 
+would eventually trigger it.
 
-I would have expected that we print that outside of
-ath12k_htt_print_tx_pdev_mu_ppdu_dist_stats_tlv(), before the function
-is called at all.
+But so far the patch Baochen submitted completely resolved the problem.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Thanks,
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+James
+
 
