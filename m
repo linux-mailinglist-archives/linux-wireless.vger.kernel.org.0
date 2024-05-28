@@ -1,34 +1,34 @@
-Return-Path: <linux-wireless+bounces-8176-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8177-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C0BE8D170F
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 11:18:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54AFA8D1711
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 11:18:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4134B1F213AF
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 09:18:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F59F1C22E97
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 09:18:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E02213D8A5;
-	Tue, 28 May 2024 09:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 032FC13D88B;
+	Tue, 28 May 2024 09:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="J7mujtiV"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="xd/2TId0"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D737617E8F3;
-	Tue, 28 May 2024 09:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C531DA5F;
+	Tue, 28 May 2024 09:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716887878; cv=none; b=VpCTTPudTMEHQnrHn6MvkgigBi/kLtlqn28gil/xYmMmrwo1jeEpdG6955HHH0tcZqDoi4UGvpMXnSPcVXsDhXWmbAvfwozAUvNXMtJX1OOzRPpwo4yEwyAFDRfnX2Ovky0w6RmjCmLngU4VA69IPoYNw9gSj1R/gF+cW+G/rS4=
+	t=1716887882; cv=none; b=BKCLlyNfUHJGRREu5iap0dcApo0QUhrxI9P2Ty7eElhBMRtoWPxV7sMJg3kQicFo4oCkTr46CPzsrJyH7viMWoaZwp0I0ZQ5bo0veW5uBnnboMD/rHwYEUPkgOzkPYZLRqwZ2CbprflywSTBzz/um/yF10A65g9rbr5o+CsTdKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716887878; c=relaxed/simple;
-	bh=NBVtuUL21VTqpumFWGrktrwmTrAumjJzvLFNX8RXO1M=;
+	s=arc-20240116; t=1716887882; c=relaxed/simple;
+	bh=LwXrmwTw34TzKIJXUTrMzBXzUMAcfJpcVULiuNUyxZ8=;
 	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=FtxuDTi3N/QhzNiK3+i5k2P3QNgkQ4RDbNwfuOBNvIn9/pbG0yeHQ3cNmIcuk8ftzyUZ8ocv73RHTd5a5kC9GbBce5gy7u8OkCsz3gJkU2kG6lIu4vZYxRWiAe11xhOLLixv0sBE/g66t3Qz+7mBcxE5p0O4whsAG2L0q9wZTWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=J7mujtiV; arc=none smtp.client-ip=78.32.30.218
+	 Content-Disposition:Content-Type:Message-Id:Date; b=iiaeZpPC7lvJZTIIqaCBv1/pPQd9+/pLokjLhAUHB47mb+RcO48WKxS4LgCh+k3JlBJDVNt7DExTGMxDVkE/qg3Z0+tEEiTwOQwYeCoU34Y7gwrKV68bFP1COfKY+jovdO3drOO9zV+QfNlAuQMucGUFfG1Tcn6nsD+TXzkxa8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=xd/2TId0; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -37,21 +37,21 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=PfGnzg4p0KPeEdVtxHFMLkm7NDRotPoeUjFEFun08h8=; b=J7mujtiVpZoR+55wIVq4Am1X3F
-	2UNPARm/w4386spkel+5aGZfWeRWVoCZm7fSrgOYiT71oV7mZ5vCKsQ5Ztcy9YwUsuKoWGAtsk5Y9
-	FrFmRYoRC9mYeO56dTT2pKabd4sZTFsgEhNvKYzz2aAshEE9R2fdDID8BMfXoAk5Xh7TRk10KBMIM
-	KLg/COqYC4BU8XPlEZ1han+VqdQObvYWaXuBOOwJvZtEgdL5LDCJLouecWX7EX5Nl1v2sfem/2ida
-	5mwNcuxbSlJncL4hb7Y/EVxQ4qD9KUPQV4QJIxBQ1j/DKD5xChshoXpwG+14ncCngyP5tQEMD62Ni
-	JVpKbZGQ==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:51426 helo=rmk-PC.armlinux.org.uk)
+	bh=qvnXOqeSbN57VD1xQ/WachONgqYyaHMsTEDVjptCkv4=; b=xd/2TId0MrNuDId8S2fH7u3Zar
+	koEvIXkcXRNJx7VQfzkI0Kxg4RqEGCRDB15GiOSBe4n5gvR3RSduFyXecoo2aLlmGx7lddOz1vJGR
+	fP+zyjtvyEjtiWP23NJn1FAIa5wsXmvEkHHwkkw068jJXkpu+pdXnXobwrFzrBGPiwxSV4VWfu0WC
+	v4RlYeKq/YUqI/dg6Ti8gm3WEj7ex0Mq0akHXSyQnG0O82xoJE4v9ROeAiZbQKak8zs5zdLOtPiK9
+	BsUTpufs10mcUGUKNhYtVfmEUnIA5MObLZl5w/Sy0ph97xCpbuFbsNj3vT3PgWQOX97Oc572KnqRB
+	3zK4yeCw==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:51436 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <rmk@armlinux.org.uk>)
-	id 1sBsxp-0004Xq-2K;
-	Tue, 28 May 2024 10:17:49 +0100
+	id 1sBsxu-0004Xz-2m;
+	Tue, 28 May 2024 10:17:54 +0100
 Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
 	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1sBsxs-00E8vc-DD; Tue, 28 May 2024 10:17:52 +0100
+	id 1sBsxx-00E8vi-Gf; Tue, 28 May 2024 10:17:57 +0100
 In-Reply-To: <ZlWhH4HleGILuUtN@shell.armlinux.org.uk>
 References: <ZlWhH4HleGILuUtN@shell.armlinux.org.uk>
 From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
@@ -60,8 +60,8 @@ Cc: Johannes Berg <johannes.berg@intel.com>,
 	 Michael Nemanov <michael.nemanov@ti.com>,
 	 linux-kernel@vger.kernel.org,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH wireless-next 3/8] wifi: wlcore: improve code in
- wlcore_fw_status()
+Subject: [PATCH wireless-next 4/8] wifi: wlcore: pass "status" to
+ wlcore_hw_convert_fw_status()
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -71,46 +71,33 @@ MIME-Version: 1.0
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1sBsxs-00E8vc-DD@rmk-PC.armlinux.org.uk>
+Message-Id: <E1sBsxx-00E8vi-Gf@rmk-PC.armlinux.org.uk>
 Sender: Russell King <rmk@armlinux.org.uk>
-Date: Tue, 28 May 2024 10:17:52 +0100
+Date: Tue, 28 May 2024 10:17:57 +0100
 
-Referring to status->counters.tx_lnk_free_pkts[i] multiple times leads
-to less efficient code. Cache this value in a local variable. This
-also makes the code clearer.
+wlcore_fw_status() is passed a pointer to the struct wl_fw_status to
+decode the status into, which is always wl->fw_status. Rather than
+referencing wl->fw_status within wlcore_fw_status(), use the supplied
+argument so that we access this member in a consistent manner.
 
 Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- drivers/net/wireless/ti/wlcore/main.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ti/wlcore/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
-index ef12169f8044..a98b26dc3cb8 100644
+index a98b26dc3cb8..3defe49c5120 100644
 --- a/drivers/net/wireless/ti/wlcore/main.c
 +++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -412,18 +412,18 @@ static int wlcore_fw_status(struct wl1271 *wl, struct wl_fw_status *status)
+@@ -392,7 +392,7 @@ static int wlcore_fw_status(struct wl1271 *wl, struct wl_fw_status *status)
+ 	if (ret < 0)
+ 		return ret;
  
+-	wlcore_hw_convert_fw_status(wl, wl->raw_fw_status, wl->fw_status);
++	wlcore_hw_convert_fw_status(wl, wl->raw_fw_status, status);
  
- 	for_each_set_bit(i, wl->links_map, wl->num_links) {
--		u8 diff;
-+		u8 diff, tx_lnk_free_pkts;
- 		lnk = &wl->links[i];
- 
- 		/* prevent wrap-around in freed-packets counter */
--		diff = (status->counters.tx_lnk_free_pkts[i] -
--		       lnk->prev_freed_pkts) & 0xff;
-+		tx_lnk_free_pkts = status->counters.tx_lnk_free_pkts[i];
-+		diff = (tx_lnk_free_pkts - lnk->prev_freed_pkts) & 0xff;
- 
- 		if (diff == 0)
- 			continue;
- 
- 		lnk->allocated_pkts -= diff;
--		lnk->prev_freed_pkts = status->counters.tx_lnk_free_pkts[i];
-+		lnk->prev_freed_pkts = tx_lnk_free_pkts;
- 
- 		/* accumulate the prev_freed_pkts counter */
- 		lnk->total_freed_pkts += diff;
+ 	wl1271_debug(DEBUG_IRQ, "intr: 0x%x (fw_rx_counter = %d, "
+ 		     "drv_rx_counter = %d, tx_results_counter = %d)",
 -- 
 2.30.2
 
