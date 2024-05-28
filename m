@@ -1,101 +1,127 @@
-Return-Path: <linux-wireless+bounces-8202-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8203-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30AF98D1D56
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 15:46:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11F008D1DBC
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 15:57:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0EF11F2360C
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 13:46:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBD8F1F23F62
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 13:57:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87A1F16F0F6;
-	Tue, 28 May 2024 13:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B98891DFEB;
+	Tue, 28 May 2024 13:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jIIXfed2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a+qJ7OLG"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55AFF11187;
-	Tue, 28 May 2024 13:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9461816DEC7
+	for <linux-wireless@vger.kernel.org>; Tue, 28 May 2024 13:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716903985; cv=none; b=CIUVjG1yg8yn5da1H+L81lHrR2oHjfhuMsjGLSzy/NHJJuIWxlOo062vYiFfFceq4VeJJWTjmSjrvhywwDXmfOnRS3B6PK4BK/x3U+Vq9NR1UnuJTUhTFahBSl4atQKVFeqJJTlsVoN3883jj3o69J9TknDact8yz6N/n3gL1Dc=
+	t=1716904523; cv=none; b=uqUZHHkZezoqzR2Lskp3rGyqIhJL1QpnXnmTPO+ioC4ilQlGFQYH0QO8QM3lvrA3SZ2AtI2Cr9Mxa9epSloDTwsGjJ2b8iqwKcGS213AU43/FHeIuTZoTLo+tRX4Y+wNUSEpjZS9jFrcmaJSPyLDOZxbFF++Ovsu/shTmXrThbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716903985; c=relaxed/simple;
-	bh=Ts9yUWNKtkjmp8jkRt/lYz8+oFlaYVa9VT7q+TSy+GA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H/HfQxeOj39qfCEhlp4MeiweLMuwrSoR9sXA6fCBta4JiTC0b1s2Ty0795KtaYY52nkq5V54BH7JcWPm0DXjhAcSH0rZ2/49XSOIRc4Bggjdzz/pzkPr0v6o/8KV53Gt8JT5XJh2uYPD9uxpwFgGfaoc2Bscx9BDXrrv4bYsIXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jIIXfed2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7EA6C3277B;
-	Tue, 28 May 2024 13:46:24 +0000 (UTC)
+	s=arc-20240116; t=1716904523; c=relaxed/simple;
+	bh=J1mW5ycXKOE6GEGuTYzYdR2QfsgfqB1HyPbDjPgL1b0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FeV9Gf+pxWBc0ia4ZLyNL8AuLGRGNki1G5z2FTbKz8mD+2+aYH6wvm3BT6lmcAb5o6w8hFGzFQm+tiPoDzjAotyrSXJBo3VD5+NymSZ2VxqMmJ/UerobYZRRgadN+QanbwmREJIxBzstGtguZUM1T35CrTSJYzXEjKh9bKQW6K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a+qJ7OLG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED34C32786
+	for <linux-wireless@vger.kernel.org>; Tue, 28 May 2024 13:55:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716903984;
-	bh=Ts9yUWNKtkjmp8jkRt/lYz8+oFlaYVa9VT7q+TSy+GA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=jIIXfed2H9nZ3neZm7Uy5Y4sQ5Kij55dKAmJaqx4068TDpoLN2N9onFvTKo7AV51p
-	 t4BfzcZqr+fmT3b0D+o41yznt/cIcfvJPGZxG6aBMdFfxvS76mP9FdFA3/0lvQpv+Z
-	 vC28fE2X6+8jVIfzkCjJk780MmrUWUzvKVSnvJGo+abTi7Adna192KwVeg5pROLzzq
-	 BMgbafBsQj4BT4/LJj/O/NduHqm5lZupm0As1xch35eClyUEiHKwv33/BKYqOa74Vl
-	 2e7LapBvTLYw6lOqvJP3Wtv2vVkEblQ35Wems/zYBv6W1oPStgh/G54XOS9N2Q/G4L
-	 AxONyfICITszA==
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Kalle Valo <kvalo@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	ath11k@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] dt-bindings: net: wireless: ath11k: Drop "qcom,ipq8074-wcss-pil" from example
-Date: Tue, 28 May 2024 08:46:09 -0500
-Message-ID: <20240528134610.4075204-1-robh@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	s=k20201202; t=1716904523;
+	bh=J1mW5ycXKOE6GEGuTYzYdR2QfsgfqB1HyPbDjPgL1b0=;
+	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
+	b=a+qJ7OLGeq9M8TB0BrrLzqKbeWdlX8G6SPY+hVtd7iTSzPFCQ9LAx34LwYrpYbwNh
+	 oHBY8r2xAqNfH7IPRjlMzVbpZNmlI/XFiQtqRlpuKTTl40CfXohc+Tfrk4rwQr75iz
+	 JNrj1XQ6tGci0fN70qgQcM6T3HBdDlqTrfgj6u9IW8RV9e/aoyUOwNIpTqV7pPJcmx
+	 qgCfQFKIMaNnOz4orIoq98j0s284oiPtUT0sGOxYRpq+xxnXyVuwSvy0zmfvYtmcue
+	 eVbTcHN7p1XK9yoTJqN+KpAeyaFvigUq+EEX5zA1FknNgpSmk0dxnArF4GmBvZJr5p
+	 kWc7nJrRZ217w==
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2e95a1f9c53so10687151fa.0
+        for <linux-wireless@vger.kernel.org>; Tue, 28 May 2024 06:55:23 -0700 (PDT)
+X-Gm-Message-State: AOJu0YycO6C8vDucayVQxpRYRSQFyN2jXnK4BVMwGpo5xxflPkZHrpLm
+	jroRbgkKcD4gfelXy1vZLyfSgXbp9jJz8ZMhIA7nNM/O+TQTO7cxi0QYuFIFxUl4ks3Froy2Fj/
+	r5Nv9HeX1FZ4vfpUZPHwEzq+G9bw=
+X-Google-Smtp-Source: AGHT+IEjHFv8zQHfB9GSG+wWe2e2/eN+jUfyeLzeHKoAPa1YTJbaz7btyqhL8Sd5iBvjCBX0kKj6Vhj7AjwwNJ4Ayrs=
+X-Received: by 2002:a2e:a289:0:b0:2e4:7996:f9f0 with SMTP id
+ 38308e7fff4ca-2e95b0c0f7dmr70366331fa.17.1716904521470; Tue, 28 May 2024
+ 06:55:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240522062835.69628-1-pkshih@realtek.com> <20240522062946.69832-1-pkshih@realtek.com>
+In-Reply-To: <20240522062946.69832-1-pkshih@realtek.com>
+Reply-To: wens@kernel.org
+From: Chen-Yu Tsai <wens@kernel.org>
+Date: Tue, 28 May 2024 21:55:09 +0800
+X-Gmail-Original-Message-ID: <CAGb2v65zyPyeE+=hJSPEVLmsSOHimMK2vWVxS5kQ6FzRrWTMYw@mail.gmail.com>
+Message-ID: <CAGb2v65zyPyeE+=hJSPEVLmsSOHimMK2vWVxS5kQ6FzRrWTMYw@mail.gmail.com>
+Subject: Re: [PATCH 4/4] wireless-regdb: Update regulatory info for Thailand
+ (TH) on 6GHz
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Convention for examples is to only show what's covered by the binding,
-so drop the provider "qcom,ipq8074-wcss-pil". It is also not documented
-by a schema which caused a warning.
+On Wed, May 22, 2024 at 2:30=E2=80=AFPM Ping-Ke Shih <pkshih@realtek.com> w=
+rote:
+>
+> The Broadcasting Commission Television business and the National
+> Telecommunications Commission announced Technical standards for
+> telecommunications equipment and equipment for radiocommunication equipme=
+nt
+> that uses the frequency 5.925 - 6.425 GHz [2], which section 2.1 describe=
+s
+> e.i.r.p. (Equivalent Isotropically Radiated Power) is 250mW and 25mW for
+> indoor and indoor/outdoor respectively.
+>
+> [1] https://ratchakitcha.soc.go.th/documents/140D100S0000000004000.pdf
+> [2] https://ratchakitcha.soc.go.th/documents/140D100S0000000004200.pdf
+> [3] https://ratchakitcha.soc.go.th/documents/140D100S0000000004300.pdf
+>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> ---
+>  db.txt | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/db.txt b/db.txt
+> index 022ecb3719b6..c7008e23b7ca 100644
+> --- a/db.txt
+> +++ b/db.txt
+> @@ -1702,12 +1702,17 @@ country TG: DFS-ETSI
+>         (5250 - 5330 @ 40), (20), DFS
+>         (5490 - 5710 @ 40), (27), DFS
+>
+> +# Source:
+> +# https://ratchakitcha.soc.go.th/documents/140D100S0000000004000.pdf
+> +# https://ratchakitcha.soc.go.th/documents/140D100S0000000004200.pdf
+> +# https://ratchakitcha.soc.go.th/documents/140D100S0000000004300.pdf
+>  country TH: DFS-FCC
+>         (2402 - 2482 @ 40), (20)
+>         (5170 - 5250 @ 80), (17), AUTO-BW
+>         (5250 - 5330 @ 80), (24), DFS, AUTO-BW
+>         (5490 - 5730 @ 160), (24), DFS
+>         (5735 - 5835 @ 80), (30)
+> +       (5925 - 6425 @ 320), (25 mW)
 
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
----
- .../devicetree/bindings/net/wireless/qcom,ath11k.yaml    | 9 ---------
- 1 file changed, 9 deletions(-)
+Other entries with different power limits for indoor and outdoor usage
+seem to favor higher power for indoor-only usage. Any reason to go the
+other way?
 
-diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
-index a2d55bf4c7a5..ff5763dc66a8 100644
---- a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
-+++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k.yaml
-@@ -265,15 +265,6 @@ allOf:
- 
- examples:
-   - |
--
--    q6v5_wcss: remoteproc@cd00000 {
--        compatible = "qcom,ipq8074-wcss-pil";
--        reg = <0xcd00000 0x4040>,
--              <0x4ab000 0x20>;
--        reg-names = "qdsp6",
--                    "rmb";
--    };
--
-     wifi0: wifi@c000000 {
-         compatible = "qcom,ipq8074-wifi";
-         reg = <0xc000000 0x2000000>;
--- 
-2.43.0
 
+ChenYu
+
+>
+>  country TN: DFS-ETSI
+>         (2402 - 2482 @ 40), (20)
+> --
+> 2.25.1
+>
 
