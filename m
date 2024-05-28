@@ -1,181 +1,205 @@
-Return-Path: <linux-wireless+bounces-8156-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8160-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50C388D13D3
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 07:22:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9089F8D147E
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 08:36:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 729581C20D87
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 05:22:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48399283AA3
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 06:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DB394BA94;
-	Tue, 28 May 2024 05:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8876BFD2;
+	Tue, 28 May 2024 06:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="II3O24pd"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="pWusYMWT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34994AEDF;
-	Tue, 28 May 2024 05:22:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3780254276
+	for <linux-wireless@vger.kernel.org>; Tue, 28 May 2024 06:36:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716873757; cv=none; b=JndqCVbtOW2nv+8cZZCCxCqjiS9GFLSPV6szJUgIxZ5zVLsqt0RGbZpEIxy1IN3W+DNffaWKErkgxqqonFriAgBOP0MulVMeDo4bPDiXL30PX/+8EXn7Ugp65RDFj11FAZe01cOdw0GeJdW9/RN2jJOa8Au2Ay/t/Q9MD7nTePc=
+	t=1716878174; cv=none; b=AYW102lm12eALutTmF+eoP0iJfCxsTTRyeO7VDsZo8U2C3BbrQq8VOCNN9PaWAJ7jsFoe0T0zd62oWe92c5qLJgHJEZoYyGGuGPlfA4W345PgLXzm+nwd2Lss3yVm+YeNjED1ISBGup16KLWmThJjWtWxk2tdvv77eXKwz1nMBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716873757; c=relaxed/simple;
-	bh=7ERKas/OkCdasWCLOQ9A0s9OZOng3YFWI1DUXAB5Hwc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=l8BIXB76jLN+YonrhqWRVDXEKcargclZb5RWYOBMIGqFeV60rIaX3DVc3fZj3KdUC610c2qxYgDC8OypNGfNJ4ZUy1UlaXyz78+Gzep1fuBBhmsWN7xvzi5T9pSUs3vQV/db+qy+xV2Y1zg8XWw62oAY7uwCzAj2Bo3alakhjm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=II3O24pd; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=h2WKMvgwAaogvoHjA4LWCMWXhYlg8Zv23ou9ksyPtbo=;
-	t=1716873755; x=1717305755; b=II3O24pdoi42K512Ax6StNNB6pZGKvZIbv7GmjYvOljd2RZ
-	xbW6KqFv9nnVQDauERtJei5qNpX+X5fw1PncMtmu0vfmdoLbmIg0AgjEYyx8cvxNmjTtiAnAs89dk
-	O6P5vApgA21pcmLyTmi0IJPJE7pCp82Bi5PxI5xjXrWcxOHcrgf2moKKf9L3O7iWWUnVqnRQuQPaw
-	TwVakVnmKmuLHEh9T6wpkT/mSKcFJkkiQe+Deo/RjAivjGeQj8Y3s8lfDzGGOqDwu2nI+xARF9gjj
-	5+h7PqwDLnOHPWD7E9/XGtO6JVzr3qIZjIBBVCdDWWSkXiHqfpWNB8FOxjP56fZQ==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1sBpI7-00087e-MZ; Tue, 28 May 2024 07:22:31 +0200
-Message-ID: <b3d8a378-346d-4dd8-9af8-1529a4484184@leemhuis.info>
-Date: Tue, 28 May 2024 07:22:31 +0200
+	s=arc-20240116; t=1716878174; c=relaxed/simple;
+	bh=mhjxcVoTy9iNVFYxkg0IzftnYiV885lRAjkrZem8Scc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=A9wvEXrf7g7CDybpraoFHHFLLwnSI3CVkqWyZ6zP2yeq19/IK2qTOq9xxMzZ7HytDHBkC/6S9gwKFPeAv6xD1kdz8qShqSMqjnMHl0jYIMYyqxhaLWRn+9HJl6QsLQ+F33AFknmyVSyE0sg3/c5O2e8M30JfubXE3NwTXJETnaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=pWusYMWT; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44S0TIT9019859;
+	Tue, 28 May 2024 06:36:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=Mo/Z46WTuECJsHblq9BFHsnx7t0Todcz7Nu
+	7ObxuXXs=; b=pWusYMWTKkXQ7ykHKq6NmC2Winz2WLctMtz492b8faw9DVPCNSd
+	r/vShFOkIjDu7XWiSLekzaya9czsSKY1xMUolTJzaxm+tuykokHU9/HobQqgyLhP
+	Ku5SVUnaEAvf+LIrbvOYo/VaxZlI6wQ58zOnd+hwAn2mn33l+R6ra/nQh4uLXs7z
+	dy13ItcMeRIGbCZRNWNWKXLvkbXrvtfON0Cx8D7xb8D++VaL9WiEPnqOLCeabv4Y
+	f5dwfYW+2RT+YytzOW+cYa3ZI9miNFfRq0LLGrHPB0M9DbHN38HncpWnLuaLkDne
+	F3JdDjBebC1OtskW20QzNV7MZqVwzUxT4AQ==
+Received: from apblrppmta02.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yba0qd8wu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 May 2024 06:36:02 +0000 (GMT)
+Received: from pps.filterd (APBLRPPMTA02.qualcomm.com [127.0.0.1])
+	by APBLRPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 44S6ZvJi012665;
+	Tue, 28 May 2024 06:35:57 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 3yb92kd5wn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 May 2024 06:35:57 +0000
+Received: from APBLRPPMTA02.qualcomm.com (APBLRPPMTA02.qualcomm.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44S6ZvwB012660;
+	Tue, 28 May 2024 06:35:57 GMT
+Received: from hu-devc-blr-u22-a.qualcomm.com (hu-hprem-blr.qualcomm.com [10.190.108.75])
+	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 44S6ZvTf012658
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 May 2024 06:35:57 +0000
+Received: by hu-devc-blr-u22-a.qualcomm.com (Postfix, from userid 4146166)
+	id 5438C4114D; Tue, 28 May 2024 12:05:56 +0530 (+0530)
+From: Harshitha Prem <quic_hprem@quicinc.com>
+To: ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, Harshitha Prem <quic_hprem@quicinc.com>
+Subject: [PATCH v7 0/8] wifi: ath12k: Introduce device group abstraction
+Date: Tue, 28 May 2024 12:05:39 +0530
+Message-Id: <20240528063547.1400700-1-quic_hprem@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION][BISECTED] wifi: RTL8821CE does not work in monitor
- mode
-To: Christian Heusel <christian@heusel.eu>,
- Johannes Berg <johannes.berg@intel.com>, regressions@lists.linux.dev
-Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
- Savyasaachi Vanga <savyasaachiv@gmail.com>
-References: <chwoymvpzwtbmzryrlitpwmta5j6mtndocxsyqvdyikqu63lon@gfds653hkknl>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <chwoymvpzwtbmzryrlitpwmta5j6mtndocxsyqvdyikqu63lon@gfds653hkknl>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1716873755;2b659210;
-X-HE-SMSGID: 1sBpI7-00087e-MZ
+Content-Transfer-Encoding: 8bit
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 6A3fk-FqxcEX-tE_WKO9fg80dQBckdZD
+X-Proofpoint-ORIG-GUID: 6A3fk-FqxcEX-tE_WKO9fg80dQBckdZD
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-05-28_03,2024-05-27_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ suspectscore=0 lowpriorityscore=0 impostorscore=0 clxscore=1015 mlxscore=0
+ mlxlogscore=635 malwarescore=0 spamscore=0 adultscore=0 bulkscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2405280047
 
-On 28.05.24 00:01, Christian Heusel wrote:
-> 
-> Savyasaachi reports that scanning for other stations in monitor mode
-> does not work anymore with his RTL8821CE wireless network card for linux
-> kernels after 6.8.9.
+To support multi-link operation, multiple devices with different bands say
+2 GHz or 5 GHz or 6 GHz can be combined together as a group and provide
+an abstraction to mac80211.
 
-Thx for the report. A few remarks:
+Device group abstraction - when there are multiple devices that are
+connected by any means of communication interface between them, then these
+devices can be combined together as a single group using a group id to form
+a group abstraction. In ath12k driver, this abstraction would be named as
+ath12k_hw_group (ag).
 
-Please be more specific in cases like this, as "kernels after 6.8.9" can
-mean "6.8.10+", "6.10-rc", or "6.9.y" (apparently it is the latter).
-Yes, this is nitpicking, which is why I normally would not have said
-anything -- but because you frequently report bugs it's likely in
-everybody's interest to bring this up.
+Please find below illustration of device group abstraction with two
+devices.
 
-In a case like this it would also be good if the reporter could give
-latest mainline a try, as (1) a fix might already be in there and (2)
-some developers do not care at all about bugs in stable kernels (and
-they are free to do so!). See
-https://linux-regtracking.leemhuis.info/post/frequent-reasons-why-linux-kernel-bug-reports-are-ignored/
-for details.
+                 Grouping of multiple devices (in future)
++------------------------------------------------------------------------+
+|  +-------------------------------------+       +-------------------+   |
+|  |   +-----------+ | | +-----------+   |       |   +-----------+   |   |
+|  |   | ar (2GHz) | | | | ar (5GHz) |   |       |   | ar (6GHz) |   |   |
+|  |   +-----------+ | | +-----------+   |       |   +-----------+   |   |
+|  |          ath12k_base (ab)           |       | ath12k_base (ab)  |   |
+|  |         (Dual band device)          |       |                   |   |
+|  +-------------------------------------+       +-------------------+   |
+|                 ath12k_hw_group (ag) based on group id                 |
++------------------------------------------------------------------------+
 
-And sorry, there is something else: from the dmesg it looks a lot like
-this report is from a patched vendor kernel that among others seems to
-enable features like "forced interrupt request threading"
-(https://github.com/zen-kernel/zen-kernel/wiki/Detailed-Feature-List ).
-Such changes even if small and done carefully can lead to bugs like this
-(yes, that particular feature I mentioned can be enabled through a
-kernel parameter as well, but some developers would consider this to be
-an unsupported configuration). The absolut minimum you should have done
-is to mention that; but normally you never want to use such kernels for
-reporting bugs upstream, as the problem might not be present in the
-upstream code.
+Say for example, device 1 has two radios (2 GHz and 5 GHz band) and
+device 2 has one radio (6 GHz).
 
-Ciao, Thorsten
+In existing code -
+        device 1 will have two hardware abstractions hw1 (2 GHz) and hw2
+        (5 GHz) will be registered separately to mac80211 as phy0 and phy1
+        respectively. Similarly, device 2 will register its hw (6GHz) as
+        phy2 to mac80211.
 
-> His workflow was putting the adapter in monitor mode by running
-> "airmon-ng start wlan0" and then capture the surrounding stations with
-> "airodump-ng wlan0".
-> 
-> We have bisected the issue together in the issue in the Arch Linux
-> bugtracker[0] down to the following commit:
-> 
->     0a44dfc070749 ("wifi: mac80211: simplify non-chanctx drivers")
-> 
-> Savyasaachi (in CC) offered to be available for questions and further
-> debugging in this thread and some general debugging outputs are
-> attached/below.
-> 
-> Reported-by: Savyasaachi Vanga <savyasaachiv@gmail.com>
-> Bisected-by: Christian Heusel <christian@heusel.eu>
-> 
-> Cheers,
-> Chris
-> 
-> [0]: https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/issues/54
-> 
-> ---
-> 
-> #regzbot link: https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/issues/54
-> #regzbot introduced: 0a44dfc070749
-> #regzbot title: wifi: RTL8821CE does not work in monitor mode
-> 
-> ---
-> 
-> lsusb:
-> 
-> Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
-> Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
-> Bus 003 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
-> Bus 003 Device 002: ID 0bda:c829 Realtek Semiconductor Corp. Bluetooth Radio
-> Bus 003 Device 003: ID 0c45:6739 Microdia Integrated_Webcam_FHD
-> Bus 004 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
-> 
-> lspci:
-> 
-> 00:00.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Renoir/Cezanne Root Complex
-> 00:00.2 IOMMU: Advanced Micro Devices, Inc. [AMD] Renoir/Cezanne IOMMU
-> 00:01.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Renoir PCIe Dummy Host Bridge
-> 00:01.2 PCI bridge: Advanced Micro Devices, Inc. [AMD] Renoir/Cezanne PCIe GPP Bridge
-> 00:01.3 PCI bridge: Advanced Micro Devices, Inc. [AMD] Renoir/Cezanne PCIe GPP Bridge
-> 00:02.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Renoir PCIe Dummy Host Bridge
-> 00:02.1 PCI bridge: Advanced Micro Devices, Inc. [AMD] Renoir/Cezanne PCIe GPP Bridge
-> 00:08.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Renoir PCIe Dummy Host Bridge
-> 00:08.1 PCI bridge: Advanced Micro Devices, Inc. [AMD] Renoir Internal PCIe GPP Bridge to Bus
-> 00:08.2 PCI bridge: Advanced Micro Devices, Inc. [AMD] Renoir Internal PCIe GPP Bridge to Bus
-> 00:14.0 SMBus: Advanced Micro Devices, Inc. [AMD] FCH SMBus Controller (rev 51)
-> 00:14.3 ISA bridge: Advanced Micro Devices, Inc. [AMD] FCH LPC Bridge (rev 51)
-> 00:18.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Cezanne Data Fabric; Function 0
-> 00:18.1 Host bridge: Advanced Micro Devices, Inc. [AMD] Cezanne Data Fabric; Function 1
-> 00:18.2 Host bridge: Advanced Micro Devices, Inc. [AMD] Cezanne Data Fabric; Function 2
-> 00:18.3 Host bridge: Advanced Micro Devices, Inc. [AMD] Cezanne Data Fabric; Function 3
-> 00:18.4 Host bridge: Advanced Micro Devices, Inc. [AMD] Cezanne Data Fabric; Function 4
-> 00:18.5 Host bridge: Advanced Micro Devices, Inc. [AMD] Cezanne Data Fabric; Function 5
-> 00:18.6 Host bridge: Advanced Micro Devices, Inc. [AMD] Cezanne Data Fabric; Function 6
-> 00:18.7 Host bridge: Advanced Micro Devices, Inc. [AMD] Cezanne Data Fabric; Function 7
-> 01:00.0 Non-Volatile memory controller: Micron Technology Inc 2210 NVMe SSD [Cobain] (rev 03)
-> 02:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8111/8168/8211/8411 PCI Express Gigabit Ethernet Controller (rev 15)
-> 03:00.0 Network controller: Realtek Semiconductor Co., Ltd. RTL8821CE 802.11ac PCIe Wireless Network Adapter
-> 04:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Barcelo (rev c2)
-> 04:00.1 Audio device: Advanced Micro Devices, Inc. [AMD/ATI] Renoir Radeon High Definition Audio Controller
-> 04:00.2 Encryption controller: Advanced Micro Devices, Inc. [AMD] Family 17h (Models 10h-1fh) Platform Security Processor
-> 04:00.3 USB controller: Advanced Micro Devices, Inc. [AMD] Renoir/Cezanne USB 3.1
-> 04:00.4 USB controller: Advanced Micro Devices, Inc. [AMD] Renoir/Cezanne USB 3.1
-> 04:00.5 Multimedia controller: Advanced Micro Devices, Inc. [AMD] ACP/ACP3X/ACP6x Audio Coprocessor (rev 01)
-> 04:00.6 Audio device: Advanced Micro Devices, Inc. [AMD] Family 17h/19h HD Audio Controller
-> 05:00.0 SATA controller: Advanced Micro Devices, Inc. [AMD] FCH SATA Controller [AHCI mode] (rev 81)
-> 05:00.1 SATA controller: Advanced Micro Devices, Inc. [AMD] FCH SATA Controller [AHCI mode] (rev 81)
+In future, with multi-link abstraction
+
+        combination 1 - Different group id for device1 and device 2
+                Device 1 will create a single hardware abstraction hw1
+                (2 GHz and  5 GHz) and will be registered to mac80211 as
+                phy0. similarly, device 2 will register its hardware
+                (6 GHz) to mac80211 as phy1.
+
+        combination 2 - Same group id for device1 and device 2
+                Both device details are combined together as a group, say
+                group1, with single hardware abstraction of radios 2 GHz,
+                5 GHz and 6 GHz band details and will be registered to
+                mac80211 as phy0.
+
+Add base infrastructure changes to add device grouping abstraction with
+a single device.
+
+This patch series brings the base code changes with following order:
+        1. Refactor existing code which would facilitate in introducing
+           device group abstraction.
+        2. Create a device group abstraction during device probe.
+        3. Start the device group only after QMI firmware ready event is
+           received for all the devices that are combined in the group.
+        4. Move the hardware abstractions (ath12k_hw - ah) from device
+           (ath12k_base - ab) to device group abstraction (ag) as it would
+           ease in having different combinations of group abstraction that
+           can be registered to mac80211.
+
+v7:
+   - Added linux-wireless mailer to cc.
+   - Removed Acked-by tag from "[PATCH v6 8/8]" as it has minor change.
+
+v6:
+  - Addressed smatch error seen on "[PATCH v5 8/8] wifi: ath12k: move
+    ath12k_hw from per soc to group"
+  - Rebased to ToT
+v5:
+  - on "[PATCH 8/8] wifi: ath12k: move ath12k_hw from per soc to
+    group", refactor the ath12k_mac_hw_allocate() api based on ag rather
+    than ab and update hardware abstraction array size in ath12k_hw_group
+    as ATH12K_GROUP_MAX_RADIO.
+  - Rebased to ToT
+v4:
+  - Modified the cover letter
+v3:
+  - Removed depends-on tag of "wifi: ath12k: Refactor the hardware recovery
+    procedures" as it is merged to ToT
+  - Addressed the deadlock warning seen during rmmod.
+
+v2:
+ - Rebased to ToT
+
+Karthikeyan Periyasamy (8):
+  wifi: ath12k: Refactor core start api
+  wifi: ath12k: Add helpers to get or set ath12k_hw
+  wifi: ath12k: Add ath12k_get_num_hw api
+  wifi: ath12k: Introduce QMI firmware ready flag
+  wifi: ath12k: move ATH12K_FLAG_REGISTERED flag set to mac_register api
+  wifi: ath12k: Introduce device group abstraction
+  wifi: ath12k: refactor core start based on hardware group
+  wifi: ath12k: move ath12k_hw from per device to group
+
+ drivers/net/wireless/ath/ath12k/core.c | 431 +++++++++++++++++++++----
+ drivers/net/wireless/ath/ath12k/core.h |  87 ++++-
+ drivers/net/wireless/ath/ath12k/dp.c   |  19 +-
+ drivers/net/wireless/ath/ath12k/dp.h   |   2 +-
+ drivers/net/wireless/ath/ath12k/mac.c  | 117 ++++---
+ drivers/net/wireless/ath/ath12k/mac.h  |   9 +-
+ drivers/net/wireless/ath/ath12k/pci.c  |   2 +
+ drivers/net/wireless/ath/ath12k/qmi.c  |  10 +-
+ 8 files changed, 544 insertions(+), 133 deletions(-)
+
+
+base-commit: f8320064a28242448eeb9fece08abd865ea8a226
+-- 
+2.34.1
+
 
