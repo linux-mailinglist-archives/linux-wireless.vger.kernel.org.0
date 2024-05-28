@@ -1,73 +1,74 @@
-Return-Path: <linux-wireless+bounces-8197-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8198-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA21E8D1B38
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 14:27:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36FF78D1B63
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 14:36:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49ACF1F2264A
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 12:27:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B500D1F220DC
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 12:36:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D88D36F08A;
-	Tue, 28 May 2024 12:25:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E009D16D4FC;
+	Tue, 28 May 2024 12:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dRQwfNcZ"
+	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="DMtObHrW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE7E16D4C8
-	for <linux-wireless@vger.kernel.org>; Tue, 28 May 2024 12:25:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17CFC16D4EB
+	for <linux-wireless@vger.kernel.org>; Tue, 28 May 2024 12:36:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716899145; cv=none; b=Uqca2q+H961hx9Ssw+9EOVEv/jcC+Lu5Awv0SdCUKQo4kqhL8IsHVEWHSpjfCRNtP//gQXswvXV1cie9FWBGC9XkHFwYsUEx5at4CcQB4ELpTFjlMeGwkCtVwLagJ9A3RusLe+shXVAK/xbRNqEqnWwFdN+vfyfGJG8vxnxIw8I=
+	t=1716899767; cv=none; b=AnWDNME+s6VF/b5GJB/yFi4WWN+3ldlB9eSOxvkBgGod0FdWAUDh5hfDiz72TXDZK94WPyM43Uo1WmSDj9SuufvE+3hFbnSst1Mx0chxjAzXpydRgkMtOmmRmmRiWKtt1y0YKoJX/ANWg76oQqaYldIAC5S0Edmy3GWGsCSe0VE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716899145; c=relaxed/simple;
-	bh=0flKcpmTI1kGdeZhR/8SnoUbTYOKjlKrDabA8ATdfW4=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=B68a5jP1Sf1Cw48MsB2+M5UPizJ0oNFCSectwwCuBydnROlPopU/IdJJXf7LmA0WExfntJUm7+FDSsiH9yNAc76NtW+XrXOHvHcr2n/8AKisZjKhvZ2heth2Gp2CahHTMj/ELLuNaE4+DBjiJYpPvVklqCJ2iaUHtBWcrEQT8Ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dRQwfNcZ; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a635a74e0deso15154866b.0
-        for <linux-wireless@vger.kernel.org>; Tue, 28 May 2024 05:25:43 -0700 (PDT)
+	s=arc-20240116; t=1716899767; c=relaxed/simple;
+	bh=dxo+VD6etbgWoCyr/ttW9EQDmp7oGUltI2KkYjRfzQ0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QcCOoouSYvoTy0pTCzBH7B/PWl8fxyDLOPBWQd9llfRdQmZlE5yWu8ekrfrTubr0FJh6IG5HiChYRLH/xN3J5+90pDTGvisri9/iatz0cycWoaWgHUSdXVesISIYye0mF5fsdPMV8rEkVOXTxlrkDrzNM1XTKC4lzAw5tV0aLqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=DMtObHrW; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-35508106cc2so692312f8f.2
+        for <linux-wireless@vger.kernel.org>; Tue, 28 May 2024 05:36:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716899142; x=1717503942; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=xtQTzcuwR5RIrvdVCwk6SoidJz/PMhtH2p6tuhNr0fc=;
-        b=dRQwfNcZInTPsyGDrcvtDuwc7OmE7UhoNy6LnmBEvlCEKW2KEjhGzPrDdPwBSojqyJ
-         KSbt+T6YVeSCQhLXhvjaky3shO7nvZ39Kkt89V5rLBrFtJOUXHg4tcPB8FVgHMnJWJj9
-         suSL0Vh4njlKc181X8jaWpILBd+E86USW/JP8mDyPaGOcxSbBhKvmHF72HpwBnYyGHRs
-         wkhuaxduwrTneNFQz6kpa22gXHViVXzuoJQsQiAn0039pJ37EWcu/GzRhXZDvY9lwJFV
-         lOXbfxQF9MX4xPK5Ta+Um1HOm6LvfaEjKWb2ebvJENoU+oI7Dv/qUhR1AhIOkIjM5PYI
-         VgwA==
+        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1716899763; x=1717504563; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=cKjV4fgQjqu5wh6AYtxjbKfildzmBjMlCCtP3nDdjQo=;
+        b=DMtObHrWOcYrcPSrmZ5dzAXS0ov6++6jbbvZWyUOnTOdlFXIJx183q0QTJveCoH3/4
+         GiKdHFoc5Qn9n8/iSvudwgrU693pxRjmy2KYjkrvb7DyXbbCWF0A3FsHH4XfY5t1FGSD
+         pOM/56YpMO+m/CO3dTFOvvtH+UuGYMdvZOchRESfAv8TgD3Jbgh1bVj2mFgCNZi/aQN5
+         rpuQorCQJyVaPJlq4DyWPeEbffdnIsTtoV66rfrCtTjIr8YC86hWg0QDhMgnQRz+va2q
+         IbGKbhH3hwNL7sHAzuSzHrg1aDFAC+3UgwYVK9RLydDYg0ng6zUuKr9y4yh0SpzMbR1E
+         gNnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716899142; x=1717503942;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1716899763; x=1717504563;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xtQTzcuwR5RIrvdVCwk6SoidJz/PMhtH2p6tuhNr0fc=;
-        b=pNcxfVRFk6OFi0zbgYNO16m1K76INZURl1L4OUt31t61Si5lLqIWrlu3V8rSvAfSIX
-         +lWkOpRCRpXqf7tVqeoit6SlN34uLS1FJc77EPAzgiAZJg+RodrZOBfmlzcdVLUwub8X
-         F/IB89ZfwUVa86CdUn+1n+LlFJ8l9l8co5a4+9a1l0Z63VhBsunh8fmu4tUwcGDpmzl4
-         AvaWSGmGr+ENOlHpGZUSlyVCOs9qTSDAYUuSIlHfosMb0uBm3lUR10xOr4Ot3yZkHq11
-         CsZd76Fy8wqz3oQ2LFr6adghpC+1w1xM6bhm+rgPgsylt9TqxtaPxSrSRjqzqnbDWy/4
-         MpMg==
-X-Gm-Message-State: AOJu0YzjTAz9ngTLqaAybq9u6/B+lbf3KkMHMxKt5Be3AwOHktgKCOee
-	fDsX1rYwyaa3dnRgFcS/+IMDFOLYvSAr4pwM+BwyRZjC4RjcRaJN
-X-Google-Smtp-Source: AGHT+IHcZb1M8wrO3b/kRHHxx6+hdaVw9hejqf2SjtlpE9MqISYO0sBUlGv+1KVmJyKzHdC9IUacKQ==
-X-Received: by 2002:a17:906:bca:b0:a5a:743b:20d2 with SMTP id a640c23a62f3a-a62643e2436mr731345266b.38.1716899141017;
-        Tue, 28 May 2024 05:25:41 -0700 (PDT)
-Received: from [192.168.0.50] ([79.119.240.1])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a63395fb1d0sm86524966b.89.2024.05.28.05.25.40
+        bh=cKjV4fgQjqu5wh6AYtxjbKfildzmBjMlCCtP3nDdjQo=;
+        b=ClfC2D2oddrkFkMjmKhnXaB3dBdsnEYTYn6b4rRI+mc7fj0Psx5/G+KB0AiVmyB6Ks
+         B7C1X12jAgwc2RIixsUBYM/JxeS9TqQFhl8UxvBmBf7n1vvc5b5N9qYTB11ZQBzZBK9f
+         C+G5PtqEvRb/aw62U1g21Bp4Jwo+usbGPi8jeoyP2FvtZTU95/OaRQl3UBZb0yxwkLa8
+         rlz0XxUpUH0dqZdIMoXHYcCdmM313nnqDED9SwvITuwTXjB6PRKgheRBTMNRBW4T17qu
+         wR0BU+yuNTuGEsdURJX+lS05PNcr4qhfVcPgs1GZoyWM4eH0agZ8JUlJ2fo5B8qtKNkr
+         DLYg==
+X-Forwarded-Encrypted: i=1; AJvYcCXfVBzT2vBYhI1dUgQ5WJyjLxdv7QGGtkmhiuimjV9Oel6UiR1rQXLo67YS8ZLpktUpwnVUwUvHya/qtC9yUerKB+xZ6ElAUzpJ0J23Wwk=
+X-Gm-Message-State: AOJu0Yye83x9+otkazv+2WppEV0dBEmIOPnFd2lzHLn4TyAKBekeanPb
+	XZ9XAJ734T1fKNrDiqBNQGexSbnPG659WlRMnohNoNPAzDG9uXi2ZRGYDr7j2NQ=
+X-Google-Smtp-Source: AGHT+IH/nIHnbKuaQ02BEZC+tUBPKkKNzrItqWNXK99sKCPB3sE+lmgdRWRIDZRs8kvy1AAgHOeL9w==
+X-Received: by 2002:a05:6000:248:b0:355:21f:be1f with SMTP id ffacd0b85a97d-35526c155b3mr7235867f8f.4.1716899763394;
+        Tue, 28 May 2024 05:36:03 -0700 (PDT)
+Received: from [192.168.108.81] (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35579d7d88esm11676251f8f.19.2024.05.28.05.36.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 May 2024 05:25:40 -0700 (PDT)
-Message-ID: <fdb30dac-4ab3-4182-80b2-8dc197420778@gmail.com>
-Date: Tue, 28 May 2024 15:25:39 +0300
+        Tue, 28 May 2024 05:36:03 -0700 (PDT)
+Message-ID: <74ab64e2-9bb4-4e98-9f2f-f6402ba42c08@freebox.fr>
+Date: Tue, 28 May 2024 14:36:02 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,67 +76,98 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: Re: wifi: rtw88: 8821CU hangs after some number of power-off/on
- cycles
-To: =?UTF-8?Q?Marcin_=C5=9Alusarz?= <marcin.slusarz@gmail.com>
-Cc: linux-wireless@vger.kernel.org, =?UTF-8?Q?Marcin_=C5=9Alusarz?=
- <mslusarz@renau.com>
-References: <20240527173454.459264-1-marcin.slusarz@gmail.com>
- <0f1aef25-2b91-408d-aca9-9943dc9367b3@gmail.com>
- <CA+GA0_vz7S++ttaug2kGZWyzyc-PMZoVSsiSH-sXn4uctX5V2A@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] dt-bindings: net: wireless: ath10k: add
+ qcom,no-msa-ready-indicator prop
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+ Jeff Johnson <quic_jjohnson@quicinc.com>, ath10k
+ <ath10k@lists.infradead.org>, wireless <linux-wireless@vger.kernel.org>,
+ DT <devicetree@vger.kernel.org>, MSM <linux-arm-msm@vger.kernel.org>,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Pierre-Hugues Husson <phhusson@freebox.fr>, Arnaud Vrac <avrac@freebox.fr>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>,
+ Jami Kettunen <jamipkettunen@gmail.com>,
+ Jeffrey Hugo <quic_jhugo@quicinc.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+ Alexey Minnekhanov <alexeymin@postmarketos.org>
+References: <54ac2295-36b4-49fc-9583-a10db8d9d5d6@freebox.fr>
+ <171560975908.1690511.498631481702370762.kvalo@kernel.org>
+ <3464a980-36a7-4ed2-b2dc-be8fd9091b06@freebox.fr> <87zfsa6ybl.fsf@kernel.org>
 Content-Language: en-US
-In-Reply-To: <CA+GA0_vz7S++ttaug2kGZWyzyc-PMZoVSsiSH-sXn4uctX5V2A@mail.gmail.com>
+From: Marc Gonzalez <mgonzalez@freebox.fr>
+In-Reply-To: <87zfsa6ybl.fsf@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 28/05/2024 13:42, Marcin Ślusarz wrote:
-> pon., 27 maj 2024 o 20:43 Bitterblue Smith <rtl8821cerfe2@gmail.com> napisał(a):
->>
->> On 27/05/2024 20:34, Marcin Ślusarz wrote:
->>> From: Marcin Ślusarz <mslusarz@renau.com>
->>>
->>> If I don't connect to any Wifi network, after around 10 minutes, the device
->>> hangs with endless spamming of:
->>> rtw_8821cu 1-1:1.2: rtw_usb_reg_sec: reg 0x4e0, usb write 1 fail, status: -71
->>> killing both Wifi and Bluetooth part of the device.
->>>
->>> On arm, just leaving the wifi device unconnected kills it in up to 20 minutes.
->>> If I keep restarting wpa_supplicant I can trigger it within a minute.
->>> Looping "ifconfig wlan0 down; ifconfig wlan0 up" also triggers it within a minute.
->>>
->>> On x86_64 system the only way I could trigger this was via ifconfig loop,
->>> but it took 3 hours and 20 minutes to do it.
->>>
->>> The only thing that can "fix" the device is replugging it.
->>>
->>> I found out that the reason for those hangs is a power-off+on sequence that's
->>> triggered by the above steps.
->>>
->>> Disabling power-off for that chip "fixes" the issue. The patches below
->>> implement that, but I'm not seriously proposing them for merging.
->>>
->>> Marcin Ślusarz (2):
->>>   wifi: rtw88: use RTW_FLAG_RUNNING for deciding whether to enter/leave
->>>     IPS
->>>   wifi: rtw88: disable power offs for 8821C
->>>
->>>  drivers/net/wireless/realtek/rtw88/main.c | 14 ++++++++------
->>>  drivers/net/wireless/realtek/rtw88/ps.c   |  4 ++--
->>>  2 files changed, 10 insertions(+), 8 deletions(-)
->>>
->>
->> The first patch alone doesn't fix it?
+On 28/05/2024 12:11, Kalle Valo wrote:
+
+> Marc Gonzalez writes:
 > 
-> The first patch exists only to make the second patch work.
-> Without the first one, rtw_enter_ips will perform all actions except actually
-> doing the power off, which clears the POWERON flag.
-> After that, rtw_leave_ips will happily return early success without actually
-> undoing the stuff that rtw_enter_ips did (like canceling all work_structs).
+>> On 13/05/2024 16:16, Kalle Valo wrote:
+>>
+>>> Marc Gonzalez wrote:
+>>>
+>>>> The ath10k driver waits for an "MSA_READY" indicator
+>>>> to complete initialization. If the indicator is not
+>>>> received, then the device remains unusable.
+>>>>
+>>>> cf. ath10k_qmi_driver_event_work()
+>>>>
+>>>> Several msm8998-based devices are affected by this issue.
+>>>> Oddly, it seems safe to NOT wait for the indicator, and
+>>>> proceed immediately when QMI_EVENT_SERVER_ARRIVE.
+>>>>
+>>>> Jeff Johnson wrote:
+>>>>
+>>>>   The feedback I received was "it might be ok to change all ath10k qmi
+>>>>   to skip waiting for msa_ready", and it was pointed out that ath11k
+>>>>   (and ath12k) do not wait for it.
+>>>>
+>>>>   However with so many deployed devices, "might be ok" isn't a strong
+>>>>   argument for changing the default behavior.
+>>>>
+>>>> Kalle Valo first suggested setting a bit in firmware-5.bin to trigger
+>>>> work-around in the driver. However, firmware-5.bin is parsed too late.
+>>>> So we are stuck with a DT property.
+>>>>
+>>>> Signed-off-by: Marc Gonzalez <mgonzalez@freebox.fr>
+>>>> Reviewed-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+>>>> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+>>>> Acked-by: Rob Herring (Arm) <robh@kernel.org>
+>>>> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+>>>
+>>> 2 patches applied to ath-next branch of ath.git, thanks.
+>>>
+>>> 71b6e321e302 dt-bindings: net: wireless: ath10k: add
+>>> qcom,no-msa-ready-indicator prop
+>>> 6d67d18014a8 wifi: ath10k: do not always wait for MSA_READY indicator
+>>
+>> Hello Kalle,
+>> What version of Linux will these be included in?
+>> (I don't see them in v6.10-rc1. Are they considered
+>> a new feature, rather than a fix, and thus 6.11?)
+> 
+> Yeah, these commits will go to v6.11. Because of the multiple trees
+> involved (ath-next -> wireless-next -> net-next -> linus) we need to
+> have ath.git pull request ready well before the merge window opens and
+> these commits missed the last pull request.
+> 
+> Yes, we are slow :)
 
-I see.
+My understanding of the merging process was that
 
-I wonder if it's really the chip that has a problem, or rtw88?
-Can you try your ifconfig loop with the other driver?
-https://github.com/morrownr/8821cu-20210916/
+- new features are queued for the next cycle,
+so vN+1-rc1, or vN+2-rc1 if the submission came too late (after ~rc6) in cycle N
+
+- fixes are queued for the fixes batch in the same cycle
+
+This patch series is handled like a feature rather than a fix?
+(To me, it fixed broken behavior in the FW, but I understand
+if the nature of the changes require a more prudent approach.
+Though they are disabled for everyone by default.)
+
+Regards
+
 
