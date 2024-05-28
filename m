@@ -1,218 +1,237 @@
-Return-Path: <linux-wireless+bounces-8168-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8169-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93B3A8D1638
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 10:28:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEDBF8D165F
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 10:37:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C73A1F229B3
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 08:28:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C44DBB23237
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 08:36:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9170D13C3CC;
-	Tue, 28 May 2024 08:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66A3F6EB64;
+	Tue, 28 May 2024 08:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="V3M//1NC"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="uvVmAvka"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDCC013B5B9
-	for <linux-wireless@vger.kernel.org>; Tue, 28 May 2024 08:28:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C531013C67D;
+	Tue, 28 May 2024 08:36:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716884883; cv=none; b=h4PyCv1uDU5ndF9zQQFJkLWyQqRHekxvEgX4rGrwyCsOn/vYIyYM3zGbpiYYgw1t7ATKHH76msAJp+4NFBBRVRHuZqpehET2+5XyAZg446XFz8E+ON95LFdCcIVkVw2taj8x4uL1f26vAQnKSpzl67t3prvOZbC3ywgl8p03Ejw=
+	t=1716885411; cv=none; b=pa64TPzA+BcC/LEGr5DN7ENr6kiqT6NhLwCPPb57LzUG7RUZOMc8mSkLQmuk4HiD7lSZo0I19UftLQFO5h8kJqZwtvDVpQjQFLo3bC9TqxWUGeSIFcK+jzy4GdwAzutx8Tr4keuw7zmcNnV7ngCXVwSdZ4VJkp+hywVA0MwX8bE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716884883; c=relaxed/simple;
-	bh=7q+1wmB8VVH7Q/kfmtljhZpI+QNePfmT3XJjHEeWXyI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eIzAQUZwmdaXBsvRf76GM2990uDDINDJkx2nAh3TV5xEMxaVJz9vqF/ROgp47LOyohJj8l0dMTYWXK2XhSY8fpldqhgghFYoWbF3zR/mFQUMVGrSsrQAeA0EVBccp7L0Tlsy2/C/yuGUJz6mGKKzwJnOLrpWyQIzzAWMYoYtr3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=V3M//1NC; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44RMxZMA022352;
-	Tue, 28 May 2024 08:27:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=GkDBccU+jna43xxCUW4fE+
-	BQ2WxpVck9QUzwrnWS30Y=; b=V3M//1NCMOCW39HX9nNOSHXKgbBpd7n1jkIapj
-	ogGAvqCP4umkUUcj0LBBU9VB9jft1sPMaVvpqmJEtzQ3cyO2YSUyp6y06HXjiLim
-	PUkHiABf/H4VIBPZuuV3B91oxZGabqql1r3ptW+YMWYPKKrf4st+pdAKU7vBUKSt
-	WsTy9HV9kX3hWJ1zLBu+QNyITcg5YFPfLV/PfOQ/iBOYWGsqREAJduqEZ15/iZVf
-	JzDmPUMKI7sZxNSZUbC3LgS0CckrIiEhLBMn6/Csek0A1xuVrQ+hz5eLggso1Ft1
-	yblKLJWRs79w14VB70N12QIf3hXfShe6L6sikCaMEf9dAZqA==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yba2h5gw0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 May 2024 08:27:55 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44S8Rs3D011801
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 May 2024 08:27:54 GMT
-Received: from hu-ramess-blr.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Tue, 28 May 2024 01:27:52 -0700
-From: Rameshkumar Sundaram <quic_ramess@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Rameshkumar Sundaram
-	<quic_ramess@quicinc.com>
-Subject: [PATCH] wifi: ath12k: modify remain on channel for single wiphy
-Date: Tue, 28 May 2024 13:57:39 +0530
-Message-ID: <20240528082739.1226758-1-quic_ramess@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1716885411; c=relaxed/simple;
+	bh=ZTuQx8KWX8IIRC4V1mv9m6I/bJUNiGJlReVGGo5xTPE=;
+	h=From:To:Cc:Subject:MIME-Version:Content-Disposition:Content-Type:
+	 Message-Id:Date; b=SY6Jzrj+F4LfozMYdmunr6KcIUDY8BJkizFNgXf45bx19BuSRWsRLFDYtuv/MS6oavtdqzakXMJWDPOo06w92G8PgDpkl0X9LVXI08/J8PXnlVx/IYSXOS5eB+cU73FNoa2I4yQBLd7Npa0lSzs/DtteHnSRbZSUqlzc4Ryj3cQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=uvVmAvka; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:Reply-To:Content-ID
+	:Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+	Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=ukatyUGGzQjNlOG2AgclIuThkOQwBsrQhRxKVAE/XuQ=; b=uvVmAvkaXyeNSsbacpgpHuEd+g
+	smGpxFhvxCfi8kO0lkIUNy6fKCBMWpGGm7HBZUQedHQlqqQgtsTjGLyqLjtilVd7HiPwy7sCNRK9/
+	ZFWghfI/Yha+Y36b++wfW/NkichBpG9SlFcfKKsqPFJmNbAuf2anfYPslXe0+AU/Yg6einDGIaP7y
+	aVn/NrQW49jXqMk1soKKs5YKHwP8hbbnxzMKgdEA8o9ENNTOvk+w+KvZ4aZzaTfMsaN47h5laA188
+	1FJou77ZW6LfV/TWKKTwcRTa+WDYrY9XmSGylhQMvFT6Kp2GYZ+ZcjFW2VBDDIShG3vSa8JMjjJuF
+	UFkEun3w==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:39186 helo=rmk-PC.armlinux.org.uk)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1sBsK0-0004TA-21;
+	Tue, 28 May 2024 09:36:40 +0100
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1sBsK3-00E8Uo-Ab; Tue, 28 May 2024 09:36:43 +0100
+From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	 Michael Nemanov <michael.nemanov@ti.com>,
+	 linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH wireless] wifi: wlcore: fix wlcore AP mode
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: tzsZbqj2MHW-2dbPUpt5Il-dFn7rY6mr
-X-Proofpoint-ORIG-GUID: tzsZbqj2MHW-2dbPUpt5Il-dFn7rY6mr
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-05-28_05,2024-05-27_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 adultscore=0
- malwarescore=0 priorityscore=1501 impostorscore=0 suspectscore=0
- phishscore=0 bulkscore=0 mlxscore=0 lowpriorityscore=0 spamscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2405280061
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1sBsK3-00E8Uo-Ab@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Tue, 28 May 2024 09:36:43 +0100
 
-When multiple radios are advertised as a single wiphy which
-supports various bands, vdev creation for the vif is deferred
-until channel is assigned to it.
-If a remain on channel(RoC) request is received from mac80211,
-select the corresponding radio(ar) based on channel and create
-a vdev on that radio to initiate an RoC scan.
+From: Johannes Berg <johannes.berg@intel.com>
 
-Note that on RoC completion this vdev is not deleted. If a new
-RoC/hw scan request is seen on that same vif for a different band the
-vdev will be deleted and created on the new radio supporting the
-request.
+Using wl183x devices in AP mode with various firmwares is not stable.
 
-Also if the RoC scan is requested when the vdev is in started state,
-no switching to new radio is allowed and RoC request can be accepted
-only on channels within same radio.
+The driver currently adds a station to firmware with basic rates when it
+is first known to the stack using the CMD_ADD_PEER command. Once the
+station has finished authorising, another CMD_ADD_PEER command is issued
+to update the firmware with the rates the station can use.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+However, after a random amount of time, the firmware ignores the power
+management nullfunc frames from the station, and tries to send packets
+while the station is asleep, resulting in lots of retries dropping down
+in rate due to no response. This restricts the available bandwidth.
 
-Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
+With this happening with several stations, the user visible effect is
+the latency of interactive connections increases significantly, packets
+get dropped, and in general the WiFi connections become unreliable and
+unstable.
+
+Eventually, the firmware transmit queue appears to get stuck - with
+packets and blocks allocated that never clear.
+
+TI have a couple of patches that address this, but they touch the
+mac80211 core to disable NL80211_FEATURE_FULL_AP_CLIENT_STATE for *all*
+wireless drivers, which has the effect of not adding the station to the
+stack until later when the rates are known. This is a sledge hammer
+approach to solving the problem.
+
+The solution implemented here has the same effect, but without
+impacting all drivers.
+
+We delay adding the station to firmware until it has been authorised
+in the driver, and correspondingly remove the station when unwinding
+from authorised state. Adding the station to firmware allocates a hlid,
+which will now happen later than the driver expects. Therefore, we need
+to track when this happens so that we transmit using the correct hlid.
+
+This patch is an equivalent fix to these two patches in TI's
+wilink8-wlan repository:
+
+https://git.ti.com/cgit/wilink8-wlan/build-utilites/tree/patches/kernel_patches/4.19.38/0004-mac80211-patch.patch?h=r8.9&id=a2ee50aa5190ed3b334373d6cd09b1bff56ffcf7
+https://git.ti.com/cgit/wilink8-wlan/build-utilites/tree/patches/kernel_patches/4.19.38/0005-wlcore-patch.patch?h=r8.9&id=a2ee50aa5190ed3b334373d6cd09b1bff56ffcf7
+
+Reported-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Co-developed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Tested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>"
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- drivers/net/wireless/ath/ath12k/mac.c | 63 ++++++++++++++++++++++++---
- 1 file changed, 57 insertions(+), 6 deletions(-)
+ drivers/net/wireless/ti/wlcore/cmd.c      |  7 -------
+ drivers/net/wireless/ti/wlcore/main.c     | 17 ++++++++---------
+ drivers/net/wireless/ti/wlcore/tx.c       |  7 ++-----
+ drivers/net/wireless/ti/wlcore/wlcore_i.h |  6 ++++++
+ 4 files changed, 16 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 784964ae03ec..3668186d0926 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -3372,7 +3372,7 @@ static void ath12k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- static struct ath12k*
- ath12k_mac_select_scan_device(struct ieee80211_hw *hw,
- 			      struct ieee80211_vif *vif,
--			      struct ieee80211_scan_request *req)
-+			      u32 center_freq)
+diff --git a/drivers/net/wireless/ti/wlcore/cmd.c b/drivers/net/wireless/ti/wlcore/cmd.c
+index a939fd89a7f5..92fc2d456c2c 100644
+--- a/drivers/net/wireless/ti/wlcore/cmd.c
++++ b/drivers/net/wireless/ti/wlcore/cmd.c
+@@ -1566,13 +1566,6 @@ int wl12xx_cmd_add_peer(struct wl1271 *wl, struct wl12xx_vif *wlvif,
+ 		cpu_to_le32(wl1271_tx_enabled_rates_get(wl, sta_rates,
+ 							wlvif->band));
+ 
+-	if (!cmd->supported_rates) {
+-		wl1271_debug(DEBUG_CMD,
+-			     "peer has no supported rates yet, configuring basic rates: 0x%x",
+-			     wlvif->basic_rate_set);
+-		cmd->supported_rates = cpu_to_le32(wlvif->basic_rate_set);
+-	}
+-
+ 	wl1271_debug(DEBUG_CMD, "new peer rates=0x%x queues=0x%x",
+ 		     cmd->supported_rates, sta->uapsd_queues);
+ 
+diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
+index ef12169f8044..492cd7aef44f 100644
+--- a/drivers/net/wireless/ti/wlcore/main.c
++++ b/drivers/net/wireless/ti/wlcore/main.c
+@@ -5139,19 +5139,23 @@ static int wl12xx_update_sta_state(struct wl1271 *wl,
+ 
+ 	/* Add station (AP mode) */
+ 	if (is_ap &&
+-	    old_state == IEEE80211_STA_NOTEXIST &&
+-	    new_state == IEEE80211_STA_NONE) {
++	    old_state == IEEE80211_STA_AUTH &&
++	    new_state == IEEE80211_STA_ASSOC) {
+ 		ret = wl12xx_sta_add(wl, wlvif, sta);
+ 		if (ret)
+ 			return ret;
+ 
++		wl_sta->fw_added = true;
++
+ 		wlcore_update_inconn_sta(wl, wlvif, wl_sta, true);
+ 	}
+ 
+ 	/* Remove station (AP mode) */
+ 	if (is_ap &&
+-	    old_state == IEEE80211_STA_NONE &&
+-	    new_state == IEEE80211_STA_NOTEXIST) {
++	    old_state == IEEE80211_STA_ASSOC &&
++	    new_state == IEEE80211_STA_AUTH) {
++		wl_sta->fw_added = false;
++
+ 		/* must not fail */
+ 		wl12xx_sta_remove(wl, wlvif, sta);
+ 
+@@ -5165,11 +5169,6 @@ static int wl12xx_update_sta_state(struct wl1271 *wl,
+ 		if (ret < 0)
+ 			return ret;
+ 
+-		/* reconfigure rates */
+-		ret = wl12xx_cmd_add_peer(wl, wlvif, sta, wl_sta->hlid);
+-		if (ret < 0)
+-			return ret;
+-
+ 		ret = wl1271_acx_set_ht_capabilities(wl, &sta->deflink.ht_cap,
+ 						     true,
+ 						     wl_sta->hlid);
+diff --git a/drivers/net/wireless/ti/wlcore/tx.c b/drivers/net/wireless/ti/wlcore/tx.c
+index 7bd3ce2f0804..464587d16ab2 100644
+--- a/drivers/net/wireless/ti/wlcore/tx.c
++++ b/drivers/net/wireless/ti/wlcore/tx.c
+@@ -140,11 +140,8 @@ EXPORT_SYMBOL(wl12xx_is_dummy_packet);
+ static u8 wl12xx_tx_get_hlid_ap(struct wl1271 *wl, struct wl12xx_vif *wlvif,
+ 				struct sk_buff *skb, struct ieee80211_sta *sta)
  {
- 	struct ath12k_hw *ah = hw->priv;
- 	enum nl80211_band band;
-@@ -3389,9 +3389,9 @@ ath12k_mac_select_scan_device(struct ieee80211_hw *hw,
- 	 * split the hw request and perform multiple scans
- 	 */
+-	if (sta) {
+-		struct wl1271_station *wl_sta;
+-
+-		wl_sta = (struct wl1271_station *)sta->drv_priv;
+-		return wl_sta->hlid;
++	if (sta && wl1271_station(sta)->fw_added) {
++		return wl1271_station(sta)->hlid;
+ 	} else {
+ 		struct ieee80211_hdr *hdr;
  
--	if (req->req.channels[0]->center_freq < ATH12K_MIN_5G_FREQ)
-+	if (center_freq < ATH12K_MIN_5G_FREQ)
- 		band = NL80211_BAND_2GHZ;
--	else if (req->req.channels[0]->center_freq < ATH12K_MIN_6G_FREQ)
-+	else if (center_freq < ATH12K_MIN_6G_FREQ)
- 		band = NL80211_BAND_5GHZ;
- 	else
- 		band = NL80211_BAND_6GHZ;
-@@ -3591,7 +3591,7 @@ static int ath12k_mac_op_hw_scan(struct ieee80211_hw *hw,
- 	/* Since the targeted scan device could depend on the frequency
- 	 * requested in the hw_req, select the corresponding radio
- 	 */
--	ar = ath12k_mac_select_scan_device(hw, vif, hw_req);
-+	ar = ath12k_mac_select_scan_device(hw, vif, hw_req->req.channels[0]->center_freq);
- 	if (!ar)
- 		return -EINVAL;
+diff --git a/drivers/net/wireless/ti/wlcore/wlcore_i.h b/drivers/net/wireless/ti/wlcore/wlcore_i.h
+index eefae3f867b9..817a8a61cac6 100644
+--- a/drivers/net/wireless/ti/wlcore/wlcore_i.h
++++ b/drivers/net/wireless/ti/wlcore/wlcore_i.h
+@@ -324,6 +324,7 @@ struct wl12xx_rx_filter {
  
-@@ -8416,12 +8416,63 @@ static int ath12k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
- 	struct ath12k_vif *arvif = ath12k_vif_to_arvif(vif);
- 	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
- 	struct ath12k_wmi_scan_req_arg arg;
--	struct ath12k *ar;
-+	struct ath12k *ar, *prev_ar;
- 	u32 scan_time_msec;
-+	bool create = true;
- 	int ret;
+ struct wl1271_station {
+ 	u8 hlid;
++	bool fw_added;
+ 	bool in_connection;
  
--	ar = ath12k_ah_to_ar(ah, 0);
-+	if (ah->num_radio == 1) {
-+		WARN_ON(!arvif->is_created);
-+		ar = ath12k_ah_to_ar(ah, 0);
-+		goto scan;
-+	}
+ 	/*
+@@ -335,6 +336,11 @@ struct wl1271_station {
+ 	u64 total_freed_pkts;
+ };
+ 
++static inline struct wl1271_station *wl1271_station(struct ieee80211_sta *sta)
++{
++	return (struct wl1271_station *)sta->drv_priv;
++}
 +
-+	ar = ath12k_mac_select_scan_device(hw, vif, chan->center_freq);
-+	if (!ar)
-+		return -EINVAL;
-+
-+	/* If the vif is already assigned to a specific vdev of an ar,
-+	 * check whether its already started, vdev which is started
-+	 * are not allowed to switch to a new radio.
-+	 * If the vdev is not started, but was earlier created on a
-+	 * different ar, delete that vdev and create a new one. We don't
-+	 * delete at the scan stop as an optimization to avoid redundant
-+	 * delete-create vdev's for the same ar, in case the request is
-+	 * always on the same band for the vif
-+	 */
-+	if (arvif->is_created) {
-+		if (WARN_ON(!arvif->ar))
-+			return -EINVAL;
-+
-+		if (ar != arvif->ar && arvif->is_started)
-+			return -EINVAL;
- 
-+		if (ar != arvif->ar) {
-+			/* backup the previously used ar ptr, since the vdev delete
-+			 * would assign the arvif->ar to NULL after the call
-+			 */
-+			prev_ar = arvif->ar;
-+			mutex_lock(&prev_ar->conf_mutex);
-+			ret = ath12k_mac_vdev_delete(prev_ar, vif);
-+			mutex_unlock(&prev_ar->conf_mutex);
-+			if (ret)
-+				ath12k_warn(prev_ar->ab,
-+					    "unable to delete scan vdev %d\n", ret);
-+		} else {
-+			create = false;
-+		}
-+	}
-+
-+	if (create) {
-+		mutex_lock(&ar->conf_mutex);
-+		ret = ath12k_mac_vdev_create(ar, vif);
-+		mutex_unlock(&ar->conf_mutex);
-+		if (ret) {
-+			ath12k_warn(ar->ab, "unable to create scan vdev %d\n", ret);
-+			return -EINVAL;
-+		}
-+	}
-+scan:
- 	mutex_lock(&ar->conf_mutex);
- 	spin_lock_bh(&ar->data_lock);
- 
-
-base-commit: f8320064a28242448eeb9fece08abd865ea8a226
+ struct wl12xx_vif {
+ 	struct wl1271 *wl;
+ 	struct list_head list;
 -- 
-2.25.1
+2.30.2
 
 
