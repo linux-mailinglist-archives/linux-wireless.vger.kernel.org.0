@@ -1,96 +1,181 @@
-Return-Path: <linux-wireless+bounces-8155-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8156-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 467218D131A
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 05:56:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50C388D13D3
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 07:22:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC8B91F230BA
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 03:56:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 729581C20D87
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 05:22:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED64310A35;
-	Tue, 28 May 2024 03:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DB394BA94;
+	Tue, 28 May 2024 05:22:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="II3O24pd"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02AF62905
-	for <linux-wireless@vger.kernel.org>; Tue, 28 May 2024 03:56:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E34994AEDF;
+	Tue, 28 May 2024 05:22:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716868590; cv=none; b=tjspvM+95I3xeToreMdzaZGxJdX7agNuyl5tnwIM0ChSD2Kuvo+2W+W5iQzapuc5IwuSDWpVgURmXulNWEECTM8/hXrodiWmIWVXSg987lfNA+IU+GNDChW7MO8Lh9aKPGDpeuiBBElG/ReLRLB1b8Jo3LME8gfP2G9DR2Cjdxw=
+	t=1716873757; cv=none; b=JndqCVbtOW2nv+8cZZCCxCqjiS9GFLSPV6szJUgIxZ5zVLsqt0RGbZpEIxy1IN3W+DNffaWKErkgxqqonFriAgBOP0MulVMeDo4bPDiXL30PX/+8EXn7Ugp65RDFj11FAZe01cOdw0GeJdW9/RN2jJOa8Au2Ay/t/Q9MD7nTePc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716868590; c=relaxed/simple;
-	bh=aDC0Z8Pa3dcCrF3E0JxnGAdo2wfXrRpM5iLZuGO/njE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=gSfMmMyYHe3t1Q01yRoQb8MLJw700fvt8KtcWaRjUr4yF/RVvrr8FAmdu4DhKLmhzXu9IStL38JDdBRYH008WnqXbi16lRrIICFSchNWcoD9XOiOVQuaZ/PU+EwcNFmmlaZuwP+G2MqnnLaktO5Zkbja5eTM74kKzRcQUzj0edc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 44S3u6W911941955, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 44S3u6W911941955
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 May 2024 11:56:06 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 28 May 2024 11:56:07 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 28 May 2024 11:56:06 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
- RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
- 15.01.2507.035; Tue, 28 May 2024 11:56:06 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: =?utf-8?B?TWFyY2luIMWabHVzYXJ6?= <marcin.slusarz@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC: =?utf-8?B?TWFyY2luIMWabHVzYXJ6?= <mslusarz@renau.com>,
-        Larry Finger
-	<Larry.Finger@lwfinger.net>,
-        Kalle Valo <kvalo@kernel.org>
-Subject: RE: [PATCH 1/2] wifi: rtw88: use RTW_FLAG_RUNNING for deciding whether to enter/leave IPS
-Thread-Topic: [PATCH 1/2] wifi: rtw88: use RTW_FLAG_RUNNING for deciding
- whether to enter/leave IPS
-Thread-Index: AQHasFxCrK4foviClUaRROae15ov4rGsBFLg
-Date: Tue, 28 May 2024 03:56:06 +0000
-Message-ID: <7427b534f5e64abf8a31a80082d4b6e1@realtek.com>
-References: <20240527173454.459264-1-marcin.slusarz@gmail.com>
- <20240527173454.459264-2-marcin.slusarz@gmail.com>
-In-Reply-To: <20240527173454.459264-2-marcin.slusarz@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1716873757; c=relaxed/simple;
+	bh=7ERKas/OkCdasWCLOQ9A0s9OZOng3YFWI1DUXAB5Hwc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l8BIXB76jLN+YonrhqWRVDXEKcargclZb5RWYOBMIGqFeV60rIaX3DVc3fZj3KdUC610c2qxYgDC8OypNGfNJ4ZUy1UlaXyz78+Gzep1fuBBhmsWN7xvzi5T9pSUs3vQV/db+qy+xV2Y1zg8XWw62oAY7uwCzAj2Bo3alakhjm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=II3O24pd; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	In-Reply-To:References; bh=h2WKMvgwAaogvoHjA4LWCMWXhYlg8Zv23ou9ksyPtbo=;
+	t=1716873755; x=1717305755; b=II3O24pdoi42K512Ax6StNNB6pZGKvZIbv7GmjYvOljd2RZ
+	xbW6KqFv9nnVQDauERtJei5qNpX+X5fw1PncMtmu0vfmdoLbmIg0AgjEYyx8cvxNmjTtiAnAs89dk
+	O6P5vApgA21pcmLyTmi0IJPJE7pCp82Bi5PxI5xjXrWcxOHcrgf2moKKf9L3O7iWWUnVqnRQuQPaw
+	TwVakVnmKmuLHEh9T6wpkT/mSKcFJkkiQe+Deo/RjAivjGeQj8Y3s8lfDzGGOqDwu2nI+xARF9gjj
+	5+h7PqwDLnOHPWD7E9/XGtO6JVzr3qIZjIBBVCdDWWSkXiHqfpWNB8FOxjP56fZQ==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1sBpI7-00087e-MZ; Tue, 28 May 2024 07:22:31 +0200
+Message-ID: <b3d8a378-346d-4dd8-9af8-1529a4484184@leemhuis.info>
+Date: Tue, 28 May 2024 07:22:31 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION][BISECTED] wifi: RTL8821CE does not work in monitor
+ mode
+To: Christian Heusel <christian@heusel.eu>,
+ Johannes Berg <johannes.berg@intel.com>, regressions@lists.linux.dev
+Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+ Savyasaachi Vanga <savyasaachiv@gmail.com>
+References: <chwoymvpzwtbmzryrlitpwmta5j6mtndocxsyqvdyikqu63lon@gfds653hkknl>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Content-Language: en-US, de-DE
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <chwoymvpzwtbmzryrlitpwmta5j6mtndocxsyqvdyikqu63lon@gfds653hkknl>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1716873755;2b659210;
+X-HE-SMSGID: 1sBpI7-00087e-MZ
 
-TWFyY2luIMWabHVzYXJ6IDxtYXJjaW4uc2x1c2FyekBnbWFpbC5jb20+IHdyb3RlOg0KPiBGcm9t
-OiBNYXJjaW4gxZpsdXNhcnogPG1zbHVzYXJ6QHJlbmF1LmNvbT4NCj4gDQo+IE5lZWRlZCBieSB0
-aGUgbmV4dCBwYXRjaCB0aGF0IGRpc2FibGVzIHBvd2VyIG9mZiBvcGVyYXRpb24gZm9yIG9uZSBj
-aGlwLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogTWFyY2luIMWabHVzYXJ6IDxtc2x1c2FyekByZW5h
-dS5jb20+DQo+IENjOiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4NCj4gQ2M6IExh
-cnJ5IEZpbmdlciA8TGFycnkuRmluZ2VyQGx3ZmluZ2VyLm5ldD4NCj4gQ2M6IEthbGxlIFZhbG8g
-PGt2YWxvQGtlcm5lbC5vcmc+DQo+IENjOiBsaW51eC13aXJlbGVzc0B2Z2VyLmtlcm5lbC5vcmcN
-Cj4gLS0tDQo+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3BzLmMgfCA0ICsr
-LS0NCj4gIDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pDQo+
-IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9wcy5j
-IGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9wcy5jDQo+IGluZGV4IGFkZDVh
-MjBiODQzMi4uZjlmYmM5YjMxNzRiIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVz
-cy9yZWFsdGVrL3J0dzg4L3BzLmMNCj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRl
-ay9ydHc4OC9wcy5jDQo+IEBAIC0yNiw3ICsyNiw3IEBAIHN0YXRpYyBpbnQgcnR3X2lwc19wd3Jf
-dXAoc3RydWN0IHJ0d19kZXYgKnJ0d2RldikNCj4gDQo+ICBpbnQgcnR3X2VudGVyX2lwcyhzdHJ1
-Y3QgcnR3X2RldiAqcnR3ZGV2KQ0KPiAgew0KPiAtICAgICAgIGlmICghdGVzdF9iaXQoUlRXX0ZM
-QUdfUE9XRVJPTiwgcnR3ZGV2LT5mbGFncykpDQo+ICsgICAgICAgaWYgKCF0ZXN0X2JpdChSVFdf
-RkxBR19SVU5OSU5HLCBydHdkZXYtPmZsYWdzKSkNCg0KUlRXX0ZMQUdfUE9XRVJPTiBpcyB0byBt
-YWludGFpbiBwb3dlciBzdGF0ZSAoaS5lLiBpcHMpIG9mIFdpRmkgY2FyZCwgYW5kDQpwcmV2ZW50
-IGVudGVyaW5nL2xlYXZpbmcgSVBTIHR3aWNlIHN1ZGRlbmx5LiBDaGFuZ2luZyB0aGlzIGlzIGNv
-bmZ1c2VkIHRvIG1lLiANCg0KDQo=
+On 28.05.24 00:01, Christian Heusel wrote:
+> 
+> Savyasaachi reports that scanning for other stations in monitor mode
+> does not work anymore with his RTL8821CE wireless network card for linux
+> kernels after 6.8.9.
+
+Thx for the report. A few remarks:
+
+Please be more specific in cases like this, as "kernels after 6.8.9" can
+mean "6.8.10+", "6.10-rc", or "6.9.y" (apparently it is the latter).
+Yes, this is nitpicking, which is why I normally would not have said
+anything -- but because you frequently report bugs it's likely in
+everybody's interest to bring this up.
+
+In a case like this it would also be good if the reporter could give
+latest mainline a try, as (1) a fix might already be in there and (2)
+some developers do not care at all about bugs in stable kernels (and
+they are free to do so!). See
+https://linux-regtracking.leemhuis.info/post/frequent-reasons-why-linux-kernel-bug-reports-are-ignored/
+for details.
+
+And sorry, there is something else: from the dmesg it looks a lot like
+this report is from a patched vendor kernel that among others seems to
+enable features like "forced interrupt request threading"
+(https://github.com/zen-kernel/zen-kernel/wiki/Detailed-Feature-List ).
+Such changes even if small and done carefully can lead to bugs like this
+(yes, that particular feature I mentioned can be enabled through a
+kernel parameter as well, but some developers would consider this to be
+an unsupported configuration). The absolut minimum you should have done
+is to mention that; but normally you never want to use such kernels for
+reporting bugs upstream, as the problem might not be present in the
+upstream code.
+
+Ciao, Thorsten
+
+> His workflow was putting the adapter in monitor mode by running
+> "airmon-ng start wlan0" and then capture the surrounding stations with
+> "airodump-ng wlan0".
+> 
+> We have bisected the issue together in the issue in the Arch Linux
+> bugtracker[0] down to the following commit:
+> 
+>     0a44dfc070749 ("wifi: mac80211: simplify non-chanctx drivers")
+> 
+> Savyasaachi (in CC) offered to be available for questions and further
+> debugging in this thread and some general debugging outputs are
+> attached/below.
+> 
+> Reported-by: Savyasaachi Vanga <savyasaachiv@gmail.com>
+> Bisected-by: Christian Heusel <christian@heusel.eu>
+> 
+> Cheers,
+> Chris
+> 
+> [0]: https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/issues/54
+> 
+> ---
+> 
+> #regzbot link: https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/issues/54
+> #regzbot introduced: 0a44dfc070749
+> #regzbot title: wifi: RTL8821CE does not work in monitor mode
+> 
+> ---
+> 
+> lsusb:
+> 
+> Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+> Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+> Bus 003 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+> Bus 003 Device 002: ID 0bda:c829 Realtek Semiconductor Corp. Bluetooth Radio
+> Bus 003 Device 003: ID 0c45:6739 Microdia Integrated_Webcam_FHD
+> Bus 004 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+> 
+> lspci:
+> 
+> 00:00.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Renoir/Cezanne Root Complex
+> 00:00.2 IOMMU: Advanced Micro Devices, Inc. [AMD] Renoir/Cezanne IOMMU
+> 00:01.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Renoir PCIe Dummy Host Bridge
+> 00:01.2 PCI bridge: Advanced Micro Devices, Inc. [AMD] Renoir/Cezanne PCIe GPP Bridge
+> 00:01.3 PCI bridge: Advanced Micro Devices, Inc. [AMD] Renoir/Cezanne PCIe GPP Bridge
+> 00:02.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Renoir PCIe Dummy Host Bridge
+> 00:02.1 PCI bridge: Advanced Micro Devices, Inc. [AMD] Renoir/Cezanne PCIe GPP Bridge
+> 00:08.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Renoir PCIe Dummy Host Bridge
+> 00:08.1 PCI bridge: Advanced Micro Devices, Inc. [AMD] Renoir Internal PCIe GPP Bridge to Bus
+> 00:08.2 PCI bridge: Advanced Micro Devices, Inc. [AMD] Renoir Internal PCIe GPP Bridge to Bus
+> 00:14.0 SMBus: Advanced Micro Devices, Inc. [AMD] FCH SMBus Controller (rev 51)
+> 00:14.3 ISA bridge: Advanced Micro Devices, Inc. [AMD] FCH LPC Bridge (rev 51)
+> 00:18.0 Host bridge: Advanced Micro Devices, Inc. [AMD] Cezanne Data Fabric; Function 0
+> 00:18.1 Host bridge: Advanced Micro Devices, Inc. [AMD] Cezanne Data Fabric; Function 1
+> 00:18.2 Host bridge: Advanced Micro Devices, Inc. [AMD] Cezanne Data Fabric; Function 2
+> 00:18.3 Host bridge: Advanced Micro Devices, Inc. [AMD] Cezanne Data Fabric; Function 3
+> 00:18.4 Host bridge: Advanced Micro Devices, Inc. [AMD] Cezanne Data Fabric; Function 4
+> 00:18.5 Host bridge: Advanced Micro Devices, Inc. [AMD] Cezanne Data Fabric; Function 5
+> 00:18.6 Host bridge: Advanced Micro Devices, Inc. [AMD] Cezanne Data Fabric; Function 6
+> 00:18.7 Host bridge: Advanced Micro Devices, Inc. [AMD] Cezanne Data Fabric; Function 7
+> 01:00.0 Non-Volatile memory controller: Micron Technology Inc 2210 NVMe SSD [Cobain] (rev 03)
+> 02:00.0 Ethernet controller: Realtek Semiconductor Co., Ltd. RTL8111/8168/8211/8411 PCI Express Gigabit Ethernet Controller (rev 15)
+> 03:00.0 Network controller: Realtek Semiconductor Co., Ltd. RTL8821CE 802.11ac PCIe Wireless Network Adapter
+> 04:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Barcelo (rev c2)
+> 04:00.1 Audio device: Advanced Micro Devices, Inc. [AMD/ATI] Renoir Radeon High Definition Audio Controller
+> 04:00.2 Encryption controller: Advanced Micro Devices, Inc. [AMD] Family 17h (Models 10h-1fh) Platform Security Processor
+> 04:00.3 USB controller: Advanced Micro Devices, Inc. [AMD] Renoir/Cezanne USB 3.1
+> 04:00.4 USB controller: Advanced Micro Devices, Inc. [AMD] Renoir/Cezanne USB 3.1
+> 04:00.5 Multimedia controller: Advanced Micro Devices, Inc. [AMD] ACP/ACP3X/ACP6x Audio Coprocessor (rev 01)
+> 04:00.6 Audio device: Advanced Micro Devices, Inc. [AMD] Family 17h/19h HD Audio Controller
+> 05:00.0 SATA controller: Advanced Micro Devices, Inc. [AMD] FCH SATA Controller [AHCI mode] (rev 81)
+> 05:00.1 SATA controller: Advanced Micro Devices, Inc. [AMD] FCH SATA Controller [AHCI mode] (rev 81)
 
