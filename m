@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-8213-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8214-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A50E18D22B6
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 19:43:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1AC68D22BB
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 19:44:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A596B231E6
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 17:43:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E4781F22CFD
+	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 17:44:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EAB438DFC;
-	Tue, 28 May 2024 17:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3047481A5;
+	Tue, 28 May 2024 17:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mk6A3wre"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IHotNmS6"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569D1383B1;
-	Tue, 28 May 2024 17:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E16B481A3
+	for <linux-wireless@vger.kernel.org>; Tue, 28 May 2024 17:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716918185; cv=none; b=FC+az66KG7gjEwgVF4CudcXEZ2s+Ub9Cap/I/Uk6dv/g1/sa/VBPn2sEwESAN/LEW6RrVQHtLmR71+f7Mp3tiOnzB+U9jYUNbv2ctrXRxOnxM2zGs3hRX7uwmLX7hCfZdhjgPYYf7iEcxsKLpN0aIASsO6vprOetOoNfngDyNvw=
+	t=1716918235; cv=none; b=a97h4LkF6B7jWK/zAFSQsPjtlWp8YXr7i+RJeE6uRqPha9CmHXu5ILI/1uopnZnU2vWEIXFqZcDLZLq91uXRQ+AB/nDFdruGdkIK5Hfm9tyhdioqUaPSVsr9KwzTnBLsFRW5Rw4NID9pUhxOHVSxl/eYYvOj2y9aeDeS8nPRlbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716918185; c=relaxed/simple;
-	bh=1t/2nyJD90QWoKEkfj3SOxB3g/QFZrSpyN4KN1vGGnU=;
+	s=arc-20240116; t=1716918235; c=relaxed/simple;
+	bh=acMf32fu0JN28eSlBB0qI0jOAiIbnSOa9UfPdAOD10o=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=TSPJqKN/mWnESjL1ero7x5sXPjNeOF1FOn9GtQqLOjsDJpaaVi52uAuNlBkld7UbpP7gRTNVplSSzwhp6tnRN5+Qwpckfy9N/zxcHa20Dn0c8S3W2BVBgHUj+U0Nh1Q6fMOGsAfLLocBoswcPafwdnRzeWIFELDDbXZ7aMDwkZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mk6A3wre; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B4ABC3277B;
-	Tue, 28 May 2024 17:43:03 +0000 (UTC)
+	 Cc:Message-ID:Date; b=o8HdV6EbWGIrDvrend6mUNL5Zo/8RZRkNI0ZVFYVzoB9tOM50ZbANefLgFJowR3LCCTz7THKLRAoQfNjBcpKBuU1uPoU1/klGJ3grruvTHOIOv3KJ1u5UOJ3qV1S7OIRjReUD70c29SMEYe4w9RxuAxM++m0FXttrQO3rkeV2XI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IHotNmS6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421FDC3277B;
+	Tue, 28 May 2024 17:43:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716918185;
-	bh=1t/2nyJD90QWoKEkfj3SOxB3g/QFZrSpyN4KN1vGGnU=;
+	s=k20201202; t=1716918235;
+	bh=acMf32fu0JN28eSlBB0qI0jOAiIbnSOa9UfPdAOD10o=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=mk6A3wreOpylOAIEsWPFXtLqkosBIeqOxTRhd4mq6Q7L6w2M2RcPgzjuvzo1utXtm
-	 InUqj2KTBoCyeh/hZe7rAijOd1Wm3u1WEQ8cP3kxpa3Zk0bg2vPxNdrg8ZZy+X2dA5
-	 s5YmLOxA530fO0r6FhKFwUbWUHimZrnr/w5XZECMC33JHLmThPk1OFa9gkWA0SVeFj
-	 20J+oLFISxG0lVSdVFcwYiE4r7wQ+zeKdEkGiKOCHNedxGHdJt5Oo4TfY0+RE1O4iz
-	 gC+kQam6pStHbYMDe1eRwq9/Eng8rvrMFQtDgNTf3EZ+UVWUBxu9tdkLNNHCG/xvlM
-	 BHuoG4/rkLbQg==
+	b=IHotNmS6iLNBAJLqukMUe67QExDQ5+rTAQE43QRz51r5YDgALRLNvI+UZ1TosINDB
+	 jVqW+R6OmgDfXH0eP5mE+QeDX5NiprilwRL9jFiE9+Zs7sK/Xw2Cb3evi27V3NzfUi
+	 ycanzFwTH5AGOVYylaDVSar4rwwlyEmlTYn11JxE0mbW1vsBYddU1JaetWwSIcdD9u
+	 EYn6QxgnvgPKg6LX3dCfF/yxf9HhPAe3bAJnSUKhUoVAa2NJkhUEytzI8QRksUa9PJ
+	 xmo8ONR+UC255qAbBHWVl8s27BuerQ+NmEHP+WkHxUFWXc3ykC0zsO+PlQA+dMhPbr
+	 /HhWFGVWHpH2w==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,38 +49,43 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: ath12k: Fix devmem address prefix when logging
+Subject: Re: [PATCH] wifi: ath11k: fix wrong definition of CE ring's base
+ address
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240523-ox-v1-1-112ae7350059@quicinc.com>
-References: <20240523-ox-v1-1-112ae7350059@quicinc.com>
-To: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: Jeff Johnson <jjohnson@kernel.org>, <linux-wireless@vger.kernel.org>,
- <ath12k@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
- Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240524021558.34452-1-quic_bqiang@quicinc.com>
+References: <20240524021558.34452-1-quic_bqiang@quicinc.com>
+To: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+ <quic_bqiang@quicinc.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <171691818162.1700985.17832746813476815446.kvalo@kernel.org>
-Date: Tue, 28 May 2024 17:43:03 +0000 (UTC)
+Message-ID: <171691823254.1700985.17999890257962892911.kvalo@kernel.org>
+Date: Tue, 28 May 2024 17:43:54 +0000 (UTC)
 
-Jeff Johnson <quic_jjohnson@quicinc.com> wrote:
+Baochen Qiang <quic_bqiang@quicinc.com> wrote:
 
-> Currently when ath12k QMI logging is enabled, messages such as the
-> following can be logged:
+> Base address of CE ring is defined as u32, currently this works
+> because coherent DMA mask configured as 32 bit:
 > 
-> ath12k_pci 0000:03:00.0: devmem [0] start ox113000 size 20480
+>         #define ATH11K_PCI_COHERENT_DMA_MASK    32
 > 
-> Replace ox% with 0x% to get a proper hex address prefix:
+> However this mask could be changed once firmware bugs are fixed
+> to fully support 36 bit DMA addressing. So to protect against any
+> future changes to the DMA mask, change the type of the fields that
+> are dependent upon it.
 > 
-> ath12k_pci 0000:03:00.0: devmem [0] start 0x113000 size 20480
+> This is found during code review. Compile tested only.
 > 
-> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-af69d862a8ba wifi: ath12k: Fix devmem address prefix when logging
+5714e25f1d18 wifi: ath11k: fix wrong definition of CE ring's base address
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240523-ox-v1-1-112ae7350059@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240524021558.34452-1-quic_bqiang@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
