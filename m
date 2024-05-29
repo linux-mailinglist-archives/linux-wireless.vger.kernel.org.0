@@ -1,63 +1,72 @@
-Return-Path: <linux-wireless+bounces-8265-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8266-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6059C8D3984
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 16:41:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A878D3986
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 16:42:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 182F4287BDE
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 14:41:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B18141F2281C
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 14:42:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B504F15920F;
-	Wed, 29 May 2024 14:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9340159216;
+	Wed, 29 May 2024 14:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="BuqJzlBx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dnU/STTc"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5F5158201
-	for <linux-wireless@vger.kernel.org>; Wed, 29 May 2024 14:41:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135E0158201
+	for <linux-wireless@vger.kernel.org>; Wed, 29 May 2024 14:42:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716993678; cv=none; b=V2KLNNTYFRBEvWBFf9QFYLj5pBVBmHA0elSt3kdI7aFUwLEtTdtbcyPe0A9gs2P8imkYwt7wJnfc1OJTZAGz7hYgzP5OySaQ/sZmpQdAwLNM58uHJ0vwCu3+X6hxnvp8BPggizc+QeHt8UlUd4AFgI+wAvbPtXnGgLvNVgOfoDY=
+	t=1716993732; cv=none; b=qeiCy/SQd9lqts42i0WWb1P7pCCY+z70iS3R977Hr+YpY49nVEJO3jhBiv0H0zBmo0QmpO5iucGiY+ohJL95BfH4slO1t2VBF/ax56SbVdepWcyiQTpLE09duW8u8DDsV8QhNIyFEv1CYUZ4vRjQXj5IeBFYIoq+IeDUE/qRhuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716993678; c=relaxed/simple;
-	bh=guo8qQGcvK6lUK1IJVdV1wUl8KN4Hs/TlPyxZV9oaaw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ajsoq0sKvJnbLSORpkILOzOABMl02ZT26PxT7x+DH7b2tHR/OORIJoD29rLJdIUuTVHBnyaAuz9wfxHh8UvWWW6BpHaYGZB0GNkjVgI3dTF5u7+kZ9ZImV2Y9ZOYZ/ssE9SrHTTnbfZ2QTwS/KRjLZOMp9p5e08euZj6GGPka0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=BuqJzlBx; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44TB49Qc005808;
-	Wed, 29 May 2024 14:41:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	kJ5qKcintWpRbRz347ijnBiMJCZIvMoK3IueNeRB/7k=; b=BuqJzlBxzLSRy6nb
-	wcexmv6jXj5EBLnCs9D7P3PRF4dKph1LJ0J0li2FVb8SRN/36qyVtSCPnGrRu0Sl
-	H34dsQjcuAmKIBBKZ+2MCFi/y95yNjKR82ghAiAkhaLzuKt1vjpJS9r0lwHKwns+
-	2t7WrBOxQqKJ9xTJWvWmKwGMNJAtbkB3vZbfRlDM45fKA74H07zzKX9378XT5x58
-	Q3/sllv1F2BlCFUf12Ct6nM+tfiOT1B85LOn8Tf185DZpvVlfBMR/outwkgncwxd
-	pTAZbQFMsWsRlAmEfWV4gfzlnoMEt/kRPawSjtwTjmtUVp45svYwbauPNZ2c6wVv
-	rNRAUw==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yba0ps3u8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 May 2024 14:41:03 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44TEf2ug028634
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 May 2024 14:41:02 GMT
-Received: from [10.110.122.222] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 29 May
- 2024 07:41:01 -0700
-Message-ID: <0f49d156-2359-4286-b2ba-b6fb4345af82@quicinc.com>
-Date: Wed, 29 May 2024 07:41:00 -0700
+	s=arc-20240116; t=1716993732; c=relaxed/simple;
+	bh=AJTbSurAe/DImAjMG9/zWv9/rdmVlmL4oqspAeQ+nfI=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=mHUSmyghUkjBOo9uZzdXXjs6Y0J2yj8y7PeB0DXaJiFB9q5QlXZG4ThCfMjW/NazELhz1zcOG2OHLC0qXSRZZr9/fPWo3XUeRwllN0IAAg+2KrBTiF6gAI/zzLMi1/vYVgJNPIf4fwoiEwTWfV5zuBy4E5KG6hCGQAPjaiaD4/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dnU/STTc; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a6268034cf8so102672566b.3
+        for <linux-wireless@vger.kernel.org>; Wed, 29 May 2024 07:42:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716993729; x=1717598529; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5q7tOOG4Y1XFf8LJdwZaKz26hPu8Gxw9oJFmVVLZvTk=;
+        b=dnU/STTcGJ1UtgnYt+kZsVKMRvQmAgkqHrdASnOwzqxWsOFQgNV0Y6mONLwBLwAqvd
+         Ar5FUmg7hu1Y3F6wqdgi3nBAt2/ffImi5LrLMJQWuL2EH+aLZdfflZUD1dTimIgvMQgX
+         ZBKpSk3TazcrXZTO7mEVJBYvXK/hFgjTwZwM4l13dyxtuV7e2lpGrZbx5UB/3Z2xEB9g
+         bT0KE0cmutD+p8VekPAzW/LHQ9BOE6rCV3MjnLfAsBiXQR9b7rReOR/TRTbpRsuaBYkQ
+         KcBVah3uWWfxAckFIn8qUpc3yG565vI5iX8/vwwkcqncWNoyI+dDiDEVVevwH/zYWuBt
+         QxQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716993729; x=1717598529;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=5q7tOOG4Y1XFf8LJdwZaKz26hPu8Gxw9oJFmVVLZvTk=;
+        b=kJypuM9ktB0a5xf09iKsQv24k9x+e4NPJF3c+L8VAM/+mh0stgld+u0ay8f3M1S3m9
+         ChaRo3TfM6hiH3+Ceyx3wNqOr5RoRbPhIUhmimN5cTH06p2OfZBU6EIYtinvgenEqX1y
+         VoeSOJxTCMFuX3IiDZPuNRBk9i80NyMwqAxMasW4tcKrOYJYHTaam3yvDSPX/twZFb6U
+         t88zfznYkzrbNiPKEv2K3UDLxEuvVm8pJgPeLImLX5gNYwZify6PFbnYjxZn9ndxJ5Z9
+         mnFdgn0rVH7UYnF9voPvjvahRSfQlBNGLElfbWokF4jLHLs1Ctkd6tx+wZTCUYNtOltt
+         9U/w==
+X-Gm-Message-State: AOJu0YxDOu/KD67jxxYSD2pU1vodl577Ft7n4oQGrwwVmuVWs9eng/c2
+	SDw0UOgzEqA9phMoVyNuLXbRUiQUl+/Y9KINQTH2dNQYP6LKkSrjxYBRNQ==
+X-Google-Smtp-Source: AGHT+IFKX/KPQBIxMeOpMJuBfJr44CZnaixn7VlFd3TvQHDkBgJe3X3ezospupwxH2iDYydYvBswXg==
+X-Received: by 2002:a50:8ad1:0:b0:578:5b30:8bfd with SMTP id 4fb4d7f45d1cf-5785b3098cemr12121239a12.21.1716993729051;
+        Wed, 29 May 2024 07:42:09 -0700 (PDT)
+Received: from [192.168.1.50] ([79.119.240.1])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-579d0d5aba4sm4566659a12.71.2024.05.29.07.42.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 29 May 2024 07:42:08 -0700 (PDT)
+Message-ID: <0996d2d0-e7b8-4e43-ba12-63074ba9df1b@gmail.com>
+Date: Wed, 29 May 2024 17:42:07 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,52 +74,180 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath12k: modify remain on channel for single wiphy
 Content-Language: en-US
-To: Rameshkumar Sundaram <quic_ramess@quicinc.com>,
-        <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240528082739.1226758-1-quic_ramess@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240528082739.1226758-1-quic_ramess@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>, Sascha Hauer <sha@pengutronix.de>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH] wifi: rtw88: usb: Further limit the TX aggregation
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: HEUKkfD941SlGmtPX5_QcCSiPXfhhXmx
-X-Proofpoint-GUID: HEUKkfD941SlGmtPX5_QcCSiPXfhhXmx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-05-29_11,2024-05-28_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=791 bulkscore=0
- suspectscore=0 clxscore=1015 lowpriorityscore=0 priorityscore=1501
- mlxscore=0 spamscore=0 adultscore=0 phishscore=0 impostorscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2405290101
 
-On 5/28/2024 1:27 AM, Rameshkumar Sundaram wrote:
-> When multiple radios are advertised as a single wiphy which
-> supports various bands, vdev creation for the vif is deferred
-> until channel is assigned to it.
-> If a remain on channel(RoC) request is received from mac80211,
-> select the corresponding radio(ar) based on channel and create
-> a vdev on that radio to initiate an RoC scan.
-> 
-> Note that on RoC completion this vdev is not deleted. If a new
-> RoC/hw scan request is seen on that same vif for a different band the
-> vdev will be deleted and created on the new radio supporting the
-> request.
-> 
-> Also if the RoC scan is requested when the vdev is in started state,
-> no switching to new radio is allowed and RoC request can be accepted
-> only on channels within same radio.
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-> 
-> Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Currently the number of frames sent to the chip in a single USB Request
+Block is limited only by the size of the TX buffer, which is 20 KiB.
+Testing reveals that as many as 13 frames get aggregated. This is more
+than what any of the chips would like to receive. RTL8822CU, RTL8822BU,
+and RTL8821CU want at most 3 frames, and RTL8723DU wants only 1 frame
+per URB.
+
+RTL8723DU in particular reliably malfunctions during a speed test. All
+traffic seems to stop. Pinging the AP no longer works.
+
+Fix this problem by limiting the number of frames sent to the chip in a
+single URB according to what each chip likes.
+
+Also configure RTL8822CU, RTL8822BU, and RTL8821CU to expect 3 frames
+per URB.
+
+RTL8703B may or may not be found in USB devices. Declare that it wants
+only 1 frame per URB, just in case.
+
+Tested with RTL8723DU and RTL8811CU.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+---
+ drivers/net/wireless/realtek/rtw88/mac.c      | 12 ++++++++++++
+ drivers/net/wireless/realtek/rtw88/main.h     |  2 ++
+ drivers/net/wireless/realtek/rtw88/reg.h      |  1 +
+ drivers/net/wireless/realtek/rtw88/rtw8703b.c |  1 +
+ drivers/net/wireless/realtek/rtw88/rtw8723d.c |  1 +
+ drivers/net/wireless/realtek/rtw88/rtw8821c.c |  1 +
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c |  1 +
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c |  1 +
+ drivers/net/wireless/realtek/rtw88/usb.c      |  4 +++-
+ 9 files changed, 23 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
+index 0dba8aae7716..fca90759c268 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac.c
++++ b/drivers/net/wireless/realtek/rtw88/mac.c
+@@ -1186,6 +1186,7 @@ static int __priority_queue_cfg(struct rtw_dev *rtwdev,
+ {
+ 	const struct rtw_chip_info *chip = rtwdev->chip;
+ 	struct rtw_fifo_conf *fifo = &rtwdev->fifo;
++	u8 val8;
+ 
+ 	rtw_write16(rtwdev, REG_FIFOPAGE_INFO_1, pg_tbl->hq_num);
+ 	rtw_write16(rtwdev, REG_FIFOPAGE_INFO_2, pg_tbl->lq_num);
+@@ -1201,6 +1202,17 @@ static int __priority_queue_cfg(struct rtw_dev *rtwdev,
+ 	rtw_write16(rtwdev, REG_FIFOPAGE_CTRL_2 + 2, fifo->rsvd_boundary);
+ 	rtw_write16(rtwdev, REG_BCNQ1_BDNY_V1, fifo->rsvd_boundary);
+ 	rtw_write32(rtwdev, REG_RXFF_BNDY, chip->rxff_size - C2H_PKT_BUF - 1);
++
++	if (rtwdev->hci.type == RTW_HCI_TYPE_USB) {
++		val8 = rtw_read8(rtwdev, REG_AUTO_LLT_V1);
++		u8p_replace_bits(&val8, chip->usb_tx_agg_desc_num,
++				 BIT_MASK_BLK_DESC_NUM);
++		rtw_write8(rtwdev, REG_AUTO_LLT_V1, val8);
++
++		rtw_write8(rtwdev, REG_AUTO_LLT_V1 + 3, chip->usb_tx_agg_desc_num);
++		rtw_write8_set(rtwdev, REG_TXDMA_OFFSET_CHK + 1, BIT(1));
++	}
++
+ 	rtw_write8_set(rtwdev, REG_AUTO_LLT_V1, BIT_AUTO_INIT_LLT_V1);
+ 
+ 	if (!check_hw_ready(rtwdev, REG_AUTO_LLT_V1, BIT_AUTO_INIT_LLT_V1, 0))
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index 49894331f7b4..49a3fd4fb7dc 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -1197,6 +1197,8 @@ struct rtw_chip_info {
+ 	u16 fw_fifo_addr[RTW_FW_FIFO_MAX];
+ 	const struct rtw_fwcd_segs *fwcd_segs;
+ 
++	u8 usb_tx_agg_desc_num;
++
+ 	u8 default_1ss_tx_path;
+ 
+ 	bool path_div_supported;
+diff --git a/drivers/net/wireless/realtek/rtw88/reg.h b/drivers/net/wireless/realtek/rtw88/reg.h
+index b122f226924b..572651b3aa4b 100644
+--- a/drivers/net/wireless/realtek/rtw88/reg.h
++++ b/drivers/net/wireless/realtek/rtw88/reg.h
+@@ -270,6 +270,7 @@
+ #define BIT_MASK_BCN_HEAD_1_V1	0xfff
+ #define REG_AUTO_LLT_V1		0x0208
+ #define BIT_AUTO_INIT_LLT_V1	BIT(0)
++#define BIT_MASK_BLK_DESC_NUM	0xf0
+ #define REG_DWBCN0_CTRL		0x0208
+ #define BIT_BCN_VALID		BIT(16)
+ #define REG_TXDMA_OFFSET_CHK	0x020C
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8703b.c b/drivers/net/wireless/realtek/rtw88/rtw8703b.c
+index 8919f9e11f03..222608de33cd 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8703b.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8703b.c
+@@ -2013,6 +2013,7 @@ const struct rtw_chip_info rtw8703b_hw_spec = {
+ 	.tx_stbc = false,
+ 	.max_power_index = 0x3f,
+ 	.ampdu_density = IEEE80211_HT_MPDU_DENSITY_16,
++	.usb_tx_agg_desc_num = 1, /* Not sure if this chip has USB interface */
+ 
+ 	.path_div_supported = false,
+ 	.ht_supported = true,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.c b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
+index f8df4c84d39f..15620fd224e0 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8723d.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
+@@ -2194,6 +2194,7 @@ const struct rtw_chip_info rtw8723d_hw_spec = {
+ 	.rfe_defs = rtw8723d_rfe_defs,
+ 	.rfe_defs_size = ARRAY_SIZE(rtw8723d_rfe_defs),
+ 	.rx_ldpc = false,
++	.usb_tx_agg_desc_num = 1,
+ 	.pwr_track_tbl = &rtw8723d_rtw_pwr_track_tbl,
+ 	.iqk_threshold = 8,
+ 	.ampdu_density = IEEE80211_HT_MPDU_DENSITY_16,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+index fe5d8e188350..1c7289534c5c 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+@@ -2029,6 +2029,7 @@ const struct rtw_chip_info rtw8821c_hw_spec = {
+ 	.rfe_defs = rtw8821c_rfe_defs,
+ 	.rfe_defs_size = ARRAY_SIZE(rtw8821c_rfe_defs),
+ 	.rx_ldpc = false,
++	.usb_tx_agg_desc_num = 3,
+ 	.pwr_track_tbl = &rtw8821c_rtw_pwr_track_tbl,
+ 	.iqk_threshold = 8,
+ 	.bfer_su_max_num = 2,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+index 3017a9760da8..aeb90d45290c 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+@@ -2574,6 +2574,7 @@ const struct rtw_chip_info rtw8822b_hw_spec = {
+ 	.bfer_su_max_num = 2,
+ 	.bfer_mu_max_num = 1,
+ 	.rx_ldpc = true,
++	.usb_tx_agg_desc_num = 3,
+ 	.edcca_th = rtw8822b_edcca_th,
+ 	.l2h_th_ini_cs = 10 + EDCCA_IGI_BASE,
+ 	.l2h_th_ini_ad = -14 + EDCCA_IGI_BASE,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+index cd965edc29ce..afc0b4d8b59d 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+@@ -5399,6 +5399,7 @@ const struct rtw_chip_info rtw8822c_hw_spec = {
+ 	.bfer_mu_max_num = 1,
+ 	.rx_ldpc = true,
+ 	.tx_stbc = true,
++	.usb_tx_agg_desc_num = 3,
+ 	.edcca_th = rtw8822c_edcca_th,
+ 	.l2h_th_ini_cs = 60,
+ 	.l2h_th_ini_ad = 45,
+diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
+index d204d138afe2..057c0ffbe944 100644
+--- a/drivers/net/wireless/realtek/rtw88/usb.c
++++ b/drivers/net/wireless/realtek/rtw88/usb.c
+@@ -379,7 +379,9 @@ static bool rtw_usb_tx_agg_skb(struct rtw_usb *rtwusb, struct sk_buff_head *list
+ 
+ 		skb_iter = skb_peek(list);
+ 
+-		if (skb_iter && skb_iter->len + skb_head->len <= RTW_USB_MAX_XMITBUF_SZ)
++		if (skb_iter &&
++		    skb_iter->len + skb_head->len <= RTW_USB_MAX_XMITBUF_SZ &&
++		    agg_num < rtwdev->chip->usb_tx_agg_desc_num)
+ 			__skb_unlink(skb_iter, list);
+ 		else
+ 			skb_iter = NULL;
+-- 
+2.45.1
 
 
