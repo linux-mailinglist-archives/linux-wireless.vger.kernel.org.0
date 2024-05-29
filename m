@@ -1,113 +1,140 @@
-Return-Path: <linux-wireless+bounces-8269-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8270-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B60FE8D3B4E
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 17:46:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E38E8D3B78
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 17:54:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44E93B21B19
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 15:46:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 601A11C22BEE
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 15:54:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C666415B115;
-	Wed, 29 May 2024 15:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0AAA181315;
+	Wed, 29 May 2024 15:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="TCdBEY0D"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aInQg98I"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9B615ADAA
-	for <linux-wireless@vger.kernel.org>; Wed, 29 May 2024 15:46:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A2F21A19
+	for <linux-wireless@vger.kernel.org>; Wed, 29 May 2024 15:53:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716997579; cv=none; b=lHW6wMPpmniZZTAwbd9Mx4xW6gOUUTPOm61Oj9MFAatqwdhulWIld0UeOedhxipZR7qDgs/S6xcnN3vTbqIe4XCFzKZmk/4L1/8mBzXeGIFnuJ1LD7SlX23ynsX2sICFk7yEsb9U8br+NGgmBtjeXOnjNseCvr7hJZK8h93GHr8=
+	t=1716998032; cv=none; b=kLhtqS48JZ5yCPUWgJ0dxIs5ZhG/QU5JJc73KkoN1foKce/3owKZozFVWmV5LAZTHbLvlnbZDt4n8AKVpjhqHLJhdbd1IyjmExOlCiePy6d8pzlAw+rh9qpL+k/3FNmoaxhElO7lv2il45i6Zja8lDeKu4Ydr/c682Hyz1Ad6kI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716997579; c=relaxed/simple;
-	bh=lgKTBI9QCefX3pW7+wH7ip+UFU1Xw2zeagCwI/7/QTQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=T8tDxO9c3HKf8fzgWLgBIS4PDBHAyNPY0/mZdu3qa/aWVrXvAF4wJ9irfbqj9wBd6skU8ZaZPJAw2H4lv6/rtOjOtdAsJsvWFn2Q74uOqSYmCQPHgis1rv947od8uELJRHbasVxjMnMmWBcyd25ovpEuNpWRPF+xcekVUB3dhAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=TCdBEY0D; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44TA0lUn019268;
-	Wed, 29 May 2024 15:46:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	dpUHLt7pwsL8k1WQ8PfR9Rhsdeh7FelLetbONZjvaqY=; b=TCdBEY0DQrNpPyO2
-	imiVOupktCYoaYKtkmGhgCcdK+eOA1YNiOwzx6tZU9YxICJ6gdWmtquEmx4bqGeC
-	00NXWy6TFk+8UsjhLW/BbN6kgF+IKtfC+J060tfZBJRqq5uFoewP2KJVBB0FodBF
-	8YRh4jNmiBtuZ6fWnVBzRk3Wulaj0MVIRaxdwNSWT7qntfVDjdQrMrq08b7215BY
-	CqCcZkEv1xUQ9Vsjlbq0cmqBkMDGwouRCzR4qu3FtzHOg3j1cxmFh2OVWptOE85A
-	EIWEL90vRSgNmEVAsSUuIB/4dCEINBmIa75jxFiIJaGHa/T3F45BhKNAuj1oRw6M
-	Pcv4+w==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yba0g9ge2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 May 2024 15:46:13 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44TFk3cg000361
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 May 2024 15:46:03 GMT
-Received: from [10.110.122.222] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 29 May
- 2024 08:46:02 -0700
-Message-ID: <161cc065-f51c-4c44-aec4-487a4494ecc1@quicinc.com>
-Date: Wed, 29 May 2024 08:46:01 -0700
+	s=arc-20240116; t=1716998032; c=relaxed/simple;
+	bh=SB0Uv3+j62mYmXxN38x+vhYcxsFH1OBzbAoRl4YOltA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cNluO5tk5rrjbgAJDYwUJmCStviVs+8TboNbm7sIgxhZCsBsOSygL11PXrnKDZmnXFTnYao5aMsACJpK7hEgDHiva1iMNdh6ZeSDFTe8oEWlDC1mn/bs3OqCr2Pa0GwJ9ZQ/H/y03l4rK6oi/eyHpzRhsDpSpmvEamabGp0/iVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aInQg98I; arc=none smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-681a4427816so1720029a12.3
+        for <linux-wireless@vger.kernel.org>; Wed, 29 May 2024 08:53:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716998031; x=1717602831; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SB0Uv3+j62mYmXxN38x+vhYcxsFH1OBzbAoRl4YOltA=;
+        b=aInQg98IpsbBdpouPmuh6FyGW79fiZpxv8XdgNuVafJ+wkyRI+nIQFJcTN+aP+EGm+
+         Bbl8VaKiXsBvLfoNsmNAAdyl6MVYo2TRifHRbYVzKdj6IQaQL0LklLCo7f0LM+ChfJtk
+         nml3k9Lph3dvZFKj0LVaXPsMEofhaDrgcninvosoOE46/iOdsq7NZmh7u4yPb5mGg/tx
+         3TM9OIAVlik+GDD6FB98vWFpu0901hZZARWOiEM0cSyE8rYzN8uZFy6g6BWQ55l2K8wo
+         5Q2Veo8E3nH3XhUSgh/iLhetbIpe5bVBCEZa8aivCkcfhO6GcD08u2zanV0URDR2bIOP
+         r6Wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716998031; x=1717602831;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SB0Uv3+j62mYmXxN38x+vhYcxsFH1OBzbAoRl4YOltA=;
+        b=ctCW7WSjoY3d9i3wpUBsyFFuJLXubOYultPdko9R4KKfLth6GVNPKv+IQb0Oem1C9+
+         68RnREyWQzcUNHyr/6BTzy2bmitj6elf9JXXOQHFmxa759eILSMm+AGOu5lM9M7qnOkh
+         HKHFIJSITYDb/GtYMFDgqtG/K3aQaoHAg7VK7S5MbvX4VqPmcuW9tEJIj0keQnA6+YVY
+         Cfh9zQzmhbVl+O4rsjEevik3dAbV4REx5Uq4cxgt9NJ0rc07iwIABE4ZIOEjzY1DkEtq
+         zsPQ88JbCmVnRQo57BV1VnYecg4Q4Tu0pPYUp6Tj7j6C2s1gGkMdwfBbMm/A3pJLhzTs
+         Gamg==
+X-Gm-Message-State: AOJu0YwWQv2ItB3x+cFoyPfW/tIAMU7NwrwvQxJa8lg9BZyZTpECnhZO
+	xjaJhL/yQ2QWoQodtMiwPMe9sG28p40LPy5tVQDbod2RqybyYNNe3A+piAvYatE3jowBqnTpTHD
+	tclu2Cd7C1i2OJO5Vk/BPESewhyyhVQ==
+X-Google-Smtp-Source: AGHT+IFpBcAGwOjbjyvgMveWbKVd2b969ovwLQeQcQPMxtfei95C3cDpD1sL8O6Lmt8xSVg7NofrG8IqdF4qWRRqByY=
+X-Received: by 2002:a17:90b:3e8b:b0:2bf:c0b7:45b1 with SMTP id
+ 98e67ed59e1d1-2bfc0b746e6mr8800962a91.15.1716998030670; Wed, 29 May 2024
+ 08:53:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath12k: do not process consecutive RDDM event
-Content-Language: en-US
-To: Baochen Qiang <quic_bqiang@quicinc.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240529015357.9846-1-quic_bqiang@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240529015357.9846-1-quic_bqiang@quicinc.com>
+References: <20240527173454.459264-1-marcin.slusarz@gmail.com>
+ <9bfc8f01e99b43e485b2afc6ae4fd661@realtek.com> <CA+GA0_sQ_Bnp8CUq1Pmxf7zut1Kocaxbw4iXT4hYC5_ceXb7WQ@mail.gmail.com>
+ <3cc9cc75468d487c988dbacd8dfc5f57@realtek.com>
+In-Reply-To: <3cc9cc75468d487c988dbacd8dfc5f57@realtek.com>
+From: =?UTF-8?Q?Marcin_=C5=9Alusarz?= <marcin.slusarz@gmail.com>
+Date: Wed, 29 May 2024 17:53:39 +0200
+Message-ID: <CA+GA0_tUy0EuXm0CGYa8SsS78oRNHUanBNwRf_BLXERa1=MYdg@mail.gmail.com>
+Subject: Re: wifi: rtw88: 8821CU hangs after some number of power-off/on cycles
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, =?UTF-8?Q?Marcin_=C5=9Alusarz?= <mslusarz@renau.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 4zpIVohw5hLlNKVO0ME5J5_nibypd_ir
-X-Proofpoint-ORIG-GUID: 4zpIVohw5hLlNKVO0ME5J5_nibypd_ir
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-05-29_12,2024-05-28_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
- priorityscore=1501 bulkscore=0 phishscore=0 adultscore=0 spamscore=0
- mlxlogscore=715 malwarescore=0 lowpriorityscore=0 clxscore=1015
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2405290109
+Content-Transfer-Encoding: quoted-printable
 
-On 5/28/2024 6:53 PM, Baochen Qiang wrote:
-> Currently we do reset for each RDDM event from MHI, however there are
-> cases, see below log, that we get two or more consecutive events, and
-> it is pointless to do reset for the subsequent ones. What's more, it
-> makes reset process more likely to fail.
-> 
-> [  103.289864] mhi mhi0: System error detected
-> [  103.289871] ath12k_pci 0000:03:00.0: mhi notify status reason MHI_CB_EE_RDDM
-> [  103.293144] mhi mhi0: System error detected
-> [  103.293150] ath12k_pci 0000:03:00.0: mhi notify status reason MHI_CB_EE_RDDM
-> 
-> Add a check to avoid reset again and again. This is done by tracking previous
-> MHI status: if we receive a new RDDM event while the previous event is
-> also the same, we treat it as duplicate and ignore it, because normally
-> we should at least receive a MHI_CB_EE_MISSION_MODE event between them.
-> 
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-> 
-> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+=C5=9Br., 29 maj 2024 o 03:52 Ping-Ke Shih <pkshih@realtek.com> napisa=C5=
+=82(a):
+>
+> Marcin =C5=9Alusarz <marcin.slusarz@gmail.com> wrote:
+> > wt., 28 maj 2024 o 05:52 Ping-Ke Shih <pkshih@realtek.com> napisa=C5=82=
+(a):
+> > >
+> > > Marcin =C5=9Alusarz <marcin.slusarz@gmail.com> wrote:
+> > > >
+> > > > I found out that the reason for those hangs is a power-off+on seque=
+nce that's
+> > > > triggered by the above steps.
+> > >
+> > > To avoid power-off/on sequence once device becomes idle, I would like=
+ to add
+> > > a ips_disabled helper. Please revert your changes and apply my attach=
+ed patch.
+> >
+> > My first attempt was very similar, and it fixed some cases but not all =
+of them.
+> >
+> > This is due to the existence of a second source of power-offs - rtw_ops=
+_stop,
+> > which is called, e.g., on downing the interface (ifconfig wlan0 down).
+>
+> Please try attached v2 patch. I would like to have an explicit helper
+> (i.e. always_power_on in v2) to have this fix, so days later people can b=
+e easy
+> to understand how it works. Not prefer adjusting existing flags to implic=
+itly
+> have behavior you want.
 
+So, do you think this is a chip issue, not just some driver misconfiguratio=
+n?
+
+I'm asking because if we are going in this direction, there's something
+more to fix... With your v2, very frequently, I hit WARN_ON(!local->started=
+) in
+ieee80211_rx_napi (in wireless-next, the code was moved to ieee80211_rx_lis=
+t).
+
+With my patch, I checked and hit that WARN_ON, too, but very occasionally.
+
+I think the difference is in what happens in rtw_ips_enter - I disabled onl=
+y
+the power_off, but you also disabled everything else, including the cancela=
+tion
+of work_structs.
+
+The warning itself sounds harmless, but I think users should never see such
+warnings, so this needs to be fixed somehow. Probably some additional
+work_struct(s) need to be canceled?
+
+Marcin
 
