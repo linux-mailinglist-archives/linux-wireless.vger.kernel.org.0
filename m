@@ -1,162 +1,116 @@
-Return-Path: <linux-wireless+bounces-8271-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8272-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 584408D3B8F
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 17:58:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1AEA8D3BEA
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 18:09:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC6011F28E5B
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 15:58:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C19F1F21EE1
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 16:09:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72ECD181D02;
-	Wed, 29 May 2024 15:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF751836DA;
+	Wed, 29 May 2024 16:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fypTA+JW"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="eHb+L+UI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C0D181CF7;
-	Wed, 29 May 2024 15:58:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9FF917DE14
+	for <linux-wireless@vger.kernel.org>; Wed, 29 May 2024 16:09:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716998320; cv=none; b=WsQ/FwUJWRKfLkle5hI4hCuX73+MTNeA2CajvJc7QG2KUIrkfZRunlUTHsYT4QV28NKQ4f9dpM7cznV3svUZ8qR7SVSKnx2PDRMpHDkF8CvgtP8ZtFxhxm1rsSsEZ2m8/9+o74Pc5A2mSVUTHCGzt+Yte42qSBwFpJsM6z0K5zA=
+	t=1716998963; cv=none; b=qQbOfGVTp0Ou5jLVE/AlKJpDvb1p5oIqEox6PURoo4OOLVFEJIX0i93UxgHtujb4hjM0ZGe5Nng6Fp1tusr1A0Bq2SZVq8Y5QFxH3tKEZWEvDSMBTi6vsA41Taidg084sSacER8SLxv8+7KryxAzN3Q8z5vovLs4Yx9Av6B4Ln4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716998320; c=relaxed/simple;
-	bh=ufyQbqT93SwSt4s4JqmoiAB/zHJa/FMuOgckZ/BR4TU=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=MhjhyaykSajl2weD08GXzNLCxiOdA8RKpPQp+u8ovxDM41x2IUGxk95raVEsjVqF+Ya9mxi+ThT3+4gq4ykOfT0yBtSSlVeOl0VcKbhnlF4GIgXdXl8CtdR8kqBWTsZJZUJQgVcfwCB+DwRz9PD3bt2BC75933uwlDVNbni/kF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fypTA+JW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 491BCC113CC;
-	Wed, 29 May 2024 15:58:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716998319;
-	bh=ufyQbqT93SwSt4s4JqmoiAB/zHJa/FMuOgckZ/BR4TU=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=fypTA+JW2IV7pVP1qSfV1ol4Ja9TfGeBVVJx8MRhuBAJGIEN1e8OFOne5tbK7RN2a
-	 D0LvLXsB5H5+Gy+2++biOK246LPXm1vkQzR9dwUErgCpKivRZRfiAf8HPNiTGKX9pU
-	 oWErLgw+ObFGOiZhKOKrIKTl3UdfBp0zLwwvyhBPfMijoZcJ4GqJGbGRVpxLiXLuK3
-	 rlD365rHM/V9afV0i+oKhcXyHY2VXEmAZKWOS9YOv4s3qcmAjzDtAySsurpBtSy2FR
-	 KYwVbp/sbn1MbK0yr5b9F++Zx1/dfnPzTxAlo4T5Gd8s0DbfhjRb+ud079yR5zNYSX
-	 CxazeMz/4IGdw==
-From: Kalle Valo <kvalo@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org,  ath11k@lists.infradead.org,
-  regressions@lists.linux.dev,  Jeff Johnson <quic_jjohnson@quicinc.com>,
- Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [regression] BUG: KASAN: use-after-free in
- lockdep_register_key+0x755/0x8f0
-References: <87v82y6wvi.fsf@kernel.org>
-Date: Wed, 29 May 2024 18:58:36 +0300
-In-Reply-To: <87v82y6wvi.fsf@kernel.org> (Kalle Valo's message of "Tue, 28 May
-	2024 13:42:25 +0300")
-Message-ID: <87wmncwqxf.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1716998963; c=relaxed/simple;
+	bh=yJJhDV0kP7rRaja12AY04syL2CbtlL4KN7Y+TDinnHA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Lb6g6N/lkq11C4+OX9th7aNhs2V/VnepPJ+L2R2a0Jq2pk78A+ZqYdFMd+V64HKAYqaDoyyKEHtgKM7seCree5Fx1pOFq+scbTe7cMJkQKLpC4rQk4SJ5U3BQNssd0gc8LobLSg+cezQ1BKOcX5NLaAVPR/KyzNmGQcSso9JXxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=eHb+L+UI; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44TAuJXM026856;
+	Wed, 29 May 2024 16:09:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	qpSIB8zCMPhZJXXwMsLR0VEaQGYpFBGechwVjwXrKG0=; b=eHb+L+UIGUcrkTBB
+	GRi5KYBCe9LW/6y9lPKo/KxNhIl58ln+s+I02yWTc4vWIjQD3mHnPhutwav7KLFg
+	wggwvWtTpAKJBGRy0eNu639NubTyngRPAR7TLJmkFKN+HlwtMvVQldMKFBlwtbjy
+	EyAz1mYYJnLRCcC68bmIPbnY5FPmTViaKyCkvF/Bl2VdvhH0G/NgMPPRdilXB9N7
+	YX9x6hUlF6oP+u4fyviCP/WGNE8F3IiQEGTAVt6cslIRbpZgQ88YasHdqQf1mu/q
+	NcS7fQitVX+mas23adU4DQG1+P1+KZUIlcPclIdYBGfdfGCs3LtVpuDbzgdT2VQ5
+	WpQiow==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yba1k9f36-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 May 2024 16:09:18 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44TG9IHZ002158
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 May 2024 16:09:18 GMT
+Received: from [10.110.122.222] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 29 May
+ 2024 09:09:17 -0700
+Message-ID: <53fdf634-ab24-469f-b4d1-5e9a8c9c113d@quicinc.com>
+Date: Wed, 29 May 2024 09:09:16 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath12k: add panic handler
+Content-Language: en-US
+To: Baochen Qiang <quic_bqiang@quicinc.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240529021533.10861-1-quic_bqiang@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240529021533.10861-1-quic_bqiang@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: FGvNPL1tMdWnwX95nP9YZaYnsPs2asg3
+X-Proofpoint-GUID: FGvNPL1tMdWnwX95nP9YZaYnsPs2asg3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-05-29_12,2024-05-28_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 impostorscore=0
+ suspectscore=0 phishscore=0 clxscore=1015 priorityscore=1501
+ lowpriorityscore=0 bulkscore=0 spamscore=0 adultscore=0 malwarescore=0
+ mlxlogscore=825 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2405290112
 
-Kalle Valo <kvalo@kernel.org> writes:
+On 5/28/2024 7:15 PM, Baochen Qiang wrote:
+> Currently for ath12k PCI devices, firmware could be running in one of
+> several execution environments, e.g., PBL, SBL and mission mode etc. Among
+> which PBL is the only stage where PCIe link negotiation could happen. So
+> normally firmware runs in PBL in order to be enumerated during system reboot.
+> 
+> However it might not work in kernel crash scenario: ath12k target is not
+> found after warm reboot from kernel crash. This is because when kernel crashes,
+> ath12k host does nothing to firmware. And during warm reboot, WLAN power
+> is sustained. So firmware is likely to keep running in mission mode throughout
+> the bootup process. As a result PCIe link is not established and thus target
+> not enumerated.
+> 
+> So add a handler in panic notification list for ath12k. When kernel crashes,
+> this handler gets called and tries to reset target to PBL state. Then PCIe
+> link negotiation could happen and target gets enumerated.
+> 
+> This change applies to all PCI devices including WCN7850 and QCN9274.
+> 
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+> 
+> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-> Yesterday I run our ath11k regression tests with v6.10-rc1 and our
-> simple ath11k module reload stress started failing reliably with various
-> KASAN errors. The test removes and inserts ath11k and other wireless
-> modules in a loop. Usually I run it at least 100 times, some times even
-> more, and no issues until yesterday.
->
-> I have verified that the last wireless-next pull request (tag
-> wireless-next-2024-05-08) works without issues and v6.10-rc1 fails
-> always, usually within 50 module reload loops. From this I'm _guessing_
-> that we have a regression outside wireless, most probably introduced
-> between v6.9 and v6.10-rc1. But of course I cannot be sure of anything
-> yet.
->
-> I see different KASAN warnings and lockdep seems to be always visible in
-> the stack traces. I think I can reproduce the issue within 15 minutes or
-> so. Before I start bisecting has anyone else seen anything similar? Or
-> any suggestions how to debug this further?
->
-> I have included some crash logs below, they are retrieved using
-> netconsole. Here's a summary of the errors:
->
-> [ 159.970765] KASAN: maybe wild-memory-access in range
-> [0xbbbbbbbbbbbbbbb8-0xbbbbbbbbbbbbbbbf]
-> [  700.017632] BUG: KASAN: use-after-free in lockdep_register_key+0x755/0x8f0
-> [  224.695821] BUG: KASAN: slab-out-of-bounds in lockdep_register_key+0x755/0x8f0
-> [  259.666542] BUG: KASAN: slab-use-after-free in lockdep_register_key+0x755/0x8f0
-
-I did a bisect and got this:
-
-cf29111d3e4a9ebe1cbe2b431274718506d69f10 is the first bad commit
-commit cf29111d3e4a9ebe1cbe2b431274718506d69f10
-Merge: ed11a28cb709 e6f7d27df5d2
-Author: Bjorn Helgaas <bhelgaas@google.com>
-Date:   Thu May 16 18:14:11 2024 -0500
-
-    Merge branch 'pci/of'
-    
-    - Check for kcalloc() failure and handle it gracefully (Duoming Zhou)
-    
-    * pci/of:
-      PCI: of_property: Return error for int_map allocation failure
-
- drivers/pci/of_property.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-But that doesn't make any sense to me, I don't even have
-CONFIG_PCI_DYNAMIC_OF_NODES enabled in my .config. I guess I did a
-mistake during bisect, I'm now testing the parents (e6f7d27df5d2 and
-ed11a28cb709) and trying to pinpoint where I did it wrong.
-
-Adding Bjorn in case he has any ideas. This might be something PCI
-related based on my bisect log (but just guessing at this point):
-
-git bisect start
-# status: waiting for both good and bad commits
-# good: [a38297e3fb012ddfa7ce0321a7e5a8daeb1872b6] Linux 6.9
-git bisect good a38297e3fb012ddfa7ce0321a7e5a8daeb1872b6
-# status: waiting for bad commit, 1 good commit known
-# good: [1d60eabb82694e58543e2b6366dae3e7465892a5] wifi: mwl8k: initialize cmd->addr[] properly
-git bisect good 1d60eabb82694e58543e2b6366dae3e7465892a5
-# status: waiting for bad commit, 2 good commits known
-# bad: [1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0] Linux 6.10-rc1
-git bisect bad 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0
-# good: [d34672777da3ea919e8adb0670ab91ddadf7dea0] Merge tag 'fbdev-for-6.10-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/deller/linux-fbdev
-git bisect good d34672777da3ea919e8adb0670ab91ddadf7dea0
-# good: [a90f1cd105c6c5c246f07ca371d873d35b78c7d9] Merge tag 'turbostat-for-Linux-6.10-merge-window' of git://git.kernel.org/pub/scm/linux/kernel/git/lenb/linux
-git bisect good a90f1cd105c6c5c246f07ca371d873d35b78c7d9
-# bad: [29c73fc794c83505066ee6db893b2a83ac5fac63] Merge tag 'perf-tools-for-v6.10-1-2024-05-21' of git://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools
-git bisect bad 29c73fc794c83505066ee6db893b2a83ac5fac63
-# good: [30aec6e1bb617e1349d7fa5498898d7d4351d71e] Merge tag 'vfio-v6.10-rc1' of https://github.com/awilliam/linux-vfio
-git bisect good 30aec6e1bb617e1349d7fa5498898d7d4351d71e
-# bad: [8053d2ffc4502bbb50a78c805d964e65a6de1803] Merge tag 'phy-for-6.10' of git://git.kernel.org/pub/scm/linux/kernel/git/phy/linux-phy
-git bisect bad 8053d2ffc4502bbb50a78c805d964e65a6de1803
-# bad: [f0bae243b2bcf2b160ae547463bf542762beef8f] Merge tag 'pci-v6.10-changes' of git://git.kernel.org/pub/scm/linux/kernel/git/pci/pci
-git bisect bad f0bae243b2bcf2b160ae547463bf542762beef8f
-# good: [38da32ee70b876f5b8bea7c4135eff46339c18f2] Merge tag 'pull-bd_inode-1' of git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs
-git bisect good 38da32ee70b876f5b8bea7c4135eff46339c18f2
-# good: [ed11a28cb709a9ab69c4cd4e0669079a455f9a8d] Merge branch 'pci/msi'
-git bisect good ed11a28cb709a9ab69c4cd4e0669079a455f9a8d
-# bad: [102c69699b5b5d4aebfe8d15d5f91bde68dababd] Merge branch 'pci/controller/mt7621'
-git bisect bad 102c69699b5b5d4aebfe8d15d5f91bde68dababd
-# bad: [14680b252788675e2007fffde371e76a3a7a9b21] Merge branch 'pci/dt-bindings'
-git bisect bad 14680b252788675e2007fffde371e76a3a7a9b21
-# bad: [12ff1ef539c23cb7563bc3d894de9edd9469ea98] Merge branch 'pci/pm'
-git bisect bad 12ff1ef539c23cb7563bc3d894de9edd9469ea98
-# bad: [cf29111d3e4a9ebe1cbe2b431274718506d69f10] Merge branch 'pci/of'
-git bisect bad cf29111d3e4a9ebe1cbe2b431274718506d69f10
-# good: [e6f7d27df5d208b50cae817a91d128fb434bb12c] PCI: of_property: Return error for int_map allocation failure
-git bisect good e6f7d27df5d208b50cae817a91d128fb434bb12c
-# first bad commit: [cf29111d3e4a9ebe1cbe2b431274718506d69f10] Merge branch 'pci/of'
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
