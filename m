@@ -1,98 +1,101 @@
-Return-Path: <linux-wireless+bounces-8241-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8242-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7F978D2A63
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 04:03:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CDB38D2A85
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 04:06:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E5FE1F278A5
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 02:03:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 051D62895A0
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 02:06:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1058515CD53;
-	Wed, 29 May 2024 02:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C275315AAD6;
+	Wed, 29 May 2024 02:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lwFVivYO"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="sW/ywED9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99B515CD4C;
-	Wed, 29 May 2024 02:02:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B3415AD99;
+	Wed, 29 May 2024 02:03:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716948137; cv=none; b=M7QHd73AxPsFJtg9Ya5KRclgYtJs4hnnRPQb/yzjo8B48AH1x8jKegeo2fRaR/zJoLSGe6nYaNI53YC+EoTde5QvQqqY3TBRas2vylUsb3Wgbqt93E0WVS5n+dUE72MngfHElkxnZd4IV4IUhoirk+I6vnogzBivDtPCvo4X1mw=
+	t=1716948183; cv=none; b=VUoZipdTgPnzQQUlZUR8eNCTlugPf9BhqAVNiw8W/5zrhC09m1LlCpg7esd7HWa2ioSjOQTRRKyLwTzrF5EJb/ZFNiCUQ5+EqrkNtoSE0cE+dFdMlp09K7bJA4Wk2vt3GnnO05l1QPAC9p/GpziqkgyOXxyHnKrYMUkj8HQ150g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716948137; c=relaxed/simple;
-	bh=kBuQ9fcA+VN6pPO3SFipaZrl1mBckkhQxMcU1vdmrT4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pNKCuIkWwJUxBTeoZUGdnrj/Aamw85Yg6p+APyD3K9mb9OZ9hRg+M0SBY0qaIETlU7gSm3u9BIByubu0c+FO7UKc0gHIluOY1ZknJn8kfPv7/lzOSbQ++MtskN3vhdzFVmT4RJ8uzv/UwYBO6EODKCafK1XJ8gMOA7L52yw2Kwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lwFVivYO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB112C4AF08;
-	Wed, 29 May 2024 02:02:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716948136;
-	bh=kBuQ9fcA+VN6pPO3SFipaZrl1mBckkhQxMcU1vdmrT4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lwFVivYOgH6ldsdLchXHx8VvhvKvJ2HOJXTIpYoe1syCLelhlDuql/2rPzZcCvm3w
-	 BwuBUY1hRH3dZr2/8875yzsE+sHEY2GLSzzfbMoqaJpsjpQO8IPtFOvO8lU4VPoSLQ
-	 X7Uxtp+B8ZABJb+ZWLVcO82zeHX2HSIj0EcbVfQwsaTihNVNvHXE0LbEknveDL7rpH
-	 WcsA3Mm23OfE/f8dWEXBajFO/lNQMmobJofNmst2lMBGuVgdfFv0vgAb/qJzMuTATQ
-	 uf0ia4VvpVsndQxmSY69Ta6/bTkNjTJahLInrlzTwsuDe7APARcC+NxGyW07Z57CkA
-	 4Ed6S8oh2mnSQ==
-From: Bjorn Andersson <andersson@kernel.org>
-To: Kalle Valo <kvalo@kernel.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	ath10k <ath10k@lists.infradead.org>,
-	Marc Gonzalez <mgonzalez@freebox.fr>
-Cc: wireless <linux-wireless@vger.kernel.org>,
-	DT <devicetree@vger.kernel.org>,
-	MSM <linux-arm-msm@vger.kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Pierre-Hugues Husson <phhusson@freebox.fr>,
-	Arnaud Vrac <avrac@freebox.fr>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Jami Kettunen <jamipkettunen@gmail.com>,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Alexey Minnekhanov <alexeymin@postmarketos.org>
-Subject: Re: (subset) [PATCH v3 0/3] Work around missing MSA_READY indicator for msm8998 devices
-Date: Tue, 28 May 2024 21:01:54 -0500
-Message-ID: <171694812078.574781.940205504715408568.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <ebbda69c-63c1-4003-bf97-c3adf3ccb9e3@freebox.fr>
-References: <ebbda69c-63c1-4003-bf97-c3adf3ccb9e3@freebox.fr>
+	s=arc-20240116; t=1716948183; c=relaxed/simple;
+	bh=O79keix28rmAHBpO1tmH+HkKuIfiwhKx1JCWllxFRxc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Yc7XJOLvUOQTmU7Olr096choVx449y1mgS1yxVk3b4PAE+gDfxtd9zZlExoVuBEIXMNsnJa8QR43fN8mqUENwyvpaYSfK7tIXUmJq3KrwgKNTsMHMwzGj15r77anYuIdnxhft078sS32Upvlvuw4pXhSksm3YsRpiygmPD4i4cQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=sW/ywED9; arc=none smtp.client-ip=115.124.30.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1716948178; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=wlYFxgSPBB8GHLCmZnRucL7d7MzOWuLmNUc70TG55TY=;
+	b=sW/ywED9AgTrF9CCg554+e14AypJHxFo9AJ2rIcMhd3M4pZbXBXS2L20qIk7xesKiwyQMlVkpnFYDuwEcIbW5a3o8oaazaPfMeOJLUZWa97Ki+0cUdu9CieF1K3MIv5Yh0NxK7W9bObD+ZqvEcg+1K35SxU56sXVKBQrxKyLGBY=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R431e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037067111;MF=jiapeng.chong@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0W7R4YvH_1716948165;
+Received: from localhost(mailfrom:jiapeng.chong@linux.alibaba.com fp:SMTPD_---0W7R4YvH_1716948165)
+          by smtp.aliyun-inc.com;
+          Wed, 29 May 2024 10:02:58 +0800
+From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+To: pkshih@realtek.com
+Cc: kvalo@kernel.org,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+	Abaci Robot <abaci@linux.alibaba.com>
+Subject: [PATCH v2] wifi: rtw89: chan: Use swap() in rtw89_swap_sub_entity()
+Date: Wed, 29 May 2024 10:02:44 +0800
+Message-Id: <20240529020244.129027-1-jiapeng.chong@linux.alibaba.com>
+X-Mailer: git-send-email 2.20.1.7.g153144c
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
+Use existing swap() function instead of keeping duplicate source code.
 
-On Mon, 29 Apr 2024 16:01:41 +0200, Marc Gonzalez wrote:
-> Work around missing MSA_READY indicator in ath10k driver
-> (apply work-around for all msm8998 devices)
-> 
-> CHANGELOG v3
-> - Add a paragraph in binding commit to explain why we use
->   a DT property instead of a firmware feature bit.
-> - Warn if the "no_msa_ready_indicator" property is true,
->   but we actually receive the indicator.
-> 
-> [...]
+./drivers/net/wireless/realtek/rtw89/chan.c:2336:32-33: WARNING opportunity for swap().
 
-Applied, thanks!
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=9174
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+---
+Changes in v2:
+  -Amend commit message to make it more clearer.
 
-[3/3] arm64: dts: qcom: msm8998: set qcom,no-msa-ready-indicator for wifi
-      commit: 737abcabe97bb37e38be2504acd28ad779dbaf3d
+ drivers/net/wireless/realtek/rtw89/chan.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-Best regards,
+diff --git a/drivers/net/wireless/realtek/rtw89/chan.c b/drivers/net/wireless/realtek/rtw89/chan.c
+index 051a3cad6101..3b1997223cc5 100644
+--- a/drivers/net/wireless/realtek/rtw89/chan.c
++++ b/drivers/net/wireless/realtek/rtw89/chan.c
+@@ -2322,7 +2322,6 @@ static void rtw89_swap_sub_entity(struct rtw89_dev *rtwdev,
+ 				  enum rtw89_sub_entity_idx idx2)
+ {
+ 	struct rtw89_hal *hal = &rtwdev->hal;
+-	struct rtw89_sub_entity tmp;
+ 	struct rtw89_vif *rtwvif;
+ 	u8 cur;
+ 
+@@ -2332,9 +2331,7 @@ static void rtw89_swap_sub_entity(struct rtw89_dev *rtwdev,
+ 	hal->sub[idx1].cfg->idx = idx2;
+ 	hal->sub[idx2].cfg->idx = idx1;
+ 
+-	tmp = hal->sub[idx1];
+-	hal->sub[idx1] = hal->sub[idx2];
+-	hal->sub[idx2] = tmp;
++	swap(hal->sub[idx1], hal->sub[idx2]);
+ 
+ 	rtw89_for_each_rtwvif(rtwdev, rtwvif) {
+ 		if (!rtwvif->chanctx_assigned)
 -- 
-Bjorn Andersson <andersson@kernel.org>
+2.20.1.7.g153144c
+
 
