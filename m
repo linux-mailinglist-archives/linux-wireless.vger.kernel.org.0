@@ -1,209 +1,107 @@
-Return-Path: <linux-wireless+bounces-8235-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8236-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 402F78D27B8
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 00:04:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7BAF8D2976
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 02:35:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62E3E1C202E2
-	for <lists+linux-wireless@lfdr.de>; Tue, 28 May 2024 22:04:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 781BE1F258C6
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 00:35:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C58821DFD2;
-	Tue, 28 May 2024 22:04:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="K7pv/AD1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 184A317E8E4;
+	Wed, 29 May 2024 00:35:21 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5DB13DB9C
-	for <linux-wireless@vger.kernel.org>; Tue, 28 May 2024 22:04:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E92D41598E9
+	for <linux-wireless@vger.kernel.org>; Wed, 29 May 2024 00:35:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716933882; cv=none; b=DG7C5uvKQdVOM0mV1Kjf74z9HvplF4FklchiJ8brZD+wq8YndL9E5MChIjHsS4KmrvJU36nqi4hy+V3AzSL5ddN4zlqBGgx5jKjoE36m3PZ2R971l6A9vC8qHNdsZcd1wMGohHQnvTQG6ZIltg9R7Mw9DKwR87xkB/QcCqOUmXc=
+	t=1716942921; cv=none; b=sW8/Mzj4o95lBLuArscuONNpG7dJDVk6DGXDVNkSsmw3G1xQhv+phQFZdcZYX4P3dkEWB8nQYJk/nHR3p/rgnynqJvnkHUSOFEsAL6CLiZa0Agb9RLt5WyoLTCD6CMfkL9vUwJFWP2UciZII9sUe497hTtKTGIXvtAxQrALl5Qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716933882; c=relaxed/simple;
-	bh=/GjpP014MD5RJGlkSnb0HyQp8zyJB8gK0lA57Yj3Jls=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ryY+qBFq/ifUjVtrRDLnj0ZTWGHmDRzNUF3/66vIqg5e+IRetALLVR0zg8Or9YEyPFfNHn0tnREfr2VJZtZMf7qOFksJDn2v5FfPgmIAd14mV+ACPd0xFluKPRv29NlDKtEeS/iGMkePy4VJ87CDtgHIEOj9Q394Vt9kV8iKmq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=K7pv/AD1; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44SBU8UW002957;
-	Tue, 28 May 2024 22:04:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	9sv0P9Ps19AIBqGH7Qwminv8nT9R2/SSGoOpb0W/kIc=; b=K7pv/AD1JUwuKVSB
-	SkBY7O2Nb46mZqRD2UzqrZ/g3rbfEzKoMM3MWTmklr9i83ym0uCmm5mRAlo9GnJG
-	pefDRlmiBqUlIsp+oKtoq7RTUCDZlYshoBXezu6DPs081DIBfQxK/xKW8S+yx0oD
-	kZejgxcVOdHTpZbcr+EgyrFjy0fwXw+29WylhIxjxphaSvDiLT47NPXHSTOIjOX2
-	o5KPauweX04Wg9ce2eZ2AA24q0v/H5n0xPoW1YcuFqef2i4ukdtuTmXRgxq4udn8
-	+S26Irl1buj6etmojpFIXzDETlGUmjs5m+L7XDi4T9xiVcYJvk4o1L3g5GARnlFi
-	dq0NOw==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yba1k7e37-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 May 2024 22:04:28 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44SM4Sxm028599
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 May 2024 22:04:28 GMT
-Received: from [10.110.122.222] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 28 May
- 2024 15:04:27 -0700
-Message-ID: <396d645d-6f3b-4c1b-9d4b-d056fad36192@quicinc.com>
-Date: Tue, 28 May 2024 15:04:26 -0700
+	s=arc-20240116; t=1716942921; c=relaxed/simple;
+	bh=0aS4vRmq2pfL1MXF9ffmx4szgM63mh3wQoR0Dhl1Jyw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=s/2KZtruxG5hJ8mhjcCDuKd8zo6oCU6+5t07f2I4PujrXYUR3I22iDeFzllK//yLz1CyUylyFIhvwm5w4s7KmXJ1ky7ikqrwDeqTJbDpOrHHCAywgmVEpNuVq2SDAksI4jjonrve0y5S/ProiNwKnKAbdSEf6uPxDRHX3eWAgJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 44T0YwqT62929896, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 44T0YwqT62929896
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 29 May 2024 08:34:58 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 29 May 2024 08:34:59 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 29 May 2024 08:34:58 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
+ 15.01.2507.035; Wed, 29 May 2024 08:34:58 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: "wens@kernel.org" <wens@kernel.org>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH 4/4] wireless-regdb: Update regulatory info for Thailand (TH) on 6GHz
+Thread-Topic: [PATCH 4/4] wireless-regdb: Update regulatory info for Thailand
+ (TH) on 6GHz
+Thread-Index: AQHarBHOhgVkAx4V/0aivjy5oRx09bGsLw6AgAE3VcA=
+Date: Wed, 29 May 2024 00:34:58 +0000
+Message-ID: <9df191b4b4a848339afc6f9b765f1e6f@realtek.com>
+References: <20240522062835.69628-1-pkshih@realtek.com>
+ <20240522062946.69832-1-pkshih@realtek.com>
+ <CAGb2v65zyPyeE+=hJSPEVLmsSOHimMK2vWVxS5kQ6FzRrWTMYw@mail.gmail.com>
+In-Reply-To: <CAGb2v65zyPyeE+=hJSPEVLmsSOHimMK2vWVxS5kQ6FzRrWTMYw@mail.gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 0/8] wifi: ath12k: Introduce device group abstraction
-Content-Language: en-US
-To: Harshitha Prem <quic_hprem@quicinc.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, Baochen Qiang <quic_bqiang@quicinc.com>
-References: <20240528063547.1400700-1-quic_hprem@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240528063547.1400700-1-quic_hprem@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: P3TRlSD1MI3L9XF3sWUPjPuHtS1BMr9J
-X-Proofpoint-GUID: P3TRlSD1MI3L9XF3sWUPjPuHtS1BMr9J
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-05-28_14,2024-05-28_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 impostorscore=0
- suspectscore=0 phishscore=0 clxscore=1015 priorityscore=1501
- lowpriorityscore=0 bulkscore=0 spamscore=0 adultscore=0 malwarescore=0
- mlxlogscore=918 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2405280164
 
-On 5/27/2024 11:35 PM, Harshitha Prem wrote:
-> To support multi-link operation, multiple devices with different bands say
-> 2 GHz or 5 GHz or 6 GHz can be combined together as a group and provide
-> an abstraction to mac80211.
-> 
-> Device group abstraction - when there are multiple devices that are
-> connected by any means of communication interface between them, then these
-> devices can be combined together as a single group using a group id to form
-> a group abstraction. In ath12k driver, this abstraction would be named as
-> ath12k_hw_group (ag).
-> 
-> Please find below illustration of device group abstraction with two
-> devices.
-> 
->                  Grouping of multiple devices (in future)
-> +------------------------------------------------------------------------+
-> |  +-------------------------------------+       +-------------------+   |
-> |  |   +-----------+ | | +-----------+   |       |   +-----------+   |   |
-> |  |   | ar (2GHz) | | | | ar (5GHz) |   |       |   | ar (6GHz) |   |   |
-> |  |   +-----------+ | | +-----------+   |       |   +-----------+   |   |
-> |  |          ath12k_base (ab)           |       | ath12k_base (ab)  |   |
-> |  |         (Dual band device)          |       |                   |   |
-> |  +-------------------------------------+       +-------------------+   |
-> |                 ath12k_hw_group (ag) based on group id                 |
-> +------------------------------------------------------------------------+
-> 
-> Say for example, device 1 has two radios (2 GHz and 5 GHz band) and
-> device 2 has one radio (6 GHz).
-> 
-> In existing code -
->         device 1 will have two hardware abstractions hw1 (2 GHz) and hw2
->         (5 GHz) will be registered separately to mac80211 as phy0 and phy1
->         respectively. Similarly, device 2 will register its hw (6GHz) as
->         phy2 to mac80211.
-> 
-> In future, with multi-link abstraction
-> 
->         combination 1 - Different group id for device1 and device 2
->                 Device 1 will create a single hardware abstraction hw1
->                 (2 GHz and  5 GHz) and will be registered to mac80211 as
->                 phy0. similarly, device 2 will register its hardware
->                 (6 GHz) to mac80211 as phy1.
-> 
->         combination 2 - Same group id for device1 and device 2
->                 Both device details are combined together as a group, say
->                 group1, with single hardware abstraction of radios 2 GHz,
->                 5 GHz and 6 GHz band details and will be registered to
->                 mac80211 as phy0.
-> 
-> Add base infrastructure changes to add device grouping abstraction with
-> a single device.
-> 
-> This patch series brings the base code changes with following order:
->         1. Refactor existing code which would facilitate in introducing
->            device group abstraction.
->         2. Create a device group abstraction during device probe.
->         3. Start the device group only after QMI firmware ready event is
->            received for all the devices that are combined in the group.
->         4. Move the hardware abstractions (ath12k_hw - ah) from device
->            (ath12k_base - ab) to device group abstraction (ag) as it would
->            ease in having different combinations of group abstraction that
->            can be registered to mac80211.
-> 
-> v7:
->    - Added linux-wireless mailer to cc.
->    - Removed Acked-by tag from "[PATCH v6 8/8]" as it has minor change.
-> 
-> v6:
->   - Addressed smatch error seen on "[PATCH v5 8/8] wifi: ath12k: move
->     ath12k_hw from per soc to group"
->   - Rebased to ToT
-> v5:
->   - on "[PATCH 8/8] wifi: ath12k: move ath12k_hw from per soc to
->     group", refactor the ath12k_mac_hw_allocate() api based on ag rather
->     than ab and update hardware abstraction array size in ath12k_hw_group
->     as ATH12K_GROUP_MAX_RADIO.
->   - Rebased to ToT
-> v4:
->   - Modified the cover letter
-> v3:
->   - Removed depends-on tag of "wifi: ath12k: Refactor the hardware recovery
->     procedures" as it is merged to ToT
->   - Addressed the deadlock warning seen during rmmod.
-> 
-> v2:
->  - Rebased to ToT
-> 
-> Karthikeyan Periyasamy (8):
->   wifi: ath12k: Refactor core start api
->   wifi: ath12k: Add helpers to get or set ath12k_hw
->   wifi: ath12k: Add ath12k_get_num_hw api
->   wifi: ath12k: Introduce QMI firmware ready flag
->   wifi: ath12k: move ATH12K_FLAG_REGISTERED flag set to mac_register api
->   wifi: ath12k: Introduce device group abstraction
->   wifi: ath12k: refactor core start based on hardware group
->   wifi: ath12k: move ath12k_hw from per device to group
-> 
->  drivers/net/wireless/ath/ath12k/core.c | 431 +++++++++++++++++++++----
->  drivers/net/wireless/ath/ath12k/core.h |  87 ++++-
->  drivers/net/wireless/ath/ath12k/dp.c   |  19 +-
->  drivers/net/wireless/ath/ath12k/dp.h   |   2 +-
->  drivers/net/wireless/ath/ath12k/mac.c  | 117 ++++---
->  drivers/net/wireless/ath/ath12k/mac.h  |   9 +-
->  drivers/net/wireless/ath/ath12k/pci.c  |   2 +
->  drivers/net/wireless/ath/ath12k/qmi.c  |  10 +-
->  8 files changed, 544 insertions(+), 133 deletions(-)
-> 
-> 
-> base-commit: f8320064a28242448eeb9fece08abd865ea8a226
-
-With this series I'm seeing a firmware crash upon resume from hibernation, but 
-I'm not sure if it is the same intermittent crash I reported in another thread 
-where firmware is not correctly handling a low physical memory address.
-
-Baochen & Kalle, since this issue may be specific to my laptop, can you 
-validate hibernation on your setups?
-
+Q2hlbi1ZdSBUc2FpIDx3ZW5zQGtlcm5lbC5vcmc+IHdyb3RlOg0KPiANCj4gT24gV2VkLCBNYXkg
+MjIsIDIwMjQgYXQgMjozMOKAr1BNIFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPiB3
+cm90ZToNCj4gPg0KPiA+IFRoZSBCcm9hZGNhc3RpbmcgQ29tbWlzc2lvbiBUZWxldmlzaW9uIGJ1
+c2luZXNzIGFuZCB0aGUgTmF0aW9uYWwNCj4gPiBUZWxlY29tbXVuaWNhdGlvbnMgQ29tbWlzc2lv
+biBhbm5vdW5jZWQgVGVjaG5pY2FsIHN0YW5kYXJkcyBmb3INCj4gPiB0ZWxlY29tbXVuaWNhdGlv
+bnMgZXF1aXBtZW50IGFuZCBlcXVpcG1lbnQgZm9yIHJhZGlvY29tbXVuaWNhdGlvbiBlcXVpcG1l
+bnQNCj4gPiB0aGF0IHVzZXMgdGhlIGZyZXF1ZW5jeSA1LjkyNSAtIDYuNDI1IEdIeiBbMl0sIHdo
+aWNoIHNlY3Rpb24gMi4xIGRlc2NyaWJlcw0KPiA+IGUuaS5yLnAuIChFcXVpdmFsZW50IElzb3Ry
+b3BpY2FsbHkgUmFkaWF0ZWQgUG93ZXIpIGlzIDI1MG1XIGFuZCAyNW1XIGZvcg0KPiA+IGluZG9v
+ciBhbmQgaW5kb29yL291dGRvb3IgcmVzcGVjdGl2ZWx5Lg0KPiA+DQo+ID4gWzFdIGh0dHBzOi8v
+cmF0Y2hha2l0Y2hhLnNvYy5nby50aC9kb2N1bWVudHMvMTQwRDEwMFMwMDAwMDAwMDA0MDAwLnBk
+Zg0KPiA+IFsyXSBodHRwczovL3JhdGNoYWtpdGNoYS5zb2MuZ28udGgvZG9jdW1lbnRzLzE0MEQx
+MDBTMDAwMDAwMDAwNDIwMC5wZGYNCj4gPiBbM10gaHR0cHM6Ly9yYXRjaGFraXRjaGEuc29jLmdv
+LnRoL2RvY3VtZW50cy8xNDBEMTAwUzAwMDAwMDAwMDQzMDAucGRmDQo+ID4NCj4gPiBTaWduZWQt
+b2ZmLWJ5OiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4NCj4gPiAtLS0NCj4gPiAg
+ZGIudHh0IHwgNSArKysrKw0KPiA+ICAxIGZpbGUgY2hhbmdlZCwgNSBpbnNlcnRpb25zKCspDQo+
+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvZGIudHh0IGIvZGIudHh0DQo+ID4gaW5kZXggMDIyZWNiMzcx
+OWI2Li5jNzAwOGUyM2I3Y2EgMTAwNjQ0DQo+ID4gLS0tIGEvZGIudHh0DQo+ID4gKysrIGIvZGIu
+dHh0DQo+ID4gQEAgLTE3MDIsMTIgKzE3MDIsMTcgQEAgY291bnRyeSBURzogREZTLUVUU0kNCj4g
+PiAgICAgICAgICg1MjUwIC0gNTMzMCBAIDQwKSwgKDIwKSwgREZTDQo+ID4gICAgICAgICAoNTQ5
+MCAtIDU3MTAgQCA0MCksICgyNyksIERGUw0KPiA+DQo+ID4gKyMgU291cmNlOg0KPiA+ICsjIGh0
+dHBzOi8vcmF0Y2hha2l0Y2hhLnNvYy5nby50aC9kb2N1bWVudHMvMTQwRDEwMFMwMDAwMDAwMDA0
+MDAwLnBkZg0KPiA+ICsjIGh0dHBzOi8vcmF0Y2hha2l0Y2hhLnNvYy5nby50aC9kb2N1bWVudHMv
+MTQwRDEwMFMwMDAwMDAwMDA0MjAwLnBkZg0KPiA+ICsjIGh0dHBzOi8vcmF0Y2hha2l0Y2hhLnNv
+Yy5nby50aC9kb2N1bWVudHMvMTQwRDEwMFMwMDAwMDAwMDA0MzAwLnBkZg0KPiA+ICBjb3VudHJ5
+IFRIOiBERlMtRkNDDQo+ID4gICAgICAgICAoMjQwMiAtIDI0ODIgQCA0MCksICgyMCkNCj4gPiAg
+ICAgICAgICg1MTcwIC0gNTI1MCBAIDgwKSwgKDE3KSwgQVVUTy1CVw0KPiA+ICAgICAgICAgKDUy
+NTAgLSA1MzMwIEAgODApLCAoMjQpLCBERlMsIEFVVE8tQlcNCj4gPiAgICAgICAgICg1NDkwIC0g
+NTczMCBAIDE2MCksICgyNCksIERGUw0KPiA+ICAgICAgICAgKDU3MzUgLSA1ODM1IEAgODApLCAo
+MzApDQo+ID4gKyAgICAgICAoNTkyNSAtIDY0MjUgQCAzMjApLCAoMjUgbVcpDQo+IA0KPiBPdGhl
+ciBlbnRyaWVzIHdpdGggZGlmZmVyZW50IHBvd2VyIGxpbWl0cyBmb3IgaW5kb29yIGFuZCBvdXRk
+b29yIHVzYWdlDQo+IHNlZW0gdG8gZmF2b3IgaGlnaGVyIHBvd2VyIGZvciBpbmRvb3Itb25seSB1
+c2FnZS4gQW55IHJlYXNvbiB0byBnbyB0aGUNCj4gb3RoZXIgd2F5Pw0KDQpObyBzdHJvbmcgcmVh
+c29uLiBXaWxsIGFkb3B0IGhpZ2hlciBwb3dlciBieSB2Mi4gVGhhbmtzLg0KDQpQaW5nLUtlDQoN
+Cg==
 
