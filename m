@@ -1,101 +1,183 @@
-Return-Path: <linux-wireless+bounces-8238-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8239-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9E458D2A01
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 03:29:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E48288D2A1F
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 03:52:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F90F289EAB
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 01:29:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6128B1F26961
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 01:52:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB9E15A862;
-	Wed, 29 May 2024 01:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9DD13EFE0;
+	Wed, 29 May 2024 01:52:15 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14FD15AAD9;
-	Wed, 29 May 2024 01:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0041D54273
+	for <linux-wireless@vger.kernel.org>; Wed, 29 May 2024 01:52:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716946150; cv=none; b=ZMZrD/1gShE6ycCHNovvC+qWBLX2EzzlZdgStYZsryuI1ON8XSxAHbb6BfrTs2y1GWaT6W2Ia3b8TWVag1Nr2qzLhl8vrp0CIpZeRemP5eqt3auoRbWkYfzPSyySnrXL6qTi2wTQ+I8PlCIB1GV4G8tY9wLTp7tMAp1QYRw0MVs=
+	t=1716947535; cv=none; b=tXWTpTUTFncCv4Rve1fpkl5QJGc2fcBrfu9g0eRQN9WhGYFXsmdcEY7+AzWvpga2C+9wPAh1J08YDMgGcX/bGMA6RUYO2A8KiypSrLknEAspN12Ugetz7mntJ+p5Lr45L/NEXjcULMQ2JvNdYGb5oEL0YpEoL6HJBVsS/CPF09Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716946150; c=relaxed/simple;
-	bh=lkvz82Zkg1Uxcp8tAZo4JvAUx8Uw550p4vhxe3h2Up8=;
+	s=arc-20240116; t=1716947535; c=relaxed/simple;
+	bh=nctUytQ2xlDq1SHv375D7QbGXR+p4sFtZD6gSdZYlHM=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=sOlLPVi15YXN+l+Hv7CAhDn2CLYmchpqelDrwyoHF4yQK9ro/ZWyuI0XQLPDWPr9LqE6qJN10PPdANOiFZ4N0c/HgSBzQ3vQXGfk5YwRleqp9KAENxdAxuNE03p0UJLg7s+fJUH5Y1Wl/nU6pbH0cSLdl39fnw2/iz6BenieaW0=
+	 Content-Type:MIME-Version; b=AFHla4R7Ll6i5jO6gIFFetbjCqht7yCzLZ1LwoptOKr2aoesMyaB2nS4H+monSolvWuByVPYFOEJ45/dw61VtMyWEfS8QXEgjNpAJVc/ElkdSixDiWekDTeRJgnkNuTs2rJonGJ+gUShuHEHMxAkjydj8yZDohd2WT5/8jxn2uM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 44T1Slj662994523, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 44T1q32D13013894, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 44T1Slj662994523
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 44T1q32D13013894
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 29 May 2024 09:28:47 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+	Wed, 29 May 2024 09:52:03 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 29 May 2024 09:28:47 +0800
+ 15.1.2507.39; Wed, 29 May 2024 09:52:03 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 29 May 2024 09:28:46 +0800
+ 15.1.2507.35; Wed, 29 May 2024 09:52:03 +0800
 Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
  RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
- 15.01.2507.035; Wed, 29 May 2024 09:28:46 +0800
+ 15.01.2507.035; Wed, 29 May 2024 09:52:03 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: =?utf-8?B?TWFyY2luIMWabHVzYXJ6?= <marcin.slusarz@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC: =?utf-8?B?TWFyY2luIMWabHVzYXJ6?= <mslusarz@renau.com>,
-        Tim K
-	<tpkuester@gmail.com>, Larry Finger <Larry.Finger@lwfinger.net>,
-        Kalle Valo
-	<kvalo@kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] wifi: rtw88: schedule rx work after everything is set up
-Thread-Topic: [PATCH] wifi: rtw88: schedule rx work after everything is set up
-Thread-Index: AQHasFekMjDEF5R7/k+0650S2/2b8bGrUuCQgACfb4CAAAQJAIABdicQ
-Date: Wed, 29 May 2024 01:28:46 +0000
-Message-ID: <801bd77995184b1fa35bf4a32ab3a036@realtek.com>
-References: <13e848c1544245e6aef4b89c3f38daf0@realtek.com>
- <20240528110246.477321-1-marcin.slusarz@gmail.com>
-In-Reply-To: <20240528110246.477321-1-marcin.slusarz@gmail.com>
+To: =?utf-8?B?TWFyY2luIMWabHVzYXJ6?= <marcin.slusarz@gmail.com>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        =?utf-8?B?TWFyY2luIMWabHVzYXJ6?= <mslusarz@renau.com>
+Subject: RE: wifi: rtw88: 8821CU hangs after some number of power-off/on cycles
+Thread-Topic: wifi: rtw88: 8821CU hangs after some number of power-off/on
+ cycles
+Thread-Index: AQHasFw+pvHPaxxLgUK305GcfZdkyrGsA2eA///v6wCAAX/iEA==
+Date: Wed, 29 May 2024 01:52:03 +0000
+Message-ID: <3cc9cc75468d487c988dbacd8dfc5f57@realtek.com>
+References: <20240527173454.459264-1-marcin.slusarz@gmail.com>
+ <9bfc8f01e99b43e485b2afc6ae4fd661@realtek.com>
+ <CA+GA0_sQ_Bnp8CUq1Pmxf7zut1Kocaxbw4iXT4hYC5_ceXb7WQ@mail.gmail.com>
+In-Reply-To: <CA+GA0_sQ_Bnp8CUq1Pmxf7zut1Kocaxbw4iXT4hYC5_ceXb7WQ@mail.gmail.com>
 Accept-Language: en-US, zh-TW
 Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+X-MS-Has-Attach: yes
+Content-Type: multipart/mixed;
+	boundary="_002_3cc9cc75468d487c988dbacd8dfc5f57realtekcom_"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
 
-TWFyY2luIMWabHVzYXJ6IDxtYXJjaW4uc2x1c2FyekBnbWFpbC5jb20+IHdyb3RlOg0KPiBGcm9t
-OiBNYXJjaW4gxZpsdXNhcnogPG1zbHVzYXJ6QHJlbmF1LmNvbT4NCj4gDQo+IFJlcG9ydGVkLWJ5
-OiBUaW0gSyA8dHBrdWVzdGVyQGdtYWlsLmNvbT4NCj4gQ2xvc2VzOg0KPiBodHRwczovL2xvcmUu
-a2VybmVsLm9yZy9saW51eC13aXJlbGVzcy9DQStzaG9XUTdQNDlqaFFhc29mRGNUZFFoaXVhclBU
-allFRGEtLU5pVlZ4NDk0V2N1UXdAbWFpbC5nbWFpbC4NCj4gY29tLw0KDQpJIGdhdmUgdGhpcyBz
-dWdnZXN0aW9ucyB0b28gZWFybHksIHNpbmNlIHdlIGhhdmUgbm90IGdvdHRlbiB0ZXN0IHJlc3Vs
-dCBmcm9tIFRpbS4NCkkgd2lsbCBjaGFuZ2UgdGhlbSB0byAiTGluazoiIGlmIG5vIEFDSyBmcm9t
-IFRpbSB3aGlsZSBtZXJnaW5nLiANCg0KPiBTaWduZWQtb2ZmLWJ5OiBNYXJjaW4gxZpsdXNhcnog
-PG1zbHVzYXJ6QHJlbmF1LmNvbT4NCj4gQ2M6IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsu
-Y29tPg0KPiBDYzogTGFycnkgRmluZ2VyIDxMYXJyeS5GaW5nZXJAbHdmaW5nZXIubmV0Pg0KPiBD
-YzogS2FsbGUgVmFsbyA8a3ZhbG9Aa2VybmVsLm9yZz4NCj4gQ2M6IGxpbnV4LXdpcmVsZXNzQHZn
-ZXIua2VybmVsLm9yZw0KPiBDYzogbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZw0KDQpUaGlz
-IGlzIHYyIHZlcnNpb24sIHNvIG1haWwgc3ViamVjdCBzaG91bGQgYmUgIltQQVRDSCB2Ml0gLi4u
-LiIsIGFuZCBhZGQgDQpjaGFuZ2UgbG9nIGhlcmUsIGxpa2U6DQoNCi0tLSAgKGRlbGltaXRlciBp
-cyBpbXBvcnRhbnQgaGVyZSkNCg0KdjI6IGFkZCBSZXBvcnRlZC1ieSBhbmQgQ2xvc2VzLg0KDQo+
-IC0tLQ0KPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC91c2IuYyB8IDEzICsr
-KysrKysrKystLS0NCj4gIDEgZmlsZSBjaGFuZ2VkLCAxMCBpbnNlcnRpb25zKCspLCAzIGRlbGV0
-aW9ucygtKQ0KPiANCg0KQWxzbyBJIHdvdWxkIHByZWZlciB0byBwb2ludCBvdXQgInVzYiIgaW4g
-c3ViamVjdCwgcGxlYXNlIHVzZSAid2lmaTogcnR3ODg6IHVzYjogIg0KYXMgcHJlZml4Lg0KDQpb
-Li4uXQ0KDQo=
+--_002_3cc9cc75468d487c988dbacd8dfc5f57realtekcom_
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+
+TWFyY2luIMWabHVzYXJ6IDxtYXJjaW4uc2x1c2FyekBnbWFpbC5jb20+IHdyb3RlOg0KPiB3dC4s
+IDI4IG1haiAyMDI0IG8gMDU6NTIgUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+IG5h
+cGlzYcWCKGEpOg0KPiA+DQo+ID4gTWFyY2luIMWabHVzYXJ6IDxtYXJjaW4uc2x1c2FyekBnbWFp
+bC5jb20+IHdyb3RlOg0KPiA+ID4NCj4gPiA+IEkgZm91bmQgb3V0IHRoYXQgdGhlIHJlYXNvbiBm
+b3IgdGhvc2UgaGFuZ3MgaXMgYSBwb3dlci1vZmYrb24gc2VxdWVuY2UgdGhhdCdzDQo+ID4gPiB0
+cmlnZ2VyZWQgYnkgdGhlIGFib3ZlIHN0ZXBzLg0KPiA+DQo+ID4gVG8gYXZvaWQgcG93ZXItb2Zm
+L29uIHNlcXVlbmNlIG9uY2UgZGV2aWNlIGJlY29tZXMgaWRsZSwgSSB3b3VsZCBsaWtlIHRvIGFk
+ZA0KPiA+IGEgaXBzX2Rpc2FibGVkIGhlbHBlci4gUGxlYXNlIHJldmVydCB5b3VyIGNoYW5nZXMg
+YW5kIGFwcGx5IG15IGF0dGFjaGVkIHBhdGNoLg0KPiANCj4gTXkgZmlyc3QgYXR0ZW1wdCB3YXMg
+dmVyeSBzaW1pbGFyLCBhbmQgaXQgZml4ZWQgc29tZSBjYXNlcyBidXQgbm90IGFsbCBvZiB0aGVt
+Lg0KPiANCj4gVGhpcyBpcyBkdWUgdG8gdGhlIGV4aXN0ZW5jZSBvZiBhIHNlY29uZCBzb3VyY2Ug
+b2YgcG93ZXItb2ZmcyAtIHJ0d19vcHNfc3RvcCwNCj4gd2hpY2ggaXMgY2FsbGVkLCBlLmcuLCBv
+biBkb3duaW5nIHRoZSBpbnRlcmZhY2UgKGlmY29uZmlnIHdsYW4wIGRvd24pLg0KDQpQbGVhc2Ug
+dHJ5IGF0dGFjaGVkIHYyIHBhdGNoLiBJIHdvdWxkIGxpa2UgdG8gaGF2ZSBhbiBleHBsaWNpdCBo
+ZWxwZXINCihpLmUuIGFsd2F5c19wb3dlcl9vbiBpbiB2MikgdG8gaGF2ZSB0aGlzIGZpeCwgc28g
+ZGF5cyBsYXRlciBwZW9wbGUgY2FuIGJlIGVhc3kNCnRvIHVuZGVyc3RhbmQgaG93IGl0IHdvcmtz
+LiBOb3QgcHJlZmVyIGFkanVzdGluZyBleGlzdGluZyBmbGFncyB0byBpbXBsaWNpdGx5DQpoYXZl
+IGJlaGF2aW9yIHlvdSB3YW50LiANCg0KDQo=
+
+--_002_3cc9cc75468d487c988dbacd8dfc5f57realtekcom_
+Content-Type: application/octet-stream;
+	name="v2-0001-wifi-rtw88-8821cu-keep-power-on-always-for-8821CU.patch"
+Content-Description: v2-0001-wifi-rtw88-8821cu-keep-power-on-always-for-8821CU.patch
+Content-Disposition: attachment;
+	filename="v2-0001-wifi-rtw88-8821cu-keep-power-on-always-for-8821CU.patch";
+	size=4183; creation-date="Wed, 29 May 2024 01:46:12 GMT";
+	modification-date="Wed, 29 May 2024 01:46:11 GMT"
+Content-Transfer-Encoding: base64
+
+RnJvbSA3MTVhN2U3NTg5NDk1OTU2NDZlOTEzNDg2OTY2N2RjNWEwNDM3YzNlIE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4KRGF0
+ZTogVHVlLCAyOCBNYXkgMjAyNCAxMTo0ODoxMyArMDgwMApTdWJqZWN0OiBbUEFUQ0ggdjJdIHdp
+Zmk6IHJ0dzg4OiA4ODIxY3U6IGtlZXAgcG93ZXIgb24gYWx3YXlzIGZvciA4ODIxQ1UKTUlNRS1W
+ZXJzaW9uOiAxLjAKQ29udGVudC1UeXBlOiB0ZXh0L3BsYWluOyBjaGFyc2V0PVVURi04CkNvbnRl
+bnQtVHJhbnNmZXItRW5jb2Rpbmc6IDhiaXQKClRoaXMgY2hpcCBmYWlscyB0byByZWxpYWJseSB3
+YWtlIHVwIGZyb20gcG93ZXIgb2ZmLgoKQ2hhbmdlLUlkOiBJMjk1ZGUzYzcxZmU5MWFmMzdlOGNj
+MzliNzA3MjhhOGJhN2U5NGIyZgpSZXBvcnRlZC1ieTogTWFyY2luIMWabHVzYXJ6IDxtYXJjaW4u
+c2x1c2FyekBnbWFpbC5jb20+ClNpZ25lZC1vZmYtYnk6IFBpbmctS2UgU2hpaCA8cGtzaGloQHJl
+YWx0ZWsuY29tPgotLS0KIG1hYzgwMjExLmMgfCAgMiArLQogbWFpbi5jICAgICB8IDEwICsrKysr
+KysrLS0KIG1haW4uaCAgICAgfCAgMiArKwogcHMuYyAgICAgICB8ICA1ICsrKystCiBwcy5oICAg
+ICAgIHwgIDIgKy0KIHVzYi5jICAgICAgfCAgMyArKysKIHdvdy5jICAgICAgfCAgMiArLQogNyBm
+aWxlcyBjaGFuZ2VkLCAyMCBpbnNlcnRpb25zKCspLCA2IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdp
+dCBhL21hYzgwMjExLmMgYi9tYWM4MDIxMS5jCmluZGV4IDc4MDc4ZDY1Yzg4Zi4uNTIwMmJhNzRj
+MjBhIDEwMDY0NAotLS0gYS9tYWM4MDIxMS5jCisrKyBiL21hYzgwMjExLmMKQEAgLTk5LDcgKzk5
+LDcgQEAgc3RhdGljIGludCBydHdfb3BzX2NvbmZpZyhzdHJ1Y3QgaWVlZTgwMjExX2h3ICpodywg
+dTMyIGNoYW5nZWQpCiAJaWYgKChjaGFuZ2VkICYgSUVFRTgwMjExX0NPTkZfQ0hBTkdFX0lETEUp
+ICYmCiAJICAgIChody0+Y29uZi5mbGFncyAmIElFRUU4MDIxMV9DT05GX0lETEUpICYmCiAJICAg
+ICF0ZXN0X2JpdChSVFdfRkxBR19TQ0FOTklORywgcnR3ZGV2LT5mbGFncykpCi0JCXJ0d19lbnRl
+cl9pcHMocnR3ZGV2KTsKKwkJcnR3X2VudGVyX2lwcyhydHdkZXYsIGZhbHNlKTsKIAogb3V0Ogog
+CW11dGV4X3VubG9jaygmcnR3ZGV2LT5tdXRleCk7CmRpZmYgLS1naXQgYS9tYWluLmMgYi9tYWlu
+LmMKaW5kZXggNTY3ZjlkNDM3M2M0Li45MGQxOGIzMzhhMTIgMTAwNjQ0Ci0tLSBhL21haW4uYwor
+KysgYi9tYWluLmMKQEAgLTMwNiw3ICszMDYsNyBAQCBzdGF0aWMgdm9pZCBydHdfaXBzX3dvcmso
+c3RydWN0IHdvcmtfc3RydWN0ICp3b3JrKQogCiAJbXV0ZXhfbG9jaygmcnR3ZGV2LT5tdXRleCk7
+CiAJaWYgKHJ0d2Rldi0+aHctPmNvbmYuZmxhZ3MgJiBJRUVFODAyMTFfQ09ORl9JRExFKQotCQly
+dHdfZW50ZXJfaXBzKHJ0d2Rldik7CisJCXJ0d19lbnRlcl9pcHMocnR3ZGV2LCBmYWxzZSk7CiAJ
+bXV0ZXhfdW5sb2NrKCZydHdkZXYtPm11dGV4KTsKIH0KIApAQCAtNjYwLDcgKzY2MCw3IEBAIGZy
+ZWU6CiAJcnR3X2l0ZXJhdGVfc3Rhc19hdG9taWMocnR3ZGV2LCBydHdfcmVzZXRfc3RhX2l0ZXIs
+IHJ0d2Rldik7CiAJcnR3X2l0ZXJhdGVfdmlmc19hdG9taWMocnR3ZGV2LCBydHdfcmVzZXRfdmlm
+X2l0ZXIsIHJ0d2Rldik7CiAJYml0bWFwX3plcm8ocnR3ZGV2LT5od19wb3J0LCBSVFdfUE9SVF9O
+VU0pOwotCXJ0d19lbnRlcl9pcHMocnR3ZGV2KTsKKwlydHdfZW50ZXJfaXBzKHJ0d2RldiwgdHJ1
+ZSk7CiB9CiAKIHN0YXRpYyB2b2lkIHJ0d19md19yZWNvdmVyeV93b3JrKHN0cnVjdCB3b3JrX3N0
+cnVjdCAqd29yaykKQEAgLTEzNzUsNiArMTM3NSw5IEBAIHN0YXRpYyBpbnQgcnR3X3Bvd2VyX29u
+KHN0cnVjdCBydHdfZGV2ICpydHdkZXYpCiAJYm9vbCB3aWZpX29ubHk7CiAJaW50IHJldDsKIAor
+CWlmIChydHdkZXYtPmFsd2F5c19wb3dlcl9vbiAmJiB0ZXN0X2JpdChSVFdfRkxBR19QT1dFUk9O
+LCBydHdkZXYtPmZsYWdzKSkKKwkJcmV0dXJuIDA7CisKIAlyZXQgPSBydHdfaGNpX3NldHVwKHJ0
+d2Rldik7CiAJaWYgKHJldCkgewogCQlydHdfZXJyKHJ0d2RldiwgImZhaWxlZCB0byBzZXR1cCBo
+Y2lcbiIpOwpAQCAtMTUyNSw2ICsxNTI4LDkgQEAgaW50IHJ0d19jb3JlX3N0YXJ0KHN0cnVjdCBy
+dHdfZGV2ICpydHdkZXYpCiAKIHN0YXRpYyB2b2lkIHJ0d19wb3dlcl9vZmYoc3RydWN0IHJ0d19k
+ZXYgKnJ0d2RldikKIHsKKwlpZiAocnR3ZGV2LT5hbHdheXNfcG93ZXJfb24pCisJCXJldHVybjsK
+KwogCXJ0d19oY2lfc3RvcChydHdkZXYpOwogCXJ0d19jb2V4X3Bvd2VyX29mZl9zZXR0aW5nKHJ0
+d2Rldik7CiAJcnR3X21hY19wb3dlcl9vZmYocnR3ZGV2KTsKZGlmZiAtLWdpdCBhL21haW4uaCBi
+L21haW4uaAppbmRleCBkOWFmYjU4NWQ0MjMuLmUxYzMxNmJkNzAxOCAxMDA2NDQKLS0tIGEvbWFp
+bi5oCisrKyBiL21haW4uaApAQCAtMjI4Myw2ICsyMjgzLDggQEAgc3RydWN0IHJ0d19kZXYgewog
+CWJvb2wgYmVhY29uX2xvc3M7CiAJc3RydWN0IGNvbXBsZXRpb24gbHBzX2xlYXZlX2NoZWNrOwog
+CisJYm9vbCBhbHdheXNfcG93ZXJfb247CisKIAlzdHJ1Y3QgZGVudHJ5ICpkZWJ1Z2ZzOwogCiAJ
+dTggc3RhX2NudDsKZGlmZiAtLWdpdCBhL3BzLmMgYi9wcy5jCmluZGV4IGIxNzFlNjJkMmQ1Ny4u
+NjUyMjM3NTFmZTJjIDEwMDY0NAotLS0gYS9wcy5jCisrKyBiL3BzLmMKQEAgLTI0LDggKzI0LDEx
+IEBAIHN0YXRpYyBpbnQgcnR3X2lwc19wd3JfdXAoc3RydWN0IHJ0d19kZXYgKnJ0d2RldikKIAly
+ZXR1cm4gcmV0OwogfQogCi1pbnQgcnR3X2VudGVyX2lwcyhzdHJ1Y3QgcnR3X2RldiAqcnR3ZGV2
+KQoraW50IHJ0d19lbnRlcl9pcHMoc3RydWN0IHJ0d19kZXYgKnJ0d2RldiwgYm9vbCBmb3JjZSkK
+IHsKKwlpZiAoIWZvcmNlICYmIHJ0d2Rldi0+YWx3YXlzX3Bvd2VyX29uKQorCQlyZXR1cm4gMDsK
+KwogCWlmICghdGVzdF9iaXQoUlRXX0ZMQUdfUE9XRVJPTiwgcnR3ZGV2LT5mbGFncykpCiAJCXJl
+dHVybiAwOwogCmRpZmYgLS1naXQgYS9wcy5oIGIvcHMuaAppbmRleCA1YWU4M2QyNTI2Y2YuLjky
+MDU3ZDAxY2JlYyAxMDA2NDQKLS0tIGEvcHMuaAorKysgYi9wcy5oCkBAIC0xNSw3ICsxNSw3IEBA
+CiAjZGVmaW5lIExFQVZFX0xQU19UUllfQ05UCTUKICNkZWZpbmUgTEVBVkVfTFBTX1RJTUVPVVQJ
+bXNlY3NfdG9famlmZmllcygxMDApCiAKLWludCBydHdfZW50ZXJfaXBzKHN0cnVjdCBydHdfZGV2
+ICpydHdkZXYpOworaW50IHJ0d19lbnRlcl9pcHMoc3RydWN0IHJ0d19kZXYgKnJ0d2RldiwgYm9v
+bCBmb3JjZSk7CiBpbnQgcnR3X2xlYXZlX2lwcyhzdHJ1Y3QgcnR3X2RldiAqcnR3ZGV2KTsKIAog
+dm9pZCBydHdfcG93ZXJfbW9kZV9jaGFuZ2Uoc3RydWN0IHJ0d19kZXYgKnJ0d2RldiwgYm9vbCBl
+bnRlcik7CmRpZmYgLS1naXQgYS91c2IuYyBiL3VzYi5jCmluZGV4IGEwMTg4NTExMDk5YS4uMjI3
+NDJmZTgxYjlhIDEwMDY0NAotLS0gYS91c2IuYworKysgYi91c2IuYwpAQCAtODU0LDYgKzg1NCw5
+IEBAIGludCBydHdfdXNiX3Byb2JlKHN0cnVjdCB1c2JfaW50ZXJmYWNlICppbnRmLCBjb25zdCBz
+dHJ1Y3QgdXNiX2RldmljZV9pZCAqaWQpCiAJcnR3ZGV2LT5oY2kub3BzID0gJnJ0d191c2Jfb3Bz
+OwogCXJ0d2Rldi0+aGNpLnR5cGUgPSBSVFdfSENJX1RZUEVfVVNCOwogCisJaWYgKHJ0d2Rldi0+
+Y2hpcC0+aWQgPT0gUlRXX0NISVBfVFlQRV84ODIxQykKKwkJcnR3ZGV2LT5hbHdheXNfcG93ZXJf
+b24gPSB0cnVlOworCiAJcnR3dXNiID0gcnR3X2dldF91c2JfcHJpdihydHdkZXYpOwogCXJ0d3Vz
+Yi0+cnR3ZGV2ID0gcnR3ZGV2OwogCmRpZmYgLS1naXQgYS93b3cuYyBiL3dvdy5jCmluZGV4IGM4
+NmNmYzQ3MzYxYS4uMjE2M2UxZGFiNjMwIDEwMDY0NAotLS0gYS93b3cuYworKysgYi93b3cuYwpA
+QCAtNjc3LDcgKzY3Nyw3IEBAIHN0YXRpYyBpbnQgcnR3X3dvd19yZXN0b3JlX3BzKHN0cnVjdCBy
+dHdfZGV2ICpydHdkZXYpCiAJaW50IHJldCA9IDA7CiAKIAlpZiAocnR3X3dvd19ub19saW5rKHJ0
+d2RldikgJiYgcnR3ZGV2LT53b3cuaXBzX2VuYWJsZWQpCi0JCXJldCA9IHJ0d19lbnRlcl9pcHMo
+cnR3ZGV2KTsKKwkJcmV0ID0gcnR3X2VudGVyX2lwcyhydHdkZXYsIGZhbHNlKTsKIAogCXJldHVy
+biByZXQ7CiB9Ci0tIAoyLjI1LjEKCg==
+
+--_002_3cc9cc75468d487c988dbacd8dfc5f57realtekcom_--
 
