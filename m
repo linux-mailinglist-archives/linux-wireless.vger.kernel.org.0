@@ -1,105 +1,101 @@
-Return-Path: <linux-wireless+bounces-8237-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8238-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 641788D2982
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 02:39:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9E458D2A01
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 03:29:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22C4E1F23C1D
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 00:39:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F90F289EAB
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 01:29:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6580815A488;
-	Wed, 29 May 2024 00:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB9E15A862;
+	Wed, 29 May 2024 01:29:10 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F71417E8E4
-	for <linux-wireless@vger.kernel.org>; Wed, 29 May 2024 00:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14FD15AAD9;
+	Wed, 29 May 2024 01:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716943137; cv=none; b=FW3WYrj7QDdzzlM123C31h6L9+M1CSbpjdXeTaU4cdyI/nUjfVWulSDt40p0voLBumGpvXvPS9nOqGkuwcILVp5gJUSAJZV5WrzEpCMSJgTr6lKYgZKXHCNG5nbRO6AvhPPcXkcPNDiOFKgWjmZWgneXQK89yaVqxusg4HtmcvE=
+	t=1716946150; cv=none; b=ZMZrD/1gShE6ycCHNovvC+qWBLX2EzzlZdgStYZsryuI1ON8XSxAHbb6BfrTs2y1GWaT6W2Ia3b8TWVag1Nr2qzLhl8vrp0CIpZeRemP5eqt3auoRbWkYfzPSyySnrXL6qTi2wTQ+I8PlCIB1GV4G8tY9wLTp7tMAp1QYRw0MVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716943137; c=relaxed/simple;
-	bh=eWTc0kf+BqoQs9RR+kOq8prBHtZnn5PG+a1uYdx0ECw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XFq0fPZdBmFrtLANEZmnFX9lAyz/o3Um+Yi6h1xNDb5ZaBwpMFeXTsf1bkrC09yYxOjTFu4262gUBke51A5sw0/BmHuaBwd2HwZOXdbbVBLO6Lm6EvdbQGkYzTUpm+l7I17uGCkYmgmhwjSAmcFs5yUGzckQF8MZ7xCb83g0Xhw=
+	s=arc-20240116; t=1716946150; c=relaxed/simple;
+	bh=lkvz82Zkg1Uxcp8tAZo4JvAUx8Uw550p4vhxe3h2Up8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=sOlLPVi15YXN+l+Hv7CAhDn2CLYmchpqelDrwyoHF4yQK9ro/ZWyuI0XQLPDWPr9LqE6qJN10PPdANOiFZ4N0c/HgSBzQ3vQXGfk5YwRleqp9KAENxdAxuNE03p0UJLg7s+fJUH5Y1Wl/nU6pbH0cSLdl39fnw2/iz6BenieaW0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 44T0cmezF2932360, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 44T0cmezF2932360
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 44T1Slj662994523, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 44T1Slj662994523
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 29 May 2024 08:38:48 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+	Wed, 29 May 2024 09:28:47 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 29 May 2024 08:38:49 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 29 May
- 2024 08:38:48 +0800
+ 15.1.2507.39; Wed, 29 May 2024 09:28:47 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 29 May 2024 09:28:46 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
+ 15.01.2507.035; Wed, 29 May 2024 09:28:46 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: <wens@kernel.org>
-CC: <linux-wireless@vger.kernel.org>
-Subject: [PATCH v2] wireless-regdb: Update regulatory info for Thailand (TH) on 6GHz
-Date: Wed, 29 May 2024 08:38:43 +0800
-Message-ID: <20240529003843.4285-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+To: =?utf-8?B?TWFyY2luIMWabHVzYXJ6?= <marcin.slusarz@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: =?utf-8?B?TWFyY2luIMWabHVzYXJ6?= <mslusarz@renau.com>,
+        Tim K
+	<tpkuester@gmail.com>, Larry Finger <Larry.Finger@lwfinger.net>,
+        Kalle Valo
+	<kvalo@kernel.org>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH] wifi: rtw88: schedule rx work after everything is set up
+Thread-Topic: [PATCH] wifi: rtw88: schedule rx work after everything is set up
+Thread-Index: AQHasFekMjDEF5R7/k+0650S2/2b8bGrUuCQgACfb4CAAAQJAIABdicQ
+Date: Wed, 29 May 2024 01:28:46 +0000
+Message-ID: <801bd77995184b1fa35bf4a32ab3a036@realtek.com>
+References: <13e848c1544245e6aef4b89c3f38daf0@realtek.com>
+ <20240528110246.477321-1-marcin.slusarz@gmail.com>
+In-Reply-To: <20240528110246.477321-1-marcin.slusarz@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-The Broadcasting Commission Television business and the National
-Telecommunications Commission announced Technical standards for
-telecommunications equipment and equipment for radiocommunication equipment
-that uses the frequency 5.925 - 6.425 GHz [2], which section 2.1 describes
-e.i.r.p. (Equivalent Isotropically Radiated Power) is 250mW and 25mW for
-indoor and indoor/outdoor respectively.
-
-[1] https://ratchakitcha.soc.go.th/documents/140D100S0000000004000.pdf
-[2] https://ratchakitcha.soc.go.th/documents/140D100S0000000004200.pdf
-[3] https://ratchakitcha.soc.go.th/documents/140D100S0000000004300.pdf
-
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
-v2: adopt indoor power 250mW instead.
----
- db.txt | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/db.txt b/db.txt
-index 022ecb3719b6..f27dd5214630 100644
---- a/db.txt
-+++ b/db.txt
-@@ -1702,12 +1702,17 @@ country TG: DFS-ETSI
- 	(5250 - 5330 @ 40), (20), DFS
- 	(5490 - 5710 @ 40), (27), DFS
- 
-+# Source:
-+# https://ratchakitcha.soc.go.th/documents/140D100S0000000004000.pdf
-+# https://ratchakitcha.soc.go.th/documents/140D100S0000000004200.pdf
-+# https://ratchakitcha.soc.go.th/documents/140D100S0000000004300.pdf
- country TH: DFS-FCC
- 	(2402 - 2482 @ 40), (20)
- 	(5170 - 5250 @ 80), (17), AUTO-BW
- 	(5250 - 5330 @ 80), (24), DFS, AUTO-BW
- 	(5490 - 5730 @ 160), (24), DFS
- 	(5735 - 5835 @ 80), (30)
-+	(5925 - 6425 @ 320), (250 mW), NO-OUTDOOR
- 
- country TN: DFS-ETSI
- 	(2402 - 2482 @ 40), (20)
--- 
-2.25.1
-
+TWFyY2luIMWabHVzYXJ6IDxtYXJjaW4uc2x1c2FyekBnbWFpbC5jb20+IHdyb3RlOg0KPiBGcm9t
+OiBNYXJjaW4gxZpsdXNhcnogPG1zbHVzYXJ6QHJlbmF1LmNvbT4NCj4gDQo+IFJlcG9ydGVkLWJ5
+OiBUaW0gSyA8dHBrdWVzdGVyQGdtYWlsLmNvbT4NCj4gQ2xvc2VzOg0KPiBodHRwczovL2xvcmUu
+a2VybmVsLm9yZy9saW51eC13aXJlbGVzcy9DQStzaG9XUTdQNDlqaFFhc29mRGNUZFFoaXVhclBU
+allFRGEtLU5pVlZ4NDk0V2N1UXdAbWFpbC5nbWFpbC4NCj4gY29tLw0KDQpJIGdhdmUgdGhpcyBz
+dWdnZXN0aW9ucyB0b28gZWFybHksIHNpbmNlIHdlIGhhdmUgbm90IGdvdHRlbiB0ZXN0IHJlc3Vs
+dCBmcm9tIFRpbS4NCkkgd2lsbCBjaGFuZ2UgdGhlbSB0byAiTGluazoiIGlmIG5vIEFDSyBmcm9t
+IFRpbSB3aGlsZSBtZXJnaW5nLiANCg0KPiBTaWduZWQtb2ZmLWJ5OiBNYXJjaW4gxZpsdXNhcnog
+PG1zbHVzYXJ6QHJlbmF1LmNvbT4NCj4gQ2M6IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsu
+Y29tPg0KPiBDYzogTGFycnkgRmluZ2VyIDxMYXJyeS5GaW5nZXJAbHdmaW5nZXIubmV0Pg0KPiBD
+YzogS2FsbGUgVmFsbyA8a3ZhbG9Aa2VybmVsLm9yZz4NCj4gQ2M6IGxpbnV4LXdpcmVsZXNzQHZn
+ZXIua2VybmVsLm9yZw0KPiBDYzogbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZw0KDQpUaGlz
+IGlzIHYyIHZlcnNpb24sIHNvIG1haWwgc3ViamVjdCBzaG91bGQgYmUgIltQQVRDSCB2Ml0gLi4u
+LiIsIGFuZCBhZGQgDQpjaGFuZ2UgbG9nIGhlcmUsIGxpa2U6DQoNCi0tLSAgKGRlbGltaXRlciBp
+cyBpbXBvcnRhbnQgaGVyZSkNCg0KdjI6IGFkZCBSZXBvcnRlZC1ieSBhbmQgQ2xvc2VzLg0KDQo+
+IC0tLQ0KPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC91c2IuYyB8IDEzICsr
+KysrKysrKystLS0NCj4gIDEgZmlsZSBjaGFuZ2VkLCAxMCBpbnNlcnRpb25zKCspLCAzIGRlbGV0
+aW9ucygtKQ0KPiANCg0KQWxzbyBJIHdvdWxkIHByZWZlciB0byBwb2ludCBvdXQgInVzYiIgaW4g
+c3ViamVjdCwgcGxlYXNlIHVzZSAid2lmaTogcnR3ODg6IHVzYjogIg0KYXMgcHJlZml4Lg0KDQpb
+Li4uXQ0KDQo=
 
