@@ -1,167 +1,216 @@
-Return-Path: <linux-wireless+bounces-8244-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8245-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E5C58D2ACB
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 04:29:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DFBF8D2B54
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 05:13:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D84FF282698
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 02:29:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF8FEB2439F
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 03:13:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F25E615B0E0;
-	Wed, 29 May 2024 02:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54FCF3207;
+	Wed, 29 May 2024 03:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KoOiWnAR"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="dOAy/8is"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D842AEFD;
-	Wed, 29 May 2024 02:28:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426324DA08
+	for <linux-wireless@vger.kernel.org>; Wed, 29 May 2024 03:13:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716949737; cv=none; b=WSoFdYdCfAnIKN+SuXgwJ6yaUVNZblEr9xBnKRGbg0uT5W7qWQkISRxXcsVUMyyEG2pRCnCttWtr6Bfq4BbcTswqY5lEibTYWcC+Kgdsz7roejCSjymjmmYreduzgd14nanU6ZLiyHXKRjwt7nAcdkDcp7tezZYpxmzKo1nx/0g=
+	t=1716952432; cv=none; b=C178BnVKDf5pXhsnY7A7yStse4psPO4oVmSG6K0SangKRFWkQ17In7uzEeUxxhpNfQFt5Y3iInXrSHzZ1f9wB/9hzT6PDnVy/5aZPJiHCXbO2btiQNyBlHtcO+2Kz8ICOwHzXj7WfIvYk+PdCKzVdDq4H0BG2PAfIvla8zFkiEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716949737; c=relaxed/simple;
-	bh=ZwvUORaxzc0vrGFqCdwHpqmj4IP8E9GxhkTzYLGO4/w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EKFcxhP+LKrwcowqqH3mdQiF6MqOmVm7swi/3UKGrWQYm+j7AoCAi5QN/qG0KQFuDPYl9/VRW6WDoSGFjmQKjG6dIKu2CvLwkHpRF+cKYfO0YPZJe8K41uX6Vca4S0iNM0wosk/VH7Qro5xY2HhvZ6LGTYn5ucZlziilP/2SAiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KoOiWnAR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD459C3277B;
-	Wed, 29 May 2024 02:28:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716949737;
-	bh=ZwvUORaxzc0vrGFqCdwHpqmj4IP8E9GxhkTzYLGO4/w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KoOiWnARhGc9ZaTdHga34C//fejSGA1/f5faW0EmsorMft6hRkhydRTmN/aHLoMb+
-	 igEjT3Zo5OXCK8ab8I41PJXqG2UGKzdQXOrHSV/hDEmuSzey92Nfu2dQnGpk9hw2Ox
-	 eHLiVveiY8oS4XULy8Q2gH0gby1KpqtcDsD+dzJol2jeBuHv4gH7dQQ9MniEmxY49E
-	 KxCL/HSqe3xbuU/B1wgi/7BtrQYL3or3DwxZw5g5AYtyXavyz8NSt7VcoMRy4NPhCG
-	 yJ31hRi0SYVuR/ZKhYhyuJ58vc3Cg2yvse7wUcU3mOtkrcBleCdu86PNrMl4Clizrj
-	 MSag0j0ZzHLLA==
-Date: Tue, 28 May 2024 21:28:54 -0500
-From: Bjorn Andersson <andersson@kernel.org>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Bjorn Andersson <quic_bjorande@quicinc.com>, 
-	Kalle Valo <kvalo@kernel.org>, neil.armstrong@linaro.org, 
-	Konrad Dybcio <konrad.dybcio@linaro.org>, Loic Poulain <loic.poulain@linaro.org>, 
-	Mathieu Poirier <mathieu.poirier@linaro.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org, 
-	linux-remoteproc@vger.kernel.org, devicetree@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH 01/12] soc: qcom: add firmware name helper
-Message-ID: <pd3jgsd2ps73qd2h4rdxavd4zmyeqrqmslkbuwtgwlotm4tzgb@bb5japc6opcq>
-References: <20240521-qcom-firmware-name-v1-0-99a6d32b1e5e@linaro.org>
- <20240521-qcom-firmware-name-v1-1-99a6d32b1e5e@linaro.org>
- <a45b53f3-b2a5-4094-af5a-1281e0f94d2f@linaro.org>
- <CAA8EJprxYsoug0ipRHTmX45vaFLzJCUF0dQWOc=QLs4y6uZ1rA@mail.gmail.com>
- <878r03csxn.fsf@kernel.org>
- <CAA8EJpqkgpCb57DGka0ckbPz=2YiaHzxmiNzG39ad5y6smgO5A@mail.gmail.com>
- <Zk52IHqAfOnVDm50@hu-bjorande-lv.qualcomm.com>
- <CAA8EJpogG5wW2mUUkYFtnnZLMVuneU4Wie6GBfYytSYe0zQ77Q@mail.gmail.com>
+	s=arc-20240116; t=1716952432; c=relaxed/simple;
+	bh=mD/ILBYICv1toLJFTImwISzxCPS7VqCrsdraKf1y/co=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=rxgfZ3wQzpyf3lI0ATZ2fAJQ/6Hfa1RTy+J/Ns+0Lpxg9Ef7n4W/IExOEi2Bmcwo0ReDimnmlhdkPY2+9IzdPzMqzE1LVC5S0Roo0gbtjd2OTi/tNyFDnrqOt5A8xt+X7X4RXLQev3m1+IFtesSSSlGFLVrncAs1Qn8urSJUG0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=dOAy/8is; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44SLpZ1Z006954;
+	Wed, 29 May 2024 03:13:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	jBcPo+QQnefRyv4pE9wArag5PWoD0lDDBPvW1MfMDVE=; b=dOAy/8isqTXTqd9e
+	kmPH5MwpasORQ+4WVuESE/CkDF+ekW9sfQ1XoggtmGy6qa6ymlTIPQWOz/aBBsup
+	NlppbsX85IDA/6cPx7uCE1CqOS7KdNqWKyjQeRUZf75OMHi27rhCgyvHA+inHkRA
+	kWSQwkn3Y0bddsynQB/24FnGmHsycDmUnQdNoDezaMkCTVrzpc300dy6POnANHAi
+	sHrlDBJ6luqMQzSPICa/rjUxkkeH7OWbc3WtzyZ9acLBM/leoFg1H+gzlIJijQjF
+	J0c3pYl8kSHrb20WtOPUKAyApE78ey150Icl11Uv5CVU3lnYH8tDoF6XXgrwJx3U
+	THMYzQ==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yba0qfu96-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 May 2024 03:13:46 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44T3Dj8f005777
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 May 2024 03:13:45 GMT
+Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 28 May
+ 2024 20:13:44 -0700
+Message-ID: <7b92a6cd-187d-4b6d-8cfb-af54365751fc@quicinc.com>
+Date: Wed, 29 May 2024 11:13:42 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAA8EJpogG5wW2mUUkYFtnnZLMVuneU4Wie6GBfYytSYe0zQ77Q@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 0/8] wifi: ath12k: Introduce device group abstraction
+To: Jeff Johnson <quic_jjohnson@quicinc.com>,
+        Harshitha Prem
+	<quic_hprem@quicinc.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240528063547.1400700-1-quic_hprem@quicinc.com>
+ <396d645d-6f3b-4c1b-9d4b-d056fad36192@quicinc.com>
+Content-Language: en-US
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+In-Reply-To: <396d645d-6f3b-4c1b-9d4b-d056fad36192@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: cucmj61QFJGWfjjOvF9JxtyADdSG4-pd
+X-Proofpoint-ORIG-GUID: cucmj61QFJGWfjjOvF9JxtyADdSG4-pd
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-05-28_14,2024-05-28_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ suspectscore=0 lowpriorityscore=0 impostorscore=0 clxscore=1015 mlxscore=0
+ mlxlogscore=960 malwarescore=0 spamscore=0 adultscore=0 bulkscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2405290019
 
-On Mon, May 27, 2024 at 02:42:44PM GMT, Dmitry Baryshkov wrote:
-> On Thu, 23 May 2024 at 01:48, Bjorn Andersson <quic_bjorande@quicinc.com> wrote:
-> >
-> > On Tue, May 21, 2024 at 03:08:31PM +0200, Dmitry Baryshkov wrote:
-> > > On Tue, 21 May 2024 at 13:20, Kalle Valo <kvalo@kernel.org> wrote:
-> > > >
-> > > > Dmitry Baryshkov <dmitry.baryshkov@linaro.org> writes:
-> > > >
-> > > > > On Tue, 21 May 2024 at 12:52, <neil.armstrong@linaro.org> wrote:
-> > > > >>
-> > > > >> On 21/05/2024 11:45, Dmitry Baryshkov wrote:
-> > > > >> > Qualcomm platforms have different sets of the firmware files, which
-> > > > >> > differ from platform to platform (and from board to board, due to the
-> > > > >> > embedded signatures). Rather than listing all the firmware files,
-> > > > >> > including full paths, in the DT, provide a way to determine firmware
-> > > > >> > path based on the root DT node compatible.
-> > > > >>
-> > > > >> Ok this looks quite over-engineered but necessary to handle the legacy,
-> > > > >> but I really think we should add a way to look for a board-specific path
-> > > > >> first and fallback to those SoC specific paths.
-> > > > >
-> > > > > Again, CONFIG_FW_LOADER_USER_HELPER => delays.
-> > > >
-> > > > To me this also looks like very over-engineered, can you elaborate more
-> > > > why this is needed? Concrete examples would help to understand better.
-> > >
-> > > Sure. During the meeting last week Arnd suggested evaluating if we can
-> > > drop firmware-name from the board DT files. Several reasons for that:
-> > > - DT should describe the hardware, not the Linux-firmware locations
-> > > - having firmware name in DT complicates updating the tree to use
-> > > different firmware API (think of mbn vs mdt vs any other format)
-> > > - If the DT gets supplied by the vendor (e.g. for
-> > > SystemReady-certified devices), there should be a sync between the
-> > > vendor's DT, linux kernel and the rootfs. Dropping firmware names from
-> > > DT solves that by removing one piece of the equation
-> > >
-> > > Now for the complexity of the solution. Each SoC family has their own
-> > > firmware set. This includes firmware for the DSPs, for modem, WiFi
-> > > bits, GPU shader, etc.
-> > > For the development boards these devices are signed by the testing key
-> > > and the actual signature is not validated against the root of trust
-> > > certificate.
-> > > For the end-user devices the signature is actually validated against
-> > > the bits fused to the SoC during manufacturing process. CA certificate
-> > > (and thus the fuses) differ from vendor to vendor (and from the device
-> > > to device)
-> > >
-> > > Not all of the firmware files are a part of the public linux-firmware
-> > > tree. However we need to support the rootfs bundled with the firmware
-> > > for different platforms (both public and vendor). The non-signed files
-> > > come from the Adreno GPU and can be shared between platforms. All
-> > > other files are SoC-specific and in some cases device-specific.
-> > >
-> > > So for example the SDM845 db845c (open device) loads following firmware files:
-> > > Not signed:
-> > > - qcom/a630_sqe.fw
-> > > - qcom/a630_gmu.bin
-> > >
-> > > Signed, will work for any non-secured sdm845 device:
-> > > - qcom/sdm845/a630_zap.mbn
-> > > - qcom/sdm845/adsp.mbn
-> > > - qcom/sdm845/cdsp.mbn
-> > > - qcom/sdm485/mba.mbn
-> > > - qcom/sdm845/modem.mbn
-> > > - qcom/sdm845/wlanmdsp.mbn (loaded via TQFTP)
-> > > - qcom/venus-5.2/venus.mbn
-> > >
-> > > Signed, works only for DB845c.
-> > > - qcom/sdm845/Thundercomm/db845c/slpi.mbn
-> > >
-> > > In comparison, the SDM845 Pixel-3 phone (aka blueline) should load the
-> > > following firmware files:
-> > > - qcom/a630_sqe.fw (the same, non-signed file)
-> > > - qcom/a630_gmu.bin (the same, non-signed file)
-> > > - qcom/sdm845/Google/blueline/a630_zap.mbn
-> >
-> > How do you get from "a630_zap.mbn" to this? By extending the lookup
-> > table for every target, or what am I missing?
+
+
+On 5/29/2024 6:04 AM, Jeff Johnson wrote:
+> On 5/27/2024 11:35 PM, Harshitha Prem wrote:
+>> To support multi-link operation, multiple devices with different bands say
+>> 2 GHz or 5 GHz or 6 GHz can be combined together as a group and provide
+>> an abstraction to mac80211.
+>>
+>> Device group abstraction - when there are multiple devices that are
+>> connected by any means of communication interface between them, then these
+>> devices can be combined together as a single group using a group id to form
+>> a group abstraction. In ath12k driver, this abstraction would be named as
+>> ath12k_hw_group (ag).
+>>
+>> Please find below illustration of device group abstraction with two
+>> devices.
+>>
+>>                  Grouping of multiple devices (in future)
+>> +------------------------------------------------------------------------+
+>> |  +-------------------------------------+       +-------------------+   |
+>> |  |   +-----------+ | | +-----------+   |       |   +-----------+   |   |
+>> |  |   | ar (2GHz) | | | | ar (5GHz) |   |       |   | ar (6GHz) |   |   |
+>> |  |   +-----------+ | | +-----------+   |       |   +-----------+   |   |
+>> |  |          ath12k_base (ab)           |       | ath12k_base (ab)  |   |
+>> |  |         (Dual band device)          |       |                   |   |
+>> |  +-------------------------------------+       +-------------------+   |
+>> |                 ath12k_hw_group (ag) based on group id                 |
+>> +------------------------------------------------------------------------+
+>>
+>> Say for example, device 1 has two radios (2 GHz and 5 GHz band) and
+>> device 2 has one radio (6 GHz).
+>>
+>> In existing code -
+>>         device 1 will have two hardware abstractions hw1 (2 GHz) and hw2
+>>         (5 GHz) will be registered separately to mac80211 as phy0 and phy1
+>>         respectively. Similarly, device 2 will register its hw (6GHz) as
+>>         phy2 to mac80211.
+>>
+>> In future, with multi-link abstraction
+>>
+>>         combination 1 - Different group id for device1 and device 2
+>>                 Device 1 will create a single hardware abstraction hw1
+>>                 (2 GHz and  5 GHz) and will be registered to mac80211 as
+>>                 phy0. similarly, device 2 will register its hardware
+>>                 (6 GHz) to mac80211 as phy1.
+>>
+>>         combination 2 - Same group id for device1 and device 2
+>>                 Both device details are combined together as a group, say
+>>                 group1, with single hardware abstraction of radios 2 GHz,
+>>                 5 GHz and 6 GHz band details and will be registered to
+>>                 mac80211 as phy0.
+>>
+>> Add base infrastructure changes to add device grouping abstraction with
+>> a single device.
+>>
+>> This patch series brings the base code changes with following order:
+>>         1. Refactor existing code which would facilitate in introducing
+>>            device group abstraction.
+>>         2. Create a device group abstraction during device probe.
+>>         3. Start the device group only after QMI firmware ready event is
+>>            received for all the devices that are combined in the group.
+>>         4. Move the hardware abstractions (ath12k_hw - ah) from device
+>>            (ath12k_base - ab) to device group abstraction (ag) as it would
+>>            ease in having different combinations of group abstraction that
+>>            can be registered to mac80211.
+>>
+>> v7:
+>>    - Added linux-wireless mailer to cc.
+>>    - Removed Acked-by tag from "[PATCH v6 8/8]" as it has minor change.
+>>
+>> v6:
+>>   - Addressed smatch error seen on "[PATCH v5 8/8] wifi: ath12k: move
+>>     ath12k_hw from per soc to group"
+>>   - Rebased to ToT
+>> v5:
+>>   - on "[PATCH 8/8] wifi: ath12k: move ath12k_hw from per soc to
+>>     group", refactor the ath12k_mac_hw_allocate() api based on ag rather
+>>     than ab and update hardware abstraction array size in ath12k_hw_group
+>>     as ATH12K_GROUP_MAX_RADIO.
+>>   - Rebased to ToT
+>> v4:
+>>   - Modified the cover letter
+>> v3:
+>>   - Removed depends-on tag of "wifi: ath12k: Refactor the hardware recovery
+>>     procedures" as it is merged to ToT
+>>   - Addressed the deadlock warning seen during rmmod.
+>>
+>> v2:
+>>  - Rebased to ToT
+>>
+>> Karthikeyan Periyasamy (8):
+>>   wifi: ath12k: Refactor core start api
+>>   wifi: ath12k: Add helpers to get or set ath12k_hw
+>>   wifi: ath12k: Add ath12k_get_num_hw api
+>>   wifi: ath12k: Introduce QMI firmware ready flag
+>>   wifi: ath12k: move ATH12K_FLAG_REGISTERED flag set to mac_register api
+>>   wifi: ath12k: Introduce device group abstraction
+>>   wifi: ath12k: refactor core start based on hardware group
+>>   wifi: ath12k: move ath12k_hw from per device to group
+>>
+>>  drivers/net/wireless/ath/ath12k/core.c | 431 +++++++++++++++++++++----
+>>  drivers/net/wireless/ath/ath12k/core.h |  87 ++++-
+>>  drivers/net/wireless/ath/ath12k/dp.c   |  19 +-
+>>  drivers/net/wireless/ath/ath12k/dp.h   |   2 +-
+>>  drivers/net/wireless/ath/ath12k/mac.c  | 117 ++++---
+>>  drivers/net/wireless/ath/ath12k/mac.h  |   9 +-
+>>  drivers/net/wireless/ath/ath12k/pci.c  |   2 +
+>>  drivers/net/wireless/ath/ath12k/qmi.c  |  10 +-
+>>  8 files changed, 544 insertions(+), 133 deletions(-)
+>>
+>>
+>> base-commit: f8320064a28242448eeb9fece08abd865ea8a226
 > 
-> More or less so. Matching the root OF node gives us the firmware
-> location, then it gets prepended to all firmware targets. Not an ideal
-> solution, as there is no fallback support, but at least it gives us
-> some points to discuss (and to decide whether to move to some
-> particular direction or to abandon the idea completely, making Arnd
-> unhappy again).
+> With this series I'm seeing a firmware crash upon resume from hibernation, but 
+> I'm not sure if it is the same intermittent crash I reported in another thread 
+> where firmware is not correctly handling a low physical memory address.
 > 
-
-I understand the desire to not put linux-firmware-specific paths in the
-DeviceTree, but I think I'm less keen on having a big lookup table in
-the kernel...
-
-Regards,
-Bjorn
+> Baochen & Kalle, since this issue may be specific to my laptop, can you 
+> validate hibernation on your setups?
+I can also see a firmware crash upon resume. I am using ath-202405281746 as code base.
+> 
 
