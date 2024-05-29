@@ -1,102 +1,104 @@
-Return-Path: <linux-wireless+bounces-8262-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8263-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E10F68D3780
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 15:23:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A2B18D37A8
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 15:31:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C4E7284426
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 13:23:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6FCE288B03
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 13:31:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1941D17BA3;
-	Wed, 29 May 2024 13:23:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 737D6E554;
+	Wed, 29 May 2024 13:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="oaMqzzbr"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="zscgljYt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FEE117BA0
-	for <linux-wireless@vger.kernel.org>; Wed, 29 May 2024 13:23:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 008BB14292;
+	Wed, 29 May 2024 13:31:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716989000; cv=none; b=JYqiDwJo+CbWaQhh2FGu+ThBwe8d9+V8sY/J+8noslHCXGa6Rdu6sCu5Rs7zzFnkRYZ+w3XZYFN9C2LDsErVC1TajAuJlhQf/xCNbWq8VPqdvw4V1ZMhBAFDHGI6xqiIJ8DPCIZYFFD7oJ+tX80rYC+Zos4WgdlmPFCQ8o3Zw3Q=
+	t=1716989504; cv=none; b=bj21HYhXi2m31HUcDW43iBijS+CrM8VGNS9Wxf01aPJIzLLSG/Ml6h/2Tb7ZtB4K8Ai22GFZyk4N/8iEEAnMhPKe2xYwMoLC85w3pOpnGp9L/NqJEEyGRODTJlLcpV8RWFE4BaZg+HJiJeUoIZYzc6HgoThTWUEvP4PfG2qOfxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716989000; c=relaxed/simple;
-	bh=Jvj+FiGU0VAkGKQvgUc7+jBTVYNPmWD6JlIV6XmdAAs=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Y8wx4CXZuedVpJGx+qENwOOPkobePYO+vKcHjQ2iyQyKqdLflrbJHpnKZDAJvpyBOeLIZyJNv+xWa6eiYj01B1hUMbdyDEUwOKG8lqgvAOwcK7/V0r7nQWv2w57/MDF+7JrGDsIfdnmEfC7vdR/cbB4m5i1Ph4SuhN2SZo7gSnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=oaMqzzbr; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+	s=arc-20240116; t=1716989504; c=relaxed/simple;
+	bh=0P7pXe69+4YQNTzp+01XM7mW8AzJM2VfMIN8IkVeLr4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c7airbZXD7/djTxlRP/R/YkkrTZaKbbbBnynRY/DG9sT8F6yT0mC/A7MC8rnPXsblxaUzL+sNYPi2WG651FxdQoWjrMTmz2BKtuZSM9+1ywdGCKybUAh4KYaVF6amWZdZ8bJq00e74tDRpflVbNqKVC1wCEdG+b302XtArg7pzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=zscgljYt; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=uJgmhnHfpXRArzWZMxr9trqneJLphfazjm2ZPyQ1l4s=;
-	t=1716988987; x=1718198587; b=oaMqzzbrDoGtAww1fussLOdGkmZYaYhWKdvMLY4sQoLpVac
-	qrGPAqDrKO6qzt9ZXoGuxdm6YrXZ82J7NV2IVbtpjrKcEyRwvgS3XSsjRD1gTrKHJcOKoy4w7j69w
-	Yzws+M2/YYbFBiZQ9hZywBe0W9ROPGB6CemDT/haDd40NXvdjlwZsoiaQ+QND7doxyJr4AdsK9MSs
-	u5QjIG7x5hYg/ssUpWSP3FJIysZQHKicfdb4TZgXu2t/oR12HHlyWRnL7Vd5VpdGApIGCj4HbaPfo
-	BF+Be+W3ylWlP0YcKT3+5IiZ+f39ESqQuLDuRR/tLMS0qHX7UFALIc9Eg0dl6Zpg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1sCJGX-0000000GxXU-1ykx;
-	Wed, 29 May 2024 15:22:53 +0200
-Message-ID: <173a8af7e9b544c496f2aee2bb47fca99279873c.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: mac80211: fix NULL dereference at band check in
- starting tx ba session
-From: Johannes Berg <johannes@sipsolutions.net>
-To: kevin_yang@realtek.com, linux-wireless@vger.kernel.org
-Date: Wed, 29 May 2024 15:22:52 +0200
-In-Reply-To: <20240523082200.15544-1-kevin_yang@realtek.com>
-References: <20240523082200.15544-1-kevin_yang@realtek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=YwVYPPJP91MPMhgrxE4Hs+BEo5W7xjePcgEPmhKjh1w=; b=zscgljYtzLTJlyx/fGphVnJySG
+	bUqRQNp+j7Mfg+4pAii6SajhZMrSNx8POI7e/GLTQJAML08YpEifJVg6FpwQqKf4HJOcyqHIALgBr
+	Hyhx8wVF4IoupXktezL13bFtrLv2VNUSD/FmygUIKDM5nUh4+odtQnH+HdIAIcAwwsniD9aSpF+jm
+	RMWYkgAZ0drA2jfCzH8mxwuMGSj5yALv8qTUonZd5tkw9sBVOfp4B1LVRTUlKMrQksgexc1pe5nZT
+	IG1Eh8pBDGV8fLY40EQP9LVCO1lP6yL3m7vSvDsqXskUpqXjLuky9zrno0LdVC300G+9d2uwLgH1V
+	74sX9bwA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:37240)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1sCJOv-0006Bl-2l;
+	Wed, 29 May 2024 14:31:33 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1sCJOx-0004Ek-70; Wed, 29 May 2024 14:31:35 +0100
+Date: Wed, 29 May 2024 14:31:35 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: "Nemanov, Michael" <michael.nemanov@ti.com>
+Cc: Kalle Valo <kvalo@kernel.org>, Johannes Berg <johannes.berg@intel.com>,
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH wireless-next 4/8] wifi: wlcore: pass "status" to
+ wlcore_hw_convert_fw_status()
+Message-ID: <ZlcuNxmpMlHOMPXL@shell.armlinux.org.uk>
+References: <ZlWhH4HleGILuUtN@shell.armlinux.org.uk>
+ <E1sBsxx-00E8vi-Gf@rmk-PC.armlinux.org.uk>
+ <abbb5c02-6cda-41c6-9900-06e7f4920541@ti.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <abbb5c02-6cda-41c6-9900-06e7f4920541@ti.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Thu, 2024-05-23 at 16:22 +0800, kevin_yang@realtek.com wrote:
->=20
-> -	if (!pubsta->deflink.ht_cap.ht_supported &&
-> -	    sta->sdata->vif.bss_conf.chanreq.oper.chan->band !=3D NL80211_BAND_=
-6GHZ)
-> -		return -EINVAL;
+On Wed, May 29, 2024 at 04:15:13PM +0300, Nemanov, Michael wrote:
+> On 5/28/2024 12:17 PM, Russell King (Oracle) wrote:
+> > @@ -392,7 +392,7 @@ static int wlcore_fw_status(struct wl1271 *wl, struct wl_fw_status *status)
+> >    	if (ret < 0)
+> >    		return ret;
+> > -	wlcore_hw_convert_fw_status(wl, wl->raw_fw_status, wl->fw_status);
+> > +	wlcore_hw_convert_fw_status(wl, wl->raw_fw_status, status);
+> >    	wl1271_debug(DEBUG_IRQ, "intr: 0x%x (fw_rx_counter = %d, "
+> >    		     "drv_rx_counter = %d, tx_results_counter = %d)",
+> > -- 
+> > 2.30.2
+> 
+> Agree this is more consistent. Maybe *status shouldn't be an argument to
+> wlcore_fw_status at all? It's called only in one place with wl->fw_status
+> anyway.
 
-I can see how this fixes the crash, and I can also see why we didn't
-notice (TX agg sessions offloaded to FW), but ...
+I did consider that, and if we removed the argument, it would make sense
+to add a local "status" variable at the top of this function anyway,
+otherwise endlessly referring to wl->fw_status.foo instead of
+status->foo becomes quite tiring and needlessly verbose (which means
+less readable.)
 
-> +	if (!pubsta->deflink.ht_cap.ht_supported) {
-> +		struct ieee80211_vif *vif =3D &sta->sdata->vif;
-> +		struct ieee80211_bss_conf *bss_conf;
-> +
-> +		rcu_read_lock();
-> +
-> +		bss_conf =3D rcu_dereference(vif->link_conf[pubsta->deflink.link_id]);
-> +		if (unlikely(!bss_conf) ||
-> +		    bss_conf->chanreq.oper.chan->band !=3D NL80211_BAND_6GHZ) {
-> +			rcu_read_unlock();
-> +			return -EINVAL;
->=20
+That's something which could be done as a separate patch.
 
-is this really right?
-
-This checks that the *first* link the STA used isn't 6 GHz, but maybe it
-should be *any* link?
-
-But then again, we don't really need this check for an MLO STA since it
-will have HT supported unless it associated on 6 GHz. Maybe we should
-just not do the check this way, but check if it has HT or VHT or HE or
-something like that?
-
-johannes
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
