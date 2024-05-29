@@ -1,81 +1,85 @@
-Return-Path: <linux-wireless+bounces-8267-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8268-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A78E8D39FE
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 16:55:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 033A88D3A72
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 17:16:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15AAD28AC80
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 14:55:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 984F61F25B91
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 15:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1162015ADAA;
-	Wed, 29 May 2024 14:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A778A17DE09;
+	Wed, 29 May 2024 15:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="hY4Edtuy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m9RGkqp0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E350D27E;
-	Wed, 29 May 2024 14:55:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FBA20328;
+	Wed, 29 May 2024 15:15:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716994505; cv=none; b=kXQWHXVGNjk0KJYF13rsCaItsXLypSNUcGaqQlu+oSxcJD6m9+TmSoWz+NOyrTdRuWAomVC/SJnCEaMFPLQylEiHOxhHMvOCgBjNoVcKrvNSetFyM1ucSJH2ujvCvxvZwMDBeazpfA9BkX25UpwuWDqqlXONgHYFOdfBluLWMCc=
+	t=1716995754; cv=none; b=KOilhp9QKdiBXjGecP/zbpemdUDAt3LTQCiRTu1CV1Wh1J9OsGPxmBXY+jVRL0UTjYU+SRbdUzqTLiIt8ZcZz3dID4lMrUZSGwNnwW73+1NiIScKQH8GYsCfbyWy7KkrQNM/hSqwZICMHFVxwHGx86LtWAf9MO3CsdD1N89l+PY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716994505; c=relaxed/simple;
-	bh=LKlh9hVOnB/K2o7RLmzS0uBIBkUJWNr7avAUzdtD2pY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=NtxAR5OtaI02VZfS2X3D6pPcL87InXfOImgJk5kScgAbs/SWACGM0BOF74JFci/i7L4UhHO6T8ukDIADxzIrowAVVJAdE4k37WefK/pdVcRcK2B/9vFo+Un+yRygBv4adn/P6jnsFIfrvd30KndsvNe19Qzd1OiaEJjA2YRnEw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=hY4Edtuy; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=LKlh9hVOnB/K2o7RLmzS0uBIBkUJWNr7avAUzdtD2pY=;
-	t=1716994503; x=1718204103; b=hY4EdtuyiN/2SnkNKjYKgRnvz7ND5tMCviUZdFx5oTeaWIw
-	pdt6xQFveEUXPuGx6IgekDy1h3Waa/LxwsGj4kZwvv3DaGQI5UxuVUYiqbtvdo+b6364qkFQotCVn
-	eGQyi6k44TkYSNuFfxvh5igLnGXw5KxQkPgzAbFI2stOTnyl3CoboTezTiesQ/CpTFLnCK7xU/OSv
-	RTWUQBYgX9zt1HurbKmz3lqR/y8thxjQdIujnYB5ZndfJC5/KMNtN7J+P2YAzx7TDqtqjTdMQj+UK
-	4E8Kx1J5qPUeU88mxoGgMFhHJne/iqkbyGwizjoPY16DYgSc5wuIDg4/a29/rW+g==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1sCKhZ-0000000H44c-3tbZ;
-	Wed, 29 May 2024 16:54:54 +0200
-Message-ID: <d1fea590e53cb1b00dc64f4f8a4c8aec84610401.camel@sipsolutions.net>
-Subject: Re: [PATCH v2] wifi: mac80211: Avoid address calculations via out
- of bounds array indexing
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Kenton Groombridge <concord@gentoo.org>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com,  linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-  linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, Kees Cook
- <keescook@chromium.org>
-Date: Wed, 29 May 2024 16:54:51 +0200
-In-Reply-To: <20240517145420.8891-1-concord@gentoo.org>
-References: <20240517145420.8891-1-concord@gentoo.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	s=arc-20240116; t=1716995754; c=relaxed/simple;
+	bh=eWUByR0VEiRUW96ijAZ5GiNZ6VAiv1wvv2G+yWAVIMc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dUlIyYuRi9l5rKB71zU347WXBMaNRLAruhmVqEoApMDPb+lUIc8+Jy5mUhDYPvUaOk9O9LFEpiuk3UFYnxNpozk4JqrwiW6VphQWcokWaBURDTsW+t8FiJNVHhIfinFSAMW/7XEQDXJ5vGgwMyABRL0d8LwoxsCWeSEx4NK0GRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m9RGkqp0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0FFAC113CC;
+	Wed, 29 May 2024 15:15:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716995754;
+	bh=eWUByR0VEiRUW96ijAZ5GiNZ6VAiv1wvv2G+yWAVIMc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=m9RGkqp0sAdEZhLCuT0KAmONCe0N9V3i3TP9LujkWb1Peph3Bbpm59h01mNhvBp+y
+	 zSCtIFc52nB47iBl28g4GxQohnd9QDR1rhbJ7fEitzTvzu6MIWBJYj+gIYnkirIg0M
+	 K+c5FOIEaWmJbwRu8FDwktmVMql9TDHUteqS0py5Z066a9TEmj0LNXfuySFY2uXkya
+	 /Ry+iD6ktMlxGh23arxufMnZX+sZ+UPD4XqLX6cCB+9S1dCwLO99ssnHTlBqHqRuw9
+	 miQpI+h0GCjr8dp/+LJEdmk9pTcGjljxGDFxJNjlJRwPsqrpiVhbllhz+LD8HQcmsc
+	 at1XrTcYdKazQ==
+Date: Wed, 29 May 2024 10:15:52 -0500
+From: Rob Herring <robh@kernel.org>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jeff Johnson <jjohnson@kernel.org>, linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	ath11k@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: net: wireless: ath11k: Drop
+ "qcom,ipq8074-wcss-pil" from example
+Message-ID: <20240529151552.GA2525043-robh@kernel.org>
+References: <20240528134610.4075204-1-robh@kernel.org>
+ <171697351470.2158278.1110328163301153386.kvalo@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <171697351470.2158278.1110328163301153386.kvalo@kernel.org>
 
-On Fri, 2024-05-17 at 10:54 -0400, Kenton Groombridge wrote:
-> req->n_channels must be set before req->channels[] can be used.
->=20
+On Wed, May 29, 2024 at 09:05:16AM +0000, Kalle Valo wrote:
+> "Rob Herring (Arm)" <robh@kernel.org> wrote:
+> 
+> > Convention for examples is to only show what's covered by the binding,
+> > so drop the provider "qcom,ipq8074-wcss-pil". It is also not documented
+> > by a schema which caused a warning.
+> > 
+> > Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+> > Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> 
+> I'll take this to our ath.git tree, ok?
 
-I don't know why, but this patch breaks a number of hwsim test cases.
+Yes, that's what I'm expecting.
 
-https://w1.fi/cgit/hostap/tree/tests/hwsim/
-
-johannes
+Rob
 
