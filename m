@@ -1,118 +1,102 @@
-Return-Path: <linux-wireless+bounces-8261-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8262-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4F8C8D375B
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 15:15:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E10F68D3780
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 15:23:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 021DC1C23D9E
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 13:15:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C4E7284426
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 13:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A5E12E40;
-	Wed, 29 May 2024 13:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1941D17BA3;
+	Wed, 29 May 2024 13:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="D15IPLoT"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="oaMqzzbr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65AF014285;
-	Wed, 29 May 2024 13:15:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.248
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FEE117BA0
+	for <linux-wireless@vger.kernel.org>; Wed, 29 May 2024 13:23:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716988531; cv=none; b=nR7U3zsAp+V6Z2g3envbUKsZoqeRiFP7ehiBG3OusChpYQ5ZF9z08rVnqGsIOYRxVhdstShu5b8IVufjXd/7pxcwNbFEyJDvrRghm2IIl7dgn/eM0M8xWhplfFVsO8fvFcpjErKauAkzSOYPlrCTklU3mLyVLKxyi+L1ZSKWsQQ=
+	t=1716989000; cv=none; b=JYqiDwJo+CbWaQhh2FGu+ThBwe8d9+V8sY/J+8noslHCXGa6Rdu6sCu5Rs7zzFnkRYZ+w3XZYFN9C2LDsErVC1TajAuJlhQf/xCNbWq8VPqdvw4V1ZMhBAFDHGI6xqiIJ8DPCIZYFFD7oJ+tX80rYC+Zos4WgdlmPFCQ8o3Zw3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716988531; c=relaxed/simple;
-	bh=OmM5PAMFbN4dfmCw525+OX5fDy1sVOYxPtyU5Ru9uAo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=o0o7vaLZLGxbE8hDPjl2R+r45k4r9wuYGGaRPUNrLy9iaTQOt2oxMrA/0YOGCvJhUwWMEllUqEI6G1ddJZ8wdwONizZL/wVazJUBOySUf8t5ckj5dlccozDoLMKGInVP4EcOXQ6GJs4q6IHHEIgrksJBHGV0l8K/Hqmj78AxSRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=D15IPLoT; arc=none smtp.client-ip=198.47.23.248
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 44TDFFRq127926;
-	Wed, 29 May 2024 08:15:15 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1716988515;
-	bh=SGXEU/HXs2xZG2V9QTv7x2JhjWA83Vf2BvYxteRQpkU=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=D15IPLoTypsUVfAq5iNhZrhWsUCKh0AF7+uShdkTIG36aZfOnTrkDPZ+xfKyzLFEL
-	 ppygFvpRKcjOXg99cmZL8s9xPkiIyYF4CpdmatwL0byu8qHD6lSyihZD8hQEHYVNKq
-	 z8WTMv9sAorzvdGZgxcSzwLLMXPc7IRGbH8mTIH8=
-Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 44TDFFPB062731
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 29 May 2024 08:15:15 -0500
-Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 29
- May 2024 08:15:15 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Wed, 29 May 2024 08:15:15 -0500
-Received: from [137.167.6.219] (lt5cg1094w5k.dhcp.ti.com [137.167.6.219])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 44TDFDUW119086;
-	Wed, 29 May 2024 08:15:14 -0500
-Message-ID: <abbb5c02-6cda-41c6-9900-06e7f4920541@ti.com>
-Date: Wed, 29 May 2024 16:15:13 +0300
+	s=arc-20240116; t=1716989000; c=relaxed/simple;
+	bh=Jvj+FiGU0VAkGKQvgUc7+jBTVYNPmWD6JlIV6XmdAAs=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Y8wx4CXZuedVpJGx+qENwOOPkobePYO+vKcHjQ2iyQyKqdLflrbJHpnKZDAJvpyBOeLIZyJNv+xWa6eiYj01B1hUMbdyDEUwOKG8lqgvAOwcK7/V0r7nQWv2w57/MDF+7JrGDsIfdnmEfC7vdR/cbB4m5i1Ph4SuhN2SZo7gSnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=oaMqzzbr; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=uJgmhnHfpXRArzWZMxr9trqneJLphfazjm2ZPyQ1l4s=;
+	t=1716988987; x=1718198587; b=oaMqzzbrDoGtAww1fussLOdGkmZYaYhWKdvMLY4sQoLpVac
+	qrGPAqDrKO6qzt9ZXoGuxdm6YrXZ82J7NV2IVbtpjrKcEyRwvgS3XSsjRD1gTrKHJcOKoy4w7j69w
+	Yzws+M2/YYbFBiZQ9hZywBe0W9ROPGB6CemDT/haDd40NXvdjlwZsoiaQ+QND7doxyJr4AdsK9MSs
+	u5QjIG7x5hYg/ssUpWSP3FJIysZQHKicfdb4TZgXu2t/oR12HHlyWRnL7Vd5VpdGApIGCj4HbaPfo
+	BF+Be+W3ylWlP0YcKT3+5IiZ+f39ESqQuLDuRR/tLMS0qHX7UFALIc9Eg0dl6Zpg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1sCJGX-0000000GxXU-1ykx;
+	Wed, 29 May 2024 15:22:53 +0200
+Message-ID: <173a8af7e9b544c496f2aee2bb47fca99279873c.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: mac80211: fix NULL dereference at band check in
+ starting tx ba session
+From: Johannes Berg <johannes@sipsolutions.net>
+To: kevin_yang@realtek.com, linux-wireless@vger.kernel.org
+Date: Wed, 29 May 2024 15:22:52 +0200
+In-Reply-To: <20240523082200.15544-1-kevin_yang@realtek.com>
+References: <20240523082200.15544-1-kevin_yang@realtek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless-next 4/8] wifi: wlcore: pass "status" to
- wlcore_hw_convert_fw_status()
-To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        Kalle Valo
-	<kvalo@kernel.org>
-CC: Johannes Berg <johannes.berg@intel.com>, <linux-kernel@vger.kernel.org>,
-        <linux-wireless@vger.kernel.org>
-References: <ZlWhH4HleGILuUtN@shell.armlinux.org.uk>
- <E1sBsxx-00E8vi-Gf@rmk-PC.armlinux.org.uk>
-Content-Language: en-US
-From: "Nemanov, Michael" <michael.nemanov@ti.com>
-In-Reply-To: <E1sBsxx-00E8vi-Gf@rmk-PC.armlinux.org.uk>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-malware-bazaar: not-scanned
 
+On Thu, 2024-05-23 at 16:22 +0800, kevin_yang@realtek.com wrote:
+>=20
+> -	if (!pubsta->deflink.ht_cap.ht_supported &&
+> -	    sta->sdata->vif.bss_conf.chanreq.oper.chan->band !=3D NL80211_BAND_=
+6GHZ)
+> -		return -EINVAL;
 
-On 5/28/2024 12:17 PM, Russell King (Oracle) wrote:
-> wlcore_fw_status() is passed a pointer to the struct wl_fw_status to
-> decode the status into, which is always wl->fw_status. Rather than
-> referencing wl->fw_status within wlcore_fw_status(), use the supplied
-> argument so that we access this member in a consistent manner.
->
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> ---
->    drivers/net/wireless/ti/wlcore/main.c | 2 +-
->    1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
-> index a98b26dc3cb8..3defe49c5120 100644
-> --- a/drivers/net/wireless/ti/wlcore/main.c
-> +++ b/drivers/net/wireless/ti/wlcore/main.c
-> @@ -392,7 +392,7 @@ static int wlcore_fw_status(struct wl1271 *wl, struct wl_fw_status *status)
->    	if (ret < 0)
->    		return ret;
->    
-> -	wlcore_hw_convert_fw_status(wl, wl->raw_fw_status, wl->fw_status);
-> +	wlcore_hw_convert_fw_status(wl, wl->raw_fw_status, status);
->    
->    	wl1271_debug(DEBUG_IRQ, "intr: 0x%x (fw_rx_counter = %d, "
->    		     "drv_rx_counter = %d, tx_results_counter = %d)",
-> -- 
-> 2.30.2
+I can see how this fixes the crash, and I can also see why we didn't
+notice (TX agg sessions offloaded to FW), but ...
 
-Agree this is more consistent. Maybe *status shouldn't be an argument to 
-wlcore_fw_status at all? It's called only in one place with 
-wl->fw_status anyway.
+> +	if (!pubsta->deflink.ht_cap.ht_supported) {
+> +		struct ieee80211_vif *vif =3D &sta->sdata->vif;
+> +		struct ieee80211_bss_conf *bss_conf;
+> +
+> +		rcu_read_lock();
+> +
+> +		bss_conf =3D rcu_dereference(vif->link_conf[pubsta->deflink.link_id]);
+> +		if (unlikely(!bss_conf) ||
+> +		    bss_conf->chanreq.oper.chan->band !=3D NL80211_BAND_6GHZ) {
+> +			rcu_read_unlock();
+> +			return -EINVAL;
+>=20
 
-Michael.
+is this really right?
 
+This checks that the *first* link the STA used isn't 6 GHz, but maybe it
+should be *any* link?
+
+But then again, we don't really need this check for an MLO STA since it
+will have HT supported unless it associated on 6 GHz. Maybe we should
+just not do the check this way, but check if it has HT or VHT or HE or
+something like that?
+
+johannes
 
