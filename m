@@ -1,68 +1,75 @@
-Return-Path: <linux-wireless+bounces-8263-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8264-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A2B18D37A8
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 15:31:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2BB98D3955
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 16:33:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6FCE288B03
-	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 13:31:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 219701C20AAF
+	for <lists+linux-wireless@lfdr.de>; Wed, 29 May 2024 14:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 737D6E554;
-	Wed, 29 May 2024 13:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E98CB159214;
+	Wed, 29 May 2024 14:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="zscgljYt"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="H2VJCtqX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 008BB14292;
-	Wed, 29 May 2024 13:31:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537F9159205
+	for <linux-wireless@vger.kernel.org>; Wed, 29 May 2024 14:33:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716989504; cv=none; b=bj21HYhXi2m31HUcDW43iBijS+CrM8VGNS9Wxf01aPJIzLLSG/Ml6h/2Tb7ZtB4K8Ai22GFZyk4N/8iEEAnMhPKe2xYwMoLC85w3pOpnGp9L/NqJEEyGRODTJlLcpV8RWFE4BaZg+HJiJeUoIZYzc6HgoThTWUEvP4PfG2qOfxQ=
+	t=1716993181; cv=none; b=eoQHWn+zjDw5LhqhJ+nZMW6bdBExbkxl1xXNyAB/wu2Z0UGZdA0SvDNCLwvcqpT3M3fvX1R1D6k5PVs92VXIlm5ToOCaaZPekjdRxoe0ZXAFCwdH8RXHpzc4RMKrSgfbJ3znbPdZ4A9BAwQQjsHSIiJ/1GF6b2CUTvK2ShQ7DwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716989504; c=relaxed/simple;
-	bh=0P7pXe69+4YQNTzp+01XM7mW8AzJM2VfMIN8IkVeLr4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c7airbZXD7/djTxlRP/R/YkkrTZaKbbbBnynRY/DG9sT8F6yT0mC/A7MC8rnPXsblxaUzL+sNYPi2WG651FxdQoWjrMTmz2BKtuZSM9+1ywdGCKybUAh4KYaVF6amWZdZ8bJq00e74tDRpflVbNqKVC1wCEdG+b302XtArg7pzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=zscgljYt; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=YwVYPPJP91MPMhgrxE4Hs+BEo5W7xjePcgEPmhKjh1w=; b=zscgljYtzLTJlyx/fGphVnJySG
-	bUqRQNp+j7Mfg+4pAii6SajhZMrSNx8POI7e/GLTQJAML08YpEifJVg6FpwQqKf4HJOcyqHIALgBr
-	Hyhx8wVF4IoupXktezL13bFtrLv2VNUSD/FmygUIKDM5nUh4+odtQnH+HdIAIcAwwsniD9aSpF+jm
-	RMWYkgAZ0drA2jfCzH8mxwuMGSj5yALv8qTUonZd5tkw9sBVOfp4B1LVRTUlKMrQksgexc1pe5nZT
-	IG1Eh8pBDGV8fLY40EQP9LVCO1lP6yL3m7vSvDsqXskUpqXjLuky9zrno0LdVC300G+9d2uwLgH1V
-	74sX9bwA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:37240)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1sCJOv-0006Bl-2l;
-	Wed, 29 May 2024 14:31:33 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1sCJOx-0004Ek-70; Wed, 29 May 2024 14:31:35 +0100
-Date: Wed, 29 May 2024 14:31:35 +0100
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: "Nemanov, Michael" <michael.nemanov@ti.com>
-Cc: Kalle Valo <kvalo@kernel.org>, Johannes Berg <johannes.berg@intel.com>,
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH wireless-next 4/8] wifi: wlcore: pass "status" to
- wlcore_hw_convert_fw_status()
-Message-ID: <ZlcuNxmpMlHOMPXL@shell.armlinux.org.uk>
-References: <ZlWhH4HleGILuUtN@shell.armlinux.org.uk>
- <E1sBsxx-00E8vi-Gf@rmk-PC.armlinux.org.uk>
- <abbb5c02-6cda-41c6-9900-06e7f4920541@ti.com>
+	s=arc-20240116; t=1716993181; c=relaxed/simple;
+	bh=flEvuhty6EuomG8EUxyF6Lx0gz0ZryAvEOoqeWjjf4U=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=VlCMBq85Xo6ovO8+BnpwQKxphGVD+z8fHx2B7gCIAicMsKIYdpkZesKFhFH1QIrxOtFGAoHHa816zWZI20uSsEWSqf8I+NCSkOMedaJ4K/42xC8q2DyYiGmMIZstjVNzFsUi8QH2HhPepEmkkKFPzsoxp6CQ7TEKNZB3K1egR5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=H2VJCtqX; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a6266ffdba8so217836266b.1
+        for <linux-wireless@vger.kernel.org>; Wed, 29 May 2024 07:33:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1716993179; x=1717597979; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/yGgtANfHFObW2yk4b9MyUemICbrjWPAQ6FaTZw/zLY=;
+        b=H2VJCtqXtJlFLgVYByLy1TKuIM5m9lVD6jJJWZ7KHZJV+Do8KnGBA5///YGAkHWRj0
+         T7Oglc518mPEPS+fqZrKqTFsMDxHtfjrvB8gX4m8VA7wBxhV+8luJgqHASzyJVohXFRn
+         QJWhjiVBs/KXjP7NBhX032LMRBH5+NOT3lzmRJeGjArTaOonu2e0jdzfnoI/8vfCDQDN
+         U9EnhEtPCeVOgNHlsNP4NP6Z3hA1xAEIYUzQnU9zZlL7awLXty1SbBWnDLDcoZUg+Lba
+         TBNGYYr3FtDREi7ckeNrXPmiWOzZLYbPTTiWuOIQkkZp6fAqJAmZ81m3YVK7CH5pCsHd
+         sKAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716993179; x=1717597979;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/yGgtANfHFObW2yk4b9MyUemICbrjWPAQ6FaTZw/zLY=;
+        b=GRuygFb85lYjPsOFSz6VeikWSuOrEwDZN3mXTXw2qtmT1RhYMCq8RrFt09EXAdWgQ3
+         YINqgTnApRWVOZKxpERHerxtUwht0XNCwDqfDUamKg4XeOKfSMbnI5j74iUYYUNdS2kc
+         z8Pop5bfR2dqiGffT5kFulfNuugTY3aoSKKLBJnqglKzVsc17tgvlHA4z+/eTAx7MDA1
+         xiHQwQtVJr5P7UZFyy4z/q0xuqqHPZ3vv94LtHFwTK5Y7IZ847d4wzmZ7EzYdbqE8obc
+         LUeMiAMe7r9k9lWAt/8uCX5dj0EeT52YKT53zTSP9IppnHY+K3/QDSWlEEcG2VwHnDBz
+         JNlw==
+X-Gm-Message-State: AOJu0YyLysx75YKQvyzIEzjGXaMUeZ/x7XG67oEM0lI3UM4Nf7Pkzvvn
+	0ARm+E2sMJvU5EQUlHb8Fyw32YzgULybToqtkxuf4d1NNwgTXZUVdrlc1oFhyQI=
+X-Google-Smtp-Source: AGHT+IFH7NS4aP8VmsnC+fzp4RqQSZye8zxVrfpr0Vj3x+zX4noEPHlGmYGdZ5clSANww20gpSAW2g==
+X-Received: by 2002:a17:906:f5a6:b0:a62:de57:adbb with SMTP id a640c23a62f3a-a62de57b397mr969367866b.27.1716993178505;
+        Wed, 29 May 2024 07:32:58 -0700 (PDT)
+Received: from localhost ([102.222.70.76])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a626c81734csm719589266b.45.2024.05.29.07.32.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 May 2024 07:32:56 -0700 (PDT)
+Date: Wed, 29 May 2024 17:32:52 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Kang Yang <quic_kangyang@quicinc.com>
+Cc: linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
+Subject: [bug report] wifi: ath11k: add P2P IE in beacon template
+Message-ID: <2d277abd-5e7b-4da0-80e0-52bd96337f6e@moroto.mountain>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -71,34 +78,78 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <abbb5c02-6cda-41c6-9900-06e7f4920541@ti.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Wed, May 29, 2024 at 04:15:13PM +0300, Nemanov, Michael wrote:
-> On 5/28/2024 12:17 PM, Russell King (Oracle) wrote:
-> > @@ -392,7 +392,7 @@ static int wlcore_fw_status(struct wl1271 *wl, struct wl_fw_status *status)
-> >    	if (ret < 0)
-> >    		return ret;
-> > -	wlcore_hw_convert_fw_status(wl, wl->raw_fw_status, wl->fw_status);
-> > +	wlcore_hw_convert_fw_status(wl, wl->raw_fw_status, status);
-> >    	wl1271_debug(DEBUG_IRQ, "intr: 0x%x (fw_rx_counter = %d, "
-> >    		     "drv_rx_counter = %d, tx_results_counter = %d)",
-> > -- 
-> > 2.30.2
-> 
-> Agree this is more consistent. Maybe *status shouldn't be an argument to
-> wlcore_fw_status at all? It's called only in one place with wl->fw_status
-> anyway.
+Hello Kang Yang,
 
-I did consider that, and if we removed the argument, it would make sense
-to add a local "status" variable at the top of this function anyway,
-otherwise endlessly referring to wl->fw_status.foo instead of
-status->foo becomes quite tiring and needlessly verbose (which means
-less readable.)
+Commit 3a415daa3e8b ("wifi: ath11k: add P2P IE in beacon template")
+from Feb 28, 2024 (linux-next), leads to the following Smatch static
+checker warning:
 
-That's something which could be done as a separate patch.
+	drivers/net/wireless/ath/ath11k/wmi.c:1742 ath11k_wmi_p2p_go_bcn_ie()
+	warn: sleeping in atomic context
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+drivers/net/wireless/ath/ath11k/wmi.c
+    1712 int ath11k_wmi_p2p_go_bcn_ie(struct ath11k *ar, u32 vdev_id,
+    1713                              const u8 *p2p_ie)
+    1714 {
+    1715         struct ath11k_pdev_wmi *wmi = ar->wmi;
+    1716         struct wmi_p2p_go_set_beacon_ie_cmd *cmd;
+    1717         size_t p2p_ie_len, aligned_len;
+    1718         struct wmi_tlv *tlv;
+    1719         struct sk_buff *skb;
+    1720         int ret, len;
+    1721 
+    1722         p2p_ie_len = p2p_ie[1] + 2;
+    1723         aligned_len = roundup(p2p_ie_len, 4);
+    1724 
+    1725         len = sizeof(*cmd) + TLV_HDR_SIZE + aligned_len;
+    1726 
+    1727         skb = ath11k_wmi_alloc_skb(wmi->wmi_ab, len);
+    1728         if (!skb)
+    1729                 return -ENOMEM;
+    1730 
+    1731         cmd = (struct wmi_p2p_go_set_beacon_ie_cmd *)skb->data;
+    1732         cmd->tlv_header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_P2P_GO_SET_BEACON_IE) |
+    1733                           FIELD_PREP(WMI_TLV_LEN, sizeof(*cmd) - TLV_HDR_SIZE);
+    1734         cmd->vdev_id = vdev_id;
+    1735         cmd->ie_buf_len = p2p_ie_len;
+    1736 
+    1737         tlv = (struct wmi_tlv *)cmd->tlv;
+    1738         tlv->header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_ARRAY_BYTE) |
+    1739                       FIELD_PREP(WMI_TLV_LEN, aligned_len);
+    1740         memcpy(tlv->value, p2p_ie, p2p_ie_len);
+    1741 
+--> 1742         ret = ath11k_wmi_cmd_send(wmi, skb, WMI_P2P_GO_SET_BEACON_IE);
+                       ^^^^^^^^^^^^^^^^^^^
+This is a might_sleep() function.
+
+    1743         if (ret) {
+    1744                 ath11k_warn(ar->ab, "failed to send WMI_P2P_GO_SET_BEACON_IE\n");
+    1745                 dev_kfree_skb(skb);
+    1746         }
+    1747 
+    1748         return ret;
+    1749 }
+
+The problematic call tree is:
+
+ath11k_bcn_tx_status_event() <- disables preempt
+-> ath11k_mac_bcn_tx_event()
+   -> ath11k_mac_setup_bcn_tmpl()
+      -> ath11k_mac_setup_bcn_tmpl_ema()
+      -> ath11k_mac_setup_bcn_tmpl_mbssid()
+         -> ath11k_mac_set_vif_params()
+            -> ath11k_mac_setup_bcn_p2p_ie()
+               -> ath11k_wmi_p2p_go_bcn_ie()
+
+The ath11k_bcn_tx_status_event() function takes rcu_read_lock() which
+disables preemption.  I don't know the code well enough to say if this
+is a real bug...  If it's a false positive, just ignore it.  These are
+one time emails.
+
+See my blog for more details.
+https://staticthinking.wordpress.com/2024/05/24/sleeping-in-atomic-warnings/
+
+regards,
+dan carpenter
 
