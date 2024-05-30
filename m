@@ -1,103 +1,103 @@
-Return-Path: <linux-wireless+bounces-8313-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8314-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E25178D4BE7
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 14:46:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2BFD8D4C32
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 15:02:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F72B1C220EC
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 12:46:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7692E287B12
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 13:02:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77FF81E521;
-	Thu, 30 May 2024 12:46:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="v9SEEwfX"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 815681E488;
+	Thu, 30 May 2024 13:02:06 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8EED1E492;
-	Thu, 30 May 2024 12:46:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7305017C9EC
+	for <linux-wireless@vger.kernel.org>; Thu, 30 May 2024 13:02:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717073196; cv=none; b=QErkuSA2M0jK0lOhVrOb+MsIgxX1d+ZIIKeiQ97fWgZZ5scF0FNSAugaDm4uKq5VsLlGbpstPlYigALtfxvNzcvkGAjFZVhvNbyQoCrN7n2BrQdMBB9rrYMXTDB1vd3sun8DZlAJ9KgbTyqFU1DpvqYdS5uFnD58BuSnhuUuVOI=
+	t=1717074126; cv=none; b=D9jPI0Xxc0ASVt2c0EjSQTCjJuBvPaE35leVeUmOCkUGn65tZ76l7crodIwGYstAGUtdBLJJimc6dgQ3EZPcQREPsTVbRL44GGcyR8Dj9FnGLDpNrfkQa/Rm3/O6jRXuO2tNUPjR5gZm2c+fj/097m4cLOE6tl2jOXV7DBbFnGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717073196; c=relaxed/simple;
-	bh=M5cLfJOtV1h8PSu49sdoWyPeSFo/8tAvf2DXyneFJQI=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
-	 In-Reply-To:Content-Type; b=JNbPMJP4FEIByox5Ps2TEVrWhE4/upOquZbwzbInZk2Ou/vEquZTb5khXzEwpr8EeYEfpiROBd3iae4txrJakJNNnD14X0VGSknnh2y3IX8J6AZvijStLocHLzJ7BKyQpeS2ySUH0qtYMbFT19MDl+H6vP4Ov1TLcvRLbNo7vig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=v9SEEwfX; arc=none smtp.client-ip=198.47.19.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 44UCkLNc077883;
-	Thu, 30 May 2024 07:46:21 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1717073181;
-	bh=zYGq4EHSKfHIOX67qHZBni7kCft57gh+IHahPaxuDp4=;
-	h=Date:Subject:From:To:CC:References:In-Reply-To;
-	b=v9SEEwfXB8H9R4J9eJXJSvrSDQOTeCmace4MGu45KjaZoRWXhuD4O4gRSxHBSkkup
-	 pRyrTrcCgazsB3/sfyem9hvrjX6uJHbWtsBZwwOuHdPu89En06UYIhbRu1zyTH/QTu
-	 BSq/tKkDMa6W6eR5SNKylw3UWm8yc0GgaO2t7cto=
-Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 44UCkLeh014887
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 30 May 2024 07:46:21 -0500
-Received: from DLEE101.ent.ti.com (157.170.170.31) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 30
- May 2024 07:46:20 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE101.ent.ti.com
- (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 30 May 2024 07:46:20 -0500
-Received: from [137.167.6.219] (lt5cg1094w5k.dhcp.ti.com [137.167.6.219])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 44UCkJsR019315;
-	Thu, 30 May 2024 07:46:19 -0500
-Message-ID: <24be3582-1b2d-4f94-9a16-26ab70da36b8@ti.com>
-Date: Thu, 30 May 2024 15:46:18 +0300
+	s=arc-20240116; t=1717074126; c=relaxed/simple;
+	bh=Zclcy1rakeT5f0M+PlcV2Mt4kyDmQgT74mkvgQcSmBg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SB9ZboDYeNHuBvyiJkPpgTUq29yxdmvtYpV0T/h5oW7Z0cs2eovGBpf0pz6Z3g49UFO2vyR//pbi7oYhZwumZwNLaPkHplFMzztXDYgW7NKLVffyyaq6GZZVD0Q1smwFoujc+7GRDetuSu1gWMpjEdwI72WHoTRftKJGVo6jBMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sCfPq-00061d-1p; Thu, 30 May 2024 15:01:58 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sCfPp-003b90-Hq; Thu, 30 May 2024 15:01:57 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sCfPp-006vb6-1Q;
+	Thu, 30 May 2024 15:01:57 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: linux-wireless@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Brian Norris <briannorris@chromium.org>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Kalle Valo <kvalo@kernel.org>,
+	David Lin <yu-hao.lin@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH] wifi: mwifiex: increase max_num_akm_suites
+Date: Thu, 30 May 2024 15:01:56 +0200
+Message-Id: <20240530130156.1651174-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless-next 6/8] wifi: wlcore: add pn16 support
-From: "Nemanov, Michael" <michael.nemanov@ti.com>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-CC: Kalle Valo <kvalo@kernel.org>, Johannes Berg <johannes.berg@intel.com>,
-        <linux-kernel@vger.kernel.org>, <linux-wireless@vger.kernel.org>
-References: <ZlWhH4HleGILuUtN@shell.armlinux.org.uk>
- <E1sBsy7-00E8vu-Nc@rmk-PC.armlinux.org.uk>
- <e6ae6dfa-6554-4e88-abb0-31dbbd8df03f@ti.com>
- <Zlg2zGb7s7zu6jb+@shell.armlinux.org.uk>
- <ceba870f-34d3-4545-884e-f04f966646ab@ti.com>
-Content-Language: en-US
-In-Reply-To: <ceba870f-34d3-4545-884e-f04f966646ab@ti.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: s.hauer@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
-On 5/30/2024 3:25 PM, Nemanov, Michael wrote:
-[...]
+The maximum number of AKM suites will be set to two if not specified by
+the driver. Set it to CFG80211_MAX_NUM_AKM_SUITES to let userspace
+specify up to ten AKM suites in the akm_suites array.
 
-> 
-> On 5/30/2024 11:20 AM, Russell King (Oracle) wrote:
-> [...]
->> > The original code was > tx_lnk_free_pkts = 
->> status->counters.tx_lnk_free_pkts[i]; > diff = (tx_lnk_free_pkts - 
->> lnk->prev_freed_pkts) & 0xff; > > if (diff == 0) > continue; > > I 
->> wonder if comparing tx_lnk_free_pkts to 0 was added intentionally? 
->> This is > monotonously incremented counter so 0 is not significant, 
->> unlike the diff. > Have I missed something? You are... While you're 
+Without only the first two AKM suites will be used, further ones are
+ignored.
 
-[...]
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
 
-And sorry for making a mess of the quoted text on the previous message, 
-got it sorted now.
+Current wpa_supplicant/hostapd only put a maximum of two into the
+akm_suites array as well, a patch changing this can be found here:
+http://lists.infradead.org/pipermail/hostap/2024-May/042720.html
+---
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Michael.
+diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+index b909a7665e9cc..908dfe01c30d7 100644
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -4358,6 +4358,8 @@ int mwifiex_register_cfg80211(struct mwifiex_adapter *adapter)
+ 				 BIT(NL80211_IFTYPE_P2P_GO) |
+ 				 BIT(NL80211_IFTYPE_AP);
+ 
++	wiphy->max_num_akm_suites = CFG80211_MAX_NUM_AKM_SUITES;
++
+ 	if (ISSUPP_ADHOC_ENABLED(adapter->fw_cap_info))
+ 		wiphy->interface_modes |= BIT(NL80211_IFTYPE_ADHOC);
+ 
+-- 
+2.39.2
+
 
