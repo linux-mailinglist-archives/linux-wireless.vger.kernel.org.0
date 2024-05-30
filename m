@@ -1,97 +1,103 @@
-Return-Path: <linux-wireless+bounces-8316-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8317-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 928118D4E0A
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 16:34:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9635A8D4E21
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 16:38:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28407281A8C
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 14:34:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50B25281BFA
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 14:38:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8B01E4AD;
-	Thu, 30 May 2024 14:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B89BA17D8AB;
+	Thu, 30 May 2024 14:37:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LLae4bLS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e0bNy4Pp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324B317C202;
-	Thu, 30 May 2024 14:34:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF7A186E57;
+	Thu, 30 May 2024 14:37:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717079645; cv=none; b=SQlzvFUchoAMxHmMRXrSR/tBOLKhnCXDjMod+wIgmlJbcmUTFiuHosu0f/A2QdT4igj4UiLhdIWL3vIhJS0qb2P6RMzh+aayefKH1e45ZPbeZsk4cgsOtSLehvIQ993vGqnn3d5M/f0UN0BVe44LSONbUj9dIaV6e5+2NOyqfpM=
+	t=1717079866; cv=none; b=NXBvM0O4pm0gHNNyj9NVCagngWSZ/MMMhJfqb3uhO1CNWCsB/k/wv0c/yO0HxRBaEQ77kf/cV7hZhj9b6rpv06KMT9mzhTfHWh+k5THFwmZK/cMWLHU/B/0NEU9DpoeapLmRpTYopOW9zRYUEt87YJ3Yu5QKOgXvnMeqTfrgfxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717079645; c=relaxed/simple;
-	bh=s8mucTal+7mxWZj/2n+kTWV7jjqo0lfn15CSNyIWMQU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e/2PwhxmY9sUp7ppQl+5Aua4JyDqopeOhjMYsUeaAPIv2PrkXpKVvIGc9qHlOr7vXL8dD3TveN3JlMbZKzfUO9VWuQOeChjQMBai79thCuHlhKMi44CxL66CAw+8mHBKm/USf5+bHa8RXBxYv1ZlugzV22ZapPaO5/R63+Na3b4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LLae4bLS; arc=none smtp.client-ip=209.85.219.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-dfa4ad7f6dfso868795276.1;
-        Thu, 30 May 2024 07:34:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717079643; x=1717684443; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=s8mucTal+7mxWZj/2n+kTWV7jjqo0lfn15CSNyIWMQU=;
-        b=LLae4bLSZrQKD2iKl2BiZPQN1aZPJqhDEIxWxu70ACwVIqIWKq6ujn5qmHQfpEUnKX
-         sGDAlC60tcgHurV2cpEe4jDeVv7n6eBJm6AG1v6oPZleI4d1WeMcfDy6hQXqUYNOVSsK
-         cfD6Q73gb9STiyuycC5jfbw8Sml0fmdkshrJ57qw73SNtW8NEd7eE13jUt9DeMjsobqJ
-         W1UlVYH+ldiD4z/bTvQoEqALVl5yx4xkYD+jfI4qxW32ff7v/IDLV4TGyczvwRrFwUML
-         XtD8Cfr6Fi5hJZNTUWD9c1slBrj5Qgg2pLXJQqsorUi7Mf8P/132Aj4msuAyzZ6FjWvl
-         5Dqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717079643; x=1717684443;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=s8mucTal+7mxWZj/2n+kTWV7jjqo0lfn15CSNyIWMQU=;
-        b=iCvTjIuX40bWXeGT13vEkkRdMf5j9moKJnTUmcOxB/MjLAs62p7GiW2wNCu/Gb+d6p
-         kJmNLJqFI8dZX87vY1wSrupRyPoTZ1gAjVtf2RJtwNy/T4+e2TcrIaMmCUiluQnX72aX
-         mEf5vM6NOF72Tez21ifsPSxpymOlah4YnR5mfb8DEdjXITkzg7iWJSbCaW5EawlZr4Ps
-         SRptzkNAavhUZHpccsKptBwPLjgBGeJVKv2fnxE6xK0K2KUsuZ1NhnfuKP6HTgW9hs1Q
-         Hp3nMuyjSKirrUMoL4xJbiZucKW84/ZsdOy6eXBBZOy/eGhTQPmTuV6ba/zGPiQayD9h
-         fxjg==
-X-Forwarded-Encrypted: i=1; AJvYcCWAs9vJYzDzvJAY9b/qbaqP40l7AqhDGao9eKKyDWlxrTbrCP9F0UdRZZF753AY0rqC9BpYfuOeN+xrmnq4we27Wun/pT3my2+itlA9uIoDB6273ZK13oSBjYnNFZuSYMoH5HE8qFg/mAJAfu4=
-X-Gm-Message-State: AOJu0YxtcVVjskywtdLRfr87lMM77WXeSEK1/6qFKkrQYN/zXXZJUZ+U
-	AUME9adm7AS1vGphmvPgd8v0hWqh6jsvpN+zvqhCdQx1bJ0HHja/UU8/3vWgE8fzS9q4TnXM6wS
-	SVqebgDKW+NsJ2fK2N1UWFcZ/Hw==
-X-Google-Smtp-Source: AGHT+IH1+lnHEQvHNTpCk4g1n3rMoXnDu8bTP/csyPUE5UnH2FmDuqVwGY9sq+kDGBDBiH5RCuTrPOILlP9jMChVO/Q=
-X-Received: by 2002:a25:ac0e:0:b0:dfa:57e4:2df8 with SMTP id
- 3f1490d57ef6-dfa5a5e77ffmr2589681276.23.1717079643016; Thu, 30 May 2024
- 07:34:03 -0700 (PDT)
+	s=arc-20240116; t=1717079866; c=relaxed/simple;
+	bh=PrMYYh8kMW3pruikOzrJKUfG0y7L/m4AXDzs8y5gFXM=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=dU/Ta8KTRJTZN9gNXRobLGPnve65ZZxxGaPFHC7Aws4ghaih2uwvSRhV3sv885Dqb2KtZBPGlTd32zV+IvBjkzpG3R5VgvDyB+MNOjBPc+6JRiKC14+nrAfiQeSk+8l4pdOdDA8sT17aU+sAVulVFmmfbwDIdXay2yZUwpgWJm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e0bNy4Pp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BEA9C32781;
+	Thu, 30 May 2024 14:37:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717079865;
+	bh=PrMYYh8kMW3pruikOzrJKUfG0y7L/m4AXDzs8y5gFXM=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=e0bNy4PpJtTgSF9gJUlNkBgM+IPi5zO/WvJd2wycEQrbq5uQnEnfQ/kNtqQmmj9Ux
+	 uqAPiXXMEjvKmzL2faeDkUjO7ZqyHEgtyosglYwbE2ZNdcN+EAkA3QG4uki1DHMPi4
+	 rILg68tyrzYfs8tWig6GHILB0XxehAGqLYZ57rfQTqeyW4vNp47H5WRgK5xFXD9S4Z
+	 ecuxbsu3wcJ8cFPlBdo8EQXLy2t4oEsBk21xasonEHd+xHFM5nPgySSLRD5BIoXwnF
+	 YK+iybUsD7etZDv8OuSdZPnsdJTM2ZnJzGVIPyKJraH/sFgMl1i9kkZYoYmojtQCtl
+	 8jZBSroR2cdUg==
+From: Kalle Valo <kvalo@kernel.org>
+To: "Nemanov, Michael" <michael.nemanov@ti.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>,  Johannes Berg
+ <johannes.berg@intel.com>,  Breno Leitao <leitao@debian.org>,  Justin
+ Stitt <justinstitt@google.com>,  Kees Cook <keescook@chromium.org>,
+  <linux-wireless@vger.kernel.org>,  <linux-kernel@vger.kernel.org>,
+  Sabeeh Khan <sabeeh-khan@ti.com>
+Subject: Re: [PATCH 08/17] Add main.c
+References: <20240521171841.884576-1-michael.nemanov@ti.com>
+	<20240521171841.884576-9-michael.nemanov@ti.com>
+	<cfe33bf1-9df3-4d02-b4ed-e29a430b106d@kernel.org>
+	<456c8076-1e3a-4cc9-895c-e707e68fe610@ti.com>
+Date: Thu, 30 May 2024 17:37:41 +0300
+In-Reply-To: <456c8076-1e3a-4cc9-895c-e707e68fe610@ti.com> (Michael Nemanov's
+	message of "Thu, 30 May 2024 14:54:26 +0300")
+Message-ID: <87bk4nwekq.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <13e848c1544245e6aef4b89c3f38daf0@realtek.com> <20240528110246.477321-1-marcin.slusarz@gmail.com>
- <801bd77995184b1fa35bf4a32ab3a036@realtek.com>
-In-Reply-To: <801bd77995184b1fa35bf4a32ab3a036@realtek.com>
-From: Tim K <tpkuester@gmail.com>
-Date: Thu, 30 May 2024 10:33:52 -0400
-Message-ID: <CA+shoWSt44WxS6s=z8wR3AMRYFj9tuxWdkwVLG5i2mU34jn4Xw@mail.gmail.com>
-Subject: Re: [PATCH] wifi: rtw88: schedule rx work after everything is set up
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: =?UTF-8?Q?Marcin_=C5=9Alusarz?= <marcin.slusarz@gmail.com>, 
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, =?UTF-8?Q?Marcin_=C5=9Alusarz?= <mslusarz@renau.com>, 
-	Larry Finger <Larry.Finger@lwfinger.net>, Kalle Valo <kvalo@kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 
-> I gave this suggestions too early, since we have not gotten test result from Tim.
-> I will change them to "Link:" if no ACK from Tim while merging.
+"Nemanov, Michael" <michael.nemanov@ti.com> writes:
 
-Hey all, thanks for reaching out!
+> On 5/22/2024 12:46 PM, Krzysztof Kozlowski wrote:
+>> ... > +} > + > +static int read_version_info(struct cc33xx *cc) > +{
+>> > + int ret; > + > + cc33xx_info("Wireless driver version %s",
+>> DRV_VERSION); Drop > + > + ret =
+>> cc33xx_acx_init_get_fw_versions(cc);  > + if (ret < 0) { > +
+>> cc33xx_error("Get FW version FAILED!"); > + return ret; > + } > + >
+>> + cc33xx_info("Wireless firmware version %u.%u.%u.%u", > +
+>> cc->all_versions.fw_ver->major_version, > +
+>> cc->all_versions.fw_ver->minor_version, > +
+>> cc->all_versions.fw_ver->api_version, > +
+>> cc->all_versions.fw_ver->build_version); > + > +
+>> cc33xx_info("Wireless PHY version %u.%u.%u.%u.%u.%u", > +
+>> cc->all_versions.fw_ver->phy_version[5], > +
+>> cc->all_versions.fw_ver->phy_version[4], > +
+>> cc->all_versions.fw_ver->phy_version[3], > +
+>> cc->all_versions.fw_ver->phy_version[2], > +
+>> cc->all_versions.fw_ver->phy_version[1], > +
+>> cc->all_versions.fw_ver->phy_version[0]); > + > +
+>> cc->all_versions.driver_ver = DRV_VERSION; Drop
+>
+> You mean drop the trace? Will exposing FW/PHY versions via debugfs be
+> OK?
 
-Sadly I'm not able to work on this project right now, but I've
-forwarded this email to a few colleagues to bring them in the loop.
-Did you have a timeline you were looking at to close this off?
+I'm guessing the comment was about DRV_VERSION. We don't use any version
+strings for drivers as they are useless.
 
-- Tim
+BTW please check your quoting style, it is hard to read your replies.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
