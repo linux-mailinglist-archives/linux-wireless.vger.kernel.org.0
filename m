@@ -1,151 +1,126 @@
-Return-Path: <linux-wireless+bounces-8305-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8306-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A3108D46A8
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 10:07:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6EA28D46E1
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 10:18:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AEB81C20D72
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 08:07:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD5881C215DE
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 08:18:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEFF81459EF;
-	Thu, 30 May 2024 08:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEDEC14C584;
+	Thu, 30 May 2024 08:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="GD/Y+GHC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BfU1jynA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3613176AD2;
-	Thu, 30 May 2024 08:07:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CBB914A615;
+	Thu, 30 May 2024 08:18:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717056427; cv=none; b=dlKOihIdW3+F5VXgTed5PpSxMSILggiuUJgph+/4j5+IbjRZXeyLztjtvlTbDFhtq552HJaHzKx/QAarDvd3R5SQFHEpYYmruAQqbH7/YNyS+gqhLU+AAbjozL1Yp+ZRL9ipjenVwVRNcjlTKc3AUMM8bg3vIhdoUUHeJtBAvsw=
+	t=1717057096; cv=none; b=S2PZgwuRRbbnWirqlW1l26BSdrVTk/tkjs/CjpKuM8WXMMzMuQxuc6fNpMXLu90Y53mhOkzyrgrV8AjZx0dN0qD403GGbYJfRLItlexTxkLaXrsyG/gnyf3PcuwulT64TOMr/s/nzSNWQRmsQDOSfN4o2BdUUVosi36bUBldoD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717056427; c=relaxed/simple;
-	bh=f2yIws9zTPZwAdY+cKgAvCt/JJvMVgXx7fnZPjo/WDA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=L4q1yaq4rmNACvUY0nLvpxs/0knd00eLrN9RtNqd1V9pw0beuyGJcKVFPFVjeAI3IJe5gg5vZLshLFBHh/9UQ+2+CZ20CvOecj4aESke22LTQjCRq1NDIezQR95rQ2x/7cYCBLZmb5c8CrtxfakUF+dCFGLaHNhAySmxhDuzi38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=GD/Y+GHC; arc=none smtp.client-ip=198.47.19.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 44U86hXQ105654;
-	Thu, 30 May 2024 03:06:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1717056403;
-	bh=qexI4QGXkxBpctS6P9RXu0XZbRrPHyV+9mwGN0BskeU=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=GD/Y+GHCbkPQTFf6M2YTDR8OyFvHUL59wDoTRQrO10+HyldYZ8mjfUDv7WODoQn8f
-	 R4cZkh9uD9i5J22DvXx3FzPH88Ytcg7ZWgO0ECK78sWsx1SbP3hxyRmGIWBEIFsiHZ
-	 kP+8EfKBN84/DVb/zWVS2pXvUyaabueSpimu9qpQ=
-Received: from DLEE102.ent.ti.com (dlee102.ent.ti.com [157.170.170.32])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 44U86hTg009239
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 30 May 2024 03:06:43 -0500
-Received: from lewvowa02.ent.ti.com (10.180.75.80) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 30
- May 2024 03:06:43 -0500
-Received: from DLEE108.ent.ti.com (157.170.170.38) by lewvowa02.ent.ti.com
- (10.180.75.80) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.2507.34; Thu, 30 May
- 2024 03:06:42 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 30 May 2024 03:06:42 -0500
-Received: from [137.167.6.219] (lt5cg1094w5k.dhcp.ti.com [137.167.6.219])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 44U86fDk114845;
-	Thu, 30 May 2024 03:06:41 -0500
-Message-ID: <e6ae6dfa-6554-4e88-abb0-31dbbd8df03f@ti.com>
-Date: Thu, 30 May 2024 11:06:40 +0300
+	s=arc-20240116; t=1717057096; c=relaxed/simple;
+	bh=LLoCHtazLklqSTo51kZD1rOstdZdBmD8nkBBghMcTi4=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=CJU5yYlQjHoDGEQxR8gl2py1CD9d3aVI95StekMcd84uE73nL0wbcb5csfN7iLrjUQbCUAjLDHLAWdxqKshh5t1ZB8yBnXv2J00Pz4E7D/h5eVXJpgpDX/TihdNx5vZSBeHgAgUUcAkdVJ6vT9Erh9ra2FuoyrUHLR2cnTpVEBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BfU1jynA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF1FEC2BBFC;
+	Thu, 30 May 2024 08:18:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717057096;
+	bh=LLoCHtazLklqSTo51kZD1rOstdZdBmD8nkBBghMcTi4=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=BfU1jynABdejcfPhHA29dQ+oPfGqOdMCRhwsYiCuOTSAI57JG6/7ULl25M79r3U2I
+	 E8P7k8piRx5OYN2BMivUHzX80VgYR4fASP2JFI7GYBPbZkmQnXA/OFrCtS4lZpfCTa
+	 oGV/SOVfbmyZe6Rgdm/ZfhW78oSeWxEEvUSEB9KadvOEMMsTH9xrt82Nu4MZl+/aEQ
+	 VLJCqrdKRyx+ZZGP7oLhuIBGlQVAj4jINQ/ghGJwTgwD7y9KNL48MMANpHyV6pOpom
+	 BfjikRWj9tXRbCykmUSeEQMIyhsAAsFeOEzozOdzgB8d3qPxCvStsIxt0TmdWaqihx
+	 60pJTNBqYkwlw==
+From: Kalle Valo <kvalo@kernel.org>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: Dave Jiang <dave.jiang@intel.com>,  Bjorn Helgaas <bhelgaas@google.com>,
+  <linux-wireless@vger.kernel.org>,  <ath11k@lists.infradead.org>,
+  <regressions@lists.linux.dev>,  Jeff Johnson <quic_jjohnson@quicinc.com>,
+  <linux-kernel@vger.kernel.org>,  <linux-cxl@vger.kernel.org>,
+  <linux-pci@vger.kernel.org>
+Subject: Re: [regression] BUG: KASAN: use-after-free in
+ lockdep_register_key+0x755/0x8f0
+References: <87v82y6wvi.fsf@kernel.org> <87wmncwqxf.fsf@kernel.org>
+	<87sexzx02f.fsf@kernel.org>
+	<66582bee45da8_6ec329496@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+	<87jzjbwxin.fsf@kernel.org>
+Date: Thu, 30 May 2024 11:18:12 +0300
+In-Reply-To: <87jzjbwxin.fsf@kernel.org> (Kalle Valo's message of "Thu, 30 May
+	2024 10:48:32 +0300")
+Message-ID: <87frtzww57.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [EXTERNAL] [PATCH wireless-next 6/8] wifi: wlcore: add pn16
- support
-To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        Kalle Valo
-	<kvalo@kernel.org>
-CC: Johannes Berg <johannes.berg@intel.com>, <linux-kernel@vger.kernel.org>,
-        <linux-wireless@vger.kernel.org>
-References: <ZlWhH4HleGILuUtN@shell.armlinux.org.uk>
- <E1sBsy7-00E8vu-Nc@rmk-PC.armlinux.org.uk>
-Content-Language: en-US
-From: "Nemanov, Michael" <michael.nemanov@ti.com>
-In-Reply-To: <E1sBsy7-00E8vu-Nc@rmk-PC.armlinux.org.uk>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain
 
+Kalle Valo <kvalo@kernel.org> writes:
 
-On 5/28/2024 12:18 PM, Russell King (Oracle) wrote:
+> Dan Williams <dan.j.williams@intel.com> writes:
+>
+>> Kalle Valo wrote:
+>>
+>>> Kalle Valo <kvalo@kernel.org> writes:
+>>> 
+>>> > Kalle Valo <kvalo@kernel.org> writes:
+>>> >
+>>> >> Yesterday I run our ath11k regression tests with v6.10-rc1 and our
+>>> >> simple ath11k module reload stress started failing reliably with various
+>>> >> KASAN errors. The test removes and inserts ath11k and other wireless
+>>> >> modules in a loop. Usually I run it at least 100 times, some times even
+>>> >> more, and no issues until yesterday.
+>>> >>
+>>> >> I have verified that the last wireless-next pull request (tag
+>>> >> wireless-next-2024-05-08) works without issues and v6.10-rc1 fails
+>>> >> always, usually within 50 module reload loops. From this I'm _guessing_
+>>> >> that we have a regression outside wireless, most probably introduced
+>>> >> between v6.9 and v6.10-rc1. But of course I cannot be sure of anything
+>>> >> yet.
+>>> >>
+>>> >> I see different KASAN warnings and lockdep seems to be always visible in
+>>> >> the stack traces. I think I can reproduce the issue within 15 minutes or
+>>> >> so. Before I start bisecting has anyone else seen anything similar? Or
+>>> >> any suggestions how to debug this further?
+>>> >>
+>>> >> I have included some crash logs below, they are retrieved using
+>>> >> netconsole. Here's a summary of the errors:
+>>> >>
+>>> >> [ 159.970765] KASAN: maybe wild-memory-access in range
+>>> >> [0xbbbbbbbbbbbbbbb8-0xbbbbbbbbbbbbbbbf]
+>>> >> [  700.017632] BUG: KASAN: use-after-free in lockdep_register_key+0x755/0x8f0
+>>> >> [ 224.695821] BUG: KASAN: slab-out-of-bounds in
+>>> >> lockdep_register_key+0x755/0x8f0
+>>> >> [ 259.666542] BUG: KASAN: slab-use-after-free in
+>>> >> lockdep_register_key+0x755/0x8f0
+>>
+>> The proposed fix for that is here:
+>>
+>> http://lore.kernel.org/r/66560aa9dbedb_195e294b0@dwillia2-mobl3.amr.corp.intel.com.notmuch
+>
+> I get "Not Found" from that link, is there a typo?
 
-[...]
+I found this fix from for-linus branch:
 
->    
->    static int wlcore_fw_status(struct wl1271 *wl, struct wl_fw_status *status)
->    {
-> +	struct wl12xx_vif *wlvifsta;
-> +	struct wl12xx_vif *wlvifap;
->    	struct wl12xx_vif *wlvif;
->    	u32 old_tx_blk_count = wl->tx_blocks_available;
->    	int avail, freed_blocks;
-> @@ -410,23 +412,100 @@ static int wlcore_fw_status(struct wl1271 *wl, struct wl_fw_status *status)
->    		wl->tx_pkts_freed[i] = status->counters.tx_released_pkts[i];
->    	}
->    
-[...]
->    	for_each_set_bit(i, wl->links_map, wl->num_links) {
-> +		u16 diff16, sec_pn16;
->    		u8 diff, tx_lnk_free_pkts;
-> +
->    		lnk = &wl->links[i];
->    
->    		/* prevent wrap-around in freed-packets counter */
->    		tx_lnk_free_pkts = status->counters.tx_lnk_free_pkts[i];
->    		diff = (tx_lnk_free_pkts - lnk->prev_freed_pkts) & 0xff;
->    
-> -		if (diff == 0)
-> +		if (diff) {
-> +			lnk->allocated_pkts -= diff;
-> +			lnk->prev_freed_pkts = tx_lnk_free_pkts;
-> +		}
-> +
-> +		/* Get the current sec_pn16 value if present */
-> +		if (status->counters.tx_lnk_sec_pn16)
-> +			sec_pn16 = __le16_to_cpu(status->counters.tx_lnk_sec_pn16[i]);
-> +		else
-> +			sec_pn16 = 0;
-> +		/* prevent wrap-around in pn16 counter */
-> +		diff16 = (sec_pn16 - lnk->prev_sec_pn16) & 0xffff;
-> +
-> +		/* FIXME: since free_pkts is a 8-bit counter of packets that
-> +		 * rolls over, it can become zero. If it is zero, then we
-> +		 * omit processing below. Is that really correct?
-> +		 */
-> +		if (tx_lnk_free_pkts <= 0)
->    			continue;
->    
-The original code was
-         tx_lnk_free_pkts = status->counters.tx_lnk_free_pkts[i];
-         diff = (tx_lnk_free_pkts - lnk->prev_freed_pkts) & 0xff;
+# PCI: Fix missing lockdep annotation for pci_cfg_access_trylock()for-linus
+https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/commit/?h=for-linus&id=f941b9182c54a885a9d5d4cfd97af66873c98560
 
-         if (diff == 0)
-             continue;
+But at least that doesn't fix my crash.
 
-I wonder if comparing tx_lnk_free_pkts to 0 was added intentionally? 
-This is monotonously incremented counter so 0 is not significant, unlike 
-the diff.
-Have I missed something?
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-Michael.
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
