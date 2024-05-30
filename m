@@ -1,168 +1,139 @@
-Return-Path: <linux-wireless+bounces-8289-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8290-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD45B8D457D
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 08:37:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C58FE8D45A4
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 08:53:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D97FD1C20FD3
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 06:37:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B8371F22B59
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 06:53:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A052CA40;
-	Thu, 30 May 2024 06:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6E213DABE7;
+	Thu, 30 May 2024 06:53:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h1w9TYqL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85FC7F
-	for <linux-wireless@vger.kernel.org>; Thu, 30 May 2024 06:37:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0CA3207;
+	Thu, 30 May 2024 06:53:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717051035; cv=none; b=i8JGXWdwhi7epcn1wt1AOso/vVS14xcs9IIvo/d/leQoQKqA7Yox42QlU4EGVoMqTL6ylOMdPH1RIkmL+/3gwNf7qJOfmf9cOCMD/ttKfvwBDpVuQ/9p0wiCEXIGA61qpoA2FOwsJs2YXLqV5ef5xi4HhpyIXYzTTlebF6zdITQ=
+	t=1717052012; cv=none; b=F0UMp9WQBysl75EdcaAM0SCKY/nIUMCs9qfOZ83ppafl/7xU9MY+EV6+q0k9Af/+s/RG+lJdaCkWEcBJzTR5oC47H3gsSpWF43fkG7QjiCVIaFcwyjlzM1wEt2YbpoyfPy3FBCZgBG1eRovoBWVBtnI1en6yfoTLemcPA0c40fY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717051035; c=relaxed/simple;
-	bh=F5lxGOtuKWH2BdUSLkqaEzdnlmg54f63kpXFwetKaIk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=AiHyXxNrVQWQpP2UBi+veYPZw+B0lPEmFnIK8qSweOgI0izJ4+3IzC/rzfR1gSwscVO2G67I7j6ymKsHJPoM2+wh+MeRa0mymK6PUbF6gkkFKMgNmA8WWkhpnX/M2saiaxWnPBUbXO8B53s5xFoxjsdonZr8JCy9XenInxYyetc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 44U6as5rB400532, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 44U6as5rB400532
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 30 May 2024 14:36:54 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 30 May 2024 14:36:55 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 30 May 2024 14:36:54 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
- RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
- 15.01.2507.035; Thu, 30 May 2024 14:36:54 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC: Sascha Hauer <sha@pengutronix.de>
-Subject: RE: [PATCH] wifi: rtw88: usb: Further limit the TX aggregation
-Thread-Topic: [PATCH] wifi: rtw88: usb: Further limit the TX aggregation
-Thread-Index: AQHasdZmkSRwEkAQJkShqu2p7TmvLbGvTWAQ
-Date: Thu, 30 May 2024 06:36:54 +0000
-Message-ID: <c1f41ca8bd7d49e4801d620089ae0a4d@realtek.com>
-References: <0996d2d0-e7b8-4e43-ba12-63074ba9df1b@gmail.com>
-In-Reply-To: <0996d2d0-e7b8-4e43-ba12-63074ba9df1b@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1717052012; c=relaxed/simple;
+	bh=YivRkEe7rYoBFKl0+BZR93LLEk9IpGONpZAKzglbHXs=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=Cf34nNYBDLjNA3BnutkTTYtH+2epcV4pgB0+TeNVbpR3nm4pmsmLYWILTsmRkBzcK31pWC79rsgxWnFjHFnwYs6paeTtx5wQIQAHLwStXMhfTMnOLSxuOQOf0FiUKUCVbkwgLErLEbAfC33SjK//3P655td74D+FNUFgjLNVIs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h1w9TYqL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11ACBC32782;
+	Thu, 30 May 2024 06:53:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717052012;
+	bh=YivRkEe7rYoBFKl0+BZR93LLEk9IpGONpZAKzglbHXs=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=h1w9TYqLc+EMav3BOhfGxWUcC9ah2ZK/gIrpZw7dlayxFXTfzLiAs7mB7mojy82Wy
+	 +JjpG8pjv/s9Qjfo9WkxaiDLVkg6lFKdSc1exbqRKXtLB9TEeUPsQR4WIzkAMKXbK4
+	 hW2+I7t9G2SeXmL9aIAo46aiZpLeuhx/GlkIPfnCkgN924TRZSdAiK3JL9L/8Hhipt
+	 JyYGtcSm0YEUgMEbmePfHq/IigYiEwH7O5y2Lb9RX4uBrFahCrkjb24Vzv6cKgYZtC
+	 oFgA3k+KYvHpxTLQ0hbpimm43aoByP+sxqOFX28mqwn90h9dssQ0MR/mtjY+3v7J+J
+	 W3c3rbzZ5ck4Q==
+From: Kalle Valo <kvalo@kernel.org>
+To: Dave Jiang <dave.jiang@intel.com>, Dan Williams
+ <dan.j.williams@intel.com>, Bjorn Helgaas <bhelgaas@google.com>
+Cc: linux-wireless@vger.kernel.org,  ath11k@lists.infradead.org,
+  regressions@lists.linux.dev,  Jeff Johnson <quic_jjohnson@quicinc.com>,
+ linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
+ linux-pci@vger.kernel.org
+Subject: Re: [regression] BUG: KASAN: use-after-free in
+ lockdep_register_key+0x755/0x8f0
+References: <87v82y6wvi.fsf@kernel.org> <87wmncwqxf.fsf@kernel.org>
+Date: Thu, 30 May 2024 09:53:28 +0300
+In-Reply-To: <87wmncwqxf.fsf@kernel.org> (Kalle Valo's message of "Wed, 29 May
+	2024 18:58:36 +0300")
+Message-ID: <87sexzx02f.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Type: text/plain
 
-Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBDdXJy
-ZW50bHkgdGhlIG51bWJlciBvZiBmcmFtZXMgc2VudCB0byB0aGUgY2hpcCBpbiBhIHNpbmdsZSBV
-U0IgUmVxdWVzdA0KPiBCbG9jayBpcyBsaW1pdGVkIG9ubHkgYnkgdGhlIHNpemUgb2YgdGhlIFRY
-IGJ1ZmZlciwgd2hpY2ggaXMgMjAgS2lCLg0KPiBUZXN0aW5nIHJldmVhbHMgdGhhdCBhcyBtYW55
-IGFzIDEzIGZyYW1lcyBnZXQgYWdncmVnYXRlZC4gVGhpcyBpcyBtb3JlDQo+IHRoYW4gd2hhdCBh
-bnkgb2YgdGhlIGNoaXBzIHdvdWxkIGxpa2UgdG8gcmVjZWl2ZS4gUlRMODgyMkNVLCBSVEw4ODIy
-QlUsDQo+IGFuZCBSVEw4ODIxQ1Ugd2FudCBhdCBtb3N0IDMgZnJhbWVzLCBhbmQgUlRMODcyM0RV
-IHdhbnRzIG9ubHkgMSBmcmFtZQ0KPiBwZXIgVVJCLg0KPiANCj4gUlRMODcyM0RVIGluIHBhcnRp
-Y3VsYXIgcmVsaWFibHkgbWFsZnVuY3Rpb25zIGR1cmluZyBhIHNwZWVkIHRlc3QuIEFsbA0KPiB0
-cmFmZmljIHNlZW1zIHRvIHN0b3AuIFBpbmdpbmcgdGhlIEFQIG5vIGxvbmdlciB3b3Jrcy4NCj4g
-DQo+IEZpeCB0aGlzIHByb2JsZW0gYnkgbGltaXRpbmcgdGhlIG51bWJlciBvZiBmcmFtZXMgc2Vu
-dCB0byB0aGUgY2hpcCBpbiBhDQo+IHNpbmdsZSBVUkIgYWNjb3JkaW5nIHRvIHdoYXQgZWFjaCBj
-aGlwIGxpa2VzLg0KPiANCj4gQWxzbyBjb25maWd1cmUgUlRMODgyMkNVLCBSVEw4ODIyQlUsIGFu
-ZCBSVEw4ODIxQ1UgdG8gZXhwZWN0IDMgZnJhbWVzDQo+IHBlciBVUkIuDQo+IA0KPiBSVEw4NzAz
-QiBtYXkgb3IgbWF5IG5vdCBiZSBmb3VuZCBpbiBVU0IgZGV2aWNlcy4gRGVjbGFyZSB0aGF0IGl0
-IHdhbnRzDQo+IG9ubHkgMSBmcmFtZSBwZXIgVVJCLCBqdXN0IGluIGNhc2UuDQo+IA0KPiBUZXN0
-ZWQgd2l0aCBSVEw4NzIzRFUgYW5kIFJUTDg4MTFDVS4NCj4gDQo+IENjOiBzdGFibGVAdmdlci5r
-ZXJuZWwub3JnDQo+IFNpZ25lZC1vZmYtYnk6IEJpdHRlcmJsdWUgU21pdGggPHJ0bDg4MjFjZXJm
-ZTJAZ21haWwuY29tPg0KPiAtLS0NCj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3
-ODgvbWFjLmMgICAgICB8IDEyICsrKysrKysrKysrKw0KPiAgZHJpdmVycy9uZXQvd2lyZWxlc3Mv
-cmVhbHRlay9ydHc4OC9tYWluLmggICAgIHwgIDIgKysNCj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNz
-L3JlYWx0ZWsvcnR3ODgvcmVnLmggICAgICB8ICAxICsNCj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNz
-L3JlYWx0ZWsvcnR3ODgvcnR3ODcwM2IuYyB8ICAxICsNCj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNz
-L3JlYWx0ZWsvcnR3ODgvcnR3ODcyM2QuYyB8ICAxICsNCj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNz
-L3JlYWx0ZWsvcnR3ODgvcnR3ODgyMWMuYyB8ICAxICsNCj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNz
-L3JlYWx0ZWsvcnR3ODgvcnR3ODgyMmIuYyB8ICAxICsNCj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNz
-L3JlYWx0ZWsvcnR3ODgvcnR3ODgyMmMuYyB8ICAxICsNCj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNz
-L3JlYWx0ZWsvcnR3ODgvdXNiLmMgICAgICB8ICA0ICsrKy0NCj4gIDkgZmlsZXMgY2hhbmdlZCwg
-MjMgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2RyaXZl
-cnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvbWFjLmMgYi9kcml2ZXJzL25ldC93aXJlbGVz
-cy9yZWFsdGVrL3J0dzg4L21hYy5jDQo+IGluZGV4IDBkYmE4YWFlNzcxNi4uZmNhOTA3NTljMjY4
-IDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L21hYy5j
-DQo+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvbWFjLmMNCj4gQEAg
-LTExODYsNiArMTE4Niw3IEBAIHN0YXRpYyBpbnQgX19wcmlvcml0eV9xdWV1ZV9jZmcoc3RydWN0
-IHJ0d19kZXYgKnJ0d2RldiwNCj4gIHsNCj4gICAgICAgICBjb25zdCBzdHJ1Y3QgcnR3X2NoaXBf
-aW5mbyAqY2hpcCA9IHJ0d2Rldi0+Y2hpcDsNCj4gICAgICAgICBzdHJ1Y3QgcnR3X2ZpZm9fY29u
-ZiAqZmlmbyA9ICZydHdkZXYtPmZpZm87DQo+ICsgICAgICAgdTggdmFsODsNCj4gDQo+ICAgICAg
-ICAgcnR3X3dyaXRlMTYocnR3ZGV2LCBSRUdfRklGT1BBR0VfSU5GT18xLCBwZ190YmwtPmhxX251
-bSk7DQo+ICAgICAgICAgcnR3X3dyaXRlMTYocnR3ZGV2LCBSRUdfRklGT1BBR0VfSU5GT18yLCBw
-Z190YmwtPmxxX251bSk7DQo+IEBAIC0xMjAxLDYgKzEyMDIsMTcgQEAgc3RhdGljIGludCBfX3By
-aW9yaXR5X3F1ZXVlX2NmZyhzdHJ1Y3QgcnR3X2RldiAqcnR3ZGV2LA0KPiAgICAgICAgIHJ0d193
-cml0ZTE2KHJ0d2RldiwgUkVHX0ZJRk9QQUdFX0NUUkxfMiArIDIsIGZpZm8tPnJzdmRfYm91bmRh
-cnkpOw0KPiAgICAgICAgIHJ0d193cml0ZTE2KHJ0d2RldiwgUkVHX0JDTlExX0JETllfVjEsIGZp
-Zm8tPnJzdmRfYm91bmRhcnkpOw0KPiAgICAgICAgIHJ0d193cml0ZTMyKHJ0d2RldiwgUkVHX1JY
-RkZfQk5EWSwgY2hpcC0+cnhmZl9zaXplIC0gQzJIX1BLVF9CVUYgLSAxKTsNCj4gKw0KPiArICAg
-ICAgIGlmIChydHdkZXYtPmhjaS50eXBlID09IFJUV19IQ0lfVFlQRV9VU0IpIHsNCj4gKyAgICAg
-ICAgICAgICAgIHZhbDggPSBydHdfcmVhZDgocnR3ZGV2LCBSRUdfQVVUT19MTFRfVjEpOw0KPiAr
-ICAgICAgICAgICAgICAgdThwX3JlcGxhY2VfYml0cygmdmFsOCwgY2hpcC0+dXNiX3R4X2FnZ19k
-ZXNjX251bSwNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgQklUX01BU0tfQkxL
-X0RFU0NfTlVNKTsNCj4gKyAgICAgICAgICAgICAgIHJ0d193cml0ZTgocnR3ZGV2LCBSRUdfQVVU
-T19MTFRfVjEsIHZhbDgpOw0KDQpydHdfd3JpdGU4X21hc2socnR3ZGV2LCBSRUdfQVVUT19MTFRf
-VjEsIEJJVF9NQVNLX0JMS19ERVNDX05VTSwgY2hpcC0+dXNiX3R4X2FnZ19kZXNjX251bSk7DQoN
-Cj4gKw0KPiArICAgICAgICAgICAgICAgcnR3X3dyaXRlOChydHdkZXYsIFJFR19BVVRPX0xMVF9W
-MSArIDMsIGNoaXAtPnVzYl90eF9hZ2dfZGVzY19udW0pOw0KPiArICAgICAgICAgICAgICAgcnR3
-X3dyaXRlOF9zZXQocnR3ZGV2LCBSRUdfVFhETUFfT0ZGU0VUX0NISyArIDEsIEJJVCgxKSk7DQo+
-ICsgICAgICAgfQ0KPiArDQo+ICAgICAgICAgcnR3X3dyaXRlOF9zZXQocnR3ZGV2LCBSRUdfQVVU
-T19MTFRfVjEsIEJJVF9BVVRPX0lOSVRfTExUX1YxKTsNCj4gDQo+ICAgICAgICAgaWYgKCFjaGVj
-a19od19yZWFkeShydHdkZXYsIFJFR19BVVRPX0xMVF9WMSwgQklUX0FVVE9fSU5JVF9MTFRfVjEs
-IDApKQ0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9t
-YWluLmggYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L21haW4uaA0KPiBpbmRl
-eCA0OTg5NDMzMWY3YjQuLjQ5YTNmZDRmYjdkYyAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9uZXQv
-d2lyZWxlc3MvcmVhbHRlay9ydHc4OC9tYWluLmgNCj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxl
-c3MvcmVhbHRlay9ydHc4OC9tYWluLmgNCj4gQEAgLTExOTcsNiArMTE5Nyw4IEBAIHN0cnVjdCBy
-dHdfY2hpcF9pbmZvIHsNCj4gICAgICAgICB1MTYgZndfZmlmb19hZGRyW1JUV19GV19GSUZPX01B
-WF07DQo+ICAgICAgICAgY29uc3Qgc3RydWN0IHJ0d19md2NkX3NlZ3MgKmZ3Y2Rfc2VnczsNCj4g
-DQo+ICsgICAgICAgdTggdXNiX3R4X2FnZ19kZXNjX251bTsNCj4gKw0KDQpQbGVhc2Uga2VlcCBv
-cmRlciBvZiBmaWVsZCBhbmQgaW5zdGFuY2UgZGVjbGFyYXRpb24sIGxpa2UgcnR3ODcwM2JfaHdf
-c3BlYy4NCg0KPiAgICAgICAgIHU4IGRlZmF1bHRfMXNzX3R4X3BhdGg7DQo+IA0KPiAgICAgICAg
-IGJvb2wgcGF0aF9kaXZfc3VwcG9ydGVkOw0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2ly
-ZWxlc3MvcmVhbHRlay9ydHc4OC9yZWcuaCBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsv
-cnR3ODgvcmVnLmgNCj4gaW5kZXggYjEyMmYyMjY5MjRiLi41NzI2NTFiM2FhNGIgMTAwNjQ0DQo+
-IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcmVnLmgNCj4gKysrIGIv
-ZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9yZWcuaA0KPiBAQCAtMjcwLDYgKzI3
-MCw3IEBADQo+ICAjZGVmaW5lIEJJVF9NQVNLX0JDTl9IRUFEXzFfVjEgMHhmZmYNCj4gICNkZWZp
-bmUgUkVHX0FVVE9fTExUX1YxICAgICAgICAgICAgICAgIDB4MDIwOA0KPiAgI2RlZmluZSBCSVRf
-QVVUT19JTklUX0xMVF9WMSAgIEJJVCgwKQ0KPiArI2RlZmluZSBCSVRfTUFTS19CTEtfREVTQ19O
-VU0gIDB4ZjANCg0KMHhmMCAtLT4gR0VOTUFTSyg3LCA0KQ0KDQo+ICAjZGVmaW5lIFJFR19EV0JD
-TjBfQ1RSTCAgICAgICAgICAgICAgICAweDAyMDgNCj4gICNkZWZpbmUgQklUX0JDTl9WQUxJRCAg
-ICAgICAgICBCSVQoMTYpDQo+ICAjZGVmaW5lIFJFR19UWERNQV9PRkZTRVRfQ0hLICAgMHgwMjBD
-DQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0dzg3
-MDNiLmMNCj4gYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0dzg3MDNiLmMN
-Cj4gaW5kZXggODkxOWY5ZTExZjAzLi4yMjI2MDhkZTMzY2QgMTAwNjQ0DQo+IC0tLSBhL2RyaXZl
-cnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcnR3ODcwM2IuYw0KPiArKysgYi9kcml2ZXJz
-L25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0dzg3MDNiLmMNCj4gQEAgLTIwMTMsNiArMjAx
-Myw3IEBAIGNvbnN0IHN0cnVjdCBydHdfY2hpcF9pbmZvIHJ0dzg3MDNiX2h3X3NwZWMgPSB7DQo+
-ICAgICAgICAgLnR4X3N0YmMgPSBmYWxzZSwNCj4gICAgICAgICAubWF4X3Bvd2VyX2luZGV4ID0g
-MHgzZiwNCj4gICAgICAgICAuYW1wZHVfZGVuc2l0eSA9IElFRUU4MDIxMV9IVF9NUERVX0RFTlNJ
-VFlfMTYsDQo+ICsgICAgICAgLnVzYl90eF9hZ2dfZGVzY19udW0gPSAxLCAvKiBOb3Qgc3VyZSBp
-ZiB0aGlzIGNoaXAgaGFzIFVTQiBpbnRlcmZhY2UgKi8NCg0KVGhlIHBvc2l0aW9uIHRvIGRlY2xh
-cmUgdGhpcyBmaWVsZCBpcyB2ZXJ5IGRpZmZlcmVudCBmcm9tIG90aGVycy4gDQoNCk5vdCBzdXJl
-IHdoZW4gd2UgbWVzc2VkIHVwIHRoZSBvcmRlciwgYnV0IHBsZWFzZSBkb24ndCBmZWVsIGZyZWUg
-dG8gYWRkIG9uZSwNCmtlZXAgdGhlIG9yZGVyLiANCg0KSWYgeW91IGhhdmUgdGltZSwgY291bGQg
-eW91IGhlbHAgdG8gYWxpZ24gYWxsIG9mIHRoZW0gYWNyb3NzIGNoaXBzPw0KSWYgbm90LCBJIHdp
-bGwgdGFrZSBteSB0aW1lIHRvIGRvIHRoYXQgYWZ0ZXIgeW91ciBwYXRjaC4gDQoNCg0K
+Kalle Valo <kvalo@kernel.org> writes:
+
+> Kalle Valo <kvalo@kernel.org> writes:
+>
+>> Yesterday I run our ath11k regression tests with v6.10-rc1 and our
+>> simple ath11k module reload stress started failing reliably with various
+>> KASAN errors. The test removes and inserts ath11k and other wireless
+>> modules in a loop. Usually I run it at least 100 times, some times even
+>> more, and no issues until yesterday.
+>>
+>> I have verified that the last wireless-next pull request (tag
+>> wireless-next-2024-05-08) works without issues and v6.10-rc1 fails
+>> always, usually within 50 module reload loops. From this I'm _guessing_
+>> that we have a regression outside wireless, most probably introduced
+>> between v6.9 and v6.10-rc1. But of course I cannot be sure of anything
+>> yet.
+>>
+>> I see different KASAN warnings and lockdep seems to be always visible in
+>> the stack traces. I think I can reproduce the issue within 15 minutes or
+>> so. Before I start bisecting has anyone else seen anything similar? Or
+>> any suggestions how to debug this further?
+>>
+>> I have included some crash logs below, they are retrieved using
+>> netconsole. Here's a summary of the errors:
+>>
+>> [ 159.970765] KASAN: maybe wild-memory-access in range
+>> [0xbbbbbbbbbbbbbbb8-0xbbbbbbbbbbbbbbbf]
+>> [  700.017632] BUG: KASAN: use-after-free in lockdep_register_key+0x755/0x8f0
+>> [  224.695821] BUG: KASAN: slab-out-of-bounds in lockdep_register_key+0x755/0x8f0
+>> [  259.666542] BUG: KASAN: slab-use-after-free in lockdep_register_key+0x755/0x8f0
+>
+> I did a bisect and got this:
+>
+> cf29111d3e4a9ebe1cbe2b431274718506d69f10 is the first bad commit
+> commit cf29111d3e4a9ebe1cbe2b431274718506d69f10
+> Merge: ed11a28cb709 e6f7d27df5d2
+> Author: Bjorn Helgaas <bhelgaas@google.com>
+> Date:   Thu May 16 18:14:11 2024 -0500
+>
+>     Merge branch 'pci/of'
+>     
+>     - Check for kcalloc() failure and handle it gracefully (Duoming Zhou)
+>     
+>     * pci/of:
+>       PCI: of_property: Return error for int_map allocation failure
+>
+>  drivers/pci/of_property.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> But that doesn't make any sense to me, I don't even have
+> CONFIG_PCI_DYNAMIC_OF_NODES enabled in my .config. I guess I did a
+> mistake during bisect, I'm now testing the parents (e6f7d27df5d2 and
+> ed11a28cb709) and trying to pinpoint where I did it wrong.
+
+I found my mistake and was able to finish the bisect. This seems to be
+the commit causing my problems:
+
+# first bad commit: [7e89efc6e9e402839643cb297bab14055c547f07] PCI: Lock upstream bridge for pci_reset_function()
+
+I verified by reverting that commit on top of v6.10-rc1 and I have not
+seen any crashes so far, normally I would have seen it by now. But I
+will continue testing the revert just to be sure.
+
+Adding people and lists involved with that commit. Here is my original
+report:
+
+https://lore.kernel.org/all/87v82y6wvi.fsf@kernel.org/
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
