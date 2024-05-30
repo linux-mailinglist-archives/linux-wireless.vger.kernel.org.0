@@ -1,185 +1,168 @@
-Return-Path: <linux-wireless+bounces-8288-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8289-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E48008D4572
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 08:23:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD45B8D457D
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 08:37:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D9C02866E8
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 06:23:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D97FD1C20FD3
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 06:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EB21155313;
-	Thu, 30 May 2024 06:23:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Pf3514e8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A052CA40;
+	Thu, 30 May 2024 06:37:15 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1F82B9A0
-	for <linux-wireless@vger.kernel.org>; Thu, 30 May 2024 06:23:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85FC7F
+	for <linux-wireless@vger.kernel.org>; Thu, 30 May 2024 06:37:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717050222; cv=none; b=OmS9IV/Z5KpzP/igF8zoXCfvtucaJGjPL0hGbeCGt4b5aJq13zKEeIH6ycM2oNeVc+phExWb14g1e4FS2hulH20yYvcPVIF0A9/uAmGlX0IWANYUq9Vz+C6XrTfoNaTRVOrn/6TnEXNrfKmboanx7FdCF5gLsvZCta1xiNHalMM=
+	t=1717051035; cv=none; b=i8JGXWdwhi7epcn1wt1AOso/vVS14xcs9IIvo/d/leQoQKqA7Yox42QlU4EGVoMqTL6ylOMdPH1RIkmL+/3gwNf7qJOfmf9cOCMD/ttKfvwBDpVuQ/9p0wiCEXIGA61qpoA2FOwsJs2YXLqV5ef5xi4HhpyIXYzTTlebF6zdITQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717050222; c=relaxed/simple;
-	bh=+JcF5yQMrJrr57pDNpfepmAW49b/sci4qijxpQpdto4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=azN2QIJW8fkgCiOPZ/Sa22+a+uZ6303U6mD7d2bIXbJ04DoosBYZL4Dslyl8msU39MQtVf+OE49Vr0i1KktC4/U6IdqRfwI4eYqZwq2wb86zsPFT+CcBqLQRidiVxnBDKUt+HGO9K0bYeC9dmzkXTojPr2/co1Or30a+j2t5v78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Pf3514e8; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44TMCSwL021170;
-	Thu, 30 May 2024 06:23:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	5WpJva/UfKszn14kM8O9sUFGcZzIvLNN3CRSXXUoWfk=; b=Pf3514e8pUr0MdYH
-	tzTC3qEONTQva6YMKXrZJPIVJ/eO6xh/HV/tvLP3WHU2mVPQFmfYJEG7xe2ebFJt
-	eG1BKDGitVDrwr0W2DjMrgvmJV41NsuBCGZgIcF0BeRI9q5XTCNoRgUrkeAUsOjF
-	mgvrRItWW1tmk5DNFjNVw4+C1WEI849Hagr39mO+mzuwky7t46SchAnZW97w+OQp
-	HT7CAJdRdP9VqVx2PyWMCpgE7KUIAKOk+69tOSXZOgGO7rVn16Rd3EcJNwS4wVUa
-	C8/QSNM7hYLrNgdZvEmW55taDtL34dVIqYWvK3B4Ov5Us73Eh1dIj6nPKev3epUC
-	yggbZg==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yba0pu1mv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 May 2024 06:23:24 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44U6NOJL021760
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 May 2024 06:23:24 GMT
-Received: from [10.253.79.103] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 29 May
- 2024 23:23:23 -0700
-Message-ID: <6c8ca575-01b7-41ba-97d9-cfe28f69c1e6@quicinc.com>
-Date: Thu, 30 May 2024 14:23:20 +0800
+	s=arc-20240116; t=1717051035; c=relaxed/simple;
+	bh=F5lxGOtuKWH2BdUSLkqaEzdnlmg54f63kpXFwetKaIk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=AiHyXxNrVQWQpP2UBi+veYPZw+B0lPEmFnIK8qSweOgI0izJ4+3IzC/rzfR1gSwscVO2G67I7j6ymKsHJPoM2+wh+MeRa0mymK6PUbF6gkkFKMgNmA8WWkhpnX/M2saiaxWnPBUbXO8B53s5xFoxjsdonZr8JCy9XenInxYyetc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 44U6as5rB400532, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 44U6as5rB400532
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 30 May 2024 14:36:54 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 30 May 2024 14:36:55 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 30 May 2024 14:36:54 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
+ 15.01.2507.035; Thu, 30 May 2024 14:36:54 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: Sascha Hauer <sha@pengutronix.de>
+Subject: RE: [PATCH] wifi: rtw88: usb: Further limit the TX aggregation
+Thread-Topic: [PATCH] wifi: rtw88: usb: Further limit the TX aggregation
+Thread-Index: AQHasdZmkSRwEkAQJkShqu2p7TmvLbGvTWAQ
+Date: Thu, 30 May 2024 06:36:54 +0000
+Message-ID: <c1f41ca8bd7d49e4801d620089ae0a4d@realtek.com>
+References: <0996d2d0-e7b8-4e43-ba12-63074ba9df1b@gmail.com>
+In-Reply-To: <0996d2d0-e7b8-4e43-ba12-63074ba9df1b@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [bug report] wifi: ath11k: add P2P IE in beacon template
-To: Dan Carpenter <dan.carpenter@linaro.org>
-CC: <linux-wireless@vger.kernel.org>, <ath11k@lists.infradead.org>
-References: <2d277abd-5e7b-4da0-80e0-52bd96337f6e@moroto.mountain>
-Content-Language: en-US
-From: Kang Yang <quic_kangyang@quicinc.com>
-In-Reply-To: <2d277abd-5e7b-4da0-80e0-52bd96337f6e@moroto.mountain>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: G59UKcIGKQm25Fl434O9Mmeg2O3cdHuo
-X-Proofpoint-GUID: G59UKcIGKQm25Fl434O9Mmeg2O3cdHuo
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-05-30_03,2024-05-28_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 bulkscore=0
- suspectscore=0 clxscore=1011 lowpriorityscore=0 priorityscore=1501
- mlxscore=0 spamscore=0 adultscore=0 phishscore=0 impostorscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2405300045
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-
-
-On 5/29/2024 10:32 PM, Dan Carpenter wrote:
-> Hello Kang Yang,
-> 
-> Commit 3a415daa3e8b ("wifi: ath11k: add P2P IE in beacon template")
-> from Feb 28, 2024 (linux-next), leads to the following Smatch static
-> checker warning:
-> 
-> 	drivers/net/wireless/ath/ath11k/wmi.c:1742 ath11k_wmi_p2p_go_bcn_ie()
-> 	warn: sleeping in atomic context
-> 
-> drivers/net/wireless/ath/ath11k/wmi.c
->      1712 int ath11k_wmi_p2p_go_bcn_ie(struct ath11k *ar, u32 vdev_id,
->      1713                              const u8 *p2p_ie)
->      1714 {
->      1715         struct ath11k_pdev_wmi *wmi = ar->wmi;
->      1716         struct wmi_p2p_go_set_beacon_ie_cmd *cmd;
->      1717         size_t p2p_ie_len, aligned_len;
->      1718         struct wmi_tlv *tlv;
->      1719         struct sk_buff *skb;
->      1720         int ret, len;
->      1721
->      1722         p2p_ie_len = p2p_ie[1] + 2;
->      1723         aligned_len = roundup(p2p_ie_len, 4);
->      1724
->      1725         len = sizeof(*cmd) + TLV_HDR_SIZE + aligned_len;
->      1726
->      1727         skb = ath11k_wmi_alloc_skb(wmi->wmi_ab, len);
->      1728         if (!skb)
->      1729                 return -ENOMEM;
->      1730
->      1731         cmd = (struct wmi_p2p_go_set_beacon_ie_cmd *)skb->data;
->      1732         cmd->tlv_header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_P2P_GO_SET_BEACON_IE) |
->      1733                           FIELD_PREP(WMI_TLV_LEN, sizeof(*cmd) - TLV_HDR_SIZE);
->      1734         cmd->vdev_id = vdev_id;
->      1735         cmd->ie_buf_len = p2p_ie_len;
->      1736
->      1737         tlv = (struct wmi_tlv *)cmd->tlv;
->      1738         tlv->header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_ARRAY_BYTE) |
->      1739                       FIELD_PREP(WMI_TLV_LEN, aligned_len);
->      1740         memcpy(tlv->value, p2p_ie, p2p_ie_len);
->      1741
-> --> 1742         ret = ath11k_wmi_cmd_send(wmi, skb, WMI_P2P_GO_SET_BEACON_IE);
->                         ^^^^^^^^^^^^^^^^^^^
-> This is a might_sleep() function.
-> 
->      1743         if (ret) {
->      1744                 ath11k_warn(ar->ab, "failed to send WMI_P2P_GO_SET_BEACON_IE\n");
->      1745                 dev_kfree_skb(skb);
->      1746         }
->      1747
->      1748         return ret;
->      1749 }
-> 
-> The problematic call tree is:
-> 
-> ath11k_bcn_tx_status_event() <- disables preempt
-> -> ath11k_mac_bcn_tx_event()
->     -> ath11k_mac_setup_bcn_tmpl()
->        -> ath11k_mac_setup_bcn_tmpl_ema()
->        -> ath11k_mac_setup_bcn_tmpl_mbssid()
->           -> ath11k_mac_set_vif_params()
->              -> ath11k_mac_setup_bcn_p2p_ie()
->                 -> ath11k_wmi_p2p_go_bcn_ie()
-> 
-> The ath11k_bcn_tx_status_event() function takes rcu_read_lock() which
-> disables preemption.  I don't know the code well enough to say if this
-> is a real bug...  If it's a false positive, just ignore it.  These are
-> one time emails.
-
-
-I also found:
-
-ath11k_bcn_tx_status_event() <- disables preempt
--> ath11k_mac_bcn_tx_event()
-	-> ath11k_mac_setup_bcn_tmpl()
-		-> ath11k_mac_setup_bcn_tmpl_ema()
-		-> ath11k_mac_setup_bcn_tmpl_mbssid()
-			->ath11k_wmi_bcn_tmpl()
-				->ath11k_wmi_cmd_send()
-
-
-It seems this problem already exist even if without my patch.
-
-
-Fine, i will find solution for this.
-
-> 
-> See my blog for more details.
-> https://staticthinking.wordpress.com/2024/05/24/sleeping-in-atomic-warnings/
->  > regards,
-> dan carpenter
+Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBDdXJy
+ZW50bHkgdGhlIG51bWJlciBvZiBmcmFtZXMgc2VudCB0byB0aGUgY2hpcCBpbiBhIHNpbmdsZSBV
+U0IgUmVxdWVzdA0KPiBCbG9jayBpcyBsaW1pdGVkIG9ubHkgYnkgdGhlIHNpemUgb2YgdGhlIFRY
+IGJ1ZmZlciwgd2hpY2ggaXMgMjAgS2lCLg0KPiBUZXN0aW5nIHJldmVhbHMgdGhhdCBhcyBtYW55
+IGFzIDEzIGZyYW1lcyBnZXQgYWdncmVnYXRlZC4gVGhpcyBpcyBtb3JlDQo+IHRoYW4gd2hhdCBh
+bnkgb2YgdGhlIGNoaXBzIHdvdWxkIGxpa2UgdG8gcmVjZWl2ZS4gUlRMODgyMkNVLCBSVEw4ODIy
+QlUsDQo+IGFuZCBSVEw4ODIxQ1Ugd2FudCBhdCBtb3N0IDMgZnJhbWVzLCBhbmQgUlRMODcyM0RV
+IHdhbnRzIG9ubHkgMSBmcmFtZQ0KPiBwZXIgVVJCLg0KPiANCj4gUlRMODcyM0RVIGluIHBhcnRp
+Y3VsYXIgcmVsaWFibHkgbWFsZnVuY3Rpb25zIGR1cmluZyBhIHNwZWVkIHRlc3QuIEFsbA0KPiB0
+cmFmZmljIHNlZW1zIHRvIHN0b3AuIFBpbmdpbmcgdGhlIEFQIG5vIGxvbmdlciB3b3Jrcy4NCj4g
+DQo+IEZpeCB0aGlzIHByb2JsZW0gYnkgbGltaXRpbmcgdGhlIG51bWJlciBvZiBmcmFtZXMgc2Vu
+dCB0byB0aGUgY2hpcCBpbiBhDQo+IHNpbmdsZSBVUkIgYWNjb3JkaW5nIHRvIHdoYXQgZWFjaCBj
+aGlwIGxpa2VzLg0KPiANCj4gQWxzbyBjb25maWd1cmUgUlRMODgyMkNVLCBSVEw4ODIyQlUsIGFu
+ZCBSVEw4ODIxQ1UgdG8gZXhwZWN0IDMgZnJhbWVzDQo+IHBlciBVUkIuDQo+IA0KPiBSVEw4NzAz
+QiBtYXkgb3IgbWF5IG5vdCBiZSBmb3VuZCBpbiBVU0IgZGV2aWNlcy4gRGVjbGFyZSB0aGF0IGl0
+IHdhbnRzDQo+IG9ubHkgMSBmcmFtZSBwZXIgVVJCLCBqdXN0IGluIGNhc2UuDQo+IA0KPiBUZXN0
+ZWQgd2l0aCBSVEw4NzIzRFUgYW5kIFJUTDg4MTFDVS4NCj4gDQo+IENjOiBzdGFibGVAdmdlci5r
+ZXJuZWwub3JnDQo+IFNpZ25lZC1vZmYtYnk6IEJpdHRlcmJsdWUgU21pdGggPHJ0bDg4MjFjZXJm
+ZTJAZ21haWwuY29tPg0KPiAtLS0NCj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3
+ODgvbWFjLmMgICAgICB8IDEyICsrKysrKysrKysrKw0KPiAgZHJpdmVycy9uZXQvd2lyZWxlc3Mv
+cmVhbHRlay9ydHc4OC9tYWluLmggICAgIHwgIDIgKysNCj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNz
+L3JlYWx0ZWsvcnR3ODgvcmVnLmggICAgICB8ICAxICsNCj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNz
+L3JlYWx0ZWsvcnR3ODgvcnR3ODcwM2IuYyB8ICAxICsNCj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNz
+L3JlYWx0ZWsvcnR3ODgvcnR3ODcyM2QuYyB8ICAxICsNCj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNz
+L3JlYWx0ZWsvcnR3ODgvcnR3ODgyMWMuYyB8ICAxICsNCj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNz
+L3JlYWx0ZWsvcnR3ODgvcnR3ODgyMmIuYyB8ICAxICsNCj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNz
+L3JlYWx0ZWsvcnR3ODgvcnR3ODgyMmMuYyB8ICAxICsNCj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNz
+L3JlYWx0ZWsvcnR3ODgvdXNiLmMgICAgICB8ICA0ICsrKy0NCj4gIDkgZmlsZXMgY2hhbmdlZCwg
+MjMgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2RyaXZl
+cnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvbWFjLmMgYi9kcml2ZXJzL25ldC93aXJlbGVz
+cy9yZWFsdGVrL3J0dzg4L21hYy5jDQo+IGluZGV4IDBkYmE4YWFlNzcxNi4uZmNhOTA3NTljMjY4
+IDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L21hYy5j
+DQo+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvbWFjLmMNCj4gQEAg
+LTExODYsNiArMTE4Niw3IEBAIHN0YXRpYyBpbnQgX19wcmlvcml0eV9xdWV1ZV9jZmcoc3RydWN0
+IHJ0d19kZXYgKnJ0d2RldiwNCj4gIHsNCj4gICAgICAgICBjb25zdCBzdHJ1Y3QgcnR3X2NoaXBf
+aW5mbyAqY2hpcCA9IHJ0d2Rldi0+Y2hpcDsNCj4gICAgICAgICBzdHJ1Y3QgcnR3X2ZpZm9fY29u
+ZiAqZmlmbyA9ICZydHdkZXYtPmZpZm87DQo+ICsgICAgICAgdTggdmFsODsNCj4gDQo+ICAgICAg
+ICAgcnR3X3dyaXRlMTYocnR3ZGV2LCBSRUdfRklGT1BBR0VfSU5GT18xLCBwZ190YmwtPmhxX251
+bSk7DQo+ICAgICAgICAgcnR3X3dyaXRlMTYocnR3ZGV2LCBSRUdfRklGT1BBR0VfSU5GT18yLCBw
+Z190YmwtPmxxX251bSk7DQo+IEBAIC0xMjAxLDYgKzEyMDIsMTcgQEAgc3RhdGljIGludCBfX3By
+aW9yaXR5X3F1ZXVlX2NmZyhzdHJ1Y3QgcnR3X2RldiAqcnR3ZGV2LA0KPiAgICAgICAgIHJ0d193
+cml0ZTE2KHJ0d2RldiwgUkVHX0ZJRk9QQUdFX0NUUkxfMiArIDIsIGZpZm8tPnJzdmRfYm91bmRh
+cnkpOw0KPiAgICAgICAgIHJ0d193cml0ZTE2KHJ0d2RldiwgUkVHX0JDTlExX0JETllfVjEsIGZp
+Zm8tPnJzdmRfYm91bmRhcnkpOw0KPiAgICAgICAgIHJ0d193cml0ZTMyKHJ0d2RldiwgUkVHX1JY
+RkZfQk5EWSwgY2hpcC0+cnhmZl9zaXplIC0gQzJIX1BLVF9CVUYgLSAxKTsNCj4gKw0KPiArICAg
+ICAgIGlmIChydHdkZXYtPmhjaS50eXBlID09IFJUV19IQ0lfVFlQRV9VU0IpIHsNCj4gKyAgICAg
+ICAgICAgICAgIHZhbDggPSBydHdfcmVhZDgocnR3ZGV2LCBSRUdfQVVUT19MTFRfVjEpOw0KPiAr
+ICAgICAgICAgICAgICAgdThwX3JlcGxhY2VfYml0cygmdmFsOCwgY2hpcC0+dXNiX3R4X2FnZ19k
+ZXNjX251bSwNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgQklUX01BU0tfQkxL
+X0RFU0NfTlVNKTsNCj4gKyAgICAgICAgICAgICAgIHJ0d193cml0ZTgocnR3ZGV2LCBSRUdfQVVU
+T19MTFRfVjEsIHZhbDgpOw0KDQpydHdfd3JpdGU4X21hc2socnR3ZGV2LCBSRUdfQVVUT19MTFRf
+VjEsIEJJVF9NQVNLX0JMS19ERVNDX05VTSwgY2hpcC0+dXNiX3R4X2FnZ19kZXNjX251bSk7DQoN
+Cj4gKw0KPiArICAgICAgICAgICAgICAgcnR3X3dyaXRlOChydHdkZXYsIFJFR19BVVRPX0xMVF9W
+MSArIDMsIGNoaXAtPnVzYl90eF9hZ2dfZGVzY19udW0pOw0KPiArICAgICAgICAgICAgICAgcnR3
+X3dyaXRlOF9zZXQocnR3ZGV2LCBSRUdfVFhETUFfT0ZGU0VUX0NISyArIDEsIEJJVCgxKSk7DQo+
+ICsgICAgICAgfQ0KPiArDQo+ICAgICAgICAgcnR3X3dyaXRlOF9zZXQocnR3ZGV2LCBSRUdfQVVU
+T19MTFRfVjEsIEJJVF9BVVRPX0lOSVRfTExUX1YxKTsNCj4gDQo+ICAgICAgICAgaWYgKCFjaGVj
+a19od19yZWFkeShydHdkZXYsIFJFR19BVVRPX0xMVF9WMSwgQklUX0FVVE9fSU5JVF9MTFRfVjEs
+IDApKQ0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9t
+YWluLmggYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L21haW4uaA0KPiBpbmRl
+eCA0OTg5NDMzMWY3YjQuLjQ5YTNmZDRmYjdkYyAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9uZXQv
+d2lyZWxlc3MvcmVhbHRlay9ydHc4OC9tYWluLmgNCj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxl
+c3MvcmVhbHRlay9ydHc4OC9tYWluLmgNCj4gQEAgLTExOTcsNiArMTE5Nyw4IEBAIHN0cnVjdCBy
+dHdfY2hpcF9pbmZvIHsNCj4gICAgICAgICB1MTYgZndfZmlmb19hZGRyW1JUV19GV19GSUZPX01B
+WF07DQo+ICAgICAgICAgY29uc3Qgc3RydWN0IHJ0d19md2NkX3NlZ3MgKmZ3Y2Rfc2VnczsNCj4g
+DQo+ICsgICAgICAgdTggdXNiX3R4X2FnZ19kZXNjX251bTsNCj4gKw0KDQpQbGVhc2Uga2VlcCBv
+cmRlciBvZiBmaWVsZCBhbmQgaW5zdGFuY2UgZGVjbGFyYXRpb24sIGxpa2UgcnR3ODcwM2JfaHdf
+c3BlYy4NCg0KPiAgICAgICAgIHU4IGRlZmF1bHRfMXNzX3R4X3BhdGg7DQo+IA0KPiAgICAgICAg
+IGJvb2wgcGF0aF9kaXZfc3VwcG9ydGVkOw0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2ly
+ZWxlc3MvcmVhbHRlay9ydHc4OC9yZWcuaCBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsv
+cnR3ODgvcmVnLmgNCj4gaW5kZXggYjEyMmYyMjY5MjRiLi41NzI2NTFiM2FhNGIgMTAwNjQ0DQo+
+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcmVnLmgNCj4gKysrIGIv
+ZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9yZWcuaA0KPiBAQCAtMjcwLDYgKzI3
+MCw3IEBADQo+ICAjZGVmaW5lIEJJVF9NQVNLX0JDTl9IRUFEXzFfVjEgMHhmZmYNCj4gICNkZWZp
+bmUgUkVHX0FVVE9fTExUX1YxICAgICAgICAgICAgICAgIDB4MDIwOA0KPiAgI2RlZmluZSBCSVRf
+QVVUT19JTklUX0xMVF9WMSAgIEJJVCgwKQ0KPiArI2RlZmluZSBCSVRfTUFTS19CTEtfREVTQ19O
+VU0gIDB4ZjANCg0KMHhmMCAtLT4gR0VOTUFTSyg3LCA0KQ0KDQo+ICAjZGVmaW5lIFJFR19EV0JD
+TjBfQ1RSTCAgICAgICAgICAgICAgICAweDAyMDgNCj4gICNkZWZpbmUgQklUX0JDTl9WQUxJRCAg
+ICAgICAgICBCSVQoMTYpDQo+ICAjZGVmaW5lIFJFR19UWERNQV9PRkZTRVRfQ0hLICAgMHgwMjBD
+DQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0dzg3
+MDNiLmMNCj4gYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0dzg3MDNiLmMN
+Cj4gaW5kZXggODkxOWY5ZTExZjAzLi4yMjI2MDhkZTMzY2QgMTAwNjQ0DQo+IC0tLSBhL2RyaXZl
+cnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcnR3ODcwM2IuYw0KPiArKysgYi9kcml2ZXJz
+L25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0dzg3MDNiLmMNCj4gQEAgLTIwMTMsNiArMjAx
+Myw3IEBAIGNvbnN0IHN0cnVjdCBydHdfY2hpcF9pbmZvIHJ0dzg3MDNiX2h3X3NwZWMgPSB7DQo+
+ICAgICAgICAgLnR4X3N0YmMgPSBmYWxzZSwNCj4gICAgICAgICAubWF4X3Bvd2VyX2luZGV4ID0g
+MHgzZiwNCj4gICAgICAgICAuYW1wZHVfZGVuc2l0eSA9IElFRUU4MDIxMV9IVF9NUERVX0RFTlNJ
+VFlfMTYsDQo+ICsgICAgICAgLnVzYl90eF9hZ2dfZGVzY19udW0gPSAxLCAvKiBOb3Qgc3VyZSBp
+ZiB0aGlzIGNoaXAgaGFzIFVTQiBpbnRlcmZhY2UgKi8NCg0KVGhlIHBvc2l0aW9uIHRvIGRlY2xh
+cmUgdGhpcyBmaWVsZCBpcyB2ZXJ5IGRpZmZlcmVudCBmcm9tIG90aGVycy4gDQoNCk5vdCBzdXJl
+IHdoZW4gd2UgbWVzc2VkIHVwIHRoZSBvcmRlciwgYnV0IHBsZWFzZSBkb24ndCBmZWVsIGZyZWUg
+dG8gYWRkIG9uZSwNCmtlZXAgdGhlIG9yZGVyLiANCg0KSWYgeW91IGhhdmUgdGltZSwgY291bGQg
+eW91IGhlbHAgdG8gYWxpZ24gYWxsIG9mIHRoZW0gYWNyb3NzIGNoaXBzPw0KSWYgbm90LCBJIHdp
+bGwgdGFrZSBteSB0aW1lIHRvIGRvIHRoYXQgYWZ0ZXIgeW91ciBwYXRjaC4gDQoNCg0K
 
