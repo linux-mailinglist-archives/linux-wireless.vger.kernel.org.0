@@ -1,117 +1,185 @@
-Return-Path: <linux-wireless+bounces-8287-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8288-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21F448D43FE
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 05:13:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E48008D4572
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 08:23:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD3E928676D
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 03:13:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D9C02866E8
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 06:23:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85E51CD2C;
-	Thu, 30 May 2024 03:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EB21155313;
+	Thu, 30 May 2024 06:23:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Pf3514e8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1C2F9F7
-	for <linux-wireless@vger.kernel.org>; Thu, 30 May 2024 03:13:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1F82B9A0
+	for <linux-wireless@vger.kernel.org>; Thu, 30 May 2024 06:23:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717038830; cv=none; b=bnvuYG5kt+l1em2RSFRFTICULY0+tKXQOMrt4LFassMIIEuBjL+Rykfg+/xnYeR3AzpF+8oL8dv2DdfBIQAXMkv/SL4f/vTPLK0cMXfAMPqUlFCWXpetINt0DWFmYYHLjlOE2KmJShdfvGbDfoFrsa7TJHhHmMWTiAqgBYUSGEU=
+	t=1717050222; cv=none; b=OmS9IV/Z5KpzP/igF8zoXCfvtucaJGjPL0hGbeCGt4b5aJq13zKEeIH6ycM2oNeVc+phExWb14g1e4FS2hulH20yYvcPVIF0A9/uAmGlX0IWANYUq9Vz+C6XrTfoNaTRVOrn/6TnEXNrfKmboanx7FdCF5gLsvZCta1xiNHalMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717038830; c=relaxed/simple;
-	bh=pXslQ4P8d/Flf2YEf2zLA1N10ty7MotRTV3sC2ARESI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=J0K6HurwCDCQc3QRFJ4qnqYIb7JTB0H5zxegLYqW31U+KaJRFw04dSo7LbJ5QR8AgV/9NaehM4DE7LPzrs2tjjIY/nIptYKUq5GGnislJs6gpGYzL1jAVxLomPiA211ghakzwiPKAr+K1o2lk7CsdjVWS6uaftBlZf39G36ZoXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 44U3DcTX2239275, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 44U3DcTX2239275
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 30 May 2024 11:13:38 +0800
-Received: from RTEXMBS05.realtek.com.tw (172.21.6.98) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 30 May 2024 11:13:39 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS05.realtek.com.tw (172.21.6.98) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 30 May 2024 11:13:39 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
- RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
- 15.01.2507.035; Thu, 30 May 2024 11:13:39 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: =?utf-8?B?TWFyY2luIMWabHVzYXJ6?= <marcin.slusarz@gmail.com>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        =?utf-8?B?TWFyY2luIMWabHVzYXJ6?= <mslusarz@renau.com>
-Subject: RE: wifi: rtw88: 8821CU hangs after some number of power-off/on cycles
-Thread-Topic: wifi: rtw88: 8821CU hangs after some number of power-off/on
- cycles
-Thread-Index: AQHasFw+pvHPaxxLgUK305GcfZdkyrGsA2eA///v6wCAAX/iEIAAZrWAgAE7nYA=
-Date: Thu, 30 May 2024 03:13:38 +0000
-Message-ID: <b9c85972ab634364bf8a705a4f4513fd@realtek.com>
-References: <20240527173454.459264-1-marcin.slusarz@gmail.com>
- <9bfc8f01e99b43e485b2afc6ae4fd661@realtek.com>
- <CA+GA0_sQ_Bnp8CUq1Pmxf7zut1Kocaxbw4iXT4hYC5_ceXb7WQ@mail.gmail.com>
- <3cc9cc75468d487c988dbacd8dfc5f57@realtek.com>
- <CA+GA0_tUy0EuXm0CGYa8SsS78oRNHUanBNwRf_BLXERa1=MYdg@mail.gmail.com>
-In-Reply-To: <CA+GA0_tUy0EuXm0CGYa8SsS78oRNHUanBNwRf_BLXERa1=MYdg@mail.gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1717050222; c=relaxed/simple;
+	bh=+JcF5yQMrJrr57pDNpfepmAW49b/sci4qijxpQpdto4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=azN2QIJW8fkgCiOPZ/Sa22+a+uZ6303U6mD7d2bIXbJ04DoosBYZL4Dslyl8msU39MQtVf+OE49Vr0i1KktC4/U6IdqRfwI4eYqZwq2wb86zsPFT+CcBqLQRidiVxnBDKUt+HGO9K0bYeC9dmzkXTojPr2/co1Or30a+j2t5v78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Pf3514e8; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44TMCSwL021170;
+	Thu, 30 May 2024 06:23:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	5WpJva/UfKszn14kM8O9sUFGcZzIvLNN3CRSXXUoWfk=; b=Pf3514e8pUr0MdYH
+	tzTC3qEONTQva6YMKXrZJPIVJ/eO6xh/HV/tvLP3WHU2mVPQFmfYJEG7xe2ebFJt
+	eG1BKDGitVDrwr0W2DjMrgvmJV41NsuBCGZgIcF0BeRI9q5XTCNoRgUrkeAUsOjF
+	mgvrRItWW1tmk5DNFjNVw4+C1WEI849Hagr39mO+mzuwky7t46SchAnZW97w+OQp
+	HT7CAJdRdP9VqVx2PyWMCpgE7KUIAKOk+69tOSXZOgGO7rVn16Rd3EcJNwS4wVUa
+	C8/QSNM7hYLrNgdZvEmW55taDtL34dVIqYWvK3B4Ov5Us73Eh1dIj6nPKev3epUC
+	yggbZg==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yba0pu1mv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 May 2024 06:23:24 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44U6NOJL021760
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 May 2024 06:23:24 GMT
+Received: from [10.253.79.103] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 29 May
+ 2024 23:23:23 -0700
+Message-ID: <6c8ca575-01b7-41ba-97d9-cfe28f69c1e6@quicinc.com>
+Date: Thu, 30 May 2024 14:23:20 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [bug report] wifi: ath11k: add P2P IE in beacon template
+To: Dan Carpenter <dan.carpenter@linaro.org>
+CC: <linux-wireless@vger.kernel.org>, <ath11k@lists.infradead.org>
+References: <2d277abd-5e7b-4da0-80e0-52bd96337f6e@moroto.mountain>
+Content-Language: en-US
+From: Kang Yang <quic_kangyang@quicinc.com>
+In-Reply-To: <2d277abd-5e7b-4da0-80e0-52bd96337f6e@moroto.mountain>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: G59UKcIGKQm25Fl434O9Mmeg2O3cdHuo
+X-Proofpoint-GUID: G59UKcIGKQm25Fl434O9Mmeg2O3cdHuo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-05-30_03,2024-05-28_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 bulkscore=0
+ suspectscore=0 clxscore=1011 lowpriorityscore=0 priorityscore=1501
+ mlxscore=0 spamscore=0 adultscore=0 phishscore=0 impostorscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2405300045
 
-TWFyY2luIMWabHVzYXJ6IDxtYXJjaW4uc2x1c2FyekBnbWFpbC5jb20+IHdyb3RlOg0KPiDFm3Iu
-LCAyOSBtYWogMjAyNCBvIDAzOjUyIFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPiBu
-YXBpc2HFgihhKToNCj4gPg0KPiA+IE1hcmNpbiDFmmx1c2FyeiA8bWFyY2luLnNsdXNhcnpAZ21h
-aWwuY29tPiB3cm90ZToNCj4gPiA+IHd0LiwgMjggbWFqIDIwMjQgbyAwNTo1MiBQaW5nLUtlIFNo
-aWggPHBrc2hpaEByZWFsdGVrLmNvbT4gbmFwaXNhxYIoYSk6DQo+ID4gPiA+DQo+ID4gPiA+IE1h
-cmNpbiDFmmx1c2FyeiA8bWFyY2luLnNsdXNhcnpAZ21haWwuY29tPiB3cm90ZToNCj4gPiA+ID4g
-Pg0KPiA+ID4gPiA+IEkgZm91bmQgb3V0IHRoYXQgdGhlIHJlYXNvbiBmb3IgdGhvc2UgaGFuZ3Mg
-aXMgYSBwb3dlci1vZmYrb24gc2VxdWVuY2UgdGhhdCdzDQo+ID4gPiA+ID4gdHJpZ2dlcmVkIGJ5
-IHRoZSBhYm92ZSBzdGVwcy4NCj4gPiA+ID4NCj4gPiA+ID4gVG8gYXZvaWQgcG93ZXItb2ZmL29u
-IHNlcXVlbmNlIG9uY2UgZGV2aWNlIGJlY29tZXMgaWRsZSwgSSB3b3VsZCBsaWtlIHRvIGFkZA0K
-PiA+ID4gPiBhIGlwc19kaXNhYmxlZCBoZWxwZXIuIFBsZWFzZSByZXZlcnQgeW91ciBjaGFuZ2Vz
-IGFuZCBhcHBseSBteSBhdHRhY2hlZCBwYXRjaC4NCj4gPiA+DQo+ID4gPiBNeSBmaXJzdCBhdHRl
-bXB0IHdhcyB2ZXJ5IHNpbWlsYXIsIGFuZCBpdCBmaXhlZCBzb21lIGNhc2VzIGJ1dCBub3QgYWxs
-IG9mIHRoZW0uDQo+ID4gPg0KPiA+ID4gVGhpcyBpcyBkdWUgdG8gdGhlIGV4aXN0ZW5jZSBvZiBh
-IHNlY29uZCBzb3VyY2Ugb2YgcG93ZXItb2ZmcyAtIHJ0d19vcHNfc3RvcCwNCj4gPiA+IHdoaWNo
-IGlzIGNhbGxlZCwgZS5nLiwgb24gZG93bmluZyB0aGUgaW50ZXJmYWNlIChpZmNvbmZpZyB3bGFu
-MCBkb3duKS4NCj4gPg0KPiA+IFBsZWFzZSB0cnkgYXR0YWNoZWQgdjIgcGF0Y2guIEkgd291bGQg
-bGlrZSB0byBoYXZlIGFuIGV4cGxpY2l0IGhlbHBlcg0KPiA+IChpLmUuIGFsd2F5c19wb3dlcl9v
-biBpbiB2MikgdG8gaGF2ZSB0aGlzIGZpeCwgc28gZGF5cyBsYXRlciBwZW9wbGUgY2FuIGJlIGVh
-c3kNCj4gPiB0byB1bmRlcnN0YW5kIGhvdyBpdCB3b3Jrcy4gTm90IHByZWZlciBhZGp1c3Rpbmcg
-ZXhpc3RpbmcgZmxhZ3MgdG8gaW1wbGljaXRseQ0KPiA+IGhhdmUgYmVoYXZpb3IgeW91IHdhbnQu
-DQo+IA0KPiBTbywgZG8geW91IHRoaW5rIHRoaXMgaXMgYSBjaGlwIGlzc3VlLCBub3QganVzdCBz
-b21lIGRyaXZlciBtaXNjb25maWd1cmF0aW9uPw0KDQpJIGFza2VkIGludGVybmFsIFVTQiBXaUZp
-IHBlb3BsZSB3aG8gc2F5IHZlbmRvciBkcml2ZXJzIG9mIFVTQi9TRElPIGNhbid0DQpwb3dlci1v
-bi8tb2ZmIGZyZXF1ZW50bHkgYnV0IG5vdCB2ZXJ5IHN1cmUgaWYgaGFyZHdhcmUgaXNzdWUgb3Ig
-ZHJpdmVyIGlzc3VlLg0KDQo+IA0KPiBJJ20gYXNraW5nIGJlY2F1c2UgaWYgd2UgYXJlIGdvaW5n
-IGluIHRoaXMgZGlyZWN0aW9uLCB0aGVyZSdzIHNvbWV0aGluZw0KPiBtb3JlIHRvIGZpeC4uLiBX
-aXRoIHlvdXIgdjIsIHZlcnkgZnJlcXVlbnRseSwgSSBoaXQgV0FSTl9PTighbG9jYWwtPnN0YXJ0
-ZWQpIGluDQo+IGllZWU4MDIxMV9yeF9uYXBpIChpbiB3aXJlbGVzcy1uZXh0LCB0aGUgY29kZSB3
-YXMgbW92ZWQgdG8gaWVlZTgwMjExX3J4X2xpc3QpLg0KPiANCj4gV2l0aCBteSBwYXRjaCwgSSBj
-aGVja2VkIGFuZCBoaXQgdGhhdCBXQVJOX09OLCB0b28sIGJ1dCB2ZXJ5IG9jY2FzaW9uYWxseS4N
-Cj4gDQo+IEkgdGhpbmsgdGhlIGRpZmZlcmVuY2UgaXMgaW4gd2hhdCBoYXBwZW5zIGluIHJ0d19p
-cHNfZW50ZXIgLSBJIGRpc2FibGVkIG9ubHkNCj4gdGhlIHBvd2VyX29mZiwgYnV0IHlvdSBhbHNv
-IGRpc2FibGVkIGV2ZXJ5dGhpbmcgZWxzZSwgaW5jbHVkaW5nIHRoZSBjYW5jZWxhdGlvbg0KPiBv
-ZiB3b3JrX3N0cnVjdHMuDQo+IA0KPiBUaGUgd2FybmluZyBpdHNlbGYgc291bmRzIGhhcm1sZXNz
-LCBidXQgSSB0aGluayB1c2VycyBzaG91bGQgbmV2ZXIgc2VlIHN1Y2gNCj4gd2FybmluZ3MsIHNv
-IHRoaXMgbmVlZHMgdG8gYmUgZml4ZWQgc29tZWhvdy4gUHJvYmFibHkgc29tZSBhZGRpdGlvbmFs
-DQo+IHdvcmtfc3RydWN0KHMpIG5lZWQgdG8gYmUgY2FuY2VsZWQ/DQo+IA0KDQpJIGZvcmdvdCB0
-byBzYXkgbXkgcGF0Y2ggaXMgY29tcGlsZWQgdGVzdCBvbmx5LCBhbmQgSSBkaWRuJ3QgY29uc2lk
-ZXIgZmxvdw0KdG9vIG11Y2gsIGp1c3QgdG8gY2xvc2UgdGhlIGJlaGF2aW9yIG9mIHlvdXIgcGF0
-Y2hlcy4gWW91IGNhbiBpbXByb3ZlIG15IHBhdGNoDQp0byBiZSBtb3JlIHJlbGlhYmxlIHRvIGF2
-b2lkIFdBUk5fT04oKS4gIA0KDQpQaW5nLUtlDQoNCg==
+
+
+On 5/29/2024 10:32 PM, Dan Carpenter wrote:
+> Hello Kang Yang,
+> 
+> Commit 3a415daa3e8b ("wifi: ath11k: add P2P IE in beacon template")
+> from Feb 28, 2024 (linux-next), leads to the following Smatch static
+> checker warning:
+> 
+> 	drivers/net/wireless/ath/ath11k/wmi.c:1742 ath11k_wmi_p2p_go_bcn_ie()
+> 	warn: sleeping in atomic context
+> 
+> drivers/net/wireless/ath/ath11k/wmi.c
+>      1712 int ath11k_wmi_p2p_go_bcn_ie(struct ath11k *ar, u32 vdev_id,
+>      1713                              const u8 *p2p_ie)
+>      1714 {
+>      1715         struct ath11k_pdev_wmi *wmi = ar->wmi;
+>      1716         struct wmi_p2p_go_set_beacon_ie_cmd *cmd;
+>      1717         size_t p2p_ie_len, aligned_len;
+>      1718         struct wmi_tlv *tlv;
+>      1719         struct sk_buff *skb;
+>      1720         int ret, len;
+>      1721
+>      1722         p2p_ie_len = p2p_ie[1] + 2;
+>      1723         aligned_len = roundup(p2p_ie_len, 4);
+>      1724
+>      1725         len = sizeof(*cmd) + TLV_HDR_SIZE + aligned_len;
+>      1726
+>      1727         skb = ath11k_wmi_alloc_skb(wmi->wmi_ab, len);
+>      1728         if (!skb)
+>      1729                 return -ENOMEM;
+>      1730
+>      1731         cmd = (struct wmi_p2p_go_set_beacon_ie_cmd *)skb->data;
+>      1732         cmd->tlv_header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_P2P_GO_SET_BEACON_IE) |
+>      1733                           FIELD_PREP(WMI_TLV_LEN, sizeof(*cmd) - TLV_HDR_SIZE);
+>      1734         cmd->vdev_id = vdev_id;
+>      1735         cmd->ie_buf_len = p2p_ie_len;
+>      1736
+>      1737         tlv = (struct wmi_tlv *)cmd->tlv;
+>      1738         tlv->header = FIELD_PREP(WMI_TLV_TAG, WMI_TAG_ARRAY_BYTE) |
+>      1739                       FIELD_PREP(WMI_TLV_LEN, aligned_len);
+>      1740         memcpy(tlv->value, p2p_ie, p2p_ie_len);
+>      1741
+> --> 1742         ret = ath11k_wmi_cmd_send(wmi, skb, WMI_P2P_GO_SET_BEACON_IE);
+>                         ^^^^^^^^^^^^^^^^^^^
+> This is a might_sleep() function.
+> 
+>      1743         if (ret) {
+>      1744                 ath11k_warn(ar->ab, "failed to send WMI_P2P_GO_SET_BEACON_IE\n");
+>      1745                 dev_kfree_skb(skb);
+>      1746         }
+>      1747
+>      1748         return ret;
+>      1749 }
+> 
+> The problematic call tree is:
+> 
+> ath11k_bcn_tx_status_event() <- disables preempt
+> -> ath11k_mac_bcn_tx_event()
+>     -> ath11k_mac_setup_bcn_tmpl()
+>        -> ath11k_mac_setup_bcn_tmpl_ema()
+>        -> ath11k_mac_setup_bcn_tmpl_mbssid()
+>           -> ath11k_mac_set_vif_params()
+>              -> ath11k_mac_setup_bcn_p2p_ie()
+>                 -> ath11k_wmi_p2p_go_bcn_ie()
+> 
+> The ath11k_bcn_tx_status_event() function takes rcu_read_lock() which
+> disables preemption.  I don't know the code well enough to say if this
+> is a real bug...  If it's a false positive, just ignore it.  These are
+> one time emails.
+
+
+I also found:
+
+ath11k_bcn_tx_status_event() <- disables preempt
+-> ath11k_mac_bcn_tx_event()
+	-> ath11k_mac_setup_bcn_tmpl()
+		-> ath11k_mac_setup_bcn_tmpl_ema()
+		-> ath11k_mac_setup_bcn_tmpl_mbssid()
+			->ath11k_wmi_bcn_tmpl()
+				->ath11k_wmi_cmd_send()
+
+
+It seems this problem already exist even if without my patch.
+
+
+Fine, i will find solution for this.
+
+> 
+> See my blog for more details.
+> https://staticthinking.wordpress.com/2024/05/24/sleeping-in-atomic-warnings/
+>  > regards,
+> dan carpenter
 
