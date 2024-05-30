@@ -1,321 +1,463 @@
-Return-Path: <linux-wireless+bounces-8308-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8309-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AF5A8D476A
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 10:45:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFB9C8D49FE
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 13:02:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DCEB1C21111
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 08:45:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 768FF2818FA
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 11:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF856F2F4;
-	Thu, 30 May 2024 08:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDED116F0E5;
+	Thu, 30 May 2024 11:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="YYiCj0Lt"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ztf0UMet"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5569955887
-	for <linux-wireless@vger.kernel.org>; Thu, 30 May 2024 08:45:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD9A6F2F9
+	for <linux-wireless@vger.kernel.org>; Thu, 30 May 2024 11:02:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717058715; cv=none; b=Gqpi1JwaDEuCoDjDfgOwcqhY8UW36IsOPnxvlfkgU47lyck7NEzU00D8d9bYyggus0wNqx4Vo/aacpGFyPw+ZE3Kpzcpk7Y+O1sxw6ngYvH8Y20SL4B9lq76YYckX5uOu87RkIqKrkSZ0Uy7b8QdjBfDzxeLx/ZhilaQWVT9YTM=
+	t=1717066966; cv=none; b=TF0RSAiqnFdB9dWji5EqPieJUxgtwL4z0Fa/JO0ZEX+JM61/3WXHV9bdcfm/+bkIsfYaQFCXMqa/ByFRLHyqQ4O70yFYdJLd2aB6ii0fxXzrBdiOY47tVZGyWTloM3OwXgOKEsQpoaEJF2YgtlqlJa6tt5p7I/7vPeTJD8vCB3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717058715; c=relaxed/simple;
-	bh=eSIoBfN9KD/raGDx3nQaqs5eTQFWX8c5cGTJt5/lT58=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OwEEluUacEe2b9nYxK+Bi0ARk2w0C0au3GGxJyu9J0ubuCQHwJDPrYpJwTWRg1PBi0whWV22mYh2Idpo0klaCXGTdsSsYAqNB7SK8fSL6ly+pELPUAuCSm6NjyXRG1DEmQNs26wOr71q3af5mbtpe9maN1z46rtPpNgT3E0fj6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=YYiCj0Lt; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: e66398e41e6011efbfff99f2466cf0b4-20240530
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=oQcOVF+O655yruhPTVMERnaIwgJZSDJ5JXbzSnvNbU8=;
-	b=YYiCj0LtprZ8ilhR6TXtCbLFhEx8BBpG/FBOpyt9fwxAeB9MaKTddKCGIA2XBTiQQPiaT0wyXrkHiV3a5hEEXXwGQWN4M4N6xdcCFVtkySGz2PDQonSwSNFDP/EDS6IayhCrE+UtLMgPJpQJoePLq7neRvlIoIovyjTFz68tzDo=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.39,REQID:efdd89df-1b4e-4b12-997f-fb134025598c,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:393d96e,CLOUDID:341a0188-8d4f-477b-89d2-1e3bdbef96d1,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,
-	SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: e66398e41e6011efbfff99f2466cf0b4-20240530
-Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw02.mediatek.com
-	(envelope-from <mingyen.hsieh@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 47687398; Thu, 30 May 2024 16:45:00 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- MTKMBS09N2.mediatek.inc (172.21.101.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Thu, 30 May 2024 01:44:59 -0700
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Thu, 30 May 2024 16:44:58 +0800
-From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
-	<Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
-	<Eric-SY.Chang@mediatek.com>, <km.lin@mediatek.com>,
-	<robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-	<Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
-	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, Leon Yen <leon.yen@mediatek.com>, Ming
- Yen Hsieh <mingyen.hsieh@mediatek.com>
-Subject: [PATCH v2] wifi: mt76: mt7921: introduce CSA support
-Date: Thu, 30 May 2024 16:44:55 +0800
-Message-ID: <20240530084455.4290-1-mingyen.hsieh@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+	s=arc-20240116; t=1717066966; c=relaxed/simple;
+	bh=ze99tk+tgTu5+kvB3B+xjJ6rgWHqjZwCG275dnpJOtQ=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=RHhB4JIPdZWP++NQDfrrgGBEwSLFkl3+a2Z/FobLVmQAVbA2z233hIYGIwumZ4XZfJHgOlIAgryviNYGOO0sptjQYJisvW6iu+5UW9Ead1iwSZLDDb/r270hR540iJ//w8jqdxuv+Zuy/KxI2kcJd/C+puhxNyD6hbQ9XMqzdpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ztf0UMet; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2e96f29884dso8410581fa.0
+        for <linux-wireless@vger.kernel.org>; Thu, 30 May 2024 04:02:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1717066962; x=1717671762; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wdJdpjrFVd2jyJBfi7/1Ypm+QKe5VhIURoGePuM+Fi8=;
+        b=ztf0UMetXZ0g9IScgcxjnFeBmBr7/L8eOw/WkTMRWXeNQuPU/Q0neC0wsqiJtu5v+t
+         9CBR+LUm21lQLZ177DjzcJt+sXK/v3YPJHRNaNcb/60JxmE0uI9YKOXXikHyH3h4I5iW
+         x7J9vPAzS7AWCM9N931lYbaG9Ish5q7+j93JkBRYK7LnuEdbq1EXAst6j/f9kqbbR8Rj
+         ZaJ7nb7/ShLRmPxe0VP4YnU5TDty5Dg+2fOsUhJQ7i4O+Sb/oDyfNFU23YMJ2JHCZ7Jd
+         AIZ+FxfIqSs7GoIRux/4fEGna698XqDY/5+9T9dXypITYokhGSNGzGez5eLc+kweHvcg
+         FrLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717066962; x=1717671762;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=wdJdpjrFVd2jyJBfi7/1Ypm+QKe5VhIURoGePuM+Fi8=;
+        b=JxWCVFr5JgCdmrqzB/L9G5dmsxC1w3VHRCh3sYcCVbp0fWxx+7MUwucLDxHt6EEHXJ
+         vVXoHye+/mE0geasxdszJr2eN8yA4SjPxlofYR1IsUjJVTZJge1hzBwfO9rUXSWyL4b1
+         OO7SiiJP+GwY3xKiZfhjB+cPZU4ct7S1RMMHkBZLmja9pPMNC3B1KUwmHFnx7AGHXdN2
+         umWDXsNzCqhLoqzIdC+b9MDiDNhTneuPWMXudP/NA8JIDRFotnvk/ec9EPBcuEsSbaeI
+         eUYor4thaBN6THT0Cgx95m756Ayh/DP0KPlhX4nz/sEM98LzxlqGgUwetnfYJUCMBGzW
+         xseQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVwwv8b/rQqs0anSjhKv8/7eF3oiH83/K0h8Olm9hO5iVe7yiMKRGG/+/0HhO++qinHbcQRqcGpVYWmlRN6fXZE2BAUPoSi5cpcV6hfWUU=
+X-Gm-Message-State: AOJu0YzFktbTXygTY9hdgeWwyCWGQnPipCYa5zIsL/zhoar0kA45VLq/
+	IaDxXB7+u/OLHSJwTrzrcIcqnn62hEAAXsrJRig+8pxuoPXZZj6oCSNDX2EQ9Vw=
+X-Google-Smtp-Source: AGHT+IFvRk0G/cssi1T5jykWS+sj3N7w+SJtv/NxzFC1qgP86vHMQCqJ5uR4sfMEFkv8MZ00HcJ33w==
+X-Received: by 2002:a2e:9d89:0:b0:2e5:1dae:1789 with SMTP id 38308e7fff4ca-2ea847f5e1dmr9802301fa.22.1717066962166;
+        Thu, 30 May 2024 04:02:42 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:982:cbb0:6c5:6f34:623a:2f88? ([2a01:e0a:982:cbb0:6c5:6f34:623a:2f88])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35579d7d88esm17272899f8f.19.2024.05.30.04.02.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 30 May 2024 04:02:41 -0700 (PDT)
+Message-ID: <177a7a7e-9e99-4e2a-9f85-e2994a049892@linaro.org>
+Date: Thu, 30 May 2024 13:02:39 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: neil.armstrong@linaro.org
+Subject: Re: [PATCH v8 00/17] power: sequencing: implement the subsystem and
+ add first users
+To: Bartosz Golaszewski <brgl@bgdev.pl>, Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Marcel Holtmann <marcel@holtmann.org>,
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
+ Rocky Liao <quic_rjliao@quicinc.com>, Kalle Valo <kvalo@kernel.org>,
+ Jeff Johnson <jjohnson@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>, Bjorn Helgaas
+ <bhelgaas@google.com>, Srini Kandagatla <srinivas.kandagatla@linaro.org>,
+ Elliot Berman <quic_eberman@quicinc.com>,
+ Caleb Connolly <caleb.connolly@linaro.org>,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, Alex Elder <elder@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+ netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+ ath11k@lists.infradead.org, Jeff Johnson <quic_jjohnson@quicinc.com>,
+ ath12k@lists.infradead.org, linux-pm@vger.kernel.org,
+ linux-pci@vger.kernel.org,
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, kernel@quicinc.com,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ Amit Pundir <amit.pundir@linaro.org>
+References: <20240528-pwrseq-v8-0-d354d52b763c@linaro.org>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <20240528-pwrseq-v8-0-d354d52b763c@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Leon Yen <leon.yen@mediatek.com>
+On 28/05/2024 21:03, Bartosz Golaszewski wrote:
+> Note: I am resending this series in its entirety once more for
+> discussions and reviews. If there won't be any major objections, I'll
+> then start sending individual bits and pieces to appropriate trees.
+> 
+> Merging strategy: The DT binding and DTS changes are a no-brainer, they
+> can go through the wireless, regulator and arm-msm trees separately. The
+> bluetooth and PCI changes have a build-time dependency on the power
+> sequencing code. The bluetooth changes also have a run-time dependency on
+> the PCI pwrctl part. In order to get it into next I plan to pick up the
+> power sequencing code into my own tree and maintain it. I can then
+> provide an immutable tag for the BT and PCI trees to pull. I wouldn't
+> stress about the BT runtime dependency as it will be fixed once all
+> changes are in next.
+> 
+> The actual cover letter follows:
+> 
+> --
+> 
+> Problem statement #1: Dynamic bus chicken-and-egg problem.
+> 
+> Certain on-board PCI devices need to be powered up before they are can be
+> detected but their PCI drivers won't get bound until the device is
+> powered-up so enabling the relevant resources in the PCI device driver
+> itself is impossible.
+> 
+> Problem statement #2: Sharing inter-dependent resources between devices.
+> 
+> Certain devices that use separate drivers (often on different busses)
+> share resources (regulators, clocks, etc.). Typically these resources
+> are reference-counted but in some cases there are additional interactions
+> between them to consider, for example specific power-up sequence timings.
+> 
+> ===
+> 
+> The reason for tackling both of these problems in a single series is the
+> fact the the platform I'm working on - Qualcomm RB5 - deals with both and
+> both need to be addressed in order to enable WLAN and Bluetooth support
+> upstream.
+> 
+> The on-board WLAN/BT package - QCA6391 - has a Power Management Unit that
+> takes inputs from the host and exposes LDO outputs consumed by the BT and
+> WLAN modules which can be powered-up and down independently. However
+> a delay of 100ms must be respected between enabling the BT- and
+> WLAN-enable GPIOs.
+> 
+> A similar design with a discreet PMU is also employed in other models of
+> the WCN family of chips although we can often do without the delays. With
+> this series we add support for the WCN7850 as well.
+> 
+> ===
+> 
+> We introduce a new subsystem here - the power sequencing framework. The
+> qcom-wcn driver that we add is its first user. It implements the power-up
+> sequences for QCA6390 and WCN7850 chips. However - we only use it to
+> power-up the bluetooth module in the former. We use it to driver the WLAN
+> modules in both. The reason for this is that for WCN7850 we have
+> comprehensive bindings already upstream together with existing DT users.
+> Porting them to using the pwrseq subsystem can be done separately and in
+> an incremental manner once the subsystem itself is upstream. We will also
+> have to ensure backward DT compatibility. To avoid overcomplicating this
+> series, let's leave it out for now.
+> 
+> ===
+> 
+> This series is logically split into several sections. I'll go
+> patch-by-patch and explain each step.
+> 
+> Patches 1/16-5/16:
+> 
+> These contain all relevant DT bindings changes. We add new documents for
+> the QCA6390 & WCN7850 PMUs and ATH12K devices as well as extend the bindings
+> for the Qualcomm Bluetooth and ATH11K modules with regulators used by them
+> in QCA6390.
+> 
+> Patches 6/16-8/16:
+> 
+> These contain changes to device-tree sources for the three platforms we
+> work with in this series. We model the PMUs of the WLAN/BT chips as
+> top-level platform devices on the device tree. In order to limit the scope
+> of this series and not introduce an excessive amount of confusion with
+> deprecating DT bindings, we leave the Bluetooth nodes on sm8650 and sm8550
+> as is (meaning: they continue to consumer the GPIOs and power inputs from
+> the host). As the WCN7850 module doesn't require any specific timings, we can
+> incrementally change that later.
+> 
+> In both cases we add WLAN nodes that consume the power outputs of the PMU.
+> For QCA6390 we also make the Bluetooth node of the RB5 consume the outputs
+> of the PMU - we can do it as the bindings for this chip did not define any
+> supply handles prior to this series meaning we are able to get this correct
+> right away.
+> 
+> Patches 9/16-12/16:
+> 
+> These contain the bulk of the PCI changes for this series. We introduce
+> a simple framework for powering up PCI devices before detecting them on
+> the bus.
+> 
+> The general approach is as follows: PCI devices that need special
+> treatment before they can be powered up, scanned and bound to their PCI
+> drivers must be described on the device-tree as child nodes of the PCI
+> port node. These devices will be instantiated on the platform bus. They
+> will in fact be generic platform devices with the compatible of the form
+> used for PCI devices already upstream ("pci<vendor ID>,<device ID">). We
+> add a new directory under drivers/pci/pwrctl/ that contains PCI pwrctl
+> drivers. These drivers are platform drivers that will now be matched
+> against the devices instantiated from port children just like any other
+> platform pairs.
+> 
+> Both the power control platform device *AND* the associated PCI device
+> reuse the same OF node and have access to the same properties. The goal
+> of the platform driver is to request and bring up any required resources
+> and let the pwrctl framework know that it's now OK to rescan the bus and
+> detect the devices. When the device is bound, we are notified about it
+> by the PCI bus notifier event and can establish a device link between the
+> power control device and the PCI device so that any future extension for
+> power-management will already be able to work with the correct hierachy.
+> 
+> The reusing of the OF node is the reason for the small changes to the PCI
+> OF core: as the bootloader can possibly leave the relevant regulators on
+> before booting linux, the PCI device can be detected before its platform
+> abstraction is probed. In this case, we find that device first and mark
+> its OF node as reused. The pwrctl framework handles the opposite case
+> (when the PCI device is detected only after the platform driver
+> successfully enabled it).
+> 
+> Patch 13/16 - 14/16:
+> 
+> These add a relatively simple power sequencing subsystem and the first
+> driver using it: the pwrseq module for the PMUs on the WCN family of chips.
+> 
+> I'm proposing to add a subsystem that allows different devices to use a shared
+> power sequence split into consumer-specific as well as common "units".
+> 
+> A power sequence provider driver registers a set of units with pwrseq
+> core. Each unit can be enabled and disabled and contains an optional list
+> of other units which must be enabled before it itself can be. A unit
+> represents a discreet chunk of the power sequence.
+> 
+> It also registers a list of targets: a target is an abstraction wrapping
+> a unit which allows consumers to tell pwrseq which unit they want to
+> reach. Real-life example is the driver we're adding here: there's a set
+> of common regulators, two PCIe-specific ones and two enable GPIOs: one
+> for Bluetooth and one for WLAN.
+> 
+> The Bluetooth driver requests a descriptor to the power sequencer and
+> names the target it wants to reach:
+> 
+>      pwrseq = devm_pwrseq_get(dev, "bluetooth");
+> 
+> The pwrseq core then knows that when the driver calls:
+> 
+>      pwrseq_power_on(pwrseq);
+> 
+> It must enable the "bluetooth-enable" unit but it depends on the
+> "regulators-common" unit so this one is enabled first. The provider
+> driver is also in charge of assuring an appropriate delay between
+> enabling the BT and WLAN enable GPIOs. The WLAN-specific resources are
+> handled by the "wlan-enable" unit and so are not enabled until the WLAN
+> driver requests the "wlan" target to be powered on.
+> 
+> Another thing worth discussing is the way we associate the consumer with
+> the relevant power sequencer. DT maintainers have expressed a discontent
+> with the existing mmc pwrseq bindings and have NAKed an earlier
+> initiative to introduce global pwrseq bindings to the kernel[1].
+> 
+> In this approach, we model the existing regulators and GPIOs in DT but
+> the pwrseq subsystem requires each provider to provide a .match()
+> callback. Whenever a consumer requests a power sequencer handle, we
+> iterate over the list of pwrseq drivers and call .match() for each. It's
+> up to the driver to verify in a platform-specific way whether it deals
+> with its consumer and let the core pwrseq code know.
+> 
+> The advantage of this over reusing the regulator or reset subsystem is
+> that it's more generalized and can handle resources of all kinds as well
+> as deal with any kind of power-on sequences: for instance, Qualcomm has
+> a PCI switch they want a driver for but this switch requires enabling
+> some resources first (PCI pwrctl) and then configuring the device over
+> I2C (which can be handled by the pwrseq provider).
+> 
+> Patch 15:
+> 
+> This patch makes the Qualcomm Bluetooth driver get and use the power
+> sequencer for QCA6390.
+> 
+> Patch 16:
+> 
+> While tiny, this patch is possibly the highlight of the entire series.
+> It uses the two abstraction layers we introduced before to create an
+> elegant power sequencing PCI power control driver and supports the ath11k
+> module on QCA6390 and ath12k on WCN7850.
+> 
+> With this series we can now enable BT and WLAN on several new Qualcomm
+> boards upstream.
+> 
+> Tested on RB5, sm8650-qrd, sm8650-hdk and sm8550-qrd.
+> 
+> Changelog:
+> 
+> Since v7:
+> - added DTS changes for sm8650-hdk
+> - added circular dependency detection for pwrseq units
+> - fixed a KASAN reported use-after-free error in remove path
+> - improve Kconfig descriptions
+> - fix typos in bindings and Kconfig
+> - fixed issues reported by smatch
+> - fix the unbind path in PCI pwrctl
+> - lots of minor improvements to the pwrseq core
+> 
+> Since v6:
+> - kernel doc fixes
+> - drop myself from the DT bindings maintainers list for ath12k
+> - wait until the PCI bridge device is fully added before creating the
+>    PCI pwrctl platform devices for its sub-nodes, otherwise we may see
+>    sysfs and procfs attribute failures (due to duplication, we're
+>    basically trying to probe the same device twice at the same time)
+> - I kept the regulators for QCA6390's ath11k as required as they only
+>    apply to this specific Qualcomm package
+> 
+> Since v5:
+> - unify the approach to modelling the WCN WLAN/BT chips by always exposing
+>    the PMU node on the device tree and making the WLAN and BT nodes become
+>    consumers of its power outputs; this includes a major rework of the DT
+>    sources, bindings and driver code; there's no more a separate PCI
+>    pwrctl driver for WCN7850, instead its power-up sequence was moved
+>    into the pwrseq driver common for all WCN chips
+> - don't set load_uA from new regulator consumers
+> - fix reported kerneldoc issues
+> - drop voltage ranges for PMU outputs from DT
+> - many minor tweaks and reworks
+> 
+> v1: Original RFC:
+> 
+> https://lore.kernel.org/lkml/20240104130123.37115-1-brgl@bgdev.pl/T/
+> 
+> v2: First real patch series (should have been PATCH v2) adding what I
+>      referred to back then as PCI power sequencing:
+> 
+> https://lore.kernel.org/linux-arm-kernel/2024021413-grumbling-unlivable-c145@gregkh/T/
+> 
+> v3: RFC for the DT representation of the PMU supplying the WLAN and BT
+>      modules inside the QCA6391 package (was largely separate from the
+>      series but probably should have been called PATCH or RFC v3):
+> 
+> https://lore.kernel.org/all/CAMRc=Mc+GNoi57eTQg71DXkQKjdaoAmCpB=h2ndEpGnmdhVV-Q@mail.gmail.com/T/
+> 
+> v4: Second attempt at the full series with changed scope (introduction of
+>      the pwrseq subsystem, should have been RFC v4)
+> 
+> https://lore.kernel.org/lkml/20240201155532.49707-1-brgl@bgdev.pl/T/
+> 
+> v5: Two different ways of handling QCA6390 and WCN7850:
+> 
+> https://lore.kernel.org/lkml/20240216203215.40870-1-brgl@bgdev.pl/
+> 
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> ---
+> Bartosz Golaszewski (16):
+>        regulator: dt-bindings: describe the PMU module of the QCA6390 package
+>        regulator: dt-bindings: describe the PMU module of the WCN7850 package
+>        dt-bindings: net: bluetooth: qualcomm: describe regulators for QCA6390
+>        dt-bindings: net: wireless: qcom,ath11k: describe the ath11k on QCA6390
+>        dt-bindings: net: wireless: describe the ath12k PCI module
+>        arm64: dts: qcom: sm8550-qrd: add the Wifi node
+>        arm64: dts: qcom: sm8650-qrd: add the Wifi node
+>        arm64: dts: qcom: qrb5165-rb5: add the Wifi node
+>        power: sequencing: implement the pwrseq core
+>        power: pwrseq: add a driver for the PMU module on the QCom WCN chipsets
+>        PCI: hold the rescan mutex when scanning for the first time
+>        PCI/pwrctl: reuse the OF node for power controlled devices
+>        PCI/pwrctl: create platform devices for child OF nodes of the port node
+>        PCI/pwrctl: add PCI power control core code
+>        PCI/pwrctl: add a PCI power control driver for power sequenced devices
+>        Bluetooth: qca: use the power sequencer for QCA6390
+> 
+> Neil Armstrong (1):
+>        arm64: dts: qcom: sm8650-hdk: add the Wifi node
+> 
+>   .../bindings/net/bluetooth/qualcomm-bluetooth.yaml |   17 +
+>   .../bindings/net/wireless/qcom,ath11k-pci.yaml     |   46 +
+>   .../bindings/net/wireless/qcom,ath12k.yaml         |   99 ++
+>   .../bindings/regulator/qcom,qca6390-pmu.yaml       |  185 ++++
+>   MAINTAINERS                                        |    8 +
+>   arch/arm64/boot/dts/qcom/qrb5165-rb5.dts           |  103 +-
+>   arch/arm64/boot/dts/qcom/sm8250.dtsi               |    2 +-
+>   arch/arm64/boot/dts/qcom/sm8550-qrd.dts            |   97 ++
+>   arch/arm64/boot/dts/qcom/sm8550.dtsi               |    2 +-
+>   arch/arm64/boot/dts/qcom/sm8650-hdk.dts            |   89 ++
+>   arch/arm64/boot/dts/qcom/sm8650-qrd.dts            |   89 ++
+>   arch/arm64/boot/dts/qcom/sm8650.dtsi               |    2 +-
+>   drivers/bluetooth/hci_qca.c                        |   74 +-
+>   drivers/pci/Kconfig                                |    1 +
+>   drivers/pci/Makefile                               |    1 +
+>   drivers/pci/bus.c                                  |    9 +
+>   drivers/pci/of.c                                   |   14 +-
+>   drivers/pci/probe.c                                |    2 +
+>   drivers/pci/pwrctl/Kconfig                         |   17 +
+>   drivers/pci/pwrctl/Makefile                        |    6 +
+>   drivers/pci/pwrctl/core.c                          |  137 +++
+>   drivers/pci/pwrctl/pci-pwrctl-pwrseq.c             |   89 ++
+>   drivers/pci/remove.c                               |    3 +-
+>   drivers/power/Kconfig                              |    1 +
+>   drivers/power/Makefile                             |    1 +
+>   drivers/power/sequencing/Kconfig                   |   28 +
+>   drivers/power/sequencing/Makefile                  |    6 +
+>   drivers/power/sequencing/core.c                    | 1105 ++++++++++++++++++++
+>   drivers/power/sequencing/pwrseq-qcom-wcn.c         |  336 ++++++
+>   include/linux/pci-pwrctl.h                         |   51 +
+>   include/linux/pwrseq/consumer.h                    |   56 +
+>   include/linux/pwrseq/provider.h                    |   75 ++
+>   32 files changed, 2717 insertions(+), 34 deletions(-)
+> ---
+> base-commit: 6dc544b66971c7f9909ff038b62149105272d26a
+> change-id: 20240527-pwrseq-76fc025248a2
+> 
+> Best regards,
 
-Add CSA (Channel Switch Announcement) related implementation
-in collaboration with mac80211 to deal with dynamic channel
-switching.
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
 
-Signed-off-by: Leon Yen <leon.yen@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
----
-v2: update subject format
----
- .../net/wireless/mediatek/mt76/mt7921/main.c  | 98 +++++++++++++++++++
- .../wireless/mediatek/mt76/mt7921/mt7921.h    |  1 +
- drivers/net/wireless/mediatek/mt76/mt792x.h   |  6 ++
- .../net/wireless/mediatek/mt76/mt792x_core.c  | 14 +++
- 4 files changed, 119 insertions(+)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 3e3ad3518d85..22689bae9a3c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -337,6 +337,9 @@ mt7921_add_interface(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
- 	vif->driver_flags |= IEEE80211_VIF_BEACON_FILTER;
- 	if (phy->chip_cap & MT792x_CHIP_CAP_RSSI_NOTIFY_EVT_EN)
- 		vif->driver_flags |= IEEE80211_VIF_SUPPORTS_CQM_RSSI;
-+
-+	INIT_WORK(&mvif->csa_work, mt7921_csa_work);
-+	timer_setup(&mvif->csa_timer, mt792x_csa_timer, 0);
- out:
- 	mt792x_mutex_release(dev);
- 
-@@ -1337,6 +1340,9 @@ static int
- mt7921_add_chanctx(struct ieee80211_hw *hw,
- 		   struct ieee80211_chanctx_conf *ctx)
- {
-+	struct mt792x_dev *dev = mt792x_hw_dev(hw);
-+
-+	dev->new_ctx = ctx;
- 	return 0;
- }
- 
-@@ -1344,6 +1350,10 @@ static void
- mt7921_remove_chanctx(struct ieee80211_hw *hw,
- 		      struct ieee80211_chanctx_conf *ctx)
- {
-+	struct mt792x_dev *dev = mt792x_hw_dev(hw);
-+
-+	if (dev->new_ctx == ctx)
-+		dev->new_ctx = NULL;
- }
- 
- static void mt7921_ctx_iter(void *priv, u8 *mac,
-@@ -1399,6 +1409,89 @@ static void mt7921_mgd_complete_tx(struct ieee80211_hw *hw,
- 	mt7921_abort_roc(mvif->phy, mvif);
- }
- 
-+static int mt7921_switch_vif_chanctx(struct ieee80211_hw *hw,
-+				     struct ieee80211_vif_chanctx_switch *vifs,
-+				     int n_vifs,
-+				     enum ieee80211_chanctx_switch_mode mode)
-+{
-+	return mt792x_assign_vif_chanctx(hw, vifs->vif, vifs->link_conf,
-+					 vifs->new_ctx);
-+}
-+
-+void mt7921_csa_work(struct work_struct *work)
-+{
-+	struct mt792x_vif *mvif;
-+	struct mt792x_dev *dev;
-+	struct ieee80211_vif *vif;
-+	int ret;
-+
-+	mvif = (struct mt792x_vif *)container_of(work, struct mt792x_vif,
-+						csa_work);
-+	dev = mvif->phy->dev;
-+	vif = container_of((void *)mvif, struct ieee80211_vif, drv_priv);
-+
-+	mt792x_mutex_acquire(dev);
-+	ret = mt76_connac_mcu_uni_set_chctx(mvif->phy->mt76, &mvif->mt76,
-+					    dev->new_ctx);
-+	mt792x_mutex_release(dev);
-+
-+	ieee80211_chswitch_done(vif, !ret, 0);
-+}
-+
-+static int mt7921_pre_channel_switch(struct ieee80211_hw *hw,
-+				     struct ieee80211_vif *vif,
-+				     struct ieee80211_channel_switch *chsw)
-+{
-+	if (vif->type != NL80211_IFTYPE_STATION || !vif->cfg.assoc)
-+		return -EOPNOTSUPP;
-+
-+	/* Avoid beacon loss due to the CAC(Channel Availability Check) time
-+	 * of the AP.
-+	 */
-+	if (!cfg80211_chandef_usable(hw->wiphy, &chsw->chandef,
-+				     IEEE80211_CHAN_RADAR))
-+		return -EOPNOTSUPP;
-+
-+	return 0;
-+}
-+
-+static void mt7921_channel_switch(struct ieee80211_hw *hw,
-+				  struct ieee80211_vif *vif,
-+				  struct ieee80211_channel_switch *chsw)
-+{
-+	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
-+	u16 beacon_interval = vif->bss_conf.beacon_int;
-+
-+	mvif->csa_timer.expires = TU_TO_EXP_TIME(beacon_interval * chsw->count);
-+	add_timer(&mvif->csa_timer);
-+}
-+
-+static void mt7921_abort_channel_switch(struct ieee80211_hw *hw,
-+					struct ieee80211_vif *vif,
-+					struct ieee80211_bss_conf *link_conf)
-+{
-+	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
-+
-+	del_timer_sync(&mvif->csa_timer);
-+	cancel_work_sync(&mvif->csa_work);
-+}
-+
-+static void mt7921_channel_switch_rx_beacon(struct ieee80211_hw *hw,
-+					    struct ieee80211_vif *vif,
-+					    struct ieee80211_channel_switch *chsw)
-+{
-+	struct mt792x_dev *dev = mt792x_hw_dev(hw);
-+	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
-+	u16 beacon_interval = vif->bss_conf.beacon_int;
-+
-+	if (cfg80211_chandef_identical(&chsw->chandef,
-+				       &dev->new_ctx->def) &&
-+				       chsw->count) {
-+		mod_timer(&mvif->csa_timer,
-+			  TU_TO_EXP_TIME(beacon_interval * chsw->count));
-+	}
-+}
-+
- const struct ieee80211_ops mt7921_ops = {
- 	.tx = mt792x_tx,
- 	.start = mt7921_start,
-@@ -1458,6 +1551,11 @@ const struct ieee80211_ops mt7921_ops = {
- 	.unassign_vif_chanctx = mt792x_unassign_vif_chanctx,
- 	.mgd_prepare_tx = mt7921_mgd_prepare_tx,
- 	.mgd_complete_tx = mt7921_mgd_complete_tx,
-+	.switch_vif_chanctx = mt7921_switch_vif_chanctx,
-+	.pre_channel_switch = mt7921_pre_channel_switch,
-+	.channel_switch = mt7921_channel_switch,
-+	.abort_channel_switch = mt7921_abort_channel_switch,
-+	.channel_switch_rx_beacon = mt7921_channel_switch_rx_beacon,
- };
- EXPORT_SYMBOL_GPL(mt7921_ops);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-index 6c5392c5d207..b85e76e50657 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h
-@@ -272,6 +272,7 @@ int mt7921_mcu_uni_rx_ba(struct mt792x_dev *dev,
- 			 bool enable);
- void mt7921_scan_work(struct work_struct *work);
- void mt7921_roc_work(struct work_struct *work);
-+void mt7921_csa_work(struct work_struct *work);
- int mt7921_mcu_uni_bss_ps(struct mt792x_dev *dev, struct ieee80211_vif *vif);
- void mt7921_coredump_work(struct work_struct *work);
- int mt7921_get_txpwr_info(struct mt792x_dev *dev, struct mt7921_txpwr *txpwr);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wireless/mediatek/mt76/mt792x.h
-index 20578497a405..d4b84c7eca59 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
-@@ -109,6 +109,9 @@ struct mt792x_vif {
- 	struct ewma_rssi rssi;
- 
- 	struct ieee80211_tx_queue_params queue_params[IEEE80211_NUM_ACS];
-+
-+	struct work_struct csa_work;
-+	struct timer_list csa_timer;
- };
- 
- struct mt792x_phy {
-@@ -209,6 +212,8 @@ struct mt792x_dev {
- 	enum environment_cap country_ie_env;
- 	u32 backup_l1;
- 	u32 backup_l2;
-+
-+	struct ieee80211_chanctx_conf *new_ctx;
- };
- 
- static inline struct mt792x_dev *
-@@ -278,6 +283,7 @@ void mt792x_set_tsf(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		    u64 timestamp);
- void mt792x_tx_worker(struct mt76_worker *w);
- void mt792x_roc_timer(struct timer_list *timer);
-+void mt792x_csa_timer(struct timer_list *timer);
- void mt792x_flush(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		  u32 queues, bool drop);
- int mt792x_assign_vif_chanctx(struct ieee80211_hw *hw,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-index a405af8d9052..2c95bc2aac0a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-@@ -246,6 +246,14 @@ void mt792x_roc_timer(struct timer_list *timer)
- }
- EXPORT_SYMBOL_GPL(mt792x_roc_timer);
- 
-+void mt792x_csa_timer(struct timer_list *timer)
-+{
-+	struct mt792x_vif *mvif = from_timer(mvif, timer, csa_timer);
-+
-+	ieee80211_queue_work(mvif->phy->mt76->hw, &mvif->csa_work);
-+}
-+EXPORT_SYMBOL_GPL(mt792x_csa_timer);
-+
- void mt792x_flush(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		  u32 queues, bool drop)
- {
-@@ -283,6 +291,11 @@ void mt792x_unassign_vif_chanctx(struct ieee80211_hw *hw,
- 	mutex_lock(&dev->mt76.mutex);
- 	mvif->mt76.ctx = NULL;
- 	mutex_unlock(&dev->mt76.mutex);
-+
-+	if (vif->bss_conf.csa_active) {
-+		del_timer_sync(&mvif->csa_timer);
-+		cancel_work_sync(&mvif->csa_work);
-+	}
- }
- EXPORT_SYMBOL_GPL(mt792x_unassign_vif_chanctx);
- 
-@@ -603,6 +616,7 @@ int mt792x_init_wiphy(struct ieee80211_hw *hw)
- 	ieee80211_hw_set(hw, SUPPORTS_DYNAMIC_PS);
- 	ieee80211_hw_set(hw, SUPPORTS_VHT_EXT_NSS_BW);
- 	ieee80211_hw_set(hw, CONNECTION_MONITOR);
-+	ieee80211_hw_set(hw, CHANCTX_STA_CSA);
- 
- 	if (dev->pm.enable)
- 		ieee80211_hw_set(hw, CONNECTION_MONITOR);
--- 
-2.18.0
-
+Thanks,
+Neil
 
