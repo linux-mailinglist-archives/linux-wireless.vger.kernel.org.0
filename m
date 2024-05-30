@@ -1,253 +1,153 @@
-Return-Path: <linux-wireless+bounces-8322-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8323-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE5B98D4FB4
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 18:17:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C63328D5173
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 19:46:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AD501F22E03
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 16:17:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 116DF2894C5
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 17:46:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D3EC187577;
-	Thu, 30 May 2024 16:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 726AC225D7;
+	Thu, 30 May 2024 17:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MESgrYNe"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="VWQHWtHl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4163B18755C
-	for <linux-wireless@vger.kernel.org>; Thu, 30 May 2024 16:17:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9547246B91
+	for <linux-wireless@vger.kernel.org>; Thu, 30 May 2024 17:45:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717085850; cv=none; b=lOwwsRSARKRJdKS4Ae8EkyBb8ywSfUAHSa8pPJ39eOMJie7jL28pUMz+GClQIcqQ3F5wLT76dQuWIJ4Ai8fRcJK3N1ReeWR1aDjqIdhpKQMS+FcrStIWZ+HPx/J4PJriZf/Zq3pJXh6svIur7R0ZqSqd/ZKk0aKRnm3Zd6iocus=
+	t=1717091151; cv=none; b=Y/fiAO8mr6CWnKsVBYTK2tZIul82m/X2EwP+FbBZEch1bpaXkUWD1DjeUq7ELNWUP9l+rEXwzaXC8cijw1eWzA7WGB7AfVIh7VqYD+JDhhHlUKA4r+68OlB42h0iveFKViCPFzBE1xd10hvwl0U4LgXWEpEBjzWRPZtgdTOAICE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717085850; c=relaxed/simple;
-	bh=7oTxNCVf8BgWgRJ9PA48zQ+bewmKW6w/6aodFwwmi4Q=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=NVRT0a1aqddzvTG1dg6b3aZ+Qm6Ko/CcW5zwQXBHrJmFIJuNzLG2Dj04fOMzJkcTf46dFkuJkZY8zek3n3uF35D4qwKl/EtGG1Kumw9tBhnydLMSSJGwn0qTpYuX9BYoJOcBuhpW6RfqZPRyxUC8SP/ndkJIMuLP8HmaTK4O1dE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MESgrYNe; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717085849; x=1748621849;
-  h=date:from:to:cc:subject:message-id;
-  bh=7oTxNCVf8BgWgRJ9PA48zQ+bewmKW6w/6aodFwwmi4Q=;
-  b=MESgrYNes2r2W0703QN+FDcMPmHn/Q/ixTHc8QYZhloNKnZA9UeT3bqP
-   Qa+Bo32CnIXHz9pAbFE+b4F8SgwUbLQ6TmH/eWzIZPU1xoXpOFB7+PUgi
-   aS2E6dvX1sOCr0/d7aO192tl4Rr6pPe+0aPHAmqyxSM3GJLSMLVjre5Xw
-   ervBBbhTz5h+KTvoy9WLgwJthGWXn8UVP924WoRLYZyhiM0GKkrEGJguE
-   kLUF6jnlyjD/YfkV75X2RowVTpTihs97OZ0f0Pij8hwLUBJqoNCasHWvD
-   Q5H/4PqUMOdxmnb5a0FDxVRD5yMFHySy4maI26qU7PlefwnDUjRhYBUDo
-   Q==;
-X-CSE-ConnectionGUID: mo21MSxtQIyhTTW89yGokQ==
-X-CSE-MsgGUID: PQFHwAAvTW6wDsDOXBdbLA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="24203669"
-X-IronPort-AV: E=Sophos;i="6.08,201,1712646000"; 
-   d="scan'208";a="24203669"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2024 09:17:28 -0700
-X-CSE-ConnectionGUID: itZNUr6PSYOlzsOOp53Gpg==
-X-CSE-MsgGUID: lp/8ocz2T4O/3QX9STmB9A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,201,1712646000"; 
-   d="scan'208";a="73341402"
-Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
-  by orviesa001.jf.intel.com with ESMTP; 30 May 2024 09:17:26 -0700
-Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sCiSS-000FgO-0o;
-	Thu, 30 May 2024 16:17:01 +0000
-Date: Fri, 31 May 2024 00:11:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: Johannes Berg <johannes.berg@intel.com>
-Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [wireless:for-next] BUILD SUCCESS
- 92ecbb3ac6f3fe8ae9edf3226c76aa17b6800699
-Message-ID: <202405310001.r7J2i8PO-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1717091151; c=relaxed/simple;
+	bh=LYWB7Ixo/Wr8/GCNmUE5ue0+R2uIASOvu8V/y7Sk+sM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=OQxBbjxhr6HTjOA3sOA9+1ZNOKfSulBbc9TeOYQTlA2WGeSMpklj9PcOgg9d0dDKlwrKMaNaCc8BRJNDJMy8HdGn2fkfUII1jj1JjobEOWd/EA1fnHO15s4q7pzvjSWp6V8eEwSXjUPRA7xE4qVrUkoULpHk9mgi9XagI73G3bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=VWQHWtHl; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44UGs35V016256;
+	Thu, 30 May 2024 17:45:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	hqp7b5gbPUCb7BDBFGZkeznY8F+QiHQQD47HaDihL2U=; b=VWQHWtHlUg17SFV8
+	tpbqA4MpggsKVsby/EUOk5W6VDdsKCkntuiTmLI1/gS5OE6kf9ECnwXC6W/pTNus
+	D21yJKKjsY2xcnOlRRgYEoG9mEm981zP6uVxQ2XGSojBjBE/ItqW1jfb3wdqfA15
+	zHt4X/6Gdw1U6O8T8ICDg4BKKHBHQNZZ3JzQlkfyK5Ra5+edX9a9zrz3nGrC9Iz2
+	HWNpdVfuYNMcPE4c0ss6lQ4EMVul2iouPd463ppQqvEGcgLjBg9ts5He/V3JLLvR
+	5JyxCs9jaYz/ScBM7w4BgmiYePzYGOUOCShlW0rdhz7jZXHaVqfUmab+CZyj/yXC
+	AO4ijA==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yba2nmt6m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 May 2024 17:45:44 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44UHjhN4008552
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 May 2024 17:45:43 GMT
+Received: from [10.227.110.203] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 30 May
+ 2024 10:45:42 -0700
+Message-ID: <cb66c4b2-eb8b-4698-bc31-1c0410c81588@quicinc.com>
+Date: Thu, 30 May 2024 10:45:42 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/8] wifi: ath12k: add support for WoW
+Content-Language: en-US
+To: Baochen Qiang <quic_bqiang@quicinc.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240530072714.25671-1-quic_bqiang@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240530072714.25671-1-quic_bqiang@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 1rjXjWoqT08SEwotlQCJ_vSf5Bdg41LR
+X-Proofpoint-GUID: 1rjXjWoqT08SEwotlQCJ_vSf5Bdg41LR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-05-30_13,2024-05-30_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 spamscore=0
+ phishscore=0 suspectscore=0 mlxlogscore=892 malwarescore=0 impostorscore=0
+ lowpriorityscore=0 adultscore=0 priorityscore=1501 mlxscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405170001
+ definitions=main-2405300132
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
-branch HEAD: 92ecbb3ac6f3fe8ae9edf3226c76aa17b6800699  wifi: mac80211: fix UBSAN noise in ieee80211_prep_hw_scan()
+On 5/30/2024 12:27 AM, Baochen Qiang wrote:
+> Add support for WoW (Wakeup on Wireless) funtionalities, this including
+> magic-pattern, net-detect, disconnect and patterns, HW data filter, ARP
+> and NS offload, GTK rekey offload.
+> 
+> Also enable keepalive before suspend to avoid unexpected kick out by AP.
+> 
+> v3:
+>  - wifi: ath12k: add ATH12K_DBG_WOW log level
+> 	1. new addition.
+>  - wifi: ath12k: support ARP and NS offload
+> 	1. move ipv6 infomation parse to ath12k_wow_arp_ns_offload() to
+> 	   avoid memory leak issue.
+> 	2. move ARP/NS related definition from core.h to wmi.h
+> 	3. rename ath12k_arp_ns_offlaod to wmi_arp_ns_offload_arg
+> 	4. rename some macros
+>  - wifi: ath12k: support GTK rekey offload
+> 	1. add rcu_read_lock/unlock in ath12k_wmi_gtk_offload_status_event()
+> 
+> 
+> v2:
+>  - [2/7] wifi: ath12k: add basic WoW functionalities
+>         1. In ath12k_wow_convert_8023_to_80211(), change to use 'size_t'
+>            instead of 'int' to make GCC happy
+>  - [5/7] wifi: ath12k: support ARP and NS offload
+>         1. In ath12k_mac_arvif_get_arp_ns_offload(), change to use
+>            GFP_ATOMIC to fix kernel crash due to sleep in invalid context
+>  - rebased on ToT
+> 
+> Baochen Qiang (8):
+>   wifi: ath12k: add ATH12K_DBG_WOW log level
+>   wifi: ath12k: implement WoW enable and wakeup commands
+>   wifi: ath12k: add basic WoW functionalities
+>   wifi: ath12k: add WoW net-detect functionality
+>   wifi: ath12k: implement hardware data filter
+>   wifi: ath12k: support ARP and NS offload
+>   wifi: ath12k: support GTK rekey offload
+>   wifi: ath12k: handle keepalive during WoWLAN suspend and resume
+> 
+>  drivers/net/wireless/ath/ath12k/Makefile |    1 +
+>  drivers/net/wireless/ath/ath12k/core.c   |   48 +-
+>  drivers/net/wireless/ath/ath12k/core.h   |   20 +
+>  drivers/net/wireless/ath/ath12k/debug.h  |    1 +
 
-elapsed time: 1456m
+My Qualcomm Innovation Center copyright checker reports:
+drivers/net/wireless/ath/ath12k/debug.h copyright missing 2024
 
-configs tested: 160
-configs skipped: 3
+>  drivers/net/wireless/ath/ath12k/htc.c    |    6 +
+>  drivers/net/wireless/ath/ath12k/mac.c    |  110 +++
+>  drivers/net/wireless/ath/ath12k/mac.h    |    4 +
+>  drivers/net/wireless/ath/ath12k/wmi.c    |  720 +++++++++++++++
+>  drivers/net/wireless/ath/ath12k/wmi.h    |  578 ++++++++++++
+>  drivers/net/wireless/ath/ath12k/wow.c    | 1012 ++++++++++++++++++++++
+>  drivers/net/wireless/ath/ath12k/wow.h    |   62 ++
+>  11 files changed, 2554 insertions(+), 8 deletions(-)
+>  create mode 100644 drivers/net/wireless/ath/ath12k/wow.c
+>  create mode 100644 drivers/net/wireless/ath/ath12k/wow.h
+> 
+> 
+> base-commit: 2580be9ee6f5d97d6763b5d4ae4f9c0383fdf130
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                          axs101_defconfig   gcc  
-arc                                 defconfig   gcc  
-arc                         haps_hs_defconfig   gcc  
-arc                   randconfig-001-20240530   gcc  
-arc                   randconfig-002-20240530   gcc  
-arm                              allmodconfig   gcc  
-arm                               allnoconfig   clang
-arm                              allyesconfig   gcc  
-arm                                 defconfig   clang
-arm                          ep93xx_defconfig   clang
-arm                       imx_v4_v5_defconfig   clang
-arm                   randconfig-002-20240530   gcc  
-arm                   randconfig-004-20240530   gcc  
-arm                         s5pv210_defconfig   gcc  
-arm                          sp7021_defconfig   gcc  
-arm64                            allmodconfig   clang
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                 randconfig-002-20240530   gcc  
-arm64                 randconfig-003-20240530   gcc  
-csky                             allmodconfig   gcc  
-csky                              allnoconfig   gcc  
-csky                             allyesconfig   gcc  
-csky                                defconfig   gcc  
-csky                  randconfig-001-20240530   gcc  
-csky                  randconfig-002-20240530   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-003-20240530   clang
-i386         buildonly-randconfig-004-20240530   clang
-i386         buildonly-randconfig-005-20240530   clang
-i386         buildonly-randconfig-006-20240530   clang
-i386                                defconfig   clang
-i386                  randconfig-002-20240530   clang
-i386                  randconfig-004-20240530   clang
-i386                  randconfig-011-20240530   clang
-i386                  randconfig-013-20240530   clang
-i386                  randconfig-014-20240530   clang
-i386                  randconfig-016-20240530   clang
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-loongarch             randconfig-001-20240530   gcc  
-loongarch             randconfig-002-20240530   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-m68k                        mvme16x_defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-microblaze                      mmu_defconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-mips                      loongson3_defconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-nios2                 randconfig-001-20240530   gcc  
-nios2                 randconfig-002-20240530   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                         allyesconfig   gcc  
-openrisc                            defconfig   gcc  
-openrisc                       virt_defconfig   gcc  
-parisc                           allmodconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                           allyesconfig   gcc  
-parisc                              defconfig   gcc  
-parisc                randconfig-001-20240530   gcc  
-parisc                randconfig-002-20240530   gcc  
-parisc64                            defconfig   gcc  
-powerpc                          allmodconfig   gcc  
-powerpc                           allnoconfig   gcc  
-powerpc                          allyesconfig   clang
-powerpc                      arches_defconfig   gcc  
-powerpc               randconfig-001-20240530   gcc  
-powerpc               randconfig-003-20240530   gcc  
-powerpc                     taishan_defconfig   clang
-powerpc64             randconfig-001-20240530   gcc  
-riscv                            alldefconfig   gcc  
-riscv                            allmodconfig   clang
-riscv                             allnoconfig   gcc  
-riscv                            allyesconfig   clang
-riscv                               defconfig   clang
-riscv                 randconfig-002-20240530   gcc  
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                        apsh4ad0a_defconfig   gcc  
-sh                                  defconfig   gcc  
-sh                    randconfig-001-20240530   gcc  
-sh                    randconfig-002-20240530   gcc  
-sh                          rsk7201_defconfig   gcc  
-sh                           se7712_defconfig   gcc  
-sh                           se7724_defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-sparc64               randconfig-001-20240530   gcc  
-sparc64               randconfig-002-20240530   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                    randconfig-001-20240530   gcc  
-um                    randconfig-002-20240530   gcc  
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64       buildonly-randconfig-001-20240530   clang
-x86_64       buildonly-randconfig-002-20240530   clang
-x86_64       buildonly-randconfig-003-20240530   gcc  
-x86_64       buildonly-randconfig-004-20240530   gcc  
-x86_64       buildonly-randconfig-005-20240530   clang
-x86_64       buildonly-randconfig-006-20240530   gcc  
-x86_64                              defconfig   gcc  
-x86_64                randconfig-001-20240530   clang
-x86_64                randconfig-002-20240530   clang
-x86_64                randconfig-003-20240530   clang
-x86_64                randconfig-004-20240530   clang
-x86_64                randconfig-005-20240530   clang
-x86_64                randconfig-006-20240530   clang
-x86_64                randconfig-011-20240530   clang
-x86_64                randconfig-012-20240530   gcc  
-x86_64                randconfig-013-20240530   gcc  
-x86_64                randconfig-014-20240530   gcc  
-x86_64                randconfig-015-20240530   clang
-x86_64                randconfig-016-20240530   gcc  
-x86_64                randconfig-071-20240530   clang
-x86_64                randconfig-072-20240530   clang
-x86_64                randconfig-073-20240530   clang
-x86_64                randconfig-074-20240530   clang
-x86_64                randconfig-075-20240530   gcc  
-x86_64                randconfig-076-20240530   gcc  
-x86_64                          rhel-8.3-rust   clang
-xtensa                            allnoconfig   gcc  
-xtensa                randconfig-001-20240530   gcc  
-xtensa                randconfig-002-20240530   gcc  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
