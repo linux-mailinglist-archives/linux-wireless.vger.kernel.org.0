@@ -1,96 +1,97 @@
-Return-Path: <linux-wireless+bounces-8315-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8316-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17ADA8D4D2E
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 15:51:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 928118D4E0A
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 16:34:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAFB71F234AD
-	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 13:51:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28407281A8C
+	for <lists+linux-wireless@lfdr.de>; Thu, 30 May 2024 14:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3013D183A61;
-	Thu, 30 May 2024 13:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8B01E4AD;
+	Thu, 30 May 2024 14:34:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LLae4bLS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCAB53D68
-	for <linux-wireless@vger.kernel.org>; Thu, 30 May 2024 13:49:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324B317C202;
+	Thu, 30 May 2024 14:34:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717076994; cv=none; b=jd6z4yNX8qVmUb4D2TCAwSLjbHGULPbGeBT/6VfXqgmr3km98l75/fSunDh7gmXbszvA9Thw7ktft94WTLqRKB6hMx31n9u2khERdT8OLCJvdvMUtcag4he5ThQaT/9VjYWBc/n5m0clU/UVV/S5A1pvZj2/BBPChoYTvfFv0BE=
+	t=1717079645; cv=none; b=SQlzvFUchoAMxHmMRXrSR/tBOLKhnCXDjMod+wIgmlJbcmUTFiuHosu0f/A2QdT4igj4UiLhdIWL3vIhJS0qb2P6RMzh+aayefKH1e45ZPbeZsk4cgsOtSLehvIQ993vGqnn3d5M/f0UN0BVe44LSONbUj9dIaV6e5+2NOyqfpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717076994; c=relaxed/simple;
-	bh=36qMTbEx4tuAY0Qj8HXlamEQAZ7jJlEQb/qwUlGcXaI=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Mo5qf6SGXwED/JCa5Nvyx+cCJ4wZoiXL5sUxQ+eg+YqJTCB66LVBhvp8ZXfoaHHdCSQDJmObdqPZg4yih7Ov7wCucbYlfITjHQMmKo5Zcl4kj7frwVMtCY7AZ16j1j2+Kdv1sHG1rNa+AvFGhcMlfOnDGIvxLqLh9F5/7QFNLvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 44UDnWpsD777760, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 44UDnWpsD777760
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 30 May 2024 21:49:32 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 30 May 2024 21:49:32 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 30 May 2024 21:49:32 +0800
-Received: from RTEXMBS03.realtek.com.tw ([fe80::b9ff:7c04:a2d:c266]) by
- RTEXMBS03.realtek.com.tw ([fe80::b9ff:7c04:a2d:c266%2]) with mapi id
- 15.01.2507.035; Thu, 30 May 2024 21:49:32 +0800
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
-To: Johannes Berg <johannes@sipsolutions.net>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH] wifi: mac80211: fix NULL dereference at band check in starting tx ba session
-Thread-Topic: [PATCH] wifi: mac80211: fix NULL dereference at band check in
- starting tx ba session
-Thread-Index: AQHarOpgkYVLW/TkN0STRQVqWrvRWLGttqwAgAIG0bA=
-Date: Thu, 30 May 2024 13:49:31 +0000
-Message-ID: <639f8c2b59eb42beb56b28e53307886a@realtek.com>
-References: <20240523082200.15544-1-kevin_yang@realtek.com>
- <173a8af7e9b544c496f2aee2bb47fca99279873c.camel@sipsolutions.net>
-In-Reply-To: <173a8af7e9b544c496f2aee2bb47fca99279873c.camel@sipsolutions.net>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1717079645; c=relaxed/simple;
+	bh=s8mucTal+7mxWZj/2n+kTWV7jjqo0lfn15CSNyIWMQU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=e/2PwhxmY9sUp7ppQl+5Aua4JyDqopeOhjMYsUeaAPIv2PrkXpKVvIGc9qHlOr7vXL8dD3TveN3JlMbZKzfUO9VWuQOeChjQMBai79thCuHlhKMi44CxL66CAw+8mHBKm/USf5+bHa8RXBxYv1ZlugzV22ZapPaO5/R63+Na3b4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LLae4bLS; arc=none smtp.client-ip=209.85.219.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-dfa4ad7f6dfso868795276.1;
+        Thu, 30 May 2024 07:34:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1717079643; x=1717684443; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=s8mucTal+7mxWZj/2n+kTWV7jjqo0lfn15CSNyIWMQU=;
+        b=LLae4bLSZrQKD2iKl2BiZPQN1aZPJqhDEIxWxu70ACwVIqIWKq6ujn5qmHQfpEUnKX
+         sGDAlC60tcgHurV2cpEe4jDeVv7n6eBJm6AG1v6oPZleI4d1WeMcfDy6hQXqUYNOVSsK
+         cfD6Q73gb9STiyuycC5jfbw8Sml0fmdkshrJ57qw73SNtW8NEd7eE13jUt9DeMjsobqJ
+         W1UlVYH+ldiD4z/bTvQoEqALVl5yx4xkYD+jfI4qxW32ff7v/IDLV4TGyczvwRrFwUML
+         XtD8Cfr6Fi5hJZNTUWD9c1slBrj5Qgg2pLXJQqsorUi7Mf8P/132Aj4msuAyzZ6FjWvl
+         5Dqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717079643; x=1717684443;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=s8mucTal+7mxWZj/2n+kTWV7jjqo0lfn15CSNyIWMQU=;
+        b=iCvTjIuX40bWXeGT13vEkkRdMf5j9moKJnTUmcOxB/MjLAs62p7GiW2wNCu/Gb+d6p
+         kJmNLJqFI8dZX87vY1wSrupRyPoTZ1gAjVtf2RJtwNy/T4+e2TcrIaMmCUiluQnX72aX
+         mEf5vM6NOF72Tez21ifsPSxpymOlah4YnR5mfb8DEdjXITkzg7iWJSbCaW5EawlZr4Ps
+         SRptzkNAavhUZHpccsKptBwPLjgBGeJVKv2fnxE6xK0K2KUsuZ1NhnfuKP6HTgW9hs1Q
+         Hp3nMuyjSKirrUMoL4xJbiZucKW84/ZsdOy6eXBBZOy/eGhTQPmTuV6ba/zGPiQayD9h
+         fxjg==
+X-Forwarded-Encrypted: i=1; AJvYcCWAs9vJYzDzvJAY9b/qbaqP40l7AqhDGao9eKKyDWlxrTbrCP9F0UdRZZF753AY0rqC9BpYfuOeN+xrmnq4we27Wun/pT3my2+itlA9uIoDB6273ZK13oSBjYnNFZuSYMoH5HE8qFg/mAJAfu4=
+X-Gm-Message-State: AOJu0YxtcVVjskywtdLRfr87lMM77WXeSEK1/6qFKkrQYN/zXXZJUZ+U
+	AUME9adm7AS1vGphmvPgd8v0hWqh6jsvpN+zvqhCdQx1bJ0HHja/UU8/3vWgE8fzS9q4TnXM6wS
+	SVqebgDKW+NsJ2fK2N1UWFcZ/Hw==
+X-Google-Smtp-Source: AGHT+IH1+lnHEQvHNTpCk4g1n3rMoXnDu8bTP/csyPUE5UnH2FmDuqVwGY9sq+kDGBDBiH5RCuTrPOILlP9jMChVO/Q=
+X-Received: by 2002:a25:ac0e:0:b0:dfa:57e4:2df8 with SMTP id
+ 3f1490d57ef6-dfa5a5e77ffmr2589681276.23.1717079643016; Thu, 30 May 2024
+ 07:34:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+References: <13e848c1544245e6aef4b89c3f38daf0@realtek.com> <20240528110246.477321-1-marcin.slusarz@gmail.com>
+ <801bd77995184b1fa35bf4a32ab3a036@realtek.com>
+In-Reply-To: <801bd77995184b1fa35bf4a32ab3a036@realtek.com>
+From: Tim K <tpkuester@gmail.com>
+Date: Thu, 30 May 2024 10:33:52 -0400
+Message-ID: <CA+shoWSt44WxS6s=z8wR3AMRYFj9tuxWdkwVLG5i2mU34jn4Xw@mail.gmail.com>
+Subject: Re: [PATCH] wifi: rtw88: schedule rx work after everything is set up
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: =?UTF-8?Q?Marcin_=C5=9Alusarz?= <marcin.slusarz@gmail.com>, 
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, =?UTF-8?Q?Marcin_=C5=9Alusarz?= <mslusarz@renau.com>, 
+	Larry Finger <Larry.Finger@lwfinger.net>, Kalle Valo <kvalo@kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Sm9oYW5uZXMgQmVyZyA8am9oYW5uZXNAc2lwc29sdXRpb25zLm5ldD4gd3JvdGU6DQo+IA0KPiBP
-biBUaHUsIDIwMjQtMDUtMjMgYXQgMTY6MjIgKzA4MDAsIGtldmluX3lhbmdAcmVhbHRlay5jb20g
-d3JvdGU6DQo+IA0KPiBbLi4uXQ0KPiANCj4gVGhpcyBjaGVja3MgdGhhdCB0aGUgKmZpcnN0KiBs
-aW5rIHRoZSBTVEEgdXNlZCBpc24ndCA2IEdIeiwgYnV0IG1heWJlIGl0IHNob3VsZCBiZSAqYW55
-KiBsaW5rPw0KPiANCj4gQnV0IHRoZW4gYWdhaW4sIHdlIGRvbid0IHJlYWxseSBuZWVkIHRoaXMg
-Y2hlY2sgZm9yIGFuIE1MTyBTVEEgc2luY2UgaXQgd2lsbCBoYXZlIEhUIHN1cHBvcnRlZA0KPiB1
-bmxlc3MgaXQgYXNzb2NpYXRlZCBvbiA2IEdIei4gTWF5YmUgd2Ugc2hvdWxkIGp1c3Qgbm90IGRv
-IHRoZSBjaGVjayB0aGlzIHdheSwgYnV0IGNoZWNrIGlmIGl0DQo+IGhhcyBIVCBvciBWSFQgb3Ig
-SEUgb3Igc29tZXRoaW5nIGxpa2UgdGhhdD8NCj4gDQoNCkkgdGhpbmsgdGhlcmUgYXJlIHR3byBw
-b2ludHMgaGVyZS4NCg0KMS4gdGhlIHdheSB0byBhdm9pZCB0aGlzIE5VTEwgZGVyZWZlcmVuY2UN
-CihDdXJyZW50IHBhdGNoIGp1c3QgZm9sbG93ZWQgb3JpZ2luYWwgbG9naWMgYW5kIG1hZGUgaXQg
-cnVubmFibGUgb24gYm90aCBNTEQgYW5kIG5vbi1NTEQuKQ0KDQpBY2NvcmRpbmcgdG8gY29tbWVu
-dHMsIEkgd2lsbCBjaGFuZ2UgdG8gY2hlY2sgaHRfc3VwcG9ydGVkL3ZodF9zdXBwb3J0ZWQvaGFz
-X2hlL2hhc19laHQuDQpUaGVuLCBpdCBkb2Vzbid0IG5lZWQgdG8gcmVmZXJlbmNlIGNoYW5yZXEu
-b3Blci5jaGFuIGhlcmUuIFNvLCB0aGVyZSB3b24ndCBiZSBOVUxMIGRlcmVmZXJlbmNlLg0KDQoy
-LiB0aGUgY2hlY2sgbG9naWMgd2hlbiBNTEQNCihDdXJyZW50IHBhdGNoIGRpZG4ndCBjb25zaWRl
-ciB0aGlzIHByb3Blcmx5LikNCg0KQWNjb3JkaW5nIHRvIHNwZWMuLCBCQSBhZ3JlZW1lbnQgZG9l
-cyBvbmNlIHBlciBUSUQgYW5kIGFwcGx5IHRvIGFsbCBjb3JyZXNwb25kaW5nIGxpbmtzLg0KU28s
-IEkgYW0gdGhpbmtpbmcgbWF5YmUgSSBjaGVjayB0aGUgY29uZGl0aW9ucyBvbiBhbGwgdmFsaWRf
-bGlua3Mgd2hlbiBNTEQuDQpBbmQsIG9ubHkgY2hlY2sgZGVmbGluayB3aGVuIG5vbi1NTEQuDQpI
-b3cgYWJvdXQgaXQ/DQoNCg==
+> I gave this suggestions too early, since we have not gotten test result from Tim.
+> I will change them to "Link:" if no ACK from Tim while merging.
+
+Hey all, thanks for reaching out!
+
+Sadly I'm not able to work on this project right now, but I've
+forwarded this email to a few colleagues to bring them in the loop.
+Did you have a timeline you were looking at to close this off?
+
+- Tim
 
