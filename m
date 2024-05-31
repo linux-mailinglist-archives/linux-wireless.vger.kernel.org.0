@@ -1,80 +1,74 @@
-Return-Path: <linux-wireless+bounces-8352-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8358-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2EA78D68A2
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 May 2024 20:04:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98A288D68A8
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 May 2024 20:04:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 359CF1F24FDC
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 May 2024 18:04:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CF8F1F259EF
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 May 2024 18:04:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 876F415B99F;
-	Fri, 31 May 2024 18:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A4F17D351;
+	Fri, 31 May 2024 18:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="a+yepiUr"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="fCDMdV4N"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB0547711B
-	for <linux-wireless@vger.kernel.org>; Fri, 31 May 2024 18:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E227D17C7D4
+	for <linux-wireless@vger.kernel.org>; Fri, 31 May 2024 18:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717178671; cv=none; b=ONILWpGF3AbByYHwhWx1DP4vRnAO8CyY6OLaHpbU11zicPm/rLwEH+r+tLRMFwuB0A19QHcE4rL5cm6Pa1kFqx1yXbxFQD9DIwzWFApcIOTGh5LDKWtMQcmwA60UkwlmlzVwL3V/Qz2yTep30kN6e4LOs34Zfx5mpQNylZ2JHdo=
+	t=1717178673; cv=none; b=FwbILl9Mxf1FhFUtO16LKuOsSBj/qVn6UzRdSIOvuXGjaNKGY43OZuZTZmtzz+EI0a8X/ud/UHvhnDAINoinbh33EaKHEPVEEsrHFFOxBPfekrOGQPstqynOw5kcKIVAFzDbaZ7iW/ETfOMponAMzpbrAdG3lNtK7rLLwWiY1dI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717178671; c=relaxed/simple;
-	bh=hEUZUNvfog/L5XqwmaI3S0w3b7ld5b/Ssk9RrZgZAQE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WDD+K8XHEee3c96Zth/zpGm9Vl4Ktx0R4WuHwjsMcNS3GE0WgNB0Zwq6KVbKhkvcJ4XGUD+MGGCvHJ6LefNxBlpuWSawa14pc3qbfVManjNMlQke5OZZIxbMN4Oini5YhmLZDbPuqvN96tJYk2JpN7OszDhcdUeRiO6p+v7yAdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=a+yepiUr; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1717178673; c=relaxed/simple;
+	bh=62BZpPOZUE6MmZMpHqzKt4b/Hnf8KucCeYkMBIDB6Nc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XD46akWNZD5gryWa+26pBxDSAejmKpFAcRwEDkVcuV4uH1Iwxu5uPbSNAlwmiH3w5FNjrAAmVmh902ZJQnS4dDQWj0p1jHs6YBKE2vsm4S8B5pFYThMlIiuqxqxY2x/gzsBqAvv/WfkVWds8eFAka/BRflsEDDXGQLk1ssoWu5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=fCDMdV4N; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44VHH0DG012837;
-	Fri, 31 May 2024 18:04:20 GMT
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44VH1H7R019268;
+	Fri, 31 May 2024 18:04:19 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=PsWkVlbWOWC
-	AFADPZTEIXLFgeVn8IL2OgXC2nvopReA=; b=a+yepiUrjRd5tBAz07S9LHaHxMu
-	BHPd04ihx7i68F1t/D6D5DbnWzBBtNTHavaPkR3wc3n8jqVKYR0jQgtBrQlszWlk
-	GHqxoHJM9NZ94fzaP6kOoQN/FpVWKtmDGbleSAX0r4P+g0bKMAzio6hh6kQuxJ8Q
-	h1qKq/8bsbUx9SLKlEo6eu2QW12cmDz1wroJlOZ98Uj0UAAN+zTV2Xp0nPNNieoW
-	SAXBYYExpHQFzCv8rSP0IBKbwoxwdhagjn1NHAPVPmgK/Xprgi+18PD6VcQ7Mm0J
-	bmSd5W2iKDMMGCFedhm06WN/whSmXq1Z1pf74Aku97fdp/XK/zBr5rdsgMA==
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=F28IE+dGQvErarU4FqvR/zA+vYGbM7+FTA1
+	kZySAZuA=; b=fCDMdV4NkypSjaH293BlMR4NBnQWBE4dDOOwr6wdHlew200zV8Y
+	tLmZ0YZbIdQHr6/VuDPA9nS1K8O9VHEIZFSlMnIgpZzTrvT/J5ZzOdcYREDkeTKm
+	NGI8MgJrVUpMQVKsOi9jnv6ecDQKbnbimkHOhOKfMMB9o4FUy4EY2yn7P8nekGtG
+	sSnysUyiQH/MKGUq1MRiZRKCC1rxbGkTc1QwwGBAzbtksGafkPpKS8nSAn74YJLQ
+	eAJA9sRE+no6mUwEQly1A+E9ZAJ4bEHltHoRB00biydNGqeF4XyiPle9NeygR480
+	NTEazSoOikT1okxZc3woFi5XEC4rIk9ukzA==
 Received: from apblrppmta01.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yba0qqvhp-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yba0gg307-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Fri, 31 May 2024 18:04:19 +0000 (GMT)
 Received: from pps.filterd (APBLRPPMTA01.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 44VI4FgU012029;
-	Fri, 31 May 2024 18:04:16 GMT
+	by APBLRPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 44VI4EDd012013;
+	Fri, 31 May 2024 18:04:14 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 3yf34nn90c-1
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 3yf34nn8yr-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 May 2024 18:04:16 +0000
+	Fri, 31 May 2024 18:04:14 +0000
 Received: from APBLRPPMTA01.qualcomm.com (APBLRPPMTA01.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44VI0slV009515;
-	Fri, 31 May 2024 18:04:16 GMT
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44VI4EeS012008;
+	Fri, 31 May 2024 18:04:14 GMT
 Received: from hu-devc-blr-u22-a.qualcomm.com (hu-hprem-blr.qualcomm.com [10.190.108.75])
-	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 44VI4G87012054
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 44VI4Es8012007
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 May 2024 18:04:16 +0000
+	Fri, 31 May 2024 18:04:14 +0000
 Received: by hu-devc-blr-u22-a.qualcomm.com (Postfix, from userid 4146166)
-	id E1AC841174; Fri, 31 May 2024 23:34:15 +0530 (+0530)
+	id 871D641137; Fri, 31 May 2024 23:34:13 +0530 (+0530)
 From: Harshitha Prem <quic_hprem@quicinc.com>
 To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org,
-        Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
-        Harshitha Prem <quic_hprem@quicinc.com>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>
-Subject: [PATCH v8 3/8] wifi: ath12k: Add ath12k_get_num_hw api
-Date: Fri, 31 May 2024 23:34:06 +0530
-Message-Id: <20240531180411.1149605-4-quic_hprem@quicinc.com>
+Cc: linux-wireless@vger.kernel.org, Harshitha Prem <quic_hprem@quicinc.com>
+Subject: [PATCH v8 0/8] wifi: ath12k: Introduce device group abstraction
+Date: Fri, 31 May 2024 23:34:03 +0530
+Message-Id: <20240531180411.1149605-1-quic_hprem@quicinc.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240531180411.1149605-1-quic_hprem@quicinc.com>
-References: <20240531180411.1149605-1-quic_hprem@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -86,124 +80,130 @@ X-QCInternal: smtphost
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: J6t_9Q8kYE9ON4Uw5AYJAVZ_UUmCbczh
-X-Proofpoint-ORIG-GUID: J6t_9Q8kYE9ON4Uw5AYJAVZ_UUmCbczh
+X-Proofpoint-GUID: CelirjJ3p5HH47UzNyjLz_cgMhQJkrwB
+X-Proofpoint-ORIG-GUID: CelirjJ3p5HH47UzNyjLz_cgMhQJkrwB
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
  definitions=2024-05-31_12,2024-05-30_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- suspectscore=0 lowpriorityscore=0 impostorscore=0 clxscore=1015 mlxscore=0
- mlxlogscore=853 malwarescore=0 spamscore=0 adultscore=0 bulkscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
+ priorityscore=1501 bulkscore=0 phishscore=0 adultscore=0 spamscore=0
+ mlxlogscore=651 malwarescore=0 lowpriorityscore=0 clxscore=1015
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2405170001 definitions=main-2405310137
 
-From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+To support multi-link operation, multiple devices with different bands say
+2 GHz or 5 GHz or 6 GHz can be combined together as a group and provide
+an abstraction to mac80211.
 
-Currently, one or more ath12k_hw is part of device (ath12k_base) but
-in future, ath12k_hw would be part of device group (ath12k_hw_group).
-Hence, num_hw under device would be moved to device group.
+Device group abstraction - when there are multiple devices that are
+connected by any means of communication interface between them, then these
+devices can be combined together as a single group using a group id to form
+a group abstraction. In ath12k driver, this abstraction would be named as
+ath12k_hw_group (ag).
 
-To facilitate above transition, add helper ath12k_get_num_hw() api to
-get the number of radios per device. In future, this helper would be
-able to get the number of radios in a device group.
+Please find below illustration of device group abstraction with two
+devices.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+                 Grouping of multiple devices (in future)
++------------------------------------------------------------------------+
+|  +-------------------------------------+       +-------------------+   |
+|  |   +-----------+ | | +-----------+   |       |   +-----------+   |   |
+|  |   | ar (2GHz) | | | | ar (5GHz) |   |       |   | ar (6GHz) |   |   |
+|  |   +-----------+ | | +-----------+   |       |   +-----------+   |   |
+|  |          ath12k_base (ab)           |       | ath12k_base (ab)  |   |
+|  |         (Dual band device)          |       |                   |   |
+|  +-------------------------------------+       +-------------------+   |
+|                 ath12k_hw_group (ag) based on group id                 |
++------------------------------------------------------------------------+
 
-Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-Signed-off-by: Harshitha Prem <quic_hprem@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/core.c | 6 +++---
- drivers/net/wireless/ath/ath12k/core.h | 5 +++++
- drivers/net/wireless/ath/ath12k/mac.c  | 8 ++++----
- 3 files changed, 12 insertions(+), 7 deletions(-)
+Say for example, device 1 has two radios (2 GHz and 5 GHz band) and
+device 2 has one radio (6 GHz).
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index 3925bb70d479..7ad65ace7123 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -946,7 +946,7 @@ static void ath12k_rfkill_work(struct work_struct *work)
- 	rfkill_radio_on = ab->rfkill_radio_on;
- 	spin_unlock_bh(&ab->base_lock);
- 
--	for (i = 0; i < ab->num_hw; i++) {
-+	for (i = 0; i < ath12k_get_num_hw(ab); i++) {
- 		ah = ath12k_ab_to_ah(ab, i);
- 		if (!ah)
- 			continue;
-@@ -998,7 +998,7 @@ static void ath12k_core_pre_reconfigure_recovery(struct ath12k_base *ab)
- 	if (ab->is_reset)
- 		set_bit(ATH12K_FLAG_CRASH_FLUSH, &ab->dev_flags);
- 
--	for (i = 0; i < ab->num_hw; i++) {
-+	for (i = 0; i < ath12k_get_num_hw(ab); i++) {
- 		ah = ath12k_ab_to_ah(ab, i);
- 		if (!ah || ah->state == ATH12K_HW_STATE_OFF)
- 			continue;
-@@ -1037,7 +1037,7 @@ static void ath12k_core_post_reconfigure_recovery(struct ath12k_base *ab)
- 	struct ath12k *ar;
- 	int i, j;
- 
--	for (i = 0; i < ab->num_hw; i++) {
-+	for (i = 0; i < ath12k_get_num_hw(ab); i++) {
- 		ah = ath12k_ab_to_ah(ab, i);
- 		if (!ah || ah->state == ATH12K_HW_STATE_OFF)
- 			continue;
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index 3f5c9fa9d04c..a22f3561deb0 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -1062,4 +1062,9 @@ static inline void ath12k_ab_set_ah(struct ath12k_base *ab, int idx,
- {
- 	ab->ah[idx] = ah;
- }
-+
-+static inline int ath12k_get_num_hw(struct ath12k_base *ab)
-+{
-+	return ab->num_hw;
-+}
- #endif /* _CORE_H_ */
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index f8e8320b8598..66587c5ea8fd 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -9157,7 +9157,7 @@ int ath12k_mac_register(struct ath12k_base *ab)
- 	ab->cc_freq_hz = 320000;
- 	ab->free_vdev_map = (1LL << (ab->num_radios * TARGET_NUM_VDEVS)) - 1;
- 
--	for (i = 0; i < ab->num_hw; i++) {
-+	for (i = 0; i < ath12k_get_num_hw(ab); i++) {
- 		ah = ath12k_ab_to_ah(ab, i);
- 
- 		ret = ath12k_mac_hw_register(ah);
-@@ -9184,7 +9184,7 @@ void ath12k_mac_unregister(struct ath12k_base *ab)
- 	struct ath12k_hw *ah;
- 	int i;
- 
--	for (i = ab->num_hw - 1; i >= 0; i--) {
-+	for (i = ath12k_get_num_hw(ab) - 1; i >= 0; i--) {
- 		ah = ath12k_ab_to_ah(ab, i);
- 		if (!ah)
- 			continue;
-@@ -9254,7 +9254,7 @@ void ath12k_mac_destroy(struct ath12k_base *ab)
- 		pdev->ar = NULL;
- 	}
- 
--	for (i = 0; i < ab->num_hw; i++) {
-+	for (i = 0; i < ath12k_get_num_hw(ab); i++) {
- 		ah = ath12k_ab_to_ah(ab, i);
- 		if (!ah)
- 			continue;
-@@ -9277,7 +9277,7 @@ int ath12k_mac_allocate(struct ath12k_base *ab)
- 	ab->num_hw = ab->num_radios;
- 	radio_per_hw = 1;
- 
--	for (i = 0; i < ab->num_hw; i++) {
-+	for (i = 0; i < ath12k_get_num_hw(ab); i++) {
- 		for (j = 0; j < radio_per_hw; j++) {
- 			pdev_map[j].ab = ab;
- 			pdev_map[j].pdev_idx = (i * radio_per_hw) + j;
+In existing code -
+        device 1 will have two hardware abstractions hw1 (2 GHz) and hw2
+        (5 GHz) will be registered separately to mac80211 as phy0 and phy1
+        respectively. Similarly, device 2 will register its hw (6GHz) as
+        phy2 to mac80211.
+
+In future, with multi-link abstraction
+
+        combination 1 - Different group id for device1 and device 2
+                Device 1 will create a single hardware abstraction hw1
+                (2 GHz and  5 GHz) and will be registered to mac80211 as
+                phy0. similarly, device 2 will register its hardware
+                (6 GHz) to mac80211 as phy1.
+
+        combination 2 - Same group id for device1 and device 2
+                Both device details are combined together as a group, say
+                group1, with single hardware abstraction of radios 2 GHz,
+                5 GHz and 6 GHz band details and will be registered to
+                mac80211 as phy0.
+
+Add base infrastructure changes to add device grouping abstraction with
+a single device.
+
+This patch series brings the base code changes with following order:
+        1. Refactor existing code which would facilitate in introducing
+           device group abstraction.
+        2. Create a device group abstraction during device probe.
+        3. Start the device group only after QMI firmware ready event is
+           received for all the devices that are combined in the group.
+        4. Move the hardware abstractions (ath12k_hw - ah) from device
+           (ath12k_base - ab) to device group abstraction (ag) as it would
+           ease in having different combinations of group abstraction that
+           can be registered to mac80211.
+
+v8:
+  - Addressed firmware assert issue seen during hibernation scenario in
+    "[PATCH v7 7/8] wifi: ath12k: refactor core start based on hardware group"
+
+v7:
+   - Added linux-wireless mailer to cc.
+   - Removed Acked-by tag from "[PATCH v6 8/8]" as it has minor change.
+
+v6:
+  - Addressed smatch error seen on "[PATCH v5 8/8] wifi: ath12k: move
+    ath12k_hw from per soc to group"
+  - Rebased to ToT
+v5:
+  - on "[PATCH 8/8] wifi: ath12k: move ath12k_hw from per soc to
+    group", refactor the ath12k_mac_hw_allocate() api based on ag rather
+    than ab and update hardware abstraction array size in ath12k_hw_group
+    as ATH12K_GROUP_MAX_RADIO.
+  - Rebased to ToT
+v4:
+  - Modified the cover letter
+v3:
+  - Removed depends-on tag of "wifi: ath12k: Refactor the hardware recovery
+    procedures" as it is merged to ToT
+  - Addressed the deadlock warning seen during rmmod.
+
+v2:
+ - Rebased to ToT
+
+
+Karthikeyan Periyasamy (8):
+  wifi: ath12k: Refactor core start api
+  wifi: ath12k: Add helpers to get or set ath12k_hw
+  wifi: ath12k: Add ath12k_get_num_hw api
+  wifi: ath12k: Introduce QMI firmware ready flag
+  wifi: ath12k: move ATH12K_FLAG_REGISTERED flag set to mac_register api
+  wifi: ath12k: Introduce device group abstraction
+  wifi: ath12k: refactor core start based on hardware group
+  wifi: ath12k: move ath12k_hw from per device to group
+
+ drivers/net/wireless/ath/ath12k/core.c | 427 +++++++++++++++++++++----
+ drivers/net/wireless/ath/ath12k/core.h |  87 ++++-
+ drivers/net/wireless/ath/ath12k/dp.c   |  19 +-
+ drivers/net/wireless/ath/ath12k/dp.h   |   2 +-
+ drivers/net/wireless/ath/ath12k/mac.c  | 117 ++++---
+ drivers/net/wireless/ath/ath12k/mac.h  |   9 +-
+ drivers/net/wireless/ath/ath12k/pci.c  |   2 +
+ drivers/net/wireless/ath/ath12k/qmi.c  |  10 +-
+ 8 files changed, 540 insertions(+), 133 deletions(-)
+
+
+base-commit: 6e7a5c6d5e38b93f9cc3289d66a597b9a4ca0403
 -- 
 2.34.1
 
