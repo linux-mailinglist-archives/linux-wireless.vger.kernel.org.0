@@ -1,126 +1,156 @@
-Return-Path: <linux-wireless+bounces-8350-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8351-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16C3E8D6822
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 May 2024 19:27:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F7FA8D689D
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 May 2024 20:00:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 960E0B21616
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 May 2024 17:27:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1870B1F23A6B
+	for <lists+linux-wireless@lfdr.de>; Fri, 31 May 2024 18:00:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49A4915DBC4;
-	Fri, 31 May 2024 17:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C752E63B;
+	Fri, 31 May 2024 18:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="nVKfI3AF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lNKTL/jN"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC85A55E4C
-	for <linux-wireless@vger.kernel.org>; Fri, 31 May 2024 17:26:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2C0208B0
+	for <linux-wireless@vger.kernel.org>; Fri, 31 May 2024 18:00:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717176416; cv=none; b=S9fzhD0xpMeyVFHeR8F5GD4/0VrXcBy37UCMMBZ1Eh7ZTzhoenIqqJMHE/fI5mEJpw4pXnNnufEzJdwHKHdqYM95pab9a1Sl1Svmf4JmzKhbuyIDpYvDXeIY9ztL5dG6ssKgTJBqojnF6N59I5T92ZpK2piPLYboyVmL5mYoom4=
+	t=1717178426; cv=none; b=mBX3EcJYsViP7AUqsbn5Ezh1OJNacKzqS4+1HwhAu2XZ5oQdjZRObLPMkanCDe9PLkbJrGtdFumGiNtpklLyAxSPG8U9tAlNszZn+4nkz1KluWFVWlIXqmSpdwTD7cQBqMO5K2OxhRpudNxKbf65RiWxyhvF5+rO3Wif/zLyopE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717176416; c=relaxed/simple;
-	bh=D4iuDm6VOlm5ADnTjz6uHtdAGtAs1bBoV9kEhxgO7Yg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=P5bGgn7xCcKc2GL3RZ4w9+tI5m8ubKht5dA0m9YXUBCbGea2wtYLD+ResCLZh2dS3lz796W+Zy+pbiafUoRW2H8C0kafVmGM6O7AGUr3F40JgnrnWgtfqfFkVSGZ2Js3X00njkL/ZjNnxhM5CKLfe2mWGNKD5JPbZjTr53Jw7MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=nVKfI3AF; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44VFK0KO031709;
-	Fri, 31 May 2024 17:26:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Kb+iaUW6DdlJnSDpiN1YqPO1vDQ8v64dWbqzF7/lRd0=; b=nVKfI3AFYRtZ3hhP
-	ytOauIc97cV6++YlMC5O6FFP15/mJx+m/JwKpTAnlN7JlvY8C4Al8hEzwAhMTza9
-	i1h3OltXFVqH9WPBhWy0+WCDorRsU9Syp+m2d61YLVyCa0WrnQuIOcqdit2GSXlV
-	8qmrfLt2L2S1/9uHVfLDcWNc19QItZr850vL+2SQHLBwMluKBmg/dNNJj6cNvg4f
-	BBwHpX14HLSArWTnEJUM9eX0Nkf5Cw1nNkczoKwDCMWzYDn0x8IUqS43Rc2pr3H8
-	E1im3fhHrb4Jyxvygi1JhWtvtLIxkVgtlrhyWgA9NLWgGB9cIyvF+OjCsmFWCL2E
-	hpU9AQ==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yf8xa1q1q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 May 2024 17:26:52 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44VHQp5R030498
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 May 2024 17:26:51 GMT
-Received: from [10.110.11.230] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 31 May
- 2024 10:26:50 -0700
-Message-ID: <29f1a482-2ead-474a-93a1-00616bcf06f8@quicinc.com>
-Date: Fri, 31 May 2024 10:26:49 -0700
+	s=arc-20240116; t=1717178426; c=relaxed/simple;
+	bh=qlU+WYP7/d64bQDIKAIfVrPzMMEKKHCH53akTxStboM=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=S7ok63vCpyowAcvwKfBe2qIC7SpYYTCnUhsW5kQAmduIXUWx/6jeG+aOr9GXdfkPgBz8BXNYAGjz9gGLbVk06QDFN77RWOMD0wbhSOSomu4FCqNfWjOVr7VTL+v4+ZyeJk9ULc7mqRw9D/km72i7rQ5MRl/+cF6aySTJuyXhD2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lNKTL/jN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3199C116B1;
+	Fri, 31 May 2024 18:00:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717178425;
+	bh=qlU+WYP7/d64bQDIKAIfVrPzMMEKKHCH53akTxStboM=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=lNKTL/jNEiGb4YbmYyYpb0yznZrbnZAH76r+euDZAWw2ddMSrKIJwz0cLi2L8E/+h
+	 49D9KYx5JtN3IE7zKkCr87TfwH39P8a0FGrlVeqtv8y2wAf0R5S+O+8KKUZ0l5lzCH
+	 uAEx1ypz4TB9UC7cTF3Lup3klluADc0iWBXijEFJl0E++QZID907DWBo/ymRI9+3TU
+	 lX0MzI7JRqqt1/P8bEkG52O0fb+XfnNXQAISI2riELgMd20vB/OmDIJtkKjYd8ZXVw
+	 t2BDTSWVLXzpGqsLTOz4uCXRjoOQ5ptpsaxp3491zUvsraY0gK44RjK/nw6zxVwf68
+	 QVBAlP1tQgNMA==
+From: Kalle Valo <kvalo@kernel.org>
+To: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
+Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v2 5/5] wifi: ath12k: Dump additional Tx PDEV HTT stats
+References: <20240510050806.514126-1-quic_rgnanase@quicinc.com>
+	<20240510050806.514126-6-quic_rgnanase@quicinc.com>
+	<87le43d26u.fsf@kernel.org>
+	<024e2594-309a-4549-9c69-d527717c5dd4@quicinc.com>
+	<87r0dm6vrn.fsf@kernel.org>
+	<1be3531d-b550-4b19-93bb-d41e93362e19@quicinc.com>
+Date: Fri, 31 May 2024 21:00:22 +0300
+In-Reply-To: <1be3531d-b550-4b19-93bb-d41e93362e19@quicinc.com> (Ramya
+	Gnanasekar's message of "Tue, 28 May 2024 22:18:18 +0530")
+Message-ID: <87plt1vp3d.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 6/8] wifi: ath12k: support ARP and NS offload
-Content-Language: en-US
-To: Baochen Qiang <quic_bqiang@quicinc.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240530072714.25671-1-quic_bqiang@quicinc.com>
- <20240530072714.25671-7-quic_bqiang@quicinc.com>
- <ccf9791b-e050-4844-8c37-35873fb3fcaf@quicinc.com>
- <17721436-19fb-4337-9058-b20f4df2792c@quicinc.com>
- <af326e49-df6e-4574-9562-44b6aee10abd@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <af326e49-df6e-4574-9562-44b6aee10abd@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: xwQXDhSs0_3H9RE0iaMZbX2RQMZHyxvk
-X-Proofpoint-ORIG-GUID: xwQXDhSs0_3H9RE0iaMZbX2RQMZHyxvk
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-05-31_12,2024-05-30_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- mlxlogscore=999 mlxscore=0 priorityscore=1501 malwarescore=0 bulkscore=0
- impostorscore=0 clxscore=1015 lowpriorityscore=0 adultscore=0 phishscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2405310132
+Content-Type: text/plain
 
-On 5/30/2024 10:11 PM, Baochen Qiang wrote:
-> 
-> 
-> On 5/31/2024 11:42 AM, Baochen Qiang wrote:
->>>> +static void ath12k_wow_prepare_ns_offload(struct ath12k_vif *arvif,
->>>> +					  struct wmi_arp_ns_offload_arg *offload)
->>>> +{
->>>> +	struct inet6_dev *idev = arvif->idev;
->>> as noted above does it make more sense to get the netdev associated with the
->>> arvif and then use in6_dev_get(net_device) to get the inet6_dev rather than
->>> caching the pointer from the ipv6_addr_changed() callback?
->> Ah.. I didn't note that we can get inet6_dev in such a way, just thought the only way is to cache it in ipv6_changed() callback.
->>
->> will get it using the following in next version:
->> 	struct ieee80211_vif *vif = container_of(arvif)
->> 	struct ieee80211_sub_if_data *sub_if_data = container_of(vif)
->> 	struct net_dev *ndev = sub_if_data->dev
->> 	struct inet6_dev *idev = in6_dev_get(ndev)
-> Just found that ieee80211_sub_if_data is internal to mac80211, so not possible to get netdev in this way.
-> 
-> any other ideas on how to get netdev?
+Ramya Gnanasekar <quic_rgnanase@quicinc.com> writes:
 
-Thinking about this some more, it seems like you'd want to send these down to
-firmware immediately so that they'd be available for NS offload. Does firmware
-support NS offload even when host is awake (I think the downstream Android
-driver supports that)?
+> On 5/28/2024 4:36 PM, Kalle Valo wrote:
+>> Ramya Gnanasekar <quic_rgnanase@quicinc.com> writes:
+>> 
+>>>>> +static inline void
+>>>>> +ath12k_htt_print_tx_pdev_mu_ppdu_dist_stats_tlv(const void *tag_buf,
+>>>>> +						struct debug_htt_stats_req *stats_req)
+>>>>> +{
+>>>>> + const struct ath12k_htt_tx_pdev_mu_ppdu_dist_stats_tlv
+>>>>> *htt_stats_buf = tag_buf;
+>>>>> +	char *mode;
+>>>>> +	u8 j, hw_mode, i, str_buf_len;
+>>>>> +	u8 *buf = stats_req->buf;
+>>>>> +	u32 len = stats_req->buf_len;
+>>>>> +	u32 buf_len = ATH12K_HTT_STATS_BUF_SIZE;
+>>>>> +	u32 stats_value;
+>>>>> +	u8 max_ppdu = ATH12K_HTT_STATS_MAX_NUM_MU_PPDU_PER_BURST;
+>>>>> +	u8 max_sched = ATH12K_HTT_STATS_MAX_NUM_SCHED_STATUS;
+>>>>> +	char str_buf[ATH12K_HTT_MAX_STRING_LEN];
+>>>>> +
+>>>>> +	hw_mode = le32_to_cpu(htt_stats_buf->hw_mode);
+>>>>> +
+>>>>> +	switch (hw_mode) {
+>>>>> +	case ATH12K_HTT_STATS_HWMODE_AC:
+>>>>> +		len += scnprintf(buf + len, buf_len - len,
+>>>>> +				 "HTT_TX_PDEV_MU_PPDU_DISTRIBUTION_STATS:\n");
+>>>>> +		mode = "ac";
+>>>>> +		break;
+>>>>> +	case ATH12K_HTT_STATS_HWMODE_AX:
+>>>>> +		mode = "ax";
+>>>>> +		break;
+>>>>> +	case ATH12K_HTT_STATS_HWMODE_BE:
+>>>>> +		mode = "be";
+>>>>> +		break;
+>>>>> +	default:
+>>>>> +		return;
+>>>>> +	}
+>>>>
+>>>> Why are we not adding "HTT_TX_PDEV_MU_PPDU_DISTRIBUTION_STATS:\n" with
+>>>> ax and be modes?
+>>>>
+>>> Sorry for the delayed response. I was on OoO for a week.
+>> 
+>> No worries.
+>> 
+>>> We will receive this TLV for each hw modes. Since
+>>> "HTT_TX_PDEV_MU_PPDU_DISTRIBUTION_STATS:\n" is header and it would be
+>>> suffice to print it once, hence added it inside hw mode ac which will be
+>>> the first hw mode integrated inside the TLV.
+>> 
+>> I would have expected that we print that outside of
+>> ath12k_htt_print_tx_pdev_mu_ppdu_dist_stats_tlv(), before the function
+>> is called at all.
+>> 
+>
+> Function itself will be called more than once.
 
-So perhaps an alternative approach is to collect the information you need from
-the notification and then schedule a workqueue to actually send the
-information to firmware?
+Sure, I got that. But I still think it is not really good design to
+print it like that.
+
+Maybe the output could be something like below? Or print the mode
+separate in the first line?
+
+HTT_TX_PDEV_MU_PPDU_DISTRIBUTION_STATS:
+
+ac_mu_mimo_num_seq_posted_nr4 = 0
+ac_mu_mimo_num_ppdu_posted_per_burst_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
+ac_mu_mimo_num_ppdu_completed_per_burst_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
+ac_mu_mimo_num_seq_term_status_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0,
+
+....
+
+HTT_TX_PDEV_MU_PPDU_DISTRIBUTION_STATS:
+
+ax_mu_mimo_num_seq_posted_nr4 = 0
+ax_mu_mimo_num_ppdu_posted_per_burst_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
+ax_mu_mimo_num_ppdu_completed_per_burst_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
+ax_mu_mimo_num_seq_term_status_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0,
+
+ax_mu_mimo_num_seq_posted_nr8 = 0
+ax_mu_mimo_num_ppdu_posted_per_burst_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
+ax_mu_mimo_num_ppdu_completed_per_burst_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
+ax_mu_mimo_num_seq_term_status_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0,
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
