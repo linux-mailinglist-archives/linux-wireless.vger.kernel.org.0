@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-8369-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8370-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F3FB8D6F39
-	for <lists+linux-wireless@lfdr.de>; Sat,  1 Jun 2024 11:58:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66A468D6F3C
+	for <lists+linux-wireless@lfdr.de>; Sat,  1 Jun 2024 11:59:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EC171F214BA
-	for <lists+linux-wireless@lfdr.de>; Sat,  1 Jun 2024 09:58:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 229EE28366A
+	for <lists+linux-wireless@lfdr.de>; Sat,  1 Jun 2024 09:59:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9623B14EC41;
-	Sat,  1 Jun 2024 09:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7ECA1CD15;
+	Sat,  1 Jun 2024 09:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nUEVUUm7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i+RyA/S1"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7277214EC40
-	for <linux-wireless@vger.kernel.org>; Sat,  1 Jun 2024 09:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DCC780635;
+	Sat,  1 Jun 2024 09:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717235879; cv=none; b=OdAHtC2XGj2/RhVx2WaCu5nZfdXRCVMDMgcPNW3t48brq4j5M2uZmygLVkWqjnQhnDwmFcP7teiA0ifRmuQRrizrpVtye37gKl0y0vCWV3LAwtmL04dcA6jSoF08ud1KHvTt01k03UZbjvum0miShw2HZNK9HVhfEOSe5XjIDyA=
+	t=1717235984; cv=none; b=WRkvgsr0UxeTGMA/KkDFvBBAdqeiGeIBdCah5EK4LfhQktwYoJb6yeO4Isa1hc60T5ID7SeJk4t4jKZloSfhwuBzlFq9Tj5qY/FFarSyYCCkWaNyC5m8ebZEdZTxN2NwziOYc+YKBbl7fIE2wAA0UrCwLOrFVWvQD4DVqXfP8ZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717235879; c=relaxed/simple;
-	bh=ABPZwTl98JqWjY9l5L1A3Pf6ulH1Xx1AiunqIWYybpw=;
+	s=arc-20240116; t=1717235984; c=relaxed/simple;
+	bh=9u8gq+9PyBB4mSrF7hivzYp+QdvvifwLDjqpZQOf3W0=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=seKD/XRkDua4j1hUCeFzc7HJzjpj6pN0LVfelxU5SlaNZ2YFEXZDvYJBd7cZ9UK0TdT1LrjUguwuYi9sZjJgpV5/Iz+foTfmToNzq9WXz/FvvDM1qyKFYuroiPeqtcGTvwbg4KGtho8FMUtOBy9XBucbhvnQIVOyZexcYAvPnJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nUEVUUm7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92D0C116B1;
-	Sat,  1 Jun 2024 09:57:57 +0000 (UTC)
+	 Cc:Message-ID:Date; b=aplNdBFqtvx+AzmfeYzqpW0Ng8UP4dCHNHjRVTN+llojHWZ6EPPiKszhgzsX5RNwF7KCRIih66Iad+izt1WTzTHQDbvMDGClGu6w+WjWb4wSlDgb9ZbcaA+f8bikuGkdO5QhvgRQJWW+Ro7L9WzqeoXigYJBB6btb5FREV3yxOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i+RyA/S1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95DF7C116B1;
+	Sat,  1 Jun 2024 09:59:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717235879;
-	bh=ABPZwTl98JqWjY9l5L1A3Pf6ulH1Xx1AiunqIWYybpw=;
+	s=k20201202; t=1717235984;
+	bh=9u8gq+9PyBB4mSrF7hivzYp+QdvvifwLDjqpZQOf3W0=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=nUEVUUm7eSNS5laRl59xNobBEKQP0WW2fCspCPBBM9SDbjXRDElexohcHagse0Dz4
-	 mcaLPiGc7LkdxgynDO7uhGBoYOx+aoqGpdTnwmlyrr4E8jCtX3vL4uipXK+Dm1kuxf
-	 siPiLDzBRKBaLZA+/YP7naIWhEsFdzXUcsQUpp78tpVNufEl1feSWL4fMdgpY/DgCh
-	 XK9rqSHiptRdzorr1PleYuOzpTHhNYykLQ4K+c/zPpZsb6Nonhm7o5T4kdZjqeJujw
-	 eKJeNg/Kjh8cP77a3D5HUDh/21qKJUrN7c6T1vi2Km41a+A5eRwSvfBFSflkD7IpkJ
-	 fFtPzm3pxSaSA==
+	b=i+RyA/S1DiRdlPVFTlIAzT+fVvin1ANRNpleEHEbE7K65NxZY7z3ENqBZv+NU2Rna
+	 t8IzrksliUvBMiMQZpCbG1WF4ex+3nVrRSwVA1QX+3XtscaMzkXdUpnH0rpSHfvjg3
+	 LIu4OMyXdYUTMKMRVbek+voBvyLcaLitfHpQvuPrXI9tiZfBOg9q3SE190i33ENFAp
+	 ZGPhmzdFZ6Ozq80w+m2b2xwEqd3vH7E+qKtCx5qvta6BU0LwIZXqr9M1W4wQG92rVW
+	 5Q+MegA0k09yHs27FZm9cHbG9vSN9ASysBB86xIgsoakF9ptEDaNwkG3wEzaaz7y4d
+	 pIHHsobG+7T/A==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -48,70 +48,58 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: pull-request: ath-current-20240531
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH wireless 1/3] Revert "wifi: wilc1000: convert list
+ management to RCU"
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <87ttidvrup.fsf@kernel.org>
-References: <87ttidvrup.fsf@kernel.org>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
- ath11k@lists.infradead.org, ath12k@lists.infradead.org,
- quic_jjohnson@quicinc.com
+In-Reply-To: <20240528-wilc_revert_srcu_to_rcu-v1-1-bce096e0798c@bootlin.com>
+References: <20240528-wilc_revert_srcu_to_rcu-v1-1-bce096e0798c@bootlin.com>
+To: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Cc: linux-wireless@vger.kernel.org, Ajay Singh <ajay.kathat@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Dan Carpenter <dan.carpenter@linaro.org>, linux-kernel@vger.kernel.org,
+ =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <171723587573.967328.5470768065737630382.kvalo@kernel.org>
-Date: Sat,  1 Jun 2024 09:57:57 +0000 (UTC)
+Message-ID: <171723598053.967328.11354175525825246331.kvalo@kernel.org>
+Date: Sat,  1 Jun 2024 09:59:42 +0000 (UTC)
 
-Kalle Valo <kvalo@kernel.org> wrote:
+Alexis Lothoré <alexis.lothore@bootlin.com> wrote:
 
-> Hi,
+> This reverts commit f236464f1db7bea80075e6e31ac70dc6eb80547f
 > 
-> Please pull, more information in the tag below.
+> Commit f236464f1db7 ("wifi: wilc1000: convert list management to RCU")
+> replaced SRCU with RCU, aiming to simplify RCU usage in the driver. No
+> documentation or commit history hinted about why SRCU has been preferred
+> in original design, so it has been assumed to be safe to do this
+> conversion.
+> Unfortunately, some static analyzers raised warnings, confirmed by runtime
+> checker, not long after the merge. At least three different issues arose
+> when switching to RCU:
+> - wilc_wlan_txq_filter_dup_tcp_ack is executed in a RCU read critical
+>   section yet calls wait_for_completion_timeout
+> - wilc_wfi_init_mon_interface calls kmalloc and register_netdevice while
+>   manipulating a vif retrieved from vif list
+> - set_channel sends command to chip (and so, also waits for a completion)
+>   while holding a vif retrieved from vif list (so, in RCU read critical
+>   section)
 > 
-> Kalle
+> Some of those issues are not trivial to fix and would need bigger driver
+> rework. Fix those issues by reverting the SRCU to RCU conversion commit
 > 
-> The following changes since commit 1d60eabb82694e58543e2b6366dae3e7465892a5:
-> 
->   wifi: mwl8k: initialize cmd->addr[] properly (2024-05-07 15:08:14 +0300)
-> 
-> are available in the Git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git tags/ath-current-20240531
-> 
-> for you to fetch changes up to 6e16782d6b4a724f9c9dcd49471219643593b60c:
-> 
->   wifi: ath11k: move power type check to ASSOC stage when connecting to 6 GHz AP (2024-05-23 15:45:52 +0300)
-> 
-> ----------------------------------------------------------------
-> Merge ath-current from git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
-> 
-> ath.git fixes for 6.10. Two fixes for user reported regressions in
-> ath11k. One dependency fix and one error path fix.
-> 
-> ----------------------------------------------------------------
-> Baochen Qiang (1):
->       wifi: ath11k: move power type check to ASSOC stage when connecting to 6 GHz AP
-> 
-> Breno Leitao (1):
->       wifi: ath11k: Fix error path in ath11k_pcic_ext_irq_config
-> 
-> Carl Huang (1):
->       wifi: ath11k: fix WCN6750 firmware crash caused by 17 num_vdevs
-> 
-> Dmitry Baryshkov (1):
->       wifi: ath10k: fix QCOM_RPROC_COMMON dependency
-> 
->  drivers/net/wireless/ath/ath10k/Kconfig |  1 +
->  drivers/net/wireless/ath/ath11k/core.c  |  2 +-
->  drivers/net/wireless/ath/ath11k/mac.c   | 38 ++++++++++++++++++++++-----------
->  drivers/net/wireless/ath/ath11k/pcic.c  | 25 +++++++++++++++-------
->  4 files changed, 44 insertions(+), 22 deletions(-)
+> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Closes: https://lore.kernel.org/linux-wireless/3b46ec7c-baee-49fd-b760-3bc12fb12eaf@moroto.mountain/
+> Fixes: f236464f1db7 ("wifi: wilc1000: convert list management to RCU")
+> Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
 
-Pulled, thanks.
+3 patches applied to wireless.git, thanks.
 
-10bc8558b59a Merge tag 'ath-current-20240531' of git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath
+ebfb5e8fc8b4 Revert "wifi: wilc1000: convert list management to RCU"
+3596717a6fbd Revert "wifi: wilc1000: set atomic flag on kmemdup in srcu critical section"
+596c195680dc wifi: wilc1000: document SRCU usage instead of SRCU
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/87ttidvrup.fsf@kernel.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240528-wilc_revert_srcu_to_rcu-v1-1-bce096e0798c@bootlin.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
