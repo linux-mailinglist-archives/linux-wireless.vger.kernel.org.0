@@ -1,111 +1,118 @@
-Return-Path: <linux-wireless+bounces-8368-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8369-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FA228D6EEC
-	for <lists+linux-wireless@lfdr.de>; Sat,  1 Jun 2024 10:39:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F3FB8D6F39
+	for <lists+linux-wireless@lfdr.de>; Sat,  1 Jun 2024 11:58:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0F502B24001
-	for <lists+linux-wireless@lfdr.de>; Sat,  1 Jun 2024 08:39:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EC171F214BA
+	for <lists+linux-wireless@lfdr.de>; Sat,  1 Jun 2024 09:58:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15B411CF90;
-	Sat,  1 Jun 2024 08:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9623B14EC41;
+	Sat,  1 Jun 2024 09:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lmu1TjfA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nUEVUUm7"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A3A111AD;
-	Sat,  1 Jun 2024 08:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7277214EC40
+	for <linux-wireless@vger.kernel.org>; Sat,  1 Jun 2024 09:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717231148; cv=none; b=cQY6NzaupyTE6Q/UjB/DmXe4Sxv38WCU/DmjJPHDzzwMCtX53JNKjyshkgrq6erx8IIkv5eCSHUsWZecIAEFE5Zh0q7ZwXHBHvvu8ZkPIt9o6WJJRsOA1EY4E4TXVLjgI/fODzZLK9NJqNPIkYzg9KIdcKna4rVOpxXSItvg0pE=
+	t=1717235879; cv=none; b=OdAHtC2XGj2/RhVx2WaCu5nZfdXRCVMDMgcPNW3t48brq4j5M2uZmygLVkWqjnQhnDwmFcP7teiA0ifRmuQRrizrpVtye37gKl0y0vCWV3LAwtmL04dcA6jSoF08ud1KHvTt01k03UZbjvum0miShw2HZNK9HVhfEOSe5XjIDyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717231148; c=relaxed/simple;
-	bh=O/cdpqT7qQihzPF3SYw3ffdjHn+vpQtcKKcbKkl2pXA=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=kPMjfVF7AfmyANxGiWWWBMdLV9cjXmhgIoK0JUwEqx214EJHFhvY80nbhsQPd+NaaEGzN2fR9Mc5VNHqq06p3KYwjGa9+w3dCF1H/OULDoKLqux4rFSPhpipuCC3K9Aw+NVq4QA7Gu9VEIWVCF0qL3upoRA/6BzqlqQxD4UjSBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lmu1TjfA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 288E7C116B1;
-	Sat,  1 Jun 2024 08:39:04 +0000 (UTC)
+	s=arc-20240116; t=1717235879; c=relaxed/simple;
+	bh=ABPZwTl98JqWjY9l5L1A3Pf6ulH1Xx1AiunqIWYybpw=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=seKD/XRkDua4j1hUCeFzc7HJzjpj6pN0LVfelxU5SlaNZ2YFEXZDvYJBd7cZ9UK0TdT1LrjUguwuYi9sZjJgpV5/Iz+foTfmToNzq9WXz/FvvDM1qyKFYuroiPeqtcGTvwbg4KGtho8FMUtOBy9XBucbhvnQIVOyZexcYAvPnJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nUEVUUm7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92D0C116B1;
+	Sat,  1 Jun 2024 09:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717231147;
-	bh=O/cdpqT7qQihzPF3SYw3ffdjHn+vpQtcKKcbKkl2pXA=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=lmu1TjfAQQoBYhj/5tR7GS0uOuhgynxe5b8eTTxihKbYlFz9EB9BuMaGLeDxzIuQa
-	 mPL1IUU24/j5KmRP7KUBe0uI7vvIS6NVX7i9Q3YerbU/Z3NPTj8MbRbneAyrTD41Ns
-	 +xyUGP2pdDwyiS94iYPHYOSWOYwFHr7xM9UMtWUFO20gz1EReopk8uHvol1NzPcobS
-	 lXYgd7nVOP7X8rb7cioKPkC2YQf1lIqdQPk4zPN5OLa/2Lr1c36cwTmNHFEp2BQ09M
-	 Y6twVXL/tNg4qPu0VP9NjAWJCRtariHmDydaylbZd8zwK+h2jqVm/2nG+pUQt5shpx
-	 JDfaxnwZkCo2g==
-From: Kalle Valo <kvalo@kernel.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: Dave Jiang <dave.jiang@intel.com>,  Bjorn Helgaas <bhelgaas@google.com>,
-  <linux-wireless@vger.kernel.org>,  <ath11k@lists.infradead.org>,
-  <regressions@lists.linux.dev>,  Jeff Johnson <quic_jjohnson@quicinc.com>,
-  <linux-kernel@vger.kernel.org>,  <linux-cxl@vger.kernel.org>,
-  <linux-pci@vger.kernel.org>
-Subject: Re: [regression] BUG: KASAN: use-after-free in
- lockdep_register_key+0x755/0x8f0
-References: <87v82y6wvi.fsf@kernel.org> <87wmncwqxf.fsf@kernel.org>
-	<87sexzx02f.fsf@kernel.org>
-	<66582bee45da8_6ec329496@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-	<87jzjbwxin.fsf@kernel.org> <87frtzww57.fsf@kernel.org>
-	<6659ee8b8dfd_166872941c@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-	<87y17qudwb.fsf@kernel.org>
-Date: Sat, 01 Jun 2024 11:39:03 +0300
-In-Reply-To: <87y17qudwb.fsf@kernel.org> (Kalle Valo's message of "Fri, 31 May
-	2024 19:47:32 +0300")
-Message-ID: <87a5k5ukew.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=k20201202; t=1717235879;
+	bh=ABPZwTl98JqWjY9l5L1A3Pf6ulH1Xx1AiunqIWYybpw=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=nUEVUUm7eSNS5laRl59xNobBEKQP0WW2fCspCPBBM9SDbjXRDElexohcHagse0Dz4
+	 mcaLPiGc7LkdxgynDO7uhGBoYOx+aoqGpdTnwmlyrr4E8jCtX3vL4uipXK+Dm1kuxf
+	 siPiLDzBRKBaLZA+/YP7naIWhEsFdzXUcsQUpp78tpVNufEl1feSWL4fMdgpY/DgCh
+	 XK9rqSHiptRdzorr1PleYuOzpTHhNYykLQ4K+c/zPpZsb6Nonhm7o5T4kdZjqeJujw
+	 eKJeNg/Kjh8cP77a3D5HUDh/21qKJUrN7c6T1vi2Km41a+A5eRwSvfBFSflkD7IpkJ
+	 fFtPzm3pxSaSA==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: pull-request: ath-current-20240531
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <87ttidvrup.fsf@kernel.org>
+References: <87ttidvrup.fsf@kernel.org>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+ ath11k@lists.infradead.org, ath12k@lists.infradead.org,
+ quic_jjohnson@quicinc.com
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <171723587573.967328.5470768065737630382.kvalo@kernel.org>
+Date: Sat,  1 Jun 2024 09:57:57 +0000 (UTC)
 
-Kalle Valo <kvalo@kernel.org> writes:
+Kalle Valo <kvalo@kernel.org> wrote:
 
-> Dan Williams <dan.j.williams@intel.com> writes:
->
->> Kalle Valo wrote:
->> [..]
->>> >> The proposed fix for that is here:
->>> >>
->>> >> http://lore.kernel.org/r/66560aa9dbedb_195e294b0@dwillia2-mobl3.amr.corp.intel.com.notmuch
->>> >
->>> > I get "Not Found" from that link, is there a typo?
->>> 
->>> I found this fix from for-linus branch:
->>> 
->>> # PCI: Fix missing lockdep annotation for pci_cfg_access_trylock()for-linus
->>> https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/commit/?h=for-linus&id=f941b9182c54a885a9d5d4cfd97af66873c98560
->>> 
->>> But at least that doesn't fix my crash.
->>
->> Sorry for the broken link I mistakenly used a message-id from an
->> internal thread with the intel.com reporter. However, it is moot now
->> because the new direction is to revert the lockdep infrastructure:
->>
->> https://lore.kernel.org/r/171711745834.1628941.5259278474013108507.stgit@dwillia2-xfh.jf.intel.com
->>
->> (that link works...)
->
-> Thanks, that links works :) I did a quick test with the three patches
-> and I didn't see any crashes anymore. But to be confident I need to run
-> overnight tests, I'll provide my Tested-by after that.
+> Hi,
+> 
+> Please pull, more information in the tag below.
+> 
+> Kalle
+> 
+> The following changes since commit 1d60eabb82694e58543e2b6366dae3e7465892a5:
+> 
+>   wifi: mwl8k: initialize cmd->addr[] properly (2024-05-07 15:08:14 +0300)
+> 
+> are available in the Git repository at:
+> 
+>   git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git tags/ath-current-20240531
+> 
+> for you to fetch changes up to 6e16782d6b4a724f9c9dcd49471219643593b60c:
+> 
+>   wifi: ath11k: move power type check to ASSOC stage when connecting to 6 GHz AP (2024-05-23 15:45:52 +0300)
+> 
+> ----------------------------------------------------------------
+> Merge ath-current from git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git
+> 
+> ath.git fixes for 6.10. Two fixes for user reported regressions in
+> ath11k. One dependency fix and one error path fix.
+> 
+> ----------------------------------------------------------------
+> Baochen Qiang (1):
+>       wifi: ath11k: move power type check to ASSOC stage when connecting to 6 GHz AP
+> 
+> Breno Leitao (1):
+>       wifi: ath11k: Fix error path in ath11k_pcic_ext_irq_config
+> 
+> Carl Huang (1):
+>       wifi: ath11k: fix WCN6750 firmware crash caused by 17 num_vdevs
+> 
+> Dmitry Baryshkov (1):
+>       wifi: ath10k: fix QCOM_RPROC_COMMON dependency
+> 
+>  drivers/net/wireless/ath/ath10k/Kconfig |  1 +
+>  drivers/net/wireless/ath/ath11k/core.c  |  2 +-
+>  drivers/net/wireless/ath/ath11k/mac.c   | 38 ++++++++++++++++++++++-----------
+>  drivers/net/wireless/ath/ath11k/pcic.c  | 25 +++++++++++++++-------
+>  4 files changed, 44 insertions(+), 22 deletions(-)
 
-Ok, I'm now quite confident that the issues I saw are solved so:
+Pulled, thanks.
 
-Tested-by: Kalle Valo <kvalo@kernel.org>
+10bc8558b59a Merge tag 'ath-current-20240531' of git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/87ttidvrup.fsf@kernel.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
