@@ -1,213 +1,193 @@
-Return-Path: <linux-wireless+bounces-8366-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8367-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FB9F8D6B4A
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 May 2024 23:10:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED1598D6D74
+	for <lists+linux-wireless@lfdr.de>; Sat,  1 Jun 2024 04:07:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A80DE1F2A793
-	for <lists+linux-wireless@lfdr.de>; Fri, 31 May 2024 21:10:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BF521C2178C
+	for <lists+linux-wireless@lfdr.de>; Sat,  1 Jun 2024 02:07:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F77E7FBA3;
-	Fri, 31 May 2024 21:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBD5DDDB8;
+	Sat,  1 Jun 2024 02:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ERmm+edW"
+	dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b="D0AcKjIt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12olkn2075.outbound.protection.outlook.com [40.92.21.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4F978C6F
-	for <linux-wireless@vger.kernel.org>; Fri, 31 May 2024 21:10:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717189833; cv=none; b=Y3eOudBnzb1umVF1BVf11KWeu9NgF2PxGhENsQIJEvnZwJ7GyLPu+JH2H4leNObarYzoZE2e70iuY7WDar2npk+JpTEP72KPuMcL6kNxlBgGdeiSZbx37g/FmgN3ZKxmUBXdrNq9utaAR+/D9CiY1chEnkhrUhOhExp6JAulCw4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717189833; c=relaxed/simple;
-	bh=l7RroDrsayCA/oexVYeIPg+q9TYUAlpowWmIABNkvQ4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mEPZU3gaGxIBJnnAjYYpx1GKosn00trhUUi/6xgfEJFlAaSQcK1q1bH+JhINvyHW1JAA81BBa7uRGmxTuzUwpg0MsvQ2XeSVP40Efi+st9R1pqFVHAgyEJXTycXKiUzhjqdCSdMijnI0CDVFd7TDuFsbE86RaE79E8sr/Neh968=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ERmm+edW; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-35a264cb831so2116124f8f.2
-        for <linux-wireless@vger.kernel.org>; Fri, 31 May 2024 14:10:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717189829; x=1717794629; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=CpvOdzD6SH4b19hLcPsehVs7J2qb/3ZgTdIuyb0YZiQ=;
-        b=ERmm+edWF00IK2npyH4xWAMKoeZopcyNw0DdlnvVg63hjiS8Z3CaQyAhZS1tCSBM2f
-         eNx+T1Qxuwv/+9/MYoOfgLp2C7vdeNwm/LUKv0A0ytiBwbflMa/qKFBCki37NW9sSyWJ
-         EchZxaSqiZ9t+3BYVq5cckx57M/qP6+UYNKNprxrJqk7e1WEZIMcNpVt8x8ngL2BKjS8
-         bw1a9RUGKLyTMiiUGLfayIE8mVlPOnz3rDa+HM3wNDKopg4Z8h8L9y2fEBc7dYuHd2bs
-         sZwFDrEl1fdea412zTPVIxPCJ6ILmQ0Fj2u0vOKY3q1/ypgvN1N/xvh+daTJIjfOF0NA
-         qp+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717189829; x=1717794629;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CpvOdzD6SH4b19hLcPsehVs7J2qb/3ZgTdIuyb0YZiQ=;
-        b=RxA6T3Rm0jRJuQAwdvOGbFi7TZAtXrPV9YizE1fhbodYzNyIrb0M1DxqqjNZKVVKll
-         KKdGLuXxdg8RTBaqqLNhIpeNO49638WadViwrto51UpvaZDr/KC97YPg3uSel0hi3bjE
-         EXFjwqq7V1zXWbaGDGI27sp128+lMZXGNG81Xk+Xu+1H+AMR5KBoBrkRgh2OC/7vTi4o
-         m71rEgEAdJvemmg+CSAoeax6OU5T8LeK5bTq92lHymmj+D8qhdbYInnNauol27RUEBnm
-         dppVzUiAh0TqS+mfOZgEt6xdgiOeLv5hxuRXDR5xglEmD3FVKAOp4A4Sx5P4pXdbahrB
-         BEkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW055LCeX23je5jm6CyroGUnpe7FHk2UBWIE+dHR5CdVJxIGpJSug8FCfCzXR6xK2VMd0IllXIE4U4lc0J8CG65dSMnWkVe3Nabt6uBiu0=
-X-Gm-Message-State: AOJu0Yx0iDzZjRn7k0ZcHefjZh4d2UJpiWfErO1YrDwPPq1zcshN4aCz
-	Hs66Q7TD251RL7NP2RB609M9JIrvdW3yMGCFSKTWe9cT/ffl9C6D
-X-Google-Smtp-Source: AGHT+IGe6VcGaKpZbcpvZdkxQZCGjjMF7U/K1ixBi320ruF5KD7w8WzgXtUQ8pR3lbo6WwUU5D5f7A==
-X-Received: by 2002:adf:f787:0:b0:354:fc03:b44 with SMTP id ffacd0b85a97d-35e0f25c39amr1894521f8f.4.1717189828723;
-        Fri, 31 May 2024 14:10:28 -0700 (PDT)
-Received: from [192.168.1.50] ([79.119.240.1])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35dd062ee05sm2651203f8f.82.2024.05.31.14.10.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 31 May 2024 14:10:28 -0700 (PDT)
-Message-ID: <6c341295-0f2b-4b8d-af6d-4e2746e56ddc@gmail.com>
-Date: Sat, 1 Jun 2024 00:10:26 +0300
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06300D304
+	for <linux-wireless@vger.kernel.org>; Sat,  1 Jun 2024 02:07:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.21.75
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717207643; cv=fail; b=d3ja9nCHtw31Egsm8ubEaJjgxgEYdXIVzVGYFiw8FQuWl6Xty9+bPwiCLGW0IJRxNz+QJ7rQhdQOtgLaLTOFaSxn2JUptaPvZ2FUxfvCrYHeH4PKEA5lKNZFUgW2v4zmUVJGYVv31HUnsxMzdHshGU3+WuPafCwL5iUU6robalo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717207643; c=relaxed/simple;
+	bh=aptn8rJS5xUM7zDqFoJDY2QnpQopyCUciZyYPRXK0KQ=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=dgWqnkyYNDwFGNlY+VrovYiyPS4hjpIYNqwR9XbhBf0LAZeYQD2x0Utx2IwFMuZ/YedPSrYlIxF6JWebkQI9/cY3i0Gf68NeRipdNSZhTD1GR8oaP9o/YILQzgUM+43NQtf/FCdHZr4ju3TRjvq2pEYifpRHPOED7yx3prw+uJg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com; spf=pass smtp.mailfrom=hotmail.com; dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b=D0AcKjIt; arc=fail smtp.client-ip=40.92.21.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=LVdyOrwi+7hxa4zr+cjB7hRJNs3ZWodi2uD5xtu2p3A0e6K8sIluewapWZhAs/hJZSjIQ1M26X3fpGh4V30pxgYGE1dj81i+NpOzxQQrl8qNQdujL6IIeI2IakspFXCs89Ba9jvRsxDXCWKUeL6bD26YFdvwe4mpAH4mIdBWh1ihHpeigNLud8aHkXv4TLHoc52Qbth+fApemXKzZrDmtOEzbDqLzYnkrXfxmly33wx5rXIrJ/IN/596xl7Rx4BftnOuyqa+EYWMw3faL1gmAtCyerjhWpCONO+85TVWEGnUhe7WI7sQgf3oFwJkZhY8vhhAL2ITJACLbeHjs+14cA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=P4FZkdOXaLgv7q2Xc6BH56M2NWl8lvQg/AFqveW0CvI=;
+ b=S42SvFOQic6HQOr3GS8eOCjpQ03JR1c078zLdCD9+6yzdUGvaMFGh3vB4w5H2UptZDFTMr80CceRk2W1AdxYBgi8qckPk0sUNsCwpL+0763qoIR4Du1q4H0eDp5Iv2qSiDX0AXrSCtyw73R0xLH5OAjB5jcXAHUIQKfLNfnAK1yKMpWiU2zEMqJ/JKnmGqGthn0P6Wiz4rBUVwirH7/5SgXqwWdf+eUPrPnWjF5RX2DTr+/xRQKb+25wSyOmyRDtSBwj13GUULnac55Yms48egB++Ag+3rMNZddI8Z9lZE4NMtTgD7bupLZNMP+HvOUJ5GMmd3ryEYqu4AMzaP0B9w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=P4FZkdOXaLgv7q2Xc6BH56M2NWl8lvQg/AFqveW0CvI=;
+ b=D0AcKjItzVYbCuABKNZhYYrrTg6eKqw3hjSoiDsJwwfwlOJdhcYpkf6eXUCDKYsRov+CoURcsH+JAGFWk4bJ5oog8lKLr946p3zxXWjma4HtAenuRZYchGJmHmVUrZQVM4z/rwTW1iNv8gsrNkq6UnMFbAgE7Y2ytOTG9LYWPr+Cd8SZeLGTBqSmiEhDwZbuLJ6jSYA9ZBGWsYp07F3ujTDRVWId1YSevTIm0XufMFX+5p94S7u8jtZvg9U7IuwQ8DQRr5EJXXwkjFQyAR57J+Bpgdd5ECWatAPgvv7NOJ/jZ3vcsSWsgzeTreJGP4vi9qFEVRVjtjcIsgQ6YGgJBQ==
+Received: from BN8PR16MB3009.namprd16.prod.outlook.com (2603:10b6:408:5c::25)
+ by MW4PR16MB4767.namprd16.prod.outlook.com (2603:10b6:303:18b::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.30; Sat, 1 Jun
+ 2024 02:07:19 +0000
+Received: from BN8PR16MB3009.namprd16.prod.outlook.com
+ ([fe80::9952:18aa:c42a:7dcb]) by BN8PR16MB3009.namprd16.prod.outlook.com
+ ([fe80::9952:18aa:c42a:7dcb%3]) with mapi id 15.20.7633.021; Sat, 1 Jun 2024
+ 02:07:19 +0000
+From: zhefeng xu <zhefeng_xu@hotmail.com>
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>
+Subject: Other updates on STA+AP mode with rtw_8822cu
+Thread-Topic: Other updates on STA+AP mode with rtw_8822cu
+Thread-Index: AQHas8R8o3GKojT9dkm/0nRi/CxCLw==
+Date: Sat, 1 Jun 2024 02:07:19 +0000
+Message-ID:
+ <BN8PR16MB3009FB694F91A191827BBE29E0FD2@BN8PR16MB3009.namprd16.prod.outlook.com>
+Accept-Language: en-CA, zh-CN, en-US, zh-TW
+Content-Language: en-CA
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+x-ms-exchange-messagesentrepresentingtype: 1
+x-tmn: [jjx0iq9tZvGj9O52ceVtnrbYSfp59j24]
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BN8PR16MB3009:EE_|MW4PR16MB4767:EE_
+x-ms-office365-filtering-correlation-id: 86c5912b-dd87-4468-4fb2-08dc81df912a
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|461199019|102099023|3412199016|440099019;
+x-microsoft-antispam-message-info:
+ OZlsZhneZoF94P4miKZZSFeyx4lnUoimPQ9kAX9cgxU+VcydE8QJaJtTplnCdkeVK173T8BjnKVOOz1pFRUlH3oQn2L4EfZ3luiOXCtwg7Ft4Yrqv2/kHHg6sNYqRh+aLx4bo83zvM1upVaMsLhpnpgXrmzxk7ki19vdg9qFjZ5Eh2j6kKnZykXdWVXbd5k5AFhgOHEV2jj446FlL7dKLwKAwp7sIWVttFUebgH8bpGwNpu4Em/gVciAjAIG6smfNfkiJYWBcKj7gwPbKqvaV2mkxRbuf0ZisbBmWydZQyB6/x8TRGfN9t/+NNq9PAxpVeYM6WRnUSF5YUj/U4AL4XP83UVTuFTiW+tImVhhyyDhfZqoBsUPJtKEeYJditHJq0YU0HgSp6xBjcCVcEkt9YFm3ynU8XEUQPoCnx45H3QFQGwtjfV/ohKm/sMGjtMDHQY0oEXmvjNoZxyN9kCszDAqwQT1o96REPD6e/ZG19Fen0DAQvt37udb2sktTjbiz0S/yuOnTMGdjVS6M38d8rnW1vybaJUKxr9bJfrm6hDhxZF4FT8X3KPL4QxNcZGV
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?1vfsWG/bZBs6kgqJU4Z9bV1RVyUw81Y1Vmh3IF+iEU9eJYaR5a55Ks+d23?=
+ =?iso-8859-1?Q?GBP+koj5ZECbaO9W7gkFOzNRX4MaVeHOMqfgxB2Poll3rouDDtjlOrROoF?=
+ =?iso-8859-1?Q?zUAwAqMg1qCDhvFNM4dJYV/5Jqlxjrpss5tKadh7yX3E97DU35NNc4j2NB?=
+ =?iso-8859-1?Q?Nj87ticAQkH83kMQfDbyS7uqffQYzO2Uz44nGYsurB51k8DIvBKkpEDYSq?=
+ =?iso-8859-1?Q?GimJB6j6tkRZHJN19anjtgwa44P4cbG3ndpNTfeOwOEcEKIfar2v25WyK6?=
+ =?iso-8859-1?Q?Q5JXCVSqOX5Uc+jbVRO22U+sqYVUX+2+syeyoeDdQuPCoMPKPXt3e1fB7W?=
+ =?iso-8859-1?Q?bDVTCa2Kw2SiFKQpSdz9Xb28wfX1oAP3XspK8iI86aI0ju8t6PFcCkwixJ?=
+ =?iso-8859-1?Q?9L48FhnG2OuIILQzBo9Knbh2WNHcnEmgo0QNG1xxYbpOik+1bvaCvW+skp?=
+ =?iso-8859-1?Q?zsHG2QPRRfyBv5yzz6UHCZzYKT6y98zpkc7n/HCx28CxzzM3kJ6FbNAFSo?=
+ =?iso-8859-1?Q?+2BKHEuYpaCSlZLu0PJhMKwc0GVwZzYBgnZERx1O8ly6KINHAJsPX1jYxt?=
+ =?iso-8859-1?Q?rfOy/NqfT6s+ccezzDq6DSW5mLTDX89uLB79+2OsRVLKSSMqTcLTXQi/FG?=
+ =?iso-8859-1?Q?saWMr9IYhwiaTueA1nkjiRm+UFmaW6TK+thl37Ru/S9IGBF+RUF6pA45Q9?=
+ =?iso-8859-1?Q?DTYt2o3gQo5vyMmIjlxlR+0E8qAV9p/BAUUNFOhmwKLxSssVvQOPV0AajH?=
+ =?iso-8859-1?Q?P6uFZcIRz9DRE0BshQn8/0Wd+9bCrUeTLkgtb7PACtcowr7hfUpst08cb2?=
+ =?iso-8859-1?Q?ADicWD/0RLEriIPfQicM8ZuuCjWla2N6Votz9Xrht99T8IQY1cmO2sgCMj?=
+ =?iso-8859-1?Q?Q/BDsQN7AgL1GAYz/au27zVCZ3o56LHCuSuoutmaF3tu7wxMc372ee96n8?=
+ =?iso-8859-1?Q?ayDWbWBqll43LWJPrsM7DyCvt0Bx88oRDoBJGAkWAxsozHUgkDVGwFJN/K?=
+ =?iso-8859-1?Q?Nc/939Q2GR/KcLXx14wEsAFHqciTXA3PYi9S2xuBVXhxkZVRr4XYEwRPjT?=
+ =?iso-8859-1?Q?kp1q74vuk4i2D5yTZb3CPWGHxyAlBv9mFrFurlRiPDnvXzVsgeLCHKFFsR?=
+ =?iso-8859-1?Q?+L+HGrHxuM6KD0qdS7yxjmQE2U+lhoKOdJ5pMaxdfdA+hFgrgvMWHz+W4Q?=
+ =?iso-8859-1?Q?2FARkTlThJIlAiR9oR+N5sJ0Jl0WHlvJtdWBOn/P5JeYO0mSJAeExjmxyS?=
+ =?iso-8859-1?Q?XmDo0WilipdkPbkJ6H2LDbNb9A3tb9BEQstdYJlA0=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: rtw88: usb: Further limit the TX aggregation
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Sascha Hauer <sha@pengutronix.de>
-References: <0996d2d0-e7b8-4e43-ba12-63074ba9df1b@gmail.com>
- <c1f41ca8bd7d49e4801d620089ae0a4d@realtek.com>
-Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <c1f41ca8bd7d49e4801d620089ae0a4d@realtek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-5ce7b.templateTenant
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BN8PR16MB3009.namprd16.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 86c5912b-dd87-4468-4fb2-08dc81df912a
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Jun 2024 02:07:19.2506
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR16MB4767
 
-On 30/05/2024 09:36, Ping-Ke Shih wrote:
-> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->> Currently the number of frames sent to the chip in a single USB Request
->> Block is limited only by the size of the TX buffer, which is 20 KiB.
->> Testing reveals that as many as 13 frames get aggregated. This is more
->> than what any of the chips would like to receive. RTL8822CU, RTL8822BU,
->> and RTL8821CU want at most 3 frames, and RTL8723DU wants only 1 frame
->> per URB.
->>
->> RTL8723DU in particular reliably malfunctions during a speed test. All
->> traffic seems to stop. Pinging the AP no longer works.
->>
->> Fix this problem by limiting the number of frames sent to the chip in a
->> single URB according to what each chip likes.
->>
->> Also configure RTL8822CU, RTL8822BU, and RTL8821CU to expect 3 frames
->> per URB.
->>
->> RTL8703B may or may not be found in USB devices. Declare that it wants
->> only 1 frame per URB, just in case.
->>
->> Tested with RTL8723DU and RTL8811CU.
->>
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
->> ---
->>  drivers/net/wireless/realtek/rtw88/mac.c      | 12 ++++++++++++
->>  drivers/net/wireless/realtek/rtw88/main.h     |  2 ++
->>  drivers/net/wireless/realtek/rtw88/reg.h      |  1 +
->>  drivers/net/wireless/realtek/rtw88/rtw8703b.c |  1 +
->>  drivers/net/wireless/realtek/rtw88/rtw8723d.c |  1 +
->>  drivers/net/wireless/realtek/rtw88/rtw8821c.c |  1 +
->>  drivers/net/wireless/realtek/rtw88/rtw8822b.c |  1 +
->>  drivers/net/wireless/realtek/rtw88/rtw8822c.c |  1 +
->>  drivers/net/wireless/realtek/rtw88/usb.c      |  4 +++-
->>  9 files changed, 23 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/wireless/realtek/rtw88/mac.c b/drivers/net/wireless/realtek/rtw88/mac.c
->> index 0dba8aae7716..fca90759c268 100644
->> --- a/drivers/net/wireless/realtek/rtw88/mac.c
->> +++ b/drivers/net/wireless/realtek/rtw88/mac.c
->> @@ -1186,6 +1186,7 @@ static int __priority_queue_cfg(struct rtw_dev *rtwdev,
->>  {
->>         const struct rtw_chip_info *chip = rtwdev->chip;
->>         struct rtw_fifo_conf *fifo = &rtwdev->fifo;
->> +       u8 val8;
->>
->>         rtw_write16(rtwdev, REG_FIFOPAGE_INFO_1, pg_tbl->hq_num);
->>         rtw_write16(rtwdev, REG_FIFOPAGE_INFO_2, pg_tbl->lq_num);
->> @@ -1201,6 +1202,17 @@ static int __priority_queue_cfg(struct rtw_dev *rtwdev,
->>         rtw_write16(rtwdev, REG_FIFOPAGE_CTRL_2 + 2, fifo->rsvd_boundary);
->>         rtw_write16(rtwdev, REG_BCNQ1_BDNY_V1, fifo->rsvd_boundary);
->>         rtw_write32(rtwdev, REG_RXFF_BNDY, chip->rxff_size - C2H_PKT_BUF - 1);
->> +
->> +       if (rtwdev->hci.type == RTW_HCI_TYPE_USB) {
->> +               val8 = rtw_read8(rtwdev, REG_AUTO_LLT_V1);
->> +               u8p_replace_bits(&val8, chip->usb_tx_agg_desc_num,
->> +                                BIT_MASK_BLK_DESC_NUM);
->> +               rtw_write8(rtwdev, REG_AUTO_LLT_V1, val8);
-> 
-> rtw_write8_mask(rtwdev, REG_AUTO_LLT_V1, BIT_MASK_BLK_DESC_NUM, chip->usb_tx_agg_desc_num);
-> 
->> +
->> +               rtw_write8(rtwdev, REG_AUTO_LLT_V1 + 3, chip->usb_tx_agg_desc_num);
->> +               rtw_write8_set(rtwdev, REG_TXDMA_OFFSET_CHK + 1, BIT(1));
->> +       }
->> +
->>         rtw_write8_set(rtwdev, REG_AUTO_LLT_V1, BIT_AUTO_INIT_LLT_V1);
->>
->>         if (!check_hw_ready(rtwdev, REG_AUTO_LLT_V1, BIT_AUTO_INIT_LLT_V1, 0))
->> diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
->> index 49894331f7b4..49a3fd4fb7dc 100644
->> --- a/drivers/net/wireless/realtek/rtw88/main.h
->> +++ b/drivers/net/wireless/realtek/rtw88/main.h
->> @@ -1197,6 +1197,8 @@ struct rtw_chip_info {
->>         u16 fw_fifo_addr[RTW_FW_FIFO_MAX];
->>         const struct rtw_fwcd_segs *fwcd_segs;
->>
->> +       u8 usb_tx_agg_desc_num;
->> +
-> 
-> Please keep order of field and instance declaration, like rtw8703b_hw_spec.
-> 
->>         u8 default_1ss_tx_path;
->>
->>         bool path_div_supported;
->> diff --git a/drivers/net/wireless/realtek/rtw88/reg.h b/drivers/net/wireless/realtek/rtw88/reg.h
->> index b122f226924b..572651b3aa4b 100644
->> --- a/drivers/net/wireless/realtek/rtw88/reg.h
->> +++ b/drivers/net/wireless/realtek/rtw88/reg.h
->> @@ -270,6 +270,7 @@
->>  #define BIT_MASK_BCN_HEAD_1_V1 0xfff
->>  #define REG_AUTO_LLT_V1                0x0208
->>  #define BIT_AUTO_INIT_LLT_V1   BIT(0)
->> +#define BIT_MASK_BLK_DESC_NUM  0xf0
-> 
-> 0xf0 --> GENMASK(7, 4)
-> 
->>  #define REG_DWBCN0_CTRL                0x0208
->>  #define BIT_BCN_VALID          BIT(16)
->>  #define REG_TXDMA_OFFSET_CHK   0x020C
->> diff --git a/drivers/net/wireless/realtek/rtw88/rtw8703b.c
->> b/drivers/net/wireless/realtek/rtw88/rtw8703b.c
->> index 8919f9e11f03..222608de33cd 100644
->> --- a/drivers/net/wireless/realtek/rtw88/rtw8703b.c
->> +++ b/drivers/net/wireless/realtek/rtw88/rtw8703b.c
->> @@ -2013,6 +2013,7 @@ const struct rtw_chip_info rtw8703b_hw_spec = {
->>         .tx_stbc = false,
->>         .max_power_index = 0x3f,
->>         .ampdu_density = IEEE80211_HT_MPDU_DENSITY_16,
->> +       .usb_tx_agg_desc_num = 1, /* Not sure if this chip has USB interface */
-> 
-> The position to declare this field is very different from others. 
-> 
-> Not sure when we messed up the order, but please don't feel free to add one,
-> keep the order. 
-> 
-> If you have time, could you help to align all of them across chips?
-> If not, I will take my time to do that after your patch. 
-> 
-
-Sure, I will do that.
+Hi,=0A=
+=0A=
+Recently I found I could connect the AP from android cellphone or iphone, b=
+ut never succeeded connecting from windows 10, ubuntu or ipad. Not sure if =
+it's the driver issue or hostapd incompatibility.=0A=
+=0A=
+phy#0=0A=
+        Interface x0wlan0=0A=
+                ifindex 43=0A=
+                wdev 0x2=0A=
+                addr 00:0e:8e:b3:fd:f5=0A=
+                ssid ap_test_j=0A=
+                type AP=0A=
+                channel 40 (5200 MHz), width: 20 MHz, center1: 5200 MHz=0A=
+                txpower 23.00 dBm=0A=
+                multicast TXQ:=0A=
+                        qsz-byt qsz-pkt flows   drops   marks   overlmt has=
+hcol tx-bytes        tx-packets=0A=
+                        0       0       11      0       0       0       3  =
+     21340           183=0A=
+        Interface wlan0=0A=
+                ifindex 42=0A=
+                wdev 0x1=0A=
+                addr 00:0e:8e:b3:fd:eb=0A=
+                ssid CIK-Mesh-2154-5G=0A=
+                type managed=0A=
+                channel 40 (5200 MHz), width: 80 MHz, center1: 5210 MHz=0A=
+                txpower 23.00 dBm=0A=
+                multicast TXQ:=0A=
+                        qsz-byt qsz-pkt flows   drops   marks   overlmt has=
+hcol tx-bytes        tx-packets=0A=
+                        0       0       0       0       0       0       0  =
+     0               0=0A=
+=0A=
+STA+AP can be set up using linux-router script. AP can access internet thro=
+ugh managed wlan0 connection. I can watch youtube from the cellphone. After=
+ a while, it's possible driver printing error information but the old conne=
+ction to AP is still alive and able to access internet. And the connection =
+can last for very long time.=0A=
+=0A=
+The log could be like:=0A=
+=0A=
+[  +0.005236] rtw_8822cu 3-1:1.2: failed to download drv rsvd page=0A=
+[  +3.040394] rtw_8822cu 3-1:1.2: error beacon valid=0A=
+[  +0.005233] rtw_8822cu 3-1:1.2: failed to download drv rsvd page=0A=
+[  +0.184770] rtw_8822cu 3-1:1.2: error beacon valid=0A=
+[  +0.005342] rtw_8822cu 3-1:1.2: failed to download drv rsvd page=0A=
+[  +1.831908] rtw_8822cu 3-1:1.2: error beacon valid=0A=
+[  +0.005334] rtw_8822cu 3-1:1.2: failed to download drv rsvd page=0A=
+[  +0.270540] rtw_8822cu 3-1:1.2: error beacon valid=0A=
+[  +0.005334] rtw_8822cu 3-1:1.2: failed to download drv rsvd page=0A=
+[  +1.748539] rtw_8822cu 3-1:1.2: error beacon valid=0A=
+[  +0.005094] rtw_8822cu 3-1:1.2: failed to download drv rsvd page=0A=
+[  +0.283437] rtw_8822cu 3-1:1.2: error beacon valid=0A=
+[  +0.005743] rtw_8822cu 3-1:1.2: failed to download drv rsvd page=0A=
+=0A=
+ssid advertisement could disappear (sometimes ssid still can be seen from o=
+ther devices for a while until more severe exception messages printed out).=
+=0A=
+=0A=
+I can look into hostapd's code to see if there's something special there (t=
+he tool might work better with intel's adapters), and I saw there were peop=
+le making up patches for hostapd to make it work better with realtek adapte=
+rs (not for rtw_8822cu). =0A=
+=0A=
+Any help is much appreciated.=0A=
+=0A=
+Thanks=0A=
+=0A=
+Zhefeng=0A=
 
