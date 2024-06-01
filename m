@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-8373-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8374-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 078D58D6F48
-	for <lists+linux-wireless@lfdr.de>; Sat,  1 Jun 2024 12:10:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 868688D6F4F
+	for <lists+linux-wireless@lfdr.de>; Sat,  1 Jun 2024 12:15:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92DBFB229CB
-	for <lists+linux-wireless@lfdr.de>; Sat,  1 Jun 2024 10:10:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCAD0282C6C
+	for <lists+linux-wireless@lfdr.de>; Sat,  1 Jun 2024 10:15:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E4F480635;
-	Sat,  1 Jun 2024 10:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5033AD59;
+	Sat,  1 Jun 2024 10:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rttwk3+M"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kGcUA2bY"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BE96F2EB;
-	Sat,  1 Jun 2024 10:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1323846C
+	for <linux-wireless@vger.kernel.org>; Sat,  1 Jun 2024 10:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717236601; cv=none; b=nHjsjtzEWbaeXmw9oloMkbqHc+59PRwnCI9YpD4ODjOx6pUJ3Jlm/F0ZiKDyGU4CejrZxHS8HyblEHkAnIkjGRejpOSGFukeJC2tZflVD3GRd6FXhBuTi1GEZvngNaG3kZrLy5k5GUHSYOAeLmM/O5iue6Vfp0/P1j8J1dfrL9A=
+	t=1717236935; cv=none; b=fxa7B6ZCSEoLzRAsvZz6S4E5fzRGyBIf5Z2L+aVK6G3BGEMM6Ywgj/5iY7yfMzFqhG6ktga0XMNOZGlBIJqt+qkfglbu82LfHAjLmkKIBH4a6GSp/xHE+A6s2oJKs4u6Q2Vc7mZ4RBjjeKQ0Vmfrm2UDpFQwua+zRjKG3tpeQ/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717236601; c=relaxed/simple;
-	bh=a0/W5by6/xec9h+UXLZSahAaezpbZxiKHRI27sSNl2I=;
+	s=arc-20240116; t=1717236935; c=relaxed/simple;
+	bh=I+urqZeqP/RJ589i7U6evxXFo+gBeJpw521+t1ZTQew=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=X5H86TZBezLUsYnqvCu02FqkkhptZ8Xuw6J3roVKTPz3gbeiiyLx7+0qw92akdC/du11Gu2LGVWVG64KaLNcGBNqEuIHkt4kHzzIn7el3L37BAwFE0wvsVhNzqNdaS3Z3De+etSzZr1iL7GtEBCnwVWVT9kJjjjQs5FE1scKe9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rttwk3+M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D12C116B1;
-	Sat,  1 Jun 2024 10:09:58 +0000 (UTC)
+	 Cc:Message-ID:Date; b=TJmnnUhwLMe3TNIrxLlzQGLJKJnlzV7GWKrI7WEZPz6WndEFKAqK8qw8ygDKmQP9vlGZpOBVyYhHOIAzLYm3E3Ffl3YM9QY113VmbjojppC4xQoL+sFeVB1p2hbCXgySfFTJkRc0dmB+12gLEFGlQUlVV1WYQAQmGhI7rJAJArA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kGcUA2bY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67E8BC116B1;
+	Sat,  1 Jun 2024 10:15:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717236600;
-	bh=a0/W5by6/xec9h+UXLZSahAaezpbZxiKHRI27sSNl2I=;
+	s=k20201202; t=1717236935;
+	bh=I+urqZeqP/RJ589i7U6evxXFo+gBeJpw521+t1ZTQew=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=rttwk3+MAfGCnyG7t4kJq/knG9qH7Bcuz6V2DUhVgX7ualv2wWv7MMpUVC8vqLNaw
-	 LA+h6jciz8cBCgYHqE/WxNoMog3P1cb6QNOzT622zbSFkmgDoQfi7AMNaKDlnXKlLl
-	 yEFpzPa/zkXgnZs2Zc3HZMj6UpDWLuUzbYZ/CkOnk5PK4Jio2XNFPz0Hsa59wd7KVm
-	 8SwcSXVRaj+rJfudw1rRHmc3jkBvDhAflpLLQ3DQyJke2FHZMRN66tfYtOtvBYUSXL
-	 tccGDF/P1BWPMkc/l584dFvjZa8/kHtd12DITIGSKQ4XoxXN6nwN0S/ysFWrRLrvuy
-	 2OeOcNtRNuMSA==
+	b=kGcUA2bYJkvqrZHmt3Jlntzeon9lvBggQJ0WvVKRqdPD3xqXg1Rsr0iDQJzk/MQwK
+	 sxUqJpOJKYQY82hlLfLIjBInOyStMAcIQVMVCmCiasyWO3nqpJ4TKr3J3eKcd0X9Zv
+	 4uhnfoOisbuQTlPu/UXcVZJs3om4Fz6lcg0ljNsj1BmdXoAY9U8SJhZxVfY7ZJ0cub
+	 gL3EvesW7hVPucik1I4n0ekEvQ3zDHdFKPiM15MOrE7Yq2NvFIVJGNj0Q3wE0PX5fQ
+	 J47YcEVX6fYCWpwxjqu2kpTNCWkj3aKwYRtHOSy+pk5h7+fovcgX2vygv7xVjxVcPh
+	 nmNlnG1bYv7TQ==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,40 +49,39 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: brcm80211: remove unused structs
+Subject: Re: [PATCH] wifi: rtlwifi: Ignore IEEE80211_CONF_CHANGE_RETRY_LIMITS
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240526234553.286773-1-linux@treblig.org>
-References: <20240526234553.286773-1-linux@treblig.org>
-To: linux@treblig.org
-Cc: arend.vanspriel@broadcom.com, linux-wireless@vger.kernel.org,
- brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
- linux-kernel@vger.kernel.org, "Dr. David Alan Gilbert" <linux@treblig.org>
+In-Reply-To: <1fabb8e4-adf3-47ae-8462-8aea963bc2a5@gmail.com>
+References: <1fabb8e4-adf3-47ae-8462-8aea963bc2a5@gmail.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ Ping-Ke Shih <pkshih@realtek.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <171723659704.1034023.17135703392957281288.kvalo@kernel.org>
-Date: Sat,  1 Jun 2024 10:09:58 +0000 (UTC)
+Message-ID: <171723693285.1122510.13353583356130532921.kvalo@kernel.org>
+Date: Sat,  1 Jun 2024 10:15:34 +0000 (UTC)
 
-linux@treblig.org wrote:
+Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
 
-> From: "Dr. David Alan Gilbert" <linux@treblig.org>
+> Since commit 0a44dfc07074 ("wifi: mac80211: simplify non-chanctx
+> drivers") ieee80211_hw_config() is no longer called with changed = ~0.
+> rtlwifi relied on ~0 in order to ignore the default retry limits of
+> 4/7, preferring 48/48 in station mode and 7/7 in AP/IBSS.
 > 
-> 'brcmf_pcie_core_info' was added in
-> commit 9e37f045d5e7 ("brcmfmac: Adding PCIe bus layer support.")
-> but never used.
+> RTL8192DU has a lot of packet loss with the default limits from
+> mac80211. Fix it by ignoring IEEE80211_CONF_CHANGE_RETRY_LIMITS
+> completely, because it's the simplest solution.
 > 
-> 'brcms_c_bit_desc' last use was removed in
-> commit cdf4352f5c59 ("brcmsmac: Improve tx trace and debug support").
-> 
-> Remove them.
-> 
-> Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
-> Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Link: https://lore.kernel.org/linux-wireless/cedd13d7691f4692b2a2fa5a24d44a22@realtek.com/
+> Cc: stable@vger.kernel.org # 6.9.x
+> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Patch applied to wireless-next.git, thanks.
+Patch applied to wireless.git, thanks.
 
-5bcd9a0a5995 wifi: brcm80211: remove unused structs
+819bda58e77b wifi: rtlwifi: Ignore IEEE80211_CONF_CHANGE_RETRY_LIMITS
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240526234553.286773-1-linux@treblig.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/1fabb8e4-adf3-47ae-8462-8aea963bc2a5@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
