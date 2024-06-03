@@ -1,137 +1,164 @@
-Return-Path: <linux-wireless+bounces-8427-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8429-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5819D8D84D1
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jun 2024 16:22:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A26748D8586
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jun 2024 16:53:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13DFF286349
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jun 2024 14:22:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4918B23832
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jun 2024 14:53:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 500AE12E1DC;
-	Mon,  3 Jun 2024 14:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F370A12D1F1;
+	Mon,  3 Jun 2024 14:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="FrEL90mE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EjJZr+Vj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCE0757E0
-	for <linux-wireless@vger.kernel.org>; Mon,  3 Jun 2024 14:22:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE1C12F5A5
+	for <linux-wireless@vger.kernel.org>; Mon,  3 Jun 2024 14:52:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717424534; cv=none; b=n8WyswVjMPQU9nLkfo0TmOiWlnp6uWc5NkqFCqUn0KSOWjgqTUT8o4rGBFBWNMkLNoG+JYlCC3fq8C1rnZyVpjs8goZdEjsB0Mx0DhfjIje3O/wPG1pq0uhBNDQCOslAOxUdwN50L+WflyoiAhgM4qZmt2Y8lYNPoaV+6Wmnw7M=
+	t=1717426367; cv=none; b=ssL0dtLcBhP9ivLQ9AEBdky+OTwjrPKIFQNB5cv2YdGb1PxiTzlVPO90ibAFrDtrftDLUXCuS2Yd+zK8s44BG+8CIRMB//JjAPlJMUp4hfCupWXYmy5Jk1OySpXjzA0sJTlAqR40WJDYwATRrkdNb9kXdl5Tc/usUsnrrolpF34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717424534; c=relaxed/simple;
-	bh=HZWgof5CsfkK2aLzr232MvhJHg2SD0m34sJgyXQ3664=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=oHqaNj8Fd4tMW7EOzlVuet8/nF5ohH7ImnVS17lEvVGyJOZ6/bt2lGliZWC+vOmUWNuGEn4lmwQ/g4jG1lrIRw7tct5QLpAEZyF7q5DW6qwYNzR4EAIfpTY9KPO1atp9QH7+UdeTLkxtX289LeCdPRfOQgRozbzYllrF+uNKIjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=FrEL90mE; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 453AL2Hx001255;
-	Mon, 3 Jun 2024 14:22:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	deGssg183ZCrpccPm/B9J68lLaxpGMT56NuhV3wYCVM=; b=FrEL90mEx5JAG4hq
-	JIUXEq0fXb2Ym5MGbPnGk9zdiNyi8ymNeoNSsuiFhGzvvzv9azW0wGI4kxZdaP2e
-	jfOBZ7kSi4j7n4bWk8hpY6oWiofz/AnyDW93QYZb+01YEBpDyDYN3mgp4AAcOtZ8
-	1asMBzW8cWskMXZf5e0mrAXQUCkY79IhGSm4lx77Hp72a0lObLoAERar+2iQZYrF
-	HR9fFo0G6iVrZ61M4g8O6Ek9W01klnuWn1k1dPb428frweeDhllrNFyHLQcheBF6
-	E7/u8JFo0hxss6rqZpd5vei5B0eWxmY0ygEwr+u2rdnh9LYSnRQxbAdek5t6n1MX
-	Lqi97A==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yfw5wm434-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Jun 2024 14:22:09 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 453EM8Xv029402
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 3 Jun 2024 14:22:08 GMT
-Received: from [10.48.241.139] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 3 Jun 2024
- 07:22:07 -0700
-Message-ID: <991e7861-0c6e-4c77-a866-4295d775df35@quicinc.com>
-Date: Mon, 3 Jun 2024 07:22:06 -0700
+	s=arc-20240116; t=1717426367; c=relaxed/simple;
+	bh=L50mzYHAl+broDDdUVPJTzCnMe6cWLR2pEk07R4/mA4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tj+Z5rFt/hVpq4rkSFdrywFWHzGUD3pxMiM2FO6BcVvdFPtLWt5u23MWENuemf8dYZuaj7kGbKsFCiF591bfq8uBU+27FDNSpelEqAD+abRT+miJTGM0eAh5G0W2+RO4gDdbZOjtIxC9xRmEbsjSQmKrc17bbPAtZ5hL1T+lI6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EjJZr+Vj; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-70109d34a16so4037711b3a.2
+        for <linux-wireless@vger.kernel.org>; Mon, 03 Jun 2024 07:52:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1717426366; x=1718031166; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=L50mzYHAl+broDDdUVPJTzCnMe6cWLR2pEk07R4/mA4=;
+        b=EjJZr+Vj9yUTaoeNSqElsB0yCfdohdsa1zmnMmBJ41DcD3abzhS71iLpMeDB4Gk9WO
+         2otcqFkUZAR6VbcI3qbb177bH+a3xkqNfi0naHVcmyjWhDkToEGaXe78c+rpKzOYRP7q
+         V4Yw8yKmTn8MnYF9XOBuV7t+NiuGdju+3+xGef/214JyGsig+teqCcUL+P0L683nlEeY
+         VDxl7e5BdBvUkwwnWwcQxC4rfh5EMNwQBXEbHmXz4KxrZRexHF0YIDE47FvsxkXZ1tgf
+         Masryez8UA6NbvNtUTs0tU2LrY8kRjoBTgAh7WXXPv3oFDJC27tmAZq4rMgmg+/b3fig
+         42RQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717426366; x=1718031166;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=L50mzYHAl+broDDdUVPJTzCnMe6cWLR2pEk07R4/mA4=;
+        b=iZpC8HDUwku2j6oVS/FGYsm1mArMsTmSbd0kRf9xPfjIMyyqJHB2uMLHski5vrRLRl
+         4lhyQvaDJYQ3a3FvYHzBrWOH4EGwaZeTkD2VsuSRVpLXB8CJ3eiAlZcuMJXO6TG3gfeZ
+         Oiv1Jle5gqyWuFAQ7FZqe+qv+m12hc5KQ1jYduo5I10X3C9p1SL/FEGMlXGTkwAENuNW
+         F/PaFvgUSJKbzs5F2i1Iz9POac+MLQK6lZs1JQnLJWDM84KSGzDSMr/3+Jo+Zu2kahqm
+         5iG+aNhyUV4YrvyrfxGHk/IqSyDJOX/XgK2B2TWo5KLA7YZokYa0ABRvEUZdmtzfszwq
+         wBew==
+X-Gm-Message-State: AOJu0Yxoq08XDUdYe7VwjUhL1gX+TEM1EOGLsraO16z4ZTBDQbOW0bvl
+	FhvAVnxrRmpQPOTvTshj4txmD6CvWWLugX/jTyJOhkScwNNFX/qU7lpELh9jbwxd1hHLzgYzxPJ
+	IMqiO9xbKDZtO6pPkJgYZrDlxoRk=
+X-Google-Smtp-Source: AGHT+IFqorXq+HifS811xR7ulyfgQe91irwhg+z8+RdxovU5PSbjVha+xTZGRBPCHUc2cfU0h9wjptvNix0CC+1FVls=
+X-Received: by 2002:aa7:8890:0:b0:702:2d79:f4e5 with SMTP id
+ d2e1a72fcca58-702477be3bbmr11434555b3a.5.1717426365554; Mon, 03 Jun 2024
+ 07:52:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 6/8] wifi: ath12k: support ARP and NS offload
-Content-Language: en-US
-To: Baochen Qiang <quic_bqiang@quicinc.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240530072714.25671-1-quic_bqiang@quicinc.com>
- <20240530072714.25671-7-quic_bqiang@quicinc.com>
- <ccf9791b-e050-4844-8c37-35873fb3fcaf@quicinc.com>
- <17721436-19fb-4337-9058-b20f4df2792c@quicinc.com>
- <af326e49-df6e-4574-9562-44b6aee10abd@quicinc.com>
- <29f1a482-2ead-474a-93a1-00616bcf06f8@quicinc.com>
- <0a386734-5796-4d99-ad4b-ee0a5653a25e@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <0a386734-5796-4d99-ad4b-ee0a5653a25e@quicinc.com>
+References: <20240527173454.459264-1-marcin.slusarz@gmail.com>
+ <9bfc8f01e99b43e485b2afc6ae4fd661@realtek.com> <CA+GA0_sQ_Bnp8CUq1Pmxf7zut1Kocaxbw4iXT4hYC5_ceXb7WQ@mail.gmail.com>
+ <3cc9cc75468d487c988dbacd8dfc5f57@realtek.com> <CA+GA0_tUy0EuXm0CGYa8SsS78oRNHUanBNwRf_BLXERa1=MYdg@mail.gmail.com>
+ <b9c85972ab634364bf8a705a4f4513fd@realtek.com>
+In-Reply-To: <b9c85972ab634364bf8a705a4f4513fd@realtek.com>
+From: =?UTF-8?Q?Marcin_=C5=9Alusarz?= <marcin.slusarz@gmail.com>
+Date: Mon, 3 Jun 2024 16:52:39 +0200
+Message-ID: <CA+GA0_v1rpoFrRVxpKpYqOrjdxEecn_m3+RKwxYc9H761dpMvw@mail.gmail.com>
+Subject: Re: wifi: rtw88: 8821CU hangs after some number of power-off/on cycles
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, =?UTF-8?Q?Marcin_=C5=9Alusarz?= <mslusarz@renau.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: HjqLcgd7FzlruVjyGB9-JypXonw18dNB
-X-Proofpoint-ORIG-GUID: HjqLcgd7FzlruVjyGB9-JypXonw18dNB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-06-03_11,2024-05-30_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
- adultscore=0 suspectscore=0 priorityscore=1501 clxscore=1015
- lowpriorityscore=0 mlxlogscore=940 bulkscore=0 spamscore=0 phishscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2406030119
+Content-Transfer-Encoding: quoted-printable
 
-On 6/2/2024 7:48 PM, Baochen Qiang wrote:
-> 
-> 
-> On 6/1/2024 1:26 AM, Jeff Johnson wrote:
->> On 5/30/2024 10:11 PM, Baochen Qiang wrote:
->>>
->>>
->>> On 5/31/2024 11:42 AM, Baochen Qiang wrote:
->>>>>> +static void ath12k_wow_prepare_ns_offload(struct ath12k_vif *arvif,
->>>>>> +					  struct wmi_arp_ns_offload_arg *offload)
->>>>>> +{
->>>>>> +	struct inet6_dev *idev = arvif->idev;
->>>>> as noted above does it make more sense to get the netdev associated with the
->>>>> arvif and then use in6_dev_get(net_device) to get the inet6_dev rather than
->>>>> caching the pointer from the ipv6_addr_changed() callback?
->>>> Ah.. I didn't note that we can get inet6_dev in such a way, just thought the only way is to cache it in ipv6_changed() callback.
->>>>
->>>> will get it using the following in next version:
->>>> 	struct ieee80211_vif *vif = container_of(arvif)
->>>> 	struct ieee80211_sub_if_data *sub_if_data = container_of(vif)
->>>> 	struct net_dev *ndev = sub_if_data->dev
->>>> 	struct inet6_dev *idev = in6_dev_get(ndev)
->>> Just found that ieee80211_sub_if_data is internal to mac80211, so not possible to get netdev in this way.
->>>
->>> any other ideas on how to get netdev?
->>
->> Thinking about this some more, it seems like you'd want to send these down to
->> firmware immediately so that they'd be available for NS offload. Does firmware
->> support NS offload even when host is awake (I think the downstream Android
->> driver supports that)?
-> And really curious about the use case in Android scenario.
+czw., 30 maj 2024 o 05:13 Ping-Ke Shih <pkshih@realtek.com> napisa=C5=82(a)=
+:
+>
+> Marcin =C5=9Alusarz <marcin.slusarz@gmail.com> wrote:
+> > =C5=9Br., 29 maj 2024 o 03:52 Ping-Ke Shih <pkshih@realtek.com> napisa=
+=C5=82(a):
+> > >
+> > > Marcin =C5=9Alusarz <marcin.slusarz@gmail.com> wrote:
+> > > > wt., 28 maj 2024 o 05:52 Ping-Ke Shih <pkshih@realtek.com> napisa=
+=C5=82(a):
+> > > > >
+> > > > > Marcin =C5=9Alusarz <marcin.slusarz@gmail.com> wrote:
+> > > > > >
+> > > > > > I found out that the reason for those hangs is a power-off+on s=
+equence that's
+> > > > > > triggered by the above steps.
+> > > > >
+> > > > > To avoid power-off/on sequence once device becomes idle, I would =
+like to add
+> > > > > a ips_disabled helper. Please revert your changes and apply my at=
+tached patch.
+> > > >
+> > > > My first attempt was very similar, and it fixed some cases but not =
+all of them.
+> > > >
+> > > > This is due to the existence of a second source of power-offs - rtw=
+_ops_stop,
+> > > > which is called, e.g., on downing the interface (ifconfig wlan0 dow=
+n).
+> > >
+> > > Please try attached v2 patch. I would like to have an explicit helper
+> > > (i.e. always_power_on in v2) to have this fix, so days later people c=
+an be easy
+> > > to understand how it works. Not prefer adjusting existing flags to im=
+plicitly
+> > > have behavior you want.
+> >
+> > So, do you think this is a chip issue, not just some driver misconfigur=
+ation?
+>
+> I asked internal USB WiFi people who say vendor drivers of USB/SDIO can't
+> power-on/-off frequently but not very sure if hardware issue or driver is=
+sue.
+>
+> >
+> > I'm asking because if we are going in this direction, there's something
+> > more to fix... With your v2, very frequently, I hit WARN_ON(!local->sta=
+rted) in
+> > ieee80211_rx_napi (in wireless-next, the code was moved to ieee80211_rx=
+_list).
+> >
+> > With my patch, I checked and hit that WARN_ON, too, but very occasional=
+ly.
+> >
+> > I think the difference is in what happens in rtw_ips_enter - I disabled=
+ only
+> > the power_off, but you also disabled everything else, including the can=
+celation
+> > of work_structs.
+> >
+> > The warning itself sounds harmless, but I think users should never see =
+such
+> > warnings, so this needs to be fixed somehow. Probably some additional
+> > work_struct(s) need to be canceled?
+> >
+>
+> I forgot to say my patch is compiled test only, and I didn't consider flo=
+w
+> too much, just to close the behavior of your patches. You can improve my =
+patch
+> to be more reliable to avoid WARN_ON().
 
-It's all about saving power. The application processor consumes way more power
-than the firmware processors, so any work that can be performed by firmware
-extends battery life.
-
-A laptop running on battery would presumably benefit from this as well.
-
-But let's get basic functionality in place using ieee80211_vif_to_wdev()
+Two variants of the patch that fix this issue will follow. They are
+built on top of yours
+v2 and my "wifi: rtw88: schedule rx work after everything is set up"
+from the other thread.
+Please choose the one you like more :).
 
