@@ -1,199 +1,96 @@
-Return-Path: <linux-wireless+bounces-8386-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8387-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B52F8D7974
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jun 2024 03:01:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF1BF8D7979
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jun 2024 03:07:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 344781F215FA
-	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jun 2024 01:01:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56174B20B88
+	for <lists+linux-wireless@lfdr.de>; Mon,  3 Jun 2024 01:07:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5578FA34;
-	Mon,  3 Jun 2024 01:01:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="tWYufJXx"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2FC110E6;
+	Mon,  3 Jun 2024 01:07:02 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 928B010E6;
-	Mon,  3 Jun 2024 01:01:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD2F631
+	for <linux-wireless@vger.kernel.org>; Mon,  3 Jun 2024 01:07:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717376482; cv=none; b=jQY9JzdrCOp/qY2El5NInTBgSKnZSEyTBZc1nyZfvprpRQEbA3rMSwZ+YsAx3bwrEyLew0Y7RofZH1+Pa9kCgrrkHMl+l0x2AcWnzEna5YROY5j4aK8qUBo8/nImySTZCtNuVRU1shpHPbTWpp7rUfcEnnwvuPx1SWzJntZk4P8=
+	t=1717376822; cv=none; b=Jke0TKZIGVZeLCxY84c0XPx90n1kyToezQ2Jd3q//w9nNZ8UWZGykdOmz93Dl58IBZO8/sQrrqeN5yCKI0zEtuNKE6pGXeil70MW9w7E/I0AY01kL+EXMEUQ0j/fq1dply9QqJ/3ERRu9kPFk1Rw8hlunB2jyChEh9A3Catl6EU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717376482; c=relaxed/simple;
-	bh=WsxmSnVOfFkU7amu/IfJK6x2Dv1B0lj8Xc7qDr+yCgY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=Rw3/YaV/kzSpSvMszqNsAyoK8HekcIcuaHR1y1lAnc1zT5xcZ4SXQEKPAHIE0SgI0SP2Z1++kc6aOWsh8wZT3iraKmxN4SI9BT1iy8Q5mBy3I5moIQKzg+ck13TCCq5YiUh07DFlbfrLjgb5zfYRC4VbDUbL3QBg5iFbXrd0F2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=tWYufJXx; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=201702; t=1717376476;
-	bh=mw8hyXSE9bFJ4MtVqvHaxGbgI57D2tjW39scQTVUe4I=;
-	h=Date:From:To:Cc:Subject:From;
-	b=tWYufJXxbRDZVSOCxft3qnO2eCpy2mpoyD0JSR/Wr8cbM+o9FWJV1M8rsJFnlY8h2
-	 VGZdfi32jpPQUteH1MDesU+o8iMAt48vHB0jzKErNtYfrRithA3O3emQfNoaES7MQo
-	 LFsJIQdKsLaLZ+slMtqSmUngk8jKJNxe36pvU9/77qRXYq29/2GZlDcEgvUu2yOHW3
-	 4rY/YTjqw7R4xHd1jbilHZ1BQ3pIcSlwZyJCxwuewNKV/J5B9lEJwAMgluwMO7m+wO
-	 uz8IKI4F+mdlXUf+UbFLkUvSZFESvANBCwtkJ8MKKiyEzUThqnilr7olzDCuoBBl/B
-	 MVGujOHVX3R5Q==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VswQd00Gmz4wc8;
-	Mon,  3 Jun 2024 11:01:12 +1000 (AEST)
-Date: Mon, 3 Jun 2024 11:01:12 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Kalle Valo <kvalo@kernel.org>, Johannes Berg
- <johannes@sipsolutions.net>, Wireless <linux-wireless@vger.kernel.org>
-Cc: Alexis =?UTF-8?B?TG90aG9yw6k=?= <alexis.lothore@bootlin.com>, Linux
- Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux Next Mailing List
- <linux-next@vger.kernel.org>
-Subject: linux-next: manual merge of the wireless-next tree with the
- wireless tree
-Message-ID: <20240603110023.23572803@canb.auug.org.au>
+	s=arc-20240116; t=1717376822; c=relaxed/simple;
+	bh=Y5qj08pLJQyCL/0P0Sp+wxoBjxUchtHMwyDXWpua3GM=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=I2HikXMeHArjUlqwQXGpPFK6t/NegH3S/ifHvMQRknpLWwotC+BSaKeY9vMwAUs0IL5kCIwTqK3auuCRxP/AdqXrp10wy7wNIE2YPn2oPtzywIb86DEd6M6BAdX2TYaNOoonVnEZdcbNM44xqW0TG7/qqtnFSgsmzx3BXWsbyiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 45316v3zA2099295, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 45316v3zA2099295
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 3 Jun 2024 09:06:57 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 3 Jun 2024 09:06:57 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Mon, 3 Jun 2024 09:06:56 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
+ 15.01.2507.035; Mon, 3 Jun 2024 09:06:56 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: devin <maildevinplease@gmail.com>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>
+Subject: RE: Realtek RTL8822CE PCIe Frequent Disconnection Issues on Linux
+Thread-Topic: Realtek RTL8822CE PCIe Frequent Disconnection Issues on Linux
+Thread-Index: AQHatG9h3oJF6pMaqU+NEkQZRdCiCbG1N6PQ
+Date: Mon, 3 Jun 2024 01:06:56 +0000
+Message-ID: <c0709b4c6a2d4be6895eb74994acf8d6@realtek.com>
+References: <CAMY0kPLv-W=cXOzT6MAwu7vWr7GcOLWA0aiygbsuUkOAtMeJzg@mail.gmail.com>
+In-Reply-To: <CAMY0kPLv-W=cXOzT6MAwu7vWr7GcOLWA0aiygbsuUkOAtMeJzg@mail.gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/05OeU/QARN9V22btBlEw4aP";
- protocol="application/pgp-signature"; micalg=pgp-sha256
 
---Sig_/05OeU/QARN9V22btBlEw4aP
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-
-Hi all,
-
-Today's linux-next merge of the wireless-next tree got a conflict in:
-
-  drivers/net/wireless/microchip/wilc1000/netdev.c
-
-between commit:
-
-  ebfb5e8fc8b4 ("Revert "wifi: wilc1000: convert list management to RCU"")
-
-from the wireless tree and commit:
-
-  6fe46d5c0a84 ("wifi: wilc1000: set net device registration as last step d=
-uring interface creation")
-
-from the wireless-next tree.
-
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
-
---=20
-Cheers,
-Stephen Rothwell
-
-diff --cc drivers/net/wireless/microchip/wilc1000/netdev.c
-index 710e29bea560,4e2698528a49..000000000000
---- a/drivers/net/wireless/microchip/wilc1000/netdev.c
-+++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
-@@@ -679,9 -669,9 +672,9 @@@ static int wilc_set_mac_addr(struct net
-  			return 0;
-  		}
-  	}
- -	rcu_read_unlock();
- +	srcu_read_unlock(&wilc->srcu, srcu_idx);
- =20
-- 	result =3D wilc_set_mac_address(vif, (u8 *)addr->sa_data);
-+ 	result =3D wilc_set_mac_address(vif, addr->sa_data);
-  	if (result)
-  		return result;
- =20
-@@@ -972,6 -959,28 +966,28 @@@ struct wilc_vif *wilc_netdev_ifc_init(s
-  	vif->priv.wdev.iftype =3D type;
-  	vif->priv.dev =3D ndev;
- =20
-+ 	ndev->needs_free_netdev =3D true;
-+ 	vif->iftype =3D vif_type;
-+ 	vif->idx =3D wilc_get_available_idx(wl);
-+ 	vif->mac_opened =3D 0;
-+=20
-+ 	memcpy(mac_address, wl->nv_mac_address, ETH_ALEN);
-+ 	/* WILC firmware uses locally administered MAC address for the
-+ 	 * second virtual interface (bit 1 of first byte set), but
-+ 	 * since it is possibly not loaded/running yet, reproduce this behavior
-+ 	 * in the driver during interface creation.
-+ 	 */
-+ 	if (vif->idx)
-+ 		mac_address[0] |=3D 0x2;
-+=20
-+ 	eth_hw_addr_set(vif->ndev, mac_address);
-+=20
-+ 	mutex_lock(&wl->vif_mutex);
-+ 	list_add_tail_rcu(&vif->list, &wl->vif_list);
-+ 	wl->vif_num +=3D 1;
-+ 	mutex_unlock(&wl->vif_mutex);
- -	synchronize_rcu();
-++	synchronize_srcu(&wl->srcu);
-+=20
-  	if (rtnl_locked)
-  		ret =3D cfg80211_register_netdevice(ndev);
-  	else
-@@@ -979,26 -988,17 +995,17 @@@
- =20
-  	if (ret) {
-  		ret =3D -EFAULT;
-- 		goto error;
-+ 		goto error_remove_vif;
-  	}
- =20
-- 	ndev->needs_free_netdev =3D true;
-- 	vif->iftype =3D vif_type;
-- 	vif->idx =3D wilc_get_available_idx(wl);
-- 	vif->mac_opened =3D 0;
-- 	mutex_lock(&wl->vif_mutex);
-- 	list_add_tail_rcu(&vif->list, &wl->vif_list);
-- 	wl->vif_num +=3D 1;
-- 	mutex_unlock(&wl->vif_mutex);
-- 	synchronize_srcu(&wl->srcu);
--=20
-  	return vif;
- =20
-- error:
-- 	if (rtnl_locked)
-- 		cfg80211_unregister_netdevice(ndev);
-- 	else
-- 		unregister_netdev(ndev);
-+ error_remove_vif:
-+ 	mutex_lock(&wl->vif_mutex);
-+ 	list_del_rcu(&vif->list);
-+ 	wl->vif_num -=3D 1;
-+ 	mutex_unlock(&wl->vif_mutex);
- -	synchronize_rcu();
-++	synchronize_srcu(&wl->srcu);
-  	free_netdev(ndev);
-  	return ERR_PTR(ret);
-  }
-
---Sig_/05OeU/QARN9V22btBlEw4aP
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmZdFdgACgkQAVBC80lX
-0Gwkfwf/drOmN75fgWcpn3xrxdrqng1PyF0wr1Vp4nKqgNlxKXEmK6jSqh5yDeN+
-6A7OggoDlsGfYAakLCEghJ40a8LIVqEM8oLISXbRVRHi2kHQXt89WLCds3qbcuzS
-dBY2gJWhwuMkGAnQWQ6PXr90atAYI7zZ07zunOX+cHYbYBMr2358SUX+ZaMGWRok
-w3ZQ6ZiJQv3UtYVn3vWi6wsm2jmTIFFDwqF8L2ky0hMsj7/Rv8a4zt2/ebbWOvuB
-BynFvvXX/TYpeluaQ5XEg+1QVO0LnYMmkbzkpiNCyM0iUu45sUUEG+lukgeBjW2a
-3an4E0V8z9vgBG02IYFkk4iXlurb/Q==
-=hvcf
------END PGP SIGNATURE-----
-
---Sig_/05OeU/QARN9V22btBlEw4aP--
+ZGV2aW4gPG1haWxkZXZpbnBsZWFzZUBnbWFpbC5jb20+IHdyb3RlOg0KPiANCj4gWyAgNDU2Ljcz
+NzQ4MV0gd2xwMnMwOiBDb25uZWN0aW9uIHRvIEFQIDEwOmRhOjQzOjk2OmNkOjFkIGxvc3QNCj4g
+WyAgNDU4LjEwMjIwNF0gd2xwMnMwOiA4MCBNSHogbm90IHN1cHBvcnRlZCwgZGlzYWJsaW5nIFZI
+VA0KPiBbICA0NTguMzA0NjkzXSB3bHAyczA6IGF1dGhlbnRpY2F0ZSB3aXRoIDEwOmRhOjQzOjk2
+OmNkOjFkIChsb2NhbA0KPiBhZGRyZXNzPWM4Ojk0OjAyOjA1OmM0OmE5KQ0KPiBbICA0NTguMzY3
+ODUxXSB3bHAyczA6IHNlbmQgYXV0aCB0byAxMDpkYTo0Mzo5NjpjZDoxZCAodHJ5IDEvMykNCj4g
+WyAgNDU4LjM3NTI5M10gd2xwMnMwOiBhdXRoZW50aWNhdGVkDQo+IFsgIDQ1OC4zNzU2NjZdIHds
+cDJzMDogYXNzb2NpYXRlIHdpdGggMTA6ZGE6NDM6OTY6Y2Q6MWQgKHRyeSAxLzMpDQo+IFsgIDQ1
+OC4zODE2MzNdIHdscDJzMDogUlggQXNzb2NSZXNwIGZyb20gMTA6ZGE6NDM6OTY6Y2Q6MWQNCj4g
+KGNhcGFiPTB4MTQxMSBzdGF0dXM9MCBhaWQ9MTIpDQo+IFsgIDQ1OC4zODIwMThdIHdscDJzMDog
+YXNzb2NpYXRlZA0KPiBbICA0NTguNDU4NDg4XSB3bHAyczA6IExpbWl0aW5nIFRYIHBvd2VyIHRv
+IDMwICgzMCAtIDApIGRCbSBhcw0KPiBhZHZlcnRpc2VkIGJ5IDEwOmRhOjQzOjk2OmNkOjFkDQoN
+ClNpbmNlIHlvdXIgY29ubmVjdGlvbnMgZ2V0IGxvc3QgYWZ0ZXIgYWJvdXQgMjAgc2Vjb25kcywg
+aXQncyB3b3J0aCB0byBnaXZlDQphIHRyeSB0byBkaXNhYmxlIHBvd2VyIHNhdmUgYnkNCg0KICAg
+c3VkbyBpdyB3bGFuMSBzZXQgcG93ZXIgc2F2ZSBvZmYNCg0KDQo+IFsgIDQ3NS42MTk5MjNdIHds
+cDJzMDogQ29ubmVjdGlvbiB0byBBUCAxMDpkYTo0Mzo5NjpjZDoxZCBsb3N0DQo+IFsgIDQ3Ny4w
+MjAyMzhdIHdscDJzMDogODAgTUh6IG5vdCBzdXBwb3J0ZWQsIGRpc2FibGluZyBWSFQNCj4gWyAg
+NDc3LjIyMTcyM10gd2xwMnMwOiBhdXRoZW50aWNhdGUgd2l0aCAxMDpkYTo0Mzo5NjpjZDoxZCAo
+bG9jYWwNCj4gYWRkcmVzcz1jODo5NDowMjowNTpjNDphOSkNCj4gWyAgNDc3LjI4NDk3Nl0gd2xw
+MnMwOiBzZW5kIGF1dGggdG8gMTA6ZGE6NDM6OTY6Y2Q6MWQgKHRyeSAxLzMpDQo+IFsgIDQ3Ny4y
+OTIzNjZdIHdscDJzMDogYXV0aGVudGljYXRlZA0KPiBbICA0NzcuMjkyODcxXSB3bHAyczA6IGFz
+c29jaWF0ZSB3aXRoIDEwOmRhOjQzOjk2OmNkOjFkICh0cnkgMS8zKQ0KPiBbICA0NzcuMjk5Mjgx
+XSB3bHAyczA6IFJYIEFzc29jUmVzcCBmcm9tIDEwOmRhOjQzOjk2OmNkOjFkDQo+IChjYXBhYj0w
+eDE0MTEgc3RhdHVzPTAgYWlkPTEyKQ0KPiBbICA0NzcuMjk5NjY1XSB3bHAyczA6IGFzc29jaWF0
+ZWQNCj4gWyAgNDc3LjMwMjU2N10gd2xwMnMwOiBMaW1pdGluZyBUWCBwb3dlciB0byAzMCAoMzAg
+LSAwKSBkQm0gYXMNCj4gYWR2ZXJ0aXNlZCBieSAxMDpkYTo0Mzo5NjpjZDoxZA0KDQoNCg==
 
