@@ -1,70 +1,68 @@
-Return-Path: <linux-wireless+bounces-8465-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8466-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08A178FAA4F
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jun 2024 07:55:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 083568FAAB6
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jun 2024 08:27:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CD7AB2585C
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jun 2024 05:55:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACF3C1F22B41
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jun 2024 06:27:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4442F13F452;
-	Tue,  4 Jun 2024 05:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89F82136E2B;
+	Tue,  4 Jun 2024 06:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Fe7t8pcx"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QzF6EF+s"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74FF413F442
-	for <linux-wireless@vger.kernel.org>; Tue,  4 Jun 2024 05:54:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3077B65F
+	for <linux-wireless@vger.kernel.org>; Tue,  4 Jun 2024 06:26:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717480477; cv=none; b=AG9FXhO7Idx1QFlaUQRv/d/miHb5WWizs9QmGA9JJrxsjsdl4DpwY4ti5m6IJXwibwkqSfT9ZOYbLbXp71G+zGYBy+6nYaJV+LXfrsrF4smiEABEMFEvn7O9kzH3wf/EDm6oHWgxhzNO4gUSJo0JWC5F+DJ5OPk7ipUQ6eocV6w=
+	t=1717482421; cv=none; b=t82v9CDXCBNho5Tr0nJOnRrM8CPpThpLgzIE42Vnh+X67uwOOX2HZM9/NFL3F/QOayDmPAg9eeMaXV07p2Aj2bqnhA9CqiJtt7M8ljVviOj6s9ecGdRrX1gN6G363AYVSsRcGWTpq2nVYa1gYCTI0TkRVoGqqbgZLUTZvhC44Oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717480477; c=relaxed/simple;
-	bh=vUkyZUvoqRYlRDkJ8W+cDzlcrkIrBjV74lxvl7xEOrY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WnjVCtYkLldVqf8oGvWr97YLH/bkGY2iPEDwJ4x0ecivz7GlKnBxshUWnWyBJccJ9NSF8CN6b1sW20hfn76FFuUiJqn7R75rriq8muAiW+ROkwwl3R3AZJsftGOP9Jl5FhTMriRUlTS9UxqCM7YISTf6siPi9ZsCaKEpm5mFr+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Fe7t8pcx; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1717482421; c=relaxed/simple;
+	bh=Mchl8aUb1KYJMe1CoATDEQ/A1EEj3104fYiKo0GduEo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=DP+IyhlakISMuzw7MGRFlhgfwomufUuYF5MHsFoCb5ArcZFT+Nnwh4uwQnIY3IYkkt2S0ki6J6CE/esYglcxNGARCEAlKj3FoPYgasrUX9tVIRKZgosWz0AN3zDWl7rKLFNoKsNZf3nP4H+0PMpiMm0lf3OIgpUxMa1LbK+t+cQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=QzF6EF+s; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 453NIl7a012642;
-	Tue, 4 Jun 2024 05:54:32 GMT
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 453N13oU001552;
+	Tue, 4 Jun 2024 06:26:56 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	WEZUzHKJFaTM09su+Fgyae1C4EmDGkXpTxuji0Tic6g=; b=Fe7t8pcxT7CrFPPn
-	2fHBYY5MCrOUyTS8WW870/R17aDZ/y0/cLgvrU7+I5kDmCLFdJ6Dv+CjLYStpSpB
-	fmPYHBR10p7NRRTnpGiUpJ0d0xcjpfbkmvTcHRbETAoqLKQPaN89VF8cOfUG/9jw
-	lTtHsTU0SFn6gjfHEZfNtYqfqvh+7X51t8eqib5jHT2mJTYIYzOPC713feSmtZfa
-	SRSWgxtFxvDITx9MabVQo5qF/uvN9zR/lArHdIqSVNxXCRKN7HSi1n2nboXnH5z0
-	piVsellbUS1piVXlsJ7n6p3SGwrk83xgkfdkSu3JuH+DpsMk4/lCpJMVFxtrLG6s
-	FZdu6w==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yfw4ap3uk-1
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=8CP5EFDC5Z1q3FYqUkR3iq
+	QgAqGx8EVTHVM3KUEuD9A=; b=QzF6EF+sNGOcN7yss58h2MRxKuOegt/Jwn+lyG
+	cLnA8FMANrp+421Usk0M/CC4BsA2C/7iIPBaSwsDfmMefZI1TgnkGPUWNploVHUG
+	A4egnfXy74kdxXwKQMEc6HCHC8TwL8ddfMstShVp0/Dh9kZxR/A4A0H7BEYci5WC
+	r0d+FsRGRtJ+AcIL2GZ1S6JzO8En068eqeU2JoEOwCsAZX7kLOw2u/KEKqdRtXTO
+	2KxQTEnmiIVwX52pMVGQ/0XLoHCzua+KcP2Exnnp86+qwk4GXKoK+8Hu2/XGprpH
+	Zf5hP6bdvygKPGbbicJxDM7VXIa8yHcEypEnK3rbqUQc4Ngg==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yfw6v62p0-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Jun 2024 05:54:31 +0000 (GMT)
+	Tue, 04 Jun 2024 06:26:56 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4545sUTk029401
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4546Qtck026237
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 4 Jun 2024 05:54:30 GMT
-Received: from bqiang-SFF.qca.qualcomm.com (10.80.80.8) by
+	Tue, 4 Jun 2024 06:26:55 GMT
+Received: from hu-periyasa-blr.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Mon, 3 Jun 2024 22:54:29 -0700
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+ 15.2.1544.9; Mon, 3 Jun 2024 23:26:53 -0700
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, <quic_bqiang@quicinc.com>
-Subject: [PATCH v4 8/8] wifi: ath12k: handle keepalive during WoWLAN suspend and resume
-Date: Tue, 4 Jun 2024 13:54:07 +0800
-Message-ID: <20240604055407.12506-9-quic_bqiang@quicinc.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240604055407.12506-1-quic_bqiang@quicinc.com>
-References: <20240604055407.12506-1-quic_bqiang@quicinc.com>
+CC: <linux-wireless@vger.kernel.org>,
+        Karthikeyan Periyasamy
+	<quic_periyasa@quicinc.com>
+Subject: [PATCH] wifi: ath12k: avoid unnecessary MSDU drop in the Rx error process
+Date: Tue, 4 Jun 2024 11:56:41 +0530
+Message-ID: <20240604062641.2956288-1-quic_periyasa@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -73,272 +71,60 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: jq493CaQBZTNpamRvlXnR7GMSl-fCMhY
-X-Proofpoint-ORIG-GUID: jq493CaQBZTNpamRvlXnR7GMSl-fCMhY
+X-Proofpoint-GUID: xCV4x4bBHxQJNzKRVIcsOJZ3-3_9kuck
+X-Proofpoint-ORIG-GUID: xCV4x4bBHxQJNzKRVIcsOJZ3-3_9kuck
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
  definitions=2024-06-04_02,2024-05-30_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- mlxlogscore=999 lowpriorityscore=0 malwarescore=0 priorityscore=1501
- suspectscore=0 mlxscore=0 bulkscore=0 spamscore=0 adultscore=0
- clxscore=1015 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2406040046
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 malwarescore=0
+ impostorscore=0 mlxscore=0 suspectscore=0 adultscore=0 lowpriorityscore=0
+ clxscore=1015 spamscore=0 priorityscore=1501 mlxlogscore=855 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405170001
+ definitions=main-2406040050
 
-With WoWLAN enabled and after sleeping for a rather long time,
-we are seeing that with some APs, it is not able to wake up
-the STA though the correct wake up pattern has been configured.
-This is because the host doesn't send keepalive command to
-firmware, thus firmware will not send any packet to the AP and
-after a specific time the AP kicks out the STA.
+Currently, in the Rx error processing handler, once an MSDU drop is
+detected, the subsequent MSDUs get unintentionally dropped due to the
+previous drop flag being retained across all MSDU processing, leading
+to the discarding of valid MSDUs. To resolve this issue, the drop flag
+should be reset to false before processing each descriptor.
 
-So enable keepalive before going to suspend and disable it after
-resume back.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
-
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/mac.c | 31 ++++++++++++++++++
- drivers/net/wireless/ath/ath12k/mac.h |  4 +++
- drivers/net/wireless/ath/ath12k/wmi.c | 38 ++++++++++++++++++++++
- drivers/net/wireless/ath/ath12k/wmi.h | 46 +++++++++++++++++++++++++++
- drivers/net/wireless/ath/ath12k/wow.c | 34 ++++++++++++++++++++
- 5 files changed, 153 insertions(+)
+ drivers/net/wireless/ath/ath12k/dp_rx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 7d7757ff5e51..8b79385bc29a 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -9372,3 +9372,34 @@ int ath12k_mac_allocate(struct ath12k_base *ab)
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index cb1f308f096b..54aea3c22311 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -3402,7 +3402,7 @@ int ath12k_dp_rx_process_err(struct ath12k_base *ab, struct napi_struct *napi,
+ 	struct ath12k *ar;
+ 	dma_addr_t paddr;
+ 	bool is_frag;
+-	bool drop = false;
++	bool drop;
+ 	int pdev_id;
  
- 	return ret;
- }
-+
-+int ath12k_mac_vif_set_keepalive(struct ath12k_vif *arvif,
-+				 enum wmi_sta_keepalive_method method,
-+				 u32 interval)
-+{
-+	struct wmi_sta_keepalive_arg arg = {};
-+	struct ath12k *ar = arvif->ar;
-+	int ret;
-+
-+	lockdep_assert_held(&ar->conf_mutex);
-+
-+	if (arvif->vdev_type != WMI_VDEV_TYPE_STA)
-+		return 0;
-+
-+	if (!test_bit(WMI_TLV_SERVICE_STA_KEEP_ALIVE, ar->ab->wmi_ab.svc_map))
-+		return 0;
-+
-+	arg.vdev_id = arvif->vdev_id;
-+	arg.enabled = 1;
-+	arg.method = method;
-+	arg.interval = interval;
-+
-+	ret = ath12k_wmi_sta_keepalive(ar, &arg);
-+	if (ret) {
-+		ath12k_warn(ar->ab, "failed to set keepalive on vdev %i: %d\n",
-+			    arvif->vdev_id, ret);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-diff --git a/drivers/net/wireless/ath/ath12k/mac.h b/drivers/net/wireless/ath/ath12k/mac.h
-index 69fd282b9dd3..2c6cb144827a 100644
---- a/drivers/net/wireless/ath/ath12k/mac.h
-+++ b/drivers/net/wireless/ath/ath12k/mac.h
-@@ -9,6 +9,7 @@
+ 	tot_n_bufs_reaped = 0;
+@@ -3420,7 +3420,9 @@ int ath12k_dp_rx_process_err(struct ath12k_base *ab, struct napi_struct *napi,
  
- #include <net/mac80211.h>
- #include <net/cfg80211.h>
-+#include "wmi.h"
- 
- struct ath12k;
- struct ath12k_base;
-@@ -81,5 +82,8 @@ int ath12k_mac_rfkill_config(struct ath12k *ar);
- int ath12k_mac_wait_tx_complete(struct ath12k *ar);
- void ath12k_mac_handle_beacon(struct ath12k *ar, struct sk_buff *skb);
- void ath12k_mac_handle_beacon_miss(struct ath12k *ar, u32 vdev_id);
-+int ath12k_mac_vif_set_keepalive(struct ath12k_vif *arvif,
-+				 enum wmi_sta_keepalive_method method,
-+				 u32 interval);
- 
- #endif
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index 877ba231830b..6c69167c201a 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -8041,3 +8041,41 @@ int ath12k_wmi_gtk_rekey_getinfo(struct ath12k *ar,
- 		   arvif->vdev_id);
- 	return ath12k_wmi_cmd_send(ar->wmi, skb, WMI_GTK_OFFLOAD_CMDID);
- }
+ 	while (budget &&
+ 	       (reo_desc = ath12k_hal_srng_dst_get_next_entry(ab, srng))) {
++		drop = false;
+ 		ab->soc_stats.err_ring_pkts++;
 +
-+int ath12k_wmi_sta_keepalive(struct ath12k *ar,
-+			     const struct wmi_sta_keepalive_arg *arg)
-+{
-+	struct wmi_sta_keepalive_arp_resp_params *arp;
-+	struct ath12k_wmi_pdev *wmi = ar->wmi;
-+	struct wmi_sta_keepalive_cmd *cmd;
-+	struct sk_buff *skb;
-+	size_t len;
-+
-+	len = sizeof(*cmd) + sizeof(*arp);
-+	skb = ath12k_wmi_alloc_skb(wmi->wmi_ab, len);
-+	if (!skb)
-+		return -ENOMEM;
-+
-+	cmd = (struct wmi_sta_keepalive_cmd *)skb->data;
-+	cmd->tlv_header = ath12k_wmi_tlv_cmd_hdr(WMI_TAG_STA_KEEPALIVE_CMD, sizeof(*cmd));
-+	cmd->vdev_id = cpu_to_le32(arg->vdev_id);
-+	cmd->enabled = cpu_to_le32(arg->enabled);
-+	cmd->interval = cpu_to_le32(arg->interval);
-+	cmd->method = cpu_to_le32(arg->method);
-+
-+	arp = (struct wmi_sta_keepalive_arp_resp_params *)(cmd + 1);
-+	arp->tlv_header = ath12k_wmi_tlv_cmd_hdr(WMI_TAG_STA_KEEPALVE_ARP_RESPONSE,
-+						 sizeof(*arp));
-+	if (arg->method == WMI_STA_KEEPALIVE_METHOD_UNSOLICITED_ARP_RESPONSE ||
-+	    arg->method == WMI_STA_KEEPALIVE_METHOD_GRATUITOUS_ARP_REQUEST) {
-+		arp->src_ip4_addr = cpu_to_le32(arg->src_ip4_addr);
-+		arp->dest_ip4_addr = cpu_to_le32(arg->dest_ip4_addr);
-+		ether_addr_copy(arp->dest_mac_addr.addr, arg->dest_mac_addr);
-+	}
-+
-+	ath12k_dbg(ar->ab, ATH12K_DBG_WMI,
-+		   "wmi sta keepalive vdev %d enabled %d method %d interval %d\n",
-+		   arg->vdev_id, arg->enabled, arg->method, arg->interval);
-+
-+	return ath12k_wmi_cmd_send(wmi, skb, WMI_STA_KEEPALIVE_CMDID);
-+}
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
-index 0188dc78139b..7d2da9dfdacb 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.h
-+++ b/drivers/net/wireless/ath/ath12k/wmi.h
-@@ -5412,6 +5412,50 @@ struct wmi_gtk_rekey_offload_cmd {
- 	u8 replay_ctr[GTK_REPLAY_COUNTER_BYTES];
- } __packed;
- 
-+struct wmi_sta_keepalive_cmd {
-+	__le32 tlv_header;
-+	__le32 vdev_id;
-+	__le32 enabled;
-+
-+	/* WMI_STA_KEEPALIVE_METHOD_ */
-+	__le32 method;
-+
-+	/* in seconds */
-+	__le32 interval;
-+
-+	/* following this structure is the TLV for struct
-+	 * wmi_sta_keepalive_arp_resp_params
-+	 */
-+} __packed;
-+
-+struct wmi_sta_keepalive_arp_resp_params {
-+	__le32 tlv_header;
-+	__le32 src_ip4_addr;
-+	__le32 dest_ip4_addr;
-+	struct ath12k_wmi_mac_addr_params dest_mac_addr;
-+} __packed;
-+
-+struct wmi_sta_keepalive_arg {
-+	u32 vdev_id;
-+	u32 enabled;
-+	u32 method;
-+	u32 interval;
-+	u32 src_ip4_addr;
-+	u32 dest_ip4_addr;
-+	const u8 dest_mac_addr[ETH_ALEN];
-+};
-+
-+enum wmi_sta_keepalive_method {
-+	WMI_STA_KEEPALIVE_METHOD_NULL_FRAME = 1,
-+	WMI_STA_KEEPALIVE_METHOD_UNSOLICITED_ARP_RESPONSE = 2,
-+	WMI_STA_KEEPALIVE_METHOD_ETHERNET_LOOPBACK = 3,
-+	WMI_STA_KEEPALIVE_METHOD_GRATUITOUS_ARP_REQUEST = 4,
-+	WMI_STA_KEEPALIVE_METHOD_MGMT_VENDOR_ACTION = 5,
-+};
-+
-+#define WMI_STA_KEEPALIVE_INTERVAL_DEFAULT	30
-+#define WMI_STA_KEEPALIVE_INTERVAL_DISABLE	0
-+
- void ath12k_wmi_init_qcn9274(struct ath12k_base *ab,
- 			     struct ath12k_wmi_resource_config_arg *config);
- void ath12k_wmi_init_wcn7850(struct ath12k_base *ab,
-@@ -5585,5 +5629,7 @@ int ath12k_wmi_gtk_rekey_offload(struct ath12k *ar,
- 				 struct ath12k_vif *arvif, bool enable);
- int ath12k_wmi_gtk_rekey_getinfo(struct ath12k *ar,
- 				 struct ath12k_vif *arvif);
-+int ath12k_wmi_sta_keepalive(struct ath12k *ar,
-+			     const struct wmi_sta_keepalive_arg *arg);
- 
- #endif
-diff --git a/drivers/net/wireless/ath/ath12k/wow.c b/drivers/net/wireless/ath/ath12k/wow.c
-index 85fe6a9dab37..76c31ed09939 100644
---- a/drivers/net/wireless/ath/ath12k/wow.c
-+++ b/drivers/net/wireless/ath/ath12k/wow.c
-@@ -812,6 +812,24 @@ static int ath12k_wow_protocol_offload(struct ath12k *ar, bool enable)
- 	return 0;
- }
- 
-+static int ath12k_wow_set_keepalive(struct ath12k *ar,
-+				    enum wmi_sta_keepalive_method method,
-+				    u32 interval)
-+{
-+	struct ath12k_vif *arvif;
-+	int ret;
-+
-+	lockdep_assert_held(&ar->conf_mutex);
-+
-+	list_for_each_entry(arvif, &ar->arvifs, list) {
-+		ret = ath12k_mac_vif_set_keepalive(arvif, method, interval);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
- int ath12k_wow_op_suspend(struct ieee80211_hw *hw,
- 			  struct cfg80211_wowlan *wowlan)
- {
-@@ -855,6 +873,14 @@ int ath12k_wow_op_suspend(struct ieee80211_hw *hw,
- 		goto cleanup;
- 	}
- 
-+	ret = ath12k_wow_set_keepalive(ar,
-+				       WMI_STA_KEEPALIVE_METHOD_NULL_FRAME,
-+				       WMI_STA_KEEPALIVE_INTERVAL_DEFAULT);
-+	if (ret) {
-+		ath12k_warn(ar->ab, "failed to enable wow keepalive: %d\n", ret);
-+		goto cleanup;
-+	}
-+
- 	ret = ath12k_wow_enable(ar);
- 	if (ret) {
- 		ath12k_warn(ar->ab, "failed to start wow: %d\n", ret);
-@@ -935,6 +961,14 @@ int ath12k_wow_op_resume(struct ieee80211_hw *hw)
- 		goto exit;
- 	}
- 
-+	ret = ath12k_wow_set_keepalive(ar,
-+				       WMI_STA_KEEPALIVE_METHOD_NULL_FRAME,
-+				       WMI_STA_KEEPALIVE_INTERVAL_DISABLE);
-+	if (ret) {
-+		ath12k_warn(ar->ab, "failed to disable wow keepalive: %d\n", ret);
-+		goto exit;
-+	}
-+
- exit:
- 	if (ret) {
- 		switch (ah->state) {
+ 		ret = ath12k_hal_desc_reo_parse_err(ab, reo_desc, &paddr,
+ 						    &desc_bank);
+ 		if (ret) {
+
+base-commit: a116bf2be795eb1db75fa6a48aa85c397be001a6
 -- 
-2.25.1
+2.34.1
 
 
