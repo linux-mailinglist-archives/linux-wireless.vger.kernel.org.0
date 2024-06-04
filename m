@@ -1,212 +1,203 @@
-Return-Path: <linux-wireless+bounces-8454-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8455-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 234758FA7B2
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jun 2024 03:38:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE2488FA7BE
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jun 2024 03:54:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EE061F22F4C
-	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jun 2024 01:38:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30C1BB22406
+	for <lists+linux-wireless@lfdr.de>; Tue,  4 Jun 2024 01:53:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0C0613D62F;
-	Tue,  4 Jun 2024 01:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95613288A4;
+	Tue,  4 Jun 2024 01:53:53 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21040137C48;
-	Tue,  4 Jun 2024 01:38:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E4A4A04
+	for <linux-wireless@vger.kernel.org>; Tue,  4 Jun 2024 01:53:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717465101; cv=none; b=U57bWztd6FVrp5RoHGqcyK+zVf7R8+R42DNV0K0/MeuoUDKbO5xa++I2ZAoFBNf8ps6cg8r1Z2NsF0QBaTbzwtt3B3rSzA98JVY7UN+4A1gtBCa+lUYw7kyEzDSQxOgYETXbTwsIA0pPa6sFl0hVJ6TIzVxVIY7FqN7PSFkXso0=
+	t=1717466033; cv=none; b=lkoKGql5fnR7MQPfnVk/zRXj5neGO69YRauESo5jMDXtMHPmeUwbPh+xc0CAitY6vuHuWEOsLMKIlxUKswZREW6oc7dnZli9R3fV/Itjytpsi6UZoEW+47iRgLkzTgoIunk7hbACefEd/JCcypgJ9m94HMbM2JW0cvRjSaKL1Tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717465101; c=relaxed/simple;
-	bh=AJSz8KJObMMDxhywmduW5EuoLxLL09BUaUxOa9QUubw=;
-	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=W76wPOqJhcfdB6bDI384qYWr5It8IGNtsF7P3ZiEf2do4DteNys1XNAEj5j60+v6mm0u/CGqeb0nwGs+414yqQsMpnESMXIbwZneeb0x7Kbi/vtHxEGiYG4HQPZLqgd0UOu3U5f8c5+SFb6zgHHWbikoW93g8IYO0vRmjfGZQu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4VtY9H1DnBzcc6M;
-	Tue,  4 Jun 2024 09:36:51 +0800 (CST)
-Received: from kwepemm600013.china.huawei.com (unknown [7.193.23.68])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7C016180069;
-	Tue,  4 Jun 2024 09:38:14 +0800 (CST)
-Received: from [10.174.178.46] (10.174.178.46) by
- kwepemm600013.china.huawei.com (7.193.23.68) with Microsoft SMTP Server
+	s=arc-20240116; t=1717466033; c=relaxed/simple;
+	bh=HCCaNPgkkqUGuhvwcbCpeo1BoLiJ+f2eeF8kU3ufgpo=;
+	h=From:To:Subject:MIME-Version:Content-Type:Message-ID:Date; b=pV8zy4XAt3bnl+XXcgu6JJ4ZBQHco3bdoDkS1mEcHZ5gKg4WnSLfXmQLIlf2UsuWX1XPOce0xXAvGHfgX9OEteFTzjSaHM4zRVkvj63C1xeERdRf3bvS4u3kuBp3trwZJEXED/eypJO/cvbl0+t7U61+2BKhN6WHuHKg61friXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4541rlPP33667163, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 4541rlPP33667163
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Tue, 4 Jun 2024 09:53:47 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 4 Jun 2024 09:38:02 +0800
-Subject: Re: [PATCH v1 1/1] treewide: Align match_string() with
- sysfs_match_string()
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, "Rafael J. Wysocki"
-	<rafael.j.wysocki@intel.com>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Corey Minyard <minyard@acm.org>, Allen Pais
-	<apais@linux.microsoft.com>, Sebastian Reichel
-	<sebastian.reichel@collabora.com>, Perry Yuan <perry.yuan@amd.com>, Giovanni
- Cabiddu <giovanni.cabiddu@intel.com>, Herbert Xu
-	<herbert@gondor.apana.org.au>, Nuno Sa <nuno.sa@analog.com>, Guenter Roeck
-	<linux@roeck-us.net>, Randy Dunlap <rdunlap@infradead.org>, Andi Shyti
-	<andi.shyti@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>, Lee Jones
-	<lee@kernel.org>, Samuel Holland <samuel@sholland.org>, Elad Nachman
-	<enachman@marvell.com>, Arseniy Krasnov <AVKrasnov@sberdevices.ru>, Johannes
- Berg <johannes.berg@intel.com>, Gregory Greenman
-	<gregory.greenman@intel.com>, Benjamin Berg <benjamin.berg@intel.com>, Bjorn
- Helgaas <bhelgaas@google.com>, Robert Richter <rrichter@amd.com>, Vinod Koul
-	<vkoul@kernel.org>, Chunfeng Yun <chunfeng.yun@mediatek.com>, Linus Walleij
-	<linus.walleij@linaro.org>, Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?Q?Ilpo_J=c3=a4rvinen?= <ilpo.jarvinen@linux.intel.com>, Nikita
- Kravets <teackot@gmail.com>, Jiri Slaby <jirislaby@kernel.org>, Srinivas
- Pandruvada <srinivas.pandruvada@linux.intel.com>, Stanley Chang
-	<stanley_chang@realtek.com>, Heikki Krogerus
-	<heikki.krogerus@linux.intel.com>, Abdel Alkuor <abdelalkuor@geotab.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>, Eric Biggers
-	<ebiggers@google.com>, Kees Cook <keescook@chromium.org>, Ingo Molnar
-	<mingo@kernel.org>, "Steven Rostedt (Google)" <rostedt@goodmis.org>, Daniel
- Bristot de Oliveira <bristot@kernel.org>, Andrew Morton
-	<akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>, Abel Wu
-	<wuyun.abel@bytedance.com>, John Johansen <john.johansen@canonical.com>, Mimi
- Zohar <zohar@linux.ibm.com>, Stefan Berger <stefanb@linux.ibm.com>, Roberto
- Sassu <roberto.sassu@huawei.com>, Eric Snowberg <eric.snowberg@oracle.com>,
-	Takashi Iwai <tiwai@suse.de>, Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>, Mark Brown
-	<broonie@kernel.org>, Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	<linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
-	<keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
-	<linux-acpi@vger.kernel.org>, <linux-ide@vger.kernel.org>,
-	<openipmi-developer@lists.sourceforge.net>, <linux-clk@vger.kernel.org>,
-	<linux-rpi-kernel@lists.infradead.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-rockchip@lists.infradead.org>,
-	<linux-tegra@vger.kernel.org>, <linux-pm@vger.kernel.org>,
-	<qat-linux@intel.com>, <dri-devel@lists.freedesktop.org>,
-	<intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>,
-	<nouveau@lists.freedesktop.org>, <linux-hwmon@vger.kernel.org>,
-	<linux-i2c@vger.kernel.org>, <linux-leds@vger.kernel.org>,
-	<linux-sunxi@lists.linux.dev>, <linux-omap@vger.kernel.org>,
-	<linux-mmc@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
-	<netdev@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
-	<linux-pci@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-	<linux-phy@lists.infradead.org>, <linux-gpio@vger.kernel.org>,
-	<platform-driver-x86@vger.kernel.org>, <linux-staging@lists.linux.dev>,
-	<linux-usb@vger.kernel.org>, <linux-fbdev@vger.kernel.org>,
-	<linux-bcachefs@vger.kernel.org>, <linux-hardening@vger.kernel.org>,
-	<cgroups@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>, <apparmor@lists.ubuntu.com>,
-	<linux-security-module@vger.kernel.org>, <linux-integrity@vger.kernel.org>,
-	<alsa-devel@alsa-project.org>, <linux-sound@vger.kernel.org>
-CC: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
-	<npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, "Naveen
- N. Rao" <naveen.n.rao@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
-	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
-	<hpa@zytor.com>, David Howells <dhowells@redhat.com>, "David S. Miller"
-	<davem@davemloft.net>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown
-	<lenb@kernel.org>, Sergey Shtylyov <s.shtylyov@omp.ru>, Damien Le Moal
-	<dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, Daniel Scally
-	<djrscally@gmail.com>, Sakari Ailus <sakari.ailus@linux.intel.com>, Michael
- Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Florian
- Fainelli <florian.fainelli@broadcom.com>, Ray Jui <rjui@broadcom.com>, Scott
- Branden <sbranden@broadcom.com>, Broadcom internal kernel review list
-	<bcm-kernel-feedback-list@broadcom.com>, Heiko Stuebner <heiko@sntech.de>,
-	Peter De Schrijver <pdeschrijver@nvidia.com>, Prashant Gaikwad
-	<pgaikwad@nvidia.com>, Thierry Reding <thierry.reding@gmail.com>, Jonathan
- Hunter <jonathanh@nvidia.com>, Huang Rui <ray.huang@amd.com>, "Gautham R.
- Shenoy" <gautham.shenoy@amd.com>, Mario Limonciello
-	<mario.limonciello@amd.com>, Viresh Kumar <viresh.kumar@linaro.org>, Maarten
- Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
-	<mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
-	<airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, Jani Nikula
-	<jani.nikula@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, Joonas
- Lahtinen <joonas.lahtinen@linux.intel.com>, Tvrtko Ursulin
-	<tursulin@ursulin.net>, Karol Herbst <kherbst@redhat.com>, Lyude Paul
-	<lyude@redhat.com>, Danilo Krummrich <dakr@redhat.com>, Jean Delvare
-	<jdelvare@suse.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Pavel Machek <pavel@ucw.cz>, Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec
-	<jernej.skrabec@gmail.com>, Tony Lindgren <tony@atomide.com>, Adrian Hunter
-	<adrian.hunter@intel.com>, Hu Ziji <huziji@marvell.com>, Ulf Hansson
-	<ulf.hansson@linaro.org>, Miquel Raynal <miquel.raynal@bootlin.com>, Richard
- Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, Potnuri
- Bharat Teja <bharat@chelsio.com>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Miri Korenblit
-	<miriam.rachel.korenblit@intel.com>, Kalle Valo <kvalo@kernel.org>, Mahesh J
- Salgaonkar <mahesh@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
-	Kishon Vijay Abraham I <kishon@kernel.org>, Matthias Brugger
-	<matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
-	<angelogioacchino.delregno@collabora.com>, JC Kuo <jckuo@nvidia.com>, Andrew
- Lunn <andrew@lunn.ch>, Gregory Clement <gregory.clement@bootlin.com>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Sebastian Reichel
-	<sre@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui
-	<rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, Thinh Nguyen
-	<Thinh.Nguyen@synopsys.com>, Helge Deller <deller@gmx.de>, Brian Foster
-	<bfoster@redhat.com>, Tejun Heo <tj@kernel.org>, Zefan Li
-	<lizefan.x@bytedance.com>, Johannes Weiner <hannes@cmpxchg.org>, Peter
- Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, Vincent
- Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann
-	<dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, Mel Gorman
-	<mgorman@suse.de>, Daniel Bristot de Oliveira <bristot@redhat.com>, Valentin
- Schneider <vschneid@redhat.com>, Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Jason Baron
-	<jbaron@akamai.com>, Jim Cromie <jim.cromie@gmail.com>, Paul Moore
-	<paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge E. Hallyn"
-	<serge@hallyn.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, Clemens
- Ladisch <clemens@ladisch.de>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai
-	<tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>, Linus Torvalds
-	<torvalds@linux-foundation.org>
-References: <20240603211538.289765-1-andriy.shevchenko@linux.intel.com>
-From: Zhihao Cheng <chengzhihao1@huawei.com>
-Message-ID: <a6cff4d3-821a-3723-b261-3699053b5a51@huawei.com>
-Date: Tue, 4 Jun 2024 09:37:50 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ 15.1.2507.39; Tue, 4 Jun 2024 09:53:47 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 4 Jun
+ 2024 09:53:46 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+Subject: pull-request: rtw-next-2024-06-04
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20240603211538.289765-1-andriy.shevchenko@linux.intel.com>
-Content-Type: text/plain; charset="gbk"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemm600013.china.huawei.com (7.193.23.68)
+Content-Type: text/plain
+Message-ID: <6f28cf60-56e3-4a6e-8a5d-1465bb30b53b@RTEXMBS04.realtek.com.tw>
+Date: Tue, 4 Jun 2024 09:53:46 +0800
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-ÔÚ 2024/6/2 23:57, Andy Shevchenko Ð´µÀ:
-> Make two APIs look similar. Hence convert match_string() to be
-> a 2-argument macro. In order to avoid unneeded churn, convert
-> all users as well. There is no functional change intended.
-> 
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
-> 
-> Compile tested with `make allyesconfig` and `make allmodconfig`
-> on x86_64, arm, aarch64, powerpc64 (8 builds total).
-> 
+Hi,
 
-[...]
-> diff --git a/fs/ubifs/auth.c b/fs/ubifs/auth.c
-> index a4a0158f712d..fc0da18bfa65 100644
-> --- a/fs/ubifs/auth.c
-> +++ b/fs/ubifs/auth.c
-> @@ -264,13 +264,13 @@ int ubifs_init_authentication(struct ubifs_info *c)
->   		return -EINVAL;
->   	}
->   
-> -	c->auth_hash_algo = match_string(hash_algo_name, HASH_ALGO__LAST,
-> -					 c->auth_hash_name);
-> -	if ((int)c->auth_hash_algo < 0) {
-> +	err = __match_string(hash_algo_name, HASH_ALGO__LAST, c->auth_hash_name);
-> +	if (err < 0) {
->   		ubifs_err(c, "Unknown hash algo %s specified",
->   			  c->auth_hash_name);
-> -		return -EINVAL;
-> +		return err;
->   	}
-> +	c->auth_hash_algo = err;
->   
->   	snprintf(hmac_name, CRYPTO_MAX_ALG_NAME, "hmac(%s)",
->   		 c->auth_hash_name);
+A pull-request of rtw-next to wireless-next tree, more info below. Please
+let me know if any problems.
 
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>  # fs/ubifs
+Thanks
+Ping-Ke
+
+---
+
+The following changes since commit 83127ecada257e27f4740dbca9644dd0e838bc36:
+
+  Merge tag 'wireless-next-2024-05-08' of git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next (2024-05-08 19:09:38 -0700)
+
+are available in the Git repository at:
+
+  https://github.com/pkshih/rtw.git tags/rtw-next-2024-06-04
+
+for you to fetch changes up to 9373ed280651af79e0adfc29797c26ab47bb9f34:
+
+  wifi: rtw89: chan: Use swap() in rtw89_swap_sub_entity() (2024-06-03 09:44:53 +0800)
+
+----------------------------------------------------------------
+rtw-next patches for v6.11
+
+Some fixes and refactors of rtlwifi, rtw88 and rtw89. Only one major change
+listed below:
+
+rtlwifi:
+ - add new chip support of RTL8192DU
+
+----------------------------------------------------------------
+Bitterblue Smith (14):
+      wifi: rtw88: usb: Simplify rtw_usb_write_data
+      wifi: rtw88: usb: Fix disconnection after beacon loss
+      wifi: rtlwifi: rtl8192d: Use "rtl92d" prefix
+      wifi: rtlwifi: Add rtl8192du/table.{c,h}
+      wifi: rtlwifi: Add new members to struct rtl_priv for RTL8192DU
+      wifi: rtlwifi: Add rtl8192du/hw.{c,h}
+      wifi: rtlwifi: Add rtl8192du/phy.{c,h}
+      wifi: rtlwifi: Add rtl8192du/trx.{c,h}
+      wifi: rtlwifi: Add rtl8192du/rf.{c,h}
+      wifi: rtlwifi: Add rtl8192du/fw.{c,h} and rtl8192du/led.{c,h}
+      wifi: rtlwifi: Add rtl8192du/dm.{c,h}
+      wifi: rtlwifi: Constify rtl_hal_cfg.{ops,usb_interface_cfg} and rtl_priv.cfg
+      wifi: rtlwifi: Add rtl8192du/sw.c
+      wifi: rtlwifi: Enable the new rtl8192du driver
+
+Breno Leitao (2):
+      wifi: rtw89: Un-embed dummy device
+      wifi: rtw88: Un-embed dummy device
+
+Jiapeng Chong (1):
+      wifi: rtw89: chan: Use swap() in rtw89_swap_sub_entity()
+
+Ping-Ke Shih (6):
+      wifi: rtw89: 8852b: restore setting for RFE type 5 after device resume
+      wifi: rtw89: correct hardware value of nominal packet padding for WiFi 7 chips
+      wifi: rtw89: 8852c: correct logic and restore PCI PHY EQ after device resume
+      wifi: rtw89: fill STBC and LDPC capabilities to TX descriptor
+      wifi: rtw89: add LDPC and STBC to rx_status and radiotap known fields for monitor mode
+      wifi: rtlwifi: handle return value of usb init TX/RX
+
+Po-Hao Huang (2):
+      wifi: rtw89: fix HW scan not aborting properly
+      wifi: rtw89: Fix P2P behavior for WiFi 7 chips
+
+Zong-Zhe Yang (4):
+      wifi: rtw89: ser: avoid multiple deinit on same CAM
+      wifi: rtw89: cam: tweak relation between sec CAM and addr CAM
+      wifi: rtw89: switch to register vif_cfg_changed and link_info_changed
+      wifi: rtw89: support mac_id number according to chip
+
+ drivers/net/wireless/realtek/rtlwifi/Kconfig       |   12 +
+ drivers/net/wireless/realtek/rtlwifi/Makefile      |    1 +
+ drivers/net/wireless/realtek/rtlwifi/base.c        |    2 +-
+ .../net/wireless/realtek/rtlwifi/rtl8192cu/sw.c    |    3 +-
+ .../wireless/realtek/rtlwifi/rtl8192d/hw_common.c  |   94 +-
+ .../wireless/realtek/rtlwifi/rtl8192d/hw_common.h  |   28 +-
+ .../wireless/realtek/rtlwifi/rtl8192d/trx_common.c |   92 +-
+ .../wireless/realtek/rtlwifi/rtl8192d/trx_common.h |   16 +-
+ .../net/wireless/realtek/rtlwifi/rtl8192de/hw.c    |   18 +-
+ .../net/wireless/realtek/rtlwifi/rtl8192de/sw.c    |   20 +-
+ .../net/wireless/realtek/rtlwifi/rtl8192de/trx.c   |    2 +-
+ .../wireless/realtek/rtlwifi/rtl8192du/Makefile    |   13 +
+ .../net/wireless/realtek/rtlwifi/rtl8192du/dm.c    |  120 +
+ .../net/wireless/realtek/rtlwifi/rtl8192du/dm.h    |   10 +
+ .../net/wireless/realtek/rtlwifi/rtl8192du/fw.c    |   63 +
+ .../net/wireless/realtek/rtlwifi/rtl8192du/fw.h    |    9 +
+ .../net/wireless/realtek/rtlwifi/rtl8192du/hw.c    | 1212 ++++++++
+ .../net/wireless/realtek/rtlwifi/rtl8192du/hw.h    |   22 +
+ .../net/wireless/realtek/rtlwifi/rtl8192du/led.c   |   10 +
+ .../net/wireless/realtek/rtlwifi/rtl8192du/led.h   |    9 +
+ .../net/wireless/realtek/rtlwifi/rtl8192du/phy.c   | 3123 ++++++++++++++++++++
+ .../net/wireless/realtek/rtlwifi/rtl8192du/phy.h   |   32 +
+ .../net/wireless/realtek/rtlwifi/rtl8192du/rf.c    |  240 ++
+ .../net/wireless/realtek/rtlwifi/rtl8192du/rf.h    |   11 +
+ .../net/wireless/realtek/rtlwifi/rtl8192du/sw.c    |  395 +++
+ .../net/wireless/realtek/rtlwifi/rtl8192du/table.c | 1675 +++++++++++
+ .../net/wireless/realtek/rtlwifi/rtl8192du/table.h |   29 +
+ .../net/wireless/realtek/rtlwifi/rtl8192du/trx.c   |  372 +++
+ .../net/wireless/realtek/rtlwifi/rtl8192du/trx.h   |   60 +
+ drivers/net/wireless/realtek/rtlwifi/usb.c         |   36 +-
+ drivers/net/wireless/realtek/rtlwifi/usb.h         |    2 +-
+ drivers/net/wireless/realtek/rtlwifi/wifi.h        |   12 +-
+ drivers/net/wireless/realtek/rtw88/pci.c           |   17 +-
+ drivers/net/wireless/realtek/rtw88/pci.h           |    2 +-
+ drivers/net/wireless/realtek/rtw88/usb.c           |   14 +-
+ drivers/net/wireless/realtek/rtw89/cam.c           |   79 +-
+ drivers/net/wireless/realtek/rtw89/chan.c          |    5 +-
+ drivers/net/wireless/realtek/rtw89/core.c          |  107 +-
+ drivers/net/wireless/realtek/rtw89/core.h          |   20 +-
+ drivers/net/wireless/realtek/rtw89/debug.c         |   16 +-
+ drivers/net/wireless/realtek/rtw89/fw.c            |   31 +-
+ drivers/net/wireless/realtek/rtw89/fw.h            |    4 +
+ drivers/net/wireless/realtek/rtw89/mac.c           |   12 +-
+ drivers/net/wireless/realtek/rtw89/mac80211.c      |   42 +-
+ drivers/net/wireless/realtek/rtw89/pci.c           |   29 +-
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c      |    1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c      |    1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c      |    7 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c      |    1 +
+ drivers/net/wireless/realtek/rtw89/rtw8922a.c      |    1 +
+ drivers/net/wireless/realtek/rtw89/ser.c           |    8 +-
+ drivers/net/wireless/realtek/rtw89/txrx.h          |    4 +
+ 52 files changed, 7870 insertions(+), 274 deletions(-)
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/Makefile
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/dm.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/dm.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/fw.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/fw.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/led.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/led.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/phy.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/rf.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/rf.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/sw.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/table.h
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/trx.c
+ create mode 100644 drivers/net/wireless/realtek/rtlwifi/rtl8192du/trx.h
 
