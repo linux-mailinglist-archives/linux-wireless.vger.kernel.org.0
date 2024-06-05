@@ -1,47 +1,47 @@
-Return-Path: <linux-wireless+bounces-8570-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8571-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FD4E8FD46F
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 19:56:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 978028FD485
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 19:58:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBECD1C227C6
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 17:56:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D4F01C218B8
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 17:58:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC444194AF5;
-	Wed,  5 Jun 2024 17:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F357195392;
+	Wed,  5 Jun 2024 17:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bnqcj30/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hd1mkKZU"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD2425777;
-	Wed,  5 Jun 2024 17:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFCE194AFC;
+	Wed,  5 Jun 2024 17:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717610171; cv=none; b=o80GSQAOKtcfzXjvTWIzF89UBxAlgvlYHlN3V/jmmAxsktUBMl1XWam1vOZrolvKuLeR3LgMecDyKr6kz+espNNjnsOwWScdGKCCK1zjeJMnL5yd2GTQoxUISLLGPQrgESYwkTyYS/LYHbTxVj21Y22Us75EWY4pK5TiGiMCz34=
+	t=1717610280; cv=none; b=GLvsdviSoEyb8ytTqkTCEDBLvAyeWt+/p9TbRx6uLZ/17UlL5cJPuLM4Yemne2s4FdoFXTkvqWeUFrW2ASbBIAauYK7aS2C3404vESZ4rxlddD875oHJU+IIKyQSlt9lLF/AQCNxwsUaX5oIuA99RyfIaxYv8rv8Q/mRnZNvA2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717610171; c=relaxed/simple;
-	bh=5hTZDZgWwowr+2AQ2lcFfI09QAJ6OolISbaea+hj9pE=;
+	s=arc-20240116; t=1717610280; c=relaxed/simple;
+	bh=7651KFw0eV+sZCBg3Xgw24WdzXcHIYOFgb2Cy9igrRI=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=ilYU4JRaUVBmwM/6Vam/wKJ2q9fl6BD/RmatS2orjQRouE/L9+51+jTqqZpP/ItmItU48O4RYKAiIKh7FaKvgz/Qi/F0EOE3P6XX0tYd81pag1Pps0pcMCHT6dBDaCv5Y/3clgTO57jvOM+pX7UWYSlbCnsY2xMiRJ3UGZOFHVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bnqcj30/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6DAC2BD11;
-	Wed,  5 Jun 2024 17:56:10 +0000 (UTC)
+	 Content-Disposition:In-Reply-To; b=YIaFdSluSpJaGSiqVimeNPBF+CTq5/vvZRlsGxv5j/U7otp7ZZ/NrN/Ga7BjeudNGvgutNHNR0GZ4bTJHeZMbfpliSNqSAMY3NbMJLc2TOj7aLW1jm+UEGZzESKbIHdZLNbUjIK0DGQVZVaIER9IEaxGxYqcUwn37VEmnJBrMlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hd1mkKZU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65200C32782;
+	Wed,  5 Jun 2024 17:57:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717610171;
-	bh=5hTZDZgWwowr+2AQ2lcFfI09QAJ6OolISbaea+hj9pE=;
+	s=k20201202; t=1717610279;
+	bh=7651KFw0eV+sZCBg3Xgw24WdzXcHIYOFgb2Cy9igrRI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=Bnqcj30/lc0LZwOprhljD/nn9cHX4h+CxuFrtg+3wNCxZqbE4KNaSShp3BSJfNsrX
-	 8Om0TR4a851Jnx4sr6WeulZ1ygwYBhq+8fpwQYeOT2yX0NxUnJlvVqd9SC/69ZR6Da
-	 mF2r+gz2YlF4Sd9esbhyIESf2nfDkiqnD/1BOh+H77meLY5WCkSBNxv5PCdk5G/T1+
-	 YhINXIUoZZxPj3hC/wsLU0NsCss/84TLwLEX4bhUw5V+Z0kdrlb85ZVrWvvhgP03DS
-	 +6WyOQ+FMOvX/+IX5YFDKkSvw0SBqw43PAhtMiYW1zG6ucIIoCk5z9tLO2ab+2PyH1
-	 qGJkXclR+OZhQ==
-Date: Wed, 5 Jun 2024 12:56:09 -0500
+	b=hd1mkKZUhqQqGSBxCm4GPev0yQ2EhyJ/hnZS0yvgyGtNfBS8om6Bq1RE4ifOd6gI5
+	 D8VetdPBrhbibxq/5zOvS8onnXu1R6FCGyyoHUAXd3cSpnu85JqX7ckJNf2pyzbUzY
+	 MjxiEshiMdJkwl+wJpE22c15NY/CKktbPbdboJBMrgBWeTJiL9h8JinLCNuaox9GSo
+	 GtwR57MNbDomombf3jMBJI8juBUZct7vfnfRdKjGTgIv6mmyHFEsR4tVai8f8qe9p8
+	 EV670UDpwwOhsKCdGYgA+ho+/AM5EFh1w+wIiD5pu1QB2ephfYREjVAwQiUgGBsrXl
+	 G4RSCtSn6mpuA==
+Date: Wed, 5 Jun 2024 12:57:57 -0500
 From: Bjorn Helgaas <helgaas@kernel.org>
 To: Bartosz Golaszewski <brgl@bgdev.pl>
 Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
@@ -72,52 +72,36 @@ Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
 	ath12k@lists.infradead.org, linux-pm@vger.kernel.org,
 	linux-pci@vger.kernel.org,
 	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	kernel@quicinc.com,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Amit Pundir <amit.pundir@linaro.org>
-Subject: Re: [PATCH v8 00/17] power: sequencing: implement the subsystem and
- add first users
-Message-ID: <20240605175609.GA768239@bhelgaas>
+	kernel@quicinc.com, Amit Pundir <amit.pundir@linaro.org>
+Subject: Re: [PATCH v8 15/17] PCI/pwrctl: add PCI power control core code
+Message-ID: <20240605175757.GA733809@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=Mf9SDwo+RzEF8d=2Si3-KQVT_Xf8ew4k6+FQAyvOS+EvQ@mail.gmail.com>
+In-Reply-To: <20240528-pwrseq-v8-15-d354d52b763c@linaro.org>
 
-On Tue, Jun 04, 2024 at 08:24:34PM +0200, Bartosz Golaszewski wrote:
-> On Tue, Jun 4, 2024 at 7:19 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> >
-> > On Tue, May 28, 2024 at 09:03:08PM +0200, Bartosz Golaszewski wrote:
-> > > Note: I am resending this series in its entirety once more for
-> > > discussions and reviews. If there won't be any major objections, I'll
-> > > then start sending individual bits and pieces to appropriate trees.
-> > >
-> > > Merging strategy: The DT binding and DTS changes are a no-brainer, they
-> > > can go through the wireless, regulator and arm-msm trees separately. The
-> > > bluetooth and PCI changes have a build-time dependency on the power
-> > > sequencing code. The bluetooth changes also have a run-time dependency on
-> > > the PCI pwrctl part. In order to get it into next I plan to pick up the
-> > > power sequencing code into my own tree and maintain it. I can then
-> > > provide an immutable tag for the BT and PCI trees to pull. I wouldn't
-> > > stress about the BT runtime dependency as it will be fixed once all
-> > > changes are in next.
-> > > ...
-> >
-> > > ---
-> > > base-commit: 6dc544b66971c7f9909ff038b62149105272d26a
-> > > change-id: 20240527-pwrseq-76fc025248a2
-> >
-> > What does this apply to?  I don't know what 6dc544b66971 is; it
-> > doesn't seem to be in upstream or linux-next.
+On Tue, May 28, 2024 at 09:03:23PM +0200, Bartosz Golaszewski wrote:
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 > 
-> It's next-20240528 but it also applies to today's next without
-> conflicts. What do you want me to base the PCI part when resending?
+> Some PCI devices must be powered-on before they can be detected on the
+> bus. Introduce a simple framework reusing the existing PCI OF
+> infrastructure.
+> 
+> The way this works is: a DT node representing a PCI device connected to
+> the port can be matched against its power control platform driver. If
+> the match succeeds, the driver is responsible for powering-up the device
+> and calling pcie_pwrctl_device_set_ready() which will trigger a PCI bus
 
-For PCI, we usually apply things on topic branches based on -rc1, so
-that's the easiest.
+s/pcie_pwrctl_device_set_ready/pci_pwrctl_device_set_ready/
+
+> rescan as well as subscribe to PCI bus notifications.
+> 
+> When the device is detected and created, we'll make it consume the same
+> DT node that the platform device did. When the device is bound, we'll
+> create a device link between it and the parent power control device.
 
