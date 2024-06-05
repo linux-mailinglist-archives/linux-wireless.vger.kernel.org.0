@@ -1,89 +1,91 @@
-Return-Path: <linux-wireless+bounces-8562-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8563-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4C7F8FCF47
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 15:31:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E79E8FD04F
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 16:00:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22220B30E7C
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 13:30:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B73F81C23F79
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 14:00:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8667B19599F;
-	Wed,  5 Jun 2024 12:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF09819D88C;
+	Wed,  5 Jun 2024 14:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c7y54Cxx"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="NB52GCUT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail2.andi.de1.cc (vmd64148.contaboserver.net [161.97.139.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4E01E89C;
-	Wed,  5 Jun 2024 12:54:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A0063D
+	for <linux-wireless@vger.kernel.org>; Wed,  5 Jun 2024 14:00:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.97.139.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717592072; cv=none; b=E2TeyxG2rDeMjf3w8lFXElkXbemlz8vZngIw8aII1Y2yewUp/VVurte6zzv9i6kD7szrMk3SONKHFJi/DA/GBnpk5Gi38qM8CHbYmDHxlPe6O7uMygFyMW1O7wpYZ19MhssU2lFjZlbMl1kejl9Esc31Cmk89tuT42D8JuGdnJk=
+	t=1717596034; cv=none; b=TLsL8fm2sSRZ0PEJ/SIuIUWW+rbHpg4UAkKD2g6q1YhAGFa13PmHk7uN3Y2jKkYFAULP+lUpwBmqVtLLQSr2Lf8JaBdr3W8ijqPPEhepOm0+xLPQfGkwhcbTOWXrqPL2+N0uBK8mC1T6QxbZUb7viopOpxrzOtFiw0w9zWlAPgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717592072; c=relaxed/simple;
-	bh=XB07QR+XSkJHYCaW2hwUoy4YszkpOcRuq7NZF7LreUM=;
-	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=kXBoowUXCBnLCmhgO6IRrgrvQ6U9wWTdmw1k5KfOFa4G2J43te9ZTOtCQPxG8bNezwac5aUugtIB0nbpFv1jEcWz+f3MZ5GeRsZM7s41bWcioRVmN4Z3OjU9PXNQVGqTSa/mo235sbG5eP87h7I7+m8GoiXTD9DlBPkHmztIdnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c7y54Cxx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E107CC32782;
-	Wed,  5 Jun 2024 12:54:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717592071;
-	bh=XB07QR+XSkJHYCaW2hwUoy4YszkpOcRuq7NZF7LreUM=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=c7y54Cxx1Xv0TlGIq5HUgQ2nYtyeWNVe/PtsNtglsSeAXuaKc3I3Nbo/BsduhjI/1
-	 H0zvh1L+J2ykqqKN3pGGvIUYuAoBav2L6iNFrrLojJinF6swHPqHTCHL0yoCklSxwz
-	 VzwcKpya5PyhI3omNOazYBtnTxEqRw5F1CzzqAYALkLyvxU8InjCz9YgV3dhcYK8dN
-	 lu5Ce9UyH35QkftqwPw8wbOBtYkartYTtvb5/uOufL6m1IZM7lC8fZ+2b7TTL5nGOZ
-	 ycsmJdpoyx+8t64yngGCt5hQ9mo+OGDvKTTDaCIoXFyY/IwMnVnlnJTacMOIr6R7pe
-	 cK8sUSngASrgQ==
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1717596034; c=relaxed/simple;
+	bh=A77GkF0LLBQA7Txt2ipwUtppct2n1oL1D694pT7X6TI=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=FdzK3NINxJL2e5ZFIimzOcpTx0gNcBKHnToKbVTqyxiqX1kfV3KDOMlHjLYAhx8ei6In5GsMFAoJJPRIK9LDTtPo6paay/ZlXWgpHa4w2gWShpdNszxi42l+fYBEqOJL/A1d0rW8P60QNyPOGyybDZ2NfikDQqZCYggQi9bY9yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=NB52GCUT; arc=none smtp.client-ip=161.97.139.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+Received: from mail.andi.de1.cc ([2a02:c205:3004:2154::1])
+	by mail2.andi.de1.cc with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <andreas@kemnade.info>)
+	id 1sErBg-008ucS-0j;
+	Wed, 05 Jun 2024 16:00:25 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Message-ID:Subject:To:From:Date:Sender:Reply-To:Cc:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=A77GkF0LLBQA7Txt2ipwUtppct2n1oL1D694pT7X6TI=; b=NB52GCUT/5M3+Cn0TPYZFZJ7yn
+	Q6WnbxaIDgAVs2gvl2pd11Bjal3Ggik6CZmHST71IvFxOdwlyhZP/4gOWhXDDg73rG6EV8dsNxZym
+	TMhNB5PMNBkvFXpenl5rSINsnMxpj7LCmFM6V8xM4QB6sE9ZvuaEkCIeB8BzuaAyRc0fBPv6y6TMU
+	AXJ63XZxDqtZJLvtdp2TvlHhzLQHRpU9gRV8LwbrV4mT6IMNAxHerP21/8eF+xVMQ4gTSv8xXC2r4
+	WG1E8mJYFAeLZHqyd93mTdt8ih8CacAvm6Yqdd27VMxeVWguPIU6Xi6qkXf9zxUG9pveUa155xK+s
+	wm9/zFQw==;
+Received: from p200300c20737c2001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:c2:737:c200:1a3d:a2ff:febf:d33a] helo=aktux)
+	by mail.andi.de1.cc with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <andreas@kemnade.info>)
+	id 1sErBV-002hfv-1m;
+	Wed, 05 Jun 2024 16:00:14 +0200
+Date: Wed, 5 Jun 2024 16:00:13 +0200
+From: Andreas Kemnade <andreas@kemnade.info>
+To: briannorris@chromium.org, francesco@dolcini.it,
+ linux-wireless@vger.kernel.org, linux-firmware@vger.kernel.org,
+ lukas@wunner.de, tszucs@protonmail.ch, yu-hao.lin@nxp.com
+Subject: mwifiex firmware mrvl/sd8987_uapsta.bin missing in the firmware git
+Message-ID: <20240605160013.6bea8d4d@aktux>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 3/6] wifi: mac80211: use 'time_left' variable with
- wait_for_completion_timeout()
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240603091541.8367-4-wsa+renesas@sang-engineering.com>
-References: <20240603091541.8367-4-wsa+renesas@sang-engineering.com>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: linux-kernel@vger.kernel.org,
- Wolfram Sang <wsa+renesas@sang-engineering.com>,
- linux-wireless@vger.kernel.org
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <171759206880.1969597.15358870283165767535.kvalo@kernel.org>
-Date: Wed,  5 Jun 2024 12:54:30 +0000 (UTC)
 
-Wolfram Sang <wsa+renesas@sang-engineering.com> wrote:
+Hi,
 
-> There is a confusing pattern in the kernel to use a variable named 'timeout' to
-> store the result of wait_for_completion_timeout() causing patterns like:
-> 
-> 	timeout = wait_for_completion_timeout(...)
-> 	if (!timeout) return -ETIMEDOUT;
-> 
-> with all kinds of permutations. Use 'time_left' as a variable to make the code
-> self explaining.
-> 
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+I am a bit wondering, but there is mrvl/sd8987_uapsta.bin
+referenced in the driver, but apperently it is not in the firmware git.
 
-The title should be:
+https://github.com/nxp-imx/imx-firmware/blob/lf-6.6.3_1.0.0/nxp/FwImage_8987/sdiouart8987_combo_v0.bin
 
-wifi: mwl8k: use 'time_left' variable with wait_for_completion_timeout()
+seems to apparently work. How to proceed? Should the file be renamed and added
+to the fw git?
+The uartuart8987_bt.bin needed by the btnxpuart driver is there.
 
-I can fix that, no need to resend because of this.
+It is just nasty to have a driver for a device but some manual matching of firmware
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240603091541.8367-4-wsa+renesas@sang-engineering.com/
+BTW: there is also https://github.com/nxp-imx/imx-firmware/blob/lf-6.6.3_1.0.0/nxp/FwImage_8987/sd8987_wlan.bin
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Regards,
+Andreas
 
