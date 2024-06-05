@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-8538-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8539-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B5018FC9A9
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 13:05:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06D548FC9AC
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 13:05:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03B612851F5
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 11:05:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E1EA1C22004
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 11:05:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3550B1922F1;
-	Wed,  5 Jun 2024 11:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6297C192B81;
+	Wed,  5 Jun 2024 11:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d8QAInNp"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bbJ4SOuH"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4AA1922FC
-	for <linux-wireless@vger.kernel.org>; Wed,  5 Jun 2024 11:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2831146017
+	for <linux-wireless@vger.kernel.org>; Wed,  5 Jun 2024 11:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717585521; cv=none; b=DcMM8Eyyzua+kBuNbpWUY0zVNqDcVJR1kOL6DG0A9Iqh5c8YVW7CnY4uW3mdR6kdQZjUi/OtI2rFU7hXaBNrgJIRhW3VJ01Fbpg2v8dU1V2ZFWoj25RS6R6wDdmnGIsKh/H+n2/YqP0Evt1zkb6IdZcZ+XbT9vwpuHH/qK14rx0=
+	t=1717585522; cv=none; b=bU810Of7rGwhc+WXFJ7TBBDRI1gUEKd+/p7pmua43SultRa8VwEBtQnpHB/hLORP0FQO7Tab9Hvw04udyhPf5eghV+w3IDh1PT8hfk9pG+PmWN5EOugwdgJKrFlzxxmUnpsiVpLGmicoccYRYHC+2p/dAS9u/LvPa1uHJrcUTTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717585521; c=relaxed/simple;
-	bh=poRTMSvlRnCZKmJ/M2sASzkvEwp62t8qdwEFWW+5vtM=;
+	s=arc-20240116; t=1717585522; c=relaxed/simple;
+	bh=Vcr2EgBYhf9DK3AkDvPaEAU0S6EyS6XndQ5jVQ1Wsjs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=krFhq2bJ8sgQZy+I+aRdwmrE82UPid71Ak4I5D4oK+GaX9WLBJ3uhq7of2UN/HJbBrvUohMTOn86UxaJC+aITyWs2n2AVC5wh6rw6yBtLbRL+HRI0QP962v8Tj35S8zMbR1YC4gdtvkizRPl115wa9HCROpUalUjBQyZLrInC/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d8QAInNp; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=DPdhiF2ILifEPLJ9FHa+WmpFp0h6+qlw1BFKsg7894CBg3234Eio1j6T9eerVaFjiOS/U/oRDo8qOOdXTIlMUOu0OvDYYGi84cAclqgVb1nrNSSL6D5wBahMAmhM11hpmwNz+eGyBm7HW/OFd7LWgqrFOHIJ4ncf0w2zsdEmhxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bbJ4SOuH; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717585519; x=1749121519;
+  t=1717585521; x=1749121521;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=poRTMSvlRnCZKmJ/M2sASzkvEwp62t8qdwEFWW+5vtM=;
-  b=d8QAInNpCFiUuokIQbPZSWvm5QEzkvqLe7Gk4r3+pZQ2mkyJEHdAoPFU
-   R9KNxm8KMMFp02O+k6LY17WoWaTiaFvecF0Bgd64pyG+ZB/8/tnRAA14q
-   UvCN9whQlqjYI+PsUxiSdC4ShnKiuEExN8/mxIjynqTaRb6fJTjlJLL/0
-   +ekLNqy9bZOwo3af4du6+p1+MF9pKuVHGrMOb8A2O1GsY0PyJvTsZ8OAQ
-   WMugDtZ9NsQ8yfqSC5tKehxmp9Zo60QMhZ/NyHA1OH+3QJoUtVsiJEtWO
-   IGEgiI4eR4F9oBiF1ff9JZkCV4oUjSUL1et8In9kFsN8x0pxh6M6PNVmm
+  bh=Vcr2EgBYhf9DK3AkDvPaEAU0S6EyS6XndQ5jVQ1Wsjs=;
+  b=bbJ4SOuHWi2iMGOag/x/KxBLYmxSL1KDI1pOOCk+/zdeeTiW3M8yekmA
+   RWKg3qHra05eydXwL5z2UbVYAPbfPH6nKqSPozNdCH9bwV9tNc434/MaC
+   JVAPrmyCW8j8ANCOMGzq1cLm6e5apb9YpP1IL3G3ii7BdeWHQKyS2a7tB
+   xcolNtVQNGpuGpEmmtOj9u6K1ZlFW/kF3P2ISWqN4/Tm2fxvfULkT14BX
+   RAxkb3XBNryFLSFJlzjhmsOlgy/1auRPp2miI9nWKHnvv0EeIZotaCtsR
+   JtECfdYup54MocvzWFbKyHVXyv9ayC9CS34xVHI/gadX2M3xCGM71PbOA
    Q==;
-X-CSE-ConnectionGUID: aH9NboCARtKVPU87+L8qoQ==
-X-CSE-MsgGUID: kpZIjw1LR52r9aTytuiGBg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11093"; a="14402176"
+X-CSE-ConnectionGUID: 4p9IXRzNQA+UQeVJLMBrsg==
+X-CSE-MsgGUID: mMPTTv4cTd+7pBiGGUAvlA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11093"; a="14402181"
 X-IronPort-AV: E=Sophos;i="6.08,216,1712646000"; 
-   d="scan'208";a="14402176"
+   d="scan'208";a="14402181"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2024 04:05:19 -0700
-X-CSE-ConnectionGUID: h7zWM9EgSiiHYHcBD1bhKQ==
-X-CSE-MsgGUID: RnZuhXRGQlG3am1Qx+Dmeg==
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2024 04:05:20 -0700
+X-CSE-ConnectionGUID: YVYmUr+ST6SLnP1PEl1xYA==
+X-CSE-MsgGUID: +vDtNmPGTPuJTOCdH4Kqbg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,216,1712646000"; 
-   d="scan'208";a="41997349"
+   d="scan'208";a="41997360"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2024 04:05:18 -0700
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2024 04:05:19 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 03/11] wifi: iwlwifi: mvm: fix DTIM skip powersave config
-Date: Wed,  5 Jun 2024 14:04:59 +0300
-Message-Id: <20240605140327.bccf980fadb4.Idc98b9f3634f39d2fae9bd9916f5d050ccd48f95@changeid>
+Subject: [PATCH 04/11] wifi: iwlwifi: move TXQ bytecount limit to queue code
+Date: Wed,  5 Jun 2024 14:05:00 +0300
+Message-Id: <20240605140327.000a0a1e807d.Ib822590d5aca76ff3168418ae2c139b3d43d81ed@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240605110507.2044059-1-miriam.rachel.korenblit@intel.com>
 References: <20240605110507.2044059-1-miriam.rachel.korenblit@intel.com>
@@ -79,117 +79,101 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-When entering D3 we want to configure skip over DTIM, but
-it can't use the deflink configuration, that will not even
-exist. Adjust the code to handle multiple links by taking
-the min skip, even if we should only have a single active
-link at this point.
+This really isn't correct to be in the opmode, do the clamping
+(and power-of-2 fixup that may be necessary due to this, or even
+otherwise) in the queue code. Also move down the retrying of the
+allocation, it should be after all the size fixups, but also it
+just makes sense, and avoids retrying same-size allocations in
+the case of the BZ-family A-step workaround.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/mvm/power.c    | 64 ++++++++++---------
- 1 file changed, 33 insertions(+), 31 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c  | 27 +++++--------------
+ drivers/net/wireless/intel/iwlwifi/queue/tx.c | 22 +++++++++++++--
+ 2 files changed, 26 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/power.c b/drivers/net/wireless/intel/iwlwifi/mvm/power.c
-index cc7176b0be4f..bc363e8427e4 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/power.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/power.c
-@@ -282,62 +282,64 @@ static bool iwl_mvm_power_allow_uapsd(struct iwl_mvm *mvm,
- 	return data.allow_uapsd;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+index 276bcccb7a38..bf3a1f132382 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+@@ -857,12 +857,6 @@ int iwl_mvm_tvqm_enable_txq(struct iwl_mvm *mvm,
+ 		size = iwl_mvm_get_queue_size(sta);
+ 	}
+ 
+-	/* take the min with bc tbl entries allowed */
+-	size = min_t(u32, size, mvm->trans->txqs.bc_tbl_size / sizeof(u16));
+-
+-	/* size needs to be power of 2 values for calculating read/write pointers */
+-	size = rounddown_pow_of_two(size);
+-
+ 	if (sta) {
+ 		struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
+ 		struct ieee80211_link_sta *link_sta;
+@@ -887,22 +881,13 @@ int iwl_mvm_tvqm_enable_txq(struct iwl_mvm *mvm,
+ 	if (!sta_mask)
+ 		return -EINVAL;
+ 
+-	do {
+-		queue = iwl_trans_txq_alloc(mvm->trans, 0, sta_mask,
+-					    tid, size, timeout);
+-
+-		if (queue < 0)
+-			IWL_DEBUG_TX_QUEUES(mvm,
+-					    "Failed allocating TXQ of size %d for sta mask %x tid %d, ret: %d\n",
+-					    size, sta_mask, tid, queue);
+-		size /= 2;
+-	} while (queue < 0 && size >= 16);
+-
+-	if (queue < 0)
+-		return queue;
++	queue = iwl_trans_txq_alloc(mvm->trans, 0, sta_mask,
++				    tid, size, timeout);
+ 
+-	IWL_DEBUG_TX_QUEUES(mvm, "Enabling TXQ #%d for sta mask 0x%x tid %d\n",
+-			    queue, sta_mask, tid);
++	if (queue >= 0)
++		IWL_DEBUG_TX_QUEUES(mvm,
++				    "Enabling TXQ #%d for sta mask 0x%x tid %d\n",
++				    queue, sta_mask, tid);
+ 
+ 	return queue;
  }
+diff --git a/drivers/net/wireless/intel/iwlwifi/queue/tx.c b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
+index 6229c785c845..726035dfa5cd 100644
+--- a/drivers/net/wireless/intel/iwlwifi/queue/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/queue/tx.c
+@@ -1237,11 +1237,29 @@ int iwl_txq_dyn_alloc(struct iwl_trans *trans, u32 flags, u32 sta_mask,
+ 	};
+ 	int ret;
  
--static bool iwl_mvm_power_is_radar(struct ieee80211_vif *vif)
-+static bool iwl_mvm_power_is_radar(struct ieee80211_bss_conf *link_conf)
- {
- 	struct ieee80211_chanctx_conf *chanctx_conf;
--	struct ieee80211_bss_conf *link_conf;
--	bool radar_detect = false;
--	unsigned int link_id;
- 
--	rcu_read_lock();
--	for_each_vif_active_link(vif, link_conf, link_id) {
--		chanctx_conf = rcu_dereference(link_conf->chanctx_conf);
--		/* this happens on link switching, just ignore inactive ones */
--		if (!chanctx_conf)
--			continue;
-+	chanctx_conf = rcu_dereference(link_conf->chanctx_conf);
- 
--		radar_detect = !!(chanctx_conf->def.chan->flags &
--				  IEEE80211_CHAN_RADAR);
--		if (radar_detect)
--			goto out;
--	}
-+	/* this happens on link switching, just ignore inactive ones */
-+	if (!chanctx_conf)
-+		return false;
- 
--out:
--	rcu_read_unlock();
--	return radar_detect;
-+	return chanctx_conf->def.chan->flags & IEEE80211_CHAN_RADAR;
- }
- 
- static void iwl_mvm_power_config_skip_dtim(struct iwl_mvm *mvm,
- 					   struct ieee80211_vif *vif,
- 					   struct iwl_mac_power_cmd *cmd)
- {
--	int dtimper = vif->bss_conf.dtim_period ?: 1;
--	int skip;
-+	struct ieee80211_bss_conf *link_conf;
-+	unsigned int min_link_skip = ~0;
-+	unsigned int link_id;
- 
- 	/* disable, in case we're supposed to override */
- 	cmd->skip_dtim_periods = 0;
- 	cmd->flags &= ~cpu_to_le16(POWER_FLAGS_SKIP_OVER_DTIM_MSK);
- 
--	if (iwl_mvm_power_is_radar(vif))
-+	if (!test_bit(IWL_MVM_STATUS_IN_D3, &mvm->status)) {
-+		if (iwlmvm_mod_params.power_scheme != IWL_POWER_SCHEME_LP)
-+			return;
-+		cmd->skip_dtim_periods = 2;
-+		cmd->flags |= cpu_to_le16(POWER_FLAGS_SKIP_OVER_DTIM_MSK);
- 		return;
++	/* take the min with bytecount table entries allowed */
++	size = min_t(u32, size, trans->txqs.bc_tbl_size / sizeof(u16));
++	/* but must be power of 2 values for calculating read/write pointers */
++	size = rounddown_pow_of_two(size);
++
+ 	if (trans->trans_cfg->device_family == IWL_DEVICE_FAMILY_BZ &&
+-	    trans->hw_rev_step == SILICON_A_STEP)
++	    trans->hw_rev_step == SILICON_A_STEP) {
+ 		size = 4096;
++		txq = iwl_txq_dyn_alloc_dma(trans, size, timeout);
++	} else {
++		do {
++			txq = iwl_txq_dyn_alloc_dma(trans, size, timeout);
++			if (!IS_ERR(txq))
++				break;
++
++			IWL_DEBUG_TX_QUEUES(trans,
++					    "Failed allocating TXQ of size %d for sta mask %x tid %d, ret: %ld\n",
++					    size, sta_mask, tid,
++					    PTR_ERR(txq));
++			size /= 2;
++		} while (size >= 16);
 +	}
  
--	if (dtimper >= 10)
--		return;
-+	rcu_read_lock();
-+	for_each_vif_active_link(vif, link_conf, link_id) {
-+		unsigned int dtimper = link_conf->dtim_period ?: 1;
-+		unsigned int dtimper_tu = dtimper * link_conf->beacon_int;
-+		unsigned int skip;
- 
--	if (!test_bit(IWL_MVM_STATUS_IN_D3, &mvm->status)) {
--		if (iwlmvm_mod_params.power_scheme != IWL_POWER_SCHEME_LP)
-+		if (dtimper >= 10 || iwl_mvm_power_is_radar(link_conf)) {
-+			rcu_read_unlock();
- 			return;
--		skip = 2;
--	} else {
--		int dtimper_tu = dtimper * vif->bss_conf.beacon_int;
-+		}
- 
- 		if (WARN_ON(!dtimper_tu))
--			return;
-+			continue;
-+
- 		/* configure skip over dtim up to 900 TU DTIM interval */
--		skip = max_t(u8, 1, 900 / dtimper_tu);
-+		skip = max_t(int, 1, 900 / dtimper_tu);
-+		min_link_skip = min(min_link_skip, skip);
- 	}
-+	rcu_read_unlock();
-+
-+	/* no WARN_ON, can only happen with WARN_ON above */
-+	if (min_link_skip == ~0)
-+		return;
- 
--	cmd->skip_dtim_periods = skip;
-+	cmd->skip_dtim_periods = min_link_skip;
- 	cmd->flags |= cpu_to_le16(POWER_FLAGS_SKIP_OVER_DTIM_MSK);
- }
+-	txq = iwl_txq_dyn_alloc_dma(trans, size, timeout);
+ 	if (IS_ERR(txq))
+ 		return PTR_ERR(txq);
  
 -- 
 2.34.1
