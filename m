@@ -1,145 +1,152 @@
-Return-Path: <linux-wireless+bounces-8524-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8525-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 954A78FC762
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 11:13:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD44B8FC862
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 11:56:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33ACB1F2165F
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 09:13:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 749A02829F8
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 09:56:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A0A218FC74;
-	Wed,  5 Jun 2024 09:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 822A618FC85;
+	Wed,  5 Jun 2024 09:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="2SVO9602"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="jgs9t38X"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D753214B093
-	for <linux-wireless@vger.kernel.org>; Wed,  5 Jun 2024 09:13:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E2918F2DD;
+	Wed,  5 Jun 2024 09:56:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.248
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717578799; cv=none; b=cEId3RaTMucMRb5nqiUepzDsMDYjLmL9Cy5N93Vr1q7F2eSuNY7nyf4twly0FlbI7Mrw9EY3s0hvqQzq/v2gPKzeDOblzZtK0FiDZQfCG+ROw42bBXr4idMx2N1dy5zXwP2jfkSU1Y6bz40CfL2brXh7KwmmhpkADIARtzOuyeA=
+	t=1717581378; cv=none; b=Dr0/3fewJohBneTexaYvORLWFQmcB2miepdH497peRTNmdq1iAb9MM59zBctNKKph5/FtKuAXgsyjY52t1HRKBX4g4Qd4S8eWhXksL3x2UQw1VWXMS90EpWGBUtHhLEQABO1oWnc9ksFB+NSZcxnZZlYSG5m4Y2lcnrTc3Se2QE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717578799; c=relaxed/simple;
-	bh=AFakv71kM06p0q3oYAQzeRow8V15P35z1h8kfitwLYA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RaZaL0pvyxx1tbxcj2LYKTC5m339digYtK4f+CDLLh9yk+VcS/MvmLZ+YlFW/eipUfypes8TxfZBR4aNFJV83t0vV2hqfDW6GgljQRWw+eZfic2gM+2hk2X/z9hBhgqop2eqPOn0AqLjXgGteoKM9g6sCqGiWjbvies++KqfOR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=2SVO9602; arc=none smtp.client-ip=209.85.208.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2ea9386cde0so66730841fa.2
-        for <linux-wireless@vger.kernel.org>; Wed, 05 Jun 2024 02:13:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1717578796; x=1718183596; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3c4YFpd8Fm+Esjyb3eXLbvb26s9zAJBJ0sBTmfOcoOQ=;
-        b=2SVO96020zsJW3oJBymyp4e6hfylB/HZFX48nO1GS+XKJVBKQq0wdZsIUdelO4ZyKe
-         SQu0FXL/8HyyEj+CJk3nsUpE6PycFoeR8rrHr465kRj5JHqfgScdEXHzZC34rBbigV+b
-         EH3kFuP2zyWGGjd91iSqrfikkXRu2M5Z5boa+1iEVT032LUU768k/3GpyJ9CFBmKJJsC
-         5I0lAlaoagW20dzf/3vzsjRMNR5bgeLPWssU/99Yhyxv/4rA63N1jc84nG1XrLSBiCh5
-         9KDm4lokoOLPbb1HfUztacDkq7cVE4iDKGqYzK7RRUKk23O4DD3GOq6iJawg7HEulqdJ
-         /RqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717578796; x=1718183596;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3c4YFpd8Fm+Esjyb3eXLbvb26s9zAJBJ0sBTmfOcoOQ=;
-        b=jBFScVu0TQksdos4SxHTEIKfJkd20L769sHFi661e5DDHHA0vJEC0TSwOba7FZmAJp
-         LLYB/kgWRhJqqIHwGZpP34ljX6F1+sKd3ZnHFtm05Kj9UW3PzoGORPp80wia4FxiVfzN
-         bav3gIHGCSvW/SRUc5+juin7huI6/hhUYDAXZr+BehLGycMVb7TwmCdiBTtljHI5n1vQ
-         KVY2CdA5VyCnGYIjvfkp6SoiznwX9kjT67Upe6lS6UdW/Ld7NcMtcpvlzwnIPE06Yxqw
-         TWZSdSngnTf9rmi8YrMscaVcymUU91dfTAsC9gbaNv+ja6lcPBg+l/0JN36X4wKXVIny
-         +WJw==
-X-Forwarded-Encrypted: i=1; AJvYcCUSKypPNTjKJn03wT/ion0i7FGVqvbeMgErJzSWvCAv97EN/9UbFmLV3jQK3tIdnkdO0aVapJ9EcYu1eBduLr9dzMI6VK9uvBs62PgmCFc=
-X-Gm-Message-State: AOJu0YzNlsHjKM06UPYaodpqCVgnAsCXxYhPyYBO/AzcAHocTUgZ4xVb
-	Pa98soPfxKYQhQzPeFHYdez1dkEnvs0wLhJUpO5uOiiKgXyKeBhLQtl5ykoi/yvT++m6kInL7+S
-	qJY6bTEXOz50uzXfEpShdPndGroeUumS/Ww9VrQ==
-X-Google-Smtp-Source: AGHT+IE63vGTd6+j21cBJUHSJYSLK2xCKb5rCCgsCKhs4EXyLEAsob0AZ/LylbrE5cvmoYjm+qi2nvoKP8Y3gZgS3f0=
-X-Received: by 2002:a05:651c:30f:b0:2ea:7e50:6c94 with SMTP id
- 38308e7fff4ca-2eac79c1bbdmr8705551fa.16.1717578795960; Wed, 05 Jun 2024
- 02:13:15 -0700 (PDT)
+	s=arc-20240116; t=1717581378; c=relaxed/simple;
+	bh=sZH130KhV6Sxe/srQIfQ6fLBm2tVfgmWGkFbCM8jzMo=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=DfjlKWPTfXDAF9a0y1TeKOScZt+yTKymoA0EHU4CmIALhXoUTiaNfN3KF1aoU6yGWrSxdka8JD3ArWhjxlNSVYUzR7vPwnLoAfkhYwFl6NRjfNHl9Gm3hzolXkYlc5OIAzhw9bTAvcg2begT9vbrIAszz6F0SeuRD4lakQJdeuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=jgs9t38X; arc=none smtp.client-ip=198.47.23.248
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 4559tBBN083735;
+	Wed, 5 Jun 2024 04:55:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1717581311;
+	bh=m4dawFd7mVRkD8sUTHOUCTtxKHfu5Cbecp6wmmcEiss=;
+	h=Date:Subject:From:To:CC:References:In-Reply-To;
+	b=jgs9t38XWrp8HD7lHcoWWvKBojDhhpkt6WR8pmNZEIphvCx9iq1EwtpMQaKs23XjK
+	 NHUPYPDGAEc8w/p8uQPX1ECPCQRcI+sTvaHMgQRxzcMIScSBD1H4tVpg+fVi1lR8Qk
+	 k/0YiJraRNTHvYszMHWtSFTk0PysGFiVpheu00l8=
+Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4559tBCB091164
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 5 Jun 2024 04:55:11 -0500
+Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 5
+ Jun 2024 04:55:11 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Wed, 5 Jun 2024 04:55:11 -0500
+Received: from [137.167.6.231] (lt5cg1094w5k.dhcp.ti.com [137.167.6.231])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4559t9C7098183;
+	Wed, 5 Jun 2024 04:55:09 -0500
+Message-ID: <eea16e12-6e9d-4630-87e6-f44071ab1c4e@ti.com>
+Date: Wed, 5 Jun 2024 12:55:08 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240528-pwrseq-v8-1-d354d52b763c@linaro.org> <20240604173021.GA732838@bhelgaas>
-In-Reply-To: <20240604173021.GA732838@bhelgaas>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Wed, 5 Jun 2024 11:13:04 +0200
-Message-ID: <CAMRc=MeNPvZUyu6rtsWtdvXFmOOpmjKCEpkoc5zBfJy6qBpxrg@mail.gmail.com>
-Subject: Re: [PATCH v8 01/17] regulator: dt-bindings: describe the PMU module
- of the QCA6390 package
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>, Rocky Liao <quic_rjliao@quicinc.com>, 
-	Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Srini Kandagatla <srinivas.kandagatla@linaro.org>, 
-	Elliot Berman <quic_eberman@quicinc.com>, Caleb Connolly <caleb.connolly@linaro.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
-	Alex Elder <elder@kernel.org>, linux-arm-msm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
-	Jeff Johnson <quic_jjohnson@quicinc.com>, ath12k@lists.infradead.org, 
-	linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, kernel@quicinc.com, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 08/17] Add main.c
+From: "Nemanov, Michael" <michael.nemanov@ti.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Breno Leitao <leitao@debian.org>,
+        Justin Stitt <justinstitt@google.com>,
+        Kees Cook <keescook@chromium.org>, <linux-wireless@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC: Sabeeh Khan <sabeeh-khan@ti.com>
+References: <20240521171841.884576-1-michael.nemanov@ti.com>
+ <20240521171841.884576-9-michael.nemanov@ti.com>
+ <cfe33bf1-9df3-4d02-b4ed-e29a430b106d@kernel.org>
+ <456c8076-1e3a-4cc9-895c-e707e68fe610@ti.com>
+ <97d8acf9-6cb3-4da7-ad4e-0f2d0a63c172@kernel.org>
+ <2e2ec1ba-0c24-4173-af60-ea51004f2e10@ti.com>
+Content-Language: en-US
+In-Reply-To: <2e2ec1ba-0c24-4173-af60-ea51004f2e10@ti.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-On Tue, Jun 4, 2024 at 7:30=E2=80=AFPM Bjorn Helgaas <helgaas@kernel.org> w=
-rote:
->
-> On Tue, May 28, 2024 at 09:03:09PM +0200, Bartosz Golaszewski wrote:
-> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >
-> > The QCA6390 package contains discreet modules for WLAN and Bluetooth. T=
-hey
->
-> s/discreet/discrete/
->
-> > are powered by the Power Management Unit (PMU) that takes inputs from t=
-he
-> > host and provides LDO outputs. This document describes this module.
->
-> LDO?  Again below, but maybe this is obvious to everybody.
->
+On 5/31/2024 4:50 PM, Nemanov, Michael wrote:
+> On 5/22/2024 12:46 PM, Krzysztof Kozlowski wrote:>
+>>> +
+>>> +static int cc33xx_probe(struct platform_device *pdev)
+>>> +{
+>>> +	struct cc33xx *cc;
+>>> +	struct ieee80211_hw *hw;
+>>> +	struct cc33xx_platdev_data *pdev_data = dev_get_platdata(&pdev->dev);
+>>> +	const char *nvs_name;
+>>> +	int ret;
+>>> +
+>>> +	cc33xx_debug(DEBUG_CC33xx, "Wireless Driver Version %s", DRV_VERSION);
+>>
+>> Drop
+>>
+>>> +
+>>> +	if (!pdev_data) {
+>>> +		cc33xx_error("can't access platform data");
+>>
+>> Do not use your own print code. Use standard dev_() calls. This applies
+>> *everywhere*.
+>>
+>> [...]
+>>
+>>> +	cc33xx_debug(DEBUG_CC33xx, "WLAN CC33xx platform device probe done");
+>>
+>> Drop, tracing/sysfs gices you this. Do not print simple
+>> success/entry/exit messages.
+>>
+>> [...]
+>>
+>>> +};
+>>> +MODULE_DEVICE_TABLE(platform, cc33xx_id_table);
+>>> +
+>>> +static struct platform_driver cc33xx_driver = {
+>>> +	.probe		= cc33xx_probe,
+>>> +	.remove		= cc33xx_remove,
+>>> +	.id_table	= cc33xx_id_table,
+>>> +	.driver = {
+>>> +		.name	= "cc33xx_driver",
+>>> +	}
+>>> +};
+>>> +
+>>> +u32 cc33xx_debug_level = DEBUG_NO_DATAPATH;
+>>> 
+>> Why this is global? Why u32? Why global variable is defined at the end
+>> of the file?!?!
+>  
+> cc33xx_debug_level together with cc33xx_debug/info/error() macros is how
+> all traces were done in drivers/net/wireless/ti/wlcore/ (originally was
+> wl1271_debug/info etc.)
+> It enables / disables traces without rebuilding or even reloading which
+> is very helpful for remote support. These macros map to dynamic_pr_debug
+> / pr_debug. I saw similar wrappers in other wireless drivers (ath12k).
+> This is also why there are plenty of cc33xx_debug() all over the code,
+> most are silent by default.
 
-Yes, this is an acceptable abbreviation to use, it's all over the
-bindings and regulator drivers.
+Any more thoughts on debug traces? I'll remove all trivial function 
+entry / exit traces as Krzysztof requested. Is it OK to keep other 
+cc33xx_debug() calls which will be off by default?
 
-> "This document describes this module" seems possibly unnecessary.
->
-> > +description:
-> > +  The QCA6390 package contains discreet modules for WLAN and Bluetooth=
-. They
->
-> s/discreet/discrete/
->
-> > +  are powered by the Power Management Unit (PMU) that takes inputs fro=
-m the
-> > +  host and provides LDO outputs. This document describes this module.
->
-> > +  vddpcie1p3-supply:
-> > +    description: VDD_PCIE_1P3 supply regulator handle<S-Del>
->
-> s/<S-Del>// ?
+Michael.
 
-Eek, bad copy-paste.
-
-Bart
 
