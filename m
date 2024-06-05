@@ -1,113 +1,135 @@
-Return-Path: <linux-wireless+bounces-8577-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8586-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E42788FD5E3
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 20:39:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A72C8FD6C8
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 21:51:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0F6E1C23A80
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 18:39:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D356F1F27EBA
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 19:51:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05A5022615;
-	Wed,  5 Jun 2024 18:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F66154448;
+	Wed,  5 Jun 2024 19:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="siRgdmpA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hk35WUGP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F7B19D8B8;
-	Wed,  5 Jun 2024 18:39:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636D21527AA;
+	Wed,  5 Jun 2024 19:51:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717612786; cv=none; b=RkYf7+AGS5FwpUrlQhjC2Kp3X7L8JYHfyxLYKsSlWIY7kAVRM6PXNoEFFQPdQQ9bC46d03XNpJgQgOgJz52CwB12V5eOtvG6LvVInX3sZIXGp8d3vc0ZgBwC0+ck5IkByB6ALbXgxMBGnwC1C28i7PxvRMsGkXn4C43FV9XCgSI=
+	t=1717617107; cv=none; b=OoPAYR6kXidhsBIgBzRVMEVg48UDO510g9ZtNpd4bok/PBxWYYBR5BRwIuJkIR5b4xjF6w56Vk14cV0gSj6jCrEzT1TfjqMoGQ83J046Pvzxb9lHR7fgaT7gW8YawtXCW9eUxtinp5W7wFF+HfizAh0xF2AE0aUXjIyPaOrUK7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717612786; c=relaxed/simple;
-	bh=ll7BJXBgyzFfVEbUvstry2CP0ImNl+s6mup20BRuXyU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=so8WHsAskyIQziTeYYdXhcClgF948fnbsSZgig9DfPyMbanRC7WybBrNnv7vg2DgXBQvBrpR/4RzWKjyzXN8hKqILbV//JZ+MIhUfZ05h5bNlKOGdSAP2qHqq3BqI36B4U5hvh5hvn3vDc5ivDIdT5gmnLVeJT3rwiPTqcDEM/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=siRgdmpA; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=y/VdjsL4ukypdzxZWoyFIbTeiY0cZ0qqJTSU7aQD81I=;
-	t=1717612784; x=1718822384; b=siRgdmpAjcjnZydxxmYuvGqTuioP5MknYzvFcCYy2cFcRfK
-	V7nTjzHkyrP+DUF70Tt1dGAnNwh11KdrYsL6GFkBTxvljTjmfD64g5R27IAsR3nLPyNa4gFY48vxb
-	gXGpEYUQTxVv6HVgMGLHO8bNWaM8wTa2SQ5iVhvp8CEIZtulTb7aVhGTqQLhjTqBQ8i8OkJnI+poR
-	60jWi2/hsrSx9XLLVE17Gwj5PVnOHY9g6Ka65+jPKXnhsOPclEJunwVkxHCnGXZaiYQBAfflfx4MY
-	hpsUCLjyDmwRGHTiHZSYaWw63CyMUyiUnmeO9QQh2K0gkLXoKV54rpiR4g/1Af6w==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1sEvXw-0000000EuRA-3zzb;
-	Wed, 05 Jun 2024 20:39:41 +0200
-Message-ID: <00555ae56b4193f47d32550440829d1c542534f6.camel@sipsolutions.net>
-Subject: Re: [RESEND PATCH v2] iwlwifi: mvm: adding check if the thermal
- firmware is running
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>, 
- miriam.rachel.korenblit@intel.com, kvalo@kernel.org,
- rafael.j.wysocki@intel.com,  daniel.lezcano@linaro.org, dmantipov@yandex.ru
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Wed, 05 Jun 2024 20:39:39 +0200
-In-Reply-To: <20240605183710.66016-1-trintaeoitogc@gmail.com>
-References: <20240605183710.66016-1-trintaeoitogc@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	s=arc-20240116; t=1717617107; c=relaxed/simple;
+	bh=13pNVGD9Kxcf1hFGXjLsg/bvuyKWmCGBqbVx1C7p2fw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UvjUtPojd3Cf8CjgyyKAiwD6RckhYEN/X8c64xguO3m+KWdDYfW2bU72jXLIqTNxelIpnAb5SHo7ECJ4Gkr2gSgovbBDYn32bCTQP2Qy3GbmeqyGt2Q7uRn2nCaxalFK09lTRSmMPE7+tbdTBTLTh6KAlDk1mR1c79bp1sPKupI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hk35WUGP; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1f630e35a01so2140385ad.1;
+        Wed, 05 Jun 2024 12:51:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1717617106; x=1718221906; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rK84/e0NpWu6xN5WA2vo2qIrm/0cYRoieZimvFEhelM=;
+        b=hk35WUGPKOdVLWFXDpQ4LtSg2JKT5ME5H/WGKLmdvtJmwXoHYvCFL8oLcfquZ8uQj4
+         1xNO4L7yQxtru0slwJ/bMRNzSP3SjoUKMPJ33QJFpvB3GQtVCylFxrCsCju6ePL+YFh8
+         TYK6U7DLqEscLMKoiddPmK6B/E4IAb9s6g4KEhA5+tSaXbdijBQw7XLy1scsuAWoHMFH
+         mqSnMUd5skl39RKUmwBUYgs3IzPhfbHMUD9Xioj83LapAf+QgfiVqSF9rpEfKAfaK5gl
+         8k6vdaFF5nJqcTMDj60PcF2oh4TNfZHXJZ2nwnVRt6A/u/1vZX0hobKU/GPerkapRtMR
+         ijFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717617106; x=1718221906;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rK84/e0NpWu6xN5WA2vo2qIrm/0cYRoieZimvFEhelM=;
+        b=wOGBuq2Q6omF44wtfHL+tA++0VN2h/shgX+D2Wm+2M16q5vL+ZwbY5M/sGyN0iUCVV
+         682AKcoWOnblTNMLqyvILk9lv5zR8aBRDxso959qzBYeFYj3jymKGdVeT5Y9UFUBrOe6
+         O6hxN0n5xVpv3UhwRMHPZXmC+iSy0Prj7SGaFOnQEiv9CXoQHae6TMnGrGYb8c4NIjyr
+         QUpjac32icOJWwBabxXgq9NVMrpwt6rw5omXjjQUcVYwinF4eFt3B7DXCBu5CKfXN7jY
+         srDwG8cKy1RER9EVJ1MYSWhVmcoLQKbjeugsCmke97A6pSZUKwZjE4QOvufCXsHBJBaL
+         heHA==
+X-Forwarded-Encrypted: i=1; AJvYcCXHmrHidoClds/KFRP4/Pi4/8PBRIKG+sFEZ+ucIw8HDKUVwQcYQzj4lmK/HzPBRaBr7LQQ2T0k2wQfoo5h+kEsQxytamFbngNuCVRU8CORYx7vF0wFyOi/ofyc/sKUmpY63KEOthPaWuHPkaY=
+X-Gm-Message-State: AOJu0YyW4ayHGhyT30/tm4Zc+hWhjiiu/8NdPaXthOhstiE5hgFZX6Y1
+	n4NWdfi4IxfdL2KuSPCxkbfWwYl9xsKFfA3HuH8D5syz2VlibMEw+KHzlojjL88=
+X-Google-Smtp-Source: AGHT+IG7ECbu4hu8GiJMC/+yTrvM3XzzHcS363edQPc1JVWRsN+LUfSOgqhk9H80IDZhhkTS5m2+xQ==
+X-Received: by 2002:a17:903:2292:b0:1f4:64ba:af9f with SMTP id d9443c01a7336-1f6a5a69a3dmr40243265ad.48.1717617105510;
+        Wed, 05 Jun 2024 12:51:45 -0700 (PDT)
+Received: from localhost.localdomain ([177.21.143.243])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f6323dde56sm109141285ad.165.2024.06.05.12.51.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Jun 2024 12:51:45 -0700 (PDT)
+From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+To: miriam.rachel.korenblit@intel.com,
+	kvalo@kernel.org,
+	rafael.j.wysocki@intel.com,
+	daniel.lezcano@linaro.org,
+	johannes.berg@intel.com,
+	dmantipov@yandex.ru
+Cc: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3] iwlwifi: mvm: adding check if the thermal firmware is running
+Date: Wed,  5 Jun 2024 16:51:28 -0300
+Message-ID: <20240605195129.89353-1-trintaeoitogc@gmail.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 
-On Wed, 2024-06-05 at 15:37 -0300, Guilherme Giacomo Simoes wrote:
-> In the dmesg is showing the message "failed to read out thermal zone"
-> as if the temperature read is failed by don't find the thermal zone.
->=20
-> After researching and debugging, I see that this specific error is
-> occurrenced because the thermal try read the temperature when is started,
-> but the firmware is not running yet.
->=20
-> For more legibiliti i change the tt.c for return EAGAIN when this was occ=
-urrence.
-> After this change, in my computer I compile and install kernel in /boot
-> and in my dmesg the message "failed to read out thermal zone" is not show
-> any more.
->=20
-> I would like to thanks for Rafael Wysocki <refael.j.wysocki@intel.com> an=
-d
-> Kalle Valo <kvalo@kernel.org> for your suggestions in my first patch.
->=20
-> Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-> ---
->  drivers/net/wireless/intel/iwlwifi/mvm/tt.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c b/drivers/net/wi=
-reless/intel/iwlwifi/mvm/tt.c
-> index 8083c4b2ab6b..68ab9966330c 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-> @@ -620,8 +620,14 @@ static int iwl_mvm_tzone_get_temp(struct thermal_zon=
-e_device *device,
-> =20
->  	mutex_lock(&mvm->mutex);
-> =20
-> -	if (!iwl_mvm_firmware_running(mvm) ||
-> -	    mvm->fwrt.cur_fw_img !=3D IWL_UCODE_REGULAR) {
-> +	const int res =3D iwl_mvm_firmware_running(mvm);
+In the dmesg is showing the message "failed to read out thermal zone"
+as if the temperature read is failed by don't find the thermal zone.
 
-const is useless, but you should not have variable declarations in the
-middle of the function (per kernel convention)
+After researching and debugging, I see that this specific error is
+occurrenced because the thermal try read the temperature when is started,
+but the firmware is not running yet.
 
-johannes
+For more legibiliti i change the tt.c for return EAGAIN when this was occurrence.
+After this change, in my computer I compile and install kernel in /boot
+and in my dmesg the message "failed to read out thermal zone" is not show
+any more.
+
+I would like to thanks for Rafael Wysocki <refael.j.wysocki@intel.com> ,
+Kalle Valo <kvalo@kernel.org> and Johannes Berg <johannes@sipsolutions.net>
+for your suggestions in my previous patch.
+
+Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/tt.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
+index 8083c4b2ab6b..9aa9e3be39b8 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
+@@ -620,8 +620,14 @@ static int iwl_mvm_tzone_get_temp(struct thermal_zone_device *device,
+ 
+ 	mutex_lock(&mvm->mutex);
+ 
+-	if (!iwl_mvm_firmware_running(mvm) ||
+-	    mvm->fwrt.cur_fw_img != IWL_UCODE_REGULAR) {
++	int res = iwl_mvm_firmware_running(mvm);
++
++	if (!res) {
++		ret = -EAGAIN;
++		goto out;
++	}
++
++	if (mvm->fwrt.cur_fw_img != IWL_UCODE_REGULAR) {
+ 		ret = -ENODATA;
+ 		goto out;
+ 	}
+-- 
+2.45.2
 
 
