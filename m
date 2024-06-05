@@ -1,141 +1,133 @@
-Return-Path: <linux-wireless+bounces-8589-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8590-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54D638FD6FC
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 22:03:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BA588FD74B
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 22:12:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE379B236E1
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 20:03:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1219F2856E0
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 20:12:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D8E156F42;
-	Wed,  5 Jun 2024 20:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3921E1586D3;
+	Wed,  5 Jun 2024 20:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DSwK/Wha"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IesPMI9q"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BCD215534A;
-	Wed,  5 Jun 2024 20:02:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7F21586C7;
+	Wed,  5 Jun 2024 20:11:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717617767; cv=none; b=ELTLi4c1ufs52Po1P7S3dHujSjPk/bKB3gkvHOCZX3UsEPLPZ4FEPwTOZkUYVWjwb7RnSf//EhQeVjcN9IE4liG+f2uTbGMjD+cicaYo3GEo21Bt+UePcR0/rBpBdUu/0115NHrEu+LgOpa+iwbN2gRsWqzxCRu9jJLHUq0Ru/8=
+	t=1717618274; cv=none; b=dpqBKnAncgihZtVVqm9HNtVF4seYOR3geE0AdvJQWPFziZnYeWtYaw/Ne6htClEbynH6A58qfd3nGn5mdGB38brzuge5wMDmSE7pwrNNvgEnWynQWp7wS5FVcfaY9xLwws+iDu0i0SP/v6l9HHAmFcmjmDApeB5Lc3MjfmdFRt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717617767; c=relaxed/simple;
-	bh=MQsO5jA5Q4r/5sp8FObB1XchIEXn3DY4dlGB8caBI7A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GjDkg/VDHGTvcqjHv1PoNWLavbYqENYw8si8a630N05TUYRPdcQT28jvpfORoH0brkTQAwNp4haI3jUw4LXJBkIcK5LZ69rRPXafWVluSrF0PTwodT+t6ikhkAQxOoY2xU0LWpqafHNYnXcm/kLKbiCOMvuMyEm0n7JfFF127DQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DSwK/Wha; arc=none smtp.client-ip=209.85.222.173
+	s=arc-20240116; t=1717618274; c=relaxed/simple;
+	bh=FAe5RBSeVUQvSoNMovSUxUr4BZQMUMsViBXF99Eg278=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sBlfTutLsg2O8MnYRhiRevgddy5YPEcNTH5RqxlUzpXdvZCGemFnAzDYcpaAKVq88FyPGSybuA/z/B7aJYE+RE6+UT6n19/CCZJpFb1adMbYCYbFhiecHMBhkkZ8v11wt4NIo+/5Tpc9J1G4qNhd4tFyQVBA4BWBpUek6MPWOps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IesPMI9q; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-79505987854so11065585a.0;
-        Wed, 05 Jun 2024 13:02:45 -0700 (PDT)
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1f6b0a40721so2144015ad.2;
+        Wed, 05 Jun 2024 13:11:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717617764; x=1718222564; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=wiejtDwNbnyUyDnMvFBVySvH2LKv57cz2j0YEQtBnXA=;
-        b=DSwK/WhaSXnmDL61Ry71XwOnVqshuom2vVq5kCLdgzUxmYWXxhvrka+mJP2Y946Pdo
-         cMa8vUqURMwnq8vubci5AgMbJJIZwmIQg1dk8bjyXKgQ02+MGpO2qAWKDNbcHDONONGk
-         vZin6QihuKbgISy4rCl4oIqrnYgUklR54GX5u74AkSEjgCyCvB5lRYjQObD9QkbGNAOs
-         OAGZdpcDfq8zU4sjJepRywvNDYVNicsvhGTB5OQjjrB0XqgxcntfgZFv+EK95LzqLKzM
-         rR6dm77oqauynHbS+AI9jdMIZ3jX5mnlgxj8M2K2n13tP1sB0NWEc0UatX2EEEJzMbkB
-         vRRg==
+        d=gmail.com; s=20230601; t=1717618272; x=1718223072; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XBj9aeVGLx9lk0+gvee4j7l4tMQJNLmoyqkeXTYVawA=;
+        b=IesPMI9qop3z5oa+1hM9U9pWVhZR8+EuRU3qJeeAt3QvwGkLtL4XzB6YFx7xUwUJQf
+         qlHSa5CQLB1H5SjlmaBuysdxjDEoa3gz1wQShbo7za2dyXVLQqNqAPeYKd1Xg2/pdqDe
+         XWGjx0BhccnSCohXTOc/5yJgV8rE/NHZfWPGPTRSFaSXhOl5Efbok0F3LfFfiPz0hCgT
+         8Moidpdk6URZCgYzquETJsJXG4jo0q3aA3XlrF56rs55rzddSSBSFnTWrrCzCkiXVRN9
+         mVeGIgs7QOJoyqQlXUASUQIf0+dmvqkdsRUCs0lNldTKOL4ZvVf4Ifdh1bz8wwHhxlwj
+         Ijfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717617764; x=1718222564;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1717618272; x=1718223072;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=wiejtDwNbnyUyDnMvFBVySvH2LKv57cz2j0YEQtBnXA=;
-        b=U3X+Fg6pBzw/H3FayiBX4KtXxy3L/LcCXuTWgtTlGjkNlxXHmNYzEHjJubwPigyOjE
-         xoydL6+/XZ6SxrywanygFt65tJ6f6WQxn7Yvyd7Z97MvJFY5xRSCBEVQ6Vgq45Np6rRi
-         z0pgUWDasRr6B/oZfjCuw3Nn9KMmQ0LZAfvIOqlf9mH7fLUNlvPJUAy9As+rfIILkTfG
-         sIgVqZqB7/JNyGKeDzdhteUdhGSZm/fIwmozeFPkYpIbVv2QeuEYL0kiUeBU37IPrqhr
-         qXr2EZz0nabWp/DAaX6hVCvF1VDwiQ3F+36Y1CaSsWYq4P+7dwu4gfsOMCGMx8ZA76gK
-         3dXg==
-X-Forwarded-Encrypted: i=1; AJvYcCUW2sAtDyFa24/OEEysU4WnlqO5P4NTljqwlstRwCytbOrAWznuptN5yKMSC/Jr7gDCZ1bakLy4auXTptp7/Si5iSRm1tfl3S0akkePuOu99b/na9PTac5+afjnz/Yr5JAVeB67PwSJQsiME00=
-X-Gm-Message-State: AOJu0Yx1HvsLbKrj5YsGvYMJkJ5o3+gSl69YdOOE7SxZuiGZJjdC/aIg
-	uHa9abV9El6YWWplZn2t11JL48OVQxnGEiyt7zf6xDo+d4DNVtuGlsViOD7XVhseR5JPT32RwqE
-	sLYJfAmH38CDyN2B7qBg51pCe4B0=
-X-Google-Smtp-Source: AGHT+IHjUuG3kbeqDQdbdD9vQU8yIrvicjHcDH6huLyQZt3nVdwNW2YlnGttJVg23BsZqZyDbbHr/ZCaUVUUj5BITjw=
-X-Received: by 2002:a05:620a:3192:b0:795:2302:249 with SMTP id
- af79cd13be357-79523fb8cb7mr450423085a.60.1717617764335; Wed, 05 Jun 2024
- 13:02:44 -0700 (PDT)
+        bh=XBj9aeVGLx9lk0+gvee4j7l4tMQJNLmoyqkeXTYVawA=;
+        b=Qu9L2GVsu1ikYDDuQhVR9yShIXmWvqCIE7QifHFl/AGRiU8nu+ohPwYHgpS6TxYPrb
+         88DaffymPqSjhciGxhY9jW3wAO/xen0/v76SoipNaTy+GTnj+l76h/97PKYIPCSnvzjy
+         S3KWGAU7v81ktl4ZQCDQmqY93gMmc0Ou4LZ5SqrmSBZ2LoHHHm0xobLeImTqnHg6puNp
+         MzSFB7oSNRn49oOZghaBBEcT5CHqVdbNMwS5FdgYh0K4ajQNminlLJi28189TNjYG8ey
+         8kGZHW2favKUI8vP73IPUb4GfUSHw0Qpdi+9Nkow1szs4erJ6ZCAUBMsvi6jl4MwV4m3
+         I0Mw==
+X-Forwarded-Encrypted: i=1; AJvYcCW0biwhAl6+eILDAZNyCm9MP3YXoqUwhaT/NkdUPvQMAOJ0KuEfjnWhhFmV3WBb2brAeXYPjPLEA3joo67GlHru5djEleaw7PtKzqTvRikDBwy2HJ3XZKJgd3UvLip41tO7awjtgTujoZO6jZA=
+X-Gm-Message-State: AOJu0YxHBv1h20fI8QE2gP5oq9RZZZovAa8kZoC4S6JTXs4VWQ0cjGZU
+	D0lRpCJMKUO4h6DtXb6ic20BN7+uUmj7OV+CfXoUm18IX3rGhE1L
+X-Google-Smtp-Source: AGHT+IEGu5ShaAHzYkwyBq4xYwcioUEVZUexCPqMcpakJMWRGFjg+Bo4DSNwD23lkoPdDBjRtp+M6g==
+X-Received: by 2002:a17:902:c40a:b0:1f6:73a9:ec9a with SMTP id d9443c01a7336-1f6a5a023f2mr49103245ad.12.1717618271758;
+        Wed, 05 Jun 2024 13:11:11 -0700 (PDT)
+Received: from localhost.localdomain ([177.21.143.243])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f6323dfe3bsm109428335ad.135.2024.06.05.13.11.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Jun 2024 13:11:11 -0700 (PDT)
+From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+To: miriam.rachel.korenblit@intel.com,
+	kvalo@kernel.org,
+	rafael.j.wysocki@intel.com,
+	daniel.lezcano@linaro.org,
+	johannes.berg@intel.com,
+	dmantipov@yandex.ru
+Cc: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4] iwlwifi: mvm: adding check if the thermal firmware is running
+Date: Wed,  5 Jun 2024 17:10:48 -0300
+Message-ID: <20240605201049.94826-1-trintaeoitogc@gmail.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240605195129.89353-1-trintaeoitogc@gmail.com> <621eb61c-87e1-417f-ad9f-f14d858ec8aa@intel.com>
-In-Reply-To: <621eb61c-87e1-417f-ad9f-f14d858ec8aa@intel.com>
-From: =?UTF-8?Q?Guilherme_Gi=C3=A1como_Sim=C3=B5es?= <trintaeoitogc@gmail.com>
-Date: Wed, 5 Jun 2024 17:02:08 -0300
-Message-ID: <CAM_RzfaikYvUFd3DqTMj9Qz+05SZAOZYJJpJAqPkYj9URh0HFQ@mail.gmail.com>
-Subject: Re: [PATCH v3] iwlwifi: mvm: adding check if the thermal firmware is running
-To: "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>
-Cc: miriam.rachel.korenblit@intel.com, kvalo@kernel.org, 
-	daniel.lezcano@linaro.org, johannes.berg@intel.com, dmantipov@yandex.ru, 
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Wysocki, Rafael J <rafael.j.wysocki@intel.com> write:
->
-> On 6/5/2024 9:51 PM, Guilherme Giacomo Simoes wrote:
-> > In the dmesg is showing the message "failed to read out thermal zone"
-> > as if the temperature read is failed by don't find the thermal zone.
-> >
-> > After researching and debugging, I see that this specific error is
-> > occurrenced because the thermal try read the temperature when is started,
-> > but the firmware is not running yet.
-> >
-> > For more legibiliti i change the tt.c for return EAGAIN when this was occurrence.
-> > After this change, in my computer I compile and install kernel in /boot
-> > and in my dmesg the message "failed to read out thermal zone" is not show
-> > any more.
-> >
-> > I would like to thanks for Rafael Wysocki <refael.j.wysocki@intel.com> ,
-> > Kalle Valo <kvalo@kernel.org> and Johannes Berg <johannes@sipsolutions.net>
-> > for your suggestions in my previous patch.
-> >
-> > Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
-> > ---
-> >   drivers/net/wireless/intel/iwlwifi/mvm/tt.c | 10 ++++++++--
-> >   1 file changed, 8 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-> > index 8083c4b2ab6b..9aa9e3be39b8 100644
-> > --- a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-> > +++ b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
-> > @@ -620,8 +620,14 @@ static int iwl_mvm_tzone_get_temp(struct thermal_zone_device *device,
-> >
-> >       mutex_lock(&mvm->mutex);
-> >
-> > -     if (!iwl_mvm_firmware_running(mvm) ||
-> > -         mvm->fwrt.cur_fw_img != IWL_UCODE_REGULAR) {
-> > +     int res = iwl_mvm_firmware_running(mvm);
->
-> Why do you need the res variable at all?  You can just call the function
-> directly in the if () statement.
->
->
-> > +
-> > +     if (!res) {
-> > +             ret = -EAGAIN;
-> > +             goto out;
-> > +     }
-> > +
-> > +     if (mvm->fwrt.cur_fw_img != IWL_UCODE_REGULAR) {
-> >               ret = -ENODATA;
-> >               goto out;
-> >       }
+In the dmesg is showing the message "failed to read out thermal zone"
+as if the temperature read is failed by don't find the thermal zone.
 
-Yes, this makes sense, I only declare the "res" variable because
-seeing some files in the linux kernel, I see this standard practice.
-But I really don't need this variable. I will send a new patch v4
-without this variable.
-Thank you for your suggestion on my code.
+After researching and debugging, I see that this specific error is
+occurrenced because the thermal try read the temperature when is started,
+but the firmware is not running yet.
+
+For more legibiliti i change the tt.c for return EAGAIN when this was occurrence.
+After this change, in my computer I compile and install kernel in /boot
+and in my dmesg the message "failed to read out thermal zone" is not show
+any more.
+
+I would like to thanks for Rafael Wysocki <refael.j.wysocki@intel.com> ,
+Kalle Valo <kvalo@kernel.org> and Johannes Berg <johannes@sipsolutions.net>
+for your suggestions in my previous patch.
+
+Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/tt.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
+index 8083c4b2ab6b..d1dd334b5049 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
+@@ -620,8 +620,12 @@ static int iwl_mvm_tzone_get_temp(struct thermal_zone_device *device,
+ 
+ 	mutex_lock(&mvm->mutex);
+ 
+-	if (!iwl_mvm_firmware_running(mvm) ||
+-	    mvm->fwrt.cur_fw_img != IWL_UCODE_REGULAR) {
++	if (!iwl_mvm_firmware_running(mvm)) {
++		ret = -EAGAIN;
++		goto out;
++	}
++
++	if (mvm->fwrt.cur_fw_img != IWL_UCODE_REGULAR) {
+ 		ret = -ENODATA;
+ 		goto out;
+ 	}
+-- 
+2.45.2
+
 
