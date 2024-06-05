@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-8550-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8552-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 392AA8FCA2A
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 13:18:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F20C8FCA2C
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 13:18:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96ABC285E42
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 11:18:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84F37B240BA
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 11:18:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60DC5194132;
-	Wed,  5 Jun 2024 11:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9452219148B;
+	Wed,  5 Jun 2024 11:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T8ushLUq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U0FFhh/J"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F1019306C
-	for <linux-wireless@vger.kernel.org>; Wed,  5 Jun 2024 11:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3658194138
+	for <linux-wireless@vger.kernel.org>; Wed,  5 Jun 2024 11:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717586244; cv=none; b=LpVMmK+L23Yejizgl7GfQcX6xUNhDQfU1PZUy181YrRGA0QbzWIUMTaHOnDqz9eBiGrVUwd4p5NJgYmpPGp6eitR6JijmyVjatww51V5y+3BaGsiwYKrMfxgAlBuyq8kTjT5EoAlGyq1onAhpiDBVgvhB/KByNp8r35CYjYb7hM=
+	t=1717586246; cv=none; b=Lh7rfz0LPWKdAMoUV2XFatZSfUozMFYC+iVChjMYPElgH6kSdPfkOduP4kWKMKEAVHOMASVwLDUEUTSI32kcuVieuRRrh7vLcCGtJEJmPJSulAb7I+qFtnsrC7k03lDJz/fleIbCmflC2YH1KfIDRWxiEL1TNwif0V7UZCuMEzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717586244; c=relaxed/simple;
-	bh=oqs8DQ9zpniAk7C9rCPfB2RgXLx/iPT/OXGpGu0g8DM=;
+	s=arc-20240116; t=1717586246; c=relaxed/simple;
+	bh=VgZ8yrn8xR3AtM3f/iUvzgymP3OJCwOWcj3sWBvCLI8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jlZE/2elR2dEIXeU6qglbLR0bxUSDTKZ74B2fFFaB7SwZ6c5sxCH3JhJUQHttWqJk/RszJKNkdY1rE/BuBrV8agXKICm3m5jah0x0osPy0rx8kEsWh877oKtP9Qwbr6e2bSja6aV6nupQs5dpnfVgrKG+e3MjDjX4c54oiHEy9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T8ushLUq; arc=none smtp.client-ip=198.175.65.9
+	 MIME-Version; b=bb00GqgA8+11SoJ7UxwNdNxq16wEdtLbuyjYK0n7hZHoubiStuiN5pTSrwivcBJMqaICn8BoYn6mOgx2L3YtJnSY916hxf31nOwNysyCr4wpcPkIXw1659J8Efkh25OIP0dX27Lsq8mQ/AjIYD4y+OFtn2FK5mxOH+6LMAfrs9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U0FFhh/J; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717586242; x=1749122242;
+  t=1717586245; x=1749122245;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=oqs8DQ9zpniAk7C9rCPfB2RgXLx/iPT/OXGpGu0g8DM=;
-  b=T8ushLUqjtJfEhenpj1HSknNCKzF9HX1MrYUMDIZEzBmta8Rdh42g70v
-   qON8fsfsysPaFX2e3+rR0tSgOaLE4IvwbpTVO0+hHWEdOoQ7313XxYkQ2
-   TDqNlz2B/XOeff00jqytYbEWoXlbarTxi4WyKrcBJnvwjmIKKpz4J4o7I
-   t+kRiwsrYnyoFzKfcksyF7xMCUZ402m18pFwfzW/Fmbri/0L2deODhrvf
-   It4nnundN5RjsGnMN+eAMdnCF1pAsbBMJAs44ysp8GgNiz/qoBOrhIfsh
-   wfdqfEbpMlXAzXZPsSHkJqthMBUdX5N+SB6Zi3IsZLsB8exCxHKD5pUc+
-   g==;
-X-CSE-ConnectionGUID: mPYyy51uQmasQE7MuJcWVw==
-X-CSE-MsgGUID: S0XthvZKTpK9rnfoOszCMw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11093"; a="36718038"
+  bh=VgZ8yrn8xR3AtM3f/iUvzgymP3OJCwOWcj3sWBvCLI8=;
+  b=U0FFhh/JXM0nbIUDbPuPIFk+yKVKboT2n7U4IrTlH0TCcC+Z1Ny93yUj
+   Jq/CzOExls4ReY/6cqasRtJ/qBsBHZPwghtSm5XchDEQp1nnwTpHxT0BG
+   Y9otGNFAJ/8hnbI7EmItQhrdrzONtmGOiccnCQ9yoAccuHCSUNaywn3gt
+   zbNcQw+hXd5V4MHocjF1mxisUeUBmNdRSr0WK76TRtkKxgq5fuDiGMGrn
+   eVFTXaFSTLcdwTg+AHObXWaV/oXwefe4wk7PB43MIEpEhacoGO2uaYwrb
+   sZ8HKiON00uOcZzxTh2s9WtIezPSPla+pFm/b/s8om9eYMA9q5dgYwaFn
+   A==;
+X-CSE-ConnectionGUID: Ki+kngXBQQWcquGP+s5eLg==
+X-CSE-MsgGUID: 5Fs9v1TPSDel0hr0kDAq0Q==
+X-IronPort-AV: E=McAfee;i="6600,9927,11093"; a="36718045"
 X-IronPort-AV: E=Sophos;i="6.08,216,1712646000"; 
-   d="scan'208";a="36718038"
+   d="scan'208";a="36718045"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2024 04:07:48 -0700
-X-CSE-ConnectionGUID: /1EcKUgzSimntUTwmPCeyg==
-X-CSE-MsgGUID: DO6JjO29RauLHrMPsbBRSw==
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2024 04:07:50 -0700
+X-CSE-ConnectionGUID: 2ZHca66hSOaVqpnwiIc1rQ==
+X-CSE-MsgGUID: 1uXWzTcARN6TKWLWMZNLwg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,216,1712646000"; 
-   d="scan'208";a="37433755"
+   d="scan'208";a="37433770"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2024 04:07:46 -0700
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2024 04:07:48 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 1/5] wifi: iwlwifi: mvm: separate non-BSS/ROC EMLSR blocking
-Date: Wed,  5 Jun 2024 14:07:36 +0300
-Message-Id: <20240605140556.461fcf7b95bb.Id0d21dcb739d426ff15ec068b5df8abaab58884d@changeid>
+	Golan Ben Ami <golan.ben.ami@intel.com>
+Subject: [PATCH 2/5] wifi: iwlwifi: remove AX101, AX201 and AX203 support from LNL
+Date: Wed,  5 Jun 2024 14:07:37 +0300
+Message-Id: <20240605140556.027052a59b82.I989a2d3f1513211bc49ac8143ee4e9e341e1ee67@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240605110740.2046411-1-miriam.rachel.korenblit@intel.com>
 References: <20240605110740.2046411-1-miriam.rachel.korenblit@intel.com>
@@ -77,97 +77,57 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Golan Ben Ami <golan.ben.ami@intel.com>
 
-If non-BSS and remain-on-channel (ROC) blocking were to occur
-simultaneously, they'd step on each other's toes, unblocking
-when not yet supported. Disentangle these bits, and ROC doesn't
-need to use the non_bss_link() function then.
-
-Fixes: a1efeb823084 ("wifi: iwlwifi: mvm: Block EMLSR when a p2p/softAP vif is active")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Golan Ben Ami <golan.ben.ami@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c   | 10 +++++++---
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h        |  5 ++++-
- drivers/net/wireless/intel/iwlwifi/mvm/time-event.c |  5 +++--
- 3 files changed, 14 insertions(+), 6 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 32 ++++++++++++++++++-
+ 1 file changed, 31 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index a2a0409672c3..d2b97e30d9eb 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -4787,6 +4787,7 @@ int iwl_mvm_roc_common(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		       const struct iwl_mvm_roc_ops *ops)
- {
- 	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
-+	struct ieee80211_vif *bss_vif = iwl_mvm_get_bss_vif(mvm);
- 	u32 lmac_id;
- 	int ret;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index d6da25e24818..9ad43464b702 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -503,7 +503,37 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct pci_device_id iwl_hw_card_ids[] = {
+ 	{IWL_PCI_DEVICE(0x2727, PCI_ANY_ID, iwl_bz_trans_cfg)},
+ 	{IWL_PCI_DEVICE(0x272D, PCI_ANY_ID, iwl_bz_trans_cfg)},
+ 	{IWL_PCI_DEVICE(0x272b, PCI_ANY_ID, iwl_bz_trans_cfg)},
+-	{IWL_PCI_DEVICE(0xA840, PCI_ANY_ID, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x0000, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x0090, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x0094, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x0098, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x009C, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x00C0, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x00C4, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x00E0, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x00E4, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x00E8, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x00EC, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x0100, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x0110, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x0114, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x0118, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x011C, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x0310, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x0314, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x0510, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x0A10, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x1671, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x1672, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x1771, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x1772, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x1791, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x1792, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x4090, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x40C4, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x40E0, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x4110, iwl_bz_trans_cfg)},
++	{IWL_PCI_DEVICE(0xA840, 0x4314, iwl_bz_trans_cfg)},
+ 	{IWL_PCI_DEVICE(0x7740, PCI_ANY_ID, iwl_bz_trans_cfg)},
+ 	{IWL_PCI_DEVICE(0x4D40, PCI_ANY_ID, iwl_bz_trans_cfg)},
  
-@@ -4799,9 +4800,12 @@ int iwl_mvm_roc_common(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	 */
- 	flush_work(&mvm->roc_done_wk);
- 
--	ret = iwl_mvm_esr_non_bss_link(mvm, vif, 0, true);
--	if (ret)
--		return ret;
-+	if (!IS_ERR_OR_NULL(bss_vif)) {
-+		ret = iwl_mvm_block_esr_sync(mvm, bss_vif,
-+					     IWL_MVM_ESR_BLOCKED_ROC);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	guard(mvm)(mvm);
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index 82080d920d59..cb227dca4f87 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -361,7 +361,9 @@ struct iwl_mvm_vif_link_info {
-  * @IWL_MVM_ESR_BLOCKED_WOWLAN: WOWLAN is preventing the enablement of EMLSR
-  * @IWL_MVM_ESR_BLOCKED_TPT: block EMLSR when there is not enough traffic
-  * @IWL_MVM_ESR_BLOCKED_FW: FW didn't recommended/forced exit from EMLSR
-- * @IWL_MVM_ESR_BLOCKED_NON_BSS: An active non-bssid link's preventing EMLSR
-+ * @IWL_MVM_ESR_BLOCKED_NON_BSS: An active non-BSS interface's link is
-+ *	preventing EMLSR
-+ * @IWL_MVM_ESR_BLOCKED_ROC: remain-on-channel is preventing EMLSR
-  * @IWL_MVM_ESR_EXIT_MISSED_BEACON: exited EMLSR due to missed beacons
-  * @IWL_MVM_ESR_EXIT_LOW_RSSI: link is deactivated/not allowed for EMLSR
-  *	due to low RSSI.
-@@ -378,6 +380,7 @@ enum iwl_mvm_esr_state {
- 	IWL_MVM_ESR_BLOCKED_TPT		= 0x4,
- 	IWL_MVM_ESR_BLOCKED_FW		= 0x8,
- 	IWL_MVM_ESR_BLOCKED_NON_BSS	= 0x10,
-+	IWL_MVM_ESR_BLOCKED_ROC		= 0x20,
- 	IWL_MVM_ESR_EXIT_MISSED_BEACON	= 0x10000,
- 	IWL_MVM_ESR_EXIT_LOW_RSSI	= 0x20000,
- 	IWL_MVM_ESR_EXIT_COEX		= 0x40000,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-index 31bc80cdcb7d..c0322349bfcd 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-@@ -47,6 +47,7 @@ void iwl_mvm_te_clear_data(struct iwl_mvm *mvm,
- 
- static void iwl_mvm_cleanup_roc(struct iwl_mvm *mvm)
- {
-+	struct ieee80211_vif *bss_vif = iwl_mvm_get_bss_vif(mvm);
- 	struct ieee80211_vif *vif = mvm->p2p_device_vif;
- 
- 	lockdep_assert_held(&mvm->mutex);
-@@ -119,9 +120,9 @@ static void iwl_mvm_cleanup_roc(struct iwl_mvm *mvm)
- 			iwl_mvm_rm_aux_sta(mvm);
- 	}
- 
-+	if (vif && !IS_ERR_OR_NULL(bss_vif))
-+		iwl_mvm_unblock_esr(mvm, bss_vif, IWL_MVM_ESR_BLOCKED_ROC);
- 	mutex_unlock(&mvm->mutex);
--	if (vif)
--		iwl_mvm_esr_non_bss_link(mvm, vif, 0, false);
- }
- 
- void iwl_mvm_roc_done_wk(struct work_struct *wk)
 -- 
 2.34.1
 
