@@ -1,63 +1,84 @@
-Return-Path: <linux-wireless+bounces-8578-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8576-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0CC08FD5F7
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 20:46:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 539CA8FD5D9
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 20:37:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFF801C218EC
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 18:46:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FB291C2402F
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 18:37:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC98619D880;
-	Wed,  5 Jun 2024 18:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07A7D12D1E7;
+	Wed,  5 Jun 2024 18:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="SKcAzGo2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NNvvnIzx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from nbd.name (nbd.name [46.4.11.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7CFF61FFE
-	for <linux-wireless@vger.kernel.org>; Wed,  5 Jun 2024 18:46:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD58DF78;
+	Wed,  5 Jun 2024 18:37:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717613171; cv=none; b=NNoTWUGyCWF7/l+zd6fOdHup4nmGJ2LZ/32oPDzARTU3rHjHNg4f4I9XQXYvwBezdSWnJLALQ6xi2q1aJ7i8IdfecF1xi9t1qL6iltR6+fTDp8jLcFgnR0U426F6dqUPQsQA2pkRhKrgqCtAe9x6L/0gt6bywaAmTyWrrZ/p/DI=
+	t=1717612659; cv=none; b=hfE9QQ9yn2+WuOUynP1W+4IlhK/dM2jKMALlmEla0JyN7/EVCnKq7OTzHPvAPA6+cwXjgSwIj++zDqUEBBO63G+4N9Z84gm/mb0l8+BDitZQOIx3tX8ZoPy1tbnJsnMm8PJGkIMJOqXQX25b5zIvrii7UPuIy6La7OadcQswu+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717613171; c=relaxed/simple;
-	bh=McF07gt4AhplTEq707os0MqhSpdMbwYAjYrRCK08ThU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uR97pl9ea5DqNWRcN7yeKZw7Wni6QYPMnsqABwZ8HzqiLjnTPieMNYrJSMFeNA/JX0bTyw5XNo1gf8xPMAi+1DbHFAlrHqkTmDmV2ucrlx9dCGsd53ZY60HPiua+YW+WvRlD+IfwInp52DzmUtlfpq8M2BoTD4fmM83huEJTKLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=SKcAzGo2; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=rmZIy0qpabGlPgxqphOmYu7ybMcD+XW/n7nuwdYBhtc=; b=SKcAzGo2BaMq4EK79/5A1Z4GRh
-	ioWmnjPgpiEEV00CDhNLWdGZWUWdb/q+dA1IvDWA9wpk7O4iwokQycske3MtQgezW9gKS+ksBC9Ru
-	mJ3AUrTD3U16zbAOhe5TJ9xnbFTQTqhDTG/AmomnvyM26QbZ2eufooomsk+od5NNm4b0=;
-Received: from p4ff130d0.dip0.t-ipconnect.de ([79.241.48.208] helo=localhost.localdomain)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
-	(Exim 4.96)
-	(envelope-from <nbd@nbd.name>)
-	id 1sEvQB-008Gwq-0Q;
-	Wed, 05 Jun 2024 20:31:39 +0200
-From: Felix Fietkau <nbd@nbd.name>
-To: linux-wireless@vger.kernel.org
-Cc: johannes@sipsolutions.net,
-	quic_adisi@quicinc.com,
-	quic_periyasa@quicinc.com,
-	ath12k@lists.infradead.org
-Subject: [RFC v2 7/7] wifi: mac80211: add wiphy radio assignment and validation
-Date: Wed,  5 Jun 2024 20:31:30 +0200
-Message-ID: <1c285c1bf3b8ba989641e0913f938c09a8c4135c.1717611760.git-series.nbd@nbd.name>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <cover.c104c0bb3a14f4ac26aee71f4979846f6ad87742.1717611760.git-series.nbd@nbd.name>
-References: <cover.c104c0bb3a14f4ac26aee71f4979846f6ad87742.1717611760.git-series.nbd@nbd.name>
+	s=arc-20240116; t=1717612659; c=relaxed/simple;
+	bh=IWRxEymlXyeOoO9yBjR2hKECkwKKp+8egwI0jWkj/dY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jMmKJo0A3POypQG8FlGlkApbLjZRgx9oTIyM2GYlN+o5KHtCfr8kwsPZDnn3uk0/oX7ObzjLVfCWvL5RDpB6R8ZnFQYXPfNXDnArsc2m7hDwQKKmj1QnWELYApvfJZCBtFyzaTXeUnBBVL6lWn+Kwg+QJTBB86oZPFeMP//1YLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NNvvnIzx; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1f4a0050b9aso1481085ad.2;
+        Wed, 05 Jun 2024 11:37:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1717612658; x=1718217458; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rBsylD2EcrDb2y9t7J9rNMpo+HTh9H61rht72+hy9NA=;
+        b=NNvvnIzxgRubRHoUh4aJV1/nwSjV4Cyz1VQK1e7WpLUZnf6Jw5Nm/z1F1rIbbSka8q
+         IvoU2yh+W7aNtC30ArmOtaDPgOdBVOchpsCeCA7QHdmTvdRxWfvsuiHLOCPYX2/FyAYf
+         rSw4STKnXIkAoru8JbMdC2jIJgOJT+hQ63p7i0AxPEwK1fBRc1PYHq7C0IvSBhbFub1C
+         8X9cezE4ljI/sM0iCdWgEO/gf0H3QrK1kgYQGpa+tRQG1dhAlBEcD9KUpm/vMnGozFvo
+         yKOhLyd07sk/jCEwGZR/v8al9DHI8DE7mnVD0WhFzjlofmEpmDoG9oGONvLC4F//1lNF
+         0WOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717612658; x=1718217458;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rBsylD2EcrDb2y9t7J9rNMpo+HTh9H61rht72+hy9NA=;
+        b=w2HWbh8+RueXn964RDIRivouU6+LBxiSih6pTKv9Gr7IA+17XJdSGMyNotuht5+Sgt
+         ubM+0GQBv2HVPCqQo5mTTK0MpEXLqlVURfFIshNLrS5PlCdD0Dh7jHvI4IzA3RgKe9Lm
+         1UeoTdxM3uFeyy7OQ+adryRSvFaoIyuKxBEj40e82mhoJC0E4uBV7BTKXA0XNSQ2jLiu
+         goEVAqbYy71RrXixKggBB4UFSigPu5GNS7Uk4gpok/z4O7tJklZ30iV08x8oKN0gLcIu
+         DPmsGDAPMBED6++zolr6VXrapdmgsoUgWZCi2Tp39lSnVyYiMU4lvuNjvZxtITF8jY7e
+         MmiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWmIqSdEpJgdYxBKH+DinlYZ5SvSJDgU6Vg9kCZccFMABpHHpmoXXuTx5YXQvXCeF02muirOdKFXa4kmwvk9pJ8Xq9CVn3ze/IHviFM1qb7N+UXTi8Jm5vsBKoQKfn9j3wWJbFKD0xE41jrQY4=
+X-Gm-Message-State: AOJu0YwqC16DyH64vjTg316szoyduqDwZpYob7rKyoURh68HhO8aAtbZ
+	MGIMbY2hkIG59675zYGkEIDZAIPWPG5ygJm0AxnbIPddYTUXX0eT
+X-Google-Smtp-Source: AGHT+IFtOR5FT59qeaQIBc7JDpQX/YF3b15w1TIgp7tAoCBQxFPZKwSXEvQh3HKRFK5LARVdv7tUvg==
+X-Received: by 2002:a17:902:e809:b0:1f6:74bb:4921 with SMTP id d9443c01a7336-1f6a5a69a0emr40966495ad.44.1717612657692;
+        Wed, 05 Jun 2024 11:37:37 -0700 (PDT)
+Received: from localhost.localdomain ([177.21.143.243])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f632338ae5sm105486695ad.37.2024.06.05.11.37.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Jun 2024 11:37:37 -0700 (PDT)
+From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+To: miriam.rachel.korenblit@intel.com,
+	kvalo@kernel.org,
+	rafael.j.wysocki@intel.com,
+	daniel.lezcano@linaro.org,
+	johannes.berg@intel.com,
+	dmantipov@yandex.ru
+Cc: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [RESEND PATCH v2] iwlwifi: mvm: adding check if the thermal firmware is running
+Date: Wed,  5 Jun 2024 15:37:08 -0300
+Message-ID: <20240605183710.66016-1-trintaeoitogc@gmail.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -66,160 +87,48 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Validate number of channels and interface combinations per radio.
-Assign each channel context to a radio.
+In the dmesg is showing the message "failed to read out thermal zone"
+as if the temperature read is failed by don't find the thermal zone.
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+After researching and debugging, I see that this specific error is
+occurrenced because the thermal try read the temperature when is started,
+but the firmware is not running yet.
+
+For more legibiliti i change the tt.c for return EAGAIN when this was occurrence.
+After this change, in my computer I compile and install kernel in /boot
+and in my dmesg the message "failed to read out thermal zone" is not show
+any more.
+
+I would like to thanks for Rafael Wysocki <refael.j.wysocki@intel.com> and
+Kalle Valo <kvalo@kernel.org> for your suggestions in my first patch.
+
+Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
 ---
- net/mac80211/chan.c | 70 ++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 65 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/tt.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index ac49c2c71d2b..257ee3b1100b 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -696,14 +696,15 @@ static struct ieee80211_chanctx *
- ieee80211_new_chanctx(struct ieee80211_local *local,
- 		      const struct ieee80211_chan_req *chanreq,
- 		      enum ieee80211_chanctx_mode mode,
--		      bool assign_on_failure)
-+		      bool assign_on_failure,
-+		      int radio_idx)
- {
- 	struct ieee80211_chanctx *ctx;
- 	int err;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
+index 8083c4b2ab6b..68ab9966330c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
+@@ -620,8 +620,14 @@ static int iwl_mvm_tzone_get_temp(struct thermal_zone_device *device,
  
- 	lockdep_assert_wiphy(local->hw.wiphy);
+ 	mutex_lock(&mvm->mutex);
  
--	ctx = ieee80211_alloc_chanctx(local, chanreq, mode, -1);
-+	ctx = ieee80211_alloc_chanctx(local, chanreq, mode, radio_idx);
- 	if (!ctx)
- 		return ERR_PTR(-ENOMEM);
- 
-@@ -1060,6 +1061,24 @@ int ieee80211_link_unreserve_chanctx(struct ieee80211_link_data *link)
- 	return 0;
- }
- 
-+static bool
-+ieee80211_radio_freq_match(const struct wiphy_radio *radio,
-+			   const struct ieee80211_chan_req *chanreq)
-+{
-+	const struct wiphy_radio_freq_range *r;
-+	u32 freq;
-+	int i;
+-	if (!iwl_mvm_firmware_running(mvm) ||
+-	    mvm->fwrt.cur_fw_img != IWL_UCODE_REGULAR) {
++	const int res = iwl_mvm_firmware_running(mvm);
 +
-+	freq = ieee80211_channel_to_khz(chanreq->oper.chan);
-+	for (i = 0; i < radio->n_freq_range; i++) {
-+		r = &radio->freq_range[i];
-+		if (freq >= r->start_freq && freq <= r->end_freq)
-+			return true;
++	if (!res) {
++		ret = -EAGAIN;
++		goto out;
 +	}
 +
-+	return false;
-+}
-+
- static struct ieee80211_chanctx *
- ieee80211_replace_chanctx(struct ieee80211_local *local,
- 			  const struct ieee80211_chan_req *chanreq,
-@@ -1067,6 +1086,8 @@ ieee80211_replace_chanctx(struct ieee80211_local *local,
- 			  struct ieee80211_chanctx *curr_ctx)
- {
- 	struct ieee80211_chanctx *new_ctx, *ctx;
-+	struct wiphy *wiphy = local->hw.wiphy;
-+	const struct wiphy_radio *radio;
- 
- 	if (!curr_ctx || (curr_ctx->replace_state ==
- 			  IEEE80211_CHANCTX_WILL_BE_REPLACED) ||
-@@ -1096,6 +1117,12 @@ ieee80211_replace_chanctx(struct ieee80211_local *local,
- 			if (!list_empty(&ctx->reserved_links))
- 				continue;
- 
-+			if (ctx->conf.radio_idx >= 0) {
-+					radio = &wiphy->radio[ctx->conf.radio_idx];
-+					if (!ieee80211_radio_freq_match(radio, chanreq))
-+							continue;
-+			}
-+
- 			curr_ctx = ctx;
- 			break;
- 		}
-@@ -1125,6 +1152,34 @@ ieee80211_replace_chanctx(struct ieee80211_local *local,
- 	return new_ctx;
- }
- 
-+static bool
-+ieee80211_find_available_radio(struct ieee80211_local *local,
-+			       const struct ieee80211_chan_req *chanreq,
-+			       int *radio_idx)
-+{
-+	struct wiphy *wiphy = local->hw.wiphy;
-+	const struct wiphy_radio *radio;
-+	int i;
-+
-+	*radio_idx = -1;
-+	if (!wiphy->n_radio)
-+		return true;
-+
-+	for (i = 0; i < wiphy->n_radio; i++) {
-+		radio = &wiphy->radio[i];
-+		if (!ieee80211_radio_freq_match(radio, chanreq))
-+			continue;
-+
-+		if (!ieee80211_can_create_new_chanctx(local, i))
-+			continue;
-+
-+		*radio_idx = i;
-+		return true;
-+	}
-+
-+	return false;
-+}
-+
- int ieee80211_link_reserve_chanctx(struct ieee80211_link_data *link,
- 				   const struct ieee80211_chan_req *chanreq,
- 				   enum ieee80211_chanctx_mode mode,
-@@ -1133,6 +1188,7 @@ int ieee80211_link_reserve_chanctx(struct ieee80211_link_data *link,
- 	struct ieee80211_sub_if_data *sdata = link->sdata;
- 	struct ieee80211_local *local = sdata->local;
- 	struct ieee80211_chanctx *new_ctx, *curr_ctx;
-+	int radio_idx;
- 
- 	lockdep_assert_wiphy(local->hw.wiphy);
- 
-@@ -1142,9 +1198,10 @@ int ieee80211_link_reserve_chanctx(struct ieee80211_link_data *link,
- 
- 	new_ctx = ieee80211_find_reservation_chanctx(local, chanreq, mode);
- 	if (!new_ctx) {
--		if (ieee80211_can_create_new_chanctx(local, -1))
-+		if (ieee80211_can_create_new_chanctx(local, -1) &&
-+		    ieee80211_find_available_radio(local, chanreq, &radio_idx))
- 			new_ctx = ieee80211_new_chanctx(local, chanreq, mode,
--							false);
-+							false, radio_idx);
- 		else
- 			new_ctx = ieee80211_replace_chanctx(local, chanreq,
- 							    mode, curr_ctx);
-@@ -1755,6 +1812,7 @@ int _ieee80211_link_use_channel(struct ieee80211_link_data *link,
- 	struct ieee80211_chanctx *ctx;
- 	u8 radar_detect_width = 0;
- 	bool reserved = false;
-+	int radio_idx;
- 	int ret;
- 
- 	lockdep_assert_wiphy(local->hw.wiphy);
-@@ -1785,9 +1843,11 @@ int _ieee80211_link_use_channel(struct ieee80211_link_data *link,
- 	/* Note: context is now reserved */
- 	if (ctx)
- 		reserved = true;
-+	else if (!ieee80211_find_available_radio(local, chanreq, &radio_idx))
-+		ctx = ERR_PTR(-EBUSY);
- 	else
- 		ctx = ieee80211_new_chanctx(local, chanreq, mode,
--					    assign_on_failure);
-+					    assign_on_failure, radio_idx);
- 	if (IS_ERR(ctx)) {
- 		ret = PTR_ERR(ctx);
++	if (mvm->fwrt.cur_fw_img != IWL_UCODE_REGULAR) {
+ 		ret = -ENODATA;
  		goto out;
+ 	}
 -- 
-git-series 0.9.1
+2.45.2
+
 
