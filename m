@@ -1,112 +1,106 @@
-Return-Path: <linux-wireless+bounces-8564-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8565-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15F6A8FD10D
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 16:44:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 778A68FD131
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 16:53:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50F65B25361
-	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 14:44:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88CF61C21743
+	for <lists+linux-wireless@lfdr.de>; Wed,  5 Jun 2024 14:53:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88321224EA;
-	Wed,  5 Jun 2024 14:44:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.ch header.i=@protonmail.ch header.b="i/FA784p"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE22027701;
+	Wed,  5 Jun 2024 14:52:59 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F6D919D8B8
-	for <linux-wireless@vger.kernel.org>; Wed,  5 Jun 2024 14:44:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.51.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C3F25774;
+	Wed,  5 Jun 2024 14:52:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717598656; cv=none; b=KR2m84t8UCCyVx4canBn+8EUuH9SyTXxaEBYTQHLaKJdsPTjcgT63kMjgib/E0r6J4CYdqXH7ULJMYR0z8xFmlX1tV7QlbFXiMUpFdifuhET77lyBwt5r1L5XB9S+G4pEeyvhyYT4iPO+rrixOU52ctRG6k67mYOz/Bg85/k/VY=
+	t=1717599179; cv=none; b=YuGkl7T5JZQqtgW9ZJXIcZy+yVVbplCK1rEoPSWnEUeimWL5rOD6cWHwoL/Wcb+EchK4/d4lMsy9WHd3W/bYehf1U64B+5U4fS7Yf1Y8ourBIZSDkQePiZT86xsojkUMlxr5k/3935tjmo7tLBSSSvhugGCjgDun+E10U/UtAcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717598656; c=relaxed/simple;
-	bh=P/NbBW47QRxkj80+OynywEc2sofxJ90pmMeEWGpxzrQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G8nINpe0yVoLOrKoNLqYbC0ROZisZmp7eCukYWjZpFaBeiAKs7f4J1XDcS2WO9ALIWfD6Un9WYwznvbxIz71s+H5OW8ILt+yKeqMmYakNzLci8Ru9HdUVRzj2nw6lPSjmUnoakrA34WNg3F6xcq9uPYiFIjVyP9rcopzEocY5Ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.ch; spf=pass smtp.mailfrom=protonmail.ch; dkim=pass (2048-bit key) header.d=protonmail.ch header.i=@protonmail.ch header.b=i/FA784p; arc=none smtp.client-ip=188.165.51.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.ch
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.ch;
-	s=protonmail3; t=1717598639; x=1717857839;
-	bh=P/NbBW47QRxkj80+OynywEc2sofxJ90pmMeEWGpxzrQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=i/FA784pfL/90T6+MJQQBi54pyfNyQ3MqNyemH7cCOIOQuCI5ebNTr+VR4S4U7jIH
-	 uRFtrLkgF6VNTwRE3+j14jAiA/YEfNeN36EcgQEa5aMdNyhyqlO6tFRt2AeblDCCcF
-	 uCcstubyIZvbsvEDA08q66tRvK7PMzZm45tmqk/jfRiwed95ObOLRW7JP6k17V7wEV
-	 s/YfGuXAsm8idgUEepZDadIEppTd85bX/8nRJEd5J60T+2I8/UR1j95+mR1kELESs8
-	 FNyU7cSZqEdKsPIf6pMXN0r/MuDJNfPLWvWroYicQIeSOKa/DFTpV1F0c5ihtCAgMB
-	 iYMJNkB3zD89w==
-Date: Wed, 05 Jun 2024 14:43:53 +0000
-To: Andreas Kemnade <andreas@kemnade.info>
-From: =?utf-8?Q?Tam=C3=A1s_Sz=C5=B1cs?= <tszucs@protonmail.ch>
-Cc: briannorris@chromium.org, francesco@dolcini.it, linux-wireless@vger.kernel.org, linux-firmware@vger.kernel.org, lukas@wunner.de, yu-hao.lin@nxp.com
-Subject: Re: mwifiex firmware mrvl/sd8987_uapsta.bin missing in the firmware git
-Message-ID: <_pNnwoI9WHlb2EY635KdIv6t_goU-ZYp9Vav31jkFOCf9fCE9EeKdyCea2m-L8pgfsKIQvODlnQLhQqmWSYip9e6FFZwaJHL5-u5rdOS_kY=@protonmail.ch>
-In-Reply-To: <20240605160013.6bea8d4d@aktux>
-References: <20240605160013.6bea8d4d@aktux>
-Feedback-ID: 53029:user:proton
-X-Pm-Message-ID: e7b701913f9657947b93d4972ca205ffe7695c03
+	s=arc-20240116; t=1717599179; c=relaxed/simple;
+	bh=yRIHKxkExUCcCNbOOTqd0FldNUHY9LI103BRj3sfAFE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JypRuyRDDq5iw/rBC9dBvCOKffB+LBnvKwSB9N4+glqPswQLO2YL1PNcyRmNnHVxZP2+LcQLQIjqy1Jn5vJ9vdU/7c51sRERAilDdA5bSI8oay2O2vBMQrSEHy6d1Iqw9VC5cyXex8Wx5LtuGp7kEJuP1vIkRDcAvQRX2T/Uw2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org; spf=pass smtp.mailfrom=gentoo.org; arc=none smtp.client-ip=140.211.166.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentoo.org
+Date: Wed, 5 Jun 2024 10:52:53 -0400
+From: Kenton Groombridge <concord@gentoo.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
+	Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH v2] wifi: mac80211: Avoid address calculations via out of
+ bounds array indexing
+Message-ID: <dbqrrkkitwhvmcpgcpapdw7a7zjgdkidr4cyyjxyr7mwiihygo@pqzstp2nl7zg>
+Mail-Followup-To: Johannes Berg <johannes@sipsolutions.net>, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-hardening@vger.kernel.org, Kees Cook <keescook@chromium.org>
+References: <20240517145420.8891-1-concord@gentoo.org>
+ <d1fea590e53cb1b00dc64f4f8a4c8aec84610401.camel@sipsolutions.net>
+ <cx2oet5b5lavjywcbf7u4c32krtoglvt3xbe2sxac55e36iibw@lrd5iuhtxz2g>
+ <ab59089feac4cfbc1d681fcaa4a828ca13088ce1.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="6uvcipftoi6mlx2a"
+Content-Disposition: inline
+In-Reply-To: <ab59089feac4cfbc1d681fcaa4a828ca13088ce1.camel@sipsolutions.net>
+
+
+--6uvcipftoi6mlx2a
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi Andreas,
-
-Excellent point. Please note, that btmrvl_sdio needs an SDIO BT FW. So, mrv=
-l/sd8987_uapsta.bin should preferably be a such a combo FW.
-
-Unfortunately, to my knowledge, none is available publicly. Also, after the=
- acquisition of Marvell IoT, NXP regrettably decided to develop mwifiex dow=
-nstream, here https://github.com/nxp-imx/mwifiex.
-
-It is what it is. Due to licensing, the FW binary should come from NXP. I c=
-annot arrange that.
-
-Kind regards,
-Tamas
-
-
-
-Tam=C3=A1s Sz=C5=B1cs
-tszucs@protonmail.ch
-
-
-Sent with Proton Mail secure email.
-
-On Wednesday, June 5th, 2024 at 4:00 PM, Andreas Kemnade <andreas@kemnade.i=
-nfo> wrote:
-
-> Hi,
+On 24/06/04 09:29PM, Johannes Berg wrote:
+> Looking at your patch again, this seems wrong?
 >=20
-> I am a bit wondering, but there is mrvl/sd8987_uapsta.bin
-> referenced in the driver, but apperently it is not in the firmware git.
+> > +				local->hw_scan_req->req.channels[*n_chans++] =3D
+> >  							req->channels[i];
+> >=20
 >=20
-> https://github.com/nxp-imx/imx-firmware/blob/lf-6.6.3_1.0.0/nxp/FwImage_8=
-987/sdiouart8987_combo_v0.bin
+> This will increment n_chans rather than *n_chans, no?
 >=20
-> seems to apparently work. How to proceed? Should the file be renamed and =
-added
-> to the fw git?
-> The uartuart8987_bt.bin needed by the btnxpuart driver is there.
->=20
-> It is just nasty to have a driver for a device but some manual matching o=
-f firmware
->=20
-> BTW: there is also https://github.com/nxp-imx/imx-firmware/blob/lf-6.6.3_=
-1.0.0/nxp/FwImage_8987/sd8987_wlan.bin
->=20
-> Regards,
-> Andreas
+
+Ah ha! A silly mistake that I missed. V3 to follow soon.
+
+--=20
+Kenton Groombridge
+Gentoo Linux Developer, SELinux Project
+
+--6uvcipftoi6mlx2a
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQKTBAABCgB9FiEEP+u3AkfbrORB/inCFt7v5V9Ft54FAmZge8BfFIAAAAAALgAo
+aXNzdWVyLWZwckBub3RhdGlvbnMub3BlbnBncC5maWZ0aGhvcnNlbWFuLm5ldDNG
+RUJCNzAyNDdEQkFDRTQ0MUZFMjlDMjE2REVFRkU1NUY0NUI3OUUACgkQFt7v5V9F
+t57bKhAAynN8R9v+lYN7ApnatMLAGRD244uYlzCDJPmBILAbfKcrg2vgm+qPJusl
+4Cwkwho370rRdRtaDqsgC9eWwRGQpJ1UZ/aq55KAI0PPtphAdXx5MqEmX7Od1aUb
+m9Nj9LLEZhL+zdIkNIP3bDRomHDCBaywzJ/mZZg+r2Edr2PUEPYsNhBM2zemvQ08
+s17K9eQooclY+fMxDGj08Em462cZ6vv5zHO4nEtTvThv+S1dPpCG9vFXreAnEckM
+sVzLDGLII97RlXIHgNKyIIN660fuIfc7O6si1W++KaDxd6j+x0NBovGwOkTPA5hM
+IDYLIt+1OG2MY4QlG32NQl3UvfsNtCjjraQcwyU5ZhT45r3W/eL6tD7JcBvLRb/4
+OKmO+sSzTAiXZ5sXOdTkIWbiqZno6vkLOsLNnxAwofHUcj0JKv8lvIHGdaxxvqhN
+yMDmKye1XdDviSggWn2cAyiovXHrcvZYYQP5LPc72DYmtXtbrIRZEKp+HmOksWBN
+ncr5VCfbcBjqeTYCUwoWU8dLE5bHR4pMZCDHUtLYAordXEB2YHavhLNKyB+QZ1m+
+s1ZyYZoz7mS6jKxphRaVrwLrQZaCn9hm9zbYx2LN6tfz3NCsV1AHoacoOUfLz/ah
+j1Av1LZFwOTw+pMmryTt/NI+kJvdGIp4yfEUSB8JCos3+m3zsJk=
+=6g5W
+-----END PGP SIGNATURE-----
+
+--6uvcipftoi6mlx2a--
 
