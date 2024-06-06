@@ -1,198 +1,123 @@
-Return-Path: <linux-wireless+bounces-8618-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8619-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E615E8FE800
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jun 2024 15:37:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2CCC8FE828
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jun 2024 15:50:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C20A41C224B2
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jun 2024 13:37:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B3531C24EFC
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jun 2024 13:50:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 941AD19642C;
-	Thu,  6 Jun 2024 13:37:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="GXwFajWW"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2825EEEC5;
+	Thu,  6 Jun 2024 13:50:03 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5DE8195FD9
-	for <linux-wireless@vger.kernel.org>; Thu,  6 Jun 2024 13:37:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5EC13C690
+	for <linux-wireless@vger.kernel.org>; Thu,  6 Jun 2024 13:50:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717681073; cv=none; b=t+Tuszao0/uEUjPRLU1cO17rvP9J50LUqlWo67EEzaemtq4KNB+T8DT7KG/8rqO2CZkhvKVwYQ1LVbBMijomUUdDCe1uLHBhyf5+t7Nb88Zi2UKCqRBoVnoTVUENa9yTejPnkQjGiyyk/qcDbZorQSFp1QkeFXMLlXA79iAdb4g=
+	t=1717681803; cv=none; b=kJ171vs2/p6THBTqUtwgxNWUCqpyeIRb9yZiHWgz0z/5dhTyMJUSMpgCHRMIBFqHmEoiQRKUSIkK5AiSVGgMwHS+08yQB/qyUzrdMfzVG62wta9FPIXztXm5aI8BCP1wHGQFJ3VS32H6nV4I6L31MCT8DMY6an4Ui/Ubkzm4T3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717681073; c=relaxed/simple;
-	bh=zjZtV8HA3Vhf3+SRpbRkKIxbVSf+NUfL0NIXTkLvKoA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Bw33oMfzGTsJRlOG1yqry2wSg5zEbZfCbBBsULzfMfSAI3st9X14bNk54CR83dTttXd0JqOLq4svv7s6r7akPbspRlMxlcWMH9067g07Lw9AqAPuLtfM9SsIDsCg3L8fKb98W+RmYpAU4Us4JPjWkUTZB6Ee+nai+x+XG/AymrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=GXwFajWW; arc=none smtp.client-ip=209.85.208.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2eadaac1d28so2662381fa.3
-        for <linux-wireless@vger.kernel.org>; Thu, 06 Jun 2024 06:37:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1717681070; x=1718285870; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/BoBiv/oTzAdR1lIG+yWj+SGvl2JhVkHcJoQ9lqvUrc=;
-        b=GXwFajWWpKkS3kcer4HmUXrpVPlzwLgFtMKG8/A4+csjCpvixF0Ty1Ad/oj77qN2Me
-         JO87MMU494Bx0vFZ24lJf4KCnqgfrhl6A9C4kmxo16oa+jyp46+vjdzdRVoK/K/bhR9q
-         fAma7enWuOIpiUF8pFO0uL6y56UCKzLkVLaKr9dv0sWg03QanZjRtgrQA66RnFrg6rLa
-         zX8nytyo/ElyipZNPeu628jGgmYDY+rCTreuivwY9HE0TrAYGDQ0Gmqrlg2PMA4OkT+b
-         t8/KfqsLrcj0BOBo8CzT17GOjZALZWK0+CoX5Z6OABaK+90n4ItgJV1v4L+7mY+UM8wj
-         Wang==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717681070; x=1718285870;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/BoBiv/oTzAdR1lIG+yWj+SGvl2JhVkHcJoQ9lqvUrc=;
-        b=eiV7xpa1sdn2+EPOn07jexIqd3/0YpE8p2ecesozQ3/9Ss/48p+v2tIAOFNTCC820d
-         gTMJ8q+uDfnywHMWvLy9jkXyQmvztvGaTvcgR5WD6CwS2lI6SdavstDwBpkRylgEzFSW
-         O2thXtQgExAB9nwzstDfuehwXSyXpdFxy1waZAPQi0LtlFr2YuR+sBi9SE5OyDv1138u
-         rJw0mqZPWmDHsS6DYWImLp9K8CjCsoxtASRqEUTYOdX7N15IK/U4DYAEqjcuaVaoBIC4
-         oitj+pwXE69oA0JnCtek9AL3E2Ryfu3vjXizgheI7K8be5KXLYgYethlvgUMjzAIO69J
-         obCg==
-X-Forwarded-Encrypted: i=1; AJvYcCVasBBn7DB+8/WttCwJn0CyUKp8StlKK5viN6vzH4S/LdvZay5bvtdyB5fVr7e693UkQ2ypZQCjaJQm8AllhWlfnrTBPqNkqgMITmcmZsY=
-X-Gm-Message-State: AOJu0Yyi//JvzXtIL6eqZvaOCqW5IFZS4X/ySY4S19NEy3gPF8nby2HQ
-	o6jog2kufsdNzbh3RLXEpFUlqGDAvj3lPyJ7IDgJFR3pNKEDmjTfqLnOFgk/PNSJs/0WOFd1flY
-	gx2mMDgUygsRKCb7qtOIvjoo7UcOPgwtp9odVL1ETm58oTX9yclg=
-X-Google-Smtp-Source: AGHT+IGVi6SdXyjqLuNgspGsS7QS0koHqoI5qU5RsxFMIyqlWHAi0Sgl3JgDM1tnD4UfWiI8Hjt8tIufJO2+Xkfj3E4=
-X-Received: by 2002:a2e:8802:0:b0:2e5:67bc:739 with SMTP id
- 38308e7fff4ca-2eac79f22cbmr31439811fa.2.1717681070058; Thu, 06 Jun 2024
- 06:37:50 -0700 (PDT)
+	s=arc-20240116; t=1717681803; c=relaxed/simple;
+	bh=P9ZMOEVVHuuXQh0Bky2kRzA341Pn39OwdempFqAbG+U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=noxj+T/aP18TT9OyTsbGkpA5KxITpzU/ZntxigzyZyDzsnL923FwkoYbo162vtTgnYX+VswUl4p4UYKrN1QWl0F6awCInuHKjUmOkCW0psDV+sH7u1qc8CaQKk46Zzz//2MsFWhbm7l3CZ5XdiuAOdC+M8Kw6mA5Xq28mosD4OU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.78.240
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 2118A2800B6F5;
+	Thu,  6 Jun 2024 15:49:53 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 09C5AFF5B4; Thu,  6 Jun 2024 15:49:53 +0200 (CEST)
+Date: Thu, 6 Jun 2024 15:49:53 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Francesco Dolcini <francesco@dolcini.it>,
+	Sherry Sun <sherry.sun@nxp.com>,
+	Dinesh Phatak <dinesh.phatak@nxp.com>,
+	Pankaj Razdan <pankaj.razdan@nxp.com>
+Cc: Andreas Kemnade <andreas@kemnade.info>, yu-hao.lin@nxp.com,
+	Neeraj Kale <neeraj.sanjaykale@nxp.com>,
+	=?iso-8859-1?Q?Tam=E1s?= Sz??cs <tszucs@protonmail.ch>,
+	linux-firmware@kernel.org, briannorris@chromium.org,
+	linux-wireless@vger.kernel.org,
+	Nicolai Buchwitz <n.buchwitz@kunbus.com>,
+	Philipp Rosenberger <p.rosenberger@kunbus.com>,
+	Lino Sanfilippo <LinoSanfilippo@gmx.de>
+Subject: Re: mwifiex firmware mrvl/sd8987_uapsta.bin missing in the firmware
+ git
+Message-ID: <ZmG-gZ306WXZUa-n@wunner.de>
+References: <20240605160013.6bea8d4d@aktux>
+ <_pNnwoI9WHlb2EY635KdIv6t_goU-ZYp9Vav31jkFOCf9fCE9EeKdyCea2m-L8pgfsKIQvODlnQLhQqmWSYip9e6FFZwaJHL5-u5rdOS_kY=@protonmail.ch>
+ <20240605174709.5043af8f@akair>
+ <20240606101839.GA76158@francesco-nb>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240605122106.23818-1-brgl@bgdev.pl> <20240605122106.23818-3-brgl@bgdev.pl>
- <87cyouqjou.fsf@kernel.org>
-In-Reply-To: <87cyouqjou.fsf@kernel.org>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Thu, 6 Jun 2024 15:37:39 +0200
-Message-ID: <CAMRc=Mdpu=1GFR-KraxCVn4oZr5TwM3ptbY25OHNkGepcsWdcQ@mail.gmail.com>
-Subject: Re: [PATCH v9 2/2] dt-bindings: net: wireless: describe the ath12k
- PCI module
-To: Kalle Valo <kvalo@kernel.org>
-Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jeff Johnson <jjohnson@kernel.org>, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	ath11k@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	ath12k@lists.infradead.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240606101839.GA76158@francesco-nb>
 
-On Thu, Jun 6, 2024 at 3:34=E2=80=AFPM Kalle Valo <kvalo@kernel.org> wrote:
->
-> Bartosz Golaszewski <brgl@bgdev.pl> writes:
->
-> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >
-> > Add device-tree bindings for the ATH12K module found in the WCN7850
-> > package.
-> >
-> > Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> > ---
-> >  .../bindings/net/wireless/qcom,ath12k.yaml    | 99 +++++++++++++++++++
-> >  1 file changed, 99 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/net/wireless/qcom=
-,ath12k.yaml
-> >
-> > diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k=
-.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml
-> > new file mode 100644
-> > index 000000000000..1b5884015b15
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml
-> > @@ -0,0 +1,99 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +# Copyright (c) 2024 Linaro Limited
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/net/wireless/qcom,ath12k.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Qualcomm Technologies ath12k wireless devices (PCIe)
-> > +
-> > +maintainers:
-> > +  - Jeff Johnson <quic_jjohnson@quicinc.com>
-> > +  - Kalle Valo <kvalo@kernel.org>
-> > +
-> > +description:
-> > +  Qualcomm Technologies IEEE 802.11be PCIe devices.
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - pci17cb,1107  # WCN7850
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  vddaon-supply:
-> > +    description: VDD_AON supply regulator handle
-> > +
-> > +  vddwlcx-supply:
-> > +    description: VDD_WLCX supply regulator handle
-> > +
-> > +  vddwlmx-supply:
-> > +    description: VDD_WLMX supply regulator handle
-> > +
-> > +  vddrfacmn-supply:
-> > +    description: VDD_RFA_CMN supply regulator handle
-> > +
-> > +  vddrfa0p8-supply:
-> > +    description: VDD_RFA_0P8 supply regulator handle
-> > +
-> > +  vddrfa1p2-supply:
-> > +    description: VDD_RFA_1P2 supply regulator handle
-> > +
-> > +  vddrfa1p8-supply:
-> > +    description: VDD_RFA_1P8 supply regulator handle
-> > +
-> > +  vddpcie0p9-supply:
-> > +    description: VDD_PCIE_0P9 supply regulator handle
-> > +
-> > +  vddpcie1p8-supply:
-> > +    description: VDD_PCIE_1P8 supply regulator handle
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - vddaon-supply
-> > +  - vddwlcx-supply
-> > +  - vddwlmx-supply
-> > +  - vddrfacmn-supply
-> > +  - vddrfa0p8-supply
-> > +  - vddrfa1p2-supply
-> > +  - vddrfa1p8-supply
-> > +  - vddpcie0p9-supply
-> > +  - vddpcie1p8-supply
->
-> Same comment here. To my understanding there are ath12k PCI devices
-> which do not need the supplies. But I guess we change this to optional
-> later?
->
+[add more interested parties to cc]
 
-Sure we can. But "pci17cb,1107" refers to a QCom variant and it always
-comes powered by a PMU so these supplies really are required.
+On Thu, Jun 06, 2024 at 12:18:39PM +0200, Francesco Dolcini wrote:
+> On Wed, Jun 05, 2024 at 05:47:09PM +0200, Andreas Kemnade wrote:
+> > But that is all legalese and I am not a lawyer... Best is of course
+> > something officially added from NXP. No idea if it can be done
+> > otherwise. How to make NXP add something?
+> 
+> Would it be possible for you to get these firmware files added to the
+> official linux-firmware git repo? 
+> 
+> I am not using sd8987 myself, from what I read in the thread probably
+> some file name would need to be corrected (I would say in the mwifiex
+> driver).
 
-Bart
+I'd appreciate if NXP could additionally greenlight addition of:
 
-> --
-> https://patchwork.kernel.org/project/linux-wireless/list/
->
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
-tches
+https://github.com/nxp-imx/imx-firmware/blob/lf-6.6.3_1.0.0/nxp/FwImage_IW416_SD/sdiouartiw416_combo_v0.bin
+https://github.com/nxp-imx/imx-firmware/blob/lf-6.6.3_1.0.0/nxp/FwImage_IW416_SD/uartiw416_bt_v0.bin
+
+...to the linux-firmware repo.  They're necessary for SD8978 (aka IW416),
+which has been supported by mwifiex since commit bba047f15851 ("wifi:
+mwifiex: Support SD8978 chipset").
+
+Back in the day when I submitted that commit, I concurrently reached out
+to NXP.  Sherry Sun kindly responded that Dinesh Phatak and Pankaj
+Razdan need to confirm upstreaming into linux-firmware (both +cc).
+
+
+The problem is that mwifiex firmware originating from
+
+https://github.com/NXP/mwifiex-firmware/
+
+is available under a simple 3-clause licence, but only contains outdated
+firmware for older chips.
+
+
+More recent firmware available from
+
+https://github.com/nxp-imx/imx-firmware
+
+seems to be distributed under different and much longer licensing terms:
+
+https://github.com/nxp-imx/imx-firmware/blob/lf-6.6.3_1.0.0/LICENSE.txt
+
+So I think we need confirmation from NXP before we can add the firmware
+to the linux-firmware repo.
+
+Thanks,
+
+Lukas
 
