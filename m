@@ -1,123 +1,153 @@
-Return-Path: <linux-wireless+bounces-8619-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8620-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2CCC8FE828
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jun 2024 15:50:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 496048FE84E
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jun 2024 16:02:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B3531C24EFC
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jun 2024 13:50:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECBA1283437
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jun 2024 14:02:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2825EEEC5;
-	Thu,  6 Jun 2024 13:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AB0B19645C;
+	Thu,  6 Jun 2024 14:02:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uGSpgk2S"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5EC13C690
-	for <linux-wireless@vger.kernel.org>; Thu,  6 Jun 2024 13:50:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E44195FC6;
+	Thu,  6 Jun 2024 14:02:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717681803; cv=none; b=kJ171vs2/p6THBTqUtwgxNWUCqpyeIRb9yZiHWgz0z/5dhTyMJUSMpgCHRMIBFqHmEoiQRKUSIkK5AiSVGgMwHS+08yQB/qyUzrdMfzVG62wta9FPIXztXm5aI8BCP1wHGQFJ3VS32H6nV4I6L31MCT8DMY6an4Ui/Ubkzm4T3k=
+	t=1717682523; cv=none; b=pPhRGc3+eF02CE1hMBmAU0Izw00W2BddFeB3x6we6zmSJbTt5hF2ofO0GTAl4p9+7FE5wwKV9UUDLKM0AvEwesYEjWX+AWXurmBHrapTiKD3Fk4/G42MCXQBDdw3rMIYdK9yZ+mPrmgCls+m2lLE9RgiFfo16GFzT0fLsAQjjPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717681803; c=relaxed/simple;
-	bh=P9ZMOEVVHuuXQh0Bky2kRzA341Pn39OwdempFqAbG+U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=noxj+T/aP18TT9OyTsbGkpA5KxITpzU/ZntxigzyZyDzsnL923FwkoYbo162vtTgnYX+VswUl4p4UYKrN1QWl0F6awCInuHKjUmOkCW0psDV+sH7u1qc8CaQKk46Zzz//2MsFWhbm7l3CZ5XdiuAOdC+M8Kw6mA5Xq28mosD4OU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.78.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 2118A2800B6F5;
-	Thu,  6 Jun 2024 15:49:53 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 09C5AFF5B4; Thu,  6 Jun 2024 15:49:53 +0200 (CEST)
-Date: Thu, 6 Jun 2024 15:49:53 +0200
-From: Lukas Wunner <lukas@wunner.de>
-To: Francesco Dolcini <francesco@dolcini.it>,
-	Sherry Sun <sherry.sun@nxp.com>,
-	Dinesh Phatak <dinesh.phatak@nxp.com>,
-	Pankaj Razdan <pankaj.razdan@nxp.com>
-Cc: Andreas Kemnade <andreas@kemnade.info>, yu-hao.lin@nxp.com,
-	Neeraj Kale <neeraj.sanjaykale@nxp.com>,
-	=?iso-8859-1?Q?Tam=E1s?= Sz??cs <tszucs@protonmail.ch>,
-	linux-firmware@kernel.org, briannorris@chromium.org,
-	linux-wireless@vger.kernel.org,
-	Nicolai Buchwitz <n.buchwitz@kunbus.com>,
-	Philipp Rosenberger <p.rosenberger@kunbus.com>,
-	Lino Sanfilippo <LinoSanfilippo@gmx.de>
-Subject: Re: mwifiex firmware mrvl/sd8987_uapsta.bin missing in the firmware
- git
-Message-ID: <ZmG-gZ306WXZUa-n@wunner.de>
-References: <20240605160013.6bea8d4d@aktux>
- <_pNnwoI9WHlb2EY635KdIv6t_goU-ZYp9Vav31jkFOCf9fCE9EeKdyCea2m-L8pgfsKIQvODlnQLhQqmWSYip9e6FFZwaJHL5-u5rdOS_kY=@protonmail.ch>
- <20240605174709.5043af8f@akair>
- <20240606101839.GA76158@francesco-nb>
+	s=arc-20240116; t=1717682523; c=relaxed/simple;
+	bh=ivsf4NbZZPAamDEi3OCHaSjrBCmG4UqHfSgu3HZ5PWY=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=uMgY8E7GdivOGj22MEvTL/nH38wYVkxLH1M+xh/FsAKW1V/jSq/f0XvfP230ZcoXNCmW+fsyIE23lA7VjvhC+CZLd90BgXe/ym0Vkf5OvCCMuowfkRC9A8D9Edd5TK6rwB6Wvhy7smsr39HPqOVXeG41O84BZ2+LSAaI2Kb9Bh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uGSpgk2S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55343C2BD10;
+	Thu,  6 Jun 2024 14:01:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717682522;
+	bh=ivsf4NbZZPAamDEi3OCHaSjrBCmG4UqHfSgu3HZ5PWY=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=uGSpgk2S9Q99QsCDrnFKgKraNdbOOhYSONYIIH2BHVK2ycaCv0j+dmU4CbWH9oBsl
+	 /J8x10c81VUUGgH+F+o5iFK8iJ1N3/hdDgSJpOL1eMQ64ggEw7IYNBeyUIg1QS0kuY
+	 Lym15z8f+QhlPxGLzLuxIEHUmDvZAvWyIa8AQ9O+MCJ4+iA9TEZTreiq6kGUHPKhy2
+	 l5LxMFSLbsqNE1sagCmLT/7GMCy/HoZtA3CTZiOAwK5tf6EVyW4/g5jr+XaV5B9ReZ
+	 7Bsrq9LThBfrwDEkz9kIRyRY1w8DCgbIRo9Vfe2lwE9W2LSIGgnws/KaPOes7FDA1J
+	 YXpduBI7BQwFA==
+From: Kalle Valo <kvalo@kernel.org>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: "David S . Miller" <davem@davemloft.net>,  Eric Dumazet
+ <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni
+ <pabeni@redhat.com>,  Rob Herring <robh@kernel.org>,  Krzysztof Kozlowski
+ <krzk+dt@kernel.org>,  Conor Dooley <conor+dt@kernel.org>,  Jeff Johnson
+ <jjohnson@kernel.org>,  linux-wireless@vger.kernel.org,
+  netdev@vger.kernel.org,  devicetree@vger.kernel.org,
+  ath11k@lists.infradead.org,  linux-kernel@vger.kernel.org,
+  ath12k@lists.infradead.org,  Bartosz Golaszewski
+ <bartosz.golaszewski@linaro.org>,  Krzysztof Kozlowski
+ <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v9 1/2] dt-bindings: net: wireless: qcom,ath11k:
+ describe the ath11k on QCA6390
+References: <20240605122106.23818-1-brgl@bgdev.pl>
+	<20240605122106.23818-2-brgl@bgdev.pl> <87h6e6qjuh.fsf@kernel.org>
+	<CAMRc=MdiKxtnN+g92RUTXdOydaPV5M2u5iUdKyE2SNvDkdXAjg@mail.gmail.com>
+Date: Thu, 06 Jun 2024 17:01:57 +0300
+In-Reply-To: <CAMRc=MdiKxtnN+g92RUTXdOydaPV5M2u5iUdKyE2SNvDkdXAjg@mail.gmail.com>
+	(Bartosz Golaszewski's message of "Thu, 6 Jun 2024 15:35:47 +0200")
+Message-ID: <871q5aqiei.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240606101839.GA76158@francesco-nb>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-[add more interested parties to cc]
+Bartosz Golaszewski <brgl@bgdev.pl> writes:
 
-On Thu, Jun 06, 2024 at 12:18:39PM +0200, Francesco Dolcini wrote:
-> On Wed, Jun 05, 2024 at 05:47:09PM +0200, Andreas Kemnade wrote:
-> > But that is all legalese and I am not a lawyer... Best is of course
-> > something officially added from NXP. No idea if it can be done
-> > otherwise. How to make NXP add something?
-> 
-> Would it be possible for you to get these firmware files added to the
-> official linux-firmware git repo? 
-> 
-> I am not using sd8987 myself, from what I read in the thread probably
-> some file name would need to be corrected (I would say in the mwifiex
-> driver).
+> On Thu, Jun 6, 2024 at 3:30=E2=80=AFPM Kalle Valo <kvalo@kernel.org> wrot=
+e:
+>
+>>
+>> Bartosz Golaszewski <brgl@bgdev.pl> writes:
+>>
+>> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>> >
+>> > Add a PCI compatible for the ATH11K module on QCA6390 and describe the
+>> > power inputs from the PMU that it consumes.
+>> >
+>> > Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>>
+>> [...]
+>>
+>> > +allOf:
+>> > +  - if:
+>> > +      properties:
+>> > +        compatible:
+>> > +          contains:
+>> > +            const: pci17cb,1101
+>> > +    then:
+>> > +      required:
+>> > +        - vddrfacmn-supply
+>> > +        - vddaon-supply
+>> > +        - vddwlcx-supply
+>> > +        - vddwlmx-supply
+>> > +        - vddrfa0p8-supply
+>> > +        - vddrfa1p2-supply
+>> > +        - vddrfa1p7-supply
+>> > +        - vddpcie0p9-supply
+>> > +        - vddpcie1p8-supply
+>>
+>> Not sure if we discussed this before, but based on this I understand
+>> that there can't be an DT entry for device pci17cb,1101 without all the
+>> supply properties? But there are QCA6390 devices with PCI id 17cb:1101
+>> which do not need these supplies and already work. For example, my Dell
+>> XPS 13 x86 laptop is one. Or anyone who manually installs QCA6390 board
+>> to their PCI slot and some of them might want to use DT, for example
+>> setting qcom,ath11k-calibration-variant.
+>>
+>> This is not a blocker for me, just making sure that we are not breaking
+>> any existing setups.
+>>
+>
+> If they are already powered up without the need for the PCI pwrctl
+> driver to do it, then they will work alright. Bindings don't affect
+> functionality.
 
-I'd appreciate if NXP could additionally greenlight addition of:
+Sure, I'm not worried about functionality. I'm worried that if I
+there's, for example, an ARM based setup which uses DT and wants to use
+a similar QCA6390 board that I have, and set
+qcom,ath11k-calibration-variant in DT. In other words, I'm worried if
+you are looking at this only for Snapdragon family of boards?
 
-https://github.com/nxp-imx/imx-firmware/blob/lf-6.6.3_1.0.0/nxp/FwImage_IW416_SD/sdiouartiw416_combo_v0.bin
-https://github.com/nxp-imx/imx-firmware/blob/lf-6.6.3_1.0.0/nxp/FwImage_IW416_SD/uartiw416_bt_v0.bin
+Again, I don't see this as a blocker. I just want to understand how this
+should work for all types of devices there are out there.
 
-...to the linux-firmware repo.  They're necessary for SD8978 (aka IW416),
-which has been supported by mwifiex since commit bba047f15851 ("wifi:
-mwifiex: Support SD8978 chipset").
+> But if you have a QCA6390 then you have its PMU too and the bindings
+> model the real-world hardware.
+>
+> IOW: your laptop should be alright but the supplies are really there
+> which warrants adding them to the bindings.
 
-Back in the day when I submitted that commit, I concurrently reached out
-to NXP.  Sherry Sun kindly responded that Dinesh Phatak and Pankaj
-Razdan need to confirm upstreaming into linux-firmware (both +cc).
+Sorry, not following here. Can you clarify your comment "the supplies
+are really there"? You mean inside the PCI board? But that's not visible
+to the kernel in anyway, the PCI board just works after I plug it in.
+It's like a regular PCI device. So I don't understand why that should be
+visible in DT, but I can very well be missing something.
 
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-The problem is that mwifiex firmware originating from
-
-https://github.com/NXP/mwifiex-firmware/
-
-is available under a simple 3-clause licence, but only contains outdated
-firmware for older chips.
-
-
-More recent firmware available from
-
-https://github.com/nxp-imx/imx-firmware
-
-seems to be distributed under different and much longer licensing terms:
-
-https://github.com/nxp-imx/imx-firmware/blob/lf-6.6.3_1.0.0/LICENSE.txt
-
-So I think we need confirmation from NXP before we can add the firmware
-to the linux-firmware repo.
-
-Thanks,
-
-Lukas
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
 
