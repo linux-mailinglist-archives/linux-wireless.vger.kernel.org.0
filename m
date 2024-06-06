@@ -1,180 +1,114 @@
-Return-Path: <linux-wireless+bounces-8642-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8643-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E67D38FF556
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jun 2024 21:36:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CC858FF5DD
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jun 2024 22:33:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EEC81F270C5
-	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jun 2024 19:36:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C284283376
+	for <lists+linux-wireless@lfdr.de>; Thu,  6 Jun 2024 20:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3791240BF2;
-	Thu,  6 Jun 2024 19:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70624194C86;
+	Thu,  6 Jun 2024 20:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FpGPzFzq"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="TlZaNFpR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723E54087C
-	for <linux-wireless@vger.kernel.org>; Thu,  6 Jun 2024 19:36:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F192B139D1B;
+	Thu,  6 Jun 2024 20:33:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717702567; cv=none; b=JLenEUL6J/OmoFEAn19AbLyn0P4HYZrghB7vPTWEb8YuX/RREA1Jp+vrtrxwRrwtw9vAjq69A7LPZLOHV6mWzU/KhdmAENvOYZTlBvDoasF2J57B2ABtsNPh7NX1YXZl5LtNC/9myLFu7qovN6WsaRjTrbw3qmHc43leC480dBU=
+	t=1717705992; cv=none; b=ToKHnWpbKSvobeNV8OJnzSfdDSLbaBUFIhCSUsGYe+yLlyOONKt4hIT+k9ydlELqOROl4SQpbzy5C8ZccF7upAdykKIc17FMS62tr/vzHZWtd8OzDBBUjr5Jh1qBAoG1nqvu1XbnLMH4HOPjODkOdHDZjTh4wFrjYyW+5qr6hC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717702567; c=relaxed/simple;
-	bh=waI3UWtzD9Vn/CITDmwA0+b+Ulo2nw2EEK3W/cR8+I0=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=Ze6+yA3M1K91U3ngM1BshKgS8Kw5U+0grjQfZHEg3FBsIbeTgxRlG+x9JV/BELkpU0HWRIS9BczTZ7Ir8AeDUrSh3VfXnFmzXJXO2XQVjNPE5pPVYNAGUiGBOcxO6ySDZD62Kak5XfkqbeG0IToryXhrxGA0zTa8+KPvfPK+xLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FpGPzFzq; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717702566; x=1749238566;
-  h=date:from:to:cc:subject:message-id;
-  bh=waI3UWtzD9Vn/CITDmwA0+b+Ulo2nw2EEK3W/cR8+I0=;
-  b=FpGPzFzqJWJoILt0Zr397CnwjcgaOOzcdd8k2HmNYCFVO2+L+2r5pjPZ
-   TEb8qFiqKWztN+DdajChzWQnlG5T0g26dMESrs77qc5EU5v1kf1RECu+1
-   IxixARmA3uNhTo2DXt7uuNVyZig8CXIYqtP3K6pF870RRcFj48ISAaN33
-   Q2reAdWGFFwvGkZjLbJ19iQO3mTWL10KMk4Jr9duYhfSXEOG4FCZeQ3Hg
-   PXf42w5omtGKWemLXES+RDVy0sv6ORJWJRyOlP2nVvAmPq8Kz/h4ykZqb
-   mm2XL8i4wi6R9Cs0el1c+X++i71qOr06rZrmo7dc6o4/V098zmzHJ4/QH
-   Q==;
-X-CSE-ConnectionGUID: no2W/bBGRAaiOxZhX2/SdQ==
-X-CSE-MsgGUID: cMZFyhXDTrS3deqPE7K7Qg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11095"; a="17329579"
-X-IronPort-AV: E=Sophos;i="6.08,219,1712646000"; 
-   d="scan'208";a="17329579"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2024 12:36:05 -0700
-X-CSE-ConnectionGUID: jeZ5xdbEQpOi0pxx9gp4TQ==
-X-CSE-MsgGUID: PeRNFT+pR2yiznACJ98vGQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,219,1712646000"; 
-   d="scan'208";a="75549982"
-Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
-  by orviesa001.jf.intel.com with ESMTP; 06 Jun 2024 12:36:03 -0700
-Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sFIu0-0003cu-1S;
-	Thu, 06 Jun 2024 19:36:00 +0000
-Date: Fri, 07 Jun 2024 03:35:00 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
- linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- a46300b1b09ba260c2c2b00f06f6e34482a8ec01
-Message-ID: <202406070357.qUhaLV0p-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1717705992; c=relaxed/simple;
+	bh=O/fIdSuE87jvT+rTXQIXkzqnruiLQx3ImxqfaRKWYqk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LmYzul+2zDAZXcAY9EnzhhmolRCPgIkBxFx/nXfXdRu06hwcS2+RxJGc39PAHExZ9/FgFvA54IkCu4S0Fm4Yei1sDQlDmVaewiscZrRyuzh78PzKoPm+KOylujqtTqSI4WOCQHqAZJqROQLKyWKOVVadZNf3hpj+yvs2pteIjMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=TlZaNFpR; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=ncgrJTEhoRR3zBhbPk7eARi4Oy+hPL2CM+fE1z0zHPc=; t=1717705989; x=1718915589; 
+	b=TlZaNFpRMd/vNXG8faBshzjdXCDA/mHoycrg00Girak2kcS1P2t8SGUiNS2krxh7+FVjxyi9bvG
+	8r24vcYr8UfxaXcPfC7NSjBUHMy7W/yq3PrVoeujAo6JEZqx1cYNOjNZFadBYGKhe/Srr5wHPL+bs
+	77sputfYj7ZXks3PpTbF75JjwB50NzOXN/0S3kOjTAvefvbEplUMeyKMA8TrVijt1uSW1fWn4UGwH
+	e/tiRsP/poUpEHIg3s1Q6qA3rexHdLq3bJk5U77z4r08dWq1T6dIL0AiLEFLmlHhcD+u3DixaNfCr
+	lp49G3RbPO0QYmVAEidELqBRMAMlFQ/VRE6w==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1sFJn8-0000000HDhM-2x41;
+	Thu, 06 Jun 2024 22:32:59 +0200
+From: Johannes Berg <johannes@sipsolutions.net>
+To: linux-kernel@vger.kernel.org
+Cc: linux-trace-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH v3 0/4] tracing: improve symbolic printing
+Date: Thu,  6 Jun 2024 22:32:00 +0200
+Message-ID: <20240606203255.49433-6-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: a46300b1b09ba260c2c2b00f06f6e34482a8ec01  Merge tag 'ath-next-20240605' of git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath
+Completely forgot about this again ... here's another respin.
 
-elapsed time: 1472m
+v2 was:
+ - rebased on 6.9-rc1
+ - always search for __print_sym() and get rid of the DYNPRINT flag
+   and associated code; I think ideally we'll just remove the older
+   __print_symbolic() entirely
+ - use ':' as the separator instead of "//" since that makes searching
+   for it much easier and it's still not a valid char in an identifier
+ - fix RCU
 
-configs tested: 86
-configs skipped: 3
+v3:
+ - fix #undef issues
+ - fix drop_monitor default
+ - rebase on linux-trace/for-next (there were no conflicts)
+ - move net patches to 3/4
+ - clarify symbol name matching logic (and remove ")" from it)
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+To recap, it's annoying to have
 
-tested configs:
-alpha                             allnoconfig   gcc  
-alpha                            allyesconfig   gcc  
-alpha                               defconfig   gcc  
-arc                              allmodconfig   gcc  
-arc                               allnoconfig   gcc  
-arc                              allyesconfig   gcc  
-arc                                 defconfig   gcc  
-arc                   randconfig-001-20240607   gcc  
-arc                   randconfig-002-20240607   gcc  
-arm                               allnoconfig   clang
-arm                                 defconfig   clang
-arm                   randconfig-001-20240607   gcc  
-arm                   randconfig-002-20240607   clang
-arm                   randconfig-003-20240607   clang
-arm                   randconfig-004-20240607   gcc  
-arm64                             allnoconfig   gcc  
-arm64                               defconfig   gcc  
-arm64                 randconfig-001-20240607   gcc  
-arm64                 randconfig-002-20240607   clang
-csky                              allnoconfig   gcc  
-csky                                defconfig   gcc  
-hexagon                          allmodconfig   clang
-hexagon                           allnoconfig   clang
-hexagon                          allyesconfig   clang
-hexagon                             defconfig   clang
-i386                             allmodconfig   gcc  
-i386                              allnoconfig   gcc  
-i386                             allyesconfig   gcc  
-i386         buildonly-randconfig-004-20240606   gcc  
-i386         buildonly-randconfig-006-20240606   gcc  
-i386                                defconfig   clang
-i386                  randconfig-012-20240606   gcc  
-i386                  randconfig-013-20240606   gcc  
-i386                  randconfig-014-20240606   gcc  
-i386                  randconfig-015-20240606   gcc  
-i386                  randconfig-016-20240606   gcc  
-loongarch                        allmodconfig   gcc  
-loongarch                         allnoconfig   gcc  
-loongarch                           defconfig   gcc  
-m68k                             allmodconfig   gcc  
-m68k                              allnoconfig   gcc  
-m68k                             allyesconfig   gcc  
-m68k                                defconfig   gcc  
-microblaze                       allmodconfig   gcc  
-microblaze                        allnoconfig   gcc  
-microblaze                       allyesconfig   gcc  
-microblaze                          defconfig   gcc  
-mips                              allnoconfig   gcc  
-mips                             allyesconfig   gcc  
-nios2                            allmodconfig   gcc  
-nios2                             allnoconfig   gcc  
-nios2                            allyesconfig   gcc  
-nios2                               defconfig   gcc  
-openrisc                          allnoconfig   gcc  
-openrisc                            defconfig   gcc  
-parisc                            allnoconfig   gcc  
-parisc                              defconfig   gcc  
-parisc64                            defconfig   gcc  
-powerpc                           allnoconfig   gcc  
-riscv                             allnoconfig   gcc  
-riscv                               defconfig   clang
-s390                             allmodconfig   clang
-s390                              allnoconfig   clang
-s390                             allyesconfig   gcc  
-s390                                defconfig   clang
-sh                               allmodconfig   gcc  
-sh                                allnoconfig   gcc  
-sh                               allyesconfig   gcc  
-sh                                  defconfig   gcc  
-sparc                            allmodconfig   gcc  
-sparc                             allnoconfig   gcc  
-sparc                               defconfig   gcc  
-sparc64                          allmodconfig   gcc  
-sparc64                          allyesconfig   gcc  
-sparc64                             defconfig   gcc  
-um                               allmodconfig   clang
-um                                allnoconfig   clang
-um                               allyesconfig   gcc  
-um                                  defconfig   clang
-um                             i386_defconfig   gcc  
-um                           x86_64_defconfig   clang
-x86_64                            allnoconfig   clang
-x86_64                           allyesconfig   clang
-x86_64                              defconfig   gcc  
-x86_64                          rhel-8.3-rust   clang
-xtensa                            allnoconfig   gcc  
+ irq/65-iwlwifi:-401   [000]    22.790000: kfree_skb:  ...  reason: 0x20000
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+and much nicer to see
+
+ irq/65-iwlwifi:-401   [000]    22.790000: kfree_skb:  ...  reason: RX_DROP_MONITOR
+
+but this doesn't work now because __print_symbolic() can only
+deal with a hard-coded list (which is actually really big.)
+
+So here's __print_sym() which doesn't build the list into the
+kernel image, but creates it at runtime. For userspace, it
+will look the same as __print_symbolic() (it literally shows
+__print_symbolic() to userspace) so no changes are needed,
+but the actual list of values exposed to userspace in there
+is built dynamically. For SKB drop reasons, this then has all
+the reasons known when userspace queries the trace format.
+
+I guess patch 3/4 should go through net-next, so not sure
+how to handle this patch series. Or perhaps, as this will not
+cause conflicts, in fact I've been rebasing it for a long time,
+go through tracing anyway with an Ack from netdev? But I can
+also just wait for the trace patch(es) to land and resubmit the
+net patches after. Assuming this looks good at all :-)
+
+Thanks,
+johannes
+
+%
 
