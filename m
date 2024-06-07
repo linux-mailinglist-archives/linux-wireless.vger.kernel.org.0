@@ -1,145 +1,162 @@
-Return-Path: <linux-wireless+bounces-8682-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8683-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72D85900095
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 12:21:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE2AF9000AE
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 12:23:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA72028686F
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 10:21:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B4D22861DA
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 10:23:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E11B15D5DA;
-	Fri,  7 Jun 2024 10:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB0315D5B2;
+	Fri,  7 Jun 2024 10:22:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="ByVYTwOy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from nbd.name (nbd.name [46.4.11.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D0215B99D;
-	Fri,  7 Jun 2024 10:21:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB4315D5A5
+	for <linux-wireless@vger.kernel.org>; Fri,  7 Jun 2024 10:22:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717755664; cv=none; b=BGghh8Zx4rFhEJoRChRbBw2AGCSkOD7C/afiufp85LESP61YheKe4PGd92VLhXn29hUVUwkLdubz0zz5KoBVjsa3QXba0yR8deHixB7vBfJx+ndaxk96LGf51CfjjVRlelJWk2ngpoFfwdDjuKGZUbIgBuOKnxBmVmo7thJWU4M=
+	t=1717755750; cv=none; b=cNh5LynwrS54S8uWxyXBoH41VFK2T4Cyquigc8ptTClaTjDSlNSne3IXYwvLm7Q7bvvMQPyecKj31p9/nr8m1T29FSDVN1h9G0rrFluI9cREYAxf8AhglFTWJeEOsZ3H3s3qN5C4L5YDjDHjFcNDSPt1CZI+f4OM8l96/L+J0Jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717755664; c=relaxed/simple;
-	bh=gbzkN+HnRQiOXaIoiH0HNihHOHVKYAf+aBcWP/Am+xk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fe4IOT7M6QjxWn5o8NtaEQ5NN+xNA4nsCWHeeqdq4FuSmXOfoG2B27F84pJucVmrUjXwETQiiG53FxajvFjkxeDmm9xL7mqAQFnU5o7Bax2FGzpSSr0QLLJnVHT528kazPZDwxkt4+NwDFmtm8JOcM6KWtdmJADA/bJcK3HF/L0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-57a32b0211aso2565765a12.2;
-        Fri, 07 Jun 2024 03:21:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717755661; x=1718360461;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=N3nNU9KpHJb0ZPufRdlZofVOg4CGXOzM45QLGnUwPxc=;
-        b=fQnB0ABsnatbKNQUAlmC4rP14ggXYSqiPxCPk8U5PjuD3HwHsUbtXSxT6kDJECXkpA
-         oRisKhRDz9rQFJjwZAfqIWTDacQAC8AxZXV4zoVlln9f3M+2/dG/BnvbZqMIoQJcuTFA
-         EQPTOqxItOYwoRLREaBs9o3fYZ2rlKq4MzS1fxnpJBgrVYARNl4TkRMnmEH2OueHIFSh
-         8kVQ+gtY7teDLDJaNOa2rqts6GwsXw2iYRlGWf+ZBy8UrkkRZYP49QEFa5Y30brjSH3s
-         hXWWm4ag3/6Li14wa1wClOFlNYqbqxgM98sTnfmdHrG7DFKjAWe8wVZlEx1wqTx8hoHW
-         H3pg==
-X-Forwarded-Encrypted: i=1; AJvYcCXIraZj0W5FjV6m51tqnq0siNYK6mQwPV0skiWA/p3NpinqM6PkWmsJBDjbfh7Ty2HHetkExv/twDnkcD73hI7j0rJskswHz0OZDyr13rTRPDNVe4+Gztb0B9BtAe3XqBpR9G8Jvkmj0BFNqPmKYn6zUgjPNWO+/DfW53QWWZcWzEGE7+4=
-X-Gm-Message-State: AOJu0Yy79jzLa69tVl7vCjWxx836gnGrT/CiernHyQVdqNGcnb2jM24K
-	lEfE5nKHWvYUqZdSeHTTfrAnt66QAD1E1OaHx69UOPJ70SINNf8I
-X-Google-Smtp-Source: AGHT+IFCVIxpP0OHrnh8NVA0zJEQxrVUDOw/7dZQgh4PFibqT5y/SjiCjtNuNTYPTxThSL3gNeMhTw==
-X-Received: by 2002:a50:8d1c:0:b0:57c:5f4c:b229 with SMTP id 4fb4d7f45d1cf-57c5f4cb36dmr565366a12.33.1717755660723;
-        Fri, 07 Jun 2024 03:21:00 -0700 (PDT)
-Received: from localhost (fwdproxy-lla-000.fbsv.net. [2a03:2880:30ff::face:b00c])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57aae142816sm2519919a12.58.2024.06.07.03.21.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Jun 2024 03:21:00 -0700 (PDT)
-From: Breno Leitao <leitao@debian.org>
-To: kvalo@kernel.org,
-	linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes@sipsolutions.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: horms@kernel.org,
-	sbhatta@marvell.com,
-	netdev@vger.kernel.org (open list:NETWORKING [GENERAL]),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH wifi-next 2/2] wifi: mac80211: Remove generic .ndo_get_stats64
-Date: Fri,  7 Jun 2024 03:20:44 -0700
-Message-ID: <20240607102045.235071-2-leitao@debian.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240607102045.235071-1-leitao@debian.org>
-References: <20240607102045.235071-1-leitao@debian.org>
+	s=arc-20240116; t=1717755750; c=relaxed/simple;
+	bh=v3h9ddT8ASNEU+e17xuYD3rpes8fTk6Ed9jPZc+o1bw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=O3Zqfzp/Jmmggd8Dwy3jzwnzEqk/mTENl0ZceKh9c590T5WJnFUhiQNH7jnqZmqhHiddG4XduEdornqdoV+RJP0xuTnnijMXLs6wO8+h3O2H8qVWqANpA2u5oxa018rmHsV5fDENV2prGjR3oC/OnlLHzaGMCMhN40fqyTCjX5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=ByVYTwOy; arc=none smtp.client-ip=46.4.11.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=uq1AHMujd0zVyzETvuqXZKvPmWNCXkBZtDnwT/6YJPY=; b=ByVYTwOyYo0DcNxdRrCm86Z8+t
+	nKQ3F5BpgcRoItCZ11Pu7fjaG1F5AXzlUmvQiNrIjohk35fPKLTyahlQW+YTXS5KfIS9BKm2aEfFm
+	JkIsab12NtIvlYboIID90r9iqTuhjYc5vq9JfKqyebk+eixVOkhoUWV2KCFEwrTDKXAM=;
+Received: from p4ff13226.dip0.t-ipconnect.de ([79.241.50.38] helo=nf.local)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96)
+	(envelope-from <nbd@nbd.name>)
+	id 1sFWjp-008rpd-1U;
+	Fri, 07 Jun 2024 12:22:25 +0200
+Message-ID: <1f32cb6c-6be8-4e3d-8e8f-2d3c728875a9@nbd.name>
+Date: Fri, 7 Jun 2024 12:22:25 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v3 6/8] wifi: mac80211: extend ifcomb check functions for
+ multi-radio
+To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+ linux-wireless@vger.kernel.org
+Cc: johannes@sipsolutions.net, quic_adisi@quicinc.com,
+ ath12k@lists.infradead.org
+References: <cover.386a66ec6a89750d4890f63f0d28582a52b838b5.1717696995.git-series.nbd@nbd.name>
+ <bc603fc671010bb720e75881ef0e22d81ec6e2eb.1717696995.git-series.nbd@nbd.name>
+ <a337de2e-fe3e-18ed-b55b-9ea2cd21baed@quicinc.com>
+From: Felix Fietkau <nbd@nbd.name>
+Content-Language: en-US
+Autocrypt: addr=nbd@nbd.name; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
+ cL98efvrjdstUfTCP2pfetyN
+In-Reply-To: <a337de2e-fe3e-18ed-b55b-9ea2cd21baed@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Commit 3e2f544dd8a33 ("net: get stats64 if device if driver is
-configured") moved the callback to dev_get_tstats64() to net core, so,
-unless the driver is doing some custom stats collection, it does not
-need to set .ndo_get_stats64.
+On 07.06.24 12:07, Karthikeyan Periyasamy wrote:
+> 
+> 
+> On 6/6/2024 11:37 PM, Felix Fietkau wrote:
+>> Add support for counting global and per-radio max/current number of
+>> channels, as well as checking radio-specific interface combinations.
+>> 
+>> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+>> ---
+>>   net/mac80211/cfg.c         |   7 +-
+>>   net/mac80211/chan.c        |  17 +++--
+>>   net/mac80211/ibss.c        |   2 +-
+>>   net/mac80211/ieee80211_i.h |   6 +-
+>>   net/mac80211/iface.c       |   2 +-
+>>   net/mac80211/util.c        | 131 +++++++++++++++++++++++++++-----------
+>>   6 files changed, 116 insertions(+), 49 deletions(-)
+>> 
+>> diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+>> index 62119e957cd8..950b7b72f0b8 100644
+>> --- a/net/mac80211/cfg.c
+>> +++ b/net/mac80211/cfg.c
+>> @@ -263,7 +263,7 @@ static int ieee80211_start_p2p_device(struct wiphy *wiphy,
+>>   
+>>   	lockdep_assert_wiphy(sdata->local->hw.wiphy);
+>>   
+>> -	ret = ieee80211_check_combinations(sdata, NULL, 0, 0);
+>> +	ret = ieee80211_check_combinations(sdata, NULL, 0, 0, -1);
+>>   	if (ret < 0)
+>>   		return ret;
+>>   
+>> @@ -285,7 +285,7 @@ static int ieee80211_start_nan(struct wiphy *wiphy,
+>>   
+>>   	lockdep_assert_wiphy(sdata->local->hw.wiphy);
+>>   
+>> -	ret = ieee80211_check_combinations(sdata, NULL, 0, 0);
+>> +	ret = ieee80211_check_combinations(sdata, NULL, 0, 0, -1);
+>>   	if (ret < 0)
+>>   		return ret;
+>>   
+>> @@ -4001,7 +4001,7 @@ __ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
+>>   		goto out;
+>>   
+>>   	/* if reservation is invalid then this will fail */
+>> -	err = ieee80211_check_combinations(sdata, NULL, chanctx->mode, 0);
+>> +	err = ieee80211_check_combinations(sdata, NULL, chanctx->mode, 0, -1);
+> 
+> Once we reach the global limit, all the -1 passing caller get fail
+> becuase the iface check param (existing and new) is validated against
+> the global limit. since global limt as a sort of union of all per-radio
+> limits.
+> 
+> Ex:
+> Global iface = 6 (Radio iface 2GHz:4, 5GHz:4, 6GHz:6)
+> 
+> 
+> So far 6 iface created (Radio iface 2GHz:2, 5GHz:3, 6GHz:1)
+> 
+> In this case, new iface creation get fail because caller uses
+> ieee80211_check_combinations() with -1 as radio idx, so it checked
+> against global limit
 
-Since this driver is now relying in NETDEV_PCPU_STAT_TSTATS, then, it
-doesn't need to set the dev_get_tstats64() generic .ndo_get_stats64
-function pointer.
+Use the sum of the number of interfaces from each radio instead of the 
+maximum.
 
-In this driver specifically, .ndo_get_stats64 basically points to
-dev_fetch_sw_netstats(). Now it will point to dev_get_tstats64(), which
-calls netdev_stats_to_stats64() and dev_fetch_sw_netstats().
-netdev_stats_to_stats64() seems irrelevant for this driver.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- net/mac80211/iface.c | 9 ---------
- 1 file changed, 9 deletions(-)
-
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 605305cb3ff2..8f5d5f5deb4d 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -815,12 +815,6 @@ static void ieee80211_uninit(struct net_device *dev)
- 	ieee80211_teardown_sdata(IEEE80211_DEV_TO_SUB_IF(dev));
- }
- 
--static void
--ieee80211_get_stats64(struct net_device *dev, struct rtnl_link_stats64 *stats)
--{
--	dev_fetch_sw_netstats(stats, dev->tstats);
--}
--
- static int ieee80211_netdev_setup_tc(struct net_device *dev,
- 				     enum tc_setup_type type, void *type_data)
- {
-@@ -837,7 +831,6 @@ static const struct net_device_ops ieee80211_dataif_ops = {
- 	.ndo_start_xmit		= ieee80211_subif_start_xmit,
- 	.ndo_set_rx_mode	= ieee80211_set_multicast_list,
- 	.ndo_set_mac_address 	= ieee80211_change_mac,
--	.ndo_get_stats64	= ieee80211_get_stats64,
- 	.ndo_setup_tc		= ieee80211_netdev_setup_tc,
- };
- 
-@@ -877,7 +870,6 @@ static const struct net_device_ops ieee80211_monitorif_ops = {
- 	.ndo_set_rx_mode	= ieee80211_set_multicast_list,
- 	.ndo_set_mac_address 	= ieee80211_change_mac,
- 	.ndo_select_queue	= ieee80211_monitor_select_queue,
--	.ndo_get_stats64	= ieee80211_get_stats64,
- };
- 
- static int ieee80211_netdev_fill_forward_path(struct net_device_path_ctx *ctx,
-@@ -945,7 +937,6 @@ static const struct net_device_ops ieee80211_dataif_8023_ops = {
- 	.ndo_start_xmit		= ieee80211_subif_start_xmit_8023,
- 	.ndo_set_rx_mode	= ieee80211_set_multicast_list,
- 	.ndo_set_mac_address	= ieee80211_change_mac,
--	.ndo_get_stats64	= ieee80211_get_stats64,
- 	.ndo_fill_forward_path	= ieee80211_netdev_fill_forward_path,
- 	.ndo_setup_tc		= ieee80211_netdev_setup_tc,
- };
--- 
-2.43.0
+- Felix
 
 
