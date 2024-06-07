@@ -1,162 +1,126 @@
-Return-Path: <linux-wireless+bounces-8683-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8684-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE2AF9000AE
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 12:23:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BCCE9000CD
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 12:30:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B4D22861DA
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 10:23:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B866628786C
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 10:30:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB0315D5B2;
-	Fri,  7 Jun 2024 10:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96FB815D5C3;
+	Fri,  7 Jun 2024 10:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="ByVYTwOy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fJ1RE9Cq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from nbd.name (nbd.name [46.4.11.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB4315D5A5
-	for <linux-wireless@vger.kernel.org>; Fri,  7 Jun 2024 10:22:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6744B15D5BD;
+	Fri,  7 Jun 2024 10:30:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717755750; cv=none; b=cNh5LynwrS54S8uWxyXBoH41VFK2T4Cyquigc8ptTClaTjDSlNSne3IXYwvLm7Q7bvvMQPyecKj31p9/nr8m1T29FSDVN1h9G0rrFluI9cREYAxf8AhglFTWJeEOsZ3H3s3qN5C4L5YDjDHjFcNDSPt1CZI+f4OM8l96/L+J0Jk=
+	t=1717756202; cv=none; b=cHASspIXKZp4AO7b0lAG12bnckTMEmusVjx/ZTPQjQfFzeQQKjqj++IEXth9eFMlQYLdVVFch8tlwH+j9pv2UnDGzJS5Y/iOthTRnwpoO9PdAkUYDuEifj3sRbfqjI5zq6gyxRHDJq/rhSRgcx46Fr36/ApsmlTQKpivM6dBo9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717755750; c=relaxed/simple;
-	bh=v3h9ddT8ASNEU+e17xuYD3rpes8fTk6Ed9jPZc+o1bw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=O3Zqfzp/Jmmggd8Dwy3jzwnzEqk/mTENl0ZceKh9c590T5WJnFUhiQNH7jnqZmqhHiddG4XduEdornqdoV+RJP0xuTnnijMXLs6wO8+h3O2H8qVWqANpA2u5oxa018rmHsV5fDENV2prGjR3oC/OnlLHzaGMCMhN40fqyTCjX5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=ByVYTwOy; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=uq1AHMujd0zVyzETvuqXZKvPmWNCXkBZtDnwT/6YJPY=; b=ByVYTwOyYo0DcNxdRrCm86Z8+t
-	nKQ3F5BpgcRoItCZ11Pu7fjaG1F5AXzlUmvQiNrIjohk35fPKLTyahlQW+YTXS5KfIS9BKm2aEfFm
-	JkIsab12NtIvlYboIID90r9iqTuhjYc5vq9JfKqyebk+eixVOkhoUWV2KCFEwrTDKXAM=;
-Received: from p4ff13226.dip0.t-ipconnect.de ([79.241.50.38] helo=nf.local)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96)
-	(envelope-from <nbd@nbd.name>)
-	id 1sFWjp-008rpd-1U;
-	Fri, 07 Jun 2024 12:22:25 +0200
-Message-ID: <1f32cb6c-6be8-4e3d-8e8f-2d3c728875a9@nbd.name>
-Date: Fri, 7 Jun 2024 12:22:25 +0200
+	s=arc-20240116; t=1717756202; c=relaxed/simple;
+	bh=y5IwuyaQDrnSDBJYNI75IW6lnQ2FscwzbDOcz+9Y8e8=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=f3aaAqjOkDHHFajdjFmnonFbMDil48nW30pX+XNBDBoMzRb16qFU0xU58jA5ugdF2VRuqHkVzXjfbvjcfUULBUO9pzPdp9eWfBE9JfJl3QdYRbLuoAST27+JQoGMVz4fYObX8OrqqnwjPRTp74XSx5tyjLvjcXPJnHXaaXf2h+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fJ1RE9Cq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C12BC2BBFC;
+	Fri,  7 Jun 2024 10:30:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717756201;
+	bh=y5IwuyaQDrnSDBJYNI75IW6lnQ2FscwzbDOcz+9Y8e8=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=fJ1RE9CqPShL6jkbKXg+pN7edrFIkH+1YdVP8jV6lMOgeGixIMhQhGsfGUVooRVUW
+	 WmgNapo5D+ms1MWzt+u3mB9cpwxFqmhz7Pqr9P4P3ETbUKrjcAhZYL/EA6w1ODhhw7
+	 7dPcgs3WcpwrdSvMbppWn1J3TBDtmSPvIWk3tPxGCFNBB4A6A/TXOfkcXzduFpuzvu
+	 m0y3pxWD3hkRTsTmRTsPb694fsUjmEZwPK3NPUGs65ClmYdsrQRduRT9B/rKuCwI/L
+	 3q8F9PKtseEOA5mYea/nvkBXuzOPI75ZQze/eHPIMGJPNA1AcGB43HdeH1xIaZq67p
+	 1Y+1kWG3vvAyQ==
+From: Kalle Valo <kvalo@kernel.org>
+To: Alexis =?utf-8?Q?Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>,  Johannes Berg
+ <johannes@sipsolutions.net>,  Wireless <linux-wireless@vger.kernel.org>,
+  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,  Linux Next
+ Mailing List <linux-next@vger.kernel.org>
+Subject: Re: linux-next: manual merge of the wireless-next tree with the
+ wireless tree
+References: <20240603110023.23572803@canb.auug.org.au>
+	<875xuquyyb.fsf@kernel.org> <87tti6qt5o.fsf@kernel.org>
+	<317b515f-30fb-4b18-bb99-b65091449ec4@bootlin.com>
+Date: Fri, 07 Jun 2024 13:29:58 +0300
+In-Reply-To: <317b515f-30fb-4b18-bb99-b65091449ec4@bootlin.com> ("Alexis
+	=?utf-8?Q?Lothor=C3=A9=22's?= message of "Fri, 7 Jun 2024 11:44:10 +0200")
+Message-ID: <87frtpoxjt.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v3 6/8] wifi: mac80211: extend ifcomb check functions for
- multi-radio
-To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
- linux-wireless@vger.kernel.org
-Cc: johannes@sipsolutions.net, quic_adisi@quicinc.com,
- ath12k@lists.infradead.org
-References: <cover.386a66ec6a89750d4890f63f0d28582a52b838b5.1717696995.git-series.nbd@nbd.name>
- <bc603fc671010bb720e75881ef0e22d81ec6e2eb.1717696995.git-series.nbd@nbd.name>
- <a337de2e-fe3e-18ed-b55b-9ea2cd21baed@quicinc.com>
-From: Felix Fietkau <nbd@nbd.name>
-Content-Language: en-US
-Autocrypt: addr=nbd@nbd.name; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
- cL98efvrjdstUfTCP2pfetyN
-In-Reply-To: <a337de2e-fe3e-18ed-b55b-9ea2cd21baed@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 07.06.24 12:07, Karthikeyan Periyasamy wrote:
-> 
-> 
-> On 6/6/2024 11:37 PM, Felix Fietkau wrote:
->> Add support for counting global and per-radio max/current number of
->> channels, as well as checking radio-specific interface combinations.
->> 
->> Signed-off-by: Felix Fietkau <nbd@nbd.name>
->> ---
->>   net/mac80211/cfg.c         |   7 +-
->>   net/mac80211/chan.c        |  17 +++--
->>   net/mac80211/ibss.c        |   2 +-
->>   net/mac80211/ieee80211_i.h |   6 +-
->>   net/mac80211/iface.c       |   2 +-
->>   net/mac80211/util.c        | 131 +++++++++++++++++++++++++++-----------
->>   6 files changed, 116 insertions(+), 49 deletions(-)
->> 
->> diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
->> index 62119e957cd8..950b7b72f0b8 100644
->> --- a/net/mac80211/cfg.c
->> +++ b/net/mac80211/cfg.c
->> @@ -263,7 +263,7 @@ static int ieee80211_start_p2p_device(struct wiphy *wiphy,
->>   
->>   	lockdep_assert_wiphy(sdata->local->hw.wiphy);
->>   
->> -	ret = ieee80211_check_combinations(sdata, NULL, 0, 0);
->> +	ret = ieee80211_check_combinations(sdata, NULL, 0, 0, -1);
->>   	if (ret < 0)
->>   		return ret;
->>   
->> @@ -285,7 +285,7 @@ static int ieee80211_start_nan(struct wiphy *wiphy,
->>   
->>   	lockdep_assert_wiphy(sdata->local->hw.wiphy);
->>   
->> -	ret = ieee80211_check_combinations(sdata, NULL, 0, 0);
->> +	ret = ieee80211_check_combinations(sdata, NULL, 0, 0, -1);
->>   	if (ret < 0)
->>   		return ret;
->>   
->> @@ -4001,7 +4001,7 @@ __ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
->>   		goto out;
->>   
->>   	/* if reservation is invalid then this will fail */
->> -	err = ieee80211_check_combinations(sdata, NULL, chanctx->mode, 0);
->> +	err = ieee80211_check_combinations(sdata, NULL, chanctx->mode, 0, -1);
-> 
-> Once we reach the global limit, all the -1 passing caller get fail
-> becuase the iface check param (existing and new) is validated against
-> the global limit. since global limt as a sort of union of all per-radio
-> limits.
-> 
-> Ex:
-> Global iface = 6 (Radio iface 2GHz:4, 5GHz:4, 6GHz:6)
-> 
-> 
-> So far 6 iface created (Radio iface 2GHz:2, 5GHz:3, 6GHz:1)
-> 
-> In this case, new iface creation get fail because caller uses
-> ieee80211_check_combinations() with -1 as radio idx, so it checked
-> against global limit
+Alexis Lothor=C3=A9 <alexis.lothore@bootlin.com> writes:
 
-Use the sum of the number of interfaces from each radio instead of the 
-maximum.
+> Hello Kalle, Stephen,
+>
+> On 6/6/24 12:09, Kalle Valo wrote:
+>> Kalle Valo <kvalo@kernel.org> writes:
+>>=20
+>>> Stephen Rothwell <sfr@canb.auug.org.au> writes:
+>>>
+>>>> Hi all,
+>>>>
+>>>> Today's linux-next merge of the wireless-next tree got a conflict in:
+>>>>
+>>>>   drivers/net/wireless/microchip/wilc1000/netdev.c
+>>>>
+>>>> between commit:
+>>>>
+>>>>   ebfb5e8fc8b4 ("Revert "wifi: wilc1000: convert list management to RC=
+U"")
+>>>>
+>>>> from the wireless tree and commit:
+>>>>
+>>>>   6fe46d5c0a84 ("wifi: wilc1000: set net device registration as last
+>>>> step during interface creation")
+>>>>
+>>>> from the wireless-next tree.
+>>>>
+>>>> I fixed it up (see below) and can carry the fix as necessary. This
+>>>> is now fixed as far as linux-next is concerned, but any non trivial
+>>>> conflicts should be mentioned to your upstream maintainer when your tr=
+ee
+>>>> is submitted for merging.  You may also want to consider cooperating
+>>>> with the maintainer of the conflicting tree to minimise any particular=
+ly
+>>>> complex conflicts.
+>>>
+>>> Thanks. We need to figure out how we solve this conflict, most probably
+>>> we'll ask network maintainers to fix it when they pull wireless-next.
+>>=20
+>> Alexis, you know wilc1000 the best. Could you double check the conflict
+>> resolution, it somewhat complicated:>
+>> https://lore.kernel.org/all/20240603110023.23572803@canb.auug.org.au/
+>>=20
+>
+> LGTM, and some quick testing on the linux-next tree with the correspondin=
+g merge
+> commit showed no issue (no RCU warning, and mac address loading fix behav=
+ing
+> properly)
 
-- Felix
+Excellent, thank you so much.
 
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
 
