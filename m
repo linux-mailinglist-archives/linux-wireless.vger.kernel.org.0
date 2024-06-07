@@ -1,183 +1,155 @@
-Return-Path: <linux-wireless+bounces-8654-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8655-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9D848FFA13
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 04:55:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F9AE8FFA6B
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 06:26:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C1BE2837B8
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 02:55:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42C041F23ACB
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 04:26:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C48DDD9;
-	Fri,  7 Jun 2024 02:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C490B2572;
+	Fri,  7 Jun 2024 04:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="fqXuJUwA"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="TU8OxjNz"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD862F26
-	for <linux-wireless@vger.kernel.org>; Fri,  7 Jun 2024 02:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34D6101CE
+	for <linux-wireless@vger.kernel.org>; Fri,  7 Jun 2024 04:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717728934; cv=none; b=DznBIFEhGDQBpBQZlsW4j597T/QI1oKBApJ0qZXN/BB3czohxWZXWC2DGTfZYG18oc+J1DXItHH7PV1JMjpgHx3PHrzTwdusNn4qTYr0hG3lbtEahTY+ahSumc/IDPyCs0q3n3jZPFKBRHuzr+X5T8B6zFn9Xn6kSD+ptWa5kpg=
+	t=1717734377; cv=none; b=ZD9aY4KMGZdiEpX5BEUa4wWYNLXbnu7XYitLKiJqLkF1/u9I6LrxToB/vgqwP2840Qv/983Kucom2Bbv85ajtPp31IDigd783x886FjUIhhiaMp6ic705Dqmq81/r/eViBsMqecnQ/tq8zbHr62kb4fsGL16m5g+HLTsHiWGN5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717728934; c=relaxed/simple;
-	bh=7b+tXuK0YVjSLbKsEAPPZeltSUucMgIXjHZlb6UkUaI=;
+	s=arc-20240116; t=1717734377; c=relaxed/simple;
+	bh=Tpbo+0R8BLz6qWZXuItnjUVc2094M9uMb3QWE4Ewnxw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=XKipCaj0gshcgLoTXSrIvcNLO0bB8kyy88Fi7pGM7K9Gz6A1pa4KlHCQ7dyq64Xcl1Co/ehF75HVwmKxAvQZKC98cFcv+ul8ECJlcm51iKRoJJx3K6pxkJIuGyA3MIp07RnRFl+6KKwl6ghlBOX782QBmKB0lx6jpXgbQ2KSm2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=fqXuJUwA; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:Content-Type; b=NXkdHcJ4o9lg/gnUni0f7tkFwVuJFq2ymWAJnuaq9/yILgyF5KbY93VeokSC27Ns2wQ75vrCG0E1iyed2MQlkOV8VX4IlHm7lRHC2f3Zx+p7hezvOACX+MqeeiJMhE2wIgpM5F3zg1Pq6rz21jhnCNIn/PhrGK8+6deScGjgpA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=TU8OxjNz; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4571VH7N031711;
-	Fri, 7 Jun 2024 02:55:08 GMT
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45742CAV022877;
+	Fri, 7 Jun 2024 04:26:02 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	4tTbXsCHuGQtIxn9Aj09SJmqa8/QdCyX6mvTd1JlVbc=; b=fqXuJUwAvuvPEbWz
-	96EqdBe8B//KCOXa6hIb7EpyMHDbB2LxYmiorcpn5E6hKL210kzrb4fFpMCOUiPS
-	s4AUBYDvUAQZyY/sKzosswuoHOpL2PeBbgQCRziZYJhlolNj4FGIr1N6Pb0ELsSA
-	Azs1fGsu5aYoapAU6mXjlY9Pnf3/ND45025U/tP92N3zoWFNVAr3ZDMrcOQqcsDe
-	o6vAstVrOtEO5WhvyS7V+pWiV8ByAAnq0PK/uEtvZfHRob4az3dID8zXPlE3GYvQ
-	KP5EZXzeM63aXjMWv3GMXTMW9MK30zcWc4f+8wAvrNEqe1ae8i3t9mGsgheZpdA0
-	Fu3FCw==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yjk89d74h-1
+	SF08Y+2lgwbn94fK7TijeOO+0PXww71J4DpKxZh4Puc=; b=TU8OxjNzoqY/GFo0
+	ZMcdWwfSYrZv4a5IU6oHQnDYMRQk/syShtqgthDOlM7GMiG8LxXmiDQ0pgCal8lM
+	xWZiEW2xZovZRDwJR5G6MhdbjiqcW1tvavGdpqrwarZvQ8O1yjRGnHOiyuQNvhPF
+	bux69b5ULu2FlSLyVPN7Bhn075y3kw6hX3F9eH8QwafF1BiTJVE5Nutj92Y+/wDJ
+	mG/tyG3+DivgtkXS68SfME3sJuotfTP8MCI5H5ZzukWU7ELlvH7nxByLi+V4X2xL
+	RFGb4ACNDgT3JM2US7vp8OoptYTibYOFctiZ5Kw0/ffSxmdGWdBoH/MWN8xc/X+W
+	2pMcwg==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ykttx016v-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 07 Jun 2024 02:55:08 +0000 (GMT)
+	Fri, 07 Jun 2024 04:26:02 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4572t6tO005785
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4574Q105031609
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 7 Jun 2024 02:55:06 GMT
-Received: from [10.216.24.186] (10.80.80.8) by nalasex01a.na.qualcomm.com
+	Fri, 7 Jun 2024 04:26:01 GMT
+Received: from [10.152.205.142] (10.80.80.8) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 6 Jun 2024
- 19:55:04 -0700
-Message-ID: <b57a06e3-6dcf-4205-83e8-14857c4b7258@quicinc.com>
-Date: Fri, 7 Jun 2024 08:25:01 +0530
+ 21:25:58 -0700
+Message-ID: <2014e488-b930-43ff-86a6-c5a4801b82f5@quicinc.com>
+Date: Fri, 7 Jun 2024 09:55:55 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/5] wifi: ath12k: Add support to parse requested
- stats_type
-To: Jeff Johnson <quic_jjohnson@quicinc.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Dinesh Karthikeyan
-	<quic_dinek@quicinc.com>
-References: <20240603044214.960261-1-quic_rgnanase@quicinc.com>
- <20240603044214.960261-5-quic_rgnanase@quicinc.com>
- <7c7ea029-6ef9-4e7b-ac45-bdf341a8256a@quicinc.com>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [RFC v3 4/8] wifi: mac80211: add support for DFS with multiple
+ radios
+To: Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
+CC: <johannes@sipsolutions.net>, <quic_adisi@quicinc.com>,
+        <ath12k@lists.infradead.org>
+References: <cover.386a66ec6a89750d4890f63f0d28582a52b838b5.1717696995.git-series.nbd@nbd.name>
+ <7cc3d89225f365c85b363874725cfbc77c9c1db5.1717696995.git-series.nbd@nbd.name>
 Content-Language: en-US
-From: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
-In-Reply-To: <7c7ea029-6ef9-4e7b-ac45-bdf341a8256a@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+In-Reply-To: <7cc3d89225f365c85b363874725cfbc77c9c1db5.1717696995.git-series.nbd@nbd.name>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: lfoncVws7FW8dubi5Eukyq6tOyCNZpHO
-X-Proofpoint-ORIG-GUID: lfoncVws7FW8dubi5Eukyq6tOyCNZpHO
+X-Proofpoint-GUID: NmZjU0jwX45oYHlGlOlqQW8VtnY8abGL
+X-Proofpoint-ORIG-GUID: NmZjU0jwX45oYHlGlOlqQW8VtnY8abGL
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-06-06_20,2024-06-06_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- spamscore=0 impostorscore=0 phishscore=0 mlxscore=0 bulkscore=0
- adultscore=0 malwarescore=0 priorityscore=1501 clxscore=1015
- suspectscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2405170001 definitions=main-2406070021
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ suspectscore=0 bulkscore=0 clxscore=1015 adultscore=0 phishscore=0
+ mlxlogscore=999 priorityscore=1501 mlxscore=0 spamscore=0 malwarescore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2406070030
 
 
-On 6/6/2024 10:12 PM, Jeff Johnson wrote:
-> On 6/2/2024 9:42 PM, Ramya Gnanasekar wrote:
->> From: Dinesh Karthikeyan <quic_dinek@quicinc.com>
->>
->> Add extended htt stats parser and print the corresponding TLVs associated
->> with the requested htt_stats_type.
->> Add support for TX PDEV related htt stats.
->>
-> 
-> while reviewing some other patches in the internal pipeline I discovered I had
-> overlooked some things in this series, so pointing them out now...
-> 
->> ---
->>  .../wireless/ath/ath12k/debugfs_htt_stats.c   | 315 ++++++++++++++++++
->>  .../wireless/ath/ath12k/debugfs_htt_stats.h   | 211 ++++++++++++
->>  drivers/net/wireless/ath/ath12k/dp_rx.c       |  10 +-
->>  drivers/net/wireless/ath/ath12k/dp_rx.h       |   4 +
->>  4 files changed, 536 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
->> index d98b971cde7d..e0a0acd5eec8 100644
->> --- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
->> +++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
->> @@ -9,6 +9,321 @@
->>  #include "debug.h"
->>  #include "debugfs_htt_stats.h"
->>  #include "dp_tx.h"
->> +#include "dp_rx.h"
->> +
->> +static u32
->> +print_array_to_buf(u8 *buf, u32 offset, const char *header,
->> +		   const __le32 *array, u32 array_len)
->> +{
->> +	int index = 0;
->> +	u8 i;
->> +
->> +	if (header) {
->> +		index += scnprintf(buf + offset,
->> +				   ATH12K_HTT_STATS_BUF_SIZE - offset,
->> +				   "%s = ", header);
->> +	}
->> +	for (i = 0; i < array_len; i++) {
->> +		index += scnprintf(buf + offset + index,
->> +				   (ATH12K_HTT_STATS_BUF_SIZE - offset) - index,
->> +				   " %u:%u,", i, le32_to_cpu(array[i]));
->> +	}
-> 
-> note that this will end up with a trailing comma, so suggest you add:
-> 
-> 	/* have the next print overwrite the last trailing comma */
-> 	index--;
 
-Thanks. Will address the same.
+On 6/6/2024 11:37 PM, Felix Fietkau wrote:
+> DFS can be supported with multi-channel combinations, as long as each DFS
+> capable radio only supports one channel.
 > 
->> +	index += scnprintf(buf + offset + index,
->> +			   (ATH12K_HTT_STATS_BUF_SIZE - offset) - index,
->> +			   "\n\n");
->> +	return index;
->> +}
->> +
->> +static void
->> +htt_print_tx_pdev_stats_cmn_tlv(const void *tag_buf, u16 tag_len,
->> +				struct debug_htt_stats_req *stats_req)
->> +{
->> +	const struct ath12k_htt_tx_pdev_stats_cmn_tlv *htt_stats_buf = tag_buf;
->> +	u8 *buf = stats_req->buf;
->> +	u32 len = stats_req->buf_len;
->> +	u32 buf_len = ATH12K_HTT_STATS_BUF_SIZE;
->> +	u32 mac_id_word = le32_to_cpu(htt_stats_buf->mac_id__word);
+> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> ---
+>   net/mac80211/main.c | 32 ++++++++++++++++++++++++--------
+>   1 file changed, 24 insertions(+), 8 deletions(-)
 > 
-> this dereference has to occur after the length check, otherwise you may have a
-> buffer overread
-> 
->> +
->> +	if (tag_len < sizeof(struct ath12k_htt_tx_pdev_stats_cmn_tlv))
-> 
-> sizeof(*htt_stats_buf) is preferred
-> 
->> +		return;
->> +
-> 
-> that concludes my new comments
-> 
+> diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+> index 40fbf397ce74..e9c4cf611e94 100644
+> --- a/net/mac80211/main.c
+> +++ b/net/mac80211/main.c
 
-Thanks Jeff. I will address the same.
+...
+
+>   int ieee80211_register_hw(struct ieee80211_hw *hw)
+>   {
+>   	struct ieee80211_local *local = hw_to_local(hw);
+> @@ -1173,17 +1188,18 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+>   			if (comb->num_different_channels > 1)
+>   				return -EINVAL;
+>   		}
+> -	} else {
+> -		/* DFS is not supported with multi-channel combinations yet */
+> -		for (i = 0; i < local->hw.wiphy->n_iface_combinations; i++) {
+> -			const struct ieee80211_iface_combination *comb;
+> -
+> -			comb = &local->hw.wiphy->iface_combinations[i];
+> +	} else if (hw->wiphy->n_radio) {
+> +		for (i = 0; i < hw->wiphy->n_radio; i++) {
+> +			const struct wiphy_radio *radio = &hw->wiphy->radio[i];
+>   
+> -			if (comb->radar_detect_widths &&
+> -			    comb->num_different_channels > 1)
+> +			if (!ieee80211_ifcomb_check_radar(radio->iface_combinations,
+> +							  radio->n_iface_combinations))
+>   				return -EINVAL;
+>   		}
+> +	} else {
+> +		if (!ieee80211_ifcomb_check_radar(hw->wiphy->iface_combinations,
+> +						  hw->wiphy->n_iface_combinations))
+> +			return -EINVAL;
+>   	}
+>   
+>   	/* Only HW csum features are currently compatible with mac80211 */
+
+Are we omitting the "wiphy->iface_combinations" if the radio specific 
+iface combination advertised ?
+
+If so, it looks like unused "wiphy->iface_combinations" for radio 
+specific combination advertised.
+
+-- 
+Karthikeyan Periyasamy
+--
+கார்த்திகேயன் பெரியசாமி
 
