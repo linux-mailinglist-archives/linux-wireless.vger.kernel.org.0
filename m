@@ -1,200 +1,114 @@
-Return-Path: <linux-wireless+bounces-8708-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8715-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80C0C9009F8
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 18:07:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 018A3900B3A
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 19:28:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5A771C233B8
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 16:07:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 269551C219C9
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 17:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6154A19AA4B;
-	Fri,  7 Jun 2024 16:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C33819B3D2;
+	Fri,  7 Jun 2024 17:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="D/uk2gFA"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="owbLSfDZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from nbd.name (nbd.name [46.4.11.11])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4266119AA4F
-	for <linux-wireless@vger.kernel.org>; Fri,  7 Jun 2024 16:05:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7593F19B3D3
+	for <linux-wireless@vger.kernel.org>; Fri,  7 Jun 2024 17:26:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717776358; cv=none; b=bIiSQ65VE9/03jcdeOJugDWGX0zzqUS3+ZcwW2PpTLH5j81a2FnYiQ1OYr3yaqGL4Jk08CEczUFKZ5Xka74cGYbYZ4QFJPzRg0YvMpoarEGT9W3bqMdUYXhiKK5fRdZ2wuoBMH1rlRci1TF4ERNMXgbG+uovBMHF+F0Ni8qlRUU=
+	t=1717781199; cv=none; b=p4I6Y5Fs5v+9vmCWwPtIbrby1wAn7hVw76n2rBQ05yqNAaqFnDFceGPrARLwPOdUsjgqms2296eAfSbl6JUPKdUP8QGS99v8C7t/oBK0WZI9izFHWu6bUlfnxDbM7JoPi2sTaXiP/iQK5wyg4NJJHRwz6Wdjc97+e2Xy4zPyKoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717776358; c=relaxed/simple;
-	bh=Q+tmcwpANBlkIWAOYG5xvF+QYH9H/ktKdDKijOIuRDI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rHxvP0HWN8G00jb0AhFZQzyvlG9wj3d1rxKiwMqbmZXhOkhQIaiwqwILdGgP1rH1gy/aVuVIv6nDoY6WC+K/oCFyQA7W1DvAUavc9kQa3Lqc6oA072ObrrwI9yULUwhDiXNfU1pKnvMlmoYsumDlHPsIqGi+hzp3yNaqR6cGFko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=D/uk2gFA; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=E5CI0wDHvksxh6jXzTcJcoR/Vkw4nSvBxyZsxzfQIAI=; b=D/uk2gFACaUhTuT969ZVdX092u
-	6wdA0JBLwlS+eipurGBtnMtjGxrfFR1YkyKSPpOdbykszLJI8C1Cytg25ZvJ8YVKtxYV2lO04Ei+r
-	UX/Ihw3yxJiz+uM6IcH7WV6leGjppZ/yKGZFyJK22IXPBvf5motB/gjVBfR2lW1TkJwA=;
-Received: from p4ff13226.dip0.t-ipconnect.de ([79.241.50.38] helo=localhost.localdomain)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
-	(Exim 4.96)
-	(envelope-from <nbd@nbd.name>)
-	id 1sFc6C-008xPc-0U;
-	Fri, 07 Jun 2024 18:05:52 +0200
-From: Felix Fietkau <nbd@nbd.name>
-To: linux-wireless@vger.kernel.org
-Cc: johannes@sipsolutions.net,
-	quic_adisi@quicinc.com,
-	quic_periyasa@quicinc.com,
-	ath12k@lists.infradead.org
-Subject: [RFC v4 9/9] wifi: mac80211: add wiphy radio assignment and validation
-Date: Fri,  7 Jun 2024 18:05:48 +0200
-Message-ID: <fc196c123ed3b79fa0ad1cbcf22af49f7f970721.1717776325.git-series.nbd@nbd.name>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <cover.0af6292ae793f7b9927ab6583791b58daedc9104.1717776325.git-series.nbd@nbd.name>
-References: <cover.0af6292ae793f7b9927ab6583791b58daedc9104.1717776325.git-series.nbd@nbd.name>
+	s=arc-20240116; t=1717781199; c=relaxed/simple;
+	bh=LEGwDRIs8v1qbJnF2Cs6SPJOmrT3TiKiSGYXhLy62S0=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=FqnOLNijitJS3iQ232q6TojrNQObTrn7MzrqX88AjIRbodnLDs3qKTGItsKZkkxgQaxlGwvmKBwrZNXMeDmTyEJmx6cekK/87xZZxMCn4OuRG8DWTI+0vM+Y+QatOx8BWVKHBo96ygBTHkujXXg9gj0CpMSXh49ktrxwBIF9Uiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=owbLSfDZ; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=LEGwDRIs8v1qbJnF2Cs6SPJOmrT3TiKiSGYXhLy62S0=;
+	t=1717781197; x=1718990797; b=owbLSfDZ8w9XK2QppsWFD7ggYqm65TeeFLXhwbarW0SdJMP
+	ddEJbD+3i/rXLr0TMb1QqktB6NH9rQjfItiOuMJ76VBldPl0i1vJbWM9kqjNPvcilAlffzqTtDZ47
+	WKPCZZmF+vStNcx5aTyqomWEHM9i6+B1+M7Nlt9VZmMWFyP4RioV3k7ED/jQtSC1xaPGVZMZrxFuj
+	UJW9WQyChsLflV/yh1lHhkFQF/ymd7zXukbpjeEiYTjKt0wdMgRvxg9KTPBJgx2Ie+b+yD6noLVL1
+	baE0TtKj5APf+QLbwYeENXAoGA1QWTMVnySJ44ewcdPCYLhpRwUvmY+sKxYaqw5w==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1sFdMI-00000001ObR-0nSo;
+	Fri, 07 Jun 2024 19:26:34 +0200
+Message-ID: <c3ce5ca1cb434c2ff4b9ee3a1be9d81bf5ae01b2.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: mac80211: fix NULL dereference at band check in
+ starting tx ba session
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Zong-Zhe Yang <kevin_yang@realtek.com>, "linux-wireless@vger.kernel.org"
+	 <linux-wireless@vger.kernel.org>
+Date: Fri, 07 Jun 2024 19:26:33 +0200
+In-Reply-To: <639f8c2b59eb42beb56b28e53307886a@realtek.com>
+References: <20240523082200.15544-1-kevin_yang@realtek.com>
+	 <173a8af7e9b544c496f2aee2bb47fca99279873c.camel@sipsolutions.net>
+	 <639f8c2b59eb42beb56b28e53307886a@realtek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-Validate number of channels and interface combinations per radio.
-Assign each channel context to a radio.
+On Thu, 2024-05-30 at 13:49 +0000, Zong-Zhe Yang wrote:
+> Johannes Berg <johannes@sipsolutions.net> wrote:
+> >=20
+> > On Thu, 2024-05-23 at 16:22 +0800, kevin_yang@realtek.com wrote:
+> >=20
+> > [...]
+> >=20
+> > This checks that the *first* link the STA used isn't 6 GHz, but maybe i=
+t should be *any* link?
+> >=20
+> > But then again, we don't really need this check for an MLO STA since it=
+ will have HT supported
+> > unless it associated on 6 GHz. Maybe we should just not do the check th=
+is way, but check if it
+> > has HT or VHT or HE or something like that?
+> >=20
+>=20
+> I think there are two points here.
+>=20
+> 1. the way to avoid this NULL dereference
+> (Current patch just followed original logic and made it runnable on both =
+MLD and non-MLD.)
+>=20
+> According to comments, I will change to check ht_supported/vht_supported/=
+has_he/has_eht.
+> Then, it doesn't need to reference chanreq.oper.chan here. So, there won'=
+t be NULL dereference.
+>=20
+> 2. the check logic when MLD
+> (Current patch didn't consider this properly.)
+>=20
+> According to spec., BA agreement does once per TID and apply to all corre=
+sponding links.
+> So, I am thinking maybe I check the conditions on all valid_links when ML=
+D.
+> And, only check deflink when non-MLD.
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
- net/mac80211/chan.c | 52 +++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 47 insertions(+), 5 deletions(-)
+Well, spec also requires that you have EHT (on all links) to be able to
+do MLO in the first place, so you shouldn't be connected. IOW, checking
+one link should be sufficient? And that can even be deflink, because for
+a STA that's always used as the assoc link (unlike for vif)
 
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index ac49c2c71d2b..6cbf314d706f 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -696,14 +696,15 @@ static struct ieee80211_chanctx *
- ieee80211_new_chanctx(struct ieee80211_local *local,
- 		      const struct ieee80211_chan_req *chanreq,
- 		      enum ieee80211_chanctx_mode mode,
--		      bool assign_on_failure)
-+		      bool assign_on_failure,
-+		      int radio_idx)
- {
- 	struct ieee80211_chanctx *ctx;
- 	int err;
- 
- 	lockdep_assert_wiphy(local->hw.wiphy);
- 
--	ctx = ieee80211_alloc_chanctx(local, chanreq, mode, -1);
-+	ctx = ieee80211_alloc_chanctx(local, chanreq, mode, radio_idx);
- 	if (!ctx)
- 		return ERR_PTR(-ENOMEM);
- 
-@@ -1067,6 +1068,8 @@ ieee80211_replace_chanctx(struct ieee80211_local *local,
- 			  struct ieee80211_chanctx *curr_ctx)
- {
- 	struct ieee80211_chanctx *new_ctx, *ctx;
-+	struct wiphy *wiphy = local->hw.wiphy;
-+	const struct wiphy_radio *radio;
- 
- 	if (!curr_ctx || (curr_ctx->replace_state ==
- 			  IEEE80211_CHANCTX_WILL_BE_REPLACED) ||
-@@ -1096,6 +1099,12 @@ ieee80211_replace_chanctx(struct ieee80211_local *local,
- 			if (!list_empty(&ctx->reserved_links))
- 				continue;
- 
-+			if (ctx->conf.radio_idx >= 0) {
-+				radio = &wiphy->radio[ctx->conf.radio_idx];
-+				if (!cfg80211_radio_chandef_valid(radio, &chanreq->oper))
-+					continue;
-+			}
-+
- 			curr_ctx = ctx;
- 			break;
- 		}
-@@ -1125,6 +1134,34 @@ ieee80211_replace_chanctx(struct ieee80211_local *local,
- 	return new_ctx;
- }
- 
-+static bool
-+ieee80211_find_available_radio(struct ieee80211_local *local,
-+			       const struct ieee80211_chan_req *chanreq,
-+			       int *radio_idx)
-+{
-+	struct wiphy *wiphy = local->hw.wiphy;
-+	const struct wiphy_radio *radio;
-+	int i;
-+
-+	*radio_idx = -1;
-+	if (!wiphy->n_radio)
-+		return true;
-+
-+	for (i = 0; i < wiphy->n_radio; i++) {
-+		radio = &wiphy->radio[i];
-+		if (!cfg80211_radio_chandef_valid(radio, &chanreq->oper))
-+			continue;
-+
-+		if (!ieee80211_can_create_new_chanctx(local, i))
-+			continue;
-+
-+		*radio_idx = i;
-+		return true;
-+	}
-+
-+	return false;
-+}
-+
- int ieee80211_link_reserve_chanctx(struct ieee80211_link_data *link,
- 				   const struct ieee80211_chan_req *chanreq,
- 				   enum ieee80211_chanctx_mode mode,
-@@ -1133,6 +1170,7 @@ int ieee80211_link_reserve_chanctx(struct ieee80211_link_data *link,
- 	struct ieee80211_sub_if_data *sdata = link->sdata;
- 	struct ieee80211_local *local = sdata->local;
- 	struct ieee80211_chanctx *new_ctx, *curr_ctx;
-+	int radio_idx;
- 
- 	lockdep_assert_wiphy(local->hw.wiphy);
- 
-@@ -1142,9 +1180,10 @@ int ieee80211_link_reserve_chanctx(struct ieee80211_link_data *link,
- 
- 	new_ctx = ieee80211_find_reservation_chanctx(local, chanreq, mode);
- 	if (!new_ctx) {
--		if (ieee80211_can_create_new_chanctx(local, -1))
-+		if (ieee80211_can_create_new_chanctx(local, -1) &&
-+		    ieee80211_find_available_radio(local, chanreq, &radio_idx))
- 			new_ctx = ieee80211_new_chanctx(local, chanreq, mode,
--							false);
-+							false, radio_idx);
- 		else
- 			new_ctx = ieee80211_replace_chanctx(local, chanreq,
- 							    mode, curr_ctx);
-@@ -1755,6 +1794,7 @@ int _ieee80211_link_use_channel(struct ieee80211_link_data *link,
- 	struct ieee80211_chanctx *ctx;
- 	u8 radar_detect_width = 0;
- 	bool reserved = false;
-+	int radio_idx;
- 	int ret;
- 
- 	lockdep_assert_wiphy(local->hw.wiphy);
-@@ -1785,9 +1825,11 @@ int _ieee80211_link_use_channel(struct ieee80211_link_data *link,
- 	/* Note: context is now reserved */
- 	if (ctx)
- 		reserved = true;
-+	else if (!ieee80211_find_available_radio(local, chanreq, &radio_idx))
-+		ctx = ERR_PTR(-EBUSY);
- 	else
- 		ctx = ieee80211_new_chanctx(local, chanreq, mode,
--					    assign_on_failure);
-+					    assign_on_failure, radio_idx);
- 	if (IS_ERR(ctx)) {
- 		ret = PTR_ERR(ctx);
- 		goto out;
--- 
-git-series 0.9.1
+johannes
 
