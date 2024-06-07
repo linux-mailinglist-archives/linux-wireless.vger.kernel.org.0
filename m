@@ -1,63 +1,60 @@
-Return-Path: <linux-wireless+bounces-8703-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8711-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC16A9009EF
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 18:06:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 796F59009FB
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 18:07:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 501F72857BB
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 16:06:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08807286981
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 16:07:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDEB319B3CD;
-	Fri,  7 Jun 2024 16:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9958619D08F;
+	Fri,  7 Jun 2024 16:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="YeyzoXCH"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="nwfhEr9s"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 334DC199EBB;
-	Fri,  7 Jun 2024 16:05:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DBFA19A297
+	for <linux-wireless@vger.kernel.org>; Fri,  7 Jun 2024 16:05:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717776337; cv=none; b=t9MAEXNUR75P+PZap1YFDNkkKjGrl4oVpXoVzkP43gYg5gCVGRXy2tH9ouQ9H7mNrEroYHCvsWmXFNT0XzJi5MONNrjW63C/QMTS/bcXErABv8Ks6wjCWkVkKrXIgisoFzO7cwb78WLhjjZpReb4mff0ZwyjnEVnZqPdxccP/XQ=
+	t=1717776358; cv=none; b=rEU/Vsp/f1qN1UEVjv3rZQbxILH3wPh9XdToO/Tijmvgradz9rmjrPCTlM6uHOA/nerChSqT8FcQSQIdhOkPvLhynUdhf1J98QCxBZbMHSBXcj8OZnaqq8O3z7WEynLSN6cKPIdvEzp4h0cW/MBZhWUfdA2UBOPhiGUopw9OlhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717776337; c=relaxed/simple;
-	bh=z9L/VT5UsQCivJ6SxdEVOVB2wfbgOMAG2X9WckMrwEM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sQ7aiFRTc2sEfSTQL5Q9SKKSFnjifC9nSzkVcDCS3l4FTc06piueVTusPLOLniWhvrHxQG9kq5senp/i/QZd/4yDCGMYruhhzJhNRSPk4VovhooSUsoQ8eUnJtxPBdPlFnXXJp3jpvbgCKBDyeyJknP+68NW1U8c0ww14B4Pzug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=YeyzoXCH; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=HFqbvy+yDIcOAsvFP2JAPAHPKAhf7Z1A8lonQFVNw84=;
-	t=1717776336; x=1718985936; b=YeyzoXCHvwBq9JqcIH8YqjejXCDzHMmvGR+Uc23fbjKMMr4
-	wiZ8EM1oTna/rjFZT3pD2GaVpKS2L8e7Iu8aDAawGHTsu30X0tUGjpiAvuhZaVTNp+O32D87UHL6k
-	EAaHphw+69MkJ+U4QcX4iNadwOsXfMkgLYP8vDi7YUBV92+mq7tDReosumgJGrmYtwkO7I+N3HBLd
-	GaqBEmGl6f2lPvopT1F8BRl7+mx9ak6ah/og1iE3kmG8qYb/kv4daEYvvSpad3sQaprs3MVtHZvuc
-	an6pcSgGGrbZlK3c/Vo5zG5Opk7goNH0GQrEJj293wE3H6RQGQYwcagc+9AXRFFw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1sFc5t-00000001Iyu-11vF;
-	Fri, 07 Jun 2024 18:05:33 +0200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-kernel@vger.kernel.org
-Cc: linux-trace-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH v4 4/4] net: drop_monitor: use drop_reason_lookup()
-Date: Fri,  7 Jun 2024 18:04:26 +0200
-Message-ID: <20240607160527.23624-10-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240607160527.23624-6-johannes@sipsolutions.net>
-References: <20240607160527.23624-6-johannes@sipsolutions.net>
+	s=arc-20240116; t=1717776358; c=relaxed/simple;
+	bh=JzD/t95YbJcvN601o3J6jZei3N5ar5pOgAGAlWxVlyA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FBlrtNe14d+RV7S6NvBCVZ1mijaxDgz76/sGLoYX6Okj9VWxqOcQrxuQTpjsgAMPx38Kg6/iQ5Wr/yLqx1kHlYU/LJL3FS5a9++I15o7+5OaZGOgvk3SMl8CiOI/cEaugnFuw/zcvdMs9IJAbXdEeBYpFxt9FfPfFjCsoUM7NyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=nwfhEr9s; arc=none smtp.client-ip=46.4.11.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+	s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=P9bW8YE3ERqwkPgGvO1IAlC1dNoSvZrIQuSqO0M2FTA=; b=nwfhEr9skVuLCLufX+xnVd6cl8
+	tnBkUd5tSwIqSmtYy/d2uHRZodT+k0pFSfZeQOSGbI+h5dc5V0jIHsD+YMSHoVTcc7jBfT4oNLRpe
+	TdUvcyMiHwiut5mIoLbGjQCyrvS6q2ltpY4eJPjQhWyyDAznsdu0vzFC1cbUab6Gg0N0=;
+Received: from p4ff13226.dip0.t-ipconnect.de ([79.241.50.38] helo=localhost.localdomain)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+	(Exim 4.96)
+	(envelope-from <nbd@nbd.name>)
+	id 1sFc69-008xPc-20;
+	Fri, 07 Jun 2024 18:05:49 +0200
+From: Felix Fietkau <nbd@nbd.name>
+To: linux-wireless@vger.kernel.org
+Cc: johannes@sipsolutions.net,
+	quic_adisi@quicinc.com,
+	quic_periyasa@quicinc.com,
+	ath12k@lists.infradead.org
+Subject: [RFC v4 0/9] cfg80211/mac80211: support defining multiple radios per wiphy
+Date: Fri,  7 Jun 2024 18:05:39 +0200
+Message-ID: <cover.0af6292ae793f7b9927ab6583791b58daedc9104.1717776325.git-series.nbd@nbd.name>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -66,106 +63,78 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+The prerequisite for MLO support in cfg80211/mac80211 is that all the links
+participating in MLO must be from the same wiphy/ieee80211_hw. To meet this
+expectation, some drivers may need to group multiple discrete hardware each
+acting as a link in MLO under single wiphy.
 
-Now that we have drop_reason_lookup(), we can just use it for
-drop_monitor as well, rather than exporting the list itself.
+With this change, supported frequencies and interface combinations of each
+individual radio are reported to user space. This allows user space to figure
+out the limitations of what combination of channels can be used concurrently.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
-v3:
- - look up SKB_DROP_REASON_NOT_SPECIFIED if initial lookup
-   returns NULL, to preserve previous behaviour
----
- include/net/dropreason.h |  4 ----
- net/core/drop_monitor.c  | 20 +++++---------------
- net/core/skbuff.c        |  6 +++---
- 3 files changed, 8 insertions(+), 22 deletions(-)
+Each mac80211 channel context is assigned to a radio based on radio specific
+frequency ranges and interface combinations.
 
-diff --git a/include/net/dropreason.h b/include/net/dropreason.h
-index c157070b5303..0e2195ccf2cd 100644
---- a/include/net/dropreason.h
-+++ b/include/net/dropreason.h
-@@ -38,10 +38,6 @@ struct drop_reason_list {
- 	size_t n_reasons;
- };
- 
--/* Note: due to dynamic registrations, access must be under RCU */
--extern const struct drop_reason_list __rcu *
--drop_reasons_by_subsys[SKB_DROP_REASON_SUBSYS_NUM];
--
- #ifdef CONFIG_TRACEPOINTS
- const char *drop_reason_lookup(unsigned long long value);
- void drop_reason_show(struct seq_file *m);
-diff --git a/net/core/drop_monitor.c b/net/core/drop_monitor.c
-index 430ed18f8584..fddf6b68bf06 100644
---- a/net/core/drop_monitor.c
-+++ b/net/core/drop_monitor.c
-@@ -610,9 +610,8 @@ static int net_dm_packet_report_fill(struct sk_buff *msg, struct sk_buff *skb,
- 				     size_t payload_len)
- {
- 	struct net_dm_skb_cb *cb = NET_DM_SKB_CB(skb);
--	const struct drop_reason_list *list = NULL;
--	unsigned int subsys, subsys_reason;
- 	char buf[NET_DM_MAX_SYMBOL_LEN];
-+	const char *reason_str;
- 	struct nlattr *attr;
- 	void *hdr;
- 	int rc;
-@@ -630,19 +629,10 @@ static int net_dm_packet_report_fill(struct sk_buff *msg, struct sk_buff *skb,
- 		goto nla_put_failure;
- 
- 	rcu_read_lock();
--	subsys = u32_get_bits(cb->reason, SKB_DROP_REASON_SUBSYS_MASK);
--	if (subsys < SKB_DROP_REASON_SUBSYS_NUM)
--		list = rcu_dereference(drop_reasons_by_subsys[subsys]);
--	subsys_reason = cb->reason & ~SKB_DROP_REASON_SUBSYS_MASK;
--	if (!list ||
--	    subsys_reason >= list->n_reasons ||
--	    !list->reasons[subsys_reason] ||
--	    strlen(list->reasons[subsys_reason]) > NET_DM_MAX_REASON_LEN) {
--		list = rcu_dereference(drop_reasons_by_subsys[SKB_DROP_REASON_SUBSYS_CORE]);
--		subsys_reason = SKB_DROP_REASON_NOT_SPECIFIED;
--	}
--	if (nla_put_string(msg, NET_DM_ATTR_REASON,
--			   list->reasons[subsys_reason])) {
-+	reason_str = drop_reason_lookup(cb->reason);
-+	if (unlikely(!reason_str))
-+		reason_str = drop_reason_lookup(SKB_DROP_REASON_NOT_SPECIFIED);
-+	if (nla_put_string(msg, NET_DM_ATTR_REASON, reason_str)) {
- 		rcu_read_unlock();
- 		goto nla_put_failure;
- 	}
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index cd1ea6c3e0f8..bd4fb7410284 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -139,13 +139,11 @@ static const struct drop_reason_list drop_reasons_core = {
- 	.n_reasons = ARRAY_SIZE(drop_reasons),
- };
- 
--const struct drop_reason_list __rcu *
-+static const struct drop_reason_list __rcu *
- drop_reasons_by_subsys[SKB_DROP_REASON_SUBSYS_NUM] = {
- 	[SKB_DROP_REASON_SUBSYS_CORE] = RCU_INITIALIZER(&drop_reasons_core),
- };
--EXPORT_SYMBOL(drop_reasons_by_subsys);
- 
--#ifdef CONFIG_TRACEPOINTS
- const char *drop_reason_lookup(unsigned long long value)
- {
- 	unsigned long long subsys_id = value >> SKB_DROP_REASON_SUBSYS_SHIFT;
-@@ -162,7 +160,9 @@ const char *drop_reason_lookup(unsigned long long value)
- 		return NULL;
- 	return subsys->reasons[reason];
- }
-+EXPORT_SYMBOL(drop_reason_lookup);
- 
-+#ifdef CONFIG_TRACEPOINTS
- void drop_reason_show(struct seq_file *m)
- {
- 	u32 subsys_id;
+Even for non-MLO devices, this improves support for devices capable of
+running on multiple channels at the same time.
+
+This is loosely based on Karthikeyan Periyasamy's series
+"[PATCH 00/13] wifi: Add multi physical hardware iface combination support"
+with some differences:
+
+ - a struct wiphy_radio is defined, which holds the frequency ranges and
+   a full struct ieee80211_iface_combination array
+ - a channel context is explicitly assigned to a radio when created
+ - both global and per-radio interface combination limits are checked
+   and enforced on channel context assignment
+ - improve comments/docs and attributes
+ - add cfg80211 helper for checking radio freq range
+
+Changes since RFC v3:
+ - fix __ieee80211_get_radio_mask to return per-vif radio mask
+ - fix params->radio in ieee80211_check_combinations()
+ - fix indentation
+ - pass radio_idx in struct iface_combination_params
+ - improve get_radio_mask callback
+
+Changes since RFC v2:
+ - fix uninitialized variables
+ - fix multiple radios with DFS
+ - add support for per-radio beacon interval checking
+
+Changes since RFC:
+ - replace static per-radio number of channels limit with full ifcomb
+   checks
+ - remove band bitmask in favor of only using freq ranges
+
+Felix Fietkau (9):
+  wifi: nl80211: split helper function from nl80211_put_iface_combinations
+  wifi: cfg80211: add support for advertising multiple radios belonging to a wiphy
+  wifi: cfg80211: extend interface combination check for multi-radio
+  wifi: cfg80211: add helper for checking if a chandef is valid on a radio
+  wifi: mac80211: add support for DFS with multiple radios
+  wifi: mac80211: add radio index to ieee80211_chanctx_conf
+  wifi: mac80211: extend ifcomb check functions for multi-radio
+  wifi: mac80211: move code in ieee80211_link_reserve_chanctx to a helper
+  wifi: mac80211: add wiphy radio assignment and validation
+
+ include/net/cfg80211.h       |  51 +++++++++-
+ include/net/mac80211.h       |   2 +-
+ include/uapi/linux/nl80211.h |  51 +++++++++-
+ net/mac80211/cfg.c           |   7 +-
+ net/mac80211/chan.c          | 210 ++++++++++++++++++++++--------------
+ net/mac80211/ibss.c          |   2 +-
+ net/mac80211/ieee80211_i.h   |   5 +-
+ net/mac80211/iface.c         |   2 +-
+ net/mac80211/main.c          |  32 +++--
+ net/mac80211/util.c          | 127 +++++++++++++++-------
+ net/wireless/nl80211.c       | 190 +++++++++++++++++++++++----------
+ net/wireless/rdev-ops.h      |  17 +++-
+ net/wireless/trace.h         |   5 +-
+ net/wireless/util.c          |  68 ++++++++++--
+ 14 files changed, 579 insertions(+), 190 deletions(-)
+
+base-commit: 5bcd9a0a59953b5ff55ac226f903397319bf7f40
 -- 
-2.45.2
-
+git-series 0.9.1
 
