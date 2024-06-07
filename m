@@ -1,174 +1,227 @@
-Return-Path: <linux-wireless+bounces-8690-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8691-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 429FB90052B
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 15:39:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4714C900581
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 15:49:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0BB41F249B7
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 13:39:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A7651C20B3C
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 13:49:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C2EF195978;
-	Fri,  7 Jun 2024 13:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFFDD192B89;
+	Fri,  7 Jun 2024 13:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TyvSM8Tk"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="AgdrmL/A"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A345194A70;
-	Fri,  7 Jun 2024 13:38:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1B1194AD6
+	for <linux-wireless@vger.kernel.org>; Fri,  7 Jun 2024 13:49:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717767482; cv=none; b=YH6kFyBvWKr4z5V6iVZTjeBt8JMBV8Xmb/hWZgwhTCC/2OzQ5lc0HZ1U5CUaMSRn3CDOHWq2stYozON5rfUdx1KivBji0+k/WCGd52quWMe1HVZzIdiGYyoO6MbyF2UMDwNPs1S10EOgoy8qEntpWaxQzTAVTK79qp2q+ftB0RY=
+	t=1717768161; cv=none; b=dw83Ousf4OzgiPUfyVxCEpVaAR3zxP2fuCHMsfimGsJjJYcMdKSHiUy41F2RAkp82Ro2gW8EGRXmJF2+MG5ksVHaZuswwQIWZabkpdnVSaC/OYVkfi2Odh+F50+hDX43b+P18rftEAwIMOt1eLVETSMsABxBSZdPmll78fpyL/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717767482; c=relaxed/simple;
-	bh=3O1OghiGGIGnmwunwGyD+S8AwdzNTowvLS3lDkW+bfM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wobox4RWxxq1n4t2yksEFUgPYcpgVV4HZbHfM8K4mx2+tAuGVHzvGZBuUPNkYBuvtI/4DCL6bVEOnnCQNWwgc/7/op3n1xf9kU1dcONzW87/ZBY9jxwysGcMYfpVvtBthHAXyBxIT8o6/9VxpDVPJvXCNOfKPcYn7XMCcweXklQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TyvSM8Tk; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717767481; x=1749303481;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=3O1OghiGGIGnmwunwGyD+S8AwdzNTowvLS3lDkW+bfM=;
-  b=TyvSM8TkvuxtB5fQndhPXvMdkmDkjx1AMYV8Q9/qX8gu/QijQYwtpLVq
-   oVp46lsF0FIWxOfPTBAeyrM9GbQrEP3iSHApgvKNC/N9ggNljgxY412qO
-   smvftrEo+UeeWIk2gb4EBxRqpvhenKqL9gXmtBxrJpQeKsUcJYuR3YT1D
-   7gmIARv30GRS8z3QOnlOwDS+COw8Jnqp0pFotnkN5L8YbWQodOyjeuxyH
-   iIHo/zlE5ARAlI8CTx4WLoxqwhRBrvIecjCqyLPg6fZc5I84h5HgPzj0S
-   Yjm8LJZrvAA7EooAgti9nXNbta68XtmLUUr/ecxQQ5aj9kdVH3gHj3dmR
-   Q==;
-X-CSE-ConnectionGUID: alBrKjLMRQed6OHxMIkkNQ==
-X-CSE-MsgGUID: kpVm4WaQQRWKOS5qmOP5Aw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="39888372"
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; 
-   d="scan'208";a="39888372"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2024 06:38:00 -0700
-X-CSE-ConnectionGUID: 8dBgWMkUQS21WbMT7fgfOQ==
-X-CSE-MsgGUID: odaHmeo2Q0CXFVfJJ0VRHg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; 
-   d="scan'208";a="69494003"
-Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
-  by fmviesa001.fm.intel.com with ESMTP; 07 Jun 2024 06:37:58 -0700
-Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sFZn2-0004qe-0P;
-	Fri, 07 Jun 2024 13:37:56 +0000
-Date: Fri, 7 Jun 2024 21:37:54 +0800
-From: kernel test robot <lkp@intel.com>
-To: Johannes Berg <johannes@sipsolutions.net>, linux-kernel@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-trace-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: Re: [PATCH v3 1/4] tracing: add __print_sym() to replace
- __print_symbolic()
-Message-ID: <202406072141.OLmqbch3-lkp@intel.com>
-References: <20240606203255.49433-7-johannes@sipsolutions.net>
+	s=arc-20240116; t=1717768161; c=relaxed/simple;
+	bh=vctVhuXr55CzSVonemQhTTFl6CBvgexYrotbMyFRnXM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=U6MqrO/g3JKVkZu3FqURofLL6FMoxna+cZg8twuozyZj3Mc8/lXJcTHwpkQTjPOxIMyZtCaJSTL3h2qE7Nr8WhMTnfS+RZy/Y+9oB2VXCpYwjK6hlEjDIcuXv6X5SFzGxInOPwnGqLZlczYASfqCyHRpc99cGz7eX0qxEwVALGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=AgdrmL/A; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 457BhMPW003956;
+	Fri, 7 Jun 2024 13:49:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	w5vzucxF6WdEu6M6aGj9WlMkNG162ITtnAQLJ2fiHtI=; b=AgdrmL/AE469So6S
+	LCHtllHlAmZ0xwm0AD3YhgFGa08/Ma8925SvI+0evH6AhPIbkraGLXy3oCMmPPGW
+	awO6reJpwcpI5Ih2GFVjj6YKhu0vHm96/l3LuYLMeFwn6U7AYe74BteEe9a1KhBc
+	0tTIpr/kQNEYhgP8VjhxhouKj+luy2qhlXf0eOsaWx3YiH0hXC5tV80jEPaJYMVf
+	KgR9+KotlnusOZ9FJB+BlYi6yS9OEvBc+hb54tZtscFTHARATReJTeAHCzJ5g/CC
+	6fsNBFjN3HMlW3HVWC7PQ9MSPfofuIDsgosYCQx48inxEMSEjfZzFFRP9zY77Ial
+	dVyYwQ==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yjxxavqft-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Jun 2024 13:49:15 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 457DnEW9016043
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 7 Jun 2024 13:49:14 GMT
+Received: from [10.216.36.52] (10.80.80.8) by nalasex01c.na.qualcomm.com
+ (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 7 Jun 2024
+ 06:49:12 -0700
+Message-ID: <dd2488bb-43f9-d546-7617-2a54ca3d1a1d@quicinc.com>
+Date: Fri, 7 Jun 2024 19:19:09 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240606203255.49433-7-johannes@sipsolutions.net>
-
-Hi Johannes,
-
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on mcgrof/modules-next]
-[also build test ERROR on arnd-asm-generic/master tip/timers/core net/main net-next/main linus/master horms-ipvs/master v6.10-rc2 next-20240607]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Johannes-Berg/tracing-add-__print_sym-to-replace-__print_symbolic/20240607-043503
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/linux.git modules-next
-patch link:    https://lore.kernel.org/r/20240606203255.49433-7-johannes%40sipsolutions.net
-patch subject: [PATCH v3 1/4] tracing: add __print_sym() to replace __print_symbolic()
-config: arm64-randconfig-002-20240607 (https://download.01.org/0day-ci/archive/20240607/202406072141.OLmqbch3-lkp@intel.com/config)
-compiler: clang version 19.0.0git (https://github.com/llvm/llvm-project d7d2d4f53fc79b4b58e8d8d08151b577c3699d4a)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240607/202406072141.OLmqbch3-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202406072141.OLmqbch3-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from kernel/trace/trace_events.c:15:
-   In file included from include/linux/security.h:33:
-   In file included from include/linux/mm.h:2210:
-   include/linux/vmstat.h:522:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-     522 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-         |                               ~~~~~~~~~~~ ^ ~~~
->> kernel/trace/trace_events.c:1586:17: error: incomplete definition of type 'struct module'
-    1586 |                 sym_defs = mod->trace_sym_defs;
-         |                            ~~~^
-   include/linux/printk.h:350:8: note: forward declaration of 'struct module'
-     350 | struct module;
-         |        ^
-   kernel/trace/trace_events.c:1587:19: error: incomplete definition of type 'struct module'
-    1587 |                 n_sym_defs = mod->num_trace_sym_defs;
-         |                              ~~~^
-   include/linux/printk.h:350:8: note: forward declaration of 'struct module'
-     350 | struct module;
-         |        ^
-   1 warning and 2 errors generated.
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.0
+Subject: Re: [PATCH v8 7/8] wifi: ath12k: refactor core start based on
+ hardware group
+Content-Language: en-US
+To: Kalle Valo <kvalo@kernel.org>
+CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+References: <20240531180411.1149605-1-quic_hprem@quicinc.com>
+ <20240531180411.1149605-8-quic_hprem@quicinc.com> <87plsuql2y.fsf@kernel.org>
+From: Harshitha Prem <quic_hprem@quicinc.com>
+In-Reply-To: <87plsuql2y.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: vjGuiJLIxhgI1S_jgsB9nrsn7ZuLdfhp
+X-Proofpoint-GUID: vjGuiJLIxhgI1S_jgsB9nrsn7ZuLdfhp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-07_08,2024-06-06_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=983 adultscore=0
+ priorityscore=1501 spamscore=0 malwarescore=0 mlxscore=0 bulkscore=0
+ phishscore=0 suspectscore=0 lowpriorityscore=0 clxscore=1015
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2406070101
 
 
-vim +1586 kernel/trace/trace_events.c
 
-  1575	
-  1576	/* note: @name is not NUL-terminated */
-  1577	static void show_sym_list(struct seq_file *m, struct trace_event_call *call,
-  1578				  const char *name, unsigned int name_len)
-  1579	{
-  1580		struct trace_sym_def **sym_defs;
-  1581		unsigned int n_sym_defs, i;
-  1582	
-  1583		if (call->module) {
-  1584			struct module *mod = call->module;
-  1585	
-> 1586			sym_defs = mod->trace_sym_defs;
-  1587			n_sym_defs = mod->num_trace_sym_defs;
-  1588		} else {
-  1589			sym_defs = __start_ftrace_sym_defs;
-  1590			n_sym_defs = __stop_ftrace_sym_defs - __start_ftrace_sym_defs;
-  1591		}
-  1592	
-  1593		for (i = 0; i < n_sym_defs; i++) {
-  1594			unsigned int sym_len;
-  1595	
-  1596			if (!sym_defs[i])
-  1597				continue;
-  1598			if (sym_defs[i]->system != call->class->system)
-  1599				continue;
-  1600			sym_len = strlen(sym_defs[i]->symbol_id);
-  1601			if (name_len != sym_len)
-  1602				continue;
-  1603			if (strncmp(sym_defs[i]->symbol_id, name, sym_len))
-  1604				continue;
-  1605			if (sym_defs[i]->show)
-  1606				sym_defs[i]->show(m);
-  1607			break;
-  1608		}
-  1609	}
-  1610	
+On 6/6/2024 6:34 PM, Kalle Valo wrote:
+> Harshitha Prem <quic_hprem@quicinc.com> writes:
+> 
+>> From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+>>
+>> Currently, mac allocate/register and core_pdev_create are initiated
+>> immediately when QMI firmware ready event is received for a particular
+>> device.
+>>
+>> With hardware device group abstraction, QMI firmware ready event can be
+>> received simultaneously for different devices in the group and so, it
+>> should not be registered immediately rather it has to be deferred until
+>> all devices in the group has received QMI firmware ready.
+>>
+>> To handle this, refactor the code of core start to move the following
+>> apis inside a wrapper ath12k_core_hw_group_start()
+>>          * ath12k_mac_allocate()
+>>          * ath12k_core_pdev_create()
+>>          * ath12k_core_rfkill_config()
+>>          * ath12k_mac_register()
+>>          * ath12k_hif_irq_enable()
+>>
+>> similarly, move the corresponding destroy/unregister/disable apis
+>> inside wrapper ath12k_core_hw_group_stop()
+>>
+>> Add the device flags to indicate pdev created and IRQ enabled which would
+>> be helpful for device clean up during failure cases.
+>>
+>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+>> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+>>
+>> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+>> Co-developed-by: Harshitha Prem <quic_hprem@quicinc.com>
+>> Signed-off-by: Harshitha Prem <quic_hprem@quicinc.com>
+>> ---
+>>   drivers/net/wireless/ath/ath12k/core.c | 210 +++++++++++++++++++------
+>>   drivers/net/wireless/ath/ath12k/core.h |  32 ++++
+>>   2 files changed, 191 insertions(+), 51 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
+>> index ebe31cbb6435..90c70dbfc50a 100644
+>> --- a/drivers/net/wireless/ath/ath12k/core.c
+>> +++ b/drivers/net/wireless/ath/ath12k/core.c
+>> @@ -563,6 +563,9 @@ u32 ath12k_core_get_max_num_tids(struct ath12k_base *ab)
+>>   
+>>   static void ath12k_core_stop(struct ath12k_base *ab)
+>>   {
+>> +	clear_bit(ATH12K_FLAG_CORE_STARTED, &ab->dev_flags);
+>> +	ath12k_dec_num_core_started(ab);
+>> +
+>>   	if (!test_bit(ATH12K_FLAG_CRASH_FLUSH, &ab->dev_flags))
+>>   		ath12k_qmi_firmware_stop(ab);
+>>   
+>> @@ -689,11 +692,15 @@ static int ath12k_core_pdev_create(struct ath12k_base *ab)
+>>   		return ret;
+>>   	}
+>>   
+>> +	set_bit(ATH12K_FLAG_PDEV_CREATED, &ab->dev_flags);
+>> +
+>>   	return 0;
+>>   }
+>>   
+>>   static void ath12k_core_pdev_destroy(struct ath12k_base *ab)
+>>   {
+>> +	clear_bit(ATH12K_FLAG_PDEV_CREATED, &ab->dev_flags);
+>> +
+>>   	ath12k_dp_pdev_free(ab);
+>>   }
+>>   
+>> @@ -702,6 +709,8 @@ static int ath12k_core_start(struct ath12k_base *ab,
+>>   {
+>>   	int ret;
+>>   
+>> +	lockdep_assert_held(&ab->core_lock);
+>> +
+>>   	ret = ath12k_wmi_attach(ab);
+>>   	if (ret) {
+>>   		ath12k_err(ab, "failed to attach wmi: %d\n", ret);
+>> @@ -795,6 +804,12 @@ static int ath12k_core_start(struct ath12k_base *ab,
+>>   		/* ACPI is optional so continue in case of an error */
+>>   		ath12k_dbg(ab, ATH12K_DBG_BOOT, "acpi failed: %d\n", ret);
+>>   
+>> +	if (!test_bit(ATH12K_FLAG_CORE_STARTED, &ab->dev_flags)) {
+>> +		/* Indicate the core start in the appropriate group */
+>> +		ath12k_inc_num_core_started(ab);
+>> +		set_bit(ATH12K_FLAG_CORE_STARTED, &ab->dev_flags);
+>> +	}
+>> +
+>>   	return 0;
+>>   
+>>   err_reo_cleanup:
+>> @@ -806,6 +821,108 @@ static int ath12k_core_start(struct ath12k_base *ab,
+>>   	return ret;
+>>   }
+>>   
+>> +static void ath12k_core_device_cleanup(struct ath12k_base *ab)
+>> +{
+>> +	mutex_lock(&ab->core_lock);
+>> +
+>> +	if (test_and_clear_bit(ATH12K_FLAG_CORE_HIF_IRQ_ENABLED, &ab->dev_flags))
+>> +		ath12k_hif_irq_disable(ab);
+>> +
+>> +	if (test_bit(ATH12K_FLAG_PDEV_CREATED, &ab->dev_flags))
+>> +		ath12k_core_pdev_destroy(ab);
+>> +
+>> +	if (test_bit(ATH12K_FLAG_REGISTERED, &ab->dev_flags)) {
+>> +		ath12k_mac_unregister(ab);
+>> +		ath12k_mac_destroy(ab);
+>> +	}
+>> +
+>> +	mutex_unlock(&ab->core_lock);
+>> +}
+> 
+> This patch is just abusing flags and because of that we have spaghetti
+> code. I have been disliking use of enum ath12k_dev_flags before but this
+> is just looks too much. I am wondering do we need to cleanup the ath12k
+> architecture first, reduce the usage of flags and then revisit this
+> patchset?
+> 
+yeah., more dev flags :( but flags were needed for the race conditions 
+when multiple devices where involved in a group, some devices would have 
+completed till pdev create some might not. Some crashes were seen 
+because hif_irq_disable was called for a device in a group but that 
+device was not even at the stage of core register. Will check the 
+possibility to  reduce the flag usage but it seemed necessary for 
+multiple device group clean up.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks,
+Harshitha
 
