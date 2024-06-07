@@ -1,135 +1,142 @@
-Return-Path: <linux-wireless+bounces-8680-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8681-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09FA690006A
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 12:12:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBB39900092
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 12:21:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A75D7288256
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 10:12:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF8FE1C219A2
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 10:21:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB3681CA85;
-	Fri,  7 Jun 2024 10:12:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="QEDDetRT"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB8015B14A;
+	Fri,  7 Jun 2024 10:21:02 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B5C2B2CF
-	for <linux-wireless@vger.kernel.org>; Fri,  7 Jun 2024 10:12:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE802156F5A;
+	Fri,  7 Jun 2024 10:21:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717755139; cv=none; b=Gu/KK3Vavxe3h+e8JXPRkgX8zZQTdm3FZFeyWBtWlkMZsWoFdqAajv3nspPOBMlCshenjwVpKif3uSfmaJ3faNyDCpfjLT/9st8OFy1RkgSKwTo7GCd5R9WK4d2v+aAek51y4AKE6TX3LPSEN+nZ24p4QVrmwFItF3uj18C1vLc=
+	t=1717755662; cv=none; b=ojytE89jeLCSJ2zd/fDISk2RRySW2lAO0Iznwy7JTe4dfBsb/AIDRzwhZ7mD1Yrq+xu1VOR58dBUfTZS6Hu7ljswcl3uigytP1ZXLOjl1LuObDg7n6mC4AUEIQqv9SwiMcGrvDNffF/dwBdGNYwDilHqq/6ad9+ww1sIT2cpQ7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717755139; c=relaxed/simple;
-	bh=gA7Yvz4W2CU+o6LkwH/meh/GPnD59forO1AGmVpA3/I=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=e0yJEbEWdpFLdwqcB1SBIekH2LsSymCfEfKTr8V09EIOxqWWIEsIkCHjA3zNY8jrcyBr6/UlfLgGVod9+yYtdKvUZejpsg1q3D0NMQZs6tjo6lxH6P85oq6I9LmqAyFFFiYO79feOHPqPHInv3/oazojH2EN5tphblINUb0phqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=QEDDetRT; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=A06AZBW0nm0OZzaXM0gGaBoJK04KsApDfsDkp6veoHo=;
-	t=1717755137; x=1718964737; b=QEDDetRTuqkO4Dc2lxygSEX2C5wUApw/P9EB2OpsMOJsws6
-	IitS1mowWDojdGk8JvtPCzcFsD/wxZBV6UxrFrnlEF972r2ZMTngC1c3FKku6GtyUcCrnmoi5s7TQ
-	ejwfmal4bHLw8tpWkVLLIu0Ry1GSXrsvWKD5IqEqoZQl3zJ03e6EepsYJYoiXX3FUwSXt+TZy5bgc
-	GwRSRLy9R9zQRZB533eLWUv+HD/E1r64ARm/bjJ1QTBXVl2Kp/JHiwmo3xmJEbRA35+NljOQjNbwh
-	H5bRdxASE/tz68Rr+73wY6CFNV1xZwC/LqYRe2LRXfUtxXKsIo3q8VbkZwzoaKAQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1sFWZy-00000000v1a-1uSu;
-	Fri, 07 Jun 2024 12:12:14 +0200
-Message-ID: <8cac5465a87e2829d4c617995a19d3f4deba2ed8.camel@sipsolutions.net>
-Subject: Re: [RFC v3 8/8] wifi: mac80211: add wiphy radio assignment and
- validation
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
-Cc: quic_adisi@quicinc.com, quic_periyasa@quicinc.com, 
-	ath12k@lists.infradead.org
-Date: Fri, 07 Jun 2024 12:12:13 +0200
-In-Reply-To: <c5abf1ae-bdda-42b2-95c0-9b1c39659bbd@nbd.name>
-References: 
-	<cover.386a66ec6a89750d4890f63f0d28582a52b838b5.1717696995.git-series.nbd@nbd.name>
-	 <9b331a61b8d53284b044bc594cf9952c60164e5f.1717696995.git-series.nbd@nbd.name>
-	 <a1cff51f789c21b2b307c58ee4d743a62874cec6.camel@sipsolutions.net>
-	 <c5abf1ae-bdda-42b2-95c0-9b1c39659bbd@nbd.name>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
+	s=arc-20240116; t=1717755662; c=relaxed/simple;
+	bh=nd+4BToiRJXLGGA3mTGlxCpZ4MPw9XkWR9N7avm/dGs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=evnW25N8fOvFbXhs+WUCAunc2eemQfQZ2EJhXl+I8M15PZaBq0s6IYArIE0mICGJ8xBH1TZJD0G13BFRMsnqgzjMDeqO9qOlWlljKXQapjB8X5Is+kgO3p1f4BBZ91xWC1GXVyPP70ymqCegvG4c+VqXAQWVLobNvMW9q3XzPRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a6e349c0f2bso41964866b.2;
+        Fri, 07 Jun 2024 03:21:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717755659; x=1718360459;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3wleu//OAE2cyfcBt+2g23v6CQm8bhtCW5SGTOJfzMc=;
+        b=sw0Oxrroaq2bA4fbpgrPmgkbPMuAOAKXKyXx8PNktZUlu3VUx8wdYlogreO+Dw5hdQ
+         CEy2gSsMCserFOBvI2mzpIxAkZT0ges901m7nrc8hU4wTCFVB1HTQ58gU/tJzNPDLQ2r
+         hMTWVE3FHupWkL1r/K01pJ1uAYpktXEaQJG+iF5FWzke2gFqw+A9FALF28K9arQtKRgj
+         nC4dq1w4b8EFNi+ft0mq38gu9wju2AUYYpxabewAQ9U9Q29lsolJePi/Y0XnTFgafGMC
+         m4B0AR7cDiwvsyTZBJN1f7HHCVrjZZE8I/GW/DIycejeb9bSE+43mx++jF5V6f5Nr7Lm
+         2Tow==
+X-Forwarded-Encrypted: i=1; AJvYcCVuPGD+TcfWfFgaBZ4VKu2VOU/c8AJIpE3LUJcT7m+PR+yLN2sIL5bq/tbxyXbj7q1AVWJ9xGP5e7gITeTUM7cexvhPhuKn8dFrfyF+lkJsjuU8ZvBOxDAoddrxSPdmMx9NZRZwEf8sshumVWeF0czX4r2oLxrOfl6fF0B0KQb0wEZh0vk=
+X-Gm-Message-State: AOJu0YxGOGI3JvJxfiBSc825ZOrWpHzlnUXSnN1E8NdB2ZPQ/w89XQiy
+	qLsALdMTVbg5dmYv9Eo7JfTeD+63/uo8OsGA3KR/htns9WYk12o7
+X-Google-Smtp-Source: AGHT+IEyyLJRYOtiSgR04GeTyfW24MKvLfnpXDDvS3JofL34QAj8qDmKfpKJ/W6nPTYpqmlU81mH7w==
+X-Received: by 2002:a17:906:11c8:b0:a6c:704b:cff1 with SMTP id a640c23a62f3a-a6cd76a9344mr136254766b.41.1717755657977;
+        Fri, 07 Jun 2024 03:20:57 -0700 (PDT)
+Received: from localhost (fwdproxy-lla-008.fbsv.net. [2a03:2880:30ff:8::face:b00c])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6c80581a7esm226683666b.36.2024.06.07.03.20.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Jun 2024 03:20:57 -0700 (PDT)
+From: Breno Leitao <leitao@debian.org>
+To: kvalo@kernel.org,
+	linux-wireless@vger.kernel.org,
+	Johannes Berg <johannes@sipsolutions.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: horms@kernel.org,
+	sbhatta@marvell.com,
+	netdev@vger.kernel.org (open list:NETWORKING [GENERAL]),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH wifi-next 1/2] wifi: mac80211: Move stats allocation to core
+Date: Fri,  7 Jun 2024 03:20:43 -0700
+Message-ID: <20240607102045.235071-1-leitao@debian.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 
-On Fri, 2024-06-07 at 11:53 +0200, Felix Fietkau wrote:
+With commit 34d21de99cea9 ("net: Move {l,t,d}stats allocation to core and
+convert veth & vrf"), stats allocation could be done on net core instead
+of this driver.
 
-> > struct wiphy_radio *wiphy_get_radio(struct wiphy *wiphy, ... *chandef);
->=20
-> I didn't add such a helper, in case we get hardware where multiple=20
-> radios support the same band. That's why ieee80211_find_available_radio=
-=20
-> loops over all radios until it finds one that matches both the freq=20
-> range and the ifcomb constraints.
+With this new approach, the driver doesn't have to bother with error
+handling (allocation failure checking, making sure free happens in the
+right spot, etc). This is core responsibility now.
 
-Ah, fair.
+Move mac80211 driver to leverage the core allocation.
 
-Thinking more about the "whole chandef" thing, I think I want to have a
-check in cfg80211 somewhere that ensures you don't split up ranges that
-could be used for a wider channel?
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ net/mac80211/iface.c | 13 +------------
+ 1 file changed, 1 insertion(+), 12 deletions(-)
 
-Say (for a stupid example) you have a device that (only) supports
-channels 36-40:
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index dc42902e2693..605305cb3ff2 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -1458,11 +1458,6 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
+ 	return res;
+ }
+ 
+-static void ieee80211_if_free(struct net_device *dev)
+-{
+-	free_percpu(dev->tstats);
+-}
+-
+ static void ieee80211_if_setup(struct net_device *dev)
+ {
+ 	ether_setup(dev);
+@@ -1470,7 +1465,6 @@ static void ieee80211_if_setup(struct net_device *dev)
+ 	dev->priv_flags |= IFF_NO_QUEUE;
+ 	dev->netdev_ops = &ieee80211_dataif_ops;
+ 	dev->needs_free_netdev = true;
+-	dev->priv_destructor = ieee80211_if_free;
+ }
+ 
+ static void ieee80211_iface_process_skb(struct ieee80211_local *local,
+@@ -2101,11 +2095,7 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
+ 
+ 		dev_net_set(ndev, wiphy_net(local->hw.wiphy));
+ 
+-		ndev->tstats = netdev_alloc_pcpu_stats(struct pcpu_sw_netstats);
+-		if (!ndev->tstats) {
+-			free_netdev(ndev);
+-			return -ENOMEM;
+-		}
++		ndev->pcpu_stat_type = NETDEV_PCPU_STAT_TSTATS;
+ 
+ 		ndev->needed_headroom = local->tx_headroom +
+ 					4*6 /* four MAC addresses */
+@@ -2118,7 +2108,6 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
+ 
+ 		ret = dev_alloc_name(ndev, ndev->name);
+ 		if (ret < 0) {
+-			ieee80211_if_free(ndev);
+ 			free_netdev(ndev);
+ 			return ret;
+ 		}
+-- 
+2.43.0
 
- * 5180
- * 5200
-
-but now you say it has two radios:
-
- * radio 1 ranges: 5170-5190
- * radio 2 ranges: 5190-5210
-
-Now you can't use 40 MHz... but nothing will actually really prevent it.
-
-Obviously this is a totally useless case, so I'd argue we should just
-check during wiphy registration that you don't split the channel list in
-this way with multiple radios?
-
-Even on the potential Qualcomm 5 GHz low/mid/high split radios you'd
-have gaps between the channels (e.g. no channel 80, no channel 148), so
-it feels like you should always be able to split it in a way that the
-radio range boundaries don't land between two adjacent channels in the
-channel array.
-
-Not sure how to implement such a check best, probably easiest to find
-all non-adjacent channels first:
-
-=20
- - go over bands
-   - ensure channels are sorted by increasing frequency
-     (not sure we do that today? but every driver probably does)
-   - find adjacent channels:
-     - while more channels:
-       - start_freq =3D current channel's freq - 10
-       - end_freq =3D current channel's freq + 10
-       - while current channel's freq =3D=3D end_freq - 10:
-         - go to next channel
-       - check all radio's ranges cover this full or not at all
-         (neither start nor end of a range falls into the calculated
-          [start_freq, end_freq) interval)
-
-or something like that?
-
-(Also some docs on this I guess!)
-
-johannes
 
