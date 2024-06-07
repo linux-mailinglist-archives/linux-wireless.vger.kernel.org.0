@@ -1,103 +1,151 @@
-Return-Path: <linux-wireless+bounces-8674-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8675-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 985368FFFC7
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 11:42:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A98178FFFCB
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 11:44:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2080DB230EF
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 09:42:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06D38280ED0
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 09:44:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF6415AACA;
-	Fri,  7 Jun 2024 09:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D57615B148;
+	Fri,  7 Jun 2024 09:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eTtxPuYS"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="lve8Q8qb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E975C823B8;
-	Fri,  7 Jun 2024 09:42:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB45313790B
+	for <linux-wireless@vger.kernel.org>; Fri,  7 Jun 2024 09:44:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717753352; cv=none; b=oWapHTdEEEg4493s36/VE2yB8WiYLVKg5snBXPQ1W2r2wDvtCVkywOS+AS33bM6ZbO+WS7XQC0X8NMlmVz9OXXDdI2CP0rLwlR2BCDgaqxezIrA24lkJUmRq2GMrCSEL0Fs00k4PcYDQgeGxDTPCZuWK3JDUT4zmiaapiFm0UqI=
+	t=1717753454; cv=none; b=eMwbm2A7opF/xQ1goeyS+RWSMczRZ9ffKJJJYd40WvYgkFjXyinDPP+cn8rNNCQyVY4xeguhvHf3IBq6N6ieRiNErc93w1PEmE4m5/DrL28lS1vIj9VqRI1TJuhRVeIbM0GCQd7RB+9ereiR3L54zArlVg7MsYbir3NStBi4FQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717753352; c=relaxed/simple;
-	bh=rzOTK7iTzJL4x7eQJVFwNhkGCeHEwZpsX4KoQt/lygM=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=rehSIkVnK0yqZQ1ENRdD7e8eBhqQmu6tzQasAEn0tRjSt4PrJr+xO/wQNtXvV1yHjZEqY5RKczo4VGFyUhrymcSw7LVZZF6cd7qGGWOjJASru8iokDLwg/toX+dwWn3iim8I3/DRRUHiwzXu258Fw8/CAdMoC96/z1u6Itp1DJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eTtxPuYS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4B90C2BBFC;
-	Fri,  7 Jun 2024 09:42:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717753350;
-	bh=rzOTK7iTzJL4x7eQJVFwNhkGCeHEwZpsX4KoQt/lygM=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=eTtxPuYSubQIllceNgJdQ6PcGD4v61ot/XfnTW017iHKhAjVe5PjFLLDoJume3mGb
-	 2WelaFx5o6w5yBf8Yi/MGRMlci2shoTltOf8xZfL9TIavL/NtXU39FdXhl7yWFhrob
-	 +craVAwNJ4f4L6Z+eoV1EMUWUSN+i/D/1sb6YrcMK2MNHIi3cG2brTYsnA/Iw3Mj4f
-	 FxDkkkEl2QZb9v5Wwswh5gSNVID43Mea3q94TMDnjJc9JjYo6+PuhFO7OGv61leYCA
-	 jiu43Cjxhu5tNNt0D7ySkUOhkZBLvKK2bA2lLnwISv4wenwWyh6qR0Fh9KHhIpJ4Ce
-	 EjAo20lA0zloQ==
-From: Kalle Valo <kvalo@kernel.org>
-To: netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Subject: Re: pull-request: wireless-next-2024-06-07
-References: <20240607093517.41394C2BBFC@smtp.kernel.org>
-Date: Fri, 07 Jun 2024 12:42:27 +0300
-In-Reply-To: <20240607093517.41394C2BBFC@smtp.kernel.org> (Kalle Valo's
-	message of "Fri, 7 Jun 2024 09:35:17 +0000 (UTC)")
-Message-ID: <87wmn1ks1o.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1717753454; c=relaxed/simple;
+	bh=KHqR4Rlz35mAzkLFXXQk1FaNZcIMC6pwUUq9kYrvFpA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=l6tQhF7zlfBoMLdcX+ywvdbg9XqQtR4MK7Hl+qERzdFxIAxrB+X+cBZdNbQn6ZQPVktZNjQ55je98H3PTCxDBjpxiVmiuWcGl+8nf37Erto+qDqEAl4rc1INvwg/iXo9gdrZncB7ycVHpUGSCtiHyFXkhSPad+5BbwaG2zg2CoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=lve8Q8qb; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=JcyM4J3i8eT5X37rRw9HSt3/1V0+wkACsp31JSdtjMI=;
+	t=1717753448; x=1718963048; b=lve8Q8qbrX8S/KgMQLX+9OUkD6TU6Z62e/VNLYen6ZqMHch
+	4Qib3iotYzX4th1i7fh1bIE4T2IC7lpBZ7tpS5eWXXYrAvgIq02RwiYFNIdfgOM1hPzgfZidbUkIT
+	6/GvYJzZmHNI6OOk2wm1pDCmdAm3aozMpPyv4Rtp+TK3QDYzMYl4KaNdODm7+vQvb4zdn0KmSinFk
+	Qp+tVrPSg0UwNvEB0MVAkG9qyAQiZJrN9dZEoPZOzuvxnftWgOoOA/Ro+gGAhmkkgxwW73vdIEdcw
+	3kAjEZwADVkruKX6tL1w80hi5ngndGbT/pRQGxG/fgeofU+sCcTTf+ZP9PU4MEuQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1sFW8e-00000000swZ-3Eyx;
+	Fri, 07 Jun 2024 11:44:00 +0200
+Message-ID: <a1cff51f789c21b2b307c58ee4d743a62874cec6.camel@sipsolutions.net>
+Subject: Re: [RFC v3 8/8] wifi: mac80211: add wiphy radio assignment and
+ validation
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
+Cc: quic_adisi@quicinc.com, quic_periyasa@quicinc.com, 
+	ath12k@lists.infradead.org
+Date: Fri, 07 Jun 2024 11:44:00 +0200
+In-Reply-To: <9b331a61b8d53284b044bc594cf9952c60164e5f.1717696995.git-series.nbd@nbd.name>
+References: 
+	<cover.386a66ec6a89750d4890f63f0d28582a52b838b5.1717696995.git-series.nbd@nbd.name>
+	 <9b331a61b8d53284b044bc594cf9952c60164e5f.1717696995.git-series.nbd@nbd.name>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-malware-bazaar: not-scanned
 
-Kalle Valo <kvalo@kernel.org> writes:
+On Thu, 2024-06-06 at 20:07 +0200, Felix Fietkau wrote:
+>=20
+> +static bool
+> +ieee80211_radio_freq_match(const struct wiphy_radio *radio,
+> +			   const struct ieee80211_chan_req *chanreq)
+> +{
+> +	const struct wiphy_radio_freq_range *r;
+> +	u32 freq;
+> +	int i;
+> +
+> +	freq =3D ieee80211_channel_to_khz(chanreq->oper.chan);
+> +	for (i =3D 0; i < radio->n_freq_range; i++) {
+> +		r =3D &radio->freq_range[i];
+> +		if (freq >=3D r->start_freq && freq <=3D r->end_freq)
+> +			return true;
 
-> Hi,
->
-> here's a pull request to net-next tree, more info below. Please let me know if
-> there are any problems.
->
-> Kalle
->
-> The following changes since commit 83127ecada257e27f4740dbca9644dd0e838bc36:
->
->   Merge tag 'wireless-next-2024-05-08' of git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next (2024-05-08 19:09:38 -0700)
->
-> are available in the Git repository at:
->
->   git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git tags/wireless-next-2024-06-07
->
-> for you to fetch changes up to a46300b1b09ba260c2c2b00f06f6e34482a8ec01:
->
->   Merge tag 'ath-next-20240605' of git://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath (2024-06-05 21:29:56 +0300)
->
-> ----------------------------------------------------------------
-> wireless-next patches for v6.11
->
-> The first "new features" pull request for v6.11 with changes both in
-> stack and in drivers. Nothing out of ordinary, except that we have two
-> conflicts this time:
->
-> CONFLICT (content): Merge conflict in net/mac80211/cfg.c
-> CONFLICT (content): Merge conflict in drivers/net/wireless/microchip/wilc1000/netdev.c
+IMHO should be inclusive only on one side of the range. Can always make
+it work since channels are at least a few MHz apart, but the purist in
+me says it's easier to grok if the end is not inclusive :)
 
-The wilc1000 conflict is too complex for my liking and I want to
-apologize for that. Here's a direct link to linux-next code, hopefully
-it helps fixing it:
+Maybe this should be a cfg80211 helper like
 
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/drivers/net/wireless/microchip/wilc1000/netdev.c#n964
+struct wiphy_radio *wiphy_get_radio(struct wiphy *wiphy, ... *chandef);
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+which could also check that the _whole_ chandef fits (though that should
+probably also be handled elsewhere, like chandef_valid), and you can use
+it to get the radio pointer and then check for =3D=3D below.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+The point would be to have a single place with this kind of range logic.
+This is only going to get done by mac80211 now, but it'd really be
+awkward if some other driver had some other logic later.
+
+>  	if (!curr_ctx || (curr_ctx->replace_state =3D=3D
+>  			  IEEE80211_CHANCTX_WILL_BE_REPLACED) ||
+> @@ -1096,6 +1117,12 @@ ieee80211_replace_chanctx(struct ieee80211_local *=
+local,
+>  			if (!list_empty(&ctx->reserved_links))
+>  				continue;
+> =20
+> +			if (ctx->conf.radio_idx >=3D 0) {
+> +					radio =3D &wiphy->radio[ctx->conf.radio_idx];
+> +					if (!ieee80211_radio_freq_match(radio, chanreq))
+> +							continue;
+> +			}
+
+something happened to indentation here :)
+
+> +static bool
+> +ieee80211_find_available_radio(struct ieee80211_local *local,
+> +			       const struct ieee80211_chan_req *chanreq,
+> +			       int *radio_idx)
+> +{
+> +	struct wiphy *wiphy =3D local->hw.wiphy;
+> +	const struct wiphy_radio *radio;
+> +	int i;
+> +
+> +	*radio_idx =3D -1;
+> +	if (!wiphy->n_radio)
+> +		return true;
+> +
+> +	for (i =3D 0; i < wiphy->n_radio; i++) {
+> +		radio =3D &wiphy->radio[i];
+> +		if (!ieee80211_radio_freq_match(radio, chanreq))
+> +			continue;
+> +
+> +		if (!ieee80211_can_create_new_chanctx(local, i))
+> +			continue;
+> +
+> +		*radio_idx =3D i;
+> +		return true;
+> +	}
+> +
+> +	return false;
+> +}
+
+which would also get used here to find the radio first, though would
+have to differentiate n_radio still, of course.
+
+johannes
 
