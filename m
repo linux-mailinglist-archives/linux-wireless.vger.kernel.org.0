@@ -1,55 +1,52 @@
-Return-Path: <linux-wireless+bounces-8694-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8695-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 083739005D5
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 16:02:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7493E9005DB
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 16:03:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 970951F22B54
-	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 14:02:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6801B23510
+	for <lists+linux-wireless@lfdr.de>; Fri,  7 Jun 2024 14:03:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0951953AA;
-	Fri,  7 Jun 2024 14:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30D8A194A54;
+	Fri,  7 Jun 2024 14:03:10 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B15FC0A
-	for <linux-wireless@vger.kernel.org>; Fri,  7 Jun 2024 14:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A8B190686
+	for <linux-wireless@vger.kernel.org>; Fri,  7 Jun 2024 14:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717768934; cv=none; b=YvWteRiSH2GHEckvmovoKo/4jOZf8LCqx3+DkcgdWn9uUDsvQWFGDC38S/2Uz4AKyPn14erinCeL61tvG1MnNZSQrJOSGertKumGe99qaC5cia+4Q2RFaVE3CM9KWz3sfCAJ0KrflbAtmCX5SQyKvpLjfpW0WomXm/GYNVcI9XQ=
+	t=1717768990; cv=none; b=URLQ6KFtXIbqaQp+VhDR+1Iti+VGNG1deBMNmYM3VP8CK9f+FaCQ+WO8cAaIH5L3YUF88sWsI/k45yXOx3abcyHK5oL46TQuu0daTBslduJaXlkRndfvpVv7Zcp9YZRtaqon1jzAxZ044s1DGQL7K98ha2vQFTsgH+DU0dGIQOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717768934; c=relaxed/simple;
-	bh=CCYeF1IU4NZbdQsZT3CnB9HzR8SgNaMN8HnMS12ZZjA=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NeAbQLZ4IYoTDeqD9kHLrtthhmL22gmPXr4vx7s7yJ3qtIO6yh7pn25pvCKLDhWcaxax8rhj6EcuVBBvRiqAuiYJN2aIxTKVjjWbN8ag/yWVim5GsJXwD0cnOIDYMEAI0a4tvJhMdOAT55AndxH/P08PYYhrbzipV8zhz5vRtII=
+	s=arc-20240116; t=1717768990; c=relaxed/simple;
+	bh=qX/vM3s+q6KV+yaTK8KpX16IXjr9bJlDOkVsfiaat7E=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=slptfBwFVkkR2jc/BCj8/6SV79id7m0jq2p2HNvhIYYqi4oBh6mr9bd6gKf+TF2O2f0PkouToFNANqFfagHVgbGL/NIPoBXLzdgVb5T/9A75r8ZHT9WpMXocYqZJW+WlnkRtOvq6fZyXCmnGFQlBk1ydBoO1EpOvryEeDkd4P/o=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 457E2A0Z04076724, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 457E2A0Z04076724
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 457E36Ja84079174, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 457E36Ja84079174
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Fri, 7 Jun 2024 22:02:10 +0800
+	for <linux-wireless@vger.kernel.org>; Fri, 7 Jun 2024 22:03:06 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 7 Jun 2024 22:02:10 +0800
+ 15.1.2507.39; Fri, 7 Jun 2024 22:03:06 +0800
 Received: from [127.0.1.1] (172.16.16.228) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 7 Jun
- 2024 22:02:09 +0800
+ 2024 22:03:06 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
-Subject: [PATCH 2/2] wifi: rtw89: pci: fix RX tag race condition resulting in wrong RX length
-Date: Fri, 7 Jun 2024 22:01:45 +0800
-Message-ID: <20240607140145.8180-2-pkshih@realtek.com>
+Subject: [PATCH] wifi: rtw89: adopt firmware whose version is equal or less but closest
+Date: Fri, 7 Jun 2024 22:02:51 +0800
+Message-ID: <20240607140251.8295-1-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240607140145.8180-1-pkshih@realtek.com>
-References: <20240607140145.8180-1-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -61,50 +58,82 @@ Content-Type: text/plain
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-Read 32 bits RX info to a local variable to fix race condition between
-reading RX length and RX tag.
+Version C of 8922AE hardware will use the same firmware of version B, so
+extend rule of firmware recognition to allow less but closest firmware
+version. Originally only accept firmware with matched version.
 
-Another solution is to get RX tag at first statement, but adopted solution
-can save some memory read, and also save 15 bytes binary code.
-
-RX tag, a sequence number, is used to ensure that RX data has been DMA to
-memory completely, so driver must check sequence number is expected before
-reading other data.
-
-This potential problem happens only after enabling 36-bit DMA.
+Tested on version A/B/C of 8922AE.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/pci.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/net/wireless/realtek/rtw89/fw.c | 34 +++++++++++++++++++------
+ 1 file changed, 26 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
-index 5e6df70513b3..b7d10a1b2d09 100644
---- a/drivers/net/wireless/realtek/rtw89/pci.c
-+++ b/drivers/net/wireless/realtek/rtw89/pci.c
-@@ -183,14 +183,17 @@ static void rtw89_pci_sync_skb_for_device(struct rtw89_dev *rtwdev,
- static void rtw89_pci_rxbd_info_update(struct rtw89_dev *rtwdev,
- 				       struct sk_buff *skb)
- {
--	struct rtw89_pci_rxbd_info *rxbd_info;
- 	struct rtw89_pci_rx_info *rx_info = RTW89_PCI_RX_SKB_CB(skb);
-+	struct rtw89_pci_rxbd_info *rxbd_info;
-+	__le32 info;
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index be39a8468d32..23204b2706c9 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -462,7 +462,7 @@ int rtw89_mfw_recognize(struct rtw89_dev *rtwdev, enum rtw89_fw_type type,
+ 	const u8 *mfw = firmware->data;
+ 	u32 mfw_len = firmware->size;
+ 	const struct rtw89_mfw_hdr *mfw_hdr = (const struct rtw89_mfw_hdr *)mfw;
+-	const struct rtw89_mfw_info *mfw_info;
++	const struct rtw89_mfw_info *mfw_info = NULL, *tmp;
+ 	int i;
  
- 	rxbd_info = (struct rtw89_pci_rxbd_info *)skb->data;
--	rx_info->fs = le32_get_bits(rxbd_info->dword, RTW89_PCI_RXBD_FS);
--	rx_info->ls = le32_get_bits(rxbd_info->dword, RTW89_PCI_RXBD_LS);
--	rx_info->len = le32_get_bits(rxbd_info->dword, RTW89_PCI_RXBD_WRITE_SIZE);
--	rx_info->tag = le32_get_bits(rxbd_info->dword, RTW89_PCI_RXBD_TAG);
-+	info = rxbd_info->dword;
+ 	if (mfw_hdr->sig != RTW89_MFW_SIG) {
+@@ -476,15 +476,27 @@ int rtw89_mfw_recognize(struct rtw89_dev *rtwdev, enum rtw89_fw_type type,
+ 	}
+ 
+ 	for (i = 0; i < mfw_hdr->fw_nr; i++) {
+-		mfw_info = &mfw_hdr->info[i];
+-		if (mfw_info->type == type) {
+-			if (mfw_info->cv == rtwdev->hal.cv && !mfw_info->mp)
+-				goto found;
+-			if (type == RTW89_FW_LOGFMT)
+-				goto found;
++		tmp = &mfw_hdr->info[i];
++		if (tmp->type != type)
++			continue;
 +
-+	rx_info->fs = le32_get_bits(info, RTW89_PCI_RXBD_FS);
-+	rx_info->ls = le32_get_bits(info, RTW89_PCI_RXBD_LS);
-+	rx_info->len = le32_get_bits(info, RTW89_PCI_RXBD_WRITE_SIZE);
-+	rx_info->tag = le32_get_bits(info, RTW89_PCI_RXBD_TAG);
- }
++		if (type == RTW89_FW_LOGFMT) {
++			mfw_info = tmp;
++			goto found;
++		}
++
++		/* Version order of WiFi firmware in firmware file are not in order,
++		 * pass all firmware to find the equal or less but closest version.
++		 */
++		if (tmp->cv <= rtwdev->hal.cv && !tmp->mp) {
++			if (!mfw_info || mfw_info->cv < tmp->cv)
++				mfw_info = tmp;
+ 		}
+ 	}
  
- static int rtw89_pci_validate_rx_tag(struct rtw89_dev *rtwdev,
++	if (mfw_info)
++		goto found;
++
+ 	if (!nowarn)
+ 		rtw89_err(rtwdev, "no suitable firmware found\n");
+ 	return -ENOENT;
+@@ -606,10 +618,16 @@ int __rtw89_fw_recognize_from_elm(struct rtw89_dev *rtwdev,
+ 	struct rtw89_hal *hal = &rtwdev->hal;
+ 	struct rtw89_fw_suit *fw_suit;
+ 
+-	if (hal->cv != elm->u.bbmcu.cv)
++	/* Version of BB MCU is in decreasing order in firmware file, so take
++	 * first equal or less version, which is equal or less but closest version.
++	 */
++	if (hal->cv < elm->u.bbmcu.cv)
+ 		return 1; /* ignore this element */
+ 
+ 	fw_suit = rtw89_fw_suit_get(rtwdev, type);
++	if (fw_suit->data)
++		return 1; /* ignore this element (a firmware is taken already) */
++
+ 	fw_suit->data = elm->u.bbmcu.contents;
+ 	fw_suit->size = le32_to_cpu(elm->size);
+ 
 -- 
 2.25.1
 
