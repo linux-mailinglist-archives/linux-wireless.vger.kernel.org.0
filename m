@@ -1,166 +1,103 @@
-Return-Path: <linux-wireless+bounces-8737-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8741-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5DD39017C5
-	for <lists+linux-wireless@lfdr.de>; Sun,  9 Jun 2024 20:28:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB7B9901BE5
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2024 09:28:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FA801F211C7
-	for <lists+linux-wireless@lfdr.de>; Sun,  9 Jun 2024 18:28:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF0B61C20FD1
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2024 07:28:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 792C381720;
-	Sun,  9 Jun 2024 18:23:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="rff9nvNV"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54999224CC;
+	Mon, 10 Jun 2024 07:28:02 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF1E7BAEC;
-	Sun,  9 Jun 2024 18:23:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B58220DC4
+	for <linux-wireless@vger.kernel.org>; Mon, 10 Jun 2024 07:27:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717957386; cv=none; b=Kzguc7dr5JW88w5rVM9tGYEkhcuIKA40PtQ4AmJ+F66nvTERao0PQP8vL5zgU35a7joO7fK//4Taj1I/Nrqt3Y0UF7BsqJjvvKcknCeIIUVfKHT07RpW6kXxxwhnAUHn2jEFlJ74sFczYvKmwvdgo5byJ+eQJzMZ2iEHQEwc2XI=
+	t=1718004482; cv=none; b=j2FKhlg7+PCoegwhbdZpcqC5pCSlyInrNHnLQNuK/Tb1N2XCZ7cGUKvHKP89OyvnOoH/YjaqJWrbKeD3cA+k5OgHqOgQr2WYB+ronmUlTon0VrF1uUB2u0MUrkDK1ojf1mmMTzL0Z/6/JUcS++ZtbkiMLB7IwCh7UfA2Ocp7O2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717957386; c=relaxed/simple;
-	bh=nLAtyX+sMSNLownEsioM+2H9J5TUgvIY4KOtJTk8Pxs=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fObeJGuLhPormpHPxo5l77INfkUcAadi4RjiVPIegaHcv7RT0WUT29KaNNnabBp5SKm3EfYy28aPb/57rq3SdQvdQYmAaxe1PWPfpLzf9W8zsRwmTMJfyt+QXaNz9Z+irnGHtrkDt25cmYzHzuZZitFMZLpTThv0k8XYcAtRcKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=rff9nvNV; arc=none smtp.client-ip=198.47.23.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 459IMtrj004420;
-	Sun, 9 Jun 2024 13:22:55 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1717957375;
-	bh=TrImBSsj42vjw87Hnv20IUv4a+9OWTACR1LYASuI6bg=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=rff9nvNVVzK6oz5P35U29agvUk8OblVn7Dne0asvSQwJZgo7osCX30SgthwKk8fyy
-	 lHsa5Q9WKBVDvq/vpl/tgBNNJANbGGa5P+0qgvz53rB/LlExKfVl+Z+E5Kxub5mMi3
-	 FM7X+ESMTJBHrdqyjffYY6FoHD+EtbY6E7iBLrWg=
-Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 459IMt0c035597
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Sun, 9 Jun 2024 13:22:55 -0500
-Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Sun, 9
- Jun 2024 13:22:55 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Sun, 9 Jun 2024 13:22:55 -0500
-Received: from localhost (uda0389739.dhcp.ti.com [137.167.1.114])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 459IMs4t034809;
-	Sun, 9 Jun 2024 13:22:55 -0500
-From: <michael.nemanov@ti.com>
-To: Sabeeh Khan <sabeeh-khan@ti.com>, Kalle Valo <kvalo@kernel.org>,
-        Johannes
- Berg <johannes.berg@intel.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo
- Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski
-	<krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>
-CC: <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Michael Nemanov
-	<michael.nemanov@ti.com>
-Subject: [PATCH v2 17/17] dt-bindings: net: wireless: cc33xx: Add ti,cc33xx.yaml
-Date: Sun, 9 Jun 2024 21:21:02 +0300
-Message-ID: <20240609182102.2950457-18-michael.nemanov@ti.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240609182102.2950457-1-michael.nemanov@ti.com>
-References: <20240609182102.2950457-1-michael.nemanov@ti.com>
+	s=arc-20240116; t=1718004482; c=relaxed/simple;
+	bh=l+cnz2kffqXjhx1RkbyaFT7mcoQvwDH1FC4xqQmmmW0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rr2SFHIkVnIwyXlz32yrNrk8wTREYZUfsBlYLACpIcREp76PMN8ywdykoU/6KRYJJrwIQlq4F/kNvmTfZaS19OHSrvTQTAGmUBQn721mNU3S4c2zCdORR3Gp3GM8CbRIKPihhlrmdQJz/iRjLyv57tDjdI3fYUs3RgctFmlA4Iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sGZRc-0002DG-M7; Mon, 10 Jun 2024 09:27:56 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sGZRb-001FSn-Lk; Mon, 10 Jun 2024 09:27:55 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sGZRb-002hvq-1r;
+	Mon, 10 Jun 2024 09:27:55 +0200
+Date: Mon, 10 Jun 2024 09:27:55 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Brian Norris <briannorris@chromium.org>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	David Lin <yu-hao.lin@nxp.com>
+Subject: Re: [PATCH] wifi: mwifiex: increase max_num_akm_suites
+Message-ID: <Zmaq-4whltVgrzCz@pengutronix.de>
+References: <20240530130156.1651174-1-s.hauer@pengutronix.de>
+ <171767674666.2401308.2539321240473169281.kvalo@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <171767674666.2401308.2539321240473169281.kvalo@kernel.org>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
-From: Michael Nemanov <michael.nemanov@ti.com>
+On Thu, Jun 06, 2024 at 12:25:48PM +0000, Kalle Valo wrote:
+> Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> 
+> > The maximum number of AKM suites will be set to two if not specified by
+> > the driver. Set it to CFG80211_MAX_NUM_AKM_SUITES to let userspace
+> > specify up to ten AKM suites in the akm_suites array.
+> > 
+> > Without only the first two AKM suites will be used, further ones are
+> > ignored.
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> 
+> I assume you that you have also tested this on a real device, right?
 
----
- .../bindings/net/wireless/ti,cc33xx.yaml      | 60 +++++++++++++++++++
- 1 file changed, 60 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/wireless/ti,cc33xx.yaml
+Sure. It was tested with a MAYA-W161-00B module from u-blox with a IW416
+chipset.
 
-diff --git a/Documentation/devicetree/bindings/net/wireless/ti,cc33xx.yaml b/Documentation/devicetree/bindings/net/wireless/ti,cc33xx.yaml
-new file mode 100644
-index 000000000000..08ab2ed93dba
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/wireless/ti,cc33xx.yaml
-@@ -0,0 +1,60 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/wireless/ti,cc33xx.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Texas Instruments CC33xx Wireless LAN Controller
-+
-+maintainers:
-+  - Michael Nemanov <michael.nemanov@ti.com>
-+
-+description:
-+  These are dt entries for the IEEE 802.11ax chips CC33xx from Texas Instruments.
-+  Currently, these chips must be connected via SDIO.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - ti,cc3300
-+      - ti,cc3301
-+      - ti,cc3350
-+      - ti,cc3351
-+
-+  reg:
-+    description:
-+      For WLAN communication, <reg> must be set to 2.
-+    maxItems: 1
-+
-+  interrupts:
-+    description: The interrupt line. Can be IRQ_TYPE_EDGE_RISING or IRQ_TYPE_LEVEL_HIGH.
-+      When SDIO is used, the "in-band" interrupt provided by the SDIO bus is used
-+      unless an interrupt is defined in the Device Tree.
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+
-+    // SDIO example:
-+    mmc3 {
-+        vmmc-supply = <&wlan_en_reg>;
-+        bus-width = <4>;
-+        cap-power-off-card;
-+        keep-power-in-suspend;
-+
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        cc33xx: cc33xx@0 {
-+            compatible = "ti,cc3300";
-+            reg = <2>;
-+            interrupts = <19 IRQ_TYPE_EDGE_RISING>;
-+        };
-+    };
+BTW I haven't mentioned this, but It fixes the same problem as mentioned here:
+
+https://lore.kernel.org/linux-kernel/20240523081428.2852276-1-s.hauer@pengutronix.de/T/
+
+Sascha
+
 -- 
-2.25.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
