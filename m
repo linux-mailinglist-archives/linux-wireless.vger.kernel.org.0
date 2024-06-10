@@ -1,90 +1,121 @@
-Return-Path: <linux-wireless+bounces-8763-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8764-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45D8C90266D
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2024 18:17:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FBA1902772
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2024 19:08:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B50F1C206FD
-	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2024 16:17:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 963921C2134D
+	for <lists+linux-wireless@lfdr.de>; Mon, 10 Jun 2024 17:08:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EFFF84DE0;
-	Mon, 10 Jun 2024 16:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D18D1E4B0;
+	Mon, 10 Jun 2024 17:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TJ+7LyX0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V52NgtLy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064B01DFF7
-	for <linux-wireless@vger.kernel.org>; Mon, 10 Jun 2024 16:17:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093D8139580
+	for <linux-wireless@vger.kernel.org>; Mon, 10 Jun 2024 17:08:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718036259; cv=none; b=XOnEkdYXIDuT7NtKrq9ZuySViyEycZUzOMrjwzSC6SpS3UrPAPmOyNFzfSZPx0RUY8gglzNWLXQNvZnADLxmEsioCMEoU9snLhH0w/sMphpeeK0lxU0qBx7jbeY6or0C1d5ZfiTAlye+BmPx4Jl3M+eTjdROQPwo3lDw8zNQ6Io=
+	t=1718039281; cv=none; b=Tvjvlu5RfHJ4auQLreSRfekCzFYuxQBxb5QLZqlwINiQ56gL0vUk/ye+ggGfGONTxnl4vJK5hMFDyKKcHgt5q2hpQc3oKL1k+W8QyQE065CVLERvJz+PKhevSble8wNcQylrJLZZCxzNVlYHTazn43Hoog3sK/DWNFI2MKr6srI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718036259; c=relaxed/simple;
-	bh=9nCNK53rTjLnVysfgXoglxvrQ8+xq11LiIZcoNznmu8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ggNsc1SAYpTSXgKAoYRj1u68JL9SWx8S/FEDm0crWTO42suVBReZk/COTv6+eD8pEl9So4nIQoqnmluDsfUtwX2WHNImZ3bzi15DbKlJjTAl7GHmChFgPSsduWT4/RkjPG8g+V2igicmcOha/Vym5f0OOEzi9dZoYWV18whR+AE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TJ+7LyX0; arc=none smtp.client-ip=209.85.219.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-df771b6cc9cso46271276.3
-        for <linux-wireless@vger.kernel.org>; Mon, 10 Jun 2024 09:17:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1718036257; x=1718641057; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9nCNK53rTjLnVysfgXoglxvrQ8+xq11LiIZcoNznmu8=;
-        b=TJ+7LyX0UbVNtKKTqIdZXpCVYeOvTx+4ifYd5lVVfNkUDcKLBg7sEsJuRNt5tFgmUS
-         3cl8DXzh48N/GY3DRkkj4/Frvvmd+p+5bO9q3Zg9Bd9jE3OykJdwuVIOJSu1/naDedEv
-         UwJHp0I8D9hlZ+OqqE3b3AkWQq4pKIq/ToyAinQGVeQ9kUVEmQEDA7wNd3d4i6KmeO4t
-         cVAtvQBcqa871rJvZQ4NcGGUn1vNEaKw9vnf/8NYcizmgDUARXHiUnVzMQGiDoBKfL1V
-         HtDHI9dOYFznt6VTtSsI9FcWCCB1inznjf/gPLwWkBU/g8/DvuExfyr5wWUgd+tDtj2X
-         5vaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718036257; x=1718641057;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9nCNK53rTjLnVysfgXoglxvrQ8+xq11LiIZcoNznmu8=;
-        b=T5Nmgpyn45GiVTzedvnGacnzSXHY6VWe0WrycXDCbeBPFbkuRpwc8SBMMfdg9uX5i3
-         M2qfBIgTL7VdoIOEXW8iMU8Wc6VX+4KKpLAcXkDMdoYyqW2bGRiSqQTuqrtioAOAbudY
-         Md8sVilb8c2j44faSzdg+D2FO3Q+U8zmpLONdQGIEjHJBWmzWsPy6qzxeP39PRlJtYmi
-         zTL8ZMdaMlPs7O9E1WqtXj/gSPOSOEiryuR42OMkUWanbaoWqEFs8jDiLCk+D7OxdDBY
-         qyeTKMa90F4zFZJL370ny85hwUXznJjAeyNfbhvEk7+z4KXnarX/+LYSw5gy7ym3Y/Hg
-         A0xA==
-X-Forwarded-Encrypted: i=1; AJvYcCU2MajBtw+jDod//cFSTwn6MulAQXWb9yJZa25IS2KtSaxmMyghtDLV8wV8JZtQjaOpVQF374fuCzzccs4VPyblcPZ9m72BwUjZZADdSKI=
-X-Gm-Message-State: AOJu0YxHjBMz8pAnOiPXnSEJKekDQNR+PkLciHV2Sflu48Hkif9lTXuO
-	i6hlsoWlOD7Xfq8ZyXRu22u1s78BiwJbtl4g/dFmHXuJ+cly3tTTwDxUW84sQsggq+Ba2bE7G/0
-	gFn2U6mvp/WAxLVGuWf8g25Bg/PWhKfWwK6VQ
-X-Google-Smtp-Source: AGHT+IGHJhDjrNJNxMp3w5oXGpyMNhws5k+6BrcXAVGbf0Vl2CbGh3uFcZ7sKIzHCofvwFIyh6Vw241h/NO5im+uDIE=
-X-Received: by 2002:a25:6b0e:0:b0:dfa:e130:3144 with SMTP id
- 3f1490d57ef6-dfaf652cda7mr10333881276.17.1718036256629; Mon, 10 Jun 2024
- 09:17:36 -0700 (PDT)
+	s=arc-20240116; t=1718039281; c=relaxed/simple;
+	bh=NpVa99PNMxyd2qle9TyoOVLTKSLJ+nVkeuskWbVwSlA=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=ASXWdIbrpwgEOY5RjKNfvpo2Di8oH3eUKOQS03NEe0114bmhE8l/ateUiHKSbcADj3EADWENvsrZAbOMh7YNgXrc4snmc9AqM2P+hAijejgQ87jZyUaBdf0exL4DVq9HI/uMDTzR3jCSoNvd+QnLeno+dRE/0+UGgXp0y27VqMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V52NgtLy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F72C2BBFC;
+	Mon, 10 Jun 2024 17:07:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718039280;
+	bh=NpVa99PNMxyd2qle9TyoOVLTKSLJ+nVkeuskWbVwSlA=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=V52NgtLyxHzH1un4QwAzSah1lWV5B9pmgy7NkyuOxgQ1o6uOnfbUr/Yv6nRJ19C8L
+	 J9+FUU33AKjoLmcjy1gTcpUm3Qu+YtsNcCcXdddP7tjkhaQyPY9A5MMdL67OndN5l1
+	 iKApYwe2dIyzELy3zo6TdCf8+buKsObjVwsMe0XvKf5ULDoAEprCfLR8zA4kt6vVks
+	 Fd1WoYYBeFkWISbXtUlgfo0WZEIqsjuXUXYCuiiCmGBDGhTWfDJDAT2CQSaahxPSYL
+	 JczHrg9KHJSeo+RWhdg0sIB58KloUXHdkS/M5a+FTMdQjRBfhEXztrSXrPZs9XhMrm
+	 5L14IDvvriWcw==
+From: Kalle Valo <kvalo@kernel.org>
+To: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: <ath11k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v2] wifi: ath11k: fix wrong handling of CCMP256 and GCMP
+ ciphers
+References: <20240605014826.22498-1-quic_bqiang@quicinc.com>
+Date: Mon, 10 Jun 2024 20:07:57 +0300
+In-Reply-To: <20240605014826.22498-1-quic_bqiang@quicinc.com> (Baochen Qiang's
+	message of "Wed, 5 Jun 2024 09:48:26 +0800")
+Message-ID: <87zfrsohea.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240412085357.13756-1-mingyen.hsieh@mediatek.com>
-In-Reply-To: <20240412085357.13756-1-mingyen.hsieh@mediatek.com>
-From: David Ruth <druth@google.com>
-Date: Mon, 10 Jun 2024 12:16:59 -0400
-Message-ID: <CAKHmtrQRQPNJ9vcvD0GFVWL10iAvjaUnbgVZa01p+BgRHreq2w@mail.gmail.com>
-Subject: Re: [PATCH] wifi: mt76: mt7921: avoid undesired changes of the preset
- regulatory domain
-To: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-Cc: nbd@nbd.name, lorenzo@kernel.org, deren.wu@mediatek.com, 
-	Sean.Wang@mediatek.com, Soul.Huang@mediatek.com, Leon.Yen@mediatek.com, 
-	Eric-SY.Chang@mediatek.com, km.lin@mediatek.com, robin.chiu@mediatek.com, 
-	ch.yeh@mediatek.com, posh.sun@mediatek.com, Quan.Zhou@mediatek.com, 
-	Ryder.Lee@mediatek.com, Shayne.Chen@mediatek.com, 
-	linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 
-Tested-by: David Ruth <druth@chromium.org>
+Baochen Qiang <quic_bqiang@quicinc.com> writes:
+
+> Currently for CCMP256, GCMP128 and GCMP256 ciphers, in ath11k_install_key()
+> IEEE80211_KEY_FLAG_GENERATE_IV_MGMT is not set. And in ath11k_mac_mgmt_tx_wmi()
+> a length of IEEE80211_CCMP_MIC_LEN is reserved for all ciphers.
+>
+> This results in unexpected management frame drop in case either of above 3 ciphers
+> is used. The reason is, without IEEE80211_KEY_FLAG_GENERATE_IV_MGMT set, mac80211
+> will not generate CCMP/GCMP headers in frame for ath11k. Also MIC length reserved
+> is wrong. Such frame is dropped later by hardware:
+>
+> ath11k_pci 0000:5a:00.0: mac tx mgmt frame, buf id 0
+> ath11k_pci 0000:5a:00.0: mgmt tx compl ev pdev_id 1, desc_id 0, status 1
+>
+>>From user point of view, we have observed very low throughput due to this issue:
+> action frames are all dropped so ADDBA response from DUT never reaches AP. AP
+> can not use aggregation thus throughput is low.
+>
+> Fix this by setting IEEE80211_KEY_FLAG_GENERATE_IV_MGMT flag and by reserving proper
+> MIC length for those ciphers.
+>
+> Tested-on: WCN6855 hw2.0 PCI
+> WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
+> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+>
+> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+> Reported-by: Yaroslav Isakov <yaroslav.isakov@gmail.com>
+> Tested-by: Yaroslav Isakov <yaroslav.isakov@gmail.com>
+> Closes:
+> https://lore.kernel.org/all/CADS+iDX5=JtJr0apAtAQ02WWBxgOFEv8G063vuGYwDTC8AVZaw@mail.gmail.com
+> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+
+[...]
+
+> @@ -5927,7 +5929,10 @@ static int ath11k_mac_mgmt_tx_wmi(struct ath11k *ar, struct ath11k_vif *arvif,
+>  		     ieee80211_is_deauth(hdr->frame_control) ||
+>  		     ieee80211_is_disassoc(hdr->frame_control)) &&
+>  		     ieee80211_has_protected(hdr->frame_control)) {
+> -			skb_put(skb, IEEE80211_CCMP_MIC_LEN);
+> +			WARN_ON(!(skb_cb->flags & ATH11K_SKB_CIPHER_SET));
+
+Using WARN_ON() in the data path is not advisable as it's not rate
+limited and quite spammy, in the worst case it can lead to kernel
+crashing (I have experienced this even myself). ath11k_warn() is safer
+in this regard so I changed it to this:
+
+			if (!(skb_cb->flags & ATH11K_SKB_CIPHER_SET))
+				ath11k_warn(ab, "WMI management tx frame without ATH11K_SKB_CIPHER_SET");
+
+Please check:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=aeadb08d7b4acced84a45812f1285c8cd3ed853a
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
