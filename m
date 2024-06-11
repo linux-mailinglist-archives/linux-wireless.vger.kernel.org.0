@@ -1,68 +1,72 @@
-Return-Path: <linux-wireless+bounces-8777-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8775-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59F82902EEC
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2024 05:11:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED59A902EE7
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2024 05:10:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3C511F22A44
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2024 03:11:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 873602831B4
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2024 03:10:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F2D616F8E0;
-	Tue, 11 Jun 2024 03:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5638816F8E0;
+	Tue, 11 Jun 2024 03:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="MuB6A/O1"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="baClxGrE"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF0C16F914
-	for <linux-wireless@vger.kernel.org>; Tue, 11 Jun 2024 03:10:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41197E782
+	for <linux-wireless@vger.kernel.org>; Tue, 11 Jun 2024 03:10:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718075458; cv=none; b=mrRdHHrpQ95zSbTiHtvIYpTj9J2AH2T2xWBOuitazfsLm1lk1RjCdX6NDhPKIPZP75mBsT/0o51jIvUmLI166rOT+aktpe03z00dbtf95QUHuKTXIAMy5KSNvepSbwWoanpbKJNy1JTCwqeO2Zeb5VLV+k91QDbqEbEH5K1mGfo=
+	t=1718075448; cv=none; b=nwc4dgrYiBbBtgI8GAYa0VY/4Xnx4bDYijRqgEOIPmGfnRZjUZyH4DIYGlhFrCnne0Q5HUDgr+qDlE2L8+OQ6KvrX5vaLNGLDM+f0MOenJSZJAQWIktNg9iJMk3jekRbwkql9ZijmM/d1AoXEIBdrWpfW3UNU+XDYyif4XthnYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718075458; c=relaxed/simple;
-	bh=UNAN3rhffugfFSHJyzZ9LQi1Y4e7v4nL1o7cbxfWxh4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gmUmUbyUEhgP8BK2rrrFgD3V6kPW+ZSewvurO2pSCN3DQka/acISB6neM7xkoiEp2HitcGohtInP5Wluyq/UpeeeMwJ1A+1edjN5yokTeP/KOt5yjZO/u/vt4iwz6mMCfU4jUFd2uL1YLKRZBilf+SPn8xzsKGyuAh0fvAfThuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=MuB6A/O1; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1718075448; c=relaxed/simple;
+	bh=qbvuxQwWLH6ZLQXi3QODM9gCU2RKWDZcEQtPlCkEFUo=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AoCpBG9x+vV6h1YA4zqzo4YkDlrrYfP2ZpQREYNRflIaoM0HkGqZ7Ok00lNLq54y+PvJRimSiQT2gsBN/YppXFQoMPJYFd3c4zWbkrm4VicalP74FEo5AiPZ/g+pNpzewQs8IyIEpt2HUfla4lBjJ933SZ7YS9I87CMopiJXEDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=baClxGrE; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45B2wjHY008531;
-	Tue, 11 Jun 2024 03:10:53 GMT
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45B2VNFF006787;
+	Tue, 11 Jun 2024 03:10:41 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=ECIsG8AncEKWI7bypJ/0x0
-	Kywyt4sB2Jj9/dj5Ywd4w=; b=MuB6A/O1YArrm4bZmALro1B70vpXtRjGXDtot5
-	31xDn6qNbVq57oyoJmk+/L1dMkEc5bIDIyNbquCec/lwQa8lN+J+sFZa5ZVUrb0b
-	wGGbs76Gx3zDuPFcoFxtg8MOI/pn9DLCJfIV8YtiqSyaoQ2sxDDtLfG4pablWeO1
-	JMKSIsU/EtkpKBhvg1AV7jHqs8ldMxvvpamENxUjd3UIhfgz2VP1YBpaT0Iu6mqU
-	rS4VFD1KdtlXahKWC4b2wBTIqpLYWzSMTjlA42x69VF9ClzexLziMDvdMEsD6Now
-	JRs5ejAk6JRd7RUKGWbBfA5Ag7aVcBql9LaGPs2lrVWI7geA==
-Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ype9100jf-1
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	yxafXVy0xULxTQS2ri4rwhBvND3NL8O7Oa6bvKd4zns=; b=baClxGrE1NBo9EkD
+	z+znY+Iy2yFBWLQ1Hw3Y6Wh/wm6AZHmymOFLjyJQTMSwl27zQVAx6G5Et6kz+obg
+	spdKKHfnqtQZ1gARpE1Qd+SHuRwq8OutLkIM/EzuuYQT+M/ALh41A50L7If131z4
+	Ezf142FWTB2KZhMGGjdh8cUfBZFzl6e1rEuN6cG1VgSj5uIqcWoKeQXfNU2v9rF0
+	mY+FNmF+zdp9fEe1+lws5igkK2tdC1q6mnk4XBEhrC0Qd6CQ8PAGzT9w6BWwm3qo
+	Oiqxricxe/Y1npPDF6ShQPWczH8NCxtCjnaUBk3zQoH9p/Eo3Nvtjr6NszbhfYv7
+	5eE7zA==
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ymfh35w57-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Jun 2024 03:10:53 +0000 (GMT)
+	Tue, 11 Jun 2024 03:10:41 +0000 (GMT)
 Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
-	by NASANPPMTA01.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45B3AZ4S013729
+	by NASANPPMTA02.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45B3Ab2q030515
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Jun 2024 03:10:35 GMT
+	Tue, 11 Jun 2024 03:10:37 GMT
 Received: from hu-aarasahu-blr.qualcomm.com (10.80.80.8) by
  nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Mon, 10 Jun 2024 20:10:34 -0700
+ 15.2.1544.9; Mon, 10 Jun 2024 20:10:35 -0700
 From: Aaradhana Sahu <quic_aarasahu@quicinc.com>
 To: <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>,
         Aaradhana Sahu
 	<quic_aarasahu@quicinc.com>
-Subject: [PATCH 0/2] wifi: ath12k: Fix the smatch error
-Date: Tue, 11 Jun 2024 08:40:15 +0530
-Message-ID: <20240611031017.297927-1-quic_aarasahu@quicinc.com>
+Subject: [PATCH 1/2] wifi: ath12k: fix NULL pointer access in ath12k_mac_op_get_survey()
+Date: Tue, 11 Jun 2024 08:40:16 +0530
+Message-ID: <20240611031017.297927-2-quic_aarasahu@quicinc.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240611031017.297927-1-quic_aarasahu@quicinc.com>
+References: <20240611031017.297927-1-quic_aarasahu@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,30 +79,50 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nasanex01c.na.qualcomm.com (10.45.79.139)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: nRak0mx027rWXt5hmCij8Tf5ydB7sPIa
-X-Proofpoint-ORIG-GUID: nRak0mx027rWXt5hmCij8Tf5ydB7sPIa
+X-Proofpoint-ORIG-GUID: RtvwAzBidLSv5VaFlUameI8lrYBXDhvn
+X-Proofpoint-GUID: RtvwAzBidLSv5VaFlUameI8lrYBXDhvn
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-06-10_08,2024-06-10_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
- adultscore=0 priorityscore=1501 malwarescore=0 phishscore=0 bulkscore=0
- clxscore=1011 mlxlogscore=592 impostorscore=0 suspectscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405170001
- definitions=main-2406110024
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 lowpriorityscore=0 spamscore=0 malwarescore=0
+ suspectscore=0 clxscore=1015 bulkscore=0 phishscore=0 adultscore=0
+ mlxscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2406110024
 
-This patch series fix the Smatch error in
-ath12k_mac_op_get_survey() and ath12k_peer_assoc_h_he().
+Smatch throws below error
 
-Aaradhana Sahu (2):
-  wifi: ath12k: fix NULL pointer access in ath12k_mac_op_get_survey()
-  wifi: ath12k: fix uninitialize symbol error on
-    ath12k_peer_assoc_h_he()
+drivers/net/wireless/ath/ath12k/mac.c:8318 ath12k_mac_op_get_survey() error: we previously assumed 'sband' could be null
 
- drivers/net/wireless/ath/ath12k/mac.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+Currently, we access sband inside the null check of the sband
+in ath12k_mac_op_get_survey().
 
+Fix this issue by removing the entire if block, because decrement
+idx is unnecessary since there are no more band to test.
 
-base-commit: a116bf2be795eb1db75fa6a48aa85c397be001a6
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+
+Fixes: 70e3be54bbdd ("wifi: ath12k: fix survey dump collection in 6 GHz")
+Signed-off-by: Aaradhana Sahu <quic_aarasahu@quicinc.com>
+---
+ drivers/net/wireless/ath/ath12k/mac.c | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 509c02bffdae..4fea411545bc 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -8314,10 +8314,6 @@ static int ath12k_mac_op_get_survey(struct ieee80211_hw *hw, int idx,
+ 
+ 	if (!sband)
+ 		sband = hw->wiphy->bands[NL80211_BAND_6GHZ];
+-	if (!sband || idx >= sband->n_channels) {
+-		idx -= sband->n_channels;
+-		sband = NULL;
+-	}
+ 
+ 	if (!sband || idx >= sband->n_channels)
+ 		return -ENOENT;
 -- 
 2.34.1
 
