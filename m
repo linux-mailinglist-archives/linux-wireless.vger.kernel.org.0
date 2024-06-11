@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-8807-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8808-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9797F9043C8
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2024 20:36:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5C439043D3
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2024 20:40:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA7941C20299
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2024 18:36:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BA3BB2540A
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2024 18:40:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27485171D8;
-	Tue, 11 Jun 2024 18:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37DFF4F606;
+	Tue, 11 Jun 2024 18:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PzO3vHSu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kWC855Mm"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0341214A96
-	for <linux-wireless@vger.kernel.org>; Tue, 11 Jun 2024 18:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F294D8BB
+	for <linux-wireless@vger.kernel.org>; Tue, 11 Jun 2024 18:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718130998; cv=none; b=C4kX7Rf6QZP2GxArczMaGrtzfYQ2XT9mhWUgJotBR4xGkBy6FnIGO7XD9pgkovW2N+kjgWjAs9Z9UnedldaIignXoUW/B6Y9AxKH1gdCcpzac6ZpQS9IaMx3BDlNjAwfTy+xnhkgQjosgNdfbId5VzTubZUbXw6Ku33Zrd61Z20=
+	t=1718131218; cv=none; b=Agjh9bmVs8svoGewU3WmjnM/bmKLqqL6q0INE6HriyyjogDkEZnPAsYKQPRPOiVmvz9Ra0n2BrGOrg0dCkVABPofBdGDN2EsBR1yyE/lEwq4A99j5RM7QZ/HhL7LueAlr96UWeGhSuATMD1Yyyca52CwLiTSDrI037/Wg22KHQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718130998; c=relaxed/simple;
-	bh=RCKxxHD3IKIUcqSpL8ezjJy6dgyDehoOCjJuNNVeRZA=;
+	s=arc-20240116; t=1718131218; c=relaxed/simple;
+	bh=xjTNil0Z8c2KFdRC6UT5suVh0Knn5BS56cRAY4d+jRA=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=RQbiZv99APaqXUCBBNHaVdv59Vi+U2o+6JjHCJkT9XFxdMSNrEsGLmvtQ7R6yMZ1viu8+MTBevL+JRCejN9tzpQV84QAi1UOCI8sCzuyZQWGnONGKN5My0ln/Yq4ykXP/t9vNPb9Qi0DtEQIgS78wX/FlnrggFQObwv+U33bAJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PzO3vHSu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 926A4C2BD10;
-	Tue, 11 Jun 2024 18:36:36 +0000 (UTC)
+	 Cc:Message-ID:Date; b=uyo1sc7zh09isBkcHSMNIlthR6+CvEbhtBn4X0BEghxBE6IQAE4fuBeZUEt28zKZvSMK8BoTJD4lJay1AblKf3QiAsAU/gC/HjduvYuod2cm3OEfP081lawvwRBxot7EenF/7CcsYYr/r72cuZejIEe99dTVTiA4CbxK2bFpGdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kWC855Mm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC012C2BD10;
+	Tue, 11 Jun 2024 18:40:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718130997;
-	bh=RCKxxHD3IKIUcqSpL8ezjJy6dgyDehoOCjJuNNVeRZA=;
+	s=k20201202; t=1718131217;
+	bh=xjTNil0Z8c2KFdRC6UT5suVh0Knn5BS56cRAY4d+jRA=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=PzO3vHSuynXbKjS4nGxQHGJgeRL+FWGRAKMUbpJ9fvw31wWJSmLLr6tx5kj+jIl+r
-	 auN4LQObvcL145JY598vE/dGycou8m5cFz1+oUhfMmZXIPuFYre4Bomiu8p+T8P+Ez
-	 0yLyH8LSI7Cp9WA788L7l+DUXACGtxNOSw7NYkRwxSzSBDnoQlFwyI4pj/WFaM95PA
-	 BxXIk1iC/ohLUuE+SmsfpNSl9FzIUeS2n9NcQ/jWiQAm8PN8ea2fUyzqyIqmqdGDE1
-	 58DfJIFX3FQ/wM1i0IG7DHg+enuEaQXBMKgwqZFvjIbycTgxNdZpRNLhKO2bat+X3t
-	 slZKVOffEwhtw==
+	b=kWC855MmxrZtEDuowAvxiHCaXOT1uTVXJpuTsZw1Q6HhENnxjr9RDVwbPiOjRMPqI
+	 2vI+whnth/Zj97IDVAJQ8EzMKtWhnds1B1uZHhWtIVb9kinD+3e/y9D+nw1EaOp+DR
+	 9La6PbqTp1yLeYiOXuOvC0Q0nOL8kVnCI2QaffKCYTBw9luwdMAldb+iGfyIchhMXc
+	 dgirZkpfpGLZ+nn71+kbHaQXFP8Am9/lxnhSw6Ugm0nH9eW15Z6ejkcobJOvNFBuwK
+	 N2f1LpiLPlfgxzPE8fQ+WJOIzPKfOKT3ltHS7GDVOSMJbW5HI2YSgbm2Tl6RRgojA2
+	 nsMLaOkmTkUJQ==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,46 +49,62 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: ath12k: fix ACPI warning when resume
+Subject: Re: [PATCH] wifi: ath11k: fix RCU documentation in
+ ath11k_mac_op_ipv6_changed()
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240531024000.9291-1-quic_bqiang@quicinc.com>
-References: <20240531024000.9291-1-quic_bqiang@quicinc.com>
+In-Reply-To: <20240531022411.6543-1-quic_bqiang@quicinc.com>
+References: <20240531022411.6543-1-quic_bqiang@quicinc.com>
 To: Baochen Qiang <quic_bqiang@quicinc.com>
-Cc: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+Cc: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
  <quic_bqiang@quicinc.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <171813099453.3564613.760110557004474171.kvalo@kernel.org>
-Date: Tue, 11 Jun 2024 18:36:36 +0000 (UTC)
+Message-ID: <171813121489.3564613.14982279115447611746.kvalo@kernel.org>
+Date: Tue, 11 Jun 2024 18:40:16 +0000 (UTC)
 
 Baochen Qiang <quic_bqiang@quicinc.com> wrote:
 
-> Currently ACPI notification handler is installed when driver loads and only
-> gets removed when driver unloads. During resume after firmware is reloaded,
-> ath12k tries to install it by default. Since it is installed already, ACPI
-> subsystem rejects it and returns an error:
+> Current documentation on RCU in ath11k_mac_op_ipv6_changed() says:
 > 
-> [   83.094206] ath12k_pci 0000:03:00.0: failed to install DSM notify callback: 7
+>         /* Note: read_lock_bh() calls rcu_read_lock() */
+>         read_lock_bh(&idev->lock);
 > 
-> Fix it by removing that handler when going to suspend. This also avoid any
-> possible ACPI call to firmware before firmware is reloaded/reinitialized.
+> This is wrong because without enabling CONFIG_PREEMPT_RT
+> rcu_read_lock() is not called by read_lock_bh(). The reason
+> why current code works even in a CONFIG_PREEMPT_RT=n kernel
+> is because atomic_notifier_call_chain() already does that for
+> us, see:
 > 
-> Note ab->acpi also needs to be cleared in ath12k_acpi_stop() such that we
-> are in a clean state when ACPI structures are reinitialized in
-> ath12k_acpi_start().
+>         int atomic_notifier_call_chain()
+>         {
+>                 ...
+>                 rcu_read_lock();
+>                 ret = notifier_call_chain(&nh->head, val, v, -1, NULL);
+>                 rcu_read_unlock();
+>                 ...
+>         }
 > 
-> Tested-on: WCN7850 HW2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> and backtrace:
 > 
-> Fixes: 576771c9fa21 ("wifi: ath12k: ACPI TAS support")
+>         ath11k_mac_op_ipv6_changed
+>         ieee80211_ifa6_changed
+>         notifier_call_chain
+>         atomic_notifier_call_chain
+> 
+> So update the comment to make it correct.
+> 
+> This is found during code review, compile tested only.
+> 
+> Fixes: feafe59c8975 ("wifi: ath11k: use RCU when accessing struct inet6_dev::ac_list")
 > Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
 > Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-8b2a12749b08 wifi: ath12k: fix ACPI warning when resume
+53d7c99719e2 wifi: ath11k: fix RCU documentation in ath11k_mac_op_ipv6_changed()
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240531024000.9291-1-quic_bqiang@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240531022411.6543-1-quic_bqiang@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
