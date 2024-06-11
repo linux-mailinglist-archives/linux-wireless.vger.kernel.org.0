@@ -1,115 +1,90 @@
-Return-Path: <linux-wireless+bounces-8787-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8788-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCDFE9039B7
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2024 13:10:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FE299039CC
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2024 13:18:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 761C91F26A32
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2024 11:10:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06EFE2850CE
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2024 11:18:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF920179951;
-	Tue, 11 Jun 2024 11:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2C9D14F10E;
+	Tue, 11 Jun 2024 11:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dg3fYT7s"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="AxwV6/iK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6564B179957
-	for <linux-wireless@vger.kernel.org>; Tue, 11 Jun 2024 11:10:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA35413E8AE
+	for <linux-wireless@vger.kernel.org>; Tue, 11 Jun 2024 11:18:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718104239; cv=none; b=sEYwHV41PwWR6zbwD5MzdzZvsRVGsYU9azwa9Nh76BzpF/5cs9ITHbFUYeJzN8EEFJCJOikAGIkl995VBQyMHqf918EjasK69apJZ2GqMg7ILdT+rJuSB8G1YIlf9mWbT4kW6unBFGxnvKhizh0TX2HkXzqy8xdcsY+Wis1YlDo=
+	t=1718104688; cv=none; b=p+T7mXN+lYU2w22MlHMYJcazKdrjyDWf58zXmQ1Iorh7RnNz5pja0LxEqGV3Xn5vs1NsY4LBaMV7KJ1eh8lgCIZjcigsCPWj5T3lLo/gwz6pP+irX3r26eDAH3xLts1v/VI2ReCmRrR+wMeXTsyOmMLr7LpLgW6hbj5XROe2/4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718104239; c=relaxed/simple;
-	bh=X3pEPRDiKtKLYAsvWh/YawOU+IrtWfgRWDDXhLpydwg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AH4oV4CuoXA3VP9hQASoxw6/Mw5+kOygSZa+IQFNBoE3xZeIcRj3YNfrOmxHlIrIh6tbC2ZxSF+EqvsFqmjHB8syX26BqnsgijiEanerPvuW/i2pIl7R/K6CpMogqG8MJYIadfdqlDbIlrJW3LtY+SweZD2bMDhZQsSmEBZ15GA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dg3fYT7s; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2c315b569c8so861453a91.0
-        for <linux-wireless@vger.kernel.org>; Tue, 11 Jun 2024 04:10:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718104238; x=1718709038; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X3pEPRDiKtKLYAsvWh/YawOU+IrtWfgRWDDXhLpydwg=;
-        b=Dg3fYT7semvHeJ6/W3YspZmmErPcC+WXEnRHQGiRYGps9wWhJ5eIFDg7WqV0TAu9Mz
-         w7Pl3X1kqKSyKhbOoaRmmxUSbKRPEqIrRzUxDoxJSNLvy5EMmbWQ1EAgiphh1JV4Ks1e
-         Vcclf+Be3RhgCUAR/vHKcllBqn1DaqnkwJ/IHJ/K3nVAfRf3iOXjdbVgO0A3v9vPqWDE
-         WP0RNjeh4Gp4U6g1KnEL9/sEnTEYT3766X7gI38Fku37kFSq696tBP/HPTid+fEDI08e
-         77cI9kvgCRHD7PTJ4S7gHo3RFwvMWDxYTFT6C8nTym4sO7btpqlyaEyAfGjLtpmrHmf9
-         6Aew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718104238; x=1718709038;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=X3pEPRDiKtKLYAsvWh/YawOU+IrtWfgRWDDXhLpydwg=;
-        b=Y9pGQY4zpvLJD1UNzYE9O1P1ezQvnfONeQC1gG+0U6VH8F/VygSGNYFjiubw8ilXwN
-         X0koLTBhMHax0xnMVJuNzcWTxyXUpBJ2u3adYMmStcd5hS51BnDZujGyafzLKi+wmbf+
-         RHTgb2gklSV+ma5oWAp2KSCHUXI5MXfFXICDBW0iGsCdyMOFeITtLHmD6vW69FpYbQlc
-         biQpPL5eZ0o1QE373OFlcjBQXF/xfZLykUpxMx9I/wXv+de3WkzkiNSmSd0cQw21+Nzo
-         g7SuXj5BTWv6VOlPAzJwXWbwD1unrlnRs3DvxL7KxjpLNBSs8L1tzFJA0gmSPPvos5J5
-         mrDA==
-X-Gm-Message-State: AOJu0Ywt1PMMwLQgY3JKOHuaaZ1EI9rGu7X2Gm+gkJBYXDqIhRZYQoKL
-	Z61XO1Ds8ltVnJlPg0197kInc9AU/owyAiR3COpIPc32djR5a1VONlRDbps8PmrQnOGyk3Xe41m
-	pL5pplwgwRNTpYJwBR4JMiBQPfqypDw==
-X-Google-Smtp-Source: AGHT+IHeM2bQyviQKPCRL9px6Dfso+fgSjsl3gMfx2pGCQEjLAlWnMp5/OLQBqRV9ByykiIMpEbzpwO0TAfZw1fdDUo=
-X-Received: by 2002:a17:90b:1bc9:b0:2c3:16f8:b57b with SMTP id
- 98e67ed59e1d1-2c316f8b5b1mr3486359a91.25.1718104237654; Tue, 11 Jun 2024
- 04:10:37 -0700 (PDT)
+	s=arc-20240116; t=1718104688; c=relaxed/simple;
+	bh=vnygC5WBBXsEj21WH/J8LxqSZv3WVKaQ2J2wUD1PSnE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=coFSB9jtZogz134pcPDIYSwxob8pGSMgBJgRVW0+oETFtjx87QE4XM5Xp/WyhO/YHgEa45ioyjUeKXyI23ju8upUzFkGxOv8hGgdUiODtbmfW4qWwGV5W0ryWT3kkdd7dP1DC1TpiDZbPH/vQx+r1eUqaDEPMFWk+7y8eJCn35E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=AxwV6/iK; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=vnygC5WBBXsEj21WH/J8LxqSZv3WVKaQ2J2wUD1PSnE=;
+	t=1718104686; x=1719314286; b=AxwV6/iKU5EzFcPUWGZ8TNgro9xH2EUdtINq2820HmiTMmB
+	POM2peTYkL6DC32W+I3gP9Ny0Tq+HqH3MbnwcNnjZ4OZzy9VqwGfbC/YmGd7eTe1dey9DAXHRXuuN
+	ls4Kbf85sPRfrf51xGfN1KLDdNu9c4cF72oHujR2o90moGnLQWKtORkDxmkr0jxc1NMWM1QPJhzdr
+	VOIbRB5VFCGxxastTwISd110ggbgYhd1k8FkY185Bad5oaJWalbhBWR5YPJycs9pF+cXbr8/ncCe/
+	V+WjOThuFEpKqTVKIDt7++QLPJbbzt2iKSgV4rnm181EBsDlkqrrFL44G7rwhn7A==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1sGzVr-00000008Wml-0Rkd;
+	Tue, 11 Jun 2024 13:18:03 +0200
+Message-ID: <6bdbcae5cfedccc507426bde60fe86e72212ca5a.camel@sipsolutions.net>
+Subject: Re: wifi: mac80211: unencrypted message in 4-way handshake
+From: Johannes Berg <johannes@sipsolutions.net>
+To: "Sperling, Tobias" <Tobias.Sperling@Softing.com>, 
+ "linux-wireless@vger.kernel.org"
+	 <linux-wireless@vger.kernel.org>
+Cc: "Le Suire, Michael" <Michael.Suire@Softing.com>, "pkshih@realtek.com"
+	 <pkshih@realtek.com>
+Date: Tue, 11 Jun 2024 13:18:02 +0200
+In-Reply-To: <BE1P281MB2420DA2C6AFF94E525306302EFC62@BE1P281MB2420.DEUP281.PROD.OUTLOOK.COM>
+References: 
+	<BE1P281MB24208AB02DAEACAE9AF4B5C5EFC62@BE1P281MB2420.DEUP281.PROD.OUTLOOK.COM>
+	 <BE1P281MB2420DA2C6AFF94E525306302EFC62@BE1P281MB2420.DEUP281.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CA+GA0_t7RPsqQ2XztOtRyW3BVZfE54h+Rg+fxRNPL8qwQWKeDw@mail.gmail.com>
- <868343c920c24204972ddaa108e5d00e@realtek.com>
-In-Reply-To: <868343c920c24204972ddaa108e5d00e@realtek.com>
-From: =?UTF-8?Q?Marcin_=C5=9Alusarz?= <marcin.slusarz@gmail.com>
-Date: Tue, 11 Jun 2024 13:10:26 +0200
-Message-ID: <CA+GA0_vA1KRRyvnURfdjwVv5JBkRhkjdQnwrRWWKmZs9_z-X1w@mail.gmail.com>
-Subject: Re: rtw88 multicast failure in AP mode
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, Kalle Valo <kvalo@kernel.org>, 
-	=?UTF-8?Q?Marcin_=C5=9Alusarz?= <mslusarz@renau.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-malware-bazaar: not-scanned
 
-wt., 11 cze 2024 o 04:32 Ping-Ke Shih <pkshih@realtek.com> napisa=C5=82(a):
->
-> Marcin =C5=9Alusarz <marcin.slusarz@gmail.com> wrote:
-> > Let's assume we have 3 systems: A and B use 8821CU chip, and C uses
-> > another chip from a different vendor.
-> >
-> > If A is in AP mode and A and B use the rtw88 driver, pinging A from B
-> > and C by local name doesn't work because name resolution fails: avahi
-> > on B and C sends a multicast request to resolve A.local, A sees it and
-> > responds, but neither B nor C sees the response.
-> >
-> > In the same situation, but with A and B using the rtl8821cu driver
-> > (from https://github.com/morrownr/8821cu-20210916.git), everything
-> > works - B and C see A's response and can resolve A.local.
-> >
-> > If C is in AP mode, resolving C from A and B also works.
-> >
-> > This leads me to believe there's something wrong with rtw88 when
-> > sending multicast packets in AP mode.
->
-> Have you captured air packets sent by C (AP mode)? (To check if TX proper=
-ly.)
+On Mon, 2024-06-10 at 13:50 +0000, Sperling, Tobias wrote:
+>=20
+> recently we moved from a 4.9 kernel to 5.4 kernel
 
-Yes, I see packets in both directions on both C and A if C is in AP mode.
+=F0=9F=A4=AF=EF=B8=8F
 
-> Have you tried non-secure connection? (To check if encryption properly.)
+> Do you have some hints where to look at to solve the issue?
 
-Nothing changes - rtw88 in AP mode sends multicast packets, but other
-devices don't see them.
+No, way too old.
+
+Take a look at supplicant logs in how it behaves differently, I guess.
+
+The only thing that comes to mind is that *maybe* the eapol-over-nl80211
+path gets used (different kernels) and that has different behaviour in
+wpa_s, but honestly, no idea.
+
+johannes
 
