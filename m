@@ -1,103 +1,112 @@
-Return-Path: <linux-wireless+bounces-8804-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8805-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FCF290420E
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2024 18:59:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99DAA904236
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2024 19:14:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E72528D9AE
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2024 16:59:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35602B24A25
+	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2024 17:14:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B62E61CFA9;
-	Tue, 11 Jun 2024 16:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD8CF4207A;
+	Tue, 11 Jun 2024 17:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ZE7+uMV+"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ItfPAEjJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E097C1EB21
-	for <linux-wireless@vger.kernel.org>; Tue, 11 Jun 2024 16:58:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B3340C03
+	for <linux-wireless@vger.kernel.org>; Tue, 11 Jun 2024 17:14:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718125105; cv=none; b=ewRMKmf2YElk3OhM98s/jSdjzVtqlVJ4fh354xbrg0r5zzbuwIejwUrxcIWpROC6QmpbkYVMQusk+GBKj47oqrZmMId7QvcvDdzbk6Y2bY7FgrGZcMO7QjoubXziUK4U8ERIqJ4iWo3FMx0lgrreOA8+Oq428B6rx0xnPummQPQ=
+	t=1718126048; cv=none; b=T4CplYyNotAIDqA6ygVbWSfSc8WAqdB7h/n62kk914aLc6GPZlO6BLxXwfkSxZXgGHWD/yCqBOm6VhKvYeemm8kBmF9d7MYVxkMSz5oAqaNJIDKi0hOg+3901RU/uchUoSplnyVoQiCse+BtarX6KEhHGBr7zy0MCcwVtUzhIxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718125105; c=relaxed/simple;
-	bh=APVzMLSve7KNEZWoXD7M2LkktVyFDne234/i7cMd6Rk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QpbUawSICmrYSqUwmFvISITzSUXM83Tl2yymsVU6tF3apmakloUGdolEavcCw1RCSOEDTR82PriIA2NAgsghWXq7v5r/1/5CnoUvIVZfstcysTyNgSwbIIV/rwheTKOf9Q5j7Y41MIHWZ2G/qDIlZ70pSh+EhwqwdrvFVFQ7j9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ZE7+uMV+; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=3v2wNHR5M70phZMaxepwnBAtXq5Ap8HzqNbvoIlfFO4=; t=1718125103; x=1719334703; 
-	b=ZE7+uMV+3OTjqRKxRuEQh5R16jXpOk70GWBd7/MS3SSgq2L9QsjuCn69r0ceCxRy6k3LOcHSg+X
-	hyxR4zbK0okCQNhYDBM/1CTkEK4up71QvTT0X7GfflDj2dlprVDXEkwoIWfCHXdF+roF3oZmxi6kh
-	87wQu/Iga7HIt/mDh0TjdF99GvyTrgLp+CGoljn4x9lZYQY1isdsk4jCjaIGr+z5by7wwX0GK8GrB
-	5Q6QEtc3ZIZDjk1JYa7GrZKywfxyoITyFj/GPbxYKUmUhJQVjFJ+YxGyVxI0o0EwOGdh9fo53C7cw
-	5hXOikc6fPl7LIsZm+Q4FUprXN5m7Kcn/w1w==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1sH4pA-00000008tF8-0dxx;
-	Tue, 11 Jun 2024 18:58:20 +0200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	syzbot+cd6135193ba6bb9ad158@syzkaller.appspotmail.com
-Subject: [PATCH wireless] wifi: cfg80211: wext: set ssids=NULL for passive scans
-Date: Tue, 11 Jun 2024 18:58:16 +0200
-Message-ID: <20240611185816.1568ff55ede1.I516eed4993495eee54290364e35535b93857fd5d@changeid>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1718126048; c=relaxed/simple;
+	bh=EorPrFsmXR219LVxhsI82XAjT/nA88Gye3vKyGsSps8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=bE+hJAtyaktotzbWf40wXqOaQTPv0q1xeYkrl+tU5TnQRuzGI/n9txpCOP+oNjkWlSrnh1Rn2pJr/g56J5GHRd5GUDytb99NWyQ+XGpu4jb2T1699GhBRXFZdNeOPRETWngfdDi2l9LjpHrlKTyGn56/JuWj9KfigMgo3gv9eec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ItfPAEjJ; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45B9bSmv012356;
+	Tue, 11 Jun 2024 17:14:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	wPIOMg+8Ni/e1WHiurLDQPppp2nzp6bXSCsbyFa49Bc=; b=ItfPAEjJ4ZMp0dtQ
+	6bR3bVt8SQc3JLXdEykeWsXQE1ncZFxABvLycjatQqBehSo9vGX1JK5n4MEfHsiw
+	GXilUe+h5mSOopTpcmQ0ghKR/iF6WFAIHJwGFQVFrBZKPVtwjnqTeCtlDId5juUr
+	WlfzSrhrhZ+G1CgGGSf24H/ku66Bfvct2xG4SGDLNudIfQ/G+RSTxwatfGrxsFNB
+	V4SqyQRbv6ppmgWEnanz4ayC4bqAhgOW7ls8YiCfWQ2onMAlnOxwSUbmClTtaqF7
+	AQp6hw/Q7vLYD2w/cV5MeTWl5ifBTgDVRZGxjCkfloUhedpM6rsDwc42J+nk5r68
+	RCObmA==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ypm459691-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Jun 2024 17:14:01 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45BHDxgi027778
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Jun 2024 17:13:59 GMT
+Received: from [10.48.243.20] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 11 Jun
+ 2024 10:13:58 -0700
+Message-ID: <1a7c7a49-f6e2-46c8-b198-e9f764b26003@quicinc.com>
+Date: Tue, 11 Jun 2024 10:13:57 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath12k: Fix pdev id sent to firmware for single phy
+ devices
+Content-Language: en-US
+To: Ramya Gnanasekar <quic_rgnanase@quicinc.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, Lingbo Kong <quic_lingbok@quicinc.com>
+References: <20240611043342.2672998-1-quic_rgnanase@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240611043342.2672998-1-quic_rgnanase@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: UpYQlgRrel3RwRdSDJ1jN_fhrm5Oj3VS
+X-Proofpoint-ORIG-GUID: UpYQlgRrel3RwRdSDJ1jN_fhrm5Oj3VS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-11_09,2024-06-11_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ impostorscore=0 mlxlogscore=954 phishscore=0 malwarescore=0 suspectscore=0
+ bulkscore=0 spamscore=0 clxscore=1015 priorityscore=1501 adultscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2406110119
 
-From: Johannes Berg <johannes.berg@intel.com>
-
-In nl80211, we always set the ssids of a scan request to
-NULL when n_ssids==0 (passive scan). Drivers have relied
-on this behaviour in the past, so we fixed it in 6 GHz
-scan requests as well, and added a warning so we'd have
-assurance the API would always be called that way.
-
-syzbot found that wext doesn't ensure that, so we reach
-the check and trigger the warning. Fix the wext code to
-set the ssids pointer to NULL when there are none.
-
-Reported-by: syzbot+cd6135193ba6bb9ad158@syzkaller.appspotmail.com
-Fixes: f7a8b10bfd61 ("wifi: cfg80211: fix 6 GHz scan request building")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/wireless/scan.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 2f2a3163968a..d7485e26f4fc 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -3493,8 +3493,10 @@ int cfg80211_wext_siwscan(struct net_device *dev,
- 			memcpy(creq->ssids[0].ssid, wreq->essid, wreq->essid_len);
- 			creq->ssids[0].ssid_len = wreq->essid_len;
- 		}
--		if (wreq->scan_type == IW_SCAN_TYPE_PASSIVE)
-+		if (wreq->scan_type == IW_SCAN_TYPE_PASSIVE) {
-+			creq->ssids = NULL;
- 			creq->n_ssids = 0;
-+		}
- 	}
- 
- 	for (i = 0; i < NUM_NL80211_BANDS; i++)
--- 
-2.45.2
+On 6/10/2024 9:33 PM, Ramya Gnanasekar wrote:
+> From: Lingbo Kong <quic_lingbok@quicinc.com>
+> 
+> Pdev id from mac phy capabilities will be sent as a part of
+> HTT/WMI command to firmware. This causes issue with single pdev
+> devices where firmware does not respond to the WMI/HTT request
+> sent from host.
+> 
+> For single pdev devices firmware expects pdev id as 1 for 5 GHz/6 GHz
+> phy and 2 for 2 GHz band. Add wrapper ath12k_mac_get_target_pdev_id()
+> to help fetch right pdev for single pdev devices.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> 
+> Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
+> Signed-off-by: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
 
