@@ -1,115 +1,160 @@
-Return-Path: <linux-wireless+bounces-8888-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8889-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 752B79057A4
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 17:56:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79B8C905894
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 18:22:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16E5728C295
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 15:56:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EB0A1C20400
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 16:22:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D39181BAB;
-	Wed, 12 Jun 2024 15:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BC8F181B87;
+	Wed, 12 Jun 2024 16:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kYWVzenO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BekjCp3W"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8729181312;
-	Wed, 12 Jun 2024 15:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4784E18133A
+	for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2024 16:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718207758; cv=none; b=TqXTeEeTAyXVbweCTjoWfBrrGZJUwDrCPyIDjVgVE3FZ26jyM9Z3RPxx6/LeAjEp3TsP95CT+n6UP0CUMsRsB8M3+YQyKDh1oR2OoF1wnWNVpe8KaS7+09BcaDD6vEo2GpIVOIzC3TiLZ1xqA9gNc9zEuyE5KGmvuf/A4EuNMZA=
+	t=1718209145; cv=none; b=b0NhAEwk4xzlEbLFQFicyT0dW+sYrh1XPNct54aUrt++3g9htT1Aa1uxAGBPgcPL4OBhEBxpGg88RgY/ppGjhpXBJiS2ptrqQ6yXVVjHYm8neug7o0cgJl12WdEeKAH2QecYeSl6s+PMjTjLQHG7iMlCV/25mFiMKleNWBsNFCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718207758; c=relaxed/simple;
-	bh=OGohKvk0MjWf9+Q8+mvrBX+1BAlKKRyUXLbfH75xyb4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=aVOTTwsJpcctQuUjdTM8dhm19LLOc1Dt6AuwIhKCXrejUHcYcJPE5H4DC9Fzyw6QCAdYqEK0nP0ui81Knrinl0W7LiaUbPTrmLHR1XPSyo1uTsFW2/6YtmNxiP9jkihUCMxy7nnZMPsyNeMQ5f1h0fnSNwiH7kbWlovFqnKdm34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kYWVzenO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7AEC7C4DDE4;
-	Wed, 12 Jun 2024 15:55:57 +0000 (UTC)
+	s=arc-20240116; t=1718209145; c=relaxed/simple;
+	bh=xTODCO3Xxhe6CnYM9IeMSAyicX7oEntJ/H4ne4NuHSI=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=eh2PJRsyEvJI+i6En/R60uZCOq0Y6w9FNoNDtUhAoWUQR56R7rkK7YW+SfJ+bchpYzlx8G9G8cXvc7ygDHo9KXtYu+c+UHb8XuzwZQ7VyBy/Ayfmh2CGOPwUk5KzKzlM2vr6kwGbsKGHXVA7Dg66HCGNtcmedGCuLK1sje0CuYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BekjCp3W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E3BC32786;
+	Wed, 12 Jun 2024 16:19:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718207757;
-	bh=OGohKvk0MjWf9+Q8+mvrBX+1BAlKKRyUXLbfH75xyb4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=kYWVzenO6v46dav7m+6VeeBQvWtkfZ2ijSROLzZNF2xhVox8NT4g6D7nEQ7Yr1CvD
-	 QbMqbzoNwKvtHxN4oOUSJGsdzFSOiqxLCA02gKqMCQ7TCsZzzusBONx5M/RWdCVpV3
-	 EiLccKqgRHfAnZUsG10WiKCsIr5ffuOoIqg1qhcsU6IhDG8FGsX5pkowWNVMy10FlC
-	 cn2EJB/8N7UtSBq02dCqRuSQs3PZ1MDiLAg7XtxdpzyjShLg11I47hWenlonizyvmL
-	 MeVPPNyid+I2VhiIZBpPj5WbK56sRWz78MH6UY8PKtaaCMSFrdgOOixPo+5vEX+bSG
-	 8/iqEXeUVgsUQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 61107C43618;
-	Wed, 12 Jun 2024 15:55:57 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1718209144;
+	bh=xTODCO3Xxhe6CnYM9IeMSAyicX7oEntJ/H4ne4NuHSI=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=BekjCp3WXmFFYqat9VCVup7d2Ds0OWrha4P89LzYk6JyZ1femQMWpHzc6qGxuKZ1I
+	 8zRTZPglsm7MreyXZQ1UHpqAtLpIssplIwudC+SQINfXDxw+yMiYedYwPNIFauUDhF
+	 pMQbIx7MC1siXWqZC2fDoql0i7Q7AqiQnDZs4UVxyx0pNCbSdcngosUKtsBzR3dg7V
+	 1dRkmvM6uwt5zjXlF05zRGtml4MOy8P95kxmiZESDWVxbk/7wdSydEyb4VTrLUgf4b
+	 i7H9HRvB0AJtevUtHAaPwYWxD9Dhi3zecibMnAcgvAuq3bAgdBZHnoYGlISf9ug74B
+	 KzpeGeu3HG09w==
+From: Kalle Valo <kvalo@kernel.org>
+To: "Peer, Ilan" <ilan.peer@intel.com>
+Cc: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>,
+  "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+  "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+  "Berg, Johannes" <johannes.berg@intel.com>,  iil_jenkins iil_jenkins
+ <EC.GER.UNIX.IIL.JENKINS@INTEL.COM>
+Subject: Re: [PATCH 6/7] wifi: cfg80211: Add support for interface usage
+ notification
+References: <20240605105722.2034610-1-miriam.rachel.korenblit@intel.com>
+	<20240605135233.23d15e758640.I7a62740a6868416acaed01e41157b3c0a7a41b4d@changeid>
+	<875xummndx.fsf@kernel.org>
+	<DM4PR11MB60436A9107BCBC27294DBF22E9C52@DM4PR11MB6043.namprd11.prod.outlook.com>
+Date: Wed, 12 Jun 2024 19:19:01 +0300
+In-Reply-To: <DM4PR11MB60436A9107BCBC27294DBF22E9C52@DM4PR11MB6043.namprd11.prod.outlook.com>
+	(Ilan Peer's message of "Sun, 9 Jun 2024 07:35:07 +0000")
+Message-ID: <87ed92nngq.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [f2fs-dev] [PATCH] tracing/treewide: Remove second parameter of
- __assign_str()
-From: patchwork-bot+f2fs@kernel.org
-Message-Id: 
- <171820775738.32393.13116890369510221266.git-patchwork-notify@kernel.org>
-Date: Wed, 12 Jun 2024 15:55:57 +0000
-References: <20240516133454.681ba6a0@rorschach.local.home>
-In-Reply-To: <20240516133454.681ba6a0@rorschach.local.home>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-hyperv@vger.kernel.org, kvm@vger.kernel.org,
- dri-devel@lists.freedesktop.org, ath10k@lists.infradead.org,
- Julia.Lawall@inria.fr, linux-s390@vger.kernel.org, dev@openvswitch.org,
- linux-cifs@vger.kernel.org, linux-bcachefs@vger.kernel.org,
- linux-rdma@vger.kernel.org, amd-gfx@lists.freedesktop.org,
- io-uring@vger.kernel.org, torvalds@linux-foundation.org,
- iommu@lists.linux.dev, ath11k@lists.infradead.org,
- linux-media@vger.kernel.org, linux-wpan@vger.kernel.org,
- linux-pm@vger.kernel.org, selinux@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, intel-gfx@lists.freedesktop.org,
- linux-erofs@lists.ozlabs.org, virtualization@lists.linux.dev,
- linux-sound@vger.kernel.org, linux-block@vger.kernel.org,
- ocfs2-devel@lists.linux.dev, mathieu.desnoyers@efficios.com,
- linux-cxl@vger.kernel.org, linux-tegra@vger.kernel.org,
- intel-xe@lists.freedesktop.org, linux-edac@vger.kernel.org,
- linux-hwmon@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
- linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org,
- linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
- linux-f2fs-devel@lists.sourceforge.net, linux-xfs@vger.kernel.org,
- ath12k@lists.infradead.org, tipc-discussion@lists.sourceforge.net,
- mhiramat@kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org,
- freedreno@lists.freedesktop.org, linux-nfs@vger.kernel.org,
- linux-btrfs@vger.kernel.org
+Content-Type: text/plain
 
-Hello:
+"Peer, Ilan" <ilan.peer@intel.com> writes:
 
-This patch was applied to jaegeuk/f2fs.git (dev)
-by Steven Rostedt (Google) <rostedt@goodmis.org>:
+> Hi,
+>
+>> -----Original Message-----
+>> From: Kalle Valo <kvalo@kernel.org>
+>> Sent: Thursday, 6 June 2024 12:28
+>> To: Korenblit, Miriam Rachel <miriam.rachel.korenblit@intel.com>
+>> Cc: johannes@sipsolutions.net; linux-wireless@vger.kernel.org; Peer, Ilan
+>> <ilan.peer@intel.com>; Berg, Johannes <johannes.berg@intel.com>;
+>> iil_jenkins iil_jenkins <EC.GER.UNIX.IIL.JENKINS@INTEL.COM>
+>> Subject: Re: [PATCH 6/7] wifi: cfg80211: Add support for interface usage
+>> notification
+>> 
+>> Miri Korenblit <miriam.rachel.korenblit@intel.com> writes:
+>> 
+>> > From: Ilan Peer <ilan.peer@intel.com>
+>> >
+>> > In some cases, when an interface is added by user space, user space
+>> > might not know yet what is the intended type of the interface, e.g.,
+>> > before a P2P Group Ownership Negotiation (GON) an interface is added
+>> > but only at the end of the GON flow the final interface type is
+>> > determined. This doesn't allow the kernel drivers to prepare for the
+>> > actual interface type, e.g., make resources available for the
+>> > interface type etc.
+>> >
+>> > Generally, adding an interface doesn't necessarily imply that it will
+>> > actually be used soon, and as described the interface might not be
+>> > used with the type it's added as.
+>> >
+>> > This new API allows user space to indicate that it does indeed intend
+>> > to use the interface soon, along with the types (of which the
+>> > interface must be one) that may be selected for that usage. This will
+>> > allow the underlying driver to adjust resources accordingly.
+>> >
+>> > Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+>> > Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+>> > Tested-by: iil_jenkins iil_jenkins <EC.GER.UNIX.IIL.JENKINS@INTEL.COM>
+>> 
+>> This new command just looks weird to me, do we really need it? I would
+>> expect to see a workaround like this in out-of-tree drivers but not in upstream.
+>> 
+>
+> As depicted above, the need to inform the driver about the intended
+> usage of the interface is real.
 
-On Thu, 16 May 2024 13:34:54 -0400 you wrote:
-> From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
-> 
-> [
->    This is a treewide change. I will likely re-create this patch again in
->    the second week of the merge window of v6.10 and submit it then. Hoping
->    to keep the conflicts that it will cause to a minimum.
-> ]
-> 
-> [...]
+Sure, I can understand the need is real. This just feels like an ugly
+workaround, not a proper solution.
 
-Here is the summary with links:
-  - [f2fs-dev] tracing/treewide: Remove second parameter of __assign_str()
-    https://git.kernel.org/jaegeuk/f2fs/c/2c92ca849fcc
+And the documentation for this is quite vague, I'm worried how do we get
+similarly working drivers? Let's say if I were to implement a user space
+application for this, or a driver implementation for that matter, it
+would be a guessing game for me. For example, what's "soon" in this
+context? 5 mins, 50 secs or 5 secs? Can the mac80211 operation sleep?
 
-You are awesome, thank you!
+So user space is now always supposed to always call this nl80211 command
+and at what stage exactly? Or is it optional? But if it's optional
+what's the point of adding it?
+
+> We encountered several P2P cases in which an interface was added and
+> P2P Group Ownership Negotiation and P2P Invitation signalling were
+> completed successfully, but the P2P Group Session establishment failed
+> since the interface type changed from P2P Client to P2P GO and the
+> local device was no longer able to accommodate the P2P GO operation
+> due to resource constraints.
+>
+> With this new API, user space can now inform the driver about the
+> intended usage of the interface so the driver will
+> make the resources available for all possible interface types. With
+> this the information exchanged during the P2P signalling
+> would correctly reflect state and the P2P group session would be able
+> to be established.
+
+Why not allocate the resources during driver initialisation? Or when
+changing the interface? Why need this weird interface?
+
+For easier reading below are all the patches, including the iwlwifi
+patch. Honestly, this just looks like something like a workaround for a
+problem in your firmware or something like that.
+
+https://patchwork.kernel.org/project/linux-wireless/patch/20240605135233.23d15e758640.I7a62740a6868416acaed01e41157b3c0a7a41b4d@changeid/
+
+https://patchwork.kernel.org/project/linux-wireless/patch/20240605135233.4d602acf0e65.I01fecab3b41961038f37ca6e0e3039c5fe9bb6bf@changeid/
+
+https://patchwork.kernel.org/project/linux-wireless/patch/20240605140556.21582e74a0e0.I7c423d03b4412d77509bd31bd41e4573f76c0e84@changeid/
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
