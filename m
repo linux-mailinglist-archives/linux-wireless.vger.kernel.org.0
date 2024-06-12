@@ -1,146 +1,91 @@
-Return-Path: <linux-wireless+bounces-8849-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8850-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C096905033
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 12:13:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90FCB905037
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 12:14:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E574D281337
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 10:13:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 139C0B2124F
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 10:14:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD73916E876;
-	Wed, 12 Jun 2024 10:13:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD69B16E87A;
+	Wed, 12 Jun 2024 10:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="BzHWPfh8"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ZowhKtiv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8E72576F;
-	Wed, 12 Jun 2024 10:13:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C9D62576F;
+	Wed, 12 Jun 2024 10:14:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718187191; cv=none; b=ZzLKFtlO+Q1hZ39wMBhvCqChXwxtWV00j/qsiCdF3hoOy1uHijz+LkhU4df6+Vy1eIkZCTgWjJ11YBT7eNzB6WGZ77IhF33MMfK93dvoeuq34yM/jvS3Sh06dcq66GWtogAvbNcKQJQlI7+1lJBKNHcXDvUMlszsgmBIzcMDZkc=
+	t=1718187287; cv=none; b=LeXW8ovPxxOzzetfs8Y2zOYXQ4S+ncg9WwU0IjaC89J90YUPIFE6ORdChsd7yNbk5y9m1FfRlsCs7Di1kRZelo4RNFDQmaZlj+pAEgO22MscQH36OkiLolc+x4r+4HQ/2rIu3KhuGVmIm4Xb7JYHOKXCim6frcH2kRCPK1pAyr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718187191; c=relaxed/simple;
-	bh=xI1nz6+05116BJ68aHUKThL+jHGqGfEX+iU8gbTQFVQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Uwxs5VsyTUDvkyy4Ct/tyvBCvfRQUMejWA770DdQSdkQyL1NKYmwdeYNwlKJTvdgQXQbxwA8fdVf3luupXcZujUn+xGwuv7MW77z+Kv0c18h61ECQNlxj/AbkkFgubueJGCk+5iY+r2qqlUgsHnuFPNpIbBhbEykjPT3WDIBS4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=BzHWPfh8; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45C8Dq2T018413;
-	Wed, 12 Jun 2024 10:12:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	n2+XhoB7ytlT0opA81Q8hkToIeSshpdybOZcZGjTlvU=; b=BzHWPfh8hN8iIPeU
-	y0+tu/k6rgKAyP1Q0H0zhzYsj70whOsn6A1Pcc+exJXYxsRy9KZWc+2AsBsqDqXf
-	YzOsB2YWEtEfpaFnjLIue/qUXjbF9SK5qFsDBC8IoPH/OOA4ils3n9Y7n68K7//h
-	uex0jiWr0w7BwmF/ID7+YkVM1+jwovXW+mYFON8jGZENOEGUMPAw7fdA3NpzEaFO
-	/7mPjNv9qTR0jwTJ0JumEUKXE6mie4/lxUU8DDeK/fEmNU4T0BrAZ4hQkMQNA6ps
-	OjuZKnXlcsjgtbAwWCOEG5Lv+vdykvFhtKMqgza9fhMcbLNN+A8fWzEvOQvZ0hHg
-	Yx6hHQ==
-Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ypm6bb65v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Jun 2024 10:12:51 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA03.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45CAComO005561
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Jun 2024 10:12:50 GMT
-Received: from [10.253.72.168] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 12 Jun
- 2024 03:12:48 -0700
-Message-ID: <9ab68c04-b33f-4f76-a563-2bc9d6c01401@quicinc.com>
-Date: Wed, 12 Jun 2024 18:12:45 +0800
+	s=arc-20240116; t=1718187287; c=relaxed/simple;
+	bh=F1N0NfWSGU2xjNToB7XxMF3lDRv4WElvZ+cfjLMi2Zw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Sa0hWAEaJhH7f6W0D6hZZipS/dCYe2Qjg7py78pHwqx+GJkw/LST70N/uewBEGGwTOzEHQDQzV2Q2FiXXi1Oh6iueP8w7TqjbwZljuRolhemYSPb2kSvu7UmzXfpVDC7z9gQuiFz0OYoX3EHHImBDBmfg8N6Bcv57n775abZz9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ZowhKtiv; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=F1N0NfWSGU2xjNToB7XxMF3lDRv4WElvZ+cfjLMi2Zw=;
+	t=1718187286; x=1719396886; b=ZowhKtivNLhfXneHCRFJtIEPtfuOo4gWWSvJNajL96gyC6h
+	7jpOK6oU2xk5puxvSzuFT3dw486yoa94wNlBwcKgJGyKNJ5k40PNXuKliK1W+czcnRgCLBnWPY9Ac
+	pd85CjuMOGdx1sfUnFL6XiIYaDXpmXdJiAlVmPm4dOmszrPd4N46Kd3lG0hsTTCMFlqe1UgCtq5xU
+	Bo1BKszTS2MRTjohKY+c3j+5+Ug0IH6ByX2SceJggrveaVrZEEXdgUyJvRnZcKqP294kz5SDHJnpX
+	yrZ4itIz/lo81Jzt4jJtNb/7QryIGkMPJa2vgPxUBYdu2NCm9IPMi9QHTAX3RQEA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1sHL03-0000000A9PT-0srd;
+	Wed, 12 Jun 2024 12:14:39 +0200
+Message-ID: <42e6c6ec01df0de6c1bf8b7610758d0f1ef8ae7c.camel@sipsolutions.net>
+Subject: Re: [PATCH v1 1/2] net: rfkill: Fix a wrongly handling error case
+From: Johannes Berg <johannes@sipsolutions.net>
+To: quic_zijuhu <quic_zijuhu@quicinc.com>, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	emmanuel.grumbach@intel.com
+Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Date: Wed, 12 Jun 2024 12:14:38 +0200
+In-Reply-To: <9ab68c04-b33f-4f76-a563-2bc9d6c01401@quicinc.com>
+References: <1717771212-30723-1-git-send-email-quic_zijuhu@quicinc.com>
+	 <1717771212-30723-2-git-send-email-quic_zijuhu@quicinc.com>
+	 <5d901b213389c38eb5bd1df37cb8a1c3d82ebba5.camel@sipsolutions.net>
+	 <9ab68c04-b33f-4f76-a563-2bc9d6c01401@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/2] net: rfkill: Fix a wrongly handling error case
-To: Johannes Berg <johannes@sipsolutions.net>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <emmanuel.grumbach@intel.com>
-CC: <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>
-References: <1717771212-30723-1-git-send-email-quic_zijuhu@quicinc.com>
- <1717771212-30723-2-git-send-email-quic_zijuhu@quicinc.com>
- <5d901b213389c38eb5bd1df37cb8a1c3d82ebba5.camel@sipsolutions.net>
-Content-Language: en-US
-From: quic_zijuhu <quic_zijuhu@quicinc.com>
-In-Reply-To: <5d901b213389c38eb5bd1df37cb8a1c3d82ebba5.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: wBoQalJrJoc70T3E_ZE6chj00Goq5dzE
-X-Proofpoint-GUID: wBoQalJrJoc70T3E_ZE6chj00Goq5dzE
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-12_06,2024-06-11_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
- mlxlogscore=999 impostorscore=0 spamscore=0 priorityscore=1501
- lowpriorityscore=0 adultscore=0 bulkscore=0 phishscore=0 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2406120073
+X-malware-bazaar: not-scanned
 
-On 6/12/2024 4:15 PM, Johannes Berg wrote:
->>
->> use pr_err() instead of WARN()
->> for this error case handling.
-> 
-> I don't see anything wrong with the WARN here, it's the user/driver
-> calling it completely incorrectly.
-> 
-the function is a kernel API and it is handing invalid user input.
-below comments for WARN() seems say that pr_err() is better than WARN()
-for this case.
+On Wed, 2024-06-12 at 18:12 +0800, quic_zijuhu wrote:
+> On 6/12/2024 4:15 PM, Johannes Berg wrote:
+> > >=20
+> > > use pr_err() instead of WARN()
+> > > for this error case handling.
+> >=20
+> > I don't see anything wrong with the WARN here, it's the user/driver
+> > calling it completely incorrectly.
+> >=20
+> the function is a kernel API
 
-include/asm-generic/bug.h:
-/*
- * WARN(), WARN_ON(), WARN_ON_ONCE(), and so on can be used to report
- * significant kernel issues that need prompt attention if they should ever
- * appear at runtime.
- *
- * Do not use these macros when checking for invalid external inputs
- * (e.g. invalid system call arguments, or invalid data coming from
- * network/devices), and on transient conditions like ENOMEM or EAGAIN.
- * These macros should be used for recoverable kernel issues only.
- * For invalid external inputs, transient conditions, etc use
- * pr_err[_once/_ratelimited]() followed by dump_stack(), if necessary.
- * Do not include "BUG"/"WARNING" in format strings manually to make these
- * conditions distinguishable from kernel issues.
- *
- * Use the versions with printk format strings to provide better
-diagnostics.
- */
+Sure.
 
-> I also don't really think this is a *fix*, if you used the API
-> incorrectly you can't necessarily expect a correct return value, I
-> guess, but anyway it shouldn't happen in the first place.
-> 
-okay, will remove term fix and fix tag. the API returns type bool for
-block state, the type bool can't cover case for invalid user input.
+> and it is handing invalid user input.
 
-> I'm happy to take the return value change (only) as a cleanup, if you
-> wish to resend that.
-> 
-i am pleasure to resend it after code review done.
->> Fixed by
-> 
-> Please also read
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-> 
-okay, thank you
-> johannes
+No.
 
+johannes
 
