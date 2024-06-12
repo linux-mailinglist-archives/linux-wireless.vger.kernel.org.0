@@ -1,236 +1,143 @@
-Return-Path: <linux-wireless+bounces-8822-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8823-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53564904764
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 00:58:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F0BA904820
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 02:56:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C75E51F25564
-	for <lists+linux-wireless@lfdr.de>; Tue, 11 Jun 2024 22:58:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B882F1F233BC
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 00:56:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 631DE156644;
-	Tue, 11 Jun 2024 22:56:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jC/lBgZD"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1498715BB;
+	Wed, 12 Jun 2024 00:56:52 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28BA77D3FA;
-	Tue, 11 Jun 2024 22:56:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015B610FA;
+	Wed, 12 Jun 2024 00:56:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718146605; cv=none; b=jl6Wog2WKVPFVebTUjEDfuLOCep4ZO8zPPA+rf8m9dqfd/G4liAHhToG8AFhJp8s1HSPsP66zMbFkG2fUrIBdbmxyitzlD5fscmfvU6qhR+yfSxvti1sq0ylVDBML2ACUo0K9LCea3SHWNySuWzb7zI0R1EoMtjl5i3N9ha4+UQ=
+	t=1718153812; cv=none; b=Un5SeJ4QOV7rpjJDhE8HzI7bkdPWNeMDrNT6OKLgilr61XQys9yz3g1329hHJISkPkEUGkYyS7ebMlKPRkMLxv448Cwuup8muJhgnNxcDYXbVDO0ZDW+vZP6/TlZnRYnZ9R4OSJ+ZY3onFYsALwPXJTmktFrNcf7G1fxTbp6qQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718146605; c=relaxed/simple;
-	bh=4jBM6mXHjYlJoMIZWueS89ZlNO+AUiWEJRKWxa04gKk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=rKOimdtNyca/DoKvpEkzL/vcAYcRQ+fOWgjNoQKrRFqGl2/DcA4RSEOktHiIIZJmZt5qSMSpW8AwDm5Aek1m5ZS5t3S8wWl5Aj/M6qNYrRSj1spaXKzKW9Iorsb53c3zCVnXLDe2NueUUczZ7t7FiOKR29DpRo5VPdSfIyemf5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jC/lBgZD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61873C2BD10;
-	Tue, 11 Jun 2024 22:56:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718146604;
-	bh=4jBM6mXHjYlJoMIZWueS89ZlNO+AUiWEJRKWxa04gKk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=jC/lBgZD6SkKl7787/66Mot1OAxtctUITyf4UXOQ2JVSa8o2lpp+iWq8ogS7UENCo
-	 yqzTumDF8tEtMA5L412KbnAWTlEICUYUaB6WQxi/iZq3KK051i9I3hdCqNPejgIY4h
-	 Ke9p24cUfRX+tKJ4QPj74HGoZDGWa82+//qPfAT/wSsLNiBhD00oQF6em+0sTCo9Ey
-	 T00111RDYHGIANzLOKvQl9jG1tiRKNY+avJse/GePnxuyh/FbgNapR/wc4e5yK42i4
-	 A9QSPKjwn8ZsN2uOR8Yxm/hvF/Rk0wTUKHu9VUqckeSElV62zzJn/RrNGm/MKg0ARp
-	 fgy3tmBrEJCJw==
-Date: Tue, 11 Jun 2024 17:56:43 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
-	Rocky Liao <quic_rjliao@quicinc.com>, Kalle Valo <kvalo@kernel.org>,
-	Jeff Johnson <jjohnson@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Srini Kandagatla <srinivas.kandagatla@linaro.org>,
-	Elliot Berman <quic_eberman@quicinc.com>,
-	Caleb Connolly <caleb.connolly@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Alex Elder <elder@kernel.org>, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	ath12k@lists.infradead.org, linux-pm@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	kernel@quicinc.com, Amit Pundir <amit.pundir@linaro.org>
-Subject: Re: [PATCH v8 16/17] PCI/pwrctl: add a PCI power control driver for
- power sequenced devices
-Message-ID: <20240611225643.GA1005995@bhelgaas>
+	s=arc-20240116; t=1718153812; c=relaxed/simple;
+	bh=WQEDdfIS01MttyVRpOjGsxOxeNT975E9YgMc/ccKkCo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Klf2UsqOYQ5kZ5tx2W29NHAHNzIH7wNQ6sJKyzMWXc4pyywx2v84o0T1Ts5zDKh213eidRRKyyFJ5zWlTi8dbg89jJRLpBJ5Gu2ju4tNCVNyaQlB4e/lmumt4dMQPOia8SJH3BMej0XbtMSJxxGbhNBlfectdNhRroP5jM8yIJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 45C0uKsI5643612, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 45C0uKsI5643612
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 12 Jun 2024 08:56:20 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 12 Jun 2024 08:56:21 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 12 Jun 2024 08:56:20 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
+ 15.01.2507.035; Wed, 12 Jun 2024 08:56:20 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Johannes Berg <johannes@sipsolutions.net>,
+        Thorsten Leemhuis
+	<regressions@leemhuis.info>,
+        Savyasaachi Vanga <savyasaachiv@gmail.com>,
+        Christian Heusel <christian@heusel.eu>
+CC: Kalle Valo <kvalo@kernel.org>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>,
+        "regressions@lists.linux.dev"
+	<regressions@lists.linux.dev>
+Subject: RE: [REGRESSION][BISECTED] wifi: RTL8821CE does not work in monitor mode
+Thread-Topic: [REGRESSION][BISECTED] wifi: RTL8821CE does not work in monitor
+ mode
+Thread-Index: AQHasIGBiI2kIPT9xk+a42EavL0uE7GryNkAgASPDICABOUZsIANAvMAgAEhOEA=
+Date: Wed, 12 Jun 2024 00:56:20 +0000
+Message-ID: <5318640d6eb74301b1fbf6d9385ba69e@realtek.com>
+References: <chwoymvpzwtbmzryrlitpwmta5j6mtndocxsyqvdyikqu63lon@gfds653hkknl>
+	 <a51f223f-18ac-4d67-9120-8da1c169b7eb@leemhuis.info>
+	 <809d2332-625e-4a46-a77e-ca2e49b0d651@leemhuis.info>
+	 <0e65ca6b471b4186a370b9a57de11abe@realtek.com>
+ <36c1f49acfcc2cc16c7e54ffeb76f1e93cb96e91.camel@sipsolutions.net>
+In-Reply-To: <36c1f49acfcc2cc16c7e54ffeb76f1e93cb96e91.camel@sipsolutions.net>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240528-pwrseq-v8-16-d354d52b763c@linaro.org>
 
-On Tue, May 28, 2024 at 09:03:24PM +0200, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> 
-> Add a PCI power control driver that's capable of correctly powering up
-> devices using the power sequencing subsystem. The first users of this
-> driver are the ath11k module on QCA6390 and ath12k on WCN7850.
-> 
-> Tested-by: Amit Pundir <amit.pundir@linaro.org>
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-
-With s/add/Add/ in subject,
-
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-
-> ---
->  drivers/pci/pwrctl/Kconfig             |  9 ++++
->  drivers/pci/pwrctl/Makefile            |  2 +
->  drivers/pci/pwrctl/pci-pwrctl-pwrseq.c | 89 ++++++++++++++++++++++++++++++++++
->  3 files changed, 100 insertions(+)
-> 
-> diff --git a/drivers/pci/pwrctl/Kconfig b/drivers/pci/pwrctl/Kconfig
-> index 96195395af69..f1b824955d4b 100644
-> --- a/drivers/pci/pwrctl/Kconfig
-> +++ b/drivers/pci/pwrctl/Kconfig
-> @@ -5,4 +5,13 @@ menu "PCI Power control drivers"
->  config PCI_PWRCTL
->  	tristate
->  
-> +config PCI_PWRCTL_PWRSEQ
-> +	tristate "PCI Power Control driver using the Power Sequencing subsystem"
-> +	select POWER_SEQUENCING
-> +	select PCI_PWRCTL
-> +	default m if ((ATH11K_PCI || ATH12K) && ARCH_QCOM)
-> +	help
-> +	  Enable support for the PCI power control driver for device
-> +	  drivers using the Power Sequencing subsystem.
-> +
->  endmenu
-> diff --git a/drivers/pci/pwrctl/Makefile b/drivers/pci/pwrctl/Makefile
-> index 52ae0640ef7b..d308aae4800c 100644
-> --- a/drivers/pci/pwrctl/Makefile
-> +++ b/drivers/pci/pwrctl/Makefile
-> @@ -2,3 +2,5 @@
->  
->  obj-$(CONFIG_PCI_PWRCTL)		+= pci-pwrctl-core.o
->  pci-pwrctl-core-y			:= core.o
-> +
-> +obj-$(CONFIG_PCI_PWRCTL_PWRSEQ)		+= pci-pwrctl-pwrseq.o
-> diff --git a/drivers/pci/pwrctl/pci-pwrctl-pwrseq.c b/drivers/pci/pwrctl/pci-pwrctl-pwrseq.c
-> new file mode 100644
-> index 000000000000..c7a113a76c0c
-> --- /dev/null
-> +++ b/drivers/pci/pwrctl/pci-pwrctl-pwrseq.c
-> @@ -0,0 +1,89 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (C) 2024 Linaro Ltd.
-> + */
-> +
-> +#include <linux/device.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/module.h>
-> +#include <linux/of.h>
-> +#include <linux/pci-pwrctl.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/pwrseq/consumer.h>
-> +#include <linux/slab.h>
-> +#include <linux/types.h>
-> +
-> +struct pci_pwrctl_pwrseq_data {
-> +	struct pci_pwrctl ctx;
-> +	struct pwrseq_desc *pwrseq;
-> +};
-> +
-> +static void devm_pci_pwrctl_pwrseq_power_off(void *data)
-> +{
-> +	struct pwrseq_desc *pwrseq = data;
-> +
-> +	pwrseq_power_off(pwrseq);
-> +}
-> +
-> +static int pci_pwrctl_pwrseq_probe(struct platform_device *pdev)
-> +{
-> +	struct pci_pwrctl_pwrseq_data *data;
-> +	struct device *dev = &pdev->dev;
-> +	int ret;
-> +
-> +	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
-> +	if (!data)
-> +		return -ENOMEM;
-> +
-> +	data->pwrseq = devm_pwrseq_get(dev, of_device_get_match_data(dev));
-> +	if (IS_ERR(data->pwrseq))
-> +		return dev_err_probe(dev, PTR_ERR(data->pwrseq),
-> +				     "Failed to get the power sequencer\n");
-> +
-> +	ret = pwrseq_power_on(data->pwrseq);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret,
-> +				     "Failed to power-on the device\n");
-> +
-> +	ret = devm_add_action_or_reset(dev, devm_pci_pwrctl_pwrseq_power_off,
-> +				       data->pwrseq);
-> +	if (ret)
-> +		return ret;
-> +
-> +	data->ctx.dev = dev;
-> +
-> +	ret = devm_pci_pwrctl_device_set_ready(dev, &data->ctx);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret,
-> +				     "Failed to register the pwrctl wrapper\n");
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct of_device_id pci_pwrctl_pwrseq_of_match[] = {
-> +	{
-> +		/* ATH11K in QCA6390 package. */
-> +		.compatible = "pci17cb,1101",
-> +		.data = "wlan",
-> +	},
-> +	{
-> +		/* ATH12K in WCN7850 package. */
-> +		.compatible = "pci17cb,1107",
-> +		.data = "wlan",
-> +	},
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(of, pci_pwrctl_pwrseq_of_match);
-> +
-> +static struct platform_driver pci_pwrctl_pwrseq_driver = {
-> +	.driver = {
-> +		.name = "pci-pwrctl-pwrseq",
-> +		.of_match_table = pci_pwrctl_pwrseq_of_match,
-> +	},
-> +	.probe = pci_pwrctl_pwrseq_probe,
-> +};
-> +module_platform_driver(pci_pwrctl_pwrseq_driver);
-> +
-> +MODULE_AUTHOR("Bartosz Golaszewski <bartosz.golaszewski@linaro.org>");
-> +MODULE_DESCRIPTION("Generic PCI Power Control module for power sequenced devices");
-> +MODULE_LICENSE("GPL");
-> 
-> -- 
-> 2.43.0
-> 
+Sm9oYW5uZXMgQmVyZyA8am9oYW5uZXNAc2lwc29sdXRpb25zLm5ldD4gd3JvdGU6DQo+IA0KPiBP
+biBNb24sIDIwMjQtMDYtMDMgYXQgMDA6NDcgKzAwMDAsIFBpbmctS2UgU2hpaCB3cm90ZToNCj4g
+Pg0KPiA+DQo+ID4gV2UgaGF2ZSBhIGRyYWZ0IGZpeCBvZiBydHc4OCBkcml2ZXIgZm9yIFJUTDg4
+MjFDRSwgYnV0IGFzIG1lbnRpb25lZCBzb21lIGRyaXZlcnMNCj4gPiBhcmUgYWZmZWN0ZWQsIHNv
+IEkgZG9uJ3QgcGxhbiB0byBzZW5kIG91dCB0aGUgcGF0Y2guIEluc3RlYWQgd2UgYXJlIGxvb2tp
+bmcgZm9yDQo+ID4gdGhlIGZpeCBvZiBjZmc4MDIxMS9tYWM4MDIxMS4NCj4gPg0KPiANCj4gR3Vl
+c3MgeW91IGRpZG4ndCBmaW5kIGl0IDopDQoNCllvdSBhcmUgcmlnaHQuIFRoYXQgaXMgbm90IGVh
+c3kgdG8gbWUuIDopDQoNCj4gDQo+IEp1c3QgZ290IHBpbmdlZCAoc3A/KSBhYm91dCB0aGlzLCBj
+YW4geW91IHNoYXJlIHRoZSBkcml2ZXIgZml4IHNvIEkgY2FuDQo+IHRha2UgYSBsb29rIHdoYXQg
+dGhlIGlzc3VlIGlzIGFib3V0Pw0KPiANCg0KUGxlYXNlIHJlZmVyZW5jZSBwYXRjaCBiZWxvdy4g
+SSBjb3B5IHRoaXMgaWRlYSBmcm9tIHJ0dzg5IFsxXSwgd2hpY2ggdGhlIG1haW4NCnN0dWZmIGlz
+IHRvIGFkZCBXQU5UX01PTklUT1JfVklGIGFuZCBjYXNlIE5MODAyMTFfSUZUWVBFX01PTklUT1Ig
+aW4gYWRkX2ludGVyZmFjZSgpLiANCkFkZGl0aW9uYWxseSBjaGVjayB3aGV0aGVyIGJzc2lkIGlz
+IE5VTEwuDQoNCk1hbnkgb3RoZXIgZHJpdmVycyBsaWtlIHJ0bHdpZmksIHJ0bDh4eHh1ZSAuLi4g
+ZG9uJ3QgZGVjbGFyZSBXQU5UX01PTklUT1JfVklGLCBzbw0KSSB0aGluayBpdCB3b3VsZCBiZSBi
+ZXR0ZXIgdG8gZml4IHRoaXMgYnkgbWFjODAyMTEgaW5zdGVhZCBvZiBmaXhpbmcgdGhlc2UgZHJp
+dmVycw0Kb25lIGJ5IG9uZS4gDQoNCg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNz
+L3JlYWx0ZWsvcnR3ODgvbWFjODAyMTEuYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsv
+cnR3ODgvbWFjODAyMTEuYw0KaW5kZXggMGFjZWJiZmExM2M0Li5iOTBkMDI2NTE5ZTIgMTAwNjQ0
+DQotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L21hYzgwMjExLmMNCisr
+KyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvbWFjODAyMTEuYw0KQEAgLTE5
+MSw2ICsxOTEsNyBAQCBzdGF0aWMgaW50IHJ0d19vcHNfYWRkX2ludGVyZmFjZShzdHJ1Y3QgaWVl
+ZTgwMjExX2h3ICpodywNCiAgICAgICAgICAgICAgICBiY25fY3RybCA9IEJJVF9FTl9CQ05fRlVO
+Q1RJT04gfCBCSVRfRElTX1RTRl9VRFQ7DQogICAgICAgICAgICAgICAgYnJlYWs7DQogICAgICAg
+IGNhc2UgTkw4MDIxMV9JRlRZUEVfU1RBVElPTjoNCisgICAgICAgY2FzZSBOTDgwMjExX0lGVFlQ
+RV9NT05JVE9SOg0KICAgICAgICAgICAgICAgIHJ0d19hZGRfcnN2ZF9wYWdlX3N0YShydHdkZXYs
+IHJ0d3ZpZik7DQogICAgICAgICAgICAgICAgbmV0X3R5cGUgPSBSVFdfTkVUX05PX0xJTks7DQog
+ICAgICAgICAgICAgICAgYmNuX2N0cmwgPSBCSVRfRU5fQkNOX0ZVTkNUSU9OOw0KZGlmZiAtLWdp
+dCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvbWFpbi5jIGIvZHJpdmVycy9u
+ZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9tYWluLmMNCmluZGV4IDdhYjdhOTg4YjEyMy4uZDUx
+YzdjYWQ3OWRhIDEwMDY0NA0KLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4
+OC9tYWluLmMNCisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvbWFpbi5j
+DQpAQCAtMjIzMSw2ICsyMjMxLDcgQEAgaW50IHJ0d19yZWdpc3Rlcl9odyhzdHJ1Y3QgcnR3X2Rl
+diAqcnR3ZGV2LCBzdHJ1Y3QgaWVlZTgwMjExX2h3ICpodykNCiAgICAgICAgaWVlZTgwMjExX2h3
+X3NldChodywgSEFTX1JBVEVfQ09OVFJPTCk7DQogICAgICAgIGllZWU4MDIxMV9od19zZXQoaHcs
+IFRYX0FNU0RVKTsNCiAgICAgICAgaWVlZTgwMjExX2h3X3NldChodywgU0lOR0xFX1NDQU5fT05f
+QUxMX0JBTkRTKTsNCisgICAgICAgaWVlZTgwMjExX2h3X3NldChodywgV0FOVF9NT05JVE9SX1ZJ
+Rik7DQoNCiAgICAgICAgaWYgKHN0YV9tb2RlX29ubHkpDQogICAgICAgICAgICAgICAgaHctPndp
+cGh5LT5pbnRlcmZhY2VfbW9kZXMgPSBCSVQoTkw4MDIxMV9JRlRZUEVfU1RBVElPTik7DQpkaWZm
+IC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9waHkuYyBiL2RyaXZl
+cnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcGh5LmMNCmluZGV4IDM3ZWY4MGM5MDkxZC4u
+YjFiNzg5MjI2NmYwIDEwMDY0NA0KLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9y
+dHc4OC9waHkuYw0KKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9waHku
+Yw0KQEAgLTYyNyw2ICs2MjcsOSBAQCBzdGF0aWMgdm9pZCBydHdfcGh5X3BhcnNpbmdfY2ZvX2l0
+ZXIodm9pZCAqZGF0YSwgdTggKm1hYywNCiAgICAgICAgdTggKmJzc2lkID0gaXRlcl9kYXRhLT5i
+c3NpZDsNCiAgICAgICAgdTggaTsNCg0KKyAgICAgICBpZiAoIXZpZi0+YnNzX2NvbmYuYnNzaWQp
+DQorICAgICAgICAgICAgICAgcmV0dXJuOw0KKw0KICAgICAgICBpZiAoIWV0aGVyX2FkZHJfZXF1
+YWwodmlmLT5ic3NfY29uZi5ic3NpZCwgYnNzaWQpKQ0KICAgICAgICAgICAgICAgIHJldHVybjsN
+CmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J4LmMgYi9k
+cml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J4LmMNCmluZGV4IDg0YWVkYWJkZjI4
+NS4uNDNhYTVkZDZmMmNjIDEwMDY0NA0KLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRl
+ay9ydHc4OC9yeC5jDQorKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J4
+LmMNCkBAIC0xMDQsNiArMTA0LDkgQEAgc3RhdGljIHZvaWQgcnR3X3J4X2FkZHJfbWF0Y2hfaXRl
+cih2b2lkICpkYXRhLCB1OCAqbWFjLA0KICAgICAgICBzdHJ1Y3QgcnR3X3J4X3BrdF9zdGF0ICpw
+a3Rfc3RhdCA9IGl0ZXJfZGF0YS0+cGt0X3N0YXQ7DQogICAgICAgIHU4ICpic3NpZCA9IGl0ZXJf
+ZGF0YS0+YnNzaWQ7DQoNCisgICAgICAgaWYgKCF2aWYtPmJzc19jb25mLmJzc2lkKQ0KKyAgICAg
+ICAgICAgICAgIHJldHVybjsNCisNCiAgICAgICAgaWYgKCFldGhlcl9hZGRyX2VxdWFsKHZpZi0+
+YnNzX2NvbmYuYnNzaWQsIGJzc2lkKSkNCiAgICAgICAgICAgICAgICByZXR1cm47DQoNCg0KWzFd
+IGh0dHBzOi8vZ2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L3dpcmVsZXNz
+L3dpcmVsZXNzLW5leHQuZ2l0L2NvbW1pdC9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0
+dzg5P2lkPWNkOWI2YjNiYWY1Mjc4YzczYzkxZTI0MmQ0MTM4NzY4NGZjN2Y4ZDgNCg0KDQoNCg==
 
