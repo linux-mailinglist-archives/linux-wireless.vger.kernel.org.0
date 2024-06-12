@@ -1,95 +1,92 @@
-Return-Path: <linux-wireless+bounces-8838-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8839-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2803904D8D
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 10:06:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D22D0904DD1
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 10:15:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7EA0DB23E88
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 08:06:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 046A91C238EA
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 08:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DF4F25605;
-	Wed, 12 Jun 2024 08:05:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F98168C33;
+	Wed, 12 Jun 2024 08:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="jN/invBY"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="VFm/j2lr"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37FB345948
-	for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2024 08:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472A341C65;
+	Wed, 12 Jun 2024 08:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718179541; cv=none; b=hg7fYGApl9nRIs8ssPE7zPdeQRk7AH4Bfjl5o4JnAEBpjnNVGQv3hymke1kqS9yPHsbngN6TpFsT/yQ4n2rXWEWmb/fr/ZKuEQoalrrt6NDHeQHnBOwi9WBj98A40AASFunxDoKcaozXCMh95+frMEpbFpzz6Egg/3hWmJi811k=
+	t=1718180144; cv=none; b=oJqfM6iPmbfx8PEk1xnT3H0Xuzn0CTICM8I+PNrELg3iYxuV9Zu+akPpgEuGUeOOFAeqWQdHLgOx/PYVzqlU3hLyAIp04ou37ciyR0TdRQU0vKxzTWAAXYzgYr9C6q3prNgVEfRmQ9HCmkxUIouGPNHT4PIALoP0YFHqlL70byA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718179541; c=relaxed/simple;
-	bh=IGHpArCv2jpEGFY4gVpV/fDuSaDNiPHUT96D9hBe7CM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EGW/hOKMzIUERjN0U2ZIyacnNPjq2Tv6y7DidZy215ujgeiTMOFIFod+KgqgDks9dBzN+g48jdHAr9m4WPFGIB2qfaBQBr4E8aURh/MZMSkOWvinra5SA4AlNps3X/YUC7R9ES7BNVPxVgATxfTWnA8nfxX4pIsmdKnDznkndx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=jN/invBY; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1718180144; c=relaxed/simple;
+	bh=xwiyBKJDZarFMbm/078sICFMFxTbzgNIbp48eF3Ki88=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=QCRh00elHz65/BzN/zKUGUsboAK7xx5jU/F2vvUC5OMJi2vTUY7xyf4qCYQhhcCRWZN8l0sxoAvDFhZrBc8kf/K3YRK4GPp3eSZaf2ksC3dIkM/MyITAe2cStre3s4YwfwmCc1+tirrtNuOk86GSJ9+28egwLnxvKA5R9XGyCzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=VFm/j2lr; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=iSPyIhNMxtArEHlFO0aNK+4vKqc7zeKLbrocKqBnlVA=; t=1718179539; x=1719389139; 
-	b=jN/invBYAXdUUSQVgl/fUXe9u9jdPKE5lIS3iXLb+UMgVJLo+m5MWFq4nDJun8r2boks+Qd4dYx
-	OSTYLtUQcpOd4ai7sfBbRDLrpSukB9hCDqUQAFJ0ze3d6BhFZpKVQq7Lic1QCxELz8Ri3CBwUsqn4
-	k/fJELlIeNx5m3Y4xHWe7lJTpPg6ErP+gBES/TfieP24pMz+/oJ5XYsj0jdt+W4ZeTHBs+Jn+ewpw
-	/jJ0DHzgMH3AykCChs5ZzuIQTQHQDQ3vYPcqXVVGAR/06Y2Z+QjTqZTq7soOd3eOjYz8VY4Da3dsR
-	D3Ld2QAYb+/0YupKy5dpugyTyeUCcykOh7Qw==;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=xwiyBKJDZarFMbm/078sICFMFxTbzgNIbp48eF3Ki88=;
+	t=1718180142; x=1719389742; b=VFm/j2lrsJ4XrmgwQJdUWDLwvPyz2/utqoYqYw5LGSBW1Dt
+	9508Gb9wbk1fNqVSjF/rnXnp3Y4suHlfr6wlxw9GkG3KOx5TZFSsPDoouexskCf2hrdfc4zQ0Pu4X
+	+/QmT0Dj9hJJiNznYF3sgr4gdJqkMmtjUh7+3x2d/0nUFqOdsw9BKNUmKh74GXSaZV0IluIDeuPNy
+	XqOp63lidqKIywEQJc35XRBjtg0pVaHlbtB7WuZFGefeYKkuvmh6r7ttlDYjQW3qmD5ujIt2dQLZN
+	3oztkR45ppyp6a65YgKFigb7OMNbSrxIRtQbgLil1Q1bTwB+FrExXIFqYjEhw/lA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1sHIzA-0000000A2If-2Ykl;
-	Wed, 12 Jun 2024 10:05:36 +0200
+	id 1sHJ8o-0000000A301-42zj;
+	Wed, 12 Jun 2024 10:15:35 +0200
+Message-ID: <5d901b213389c38eb5bd1df37cb8a1c3d82ebba5.camel@sipsolutions.net>
+Subject: Re: [PATCH v1 1/2] net: rfkill: Fix a wrongly handling error case
 From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH] wifi: mac80211: correct EHT EIRP TPE parsing
-Date: Wed, 12 Jun 2024 10:05:33 +0200
-Message-ID: <20240612100533.f96c1e0fb758.I2f301c4341abb44dafd29128e7e32c66dc0e296d@changeid>
-X-Mailer: git-send-email 2.45.2
+To: Zijun Hu <quic_zijuhu@quicinc.com>, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	emmanuel.grumbach@intel.com
+Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Date: Wed, 12 Jun 2024 10:15:33 +0200
+In-Reply-To: <1717771212-30723-2-git-send-email-quic_zijuhu@quicinc.com>
+References: <1717771212-30723-1-git-send-email-quic_zijuhu@quicinc.com>
+	 <1717771212-30723-2-git-send-email-quic_zijuhu@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-From: Johannes Berg <johannes.berg@intel.com>
+>=20
+> use pr_err() instead of WARN()
+> for this error case handling.
 
-For the EHT EIRP transmit power envelope, the 320 MHz is in
-the last octet, but if we've copied 4 octets (count == 3),
-the next one is at index 4 not 5 (count + 2). Fix this, and
-just hardcode the offset since count is always 3 here.
+I don't see anything wrong with the WARN here, it's the user/driver
+calling it completely incorrectly.
 
-Fixes: 39dc8b8ea387 ("wifi: mac80211: pass parsed TPE data to drivers")
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/mac80211/parse.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I also don't really think this is a *fix*, if you used the API
+incorrectly you can't necessarily expect a correct return value, I
+guess, but anyway it shouldn't happen in the first place.
 
-diff --git a/net/mac80211/parse.c b/net/mac80211/parse.c
-index 5c5c21ecb2b7..98fb4d316228 100644
---- a/net/mac80211/parse.c
-+++ b/net/mac80211/parse.c
-@@ -235,7 +235,7 @@ static void ieee80211_parse_tpe(struct ieee80211_parsed_tpe *tpe,
- 		*cnt_out = count + 1;
- 		/* separately take 320 MHz if present */
- 		if (count == 3 && len > sizeof(*env) + count + 1) {
--			out[4] = env->variable[count + 2];
-+			out[4] = env->variable[4];
- 			*cnt_out = 5;
- 		}
- 		break;
--- 
-2.45.2
+I'm happy to take the return value change (only) as a cleanup, if you
+wish to resend that.
 
+> Fixed by
+
+Please also read
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
+
+johannes
 
