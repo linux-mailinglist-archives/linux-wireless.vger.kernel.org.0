@@ -1,76 +1,98 @@
-Return-Path: <linux-wireless+bounces-8854-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8855-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D1D5905112
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 13:06:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E7A69051DF
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 14:00:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 891DF1F22CCA
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 11:06:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 027321F27863
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 12:00:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF63B16EC1B;
-	Wed, 12 Jun 2024 11:06:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B27716F27D;
+	Wed, 12 Jun 2024 12:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Jwu7Rk+m"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oXWplOsq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF563D388
-	for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2024 11:06:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BBE05B5B6;
+	Wed, 12 Jun 2024 12:00:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718190378; cv=none; b=A38CMlPGIIDV4aki3M4Lv9h4ptV/DWGmnP5dH8a2wrqM2pnkwVks+CSQDCDEdEp0396jKlV+HenU2U4+qMd1iXpXhqmr7mYs+Y71iVbDKmhnY2ve+euQjlnAX44qgwue6KLcW4k57mk1jKW3wAJ674HV80zbhU4MjgRtAzSicT0=
+	t=1718193650; cv=none; b=KWGT2oXBjN1LBsEM/P5iVKM4twFabdy7vYyQtGPAaHjC1LDlfmYkHhW5KmNpC03StkayyOIKUetXSOvqHTnq0UOgQnUnRPASRrKNyWR3SMWkmdeTT6eLPaUxzBtd2DJesKBhwDFRo0lHZoGWyeVfW0Uo0tMK38qk98seLuvPXdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718190378; c=relaxed/simple;
-	bh=9HxlKVUDBe1qZeoGLrRCe2lMtSVBlFdHwBPRzlwSVxE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KjG9FJ0RwnNsRqFSN5A4neljLBo6Navx9TqWivxKSZIduoKSRH8xcPLae1QzjlBTM8qizXrcgJTEJLbOgEuX+wUATcF5qaxrqbsdLFzNWQCnvru0oTd0oJgmPrdb84r6BoSf0HF0DtPjubIptKIT4NCxMWAgUvZzoaiRN0fMbkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Jwu7Rk+m; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=9HxlKVUDBe1qZeoGLrRCe2lMtSVBlFdHwBPRzlwSVxE=;
-	t=1718190377; x=1719399977; b=Jwu7Rk+mP7gWk1/sL4X8r1et3TgbpcrmjmT8ne5qdGkr4qS
-	U8wlsD5ALSESiIcI0g9jAyPXK5LyN0sLmwrvfbdQVTYDi3uFvJ5a+tU99yJYtXPbb5eCQaSytyFkJ
-	9EA4jEIey4SDICyQLklvdTsV2OUwOpPN1ekKenu8UPVVBGD/hPZxT+MwCyH3+c2LKvx9L/bVVcxvP
-	Lny1t4rPIR9NSDP5lOMDh6O7kQrLJ/pj4uA1+di0opK0ObJsN5nzeEcn+Br1E4QVVhavoXo0Xr8O3
-	Vb4iliwdoKQCmJJHYozUO5a88W0QUVQFfE5S8WSgtSVAqqe7szpRlD9x3eRAnMbA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1sHLny-0000000ABku-10aV;
-	Wed, 12 Jun 2024 13:06:14 +0200
-Message-ID: <ef80a0b77fcab051e256deb310c725d4d8884fbd.camel@sipsolutions.net>
-Subject: Re: [PATCH 0/4] wifi: cfg80211: fix per-STA profile BSS entry issues
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Veerendranath Jakkam <quic_vjakkam@quicinc.com>
-Cc: linux-wireless@vger.kernel.org
-Date: Wed, 12 Jun 2024 13:06:13 +0200
-In-Reply-To: <1718009524-5579-1-git-send-email-quic_vjakkam@quicinc.com>
-References: <1718009524-5579-1-git-send-email-quic_vjakkam@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
+	s=arc-20240116; t=1718193650; c=relaxed/simple;
+	bh=n07DsxpF09u9uRBGe0+vElVCf39YcKw1xJ60iXRcKzg=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=LDHx1BUY+VCfoBQnAkRfS+Q2GbMvCRizOynoyQUTw1T7yBnGh1imJz4bAkPh+E51+4nut56TxsPAv+d+lG9oJXuMe3I3e+A2tUUR1V9OCbarzTX9+qnP/ksNdBaMtTzM8cU409reLLf1aOrfc6kQ9KtXF/3dcvrThHgPn7CTkOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oXWplOsq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E93BFC3277B;
+	Wed, 12 Jun 2024 12:00:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718193649;
+	bh=n07DsxpF09u9uRBGe0+vElVCf39YcKw1xJ60iXRcKzg=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=oXWplOsq4nnAtuLBBD+pAoPfNo9LptulGP0gr4nvRfkbtxPnYsxqr3QnMyNnPfYH6
+	 kM6B6mF0kd1Ds3lXuu2aUqqdtb2Kf38jBF1DBUwPw3CjvcAU6TbpOfjINQEFLou32C
+	 gNO36MRx2EzUGOJIr1iRM4rmsewkGDoLFBIRqLrfA6o7BBfLjPGcu1/Xs+KG6d1IOK
+	 SaWDYf3mFcw/dBJ2LvrZiUKXKqd+PR93+0BQK7042tV8lwenoBsaUewEsHFnSGXvYO
+	 Z9Uz4PZkJTxFTCe4Ya9GSvubI3jvnXrYn/a7krp8m7cfs0ZimCQ+kJYlNXoJ8vWeOV
+	 fN1MYBnBNUaIg==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 7bit
+Subject: Re: [1/2] wifi: at76c50x: use sizeof(*pointer) instead of
+ sizeof(type)
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: 
+ <AS8PR02MB7237C784C14DBC943CB719F88BFE2@AS8PR02MB7237.eurprd02.prod.outlook.com>
+References: 
+ <AS8PR02MB7237C784C14DBC943CB719F88BFE2@AS8PR02MB7237.eurprd02.prod.outlook.com>
+To: Erick Archer <erick.archer@outlook.com>
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Kees Cook <keescook@chromium.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>,
+ Justin Stitt <justinstitt@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Johannes Berg <johannes.berg@intel.com>,
+ Alan Stern <stern@rowland.harvard.edu>,
+ Erick Archer <erick.archer@outlook.com>, linux-wireless@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-hardening@vger.kernel.org, llvm@lists.linux.dev
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <171819364392.3856519.7235762996052092002.kvalo@kernel.org>
+Date: Wed, 12 Jun 2024 12:00:45 +0000 (UTC)
 
-On Mon, 2024-06-10 at 14:22 +0530, Veerendranath Jakkam wrote:
-> This patch set contains bugfixes and cleanups related to per-STA
-> profile BSS entries.
->=20
+Erick Archer <erick.archer@outlook.com> wrote:
 
-It also has RCU bugs (per warnings in the hwsim tests).
+> It is preferred to use sizeof(*pointer) instead of sizeof(type)
+> due to the type of the variable can change and one needs not
+> change the former (unlike the latter). This patch has no effect
+> on runtime behavior.
+> 
+> At the same time remove some redundant NULL initializations.
+> 
+> Signed-off-by: Erick Archer <erick.archer@outlook.com>
 
-johannes
+2 patches applied to wireless-next.git, thanks.
+
+aea9165ccfd1 wifi: at76c50x: use sizeof(*pointer) instead of sizeof(type)
+bbef1d006cb1 wifi: at76c50x: prefer struct_size over open coded arithmetic
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/AS8PR02MB7237C784C14DBC943CB719F88BFE2@AS8PR02MB7237.eurprd02.prod.outlook.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
