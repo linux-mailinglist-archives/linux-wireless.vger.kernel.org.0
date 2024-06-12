@@ -1,156 +1,127 @@
-Return-Path: <linux-wireless+bounces-8866-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8873-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8079890527B
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 14:31:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9638C905293
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 14:35:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89B241C21843
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 12:31:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A95941C2188C
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 12:35:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24B0E16F901;
-	Wed, 12 Jun 2024 12:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A201F16FF55;
+	Wed, 12 Jun 2024 12:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Kp2pCGcJ"
+	dkim=pass (2048-bit key) header.d=concord.sh header.i=@concord.sh header.b="hqddc/9m"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from komekko.fuwafuwatime.moe (komekko.fuwafuwatime.moe [65.21.224.109])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B8D172799
-	for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2024 12:30:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 126D116D4F6;
+	Wed, 12 Jun 2024 12:35:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.224.109
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718195452; cv=none; b=b7PyaotYdiPG41xSTeHy5dQLnHHk6HUVboKuwIzGJux5SKgX7VMMYubB2ITIcL61uFewe1IywgriKvdkMX0rvOBq+eyRMak8llLpaTmMPaV/5dWpDfMs/8zQAwscDNQl6uRCck/6KXoUbSADOIEheVKLc07yFYXBe2NFbTlRVX4=
+	t=1718195713; cv=none; b=K0yKTlAyBXdC7d0JEl3p5hhQMBSO3gj8JrKZfsIpfVsQVA+AEpusBiEi9N171Q4tUS3U9OsQ+jNkVFczrUIX+G3RMoHYahc8bXhvX/hHff617lmaA4mf0n0cN++cTml2e4r7iCE4b5lDX74yH+FZQwbE7AoKS4JMDdlv9TiZ3fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718195452; c=relaxed/simple;
-	bh=RywbknV8SP0fOLGcJYxg4qNIa4JkeIxwQQlegGFPnAg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nj4YGOmS0+FrVbyObKQd8r70IfEW6f/GlaXSPQ1DrIZ9D4Swy7Vx6O4wZuWUMliXW6cHcdQU9SzZekPN9oFvovCoU8wLEgTauJIe281NL6E92lf9Tf4HBortqaAIMsuGAIXqUFoC8fGd6VoadDpgLjijgxbYZFBIUmRoYA0Tloc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Kp2pCGcJ; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=LFVrlfKjtdFmRd6RQ+XaAHOlKyCDa66dUA8J2QyEWdQ=;
-	t=1718195450; x=1719405050; b=Kp2pCGcJQanwpMesrAR7YdM0B8+YEuCSNbSstm62NyDxCI/
-	BbBTUYMDxugX6ga9nU9x9yxvinOdAyFoyizZiP3ufH5WPw59FbdIz9ZSnQB72g4ryqJK+6rA1nKUR
-	eEGKfrGJKqwtSrFPFhzrWYwCQdyYc1jfCnJUpa3EABo/gPl4UiRnXGP6wb9RQQi/kaicZCKOoaVIU
-	hlr6r3ojyna/XaZWg3lA35hy3vS3LdRN7mdsJhR+0hrc9pJ5MCt0nRLIe0AMjGqXX+4XsGH2yacuP
-	HrUjoH/xDYBxjEiZR0oNUDFgsdIM7XhyrUMNdOgbY1JY1oCBGQTbXvg92YrMgsdg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1sHN7o-0000000AGRh-0dfg;
-	Wed, 12 Jun 2024 14:30:48 +0200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [PATCH 3/3] wifi: mac80211: handle protected dual of public action
-Date: Wed, 12 Jun 2024 14:28:37 +0200
-Message-ID: <20240612143037.db642feb8b2e.I184fa5c9bffb68099171701e403c2aa733f60fde@changeid>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240612123037.36687-5-johannes@sipsolutions.net>
-References: <20240612123037.36687-5-johannes@sipsolutions.net>
+	s=arc-20240116; t=1718195713; c=relaxed/simple;
+	bh=TDi4E53eOV070hTG5YTA25MB1lt7gnKyfwnJfREXyYo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VOH4gEf/bNo5HB3c9CyzMbMH4Id41DxAl/6QcAFtXgMBjxn7VdFAGAtufuZUM1viAXt8FF1zdVrXZ9FFxvAjkPU33sf3SqQ1cZjeGqi4UmbBy/fNtYBGCXrAKcIbsrc0igxirpsmJ+9jaZBER8xpIPicNcHpFCx0V3KOeHaoMiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=concord.sh; spf=pass smtp.mailfrom=concord.sh; dkim=pass (2048-bit key) header.d=concord.sh header.i=@concord.sh header.b=hqddc/9m; arc=none smtp.client-ip=65.21.224.109
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=concord.sh
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=concord.sh
+Received: from megumin.fuwafuwatime.moe (unknown [71.203.71.170])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by komekko.fuwafuwatime.moe (Postfix) with ESMTPSA id A03E41145104;
+	Wed, 12 Jun 2024 15:29:15 +0300 (EEST)
+Received: from localhost (unknown [192.168.1.101])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by megumin.fuwafuwatime.moe (Postfix) with ESMTPSA id 0C8D010962BC;
+	Wed, 12 Jun 2024 08:29:10 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=concord.sh; s=dkim;
+	t=1718195353;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TDi4E53eOV070hTG5YTA25MB1lt7gnKyfwnJfREXyYo=;
+	b=hqddc/9maZCsBRJ9ABlmTv6tXq6l0TTb+km1ZM5oOQfADREbo2japdfW2lyZe49Gfba42c
+	FGg6yfC+tWIv8FkC1NEeiJW1u2IWOmoK1ekdLLHPz2wkjITKo8UMxF6FQjA+fatksvPNoh
+	ncONAKqvg5cXEhxf4WpDBCh1Zvp+ZO7tnfD7xHmBtxGUQ66gWcwuBUYKaMMlPBlhotMEpJ
+	VRr1q8LALz50D2LL67N/gpLfA4kinPgTB6RXV+Zc3ggKIJhGf//5CNCHbz8aUOqPBDtSLD
+	lje7a8rSySZcGmtCyAB4e2MIXtbYRMgAmcBA5ncaYbDjVawpMgtbxGMCsfqwRQ==
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=me@concord.sh smtp.mailfrom=me@concord.sh
+Date: Wed, 12 Jun 2024 08:29:01 -0400
+From: Kenton Groombridge <me@concord.sh>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Kenton Groombridge <concord@gentoo.org>, 
+	Kees Cook <keescook@chromium.org>, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v3] wifi: mac80211: Avoid address calculations via out of
+ bounds array indexing
+Message-ID: <hftvxmqv4wm4l6s4ynkzakvawem4a6mvzvkbvnfgvkuie6ybbw@7pulonpy7q74>
+Mail-Followup-To: Johannes Berg <johannes@sipsolutions.net>, 
+	Kenton Groombridge <concord@gentoo.org>, Kees Cook <keescook@chromium.org>, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-hardening@vger.kernel.org
+References: <20240605152218.236061-1-concord@gentoo.org>
+ <fd1acc0f69ef9573ff0dced35863949c80c6d5e7.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="m6rphp4l66hp66gv"
+Content-Disposition: inline
+In-Reply-To: <fd1acc0f69ef9573ff0dced35863949c80c6d5e7.camel@sipsolutions.net>
 
-From: Johannes Berg <johannes.berg@intel.com>
 
-The code currently handles ECSA (extended channel switch
-announcement) public action frames. Handle also their
-protected dual, which actually is protected.
+--m6rphp4l66hp66gv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/mac80211/mlme.c | 22 ++++++++++++++--------
- net/mac80211/rx.c   |  1 +
- 2 files changed, 15 insertions(+), 8 deletions(-)
+On 24/06/12 10:20AM, Johannes Berg wrote:
+>=20
+> Wait ... I don't know what Kees did here, but seems then he should sign-
+> off too.
+>=20
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index fff158b1615f..e76b887a46eb 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -7429,6 +7429,7 @@ void ieee80211_sta_rx_queued_mgmt(struct ieee80211_sub_if_data *sdata,
- {
- 	struct ieee80211_link_data *link = &sdata->deflink;
- 	struct ieee80211_rx_status *rx_status;
-+	struct ieee802_11_elems *elems;
- 	struct ieee80211_mgmt *mgmt;
- 	u16 fc;
- 	int ies_len;
-@@ -7472,9 +7473,8 @@ void ieee80211_sta_rx_queued_mgmt(struct ieee80211_sub_if_data *sdata,
- 		    !ether_addr_equal(mgmt->bssid, sdata->vif.cfg.ap_addr))
- 			break;
- 
--		if (mgmt->u.action.category == WLAN_CATEGORY_SPECTRUM_MGMT) {
--			struct ieee802_11_elems *elems;
--
-+		switch (mgmt->u.action.category) {
-+		case WLAN_CATEGORY_SPECTRUM_MGMT:
- 			ies_len = skb->len -
- 				  offsetof(struct ieee80211_mgmt,
- 					   u.action.u.chan_switch.variable);
-@@ -7498,9 +7498,9 @@ void ieee80211_sta_rx_queued_mgmt(struct ieee80211_sub_if_data *sdata,
- 								 src);
- 			}
- 			kfree(elems);
--		} else if (mgmt->u.action.category == WLAN_CATEGORY_PUBLIC) {
--			struct ieee802_11_elems *elems;
--
-+			break;
-+		case WLAN_CATEGORY_PUBLIC:
-+		case WLAN_CATEGORY_PROTECTED_DUAL_OF_ACTION:
- 			ies_len = skb->len -
- 				  offsetof(struct ieee80211_mgmt,
- 					   u.action.u.ext_chan_switch.variable);
-@@ -7517,8 +7517,13 @@ void ieee80211_sta_rx_queued_mgmt(struct ieee80211_sub_if_data *sdata,
- 					ies_len, true, NULL);
- 
- 			if (elems && !elems->parse_error) {
--				enum ieee80211_csa_source src =
--					IEEE80211_CSA_SOURCE_UNPROT_ACTION;
-+				enum ieee80211_csa_source src;
-+
-+				if (mgmt->u.action.category ==
-+						WLAN_CATEGORY_PROTECTED_DUAL_OF_ACTION)
-+					src = IEEE80211_CSA_SOURCE_PROT_ACTION;
-+				else
-+					src = IEEE80211_CSA_SOURCE_UNPROT_ACTION;
- 
- 				/* for the handling code pretend it was an IE */
- 				elems->ext_chansw_ie =
-@@ -7532,6 +7537,7 @@ void ieee80211_sta_rx_queued_mgmt(struct ieee80211_sub_if_data *sdata,
- 			}
- 
- 			kfree(elems);
-+			break;
- 		}
- 		break;
- 	}
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 4914692750e5..0ff9062a130c 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -3617,6 +3617,7 @@ ieee80211_rx_h_action(struct ieee80211_rx_data *rx)
- 
- 		break;
- 	case WLAN_CATEGORY_PUBLIC:
-+	case WLAN_CATEGORY_PROTECTED_DUAL_OF_ACTION:
- 		if (len < IEEE80211_MIN_ACTION_SIZE + 1)
- 			goto invalid;
- 		if (sdata->vif.type != NL80211_IFTYPE_STATION)
--- 
-2.45.2
+Very early on I asked Kees to review this patch and he identified a
+couple issues with it and offered some suggestions. I wanted to make
+sure to credit him appropriately for his help -- I apologize if the
+Co-authored-by: tag is not appropriate here.
 
+--m6rphp4l66hp66gv
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQKTBAABCgB9FiEEP+u3AkfbrORB/inCFt7v5V9Ft54FAmZplIlfFIAAAAAALgAo
+aXNzdWVyLWZwckBub3RhdGlvbnMub3BlbnBncC5maWZ0aGhvcnNlbWFuLm5ldDNG
+RUJCNzAyNDdEQkFDRTQ0MUZFMjlDMjE2REVFRkU1NUY0NUI3OUUACgkQFt7v5V9F
+t57vpA//VHsT66cH6yUOnOb25EOh76FkknUiaDTdDSU90XWIx3SBe2xILR+yeipU
+hMpdatBpLtE0lIKnWjp7a9ZxTrIzHtqkKqscNzFRlsPVlZqOw3pOmCyyYi4gsxwY
+AL6tn4Jb6iS4msK124/ncdOIkudCMuE3p8ii9SDFn47ubf4oROgsFponQqP1Mjt6
+/0a1fPFbUm7pJR/dCVbk+WcEHq65jS3uk60fL1iYttLsPQVjAKjkbsfDzUA7h8Vx
+xPTXgbSNgy2uCp78s20z0gkGiJ4RLGJlE9U2msFHbWRUY0MBZDVa67IHMql7JsOl
+Y3MCItaZdLbf44bhP2NuFEF5NPdXka2EgrTpS7wUbnX8x9H9nmCVTgWFWOHKGV2y
+2roUwfuO/oYSrmQpFH2CTo0wtwnKaA+57e8qD6kQZzRqeGMrLGoc9AwvFPxxXPyy
+ZyDfSUXRY9PRJ/TGZAosm1PO1BCMJTd9Qg+0v3usoXeBtsG49E3XJtLfKCq0dK8i
+OSpUfNVuPDeZ1MA2YsbmXg/z/WGmj7daCA20Kto502qtuTHYsX4X9SxFx7SZHCEh
+MkKjyPpyLxMSMhLTHHD9qIs+LsUxvDbKElZPT+0YmrOaS1xB3SW685sNmoGVOZ8Z
+aF037mFI3iIUqGjFZZynBmJPllU2//O9CP9RIfne12m7TrZWc2U=
+=0LHB
+-----END PGP SIGNATURE-----
+
+--m6rphp4l66hp66gv--
 
