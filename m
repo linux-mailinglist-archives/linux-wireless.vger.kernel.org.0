@@ -1,107 +1,131 @@
-Return-Path: <linux-wireless+bounces-8896-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8897-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08551905BCB
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 21:16:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0F1E905BEE
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 21:26:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B148E1F21668
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 19:16:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34979286E12
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 19:26:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB9C57880;
-	Wed, 12 Jun 2024 19:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4DB82C7D;
+	Wed, 12 Jun 2024 19:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="de/3beha"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="T72jWBUZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09FC381D1;
-	Wed, 12 Jun 2024 19:16:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B0D374D3
+	for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2024 19:26:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718219765; cv=none; b=vGj9qoDwdFBD2Umegk6WY/6YyrmJPdVg4oDdxQ5QljGnJr3vxw1ltExcRruobS0pq1TVJAi8MJ/lzscyfGPRBfvz73S8s6GQkgEdYFyop3EpMNaB5n5n7QrxyTQSGkWyf9EHJs9bqEd5Sd81SZb4bHEtYUxlMcN5DBZS/lFF3q8=
+	t=1718220401; cv=none; b=qW2JsekKsX+TU1BIzjrRfs+Z4PvzcISPlGYuCI/4HQP5Qmn+OHlMPQMlW/SLR1jUAZVyY7dhIelUIw9eEwyywqV0mAQC5Tzyy9PRptY0U9z7zjqzB5NwSID2ic1mBz8f8Ck9YEyhWrgjxlS0BLhFLA3khpEQ5y6DO8kiFMmAfcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718219765; c=relaxed/simple;
-	bh=A+VpfNhkNXssJl8SPNJS+OQlIAJWkhecVNtDnhP3BmU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PEscHBfXwjT7rLLKMONRHmcweoPo8Df3a5msrSViynBrUJ21U0sICWCR0XKlal5o9LzxePyvLgDQF0J2wFYrSACOuocjjFuayESzHiNjxBJvIJ4PlWUAgQ1QMgESkc4PIS32ImxKy9xfFKu95FXdL205+lQr1xLRd9ObPW4AlLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=de/3beha; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-1f6f38b6278so277195ad.0;
-        Wed, 12 Jun 2024 12:16:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718219763; x=1718824563; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A+VpfNhkNXssJl8SPNJS+OQlIAJWkhecVNtDnhP3BmU=;
-        b=de/3behadMnFpTa2JI4KRbO9yht4qFRym9W+YaIfaAcE9EsokaLfqwv2AwFivoJO3W
-         GYWONshtt2tayYTD5BZqegzHxZBCYCv4jpw+dfD30hTqSl/DzR4valucEzCjuBy7Gmuy
-         M7b7oCSprDewHeJ80fN/2J3roptnA1Y8In2eZtXYCUne6PDb0MzG7VhcBc/vOZXqzkJ5
-         GsyU55eKrMqHzbYw2I/7XiSwH9ZFiYU2s6vysYksEJJRGoCqIyZpyFhuyr/jCfBRV8n9
-         m19dgA1sbXUWSZeBoxAuIpQP2XMliymiP3RAla0AyCkVT30+eYk5bBVZ9HNjgK0I9NR2
-         EHSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718219763; x=1718824563;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=A+VpfNhkNXssJl8SPNJS+OQlIAJWkhecVNtDnhP3BmU=;
-        b=SiyYGW4uj0jDFoLHFMQKNaVITUgyHhLEAPQYBkj0NzNzLorFQ/o4/qHj6az07Dhe+N
-         iwDXnIBCsjinCcsM3lrj28egpYP9wmgiH3aT6qiuONBOMNih2Joyd0gw/eXDYliiRdEr
-         0lPTfkuKVTUsVSiEzotH9zYgqAh7d6FML8LM2/WhkHNqUInhwmN3yOblgtdXSBLNtRuv
-         orxlSLjBxERo0hhA+GOC8AOObU4DkTthfd2oN/ANYsZvvPI9Wajgs4pXJdhjFG2rjtEi
-         HZEJl92CznDH+/wxcW96p7OgPQCGoxAA0ensHeXU8AvYj/pwbO8ds65Z6tiaqKJ6x/wS
-         P+/w==
-X-Forwarded-Encrypted: i=1; AJvYcCVkAAWf+QNUYRcI6wnltAOuciGupoUAAbMfTl+IGezejo3cYjDw8mlgWoAYxQ4fC6HlxMfupjsSVh77t6Fwu1qG2G/F6EGBLLnQAVhd4MWsSKKpbYjgsQYT8RAiGLjFo4wMZYb3qDsZ2/xV9ag=
-X-Gm-Message-State: AOJu0Yy56HE+xsGjcu0jxMf564ybiyijKrQyzMBSpLXrZkDFp9qJ+8IN
-	tbLh8WVSXmnlZBlI37xaT++TmaikFcCpdTIx7oT+DsvGU27f6MjCT8mAb2lh9Nw+gPvRyAse5p9
-	TvcEMLx0YL72JaWU14WZNMFPwLoY=
-X-Google-Smtp-Source: AGHT+IEz12pJOJPP4SRJM7X37Q5Q/PBHs8l5ZKRIH+idUXzto7zy5Roy+kO8O4ZOVmAX1ew5P/R2FzaP+3uYKsxiQWE=
-X-Received: by 2002:a17:903:2444:b0:1f7:2576:7fbe with SMTP id
- d9443c01a7336-1f83b7328eamr29256795ad.5.1718219762849; Wed, 12 Jun 2024
- 12:16:02 -0700 (PDT)
+	s=arc-20240116; t=1718220401; c=relaxed/simple;
+	bh=mQ5HCu/yYf295hF0HmU6VbI/56nsYqxUvlSie5zh3o4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=pEWM0wcKDJI4U266efyx6XKvSl5XIaWFS6DAwCcEC/uOngoEVdIReZkV53doLia5JyRH6VTVNRp7Z1v7splaOW0U5U4xL2BXtQ/XW3VnB6PGLoLMq4GiiM4iZV4BJXtPsYG2OQjp8pbIlN0HD0GflwQ6bIymXFIhHVAQyC183is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=T72jWBUZ; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45CDqqZN019231;
+	Wed, 12 Jun 2024 19:26:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	g3ftkoyR5O0kSK38yll0SLWdrY4adiKP1UY4i0+tPjU=; b=T72jWBUZ8jcnNpnF
+	xD3T16jNLnjMvgKWwsL96XkPr7R/bRgqm0x02gwbXbT7ACjPTQV+MJlJBvIB/kqu
+	/w2iMrpET7vzwDZZzb1aqJqDQsIwUOxa99f0BAHbM0CYusH1daziz6SvO+Os/wpz
+	9ThjbNgM2XRtBheRR0lbTWbvPTioVxlQtSfwgY/YkLrKNOLB16N1FthzBjDAWKtx
+	OrQOorivIwu5AnoRH7hhDhHcMAdxIeqYL/z901ypzFN6JFuuL4fMzojc0VE3zECf
+	O7DOaMLdMdciR2FWd/vuYPg2thZRn0ms+f93+UYdNuy8OkSLYzbaQcVEdV8IakKz
+	lGokrg==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yqcxth1xq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Jun 2024 19:26:36 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45CJQZjB000751
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Jun 2024 19:26:35 GMT
+Received: from [10.48.243.20] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 12 Jun
+ 2024 12:26:35 -0700
+Message-ID: <5cf39d31-c470-4c28-bb82-a489a44488ef@quicinc.com>
+Date: Wed, 12 Jun 2024 12:26:34 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAOMZO5A7+nxACoBPY0k8cOpVQByZtEV_N1489MK5wETHF_RXWA@mail.gmail.com>
- <3fbb5317d9ff33ef1b60ca8297537335ce86a79d.camel@sipsolutions.net>
- <CAOMZO5Aufe7zAE7TFVprvRreamYd9=RHjybjaEz2O9WaPksV=Q@mail.gmail.com>
- <95163ee547da95964c16f87a38d3326ae4da3253.camel@sipsolutions.net>
- <CAOMZO5CYDsh70u3To7HYXVki_MzzhFyCCHkigt_Es7o_+XG3oA@mail.gmail.com>
- <7a8e220d77d7e30a0cfaf984404ef2f57eaa785f.camel@sipsolutions.net>
- <CAOMZO5BktgtaSPzCf3WOOnkD2n+fj3FeQEfHeT7CYFL+tCHeaw@mail.gmail.com> <fb60b7f5bcf5ba47be54398225075a5bfab7c141.camel@sipsolutions.net>
-In-Reply-To: <fb60b7f5bcf5ba47be54398225075a5bfab7c141.camel@sipsolutions.net>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Wed, 12 Jun 2024 16:15:51 -0300
-Message-ID: <CAOMZO5CMX_juW4-t6CSd2xdzXkFfBiamuSTjsTB80Ly_TUsxRA@mail.gmail.com>
-Subject: Re: iwlwifi: Regression after migrating to 6.6.32
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: miriam.rachel.korenblit@intel.com, kvalo@kernel.org, 
-	Jakub Kicinski <kuba@kernel.org>, linux-wireless <linux-wireless@vger.kernel.org>, 
-	linux-kernel <linux-kernel@vger.kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath11k: fix ack signal strength calculation
+Content-Language: en-US
+To: Lingbo Kong <quic_lingbok@quicinc.com>, <ath11k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240611022550.59078-1-quic_lingbok@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240611022550.59078-1-quic_lingbok@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 80f8f7cz3vu-P3IBDnYl0jvH1L7-Fpz2
+X-Proofpoint-GUID: 80f8f7cz3vu-P3IBDnYl0jvH1L7-Fpz2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-12_10,2024-06-12_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
+ lowpriorityscore=0 mlxlogscore=999 spamscore=0 mlxscore=0
+ priorityscore=1501 bulkscore=0 phishscore=0 suspectscore=0 malwarescore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2406120137
 
-Hi Johannes,
+On 6/10/2024 7:25 PM, Lingbo Kong wrote:
+> Currently, the calculation of ack signal strength is incorrect.
+> 
+> This is because before calculating the ack signal strength, ath11k need
+> to determine whether the hardware and firmware support db2dbm. If the
+> hardware and firmware support db2dbm, do not need to add noise floor,
+> otherwise, need to add noise floor.
+> 
+> Besides, the value of ack_rssi passed by firmware to ath11k should be a
+> signed number, so change its type to s8.
+> 
+> After that, "iw wlan0 station dump" show the correct ack signal strength.
+> 
+> Such as:
+> root@CDCCSTEX0799733-LIN:~# iw wlp88s0 station dump
+> Station 00:03:7f:12:df:df (on wlp88s0)
+>         inactive time:  75 ms
+>         rx bytes:       11599
+>         rx packets:     99
+>         tx bytes:       9029
+>         tx packets:     81
+>         tx retries:     4
+>         tx failed:      0
+>         rx drop misc:   2
+>         signal:         -16 dBm
+>         signal avg:     -24 dBm
+>         tx bitrate:     1560.0 MBit/s VHT-MCS 9 80MHz VHT-NSS 4
+>         tx duration:    9230 us
+>         rx bitrate:     1560.0 MBit/s VHT-MCS 9 80MHz VHT-NSS 4
+>         rx duration:    7201 us
+>         last ack signal:-23 dBm
+>         avg ack signal: -22 dBm
+> 
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
+> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+> 
+> Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-On Wed, Jun 12, 2024 at 4:10=E2=80=AFPM Johannes Berg <johannes@sipsolution=
-s.net> wrote:
-
-> Strange. Is there an IOMMU involved on this platform?
-
-IOMMU isn't available on i.MX8M as far as I know.
-
-Interestingly, such a warning does not happen with the 5.10 kernel.
-
-I only noticed it yesterday, after migrating to 6.6.32.
-
-Thanks
 
