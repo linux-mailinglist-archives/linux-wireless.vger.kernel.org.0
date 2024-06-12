@@ -1,88 +1,109 @@
-Return-Path: <linux-wireless+bounces-8858-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8859-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB2F790520C
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 14:06:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22186905230
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 14:14:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E2A51F288A8
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 12:06:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21DAD1C21B6E
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 12:14:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A739A374D3;
-	Wed, 12 Jun 2024 12:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E16C16F0E4;
+	Wed, 12 Jun 2024 12:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WiKHMZah"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TX/k7pYG";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WElpAgrt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C47152DF1
-	for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2024 12:06:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9C538F83
+	for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2024 12:14:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718194001; cv=none; b=GlBOGkEi+o8c2w281TR8zN2GSIXoOJeL1/pUC9EkcfIcCtbLw+1yw9gGwAjzUz+JGqvyZW4qvpcLYyqugh+QCMMUtAT6P6YrlG6ErkXIJkcX9nG6Rz9FOfW5+9pG8gJ9QighnNod6UITxoYIn3diTWCZcb3f7nLmnE+rGTMHHkw=
+	t=1718194448; cv=none; b=mqY6ytTGrRQgXEic9rVVFE6G/cLN5nu8oDi3/ekasrcU3Gg0NmvIFEvk/WCbOBxXi58tBr1ClHxxCiIJPVNfUmLoGLORAkzGJzNJRcpuHKiOaiVSFnd0wWE7ARaQI6ymLpRTIISTnbfTfEDeC7ej5o2dUZkiDAZgEl/hUWFTM0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718194001; c=relaxed/simple;
-	bh=00vPD93kJUmCxjtL2ZOh+LvycvFt+ZvpgyuiE6ZabKY=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=W8kWfBGoHpT5DFrWR2tbrvWmWKMpubH1pHuWH3QJ2l2UlgnNVruW8rprAMgWSUQ4+YZpy00CIbPS1AnIkIdbAIjxNTyAbyONGX9OYE5RBgHCJRv1BBh+zSn64tg+d58xBSkKQKntzRcEq2gbqfGPBUToeo6pMiNcLWTF89Wtx4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WiKHMZah; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47EC7C3277B;
-	Wed, 12 Jun 2024 12:06:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718194001;
-	bh=00vPD93kJUmCxjtL2ZOh+LvycvFt+ZvpgyuiE6ZabKY=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=WiKHMZahjCve3aSq319O0D33gyjCeRSaZzbLIOthnjgXxVm0HSOLJ/NUddAw1JeAl
-	 AWa4c2/Z8QqThEAbE38lJBRbeQpuiIbmBpgjcJAdcNAV3fXk3tmweBO96klwUwoFis
-	 qnat3AzWJuOoVwGIqkrEPRc58utr0iHEt8dFyh/LclTDulDf5MYBGK+vTndm3jFx5v
-	 Xug4J9qLzTTmvq8hzUl3m7ijI/2+XLsPjWBOyuSCY9W2/bdAkLXTDaSeuChZ3WCGw4
-	 eq0aAH7jf2UjA/pu63MrBalbNSiFCnH8bMbttXEHDJ5uHOX30IWL4RO5A4/KF9mAQo
-	 jj5jzlKunt4Ww==
-From: Kalle Valo <kvalo@kernel.org>
-To: <andrea.marcer@external.marelli.com>
-Cc: <quic_rajkbhag@quicinc.com>,  <ath11k@lists.infradead.org>,
-  <linux-wireless@vger.kernel.org>,  <quic_gsaminat@quicinc.com>,
-  <Dennis.Damore@marelli.com>,  <danilo.sabato@external.marelli.com>,
-  <giovanni.ciaramitaro@external.marelli.com>
-Subject: Re: [PATCH v4 0/4] ath11k: factory test mode support
-References: <TYZPR02MB7247209AEA8B450DB501972ACDC02@TYZPR02MB7247.apcprd02.prod.outlook.com>
-Date: Wed, 12 Jun 2024 15:06:37 +0300
-In-Reply-To: <TYZPR02MB7247209AEA8B450DB501972ACDC02@TYZPR02MB7247.apcprd02.prod.outlook.com>
-	(andrea marcer's message of "Wed, 12 Jun 2024 11:46:55 +0000")
-Message-ID: <87r0d2nz5e.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1718194448; c=relaxed/simple;
+	bh=qXZLIqICJNwmkl8ZW/gkmNOQvenhDGAMd5JRdma0hwU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PblL0MThI+xzoqcxfRzZ9TDgPOUOkByPBOIWSnWO81oNTXNr2XHmGHaAxBFyDtBdFQDgBLpYhjl3c2J4nIo/dbfqZelz6fp5jwskcU025vUdnWrqbRNOdJuMS97gfkr7yzo9stFOSErOw6Hoosw1FpHpk/GQAeFnFxA5PLgjXM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TX/k7pYG; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WElpAgrt; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Message-ID: <0cbed427-e772-416d-ba40-32cbb59c8083@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1718194444;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BGk/1iMmRrfE1DIf5sik0hU4QcQc0eVeNmC9n/fpms0=;
+	b=TX/k7pYGno3XXfndXH7deEYnC8GCjb6ygs9QLIucuQMoDlRmZIAejURl5e7CUNso7M7t/D
+	6TWvKOWUphqBhg2qLPVGQSLgQxpnpKyUkN7cc3kUP4uZElAC90bitNZXAmRLLMpMY+uhKa
+	7Pd7jawdqo55gIUOIRadTbaeleBcFeSWOSElLxuq2ICFI+aogatdZwJ9IJmzFliu7c9SFk
+	ldE48rtVqszDOJCMCJO4vWJtTtELz+CT5zF5pfYy0b4ZqBEYRA7gYm35C8qcXXNMad0Jmj
+	yFV55ZPw8VFv7FPTUWTXPgrw2NJbGTOPz9r17eq/b1r3cb3XgmmAGsr5kJWa7Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1718194444;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BGk/1iMmRrfE1DIf5sik0hU4QcQc0eVeNmC9n/fpms0=;
+	b=WElpAgrtP/TSx1rZlz/Zwr2HyDMNPZoawkLB9yzgS/FWFhv/DlX1LPpXVPwFXnJJ42p0RR
+	cwX1qaUYHgLzPyBg==
+Date: Wed, 12 Jun 2024 14:14:03 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Subject: Re: ETIMEDOUT with rtl8xxxu
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+ Ping-Ke Shih <pkshih@realtek.com>
+Cc: linux-wireless@vger.kernel.org
+References: <ee08c815-9389-4277-be6d-197511636892@linutronix.de>
+ <e46407b3-3531-4935-a0a5-5132d5baa722@gmail.com>
+Content-Language: de-DE
+From: Martin Kaistra <martin.kaistra@linutronix.de>
+In-Reply-To: <e46407b3-3531-4935-a0a5-5132d5baa722@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-<andrea.marcer@external.marelli.com> writes:
+Am 11.06.24 um 22:15 schrieb Bitterblue Smith:
+> On 11/06/2024 18:54, Martin Kaistra wrote:
+>> Hi Ping-Ke, hi Bitterblue,
+>>
+>> I have a problem with the rtl8xxxu driver and 8188f, but only on some boards. More specifically, I can see that during the second channel switch (which happens when I do "iw dev wlan0 scan"),  the rtl8xxxu_read32(0e08) returns -110 (ETIMEDOUT) and after that no reads or writes work anymore until I unload and reload the driver.
+>>
+>> The strange thing now is, that even though it seems to be hardware dependent the vendor driver does not have this problem.
+>>
+>> I tried to change the probe and start functions, so that they behaved exactly as their vendor driver equivalents, but so far I don't see any improvement.
+>>
+>> I was hoping, that one of you maybe has an idea, what could be causing such an issue and how to avoid it.
+>>
+>> Martin
+> 
+> Does it still die if you do a passive scan?
 
->> Device is booted in factory test mode to calibrate the board.
->> The commands are sent from a userspace application, which is
->> sent to firmware using wmi commands. Firmware will send the
->> response back to the application which stores the calibration
->> data in caldata.bin file. This file will be loaded when the
->> device boots up normally next time.
->
-> I would like to calibrate and generate test signals on a QCN9074 
-> chip using the factory test mode. Which userspace application 
-> am I supposed to use to perform the calibration and tests?
->
-> QCN9074 PCI WLAN.HK.2.5.0.1-03982-QCAHKSWPL_SILICONZ-3 
-> Linux Kernel 6.1
+no, the problem seems to appear after the first sent frame. So, if I don't send 
+any frames, the channel switching works fine.
 
-To my knowledge there are no calibration tools publically available,
-unfortunately.
+> 
+> I wonder what vendor driver you are using? Is it loading the
+> same v4.0 firmware as rtl8xxxu?
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+using the firmware from the vendor driver or the firmware from rtl8xxxu made no 
+difference.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> 
+> Why reloading rtl8xxxu makes it work again? A USB reset?
+> Or something in the disconnect function?
+> 
+> To avoid the problem, obviously you have to make rtl8xxxu
+> even more like the vendor driver. :)
+
 
