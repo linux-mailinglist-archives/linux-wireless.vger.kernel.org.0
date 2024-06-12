@@ -1,160 +1,160 @@
-Return-Path: <linux-wireless+bounces-8889-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8890-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79B8C905894
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 18:22:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88EE5905928
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 18:51:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EB0A1C20400
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 16:22:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B29C1C21D74
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 16:51:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BC8F181B87;
-	Wed, 12 Jun 2024 16:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832DD17D8B7;
+	Wed, 12 Jun 2024 16:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BekjCp3W"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="o1YZ/r38"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4784E18133A
-	for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2024 16:19:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2A9181BA6
+	for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2024 16:51:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718209145; cv=none; b=b0NhAEwk4xzlEbLFQFicyT0dW+sYrh1XPNct54aUrt++3g9htT1Aa1uxAGBPgcPL4OBhEBxpGg88RgY/ppGjhpXBJiS2ptrqQ6yXVVjHYm8neug7o0cgJl12WdEeKAH2QecYeSl6s+PMjTjLQHG7iMlCV/25mFiMKleNWBsNFCg=
+	t=1718211102; cv=none; b=CTg73astN4dqVhGJkPlOqaLKd+OSk2n1ggUittCdeuQCLHOJbAQyo1Dy+VG8P5UGvDI7UQFSwdbtvOH33FPgPiM0xA8a7TO4Htw7kzye7BhWAB3fSk5I2JAZiPc3DrDyGtYlvZ/wakP4nDEdNiYHcrfFO+13AI0XWvUHtuucoRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718209145; c=relaxed/simple;
-	bh=xTODCO3Xxhe6CnYM9IeMSAyicX7oEntJ/H4ne4NuHSI=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=eh2PJRsyEvJI+i6En/R60uZCOq0Y6w9FNoNDtUhAoWUQR56R7rkK7YW+SfJ+bchpYzlx8G9G8cXvc7ygDHo9KXtYu+c+UHb8XuzwZQ7VyBy/Ayfmh2CGOPwUk5KzKzlM2vr6kwGbsKGHXVA7Dg66HCGNtcmedGCuLK1sje0CuYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BekjCp3W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E3BC32786;
-	Wed, 12 Jun 2024 16:19:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718209144;
-	bh=xTODCO3Xxhe6CnYM9IeMSAyicX7oEntJ/H4ne4NuHSI=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=BekjCp3WXmFFYqat9VCVup7d2Ds0OWrha4P89LzYk6JyZ1femQMWpHzc6qGxuKZ1I
-	 8zRTZPglsm7MreyXZQ1UHpqAtLpIssplIwudC+SQINfXDxw+yMiYedYwPNIFauUDhF
-	 pMQbIx7MC1siXWqZC2fDoql0i7Q7AqiQnDZs4UVxyx0pNCbSdcngosUKtsBzR3dg7V
-	 1dRkmvM6uwt5zjXlF05zRGtml4MOy8P95kxmiZESDWVxbk/7wdSydEyb4VTrLUgf4b
-	 i7H9HRvB0AJtevUtHAaPwYWxD9Dhi3zecibMnAcgvAuq3bAgdBZHnoYGlISf9ug74B
-	 KzpeGeu3HG09w==
-From: Kalle Valo <kvalo@kernel.org>
-To: "Peer, Ilan" <ilan.peer@intel.com>
-Cc: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>,
-  "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-  "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-  "Berg, Johannes" <johannes.berg@intel.com>,  iil_jenkins iil_jenkins
- <EC.GER.UNIX.IIL.JENKINS@INTEL.COM>
-Subject: Re: [PATCH 6/7] wifi: cfg80211: Add support for interface usage
- notification
-References: <20240605105722.2034610-1-miriam.rachel.korenblit@intel.com>
-	<20240605135233.23d15e758640.I7a62740a6868416acaed01e41157b3c0a7a41b4d@changeid>
-	<875xummndx.fsf@kernel.org>
-	<DM4PR11MB60436A9107BCBC27294DBF22E9C52@DM4PR11MB6043.namprd11.prod.outlook.com>
-Date: Wed, 12 Jun 2024 19:19:01 +0300
-In-Reply-To: <DM4PR11MB60436A9107BCBC27294DBF22E9C52@DM4PR11MB6043.namprd11.prod.outlook.com>
-	(Ilan Peer's message of "Sun, 9 Jun 2024 07:35:07 +0000")
-Message-ID: <87ed92nngq.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1718211102; c=relaxed/simple;
+	bh=eK4NbkS1xHuiWb44QQpk+mh06cmqZYsXP2MV+hXAQBU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=k8V1abz9XSGdLaGgsI9sFaUX9VkFuYn43EySNZqoArPeXK9/SN27jQZT2sj53xRbdQNV9ywOrdTsXFmVyLUfqz+qSC+BlXI9CnzioFKIO/Z/7mEbNdx+QwC+cps8N56H/h1YQp9tke9PsVdYdOQHcvu2UUn9HGecANkJ31lt01s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=o1YZ/r38; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45CFND0m015964;
+	Wed, 12 Jun 2024 16:51:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	aPOOL93oA55fvJx3l5V5jUffrMIfBbciFg91UPpmXiA=; b=o1YZ/r386P8jKT42
+	YjVDJGG9EEqYVdz5WYAeLrT6CxRU2OV+nyfgQcwi27odhnB5JSDjJ+Sh+xtiRZyZ
+	fg0dboMBFJ7jAPbmunR8u1VS9yXJuxZvTzBoaiSMfn4mkPhyzGKprR94wd45L5Yx
+	BAAtozSIr2HiRAYMr+1G8XDzmUPeJw2MRu/stNVGKUbih/Ws+KpvbzXILu8q1BX0
+	QrjtlQv1qGc9QpDmtZR2DPIFJKu5Tzw+1dJwFurvoeh00w/GRkFOqdM0eCFX9A7o
+	BbezLXPhL54smjCdrxZQd9XTLX/9rNW++GRr0pK6aOBGHSwF8ZWBKZ5t1U7wicnb
+	blgc2A==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yqe93gay2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Jun 2024 16:51:34 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45CGpXZi026441
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Jun 2024 16:51:33 GMT
+Received: from [10.48.243.20] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 12 Jun
+ 2024 09:51:33 -0700
+Message-ID: <cd77058f-7165-4342-893b-a59a3a18c3c5@quicinc.com>
+Date: Wed, 12 Jun 2024 09:51:32 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/4] ath12k: Factory test mode support
+Content-Language: en-US
+To: Aaradhana Sahu <quic_aarasahu@quicinc.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240611083427.881443-1-quic_aarasahu@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240611083427.881443-1-quic_aarasahu@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: CarHVmVqP7xmin0i_6Pn_3dCn7ZD5GSs
+X-Proofpoint-ORIG-GUID: CarHVmVqP7xmin0i_6Pn_3dCn7ZD5GSs
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-12_08,2024-06-12_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 phishscore=0
+ lowpriorityscore=0 suspectscore=0 malwarescore=0 mlxlogscore=999
+ impostorscore=0 priorityscore=1501 mlxscore=0 bulkscore=0 adultscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2406120121
 
-"Peer, Ilan" <ilan.peer@intel.com> writes:
+On 6/11/2024 1:34 AM, Aaradhana Sahu wrote:
+> Device is booted in factory test mode for calibration.
+> The commands are sent from userspace application, which
+> is sent to firmware using wmi commands. Firmware sends
+> the response to driver as wmi events and driver sends
+> these events to the application via netlink message.
+> 
+> Also added changes related to correct pdev id access for
+> fw test cmd.
+> 
+> Aaradhana Sahu (3):
+>   wifi: ath: create common testmode_i.h file for ath drivers
+>   wifi: ath12k: export ath12k_wmi_tlv_hdr for testmode
+>   wifi: ath12k: add factory test mode support
+> 
+> Rajat Soni (1):
+>   wifi: ath12k: Fill pdev id for fw test cmd
+> 
+> ---
+> v3:
+>   -Rebased on latest ToT
+>   -Updated Tested-on Tag
+>   -Removed second parameter of ath12k_core_start()
+>   -Updated copyright
+> v2:
+>   -Rebased on latest ath ToT
+> ---
+> 
+>  drivers/net/wireless/ath/ath11k/testmode.c    |  78 ++--
+>  drivers/net/wireless/ath/ath12k/Makefile      |   1 +
+>  drivers/net/wireless/ath/ath12k/core.c        |  22 +-
+>  drivers/net/wireless/ath/ath12k/core.h        |  13 +
+>  drivers/net/wireless/ath/ath12k/debug.h       |   1 +
+>  drivers/net/wireless/ath/ath12k/dp.c          |   3 +
+>  drivers/net/wireless/ath/ath12k/mac.c         |  15 +-
+>  drivers/net/wireless/ath/ath12k/pci.c         |   1 +
+>  drivers/net/wireless/ath/ath12k/testmode.c    | 422 ++++++++++++++++++
+>  drivers/net/wireless/ath/ath12k/testmode.h    |  40 ++
+>  drivers/net/wireless/ath/ath12k/wmi.c         |  39 +-
+>  drivers/net/wireless/ath/ath12k/wmi.h         |  21 +
+>  .../wireless/ath/{ath11k => }/testmode_i.h    |  52 +--
+>  13 files changed, 634 insertions(+), 74 deletions(-)
+>  create mode 100644 drivers/net/wireless/ath/ath12k/testmode.c
+>  create mode 100644 drivers/net/wireless/ath/ath12k/testmode.h
+>  rename drivers/net/wireless/ath/{ath11k => }/testmode_i.h (53%)
+> 
+> 
+> base-commit: a116bf2be795eb1db75fa6a48aa85c397be001a6
 
-> Hi,
->
->> -----Original Message-----
->> From: Kalle Valo <kvalo@kernel.org>
->> Sent: Thursday, 6 June 2024 12:28
->> To: Korenblit, Miriam Rachel <miriam.rachel.korenblit@intel.com>
->> Cc: johannes@sipsolutions.net; linux-wireless@vger.kernel.org; Peer, Ilan
->> <ilan.peer@intel.com>; Berg, Johannes <johannes.berg@intel.com>;
->> iil_jenkins iil_jenkins <EC.GER.UNIX.IIL.JENKINS@INTEL.COM>
->> Subject: Re: [PATCH 6/7] wifi: cfg80211: Add support for interface usage
->> notification
->> 
->> Miri Korenblit <miriam.rachel.korenblit@intel.com> writes:
->> 
->> > From: Ilan Peer <ilan.peer@intel.com>
->> >
->> > In some cases, when an interface is added by user space, user space
->> > might not know yet what is the intended type of the interface, e.g.,
->> > before a P2P Group Ownership Negotiation (GON) an interface is added
->> > but only at the end of the GON flow the final interface type is
->> > determined. This doesn't allow the kernel drivers to prepare for the
->> > actual interface type, e.g., make resources available for the
->> > interface type etc.
->> >
->> > Generally, adding an interface doesn't necessarily imply that it will
->> > actually be used soon, and as described the interface might not be
->> > used with the type it's added as.
->> >
->> > This new API allows user space to indicate that it does indeed intend
->> > to use the interface soon, along with the types (of which the
->> > interface must be one) that may be selected for that usage. This will
->> > allow the underlying driver to adjust resources accordingly.
->> >
->> > Signed-off-by: Ilan Peer <ilan.peer@intel.com>
->> > Reviewed-by: Johannes Berg <johannes.berg@intel.com>
->> > Tested-by: iil_jenkins iil_jenkins <EC.GER.UNIX.IIL.JENKINS@INTEL.COM>
->> 
->> This new command just looks weird to me, do we really need it? I would
->> expect to see a workaround like this in out-of-tree drivers but not in upstream.
->> 
->
-> As depicted above, the need to inform the driver about the intended
-> usage of the interface is real.
+FYI this series is not applying cleanly in my tree for validation:
 
-Sure, I can understand the need is real. This just feels like an ugly
-workaround, not a proper solution.
+Base: using specified base-commit a116bf2be795eb1db75fa6a48aa85c397be001a6
+Applying: wifi: ath: create common testmode_i.h file for ath drivers
+Using index info to reconstruct a base tree...
+Patch failed at 0001 wifi: ath: create common testmode_i.h file for ath drivers
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
+error: patch failed: drivers/net/wireless/ath/ath11k/testmode_i.h:4
+error: drivers/net/wireless/ath/ath11k/testmode_i.h: patch does not apply
+error: Did you hand edit your patch?
+It does not apply to blobs recorded in its index.
 
-And the documentation for this is quite vague, I'm worried how do we get
-similarly working drivers? Let's say if I were to implement a user space
-application for this, or a driver implementation for that matter, it
-would be a guessing game for me. For example, what's "soon" in this
-context? 5 mins, 50 secs or 5 secs? Can the mac80211 operation sleep?
+I initially used b4, but tried again directly with git, and it failed for me 
+with both mechanisms.
+Kalle, do you have any issues with this series?
 
-So user space is now always supposed to always call this nl80211 command
-and at what stage exactly? Or is it optional? But if it's optional
-what's the point of adding it?
 
-> We encountered several P2P cases in which an interface was added and
-> P2P Group Ownership Negotiation and P2P Invitation signalling were
-> completed successfully, but the P2P Group Session establishment failed
-> since the interface type changed from P2P Client to P2P GO and the
-> local device was no longer able to accommodate the P2P GO operation
-> due to resource constraints.
->
-> With this new API, user space can now inform the driver about the
-> intended usage of the interface so the driver will
-> make the resources available for all possible interface types. With
-> this the information exchanged during the P2P signalling
-> would correctly reflect state and the P2P group session would be able
-> to be established.
-
-Why not allocate the resources during driver initialisation? Or when
-changing the interface? Why need this weird interface?
-
-For easier reading below are all the patches, including the iwlwifi
-patch. Honestly, this just looks like something like a workaround for a
-problem in your firmware or something like that.
-
-https://patchwork.kernel.org/project/linux-wireless/patch/20240605135233.23d15e758640.I7a62740a6868416acaed01e41157b3c0a7a41b4d@changeid/
-
-https://patchwork.kernel.org/project/linux-wireless/patch/20240605135233.4d602acf0e65.I01fecab3b41961038f37ca6e0e3039c5fe9bb6bf@changeid/
-
-https://patchwork.kernel.org/project/linux-wireless/patch/20240605140556.21582e74a0e0.I7c423d03b4412d77509bd31bd41e4573f76c0e84@changeid/
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
