@@ -1,211 +1,213 @@
-Return-Path: <linux-wireless+bounces-8836-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8837-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9684D904CF1
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 09:42:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DDD5904D45
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 09:58:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B05061C243CA
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 07:42:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 489E81C22625
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 07:58:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 878933EA66;
-	Wed, 12 Jun 2024 07:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22EDA16C6B1;
+	Wed, 12 Jun 2024 07:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mtvIS5Nu"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="BCx1hMRm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B995B3D388
-	for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2024 07:42:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD9A16B736;
+	Wed, 12 Jun 2024 07:58:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718178128; cv=none; b=cCgqaeSGRalecO9ZkPKw/pN4n9Cb5z8xoPMgZxit19r8ad3ngdyNqDURSSloBVdosB1ghk7YuMSWnnBzytZfV4vA10Go96LBudIsu3QwulPTqaIOKiCdUx86aOq+UuPbzbV3OifAQ1cREV+4QvSeW3MljLlqdT3nv/nxGmFPp7Q=
+	t=1718179100; cv=none; b=kh3Z39NarP3zDnBxbFaW+qUma6wug0cAcNS9m2lCUV18yeiBlmMtNuEiah6f+tPg3UmeCXyChPUCILuWsvXDmVB22OZJU+PDZlaPeAaH0zrCimW81eK+GHCIgBTNfPAY2OvkKV0r/cpHIGeWfpc8g05xZhZTshQEVRfbywtHp1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718178128; c=relaxed/simple;
-	bh=eLylLwawMmTVeKL9GZh4S2r+IXtC70JDu18IVaKjpdA=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=MzR69P4XQ1R165tyKD7D2DYL14Bip0lgMJtgQVvOKQ19rKNoZN6cs2YFm+XOHqKzCm8AP2Qq+NylS6rLR0/T7ePf2/X+BPAstiGuEEw86SDsXCmM4izjBvPkIjeW9fogESpBcMpPYQEeypapGnqI1+6g9ycIDYEbwGOdkJqY/s8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mtvIS5Nu; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718178127; x=1749714127;
-  h=date:from:to:cc:subject:message-id;
-  bh=eLylLwawMmTVeKL9GZh4S2r+IXtC70JDu18IVaKjpdA=;
-  b=mtvIS5NuQwMfLPLF9LpkyPcb91Ckg/MbGQlJNpftNaBZNK5i81MoV0BK
-   jvMKSp/pDGKnw0kEwNzNptJb5hyOBGFSY1Hmt5JlWyBRtx1ffd8iwzUa6
-   BPUPL836tNZYNta+gl7dezz+wd9omfoe2up6cMBD2DTgla+cXR/r/EDQv
-   1JzHB9978RfxqDlbslcnv1F2QRo44MlBdAsmmUoEzIdWq/yhl1Akje5wW
-   JKnF5lK+nh+jd3uKkuDn9CEdjMmR3IuhU9cdoC39TyWGzi9TtUSuRDNTj
-   ktblwOoXwMci7kbcT/X/uVLm7uW8MmyTAg+JsOjpcRzPGbBU+fBq1e6B5
-   g==;
-X-CSE-ConnectionGUID: L8urXjDJTVOa8/24LKmPhg==
-X-CSE-MsgGUID: /LsO884kSpWPg9xk58VUbA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11100"; a="15052341"
-X-IronPort-AV: E=Sophos;i="6.08,232,1712646000"; 
-   d="scan'208";a="15052341"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2024 00:41:38 -0700
-X-CSE-ConnectionGUID: ZmuBiyUtSamSyZiaKwGXKA==
-X-CSE-MsgGUID: AZDjW2QES32laiOfa4DRrg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,232,1712646000"; 
-   d="scan'208";a="40334838"
-Received: from lkp-server01.sh.intel.com (HELO 628d7d8b9fc6) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 12 Jun 2024 00:41:37 -0700
-Received: from kbuild by 628d7d8b9fc6 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sHIbv-0001KT-0O;
-	Wed, 12 Jun 2024 07:41:35 +0000
-Date: Wed, 12 Jun 2024 15:40:40 +0800
-From: kernel test robot <lkp@intel.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
- Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- bb678f01804ccaa861b012b2b9426d69673d8a84
-Message-ID: <202406121537.snZMIacX-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1718179100; c=relaxed/simple;
+	bh=2jKJ20lACwa8Lhy1jPFHX9qJeJNWe+wNDq/R6ZIvLEU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=m6vVIM0QRMBkz/zsGKjSMI3no4S9mawTMeIudofoobtxzPnaskPqhHSjcH5Yn9IRpdYzwkcsjGPtQciXBCKM/aAhXbx2QxGulSPrdg1dxiv75HjO7LvqT0N29PMweS3epQRIchGMcmkz4yMdA9eXksYBy7BEp4KN9AI0g/9U1mY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=BCx1hMRm; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=ndOyxQUJxrNxnsAspzStG/x5rg/w1hxjNghGsxB7p88=;
+	t=1718179098; x=1719388698; b=BCx1hMRmC4U1XdOuSVJX8a6DM9QWHWmGM0RfTFx97Ig/7WN
+	N8n87o7A043LalhVEtQ94bWUV4U0X9NWriFwjD09YlapAutT4UDs15SBl/gMUKh/dznGQZg+ybhJt
+	z+AgxFsjeWXotfsVz4m2BV159G9RXBLoEpMYd4hzDzLpOcDN4oCUX0jaKc1s0E7oSo6XFwsYrq/Z0
+	g698Tab+zsWii/HHVVN5F0msk3Qk1t9FkPCLk+TwaG9VXU3Eg+L4mP0qIyxFmdVhzxS3RmVnYZC+y
+	Uic823OrYt+gFApUaC/gcmuqd5vztWrv+TBvWe9w5EdebProp33X6fTJcIYWi+ag==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1sHIs1-0000000A1tt-1BRh;
+	Wed, 12 Jun 2024 09:58:13 +0200
+Message-ID: <7869b9b29b6796c95fd5af649e4bd6696e56dcaf.camel@sipsolutions.net>
+Subject: Re: [REGRESSION][BISECTED] wifi: RTL8821CE does not work in monitor
+ mode
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Ping-Ke Shih <pkshih@realtek.com>, Thorsten Leemhuis
+	 <regressions@leemhuis.info>, Savyasaachi Vanga <savyasaachiv@gmail.com>, 
+ Christian Heusel <christian@heusel.eu>
+Cc: Kalle Valo <kvalo@kernel.org>, "linux-wireless@vger.kernel.org"
+	 <linux-wireless@vger.kernel.org>, "regressions@lists.linux.dev"
+	 <regressions@lists.linux.dev>
+Date: Wed, 12 Jun 2024 09:58:12 +0200
+In-Reply-To: <6a88e0d3e47ebbd1f0f383094e4804a627c41870.camel@sipsolutions.net>
+References: 
+	<chwoymvpzwtbmzryrlitpwmta5j6mtndocxsyqvdyikqu63lon@gfds653hkknl>
+	 <a51f223f-18ac-4d67-9120-8da1c169b7eb@leemhuis.info>
+	 <809d2332-625e-4a46-a77e-ca2e49b0d651@leemhuis.info>
+	 <0e65ca6b471b4186a370b9a57de11abe@realtek.com>
+	 <36c1f49acfcc2cc16c7e54ffeb76f1e93cb96e91.camel@sipsolutions.net>
+	 <5318640d6eb74301b1fbf6d9385ba69e@realtek.com>
+	 <6a88e0d3e47ebbd1f0f383094e4804a627c41870.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: bb678f01804ccaa861b012b2b9426d69673d8a84  Merge branch 'intel-wired-lan-driver-updates-2024-06-03'
+On Wed, 2024-06-12 at 09:07 +0200, Johannes Berg wrote:
+> On Wed, 2024-06-12 at 00:56 +0000, Ping-Ke Shih wrote:
+>=20
+>=20
+> > > Just got pinged (sp?) about this, can you share the driver fix so I c=
+an
+> > > take a look what the issue is about?
+> > >=20
+> >=20
+> > Please reference patch below. I copy this idea from rtw89 [1], which th=
+e main
+> > stuff is to add WANT_MONITOR_VIF and case NL80211_IFTYPE_MONITOR in add=
+_interface().=20
+>=20
+> Ah, OK, but that gives me a hint. Yes, I see the issue now.
+>=20
+> OK it's not trivial and it might leave ath12k still not working (though
+> not sure it ever did before? or maybe I'm missing something...), but I
+> think I can fix this. Let's see.
+>=20
 
-elapsed time: 1625m
+I don't have any of the affected hardware, could someone test this?
 
-configs tested: 117
-configs skipped: 3
+https://p.sipsolutions.net/619a4ce4a197b2b4.txt
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+diff --git a/net/mac80211/driver-ops.c b/net/mac80211/driver-ops.c
+index dce37ba8ebe3..254d745832cb 100644
+--- a/net/mac80211/driver-ops.c
++++ b/net/mac80211/driver-ops.c
+@@ -311,6 +311,18 @@ int drv_assign_vif_chanctx(struct ieee80211_local *loc=
+al,
+ 	might_sleep();
+ 	lockdep_assert_wiphy(local->hw.wiphy);
+=20
++	/*
++	 * We should perhaps push emulate chanctx down and only
++	 * make it call ->config() when the chanctx is actually
++	 * assigned here (and unassigned below), but that's yet
++	 * another change to all drivers to add assign/unassign
++	 * emulation callbacks. Maybe later.
++	 */
++	if (sdata->vif.type =3D=3D NL80211_IFTYPE_MONITOR &&
++	    local->emulate_chanctx &&
++	    !ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF))
++		return 0;
++
+ 	if (!check_sdata_in_driver(sdata))
+ 		return -EIO;
+=20
+@@ -338,6 +350,11 @@ void drv_unassign_vif_chanctx(struct ieee80211_local *=
+local,
+ 	might_sleep();
+ 	lockdep_assert_wiphy(local->hw.wiphy);
+=20
++	if (sdata->vif.type =3D=3D NL80211_IFTYPE_MONITOR &&
++	    local->emulate_chanctx &&
++	    !ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF))
++		return;
++
+ 	if (!check_sdata_in_driver(sdata))
+ 		return;
+=20
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index dc42902e2693..4a49e834a9f5 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -1121,9 +1121,6 @@ int ieee80211_add_virtual_monitor(struct ieee80211_lo=
+cal *local)
+ 	struct ieee80211_sub_if_data *sdata;
+ 	int ret;
+=20
+-	if (!ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF))
+-		return 0;
+-
+ 	ASSERT_RTNL();
+ 	lockdep_assert_wiphy(local->hw.wiphy);
+=20
+@@ -1145,11 +1142,13 @@ int ieee80211_add_virtual_monitor(struct ieee80211_=
+local *local)
+=20
+ 	ieee80211_set_default_queues(sdata);
+=20
+-	ret =3D drv_add_interface(local, sdata);
+-	if (WARN_ON(ret)) {
+-		/* ok .. stupid driver, it asked for this! */
+-		kfree(sdata);
+-		return ret;
++	if (ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF)) {
++		ret =3D drv_add_interface(local, sdata);
++		if (WARN_ON(ret)) {
++			/* ok .. stupid driver, it asked for this! */
++			kfree(sdata);
++			return ret;
++		}
+ 	}
+=20
+ 	set_bit(SDATA_STATE_RUNNING, &sdata->state);
+@@ -1187,9 +1186,6 @@ void ieee80211_del_virtual_monitor(struct ieee80211_l=
+ocal *local)
+ {
+ 	struct ieee80211_sub_if_data *sdata;
+=20
+-	if (!ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF))
+-		return;
+-
+ 	ASSERT_RTNL();
+ 	lockdep_assert_wiphy(local->hw.wiphy);
+=20
+@@ -1209,7 +1205,8 @@ void ieee80211_del_virtual_monitor(struct ieee80211_l=
+ocal *local)
+=20
+ 	ieee80211_link_release_channel(&sdata->deflink);
+=20
+-	drv_remove_interface(local, sdata);
++	if (ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF))
++		drv_remove_interface(local, sdata);
+=20
+ 	kfree(sdata);
+ }
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 283bfc99417e..963ed75deb76 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -1843,7 +1843,7 @@ int ieee80211_reconfig(struct ieee80211_local *local)
+=20
+ 	/* add interfaces */
+ 	sdata =3D wiphy_dereference(local->hw.wiphy, local->monitor_sdata);
+-	if (sdata) {
++	if (sdata && ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF)) {
+ 		/* in HW restart it exists already */
+ 		WARN_ON(local->resuming);
+ 		res =3D drv_add_interface(local, sdata);
 
-tested configs:
-alpha                             allnoconfig   gcc-13.2.0
-alpha                            allyesconfig   gcc-13.2.0
-alpha                               defconfig   gcc-13.2.0
-arc                               allnoconfig   gcc-13.2.0
-arc                                 defconfig   gcc-13.2.0
-arc                   randconfig-001-20240612   gcc-13.2.0
-arc                   randconfig-002-20240612   gcc-13.2.0
-arm                               allnoconfig   clang-19
-arm                                 defconfig   clang-14
-arm                   randconfig-001-20240612   gcc-13.2.0
-arm                   randconfig-002-20240612   gcc-13.2.0
-arm                   randconfig-003-20240612   clang-19
-arm                   randconfig-004-20240612   clang-14
-arm64                             allnoconfig   gcc-13.2.0
-arm64                               defconfig   gcc-13.2.0
-arm64                 randconfig-001-20240612   gcc-13.2.0
-arm64                 randconfig-002-20240612   gcc-13.2.0
-arm64                 randconfig-003-20240612   gcc-13.2.0
-arm64                 randconfig-004-20240612   clang-19
-csky                              allnoconfig   gcc-13.2.0
-csky                                defconfig   gcc-13.2.0
-csky                  randconfig-001-20240612   gcc-13.2.0
-csky                  randconfig-002-20240612   gcc-13.2.0
-hexagon                          allmodconfig   clang-19
-hexagon                           allnoconfig   clang-19
-hexagon                          allyesconfig   clang-19
-hexagon                             defconfig   clang-19
-hexagon               randconfig-001-20240612   clang-19
-hexagon               randconfig-002-20240612   clang-19
-i386         buildonly-randconfig-001-20240612   gcc-13
-i386         buildonly-randconfig-002-20240612   gcc-8
-i386         buildonly-randconfig-003-20240612   gcc-13
-i386         buildonly-randconfig-004-20240612   clang-18
-i386         buildonly-randconfig-005-20240612   gcc-13
-i386         buildonly-randconfig-006-20240612   clang-18
-i386                  randconfig-001-20240612   gcc-8
-i386                  randconfig-002-20240612   clang-18
-i386                  randconfig-003-20240612   clang-18
-i386                  randconfig-004-20240612   clang-18
-i386                  randconfig-005-20240612   gcc-13
-i386                  randconfig-006-20240612   clang-18
-i386                  randconfig-011-20240612   clang-18
-i386                  randconfig-012-20240612   clang-18
-i386                  randconfig-013-20240612   clang-18
-i386                  randconfig-014-20240612   gcc-7
-i386                  randconfig-015-20240612   gcc-13
-i386                  randconfig-016-20240612   gcc-7
-loongarch                        allmodconfig   gcc-13.2.0
-loongarch                         allnoconfig   gcc-13.2.0
-loongarch                           defconfig   gcc-13.2.0
-loongarch             randconfig-001-20240612   gcc-13.2.0
-loongarch             randconfig-002-20240612   gcc-13.2.0
-m68k                             allmodconfig   gcc-13.2.0
-m68k                              allnoconfig   gcc-13.2.0
-m68k                             allyesconfig   gcc-13.2.0
-m68k                                defconfig   gcc-13.2.0
-microblaze                       allmodconfig   gcc-13.2.0
-microblaze                        allnoconfig   gcc-13.2.0
-microblaze                       allyesconfig   gcc-13.2.0
-microblaze                          defconfig   gcc-13.2.0
-mips                              allnoconfig   gcc-13.2.0
-mips                             allyesconfig   gcc-13.2.0
-nios2                            allmodconfig   gcc-13.2.0
-nios2                             allnoconfig   gcc-13.2.0
-nios2                            allyesconfig   gcc-13.2.0
-nios2                               defconfig   gcc-13.2.0
-nios2                 randconfig-001-20240612   gcc-13.2.0
-nios2                 randconfig-002-20240612   gcc-13.2.0
-openrisc                          allnoconfig   gcc-13.2.0
-openrisc                            defconfig   gcc-13.2.0
-parisc                            allnoconfig   gcc-13.2.0
-parisc                              defconfig   gcc-13.2.0
-parisc                randconfig-001-20240612   gcc-13.2.0
-parisc                randconfig-002-20240612   gcc-13.2.0
-parisc64                            defconfig   gcc-13.2.0
-powerpc                           allnoconfig   gcc-13.2.0
-powerpc               randconfig-001-20240612   gcc-13.2.0
-powerpc               randconfig-002-20240612   gcc-13.2.0
-powerpc               randconfig-003-20240612   clang-19
-powerpc64             randconfig-001-20240612   gcc-13.2.0
-powerpc64             randconfig-002-20240612   gcc-13.2.0
-powerpc64             randconfig-003-20240612   clang-14
-riscv                             allnoconfig   gcc-13.2.0
-riscv                               defconfig   clang-19
-riscv                 randconfig-001-20240612   gcc-13.2.0
-riscv                 randconfig-002-20240612   gcc-13.2.0
-s390                             allmodconfig   clang-19
-s390                              allnoconfig   clang-19
-s390                             allyesconfig   gcc-13.2.0
-s390                                defconfig   clang-19
-s390                  randconfig-001-20240612   clang-19
-s390                  randconfig-002-20240612   clang-19
-sh                               allmodconfig   gcc-13.2.0
-sh                                allnoconfig   gcc-13.2.0
-sh                               allyesconfig   gcc-13.2.0
-sh                                  defconfig   gcc-13.2.0
-sh                    randconfig-001-20240612   gcc-13.2.0
-sh                    randconfig-002-20240612   gcc-13.2.0
-sparc                            allmodconfig   gcc-13.2.0
-sparc                             allnoconfig   gcc-13.2.0
-sparc                               defconfig   gcc-13.2.0
-sparc64                          allmodconfig   gcc-13.2.0
-sparc64                          allyesconfig   gcc-13.2.0
-sparc64                             defconfig   gcc-13.2.0
-sparc64               randconfig-001-20240612   gcc-13.2.0
-sparc64               randconfig-002-20240612   gcc-13.2.0
-um                               allmodconfig   clang-19
-um                                allnoconfig   clang-17
-um                               allyesconfig   gcc-13
-um                                  defconfig   clang-19
-um                             i386_defconfig   gcc-13
-um                    randconfig-001-20240612   gcc-13
-um                    randconfig-002-20240612   clang-16
-um                           x86_64_defconfig   clang-15
-xtensa                            allnoconfig   gcc-13.2.0
-xtensa                randconfig-001-20240612   gcc-13.2.0
-xtensa                randconfig-002-20240612   gcc-13.2.0
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
