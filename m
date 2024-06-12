@@ -1,101 +1,88 @@
-Return-Path: <linux-wireless+bounces-8857-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8858-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED3609051FF
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 14:05:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB2F790520C
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 14:06:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FF4D2816A9
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 12:05:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E2A51F288A8
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 12:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A2A916F0E1;
-	Wed, 12 Jun 2024 12:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A739A374D3;
+	Wed, 12 Jun 2024 12:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="oSK4cCDB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WiKHMZah"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88317374D3
-	for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2024 12:05:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C47152DF1
+	for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2024 12:06:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718193949; cv=none; b=X6hBFEYM6iuBL/+eMB0zir4Zp4woMIcZ0gyQrhZefA0daBeSalGOAFc5ZHPY5jNXBLwCGuaQAisRzswdQ6TkfjvsnU1DDNzteaMPkKvlCw1MBMIGAJ782gOpgeyNkx3GYxFA1gTVHRfuhpXCfv8vLfEXFQ6UcHMbL1Tuv37EZPg=
+	t=1718194001; cv=none; b=GlBOGkEi+o8c2w281TR8zN2GSIXoOJeL1/pUC9EkcfIcCtbLw+1yw9gGwAjzUz+JGqvyZW4qvpcLYyqugh+QCMMUtAT6P6YrlG6ErkXIJkcX9nG6Rz9FOfW5+9pG8gJ9QighnNod6UITxoYIn3diTWCZcb3f7nLmnE+rGTMHHkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718193949; c=relaxed/simple;
-	bh=E4QnWHv8dLIoq+vheL78UIzoMLHsB6bqRQNiyBcbXwY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=uMZRs1LDo2z8/O9FPMK7Uymfrc1bykLDqU1vRi+oCUUJyNYKBFIJF5bdA4CUQkzkgZxGICMUxHUDQRvYrJ0meiJISrrvECHq+Urdx61VZ8KolE2hf2VicdD/irY0ao93FwO36Gr6oY9cGYD3piwcmC7BaxgQoKgWuxjUAVGSsmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=oSK4cCDB; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=E4QnWHv8dLIoq+vheL78UIzoMLHsB6bqRQNiyBcbXwY=;
-	t=1718193947; x=1719403547; b=oSK4cCDBCm0bVboU6j74MsLLjSVjNZOc6Zbj97T5fXX9yEG
-	RBkfY7yHlw6Q9ps9OrSLG8uDB4Hm6wWZAweJEq4SNmu74zQQwF7Efxg8BhCrqHTxaLm4II/kUd1TW
-	9sDku/gEeIlZiixS3s8gSWj4OCWCbCQr0EpXZ7I2HZO8xbKqGs6NtB2N52oIYWt267R1QYYHVkmPY
-	xgRRTX0KZbbdU6XvB/rNpBOdbXbE4z0rFJ4vjxit+3MdAx0lx3YruRlFdHtmhP+QOHy/KX0f1OrT9
-	2ORI5uFldyUQvra6RXSCDD4gA2sz8o+D8eyHKGRwgQYqUFPa5az1Z4DrYQOjcvfQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1sHMjY-0000000AEjC-0yRF;
-	Wed, 12 Jun 2024 14:05:44 +0200
-Message-ID: <fa7c2aeef854f89eeb03a01a21a8d511417c92b6.camel@sipsolutions.net>
-Subject: Re: [RFC v3 6/8] wifi: mac80211: extend ifcomb check functions for
- multi-radio
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Felix Fietkau <nbd@nbd.name>, Karthikeyan Periyasamy
-	 <quic_periyasa@quicinc.com>, linux-wireless@vger.kernel.org
-Cc: quic_adisi@quicinc.com, ath12k@lists.infradead.org
-Date: Wed, 12 Jun 2024 14:05:43 +0200
-In-Reply-To: <096940e3-713a-4533-ab0f-e82bd647e205@nbd.name>
-References: 
-	<cover.386a66ec6a89750d4890f63f0d28582a52b838b5.1717696995.git-series.nbd@nbd.name>
-	 <bc603fc671010bb720e75881ef0e22d81ec6e2eb.1717696995.git-series.nbd@nbd.name>
-	 <a337de2e-fe3e-18ed-b55b-9ea2cd21baed@quicinc.com>
-	 <1f32cb6c-6be8-4e3d-8e8f-2d3c728875a9@nbd.name>
-	 <479752f5-221d-746b-7513-ba27ef547ac1@quicinc.com>
-	 <096940e3-713a-4533-ab0f-e82bd647e205@nbd.name>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
+	s=arc-20240116; t=1718194001; c=relaxed/simple;
+	bh=00vPD93kJUmCxjtL2ZOh+LvycvFt+ZvpgyuiE6ZabKY=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=W8kWfBGoHpT5DFrWR2tbrvWmWKMpubH1pHuWH3QJ2l2UlgnNVruW8rprAMgWSUQ4+YZpy00CIbPS1AnIkIdbAIjxNTyAbyONGX9OYE5RBgHCJRv1BBh+zSn64tg+d58xBSkKQKntzRcEq2gbqfGPBUToeo6pMiNcLWTF89Wtx4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WiKHMZah; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47EC7C3277B;
+	Wed, 12 Jun 2024 12:06:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718194001;
+	bh=00vPD93kJUmCxjtL2ZOh+LvycvFt+ZvpgyuiE6ZabKY=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=WiKHMZahjCve3aSq319O0D33gyjCeRSaZzbLIOthnjgXxVm0HSOLJ/NUddAw1JeAl
+	 AWa4c2/Z8QqThEAbE38lJBRbeQpuiIbmBpgjcJAdcNAV3fXk3tmweBO96klwUwoFis
+	 qnat3AzWJuOoVwGIqkrEPRc58utr0iHEt8dFyh/LclTDulDf5MYBGK+vTndm3jFx5v
+	 Xug4J9qLzTTmvq8hzUl3m7ijI/2+XLsPjWBOyuSCY9W2/bdAkLXTDaSeuChZ3WCGw4
+	 eq0aAH7jf2UjA/pu63MrBalbNSiFCnH8bMbttXEHDJ5uHOX30IWL4RO5A4/KF9mAQo
+	 jj5jzlKunt4Ww==
+From: Kalle Valo <kvalo@kernel.org>
+To: <andrea.marcer@external.marelli.com>
+Cc: <quic_rajkbhag@quicinc.com>,  <ath11k@lists.infradead.org>,
+  <linux-wireless@vger.kernel.org>,  <quic_gsaminat@quicinc.com>,
+  <Dennis.Damore@marelli.com>,  <danilo.sabato@external.marelli.com>,
+  <giovanni.ciaramitaro@external.marelli.com>
+Subject: Re: [PATCH v4 0/4] ath11k: factory test mode support
+References: <TYZPR02MB7247209AEA8B450DB501972ACDC02@TYZPR02MB7247.apcprd02.prod.outlook.com>
+Date: Wed, 12 Jun 2024 15:06:37 +0300
+In-Reply-To: <TYZPR02MB7247209AEA8B450DB501972ACDC02@TYZPR02MB7247.apcprd02.prod.outlook.com>
+	(andrea marcer's message of "Wed, 12 Jun 2024 11:46:55 +0000")
+Message-ID: <87r0d2nz5e.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain
 
-On Fri, 2024-06-07 at 13:04 +0200, Felix Fietkau wrote:
-> > >=20
-> > > Use the sum of the number of interfaces from each radio instead of th=
-e=20
-> > > maximum.
-> >=20
-> > Oh, then legacy user have misconception of the global interfaces
-> > advertised and try to fail for the allowed limits.
->=20
-> Sure, but that might be an issue either way until user space is updated=
-=20
-> and users start looking at the per-radio ifcomb data.
+<andrea.marcer@external.marelli.com> writes:
 
-I'm kind of with Karthikeyan here - this could be understood as a
-regression, since you're now telling userspace something you can't
-actually do.
+>> Device is booted in factory test mode to calibrate the board.
+>> The commands are sent from a userspace application, which is
+>> sent to firmware using wmi commands. Firmware will send the
+>> response back to the application which stores the calibration
+>> data in caldata.bin file. This file will be loaded when the
+>> device boots up normally next time.
+>
+> I would like to calibrate and generate test signals on a QCN9074 
+> chip using the factory test mode. Which userspace application 
+> am I supposed to use to perform the calibration and tests?
+>
+> QCN9074 PCI WLAN.HK.2.5.0.1-03982-QCAHKSWPL_SILICONZ-3 
+> Linux Kernel 6.1
 
-> The global data is simply not enough to describe the details of the=20
-> radio split.
+To my knowledge there are no calibration tools publically available,
+unfortunately.
 
-Obviously, but that doesn't mean the global data as advertised in the
-existing attributes must be *wrong*. It could be a subset, and the
-superset data is only available to new implementations.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-johannes
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
