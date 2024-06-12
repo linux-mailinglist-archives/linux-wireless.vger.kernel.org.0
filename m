@@ -1,52 +1,52 @@
-Return-Path: <linux-wireless+bounces-8847-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8848-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE1290502B
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 12:11:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E14990502D
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 12:11:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C463281ACA
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 10:11:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11EED1F21379
+	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 10:11:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF2916D4E8;
-	Wed, 12 Jun 2024 10:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C10D916E876;
+	Wed, 12 Jun 2024 10:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ik5aaidN"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="PSOlY9OD"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B51416E876;
-	Wed, 12 Jun 2024 10:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC27833FE;
+	Wed, 12 Jun 2024 10:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718187070; cv=none; b=Y7/r4DjAXNHF0SbYGA6XoiYy1YDqG429oeUsbrwq00ASWU44GOKOA8t7gsSvuufpZAnNCrbuZj54hYQbB1xXaSSjsojO6LsLTDfWcX6Z3dvn2fbc3QKxWhmNxQkQ8cS3r9BIzmi5RFjSL60I2NOlNL2Ko++B7mOb7yPXK3vudd8=
+	t=1718187095; cv=none; b=Iq+mwsqzidNEJ3nAN+GZa7UiY0Qxxx4bM10SKHf8Fjbmp1XpDndL3Ulh8diiHV+uX1cIRk+AbhWufMiC73a/GkOPbCUJq+wmkt/7W/P6+kvBF6gJUYIdRjTp2y7p8erNZSFm5OWIl05NtgxXJPWr0v5yBljUmfX7vQagN5v+jkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718187070; c=relaxed/simple;
-	bh=qVHAhWuj32KXJ7kyxZOwVuH8j1imYFQRPeHMdoRksBM=;
+	s=arc-20240116; t=1718187095; c=relaxed/simple;
+	bh=RQd4+UA7wdvXCU0xtrywxrKMF7w3HR0YIfUPyBtqszM=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tkyBrWJWUIvTMkRcmiYcVPWU5RYHp7dORtVpT0wfYEcFO8M1i8l2Nnrd540bySEgNS1UlJrVcvIIIGcbn622J7Madas0lvtdp+zDs+ELvh3O3W0VfztmSzt3PokGXGkPNuMoIL6BLlVqQ2mZf0C6fuYjCEBK2m6G7Q4B3nb0br4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ik5aaidN; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=FrunK85IXs7PW7l6G/gCRxZ0PL7B6xmvC/tJEke/J7uDzP0apdZgmOr0t0Cy0FejhMOscT0mp4ORgg9NBVbCoUj8HMpeIrBwC5TRv7WOzrumWZCRMCm7b0+0UWc9OAXzyup4KK0H0lWSGklsBjeUlbkRwFmGQU3VCh2bic0C2tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=PSOlY9OD; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=qVHAhWuj32KXJ7kyxZOwVuH8j1imYFQRPeHMdoRksBM=;
-	t=1718187068; x=1719396668; b=ik5aaidN/Z8sTfAfwst748/yRUH/h+94CZVzOQqzGY2c/JO
-	Wq2potPI3DfAdXrrfLf15W1E9Tir3C8NTPqEoMwR31eKfxZWJGCbfFQmEJZr+Uh094e1toZyCMgDC
-	b7wKYN9UTKwxOwJLBrp4IKwijCJIOUftxOQ/k71Msdez+J5rn2Y9u56aNAAy1GIGm5rRHSGJTKLa8
-	w9itM6WawbBNJ2enAaV5qVSJMKXjYkWuAwHk10NOyFlQWvEhDhkBJgcWo3GBawaJBLj4K7vzwbhcz
-	IWLtn2g3W2pmEKl5tRHKPPsTqLySU2DHD4bpQhpfkiDUf7iQSdvF9mrLUknkbq5A==;
+	Resent-Cc:Resent-Message-ID; bh=RQd4+UA7wdvXCU0xtrywxrKMF7w3HR0YIfUPyBtqszM=;
+	t=1718187094; x=1719396694; b=PSOlY9ODLRkRwakYnkQFm0rrtK/aRXd3G0dP0U+/XnbfgGR
+	R5nXc9GOyMqYK4CZtVNrJ6vKnCkyO1YoDPzGEyiKSJ6ouYK+MOTG2pgeNjWvNrRezkxx0WhFd2Gda
+	5GhZ0hh+NqCVyVKsFLVeEHBkISSTN0WNpferI6pbcdGSF1Ebb3+Lcp5kaFMydl2/MXQTPjotwTit4
+	2PuHysyKxtbuvONuOzux3ouJ6G5qAdzD+w732XG2kYDMLE9YG42trICDalvlcegDoIRZ9s7EcB7ku
+	Iea2tsLYsD23a1MNBUwg/arTPibd85foW+zidYsMh/sjAoTik66tRMOv6BFcDrNA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1sHKwV-0000000A9An-27Fe;
-	Wed, 12 Jun 2024 12:10:59 +0200
-Message-ID: <044e2d411333d3b81a6853d92a1c77a1aee0e4d9.camel@sipsolutions.net>
+	id 1sHKwx-0000000A9DA-19lv;
+	Wed, 12 Jun 2024 12:11:27 +0200
+Message-ID: <be3576e234177f8da28be8ba37fd369c00fb548d.camel@sipsolutions.net>
 Subject: Re: [PATCH v1 2/2] net: rfkill: Fix a logic error within
  rfkill_set_hw_state_reason()
 From: Johannes Berg <johannes@sipsolutions.net>
@@ -54,7 +54,7 @@ To: quic_zijuhu <quic_zijuhu@quicinc.com>, davem@davemloft.net,
 	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
 	emmanuel.grumbach@intel.com
 Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Date: Wed, 12 Jun 2024 12:10:58 +0200
+Date: Wed, 12 Jun 2024 12:11:26 +0200
 In-Reply-To: <b8610296-f8cf-4b61-9b64-ffb52b7ab251@quicinc.com>
 References: <1717771212-30723-1-git-send-email-quic_zijuhu@quicinc.com>
 	 <1717771212-30723-3-git-send-email-quic_zijuhu@quicinc.com>
@@ -87,10 +87,17 @@ tate
 > RFKILL_HARD_BLOCK_SIGNAL which means block state before
 > __rfkill_set_sw_state(..., true, RFKILL_HARD_BLOCK_NOT_OWNER) is invoked.
 >=20
-> @prev should mean previous block state,
+> @prev should mean previous block state, @prev will have false based on
+> current logic, it is wrong since rfkill have block state before the call.
 >=20
+> > We might want to not schedule the worker if it's not needed, but that's
+> > a different issue, I don't see a real bug here?
+> >=20
+> the worker will be unneccessarily scheduled for above example based on
+> current logic even if the rfkill always stay in block state.
+> >=20
 
-no.
+But yes, this is right. It's just not a bug.
 
 johannes
 
