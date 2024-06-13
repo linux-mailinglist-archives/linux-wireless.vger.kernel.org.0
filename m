@@ -1,195 +1,150 @@
-Return-Path: <linux-wireless+bounces-8972-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8973-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FD8F90710D
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2024 14:33:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4D9B9073BD
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2024 15:30:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 683F11C247F3
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2024 12:33:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1AEFFB24E17
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2024 13:30:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C84428FF;
-	Thu, 13 Jun 2024 12:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A49211422DD;
+	Thu, 13 Jun 2024 13:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nZDvHpm9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eTm/+VA2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01BF12F5A
-	for <linux-wireless@vger.kernel.org>; Thu, 13 Jun 2024 12:33:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801381422AB
+	for <linux-wireless@vger.kernel.org>; Thu, 13 Jun 2024 13:30:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718281986; cv=none; b=jVf3EXPn59IzsaISySCofpLTDXx1pM9CwDtZP/UUNN15ri0Jm7D9sJQzsJD+BarVBXr1XDDl+/Tf6WnbaYeBpz2gu3uUT83/oJCICzlw+LnZXWk1NDUAKGpOdVtoxf2YnAt4JKiQewzfy4zkt7rW7gMTG/x23haRqg6ewT9TRok=
+	t=1718285437; cv=none; b=jqrDdIx/twsl9aD68ywSlfSIYeICJKuXxIT4bAs0yMfFg1JAPLue7yUhjk4qzOqGvTy2FEd6oZERHE8ZSKWpBEvZFaFurLPCu1ZZ7/1G3B23352sO1/+Bt1X/7+GJWIEQvsnhx0ZVVBOy0N1BJ31FKchq0jjf8CGh1ZQZqWBUAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718281986; c=relaxed/simple;
-	bh=Y2H6zYNTlwW4ui1zwox4FSiGzQDy3cGU1grMKwM+ivQ=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=g4y3h3rNJVe0iMDyMolq+vgJCVf4TK342cOE8kq3LdhBsxuUMhoxgxiDWtB2x5Km+5I87YF0RnMh9fTb4pkZMPoB4sGKK1Ipc3F0HAs5tHWZ/9cn0nQMKF7WoUMdl41BXZLVS34LpMqMKqo92yF4xROQjo9qncln1WRMavomf6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nZDvHpm9; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718281985; x=1749817985;
-  h=date:from:to:cc:subject:message-id;
-  bh=Y2H6zYNTlwW4ui1zwox4FSiGzQDy3cGU1grMKwM+ivQ=;
-  b=nZDvHpm94TM1HBTP7GP/QJ2iZ/OzfJeaNqphD/jE0TPqmCNl6Mn3Yoxm
-   wG+y9ffpo0on0puyIXCjzGIXZp4XSmrZvAKOq4Wk9LnBB47N5qXdRoOos
-   65QxK6T+yLR1RAZD/vrF2ThBJWTUYsosiZH2Aa4WJB3O+OH7sw3Y5tf15
-   +eFwmWTyV4v8ajVolDBDRciZfzPu0WvrQZCWwJs53R2f3MQiftZSNgbeK
-   /Ux0IpFVmvb9V83bR7zf6GAHR6yiPm0FLpwHCRmVGHBX2Y8GTg1MLDFRw
-   gfpLryn9YP82Rzyyq2jwMMQWZk/ygv+Mt7dvDyuPmkRx3QxVKzu8CiLtF
-   Q==;
-X-CSE-ConnectionGUID: WYZEchLIRCS+wqiL9mybIQ==
-X-CSE-MsgGUID: veBeNc/nQHu8SDGIiMXsxg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11101"; a="18920319"
-X-IronPort-AV: E=Sophos;i="6.08,235,1712646000"; 
-   d="scan'208";a="18920319"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2024 05:33:05 -0700
-X-CSE-ConnectionGUID: ub/7wRU6TNOuam+6KTnWSw==
-X-CSE-MsgGUID: GVnFYR/PQxeig0ZZNHTZ+w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,235,1712646000"; 
-   d="scan'208";a="45037177"
-Received: from lkp-server01.sh.intel.com (HELO 0b1fe898bbad) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 13 Jun 2024 05:33:04 -0700
-Received: from kbuild by 0b1fe898bbad with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sHjdV-00004I-0h;
-	Thu, 13 Jun 2024 12:33:01 +0000
-Date: Thu, 13 Jun 2024 20:32:56 +0800
-From: kernel test robot <lkp@intel.com>
-To: Johannes Berg <johannes.berg@intel.com>
-Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: [wireless:for-next] BUILD SUCCESS
- 7d09e17c0415fe6d946044c7e70bce31cda952ec
-Message-ID: <202406132053.zaTEj1lR-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1718285437; c=relaxed/simple;
+	bh=OEAhHd+pUhFkMT+aGEvAyJitpB0TMqS13pSWrHHwhao=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=fvgfdzG+q9JzNtH7RfurCPSRWzF8iyg7Siict3K0JuxnsE303KHHQE8ywVkWoSPOaJG4clfrpBX3wDefUi7ziW/ujpu14+AhEkTFRpnJA6RhXluXsVJOpYv894ZrYkXg6BCrZLbLmcoq9mLP2T+Vbc3ol/F7/KO5rAeuRXF8dHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eTm/+VA2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 174CDC2BBFC;
+	Thu, 13 Jun 2024 13:30:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718285437;
+	bh=OEAhHd+pUhFkMT+aGEvAyJitpB0TMqS13pSWrHHwhao=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=eTm/+VA2ROb2ec3EV6ZCggZrv2b3mQfO9VRGY8x6Id6yzcXYxmraWpe6/sJCWoqHD
+	 lraG6DgVyqPpDyqQN6p3f6gAuM3Rx2jrjRDqul7b8n5oaV/ug3XCS3ltOo07n5iSKD
+	 PZLWoMi1Fz2v98IJmQ34AlabRFrAtNdvp3eLapDVgvkzoLDStK8hXYAa8nwxKZLLtb
+	 7PG8Rcw65IG3Id0ei5Rqz0cAvNwdSwJV9CEaXbzIfGASdIJuddQM5xvZ+42oPjSHw8
+	 Ukynh0yqzDFCnC+S6wmfam7Heoqs33QiGjCue4L6RkkFyV4GtkMi4UOvGA9rvPH9uG
+	 9NUrmRR8ROkEw==
+From: Kalle Valo <kvalo@kernel.org>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Aaradhana Sahu <quic_aarasahu@quicinc.com>,
+  <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v3 0/4] ath12k: Factory test mode support
+References: <20240611083427.881443-1-quic_aarasahu@quicinc.com>
+	<cd77058f-7165-4342-893b-a59a3a18c3c5@quicinc.com>
+Date: Thu, 13 Jun 2024 16:30:34 +0300
+In-Reply-To: <cd77058f-7165-4342-893b-a59a3a18c3c5@quicinc.com> (Jeff
+	Johnson's message of "Wed, 12 Jun 2024 09:51:32 -0700")
+Message-ID: <875xudnf5x.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
-branch HEAD: 7d09e17c0415fe6d946044c7e70bce31cda952ec  wifi: mac80211: Recalc offload when monitor stop
+Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 
-elapsed time: 1521m
+> On 6/11/2024 1:34 AM, Aaradhana Sahu wrote:
+>
+>> Device is booted in factory test mode for calibration.
+>> The commands are sent from userspace application, which
+>> is sent to firmware using wmi commands. Firmware sends
+>> the response to driver as wmi events and driver sends
+>> these events to the application via netlink message.
+>> 
+>> Also added changes related to correct pdev id access for
+>> fw test cmd.
+>> 
+>> Aaradhana Sahu (3):
+>>   wifi: ath: create common testmode_i.h file for ath drivers
+>>   wifi: ath12k: export ath12k_wmi_tlv_hdr for testmode
+>>   wifi: ath12k: add factory test mode support
+>> 
+>> Rajat Soni (1):
+>>   wifi: ath12k: Fill pdev id for fw test cmd
+>> 
+>> ---
+>> v3:
+>>   -Rebased on latest ToT
+>>   -Updated Tested-on Tag
+>>   -Removed second parameter of ath12k_core_start()
+>>   -Updated copyright
+>> v2:
+>>   -Rebased on latest ath ToT
+>> ---
+>> 
+>>  drivers/net/wireless/ath/ath11k/testmode.c    |  78 ++--
+>>  drivers/net/wireless/ath/ath12k/Makefile      |   1 +
+>>  drivers/net/wireless/ath/ath12k/core.c        |  22 +-
+>>  drivers/net/wireless/ath/ath12k/core.h        |  13 +
+>>  drivers/net/wireless/ath/ath12k/debug.h       |   1 +
+>>  drivers/net/wireless/ath/ath12k/dp.c          |   3 +
+>>  drivers/net/wireless/ath/ath12k/mac.c         |  15 +-
+>>  drivers/net/wireless/ath/ath12k/pci.c         |   1 +
+>>  drivers/net/wireless/ath/ath12k/testmode.c    | 422 ++++++++++++++++++
+>>  drivers/net/wireless/ath/ath12k/testmode.h    |  40 ++
+>>  drivers/net/wireless/ath/ath12k/wmi.c         |  39 +-
+>>  drivers/net/wireless/ath/ath12k/wmi.h         |  21 +
+>>  .../wireless/ath/{ath11k => }/testmode_i.h    |  52 +--
+>>  13 files changed, 634 insertions(+), 74 deletions(-)
+>>  create mode 100644 drivers/net/wireless/ath/ath12k/testmode.c
+>>  create mode 100644 drivers/net/wireless/ath/ath12k/testmode.h
+>>  rename drivers/net/wireless/ath/{ath11k => }/testmode_i.h (53%)
+>> 
+>> 
+>> base-commit: a116bf2be795eb1db75fa6a48aa85c397be001a6
+>
+> FYI this series is not applying cleanly in my tree for validation:
+>
+> Base: using specified base-commit a116bf2be795eb1db75fa6a48aa85c397be001a6
+> Applying: wifi: ath: create common testmode_i.h file for ath drivers
+> Using index info to reconstruct a base tree...
+> Patch failed at 0001 wifi: ath: create common testmode_i.h file for ath drivers
+> When you have resolved this problem, run "git am --continue".
+> If you prefer to skip this patch, run "git am --skip" instead.
+> To restore the original branch and stop patching, run "git am --abort".
+> error: patch failed: drivers/net/wireless/ath/ath11k/testmode_i.h:4
+> error: drivers/net/wireless/ath/ath11k/testmode_i.h: patch does not apply
+> error: Did you hand edit your patch?
+> It does not apply to blobs recorded in its index.
+>
+> I initially used b4, but tried again directly with git, and it failed for me 
+> with both mechanisms.
+> Kalle, do you have any issues with this series?
 
-configs tested: 102
-configs skipped: 3
+Also fails for me on top of commit a116bf2be795:
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Applying: wifi: ath: create common testmode_i.h file for ath drivers
+Using index info to reconstruct a base tree...
+error: patch failed: drivers/net/wireless/ath/ath11k/testmode_i.h:4
+error: drivers/net/wireless/ath/ath11k/testmode_i.h: patch does not apply
+error: Did you hand edit your patch?
+It does not apply to blobs recorded in its index.
+Patch failed at 0001 wifi: ath: create common testmode_i.h file for ath drivers
 
-tested configs:
-alpha                             allnoconfig   gcc-13.2.0
-alpha                            allyesconfig   gcc-13.2.0
-alpha                               defconfig   gcc-13.2.0
-arc                               allnoconfig   gcc-13.2.0
-arc                                 defconfig   gcc-13.2.0
-arc                   randconfig-001-20240613   gcc-13.2.0
-arc                   randconfig-002-20240613   gcc-13.2.0
-arm                               allnoconfig   clang-19
-arm                                 defconfig   clang-14
-arm                   randconfig-001-20240613   gcc-13.2.0
-arm                   randconfig-002-20240613   clang-17
-arm                   randconfig-003-20240613   clang-19
-arm                   randconfig-004-20240613   clang-19
-arm64                             allnoconfig   gcc-13.2.0
-arm64                               defconfig   gcc-13.2.0
-arm64                 randconfig-001-20240613   gcc-13.2.0
-arm64                 randconfig-002-20240613   clang-19
-arm64                 randconfig-003-20240613   clang-19
-arm64                 randconfig-004-20240613   clang-19
-csky                              allnoconfig   gcc-13.2.0
-csky                                defconfig   gcc-13.2.0
-csky                  randconfig-001-20240613   gcc-13.2.0
-csky                  randconfig-002-20240613   gcc-13.2.0
-hexagon                          allmodconfig   clang-19
-hexagon                           allnoconfig   clang-19
-hexagon                          allyesconfig   clang-19
-hexagon                             defconfig   clang-19
-hexagon               randconfig-001-20240613   clang-19
-hexagon               randconfig-002-20240613   clang-15
-i386         buildonly-randconfig-001-20240613   gcc-9
-i386         buildonly-randconfig-002-20240613   clang-18
-i386         buildonly-randconfig-003-20240613   clang-18
-i386         buildonly-randconfig-004-20240613   clang-18
-i386         buildonly-randconfig-005-20240613   gcc-7
-i386         buildonly-randconfig-006-20240613   clang-18
-i386                  randconfig-001-20240613   gcc-7
-i386                  randconfig-002-20240613   gcc-11
-i386                  randconfig-003-20240613   gcc-13
-i386                  randconfig-004-20240613   clang-18
-i386                  randconfig-005-20240613   gcc-13
-i386                  randconfig-006-20240613   gcc-13
-i386                  randconfig-011-20240613   gcc-13
-i386                  randconfig-012-20240613   clang-18
-i386                  randconfig-013-20240613   clang-18
-i386                  randconfig-014-20240613   gcc-12
-i386                  randconfig-015-20240613   gcc-8
-i386                  randconfig-016-20240613   gcc-13
-loongarch                         allnoconfig   gcc-13.2.0
-loongarch                           defconfig   gcc-13.2.0
-loongarch             randconfig-001-20240613   gcc-13.2.0
-loongarch             randconfig-002-20240613   gcc-13.2.0
-m68k                              allnoconfig   gcc-13.2.0
-m68k                                defconfig   gcc-13.2.0
-microblaze                        allnoconfig   gcc-13.2.0
-microblaze                          defconfig   gcc-13.2.0
-mips                              allnoconfig   gcc-13.2.0
-nios2                             allnoconfig   gcc-13.2.0
-nios2                               defconfig   gcc-13.2.0
-nios2                 randconfig-001-20240613   gcc-13.2.0
-nios2                 randconfig-002-20240613   gcc-13.2.0
-openrisc                          allnoconfig   gcc-13.2.0
-openrisc                            defconfig   gcc-13.2.0
-parisc                            allnoconfig   gcc-13.2.0
-parisc                              defconfig   gcc-13.2.0
-parisc                randconfig-001-20240613   gcc-13.2.0
-parisc                randconfig-002-20240613   gcc-13.2.0
-parisc64                            defconfig   gcc-13.2.0
-powerpc                           allnoconfig   gcc-13.2.0
-powerpc               randconfig-001-20240613   clang-19
-powerpc               randconfig-002-20240613   clang-19
-powerpc               randconfig-003-20240613   clang-19
-powerpc64             randconfig-001-20240613   clang-19
-powerpc64             randconfig-002-20240613   clang-19
-powerpc64             randconfig-003-20240613   gcc-13.2.0
-riscv                             allnoconfig   gcc-13.2.0
-riscv                               defconfig   clang-19
-riscv                 randconfig-001-20240613   clang-19
-riscv                 randconfig-002-20240613   clang-19
-s390                              allnoconfig   clang-19
-s390                                defconfig   clang-19
-s390                  randconfig-001-20240613   gcc-13.2.0
-s390                  randconfig-002-20240613   gcc-13.2.0
-sh                                allnoconfig   gcc-13.2.0
-sh                                  defconfig   gcc-13.2.0
-sh                    randconfig-001-20240613   gcc-13.2.0
-sh                    randconfig-002-20240613   gcc-13.2.0
-sparc                             allnoconfig   gcc-13.2.0
-sparc                               defconfig   gcc-13.2.0
-sparc64                             defconfig   gcc-13.2.0
-sparc64               randconfig-001-20240613   gcc-13.2.0
-sparc64               randconfig-002-20240613   gcc-13.2.0
-um                               allmodconfig   clang-19
-um                                allnoconfig   clang-17
-um                               allyesconfig   gcc-13
-um                                  defconfig   clang-19
-um                             i386_defconfig   gcc-13
-um                    randconfig-001-20240613   gcc-9
-um                    randconfig-002-20240613   gcc-9
-um                           x86_64_defconfig   clang-15
-xtensa                            allnoconfig   gcc-13.2.0
-xtensa                randconfig-001-20240613   gcc-13.2.0
-xtensa                randconfig-002-20240613   gcc-13.2.0
+Setting the patchset to Changes Requested.
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
