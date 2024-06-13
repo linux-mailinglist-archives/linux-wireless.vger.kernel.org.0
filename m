@@ -1,58 +1,58 @@
-Return-Path: <linux-wireless+bounces-8943-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8944-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1253490625B
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2024 05:05:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7224390625C
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2024 05:05:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0356B22E63
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2024 03:05:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A8142840A1
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2024 03:05:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3165612DDBC;
-	Thu, 13 Jun 2024 03:03:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C77CF12E1C6;
+	Thu, 13 Jun 2024 03:03:59 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC068130E40
-	for <linux-wireless@vger.kernel.org>; Thu, 13 Jun 2024 03:03:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE9012F581
+	for <linux-wireless@vger.kernel.org>; Thu, 13 Jun 2024 03:03:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718247838; cv=none; b=S+/zJEH4Cpb7eVpySugRFW398gbRoyauoNryNowHhv3WWCI7oC3n+3HiSTniNQ1WPH545wEfJIAJ7rvjB3eGVxOBSr9d6OWVL9Q421LcuFoMgjVGTIsNxSQiI4dCI/Ho6YYd4GcGMNFfK7VIjMQq1NZ6kWbNA+oMCNOQbXPS3Qg=
+	t=1718247839; cv=none; b=RJHVGCR+cEu/aGNKJ6AKBeQnQr+B7p/fkqyc9KnFWYlc97YG94pUGvJoTyLxK6MTgf4zl4ATrZHxcJz0boTAUfkeWFM5dGc5npnnrIsrKxOzewI/m3lryzFFPS0eLAHwyn5xPD2aK0mn3vNx4g+/qDO4N8vyk912lPNILIW+WVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718247838; c=relaxed/simple;
-	bh=QAFFfGwYLEnHEqo6FXQCBcr2gQrBP3p0URnnZQPLooc=;
+	s=arc-20240116; t=1718247839; c=relaxed/simple;
+	bh=ABwgBz7zb0tL5nl1OVO16rswOeC2ujA0WmZYzZNo7+s=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=b0ukhixrlykWMAKFjRfKEV0vTeeV81dqSK0xbU1zz/fOaOS36QuKkzZR3B1RsnNJjRAmLltH34hxwUx2eTmCVuqR8E5dM8hizG/M3VDdTH/UCDXbFuQ7yOFZtN7eFgXAkeeAaw6DQ1bugACEI255CyxW5vtAkysPFnQArVQOZMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.175
+	 MIME-Version; b=RKNIjM5x/xFp+qAIsUjuXUwMAfXcCHZoPBmfjJ/AC6poilZ1w6l+YXsH243blqNRBf3XubpAD8L+hNx0N0Fkpd+qIUfNWiz13PsmayjgTzUtEt0Rnv6SSIiWpkqshqwxiSblFEVW32fjHfIDxuEuoFxbBVxmZFgs2IV9aLAwjNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-3d21b50f8b4so68984b6e.1
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2024 20:03:56 -0700 (PDT)
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-5b97f09cde3so43153eaf.0
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2024 20:03:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718247836; x=1718852636;
+        d=1e100.net; s=20230601; t=1718247837; x=1718852637;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=nye+j/7qGy0YUA+JVCM3jZJLUrkoBzYEWb5GNp1RVTA=;
-        b=oo+NAC7wagG43D49s6aezElTku5RbbEM9/2jhdfIK5cle4o94wIOYWw9fTU8L17UIM
-         RZBkHtczBtlOYCfaMzVE3YQP79xSazpAh9fHPEwRYuvQV9TLPfv3I11aCTM1741S/Dvy
-         r94aBig7q9ZSLInVb5UP1rBrh3hl0xNO7rskcpFatefIV0e7gTh8b7yP3HpIPU8rHIyW
-         byUMgzsDqIxJAcgKbsCNoje6Ual/EkY0S2xn4Wxi+j2DntFoBBnsAB2HUbKW/SkKP7at
-         mOIMA8tOZD3PIPG7bEvGBZmtIrqecv1CaWNJHLtYWEOtWBW9wt6HziwFl5GACg2vwSA0
-         riWw==
-X-Forwarded-Encrypted: i=1; AJvYcCUmVy2UvTI+Vb65dS5I5gM6kd3eKLNOjAuSKFNWjVtHI/wvSgroAwLSoOZC5BYXIPsf2a6E2KvXnR0XC5JbXuKbI741rDibY7dA3OxNw8g=
-X-Gm-Message-State: AOJu0YzRZOltHoTJHtUQEYdz+tCXSauM/ii4qzjZBezSlAPPKDxDarVo
-	XF9u0M4vYxbo4u+uhBXt5Q9nxxlXyNS+nbJwcGVj+V6eFybsg0j2
-X-Google-Smtp-Source: AGHT+IGqVf629ydu9/AlFHfkI+1bnq4OcapyfrCu+zhwMgh2RiZt82PM5g9cxvOIWlbsU+N3cPN4Bg==
-X-Received: by 2002:a05:6820:d88:b0:5ba:ead2:c742 with SMTP id 006d021491bc7-5bb3b7a3d2bmr3672840eaf.0.1718247835702;
-        Wed, 12 Jun 2024 20:03:55 -0700 (PDT)
+        bh=DDdCS5wTSvZ4XBL7ZL9EjuprlNu9A2pnAl8ILdhp1NM=;
+        b=bXtFFnVbEN1Qn1k7d6hv57CkEnRzBw0VApcZaiW3DHpOFa9cbzcQuR5QS/7NaN95SC
+         mYBjGQDoEqBV4XxAcMk5GyKQfrH2XaxPLVqvL9OmwcGtLszbyNaiMNPnWMx7WZ8GFTGl
+         qAweqXNek3aMVJooKgXdsJop9EcyoFT4Z6zKBLi46pDnt35GPJj9e7uhPkGVwfQkiC/v
+         AZTDHlmj+QieUcNOQLPIDDDzKSMdT89CJAsPd6XPUB+nXgtuJFETJ+mnvMCKU+JEzfag
+         jYYguyV2yzgHth17T3tB6bMQZX4fLpoYkvZnJUI/nMLMqERJ80Rza7zR5U5lG7LQ2K1n
+         2Oqg==
+X-Forwarded-Encrypted: i=1; AJvYcCX6gOJgtPPipCTuDzG3MdY7H6tPESY53tCoM6uPrV54WgucoUJhyBZSlDozzHsX369Jf5y0bekjjraDH5ve4bmBQmEL1jrcQOK+R8C2J3I=
+X-Gm-Message-State: AOJu0YxegYtr8nTqmcQsbtUQdsdACg2lC+NhoTO5VD759FQ3+uI6fBjq
+	gBE8mwyCunzZpcfN+QPl5iM1OV+Lx9jhHRqyd0Guu4fBQXFJFJNQxwOeqepj4w0=
+X-Google-Smtp-Source: AGHT+IGYteeIl0hbP50uC7mXetKY9ae07NNSA+90LC4OT/5TPcu7XyaM2tMVgvkcaDY43dbLLtudjA==
+X-Received: by 2002:a4a:8552:0:b0:5ba:ca86:a025 with SMTP id 006d021491bc7-5bb3b7a9135mr3997317eaf.0.1718247837460;
+        Wed, 12 Jun 2024 20:03:57 -0700 (PDT)
 Received: from sean-ThinkPad-T450s.lan ([207.191.35.252])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5bd629263c5sm67685eaf.46.2024.06.12.20.03.54
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5bd629263c5sm67685eaf.46.2024.06.12.20.03.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Jun 2024 20:03:54 -0700 (PDT)
+        Wed, 12 Jun 2024 20:03:56 -0700 (PDT)
 From: sean.wang@kernel.org
 To: nbd@nbd.name,
 	lorenzo.bianconi@redhat.com
@@ -61,9 +61,9 @@ Cc: sean.wang@mediatek.com,
 	mingyen.hsieh@mediatek.com,
 	linux-wireless@vger.kernel.org,
 	linux-mediatek@lists.infradead.org
-Subject: [PATCH 33/47] wifi: mt76: mt7925: extend mt7925_mcu_sta_phy_tlv for per-link STA
-Date: Wed, 12 Jun 2024 20:02:27 -0700
-Message-Id: <20240613030241.5771-34-sean.wang@kernel.org>
+Subject: [PATCH 34/47] wifi: mt76: mt7925: extend mt7925_get_phy_mode_ext for per-link STA
+Date: Wed, 12 Jun 2024 20:02:28 -0700
+Message-Id: <20240613030241.5771-35-sean.wang@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240613030241.5771-1-sean.wang@kernel.org>
 References: <20240613030241.5771-1-sean.wang@kernel.org>
@@ -77,7 +77,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Sean Wang <sean.wang@mediatek.com>
 
-Extend mt7925_mcu_sta_phy_tlv with per-link STA configuration.
+Extend mt7925_get_phy_mode_ext with the per-link STA configuration.
 
 The patch we created is a prerequisite to enable the MLO function in the
 driver. It is purely a refactoring patch so the functionality should
@@ -89,78 +89,45 @@ Co-developed-by: Deren Wu <deren.wu@mediatek.com>
 Signed-off-by: Deren Wu <deren.wu@mediatek.com>
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
- .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 35 ++++++++++++-------
- 1 file changed, 22 insertions(+), 13 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 66d45d676739..a0fd02dd9551 100644
+index a0fd02dd9551..32ea71128280 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -1507,34 +1507,43 @@ mt7925_mcu_sta_amsdu_tlv(struct sk_buff *skb,
+@@ -2035,16 +2035,17 @@ int mt7925_mcu_set_chctx(struct mt76_phy *phy, struct mt76_vif *mvif,
  
- static void
- mt7925_mcu_sta_phy_tlv(struct sk_buff *skb,
--		       struct ieee80211_vif *vif, struct ieee80211_sta *sta)
-+		       struct ieee80211_vif *vif,
-+		       struct ieee80211_link_sta *link_sta)
+ static u8
+ mt7925_get_phy_mode_ext(struct mt76_phy *phy, struct ieee80211_vif *vif,
+-			enum nl80211_band band, struct ieee80211_sta *sta)
++			enum nl80211_band band,
++			struct ieee80211_link_sta *link_sta)
  {
- 	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
--	struct cfg80211_chan_def *chandef = &mvif->bss_conf.mt76.ctx->def;
-+	struct ieee80211_bss_conf *link_conf;
-+	struct cfg80211_chan_def *chandef;
-+	struct mt792x_bss_conf *mconf;
- 	struct sta_rec_phy *phy;
- 	struct tlv *tlv;
- 	u8 af = 0, mm = 0;
+ 	struct ieee80211_he_6ghz_capa *he_6ghz_capa;
+ 	const struct ieee80211_sta_eht_cap *eht_cap;
+ 	__le16 capa = 0;
+ 	u8 mode = 0;
  
-+	link_conf = mt792x_vif_to_bss_conf(vif, link_sta->link_id);
-+	mconf = mt792x_vif_to_link(mvif, link_sta->link_id);
-+	chandef = &mconf->mt76.ctx->def;
-+
- 	tlv = mt76_connac_mcu_add_tlv(skb, STA_REC_PHY, sizeof(*phy));
- 	phy = (struct sta_rec_phy *)tlv;
--	phy->phy_type = mt76_connac_get_phy_mode_v2(mvif->phy->mt76, vif, chandef->chan->band, sta);
--	phy->basic_rate = cpu_to_le16((u16)vif->bss_conf.basic_rates);
--	if (sta->deflink.ht_cap.ht_supported) {
--		af = sta->deflink.ht_cap.ampdu_factor;
--		mm = sta->deflink.ht_cap.ampdu_density;
-+	phy->phy_type = mt76_connac_get_phy_mode_v2(mvif->phy->mt76, vif,
-+						    chandef->chan->band,
-+						    link_sta->sta);
-+	phy->basic_rate = cpu_to_le16((u16)link_conf->basic_rates);
-+	if (link_sta->ht_cap.ht_supported) {
-+		af = link_sta->ht_cap.ampdu_factor;
-+		mm = link_sta->ht_cap.ampdu_density;
- 	}
+-	if (sta) {
+-		he_6ghz_capa = &sta->deflink.he_6ghz_capa;
+-		eht_cap = &sta->deflink.eht_cap;
++	if (link_sta) {
++		he_6ghz_capa = &link_sta->he_6ghz_capa;
++		eht_cap = &link_sta->eht_cap;
+ 	} else {
+ 		struct ieee80211_supported_band *sband;
  
--	if (sta->deflink.vht_cap.vht_supported) {
-+	if (link_sta->vht_cap.vht_supported) {
- 		u8 vht_af = FIELD_GET(IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK,
--				      sta->deflink.vht_cap.cap);
-+				      link_sta->vht_cap.cap);
+@@ -2104,7 +2105,8 @@ mt7925_mcu_bss_basic_tlv(struct sk_buff *skb,
+ 						      mconf->mt76.omac_idx;
+ 	basic_req->hw_bss_idx = idx;
  
- 		af = max_t(u8, af, vht_af);
- 	}
+-	basic_req->phymode_ext = mt7925_get_phy_mode_ext(phy, vif, band, sta);
++	basic_req->phymode_ext = mt7925_get_phy_mode_ext(phy, vif, band,
++							 &sta->deflink);
  
--	if (sta->deflink.he_6ghz_capa.capa) {
--		af = le16_get_bits(sta->deflink.he_6ghz_capa.capa,
-+	if (link_sta->he_6ghz_capa.capa) {
-+		af = le16_get_bits(link_sta->he_6ghz_capa.capa,
- 				   IEEE80211_HE_6GHZ_CAP_MAX_AMPDU_LEN_EXP);
--		mm = le16_get_bits(sta->deflink.he_6ghz_capa.capa,
-+		mm = le16_get_bits(link_sta->he_6ghz_capa.capa,
- 				   IEEE80211_HE_6GHZ_CAP_MIN_MPDU_START);
- 	}
- 
-@@ -1639,7 +1648,7 @@ mt7925_mcu_sta_cmd(struct mt76_phy *phy,
- 					      info->link_sta->sta,
- 					      info->enable, info->newly);
- 	if (info->link_sta && info->enable) {
--		mt7925_mcu_sta_phy_tlv(skb, info->vif, info->link_sta->sta);
-+		mt7925_mcu_sta_phy_tlv(skb, info->vif, info->link_sta);
- 		mt7925_mcu_sta_ht_tlv(skb, info->link_sta);
- 		mt7925_mcu_sta_vht_tlv(skb, info->link_sta);
- 		mt76_connac_mcu_sta_uapsd(skb, info->vif, info->link_sta->sta);
+ 	if (band == NL80211_BAND_2GHZ)
+ 		basic_req->nonht_basic_phy = cpu_to_le16(PHY_TYPE_ERP_INDEX);
 -- 
 2.34.1
 
