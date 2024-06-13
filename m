@@ -1,58 +1,58 @@
-Return-Path: <linux-wireless+bounces-8951-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8952-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F08B7906263
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2024 05:05:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B4FA906264
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2024 05:05:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21F421C219B2
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2024 03:05:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CEA98B22585
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2024 03:05:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0571B12DD83;
-	Thu, 13 Jun 2024 03:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E2512FF70;
+	Thu, 13 Jun 2024 03:04:15 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
+Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FAB1132126
-	for <linux-wireless@vger.kernel.org>; Thu, 13 Jun 2024 03:04:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C628812DD8E
+	for <linux-wireless@vger.kernel.org>; Thu, 13 Jun 2024 03:04:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718247853; cv=none; b=HPXc7RjWkFPz57b8mfPU91C7nQX9jA6Dry8fR+0I2oPVckRIShqZmij9BVJne/gBEAh5R1KVkH3Y5Kuhw80dWjJxHW/0PjvUmHE4tUtjzhAOGpWoK9nKiE9QZBhrsUnb9t9YkGNT1S8pYiPzMg7HEEEEnZqJL0fQ4yfZaukjac0=
+	t=1718247855; cv=none; b=OJkUn7XX07nmCN+JYE5tNfDAzOTAKCig+cG6In8MC6iu9EwjKmF+KFFJEBfaU9rGuMf23HT1mTR9dTOMKNdIziXOi4O+hRDDMqpvHqLhSfQ+4FOGCjKGPelQYg8P053BwdIRjC7d5uebGW9lvvJlqwxzkJxdgwr026rnXf1IfhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718247853; c=relaxed/simple;
-	bh=3CFbMNhzsMvrEU1ryLOSFPueoi4oBV149xAb0jwplL8=;
+	s=arc-20240116; t=1718247855; c=relaxed/simple;
+	bh=3cLBQ63A8u3bk0OK3TnuLG6ZqvBhomYNSLmfhGFS2i8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HgWm6t1M6V1vJDvr7GkFSzZmxypHdppq3Ajs503jTUQgK+QoYonyBN8UmpZt0hOwHGF2NPSemJp00vQRX7gBumd25eu+uTuouc3mFtz07Yn9ZsCl/UhmQluIMeuHz1FWCdctESVVgWGhiLi/xYGkNHkBaRFIf5x+zS/cAPLh4Go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.54
+	 MIME-Version; b=pGfXJ03OvyjRMx0ucvNveGgo7mGJEo179m/LkUTvHZt72AlFUS+uTuaKGRsO6yliDWxXJEm+A4JWURI8jUE4NOAyzEwRkEube/J88d/AmjjMKOFIfhPdjkd2cZxjhApDQX3lLhjF6GCvq3M2UK9ViTezrlQ2ubrzx8KJNcghQL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-5b97f09cde3so43170eaf.0
-        for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2024 20:04:12 -0700 (PDT)
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-25496e90cf5so70208fac.1
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2024 20:04:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718247851; x=1718852651;
+        d=1e100.net; s=20230601; t=1718247853; x=1718852653;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=OgMigc2VAhtdTb1uu0yJ7C/V9AuPVgLB5PjEnDvYkH8=;
-        b=l3vnCQoUxih4iJnZMrThccuNNZeCYgCD00Ghga8p8IkQtebk06z3HTBHnhftq+t3lH
-         ksC19vhwSxC8avfdbGc6wpmnvrZg4qcyteCu/Kw2Ym6QzG4jUY3g08No5W0eObNWO8mX
-         rw4jBe3cGBC8kcAUQXD/2MsdeNKCmFgZ0HgpADBU5zHL6uQJ42UHnxwB/1G3PqBvrjA8
-         tkrf08spUKZ8wubK8rUZF8CHn9nUhjqcS0CV71bOJB/A0Y5IOTJKyqQi7Pjt92rQWZTG
-         OWQIzocdKUsMj24U6x/3PEX261BunislH53oj7dSaDa03jglBaI8Yvx1fC2DXhonTDYb
-         jV7w==
-X-Forwarded-Encrypted: i=1; AJvYcCWmVOcK0ldV6jzLmRlBzVKnnj8EXE0IxbgZepsRirEmCm1G1cQEh9CAKwdasczOX1fQyxbB5Koc+LXRoFi4+qxT0+ruixZqZ+UEhiiUhiU=
-X-Gm-Message-State: AOJu0YzOf6wmEEm95VkUzm0D4OHiahkS4XQaKQmOdZNTfPgXSIB/J/Td
-	c+/N521N6agEl+ZzdB4N+FtUO1MacSs5whVoDjbscl4U33UTW+zV
-X-Google-Smtp-Source: AGHT+IELnhgtggY4/ayU1vQAw9jcuSekNmvxXHACEAQ0mYwcUJ76ywNVecENM/8BKUBdyqxm5HkDdQ==
-X-Received: by 2002:a4a:d196:0:b0:5bd:87a0:66d with SMTP id 006d021491bc7-5bd87a01b93mr286964eaf.1.1718247851492;
-        Wed, 12 Jun 2024 20:04:11 -0700 (PDT)
+        bh=8qaT8b7yGtuN3JUwjHPR4rGNkOaYwHk+6PNJhQjqaCo=;
+        b=N6m1GAONk0i+LqOQC1+zeB7qFPUA6eBHW6sC3Snsv8kiQ3GP9iMFGpSBKyRcVDtrV/
+         SbZj5d76lrqdENd0N7QaRZljTC8e7hazEKfXxOVAmJsxGuolJwbeILtbO9VposqSEU9q
+         zHFDwSBDXgqgR+Tzyweb/KptKCn96xePA7l6ToHUb9pVrkE6mPxo0Au9NreBNRxDFYLI
+         A/Qz6MjtCs68cTWC2daYr6amhIUCr+qEWwU/2lwR5CXqYEKl+scPRe8Fp2f8RdAd9xY0
+         7qKTR/YRpjE1o3KKuKiZDd7blylHC2ch/BBlcutEqwa8HtK6iqVXaBOuE/qg7FgPeCEO
+         39sw==
+X-Forwarded-Encrypted: i=1; AJvYcCVhCSzuiHHm8ZVecOOEgrvDe/VJDDyy2nxspE1ChIyZX091XU1lXssbG0U7yWrzKrSwweeEHlPVQOkMPEDCIQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzvf0NyVnUyOYTCYk9cMbbjOltOWVVYDbthNnleMyB1hQuytqgO
+	EaVWvOmyTsgC9AzboXstp5exX/i7+QJER4lynzIxhJcye/+C5WGfC8ytO1zdmfk=
+X-Google-Smtp-Source: AGHT+IEqhSHMsARTCevRepG4Bai6+yCrp4bNWqrV+fqylm24sKnywEbKk5XYKWvL19S43sQzF1dk/A==
+X-Received: by 2002:a05:6820:b0b:b0:5ba:c4ed:ee98 with SMTP id 006d021491bc7-5bb3b7a4c51mr3591290eaf.0.1718247853048;
+        Wed, 12 Jun 2024 20:04:13 -0700 (PDT)
 Received: from sean-ThinkPad-T450s.lan ([207.191.35.252])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5bd629263c5sm67685eaf.46.2024.06.12.20.04.09
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5bd629263c5sm67685eaf.46.2024.06.12.20.04.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Jun 2024 20:04:10 -0700 (PDT)
+        Wed, 12 Jun 2024 20:04:11 -0700 (PDT)
 From: sean.wang@kernel.org
 To: nbd@nbd.name,
 	lorenzo.bianconi@redhat.com
@@ -61,9 +61,9 @@ Cc: sean.wang@mediatek.com,
 	mingyen.hsieh@mediatek.com,
 	linux-wireless@vger.kernel.org,
 	linux-mediatek@lists.infradead.org
-Subject: [PATCH 41/47] wifi: mt76: mt7925: extend mt7925_mcu_bss_basic_tlv for per-link STA
-Date: Wed, 12 Jun 2024 20:02:35 -0700
-Message-Id: <20240613030241.5771-42-sean.wang@kernel.org>
+Subject: [PATCH 42/47] wifi: mt76: mt7925: add mt7925_mac_link_sta_add to create per-link STA
+Date: Wed, 12 Jun 2024 20:02:36 -0700
+Message-Id: <20240613030241.5771-43-sean.wang@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240613030241.5771-1-sean.wang@kernel.org>
 References: <20240613030241.5771-1-sean.wang@kernel.org>
@@ -77,86 +77,105 @@ Content-Transfer-Encoding: 8bit
 
 From: Sean Wang <sean.wang@mediatek.com>
 
-Extend mt7925_mcu_bss_basic_tlv with the per-link STA configuration.
+The mt7925_mac_link_sta_add function currently adds the per-link STA.
+We will extend this function when we implement the MLO functionality.
 
-Co-developed-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Co-developed-by: Deren Wu <deren.wu@mediatek.com>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+This patch only includes structural changes and does not involve any
+logic changes.
+
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
- .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 25 +++++++++++++------
- 1 file changed, 17 insertions(+), 8 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7925/main.c  | 47 ++++++++++++-------
+ 1 file changed, 31 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 24966e614303..7156ba092302 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -2078,18 +2078,17 @@ mt7925_get_phy_mode_ext(struct mt76_phy *phy, struct ieee80211_vif *vif,
- static void
- mt7925_mcu_bss_basic_tlv(struct sk_buff *skb,
- 			 struct ieee80211_bss_conf *link_conf,
--			 struct ieee80211_sta *sta,
-+			 struct ieee80211_link_sta *link_sta,
- 			 struct ieee80211_chanctx_conf *ctx,
- 			 struct mt76_phy *phy, u16 wlan_idx,
- 			 bool enable)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index b91992745462..3911cf71462f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -702,45 +702,46 @@ mt7925_get_rates_table(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	return mvif->basic_rates_idx;
+ }
+ 
+-int mt7925_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+-		       struct ieee80211_sta *sta)
++static int mt7925_mac_link_sta_add(struct mt76_dev *mdev,
++				   struct ieee80211_vif *vif,
++				   struct ieee80211_link_sta *link_sta)
  {
- 	struct ieee80211_vif *vif = link_conf->vif;
- 	struct mt792x_bss_conf *mconf = mt792x_link_conf_to_mconf(link_conf);
--	struct mt792x_sta *msta = sta ? (struct mt792x_sta *)sta->drv_priv :
--				  &mconf->vif->sta;
- 	struct cfg80211_chan_def *chandef = ctx ? &ctx->def : &phy->chandef;
- 	enum nl80211_band band = chandef->chan->band;
- 	struct mt76_connac_bss_basic_tlv *basic_req;
+ 	struct mt792x_dev *dev = container_of(mdev, struct mt792x_dev, mt76);
+-	struct mt792x_sta *msta = (struct mt792x_sta *)sta->drv_priv;
+ 	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
+ 	struct ieee80211_bss_conf *link_conf;
 +	struct mt792x_link_sta *mlink;
- 	struct tlv *tlv;
- 	int conn_type;
- 	u8 idx;
-@@ -2102,7 +2101,7 @@ mt7925_mcu_bss_basic_tlv(struct sk_buff *skb,
- 	basic_req->hw_bss_idx = idx;
++	struct mt792x_sta *msta;
+ 	int ret, idx;
  
- 	basic_req->phymode_ext = mt7925_get_phy_mode_ext(phy, vif, band,
--							 &sta->deflink);
-+							 link_sta);
- 
- 	if (band == NL80211_BAND_2GHZ)
- 		basic_req->nonht_basic_phy = cpu_to_le16(PHY_TYPE_ERP_INDEX);
-@@ -2110,12 +2109,22 @@ mt7925_mcu_bss_basic_tlv(struct sk_buff *skb,
- 		basic_req->nonht_basic_phy = cpu_to_le16(PHY_TYPE_OFDM_INDEX);
- 
- 	memcpy(basic_req->bssid, link_conf->bssid, ETH_ALEN);
--	basic_req->phymode = mt76_connac_get_phy_mode(phy, vif, band,
--						      &sta->deflink);
-+	basic_req->phymode = mt76_connac_get_phy_mode(phy, vif, band, link_sta);
- 	basic_req->bcn_interval = cpu_to_le16(link_conf->beacon_int);
- 	basic_req->dtim_period = link_conf->dtim_period;
- 	basic_req->bmc_tx_wlan_idx = cpu_to_le16(wlan_idx);
--	basic_req->sta_idx = cpu_to_le16(msta->deflink.wcid.idx);
++	msta = (struct mt792x_sta *)link_sta->sta->drv_priv;
++	mlink = mt792x_sta_to_link(msta, link_sta->link_id);
 +
-+	if (link_sta) {
-+		struct mt792x_sta *msta;
-+
-+		msta = (struct mt792x_sta *)link_sta->sta->drv_priv;
-+		mlink = mt792x_sta_to_link(msta, link_sta->link_id);
-+
-+	} else {
-+		mlink = &mconf->vif->sta.deflink;
-+	}
-+
-+	basic_req->sta_idx = cpu_to_le16(mlink->wcid.idx);
- 	basic_req->omac_idx = mconf->mt76.omac_idx;
- 	basic_req->band_idx = mconf->mt76.band_idx;
- 	basic_req->wmm_idx = mconf->mt76.wmm_idx;
-@@ -2352,7 +2361,7 @@ int mt7925_mcu_add_bss_info(struct mt792x_phy *phy,
- 		return PTR_ERR(skb);
+ 	idx = mt76_wcid_alloc(dev->mt76.wcid_mask, MT792x_WTBL_STA - 1);
+ 	if (idx < 0)
+ 		return -ENOSPC;
  
- 	/* bss_basic must be first */
--	mt7925_mcu_bss_basic_tlv(skb, link_conf, link_sta->sta, ctx, phy->mt76,
-+	mt7925_mcu_bss_basic_tlv(skb, link_conf, link_sta, ctx, phy->mt76,
- 				 mvif->sta.deflink.wcid.idx, enable);
- 	mt7925_mcu_bss_sec_tlv(skb, link_conf);
+-	INIT_LIST_HEAD(&msta->deflink.wcid.poll_list);
+-	msta->vif = mvif;
+-	msta->deflink.wcid.sta = 1;
+-	msta->deflink.wcid.idx = idx;
+-	msta->deflink.wcid.phy_idx = mvif->bss_conf.mt76.band_idx;
+-	msta->deflink.wcid.tx_info |= MT_WCID_TX_INFO_SET;
+-	msta->deflink.last_txs = jiffies;
++	INIT_LIST_HEAD(&mlink->wcid.poll_list);
++	mlink->wcid.sta = 1;
++	mlink->wcid.idx = idx;
++	mlink->wcid.phy_idx = mvif->bss_conf.mt76.band_idx;
++	mlink->wcid.tx_info |= MT_WCID_TX_INFO_SET;
++	mlink->last_txs = jiffies;
  
+ 	ret = mt76_connac_pm_wake(&dev->mphy, &dev->pm);
+ 	if (ret)
+ 		return ret;
+ 
+-	if (vif->type == NL80211_IFTYPE_STATION)
+-		mvif->wep_sta = msta;
+-
+ 	mt7925_mac_wtbl_update(dev, idx,
+ 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
+ 
+ 	link_conf = mt792x_vif_to_bss_conf(vif, vif->bss_conf.link_id);
+ 
+ 	/* should update bss info before STA add */
+-	if (vif->type == NL80211_IFTYPE_STATION && !sta->tdls)
++	if (vif->type == NL80211_IFTYPE_STATION && !link_sta->sta->tdls)
+ 		mt7925_mcu_add_bss_info(&dev->phy, mvif->bss_conf.mt76.ctx,
+-					link_conf, &sta->deflink, false);
++					link_conf, link_sta, false);
+ 
+-	ret = mt7925_mcu_sta_update(dev, &sta->deflink, vif, true,
++	ret = mt7925_mcu_sta_update(dev, link_sta, vif, true,
+ 				    MT76_STA_INFO_STATE_NONE);
+ 	if (ret)
+ 		return ret;
+@@ -749,6 +750,20 @@ int mt7925_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ 
+ 	return 0;
+ }
++
++int mt7925_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
++		       struct ieee80211_sta *sta)
++{
++	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
++	struct mt792x_sta *msta = (struct mt792x_sta *)sta->drv_priv;
++
++	msta->vif = mvif;
++
++	if (vif->type == NL80211_IFTYPE_STATION)
++		mvif->wep_sta = msta;
++
++	return mt7925_mac_link_sta_add(mdev, vif, &sta->deflink);
++}
+ EXPORT_SYMBOL_GPL(mt7925_mac_sta_add);
+ 
+ void mt7925_mac_sta_assoc(struct mt76_dev *mdev, struct ieee80211_vif *vif,
 -- 
 2.34.1
 
