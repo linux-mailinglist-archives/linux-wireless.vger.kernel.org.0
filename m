@@ -1,170 +1,142 @@
-Return-Path: <linux-wireless+bounces-8986-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8987-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E9B2907BDF
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2024 21:00:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F12A0907D37
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2024 22:15:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 076381F21E4D
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2024 19:00:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9933C1F24F14
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2024 20:15:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56EBC137758;
-	Thu, 13 Jun 2024 19:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF66824A4;
+	Thu, 13 Jun 2024 20:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="me5Msm5v"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HmvIrAaM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF03D14B095
-	for <linux-wireless@vger.kernel.org>; Thu, 13 Jun 2024 19:00:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291A676EEA;
+	Thu, 13 Jun 2024 20:15:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718305208; cv=none; b=OZvWu19iTrIE5ig76wmNUlsOZg9scO4ZiF7hiYVkuSlxhSmm5vGfR80Vnq8sWhnDr4BGyaHzO3zpBbF1DiMTCcMJjAXJpPjZr8iO3RYSa41UAKkdBY0xQL8r+ZmGoac+PfgRSJjiNSCDvD+sQD4LLDqrZ+vf9EwogAo7voG0ZBo=
+	t=1718309717; cv=none; b=F4PtL99XPus1GAW1DLn9E+nYwbkMYjSJrYSnighzGq9ZOzLiws0Zkj46iFDMyzXHQWcb1d00/w+mXOf1sT47SDnk4Ice/8g/ZM0JlEVB/sV8RMxFIj5q7JnuNMzJ4DWMSyMpVlyEZ+ow/4t4XbKa2B0eFt/UorCpqb9FE2vhB+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718305208; c=relaxed/simple;
-	bh=nx6A49FdZbbbtBh3n26TxmIDeL9ouQLSgIYAe0kyJrM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ZlyzzNnUT49bh0VkLweb3ChyqBMxNHS0LsED0T5j3SDOcQwfN74wN30shx5EiFbmAo157prh3sRwomCtwHDHtVajjVu3lc6Thp/E+jPLl+8ynL3BsOpv2CE32VqBNSGQwNXr2/AzxFxNY3ELNzWTcWM1mDkaoTqXuF6CZEECM+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=me5Msm5v; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45DItYKX025163;
-	Thu, 13 Jun 2024 19:00:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	upQgT8P20mZATnR5JEfmI8BYfTGq3iAmLUZx9tflOdE=; b=me5Msm5v0zZrpQyM
-	WlANJoAguu85CxZ92Kmk+Ds+rZJTWH6O+onvjvO7kHU3YCLJTfXZGcOlLbqL+RaO
-	H3WdEqyYFBBrjhlWRg3HdHNxoR85xMHfXgFR30tWQWYT8IuvBMsl76rnGJ2beAAK
-	SKKCOTN0xSpS4k7vyxSE8aRtMlR6r0VH2PNS+BI/H+VKGPzqAMvLhLkpEKaAE47m
-	B1UghzdNSxu3fXY9m9acFyDFrUzHdJURu8OGJ3PZYwQi91nvfaG6mqooKyHcJBZq
-	oj6WiGVFTgD0QA7IKmSM/lc4HMCgel7ki1ZfUngSuUwqLYwpTAEWLUEIdvshtEwj
-	b8iXIA==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yr6fbr0bm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Jun 2024 19:00:01 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45DJ01Bi001656
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Jun 2024 19:00:01 GMT
-Received: from [10.110.103.68] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 13 Jun
- 2024 12:00:00 -0700
-Message-ID: <a7921a28-6f36-40b4-9d56-284b2c2684a6@quicinc.com>
-Date: Thu, 13 Jun 2024 11:59:58 -0700
+	s=arc-20240116; t=1718309717; c=relaxed/simple;
+	bh=0VyVbcu1boTZF6DwGTdBdmpjhkqK9llX60FYNycn2ec=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XBgsfVh6JWU+FZABItouBZln3rAj+tVWcQkG9h582jIGm9Rk4nTcRbI/wYyaVl9d9fZGbfgi5EMOqzniWHTd+pBSGCKnMXO0I9HsClZwSR+wZLlaKP4rYKbzEZPLyyAiEacUIfnYHqtShKqb3Xu+zl2w4OaYbao8XTDaJ/vO6y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HmvIrAaM; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1f70a87fd16so875125ad.3;
+        Thu, 13 Jun 2024 13:15:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718309715; x=1718914515; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xbflSuWMUpgqTUBYoUQqUfwyzkg6nAlYMJc1UzV9Z44=;
+        b=HmvIrAaMRPwokdkSDGSBC6i75K1hyf/m/C+sz9mNqxRoExKgHZ3hRAXMHVNK/FUdTY
+         2unrmgub+Ln3kFQTSDpQmnA49or6Tqr1NRadURR12EZZzQ1LJdAClzvs+H14tSIZCe9w
+         3TarHah53zcJT4STsifGfZW/93L/mVA44m7fQSV/HikSesC/wTjmYQ2ZddDhEvfr4ByS
+         ccCXrayOCYBeaD/BTqcgxwgh91qQZ98bCstE1fi+mnbRyrlgG/l1kZ2Uwk1btWPb2OtD
+         RYcreOw8jK0x5mtw+0KpfZQwEOpzcB03/bjAUkbP4oHJ9JG94U5Nl5ShcgzNtKuet9A2
+         TglQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718309715; x=1718914515;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xbflSuWMUpgqTUBYoUQqUfwyzkg6nAlYMJc1UzV9Z44=;
+        b=ftLgsDOjF5WorAWO8MJHCxBU8F20zd2SV5U5KXh3xr5zWdD0SjswqNlJwCRYGEjRX+
+         JTZRWvQwIdfF9fTWdz+dd9eiZ14RlwDzQHD3PA09spb5sc0NDWKgVDoFOg9Dz+pGSjOU
+         QsUf+8ZWOGN2hiJMsr6Fe4VigrWU3yaUTW3M4nucGOxF+58b9Wnxa+6GJjnWiJHFun2b
+         f/q2a4nIX4gu3NuC5ZcOrJU/nFg9cgCfph4lAGWdOF8m2p96EIOIVBCxfiDx6q7SjY2L
+         K/msrTlIb1UI9Aq02i0yLbGwTMNga3eFkIHUREwmAGhTLbu9JjbkaPXgHOLLgndWAshp
+         gnVA==
+X-Forwarded-Encrypted: i=1; AJvYcCW+1aB/TLnQLwu6dXCuj2To9jSz6FY0CVVcT9Hate1j5saT6WCvxvBnncLxoBHuqb2gW3BRSXdyNgXVJh6lDP0xKWvtYoMW0qE5IuRkLtNQGAFtk4sRJClfnS/1KFP0I7h3mtMOapCT2tWYx6c=
+X-Gm-Message-State: AOJu0YyFQ6ICsigS+ytX/R3WHx6JVcQlp2yMb3aAlMwLxYmtXupw4z5P
+	wE4w3AND59/VvVFTTBS+UQnsVYjrVAC0q0vGk/91emiwtRP9G6qP4uCIgft1VhM607TowimDWqv
+	oZxr8bdh3ebwFD/sQUbc5F8k5rqQ=
+X-Google-Smtp-Source: AGHT+IFmx3oQAQqw3JJ/zFU64xUpwOUXiRy5J8pNaJ8mcjqFV74Sy3HFNb8wQ9haUW3V4Od24xga70MR9vX8OI9ddKQ=
+X-Received: by 2002:a05:6a20:f385:b0:1b4:4ed4:91f5 with SMTP id
+ adf61e73a8af0-1bae845b35emr838497637.6.1718309715376; Thu, 13 Jun 2024
+ 13:15:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath12k: fix legacy peer association due to missing
- HT or 6 GHz capabilities
-Content-Language: en-US
-To: Jeff Johnson <quic_jjohnson@quicinc.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Aditya Kumar Singh
-	<quic_adisi@quicinc.com>,
-        Zachary Smith <dr.z.smith@gmail.com>
-References: <20240612225336.2303119-1-quic_pradeepc@quicinc.com>
- <760d99d1-c709-43b5-9d15-c2a0fef98b66@quicinc.com>
-From: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-In-Reply-To: <760d99d1-c709-43b5-9d15-c2a0fef98b66@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: pRyuQGM8xdCurD6cDvj3vs4pwnkyjIsE
-X-Proofpoint-ORIG-GUID: pRyuQGM8xdCurD6cDvj3vs4pwnkyjIsE
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-13_11,2024-06-13_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 adultscore=0
- lowpriorityscore=0 impostorscore=0 bulkscore=0 phishscore=0
- priorityscore=1501 clxscore=1015 suspectscore=0 spamscore=0 malwarescore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2406130135
+References: <CAOMZO5A7+nxACoBPY0k8cOpVQByZtEV_N1489MK5wETHF_RXWA@mail.gmail.com>
+ <3fbb5317d9ff33ef1b60ca8297537335ce86a79d.camel@sipsolutions.net>
+ <CAOMZO5Aufe7zAE7TFVprvRreamYd9=RHjybjaEz2O9WaPksV=Q@mail.gmail.com>
+ <95163ee547da95964c16f87a38d3326ae4da3253.camel@sipsolutions.net>
+ <CAOMZO5CYDsh70u3To7HYXVki_MzzhFyCCHkigt_Es7o_+XG3oA@mail.gmail.com>
+ <7a8e220d77d7e30a0cfaf984404ef2f57eaa785f.camel@sipsolutions.net>
+ <CAOMZO5BktgtaSPzCf3WOOnkD2n+fj3FeQEfHeT7CYFL+tCHeaw@mail.gmail.com>
+ <fb60b7f5bcf5ba47be54398225075a5bfab7c141.camel@sipsolutions.net>
+ <CAOMZO5CMX_juW4-t6CSd2xdzXkFfBiamuSTjsTB80Ly_TUsxRA@mail.gmail.com>
+ <d49fcc32-bfa8-41d2-8666-af6256b7b4b4@quicinc.com> <50101085cba7fc089339c96f531f797e27c632ff.camel@sipsolutions.net>
+ <35750452-e362-4dfa-803a-3360a4e16cd8@quicinc.com> <6e556f7b6b769c4d70be3e248b98d8d09d51452b.camel@sipsolutions.net>
+In-Reply-To: <6e556f7b6b769c4d70be3e248b98d8d09d51452b.camel@sipsolutions.net>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Thu, 13 Jun 2024 17:15:03 -0300
+Message-ID: <CAOMZO5CN_kbPcEYsN9SqqfUyrJdq9yaDisfJKL+CnENVTPuq3g@mail.gmail.com>
+Subject: Re: iwlwifi: Regression after migrating to 6.6.32
+To: Johannes Berg <johannes@sipsolutions.net>, Will Deacon <will@kernel.org>
+Cc: Baochen Qiang <quic_bqiang@quicinc.com>, miriam.rachel.korenblit@intel.com, 
+	kvalo@kernel.org, Jakub Kicinski <kuba@kernel.org>, 
+	linux-wireless <linux-wireless@vger.kernel.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hi Johannes and Baochen,
 
+Thanks for the great suggestions.
 
-On 6/13/2024 8:42 AM, Jeff Johnson wrote:
-> On 6/12/2024 3:53 PM, Pradeep Kumar Chitrapu wrote:
->> Currently SMPS configuration failed when the Information
->> Elements (IEs) did not contain HT or 6 GHz capabilities. This
->> caused legacy peer association to fail as legacy peers do not
->> have HT or 6 GHz capabilities. Fix this by not returning an
->> error when SMPS configuration fails due to the absence of HT
->> or 6 GHz capabilities.
->>
->> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
->>
->> Fixes: f0e61dc7ecf9 ("wifi: ath12k: refactor SMPS configuration")
->> Reported-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
-> 
-> Per checkpatch:
-> WARNING: Reported-by: should be immediately followed by Closes: with a URL to the report
-> #17:
-> Reported-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
-> 
-> Is there a separate public bug report from Aditya?
-Hi Jeff,
-No, this was internal report and does not have weblink associated with 
-it. Also, do not want to ignore reportee.
+On Thu, Jun 13, 2024 at 7:37=E2=80=AFAM Johannes Berg <johannes@sipsolution=
+s.net> wrote:
 
-Thanks
-Pradeep
-> 
->> Reported-by: Zachary Smith <dr.z.smith@gmail.com>
->> Closes: https://lore.kernel.org/all/CAM=znoFPcXrn5GhDmDmo50Syic3-hXpWvD+vkv8KX5o_ZTo8kQ@mail.gmail.com/
->> Signed-off-by: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
->> ---
->>   drivers/net/wireless/ath/ath12k/mac.c | 9 ++++++---
->>   1 file changed, 6 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
->> index 2259ce22cc8b..fa9f6656a06f 100644
->> --- a/drivers/net/wireless/ath/ath12k/mac.c
->> +++ b/drivers/net/wireless/ath/ath12k/mac.c
->> @@ -2255,9 +2255,6 @@ static int ath12k_get_smps_from_capa(const struct ieee80211_sta_ht_cap *ht_cap,
->>   				     const struct ieee80211_he_6ghz_capa *he_6ghz_capa,
->>   				     int *smps)
->>   {
->> -	if (!ht_cap->ht_supported && !he_6ghz_capa->capa)
->> -		return -EOPNOTSUPP;
->> -
->>   	if (ht_cap->ht_supported)
->>   		*smps = u16_get_bits(ht_cap->cap, IEEE80211_HT_CAP_SM_PS);
->>   	else
->> @@ -2277,6 +2274,9 @@ static void ath12k_peer_assoc_h_smps(struct ieee80211_sta *sta,
->>   	const struct ieee80211_sta_ht_cap *ht_cap = &sta->deflink.ht_cap;
->>   	int smps;
->>   
->> +	if (!ht_cap->ht_supported && !he_6ghz_capa->capa)
->> +		return;
->> +
->>   	if (ath12k_get_smps_from_capa(ht_cap, he_6ghz_capa, &smps))
->>   		return;
->>   
->> @@ -2756,6 +2756,9 @@ static int ath12k_setup_peer_smps(struct ath12k *ar, struct ath12k_vif *arvif,
->>   {
->>   	int smps, ret = 0;
->>   
->> +	if (!ht_cap->ht_supported && !he_6ghz_capa)
->> +		return 0;
->> +
->>   	ret = ath12k_get_smps_from_capa(ht_cap, he_6ghz_capa, &smps);
->>   	if (ret < 0)
->>   		return ret;
->>
->> base-commit: e72048809ec7355a947415ae6836d2eb7fdcda39
-> 
+> Oh. So I guess try to pick up commit 14cebf689a78 ("swiotlb: Reinstate
+> page-alignment for mappings >=3D PAGE_SIZE").
+
+Good catch, thanks!
+
+After applying 14cebf689a78 ("swiotlb: Reinstate> page-alignment for
+mappings >=3D PAGE_SIZE")
+on top of 6.6.33 I no longer have the flood of alignment warnings and
+iwlwifi can be used again:
+
+# dmesg | grep iwlwifi
+[    4.295064] iwlwifi 0000:01:00.0: enabling device (0000 -> 0002)
+[    4.305459] iwlwifi 0000:01:00.0: Detected crf-id 0x3617, cnv-id
+0x100530 wfpm id 0x80000000
+[    4.315440] iwlwifi 0000:01:00.0: PCI dev 2723/0084, rev=3D0x340, rfid=
+=3D0x10a100
+[    4.346029] iwlwifi 0000:01:00.0: api flags index 2 larger than
+supported by driver
+[    4.353816] iwlwifi 0000:01:00.0: TLV_FW_FSEQ_VERSION: FSEQ
+Version: 89.3.35.37
+[    4.363135] iwlwifi 0000:01:00.0: loaded firmware version
+77.ad46c98b.0 cc-a0-77.ucode op_mode iwlmvm
+[    4.444427] iwlwifi 0000:01:00.0: Detected Intel(R) Wi-Fi 6 AX200
+160MHz, REV=3D0x340
+[    4.604918] iwlwifi 0000:01:00.0: Detected RF HR B3, rfid=3D0x10a100
+[    4.676138] iwlwifi 0000:01:00.0: base HW address: 3c:21:9c:4e:16:6x
+[    5.339929] iwlwifi 0000:01:00.0 wlp1s0: renamed from wlan0
+[    9.840136] iwlwifi 0000:01:00.0: Registered PHC clock:
+iwlwifi-PTP, with index: 1
+
+Will, is it OK for me to ask the stable folks to backport 14cebf689a78
+("swiotlb: Reinstate> page-alignment for mappings >=3D PAGE_SIZE")
+to 6.6 stable?
+
+Thanks!
+
+Fabio Estevam
 
