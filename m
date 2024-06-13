@@ -1,109 +1,129 @@
-Return-Path: <linux-wireless+bounces-8965-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8966-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3C8590655D
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2024 09:39:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44F38906565
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2024 09:40:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B568D1C23164
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2024 07:39:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0959286C1B
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2024 07:40:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DADA813C3D6;
-	Thu, 13 Jun 2024 07:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0436613C660;
+	Thu, 13 Jun 2024 07:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="HZLfaw0P"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="lVO3WmtC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA9B13C3D8;
-	Thu, 13 Jun 2024 07:39:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D414113C3CD;
+	Thu, 13 Jun 2024 07:40:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718264391; cv=none; b=gBMZjwfIsB2OSrMPX+DqfEl8rtfwDNhJkSw2hkiXilwqQVIn+zSIatLQznUaqONYAbALtCgbbilkJDHUm6GNAznRpUL7oUVvXjC5tQMQrGO2rQNGHjQrqqV5QrATpOhzSxS+t20lPuLh3Ysm5CvQIcDZKh/FlQZ4bUVCh7lMsBg=
+	t=1718264433; cv=none; b=ZDM6ofT640siLz3qBO2qkATpURdk5RPcGiTfKphkTHjP11uGsldgMdOdg/DO+6pQf5sk6FRhKPwU37Wtp1yhE0ka9fq17zhL1o/Qhexobn/4dv4GhlECEgUtyba7ocMwYmt40w8jP9BtvHkzp8zyN1LcGSkaog5LwOVL6KUf2rM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718264391; c=relaxed/simple;
-	bh=TDG1hAEvKTqi8x6dK8QwzoYkuCJJOfpG15LJ6vNyGJM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=F2SM39Yx6gBwuOHU8ogSYaX9ea81CqA+72apZIRsLIxOV9gMdBKQP3vus0xeI3CNrNJfgvIpMOxFawe98c8x6LK3IAiis9xvbP8C72b7EORPAsCAPg1LvRw0A9ewdYI0MDS77wx8M7DUaHClBjpDJOAnXsNZA9cLyMGdCsiQE30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=HZLfaw0P; arc=none smtp.client-ip=198.47.19.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-	by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 45D7degi088676;
-	Thu, 13 Jun 2024 02:39:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1718264380;
-	bh=2okusDhLwSssKtYayuSI+ewFdBOg2dmNj/EzRz6J07A=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=HZLfaw0PrJDyZqDUmqmX8ctVk1V2Mh2Z2udJ+5X+gEGhoW8rZBq4la2Png1DAa31D
-	 MoBCz+HJFDX7U90ygPInUHBP3eERu8T8S+cJ+i/VukI/DSpexCojohblTW8Wunh4dW
-	 JKuLbI4ECOeA3tws/DgvZxH7/CqQ+IYuTDqJ5UJE=
-Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
-	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 45D7deOA055024
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 13 Jun 2024 02:39:40 -0500
-Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE103.ent.ti.com
- (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 13
- Jun 2024 02:39:39 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 13 Jun 2024 02:39:39 -0500
-Received: from [10.250.214.9] ([10.250.214.9])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 45D7dZ9a102427;
-	Thu, 13 Jun 2024 02:39:36 -0500
-Message-ID: <1c655f3d-7198-4f7b-be14-407345f6a204@ti.com>
-Date: Thu, 13 Jun 2024 10:39:35 +0300
+	s=arc-20240116; t=1718264433; c=relaxed/simple;
+	bh=vA7CkQV/uZWCqUet3+TkgnI8gkyk1M2E09VVDHS+x+Q=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=n1OA9ap5lXFaR7k8cgADyBdtHgGBRFtbr9v1YW3aLND+qE7hyrdvXxSoVVKvPenMPhPYSvC8j5Hwfnug5CfKq5Z4cQ74WENon9/Vj2kkLPDHr0f0n9arW6n8Q1cwkj0pT5KuBaU0BQWJoKrvKoyHeT7nET1DFReF5gzFGDrm+Sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=lVO3WmtC; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=b2tVk5gtyfcK3Xrbxsq8MRKsU3rezhDvNclVJ6CRAH0=;
+	t=1718264431; x=1719474031; b=lVO3WmtCuoWMgaIbZZju02Lz9SW+Ku9X7vNqcfpH8y8yQOu
+	qPDrV4vVayV/1Vpe5PzICnFJZ+gIvd2un9QZVtjMC6dI8q3D+aOC4pIEi/EB85HFFrhi7nlYL3fNn
+	G4htzzvkDP4b221qRHKc4X8AR7YOXzYKjWPVShjWmEn4XHZuEyW59XnIsor4klw9DtJWlpD/jmWSX
+	+2BpCiiOAZM4sBNvFDaK9u1+ru8puUEXKBhmsInl2jZ8bcIupz5pCrUF/ChTy8S9sd4iPQnXLhbcg
+	Ui6goj1KIORl5y4dZb0/TqXOAnBVsrB9vMzQ1DBiQuDTG/DAfkL3aB4fQB4wvr5A==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1sHf4N-0000000BVam-2UwH;
+	Thu, 13 Jun 2024 09:40:27 +0200
+Message-ID: <50101085cba7fc089339c96f531f797e27c632ff.camel@sipsolutions.net>
+Subject: Re: iwlwifi: Regression after migrating to 6.6.32
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Baochen Qiang <quic_bqiang@quicinc.com>, Fabio Estevam
+ <festevam@gmail.com>
+Cc: miriam.rachel.korenblit@intel.com, kvalo@kernel.org, Jakub Kicinski
+	 <kuba@kernel.org>, linux-wireless <linux-wireless@vger.kernel.org>, 
+ linux-kernel <linux-kernel@vger.kernel.org>
+Date: Thu, 13 Jun 2024 09:40:26 +0200
+In-Reply-To: <d49fcc32-bfa8-41d2-8666-af6256b7b4b4@quicinc.com>
+References: 
+	<CAOMZO5A7+nxACoBPY0k8cOpVQByZtEV_N1489MK5wETHF_RXWA@mail.gmail.com>
+	 <3fbb5317d9ff33ef1b60ca8297537335ce86a79d.camel@sipsolutions.net>
+	 <CAOMZO5Aufe7zAE7TFVprvRreamYd9=RHjybjaEz2O9WaPksV=Q@mail.gmail.com>
+	 <95163ee547da95964c16f87a38d3326ae4da3253.camel@sipsolutions.net>
+	 <CAOMZO5CYDsh70u3To7HYXVki_MzzhFyCCHkigt_Es7o_+XG3oA@mail.gmail.com>
+	 <7a8e220d77d7e30a0cfaf984404ef2f57eaa785f.camel@sipsolutions.net>
+	 <CAOMZO5BktgtaSPzCf3WOOnkD2n+fj3FeQEfHeT7CYFL+tCHeaw@mail.gmail.com>
+	 <fb60b7f5bcf5ba47be54398225075a5bfab7c141.camel@sipsolutions.net>
+	 <CAOMZO5CMX_juW4-t6CSd2xdzXkFfBiamuSTjsTB80Ly_TUsxRA@mail.gmail.com>
+	 <d49fcc32-bfa8-41d2-8666-af6256b7b4b4@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 17/17] dt-bindings: net: wireless: cc33xx: Add
- ti,cc33xx.yaml
-To: Krzysztof Kozlowski <krzk@kernel.org>, Sabeeh Khan <sabeeh-khan@ti.com>,
-        Kalle Valo <kvalo@kernel.org>, Johannes Berg <johannes.berg@intel.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Rob
- Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor
- Dooley <conor+dt@kernel.org>
-CC: <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20240609182102.2950457-1-michael.nemanov@ti.com>
- <20240609182102.2950457-18-michael.nemanov@ti.com>
- <e7444ff4-763a-44c6-9a73-0c5f590ceaad@kernel.org>
- <0d4fc078-52a7-4d3b-a95e-fd64e0702a99@kernel.org>
-Content-Language: en-US
-From: "Nemanov, Michael" <michael.nemanov@ti.com>
-In-Reply-To: <0d4fc078-52a7-4d3b-a95e-fd64e0702a99@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-malware-bazaar: not-scanned
 
-On 10/6/2024 11:17 AM, Krzysztof Kozlowski wrote:
->> On 09/06/2024 20:21, michael.nemanov@ti.com wrote:
->>> From: Michael Nemanov <michael.nemanov@ti.com>
->>>
->> 
->> Missing commit msg (explain the hardware), missing SoB.
-> 
-> And now I found that you actually received such feedback and you just
-> ignored it.
-> 
-> Go back to v1 and respond to each feedback you got.
-> 
-> Best regards,
-> Krzysztof
-> 
+On Thu, 2024-06-13 at 15:10 +0800, Baochen Qiang wrote:
+>=20
+> On 6/13/2024 3:15 AM, Fabio Estevam wrote:
+> > Hi Johannes,
+> >=20
+> > On Wed, Jun 12, 2024 at 4:10=E2=80=AFPM Johannes Berg <johannes@sipsolu=
+tions.net> wrote:
+> >=20
+> > > Strange. Is there an IOMMU involved on this platform?
+> >=20
+> > IOMMU isn't available on i.MX8M as far as I know.
+> If IOMMU not present, likely the buffer is mapped by SWIOTLB.
 
-Oversight on my part, will fix.
+Why? The device can do 64-bit DMA, so should be able to just access any
+page in the system. Even older devices can do 36-bit DMA, but this is a
+newer one. And if IOMMU isn't present, you have no protection anyway.
+
+>  The iova 4215433216, aka 0xFB426800, is 2K aligned, which also supports =
+such guessing. See definition of IO_TLB_SIZE.
+
+Not sure that means anything though, I really would have expected a 4k
+buffer to be 4k aligned - why would you even want to map it across two
+pages?
+
+If it is SWIOTLB, shouldn't we get into this condition?
+
+        /*
+         * Historically, swiotlb allocations >=3D PAGE_SIZE were guaranteed=
+ to be
+         * page-aligned in the absence of any other alignment requirements.
+         * 'alloc_align_mask' was later introduced to specify the alignment
+         * explicitly, however this is passed as zero for streaming mapping=
+s
+         * and so we preserve the old behaviour there in case any drivers a=
+re
+         * relying on it.
+         */
+        if (!alloc_align_mask && !iotlb_align_mask && alloc_size >=3D PAGE_=
+SIZE)
+                alloc_align_mask =3D PAGE_SIZE - 1;
+
+
+Otherwise, not sure though how we could possibly fix this in the driver,
+we really shouldn't do dma_set_min_align_mask() since on the TX side we
+really have no alignment requirements, and swiotlb_map() uses 0 as
+alignment.
+
+johannes
 
