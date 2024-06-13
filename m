@@ -1,73 +1,69 @@
-Return-Path: <linux-wireless+bounces-8909-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8910-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20F63905F61
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2024 01:43:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5259190623A
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2024 05:02:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FD90B2276D
-	for <lists+linux-wireless@lfdr.de>; Wed, 12 Jun 2024 23:43:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06B771F22411
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2024 03:02:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73E2612EBD6;
-	Wed, 12 Jun 2024 23:42:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="laODRw1L"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E64412CD8B;
+	Thu, 13 Jun 2024 03:02:49 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9B2712E1D3
-	for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2024 23:42:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B06618028
+	for <linux-wireless@vger.kernel.org>; Thu, 13 Jun 2024 03:02:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718235756; cv=none; b=pd+u2wW9/HcwGJ/EgrHqPk4FDm4qsOPfm387ZNk+DYUxm6b3AzHIG+3mA45pFdP8VkK54R19UY5/4hFUc48nHd8iyZOulPGkV6HFQEonoQp2OkRCJ68EfYfw/VuJDHWZ7Za0IF/pe4Vwd7LoNJ3z8tQ6t5b2tMpUF59fw5koyUk=
+	t=1718247769; cv=none; b=LQIRAqJ4xAlplhJBvkwqxgNhmhmd4BF2JukDnl6DShdledDuLzvcSVfdgsMah6p4Vig/8OKx/WXEoNwCPAzr804CdxbJvw2jI1Ehr85MWBkctdnz80lL8r5FgaTQ2ISDz3j7n2JWxe/IxPPndJfpMmsJX8rcDtzpkbM7B5/AkRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718235756; c=relaxed/simple;
-	bh=/YyommARHN8KX6UTHYh3bKUBtymjTwV3MZ4CvdFpTxg=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p/o7zynMV/z306I4QefWHUjU7WeV81RpbrZ4f3zQFso/LezL5XyG5fBuwmVhH5l5hCqNnFJc8gkcm6gBj0njA3ZAltM9jJKPgo1byUOk/AaeuUBI/8a1l0r6d3Cp6MKcNbrUS/gN25ICquDX5c1kCh/1OiHwg8Zw9UUKhscdS/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=laODRw1L; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45CKnoQp016607;
-	Wed, 12 Jun 2024 23:42:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	MLMq/GyXzRJOlO4IstObk5HeUL5Rzqs8GuASCp3RbeA=; b=laODRw1LS1EX3bzL
-	pWdQPs/eQ011QqmF67eIDEVL4HXchc3wXtkRkdA3B3iFfeNJatFZWr38cj4572p/
-	aMv+5U/OiLqSlkx8wjWTGcPwFOidhPUuHrhTba3ah/R5DbrkhFT7E4N3X8AB7JGA
-	D8wP26pd01+DKhDlgJ4HV5tmLz1peTjX4ZyrEowmC/iZpuT5bS+gnN96jk5Dv4LB
-	JO2yf5+31N0tvuKOv3qP5cveMnGmLwU3jbSY5OuqwQ5ak9gpedIdknFpwVeosNDk
-	f5QjZ4Cuyr9GmNyT0bgVBurv78fnAKk5fM7HtvleDySNnJBK36OdowgNTdgrbLpq
-	0WBOXA==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ypm45chj2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Jun 2024 23:42:25 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45CNgORs032443
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Jun 2024 23:42:24 GMT
-Received: from pradeepc-linux2.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Wed, 12 Jun 2024 16:42:23 -0700
-From: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Pradeep Kumar Chitrapu
-	<quic_pradeepc@quicinc.com>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>
-Subject: [PATCH V7 9/9] wifi: ath12k: add extended NSS bandwidth support for 160 MHz
-Date: Wed, 12 Jun 2024 16:42:09 -0700
-Message-ID: <20240612234209.2324181-10-quic_pradeepc@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240612234209.2324181-1-quic_pradeepc@quicinc.com>
-References: <20240612234209.2324181-1-quic_pradeepc@quicinc.com>
+	s=arc-20240116; t=1718247769; c=relaxed/simple;
+	bh=uWkuOTccdBiZ179b6SEhfG/8T9N9lWVQZXjc3kGSO0s=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=s2pEqn46J0qPY6ewtTDokjSHZnjMliArHMI4RQuHKM5BZI8T6faYCjj011kI7X4WQeYqTPnyzwe6fL2cXnk3d4ggjNeNgOEUC75c0EET0nIxVOHn/wMGSE7pt74C0YxHyN5Q5Wqi0gWdTMO6nHz7Lo2OOrSOvYpZisEzfQgGW3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-5b97f09cde3so43126eaf.0
+        for <linux-wireless@vger.kernel.org>; Wed, 12 Jun 2024 20:02:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718247766; x=1718852566;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wjwbybjfnlPDTGv5o9qP6JskFHBy1UjXTbEViuKqIyc=;
+        b=Ql3+CEU2aWuuz7+EM9ZzmP4KyTQNnixmY2u8BWRvFtpYubqNWpmKZ+BsGw8ZYgppPq
+         GRm/NSHVSW7Nq+zF8Gw7sUDTUpxsinP+rWicqFjej4yG+EdPjxx3RAqONRxHGwAaBQVu
+         gGH0K3gfmPoVn9zONHtvI575MDQSBGw9YKE3bUyB4OeIEOnVNYlE6dZepJ3rXMCQRP0w
+         +HBNgO9Fo1tkA3GKpZhrLNYPc2MqJZ3do6M0IMBSQMJ+iZszNrwLUvIyKIc40ahqfzW4
+         DKiF5vTmLbt+GNiMufYy77t55M1NeUrjh7qr9tV22695qtkaUgGRtOKRJYpHzd6bHkmc
+         /OWw==
+X-Forwarded-Encrypted: i=1; AJvYcCW6lOclNKOmLmgseyxyHjhGPRWsqhnMZf8fkrgGVdSXXOWWfvQwDinMMVgMCK6TuLUG9hU990vtvWr/nlgJNA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxifiZPw61Uy3fLgv6dZYhTf3KqIFtGVnhkKzxzsh2mhkjbWCXn
+	nuDLdyhcpXIpAq1sLWOLd1Ex0mHHrNfR1CxaGtZK9/r8ciQihR5aEb0w171/3n4=
+X-Google-Smtp-Source: AGHT+IER9+Uy+9LreQRT6aeUwKH/q1c4bW65weR/CmRHz5fIl/mNx4PfWXC2BSSQSFLZkz07u24dig==
+X-Received: by 2002:a4a:8552:0:b0:5ba:ca86:a025 with SMTP id 006d021491bc7-5bb3b7a9135mr3995097eaf.0.1718247766411;
+        Wed, 12 Jun 2024 20:02:46 -0700 (PDT)
+Received: from sean-ThinkPad-T450s.lan ([207.191.35.252])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5bd629263c5sm67685eaf.46.2024.06.12.20.02.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Jun 2024 20:02:45 -0700 (PDT)
+From: sean.wang@kernel.org
+To: nbd@nbd.name,
+	lorenzo.bianconi@redhat.com
+Cc: sean.wang@mediatek.com,
+	deren.wu@mediatek.com,
+	mingyen.hsieh@mediatek.com,
+	linux-wireless@vger.kernel.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH 00/47] Prerequisite Refactoring for Enabling MLO on MT7925
+Date: Wed, 12 Jun 2024 20:01:54 -0700
+Message-Id: <20240613030241.5771-1-sean.wang@kernel.org>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,114 +71,108 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: Wz9mvGKjxT7gZj5q_t0LkEXG39fzBMS5
-X-Proofpoint-ORIG-GUID: Wz9mvGKjxT7gZj5q_t0LkEXG39fzBMS5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-12_11,2024-06-12_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- impostorscore=0 mlxlogscore=999 phishscore=0 malwarescore=0 suspectscore=0
- bulkscore=0 spamscore=0 clxscore=1015 priorityscore=1501 adultscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2406120169
 
-Currently rx and tx MCS map for 160 MHz under HE capabilities
-are not updating properly, when 160 MHz is configured with NSS
-lesser than max NSS support. Fix this by utilizing
-nss_ratio_enabled and nss_ratio_info fields sent by firmware
-in service ready event.
+From: Sean Wang <sean.wang@mediatek.com>
 
-However, if firmware advertises EXT NSS BW support in VHT caps
-as 1(1x2) and when nss_ratio_info indicates 1:1, reset the EXT
-NSS BW Support in VHT caps to 0 which indicates 1x1. This is
-to avoid incorrectly choosing 1:2 NSS ratio when using the
-default VHT caps advertised by firmware.
+I'm submitting some patches that are essential preliminary steps for getting
+Multi-Link Operation (MLO) up and running smoothly on the MT7925 driver.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+Before we can activate MLO, we need to do some necessary refactoring work.
+This involves adjusting how the driver handles certain commands and data to
+support per-link STA and per-BSS operations. It's like laying down a strong
+foundation so that MLO can seamlessly integrate with our existing setup.
 
-Signed-off-by: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/mac.c | 33 ++++++++++++++++++++++-----
- 1 file changed, 27 insertions(+), 6 deletions(-)
+It's important to note that these patches focus solely on refactoring work.
+We're not changing any of the current functions or logic; we're just making
+sure everything is structured properly to support MLO when it's enabled.
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index a75a3235ac19..b1a048fe888d 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -2394,8 +2394,10 @@ static void ath12k_peer_assoc_h_he(struct ath12k *ar,
- 	arg->peer_nss = min(sta->deflink.rx_nss, max_nss);
- 
- 	if (arg->peer_phymode == MODE_11AX_HE160) {
--		tx_nss = ath12k_get_nss_160mhz(ar, max_nss);
-+		tx_nss = ath12k_get_nss_160mhz(ar, ar->num_tx_chains);
- 		rx_nss = min(arg->peer_nss, tx_nss);
-+
-+		arg->peer_nss = min(sta->deflink.rx_nss, ar->num_rx_chains);
- 		arg->peer_bw_rxnss_override = ATH12K_BW_NSS_MAP_ENABLE;
- 
- 		if (!rx_nss) {
-@@ -5520,6 +5522,12 @@ ath12k_create_vht_cap(struct ath12k *ar, u32 rate_cap_tx_chainmask,
- 	vht_cap.vht_mcs.rx_mcs_map = cpu_to_le16(rxmcs_map);
- 	vht_cap.vht_mcs.tx_mcs_map = cpu_to_le16(txmcs_map);
- 
-+	/* Check if the HW supports 1:1 NSS ratio and reset
-+	 * EXT NSS BW Support field to 0 to indicate 1:1 ratio
-+	 */
-+	if (ar->pdev->cap.nss_ratio_info == WMI_NSS_RATIO_1_NSS)
-+		vht_cap.cap &= ~IEEE80211_VHT_CAP_EXT_NSS_BW_MASK;
-+
- 	return vht_cap;
- }
- 
-@@ -5702,11 +5710,12 @@ static void ath12k_mac_set_hemcsmap(struct ath12k *ar,
- 				    struct ieee80211_sta_he_cap *he_cap)
- {
- 	struct ieee80211_he_mcs_nss_supp *mcs_nss = &he_cap->he_mcs_nss_supp;
--	u16 txmcs_map, rxmcs_map;
-+	u8 maxtxnss_160 = ath12k_get_nss_160mhz(ar, ar->num_tx_chains);
-+	u8 maxrxnss_160 = ath12k_get_nss_160mhz(ar, ar->num_rx_chains);
-+	u16 txmcs_map_160 = 0, rxmcs_map_160 = 0;
-+	u16 txmcs_map = 0, rxmcs_map = 0;
- 	u32 i;
- 
--	rxmcs_map = 0;
--	txmcs_map = 0;
- 	for (i = 0; i < 8; i++) {
- 		if (i < ar->num_tx_chains &&
- 		    (ar->cfg_tx_chainmask >> cap->tx_chain_mask_shift) & BIT(i))
-@@ -5719,12 +5728,24 @@ static void ath12k_mac_set_hemcsmap(struct ath12k *ar,
- 			rxmcs_map |= IEEE80211_HE_MCS_SUPPORT_0_11 << (i * 2);
- 		else
- 			rxmcs_map |= IEEE80211_HE_MCS_NOT_SUPPORTED << (i * 2);
-+
-+		if (i < maxtxnss_160 &&
-+		    (ar->cfg_tx_chainmask >> cap->tx_chain_mask_shift) & BIT(i))
-+			txmcs_map_160 |= IEEE80211_HE_MCS_SUPPORT_0_11 << (i * 2);
-+		else
-+			txmcs_map_160 |= IEEE80211_HE_MCS_NOT_SUPPORTED << (i * 2);
-+
-+		if (i < maxrxnss_160 &&
-+		    (ar->cfg_tx_chainmask >> cap->tx_chain_mask_shift) & BIT(i))
-+			rxmcs_map_160 |= IEEE80211_HE_MCS_SUPPORT_0_11 << (i * 2);
-+		else
-+			rxmcs_map_160 |= IEEE80211_HE_MCS_NOT_SUPPORTED << (i * 2);
- 	}
- 
- 	mcs_nss->rx_mcs_80 = cpu_to_le16(rxmcs_map & 0xffff);
- 	mcs_nss->tx_mcs_80 = cpu_to_le16(txmcs_map & 0xffff);
--	mcs_nss->rx_mcs_160 = cpu_to_le16(rxmcs_map & 0xffff);
--	mcs_nss->tx_mcs_160 = cpu_to_le16(txmcs_map & 0xffff);
-+	mcs_nss->rx_mcs_160 = cpu_to_le16(rxmcs_map_160 & 0xffff);
-+	mcs_nss->tx_mcs_160 = cpu_to_le16(txmcs_map_160 & 0xffff);
- }
- 
- static void ath12k_mac_copy_he_cap(struct ath12k *ar,
+I've tested these patches to make sure they're reliable and won't mess up
+anything that's already working. 
+
+Deren Wu (5):
+  wifi: mt76: mt792x: add struct mt792x_bss_conf
+  wifi: mt76: mt792x: add struct mt792x_link_sta
+  wifi: mt76: mt792x: add struct mt792x_chanctx
+  wifi: mt76: mt7925: support for split bss_info_changed method
+  wifi: mt76: mt7925: extend mt7925_mcu_set_tx with for per-link BSS
+
+Sean Wang (42):
+  wifi: mt76: mt792x: extend mt76_connac_mcu_uni_add_dev for per-link
+    BSS
+  wifi: mt76: mt7925: extend mt7925_mcu_add_bss_info for per-link BSS
+  wifi: mt76: mt7925: extend mt7925_mcu_set_timing for per-link BSS
+  wifi: mt76: mt7925: extend mt7925_mcu_bss_ifs_tlv for per-link BSS
+  wifi: mt76: mt7925: extend mt7925_mcu_bss_color_tlv for per-link BSS
+  wifi: mt76: mt7925: extend mt7925_mcu_bss_he_tlv for per-link BSS
+  wifi: mt76: mt7925: extend mt7925_mcu_bss_qos_tlv for per-link BSS
+  wifi: mt76: mt7925: extend mt7925_mcu_bss_mld_tlv for per-link BSS
+  wifi: mt76: mt7925: extend mt7925_mcu_bss_bmc_tlv for per-link BSS
+  wifi: mt76: mt7925: remove unused parameters in mt7925_mcu_bss_bmc_tlv
+  wifi: mt76: mt7925: extend mt7925_mcu_bss_sec_tlv for per-link BSS
+  wifi: mt76: mt7925: extend mt7925_mcu_bss_basic_tlv for per-link BSS
+  wifi: mt76: mt7925: extend mt7925_mcu_set_bss_pm for per-link BSS
+  wifi: mt76: mt7925: extend mt7925_mcu_[abort, set]_roc for per-link
+    BSS
+  wifi: mt76: mt7925: extend mt7925_mcu_uni_bss_bcnft for per-link BSS
+  wifi: mt76: mt7925: extend mt7925_mcu_uni_bss_ps for per-link BSS
+  wifi: mt76: mt7925: add mt7925_mcu_bss_rlm_tlv to constitue the RLM
+    TLV
+  wifi: mt76: mt7925: mt7925_mcu_set_chctx rely on
+    mt7925_mcu_bss_rlm_tlv
+  wifi: mt76: mt7925: extend mt7925_mcu_sta_update for per-link STA
+  wifi: mt76: mt7925: extend mt7925_mcu_sta_state_v2_tlv for per-link
+    STA
+  wifi: mt76: mt7925: extend mt7925_mcu_sta_rate_ctrl_tlv with per-link
+    STA
+  wifi: mt76: mt7925: extend mt7925_mcu_sta_eht_tlv for per-link STA
+  wifi: mt76: mt7925: extend mt7925_mcu_sta_he_6g_tlv for per-link STA
+  wifi: mt76: mt7925: extend mt7925_mcu_sta_he_tlv for per-link STA
+  wifi: mt76: mt7925: extend mt7925_mcu_sta_amsdu_tlv for per-link STA
+  wifi: mt76: mt7925: extend mt7925_mcu_sta_vht_tlv for per-link STA
+  wifi: mt76: mt7925: extend mt7925_mcu_sta_ht_tlv for per-link STA
+  wifi: mt76: mt7925: extend mt7925_mcu_sta_phy_tlv for per-link STA
+  wifi: mt76: mt7925: extend mt7925_get_phy_mode_ext for per-link STA
+  wifi: mt76: mt7925: extend mt7925_get_phy_mode for per-link STA
+  wifi: mt76: mt792x: extend mt76_connac_get_phy_mode_v2 for per-link
+    STA
+  wifi: mt76: mt762x:  extend mt76_connac_mcu_sta_basic_tlv for per-link
+    STA
+  wifi: mt76: mt7925: extend mt7925_mcu_sta_hdr_trans_tlv for per-link
+    STA
+  wifi: mt76: mt7925: extend mt7925_mcu_add_bss_info for per-link STA
+  wifi: mt76: mt7925: extend mt7925_mcu_bss_mld_tlv for per-link STA
+  wifi: mt76: mt7925: extend mt7925_mcu_bss_basic_tlv for per-link STA
+  wifi: mt76: mt7925: add mt7925_mac_link_sta_add to create per-link STA
+  wifi: mt76: mt7925: add mt7925_mac_link_sta_assoc to associate
+    per-link STA
+  wifi: mt76: mt7925: add mt7925_mac_link_sta_remove to remove per-link
+    STA
+  wifi: mt76: mt7925: add mt7925_mac_link_bss_add to create per-link BSS
+  wifi: mt76: mt7925: add mt7925_mac_link_bss_remove to remove per-link
+    BSS
+  wifi: mt76: mt7925: simpify mt7925_mcu_sta_cmd logic by removing
+    fw_offload
+
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   |   8 +-
+ .../wireless/mediatek/mt76/mt76_connac_mcu.c  |  56 +-
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  19 +-
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   |   4 +-
+ .../net/wireless/mediatek/mt76/mt7921/mac.c   |  66 +--
+ .../net/wireless/mediatek/mt76/mt7921/main.c  | 143 +++--
+ .../net/wireless/mediatek/mt76/mt7921/mcu.c   |  46 +-
+ .../wireless/mediatek/mt76/mt7921/pci_mac.c   |   4 +-
+ .../net/wireless/mediatek/mt76/mt7925/mac.c   |  69 +--
+ .../net/wireless/mediatek/mt76/mt7925/main.c  | 452 +++++++++-------
+ .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 500 ++++++++++--------
+ .../net/wireless/mediatek/mt76/mt7925/mcu.h   |  25 +-
+ .../wireless/mediatek/mt76/mt7925/mt7925.h    |  15 +-
+ .../wireless/mediatek/mt76/mt7925/pci_mac.c   |   4 +-
+ drivers/net/wireless/mediatek/mt76/mt792x.h   |  78 ++-
+ .../net/wireless/mediatek/mt76/mt792x_core.c  |  70 ++-
+ .../net/wireless/mediatek/mt76/mt792x_mac.c   |   8 +-
+ .../net/wireless/mediatek/mt76/mt7996/mcu.c   |   2 +-
+ 18 files changed, 896 insertions(+), 673 deletions(-)
+
 -- 
 2.34.1
 
