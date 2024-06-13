@@ -1,133 +1,159 @@
-Return-Path: <linux-wireless+bounces-8967-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-8968-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B9C29067E7
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2024 10:58:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E84090695B
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2024 11:52:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 448AAB25364
-	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2024 08:56:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08BF41F21B84
+	for <lists+linux-wireless@lfdr.de>; Thu, 13 Jun 2024 09:52:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4891813D285;
-	Thu, 13 Jun 2024 08:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54BDA13A41A;
+	Thu, 13 Jun 2024 09:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jie9CYPU"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="RvdQ1ARx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C4D7139D0B
-	for <linux-wireless@vger.kernel.org>; Thu, 13 Jun 2024 08:55:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B833713774D;
+	Thu, 13 Jun 2024 09:52:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718268952; cv=none; b=NTr4q6thHxYF+vtzGewQLgT6P8/y76G/y06m520zuLC2MhPxZXvs4SCtNqMJ/QkEHoSOwe2i/4fXvkgjd7CCfwfVuJFxFhut8nZ6Xd0kdh54Rr1xCEyUIfXuzFo/kyK2IWpJDUM5TdXa88sFR6pGoxUJqz3Wn9cq49uIIHbAOKs=
+	t=1718272358; cv=none; b=cavdTHhmJHXVTMXkx4jNJFkiAPPPDE+MhjGdEoQOHSMgFXdUhPulZv6yHEJmfS7oPNyXgLTAfZwYT5e5pvSe0r6KvyzBO2NQ3NHhZ9WZVPmlsRqKTu11C5iP7Jx7ghkCTkTtDaC5YTG5hyQRVtLm8BXgwtmoZ06q3/WBi0guMMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718268952; c=relaxed/simple;
-	bh=g00td5Wc4rEEGdV4R/wXJAgrprdwOdfZb12x3iXtkWE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=O2khQ2O9VH7GrOstFArL35uimh46fdnibtBM14XWEk+rtz4jAjcVR2+3M84n6Mpta7u1bdVQ9NCSaJol0EyVXEu6fZyLWC2EGFta7OeGpz6njVzrmf6PNRS+fqr0LNK5PL4/7O6l+jgSrpeqA1Dsqlr7rgUtlTHYsxFA1t03oTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jie9CYPU; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718268950; x=1749804950;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=g00td5Wc4rEEGdV4R/wXJAgrprdwOdfZb12x3iXtkWE=;
-  b=Jie9CYPUsfeaH13aR8JVG+77rpKtPJcMw5vOi1UBqXSOWAwJFwmSYbLy
-   knJKbdrkx4Md2FW/EbBuAV/CYN5fb3TVLj+0FwfL3lB04ycAUXXYMQ/TO
-   YWwJ2Tn0ue24nK20zX5htX/LQi7B4iysbdcj4P5FqsNY47CVfQWF/mzb9
-   sLhq4iljLlFcDKz59EWWfe4i/Lw18TEKBfmv2oajc5nQNZ1sSBhMgTXbI
-   n5/nXAE1VFtcBKWN3y0qR0wiehubWwMXnShaF1fkf2npCDj8pL12J1Rgw
-   lmXAGlHiJcdVz/ICrkL7QPmxmbAhuRd840IMEPuYUz5QzZ+BCmWvNI8V4
-   A==;
-X-CSE-ConnectionGUID: qftlwVySSZyp7IEVL52q9w==
-X-CSE-MsgGUID: rK0jcr7KSC+fUDA7ECP3Pg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11101"; a="18001111"
-X-IronPort-AV: E=Sophos;i="6.08,234,1712646000"; 
-   d="scan'208";a="18001111"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2024 01:55:50 -0700
-X-CSE-ConnectionGUID: r3OZHGZ4Sda7kmJ2egzexg==
-X-CSE-MsgGUID: a/o9ZafcQvGMjz+D7aOJMw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,234,1712646000"; 
-   d="scan'208";a="44454215"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2024 01:55:48 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Golan Ben Ami <golan.ben.ami@intel.com>
-Subject: [PATCH] wifi: iwlwifi: remove AX101, AX201 and AX203 support from  LNL
-Date: Thu, 13 Jun 2024 11:55:33 +0300
-Message-Id: <20240613115533.93cfbd8b325b.I989a2d3f1513211bc49ac8143ee4e9e341e1ee67@changeid>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1718272358; c=relaxed/simple;
+	bh=RrwJyBp5r48PP0OB7E9bbtZaSKSU+dE831Q19RMIi60=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Jx2nT0cciv/ty7lDm0qn+sQBU9XEFsfUDJuHRmCB59UaIRuBG9bqmdZm3VPCOWoCZrb1WtLXQDrl5/JV4cyyGJWmnOROtOCKiYKYvAIg59MWz+IKHVN69vmTFMw21+wwLNmYKgYgGRnstuU/PxPJOASe/rTkNDePoULZMtYnydk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=RvdQ1ARx; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45D8rrmP002076;
+	Thu, 13 Jun 2024 09:52:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	jIsKe1t72C0n6LQKxWqUjNjoizn7ErYhYoFZfb3QbJ4=; b=RvdQ1ARx0qFDREf2
+	SCvrb27ywb1VKv8vgaBs7amIjaPE6Fkjg5TJTPE4s3dpMSz+UtPM7ojTJb6Z23+K
+	MloeePFXGatom3LyvhxZ7GzKr94AIF+P5DfXp0i7GGbFhWOexxjYixuaY+yJ27JV
+	6dW82sMZiJJivdMxmBGpYG6gWco5slCFJ166IsIObhxHmH6GlhYcQHdbF4AbrDd5
+	tV044qWPZgIf+9otM/zacvWEZItIjIu0HzeTRtRnS95azqgsW1hbCwNjeWtTygbX
+	ZhX6he4MyvY0Q/zhVYO8PjkIPMNoOOzwoGqY1NCd+4rWf8GXJ2OWz04y9HKNldw9
+	FOArkA==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ypp87x2a7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Jun 2024 09:52:07 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45D9q6rP019968
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Jun 2024 09:52:06 GMT
+Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 13 Jun
+ 2024 02:51:58 -0700
+Message-ID: <35750452-e362-4dfa-803a-3360a4e16cd8@quicinc.com>
+Date: Thu, 13 Jun 2024 17:51:56 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
+User-Agent: Mozilla Thunderbird
+Subject: Re: iwlwifi: Regression after migrating to 6.6.32
+To: Johannes Berg <johannes@sipsolutions.net>,
+        Fabio Estevam
+	<festevam@gmail.com>
+CC: <miriam.rachel.korenblit@intel.com>, <kvalo@kernel.org>,
+        Jakub Kicinski
+	<kuba@kernel.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+References: <CAOMZO5A7+nxACoBPY0k8cOpVQByZtEV_N1489MK5wETHF_RXWA@mail.gmail.com>
+ <3fbb5317d9ff33ef1b60ca8297537335ce86a79d.camel@sipsolutions.net>
+ <CAOMZO5Aufe7zAE7TFVprvRreamYd9=RHjybjaEz2O9WaPksV=Q@mail.gmail.com>
+ <95163ee547da95964c16f87a38d3326ae4da3253.camel@sipsolutions.net>
+ <CAOMZO5CYDsh70u3To7HYXVki_MzzhFyCCHkigt_Es7o_+XG3oA@mail.gmail.com>
+ <7a8e220d77d7e30a0cfaf984404ef2f57eaa785f.camel@sipsolutions.net>
+ <CAOMZO5BktgtaSPzCf3WOOnkD2n+fj3FeQEfHeT7CYFL+tCHeaw@mail.gmail.com>
+ <fb60b7f5bcf5ba47be54398225075a5bfab7c141.camel@sipsolutions.net>
+ <CAOMZO5CMX_juW4-t6CSd2xdzXkFfBiamuSTjsTB80Ly_TUsxRA@mail.gmail.com>
+ <d49fcc32-bfa8-41d2-8666-af6256b7b4b4@quicinc.com>
+ <50101085cba7fc089339c96f531f797e27c632ff.camel@sipsolutions.net>
+Content-Language: en-US
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+In-Reply-To: <50101085cba7fc089339c96f531f797e27c632ff.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: X2zS0ggyJuVatQl9Jw7gduj9iIOpNr1a
+X-Proofpoint-ORIG-GUID: X2zS0ggyJuVatQl9Jw7gduj9iIOpNr1a
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-13_02,2024-06-13_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 malwarescore=0
+ spamscore=0 suspectscore=0 mlxlogscore=822 priorityscore=1501 adultscore=0
+ bulkscore=0 mlxscore=0 clxscore=1015 impostorscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405170001
+ definitions=main-2406130070
 
-From: Golan Ben Ami <golan.ben.ami@intel.com>
 
-These devices will not be supported on LNL platfroms
 
-Signed-off-by: Golan Ben Ami <golan.ben.ami@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 32 ++++++++++++++++++-
- 1 file changed, 31 insertions(+), 1 deletion(-)
+On 6/13/2024 3:40 PM, Johannes Berg wrote:
+> On Thu, 2024-06-13 at 15:10 +0800, Baochen Qiang wrote:
+>>
+>> On 6/13/2024 3:15 AM, Fabio Estevam wrote:
+>>> Hi Johannes,
+>>>
+>>> On Wed, Jun 12, 2024 at 4:10 PM Johannes Berg <johannes@sipsolutions.net> wrote:
+>>>
+>>>> Strange. Is there an IOMMU involved on this platform?
+>>>
+>>> IOMMU isn't available on i.MX8M as far as I know.
+>> If IOMMU not present, likely the buffer is mapped by SWIOTLB.
+> 
+> Why? The device can do 64-bit DMA, so should be able to just access any
+> page in the system. Even older devices can do 36-bit DMA, but this is a
+> newer one. And if IOMMU isn't present, you have no protection anyway.
+Then no idea :(
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index d6da25e24818..9ad43464b702 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -503,7 +503,37 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct pci_device_id iwl_hw_card_ids[] = {
- 	{IWL_PCI_DEVICE(0x2727, PCI_ANY_ID, iwl_bz_trans_cfg)},
- 	{IWL_PCI_DEVICE(0x272D, PCI_ANY_ID, iwl_bz_trans_cfg)},
- 	{IWL_PCI_DEVICE(0x272b, PCI_ANY_ID, iwl_bz_trans_cfg)},
--	{IWL_PCI_DEVICE(0xA840, PCI_ANY_ID, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x0000, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x0090, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x0094, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x0098, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x009C, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x00C0, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x00C4, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x00E0, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x00E4, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x00E8, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x00EC, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x0100, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x0110, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x0114, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x0118, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x011C, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x0310, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x0314, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x0510, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x0A10, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x1671, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x1672, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x1771, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x1772, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x1791, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x1792, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x4090, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x40C4, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x40E0, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x4110, iwl_bz_trans_cfg)},
-+	{IWL_PCI_DEVICE(0xA840, 0x4314, iwl_bz_trans_cfg)},
- 	{IWL_PCI_DEVICE(0x7740, PCI_ANY_ID, iwl_bz_trans_cfg)},
- 	{IWL_PCI_DEVICE(0x4D40, PCI_ANY_ID, iwl_bz_trans_cfg)},
- 
--- 
-2.34.1
+> 
+>>  The iova 4215433216, aka 0xFB426800, is 2K aligned, which also supports such guessing. See definition of IO_TLB_SIZE.
+> 
+> Not sure that means anything though, I really would have expected a 4k
+> buffer to be 4k aligned - why would you even want to map it across two
+> pages?
+IMO SWIOTLB manages buffers in a unit of IO_TLB_SIZE, it does not care about whether or not we are crossing page boundaries, no?
 
+> 
+> If it is SWIOTLB, shouldn't we get into this condition?
+> 
+>         /*
+>          * Historically, swiotlb allocations >= PAGE_SIZE were guaranteed to be
+>          * page-aligned in the absence of any other alignment requirements.
+>          * 'alloc_align_mask' was later introduced to specify the alignment
+>          * explicitly, however this is passed as zero for streaming mappings
+>          * and so we preserve the old behaviour there in case any drivers are
+>          * relying on it.
+>          */
+>         if (!alloc_align_mask && !iotlb_align_mask && alloc_size >= PAGE_SIZE)
+>                 alloc_align_mask = PAGE_SIZE - 1;
+> 
+This is not present in 6.6.32 stable kernel.
+
+> 
+> Otherwise, not sure though how we could possibly fix this in the driver,
+> we really shouldn't do dma_set_min_align_mask() since on the TX side we
+> really have no alignment requirements, and swiotlb_map() uses 0 as
+> alignment.
+> 
+> johannes
 
