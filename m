@@ -1,124 +1,119 @@
-Return-Path: <linux-wireless+bounces-9007-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9008-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB9CD9086D8
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2024 10:57:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36A999089F1
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2024 12:32:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65E17281FC2
-	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2024 08:57:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCB271F21227
+	for <lists+linux-wireless@lfdr.de>; Fri, 14 Jun 2024 10:32:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C96519146E;
-	Fri, 14 Jun 2024 08:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30FBF1940AA;
+	Fri, 14 Jun 2024 10:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="HEuozICN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V5Bwq0o6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9568F188CC1;
-	Fri, 14 Jun 2024 08:57:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437FE19414D
+	for <linux-wireless@vger.kernel.org>; Fri, 14 Jun 2024 10:28:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718355438; cv=none; b=geC9fOoEXh42yetDMIs2Dtl1vYW5rl2Ddh0rSo2p+6brFKOAYCN+y3Z2lRFmCo2K6j4TZuc55epARLTLNZ4noArIfLwoQjoWJBEJGiqHPIhYIwJeRoJdRbbdJS7yHvH6f6dVZS8FiGF67r8L/sU4rcbBycQHcRhhl2g0qwgHgF0=
+	t=1718360932; cv=none; b=Cb4I8mvE8v7WNTB+9V9Ax9X06xyV2I4ou+qsfGchRmJ6ifckV74vfYeUs5CMdVTGlQDELviCPcca2KShDOO0F3g+7MlOLg5glG6JFUJVR2L247Z1xVrXRE80X1Mpar2d5jGnA1XXDzbqYDgx3ZYkI+c+ZxIxE7jDsk+fr37I4Tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718355438; c=relaxed/simple;
-	bh=xdriQCpMjpmNVBrCJ1jZItM9KNv2DMY2gtCZacQO0LA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ELvtqOsf+DNhpGxvPFaIP0/NEhYRoB4+q5YcyS4WYpczBkkSfIA1js1Ca1IfTPseja2z8vKclTTUqmgW5/tLfrhVbIs+VJO/2EwQ9z+ExveDB82lKwAm1hdhFvNIf7y6plxOxx/tQLiFS16Yr1cgwL1mSikv/4Iq3CxzdLuq1AE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=HEuozICN; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=oVycumswJpHb/XGD7yqMZ1AATV19rhYlmNYcNDoFmxg=; t=1718355436; x=1719565036; 
-	b=HEuozICNQ4y1crtaBu23IzEJCyxoo4oNQBaZ71BXeK/1PnKV5kI9GfgsOOQEvsXjF5HEfKnO1Xv
-	8AoVghIOG9x1IXYhTnuGnu3fl2ME2PvNZfUvRZQikUkbaWLsUmcQtA9xzbr8l8hsF8IwOFbgdGlmv
-	MhwfY3ql9paUS2bjHuJRWDUEVE5x456/rxpIm3T9QpUYwS8S9G9HRVszfuB5pZIcff6tw301efdmd
-	rAUaoTs1/IJR/yK0zWhdM52TApOJ7XUetnQuqqB3ehjvzSUaaa3nRbW2CHLqYirJBJrPPrehhu2ZU
-	371Uy1b3Jp0lMSZy96N26CtSaRlEbYq/jqow==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1sI2kD-0000000DcLz-3Kf6;
-	Fri, 14 Jun 2024 10:57:14 +0200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Subject: pull-request: wireless-2024-06-14
-Date: Fri, 14 Jun 2024 10:56:44 +0200
-Message-ID: <20240614085710.24103-3-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1718360932; c=relaxed/simple;
+	bh=wPWwJRRIaoSICVwJZc8x8QfxOZ0r9W+zSR0QF3AOlrQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=R0cxUR+MsgxzxrwCnXgK+oxHNcWkRLmnOIMAIFrOMZ+GzBwUUYAqspk9DSossnACHch2DTvvAhKmmgvYVCxjeFSLoq+NpFVIQzBkJ3krmOeYBehOYmNabqt3Qo75ZBU7hqZ926EPEnvx/qNpik5p6drgEx8Pe19+fJmpRDeCOfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V5Bwq0o6; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-57cbc2a2496so1602666a12.0
+        for <linux-wireless@vger.kernel.org>; Fri, 14 Jun 2024 03:28:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718360927; x=1718965727; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OIavNrSwHK3DKdtt5n1tn0yzXiZB9uoF5USbtpIYRHs=;
+        b=V5Bwq0o6S6o0jEBpENhxnHUHqH27hJN8JKQ4SwdUGqNvkYVpyNdxna+qQPKWkdNHTi
+         kYDYKLFWwMHAUYsdQ+PLB/MU/XolXnDKd0ag9kdyx77PC41TPScTTWKqa5spM9DZnqQh
+         8iMm3qV+o5avUok8SQaM8B+TtkVZrdzPqapG/CI/poc1S1c46FX+vn/cxGK5aL6yM/bn
+         Ffks8CnAhDVB+iZ0dj+hOIvpYfbY8wf/jMDK7JYHxQI2+ivV2CDXxKImWSQQLAn+lDS+
+         A0LRP4xZ/MYu+EHupgW9/XoDpZKb5BNHzh/RszJf05utER+oLF43lCfB8nmjbb+8jLRq
+         Bagw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718360927; x=1718965727;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OIavNrSwHK3DKdtt5n1tn0yzXiZB9uoF5USbtpIYRHs=;
+        b=mi0Xpy41YyoQw2hW47M+DCLP+Sdcmovd9h47+dJ2mZKh+aPK0PG2D4e0dId17I+J9X
+         0NcfWrJhN0c1nJvdEYQ8tyvQo6ypz8h1RB6mfB5+eqbHH2pV3hw/WpkPEmu4ntU8OltG
+         KCGXNL4OnPisOVx1dFULNN13ZkEgt6BK5gvVoroIdI0nD91nNNt6Eju6TSxmygxe1QIT
+         ZNAAWHK/WlzzJI6FURH3DVJ1t1l+P8FULy8iImNrnX/xB5PLEJfLPdhuq+qO4uWnovOC
+         qpI626b64Ff59zrFaFUxSpIRU+2CaR7EKKCCIXH9Zw3vK6KuFlanmiERTagadUKi8HkM
+         r52Q==
+X-Gm-Message-State: AOJu0YyBeYIWDyNVkAjK/8asQ4p0+9As0mguDz+t1G2Oczmfk1zz2eZ3
+	G0UK3Rk2Tkv2ZSn3lFn7w6/RprccfqOtGq25Y/EFgL3ylvbcaD3G1lF/ew==
+X-Google-Smtp-Source: AGHT+IEv865GQxhTdi/MnWJLdv7FLyTs2tZsdXtM5C7B/5l2rg6cxqByxa2WY3ZzxvQSFT9MRV9lJg==
+X-Received: by 2002:a17:906:33da:b0:a6f:1445:9de8 with SMTP id a640c23a62f3a-a6f60dc4f22mr202845566b.54.1718360926769;
+        Fri, 14 Jun 2024 03:28:46 -0700 (PDT)
+Received: from mslusarz-hyperv.mshome.net (078088142095.jeleniagora.vectranet.pl. [78.88.142.95])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f56db61f6sm169006566b.57.2024.06.14.03.28.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Jun 2024 03:28:46 -0700 (PDT)
+From: "=?UTF-8?q?Marcin=20=C5=9Alusarz?=" <marcin.slusarz@gmail.com>
+X-Google-Original-From: =?UTF-8?q?Marcin=20=C5=9Alusarz?= <mslusarz@renau.com>
+To: linux-wireless@vger.kernel.org
+Cc: =?UTF-8?q?Marcin=20=C5=9Alusarz?= <mslusarz@renau.com>,
+	Po-Hao Huang <phhuang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH] wifi: rtw88: usb: unbreak multicast
+Date: Fri, 14 Jun 2024 12:28:35 +0200
+Message-Id: <20240614102835.518348-1-mslusarz@renau.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <CA+GA0_vcUneM4Uo8fg0=4sCK049uhjv+NskotRbNg9Em0cnyUQ@mail.gmail.com>
+References: <CA+GA0_vcUneM4Uo8fg0=4sCK049uhjv+NskotRbNg9Em0cnyUQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi,
+High queue is not functioning, for some reason.
+Broken by 076f786a0ae14a81f40314b96a2d815e264bc213
 
-Here are a couple of fixes for net, including one for the
-monitor mode regression you'd asked about.
+Signed-off-by: Marcin Ślusarz <mslusarz@renau.com>
+Cc: Po-Hao Huang <phhuang@realtek.com>
+Cc: Ping-Ke Shih <pkshih@realtek.com>
+Cc: Kalle Valo <kvalo@kernel.org>
+---
+ drivers/net/wireless/realtek/rtw88/usb.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-Please pull and let us know if there's any problem.
+diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
+index c25fd4b193a7..aacc5a105b15 100644
+--- a/drivers/net/wireless/realtek/rtw88/usb.c
++++ b/drivers/net/wireless/realtek/rtw88/usb.c
+@@ -492,9 +492,6 @@ static u8 rtw_usb_tx_queue_mapping_to_qsel(struct sk_buff *skb)
+ 
+ 	if (unlikely(ieee80211_is_mgmt(fc) || ieee80211_is_ctl(fc)))
+ 		qsel = TX_DESC_QSEL_MGMT;
+-	else if (is_broadcast_ether_addr(hdr->addr1) ||
+-		 is_multicast_ether_addr(hdr->addr1))
+-		qsel = TX_DESC_QSEL_HIGH;
+ 	else if (skb_get_queue_mapping(skb) <= IEEE80211_AC_BK)
+ 		qsel = skb->priority;
+ 	else
+-- 
+2.25.1
 
-Thanks,
-johannes
-
-
-
-The following changes since commit 819bda58e77bb67974f94dc1aa11b0556b6f6889:
-
-  wifi: rtlwifi: Ignore IEEE80211_CONF_CHANGE_RETRY_LIMITS (2024-06-01 13:15:26 +0300)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2024-06-14
-
-for you to fetch changes up to 0d9c2beed116e623ac30810d382bd67163650f98:
-
-  wifi: mac80211: fix monitor channel with chanctx emulation (2024-06-14 09:14:08 +0200)
-
-----------------------------------------------------------------
-Various fixes:
- * cfg80211: wext scan
- * mac80211: monitor regression, scan counted_by, offload
- * iwlwifi: locking, 6 GHz scan, remain-on-channel
-
-----------------------------------------------------------------
-Ayala Beker (1):
-      wifi: iwlwifi: scan: correctly check if PSC listen period is needed
-
-Dmitry Antipov (1):
-      wifi: cfg80211: wext: add extra SIOCSIWSCAN data check
-
-Johannes Berg (2):
-      wifi: cfg80211: wext: set ssids=NULL for passive scans
-      wifi: mac80211: fix monitor channel with chanctx emulation
-
-Kenton Groombridge (1):
-      wifi: mac80211: Avoid address calculations via out of bounds array indexing
-
-Remi Pommarel (1):
-      wifi: mac80211: Recalc offload when monitor stop
-
-Shaul Triebitz (2):
-      wifi: iwlwifi: mvm: unlock mvm mutex
-      wifi: iwlwifi: mvm: fix ROC version check
-
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c  |  2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c      |  2 +-
- .../net/wireless/intel/iwlwifi/mvm/time-event.c    |  2 ++
- net/mac80211/driver-ops.c                          | 17 +++++++++++++++++
- net/mac80211/iface.c                               | 22 ++++++++++------------
- net/mac80211/scan.c                                | 17 +++++++++--------
- net/mac80211/util.c                                |  2 +-
- net/wireless/scan.c                                | 12 +++++++++---
- 8 files changed, 50 insertions(+), 26 deletions(-)
 
