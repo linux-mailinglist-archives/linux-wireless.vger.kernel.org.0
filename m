@@ -1,155 +1,158 @@
-Return-Path: <linux-wireless+bounces-9017-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9018-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 642F2909715
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jun 2024 10:51:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED45A90985C
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jun 2024 14:47:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA82CB2128D
-	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jun 2024 08:51:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7655B2831A7
+	for <lists+linux-wireless@lfdr.de>; Sat, 15 Jun 2024 12:47:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD4361BDD3;
-	Sat, 15 Jun 2024 08:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C988F1DFEF;
+	Sat, 15 Jun 2024 12:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tUHdpuUS"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W4Mkv3TR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 978E618EB8;
-	Sat, 15 Jun 2024 08:51:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDEC919D8A2
+	for <linux-wireless@vger.kernel.org>; Sat, 15 Jun 2024 12:47:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718441499; cv=none; b=qaEKi6V9sgppfpoO+u5+rAMrjU0VeGezHDBHMC1RNCnLN8XYDcaCKi0g0x0+1P+oqsCJrEaoUqLxufHlPsjm+McSQ44jBZRvwvERiVLZWDT8zGWzUByIWvMGqIpoS3Sbik0oUa22FKO1G6Y2GLwI0x7wOgHO1qdhLQ4px/YsGF0=
+	t=1718455639; cv=none; b=oU4p6BGjt4XwIyimQsgcMUE3YV7o5fTATr4+8uKgsD09PSi/emMRHHjaTsWJCV01F+swxF12Up92OWSnHw5anBwQbuIrUzigpvzN5A2cHo5H1fBfQ6Q02dhD7/C+L7dyge1lGBi365+/Dt3O5gcXqG2NM7v+7TX7yJuE1v1XjO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718441499; c=relaxed/simple;
-	bh=HYiqFF+X1hj20xOiB2JhIQkGc5pdm6XVantm2REZnCU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WB0xzJfDYrG84SjFOO6o4+J0RPccCeiYUBezQ67YdQuDst/IdrF/Hc58rKtRYGsuM6pMKSKfAhexLvORXeecup/j1Xwlx3AbVt5D6a8NlF2dEObWnMvEdCpzJvmN6s6e3URAZioTnmoIadk2j6F3jMIYo5PoW3tEqBqdHCudg+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tUHdpuUS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22816C116B1;
-	Sat, 15 Jun 2024 08:51:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718441499;
-	bh=HYiqFF+X1hj20xOiB2JhIQkGc5pdm6XVantm2REZnCU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tUHdpuUStcII3fnnhUSWfO5aDsz8l0wO0e4gjJa4FGd1lfClNKSIPNemAjl8QUqbF
-	 KtZ9qBOoci4D5QO/yN4yFtviwWs028zh7uck1q1FUgmmaA94H4TFxG/e5KZy3jmL1+
-	 P8nNuxhjUq/I0S7kDFE3EZnJgdAnKBwz4S6c9RLKie7xeuOpAORlxJl03nSBt+f/jN
-	 JOE5op4pEZM+bgeuBLNm2K/jTsPKinLpdPBLJmiqafnuzmgl8k2VNnMR1QXTP9rwnc
-	 8TWoL4ty1mWY1O1sDCZHC5UqZTLDyo/xDodqiFyP2axAuavNJ7MijmRBTUdrqLigOz
-	 vvMRobF6RDP5A==
-Date: Sat, 15 Jun 2024 09:51:33 +0100
-From: Simon Horman <horms@kernel.org>
-To: michael.nemanov@ti.com
-Cc: Sabeeh Khan <sabeeh-khan@ti.com>, Kalle Valo <kvalo@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 11/17] wifi: cc33xx: Add init.c, init.h
-Message-ID: <20240615085133.GA234885@kernel.org>
-References: <20240609182102.2950457-1-michael.nemanov@ti.com>
- <20240609182102.2950457-12-michael.nemanov@ti.com>
+	s=arc-20240116; t=1718455639; c=relaxed/simple;
+	bh=HSWx/W9E0f0BND2eZK2tveHMLpdRnEJ7W0pz+H9vlVI=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=uZo51tYlb+ZTS8vtmyRAavK7PKAIleS6imhsU2sbGf+TW6CPzrrCQIU/QGqqcX1yzfBSM8WQNYf05yIHOBvDh3jHv0vN5bASLZ7xmxpc2VCDnuSSgqHXdg072DNHgicnTX9LOQidz84YkRCV44Ek0OhoFW/d8+SIz8cU+bfefxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W4Mkv3TR; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1718455637; x=1749991637;
+  h=date:from:to:cc:subject:message-id;
+  bh=HSWx/W9E0f0BND2eZK2tveHMLpdRnEJ7W0pz+H9vlVI=;
+  b=W4Mkv3TRScF/g51E2fqtumfUK1R7eV3yFEO8tWetqPhERmJpCOtfVH8/
+   IWEV5Ul45Gh4ihLxfmGr1XQVAKCEPL396w9uzrpqimP5+C3C/KCpRdckt
+   jaFxkGKy/0QLbnCj92FMdtQ4pjDDD5EljmR5WNh/2hjNvdRMTX+gRib69
+   ao7OR8C8Xtl+V4bRI1vog8KZilpV4zgSBf2pj4+COi8gJZJ5dzjfbxP+A
+   L49q0GP4+jOyonJOGnnXjkj1ApbuwZilCnOUEPI1peZv234jpZIKMpDAD
+   z5XFfsrtJXSGtoYNTTfeKT9VBNZ0oamWU//qyP/fLJYSGa1oYe1L2+gLA
+   w==;
+X-CSE-ConnectionGUID: jkxL3FXAS0GMSHLzFhtOHg==
+X-CSE-MsgGUID: rSVCW8V2QuGQO+8pNBfDDQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11104"; a="25976893"
+X-IronPort-AV: E=Sophos;i="6.08,240,1712646000"; 
+   d="scan'208";a="25976893"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2024 05:47:17 -0700
+X-CSE-ConnectionGUID: kXYQ0rJrS06G2qmv+/cZpg==
+X-CSE-MsgGUID: eqyWUA0zQeqiKFAkIP9tng==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,240,1712646000"; 
+   d="scan'208";a="40708767"
+Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 15 Jun 2024 05:47:15 -0700
+Received: from kbuild by 68891e0c336b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sISoL-000016-2s;
+	Sat, 15 Jun 2024 12:47:13 +0000
+Date: Sat, 15 Jun 2024 20:46:47 +0800
+From: kernel test robot <lkp@intel.com>
+To: Johannes Berg <johannes.berg@intel.com>
+Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+Subject: [wireless:for-next] BUILD SUCCESS
+ 0d9c2beed116e623ac30810d382bd67163650f98
+Message-ID: <202406152044.Buy9uN4G-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240609182102.2950457-12-michael.nemanov@ti.com>
 
-On Sun, Jun 09, 2024 at 09:20:56PM +0300, michael.nemanov@ti.com wrote:
-> From: Michael Nemanov <Michael.Nemanov@ti.com>
-> 
-> High-level init code for new vifs
-> ---
->  drivers/net/wireless/ti/cc33xx/init.c | 236 ++++++++++++++++++++++++++
->  drivers/net/wireless/ti/cc33xx/init.h |  15 ++
->  2 files changed, 251 insertions(+)
->  create mode 100644 drivers/net/wireless/ti/cc33xx/init.c
->  create mode 100644 drivers/net/wireless/ti/cc33xx/init.h
-> 
-> diff --git a/drivers/net/wireless/ti/cc33xx/init.c b/drivers/net/wireless/ti/cc33xx/init.c
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
+branch HEAD: 0d9c2beed116e623ac30810d382bd67163650f98  wifi: mac80211: fix monitor channel with chanctx emulation
 
-...
+elapsed time: 1738m
 
-> +int cc33xx_init_vif_specific(struct cc33xx *cc, struct ieee80211_vif *vif)
-> +{
-> +	struct cc33xx_vif *wlvif = cc33xx_vif_to_data(vif);
-> +	struct conf_tx_ac_category *conf_ac;
-> +	struct conf_tx_ac_category ac_conf[4];
-> +	struct conf_tx_tid tid_conf[8];
-> +	struct conf_tx_settings *tx_settings = &cc->conf.host_conf.tx;
-> +	struct conf_tx_ac_category *p_wl_host_ac_conf = &tx_settings->ac_conf0;
-> +	struct conf_tx_tid *p_wl_host_tid_conf = &tx_settings->tid_conf0;
-> +	bool is_ap = (wlvif->bss_type == BSS_TYPE_AP_BSS);
-> +	u8 ps_scheme = cc->conf.mac.ps_scheme;
-> +	int ret, i;
+configs tested: 65
+configs skipped: 2
 
-...
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-> +	/* Default TID/AC configuration */
-> +	WARN_ON(tx_settings->tid_conf_count != tx_settings->ac_conf_count);
-> +	memcpy(ac_conf, p_wl_host_ac_conf, 4 * sizeof(struct conf_tx_ac_category));
-> +	memcpy(tid_conf, p_wl_host_tid_conf, 8 * sizeof(struct conf_tx_tid));
+tested configs:
+alpha                             allnoconfig   gcc-13.2.0
+alpha                               defconfig   gcc-13.2.0
+arc                               allnoconfig   gcc-13.2.0
+arc                                 defconfig   gcc-13.2.0
+arm                               allnoconfig   clang-19
+arm                                 defconfig   clang-14
+arm64                             allnoconfig   gcc-13.2.0
+arm64                               defconfig   gcc-13.2.0
+csky                              allnoconfig   gcc-13.2.0
+csky                                defconfig   gcc-13.2.0
+hexagon                           allnoconfig   clang-19
+hexagon                             defconfig   clang-19
+loongarch                         allnoconfig   gcc-13.2.0
+loongarch                           defconfig   gcc-13.2.0
+m68k                              allnoconfig   gcc-13.2.0
+m68k                                defconfig   gcc-13.2.0
+microblaze                        allnoconfig   gcc-13.2.0
+microblaze                          defconfig   gcc-13.2.0
+mips                              allnoconfig   gcc-13.2.0
+nios2                             allnoconfig   gcc-13.2.0
+nios2                               defconfig   gcc-13.2.0
+openrisc                          allnoconfig   gcc-13.2.0
+openrisc                            defconfig   gcc-13.2.0
+parisc                            allnoconfig   gcc-13.2.0
+parisc                              defconfig   gcc-13.2.0
+parisc64                            defconfig   gcc-13.2.0
+powerpc                           allnoconfig   gcc-13.2.0
+riscv                             allnoconfig   gcc-13.2.0
+riscv                               defconfig   clang-19
+s390                              allnoconfig   clang-19
+s390                                defconfig   clang-19
+sh                                allnoconfig   gcc-13.2.0
+sh                                  defconfig   gcc-13.2.0
+sparc                             allnoconfig   gcc-13.2.0
+sparc                               defconfig   gcc-13.2.0
+sparc64                             defconfig   gcc-13.2.0
+um                                allnoconfig   clang-17
+um                                  defconfig   clang-19
+um                             i386_defconfig   gcc-13
+um                           x86_64_defconfig   clang-15
+x86_64       buildonly-randconfig-001-20240615   gcc-9
+x86_64       buildonly-randconfig-002-20240615   clang-18
+x86_64       buildonly-randconfig-003-20240615   clang-18
+x86_64       buildonly-randconfig-004-20240615   clang-18
+x86_64       buildonly-randconfig-005-20240615   gcc-9
+x86_64       buildonly-randconfig-006-20240615   clang-18
+x86_64                randconfig-001-20240615   gcc-13
+x86_64                randconfig-002-20240615   gcc-8
+x86_64                randconfig-003-20240615   gcc-13
+x86_64                randconfig-004-20240615   gcc-13
+x86_64                randconfig-005-20240615   gcc-13
+x86_64                randconfig-006-20240615   gcc-8
+x86_64                randconfig-011-20240615   clang-18
+x86_64                randconfig-012-20240615   gcc-13
+x86_64                randconfig-013-20240615   clang-18
+x86_64                randconfig-014-20240615   clang-18
+x86_64                randconfig-015-20240615   clang-18
+x86_64                randconfig-016-20240615   clang-18
+x86_64                randconfig-071-20240615   clang-18
+x86_64                randconfig-072-20240615   clang-18
+x86_64                randconfig-073-20240615   gcc-7
+x86_64                randconfig-074-20240615   gcc-13
+x86_64                randconfig-075-20240615   clang-18
+x86_64                randconfig-076-20240615   gcc-13
+xtensa                            allnoconfig   gcc-13.2.0
 
-Hi Michael,
-
-allmodconfig builds on x86_64 with gcc-13 flag the following:
-
-In file included from ./include/linux/string.h:374,
-                 from ./include/linux/bitmap.h:13,
-                 from ./include/linux/cpumask.h:13,
-                 from ./arch/x86/include/asm/paravirt.h:21,
-                 from ./arch/x86/include/asm/irqflags.h:60,
-                 from ./include/linux/irqflags.h:18,
-                 from ./include/linux/spinlock.h:59,
-                 from ./include/linux/mmzone.h:8,
-                 from ./include/linux/gfp.h:7,
-                 from ./include/linux/firmware.h:8,
-                 from drivers/net/wireless/ti/cc33xx/init.c:6:
-In function 'fortify_memcpy_chk',
-    inlined from 'cc33xx_init_vif_specific' at drivers/net/wireless/ti/cc33xx/init.c:156:2:
-./include/linux/fortify-string.h:580:25: warning: call to '__read_overflow2_field' declared with attribute warning: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Wattribute-warning]
-  580 |                         __read_overflow2_field(q_size_field, size);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In function 'fortify_memcpy_chk',
-    inlined from 'cc33xx_init_vif_specific' at drivers/net/wireless/ti/cc33xx/init.c:157:2:
-./include/linux/fortify-string.h:580:25: warning: call to '__read_overflow2_field' declared with attribute warning: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Wattribute-warning]
-  580 |                         __read_overflow2_field(q_size_field, size);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  CC [M]  drivers/net/wireless/ti/cc33xx/rx.o
-
-I believe that this is because the destination for each of the two memcpy()
-calls immediately above is too narrow - 1 structure wide instead of 4 or 8.
-
-I think this can be resolved by either using:
-1. struct_group in .../cc33xx/conf.h:struct conf_tx_settings
-   to wrap ac_conf0 ... ac_conf3, and separately tid_conf0 ... tid_conf7.
-2. Using arrays for ac_conf and tid_conf in
-   .../cc33xx/conf.h:struct conf_tx_settings, in which case perhaps
-   .../wlcore/conf.h:struct conf_tx_settings can be reused somehow
-   (I did not check closely)?
-
-
-Similar errors are flagged elsewhere in this series.
-Please take a look at allmodconfig builds and make sure
-no warnings are introduced.
-
-Lastly, more related to the series as a whole than this patch in
-particular, please consider running checkpatch.pl --codespell
-
-Thanks!
-
-...
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
