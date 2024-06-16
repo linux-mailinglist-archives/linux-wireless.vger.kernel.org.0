@@ -1,160 +1,160 @@
-Return-Path: <linux-wireless+bounces-9023-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9024-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 821C1909C98
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Jun 2024 10:35:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5579909D97
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Jun 2024 15:11:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 592721C209F5
-	for <lists+linux-wireless@lfdr.de>; Sun, 16 Jun 2024 08:35:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6641F281783
+	for <lists+linux-wireless@lfdr.de>; Sun, 16 Jun 2024 13:11:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4402349635;
-	Sun, 16 Jun 2024 08:35:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oKITIvAf"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70C0517F397;
+	Sun, 16 Jun 2024 13:11:21 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1698233C0;
-	Sun, 16 Jun 2024 08:35:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17C2A19D8BA;
+	Sun, 16 Jun 2024 13:11:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718526938; cv=none; b=j8dT1qHBD2GNMd/gDe3emHP/i2y+psqVr2Qere0bvmgDgA+n1cje3ipOWFe0R4iMl+HmjtYKU5QlkNyoWa9IrOO0len/886amxg4rSiEcUBkE+Y4mK1PlPG1eUBHoOFKhT/9DWwz8e5yLNnvf3c4Myzh0Vhi11QUBVTRPgnVs+4=
+	t=1718543481; cv=none; b=SFDRUaQ0Daleflo+f9u5T4uMmzdIBg3mDuAorRB/hPLk94nHVyyjdV+MlQGN2eERVxir/usoTtWc6dIYXgzWwid+fccm31gAkOeUcZ9SrAE9gWAiwOrpE+DQSdQkMELUI5aOIwNi8ambNkWrEJy8ryLBT56xO/Fp55rhk5JVc/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718526938; c=relaxed/simple;
-	bh=gMHw0zgKhT2FIrKEWVvNVX2awLi4Bqd58VLtETxGG0M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DId5aX/M/ePWsBDRK3tQioycrPbJLW5kqCNW+oMiLX3B5xrbbDK6qfsUsFgi3/cxtOxwmeJiKWbT4iqUHE7AzlBEja58xeRR1qQGA4szS5IdzbrXy9MmiYZ2K4Rzccs4ycIz2TMlnRnBevmv/bYPoLkoH/e0zQegvnSOaAp7qUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oKITIvAf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53123C2BBFC;
-	Sun, 16 Jun 2024 08:35:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718526937;
-	bh=gMHw0zgKhT2FIrKEWVvNVX2awLi4Bqd58VLtETxGG0M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oKITIvAfZUzTfAk4VH+3dgKt1FYvHBwTTDgWvZjE9b4QyI4fiF3jwQe3H1Gm5wTuQ
-	 wP5EF/gxM+BNzy7Nm/FSZEHtQKlvHJhya2+2vUU95C+bMWunrs9RCLPRS6rztYwjtB
-	 FAK7IPVBszykFDvXKjJoMv6unq66JO9et4sXrnrts8I9FZgB8BNQCsf5/BldVITew4
-	 Ci01x0bm3SH3g8ESfXOWgd/1wf2LYuR8Jvs/XMB2FCGsCEj/BTDKtxnG1eODq28tM9
-	 p4GpUn/huIZIoi4Ep+yzqvxjQkIeppSf0YbLZmEca4RwFz4ntP49lpadQVN/40Uywe
-	 SZCRyHmKxjmDg==
-Date: Sun, 16 Jun 2024 09:35:29 +0100
-From: Simon Horman <horms@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: kvalo@kernel.org, linux-wireless@vger.kernel.org,
-	Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	netdev@vger.kernel.org, kees@kernel.org, kuba@kernel.org,
-	Bo Jiao <Bo.Jiao@mediatek.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Alexander Couzens <lynxis@fe80.eu>,
-	Deren Wu <deren.wu@mediatek.com>,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Leon Yen <leon.yen@mediatek.com>,
-	Quan Zhou <quan.zhou@mediatek.com>, Ingo Rohloff <lundril@gmx.de>,
-	Sujuan Chen <sujuan.chen@mediatek.com>,
-	StanleyYP Wang <StanleyYP.Wang@mediatek.com>,
-	Benjamin Lin <benjamin-jw.lin@mediatek.com>,
-	Peter Chiu <chui-hao.chiu@mediatek.com>,
-	"open list:ARM/Mediatek SoC support" <linux-kernel@vger.kernel.org>,
-	"moderated list:ARM/Mediatek SoC support" <linux-arm-kernel@lists.infradead.org>,
-	"moderated list:ARM/Mediatek SoC support" <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH] wifi: mt76: un-embedd netdev from mt76_dev
-Message-ID: <20240616083529.GH8447@kernel.org>
-References: <20240614115317.657700-1-leitao@debian.org>
+	s=arc-20240116; t=1718543481; c=relaxed/simple;
+	bh=6PvgRI9Yol2o20j2EJGx9Xs1iEwNeR4MJGDT8YlKfF8=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=sMuBLLD0PAYtpBJmgsmAtFXl4ZQB1PgkbzTxzjdrHlax9m6wPqJgzJsTpwgFHPnMjxlEZ0UOaQJBTSbpvEwcB/YemWJy1LRQ9N77W8Y9r4yIh94d8evRNfAz1rBl+wO9KvdaqPiOC2KqkfjOYel2atl9Kg0r/sSsDcQbHA5V+ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [172.16.184.163] (i68973E31.versanet.de [104.151.62.49])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 743FC61E5FE01;
+	Sun, 16 Jun 2024 15:10:34 +0200 (CEST)
+Message-ID: <fba24cd3-4a1e-4072-8585-8402272788ff@molgen.mpg.de>
+Date: Sun, 16 Jun 2024 15:10:32 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240614115317.657700-1-leitao@debian.org>
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+ LKML <linux-kernel@vger.kernel.org>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+Subject: invalid vht params rate 1920 100kbps nss 2 mcs 9
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jun 14, 2024 at 04:52:42AM -0700, Breno Leitao wrote:
-> Embedding net_device into structures prohibits the usage of flexible
-> arrays in the net_device structure. For more details, see the discussion
-> at [1].
-> 
-> Un-embed the net_devices from struct mt76_dev by converting them
-> into pointers, and allocating them dynamically. Use the leverage
-> alloc_netdev_dummy() to allocate the net_device object at
-> mt76_dma_init().
-> 
-> The free of the device occurs at mt76_dma_cleanup().
-> 
-> Link: https://lore.kernel.org/all/20240229225910.79e224cf@kernel.org/ [1]
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> ---
-> 
-> PS: Due to the lack of hardware, this patch was not tested on a real
-> hardware, unfortunately.
-> 
-> PS2: this is the last driver that is still using embedded netdevices.
+Dear Linux folks,
 
-...
 
-> diff --git a/drivers/net/wireless/mediatek/mt76/dma.h b/drivers/net/wireless/mediatek/mt76/dma.h
-> index 1de5a2b20f74..6454a5eca13e 100644
-> --- a/drivers/net/wireless/mediatek/mt76/dma.h
-> +++ b/drivers/net/wireless/mediatek/mt76/dma.h
-> @@ -116,4 +116,9 @@ mt76_dma_should_drop_buf(bool *drop, u32 ctrl, u32 buf1, u32 info)
->  	}
->  }
->  
-> +static inline struct mt76_dev *mt76_from_netdev(struct net_device *dev)
-> +{
-> +	return *(struct mt76_dev **)netdev_priv(dev);
-> +}
-> +
->  #endif
+Linux 6.10-rc3 (commit a3e18a540541) logged the warning below when 
+connecting to a public WiFi:
 
-Hi Breno,
+     ath10k_pci 0000:3a:00.0: invalid vht params rate 1920 100kbps nss 2 
+mcs 9
 
-I agree that the above is correct, but I wonder if somehow it
-is nicer to avoid explicit casts and instead take advantage of
-implicit casting too and from void *.
 
-Maybe something like this:
+Kind regards,
 
-static inline struct mt76_dev *mt76_from_netdev(struct net_device *dev)
-{
-        struct mt76_dev **priv;
+Paul
 
-        priv = netdev_priv(dev);
 
-        return *priv;
-}
-
-Further, some of the callers of mt76_from_netdev() cast the return value to
-(struct mt7615_dev *). Which seems a bit awkward seeing as it was very
-recently a void * (i.e. netdev_priv() returns void *).
-
-I wonder if something like this makes sense, which I believe would avoid
-the need for any callers to cast.
-
-static inline void *mt76_priv(struct net_device *dev)
-{
-        struct mt76_dev **priv;
-
-        priv = netdev_priv(dev);
-
-        return *priv;
-}
-
-Ideas above compile tested only.
-
-Other than the above, which is clearly more about style than substance,
-this patch looks good to me.
-
-Reviewed-by: Simon Horman <horms@kernel.org>
-
+```
+Jun 16 11:38:15 abreu kernel: Linux version 
+6.10.0-rc3-00174-ga3e18a540541 (build@bohemianrhapsody.molgen.mpg.de) 
+(gcc (Debian 13.2.0-25) 13.2.0, GNU ld (GNU Binutils for Debian) 2.42) 
+#196 SMP PREEMPT_DYNAMIC Sun Jun 16 06:02:29 CEST 2024
+[…]
+Jun 16 11:38:15 abreu kernel: DMI: Dell Inc. XPS 13 9360/0596KF, BIOS 
+2.21.0 06/02/2022
+[…]
+Jun 16 11:38:33 abreu kernel: ath10k_pci 0000:3a:00.0: enabling device 
+(0000 -> 0002)
+Jun 16 11:38:33 abreu kernel: ath10k_pci 0000:3a:00.0: pci irq msi 
+oper_irq_mode 2 irq_mode 0 reset_mode 0
+Jun 16 11:38:34 abreu kernel: ath10k_pci 0000:3a:00.0: qca6174 hw3.2 
+target 0x05030000 chip_id 0x00340aff sub 1a56:1535
+Jun 16 11:38:34 abreu kernel: ath10k_pci 0000:3a:00.0: kconfig debug 0 
+debugfs 0 tracing 0 dfs 0 testmode 0
+Jun 16 11:38:34 abreu kernel: ath10k_pci 0000:3a:00.0: firmware ver 
+WLAN.RM.4.4.1-00288- api 6 features wowlan,ignore-otp,mfp crc32 bf907c7c
+Jun 16 11:38:34 abreu kernel: ath10k_pci 0000:3a:00.0: board_file api 2 
+bmi_id N/A crc32 d2863f91
+Jun 16 11:38:34 abreu kernel: ath10k_pci 0000:3a:00.0: htt-ver 3.87 
+wmi-op 4 htt-op 3 cal otp max-sta 32 raw 0 hwcrypto 1
+Jun 16 11:38:34 abreu kernel: ath: EEPROM regdomain: 0x6c
+Jun 16 11:38:34 abreu kernel: ath: EEPROM indicates we should expect a 
+direct regpair map
+Jun 16 11:38:34 abreu kernel: ath: Country alpha2 being used: 00
+Jun 16 11:38:34 abreu kernel: ath: Regpair used: 0x6c
+[…]
+Jun 16 11:39:20 abreu kernel: wlp58s0: authenticate with 
+70:18:a7:0e:f7:cb (local address=9c:b6:d0:d1:6a:b1)
+Jun 16 11:39:20 abreu kernel: wlp58s0: send auth to 70:18:a7:0e:f7:cb 
+(try 1/3)
+Jun 16 11:39:20 abreu kernel: wlp58s0: send auth to 70:18:a7:0e:f7:cb 
+(try 2/3)
+Jun 16 11:39:20 abreu kernel: wlp58s0: send auth to 70:18:a7:0e:f7:cb 
+(try 3/3)
+Jun 16 11:39:20 abreu kernel: wlp58s0: authentication with 
+70:18:a7:0e:f7:cb timed out
+Jun 16 11:39:22 abreu kernel: wlp58s0: authenticate with 
+4c:bc:48:39:16:ab (local address=9c:b6:d0:d1:6a:b1)
+Jun 16 11:39:22 abreu kernel: wlp58s0: send auth to 4c:bc:48:39:16:ab 
+(try 1/3)
+Jun 16 11:39:22 abreu kernel: wlp58s0: send auth to 4c:bc:48:39:16:ab 
+(try 2/3)
+Jun 16 11:39:22 abreu kernel: wlp58s0: send auth to 4c:bc:48:39:16:ab 
+(try 3/3)
+Jun 16 11:39:22 abreu kernel: wlp58s0: authentication with 
+4c:bc:48:39:16:ab timed out
+Jun 16 11:39:24 abreu kernel: wlp58s0: authenticate with 
+4c:bc:48:38:d8:4b (local address=9c:b6:d0:d1:6a:b1)
+Jun 16 11:39:24 abreu kernel: wlp58s0: send auth to 4c:bc:48:38:d8:4b 
+(try 1/3)
+Jun 16 11:39:24 abreu kernel: wlp58s0: authenticated
+Jun 16 11:39:24 abreu kernel: wlp58s0: associate with 4c:bc:48:38:d8:4b 
+(try 1/3)
+Jun 16 11:39:24 abreu kernel: wlp58s0: RX AssocResp from 
+4c:bc:48:38:d8:4b (capab=0x1101 status=0 aid=30)
+Jun 16 11:39:24 abreu kernel: wlp58s0: associated
+Jun 16 11:39:24 abreu kernel: wlp58s0: Limiting TX power to 20 (23 - 3) 
+dBm as advertised by 4c:bc:48:38:d8:4b
+Jun 16 11:39:50 abreu kernel: ath10k_pci 0000:3a:00.0: invalid vht 
+params rate 1920 100kbps nss 2 mcs 9
+Jun 16 11:39:56 abreu kernel: ath10k_pci 0000:3a:00.0: invalid vht 
+params rate 1920 100kbps nss 2 mcs 9
+Jun 16 11:40:02 abreu kernel: ath10k_pci 0000:3a:00.0: invalid vht 
+params rate 1920 100kbps nss 2 mcs 9
+Jun 16 11:40:08 abreu kernel: ath10k_pci 0000:3a:00.0: invalid vht 
+params rate 1920 100kbps nss 2 mcs 9
+Jun 16 11:40:20 abreu kernel: ath10k_pci 0000:3a:00.0: invalid vht 
+params rate 1920 100kbps nss 2 mcs 9
+Jun 16 11:40:26 abreu kernel: ath10k_pci 0000:3a:00.0: invalid vht 
+params rate 1920 100kbps nss 2 mcs 9
+Jun 16 11:40:32 abreu kernel: ath10k_pci 0000:3a:00.0: invalid vht 
+params rate 1920 100kbps nss 2 mcs 9
+Jun 16 11:40:38 abreu kernel: ath10k_pci 0000:3a:00.0: invalid vht 
+params rate 1920 100kbps nss 2 mcs 9
+Jun 16 11:40:43 abreu kernel: ath10k_pci 0000:3a:00.0: invalid vht 
+params rate 1920 100kbps nss 2 mcs 9
+Jun 16 11:40:49 abreu kernel: ath10k_pci 0000:3a:00.0: invalid vht 
+params rate 1920 100kbps nss 2 mcs 9
+Jun 16 11:41:01 abreu kernel: ath10k_pci 0000:3a:00.0: invalid vht 
+params rate 1920 100kbps nss 2 mcs 9
+Jun 16 11:41:13 abreu kernel: ath10k_pci 0000:3a:00.0: invalid vht 
+params rate 1920 100kbps nss 2 mcs 9
+Jun 16 11:41:19 abreu kernel: ath10k_pci 0000:3a:00.0: invalid vht 
+params rate 1920 100kbps nss 2 mcs 9
+Jun 16 11:41:21 abreu kernel: wlp58s0: deauthenticating from 
+4c:bc:48:38:d8:4b by local choice (Reason: 3=DEAUTH_LEAVING)
 
