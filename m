@@ -1,123 +1,118 @@
-Return-Path: <linux-wireless+bounces-9055-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9056-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91AB290A98D
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 11:29:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7222290AA46
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 11:54:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BD3C2889CA
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 09:29:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C31D1F21547
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 09:54:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5642A1922C9;
-	Mon, 17 Jun 2024 09:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D70195FD8;
+	Mon, 17 Jun 2024 09:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E/mPGHpM"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="HVEE4c63"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E54288BD;
-	Mon, 17 Jun 2024 09:29:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74631195F09;
+	Mon, 17 Jun 2024 09:44:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718616589; cv=none; b=PooSObC+4rR/ebvgtjay64wdfEfB8d4xVK/QEYgm3TqiMW9ufN12XbOrBnDtTEHet72fKLxBt8GTuR5ns0Rs+Q6F94CANgAIOGV72iGLSi8Tj44xdVnA4BarAL12OPnUrbcilOzq7oW4Z35g6ApQTjulEldX/Cdgtr7jy7y5Z2Y=
+	t=1718617500; cv=none; b=cm0A5URTCWFH5UBcwtkQSYnTHVKh8215TXBzkHIQfk0kULHvqpgJ0Uj+4iDtAsxcyHXG/2HVTy5De8rVLWry3xFrG7nv4DmJRRzHzwS+yqyIhflZnasQaBTX7+ovuOeGcZhhloFD/tNwT5kWim5cgmRiOM7xPyWVV3MbkIVMIuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718616589; c=relaxed/simple;
-	bh=at9csQjhwS6i1s/d4XG/8Zpj8DRi4xJ/ag+5eIwgDXc=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=GSJFgkvGeupIyIzEJXIbnsmB8IXKlNlJMaoG9zkUfvA1d9nQRIe5fYDvpxVUxzGcDt9LgTgRA6oZPBk9zOWCO/PMKOR9/AJLxwJW1a/jYUZxpydEFCnn48vSqptRGigrQmkHFIgYjNAFYncGlSzvI6F/CPCfX26vBN7QdoiJY3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E/mPGHpM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7837C2BD10;
-	Mon, 17 Jun 2024 09:29:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718616588;
-	bh=at9csQjhwS6i1s/d4XG/8Zpj8DRi4xJ/ag+5eIwgDXc=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=E/mPGHpMeIKgElg+Cpbw7Fc4U13Fmjr/ou+tMopM8OI/rDuDdPcOl4diV6dshwHhQ
-	 3sNv1Ke/lo5tm3ytKne5KNNO2Yd/NG5GnuCLOuBIioWeNHZSFi6d0iSOde+dXx/B6j
-	 3whdRSvwmZH1N2Ue9vGwp3EaecJaqm5pKb/q6LtrvJI6tJpV93fkKvzL9+vkwzp6vx
-	 8L8/gSlYRXdmAFPtQ01t2G0VPY93VsyiGdmB1XI/MsoVst8nV+XnNF86IcCpni81i9
-	 xHSp07ojBZM0bm9x6EbEbQmOcqic7F7aUAtsulWym9myGefvcAHF9vMNFWTPJf/CQK
-	 v1oZos6Ur+BYg==
-From: Kalle Valo <kvalo@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: linux-wireless@vger.kernel.org,  Felix Fietkau <nbd@nbd.name>,  Lorenzo
- Bianconi <lorenzo@kernel.org>,  Ryder Lee <ryder.lee@mediatek.com>,
-  Shayne Chen <shayne.chen@mediatek.com>,  Sean Wang
- <sean.wang@mediatek.com>,  Matthias Brugger <matthias.bgg@gmail.com>,
-  AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-  netdev@vger.kernel.org,  horms@kernel.org,  kees@kernel.org,
-  kuba@kernel.org,  Bo Jiao <Bo.Jiao@mediatek.com>,  Daniel Golle
- <daniel@makrotopia.org>,  Alexander Couzens <lynxis@fe80.eu>,  Deren Wu
- <deren.wu@mediatek.com>,  Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-  Leon Yen <leon.yen@mediatek.com>,  Quan Zhou <quan.zhou@mediatek.com>,
-  Ingo Rohloff <lundril@gmx.de>,  Sujuan Chen <sujuan.chen@mediatek.com>,
-  StanleyYP Wang <StanleyYP.Wang@mediatek.com>,  Benjamin Lin
- <benjamin-jw.lin@mediatek.com>,  Peter Chiu <chui-hao.chiu@mediatek.com>,
-  "open list:ARM/Mediatek SoC support" <linux-kernel@vger.kernel.org>,
-  "moderated list:ARM/Mediatek SoC support"
- <linux-arm-kernel@lists.infradead.org>,  "moderated list:ARM/Mediatek SoC
- support" <linux-mediatek@lists.infradead.org>
-Subject: Re: [PATCH] wifi: mt76: un-embedd netdev from mt76_dev
-References: <20240614115317.657700-1-leitao@debian.org>
-	<87cyogkkju.fsf@kernel.org> <ZnAAT/a3DKnTgUoz@gmail.com>
-Date: Mon, 17 Jun 2024 12:29:42 +0300
-In-Reply-To: <ZnAAT/a3DKnTgUoz@gmail.com> (Breno Leitao's message of "Mon, 17
-	Jun 2024 02:22:23 -0700")
-Message-ID: <874j9rlxx5.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1718617500; c=relaxed/simple;
+	bh=Zl0H127CyeqOXk7mpS1eDFYTetGfKPwapBTVMhQmSlo=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=Dh8wo/AegKSQQMo+Tvk42PYJpERHZ35ks4mJ29MUWFw/FIClfrDMzmTvr+/J/cSmFHCTIMAjHcz+PqY19KLNr91PcbfWw5WIp/GkquA2SENTa9GYxXv9/HuQbgY9Yc9u2DLQNyE4/PaBnAnAAYX4jblFxO5f7uwGv5gCdIvnluE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=HVEE4c63; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:Subject
+	:Reply-To:Cc:To:From:MIME-Version:Date:Message-ID:From:Sender:Reply-To:
+	Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=y5NFcSqhUTL6fruZ1xgcLxOYcmeMsMeCG+Q/p9D+Di4=; t=1718617498;
+	x=1719049498; b=HVEE4c63RYE7DoCjiOu7ODPQkqgcoMnXqCC/QIcV/iVPX1buMchXKwrAVGDa5
+	Ua7G6mG/5FzNEMikmsnR2Fv8/svixUhgxXchZy1qcRFju5jkCoB1fxlP0r7EUNnQjAEn/YT/2KNty
+	6+AVp9Actax9Cqo9MGztGf2Tp5VtcHfHZnyKyJkpkaCkz864kvKtveEn9bRIlTBPcZtekJKPmcseP
+	uXbZrgcR68bjjszNEODeX5apNUVaUGKSepdkUZ6xQ+IT2GIrM1uI7QGbYFqMC2iDeV2p9JRO+FVAS
+	ggIncKhRXwcqf2pUGI7ztr0XmVoagXI00KpAU09fzxWCBEz2GQ==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1sJ8v1-0005bs-TO; Mon, 17 Jun 2024 11:44:56 +0200
+Message-ID: <f16d49f6-01a4-45c7-aabf-ab6a1b8bfe6e@leemhuis.info>
+Date: Mon, 17 Jun 2024 11:44:55 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Content-Language: en-US, de-DE
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ Kalle Valo <kvalo@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+ Linux kernel regressions list <regressions@lists.linux.dev>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+Subject: [regression] iwlwifi 0000:02:00.0: Microcode SW error detected.
+ Restarting 0x82000000.
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1718617498;0748ce8c;
+X-HE-SMSGID: 1sJ8v1-0005bs-TO
 
-Breno Leitao <leitao@debian.org> writes:
+Hi, Thorsten here, the Linux kernel's regression tracker.
 
-> Hello Kalle,
->
-> On Mon, Jun 17, 2024 at 12:03:49PM +0300, Kalle Valo wrote:
->> Breno Leitao <leitao@debian.org> writes:
->> 
->> > Embedding net_device into structures prohibits the usage of flexible
->> > arrays in the net_device structure. For more details, see the discussion
->> > at [1].
->> >
->> > Un-embed the net_devices from struct mt76_dev by converting them
->> > into pointers, and allocating them dynamically. Use the leverage
->> > alloc_netdev_dummy() to allocate the net_device object at
->> > mt76_dma_init().
->> >
->> > The free of the device occurs at mt76_dma_cleanup().
->> >
->> > Link: https://lore.kernel.org/all/20240229225910.79e224cf@kernel.org/ [1]
->> > Signed-off-by: Breno Leitao <leitao@debian.org>
->> > ---
->> >
->> > PS: Due to the lack of hardware, this patch was not tested on a real
->> > hardware, unfortunately.
->> >
->> > PS2: this is the last driver that is still using embedded netdevices.
->> 
->> Is this patch a dependency to other patches? I'm asking because it will
->> be _slow_ to get this patch to net-next via wireless trees. If there's
->> urgency then it's much better to take it directly to net-next (of course
->> with acks from Felix and Lorenzo).
->
-> Since this is the last patch for the whole flexible netdev work, I would
-> prefer to have it through net-next then, so, we finish the whole work
-> sooner rather than later.
+Miri, I noticed a report about a regression in bugzilla.kernel.org for
+some code you maintain. As many (most?) kernel developers don't keep an
+eye on the bug tracker, I decided to write this mail. To quote from
+https://bugzilla.kernel.org/show_bug.cgi?id=218946 :
 
-Ok, even though I hate dealing with conflicts between trees I still
-think it's better to get this directly to net-next. I hate "hurry up!"
-emails even more ;)
+> The linux Kernel 6.10.0-rc3
+> [   17.124384] iwlwifi 0000:02:00.0: Microcode SW error detected.  Restarting 0x82000000.
+> [   17.124405] iwlwifi 0000:02:00.0: Loaded firmware version: 18.168.6.1 6000g2b-6.ucode
+> [   17.124588] iwlwifi 0000:02:00.0: Start IWL Error Log Dump:
+> [   17.124590] iwlwifi 0000:02:00.0: Status: 0x000002CC, count: 6
+> [   17.124592] iwlwifi 0000:02:00.0: 0x0000198A | ADVANCED_SYSASSERT          
+> [   17.124594] iwlwifi 0000:02:00.0: 0x00015920 | uPc
+> [   17.124596] iwlwifi 0000:02:00.0: 0x00015910 | branchlink1
+> [   17.124597] iwlwifi 0000:02:00.0: 0x00015910 | branchlink2
+> [   17.124599] iwlwifi 0000:02:00.0: 0x0000DBEA | interruptlink1
+> [   17.124600] iwlwifi 0000:02:00.0: 0x00000000 | interruptlink2
+> [   17.124602] iwlwifi 0000:02:00.0: 0x0000005C | data1
+> [   17.124603] iwlwifi 0000:02:00.0: 0x00000008 | data2
+> [   17.124605] iwlwifi 0000:02:00.0: 0x000001DC | line
+> [   17.124606] iwlwifi 0000:02:00.0: 0x11C0C9B1 | beacon time
+> [   17.124608] iwlwifi 0000:02:00.0: 0x006FB64F | tsf low
+> [...]
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+The reporter later confirmed that 6.9 is working fine.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+See the ticket for more details. Note, you have to use bugzilla to reach
+the reporter, as I sadly[1] can not CCed them in mails like this.
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
+
+[1] because bugzilla.kernel.org tells users upon registration their
+"email address will never be displayed to logged out users"
+
+P.S.: let me use this mail to also add the report to the list of tracked
+regressions to ensure it's doesn't fall through the cracks:
+
+#regzbot introduced: v6.9..v6.10-rc3
+#regzbot title: wifi: iwlwifi: Microcode SW error detected
+#regzbot from: doru iorgulescu
+#regzbot duplicate: https://bugzilla.kernel.org/show_bug.cgi?id=218946
+#regzbot ignore-activity
 
