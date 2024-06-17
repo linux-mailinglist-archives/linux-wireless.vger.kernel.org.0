@@ -1,63 +1,61 @@
-Return-Path: <linux-wireless+bounces-9079-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9080-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4D1B90AF54
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 15:31:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB1BE90B098
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 15:59:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02EC01C2017A
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 13:31:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72889B31BDB
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 13:32:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55933199EB3;
-	Mon, 17 Jun 2024 13:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF051AB520;
+	Mon, 17 Jun 2024 13:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BFS7RyGe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u4rd8Qa0"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA9C1991D9;
-	Mon, 17 Jun 2024 13:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A181AB51B;
+	Mon, 17 Jun 2024 13:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718630488; cv=none; b=lJLZk77xD4A5XNMbwWkz7Ny1MzuZ/wLDGeftM4EISfNB9jCh9k6rqu7MwLqAoq2DNv63Uu8sEs2v9VL2fycQ7vXaQHyLDapDBm1tKsJF79DodrWghMhDS5FXCrRvrEPTpxG4ueECIOsIaqJg/bgDbkZsktkCeLfAv+7h5ZN9DE8=
+	t=1718630491; cv=none; b=obBslh2kdktat+dzR1yEa0vl3uP8GyRUxhuVpWGvZL8I9jB+kPbQggMk+LLEVTtGpVI0VA4ElrXs7y9T2nPVBN0KUjB2YF5ikO8EyH2I7HVCm84wjAtxeg56l5KsKZOYjvBS/7K3wFRCHMh8C0ZVfsCNK2WzYlggLqpTa4TZn+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718630488; c=relaxed/simple;
-	bh=W+Kqzrrisl+xzqP63S4grqOrs6f5pItw2/GgaKQC/zo=;
+	s=arc-20240116; t=1718630491; c=relaxed/simple;
+	bh=JLOJ558q63l03Y1Ze34RgJjlYOi5QqzBLt+5yBQZ0cU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E5zFC5kKIXge8cJTX1/8WlECl5SJqXmX/q32SVcNp6eSeFiM7NrX2/dA3IYqva5InVvL0M8YJXPYDwnsMBpWZ/QNCfIr9nlR2nwkhnDBpaLKErWk5kH4qVVX8sh6ep08WDlmdrdz8m3bMuU3jW6COdQaSY1ofmwGPozNxLl5qSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BFS7RyGe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68DADC4AF1D;
-	Mon, 17 Jun 2024 13:21:26 +0000 (UTC)
+	 MIME-Version; b=qYuvZ53RhZ6hTrFifIcCmDBaDD3i0bq6SV3jT2cHDVQ/Q/6svJBJcw/lWbuuo4Uyn4LYx3epFatRqVKvKW9wMpIEcuuogEmmcKWbhEP4F6Dt/qf38JiKOTxj3mFBoNTjHn4Esuv2qqccRXfdOpu70Xo3DLBGW2l5Yp+JHsrsOwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u4rd8Qa0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3829C2BD10;
+	Mon, 17 Jun 2024 13:21:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718630487;
-	bh=W+Kqzrrisl+xzqP63S4grqOrs6f5pItw2/GgaKQC/zo=;
+	s=k20201202; t=1718630491;
+	bh=JLOJ558q63l03Y1Ze34RgJjlYOi5QqzBLt+5yBQZ0cU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BFS7RyGe8sFsnSsWWtQHJG0CH0r5YW2iBQUT0SkDB2wI3g9oTpYf/A5CqG8QqR2Fc
-	 NIUrbwK3zRWjvbEqBk2ts/18UQJ/4dnm/IXx8QgLBaP7AEG1nCjVzVFpJYLzmqiIL1
-	 3HF2qj107Tb9tWNm1CJjhY8XyUQ3rqZt0b9Hq8wwbOmSAuF5dd2y5XywHpASFMku73
-	 1505VgvOY7PtilY+V8nCgeXeDL2PaLJKCDtxOyqGOc/k+p6iN1UKwyvKQ3lQ41hJaJ
-	 IxBLNyz71s5JNsvcKYU2XI0AA8vMiAUdLIIRRqLMBHy+9XS5JPrPaEauqIL1f6F3Oe
-	 RktU5ak/mHUWA==
+	b=u4rd8Qa0SHy59fXKpggcWNB4bYwaq1rX6WLPseLtpPJyeL5o6Z/HNRHg3Y3DwFk/7
+	 ZV75GKTIP/l5mmDEpP/XfivT50ooG2/KYilL3k68ajz/EAlT5krdC7woAh4yfoNZBm
+	 SANHZSR2YFpbxIGOjgQjCo2gY5TzRglMFGOomgIF46Hf7mWUTUHlY0L7zJASkH7uOd
+	 roP61xUQWjQ1N2yHXB9MBU6S1kM46Q/6T1lMGVGoUmKkTCXIFVVyghpGXkEFRgfZdf
+	 Bvq9+ZOxGnSlZUc3pFEuKwk7g0hycmbPNLXIwnXaOPKYtihRZfYjiFw5DG0Fj81Cff
+	 ZHDSD/9z4ALBw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Benjamin Berg <benjamin.berg@intel.com>,
+Cc: Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
 	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	kvalo@kernel.org,
 	gregory.greenman@intel.com,
-	emmanuel.grumbach@intel.com,
-	ilan.peer@intel.com,
 	shaul.triebitz@intel.com,
-	dan.carpenter@linaro.org,
+	benjamin.berg@intel.com,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 19/44] wifi: iwlwifi: mvm: remove stale STA link data during restart
-Date: Mon, 17 Jun 2024 09:19:32 -0400
-Message-ID: <20240617132046.2587008-19-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.9 20/44] wifi: iwlwifi: mvm: Handle BIGTK cipher in kek_kck cmd
+Date: Mon, 17 Jun 2024 09:19:33 -0400
+Message-ID: <20240617132046.2587008-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240617132046.2587008-1-sashal@kernel.org>
 References: <20240617132046.2587008-1-sashal@kernel.org>
@@ -72,123 +70,56 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
 
-[ Upstream commit cc3ba78f202de9752aceb16342ab62bdfbffac7e ]
+[ Upstream commit 08b16d1b5997dc378533318e2a9cd73c7a898284 ]
 
-If pre-recovery mac80211 tried to disable a link but this disablement
-failed, then there might be a mismatch between mac80211 assuming the
-link has been disabled and the driver still having the data around.
-During recover itself, that is not a problem, but should the link be
-activated again at a later point, iwlwifi will refuse the activation as
-it detects the inconsistent state.
+The BIGTK cipher field was added to the kek_kck_material_cmd
+but wasn't assigned. Fix that by differentiating between the
+IGTK/BIGTK keys and assign the ciphers fields accordingly.
 
-Solve this corner-case by iterating the station in the restart cleanup
-handler.
-
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240513132416.d2fd60338055.I840d4fdce5fd49fe69896d928b071067e3730259@changeid
+Link: https://msgid.link/20240513132416.7fd0b22b7267.Ie9b581652b74bd7806980364d59e1b2e78e682c0@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 37 +++++++++++++++++++
- .../net/wireless/intel/iwlwifi/mvm/mld-sta.c  | 10 ++---
- drivers/net/wireless/intel/iwlwifi/mvm/sta.h  |  5 +++
- 3 files changed, 47 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 7ed7444c98715..d2557d9f63e59 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -1115,6 +1115,39 @@ static void iwl_mvm_cleanup_iterator(void *data, u8 *mac,
- 	RCU_INIT_POINTER(mvmvif->deflink.probe_resp_data, NULL);
- }
- 
-+static void iwl_mvm_cleanup_sta_iterator(void *data, struct ieee80211_sta *sta)
-+{
-+	struct iwl_mvm *mvm = data;
-+	struct iwl_mvm_sta *mvm_sta;
-+	struct ieee80211_vif *vif;
-+	int link_id;
-+
-+	mvm_sta = iwl_mvm_sta_from_mac80211(sta);
-+	vif = mvm_sta->vif;
-+
-+	if (!sta->valid_links)
-+		return;
-+
-+	for (link_id = 0; link_id < ARRAY_SIZE((sta)->link); link_id++) {
-+		struct iwl_mvm_link_sta *mvm_link_sta;
-+
-+		mvm_link_sta =
-+			rcu_dereference_check(mvm_sta->link[link_id],
-+					      lockdep_is_held(&mvm->mutex));
-+		if (mvm_link_sta && !(vif->active_links & BIT(link_id))) {
-+			/*
-+			 * We have a link STA but the link is inactive in
-+			 * mac80211. This will happen if we failed to
-+			 * deactivate the link but mac80211 roll back the
-+			 * deactivation of the link.
-+			 * Delete the stale data to avoid issues later on.
-+			 */
-+			iwl_mvm_mld_free_sta_link(mvm, mvm_sta, mvm_link_sta,
-+						  link_id, false);
-+		}
-+	}
-+}
-+
- static void iwl_mvm_restart_cleanup(struct iwl_mvm *mvm)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+index 74743c3ceeefb..6f16b5b33f0c0 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+@@ -595,6 +595,12 @@ static void iwl_mvm_wowlan_gtk_type_iter(struct ieee80211_hw *hw,
+ 					 void *_data)
  {
- 	iwl_mvm_stop_device(mvm);
-@@ -1137,6 +1170,10 @@ static void iwl_mvm_restart_cleanup(struct iwl_mvm *mvm)
- 	 */
- 	ieee80211_iterate_interfaces(mvm->hw, 0, iwl_mvm_cleanup_iterator, mvm);
- 
-+	/* cleanup stations as links may be gone after restart */
-+	ieee80211_iterate_stations_atomic(mvm->hw,
-+					  iwl_mvm_cleanup_sta_iterator, mvm);
+ 	struct wowlan_key_gtk_type_iter *data = _data;
++	__le32 *cipher = NULL;
 +
- 	mvm->p2p_device_vif = NULL;
++	if (key->keyidx == 4 || key->keyidx == 5)
++		cipher = &data->kek_kck_cmd->igtk_cipher;
++	if (key->keyidx == 6 || key->keyidx == 7)
++		cipher = &data->kek_kck_cmd->bigtk_cipher;
  
- 	iwl_mvm_reset_phy_ctxts(mvm);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-index 36dc291d98dd6..a21e29947475f 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-@@ -515,11 +515,11 @@ static int iwl_mvm_mld_cfg_sta(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
- 	return iwl_mvm_mld_send_sta_cmd(mvm, &cmd);
- }
- 
--static void iwl_mvm_mld_free_sta_link(struct iwl_mvm *mvm,
--				      struct iwl_mvm_sta *mvm_sta,
--				      struct iwl_mvm_link_sta *mvm_sta_link,
--				      unsigned int link_id,
--				      bool is_in_fw)
-+void iwl_mvm_mld_free_sta_link(struct iwl_mvm *mvm,
-+			       struct iwl_mvm_sta *mvm_sta,
-+			       struct iwl_mvm_link_sta *mvm_sta_link,
-+			       unsigned int link_id,
-+			       bool is_in_fw)
- {
- 	RCU_INIT_POINTER(mvm->fw_id_to_mac_id[mvm_sta_link->sta_id],
- 			 is_in_fw ? ERR_PTR(-EINVAL) : NULL);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.h b/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
-index b3450569864eb..7dd8f7f4b4492 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
-@@ -638,6 +638,11 @@ int iwl_mvm_mld_update_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 			   struct ieee80211_sta *sta);
- int iwl_mvm_mld_rm_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 		       struct ieee80211_sta *sta);
-+void iwl_mvm_mld_free_sta_link(struct iwl_mvm *mvm,
-+			       struct iwl_mvm_sta *mvm_sta,
-+			       struct iwl_mvm_link_sta *mvm_sta_link,
-+			       unsigned int link_id,
-+			       bool is_in_fw);
- int iwl_mvm_mld_rm_sta_id(struct iwl_mvm *mvm, u8 sta_id);
- int iwl_mvm_mld_update_sta_links(struct iwl_mvm *mvm,
- 				 struct ieee80211_vif *vif,
+ 	switch (key->cipher) {
+ 	default:
+@@ -606,10 +612,13 @@ static void iwl_mvm_wowlan_gtk_type_iter(struct ieee80211_hw *hw,
+ 		return;
+ 	case WLAN_CIPHER_SUITE_BIP_GMAC_256:
+ 	case WLAN_CIPHER_SUITE_BIP_GMAC_128:
+-		data->kek_kck_cmd->igtk_cipher = cpu_to_le32(STA_KEY_FLG_GCMP);
++		if (cipher)
++			*cipher = cpu_to_le32(STA_KEY_FLG_GCMP);
+ 		return;
+ 	case WLAN_CIPHER_SUITE_AES_CMAC:
+-		data->kek_kck_cmd->igtk_cipher = cpu_to_le32(STA_KEY_FLG_CCM);
++	case WLAN_CIPHER_SUITE_BIP_CMAC_256:
++		if (cipher)
++			*cipher = cpu_to_le32(STA_KEY_FLG_CCM);
+ 		return;
+ 	case WLAN_CIPHER_SUITE_CCMP:
+ 		if (!sta)
 -- 
 2.43.0
 
