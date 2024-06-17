@@ -1,191 +1,88 @@
-Return-Path: <linux-wireless+bounces-9035-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9036-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DF9D90A21F
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 03:56:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69FB390A24C
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 04:07:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 446531F25745
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 01:56:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 078711F24A7C
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 02:07:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3258716088F;
-	Mon, 17 Jun 2024 01:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A3F13E898;
+	Mon, 17 Jun 2024 02:07:23 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96DC915FA7A
-	for <linux-wireless@vger.kernel.org>; Mon, 17 Jun 2024 01:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C2179F3;
+	Mon, 17 Jun 2024 02:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718589389; cv=none; b=Z22/T5J6OhraQP4t2NBeTZfkYTaHWQQnfvg2LOYhzqYGArE6cDNUoaUg530K/IP/NDmBl5hNc2hXmLTcAseji11dXBw7ALm9UFJnVKUa3OKZoUijKRB7SDxTMFihpJ97xA+B8Xif+voorh8/eDgquiGTNCzs84zM8j3auEQiEUs=
+	t=1718590043; cv=none; b=IogtVgdEHhG2u6DZba2BmJ6XlCWD1JVTLE/vf8EE0vFedx72v7nZNpy0ff0MCWEVmoXBwUTe11L8zMBsYldrvuSYZzWbezO2XNu/RguE0m6v2vtkOpebzg3ppfYyzSQixWNNwRxxHtnqaIYFslKrdg2ANzC5U+A4yu9iMvT6nzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718589389; c=relaxed/simple;
-	bh=2hAWRLJlQbNdHBqS2iZIJ6KFkmOQx8Wr7hNlgsl5pDo=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=DqxvFaoEmWOy1y2D7QFKh+HFOfvWrjwWyulOX3AoBa41cFHl9DAH8OneCTVKBNTNLAoCQ6iURviJs7haIS15NemKq6GNYq5DTMGieHsZFAq1sr3iBSyl5+vL9k94ZXZlI8hAmR1pYZawOmkYBVvX9YuRm6j5LI1BWnqWDWjmJSs=
+	s=arc-20240116; t=1718590043; c=relaxed/simple;
+	bh=3VSCHH1AOXkI5qcx5xgoNWbZlrJ3YH7Z79eeMHytc1c=;
+	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type:Message-ID:Date; b=R7FRlFqyowMHRHv1CqoXEeMVChlOOYmxMQCDnuSJwLili4lhyRoZ/Crukkp9UyziygsYvL8DzvwlIZ2vCbC6F8o4WKqqFvwktWR4iD478LN/4/fbY9XFlMvSXYFMQdnvC8tSzZPeSiVc28V6shwdBbXxFPfYuwWcT542kQupw7U=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 45H1uHv452550601, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 45H272m842559489, This message is accepted by code: ctloc85258
 Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 45H1uHv452550601
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 45H272m842559489
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 17 Jun 2024 09:56:17 +0800
+	Mon, 17 Jun 2024 10:07:02 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 17 Jun 2024 09:56:17 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 17 Jun 2024 09:56:17 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
- RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
- 15.01.2507.035; Mon, 17 Jun 2024 09:56:17 +0800
+ 15.1.2507.39; Mon, 17 Jun 2024 10:07:01 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 17 Jun
+ 2024 10:07:00 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: =?utf-8?B?TWFyY2luIMWabHVzYXJ6?= <marcin.slusarz@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC: =?utf-8?B?TWFyY2luIMWabHVzYXJ6?= <mslusarz@renau.com>
-Subject: RE: [PATCH v2 2/2] wifi: rtw88/usb: stop rx work before potential power off
-Thread-Topic: [PATCH v2 2/2] wifi: rtw88/usb: stop rx work before potential
- power off
-Thread-Index: AQHavlRdI3CsoKW/wUiRvf1K/HqCtLHLNBJQ
-Date: Mon, 17 Jun 2024 01:56:16 +0000
-Message-ID: <b1c0258c42284de187ba69a5491f5042@realtek.com>
-References: <CA+GA0_tK_+Rsj0FAxO-_VXBLLFMoxW9FHsWhL6gEoWaOMKwWrA@mail.gmail.com>
- <20240614121339.525935-1-mslusarz@renau.com>
- <20240614121339.525935-2-mslusarz@renau.com>
-In-Reply-To: <20240614121339.525935-2-mslusarz@renau.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        <linux-kernel@vger.kernel.org>
+CC: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Ping-Ke Shih
+	<pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
+        <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH 5/6] wifi: rtw89: use 'time_left' variable with wait_for_completion_timeout()
+In-Reply-To: <20240603091541.8367-6-wsa+renesas@sang-engineering.com>
+References: <20240603091541.8367-1-wsa+renesas@sang-engineering.com> <20240603091541.8367-6-wsa+renesas@sang-engineering.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain
+Message-ID: <64c6f54a-a76d-4840-85f0-60a4ce19d2ca@RTEXMBS04.realtek.com.tw>
+Date: Mon, 17 Jun 2024 10:07:00 +0800
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-TWFyY2luIMWabHVzYXJ6IDxtYXJjaW4uc2x1c2FyekBnbWFpbC5jb20+IHdyb3RlOg0KPiBJZiBw
-b3dlciBvZmYgaXMgZGlzYWJsZWQgKGxpa2Ugb24gODgyMUNVIGFmdGVyIHByZXZpb3VzIHBhdGNo
-KSwNCj4gdGhlIGhhcmR3YXJlIGNhbiBzdGlsbCBmaXJlIGFuZCBkZWxpdmVyIGRhdGEuIFRoaXMg
-bWF5IGhhdmUNCj4gdW5kZXJzaXJlZCBpbXBhY3Qgb24gdGhlIG5ldHdvcmtpbmcgc3RhY2sgKGUu
-Zy4NCj4gV0FSTl9PTighbG9jYWwtPnN0YXJ0ZWQpIGluIGllZWU4MDIxMV9yeF9saXN0KSwgYmVj
-YXVzZSBodyBpcw0KPiBub3Qgc3VwcG9zZWQgdG8gZG8gdGhhdCBhZnRlciBwb3dlciBvZmYuDQo+
-IA0KPiBTbyB0byBwcmV2ZW50IHRoYXQsIGNhbmNlbCBhbnkgcGVuZGluZyBSWCBVUkJzIHRvIHN0
-b3AgdGhlDQo+IGNvbXBsZXRpb24gaGFuZGxlcnMgZnJvbSBiZWluZyBjYWxsZWQuDQo+IA0KPiBT
-aWduZWQtb2ZmLWJ5OiBNYXJjaW4gxZpsdXNhcnogPG1zbHVzYXJ6QHJlbmF1LmNvbT4NCj4gLS0t
-DQo+IHYyOiBzdGFydF9yeC9zdG9wX3J4IGNicyBjYW4gYmUgTlVMTDsgcnhfZW5hYmxlZCBjaGVj
-ayBhZGRlZCB0byBzdG9wX3J4DQo+IC0tLQ0KPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRl
-ay9ydHc4OC9oY2kuaCAgfCAxNCArKysrKysrKw0KPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVh
-bHRlay9ydHc4OC9tYWluLmMgfCAgNyArKystDQo+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFs
-dGVrL3J0dzg4L3VzYi5jICB8IDQ0ICsrKysrKysrKysrKysrKystLS0tLS0tDQo+ICBkcml2ZXJz
-L25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3VzYi5oICB8ICAxICsNCj4gIDQgZmlsZXMgY2hh
-bmdlZCwgNTIgaW5zZXJ0aW9ucygrKSwgMTQgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0
-IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9oY2kuaCBiL2RyaXZlcnMvbmV0
-L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvaGNpLmgNCj4gaW5kZXggODMwZDc1MzJmMmEzLi44Mzli
-OTE2MTAxNGYgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3
-ODgvaGNpLmgNCj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9oY2ku
-aA0KPiBAQCAtMTgsNiArMTgsOCBAQCBzdHJ1Y3QgcnR3X2hjaV9vcHMgew0KPiAgICAgICAgIHZv
-aWQgKCpkZWVwX3BzKShzdHJ1Y3QgcnR3X2RldiAqcnR3ZGV2LCBib29sIGVudGVyKTsNCj4gICAg
-ICAgICB2b2lkICgqbGlua19wcykoc3RydWN0IHJ0d19kZXYgKnJ0d2RldiwgYm9vbCBlbnRlcik7
-DQo+ICAgICAgICAgdm9pZCAoKmludGVyZmFjZV9jZmcpKHN0cnVjdCBydHdfZGV2ICpydHdkZXYp
-Ow0KPiArICAgICAgIHZvaWQgKCpzdG9wX3J4KShzdHJ1Y3QgcnR3X2RldiAqcnR3ZGV2KTsNCj4g
-KyAgICAgICB2b2lkICgqc3RhcnRfcngpKHN0cnVjdCBydHdfZGV2ICpydHdkZXYpOw0KPiANCj4g
-ICAgICAgICBpbnQgKCp3cml0ZV9kYXRhX3JzdmRfcGFnZSkoc3RydWN0IHJ0d19kZXYgKnJ0d2Rl
-diwgdTggKmJ1ZiwgdTMyIHNpemUpOw0KPiAgICAgICAgIGludCAoKndyaXRlX2RhdGFfaDJjKShz
-dHJ1Y3QgcnR3X2RldiAqcnR3ZGV2LCB1OCAqYnVmLCB1MzIgc2l6ZSk7DQo+IEBAIC01Nyw2ICs1
-OSwxOCBAQCBzdGF0aWMgaW5saW5lIHZvaWQgcnR3X2hjaV9zdG9wKHN0cnVjdCBydHdfZGV2ICpy
-dHdkZXYpDQo+ICAgICAgICAgcnR3ZGV2LT5oY2kub3BzLT5zdG9wKHJ0d2Rldik7DQo+ICB9DQo+
-IA0KPiArc3RhdGljIGlubGluZSB2b2lkIHJ0d19oY2lfc3RhcnRfcngoc3RydWN0IHJ0d19kZXYg
-KnJ0d2RldikNCj4gK3sNCj4gKyAgICAgICBpZiAocnR3ZGV2LT5oY2kub3BzLT5zdGFydF9yeCkN
-Cj4gKyAgICAgICAgICAgICAgIHJ0d2Rldi0+aGNpLm9wcy0+c3RhcnRfcngocnR3ZGV2KTsNCj4g
-K30NCj4gKw0KPiArc3RhdGljIGlubGluZSB2b2lkIHJ0d19oY2lfc3RvcF9yeChzdHJ1Y3QgcnR3
-X2RldiAqcnR3ZGV2KQ0KPiArew0KPiArICAgICAgIGlmIChydHdkZXYtPmhjaS5vcHMtPnN0b3Bf
-cngpDQo+ICsgICAgICAgICAgICAgICBydHdkZXYtPmhjaS5vcHMtPnN0b3BfcngocnR3ZGV2KTsN
-Cj4gK30NCj4gKw0KPiAgc3RhdGljIGlubGluZSB2b2lkIHJ0d19oY2lfZGVlcF9wcyhzdHJ1Y3Qg
-cnR3X2RldiAqcnR3ZGV2LCBib29sIGVudGVyKQ0KPiAgew0KPiAgICAgICAgIHJ0d2Rldi0+aGNp
-Lm9wcy0+ZGVlcF9wcyhydHdkZXYsIGVudGVyKTsNCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0
-L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvbWFpbi5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVh
-bHRlay9ydHc4OC9tYWluLmMNCj4gaW5kZXggYTQ4ZTkxOWFkZGRiLi5iYjAxMjJkMTk0MTYgMTAw
-NjQ0DQo+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvbWFpbi5jDQo+
-ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvbWFpbi5jDQo+IEBAIC0x
-MzU3LDcgKzEzNTcsNyBAQCBzdGF0aWMgaW50IHJ0d19wb3dlcl9vbihzdHJ1Y3QgcnR3X2RldiAq
-cnR3ZGV2KQ0KPiAgICAgICAgIGludCByZXQ7DQo+IA0KPiAgICAgICAgIGlmIChydHdkZXYtPmFs
-d2F5c19wb3dlcl9vbiAmJiB0ZXN0X2JpdChSVFdfRkxBR19QT1dFUk9OLCBydHdkZXYtPmZsYWdz
-KSkNCj4gLSAgICAgICAgICAgICAgIHJldHVybiAwOw0KPiArICAgICAgICAgICAgICAgZ290byBz
-dWNjZXNzOw0KPiANCj4gICAgICAgICByZXQgPSBydHdfaGNpX3NldHVwKHJ0d2Rldik7DQo+ICAg
-ICAgICAgaWYgKHJldCkgew0KPiBAQCAtMTQwNyw2ICsxNDA3LDkgQEAgc3RhdGljIGludCBydHdf
-cG93ZXJfb24oc3RydWN0IHJ0d19kZXYgKnJ0d2RldikNCj4gICAgICAgICBydHdfY29leF9wb3dl
-cl9vbl9zZXR0aW5nKHJ0d2Rldik7DQo+ICAgICAgICAgcnR3X2NvZXhfaW5pdF9od19jb25maWco
-cnR3ZGV2LCB3aWZpX29ubHkpOw0KPiANCj4gK3N1Y2Nlc3M6DQo+ICsgICAgICAgcnR3X2hjaV9z
-dGFydF9yeChydHdkZXYpOw0KPiArDQoNCkFzIG1lbnRpb25lZCwgdGhpcyBpcyBub3QgYSBjb21t
-b24gcm91dGluZSwgYnV0IG9ubHkgc3BlY2lhbCBmb3IgYWx3YXlzX3Bvd2VyX29uIGNhc2UuDQpG
-b3Igbm9ybWFsIGNhc2UsIHJ1bm5pbmcgYm90aCBydHdfaGNpX3N0YXJ0KCkgYW5kIHJ0d19oY2lf
-c3RhcnRfcngoKSBhcmUNCmNvbmZ1c2luZy4gRXZlbiBJJ20gdGhpbmtpbmcgdGhlIG5hbWVzIG9m
-IHRoZXNlIHR3byBvcHMgYXJlIGNvbmZ1c2luZyBwZW9wbGUuIA0KDQo+ICAgICAgICAgcmV0dXJu
-IDA7DQo+IA0KPiAgZXJyX29mZjoNCj4gQEAgLTE1MDksNiArMTUxMiw4IEBAIGludCBydHdfY29y
-ZV9zdGFydChzdHJ1Y3QgcnR3X2RldiAqcnR3ZGV2KQ0KPiANCj4gIHN0YXRpYyB2b2lkIHJ0d19w
-b3dlcl9vZmYoc3RydWN0IHJ0d19kZXYgKnJ0d2RldikNCj4gIHsNCj4gKyAgICAgICBydHdfaGNp
-X3N0b3BfcngocnR3ZGV2KTsNCj4gKw0KDQpEaXR0by4gDQoNCj4gICAgICAgICBpZiAocnR3ZGV2
-LT5hbHdheXNfcG93ZXJfb24pDQo+ICAgICAgICAgICAgICAgICByZXR1cm47DQo+IA0KPiBkaWZm
-IC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC91c2IuYyBiL2RyaXZl
-cnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvdXNiLmMNCj4gaW5kZXggMjhmZjQ2ZTk2NjA0
-Li44ZTc4NGMzNTdlZTIgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0
-ZWsvcnR3ODgvdXNiLmMNCj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4
-OC91c2IuYw0KPiBAQCAtNzEzLDYgKzcxMywzNCBAQCBzdGF0aWMgdm9pZCBydHdfdXNiX2ludGVy
-ZmFjZV9jZmcoc3RydWN0IHJ0d19kZXYgKnJ0d2RldikNCj4gICAgICAgICAvKiBlbXB0eSBmdW5j
-dGlvbiBmb3IgcnR3X2hjaV9vcHMgKi8NCj4gIH0NCj4gDQo+ICtzdGF0aWMgdm9pZCBydHdfdXNi
-X3N0b3Bfcngoc3RydWN0IHJ0d19kZXYgKnJ0d2RldikNCj4gK3sNCj4gKyAgICAgICBzdHJ1Y3Qg
-cnR3X3VzYiAqcnR3dXNiID0gcnR3X2dldF91c2JfcHJpdihydHdkZXYpOw0KPiArDQo+ICsgICAg
-ICAgaWYgKCFydHd1c2ItPnJ4X2VuYWJsZWQpDQo+ICsgICAgICAgICAgICAgICByZXR1cm47DQo+
-ICsNCj4gKyAgICAgICBydHdfdXNiX2NhbmNlbF9yeF9idWZzKHJ0d3VzYik7DQo+ICsgICAgICAg
-cnR3dXNiLT5yeF9lbmFibGVkID0gZmFsc2U7DQo+ICt9DQo+ICsNCj4gK3N0YXRpYyB2b2lkIHJ0
-d191c2Jfc3RhcnRfcngoc3RydWN0IHJ0d19kZXYgKnJ0d2RldikNCj4gK3sNCj4gKyAgICAgICBz
-dHJ1Y3QgcnR3X3VzYiAqcnR3dXNiID0gcnR3X2dldF91c2JfcHJpdihydHdkZXYpOw0KPiArICAg
-ICAgIGludCBpOw0KPiArDQo+ICsgICAgICAgaWYgKHJ0d3VzYi0+cnhfZW5hYmxlZCkNCj4gKyAg
-ICAgICAgICAgICAgIHJldHVybjsNCj4gKw0KPiArICAgICAgIGZvciAoaSA9IDA7IGkgPCBSVFdf
-VVNCX1JYQ0JfTlVNOyBpKyspIHsNCj4gKyAgICAgICAgICAgICAgIHN0cnVjdCByeF91c2JfY3Ry
-bF9ibG9jayAqcnhjYiA9ICZydHd1c2ItPnJ4X2NiW2ldOw0KPiArDQo+ICsgICAgICAgICAgICAg
-ICBydHdfdXNiX3J4X3Jlc3VibWl0KHJ0d3VzYiwgcnhjYik7DQo+ICsgICAgICAgfQ0KPiArDQo+
-ICsgICAgICAgcnR3dXNiLT5yeF9lbmFibGVkID0gdHJ1ZTsNCj4gK30NCj4gKw0KPiAgc3RhdGlj
-IHN0cnVjdCBydHdfaGNpX29wcyBydHdfdXNiX29wcyA9IHsNCj4gICAgICAgICAudHhfd3JpdGUg
-PSBydHdfdXNiX3R4X3dyaXRlLA0KPiAgICAgICAgIC50eF9raWNrX29mZiA9IHJ0d191c2JfdHhf
-a2lja19vZmYsDQo+IEBAIC03MjIsNiArNzUwLDggQEAgc3RhdGljIHN0cnVjdCBydHdfaGNpX29w
-cyBydHdfdXNiX29wcyA9IHsNCj4gICAgICAgICAuZGVlcF9wcyA9IHJ0d191c2JfZGVlcF9wcywN
-Cj4gICAgICAgICAubGlua19wcyA9IHJ0d191c2JfbGlua19wcywNCj4gICAgICAgICAuaW50ZXJm
-YWNlX2NmZyA9IHJ0d191c2JfaW50ZXJmYWNlX2NmZywNCj4gKyAgICAgICAuc3RvcF9yeCA9IHJ0
-d191c2Jfc3RvcF9yeCwNCj4gKyAgICAgICAuc3RhcnRfcnggPSBydHdfdXNiX3N0YXJ0X3J4LA0K
-DQpQbGVhc2Ugc2V0IC5zdG9wX3J4Ly5zdGFydF9yeCB0byBOVUxMIGZvciBQQ0kgYW5kIFNESU8g
-ZXhwbGljaXRseS4gDQoNCg0KPiANCj4gICAgICAgICAud3JpdGU4ICA9IHJ0d191c2Jfd3JpdGU4
-LA0KPiAgICAgICAgIC53cml0ZTE2ID0gcnR3X3VzYl93cml0ZTE2LA0KPiBAQCAtNzUxLDE4ICs3
-ODEsNiBAQCBzdGF0aWMgaW50IHJ0d191c2JfaW5pdF9yeChzdHJ1Y3QgcnR3X2RldiAqcnR3ZGV2
-KQ0KPiAgICAgICAgIHJldHVybiAwOw0KPiAgfQ0KPiANCj4gLXN0YXRpYyB2b2lkIHJ0d191c2Jf
-c2V0dXBfcngoc3RydWN0IHJ0d19kZXYgKnJ0d2RldikNCj4gLXsNCj4gLSAgICAgICBzdHJ1Y3Qg
-cnR3X3VzYiAqcnR3dXNiID0gcnR3X2dldF91c2JfcHJpdihydHdkZXYpOw0KPiAtICAgICAgIGlu
-dCBpOw0KPiAtDQo+IC0gICAgICAgZm9yIChpID0gMDsgaSA8IFJUV19VU0JfUlhDQl9OVU07IGkr
-Kykgew0KPiAtICAgICAgICAgICAgICAgc3RydWN0IHJ4X3VzYl9jdHJsX2Jsb2NrICpyeGNiID0g
-JnJ0d3VzYi0+cnhfY2JbaV07DQo+IC0NCj4gLSAgICAgICAgICAgICAgIHJ0d191c2JfcnhfcmVz
-dWJtaXQocnR3dXNiLCByeGNiKTsNCj4gLSAgICAgICB9DQo+IC19DQo+IC0NCj4gIHN0YXRpYyB2
-b2lkIHJ0d191c2JfZGVpbml0X3J4KHN0cnVjdCBydHdfZGV2ICpydHdkZXYpDQo+ICB7DQo+ICAg
-ICAgICAgc3RydWN0IHJ0d191c2IgKnJ0d3VzYiA9IHJ0d19nZXRfdXNiX3ByaXYocnR3ZGV2KTsN
-Cj4gQEAgLTkwMCw3ICs5MTgsNyBAQCBpbnQgcnR3X3VzYl9wcm9iZShzdHJ1Y3QgdXNiX2ludGVy
-ZmFjZSAqaW50ZiwgY29uc3Qgc3RydWN0IHVzYl9kZXZpY2VfaWQgKmlkKQ0KPiAgICAgICAgICAg
-ICAgICAgZ290byBlcnJfZGVzdHJveV9yeHdxOw0KPiAgICAgICAgIH0NCj4gDQo+IC0gICAgICAg
-cnR3X3VzYl9zZXR1cF9yeChydHdkZXYpOw0KPiArICAgICAgIHJ0d191c2Jfc3RhcnRfcngocnR3
-ZGV2KTsNCj4gDQo+ICAgICAgICAgcmV0dXJuIDA7DQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVy
-cy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC91c2IuaCBiL2RyaXZlcnMvbmV0L3dpcmVsZXNz
-L3JlYWx0ZWsvcnR3ODgvdXNiLmgNCj4gaW5kZXggODY2OTdhNWMwMTAzLi5hNmIwMDRkNGY3NGUg
-MTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvdXNiLmgN
-Cj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC91c2IuaA0KPiBAQCAt
-ODIsNiArODIsNyBAQCBzdHJ1Y3QgcnR3X3VzYiB7DQo+ICAgICAgICAgc3RydWN0IHJ4X3VzYl9j
-dHJsX2Jsb2NrIHJ4X2NiW1JUV19VU0JfUlhDQl9OVU1dOw0KPiAgICAgICAgIHN0cnVjdCBza19i
-dWZmX2hlYWQgcnhfcXVldWU7DQo+ICAgICAgICAgc3RydWN0IHdvcmtfc3RydWN0IHJ4X3dvcms7
-DQo+ICsgICAgICAgYm9vbCByeF9lbmFibGVkOw0KPiAgfTsNCj4gDQo+ICBzdGF0aWMgaW5saW5l
-IHN0cnVjdCBydHdfdXNiX3R4X2RhdGEgKnJ0d191c2JfZ2V0X3R4X2RhdGEoc3RydWN0IHNrX2J1
-ZmYgKnNrYikNCj4gLS0NCj4gMi4yNS4xDQo+IA0KDQo=
+Wolfram Sang <wsa+renesas@sang-engineering.com> wrote:
+
+> There is a confusing pattern in the kernel to use a variable named 'timeout' to
+> store the result of wait_for_completion_timeout() causing patterns like:
+> 
+> 	timeout = wait_for_completion_timeout(...)
+> 	if (!timeout) return -ETIMEDOUT;
+> 
+> with all kinds of permutations. Use 'time_left' as a variable to make the code
+> self explaining.
+> 
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+
+1 patch(es) applied to rtw-next branch of rtw.git, thanks.
+
+3d530eeaf8e7 wifi: rtw89: use 'time_left' variable with wait_for_completion_timeout()
+
+---
+https://github.com/pkshih/rtw.git
+
 
