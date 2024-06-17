@@ -1,103 +1,123 @@
-Return-Path: <linux-wireless+bounces-9072-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9078-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47A6C90B032
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 15:51:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0751E90AF53
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 15:31:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B527CB2993E
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 13:24:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 989A628B10A
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 13:31:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F562194C70;
-	Mon, 17 Jun 2024 13:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC6AB1A38F2;
+	Mon, 17 Jun 2024 13:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K8B6KX3T"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="i5qQH4pU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7755E194A4E;
-	Mon, 17 Jun 2024 13:19:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8831A38C7;
+	Mon, 17 Jun 2024 13:21:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718630396; cv=none; b=O3Z8bABXp4z1RYDeD9mk2RtcDiCsOx4SgAx/RKD9nBQ69e0RhzjhYa/E8bDLMF9Ig2KxZ2jMB/9svYsrap0+G0fWaf3ejy0e/4cq7NJMNwyPyO08T/RtIQRVp6eyfG3/XzAhDR0eFOByHkBa/P5oav86hwH8jlipjMt5qCRZlLs=
+	t=1718630482; cv=none; b=MqHa1+LiUssARmedy5SeY7zNGNeGd4OoI3VQS9cRrHJAFPiXHFfbH4tOtMN4OUgzSLrGvFXNzBIAb6R+Vpy5zLsNE5biui8ymuR6+4GnH2ErUR2Hmg5cNdb4EblO23WPoeiquRq2GXk/hj2HhXB/VSt1TOG2hyiRCxy3cRx2SKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718630396; c=relaxed/simple;
-	bh=9hACNZampJn6nK9Lw3MnzI2p/LIpPq2mzaJcb+mZ0oc=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=ts4CRv7hGH5YszestJ6EEv3sGVEjc3akUGMnbnxTEOgKpgnIvyP0oAeQja2Ab4K9LLGwJinRl3cd1I5EDUp4/BUnjm2ufcdpZdrjVBPuMs+9Z3uyQjNlwgYdVTDlMTifq05gUIt2UNEERkS0qzei7Qu7Otk2RUnXM++4aX/1NN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K8B6KX3T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47DA0C4AF1C;
-	Mon, 17 Jun 2024 13:19:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718630396;
-	bh=9hACNZampJn6nK9Lw3MnzI2p/LIpPq2mzaJcb+mZ0oc=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=K8B6KX3ToDkgIiM4a8ovDS8hTzxzqTCReaffYM46+UKbSe4pqqqxIy9AdycC6PLpF
-	 qhH61rnQ1JiQmdFTgyJZJO8g4sUxE5rvAYTJDOEdR88cZq9tFNaTj2YSMd6wcYxtLh
-	 J6MjvlJaHOnbGwf5LgI1WwUMdyt7g9sxoXvAkM5mF+y4UZlXrL4mcjKGT6/4Q/8kJN
-	 c9GM/whlyT/hAwAU0DOhRMdRpGaVtLndu/BR1Z1x/keDpYz4EUG2FihkdcxFB2Okye
-	 2roMwxCxNxpuIe30kjLPtl8donYJITTU7sgMuPVhTvTvNekwEeFGSI4UdKSsLHOpOR
-	 SxPS3Bc7UTWMA==
-From: Kalle Valo <kvalo@kernel.org>
-To: Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc: brcm80211@lists.linux.dev,  linux-wireless@vger.kernel.org
-Subject: Re: brcmfmac: implement basic AP-follow-STA
-References: <Zmqf7jCqwlQNGM_j@x1.vandijck-laurijssen.be>
-Date: Mon, 17 Jun 2024 16:19:53 +0300
-In-Reply-To: <Zmqf7jCqwlQNGM_j@x1.vandijck-laurijssen.be> (Kurt Van Dijck's
-	message of "Thu, 13 Jun 2024 09:29:50 +0200")
-Message-ID: <87v827k8p2.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1718630482; c=relaxed/simple;
+	bh=aizDZvnCDX/j0pRij/wrhNU+Zaq/hXsUCMLAW5X7shE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LFIh2S8tjYT1y7pc7z98oyPpLxq5W8A/KgBiEOP7ewfNSXQrMhtajy+FeXaQ8UGWZ8R65kOiafrqRr08aQjcnJS7kqjFCjsV8An4maOOhgm9k96jgU9WCwOJ7zWv0ps7DSijDNFIGRKYrZCrdyop0ims9Hod9CVdfqZwaLjieak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=i5qQH4pU; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=dgzLUyLL44aNtNUZ4cik5aVlKeZ3MyaadjRq+pbLGk0=; b=i5qQH4pUO+Y/XOIW4KPvJ3rbY2
+	Rxqu80nP7jKjm1a+NyjJYN0Th7nVtE4d/P0uyJNd9RRHvi4oUyVvq8H6eUsAcCHDKJwknelnVwpKq
+	jt+bwUn1P3zDRc6CcLIzJmeyPHr7gGtsjc6seHNb+5uwF1gtyb9RpG8Ydvf0YVjwzy6iFaSs0/BQg
+	jsN0KEGloIhShKT1DDil4mKTWBZzu9Lhyiu3WsBV5ZakUj8/ZACVFO8wxOZmmYIvw4DQz0juNTGFf
+	zbj5eySUNdQ+6eXieJLh9vUg3qgHIgpTtFUHKyHPzeEP+qztohMIuGrNWuSjv8DfRpp1V1Ir6YWrY
+	J7RTak/Q==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:57690)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1sJCID-0005Ic-0O;
+	Mon, 17 Jun 2024 14:21:05 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1sJCIE-0004w5-Ft; Mon, 17 Jun 2024 14:21:06 +0100
+Date: Mon, 17 Jun 2024 14:21:06 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Michael Nemanov <michael.nemanov@ti.com>,
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH wireless v2] wifi: wlcore: fix wlcore AP mode
+Message-ID: <ZnA4QpyOdcYxg8LE@shell.armlinux.org.uk>
+References: <E1sClp4-00Evu7-8v@rmk-PC.armlinux.org.uk>
+ <Zm1CKAKCnuc94oIi@shell.armlinux.org.uk>
+ <87tthrn8gf.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87tthrn8gf.fsf@kernel.org>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Kurt Van Dijck <dev.kurt@vandijck-laurijssen.be> writes:
+On Mon, Jun 17, 2024 at 01:56:48PM +0300, Kalle Valo wrote:
+> "Russell King (Oracle)" <linux@armlinux.org.uk> writes:
+> 
+> > I see all my TI Wilink patches have been marked as "deferred" in the
+> > wireless patchwork. Please could you explain what the plan is with
+> > these patches, especially this one which fixes a serious frustrating
+> > failing that makes AP mode on this hardware very unreliable and thus
+> > useless.
+> 
+> I'm just swamped with patches, I'll try to look at these soon.
+> 
+> I wish that TI would take a more active role in upstream, for example
+> reviewing and testing patches would help a lot.
 
-> /* context */
-> We (Yamabiko) have an application where we migrated to a bcm4339 sdio wifi chip.
-> We use it in AP+STA mode: when the chip is detected (wlan+ add uevent),
-> we call 'run iw dev wlan0 interface add wap0 type __ap' and start
-> wpa_supplicant on wlan0 and hostapd on wap0.
-> The STA is more important than the AP.
-> We have 'roamoff' parameter set. We observed problems with the firmware roaming
-> before and switched to wpa_supplicant roaming.
->
-> We run a linux v5.4.24 derivative.
->
-> /* problem */
-> We observed that the chip is able to switch channel for wpa_supplicant to
-> connect to a different channel, but it soon looses connection because hostapd
-> does not change channel too.
->
-> This did work with our previous wifi chip (realtek 88x2 something), which notifies
-> hostapd that it switched.
->
-> /* patch description */
-> I went down and ended up modifying the brcmfmac driver, patch appended below.
-> For contributing on these mailing lists, I ported it to yesterday's master.
-> The idea is that whenever a STA issues a connect with channel info, the AP's
-> will switch to it too. This implies a small glitch in the AP radio, which already
-> occurred before my patch. it seems that the wifi chip cannot modify radio settings
-> per virtual interface, although the API to the wifi chip suggests it can (that is
-> most probable a more generic communication used for other chips that can do this).
-> The channel switch is also reported to userspace.
->
-> To be less invasive, this new behaviour is put behind
-> a module parameter 'ap_follow_sta'.
+I believe the problem has been that TI have had an attitude of "we
+only support people using 4.19.38, if you can't reproduce the problem
+there we aren't interested". To see the versions they support:
 
-FWIW module parameters should be avoided, especially for 802.11 protocol
-level functionality.
+https://git.ti.com/cgit/wilink8-wlan/build-utilites/tree/patches/kernel_patches?h=r8.9&id=a2ee50aa5190ed3b334373d6cd09b1bff56ffcf7
+
+basically, all are ancient.
+
+They also appear take the attitude that all the kernel code is ripe
+for them to hack about with - whcih is why this fix has had to be
+reworked so it isn't removing NL80211_FEATURE_FULL_AP_CLIENT_STATE
+for _all_ kernel wireless drivers!
+
+Also, I think they also require one to use their hostapd and
+wpa_supplicant, probably for a similar reason. I know that in some
+of the patches they've hacked in API changes...
+
+Then one can see the attitude of lock-step firmware and driver
+upgrade - you can't use 8.9.1.x.x firmware with their older driver,
+and you can't use 8.9.0.x.x with their newer driver. That, of course,
+is not acceptable to mainline.
+
+So, given all this, IMHO it's probably a good thing TI aren't trying
+to submit their stuff upstream... that is, unless they are willing
+to learn how to "do things correctly".
+
+Maybe I'm being too hard on TI's wireless division, but that seems to
+be what has been going on.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
