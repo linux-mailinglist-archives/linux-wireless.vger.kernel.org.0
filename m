@@ -1,124 +1,125 @@
-Return-Path: <linux-wireless+bounces-9117-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9118-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BC4790B1EC
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 16:28:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2C5490B328
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 17:00:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D8751C204AB
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 14:28:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86B531F21FE8
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 15:00:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9650019AD7E;
-	Mon, 17 Jun 2024 13:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDB5C13AA5A;
+	Mon, 17 Jun 2024 14:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kmnw4KwY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MlcMyTRD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706D8198A22
-	for <linux-wireless@vger.kernel.org>; Mon, 17 Jun 2024 13:43:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9FC13AA48;
+	Mon, 17 Jun 2024 14:08:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718631806; cv=none; b=uFibXweR993g6LKYo3yE8e3B1W5sIHQQLmIrVm1wpkhZtl2/Ei88dyx9pWKCMcHUbVyMhUcyjKQIMfjsktrNXzGJufpgXORp7FHZcnJDiZW+Pn4P7IjAb2BmIBM6NnjoX/qPkdSPNp/KlQim4Ye+Utu7c9gBisnxACrK/YIuxMk=
+	t=1718633301; cv=none; b=S+bD5kGQ9r0/+hFDP795/hnBu8uF6Ri0sQC9iPtjq036qj+/1OWV+y6sWe/dDjSAJkElG1CaJWzoWYrjQP9gIsHfLd1O1LhKgR44MkdQhd0L7DI8FgKJbAtEwfjn7aDGu9pjTVmBqgin2H2MyKG9SSOo/yOxX8pj8oZG1YwCxqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718631806; c=relaxed/simple;
-	bh=/QgzJzbG+aEkoSnSmwQZl/Am2miS1ZCWALieAysez/g=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=s+wMV/SovLS+exspcyBt4TEZuo+A1bmA9IKp1dswLEOV5c7Ctz/I4t1XoLy1SBIAXms+ZiZPSHJ8H2Gp67aIFRGme/GCDAvMPW2mbrwLACzaRJoJqvg/6+sPRQ15RTW84x3e36eataxlbbuzPYxO2MSEVDGNi0j8trK3SMPMI6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kmnw4KwY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26219C4AF53;
-	Mon, 17 Jun 2024 13:43:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718631805;
-	bh=/QgzJzbG+aEkoSnSmwQZl/Am2miS1ZCWALieAysez/g=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=Kmnw4KwY7FBylUp4MsGLdUEr9lRqvdYkuBCbBOa5U4uaGNMZjRP4hJoh986t4PED6
-	 t8EmrHb6l3sauOBfkFFy46Gf12YB/oAvfCJ3F0wWSH/jDgi/RNbWHay82WRYCRvaR0
-	 foB4Z8FXhYDcI5AhFp+/KVu5lZbnCeFsryCAprTE3tZsfJJ69FJM5B2xo7JnseLJ/0
-	 lIQMacznu+R8ia+UasXvlbUpsatwVYdSyZ3pGhYnIa1fPqolUBrXiF3oA4NmHv78CN
-	 Pgx0jP7vpYtoxuaxnF0095PjfbqbUpBQAosxhkg6/BXUTIJemtk0Y4fvKKgc6c73NK
-	 dXQhPwL08EZCg==
-From: Kalle Valo <kvalo@kernel.org>
-To: Baochen Qiang <quic_bqiang@quicinc.com>
-Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v4 2/8] wifi: ath12k: implement WoW enable and wakeup
- commands
-References: <20240604055407.12506-1-quic_bqiang@quicinc.com>
-	<20240604055407.12506-3-quic_bqiang@quicinc.com>
-Date: Mon, 17 Jun 2024 16:43:23 +0300
-In-Reply-To: <20240604055407.12506-3-quic_bqiang@quicinc.com> (Baochen Qiang's
-	message of "Tue, 4 Jun 2024 13:54:01 +0800")
-Message-ID: <87msnjn0qs.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1718633301; c=relaxed/simple;
+	bh=WXbjESbsSniDe5JAAxAHYsoDTBYof7BSAyMy5UDLhcg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ElIty57YUiEdgp+QWi1hLQAHlZ+zrPu7ovlG1VVPOS4JzUD4oSx/7FP6hsko5eU1+ABIwaf+ZBrA0HnXA4c9nehudWP7KjjTnyEww0nHvSf2mL8Y7WQ7O9WsTQPQeIKI+0Df2jemx9MB+kSdBo5cJ3nJj7KIYnJ9iTGE+sAP1us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MlcMyTRD; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1f737bd5cfeso3778385ad.1;
+        Mon, 17 Jun 2024 07:08:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718633300; x=1719238100; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WXbjESbsSniDe5JAAxAHYsoDTBYof7BSAyMy5UDLhcg=;
+        b=MlcMyTRDAwP4HYq0XrUvwNkqFaeXBao+C7WqognFz0RYCfRa0K2YKtcxjzpRGTmAI+
+         dugY5UjE4H+fXTBfFwtgbgAnJVu0C0/OrCuexxJ4b68GrxJNKWdISVmN070N8Kpz4eXR
+         uelUqDcowFKoHirRS9OTpCceprzxR1jGtSke0mHpZ8fR5ySlJPMzJUdW/4vSGItd9rJf
+         Bekc1xdEdvv4DtmuJ6ODiTWRu1Gl0FX65AAQoGuxDUepTUhnSth8mRIbDt+iFhYVSnCf
+         QoLpWhO3Q+kmoiFbdLYadR4tLsttsw2gd4bswHzEmsRc1PyX9FdbqFdodd7v0VD8duLM
+         vWMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718633300; x=1719238100;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WXbjESbsSniDe5JAAxAHYsoDTBYof7BSAyMy5UDLhcg=;
+        b=bgnxSBsbXKDUaL38DsN6j73uvTWN2XIrCWl3ZXTrBsP/jJOfgP4Jn+rJf/KCrQw36K
+         0WJLr3tkYeergAdxD03skNqGx+lKaQNlKgF0fBsHNx5+CBQzsUXNY1VC7wMDnYZbCAxL
+         HnPt48fMlwzlg9XlnSOgtDd9ZJrSYas7PS+zDPx7mbEPvJYSLrlXuHGo9Ui77/bbeMoz
+         WSO2RBpCyV443aD4WL0cFYTWaJDBu+5GmZs8JURMbsn0yrr1ksB4POuzNFycVYfqSLjb
+         fp1y0MT6YXcA67g4iozvTLtrvyYw7OUJ18aiwBRrdhQTAGgT4K464/k8fzZpaDjENSIs
+         DwNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWW9uVkGSNa63x3pa45Jt5aDRv+gLXAeXD2D02B+j3lU5cfQh/YhMWsDuSqkTDpnbcDWgqoVke63+emKAaXDZ2E813+fLUT6/A2hmLCIq5LXwErLxNNjCDsEieiqUbAYvSraBBCeZCPr8abfjo=
+X-Gm-Message-State: AOJu0Ywe3R3RjCUbXD2gMnQM1QMNB9M1lKi5Qk4m0CPzta0lbCiy4vYm
+	6abJ/3PWtqNaUFqjlS1II59mp9puNCGZc9Di41kToMsn1ItI5tq+TyrxEVSmrfLYO5Yben5GWNt
+	6jHFXw1LZVGo/ZL11+czp/IjtcbY3cY+u
+X-Google-Smtp-Source: AGHT+IGsT72g2JwKho6wZZPiR4BwxAxLlHv99PK4li2By2akfpCprUp6s9FVHkl3+fIYafQVV5D0Bp9ztkF4EA+QkoY=
+X-Received: by 2002:a17:902:dac5:b0:1f7:3ed:e7b2 with SMTP id
+ d9443c01a7336-1f86253a470mr113738725ad.0.1718633299645; Mon, 17 Jun 2024
+ 07:08:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <CAOMZO5CYDsh70u3To7HYXVki_MzzhFyCCHkigt_Es7o_+XG3oA@mail.gmail.com>
+ <7a8e220d77d7e30a0cfaf984404ef2f57eaa785f.camel@sipsolutions.net>
+ <CAOMZO5BktgtaSPzCf3WOOnkD2n+fj3FeQEfHeT7CYFL+tCHeaw@mail.gmail.com>
+ <fb60b7f5bcf5ba47be54398225075a5bfab7c141.camel@sipsolutions.net>
+ <CAOMZO5CMX_juW4-t6CSd2xdzXkFfBiamuSTjsTB80Ly_TUsxRA@mail.gmail.com>
+ <d49fcc32-bfa8-41d2-8666-af6256b7b4b4@quicinc.com> <50101085cba7fc089339c96f531f797e27c632ff.camel@sipsolutions.net>
+ <35750452-e362-4dfa-803a-3360a4e16cd8@quicinc.com> <6e556f7b6b769c4d70be3e248b98d8d09d51452b.camel@sipsolutions.net>
+ <CAOMZO5CN_kbPcEYsN9SqqfUyrJdq9yaDisfJKL+CnENVTPuq3g@mail.gmail.com> <20240617120804.GA861@willie-the-truck>
+In-Reply-To: <20240617120804.GA861@willie-the-truck>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Mon, 17 Jun 2024 11:08:07 -0300
+Message-ID: <CAOMZO5D2Atb=rnvmNLvu8nrsn+3L9X9NbG1bkZx_MenCCmJK2Q@mail.gmail.com>
+Subject: Re: iwlwifi: Regression after migrating to 6.6.32
+To: Will Deacon <will@kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>, Baochen Qiang <quic_bqiang@quicinc.com>, 
+	miriam.rachel.korenblit@intel.com, kvalo@kernel.org, 
+	Jakub Kicinski <kuba@kernel.org>, linux-wireless <linux-wireless@vger.kernel.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Baochen Qiang <quic_bqiang@quicinc.com> writes:
+Hi Will,
 
-> Implement WoW enable and WoW wakeup commands which are needed
-> for suspend/resume.
+On Mon, Jun 17, 2024 at 9:08=E2=80=AFAM Will Deacon <will@kernel.org> wrote=
+:
+
+> If you want to backport that change, then I think you should probably
+> take the whole series:
 >
-> Tested-on: WCN7850 hw2.0 PCI
-> WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+> https://lore.kernel.org/all/20240308152829.25754-1-will@kernel.org/
 >
-> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> (and there were some follow-ups from Michael iirc; you're best off
+> checking the git history for kernel/dma/swiotlb.c).
+>
+> FWIW: we have this series backported to 6.6 in the android15-6.6 tree.
 
-[...]
+Thanks for the suggestion.
 
-> +int ath12k_wow_enable(struct ath12k *ar)
-> +{
-> +	struct ath12k_base *ab = ar->ab;
-> +	int i, ret;
-> +
-> +	clear_bit(ATH12K_FLAG_HTC_SUSPEND_COMPLETE, &ab->dev_flags);
-> +
-> +	for (i = 0; i < ATH12K_WOW_RETRY_NUM; i++) {
-> +		reinit_completion(&ab->htc_suspend);
-> +
-> +		ret = ath12k_wmi_wow_enable(ar);
-> +		if (ret) {
-> +			ath12k_warn(ab, "failed to issue wow enable: %d\n", ret);
-> +			return ret;
-> +		}
-> +
-> +		ret = wait_for_completion_timeout(&ab->htc_suspend, 3 * HZ);
-> +		if (ret == 0) {
-> +			ath12k_warn(ab,
-> +				    "timed out while waiting for htc suspend completion\n");
-> +			return -ETIMEDOUT;
-> +		}
-> +
-> +		if (test_bit(ATH12K_FLAG_HTC_SUSPEND_COMPLETE, &ab->dev_flags))
-> +			/* success, suspend complete received */
-> +			return 0;
-> +
-> +		ath12k_warn(ab, "htc suspend not complete, retrying (try %d)\n",
-> +			    i);
-> +		msleep(ATH12K_WOW_RETRY_WAIT_MS);
-> +	}
-> +
-> +	ath12k_warn(ab, "htc suspend not complete, failing after %d tries\n", i);
-> +
-> +	return -ETIMEDOUT;
-> +}
+From this series, only the two patches below are not present in the
+6.6 stable tree:
 
-Why the loop here? Looks really odd to me and no explanation why it's
-needed. ATH12K_WOW_RETRY_NUM seems to be 10 so this can loop a lot.
+swiotlb: Enforce page alignment in swiotlb_alloc()
+swiotlb: Reinstate page-alignment for mappings >=3D PAGE_SIZE
 
-ath11k seems to have a similar loop and no comments there either. I
-clearly missed that in review.
+I will submit these two to stable and also an additional one:
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+swiotlb: extend buffer pre-padding to alloc_align_mask if necessary
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Thanks,
+
+Fabio Estevam
 
