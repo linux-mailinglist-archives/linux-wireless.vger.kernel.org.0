@@ -1,132 +1,87 @@
-Return-Path: <linux-wireless+bounces-9124-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9120-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1364E90B55B
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 17:55:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA97E90B699
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 18:38:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE4F01F23BC9
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 15:55:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9193EB39C12
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 15:24:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76DDA13AD2F;
-	Mon, 17 Jun 2024 15:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F42C1607B4;
+	Mon, 17 Jun 2024 14:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h/0tV0zl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vDGq1++s"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1592913AD28;
-	Mon, 17 Jun 2024 15:40:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4101607B3
+	for <linux-wireless@vger.kernel.org>; Mon, 17 Jun 2024 14:46:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718638829; cv=none; b=nVF9v4gDtv+X22zXK0pXN7kFT7B/A8bii/csGlVAliPyOx+4RcgwlUN39/TMUOgg1BeZ1UV9wG0EnA7fj3nJ8Y8gwyErd68oAwvvMJZM+pZelm8Dt6qoCUQRtwgF6d7Nvq300Rbox0q0Hd9V7ADcn2eLrcpUGk26rpoJDIWcXkg=
+	t=1718635597; cv=none; b=qKv6q6zaROlgrVdK9HIfXRejexjNgD0m33IOTo1fP1KxWKPPevbXVjDclFRxp8N7h0j2UD0EOyLYb5yD0Ggb1zLrYjVjze4ImCYdtuxfBVLQLC32JEanFXKJ/8g+w8ukXQPzWLYSqEbwiR/TpOVGIUr5i1DS6oX7e/EJh4fEkoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718638829; c=relaxed/simple;
-	bh=lOamXn3N/pPpYSAmY4TOJJMLx7CGifnlr7hw4fmHfHU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ku9rbAzzfscBT49vlog6JtAvoNMm7vUpbHvOtmEX6uKTUr8JwgEk+nUkxG2/nZCZYe9Ep1yvY+EEcQI2dC6tl1B+ykLRbaA9QGL52MQ/rbE/rpNQV2yX4SYBu34r0rNaVR094g15gxb6t8IdlmYnlbx3El1oW4HtHp2S917t0bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h/0tV0zl; arc=none smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2c2e31d319eso3653489a91.1;
-        Mon, 17 Jun 2024 08:40:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718638827; x=1719243627; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=UYKZbKA1IH1qpLBsnDaAu/eGeDN326v+sTxO24RWZEc=;
-        b=h/0tV0zlxboIuVQNIPznQquLeh/OH5Ne9ZPYaPnTuajv2gX3dosOL5CC6A3ni0QNjs
-         bjAHk7iRWkNubjPlS2AAwqr3SnEszPi/NpzzSHxvAZtTlGkLNpk0+abviK70SBKmdoyP
-         mjx9+tyEyFR1Azwm6HTmNSm6jbfCDK8ZQjfrrkvuOMZ/eaUeqppjbtscD6esTnanMC7q
-         n2H8Cy9v3WbjtQ84/4VrsGEZgABETrDaAvz9pVAKCQTFXR9l4D4DAtRmAIy/TterO1x2
-         gYmuILHd1TNqMC8BWP2SCccwYZs987EOKXZZ6IyuUES+Yz7bIhAdtRr1UFXsjyU2w7g0
-         PV3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718638827; x=1719243627;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UYKZbKA1IH1qpLBsnDaAu/eGeDN326v+sTxO24RWZEc=;
-        b=BlpUx9jbv7NhXQjB7tSqz/uhhFzqFBkblAQqamL2ZgWRiOkOUthQit/kg1k4y+fnrb
-         xaAixQDFUdmKeKq7A60O+VYRME5S+3kXmQtu0cUnxeoQzv6bFxBVV7OJ8tO6f5laBuVd
-         /kTxRkGvmI+kgSGkqKekPgIEr06rt4TUhM/JVpsIELtjVZYU3ScegoyImNWX84xWax9u
-         xhK+L1YMUWgnAavlyhl8AZDPCpg+zShfacxkhbxjkitT4T1b0nLRpNSaxhUI0uTFwmMY
-         rQDImpdruiO9/jcGz17d2qwPKeb2ZzpVbcBnNLX0Gno0Xga5+fjTsqmlGx3eJy/epnsc
-         dPjA==
-X-Forwarded-Encrypted: i=1; AJvYcCXr5FZuZxOs7gNUgA0OFH3R5gEc0bDS3HProBHJ1Qe7kGMaamMVKM2UvGANlP0PsZro9VQTTTe/cuzsKR2eeFHk0N9lZdR1pEni48IUaWbsKWU0TTYUU8O+U0dZAPY97jcWeqMqjt1nGCq/fsg=
-X-Gm-Message-State: AOJu0Yze39gf2ZZL31HEEWPMiz1Xu4Fto2jiugPrUrA+8gZ6yfcb85fG
-	32waAcyw1CUcpp4FTJPYjeDUYmcQqTr/Fuc0nKIhWQ7/naEHculv
-X-Google-Smtp-Source: AGHT+IFHFsKHtLXkZcWv7XUVxV29Z6bbPOrvzMOfmWEj2bjq7IKEVu74hiV3XqolDSUa8zDgMsp85A==
-X-Received: by 2002:a17:90a:ae06:b0:2c2:f6a3:3043 with SMTP id 98e67ed59e1d1-2c4db133ea3mr9702567a91.9.1718638827086;
-        Mon, 17 Jun 2024 08:40:27 -0700 (PDT)
-Received: from [10.102.4.159] ([208.195.13.130])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c4c45cc95dsm9152634a91.22.2024.06.17.08.40.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Jun 2024 08:40:26 -0700 (PDT)
-Message-ID: <37ba6cb0-d887-4fcf-b7dc-c93a5fc5900f@gmail.com>
-Date: Mon, 17 Jun 2024 08:40:23 -0700
+	s=arc-20240116; t=1718635597; c=relaxed/simple;
+	bh=IbcA056kCP+fyaAgZ6tZpqCHgjbNEZC0YjTh3ybgQfY=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=cX0hAVLpm6uCuLd/3aA9apcJi7AlO2l7Ed1BMq07Ptj+UkeN6G96V2ANooL+ifakNKpnbXalK50m/mhCGDZvQurV5Y+Q4V9V7/RWZJEQ3NlKWrQ52CD4NalUq+9SpKrmTqDoEa5lFUto8wsG2NhhNPur89aZPnsj3I3YG+hOe9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vDGq1++s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C5BC2BD10;
+	Mon, 17 Jun 2024 14:46:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718635596;
+	bh=IbcA056kCP+fyaAgZ6tZpqCHgjbNEZC0YjTh3ybgQfY=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=vDGq1++soky9PDf2/SO78qSbjmKXO0M44N5kyUUs9YJKGswrYtpXV1KSWo7EZcHM3
+	 bJHrk3VPXF+KpQoybqAK5oZFSz0K7CYRYhC4QCQ9obsBLBH6WaJ76XcFED0aky1jul
+	 QWK5wHFjbvW1wOTyiFXMNJIkXzN8gufvU0mR3MwtfDyp6ctptB4XHEDZXY9OarEf8P
+	 RaWRHAwMkDX8i9/4nwYGkxSrk6voWBR7LOwlnAVInO65vNdmNd4kRnJToGmatR5teT
+	 VB7+z9FmGtpfy65D5ezjjc62Zurks+Vr7igph/YgEPa35+4aFwKVIbKNIzj6MAWHWA
+	 a9hpksVxHj89A==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: invalid vht params rate 1920 100kbps nss 2 mcs 9
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Paul Menzel <pmenzel@molgen.mpg.de>, linux-wireless@vger.kernel.org,
- ath10k@lists.infradead.org, LKML <linux-kernel@vger.kernel.org>
-References: <fba24cd3-4a1e-4072-8585-8402272788ff@molgen.mpg.de>
- <1faa7eee-ed1e-477b-940d-a5cf4478cf73@gmail.com> <87iky7mvxt.fsf@kernel.org>
-Content-Language: en-US
-From: James Prestwood <prestwoj@gmail.com>
-In-Reply-To: <87iky7mvxt.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] wifi: ath12k: Remove unused ath12k_base from ath12k_hw
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20240529060939.4156281-1-quic_hprem@quicinc.com>
+References: <20240529060939.4156281-1-quic_hprem@quicinc.com>
+To: Harshitha Prem <quic_hprem@quicinc.com>
+Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
+ Harshitha Prem <quic_hprem@quicinc.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <171863559405.53335.7477660274917067643.kvalo@kernel.org>
+Date: Mon, 17 Jun 2024 14:46:35 +0000 (UTC)
 
-Hi Kalle,
+Harshitha Prem <quic_hprem@quicinc.com> wrote:
 
-On 6/17/24 8:27 AM, Kalle Valo wrote:
-> James Prestwood <prestwoj@gmail.com> writes:
->
->> Hi Paul,
->>
->> On 6/16/24 6:10 AM, Paul Menzel wrote:
->>> Dear Linux folks,
->>>
->>>
->>> Linux 6.10-rc3 (commit a3e18a540541) logged the warning below when
->>> connecting to a public WiFi:
->>>
->>>      ath10k_pci 0000:3a:00.0: invalid vht params rate 1920 100kbps
->>> nss 2 mcs 9
->> This has been reported/discussed [1]. It was hinted that there was a
->> firmware fix for this, but none that I tried got rid of it. I got fed
->> up enough with the logs filling up with this I patched our kernel to
->> remove the warning. AFAICT it appears benign (?). Removing the warning
->> was purely "cosmetic" so other devs stopped complaining about it :)
->>
->> [1] https://www.mail-archive.com/ath10k@lists.infradead.org/msg13406.html
-> More reliable link to the discussion:
->
-> https://lore.kernel.org/ath10k/76a816d983e6c4d636311738396f97971b5523fb.1612915444.git.skhan@linuxfoundation.org/
->
-> I think we should add this workaround I mentioned in 2021:
->
->     "If the firmware still keeps sending invalid rates we should add a
->      specific check to ignore the known invalid values, but not all of
->      them."
->
->     https://lore.kernel.org/ath10k/87h7mktjgi.fsf@codeaurora.org/
->
-> I guess that would be mcs == 7 and rate == 1440?
-I think its more than this combination (Paul's are different). So how 
-many combinations are we willing to add here? Seems like that could get 
-out of hand if there are more than a few invalid combinations. Would we 
-also want to restrict the workaround to specific hardware/firmware?
->
+> Currently, device (ab) reference in hardware abstraction (ah)
+> is not used anywhere. Also, with multiple device group abstraction,
+> hardware abstraction would be coupled with device group abstraction
+> rather than single device.
+> 
+> Hence, remove the ab reference from hardware abstraction.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> 
+> Signed-off-by: Harshitha Prem <quic_hprem@quicinc.com>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+
+Patch applied to ath-next branch of ath.git, thanks.
+
+4f15b06e5782 wifi: ath12k: Remove unused ath12k_base from ath12k_hw
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20240529060939.4156281-1-quic_hprem@quicinc.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
