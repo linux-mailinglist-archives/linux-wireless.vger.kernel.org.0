@@ -1,51 +1,51 @@
-Return-Path: <linux-wireless+bounces-9096-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9097-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5580090B081
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 15:56:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E383190B086
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 15:57:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC60028487F
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 13:56:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D31C41C2039F
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 13:57:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3777416CD1F;
-	Mon, 17 Jun 2024 13:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E923A16DC09;
+	Mon, 17 Jun 2024 13:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PYwlBlW6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N6hwTdN6"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08A9316CD18;
-	Mon, 17 Jun 2024 13:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9A516DC03;
+	Mon, 17 Jun 2024 13:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718630717; cv=none; b=SPbd76jSLF3HFlfm7P2TAjbSuP6ePHQIEqmcaZRDJ6NV7Iy8PrSk06tMrhuN7JwIAqQL79wsMriQxxowrp/uSaSwK8/B13fMPbNl8R3o7pBKz53B8N5xFPo8pZtXhZkk/rsaCWWjPYaRcR9+wj+s5f74+J0Lo2ii052l7/NOpUw=
+	t=1718630718; cv=none; b=MrzwTbVV13v6kESpG0ZcBO9z9MolNgDuMJEmJ7VEB9j36sdb7v0hEItgTkYXxnpQFz+NoRRDK6kFR4yE98gHC4FVCOSxiwAdDKcUA568MMd5IRQz/hTY4qqKwAd73I4q4Un1j5/zQj8OsSn6jPPViNFjj/B1XEJ6Gq37QOI2xng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718630717; c=relaxed/simple;
-	bh=R9gQ5TWisbAU0V37/lrPQFfzIfNu5uluZ0CmaDwYwDI=;
+	s=arc-20240116; t=1718630718; c=relaxed/simple;
+	bh=VNR/aRNyviV1hVqoK3ZPFxvV0nyMXjxLv7AXsbINkwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kie4ab8nSBPnOU6EO9dckdALdc0ZECpZtUloUCGFz0I/0JAjBAC1UobMglGu+5CVuVNl1Obhyxh2uptVPwKtFo3oXGAy0bp+tVG4p+w1wk7AJ8VmLicCTYSzcQiwls9fahDoAvZUXkULrGZ9zUZra7Kcs8k5r0fa7hmAyoi8HUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PYwlBlW6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF4DC4AF49;
-	Mon, 17 Jun 2024 13:25:15 +0000 (UTC)
+	 MIME-Version; b=Yqwe1fFcL3wQq9iPC/SIqRAakRfC4L71zd38cAUHTWhyv4r5DUU0/mYg4rqVeA5HeFago9aHT4Vi2bwsgE2jAgcEhhllevL8oNltQ3lL31EhcIi/+0xVWHHI0eaXxRIV86ttY7bzD84XSGUHo1rqn9YS5Fal37IGQcie/KKXQGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N6hwTdN6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5986FC4AF1C;
+	Mon, 17 Jun 2024 13:25:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718630716;
-	bh=R9gQ5TWisbAU0V37/lrPQFfzIfNu5uluZ0CmaDwYwDI=;
+	s=k20201202; t=1718630718;
+	bh=VNR/aRNyviV1hVqoK3ZPFxvV0nyMXjxLv7AXsbINkwo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PYwlBlW6RSSZ+XKawrHf3TQYD4/BjQaEtSYbRd0VTZW+IXcMoZ+ddnNHdUlFFaX1l
-	 iThBtxF4CmcGtKYNQukoYDdM0s1cobfiD4we4gIb61x31Kbl9Sca1pF2liguWKNuBY
-	 3M6TE2dL6VTXsspvIGZ9LyxcMaKYf/Mr423nXUw6p48Erw2I9MTM6iHrxysJyhCQa9
-	 1myPk5c4BcZ0AGwKls49oeK3c72ffEJief19xd7j2GuhbAVv+zegPGV4JG9mCoLsf6
-	 F/16Ry10D3miQ1Hgb8X9lW5TdblZ/5KTImDGMggwBHswLT16UBGheOLFxd+lpb305W
-	 /U4FwY64UMMbQ==
+	b=N6hwTdN6ZE00t5/IODjlk7UbOY5l5i2RsenMp21DoP4DZzgxfVtT6INb0kHnPitjY
+	 dBgt/xMA6mc9KZqRKiuh79k19WuppbpPrtDakS0EjCh3Zqef7GZoa0QIbArFnJqlAH
+	 abPCnug7Nmu/KqL30GYVXkWmgFBg5NUqN9yWcQmzEcQ2A8yQa7ORIR9fMwztIh4ZkZ
+	 zmaSNYJSpP4C8BENns0PKQTQFfq4aYgLgcLJhL0luDKqTE1RArZb2eM7ZzVWYo91Rw
+	 h7wD/6aXECX2RDc7FAI1/+XMgpBXZaAFSOOEHKh5HcXttok6fNIbHiVG41rJ/YN/ey
+	 fcpTn4twsTt4A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Nicolas Escande <nico.escande@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	syzbot+de87c09cc7b964ea2e23@syzkaller.appspotmail.com,
 	Sasha Levin <sashal@kernel.org>,
 	johannes@sipsolutions.net,
 	davem@davemloft.net,
@@ -54,9 +54,9 @@ Cc: Nicolas Escande <nico.escande@gmail.com>,
 	pabeni@redhat.com,
 	linux-wireless@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 11/29] wifi: mac80211: mesh: init nonpeer_pm to active by default in mesh sdata
-Date: Mon, 17 Jun 2024 09:24:15 -0400
-Message-ID: <20240617132456.2588952-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 12/29] wifi: mac80211: apply mcast rate only if interface is up
+Date: Mon, 17 Jun 2024 09:24:16 -0400
+Message-ID: <20240617132456.2588952-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240617132456.2588952-1-sashal@kernel.org>
 References: <20240617132456.2588952-1-sashal@kernel.org>
@@ -71,50 +71,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.94
 Content-Transfer-Encoding: 8bit
 
-From: Nicolas Escande <nico.escande@gmail.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 6f6291f09a322c1c1578badac8072d049363f4e6 ]
+[ Upstream commit 02c665f048a439c0d58cc45334c94634bd7c18e6 ]
 
-With a ath9k device I can see that:
-	iw phy phy0 interface add mesh0 type mp
-	ip link set mesh0 up
-	iw dev mesh0 scan
+If the interface isn't enabled, don't apply multicast
+rate changes immediately.
 
-Will start a scan with the Power Management bit set in the Frame Control Field.
-This is because we set this bit depending on the nonpeer_pm variable of the mesh
-iface sdata and when there are no active links on the interface it remains to
-NL80211_MESH_POWER_UNKNOWN.
-
-As soon as links starts to be established, it wil switch to
-NL80211_MESH_POWER_ACTIVE as it is the value set by befault on the per sta
-nonpeer_pm field.
-As we want no power save by default, (as expressed with the per sta ini values),
-lets init it to the expected default value of NL80211_MESH_POWER_ACTIVE.
-
-Also please note that we cannot change the default value from userspace prior to
-establishing a link as using NL80211_CMD_SET_MESH_CONFIG will not work before
-NL80211_CMD_JOIN_MESH has been issued. So too late for our initial scan.
-
-Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
-Link: https://msgid.link/20240527141759.299411-1-nico.escande@gmail.com
+Reported-by: syzbot+de87c09cc7b964ea2e23@syzkaller.appspotmail.com
+Link: https://msgid.link/20240515133410.d6cffe5756cc.I47b624a317e62bdb4609ff7fa79403c0c444d32d@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mesh.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/mac80211/cfg.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
-index 5a99b8f6e465f..9c9b47d153c28 100644
---- a/net/mac80211/mesh.c
-+++ b/net/mac80211/mesh.c
-@@ -1625,6 +1625,7 @@ void ieee80211_mesh_init_sdata(struct ieee80211_sub_if_data *sdata)
- 	ifmsh->last_preq = jiffies;
- 	ifmsh->next_perr = jiffies;
- 	ifmsh->csa_role = IEEE80211_MESH_CSA_ROLE_NONE;
-+	ifmsh->nonpeer_pm = NL80211_MESH_POWER_ACTIVE;
- 	/* Allocate all mesh structures when creating the first mesh interface. */
- 	if (!mesh_allocated)
- 		ieee80211s_init();
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 1e57027da2913..2c60fc165801c 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -2838,8 +2838,9 @@ static int ieee80211_set_mcast_rate(struct wiphy *wiphy, struct net_device *dev,
+ 	memcpy(sdata->vif.bss_conf.mcast_rate, rate,
+ 	       sizeof(int) * NUM_NL80211_BANDS);
+ 
+-	ieee80211_link_info_change_notify(sdata, &sdata->deflink,
+-					  BSS_CHANGED_MCAST_RATE);
++	if (ieee80211_sdata_running(sdata))
++		ieee80211_link_info_change_notify(sdata, &sdata->deflink,
++						  BSS_CHANGED_MCAST_RATE);
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
