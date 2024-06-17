@@ -1,125 +1,159 @@
-Return-Path: <linux-wireless+bounces-9118-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9119-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2C5490B328
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 17:00:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEBBD90B534
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 17:51:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86B531F21FE8
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 15:00:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CAC7DB3ADD5
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 15:23:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDB5C13AA5A;
-	Mon, 17 Jun 2024 14:08:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F063D15F316;
+	Mon, 17 Jun 2024 14:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MlcMyTRD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YPBUL7qk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9FC13AA48;
-	Mon, 17 Jun 2024 14:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCCE71E53A
+	for <linux-wireless@vger.kernel.org>; Mon, 17 Jun 2024 14:45:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718633301; cv=none; b=S+bD5kGQ9r0/+hFDP795/hnBu8uF6Ri0sQC9iPtjq036qj+/1OWV+y6sWe/dDjSAJkElG1CaJWzoWYrjQP9gIsHfLd1O1LhKgR44MkdQhd0L7DI8FgKJbAtEwfjn7aDGu9pjTVmBqgin2H2MyKG9SSOo/yOxX8pj8oZG1YwCxqc=
+	t=1718635535; cv=none; b=h7V/kkjUbG5kcXoBba4aaK+Zkekq1IIlMbCRjQFsFQrPoSc1qccLSeSKtEnCuMo/VQOmYdRJxQX5VBh7vWIhDgzjd9T5PMqJaZTgYHWdzGIKKsM5CExoWmiu7G7sG4VoC+sF/zz244jSaYb1gSPTNcT9Tib+I8vikbbwWyYmeiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718633301; c=relaxed/simple;
-	bh=WXbjESbsSniDe5JAAxAHYsoDTBYof7BSAyMy5UDLhcg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ElIty57YUiEdgp+QWi1hLQAHlZ+zrPu7ovlG1VVPOS4JzUD4oSx/7FP6hsko5eU1+ABIwaf+ZBrA0HnXA4c9nehudWP7KjjTnyEww0nHvSf2mL8Y7WQ7O9WsTQPQeIKI+0Df2jemx9MB+kSdBo5cJ3nJj7KIYnJ9iTGE+sAP1us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MlcMyTRD; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1f737bd5cfeso3778385ad.1;
-        Mon, 17 Jun 2024 07:08:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718633300; x=1719238100; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WXbjESbsSniDe5JAAxAHYsoDTBYof7BSAyMy5UDLhcg=;
-        b=MlcMyTRDAwP4HYq0XrUvwNkqFaeXBao+C7WqognFz0RYCfRa0K2YKtcxjzpRGTmAI+
-         dugY5UjE4H+fXTBfFwtgbgAnJVu0C0/OrCuexxJ4b68GrxJNKWdISVmN070N8Kpz4eXR
-         uelUqDcowFKoHirRS9OTpCceprzxR1jGtSke0mHpZ8fR5ySlJPMzJUdW/4vSGItd9rJf
-         Bekc1xdEdvv4DtmuJ6ODiTWRu1Gl0FX65AAQoGuxDUepTUhnSth8mRIbDt+iFhYVSnCf
-         QoLpWhO3Q+kmoiFbdLYadR4tLsttsw2gd4bswHzEmsRc1PyX9FdbqFdodd7v0VD8duLM
-         vWMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718633300; x=1719238100;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WXbjESbsSniDe5JAAxAHYsoDTBYof7BSAyMy5UDLhcg=;
-        b=bgnxSBsbXKDUaL38DsN6j73uvTWN2XIrCWl3ZXTrBsP/jJOfgP4Jn+rJf/KCrQw36K
-         0WJLr3tkYeergAdxD03skNqGx+lKaQNlKgF0fBsHNx5+CBQzsUXNY1VC7wMDnYZbCAxL
-         HnPt48fMlwzlg9XlnSOgtDd9ZJrSYas7PS+zDPx7mbEPvJYSLrlXuHGo9Ui77/bbeMoz
-         WSO2RBpCyV443aD4WL0cFYTWaJDBu+5GmZs8JURMbsn0yrr1ksB4POuzNFycVYfqSLjb
-         fp1y0MT6YXcA67g4iozvTLtrvyYw7OUJ18aiwBRrdhQTAGgT4K464/k8fzZpaDjENSIs
-         DwNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWW9uVkGSNa63x3pa45Jt5aDRv+gLXAeXD2D02B+j3lU5cfQh/YhMWsDuSqkTDpnbcDWgqoVke63+emKAaXDZ2E813+fLUT6/A2hmLCIq5LXwErLxNNjCDsEieiqUbAYvSraBBCeZCPr8abfjo=
-X-Gm-Message-State: AOJu0Ywe3R3RjCUbXD2gMnQM1QMNB9M1lKi5Qk4m0CPzta0lbCiy4vYm
-	6abJ/3PWtqNaUFqjlS1II59mp9puNCGZc9Di41kToMsn1ItI5tq+TyrxEVSmrfLYO5Yben5GWNt
-	6jHFXw1LZVGo/ZL11+czp/IjtcbY3cY+u
-X-Google-Smtp-Source: AGHT+IGsT72g2JwKho6wZZPiR4BwxAxLlHv99PK4li2By2akfpCprUp6s9FVHkl3+fIYafQVV5D0Bp9ztkF4EA+QkoY=
-X-Received: by 2002:a17:902:dac5:b0:1f7:3ed:e7b2 with SMTP id
- d9443c01a7336-1f86253a470mr113738725ad.0.1718633299645; Mon, 17 Jun 2024
- 07:08:19 -0700 (PDT)
+	s=arc-20240116; t=1718635535; c=relaxed/simple;
+	bh=WljONcMYBQiy9twhsd+WU7VgbMMFjDDo3+ZIVzd90/A=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=Dc5hFyaJR1roT4aZ/dfVKA1okp7NwsE3bfYy5VaQHA9M36EJdkHE2wjxxdgAbgP66pDTnric+lZ71PRN4HaXv/KJZekePz8D7L0bsRNfRxZ9x6maQE/VP9R2ShjQhyUR7IBn2P6pZ8mYPh7U0OC9zoGXsGmDhwgoWqptGAM1Cpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YPBUL7qk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63817C4AF1D;
+	Mon, 17 Jun 2024 14:45:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718635535;
+	bh=WljONcMYBQiy9twhsd+WU7VgbMMFjDDo3+ZIVzd90/A=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=YPBUL7qkUvSyAYCq7H8QjyoOuk9RQbKKLnCxPBc63kBP8F8IuqHvDAPNIBNzRB3Dj
+	 RePn3NaHOvOZoT8UuArXkrxXHVazRtzACm1uhZ4+XD69EmnJBC6OHFMbLhgGDpOBV3
+	 72+HAmqBZ97rDfvqkjYLQ7Or9/uBQFx2WzqfCRYY7F7Hcy+ALUt3dkORRhiurwA2BK
+	 Inf3Cg0ia7G1x8Y/fW/fMhMusvZ1FWcvgR/2HpiRoWNe/HMd13wtEoRfHNxqDkOpgx
+	 eBPgfrGdPaYeziNjbrsszimWKGka3pTi4b7VSMPUjMFrhJ6DG/c6wvJeVw93brKHGo
+	 NYt9V2nBqL5Cg==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAOMZO5CYDsh70u3To7HYXVki_MzzhFyCCHkigt_Es7o_+XG3oA@mail.gmail.com>
- <7a8e220d77d7e30a0cfaf984404ef2f57eaa785f.camel@sipsolutions.net>
- <CAOMZO5BktgtaSPzCf3WOOnkD2n+fj3FeQEfHeT7CYFL+tCHeaw@mail.gmail.com>
- <fb60b7f5bcf5ba47be54398225075a5bfab7c141.camel@sipsolutions.net>
- <CAOMZO5CMX_juW4-t6CSd2xdzXkFfBiamuSTjsTB80Ly_TUsxRA@mail.gmail.com>
- <d49fcc32-bfa8-41d2-8666-af6256b7b4b4@quicinc.com> <50101085cba7fc089339c96f531f797e27c632ff.camel@sipsolutions.net>
- <35750452-e362-4dfa-803a-3360a4e16cd8@quicinc.com> <6e556f7b6b769c4d70be3e248b98d8d09d51452b.camel@sipsolutions.net>
- <CAOMZO5CN_kbPcEYsN9SqqfUyrJdq9yaDisfJKL+CnENVTPuq3g@mail.gmail.com> <20240617120804.GA861@willie-the-truck>
-In-Reply-To: <20240617120804.GA861@willie-the-truck>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Mon, 17 Jun 2024 11:08:07 -0300
-Message-ID: <CAOMZO5D2Atb=rnvmNLvu8nrsn+3L9X9NbG1bkZx_MenCCmJK2Q@mail.gmail.com>
-Subject: Re: iwlwifi: Regression after migrating to 6.6.32
-To: Will Deacon <will@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>, Baochen Qiang <quic_bqiang@quicinc.com>, 
-	miriam.rachel.korenblit@intel.com, kvalo@kernel.org, 
-	Jakub Kicinski <kuba@kernel.org>, linux-wireless <linux-wireless@vger.kernel.org>, 
-	linux-kernel <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] wifi: ath12k: Fix WARN_ON during firmware crash in
+ split-phy
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20240529034405.2863150-1-quic_aarasahu@quicinc.com>
+References: <20240529034405.2863150-1-quic_aarasahu@quicinc.com>
+To: Aaradhana Sahu <quic_aarasahu@quicinc.com>
+Cc: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+ Aaradhana Sahu
+	<quic_aarasahu@quicinc.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <171863553279.53335.12406687244110796571.kvalo@kernel.org>
+Date: Mon, 17 Jun 2024 14:45:34 +0000 (UTC)
 
-Hi Will,
+Aaradhana Sahu <quic_aarasahu@quicinc.com> wrote:
 
-On Mon, Jun 17, 2024 at 9:08=E2=80=AFAM Will Deacon <will@kernel.org> wrote=
-:
+> Whenever firmware is crashed in split-phy below WARN_ON() triggered:
+> 
+> WARNING: CPU: 3 PID: 82 at net/mac80211/driver-ops.c:41 drv_stop+0xac/0xbc
+> Modules linked in: ath12k qmi_helpers
+> CPU: 3 PID: 82 Comm: kworker/3:2 Tainted: G      D W          6.9.0-next-20240520-00113-gd981a3784e15 #39
+> Hardware name: Qualcomm Technologies, Inc. IPQ9574/AP-AL02-C9 (DT)
+> Workqueue: events_freezable ieee80211_restart_work
+> pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> pc : drv_stop+0xac/0xbc
+> lr : ieee80211_stop_device+0x54/0x64
+> sp : ffff8000848dbb20
+> x29: ffff8000848dbb20 x28: 0000000000000790 x27: ffff000014d78900
+> x26: ffff000014d791f8 x25: ffff000007f0d9b0 x24: 0000000000000018
+> x23: 0000000000000001 x22: 0000000000000000 x21: ffff000014d78e10
+> x20: ffff800081dc0000 x19: ffff000014d78900 x18: ffffffffffffffff
+> x17: ffff7fffbca84000 x16: ffff800083fe0000 x15: ffff800081dc0b48
+> x14: 0000000000000076 x13: 0000000000000076 x12: 0000000000000001
+> x11: 0000000000000000 x10: 0000000000000a60 x9 : ffff8000848db980
+> x8 : ffff000000dddfc0 x7 : 0000000000000400 x6 : ffff800083b012d8
+> x5 : ffff800083b012d8 x4 : 0000000000000000 x3 : ffff000014d78398
+> x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff000014d78900
+> Call trace:
+>  drv_stop+0xac/0xbc
+>  ieee80211_stop_device+0x54/0x64
+>  ieee80211_do_stop+0x5a0/0x790
+>  ieee80211_stop+0x4c/0x178
+>  __dev_close_many+0xb0/0x150
+>  dev_close_many+0x88/0x130
+>  dev_close.part.171+0x44/0x74
+>  dev_close+0x1c/0x28
+>  cfg80211_shutdown_all_interfaces+0x44/0xfc
+>  ieee80211_restart_work+0xfc/0x14c
+>  process_scheduled_works+0x18c/0x2dc
+>  worker_thread+0x13c/0x314
+>  kthread+0x118/0x124
+>  ret_from_fork+0x10/0x20
+> ---[ end trace 0000000000000000 ]---
+> 
+> The warning in question is from drv_stop():
+> 
+>         if (WARN_ON(!local->started))
+>                 return;
+> 
+> The sequence of WARN_ON() is:
+> Thread 1:
+> -Firmware crash calls ath12k_core_reset().
+> -Call ieee80211_restart_hw() inside
+>  ath12k_core_post_reconfigure_recovery() which schedules worker
+>  for both hardware.
+> -Wait for completion of ab->recovery_start.
+> 
+> Thread 2 (worker thread):
+> -One hardware acquires rtnl_lock() inside ieee80211_restart_hw() and
+>  calls ath12k_mac_wait_reconfigure() into ath12k_mac_op_start().
+> -Hardware is waiting for ab->reconfigure_complete but at this time
+>  recovery_start_count value is 1 because another worker thread
+>  (local->restart_work) is still waiting for rtnl_lock().
+>  recovery_start_count is not equal to number of radios
+>  (2 in split-phy). So ab->recovery_start complete does not set
+>  due to this, thread 1 is still waiting and not able to perform
+>  hif power down up and firmware reload.
+> -Wait timeout happens for ab->reconfigure_complete and comeback
+>  to caller (ath12k_mac_op_start()) and sends WMI command to
+>  crashed firmware and gets error.
+> -This returns error to drv_start() and local->started is set to false.
+> -Hardware calls cfg80211_shutdown_all_interfaces() after receiving error
+>  inside ieee80211_restart_work() and goes to drv_stop(), here we trigger
+>  WARN_ON as local->started is false.
+> 
+> To fix this issue call ieee80211_restart_hw() after firmware has been
+> reloaded. Now, each hardware can send WMI command to firmware
+> successfully. With this fix we don't need to wait for
+> ab->recovery_start completion so remove
+> ath12k_mac_wait_reconfigure().
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00209-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 HW2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> 
+> Signed-off-by: Aaradhana Sahu <quic_aarasahu@quicinc.com>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-> If you want to backport that change, then I think you should probably
-> take the whole series:
->
-> https://lore.kernel.org/all/20240308152829.25754-1-will@kernel.org/
->
-> (and there were some follow-ups from Michael iirc; you're best off
-> checking the git history for kernel/dma/swiotlb.c).
->
-> FWIW: we have this series backported to 6.6 in the android15-6.6 tree.
+Patch applied to ath-next branch of ath.git, thanks.
 
-Thanks for the suggestion.
+670d4949bc8e wifi: ath12k: Fix WARN_ON during firmware crash in split-phy
 
-From this series, only the two patches below are not present in the
-6.6 stable tree:
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20240529034405.2863150-1-quic_aarasahu@quicinc.com/
 
-swiotlb: Enforce page alignment in swiotlb_alloc()
-swiotlb: Reinstate page-alignment for mappings >=3D PAGE_SIZE
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
-I will submit these two to stable and also an additional one:
-
-swiotlb: extend buffer pre-padding to alloc_align_mask if necessary
-
-Thanks,
-
-Fabio Estevam
 
