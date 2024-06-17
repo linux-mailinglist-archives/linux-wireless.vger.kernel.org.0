@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-9061-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9062-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 136E690ACB7
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 13:17:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E38FE90AD56
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 13:50:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 888901F21172
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 11:17:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73A89284292
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 11:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51DEE19069A;
-	Mon, 17 Jun 2024 11:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C791193065;
+	Mon, 17 Jun 2024 11:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Q+aebDGh"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="H6j8ayxf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5FA17B515
-	for <linux-wireless@vger.kernel.org>; Mon, 17 Jun 2024 11:17:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85BDA186E56
+	for <linux-wireless@vger.kernel.org>; Mon, 17 Jun 2024 11:50:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718623041; cv=none; b=ZxoVldBvkB8gdLyoZR3ZeUpuOEmls7xgeeDX78eXEquHQ0UEuK4WpfXtZ8wCPOvXy4/4HQ58n0vZUsKYPnqqgAcaxGm2q6V/2Kl375oU8/obQmnC/AZVvgeJvySJZ1z9+SYNsnBOY2qQnr5EfQdf37ND0T8+bGr76AIxm+37P+w=
+	t=1718625056; cv=none; b=o0gZb6/K6LOuufg3q6AuO+rr4NGyE/qTREfDfS5r2lndqtUPwjJCx5gm3wAyCGcY8kILNmoJjigXmmsSntGkIrZZrYICDYMujcPP41gP1YhEb7c7YcylVNuv7PZyuWK66HdZrTMmzFDE7D0hP/spak/qwlMjCZXmWUs9dBocxFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718623041; c=relaxed/simple;
-	bh=jsHE8IdmgA9Gi3IVdy9rSkaxf6j+SkMH4w9r5Vnddwk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=mgbyA6JPKr6mC43nlW+Ufo1AFZOQIOe+dxkuA3vcrHowaTegcqG4Ccrtx8xabq5I4l+jpehS1DrmUCesYKkP0BozCdANj8Kh5AL5OYm6yYFBMOeF+52lmMjvC5SxbuIXBIbNBwx+DQNA4tka/fGxZU+NbW6ykhPlv89AhnUnMhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Q+aebDGh; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1718625056; c=relaxed/simple;
+	bh=X1fihKyXUdom3w7PwLpPjYGIYrZbzdjJZp0XuZUzw7Y=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=Nt2PnCZ64kWs6NaoQUysxcJtLvbNTIUt2fq/C0FJ8wCVpqv72DWcYnQdcuxfopjxT83s89UJ9AUqvcD2RBeSEz6gEZhEFTU0rX46YBrPiKlpA7uM8CjyJUpMc3g83FVd5IZOsy6JJWFHQp56smFgU57P5Bz0dFwWErBuV+zTZZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=H6j8ayxf; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45HAiIxo003122;
-	Mon, 17 Jun 2024 11:17:13 GMT
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45HAefGf024860;
+	Mon, 17 Jun 2024 11:50:38 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	/RaIXtC6vsj3sHVRPSWqYl+q9D80xpcpne/9wrlpavI=; b=Q+aebDGhY+tUAAEl
-	su+w4v53Y7DyzsxpZfWzW6JCQkdcE/d2TD56C9VOFxVeP2ctkNIGy6pEWm6kHiyb
-	3zH3AMJD0O3Xu4svLhCI+X7EEfUdPYp+gmkDLj3eitZeIWwDShctTAo8dJZijC++
-	btp5QEpoMp3+Jo2E924YDjM0gT6Q2xZyjF9A+k0Dk8D+MK7M8cNat/FOAIq91QRk
-	rGop0DLT2UWIRlxQeozdXSi7tHv5y57q8dq90qCivPISUUNKqQGeASOMilhIKOnw
-	Zw2hoMbb6oL4/cYlgFj1g0FhugWgErwpR4AxD5Kz2WZASReb29NpyEjhCAI7c/4+
-	DGezZQ==
-Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ys1y6uhxc-1
+	1AR55VlvyvZwB5yxAZ1a9slI5M6W51ohX3f5Ul0Vt/U=; b=H6j8ayxfWmKpeqCr
+	BeHwugbwwC5JPyrpcG6QH3HAw+z2ZYXXcdcQILKJq38LxlsjhL9vMe0j+JQjcbCi
+	cwN/diFjqP+vc8VtjmuNwlbKO8dkBA3fRL2FUwhZo+q5Xq9V9iS2WtpIc/Xz2wSp
+	dvqTQKbG5ZV8EZFW3OKDuVPcs1TxNXek37hPJLpoP52EEaiC8D24HmMiLYK0KL0u
+	OW9VpotK4KHJQa4veaLahUFfb6b6oFoZHGm5AfavplF10TJbXnpyESubj61dSx1m
+	l+tg6z3he/vSXlvWsnCrfQoU5Ov4g/xB8n7gE5ZNaHp8FI8f23BGRJqM+6bLy/iL
+	by30KQ==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ys3qf3jy4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Jun 2024 11:17:13 +0000 (GMT)
-Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
-	by NASANPPMTA04.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45HBHCGU015529
+	Mon, 17 Jun 2024 11:50:38 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA04.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45HBoJun026815
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Jun 2024 11:17:12 GMT
-Received: from [10.152.193.243] (10.80.80.8) by nasanex01c.na.qualcomm.com
- (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
+	Mon, 17 Jun 2024 11:50:19 GMT
+Received: from [10.110.108.3] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 17 Jun
- 2024 04:17:10 -0700
-Message-ID: <7e1ab778-83af-4e7e-bc5d-069bb6c83563@quicinc.com>
-Date: Mon, 17 Jun 2024 16:47:01 +0530
+ 2024 04:50:18 -0700
+Message-ID: <e28947fe-c0a7-4445-9e02-7224f733553b@quicinc.com>
+Date: Mon, 17 Jun 2024 19:50:15 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,117 +65,116 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/4] ath12k: Factory test mode support
-To: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <quic_jjohnson@quicinc.com>
+Subject: Re: [PATCH v4 1/3] wifi: ath12k: report station mode transmit rate
+From: Lingbo Kong <quic_lingbok@quicinc.com>
+To: Kalle Valo <kvalo@kernel.org>
 CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20240611083427.881443-1-quic_aarasahu@quicinc.com>
- <cd77058f-7165-4342-893b-a59a3a18c3c5@quicinc.com>
- <875xudnf5x.fsf@kernel.org>
+References: <20240419032122.7009-1-quic_lingbok@quicinc.com>
+ <20240419032122.7009-2-quic_lingbok@quicinc.com> <87bk5xs7qj.fsf@kernel.org>
+ <050ae0d4-c879-40c2-b2ac-1766aaa2c789@quicinc.com>
+ <87v844qsih.fsf@kernel.org>
+ <4fdfdb34-7892-4bf9-8da1-e09cf6ff7731@quicinc.com>
 Content-Language: en-US
-From: Aaradhana Sahu <quic_aarasahu@quicinc.com>
-In-Reply-To: <875xudnf5x.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01c.na.qualcomm.com (10.45.79.139)
+In-Reply-To: <4fdfdb34-7892-4bf9-8da1-e09cf6ff7731@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: nkyXtN-OlmobDKVUBI6HC53bA8BHMF3c
-X-Proofpoint-ORIG-GUID: nkyXtN-OlmobDKVUBI6HC53bA8BHMF3c
+X-Proofpoint-GUID: Wj0NSy-bOxRF7a-8bSP4YVA669vZaccu
+X-Proofpoint-ORIG-GUID: Wj0NSy-bOxRF7a-8bSP4YVA669vZaccu
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-17_09,2024-06-17_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- adultscore=0 impostorscore=0 mlxscore=0 bulkscore=0 clxscore=1015
- lowpriorityscore=0 spamscore=0 mlxlogscore=999 suspectscore=0 phishscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2406170087
+ definitions=2024-06-17_10,2024-06-17_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 clxscore=1015
+ malwarescore=0 spamscore=0 mlxlogscore=995 bulkscore=0 phishscore=0
+ lowpriorityscore=0 mlxscore=0 priorityscore=1501 adultscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2406170092
 
 
 
-On 6/13/2024 7:00 PM, Kalle Valo wrote:
-> Jeff Johnson <quic_jjohnson@quicinc.com> writes:
+On 2024/6/5 14:31, Lingbo Kong wrote:
 > 
->> On 6/11/2024 1:34 AM, Aaradhana Sahu wrote:
+> 
+> On 2024/4/26 19:21, Kalle Valo wrote:
+>> Lingbo Kong <quic_lingbok@quicinc.com> writes:
 >>
->>> Device is booted in factory test mode for calibration.
->>> The commands are sent from userspace application, which
->>> is sent to firmware using wmi commands. Firmware sends
->>> the response to driver as wmi events and driver sends
->>> these events to the application via netlink message.
+>>> On 2024/4/26 0:54, Kalle Valo wrote:
+>>>> Lingbo Kong <quic_lingbok@quicinc.com> writes:
+>>>>
+>>>>> +static void ath12k_dp_tx_update_txcompl(struct ath12k *ar, struct
+>>>>> hal_tx_status *ts)
+>>>>> +{
+>>>>> +    struct ath12k_base *ab = ar->ab;
+>>>>> +    struct ath12k_peer *peer;
+>>>>> +    struct ath12k_sta *arsta;
+>>>>> +    struct ieee80211_sta *sta;
+>>>>> +    u16 rate;
+>>>>> +    u8 rate_idx = 0;
+>>>>> +    int ret;
+>>>>> +
+>>>>> +    spin_lock_bh(&ab->base_lock);
+>>>>
+>>>> Did you analyse how this function, and especially taking the
+>>>> base_lock,
+>>>> affects performance?
 >>>
->>> Also added changes related to correct pdev id access for
->>> fw test cmd.
+>>> The base_lock is used here because of the need to look for peers based
+>>> on the ts->peer_id when calling ath12k_peer_find_by_id() function,
+>>> which i think might affect performance.
 >>>
->>> Aaradhana Sahu (3):
->>>   wifi: ath: create common testmode_i.h file for ath drivers
->>>   wifi: ath12k: export ath12k_wmi_tlv_hdr for testmode
->>>   wifi: ath12k: add factory test mode support
->>>
->>> Rajat Soni (1):
->>>   wifi: ath12k: Fill pdev id for fw test cmd
->>>
->>> ---
->>> v3:
->>>   -Rebased on latest ToT
->>>   -Updated Tested-on Tag
->>>   -Removed second parameter of ath12k_core_start()
->>>   -Updated copyright
->>> v2:
->>>   -Rebased on latest ath ToT
->>> ---
->>>
->>>  drivers/net/wireless/ath/ath11k/testmode.c    |  78 ++--
->>>  drivers/net/wireless/ath/ath12k/Makefile      |   1 +
->>>  drivers/net/wireless/ath/ath12k/core.c        |  22 +-
->>>  drivers/net/wireless/ath/ath12k/core.h        |  13 +
->>>  drivers/net/wireless/ath/ath12k/debug.h       |   1 +
->>>  drivers/net/wireless/ath/ath12k/dp.c          |   3 +
->>>  drivers/net/wireless/ath/ath12k/mac.c         |  15 +-
->>>  drivers/net/wireless/ath/ath12k/pci.c         |   1 +
->>>  drivers/net/wireless/ath/ath12k/testmode.c    | 422 ++++++++++++++++++
->>>  drivers/net/wireless/ath/ath12k/testmode.h    |  40 ++
->>>  drivers/net/wireless/ath/ath12k/wmi.c         |  39 +-
->>>  drivers/net/wireless/ath/ath12k/wmi.h         |  21 +
->>>  .../wireless/ath/{ath11k => }/testmode_i.h    |  52 +--
->>>  13 files changed, 634 insertions(+), 74 deletions(-)
->>>  create mode 100644 drivers/net/wireless/ath/ath12k/testmode.c
->>>  create mode 100644 drivers/net/wireless/ath/ath12k/testmode.h
->>>  rename drivers/net/wireless/ath/{ath11k => }/testmode_i.h (53%)
->>>
->>>
->>> base-commit: a116bf2be795eb1db75fa6a48aa85c397be001a6
+>>> Do i need to run a throughput test?
 >>
->> FYI this series is not applying cleanly in my tree for validation:
+>> Ok, so to answer my question: no, you didn't do any performance
+>> analysis. Throughput test might not be enough, for example the driver
+>> can be used on slower systems and running the test on a fast CPU might
+>> not reveal any problem. A proper analysis would be much better.
 >>
->> Base: using specified base-commit a116bf2be795eb1db75fa6a48aa85c397be001a6
->> Applying: wifi: ath: create common testmode_i.h file for ath drivers
->> Using index info to reconstruct a base tree...
->> Patch failed at 0001 wifi: ath: create common testmode_i.h file for ath drivers
->> When you have resolved this problem, run "git am --continue".
->> If you prefer to skip this patch, run "git am --skip" instead.
->> To restore the original branch and stop patching, run "git am --abort".
->> error: patch failed: drivers/net/wireless/ath/ath11k/testmode_i.h:4
->> error: drivers/net/wireless/ath/ath11k/testmode_i.h: patch does not apply
->> error: Did you hand edit your patch?
->> It does not apply to blobs recorded in its index.
->>
->> I initially used b4, but tried again directly with git, and it failed for me 
->> with both mechanisms.
->> Kalle, do you have any issues with this series?
 > 
-> Also fails for me on top of commit a116bf2be795:
+> Hi, kalle,
+> I did a simple performance analysis of the ath12k_dp_tx_update_txcompl() 
+> function on slower systems.
 > 
-> Applying: wifi: ath: create common testmode_i.h file for ath drivers
-> Using index info to reconstruct a base tree...
-> error: patch failed: drivers/net/wireless/ath/ath11k/testmode_i.h:4
-> error: drivers/net/wireless/ath/ath11k/testmode_i.h: patch does not apply
-> error: Did you hand edit your patch?
-> It does not apply to blobs recorded in its index.
-> Patch failed at 0001 wifi: ath: create common testmode_i.h file for ath drivers
+> Firstly, i use perf tool to set dynamic tracepoints in 
+> ath12k_dp_tx_complete_msdu() function, and then used the command of 
+> "iperf -c ip address -w 4M -n 1G -i 1" to do traffic test.
 > 
-> Setting the patchset to Changes Requested.
+> During this process, use ./perf record -a -g to detect the performace of 
+> the system.
 > 
+> Finally, compare the results with and without this patch.
+> 
+> without this patch
+> ./perf report output
+> children    self    command        symbol
+> 7.28%       0.08%      ksoftirqd/0 ath12k_dp_tx_complete_msdu
+> 5.96%      0.03%      swapper     ath12k_dp_tx_complete_msdu
+> 
+> iperf output
+> [  1] 0.0000-62.6712 sec  1.00 GBytes   137 Mbits/sec
+> 
+> with this patch
+> children    self       command         symbol
+> 7.42%       0.08%      ksoftirqd/0  ath12k_dp_tx_complete_msdu
+> 6.32%      0.03%      swapper      ath12k_dp_tx_complete_msdu
+> 
+> iperf output
+> [  1] 0.0000-62.6732 sec  1.00 GBytes   137 Mbits/sec
+> 
+> As can be seen from the table above, with this patch, the CPU time 
+> percentage will increase by 0.5%.
+> 
+> So, i think applying this patch will definitely have an impact on system 
+> performance, but the impact is not that big and i think it can be ignored:)
+> 
+> Best regards
+> Lingbo Kong
 
-I have rebased and sent the next version.
+Hi, kalle
+do you have any comments regarding the above content?:)
+
+best regards
+Lingbo Kong
 
