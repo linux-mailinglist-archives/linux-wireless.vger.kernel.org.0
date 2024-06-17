@@ -1,134 +1,220 @@
-Return-Path: <linux-wireless+bounces-9048-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9049-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7C4390A54A
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 08:19:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 034E990A5C5
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 08:30:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEC981C25641
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 06:19:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6BA4AB27617
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 06:30:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF0539FFB;
-	Mon, 17 Jun 2024 06:19:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gJhrJo3z"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 908CE1836FC;
+	Mon, 17 Jun 2024 06:29:58 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C39222089;
-	Mon, 17 Jun 2024 06:18:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40750DDAD
+	for <linux-wireless@vger.kernel.org>; Mon, 17 Jun 2024 06:29:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718605140; cv=none; b=n7prfH0pP4mhQ01tea61I/X9+FZXIHSM1SZdfDfiSVVcLcyk4eJykEKxZeWpyIeO46LGa87Vm4JClobPe2CzhfH1fp7ztXciGWRNlc8LcLIalbqEaJyJrjOhpr3iciexuQv//k6j3OrDdFYzFnEECaMVlI3PeVIyqOnWtNE0fgA=
+	t=1718605798; cv=none; b=MsXY9JtFO4DNKWuctfDv9BiibFO5QtCb3qu7abEoI0VMzTX5fUWKnZscj6h5FZ+/NYgGCyspQHZ3LA/ldzNc0U4W3FE76aPUuZp9QbXqpcgbBCKbjDFGVB4VvsGyCtkqhGtaULwV2Ia8aRsZ1k0460dm4nMi6Nf6u9WZ8SzhPWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718605140; c=relaxed/simple;
-	bh=rZA4FLzEkYyfBa4KOcKr9fp8upbXd7mmB9ZsSaFT4hg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cZe3uTcwZwMi5RkJn6lGW07YnOWYLayhYbR1byvQC0X7iwD7j6Wj0EVirIDQNLz4z/NYOzwwrFHjMsjtVnvEqCjK7htsbMyz/kgb0wO7DdayfsJ1BUM5X1K2Hod3yUpC/JoIFfiy2kJGyvTSzJzPmk1Nj6SSQGHRMAeMvK7c7IA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gJhrJo3z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B170AC2BD10;
-	Mon, 17 Jun 2024 06:18:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718605139;
-	bh=rZA4FLzEkYyfBa4KOcKr9fp8upbXd7mmB9ZsSaFT4hg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gJhrJo3zWxMmxdKE8JKFQEu66nZIVjUZ5/zH7wTIyvfDJDv7yt0PQ2lOY1TReFuYV
-	 eQNg1YEaRUOHEXLbIxuXOFKM/wz6eGPr6oxuSJ2kfJXIgLLRYrS66zR9SQ9Yg1Tb0z
-	 +3dAFF+zzaovDoYoIOjTo97/uVypm9FIx50b4byTfDKvoQEt33nitnsINzz/cP3enj
-	 CgdalSQtdTjyzz5cVRxOMYNj4k7ot2fmQAnA0Lcv6rYEzmW3t/PP8TYwwRoO1sICy1
-	 0bXVOBDvtPtLlmz0+edetyvY9oj4SFi+9gFO2nPACUEC2y4Tw3HJ85sDWGYFqJZze4
-	 SYGY8p15bvxdg==
-Message-ID: <bbd04c56-451a-4a5f-938c-2ce4ccec7253@kernel.org>
-Date: Mon, 17 Jun 2024 08:18:53 +0200
+	s=arc-20240116; t=1718605798; c=relaxed/simple;
+	bh=gB74UQ+ZU/i1keZiWgSywW8y4hrs5IFCjiV5a6pIvAE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Da/zu/qcTjgug7DeD84ttDz4jSqT/VPt1RLR71FEhkFAwOkVBjQIsEUVvTPR1Hr4F9rp0oeoDuW5RtlqCHZHj3yOW4GtyBVZXzx/Zevwlg1ecc/0RFJUJeNT08UbEpvUtJ+qAnD2tMuV5qx+HSAzq1Rg48r08HHraQTlHPoRXBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sJ5sA-0005oq-R9; Mon, 17 Jun 2024 08:29:46 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sJ5s9-002uZ2-Pb; Mon, 17 Jun 2024 08:29:45 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sJ5s9-00G1vp-2F;
+	Mon, 17 Jun 2024 08:29:45 +0200
+Date: Mon, 17 Jun 2024 08:29:45 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: David Lin <yu-hao.lin@nxp.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"briannorris@chromium.org" <briannorris@chromium.org>,
+	"kvalo@kernel.org" <kvalo@kernel.org>,
+	"francesco@dolcini.it" <francesco@dolcini.it>,
+	Pete Hsieh <tsung-hsien.hsieh@nxp.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: Re: [EXT] Re: [PATCH v10 2/2] wifi: mwifiex: add host mlme for AP
+ mode
+Message-ID: <Zm_X2ULdvDIHFWAl@pengutronix.de>
+References: <20240418060626.431202-1-yu-hao.lin@nxp.com>
+ <20240418060626.431202-3-yu-hao.lin@nxp.com>
+ <Zmmeg15YQtiChZ70@pengutronix.de>
+ <PA4PR04MB9638C0A141C53CC2F5898DA1D1C22@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <Zmvjw3aG9j8kW0Ld@pengutronix.de>
+ <PA4PR04MB9638EE40501500C0B58BACC5D1CD2@PA4PR04MB9638.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] dt-bindings: net: wireless: BCM4329 binding: add
- pci14e4,449d
-To: Jacobe Zang <jacobe.zang@wesion.com>, kvalo@kernel.org,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org
-Cc: nick@khadas.com, arend@broadcom.com, linux-wireless@vger.kernel.org,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240617024341.3106240-1-jacobe.zang@wesion.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240617024341.3106240-1-jacobe.zang@wesion.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <PA4PR04MB9638EE40501500C0B58BACC5D1CD2@PA4PR04MB9638.eurprd04.prod.outlook.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
-On 17/06/2024 04:43, Jacobe Zang wrote:
-> It's a Broadcom Wi-Fi module connected via the PCIe interface and also
-> add prefix in vendor-prefix.yaml
-
-You do not add prefix here. Drop unrelated parts of commit msg.
-
+On Mon, Jun 17, 2024 at 02:15:41AM +0000, David Lin wrote:
+> > From: Sascha Hauer <s.hauer@pengutronix.de>
+> > Sent: Friday, June 14, 2024 2:32 PM
+> > To: David Lin <yu-hao.lin@nxp.com>
+> > Cc: linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org;
+> > briannorris@chromium.org; kvalo@kernel.org; francesco@dolcini.it; Pete
+> > Hsieh <tsung-hsien.hsieh@nxp.com>; Francesco Dolcini
+> > <francesco.dolcini@toradex.com>
+> > Subject: Re: [EXT] Re: [PATCH v10 2/2] wifi: mwifiex: add host mlme for AP
+> > mode
+> >
+> > Caution: This is an external email. Please take care when clicking links or
+> > opening attachments. When in doubt, report the message using the 'Report
+> > this email' button
+> >
+> >
+> > On Fri, Jun 14, 2024 at 02:06:45AM +0000, David Lin wrote:
+> > > > From: Sascha Hauer <s.hauer@pengutronix.de>
+> > > > Sent: Wednesday, June 12, 2024 9:12 PM
+> > > > To: David Lin <yu-hao.lin@nxp.com>
+> > > > Cc: linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org;
+> > > > briannorris@chromium.org; kvalo@kernel.org; francesco@dolcini.it;
+> > > > Pete Hsieh <tsung-hsien.hsieh@nxp.com>; Francesco Dolcini
+> > > > <francesco.dolcini@toradex.com>
+> > > > Subject: [EXT] Re: [PATCH v10 2/2] wifi: mwifiex: add host mlme for
+> > > > AP mode
+> > > >
+> > > > Caution: This is an external email. Please take care when clicking
+> > > > links or opening attachments. When in doubt, report the message
+> > > > using the 'Report this email' button
+> > > >
+> > > >
+> > > > Hi David,
+> > > >
+> > > > On Thu, Apr 18, 2024 at 02:06:26PM +0800, David Lin wrote:
+> > > > > Add host based MLME to enable WPA3 functionalities in AP mode.
+> > > > > This feature required a firmware with the corresponding V2 Key API
+> > > > > support. The feature (WPA3) is currently enabled and verified only
+> > > > > on IW416. Also, verified no regression with change when host MLME
+> > > > > is disabled.
+> > > > >
+> > > > > Signed-off-by: David Lin <yu-hao.lin@nxp.com>
+> > > > > Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> > > > > ---
+> > > > >
+> > > >
+> > > > > diff --git a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
+> > > > > b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
+> > > > > index 491e36611909..073c665183b3 100644
+> > > > > --- a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
+> > > > > +++ b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
+> > > > > @@ -72,6 +72,10 @@ int mwifiex_set_secure_params(struct
+> > > > mwifiex_private *priv,
+> > > > >                               bss_config->key_mgmt =
+> > > > KEY_MGMT_PSK;
+> > > > >                       }
+> > > > >                       break;
+> > > > > +             case WLAN_AKM_SUITE_SAE:
+> > > > > +                     bss_config->protocol = PROTOCOL_WPA2;
+> > > > > +                     bss_config->key_mgmt = KEY_MGMT_SAE;
+> > > > > +                     break;
+> > > >
+> > > > Shouldn't this be |= PROTOCOL_WPA2 and |= KEY_MGMT_SAE?
+> > > > Clearing the other flags when SAE is enabled looks wrong to me.
+> > > >
+> > > > Sascha
+> > > >
+> > >
+> > > These fields are used for the configuration of FW, this is the correct setting.
+> >
+> > This is done in a loop iterating over the different AKM suites, with your patch
+> > this looks like this:
+> >
+> >         for (i = 0; i < params->crypto.n_akm_suites; i++) {
+> >                 switch (params->crypto.akm_suites[i]) {
+> >                 case WLAN_AKM_SUITE_8021X:
+> >                         if (params->crypto.wpa_versions &
+> >                             NL80211_WPA_VERSION_1) {
+> >                                 bss_config->protocol =
+> > PROTOCOL_WPA;
+> >                                 bss_config->key_mgmt =
+> > KEY_MGMT_EAP;
+> >                         }
+> >                         if (params->crypto.wpa_versions &
+> >                             NL80211_WPA_VERSION_2) {
+> >                                 bss_config->protocol |=
+> > PROTOCOL_WPA2;
+> >                                 bss_config->key_mgmt =
+> > KEY_MGMT_EAP;
+> >                         }
+> >                         break;
+> >                 case WLAN_AKM_SUITE_PSK:
+> >                         if (params->crypto.wpa_versions &
+> >                             NL80211_WPA_VERSION_1) {
+> >                                 bss_config->protocol =
+> > PROTOCOL_WPA;
+> >                                 bss_config->key_mgmt =
+> > KEY_MGMT_PSK;
+> >                         }
+> >                         if (params->crypto.wpa_versions &
+> >                             NL80211_WPA_VERSION_2) {
+> >                                 bss_config->protocol |=
+> > PROTOCOL_WPA2;
+> >                                 bss_config->key_mgmt =
+> > KEY_MGMT_PSK;
+> >                         }
+> >                         break;
+> >                 case WLAN_AKM_SUITE_SAE:
+> >                         bss_config->protocol = PROTOCOL_WPA2;
+> >                         bss_config->key_mgmt = KEY_MGMT_SAE;
+> >                         break;
+> >
+> >                 default:
+> >                         break;
+> >                 }
+> >         }
+> >
+> > It looks wrong to overwrite bss_config->protocol and bss_config->key_mgmt in
+> > each iteration of this loop. If that would be correct, you wouldn't need a loop
+> > at all, but could instead configure based on the last AKM suite entry.
+> >
+> > In my understanding the bits in bss_config->key_mgmt should be ored together
+> > depending on the possible AKM suites which is also what the downstream
+> > driver does.
+> >
 > 
-> Link:https://lore.kernel.org/linux-devicetree/20240617023517.3104427-1-jacobe.zang@wesion.com/T/#u
+> For the configuration of FW, ored only happens for the same AKM suite.
 
-Link also does not seem to be really relevant to the commit. No point to
-keep it in the git log. You can always provide additional information in
-the changelog section (---).
+Sorry, I don't understand this. Could you elaborate what you mean here?
 
+Sascha
 
-> Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
-> ---
->  .../devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml      | 1 +
->  1 file changed, 1 insertion(+)
-
-
-Best regards,
-Krzysztof
-
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
