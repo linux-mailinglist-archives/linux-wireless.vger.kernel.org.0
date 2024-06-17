@@ -1,236 +1,207 @@
-Return-Path: <linux-wireless+bounces-9121-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9122-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C597090B439
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 17:28:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BF3390B4A2
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 17:37:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF7181C22A4D
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 15:28:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E27D1C22E92
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 15:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4431BDDB;
-	Mon, 17 Jun 2024 14:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5BA414F9D8;
+	Mon, 17 Jun 2024 15:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="d8QoCOIY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e0KHB6Ry"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBF31C2AD
-	for <linux-wireless@vger.kernel.org>; Mon, 17 Jun 2024 14:57:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2395114E2FF;
+	Mon, 17 Jun 2024 15:09:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718636277; cv=none; b=iDVuN6D4MLEB2q3GyQlfjy8VJ5q9Tm9XnUlXRZH9TwKLDxW6fTyWa8kCl6ZJg+Fu1V2RsH7B8DxJSJTYD9ykOfOuELVbQideoCPx04vJCjU5E+hi6v7s7L87050XiAFe9pKVWMfEIwhmeTWle+jZaVZ1WDe06QCZUo2QEWxfxtk=
+	t=1718636951; cv=none; b=IHO4SkDePpmch+EI8oTGHe1YUc+axh8Z5YQBfS92Rpr8jru/UKN0zCZfm/j5eXxP7TSNVVK4fcdTl6Mzkqr6FZA1BvbP8RWjzIO5XgbU0yNB0XLQ69/hf3JlgUjTWpuyzW6Iqv+fNFLaEfMGoa/Q8OLVrVvchJkTfmNbiJja/Z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718636277; c=relaxed/simple;
-	bh=/DkOR738TmYDOooGrPOP8wxXzVGBOG4+es3DvgeHrlQ=;
-	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=WB+y/Zq4tXTwJVQd2S8OgSpq+YDHbXQi3Xvdn3LtLbkuw7Upuyh/Oe1NY0e86ziIsZZ2Ps6fedwTOIRjlI2k21LM5jDsYx7O7cf0h5QQaDtmu3uWY4RFhhHcmGy2bcj2PTXJLBwZrqH8GSRfOs5ZsjlJRXbCbvk/Jx3rXBusKXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=d8QoCOIY; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a6f7720e6e8so167976166b.3
-        for <linux-wireless@vger.kernel.org>; Mon, 17 Jun 2024 07:57:55 -0700 (PDT)
+	s=arc-20240116; t=1718636951; c=relaxed/simple;
+	bh=IT162UEg2/PWZivrlpF3xwi1skWmZOYgmUYGn5FNmVg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=A3LmYWWisKg7LqsLnL72nvYPRM/QnxhAUNri5cE8DYXtH8LfVPO1ckbS+wPPTDKUC7FIJMbpdAfQk3a3bVuFUFiKnAtZCSRgKj0L1xZmgTktWG71753iMr4R3lZkIVpXYOoUal0HZ3aTMWChIRBOvNd1zi7gvly35xsRC3Y6gF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e0KHB6Ry; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1f47f07aceaso36410225ad.0;
+        Mon, 17 Jun 2024 08:09:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1718636274; x=1719241074; darn=vger.kernel.org;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=OLet9zmo5UW5HmzlkcgKpZ+mok13cHRhtNxkNu+SlXU=;
-        b=d8QoCOIYEP3sT9g4lwbm6qZicQN5a3O4MCrG+1szAdb5MW2IjTQ8tPZFdLW7iO2Uko
-         NubCxVnLxn5hlP6eQvr2WkHSJglR0EsZ3fklsV2WQsJG9/ZC2gbJdWq+JbKQSSViCxyZ
-         O9klh+FL+WQzoYmk7vent5C237LErTCgqM1Ws=
+        d=gmail.com; s=20230601; t=1718636949; x=1719241749; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WSfIk8K4XME6GZfBy3FFM+3s5/rKYnSusBreIG/t7cA=;
+        b=e0KHB6RyIJlpmBKe3bjozvNuTO5gorhaFaEd+JN3Hnxag2+OUICNQUXq7gRjgbH8YX
+         iFHcFaaJYCeQtcMtDKnsprdLbHFnwGd0M5BrX2mFv+kb3F7sP1fpqFqu0f+B6igtBOFv
+         +Prhhvj5bulfEFSh9lL7FFsiuwaEoACdwQEAGOm1eyPJqRALX2xSXjcZGqu81bqM4EKF
+         vj0FQjmbP+XcpANeaT7br6o1TYRke4MLKbqfUCKKYC2R8wxR8YZ89FQgMBHQq5Z3oStS
+         l7R0LwE8qIfPJM4LIKsQZ3u4MTfa7W0CxgWgejJoqKqt6Inx+EpsqgZ4MJUyDh8t5L2T
+         NDfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718636274; x=1719241074;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OLet9zmo5UW5HmzlkcgKpZ+mok13cHRhtNxkNu+SlXU=;
-        b=ZR9TaLj3vvr1sPU3J2tcjjKMlp22azqGUx22ZKHdoeRQS4xeuOk3e63jLM7JhVOpaG
-         Pd/OD29QdJr6Ij89qXOGPuM3Dlrvxa+0c0jEkSSMb1Gr07CVSW34brj0ENckSE1M0/nE
-         zQDbqkk/guAgJquMqLeimaSZYU13dp0E1u3/2ICEPNBbaYaw6lD/oj0/hXOZhpOETlSI
-         Qspn5Dx5+Yqn5ODV3wtaDrvC3/VBmWRg0DFX+doOToC/DDk43/A4YYSAY1dX/pIQU7DZ
-         ns1+6KuHPqwl/7KZwiREAoR+GoJkE4tzozTpirGW/6J7BEc2nIqFxwKvINOYXUZ38kKw
-         pkOA==
-X-Forwarded-Encrypted: i=1; AJvYcCXl+nV7WBNcci/a+JSueq3CQMhdWo8azaIvCarDVXrVmK7bPntLH7Ef7tNh+iXN1I2MkM/LenakwdpPJrSa3/ObqrKooUIVmvW+vsE4qfU=
-X-Gm-Message-State: AOJu0Yxb5nMYFBZBoi3+ISihDsGxvrZ4pJAFg7xpdwqtBxpLmm4F+DB5
-	CoWcd355QpDfPiVHGrCgWDlB4dNzWD53ttaMc8Bp6P1veVRr+j7cU8CJ7kEW4D7gskWaAwOz9OE
-	arA==
-X-Google-Smtp-Source: AGHT+IFH/O0BfeGWIV0gH4dawn5yv56Id5lK62bbsMWnqc346dkUMOm3PNnwGutCw35z5P2YFImEew==
-X-Received: by 2002:a17:906:2c16:b0:a6f:37b7:52e6 with SMTP id a640c23a62f3a-a6f60d13b6dmr858496966b.2.1718636274157;
-        Mon, 17 Jun 2024 07:57:54 -0700 (PDT)
-Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f63f7e9d8sm415130766b.182.2024.06.17.07.57.53
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 17 Jun 2024 07:57:53 -0700 (PDT)
-From: Arend Van Spriel <arend.vanspriel@broadcom.com>
-To: Kalle Valo <kvalo@kernel.org>
-CC: <brcm80211@lists.linux.dev>, <linux-wireless@vger.kernel.org>
-Date: Mon, 17 Jun 2024 16:57:52 +0200
-Message-ID: <19026b45980.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <87v827k8p2.fsf@kernel.org>
-References: <Zmqf7jCqwlQNGM_j@x1.vandijck-laurijssen.be>
- <87v827k8p2.fsf@kernel.org>
-User-Agent: AquaMail/1.51.3 (build: 105103473)
-Subject: Re: brcmfmac: implement basic AP-follow-STA
+        d=1e100.net; s=20230601; t=1718636949; x=1719241749;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WSfIk8K4XME6GZfBy3FFM+3s5/rKYnSusBreIG/t7cA=;
+        b=LtxjCVZwMlI+F9tSeBqhMya16yE96G3ElOi4bh6lGWFRX5dFOissLgbcB1RjuKbfhC
+         EcuO5aJL2gkje2iv6xmfP+VPmtZNmXqm7FbeLEN9CpXeacxLNIL/jdZfz70pnKLJxq6T
+         aWOJm1CcHYVCHL3qIhDFtqnmcMvyAoMHdwzvHxvhIJsGxtG9z8Kk0EKcdjIcFOwYVI0c
+         CytNaKNcruV1yW0ynX1yz4K4P6ZzhGyAoo5ZSp7yt0smtHSCf5ShmACMpbjygZ7IAich
+         VZzQ+d7cR4UV39diPoHUrSxRQU2+k9FuuxwUIYmK9AnU03W03Ajg5nA7redZwKpvGbm5
+         /Mzg==
+X-Forwarded-Encrypted: i=1; AJvYcCVNoVocayMHEk1f31bp5osrNLZKTBv0Mou+O1ddaWkJurkaz0Cn0o+Pd7xotk4ISmJ6oPAoD4bge2Rc1x1VGHjHshczavNxzh+alRix
+X-Gm-Message-State: AOJu0YzoNXTeTgGPciTRqtbm9TBnrFE/JCN4nAJYvEHlcqDDB3TOXOQY
+	HsKaT6FJT2vnHv8Q4pdst6q0r8Ruj5D7jclcCGZ1g53Wf3oWA9if
+X-Google-Smtp-Source: AGHT+IHaWapibFdK79vB3fJG4Nz96RSjPehaB6COG+NcELElXjUeNz89MPURVFDFdeqFx+o2JGWVzg==
+X-Received: by 2002:a17:903:22c5:b0:1f7:e32f:f067 with SMTP id d9443c01a7336-1f862a1694emr104999715ad.50.1718636949159;
+        Mon, 17 Jun 2024 08:09:09 -0700 (PDT)
+Received: from [10.102.4.159] ([208.195.13.130])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f855e56183sm80122435ad.28.2024.06.17.08.09.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Jun 2024 08:09:08 -0700 (PDT)
+Message-ID: <1faa7eee-ed1e-477b-940d-a5cf4478cf73@gmail.com>
+Date: Mon, 17 Jun 2024 08:09:05 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000a568c0061b173079"
-
---000000000000a568c0061b173079
-Content-Type: text/plain; format=flowed; charset="us-ascii"
+User-Agent: Mozilla Thunderbird
+Subject: Re: invalid vht params rate 1920 100kbps nss 2 mcs 9
+To: Paul Menzel <pmenzel@molgen.mpg.de>, Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+ LKML <linux-kernel@vger.kernel.org>
+References: <fba24cd3-4a1e-4072-8585-8402272788ff@molgen.mpg.de>
+Content-Language: en-US
+From: James Prestwood <prestwoj@gmail.com>
+In-Reply-To: <fba24cd3-4a1e-4072-8585-8402272788ff@molgen.mpg.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On June 17, 2024 3:19:56 PM Kalle Valo <kvalo@kernel.org> wrote:
+Hi Paul,
 
-> Kurt Van Dijck <dev.kurt@vandijck-laurijssen.be> writes:
+On 6/16/24 6:10 AM, Paul Menzel wrote:
+> Dear Linux folks,
 >
->> /* context */
->> We (Yamabiko) have an application where we migrated to a bcm4339 sdio wifi 
->> chip.
->> We use it in AP+STA mode: when the chip is detected (wlan+ add uevent),
->> we call 'run iw dev wlan0 interface add wap0 type __ap' and start
->> wpa_supplicant on wlan0 and hostapd on wap0.
->> The STA is more important than the AP.
->> We have 'roamoff' parameter set. We observed problems with the firmware roaming
->> before and switched to wpa_supplicant roaming.
->>
->> We run a linux v5.4.24 derivative.
->>
->> /* problem */
->> We observed that the chip is able to switch channel for wpa_supplicant to
->> connect to a different channel, but it soon looses connection because hostapd
->> does not change channel too.
->>
->> This did work with our previous wifi chip (realtek 88x2 something), which 
->> notifies
->> hostapd that it switched.
->>
->> /* patch description */
->> I went down and ended up modifying the brcmfmac driver, patch appended below.
->> For contributing on these mailing lists, I ported it to yesterday's master.
->> The idea is that whenever a STA issues a connect with channel info, the AP's
->> will switch to it too. This implies a small glitch in the AP radio, which 
->> already
->> occurred before my patch. it seems that the wifi chip cannot modify radio 
->> settings
->> per virtual interface, although the API to the wifi chip suggests it can 
->> (that is
->> most probable a more generic communication used for other chips that can do 
->> this).
->> The channel switch is also reported to userspace.
->>
->> To be less invasive, this new behaviour is put behind
->> a module parameter 'ap_follow_sta'.
 >
-> FWIW module parameters should be avoided, especially for 802.11 protocol
-> level functionality.
-
-Right. Only had taken a quick glance and noticed this. The 802.11 spec does 
-not really cover the concept of virtual interfaces, but still having this 
-solved through a module parameter for a specific driver is definitely not a 
-first choice.
-
-Anyway, I do have some thoughts about this patch. Hopefully I can dive into 
-this in coming days.
-
-Regards,
-Arend
-
-> --
-> https://patchwork.kernel.org/project/linux-wireless/list/
+> Linux 6.10-rc3 (commit a3e18a540541) logged the warning below when 
+> connecting to a public WiFi:
 >
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+>     ath10k_pci 0000:3a:00.0: invalid vht params rate 1920 100kbps nss 
+> 2 mcs 9
 
+This has been reported/discussed [1]. It was hinted that there was a 
+firmware fix for this, but none that I tried got rid of it. I got fed up 
+enough with the logs filling up with this I patched our kernel to remove 
+the warning. AFAICT it appears benign (?). Removing the warning was 
+purely "cosmetic" so other devs stopped complaining about it :)
 
+[1] https://www.mail-archive.com/ath10k@lists.infradead.org/msg13406.html
 
-
---000000000000a568c0061b173079
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
-Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
-ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
-zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
-sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
-BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
-N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
-p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCA9/COoi2VLlWyAEPjO
-nfN+LSJNis2pD5OqeHtNWOmi8TAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNDA2MTcxNDU3NTRaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAFG797p9nJVafRIz+baGd5i4TKtqyopy6UcoD
-K36jGeisRk5sLN464pjNwb5BJCNENJ4FrmvmGtsXYSE7xxAQ7UyBco8IXwSJAxpGNyiHEgOl2a9O
-q1WGJYYhHIDAK5IExsl6Aqngn758Jm16vXGhFYj8lI98M0gRQEET15Rw7R7DLztQyTZCtjACsCay
-HTmPkEmm76dSa/WuJFZX5QAO7fvt02IZDDHHuweu3Ux57L5bfMNIDBzXq8DiZLJ+nTzE3O4wwOfn
-/Dlne+Ho0CODyRReoucAEKnmpmgyuBPdJ8rUOeVJmlUE5gsCsj0vS7WNGmU2QcGTfFyBseJ3YSn/
-6Q==
---000000000000a568c0061b173079--
+>
+>
+> Kind regards,
+>
+> Paul
+>
+>
+> ```
+> Jun 16 11:38:15 abreu kernel: Linux version 
+> 6.10.0-rc3-00174-ga3e18a540541 (build@bohemianrhapsody.molgen.mpg.de) 
+> (gcc (Debian 13.2.0-25) 13.2.0, GNU ld (GNU Binutils for Debian) 2.42) 
+> #196 SMP PREEMPT_DYNAMIC Sun Jun 16 06:02:29 CEST 2024
+> […]
+> Jun 16 11:38:15 abreu kernel: DMI: Dell Inc. XPS 13 9360/0596KF, BIOS 
+> 2.21.0 06/02/2022
+> […]
+> Jun 16 11:38:33 abreu kernel: ath10k_pci 0000:3a:00.0: enabling device 
+> (0000 -> 0002)
+> Jun 16 11:38:33 abreu kernel: ath10k_pci 0000:3a:00.0: pci irq msi 
+> oper_irq_mode 2 irq_mode 0 reset_mode 0
+> Jun 16 11:38:34 abreu kernel: ath10k_pci 0000:3a:00.0: qca6174 hw3.2 
+> target 0x05030000 chip_id 0x00340aff sub 1a56:1535
+> Jun 16 11:38:34 abreu kernel: ath10k_pci 0000:3a:00.0: kconfig debug 0 
+> debugfs 0 tracing 0 dfs 0 testmode 0
+> Jun 16 11:38:34 abreu kernel: ath10k_pci 0000:3a:00.0: firmware ver 
+> WLAN.RM.4.4.1-00288- api 6 features wowlan,ignore-otp,mfp crc32 bf907c7c
+> Jun 16 11:38:34 abreu kernel: ath10k_pci 0000:3a:00.0: board_file api 
+> 2 bmi_id N/A crc32 d2863f91
+> Jun 16 11:38:34 abreu kernel: ath10k_pci 0000:3a:00.0: htt-ver 3.87 
+> wmi-op 4 htt-op 3 cal otp max-sta 32 raw 0 hwcrypto 1
+> Jun 16 11:38:34 abreu kernel: ath: EEPROM regdomain: 0x6c
+> Jun 16 11:38:34 abreu kernel: ath: EEPROM indicates we should expect a 
+> direct regpair map
+> Jun 16 11:38:34 abreu kernel: ath: Country alpha2 being used: 00
+> Jun 16 11:38:34 abreu kernel: ath: Regpair used: 0x6c
+> […]
+> Jun 16 11:39:20 abreu kernel: wlp58s0: authenticate with 
+> 70:18:a7:0e:f7:cb (local address=9c:b6:d0:d1:6a:b1)
+> Jun 16 11:39:20 abreu kernel: wlp58s0: send auth to 70:18:a7:0e:f7:cb 
+> (try 1/3)
+> Jun 16 11:39:20 abreu kernel: wlp58s0: send auth to 70:18:a7:0e:f7:cb 
+> (try 2/3)
+> Jun 16 11:39:20 abreu kernel: wlp58s0: send auth to 70:18:a7:0e:f7:cb 
+> (try 3/3)
+> Jun 16 11:39:20 abreu kernel: wlp58s0: authentication with 
+> 70:18:a7:0e:f7:cb timed out
+> Jun 16 11:39:22 abreu kernel: wlp58s0: authenticate with 
+> 4c:bc:48:39:16:ab (local address=9c:b6:d0:d1:6a:b1)
+> Jun 16 11:39:22 abreu kernel: wlp58s0: send auth to 4c:bc:48:39:16:ab 
+> (try 1/3)
+> Jun 16 11:39:22 abreu kernel: wlp58s0: send auth to 4c:bc:48:39:16:ab 
+> (try 2/3)
+> Jun 16 11:39:22 abreu kernel: wlp58s0: send auth to 4c:bc:48:39:16:ab 
+> (try 3/3)
+> Jun 16 11:39:22 abreu kernel: wlp58s0: authentication with 
+> 4c:bc:48:39:16:ab timed out
+> Jun 16 11:39:24 abreu kernel: wlp58s0: authenticate with 
+> 4c:bc:48:38:d8:4b (local address=9c:b6:d0:d1:6a:b1)
+> Jun 16 11:39:24 abreu kernel: wlp58s0: send auth to 4c:bc:48:38:d8:4b 
+> (try 1/3)
+> Jun 16 11:39:24 abreu kernel: wlp58s0: authenticated
+> Jun 16 11:39:24 abreu kernel: wlp58s0: associate with 
+> 4c:bc:48:38:d8:4b (try 1/3)
+> Jun 16 11:39:24 abreu kernel: wlp58s0: RX AssocResp from 
+> 4c:bc:48:38:d8:4b (capab=0x1101 status=0 aid=30)
+> Jun 16 11:39:24 abreu kernel: wlp58s0: associated
+> Jun 16 11:39:24 abreu kernel: wlp58s0: Limiting TX power to 20 (23 - 
+> 3) dBm as advertised by 4c:bc:48:38:d8:4b
+> Jun 16 11:39:50 abreu kernel: ath10k_pci 0000:3a:00.0: invalid vht 
+> params rate 1920 100kbps nss 2 mcs 9
+> Jun 16 11:39:56 abreu kernel: ath10k_pci 0000:3a:00.0: invalid vht 
+> params rate 1920 100kbps nss 2 mcs 9
+> Jun 16 11:40:02 abreu kernel: ath10k_pci 0000:3a:00.0: invalid vht 
+> params rate 1920 100kbps nss 2 mcs 9
+> Jun 16 11:40:08 abreu kernel: ath10k_pci 0000:3a:00.0: invalid vht 
+> params rate 1920 100kbps nss 2 mcs 9
+> Jun 16 11:40:20 abreu kernel: ath10k_pci 0000:3a:00.0: invalid vht 
+> params rate 1920 100kbps nss 2 mcs 9
+> Jun 16 11:40:26 abreu kernel: ath10k_pci 0000:3a:00.0: invalid vht 
+> params rate 1920 100kbps nss 2 mcs 9
+> Jun 16 11:40:32 abreu kernel: ath10k_pci 0000:3a:00.0: invalid vht 
+> params rate 1920 100kbps nss 2 mcs 9
+> Jun 16 11:40:38 abreu kernel: ath10k_pci 0000:3a:00.0: invalid vht 
+> params rate 1920 100kbps nss 2 mcs 9
+> Jun 16 11:40:43 abreu kernel: ath10k_pci 0000:3a:00.0: invalid vht 
+> params rate 1920 100kbps nss 2 mcs 9
+> Jun 16 11:40:49 abreu kernel: ath10k_pci 0000:3a:00.0: invalid vht 
+> params rate 1920 100kbps nss 2 mcs 9
+> Jun 16 11:41:01 abreu kernel: ath10k_pci 0000:3a:00.0: invalid vht 
+> params rate 1920 100kbps nss 2 mcs 9
+> Jun 16 11:41:13 abreu kernel: ath10k_pci 0000:3a:00.0: invalid vht 
+> params rate 1920 100kbps nss 2 mcs 9
+> Jun 16 11:41:19 abreu kernel: ath10k_pci 0000:3a:00.0: invalid vht 
+> params rate 1920 100kbps nss 2 mcs 9
+> Jun 16 11:41:21 abreu kernel: wlp58s0: deauthenticating from 
+> 4c:bc:48:38:d8:4b by local choice (Reason: 3=DEAUTH_LEAVING)
+>
 
