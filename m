@@ -1,61 +1,62 @@
-Return-Path: <linux-wireless+bounces-9109-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9110-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBA9690B0F7
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 16:07:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6BE390B0FB
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 16:07:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED1A11C21D7E
-	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 14:07:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D94EE1C21CED
+	for <lists+linux-wireless@lfdr.de>; Mon, 17 Jun 2024 14:07:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B3D19E818;
-	Mon, 17 Jun 2024 13:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4BA119E83B;
+	Mon, 17 Jun 2024 13:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s4gFdhjN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HPkDIEIG"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC9619E814;
-	Mon, 17 Jun 2024 13:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7475419E838;
+	Mon, 17 Jun 2024 13:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718630803; cv=none; b=I/3/Zpe9X7kZ56HZPboe0prFClLQpOcoWJpa8RMEm2IbJ74Eswq5jYRz1pIqGLoLckekVqfWRWC9CHNlpLX6TXpnmK+wybCXY5KuTIAq7Lbht0ORsR5Xh2fnPGt7owH5Nki64SW5nhCTDDn19ilhLbKUbBBjkqw+t68gYmgtGKs=
+	t=1718630805; cv=none; b=uZav/PdSI/mywt0j8yN4NQI8wQrk/ds/RwCj3FsWy803Y8/LSjWwS8Kp4e1/bHlWpd6ezIJ98TPzjQ6QUo+LawUzIVPo/SsJu50eJQNAggKl4HmAFW3b8+G5NiHbxQ34H3xU/RTRCunLhQWvRsey3oBztU9cUp3Nu3haxF3BysA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718630803; c=relaxed/simple;
-	bh=8WLbFziU0zMdfTxwwQhPgmhRh05tOApmBTnDzFv5sCk=;
+	s=arc-20240116; t=1718630805; c=relaxed/simple;
+	bh=y7TGi+zhK1eGf7RQTbK6YVn663xvsLjgKDYD4L0nIP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cqruNoLe3Neh8KyDRhsULq1E11AvLOS0kV9FhsbuvquovNksgVSZRb45kfUi9F5/16oV3UaIMhGp8mBnnhq1qeJqanUYYDEyXmprLNOO+EQAxBzstpK76fkaGdrufUhICPNV+3vAoXuXq3UuCRmpHTDZPvzpvcM3v3TrZxTgF08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s4gFdhjN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE07C4AF49;
-	Mon, 17 Jun 2024 13:26:41 +0000 (UTC)
+	 MIME-Version; b=etteKmgsXMCicgA45wmqHMQ0yam3ztDm4O07Kh5r0hkcu/HysK6n2euGZPxg9Zzlenxwp+B1+vm0Z9Kg2opjeL87bihBIIuW+uzqXLloBsKFmfXQTOLfcqLeCfCYv3mw9APZbTi1QNCh0Qn7N+RS+uU5VxrdpRSJikrA3laViOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HPkDIEIG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA6E4C4AF1C;
+	Mon, 17 Jun 2024 13:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718630803;
-	bh=8WLbFziU0zMdfTxwwQhPgmhRh05tOApmBTnDzFv5sCk=;
+	s=k20201202; t=1718630805;
+	bh=y7TGi+zhK1eGf7RQTbK6YVn663xvsLjgKDYD4L0nIP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s4gFdhjNu1he4A1kOrYG+s+Smy9hbLd03WmnDRwKevKTVSCH8Wguxz1/JkHqu7DHb
-	 1KP+rlpB/ZMOwiOH4HxVth6OAqISqEoIhkk266ds0PQcMlJHCRgMQ9vdpI+XfEE34n
-	 UGoocBQ8nar2nFz3z+AHKHUDX9AB7RFgXEI6f0vF3GieiHgwfGjTfFIoq/vFZ4HxCx
-	 0ma9F82QzAbinHeKDHHKzMu2Hc9uXCVqSRn3pHHCYxo2Mk/jzQXmzwQhR+xpPd4y9Q
-	 x27yezzGtpE+tvMVMHCQPQ8+y3SsdBdQnftVU7VxYpP/BuCKyJVbEYDqtCh6zDq0XX
-	 g2sENCQuX+Q9g==
+	b=HPkDIEIG4EHjwtkXRNVErlrt/7kFUC1zs/0fk+NQYLtx3WZNDAgfPl2gcKdPIxPZa
+	 zCy4/CdYNuPJ1VjWWrS5DyfOpbEqWLN84klpaU9I8NA6DEFlyEDlkE03pa9veWUz/I
+	 F7qXNNUhM85ajcWqnFDESgreH3Qqio6TLKJru6k7ZyWXoVFAVtK5iWIf69A27NZ8C2
+	 IP/pWkuzXN+84NJy0zfJ8N+Ed4H81xhx7LAgEQC3kox/ZCg5LiB3+QR7L/mPG41Nit
+	 arAYvwjgxTp7zRR7Wg/SQEIIkZ5WNew4zYPUK12jqJ5nleMGZ1buMrKST9LP6p/Ib5
+	 SpLxPR56fqcyg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ayala Beker <ayala.beker@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+Cc: Dmitry Antipov <dmantipov@yandex.ru>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	gregory.greenman@intel.com,
-	benjamin.berg@intel.com,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 12/21] wifi: iwlwifi: mvm: properly set 6 GHz channel direct probe option
-Date: Mon, 17 Jun 2024 09:25:49 -0400
-Message-ID: <20240617132617.2589631-12-sashal@kernel.org>
+	johannes@sipsolutions.net,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 13/21] wifi: mac80211: fix UBSAN noise in ieee80211_prep_hw_scan()
+Date: Mon, 17 Jun 2024 09:25:50 -0400
+Message-ID: <20240617132617.2589631-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240617132617.2589631-1-sashal@kernel.org>
 References: <20240617132617.2589631-1-sashal@kernel.org>
@@ -70,39 +71,78 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.161
 Content-Transfer-Encoding: 8bit
 
-From: Ayala Beker <ayala.beker@intel.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 989830d1cf16bd149bf0690d889a9caef95fb5b1 ]
+[ Upstream commit 92ecbb3ac6f3fe8ae9edf3226c76aa17b6800699 ]
 
-Ensure that the 6 GHz channel is configured with a valid direct BSSID,
-avoiding any invalid or multicast BSSID addresses.
+When testing the previous patch with CONFIG_UBSAN_BOUNDS, I've
+noticed the following:
 
-Signed-off-by: Ayala Beker <ayala.beker@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240513132416.91a631a0fe60.I2ea2616af9b8a2eaf959b156c69cf65a2f1204d4@changeid
+UBSAN: array-index-out-of-bounds in net/mac80211/scan.c:372:4
+index 0 is out of range for type 'struct ieee80211_channel *[]'
+CPU: 0 PID: 1435 Comm: wpa_supplicant Not tainted 6.9.0+ #1
+Hardware name: LENOVO 20UN005QRT/20UN005QRT <...BIOS details...>
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x2d/0x90
+ __ubsan_handle_out_of_bounds+0xe7/0x140
+ ? timerqueue_add+0x98/0xb0
+ ieee80211_prep_hw_scan+0x2db/0x480 [mac80211]
+ ? __kmalloc+0xe1/0x470
+ __ieee80211_start_scan+0x541/0x760 [mac80211]
+ rdev_scan+0x1f/0xe0 [cfg80211]
+ nl80211_trigger_scan+0x9b6/0xae0 [cfg80211]
+ ...<the rest is not too useful...>
+
+Since '__ieee80211_start_scan()' leaves 'hw_scan_req->req.n_channels'
+uninitialized, actual boundaries of 'hw_scan_req->req.channels' can't
+be checked in 'ieee80211_prep_hw_scan()'. Although an initialization
+of 'hw_scan_req->req.n_channels' introduces some confusion around
+allocated vs. used VLA members, this shouldn't be a problem since
+everything is correctly adjusted soon in 'ieee80211_prep_hw_scan()'.
+
+Cleanup 'kmalloc()' math in '__ieee80211_start_scan()' by using the
+convenient 'struct_size()' as well.
+
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://msgid.link/20240517153332.18271-2-dmantipov@yandex.ru
+[improve (imho) indentation a bit]
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/mac80211/scan.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index c0ffa26bc5aaa..0f9016cda31c6 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -1721,7 +1721,10 @@ iwl_mvm_umac_scan_fill_6g_chan_list(struct iwl_mvm *mvm,
- 				break;
+diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
+index e692a2487eb5d..3bf3dd4bafa54 100644
+--- a/net/mac80211/scan.c
++++ b/net/mac80211/scan.c
+@@ -729,15 +729,21 @@ static int __ieee80211_start_scan(struct ieee80211_sub_if_data *sdata,
+ 			local->hw_scan_ies_bufsize *= n_bands;
  		}
  
--		if (k == idex_b && idex_b < SCAN_BSSID_MAX_SIZE) {
-+		if (k == idex_b && idex_b < SCAN_BSSID_MAX_SIZE &&
-+		    !WARN_ONCE(!is_valid_ether_addr(scan_6ghz_params[j].bssid),
-+			       "scan: invalid BSSID at index %u, index_b=%u\n",
-+			       j, idex_b)) {
- 			memcpy(&pp->bssid_array[idex_b++],
- 			       scan_6ghz_params[j].bssid, ETH_ALEN);
- 		}
+-		local->hw_scan_req = kmalloc(
+-				sizeof(*local->hw_scan_req) +
+-				req->n_channels * sizeof(req->channels[0]) +
+-				local->hw_scan_ies_bufsize, GFP_KERNEL);
++		local->hw_scan_req = kmalloc(struct_size(local->hw_scan_req,
++							 req.channels,
++							 req->n_channels) +
++					     local->hw_scan_ies_bufsize,
++					     GFP_KERNEL);
+ 		if (!local->hw_scan_req)
+ 			return -ENOMEM;
+ 
+ 		local->hw_scan_req->req.ssids = req->ssids;
+ 		local->hw_scan_req->req.n_ssids = req->n_ssids;
++		/* None of the channels are actually set
++		 * up but let UBSAN know the boundaries.
++		 */
++		local->hw_scan_req->req.n_channels = req->n_channels;
++
+ 		ies = (u8 *)local->hw_scan_req +
+ 			sizeof(*local->hw_scan_req) +
+ 			req->n_channels * sizeof(req->channels[0]);
 -- 
 2.43.0
 
