@@ -1,70 +1,71 @@
-Return-Path: <linux-wireless+bounces-9216-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9217-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C71290DA2F
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 19:03:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74AC090DA31
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 19:03:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16536284AB6
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 17:03:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34E3C28501C
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 17:03:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 245B613BC35;
-	Tue, 18 Jun 2024 17:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D0CC39AEC;
+	Tue, 18 Jun 2024 17:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xx2wKnpA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fyQUCP3f"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F69E39AEC
-	for <linux-wireless@vger.kernel.org>; Tue, 18 Jun 2024 17:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69465446DE
+	for <linux-wireless@vger.kernel.org>; Tue, 18 Jun 2024 17:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718730195; cv=none; b=Z0/j08g9QcuiUH+i9XqbBreeTlRwFXIf695gMPwQxEic6u8/cAh6bmXH7en6LmDepEfHtStF84jmIu9XXbtLbep+V8MpzvHZrxF+h1IMrRLohyzzI3JKrpT2aGeoel7B65Zg804DRhoxZ8fPnjToqJ3j+xyoGNj7lNshQnti31A=
+	t=1718730196; cv=none; b=YoaoUmnbqRmFXhS7jpKDWT5Takwiq52LILNeXxEiCyJrPL5K0Sok0GjdH1opKK5tFWHOxtCjzf09rsdotA4pWsj6QpmsS9p3jWrBE7tBhfSa6QR1wGKKxk+SjWL1GkDnCdomJhpRm4bH/s5BJHAAVQ++TYyYyvoX1I+WPmdMLJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718730195; c=relaxed/simple;
-	bh=av+GWUXwrf2nUJ1+wNxeFiyu41GnuO7XRYcvy3Jn+gY=;
+	s=arc-20240116; t=1718730196; c=relaxed/simple;
+	bh=WvFpU/C0Qq9GwBQ3eESwpgR+YsjyPi9QjqJhJJJsFCE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bVtGHK2B4gPkbeb2spAgxYkDltwAHdAxsh2WNJy4AVeWuLxy48qq66QSmKssuN3ZLkctIrGXw5vcIPZCGUswTTOLmgnRBdWKrhlOCZv3lPovggbZlR5OiRgQFAHr/47G0M2LGelJHDgcBXvn3atXB25wMtZq3bDJQQnjbcdHqME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xx2wKnpA; arc=none smtp.client-ip=198.175.65.10
+	 MIME-Version; b=ANTbHjQbjq/dAks5uBLrsZgkUQH4WfsFmHGp7+I3gOpYBs+WS9sU6v9xHBTPUR2ibWIZzAlDvDuRMNg57O49wqofqWP7ABfoioN7x1YBtfVG5T2Lr33TTrU5CebJgnN0ReJIhZtVhY5L4Fo1v3kIDsztmDoTSbdKc3zgGzqmnPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fyQUCP3f; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718730193; x=1750266193;
+  t=1718730194; x=1750266194;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=av+GWUXwrf2nUJ1+wNxeFiyu41GnuO7XRYcvy3Jn+gY=;
-  b=Xx2wKnpAieQBHSqQrIrO2+okRMtlulL2JUBBdeeenEOgEQO3lOwXeugf
-   o0Su5Lt8gRdvI0zPCphYWbsnKsUGEUHw4fxb6uHj+aA7lD2AINieinzJW
-   5v69eXs7LMosPRuyAZqD4RFao92X47tjcwcRIa5d1znJTfaSeA5F/Sl4p
-   oCiaPU/41/8uVBHsv2qbCcdLoUUIT1al+f1y4e0LnQcqjFpiNxWfJjIqy
-   Edpjhwkyr7edNsWveq9E0pvyion8awe5PJmQI8sZeCt806xGMj9hYI1+1
-   irDImKEQU6+ejFaarhkddDYkdTRlC2cXaiffjMk4uyQd+EfHbOUCHdcO0
-   w==;
-X-CSE-ConnectionGUID: aCrWNgFcQLq8klQlZwvpDQ==
-X-CSE-MsgGUID: yYfvmvFFT7qBiLoyWCn3Wg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11107"; a="33093999"
+  bh=WvFpU/C0Qq9GwBQ3eESwpgR+YsjyPi9QjqJhJJJsFCE=;
+  b=fyQUCP3fyWu2iN3QS//sk4DlBtIdPG45f7xcNg0xjqTONockoT8mx7d/
+   Ke6JO+negQK28G5ZNMVCvGbaxmZhwAhcQvP+ADwjtozXFflRCyAuFImoh
+   bsBHnVpv+p3FAe3S4ROt9PIGMTNAw8yBvGznbkeANMtUOvMoD5c38DmpC
+   CcZd3BHIpx/XY+rpd1usU7ySVm23iuJrapjyPggesVq2Ujm3nuzi979h1
+   FOPRlDnOKnxwYpuZj6F3yD3morPbxkLOPD1Zdv/bu9M1QnX0lrEPM7xwY
+   6D4pqcZNPSwXHyc+3sG47seaV+gFBk0s9VKuSdiYuexuZ1SQe3abUaWGZ
+   Q==;
+X-CSE-ConnectionGUID: 5kCuuDpuS9KZjxC0jfVh4Q==
+X-CSE-MsgGUID: 0aM/EnosSE+BlOYVGsD68w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11107"; a="33094005"
 X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; 
-   d="scan'208";a="33093999"
+   d="scan'208";a="33094005"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2024 10:03:13 -0700
-X-CSE-ConnectionGUID: JVqU+bDXQa6FYGWavfc3cg==
-X-CSE-MsgGUID: DiBgkrf6QrOJC8KDT157PQ==
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2024 10:03:14 -0700
+X-CSE-ConnectionGUID: hMg44sTPTTuZoATv7F9Iew==
+X-CSE-MsgGUID: ueZNVs52R8S97LIpMDb86g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; 
-   d="scan'208";a="46541780"
+   d="scan'208";a="46541785"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2024 10:03:11 -0700
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2024 10:03:13 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH 1/3] wifi: iwlwifi: pcie: fix a few legacy register accesses for new devices
-Date: Tue, 18 Jun 2024 20:03:01 +0300
-Message-Id: <20240618200104.399d4d215210.Id12e7fdb7bab9f2c4c0d292519b5c1b4753a8c84@changeid>
+	Johannes Berg <johannes.berg@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>
+Subject: [PATCH 2/3] wifi: iwlwifi: mvm: unify and fix interface combinations
+Date: Tue, 18 Jun 2024 20:03:02 +0300
+Message-Id: <20240618200104.3213638262ef.I2a0031b37623d7763fd0c5405477ea7206a3e923@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240618170303.2438911-1-miriam.rachel.korenblit@intel.com>
 References: <20240618170303.2438911-1-miriam.rachel.korenblit@intel.com>
@@ -77,81 +78,87 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-Do not access legacy bits for new devices, this has no effect.
-Somehow, wowlan worked despite the usage of the wrong bits. Now
-that we want to keep the firmware loaded during suspend even without
-wowlan, this change is needed.
+AP interfaces fundamentally cannot leave the channel, so multi-
+channel operation with them isn't really possible. We shouldn't
+advertise support for such, at least not as long as we don't
+have full multi-radio support. Thus, remove the AP bit from the
+interface combinations for two channels and add another set for
+just one channel that has it.
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Also, to avoid duplicating everything even more, unify the NAN
+and non-NAN cases.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-io.c   |  4 ++--
- .../net/wireless/intel/iwlwifi/pcie/trans.c   | 22 ++++++++++++++-----
- 2 files changed, 19 insertions(+), 7 deletions(-)
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 43 ++++++++++++-------
+ 1 file changed, 28 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-io.c b/drivers/net/wireless/intel/iwlwifi/iwl-io.c
-index c60f9466c5fd..060becfd64f3 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-io.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-io.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2003-2014, 2018-2022 Intel Corporation
-+ * Copyright (C) 2003-2014, 2018-2022, 2024 Intel Corporation
-  * Copyright (C) 2015-2016 Intel Deutschland GmbH
-  */
- #include <linux/delay.h>
-@@ -460,7 +460,7 @@ int iwl_finish_nic_init(struct iwl_trans *trans)
- 	 */
- 	if (cfg_trans->device_family >= IWL_DEVICE_FAMILY_BZ) {
- 		iwl_set_bit(trans, CSR_GP_CNTRL,
--			    CSR_GP_CNTRL_REG_FLAG_MAC_CLOCK_READY |
-+			    CSR_GP_CNTRL_REG_FLAG_BZ_MAC_ACCESS_REQ |
- 			    CSR_GP_CNTRL_REG_FLAG_MAC_INIT);
- 		poll_ready = CSR_GP_CNTRL_REG_FLAG_MAC_STATUS;
- 	} else {
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index d5a887b3a4bb..200d4c1c3108 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -1505,9 +1505,17 @@ void iwl_pcie_d3_complete_suspend(struct iwl_trans *trans,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 18ce060df9b5..eeec425dc4d5 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -30,21 +30,28 @@
+ #include "iwl-nvm-parse.h"
+ #include "time-sync.h"
  
- 	iwl_pcie_synchronize_irqs(trans);
- 
--	iwl_clear_bit(trans, CSR_GP_CNTRL,
--		      CSR_GP_CNTRL_REG_FLAG_MAC_ACCESS_REQ);
--	iwl_clear_bit(trans, CSR_GP_CNTRL, CSR_GP_CNTRL_REG_FLAG_INIT_DONE);
-+	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_BZ) {
-+		iwl_clear_bit(trans, CSR_GP_CNTRL,
-+			      CSR_GP_CNTRL_REG_FLAG_BZ_MAC_ACCESS_REQ);
-+		iwl_clear_bit(trans, CSR_GP_CNTRL,
-+			      CSR_GP_CNTRL_REG_FLAG_MAC_INIT);
-+	} else {
-+		iwl_clear_bit(trans, CSR_GP_CNTRL,
-+			      CSR_GP_CNTRL_REG_FLAG_MAC_ACCESS_REQ);
-+		iwl_clear_bit(trans, CSR_GP_CNTRL,
-+			      CSR_GP_CNTRL_REG_FLAG_INIT_DONE);
++#define IWL_MVM_LIMITS(ap)					\
++	{							\
++		.max = 1,					\
++		.types = BIT(NL80211_IFTYPE_STATION),		\
++	},							\
++	{							\
++		.max = 1,					\
++		.types = ap |					\
++			 BIT(NL80211_IFTYPE_P2P_CLIENT) |	\
++			 BIT(NL80211_IFTYPE_P2P_GO),		\
++	},							\
++	{							\
++		.max = 1,					\
++		.types = BIT(NL80211_IFTYPE_P2P_DEVICE),	\
 +	}
++
+ static const struct ieee80211_iface_limit iwl_mvm_limits[] = {
+-	{
+-		.max = 1,
+-		.types = BIT(NL80211_IFTYPE_STATION),
+-	},
+-	{
+-		.max = 1,
+-		.types = BIT(NL80211_IFTYPE_AP) |
+-			BIT(NL80211_IFTYPE_P2P_CLIENT) |
+-			BIT(NL80211_IFTYPE_P2P_GO),
+-	},
+-	{
+-		.max = 1,
+-		.types = BIT(NL80211_IFTYPE_P2P_DEVICE),
+-	},
++	IWL_MVM_LIMITS(0)
++};
++
++static const struct ieee80211_iface_limit iwl_mvm_limits_ap[] = {
++	IWL_MVM_LIMITS(BIT(NL80211_IFTYPE_AP))
+ };
  
- 	if (reset) {
- 		/*
-@@ -1586,8 +1594,12 @@ static int iwl_trans_pcie_d3_resume(struct iwl_trans *trans,
- 		goto out;
- 	}
+ static const struct ieee80211_iface_combination iwl_mvm_iface_combinations[] = {
+@@ -52,7 +59,13 @@ static const struct ieee80211_iface_combination iwl_mvm_iface_combinations[] = {
+ 		.num_different_channels = 2,
+ 		.max_interfaces = 3,
+ 		.limits = iwl_mvm_limits,
+-		.n_limits = ARRAY_SIZE(iwl_mvm_limits),
++		.n_limits = ARRAY_SIZE(iwl_mvm_limits) - 1,
++	},
++	{
++		.num_different_channels = 1,
++		.max_interfaces = 3,
++		.limits = iwl_mvm_limits_ap,
++		.n_limits = ARRAY_SIZE(iwl_mvm_limits_ap) - 1,
+ 	},
+ };
  
--	iwl_set_bit(trans, CSR_GP_CNTRL,
--		    CSR_GP_CNTRL_REG_FLAG_MAC_ACCESS_REQ);
-+	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_BZ)
-+		iwl_set_bit(trans, CSR_GP_CNTRL,
-+			    CSR_GP_CNTRL_REG_FLAG_BZ_MAC_ACCESS_REQ);
-+	else
-+		iwl_set_bit(trans, CSR_GP_CNTRL,
-+			    CSR_GP_CNTRL_REG_FLAG_MAC_ACCESS_REQ);
- 
- 	ret = iwl_finish_nic_init(trans);
- 	if (ret)
 -- 
 2.34.1
 
