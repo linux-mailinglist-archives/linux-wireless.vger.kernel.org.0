@@ -1,71 +1,71 @@
-Return-Path: <linux-wireless+bounces-9217-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9218-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74AC090DA31
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 19:03:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB6AF90DA3B
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 19:04:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34E3C28501C
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 17:03:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94CF9B272F8
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 17:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D0CC39AEC;
-	Tue, 18 Jun 2024 17:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0136446DE;
+	Tue, 18 Jun 2024 17:03:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fyQUCP3f"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nhnlPuuX"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69465446DE
-	for <linux-wireless@vger.kernel.org>; Tue, 18 Jun 2024 17:03:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CFF713D8AE
+	for <linux-wireless@vger.kernel.org>; Tue, 18 Jun 2024 17:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718730196; cv=none; b=YoaoUmnbqRmFXhS7jpKDWT5Takwiq52LILNeXxEiCyJrPL5K0Sok0GjdH1opKK5tFWHOxtCjzf09rsdotA4pWsj6QpmsS9p3jWrBE7tBhfSa6QR1wGKKxk+SjWL1GkDnCdomJhpRm4bH/s5BJHAAVQ++TYyYyvoX1I+WPmdMLJ8=
+	t=1718730197; cv=none; b=eTs54O4l/ygJa+djzVcya/zM3pdWkgTCLrkvA+7CnDM7IGhTygYyWxq3QXzTUZ1J7HyMYr+JV/1oRYkQ7geYKD+s3KiVxnvvPKa4v40IgN9XlPtDiJeWAsVLoGbjnVec/o1b//ayIATUdDVdqCodX6y+CCX0Pm73R9q914lOcJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718730196; c=relaxed/simple;
-	bh=WvFpU/C0Qq9GwBQ3eESwpgR+YsjyPi9QjqJhJJJsFCE=;
+	s=arc-20240116; t=1718730197; c=relaxed/simple;
+	bh=MZcldRyTnCRMVaSC5A89IC1hb6o7NnlLnCidur0JvwU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ANTbHjQbjq/dAks5uBLrsZgkUQH4WfsFmHGp7+I3gOpYBs+WS9sU6v9xHBTPUR2ibWIZzAlDvDuRMNg57O49wqofqWP7ABfoioN7x1YBtfVG5T2Lr33TTrU5CebJgnN0ReJIhZtVhY5L4Fo1v3kIDsztmDoTSbdKc3zgGzqmnPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fyQUCP3f; arc=none smtp.client-ip=198.175.65.10
+	 MIME-Version; b=F3ykyC5cd3vbomT4KWK9xPC6nYxCmVR/reZ3+xXvH6wgx1ZWXwkQrAEZJsoEViYkHSdq88draXgNlH57YPMklvqWLNzrNwaGVBIgxY3gkIwy3CmWkQuSRaIqEZekjd+LlnsibZ67S90CMji9oezwWO5ELJUMmvVslLWBEHe8OLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nhnlPuuX; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718730194; x=1750266194;
+  t=1718730196; x=1750266196;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=WvFpU/C0Qq9GwBQ3eESwpgR+YsjyPi9QjqJhJJJsFCE=;
-  b=fyQUCP3fyWu2iN3QS//sk4DlBtIdPG45f7xcNg0xjqTONockoT8mx7d/
-   Ke6JO+negQK28G5ZNMVCvGbaxmZhwAhcQvP+ADwjtozXFflRCyAuFImoh
-   bsBHnVpv+p3FAe3S4ROt9PIGMTNAw8yBvGznbkeANMtUOvMoD5c38DmpC
-   CcZd3BHIpx/XY+rpd1usU7ySVm23iuJrapjyPggesVq2Ujm3nuzi979h1
-   FOPRlDnOKnxwYpuZj6F3yD3morPbxkLOPD1Zdv/bu9M1QnX0lrEPM7xwY
-   6D4pqcZNPSwXHyc+3sG47seaV+gFBk0s9VKuSdiYuexuZ1SQe3abUaWGZ
-   Q==;
-X-CSE-ConnectionGUID: 5kCuuDpuS9KZjxC0jfVh4Q==
-X-CSE-MsgGUID: 0aM/EnosSE+BlOYVGsD68w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11107"; a="33094005"
+  bh=MZcldRyTnCRMVaSC5A89IC1hb6o7NnlLnCidur0JvwU=;
+  b=nhnlPuuXMd6TvyTKCgXxIHkub8HVRvJntFkJr9C1kUq4ce2uyiis1qFq
+   4PeNqr/v8FiVSkPwQlT+BiZHn54gvo6PofrJ0auk+btnjPsq4WKtNViUe
+   JCPqA4YX96j5A7laNie8O5szVxlJTwe98QnmgHSWzI2GnsRi5qw76g3Q9
+   jxlRf/ibY/HJTh1he6uVU/C9nOmvnfpRmch7cc9ouqWVFADcqs5/NyX6W
+   Aa/9TJKuTlGJPscpqCoJ/dHyBGKuhBVBoNOmOC3roMEjaSUhAQLWx096E
+   cbnefmXvjnnE6wG29k3CMdaUkELahPgbqMmJTYb4HPKIhLdgYc5T3frmv
+   g==;
+X-CSE-ConnectionGUID: ODwoywWMRQ+ci0bISDIe4A==
+X-CSE-MsgGUID: plVPTO8DSQCCTUbjqG87sg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11107"; a="33094015"
 X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; 
-   d="scan'208";a="33094005"
+   d="scan'208";a="33094015"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2024 10:03:14 -0700
-X-CSE-ConnectionGUID: hMg44sTPTTuZoATv7F9Iew==
-X-CSE-MsgGUID: ueZNVs52R8S97LIpMDb86g==
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2024 10:03:16 -0700
+X-CSE-ConnectionGUID: 49vrFl5fQXqRvUE+qX7cIQ==
+X-CSE-MsgGUID: y16NSVN/QCeIEYJCbBNm4Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; 
-   d="scan'208";a="46541785"
+   d="scan'208";a="46541789"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2024 10:03:13 -0700
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2024 10:03:14 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>
-Subject: [PATCH 2/3] wifi: iwlwifi: mvm: unify and fix interface combinations
-Date: Tue, 18 Jun 2024 20:03:02 +0300
-Message-Id: <20240618200104.3213638262ef.I2a0031b37623d7763fd0c5405477ea7206a3e923@changeid>
+	Daniel Gabay <daniel.gabay@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Subject: [PATCH 3/3] wifi: iwlwifi: fix iwl_mvm_get_valid_rx_ant()
+Date: Tue, 18 Jun 2024 20:03:03 +0300
+Message-Id: <20240618200104.b7c6a320c7dc.I3092eb5275056f2162b9694e583c310c38568b2a@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240618170303.2438911-1-miriam.rachel.korenblit@intel.com>
 References: <20240618170303.2438911-1-miriam.rachel.korenblit@intel.com>
@@ -78,87 +78,35 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Daniel Gabay <daniel.gabay@intel.com>
 
-AP interfaces fundamentally cannot leave the channel, so multi-
-channel operation with them isn't really possible. We shouldn't
-advertise support for such, at least not as long as we don't
-have full multi-radio support. Thus, remove the AP bit from the
-interface combinations for two channels and add another set for
-just one channel that has it.
+Fix incorrect use of _tx_ valid ant data in the function.
 
-Also, to avoid duplicating everything even more, unify the NAN
-and non-NAN cases.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Fixes: 4ea1ed1d14d8 ("wifi: iwlwifi: mvm: support set_antenna()")
+Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 43 ++++++++++++-------
- 1 file changed, 28 insertions(+), 15 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 18ce060df9b5..eeec425dc4d5 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -30,21 +30,28 @@
- #include "iwl-nvm-parse.h"
- #include "time-sync.h"
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index 0a1959bd4079..d73c71cf102e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -1860,10 +1860,10 @@ static inline u8 iwl_mvm_get_valid_tx_ant(struct iwl_mvm *mvm)
  
-+#define IWL_MVM_LIMITS(ap)					\
-+	{							\
-+		.max = 1,					\
-+		.types = BIT(NL80211_IFTYPE_STATION),		\
-+	},							\
-+	{							\
-+		.max = 1,					\
-+		.types = ap |					\
-+			 BIT(NL80211_IFTYPE_P2P_CLIENT) |	\
-+			 BIT(NL80211_IFTYPE_P2P_GO),		\
-+	},							\
-+	{							\
-+		.max = 1,					\
-+		.types = BIT(NL80211_IFTYPE_P2P_DEVICE),	\
-+	}
-+
- static const struct ieee80211_iface_limit iwl_mvm_limits[] = {
--	{
--		.max = 1,
--		.types = BIT(NL80211_IFTYPE_STATION),
--	},
--	{
--		.max = 1,
--		.types = BIT(NL80211_IFTYPE_AP) |
--			BIT(NL80211_IFTYPE_P2P_CLIENT) |
--			BIT(NL80211_IFTYPE_P2P_GO),
--	},
--	{
--		.max = 1,
--		.types = BIT(NL80211_IFTYPE_P2P_DEVICE),
--	},
-+	IWL_MVM_LIMITS(0)
-+};
-+
-+static const struct ieee80211_iface_limit iwl_mvm_limits_ap[] = {
-+	IWL_MVM_LIMITS(BIT(NL80211_IFTYPE_AP))
- };
+ static inline u8 iwl_mvm_get_valid_rx_ant(struct iwl_mvm *mvm)
+ {
+-	u8 rx_ant = mvm->fw->valid_tx_ant;
++	u8 rx_ant = mvm->fw->valid_rx_ant;
  
- static const struct ieee80211_iface_combination iwl_mvm_iface_combinations[] = {
-@@ -52,7 +59,13 @@ static const struct ieee80211_iface_combination iwl_mvm_iface_combinations[] = {
- 		.num_different_channels = 2,
- 		.max_interfaces = 3,
- 		.limits = iwl_mvm_limits,
--		.n_limits = ARRAY_SIZE(iwl_mvm_limits),
-+		.n_limits = ARRAY_SIZE(iwl_mvm_limits) - 1,
-+	},
-+	{
-+		.num_different_channels = 1,
-+		.max_interfaces = 3,
-+		.limits = iwl_mvm_limits_ap,
-+		.n_limits = ARRAY_SIZE(iwl_mvm_limits_ap) - 1,
- 	},
- };
+ 	if (mvm->nvm_data && mvm->nvm_data->valid_rx_ant)
+-		rx_ant &= mvm->nvm_data->valid_tx_ant;
++		rx_ant &= mvm->nvm_data->valid_rx_ant;
  
+ 	if (mvm->set_rx_ant)
+ 		rx_ant &= mvm->set_rx_ant;
 -- 
 2.34.1
 
