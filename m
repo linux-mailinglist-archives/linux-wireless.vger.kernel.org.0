@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-9210-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9211-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDFF890D9BA
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 18:46:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5849490D9BB
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 18:46:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 527D01F24CA4
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 16:46:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F0302832CF
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 16:46:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A86F148310;
-	Tue, 18 Jun 2024 16:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A8D713DDD6;
+	Tue, 18 Jun 2024 16:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mkm/BlMq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HF21RM9w"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7DB1442F5
-	for <linux-wireless@vger.kernel.org>; Tue, 18 Jun 2024 16:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E82143C4D
+	for <linux-wireless@vger.kernel.org>; Tue, 18 Jun 2024 16:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718729078; cv=none; b=javVL51W5mUEm7vHi9DU9Kn+qNMPGE9nQQcFQNkLUH7b16GDsXvMF8Hi88gWGyrmcwE4ifPj+5GVCJdAGV/gmuHKORrmDE4a72/S0cCo89JjIxgCTaVNZGCeazUXAk5jdqBlURIa2RimFQMBaHfMfmM1WZ9sIG0KRF/y2gizE04=
+	t=1718729080; cv=none; b=c9ydW1zpWYmjhbDV3toEwbVzjIe/K5XYEwXThg8BsyxUfrr92NP867e8IYWy+dOvG82XmIjKxNUecqC79a/Wp6U/0LnfU4cCS7i7dCmTkKwIkqnNle/SKW0bPbZTO6knmR8xGa/DJ7hSbQpv2ZWawX3HsLGOLAsB19UIp6KsD+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718729078; c=relaxed/simple;
-	bh=2up0Q3kEQHzPVrv2A85hasp0oaLoqxXGHnteVvqcPkY=;
+	s=arc-20240116; t=1718729080; c=relaxed/simple;
+	bh=ukVGpbVmYHzttJPq1+P2VrqPMsGENnbz/fi8BS+CMvY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ngPtSN0SlSA0zs/poOttcHiaUq3gKe+UO0kCNzmxMpe26g/qzeeMfNvpbb6ChunX9AqJW7krZE7iw2Y+NJXQHIQ2RtXAM6miKrQ0RSxycjEKTCgUoqdIvDrnwb+D4z3P97cEno3+LkLbp46NrMMZQHkPQC3pB+8Mw9rXJ3qygmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mkm/BlMq; arc=none smtp.client-ip=192.198.163.11
+	 MIME-Version; b=VAS2sIDQFBxNFszCaFdLmO/EpJC0zZCDNxn8PLyXRodUlRFM6O5MFz/JW7kilbmdc6swYQzdeVq4MWc3ti93ZBQ7AKSjwjsTCTk7yecZ6vqybdLgq+b8OU65UiF53n3LFB6gpCmoWaYCGgT1yzQoEq5fMNK1Y1BIKEspbxazreg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HF21RM9w; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718729077; x=1750265077;
+  t=1718729079; x=1750265079;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=2up0Q3kEQHzPVrv2A85hasp0oaLoqxXGHnteVvqcPkY=;
-  b=mkm/BlMqPme1iNHUchoKuUGHQp0EDkK953KKMjUGDkXY2fjP6vsgey69
-   Z2CdrZW47rAsR0FLJODgbG9MuKGtQ04qSHpwheKO4rQyhwsqYjM5UpeqF
-   h1dh796AwEOoRjBLuriT6nhdl/PQZeo12pIDyVzv1CKVUBHSbbTOMXB/W
-   DBGtyts2tAcHnB+GNrRoc3I8BNTZAbmdKCVhIiz2IzD69t0BWFJCWjNXI
-   TGwffDuSd08fdVl/W1SSCNqGGvhdlJxJtmJ9m0GFRhxfDgDc+0oepiTO4
-   Jd4XRCHpYYwPIL7euYDHz8eFUdy73Zuy4PeczgsEOcK4uMZuAHUOasyHZ
-   w==;
-X-CSE-ConnectionGUID: Bih+ouepRfGzrXJ8rCNbnA==
-X-CSE-MsgGUID: ckkpVa+sQ06dNi5zhFn+1w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11107"; a="26257206"
+  bh=ukVGpbVmYHzttJPq1+P2VrqPMsGENnbz/fi8BS+CMvY=;
+  b=HF21RM9wedIaMKtu8ZPz2j8wncpDNuQ4Ic+P+UdVEepMKAXVmhXO0ipi
+   b5mdvtSF7yRQditR/32uUDrGQNCJ4mQpxH34hAXsnL38TRjajBKBfHyeH
+   Z2X+JjbpApsURm1WLHK9lDtQih0JoQX4cQqG4pfGW18x/Oxqf/EJF8U67
+   6T9yiLMKcQg8kDixcUdOMbQ+eimiM1BbsgGqpiww4TVNJNPrKY6NDBCot
+   j3ldOkf4s/6Z3GB3NO7UVS7I0KPFqp42nPqx6Yie4SrZ9eaEk+gEZzpRL
+   AhA52F1WX2xTEtLfWbXDejmnjWFCmS4WR3KSzGFc/0QlQNsP0KGZHprFo
+   A==;
+X-CSE-ConnectionGUID: YJTf8+bsSsGIbLRWoIuacQ==
+X-CSE-MsgGUID: zrrdRv9ZTZGeHMPI9dqyYQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11107"; a="26257209"
 X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; 
-   d="scan'208";a="26257206"
+   d="scan'208";a="26257209"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2024 09:44:37 -0700
-X-CSE-ConnectionGUID: BNWkEw3bRaaoVdOI0vhWNQ==
-X-CSE-MsgGUID: c9pEMOZZQzm7OQu5Xmd9Kg==
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2024 09:44:38 -0700
+X-CSE-ConnectionGUID: Lu1gi4YrSmubv78lLHVPtQ==
+X-CSE-MsgGUID: 61F+VQbMRkmsb2Hqc1D1Zw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; 
-   d="scan'208";a="42306543"
+   d="scan'208";a="42306552"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2024 09:44:36 -0700
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2024 09:44:37 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 09/11] wifi: iwlwifi: mvm: rename 'pldr_sync'
-Date: Tue, 18 Jun 2024 19:44:11 +0300
-Message-Id: <20240618194245.ccf849642af8.I01dded6b2393771b7baf8b4b17336784d987c7c2@changeid>
+Subject: [PATCH 10/11] wifi: iwlwifi: mei: clarify iwl_mei_pldr_req() docs
+Date: Tue, 18 Jun 2024 19:44:12 +0300
+Message-Id: <20240618194245.ca2c55121a04.I889cd47210367ca9110411472ee696b796a37ab5@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240618164413.2416719-1-miriam.rachel.korenblit@intel.com>
 References: <20240618164413.2416719-1-miriam.rachel.korenblit@intel.com>
@@ -79,108 +79,45 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-PLDR (product level device reset) is a Windows term, and
-is something the driver triggers there, AFAICT.
+This isn't related to whether or not "fw can be loaded",
+but rather requesting that ME go into a state where doing
+a product reset is safe. This is related to FW load only
+in the specific case of where it's used today in iwlmvm,
+notably when it's known that the firmware itself will (or
+at least may) do a product reset during load.
 
-Really what 'pldr_sync' here wants to capture is whether
-or not the firmware will/may do a product reset during
-initialization, which makes the device drop off the bus,
-requiring a rescan. If this is the case, obviously the
-init will fail/time out, so we don't want to report all
-kinds of errors etc., hence this tracking variable.
+Clarify the documentation.
 
-Rename it to 'fw_product_reset' to capture the meaning
-better.
+I was tempted to rename things too, but on the ME side it
+really is also called PLDR (which is a Windows term and
+may not even match the complete behaviour since doing a
+full product reset from the driver also requires calling
+an ACPI method first.) So keep the name aligned with ME.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c  | 12 ++++++------
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h |  7 ++++++-
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c |  2 +-
- 3 files changed, 13 insertions(+), 8 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mei/iwl-mei.h | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 36ed08f20f80..0a8bd957bd6c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -408,7 +408,7 @@ static int iwl_mvm_load_ucode_wait_alive(struct iwl_mvm *mvm,
- 						UREG_LMAC2_CURRENT_PC));
- 		}
+diff --git a/drivers/net/wireless/intel/iwlwifi/mei/iwl-mei.h b/drivers/net/wireless/intel/iwlwifi/mei/iwl-mei.h
+index ee48b86674a6..4900de3cc0d3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mei/iwl-mei.h
++++ b/drivers/net/wireless/intel/iwlwifi/mei/iwl-mei.h
+@@ -456,8 +456,11 @@ void iwl_mei_device_state(bool up);
+ /**
+  * iwl_mei_pldr_req() - must be called before loading the fw
+  *
+- * Return: 0 if the PLDR flow was successful and the fw can be loaded, negative
+- *	value otherwise.
++ * Requests from the ME that it releases its potential bus access to
++ * the WiFi NIC so that the device can safely undergo product reset.
++ *
++ * Return: 0 if the request was successful and the device can be
++ *	reset, a negative error value otherwise
+  */
+ int iwl_mei_pldr_req(void);
  
--		if (ret == -ETIMEDOUT && !mvm->pldr_sync)
-+		if (ret == -ETIMEDOUT && !mvm->fw_product_reset)
- 			iwl_fw_dbg_error_collect(&mvm->fwrt,
- 						 FW_DBG_TRIGGER_ALIVE_TIMEOUT);
- 
-@@ -627,8 +627,8 @@ static int iwl_run_unified_mvm_ucode(struct iwl_mvm *mvm)
- 	if (mvm->trans->trans_cfg->device_family == IWL_DEVICE_FAMILY_AX210) {
- 		sb_cfg = iwl_read_umac_prph(mvm->trans, SB_MODIFY_CFG_FLAG);
- 		/* if needed, we'll reset this on our way out later */
--		mvm->pldr_sync = sb_cfg == SB_CFG_RESIDES_IN_ROM;
--		if (mvm->pldr_sync && iwl_mei_pldr_req())
-+		mvm->fw_product_reset = sb_cfg == SB_CFG_RESIDES_IN_ROM;
-+		if (mvm->fw_product_reset && iwl_mei_pldr_req())
- 			return -EBUSY;
- 	}
- 
-@@ -647,7 +647,7 @@ static int iwl_run_unified_mvm_ucode(struct iwl_mvm *mvm)
- 		IWL_ERR(mvm, "Failed to start RT ucode: %d\n", ret);
- 
- 		/* if we needed reset then fail here, but notify and remove */
--		if (mvm->pldr_sync) {
-+		if (mvm->fw_product_reset) {
- 			iwl_mei_alive_notif(false);
- 			iwl_trans_pcie_remove(mvm->trans, true);
- 		}
-@@ -1407,14 +1407,14 @@ int iwl_mvm_up(struct iwl_mvm *mvm)
- 	ret = iwl_mvm_load_rt_fw(mvm);
- 	if (ret) {
- 		IWL_ERR(mvm, "Failed to start RT ucode: %d\n", ret);
--		if (ret != -ERFKILL && !mvm->pldr_sync)
-+		if (ret != -ERFKILL && !mvm->fw_product_reset)
- 			iwl_fw_dbg_error_collect(&mvm->fwrt,
- 						 FW_DBG_TRIGGER_DRIVER);
- 		goto error;
- 	}
- 
- 	/* FW loaded successfully */
--	mvm->pldr_sync = false;
-+	mvm->fw_product_reset = false;
- 
- 	iwl_fw_disable_dbg_asserts(&mvm->fwrt);
- 	iwl_get_shared_mem_conf(&mvm->fwrt);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index a57f4738a8c8..4c027cf68a2b 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -1325,7 +1325,12 @@ struct iwl_mvm {
- 	bool sta_remove_requires_queue_remove;
- 	bool mld_api_is_used;
- 
--	bool pldr_sync;
-+	/*
-+	 * Indicates that firmware will do a product reset (and then
-+	 * therefore fail to load) when we start it (due to OTP burn),
-+	 * if so don't dump errors etc. since this is expected.
-+	 */
-+	bool fw_product_reset;
- 
- 	struct iwl_time_sync_data time_sync;
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index f8a4fefede8d..008fe5fece87 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -875,7 +875,7 @@ static int iwl_mvm_start_get_nvm(struct iwl_mvm *mvm)
- 		IWL_ERR(mvm, "Failed to run INIT ucode: %d\n", ret);
- 
- 	/* no longer need this regardless of failure or not */
--	mvm->pldr_sync = false;
-+	mvm->fw_product_reset = false;
- 
- 	return ret;
- }
 -- 
 2.34.1
 
