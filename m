@@ -1,52 +1,52 @@
-Return-Path: <linux-wireless+bounces-9196-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9197-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0307D90D5E1
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 16:46:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0303A90D5F1
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 16:48:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A58A1C22399
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 14:46:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE122282B76
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 14:48:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAFB613AA51;
-	Tue, 18 Jun 2024 14:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4EC4154445;
+	Tue, 18 Jun 2024 14:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="t4g0hXlJ"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="jIRfvm73"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDBFE1C2A8
-	for <linux-wireless@vger.kernel.org>; Tue, 18 Jun 2024 14:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5C91552FD
+	for <linux-wireless@vger.kernel.org>; Tue, 18 Jun 2024 14:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718721260; cv=none; b=dVlsBQYMFKaVAipHlq9f5cxvziRcLPOEPDWgi0hQciqSxAMw6xJXHQFFuus0n+v6rMkxWQVnuQtVGg7hRcfv474Ggesx0yCvkn0gIk9imzQv090O/yNXsX/wxjMqGITSqV8Vo8j5O3go8yDbA/0LovTqomJfvNsOVLfJ17ZBGRQ=
+	t=1718721561; cv=none; b=ItamnP6dpfO2mXo3Qbc6NLNYHxAVPcMDhYzlqTFpvIYb0PPVsUUzuNOedBx61Tp+y84ejC7kPswTP1sLIo2dPV4UYtLqUgbxD5uQafFpLPUJQZ6qtrpXdhG3SB6dHquaWZom6GYH9WA+56T3H/tXmuva5DTWmAQb1fc5wlTcvmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718721260; c=relaxed/simple;
-	bh=mImgMnclwauk03h/yyY+/vk7U6wTzr8k8F1eJ3bQyJU=;
+	s=arc-20240116; t=1718721561; c=relaxed/simple;
+	bh=bkVNbXxmw65nyhBB1LJ8OyDEI1/PJVOgQNG7A35m4WY=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QJPcKt5FQ58DmxsUxge7Ba6rSCM+vKfJiPyiSveDeAo+1u2d+dLUvGzdpmSVBxCRXnAvI3p46RgS4bP8tsRkMkhL8hf+pA5BHkSok7qF9gqvEMp5syS0iLlRdiQUSiysFRidMs23bwEcoCwcw71bbuWlDPK/NhJJU0d1rsAtV28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=t4g0hXlJ; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=gtp5++SLJacapbERniVpPLh7NTsxHrhMnUQxJnmhFT5EluIZkbkuaixQsm1RRQWA3mpry8ZuiARy9xY2R7svovj3gFY1/CHAnHPx/7+Jd4lqLOGlsqXzKhiV4zXzBiMpFUgwAqld1YQuCJLWWihdw8PKeXMIeR/QZhWMaKj6C3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=jIRfvm73; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=m6oxJS4bwQ7oJbqr2zrB+YUY8zIr1r4WhUyUcxBm+ec=;
-	t=1718721257; x=1719930857; b=t4g0hXlJIc0jARgKJMLoOVGOio01GpEgbmvlMQuCVRPBx7h
-	U+8MSlu4OfAE3vNSFNCAWS7s1R3yG1d5Ob8yw76aX2CBHgF/hqe2jrioNPAWj7j/oDLANYLnzVubs
-	qtXzH0mR3oaJ+3n+5bOmfSyeHzDphXkyrGfThTMIo04L3DAdDFcqE629oPi9Qm23g6sxqD0PfFcuB
-	UxhJhLewyY9cN3rxWoLwnLbJ81k0FB8hvikcS7vZFXi35+PalVPC/jo7AfU5VxFZbOnVsQEHT3sVS
-	gdfL5FkrnEBHD5Cl+RXQ7FEaxyzcpHz0N7jo2lS8wz1g8LvFv1/6YyldeBUOl0Rg==;
+	Resent-Cc:Resent-Message-ID; bh=ur+m331uguAtiNKjUmDuZMaejiiFWnk5cN4jkRwarYI=;
+	t=1718721559; x=1719931159; b=jIRfvm73ZJI6CUeBfNF+OX5sojC1nisVwWH2SJuZfqesbp6
+	XN2i+CPiJWJkc/wI1PP+rcb+GPjVtg9ce0TvEuVWrD8TsZeO35kQAB0cUogRZVe0tcTI+VLi5t7HX
+	iOsrAcekvLVTmJcBFVB0qXKBlshc7LMelvDqi+EMhtwV1TdhBlgoutnJrBbBjldDoXKA3Ku6GPHl6
+	f0JKzzeREjfG6Rq5Q0C/AO8wFGJz8dmMHrurO4sNVVmmXyKnDBAa8I7md9l0EjvVC0FEoFtUW1v+9
+	yaFPfpoKclqTposg5hjr4FmYF7NJbgWN+o13s8qxFYbf6pmXh4O2khpPY71LlINA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1sJZuX-00000005IR5-3rWZ;
-	Tue, 18 Jun 2024 16:34:14 +0200
-Message-ID: <d74ede1a96a1cb615dcbfc445b526b48da40ffc8.camel@sipsolutions.net>
+	id 1sJZzP-00000005Ilq-3yPp;
+	Tue, 18 Jun 2024 16:39:16 +0200
+Message-ID: <db505ce2afd6f4389c20b323cd20d88b4b886f46.camel@sipsolutions.net>
 Subject: Re: wifi: mac80211: unencrypted message in 4-way handshake
 From: Johannes Berg <johannes@sipsolutions.net>
 To: "Sperling, Tobias" <Tobias.Sperling@Softing.com>, 
@@ -54,7 +54,7 @@ To: "Sperling, Tobias" <Tobias.Sperling@Softing.com>,
 	 <linux-wireless@vger.kernel.org>
 Cc: "Le Suire, Michael" <Michael.Suire@Softing.com>, "pkshih@realtek.com"
 	 <pkshih@realtek.com>
-Date: Tue, 18 Jun 2024 16:34:13 +0200
+Date: Tue, 18 Jun 2024 16:39:15 +0200
 In-Reply-To: <BE1P281MB2420B8A0493568084C9F119FEFCE2@BE1P281MB2420.DEUP281.PROD.OUTLOOK.COM>
 References: 
 	<BE1P281MB24208AB02DAEACAE9AF4B5C5EFC62@BE1P281MB2420.DEUP281.PROD.OUTLOOK.COM>
@@ -76,15 +76,6 @@ X-malware-bazaar: not-scanned
 
 On Tue, 2024-06-18 at 13:56 +0000, Sperling, Tobias wrote:
 > > > >=20
-> I guess you were on the right track. For now we disabled the control_port=
- via
-> driver option in the supplicant conf, because the wpa_s logs were pointin=
-g to
-> that and now the 4/4 frame of the 4-way handshake is encrypted as expecte=
-d.
-
-OK.
-
 > Looking to the supplicant the problematic code is in the following functi=
 on.
 > When WPA_DRIVER_FLAGS_CONTROL_PORT is set, during rekeying at the time
@@ -103,43 +94,15 @@ ng the
 > 	if (wpa_s->drv_flags & WPA_DRIVER_FLAGS_CONTROL_PORT) {
 > 		int encrypt =3D wpa_s->wpa &&
 > 			wpa_sm_has_ptk_installed(wpa_s->wpa);
->=20
-> 		return wpa_drv_tx_control_port(wpa_s, dest, proto, buf, len,
-> 					       !encrypt);
-> 	}
->=20
-> 	if (wpa_s->l2) {
-> 		return l2_packet_send(wpa_s->l2, dest, proto, buf, len);
-> 	}
->=20
-> 	return -1;
-> }
 
-I don't know, you should take all this to the hostap list then.
+Yeah I think the issue here might have been that this frame is queued up
+for transmission, then the key is installed, and then it really is
+transmitted - so then it might be encrypted when it shouldn't be.
 
-> Currently I don't really get the relation of PTK of the 4-way handshake a=
-nd the
-> PEAP session key of the TLS handshake. Latter encryption should be applie=
-d
-> independently of the PTK being installed or not or am I wrong? Searching =
-in
-> the IEEE802.11 standard didn't help me to find an answer to that question=
-.
-
-
-The PEAP session is completely transparent to wifi as a transort - as
-far as the kernel stack is concerned, the TLS handshake packets are just
-data to either be encrypted with the TK (PTK) or not (depending on the
-flag), but the inner encryption is totally up to the higher layer.
-
-> So I'd assume there's a bug in the wpa_supplicant or what's your impressi=
-on?
-
-Sounds like.
-
-> Or is disabling of control_port already considered as a proper solution?
-
-No.
+But tracking whether the *current* PTK is installed is wrong in the
+rekey case since the packets should be encrypted with the *old* PTK,
+which ... will have the same race?
 
 johannes
+
 
