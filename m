@@ -1,61 +1,61 @@
-Return-Path: <linux-wireless+bounces-9178-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9179-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D99F090CCFF
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 15:02:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E20390CD03
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 15:03:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EDAE2820CA
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 13:02:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB3A61F218A2
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 13:03:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFA261A38C1;
-	Tue, 18 Jun 2024 12:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25C2E1A2FDA;
+	Tue, 18 Jun 2024 12:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lA4yl44N"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="agU7AQtn"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CA61A2FDA;
-	Tue, 18 Jun 2024 12:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01A31A38F1;
+	Tue, 18 Jun 2024 12:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714447; cv=none; b=Jev7eJFOCshERCJCf4UJLUjKhqHe+xM/KqrWKPqFumkxb3b4G4UPos9vhEUubLd5S3DP0GWHqgn1atHq3KY3ibp+RGCT0g792OYyv7Lp73MtLjONTp0zj0pbgEizoKjqV99yGBqVuHbGt8L0LpO+pwpDNI7GRnUgpVHC4IUKBE0=
+	t=1718714451; cv=none; b=Wrxa7xYMLndhhczsw5h6dqPt8rWMrzWB3w/rPd+UoovW1ITmOoyAeDsNsrdR3o4gzQNSLRarDZdxMJv+b4D5uGz2iC/une6dFkN9f9g3unGqf3PkRsomqUwzMfgVGPsIU/Tua+7/bKcqkBsMsXInX2B4S5FzJ+ZxeRMdqrfaB4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714447; c=relaxed/simple;
-	bh=6YK1nSfeH51EVhdHDofsARKpTId9VzEdXwFMFFgqiWc=;
+	s=arc-20240116; t=1718714451; c=relaxed/simple;
+	bh=hq8Wn4mgFcQ5ZsgQz/dTNMmh6yB2UphrglQ7l2h1J0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q6mSc/z1p8A5DDYESyhhLzOccydB394bqYknAvSI6RrTx+Sac9CYIzDS6vVInnoRM1X4TcBFXp7BiWO38KGuMZ+z3XBuc349aq8fSs3O/9WjnsPy33Ico/wjJREEjB1mK8Dxbp1iWVKjQ5qjpS8kuchXMIrE4BlSalmIvA7KNR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lA4yl44N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D360C3277B;
-	Tue, 18 Jun 2024 12:40:46 +0000 (UTC)
+	 MIME-Version; b=s51WLp6V5uLBJDPi/rGpLHrSYiRIyfYEKTQLhA9A30rI4xmJ1DB6dMQt2PwZk/C8wLjHrM7S3yt0KyFfABFrXsjUjuqbw7adbkfZh4btV5PdxnMj5/1wry74mYRK//HrAmTzScCG6C6AF0qbdGBc04bUNoczpYIoCqIDDHU2bsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=agU7AQtn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2530C4AF1D;
+	Tue, 18 Jun 2024 12:40:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714447;
-	bh=6YK1nSfeH51EVhdHDofsARKpTId9VzEdXwFMFFgqiWc=;
+	s=k20201202; t=1718714450;
+	bh=hq8Wn4mgFcQ5ZsgQz/dTNMmh6yB2UphrglQ7l2h1J0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lA4yl44NgXyJR7WslrDTVKT/fFiDEMzjl3Ubplolu3qq1l8RagfmDJc/lBVeZEe9X
-	 2k7E9VvjhqG9CV90aJznECG3crq37kodDv0maf3puWkk0u0UHZq50RsND+W92tQinG
-	 2rRg50L8b9+Rjf4bj692Z6ui+GnUmJ+YhEYQuyiLHkvoUvqBF16HIqv1lgg5a7wR9z
-	 kuIcD00uT3nrVaWEWyEJX18GccG52Z+MYUo7vh1Sad3XKnV0tFPj3vLwEUtsEMQg15
-	 926peG7E9XQrCMZ3gdets/EUpyRLbjnZjhVhmWn8ch+qLlMqhxjbI77oFSSspgRNJ+
-	 zb5Ho/QA5Yw+w==
+	b=agU7AQtnvsZdYfTBPeHwGViKCbPg6kNKd+W5BoDddS1D58/xNiS7Wq01nz/3MUtFP
+	 D1z+pQJctmpWc7M8SUjOK5W0k/mXZC95AnhIsFBGHkBhieJzwuSIqbffm1xM1Qnb8W
+	 alie7ZfJ2d0uJsUk76hsfT516xitLBp4mN35kVVg3uq9q08WNnhFGT1dJc9VWE2DFE
+	 HNeJhyQimgK+UiL+HBxj3PpNnoz1iDR6YfvLM2ItYQYb/064eN3BWMCJZtsWTfCpzh
+	 ON1QIKB8jBixtBQ5Cxm+fYHfpB3dYbkJe0TZ1Axyhr8ok/okgM08OjejYChVzdifmI
+	 OEVF3N1cflV1Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
 	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	kvalo@kernel.org,
+	gregory.greenman@intel.com,
 	shaul.triebitz@intel.com,
 	benjamin.berg@intel.com,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 15/29] wifi: iwlwifi: mvm: d3: fix WoWLAN command version lookup
-Date: Tue, 18 Jun 2024 08:39:41 -0400
-Message-ID: <20240618124018.3303162-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 16/29] wifi: iwlwifi: mvm: Handle BIGTK cipher in kek_kck cmd
+Date: Tue, 18 Jun 2024 08:39:42 -0400
+Message-ID: <20240618124018.3303162-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240618124018.3303162-1-sashal@kernel.org>
 References: <20240618124018.3303162-1-sashal@kernel.org>
@@ -72,38 +72,53 @@ Content-Transfer-Encoding: 8bit
 
 From: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
 
-[ Upstream commit b7ffca99313d856f7d1cc89038d9061b128e8e97 ]
+[ Upstream commit 08b16d1b5997dc378533318e2a9cd73c7a898284 ]
 
-After moving from commands to notificaitons in the d3 resume flow,
-removing the WOWLAN_GET_STATUSES and REPLY_OFFLOADS_QUERY_CMD causes
-the return of the default value when looking up their version.
-Returning zero here results in the driver sending the not supported
-NON_QOS_TX_COUNTER_CMD.
+The BIGTK cipher field was added to the kek_kck_material_cmd
+but wasn't assigned. Fix that by differentiating between the
+IGTK/BIGTK keys and assign the ciphers fields accordingly.
 
 Signed-off-by: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
-Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240510170500.8cabfd580614.If3a0db9851f56041f8f5360959354abd5379224a@changeid
+Link: https://msgid.link/20240513132416.7fd0b22b7267.Ie9b581652b74bd7806980364d59e1b2e78e682c0@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index 88f4f429d875c..9a36ce98b5bfc 100644
+index 9a36ce98b5bfc..425588605a262 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -1934,7 +1934,8 @@ static bool iwl_mvm_setup_connection_keep(struct iwl_mvm *mvm,
+@@ -594,16 +594,25 @@ static void iwl_mvm_wowlan_gtk_type_iter(struct ieee80211_hw *hw,
+ 					 void *_data)
+ {
+ 	struct wowlan_key_gtk_type_iter *data = _data;
++	__le32 *cipher = NULL;
++
++	if (key->keyidx == 4 || key->keyidx == 5)
++		cipher = &data->kek_kck_cmd->igtk_cipher;
++	if (key->keyidx == 6 || key->keyidx == 7)
++		cipher = &data->kek_kck_cmd->bigtk_cipher;
  
- out:
- 	if (iwl_fw_lookup_notif_ver(mvm->fw, LONG_GROUP,
--				    WOWLAN_GET_STATUSES, 0) < 10) {
-+				    WOWLAN_GET_STATUSES,
-+				    IWL_FW_CMD_VER_UNKNOWN) < 10) {
- 		mvmvif->seqno_valid = true;
- 		/* +0x10 because the set API expects next-to-use, not last-used */
- 		mvmvif->seqno = status->non_qos_seq_ctr + 0x10;
+ 	switch (key->cipher) {
+ 	default:
+ 		return;
+ 	case WLAN_CIPHER_SUITE_BIP_GMAC_256:
+ 	case WLAN_CIPHER_SUITE_BIP_GMAC_128:
+-		data->kek_kck_cmd->igtk_cipher = cpu_to_le32(STA_KEY_FLG_GCMP);
++		if (cipher)
++			*cipher = cpu_to_le32(STA_KEY_FLG_GCMP);
+ 		return;
+ 	case WLAN_CIPHER_SUITE_AES_CMAC:
+-		data->kek_kck_cmd->igtk_cipher = cpu_to_le32(STA_KEY_FLG_CCM);
++	case WLAN_CIPHER_SUITE_BIP_CMAC_256:
++		if (cipher)
++			*cipher = cpu_to_le32(STA_KEY_FLG_CCM);
+ 		return;
+ 	case WLAN_CIPHER_SUITE_CCMP:
+ 		if (!sta)
 -- 
 2.43.0
 
