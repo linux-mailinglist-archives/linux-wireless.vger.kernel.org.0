@@ -1,105 +1,90 @@
-Return-Path: <linux-wireless+bounces-9145-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9146-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B78C90C950
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 13:28:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E55A90C93C
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 13:26:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DEDB1B24D18
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 11:25:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 109F2281743
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 11:26:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A98213AA48;
-	Tue, 18 Jun 2024 10:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 093B015DBD6;
+	Tue, 18 Jun 2024 10:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="V5veSNsK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hF1Wh55w"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7FE7F489
-	for <linux-wireless@vger.kernel.org>; Tue, 18 Jun 2024 10:19:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41FA13D62E;
+	Tue, 18 Jun 2024 10:22:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718705953; cv=none; b=YLJSU4WZMjiS5HFZJ8Nl59ZvoxVu46DhenFKJXOHL0BIf5iDMI4f1ZTvCIblItnrg+j6tNZKYJpk+ZKjjjDtPEXzdYESw5QW3O511pmAD4/zvuhr3AXF8sTS3quV6tly9xLqSoipLN/KUbePwrv0MD+pS7zLcVoixez4J7cNIFU=
+	t=1718706156; cv=none; b=qo6DenYbR4U8NUJx2Pe/k/AfnSRO3R6gnVTeblS6b4vYYT6vc+RcbW1QneU9ujWpUe7oH9N5BzlvAL3v1UwWL2dsVynsWPF0yHr8V6GRN3JSJ5YiTmVJ6Wo3zqca+1NIHw9/y1FjBp+/xzw3c6Rz5ssPcvuW50giBFp7vJ1ohek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718705953; c=relaxed/simple;
-	bh=YD7zDmmn1MxXpVpXmrQK2O6Mt6z9u+z0YUhS3anNutw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=R9DRMOV9SI93QdmdVHU0Op4phVOhlxS1cC27yk7fXEs2NZCdfIXepcv0tkTTTRcCbvDP79GF8vSSStzzvTj6QmFsmXiU6ABCNU1BKjxrsmdrHUpaZIrn7abuPJ3nDA2zlOGVRY06MUTaZKu3K00lWpdQrd1YHhp9R2jdVmKV40E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=V5veSNsK; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45I387Lf019209;
-	Tue, 18 Jun 2024 10:19:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	kbs0erw5OqnlYwGFkBSfxJZnMphNTdjPSZw8vQCCnn8=; b=V5veSNsK+srIs9QQ
-	yO6Q69h4F28y8W7Ez7Y6s923skrJry9LtMg75cFMVw1UE0Rw1RmyUDKW7VRDiQN3
-	6KpqByDyknkaCrGlPtKmlcBB+5ZoJlS18ePZNiqmKxu9PRLSQ4JX6h5uMGwv7LCZ
-	CtFxgJjjH4WvpjDKxbxlzyC/rCC+D6q9Co60eFfsJ+oQyu0QPNB06tiNPjv4z/nh
-	f2APWsCYGZBXJ26svzXVGMFVNrSv2mTgS7G0S6mLd3SIMhWdTIZAxakUgvSzY1oI
-	A1GYtCYHot9K3IIpNxCYyU7qMoEBvK+J3nrV43MHFcYJtXA9Us9rTnkIBB+dk3vJ
-	bulhfg==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yu22grvex-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Jun 2024 10:19:06 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45IAJ4V8024670
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Jun 2024 10:19:04 GMT
-Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 18 Jun
- 2024 03:19:03 -0700
-Message-ID: <29fcda42-8d83-40e4-856a-d98e56981091@quicinc.com>
-Date: Tue, 18 Jun 2024 18:19:01 +0800
+	s=arc-20240116; t=1718706156; c=relaxed/simple;
+	bh=1Y1pwJVbRda7BdQq6TUf8QlWUANn6f1wQ4H0qx18oa0=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=Yx8bRudEL1rbxwV1kpQ64B85NFePKleaPofqoUpl2beh/BZb3EobpKLxgx8/kN9VeLPUc9ybBNjIWI177besRVwc69N/6QWdnMfsYErqpIP3qNG8zaOjm5fi/pBu60fhQaFVrN+eUt8bm5ZfQQ9y+FVcpZv6I5cbZnwyeM3r9bU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hF1Wh55w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79D74C3277B;
+	Tue, 18 Jun 2024 10:22:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718706156;
+	bh=1Y1pwJVbRda7BdQq6TUf8QlWUANn6f1wQ4H0qx18oa0=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=hF1Wh55wlUAiMLO30Z93kbPKcuEzkzXOH2bbat3iImmZGKhc8Q7p3bT4xjDUm0c12
+	 Uk3Edt13+brNDk7hKSO4XbIYVf0V+7+5a8bPgrEU4edk8oXERFnxAnGTb9sO6eRIQa
+	 Pev2dkPhKIRtj9256vmOtel0SpKBvAVj8hW4ckIta78iTFatX9Thw8Ifgti3K4EGZ0
+	 4Ab74G4lGen2b4ARrRjQZp/rbSUEOFMDPQ4I290zRqCFPVgrSG7Cf4lD2uyB2f4L3L
+	 PnWqx2x2ffmrGWQU4ZGaQhphAHIuLmaCryB4NLvPqSvdOy8Cf+E8FnR7pvwi0KWx6P
+	 c87CfGINrel+Q==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/3] wifi: ath12k: prepare sta data structure for MLO
- handling
-To: Rameshkumar Sundaram <quic_ramess@quicinc.com>,
-        <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, Sriram R <quic_srirrama@quicinc.com>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>
-References: <20240617131650.3288118-1-quic_ramess@quicinc.com>
- <20240617131650.3288118-4-quic_ramess@quicinc.com>
-Content-Language: en-US
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <20240617131650.3288118-4-quic_ramess@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: uAEbIrKkJC0h08fgwvRjr0je8nCN0btq
-X-Proofpoint-GUID: uAEbIrKkJC0h08fgwvRjr0je8nCN0btq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-18_02,2024-06-17_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
- clxscore=1015 malwarescore=0 priorityscore=1501 spamscore=0 suspectscore=0
- adultscore=0 impostorscore=0 phishscore=0 mlxlogscore=807 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405170001
- definitions=main-2406180076
+Subject: Re: [PATCH wireless-next 1/8] wifi: wlcore: correctness fix fwlog
+ reading
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <E1sBsxi-00E8vQ-5r@rmk-PC.armlinux.org.uk>
+References: <E1sBsxi-00E8vQ-5r@rmk-PC.armlinux.org.uk>
+To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Cc: Johannes Berg <johannes.berg@intel.com>,
+ Michael Nemanov <michael.nemanov@ti.com>, linux-kernel@vger.kernel.org,
+ linux-wireless@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <171870615366.452784.11571930930740419280.kvalo@kernel.org>
+Date: Tue, 18 Jun 2024 10:22:35 +0000 (UTC)
 
+"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk> wrote:
 
+> Fix the calculation of clear_offset, which may overflow the end of
+> the buffer. However, this is harmless if it does because in that case
+> it will be recalculated when we copy the chunk of messages at the
+> start of the buffer.
+> 
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-On 6/17/2024 9:16 PM, Rameshkumar Sundaram wrote:
-> +static inline struct ieee80211_sta *ath12k_sta_to_sta(struct ath12k_sta *ahsta)
-> +{
-> +	return container_of((void *)ahsta, struct ieee80211_sta, drv_priv);
-> +}
-> +
-better naming as ath12k_ahsta_to_sta()?
+8 patches applied to wireless-next.git, thanks.
+
+64ff013ce098 wifi: wlcore: correctness fix fwlog reading
+b734d8830f70 wifi: wl18xx: make wl18xx_tx_immediate_complete() more efficient
+97715e29cebc wifi: wlcore: improve code in wlcore_fw_status()
+dd265a7415f8 wifi: wlcore: pass "status" to wlcore_hw_convert_fw_status()
+81271c2bc59e wifi: wlcore: store AP encryption key type
+bb8edd900fd6 wifi: wlcore: add pn16 support
+9685262b5e5d wifi: wl18xx: add support for reading 8.9.1 fw status
+8c58f972219e wifi: wl18xx: allow firmwares > 8.9.0.x.58
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/E1sBsxi-00E8vQ-5r@rmk-PC.armlinux.org.uk/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
