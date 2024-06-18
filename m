@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-9199-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9200-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A3390D922
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 18:24:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8BD190D92F
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 18:26:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B78901F24FC2
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 16:24:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 047431F2218E
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 16:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CCC64D8A4;
-	Tue, 18 Jun 2024 16:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95F214E1C8;
+	Tue, 18 Jun 2024 16:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QhQ8/bqh"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="feoVaGKz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E297347E
-	for <linux-wireless@vger.kernel.org>; Tue, 18 Jun 2024 16:24:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35E54D8CF
+	for <linux-wireless@vger.kernel.org>; Tue, 18 Jun 2024 16:26:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718727866; cv=none; b=cbpKPpzcofBf0cB4DNR1b55ubblkuJCllHIAHUk8Mldkb6oIiA43Yr3BbyHcfZhoi2rR5NA61LYSuQvPx3UcOMAHmDxbztVXyQVSwUb6PDfFXIXX5065XegqNc2gUV2nQ1Xap61DDNyWSMoxKdKVjPcpsIansIHHCJ6EGU271p0=
+	t=1718727968; cv=none; b=ENRthuQ17pXGeRK2YVPpl/nbswFe4RgEN8faQvuMR5GIXriiAfSik+OkwxIHqEWMfIr0en3gRrruujGU1dLJC7plOTx4HqgZXQUMryiIBJACWItVeSHrf5/c5QTN3oBcw44cb0g/+pEw0rDBmHK+ZPIZt0TKm96c6ERbPjjPTPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718727866; c=relaxed/simple;
-	bh=VOje7kmvdK9+0Du0dDRXC8KqclOApSk+jNBUxXyha2A=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=svhG31j3HrOP79tqJ8Mm0WKbcDlUi2x0c0ul73e9n/XPjngTO6NPIq7T0uqYke1THVr1Uom67ED1LTrVjXXxSVYlj4nvIsYNR9KYnF5bbFbdKjSiOjH8966q2WwPj0nFwmrI4eNvzE3cxnU3F5bR10XGmL4RtQ1jqQenCGIsM8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QhQ8/bqh; arc=none smtp.client-ip=192.198.163.7
+	s=arc-20240116; t=1718727968; c=relaxed/simple;
+	bh=+FO5ObGl3/mbncdYjplvonO+Y4ZBNTBBBUTmiLAqspw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Do3/+P9zj4xb6dFIGRA1nYAZhmlu9t5kLktF6EZjXrtjo97JhfzZKpAMnwTz9O1r1x63lQ2nqUPKr97s3dawJ8U/9+WUSyjrIQIXzHVYTokFu20xApOo012Nstx6iB0JBjMtfrltmnEjrXyRamFrVdrJFz8uot7obYidk7RzbOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=feoVaGKz; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718727864; x=1750263864;
+  t=1718727966; x=1750263966;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=VOje7kmvdK9+0Du0dDRXC8KqclOApSk+jNBUxXyha2A=;
-  b=QhQ8/bqhgO5MDqnGggdb1dlNqB7o1LEYFoM7UCUacWo2kx8ZDWm2T47x
-   npixk3OLiVFSS5VxxCjE9MUAsTwldmbnQL+T7lF/Usivz0fQmFmAIjBPn
-   EL1ibVWHbjX1HPvyPWmbGKsn2Ui3W/x0Q8hlIXiQlaplef5kV/HYMLUjt
-   95jgwvStifDXGoCdhRj0KtAF3QpSs++XZzJUSxt/0CnVlpyIO+oJNuGQ6
-   ubUvc3EW8NcGC+yIuK5REjICl6GNxrFqZD6H1OmdZFh0t/Q7B8PFxB5l7
-   07c4/5GmGy92RViUl8OXOHM22wYlUdhVGA70T8sObywrxSo+R3smvTig9
-   w==;
-X-CSE-ConnectionGUID: gZRP2R4OS1algIoLiNprjA==
-X-CSE-MsgGUID: 0KRqXmtyT6irAb2gVNMElg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11107"; a="41030213"
+  bh=+FO5ObGl3/mbncdYjplvonO+Y4ZBNTBBBUTmiLAqspw=;
+  b=feoVaGKzqQyTw+hyjxFlLvYmRyb+HG5IfqUBvEn0LBOVOzGo1v59FHWh
+   r4Z37Pos01R/3+qGDtBIoxmMVS8dGyz3XShEWtICW0/0BXJN+bHZtTU9C
+   50WS8NpgX47gTpHy5AYxQvstEy/GI5W+0iw+BgrLQdN1kb7O18/Q+cv7a
+   hMgAm9S9byOUgvi+nbGuUzomMB8Haaoq8j8GeTpm1JyV1GxQE+WAsi3YM
+   y4HKu7R0f8HAP1srji71TivREAibJGDG7eA+epMqiN0nQzuzSae4NFLxV
+   nv0LgrMdvLHr9PW+rgMp8Gkfokzqqja46+QnXfu0nwvuOLGWZA4Btfzrk
+   g==;
+X-CSE-ConnectionGUID: DCZyqOGfTb+GgX02MMtKag==
+X-CSE-MsgGUID: IaVy9l3AQSCzg3ZXsyzMnw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11107"; a="33162335"
 X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; 
-   d="scan'208";a="41030213"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2024 09:24:23 -0700
-X-CSE-ConnectionGUID: 3eMQY+dfQMSSLr9fyXxRsQ==
-X-CSE-MsgGUID: wluUYYkcRWalN2daJSYSUw==
+   d="scan'208";a="33162335"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2024 09:26:04 -0700
+X-CSE-ConnectionGUID: Di3mYhNfRtK0H9WomNcmLA==
+X-CSE-MsgGUID: CGoD1enrQVqfc48il25IjQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; 
-   d="scan'208";a="41558514"
+   d="scan'208";a="41456394"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2024 09:24:21 -0700
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2024 09:26:02 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH] wifi: mac80211: inform the low level if drv_stop() is a suspend
-Date: Tue, 18 Jun 2024 19:24:14 +0300
-Message-Id: <20240618192351.e117673dc95f.Ie18a2fe8e02bf2717549d39420b350cfdaf3d317@changeid>
+Subject: [PATCH v2] wifi: mac80211: inform the low level if drv_stop() is a suspend
+Date: Tue, 18 Jun 2024 19:25:56 +0300
+Message-Id: <20240618192529.739036208b6e.Ie18a2fe8e02bf2717549d39420b350cfdaf3d317@changeid>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -82,6 +82,7 @@ different flows.
 Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
+v2: Added missing documentation
  drivers/net/wireless/admtek/adm8211.c             |  2 +-
  drivers/net/wireless/ath/ar5523/ar5523.c          |  2 +-
  drivers/net/wireless/ath/ath10k/mac.c             |  2 +-
@@ -131,7 +132,7 @@ Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
  drivers/net/wireless/realtek/rtlwifi/core.c       |  4 ++--
  drivers/net/wireless/realtek/rtw88/mac80211.c     |  2 +-
  drivers/net/wireless/realtek/rtw89/mac80211.c     |  2 +-
- drivers/net/wireless/rsi/rsi_91x_mac80211.c       |  2 +-
+ drivers/net/wireless/rsi/rsi_91x_mac80211.c       |  3 ++-
  drivers/net/wireless/silabs/wfx/sta.c             |  2 +-
  drivers/net/wireless/silabs/wfx/sta.h             |  2 +-
  drivers/net/wireless/st/cw1200/sta.c              |  2 +-
@@ -152,7 +153,7 @@ Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
  net/mac80211/pm.c                                 |  4 ++--
  net/mac80211/trace.h                              | 15 ++++++++++++---
  net/mac80211/util.c                               |  4 ++--
- 70 files changed, 92 insertions(+), 83 deletions(-)
+ 70 files changed, 93 insertions(+), 83 deletions(-)
 
 diff --git a/drivers/net/wireless/admtek/adm8211.c b/drivers/net/wireless/admtek/adm8211.c
 index e3fd48dd3909..a2d87c3ad196 100644
@@ -843,10 +844,14 @@ index 41b286da3d59..722d09e9fbb5 100644
  	struct rtw89_dev *rtwdev = hw->priv;
  
 diff --git a/drivers/net/wireless/rsi/rsi_91x_mac80211.c b/drivers/net/wireless/rsi/rsi_91x_mac80211.c
-index 211fa25b9a78..ee0f5d912dab 100644
+index 211fa25b9a78..3425a473b9a1 100644
 --- a/drivers/net/wireless/rsi/rsi_91x_mac80211.c
 +++ b/drivers/net/wireless/rsi/rsi_91x_mac80211.c
-@@ -413,7 +413,7 @@ static int rsi_mac80211_start(struct ieee80211_hw *hw)
+@@ -410,10 +410,11 @@ static int rsi_mac80211_start(struct ieee80211_hw *hw)
+ /**
+  * rsi_mac80211_stop() - This is the last handler that 802.11 module calls.
+  * @hw: Pointer to the ieee80211_hw structure.
++ * @suspend: true if the this was called from suspend flow.
   *
   * Return: None.
   */
