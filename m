@@ -1,51 +1,51 @@
-Return-Path: <linux-wireless+bounces-9164-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9165-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A6F590CC7A
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 14:51:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C893890CCBB
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 14:55:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB20E285AC3
-	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 12:51:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1A31B28DEA
+	for <lists+linux-wireless@lfdr.de>; Tue, 18 Jun 2024 12:51:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D5716EB6F;
-	Tue, 18 Jun 2024 12:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BBAA1741DB;
+	Tue, 18 Jun 2024 12:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="njXHy/sP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V2Pi2wbU"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE07C14F9E2;
-	Tue, 18 Jun 2024 12:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E541741D9;
+	Tue, 18 Jun 2024 12:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714334; cv=none; b=rNXuZmdYp2+GEYxHnn6ZW3ww1aLyRYreJkx7J9iiKxkZ6f7V/CzTN/DdSRwYxvAR+wYinf4GriRcx1qAfDEN0E8JyZTl1lBOdvVEi2TZnnzGSYrqKeRJjjdFRg3g7Pw9Qh8dP+OS5M0sLJBz7sMeUtGSwD+mVnHAgw93sRfMRYU=
+	t=1718714336; cv=none; b=UV2e/oV1TxFLRvOirCZcd7cd+x52KWqgLFRhswGaP43lCBFjLgCg03gzDcKqZIPhFfPZQWi2cZqmbZH6ylcfkTXCTcWr25KrE2ctejQa0fYoxpy39WbbYlWa/Xu4oBTT0SOeyPK0Vs1TT7zAYlfkYeHIybL6zPynpuHYTPFdC9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714334; c=relaxed/simple;
-	bh=yAc7Cg+LvcJNP6MHenJI3HRC/4+g2Ha2WT6arXir4J0=;
+	s=arc-20240116; t=1718714336; c=relaxed/simple;
+	bh=Zj9d84qwyrY4m2ytLMJ7KkWT6CrOEfG4t29RPvVaUJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C/wZn5K7E5748ELJDjnBcsZ/lf2jj1KI7KnmJbzZCBtXDBIrB7uiUp+BWKav6XjMGCB+ku72QS+qKC2zd8FvONIJ6b3O2dtVi2hCGFRyR9422SaelG+ni0siHvnu7i7WPCWAf/fM7IvjmT0usXUgZjTn7YENuFWXhUSCYFqWBFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=njXHy/sP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F41A9C3277B;
-	Tue, 18 Jun 2024 12:38:52 +0000 (UTC)
+	 MIME-Version; b=X8SUQjN3W+0PaULTheedjVzjc8qnB/za9Lew9bpp6/UEJ2twCB6KjrhzYUK4jgcLm+w+4I2iofj7sxI03ZXm5E3+FgJ9jZtKq5+2Lq+X1U81m45mveeINU3hvNCId5jz9HjmvG46UVXNeLYJDEo3O22nawAYSsyUw8JGxXfH+mU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V2Pi2wbU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9EC1C4AF1D;
+	Tue, 18 Jun 2024 12:38:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714334;
-	bh=yAc7Cg+LvcJNP6MHenJI3HRC/4+g2Ha2WT6arXir4J0=;
+	s=k20201202; t=1718714336;
+	bh=Zj9d84qwyrY4m2ytLMJ7KkWT6CrOEfG4t29RPvVaUJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=njXHy/sPdsPcgmb3dTbVh3nt2gRYyV5gIDDErBiCe1sV5G6qOlHxDWk37qlUnw7lu
-	 FJ3fEffiYuF6ayJzcHaD8O8926641AGh4NPjPPrzEVu1H+VV6ohZ/AebLwdgCwXsEh
-	 vf3sjc9XiKQj6qo8L9fBWJuEtvH1hydqYxQKJHl1ocdcTslLt2fNqIghn2mVIf3w4V
-	 d6wwLB32viEWEp2UD7u9I11kxqoXmlxmM8yE3k9fFNVmUlqwTtWWzbyj11xGwIKG12
-	 FI20EBNP1Mg3zaxhhujVB+Vxr/iPwtaoGL/s2XIBoZnUCy9/KdX0ZXltTWlkPbCAb/
-	 uG7YiwNnqO7EA==
+	b=V2Pi2wbUzlqlFaUj5JHCtdIVxh7+KoOuFiLnxtcuGzdmoRr8c5wdhLj6LQZliyn7v
+	 yfK/naxrv+PflqcKApiiaFOgEQ0pLpO1v3zi9obL1uYOoxn/kccwkhkuLhKMle1N4P
+	 4lvieU+mZv2Kq+geTXwXEyTq78DECj5vRipzvpAY17bfyL8tG9zf9P+LCgXrbiaaQ1
+	 s2Rk7jFXRTTqrUZvBGkwFeCx6nnhBxnuZLJDByaBSKkJ/6bv6WnimdTsWFkLMkrjif
+	 rC67RsoIeL09Gl8vMHkIBbtOmsu9sEN/OjQD8hfMcHWJDx7OljAINoGkknpbSs0Nxn
+	 Wa0hn2PwV57Ng==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>,
-	syzbot+de87c09cc7b964ea2e23@syzkaller.appspotmail.com,
+	syzbot+8830db5d3593b5546d2e@syzkaller.appspotmail.com,
 	Sasha Levin <sashal@kernel.org>,
 	johannes@sipsolutions.net,
 	davem@davemloft.net,
@@ -54,9 +54,9 @@ Cc: Johannes Berg <johannes.berg@intel.com>,
 	pabeni@redhat.com,
 	linux-wireless@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 12/35] wifi: mac80211: apply mcast rate only if interface is up
-Date: Tue, 18 Jun 2024 08:37:32 -0400
-Message-ID: <20240618123831.3302346-12-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 13/35] wifi: mac80211: handle tasklet frames before stopping
+Date: Tue, 18 Jun 2024 08:37:33 -0400
+Message-ID: <20240618123831.3302346-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240618123831.3302346-1-sashal@kernel.org>
 References: <20240618123831.3302346-1-sashal@kernel.org>
@@ -73,35 +73,79 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 02c665f048a439c0d58cc45334c94634bd7c18e6 ]
+[ Upstream commit 177c6ae9725d783f9e96f02593ce8fb2639be22f ]
 
-If the interface isn't enabled, don't apply multicast
-rate changes immediately.
+The code itself doesn't want to handle frames from the driver
+if it's already stopped, but if the tasklet was queued before
+and runs after the stop, then all bets are off. Flush queues
+before actually stopping, RX should be off at this point since
+all the interfaces are removed already, etc.
 
-Reported-by: syzbot+de87c09cc7b964ea2e23@syzkaller.appspotmail.com
-Link: https://msgid.link/20240515133410.d6cffe5756cc.I47b624a317e62bdb4609ff7fa79403c0c444d32d@changeid
+Reported-by: syzbot+8830db5d3593b5546d2e@syzkaller.appspotmail.com
+Link: https://msgid.link/20240515135318.b05f11385c9a.I41c1b33a2e1814c3a7ef352cd7f2951b91785617@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/mac80211/ieee80211_i.h |  2 ++
+ net/mac80211/main.c        | 10 ++++++++--
+ net/mac80211/util.c        |  2 ++
+ 3 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 505f1d6ccd16c..f3fc0be9d8eac 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -2953,8 +2953,9 @@ static int ieee80211_set_mcast_rate(struct wiphy *wiphy, struct net_device *dev,
- 	memcpy(sdata->vif.bss_conf.mcast_rate, rate,
- 	       sizeof(int) * NUM_NL80211_BANDS);
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index fefaa9e902a2f..fb55014c0e898 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1846,6 +1846,8 @@ void ieee80211_link_info_change_notify(struct ieee80211_sub_if_data *sdata,
+ void ieee80211_configure_filter(struct ieee80211_local *local);
+ u64 ieee80211_reset_erp_info(struct ieee80211_sub_if_data *sdata);
  
--	ieee80211_link_info_change_notify(sdata, &sdata->deflink,
--					  BSS_CHANGED_MCAST_RATE);
-+	if (ieee80211_sdata_running(sdata))
-+		ieee80211_link_info_change_notify(sdata, &sdata->deflink,
-+						  BSS_CHANGED_MCAST_RATE);
- 
- 	return 0;
++void ieee80211_handle_queued_frames(struct ieee80211_local *local);
++
+ u64 ieee80211_mgmt_tx_cookie(struct ieee80211_local *local);
+ int ieee80211_attach_ack_skb(struct ieee80211_local *local, struct sk_buff *skb,
+ 			     u64 *cookie, gfp_t gfp);
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 4548f84451095..d7f67d81d5af9 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -301,9 +301,8 @@ u64 ieee80211_reset_erp_info(struct ieee80211_sub_if_data *sdata)
+ 	       BSS_CHANGED_ERP_SLOT;
  }
+ 
+-static void ieee80211_tasklet_handler(struct tasklet_struct *t)
++void ieee80211_handle_queued_frames(struct ieee80211_local *local)
+ {
+-	struct ieee80211_local *local = from_tasklet(local, t, tasklet);
+ 	struct sk_buff *skb;
+ 
+ 	while ((skb = skb_dequeue(&local->skb_queue)) ||
+@@ -328,6 +327,13 @@ static void ieee80211_tasklet_handler(struct tasklet_struct *t)
+ 	}
+ }
+ 
++static void ieee80211_tasklet_handler(struct tasklet_struct *t)
++{
++	struct ieee80211_local *local = from_tasklet(local, t, tasklet);
++
++	ieee80211_handle_queued_frames(local);
++}
++
+ static void ieee80211_restart_work(struct work_struct *work)
+ {
+ 	struct ieee80211_local *local =
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 172173b2a9eb8..62c8b4342136e 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -2313,6 +2313,8 @@ u32 ieee80211_sta_get_rates(struct ieee80211_sub_if_data *sdata,
+ 
+ void ieee80211_stop_device(struct ieee80211_local *local)
+ {
++	ieee80211_handle_queued_frames(local);
++
+ 	ieee80211_led_radio(local, false);
+ 	ieee80211_mod_tpt_led_trig(local, 0, IEEE80211_TPT_LEDTRIG_FL_RADIO);
+ 
 -- 
 2.43.0
 
