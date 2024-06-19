@@ -1,146 +1,150 @@
-Return-Path: <linux-wireless+bounces-9221-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9222-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E00590E206
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jun 2024 05:41:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0765D90E232
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jun 2024 06:10:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6F421F2312A
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jun 2024 03:41:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A98CB284F9F
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jun 2024 04:10:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B10A2139C7;
-	Wed, 19 Jun 2024 03:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAFEE37700;
+	Wed, 19 Jun 2024 04:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="LoyPKZKN"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="b4l9AY+m"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F59E502B1
-	for <linux-wireless@vger.kernel.org>; Wed, 19 Jun 2024 03:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A44D4C635
+	for <linux-wireless@vger.kernel.org>; Wed, 19 Jun 2024 04:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718768458; cv=none; b=EKdR26PU6OGfdBIblCDs2yHtXqdEgEUgcqWI3eTpBxHNyGIPi8V4RfpNBEyq8rbFc8+wdcrml8uhjgWtEijACrGJUA4aLewQYkfyCdMw2YZxKpbNhAOx+3dT3EVEzzgfe3q/Q6tDmecdT+B3UA0eoCvqf47ctBZW4SFNl99qK/8=
+	t=1718770232; cv=none; b=BUnEOjOivBnO6Pmen/41PFbEz1Aoo46zNrTAkaC0SEfJOLFATsTcqaGYVZYHSw7cGXuj6grtQ86bjycTkRIUm58ncirQlavPLnf3rGmHnKP+BXpPAm+Jr32G9fDqIlbJV707hq1w1kqzKRk7EcFGP272nUQlp1VAMibqnEoyTdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718768458; c=relaxed/simple;
-	bh=W62hpRRPLIbO9WFhISoFHnChsxrfjXsKFQ+DpT5FJXk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Ik1yUcNYuXDqGcMVn9/SeSdLfmaBx44R6KvtTw5wBJspQxW7iFtngEyt+7gB5uXwPWYnU+fs8lDZTXqTmGoKR+9vjGvR8nLaloPcvZ7Pesrx6ZQGDovdl/pDYk5pz6CauK5VDKAdujhGwRs+ZgPo7DVtG+AakSanpqhOrLPAk5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=LoyPKZKN; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1718770232; c=relaxed/simple;
+	bh=hl/e46bt+NV7xhSLcpwshQaRHMSZpy2jWbNDJoj1F00=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=q+uCeixA5x23/nxhIwn8Zj0giVvESb0w98H+jy0iy3lPf6aPI/Vu5gDJn7EkfnkotiwP9TkQmCYgUO/Ua/7NAyeq1vk1ngL8eH1Qwh/TxDPKP5hB/LV7r4auwVLaMf7cNed82fkL8zBobeP//RyCE/HGAiNAW6xBH8eCatrq3qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=b4l9AY+m; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45ILaNaH001119;
-	Wed, 19 Jun 2024 03:40:52 GMT
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45IMFw6f016036;
+	Wed, 19 Jun 2024 04:10:28 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	6PS6pgSqowtmSYVpHBn5Y+bGvvwHWd3ec5wuM8HblyY=; b=LoyPKZKNIArL160V
-	BF5Xmslb9Ta6/FTNOhTVfyA0SMtl/Tn901bbMWLiUP+hVn7kS3jIATB9Z8DaOCfB
-	3QLUvqq2nqlee/UNW0qYox+elcTsGa4hDpikTE/N9malVp55ZVIQvA50RTDww8Qj
-	Kq0+1cmWLWRsurEGPsba0u2qNT1KJQnJqz7S1oyqvYn49taJKp0BoWicd2sC1Ebm
-	My/2WsMnbcFRjsrd7CUygF82W5WnqLeTfAGYDSgAZ+mRuFx42x3GgMM4Q4NdKrKJ
-	7RGJo3X74c4fw1O7ecUEi7tK42NShRkyNWcL5LTVjcmyoagOpOo5QyV2aZ1x9tnw
-	/58WVw==
-Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yuja28hym-1
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=zalxSQ9cDU7f7E+fQijsIy
+	M+ge3uidgooW+tRavYCU8=; b=b4l9AY+m77Hnr28FyowyHjbeO3VOPf4VKK6ZBG
+	UQLYubO40eAHfnNQhZpbQubEA1yVMGIQbVNK01LCJCh8I03j0SY4VhMGwFEE2acf
+	Ydu1+Gdz1RU9wNshCqvOG+B+jcUXFFINuOkvrjbaUzy0vdMgnBng/YVGKkdNdR3z
+	wvYt1QiKqJ+IjUB99ndP2unIGt+NW7uIvX6B0QUlRcVltIMZqMWw12hOqzQnibKf
+	zKzwwW5SoW6xDzdtpVYMI+ang3NkRHDA3tZ5yPQfPk25EXHUW7xh7pCK4jB4wKnu
+	6UcvyJViwCT2PreupyV+I16w7ELW6+XL0cky5LoyvTqlyrYQ==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yujah8kdf-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Jun 2024 03:40:51 +0000 (GMT)
-Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
-	by NASANPPMTA02.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45J3eoDg015429
+	Wed, 19 Jun 2024 04:10:27 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45J4APNY013276
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Jun 2024 03:40:50 GMT
-Received: from [10.152.193.243] (10.80.80.8) by nasanex01c.na.qualcomm.com
- (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 18 Jun
- 2024 20:40:49 -0700
-Message-ID: <5277edb6-cbb5-4b7f-8e2f-df702483021f@quicinc.com>
-Date: Wed, 19 Jun 2024 09:10:49 +0530
+	Wed, 19 Jun 2024 04:10:25 GMT
+Received: from hu-adisi-blr.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Tue, 18 Jun 2024 21:10:24 -0700
+From: Aditya Kumar Singh <quic_adisi@quicinc.com>
+To: <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>,
+        Aditya Kumar Singh
+	<quic_adisi@quicinc.com>
+Subject: [PATCH 0/9] wifi: cfg80211/mac80211: add DFS support for MLO
+Date: Wed, 19 Jun 2024 09:39:50 +0530
+Message-ID: <20240619040959.1457547-1-quic_adisi@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/4] wifi: ath12k: add factory test mode support
-To: Jeff Johnson <quic_jjohnson@quicinc.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240617052903.2720292-1-quic_aarasahu@quicinc.com>
- <20240617052903.2720292-4-quic_aarasahu@quicinc.com>
- <1f760727-6395-40a9-b817-3c05a5760a10@quicinc.com>
-Content-Language: en-US
-From: Aaradhana Sahu <quic_aarasahu@quicinc.com>
-In-Reply-To: <1f760727-6395-40a9-b817-3c05a5760a10@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01c.na.qualcomm.com (10.45.79.139)
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: _fSQT5PjqzAssZ5y_BuH6cNECBrO6-6n
-X-Proofpoint-ORIG-GUID: _fSQT5PjqzAssZ5y_BuH6cNECBrO6-6n
+X-Proofpoint-ORIG-GUID: xJhLxTbAUxkT-x54CsVNv7IJQGl8oE_K
+X-Proofpoint-GUID: xJhLxTbAUxkT-x54CsVNv7IJQGl8oE_K
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-06-18_08,2024-06-17_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- mlxlogscore=999 suspectscore=0 clxscore=1015 impostorscore=0
- malwarescore=0 mlxscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0
- phishscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2406190026
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=999
+ clxscore=1015 spamscore=0 lowpriorityscore=0 mlxscore=0 priorityscore=1501
+ phishscore=0 adultscore=0 suspectscore=0 impostorscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405170001
+ definitions=main-2406190029
+
+Currently, Dynamic Frequency Selection (DFS) and its related radar events
+are supported only for non-MLO case where deflink (or link_id 0) is always
+considered. However, with MLO in place, there is need to handle DFS in
+per-link manner instead of always handling it on per device.
+
+Add support to handle DFS interference related events per-link basis.
+
+Aditya Kumar Singh (9):
+  Revert "wifi: mac80211: move radar detect work to sdata"
+  wifi: cfg80211: move DFS related members to links[] in wireless_dev
+  wifi: nl80211: allow CAC while other links are beaconing during MLO
+  wifi: trace: unlink rdev_end_cac trace event from wiphy_netdev_evt
+    class
+  wifi: cfg80211: handle DFS on per link
+  wifi: mac80211: fix label name in ieee80211_start_radar_detection()
+  wifi: mac80211: handle DFS on per link
+  wifi: mac80211: handle ieee80211_radar_detected() for MLO
+  wifi: mac80211: abort active CAC while freeing the links during MLO
+---
+
+ drivers/net/wireless/ath/ath10k/debug.c       |  4 +-
+ drivers/net/wireless/ath/ath10k/mac.c         |  2 +-
+ drivers/net/wireless/ath/ath10k/wmi.c         |  2 +-
+ drivers/net/wireless/ath/ath11k/wmi.c         |  2 +-
+ drivers/net/wireless/ath/ath12k/wmi.c         |  2 +-
+ drivers/net/wireless/ath/ath9k/dfs.c          |  2 +-
+ drivers/net/wireless/ath/ath9k/dfs_debug.c    |  2 +-
+ drivers/net/wireless/marvell/mwifiex/11h.c    | 11 ++-
+ .../net/wireless/marvell/mwifiex/cfg80211.c   |  6 +-
+ .../net/wireless/mediatek/mt76/mt7615/mcu.c   |  2 +-
+ .../net/wireless/mediatek/mt76/mt76x02_dfs.c  |  4 +-
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   |  2 +-
+ .../net/wireless/mediatek/mt76/mt7996/mcu.c   |  2 +-
+ .../net/wireless/quantenna/qtnfmac/cfg80211.c |  2 +-
+ .../net/wireless/quantenna/qtnfmac/event.c    | 12 +--
+ drivers/net/wireless/ti/wl18xx/event.c        |  2 +-
+ drivers/net/wireless/virtual/mac80211_hwsim.c |  2 +-
+ include/net/cfg80211.h                        | 25 ++---
+ include/net/mac80211.h                        |  5 +-
+ net/mac80211/cfg.c                            | 46 +++++----
+ net/mac80211/ieee80211_i.h                    |  9 +-
+ net/mac80211/iface.c                          |  8 +-
+ net/mac80211/link.c                           | 26 +++++-
+ net/mac80211/main.c                           |  8 ++
+ net/mac80211/mlme.c                           | 13 +--
+ net/mac80211/scan.c                           |  2 +-
+ net/mac80211/util.c                           | 93 ++++++++++++++++---
+ net/wireless/ibss.c                           |  2 +-
+ net/wireless/mesh.c                           |  2 +-
+ net/wireless/mlme.c                           | 20 ++--
+ net/wireless/nl80211.c                        | 35 +++++--
+ net/wireless/rdev-ops.h                       | 13 +--
+ net/wireless/reg.c                            | 19 ++--
+ net/wireless/trace.h                          | 40 +++++---
+ 34 files changed, 292 insertions(+), 135 deletions(-)
 
 
+base-commit: 5ad8897fd15a3716601509ed4a7bc47bf0cab661
+-- 
+2.34.1
 
-On 6/18/2024 2:43 AM, Jeff Johnson wrote:
-> On 6/16/2024 10:29 PM, Aaradhana Sahu wrote:
->> Add support to process factory test mode commands(FTM) for calibration.
->> By default firmware start with MISSION mode and to process the FTM commands
->> firmware needs to be restarted in FTM mode using module parameter ftm_mode.
->> The pre-request is all the radios should be down before starting the test.
->>
->> All ath12k test mode interface related commands specified in enum
->> ath_tm_cmd.
->>
->> When start command ATH_TM_CMD_TESTMODE_START is received, ar state
->> is set to test Mode and FTM daemon sends test mode command to wifi
->> driver via cfg80211. Wifi driver sends these command to firmware as
->> wmi events. If it is segmented commands it will be broken down into
->> multiple segments and encoded with TLV header else it is sent to
->> firmware as it is.
->>
->> Firmware response via UTF events, wifi driver creates skb and send
->> to cfg80211, cfg80211 sends firmware response to FTM daemon via
->> netlink message.
->>
->> Command to boot in ftm mode
->> insmod ath12k ftm_mode=1
->>
->> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00210-QCAHKSWPL_SILICONZ-1
->>
->> Signed-off-by: Aaradhana Sahu <quic_aarasahu@quicinc.com>
->> ---
-> ...
->>  11 files changed, 560 insertions(+), 8 deletions(-)
->>  create mode 100644 drivers/net/wireless/ath/ath12k/testmode.c
-> ...
->> +		ftm_cmd->seg_hdr.segmentinfo = le32_encode_bits(num_segments,
->> +								ATH12K_FTM_SEGHDR_TOTAL_SEGMENTS) |
->> +					       le32_encode_bits(segnumber,
->> +								ATH12K_FTM_SEGHDR_CURRENT_SEQ);
-> 
-> ath12k-check warns:
-> drivers/net/wireless/ath/ath12k/testmode.c:265: line length of 99 exceeds 90 columns
-> drivers/net/wireless/ath/ath12k/testmode.c:267: line length of 95 exceeds 90 columns
-> 
-> suggest splitting the first line at the =
-> 		ftm_cmd->seg_hdr.segmentinfo =
-> 			le32_encode_bits(num_segments,
-> 					 ATH12K_FTM_SEGHDR_TOTAL_SEGMENTS) |
-> 			le32_encode_bits(segnumber,
-> 					 ATH12K_FTM_SEGHDR_CURRENT_SEQ);
-> 
-
-Sure, will update in the next version.
 
