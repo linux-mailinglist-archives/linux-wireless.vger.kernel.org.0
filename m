@@ -1,105 +1,153 @@
-Return-Path: <linux-wireless+bounces-9242-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9243-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8598690EB3F
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jun 2024 14:37:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D77A990ED5C
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jun 2024 15:17:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1046A282EEF
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jun 2024 12:37:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B2CA281322
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jun 2024 13:17:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E69A143752;
-	Wed, 19 Jun 2024 12:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 107B413F435;
+	Wed, 19 Jun 2024 13:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p9Ny1vBf"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HxcrqM0m"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE4F14373F;
-	Wed, 19 Jun 2024 12:37:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C0814375A
+	for <linux-wireless@vger.kernel.org>; Wed, 19 Jun 2024 13:17:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718800624; cv=none; b=JWa9YKVPc4ysrpFtctL7ZpW1XOFWSlKwBvJhElBXW7LYHXnyCuGnsOocE2QemHHDIJOw7ylRCIXP5XIDxShkItZrM2ldXc0qAW1VkE+ifVSEFLxFv+cWam3t9m3Y32myFWU7my/cvV36i/T4jCkF/GylF4umIJLPtkPBvgyBZQQ=
+	t=1718803031; cv=none; b=SGhs5qnPkHWIYBv85Hq1pPcSsAK6Aq5+lluBNvS3zMNOFhCrCo7mN9imYUr56Fxy34k/gixKeQTJ89FzPeya5NyVh98+EVYAY+nZWPmjVWgKOc98/+T4QhB1UNLDYZc2964JSdiyXB7j0m9do2pUVVwdCR/OiwYd2GephweNiZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718800624; c=relaxed/simple;
-	bh=G/1QD6sxX4K16RM7mh/Kh/CPatatOc0PRN9T+Q9l3ho=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=I/rJwthUMTQKFvPO23f0od+Z3M2AK6kF3mjR36hFFXLo7qLrtdM4tj8/U4uQbdN0Qh4HhcY9dksycqrPH3jnEvWm/QnkLV3DVeZCEOxSpZ1rqYBY9TMIlGY5CyCA3GDcIarWEyJM3Cqos4WYbB6zb5BytTLpDskSeIU+ASrJ4jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p9Ny1vBf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1316EC32786;
-	Wed, 19 Jun 2024 12:36:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718800623;
-	bh=G/1QD6sxX4K16RM7mh/Kh/CPatatOc0PRN9T+Q9l3ho=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=p9Ny1vBfTquUva0eyQD4qFh1bVMBzMXb7Txe93yOkDr19G9vFfBwKs1TNXuwXpg4q
-	 JGByEOYw+S4FBLwq5auCFg/tMpjH6+HyvAiwAV7jes41arn7P4T/iQmg4Q4qa9WHhJ
-	 NNuY9ctilj+0MC415cdJcimeVh2KHjkCPtRgZfhyGIVb0M+wlsz6lIkbZaTOO3E89Q
-	 XjXWHyDwwg7ihGkZ+dVc0Habiw607B3Q1pd3uWnUrXSELSdm9ZrTup5UolBvt6ECoA
-	 FQBNB6JNJeZyp0j4tbOnZiwLpwc+dJpui2Aqmgu+sDGeneREUEVUrO74tiTHcJx2+h
-	 a8+bKJb7A8jcA==
-From: Kalle Valo <kvalo@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: linux-wireless@vger.kernel.org,  davem@davemloft.net,
-  edumazet@google.com,  pabeni@redhat.com,  Felix Fietkau <nbd@nbd.name>,
-  Lorenzo Bianconi <lorenzo@kernel.org>,  Ryder Lee
- <ryder.lee@mediatek.com>,  Shayne Chen <shayne.chen@mediatek.com>,  Sean
- Wang <sean.wang@mediatek.com>,  Matthias Brugger <matthias.bgg@gmail.com>,
-  AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-  netdev@vger.kernel.org,  horms@kernel.org,  kees@kernel.org,  Bo Jiao
- <Bo.Jiao@mediatek.com>,  Alexander Couzens <lynxis@fe80.eu>,  Deren Wu
- <deren.wu@mediatek.com>,  Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-  Leon Yen <leon.yen@mediatek.com>,  Quan Zhou <quan.zhou@mediatek.com>,
-  Ingo Rohloff <lundril@gmx.de>,  Sujuan Chen <sujuan.chen@mediatek.com>,
-  Peter Chiu <chui-hao.chiu@mediatek.com>,  StanleyYP Wang
- <StanleyYP.Wang@mediatek.com>,  Benjamin Lin
- <benjamin-jw.lin@mediatek.com>,  linux-kernel@vger.kernel.org (open
- list:ARM/Mediatek SoC support),  linux-arm-kernel@lists.infradead.org
- (moderated list:ARM/Mediatek SoC support),
-  linux-mediatek@lists.infradead.org (moderated list:ARM/Mediatek SoC
- support)
-Subject: Re: [PATCH net-next v2] wifi: mt76: un-embedd netdev from mt76_dev
-References: <20240619105311.3144908-1-leitao@debian.org>
-Date: Wed, 19 Jun 2024 15:36:56 +0300
-In-Reply-To: <20240619105311.3144908-1-leitao@debian.org> (Breno Leitao's
-	message of "Wed, 19 Jun 2024 03:52:36 -0700")
-Message-ID: <87o77xkt1z.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1718803031; c=relaxed/simple;
+	bh=/Aq+rEEMRWIUXG5fyG/dppdpGwcK+saK65VLMF09w+o=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=chvro9iYDyOpr+7i6a5Wmkj2evPgtVqTq0ZhsuDOMYD8HYbu4Jp1FaCr1mXqUWpVfllIzJ/Txa4DPVN9oZXdCq00i+UoSBdXUHI91u/Z01/8z8pFBy1QjRIS1n4vdXGSo73nNabU4Wo+YHj2mA8KIVPVwnkC9YjkWakT3v5WzRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HxcrqM0m; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1718803029; x=1750339029;
+  h=date:from:to:cc:subject:message-id;
+  bh=/Aq+rEEMRWIUXG5fyG/dppdpGwcK+saK65VLMF09w+o=;
+  b=HxcrqM0mG+YqHbH9f6IMM4sD0jIRUw71cDZSn/zDMBJ2q2DGPLpUMZ7x
+   gyKxWttZGsCa5VB9XrBMPUcZm2WYfEXH8q8Zy6MRjp7aAvsTo16eVpWl/
+   l9BLtjXNwmf/DhDn3v/g1kDVbQy9J/wg+WD5yh4TwpqBwRx/Z4v0sdZjs
+   xcoQz2h/OPC4RNtzxTbEc9mXxnkf/a7otSM82E6X/KGFGef1jkjvGdtJA
+   xZmriBB523olTzpjjV3nyOpVPsDO6EQTSU5nLfEtz/Pra7Yhg5Uwuzfsr
+   5hd0ot588Bh9YCcTR0UYNlVLAHw4TwJZzNassegMBxxPE1TAg176VRjZ4
+   Q==;
+X-CSE-ConnectionGUID: CvvTnB4IT+CBZxAfpKWfzw==
+X-CSE-MsgGUID: JZRGdVztTZmUYrNyROMmbA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11107"; a="15453088"
+X-IronPort-AV: E=Sophos;i="6.08,250,1712646000"; 
+   d="scan'208";a="15453088"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jun 2024 06:17:07 -0700
+X-CSE-ConnectionGUID: CO3dqc1JQrGyFKfNtzFxvA==
+X-CSE-MsgGUID: 6Wy5lxdzTg+aN47sy+43bQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,250,1712646000"; 
+   d="scan'208";a="46368268"
+Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 19 Jun 2024 06:17:05 -0700
+Received: from kbuild by 68891e0c336b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sJvBO-0006c6-0z;
+	Wed, 19 Jun 2024 13:17:02 +0000
+Date: Wed, 19 Jun 2024 21:16:02 +0800
+From: kernel test robot <lkp@intel.com>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+ linux-wireless@vger.kernel.org
+Subject: [wireless-next:main] BUILD SUCCESS
+ 5ad8897fd15a3716601509ed4a7bc47bf0cab661
+Message-ID: <202406192158.DU3kCSyd-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
 
-Breno Leitao <leitao@debian.org> writes:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: 5ad8897fd15a3716601509ed4a7bc47bf0cab661  wifi: wilc1000: disable SDIO func IRQ before suspend
 
-> Embedding net_device into structures prohibits the usage of flexible
-> arrays in the net_device structure. For more details, see the discussion
-> at [1].
->
-> Un-embed the net_devices from struct mt76_dev by converting them
-> into pointers, and allocating them dynamically. Use the leverage
-> alloc_netdev_dummy() to allocate the net_device object at
-> mt76_dma_init().
->
-> The free of the device occurs at mt76_dma_cleanup().
->
-> Link: https://lore.kernel.org/all/20240229225910.79e224cf@kernel.org/ [1]
-> Reviewed-by: Simon Horman <horms@kernel.org>
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+elapsed time: 1533m
 
-As discussed in v1, feel free to take this to net-next to speed things
-up:
+configs tested: 59
+configs skipped: 0
 
-Acked-by: Kalle Valo <kvalo@kernel.org>
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+arc                   randconfig-001-20240619   gcc-13.2.0
+arc                   randconfig-002-20240619   gcc-13.2.0
+arm                   randconfig-001-20240619   clang-19
+arm                   randconfig-002-20240619   clang-19
+arm                   randconfig-003-20240619   clang-19
+arm                   randconfig-004-20240619   gcc-13.2.0
+arm64                 randconfig-001-20240619   clang-19
+arm64                 randconfig-002-20240619   clang-19
+arm64                 randconfig-003-20240619   clang-19
+arm64                 randconfig-004-20240619   clang-19
+csky                  randconfig-001-20240619   gcc-13.2.0
+csky                  randconfig-002-20240619   gcc-13.2.0
+hexagon               randconfig-001-20240619   clang-15
+hexagon               randconfig-002-20240619   clang-19
+i386         buildonly-randconfig-001-20240619   clang-18
+i386         buildonly-randconfig-002-20240619   clang-18
+i386         buildonly-randconfig-003-20240619   clang-18
+i386         buildonly-randconfig-004-20240619   clang-18
+i386         buildonly-randconfig-005-20240619   gcc-7
+i386         buildonly-randconfig-006-20240619   gcc-7
+i386                  randconfig-001-20240619   gcc-7
+i386                  randconfig-002-20240619   gcc-7
+i386                  randconfig-003-20240619   clang-18
+i386                  randconfig-004-20240619   gcc-7
+i386                  randconfig-005-20240619   clang-18
+i386                  randconfig-006-20240619   gcc-9
+i386                  randconfig-011-20240619   clang-18
+i386                  randconfig-012-20240619   clang-18
+i386                  randconfig-013-20240619   gcc-13
+i386                  randconfig-014-20240619   clang-18
+i386                  randconfig-015-20240619   clang-18
+i386                  randconfig-016-20240619   gcc-13
+loongarch             randconfig-001-20240619   gcc-13.2.0
+loongarch             randconfig-002-20240619   gcc-13.2.0
+nios2                 randconfig-001-20240619   gcc-13.2.0
+x86_64       buildonly-randconfig-001-20240619   clang-18
+x86_64       buildonly-randconfig-002-20240619   clang-18
+x86_64       buildonly-randconfig-003-20240619   gcc-11
+x86_64       buildonly-randconfig-004-20240619   clang-18
+x86_64       buildonly-randconfig-005-20240619   clang-18
+x86_64       buildonly-randconfig-006-20240619   gcc-13
+x86_64                randconfig-001-20240619   gcc-13
+x86_64                randconfig-002-20240619   clang-18
+x86_64                randconfig-003-20240619   gcc-8
+x86_64                randconfig-004-20240619   clang-18
+x86_64                randconfig-005-20240619   clang-18
+x86_64                randconfig-006-20240619   gcc-13
+x86_64                randconfig-011-20240619   gcc-13
+x86_64                randconfig-012-20240619   gcc-13
+x86_64                randconfig-013-20240619   gcc-13
+x86_64                randconfig-014-20240619   clang-18
+x86_64                randconfig-015-20240619   clang-18
+x86_64                randconfig-016-20240619   gcc-11
+x86_64                randconfig-071-20240619   clang-18
+x86_64                randconfig-072-20240619   clang-18
+x86_64                randconfig-073-20240619   gcc-9
+x86_64                randconfig-074-20240619   gcc-9
+x86_64                randconfig-075-20240619   clang-18
+x86_64                randconfig-076-20240619   clang-18
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
