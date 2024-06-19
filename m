@@ -1,149 +1,188 @@
-Return-Path: <linux-wireless+bounces-9231-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9232-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 445D490E23C
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jun 2024 06:11:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25E2D90E2C7
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jun 2024 07:44:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0BD21F23A03
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jun 2024 04:11:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5D40B2219A
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jun 2024 05:43:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 442076BFCA;
-	Wed, 19 Jun 2024 04:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A60558BB;
+	Wed, 19 Jun 2024 05:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="FLudy2Vq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LXwZQEU7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCED755882
-	for <linux-wireless@vger.kernel.org>; Wed, 19 Jun 2024 04:10:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E949FC1F;
+	Wed, 19 Jun 2024 05:43:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718770250; cv=none; b=cxPOzVM2r3RLly8dXbgBJiGxmmKkgL+aFvKjgjloUlxZo1MnIqkGtzg+AYdEXcuCp6oMxMT1KCVoQpUzsX4fJQC46RKqqMOAkfnXvomTpMioKrWNetYQmTv4SvbIB0gw5yzyN+ba11tZsQ9qg5BE+gy+zMVZD7r/ET5UnvQRuaU=
+	t=1718775832; cv=none; b=LLonIjg9C4fn8tTCYqnBLdKEFyL3WGCOtmUkf6rRWWvfYpc4+ssZdOWi2sEdFFu5QPLrjeJRUgDZ7RHuhYduyWLdkdsOnZsfu3rOvkqS+VLm45oLX9+CW/NvZQqbYa4WJNi8iL261B0JiDusHq+oHaYxZBXAP3K3aZ3mrt8shrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718770250; c=relaxed/simple;
-	bh=YDLHKtCIPLrnk6kh4WzOWYZSpISXjaBgNI8IVrOMqkM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ulEPOPYnNX8EcLu47mpX1K/W3oVFxwcM975I+bshMDtqR6uqzKi0++G+304uTfFtp2gU10d+qg3ZAHQ3fZOOlWXwqxb1dQaZ5NJgYj4YjKq/SmIP/99VBQuoFM1fos5M0Jd7Lqroyl+XWRSPN4PQXkqG16nxrh4pCTgFfQlna/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=FLudy2Vq; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45ILcZGt009524;
-	Wed, 19 Jun 2024 04:10:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	y7nNMpzxRtRrWVVJATkbpBxyTIP2qgaf6ch4grZIH+Y=; b=FLudy2Vq9RSISqmK
-	uvP3sbtvrEgEa6GN1Sc7yultsyQ2QwcN/U6FhyazzB25LSRQkn1U6yoh9boZQqcj
-	9ILKAJFNLcSTAVZtkTNLLjdMpO9vNIGHtstJrOm9mqjc/yx1n9hL6JUBMLDUlBNI
-	sOI6AsEvYZSmr+qqGocEqL43mFp01QhOeo9SnjUX4yxsWayzFE3je/xji093tTg/
-	HvAU22j3AOFsRHF30KTKgICJMlZsls1+fHqW6z5bDIX/oVp8MDX98wyNMhlACnce
-	a/1x1HDI3t1ur2t4OTdU/KLD6jol4maExJlgvbho+8an9AaKY7W8nyNU844I7FXj
-	Wqnveg==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yujag0k7n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Jun 2024 04:10:44 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45J4AhEn013863
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Jun 2024 04:10:43 GMT
-Received: from hu-adisi-blr.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Tue, 18 Jun 2024 21:10:42 -0700
-From: Aditya Kumar Singh <quic_adisi@quicinc.com>
-To: <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>,
-        Aditya Kumar Singh
-	<quic_adisi@quicinc.com>
-Subject: [PATCH 9/9] wifi: mac80211: abort active CAC while freeing the links during MLO
-Date: Wed, 19 Jun 2024 09:39:59 +0530
-Message-ID: <20240619040959.1457547-10-quic_adisi@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240619040959.1457547-1-quic_adisi@quicinc.com>
-References: <20240619040959.1457547-1-quic_adisi@quicinc.com>
+	s=arc-20240116; t=1718775832; c=relaxed/simple;
+	bh=1MWDSgrROFhu76DSyxYy7yjYvYvBvDjlXn+sMPQhZZw=;
+	h=From:To:Subject:Date:CC:Message-ID:MIME-Version:Content-Type; b=Evnw5XHOZoma2hrw5O1IDaSecuHobR6zmJ3sHe9IyF1uGgB/NrmOhpFJ+DtdXqWH7mpLX+NO2VHswakbgzs5zdepycncrHaqNwdL8FHqAtyAEnfYy86fYduCGm/ZeS9caNCHgopZ70FVTQ/v2LRlidTE+sUebuZNCtlJFDBEhWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LXwZQEU7; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1f64ecb1766so44747175ad.1;
+        Tue, 18 Jun 2024 22:43:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718775830; x=1719380630; darn=vger.kernel.org;
+        h=mime-version:message-id:cc:date:subject:to:from:user-agent:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=1MWDSgrROFhu76DSyxYy7yjYvYvBvDjlXn+sMPQhZZw=;
+        b=LXwZQEU7SCYtcv2Dv+2yCz21W/i1lOlr4jmI0JqSSdSLZrcv6l7c+dABXHlMxRuZ2Y
+         hD1eRaLzVKsG/g8KO1Sj7pbmuHPv2gkzc52ntgNXYDK9LqHzMJmepGndpP0hutovCeI0
+         oHu6Zz96HHOrVtm5yHVnUl7AA8ikPu3XjEoY5UUZZHTnNGZsook2G7IYXenWShoWN/mv
+         tx/ZOtNKOdu2oUqkWfLAUtwQfQc4+BklJBKamqqflJ8QWsxdw5wfB7yrZqnUJofgVJ6f
+         1QQ39EIbEZ03o2wEqqnQo0yB8ZVFuM1Jz6yhHhrkid9Lkv2ruytwm1O6jCSlHh8OLO8v
+         XnEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718775830; x=1719380630;
+        h=mime-version:message-id:cc:date:subject:to:from:user-agent
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1MWDSgrROFhu76DSyxYy7yjYvYvBvDjlXn+sMPQhZZw=;
+        b=qFD6be3VC6FzkfXBYoPzaPsSGVwoMc4ex+CnGes8u5ThaNDq7oV/T+xFaxgqsXnDDG
+         Ka6V+Xn9HGCuEMYoSkA/kv91Vmt4nHYCL/a1xoifYI9XSrhXoysN8ZP4ugcFXb1X5akn
+         debpw5W/wIVreINdVLNM4ouNMOhRkQz4KyY7DWNeo80VAWzaCuQL19xlyduFLRotPRlb
+         ZwcdzCoe5FmPSRgeoG8ZrJxtCX1O+Rc8nvjlMHufVZAdsROBmk51n2m9Zc87mIdwAnRq
+         WntNahJz/Tk2e9XlDUseDflh+i5G8v8Ng/n/x9dvOXEF5dkt6vXV8G5nR2950HEWutL9
+         /fUw==
+X-Gm-Message-State: AOJu0YxGGqyVUQ3epsjdCvZM89Tcfz0eYNK4BQJpYqfOiHD4JqwKSRI8
+	TjX+M8ppbxxB8dmO9Op0G+Yo5NwdXZ754O0GPTGBciBH1sC2RNtw
+X-Google-Smtp-Source: AGHT+IG4cfqY0r085GVp78gHD0WvEwQnaNKB8ctJdXB3EzIEPfgwgJ/alDtu38pkvaE8lUWvr11uPA==
+X-Received: by 2002:a17:903:40c7:b0:1f7:1cbc:184b with SMTP id d9443c01a7336-1f9aa3c362cmr17571975ad.20.1718775829404;
+        Tue, 18 Jun 2024 22:43:49 -0700 (PDT)
+Received: from terra ([122.171.16.135])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f855e704desm107512475ad.75.2024.06.18.22.43.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Jun 2024 22:43:48 -0700 (PDT)
+User-agent: Mozilla/5.0 (Windows NT 6.1; rv:38.0) Gecko/20100101
+ Thunderbird/38.1.0 Lightning/4.0.2
+From: Forty Five <mathewegeorge@gmail.com>
+To: linux-wireless@vger.kernel.org
+Subject: [REGRESSION] Freeze on resume from S3 (bisected)
+Date: Wed, 19 Jun 2024 10:09:03 +0530
+CC: linux-pm@vger.kernel.org,phhuang@realtek.com,pkshih@realtek.com,kvalo@kernel.org,regressions@lists.linux.dev
+Message-ID: <87tthpwkqf.fsf@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: DbgN5xWkqR4X6d-AsGtVj_gCBeyrMUM7
-X-Proofpoint-ORIG-GUID: DbgN5xWkqR4X6d-AsGtVj_gCBeyrMUM7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-18_08,2024-06-17_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- phishscore=0 mlxscore=0 adultscore=0 mlxlogscore=984 impostorscore=0
- spamscore=0 bulkscore=0 malwarescore=0 clxscore=1015 suspectscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2406190029
 
-If CAC is started and the interface is brought down, currently, CAC
-started on link 0 is aborted in function ieee80211_do_stop(). Technically,
-by the time execution reaches the above function, all links are already
-teared down and hence link 0 (or deflink) alone is handled. Also, since
-links are teared down, information on other links is also not available.
-Hence there is a need to handle this in function ieee80211_free_links().
 
-Add changes in ieee80211_free_links() function which cancels any scheduled
-dfs_cac_timer_work on the link and if CAC is started, aborts it.
+I've been experiencing system freezes that require a hard reset with the
+power button, starting from v6.8-rc1. The warnings produced suggest a
+wireless-related issue, and the bisection seems to confirm this.
 
-Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
----
- net/mac80211/link.c | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+The freezes usually occur right after resuming from S3 (suspend). To
+reproduce the issue, I just suspend (`sudo systemctl suspend`) and
+resume (press any key on keyboard) a few times until the freeze happens.
+It takes 4-5 cycles of this most of the time, though it varies a lot.
 
-diff --git a/net/mac80211/link.c b/net/mac80211/link.c
-index 8871cc1a0454..6c68887f051c 100644
---- a/net/mac80211/link.c
-+++ b/net/mac80211/link.c
-@@ -111,10 +111,32 @@ static void ieee80211_tear_down_links(struct ieee80211_sub_if_data *sdata,
- static void ieee80211_free_links(struct ieee80211_sub_if_data *sdata,
- 				 struct link_container **links)
- {
-+	struct ieee80211_bss_conf *link_conf;
-+	struct ieee80211_link_data *link_data;
-+	struct cfg80211_chan_def chandef;
- 	unsigned int link_id;
- 
--	for (link_id = 0; link_id < IEEE80211_MLD_MAX_NUM_LINKS; link_id++)
-+	for (link_id = 0; link_id < IEEE80211_MLD_MAX_NUM_LINKS; link_id++) {
-+		link_data = &links[link_id]->data;
-+		link_conf = &links[link_id]->conf;
-+
-+		if (!link_data || !link_conf)
-+			continue;
-+
-+		wiphy_delayed_work_cancel(sdata->local->hw.wiphy,
-+					  &link_data->dfs_cac_timer_work);
-+
-+		if (sdata->wdev.links[link_id].cac_started) {
-+			chandef = link_conf->chanreq.oper;
-+			ieee80211_link_release_channel(link_data);
-+			cfg80211_cac_event(sdata->dev,
-+					   &chandef,
-+					   NL80211_RADAR_CAC_ABORTED,
-+					   GFP_KERNEL, link_id);
-+		}
-+
- 		kfree(links[link_id]);
-+	}
- }
- 
- static int ieee80211_check_dup_link_addrs(struct ieee80211_sub_if_data *sdata)
--- 
-2.34.1
+The upshot of all of this is that S3 (and S4 as well, see below) are
+pretty much unusable for me, due to the risk of losing work due to a
+freeze.
 
+Since a hard reset causes the systemd journal to be dropped, I set up
+[kdumpst](https://gitlab.freedesktop.org/gpiccoli/kdumpst) so that I
+could record dmesg output at the time of the freeze. I've linked to the
+crash logs produced by that tool for every bad commit in the bisection
+(except in cases where I couldn't get the kdump to happen - see the
+comments in the bisection log below), as well as a crash log triggered
+by SysRq (Alt+SysRq+c) on a good commit for comparison.
+
+I've already submitted this as an Arch Linux bug report:
+https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/issues/61
+
+The freezes have also occurred (seemingly) at random times, although
+this is quite rare. They do seem to be more likely to occur after the
+system has been hibernated, although I don't really have any way to
+confirm this.
+
+
+Git bisect log:
+
+git bisect start
+# status: waiting for both good and bad commits
+# bad: [83a7eefedc9b56fe7bfeff13b6c7356688ffa670] Linux 6.10-rc3
+git bisect bad 83a7eefedc9b56fe7bfeff13b6c7356688ffa670
+# good: [e8f897f4afef0031fe618a8e94127a0934896aba] Linux 6.8
+git bisect good e8f897f4afef0031fe618a8e94127a0934896aba
+# bad: [445e60303883950161f67e18b9f048b18d7fb706] Merge branch '1GbE' of git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue
+git bisect bad 445e60303883950161f67e18b9f048b18d7fb706
+# bad: [e5e038b7ae9da96b93974bf072ca1876899a01a3] Merge tag 'fs_for_v6.9-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/jack/linux-fs
+# this one froze on the first suspend/resume
+git bisect bad e5e038b7ae9da96b93974bf072ca1876899a01a3
+# good: [1f440397665f4241346e4cc6d93f8b73880815d1] Merge tag 'docs-6.9' of git://git.lwn.net/linux
+git bisect good 1f440397665f4241346e4cc6d93f8b73880815d1
+# bad: [a2f24c8a955c8f941d6ac08dd7f401f54eef4627] Merge branch 'mptcp-some-clean-up-patches'
+git bisect bad a2f24c8a955c8f941d6ac08dd7f401f54eef4627
+# bad: [26f4dac11775a1ca24e2605cb30e828d4dbdea93] netfilter: x_tables: Use unsafe_memcpy() for 0-sized destination
+# This one was very hard to reproduce - it must have taken 25-30 cycles total, and I hibernated the system twice
+git bisect bad 26f4dac11775a1ca24e2605cb30e828d4dbdea93
+# good: [4f5e5092fdbf5cec6bedc19fbe69cce4f5f08372] Merge tag 'net-6.8-rc5' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
+git bisect good 4f5e5092fdbf5cec6bedc19fbe69cce4f5f08372
+# good: [b4e8ae5c8c41355791a99fdf2fcac16deace1e79] net: add napi_busy_loop_rcu()
+git bisect good b4e8ae5c8c41355791a99fdf2fcac16deace1e79
+# bad: [20ea9327c2fd545d6b96e998727bcd724290694d] net: dccp: Simplify the allocation of slab caches in dccp_ackvec_init
+git bisect bad 20ea9327c2fd545d6b96e998727bcd724290694d
+# bad: [92046e83c07b064ca65ac4ae7660a540016bdfc1] Merge tag 'for-netdev' of https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next
+git bisect bad 92046e83c07b064ca65ac4ae7660a540016bdfc1
+# bad: [b54846da45942bbe4e5ebc59d497e4a48525ba5a] Merge tag 'wireless-next-2024-01-25' of git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next
+git bisect bad b54846da45942bbe4e5ebc59d497e4a48525ba5a
+# good: [3832a9c40b356500c5b85a6fdf9577c590fcd637] wifi: rtw89: fw: extend JOIN H2C command to support WiFi 7 chips
+git bisect good 3832a9c40b356500c5b85a6fdf9577c590fcd637
+# bad: [5ba45ba77616637e554d66a57ef0334e5cc2efe4] wifi: rtw89: fix disabling concurrent mode TX hang issue
+# I see the same kernel warnings here as with the other bad commits.
+# However, there is no crash after a few suspend/resume cycles - instead
+# the system simply restarts when I trigger the nth suspend. I'm not
+# able to trigger a crash with SysRq either (Alt+SysRq+c) - again, the
+# system restarts. This is the case with all bad commits after this.
+git bisect bad 5ba45ba77616637e554d66a57ef0334e5cc2efe4
+# good: [85da8f71aaa7b83ea7ef0e89182e0cd47e16d465] wifi: brcmfmac: Demote vendor-specific attach/detach messages to info
+git bisect good 85da8f71aaa7b83ea7ef0e89182e0cd47e16d465
+# good: [295304040d9f6f350b68652acd99650c7e16d0a8] wifi: rtw89: 8922a: add TX power related ops
+git bisect good 295304040d9f6f350b68652acd99650c7e16d0a8
+# good: [7cf6b6764b2f665d317ba0f91c247437019a2f4c] wifi: rtw89: Set default CQM config if not present
+git bisect good 7cf6b6764b2f665d317ba0f91c247437019a2f4c
+# good: [7e11a2966f51695c0af0b1f976a32d64dee243b2] wifi: rtw89: fix null pointer access when abort scan
+git bisect good 7e11a2966f51695c0af0b1f976a32d64dee243b2
+# bad: [f59a98c82534e986b06615ba94e060aa3129b08b] wifi: rtw89: fix HW scan timeout due to TSF sync issue
+git bisect bad f59a98c82534e986b06615ba94e060aa3129b08b
+# bad: [bcbefbd032df6bfe925e6afeca82eb9d2cc0cb23] wifi: rtw89: add wait/completion for abort scan
+git bisect bad bcbefbd032df6bfe925e6afeca82eb9d2cc0cb23
+# first bad commit: [bcbefbd032df6bfe925e6afeca82eb9d2cc0cb23] wifi: rtw89: add wait/completion for abort scan
+
+
+#regzbot introduced: bcbefbd032df6bfe925e6afeca82eb9d2cc0cb23
+
+
+Logs produced by kdumpst:
+
+[kdumpst-e5e038b7ae9da96b93974bf072ca1876899a01a3.zip](https://gitlab.archlinux.org/archlinux/packaging/packages/linux/uploads/b925cb5e9c6cfb6b224993c017ba61f5/kdumpst-e5e038b7ae9da96b93974bf072ca1876899a01a3.zip)
+
+[kdumpst-b54846da45942bbe4e5ebc59d497e4a48525ba5a.zip](https://gitlab.archlinux.org/archlinux/packaging/packages/linux/uploads/e1610c3ae26971a890121d3a5eb8fa9e/kdumpst-b54846da45942bbe4e5ebc59d497e4a48525ba5a.zip)
+
+[kdumpst-a2f24c8a955c8f941d6ac08dd7f401f54eef4627.zip](https://gitlab.archlinux.org/archlinux/packaging/packages/linux/uploads/34171a87da304987cc8ce5066fc35dd5/kdumpst-a2f24c8a955c8f941d6ac08dd7f401f54eef4627.zip)
+
+[kdumpst-92046e83c07b064ca65ac4ae7660a540016bdfc1.zip](https://gitlab.archlinux.org/archlinux/packaging/packages/linux/uploads/67d756f963ffafd0b332c88701286a30/kdumpst-92046e83c07b064ca65ac4ae7660a540016bdfc1.zip)
+
+[kdumpst-445e60303883950161f67e18b9f048b18d7fb706.zip](https://gitlab.archlinux.org/archlinux/packaging/packages/linux/uploads/f75f91d127050a327114bf904f335087/kdumpst-445e60303883950161f67e18b9f048b18d7fb706.zip)
+
+[kdumpst-26f4dac11775a1ca24e2605cb30e828d4dbdea93.zip](https://gitlab.archlinux.org/archlinux/packaging/packages/linux/uploads/f3d26fc4187c8b8854386fed6f15c972/kdumpst-26f4dac11775a1ca24e2605cb30e828d4dbdea93.zip)
+
+[kdumpst-20ea9327c2fd545d6b96e998727bcd724290694d.zip](https://gitlab.archlinux.org/archlinux/packaging/packages/linux/uploads/8618207aff0eb92413ce0c2994c7888f/kdumpst-20ea9327c2fd545d6b96e998727bcd724290694d.zip)
+
+Good commit: [kdumpst-e8f897f4afef0031fe618a8e94127a0934896aba.zip](https://gitlab.archlinux.org/archlinux/packaging/packages/linux/uploads/b13b3914e50fc85548c77a4163dec383/kdumpst-e8f897f4afef0031fe618a8e94127a0934896aba.zip)
+--
 
