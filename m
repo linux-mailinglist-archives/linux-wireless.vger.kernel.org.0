@@ -1,92 +1,92 @@
-Return-Path: <linux-wireless+bounces-9236-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9237-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5CF090E682
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jun 2024 11:07:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAE2F90E694
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jun 2024 11:11:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC9B01C21A93
-	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jun 2024 09:07:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F2EB1F2200E
+	for <lists+linux-wireless@lfdr.de>; Wed, 19 Jun 2024 09:11:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C447EEF5;
-	Wed, 19 Jun 2024 09:07:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CD647E776;
+	Wed, 19 Jun 2024 09:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iGDonf6M"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VrbbUr5Z"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86DE224D4
-	for <linux-wireless@vger.kernel.org>; Wed, 19 Jun 2024 09:07:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6281C7E576
+	for <linux-wireless@vger.kernel.org>; Wed, 19 Jun 2024 09:10:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718788061; cv=none; b=TR+HVMC2CNkKS9wiKI+/1zBWN7eElEXpM2wmVDR7cdY1eQ9FM9RnHEF0Py1dpvuAw9ubH3GlwASVtBNVu/VFIESih236lJVRmfvK7Hfg/vREVFrTZ79Sub2hPotFzY8v5JcxZ+VBXOC1udIhyC/lmtSA59QDOh/rPu2AmiRgRKA=
+	t=1718788255; cv=none; b=kjrL0/DDwSJmCoesf0Ex5TW9zH5w5Xg1QVFfiJTOx7mWjSeHS+fXLyIDzGcXGOHd71C1fvwTDh3OMAHa2nW/r7e0of4hfPKI1Gp7EURlHn1DH5B4lGxw6Hlgz4MKw/mNAfC2eJT/35bmeaaosBzSpTqb2APctjc9xUcJsjPETuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718788061; c=relaxed/simple;
-	bh=NQVWWg76uzx9c7sOz2NReyLbKGOFOQCF4FoB84SLZls=;
+	s=arc-20240116; t=1718788255; c=relaxed/simple;
+	bh=wN8yFVyqS4IZa+6gbD+BAY5GZqBxwAbBGa807SgLH5I=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=agzhiXplBS+C7+UpRJZ+PChl/cS7PLpKYH7blKYA6cMxAwQ8ZhYG4YB/qTQA1rnI4ZDxW4FnJCMaK5CxJE5jMzaqSShOWoBEjTa6pi6fqkFxjgnup96Gxg+JKGDZ33mQbbqwdLlGTTmYwCQbcAIDlgUZ0AXmXP6mMvTjnTQas+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iGDonf6M; arc=none smtp.client-ip=209.85.208.50
+	 To:Cc:Content-Type; b=br26vylzMHrBa9DZVwO3Z+4wIelxCszL3ZwontYazlHNiBoWhV9Gxbm/YLgKL+En5kjJQrrKCdosRk6g/5Aqawr+x1tsMIR5v0fqLJAz8P6owJclRdXHnwTt4RtDwSA43COZaEBwwTqGsI5iHfS89xRxRTMnPUNLlUZ9ZyU6qe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VrbbUr5Z; arc=none smtp.client-ip=209.85.208.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-57d119fddd9so2993a12.1
-        for <linux-wireless@vger.kernel.org>; Wed, 19 Jun 2024 02:07:38 -0700 (PDT)
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-57d16251a07so1650a12.1
+        for <linux-wireless@vger.kernel.org>; Wed, 19 Jun 2024 02:10:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1718788057; x=1719392857; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1718788251; x=1719393051; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=w040dDSggZKx2nZfSuhbq5UJxonhiqKtPHidmMpJCDg=;
-        b=iGDonf6MLJStjsLCV5m4q4NdrWnCPQcwMOMXyNBRsydT5jO1d68galnGmA9gGpqt/F
-         MOtP1oiWC25QneX9QVFl+KKtQK4n8uegDQc19Z0s8GEGytl3y1c2jtzbxDsrVckv8x32
-         rTQVJTmyUm/pp8dBGvFVTAuEDa5Q8radCItEWNEBnyWM+BX0EVefC8zvJhWK52m+pVN1
-         hU/FKd5rZHL98l/fJz8+b9m9+P40oWCNpmbC4OaqMfjZQQFAk4cOWCRZgquXGJO8TqPr
-         jLJ8CawMAGr4gSVhSrtMWuyvAXPO/eccY/KaAMJVsyn+u6j0pQHEFtjUa7VKVSdq3lTt
-         Y9uQ==
+        bh=WxdzoaDML2ndueel6BZlI16I6zBV/MwHlcg6wwmngnE=;
+        b=VrbbUr5ZlXpbBv99r+//xb3fINJrGFm9vKOgAElAmzTrUrOCwFGxU9yU/3tpQ5h1LK
+         MGGVZuhwZuFCuHPMB3pzwpnrROyn29EfNPbViTUYzBGEQztXvH4GU9/90l+PPeg6AzCL
+         VAHfxcoOKyBuC9L2Q+oiILQsKgwYloO84qqNrXjgHjRHm/Rf7WOUP/RWB+4bozPYXlii
+         Bc+U3GchqDOekKx/plgWWd3mdfDLG2qtaZwkJBu7OGroKtwLAuNknmsI9qAWih2dQdRV
+         HblZcAycEc1VgmkxxlXz+eB+daWsCuC0lVRBbUWneBgabWf+GPazNA9hhYLVRicBrCqZ
+         Sxnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718788057; x=1719392857;
+        d=1e100.net; s=20230601; t=1718788251; x=1719393051;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=w040dDSggZKx2nZfSuhbq5UJxonhiqKtPHidmMpJCDg=;
-        b=af1VHLxz7vp81j0g1HM0+TJ1rW5VT4Tywijq+H6zHIX4gWsCtbRq1ksnemtl4kHtas
-         GznyC4S54Km3hOh1VkA17glybgRS3nDNy1wp3EUvSNs133RTq9s/tmKs4YF6kD1yEyax
-         Obm65kv/VoGq4e6diBcqnpRCSO/CDmYnC8gZ3VF3hpcEe7V0ixVBKY+e/FHunwQFvBh9
-         aKjGKym72J4RRstU9teN/9Z/c7k19I2DFlydZFwQ1ILVQOJgh6h2o61vU7WMyD6egDZj
-         DGCIpaKytgXt4gmHGLv705MApCO/XZECiZvItFlycF2uVyFzo1Nk0uuQqAxdLQyQuwR1
-         50Jg==
-X-Forwarded-Encrypted: i=1; AJvYcCX2pwYsYFANDEJvb3iRAdyrKzd0wdcA2qIN3Bj01hiyPN+a/+rHUQNzI/cy+PRI9+qjUKfs8u8KijrON8ZU6rXaqLYnBfvFdW9LoejBMp4=
-X-Gm-Message-State: AOJu0YzEHF/kwSiQK682V0MwUS57x46XGWZXgsbjtF4Ku0XxRpj7l4oO
-	VkeOhEE68N7genyIarbM+yvFdQ1cPD7gVe6RpILUmOiuIQjwUflInZgCw+YFGBi6wVKtxRtjSCk
-	q4+8FyeXWVVr9koSWEC6MKFERy9Ue66GZ17m2
-X-Google-Smtp-Source: AGHT+IElx942k2fjN+uRGV/WODZr3r0SpvBDEzr451hiqnQXMwt0fRXsF+AR2hfpZbUVs8vVoRsS/ioUtJlCWboGOAE=
-X-Received: by 2002:a05:6402:278f:b0:57c:d1dd:e645 with SMTP id
- 4fb4d7f45d1cf-57d0ec619f9mr96189a12.5.1718788056714; Wed, 19 Jun 2024
- 02:07:36 -0700 (PDT)
+        bh=WxdzoaDML2ndueel6BZlI16I6zBV/MwHlcg6wwmngnE=;
+        b=YN7hi/gRPY8/2FQlfbvnWeCPWrn9qobx4TZVbKhOzSLQWABv8grq+niTQeFcQcPmdG
+         tSYPkMGHrXEhkdouQlRgGmwGWggJMIeNrjapbpO/nPal8cgWvGMYO0yewS0h5GSosp8s
+         gVD77ftg+7zFCicZ5vsCS4oPE9HSV9bElrrUwb0ceKavVWMdEgSx3qUYSVydowzjqfla
+         jXbYJXkbOr4YlvDxlW5CAjvY6lVhqbnA9QXwEtCKW34vz5jEPfaKgkanYMHqHRyYY5/y
+         0ptBcyn6smT9GuuVg3fGvLr8Xwl8p3162Rbpo87Dc3xDlFcpsWlNhSECk8+3DuPShTro
+         r4cw==
+X-Forwarded-Encrypted: i=1; AJvYcCXWKp2Ftq+ZioDkdN5p09G/xastHjW+5yyUYP6pBUfuE3Ck2ywEpeDgddjerwY4FohDCNe05fGrKZIqIM4Y9aPi4MIIvcbrGBoKM5Wqo0I=
+X-Gm-Message-State: AOJu0Yx2++YajcYmlY1hF2svBakCHYscCZMwfDfXZXGtuxy/WIjC9o1v
+	wiEW4uKGf55DpXmWB5+9zETJ+pMRDzOjZrtSPyiqyk4mkwrtbG7kyWsLSStfJ26P3BQrQS0TYr1
+	uAldndPTmArSKHzyzOFdsmedoXmb7MkwFCjh7zA0CP5G/ey9JXgEm
+X-Google-Smtp-Source: AGHT+IHyEGupMiDJLxHWnla1YueniKdz+Sr8fbjJoc2PshALijrsFrMyRk2qFx9rbwk0F8Ximq0yAaim9WmXLQG67KI=
+X-Received: by 2002:a05:6402:2709:b0:57c:fef9:1a9 with SMTP id
+ 4fb4d7f45d1cf-57d0ec442cfmr106610a12.1.1718788251172; Wed, 19 Jun 2024
+ 02:10:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240615160800.250667-1-edumazet@google.com> <87sexbsvqj.fsf@toke.dk>
-In-Reply-To: <87sexbsvqj.fsf@toke.dk>
+References: <20240615160800.250667-1-edumazet@google.com> <87zfrjk8wi.fsf@kernel.org>
+In-Reply-To: <87zfrjk8wi.fsf@kernel.org>
 From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 19 Jun 2024 11:07:25 +0200
-Message-ID: <CANn89iK=9_oWemL+qoHcrPH=hWe49NKJr9=tuGQ2yMqXVNOaaw@mail.gmail.com>
+Date: Wed, 19 Jun 2024 11:10:39 +0200
+Message-ID: <CANn89iJ2SHPGVM1mxx4x4WU5X0CcVmmBhSD-FZS5fPs_Z1D01A@mail.gmail.com>
 Subject: Re: [PATCH net] wifi: cfg80211: restrict NL80211_ATTR_TXQ_QUANTUM values
-To: =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>
+To: Kalle Valo <kvalo@kernel.org>
 Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>, Johannes Berg <johannes@sipsolutions.net>, 
 	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com
+	eric.dumazet@gmail.com, =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@toke.dk>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 17, 2024 at 12:35=E2=80=AFPM Toke H=C3=B8iland-J=C3=B8rgensen <=
-toke@toke.dk> wrote:
+On Mon, Jun 17, 2024 at 3:15=E2=80=AFPM Kalle Valo <kvalo@kernel.org> wrote=
+:
 >
 > Eric Dumazet <edumazet@google.com> writes:
 >
@@ -182,30 +182,28 @@ space")
 > > Signed-off-by: Eric Dumazet <edumazet@google.com>
 > > Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
 >
-> Hmm, extraneous s-o-b? :)
+> cfg80211 patches go to wireless tree, not net.
 >
-> > ---
-> >  net/wireless/nl80211.c | 6 +++++-
-> >  1 file changed, 5 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-> > index 3c0bca4238d357c01b6fe92bb0f2b2b8a2917725..72c7bf55858166b8fc12114=
-f090bf085d652db6b 100644
-> > --- a/net/wireless/nl80211.c
-> > +++ b/net/wireless/nl80211.c
-> > @@ -468,6 +468,10 @@ static const struct netlink_range_validation nl802=
-11_punct_bitmap_range =3D {
-> >       .max =3D 0xffff,
-> >  };
-> >
-> > +static const struct netlink_range_validation q_range =3D {
-> > +     .max =3D INT_MAX,
-> > +};
+> --
+> https://patchwork.kernel.org/project/linux-wireless/list/
 >
-> The corresponding fixes to sch_fq and fq_codel use a limit of 1<<20;
-> INT_MAX is a bit above that, won't that still lead to issues?
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
+tches
 
-What kind of  issues do you envision ?
 
-I do not know what kind of aggregation level wireless will have in 2030.
+I used as usual for wifi paches :
+
+git send-email \
+    --to "David S. Miller <davem@davemloft.net>" \
+   --to "Jakub Kicinski <kuba@kernel.org>" \
+   --to "Paolo Abeni <pabeni@redhat.com>" \
+   --cc "linux-wireless@vger.kernel.org" \
+   --to "Johannes Berg <johannes@sipsolutions.net>" \
+    --cc "netdev@vger.kernel.org" \
+--cc "eric.dumazet@gmail.com" \
+--validate \
+0001-wifi-cfg80211-restrict-NL80211_ATTR_TXQ_QUANTUM-valu.patch
+
+
+What did I miss ?
 
