@@ -1,114 +1,98 @@
-Return-Path: <linux-wireless+bounces-9282-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9283-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1C4C91005B
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 11:29:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DE21910071
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 11:33:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3BD51C210DA
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 09:29:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08422284941
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 09:33:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 883241A00C2;
-	Thu, 20 Jun 2024 09:29:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="455Y4DfC";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mdWQu1Wb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC68217109F;
+	Thu, 20 Jun 2024 09:33:53 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA04E39FD7
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Jun 2024 09:29:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF481802E;
+	Thu, 20 Jun 2024 09:33:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718875768; cv=none; b=ZRdIz10FIjaOH3Db8dl9PE/AIn9FvPB8Xjx5AdFxtjuBad5rooAnoPya20e5kaVr1BM4xWqHXii5R4YHv7yqTt7b3J55SP3JirruUKMRvYvKFY9nNUgoYv1D316i1C0GJ9iGP3DaxJ6Q+dfyEK1vp1vqV4S69ndO5ST2n2frkJg=
+	t=1718876033; cv=none; b=H9jFtCUm+dOu4naMozxajyTRrCsfWUTDQ7Okom9tqeRma9CoKm3Rb4y3myboE0U7n8jKGmOlE2TcoKJp96b81LBSsl7P8wXrobzC/wz1uHYNbtBJbw7nxWNoS7vC02GcLv8ebFcGTHMdXYehGp+vUcfhSCGc9aKQq601kNgdcpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718875768; c=relaxed/simple;
-	bh=zt31FhiMumx3MPxr1BNq1Pgmcm8cxEhtCRrzQu74ALk=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=u0BiL0ciuwXLtvmyvN1VWg3OX30lv0h660WTW5Xm0n6RDxoQPsEA9fAO5TDP54u5ekoDP4gRQtqBd+z8qmGKWrZZ24VYFEzsMg05LqqBNVVp/H4XFALxgl1WT+iR65vpLeh+LEIC4RJI5ndw8NBzzi5BTruyuGFT7Bs3/STWmFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=455Y4DfC; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mdWQu1Wb; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Message-ID: <866b5d0f-5c89-4dcc-adeb-8ebb0cc340e2@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1718875764;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0WCCb2gpcdlseiJAeB8VVwI0SdeLz44tD0i1Mpz8Ghs=;
-	b=455Y4DfCvcfdk0SxImKhNoCoJmuXkT3x6xQvMiYIjFXtVSmebmC0decrt+y48EjT5Ze09y
-	M68clQjOa/V9u1LU6y0JidbHzug6SMbJB80YNPkOWH7dcZLbPQQDbvQlr70SYkCfVCJLuM
-	TOTHif6wMuz0yyUN8ZdkkHB1aG+KoeUn6CPtj9j9JSxBL8fSYEaCaW6DvlF1nn7JtgLOrd
-	oRCMa7aDSReZ+kflv6wZZsjMryY4VFnvfSmMGkt8+2lFzrH8pLErL4IZcOq4Sv85O0glcA
-	EfNs9oqOtIUCVfJmSYGi9rFe0CfzBRS1PbWiBH1I13oBf0y797/BJk/lqTSgYw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1718875764;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0WCCb2gpcdlseiJAeB8VVwI0SdeLz44tD0i1Mpz8Ghs=;
-	b=mdWQu1Wbx4Tm+XO4hnBqOak3PAtBxpuwnTJvQRZe/IwCSAkYXPrSCj6JaAQzE+btOMMdCX
-	14myfGMY3/co+jCQ==
-Date: Thu, 20 Jun 2024 11:29:24 +0200
+	s=arc-20240116; t=1718876033; c=relaxed/simple;
+	bh=sxoBp8344+h3toLqhD2tkt93nxAaMGVqGLXZJlV88us=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=FGPBQl+fAj1CBaXnDOcu5AEahBwOQcIRJoDyGLHeZ3BQ3RzM4mg9UIN/YPQNeG6vyKSjd6rL2EfOinMzNTGxk419F297WhOIuY64y3LGdEuWrC838LGzgnxKVIK0EXI+thfzaiAB0/4nxliM91m8+6vH95diwrYvYVxCc9zvIOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 45K9Xf6W22754179, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 45K9Xf6W22754179
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 20 Jun 2024 17:33:41 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 20 Jun 2024 17:33:42 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 20 Jun 2024 17:33:41 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
+ 15.01.2507.035; Thu, 20 Jun 2024 17:33:41 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Mathew George <mathewegeorge@gmail.com>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        Bernie Huang
+	<phhuang@realtek.com>,
+        "kvalo@kernel.org" <kvalo@kernel.org>,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>
+Subject: RE: [REGRESSION] Freeze on resume from S3 (bisected)
+Thread-Topic: [REGRESSION] Freeze on resume from S3 (bisected)
+Thread-Index: AQHawgusbA+C/SyMRES67Y/3y6K7kbHOmQDAgAALtgCAAakyAP//jZeAgACItrA=
+Date: Thu, 20 Jun 2024 09:33:41 +0000
+Message-ID: <342b6b95d97a4bf09afee15c09481efc@realtek.com>
+References: <87tthpwkqf.fsf@gmail.com>
+ <2ce41d4129234ba9a91d5b4dcd8a40ee@realtek.com> <87sex93s63.fsf@gmail.com>
+ <6970398610c546b1b62e599902c67572@realtek.com>
+ <E3FF7BC1-725B-40E2-AAF0-CA41A44B9DF9@gmail.com>
+In-Reply-To: <E3FF7BC1-725B-40E2-AAF0-CA41A44B9DF9@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: ETIMEDOUT with rtl8xxxu
-From: Martin Kaistra <martin.kaistra@linutronix.de>
-To: Ping-Ke Shih <pkshih@realtek.com>,
- Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <ee08c815-9389-4277-be6d-197511636892@linutronix.de>
- <1385519564244924a1101770344544a0@realtek.com>
- <8581983e-714b-4173-9150-061f57516ab8@linutronix.de>
-Content-Language: de-DE
-In-Reply-To: <8581983e-714b-4173-9150-061f57516ab8@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-Am 12.06.24 um 14:20 schrieb Martin Kaistra:
-> Am 12.06.24 um 03:47 schrieb Ping-Ke Shih:
->> Martin Kaistra <martin.kaistra@linutronix.de> wrote:
->>> Hi Ping-Ke, hi Bitterblue,
->>>
->>> I have a problem with the rtl8xxxu driver and 8188f, but only on some boards.
->>> More specifically, I can see that during the second channel switch (which
->>> happens when I do "iw dev wlan0 scan"),  the rtl8xxxu_read32(0e08) returns -110
->>> (ETIMEDOUT) and after that no reads or writes work anymore until I unload and
->>> reload the driver.
->>
->> If this symptom is 100% reproducible, I would add many rtl8xxxu_read32(0xe08)
->> somewhere to bisect the cause resulting from writing IO or certain H2C commands.
-> 
-> Thanks to your suggestion, I found out that
-> 1) the timeouts start occuring right after the first frame is sent (rtl8xxxu_tx)
-> 2) the adress doesn't matter, rtl8xxxu_read8(0x100) also gets a timeout
-> 
-
-After doing more debugging, I saw that the values that are written to the 
-txpower registers are different between vendor and mainline driver.
-
-The efuse for the problematic boards has no txpower values set, but reads instead
-
-00000010: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-
-I guess, they haven't gone through the calibration stage yet..
-
-The vendor driver seems to have a check for invalid values and uses some default 
-values instead. rtl8xxxu just uses 0xff, sets the power to max and then once a 
-frame is sent, the USB power supply is not enough and the chip goes into reset?!
-
-When I either comment out the calls to .set_tx_power() or add some defaults in 
-case of 0xff in parse_efuse() the chip works and I don't see any timeout problems.
-
-I will prepare a patch to fix at least rtl8188fu_parse_efuse() and then we can 
-see how to implement it for all supported chips.
+TWF0aGV3IEdlb3JnZSA8bWF0aGV3ZWdlb3JnZUBnbWFpbC5jb20+IHdyb3RlOg0KPiA+IFBsZWFz
+ZSBzaGFyZSBBcmNoIExpbnV4IGltYWdlIHlvdSBhcmUgdXNpbmcuDQo+IA0KPiBOb3Qgc3VyZSB3
+aGF0IHlvdSBtZWFuIGJ5ICdpbWFnZScuIA0KDQpJIGZlZWwgdGhpcyBwcm9ibGVtIG1heSBiZSBl
+YXNpZXIgdG8gcmVwcm9kdWNlIG9uIEFyY2ggTGludXgsIHNvIEkgd291bGQgbGlrZQ0KdG8ga25v
+dyBBcmNoIExpbnV4IGlzbyBmaWxlIHlvdSBpbnN0YWxsZWQuIA0KDQo+IEFzIHlvdSBjYW4gc2Vl
+IGluIHRoZSBjcmFzaCBsb2cgYXR0YWNoZWQgdG8gbXkNCj4gcHJldmlvdXMgbWFpbCwgSSBidWls
+dCB0aGUgbGF0ZXN0IG1haW5saW5lIGtlcm5lbCAoNDQ1ZTYwMzAzODgzIGF0IHRoZSB0aW1lKSB3
+aXRoIHlvdXINCj4gcGF0Y2ggYXBwbGllZC4gSSB1c2VkIFt0aGlzIFBLR0JVSUxEXShodHRwczov
+L2F1ci5hcmNobGludXgub3JnL3BhY2thZ2VzL2xpbnV4LWdpdCkNCj4gdG8gYnVpbGQgaXQ7IHRo
+ZSBmaWxlIGBjb25maWdgIGNvbnRhaW5zIHRoZSBrZXJuZWwgY29uZmlndXJhdGlvbiAoSSBkaWQg
+bm90IGFwcGx5IGFueSBvdGhlcg0KPiBvcHRpb25zKSwgYW5kIHRoZXJlIGFyZSBubyBwYXRjaGVz
+IGFwcGxpZWQgZXhjZXB0IHlvdXJzLg0KDQpJIHdpbGwgZG8gaXQgYXMgeW91ciBzaWRlLiANCg0K
+PiANCj4gPiBDb3VsZCB5b3UgcGxlYXNlIGhlbHAgdG8gY29sbGVjdCAyIG9yIG1vcmUgY3Jhc2gg
+bG9nPw0KPiA+IFNvIEkgY2FuIGNoZWNrIGlmIHRoZXJlIGFyZQ0KPiA+IG1vcmUgdGhhbiBvbmUg
+Y3Jhc2ggY2FzZXMuDQo+IA0KPiBXaGVuIEkgYW0gYmFjayBhdCBteSBzeXN0ZW0sIEkgd2lsbCBy
+ZXByb2R1Y2UgdGhlIGlzc3VlIGEgZmV3IG1vcmUgdGltZXMgd2l0aA0KPiB0aGlzIGtlcm5lbCwg
+YW5kIGF0dGFjaCB0aGUgbG9ncy4gSW4gdGhlIG1lYW50aW1lLCB5b3UgY291bGQgaGF2ZSBhIGxv
+b2sgYXQgdGhlIGxvZ3MNCj4gbGlua2VkIGluIG15IGZpcnN0IG1haWwuIFRoZXJlIGFyZSBsb2dz
+IGZvciBtb3N0IG9mIHRoZSBiYWQgY29tbWl0cyBlbmNvdW50ZXJlZCBpbiB0aGUNCj4gYmlzZWN0
+aW9uLg0KDQpJIGhhdmUgc2VlbiB0aGF0LCBidXQgbm8gY2xlYXIgaWRlYSBmb3Igbm93LCBzbyBJ
+IHdpbGwgaW5zdGFsbCBBcmNoIExpbnV4IGFzIHlvdXJzDQppbiBteSBzaWRlLg0KDQoNCg0K
 
