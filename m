@@ -1,128 +1,160 @@
-Return-Path: <linux-wireless+bounces-9335-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9336-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 218F09111BC
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 21:03:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B032911237
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 21:35:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44D001C2250A
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 19:03:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCA6C1F2246F
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 19:35:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C1C71B47AF;
-	Thu, 20 Jun 2024 19:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88FC41AC765;
+	Thu, 20 Jun 2024 19:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="jvmowCZX"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="VS7f0Q8s"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909C21B14F3
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Jun 2024 19:03:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2ABB1B47BA
+	for <linux-wireless@vger.kernel.org>; Thu, 20 Jun 2024 19:35:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718910183; cv=none; b=iFr2AqLQ/zCPvbI+22kKVm21PLnozhvZ/xwC2wqlxrbKIpgfVdAUVAOb2AlI/URy3LlC9f0qnv1AKZV9iGH/YukYNFsSaajAFQkMR82zRcchojqpo4ewbMe5Qrwja898vC7rPZ66MM0GvCitI0WduW/Q73sSDgJXaTkNOLwcpAg=
+	t=1718912114; cv=none; b=DovISVwOHpJb3bufzkhu/wypv/uFl7rRtaHdBkmTsWOjjdLyO02xqyLVhmSQtzGY4+2GHsAoaUkmIiOOdq1SnG71E7DNNMtKPXqL+Fsfg3qfDNHu1UWMNT4YC/QgbZJBQ/+v9gDRCz2fNSK5wnq/ZtI4I8UQjfLvOfaLL6c1PQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718910183; c=relaxed/simple;
-	bh=+Jj2iyrjvgazskQSxghCtRl5yuPRiI5t6yni7Yjz8Y8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Zf07kR78QqREdm/B6oLqtMNy5F4Q8tOt/JU3zuB4qwS5XzGE0aTFYF+qX+LRN1IGynylN6s0Dibt2VIkm7JJHUczYnFSPN4TLyhlyEcypXXad9kEEJqQ+w1cVzUHhiuUogwCOeS53ZVmMi2WlmhpZiWEbJJ5GfQMEgnhxELEWXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=jvmowCZX; arc=none smtp.client-ip=44.202.169.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
-Received: from eig-obgw-5010a.ext.cloudfilter.net ([10.0.29.199])
-	by cmsmtp with ESMTPS
-	id KIxvsXHZqAidIKN3ksmL2G; Thu, 20 Jun 2024 19:03:00 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-	by cmsmtp with ESMTPS
-	id KN3jsu3yS7IZEKN3ksxlX3; Thu, 20 Jun 2024 19:03:00 +0000
-X-Authority-Analysis: v=2.4 cv=DttQ+n/+ c=1 sm=1 tr=0 ts=66747ce4
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=frY+GlAHrI6frpeK1MvySw==:17
- a=IkcTkHD0fZMA:10 a=T1WGqf2p2xoA:10 a=wYkD_t78qR0A:10
- a=YnLhUqmXxxwrq80so2UA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=QYH75iMubAgA:10
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=W5Sd7FdHakQhG3LkErMyF9EONJJIZEQHFSsJXeCMdcw=; b=jvmowCZXAPZXwN71QtV56/f/2t
-	OgMWzfsKABm/jZfdV6sxtYD/1ZpuF7qoFCl/zk0XFls2Hn6CverV/XuR9wdS7u7I210A3qoN3VI/x
-	NoUm81K8WFt2l0N+y5EFhauq84MJSbpxXrOcvK0rJ2iqNEhxXYX9O+elYynryhMlUH0DGlJ79OJZ1
-	JZMQrVDB7npUIWd65TfGvkQE0yOjAnF+fOHLPc51qq/XZb9/KnQMmwBA8heUgaP5KUcEV76YCwDlZ
-	taCEVPIJ1gLPAjtf7s4VrF1KJy3YTfKaUSbdpep1kPQoQUASywrs5ZkoANo7EGKn2Hu5h6CePQQyi
-	EoRu27NA==;
-Received: from [201.172.173.139] (port=38462 helo=[192.168.15.10])
-	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <gustavo@embeddedor.com>)
-	id 1sKN3h-000CZj-3B;
-	Thu, 20 Jun 2024 14:02:58 -0500
-Message-ID: <b0569cd6-83a4-4b5c-a31e-340bba452473@embeddedor.com>
-Date: Thu, 20 Jun 2024 13:02:55 -0600
+	s=arc-20240116; t=1718912114; c=relaxed/simple;
+	bh=LMJhwXKqZKwDoZfSA47gsl66tl0ZA7Fm/pP5alDoprs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=b4CDJ2JmSatH7FdpCtDtPoGKIONPDOrK3Iind15ByK77oqbToz9+m4CyRgbEw0ZcNxYWtm94SlX4Hlvy7lLvGTAlnrdE9xPRKwCDWbonkSWlCeYIucoKjvF5KA38bEVTYDd7zOJAWa5umGsLWHXnU8zQqkdqfKtyeQ1v8UUS+v8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=VS7f0Q8s; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-57d251b5fccso870834a12.0
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Jun 2024 12:35:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1718912111; x=1719516911; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=rxmltmQrKwAluprbf/AG1nvFIcYg57/7dnDwU0ucSDg=;
+        b=VS7f0Q8sFzlQaMEMOe07F6ml/pKMc/nohApB40bpNhXIOYvqc9zw0QH52CiOsJGwYh
+         MOeYAGFV+b/4xQMk9K95vO1YVXkOyRLg4lZ2F/VSXaBzefdn6XnFqbpRRBdzrO+YdTMV
+         6J6UP4sX9SQviMww0R4hYUSzoZt1B1LKgGyFk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718912111; x=1719516911;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rxmltmQrKwAluprbf/AG1nvFIcYg57/7dnDwU0ucSDg=;
+        b=SJdFNcv0sL7QEBWUirCi6acwUkjaciYODv0PaLhg8p/Zus7WS6Stuw+SUrMfnJAdkI
+         f/sJokx78I4oBSKXClOoulqo+JHf48GVq/cRZsUjiRvAml2ta8G2mGjdPIkxrmclIggy
+         bXLU2Kn2ty5ZU34RrlGsZ+Zt4pL8gTtGYvl5XtSEVa+oFjPSPMu3S3XgE5Y94dHA8msw
+         uv5tVPfg4yalqMOeZP0/otvxs59iccZD0O9hS6l5ATuPenKqrUpD79xsu1MEp7Va6hOW
+         5XcxkShzmG+ifrlVXsuxqFZc5sC7i3i8dOC1exvWwI+hjpJDR4bEAD6TNmEEnY2UaiPv
+         qNRg==
+X-Forwarded-Encrypted: i=1; AJvYcCU4N1UY03fXNUpwfWxn7mq5gRfovnfeipJIEKXtoJ9CPNYRYsdpl/yP1hmNzUsUhxCo1QtP03CDGuPML43+tiMMQB1yShrFlSbRckemIH8=
+X-Gm-Message-State: AOJu0YxoDvG0xPolpr5zalAXYsFEuqpLawEwi5XU8JNmoS772HQqd/Jj
+	U0dshCCwxXtCA3SG4vXo+PN0yTrCcKP4FCoUeYK6FtousYNYoFqz/ByRIluw2/1qSE+lfFotRWX
+	SLKUyLo4N
+X-Google-Smtp-Source: AGHT+IHv3lk4g8qzrZS8BKoEtXHngJT3VKL5lQmVCqJPs5PQ3SfBAaBAaABcB2AGa86XPTqbykfnGw==
+X-Received: by 2002:a05:6402:b5b:b0:57d:10d2:23ef with SMTP id 4fb4d7f45d1cf-57d10d223f9mr2807243a12.42.1718912110714;
+        Thu, 20 Jun 2024 12:35:10 -0700 (PDT)
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com. [209.85.221.44])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57cb7438a18sm9965706a12.82.2024.06.20.12.35.10
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Jun 2024 12:35:10 -0700 (PDT)
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3608e6d14b6so904728f8f.0
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Jun 2024 12:35:10 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWygHHIS1bgrtt1ha4eO3d7nnvH23D3PZYqa7suDmzBJV320paljsENsmE7sZ0pmXv40LfLvYqJzVKgyJj9tVLryjN4HXI3MmSAEN/5hnY=
+X-Received: by 2002:a5d:6152:0:b0:35f:308a:cab0 with SMTP id
+ ffacd0b85a97d-363170ecbe5mr4379764f8f.13.1718911595412; Thu, 20 Jun 2024
+ 12:26:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: iwlwifi: mvm: Fix __counted_by usage in
- cfg80211_wowlan_nd_*
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- Kees Cook <kees@kernel.org>
-Cc: benjamin.berg@intel.com, dmantipov@yandex.ru, gregory.greenman@intel.com,
- gustavoars@kernel.org, haim.dreyfuss@intel.com, johannes.berg@intel.com,
- kvalo@kernel.org, linux-hardening@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
- luciano.coelho@intel.com, miriam.rachel.korenblit@intel.com,
- shaul.triebitz@intel.com, yedidya.ben.shimol@intel.com
-References: <20240619211233.work.355-kees@kernel.org>
- <d9bdb9c1-689e-4b3f-8325-8ee813257d8f@wanadoo.fr>
- <c8404725-e4c4-453b-b72d-19ab0761da70@embeddedor.com>
- <47a71c03-0306-4239-b77c-cb63a1760d19@embeddedor.com>
- <0f7d2d25-5c7c-4a19-8af7-ce38ee630d4d@wanadoo.fr>
-Content-Language: en-US
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <0f7d2d25-5c7c-4a19-8af7-ce38ee630d4d@wanadoo.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 201.172.173.139
-X-Source-L: No
-X-Exim-ID: 1sKN3h-000CZj-3B
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: ([192.168.15.10]) [201.172.173.139]:38462
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 5
-X-Org: HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfLKHcS1nqk/3VkiccFZx9OEb7Bb5dgM0Rmj4pERBvnHUB4w5IiILHhJkEVLMBdzlUJgowj5M7rV10rLqtNh29c0Trx0KcFrkahtvIzK2wDZC7W+lPqho
- A8VhwBIVL9bt7LYORpC8D4ycDv8MX3i2MZIdn5UwLQ/NpECnTgLwXGxVe9bG5TVkB5RBmB0+N7yHzx9gnFqJJUzoCIVSIRITJRrInU1f9U4k7okTIMwqw1+I
+References: <20240620175703.605111-1-yury.norov@gmail.com> <CAHk-=wiUTXC452qbypG3jW6XCZGfc8d-iehSavxn5JkQ=sv0zA@mail.gmail.com>
+ <ZnR1tQN01kN97G_F@yury-ThinkPad>
+In-Reply-To: <ZnR1tQN01kN97G_F@yury-ThinkPad>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Thu, 20 Jun 2024 12:26:18 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjv-DkukaKb7f04WezyPjRERp=xfxv34j5fA8cDQ_JudA@mail.gmail.com>
+Message-ID: <CAHk-=wjv-DkukaKb7f04WezyPjRERp=xfxv34j5fA8cDQ_JudA@mail.gmail.com>
+Subject: Re: [PATCH v4 00/40] lib/find: add atomic find_bit() primitives
+To: Yury Norov <yury.norov@gmail.com>
+Cc: linux-kernel@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+	"H. Peter Anvin" <hpa@zytor.com>, "James E.J. Bottomley" <jejb@linux.ibm.com>, 
+	"K. Y. Srinivasan" <kys@microsoft.com>, "Md. Haris Iqbal" <haris.iqbal@ionos.com>, 
+	Akinobu Mita <akinobu.mita@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Borislav Petkov <bp@alien8.de>, Chaitanya Kulkarni <kch@nvidia.com>, 
+	Christian Brauner <brauner@kernel.org>, Damien Le Moal <damien.lemoal@opensource.wdc.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, David Disseldorp <ddiss@suse.de>, 
+	Edward Cree <ecree.xilinx@gmail.com>, Eric Dumazet <edumazet@google.com>, 
+	Fenghua Yu <fenghua.yu@intel.com>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Gregory Greenman <gregory.greenman@intel.com>, 
+	Hans Verkuil <hverkuil@xs4all.nl>, Hans de Goede <hdegoede@redhat.com>, 
+	Hugh Dickins <hughd@google.com>, Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Jaroslav Kysela <perex@perex.cz>, Jason Gunthorpe <jgg@ziepe.ca>, Jens Axboe <axboe@kernel.dk>, 
+	Jiri Pirko <jiri@resnulli.us>, Jiri Slaby <jirislaby@kernel.org>, Kalle Valo <kvalo@kernel.org>, 
+	Karsten Graul <kgraul@linux.ibm.com>, Karsten Keil <isdn@linux-pingi.de>, 
+	Kees Cook <keescook@chromium.org>, Leon Romanovsky <leon@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Martin Habets <habetsm.xilinx@gmail.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>, Michal Simek <monstr@monstr.eu>, 
+	Nicholas Piggin <npiggin@gmail.com>, Oliver Neukum <oneukum@suse.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Ping-Ke Shih <pkshih@realtek.com>, Rich Felker <dalias@libc.org>, Rob Herring <robh@kernel.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Sean Christopherson <seanjc@google.com>, 
+	Shuai Xue <xueshuai@linux.alibaba.com>, Stanislaw Gruszka <stf_xl@wp.pl>, 
+	Steven Rostedt <rostedt@goodmis.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	Thomas Gleixner <tglx@linutronix.de>, Valentin Schneider <vschneid@redhat.com>, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>, Wenjia Zhang <wenjia@linux.ibm.com>, 
+	Will Deacon <will@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
+	GR-QLogic-Storage-Upstream@marvell.com, alsa-devel@alsa-project.org, 
+	ath10k@lists.infradead.org, dmaengine@vger.kernel.org, iommu@lists.linux.dev, 
+	kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-arm-msm@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-bluetooth@vger.kernel.org, linux-hyperv@vger.kernel.org, 
+	linux-m68k@lists.linux-m68k.org, linux-media@vger.kernel.org, 
+	linux-mips@vger.kernel.org, linux-net-drivers@amd.com, 
+	linux-pci@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	linux-serial@vger.kernel.org, linux-sh@vger.kernel.org, 
+	linux-sound@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	mpi3mr-linuxdrv.pdl@broadcom.com, netdev@vger.kernel.org, 
+	sparclinux@vger.kernel.org, x86@kernel.org, 
+	Alexey Klimov <alexey.klimov@linaro.org>, Bart Van Assche <bvanassche@acm.org>, Jan Kara <jack@suse.cz>, 
+	Matthew Wilcox <willy@infradead.org>, Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Sergey Shtylyov <s.shtylyov@omp.ru>
+Content-Type: text/plain; charset="UTF-8"
 
+On Thu, 20 Jun 2024 at 11:32, Yury Norov <yury.norov@gmail.com> wrote:
+>
+> Is that in master already? I didn't get any email, and I can't find
+> anything related in the master branch.
 
->> then match->n_channels updated here:
->>
->>           if (!match)
->>               goto out_report_nd;
->> +        match->n_channels = n_channels;
-> 
-> Thanks for the explanation.
-> This is what I was looking for, and I missed this line.
-> 
-> Sorry for the noise.
+It's 5d272dd1b343 ("cpumask: limit FORCE_NR_CPUS to just the UP case").
 
-No worries. Glad to help. :)
+> > New rule: before you send some optimization, you need to have NUMBERS.
+>
+> I tried to underline that it's not a performance optimization at my
+> best.
 
---
-Gustavo
+If it's not about performance, then it damn well shouldn't be 90%
+inline functions in a header file.
+
+If it's a helper function, it needs to be a real function elsewhere. Not this:
+
+ include/linux/find_atomic.h                  | 324 +++++++++++++++++++
+
+because either performance really matters, in which case you need to
+show profiles, or performance doesn't matter, in which case it damn
+well shouldn't have special cases for small bitsets that double the
+size of the code.
+
+              Linus
 
