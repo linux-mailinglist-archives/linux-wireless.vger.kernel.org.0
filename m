@@ -1,46 +1,49 @@
-Return-Path: <linux-wireless+bounces-9308-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9310-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0616910796
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 16:09:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E5BC910861
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 16:31:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73D941F218DE
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 14:09:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B05AFB23B82
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 14:31:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 859DA1AD9F0;
-	Thu, 20 Jun 2024 14:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5633F1AF6BF;
+	Thu, 20 Jun 2024 14:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r6lmXn7Y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K5MlKvy8"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6239E1AD9DE
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Jun 2024 14:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6CE1AED20;
+	Thu, 20 Jun 2024 14:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718892541; cv=none; b=cThQU4qfzfW7CreuIai5Ic+g1jdI9xnc9U/sNdaVj/zhPDTngua7juCcADoLMXrqzlbuLrSz1UaKOYJslrzPX/xfXKGwryfTjAzekfj+SMBaGdfH6P/sH26Hc0vOApN7a53m4k52ZKexDYU707syq5T3t5dBbIkHD2+l94IZh+8=
+	t=1718893851; cv=none; b=H+6Fk3qkOb4pZQfe36kK87/fGF/sq7Y6DhJoQebZPMBIwjquEJRnt8t4H6Jt+4fkXrtdLO2YiiPYhYlwjoUP8pXWR8S2sihmO/QTY7N3L0JwdPt3OESSc/AIeDBcPS4xpnuWi3XpaZskA4tKdg0peAeO7aqNEbVuz3fiP6pxoXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718892541; c=relaxed/simple;
-	bh=9bJfbKRupOXgKTJN/Kgr1szk1mCSg6BrwEvmo45z+iM=;
-	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=ODbOzzBCHEpIF6RDvWiqXV7TxyEsqfFC1DRBqWWz+JTrYhv9kNGPIJXThngOX5Ke3KetkTO0XCjmeb27LU+mPj72/pRD+fij+Nh9COMa78+sZ+Kk4XJEVA6l/5344FXqquII1sAAe7Jwz2hk3M4Nb66VqR1jOvalHTxu4OIdnBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r6lmXn7Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 040D5C32786;
-	Thu, 20 Jun 2024 14:08:59 +0000 (UTC)
+	s=arc-20240116; t=1718893851; c=relaxed/simple;
+	bh=MCEdSf7+2gNB9bRow0LmNrkJ5TryvBvJFSq8fOZe7Rg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=cyto9yB/74kHVOGoRXPRM/f/9VBIIEOmttBEDRrT8qQMBvzx+jc+p0TUlZfk7WjEZ3nV3NvR4uG9G7eHgAogYa7CiLpa4GWroshzcl7YceAA6hetUytMrBlpO4284yTvtwqm9laLD3D/StBrTyjTmir1vezlJ75EOTrSblrCKcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K5MlKvy8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 754EDC4AF08;
+	Thu, 20 Jun 2024 14:30:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718892540;
-	bh=9bJfbKRupOXgKTJN/Kgr1szk1mCSg6BrwEvmo45z+iM=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=r6lmXn7YyMWbrxV+GjC510QWKGm33Jsaq0O35EZwfQF0A6tKUI5hO+7CMbQ7Hv/4z
-	 2jf4+rgglzHIibOsqbVkNt49P0CXJwnwp/erEDHDuIVk2psvKuw6Bkpm7H4raZoSUi
-	 zfgnGE0WXP4eKEzfTMc6yFVSxiq478oSlVzxKISTuIqQIgpFwkOWR4bUych5wgCO1t
-	 63Wf0q6j8ICz59kFKquAKFYgS57AYv4M2mf4GXlux2+CYmEBEOZ+qs/OSKzN9eAe/5
-	 ert9LhvYlJJi/zeZ+dCKS82Zujcflmgn5m43D/0cA6VOfUKYEzZZf4y0lV2B81Ihss
-	 RvpJQf46dttKw==
+	s=k20201202; t=1718893850;
+	bh=MCEdSf7+2gNB9bRow0LmNrkJ5TryvBvJFSq8fOZe7Rg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=K5MlKvy87w2ZwcwG/Mb+ggZHPQRRRAsjnPfz5F/9Rw3ACzo50kWz4W/1sPKRsx2OD
+	 45eJ8PJhfT9C1aSYG2oOOgEz+4pmU2qtcoDQQGDJjKM0vkdc2yPDvx7BKGEKYgUVfJ
+	 FbJJ3SHC715N7y2gwH8X8Iarb/5jC5/Ag2YNJNCp9yR768tH/pzNSKCVNFyqQ+EmGk
+	 Qe94ZYQ3qZ7SE+cBm4X+6bEGLap4rWytkSdmouOPCDSoDglqpewIDO836XoaVi9yvu
+	 NEAxY8FQhqm3R7R7kvd87h48C07OD9j7BGxz2P5qUju6kcFwPuPmw9/B2XOOiweZox
+	 aoPYuE7BiyA6g==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 5B2D8E7C4C6;
+	Thu, 20 Jun 2024 14:30:50 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -48,49 +51,60 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3]wifi: ath12k: Add firmware coredump collection support
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240325183414.4016663-1-quic_ssreeela@quicinc.com>
-References: <20240325183414.4016663-1-quic_ssreeela@quicinc.com>
-To: Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>
-Cc: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
- Sowmiya Sree Elavalagan
-	<quic_ssreeela@quicinc.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <171889253841.918573.15918536206746856053.kvalo@kernel.org>
-Date: Thu, 20 Jun 2024 14:08:59 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v9 0/2] pwrseq: introduce the subsystem and first driver
+From: patchwork-bot+bluetooth@kernel.org
+Message-Id: 
+ <171889385036.4585.6482250630135606154.git-patchwork-notify@kernel.org>
+Date: Thu, 20 Jun 2024 14:30:50 +0000
+References: <20240605123850.24857-1-brgl@bgdev.pl>
+In-Reply-To: <20240605123850.24857-1-brgl@bgdev.pl>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: marcel@holtmann.org, luiz.dentz@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, kvalo@kernel.org,
+ andersson@kernel.org, konrad.dybcio@linaro.org, lgirdwood@gmail.com,
+ broonie@kernel.org, catalin.marinas@arm.com, will@kernel.org,
+ bhelgaas@google.com, saravanak@google.com, geert+renesas@glider.be,
+ arnd@arndb.de, neil.armstrong@linaro.org, m.szyprowski@samsung.com,
+ elder@linaro.org, srinivas.kandagatla@linaro.org, gregkh@linuxfoundation.org,
+ abel.vesa@linaro.org, mani@kernel.org, lukas@wunner.de,
+ dmitry.baryshkov@linaro.org, amit.pundir@linaro.org, wuxilin123@gmail.com,
+ linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-wireless@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
+ linux-pm@vger.kernel.org, bartosz.golaszewski@linaro.org
 
-Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com> wrote:
+Hello:
 
-> In case of firmware assert snapshot of firmware memory is essential for
-> debugging. Add firmware coredump collection support for PCI bus.
-> Collect RDDM and firmware paging dumps from MHI and pack them in TLV
-> format and also pack various memory shared during QMI phase in separate
-> TLVs.  Add necessary header and share the dumps to user space using dev
-> coredump framework. Coredump collection is disabled by default and can
-> be enabled using menuconfig. Dump collected for a radio is 55 MB
-> approximately.
+This series was applied to bluetooth/bluetooth-next.git (master)
+by Bartosz Golaszewski <bartosz.golaszewski@linaro.org>:
+
+On Wed,  5 Jun 2024 14:38:48 +0200 you wrote:
+> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 > 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.2.1-00201-QCAHKSWPL_SILICONZ-1
+> Hi!
 > 
-> Signed-off-by: Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>
-> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> These are the power sequencing patches sent separately after some
+> improvements suggested by Bjorn Helgaas. I intend to pick them up into a
+> new branch and maintain the subsystem from now on. I then plan to
+> provide an immutable tag to the Bluetooth and PCI subsystems so that the
+> rest of the C changes can be applied. This new branch will then be
+> directly sent to Linus Torvalds for the next merge window.
+> 
+> [...]
 
-This didn't compile for me, I added this to pci.c:
+Here is the summary with links:
+  - [v9,1/2] power: sequencing: implement the pwrseq core
+    https://git.kernel.org/bluetooth/bluetooth-next/c/249ebf3f65f8
+  - [v9,2/2] power: pwrseq: add a driver for the PMU module on the QCom WCN chipsets
+    https://git.kernel.org/bluetooth/bluetooth-next/c/2f1630f437df
 
-+#include <linux/vmalloc.h>
-
-Also in the pending branch I made some whitespace in struct ath12k_dump_file_data:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/kvalo/ath.git/commit/?h=pending&id=44ae07628b68375f476895f4fc1e89a570790ac0
-
-Any tips how to test this until we have the debugfs interface to crash the firmware?
-
+You are awesome, thank you!
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240325183414.4016663-1-quic_ssreeela@quicinc.com/
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
 
