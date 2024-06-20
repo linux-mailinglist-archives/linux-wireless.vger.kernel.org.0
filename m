@@ -1,156 +1,124 @@
-Return-Path: <linux-wireless+bounces-9339-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9340-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1F93911360
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 22:38:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8906391152F
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 23:53:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 875E7281404
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 20:38:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA0121C229F2
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 21:53:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58BD43C6AC;
-	Thu, 20 Jun 2024 20:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A36F6F311;
+	Thu, 20 Jun 2024 21:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ALCyPsPG"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="OsBw3Pqu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60EB31D556
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Jun 2024 20:38:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10913757E3
+	for <linux-wireless@vger.kernel.org>; Thu, 20 Jun 2024 21:53:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718915908; cv=none; b=sNQacTcpOFQJnSfau6C9PzKbIBTP6Qb0eFITq+EsNHWZLq09Nx1PUh2QAPXH7Da3YyZAW/0Amc7L/6AjZUUjeEhZRNzYr8sChO0KnjGcDSiXH3OrVc8NoE3MTLF1jJkL5l0umTqmEka1+ONAwyeBm0r0NJQTzqOzKTImjlYq8nM=
+	t=1718920404; cv=none; b=pAYgR0g2Iv0OBHAX1763GBjOgQJHy3xGAxIXZykv3FrglJ4EkA1imtJ+Tfmj23SjpOBveAqXsCg7TycomtmiJUIrCvd6tRquVpzelh8H5MzZdzk0hro30qG3HzA06L0aaD5z+NHi3RA9PTeNWvkdz1lwnAkeOT9oVuMFFrRthGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718915908; c=relaxed/simple;
-	bh=xe0CLiytQL+w07wMVqUc1rJS0v+e/Ti6ErqFWmVCp7I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=c5Z/za1yJ/6H/ogWEx+waZ7n7to4ZcwGOkcqN8eVvmx0Dxy83wFGYBha0+xyMnROjQqs6O+tesduAeAT5baex5ZzltgBX9SoUV3YZ6zZbR8QkQO81hLZAVvA4ZN20nPF9tk+0s4MSLVwMtc7l49MtSfakhC/c8q2HfrquRWY9hY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ALCyPsPG; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a6f21ff4e6dso190124666b.3
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Jun 2024 13:38:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1718915904; x=1719520704; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=w6VZWpwlG7GhpGptpxtkhZuBw3s+vrw3bJ0KsbwAf6c=;
-        b=ALCyPsPG0td74uLrcWkx15hdHi4qwl5IeeLNlQnbRco/Dw1RJG//dzOVGk9z8ZBn4v
-         8bUYJm3/FiYDo2pFOdMWVsGl77nvKMGqQTzGpI94P27hXK81IaPghPglR05OWY3fC2JM
-         /0OP33Re11Ctloo+PssRXUyB9eBUL/xoAk+L0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718915904; x=1719520704;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=w6VZWpwlG7GhpGptpxtkhZuBw3s+vrw3bJ0KsbwAf6c=;
-        b=G4r05VbFImWAP1A79yFxs5ocj7iWIL01jf/DI+g5a8BXeOLUCLT3hv3SU3S1M974pZ
-         UGso/d7od338qqvTCD+FOGyLIwLHLTjn4fJWEsYKktcl8bUs6Z9cabmySMi9K7ERwQcJ
-         62lDgM/miTvAOmDKfaNxiJbCXEP4LoA7Aie4Spp2l/UQpLlbUMtiI/xOQUI1YD/bvGL4
-         ZYqERSA/5c8Cd5BW/gE62e3xt5t5UkC8w7E3J3XVckNy2n2adGLjN4ynLgmeGuXAbcp5
-         Us0c0J/orjN+3MOEt3qVvSqlgy6pM68G7vzuwLNFjebROPi1TYHRCmxHkxzpIIjpau70
-         OedQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWVhBEMu+rZkyONP7zct89QogX0bZwhYHvTxddeA139UKmqkLuu1ReAImUupDfyBuGQkvQpTa/CgzQCrU1kll6MjktPGYICt2UicHSXQ+4=
-X-Gm-Message-State: AOJu0YyQFgpnHtunckTfCLmO/8P4MA/TTAxCHXjCXJTbb84IDIkmuHjT
-	Pw9FnchDxefw2i24QRHoxt+kYxuaQ0TVrk3Oqo21amrNsggu4Pc5V44nMuUXEpJhd8CJFG2Md2k
-	9Vuq5xHnT
-X-Google-Smtp-Source: AGHT+IHx03RUcZlBCDHZTl1pMs/y0UiDpRfWq35meMUrU0b7Fk9ySvftuECBSBUkz5UCIhi5Zd+Shg==
-X-Received: by 2002:a17:907:175e:b0:a6f:1166:fb7a with SMTP id a640c23a62f3a-a6fab614d2cmr316155966b.32.1718915904354;
-        Thu, 20 Jun 2024 13:38:24 -0700 (PDT)
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com. [209.85.128.52])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6fcf489e61sm8089066b.49.2024.06.20.13.38.23
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Jun 2024 13:38:24 -0700 (PDT)
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-421b9068274so13230655e9.1
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Jun 2024 13:38:23 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXCyjVfwP07S2F4i/B6z2GkrR5yKi1izN1Vz/1NU3ByKd7UZ2qpqUlxwS1bY49OHU0b16TDW8aR6Qn4gwoSgxLtUkNcLxRVNtnFglaF7LA=
-X-Received: by 2002:a17:906:1348:b0:a6e:2a67:7899 with SMTP id
- a640c23a62f3a-a6fab63aaabmr312193466b.35.1718915542284; Thu, 20 Jun 2024
- 13:32:22 -0700 (PDT)
+	s=arc-20240116; t=1718920404; c=relaxed/simple;
+	bh=7TT9B+hStNm4w3T3KVJ+4AA0JPJhPyaoLdCBUUM124w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EGmFDknzbvtQ49oSybRYdvKcH+LKoXmHJMRfDGYTwBBMwXVoCaRZt1cFqtSRxq6q11ZjvPfAAamCLP3/3SveTI27ld6vABwzACTNoxW4KHBDAeq/9GmBE8eyxR3XuxRRpJvy+gNOHJACZtouwJR9qwYlig13kT/thXj1HNpMzyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=OsBw3Pqu; arc=none smtp.client-ip=148.163.129.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
+	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id BFDE82C5849
+	for <linux-wireless@vger.kernel.org>; Thu, 20 Jun 2024 21:44:50 +0000 (UTC)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 4BB05B00066;
+	Thu, 20 Jun 2024 21:44:43 +0000 (UTC)
+Received: from [192.168.166.224] (70.sub-174-231-83.myvzw.com [174.231.83.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id 1786C13C2B0;
+	Thu, 20 Jun 2024 14:44:39 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 1786C13C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1718919881;
+	bh=7TT9B+hStNm4w3T3KVJ+4AA0JPJhPyaoLdCBUUM124w=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=OsBw3PquHy99wxqUmn21LVnM+Yllt8CGWosI8j5daD7OMve+K5DoeujE6g1qRy/YR
+	 VGjR/Y6gDrQ8mmB5hS6DPFcvvU+FKjs8WEJ7gkG9q5KIgO0McOApboWnwOyedPIoVK
+	 foOuK/2y3eTOymsXuw17ee0+LhqrZx2OwAyQLG1g=
+Message-ID: <cc12d6e8-bafb-e2d2-dac6-45fb8a64aafc@candelatech.com>
+Date: Thu, 20 Jun 2024 14:44:38 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240620175703.605111-1-yury.norov@gmail.com> <CAHk-=wiUTXC452qbypG3jW6XCZGfc8d-iehSavxn5JkQ=sv0zA@mail.gmail.com>
- <ZnR1tQN01kN97G_F@yury-ThinkPad> <CAHk-=wjv-DkukaKb7f04WezyPjRERp=xfxv34j5fA8cDQ_JudA@mail.gmail.com>
- <ZnSPBFW5wL0D0b86@yury-ThinkPad>
-In-Reply-To: <ZnSPBFW5wL0D0b86@yury-ThinkPad>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 20 Jun 2024 13:32:05 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wi2R7-jyoOw27Svf1PmfDFQgBWVAH3DP5CXO+JF-BeFZA@mail.gmail.com>
-Message-ID: <CAHk-=wi2R7-jyoOw27Svf1PmfDFQgBWVAH3DP5CXO+JF-BeFZA@mail.gmail.com>
-Subject: Re: [PATCH v4 00/40] lib/find: add atomic find_bit() primitives
-To: Yury Norov <yury.norov@gmail.com>
-Cc: linux-kernel@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
-	"H. Peter Anvin" <hpa@zytor.com>, "James E.J. Bottomley" <jejb@linux.ibm.com>, 
-	"K. Y. Srinivasan" <kys@microsoft.com>, "Md. Haris Iqbal" <haris.iqbal@ionos.com>, 
-	Akinobu Mita <akinobu.mita@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Borislav Petkov <bp@alien8.de>, Chaitanya Kulkarni <kch@nvidia.com>, 
-	Christian Brauner <brauner@kernel.org>, Damien Le Moal <damien.lemoal@opensource.wdc.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, David Disseldorp <ddiss@suse.de>, 
-	Edward Cree <ecree.xilinx@gmail.com>, Eric Dumazet <edumazet@google.com>, 
-	Fenghua Yu <fenghua.yu@intel.com>, Geert Uytterhoeven <geert@linux-m68k.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Gregory Greenman <gregory.greenman@intel.com>, 
-	Hans Verkuil <hverkuil@xs4all.nl>, Hans de Goede <hdegoede@redhat.com>, 
-	Hugh Dickins <hughd@google.com>, Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Jaroslav Kysela <perex@perex.cz>, Jason Gunthorpe <jgg@ziepe.ca>, Jens Axboe <axboe@kernel.dk>, 
-	Jiri Pirko <jiri@resnulli.us>, Jiri Slaby <jirislaby@kernel.org>, Kalle Valo <kvalo@kernel.org>, 
-	Karsten Graul <kgraul@linux.ibm.com>, Karsten Keil <isdn@linux-pingi.de>, 
-	Kees Cook <keescook@chromium.org>, Leon Romanovsky <leon@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Martin Habets <habetsm.xilinx@gmail.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>, Michal Simek <monstr@monstr.eu>, 
-	Nicholas Piggin <npiggin@gmail.com>, Oliver Neukum <oneukum@suse.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Ping-Ke Shih <pkshih@realtek.com>, Rich Felker <dalias@libc.org>, Rob Herring <robh@kernel.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Sean Christopherson <seanjc@google.com>, 
-	Shuai Xue <xueshuai@linux.alibaba.com>, Stanislaw Gruszka <stf_xl@wp.pl>, 
-	Steven Rostedt <rostedt@goodmis.org>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	Thomas Gleixner <tglx@linutronix.de>, Valentin Schneider <vschneid@redhat.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, Wenjia Zhang <wenjia@linux.ibm.com>, 
-	Will Deacon <will@kernel.org>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
-	GR-QLogic-Storage-Upstream@marvell.com, alsa-devel@alsa-project.org, 
-	ath10k@lists.infradead.org, dmaengine@vger.kernel.org, iommu@lists.linux.dev, 
-	kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-arm-msm@vger.kernel.org, linux-block@vger.kernel.org, 
-	linux-bluetooth@vger.kernel.org, linux-hyperv@vger.kernel.org, 
-	linux-m68k@lists.linux-m68k.org, linux-media@vger.kernel.org, 
-	linux-mips@vger.kernel.org, linux-net-drivers@amd.com, 
-	linux-pci@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
-	linux-serial@vger.kernel.org, linux-sh@vger.kernel.org, 
-	linux-sound@vger.kernel.org, linux-usb@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	mpi3mr-linuxdrv.pdl@broadcom.com, netdev@vger.kernel.org, 
-	sparclinux@vger.kernel.org, x86@kernel.org, 
-	Alexey Klimov <alexey.klimov@linaro.org>, Bart Van Assche <bvanassche@acm.org>, Jan Kara <jack@suse.cz>, 
-	Matthew Wilcox <willy@infradead.org>, Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Sergey Shtylyov <s.shtylyov@omp.ru>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.2.0
+Subject: Re: Intel BE200 - mld/mlo supplicant testing
+Content-Language: en-MW
+To: Janusz Dziedzic <janusz.dziedzic@gmail.com>,
+ linux-wireless <linux-wireless@vger.kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+References: <CAFED-jnTOkH6BwUAUnTvr9SSqrwV-2fUCuwywwt+JOKQJx__ew@mail.gmail.com>
+ <CAFED-j=_DRXb6+dTGRaBGGtD_efrCw1BPC2CvLfZpRxoPVQB_g@mail.gmail.com>
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <CAFED-j=_DRXb6+dTGRaBGGtD_efrCw1BPC2CvLfZpRxoPVQB_g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-MDID: 1718919884-fTXsh69mHdYK
+X-MDID-O:
+ us5;ut7;1718919884;fTXsh69mHdYK;<greearb@candelatech.com>;34c747a789912928d0aa9a6167f839c3
 
-On Thu, 20 Jun 2024 at 13:20, Yury Norov <yury.norov@gmail.com> wrote:
->
-> FORCE_NR_CPUS helped to generate a better code for me back then. I'll
-> check again against the current kernel.
+On 6/20/24 11:13, Janusz Dziedzic wrote:
+> czw., 20 cze 2024 o 20:10 Janusz Dziedzic <janusz.dziedzic@gmail.com>
+> napisał(a):
+>>
+>> Hello,
+>>
+>> Just check:
+>>   -  6.10.0-rc4-next-20240619
+>>   - latest supplicant
+>>
+>> Seems supplicant report:
+>>
+> nl80211: EML Capability: 0x0 MLD Capability: 0x0
+> nl80211: EML Capability: 0x0 MLD Capability: 0x0
+> 
+> 
+>>
+>> WIPHY_FLAG_SUPPORTS_MLO
+> I see only hwsim set it today.
+> 
+> My iwl firmware:
+> loaded firmware version 90.38c93dbc.0 gl-c0-fm-c0-90.ucode op_mode iwlmvm
+> 
+> So, question here - how could I use Intel BE200 with MLO/MLD?
+> Do I need some test firmware/driver?
+> Or just set WIPHY_FLAG_SUPPORTS_MLO with FW I already have?
 
-Of _course_ it generates better code.
+Add patch to iwlwifi to re-enable that flag.  The 6.10 kernel on my (greearb)
+github has it (among a lot of other stuff you may or may not want), and we had some
+success testing MLO with the v90 intel firmware.
 
-But when "better code" is a source of bugs, and isn't actually useful
-in general, it's not better, is it.
+Thanks,
+Ben
 
-> The 5d272dd1b343 is wrong. Limiting FORCE_NR_CPUS to UP case makes no
-> sense because in UP case nr_cpu_ids is already a compile-time macro:
+> 
+> BR
+> Janusz
+> 
+> 
 
-Yury, I'm very aware. That was obviously intentional. the whole point
-of the commit is to just disable the the whole thing as useless and
-problematic.
 
-I could have just ripped it out entirely. I ended up doing a one-liner instead.
-
-                Linus
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
