@@ -1,77 +1,76 @@
-Return-Path: <linux-wireless+bounces-9324-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9325-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87B87910FE3
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 20:02:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA67F910FE6
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 20:02:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41738283FCF
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 18:02:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DF5D1F237B7
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 18:02:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F5C1BE856;
-	Thu, 20 Jun 2024 17:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D034D1BE876;
+	Thu, 20 Jun 2024 17:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eRXaqcR5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jTKbvNiQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACFB01BE840;
-	Thu, 20 Jun 2024 17:57:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFBC1BE86B;
+	Thu, 20 Jun 2024 17:57:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718906262; cv=none; b=d9N5yWNgxYswk6Hi02Sc6OCXcAp4xXtWVZkuADBa5O3dWTwa/TDElebelKNUOLJ38CK+Ot4/RD68mZdTCR1qteyhMsxrx1K3tSRtnIXF27UPiRRpM3c5SXdnyCHU08MrEYy7C3W+JdQ2DrvX2OclsXv71ywCqrlz0SJa25Rcedg=
+	t=1718906264; cv=none; b=OpH2UUf3W6AA0PnHYFvkKgk3VferXxjb4TRSgHrAaJ05fFk1eVwrF/1Brxp2N1NQ+qtjUkRdvVsaPDYUpM4jXa0g2yiO7mforGnhMSjlvTw9IdiCo83X8vmHxYoSvv//JYbiMoR5uaqxHIn5qIa46c9fxhRg1q53vPZutpbwWmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718906262; c=relaxed/simple;
-	bh=oWm6wtDkPUXuudaVdlEMN+qr0+C3Zd/WIco5LGbYaIA=;
+	s=arc-20240116; t=1718906264; c=relaxed/simple;
+	bh=Kq0Le/AzG6nhFQ+X/jkGw++00vhHiyLHVZOAh/AXVkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l1XugCCgOsxr6W4HJYPok6PrTi3e2Qprc0O49Cr5dnhPw5xxox5SVXjLANTl4R+94jqMo/lkcbWN9tt3WB+58aw2JGzKtSX85d82Hi2P+QmOetKfO5GKApR8ohcquEO7JV2wLosP2qe2azNvw0U6pHLfmyXEifstR6kAF9DVQNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eRXaqcR5; arc=none smtp.client-ip=209.85.210.172
+	 MIME-Version; b=T6aJHpvfrPTlexzKzd2CNQODM/bPuLYbQGXbNyy4pdvMInLcoN0lUC5GmBCfrcfz3bI/wt39Bya0kKq1RpLZBBwFunB+VFuG1Yf903PzZJvSD9Fh0nFtmEwYFDeSLQa6Z8BgFMQ39ovMAJ1aZ+DqRdjntBawgyb30Pf+RX8bSJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jTKbvNiQ; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-70631cd9e50so996929b3a.0;
-        Thu, 20 Jun 2024 10:57:40 -0700 (PDT)
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1f9de13d6baso4397325ad.2;
+        Thu, 20 Jun 2024 10:57:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718906260; x=1719511060; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1718906263; x=1719511063; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JyCbmEERBgdbr2L9cnI5uWj+Q286mUzZnK0ig6JQYFg=;
-        b=eRXaqcR5hxFD/igTe/+gznaNKr0e6drSDBzoiknRHGsVwZ/u3fIswf0SEZieOx+gcj
-         y5cSdi8j5Cu5QAMdsZJSn/awgVaV6k3lGOR3I9io2P/AC2zcgKzEV+LOpLANVhvj23v3
-         OtFS678cInEWEUwXlqo9/H/ZB4cso/VXTwdFsSzlZvArzWYiNRqnpwqgvy3IZzoq3wj5
-         oqVHNeWAs2r+UPs3ksm1JzwDJnEedwfKixRJ/dRMGVxW5NokTPjCfDBbY1aEtPh7kj1K
-         HDCxwK+xvZskgdkbL9NnGOCUxeXDUnz3o9Jn8gz+fY2ozk/EgwOYSqw95RtiZ6r6KH52
-         eHrw==
+        bh=AoRopA5ztbgBJRJEKQhgRyu/McLJD9vC3MN+d4zw/zY=;
+        b=jTKbvNiQWVes0vDEyyG7Shb/nyfrhRKxbMpNfF8B8b/f0f9Aqa0VC8ZUskzSe1BPL+
+         ryoDVXOPPqiNr6jLZfX9kO6WD7hyE9enr/15IaMJgy7dNJUtdTBOvJZUEATjHV8t3KhQ
+         htZ7c8N0On6YyDDIThnOF2AZbAumvdP/MJTwZaV6VBpvbtR1qA8TXBEN2Q/g/UlKF6l5
+         dFVGV+/3cb61ncD6DQzJo8A/DPOLj93NDp7/rbeqLFx4+Vj070wHSC/+xttzIEkdHeN0
+         INk5OUB5zm+Ky+7nNKvRZcOwd5WWukXUlz7r0zE4XXWPNapkB7qOPMDYtwq5EVyzk1FL
+         78kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718906260; x=1719511060;
+        d=1e100.net; s=20230601; t=1718906263; x=1719511063;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=JyCbmEERBgdbr2L9cnI5uWj+Q286mUzZnK0ig6JQYFg=;
-        b=qnliM5k1yKarEyzs5tsHiLwA7KpR4WwXBoPGA+TXK7vXMPvWX3KOwAtn29QeWQdBNC
-         4onNHjPRuZcqEjYupvohCTIFP0M7PIU8qaGMwFpuqlSXBUTSnzItMDw746i6IY9z4E9s
-         jF0e5HBxy2j2yu+aetnc+ICC/dPEWN+ef4oGP4GWB9NsGxe0XkxqZJlWTTAOlxgn6LnS
-         yGpL1Z7UsEcXP8KekB/ScmKkpDIvCurtmOblH7DmiTXS/xt2vWG7OdAnzlJSZBVVgND3
-         vMh0DjcdNiIW2EkYkslWTv8rVYrtK7B60NCbT4MLPKLPZ5j4cV8T+JLIhANnWFIMPrCh
-         +2dw==
-X-Forwarded-Encrypted: i=1; AJvYcCXyE4YI7TkYJ2cuDZM/1Qi7pAYtDoYWxlR6B2n7sBNx72awKsqPeuUKZzua2yuNYqCI8SVf4XReVXnf6NIfjoVPkmyyK1fIr+ua9obaqEA=
-X-Gm-Message-State: AOJu0Yy2/GudJgIPyXCfx52RKwyD4kUp9V5jUwTM8Ii+uDzZBtgiNKXg
-	gkoQynfCSR8H81XTmhT0HCiuFR0d8by6aAESu8PKCoIgZQRK2bfbuXRdUPwLDMc=
-X-Google-Smtp-Source: AGHT+IF6k794+bXj65/GLuqQFCenpTYt6QZL4TjH+FL/9upfIcGTU3RlCoM3IuIh09X+vOAPLBF0ZQ==
-X-Received: by 2002:a05:6a00:2f49:b0:706:2acd:405 with SMTP id d2e1a72fcca58-7062acd0449mr5420295b3a.31.1718906259963;
-        Thu, 20 Jun 2024 10:57:39 -0700 (PDT)
+        bh=AoRopA5ztbgBJRJEKQhgRyu/McLJD9vC3MN+d4zw/zY=;
+        b=n8lyzdvaVfLDeu1utbSDARPIi6PdzVc+i3UGUcyrsugaKFaVIKNCyoIn8AuqWxD8GD
+         feYDm2OQQtQ2cOI71qJnuYZqyMg0s4QbBzmvc4qiw6Ye2Q6dI2wdasainhVv1zfp19TH
+         ADJanZ7BKCffPnpcWV+R/jCdJR+BjP4QWHQtpnKdKIvDoSuGLkHZOG8OBq0vnd6FJLTc
+         qYNmWYYL9lNJ3INGTWC9Rll4ZqUIIzCusmNwi7WoTmXopMr+2TJuFcb8kqiHI5SCmsCF
+         YJXLRSopQnEq0V/C5cePZGntFVsWQLIPsnF74TnY2s4HkKpMGpt+HXlIRynLWVsdJnw2
+         2qbA==
+X-Forwarded-Encrypted: i=1; AJvYcCUCFKQBH8+38o+UYcgQzRI37Gvai1cpSHUJBT+vDxK7FxVO78GnzRtESRvmMq4Ppn8XHKVvdycaXbdgPZBDBb9y1vxr56cAXWHjwI/H0VE=
+X-Gm-Message-State: AOJu0YyH6GniuyTuDAYYEvEDgdwrOqj9g7YgliMm4AMq0Xen3b416bhv
+	TIYnUXTDvF8OJMeRdoDrZCouP0N2pfBLD4PElLpmOLOc12hHGRQPlp8seYzL8a8=
+X-Google-Smtp-Source: AGHT+IFHXkrW2RCg31fg2jAnnLV16IOTYwG6YWnnpIOxreHYDd/8dS8YUOFYNhDpd1HKZjOhC4X4hA==
+X-Received: by 2002:a17:902:d508:b0:1f9:d1f7:3fe5 with SMTP id d9443c01a7336-1f9d1f76f10mr22446525ad.34.1718906262729;
+        Thu, 20 Jun 2024 10:57:42 -0700 (PDT)
 Received: from localhost ([216.228.127.128])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-705ccb3d65csm12619770b3a.102.2024.06.20.10.57.39
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f9d6b45389sm13541245ad.216.2024.06.20.10.57.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Jun 2024 10:57:39 -0700 (PDT)
+        Thu, 20 Jun 2024 10:57:42 -0700 (PDT)
 From: Yury Norov <yury.norov@gmail.com>
 To: linux-kernel@vger.kernel.org,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Kalle Valo <kvalo@kernel.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	ath10k@lists.infradead.org,
 	linux-wireless@vger.kernel.org
 Cc: Yury Norov <yury.norov@gmail.com>,
 	Alexey Klimov <alexey.klimov@linaro.org>,
@@ -82,9 +81,9 @@ Cc: Yury Norov <yury.norov@gmail.com>,
 	Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
 	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
 	Sergey Shtylyov <s.shtylyov@omp.ru>
-Subject: [PATCH v4 11/40] ath10k: optimize ath10k_snoc_napi_poll()
-Date: Thu, 20 Jun 2024 10:56:34 -0700
-Message-ID: <20240620175703.605111-12-yury.norov@gmail.com>
+Subject: [PATCH v4 12/40] wifi: rtw88: optimize the driver by using atomic iterator
+Date: Thu, 20 Jun 2024 10:56:35 -0700
+Message-ID: <20240620175703.605111-13-yury.norov@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240620175703.605111-1-yury.norov@gmail.com>
 References: <20240620175703.605111-1-yury.norov@gmail.com>
@@ -96,42 +95,64 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ath10k_snoc_napi_poll() traverses pending_ce_irqs bitmap bit by bit.
-Simplify it by using for_each_test_and_clear_bit() iterator.
+rtw_pci_tx_kick_off() and rtw89_pci_tx_kick_off_pending() traverse bitmaps
+bit by bit. Simplify it by using atomic for_each_test_and_clear_bit()
+iterator.
 
 Signed-off-by: Yury Norov <yury.norov@gmail.com>
 ---
- drivers/net/wireless/ath/ath10k/snoc.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/wireless/realtek/rtw88/pci.c | 6 +++---
+ drivers/net/wireless/realtek/rtw89/pci.c | 6 ++----
+ 2 files changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index 8530550cf5df..d63608e34785 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -5,6 +5,7 @@
+diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
+index 30232f7e3ec5..28c0f4c99cf8 100644
+--- a/drivers/net/wireless/realtek/rtw88/pci.c
++++ b/drivers/net/wireless/realtek/rtw88/pci.c
+@@ -2,6 +2,7 @@
+ /* Copyright(c) 2018-2019  Realtek Corporation
+  */
  
- #include <linux/bits.h>
- #include <linux/clk.h>
 +#include <linux/find_atomic.h>
- #include <linux/kernel.h>
  #include <linux/module.h>
- #include <linux/of.h>
-@@ -1237,11 +1238,10 @@ static int ath10k_snoc_napi_poll(struct napi_struct *ctx, int budget)
- 		return done;
+ #include <linux/pci.h>
+ #include "main.h"
+@@ -790,9 +791,8 @@ static void rtw_pci_tx_kick_off(struct rtw_dev *rtwdev)
+ 	struct rtw_pci *rtwpci = (struct rtw_pci *)rtwdev->priv;
+ 	enum rtw_tx_queue_type queue;
+ 
+-	for (queue = 0; queue < RTK_MAX_TX_QUEUE_NUM; queue++)
+-		if (test_and_clear_bit(queue, rtwpci->tx_queued))
+-			rtw_pci_tx_kick_off_queue(rtwdev, queue);
++	for_each_test_and_clear_bit(queue, rtwpci->tx_queued, RTK_MAX_TX_QUEUE_NUM)
++		rtw_pci_tx_kick_off_queue(rtwdev, queue);
+ }
+ 
+ static int rtw_pci_tx_write_data(struct rtw_dev *rtwdev,
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
+index 03bbcf9b6737..deb06cab5974 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -2,6 +2,7 @@
+ /* Copyright(c) 2020  Realtek Corporation
+  */
+ 
++#include <linux/find_atomic.h>
+ #include <linux/pci.h>
+ 
+ #include "mac.h"
+@@ -1234,10 +1235,7 @@ static void rtw89_pci_tx_kick_off_pending(struct rtw89_dev *rtwdev)
+ 	struct rtw89_pci_tx_ring *tx_ring;
+ 	int txch;
+ 
+-	for (txch = 0; txch < RTW89_TXCH_NUM; txch++) {
+-		if (!test_and_clear_bit(txch, rtwpci->kick_map))
+-			continue;
+-
++	for_each_test_and_clear_bit(txch, rtwpci->kick_map, RTW89_TXCH_NUM) {
+ 		tx_ring = &rtwpci->tx_rings[txch];
+ 		__rtw89_pci_tx_kick_off(rtwdev, tx_ring);
  	}
- 
--	for (ce_id = 0; ce_id < CE_COUNT; ce_id++)
--		if (test_and_clear_bit(ce_id, ar_snoc->pending_ce_irqs)) {
--			ath10k_ce_per_engine_service(ar, ce_id);
--			ath10k_ce_enable_interrupt(ar, ce_id);
--		}
-+	for_each_test_and_clear_bit(ce_id, ar_snoc->pending_ce_irqs, CE_COUNT) {
-+		ath10k_ce_per_engine_service(ar, ce_id);
-+		ath10k_ce_enable_interrupt(ar, ce_id);
-+	}
- 
- 	done = ath10k_htt_txrx_compl_task(ar, budget);
- 
 -- 
 2.43.0
 
