@@ -1,186 +1,472 @@
-Return-Path: <linux-wireless+bounces-9319-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9321-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C219F910F47
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 19:46:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A80910F8E
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 19:57:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5979EB248A6
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 17:42:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F403281E21
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 17:57:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33D731C68A6;
-	Thu, 20 Jun 2024 17:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6CA21B47DA;
+	Thu, 20 Jun 2024 17:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="MjSGWCt8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PqyjojpX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF491C2300
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Jun 2024 17:33:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00321B3F2F;
+	Thu, 20 Jun 2024 17:57:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718904804; cv=none; b=fgXLc52irr0GcPl8+m4aFfoV/Ev8oEmlr1bJKJRZO1wW1RmufNpVkD2Xdf13QLhoAIPOnKNAcjwRkBmRtGBc7cXoVSIU2gnS+FzGsZBOB5GQhrm4FRLDyclk/+vOlrSfSdLYBjFETWMAk+y5qHHobG1gNPg6bXoMq6OLd6Pl1eE=
+	t=1718906230; cv=none; b=iP4ATLyF+W2KFA35NfSbFo7ThN1BM9AwuYMv6F7N+mgnYPfn0t6KMWVbjm4uqWSrBKrPJ6zy4+xejo5ySkqXxQC5XdurHQ9fAZWNPT3Q+26BHQYSGpN+sFUm6kGwngxyWq3ChP6mfLUEaRZ0MH7e7xlXWvPtPgckH1c+W80+A+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718904804; c=relaxed/simple;
-	bh=HKAEEEh7eGx03O3X2ziI9qd4Ys041mMBL4w4gygwxL8=;
-	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=I918GyUKbNWevBWTThrpqjCCpB09XGNUEUSXt+JJ3GK8oZRKM46I+umoI+07Gu/+YFAORCuaq9qO7s7kxNthq15TweexzkEenhmS2kWM4waqEVIUriiPkLQqQKdn7VMlWadNLuptDrEpfT22fXDUGWeIgPlV59ryG6NmFxoXmuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=MjSGWCt8; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-57d1d45ba34so1276155a12.3
-        for <linux-wireless@vger.kernel.org>; Thu, 20 Jun 2024 10:33:22 -0700 (PDT)
+	s=arc-20240116; t=1718906230; c=relaxed/simple;
+	bh=+v4jjUj1lwOTsz8Mxp1G6htBOFCIigsWgsHI5ysa1Ss=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pWjLvqzN/KTRpyj3Xp3sqLFyRnP6GvzI4JJSQDuU0DJjHlLtSuDghSPM6JOVN1sAt4DL4R0dJkhDLexvU3p4Zk/LtWF/icNXQJPjXk1RnPrzUwFduKgp8QTFauVl7gPEh+4YlqCFXuwS7FKVnT6gBm8Mt/ehGi/cj184J1ZWS0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PqyjojpX; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7062c11d0d1so1107834b3a.1;
+        Thu, 20 Jun 2024 10:57:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1718904801; x=1719509601; darn=vger.kernel.org;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uEV8/W6zeyOaaEq9YUPhCEU+OHntfzT5aMEzPBHAhuY=;
-        b=MjSGWCt8na+IhjgibLb8JNNBFir8oODMpvoDZm0EJynXOXfdihYOm/MDTcmWjcKuHU
-         49KXgEPnyJ4wy0hXO7yTzFVi2oUDGn/djC4XsEBoi5fu8PhPErQ5wWBE3T4zMOYFrGbh
-         tUspjPwLSwCb/22osGyP/Sy1fUrNQKuNMxXbA=
+        d=gmail.com; s=20230601; t=1718906228; x=1719511028; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=W47tS6B8wqIVT2qpvRqiOMMzdBB5xZ547KnoaR9dSwQ=;
+        b=PqyjojpX1b4mgz2H6+lYPRp07fFU2sCPoV03VK1toFN3hNvHH0OZ29cw4r4EYltvsT
+         d/NZHXJfPT0+PGADyQHuIcju+T05jil/ldHZIoA5MXkbAMyDdY3AnF/Qc36Dt0hs+Fiu
+         vE6PteNhgGh+xKLl6fhgraTms7BgS30RwpmWfG5XQ/+NYkxj+gjSMSxBNDP0Ca7Se3Wa
+         GRfCJQ/D6K3hY6bucltqdTX5ZkKVpwQ9J5tK6atcCQtWl9Al6y1/dwor7tLSrLGIUNy4
+         eTdoU95nb1v1wkc+naz0Zap3noT6UR2X0DpdZnpDALP4d9fLE7o58WfSkRhd50za2Unk
+         PGvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718904801; x=1719509601;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uEV8/W6zeyOaaEq9YUPhCEU+OHntfzT5aMEzPBHAhuY=;
-        b=as5bzL/ZjewEBIGVDlv0br8tOvX/9AAX04d0VWQtH8EMzegqUR6bBlUryQowNj2Ih6
-         HVhytAOJPf534pVnSNPZ3jZqWyM3wsZ+XPi1+jyZofcRzMNaqO1gSFCue0VIThV8Lp5A
-         JLv/8SDJC1orpBS5tA2KJTX2eY5EPeg8Va6nFxJXi0KIwC9vkEKmvh3AioV0VGkHb1kk
-         p79RCM97VafiLR08cvK6CjdLBxQ90vuNwh3IWEKE+QCEgtlV+OPqVNlySX0bg1hDQP8r
-         aKBqxtXIb7k9S0qVzlyAIpCi38z1ZwDz4XgBtoTo37Ht/WKgR4tYYMqzBW+kBLtuuhHu
-         HIaw==
-X-Forwarded-Encrypted: i=1; AJvYcCW73JO/bby3ooFMkznGW2gj75Sq2RHapCUxg+wp/lmqD7nCcam1ncv1c/0AMSUYN5poVSnQ3vwtQ8nNv6XPsBx5XjaCz6x4YeZ9tpV5ueE=
-X-Gm-Message-State: AOJu0YxbmxnwQivvOawtR8y+SoEoN6JNt0ff/0YB35HQhjZFI+eMFnNc
-	ZNEjsVGugIXbdtfXg1G8Q57YXvFa4bMIlUXCFICrUVWgi+a8KvbeSQBzBYorAw==
-X-Google-Smtp-Source: AGHT+IETUAVlwwFkqDQ4w98uIqyon39aonVaXSncZlcpdsKtKdRss5bCY3FXbq7fQ34KTjOyYSsSvA==
-X-Received: by 2002:a50:9e67:0:b0:57d:57c:ce99 with SMTP id 4fb4d7f45d1cf-57d07e68e29mr3351251a12.2.1718904800448;
-        Thu, 20 Jun 2024 10:33:20 -0700 (PDT)
-Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57cb72da156sm9886234a12.22.2024.06.20.10.33.19
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 20 Jun 2024 10:33:20 -0700 (PDT)
-From: Arend Van Spriel <arend.vanspriel@broadcom.com>
-To: Jacobe Zang <jacobe.zang@wesion.com>
-CC: <kvalo@kernel.org>, <duoming@zju.edu.cn>, <bhelgaas@google.com>, <minipli@grsecurity.net>, <linux-wireless@vger.kernel.org>, <brcm80211@lists.linux.dev>, <brcm80211-dev-list.pdl@broadcom.com>, <megi@xff.cz>, <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>, <heiko@sntech.de>, <nick@khadas.com>, <efectn@protonmail.com>, <jagan@edgeble.ai>, <dsimic@manjaro.org>, <devicetree@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>, <linux-rockchip@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-Date: Thu, 20 Jun 2024 19:33:18 +0200
-Message-ID: <19036b5bb30.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <20240620020015.4021696-1-jacobe.zang@wesion.com>
-References: <20240620020015.4021696-1-jacobe.zang@wesion.com>
-User-Agent: AquaMail/1.51.3 (build: 105103473)
-Subject: Re: [PATCH v1 0/3] Add AP6275P wireless support
+        d=1e100.net; s=20230601; t=1718906228; x=1719511028;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=W47tS6B8wqIVT2qpvRqiOMMzdBB5xZ547KnoaR9dSwQ=;
+        b=xOm83k1b3T2P7061m/GC8EoL8iC9N3yIRgp915MVoWjtIwhudItffPScrNCNljR5k9
+         uca7c+oKtfDfIZ2uBkrTi/fUf8EDnv3HPZB9kE5PXnSlueghLclJ3uRyMttHKc9/9J6w
+         K4SNM9VwnD19ZDc5+dk1DsrUmtRbQGUD2hQGb0hYR+vv3kzS3E6Ca2zGUQ2p++Xecfw2
+         UBB6dc84AeS12CbX27jetAsiultuhGOv6NjLuOcuu75uXudUsKmII7vI7cemDgYJnCBO
+         YVjCN53nI2G1cKzobX5/iVn4eByIUsqUNbivcwLlGfqSRTwAbiqC+ZJthOw/YZb1BznV
+         Du6w==
+X-Forwarded-Encrypted: i=1; AJvYcCUmPEpinUDxQ/e7osRM5IgmXW0CNXEZ2CJmzXzCkmMwKmBQnaMbWaDPpnohwC73rTeKCBatyIrWpX9KRlR8ywVf4sFqMjy9aixvy/BTguu2BfuqNx0v/KMakGKhE42hCj57XCpXvC/Oe92xe75+9u+YlEUdshVYNrYYPlplyNUUOVHIEBTUz2E4o91gP/EQ4gScQN5VBK/Dp6RcZ9N/ZxyyOeWZ4l8yGaKEzkyALLvmZaRtmuwm3pnk+iovfNtouZxmcmR9E4ZASWWB/YH27rZZwRdGGLgBtWib327scpTEx/nh8svNY8w+qP471Zw9CIFJrKIwMLZtvWWSDyQskWu6cx3qMqMitkA9uV21RXHzlGLTMlDGXuWcvmuOrL49dFBVu/PUplXttjLYawjSPloNiLEv9yZIVB167y+bHK5YGBsf5Mgcg/VxPOgdoiy3iZThHn4/49/yMxlwcx75qV+4F6N4JhGd/v7iBrtX3hiWaX805W6KpgLh1yvCIoRAkmGfL4zYccwXYTlzrx22fMDGhzPRLnhIECX/gVpMuGRQ1tXj3XlUrC/78Bue+aGQBkYJapRiHrQRZRl9m4W3YMi+sHp32dm3WytFndm+BzMNyFBWob3tku2ElOulzjQw+XZsgeDUlLbJ2KbWxTsWbGfjNq5BqM5eolT8uTqSrnPi7hLTctNoEfUQYBGTHYZO48CJGVOn82gV8NcJgweO2bIasUbiKvCmTmpeg0pT64N01358IJNrWRTDm3truR0VXfJ5M6hYgA==
+X-Gm-Message-State: AOJu0YyrGxD4iiAqrh4f6mHA/PYhBsRMQALVJ44xPWjvtc/Me1PTxzj+
+	TQr8QREdTH92HpO3yjciemxhwK7dUsjgO5tn7d4WfvEnnI4AB3M2Wy8Db1lzsC0=
+X-Google-Smtp-Source: AGHT+IETPnhQIIAFAn3PVCfwnEc7SkEbk6ro/qDz0Ch8QyPc2IoUZATwJ2GjFRkYml1JLqHQ4RqduQ==
+X-Received: by 2002:a05:6a00:1712:b0:704:12fc:7b30 with SMTP id d2e1a72fcca58-70629c565e1mr5514020b3a.17.1718906227709;
+        Thu, 20 Jun 2024 10:57:07 -0700 (PDT)
+Received: from localhost ([216.228.127.128])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-705ccb6b11bsm12644924b3a.154.2024.06.20.10.57.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Jun 2024 10:57:07 -0700 (PDT)
+From: Yury Norov <yury.norov@gmail.com>
+To: linux-kernel@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"James E.J. Bottomley" <jejb@linux.ibm.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	"Md. Haris Iqbal" <haris.iqbal@ionos.com>,
+	Akinobu Mita <akinobu.mita@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Disseldorp <ddiss@suse.de>,
+	Edward Cree <ecree.xilinx@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Fenghua Yu <fenghua.yu@intel.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Jens Axboe <axboe@kernel.dk>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Kalle Valo <kvalo@kernel.org>,
+	Karsten Graul <kgraul@linux.ibm.com>,
+	Karsten Keil <isdn@linux-pingi.de>,
+	Kees Cook <keescook@chromium.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Martin Habets <habetsm.xilinx@gmail.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Simek <monstr@monstr.eu>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Oliver Neukum <oneukum@suse.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Rich Felker <dalias@libc.org>,
+	Rob Herring <robh@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Stanislaw Gruszka <stf_xl@wp.pl>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>,
+	Will Deacon <will@kernel.org>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	GR-QLogic-Storage-Upstream@marvell.com,
+	alsa-devel@alsa-project.org,
+	ath10k@lists.infradead.org,
+	dmaengine@vger.kernel.org,
+	iommu@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-bluetooth@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	linux-media@vger.kernel.org,
+	linux-mips@vger.kernel.org,
+	linux-net-drivers@amd.com,
+	linux-pci@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	mpi3mr-linuxdrv.pdl@broadcom.com,
+	netdev@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	x86@kernel.org
+Cc: Yury Norov <yury.norov@gmail.com>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jan Kara <jack@suse.cz>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>
+Subject: [PATCH v4 00/40] lib/find: add atomic find_bit() primitives
+Date: Thu, 20 Jun 2024 10:56:23 -0700
+Message-ID: <20240620175703.605111-1-yury.norov@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000001106d2061b55b63e"
-
---0000000000001106d2061b55b63e
-Content-Type: text/plain; format=flowed; charset="us-ascii"
 Content-Transfer-Encoding: 8bit
 
-On June 20, 2024 4:00:31 AM Jacobe Zang <jacobe.zang@wesion.com> wrote:
+--- 
 
-> These add AP6275P wireless support on Khadas Edge2. Enable 32k clock
-> for Wi-Fi module and extend the hardware IDs table in the brcmfmac
-> driver for it to attach.
+This v4 moves new API to separate headers, as adding stuff to find.h
+concerns people, particularly Linus. It also adds few more conversions
+alongside other cosmetic changes. See full changelog below.
 
-Please get the bindings properly defined. I assume the patch sent earlier 
-titled "[PATCH v1] dt-bindings: net: wireless: BCM4329 binding: add 
-pci14e4,449d" is related. Focus on getting agreement on that before 
-throwing in DTS and driver details.
+---
 
-Regards,
-Arend
+Add helpers around test_and_{set,clear}_bit() to allow searching for
+clear or set bits and flipping them atomically.
 
+Using atomic search primitives allows to implement lockless bitmap
+handling where only individual bits are touched by concurrent processes,
+and where people now have to protect their bitmaps to search for a free
+or set bit due to the lack of atomic searching routines.
 
+The typical lock-protected bit allocation may look like this:
 
---0000000000001106d2061b55b63e
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+	unsigned long alloc_bit()
+	{
+		unsigned long bit;
 
-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
-2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
-Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
-ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
-zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
-sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
-BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
-N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
-p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBPebLIu9F2P1y30YQL
-jbYsU5v9bP7EgEDtpbFiVHGrMDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNDA2MjAxNzMzMjFaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAFUacIdRVb6zyMWqRS4C7dma+hpUQFPR5x7It
-rDfvoZeyqV9dgn71AeciW4E+ySGN2Nw2iRo/KOte3hFL+BBF4HT2Jb8OHOBQ2/qR8NSHdLrVCxQS
-8CVAhXwriZG2nk4AmrCIp/bJQh+ktIQzs77xCcWXw+6Vr0vBvdp1bbYJ4Bx1GI/lm9OSwRRT3FDP
-Gw29GNRWS/ur33cZFZA/z1xB69ALZqXtW0+SWfR1I6NqjWu7iEnH1YB+FPfdI4dwjn/9ROgaQxBE
-3+bcsDKJoezoz8inDmiCz+XQaHl0XrrqN0GVs9xavUUCl9HePs3neKFNKwHVPoCvubyeVkx4xK9b
-zA==
---0000000000001106d2061b55b63e--
+		spin_lock(bitmap_lock);
+		bit = find_first_zero_bit(bitmap, nbits);
+		if (bit < nbits)
+			__set_bit(bit, bitmap);
+		spin_unlock(bitmap_lock);
+
+		return bit;
+	}
+
+	void free_bit(unsigned long bit)
+	{
+		spin_lock(bitmap_lock);
+		__clear_bit(bit, bitmap);
+		spin_unlock(bitmap_lock);
+	}
+
+Now with atomic find_and_set_bit(), the above can be implemented
+lockless, directly by using it and atomic clear_bit().
+
+Patches 36-40 do this in few places in the kernel where the
+transition is clear. There is likely more candidates for
+refactoring.
+
+The other important case is when people opencode atomic search
+or atomic traverse on the maps with the patterns looking like:
+
+	for (idx = 0; idx < nbits; idx++)
+		if (test_and_clear_bit(idx, bitmap))
+			do_something(idx);
+
+Or like this:
+
+	do {
+		bit = find_first_bit(bitmap, nbits);
+		if (bit >= nbits)
+			return nbits;
+
+	} while (!test_and_clear_bit(bit, bitmap));
+
+	return bit;
+
+In both cases, the opencoded loop may be converted to a single function
+or iterator call. Correspondingly:
+
+	for_each_test_and_clear_bit(idx, bitmap, nbits)
+		do_something(idx);
+
+Or:
+	return find_and_clear_bit(bitmap, nbits);
+
+Obviously, the less routine code people have to write themself, the
+less probability to make a mistake. The patch #33 fixes one such
+mistake.
+
+The new API is not only a handy helpers - it also resolves a non-trivial
+issue of using non-atomic find_bit() together with atomic
+test_and_{set,clear)_bit().
+
+The trick is that find_bit() implies that the bitmap is a regular
+non-volatile piece of memory, and compiler is allowed to use such
+optimization techniques like re-fetching memory instead of caching it.
+
+For example, find_first_bit() is implemented like:
+
+      for (idx = 0; idx * BITS_PER_LONG < sz; idx++) {
+              val = addr[idx];
+              if (val) {
+                      sz = min(idx * BITS_PER_LONG + __ffs(val), sz);
+                      break;
+              }
+      }
+
+On register-memory architectures, like x86, compiler may decide to
+access memory twice - first time to compare against 0, and second time
+to fetch its value to pass it to __ffs().
+
+When running find_first_bit() on volatile memory, the memory may get
+changed in-between, and for instance, it may lead to passing 0 to
+__ffs(), which is an undefined behaviour. This is a potentially
+dangerous call.
+
+find_and_clear_bit() as a wrapper around test_and_clear_bit()
+naturally treats underlying bitmap as a volatile memory and prevents
+compiler from such optimizations.
+
+Now that KCSAN is catching exactly this type of situations and warns on
+undercover memory modifications. We can use it to reveal improper usage
+of find_bit(), and convert it to atomic find_and_*_bit() as appropriate.
+
+In some cases concurrent operations with plain find_bit() are acceptable.
+For example:
+
+ - two threads running find_*_bit(): safe wrt ffs(0) and returns correct
+   value, because underlying bitmap is unchanged;
+ - find_next_bit() in parallel with set or clear_bit(), when modifying
+   a bit prior to the start bit to search: safe and correct;
+ - find_first_bit() in parallel with set_bit(): safe, but may return wrong
+   bit number;
+ - find_first_zero_bit() in parallel with clear_bit(): same as above.
+
+In last 2 cases find_bit() may not return a correct bit number, but
+it may be OK if caller requires any (not exactly the first) set or clear
+bit, correspondingly.
+
+In such cases, KCSAN may be safely silenced with data_race(). But in most
+cases where KCSAN detects concurrency we should carefully review the code
+and likely protect critical sections or switch to atomic find_and_bit(),
+as appropriate.
+
+This patch adds the following atomic primitives:
+
+	find_and_set_bit(addr, nbits);
+	find_and_set_next_bit(addr, nbits, start);
+	...
+
+Here find_and_{set,clear} part refers to the corresponding
+test_and_{set,clear}_bit function. Suffixes like _wrap or _lock
+derive their semantics from corresponding find() or test() functions.
+
+For brevity, the naming omits the fact that we search for zero bit in
+find_and_set, and correspondingly search for set bit in find_and_clear
+functions.
+
+The patch also adds iterators with atomic semantics, like
+for_each_test_and_set_bit(). Here, the naming rule is to simply prefix
+corresponding atomic operation with 'for_each'.
+
+This series is not aimed on performance, but some performance
+implications are considered.
+
+In [1] Jan reported 2% slowdown in a single-thread search test when
+switching find_bit() function to treat bitmaps as volatile arrays. On
+the other hand, kernel robot in the same thread reported +3.7% to the
+performance of will-it-scale.per_thread_ops test.
+
+Assuming that our compilers are sane and generate better code against
+properly annotated data, the above discrepancy doesn't look weird. When
+running on non-volatile bitmaps, plain find_bit() outperforms atomic
+find_and_bit(), and vice-versa.
+
+So, all users of find_bit() API, where heavy concurrency is expected,
+are encouraged to switch to atomic find_and_bit() as appropriate.
+
+The 1st patch of this series adds atomic find_and_bit() API, 2nd adds
+a basic test for new API, and all the following patches spread it over
+the kernel.
+
+[1] https://lore.kernel.org/lkml/634f5fdf-e236-42cf-be8d-48a581c21660@alu.unizg.hr/T/#m3e7341eb3571753f3acf8fe166f3fb5b2c12e615
+
+---
+v1: https://lore.kernel.org/netdev/20231118155105.25678-29-yury.norov@gmail.com/T/
+v2: https://lore.kernel.org/all/20231204185101.ddmkvsr2xxsmoh2u@quack3/T/
+v3: https://lore.kernel.org/linux-pci/ZX4bIisLzpW8c4WM@yury-ThinkPad/T/
+v4:
+ - drop patch v3-24: not needed after null_blk refactoring;
+ - add patch 34: "MIPS: sgi-ip27: optimize alloc_level()";
+ - add patch 35: "uprobes: optimize xol_take_insn_slot()";
+ - add patches 36-40: get rid of locking scheme around bitmaps;
+ - move new API to separate headers, to not bloat bitmap.h @ Linus;
+ - patch #1: adjust comments to allow returning >= @size;
+ - rebase the series on top of current master.
+
+Yury Norov (40):
+  lib/find: add atomic find_bit() primitives
+  lib/find: add test for atomic find_bit() ops
+  lib/sbitmap; optimize __sbitmap_get_word() by using find_and_set_bit()
+  watch_queue: optimize post_one_notification() by using
+    find_and_clear_bit()
+  sched: add cpumask_find_and_set() and use it in __mm_cid_get()
+  mips: sgi-ip30: optimize heart_alloc_int() by using find_and_set_bit()
+  sparc: optimize alloc_msi() by using find_and_set_bit()
+  perf/arm: use atomic find_bit() API
+  drivers/perf: optimize ali_drw_get_counter_idx() by using
+    find_and_set_bit()
+  dmaengine: idxd: optimize perfmon_assign_event()
+  ath10k: optimize ath10k_snoc_napi_poll()
+  wifi: rtw88: optimize the driver by using atomic iterator
+  KVM: x86: hyper-v: optimize and cleanup kvm_hv_process_stimers()
+  PCI: hv: Optimize hv_get_dom_num() by using find_and_set_bit()
+  scsi: core: optimize scsi_evt_emit() by using an atomic iterator
+  scsi: mpi3mr: optimize the driver by using find_and_set_bit()
+  scsi: qedi: optimize qedi_get_task_idx() by using find_and_set_bit()
+  powerpc: optimize arch code by using atomic find_bit() API
+  iommu: optimize subsystem by using atomic find_bit() API
+  media: radio-shark: optimize the driver by using atomic find_bit() API
+  sfc: optimize the driver by using atomic find_bit() API
+  tty: nozomi: optimize interrupt_handler()
+  usb: cdc-acm: optimize acm_softint()
+  RDMA/rtrs: optimize __rtrs_get_permit() by using
+    find_and_set_bit_lock()
+  mISDN: optimize get_free_devid()
+  media: em28xx: cx231xx: optimize drivers by using find_and_set_bit()
+  ethernet: rocker: optimize ofdpa_port_internal_vlan_id_get()
+  bluetooth: optimize cmtp_alloc_block_id()
+  net: smc: optimize smc_wr_tx_get_free_slot_index()
+  ALSA: use atomic find_bit() functions where applicable
+  m68k: optimize get_mmu_context()
+  microblaze: optimize get_mmu_context()
+  sh: mach-x3proto: optimize ilsel_enable()
+  MIPS: sgi-ip27: optimize alloc_level()
+  uprobes: optimize xol_take_insn_slot()
+  scsi: sr: drop locking around SR index bitmap
+  KVM: PPC: Book3s HV: drop locking around kvmppc_uvmem_bitmap
+  wifi: mac80211: drop locking around ntp_fltr_bmap
+  mailbox: bcm-flexrm: simplify locking scheme
+  powerpc/xive: drop locking around IRQ map
+
+ MAINTAINERS                                  |   2 +
+ arch/m68k/include/asm/mmu_context.h          |  12 +-
+ arch/microblaze/include/asm/mmu_context_mm.h |  12 +-
+ arch/mips/sgi-ip27/ip27-irq.c                |  13 +-
+ arch/mips/sgi-ip30/ip30-irq.c                |  13 +-
+ arch/powerpc/kvm/book3s_hv_uvmem.c           |  33 +-
+ arch/powerpc/mm/book3s32/mmu_context.c       |  11 +-
+ arch/powerpc/platforms/pasemi/dma_lib.c      |  46 +--
+ arch/powerpc/platforms/powernv/pci-sriov.c   |  13 +-
+ arch/powerpc/sysdev/xive/spapr.c             |  34 +-
+ arch/sh/boards/mach-x3proto/ilsel.c          |   5 +-
+ arch/sparc/kernel/pci_msi.c                  |  10 +-
+ arch/x86/kvm/hyperv.c                        |  41 +--
+ drivers/dma/idxd/perfmon.c                   |   9 +-
+ drivers/infiniband/ulp/rtrs/rtrs-clt.c       |  16 +-
+ drivers/iommu/arm/arm-smmu/arm-smmu.h        |  11 +-
+ drivers/iommu/msm_iommu.c                    |  19 +-
+ drivers/isdn/mISDN/core.c                    |  10 +-
+ drivers/mailbox/bcm-flexrm-mailbox.c         |  21 +-
+ drivers/media/radio/radio-shark.c            |   6 +-
+ drivers/media/radio/radio-shark2.c           |   6 +-
+ drivers/media/usb/cx231xx/cx231xx-cards.c    |  17 +-
+ drivers/media/usb/em28xx/em28xx-cards.c      |  38 +--
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c    |  18 +-
+ drivers/net/ethernet/rocker/rocker_ofdpa.c   |  12 +-
+ drivers/net/ethernet/sfc/rx_common.c         |   5 +-
+ drivers/net/ethernet/sfc/siena/rx_common.c   |   5 +-
+ drivers/net/ethernet/sfc/siena/siena_sriov.c |  15 +-
+ drivers/net/wireless/ath/ath10k/snoc.c       |  10 +-
+ drivers/net/wireless/realtek/rtw88/pci.c     |   6 +-
+ drivers/net/wireless/realtek/rtw89/pci.c     |   6 +-
+ drivers/pci/controller/pci-hyperv.c          |   8 +-
+ drivers/perf/alibaba_uncore_drw_pmu.c        |  11 +-
+ drivers/perf/arm-cci.c                       |  25 +-
+ drivers/perf/arm-ccn.c                       |  11 +-
+ drivers/perf/arm_dmc620_pmu.c                |  10 +-
+ drivers/perf/arm_pmuv3.c                     |   9 +-
+ drivers/scsi/mpi3mr/mpi3mr_os.c              |  22 +-
+ drivers/scsi/qedi/qedi_main.c                |  10 +-
+ drivers/scsi/scsi_lib.c                      |   8 +-
+ drivers/scsi/sr.c                            |  15 +-
+ drivers/tty/nozomi.c                         |   6 +-
+ drivers/usb/class/cdc-acm.c                  |   6 +-
+ include/linux/cpumask_atomic.h               |  20 ++
+ include/linux/find.h                         |   4 -
+ include/linux/find_atomic.h                  | 324 +++++++++++++++++++
+ kernel/events/uprobes.c                      |  15 +-
+ kernel/sched/sched.h                         |  15 +-
+ kernel/watch_queue.c                         |   7 +-
+ lib/find_bit.c                               |  86 +++++
+ lib/sbitmap.c                                |  47 +--
+ lib/test_bitmap.c                            |  62 ++++
+ net/bluetooth/cmtp/core.c                    |  11 +-
+ net/smc/smc_wr.c                             |  11 +-
+ sound/pci/hda/hda_codec.c                    |   8 +-
+ sound/usb/caiaq/audio.c                      |  14 +-
+ 56 files changed, 747 insertions(+), 493 deletions(-)
+ create mode 100644 include/linux/cpumask_atomic.h
+ create mode 100644 include/linux/find_atomic.h
+
+-- 
+2.43.0
+
 
