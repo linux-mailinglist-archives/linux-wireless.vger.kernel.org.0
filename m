@@ -1,268 +1,217 @@
-Return-Path: <linux-wireless+bounces-9296-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9288-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B7991028E
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 13:32:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55191910250
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 13:14:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D0231F218D2
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 11:32:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9EC02B2337A
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 11:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA35A198E7A;
-	Thu, 20 Jun 2024 11:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2EED1AB34A;
+	Thu, 20 Jun 2024 11:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="j6z4wEgk"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="GoO+YvIS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from nbd.name (nbd.name [46.4.11.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18FA17CA1B
-	for <linux-wireless@vger.kernel.org>; Thu, 20 Jun 2024 11:31:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF331AB36C
+	for <linux-wireless@vger.kernel.org>; Thu, 20 Jun 2024 11:14:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718883117; cv=none; b=KkTVPCOmgwNQ8uVkS0HcMQj2NvW/vrSwDSl7jxg19s+cCW61YjOfqlozOBw5ZsZzx18ltqpQ5q0KT3jOCdN2Gk3hVtEll6lZkbsZs61UuRBPga2MYSZTg4pHDdOC34c6JTtU05kE5NtBglDP9l5LRltlvYBIu3QjjBZa9Eiq5e4=
+	t=1718882074; cv=none; b=BeMam7YGD9a4HqrlGwcfqo1hw3JuG4B37IK4BR3XD7MWIeG8+4IynNHg+YO52WcqkEB/+kmbjIyzqeuTOxQFBNAYFlCQp2m4RPet3/hJ7L2t0iVKUTf43FOOqDCxJoJNTOdYoFRRRpWJIkqHf4kz/bEGHuiavGYuxsjPFOpa6mk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718883117; c=relaxed/simple;
-	bh=oxDK1ork4gV3oAcNrGsVEPfrOqoZpJRbXU3HdPmx46Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NtXIvB2lOtZGXWKKEZc00hiE8orxq5lI2qx8HJesKjc1dghxGFGvlLvTTY36U36fOZFTPpJ859PIE3dr4ErpmJJHwBmTp8sRmigXMFcL1DuvohWiZQlrK6Wt2eP13mhtsSWWl9T7fRDnHBOyD9LpFY8PrR1HC4rZjpT/X1wndfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=j6z4wEgk; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=42ZCArE5bd76XlgcFgg80hu5d/Tp9VZxzntk2qX1VN4=; b=j6z4wEgkVoRiKvtsq5hqmp2VZW
-	EmWO48ijMf5Gxu9p3gwH5afghl+pF63tHpQ8rH+91bMtvx6vmPaUcvUkMLIApfh2wiRVOwDKqCezI
-	UppWgvnyfDjxwe/bNBvl19D8qoz7INrkPXxpE3d97Wtol1DDKdUaV5fxTnDOoBDBWRls=;
-Received: from p4ff13dca.dip0.t-ipconnect.de ([79.241.61.202] helo=localhost.localdomain)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
-	(Exim 4.96)
-	(envelope-from <nbd@nbd.name>)
-	id 1sKFhO-00Ei9k-0v;
-	Thu, 20 Jun 2024 13:11:26 +0200
-From: Felix Fietkau <nbd@nbd.name>
-To: linux-wireless@vger.kernel.org
-Cc: johannes@sipsolutions.net,
-	quic_adisi@quicinc.com,
-	quic_periyasa@quicinc.com,
-	ath12k@lists.infradead.org
-Subject: [PATCH 10/10] wifi: mac80211_hwsim: add support for multi-radio wiphy
-Date: Thu, 20 Jun 2024 13:11:22 +0200
-Message-ID: <b2f7aea3341e8610880e46d91e984a6e2c14b3f3.1718881762.git-series.nbd@nbd.name>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <cover.a7730420cfba0f204a60e4c30e6b0e07b441ff6b.1718881762.git-series.nbd@nbd.name>
-References: <cover.a7730420cfba0f204a60e4c30e6b0e07b441ff6b.1718881762.git-series.nbd@nbd.name>
+	s=arc-20240116; t=1718882074; c=relaxed/simple;
+	bh=c6utQ4uqFKyvvzhNiHuoxPlXhsrnPYTke/xmZU6LIHU=;
+	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=QvFMI21lOsUupnyRCBdGimxVI8tgZ2Z83cSvMqs6AabYgTB5EX3rb5baWrWyWh4EQ3v9y8WKZrIkecrToqAhEGPN796CiW+azIjBT15ZzbU/2cyqLLey23dZpaQnRzhcrP4nPHB9YKMVU8h/kFSZUZwJCAw6gWFOcgJ3N/+bEI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=GoO+YvIS; arc=none smtp.client-ip=209.85.208.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2ec002caeb3so9003821fa.2
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Jun 2024 04:14:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1718882071; x=1719486871; darn=vger.kernel.org;
+        h=mime-version:subject:user-agent:references:in-reply-to:message-id
+         :date:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZgYHhlx6bPo9yXrBLG8FPjlZp9aq5gf1ZRA/NAPZtuE=;
+        b=GoO+YvISBArmZD04Y8RQQ5aRyjiPOUGDgo78vGozGEJ0q+4MOqaXSQu8p/BbJwZdB7
+         UQqTGdb/uDDzg6QzeHaAxsARRjyU4Hh0UF5d9eM6Yp0J66YdWPI1hr3XIH8jkLolfZqa
+         gAfexaXTMlZZMCMaL9uMpuUVmqGQvH2df72Uw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718882071; x=1719486871;
+        h=mime-version:subject:user-agent:references:in-reply-to:message-id
+         :date:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZgYHhlx6bPo9yXrBLG8FPjlZp9aq5gf1ZRA/NAPZtuE=;
+        b=mODBSHheMF4BtL70FW546uprFQbEm8lzDJHfyMUCQpQCn1RpfLATySl4SErA1bVZie
+         Gn87LgqPMIOrEAmP50n5SC3CFNNLNVep+gTMMvNnJMkeecFHNYzmUmTR8F7vwcRLtE2q
+         EzqT8bkbcHr0wXaW+ct7KYXUtS14yFqWX6VvFZz7PP/NgnediWJ5AmVzMnU64/O5yF79
+         tXsM6f43hQpqa0XpH8CsFyXqmx46HC/xDXm4r+KWJyZwopkyETGLvTOcFvBbEa9TbBUc
+         bUHwCj4iFoNyeG39iwmkrkXnhcletZgGQPTBa5UGwDpAw3Lf26JjK3FlpXvjYN/C1e2q
+         nDgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVzMyuIB714h3y5qpxBtth8Lyh8/CaIqsoGmZvmUL5ENxb68CHQEMstKgisNwmzFSEWx0VkLyhMZH0W84cYb/rHIq8OmxHyOIlSh0cfJFM=
+X-Gm-Message-State: AOJu0YxmKOKy28SqrasTP+6S3+kbnStvOrE4yiNPdIWE2rYUSq2hAFuh
+	Zd1b2Jvj/WqpJg3BzjsOpLqv1EGAQaqONRISEIXO6PIfFtK7V1rsOdRhb4HDuA==
+X-Google-Smtp-Source: AGHT+IHvtUBXRcCX4PQ1xiorMqe9XQyPGYnlOu+wbXZ1SH8c9ZJy+M4H6v5QYDPfHZMdmYIaIcVkGw==
+X-Received: by 2002:a2e:9e94:0:b0:2ec:4064:18e4 with SMTP id 38308e7fff4ca-2ec40641ae0mr27120081fa.5.1718882070853;
+        Thu, 20 Jun 2024 04:14:30 -0700 (PDT)
+Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57d03f29c8csm2082529a12.40.2024.06.20.04.14.30
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 20 Jun 2024 04:14:30 -0700 (PDT)
+From: Arend Van Spriel <arend.vanspriel@broadcom.com>
+To: Peter Robinson <pbrobinson@gmail.com>, Julian Calaby <julian.calaby@gmail.com>
+CC: Kalle Valo <kvalo@kernel.org>, <linux-wireless@vger.kernel.org>, <brcm80211@lists.linux.dev>
+Date: Thu, 20 Jun 2024 13:14:30 +0200
+Message-ID: <190355aedf0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <CALeDE9M78so=roEFion9GGo4tV7c+M885=ZNZgi9zKyBur+iMQ@mail.gmail.com>
+References: <20240617122609.349582-1-arend.vanspriel@broadcom.com>
+ <CALeDE9O7DCPhoxdMyHmYFOjwdkPRepiaaC92QorzSTXCduZ+xQ@mail.gmail.com>
+ <CAGRGNgWH9U3XeatXA9xpkLz76COuL1xjYcfXQYLTGKBxvy=M-A@mail.gmail.com>
+ <CALeDE9M78so=roEFion9GGo4tV7c+M885=ZNZgi9zKyBur+iMQ@mail.gmail.com>
+User-Agent: AquaMail/1.51.3 (build: 105103473)
+Subject: Re: [PATCH] wifi: brcmsmac: advertise MFP_CAPABLE to enable WPA3
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="00000000000044f5b3061b506b0c"
+
+--00000000000044f5b3061b506b0c
+Content-Type: text/plain; format=flowed; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 
-This registers one wiphy radio per supported band. Number of different
-channels is set per radio.
+On June 20, 2024 11:53:12 AM Peter Robinson <pbrobinson@gmail.com> wrote:
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
- drivers/net/wireless/virtual/mac80211_hwsim.c | 77 +++++++++++++++++---
- drivers/net/wireless/virtual/mac80211_hwsim.h |  3 +-
- 2 files changed, 69 insertions(+), 11 deletions(-)
+> On Thu, 20 Jun 2024 at 10:46, Julian Calaby <julian.calaby@gmail.com> wrote:
+>>
+>> Hi Peter,
+>>
+>> On Thu, Jun 20, 2024 at 7:19 PM Peter Robinson <pbrobinson@gmail.com> wrote:
+>>>
+>>> Hi Arend,
+>>>
+>>>> After being asked about support for WPA3 for BCM43224 chipset it
+>>>> was found that all it takes is setting the MFP_CAPABLE flag and
+>>>> mac80211 will take care of all that is needed [1].
+>>>
+>>> Testing this on a Raspberry Pi 4 [1] against a UniFi U6Pro AP I can't
+>>> connect to my WPA3 only SSID, it works fine with the SSID that's
+>>> WPA2/WPA3 on the same AP. It doesn't connect and I get a whole lot of
+>>> the following errors while it tries:
+>>>
+>>> [  155.988865] brcmfmac: brcmf_set_channel: set chanspec 0xd02e fail, 
+>>> reason -52
+>>> [  156.100906] brcmfmac: brcmf_set_channel: set chanspec 0xd034 fail, 
+>>> reason -52
+>>> [  156.108597] brcmfmac: brcmf_set_channel: set chanspec 0xd038 fail, 
+>>> reason -52
+>>> [  156.116317] brcmfmac: brcmf_set_channel: set chanspec 0xd03c fail, 
+>>> reason -52
+>>
+>> The Raspberry Pis' WiFi chipsets use the brcmfmac driver and this is a
+>> patch to the brcmsmac driver. This driver is for older and simpler
+>> WiFi chipsets than the ones on the Raspberry Pis.
+>
+> Right you are, completely missed that :)
 
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
-index b5afaec61827..d8dc1a2da72b 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-@@ -69,6 +69,9 @@ static bool mlo;
- module_param(mlo, bool, 0444);
- MODULE_PARM_DESC(mlo, "Support MLO");
- 
-+static bool multi_radio;
-+module_param(multi_radio, bool, 0444);
-+MODULE_PARM_DESC(mlo, "Support Multiple Radios per wiphy");
- /**
-  * enum hwsim_regtest - the type of regulatory tests we offer
-  *
-@@ -669,6 +672,10 @@ struct mac80211_hwsim_data {
- 	struct ieee80211_iface_limit if_limits[3];
- 	int n_if_limits;
- 
-+	struct ieee80211_iface_combination if_combination_radio;
-+	struct wiphy_radio_freq_range radio_range[4];
-+	struct wiphy_radio radio[4];
-+
- 	u32 ciphers[ARRAY_SIZE(hwsim_ciphers)];
- 
- 	struct mac_address addresses[2];
-@@ -4017,6 +4024,7 @@ struct hwsim_new_radio_params {
- 	bool reg_strict;
- 	bool p2p_device;
- 	bool use_chanctx;
-+	bool multi_radio;
- 	bool destroy_on_close;
- 	const char *hwname;
- 	bool no_vif;
-@@ -4093,6 +4101,12 @@ static int append_radio_msg(struct sk_buff *skb, int id,
- 			return ret;
- 	}
- 
-+	if (param->multi_radio) {
-+		ret = nla_put_flag(skb, HWSIM_ATTR_MULTI_RADIO);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
- 	if (param->hwname) {
- 		ret = nla_put(skb, HWSIM_ATTR_RADIO_NAME,
- 			      strlen(param->hwname), param->hwname);
-@@ -5113,6 +5127,7 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
- 	struct net *net;
- 	int idx, i;
- 	int n_limits = 0;
-+	int n_bands = 0;
- 
- 	if (WARN_ON(param->channels > 1 && !param->use_chanctx))
- 		return -EINVAL;
-@@ -5216,22 +5231,22 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
- 		n_limits++;
- 	}
- 
-+	data->if_combination.radar_detect_widths =
-+				BIT(NL80211_CHAN_WIDTH_5) |
-+				BIT(NL80211_CHAN_WIDTH_10) |
-+				BIT(NL80211_CHAN_WIDTH_20_NOHT) |
-+				BIT(NL80211_CHAN_WIDTH_20) |
-+				BIT(NL80211_CHAN_WIDTH_40) |
-+				BIT(NL80211_CHAN_WIDTH_80) |
-+				BIT(NL80211_CHAN_WIDTH_160);
-+
- 	if (data->use_chanctx) {
- 		hw->wiphy->max_scan_ssids = 255;
- 		hw->wiphy->max_scan_ie_len = IEEE80211_MAX_DATA_LEN;
- 		hw->wiphy->max_remain_on_channel_duration = 1000;
--		data->if_combination.radar_detect_widths = 0;
- 		data->if_combination.num_different_channels = data->channels;
- 	} else {
- 		data->if_combination.num_different_channels = 1;
--		data->if_combination.radar_detect_widths =
--					BIT(NL80211_CHAN_WIDTH_5) |
--					BIT(NL80211_CHAN_WIDTH_10) |
--					BIT(NL80211_CHAN_WIDTH_20_NOHT) |
--					BIT(NL80211_CHAN_WIDTH_20) |
--					BIT(NL80211_CHAN_WIDTH_40) |
--					BIT(NL80211_CHAN_WIDTH_80) |
--					BIT(NL80211_CHAN_WIDTH_160);
- 	}
- 
- 	if (!n_limits) {
-@@ -5349,6 +5364,9 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
- 
- 	for (band = NL80211_BAND_2GHZ; band < NUM_NL80211_BANDS; band++) {
- 		struct ieee80211_supported_band *sband = &data->bands[band];
-+		struct wiphy_radio_freq_range *radio_range;
-+		const struct ieee80211_channel *c;
-+		struct wiphy_radio *radio;
- 
- 		sband->band = band;
- 
-@@ -5422,8 +5440,41 @@ static int mac80211_hwsim_new_radio(struct genl_info *info,
- 		mac80211_hwsim_sband_capab(sband);
- 
- 		hw->wiphy->bands[band] = sband;
-+
-+		if (!param->multi_radio)
-+			continue;
-+
-+		if (WARN_ON_ONCE(n_bands >= ARRAY_SIZE(data->radio))) {
-+			err = -EINVAL;
-+			goto failed_hw;
-+		}
-+
-+		c = sband->channels;
-+		radio_range = &data->radio_range[n_bands];
-+		radio_range->start_freq = ieee80211_channel_to_khz(c) - 10000;
-+
-+		c += sband->n_channels - 1;
-+		radio_range->end_freq = ieee80211_channel_to_khz(c) + 10000;
-+
-+		radio = &data->radio[n_bands++];
-+		radio->freq_range = radio_range;
-+		radio->n_freq_range = 1;
-+		radio->iface_combinations = &data->if_combination_radio;
-+		radio->n_iface_combinations = 1;
-+	}
-+
-+	if (param->multi_radio) {
-+		hw->wiphy->radio = data->radio;
-+		hw->wiphy->n_radio = n_bands;
-+
-+		memcpy(&data->if_combination_radio, &data->if_combination,
-+		       sizeof(data->if_combination));
-+		data->if_combination.num_different_channels *= n_bands;
- 	}
- 
-+	if (data->use_chanctx)
-+		data->if_combination.radar_detect_widths = 0;
-+
- 	/* By default all radios belong to the first group */
- 	data->group = 1;
- 	mutex_init(&data->mutex);
-@@ -6041,6 +6092,9 @@ static int hwsim_new_radio_nl(struct sk_buff *msg, struct genl_info *info)
- 	else
- 		param.use_chanctx = (param.channels > 1);
- 
-+	if (info->attrs[HWSIM_ATTR_MULTI_RADIO])
-+		param.multi_radio = true;
-+
- 	if (info->attrs[HWSIM_ATTR_REG_HINT_ALPHA2])
- 		param.reg_alpha2 =
- 			nla_data(info->attrs[HWSIM_ATTR_REG_HINT_ALPHA2]);
-@@ -6121,7 +6175,7 @@ static int hwsim_new_radio_nl(struct sk_buff *msg, struct genl_info *info)
- 
- 	param.mlo = info->attrs[HWSIM_ATTR_MLO_SUPPORT];
- 
--	if (param.mlo)
-+	if (param.mlo || param.multi_radio)
- 		param.use_chanctx = true;
- 
- 	if (info->attrs[HWSIM_ATTR_RADIO_NAME]) {
-@@ -6815,7 +6869,8 @@ static int __init init_mac80211_hwsim(void)
- 
- 		param.p2p_device = support_p2p_device;
- 		param.mlo = mlo;
--		param.use_chanctx = channels > 1 || mlo;
-+		param.multi_radio = multi_radio;
-+		param.use_chanctx = channels > 1 || mlo || multi_radio;
- 		param.iftypes = HWSIM_IFTYPE_SUPPORT_MASK;
- 		if (param.p2p_device)
- 			param.iftypes |= BIT(NL80211_IFTYPE_P2P_DEVICE);
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.h b/drivers/net/wireless/virtual/mac80211_hwsim.h
-index 21b1afd83dc1..2a890c4903db 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim.h
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim.h
-@@ -157,6 +157,8 @@ enum hwsim_commands {
-  *	to provide details about peer measurement request (nl80211_peer_measurement_attrs)
-  * @HWSIM_ATTR_PMSR_RESULT: nested attributed used with %HWSIM_CMD_REPORT_PMSR
-  *	to provide peer measurement result (nl80211_peer_measurement_attrs)
-+ * @HWSIM_ATTR_MULTI_RADIO: register multiple wiphy radios (one per band).
-+ *	Number of supported channels for the phy will be per radio.
-  * @__HWSIM_ATTR_MAX: enum limit
-  */
- enum hwsim_attrs {
-@@ -189,6 +191,7 @@ enum hwsim_attrs {
- 	HWSIM_ATTR_PMSR_SUPPORT,
- 	HWSIM_ATTR_PMSR_REQUEST,
- 	HWSIM_ATTR_PMSR_RESULT,
-+	HWSIM_ATTR_MULTI_RADIO,
- 	__HWSIM_ATTR_MAX,
- };
- #define HWSIM_ATTR_MAX (__HWSIM_ATTR_MAX - 1)
--- 
-git-series 0.9.1
+The devil is in the details ;-) Good that you tested. Maybe we can look 
+into the WPA3-only problem. Are you using wpa_supplicant? Can you share 
+supplicant log file and kernel log with brcmfmac debug modparam set to 0x1416.
+
+Regards,
+Arend
+
+
+
+
+--00000000000044f5b3061b506b0c
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+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
+2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
+Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
+HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
+KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
+Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
+dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
+OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
+MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
+BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
+ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
+zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
+sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
+BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
+N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
+p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
+YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBQASszIE8E6NbffKqu
+edH7IPeTGkqMf7NMrzXC4YahtTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yNDA2MjAxMTE0MzFaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEADcOZYoelIObh4sAhhI0f65ONxPnyemDcNu0f
+l+yR/O0Gzb2TlCDb6TvpRKDKcD48ZJVZS45GuumnOzAsTm+tez5YcBcZZ3tZoW3VVwdjz6rJW2Tb
+tFb51TY1OYiz6l24/XxPhtyuIKegzDlLBQjGmDGGI3QqHzLiYXhp5EmDjIJCvC2mh+xGBRV6GQ8D
+nJ/eEpsqvr9cYfSsSb+xrsLnV1ikKPqqLlBZqhqOKsSeTUJpWfCJPl8Utt3ELFve0udsJgbF/wDw
+1iAkQeg8wUO0WfjFU0fCqnD5MTfL0dvC7K4kM5tHPu1p1PPQO6h9a0Q+ubKdlba5AQ8Q47qhj4Pz
+1w==
+--00000000000044f5b3061b506b0c--
 
