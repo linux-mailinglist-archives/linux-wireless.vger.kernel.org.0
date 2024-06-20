@@ -1,125 +1,287 @@
-Return-Path: <linux-wireless+bounces-9286-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9287-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB659910110
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 12:05:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A95391023B
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 13:11:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 707021F22814
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 10:05:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A01AB20D91
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 11:11:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ADE41A4F30;
-	Thu, 20 Jun 2024 10:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA8231AAE1E;
+	Thu, 20 Jun 2024 11:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ArXWFJQJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bnodb2Vh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDB22BAE2;
-	Thu, 20 Jun 2024 10:05:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B473321A19
+	for <linux-wireless@vger.kernel.org>; Thu, 20 Jun 2024 11:10:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718877929; cv=none; b=iRisYDlxp/7TtHHAZELCYZU9al9zWKkWCcnsQE41owGMJnq0rbjJBJcAtTa6yKo/42sVHBq5izVbFViOFTVbxBWZftgxQyI+KLewAon8/YDPg6bqKUqMIHW2OF5OJOTw6B3ArjnKTh9sGcbkkl2Y5RBm6DZYdP0JJwaVnSPCf30=
+	t=1718881855; cv=none; b=h8Kkykwn2QadvUiIUtRz4YGm+MVTPJlf/w4i/zHiK7zxsKGNRg8JDWYGNHwLkIWbTSMqnDdtEUkpF8+qbUKzFDwYa9C9uKLJl9AIZMDlVJHtyp7worcNF2oWLgyJCdr4zBa6nrZiVmpaR99ZrY5sknBOEY6R6WIctDMPjma3WT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718877929; c=relaxed/simple;
-	bh=HDZk9HJppUsHiLTg26al0A+m7r+GdOYBJsYGlt7Qx7E=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=D4uwjFKXlwkT0DzPj727AbWwtI94mNA098zW7+r23yyqcnSoS75t37Spu45LRT/RhAJ/uFbzYssPQOUmh1OydXk66KMVqNnbygzgyWVCwybmNBOJdU6zVRol4abGeXNwELqMLTPxjRbWKDJ4ITblZWxkHBnxDOGklhWzgn5af4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ArXWFJQJ; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1f44b441b08so5315555ad.0;
-        Thu, 20 Jun 2024 03:05:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718877927; x=1719482727; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=HDZk9HJppUsHiLTg26al0A+m7r+GdOYBJsYGlt7Qx7E=;
-        b=ArXWFJQJh37gmCLv2Wo20HdCZtzaoSMtV0fjcH/2WUfTGRhVOcl1JHzEvQM5M+WGx9
-         EVDZznNAQMS7uMtf8YJEjgmII+5OxgwuZlc3125lBjmet5CEI+VF7UgV0nMkfh+MySkQ
-         /yb3D/+2GpItJsatA2VcWn/fbgwaqENK8rE48zTOyTryyan4NAa5BR9SzmVge1KPwxdL
-         uKKRBKhIsFn01q5gfFdPbkDSGKIb6aiirsj4vPmkO3Hb8RS2MbhLkMvMnIBTUwAy6diW
-         EceK/E8maqv0Yxdufj2Ny2USdlViUVQoYABS0UXlOzCPcOzRHonSdN/q8DuIM/wUkQxd
-         xeFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718877927; x=1719482727;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HDZk9HJppUsHiLTg26al0A+m7r+GdOYBJsYGlt7Qx7E=;
-        b=i5qx31MclfmOkhBmB2HpVeQHKFph+dss92EcC7xGkjGMNSu8TbjNNhYvsuXPoHilBF
-         fM5mhEFZan8N1EybrsWAgB+N3NqLi3Hy59I1CH2FxR+p001YY2P+plHXqqJyYvI963gK
-         /0e1us/ZwbebQGSTxft2LjPs5uXN5/ex/EoQTHwpsc60k8vXMncq8xqo9nMRF1Ku3zxj
-         9O2ITt3whJxTzwhss9LYz8r4FXWFwESq2yft2q9b4euQrHQxd0aFKgkl+3bAPORCh58A
-         DG3x3XrQFd9wYWJFg4hNe+1KsMOHGdojhhtQ9PZtH/YXlUboZjXMYuZjBmUR/By+4Aig
-         FuUg==
-X-Forwarded-Encrypted: i=1; AJvYcCVp/TlDnV61CC015QtyKpSIuoFLIG7HZdNrw8t0+nzrZ40ZlHjCH9MhqtRXa+ZJg/5aEio/LuVlnePk3JCR7SebXTBhVp5waU8=
-X-Gm-Message-State: AOJu0Yw3uEM7dcSryYCiwf1AXc3xXAUGrZOzF4YpvVpp2WwiO2dRL98H
-	JLokIy4XvAiMVyXOqdCeZY45c8Y5Jig1reJXvXtEWSaHOQIht4f7
-X-Google-Smtp-Source: AGHT+IHKP0cjFNlKm9wf9h08SQSeHk8JMac7e/kdLm1Cay1idYN22fHCErHQ1so6NkdBrqsZNuoh7g==
-X-Received: by 2002:a17:903:230a:b0:1f9:ddb9:3ee5 with SMTP id d9443c01a7336-1f9ddb94098mr411145ad.26.1718877927301;
-        Thu, 20 Jun 2024 03:05:27 -0700 (PDT)
-Received: from [127.0.0.1] ([49.205.38.201])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f9b17f9bcasm30533305ad.161.2024.06.20.03.05.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Jun 2024 03:05:26 -0700 (PDT)
-Date: Thu, 20 Jun 2024 15:35:23 +0530
-From: Mathew George <mathewegeorge@gmail.com>
-To: Ping-Ke Shih <pkshih@realtek.com>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
- Bernie Huang <phhuang@realtek.com>, "kvalo@kernel.org" <kvalo@kernel.org>,
- "regressions@lists.linux.dev" <regressions@lists.linux.dev>
-Subject: RE: [REGRESSION] Freeze on resume from S3 (bisected)
-User-Agent: K-9 Mail for Android
-In-Reply-To: <342b6b95d97a4bf09afee15c09481efc@realtek.com>
-References: <87tthpwkqf.fsf@gmail.com> <2ce41d4129234ba9a91d5b4dcd8a40ee@realtek.com> <87sex93s63.fsf@gmail.com> <6970398610c546b1b62e599902c67572@realtek.com> <E3FF7BC1-725B-40E2-AAF0-CA41A44B9DF9@gmail.com> <342b6b95d97a4bf09afee15c09481efc@realtek.com>
-Message-ID: <CFB0314C-AE45-4563-BF41-F5D635BFCF86@gmail.com>
+	s=arc-20240116; t=1718881855; c=relaxed/simple;
+	bh=HaRyeGCSmJfjAMezDKhTuUXcvEjf+Qs3/osMB2Fr9Uc=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=UffScu0nTyPfc1qOj45qy2viGkRfRrcPSknSPAmbFj5aegMbKRyanpAvsS1MStM9LKcQH2hD5HZzjMnEycumiO5QobIANpT+eYljbYIAyrq3CW2B0CPvGdB8WwBsNeDd3xDs6bgqJuxK+Y8nLcN7Yu3u3pCJORAiIUyUPhIpNNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bnodb2Vh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FBA7C2BD10;
+	Thu, 20 Jun 2024 11:10:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718881855;
+	bh=HaRyeGCSmJfjAMezDKhTuUXcvEjf+Qs3/osMB2Fr9Uc=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=bnodb2Vhu81Hg96+7GH1ZyvE770Un6qWmTRIoC2J1jN6zBF89XE+ATY17qxe+tC01
+	 kNlrFIpbc9mPnRIuL3zLoTC8UgovaVs/FmRVs4XLxLcLR/547BozKHl6kRqJllgFdp
+	 R7C5Y5TvDKaQOD4U1lReJAysdZGc5WXcfR0Vjo82ypTNnJfxX9bmFQDW1eCMslar5p
+	 xu97TpDxYBAUddC+qIPEKjlxwiHpNC1NQwONaFSdmDlyxtyhl+b8JsRYYwOSdxavHW
+	 8P9HeNI5I1aSW5/rnGu0DVQGGr93AyC2gdu2oX532oQ7vIFoCr8JpxbNcKAeEbOiXA
+	 qASJvyxqGLP+w==
+From: Kalle Valo <kvalo@kernel.org>
+To: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v3 4/8] wifi: ath12k: add WoW net-detect functionality
+References: <20240530072714.25671-1-quic_bqiang@quicinc.com>
+	<20240530072714.25671-5-quic_bqiang@quicinc.com>
+Date: Thu, 20 Jun 2024 14:10:52 +0300
+In-Reply-To: <20240530072714.25671-5-quic_bqiang@quicinc.com> (Baochen Qiang's
+	message of "Thu, 30 May 2024 15:27:10 +0800")
+Message-ID: <87le2zkgxv.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-> I have seen that, but no clear idea for now, so I will install Arch Linux=
- as yours
-> in my side=2E=20
+Baochen Qiang <quic_bqiang@quicinc.com> writes:
 
-I really appreciate your dedication here, but I'm not sure that this is re=
-lated to my OS=2E I
-feel it might be a corner case that manifests only on certain hardware con=
-figurations,
-otherwise it would probably have been encountered by other people by now=
-=2E
-I can't say this with any confidence, since this is my first kernel bug, a=
-nd I don't have
-any factual basis for this feeling; I just don't want you to burn yourself=
- out with the Arch
-installation process when it might not help in diagnosing the issue=2E
-Ultimately we'll go by whatever you think is best, though; you're the expe=
-rt here, not me=2E
+> Implement net-detect feature by setting flag
+> WIPHY_WOWLAN_NET_DETECT if firmware supports this
+> feature. Driver sets the related PNO configuration
+> to firmware before entering WoW and firmware then
+> scans periodically and wakes up host if a specific
+> SSID is found.
+>
+> Note that firmware crashes if we enable it for both
+> P2P vdev and station vdev simultaneously because
+> firmware can only support one vdev at a time. Since
+> there is rare scenario for a P2P vdev to do net-detect,
+> skip it for P2P vdevs.
+>
+> Tested-on: WCN7850 hw2.0 PCI
+> WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+>
+> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
 
-> I feel this problem may be easier to reproduce on Arch Linux, so I would=
- like
-> to know Arch Linux iso file you installed=2E
+[...]
 
-I don't remember the iso version that I used (it was years ago), and I don=
-'t know of any
-way to check, but it shouldn't matter=2E AFAIK the Arch iso is only used t=
-o bootstrap the
-system, so its version should not be of any consequence to my current conf=
-iguration=2E
-You might want to look at https://wiki=2Earchlinux=2Eorg/title/Installatio=
-n_guide
-to get an idea of what the process is like; as you'll see it's very manual=
- and takes a fair bit
-of effort=2E
+> +struct wmi_wow_nlo_config_cmd {
+> +	__le32 tlv_header;
+> +	__le32 flags;
+> +	__le32 vdev_id;
+> +	__le32 fast_scan_max_cycles;
+> +	__le32 active_dwell_time;
+> +	__le32 passive_dwell_time;
+> +	__le32 probe_bundle_size;
+> +
+> +	/* ART = IRT */
+> +	__le32 rest_time;
+
+What's ART and IRT in this context? The comments are supposed to answer
+to questions but this is just adding more questions.
+
+> +
+> +	/* Max value that can be reached after SBM */
+> +	__le32 max_rest_time;
+
+It's good to avoid acronyms so I changed this to:
+
+	/* max value that can be reached after scan_backoff_multiplier */
+	__le32 max_rest_time;
+
+> +	/* SBM */
+> +	__le32 scan_backoff_multiplier;
+> +
+> +	/* SCBM */
+> +	__le32 fast_scan_period;
+
+These two comments are not really providing any extra information I
+removed them.
+
+> +static int
+> +ath12k_wow_pno_check_and_convert(struct ath12k *ar, u32 vdev_id,
+> +				 const struct cfg80211_sched_scan_request *nd_config,
+> +				 struct wmi_pno_scan_req_arg *pno)
+> +{
+> +	int i, j;
+> +	u8 ssid_len;
+> +
+> +	pno->enable = 1;
+> +	pno->vdev_id = vdev_id;
+> +	pno->uc_networks_count = nd_config->n_match_sets;
+> +
+> +	if (!pno->uc_networks_count ||
+> +	    pno->uc_networks_count > WMI_PNO_MAX_SUPP_NETWORKS)
+> +		return -EINVAL;
+> +
+> +	if (nd_config->n_channels > WMI_PNO_MAX_NETW_CHANNELS_EX)
+> +		return -EINVAL;
+> +
+> +	/* Filling per profile params */
+> +	for (i = 0; i < pno->uc_networks_count; i++) {
+> +		ssid_len = nd_config->match_sets[i].ssid.ssid_len;
+> +
+> +		if (ssid_len == 0 || ssid_len > 32)
+> +			return -EINVAL;
+> +
+> +		pno->a_networks[i].ssid.ssid_len = ssid_len;
+> +
+> +		memcpy(pno->a_networks[i].ssid.ssid,
+> +		       nd_config->match_sets[i].ssid.ssid,
+> +		       ssid_len);
+> +		pno->a_networks[i].authentication = 0;
+> +		pno->a_networks[i].encryption     = 0;
+> +		pno->a_networks[i].bcast_nw_type  = 0;
+> +
+> +		/* Copying list of valid channel into request */
+> +		pno->a_networks[i].channel_count = nd_config->n_channels;
+> +		pno->a_networks[i].rssi_threshold = nd_config->match_sets[i].rssi_thold;
+> +
+> +		for (j = 0; j < nd_config->n_channels; j++) {
+> +			pno->a_networks[i].channels[j] =
+> +					nd_config->channels[j]->center_freq;
+> +		}
+> +	}
+> +
+> +	/* set scan to passive if no SSIDs are specified in the request */
+> +	if (nd_config->n_ssids == 0)
+> +		pno->do_passive_scan = true;
+> +	else
+> +		pno->do_passive_scan = false;
+> +
+> +	for (i = 0; i < nd_config->n_ssids; i++) {
+> +		j = 0;
+> +		while (j < pno->uc_networks_count) {
+> +			if (pno->a_networks[j].ssid.ssid_len ==
+> +				nd_config->ssids[i].ssid_len &&
+> +			    !memcmp(pno->a_networks[j].ssid.ssid,
+> +				    nd_config->ssids[i].ssid,
+> +				    pno->a_networks[j].ssid.ssid_len)) {
+> +				pno->a_networks[j].bcast_nw_type = BCAST_HIDDEN;
+> +				break;
+> +			}
+> +			j++;
+> +		}
+> +	}
+
+The while loop is just a simple for loop so I changed it to use for statement.
+
+> +
+> +	if (nd_config->n_scan_plans == 2) {
+> +		pno->fast_scan_period = nd_config->scan_plans[0].interval * MSEC_PER_SEC;
+> +		pno->fast_scan_max_cycles = nd_config->scan_plans[0].iterations;
+> +		pno->slow_scan_period =
+> +			nd_config->scan_plans[1].interval * MSEC_PER_SEC;
+> +	} else if (nd_config->n_scan_plans == 1) {
+> +		pno->fast_scan_period = nd_config->scan_plans[0].interval * MSEC_PER_SEC;
+> +		pno->fast_scan_max_cycles = 1;
+> +		pno->slow_scan_period = nd_config->scan_plans[0].interval * MSEC_PER_SEC;
+> +	} else {
+> +		ath12k_warn(ar->ab, "Invalid number of scan plans %d !!",
+> +			    nd_config->n_scan_plans);
+> +	}
+
+I cleaned up the error message here.
+
+> +static int ath12k_wow_vdev_clean_nlo(struct ath12k *ar, u32 vdev_id)
+> +{
+> +	int ret = 0;
+> +
+> +	if (ar->nlo_enabled) {
+> +		struct wmi_pno_scan_req_arg *pno =
+> +			kzalloc(sizeof(*pno), GFP_KERNEL);
+> +		if (!pno)
+> +			return -ENOMEM;
+> +
+> +		pno->enable = 0;
+> +		ar->nlo_enabled = false;
+> +		ret = ath12k_wmi_wow_config_pno(ar, vdev_id, pno);
+> +		kfree(pno);
+> +	}
+> +
+> +	return ret;
+> +}
+
+Avoid initialising ret variables and minimise the indentation. I changed
+this to:
+
+static int ath12k_wow_vdev_clean_nlo(struct ath12k *ar, u32 vdev_id)
+{
+	struct wmi_pno_scan_req_arg *pno;
+	int ret;
+
+	if (!ar->nlo_enabled)
+		return 0;
+
+	pno = kzalloc(sizeof(*pno), GFP_KERNEL);
+	if (!pno)
+		return -ENOMEM;
+
+	pno->enable = 0;
+	ret = ath12k_wmi_wow_config_pno(ar, vdev_id, pno);
+	if (ret) {
+		ath12k_warn(ar->ab, "failed to disable PNO: %d", ret);
+		goto out;
+	}
+
+	ar->nlo_enabled = false;
+
+out:
+	kfree(pno);
+	return ret;
+}
+
+> +static int ath12k_wow_vif_clean_nlo(struct ath12k_vif *arvif)
+> +{
+> +	struct ath12k *ar = arvif->ar;
+> +	int ret = 0;
+> +
+> +	switch (arvif->vdev_type) {
+> +	case WMI_VDEV_TYPE_STA:
+> +		ret = ath12k_wow_vdev_clean_nlo(ar, arvif->vdev_id);
+> +		break;
+> +	default:
+> +		break;
+> +	}
+> +	return ret;
+> +}
+
+ret variable is not really needed:
+
+static int ath12k_wow_vif_clean_nlo(struct ath12k_vif *arvif)
+{
+	struct ath12k *ar = arvif->ar;
+
+	switch (arvif->vdev_type) {
+	case WMI_VDEV_TYPE_STA:
+		return ath12k_wow_vdev_clean_nlo(ar, arvif->vdev_id);
+	default:
+		return 0;
+	}
+}
+
+In the pending branch I did also some minor cosmetic changes to this and
+earlier patches, too many to list here.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
