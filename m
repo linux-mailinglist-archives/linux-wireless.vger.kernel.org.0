@@ -1,237 +1,161 @@
-Return-Path: <linux-wireless+bounces-9261-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9262-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73EB690FB26
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 04:01:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C162A90FBF0
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 06:23:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE99EB20F92
-	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 02:01:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 605FA1F220DF
+	for <lists+linux-wireless@lfdr.de>; Thu, 20 Jun 2024 04:23:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30B732E3E9;
-	Thu, 20 Jun 2024 02:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3FC722EED;
+	Thu, 20 Jun 2024 04:23:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Y+CLMb35"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from APC01-SG2-obe.outbound.protection.outlook.com (mail-sgaapc01on2128.outbound.protection.outlook.com [40.107.215.128])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E8DA282E2;
-	Thu, 20 Jun 2024 02:00:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.215.128
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718848844; cv=fail; b=tDS1hnolktag/3H2BhvI3drLtQwBFFT9ty4fnDR1bfxNmHfzy3gKUNGMXCtcTBlh9B/VPRefZAVUOnzK8QjHDnXmCv0IXOCP5qYBFW5HLeB+5dTv92bRpv033gg18z8MaIpg6N5JBZ9t5so00T8dtOQwuoBzUCJVLESbdZcWjh4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718848844; c=relaxed/simple;
-	bh=xJW+5hOAMUkFPGt28SK7hB1xyqMVx/KvSZ7fT2KIDzA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=sV6AnqpYvZccy1w03OxrAGkUtcnIjj2LKrqRbLh8KTDO/cn0NN4qchad44Z8YlohFR/zm7VM+aSAtrhMsUE3jAKXQ1Lu2gEV35eOe+L/4V5ecSfwPzooLgwdQAIjGmGyqiV6iSwd7xOmq0oTQaLZJ6RpbDiOjsTu0hIA9DLNGvU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wesion.com; spf=pass smtp.mailfrom=wesion.com; arc=fail smtp.client-ip=40.107.215.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wesion.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wesion.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fFufsblirz2lMH2CycigsI8yd5EDLYFUQg/hrlDtA75WH9Jecjg1h3YNIeRGste3EM/nG9exizCjKWmRPj4ljHSDJebP5bRmQsfa8Wj2DNe6pGXRubjUUCGUlFRrJT1/3xcDtFY5UAs1FiCSSsji5J/NnyNOqxrOSUqQkDbHFLI9Uuhn/uVl4Y6E/Y4uaJpuqF+kGAVcAZdhwP71h4bEyDCTB1AWqUIZoxNZQDsXN9q2xoxRocIXbxYunFpbp8Blr/pOXCLWtsMxOMmDa/hb0vX58IklL44nT0fEkkPT8CtnUFbwORCXCrZr6tY538GKsVEmNDIbUvXIC2vC+KKFBg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=U6hbGoEs9Vr71hwrQ+0VzO3tMCpU/yX3mus5cqX6VQ8=;
- b=cEs8HzxhNamXOm/VM/WMn8xYgwsh/fmyRGqjSTnItrbWgavGGtDHMf5+EZgYbicZVl3x2AWBB3oae1Celqi/0CSJXVxiXnEKFtgBEUxiBedn8fBvusYZDnnL/LwKMrAgKni1yegPEmoVeBi6WiXwPKAR1LLV7klSuas8XOZjyACoM20m+osLUK+1pgtJJpgD6c6S00ojgAMPOEKDg+qga5qLa6VpH+jC9mqMjZYTLEA5I4k6EICeIc1ZydM2AVaSdglyE6TxAgJw3Fw/O1+wVhWyN5D7K4jqAn0uVWzsJeyLE1y8KtkC/MH05w29wsmESHGedDJzGURROymY8/AyBg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=wesion.com; dmarc=pass action=none header.from=wesion.com;
- dkim=pass header.d=wesion.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=wesion.com;
-Received: from TYZPR03MB7001.apcprd03.prod.outlook.com (2603:1096:400:26a::14)
- by JH0PR03MB7323.apcprd03.prod.outlook.com (2603:1096:990:11::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.31; Thu, 20 Jun
- 2024 02:00:37 +0000
-Received: from TYZPR03MB7001.apcprd03.prod.outlook.com
- ([fe80::78dd:5e68:1a9c:36c0]) by TYZPR03MB7001.apcprd03.prod.outlook.com
- ([fe80::78dd:5e68:1a9c:36c0%6]) with mapi id 15.20.7677.029; Thu, 20 Jun 2024
- 02:00:37 +0000
-From: Jacobe Zang <jacobe.zang@wesion.com>
-To: arend.vanspriel@broadcom.com
-Cc: kvalo@kernel.org,
-	duoming@zju.edu.cn,
-	bhelgaas@google.com,
-	minipli@grsecurity.net,
-	linux-wireless@vger.kernel.org,
-	brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com,
-	megi@xff.cz,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	heiko@sntech.de,
-	nick@khadas.com,
-	efectn@protonmail.com,
-	jagan@edgeble.ai,
-	dsimic@manjaro.org,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Jacobe Zang <jacobe.zang@wesion.com>
-Subject: [PATCH v1 3/3] net: wireless: brcmfmac: Add support for AP6275P
-Date: Thu, 20 Jun 2024 10:00:15 +0800
-Message-Id: <20240620020015.4021696-4-jacobe.zang@wesion.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240620020015.4021696-1-jacobe.zang@wesion.com>
-References: <20240620020015.4021696-1-jacobe.zang@wesion.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR04CA0185.apcprd04.prod.outlook.com
- (2603:1096:4:14::23) To TYZPR03MB7001.apcprd03.prod.outlook.com
- (2603:1096:400:26a::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A084381B8
+	for <linux-wireless@vger.kernel.org>; Thu, 20 Jun 2024 04:23:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1718857408; cv=none; b=MuT5gyqwVu4TFtt/FaJ9c9/94Ld1kuedtgfNlxG7o2fkC+dQcQAtO9punOClM+j3Q3GEyF9XdWZHLMnolNCZ+0MHO9JPRjtArR/kXD7oKL6dDfeC924UVygSBfvAT+5sICuDPP7RxE9rbIB9LjTtwyxqTa6pTNtdZwNjE/7HvoE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1718857408; c=relaxed/simple;
+	bh=SX0jl+vWdPD8pQU/pCUWjXZ/6R9tAZ3Lcr5rYOjj8VU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Wmn+cYg8cGTVZrJJtJHdku5LCsOCBmfbeGCQUY6brcmxKLVuui0fCZWJ6nC9noxp8HxNuAQCEt6EYavTwfImHZnijjN125PxCpaK9heoQ5efwZ+rkCd9JBHJcv19PdwnNK93zd1lx51Ext/fagGN/zw14wAQJSvgjxxywg3nXsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Y+CLMb35; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45JNUxxL025755;
+	Thu, 20 Jun 2024 04:23:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	3Bj8FJaMCS8jKnX1VnafPVpgiQEJjcKXalQEuVh9L90=; b=Y+CLMb35A1utbT/Z
+	rju8nONoEcR7OFH1Gui1g6/8Jggf65eVMywDb5FVIYH0Y1UkQ/3CRhumLDByPTbM
+	Y+4tnmMxTJji3n+ncT3Vg3AUH5M9+t3bgg0A7dDWy7lo7m/jibvepnJFSMeIdXc1
+	KOMuSqc7ckzxCOlSFo/LZiXHP8FRABRb0F0NSgv1DKx5J/q3hC7zXhPX6v/pCKyO
+	ItHAumSMWDdbvnDEqYfQvH3LQHLtHFrwGVQzPi7IcooyRpCbuy2p1q6DWzExXo67
+	qwbaxhL4a90po0yKwAELWQpi5PgVVWf87H+D9sRUNgD1v5M7So4P3dYfYlcQoOti
+	HUJmcg==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yujc4kcd6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 20 Jun 2024 04:23:15 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45K4NEB8001593
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 20 Jun 2024 04:23:14 GMT
+Received: from [10.152.203.249] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 19 Jun
+ 2024 21:23:12 -0700
+Message-ID: <d1e9897f-c093-48ec-b887-2f5398ea9aa8@quicinc.com>
+Date: Thu, 20 Jun 2024 09:53:09 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYZPR03MB7001:EE_|JH0PR03MB7323:EE_
-X-MS-Office365-Filtering-Correlation-Id: 46453918-9b87-4954-2289-08dc90ccc73e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230037|1800799021|52116011|366013|376011|7416011|38350700011;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?krYlmyyAyhxcgjUe+S0xXL8S49r8oANhVx/+ECJyyd8UfSntPwPTkzPB1cGa?=
- =?us-ascii?Q?zh2tZl2gn8nDcBu7+2TunpF5b9noOG/waaISUXpiPhCM5t4MOE4bBlwClVkm?=
- =?us-ascii?Q?C6JMs75ziL40FRDXv65PTE7BbpK76EojgtxIBxhltPM8v5ZLmUgzwUCkc1aV?=
- =?us-ascii?Q?jXUP89bIsCpWwMTNaYPOMkjTHNxYQt/+/GeckFerQLZsMnlpnd/WWEc8spRx?=
- =?us-ascii?Q?hMkuD6MPpOGX6WKoRWG9rWq+Ak9S1vkjLIKa/AZ1AuLlhQ18DcpmKBRPTjXh?=
- =?us-ascii?Q?s/CklVpNIoSin8caJok26UGgqt5jAyYaJ1UwXSap7z25WKRq0hJHGkdKOBpB?=
- =?us-ascii?Q?5LLw9fzcEhsZBh6MT0iLrgfQBj4u7Iw2/V5asdUDowaErTatXcV7jOKtcA7e?=
- =?us-ascii?Q?R2H9YI3ffr5kCWF2f/FJUgkFVWE/oguvEz570rXTi/MUul2NmruT/XyuhcBf?=
- =?us-ascii?Q?TZm4WIi4zYfsBD6c8+wRdgZ2NFeOXrKDpyxgrizX39EwdN6bYS+/V+Prbq1Z?=
- =?us-ascii?Q?h/F3vT1c7mjlWV/qThq5XBE3AatsK60Mjr0ISWt1KPXM/A9UfujhEhm+AeUU?=
- =?us-ascii?Q?D6QQVxRJ8QLHBuy6NIjHf6o6BQsiHRweJoS/p1CXHiSl2FSMd1ldoRP8YBu4?=
- =?us-ascii?Q?AHXB6shE9FEoB41KPGLoW2DE+t4jqfot26ERNQ7/P3x6pNwDnFpjJlP5mS30?=
- =?us-ascii?Q?1FpSBSkyhhYogroAQ1Wznk2KovI2FhrlicNXPQW8/oobtgH5NS6fpJadwLiZ?=
- =?us-ascii?Q?+qTiXXWFS0uZ7ASRUray16pQeMPVdhqAXtEGH602zuoGgEHmlYTyvXNkuxjq?=
- =?us-ascii?Q?Ut0kNst9ywXr/PUoIQUmKQv9RiH16eg97iO/jR4OmM94/uFJVANlX07Srev4?=
- =?us-ascii?Q?/PgLk9PM5K6NXL9AjNLAjcBks5P4WiKXNgwYzpCTuUMf6vKh2ymc2yIdYh5B?=
- =?us-ascii?Q?lVBRkeMbWi9goy7ivuiMP1dJtzE/XFx0V1R0Egpr+t4XSVjdIpNL4ByPVha9?=
- =?us-ascii?Q?+0MXCN5GvbKLQgVh93FcZXboaQPYN1Mgf8vCSLAY9ROdMWrmrv7m/mWo/McR?=
- =?us-ascii?Q?SMb/5Z5fvPGpsn/EUvLgESUWVTC/KsTC+29VJBKRQCPot3wcI5o0vAclL/0K?=
- =?us-ascii?Q?diL4H7NgS4TtKxc3T1js1RAHZAwMe+QstR9/TQ6DvbEDysXQRIWQ2/8iFDye?=
- =?us-ascii?Q?i13YzgBYXxgn0Eyf0cX2DSaV6BJhymgJgkMl4MgJfJ1mCuG6wKPTmeczTxAr?=
- =?us-ascii?Q?O4iygmCclnbSVjkrlZ4d1iqwRo8V+t+dXNJx0LdWKWhMvdBpYBZhO9JNfilG?=
- =?us-ascii?Q?pp0DQ0Kuo2r/hAD1Vmo0wwu58mBJKgxtZAn1dWLfCEF260TeM4Uqy7rYTFXp?=
- =?us-ascii?Q?qNrwNJU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYZPR03MB7001.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(1800799021)(52116011)(366013)(376011)(7416011)(38350700011);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?6fGwhQi3QihAEmZ6okwKe8fG0sCEHU6swgO232K63o7O3FN2wH4d1d0XJMVS?=
- =?us-ascii?Q?QeDSfhe+BfVCfILHOC7cWzWzfcoQBJ6gmNzmj0tVOADV3V+hlZEiIYnL/iiM?=
- =?us-ascii?Q?L4mKYj58jKMRb7nNJ5vqm4pXfPFA6oWuMXHIIa8PzzWeqUhwHdFhyAPiTiy4?=
- =?us-ascii?Q?osxWToZ/mtjfsyi6lby39QLMANZokkvaxIuebA/WQd1Ktcy3E76RrjeRixv+?=
- =?us-ascii?Q?YEBoOag55PsV2njR1EGN3FLBiHaJzI29iniiDGjW9ryHjMC+ipjIa2z2zpZC?=
- =?us-ascii?Q?y2nRSvIF1FHjWXuLRmCopdnVOqz4/h28oQAa0wyEEUtFza30JG5oGcxyGYNj?=
- =?us-ascii?Q?nbCFMLebfCswdf8Hk9KsuTyJwFVf0Wl7WqX/3244SS3T7c8VZDqTLwA4iTkY?=
- =?us-ascii?Q?0yebLj7AiF0K54qejXYXh9QvM+qFs8SRRYqLpZq2AdweXajtul7QIMi7eyjD?=
- =?us-ascii?Q?LbzQkFJWpttb9SHroDr9LVT4pYsicXtge/NmeUjFP28p/sHkdOtLBEw2+Dod?=
- =?us-ascii?Q?RdQ0j6AEGotJDpp/Krw0qs9Z0JSyHBKHokbq0+ViHlKw49mDe5ROO/lalGnK?=
- =?us-ascii?Q?3/FbIlna6vRpQkuQsGL7Fwu5eKqlZmVGWUkyW5tLVrZi3IPdChU5nY0h/WSf?=
- =?us-ascii?Q?N9qm8UDQVj2/2vwPv5K4hrUjDevnjwqNJCcEog6tk9TZDMKAkOynMoB1E7zC?=
- =?us-ascii?Q?AAejd7kStucvrbLnT6v5hZzxqfEnXgJCX89BiuiNqKLseQ2bAkt/MSZarRDZ?=
- =?us-ascii?Q?9wrxLDo3ry8Y2cLcY3gjHw0rphMdAXgEdgP9cH8pjxh87L4o9YKEpwHC5wQl?=
- =?us-ascii?Q?OOMwGbkWRnLRgZw73hAWch/5JcHriwChvv4Yfq9l1wCwb4psyGNnnJo5zZb9?=
- =?us-ascii?Q?xGKBFz637tCeykbHtjlQA3tHR/zRf3afpNIRNI336sNcw3B/PE1mTd+nQ0aV?=
- =?us-ascii?Q?j0+GcWg9GP169QkLys+0YCKKzO4K6j0Dr4Jc1lJx4pNh2oMtFHefX1BLYv85?=
- =?us-ascii?Q?4uueqOtyU2S0PYfdU7Ao/Sp2TtTk1TbItAm1eON2I4b4lnmL1nSvMcPSMO+d?=
- =?us-ascii?Q?WEQjEj0x3CiHsDS31d/dvFDR4yHqDtx2IGk5h63ohVzbZ+dn7KFAQGWakKo9?=
- =?us-ascii?Q?ZdVe/u1SbpyIyTxdsvlwz73wCnd61AzSeLMVDMh3NjuQDVcCshHQZe8fEYad?=
- =?us-ascii?Q?LvQUyaW3CLO809uv9soo9p/nAJhKHZdSRJ6CtFqeRrEqLJQmsFf3KtLH2OuW?=
- =?us-ascii?Q?mIBWI+M8/vJ8Mr7CIUS0aFI1uTGnbYJsDauWz8TpeITqaB5Lf5c/I3z1lbTc?=
- =?us-ascii?Q?o7P2RwD03rhLmJ1QhCCjNNpUzlCjpsELS/SZEvkqgi6I9GmBQDxPz1JwpgHL?=
- =?us-ascii?Q?YQFMxEiMWYch6c//73bzr5W1uO5O8FBU0w0D4Vk8lXutHqhbz19NtU1LAOPu?=
- =?us-ascii?Q?jiTIeBGdN3nGukgGD88ZEPxk7GcZ5LVgjiu0L/jNPtf3WTt1hl2DqdFtridB?=
- =?us-ascii?Q?9WaY5YonRzv2FFWBG1SSMtAWP7E8ICQz6Ikj4cd97DZrjms2M0HqXmR7Etey?=
- =?us-ascii?Q?8Xi7Vfnmkci0P58hmFT/lVoJzOs6nOhTdzo76NOl?=
-X-OriginatorOrg: wesion.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 46453918-9b87-4954-2289-08dc90ccc73e
-X-MS-Exchange-CrossTenant-AuthSource: TYZPR03MB7001.apcprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jun 2024 02:00:37.1366
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 2dc3bd76-7ac2-4780-a5b7-6c6cc6b5af9b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YKAryeTOiiOeVp7EfePtAGQ8sddXyadTVCmnvjnJcihw0vv0fIAd4GCjLX5l85Sqar6/MqSdDjCXIyyV+RjO6g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: JH0PR03MB7323
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath12k: Fix pdev id sent to firmware for single phy
+ devices
+To: Kalle Valo <kvalo@kernel.org>
+CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        "Lingbo
+ Kong" <quic_lingbok@quicinc.com>
+References: <20240611043342.2672998-1-quic_rgnanase@quicinc.com>
+ <878qz1kokv.fsf@kernel.org>
+ <eb7ab3a3-4365-44fe-a33b-fdcd47524778@quicinc.com>
+ <874j9olu7u.fsf@kernel.org>
+Content-Language: en-US
+From: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
+In-Reply-To: <874j9olu7u.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: t1V4N_UjHbbbB7QnBX0_LHQTsPZ3meKp
+X-Proofpoint-GUID: t1V4N_UjHbbbB7QnBX0_LHQTsPZ3meKp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-20_02,2024-06-19_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1015
+ priorityscore=1501 mlxlogscore=999 malwarescore=0 lowpriorityscore=0
+ mlxscore=0 bulkscore=0 impostorscore=0 spamscore=0 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2406200029
 
-This module features BCM43752A2 chipset. The firmware requires
-randomness seeding, so enabled it.
 
-Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c      | 5 ++++-
- .../net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h    | 2 ++
- 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-index f241e1757d7e3..add317731126c 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-@@ -71,6 +71,7 @@ BRCMF_FW_CLM_DEF(4377B3, "brcmfmac4377b3-pcie");
- BRCMF_FW_CLM_DEF(4378B1, "brcmfmac4378b1-pcie");
- BRCMF_FW_CLM_DEF(4378B3, "brcmfmac4378b3-pcie");
- BRCMF_FW_CLM_DEF(4387C2, "brcmfmac4387c2-pcie");
-+BRCMF_FW_CLM_DEF(43752, "brcmfmac43752-pcie");
- 
- /* firmware config files */
- MODULE_FIRMWARE(BRCMF_FW_DEFAULT_PATH "brcmfmac*-pcie.txt");
-@@ -105,6 +106,7 @@ static const struct brcmf_firmware_mapping brcmf_pcie_fwnames[] = {
- 	BRCMF_FW_ENTRY(BRCM_CC_43664_CHIP_ID, 0xFFFFFFF0, 4366C),
- 	BRCMF_FW_ENTRY(BRCM_CC_43666_CHIP_ID, 0xFFFFFFF0, 4366C),
- 	BRCMF_FW_ENTRY(BRCM_CC_4371_CHIP_ID, 0xFFFFFFFF, 4371),
-+	BRCMF_FW_ENTRY(BRCM_CC_43752_CHIP_ID, 0xFFFFFFFF, 43752),
- 	BRCMF_FW_ENTRY(BRCM_CC_4377_CHIP_ID, 0xFFFFFFFF, 4377B3), /* revision ID 4 */
- 	BRCMF_FW_ENTRY(BRCM_CC_4378_CHIP_ID, 0x0000000F, 4378B1), /* revision ID 3 */
- 	BRCMF_FW_ENTRY(BRCM_CC_4378_CHIP_ID, 0xFFFFFFE0, 4378B3), /* revision ID 5 */
-@@ -1721,7 +1723,7 @@ static int brcmf_pcie_download_fw_nvram(struct brcmf_pciedev_info *devinfo,
- 		memcpy_toio(devinfo->tcm + address, nvram, nvram_len);
- 		brcmf_fw_nvram_free(nvram);
- 
--		if (devinfo->otp.valid) {
-+		if (devinfo->otp.valid || devinfo->ci->chip == BRCM_CC_43752_CHIP_ID) {
- 			size_t rand_len = BRCMF_RANDOM_SEED_LENGTH;
- 			struct brcmf_random_seed_footer footer = {
- 				.length = cpu_to_le32(rand_len),
-@@ -2710,6 +2712,7 @@ static const struct pci_device_id brcmf_pcie_devid_table[] = {
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4366_5G_DEVICE_ID, BCA),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4371_DEVICE_ID, WCC),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43596_DEVICE_ID, CYW),
-+	BRCMF_PCIE_DEVICE(BRCM_PCIE_43752_DEVICE_ID, WCC),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4377_DEVICE_ID, WCC),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4378_DEVICE_ID, WCC),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4387_DEVICE_ID, WCC),
-diff --git a/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h b/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
-index 44684bf1b9acc..c1e22c589d85e 100644
---- a/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
-@@ -52,6 +52,7 @@
- #define BRCM_CC_43664_CHIP_ID		43664
- #define BRCM_CC_43666_CHIP_ID		43666
- #define BRCM_CC_4371_CHIP_ID		0x4371
-+#define BRCM_CC_43752_CHIP_ID		43752
- #define BRCM_CC_4377_CHIP_ID		0x4377
- #define BRCM_CC_4378_CHIP_ID		0x4378
- #define BRCM_CC_4387_CHIP_ID		0x4387
-@@ -94,6 +95,7 @@
- #define BRCM_PCIE_4366_5G_DEVICE_ID	0x43c5
- #define BRCM_PCIE_4371_DEVICE_ID	0x440d
- #define BRCM_PCIE_43596_DEVICE_ID	0x4415
-+#define BRCM_PCIE_43752_DEVICE_ID	0x449d
- #define BRCM_PCIE_4377_DEVICE_ID	0x4488
- #define BRCM_PCIE_4378_DEVICE_ID	0x4425
- #define BRCM_PCIE_4387_DEVICE_ID	0x4433
--- 
-2.34.1
+On 6/19/2024 10:56 PM, Kalle Valo wrote:
+> Ramya Gnanasekar <quic_rgnanase@quicinc.com> writes:
+> 
+>> On 6/19/2024 7:43 PM, Kalle Valo wrote:
+>>> Ramya Gnanasekar <quic_rgnanase@quicinc.com> writes:
+>>>
+>>>> From: Lingbo Kong <quic_lingbok@quicinc.com>
+>>>>
+>>>> Pdev id from mac phy capabilities will be sent as a part of
+>>>> HTT/WMI command to firmware. This causes issue with single pdev
+>>>> devices where firmware does not respond to the WMI/HTT request
+>>>> sent from host.
+>>>
+>>> But WCN7850 already works so I'm not really understanding the bug
+>>> description. Can you elaborate, please?
+>>
+>> pdev id from mac capabilities sent as a part of HTT stats request or WMI
+>> control path stats request was not expected by WCN7850 and hence fails
+>> to send the stats response.
+> 
+> Ok, now I understand. Please include that info to the commit message.
 
+Sure I will add the information.
+> 
+>>>> @@ -81,5 +81,8 @@ int ath12k_mac_rfkill_config(struct ath12k *ar);
+>>>>  int ath12k_mac_wait_tx_complete(struct ath12k *ar);
+>>>>  void ath12k_mac_handle_beacon(struct ath12k *ar, struct sk_buff *skb);
+>>>>  void ath12k_mac_handle_beacon_miss(struct ath12k *ar, u32 vdev_id);
+>>>> +u8 ath12k_mac_get_target_pdev_id(struct ath12k *ar);
+>>>> +u8 ath12k_mac_get_target_pdev_id_from_vif(struct ath12k_vif *arvif);
+>>>> +struct ath12k_vif *ath12k_mac_get_vif_up(struct ath12k *ar);
+>>>
+>>> AFAICS ath12k_mac_get_target_pdev_id_from_vif() and
+>>> ath12k_mac_get_vif_up() can be static, no need to add them to mac.h.
+>>
+>> Ah! Sure Kalle. I will take care.
+> 
+> Thanks.
+> 
+>>> So we are left with ath12k_mac_get_target_pdev_id() but I don't see it
+>>> called anywhere. Isn't that dead code we are adding?
+>>
+>> The wrapper is used by upcoming HTT stats and WMI control path stats
+>> support. Initially this change was added in the HTT stats infrastructure
+>> support series. Since WMI control path stats also depends on this patch,
+>> to eliminate the another patch series dependency, I pulled out this
+>> patch from HTT stats series.
+>> This wrapper will be used by below changes:
+>> HTT stats:
+>> https://lore.kernel.org/linux-wireless/20240614063404.2659089-1-quic_rgnanase@quicinc.com/T/
+>> WMI control path stats:
+>> https://patchwork.kernel.org/project/linux-wireless/patch/20240529180920.1472003-1-quic_rgnanase@quicinc.com/
+>>
+>> WMI control path stats has to be rebased on this current patch. Since it
+>> is deferred, I refrained from sending v2.
+> 
+> Ok, you could for example mention this is in a comment after '---' line.
+> Adding dead code is usually suspicious.
+
+Yeah sure. I will brief the usage in commit message as you mentioned.
+> 
 
