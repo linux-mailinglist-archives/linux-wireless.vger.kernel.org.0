@@ -1,61 +1,61 @@
-Return-Path: <linux-wireless+bounces-9374-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9375-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F732911D6E
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 09:55:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52E51911D70
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 09:55:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C01B6B23FB4
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 07:55:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD0F51F21315
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 07:55:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD8E216F262;
-	Fri, 21 Jun 2024 07:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A28A16F27E;
+	Fri, 21 Jun 2024 07:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="UkAwWe33"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="Vbzp8wIl"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2068.outbound.protection.outlook.com [40.107.8.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2C516F0F9;
-	Fri, 21 Jun 2024 07:53:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E601016F269;
+	Fri, 21 Jun 2024 07:53:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.8.68
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718956395; cv=fail; b=oPwSqmtbEw7lkaYlwcTVkCrtSftmOMjM9ZFcXk82OWn7YEpDsXVtewtRxui3N/5CnM+67oafs47NF8C/4PJZfwYTpPo3DGvRc6COVHzZCum+aug6T57N1AzECqx3M6griL0uq1ussqEjlrAR2E/bGlrWyI9AQj/qlUWLNQD030I=
+	t=1718956398; cv=fail; b=EcCzHvw/5mZmHInszWJNX2mjj30whl0otn7rULP5SJ3twtI7iWIhR9ak3LK8N3BMaU0RgyV3CFfHnkU6DZOPwyfCEo9GTc01cVRrFzTAnYKC5TVnazWiLLF9d8hjwSbDtJgGTF2zTl7YVh1p7W2w13frqu4AaIoeRVpOC4ePlWg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718956395; c=relaxed/simple;
-	bh=3dplxlyXW1Zxy4YiHEztF/HjtUnRFoQ00VkskttUzp0=;
+	s=arc-20240116; t=1718956398; c=relaxed/simple;
+	bh=uEpY8cDKF0IEOBKttlAGcwDVWN/AfVZM4YwiyAE3Se8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=oolwbWEkUh48fBftZOn8+mR9rORipqhNA5IjLGlZTQUj8jTtfgUoKf30zezo+swqfBO0ozU6qmQYoh6gTvImEVMnbpkC0CAzUydkoAe09uPcSWDJNGQqEucJCD86GwekR3lpl2vwDOEzBuCBPKFzROPOEesA9O5RSQoI8Ff76tw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=UkAwWe33; arc=fail smtp.client-ip=40.107.8.68
+	 Content-Type:MIME-Version; b=R8nsNnwjxvGP+D+FU7qU6T6TCKc8EtebB7wMeDhJDflWwCdqDjVK5iDFASZce7xJ/UivJzRXmvw+guJpFPsTg7+GWHo8mB45FrJl/5E3wJGARhzhUuv027fQcvILcz9HGNk3qdmOjI+qLbZYkHIRJeY7kli+Kr2+5Cue5ZCzHdA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=Vbzp8wIl; arc=fail smtp.client-ip=40.107.8.68
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cO1HvPKybj4Lhm1QLuYtD5874AQRE/zsMzOX6D8s9+LHd/rVMsSZRTF6qkID6ICly3YsT/N3S/cWZLtNqxI7Doi2FsqkWHwXzlMU4RANPPJgXAj2bzWU5T9pIuCPDJgoY2HKF2UKym9q1dAuzGjgF6xseY7IHTC6lr7BRQQ/JjCEPWlOVwfhinjxgciw6ZXnjrp13r7uCFaV1ikgjUgG18Oe+AXgICl5enzU9fMUZc7mxfeVzlYE+EPL3WnYVFA4kyL6qW3KY1WWJy/H/coaNWK7csqsryA+bG+lRTAh9/QBOWihK5glL6BCybnF1v+QIj5uA+MtBg731bYQmz5KNA==
+ b=fdu8PME5SNxNfVJk9X6a/aWXd5KxTVnTjY1GXTUt5yCVBL9TZ6PnLRwbb9FLa5hBWwNoe+tL85EfztoIOgKtUcrhk/SbryDv9nlKlELYtdNvWgOo15S9fRj5munVtbmF+vg8SJ5W2szpGTUJtKvxi/4mgt24G30zQDX422+kfOcAg5M8JUWnM42VhYdePAfFnPcusQ/P9UHkuVOqv4N+wNiHQ8aEGUggsv5L5N9sDuuIgqasBSNPmDyw8Tv8nK9m+hvUl8FrczUQ93w+cl3di2m4JfFPp3bYJGeNXhmPMA+9LA4SeQ/0DTJsI/nbldb1h1STTHdWT7S2gQQogAfX8w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kO0oyfsuJoweQWi578zh5DQ2EF8aGbVqEv8amPR9EFw=;
- b=WeU+LL6bqrp6xqlisHjNYzjQzW5jd7rlKrpLigbHJqSaZy43LnBR92rSjvr9zkmS3zb4IiJNG3ohTK4CtnlTO2LqHSwbWGU21SDaYQL2CZEiW76OfCpDcOQlG7O3ENoFnSf+PdsiwF2hppq/WzsdPXM1G9XYZX2pttOe/tr5o+qiId39JUMfLnRXKXY6RVCSQlF7MGajhp7bzfpTt8Gi3HcOQzAXtNWwYlPYi3QTa4NiPJRTOZlbKDGtA36E1Vjox+J2pDll2uf7JwfqPGYyXq9jGYXvDY14caw9YebJMYeYQduuU0Z0frL/ipdlzAGqeYV/fsKVbvY+V3u+ofBmgQ==
+ bh=0GU6nIhsdc9DdTeK08hBh9rOdAUEaagjd8/3z87/I9w=;
+ b=WFvbsMTIOIwayEIIjZRwQqKOVFPlJ2VcF6VHi8euFX6QqmHqNzRmY9mkjW0pMmyWmgsu54lP4kgTGP/CIeknvNvxatSzmARaPC3PkB2Dptx9Qm2vNDQ3FW/DdHu7YRZE0tnds27b15VmUcc0yzRvMae59GbkNJoZBJrnFxZWVgd4g7JJf/DmsKl567o7/ZJaraE2Fl/i7aS+PXXn6XDXVk0IBH125f7embJ0zzhMrNdmWZ4HYVLcsOAEb1epicJzlZQOhxGPMVxa+ygGkRxrcw6+JGRUn81Lfv7flERdkO9qGP9cTTmLQn74HfaNm5/suOxcYY6TqL56wKlF97E9MQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kO0oyfsuJoweQWi578zh5DQ2EF8aGbVqEv8amPR9EFw=;
- b=UkAwWe33AQnQVDtpUx5UMy+zN9nB1qtku+j5cZpKauOPYMeZIqjsZcGjd0AicXdT5blnZpQF9qAMYIFksNs/LQ1YPI8lkO1Ep1JyFsSj43IsQGy6mUIk0jYD53twghT6vdK0qMU5shxxVwi0VUN4j9RXpHZfH9iCCrPoamX8WjY=
+ bh=0GU6nIhsdc9DdTeK08hBh9rOdAUEaagjd8/3z87/I9w=;
+ b=Vbzp8wIlR+HFZlsjecYBGRBQAEgG/tTJelazmfw/m+LYZjcrBTXYEppEpamtZtztCOQuJ5EOCgGBfPrlLtMzeEwWF3WKhQX9Py0BkW9y5/cpyI/Hp/jHYgr4QPhxGjwjva/9U41DHLayVMyJpIDhwAo8s4Mplf9gisP0symr694=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PA4PR04MB9638.eurprd04.prod.outlook.com (2603:10a6:102:273::20)
  by AS8PR04MB8135.eurprd04.prod.outlook.com (2603:10a6:20b:3b0::23) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.21; Fri, 21 Jun
- 2024 07:53:11 +0000
+ 2024 07:53:14 +0000
 Received: from PA4PR04MB9638.eurprd04.prod.outlook.com
  ([fe80::f950:3bb6:6848:2257]) by PA4PR04MB9638.eurprd04.prod.outlook.com
  ([fe80::f950:3bb6:6848:2257%4]) with mapi id 15.20.7677.030; Fri, 21 Jun 2024
- 07:53:11 +0000
+ 07:53:14 +0000
 From: David Lin <yu-hao.lin@nxp.com>
 To: linux-wireless@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -64,9 +64,9 @@ Cc: linux-kernel@vger.kernel.org,
 	francesco@dolcini.it,
 	tsung-hsien.hsieh@nxp.com,
 	David Lin <yu-hao.lin@nxp.com>
-Subject: [PATCH 11/43] wifi: nxpwifi: add cfg80211.h
-Date: Fri, 21 Jun 2024 15:51:36 +0800
-Message-Id: <20240621075208.513497-12-yu-hao.lin@nxp.com>
+Subject: [PATCH 12/43] wifi: nxpwifi: add cfp.c
+Date: Fri, 21 Jun 2024 15:51:37 +0800
+Message-Id: <20240621075208.513497-13-yu-hao.lin@nxp.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240621075208.513497-1-yu-hao.lin@nxp.com>
 References: <20240621075208.513497-1-yu-hao.lin@nxp.com>
@@ -83,110 +83,575 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PA4PR04MB9638:EE_|AS8PR04MB8135:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6090dcfa-c2e5-4d66-f139-08dc91c73259
+X-MS-Office365-Filtering-Correlation-Id: 30a6f778-bd9c-4d42-52ef-08dc91c73415
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230037|52116011|376011|1800799021|366013|38350700011;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?gIscUlDGZRQ81VjOpuF1qa+VI3WljGnyhbRXiwbNbyP7KN47lAnWoIXk0s1d?=
- =?us-ascii?Q?brm/bK5JYXnRLVsOCYWvWpQTmkiWjCxNEADypEx3z4uw9aiWqMYpTOm4wM8Z?=
- =?us-ascii?Q?s81dFmiQ3rK/U/Kd4+kekLzoNbwgYNqpQ6az6lJKNYX1/PesLx83K6Lj2oPs?=
- =?us-ascii?Q?ba4f2XkZ3Uj8mcgxGh4KiTowdzWh2+YbYNodhvxvolFXNZlea2m20zrJiMFW?=
- =?us-ascii?Q?b1QCer2ZJKfMX7ut1fysIGZZvkekAeXbBSBlz7YI6xnYkHIGuH9cmNxU6Ld3?=
- =?us-ascii?Q?8lE2ns0JaB2d7amgeESyKqmWsFQA+7ODaJlwMuQE5FRRZ9Y7UiBFFLPERaaC?=
- =?us-ascii?Q?wiA7tyKohVTD9CnRGyvgO4My/f8IYfBar4gmRRVBlyP8C2Yt3ulubM04Kg0r?=
- =?us-ascii?Q?f6Y7gOFLdO/xJBa4L6JBFjdrGsFp60121tS6ldRp64XmizkEor/08Lo0lURd?=
- =?us-ascii?Q?Ta4lIK56Td5grrYtvfJHh1fLvJICg1/5S2kfVkZZK1AGR1n1pyoOFX4EvBhV?=
- =?us-ascii?Q?4R/gt7FBtFNo5Amr6LKq1IgDAfcObrj/jbGArRWgDpMzUVQM7qGQOkoG/ckX?=
- =?us-ascii?Q?Ur8xUgJ3HezKgbuWeHva71XzqaJETeSWo/04cWmuBx2Hf/KJikYDEhjJcul1?=
- =?us-ascii?Q?+aNAZO1LDrxCeIeR6SUdojXl+uBSdsN2jqGVU2mRKtBDAuA6LnU3AMkY5UGP?=
- =?us-ascii?Q?5BQMmVXwR+sJekGSpi0mKPRTR5akcd6J5KSNjsO6LsEI5Tq89gagLnxiA535?=
- =?us-ascii?Q?gIgC8iGPVbep+XNObLVdSmRFSzrHIUaeNode9YgVSLRGGQLtCpUrd9knq0ng?=
- =?us-ascii?Q?40wQ1ZJwqrc1KYV/mKn7J57L5cvBWPG7HWsQlKHAch4R9SHa6U8Cj4iE2hu+?=
- =?us-ascii?Q?7fnPfmCbAbMAh5uBoFXPdkf7tMXvN0VPuHu1UYN7nkXAHanwVnfOwrr0Bo2s?=
- =?us-ascii?Q?zcmOAhiN0Fbqc5X8S98mrr1bQ6bdaq1BZ/G7gp22doBiGTQGKLf5P9cruSPb?=
- =?us-ascii?Q?4vYalpZKWt2KVN7DD+rXXRaLf/W2HOGO5p3KAjOt4AlDb7oPiv8mjcituTWz?=
- =?us-ascii?Q?GYn3QIA0r0IDQNNEHDOzmfA1/19gr16Pt98Gofigo8xkJ2Ht9IcNcr/735IG?=
- =?us-ascii?Q?XRJCnKDG081Ylui7edXdOdhZGFOc51tFLdoA/smJK/bZ1+3TsH5WDWXZRu2D?=
- =?us-ascii?Q?gNVnFx3YNZLDQQwqW+VtHcpC552tbr1xjRfUPF4PaRH+m/fkh2azbuB5VEd0?=
- =?us-ascii?Q?xxk7EyMtofKJal0kpPV/Dhlqz9FkKzxq7W+eyfqGgMq3jO027K9jZayYN95e?=
- =?us-ascii?Q?pbPhLcry3AO0e84yH4DrK9d9vaTQTGmnrTbhv1Vv1fc6ZIm/jsHS1btoaVOb?=
- =?us-ascii?Q?5kbLWXU=3D?=
+	=?us-ascii?Q?a5tl6gOEhIK38lxLQ2WltU0qnCOlZsTQZ8bXL8yCyfMk3Y4+ZAPFMcag5o0n?=
+ =?us-ascii?Q?/Owm4LezNOzDgYvBcHlZFA1ya7NQowrNQKykcejkRa4EB9zS0v0SznGwzHLR?=
+ =?us-ascii?Q?LuKrA8bSMVYcF1WR/JJO3rLOyQSXvqUI/Gu7Bo0Hpnmskv6PWiDZI/n/w9se?=
+ =?us-ascii?Q?H7tJOyQrsVieg7zZ1/0THpypIN/MKMZ9slmFpdYa6utpLAAq1fsf1eMI2EMV?=
+ =?us-ascii?Q?bNCfqReCqq6fV57FwdrY2po41QZRhsR3WT65JURJP7tctAHl2vwX9JYBOlul?=
+ =?us-ascii?Q?iqWGnUYjxaTk7qXfSc5p2YjR7TWeFmRoReUPDeJ4eZ51bnmHtO16VMkb6I5e?=
+ =?us-ascii?Q?942TCfRa5vw2Go57HjRiVSqsqQCZiL9AVc7amFEhiA68LxL0xWU5NlpunHWA?=
+ =?us-ascii?Q?/qbNA6qHd68pCv5b9F6mBpXSKwTOkAQwWIPTGr1eIEm3R3vBHXSw2j4xybS7?=
+ =?us-ascii?Q?kUa0qe+w8gtZcEVFOMUy4KNcQtnCX3Rk8nyV3fJYr7XhoEaxEa+5T7UMMojM?=
+ =?us-ascii?Q?8pz5iyf2uM4KjjWphHYrKG978AyErpkUDB6pUoDXIIQyvYJldaKFAX7f/Vmn?=
+ =?us-ascii?Q?P0Dhg09uGAncADtf5O92APx2GoHtjOdczMpGGrqrHtIH8lQYVH+jeBJQTEa9?=
+ =?us-ascii?Q?7a44ZbEafFYj1kWzqUn10nr4+O+I2Bvduh07v5fFi6+vdzAd5KooNFHt1+CC?=
+ =?us-ascii?Q?2QTVhAk3YsZ3ahDB4UGHrmW5YBgntbIJ4SOwbtoFk4Kp/Mb2Vl8oIoayR0Mw?=
+ =?us-ascii?Q?QrsZhJiA8/5VY4ZmhzSOK6Wu68xOI0ZZlEHgNa+zhKpbeCDH5eXQy++LPBrL?=
+ =?us-ascii?Q?0M67+L878a1KIF/o2kifLxVn/sIjHRdFOxtjw+MMoBEvPhe9uQPxcI2D7DNZ?=
+ =?us-ascii?Q?AtlvZMyxqJt973fIwxd8oOxbwIjCSaVGUDZ5P58h6pXD0y+4P08Yk34K4Dbv?=
+ =?us-ascii?Q?iyYOjW/2UlNS112tLjMotVDqzcukuN4sL+khNU1f7h3ZlvemWxK1URnKgUPT?=
+ =?us-ascii?Q?qgC3JGSqg1Hj5txJuAZMOnD3XjJj7NEGkXXy74Z9u7Qo0lsrcftZN+w0gbcL?=
+ =?us-ascii?Q?uYZDF1UDJZ2xAhYVWjXBZUIjyYEUqX7EHiiNcNsTb/6WVXtIND7Bjqcdfazq?=
+ =?us-ascii?Q?H2gMPqGZds0g3ctMOCVJRCx2NmfO0LcSeXxAAn3nvi+JbmKwKeQ/kk0er0Da?=
+ =?us-ascii?Q?QSLYCeF0YpHRYJ5eRSztmNh7gmMQZmPnN+n26d3iRJH076uRu489YQBBCvpL?=
+ =?us-ascii?Q?jNru0ycg15xtUAry5PKB2+xggt+DMRJwtcE8Y0OzmDib5ywJgRpdv2Q8zdJm?=
+ =?us-ascii?Q?ad1CpD3DbExiM3ulcfYAUWix1t7WVQ/ns7AFQdcQbCHOtXC6M1CzuQBTxfqz?=
+ =?us-ascii?Q?U9eKS2c=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(52116011)(376011)(1800799021)(366013)(38350700011);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?L5hY2wsE3StsnZkYjDHbMYD5uQFkjyWQG0YbTweoYDYlW2C5p+HpMNeZaQpL?=
- =?us-ascii?Q?NNQTe+AszuO4307TNAq377yqM/J0v0NPWzpDSN+XS0dWh7Bx5fN5cpNqmJY9?=
- =?us-ascii?Q?fXInB6Svey5nf7JvyFKwgTxLVm0PdE1MXdrUCTkGiIqcGYxsZPfsJrVCqTAa?=
- =?us-ascii?Q?IGDD6Et4D+c/a6fzv3GE8d9eV4lXch+vEeB65s4aAKsDBUp5XoHEIpEztIn+?=
- =?us-ascii?Q?LltJF7A7ajYIFDAep/tAhDzO19G9ER5nCJfuylVtgTAUXIojDoJQhRpnBq6l?=
- =?us-ascii?Q?6on5eQJqBa2qwKoZn5n3Xbst3FWXzV8sLiq6XyZ1telNp1Qp8hxJ6kfcyU7g?=
- =?us-ascii?Q?v8cStNYUBov6yMTXkg+SiaW4f1gjH9Pei4kCbH8jlyBQX8ZG5eoije9i3Tqu?=
- =?us-ascii?Q?eBtnvimqTVUoo+GvRZVXuSxV/SpGbVCbyPTIRB3oFsvYwnXF5ejaJbmXWbAw?=
- =?us-ascii?Q?speyKSOP83ZDvvrrx05Ibgmc2Ca8AjcwX0OFVcpnvZk3YsB8dXjjicznqL+6?=
- =?us-ascii?Q?FdnKanlEmy6cXOFYEgVGP56HxtM6fJGtyocUeuLw8e/MlPOafHdlpqrURxBc?=
- =?us-ascii?Q?a11IaIjNgFea7wZ7+g7B1gBT8frSpdMqmdP4e82HC5QIuEsMTYNB2Bx0PxpQ?=
- =?us-ascii?Q?/S0uIqj3yzgXkPgtTs84LiV98q5wqrkc5zWXpxxdiRvtd84rQmPBhSoDeWGQ?=
- =?us-ascii?Q?ipAaBT2jO6SCFivF74BWP9BcOpK1h8ABvfhECauDG5hxbVldbf0BR06W2TeT?=
- =?us-ascii?Q?zotZdJElmlc/eesa2kZlVMwp6l9Gz5sbLiFZa7uTkT5G3EpLrWdmTzFiWzJq?=
- =?us-ascii?Q?lWw2pTShYTXO1DDXVrtpMEMGfwvXMFQ41nk1gvYr3cUHjbbpCho8bPQpbG2q?=
- =?us-ascii?Q?VugvyriwGDy1gb0O4bxkMk2kl8PCHByEIqO/9V+kpF6dO5MBT2Pl56dOAhbK?=
- =?us-ascii?Q?xGvCv/iEbjaYjS4P2QT0YJYuCMuEWAWTbctkFdEPYHw/9P5Z/IKFAhvpP61Z?=
- =?us-ascii?Q?JuQXp1c0okmx3Q9SUo0WWgt8dEo3ixf9Vdfqx3oYhbowEkuxTjK+7slQjS6+?=
- =?us-ascii?Q?x6yolHsiZ8eD+zSABOAc1iMARzbcSKxz5maJ8WnS6k5jYx+TGyGHoFp0cGs/?=
- =?us-ascii?Q?Ih6WAoba8CwVe6bSic83RfwYq9YgMQOeEIL/ZUDggdPE8HOvWc664/gCx+P0?=
- =?us-ascii?Q?oUar7YHs7yWcvjEaYqS2EmK/cvvjVDZfnTJmT+Eq+mWbYKlJ1pt2zR6L2nQy?=
- =?us-ascii?Q?zvGePe2nIwtQ5fKrLzetXgO7H5JNh3dtwmt3Jogrq0f48w9k8PUL8SNWe2No?=
- =?us-ascii?Q?N0D3QjRMAK5yMt8f6D9ojsNope8rWjK8OX3cN88Rj2fbQyD3EFBo/a+jcr6Y?=
- =?us-ascii?Q?BiRCE3wvL4u4KAnDUaDcpV0MXxMwgvDsTLQRyjhvw2N25iIBrYFwsjWmO7EG?=
- =?us-ascii?Q?lYjuvYWBqq83asKqaffkobyIS6O7dAUdHT4DNKKJi+pkt5DjmezoDkmYJVgN?=
- =?us-ascii?Q?Bz0J+yIrWMcgCu5Xa1y3cckSTmVmjTY1hPMZm56jU5whidMd6oibfyzJ1KdT?=
- =?us-ascii?Q?QEr72XrMKhBhgApjp2eD4X+7KmVwl3o0D7dw46qg?=
+	=?us-ascii?Q?YHekFwP7ddtvymjXoikNox4DU91Dl0C3WJP0TLlCUCtZ0giF05HYWdcuf0La?=
+ =?us-ascii?Q?rMHB63EeJmafdc8blW3c1HnCZ1lFHTnl/6Zyr1Bw1tzQjhkS8bH3v4FOmDsX?=
+ =?us-ascii?Q?FMACeZplLFrBjVg39PYDWeRa1rvwK0wobwPONS3decIutSLUFDJlK/SzFAP5?=
+ =?us-ascii?Q?8yMkKqdx7R7vxOvV+2d++Pu9sk/FLAipp6j5Xlo5QSIFs2oZggjjXwNDfK2s?=
+ =?us-ascii?Q?5z9GIzgYm11HD29qMNmEVRprXse9PUdug5qAFXSnDICfIt2e64qBIPFPhqn9?=
+ =?us-ascii?Q?xNDCueste/Of7OrBDXEtbYyCMCDffdIfoZGj6dYXYpsM1HL8BC8A5tdvhS5l?=
+ =?us-ascii?Q?Tgz7ta57JMJ8MHwdvfVfzk7eEf3VjClPaXGJAlcsw+HeRPxaVg1V/EYqRpwm?=
+ =?us-ascii?Q?O/wlkSoO84wc75/SqyPqRBiP0hI39ZK5HlxNVxZKX4bnfSCwwUEPcNBZvfnC?=
+ =?us-ascii?Q?X94NNoXbiQkfPuq7IIQYTZp+BOZkVBzYQHBAeHGI7uJDJU8pPRUzekQxr5CO?=
+ =?us-ascii?Q?ZMhAfrfmwy1pFHHIBCmkBfczIS/IBZrjK3T6NssyaCPIldH6Z4A/nWQuAS7v?=
+ =?us-ascii?Q?w7w2SBPn4W8X8V0/WrsnMAQAJBFCx0gDrjUz92szXPdkhDDF04SjaDNcqiO8?=
+ =?us-ascii?Q?XiUvs6M5Zm526f2J/8n5fUYpjqsN+wlbaGKAv9O/6x/fDjpaZdnQUQAyKjGD?=
+ =?us-ascii?Q?v5PTlxDHVUBq/Wyqhi+5hl+2H48cXBh13/1qwm24D+9oT6mqYo3DReUmjRlI?=
+ =?us-ascii?Q?Y2yng+PO/m5gUOUyi3sVdDSDvhpKXhHRF4uubvd30BmX86xTIQXCr+yYoUif?=
+ =?us-ascii?Q?mmgD78OCLjpimDkq0ucYlJ0UDLJEZWWIJvQdTIUXg5pWK0GiHM9dCSff6rg+?=
+ =?us-ascii?Q?9n+93hzWpgrci2EdMBFUE/jD77VE21+AiBy5TE0K7gEccTH9UUEpp1P76/Qg?=
+ =?us-ascii?Q?gIvZKJIviSQ5/79IHEl+eHWzBZQ3QkVluGcDzsRye3TclM4mi8NVvhHHYU9x?=
+ =?us-ascii?Q?LdecYwpPbd/DVfiq+E/uWy6+6txuvrHd+yyi2xj227KbD1WuAGKqF70m6PSj?=
+ =?us-ascii?Q?9A5VxkUL+jJAbNx+3XgDjqYzdCuUdaP4t2z3rQyVTXsRIAmMfgSqlXWHNjQn?=
+ =?us-ascii?Q?MuIEbrKNPrE7pVvkJw6j5X26drnH8RPOc5f+ItmmWOPJFBHKqtK2S9dadm9r?=
+ =?us-ascii?Q?uwZ8LGTDufZNzGS40qaZXzJzP4/nJLreQzOfTgisigZRHJpGIaMDWcPMAHo3?=
+ =?us-ascii?Q?Rx/VwLjwC1Dii7QJYvCv20xHJOJmVyKP5t0i/GDjIRdtCWEm1QjZR6JMR+Ri?=
+ =?us-ascii?Q?NrPr3on8B5/nB7f3a9fgBnnj6Mv1fHm1ot8uNJBNpcY6Wyqevd4hfo+pZbBV?=
+ =?us-ascii?Q?3Itaw/eSNcOsyiUDrzuR4kLIQvsoMXjbLYxaswvKObzzLC6WgsMMdRQGyS7K?=
+ =?us-ascii?Q?2Dxmh+wP8Os/Y6aDZbEQM2tgpEdzidxOFRzsl1rqgzNPMHe1eff9WFMH+Ufx?=
+ =?us-ascii?Q?D5056ItQyLWNCob1ljrhnSkBq/VsXsuADZfFhvoGwamXRr7GKHiasztvmmnR?=
+ =?us-ascii?Q?xoGEA8CE+RDC1HGWY3JiExMkWn6KNtSiXlE0ca4K?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6090dcfa-c2e5-4d66-f139-08dc91c73259
+X-MS-Exchange-CrossTenant-Network-Message-Id: 30a6f778-bd9c-4d42-52ef-08dc91c73415
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9638.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2024 07:53:11.2284
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2024 07:53:14.1645
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zkRIHgbgwhK9Nan4K+jZlUptqwP6vrTZVeC3DOP6FVwS97c7+iJDrM4FCwbFMbWOGDkXNMoKyPK8LO3CRzodbw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: d/GV2acD0GSxaEbWg4GSpSSneltpMc4DvTiByJ+K/EjN6lbGPsKmApYAX4QUX5SConOa8mga++Wv7c4V13+WiA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8135
 
 Signed-off-by: David Lin <yu-hao.lin@nxp.com>
 ---
- drivers/net/wireless/nxp/nxpwifi/cfg80211.h | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/cfg80211.h
+ drivers/net/wireless/nxp/nxpwifi/cfp.c | 484 +++++++++++++++++++++++++
+ 1 file changed, 484 insertions(+)
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/cfp.c
 
-diff --git a/drivers/net/wireless/nxp/nxpwifi/cfg80211.h b/drivers/net/wireless/nxp/nxpwifi/cfg80211.h
+diff --git a/drivers/net/wireless/nxp/nxpwifi/cfp.c b/drivers/net/wireless/nxp/nxpwifi/cfp.c
 new file mode 100644
-index 000000000000..086ec9ca4cc9
+index 000000000000..4fcd2add9b66
 --- /dev/null
-+++ b/drivers/net/wireless/nxp/nxpwifi/cfg80211.h
-@@ -0,0 +1,19 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
++++ b/drivers/net/wireless/nxp/nxpwifi/cfp.c
+@@ -0,0 +1,484 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * NXP Wireless LAN device driver: CFG80211
++ * NXP Wireless LAN device driver: Channel, Frequency and Power
 + *
 + * Copyright 2011-2024 NXP
 + */
 +
-+#ifndef __NXPWIFI_CFG80211__
-+#define __NXPWIFI_CFG80211__
-+
++#include "decl.h"
++#include "ioctl.h"
++#include "util.h"
++#include "fw.h"
 +#include "main.h"
++#include "cfg80211.h"
 +
-+int nxpwifi_register_cfg80211(struct nxpwifi_adapter *adapter);
++/* 100mW */
++#define NXPWIFI_TX_PWR_DEFAULT         20
++/* 100mW */
++#define NXPWIFI_TX_PWR_US_DEFAULT      20
++/* 50mW */
++#define NXPWIFI_TX_PWR_JP_DEFAULT      16
++/* 100mW */
++#define NXPWIFI_TX_PWR_FR_100MW        20
++/* 10mW */
++#define NXPWIFI_TX_PWR_FR_10MW         10
++/* 100mW */
++#define NXPWIFI_TX_PWR_EMEA_DEFAULT    20
 +
-+int nxpwifi_cfg80211_change_beacon_data(struct wiphy *wiphy,
-+					struct net_device *dev,
-+					struct cfg80211_beacon_data *data);
++static u8 supported_rates_a[A_SUPPORTED_RATES] = { 0x0c, 0x12, 0x18, 0x24,
++					0xb0, 0x48, 0x60, 0x6c, 0 };
++static u16 nxpwifi_data_rates[NXPWIFI_SUPPORTED_RATES_EXT] = { 0x02, 0x04,
++					0x0B, 0x16, 0x00, 0x0C, 0x12, 0x18,
++					0x24, 0x30, 0x48, 0x60, 0x6C, 0x90,
++					0x0D, 0x1A, 0x27, 0x34, 0x4E, 0x68,
++					0x75, 0x82, 0x0C, 0x1B, 0x36, 0x51,
++					0x6C, 0xA2, 0xD8, 0xF3, 0x10E, 0x00 };
 +
-+#endif
++static u8 supported_rates_b[B_SUPPORTED_RATES] = { 0x02, 0x04, 0x0b, 0x16, 0 };
++
++static u8 supported_rates_g[G_SUPPORTED_RATES] = { 0x0c, 0x12, 0x18, 0x24,
++					0x30, 0x48, 0x60, 0x6c, 0 };
++
++static u8 supported_rates_bg[BG_SUPPORTED_RATES] = { 0x02, 0x04, 0x0b, 0x0c,
++					0x12, 0x16, 0x18, 0x24, 0x30, 0x48,
++					0x60, 0x6c, 0 };
++
++u16 region_code_index[NXPWIFI_MAX_REGION_CODE] = { 0x00, 0x10, 0x20, 0x30,
++						0x31, 0x32, 0x40, 0x41, 0x50 };
++
++static u8 supported_rates_n[N_SUPPORTED_RATES] = { 0x02, 0x04, 0 };
++
++/* For every mcs_rate line, the first 8 bytes are for stream 1x1,
++ * and all 16 bytes are for stream 2x2.
++ */
++static const u16 mcs_rate[4][16] = {
++	/* LGI 40M */
++	{ 0x1b, 0x36, 0x51, 0x6c, 0xa2, 0xd8, 0xf3, 0x10e,
++	  0x36, 0x6c, 0xa2, 0xd8, 0x144, 0x1b0, 0x1e6, 0x21c },
++
++	/* SGI 40M */
++	{ 0x1e, 0x3c, 0x5a, 0x78, 0xb4, 0xf0, 0x10e, 0x12c,
++	  0x3c, 0x78, 0xb4, 0xf0, 0x168, 0x1e0, 0x21c, 0x258 },
++
++	/* LGI 20M */
++	{ 0x0d, 0x1a, 0x27, 0x34, 0x4e, 0x68, 0x75, 0x82,
++	  0x1a, 0x34, 0x4e, 0x68, 0x9c, 0xd0, 0xea, 0x104 },
++
++	/* SGI 20M */
++	{ 0x0e, 0x1c, 0x2b, 0x39, 0x56, 0x73, 0x82, 0x90,
++	  0x1c, 0x39, 0x56, 0x73, 0xad, 0xe7, 0x104, 0x120 }
++};
++
++/* AC rates */
++static const u16 ac_mcs_rate_nss1[8][10] = {
++	/* LG 160M */
++	{ 0x75, 0xEA, 0x15F, 0x1D4, 0x2BE, 0x3A8, 0x41D,
++	  0x492, 0x57C, 0x618 },
++
++	/* SG 160M */
++	{ 0x82, 0x104, 0x186, 0x208, 0x30C, 0x410, 0x492,
++	  0x514, 0x618, 0x6C6 },
++
++	/* LG 80M */
++	{ 0x3B, 0x75, 0xB0, 0xEA, 0x15F, 0x1D4, 0x20F,
++	  0x249, 0x2BE, 0x30C },
++
++	/* SG 80M */
++	{ 0x41, 0x82, 0xC3, 0x104, 0x186, 0x208, 0x249,
++	  0x28A, 0x30C, 0x363 },
++
++	/* LG 40M */
++	{ 0x1B, 0x36, 0x51, 0x6C, 0xA2, 0xD8, 0xF3,
++	  0x10E, 0x144, 0x168 },
++
++	/* SG 40M */
++	{ 0x1E, 0x3C, 0x5A, 0x78, 0xB4, 0xF0, 0x10E,
++	  0x12C, 0x168, 0x190 },
++
++	/* LG 20M */
++	{ 0xD, 0x1A, 0x27, 0x34, 0x4E, 0x68, 0x75, 0x82, 0x9C, 0x00 },
++
++	/* SG 20M */
++	{ 0xF, 0x1D, 0x2C, 0x3A, 0x57, 0x74, 0x82, 0x91, 0xAE, 0x00 },
++};
++
++/* NSS2 note: the value in the table is 2 multiplier of the actual rate */
++static const u16 ac_mcs_rate_nss2[8][10] = {
++	/* LG 160M */
++	{ 0xEA, 0x1D4, 0x2BE, 0x3A8, 0x57C, 0x750, 0x83A,
++	  0x924, 0xAF8, 0xC30 },
++
++	/* SG 160M */
++	{ 0x104, 0x208, 0x30C, 0x410, 0x618, 0x820, 0x924,
++	  0xA28, 0xC30, 0xD8B },
++
++	/* LG 80M */
++	{ 0x75, 0xEA, 0x15F, 0x1D4, 0x2BE, 0x3A8, 0x41D,
++	  0x492, 0x57C, 0x618 },
++
++	/* SG 80M */
++	{ 0x82, 0x104, 0x186, 0x208, 0x30C, 0x410, 0x492,
++	  0x514, 0x618, 0x6C6 },
++
++	/* LG 40M */
++	{ 0x36, 0x6C, 0xA2, 0xD8, 0x144, 0x1B0, 0x1E6,
++	  0x21C, 0x288, 0x2D0 },
++
++	/* SG 40M */
++	{ 0x3C, 0x78, 0xB4, 0xF0, 0x168, 0x1E0, 0x21C,
++	  0x258, 0x2D0, 0x320 },
++
++	/* LG 20M */
++	{ 0x1A, 0x34, 0x4A, 0x68, 0x9C, 0xD0, 0xEA, 0x104,
++	  0x138, 0x00 },
++
++	/* SG 20M */
++	{ 0x1D, 0x3A, 0x57, 0x74, 0xAE, 0xE6, 0x104, 0x121,
++	  0x15B, 0x00 },
++};
++
++struct region_code_mapping {
++	u8 code;
++	u8 region[IEEE80211_COUNTRY_STRING_LEN];
++};
++
++static struct region_code_mapping region_code_mapping_t[] = {
++	{ 0x10, "US " }, /* US FCC */
++	{ 0x20, "CA " }, /* IC Canada */
++	{ 0x30, "FR " }, /* France */
++	{ 0x31, "ES " }, /* Spain */
++	{ 0x32, "FR " }, /* France */
++	{ 0x40, "JP " }, /* Japan */
++	{ 0x41, "JP " }, /* Japan */
++	{ 0x50, "CN " }, /* China */
++};
++
++/* This function converts integer code to region string */
++u8 *nxpwifi_11d_code_2_region(u8 code)
++{
++	u8 i;
++
++	/* Look for code in mapping table */
++	for (i = 0; i < ARRAY_SIZE(region_code_mapping_t); i++)
++		if (region_code_mapping_t[i].code == code)
++			return region_code_mapping_t[i].region;
++
++	return NULL;
++}
++
++/* This function maps an index in supported rates table into
++ * the corresponding data rate.
++ */
++u32 nxpwifi_index_to_acs_data_rate(struct nxpwifi_private *priv,
++				   u8 index, u8 ht_info)
++{
++	u32 rate = 0;
++	u8 mcs_index = 0;
++	u8 bw = 0;
++	u8 gi = 0;
++
++	if ((ht_info & 0x3) == NXPWIFI_RATE_FORMAT_VHT) {
++		mcs_index = min(index & 0xF, 9);
++
++		/* 20M: bw=0, 40M: bw=1, 80M: bw=2, 160M: bw=3 */
++		bw = (ht_info & 0xC) >> 2;
++
++		/* LGI: gi =0, SGI: gi = 1 */
++		gi = (ht_info & 0x10) >> 4;
++
++		if ((index >> 4) == 1)	/* NSS = 2 */
++			rate = ac_mcs_rate_nss2[2 * (3 - bw) + gi][mcs_index];
++		else			/* NSS = 1 */
++			rate = ac_mcs_rate_nss1[2 * (3 - bw) + gi][mcs_index];
++	} else if ((ht_info & 0x3) == NXPWIFI_RATE_FORMAT_HT) {
++		/* 20M: bw=0, 40M: bw=1 */
++		bw = (ht_info & 0xC) >> 2;
++
++		/* LGI: gi =0, SGI: gi = 1 */
++		gi = (ht_info & 0x10) >> 4;
++
++		if (index == NXPWIFI_RATE_BITMAP_MCS0) {
++			if (gi == 1)
++				rate = 0x0D;    /* MCS 32 SGI rate */
++			else
++				rate = 0x0C;    /* MCS 32 LGI rate */
++		} else if (index < 16) {
++			if (bw == 1 || bw == 0)
++				rate = mcs_rate[2 * (1 - bw) + gi][index];
++			else
++				rate = nxpwifi_data_rates[0];
++		} else {
++			rate = nxpwifi_data_rates[0];
++		}
++	} else {
++		/* 11n non-HT rates */
++		if (index >= NXPWIFI_SUPPORTED_RATES_EXT)
++			index = 0;
++		rate = nxpwifi_data_rates[index];
++	}
++
++	return rate;
++}
++
++/* This function maps an index in supported rates table into
++ * the corresponding data rate.
++ */
++u32 nxpwifi_index_to_data_rate(struct nxpwifi_private *priv,
++			       u8 index, u8 ht_info)
++{
++	u32 mcs_num_supp =
++		(priv->adapter->user_dev_mcs_support == HT_STREAM_2X2) ? 16 : 8;
++	u32 rate;
++
++	if (priv->adapter->is_hw_11ac_capable)
++		return nxpwifi_index_to_acs_data_rate(priv, index, ht_info);
++
++	if (ht_info & BIT(0)) {
++		if (index == NXPWIFI_RATE_BITMAP_MCS0) {
++			if (ht_info & BIT(2))
++				rate = 0x0D;	/* MCS 32 SGI rate */
++			else
++				rate = 0x0C;	/* MCS 32 LGI rate */
++		} else if (index < mcs_num_supp) {
++			if (ht_info & BIT(1)) {
++				if (ht_info & BIT(2))
++					/* SGI, 40M */
++					rate = mcs_rate[1][index];
++				else
++					/* LGI, 40M */
++					rate = mcs_rate[0][index];
++			} else {
++				if (ht_info & BIT(2))
++					/* SGI, 20M */
++					rate = mcs_rate[3][index];
++				else
++					/* LGI, 20M */
++					rate = mcs_rate[2][index];
++			}
++		} else {
++			rate = nxpwifi_data_rates[0];
++		}
++	} else {
++		if (index >= NXPWIFI_SUPPORTED_RATES_EXT)
++			index = 0;
++		rate = nxpwifi_data_rates[index];
++	}
++	return rate;
++}
++
++/* This function returns the current active data rates.
++ *
++ * The result may vary depending upon connection status.
++ */
++u32 nxpwifi_get_active_data_rates(struct nxpwifi_private *priv, u8 *rates)
++{
++	if (!priv->media_connected)
++		return nxpwifi_get_supported_rates(priv, rates);
++	else
++		return nxpwifi_copy_rates(rates, 0,
++					  priv->curr_bss_params.data_rates,
++					  priv->curr_bss_params.num_of_rates);
++}
++
++/* This function locates the Channel-Frequency-Power triplet based upon
++ * band and channel/frequency parameters.
++ */
++struct nxpwifi_chan_freq_power *
++nxpwifi_get_cfp(struct nxpwifi_private *priv, u8 band, u16 channel, u32 freq)
++{
++	struct nxpwifi_chan_freq_power *cfp = NULL;
++	struct ieee80211_supported_band *sband;
++	struct ieee80211_channel *ch = NULL;
++	int i;
++
++	if (!channel && !freq)
++		return cfp;
++
++	if (nxpwifi_band_to_radio_type(band) == HOST_SCAN_RADIO_TYPE_BG)
++		sband = priv->wdev.wiphy->bands[NL80211_BAND_2GHZ];
++	else
++		sband = priv->wdev.wiphy->bands[NL80211_BAND_5GHZ];
++
++	if (!sband) {
++		nxpwifi_dbg(priv->adapter, ERROR,
++			    "%s: cannot find cfp by band %d\n",
++			    __func__, band);
++		return cfp;
++	}
++
++	for (i = 0; i < sband->n_channels; i++) {
++		ch = &sband->channels[i];
++
++		if (ch->flags & IEEE80211_CHAN_DISABLED)
++			continue;
++
++		if (freq) {
++			if (ch->center_freq == freq)
++				break;
++		} else {
++			/* find by valid channel*/
++			if (ch->hw_value == channel ||
++			    channel == FIRST_VALID_CHANNEL)
++				break;
++		}
++	}
++	if (i == sband->n_channels) {
++		nxpwifi_dbg(priv->adapter, WARN,
++			    "%s: cannot find cfp by band %d\t"
++			    "& channel=%d freq=%d\n",
++			    __func__, band, channel, freq);
++	} else {
++		if (!ch)
++			return cfp;
++
++		priv->cfp.channel = ch->hw_value;
++		priv->cfp.freq = ch->center_freq;
++		priv->cfp.max_tx_power = ch->max_power;
++		cfp = &priv->cfp;
++	}
++
++	return cfp;
++}
++
++/* This function checks if the data rate is set to auto.
++ */
++u8
++nxpwifi_is_rate_auto(struct nxpwifi_private *priv)
++{
++	u32 i;
++	int rate_num = 0;
++
++	for (i = 0; i < ARRAY_SIZE(priv->bitmap_rates); i++)
++		if (priv->bitmap_rates[i])
++			rate_num++;
++
++	if (rate_num > 1)
++		return true;
++	else
++		return false;
++}
++
++/* This function gets the supported data rates from bitmask inside
++ * cfg80211_scan_request.
++ */
++u32 nxpwifi_get_rates_from_cfg80211(struct nxpwifi_private *priv,
++				    u8 *rates, u8 radio_type)
++{
++	struct wiphy *wiphy = priv->adapter->wiphy;
++	struct cfg80211_scan_request *request = priv->scan_request;
++	u32 num_rates, rate_mask;
++	struct ieee80211_supported_band *sband;
++	int i;
++
++	if (radio_type) {
++		sband = wiphy->bands[NL80211_BAND_5GHZ];
++		if (WARN_ON_ONCE(!sband))
++			return 0;
++		rate_mask = request->rates[NL80211_BAND_5GHZ];
++	} else {
++		sband = wiphy->bands[NL80211_BAND_2GHZ];
++		if (WARN_ON_ONCE(!sband))
++			return 0;
++		rate_mask = request->rates[NL80211_BAND_2GHZ];
++	}
++
++	num_rates = 0;
++	for (i = 0; i < sband->n_bitrates; i++) {
++		if ((BIT(i) & rate_mask) == 0)
++			continue; /* skip rate */
++		rates[num_rates++] = (u8)(sband->bitrates[i].bitrate / 5);
++	}
++
++	return num_rates;
++}
++
++/* This function gets the supported data rates. The function works in
++ * both Ad-Hoc and infra mode by printing the band and returning the
++ * data rates.
++ */
++u32 nxpwifi_get_supported_rates(struct nxpwifi_private *priv, u8 *rates)
++{
++	u32 k = 0;
++	struct nxpwifi_adapter *adapter = priv->adapter;
++
++	if (priv->bss_mode == NL80211_IFTYPE_STATION) {
++		switch (adapter->config_bands) {
++		case BAND_B:
++			nxpwifi_dbg(adapter, INFO, "info: infra band=%d\t"
++				    "supported_rates_b\n",
++				    adapter->config_bands);
++			k = nxpwifi_copy_rates(rates, k, supported_rates_b,
++					       sizeof(supported_rates_b));
++			break;
++		case BAND_G:
++		case BAND_G | BAND_GN:
++			nxpwifi_dbg(adapter, INFO, "info: infra band=%d\t"
++				    "supported_rates_g\n",
++				    adapter->config_bands);
++			k = nxpwifi_copy_rates(rates, k, supported_rates_g,
++					       sizeof(supported_rates_g));
++			break;
++		case BAND_B | BAND_G:
++		case BAND_A | BAND_B | BAND_G:
++		case BAND_A | BAND_B:
++		case BAND_A | BAND_B | BAND_G | BAND_GN | BAND_AN:
++		case BAND_A | BAND_B | BAND_G | BAND_GN | BAND_AN | BAND_AAC:
++		case BAND_B | BAND_G | BAND_GN:
++			nxpwifi_dbg(adapter, INFO, "info: infra band=%d\t"
++				    "supported_rates_bg\n",
++				    adapter->config_bands);
++			k = nxpwifi_copy_rates(rates, k, supported_rates_bg,
++					       sizeof(supported_rates_bg));
++			break;
++		case BAND_A:
++		case BAND_A | BAND_G:
++			nxpwifi_dbg(adapter, INFO, "info: infra band=%d\t"
++				    "supported_rates_a\n",
++				    adapter->config_bands);
++			k = nxpwifi_copy_rates(rates, k, supported_rates_a,
++					       sizeof(supported_rates_a));
++			break;
++		case BAND_AN:
++		case BAND_A | BAND_AN:
++		case BAND_A | BAND_AN | BAND_AAC:
++		case BAND_A | BAND_G | BAND_AN | BAND_GN:
++		case BAND_A | BAND_G | BAND_AN | BAND_GN | BAND_AAC:
++			nxpwifi_dbg(adapter, INFO, "info: infra band=%d\t"
++				    "supported_rates_a\n",
++				    adapter->config_bands);
++			k = nxpwifi_copy_rates(rates, k, supported_rates_a,
++					       sizeof(supported_rates_a));
++			break;
++		case BAND_GN:
++			nxpwifi_dbg(adapter, INFO, "info: infra band=%d\t"
++				    "supported_rates_n\n",
++				    adapter->config_bands);
++			k = nxpwifi_copy_rates(rates, k, supported_rates_n,
++					       sizeof(supported_rates_n));
++			break;
++		}
++	}
++
++	return k;
++}
++
++u8 nxpwifi_adjust_data_rate(struct nxpwifi_private *priv,
++			    u8 rx_rate, u8 rate_info)
++{
++	u8 rate_index = 0;
++
++	/* HT40 */
++	if ((rate_info & BIT(0)) && (rate_info & BIT(1)))
++		rate_index = NXPWIFI_RATE_INDEX_MCS0 +
++			     NXPWIFI_BW20_MCS_NUM + rx_rate;
++	else if (rate_info & BIT(0)) /* HT20 */
++		rate_index = NXPWIFI_RATE_INDEX_MCS0 + rx_rate;
++	else
++		rate_index = (rx_rate > NXPWIFI_RATE_INDEX_OFDM0) ?
++			      rx_rate - 1 : rx_rate;
++
++	if (rate_index >= NXPWIFI_MAX_AC_RX_RATES)
++		rate_index = NXPWIFI_MAX_AC_RX_RATES - 1;
++
++	return rate_index;
++}
 -- 
 2.34.1
 
