@@ -1,144 +1,133 @@
-Return-Path: <linux-wireless+bounces-9354-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9355-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BC20911ADE
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 08:03:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 126C5911B92
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 08:23:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F7431F2169C
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 06:03:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABFCD1F21461
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 06:23:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB277137776;
-	Fri, 21 Jun 2024 06:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA1E7143C58;
+	Fri, 21 Jun 2024 06:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QHuPW/l7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EX9lQolt"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2B317BB9;
-	Fri, 21 Jun 2024 06:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C611312D742
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Jun 2024 06:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718949819; cv=none; b=nF1TPTPjyCwWAIMPve+4ZRhVdVB2S64OyUGI7sZE5ANd2n7gRr1u9Y9YWf8yjM7tODJwK5IIM0Rx6WAcwXOPUJhwrkqMl+LtZ3xyRNofOalzcuAd5gSWx9+2yIiCIaH56DjLSsV9Y972zYf0uIUvkOSD9pYURZ0FCAUmkq3FhJo=
+	t=1718950916; cv=none; b=TDDS+g1RA3BBw+B4LkMO7NSSJh0D7V79xKzudn4/f9Y9gV8aloiVa1Ti/1KBK3XEizRXaG9tN71gop3y0YwOppep3BUvgY7O6O8+YW7hH/kSgzVsP4JqeCjeqvRhU/GLEYKnZ+e8gjEDRbXXW5N7CZoIZm0v/ShpiwRxZ8JKJYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718949819; c=relaxed/simple;
-	bh=3HxjbrgVB9KXbMOlbGzr9Z5tVUPV8KpfS6W+akCYdZo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cNw8mQlKqd3uaBhXbEgInYIW6KUC/IhQup70q6L7G0A6cBZlfxAjK1swRxmEvMBxMm6WSU1JJtSRJ1/pDTCsGo8ECBRz1uSP7SgqEt6yhR6uW0CU07fkvAvLkiLl2b0cAQEsl3bKsvYGT9z2sFQhadnb0gUKgOOsLCdzBbo5kVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QHuPW/l7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55039C2BBFC;
-	Fri, 21 Jun 2024 06:03:33 +0000 (UTC)
+	s=arc-20240116; t=1718950916; c=relaxed/simple;
+	bh=hMkpu0krNr2g93eZ8IM3B57N+hVlxXfT21ilDYvWVq8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EsetJjp61mEWgnWVjj27GeuAHnSAWz8npvS1E5wkw+ceicB1PplOvwUXPHFUfynhlKQfLGoDqwtnp233o7Ql10x7a/bhARIGjgIiSSO9jLy/QGZEq7zbSDPzstTxHfE0weRGxrGwDRfaRspKskzH0pgaKFoKhe3MoeGp6dUWYXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EX9lQolt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57B38C4AF07
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Jun 2024 06:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718949819;
-	bh=3HxjbrgVB9KXbMOlbGzr9Z5tVUPV8KpfS6W+akCYdZo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QHuPW/l7LVgedeyzPWjy7KryxLel9deWa+Zg+1o+NE2iR8Xq/T07MZeOdiQapTqNa
-	 6LOM28+9NOwTkfK0Sa9p66zZj9ir5jMv3ltMQf4kU9cVhoFMkDN29HKYp6gMTYN04t
-	 i/4C3bi4YfFcwk4pfaUnibp60Q6DssugXk7Lyr2hHoiEMZeWP+mVDPs6CbWShA0iva
-	 pZpCnjfbDc1H+6sTVzNBu6WOLl+7e9WagfrhOmd8Z91HRk4b0qZ/h0gGmVKP5iEkzi
-	 JRYXjgz70fsRDvoCN9OhFUn7dCRhid+LXOXRVxGCIhEC52R18X4g5uTOkiUckSUCRM
-	 12FykE/e1/r9A==
-Message-ID: <4533403d-11b1-4f73-b57d-3079be1e300f@kernel.org>
-Date: Fri, 21 Jun 2024 08:03:30 +0200
+	s=k20201202; t=1718950916;
+	bh=hMkpu0krNr2g93eZ8IM3B57N+hVlxXfT21ilDYvWVq8=;
+	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
+	b=EX9lQoltpiFc3q7j93ULJKsmcCLkMw97KPsdkc79sXOn67DqN8tp/SEio66pj4o6K
+	 a4KHHhkAHY7av+6Ot0ulcV1M7wsnKZlwYXsMcqkZgrHTRHbshHh5uJDTmq1Sqt5IDR
+	 P7kOpza35cV/NMwoktwJ62TM2Feya/a3B7C1pI6v1LCxbUj+RhbjjC/67v/SudRbs8
+	 FYGa12CaFVXUaSyz9eM5sYi0yL47cEpIfRHr0fZdhqnFaetlpsgCnP19F9O+diwklL
+	 hpPdKb+LwVMaEqvFzRRpf77ZkblnibDOs0GWCicqIt5EaOawbJ0Lre/8Swz2yfQZIq
+	 3a7FF0x+0QFXQ==
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2e72224c395so17507361fa.3
+        for <linux-wireless@vger.kernel.org>; Thu, 20 Jun 2024 23:21:56 -0700 (PDT)
+X-Gm-Message-State: AOJu0YxFXPoi3JnZFkhrYZ+UWir1xZlpLdDc1T4h+EZyYp3c0rHByRkp
+	PHzZWgI/LN9zRO39JhKqYn4/s8gxSAFKGQKxUyNwqJfsmQj+RhHiBdITXLXVwvJKWRiLj6JZ1KD
+	OqtEw8It0Z8yaYXqnLGAjVOl4LXA=
+X-Google-Smtp-Source: AGHT+IGw5UYx81r3K2ucby3YFlI+wqgzxWeOa5Pevemh0b0s2VLqCckk46850zC6AS/PpwpRA8YwMxo1ssl2bdwY2H0=
+X-Received: by 2002:a2e:83d0:0:b0:2ea:e763:7124 with SMTP id
+ 38308e7fff4ca-2ec3ceb867bmr51106431fa.18.1718950914635; Thu, 20 Jun 2024
+ 23:21:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/3] net: wireless: brcmfmac: Add optional 32k clock
- enable support
-To: Jacobe Zang <jacobe.zang@wesion.com>,
- "arend.vanspriel@broadcom.com" <arend.vanspriel@broadcom.com>
-Cc: "kvalo@kernel.org" <kvalo@kernel.org>,
- "duoming@zju.edu.cn" <duoming@zju.edu.cn>,
- "bhelgaas@google.com" <bhelgaas@google.com>,
- "minipli@grsecurity.net" <minipli@grsecurity.net>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "brcm80211@lists.linux.dev" <brcm80211@lists.linux.dev>,
- "brcm80211-dev-list.pdl@broadcom.com" <brcm80211-dev-list.pdl@broadcom.com>,
- "megi@xff.cz" <megi@xff.cz>, "robh@kernel.org" <robh@kernel.org>,
- "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
- "conor+dt@kernel.org" <conor+dt@kernel.org>,
- "heiko@sntech.de" <heiko@sntech.de>, Nick Xie <nick@khadas.com>,
- "efectn@protonmail.com" <efectn@protonmail.com>,
- "jagan@edgeble.ai" <jagan@edgeble.ai>,
- "dsimic@manjaro.org" <dsimic@manjaro.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-rockchip@lists.infradead.org" <linux-rockchip@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20240620020015.4021696-1-jacobe.zang@wesion.com>
- <20240620020015.4021696-3-jacobe.zang@wesion.com>
- <b8b89ef7-2e92-4e1a-9609-6b0fd6d64d7e@kernel.org>
- <TYZPR03MB700143E13635364FF5A316D080C92@TYZPR03MB7001.apcprd03.prod.outlook.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <TYZPR03MB700143E13635364FF5A316D080C92@TYZPR03MB7001.apcprd03.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20240607023058.34002-1-pkshih@realtek.com> <20240607023058.34002-4-pkshih@realtek.com>
+In-Reply-To: <20240607023058.34002-4-pkshih@realtek.com>
+Reply-To: wens@kernel.org
+From: Chen-Yu Tsai <wens@kernel.org>
+Date: Fri, 21 Jun 2024 14:21:41 +0800
+X-Gmail-Original-Message-ID: <CAGb2v65k7M0=fiJoVaNUFxKCsRQXcv7mmXjDEJ0-OnV2uTUE1w@mail.gmail.com>
+Message-ID: <CAGb2v65k7M0=fiJoVaNUFxKCsRQXcv7mmXjDEJ0-OnV2uTUE1w@mail.gmail.com>
+Subject: Re: [PATCH 4/5] wireless-regdb: Update regulatory info for Costa Rica
+ (CR) for 2021
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 21/06/2024 03:45, Jacobe Zang wrote:
-> Hello,
-> 
->> Where is the binding for this?
-> I seperate the binding in this patch " [PATCH v1 1/3] arm64: dts: rockchip: Add AP6275P wireless support to Khadas Edge 2 ", the specific code is 
-> +                       clocks = <&hym8563>;
-> +                       clock-names = "32k";
-> 
-> Should I combine these two patch to one?
+Hi,
 
-That's DTS, not binding. I ask about Devicetree binding.
+On Fri, Jun 7, 2024 at 10:31=E2=80=AFAM Ping-Ke Shih <pkshih@realtek.com> w=
+rote:
+>
+> DECENTRALIZED INSTITUTIONS, REGULATORY AUTHORITY OF PUBLIC SERVICES,
+> announced ALCANCE NO 87 A LA GACETA NO 83 (in Spanish) on April 30, 2021.
+>
+> For 6GHz band (frequency 5925-7125), allowed only the following usage
+> applications free in this segment:
+>  - Applications of low power in interiors (LPI), according to the limits =
+of
+>    power 24 dBm.
+>  - Applications of very low power (VLP), indoors and exteriors, with an
+>    EIRP maximum of 14 dBm.
+>
+> Also update and add limits of 2 and 5 GHz bands accordingly.
+>
+> [1] https://storage.googleapis.com/eleoscompliance1.appspot.com/public/PN=
+AF%20modificaci%C3%B3n%20ALCA87_30_04_2021.pdf
+>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> ---
+>  db.txt | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+>
+> diff --git a/db.txt b/db.txt
+> index c98749442873..cdec93783b20 100644
+> --- a/db.txt
+> +++ b/db.txt
+> @@ -434,12 +434,16 @@ country CO: DFS-FCC
+>         (5735 - 5835 @ 80), (30)
+>         (5925 - 7125 @ 320), (12), NO-OUTDOOR
+>
+> +# Source:
+> +# https://storage.googleapis.com/eleoscompliance1.appspot.com/public/PNA=
+F%20modificaci%C3%B3n%20ALCA87_30_04_2021.pdf
+>  country CR: DFS-FCC
+> -       (2402 - 2482 @ 40), (20)
+> -       (5170 - 5250 @ 20), (17)
+> +       (2402 - 2482 @ 40), (30)
+> +       (5170 - 5250 @ 20), (24)
+>         (5250 - 5330 @ 20), (24), DFS
+>         (5490 - 5730 @ 20), (24), DFS
+>         (5735 - 5835 @ 20), (30)
+> +       (5875 - 5925 @ 20), (24)
+> +       (5925 - 7125 @ 320), (24), NO-OUTDOOR
 
-Best regards,
-Krzysztof
+I believe the kernel uses EIRP values. That means using the values in the
+third column of the table in the reference.
 
+ChenYu
+
+
+>
+>  # Source:
+>  # https://www.mincom.gob.cu/es/marco-legal
+> --
+> 2.25.1
+>
 
