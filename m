@@ -1,143 +1,229 @@
-Return-Path: <linux-wireless+bounces-9426-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9427-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4465B912181
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 12:06:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1E7F912262
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 12:29:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E245D1F25710
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 10:06:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87C7A28AF7E
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 10:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC8CB171064;
-	Fri, 21 Jun 2024 10:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E02171647;
+	Fri, 21 Jun 2024 10:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kAdMqyV+"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="DaWdTXWS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C09084D04;
-	Fri, 21 Jun 2024 10:06:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C4917109B
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Jun 2024 10:28:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718964370; cv=none; b=hwIaVJyL1YK0q+yllkwOiL6fcO8CGZf60QnYrvLuJLRbxmk8dAMK3DBE2XPLXnrdWVYEsgJ5X8o+npmU6QzBGEHOmAIBujsWVbxYnjbyjXVx71EgsiW8MZy+DzgQYK01VIgupNFrstzIE+d+BBXyL0wUZrcWab2nins+f5pcguI=
+	t=1718965740; cv=none; b=jAVA084rPevXdPfujd7/304OY2BpSG9Uxohe9SUD1Rhfksk8blju8JEmsbA32+8VrivA7GmKeEdRl0gCzZByjsGnR75b4UQIvCYQ2gP8hkhGRntbN+4JTJfKt2mVBdHbMggFchZcKYkBul8nRgH8+9Au3tsKH8iazmRRaOfKRzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718964370; c=relaxed/simple;
-	bh=eIrkj/gF11mCVv5C/FFPHFinu8rryuV0kc+GwM2eeE4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ELoW7r4jBpyoAXgPPd/Bi4JPnrhYfAOXf+fdy+jVR6xY1cw91tjPuGQijLytM8M6gtLxW6tqWc7//sKQnJZy1zMeJFJj4zVYrmCrIEJnGkeh0hEs1uUmYIiMppMP0S4a3M+x35qQdJqXb3epC80jmP7scg9+t7KS8Bcx7/vBpM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kAdMqyV+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C756BC2BBFC;
-	Fri, 21 Jun 2024 10:06:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718964370;
-	bh=eIrkj/gF11mCVv5C/FFPHFinu8rryuV0kc+GwM2eeE4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=kAdMqyV+Bm54/U80yaJFieUDXUu5iENt7Oga/D+z04++JZfqq56C6/Am28wY+na8f
-	 twWx/luB6gR/FNCn0Bi5gVHXrrZRXKKvqppeYoLhjyZXM1vIhXLzVMx3MDlUb6Idwt
-	 6J8mCn5JkYxKCQe7kZ6+iLe3E08N8Io2eYhnpbrknIxwoFtEfqKIzH78cD8Yrj2Nl1
-	 Xausbquup+SUfGZ4cTOfmkuKwr7zTWGswAkycDD5H5U3jPBZp/5yWnjJyPtyfhHgaS
-	 PI4AqFZ3f0uT6ssMzfjZJzwBbFkXuDOHrYnpoMzSj5XDiz3cjEsAAA96sP/mwW+W8t
-	 6rYRsZfO7FCGg==
-Message-ID: <6ad2a9ab-41a7-4560-8031-d5fa9f2cd558@kernel.org>
-Date: Fri, 21 Jun 2024 12:06:01 +0200
+	s=arc-20240116; t=1718965740; c=relaxed/simple;
+	bh=Ukg4mchcWuzTasNT4GL32mXRh9h7YAwbS01BncSs6jA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IHHSHJw4BjETichI2R3ok1hcc3KFlF/PM6vpNVEtwWjGAf0Lw/7PpRYelT2b0UYiEyELyEcdKSW8qcoa5ohK8reENZOOC/rnuweBUkb7mSx6juSyxqoI9hZLd7BykT4wSxSWp3ofxIKVIyr+pcyrY2I1EIDTqfUWW2pxMipnvgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=DaWdTXWS; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45L67AAo018160;
+	Fri, 21 Jun 2024 10:28:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=mRA1HZXsl2V0hmg48lYdjzuM13cxSnGOq2Y
+	sSrNH+7o=; b=DaWdTXWS8TIKb8MxpYUnuGNuXFhTArQcZLR6MDX4WQEvZNbCDMk
+	eLEHuC4rgjmex+kNLmam36nxZ9BbEsQdBjpFgYnkyFyej5en9C3kHHQIrmyGIXP/
+	jbaQFd2T1czR9umEZ8QzmbH8yWNJv/2z36pkjo+c0FcMTk0yzEyRqszyeeW1cOzp
+	zG3bDoz8Zd11pEmLmPKQOuGMlKvYpgPrUcYR/PdxBfQwoN82HYsu6GYJzyH04W04
+	L2XiRmIuHD/Og9lnaaMKPttXT+hTO7dNKWRXApIy2WUBu8TZ1bxOWTcetpqsuODF
+	1UGIx+Kd+cCm8eWPIO/vSmN1fVd/Hojo2Hg==
+Received: from apblrppmta02.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yvrp1a9as-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 21 Jun 2024 10:28:53 +0000 (GMT)
+Received: from pps.filterd (APBLRPPMTA02.qualcomm.com [127.0.0.1])
+	by APBLRPPMTA02.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTP id 45LASn5u007849;
+	Fri, 21 Jun 2024 10:28:49 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 3ys41mbaew-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 21 Jun 2024 10:28:49 +0000
+Received: from APBLRPPMTA02.qualcomm.com (APBLRPPMTA02.qualcomm.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 45LASms5007843;
+	Fri, 21 Jun 2024 10:28:49 GMT
+Received: from hu-devc-blr-u22-a.qualcomm.com (hu-rgnanase-blr.qualcomm.com [10.190.106.79])
+	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 45LASmsx007842
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 21 Jun 2024 10:28:48 +0000
+Received: by hu-devc-blr-u22-a.qualcomm.com (Postfix, from userid 2378837)
+	id C324D41149; Fri, 21 Jun 2024 15:58:47 +0530 (+0530)
+From: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
+To: ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, Lingbo Kong <quic_lingbok@quicinc.com>,
+        Ramya Gnanasekar <quic_rgnanase@quicinc.com>
+Subject: [PATCH v2] wifi: ath12k: Fix pdev id sent to firmware for single phy devices
+Date: Fri, 21 Jun 2024 15:58:09 +0530
+Message-Id: <20240621102809.3984004-1-quic_rgnanase@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/3] net: wireless: brcmfmac: Add optional 32k clock
- enable support
-To: Jacobe Zang <jacobe.zang@wesion.com>,
- "arend.vanspriel@broadcom.com" <arend.vanspriel@broadcom.com>
-Cc: "kvalo@kernel.org" <kvalo@kernel.org>,
- "duoming@zju.edu.cn" <duoming@zju.edu.cn>,
- "bhelgaas@google.com" <bhelgaas@google.com>,
- "minipli@grsecurity.net" <minipli@grsecurity.net>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "brcm80211@lists.linux.dev" <brcm80211@lists.linux.dev>,
- "brcm80211-dev-list.pdl@broadcom.com" <brcm80211-dev-list.pdl@broadcom.com>,
- "megi@xff.cz" <megi@xff.cz>, "robh@kernel.org" <robh@kernel.org>,
- "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
- "conor+dt@kernel.org" <conor+dt@kernel.org>,
- "heiko@sntech.de" <heiko@sntech.de>, Nick Xie <nick@khadas.com>,
- "efectn@protonmail.com" <efectn@protonmail.com>,
- "jagan@edgeble.ai" <jagan@edgeble.ai>,
- "dsimic@manjaro.org" <dsimic@manjaro.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-rockchip@lists.infradead.org" <linux-rockchip@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20240620020015.4021696-1-jacobe.zang@wesion.com>
- <20240620020015.4021696-3-jacobe.zang@wesion.com>
- <b8b89ef7-2e92-4e1a-9609-6b0fd6d64d7e@kernel.org>
- <TYZPR03MB700143E13635364FF5A316D080C92@TYZPR03MB7001.apcprd03.prod.outlook.com>
- <4533403d-11b1-4f73-b57d-3079be1e300f@kernel.org>
- <TYZPR03MB7001C517C5BDC8967DECECD880C92@TYZPR03MB7001.apcprd03.prod.outlook.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <TYZPR03MB7001C517C5BDC8967DECECD880C92@TYZPR03MB7001.apcprd03.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: aWoannXO4upzofr0_lDdb_Cdvw54QoEw
+X-Proofpoint-ORIG-GUID: aWoannXO4upzofr0_lDdb_Cdvw54QoEw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-21_04,2024-06-20_04,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
+ lowpriorityscore=0 malwarescore=0 mlxscore=0 phishscore=0 mlxlogscore=999
+ bulkscore=0 spamscore=0 clxscore=1015 impostorscore=0 priorityscore=1501
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2406210077
 
-On 21/06/2024 09:45, Jacobe Zang wrote:
->> That's DTS, not binding. I ask about Devicetree binding.
-> 
-> Ok... I have grep in all dts files and can't find wifi node which is under pcie node has clock. So should I add an example in the yaml file? 
+From: Lingbo Kong <quic_lingbok@quicinc.com>
 
-No, that's example, not binding.
+Pdev id from mac phy capabilities will be sent as a part of
+HTT/WMI command to firmware. This causes issue with single pdev
+devices where firmware does not respond to the WMI/HTT request
+sent from host.
 
-Validate your DTS with dtbs_check.
+For single pdev devices firmware expects pdev id as 1 for 5 GHz/6 GHz
+phy and 2 for 2 GHz band. Add wrapper ath12k_mac_get_target_pdev_id()
+to help fetch right pdev for single pdev devices.
 
-Best regards,
-Krzysztof
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
+Signed-off-by: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
+---
+v2:
+   - Addressed Kalle's comments
+     - Function protoype changed to static
+     - Coding style changed for better readability
+
+Note: Wrapper ath12k_mac_get_target_pdev_id() will be used when driver sends
+pdev id while requesting stats such as HTT or WMI control path stats.
+Adding wrapper as a separate patch to eliminate depedency for future
+development.
+---
+ drivers/net/wireless/ath/ath12k/mac.c | 76 +++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath12k/mac.h |  1 +
+ 2 files changed, 77 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 17b7fab03d50..278087c15bc3 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -670,6 +670,82 @@ static struct ath12k *ath12k_get_ar_by_vif(struct ieee80211_hw *hw,
+ 	return NULL;
+ }
+ 
++static struct ath12k_vif *ath12k_mac_get_vif_up(struct ath12k *ar)
++{
++	struct ath12k_vif *arvif;
++
++	lockdep_assert_held(&ar->conf_mutex);
++	list_for_each_entry(arvif, &ar->arvifs, list) {
++		if (arvif->is_up)
++			return arvif;
++	}
++
++	return NULL;
++}
++
++static bool ath12k_mac_band_match(enum nl80211_band band1, enum WMI_HOST_WLAN_BAND band2)
++{
++	switch (band1) {
++	case NL80211_BAND_2GHZ:
++		if (band2 & WMI_HOST_WLAN_2G_CAP)
++			return true;
++		break;
++	case NL80211_BAND_5GHZ:
++	case NL80211_BAND_6GHZ:
++		if (band2 & WMI_HOST_WLAN_5G_CAP)
++			return true;
++		break;
++	default:
++		return false;
++	}
++
++	return false;
++}
++
++static u8 ath12k_mac_get_target_pdev_id_from_vif(struct ath12k_vif *arvif)
++{
++	struct ath12k *ar = arvif->ar;
++	struct ath12k_base *ab = ar->ab;
++	struct ieee80211_vif *vif = arvif->vif;
++	struct cfg80211_chan_def def;
++	enum nl80211_band band;
++	u8 pdev_id = ab->fw_pdev[0].pdev_id;
++	int i;
++
++	if (WARN_ON(ath12k_mac_vif_chan(vif, &def)))
++		return pdev_id;
++
++	band = def.chan->band;
++
++	for (i = 0; i < ab->fw_pdev_count; i++) {
++		if (ath12k_mac_band_match(band, ab->fw_pdev[i].supported_bands))
++			return ab->fw_pdev[i].pdev_id;
++	}
++
++	return pdev_id;
++}
++
++u8 ath12k_mac_get_target_pdev_id(struct ath12k *ar)
++{
++	struct ath12k_vif *arvif;
++	struct ath12k_base *ab = ar->ab;
++
++	if (!ab->hw_params->single_pdev_only)
++		return ar->pdev->pdev_id;
++
++	arvif = ath12k_mac_get_vif_up(ar);
++
++	/* fw_pdev array has pdev ids derived from phy capability
++	 * service ready event (pdev_and_hw_link_ids).
++	 * If no vif is active, return default first index.
++	 */
++	if (!arvif)
++		return ar->ab->fw_pdev[0].pdev_id;
++
++	/* If active vif is found, return the pdev id matching chandef band */
++	return ath12k_mac_get_target_pdev_id_from_vif(arvif);
++}
++
+ static void ath12k_pdev_caps_update(struct ath12k *ar)
+ {
+ 	struct ath12k_base *ab = ar->ab;
+diff --git a/drivers/net/wireless/ath/ath12k/mac.h b/drivers/net/wireless/ath/ath12k/mac.h
+index 69fd282b9dd3..5c543fc87b35 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.h
++++ b/drivers/net/wireless/ath/ath12k/mac.h
+@@ -81,5 +81,6 @@ int ath12k_mac_rfkill_config(struct ath12k *ar);
+ int ath12k_mac_wait_tx_complete(struct ath12k *ar);
+ void ath12k_mac_handle_beacon(struct ath12k *ar, struct sk_buff *skb);
+ void ath12k_mac_handle_beacon_miss(struct ath12k *ar, u32 vdev_id);
++u8 ath12k_mac_get_target_pdev_id(struct ath12k *ar);
+ 
+ #endif
+
+base-commit: cac9bfd02678adbcca9a7dce770609b9f7434d37
+-- 
+2.34.1
 
 
