@@ -1,61 +1,61 @@
-Return-Path: <linux-wireless+bounces-9405-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9406-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3C18911DC2
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 10:05:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAE8C911DC4
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 10:05:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78A03287BA9
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 08:05:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 695AA1F214A6
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 08:05:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C933817C7C6;
-	Fri, 21 Jun 2024 07:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3739B17C9F7;
+	Fri, 21 Jun 2024 07:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="pJrAaHch"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="I3Xjr5zp"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2050.outbound.protection.outlook.com [40.107.21.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F32EA17C7AB;
-	Fri, 21 Jun 2024 07:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0272217C7CB;
+	Fri, 21 Jun 2024 07:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.50
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718956494; cv=fail; b=a78n9755VEbNrHmqsDSKzJ2b/GTzUuZrDCx+QolZMRQvtbD18dgREkQAXN7bpe+SRuckkILji14s3woV0lfr3BEUqyCK5XWCrckmAf0+rw9//6O7kGx5+zxzZ2fGKmeYAfs6qhsUiv8QdSmY/7iPLyEcuCP4Wx+amK8BECZU2JY=
+	t=1718956497; cv=fail; b=stYZyzb1tPhDLzi3sfWcr/W3nAhrL2WdRB8SFhtZo2/SCA9hHkVTsDLj33mIzW2eff99CexInk4dv3t905rz1hBYBOK004Qa766e/1auKSz+F16j8jLy/gX8LndEQCs5vAuYTPptCqDByQ4EfGmOx9T+gMOtQMcvhcdbBxLJAaA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718956494; c=relaxed/simple;
-	bh=n17QDADJXrjc3wuFOUIEeEJWZL+PpjoYbwMv0BO0H3I=;
+	s=arc-20240116; t=1718956497; c=relaxed/simple;
+	bh=OWLLOg9zNviDBy1PpaLIuGUJXKqg+tFm6JSElyxo7sA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pFEVj+zR3Ysbx5yAm0bYPuz5v3IpxkEOBjCu5IcOy9IBc1Kp/xl1QLIxUla8CTShLe9IKfQwHKPTXFfAk2E7kfjMzQcNQ29BYnKmci07EyyTkSUMz8mQCW773XNGQn37GiHLF6dt9/8dBoofRO+dcy3wtuTt9K08v2GcY1VcnlU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=pJrAaHch; arc=fail smtp.client-ip=40.107.21.50
+	 Content-Type:MIME-Version; b=Sm8jYKDF3wZBKFlBr8Hesl1oHqDRk4jjrmRW0o8OxMI2WTQj1ODXj2Q/Tdq43sSJkV3j8wShbUHPjXXy+RC0FhNNQSZWdVY9L5W/RyzUHlXFqgDamCwgaAlVdgHgDK3b7Nqx9RYcYKHj7zJwuFRxYUvjev9QD10KjRNaLc70640=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=I3Xjr5zp; arc=fail smtp.client-ip=40.107.21.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YZV2AqoQrW9xM+65tgzdMDPGn3Np8JvvKzrbe/x0SuXHsomg85aIkRWCAJTMhRze+YsOi7dZiJ2FuqnSZ6zjDtI7qOIa5C8oVn15Y5q25zH9Y1y0hZm/10v9ju5PHGLonv+LYE1H3hHRWWvl5KLdfrrNhmvaNt/8CGNDKwnpN/n1x5Wbr+KvyLmbKiQAdNObTwzF2TSVQtSkGKSugvZWhjKZf/VJn8EigWwY0Wf/zgECu2voSu8jCWXdWUWQXJI2rDKJHAFLYoZtxJjeJHTVqbJCv7ZfazUX/q3qw4+0cDiTgHzvcVh/D+SesSy6kMAIzgGE+kE13xFvAqyy9f9tVw==
+ b=gq8Bas/ZE8nxGTdxWNotva0Rfck3EjLaLFvZzv3vRgDaHyvSlEfUbir6u99jZZB93M/Vv5KvbKbgYLoHdAtv6SFPPeJQ9VwKdv8nhuKUmV2ld+Fd0ZactJUyp+r2Sqyifsb/DiYZTGTU0NXqOAobGGxZvodiZ85gB2JwcXJs3PGrS++h9l8afGPF2pc47BHv2i70Lh/EmV6CEuZ0enXESWXWms+rOPv7VAjqS3H/xHbZR4+F7/JeCRsDVlJoiYnz9x/+7jD0m13jHZBpBTl3E3hrJNAhLdEZfrpudAKzHyz/XFKv/10VJJ7pAv5IRFrtminpoo902MobBXQ7OUGbBA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Z7MeuOgQrbSP0BuVj0rjMFxdtU8YgEfcffhYnh1ojkU=;
- b=dL43LMxs3J9ScDLmRbCIzKS2Li//wE4WeFzp5RHZsi6BTSk6ZAuCdrwCgdrgkhJQc/Y0SRZqtcKEZOacfa/vdOTmvKYPRo7HXtuDENUICM11moZowGJUEwX5Yl2n+ZV+fn8uerv1KzUUKX7ZxsC0FS3pnMfK5HPivDvRL953Y0l9fZtXo6qoG8P5j+8Ckc69gr+tjQYY8UI3fFKePM6jsFfV5u82aQrnFEDakHx9jmtHP23EC5bG0axYPhfg4G1fin1xE2YmvWONJhUX8G+x3hhk48XnT/HxupcVqCC/fEV+Hzlur2ilN8cV8jQo/rv5JBTgru9s+kEKJyMelrY8Vg==
+ bh=PuuA7mCk2j/GPV0d3IBmmbNL0aQrroJhtLXnB92XVno=;
+ b=ZMz2PCQLo9QNusTaWeJ1FnREAhg+a64jmuaoWEllT7QWvG6c8hl+Oy0Euo73zoiPiaWlr4fCDQjpjFIjuRcAyzf4lQ+xYYDiTukbme6bYsP4yKfKabPq9aEfGWD5XxXFZpx/XhjQcZdk7C2ldRqKqmkr0HuAwx72XueD9muWCVoC7U961paCQuf/yJX3eWxh0BysExk+9Y5SUm7VvCcdpwPQdIqpz98ZCcWSvU/hkUE8zMwAKayGp86AyF5I7ZfvwycE8iTBtX4qp64m+a5+Y90/1bohcIQIh9y7DliplzcmVvQH8gGKOA0vxV0bCveAq9bPoe1239yBIspFfGoDlA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Z7MeuOgQrbSP0BuVj0rjMFxdtU8YgEfcffhYnh1ojkU=;
- b=pJrAaHchrhzxM1xLNyzs0VyMP95dyIsnb5hXvODaylX+7RE7tJkxyosKgVt1Iy5gJdNfGHvNT5tXG7dakG4NwpZnSh8ksfTLTccRMX0OBrifG0GL22kfPtmyzL8o1dOYY+lt0TE8biFh+RhFHIwbtPLYfFM3/mcJqpi77P1vwoA=
+ bh=PuuA7mCk2j/GPV0d3IBmmbNL0aQrroJhtLXnB92XVno=;
+ b=I3Xjr5zpA2oI6f6SqC8atU9ppP4oPQ2r6uylDGVfXdsz2oJSk3YXqfp4C46gTYQKoqPZGdspt/Fty3Xe3rmKVMDtBJxhC6H50qTtl7dvNjowZd/mDkJqQWtxRI/grcDEhJLum2DlmJiBSPrq7pH0kroY/4rhEDD/SO+k4xiWr6I=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PA4PR04MB9638.eurprd04.prod.outlook.com (2603:10a6:102:273::20)
  by VI0PR04MB10464.eurprd04.prod.outlook.com (2603:10a6:800:218::6) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.21; Fri, 21 Jun
- 2024 07:54:49 +0000
+ 2024 07:54:52 +0000
 Received: from PA4PR04MB9638.eurprd04.prod.outlook.com
  ([fe80::f950:3bb6:6848:2257]) by PA4PR04MB9638.eurprd04.prod.outlook.com
  ([fe80::f950:3bb6:6848:2257%4]) with mapi id 15.20.7677.030; Fri, 21 Jun 2024
- 07:54:49 +0000
+ 07:54:52 +0000
 From: David Lin <yu-hao.lin@nxp.com>
 To: linux-wireless@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -64,9 +64,9 @@ Cc: linux-kernel@vger.kernel.org,
 	francesco@dolcini.it,
 	tsung-hsien.hsieh@nxp.com,
 	David Lin <yu-hao.lin@nxp.com>
-Subject: [PATCH 41/43] wifi: nxpwifi: add nxp sdio vendor id and iw61x device id
-Date: Fri, 21 Jun 2024 15:52:06 +0800
-Message-Id: <20240621075208.513497-42-yu-hao.lin@nxp.com>
+Subject: [PATCH 42/43] wifi: nxpwifi: add Makefile and Kconfig files for nxpwifi compilation
+Date: Fri, 21 Jun 2024 15:52:07 +0800
+Message-Id: <20240621075208.513497-43-yu-hao.lin@nxp.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240621075208.513497-1-yu-hao.lin@nxp.com>
 References: <20240621075208.513497-1-yu-hao.lin@nxp.com>
@@ -83,98 +83,221 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PA4PR04MB9638:EE_|VI0PR04MB10464:EE_
-X-MS-Office365-Filtering-Correlation-Id: 49007c16-0564-4ba5-5a25-08dc91c76c72
+X-MS-Office365-Filtering-Correlation-Id: 4c60d90d-022c-4074-cd82-08dc91c76e5f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230037|1800799021|366013|376011|52116011|38350700011;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?P26wOFSNUr/S4E+3uuTNO2RFqL//kvNOWu0cd4zAh2KqWSiBBWdMh+PKnOIW?=
- =?us-ascii?Q?ilAOxtvNdhOP2ZcSeP48IhItChQzy47EPqs+r6TRhNMYc5M8vxzY6vdxwEHC?=
- =?us-ascii?Q?owNvOmTCAj8slRXcpG9HTuZ3PzAVxMt97YLYOxHjZImlaFGbgnU/mwwt6/CX?=
- =?us-ascii?Q?ypHJB3W/IU/aM7nipjpQ2vbyEh7oE65SjNSv3+VMHaeNJegrD5/cgGzqm7Bx?=
- =?us-ascii?Q?sQB3IvfgAMjhg5rRto6qpK+cHRzZZt9l2F1xYIqZxkFaj2u/QCpEBp70YHDC?=
- =?us-ascii?Q?czm0xzgQ3+hhemeCPafnf6tQwiMqvq+2LWLeDhcFRYH3WbKKPX0v4SqpYYSy?=
- =?us-ascii?Q?LjFkjYBW8D2A3woMmfQG+9JaOkjuQ3sJKjwCFhEMKlY1xvyJaFbciWWFQbjH?=
- =?us-ascii?Q?lofLcSdAve7WcixcgRUWJxO0/y0gsvFkuxv7ZGUwTIeokAT6G/IIA69JclKB?=
- =?us-ascii?Q?R+pUcHQfSq34noqWw8zuaRFixigHbIwOvWCoG3wNgI5w4rtg9PJKTTt4cJzT?=
- =?us-ascii?Q?I4GrAVAlhJCOuXnviPmxUDYscumd609XFWaalL3dEnYFhqW5fpQX4FHXWkQk?=
- =?us-ascii?Q?bBXiWf9uq/kKV7dbhLWMHBX3ZSS+uZuaLktaZoM4ZcXzUDEM7+tQREQvhHHb?=
- =?us-ascii?Q?oHNZbHkNO4Rb0FnPZWfq5fsyQI1DeCO4mS/bq4i6XpY5ZFIdnPLceZtEXgii?=
- =?us-ascii?Q?n17Axh6kX/SvAffDkCaNyUyoINkTERajgzrHFNcg+g6JKZZZqNqic5ef74eQ?=
- =?us-ascii?Q?1ZyiLiGSkInhkJAPMPRIlfnr9KNoIUDyujUsOZNHaB0msLj6uSD0JIaO0yy8?=
- =?us-ascii?Q?2jpkswphESGV4btoeoetsn6udxxxYjqM3FIa1sh4J8IQ8pRjir4vWV/vWPtk?=
- =?us-ascii?Q?jYI6UxAjHMQUM6f7TVaWb3uiZ9SeUYt+ABfULl41Iz9txRXHqIz82jK8Ka/l?=
- =?us-ascii?Q?NRh97TWdbHUYLvBLPVoF44UIWa9DsSQ+M8WWohRUkw9h7RoeoM7tflErENDD?=
- =?us-ascii?Q?yKy5RCBWFAIm5IPIAgQNUbevBlAJVyM2NYgi5brTCccSZs1AxDBxNXZ37XTJ?=
- =?us-ascii?Q?bpYXK0pERHXCgbGYsjj2ADBeLpWFrsKmXvv4Q4JVhNgbr2pgvVEnDFSfejGP?=
- =?us-ascii?Q?D8ks/shs6x+tnvm274Oisw+u1SrOpJ3CwOlBDmtHiv7ieHJ0IKpEP/dYY0kV?=
- =?us-ascii?Q?cZUeTfUbUCnFizprgfVzE7MtbyfkBW5zwYSfwxC0HdgPzV5KVl9g+yM0uKxy?=
- =?us-ascii?Q?+RYgfC+PcMEaCJxhMoofFGhA9shMND/a4MrqSXCKrSSbiXH1ol+fpPSIkz0R?=
- =?us-ascii?Q?Pmn4f/cA6rXTvCgl6ddVhbTHvjXCvPAu76HH7sa6q9TKBOaP9RwWtNjUtbkY?=
- =?us-ascii?Q?E2v9HBI=3D?=
+	=?us-ascii?Q?M7QPBl9ThJ3D1H+8Ru3OFFkPTBhJRLgcOaOP8VC7etVyPIZ1f/tL9lmUvO8m?=
+ =?us-ascii?Q?gyWXO8QX4cmZNzvMn7NdeMBdC3ZMlqgWBrcx/BzcLHl5wglWBMQaDmMbyFo+?=
+ =?us-ascii?Q?HEkeIJP7NmaiOI8TWMyeDypdMquHj0+gdLIhcd/r0eTUGC9iCUG0Mwm8C7Ed?=
+ =?us-ascii?Q?BG3zoq+HQWTqnRM3GP/pLZ0MT29qiN7j4umlxfwJDQgFanEs4jEEH7xYM47N?=
+ =?us-ascii?Q?PfiknrRE6SfQckT3ZDO8y9YDvr0Y8Y636Jl6kEcVpKEBq/OeJ6gr+1IR/1qE?=
+ =?us-ascii?Q?WkQm40Ko80oIVMYOIZUvKyphJZ59+bbVQhUggKyD5UjHLlXnSf3KSQOXHjZZ?=
+ =?us-ascii?Q?SM+wPdXhl2Ikba0IBMhVagtekajVOttVRV09lz25/hJoKcK+WQlWZGEw8HJt?=
+ =?us-ascii?Q?ql9pXQoGE31Gx1USm0IVFH0pUJTb6mlw0hf1Z4l9eGMYLjA6pH0njpKaj+H7?=
+ =?us-ascii?Q?Mbou4CEaandPWCeIR4F5nWGfm3MeA7gLzqPwAIDsh5FRzKhRdwDVsCFL1kow?=
+ =?us-ascii?Q?tr4R31P741fl/91El3sauYgXJrqM5FTCClllX6Ul36pte1pj4tmSg1qYPqfw?=
+ =?us-ascii?Q?4FczWIiGawRdfGMsIRKfDX0yqWxvrzJrTPp9KcMbhI8l3hyTnhddstw1WBM3?=
+ =?us-ascii?Q?ACreQ8cR9PMlPTldLdQnk6ON6a/6QAA/SUaXDUBFRHdBEpR7PH2JXIPxzJXx?=
+ =?us-ascii?Q?JQtPT4ZO0NKL1Q03uxCZ/90MZg4NCNbmavF7V20ff04+qBzDAfXLcEXIEvb8?=
+ =?us-ascii?Q?/1aolvroxMSZzYF/h6RY+xOJWthBIuBgPlyEoMWvxFfR5rwu0B9EWFhqImD6?=
+ =?us-ascii?Q?Ii6IjKO2uBiLCxM54ehGPVOd+y59byoDAmykG+J3SFntOK+vIU3PxT735LOV?=
+ =?us-ascii?Q?dPLy6oGoHA/MardkzpKo3OvKG8QRHYvNUxxt10PwBoDeg0FAHdlZG61RFVtt?=
+ =?us-ascii?Q?NM/1HZuH7ixm5X0CE4QTZjQyt7hKIgFp+HeaV3L+rva/YQ5FDqGva+od9udo?=
+ =?us-ascii?Q?0PgpkOR+7ttN8g8qwiZlgocfWoueVHOisPpb8iuW1E65S1lOWuYtej+Ap+FP?=
+ =?us-ascii?Q?Cr18CFWOuKahxe4NZkVlBwK6kzGLSfaLrL+oY8llJEEqXwRGMSJUq5MhtScB?=
+ =?us-ascii?Q?ZiFLj3b3fXtXaWfCxqcQDTaMjW9MMze8OEToBeA5FiQkQEKgo/6MH1iDF8R+?=
+ =?us-ascii?Q?IjBKxH3Bn6o8Zp/FOTpSg+XOUwXxQm8q9cZbLxBGG9VK5FPpJ7EwUKk/gEq/?=
+ =?us-ascii?Q?2d7bkvxG59P6lANCPHaqMI8HnzllO05oKSMa3w+q51V/+GSK/+3tlJUnSou8?=
+ =?us-ascii?Q?q3VA40tWENDEZOtxNgNboAHza8YoxOaSM9bWE92Znab2JdZUqAjPQa4LEkZR?=
+ =?us-ascii?Q?IKRITIU=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(1800799021)(366013)(376011)(52116011)(38350700011);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?B9IX8oTw6tVRTbyuXg4EDaIdECW+4IW75cOehRBXheDU4dyiYBVAUwlxEgKb?=
- =?us-ascii?Q?phdAuKeLCpR0/qVYUxzbC3bcU/QJfP47f4NDwdsPfTjTSt3isJDOWEppw9uE?=
- =?us-ascii?Q?lyRIR9xbT0kQWS9uqcTgVmDFMcZ/7w1IbbvUHSE4BOdi+KiZGOjesCjB1/x8?=
- =?us-ascii?Q?P3/PkXlATp5PkMC65iiDgQI6o31U/HVn958TjaV1YyxnYlP2E9TfMzMXgiyR?=
- =?us-ascii?Q?n6X8MyRq4KkdxcApyJ+1E4RW68tq8hqCCZ1ltm3MclQV4nmLZv7Kk6DuyMv2?=
- =?us-ascii?Q?lBZyFXErjwxKBFle8/iX8+0gZQ7QCCXhkwNjfPebME1Y5cT7+YqywIlp7grr?=
- =?us-ascii?Q?xRfM63qjmVqc5/kfjmt0ZuEqDzPPDWdLqVpTTncBrwK8Ws0JOKdKR5vUWjmK?=
- =?us-ascii?Q?ZESJ6ZiXgmtKJvkamM8u8rSdVntX+ysylcLuomd71/kRUj4WL1AG+lPY3WvJ?=
- =?us-ascii?Q?mEPTKeSOn8P1Ef0A4hUOKu8NM878DI3QK93XpE6dhfK3GP/EXQk9zKq6Zv1b?=
- =?us-ascii?Q?TQAL4/Ih5XvSydtHc70iCI9t/3YG/bySFB6+2xzLLLcJmWpvfcamofu2vwiX?=
- =?us-ascii?Q?9GPjm8jm1lVGPH9Pl/Jg/NgMKEq7ALTVyi3U++pL/NCHidZrBw6Y4s4+uugv?=
- =?us-ascii?Q?0YpJ/n+f3bPFa/NK0DMU8Gc+4Bv+WN6hb3gQyt5kGlU1ce/IUaujAtjB7T8x?=
- =?us-ascii?Q?bWGNJ2YBHAvgiCu/lNJ1X/mzcBhAVIb0N9xyIOoVlfU/+EzqIqbTBvdJDtAG?=
- =?us-ascii?Q?I0WXR9xgfkeb3qYkabupk/GR8uCs8JIjWiH6+CoK179nwyY2nc25HphYtS4J?=
- =?us-ascii?Q?oDYX4NFfcCmBy6RKO0AhVvKSSoi3IfvsmTzO6h2T+4hSsCb3TK0hPznHF2+1?=
- =?us-ascii?Q?gnCHkLt0VMLw88zN+9Hqy34ZnjTg5RjBL+zwbboRTs2g3F8Qtgj3iC9g/yvS?=
- =?us-ascii?Q?/Cj8IliVqJOC3ohIUxYHPQKWTqNSVP/pwIj6G9+jz5UGYM4J0977GWWS7wJf?=
- =?us-ascii?Q?zsNNrNQb/5DaLdwzp/cGsvuMRcFb+NveKhPO5Afa+H0f7euWsKu5peoTND1/?=
- =?us-ascii?Q?BKdCMffvo8RQMb1HKGQpK6chP7RcSvwhwR97tufLYlBpL+md//MxVus0OZXJ?=
- =?us-ascii?Q?KnQ8fdRR1AOjBlZlRTPnj5D7h+YEcP5F61/fw+cNPR6AyyE89Mnlv+j5eOaZ?=
- =?us-ascii?Q?aDi5DOUH9kBUEtcxR8EhD7rSCN0eAZdH15xJ21GvDyDOgxikydbQwbVOfYUH?=
- =?us-ascii?Q?quLd2n9vhFHdCn+DPV+ECjIb6BlbIMQUTw+zpKSroj24cvTFXW/s7qUr4AeR?=
- =?us-ascii?Q?a+ItMInhnAWS+HFhCU6jHN6I+wGtTEDKrqBaHcafxlky0DxGJtl/bXwRS8Ni?=
- =?us-ascii?Q?pEYpCsj1CJuPFDT7ZRxzQRBt5vunc1Y8tfCtWbgR9Jjw4arGkw/+huShdeGt?=
- =?us-ascii?Q?nzo5Tnu5TONBPoS1gVQdaEPC9rEcLGFowUbzzPVKRrMQ8jzPFZ60xJc6V50p?=
- =?us-ascii?Q?PyzyudBTzxw8XRja9+vX5KSGf+Io+jcH1pYFKd5WPDV7n0TAtALgXFtSX6Kb?=
- =?us-ascii?Q?MJSJLxx6s9eQ5UJ5cUMnZynLxuHG2ac3bKLBTeCF?=
+	=?us-ascii?Q?0pU4LyDblX+uZ66zuMv/6GRV1Oo+04PCdTV4R9gQEqrSj06Caf4p0u3w8qaE?=
+ =?us-ascii?Q?HdFF+r40CTTADj67FrBfyUHsoFJyr+BrtbqWIQw4h5tWUwF5czSYcoeKRtKw?=
+ =?us-ascii?Q?t3or/GTxDIvrjyrYs7Qp3HOQAeP2qUWRHscHKaraVkbXDBpSXBGZheZBDB2C?=
+ =?us-ascii?Q?VgUPMgHdFdKHApYtNub3jjvLZOFreA2XwYHTpdmaOTIscwxZQsDIVPH46uOF?=
+ =?us-ascii?Q?PHLy3UzWDcjpjHy4Lja0c2kGgrEBt00O5tTEFmIQEY9KzkQcbewzSGDQ0sKh?=
+ =?us-ascii?Q?UbxfK6qS/PTbARVCBUQ+kYGjRVM4ct7DWw15KYLrZoktI9yzgIbZJDF7DD8+?=
+ =?us-ascii?Q?3CVTyifuL8sDM1VgljXP5IOUknucg+B1Tawg1aANF12F8jY1oUjhhOpKf9pY?=
+ =?us-ascii?Q?P4K2ib++bDcFxxGhBaF1NQEpXt4PPJqJKZkfV9HOdJwTw5aoQ416B9ICX/hC?=
+ =?us-ascii?Q?/jP8Eds/ESYYmq8Di+S5DpjOOZRv1rLChnwrkVzulXNWNI4OzPisYINytVyg?=
+ =?us-ascii?Q?N4JeTwLVOaGSYooSDZ7dwth+mnDAJAB7WKOx/9vlEPHZZsBMtWfd8kr0JMv8?=
+ =?us-ascii?Q?8CzH2SWQUehWO9O/vFZCqR7pxT0+v/0N4pE6W1PGGbdvFwbVm2LWOgM61aMb?=
+ =?us-ascii?Q?zkO9YW6uMwWTIxtHbRCGVUzhDHDq36xlqCdBpOXlS7ZCzdN0ET6xcvyT9cYK?=
+ =?us-ascii?Q?ivhkpz+Ht5VSe0HydDUi7B/ZGeP+Jg0DEd/3510OZUX61FOMmtTC6tmRYGps?=
+ =?us-ascii?Q?WQhMT8tVRQrvOmDExPWm2bdQCFCKcaMIjwyFkJSNnnvfVN5vyiw39EHzLNe1?=
+ =?us-ascii?Q?eRL21FCJVaNk/rYWZOssswZVDwBwGZtlN7MOzkSUYi6fMbczvZrYslXsiH5T?=
+ =?us-ascii?Q?29frKkYF+TVoXzXuvDD+k0ftzo9cDENnTzE3ZRw19pWSaIcI0feKQHQ1E1Af?=
+ =?us-ascii?Q?e8nKpBxMq+XOpUdT5R5ePUuyYYyXgiQNCav+6QkVaFSE7Iz6+YSbf19vs3TF?=
+ =?us-ascii?Q?RjMkUQl6TzZTN2eO6Cm7NIbrYFdxoxE4Plq5DBR1Xpj74kT83afsoP+563hZ?=
+ =?us-ascii?Q?DjJ/xUIhwQwd+U1E9uBdvZwoLqekh4s4+/UR+CXyc2Dqh8yXqYZGokjr0slC?=
+ =?us-ascii?Q?K7+OtEdc3Ddx9IFQYsPQtZsr8JR+zpIidlG+FPhHMuEFkLOV8eEYzfWzKDfv?=
+ =?us-ascii?Q?r7/CQ84Ogk+95t2+DvZ5z7Jsy8U2qyQ2Ppm+umQGIHtowaTQb/xVr70hlzEf?=
+ =?us-ascii?Q?UH69KjZExQXbt4vxuFb08ilDf4caxA8lg8cqKs6BoY8z3kYmDPmp40c74tiz?=
+ =?us-ascii?Q?4nCIRr08W3vzIgqK5VxGVVK5pE+kXtIeqK0SUzvQ3iASR8Wol36iSX816HEK?=
+ =?us-ascii?Q?QoPPsL6fo4z7kcsOjf0CZrNMmKESw88kvEaocK6row8I33A/CGBr96o6WKNG?=
+ =?us-ascii?Q?DZ9qEu3ttJA/aqCFfYYfkOGPwZ+deFxkSLKwyXYKA6lOsi6sCHsN55BmfwGF?=
+ =?us-ascii?Q?Gq0yaV81gBziFEAlhRDoLz4ZiT0oXAZJOCpWJ0Ci4H0dX9Soo/1suU7rN1rr?=
+ =?us-ascii?Q?YGeytvR2ljoqTiVrdmMB/xhnejI/K3n7ykhzsBB8?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 49007c16-0564-4ba5-5a25-08dc91c76c72
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4c60d90d-022c-4074-cd82-08dc91c76e5f
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9638.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2024 07:54:49.0341
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2024 07:54:51.9330
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ZmmWHbVuJchHdgNnqBNNFsMJM3GfLRuH5COmcsyhr6qc9Str/+pIZIvaOZGa+opXv1wOvflqlA/be+cRphV33w==
+X-MS-Exchange-CrossTenant-UserPrincipalName: HY8MAbM9Yvcubvk6yShLbfgHdrvi8U6lka6Q1QQ19c1iK5EsrYCNR+Im6N/7/0EzJ1Qdxgg2WOIItY3Ntvj9dg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10464
 
 Signed-off-by: David Lin <yu-hao.lin@nxp.com>
 ---
- include/linux/mmc/sdio_ids.h | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/Kconfig              |  1 +
+ drivers/net/wireless/Makefile             |  1 +
+ drivers/net/wireless/nxp/Kconfig          | 17 ++++++++++
+ drivers/net/wireless/nxp/Makefile         |  3 ++
+ drivers/net/wireless/nxp/nxpwifi/Kconfig  | 22 +++++++++++++
+ drivers/net/wireless/nxp/nxpwifi/Makefile | 38 +++++++++++++++++++++++
+ 6 files changed, 82 insertions(+)
+ create mode 100644 drivers/net/wireless/nxp/Kconfig
+ create mode 100644 drivers/net/wireless/nxp/Makefile
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/Kconfig
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/Makefile
 
-diff --git a/include/linux/mmc/sdio_ids.h b/include/linux/mmc/sdio_ids.h
-index 7cddfdac2f57..8446841d62ef 100644
---- a/include/linux/mmc/sdio_ids.h
-+++ b/include/linux/mmc/sdio_ids.h
-@@ -115,6 +115,9 @@
- #define SDIO_VENDOR_ID_MICROCHIP_WILC		0x0296
- #define SDIO_DEVICE_ID_MICROCHIP_WILC1000	0x5347
- 
-+#define SDIO_VENDOR_ID_NXP			0x0471
-+#define SDIO_DEVICE_ID_NXP_IW61X		0x0205
+diff --git a/drivers/net/wireless/Kconfig b/drivers/net/wireless/Kconfig
+index c6599594dc99..4d7b81182925 100644
+--- a/drivers/net/wireless/Kconfig
++++ b/drivers/net/wireless/Kconfig
+@@ -27,6 +27,7 @@ source "drivers/net/wireless/intersil/Kconfig"
+ source "drivers/net/wireless/marvell/Kconfig"
+ source "drivers/net/wireless/mediatek/Kconfig"
+ source "drivers/net/wireless/microchip/Kconfig"
++source "drivers/net/wireless/nxp/Kconfig"
+ source "drivers/net/wireless/purelifi/Kconfig"
+ source "drivers/net/wireless/ralink/Kconfig"
+ source "drivers/net/wireless/realtek/Kconfig"
+diff --git a/drivers/net/wireless/Makefile b/drivers/net/wireless/Makefile
+index e1c4141c6004..0c6b3cc719db 100644
+--- a/drivers/net/wireless/Makefile
++++ b/drivers/net/wireless/Makefile
+@@ -12,6 +12,7 @@ obj-$(CONFIG_WLAN_VENDOR_INTERSIL) += intersil/
+ obj-$(CONFIG_WLAN_VENDOR_MARVELL) += marvell/
+ obj-$(CONFIG_WLAN_VENDOR_MEDIATEK) += mediatek/
+ obj-$(CONFIG_WLAN_VENDOR_MICROCHIP) += microchip/
++obj-$(CONFIG_WLAN_VENDOR_NXP) += nxp/
+ obj-$(CONFIG_WLAN_VENDOR_PURELIFI) += purelifi/
+ obj-$(CONFIG_WLAN_VENDOR_QUANTENNA) += quantenna/
+ obj-$(CONFIG_WLAN_VENDOR_RALINK) += ralink/
+diff --git a/drivers/net/wireless/nxp/Kconfig b/drivers/net/wireless/nxp/Kconfig
+new file mode 100644
+index 000000000000..68b32d4536e5
+--- /dev/null
++++ b/drivers/net/wireless/nxp/Kconfig
+@@ -0,0 +1,17 @@
++# SPDX-License-Identifier: GPL-2.0-only
++config WLAN_VENDOR_NXP
++	bool "NXP devices"
++	default y
++	help
++	  If you have a wireless card belonging to this class, say Y.
 +
- #define SDIO_VENDOR_ID_REALTEK			0x024c
- #define SDIO_DEVICE_ID_REALTEK_RTW8723BS	0xb723
- #define SDIO_DEVICE_ID_REALTEK_RTW8821BS	0xb821
++	  Note that the answer to this question doesn't directly affect the
++	  kernel: saying N will just cause the configurator to skip all the
++	  questions about these cards. If you say Y, you will be asked for
++	  your specific card in the following questions.
++
++if WLAN_VENDOR_NXP
++
++source "drivers/net/wireless/nxp/nxpwifi/Kconfig"
++
++endif # WLAN_VENDOR_NXP
+diff --git a/drivers/net/wireless/nxp/Makefile b/drivers/net/wireless/nxp/Makefile
+new file mode 100644
+index 000000000000..27b41a0afdd2
+--- /dev/null
++++ b/drivers/net/wireless/nxp/Makefile
+@@ -0,0 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
++obj-$(CONFIG_NXPWIFI)	+= nxpwifi/
+diff --git a/drivers/net/wireless/nxp/nxpwifi/Kconfig b/drivers/net/wireless/nxp/nxpwifi/Kconfig
+new file mode 100644
+index 000000000000..3637068574b8
+--- /dev/null
++++ b/drivers/net/wireless/nxp/nxpwifi/Kconfig
+@@ -0,0 +1,22 @@
++# SPDX-License-Identifier: GPL-2.0-only
++config NXPWIFI
++	tristate "NXP WiFi Driver"
++	depends on CFG80211
++	help
++	  This adds support for wireless adapters based on NXP
++	  802.11n/ac chipsets.
++
++	  If you choose to build it as a module, it will be called
++	  nxpwifi.
++
++config NXPWIFI_SDIO
++	tristate "NXP WiFi Driver for IW61x"
++	depends on NXPWIFI && MMC
++	select FW_LOADER
++	select WANT_DEV_COREDUMP
++	help
++	  This adds support for wireless adapters based on NXP
++	  IW61x interface.
++
++	  If you choose to build it as a module, it will be called
++	  nxpwifi_sdio.
+diff --git a/drivers/net/wireless/nxp/nxpwifi/Makefile b/drivers/net/wireless/nxp/nxpwifi/Makefile
+new file mode 100644
+index 000000000000..a9e5a528324b
+--- /dev/null
++++ b/drivers/net/wireless/nxp/nxpwifi/Makefile
+@@ -0,0 +1,38 @@
++# SPDX-License-Identifier: GPL-2.0-only
++#
++# Copyright 2011-2020 NXP
++#
++
++
++nxpwifi-y += main.o
++nxpwifi-y += init.o
++nxpwifi-y += cfp.o
++nxpwifi-y += cmdevt.o
++nxpwifi-y += util.o
++nxpwifi-y += txrx.o
++nxpwifi-y += wmm.o
++nxpwifi-y += 11n.o
++nxpwifi-y += 11ac.o
++nxpwifi-y += 11n_aggr.o
++nxpwifi-y += 11n_rxreorder.o
++nxpwifi-y += scan.o
++nxpwifi-y += join.o
++nxpwifi-y += sta_ioctl.o
++nxpwifi-y += sta_cmd.o
++nxpwifi-y += uap_cmd.o
++nxpwifi-y += ie.o
++nxpwifi-y += sta_event.o
++nxpwifi-y += uap_event.o
++nxpwifi-y += sta_tx.o
++nxpwifi-y += sta_rx.o
++nxpwifi-y += uap_txrx.o
++nxpwifi-y += cfg80211.o
++nxpwifi-y += ethtool.o
++nxpwifi-y += 11h.o
++nxpwifi-$(CONFIG_DEBUG_FS) += debugfs.o
++obj-$(CONFIG_NXPWIFI) += nxpwifi.o
++
++nxpwifi_sdio-y += sdio.o
++obj-$(CONFIG_NXPWIFI_SDIO) += nxpwifi_sdio.o
++
++ccflags-y += -D__CHECK_ENDIAN
 -- 
 2.34.1
 
