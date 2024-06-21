@@ -1,123 +1,106 @@
-Return-Path: <linux-wireless+bounces-9445-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9446-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1AA0912E11
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 21:44:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B579D912E15
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 21:46:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C3EB1F25268
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 19:44:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 677CE1F25251
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 19:46:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 213A617B50D;
-	Fri, 21 Jun 2024 19:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B501F13CAA5;
+	Fri, 21 Jun 2024 19:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eZJgdQbm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hyAlmWdi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB23D17B4FE
-	for <linux-wireless@vger.kernel.org>; Fri, 21 Jun 2024 19:43:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9088A13B59F
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Jun 2024 19:46:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718999041; cv=none; b=SB3agcd+7Zx/vkVPOyNBkVMC9cLKcEeDxpknFoXHZjQiBsorflB4+++o+53ZQrnmJbllvpGxAlXqFpFXrVyw86HurHnbvJGU6CbrgAuoFX8EOc40vVJz+gQkOXtBamdEWkxEE5etN1pGXjho4K3tlZRZf9L+A9xBugP+IPNIH1o=
+	t=1718999181; cv=none; b=onYEBNKB816ylaUW+axrXPVfrhaMjky9KrLzxcFN68JKu0RWt6E+/zTBC/spY6/IvM0iUeOJO4u1oEzVIGbM9mlBky3F+1cSmXu4FOjQTjoaF3+hA68PnRRWHsmiRafnq+YtQPk/fu5P0lWnU7b/B7gDWGUA1YyQNYPK7SXfRe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718999041; c=relaxed/simple;
-	bh=FckWlNcKkH86nEpWwvTUlItzowssczEyxh04y6cUrQk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ROpCRtYrPyhH5W9sVtGGMz2QWV98K2cyh6QY2jCdTuQe0wvq/pT+gAq0H2ND6DN2VdVZGUA+ksA9146BcSDhYWIH5aapE3nOYSpOgO8kpciUKi2fjoQu5NjyvvtHgk2464BywfIhYMLi0O+AO+K1/jg+V4IyXpu9UNjLvsiFr14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eZJgdQbm; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-711b1512aeaso1858994a12.3
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Jun 2024 12:43:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718999039; x=1719603839; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QkIb7gf2bHPY6dWL00bChK5hdPR/pt0YWtKvdJeMO1w=;
-        b=eZJgdQbmgG8QABErn3eHs6NgV6U+qFywFRI5mikC+OFIC5ct0+EXXqL1+O/3qWu4ET
-         8n1iBq6/7x9lDbSD2E9Pd9HbghFiXGm860LYdoD6SOBmkSRNR4DMCCbIIU+DVudT+CLN
-         NvX5Pvyiuj6wppXJRuQjQmUgeFRTb8/+o/xHfOj/zNsVDIK5I6nOR8HANSDx9t7DD9ri
-         e7VKZ6Xv80W9BnwmGMgxLge0CVnrItEj8WRKe4sYFVxF+3TjRdsRWuOqgrMy2LJLJa5Y
-         /mtGwrxRTlGvnukZh/1/5Q1dmzYJqo2bxV16Y0yqbaNziBOsR2KXpnri2ZRiA/wq622a
-         uaAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718999039; x=1719603839;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QkIb7gf2bHPY6dWL00bChK5hdPR/pt0YWtKvdJeMO1w=;
-        b=EaFz5xSYUzn3pL88kEBFK13NcnlpHKdfxnHRIUzO1T/uLBYkBn9txSpCXQW92XLeHd
-         i1CnaUnZ9osDq9S7yX7yaMFik6zGN1PFCS2YKfZbmPattZVE8QlR++7TWi7jBzcLD/WM
-         RDwyPWeouxpLEQlK3QzVkTg6VB5BL0Jhffa8mU/4nmLmqBN1kzF7G+8bx2MtmEtyWxjg
-         Rtlr3A2XJY7D6jK+enAdHGZCCy0a3CbRhqVzBf2kk8OWCbUKHaSh18GxRlotJ684gVsD
-         +qMCtlhYQ9r4d7C+25ZusxdWmMEBBcO7W8ab1QOHQ6lBx3bmVOx0JtuIfhUPrRb4RKBf
-         dFCA==
-X-Forwarded-Encrypted: i=1; AJvYcCWPUI/n2An/cGApGAvtMPA31slWNLXpU4UXso+jnyxYtBz9Uu0ihBwnL+AOu7UpFfmvRX2DQRJgl1+t0ieJioPTeaKNKzHcdxaO9b8onAw=
-X-Gm-Message-State: AOJu0YzKAPb4YpsSp/l2zOO05DqvIrdNjlneNLUh9Pj+4XbCOQJWFgJn
-	Y9ye4R7eZRs4ryvb481+fjE1l9KJK+4PRTrWbYUmUE9NbB3h8c6KuV0GjHQe3hu3nTBGoF7byMC
-	a9QhWwtZnuan+FNHfM7l/pc8VfCE=
-X-Google-Smtp-Source: AGHT+IG/VHNVGO8lR86yTQZFauMxfnJ6vv1yrqpGRdYmFybn/jp3wU2ZU3njC7MVpJ6AVq5rCdQRmUr7DWOzhI/1Isk=
-X-Received: by 2002:a17:90a:4a17:b0:2c8:893:2c1b with SMTP id
- 98e67ed59e1d1-2c808932c47mr4517482a91.21.1718999039034; Fri, 21 Jun 2024
- 12:43:59 -0700 (PDT)
+	s=arc-20240116; t=1718999181; c=relaxed/simple;
+	bh=C3SIMqwONzYK1bUW0NsLIvelgHUVmx8PUbQFb9azWgY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q7kwS75lpf9LmgmzCXBpJYEaYms9/2k1Sh4nV635yWKiGYbcLlw+ozXz5edSreTPums+aaKakJ49sJ49+OmFYYk/AUUTfAPM+oA3zhPmhjdGfllbv4pEOMHDp1zzhr1Agxv9NnjioFMkU/pjxOeEEZOItGhS0qvIuzB6G+ZheQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hyAlmWdi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BB6AC2BBFC;
+	Fri, 21 Jun 2024 19:46:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718999181;
+	bh=C3SIMqwONzYK1bUW0NsLIvelgHUVmx8PUbQFb9azWgY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hyAlmWdiwSlArMQwwj6AgWEljbMzqR1tszAeD7cfwBwAuc+fWbEXH7xU60Gzs1UyR
+	 6K/Bd3JK5x9HnYWf+ohbbehb1lBkONGYBDDtIjSRLcmoUruD9lymRlYXDUckkYEFKo
+	 2ymx4GKeiJT1TqyDfj26AmWmapnAlrP1mt/+OKvWIzELOELNaLpN5OL+HFooo0z7E0
+	 XOo6PxK7lIv5oSmyYDzeL545k9+is43kXXbPuiSL6VZaOAThGnCCPuD9/9bxZs85sU
+	 EuCd0CvNBxHbYerh9/y7DRJLzKjHrG1zrFbj/ixPmQ/PUIjbeMXFUnmGPn7cxSA7XR
+	 CU3sdI+0yJyew==
+Date: Fri, 21 Jun 2024 12:46:20 -0700
+From: Kees Cook <kees@kernel.org>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Koen Vandeputte <koen.vandeputte@citymesh.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	ath10k@lists.infradead.org,
+	linux-wireless <linux-wireless@vger.kernel.org>
+Subject: Re: ieee80211.h virtual_map splat
+Message-ID: <202406211241.3E23349@keescook>
+References: <CAPh3n83zb1PwFBFijJKChBqY95zzpYh=2iPf8tmh=YTS6e3xPw@mail.gmail.com>
+ <efc8cdc0853a921ce4dad1a36b084608fe0b01a8.camel@sipsolutions.net>
+ <CAPh3n834eg1_+gmh_LMTQnc95aLBWNVOANjZsMap=_szOY2nHQ@mail.gmail.com>
+ <83fcb33e3fadb457466126255297899fbc4186f8.camel@sipsolutions.net>
+ <CAPh3n80PF4NULjKJVVMEiGuuJZhLQszYSTCv+f6e9LfVJbKesw@mail.gmail.com>
+ <d834ff59-f331-4eb4-91c6-e76eb48780d8@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240617122609.349582-1-arend.vanspriel@broadcom.com> <1903bdacb28.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <1903bdacb28.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-From: KeithG <ys3al35l@gmail.com>
-Date: Fri, 21 Jun 2024 14:43:47 -0500
-Message-ID: <CAG17S_MPxPms32e=s8szVOBHQk=tikN5sjO_pa8r1as0V2Q5ZA@mail.gmail.com>
-Subject: Re: [PATCH] wifi: brcmsmac: advertise MFP_CAPABLE to enable WPA3
-To: Arend Van Spriel <arend.vanspriel@broadcom.com>
-Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org, 
-	brcm80211@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <d834ff59-f331-4eb4-91c6-e76eb48780d8@quicinc.com>
 
-On Fri, Jun 21, 2024 at 12:32=E2=80=AFPM Arend Van Spriel
-<arend.vanspriel@broadcom.com> wrote:
->
-> On June 17, 2024 2:26:25 PM Arend van Spriel <arend.vanspriel@broadcom.co=
-m>
-> wrote:
->
-> > After being asked about support for WPA3 for BCM43224 chipset it
-> > was found that all it takes is setting the MFP_CAPABLE flag and
-> > mac80211 will take care of all that is needed [1].
-> >
-> > [1]
-> > https://lore.kernel.org/linux-wireless/20200526155909.5807-2-Larry.Fing=
-er@lwfinger.net/
->
-> Tested-by: Reijer Boekhoff <reijerboekhoff@protonmail.com>
-> > Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> > ---
-> > drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c | 1 +
-> > 1 file changed, 1 insertion(+)
->
-I think I get what it is supposed to do, but am unsure of how to do it.
+On Fri, Jun 21, 2024 at 07:25:08AM -0700, Jeff Johnson wrote:
+> On 6/21/2024 3:31 AM, Koen Vandeputte wrote:
+> > On Fri, Jun 21, 2024 at 11:30 AM Johannes Berg
+> > <johannes@sipsolutions.net> wrote:
+> >>
+> >>
+> >>> will this one get backported also?
+> >>
+> >> Why? It's not even a bug.
+> >>
+> >> johannes
+> > 
+> > Because without this patch, it produces a splat on kernel 6.6 (which
+> > is an LTS) at least ? :-)
+> 
+> @Kees, have you been backporting all your flexible array changes?
 
-the modules referred to in that link (b43 or ieee80211) do not appear
-to be loaded:
-# lsmod | grep 802
-8021q                  49152  0
-garp                   49152  1 8021q
-nf_conntrack          180224  1 nf_nat
-cfg80211             1032192  1 brcmfmac
-rfkill                 49152  7 bluetooth,cfg80211
+I haven't done anything explicit for them. This is especially true for
+netdev where maintainers have asked that contributors not include "Cc:
+stable" tags, as they want to evaluate for themselves whether patches
+should go to stable or not.
 
-How do I set this up to work on RPiOS?
+> Or are you suggesting folks disable FORTIFY_SOURCE (is that the controlling
+> config?)
 
-Regards,
+I do not want people turning off FORTIFY_SOURCE. By design, this is
+a warning only -- the memcpy() still works like it did before. The
+goal was to catch any of these stragglers going forward, not to break
+existing code. I expect that in a few more years it can be flipped to
+warn-and-block for these kinds of detected memcpy()s, but for now there
+should not be any behavioral changes seen besides the WARN appearing.
 
-Keith
+-Kees
+
+-- 
+Kees Cook
 
