@@ -1,124 +1,123 @@
-Return-Path: <linux-wireless+bounces-9444-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9445-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82AAC912DC1
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 21:17:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1AA0912E11
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 21:44:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CEEC1F22855
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 19:17:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C3EB1F25268
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 19:44:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 588E5168482;
-	Fri, 21 Jun 2024 19:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 213A617B50D;
+	Fri, 21 Jun 2024 19:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ECAbtvCH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eZJgdQbm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98FCA4644C
-	for <linux-wireless@vger.kernel.org>; Fri, 21 Jun 2024 19:17:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB23D17B4FE
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Jun 2024 19:43:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718997430; cv=none; b=uk7eaPqVjxjWX11AbNb8uCnZM9ZLtXhRmDccQSaaAdIfQzLylsIQigI6pJw/2x4MvRXmJLFNz3wc9njfgVzwMUFBzmvB5+zKyyeAFjmA+ZvcFcYN1WSjjtEtQlMX1+H7bv9hHj3gJMPfkhEXsTa135Qc+nR1u6LQrMOgyxd6EkY=
+	t=1718999041; cv=none; b=SB3agcd+7Zx/vkVPOyNBkVMC9cLKcEeDxpknFoXHZjQiBsorflB4+++o+53ZQrnmJbllvpGxAlXqFpFXrVyw86HurHnbvJGU6CbrgAuoFX8EOc40vVJz+gQkOXtBamdEWkxEE5etN1pGXjho4K3tlZRZf9L+A9xBugP+IPNIH1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718997430; c=relaxed/simple;
-	bh=7J5AIRkxOti8YYAHsz/gEyTkLUKSwh4/mHoyvBWhX2A=;
+	s=arc-20240116; t=1718999041; c=relaxed/simple;
+	bh=FckWlNcKkH86nEpWwvTUlItzowssczEyxh04y6cUrQk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KlIeYKznXrT2TWBP3o24Ffps+8OZZt9hFFGhAXgBWhiELp+7Bbv7RLO+B2P7E2ePughZ5IkPPK9Jz2GNLfEkiviMWk2NWMY9AUnC9uuxPKzYb3TpCarkZfMn8MPrA9+dH8+YFGPRD0/luKS0SjkpMTTgWjrCrOtNYHb3oTHaedU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ECAbtvCH; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-57d06101d76so2519231a12.3
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Jun 2024 12:17:08 -0700 (PDT)
+	 To:Cc:Content-Type; b=ROpCRtYrPyhH5W9sVtGGMz2QWV98K2cyh6QY2jCdTuQe0wvq/pT+gAq0H2ND6DN2VdVZGUA+ksA9146BcSDhYWIH5aapE3nOYSpOgO8kpciUKi2fjoQu5NjyvvtHgk2464BywfIhYMLi0O+AO+K1/jg+V4IyXpu9UNjLvsiFr14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eZJgdQbm; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-711b1512aeaso1858994a12.3
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Jun 2024 12:43:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1718997426; x=1719602226; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1718999039; x=1719603839; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7J5AIRkxOti8YYAHsz/gEyTkLUKSwh4/mHoyvBWhX2A=;
-        b=ECAbtvCHGsnw/7UdTSrKimVG62XhPwynNC/c44Jg0ctt5iFvTjFEJ+MY2XJiNMeVc/
-         a1p9hPwZZV1jufs5evXfKGO3GGJiDciWygJBcvWFsrOO3KhM4tnpn6KQUkNVqGlFN9JO
-         3jdprApHcy7eS4+77syeqiLz8FBT3Aa8jTLGY=
+        bh=QkIb7gf2bHPY6dWL00bChK5hdPR/pt0YWtKvdJeMO1w=;
+        b=eZJgdQbmgG8QABErn3eHs6NgV6U+qFywFRI5mikC+OFIC5ct0+EXXqL1+O/3qWu4ET
+         8n1iBq6/7x9lDbSD2E9Pd9HbghFiXGm860LYdoD6SOBmkSRNR4DMCCbIIU+DVudT+CLN
+         NvX5Pvyiuj6wppXJRuQjQmUgeFRTb8/+o/xHfOj/zNsVDIK5I6nOR8HANSDx9t7DD9ri
+         e7VKZ6Xv80W9BnwmGMgxLge0CVnrItEj8WRKe4sYFVxF+3TjRdsRWuOqgrMy2LJLJa5Y
+         /mtGwrxRTlGvnukZh/1/5Q1dmzYJqo2bxV16Y0yqbaNziBOsR2KXpnri2ZRiA/wq622a
+         uaAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718997426; x=1719602226;
+        d=1e100.net; s=20230601; t=1718999039; x=1719603839;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7J5AIRkxOti8YYAHsz/gEyTkLUKSwh4/mHoyvBWhX2A=;
-        b=AfeyULtCF6SeRmrYHc8+5rajQXCqGRWfE0APJgaBkXFmZRWadrX/OXB2dF7unxK3L2
-         JQ9C5XPsKLLTRSaMTesdOG1HcIhdb4Q5vzh3oMHRII5Vydu4/JUSnaDdauZrPf7OmVuK
-         x4RDok3i4WVOXxCG6GvQb2/YTevxrrEuV6ssGI1BpgQQ5yfzHKFWPY44mSYBQUoFCDmh
-         uVGxFL54TZObj51PN5Dg/GFCoS1+qxb5tHHOQj3tajz1DSVbegOVS1r2VpxNzwXKKcIw
-         Jv6DQQn4WL6SrxAyXJaQNW9WWyNJR2X31bt8VcRGoIJ9ZK5ojqaH5VmZXjC7ZXSPqK0Q
-         RFRQ==
-X-Gm-Message-State: AOJu0YwKjZaffCTmJEdkV2tdEO6Wt/wrWVqQj9pXWfRttE9AO5dd6n/7
-	RPA7OFZufd6l7/QU42X0hID1W2oLApTEUjBkvat8XqUq1PxvzbDpqN5RzX1D2sVpys3AvtW3yRI
-	=
-X-Google-Smtp-Source: AGHT+IFp4QA2UjaBgFRoLFF0j0RVYvUZbh3tkdqZiBXoBW5R9+CsziRwuMUI4YDfTEgmVMvjYoQhfw==
-X-Received: by 2002:a17:907:8b90:b0:a6f:709e:5248 with SMTP id a640c23a62f3a-a6fab77188dmr528440366b.54.1718997426472;
-        Fri, 21 Jun 2024 12:17:06 -0700 (PDT)
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com. [209.85.218.52])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6fcf48b2b5sm112088766b.84.2024.06.21.12.17.05
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Jun 2024 12:17:05 -0700 (PDT)
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a6265d3ba8fso251282466b.0
-        for <linux-wireless@vger.kernel.org>; Fri, 21 Jun 2024 12:17:05 -0700 (PDT)
-X-Received: by 2002:a17:906:1f4f:b0:a6f:8265:8f2 with SMTP id
- a640c23a62f3a-a6fab642399mr452321666b.37.1718997424907; Fri, 21 Jun 2024
- 12:17:04 -0700 (PDT)
+        bh=QkIb7gf2bHPY6dWL00bChK5hdPR/pt0YWtKvdJeMO1w=;
+        b=EaFz5xSYUzn3pL88kEBFK13NcnlpHKdfxnHRIUzO1T/uLBYkBn9txSpCXQW92XLeHd
+         i1CnaUnZ9osDq9S7yX7yaMFik6zGN1PFCS2YKfZbmPattZVE8QlR++7TWi7jBzcLD/WM
+         RDwyPWeouxpLEQlK3QzVkTg6VB5BL0Jhffa8mU/4nmLmqBN1kzF7G+8bx2MtmEtyWxjg
+         Rtlr3A2XJY7D6jK+enAdHGZCCy0a3CbRhqVzBf2kk8OWCbUKHaSh18GxRlotJ684gVsD
+         +qMCtlhYQ9r4d7C+25ZusxdWmMEBBcO7W8ab1QOHQ6lBx3bmVOx0JtuIfhUPrRb4RKBf
+         dFCA==
+X-Forwarded-Encrypted: i=1; AJvYcCWPUI/n2An/cGApGAvtMPA31slWNLXpU4UXso+jnyxYtBz9Uu0ihBwnL+AOu7UpFfmvRX2DQRJgl1+t0ieJioPTeaKNKzHcdxaO9b8onAw=
+X-Gm-Message-State: AOJu0YzKAPb4YpsSp/l2zOO05DqvIrdNjlneNLUh9Pj+4XbCOQJWFgJn
+	Y9ye4R7eZRs4ryvb481+fjE1l9KJK+4PRTrWbYUmUE9NbB3h8c6KuV0GjHQe3hu3nTBGoF7byMC
+	a9QhWwtZnuan+FNHfM7l/pc8VfCE=
+X-Google-Smtp-Source: AGHT+IG/VHNVGO8lR86yTQZFauMxfnJ6vv1yrqpGRdYmFybn/jp3wU2ZU3njC7MVpJ6AVq5rCdQRmUr7DWOzhI/1Isk=
+X-Received: by 2002:a17:90a:4a17:b0:2c8:893:2c1b with SMTP id
+ 98e67ed59e1d1-2c808932c47mr4517482a91.21.1718999039034; Fri, 21 Jun 2024
+ 12:43:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240530130156.1651174-1-s.hauer@pengutronix.de>
- <ZnRvZMQJUr4APwUU@google.com> <ZnU-STTaTWjHViwW@pengutronix.de>
-In-Reply-To: <ZnU-STTaTWjHViwW@pengutronix.de>
-From: Brian Norris <briannorris@chromium.org>
-Date: Fri, 21 Jun 2024 12:16:50 -0700
-X-Gmail-Original-Message-ID: <CA+ASDXMSyVbPrTz4Vag-4_yi7080bBtkwBgOLFYOTmwb=NDvNQ@mail.gmail.com>
-Message-ID: <CA+ASDXMSyVbPrTz4Vag-4_yi7080bBtkwBgOLFYOTmwb=NDvNQ@mail.gmail.com>
-Subject: Re: [PATCH] wifi: mwifiex: increase max_num_akm_suites
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Francesco Dolcini <francesco@dolcini.it>, Kalle Valo <kvalo@kernel.org>, David Lin <yu-hao.lin@nxp.com>
+References: <20240617122609.349582-1-arend.vanspriel@broadcom.com> <1903bdacb28.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <1903bdacb28.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+From: KeithG <ys3al35l@gmail.com>
+Date: Fri, 21 Jun 2024 14:43:47 -0500
+Message-ID: <CAG17S_MPxPms32e=s8szVOBHQk=tikN5sjO_pa8r1as0V2Q5ZA@mail.gmail.com>
+Subject: Re: [PATCH] wifi: brcmsmac: advertise MFP_CAPABLE to enable WPA3
+To: Arend Van Spriel <arend.vanspriel@broadcom.com>
+Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org, 
+	brcm80211@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 21, 2024 at 1:48=E2=80=AFAM Sascha Hauer <s.hauer@pengutronix.d=
-e> wrote:
-> On Thu, Jun 20, 2024 at 11:05:24AM -0700, Brian Norris wrote:
-> > Possibly dumb question: what's unique about mwifiex here? Everything yo=
-u
-> > describe above sounds applicable to all drivers, IIUC, and I don't see
-> > any other driver that touches max_num_akm_suites.
+On Fri, Jun 21, 2024 at 12:32=E2=80=AFPM Arend Van Spriel
+<arend.vanspriel@broadcom.com> wrote:
 >
-> I asked myself the same question and I don't have an answer to it. To me
-> it looks like the number of akm suites is limited by the akm_suites array
-> size which is CFG80211_MAX_NUM_AKM_SUITES which is 10 and that could be
-> used for all drivers.
+> On June 17, 2024 2:26:25 PM Arend van Spriel <arend.vanspriel@broadcom.co=
+m>
+> wrote:
+>
+> > After being asked about support for WPA3 for BCM43224 chipset it
+> > was found that all it takes is setting the MFP_CAPABLE flag and
+> > mac80211 will take care of all that is needed [1].
+> >
+> > [1]
+> > https://lore.kernel.org/linux-wireless/20200526155909.5807-2-Larry.Fing=
+er@lwfinger.net/
+>
+> Tested-by: Reijer Boekhoff <reijerboekhoff@protonmail.com>
+> > Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> > ---
+> > drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c | 1 +
+> > 1 file changed, 1 insertion(+)
+>
+I think I get what it is supposed to do, but am unsure of how to do it.
 
-Yeah, I can't figure out a great answer either. Although I did find that
-(1) it's theoretically possible some driver could be confused by
-larger indices (which should be easy enough to audit...) and
-(2) there's at least 1 borderline example, in wilc1000 --
-wilc_join_bss_param is only prepared to handle up to 3 akm_suites. But
-it also has a (magic number) bound of 3, so it will silently drop the
-4th, 5th, ... suite.
+the modules referred to in that link (b43 or ieee80211) do not appear
+to be loaded:
+# lsmod | grep 802
+8021q                  49152  0
+garp                   49152  1 8021q
+nf_conntrack          180224  1 nf_nat
+cfg80211             1032192  1 brcmfmac
+rfkill                 49152  7 bluetooth,cfg80211
 
-So maybe it's a reasonable start to have drivers modify this as
-needed. If we later figure out all drivers should be OK with an
-increased limit, we can unify that later.
+How do I set this up to work on RPiOS?
 
-> max_num_akm_suites is introduced to be driver specific and so I changed
-> it only for the driver I am currently interested in.
+Regards,
 
-Sure. Seems fine to me.
-
-Acked-by: Brian Norris <briannorris@chromium.org>
+Keith
 
