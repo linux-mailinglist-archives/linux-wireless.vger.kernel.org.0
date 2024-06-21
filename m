@@ -1,61 +1,61 @@
-Return-Path: <linux-wireless+bounces-9390-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9391-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1F02911D9D
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 10:00:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAB8E911D9F
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 10:00:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A18752844DB
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 08:00:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29B5D1F22321
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 08:00:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B686416E873;
-	Fri, 21 Jun 2024 07:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48817175540;
+	Fri, 21 Jun 2024 07:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="Dl4qd9Oy"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="ow6G/UHe"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2046.outbound.protection.outlook.com [40.107.7.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25221741F6;
-	Fri, 21 Jun 2024 07:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB87174EE4;
+	Fri, 21 Jun 2024 07:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.7.46
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718956453; cv=fail; b=cmf9MWk6Z2uoBqsFBKp9wj/rFGhCYDEeToVAmUcn5USTXcMIJWvMRpjHD91/CfzY6Ur+96LpV/NVf6X/K6If7J2x9azH9sz2suRop1O+uE+ln6XZriumE6++QarkUw4/gK+UK/3oLjxOin+T43+JVAivWNaBvsUUi8JNL7M+7xI=
+	t=1718956456; cv=fail; b=IHaZbm7oa+oEI1PrJEvKzVGTyNaH39X6TIW/2kaElZLChF2RX6C9FAxL+ZpXQoQO5eAK1wczvb01q/M0epNbJWRcLWpTWanuNs75U+SYuV2Tt3xJym9d3ninaj3Otpmtj1c2Z6nIHeLLd0+KJls16pRpk3fROeiu/b4N4dGQ4aY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718956453; c=relaxed/simple;
-	bh=P/mcp5L22eMSTulZxW7iFABO0Fr0mWuczcx9Kc4oej8=;
+	s=arc-20240116; t=1718956456; c=relaxed/simple;
+	bh=yCMM0VSY+qxTwI8nHoyn33atrcSTD4iIeI15LJsQUOc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=sCCSsJoGK4DMaFhR19CplXw7KvwxrK2++iLpnIuL4W/TmmQ4aldJonhe7DTajZja9XoK61Zjf42cfG7NwhI1SsTjfGBF7N1zp9x3iA/XE5idUDzpkVavw/ftGmyyjPKrwGTADbV0eEVYYyuK0ytAmra27KxIP03FXkjU+Co7kf8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=Dl4qd9Oy; arc=fail smtp.client-ip=40.107.7.46
+	 Content-Type:MIME-Version; b=uQE3ZpLh4dl3lk+uWjUa9vDMC9NMsfUVZ/uL7ZhcISOhVS8ocb25VVzGZ2glBHQ2MpHWGREYLMcPMvlf8xXaYKZxV0sqmJIqf7FjPeHnDmEMmjfZ8OJ0bp5KaVdjDidqn4+iJM05aURmfTVC2l2JSHiXUnm+7F0867WeazvLIA0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=ow6G/UHe; arc=fail smtp.client-ip=40.107.7.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RKqPC5fJlIAZ3Wk/q6qj04R3vQZ2C0GlPAJgAEZuQntU/6XN86AuR0SvWJ1mZGxuo/n7knsF9JYxnZFBGMDGliVtgFOuH2ycenaK2cCFwGQqjIDTkLSvustCqY5bklRG00a+DxWdvngd2/2SB1K3Rfwq0QmIvETK40M+EEa+63qD7yXaZpgtc/weThUBXGuBCTJfLreRMYAvWy8dqRSs693H3M/G+wRgrfdqCOBAeqmMvdUVBfG1PMyqi5Ybi+iAKvvJcSJGZiRQK+tvuMyVEgCYTg/Ot1qX4Zka2VaL74UBqt3t61MhFpbNOgWMDwOqenAeu1DJWhRSLs3droXw1A==
+ b=FQhasRKcTpT1h2VKFMLMuvaI7ozkbExflCvV9BqmdGYmLJWSj9POLWP/0Ygno8JVWoIhqwJ9Ebv59ZWwgIbAIBAVX07mU9zor1l5BNc+OjC6ErM8sacT2xGKTt4SzmB2hPGr4oPqnQH0c0Ay/D/Oyof7hUxXBT0agn9xbp5njY2EbHbaBH6YI8NR3AWCh2YKPjQoov42BR2ZLZdjXEfq/MV7SDCtk+lQmlOU1DrzC/sE57RjVEki7tf24MUryoysT+U0zgiTKOsp2Cc49wsDHBCQczg2gJECl0k5jgAoJ12I6cnUEVidwT1A3WQ/70mh0/50cUvs4xFWNcUXFnfUxQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vszfFQY6HkZ2cM0O92DsJHkJ6U5K1ANyHXF2RgX4OFQ=;
- b=hcIb0jRE22xQCWbQm1tG9hkJn1bDw/BaaKclJXZ25OF5BR7MKdFSbu/oMqi2KMqtg0gTsfD9cTpqRbM70zGqIduzNs0cRp+9MJUgzw8P09aAO6rWOIBuZ6y2Bz/5iwIZoTfJJiC3MQnwuLjyJoCU7hsq5FkLnv5GEye0QNdi5fCXt+bx+NT+T/DHaFxOEPDl+R0nQI3JfK75/LKC7qKDyKKnfJjHA5aK9zdmS35FVoToqU506ZBOnGxErjahF/gnbuUfVLPACFWYRj/7VSWBR6aDZfJLQEL+Yr4aN53NUyWicyOh1+nKwMrBhSO7wUcZSBzAxaw9RsCFjcE8RI9cUw==
+ bh=Kwy7f9r3/pe4RXzAg9uU+I6huax8c3zE+iIqAvtFt7M=;
+ b=Y7lLAb9PWpBX+7ZFacpaAw5I2YZ0gAgqHAUokUmaQLW3/vcUBvMf2eOedxZp0U2mQoZMDhl1c3B8XwlwwGekYnQRealIwSWylgtBRU36HRvYys6O+al6w6fN+n7cNjND2uhkmLNSdGpxFm2snnazHIXzAfWhtd5hTUCyrasmvUYMYB3iYQI50wTqUSz8YGgP+UXwB6R2cdOiTdiwgrlowqrLzNrLJIIS6UTYNL7DFFDFHsfOK1FMz543YXcxjQ26b/nYKwDRhcWABb0QJOjXOuER66QPylHoAd2fnYz2Wy5Ka5VlQXE2kg+3P921q/W/Dm9W//TTnvOq41Ux73q54g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vszfFQY6HkZ2cM0O92DsJHkJ6U5K1ANyHXF2RgX4OFQ=;
- b=Dl4qd9OyOvR91Ah5CYZwg66aa4LQMDYOe7o9j5WLkbvQlCGXdOUKJRr21lr3d9W/OlpNHsZ0i6/u9zRFpG29onRKPY/HQCjg5NpxZAr91B9thVpTg6x3mlIZxEzZahIoU5xT1Wj81ETvyGqQmRescckdUzT2aIBbFODIA3LH8ak=
+ bh=Kwy7f9r3/pe4RXzAg9uU+I6huax8c3zE+iIqAvtFt7M=;
+ b=ow6G/UHesKOMoLq3ZrQRlTZlN4ZM4xDbOx2H4sEBv0cLthBAyz5whVQ3XugD5rnzUsCRq4RCfJxe2CIbcthoZXwWjvOyCJrc3zX1fjvwYna31Dr+vD7xftivD2r5aV9C0l+9PF6kyzmEhRmHGiWKU3IETN4txyjr9rrkpgfx+4I=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PA4PR04MB9638.eurprd04.prod.outlook.com (2603:10a6:102:273::20)
  by AS8PR04MB9190.eurprd04.prod.outlook.com (2603:10a6:20b:44d::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.22; Fri, 21 Jun
- 2024 07:54:01 +0000
+ 2024 07:54:05 +0000
 Received: from PA4PR04MB9638.eurprd04.prod.outlook.com
  ([fe80::f950:3bb6:6848:2257]) by PA4PR04MB9638.eurprd04.prod.outlook.com
  ([fe80::f950:3bb6:6848:2257%4]) with mapi id 15.20.7677.030; Fri, 21 Jun 2024
- 07:54:01 +0000
+ 07:54:05 +0000
 From: David Lin <yu-hao.lin@nxp.com>
 To: linux-wireless@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -64,9 +64,9 @@ Cc: linux-kernel@vger.kernel.org,
 	francesco@dolcini.it,
 	tsung-hsien.hsieh@nxp.com,
 	David Lin <yu-hao.lin@nxp.com>
-Subject: [PATCH 26/43] wifi: nxpwifi: add sdio.c
-Date: Fri, 21 Jun 2024 15:51:51 +0800
-Message-Id: <20240621075208.513497-27-yu-hao.lin@nxp.com>
+Subject: [PATCH 27/43] wifi: nxpwifi: add sdio.h
+Date: Fri, 21 Jun 2024 15:51:52 +0800
+Message-Id: <20240621075208.513497-28-yu-hao.lin@nxp.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240621075208.513497-1-yu-hao.lin@nxp.com>
 References: <20240621075208.513497-1-yu-hao.lin@nxp.com>
@@ -83,2737 +83,431 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PA4PR04MB9638:EE_|AS8PR04MB9190:EE_
-X-MS-Office365-Filtering-Correlation-Id: 793aa944-07f5-46fc-76b5-08dc91c7500c
+X-MS-Office365-Filtering-Correlation-Id: abeac904-8c57-46e4-ad31-08dc91c75246
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230037|1800799021|52116011|376011|366013|38350700011;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?n13wZDTgMULy1WeseyjyAUrNWSyjbT8BWg/dfC2TM5+USYFi7uS27flT4AEQ?=
- =?us-ascii?Q?vQBoEoxiqTMdAr9QSLNRW6V+tBBfj/y9bqozhqzkITllGr00cWKwIJcExZIs?=
- =?us-ascii?Q?bHJCZ4704PF3OcRwy/dO+SCLHtYIRabQPu3lAftzfgQPdU3eP2iwQBn5PN2s?=
- =?us-ascii?Q?liHIiejFZFDCvOvg5HoLjrwZ6kpQDsF+KOoeFxViisgAzcbPoNznJvaWzwl0?=
- =?us-ascii?Q?fb0rEJy2nW+WKSfkUxM4mswZlQS7ujcHGigfuH6dGmKkC7lTYRW9OqjxJLtf?=
- =?us-ascii?Q?RxWsLj0SvEcrjGhOPzx/1yc5h8i5en37EjQTu+I6xANUsuLp11hGUgEdao9T?=
- =?us-ascii?Q?oX7Ylyk5+zwKBp429LqLIM7DM4Cw6Z+xPAenpNk68rIsj8YCHdFMxyF0fS3o?=
- =?us-ascii?Q?c7Ye79NBHsK9zJdPiW0i+ByVnFWqf04YogVw20vDFhSdJqMECYBwH5Gy0lB1?=
- =?us-ascii?Q?WQtHDg1eE9R2Lm/VWtqDWGIMuHtYHIpglbtJ6zWn/RQ9qAbncJFjEDX2w2tM?=
- =?us-ascii?Q?IoHZTPI6a48cWHeKk7w4zohZp2m8LGKmgmzYW+B2nM6iegmcCbcvuwNrbObW?=
- =?us-ascii?Q?Nx3zTzkRHEe9r91+vl8whYACdYEnKtbLQ5EhLRYJXsKjywtfODfDaeY6Xtaq?=
- =?us-ascii?Q?C/ZhuMwXO1UvKeZ3dVJTSmpvqFMfqfornZNKippXz+jqFkwIloG47YKrUW9u?=
- =?us-ascii?Q?bUHE63kJctKH9RgDob6JN5lMRjs3GcJ8p0Ct1bhKbISmkgPB1RDlwsiietUQ?=
- =?us-ascii?Q?3eNTi87eI1R8hB4Boq/sPKObiB3X54MLIOBj/EiRS0VHMDX537Xts5CCuO1c?=
- =?us-ascii?Q?Qhb6YZQlL+ZgS5aE4V1UdjDz4eWsBKmeUmAUiBrOxML4l0puGIxC3QUts2rt?=
- =?us-ascii?Q?JbhchPRT0md3ZB16T92JyRyqV2Ni82U1bw+W+sYTq93Tq3tiYePSbLT01dH1?=
- =?us-ascii?Q?JmC4sfCXB7Ej2RI0N1ioB7P/L/dJt4Or5bh9xADuahahsHAqiVkc9wVfO852?=
- =?us-ascii?Q?g9ch5mo9pEM5wP4sRZSeeGG3KQKDXxs44TtJEF1BibnCWcqJNDfZin75KISi?=
- =?us-ascii?Q?cDADXdfJO0sM/wAOvUvYmEarHYsfk5dZFvmzgmMyufblMJHzEAypcXVkHN4+?=
- =?us-ascii?Q?uiLAEdvDnSXN25DXmnSBQS4VBoV44lvacJuuncufFbz+FAHpx2fBtn7+y8Zj?=
- =?us-ascii?Q?ZGiSsWA1L2l9+tIpRIQD+YZSrqD/SLk/c1axLOu9bKA8JyLR9HkM0ZN5jfz3?=
- =?us-ascii?Q?Xof9mAF8mB65795AdEfuPapFeU6wg2BkVUfyDxSwDbAlQwTNxcVfgE6HRtIp?=
- =?us-ascii?Q?4e3whloCFRpr7D8qIpE7xXAtg3lPu3vcIQGNx/XdA1CXyvuPFLsiYZTkV7WF?=
- =?us-ascii?Q?DqkgLRw=3D?=
+	=?us-ascii?Q?lsHAW+OIZuKLDkByXdzFM9YB2fR29dF6/hQ5fK3aZQ86AozwN+CFc8wKfeOp?=
+ =?us-ascii?Q?+OlpG8sLvBtICcwV6DyDSqTJxka7wiPyxz6Dxv3j2iYUfCpuVAlFMiU+2/6f?=
+ =?us-ascii?Q?BucwRGqz2+iJkufKQG/3LOWg+7aaxh/jxyuenYPeXiy/zVhiFVCQitqyQKsO?=
+ =?us-ascii?Q?XrSbqJHPbpvO19fXZ+oj67khEn7Wqho4PgHmyhGKd+XioaLoZXjQCJm7fUSj?=
+ =?us-ascii?Q?VlKaIWm2xhy91nKOW3GacM9Rwldg6Z+xn11zFsBXOPomeTDJ9CkC6/IXIAVy?=
+ =?us-ascii?Q?wFbhB3/j/PRLWwQuFKWc1jasmeWgeR7EPBBLoyN8kkmgXmhYRDNJ4ENycLOP?=
+ =?us-ascii?Q?G6zrBn3NA3hycIOOm8YTe/gdrz9rUnZzHi5Zj2aqTuvv1Oesy5prkbe0yEIf?=
+ =?us-ascii?Q?tSuDK6+v2jw2V8nhp7TsqEscGnFeys1WsTR+fIE1BIta9zRJ3rA8LMQawHOq?=
+ =?us-ascii?Q?edffhM58/Tgm8yLuYrdlaIhHdfcM9jQ0MovBLYR4gYxWD59z2NnMukmpgoGq?=
+ =?us-ascii?Q?FEf0xQDG/x5emQ6F8u/0Pi6y5st1vjHI8mmb23HK2Z2VEPiV4wV3wnXwRmUf?=
+ =?us-ascii?Q?iEfVnJXAaGZYhuq02JNcB0Ww1VAFwnseTeE85HCzOOk9z7TlrnyuJwMc3OJl?=
+ =?us-ascii?Q?nMJwjRFUNvKVFgD4R79NFFQd36UN+4tSWXGaK1BqZ8uSLT1aAyTs3d5QNOMk?=
+ =?us-ascii?Q?/vQXoX4pyK+N+c/pnaT4UEN1ssL158HBzMfHngopLLxMCVku3rmOw636Szyd?=
+ =?us-ascii?Q?S4NBcy4ygleX/VUKS/A8tKqQ5mkm6EYQCggnxkd92Y0S3Pn7IESoSXzTukME?=
+ =?us-ascii?Q?GE91HWZGR3CfhZmOUU1+m9k6CUhcBSFK+d6UVrnuEbGzykw8Kd24DOrthFsC?=
+ =?us-ascii?Q?rlG11nnknhWmrWDbeVVx4H25/xzFqSCjB/V+2Hf0Xp1t/zzb9TPAg4KLe1HV?=
+ =?us-ascii?Q?yte9Gq3D1kNPqaIobcfGsV/mkd81gItIo7Z+z78tqBZb7OabVxqojKp2+2BB?=
+ =?us-ascii?Q?S1ayHROv7+/zn5mtqPfA3yWAto5EUnJrWSh+jHWfVILLLEnaC1JVeHPbDPte?=
+ =?us-ascii?Q?8ctDICDyzgXQm1T6y8DfRCV/HVC0NOFw6cNQePpTjxsHiDAMVBLVJvX9JbvJ?=
+ =?us-ascii?Q?meh3w0lXF9zWoseQGmdLt7iIOQjyH75Yl7aySvVSlL3hwEZxyVbd60ZbJyDV?=
+ =?us-ascii?Q?3H5AsArLj3ofZDKiLHQEbxDj60QYOT50RN689NrC0Z5kD8LViMVxmIIFB6Ox?=
+ =?us-ascii?Q?iYcP9HhNBAArgbH02pQHZGKTScAlz86FJqAcorB4TW0AavcgAQIRSU64gb49?=
+ =?us-ascii?Q?du5iIenGZLrzNPUgOBvESqKsXnYzylaz7AB8aJPd5ItAPND31U2hAb1+7tD7?=
+ =?us-ascii?Q?uQ1cqv4=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(1800799021)(52116011)(376011)(366013)(38350700011);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?WWzdSJkty7SKJ3TV4wraV/rFYJ7P3F0mUEye0NYlIxxhDUZjYSSoK06BXwKO?=
- =?us-ascii?Q?3/Y1RQAGqoe7XMiCe+ZANJ5JIzYHeDtGC334tFvMTsf108qsM05FCMBj5va7?=
- =?us-ascii?Q?P34ws8BmLYwTvgP9km+Tapqf8xYArzt2aNpaba0E8FCzGnYyh35lo+lD7SZg?=
- =?us-ascii?Q?dSG9FyLycoxNL/zjzprUG8tiLIZghkEWb5z2ZXMFC8SthT8ApdNbkPnfK4IO?=
- =?us-ascii?Q?q0JHVMlGG7xDFfaC3Gbf9LyQM2NTjYL7b2kxAXs8VUwiWtlEWO7px4tLL+07?=
- =?us-ascii?Q?Q1N2ZkFHG6Z0MK38LZAvIBqtzYXjN4qgpPaZ4DAyQWWwLDDK0PX/AgoaCEEw?=
- =?us-ascii?Q?UujQtYBgsoRsxQ+jebHIcRAQXyGcrJILCsExemd/SuJuiQC70NrUTUslGlLj?=
- =?us-ascii?Q?67ooyYoZVy8+WX1xDXQ3k6/AyUZ89H/2b3v2NN6mu9Ei5saPvVAOsoOXqy9s?=
- =?us-ascii?Q?gJ30q2/A1f6iddpH4xsX9fHYtL7T1yxr24PtbvXb3FpoDlbnklZejU9lrH4q?=
- =?us-ascii?Q?BKEKW5oADMJq+BFtznIBbmuGJgFbD11IHbMunYfZDGQbDjxPICNiIIpQEWdC?=
- =?us-ascii?Q?VHqwQSji2LOJB7OGFLss1rLlsKF1uSSmJtIkD2LjQLQQvQD/x4yuCLephuxp?=
- =?us-ascii?Q?XhebTk3JEMo8248VgClP1CHzOCgNxe5KNaj6MghhfAhMIRumwTrrR/EO9G/f?=
- =?us-ascii?Q?JaFnkr3FZCmw+5e+wjtws6/+yNj1GruQQHUBDR5LTh/2y7UqAScqku/oKihJ?=
- =?us-ascii?Q?XIe5h74KFLakODpBY2mLP3WSYF0f/udH7jG79DJZcYxlz4cBEd4i2BS4c8jz?=
- =?us-ascii?Q?XGNFkBBVUJGqTllzbQQkzebd2+NQVRi0H4fCwG+Hd7lWhM+rtFQrIwEmJg2a?=
- =?us-ascii?Q?VqVQpssLPQejhpyfED4wY/J9chnSULCaikpmSVXTJcceWgCbE7IjW6iit7hV?=
- =?us-ascii?Q?VyNav0A2Hfi4waTe8YQfAy4D1rFGRPFkOULJlKHnnlqosOX+PUWHACks8KKX?=
- =?us-ascii?Q?83pALxh45m6DMe4d6tDKGpPrcfrHZthqsvqocNVDBxbMTbHYfnvnFd/lp50V?=
- =?us-ascii?Q?UswhrvNvfl/3cuAEK+yLX+QWmndxaHx90dsFMZLXKuYCyk0wuHbn4bkvByYp?=
- =?us-ascii?Q?1dDp9ftEDiJtp6NJTupOMK5yqa5hEu9WlbYhKzXRcNADig17XYT5FxPw3UDP?=
- =?us-ascii?Q?5OKOmHfZfq7RHI8tS8Gl/q9Jk0EsP7+lMjugqCWLUprcixi9Iu0GfDzTAuv4?=
- =?us-ascii?Q?SAwgJ+fOd0MZgxyeEN8g9hOfwLflX5RADqfhIyuDpQdPKzxGn8G/ggf1fhwQ?=
- =?us-ascii?Q?cBkcMDx/p6vKmjk3DLt8mxA9GjVKhpQmemcR5rubOGvZsH30loSZVIG6Mc7q?=
- =?us-ascii?Q?wZ2mwEMnSZFGHensagJu1q/mTdfbryGAuEs9rCrNtTZ2UwfUAIKKDJtd+LVG?=
- =?us-ascii?Q?gdfgX6x1l8en4vJy3lSaCfxsZVbUjBAV3E631T9aLuJTVHzkcQS73fWS63XS?=
- =?us-ascii?Q?QRrz8+mYxcmFuCg7i2V32hjNFnaizkspV/jgmtVvH2KFtnYbUzrAH4+0ieY8?=
- =?us-ascii?Q?tOezVYSqq1bO8Z+ciJhOTnFM6W1sjM7AA4prJOgf?=
+	=?us-ascii?Q?7r/gNiFKlHSXSTICN5o/N2GyjQNWlSjrcF77lE3vDEcKODEW9NKmWLdt5jQe?=
+ =?us-ascii?Q?6rAQFDFn114Ki4bgrY+VLVfrhzCZTd53HRg+9CuGnaVhB7Z9MKXax7UvsCe7?=
+ =?us-ascii?Q?4X3mqkkaYRc7Wm3jGMdpoa278wibiCp0ox4ClL2brwP7Ej0FiBCRGWNXULlS?=
+ =?us-ascii?Q?JcQXcuPb7ZY8ZM88vs5Ls4ZNwZ/lyXylmzMBJ2W5OfMN24mlC6rqkA7TvU/0?=
+ =?us-ascii?Q?ICs4qcEnSALCu0Zq+3lXIT0kwth9x2kGA5MaUPQeLsaSgiuWVLKMsWDSwW4Y?=
+ =?us-ascii?Q?YvQBQcN2R+ShvXXlhem/+D9/nIAm9jzzoApoyLL2gxEvqOTLxHw5/8hs3Z1g?=
+ =?us-ascii?Q?31KZITM3HQTfTgSbTk18HtN3HJ3RY4oQrGlS+2iiQvfEsOgzkKn8bf+uOE3V?=
+ =?us-ascii?Q?2XYP04etBMfAP26ThJlBLeTTSW7tAKhGMeuga/ZPwtUfOg1q4G90DqLtENbD?=
+ =?us-ascii?Q?EjtdOirMeCtybwFpBXwtFlQZh76JDZo6c3oPMwdbsnphKj4tTdGThG+nGL4Z?=
+ =?us-ascii?Q?syKbp+IHySZrLEzpLmUvGU2j1SZWa3aoclBSzJP0jFP4Xay7lOlKUuc4Q7JQ?=
+ =?us-ascii?Q?3WLtzpj0ZyM2S0y4fwzH+VKxBvik2QaWiciKxt0qJBMpoKijlrReVkQHIwW1?=
+ =?us-ascii?Q?N9H29UgyIVxBCXlhMTRTSTjiPap8HsT3XZYqoWtxJuDvGFFUnJO60Yv+0Y9P?=
+ =?us-ascii?Q?2HZu8/CPUwa3PlEFwKjiBLIbmxsASoQvmtMCxune7rWdKaT4YIaDAWpIog1u?=
+ =?us-ascii?Q?gGO+b6jPeTQV5bMa0GWbhNv2FrHjQgvC2CJcWiE3esbt4f+WZTVHx5CcmuNR?=
+ =?us-ascii?Q?/0DML0/kghbrtNUdKLjtJuzlRgRpO79m3ApLPvizi+o3gOVUuRZnocnj7XXo?=
+ =?us-ascii?Q?JTcoQleTvKln0248LysYxkxg4rarJiux0Ha9adAQDmAi2NNxR/A5I1x/kO9C?=
+ =?us-ascii?Q?2FqZsdxbMHeC3eRTdf7THWEgB+rgt17fFGq2c8TEWXETFQyh20Cu6wloDX8f?=
+ =?us-ascii?Q?yWsD+G17/WEp9WEHtUY6s4W1/vdbmyVoZ5Tj0pEBikPgK5ovWbX+bhUqNY+u?=
+ =?us-ascii?Q?3nnb/PN6XSftZUwur/Vppk6kESoSnAiLSZ+b6OgDVTjrEky4QCr98lGMkZ2l?=
+ =?us-ascii?Q?qFvX+zPyAz8NisTph+Xl1Ajtk3HpeHYAu6ByIP94/h7evp89MUUcPjFM5x0S?=
+ =?us-ascii?Q?kaEn4pjCeOf7ufbZ6b2p0f88EqYLfpzisz+JnNQ0Ki7Nins8S+km8SpmgJTN?=
+ =?us-ascii?Q?g+R2Pn5xs9OeGLayjd5eXJvaLcqqK5qVnLvfG6lA71qZQ4eEnERQZfhF0Ff+?=
+ =?us-ascii?Q?LqIGL6dGanuvQVTkiV0lj1ann3CCyjUxciveNE+rG4icMoOExybRsvTrBa6v?=
+ =?us-ascii?Q?RUI/zL9CqAzP//lidk1pID5wY2MzrK7jlkaKiSqUeLlIGDxK5LbMwBC1PvtI?=
+ =?us-ascii?Q?Mxk+PQs31DEP1vpFadNDUvN9MIPMD0zK0psvncx+yi57CsvZU8/E8IWVdwvH?=
+ =?us-ascii?Q?oyFdqmuRnAyjqSSfBBPGrGHfKHyVmBJlWqcoSOVmtoEKVzny/xS9Yxpiq0E2?=
+ =?us-ascii?Q?gEhYDFKQ1814uc5XKcKpJC7LOXLMfLRFSUsUr62B?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 793aa944-07f5-46fc-76b5-08dc91c7500c
+X-MS-Exchange-CrossTenant-Network-Message-Id: abeac904-8c57-46e4-ad31-08dc91c75246
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9638.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2024 07:54:01.8493
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2024 07:54:05.0056
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: faUp+gmldIZbXIsLyhK8cgfhbFa8MT6Za8nKeKDPztxoQ6guY1LoJlLPQ+chQsWGzS/UXngNfyeY3CSgTrYcEw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: tL6vi5msSN7OcgtPn4U10OEgiOpdTGF0mz9REYPnLEMgEmUZjwtrzG3I1xTjN3TvY4VoH+/xaIGSTd+XZf1lKQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9190
 
 Signed-off-by: David Lin <yu-hao.lin@nxp.com>
 ---
- drivers/net/wireless/nxp/nxpwifi/sdio.c | 2646 +++++++++++++++++++++++
- 1 file changed, 2646 insertions(+)
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/sdio.c
+ drivers/net/wireless/nxp/nxpwifi/sdio.h | 340 ++++++++++++++++++++++++
+ 1 file changed, 340 insertions(+)
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/sdio.h
 
-diff --git a/drivers/net/wireless/nxp/nxpwifi/sdio.c b/drivers/net/wireless/nxp/nxpwifi/sdio.c
+diff --git a/drivers/net/wireless/nxp/nxpwifi/sdio.h b/drivers/net/wireless/nxp/nxpwifi/sdio.h
 new file mode 100644
-index 000000000000..962c9b2f7db2
+index 000000000000..de5c884a5b14
 --- /dev/null
-+++ b/drivers/net/wireless/nxp/nxpwifi/sdio.c
-@@ -0,0 +1,2646 @@
-+// SPDX-License-Identifier: GPL-2.0-only
++++ b/drivers/net/wireless/nxp/nxpwifi/sdio.h
+@@ -0,0 +1,340 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
 +/*
-+ * NXP Wireless LAN device driver: SDIO specific handling
++ * NXP Wireless LAN device driver: SDIO specific definitions
 + *
 + * Copyright 2011-2024 NXP
 + */
 +
-+#include <linux/firmware.h>
-+#include <linux/completion.h>
-+#include <linux/mmc/sdio.h>
-+#include <linux/mmc/sdio_ids.h>
-+#include <linux/mmc/sdio_func.h>
-+#include <linux/mmc/card.h>
-+#include <linux/mmc/host.h>
++#ifndef	_NXPWIFI_SDIO_H
++#define	_NXPWIFI_SDIO_H
 +
-+#include "decl.h"
-+#include "ioctl.h"
-+#include "util.h"
-+#include "fw.h"
 +#include "main.h"
-+#include "wmm.h"
-+#include "11n.h"
-+#include "sdio.h"
 +
-+#define SDIO_VERSION	"1.0"
++#define IW61X_SDIO_FW_NAME     "nxp/sd_w61x_v1.bin.se"
 +
-+static void nxpwifi_sdio_work(struct work_struct *work);
++#define BLOCK_MODE	1
++#define BYTE_MODE	0
 +
-+static struct nxpwifi_if_ops sdio_ops;
++#define NXPWIFI_SDIO_IO_PORT_MASK	0xfffff
 +
-+static const struct nxpwifi_sdio_card_reg nxpwifi_reg_iw61x = {
-+	.start_rd_port = 0,
-+	.start_wr_port = 0,
-+	.base_0_reg = 0xF8,
-+	.base_1_reg = 0xF9,
-+	.poll_reg = 0x5C,
-+	.host_int_enable = UP_LD_HOST_INT_MASK | DN_LD_HOST_INT_MASK |
-+			   CMD_PORT_UPLD_INT_MASK | CMD_PORT_DNLD_INT_MASK,
-+	.host_int_rsr_reg = 0x4,
-+	.host_int_status_reg = 0x0C,
-+	.host_int_mask_reg = 0x08,
-+	.host_strap_reg = 0xF4,
-+	.host_strap_mask = 0x01,
-+	.host_strap_value = 0x00,
-+	.status_reg_0 = 0xE8,
-+	.status_reg_1 = 0xE9,
-+	.sdio_int_mask = 0xff,
-+	.data_port_mask = 0xffffffff,
-+	.io_port_0_reg = 0xE4,
-+	.io_port_1_reg = 0xE5,
-+	.io_port_2_reg = 0xE6,
-+	.max_mp_regs = 196,
-+	.rd_bitmap_l = 0x10,
-+	.rd_bitmap_u = 0x11,
-+	.rd_bitmap_1l = 0x12,
-+	.rd_bitmap_1u = 0x13,
-+	.wr_bitmap_l = 0x14,
-+	.wr_bitmap_u = 0x15,
-+	.wr_bitmap_1l = 0x16,
-+	.wr_bitmap_1u = 0x17,
-+	.rd_len_p0_l = 0x18,
-+	.rd_len_p0_u = 0x19,
-+	.card_misc_cfg_reg = 0xd8,
-+	.card_cfg_2_1_reg = 0xd9,
-+	.cmd_rd_len_0 = 0xc0,
-+	.cmd_rd_len_1 = 0xc1,
-+	.cmd_rd_len_2 = 0xc2,
-+	.cmd_rd_len_3 = 0xc3,
-+	.cmd_cfg_0 = 0xc4,
-+	.cmd_cfg_1 = 0xc5,
-+	.cmd_cfg_2 = 0xc6,
-+	.cmd_cfg_3 = 0xc7,
-+	.fw_dump_host_ready = 0xcc,
-+	.fw_dump_ctrl = 0xf9,
-+	.fw_dump_start = 0xf1,
-+	.fw_dump_end = 0xf8,
-+	.func1_dump_reg_start = 0x10,
-+	.func1_dump_reg_end = 0x17,
-+	.func1_scratch_reg = 0xE8,
-+	.func1_spec_reg_num = 13,
-+	.func1_spec_reg_table = {0x08, 0x58, 0x5C, 0x5D, 0x60,
-+				 0x61, 0x62, 0x64, 0x65, 0x66,
-+				 0x68, 0x69, 0x6a},
++#define NXPWIFI_SDIO_BYTE_MODE_MASK	0x80000000
++
++#define NXPWIFI_MAX_FUNC2_REG_NUM	13
++#define NXPWIFI_SDIO_SCRATCH_SIZE	10
++
++#define SDIO_MPA_ADDR_BASE		0x1000
++
++#define CMD_PORT_UPLD_INT_MASK		(0x1U << 6)
++#define CMD_PORT_DNLD_INT_MASK		(0x1U << 7)
++#define HOST_TERM_CMD53			(0x1U << 2)
++#define REG_PORT			0
++#define MEM_PORT			0x10000
++
++#define CMD53_NEW_MODE			(0x1U << 0)
++#define CMD_PORT_RD_LEN_EN		(0x1U << 2)
++#define CMD_PORT_AUTO_EN		(0x1U << 0)
++#define CMD_PORT_SLCT			0x8000
++#define UP_LD_CMD_PORT_HOST_INT_STATUS	(0x40U)
++#define DN_LD_CMD_PORT_HOST_INT_STATUS	(0x80U)
++
++#define NXPWIFI_MP_AGGR_BSIZE_32K	(32768)
++/* we leave one block of 256 bytes for DMA alignment*/
++#define NXPWIFI_MP_AGGR_BSIZE_MAX	(65280)
++
++/* Misc. Config Register : Auto Re-enable interrupts */
++#define AUTO_RE_ENABLE_INT		BIT(4)
++
++/* Host Control Registers : Configuration */
++#define CONFIGURATION_REG		0x00
++/* Host Control Registers : Host power up */
++#define HOST_POWER_UP			(0x1U << 1)
++
++/* Host Control Registers : Upload host interrupt mask */
++#define UP_LD_HOST_INT_MASK		(0x1U)
++/* Host Control Registers : Download host interrupt mask */
++#define DN_LD_HOST_INT_MASK		(0x2U)
++
++/* Host Control Registers : Upload host interrupt status */
++#define UP_LD_HOST_INT_STATUS		(0x1U)
++/* Host Control Registers : Download host interrupt status */
++#define DN_LD_HOST_INT_STATUS		(0x2U)
++
++/* Host Control Registers : Host interrupt status */
++#define CARD_INT_STATUS_REG		0x28
++
++/* Card Control Registers : Card I/O ready */
++#define CARD_IO_READY                   (0x1U << 3)
++/* Card Control Registers : Download card ready */
++#define DN_LD_CARD_RDY                  (0x1U << 0)
++
++/* Max retry number of CMD53 write */
++#define MAX_WRITE_IOMEM_RETRY		2
++
++/* SDIO Tx aggregation in progress ? */
++#define MP_TX_AGGR_IN_PROGRESS(a) ((a)->mpa_tx.pkt_cnt > 0)
++
++/* SDIO Tx aggregation buffer room for next packet ? */
++#define MP_TX_AGGR_BUF_HAS_ROOM(a, len) ({ \
++	typeof(a) (_a) = a; \
++	(((_a)->mpa_tx.buf_len + (len))	<= (_a)->mpa_tx.buf_size); \
++	})
++
++/* Copy current packet (SDIO Tx aggregation buffer) to SDIO buffer */
++#define MP_TX_AGGR_BUF_PUT(a, payload, pkt_len, port) do {		\
++	typeof(a) (_a) = (a);						\
++	typeof(pkt_len) (_pkt_len) = pkt_len;				\
++	typeof(port) (_port) = port;					\
++	memmove(&(_a)->mpa_tx.buf[(_a)->mpa_tx.buf_len],		\
++		payload, (_pkt_len));					\
++	(_a)->mpa_tx.buf_len += (_pkt_len);				\
++	if (!(_a)->mpa_tx.pkt_cnt)					\
++		(_a)->mpa_tx.start_port = (_port);			\
++	if ((_a)->mpa_tx.start_port <= (_port))				\
++		(_a)->mpa_tx.ports |= (1 << ((_a)->mpa_tx.pkt_cnt));	\
++	else								\
++		(_a)->mpa_tx.ports |= (1 << ((_a)->mpa_tx.pkt_cnt + 1 +	\
++					     ((_a)->max_ports -		\
++					      (_a)->mp_end_port)));	\
++	(_a)->mpa_tx.pkt_cnt++;						\
++} while (0)
++
++/* SDIO Tx aggregation limit ? */
++#define MP_TX_AGGR_PKT_LIMIT_REACHED(a) ({				\
++	typeof(a) (_a) = a;						\
++	((_a)->mpa_tx.pkt_cnt == (_a)->mpa_tx.pkt_aggr_limit);		\
++	})
++
++/* Reset SDIO Tx aggregation buffer parameters */
++#define MP_TX_AGGR_BUF_RESET(a) do {					\
++	typeof(a) (_a) = (a);						\
++	(_a)->mpa_tx.pkt_cnt = 0;					\
++	(_a)->mpa_tx.buf_len = 0;					\
++	(_a)->mpa_tx.ports = 0;						\
++	(_a)->mpa_tx.start_port = 0;					\
++} while (0)
++
++/* SDIO Rx aggregation limit ? */
++#define MP_RX_AGGR_PKT_LIMIT_REACHED(a)	({				\
++	typeof(a) (_a) = a;						\
++	((_a)->mpa_rx.pkt_cnt == (_a)->mpa_rx.pkt_aggr_limit);		\
++	})
++
++/* SDIO Rx aggregation in progress ? */
++#define MP_RX_AGGR_IN_PROGRESS(a) ((a)->mpa_rx.pkt_cnt > 0)
++
++/* SDIO Rx aggregation buffer room for next packet ? */
++#define MP_RX_AGGR_BUF_HAS_ROOM(a, rx_len) ({				\
++	typeof(a) (_a) = a;						\
++	((((_a)->mpa_rx.buf_len + (rx_len))) <= (_a)->mpa_rx.buf_size);	\
++	})
++
++/* Reset SDIO Rx aggregation buffer parameters */
++#define MP_RX_AGGR_BUF_RESET(a) do {					\
++	typeof(a) (_a) = (a);						\
++	(_a)->mpa_rx.pkt_cnt = 0;					\
++	(_a)->mpa_rx.buf_len = 0;					\
++	(_a)->mpa_rx.ports = 0;						\
++	(_a)->mpa_rx.start_port = 0;					\
++} while (0)
++
++/* data structure for SDIO MPA TX */
++struct nxpwifi_sdio_mpa_tx {
++	/* multiport tx aggregation buffer pointer */
++	u8 *buf;
++	u32 buf_len;
++	u32 pkt_cnt;
++	u32 ports;
++	u16 start_port;
++	u8 enabled;
++	u32 buf_size;
++	u32 pkt_aggr_limit;
 +};
 +
-+static const struct nxpwifi_sdio_device nxpwifi_sdio_iw61x = {
-+	.firmware = IW61X_SDIO_FW_NAME,
-+	.reg = &nxpwifi_reg_iw61x,
-+	.max_ports = 32,
-+	.mp_agg_pkt_limit = 16,
-+	.tx_buf_size = NXPWIFI_TX_DATA_BUF_SIZE_4K,
-+	.mp_tx_agg_buf_size = NXPWIFI_MP_AGGR_BSIZE_MAX,
-+	.mp_rx_agg_buf_size = NXPWIFI_MP_AGGR_BSIZE_MAX,
-+	.can_dump_fw = true,
-+	.fw_dump_enh = true,
-+	.can_ext_scan = true,
++struct nxpwifi_sdio_mpa_rx {
++	u8 *buf;
++	u32 buf_len;
++	u32 pkt_cnt;
++	u32 ports;
++	u16 start_port;
++	u32 *len_arr;
++	u8 enabled;
++	u32 buf_size;
++	u32 pkt_aggr_limit;
 +};
 +
-+static struct memory_type_mapping generic_mem_type_map[] = {
-+	{"DUMP", NULL, 0, 0xDD},
++int nxpwifi_bus_register(void);
++void nxpwifi_bus_unregister(void);
++
++struct nxpwifi_sdio_card_reg {
++	u8 start_rd_port;
++	u8 start_wr_port;
++	u8 base_0_reg;
++	u8 base_1_reg;
++	u8 poll_reg;
++	u8 host_int_enable;
++	u8 host_int_rsr_reg;
++	u8 host_int_status_reg;
++	u8 host_int_mask_reg;
++	u8 host_strap_reg;
++	u8 host_strap_mask;
++	u8 host_strap_value;
++	u8 status_reg_0;
++	u8 status_reg_1;
++	u8 sdio_int_mask;
++	u32 data_port_mask;
++	u8 io_port_0_reg;
++	u8 io_port_1_reg;
++	u8 io_port_2_reg;
++	u8 max_mp_regs;
++	u8 rd_bitmap_l;
++	u8 rd_bitmap_u;
++	u8 rd_bitmap_1l;
++	u8 rd_bitmap_1u;
++	u8 wr_bitmap_l;
++	u8 wr_bitmap_u;
++	u8 wr_bitmap_1l;
++	u8 wr_bitmap_1u;
++	u8 rd_len_p0_l;
++	u8 rd_len_p0_u;
++	u8 card_misc_cfg_reg;
++	u8 card_cfg_2_1_reg;
++	u8 cmd_rd_len_0;
++	u8 cmd_rd_len_1;
++	u8 cmd_rd_len_2;
++	u8 cmd_rd_len_3;
++	u8 cmd_cfg_0;
++	u8 cmd_cfg_1;
++	u8 cmd_cfg_2;
++	u8 cmd_cfg_3;
++	u8 fw_dump_host_ready;
++	u8 fw_dump_ctrl;
++	u8 fw_dump_start;
++	u8 fw_dump_end;
++	u8 func1_dump_reg_start;
++	u8 func1_dump_reg_end;
++	u8 func1_scratch_reg;
++	u8 func1_spec_reg_num;
++	u8 func1_spec_reg_table[NXPWIFI_MAX_FUNC2_REG_NUM];
 +};
 +
-+static struct memory_type_mapping mem_type_mapping_tbl[] = {
-+	{"ITCM", NULL, 0, 0xF0},
-+	{"DTCM", NULL, 0, 0xF1},
-+	{"SQRAM", NULL, 0, 0xF2},
-+	{"APU", NULL, 0, 0xF3},
-+	{"CIU", NULL, 0, 0xF4},
-+	{"ICU", NULL, 0, 0xF5},
-+	{"MAC", NULL, 0, 0xF6},
-+	{"EXT7", NULL, 0, 0xF7},
-+	{"EXT8", NULL, 0, 0xF8},
-+	{"EXT9", NULL, 0, 0xF9},
-+	{"EXT10", NULL, 0, 0xFA},
-+	{"EXT11", NULL, 0, 0xFB},
-+	{"EXT12", NULL, 0, 0xFC},
-+	{"EXT13", NULL, 0, 0xFD},
-+	{"EXTLAST", NULL, 0, 0xFE},
-+};
-+
-+static const struct of_device_id nxpwifi_sdio_of_match_table[] __maybe_unused = {
-+	{ }
-+};
-+
-+/* This function parse device tree node using mmc subnode devicetree API.
-+ * The device node is saved in card->plt_of_node.
-+ * if the device tree node exist and include interrupts attributes, this
-+ * function will also request platform specific wakeup interrupt.
-+ */
-+static int nxpwifi_sdio_probe_of(struct device *dev)
-+{
-+	if (!of_match_node(nxpwifi_sdio_of_match_table, dev->of_node)) {
-+		dev_err(dev, "required compatible string missing\n");
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+/* SDIO probe.
-+ *
-+ * This function probes an nxpwifi device and registers it. It allocates
-+ * the card structure, enables SDIO function number and initiates the
-+ * device registration and initialization procedure by adding a logical
-+ * interface.
-+ */
-+static int
-+nxpwifi_sdio_probe(struct sdio_func *func, const struct sdio_device_id *id)
-+{
-+	int ret;
-+	struct sdio_mmc_card *card = NULL;
-+
-+	pr_debug("info: vendor=0x%4.04X device=0x%4.04X class=%d function=%d\n",
-+		 func->vendor, func->device, func->class, func->num);
-+
-+	card = devm_kzalloc(&func->dev, sizeof(*card), GFP_KERNEL);
-+	if (!card)
-+		return -ENOMEM;
-+
-+	init_completion(&card->fw_done);
-+
-+	card->func = func;
-+
-+	func->card->quirks |= MMC_QUIRK_BLKSZ_FOR_BYTE_MODE;
-+
-+	if (id->driver_data) {
-+		struct nxpwifi_sdio_device *data = (void *)id->driver_data;
-+
-+		card->firmware = data->firmware;
-+		card->firmware_sdiouart = data->firmware_sdiouart;
-+		card->reg = data->reg;
-+		card->max_ports = data->max_ports;
-+		card->mp_agg_pkt_limit = data->mp_agg_pkt_limit;
-+		card->tx_buf_size = data->tx_buf_size;
-+		card->mp_tx_agg_buf_size = data->mp_tx_agg_buf_size;
-+		card->mp_rx_agg_buf_size = data->mp_rx_agg_buf_size;
-+		card->can_dump_fw = data->can_dump_fw;
-+		card->fw_dump_enh = data->fw_dump_enh;
-+		card->can_ext_scan = data->can_ext_scan;
-+		INIT_WORK(&card->work, nxpwifi_sdio_work);
-+	}
-+
-+	sdio_claim_host(func);
-+	ret = sdio_enable_func(func);
-+	sdio_release_host(func);
-+
-+	if (ret) {
-+		dev_err(&func->dev, "failed to enable function\n");
-+		return ret;
-+	}
-+
-+	/* device tree node parsing and platform specific configuration*/
-+	if (func->dev.of_node) {
-+		ret = nxpwifi_sdio_probe_of(&func->dev);
-+		if (ret)
-+			goto err_disable;
-+	}
-+
-+	ret = nxpwifi_add_card(card, &card->fw_done, &sdio_ops,
-+			       NXPWIFI_SDIO, &func->dev);
-+	if (ret) {
-+		dev_err(&func->dev, "add card failed\n");
-+		goto err_disable;
-+	}
-+
-+	return 0;
-+
-+err_disable:
-+	sdio_claim_host(func);
-+	sdio_disable_func(func);
-+	sdio_release_host(func);
-+
-+	return ret;
-+}
-+
-+/* SDIO resume.
-+ *
-+ * Kernel needs to suspend all functions separately. Therefore all
-+ * registered functions must have drivers with suspend and resume
-+ * methods. Failing that the kernel simply removes the whole card.
-+ *
-+ * If already not resumed, this function turns on the traffic and
-+ * sends a host sleep cancel request to the firmware.
-+ */
-+static int nxpwifi_sdio_resume(struct device *dev)
-+{
-+	struct sdio_func *func = dev_to_sdio_func(dev);
-+	struct sdio_mmc_card *card;
++struct sdio_mmc_card {
++	struct sdio_func *func;
 +	struct nxpwifi_adapter *adapter;
 +
-+	card = sdio_get_drvdata(func);
-+	if (!card || !card->adapter) {
-+		dev_err(dev, "resume: invalid card or adapter\n");
-+		return 0;
-+	}
++	struct completion fw_done;
++	const char *firmware;
++	const char *firmware_sdiouart;
++	const struct nxpwifi_sdio_card_reg *reg;
++	u8 max_ports;
++	u8 mp_agg_pkt_limit;
++	u16 tx_buf_size;
++	u32 mp_tx_agg_buf_size;
++	u32 mp_rx_agg_buf_size;
 +
-+	adapter = card->adapter;
++	u32 mp_rd_bitmap;
++	u32 mp_wr_bitmap;
 +
-+	if (!test_bit(NXPWIFI_IS_SUSPENDED, &adapter->work_flags)) {
-+		nxpwifi_dbg(adapter, WARN,
-+			    "device already resumed\n");
-+		return 0;
-+	}
++	u16 mp_end_port;
++	u32 mp_data_port_mask;
 +
-+	clear_bit(NXPWIFI_IS_SUSPENDED, &adapter->work_flags);
++	u8 curr_rd_port;
++	u8 curr_wr_port;
 +
-+	/* Disable Host Sleep */
-+	nxpwifi_cancel_hs(nxpwifi_get_priv(adapter, NXPWIFI_BSS_ROLE_STA),
-+			  NXPWIFI_SYNC_CMD);
++	u8 *mp_regs;
++	bool can_dump_fw;
++	bool fw_dump_enh;
++	bool can_ext_scan;
 +
-+	nxpwifi_disable_wake(adapter);
++	struct nxpwifi_sdio_mpa_tx mpa_tx;
++	struct nxpwifi_sdio_mpa_rx mpa_rx;
 +
-+	return 0;
-+}
-+
-+/* Write data into SDIO card register. Caller claims SDIO device. */
-+static int
-+nxpwifi_write_reg_locked(struct sdio_func *func, u32 reg, u8 data)
-+{
-+	int ret = -1;
-+
-+	sdio_writeb(func, data, reg, &ret);
-+	return ret;
-+}
-+
-+/* This function writes data into SDIO card register.
-+ */
-+static int
-+nxpwifi_write_reg(struct nxpwifi_adapter *adapter, u32 reg, u8 data)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+	int ret;
-+
-+	sdio_claim_host(card->func);
-+	ret = nxpwifi_write_reg_locked(card->func, reg, data);
-+	sdio_release_host(card->func);
-+
-+	return ret;
-+}
-+
-+/* This function reads data from SDIO card register.
-+ */
-+static int
-+nxpwifi_read_reg(struct nxpwifi_adapter *adapter, u32 reg, u8 *data)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+	int ret = -1;
-+	u8 val;
-+
-+	sdio_claim_host(card->func);
-+	val = sdio_readb(card->func, reg, &ret);
-+	sdio_release_host(card->func);
-+
-+	*data = val;
-+
-+	return ret;
-+}
-+
-+/* This function writes multiple data into SDIO card memory.
-+ *
-+ * This does not work in suspended mode.
-+ */
-+static int
-+nxpwifi_write_data_sync(struct nxpwifi_adapter *adapter,
-+			u8 *buffer, u32 pkt_len, u32 port)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+	int ret;
-+	u8 blk_mode =
-+		(port & NXPWIFI_SDIO_BYTE_MODE_MASK) ? BYTE_MODE : BLOCK_MODE;
-+	u32 blk_size = (blk_mode == BLOCK_MODE) ? NXPWIFI_SDIO_BLOCK_SIZE : 1;
-+	u32 blk_cnt =
-+		(blk_mode ==
-+		 BLOCK_MODE) ? (pkt_len /
-+				NXPWIFI_SDIO_BLOCK_SIZE) : pkt_len;
-+	u32 ioport = (port & NXPWIFI_SDIO_IO_PORT_MASK);
-+
-+	if (test_bit(NXPWIFI_IS_SUSPENDED, &adapter->work_flags)) {
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "%s: not allowed while suspended\n", __func__);
-+		return -1;
-+	}
-+
-+	sdio_claim_host(card->func);
-+
-+	ret = sdio_writesb(card->func, ioport, buffer, blk_cnt * blk_size);
-+
-+	sdio_release_host(card->func);
-+
-+	return ret;
-+}
-+
-+/* This function reads multiple data from SDIO card memory.
-+ */
-+static int nxpwifi_read_data_sync(struct nxpwifi_adapter *adapter, u8 *buffer,
-+				  u32 len, u32 port, u8 claim)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+	int ret;
-+	u8 blk_mode = (port & NXPWIFI_SDIO_BYTE_MODE_MASK) ? BYTE_MODE
-+		       : BLOCK_MODE;
-+	u32 blk_size = (blk_mode == BLOCK_MODE) ? NXPWIFI_SDIO_BLOCK_SIZE : 1;
-+	u32 blk_cnt = (blk_mode == BLOCK_MODE) ? (len / NXPWIFI_SDIO_BLOCK_SIZE)
-+			: len;
-+	u32 ioport = (port & NXPWIFI_SDIO_IO_PORT_MASK);
-+
-+	if (claim)
-+		sdio_claim_host(card->func);
-+
-+	ret = sdio_readsb(card->func, buffer, ioport, blk_cnt * blk_size);
-+
-+	if (claim)
-+		sdio_release_host(card->func);
-+
-+	return ret;
-+}
-+
-+/* This function reads the firmware status.
-+ */
-+static int
-+nxpwifi_sdio_read_fw_status(struct nxpwifi_adapter *adapter, u16 *dat)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+	const struct nxpwifi_sdio_card_reg *reg = card->reg;
-+	u8 fws0, fws1;
-+
-+	if (nxpwifi_read_reg(adapter, reg->status_reg_0, &fws0))
-+		return -1;
-+
-+	if (nxpwifi_read_reg(adapter, reg->status_reg_1, &fws1))
-+		return -1;
-+
-+	*dat = (u16)((fws1 << 8) | fws0);
-+	return 0;
-+}
-+
-+/* This function checks the firmware status in card.
-+ */
-+static int nxpwifi_check_fw_status(struct nxpwifi_adapter *adapter,
-+				   u32 poll_num)
-+{
-+	int ret = 0;
-+	u16 firmware_stat = 0;
-+	u32 tries;
-+
-+	for (tries = 0; tries < poll_num; tries++) {
-+		ret = nxpwifi_sdio_read_fw_status(adapter, &firmware_stat);
-+		if (ret)
-+			continue;
-+		if (firmware_stat == FIRMWARE_READY_SDIO) {
-+			ret = 0;
-+			break;
-+		}
-+
-+		msleep(100);
-+		ret = -1;
-+	}
-+
-+	if (firmware_stat == FIRMWARE_READY_SDIO)
-+		/* firmware might pretend to be ready, when it's not.
-+		 * Wait a little bit more as a workaround.
-+		 */
-+		msleep(100);
-+
-+	return ret;
-+}
-+
-+/* This function checks if WLAN is the winner.
-+ */
-+static int nxpwifi_check_winner_status(struct nxpwifi_adapter *adapter)
-+{
-+	int ret = 0;
-+	u8 winner = 0;
-+	struct sdio_mmc_card *card = adapter->card;
-+
-+	if (nxpwifi_read_reg(adapter, card->reg->status_reg_0, &winner))
-+		return -1;
-+
-+	if (winner)
-+		adapter->winner = 0;
-+	else
-+		adapter->winner = 1;
-+
-+	return ret;
-+}
-+
-+/* SDIO remove.
-+ *
-+ * This function removes the interface and frees up the card structure.
-+ */
-+static void
-+nxpwifi_sdio_remove(struct sdio_func *func)
-+{
-+	struct sdio_mmc_card *card;
-+	struct nxpwifi_adapter *adapter;
-+	struct nxpwifi_private *priv;
-+	int ret = 0;
-+	u16 firmware_stat;
-+
-+	card = sdio_get_drvdata(func);
-+	if (!card)
-+		return;
-+
-+	wait_for_completion(&card->fw_done);
-+
-+	adapter = card->adapter;
-+	if (!adapter || !adapter->priv_num)
-+		return;
-+
-+	nxpwifi_dbg(adapter, INFO, "info: SDIO func num=%d\n", func->num);
-+
-+	ret = nxpwifi_sdio_read_fw_status(adapter, &firmware_stat);
-+	if (!ret && firmware_stat == FIRMWARE_READY_SDIO) {
-+		nxpwifi_deauthenticate_all(adapter);
-+
-+		priv = nxpwifi_get_priv(adapter, NXPWIFI_BSS_ROLE_ANY);
-+		nxpwifi_disable_auto_ds(priv);
-+		nxpwifi_init_shutdown_fw(priv, NXPWIFI_FUNC_SHUTDOWN);
-+	}
-+
-+	nxpwifi_remove_card(adapter);
-+}
-+
-+/* SDIO suspend.
-+ *
-+ * Kernel needs to suspend all functions separately. Therefore all
-+ * registered functions must have drivers with suspend and resume
-+ * methods. Failing that the kernel simply removes the whole card.
-+ *
-+ * If already not suspended, this function allocates and sends a host
-+ * sleep activate request to the firmware and turns off the traffic.
-+ */
-+static int nxpwifi_sdio_suspend(struct device *dev)
-+{
-+	struct sdio_func *func = dev_to_sdio_func(dev);
-+	struct sdio_mmc_card *card;
-+	struct nxpwifi_adapter *adapter;
-+	mmc_pm_flag_t pm_flag = 0;
-+	int ret = 0;
-+
-+	pm_flag = sdio_get_host_pm_caps(func);
-+	pr_debug("cmd: %s: suspend: PM flag = 0x%x\n",
-+		 sdio_func_id(func), pm_flag);
-+	if (!(pm_flag & MMC_PM_KEEP_POWER)) {
-+		dev_err(dev,
-+			"%s: cannot remain alive while host is suspended\n",
-+			sdio_func_id(func));
-+		return -EPERM;
-+	}
-+
-+	card = sdio_get_drvdata(func);
-+	if (!card) {
-+		dev_err(dev, "suspend: invalid card\n");
-+		return 0;
-+	}
-+
-+	/* Might still be loading firmware */
-+	wait_for_completion(&card->fw_done);
-+
-+	adapter = card->adapter;
-+	if (!adapter) {
-+		dev_err(dev, "adapter is not valid\n");
-+		return 0;
-+	}
-+
-+	if (!adapter->is_up)
-+		return -EBUSY;
-+
-+	nxpwifi_enable_wake(adapter);
-+
-+	/* Enable the Host Sleep */
-+	if (!nxpwifi_enable_hs(adapter)) {
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "cmd: failed to suspend\n");
-+		clear_bit(NXPWIFI_IS_HS_ENABLING, &adapter->work_flags);
-+		nxpwifi_disable_wake(adapter);
-+		return -EFAULT;
-+	}
-+
-+	nxpwifi_dbg(adapter, INFO,
-+		    "cmd: suspend with MMC_PM_KEEP_POWER\n");
-+	ret = sdio_set_host_pm_flags(func, MMC_PM_KEEP_POWER);
-+
-+	/* Indicate device suspended */
-+	set_bit(NXPWIFI_IS_SUSPENDED, &adapter->work_flags);
-+	clear_bit(NXPWIFI_IS_HS_ENABLING, &adapter->work_flags);
-+
-+	return ret;
-+}
-+
-+static void nxpwifi_sdio_coredump(struct device *dev)
-+{
-+	struct sdio_func *func = dev_to_sdio_func(dev);
-+	struct sdio_mmc_card *card;
-+
-+	card = sdio_get_drvdata(func);
-+	if (!test_and_set_bit(NXPWIFI_IFACE_WORK_DEVICE_DUMP,
-+			      &card->work_flags))
-+		schedule_work(&card->work);
-+}
-+
-+/* WLAN IDs */
-+static const struct sdio_device_id nxpwifi_ids[] = {
-+	{SDIO_DEVICE(SDIO_VENDOR_ID_NXP, SDIO_DEVICE_ID_NXP_IW61X),
-+		.driver_data = (unsigned long)&nxpwifi_sdio_iw61x},
-+	{},
++	struct work_struct work;
++	unsigned long work_flags;
 +};
 +
-+MODULE_DEVICE_TABLE(sdio, nxpwifi_ids);
-+
-+static const struct dev_pm_ops nxpwifi_sdio_pm_ops = {
-+	.suspend = nxpwifi_sdio_suspend,
-+	.resume = nxpwifi_sdio_resume,
++struct nxpwifi_sdio_device {
++	const char *firmware;
++	const char *firmware_sdiouart;
++	const struct nxpwifi_sdio_card_reg *reg;
++	u8 max_ports;
++	u8 mp_agg_pkt_limit;
++	u16 tx_buf_size;
++	u32 mp_tx_agg_buf_size;
++	u32 mp_rx_agg_buf_size;
++	bool can_dump_fw;
++	bool fw_dump_enh;
++	bool can_ext_scan;
 +};
 +
-+static struct sdio_driver nxpwifi_sdio = {
-+	.name = "nxpwifi_sdio",
-+	.id_table = nxpwifi_ids,
-+	.probe = nxpwifi_sdio_probe,
-+	.remove = nxpwifi_sdio_remove,
-+	.drv = {
-+		.owner = THIS_MODULE,
-+		.coredump = nxpwifi_sdio_coredump,
-+		.pm = &nxpwifi_sdio_pm_ops,
-+	}
-+};
-+
-+/* This function wakes up the card.
-+ *
-+ * A host power up command is written to the card configuration
-+ * register to wake up the card.
++/* .cmdrsp_complete handler
 + */
-+static int nxpwifi_pm_wakeup_card(struct nxpwifi_adapter *adapter)
++static inline int nxpwifi_sdio_cmdrsp_complete(struct nxpwifi_adapter *adapter,
++					       struct sk_buff *skb)
 +{
-+	nxpwifi_dbg(adapter, EVENT,
-+		    "event: wakeup device...\n");
-+
-+	return nxpwifi_write_reg(adapter, CONFIGURATION_REG, HOST_POWER_UP);
-+}
-+
-+/* This function is called after the card has woken up.
-+ *
-+ * The card configuration register is reset.
-+ */
-+static int nxpwifi_pm_wakeup_card_complete(struct nxpwifi_adapter *adapter)
-+{
-+	nxpwifi_dbg(adapter, EVENT,
-+		    "cmd: wakeup device completed\n");
-+
-+	return nxpwifi_write_reg(adapter, CONFIGURATION_REG, 0);
-+}
-+
-+static int nxpwifi_sdio_dnld_fw(struct nxpwifi_adapter *adapter,
-+				struct nxpwifi_fw_image *fw)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+	int ret;
-+
-+	sdio_claim_host(card->func);
-+	ret = nxpwifi_dnld_fw(adapter, fw);
-+	sdio_release_host(card->func);
-+
-+	return ret;
-+}
-+
-+/* This function is used to initialize IO ports for the
-+ * chipsets supporting SDIO new mode.
-+ */
-+static int nxpwifi_init_sdio_new_mode(struct nxpwifi_adapter *adapter)
-+{
-+	u8 reg;
-+	struct sdio_mmc_card *card = adapter->card;
-+
-+	adapter->ioport = MEM_PORT;
-+
-+	/* enable sdio new mode */
-+	if (nxpwifi_read_reg(adapter, card->reg->card_cfg_2_1_reg, &reg))
-+		return -1;
-+	if (nxpwifi_write_reg(adapter, card->reg->card_cfg_2_1_reg,
-+			      reg | CMD53_NEW_MODE))
-+		return -1;
-+
-+	/* Configure cmd port and enable reading rx length from the register */
-+	if (nxpwifi_read_reg(adapter, card->reg->cmd_cfg_0, &reg))
-+		return -1;
-+	if (nxpwifi_write_reg(adapter, card->reg->cmd_cfg_0,
-+			      reg | CMD_PORT_RD_LEN_EN))
-+		return -1;
-+
-+	/* Enable Dnld/Upld ready auto reset for cmd port after cmd53 is
-+	 * completed
-+	 */
-+	if (nxpwifi_read_reg(adapter, card->reg->cmd_cfg_1, &reg))
-+		return -1;
-+	if (nxpwifi_write_reg(adapter, card->reg->cmd_cfg_1,
-+			      reg | CMD_PORT_AUTO_EN))
-+		return -1;
-+
++	dev_kfree_skb_any(skb);
 +	return 0;
 +}
 +
-+/* This function initializes the IO ports.
-+ *
-+ * The following operations are performed -
-+ *      - Read the IO ports (0, 1 and 2)
-+ *      - Set host interrupt Reset-To-Read to clear
-+ *      - Set auto re-enable interrupt
++/* .event_complete handler
 + */
-+static int nxpwifi_init_sdio_ioport(struct nxpwifi_adapter *adapter)
++static inline int nxpwifi_sdio_event_complete(struct nxpwifi_adapter *adapter,
++					      struct sk_buff *skb)
 +{
-+	u8 reg;
-+	struct sdio_mmc_card *card = adapter->card;
-+
-+	if (nxpwifi_init_sdio_new_mode(adapter))
-+		return -1;
-+
-+	nxpwifi_dbg(adapter, INFO,
-+		    "info: SDIO FUNC1 IO port: %#x\n", adapter->ioport);
-+
-+	/* Set Host interrupt reset to read to clear */
-+	if (nxpwifi_read_reg(adapter, card->reg->host_int_rsr_reg, &reg))
-+		return -1;
-+	if (nxpwifi_write_reg(adapter, card->reg->host_int_rsr_reg,
-+			      reg | card->reg->sdio_int_mask))
-+		return -1;
-+
-+	/* Dnld/Upld ready set to auto reset */
-+	if (nxpwifi_read_reg(adapter, card->reg->card_misc_cfg_reg, &reg))
-+		return -1;
-+	if (nxpwifi_write_reg(adapter, card->reg->card_misc_cfg_reg,
-+			      reg | AUTO_RE_ENABLE_INT))
-+		return -1;
-+
++	dev_kfree_skb_any(skb);
 +	return 0;
 +}
 +
-+/* This function sends data to the card.
-+ */
-+static int nxpwifi_write_data_to_card(struct nxpwifi_adapter *adapter,
-+				      u8 *payload, u32 pkt_len, u32 port)
++static inline bool
++mp_rx_aggr_port_limit_reached(struct sdio_mmc_card *card)
 +{
-+	u32 i = 0;
-+	int ret;
++	u8 tmp;
 +
-+	do {
-+		ret = nxpwifi_write_data_sync(adapter, payload, pkt_len, port);
-+		if (ret) {
-+			i++;
-+			nxpwifi_dbg(adapter, ERROR,
-+				    "host_to_card, write iomem\t"
-+				    "(%d) failed: %d\n", i, ret);
-+			if (nxpwifi_write_reg(adapter, CONFIGURATION_REG, 0x04))
-+				nxpwifi_dbg(adapter, ERROR,
-+					    "write CFG reg failed\n");
++	if (card->curr_rd_port < card->mpa_rx.start_port) {
++		tmp = card->mp_end_port >> 1;
 +
-+			ret = -1;
-+			if (i > MAX_WRITE_IOMEM_RETRY)
-+				return ret;
-+		}
-+	} while (ret == -1);
++		if (((card->max_ports - card->mpa_rx.start_port) +
++		    card->curr_rd_port) >= tmp)
++			return true;
++	}
 +
-+	return ret;
++	if ((card->curr_rd_port - card->mpa_rx.start_port) >=
++	    (card->mp_end_port >> 1))
++		return true;
++
++	return false;
 +}
 +
-+/* This function gets the read port.
-+ *
-+ * If control port bit is set in MP read bitmap, the control port
-+ * is returned, otherwise the current read port is returned and
-+ * the value is increased (provided it does not reach the maximum
-+ * limit, in which case it is reset to 1)
-+ */
-+static int nxpwifi_get_rd_port(struct nxpwifi_adapter *adapter, u8 *port)
++static inline bool
++mp_tx_aggr_port_limit_reached(struct sdio_mmc_card *card)
 +{
-+	struct sdio_mmc_card *card = adapter->card;
-+	const struct nxpwifi_sdio_card_reg *reg = card->reg;
-+	u32 rd_bitmap = card->mp_rd_bitmap;
++	u16 tmp;
 +
-+	nxpwifi_dbg(adapter, DATA,
-+		    "data: mp_rd_bitmap=0x%08x\n", rd_bitmap);
++	if (card->curr_wr_port < card->mpa_tx.start_port) {
++		tmp = card->mp_end_port >> 1;
 +
-+	if (!(rd_bitmap & reg->data_port_mask))
-+		return -1;
++		if (((card->max_ports - card->mpa_tx.start_port) +
++		    card->curr_wr_port) >= tmp)
++			return true;
++	}
 +
-+	if (!(card->mp_rd_bitmap & (1 << card->curr_rd_port)))
-+		return -1;
++	if ((card->curr_wr_port - card->mpa_tx.start_port) >=
++	    (card->mp_end_port >> 1))
++		return true;
 +
-+	/* We are now handling the SDIO data ports */
-+	card->mp_rd_bitmap &= (u32)(~(1 << card->curr_rd_port));
-+	*port = card->curr_rd_port;
-+
-+	if (++card->curr_rd_port == card->max_ports)
-+		card->curr_rd_port = reg->start_rd_port;
-+
-+	nxpwifi_dbg(adapter, DATA,
-+		    "data: port=%d mp_rd_bitmap=0x%08x -> 0x%08x\n",
-+		    *port, rd_bitmap, card->mp_rd_bitmap);
-+
-+	return 0;
++	return false;
 +}
 +
-+/* This function gets the write port for data.
-+ *
-+ * The current write port is returned if available and the value is
-+ * increased (provided it does not reach the maximum limit, in which
-+ * case it is reset to 1)
-+ */
-+static int nxpwifi_get_wr_port_data(struct nxpwifi_adapter *adapter, u32 *port)
++/* Prepare to copy current packet from card to SDIO Rx aggregation buffer */
++static inline void mp_rx_aggr_setup(struct sdio_mmc_card *card,
++				    u16 rx_len, u8 port)
 +{
-+	struct sdio_mmc_card *card = adapter->card;
-+	const struct nxpwifi_sdio_card_reg *reg = card->reg;
-+	u32 wr_bitmap = card->mp_wr_bitmap;
++	card->mpa_rx.buf_len += rx_len;
 +
-+	nxpwifi_dbg(adapter, DATA,
-+		    "data: mp_wr_bitmap=0x%08x\n", wr_bitmap);
++	if (!card->mpa_rx.pkt_cnt)
++		card->mpa_rx.start_port = port;
 +
-+	if (!(wr_bitmap & card->mp_data_port_mask)) {
-+		adapter->data_sent = true;
-+		return -EBUSY;
-+	}
-+
-+	if (card->mp_wr_bitmap & (1 << card->curr_wr_port)) {
-+		card->mp_wr_bitmap &= (u32)(~(1 << card->curr_wr_port));
-+		*port = card->curr_wr_port;
-+		if (++card->curr_wr_port == card->mp_end_port)
-+			card->curr_wr_port = reg->start_wr_port;
-+	} else {
-+		adapter->data_sent = true;
-+		return -EBUSY;
-+	}
-+
-+	nxpwifi_dbg(adapter, DATA,
-+		    "data: port=%d mp_wr_bitmap=0x%08x -> 0x%08x\n",
-+		    *port, wr_bitmap, card->mp_wr_bitmap);
-+
-+	return 0;
++	card->mpa_rx.ports |= (1 << port);
++	card->mpa_rx.len_arr[card->mpa_rx.pkt_cnt] = rx_len;
++	card->mpa_rx.pkt_cnt++;
 +}
-+
-+/* This function polls the card status.
-+ */
-+static int
-+nxpwifi_sdio_poll_card_status(struct nxpwifi_adapter *adapter, u8 bits)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+	u32 tries;
-+	u8 cs;
-+
-+	for (tries = 0; tries < MAX_POLL_TRIES; tries++) {
-+		if (nxpwifi_read_reg(adapter, card->reg->poll_reg, &cs))
-+			break;
-+		else if ((cs & bits) == bits)
-+			return 0;
-+
-+		usleep_range(10, 20);
-+	}
-+
-+	nxpwifi_dbg(adapter, ERROR,
-+		    "poll card status failed, tries = %d\n", tries);
-+
-+	return -1;
-+}
-+
-+/* This function disables the host interrupt.
-+ *
-+ * The host interrupt mask is read, the disable bit is reset and
-+ * written back to the card host interrupt mask register.
-+ */
-+static void nxpwifi_sdio_disable_host_int(struct nxpwifi_adapter *adapter)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+	struct sdio_func *func = card->func;
-+
-+	sdio_claim_host(func);
-+	nxpwifi_write_reg_locked(func, card->reg->host_int_mask_reg, 0);
-+	sdio_release_irq(func);
-+	sdio_release_host(func);
-+}
-+
-+/* This function reads the interrupt status from card.
-+ */
-+static void nxpwifi_interrupt_status(struct nxpwifi_adapter *adapter)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+	u8 sdio_ireg;
-+	unsigned long flags;
-+
-+	if (nxpwifi_read_data_sync(adapter, card->mp_regs,
-+				   card->reg->max_mp_regs,
-+				   REG_PORT | NXPWIFI_SDIO_BYTE_MODE_MASK, 0)) {
-+		nxpwifi_dbg(adapter, ERROR, "read mp_regs failed\n");
-+		return;
-+	}
-+
-+	sdio_ireg = card->mp_regs[card->reg->host_int_status_reg];
-+	if (sdio_ireg) {
-+		/* DN_LD_HOST_INT_STATUS and/or UP_LD_HOST_INT_STATUS
-+		 * For SDIO new mode CMD port interrupts
-+		 *	DN_LD_CMD_PORT_HOST_INT_STATUS and/or
-+		 *	UP_LD_CMD_PORT_HOST_INT_STATUS
-+		 * Clear the interrupt status register
-+		 */
-+		nxpwifi_dbg(adapter, INTR,
-+			    "int: sdio_ireg = %#x\n", sdio_ireg);
-+		spin_lock_irqsave(&adapter->int_lock, flags);
-+		adapter->int_status |= sdio_ireg;
-+		spin_unlock_irqrestore(&adapter->int_lock, flags);
-+	}
-+}
-+
-+/* SDIO interrupt handler.
-+ *
-+ * This function reads the interrupt status from firmware and handles
-+ * the interrupt in current thread (ksdioirqd) right away.
-+ */
-+static void
-+nxpwifi_sdio_interrupt(struct sdio_func *func)
-+{
-+	struct nxpwifi_adapter *adapter;
-+	struct sdio_mmc_card *card;
-+
-+	card = sdio_get_drvdata(func);
-+	if (!card || !card->adapter) {
-+		pr_err("int: func=%p card=%p adapter=%p\n",
-+		       func, card, card ? card->adapter : NULL);
-+		return;
-+	}
-+	adapter = card->adapter;
-+
-+	if (!adapter->pps_uapsd_mode && adapter->ps_state == PS_STATE_SLEEP)
-+		adapter->ps_state = PS_STATE_AWAKE;
-+
-+	nxpwifi_interrupt_status(adapter);
-+	nxpwifi_main_process(adapter);
-+}
-+
-+/* This function enables the host interrupt.
-+ *
-+ * The host interrupt enable mask is written to the card
-+ * host interrupt mask register.
-+ */
-+static int nxpwifi_sdio_enable_host_int(struct nxpwifi_adapter *adapter)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+	struct sdio_func *func = card->func;
-+	int ret;
-+
-+	sdio_claim_host(func);
-+
-+	/* Request the SDIO IRQ */
-+	ret = sdio_claim_irq(func, nxpwifi_sdio_interrupt);
-+	if (ret) {
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "claim irq failed: ret=%d\n", ret);
-+		goto out;
-+	}
-+
-+	/* Simply write the mask to the register */
-+	ret = nxpwifi_write_reg_locked(func, card->reg->host_int_mask_reg,
-+				       card->reg->host_int_enable);
-+	if (ret) {
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "enable host interrupt failed\n");
-+		sdio_release_irq(func);
-+	}
-+
-+out:
-+	sdio_release_host(func);
-+	return ret;
-+}
-+
-+/* This function gets a data buffer from the card.
-+ */
-+static int nxpwifi_sdio_card_to_host(struct nxpwifi_adapter *adapter,
-+				     u32 *type, u8 *buffer,
-+				     u32 npayload, u32 ioport)
-+{
-+	int ret;
-+	u32 nb;
-+
-+	if (!buffer) {
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "%s: buffer is NULL\n", __func__);
-+		return -1;
-+	}
-+
-+	ret = nxpwifi_read_data_sync(adapter, buffer, npayload, ioport, 1);
-+
-+	if (ret) {
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "%s: read iomem failed: %d\n", __func__,
-+			ret);
-+		return -1;
-+	}
-+
-+	nb = get_unaligned_le16((buffer));
-+	if (nb > npayload) {
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "%s: invalid packet, nb=%d npayload=%d\n",
-+			    __func__, nb, npayload);
-+		return -1;
-+	}
-+
-+	*type = get_unaligned_le16((buffer + 2));
-+
-+	return ret;
-+}
-+
-+/* This function downloads the firmware to the card.
-+ *
-+ * Firmware is downloaded to the card in blocks. Every block download
-+ * is tested for CRC errors, and retried a number of times before
-+ * returning failure.
-+ */
-+static int nxpwifi_prog_fw_w_helper(struct nxpwifi_adapter *adapter,
-+				    struct nxpwifi_fw_image *fw)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+	const struct nxpwifi_sdio_card_reg *reg = card->reg;
-+	int ret;
-+	u8 *firmware = fw->fw_buf;
-+	u32 firmware_len = fw->fw_len;
-+	u32 offset = 0;
-+	u8 base0, base1;
-+	u8 *fwbuf;
-+	u16 len = 0;
-+	u32 txlen, tx_blocks = 0, tries;
-+	u32 i = 0;
-+
-+	if (!firmware_len) {
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "firmware image not found! Terminating download\n");
-+		return -1;
-+	}
-+
-+	nxpwifi_dbg(adapter, INFO,
-+		    "info: downloading FW image (%d bytes)\n",
-+		    firmware_len);
-+
-+	/* Assume that the allocated buffer is 8-byte aligned */
-+	fwbuf = kzalloc(NXPWIFI_UPLD_SIZE, GFP_KERNEL);
-+	if (!fwbuf)
-+		return -ENOMEM;
-+
-+	sdio_claim_host(card->func);
-+
-+	/* Perform firmware data transfer */
-+	do {
-+		/* The host polls for the DN_LD_CARD_RDY and CARD_IO_READY
-+		 * bits
-+		 */
-+		ret = nxpwifi_sdio_poll_card_status(adapter, CARD_IO_READY |
-+						    DN_LD_CARD_RDY);
-+		if (ret) {
-+			nxpwifi_dbg(adapter, ERROR,
-+				    "FW download with helper:\t"
-+				    "poll status timeout @ %d\n", offset);
-+			goto done;
-+		}
-+
-+		/* More data? */
-+		if (offset >= firmware_len)
-+			break;
-+
-+		for (tries = 0; tries < MAX_POLL_TRIES; tries++) {
-+			ret = nxpwifi_read_reg(adapter, reg->base_0_reg,
-+					       &base0);
-+			if (ret) {
-+				nxpwifi_dbg(adapter, ERROR,
-+					    "dev BASE0 register read failed:\t"
-+					    "base0=%#04X(%d). Terminating dnld\n",
-+					    base0, base0);
-+				goto done;
-+			}
-+			ret = nxpwifi_read_reg(adapter, reg->base_1_reg,
-+					       &base1);
-+			if (ret) {
-+				nxpwifi_dbg(adapter, ERROR,
-+					    "dev BASE1 register read failed:\t"
-+					    "base1=%#04X(%d). Terminating dnld\n",
-+					    base1, base1);
-+				goto done;
-+			}
-+			len = (u16)(((base1 & 0xff) << 8) | (base0 & 0xff));
-+
-+			if (len)
-+				break;
-+
-+			usleep_range(10, 20);
-+		}
-+
-+		if (!len) {
-+			break;
-+		} else if (len > NXPWIFI_UPLD_SIZE) {
-+			nxpwifi_dbg(adapter, ERROR,
-+				    "FW dnld failed @ %d, invalid length %d\n",
-+				    offset, len);
-+			ret = -1;
-+			goto done;
-+		}
-+
-+		txlen = len;
-+
-+		if (len & BIT(0)) {
-+			i++;
-+			if (i > MAX_WRITE_IOMEM_RETRY) {
-+				nxpwifi_dbg(adapter, ERROR,
-+					    "FW dnld failed @ %d, over max retry\n",
-+					    offset);
-+				ret = -1;
-+				goto done;
-+			}
-+			nxpwifi_dbg(adapter, ERROR,
-+				    "CRC indicated by the helper:\t"
-+				    "len = 0x%04X, txlen = %d\n", len, txlen);
-+			len &= ~BIT(0);
-+			/* Setting this to 0 to resend from same offset */
-+			txlen = 0;
-+		} else {
-+			i = 0;
-+
-+			/* Set blocksize to transfer - checking for last
-+			 * block
-+			 */
-+			if (firmware_len - offset < txlen)
-+				txlen = firmware_len - offset;
-+
-+			tx_blocks = (txlen + NXPWIFI_SDIO_BLOCK_SIZE - 1)
-+				    / NXPWIFI_SDIO_BLOCK_SIZE;
-+
-+			/* Copy payload to buffer */
-+			memmove(fwbuf, &firmware[offset], txlen);
-+		}
-+
-+		ret = nxpwifi_write_data_sync(adapter, fwbuf, tx_blocks *
-+					      NXPWIFI_SDIO_BLOCK_SIZE,
-+					      adapter->ioport);
-+		if (ret) {
-+			nxpwifi_dbg(adapter, ERROR,
-+				    "FW download, write iomem (%d) failed @ %d\n",
-+				    i, offset);
-+			if (nxpwifi_write_reg(adapter, CONFIGURATION_REG, 0x04))
-+				nxpwifi_dbg(adapter, ERROR,
-+					    "write CFG reg failed\n");
-+
-+			ret = -1;
-+			goto done;
-+		}
-+
-+		offset += txlen;
-+	} while (true);
-+
-+	nxpwifi_dbg(adapter, MSG,
-+		    "info: FW download over, size %d bytes\n", offset);
-+
-+	ret = 0;
-+done:
-+	sdio_release_host(card->func);
-+	kfree(fwbuf);
-+	return ret;
-+}
-+
-+/* This function decodes sdio aggregation pkt.
-+ *
-+ * Based on the data block size and pkt_len,
-+ * skb data will be decoded to few packets.
-+ */
-+static void nxpwifi_deaggr_sdio_pkt(struct nxpwifi_adapter *adapter,
-+				    struct sk_buff *skb)
-+{
-+	u32 total_pkt_len, pkt_len;
-+	struct sk_buff *skb_deaggr;
-+	u16 blk_size;
-+	u8 blk_num;
-+	u8 *data;
-+
-+	data = skb->data;
-+	total_pkt_len = skb->len;
-+
-+	while (total_pkt_len >= (SDIO_HEADER_OFFSET + adapter->intf_hdr_len)) {
-+		if (total_pkt_len < adapter->sdio_rx_block_size)
-+			break;
-+		blk_num = *(data + BLOCK_NUMBER_OFFSET);
-+		blk_size = adapter->sdio_rx_block_size * blk_num;
-+		if (blk_size > total_pkt_len) {
-+			nxpwifi_dbg(adapter, ERROR,
-+				    "%s: error in blk_size,\t"
-+				    "blk_num=%d, blk_size=%d, total_pkt_len=%d\n",
-+				    __func__, blk_num, blk_size, total_pkt_len);
-+			break;
-+		}
-+		pkt_len = get_unaligned_le16((data +
-+					     SDIO_HEADER_OFFSET));
-+		if ((pkt_len + SDIO_HEADER_OFFSET) > blk_size) {
-+			nxpwifi_dbg(adapter, ERROR,
-+				    "%s: error in pkt_len,\t"
-+				    "pkt_len=%d, blk_size=%d\n",
-+				    __func__, pkt_len, blk_size);
-+			break;
-+		}
-+
-+		skb_deaggr = nxpwifi_alloc_dma_align_buf(pkt_len, GFP_KERNEL);
-+		if (!skb_deaggr)
-+			break;
-+		skb_put(skb_deaggr, pkt_len);
-+		memcpy(skb_deaggr->data, data + SDIO_HEADER_OFFSET, pkt_len);
-+		skb_pull(skb_deaggr, adapter->intf_hdr_len);
-+
-+		nxpwifi_handle_rx_packet(adapter, skb_deaggr);
-+		data += blk_size;
-+		total_pkt_len -= blk_size;
-+	}
-+}
-+
-+/* This function decodes a received packet.
-+ *
-+ * Based on the type, the packet is treated as either a data, or
-+ * a command response, or an event, and the correct handler
-+ * function is invoked.
-+ */
-+static int nxpwifi_decode_rx_packet(struct nxpwifi_adapter *adapter,
-+				    struct sk_buff *skb, u32 upld_typ)
-+{
-+	u8 *cmd_buf;
-+	u16 pkt_len;
-+	struct nxpwifi_rxinfo *rx_info;
-+
-+	pkt_len = get_unaligned_le16(skb->data);
-+
-+	if (upld_typ != NXPWIFI_TYPE_AGGR_DATA) {
-+		skb_trim(skb, pkt_len);
-+		skb_pull(skb, adapter->intf_hdr_len);
-+	}
-+
-+	switch (upld_typ) {
-+	case NXPWIFI_TYPE_AGGR_DATA:
-+		nxpwifi_dbg(adapter, INFO,
-+			    "info: --- Rx: Aggr Data packet ---\n");
-+		rx_info = NXPWIFI_SKB_RXCB(skb);
-+		rx_info->buf_type = NXPWIFI_TYPE_AGGR_DATA;
-+		if (adapter->rx_work_enabled) {
-+			skb_queue_tail(&adapter->rx_data_q, skb);
-+			atomic_inc(&adapter->rx_pending);
-+			adapter->data_received = true;
-+		} else {
-+			nxpwifi_deaggr_sdio_pkt(adapter, skb);
-+			dev_kfree_skb_any(skb);
-+		}
-+		break;
-+
-+	case NXPWIFI_TYPE_DATA:
-+		nxpwifi_dbg(adapter, DATA,
-+			    "info: --- Rx: Data packet ---\n");
-+		if (adapter->rx_work_enabled) {
-+			skb_queue_tail(&adapter->rx_data_q, skb);
-+			adapter->data_received = true;
-+			atomic_inc(&adapter->rx_pending);
-+		} else {
-+			nxpwifi_handle_rx_packet(adapter, skb);
-+		}
-+		break;
-+
-+	case NXPWIFI_TYPE_CMD:
-+		nxpwifi_dbg(adapter, CMD,
-+			    "info: --- Rx: Cmd Response ---\n");
-+		/* take care of curr_cmd = NULL case */
-+		if (!adapter->curr_cmd) {
-+			cmd_buf = adapter->upld_buf;
-+
-+			if (adapter->ps_state == PS_STATE_SLEEP_CFM)
-+				nxpwifi_process_sleep_confirm_resp(adapter,
-+								   skb->data,
-+								   skb->len);
-+
-+			memcpy(cmd_buf, skb->data,
-+			       min_t(u32, NXPWIFI_SIZE_OF_CMD_BUFFER,
-+				     skb->len));
-+
-+			dev_kfree_skb_any(skb);
-+		} else {
-+			adapter->cmd_resp_received = true;
-+			adapter->curr_cmd->resp_skb = skb;
-+		}
-+		break;
-+
-+	case NXPWIFI_TYPE_EVENT:
-+		nxpwifi_dbg(adapter, EVENT,
-+			    "info: --- Rx: Event ---\n");
-+		adapter->event_cause = get_unaligned_le32(skb->data);
-+
-+		if (skb->len > 0 && skb->len  < MAX_EVENT_SIZE)
-+			memcpy(adapter->event_body,
-+			       skb->data + NXPWIFI_EVENT_HEADER_LEN,
-+			       skb->len);
-+
-+		/* event cause has been saved to adapter->event_cause */
-+		adapter->event_received = true;
-+		adapter->event_skb = skb;
-+
-+		break;
-+
-+	default:
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "unknown upload type %#x\n", upld_typ);
-+		dev_kfree_skb_any(skb);
-+		break;
-+	}
-+
-+	return 0;
-+}
-+
-+/* This function transfers received packets from card to driver, performing
-+ * aggregation if required.
-+ *
-+ * For data received on control port, or if aggregation is disabled, the
-+ * received buffers are uploaded as separate packets. However, if aggregation
-+ * is enabled and required, the buffers are copied onto an aggregation buffer,
-+ * provided there is space left, processed and finally uploaded.
-+ */
-+static int nxpwifi_sdio_card_to_host_mp_aggr(struct nxpwifi_adapter *adapter,
-+					     u16 rx_len, u8 port)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+	s32 f_do_rx_aggr = 0;
-+	s32 f_do_rx_cur = 0;
-+	s32 f_aggr_cur = 0;
-+	s32 f_post_aggr_cur = 0;
-+	struct sk_buff *skb_deaggr;
-+	struct sk_buff *skb = NULL;
-+	u32 pkt_len, pkt_type, mport, pind;
-+	u8 *curr_ptr;
-+
-+	if (!card->mpa_rx.enabled) {
-+		nxpwifi_dbg(adapter, WARN,
-+			    "info: %s: rx aggregation disabled\n",
-+			    __func__);
-+
-+		f_do_rx_cur = 1;
-+		goto rx_curr_single;
-+	}
-+
-+	if (card->mp_rd_bitmap & card->reg->data_port_mask) {
-+		/* Some more data RX pending */
-+		nxpwifi_dbg(adapter, INFO,
-+			    "info: %s: not last packet\n", __func__);
-+
-+		if (MP_RX_AGGR_IN_PROGRESS(card)) {
-+			if (MP_RX_AGGR_BUF_HAS_ROOM(card, rx_len)) {
-+				f_aggr_cur = 1;
-+			} else {
-+				/* No room in Aggr buf, do rx aggr now */
-+				f_do_rx_aggr = 1;
-+				f_post_aggr_cur = 1;
-+			}
-+		} else {
-+			/* Rx aggr not in progress */
-+			f_aggr_cur = 1;
-+		}
-+
-+	} else {
-+		/* No more data RX pending */
-+		nxpwifi_dbg(adapter, INFO,
-+			    "info: %s: last packet\n", __func__);
-+
-+		if (MP_RX_AGGR_IN_PROGRESS(card)) {
-+			f_do_rx_aggr = 1;
-+			if (MP_RX_AGGR_BUF_HAS_ROOM(card, rx_len))
-+				f_aggr_cur = 1;
-+			else
-+				/* No room in Aggr buf, do rx aggr now */
-+				f_do_rx_cur = 1;
-+		} else {
-+			f_do_rx_cur = 1;
-+		}
-+	}
-+
-+	if (f_aggr_cur) {
-+		nxpwifi_dbg(adapter, INFO,
-+			    "info: current packet aggregation\n");
-+		/* Curr pkt can be aggregated */
-+		mp_rx_aggr_setup(card, rx_len, port);
-+
-+		if (MP_RX_AGGR_PKT_LIMIT_REACHED(card) ||
-+		    mp_rx_aggr_port_limit_reached(card)) {
-+			nxpwifi_dbg(adapter, INFO,
-+				    "info: %s: aggregated packet\t"
-+				    "limit reached\n", __func__);
-+			/* No more pkts allowed in Aggr buf, rx it */
-+			f_do_rx_aggr = 1;
-+		}
-+	}
-+
-+	if (f_do_rx_aggr) {
-+		u32 port_count;
-+		int i;
-+
-+		/* do aggr RX now */
-+		nxpwifi_dbg(adapter, DATA,
-+			    "info: do_rx_aggr: num of packets: %d\n",
-+			    card->mpa_rx.pkt_cnt);
-+
-+		for (i = 0, port_count = 0; i < card->max_ports; i++)
-+			if (card->mpa_rx.ports & BIT(i))
-+				port_count++;
-+
-+		/* Reading data from "start_port + 0" to "start_port +
-+		 * port_count -1", so decrease the count by 1
-+		 */
-+		port_count--;
-+		mport = (adapter->ioport | SDIO_MPA_ADDR_BASE |
-+			 (port_count << 8)) + card->mpa_rx.start_port;
-+
-+		if (card->mpa_rx.pkt_cnt == 1)
-+			mport = adapter->ioport + card->mpa_rx.start_port;
-+
-+		if (nxpwifi_read_data_sync(adapter, card->mpa_rx.buf,
-+					   card->mpa_rx.buf_len, mport, 1))
-+			goto error;
-+
-+		curr_ptr = card->mpa_rx.buf;
-+
-+		for (pind = 0; pind < card->mpa_rx.pkt_cnt; pind++) {
-+			u32 *len_arr = card->mpa_rx.len_arr;
-+
-+			/* get curr PKT len & type */
-+			pkt_len = get_unaligned_le16(&curr_ptr[0]);
-+			pkt_type = get_unaligned_le16(&curr_ptr[2]);
-+
-+			/* copy pkt to deaggr buf */
-+			skb_deaggr = nxpwifi_alloc_dma_align_buf(len_arr[pind],
-+								 GFP_KERNEL);
-+			if (!skb_deaggr) {
-+				nxpwifi_dbg(adapter, ERROR, "skb allocation failure\t"
-+					    "drop pkt len=%d type=%d\n",
-+					    pkt_len, pkt_type);
-+				curr_ptr += len_arr[pind];
-+				continue;
-+			}
-+
-+			skb_put(skb_deaggr, len_arr[pind]);
-+
-+			if ((pkt_type == NXPWIFI_TYPE_DATA ||
-+			     (pkt_type == NXPWIFI_TYPE_AGGR_DATA &&
-+			      adapter->sdio_rx_aggr_enable)) &&
-+			    pkt_len <= len_arr[pind]) {
-+				memcpy(skb_deaggr->data, curr_ptr, pkt_len);
-+
-+				skb_trim(skb_deaggr, pkt_len);
-+
-+				/* Process de-aggr packet */
-+				nxpwifi_decode_rx_packet(adapter, skb_deaggr,
-+							 pkt_type);
-+			} else {
-+				nxpwifi_dbg(adapter, ERROR,
-+					    "drop wrong aggr pkt:\t"
-+					    "sdio_single_port_rx_aggr=%d\t"
-+					    "type=%d len=%d max_len=%d\n",
-+					    adapter->sdio_rx_aggr_enable,
-+					    pkt_type, pkt_len, len_arr[pind]);
-+				dev_kfree_skb_any(skb_deaggr);
-+			}
-+			curr_ptr += len_arr[pind];
-+		}
-+		MP_RX_AGGR_BUF_RESET(card);
-+	}
-+
-+rx_curr_single:
-+	if (f_do_rx_cur) {
-+		nxpwifi_dbg(adapter, INFO, "info: RX: port: %d, rx_len: %d\n",
-+			    port, rx_len);
-+
-+		skb = nxpwifi_alloc_dma_align_buf(rx_len, GFP_KERNEL);
-+		if (!skb) {
-+			nxpwifi_dbg(adapter, ERROR,
-+				    "single skb allocated fail,\t"
-+				    "drop pkt port=%d len=%d\n", port, rx_len);
-+			if (nxpwifi_sdio_card_to_host(adapter, &pkt_type,
-+						      card->mpa_rx.buf, rx_len,
-+						      adapter->ioport + port))
-+				goto error;
-+			return 0;
-+		}
-+
-+		skb_put(skb, rx_len);
-+
-+		if (nxpwifi_sdio_card_to_host(adapter, &pkt_type,
-+					      skb->data, skb->len,
-+					      adapter->ioport + port))
-+			goto error;
-+		if (!adapter->sdio_rx_aggr_enable &&
-+		    pkt_type == NXPWIFI_TYPE_AGGR_DATA) {
-+			nxpwifi_dbg(adapter, ERROR, "drop wrong pkt type %d\t"
-+				    "current SDIO RX Aggr not enabled\n",
-+				    pkt_type);
-+			dev_kfree_skb_any(skb);
-+			return 0;
-+		}
-+
-+		nxpwifi_decode_rx_packet(adapter, skb, pkt_type);
-+	}
-+	if (f_post_aggr_cur) {
-+		nxpwifi_dbg(adapter, INFO,
-+			    "info: current packet aggregation\n");
-+		/* Curr pkt can be aggregated */
-+		mp_rx_aggr_setup(card, rx_len, port);
-+	}
-+
-+	return 0;
-+error:
-+	if (MP_RX_AGGR_IN_PROGRESS(card))
-+		MP_RX_AGGR_BUF_RESET(card);
-+
-+	if (f_do_rx_cur && skb)
-+		/* Single transfer pending. Free curr buff also */
-+		dev_kfree_skb_any(skb);
-+
-+	return -1;
-+}
-+
-+/* This function checks the current interrupt status.
-+ *
-+ * The following interrupts are checked and handled by this function -
-+ *      - Data sent
-+ *      - Command sent
-+ *      - Packets received
-+ *
-+ * Since the firmware does not generate download ready interrupt if the
-+ * port updated is command port only, command sent interrupt checking
-+ * should be done manually, and for every SDIO interrupt.
-+ *
-+ * In case of Rx packets received, the packets are uploaded from card to
-+ * host and processed accordingly.
-+ */
-+static int nxpwifi_process_int_status(struct nxpwifi_adapter *adapter)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+	const struct nxpwifi_sdio_card_reg *reg = card->reg;
-+	int ret = 0;
-+	u8 sdio_ireg;
-+	struct sk_buff *skb;
-+	u8 port;
-+	u32 len_reg_l, len_reg_u;
-+	u32 rx_blocks;
-+	u16 rx_len;
-+	unsigned long flags;
-+	u32 bitmap;
-+	u8 cr;
-+
-+	spin_lock_irqsave(&adapter->int_lock, flags);
-+	sdio_ireg = adapter->int_status;
-+	adapter->int_status = 0;
-+	spin_unlock_irqrestore(&adapter->int_lock, flags);
-+
-+	if (!sdio_ireg)
-+		return ret;
-+
-+	/* Following interrupt is only for SDIO new mode */
-+	if (sdio_ireg & DN_LD_CMD_PORT_HOST_INT_STATUS && adapter->cmd_sent)
-+		adapter->cmd_sent = false;
-+
-+	/* Following interrupt is only for SDIO new mode */
-+	if (sdio_ireg & UP_LD_CMD_PORT_HOST_INT_STATUS) {
-+		u32 pkt_type;
-+
-+		/* read the len of control packet */
-+		rx_len = card->mp_regs[reg->cmd_rd_len_1] << 8;
-+		rx_len |= (u16)card->mp_regs[reg->cmd_rd_len_0];
-+		rx_blocks = DIV_ROUND_UP(rx_len, NXPWIFI_SDIO_BLOCK_SIZE);
-+		if (rx_len <= adapter->intf_hdr_len ||
-+		    (rx_blocks * NXPWIFI_SDIO_BLOCK_SIZE) >
-+		     NXPWIFI_RX_DATA_BUF_SIZE)
-+			return -1;
-+		rx_len = (u16)(rx_blocks * NXPWIFI_SDIO_BLOCK_SIZE);
-+		nxpwifi_dbg(adapter, INFO, "info: rx_len = %d\n", rx_len);
-+
-+		skb = nxpwifi_alloc_dma_align_buf(rx_len, GFP_KERNEL);
-+		if (!skb)
-+			return -1;
-+
-+		skb_put(skb, rx_len);
-+
-+		if (nxpwifi_sdio_card_to_host(adapter, &pkt_type, skb->data,
-+					      skb->len, adapter->ioport |
-+							CMD_PORT_SLCT)) {
-+			nxpwifi_dbg(adapter, ERROR,
-+				    "%s: failed to card_to_host", __func__);
-+			dev_kfree_skb_any(skb);
-+			goto term_cmd;
-+		}
-+
-+		if (pkt_type != NXPWIFI_TYPE_CMD &&
-+		    pkt_type != NXPWIFI_TYPE_EVENT)
-+			nxpwifi_dbg(adapter, ERROR,
-+				    "%s:Received wrong packet on cmd port",
-+				    __func__);
-+
-+		nxpwifi_decode_rx_packet(adapter, skb, pkt_type);
-+	}
-+
-+	if (sdio_ireg & DN_LD_HOST_INT_STATUS) {
-+		bitmap = (u32)card->mp_regs[reg->wr_bitmap_l];
-+		bitmap |= ((u32)card->mp_regs[reg->wr_bitmap_u]) << 8;
-+		bitmap |= ((u32)card->mp_regs[reg->wr_bitmap_1l]) << 16;
-+		bitmap |= ((u32)card->mp_regs[reg->wr_bitmap_1u]) << 24;
-+		card->mp_wr_bitmap = bitmap;
-+
-+		nxpwifi_dbg(adapter, INTR,
-+			    "int: DNLD: wr_bitmap=0x%x\n",
-+			    card->mp_wr_bitmap);
-+		if (adapter->data_sent &&
-+		    (card->mp_wr_bitmap & card->mp_data_port_mask)) {
-+			nxpwifi_dbg(adapter, INTR,
-+				    "info:  <--- Tx DONE Interrupt --->\n");
-+			adapter->data_sent = false;
-+		}
-+	}
-+
-+	nxpwifi_dbg(adapter, INTR, "info: cmd_sent=%d data_sent=%d\n",
-+		    adapter->cmd_sent, adapter->data_sent);
-+	if (sdio_ireg & UP_LD_HOST_INT_STATUS) {
-+		bitmap = (u32)card->mp_regs[reg->rd_bitmap_l];
-+		bitmap |= ((u32)card->mp_regs[reg->rd_bitmap_u]) << 8;
-+		bitmap |= ((u32)card->mp_regs[reg->rd_bitmap_1l]) << 16;
-+		bitmap |= ((u32)card->mp_regs[reg->rd_bitmap_1u]) << 24;
-+		card->mp_rd_bitmap = bitmap;
-+		nxpwifi_dbg(adapter, INTR,
-+			    "int: UPLD: rd_bitmap=0x%x\n",
-+			    card->mp_rd_bitmap);
-+
-+		while (true) {
-+			ret = nxpwifi_get_rd_port(adapter, &port);
-+			if (ret) {
-+				nxpwifi_dbg(adapter, INFO,
-+					    "info: no more rd_port available\n");
-+				break;
-+			}
-+			len_reg_l = reg->rd_len_p0_l + (port << 1);
-+			len_reg_u = reg->rd_len_p0_u + (port << 1);
-+			rx_len = ((u16)card->mp_regs[len_reg_u]) << 8;
-+			rx_len |= (u16)card->mp_regs[len_reg_l];
-+			nxpwifi_dbg(adapter, INFO,
-+				    "info: RX: port=%d rx_len=%u\n",
-+				    port, rx_len);
-+			rx_blocks =
-+				(rx_len + NXPWIFI_SDIO_BLOCK_SIZE -
-+				 1) / NXPWIFI_SDIO_BLOCK_SIZE;
-+			if (rx_len <= adapter->intf_hdr_len ||
-+			    (card->mpa_rx.enabled &&
-+			     ((rx_blocks * NXPWIFI_SDIO_BLOCK_SIZE) >
-+			      card->mpa_rx.buf_size))) {
-+				nxpwifi_dbg(adapter, ERROR,
-+					    "invalid rx_len=%d\n",
-+					    rx_len);
-+				return -1;
-+			}
-+
-+			rx_len = (u16)(rx_blocks * NXPWIFI_SDIO_BLOCK_SIZE);
-+			nxpwifi_dbg(adapter, INFO, "info: rx_len = %d\n",
-+				    rx_len);
-+
-+			if (nxpwifi_sdio_card_to_host_mp_aggr(adapter, rx_len,
-+							      port)) {
-+				nxpwifi_dbg(adapter, ERROR,
-+					    "card_to_host_mpa failed: int status=%#x\n",
-+					    sdio_ireg);
-+				goto term_cmd;
-+			}
-+		}
-+	}
-+
-+	return 0;
-+
-+term_cmd:
-+	/* terminate cmd */
-+	if (nxpwifi_read_reg(adapter, CONFIGURATION_REG, &cr))
-+		nxpwifi_dbg(adapter, ERROR, "read CFG reg failed\n");
-+	else
-+		nxpwifi_dbg(adapter, INFO,
-+			    "info: CFG reg val = %d\n", cr);
-+
-+	if (nxpwifi_write_reg(adapter, CONFIGURATION_REG, (cr | 0x04)))
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "write CFG reg failed\n");
-+	else
-+		nxpwifi_dbg(adapter, INFO, "info: write success\n");
-+
-+	if (nxpwifi_read_reg(adapter, CONFIGURATION_REG, &cr))
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "read CFG reg failed\n");
-+	else
-+		nxpwifi_dbg(adapter, INFO,
-+			    "info: CFG reg val =%x\n", cr);
-+
-+	return -1;
-+}
-+
-+/* This function aggregates transmission buffers in driver and downloads
-+ * the aggregated packet to card.
-+ *
-+ * The individual packets are aggregated by copying into an aggregation
-+ * buffer and then downloaded to the card. Previous unsent packets in the
-+ * aggregation buffer are pre-copied first before new packets are added.
-+ * Aggregation is done till there is space left in the aggregation buffer,
-+ * or till new packets are available.
-+ *
-+ * The function will only download the packet to the card when aggregation
-+ * stops, otherwise it will just aggregate the packet in aggregation buffer
-+ * and return.
-+ */
-+static int nxpwifi_host_to_card_mp_aggr(struct nxpwifi_adapter *adapter,
-+					u8 *payload, u32 pkt_len, u32 port,
-+					u32 next_pkt_len)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+	int ret = 0;
-+	s32 f_send_aggr_buf = 0;
-+	s32 f_send_cur_buf = 0;
-+	s32 f_precopy_cur_buf = 0;
-+	s32 f_postcopy_cur_buf = 0;
-+	u32 mport;
-+	int index;
-+
-+	if (!card->mpa_tx.enabled || port == CMD_PORT_SLCT) {
-+		nxpwifi_dbg(adapter, WARN,
-+			    "info: %s: tx aggregation disabled\n",
-+			    __func__);
-+
-+		f_send_cur_buf = 1;
-+		goto tx_curr_single;
-+	}
-+
-+	if (next_pkt_len) {
-+		/* More pkt in TX queue */
-+		nxpwifi_dbg(adapter, INFO,
-+			    "info: %s: more packets in queue.\n",
-+			    __func__);
-+
-+		if (MP_TX_AGGR_IN_PROGRESS(card)) {
-+			if (MP_TX_AGGR_BUF_HAS_ROOM(card, pkt_len)) {
-+				f_precopy_cur_buf = 1;
-+
-+				if (!(card->mp_wr_bitmap &
-+				      (1 << card->curr_wr_port)) ||
-+				    !MP_TX_AGGR_BUF_HAS_ROOM
-+				     (card, pkt_len + next_pkt_len))
-+					f_send_aggr_buf = 1;
-+			} else {
-+				/* No room in Aggr buf, send it */
-+				f_send_aggr_buf = 1;
-+
-+				if (!(card->mp_wr_bitmap &
-+				      (1 << card->curr_wr_port)))
-+					f_send_cur_buf = 1;
-+				else
-+					f_postcopy_cur_buf = 1;
-+			}
-+		} else {
-+			if (MP_TX_AGGR_BUF_HAS_ROOM(card, pkt_len) &&
-+			    (card->mp_wr_bitmap & (1 << card->curr_wr_port)))
-+				f_precopy_cur_buf = 1;
-+			else
-+				f_send_cur_buf = 1;
-+		}
-+	} else {
-+		/* Last pkt in TX queue */
-+		nxpwifi_dbg(adapter, INFO,
-+			    "info: %s: Last packet in Tx Queue.\n",
-+			    __func__);
-+
-+		if (MP_TX_AGGR_IN_PROGRESS(card)) {
-+			/* some packs in Aggr buf already */
-+			f_send_aggr_buf = 1;
-+
-+			if (MP_TX_AGGR_BUF_HAS_ROOM(card, pkt_len))
-+				f_precopy_cur_buf = 1;
-+			else
-+				/* No room in Aggr buf, send it */
-+				f_send_cur_buf = 1;
-+		} else {
-+			f_send_cur_buf = 1;
-+		}
-+	}
-+
-+	if (f_precopy_cur_buf) {
-+		nxpwifi_dbg(adapter, DATA,
-+			    "data: %s: precopy current buffer\n",
-+			    __func__);
-+		MP_TX_AGGR_BUF_PUT(card, payload, pkt_len, port);
-+
-+		if (MP_TX_AGGR_PKT_LIMIT_REACHED(card) ||
-+		    mp_tx_aggr_port_limit_reached(card))
-+			/* No more pkts allowed in Aggr buf, send it */
-+			f_send_aggr_buf = 1;
-+	}
-+
-+	if (f_send_aggr_buf) {
-+		u32 port_count;
-+		int i;
-+
-+		nxpwifi_dbg(adapter, DATA,
-+			    "data: %s: send aggr buffer: %d %d\n",
-+			    __func__, card->mpa_tx.start_port,
-+			    card->mpa_tx.ports);
-+
-+		for (i = 0, port_count = 0; i < card->max_ports; i++)
-+			if (card->mpa_tx.ports & BIT(i))
-+				port_count++;
-+
-+		/* Writing data from "start_port + 0" to "start_port +
-+		 * port_count -1", so decrease the count by 1
-+		 */
-+		port_count--;
-+		mport = (adapter->ioport | SDIO_MPA_ADDR_BASE |
-+			 (port_count << 8)) + card->mpa_tx.start_port;
-+
-+		if (card->mpa_tx.pkt_cnt == 1)
-+			mport = adapter->ioport + card->mpa_tx.start_port;
-+
-+		ret = nxpwifi_write_data_to_card(adapter, card->mpa_tx.buf,
-+						 card->mpa_tx.buf_len, mport);
-+
-+		/* Save the last multi port tx aggregation info to debug log */
-+		index = adapter->dbg.last_sdio_mp_index;
-+		index = (index + 1) % NXPWIFI_DBG_SDIO_MP_NUM;
-+		adapter->dbg.last_sdio_mp_index = index;
-+		adapter->dbg.last_mp_wr_ports[index] = mport;
-+		adapter->dbg.last_mp_wr_bitmap[index] = card->mp_wr_bitmap;
-+		adapter->dbg.last_mp_wr_len[index] = card->mpa_tx.buf_len;
-+		adapter->dbg.last_mp_curr_wr_port[index] = card->curr_wr_port;
-+
-+		MP_TX_AGGR_BUF_RESET(card);
-+	}
-+
-+tx_curr_single:
-+	if (f_send_cur_buf) {
-+		nxpwifi_dbg(adapter, DATA,
-+			    "data: %s: send current buffer %d\n",
-+			    __func__, port);
-+		ret = nxpwifi_write_data_to_card(adapter, payload, pkt_len,
-+						 adapter->ioport + port);
-+	}
-+
-+	if (f_postcopy_cur_buf) {
-+		nxpwifi_dbg(adapter, DATA,
-+			    "data: %s: postcopy current buffer\n",
-+			    __func__);
-+		MP_TX_AGGR_BUF_PUT(card, payload, pkt_len, port);
-+	}
-+
-+	return ret;
-+}
-+
-+/* This function downloads data from driver to card.
-+ *
-+ * Both commands and data packets are transferred to the card by this
-+ * function.
-+ *
-+ * This function adds the SDIO specific header to the front of the buffer
-+ * before transferring. The header contains the length of the packet and
-+ * the type. The firmware handles the packets based upon this set type.
-+ */
-+static int nxpwifi_sdio_host_to_card(struct nxpwifi_adapter *adapter,
-+				     u8 type, struct sk_buff *skb,
-+				     struct nxpwifi_tx_param *tx_param)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+	int ret;
-+	u32 buf_block_len;
-+	u32 blk_size;
-+	u32 port;
-+	u8 *payload = (u8 *)skb->data;
-+	u32 pkt_len = skb->len;
-+
-+	/* Allocate buffer and copy payload */
-+	blk_size = NXPWIFI_SDIO_BLOCK_SIZE;
-+	buf_block_len = (pkt_len + blk_size - 1) / blk_size;
-+	put_unaligned_le16((u16)pkt_len, payload + 0);
-+	put_unaligned_le16((u16)type, payload + 2);
-+
-+	/* This is SDIO specific header
-+	 *  u16 length,
-+	 *  u16 type (NXPWIFI_TYPE_DATA = 0, NXPWIFI_TYPE_CMD = 1,
-+	 *  NXPWIFI_TYPE_EVENT = 3)
-+	 */
-+	if (type == NXPWIFI_TYPE_DATA) {
-+		ret = nxpwifi_get_wr_port_data(adapter, &port);
-+		if (ret) {
-+			nxpwifi_dbg(adapter, ERROR,
-+				    "%s: no wr_port available\n",
-+				    __func__);
-+			return ret;
-+		}
-+	} else {
-+		adapter->cmd_sent = true;
-+		/* Type must be NXPWIFI_TYPE_CMD */
-+
-+		if (pkt_len <= adapter->intf_hdr_len ||
-+		    pkt_len > NXPWIFI_UPLD_SIZE)
-+			nxpwifi_dbg(adapter, ERROR,
-+				    "%s: payload=%p, nb=%d\n",
-+				    __func__, payload, pkt_len);
-+
-+		port = CMD_PORT_SLCT;
-+	}
-+
-+	/* Transfer data to card */
-+	pkt_len = buf_block_len * blk_size;
-+
-+	if (tx_param)
-+		ret = nxpwifi_host_to_card_mp_aggr(adapter, payload, pkt_len,
-+						   port, tx_param->next_pkt_len
-+						   );
-+	else
-+		ret = nxpwifi_host_to_card_mp_aggr(adapter, payload, pkt_len,
-+						   port, 0);
-+
-+	if (ret) {
-+		if (type == NXPWIFI_TYPE_CMD)
-+			adapter->cmd_sent = false;
-+		if (type == NXPWIFI_TYPE_DATA) {
-+			adapter->data_sent = false;
-+			/* restore curr_wr_port in error cases */
-+			card->curr_wr_port = port;
-+			card->mp_wr_bitmap |= (u32)(1 << card->curr_wr_port);
-+		}
-+	} else {
-+		if (type == NXPWIFI_TYPE_DATA) {
-+			if (!(card->mp_wr_bitmap & (1 << card->curr_wr_port)))
-+				adapter->data_sent = true;
-+			else
-+				adapter->data_sent = false;
-+		}
-+	}
-+
-+	return ret;
-+}
-+
-+/* This function allocates the MPA Tx and Rx buffers.
-+ */
-+static int nxpwifi_alloc_sdio_mpa_buffers(struct nxpwifi_adapter *adapter,
-+					  u32 mpa_tx_buf_size,
-+					  u32 mpa_rx_buf_size)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+	u32 rx_buf_size;
-+	int ret = 0;
-+
-+	card->mpa_tx.buf = kzalloc(mpa_tx_buf_size, GFP_KERNEL);
-+	if (!card->mpa_tx.buf) {
-+		ret = -1;
-+		goto error;
-+	}
-+
-+	card->mpa_tx.buf_size = mpa_tx_buf_size;
-+
-+	rx_buf_size = max_t(u32, mpa_rx_buf_size,
-+			    (u32)SDIO_MAX_AGGR_BUF_SIZE);
-+	card->mpa_rx.buf = kzalloc(rx_buf_size, GFP_KERNEL);
-+	if (!card->mpa_rx.buf) {
-+		ret = -1;
-+		goto error;
-+	}
-+
-+	card->mpa_rx.buf_size = rx_buf_size;
-+
-+error:
-+	if (ret) {
-+		kfree(card->mpa_tx.buf);
-+		kfree(card->mpa_rx.buf);
-+		card->mpa_tx.buf_size = 0;
-+		card->mpa_rx.buf_size = 0;
-+		card->mpa_tx.buf = NULL;
-+		card->mpa_rx.buf = NULL;
-+	}
-+
-+	return ret;
-+}
-+
-+/* This function unregisters the SDIO device.
-+ *
-+ * The SDIO IRQ is released, the function is disabled and driver
-+ * data is set to null.
-+ */
-+static void
-+nxpwifi_unregister_dev(struct nxpwifi_adapter *adapter)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+
-+	if (adapter->card) {
-+		card->adapter = NULL;
-+		sdio_claim_host(card->func);
-+		sdio_disable_func(card->func);
-+		sdio_release_host(card->func);
-+	}
-+}
-+
-+/* This function registers the SDIO device.
-+ *
-+ * SDIO IRQ is claimed, block size is set and driver data is initialized.
-+ */
-+static int nxpwifi_register_dev(struct nxpwifi_adapter *adapter)
-+{
-+	int ret;
-+	struct sdio_mmc_card *card = adapter->card;
-+	struct sdio_func *func = card->func;
-+	const char *firmware = card->firmware;
-+
-+	/* save adapter pointer in card */
-+	card->adapter = adapter;
-+	adapter->tx_buf_size = card->tx_buf_size;
-+
-+	sdio_claim_host(func);
-+
-+	/* Set block size */
-+	ret = sdio_set_block_size(card->func, NXPWIFI_SDIO_BLOCK_SIZE);
-+	sdio_release_host(func);
-+	if (ret) {
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "cannot set SDIO block size\n");
-+		return ret;
-+	}
-+
-+	/* Select correct firmware (sdsd or sdiouart) firmware based on the strapping
-+	 * option
-+	 */
-+	if (card->firmware_sdiouart) {
-+		u8 val;
-+
-+		nxpwifi_read_reg(adapter, card->reg->host_strap_reg, &val);
-+		if ((val & card->reg->host_strap_mask) == card->reg->host_strap_value)
-+			firmware = card->firmware_sdiouart;
-+	}
-+	strscpy(adapter->fw_name, firmware, sizeof(adapter->fw_name));
-+
-+	if (card->fw_dump_enh) {
-+		adapter->mem_type_mapping_tbl = generic_mem_type_map;
-+		adapter->num_mem_types = 1;
-+	} else {
-+		adapter->mem_type_mapping_tbl = mem_type_mapping_tbl;
-+		adapter->num_mem_types = ARRAY_SIZE(mem_type_mapping_tbl);
-+	}
-+
-+	return 0;
-+}
-+
-+/* This function initializes the SDIO driver.
-+ *
-+ * The following initializations steps are followed -
-+ *      - Read the Host interrupt status register to acknowledge
-+ *        the first interrupt got from bootloader
-+ *      - Disable host interrupt mask register
-+ *      - Get SDIO port
-+ *      - Initialize SDIO variables in card
-+ *      - Allocate MP registers
-+ *      - Allocate MPA Tx and Rx buffers
-+ */
-+static int nxpwifi_init_sdio(struct nxpwifi_adapter *adapter)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+	const struct nxpwifi_sdio_card_reg *reg = card->reg;
-+	int ret;
-+	u8 sdio_ireg;
-+
-+	sdio_set_drvdata(card->func, card);
-+
-+	/* Read the host_int_status_reg for ACK the first interrupt got
-+	 * from the bootloader. If we don't do this we get a interrupt
-+	 * as soon as we register the irq.
-+	 */
-+	nxpwifi_read_reg(adapter, card->reg->host_int_status_reg, &sdio_ireg);
-+
-+	/* Get SDIO ioport */
-+	if (nxpwifi_init_sdio_ioport(adapter))
-+		return -EIO;
-+
-+	/* Initialize SDIO variables in card */
-+	card->mp_rd_bitmap = 0;
-+	card->mp_wr_bitmap = 0;
-+	card->curr_rd_port = reg->start_rd_port;
-+	card->curr_wr_port = reg->start_wr_port;
-+
-+	card->mp_data_port_mask = reg->data_port_mask;
-+
-+	card->mpa_tx.buf_len = 0;
-+	card->mpa_tx.pkt_cnt = 0;
-+	card->mpa_tx.start_port = 0;
-+
-+	card->mpa_tx.enabled = 1;
-+	card->mpa_tx.pkt_aggr_limit = card->mp_agg_pkt_limit;
-+
-+	card->mpa_rx.buf_len = 0;
-+	card->mpa_rx.pkt_cnt = 0;
-+	card->mpa_rx.start_port = 0;
-+
-+	card->mpa_rx.enabled = 1;
-+	card->mpa_rx.pkt_aggr_limit = card->mp_agg_pkt_limit;
-+
-+	/* Allocate buffers for SDIO MP-A */
-+	card->mp_regs = kzalloc(reg->max_mp_regs, GFP_KERNEL);
-+	if (!card->mp_regs)
-+		return -ENOMEM;
-+
-+	card->mpa_rx.len_arr = kcalloc(card->mp_agg_pkt_limit,
-+				       sizeof(*card->mpa_rx.len_arr),
-+				       GFP_KERNEL);
-+	if (!card->mpa_rx.len_arr) {
-+		kfree(card->mp_regs);
-+		return -ENOMEM;
-+	}
-+
-+	ret = nxpwifi_alloc_sdio_mpa_buffers(adapter,
-+					     card->mp_tx_agg_buf_size,
-+					     card->mp_rx_agg_buf_size);
-+
-+	/* Allocate 32k MPA Tx/Rx buffers if 64k memory allocation fails */
-+	if (ret && (card->mp_tx_agg_buf_size == NXPWIFI_MP_AGGR_BSIZE_MAX ||
-+		    card->mp_rx_agg_buf_size == NXPWIFI_MP_AGGR_BSIZE_MAX)) {
-+		/* Disable rx single port aggregation */
-+		adapter->host_disable_sdio_rx_aggr = true;
-+
-+		ret = nxpwifi_alloc_sdio_mpa_buffers(adapter,
-+						     NXPWIFI_MP_AGGR_BSIZE_32K,
-+						     NXPWIFI_MP_AGGR_BSIZE_32K);
-+		if (ret) {
-+			/* Disable multi port aggregation */
-+			card->mpa_tx.enabled = 0;
-+			card->mpa_rx.enabled = 0;
-+		}
-+	}
-+
-+	adapter->ext_scan = card->can_ext_scan;
-+	return 0;
-+}
-+
-+/* This function resets the MPA Tx and Rx buffers.
-+ */
-+static void nxpwifi_cleanup_mpa_buf(struct nxpwifi_adapter *adapter)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+
-+	MP_TX_AGGR_BUF_RESET(card);
-+	MP_RX_AGGR_BUF_RESET(card);
-+}
-+
-+/* This function cleans up the allocated card buffers.
-+ *
-+ * The following are freed by this function -
-+ *      - MP registers
-+ *      - MPA Tx buffer
-+ *      - MPA Rx buffer
-+ */
-+static void nxpwifi_cleanup_sdio(struct nxpwifi_adapter *adapter)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+
-+	cancel_work_sync(&card->work);
-+
-+	kfree(card->mp_regs);
-+	kfree(card->mpa_rx.len_arr);
-+	kfree(card->mpa_tx.buf);
-+	kfree(card->mpa_rx.buf);
-+}
-+
-+/* This function updates the MP end port in card.
-+ */
-+static void
-+nxpwifi_update_mp_end_port(struct nxpwifi_adapter *adapter, u16 port)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+	const struct nxpwifi_sdio_card_reg *reg = card->reg;
-+	int i;
-+
-+	card->mp_end_port = port;
-+
-+	card->mp_data_port_mask = reg->data_port_mask;
-+
-+	if (reg->start_wr_port) {
-+		for (i = 1; i <= card->max_ports - card->mp_end_port; i++)
-+			card->mp_data_port_mask &=
-+					~(1 << (card->max_ports - i));
-+	}
-+
-+	card->curr_wr_port = reg->start_wr_port;
-+
-+	nxpwifi_dbg(adapter, CMD,
-+		    "cmd: mp_end_port %d, data port mask 0x%x\n",
-+		    port, card->mp_data_port_mask);
-+}
-+
-+static void nxpwifi_sdio_card_reset_work(struct nxpwifi_adapter *adapter)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+	struct sdio_func *func = card->func;
-+	int ret;
-+
-+	/* Prepare the adapter for the reset. */
-+	nxpwifi_shutdown_sw(adapter);
-+	clear_bit(NXPWIFI_IFACE_WORK_DEVICE_DUMP, &card->work_flags);
-+	clear_bit(NXPWIFI_IFACE_WORK_CARD_RESET, &card->work_flags);
-+
-+	/* Run a HW reset of the SDIO interface. */
-+	sdio_claim_host(func);
-+	ret = mmc_hw_reset(func->card);
-+	sdio_release_host(func);
-+
-+	switch (ret) {
-+	case 1:
-+		dev_dbg(&func->dev, "SDIO HW reset asynchronous\n");
-+		complete_all(adapter->fw_done);
-+		break;
-+	case 0:
-+		ret = nxpwifi_reinit_sw(adapter);
-+		if (ret)
-+			dev_err(&func->dev, "reinit failed: %d\n", ret);
-+		break;
-+	default:
-+		dev_err(&func->dev, "SDIO HW reset failed: %d\n", ret);
-+		break;
-+	}
-+}
-+
-+/* This function read/write firmware */
-+static enum
-+rdwr_status nxpwifi_sdio_rdwr_firmware(struct nxpwifi_adapter *adapter,
-+				       u8 doneflag)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+	int ret, tries;
-+	u8 ctrl_data = 0;
-+
-+	sdio_writeb(card->func, card->reg->fw_dump_host_ready,
-+		    card->reg->fw_dump_ctrl, &ret);
-+	if (ret) {
-+		nxpwifi_dbg(adapter, ERROR, "SDIO Write ERR\n");
-+		return RDWR_STATUS_FAILURE;
-+	}
-+	for (tries = 0; tries < MAX_POLL_TRIES; tries++) {
-+		ctrl_data = sdio_readb(card->func, card->reg->fw_dump_ctrl,
-+				       &ret);
-+		if (ret) {
-+			nxpwifi_dbg(adapter, ERROR, "SDIO read err\n");
-+			return RDWR_STATUS_FAILURE;
-+		}
-+		if (ctrl_data == FW_DUMP_DONE)
-+			break;
-+		if (doneflag && ctrl_data == doneflag)
-+			return RDWR_STATUS_DONE;
-+		if (ctrl_data != card->reg->fw_dump_host_ready) {
-+			nxpwifi_dbg(adapter, WARN,
-+				    "The ctrl reg was changed, re-try again\n");
-+			sdio_writeb(card->func, card->reg->fw_dump_host_ready,
-+				    card->reg->fw_dump_ctrl, &ret);
-+			if (ret) {
-+				nxpwifi_dbg(adapter, ERROR, "SDIO write err\n");
-+				return RDWR_STATUS_FAILURE;
-+			}
-+		}
-+		usleep_range(100, 200);
-+	}
-+	if (ctrl_data == card->reg->fw_dump_host_ready) {
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "Fail to pull ctrl_data\n");
-+		return RDWR_STATUS_FAILURE;
-+	}
-+
-+	return RDWR_STATUS_SUCCESS;
-+}
-+
-+/* This function dump firmware memory to file */
-+static void nxpwifi_sdio_fw_dump(struct nxpwifi_adapter *adapter)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+	int ret = 0;
-+	unsigned int reg, reg_start, reg_end;
-+	u8 *dbg_ptr, *end_ptr, dump_num, idx, i, read_reg, doneflag = 0;
-+	enum rdwr_status stat;
-+	u32 memory_size;
-+
-+	if (!card->can_dump_fw)
-+		return;
-+
-+	for (idx = 0; idx < ARRAY_SIZE(mem_type_mapping_tbl); idx++) {
-+		struct memory_type_mapping *entry = &mem_type_mapping_tbl[idx];
-+
-+		if (entry->mem_ptr) {
-+			vfree(entry->mem_ptr);
-+			entry->mem_ptr = NULL;
-+		}
-+		entry->mem_size = 0;
-+	}
-+
-+	nxpwifi_pm_wakeup_card(adapter);
-+	sdio_claim_host(card->func);
-+
-+	nxpwifi_dbg(adapter, MSG, "== nxpwifi firmware dump start ==\n");
-+
-+	stat = nxpwifi_sdio_rdwr_firmware(adapter, doneflag);
-+	if (stat == RDWR_STATUS_FAILURE)
-+		goto done;
-+
-+	reg = card->reg->fw_dump_start;
-+	/* Read the number of the memories which will dump */
-+	dump_num = sdio_readb(card->func, reg, &ret);
-+	if (ret) {
-+		nxpwifi_dbg(adapter, ERROR, "SDIO read memory length err\n");
-+		goto done;
-+	}
-+
-+	/* Read the length of every memory which will dump */
-+	for (idx = 0; idx < dump_num; idx++) {
-+		struct memory_type_mapping *entry = &mem_type_mapping_tbl[idx];
-+
-+		stat = nxpwifi_sdio_rdwr_firmware(adapter, doneflag);
-+		if (stat == RDWR_STATUS_FAILURE)
-+			goto done;
-+
-+		memory_size = 0;
-+		reg = card->reg->fw_dump_start;
-+		for (i = 0; i < 4; i++) {
-+			read_reg = sdio_readb(card->func, reg, &ret);
-+			if (ret) {
-+				nxpwifi_dbg(adapter, ERROR, "SDIO read err\n");
-+				goto done;
-+			}
-+			memory_size |= (read_reg << i * 8);
-+			reg++;
-+		}
-+
-+		if (memory_size == 0) {
-+			nxpwifi_dbg(adapter, DUMP, "Firmware dump Finished!\n");
-+			ret = nxpwifi_write_reg(adapter,
-+						card->reg->fw_dump_ctrl,
-+						FW_DUMP_READ_DONE);
-+			if (ret) {
-+				nxpwifi_dbg(adapter, ERROR, "SDIO write err\n");
-+				return;
-+			}
-+			break;
-+		}
-+
-+		nxpwifi_dbg(adapter, DUMP,
-+			    "%s_SIZE=0x%x\n", entry->mem_name, memory_size);
-+		entry->mem_ptr = vmalloc(memory_size + 1);
-+		entry->mem_size = memory_size;
-+		if (!entry->mem_ptr)
-+			goto done;
-+		dbg_ptr = entry->mem_ptr;
-+		end_ptr = dbg_ptr + memory_size;
-+
-+		doneflag = entry->done_flag;
-+		nxpwifi_dbg(adapter, DUMP,
-+			    "Start %s output, please wait...\n",
-+			    entry->mem_name);
-+
-+		do {
-+			stat = nxpwifi_sdio_rdwr_firmware(adapter, doneflag);
-+			if (stat == RDWR_STATUS_FAILURE)
-+				goto done;
-+
-+			reg_start = card->reg->fw_dump_start;
-+			reg_end = card->reg->fw_dump_end;
-+			for (reg = reg_start; reg <= reg_end; reg++) {
-+				*dbg_ptr = sdio_readb(card->func, reg, &ret);
-+				if (ret) {
-+					nxpwifi_dbg(adapter, ERROR,
-+						    "SDIO read err\n");
-+					goto done;
-+				}
-+				if (dbg_ptr < end_ptr)
-+					dbg_ptr++;
-+				else
-+					nxpwifi_dbg(adapter, ERROR,
-+						    "Allocated buf not enough\n");
-+			}
-+
-+			if (stat != RDWR_STATUS_DONE)
-+				continue;
-+
-+			nxpwifi_dbg(adapter, DUMP, "%s done: size=0x%tx\n",
-+				    entry->mem_name, dbg_ptr - entry->mem_ptr);
-+			break;
-+		} while (1);
-+	}
-+	nxpwifi_dbg(adapter, MSG, "== nxpwifi firmware dump end ==\n");
-+
-+done:
-+	sdio_release_host(card->func);
-+}
-+
-+static void nxpwifi_sdio_generic_fw_dump(struct nxpwifi_adapter *adapter)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+	struct memory_type_mapping *entry = &generic_mem_type_map[0];
-+	unsigned int reg, reg_start, reg_end;
-+	u8 start_flag = 0, done_flag = 0;
-+	u8 *dbg_ptr, *end_ptr;
-+	enum rdwr_status stat;
-+	int ret = -1, tries;
-+
-+	if (!card->fw_dump_enh)
-+		return;
-+
-+	if (entry->mem_ptr) {
-+		vfree(entry->mem_ptr);
-+		entry->mem_ptr = NULL;
-+	}
-+	entry->mem_size = 0;
-+
-+	nxpwifi_pm_wakeup_card(adapter);
-+	sdio_claim_host(card->func);
-+
-+	nxpwifi_dbg(adapter, MSG, "== nxpwifi firmware dump start ==\n");
-+
-+	stat = nxpwifi_sdio_rdwr_firmware(adapter, done_flag);
-+	if (stat == RDWR_STATUS_FAILURE)
-+		goto done;
-+
-+	reg_start = card->reg->fw_dump_start;
-+	reg_end = card->reg->fw_dump_end;
-+	for (reg = reg_start; reg <= reg_end; reg++) {
-+		for (tries = 0; tries < MAX_POLL_TRIES; tries++) {
-+			start_flag = sdio_readb(card->func, reg, &ret);
-+			if (ret) {
-+				nxpwifi_dbg(adapter, ERROR,
-+					    "SDIO read err\n");
-+				goto done;
-+			}
-+			if (start_flag == 0)
-+				break;
-+			if (tries == MAX_POLL_TRIES) {
-+				nxpwifi_dbg(adapter, ERROR,
-+					    "FW not ready to dump\n");
-+				ret = -1;
-+				goto done;
-+			}
-+		}
-+		usleep_range(100, 200);
-+	}
-+
-+	entry->mem_ptr = vmalloc(0xf0000 + 1);
-+	if (!entry->mem_ptr) {
-+		ret = -1;
-+		goto done;
-+	}
-+	dbg_ptr = entry->mem_ptr;
-+	entry->mem_size = 0xf0000;
-+	end_ptr = dbg_ptr + entry->mem_size;
-+
-+	done_flag = entry->done_flag;
-+	nxpwifi_dbg(adapter, DUMP,
-+		    "Start %s output, please wait...\n", entry->mem_name);
-+
-+	while (true) {
-+		stat = nxpwifi_sdio_rdwr_firmware(adapter, done_flag);
-+		if (stat == RDWR_STATUS_FAILURE)
-+			goto done;
-+		for (reg = reg_start; reg <= reg_end; reg++) {
-+			*dbg_ptr = sdio_readb(card->func, reg, &ret);
-+			if (ret) {
-+				nxpwifi_dbg(adapter, ERROR,
-+					    "SDIO read err\n");
-+				goto done;
-+			}
-+			dbg_ptr++;
-+			if (dbg_ptr >= end_ptr) {
-+				u8 *tmp_ptr;
-+
-+				tmp_ptr = vmalloc(entry->mem_size + 0x4000 + 1);
-+				if (!tmp_ptr)
-+					goto done;
-+
-+				memcpy(tmp_ptr, entry->mem_ptr,
-+				       entry->mem_size);
-+				vfree(entry->mem_ptr);
-+				entry->mem_ptr = tmp_ptr;
-+				tmp_ptr = NULL;
-+				dbg_ptr = entry->mem_ptr + entry->mem_size;
-+				entry->mem_size += 0x4000;
-+				end_ptr = entry->mem_ptr + entry->mem_size;
-+			}
-+		}
-+		if (stat == RDWR_STATUS_DONE) {
-+			entry->mem_size = dbg_ptr - entry->mem_ptr;
-+			nxpwifi_dbg(adapter, DUMP, "dump %s done size=0x%x\n",
-+				    entry->mem_name, entry->mem_size);
-+			ret = 0;
-+			break;
-+		}
-+	}
-+	nxpwifi_dbg(adapter, MSG, "== nxpwifi firmware dump end ==\n");
-+
-+done:
-+	if (ret) {
-+		nxpwifi_dbg(adapter, ERROR, "firmware dump failed\n");
-+		if (entry->mem_ptr) {
-+			vfree(entry->mem_ptr);
-+			entry->mem_ptr = NULL;
-+		}
-+		entry->mem_size = 0;
-+	}
-+	sdio_release_host(card->func);
-+}
-+
-+static void nxpwifi_sdio_device_dump_work(struct nxpwifi_adapter *adapter)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+
-+	adapter->devdump_data = vzalloc(NXPWIFI_FW_DUMP_SIZE);
-+	if (!adapter->devdump_data)
-+		return;
-+
-+	nxpwifi_drv_info_dump(adapter);
-+	if (card->fw_dump_enh)
-+		nxpwifi_sdio_generic_fw_dump(adapter);
-+	else
-+		nxpwifi_sdio_fw_dump(adapter);
-+	nxpwifi_prepare_fw_dump_info(adapter);
-+	nxpwifi_upload_device_dump(adapter);
-+}
-+
-+static void nxpwifi_sdio_work(struct work_struct *work)
-+{
-+	struct sdio_mmc_card *card =
-+		container_of(work, struct sdio_mmc_card, work);
-+
-+	if (test_and_clear_bit(NXPWIFI_IFACE_WORK_DEVICE_DUMP,
-+			       &card->work_flags))
-+		nxpwifi_sdio_device_dump_work(card->adapter);
-+	if (test_and_clear_bit(NXPWIFI_IFACE_WORK_CARD_RESET,
-+			       &card->work_flags))
-+		nxpwifi_sdio_card_reset_work(card->adapter);
-+}
-+
-+/* This function resets the card */
-+static void nxpwifi_sdio_card_reset(struct nxpwifi_adapter *adapter)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+
-+	if (!test_and_set_bit(NXPWIFI_IFACE_WORK_CARD_RESET, &card->work_flags))
-+		schedule_work(&card->work);
-+}
-+
-+/* This function dumps FW information */
-+static void nxpwifi_sdio_device_dump(struct nxpwifi_adapter *adapter)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+
-+	if (!test_and_set_bit(NXPWIFI_IFACE_WORK_DEVICE_DUMP,
-+			      &card->work_flags))
-+		schedule_work(&card->work);
-+}
-+
-+/* Function to dump SDIO function registers and SDIO scratch registers in case
-+ * of FW crash
-+ */
-+static int
-+nxpwifi_sdio_reg_dump(struct nxpwifi_adapter *adapter, char *drv_buf)
-+{
-+	char *p = drv_buf;
-+	struct sdio_mmc_card *cardp = adapter->card;
-+	int ret = 0;
-+	u8 count, func, data, index = 0, size = 0;
-+	u8 reg, reg_start, reg_end;
-+	char buf[256], *ptr;
-+
-+	if (!p)
-+		return 0;
-+
-+	nxpwifi_dbg(adapter, MSG, "SDIO register dump start\n");
-+
-+	nxpwifi_pm_wakeup_card(adapter);
-+
-+	sdio_claim_host(cardp->func);
-+
-+	for (count = 0; count < 5; count++) {
-+		memset(buf, 0, sizeof(buf));
-+		ptr = buf;
-+
-+		switch (count) {
-+		case 0:
-+			/* Read the registers of SDIO function0 */
-+			func = count;
-+			reg_start = 0;
-+			reg_end = 9;
-+			break;
-+		case 1:
-+			/* Read the registers of SDIO function1 */
-+			func = count;
-+			reg_start = cardp->reg->func1_dump_reg_start;
-+			reg_end = cardp->reg->func1_dump_reg_end;
-+			break;
-+		case 2:
-+			index = 0;
-+			func = 1;
-+			reg_start = cardp->reg->func1_spec_reg_table[index++];
-+			size = cardp->reg->func1_spec_reg_num;
-+			reg_end = cardp->reg->func1_spec_reg_table[size - 1];
-+			break;
-+		default:
-+			/* Read the scratch registers of SDIO function1 */
-+			if (count == 4)
-+				mdelay(100);
-+			func = 1;
-+			reg_start = cardp->reg->func1_scratch_reg;
-+			reg_end = reg_start + NXPWIFI_SDIO_SCRATCH_SIZE;
-+		}
-+
-+		if (count != 2)
-+			ptr += sprintf(ptr, "SDIO Func%d (%#x-%#x): ",
-+				       func, reg_start, reg_end);
-+		else
-+			ptr += sprintf(ptr, "SDIO Func%d: ", func);
-+
-+		for (reg = reg_start; reg <= reg_end;) {
-+			if (func == 0)
-+				data = sdio_f0_readb(cardp->func, reg, &ret);
-+			else
-+				data = sdio_readb(cardp->func, reg, &ret);
-+
-+			if (count == 2)
-+				ptr += sprintf(ptr, "(%#x) ", reg);
-+			if (!ret) {
-+				ptr += sprintf(ptr, "%02x ", data);
-+			} else {
-+				ptr += sprintf(ptr, "ERR");
-+				break;
-+			}
-+
-+			if (count == 2 && reg < reg_end)
-+				reg = cardp->reg->func1_spec_reg_table[index++];
-+			else
-+				reg++;
-+		}
-+
-+		nxpwifi_dbg(adapter, MSG, "%s\n", buf);
-+		p += sprintf(p, "%s\n", buf);
-+	}
-+
-+	sdio_release_host(cardp->func);
-+
-+	nxpwifi_dbg(adapter, MSG, "SDIO register dump end\n");
-+
-+	return p - drv_buf;
-+}
-+
-+/* sdio device/function initialization, code is extracted
-+ * from init_if handler and register_dev handler.
-+ */
-+static void nxpwifi_sdio_up_dev(struct nxpwifi_adapter *adapter)
-+{
-+	struct sdio_mmc_card *card = adapter->card;
-+	u8 sdio_ireg;
-+
-+	sdio_claim_host(card->func);
-+	sdio_enable_func(card->func);
-+	sdio_set_block_size(card->func, NXPWIFI_SDIO_BLOCK_SIZE);
-+	sdio_release_host(card->func);
-+
-+	/* tx_buf_size might be changed to 3584 by firmware during
-+	 * data transfer, we will reset to default size.
-+	 */
-+	adapter->tx_buf_size = card->tx_buf_size;
-+
-+	/* Read the host_int_status_reg for ACK the first interrupt got
-+	 * from the bootloader. If we don't do this we get a interrupt
-+	 * as soon as we register the irq.
-+	 */
-+	nxpwifi_read_reg(adapter, card->reg->host_int_status_reg, &sdio_ireg);
-+
-+	if (nxpwifi_init_sdio_ioport(adapter))
-+		dev_err(&card->func->dev, "error enabling SDIO port\n");
-+}
-+
-+static struct nxpwifi_if_ops sdio_ops = {
-+	.init_if = nxpwifi_init_sdio,
-+	.cleanup_if = nxpwifi_cleanup_sdio,
-+	.check_fw_status = nxpwifi_check_fw_status,
-+	.check_winner_status = nxpwifi_check_winner_status,
-+	.prog_fw = nxpwifi_prog_fw_w_helper,
-+	.register_dev = nxpwifi_register_dev,
-+	.unregister_dev = nxpwifi_unregister_dev,
-+	.enable_int = nxpwifi_sdio_enable_host_int,
-+	.disable_int = nxpwifi_sdio_disable_host_int,
-+	.process_int_status = nxpwifi_process_int_status,
-+	.host_to_card = nxpwifi_sdio_host_to_card,
-+	.wakeup = nxpwifi_pm_wakeup_card,
-+	.wakeup_complete = nxpwifi_pm_wakeup_card_complete,
-+
-+	/* SDIO specific */
-+	.update_mp_end_port = nxpwifi_update_mp_end_port,
-+	.cleanup_mpa_buf = nxpwifi_cleanup_mpa_buf,
-+	.cmdrsp_complete = nxpwifi_sdio_cmdrsp_complete,
-+	.event_complete = nxpwifi_sdio_event_complete,
-+	.dnld_fw = nxpwifi_sdio_dnld_fw,
-+	.card_reset = nxpwifi_sdio_card_reset,
-+	.reg_dump = nxpwifi_sdio_reg_dump,
-+	.device_dump = nxpwifi_sdio_device_dump,
-+	.deaggr_pkt = nxpwifi_deaggr_sdio_pkt,
-+	.up_dev = nxpwifi_sdio_up_dev,
-+};
-+
-+module_driver(nxpwifi_sdio, sdio_register_driver, sdio_unregister_driver);
-+
-+MODULE_AUTHOR("NXP International Ltd.");
-+MODULE_DESCRIPTION("NXP WiFi SDIO Driver version " SDIO_VERSION);
-+MODULE_VERSION(SDIO_VERSION);
-+MODULE_LICENSE("GPL");
-+MODULE_FIRMWARE(IW61X_SDIO_FW_NAME);
++#endif /* _NXPWIFI_SDIO_H */
 -- 
 2.34.1
 
