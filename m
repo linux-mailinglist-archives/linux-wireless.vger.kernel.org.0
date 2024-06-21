@@ -1,61 +1,61 @@
-Return-Path: <linux-wireless+bounces-9385-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9386-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8143911D93
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 09:58:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 756F5911D95
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 09:59:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F0D2284117
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 07:58:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98F771C211CA
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 07:59:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F382A172762;
-	Fri, 21 Jun 2024 07:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 988AB172BBE;
+	Fri, 21 Jun 2024 07:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="MUL1Ey08"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="GU8wrCfh"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2046.outbound.protection.outlook.com [40.107.7.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF57171E6A;
-	Fri, 21 Jun 2024 07:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32AE417276D;
+	Fri, 21 Jun 2024 07:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.7.46
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718956431; cv=fail; b=GGo9LFkHI6QuYR9xuIqkuVAT5tGE2gSvrhg0aPcRoCB8fnkx4EvD0uoGm3gIQQlv8WhDsRH6RC8jPVCnkjFj26UPLX1/AWT5rqNkgIJubbyw4CFWpnz3ypwTHnVqT8GIDTF49eXp1c2FODLiMazO1ABiBSN+gROuoSDvO4lC+eU=
+	t=1718956435; cv=fail; b=YRh7TTP797RSGy+ytqTDtDuez4WSFQyfZxXDVCJ3fK15wezL2ctQ5yOY8q/1kJItQHeE6ZOz5TqKk/aNIIJdgDhirGO8poe0fJ5s7C367e3D9HNkNGY9mo6N/M5Ga8oCnJqYFUs2EoDSDQJnVvUdSaOOp0sHTBNBtO5x22op560=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718956431; c=relaxed/simple;
-	bh=+Hc38o8j24z5H8NImnvPilD/fhU5NEpS24m3JhDdxE4=;
+	s=arc-20240116; t=1718956435; c=relaxed/simple;
+	bh=X+9VxM65+O9aRIiGka3xGpgSCoUHsm6ZFi6q5V1+CxU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jidpjJvhS5bR2vji299K+LMg6P5rQXo/znuuxhp0g+HUlslK/aM36nvDgLmu/a4rMU/IdM504M7ZLLyVSBME7UkvnfDdqUetmHNitBeEN/FE/WGXd8sNcOBMPAo6ODRDEY3WrEz5Lc7jh2Gj3geXk0YNqxJjbRDIU7kFyn7wjSs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=MUL1Ey08; arc=fail smtp.client-ip=40.107.7.46
+	 Content-Type:MIME-Version; b=NJCBe7PclQYSH4u3fVZsvFMeIaBh4CtACs6a5mwev32mQziknstry3wnSfoTkp7IEsD+kNp70ZVJhRPuzvhkMNSnqZye/z+thiSFfAt+c+mZC9eGktu1ZMN+Z4SlFDNx0O8u61ToSNwWGcsbJJpMdcSM+0cg5jh0C6QWHulSvEQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=GU8wrCfh; arc=fail smtp.client-ip=40.107.7.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Yu3HUPMGAzMZafN6ZUVcVPN8aHKb/m5VuN77EICIY2SO/CGGTZWMG4wI7npRn1uPdwOz6UGmAYq5mC8sl7tMrIrAPiGiTtuGJC2zBIrSK83hWEdAjtAV0hHRhRTT3RRxVRWgkOEMuroQuiE7mSARYDUP/o7LgseQorV9He7LyiL4M641y55cWEC3O9Uygyh7fxlwB2zcjIudDpqci/OITkJ7k+Qt+okn26zpD9tUUKjIyz3BZoQQmIbllofiFJDfnG6yxUXn2SdIyGSzoJRS9iLVVnb3l8my379B8bUd7u/j6mDiAVPcjUalEcm4QxUvHnKQzmRbvYExpfFttcSwQA==
+ b=ZuceImCKFy0K1eIZaJjzgdQ+h9gYzJ9Z1G+jienYf3OUI78O78sf0NjIlIbe4xSCcp5+gyFLe5g7tTAIhXgdM5+W/B6//UAdUBkECnimw9L3DyfgGXQiXJW50r+q7NVZJGNtk3Z0EqwweLqcTFd2nW2fXcNux2bnkk3gqXbW8Ndojm9pC/Dt+k7FB/tjw6WxEZMf+lVhY0ZMQgpPj0fpZtOhZyV+t8t2g/z7PzlSPF1ZxoYZLNrvRbuUNNoXl5fcTVPO/xoAYVUKfuFJPstl+oIUg6VX958Px3/KLsNrLyUqYJiVvgoR023f7/8iq0t/kcXMjnM2OoA+k3YHiPGAAA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GFc39Lj0uGo092n8QLjDs8jPw9mCJvcmIKCEJw+1DeE=;
- b=YXczyMr9BFLt99R31oqXuka8GZCsIafeatY7B4FIkSkAVnzy9ND20KNCXgcMZCHpB5bb7PYzF4/dqZb3cVqxKxllwkkiB2zu0FT6CmBBs33t1D4p1WM7ZMaEMD4h/HXZ5E9N4JoGZZCt88cz/BGD9bqw9TyF5+16pbnxih4Zh8c4TVR5FrmFwyGKxs8mEcwYERFx3U++kMz1Y43NT+ED1lya3fldxxXRxBqzqxG78MVkArumXuhdWbh/aPPuai8MRQKLHwQgsYPzPhr3TUnCagQluU5JlkSfs6AiY87PNIe3z2barhTl9/JUmii205mggBGFFY99Nus2XQad+DhFyA==
+ bh=491aHzeYwgNPJtrgU9rlL8s0tBKa++vzVk9oOfO/2mc=;
+ b=WX+MEH347sKG+RYrPBF1wAOwLkg5ZbpC/nONU6onnWcITAOJANGQnBqD20bE4btbO0mqxcVphnO1A4NYiXvQ4NTHwlrbM2K8nz4e0wKdFj/dMiVRxDHGEbNfiTh2/RS+nRLZl8cVIRGnOPb0ejkGyy3afQdUjk92yDiBrUjLehy/kR7W3D8ybZayOmWAJzGGcMW/3fkqqZ+A/BBrLccgKEUwgKFnML+DRQUbXjRN9ePtEkE9r+V/a8sCC8RCwvfkBMMNhy4xmJYJro6imSmMeRHk7h3c8Xvbjw3TaNrP0jnSF9LN+7b/I/A/zZTyHePgzzqcpKlzBEq63UFxpg8kaw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GFc39Lj0uGo092n8QLjDs8jPw9mCJvcmIKCEJw+1DeE=;
- b=MUL1Ey08FWdnSqRfXQqG3IEDF4m++HSdzo/zAJ1ehT+KflNGrWo2YuILNBSNkRIQRcmjAiGuJwFMDdH9Bhs8f8YDGTBFOWUkAc9MxI6DDH4qsqc70iY2bFyQpEJ/xCm5e2tTnnLdro6bCKPYywaDyWNBjlNcurBWGJ17mZ108qI=
+ bh=491aHzeYwgNPJtrgU9rlL8s0tBKa++vzVk9oOfO/2mc=;
+ b=GU8wrCfhZhwy26YpbpRw+wEHdAUE8a3ceZHvQAxOO1itam7Hd/gtO6B3OdSRSsy9MK4gdpVtbIZFBG1u2GM1OQFOO2aeoaaK1yB26nhbd2kEy3MNfeoFoClmU/WfwkNZE18pcL8G3KjlLQzOzK6NJqtOcpUvLGmsIUY2njEIxxA=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PA4PR04MB9638.eurprd04.prod.outlook.com (2603:10a6:102:273::20)
  by AS8PR04MB9190.eurprd04.prod.outlook.com (2603:10a6:20b:44d::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.22; Fri, 21 Jun
- 2024 07:53:44 +0000
+ 2024 07:53:47 +0000
 Received: from PA4PR04MB9638.eurprd04.prod.outlook.com
  ([fe80::f950:3bb6:6848:2257]) by PA4PR04MB9638.eurprd04.prod.outlook.com
  ([fe80::f950:3bb6:6848:2257%4]) with mapi id 15.20.7677.030; Fri, 21 Jun 2024
- 07:53:44 +0000
+ 07:53:47 +0000
 From: David Lin <yu-hao.lin@nxp.com>
 To: linux-wireless@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -64,9 +64,9 @@ Cc: linux-kernel@vger.kernel.org,
 	francesco@dolcini.it,
 	tsung-hsien.hsieh@nxp.com,
 	David Lin <yu-hao.lin@nxp.com>
-Subject: [PATCH 21/43] wifi: nxpwifi: add ioctl.h
-Date: Fri, 21 Jun 2024 15:51:46 +0800
-Message-Id: <20240621075208.513497-22-yu-hao.lin@nxp.com>
+Subject: [PATCH 22/43] wifi: nxpwifi: add join.c
+Date: Fri, 21 Jun 2024 15:51:47 +0800
+Message-Id: <20240621075208.513497-23-yu-hao.lin@nxp.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240621075208.513497-1-yu-hao.lin@nxp.com>
 References: <20240621075208.513497-1-yu-hao.lin@nxp.com>
@@ -83,536 +83,1001 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PA4PR04MB9638:EE_|AS8PR04MB9190:EE_
-X-MS-Office365-Filtering-Correlation-Id: 82e06da8-24e2-41ab-01bf-08dc91c74665
+X-MS-Office365-Filtering-Correlation-Id: 59dbe823-9fc3-4713-d87c-08dc91c7481e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230037|1800799021|52116011|376011|366013|38350700011;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?UBj3RHjaXlVNoOhOBzI9tHIPoAAOrWbdWZbYS1z8+xcjuwZsRnok8ofpZkgi?=
- =?us-ascii?Q?ut0R89cio6k1Qfc8Vys1LhfJenju3ugcilZ2hbruKZkokKCbJYnR4gibkarD?=
- =?us-ascii?Q?7ByPcTFq5xSTc+FxECtkyxa3Slyox2fKi8LlysBIBRL3Aq83TB8hdxnX+DSL?=
- =?us-ascii?Q?ujjrGnwv/KwJwZieTWr8D1/SPmHFdJtIOrPDlyzQ40DrPWGn4t8pDJOVFmQs?=
- =?us-ascii?Q?WpYs/kU2SWOoYxWtgU6DiEBxPa/2/nEa6ThPYK1DvV/8aA7o8RJGNES5XM0N?=
- =?us-ascii?Q?ge2+T7P7pw2slLQSMexw+1WyxzPMxxcnQCgIejhv/w9zGxoQqFZ8XpbWWgZL?=
- =?us-ascii?Q?DwxOA1J7y4JQSS013QP7G1VoCgP89joqDVUFlLtCjkGaUgfeZgYAyk1m4JbK?=
- =?us-ascii?Q?X12aC2uFoR7RAGPW+kNbrVNDaZASw9xCVIGzuuzNpJ6gan+j1r/IEhf3tBj5?=
- =?us-ascii?Q?JlSOqc3rl0oG4jD+ZfTTzXJ9vZOmQt4B5H3lA4aePdjq4swUrASh5oPIghQS?=
- =?us-ascii?Q?aDJkgNrYqxBqK+4QvRnO18hmThI2sjEav9stsR0I5Oz99OMedg47YHQbe801?=
- =?us-ascii?Q?yVmb3SGe7ZWH5Olad5xSADZ5Aqua7WEzIQ+61CII8a68YXiIAPGPGtUDJT8g?=
- =?us-ascii?Q?zoHPpOWrSMrZOAYzTtU/baFDeWs7OWNbxniyFpxjxQJWVkKty7o7AbU6rwKj?=
- =?us-ascii?Q?nvBh+T923Zh/P2UKSj0ReD8I2n0c0Smf8L0yGNkj2QxK9/bn6tzLnkGjuDxr?=
- =?us-ascii?Q?Ye9Gv11wfJ9fpYMOcLpzqC0iVn04bNxdLQtia+c4GHwy5Z/WPUNVqOu0ptkZ?=
- =?us-ascii?Q?h2ICwX30NaHWHzEujCkfNinb7Arjg4IH4mOUiXpY9oyY3q5EdIezGMWT/IdN?=
- =?us-ascii?Q?LmuMcM92ueUY67846eNlGXX0gvw/xMLLVDa0cIa+It0purzznc5yXO0yxIY0?=
- =?us-ascii?Q?35k2jTKgz/toQt9MPbxmgtS9M0+3KiaO5E/916YhF5PwFfo17KCALap4sDBt?=
- =?us-ascii?Q?1IGGCX4XDRhw9eel8ef1WEx6iNnPoDyaAKTLOSk+Bw5koaob2TiwpdstK1wG?=
- =?us-ascii?Q?70DKfIll48z7HkyHgU1gPUlnvypvAao1z/HXuAT1Bs+hudiUh5+DCmDM4Qw1?=
- =?us-ascii?Q?0fyILG8k0Yq4XkzyCd+lzFJlfDQC2nCrTofG5AK2Fcxpx+POd6F1dLncMkOr?=
- =?us-ascii?Q?Oz1uxRW9b0lRWxSh7v3/4Y0IiQXOOop2KXIJGL4wHCMG3biZGbnx+5dc2pm1?=
- =?us-ascii?Q?jvVlgZNAtyTOVbhxb3qRMmi6AusmyiKQGkoAAftYbjfU71gPB/ONXf+5DuOW?=
- =?us-ascii?Q?dkjd+Cvg1EiiBG6+82AOrmfGAsi5KgFnQgM0P6dkaRr3ccJdv/JNgN31om2h?=
- =?us-ascii?Q?eVvmfPY=3D?=
+	=?us-ascii?Q?gZAdab7D/xsRr0Xogj4Hy6aUc3tapKXGOb20Kh8Y5zgB4Gy4Y0QW+hI/5FCQ?=
+ =?us-ascii?Q?qinZ/uuueWcDvZnTz+R+/cARB5vbO024nZtdaiAorhZLXGOYCZJjuN9/0GBV?=
+ =?us-ascii?Q?RH2gjbT1iMb0jjsEti4hnAoT1Aa83SP82zzwMcFVnmfPDjZHWEuon8vR4Oek?=
+ =?us-ascii?Q?402SXsh/yi2YhAVV/XrjYfTbykGShkWt1wdAcv/NA41nMjfLXGP2lZ1wkT8p?=
+ =?us-ascii?Q?eZJ9fQsDNZZljoAy9wX3sYrn+O0vpaFk651XtSAmERr+6e0JtdMRjntlSilC?=
+ =?us-ascii?Q?PS1I2sCzrY5uRzzFioMY7ynTJJh6koB2ITodJwpMW7TNj28s/uf1VXxfQfMB?=
+ =?us-ascii?Q?YSn+GiJpCQPNh/8AAEJ+ZYjyiU/tEmByhIlTs+3BZktvQFccSN01hfRn8FqS?=
+ =?us-ascii?Q?WGz/4qVx3dIQTXTj/fmciCOy9Mh8OfuOk6BEid0jlD1X8Bkt3kJjZEknaCxh?=
+ =?us-ascii?Q?8s45+DA+hxynm/t1cdZk0BwHN7asE0wqUk6lOdGjlQKprYkWwW2vmGzXaF+m?=
+ =?us-ascii?Q?bCOSyssVQB+hLM0sMg7vA1SmRgEnUbKkJqrrKZ8S23117FADFyln9dMLp944?=
+ =?us-ascii?Q?tXz3lk5zOLKtXKwak34NjrN8jdurS5v27f+o6IVEL0kOHujAgV2syTbSZFgl?=
+ =?us-ascii?Q?a8t0nI25HBdJtH/5eVLxsEgMAlE3A3vKJt9TOoNY9+I7daJjcPgV+OXa4w9W?=
+ =?us-ascii?Q?1osHz/e1ZuI0jRk1/N+7ozGQcEsWnOUhHwong+MdW49OYfESbnsZdpAsegjh?=
+ =?us-ascii?Q?Iq+oFzwrRdh5iP73+fI8pgJOaVyx7XYW8max/U0Op5c6p75SJr3jbyvCox7F?=
+ =?us-ascii?Q?jK0gKox3e4yEj5A/N7XQneRnAWrga6cm7yr9vOTIT8SM4aJ9niqEOnj21KiH?=
+ =?us-ascii?Q?p1NhR2zxOltfebNynV6SROGp45LjvUEky4GapTkIvG01KdMmn3HcDWRrTaM4?=
+ =?us-ascii?Q?8KeGvzYZe16HGT1BoigaLkX98bA0exVTsqVYg6E29BfsjQKdyqPDn7q+Hid/?=
+ =?us-ascii?Q?GQhX64JeN9hf77fRdPy/vHhNSf3NQWiXoQosKPeNrsOg1P+laqV7KVJioDCn?=
+ =?us-ascii?Q?c4xpC6jv7UZD6QhzivJ1GMa9L9R+laJsgtQw+I2GilwrCnrnpY86S8Sb1DwH?=
+ =?us-ascii?Q?zSSMu10tJwSLuZdwsmZ/i5UDc18K1KXJA5JydhgyGGZO5S8Joe5vcV+/SVJB?=
+ =?us-ascii?Q?BcmgbTwIGKGy79zeuL0m4+MrUIZNLMbN3mqKBpBrt0KICQlQDfIDSLTjpF4+?=
+ =?us-ascii?Q?byyYEc0EggjvhvM4SE8+NjDixeaQUtS3k7/z3Kqy95TVZDTItqOX3CqSqvWz?=
+ =?us-ascii?Q?aMARGQ+Pdqj+Ka2vb+btpKvGIGg9FFYisCAqVJyGTIiXK9kN9s8RpuxjYNCu?=
+ =?us-ascii?Q?BmWJINQ=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(1800799021)(52116011)(376011)(366013)(38350700011);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?mde35GWc+sSFU3Qf+eVHlh5oaMCKEMjjVr1d0aeVq0Rdgk3edWoLOYbF0E4o?=
- =?us-ascii?Q?0mV4K5u34uawlM/N4bVHrCqPk70kCd2cqKnSyuCoeXLLWea5J4fR7bhnLuC0?=
- =?us-ascii?Q?JOyZNuaw1XRtcmJhYRu2apc7UlUOpG13BR3yfavDKOZTwspm3Z1Y1XE7B8sa?=
- =?us-ascii?Q?1Tx+2lkHLSKeh2hj2aFvhnDlOkB3m1MAdpbrHXzu0qTrwd2jHtpEnh6mZFNZ?=
- =?us-ascii?Q?ljuKcxUNwg+u/te6nyo/CKN91yN/YSZ47/EZ8tSmN34wLTrX7QvNl7ucKwbm?=
- =?us-ascii?Q?lLEfQWm6mOTEFxIuJ+snzqfLHcaKDIXwOriOC4BNFjFMXahwqZfzXGy5cM+u?=
- =?us-ascii?Q?yYklYi6mfZfTbT+E6KRyPHpfKr1EJrzv+Z6qoDyV6NQBx/TuuGkbMJ5n7FUh?=
- =?us-ascii?Q?HpAnpetE15TNKYng5lcbzlFNyo8nzUELneYRSqjk3cjlMlq6550UZhK6hnPX?=
- =?us-ascii?Q?kxw3iBQnMYJ7fPYxYDE/vrF7XOr/wWGFSvEQxDAIiZNPCAJxVRAFiG5ZhOhC?=
- =?us-ascii?Q?wPmNa+Pn/1OIzF3pCxbFxe8qpQ/ZmmUSoAJ+kqLMrzxHTaSJEb/Zjo6dvIEC?=
- =?us-ascii?Q?3cOOrXrNbz/4jSJLfcb0OKTDHMGnMSrGww/31DH2X3ZVXmN39zElZnnYe8KP?=
- =?us-ascii?Q?ll1hKfU7LTZ/4p/LKLWo3ubkmHCCTnY1TN7uTOGdGGLDWbcRRbT65nZFMrSv?=
- =?us-ascii?Q?1idP+7x/0+9meVYpvy+l7Wjg2UZpYuDPC6S0cw3fAwmw+KUj/y7nUSYVHoWQ?=
- =?us-ascii?Q?UlvCsizFJpV/7KFNoD6b1SER+ZvQ7TdN7/VSyWW+1DyS7dYChief6JGg/XMa?=
- =?us-ascii?Q?X+EkbwadhFCdsMGYG+mANFmguOZBz1UA/Dru2Fu4ncyrPLKOnq+wWlSb6UX/?=
- =?us-ascii?Q?VqiGIKec1MW8wWn9ZrAbIIz8eMV59UVf4f1LWuvK0Fvixe6mNooX/ReemalG?=
- =?us-ascii?Q?cdDXF7fwmOv0mneLM6m5EQS0wnX/ygct9aUVRhAfrkk0w+6MMsBJ7skhYqly?=
- =?us-ascii?Q?NG4O4M6gbz7IjTT/nJxmB8yXMSUTPit82o9YA/rgeuNdMHIoZSPKCjfAcC5l?=
- =?us-ascii?Q?MroBY0c1hR1DbCnd9hMzrkvwgrJ7iooXBWP0wan2eYK+KymPJGna5GwD89WJ?=
- =?us-ascii?Q?ReItTEoq/hkmChKvLSZX04XaXT09p8RhV4rOMNow784xeaN/xEybJQNy+J5j?=
- =?us-ascii?Q?nfu/h9v7uD+1RWS5F1RtqLvHUXtpdx4sPNC+SQ+V2pG9uFQlHcpGqEqDQTMt?=
- =?us-ascii?Q?Trj127CMfhyjq7DWErtif86s/MUhySV3bIMn1nd6cdiR6nPFttCsOTOsVw09?=
- =?us-ascii?Q?/9iaVpm/VEQFsSpx9dEFTHLetBV7liCS+IvyJXeHWBHx6EgJkpFbQB6Q0dPU?=
- =?us-ascii?Q?CqFp4gZAP+v/5Cc98gRFL74EqcgUZkKtBxD897eWh20U8CbEeccaqjHs5f2Q?=
- =?us-ascii?Q?nVYortj8S0UYES0+Yi0R0xrXgYYHABk6iZSu5CFNXIQ2QkFHArb2MHyfYW1k?=
- =?us-ascii?Q?bJpQWD3WrlPNy+qfIJ0Vq2OV5ZOGhLL05+pb8FnWO2DjuPJ/ebuYyqt64T8j?=
- =?us-ascii?Q?s3UYvW69QXIYpnsG3j2s6clXR8I1IUuCHdOCzQEG?=
+	=?us-ascii?Q?CcU8hykDo/4gp5+YP/ZmVHseQd0nJBVKr2oAYLXZIcfom5I+LmP11RaY9q3q?=
+ =?us-ascii?Q?TRTInA5NoLSbkfgXX6KJErqGkMHCwbJoB2Cz76IlR8IBELFeZqM1nc+fRWvL?=
+ =?us-ascii?Q?XfDXOCvCQNRmYF5rKMYbG2ERd2Wh398LWp3RHGWsZ/HLBsXzHrZhJiMvWH3w?=
+ =?us-ascii?Q?JI96Gy6KstmxouEaQkNylHHDCy83n8TMSRVUPT+YVvD+iPiGjw9D+VmfbCzd?=
+ =?us-ascii?Q?RTY0QuMT4HXq22Deiaj08KFsAu0EIFF389hl23foYtTsVuLbJAZQXDhBshuN?=
+ =?us-ascii?Q?ZYtz0YgDhPwK+FLyv8FexRsBaKK1LILqiHPc/7tVDgi25jp7H8Vfroey2tDl?=
+ =?us-ascii?Q?+5+CQTBoW9FXFixm6FjiffzhggeMDFkVproNW1r6G9cWbhKPtosRBtIv1T37?=
+ =?us-ascii?Q?lIa5hJQ+2C7YtEIwuxOnHoHVoRj4+yjkXiHik5WAandTUnJD/myMNfkerO91?=
+ =?us-ascii?Q?apn+Uq4YPTJu6UGE5qaJTkOjXtlZ3dMIpfG69r489cQDh5MsNBmX3yJOKNdg?=
+ =?us-ascii?Q?WIWsE2IaW89LUle3IGfPhOlT3s+CfSDQ54OBtdldfdkloc9ag2wb2fH1314x?=
+ =?us-ascii?Q?zt7gZJxLqsDAKuULDDAmrKhU+2K6vQgvT2rY2XvuBoQPmZqSLGniO/doCkRz?=
+ =?us-ascii?Q?j27e9AMuuDDmrYGl9NOcYPkTrF0R3sU1Y8gV7Xob6SeKlTXDa1Xi1qq0kbsW?=
+ =?us-ascii?Q?2JPCD3ZDBlmchRbdnZTpPE6RXub0UyhzszwUqH4305KcqaAaEK2eRvX/ZFtp?=
+ =?us-ascii?Q?hOX9PtHvH3jEqogulzAPxbF9RmVr03MhbpqL/xYXYpNzMbK37eaEDT47SXmC?=
+ =?us-ascii?Q?K2jkixSGn9so8eA64dJ49PEcjtWrINeoV6ADXT+zYECdVFjTkbymw8eXtTr3?=
+ =?us-ascii?Q?8Ssv85OsszxIZkKnRfjVa4jPxv9dKChzI7X+CgdyV3eETJC4qzYilikDOYmM?=
+ =?us-ascii?Q?ArKTuMZEyIVOP5QBVNlN2KP951KpvWmAZczjRlLY9axRBa1DfbbciIdHOEcF?=
+ =?us-ascii?Q?jYwOoTPsOMDMv7UfR4uJSKgAOFFYgONHv96ZU4GPGgSP0Jku1pBL8RSazi0I?=
+ =?us-ascii?Q?xu19/cyAyxntOjoOtRkQzpq6RN60PcIhDnfAzB1E+qX3J1qwQq0/zKqEomWm?=
+ =?us-ascii?Q?yd14X94mxpewSVa6vf7vgJ5dbdoa/xy/Vilgg9SSfSi0jBds/EECwMbgCfGU?=
+ =?us-ascii?Q?dZ6Q/PHeLa42xOb7QPLjWtSWSqEbGJQfwoX9eHfRa1q839RKFygKgGtjXO/J?=
+ =?us-ascii?Q?Jm2YDcqhcSKoUKXx5Ze7iHuP8O1H/u1GfJBmVcjicG0qQIb22pKqsbK7vnv7?=
+ =?us-ascii?Q?BvaY/W9/PD+PDBRVA2DC3O5K6h51N3m/1j8H5A+PyOU2wcjZEeLo+M6uzw39?=
+ =?us-ascii?Q?Bw3f2wSD9WT3FSZee3g6krCQ5A6s2S5/1HytZipaytv5UGv4phQ3H94XCYE7?=
+ =?us-ascii?Q?HxvACEQIFn2gdTjQOYHFXbV3ZiWTnwgeMogZioBh5xBJqZ1r0IlSD6ZI6fLP?=
+ =?us-ascii?Q?Ed41Xw9+tW5WObhl4DLzpfd0lLsCH05J9YYq0XZBpgY4xh+pUe6fL0b76tPh?=
+ =?us-ascii?Q?9t3Uyxe3TLqPQwts2Hg0ZtDK9+WN36xzvCmZEk3d?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 82e06da8-24e2-41ab-01bf-08dc91c74665
+X-MS-Exchange-CrossTenant-Network-Message-Id: 59dbe823-9fc3-4713-d87c-08dc91c7481e
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9638.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2024 07:53:44.8570
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2024 07:53:47.7681
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: x1X8P2BO3H0IhteIHzB+M2JZxYHPIQJS5N3pEtWmw3BfjIkcIvm07VM89jH7NqOm4aV3E9wHsYT4hQsdZLcgHg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: yfOAYJ3DY3OcnaqcJ3Oz9fqlV+YCofTDs9HWevP7kgenIr8vsUOXPQnwiQ/XidH1mRPYUgGcXBBu3TIJIGsGCg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9190
 
 Signed-off-by: David Lin <yu-hao.lin@nxp.com>
 ---
- drivers/net/wireless/nxp/nxpwifi/ioctl.h | 445 +++++++++++++++++++++++
- 1 file changed, 445 insertions(+)
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/ioctl.h
+ drivers/net/wireless/nxp/nxpwifi/join.c | 910 ++++++++++++++++++++++++
+ 1 file changed, 910 insertions(+)
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/join.c
 
-diff --git a/drivers/net/wireless/nxp/nxpwifi/ioctl.h b/drivers/net/wireless/nxp/nxpwifi/ioctl.h
+diff --git a/drivers/net/wireless/nxp/nxpwifi/join.c b/drivers/net/wireless/nxp/nxpwifi/join.c
 new file mode 100644
-index 000000000000..b55dfb872b76
+index 000000000000..a492821dd87a
 --- /dev/null
-+++ b/drivers/net/wireless/nxp/nxpwifi/ioctl.h
-@@ -0,0 +1,445 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
++++ b/drivers/net/wireless/nxp/nxpwifi/join.c
+@@ -0,0 +1,910 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * NXP Wireless LAN device driver: ioctl data structures & APIs
++ * NXP Wireless LAN device driver: association and ad-hoc start/join
 + *
 + * Copyright 2011-2024 NXP
 + */
 +
-+#ifndef _NXPWIFI_IOCTL_H_
-+#define _NXPWIFI_IOCTL_H_
++#include "decl.h"
++#include "ioctl.h"
++#include "util.h"
++#include "fw.h"
++#include "main.h"
++#include "cmdevt.h"
++#include "wmm.h"
++#include "11n.h"
++#include "11ac.h"
 +
-+#include <net/lib80211.h>
++#define CAPINFO_MASK    (~(BIT(15) | BIT(14) | BIT(12) | BIT(11) | BIT(9)))
 +
-+enum {
-+	NXPWIFI_SCAN_TYPE_UNCHANGED = 0,
-+	NXPWIFI_SCAN_TYPE_ACTIVE,
-+	NXPWIFI_SCAN_TYPE_PASSIVE
-+};
++/* Append a generic IE as a pass through TLV to a TLV buffer.
++ *
++ * This function is called from the network join command preparation routine.
++ *
++ * If the IE buffer has been setup by the application, this routine appends
++ * the buffer as a pass through TLV type to the request.
++ */
++static int
++nxpwifi_cmd_append_generic_ie(struct nxpwifi_private *priv, u8 **buffer)
++{
++	int ret_len = 0;
++	struct nxpwifi_ie_types_header ie_header;
 +
-+#define NXPWIFI_PROMISC_MODE            1
-+#define NXPWIFI_MULTICAST_MODE		2
-+#define	NXPWIFI_ALL_MULTI_MODE		4
-+#define NXPWIFI_MAX_MULTICAST_LIST_SIZE	32
++	/* Null Checks */
++	if (!buffer)
++		return 0;
++	if (!(*buffer))
++		return 0;
 +
-+struct nxpwifi_multicast_list {
-+	u32 mode;
-+	u32 num_multicast_addr;
-+	u8 mac_list[NXPWIFI_MAX_MULTICAST_LIST_SIZE][ETH_ALEN];
-+};
-+
-+struct nxpwifi_chan_freq {
-+	u32 channel;
-+	u32 freq;
-+};
-+
-+struct nxpwifi_ssid_bssid {
-+	struct cfg80211_ssid ssid;
-+	u8 bssid[ETH_ALEN];
-+};
-+
-+enum {
-+	BAND_B = 1,
-+	BAND_G = 2,
-+	BAND_A = 4,
-+	BAND_GN = 8,
-+	BAND_AN = 16,
-+	BAND_AAC = 32,
-+};
-+
-+#define NXPWIFI_WPA_PASSHPHRASE_LEN 64
-+struct wpa_param {
-+	u8 pairwise_cipher_wpa;
-+	u8 pairwise_cipher_wpa2;
-+	u8 group_cipher;
-+	u32 length;
-+	u8 passphrase[NXPWIFI_WPA_PASSHPHRASE_LEN];
-+};
-+
-+struct wep_key {
-+	u8 key_index;
-+	u8 is_default;
-+	u16 length;
-+	u8 key[WLAN_KEY_LEN_WEP104];
-+};
-+
-+#define KEY_MGMT_ON_HOST        0x03
-+#define NXPWIFI_AUTH_MODE_AUTO  0xFF
-+#define BAND_CONFIG_BG          0x00
-+#define BAND_CONFIG_A           0x01
-+#define NXPWIFI_SEC_CHAN_BELOW	0x30
-+#define NXPWIFI_SEC_CHAN_ABOVE	0x10
-+#define NXPWIFI_SUPPORTED_RATES                 14
-+#define NXPWIFI_SUPPORTED_RATES_EXT             32
-+#define NXPWIFI_PRIO_BK				2
-+#define NXPWIFI_PRIO_VI				5
-+#define NXPWIFI_SUPPORTED_CHANNELS		2
-+#define NXPWIFI_OPERATING_CLASSES		16
-+
-+struct nxpwifi_uap_bss_param {
-+	u8 mac_addr[ETH_ALEN];
-+	u8 channel;
-+	u8 band_cfg;
-+	u16 rts_threshold;
-+	u16 frag_threshold;
-+	u8 retry_limit;
-+	struct nxpwifi_802_11_ssid ssid;
-+	u8 bcast_ssid_ctl;
-+	u8 radio_ctl;
-+	u8 dtim_period;
-+	u16 beacon_period;
-+	u16 auth_mode;
-+	u16 protocol;
-+	u16 key_mgmt;
-+	u16 key_mgmt_operation;
-+	struct wpa_param wpa_cfg;
-+	struct wep_key wep_cfg[NUM_WEP_KEYS];
-+	struct ieee80211_ht_cap ht_cap;
-+	struct ieee80211_vht_cap vht_cap;
-+	u8 rates[NXPWIFI_SUPPORTED_RATES];
-+	u32 sta_ao_timer;
-+	u32 ps_sta_ao_timer;
-+	u8 qos_info;
-+	u8 power_constraint;
-+	struct nxpwifi_types_wmm_info wmm_info;
-+};
-+
-+struct nxpwifi_ds_get_stats {
-+	u32 mcast_tx_frame;
-+	u32 failed;
-+	u32 retry;
-+	u32 multi_retry;
-+	u32 frame_dup;
-+	u32 rts_success;
-+	u32 rts_failure;
-+	u32 ack_failure;
-+	u32 rx_frag;
-+	u32 mcast_rx_frame;
-+	u32 fcs_error;
-+	u32 tx_frame;
-+	u32 wep_icv_error[4];
-+	u32 bcn_rcv_cnt;
-+	u32 bcn_miss_cnt;
-+};
-+
-+#define NXPWIFI_MAX_VER_STR_LEN    128
-+
-+struct nxpwifi_ver_ext {
-+	u32 version_str_sel;
-+	char version_str[NXPWIFI_MAX_VER_STR_LEN];
-+};
-+
-+struct nxpwifi_bss_info {
-+	u32 bss_mode;
-+	struct cfg80211_ssid ssid;
-+	u32 bss_chan;
-+	u8 country_code[3];
-+	u32 media_connected;
-+	u32 max_power_level;
-+	u32 min_power_level;
-+	signed int bcn_nf_last;
-+	u32 wep_status;
-+	u32 is_hs_configured;
-+	u32 is_deep_sleep;
-+	u8 bssid[ETH_ALEN];
-+};
-+
-+struct nxpwifi_sta_info {
-+	u8 peer_mac[ETH_ALEN];
-+	struct station_parameters *params;
-+};
-+
-+#define MAX_NUM_TID     8
-+
-+#define MAX_RX_WINSIZE  64
-+
-+struct nxpwifi_ds_rx_reorder_tbl {
-+	u16 tid;
-+	u8 ta[ETH_ALEN];
-+	u32 start_win;
-+	u32 win_size;
-+	u32 buffer[MAX_RX_WINSIZE];
-+};
-+
-+struct nxpwifi_ds_tx_ba_stream_tbl {
-+	u16 tid;
-+	u8 ra[ETH_ALEN];
-+	u8 amsdu;
-+};
-+
-+#define DBG_CMD_NUM    5
-+#define NXPWIFI_DBG_SDIO_MP_NUM    10
-+
-+struct nxpwifi_debug_info {
-+	unsigned int debug_mask;
-+	u32 int_counter;
-+	u32 packets_out[MAX_NUM_TID];
-+	u32 tx_buf_size;
-+	u32 curr_tx_buf_size;
-+	u32 tx_tbl_num;
-+	struct nxpwifi_ds_tx_ba_stream_tbl
-+		tx_tbl[NXPWIFI_MAX_TX_BASTREAM_SUPPORTED];
-+	u32 rx_tbl_num;
-+	struct nxpwifi_ds_rx_reorder_tbl rx_tbl
-+		[NXPWIFI_MAX_RX_BASTREAM_SUPPORTED];
-+	u16 ps_mode;
-+	u32 ps_state;
-+	u8 is_deep_sleep;
-+	u8 pm_wakeup_card_req;
-+	u32 pm_wakeup_fw_try;
-+	u8 is_hs_configured;
-+	u8 hs_activated;
-+	u32 num_cmd_host_to_card_failure;
-+	u32 num_cmd_sleep_cfm_host_to_card_failure;
-+	u32 num_tx_host_to_card_failure;
-+	u32 num_event_deauth;
-+	u32 num_event_disassoc;
-+	u32 num_event_link_lost;
-+	u32 num_cmd_deauth;
-+	u32 num_cmd_assoc_success;
-+	u32 num_cmd_assoc_failure;
-+	u32 num_tx_timeout;
-+	u8 is_cmd_timedout;
-+	u16 timeout_cmd_id;
-+	u16 timeout_cmd_act;
-+	u16 last_cmd_id[DBG_CMD_NUM];
-+	u16 last_cmd_act[DBG_CMD_NUM];
-+	u16 last_cmd_index;
-+	u16 last_cmd_resp_id[DBG_CMD_NUM];
-+	u16 last_cmd_resp_index;
-+	u16 last_event[DBG_CMD_NUM];
-+	u16 last_event_index;
-+	u8 data_sent;
-+	u8 cmd_sent;
-+	u8 cmd_resp_received;
-+	u8 event_received;
-+	u32 last_mp_wr_bitmap[NXPWIFI_DBG_SDIO_MP_NUM];
-+	u32 last_mp_wr_ports[NXPWIFI_DBG_SDIO_MP_NUM];
-+	u32 last_mp_wr_len[NXPWIFI_DBG_SDIO_MP_NUM];
-+	u32 last_mp_curr_wr_port[NXPWIFI_DBG_SDIO_MP_NUM];
-+	u8 last_sdio_mp_index;
-+};
-+
-+#define NXPWIFI_KEY_INDEX_UNICAST	0x40000000
-+#define PN_LEN				16
-+
-+struct nxpwifi_ds_encrypt_key {
-+	u32 key_disable;
-+	u32 key_index;
-+	u32 key_len;
-+	u8 key_material[WLAN_MAX_KEY_LEN];
-+	u8 mac_addr[ETH_ALEN];
-+	u8 pn[PN_LEN];		/* packet number */
-+	u8 pn_len;
-+	u8 is_igtk_key;
-+	u8 is_current_wep_key;
-+	u8 is_rx_seq_valid;
-+	u8 is_igtk_def_key;
-+};
-+
-+struct nxpwifi_power_cfg {
-+	u32 is_power_auto;
-+	u32 is_power_fixed;
-+	u32 power_level;
-+};
-+
-+struct nxpwifi_ds_hs_cfg {
-+	u32 is_invoke_hostcmd;
-+	/*  Bit0: non-unicast data
-+	 *  Bit1: unicast data
-+	 *  Bit2: mac events
-+	 *  Bit3: magic packet
++	/* If there is a generic ie buffer setup, append it to the return
++	 *   parameter buffer pointer.
 +	 */
-+	u32 conditions;
-+	u32 gpio;
-+	u32 gap;
-+};
++	if (priv->gen_ie_buf_len) {
++		nxpwifi_dbg(priv->adapter, INFO,
++			    "info: %s: append generic ie len %d to %p\n",
++			    __func__, priv->gen_ie_buf_len, *buffer);
 +
-+struct nxpwifi_ds_wakeup_reason {
-+	u16  hs_wakeup_reason;
-+};
++		/* Wrap the generic IE buffer with a pass through TLV type */
++		ie_header.type = cpu_to_le16(TLV_TYPE_PASSTHROUGH);
++		ie_header.len = cpu_to_le16(priv->gen_ie_buf_len);
++		memcpy(*buffer, &ie_header, sizeof(ie_header));
 +
-+#define DEEP_SLEEP_ON  1
-+#define DEEP_SLEEP_OFF 0
-+#define DEEP_SLEEP_IDLE_TIME	100
-+#define PS_MODE_AUTO		1
++		/* Increment the return size and the return buffer pointer
++		 * param
++		 */
++		*buffer += sizeof(ie_header);
++		ret_len += sizeof(ie_header);
 +
-+struct nxpwifi_ds_auto_ds {
-+	u16 auto_ds;
-+	u16 idle_time;
-+};
++		/* Copy the generic IE buffer to the output buffer, advance
++		 * pointer
++		 */
++		memcpy(*buffer, priv->gen_ie_buf, priv->gen_ie_buf_len);
 +
-+struct nxpwifi_ds_pm_cfg {
-+	union {
-+		u32 ps_mode;
-+		struct nxpwifi_ds_hs_cfg hs_cfg;
-+		struct nxpwifi_ds_auto_ds auto_deep_sleep;
-+		u32 sleep_period;
-+	} param;
-+};
++		/* Increment the return size and the return buffer pointer
++		 * param
++		 */
++		*buffer += priv->gen_ie_buf_len;
++		ret_len += priv->gen_ie_buf_len;
 +
-+struct nxpwifi_11ac_vht_cfg {
-+	u8 band_config;
-+	u8 misc_config;
-+	u32 cap_info;
-+	u32 mcs_tx_set;
-+	u32 mcs_rx_set;
-+};
++		/* Reset the generic IE buffer */
++		priv->gen_ie_buf_len = 0;
++	}
 +
-+struct nxpwifi_ds_11n_tx_cfg {
-+	u16 tx_htcap;
-+	u16 tx_htinfo;
-+	u16 misc_config; /* Needed for 802.11AC cards only */
-+};
++	/* return the length appended to the buffer */
++	return ret_len;
++}
 +
-+struct nxpwifi_ds_11n_amsdu_aggr_ctrl {
-+	u16 enable;
-+	u16 curr_buf_size;
-+};
++/* Append TSF tracking info from the scan table for the target AP.
++ *
++ * This function is called from the network join command preparation routine.
++ *
++ * The TSF table TSF sent to the firmware contains two TSF values:
++ *      - The TSF of the target AP from its previous beacon/probe response
++ *      - The TSF timestamp of our local MAC at the time we observed the
++ *        beacon/probe response.
++ *
++ * The firmware uses the timestamp values to set an initial TSF value
++ * in the MAC for the new association after a reassociation attempt.
++ */
++static int
++nxpwifi_cmd_append_tsf_tlv(struct nxpwifi_private *priv, u8 **buffer,
++			   struct nxpwifi_bssdescriptor *bss_desc)
++{
++	struct nxpwifi_ie_types_tsf_timestamp tsf_tlv;
++	__le64 tsf_val;
 +
-+struct nxpwifi_ds_ant_cfg {
-+	u32 tx_ant;
-+	u32 rx_ant;
-+};
++	/* Null Checks */
++	if (!buffer)
++		return 0;
++	if (!*buffer)
++		return 0;
 +
-+#define NXPWIFI_NUM_OF_CMD_BUFFER	50
-+#define NXPWIFI_SIZE_OF_CMD_BUFFER	2048
++	memset(&tsf_tlv, 0x00, sizeof(struct nxpwifi_ie_types_tsf_timestamp));
 +
-+enum {
-+	NXPWIFI_IE_TYPE_GEN_IE = 0,
-+	NXPWIFI_IE_TYPE_ARP_FILTER,
-+};
++	tsf_tlv.header.type = cpu_to_le16(TLV_TYPE_TSFTIMESTAMP);
++	tsf_tlv.header.len = cpu_to_le16(2 * sizeof(tsf_val));
 +
-+enum {
-+	NXPWIFI_REG_MAC = 1,
-+	NXPWIFI_REG_BBP,
-+	NXPWIFI_REG_RF,
-+	NXPWIFI_REG_PMIC,
-+	NXPWIFI_REG_CAU,
-+};
++	memcpy(*buffer, &tsf_tlv, sizeof(tsf_tlv.header));
++	*buffer += sizeof(tsf_tlv.header);
 +
-+struct nxpwifi_ds_reg_rw {
-+	u32 type;
-+	u32 offset;
-+	u32 value;
-+};
++	/* TSF at the time when beacon/probe_response was received */
++	tsf_val = cpu_to_le64(bss_desc->fw_tsf);
++	memcpy(*buffer, &tsf_val, sizeof(tsf_val));
++	*buffer += sizeof(tsf_val);
 +
-+#define MAX_EEPROM_DATA 256
++	tsf_val = cpu_to_le64(bss_desc->timestamp);
 +
-+struct nxpwifi_ds_read_eeprom {
-+	u16 offset;
-+	u16 byte_count;
-+	u8 value[MAX_EEPROM_DATA];
-+};
++	nxpwifi_dbg(priv->adapter, INFO,
++		    "info: %s: TSF offset calc: %016llx - %016llx\n",
++		    __func__, bss_desc->timestamp, bss_desc->fw_tsf);
 +
-+struct nxpwifi_ds_mem_rw {
-+	u32 addr;
-+	u32 value;
-+};
++	memcpy(*buffer, &tsf_val, sizeof(tsf_val));
++	*buffer += sizeof(tsf_val);
 +
-+#define IEEE_MAX_IE_SIZE		256
++	return sizeof(tsf_tlv.header) + (2 * sizeof(tsf_val));
++}
 +
-+#define NXPWIFI_IE_HDR_SIZE	(sizeof(struct nxpwifi_ie) - IEEE_MAX_IE_SIZE)
++/* This function finds out the common rates between rate1 and rate2.
++ *
++ * It will fill common rates in rate1 as output if found.
++ *
++ * NOTE: Setting the MSB of the basic rates needs to be taken
++ * care of, either before or after calling this function.
++ */
++static int nxpwifi_get_common_rates(struct nxpwifi_private *priv, u8 *rate1,
++				    u32 rate1_size, u8 *rate2, u32 rate2_size)
++{
++	int ret;
++	u8 *ptr = rate1, *tmp;
++	u32 i, j;
 +
-+struct nxpwifi_ds_misc_gen_ie {
-+	u32 type;
-+	u32 len;
-+	u8 ie_data[IEEE_MAX_IE_SIZE];
-+};
++	tmp = kmemdup(rate1, rate1_size, GFP_KERNEL);
++	if (!tmp)
++		return -ENOMEM;
 +
-+struct nxpwifi_ds_misc_cmd {
-+	u32 len;
-+	u8 cmd[NXPWIFI_SIZE_OF_CMD_BUFFER];
-+};
++	memset(rate1, 0, rate1_size);
 +
-+#define BITMASK_BCN_RSSI_LOW	BIT(0)
-+#define BITMASK_BCN_RSSI_HIGH	BIT(4)
++	for (i = 0; i < rate2_size && rate2[i]; i++) {
++		for (j = 0; j < rate1_size && tmp[j]; j++) {
++			/* Check common rate, excluding the bit for
++			 * basic rate
++			 */
++			if ((rate2[i] & 0x7F) == (tmp[j] & 0x7F)) {
++				*rate1++ = tmp[j];
++				break;
++			}
++		}
++	}
 +
-+enum subsc_evt_rssi_state {
-+	EVENT_HANDLED,
-+	RSSI_LOW_RECVD,
-+	RSSI_HIGH_RECVD
-+};
++	nxpwifi_dbg(priv->adapter, INFO, "info: Tx data rate set to %#x\n",
++		    priv->data_rate);
 +
-+struct subsc_evt_cfg {
-+	u8 abs_value;
-+	u8 evt_freq;
-+};
++	if (!priv->is_data_rate_auto) {
++		while (*ptr) {
++			if ((*ptr & 0x7f) == priv->data_rate) {
++				ret = 0;
++				goto done;
++			}
++			ptr++;
++		}
++		nxpwifi_dbg(priv->adapter, ERROR,
++			    "previously set fixed data rate %#x\t"
++			    "is not compatible with the network\n",
++			    priv->data_rate);
 +
-+struct nxpwifi_ds_misc_subsc_evt {
-+	u16 action;
-+	u16 events;
-+	struct subsc_evt_cfg bcn_l_rssi_cfg;
-+	struct subsc_evt_cfg bcn_h_rssi_cfg;
-+};
++		ret = -1;
++		goto done;
++	}
 +
-+#define NXPWIFI_MEF_MAX_BYTESEQ		6	/* non-adjustable */
-+#define NXPWIFI_MEF_MAX_FILTERS		10
++	ret = 0;
++done:
++	kfree(tmp);
++	return ret;
++}
 +
-+struct nxpwifi_mef_filter {
-+	u16 repeat;
-+	u16 offset;
-+	s8 byte_seq[NXPWIFI_MEF_MAX_BYTESEQ + 1];
-+	u8 filt_type;
-+	u8 filt_action;
-+};
++/* This function creates the intersection of the rates supported by a
++ * target BSS and our adapter settings for use in an assoc/join command.
++ */
++static int
++nxpwifi_setup_rates_from_bssdesc(struct nxpwifi_private *priv,
++				 struct nxpwifi_bssdescriptor *bss_desc,
++				 u8 *out_rates, u32 *out_rates_size)
++{
++	u8 card_rates[NXPWIFI_SUPPORTED_RATES];
++	u32 card_rates_size;
 +
-+struct nxpwifi_mef_entry {
-+	u8 mode;
-+	u8 action;
-+	struct nxpwifi_mef_filter filter[NXPWIFI_MEF_MAX_FILTERS];
-+};
++	/* Copy AP supported rates */
++	memcpy(out_rates, bss_desc->supported_rates, NXPWIFI_SUPPORTED_RATES);
++	/* Get the STA supported rates */
++	card_rates_size = nxpwifi_get_active_data_rates(priv, card_rates);
++	/* Get the common rates between AP and STA supported rates */
++	if (nxpwifi_get_common_rates(priv, out_rates, NXPWIFI_SUPPORTED_RATES,
++				     card_rates, card_rates_size)) {
++		*out_rates_size = 0;
++		nxpwifi_dbg(priv->adapter, ERROR,
++			    "%s: cannot get common rates\n",
++			    __func__);
++		return -1;
++	}
 +
-+struct nxpwifi_ds_mef_cfg {
-+	u32 criteria;
-+	u16 num_entries;
-+	struct nxpwifi_mef_entry *mef_entry;
-+};
++	*out_rates_size =
++		min_t(size_t, strlen(out_rates), NXPWIFI_SUPPORTED_RATES);
 +
-+#define NXPWIFI_MAX_VSIE_LEN       (256)
-+#define NXPWIFI_MAX_VSIE_NUM       (8)
-+#define NXPWIFI_VSIE_MASK_CLEAR    0x00
-+#define NXPWIFI_VSIE_MASK_SCAN     0x01
-+#define NXPWIFI_VSIE_MASK_ASSOC    0x02
-+#define NXPWIFI_VSIE_MASK_BGSCAN   0x08
++	return 0;
++}
 +
-+enum {
-+	NXPWIFI_FUNC_INIT = 1,
-+	NXPWIFI_FUNC_SHUTDOWN,
-+};
++/* This function appends a WPS IE. It is called from the network join command
++ * preparation routine.
++ *
++ * If the IE buffer has been setup by the application, this routine appends
++ * the buffer as a WPS TLV type to the request.
++ */
++static int
++nxpwifi_cmd_append_wps_ie(struct nxpwifi_private *priv, u8 **buffer)
++{
++	int ret_len = 0;
++	struct nxpwifi_ie_types_header ie_header;
 +
-+enum COALESCE_OPERATION {
-+	RECV_FILTER_MATCH_TYPE_EQ = 0x80,
-+	RECV_FILTER_MATCH_TYPE_NE,
-+};
++	if (!buffer || !*buffer)
++		return 0;
 +
-+enum COALESCE_PACKET_TYPE {
-+	PACKET_TYPE_UNICAST = 1,
-+	PACKET_TYPE_MULTICAST = 2,
-+	PACKET_TYPE_BROADCAST = 3
-+};
++	/* If there is a wps ie buffer setup, append it to the return
++	 * parameter buffer pointer.
++	 */
++	if (priv->wps_ie_len) {
++		nxpwifi_dbg(priv->adapter, CMD,
++			    "cmd: append wps ie %d to %p\n",
++			    priv->wps_ie_len, *buffer);
 +
-+#define NXPWIFI_COALESCE_MAX_RULES	8
-+#define NXPWIFI_COALESCE_MAX_BYTESEQ	4	/* non-adjustable */
-+#define NXPWIFI_COALESCE_MAX_FILTERS	4
-+#define NXPWIFI_MAX_COALESCING_DELAY	100     /* in msecs */
++		/* Wrap the generic IE buffer with a pass through TLV type */
++		ie_header.type = cpu_to_le16(TLV_TYPE_PASSTHROUGH);
++		ie_header.len = cpu_to_le16(priv->wps_ie_len);
++		memcpy(*buffer, &ie_header, sizeof(ie_header));
++		*buffer += sizeof(ie_header);
++		ret_len += sizeof(ie_header);
 +
-+struct filt_field_param {
-+	u8 operation;
-+	u8 operand_len;
-+	u16 offset;
-+	u8 operand_byte_stream[NXPWIFI_COALESCE_MAX_BYTESEQ];
-+};
++		memcpy(*buffer, priv->wps_ie, priv->wps_ie_len);
++		*buffer += priv->wps_ie_len;
++		ret_len += priv->wps_ie_len;
++	}
 +
-+struct nxpwifi_coalesce_rule {
-+	u16 max_coalescing_delay;
-+	u8 num_of_fields;
-+	u8 pkt_type;
-+	struct filt_field_param params[NXPWIFI_COALESCE_MAX_FILTERS];
-+};
++	kfree(priv->wps_ie);
++	priv->wps_ie_len = 0;
++	return ret_len;
++}
 +
-+struct nxpwifi_ds_coalesce_cfg {
-+	u16 num_of_rules;
-+	struct nxpwifi_coalesce_rule rule[NXPWIFI_COALESCE_MAX_RULES];
-+};
++/* This function appends rsn ie tlv for wpa/wpa2 security modes.
++ * It is called from the network join command preparation routine.
++ */
++static int nxpwifi_append_rsn_ie_wpa_wpa2(struct nxpwifi_private *priv,
++					  u8 **buffer)
++{
++	struct nxpwifi_ie_types_rsn_param_set *rsn_ie_tlv;
++	int rsn_ie_len;
 +
-+#endif /* !_NXPWIFI_IOCTL_H_ */
++	if (!buffer || !(*buffer))
++		return 0;
++
++	rsn_ie_tlv = (struct nxpwifi_ie_types_rsn_param_set *)(*buffer);
++	rsn_ie_tlv->header.type = cpu_to_le16((u16)priv->wpa_ie[0]);
++	rsn_ie_tlv->header.type =
++		cpu_to_le16(le16_to_cpu(rsn_ie_tlv->header.type) & 0x00FF);
++	rsn_ie_tlv->header.len = cpu_to_le16((u16)priv->wpa_ie[1]);
++	rsn_ie_tlv->header.len = cpu_to_le16(le16_to_cpu(rsn_ie_tlv->header.len)
++							 & 0x00FF);
++	if (le16_to_cpu(rsn_ie_tlv->header.len) <= (sizeof(priv->wpa_ie) - 2))
++		memcpy(rsn_ie_tlv->rsn_ie, &priv->wpa_ie[2],
++		       le16_to_cpu(rsn_ie_tlv->header.len));
++	else
++		return -1;
++
++	rsn_ie_len = sizeof(rsn_ie_tlv->header) +
++					le16_to_cpu(rsn_ie_tlv->header.len);
++	*buffer += rsn_ie_len;
++
++	return rsn_ie_len;
++}
++
++/* This function prepares command for association.
++ *
++ * This sets the following parameters -
++ *      - Peer MAC address
++ *      - Listen interval
++ *      - Beacon interval
++ *      - Capability information
++ *
++ * ...and the following TLVs, as required -
++ *      - SSID TLV
++ *      - PHY TLV
++ *      - SS TLV
++ *      - Rates TLV
++ *      - Authentication TLV
++ *      - Channel TLV
++ *      - WPA/WPA2 IE
++ *      - 11n TLV
++ *      - Vendor specific TLV
++ *      - WMM TLV
++ *      - Generic IE
++ *      - TSF TLV
++ *
++ * Preparation also includes -
++ *      - Setting command ID and proper size
++ *      - Ensuring correct endian-ness
++ */
++int nxpwifi_cmd_802_11_associate(struct nxpwifi_private *priv,
++				 struct host_cmd_ds_command *cmd,
++				 struct nxpwifi_bssdescriptor *bss_desc)
++{
++	struct host_cmd_ds_802_11_associate *assoc = &cmd->params.associate;
++	struct nxpwifi_ie_types_host_mlme *host_mlme_tlv;
++	struct nxpwifi_ie_types_ssid_param_set *ssid_tlv;
++	struct nxpwifi_ie_types_phy_param_set *phy_tlv;
++	struct nxpwifi_ie_types_ss_param_set *ss_tlv;
++	struct nxpwifi_ie_types_rates_param_set *rates_tlv;
++	struct nxpwifi_ie_types_auth_type *auth_tlv;
++	struct nxpwifi_ie_types_sae_pwe_mode *sae_pwe_tlv;
++	struct nxpwifi_ie_types_chan_list_param_set *chan_tlv;
++	u8 rates[NXPWIFI_SUPPORTED_RATES];
++	u32 rates_size;
++	u16 tmp_cap;
++	u8 *pos;
++	int rsn_ie_len = 0;
++
++	pos = (u8 *)assoc;
++
++	cmd->command = cpu_to_le16(HOST_CMD_802_11_ASSOCIATE);
++
++	/* Save so we know which BSS Desc to use in the response handler */
++	priv->attempted_bss_desc = bss_desc;
++
++	memcpy(assoc->peer_sta_addr,
++	       bss_desc->mac_address, sizeof(assoc->peer_sta_addr));
++	pos += sizeof(assoc->peer_sta_addr);
++
++	/* Set the listen interval */
++	assoc->listen_interval = cpu_to_le16(priv->listen_interval);
++	/* Set the beacon period */
++	assoc->beacon_period = cpu_to_le16(bss_desc->beacon_period);
++
++	pos += sizeof(assoc->cap_info_bitmap);
++	pos += sizeof(assoc->listen_interval);
++	pos += sizeof(assoc->beacon_period);
++	pos += sizeof(assoc->dtim_period);
++
++	host_mlme_tlv = (struct nxpwifi_ie_types_host_mlme *)pos;
++	host_mlme_tlv->header.type = cpu_to_le16(TLV_TYPE_HOST_MLME);
++	host_mlme_tlv->header.len = cpu_to_le16(sizeof(host_mlme_tlv->host_mlme));
++	host_mlme_tlv->host_mlme = 1;
++	pos += sizeof(host_mlme_tlv->header) + sizeof(host_mlme_tlv->host_mlme);
++
++	ssid_tlv = (struct nxpwifi_ie_types_ssid_param_set *)pos;
++	ssid_tlv->header.type = cpu_to_le16(WLAN_EID_SSID);
++	ssid_tlv->header.len = cpu_to_le16((u16)bss_desc->ssid.ssid_len);
++	memcpy(ssid_tlv->ssid, bss_desc->ssid.ssid,
++	       le16_to_cpu(ssid_tlv->header.len));
++	pos += sizeof(ssid_tlv->header) + le16_to_cpu(ssid_tlv->header.len);
++
++	phy_tlv = (struct nxpwifi_ie_types_phy_param_set *)pos;
++	phy_tlv->header.type = cpu_to_le16(WLAN_EID_DS_PARAMS);
++	phy_tlv->header.len = cpu_to_le16(sizeof(phy_tlv->fh_ds.ds_param_set));
++	memcpy(&phy_tlv->fh_ds.ds_param_set,
++	       &bss_desc->phy_param_set.ds_param_set.current_chan,
++	       sizeof(phy_tlv->fh_ds.ds_param_set));
++	pos += sizeof(phy_tlv->header) + le16_to_cpu(phy_tlv->header.len);
++
++	ss_tlv = (struct nxpwifi_ie_types_ss_param_set *)pos;
++	ss_tlv->header.type = cpu_to_le16(WLAN_EID_CF_PARAMS);
++	ss_tlv->header.len = cpu_to_le16(sizeof(ss_tlv->cf_ibss.cf_param_set));
++	pos += sizeof(ss_tlv->header) + le16_to_cpu(ss_tlv->header.len);
++
++	/* Get the common rates supported between the driver and the BSS Desc */
++	if (nxpwifi_setup_rates_from_bssdesc
++	    (priv, bss_desc, rates, &rates_size))
++		return -1;
++
++	/* Save the data rates into Current BSS state structure */
++	priv->curr_bss_params.num_of_rates = rates_size;
++	memcpy(&priv->curr_bss_params.data_rates, rates, rates_size);
++
++	/* Setup the Rates TLV in the association command */
++	rates_tlv = (struct nxpwifi_ie_types_rates_param_set *)pos;
++	rates_tlv->header.type = cpu_to_le16(WLAN_EID_SUPP_RATES);
++	rates_tlv->header.len = cpu_to_le16((u16)rates_size);
++	memcpy(rates_tlv->rates, rates, rates_size);
++	pos += sizeof(rates_tlv->header) + rates_size;
++	nxpwifi_dbg(priv->adapter, INFO, "info: ASSOC_CMD: rates size = %d\n",
++		    rates_size);
++
++	/* Add the Authentication type */
++	auth_tlv = (struct nxpwifi_ie_types_auth_type *)pos;
++	auth_tlv->header.type = cpu_to_le16(TLV_TYPE_AUTH_TYPE);
++	auth_tlv->header.len = cpu_to_le16(sizeof(auth_tlv->auth_type));
++	if (priv->sec_info.wep_enabled)
++		auth_tlv->auth_type =
++			cpu_to_le16((u16)priv->sec_info.authentication_mode);
++	else
++		auth_tlv->auth_type = cpu_to_le16(NL80211_AUTHTYPE_OPEN_SYSTEM);
++
++	pos += sizeof(auth_tlv->header) + le16_to_cpu(auth_tlv->header.len);
++
++	if (priv->sec_info.authentication_mode == WLAN_AUTH_SAE) {
++		auth_tlv->auth_type = cpu_to_le16(NXPWIFI_AUTHTYPE_SAE);
++		if (bss_desc->bcn_rsnx_ie &&
++		    bss_desc->bcn_rsnx_ie->ieee_hdr.len &&
++		    (bss_desc->bcn_rsnx_ie->data[0] &
++		     WLAN_RSNX_CAPA_SAE_H2E)) {
++			sae_pwe_tlv =
++				(struct nxpwifi_ie_types_sae_pwe_mode *)pos;
++			sae_pwe_tlv->header.type =
++				cpu_to_le16(TLV_TYPE_SAE_PWE_MODE);
++			sae_pwe_tlv->header.len =
++				cpu_to_le16(sizeof(sae_pwe_tlv->pwe[0]));
++			sae_pwe_tlv->pwe[0] = bss_desc->bcn_rsnx_ie->data[0];
++			pos += sizeof(sae_pwe_tlv->header) +
++				sizeof(sae_pwe_tlv->pwe[0]);
++		}
++	}
++
++	if (IS_SUPPORT_MULTI_BANDS(priv->adapter) &&
++	    !(ISSUPP_11NENABLED(priv->adapter->fw_cap_info) &&
++	    !bss_desc->disable_11n &&
++	    (priv->adapter->config_bands & BAND_GN ||
++	     priv->adapter->config_bands & BAND_AN) &&
++	    bss_desc->bcn_ht_cap)) {
++		/* Append a channel TLV for the channel the attempted AP was
++		 * found on
++		 */
++		chan_tlv = (struct nxpwifi_ie_types_chan_list_param_set *)pos;
++		chan_tlv->header.type = cpu_to_le16(TLV_TYPE_CHANLIST);
++		chan_tlv->header.len =
++			cpu_to_le16(sizeof(struct nxpwifi_chan_scan_param_set));
++
++		memset(chan_tlv->chan_scan_param, 0x00,
++		       sizeof(struct nxpwifi_chan_scan_param_set));
++		chan_tlv->chan_scan_param[0].chan_number =
++			(bss_desc->phy_param_set.ds_param_set.current_chan);
++		nxpwifi_dbg(priv->adapter, INFO, "info: Assoc: TLV Chan = %d\n",
++			    chan_tlv->chan_scan_param[0].chan_number);
++
++		chan_tlv->chan_scan_param[0].radio_type =
++			nxpwifi_band_to_radio_type((u8)bss_desc->bss_band);
++
++		nxpwifi_dbg(priv->adapter, INFO, "info: Assoc: TLV Band = %d\n",
++			    chan_tlv->chan_scan_param[0].radio_type);
++		pos += sizeof(chan_tlv->header) +
++			sizeof(struct nxpwifi_chan_scan_param_set);
++	}
++
++	if (!priv->wps.session_enable) {
++		if (priv->sec_info.wpa_enabled || priv->sec_info.wpa2_enabled)
++			rsn_ie_len = nxpwifi_append_rsn_ie_wpa_wpa2(priv, &pos);
++
++		if (rsn_ie_len == -1)
++			return -1;
++	}
++
++	if (ISSUPP_11NENABLED(priv->adapter->fw_cap_info) &&
++	    !bss_desc->disable_11n &&
++	    (priv->adapter->config_bands & BAND_GN ||
++	     priv->adapter->config_bands & BAND_AN))
++		nxpwifi_cmd_append_11n_tlv(priv, bss_desc, &pos);
++
++	if (ISSUPP_11ACENABLED(priv->adapter->fw_cap_info) &&
++	    !bss_desc->disable_11n && !bss_desc->disable_11ac &&
++	    priv->adapter->config_bands & BAND_AAC)
++		nxpwifi_cmd_append_11ac_tlv(priv, bss_desc, &pos);
++
++	/* Append vendor specific IE TLV */
++	nxpwifi_cmd_append_vsie_tlv(priv, NXPWIFI_VSIE_MASK_ASSOC, &pos);
++
++	nxpwifi_wmm_process_association_req(priv, &pos, &bss_desc->wmm_ie,
++					    bss_desc->bcn_ht_cap);
++
++	if (priv->wps.session_enable && priv->wps_ie_len)
++		nxpwifi_cmd_append_wps_ie(priv, &pos);
++
++	nxpwifi_cmd_append_generic_ie(priv, &pos);
++
++	nxpwifi_cmd_append_tsf_tlv(priv, &pos, bss_desc);
++
++	nxpwifi_11h_process_join(priv, &pos, bss_desc);
++
++	cmd->size = cpu_to_le16((u16)(pos - (u8 *)assoc) + S_DS_GEN);
++
++	/* Set the Capability info at last */
++	tmp_cap = bss_desc->cap_info_bitmap;
++
++	if (priv->adapter->config_bands == BAND_B)
++		tmp_cap &= ~WLAN_CAPABILITY_SHORT_SLOT_TIME;
++
++	tmp_cap &= CAPINFO_MASK;
++	nxpwifi_dbg(priv->adapter, INFO,
++		    "info: ASSOC_CMD: tmp_cap=%4X CAPINFO_MASK=%4lX\n",
++		    tmp_cap, CAPINFO_MASK);
++	assoc->cap_info_bitmap = cpu_to_le16(tmp_cap);
++
++	return 0;
++}
++
++static const char *assoc_failure_reason_to_str(u16 cap_info)
++{
++	switch (cap_info) {
++	case CONNECT_ERR_AUTH_ERR_STA_FAILURE:
++		return "CONNECT_ERR_AUTH_ERR_STA_FAILURE";
++	case CONNECT_ERR_AUTH_MSG_UNHANDLED:
++		return "CONNECT_ERR_AUTH_MSG_UNHANDLED";
++	case CONNECT_ERR_ASSOC_ERR_TIMEOUT:
++		return "CONNECT_ERR_ASSOC_ERR_TIMEOUT";
++	case CONNECT_ERR_ASSOC_ERR_AUTH_REFUSED:
++		return "CONNECT_ERR_ASSOC_ERR_AUTH_REFUSED";
++	case CONNECT_ERR_STA_FAILURE:
++		return "CONNECT_ERR_STA_FAILURE";
++	}
++
++	return "Unknown connect failure";
++}
++
++/* Association firmware command response handler
++ *
++ * The response buffer for the association command has the following
++ * memory layout.
++ *
++ * For cases where an association response was not received (indicated
++ * by the CapInfo and AId field):
++ *
++ *     .------------------------------------------------------------.
++ *     |  Header(4 * sizeof(t_u16)):  Standard command response hdr |
++ *     .------------------------------------------------------------.
++ *     |  cap_info/Error Return(t_u16):                             |
++ *     |           0xFFFF(-1): Internal error                       |
++ *     |           0xFFFE(-2): Authentication unhandled message     |
++ *     |           0xFFFD(-3): Authentication refused               |
++ *     |           0xFFFC(-4): Timeout waiting for AP response      |
++ *     .------------------------------------------------------------.
++ *     |  status_code(t_u16):                                       |
++ *     |        If cap_info is -1:                                  |
++ *     |           An internal firmware failure prevented the       |
++ *     |           command from being processed.  The status_code   |
++ *     |           will be set to 1.                                |
++ *     |                                                            |
++ *     |        If cap_info is -2:                                  |
++ *     |           An authentication frame was received but was     |
++ *     |           not handled by the firmware.  IEEE Status        |
++ *     |           code for the failure is returned.                |
++ *     |                                                            |
++ *     |        If cap_info is -3:                                  |
++ *     |           An authentication frame was received and the     |
++ *     |           status_code is the IEEE Status reported in the   |
++ *     |           response.                                        |
++ *     |                                                            |
++ *     |        If cap_info is -4:                                  |
++ *     |           (1) Association response timeout                 |
++ *     |           (2) Authentication response timeout              |
++ *     .------------------------------------------------------------.
++ *     |  a_id(t_u16): 0xFFFF                                       |
++ *     .------------------------------------------------------------.
++ *
++ *
++ * For cases where an association response was received, the IEEE
++ * standard association response frame is returned:
++ *
++ *     .------------------------------------------------------------.
++ *     |  Header(4 * sizeof(t_u16)):  Standard command response hdr |
++ *     .------------------------------------------------------------.
++ *     |  cap_info(t_u16): IEEE Capability                          |
++ *     .------------------------------------------------------------.
++ *     |  status_code(t_u16): IEEE Status Code                      |
++ *     .------------------------------------------------------------.
++ *     |  a_id(t_u16): IEEE Association ID                          |
++ *     .------------------------------------------------------------.
++ *     |  IEEE IEs(variable): Any received IEs comprising the       |
++ *     |                      remaining portion of a received       |
++ *     |                      association response frame.           |
++ *     .------------------------------------------------------------.
++ *
++ * For simplistic handling, the status_code field can be used to determine
++ * an association success (0) or failure (non-zero).
++ */
++int nxpwifi_ret_802_11_associate(struct nxpwifi_private *priv,
++				 struct host_cmd_ds_command *resp)
++{
++	struct nxpwifi_adapter *adapter = priv->adapter;
++	int ret = 0;
++	struct ieee_types_assoc_rsp *assoc_rsp;
++	struct nxpwifi_bssdescriptor *bss_desc;
++	bool enable_data = true;
++	u16 cap_info, status_code, aid;
++	const u8 *ie_ptr;
++	struct ieee80211_ht_operation *assoc_resp_ht_oper;
++	struct ieee80211_mgmt *hdr;
++
++	if (!priv->attempted_bss_desc) {
++		nxpwifi_dbg(priv->adapter, ERROR,
++			    "%s: failed, association terminated by host\n",
++			    __func__);
++		goto done;
++	}
++
++	hdr = (struct ieee80211_mgmt *)&resp->params;
++	if (!memcmp(hdr->bssid, priv->attempted_bss_desc->mac_address,
++		    ETH_ALEN))
++		assoc_rsp = (struct ieee_types_assoc_rsp *)&hdr->u.assoc_resp;
++	else
++		assoc_rsp = (struct ieee_types_assoc_rsp *)&resp->params;
++
++	cap_info = le16_to_cpu(assoc_rsp->cap_info_bitmap);
++	status_code = le16_to_cpu(assoc_rsp->status_code);
++	aid = le16_to_cpu(assoc_rsp->a_id);
++
++	if ((aid & (BIT(15) | BIT(14))) != (BIT(15) | BIT(14)))
++		dev_err(priv->adapter->dev,
++			"invalid AID value 0x%x; bits 15:14 not set\n",
++			aid);
++
++	aid &= ~(BIT(15) | BIT(14));
++
++	priv->assoc_rsp_size = min(le16_to_cpu(resp->size) - S_DS_GEN,
++				   sizeof(priv->assoc_rsp_buf));
++
++	assoc_rsp->a_id = cpu_to_le16(aid);
++	memcpy(priv->assoc_rsp_buf, &resp->params, priv->assoc_rsp_size);
++
++	if (status_code) {
++		priv->adapter->dbg.num_cmd_assoc_failure++;
++		nxpwifi_dbg(priv->adapter, ERROR,
++			    "ASSOC_RESP: failed,\t"
++			    "status code=%d err=%#x a_id=%#x\n",
++			    status_code, cap_info,
++			    le16_to_cpu(assoc_rsp->a_id));
++
++		nxpwifi_dbg(priv->adapter, ERROR, "assoc failure: reason %s\n",
++			    assoc_failure_reason_to_str(cap_info));
++		if (cap_info == CONNECT_ERR_ASSOC_ERR_TIMEOUT) {
++			if (status_code == NXPWIFI_ASSOC_CMD_FAILURE_AUTH) {
++				ret = WLAN_STATUS_AUTH_TIMEOUT;
++				nxpwifi_dbg(priv->adapter, ERROR,
++					    "ASSOC_RESP: AUTH timeout\n");
++			} else {
++				ret = WLAN_STATUS_UNSPECIFIED_FAILURE;
++				nxpwifi_dbg(priv->adapter, ERROR,
++					    "ASSOC_RESP: UNSPECIFIED failure\n");
++			}
++
++			priv->assoc_rsp_size = 0;
++		} else {
++			ret = status_code;
++		}
++
++		goto done;
++	}
++
++	/* Send a Media Connected event, according to the Spec */
++	priv->media_connected = true;
++
++	priv->adapter->ps_state = PS_STATE_AWAKE;
++	priv->adapter->pps_uapsd_mode = false;
++	priv->adapter->tx_lock_flag = false;
++
++	/* Set the attempted BSSID Index to current */
++	bss_desc = priv->attempted_bss_desc;
++
++	nxpwifi_dbg(priv->adapter, INFO, "info: ASSOC_RESP: %s\n",
++		    bss_desc->ssid.ssid);
++
++	/* Make a copy of current BSSID descriptor */
++	memcpy(&priv->curr_bss_params.bss_descriptor,
++	       bss_desc, sizeof(struct nxpwifi_bssdescriptor));
++
++	/* Update curr_bss_params */
++	priv->curr_bss_params.bss_descriptor.channel =
++		bss_desc->phy_param_set.ds_param_set.current_chan;
++
++	priv->curr_bss_params.band = (u8)bss_desc->bss_band;
++
++	if (bss_desc->wmm_ie.vend_hdr.element_id == WLAN_EID_VENDOR_SPECIFIC)
++		priv->curr_bss_params.wmm_enabled = true;
++	else
++		priv->curr_bss_params.wmm_enabled = false;
++
++	if ((priv->wmm_required || bss_desc->bcn_ht_cap) &&
++	    priv->curr_bss_params.wmm_enabled)
++		priv->wmm_enabled = true;
++	else
++		priv->wmm_enabled = false;
++
++	priv->curr_bss_params.wmm_uapsd_enabled = false;
++
++	if (priv->wmm_enabled)
++		priv->curr_bss_params.wmm_uapsd_enabled =
++			((bss_desc->wmm_ie.qos_info_bitmap &
++			  IEEE80211_WMM_IE_AP_QOSINFO_UAPSD) ? 1 : 0);
++
++	/* Store the bandwidth information from assoc response */
++	ie_ptr = cfg80211_find_ie(WLAN_EID_HT_OPERATION, assoc_rsp->ie_buffer,
++				  priv->assoc_rsp_size
++				  - sizeof(struct ieee_types_assoc_rsp));
++	if (ie_ptr) {
++		assoc_resp_ht_oper = (struct ieee80211_ht_operation *)(ie_ptr
++					+ sizeof(struct ieee_types_header));
++		priv->assoc_resp_ht_param = assoc_resp_ht_oper->ht_param;
++		priv->ht_param_present = true;
++	} else {
++		priv->ht_param_present = false;
++	}
++
++	nxpwifi_dbg(priv->adapter, INFO,
++		    "info: ASSOC_RESP: curr_pkt_filter is %#x\n",
++		    priv->curr_pkt_filter);
++	if (priv->sec_info.wpa_enabled || priv->sec_info.wpa2_enabled)
++		priv->wpa_is_gtk_set = false;
++
++	if (priv->wmm_enabled) {
++		/* Don't re-enable carrier until we get the WMM_GET_STATUS
++		 * event
++		 */
++		enable_data = false;
++	} else {
++		/* Since WMM is not enabled, setup the queues with the
++		 * defaults
++		 */
++		nxpwifi_wmm_setup_queue_priorities(priv, NULL);
++		nxpwifi_wmm_setup_ac_downgrade(priv);
++	}
++
++	if (enable_data)
++		nxpwifi_dbg(priv->adapter, INFO,
++			    "info: post association, re-enabling data flow\n");
++
++	/* Reset SNR/NF/RSSI values */
++	priv->data_rssi_last = 0;
++	priv->data_nf_last = 0;
++	priv->data_rssi_avg = 0;
++	priv->data_nf_avg = 0;
++	priv->bcn_rssi_last = 0;
++	priv->bcn_nf_last = 0;
++	priv->bcn_rssi_avg = 0;
++	priv->bcn_nf_avg = 0;
++	priv->rxpd_rate = 0;
++	priv->rxpd_htinfo = 0;
++
++	nxpwifi_save_curr_bcn(priv);
++
++	priv->adapter->dbg.num_cmd_assoc_success++;
++
++	nxpwifi_dbg(priv->adapter, MSG, "assoc: associated with %pM\n",
++		    priv->attempted_bss_desc->mac_address);
++
++	/* Add the ra_list here for infra mode as there will be only 1 ra
++	 * always
++	 */
++	nxpwifi_ralist_add(priv,
++			   priv->curr_bss_params.bss_descriptor.mac_address);
++
++	if (!netif_carrier_ok(priv->netdev))
++		netif_carrier_on(priv->netdev);
++	nxpwifi_wake_up_net_dev_queue(priv->netdev, adapter);
++
++	if (priv->sec_info.wpa_enabled || priv->sec_info.wpa2_enabled)
++		priv->scan_block = true;
++	else
++		priv->port_open = true;
++
++done:
++	/* Need to indicate IOCTL complete */
++	if (adapter->curr_cmd->wait_q_enabled) {
++		if (ret)
++			adapter->cmd_wait_q.status = -1;
++		else
++			adapter->cmd_wait_q.status = 0;
++	}
++
++	return ret;
++}
++
++/* This function associates to a specific BSS discovered in a scan.
++ *
++ * It clears any past association response stored for application
++ * retrieval and calls the command preparation routine to send the
++ * command to firmware.
++ */
++int nxpwifi_associate(struct nxpwifi_private *priv,
++		      struct nxpwifi_bssdescriptor *bss_desc)
++{
++	/* Return error if the adapter is not STA role or table entry
++	 * is not marked as infra.
++	 */
++	if ((GET_BSS_ROLE(priv) != NXPWIFI_BSS_ROLE_STA) ||
++	    bss_desc->bss_mode != NL80211_IFTYPE_STATION)
++		return -1;
++
++	if (ISSUPP_11ACENABLED(priv->adapter->fw_cap_info) &&
++	    !bss_desc->disable_11n && !bss_desc->disable_11ac &&
++	    priv->adapter->config_bands & BAND_AAC)
++		nxpwifi_set_11ac_ba_params(priv);
++	else
++		nxpwifi_set_ba_params(priv);
++
++	/* Clear any past association response stored for application
++	 * retrieval
++	 */
++	priv->assoc_rsp_size = 0;
++
++	return nxpwifi_send_cmd(priv, HOST_CMD_802_11_ASSOCIATE,
++				HOST_ACT_GEN_SET, 0, bss_desc, true);
++}
++
++/* This function deauthenticates/disconnects from infra network by sending
++ * deauthentication request.
++ */
++static int nxpwifi_deauthenticate_infra(struct nxpwifi_private *priv, u8 *mac)
++{
++	u8 mac_address[ETH_ALEN];
++	int ret;
++
++	if (!mac || is_zero_ether_addr(mac))
++		memcpy(mac_address,
++		       priv->curr_bss_params.bss_descriptor.mac_address,
++		       ETH_ALEN);
++	else
++		memcpy(mac_address, mac, ETH_ALEN);
++
++	ret = nxpwifi_send_cmd(priv, HOST_CMD_802_11_DEAUTHENTICATE,
++			       HOST_ACT_GEN_SET, 0, mac_address, true);
++
++	return ret;
++}
++
++/* This function deauthenticates/disconnects from a BSS.
++ *
++ * In case of infra made, it sends deauthentication request, and
++ * in case of ad-hoc mode, a stop network request is sent to the firmware.
++ * In AP mode, a command to stop bss is sent to firmware.
++ */
++int nxpwifi_deauthenticate(struct nxpwifi_private *priv, u8 *mac)
++{
++	int ret = 0;
++
++	if (!priv->media_connected)
++		return 0;
++
++	priv->auth_flag = 0;
++	priv->auth_alg = WLAN_AUTH_NONE;
++	priv->host_mlme_reg = false;
++	priv->mgmt_frame_mask = 0;
++	if (nxpwifi_send_cmd(priv, HOST_CMD_MGMT_FRAME_REG,
++			     HOST_ACT_GEN_SET, 0,
++			     &priv->mgmt_frame_mask, false)) {
++		nxpwifi_dbg(priv->adapter, ERROR,
++			    "could not unregister mgmt frame rx\n");
++		return -1;
++	}
++
++	switch (priv->bss_mode) {
++	case NL80211_IFTYPE_STATION:
++		ret = nxpwifi_deauthenticate_infra(priv, mac);
++		if (ret)
++			cfg80211_disconnected(priv->netdev, 0, NULL, 0,
++					      true, GFP_KERNEL);
++		break;
++	case NL80211_IFTYPE_AP:
++		return nxpwifi_send_cmd(priv, HOST_CMD_UAP_BSS_STOP,
++					HOST_ACT_GEN_SET, 0, NULL, true);
++	default:
++		break;
++	}
++
++	return ret;
++}
++
++/* This function deauthenticates/disconnects from all BSS. */
++void nxpwifi_deauthenticate_all(struct nxpwifi_adapter *adapter)
++{
++	struct nxpwifi_private *priv;
++	int i;
++
++	for (i = 0; i < adapter->priv_num; i++) {
++		priv = adapter->priv[i];
++		if (priv)
++			nxpwifi_deauthenticate(priv, NULL);
++	}
++}
++EXPORT_SYMBOL_GPL(nxpwifi_deauthenticate_all);
++
++/* This function converts band to radio type used in channel TLV.
++ */
++u8
++nxpwifi_band_to_radio_type(u8 band)
++{
++	switch (band) {
++	case BAND_A:
++	case BAND_AN:
++	case BAND_A | BAND_AN:
++	case BAND_A | BAND_AN | BAND_AAC:
++		return HOST_SCAN_RADIO_TYPE_A;
++	case BAND_B:
++	case BAND_G:
++	case BAND_B | BAND_G:
++	default:
++		return HOST_SCAN_RADIO_TYPE_BG;
++	}
++}
 -- 
 2.34.1
 
