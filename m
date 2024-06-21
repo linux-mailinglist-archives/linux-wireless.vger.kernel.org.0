@@ -1,95 +1,113 @@
-Return-Path: <linux-wireless+bounces-9419-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9420-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C9EE911EEA
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 10:36:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A56D8911F36
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 10:47:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D771CB2138C
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 08:36:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D60FC1C20A89
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 08:47:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33A816D31E;
-	Fri, 21 Jun 2024 08:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B4C18E20;
+	Fri, 21 Jun 2024 08:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VxYgU7TJ"
+	dkim=pass (2048-bit key) header.d=citymesh.com header.i=@citymesh.com header.b="Nb8KXGQD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD52216B3B9
-	for <linux-wireless@vger.kernel.org>; Fri, 21 Jun 2024 08:36:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98175168C3C
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Jun 2024 08:47:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718959006; cv=none; b=B91I4LElhUvKrgPKpmfFxBJsIgDA9Bs6RYm0KJsmHfTQrMcLC7bOx49wMozUUAz/m0NlzxfbrXa1L3qMYvGQkARO0lzf5FelCLnUHnNPRXV9zLkzxrD7lad8FiqXZcyn3J4o1OelRf9nCMB4osg16QM212icSLQg81N4B8iQFws=
+	t=1718959662; cv=none; b=MUgy9vIcb0p9rP7EshvUhntqlLTLFscCxgXtcYPxU87Jh3EBxZ5QYhdoaL7EVMW7Cf+HErEdyoEUOEICtFG0Z+Zg6y+Tq4SuFCZuvGNxCvy3wsQWj7UjUkgawEWO6oHCVznuhhHaLbFELsfQx1pbQh0SBOu3Ea87nKJdz0UTCzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718959006; c=relaxed/simple;
-	bh=2g3e5q2wgc/Fb4K34fTPXTCmZ9H0dU3ILM5fFmsdhas=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=cSFZUllqSdcE5LLCVBShr4XaX76jnkB5chWn+HKuKQ7LL2gp5sMmJHBHF2bsa++G2ULzXzONX37RKLKxT0ZES3+h3cmH7WKuGALr0djZLP5nm2oemo0lMS6ZDU1S/z7UwZHCm3SJEBs/4ipHTSiNDfIbMqC8KsnhBoPeDsREc/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VxYgU7TJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A65DC2BBFC;
-	Fri, 21 Jun 2024 08:36:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718959006;
-	bh=2g3e5q2wgc/Fb4K34fTPXTCmZ9H0dU3ILM5fFmsdhas=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=VxYgU7TJekGgAOLEyU2XrpW6TZWbWfcDbv+X1D44Z6WyM1ru9bIrI3yzCTYS65m9+
-	 fHV9AGIsysv2O9ZCRmSUq1GH6NZhZCqkWFNeEj3DhJileO0ONrErv3t8kOnGbqWuix
-	 HcZ630tHF4+4y6JlPvY7Y/wQhV235ne2QjfqJj2hjTRKnG8wWs2TsiOwMVWGDrxiE8
-	 Fl4OEMs9AndEtmQJIZXd69PYpguoVvMIL/tgsKHD25yuFFREVieCmar9uJGrMwXoQX
-	 JYGT75w4bw9PV6ywVlOPD9hYbNA4ej22S11vwFAG139XFCkJ3zs1P6PzfDzS1fWCWP
-	 xYpF6R8aEp/8Q==
-Received: from wens.tw (localhost [127.0.0.1])
-	by wens.tw (Postfix) with ESMTP id 77BD15F852;
-	Fri, 21 Jun 2024 16:36:43 +0800 (CST)
-From: Chen-Yu Tsai <wens@kernel.org>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org
-In-Reply-To: <20240621080348.55504-1-pkshih@realtek.com>
-References: <20240621080348.55504-1-pkshih@realtek.com>
-Subject: Re: [PATCH v2 1/5] wireless-regdb: Update regulatory info for
- Argentina (AR) on 6GHz
-Message-Id: <171895900346.921008.11652894274798120471.b4-ty@kernel.org>
-Date: Fri, 21 Jun 2024 16:36:43 +0800
+	s=arc-20240116; t=1718959662; c=relaxed/simple;
+	bh=IDMu00mV1qaVpBkrHZ5jMnVpkSyXptp2t4w1GNmg9GE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TNLz2K/WVkloC+tvGFZt//RgyepPXvyplUuFuA2FTUhW6a+FG2XnAjICXlCiTxo5OY+8u1tpMj8CpfpM8X9ZSGMkb6kXbQFEkafdMXbwgHt8h/IQoR02fWKv8Ttl9NcsvE1OqmtrlWDjhiu85/ZYQggBZAft92irWFOEZE+xl1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citymesh.com; spf=pass smtp.mailfrom=citymesh.com; dkim=pass (2048-bit key) header.d=citymesh.com header.i=@citymesh.com header.b=Nb8KXGQD; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citymesh.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=citymesh.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-57d280e2d5dso1158054a12.1
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Jun 2024 01:47:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=citymesh.com; s=google; t=1718959659; x=1719564459; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IDMu00mV1qaVpBkrHZ5jMnVpkSyXptp2t4w1GNmg9GE=;
+        b=Nb8KXGQDwYcJVn9BlfoPV4m4MybO7xTDygUiX2BBvFNNftNRLVBezOzCiZTaqBzZ7m
+         9ZcbGjx5v/6y+LG1DKt8elW9bY74HaUi7XsflSMAPSMzRgtnQZf7H5ZvW/Wsf6mX+tP0
+         gwjTBrO8fXJCnUY9vJJz22jXq4TQjkTEHuqew2LH5X8hjRM56RnfaE89/BRUR+A991D6
+         e3CKPZHS2dehqS4SGPDgc6YhbkZ/xmYKD5GczthuWYkxPN/ZXT67TCSaUaKvKFQgAH2E
+         EHb2lrEWTMtMe8OYI03G6byQyqZs8m4g8nW7VhR0ioQWkyloV5kv++U+MmDdRNFirXRS
+         0aDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718959659; x=1719564459;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IDMu00mV1qaVpBkrHZ5jMnVpkSyXptp2t4w1GNmg9GE=;
+        b=YpD/+VfuoTxnyQNUhpTmBihk+yxQMzUg4jF8HeYskPh/sVH43HSUAUE2ebZO/NkkuO
+         JATdK/UEouCofg54UDFf3r8jmNmpS6/Gj+g9pMIumV+1CNPya46BKX5v9KsvYqDFq9VH
+         +u8dC8Ak+7QSPs5XiZuf5YPX6U0gKECm27eejJcX472vs8WAEvPQxrYxAx5QvYJ/YocV
+         4rnu4qmg7gE+4ihunOxYZYBxHycO9EduG9CwsS2OYioGlJNwGwbZWu6rMDDI3hwPH1tj
+         gS9BD5fdExYckhi8ZFF4de4WA/WKbJuTgPHVakThlUzgceXNMv8U6NJIsGCcJ27O+4LA
+         JcHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWiGOPUYpKq7jJaGDXEXXK1wr90DK8Ida/S7XxMGMsHLga5s+tNiVcN+hfpPunCruifGh90s7x/7s5VJIN4JU0/nxHlFrRyln0dfoHiVQg=
+X-Gm-Message-State: AOJu0Yxn5ajfk0bWG7KWz6zRRwoHaGr/fQpAnfR++4y9IwhM1cztTWcs
+	ERgV9iauSdWlEiiFcm60sHxxIVvjLYHr7njX94Ie4cTYQl4kJUzEbsz/8uK7vIbokuOEsNCoNO1
+	YPpRS6uBB7yGZ+3JuMho0FxFiw24xSk5pxStC0mWXu8lZ0SBaPTd66g==
+X-Google-Smtp-Source: AGHT+IFbHYh8icaOhJudVrdY/YTgZkwzGJ1/e/hmi87432nITQ8twIZwgr0tJr4hZwSyjkLTGFiZ6JIyQ80ckbc3C/w=
+X-Received: by 2002:a50:8d14:0:b0:57c:78fb:1a32 with SMTP id
+ 4fb4d7f45d1cf-57d07e82ab3mr4394205a12.19.1718959658908; Fri, 21 Jun 2024
+ 01:47:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13.0
+References: <CAPh3n83zb1PwFBFijJKChBqY95zzpYh=2iPf8tmh=YTS6e3xPw@mail.gmail.com>
+ <efc8cdc0853a921ce4dad1a36b084608fe0b01a8.camel@sipsolutions.net>
+In-Reply-To: <efc8cdc0853a921ce4dad1a36b084608fe0b01a8.camel@sipsolutions.net>
+From: Koen Vandeputte <koen.vandeputte@citymesh.com>
+Date: Fri, 21 Jun 2024 10:47:28 +0200
+Message-ID: <CAPh3n834eg1_+gmh_LMTQnc95aLBWNVOANjZsMap=_szOY2nHQ@mail.gmail.com>
+Subject: Re: ieee80211.h virtual_map splat
+To: Johannes Berg <johannes@sipsolutions.net>, quic_jjohnson@quicinc.com
+Cc: ath10k@lists.infradead.org, 
+	linux-wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 21 Jun 2024 16:03:44 +0800, Ping-Ke Shih wrote:
-> NATIONAL COMMUNICATIONS ENTITY issued Technical Characteristics WiFI6
-> Equipment on 05/22/2023 by Appendix 1 of [1], which 1) an access point or
-> subordinate device may operate in the 5925-7125 MHz band with a Power
-> Maximum Radiated Isotropic Equivalent (EIRP) of 30 dBm and a maximum
-> EIRP spectral density of 5 dBm in a bandwidth of 1 MHz; 2) A client device
-> may operate in the 5925-7125 MHz band with an Isotropic Radiated Power
-> equivalent (EIRP) of 24 dBm and a maximum EIRP spectral density of -1 dBm
-> over a width of 1 MHz band.
-> 
-> [...]
+On Fri, Jun 21, 2024 at 10:21=E2=80=AFAM Johannes Berg
+<johannes@sipsolutions.net> wrote:
+>
+> On Fri, 2024-06-21 at 10:04 +0200, Koen Vandeputte wrote:
+> >
+> > memcpy: detected field-spanning write (size 64) of single field
+> > "tim->virtual_map" at
+> > ../ath10k-ct-smallbuffers/ath10k-ct-2024.03.02~eb3f488a/ath10k-6.7/wmi.=
+c:4043
+> > (size 1)
+> >
+>
+> Check out commit 2ae5c9248e06 ("wifi: mac80211: Use flexible array in
+> struct ieee80211_tim_ie") ... :)
+>
+> johannes
 
-Applied to master in wens/wireless-regdb.git, thanks!
+Ooh .. fixed already :-)
+Thanks a lot for the pointer
 
-[1/5] wireless-regdb: Update regulatory info for Argentina (AR) on 6GHz
-      https://git.kernel.org/wens/wireless-regdb/c/7e37778d99d0
-[2/5] wireless-regdb: Update regulatory info for United Arab Emirates (AE) on 6GHz
-      https://git.kernel.org/wens/wireless-regdb/c/56f3a433fa0c
-[3/5] wireless-regdb: Update regulatory info for Colombia (CO) on 6GHz
-      https://git.kernel.org/wens/wireless-regdb/c/3cb8b91d242e
-[4/5] wireless-regdb: Update regulatory info for Costa Rica (CR) for 2021
-      https://git.kernel.org/wens/wireless-regdb/c/3682ce5d086d
-[5/5] wireless-regdb: Update regulatory info for Dominican Republic (DO) on 6GHz
-      https://git.kernel.org/wens/wireless-regdb/c/dd4ffe775dbc
+Jeff,
+will this one get backported also?
 
-Best regards,
--- 
-Chen-Yu Tsai <wens@kernel.org>
+Thanks!
 
+Koen
 
