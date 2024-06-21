@@ -1,61 +1,61 @@
-Return-Path: <linux-wireless+bounces-9395-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9396-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5772F911DA7
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 10:01:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25EE9911DAA
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 10:01:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A3371C22245
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 08:01:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64F01B2160A
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 08:01:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41DDF176AB1;
-	Fri, 21 Jun 2024 07:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 397AC16E892;
+	Fri, 21 Jun 2024 07:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="ctqRE9Mq"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="VcyTi0Z3"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2059.outbound.protection.outlook.com [40.107.8.59])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A516F16E88F;
-	Fri, 21 Jun 2024 07:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75606176AB5;
+	Fri, 21 Jun 2024 07:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.8.59
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718956465; cv=fail; b=ZizT0Boha83xc8yP+QxWlT3J9E5BJjRw9XZ26w5D9NKZlSPgUBnyIH7hqdcrRQmcjJuQJVIoDmoapRQvkW7Wls86BS2o9NKzJwHMX5KQPtC4QM3tOkskpLpYtIajMKO/lCyAQudZJXEbZibcUYEtCGrRWZImsoTUNn78vtzFbdE=
+	t=1718956468; cv=fail; b=CJl4kJnVRGBLw1gWmuknTCrauKFh2A2i/tiCFshNhxdK8WGh20Khwxl2up6j/vQwMMoc5dYcys5xQyRxnA0+2RTfzYbbHW6kYgdclkHXIow+IV7W4Lu/1CyAwz82pwiJp/KzkWL1UJKq+Tcbwj440X+CIFNSPePn41/MDqbKCgE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718956465; c=relaxed/simple;
-	bh=Djzln+3lGkZZ9EFjfSDXTbdRkq2+it4KTZpzuWitzPY=;
+	s=arc-20240116; t=1718956468; c=relaxed/simple;
+	bh=aklnOpT2v7W0jpVlAabJ6Fw02cxZKm5w7S0hayxQ0Z4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KFXSQOEetZiSSNs6r8MiNeMwJ+qYMB7IilY4mu7tYsSuCj5Wsipl7/g6TGpSRNBxSjmxZUMpzcsf47LpSxgbVCoKKGJIjio0Dj5HqHCa9KfJwTeJwuMMoBBB7hCQXxzZqIciskzb3fm9hhyjeuLGYF5iuLRMe+1Zrr0lluDSVxU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=ctqRE9Mq; arc=fail smtp.client-ip=40.107.8.59
+	 Content-Type:MIME-Version; b=gh+ye7vROsaY/LiRdAWD0LZ2xerIY6Ge5qXMl91sM/cC6gQZvl38ge4Cmi7JwqWtAVNp8XTugxTSinRadMOdWPLdmi07qrN0fSHnv5mO9hpVQIvEBBRjkObgOT0+8h0D4iRP9/SVzDHMKxzZ9lOKe8LluBETyXbjZ3Y5quVfb9U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=VcyTi0Z3; arc=fail smtp.client-ip=40.107.8.59
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KvDzc7EC093Fmsm8T8PkqJfAzujIEvKJYf+FvlCPpvcmCu8YUnLV7G7ali39VyGcVrcYtljaGIJVHeb8BsJ6+6acX2q4/ixNhxayw1ciHfB8QSjZkxraHFatIOj8e6DhI2oaC4cwkmlppB/rXTYXEgUERad9/MB/jj3swPeZj8RTKe/nYo1iRT8n/LY/9UowzQBY7UMpzeWBpzlXfLmE4nbDlgzCnhiooITfe1AAriH8k2YFcJIocUPHCHG7O4aQh23r/TQrQCx7B5f7JHkDX0WtoBsALKuaWumz6PXS6JiiQLbV0rRWAfg+alXGgkemMoMXGQGi1OeWm6gx6awUOg==
+ b=mwwKlW+OO2y0efjv7oH93nkTXvFc9FPKIcXbF0ccvHNeBPbbR6kNcSbC695oq/BNHDSfGday3U2JILRQzEM1+P73YTgtKWQ64PKfRHQRSac874uhbakOAqar69q0WcLeEWO3J045b/gla5votoNfzNkmyXAZEzOYAle9AbzkctEc5r5kWHBavUNjaJ30IHnDJ7uAP/Oan0yE7MGbrD4s9k/aGFxVj87XOC9dQWnuksbRJ7QY+Y6zab06z+NsSET2FJsGRZwPjV/3BL8T11+0nP/cDYJgMPCLfL286gHC6XQ6t7b7UgL4ZMNHKbIsrfRtXnWmaG+rRSZvydjiDdLyYw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lLYvg+X4YphWukZS7QCqHGZLsN9xLcKOGLe4/faSvDs=;
- b=iUnbMGlPeAYF/9zoRzB7Lp6/hICnGilHMp31hJiZXFMHzttkQwbXTl8khLOvgzFoYaYtDx2f5zA7SWfkVX6FTWaJ2u3/R72X0orNqYzxlJLnmHXN4PAYZ8hGPhS86mpGAtQoIYHWgE9/83EvMlaw/5zN3j2RU1gFir7mFTZRB6ekwQ/Eg/psp/Xc3xE/iDg2PmFUCbA4Pl/+WSpp+pjslWoPCJ+QHy+AkULs6CVyrnBIFyHPB+t4g0mT41aPDpnrIjIw9aSwEK2KnB9YBx9zuauU3P5yewAn8x01ZmiVqbXnkEAoFdc1ITMnKVEsP9cQM8qjnZ5cK0m/TEBLr7LAHw==
+ bh=rtNF4CrZJxpN3HJymi7dgfcDvCQZ6LjMXc3Vxjl+j1Y=;
+ b=oYP0lYNkr0nqyphVpxs4AhjfonnuREmCnHdJmWeSPaXQuvSOlA8FXhJt3lw+RhX8MxvJmBkOnbTWJfhJ2hrzSI7vnuCxylrTPcSH4LHGLqs6Bfk6C63frTx8Y5LmPpWMGs+8MKJdAn1/AgaStCECT4qxUPHbuwoY7XFoBge48jGlwQjdaOS1SMiLkXx5M0PWcPtLwF0S5u6cIPf8lzWoGgLa9pW0x+yQzPoc5aUlXiU8F+ZaByUIsCmpSwOOwWGZsPdmfW9Wrq4k/kdJzxQHflhF3DW0v9skwZj8cXJumD8UGVgnWg8BI4T6j/gkuWQuWz5Wqfd1b/a8gRXqMCVmBw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lLYvg+X4YphWukZS7QCqHGZLsN9xLcKOGLe4/faSvDs=;
- b=ctqRE9Mqklyxeg4idAnJNre7NmcXWs3oEo6IZ6PYMPSXLgm4o4Ni+5VqvSxJKuI1UGCONEqMwrtSEB1WPnNghL59O0bsFG5yTmWFo2eOmSs0rFmXRgdChaz6YjJvT5r0r8j6G1pTNVQ1mQaY24lREW4ynmDmQPiIcg0YVswgMVU=
+ bh=rtNF4CrZJxpN3HJymi7dgfcDvCQZ6LjMXc3Vxjl+j1Y=;
+ b=VcyTi0Z348zLPKYu6Zi6hKJnD3vRpJN85+ilbXbbAWvU2NGiggnQgNMiE0Dom9gRTEBxat358OnalNUWg/AehGITj2aGftm6pz3WWsALNFj0YFEXpsX3LNOC6QfDSs0UqLGJ3BHqT+swyXuTuKZ0iJixiAJIbQoWIcoO4x5zfe8=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PA4PR04MB9638.eurprd04.prod.outlook.com (2603:10a6:102:273::20)
  by AS8PR04MB8135.eurprd04.prod.outlook.com (2603:10a6:20b:3b0::23) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.21; Fri, 21 Jun
- 2024 07:54:18 +0000
+ 2024 07:54:21 +0000
 Received: from PA4PR04MB9638.eurprd04.prod.outlook.com
  ([fe80::f950:3bb6:6848:2257]) by PA4PR04MB9638.eurprd04.prod.outlook.com
  ([fe80::f950:3bb6:6848:2257%4]) with mapi id 15.20.7677.030; Fri, 21 Jun 2024
- 07:54:18 +0000
+ 07:54:21 +0000
 From: David Lin <yu-hao.lin@nxp.com>
 To: linux-wireless@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -64,9 +64,9 @@ Cc: linux-kernel@vger.kernel.org,
 	francesco@dolcini.it,
 	tsung-hsien.hsieh@nxp.com,
 	David Lin <yu-hao.lin@nxp.com>
-Subject: [PATCH 31/43] wifi: nxpwifi: add sta_rx.c
-Date: Fri, 21 Jun 2024 15:51:56 +0800
-Message-Id: <20240621075208.513497-32-yu-hao.lin@nxp.com>
+Subject: [PATCH 32/43] wifi: nxpwifi: add sta_tx.c
+Date: Fri, 21 Jun 2024 15:51:57 +0800
+Message-Id: <20240621075208.513497-33-yu-hao.lin@nxp.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240621075208.513497-1-yu-hao.lin@nxp.com>
 References: <20240621075208.513497-1-yu-hao.lin@nxp.com>
@@ -83,333 +83,304 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PA4PR04MB9638:EE_|AS8PR04MB8135:EE_
-X-MS-Office365-Filtering-Correlation-Id: 06f26854-1806-42f9-3ad5-08dc91c75a31
+X-MS-Office365-Filtering-Correlation-Id: fb2177fd-61a5-4501-c3d1-08dc91c75beb
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230037|52116011|376011|1800799021|366013|38350700011;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?7hs5zqo8b3s4sQ7Rhg38UbeIozsTPH4axM0LZoppwbbD42nQntggThADzCvq?=
- =?us-ascii?Q?cgZJfLc59ZvIyNqPEohcD06SS6aDxYRlDPXKt8R9js0ACZn4KSqdJkDpgcuv?=
- =?us-ascii?Q?OjIIVE3laoQS7uqlmmf+AjNEjKeOzzVE03Z5pHEYWuzL/S7zho+wHv1MeXcg?=
- =?us-ascii?Q?uSYcs2/dhtYAfQ/mckKiOOk07KO3qQugYsnt8gUo8sCcDCXyHXuzGy2sF6la?=
- =?us-ascii?Q?133ERPffCF7rH/+lGtCAcXFe/YShVtQLylN8geYyWZ0dqMIf47jgK5woOxP9?=
- =?us-ascii?Q?0WHjjnhxcqUDZQ7I/iJDxRdgJvAtVcCfo9TrsJMQDfO/Z5IXVRifqFgSlt3P?=
- =?us-ascii?Q?OVbF2FV7F0t4ZwzpuSQmpz6xQOdsdUzXBTd+pzKblT9q6UeIxaTiKiCpQGQE?=
- =?us-ascii?Q?p3+NpQ8RaTCOE0EbKxNzOUv2Sg11xXVfS0Y0Ih7FflE0l3kHYZle+BNTYOfS?=
- =?us-ascii?Q?NLFAt3KSYx0Mm97fVsA3hh/dmoO2hGADErJrenDbJkCaqo3foWzvf3ZIa0jw?=
- =?us-ascii?Q?kuyLZnds1xRzsTl/eI6DYMgw6NuGgHmHk15GOgcVTO5cx86mVQGcEYnWXo0v?=
- =?us-ascii?Q?XFTL8SPGQTQK91xqRoOuuo0ToWnR6U6y8qUIXmHyUNZkZIbNgjKABUQpecss?=
- =?us-ascii?Q?ZzrQX7JpKRoSLu4p2SNGwXxMWkvxu5b5kz66RRq0v6N4UMwbaf/lHGk2pDHG?=
- =?us-ascii?Q?TErHiKG0w3MQGBhRtFFnc+qa9C6eR/Ji1nJfG+D4RLGxodp3e3qlfbCgCt72?=
- =?us-ascii?Q?sqvmy0hgtmZqa7+TkRAFKe959izwYkLvOAaWUlQjZ8+E8T/ViVH8HnsPNFsI?=
- =?us-ascii?Q?ueueJZoNwfWImI0phkjfUoC3Dp4n+iPVqO377w4XRP2acnTv4C/agdJ4810V?=
- =?us-ascii?Q?32FZa4M0XSJEvNiV83MwHd9gBfE4EqrxJw+8Id9sai8XuZHXQC2hZy0/Lx81?=
- =?us-ascii?Q?z/1QJEa1l7nUHLJ3z2ffWj1rDIWPcAIsaPIxXr4cJrCueGUN19WTIhc1I5dA?=
- =?us-ascii?Q?PATaM4lXRC4UQzrxaqUPa2FVUV2EiFShkiR0zIgl5FkDNpf1Vo1YZfpzWJCM?=
- =?us-ascii?Q?7kkspQlUzaZphuXXFDcXOQwD6qc55t4hgk9/dW92vHQdQvn7UpK/TanRLPxW?=
- =?us-ascii?Q?ME0sGXvxHpVQv8B/yVuva1VSpAcrpFDPgsnoqbs7lf7ZpOr1Ng6ANd/AarpS?=
- =?us-ascii?Q?Skb98QeXxxpcU9FADV3rV89+actsd8TS6cHqyrXRwHLmxDBupiFwYu2BxdcA?=
- =?us-ascii?Q?ExzWMrHAcFQ8cuVUSqqpC4z2kPJYFq9OrD7HvxMtm7T+Xol7FvSut/t2kecq?=
- =?us-ascii?Q?SZXr89Jo9/EvYI0Tmpg439ANWGqy1Jq22KVQYWzS44dmvXnR4riZqOJrXCXs?=
- =?us-ascii?Q?UI5MvPY=3D?=
+	=?us-ascii?Q?+Oqkd5ldoq8LRFJ57mNTNYCJJPWVyRSSvOjTxBNw3A/gdNucNFzdHkPmrzCB?=
+ =?us-ascii?Q?0sW4LadNwiZAHCiDTk+Zt0wIHL2ut0Id1yk6bsrYnQHAKSQ8Xpxi2RsaWDI6?=
+ =?us-ascii?Q?VtCulXSXz5TBKAc06Rr9lkcN4eqR1wElXAwAs9zMkpQ9tTqO87x6hwz3X7KB?=
+ =?us-ascii?Q?qAwMu0HMydj6M47umiOvotBvzkENIaon5ZPOgSbrTeJN9P9lzuZfzXASUOHb?=
+ =?us-ascii?Q?TDkSMM2+iT4f0+HwlwHmarcDpDaKJyVgJd5uzB1FzJTTh5M3wTo8wqGx/U8J?=
+ =?us-ascii?Q?WIK0Fm3Cbo2DCADeBI3T1EqPggVk6l4hMcCEaINvdCfiBppGJ9dV5F5wu3uL?=
+ =?us-ascii?Q?e4VFy3hOcU8EHENZrFazyxUUB2sicxiZUkceebeyvygdLMQxc2Tktrk2izv3?=
+ =?us-ascii?Q?DwizRa1p0EQrN/ZGiGFuR+peibKqL6WGpkrf/UDoQ81fYxHX7w+MIqsFgCmz?=
+ =?us-ascii?Q?pDsm9q32lDqP7fSZbvBPax1iPwowDXBty3j+XaAaGJiJXJwlYKDlzp1MV1KG?=
+ =?us-ascii?Q?U43cZGDxGM2ONqlGA7ePINpPYsVjl/yk20MT0ggEt4LV0MLPaBZ2ya59t1Ko?=
+ =?us-ascii?Q?K59c+HkZpgdR0pwPewH3DfNkc+w63MwDtQXFuJZvOhxv0YJn0nxoa+QR7xxb?=
+ =?us-ascii?Q?BvmC4YQHNSoHr7NrHiyBntcC/qFzi6Qc/fh9X03BB/FDQbHWdyQcq4w1dIIB?=
+ =?us-ascii?Q?s7PnqC6FI104M+wMJYqaOMSW3U3khYF5zS/rqiJcoddBWQOxStdGADvwACjE?=
+ =?us-ascii?Q?glBAsTEVPr4ohug5GziG5Ax0tC2POKSRqgGbyVQPcRlViunZ4KJyXYwH1p0l?=
+ =?us-ascii?Q?pMgyo/X9jLvV+YrEheEzTPPmHmBFKSu3lH4KOqKkhoMskyqhPYOmAROGwtI6?=
+ =?us-ascii?Q?FOn97OZYEII6O4skIS0s8yT6Zec/7r0dRPXu9dX2rfoLlcLmZaqJoakQGyYO?=
+ =?us-ascii?Q?65Ejd+YJk4EMh/L2zmTIcbkjsVbc5J/C+II29hxgrm5WYGa/E38Z2BYkuy+Y?=
+ =?us-ascii?Q?3EoxyzNdykN9gBEv0Ii1YLGTtN5+JdnovX4vnE4OAM2dmjSf1ji16yLb4kQX?=
+ =?us-ascii?Q?u8+Mt5tiTKJ2zCDb6Wh3Tflv812DLQC6W6l2HMxGnzhw4YnpNrSvY6PAuCMX?=
+ =?us-ascii?Q?Y6TeAAIcrvop+abFgm2JmUrQQ7EqQZp2LcvYblUGk1RWLyjhjWnsc7eVKGYv?=
+ =?us-ascii?Q?YihvWO51oyftNU++J7XZbJLDeVs/NT/L0Qbcnje2Y6UnttJdZFn7myFABGrR?=
+ =?us-ascii?Q?0mXGYplmWTGpBRsxLUKlKawJN07yNVq7+hnc4yGlDimVilUGmz21Er5pASN6?=
+ =?us-ascii?Q?rP/+wuwtdtJXUL9Z2s3NNtzVhkOx3DjUfDibECUp/IHVDXD1OXqmZ8htuvSV?=
+ =?us-ascii?Q?XjLIXSg=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(52116011)(376011)(1800799021)(366013)(38350700011);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?xbqic4xo3YzKe36Uy6bkz7mj+MN6iwHEJa1APnYhbUKaeD9ytCinJJWeP8Ra?=
- =?us-ascii?Q?/96984ashiqAh3MamxfyLpV4sMXZtCC5BUfI8PO1QvAzAlHyGM/kf3U9KvV3?=
- =?us-ascii?Q?HVb6gMVFfEJKrLwl4s0k1cHy1sGV0XsD+ENMF/UYbLdZ76r5BzX2dxu31r9U?=
- =?us-ascii?Q?4kQEqvFMTtCgBXMKbK4giJMG8cNd/ZH21QoXjyiHOMWWmJ9mComyqzrqCJ/h?=
- =?us-ascii?Q?Vcd8SZ0BDdxOYkSTAkgUmrFPdx3rypWqS9RpktefmufSV5X9aV+rcY7obndF?=
- =?us-ascii?Q?8SAO4mmg7IWZ4hXCk9FFRp7ollBITeqxVkf5IhicihD0JyUDsCUwhG/Z5m01?=
- =?us-ascii?Q?ZUSB3efrtMjVXeaetDe2m8BchEIuMOMFjhl5JTqEBsa0GjtmkT5l+AB81K5G?=
- =?us-ascii?Q?fVSr5BkAtaP2GLgYpvCzRIPjGMCurdJT4eQa18WXjulomIkoYR3B7EPpKetR?=
- =?us-ascii?Q?bV1ihcxxoWtxOGTTsx4+Omh3Go5ANpjkWhoqeofKO6WjMAx8SpbytNp0jDkc?=
- =?us-ascii?Q?cNY+mDPMl5OovaJRUzfvhyqrbav0clNnqPFfE7ex3GgZZV8x5GE2pq/PPT9K?=
- =?us-ascii?Q?ElPowbmi9fjBlmCzmMySB47s+c0WvvXxWGlBN6bpmhVacQJwOpuVXg8Xj4ve?=
- =?us-ascii?Q?xony8oehqm9C2D3sXN8lNaCn83cuKBVSJWZNbcS5t8fpcLpzfWiQRGZhBEBF?=
- =?us-ascii?Q?10RTKUYYshlb8kkFLKjfnxTHYb4kp/8WfXxs0QYJERta1aJ5mpEJTejGXZ8q?=
- =?us-ascii?Q?r0J8+oUTq/eazlZ2rxTpUSfDFSa1sFAPe+PSg1VuuNTF+nQKSSBriFDatoJ6?=
- =?us-ascii?Q?Jg1Bh3xj7QmnunMyaJhAWA//rLj9GLSP7+FRV916IvofI2HuWtqnY/1KGFYB?=
- =?us-ascii?Q?wBVpn8olhlE93AnsPieVZhepZfx77EFMig7U8ExQhyvZm2PWknOt7y5Sh0Hu?=
- =?us-ascii?Q?k9uDueVKiChi/uENa7nBmvZG50yiiFhy6R24TlLFiT7gxzz73IXR5qRIWCN6?=
- =?us-ascii?Q?Qq19EaMCJIfc7SfB/endOh2nrprWOkarQHz25dVr4Lgw+i0wkYtHLoXhRUT/?=
- =?us-ascii?Q?A3164GOJkWu9Iy5mznN8i7ZggbuLriwZTy3QWGHPcl4+tyV4pDivUa+5YZzQ?=
- =?us-ascii?Q?HjZZqKJ0MQNsa4p944+vB0zc/m9TMBzBq/INwqy0hLbnrfhw/ZKT5pO+xv/z?=
- =?us-ascii?Q?lKEymW2JiBC7zCcSZOUfBNk9c65DD+jENwhJfcENr43lfeqygRzUjjrB/D8V?=
- =?us-ascii?Q?1vCfODg3LIvUHSQwbI8PWLL/e3la/kUTAez5o6BlPh0C3jOS4OYb7HWAOyTg?=
- =?us-ascii?Q?5IsQ2tdX2Z3zPp4a6aecKohEHslzWjGYagXaZ3K5fgZGMqw8qPjPj7GPpnAA?=
- =?us-ascii?Q?v/vRgNDdFMcmEwdBTuqTI5lh1IF2IpW0yL9TNoNuIz6gAEvWWQwQKMVYqqdX?=
- =?us-ascii?Q?7XKIEdcfVIZcyJShm+CU7XNYjeXJdy1q9W3F1Xlf5OSnQ84kXzbEFSF5I0z5?=
- =?us-ascii?Q?DiFyYPypLb802lGz1XM6Vh04dWKpUAAsZY8OTga+s9sMYqJTwZTMiRXiV4U/?=
- =?us-ascii?Q?UINVNShwKr/wKP1BVPSI0t+UxTS7LJ9EerVt2ehs?=
+	=?us-ascii?Q?paeAXd/8nX3461HUShzI6S0gi1oZp6LXvY15fYNzM5Z6vfK8gqqjbvL+dz8B?=
+ =?us-ascii?Q?on8zf/rQmUQgLGhjspMrZ5HHzTPpdoE6tShm8EdxGa2fEqX5LS8sCmVxAl/R?=
+ =?us-ascii?Q?Hi56OH2aUfUWMfOV56Qaj28uJSysY1FhV8rGMYwoM5ndUkmOhc5biQuhCsIL?=
+ =?us-ascii?Q?uKKou+2LfeIWGYBrYgYbepwv68Yg6/2KC30NwqNmIqg3J8gH85nttPPIi4la?=
+ =?us-ascii?Q?CWU4mmDj5BdhgIF9tyCzkpa/EX5OlMhxhUGwer9eI5D1Tu9h9idiRnav8KS3?=
+ =?us-ascii?Q?/NQ0vpatAWbB68DU2ZQRwyPAmiNm678Hpki+rUoBeQbTSegpHeGgFzANJ0fR?=
+ =?us-ascii?Q?JvEdyiJSo4w8/dieKLCo2/hzvVwq0gpPPZbD8vnsIFVTsqQoyWcW8wACNuIQ?=
+ =?us-ascii?Q?BizMz5Bd45HvHXj52S0NMkdyglNUH4gTsSS45y+WfIl/CxFZC8GBw4pI2zXw?=
+ =?us-ascii?Q?OCX1e1ulcYVVX0PSm+wUcTecwB3aCpxJbpjvp7+fckf8MBM1K/CxmiNe/TNl?=
+ =?us-ascii?Q?QCP8/tCLz8jngPjbL1Lnazyqzyv1aiPOYXoq/cujulFFu2+96CtkHBZNcMeC?=
+ =?us-ascii?Q?sOQqwmugASli2zhRCFRcQCYZewBkdDsD9ECSIc0S9LuxlJ4JogEJZjznK8O+?=
+ =?us-ascii?Q?zqSjb4YGVIpoei91OkM2ozCw7xMZOaQHM25P+7xdSgV6IiaS2S4vvE6eIXhJ?=
+ =?us-ascii?Q?BzLHebLEOTZ8+/0PlY0lNtf9nazWDt3S47ytzNk4zOYp2WIdltMdXVNTc6F4?=
+ =?us-ascii?Q?AfrvuYWdbX5LrOT49dcNJtR1kysd4jqNuykClpa8Fhid0Ag7L9OchpFuNVnx?=
+ =?us-ascii?Q?nG3QyxEoR1KNcQEgodsseNh6vPeiT/eHXiOO1oSInIoKNSciBC1GKIB+sQjZ?=
+ =?us-ascii?Q?VNzGqC+oANf42kKoMa1jPypBJ6M0FKSi6XH9mZZZ2A1+vg7spW68eAsgVldq?=
+ =?us-ascii?Q?+xS1jM9sN5bwzvwGm7srL/WGv9YGIVu1SVuAbtGR3FYYb3pbjqsNT3xiD+E2?=
+ =?us-ascii?Q?R+ExM9QaJmtTAh2XxL+woqyS8ECiqDPSJcTOu7BUr2KuEY0mcBwVA4GItipI?=
+ =?us-ascii?Q?lgsyGLou67AuFJFphqbIw1sOCPaU3Ty5D9zCtXMaaQ01hZdAFwNx7Ie0Rcw4?=
+ =?us-ascii?Q?buVvDn5/Hj8hZLjyGVAg/s3VWyAzDTaEXHE0B31zdNLAc7+tLWKepMheWxTH?=
+ =?us-ascii?Q?uNabENryx1nesvd5RN8bILboPME3N7f81gWpSNqFvhUTGI9x/NfkB3xue8x9?=
+ =?us-ascii?Q?OZgEK6MFjw7lHiVPU9adA25dRjOpg48VnDqUE/uRP6jC/i+DcwTT3bwIC5S8?=
+ =?us-ascii?Q?zZq1WvSVfTDtnmmE0PT1Qp1PYXJpeg+RZ34oST7RmHHTp9oU/IlD2G3YeJm3?=
+ =?us-ascii?Q?eW9Vjttp+gv/CDP7Nq2ZPP5NLy2XB7ansbhkATo8B1aOKA9RB/vEMGiG3Btl?=
+ =?us-ascii?Q?Zr4unuNufGHoBH9p07C+HQpCDVJuoebd9c3BdPpRQySwgOLxDPgZgmi9eLQ8?=
+ =?us-ascii?Q?ctKhqVETlb/Pf+9VxN96gI7Ss9nAECg2QC4+VsyNChYvlXU3At5WidJEssKT?=
+ =?us-ascii?Q?Cn3u5qrXfAnvoKRF1V+hET4fiVK7S4zDnxsXrd9t?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 06f26854-1806-42f9-3ad5-08dc91c75a31
+X-MS-Exchange-CrossTenant-Network-Message-Id: fb2177fd-61a5-4501-c3d1-08dc91c75beb
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9638.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2024 07:54:18.0713
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2024 07:54:20.9806
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gGjGJtRvjN8YLspmXNV2HmRWKoGFAI3ia3wCwdDnhk0+DcwAp0wbNT3UwBZzWU0ftWv1+BpGtRNhKLMTrjcaUA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: sl6UUNJIffsibSsDF/qSWGj1gWDuejm2Abezcu5VHfOP4JtBjGyUyTQ4NNB4rKHnJyRj3Bye0Bcm3FfBmPvt4A==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8135
 
 Signed-off-by: David Lin <yu-hao.lin@nxp.com>
 ---
- drivers/net/wireless/nxp/nxpwifi/sta_rx.c | 244 ++++++++++++++++++++++
- 1 file changed, 244 insertions(+)
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/sta_rx.c
+ drivers/net/wireless/nxp/nxpwifi/sta_tx.c | 215 ++++++++++++++++++++++
+ 1 file changed, 215 insertions(+)
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/sta_tx.c
 
-diff --git a/drivers/net/wireless/nxp/nxpwifi/sta_rx.c b/drivers/net/wireless/nxp/nxpwifi/sta_rx.c
+diff --git a/drivers/net/wireless/nxp/nxpwifi/sta_tx.c b/drivers/net/wireless/nxp/nxpwifi/sta_tx.c
 new file mode 100644
-index 000000000000..9309ac510ac5
+index 000000000000..8fb3a146552d
 --- /dev/null
-+++ b/drivers/net/wireless/nxp/nxpwifi/sta_rx.c
-@@ -0,0 +1,244 @@
++++ b/drivers/net/wireless/nxp/nxpwifi/sta_tx.c
+@@ -0,0 +1,215 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * NXP Wireless LAN device driver: station RX data handling
++ * NXP Wireless LAN device driver: station TX data handling
 + *
 + * Copyright 2011-2024 NXP
 + */
 +
-+#include <uapi/linux/ipv6.h>
-+#include <net/ndisc.h>
 +#include "decl.h"
 +#include "ioctl.h"
 +#include "util.h"
 +#include "fw.h"
 +#include "main.h"
-+#include "11n_aggr.h"
-+#include "11n_rxreorder.h"
++#include "cmdevt.h"
++#include "wmm.h"
 +
-+/* This function checks if a frame is IPv4 ARP or IPv6 Neighbour advertisement
-+ * frame. If frame has both source and destination mac address as same, this
-+ * function drops such gratuitous frames.
++/* This function fills the TxPD for tx packets.
++ *
++ * The Tx buffer received by this function should already have the
++ * header space allocated for TxPD.
++ *
++ * This function inserts the TxPD in between interface header and actual
++ * data and adjusts the buffer pointers accordingly.
++ *
++ * The following TxPD fields are set by this function, as required -
++ *      - BSS number
++ *      - Tx packet length and offset
++ *      - Priority
++ *      - Packet delay
++ *      - Priority specific Tx control
++ *      - Flags
 + */
-+static bool
-+nxpwifi_discard_gratuitous_arp(struct nxpwifi_private *priv,
-+			       struct sk_buff *skb)
++void nxpwifi_process_sta_txpd(struct nxpwifi_private *priv,
++			      struct sk_buff *skb)
 +{
-+	const struct nxpwifi_arp_eth_header *arp;
-+	struct ethhdr *eth;
-+	struct ipv6hdr *ipv6;
-+	struct icmp6hdr *icmpv6;
++	struct nxpwifi_adapter *adapter = priv->adapter;
++	struct txpd *local_tx_pd;
++	struct nxpwifi_txinfo *tx_info = NXPWIFI_SKB_TXCB(skb);
++	unsigned int pad;
++	u16 pkt_type, pkt_length, pkt_offset;
++	int hroom = adapter->intf_hdr_len;
++	u32 tx_control;
 +
-+	eth = (struct ethhdr *)skb->data;
-+	switch (ntohs(eth->h_proto)) {
-+	case ETH_P_ARP:
-+		arp = (void *)(skb->data + sizeof(struct ethhdr));
-+		if (arp->hdr.ar_op == htons(ARPOP_REPLY) ||
-+		    arp->hdr.ar_op == htons(ARPOP_REQUEST)) {
-+			if (!memcmp(arp->ar_sip, arp->ar_tip, 4))
-+				return true;
++	pkt_type = nxpwifi_is_skb_mgmt_frame(skb) ? PKT_TYPE_MGMT : 0;
++
++	pad = ((uintptr_t)skb->data - (sizeof(*local_tx_pd) + hroom)) &
++	       (NXPWIFI_DMA_ALIGN_SZ - 1);
++	skb_push(skb, sizeof(*local_tx_pd) + pad);
++
++	local_tx_pd = (struct txpd *)skb->data;
++	memset(local_tx_pd, 0, sizeof(struct txpd));
++	local_tx_pd->bss_num = priv->bss_num;
++	local_tx_pd->bss_type = priv->bss_type;
++
++	pkt_length = (u16)(skb->len - (sizeof(struct txpd) + pad));
++	if (pkt_type == PKT_TYPE_MGMT)
++		pkt_length -= NXPWIFI_MGMT_FRAME_HEADER_SIZE;
++	local_tx_pd->tx_pkt_length = cpu_to_le16(pkt_length);
++
++	local_tx_pd->priority = (u8)skb->priority;
++	local_tx_pd->pkt_delay_2ms =
++				nxpwifi_wmm_compute_drv_pkt_delay(priv, skb);
++
++	if (tx_info->flags & NXPWIFI_BUF_FLAG_EAPOL_TX_STATUS ||
++	    tx_info->flags & NXPWIFI_BUF_FLAG_ACTION_TX_STATUS) {
++		local_tx_pd->tx_token_id = tx_info->ack_frame_id;
++		local_tx_pd->flags |= NXPWIFI_TXPD_FLAGS_REQ_TX_STATUS;
++	}
++
++	if (local_tx_pd->priority <
++	    ARRAY_SIZE(priv->wmm.user_pri_pkt_tx_ctrl)) {
++		/* Set the priority specific tx_control field, setting of 0 will
++		 *   cause the default value to be used later in this function
++		 */
++		tx_control =
++			priv->wmm.user_pri_pkt_tx_ctrl[local_tx_pd->priority];
++		local_tx_pd->tx_control = cpu_to_le32(tx_control);
++	}
++
++	if (adapter->pps_uapsd_mode) {
++		if (nxpwifi_check_last_packet_indication(priv)) {
++			adapter->tx_lock_flag = true;
++			local_tx_pd->flags =
++				NXPWIFI_TxPD_POWER_MGMT_LAST_PACKET;
 +		}
++	}
++
++	/* Offset of actual data */
++	pkt_offset = sizeof(struct txpd) + pad;
++	if (pkt_type == PKT_TYPE_MGMT) {
++		/* Set the packet type and add header for management frame */
++		local_tx_pd->tx_pkt_type = cpu_to_le16(pkt_type);
++		pkt_offset += NXPWIFI_MGMT_FRAME_HEADER_SIZE;
++	}
++
++	local_tx_pd->tx_pkt_offset = cpu_to_le16(pkt_offset);
++
++	/* make space for adapter->intf_hdr_len */
++	skb_push(skb, hroom);
++
++	if (!local_tx_pd->tx_control)
++		/* TxCtrl set by user or default */
++		local_tx_pd->tx_control = cpu_to_le32(priv->pkt_tx_ctrl);
++}
++
++/* This function tells firmware to send a NULL data packet.
++ *
++ * The function creates a NULL data packet with TxPD and sends to the
++ * firmware for transmission, with highest priority setting.
++ */
++int nxpwifi_send_null_packet(struct nxpwifi_private *priv, u8 flags)
++{
++	struct nxpwifi_adapter *adapter = priv->adapter;
++	struct txpd *local_tx_pd;
++	struct nxpwifi_tx_param tx_param;
++/* sizeof(struct txpd) + Interface specific header */
++#define NULL_PACKET_HDR 64
++	u32 data_len = NULL_PACKET_HDR;
++	struct sk_buff *skb;
++	int ret;
++	struct nxpwifi_txinfo *tx_info = NULL;
++
++	if (test_bit(NXPWIFI_SURPRISE_REMOVED, &adapter->work_flags))
++		return -1;
++
++	if (!priv->media_connected)
++		return -1;
++
++	if (adapter->data_sent)
++		return -1;
++
++	if (adapter->if_ops.is_port_ready &&
++	    !adapter->if_ops.is_port_ready(priv))
++		return -1;
++
++	skb = dev_alloc_skb(data_len);
++	if (!skb)
++		return -1;
++
++	tx_info = NXPWIFI_SKB_TXCB(skb);
++	memset(tx_info, 0, sizeof(*tx_info));
++	tx_info->bss_num = priv->bss_num;
++	tx_info->bss_type = priv->bss_type;
++	tx_info->pkt_len = data_len -
++			(sizeof(struct txpd) + adapter->intf_hdr_len);
++	skb_reserve(skb, sizeof(struct txpd) + adapter->intf_hdr_len);
++	skb_push(skb, sizeof(struct txpd));
++
++	local_tx_pd = (struct txpd *)skb->data;
++	local_tx_pd->tx_control = cpu_to_le32(priv->pkt_tx_ctrl);
++	local_tx_pd->flags = flags;
++	local_tx_pd->priority = WMM_HIGHEST_PRIORITY;
++	local_tx_pd->tx_pkt_offset = cpu_to_le16(sizeof(struct txpd));
++	local_tx_pd->bss_num = priv->bss_num;
++	local_tx_pd->bss_type = priv->bss_type;
++
++	skb_push(skb, adapter->intf_hdr_len);
++	tx_param.next_pkt_len = 0;
++	ret = adapter->if_ops.host_to_card(adapter, NXPWIFI_TYPE_DATA,
++					   skb, &tx_param);
++
++	switch (ret) {
++	case -EBUSY:
++		dev_kfree_skb_any(skb);
++		nxpwifi_dbg(adapter, ERROR,
++			    "%s: host_to_card failed: ret=%d\n",
++			    __func__, ret);
++		adapter->dbg.num_tx_host_to_card_failure++;
 +		break;
-+	case ETH_P_IPV6:
-+		ipv6 = (void *)(skb->data + sizeof(struct ethhdr));
-+		icmpv6 = (void *)(skb->data + sizeof(struct ethhdr) +
-+				  sizeof(struct ipv6hdr));
-+		if (icmpv6->icmp6_type == NDISC_NEIGHBOUR_ADVERTISEMENT) {
-+			if (!memcmp(&ipv6->saddr, &ipv6->daddr,
-+				    sizeof(struct in6_addr)))
-+				return true;
-+		}
++	case -1:
++		dev_kfree_skb_any(skb);
++		nxpwifi_dbg(adapter, ERROR,
++			    "%s: host_to_card failed: ret=%d\n",
++			    __func__, ret);
++		adapter->dbg.num_tx_host_to_card_failure++;
++		break;
++	case 0:
++		dev_kfree_skb_any(skb);
++		nxpwifi_dbg(adapter, DATA,
++			    "data: %s: host_to_card succeeded\n",
++			    __func__);
++		adapter->tx_lock_flag = true;
++		break;
++	case -EINPROGRESS:
++		adapter->tx_lock_flag = true;
 +		break;
 +	default:
 +		break;
 +	}
 +
-+	return false;
-+}
-+
-+/* This function processes the received packet and forwards it
-+ * to kernel/upper layer.
-+ *
-+ * This function parses through the received packet and determines
-+ * if it is a debug packet or normal packet.
-+ *
-+ * For non-debug packets, the function chops off unnecessary leading
-+ * header bytes, reconstructs the packet as an ethernet frame or
-+ * 802.2/llc/snap frame as required, and sends it to kernel/upper layer.
-+ *
-+ * The completion callback is called after processing in complete.
-+ */
-+int nxpwifi_process_rx_packet(struct nxpwifi_private *priv,
-+			      struct sk_buff *skb)
-+{
-+	int ret;
-+	struct rx_packet_hdr *rx_pkt_hdr;
-+	struct rxpd *local_rx_pd;
-+	int hdr_chop;
-+	struct ethhdr *eth;
-+	u16 rx_pkt_off, rx_pkt_len;
-+	u8 adj_rx_rate = 0;
-+
-+	local_rx_pd = (struct rxpd *)(skb->data);
-+
-+	rx_pkt_off = le16_to_cpu(local_rx_pd->rx_pkt_offset);
-+	rx_pkt_len = le16_to_cpu(local_rx_pd->rx_pkt_length);
-+	rx_pkt_hdr = (void *)local_rx_pd + rx_pkt_off;
-+
-+	if (sizeof(rx_pkt_hdr->eth803_hdr) + sizeof(rfc1042_header) +
-+	    rx_pkt_off > skb->len) {
-+		priv->stats.rx_dropped++;
-+		dev_kfree_skb_any(skb);
-+		return -1;
-+	}
-+
-+	if (sizeof(*rx_pkt_hdr) + rx_pkt_off <= skb->len &&
-+	    ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
-+		      sizeof(bridge_tunnel_header))) ||
-+	     (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
-+		      sizeof(rfc1042_header)) &&
-+	      rx_pkt_hdr->rfc1042_hdr.snap_type != htons(ETH_P_AARP) &&
-+	      rx_pkt_hdr->rfc1042_hdr.snap_type != htons(ETH_P_IPX)))) {
-+		/*  Replace the 803 header and rfc1042 header (llc/snap) with an
-+		 *    EthernetII header, keep the src/dst and snap_type
-+		 *    (ethertype).
-+		 *  The firmware only passes up SNAP frames converting
-+		 *    all RX Data from 802.11 to 802.2/LLC/SNAP frames.
-+		 *  To create the Ethernet II, just move the src, dst address
-+		 *    right before the snap_type.
-+		 */
-+		eth = (struct ethhdr *)
-+			((u8 *)&rx_pkt_hdr->eth803_hdr
-+			 + sizeof(rx_pkt_hdr->eth803_hdr) +
-+			 sizeof(rx_pkt_hdr->rfc1042_hdr)
-+			 - sizeof(rx_pkt_hdr->eth803_hdr.h_dest)
-+			 - sizeof(rx_pkt_hdr->eth803_hdr.h_source)
-+			 - sizeof(rx_pkt_hdr->rfc1042_hdr.snap_type));
-+
-+		memcpy(eth->h_source, rx_pkt_hdr->eth803_hdr.h_source,
-+		       sizeof(eth->h_source));
-+		memcpy(eth->h_dest, rx_pkt_hdr->eth803_hdr.h_dest,
-+		       sizeof(eth->h_dest));
-+
-+		/* Chop off the rxpd + the excess memory from the 802.2/llc/snap
-+		 * header that was removed.
-+		 */
-+		hdr_chop = (u8 *)eth - (u8 *)local_rx_pd;
-+	} else {
-+		/* Chop off the rxpd */
-+		hdr_chop = (u8 *)&rx_pkt_hdr->eth803_hdr - (u8 *)local_rx_pd;
-+	}
-+
-+	/* Chop off the leading header bytes so the it points to the start of
-+	 * either the reconstructed EthII frame or the 802.2/llc/snap frame
-+	 */
-+	skb_pull(skb, hdr_chop);
-+
-+	if (priv->hs2_enabled &&
-+	    nxpwifi_discard_gratuitous_arp(priv, skb)) {
-+		nxpwifi_dbg(priv->adapter, INFO, "Bypassed Gratuitous ARP\n");
-+		dev_kfree_skb_any(skb);
-+		return 0;
-+	}
-+
-+	/* Only stash RX bitrate for unicast packets. */
-+	if (likely(!is_multicast_ether_addr(rx_pkt_hdr->eth803_hdr.h_dest))) {
-+		priv->rxpd_rate = local_rx_pd->rx_rate;
-+		priv->rxpd_htinfo = local_rx_pd->ht_info;
-+	}
-+
-+	if (GET_BSS_ROLE(priv) == NXPWIFI_BSS_ROLE_STA ||
-+	    GET_BSS_ROLE(priv) == NXPWIFI_BSS_ROLE_UAP) {
-+		adj_rx_rate = nxpwifi_adjust_data_rate(priv,
-+						       local_rx_pd->rx_rate,
-+						       local_rx_pd->ht_info);
-+		nxpwifi_hist_data_add(priv, adj_rx_rate, local_rx_pd->snr,
-+				      local_rx_pd->nf);
-+	}
-+
-+	ret = nxpwifi_recv_packet(priv, skb);
-+	if (ret == -1)
-+		nxpwifi_dbg(priv->adapter, ERROR,
-+			    "recv packet failed\n");
-+
 +	return ret;
 +}
 +
-+/* This function processes the received buffer.
-+ *
-+ * The function looks into the RxPD and performs sanity tests on the
-+ * received buffer to ensure its a valid packet, before processing it
-+ * further. If the packet is determined to be aggregated, it is
-+ * de-aggregated accordingly. Non-unicast packets are sent directly to
-+ * the kernel/upper layers. Unicast packets are handed over to the
-+ * Rx reordering routine if 11n is enabled.
-+ *
-+ * The completion callback is called after processing in complete.
++/* This function checks if we need to send last packet indication.
 + */
-+int nxpwifi_process_sta_rx_packet(struct nxpwifi_private *priv,
-+				  struct sk_buff *skb)
++u8
++nxpwifi_check_last_packet_indication(struct nxpwifi_private *priv)
 +{
 +	struct nxpwifi_adapter *adapter = priv->adapter;
-+	int ret = 0;
-+	struct rxpd *local_rx_pd;
-+	struct rx_packet_hdr *rx_pkt_hdr;
-+	u8 ta[ETH_ALEN];
-+	u16 rx_pkt_type, rx_pkt_offset, rx_pkt_length, seq_num;
++	u8 ret = false;
 +
-+	local_rx_pd = (struct rxpd *)(skb->data);
-+	rx_pkt_type = le16_to_cpu(local_rx_pd->rx_pkt_type);
-+	rx_pkt_offset = le16_to_cpu(local_rx_pd->rx_pkt_offset);
-+	rx_pkt_length = le16_to_cpu(local_rx_pd->rx_pkt_length);
-+	seq_num = le16_to_cpu(local_rx_pd->seq_num);
-+
-+	rx_pkt_hdr = (void *)local_rx_pd + rx_pkt_offset;
-+
-+	if ((rx_pkt_offset + rx_pkt_length) > skb->len ||
-+	    sizeof(rx_pkt_hdr->eth803_hdr) + rx_pkt_offset > skb->len) {
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "wrong rx packet: len=%d, rx_pkt_offset=%d, rx_pkt_length=%d\n",
-+			    skb->len, rx_pkt_offset, rx_pkt_length);
-+		priv->stats.rx_dropped++;
-+		dev_kfree_skb_any(skb);
++	if (!adapter->sleep_period.period)
 +		return ret;
-+	}
++	if (nxpwifi_wmm_lists_empty(adapter))
++		ret = true;
 +
-+	if (rx_pkt_type == PKT_TYPE_MGMT) {
-+		ret = nxpwifi_process_mgmt_packet(priv, skb);
-+		if (ret)
-+			nxpwifi_dbg(adapter, DATA, "Rx of mgmt packet failed");
-+		dev_kfree_skb_any(skb);
-+		return ret;
-+	}
-+
-+	/* If the packet is not an unicast packet then send the packet
-+	 * directly to os. Don't pass thru rx reordering
-+	 */
-+	if (!IS_11N_ENABLED(priv) ||
-+	    !ether_addr_equal_unaligned(priv->curr_addr,
-+					rx_pkt_hdr->eth803_hdr.h_dest)) {
-+		nxpwifi_process_rx_packet(priv, skb);
-+		return ret;
-+	}
-+
-+	if (nxpwifi_queuing_ra_based(priv)) {
-+		memcpy(ta, rx_pkt_hdr->eth803_hdr.h_source, ETH_ALEN);
++	if (ret && !adapter->cmd_sent && !adapter->curr_cmd &&
++	    !is_command_pending(adapter)) {
++		adapter->delay_null_pkt = false;
++		ret = true;
 +	} else {
-+		if (rx_pkt_type != PKT_TYPE_BAR &&
-+		    local_rx_pd->priority < MAX_NUM_TID)
-+			priv->rx_seq[local_rx_pd->priority] = seq_num;
-+		memcpy(ta, priv->curr_bss_params.bss_descriptor.mac_address,
-+		       ETH_ALEN);
++		ret = false;
++		adapter->delay_null_pkt = true;
 +	}
-+
-+	/* Reorder and send to OS */
-+	ret = nxpwifi_11n_rx_reorder_pkt(priv, seq_num, local_rx_pd->priority,
-+					 ta, (u8)rx_pkt_type, skb);
-+
-+	if (ret || rx_pkt_type == PKT_TYPE_BAR)
-+		dev_kfree_skb_any(skb);
-+
-+	if (ret)
-+		priv->stats.rx_dropped++;
-+
 +	return ret;
 +}
 -- 
