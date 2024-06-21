@@ -1,104 +1,99 @@
-Return-Path: <linux-wireless+bounces-9433-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9434-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69E989125A0
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 14:39:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A4C912603
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 14:52:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7119B297B8
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 12:37:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E5FCB2CACE
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 12:50:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD24A15383B;
-	Fri, 21 Jun 2024 12:37:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="LaeiIH7I"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787A0C8FB;
+	Fri, 21 Jun 2024 12:45:21 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C72215443A
-	for <linux-wireless@vger.kernel.org>; Fri, 21 Jun 2024 12:37:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C39641C6D
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Jun 2024 12:45:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718973426; cv=none; b=chRGz4kX6AX5hEmEmjYdFHcJkKNWYXiI0KP9LHB0zFwAz7theMLHhxCSHzRT7skvgdbz3G9CM2I7I8JFSD3hstH1fYsBeqn8JFkGA/NPDztfv8S0eonjhjiJUDi/LPRcBmFm7b7H3s/3sM/RqS6qIysAgnSN9E5ham+QlTHC9+w=
+	t=1718973921; cv=none; b=LLSK7HbRHOjjrIClQ4TDqolCwYFeXj5HY9RPxnf5eN5n6zVODaEIToVdH9pR4C0+XWnHWffSnR+zBLHU9Gcsl0qVznwGJF5kn/4hKPLCkmwmUPB6+nE9ViZo7p+e28ezJq56aZ18D4pDpv51lXd++sLmfZJkbvOqzt84LSFGL4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718973426; c=relaxed/simple;
-	bh=2StdHxeg1sSAJrmeuKSOzkQwVjwHl88ZoG/POIo1QEA=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=geiS7nBwTh9YO6sJbd1VkZoH2nS3o0vHBOHgfWOQ7v+Fc+Ut+XHvnrniM5UJx6ULwVjWveBxTYQArB6VMjDvXtM31eorGVHikfV0Uo6tMDZ7CssMgysj6lcIp5KYsDqaHDlDJ9NnFqOqzLSJtUDHRdoRbr9Y65XOgRquLsaGBt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=LaeiIH7I; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=si1KA00cBntgKEnHaiKpgkNtVv7kxa20bAztn1WoR6M=;
-	t=1718973425; x=1720183025; b=LaeiIH7IqgUgzcZQBobbtyQt2g8YyAWioGJrI0MMxnO8BQi
-	XFo4588F7tlGbYE3OAzImRLDO+BUTKK2OOv8xEoFL99T7k3+PATHD8zk8kDLipLO1xqcTJ++w1NDH
-	TpBo71Y6MjkNyMeR3IUEVfBhkFbSE6IR28YTPEZbcXxOPxyMuTzDz8bssuWcM4GbbptcePs/kf3+s
-	t3IpkO2mlHpmqsNlQWyD4+2Og/Tv+1yGqFGJHc+1OYk4Ck0hgkmY8sutQAvDpG+QiMuy9QjlrssV7
-	a6fkHI7NamWeBsM7FmT6bxVgIYbT2v4KXKKu/fR7V2RbeolAiZypcvyGu6i5HKng==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1sKdVm-0000000Bt1X-0r8B
-	for linux-wireless@vger.kernel.org;
-	Fri, 21 Jun 2024 14:37:02 +0200
-Message-ID: <9559970ad396591e628424a50b35c5c3dc7b9f63.camel@sipsolutions.net>
-Subject: Re: Receive OMI support in mac80211?
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Date: Fri, 21 Jun 2024 14:37:01 +0200
-In-Reply-To: <b7ca414c297df4acb0a8132339293ea7249cfad3.camel@sipsolutions.net>
-References: 
-	<b7ca414c297df4acb0a8132339293ea7249cfad3.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
+	s=arc-20240116; t=1718973921; c=relaxed/simple;
+	bh=jJKBMqZsqiH2TBdoDvABcGSzfNHWnY6jcmKNDkL4VYY=;
+	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type:Message-ID:Date; b=tTOb9EDOy51aGUrUd08o5jkbq1BiXRu1et0zlAQl2pw4Y03hAhBolGjR/OAciak8mqhjqpcUEms2pl0U5E0NNt+QRakPDLIj5SCnErIPjghAs3jg58zW440ctWnZ8b2iLzvhhqfAkEejLZj/4D5qg8yBdw63RYDBmSlQN64bC7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 45LCj2ovD4095849, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 45LCj2ovD4095849
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 21 Jun 2024 20:45:02 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 21 Jun 2024 20:45:03 +0800
+Received: from [127.0.1.1] (172.16.22.19) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 21 Jun
+ 2024 20:45:01 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: Ping-Ke Shih <pkshih@realtek.com>, Sascha Hauer <sha@pengutronix.de>
+Subject: Re: [PATCH v3] wifi: rtw88: usb: Further limit the TX aggregation
+In-Reply-To: <cb46ea35-7e59-4742-9c1f-01ceeaad36fb@gmail.com>
+References: <cb46ea35-7e59-4742-9c1f-01ceeaad36fb@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain
+Message-ID: <e13c95a4-a747-43c3-837c-a145c63e9546@RTEXMBS04.realtek.com.tw>
+Date: Fri, 21 Jun 2024 20:45:01 +0800
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-On Fri, 2024-06-21 at 14:31 +0200, Johannes Berg wrote:
-> Hey all,
->=20
-> We're contemplating adding some support for using (sending) OMI to save
-> power or perhaps other reasons.
->=20
-> The implementation logic would seem to end up being somewhat similar to
-> some other cases of changing parameters (CSA or simply AP doing
-> HT/VHT/HE/EHT operation changes, VHT operating mode notification action
-> frame), but=20
->=20
->  - for widening bandwidth/increasing NSS:
->     - update chanctx
->     - send OMI / wait / response
->     - update TX configuration for the STA it was sent to
->=20
->  - for reducing bandwidth/NSS:
->     - update TX configuration for the STA it was sent to
->     - send OMI / wait / response
->     - update chanctx
+Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
 
-Hmm. Maybe I sent this too early ;)
+> Currently the number of frames sent to the chip in a single USB Request
+> Block is limited only by the size of the TX buffer, which is 20 KiB.
+> Testing reveals that as many as 13 frames get aggregated. This is more
+> than what any of the chips would like to receive. RTL8822CU, RTL8822BU,
+> and RTL8821CU want at most 3 frames, and RTL8723DU wants only 1 frame
+> per URB.
+> 
+> RTL8723DU in particular reliably malfunctions during a speed test if it
+> receives more than 1 frame per URB. All traffic seems to stop. Pinging
+> the AP no longer works.
+> 
+> Fix this problem by limiting the number of frames sent to the chip in a
+> single URB according to what each chip likes.
+> 
+> Also configure RTL8822CU, RTL8822BU, and RTL8821CU to expect 3 frames
+> per URB.
+> 
+> RTL8703B may or may not be found in USB devices. Declare that it wants
+> only 1 frame per URB, just in case.
+> 
+> Tested with RTL8723DU and RTL8811CU.
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Maybe mac80211 shouldn't even do the TX configuration for the STA? It
-would have to track this as a separate data point because it's due to
-the *local* configuration, so it doesn't actually match the other things
-that it's doing today ...
+1 patch(es) applied to rtw-next branch of rtw.git, thanks.
 
-OTOH, if mac80211 does rate control? But maybe we don't really care
-about that case? I don't really for iwlwifi ...
+d7dd13ea54af wifi: rtw88: usb: Further limit the TX aggregation
 
-And then if we don't care about that part, all we need is to be able to
-notify mac80211 about the BW change on that given connection.
+---
+https://github.com/pkshih/rtw.git
 
-johannes
 
