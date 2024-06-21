@@ -1,84 +1,209 @@
-Return-Path: <linux-wireless+bounces-9435-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9436-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB0319125F2
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 14:51:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E86B391269B
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 15:24:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB9B51C231F8
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 12:51:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12CE01C22706
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 13:24:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D5F1552F9;
-	Fri, 21 Jun 2024 12:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0AF7155A43;
+	Fri, 21 Jun 2024 13:23:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="bjtyj2p4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B8F15530F;
-	Fri, 21 Jun 2024 12:47:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C00155758
+	for <linux-wireless@vger.kernel.org>; Fri, 21 Jun 2024 13:23:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718974076; cv=none; b=E3fTc5+nIhGDOVfszXgXzJzY5cSDSAhKg3RmO7l7z13rTzQrbp190nlJppnPK5WlI7ZvRe2ne2yUv6Asw4UCuuDg55VFF8KrNdE5OSr/oH1eIhF6Bl08j/FKaSdJHc/SQ8V2i+cStTlC/SsnBCQGn/YoAMFgqQD2MG6QjIFApr4=
+	t=1718976233; cv=none; b=boMT6Us/49ky0asTGyyNAvagndItsph+b4uzOf4ttm32r/eaFS8lcNBdjqyqtWOYeNAta0IrGO5oS1KEbrQ/jd4rRteh76XxiKYoX1kwbQbmZukNcJ0Jwo4CYGdxewkWHdfvlYoOhPptfHGEaOWt96Bnuw+DY5gkpqZGsmFufhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718974076; c=relaxed/simple;
-	bh=0d8wlO0X6tVXHNhI6T5ozsQARyGGQggyq/qs8MeKrbM=;
-	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date; b=EkjRXQZeQUewaySupMHpfacpFwNPOvIbreQRfqPN5YxyV139obQI6wYqlDABPovknNgLq86Wz7jlRuKAseBFUzBRw6goQE8NuchL5TMuxEVST1ez3HaBLIBwu4A1iLFVePC8dMgIJPewkdbHUXX1tG8rzht0Omqk1YA24YBSlNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 45LClYJV14097679, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 45LClYJV14097679
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 21 Jun 2024 20:47:34 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 21 Jun 2024 20:47:34 +0800
-Received: from [127.0.1.1] (172.16.22.19) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 21 Jun
- 2024 20:47:34 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>, <Jes.Sorensen@gmail.com>
-CC: <kvalo@kernel.org>, <linux-wireless@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Jiapeng Chong
-	<jiapeng.chong@linux.alibaba.com>,
-        Abaci Robot <abaci@linux.alibaba.com>
-Subject: Re: [PATCH] wifi: rtl8xxxu: use swap() in rtl8xxxu_switch_ports()
-In-Reply-To: <20240619024017.53246-1-jiapeng.chong@linux.alibaba.com>
-References: <20240619024017.53246-1-jiapeng.chong@linux.alibaba.com>
+	s=arc-20240116; t=1718976233; c=relaxed/simple;
+	bh=wQtusHT7PTHfNhISON3c4fk/0f68+/Mcm3emwcz0W2Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=im1NuolE5boMgBd3lvqLb4bNAtNdn3NS3MIpcHZAr+Nk4BtdhMQWghBKKkVrLawd6Wblq9U6xiaKvzYJ5/5DOUxmiJDVkoWyFZ4Z3EuwPRxzCuO87cwTkYpmLDqu/wAD8Mdbp524lKdN3L4qmXObbu29fCZTnStiypG45CC0YFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=bjtyj2p4; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-52bc335e49aso2333529e87.3
+        for <linux-wireless@vger.kernel.org>; Fri, 21 Jun 2024 06:23:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1718976229; x=1719581029; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Lh6DHy5f3eoMV1E961uZI87Rq1n/gY0n/fr9bCAQrdo=;
+        b=bjtyj2p4U32GeMDYPSUWmtE2chTbi1v+y5UfIGQC9LEUpC/OkUlilX5eOFlWPjKkF2
+         qGe2Q+8jPSNTYIRSXG62GOsDi+9yNmRjVL1O4136JvCl8YCVbSJmMiDn0iyE48QF+noj
+         pNXmYpbCubSyKA/c8TV0D4sg1tw2fB1XAG0PChFXO1DR863DYtqrGl/uIFqlLVSpw2XD
+         7wFFJ7AJdLdvFSUYayx5g+q8kYUwqmnSx6u+f8T3NdMv42+yEaRWhWiWs0NZcPQwrJ9z
+         0gunHamNuRjqeEvfoiC00FK96wfDMMJUaAV0APR2FVMtD2VMV69wLgtapdkgfAKz6Ry2
+         jacQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718976229; x=1719581029;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Lh6DHy5f3eoMV1E961uZI87Rq1n/gY0n/fr9bCAQrdo=;
+        b=N7fHk7fTKj3lkAIHT/wMGKH5OBVeTBJLn+o2zXviqQ7OcFowNpmjma6DppP6I5ThAX
+         5h3OfVmO9twdLyqtQukrwjHC4iTgzNMl08kAPlJmLiwzOq84q4GJ4QI5snkdsOUHK1x8
+         uA0+uWutmsXPhJ+T+jb5TEMob93Upq9/6U83WscFto5UM2jJleENmbROj7b9yAYC02kF
+         1FrcraPArFAh6v//UFIHf1TH32GwoIOFhauIcz1Bw4zwik+chnaKe9XDEaAkMbrVAo8g
+         snYfKRC9lPxbPrB+rLmWMM1T969ukM5kS1ckYrJdlvrZMPivH1gpqhZxucrz3SMHyfHw
+         c85g==
+X-Forwarded-Encrypted: i=1; AJvYcCVNmee1zBT0trQIBdSpcJKuHVVrcF7+hSuYJ9vSthtXqpWSp7lvXG45tzrDbzSilnMHvon9zNSaojsMRuIQNQylg3tHiYowrBEW7a1k3G8=
+X-Gm-Message-State: AOJu0YzyetKyfex29Pw8+FM6+LlLXfGjv4BMlsbrpOLXtxUWaaViLM8r
+	+uYE24zsZZHW8I6Rlh63+m6BAeQQYv6Eo0BFhcK6V1xhTHDR1H096bM1JD+eY+e7cAIoPVIwdWV
+	TVt4X6rHHLgCQiqP+6Ui/bd4u2GCDIT7ga7rPHg==
+X-Google-Smtp-Source: AGHT+IG5Y1gn2ekPnM1m7JqqJu9Ttsj5bBzwQpCQM5QC3ClAcEetDkpxMFp8GreL0i+Q2R/FLHudf9Yf2q2tQ+uH6IQ=
+X-Received: by 2002:ac2:5e91:0:b0:52c:b199:940b with SMTP id
+ 2adb3069b0e04-52ccaa62a3emr5131441e87.32.1718976228569; Fri, 21 Jun 2024
+ 06:23:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Message-ID: <a735918b-ed0e-4fb2-9b95-d3eeb48b0f17@RTEXMBS04.realtek.com.tw>
-Date: Fri, 21 Jun 2024 20:47:34 +0800
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+References: <20240605123850.24857-1-brgl@bgdev.pl> <171889385036.4585.6482250630135606154.git-patchwork-notify@kernel.org>
+ <0b144517-4cc5-4c23-be57-d6f5323690ec@163.com> <CAMRc=Mf2C4ywa+wQ6pcq5RtehQD00dDhzvS6sDcD8tAn=UypUA@mail.gmail.com>
+ <33c7587b-83a4-4be7-b00a-d30874df8c22@163.com>
+In-Reply-To: <33c7587b-83a4-4be7-b00a-d30874df8c22@163.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Fri, 21 Jun 2024 15:23:37 +0200
+Message-ID: <CAMRc=Me8h-L6mbmOfHce9FF8Koh4_fp=cWAeWrQAj-ukxBOL2g@mail.gmail.com>
+Subject: Re: [PATCH v9 0/2] pwrseq: introduce the subsystem and first driver
+To: Lk Sii <lk_sii@163.com>, marcel@holtmann.org, luiz.dentz@gmail.com
+Cc: patchwork-bot+bluetooth@kernel.org, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, 
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, kvalo@kernel.org, 
+	andersson@kernel.org, konrad.dybcio@linaro.org, lgirdwood@gmail.com, 
+	broonie@kernel.org, catalin.marinas@arm.com, will@kernel.org, 
+	bhelgaas@google.com, saravanak@google.com, geert+renesas@glider.be, 
+	arnd@arndb.de, neil.armstrong@linaro.org, m.szyprowski@samsung.com, 
+	elder@linaro.org, srinivas.kandagatla@linaro.org, gregkh@linuxfoundation.org, 
+	abel.vesa@linaro.org, mani@kernel.org, lukas@wunner.de, 
+	dmitry.baryshkov@linaro.org, amit.pundir@linaro.org, wuxilin123@gmail.com, 
+	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
+	linux-pm@vger.kernel.org, bartosz.golaszewski@linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Jiapeng Chong <jiapeng.chong@linux.alibaba.com> wrote:
+On Fri, Jun 21, 2024 at 11:04=E2=80=AFAM Lk Sii <lk_sii@163.com> wrote:
+>
+> On 2024/6/21 14:36, Bartosz Golaszewski wrote:
+> > On Fri, Jun 21, 2024 at 3:14=E2=80=AFAM Lk Sii <lk_sii@163.com> wrote:
+> >>
+> >>
+> >>
+> >> On 2024/6/20 22:30, patchwork-bot+bluetooth@kernel.org wrote:
+> >>> Hello:
+> >>>
+> >>> This series was applied to bluetooth/bluetooth-next.git (master)
+> >>> by Bartosz Golaszewski <bartosz.golaszewski@linaro.org>:
+> >>>
+> >> Hi luiz,
+> >>
+> >> i am curious why Bartosz is able to merge his changes into bluetooth
+> >> development tree bluetooth-next directly.
+> >>
+> >
+> > This conversation is getting progressively worse...
+> >
+> >> 1)
+> >> his changes should belong to *POWER* scope instead of *Bluetooth*
+> >> obviously, however, there are *NOT* any SOB tag from either power and
+> >> bluetooth maintainer. these changes currently only have below Acked-by
+> >> and Signed-off-by tags:
+> >>
+> >> Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
+> >> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> >>
+> >
+> > It's a new subsystem that has been discussed and reviewed for months
+> > and thoroughly tested. Please refer to the cover letter under v8
+> > linked in this thread. It's not related to power-management or
+> > power-supply, it's its own thing but IMO the best place to put it is
+> > under drivers/power/. And I will maintain it.
+> >
+> >> 2)
+> >> his changes have not merged into linus mainline tree yet.
+> >>
+> >
+> > This is why they are in next! They are scheduled to go in during the
+> > upcoming merge window. But since changes belong in multiple trees, we
+> > need a cross-tree merge.
+> >
+> >> 3)
+> >> perhaps, it is safer to pull his changes from linus mainline tree when
+> >> merged than to merge into bluetooth-next firstly.
+> >>
+> >
+> > It's not safer at all, why would spending less time in next be safer?
+> >
+> it seems this patch serial(new subsystem) does not depend on bluetooth
+> and also does not belong to bluetooth subsystem, but have been contained
+> by tip of bluetooth tree.
+>
 
-> Use existing swap() function rather than duplicating its implementation.
-> 
-> ./drivers/net/wireless/realtek/rtl8xxxu/core.c:6749:30-31: WARNING opportunity for swap().
-> 
-> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-> Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=9358
-> Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+It's the other way around: bluetooth changes (namely the hci_qca
+driver) depend on the power sequencing changes.
 
-1 patch(es) applied to rtw-next branch of rtw.git, thanks.
+> why not follow below merging produce?
+> 1) you send this patch serials to Linus to merge within linus mainline tr=
+ee
+> 2) luiz then pull your changes from linus mainline tree.
+>
 
-6c3b5970b0c4 wifi: rtl8xxxu: use swap() in rtl8xxxu_switch_ports()
+I explained this in my previous email. Why would you want these
+changes to needlessly wait for another release cycle? It makes no
+sense. It's just a regular cross-tree merge like hundreds that are
+performed every release.
 
----
-https://github.com/pkshih/rtw.git
+> >>> On Wed,  5 Jun 2024 14:38:48 +0200 you wrote:
+> >>>> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> >>>>
+> >>>> Hi!
+> >>>>
+> >>>> These are the power sequencing patches sent separately after some
+> >>>> improvements suggested by Bjorn Helgaas. I intend to pick them up in=
+to a
+> >>>> new branch and maintain the subsystem from now on. I then plan to
+> >>>> provide an immutable tag to the Bluetooth and PCI subsystems so that=
+ the
+> >>>> rest of the C changes can be applied. This new branch will then be
+> >>>> directly sent to Linus Torvalds for the next merge window.
+> >>>>
+> >>>> [...]
+> >>>
+> >>> Here is the summary with links:
+> >>>   - [v9,1/2] power: sequencing: implement the pwrseq core
+> >>>     https://git.kernel.org/bluetooth/bluetooth-next/c/249ebf3f65f8
+> >>>   - [v9,2/2] power: pwrseq: add a driver for the PMU module on the QC=
+om WCN chipsets
+> >>>     https://git.kernel.org/bluetooth/bluetooth-next/c/2f1630f437df
+> >>>
+> >>> You are awesome, thank you!
+> >>
+> >
+> > Why are you top-posting anyway?
+> >
+> it is caused by my bad mail client settings. thanks for reminder.
+> > Bart
+>
 
+Luiz, Marcel: Am I wasting my time with this person? Is this another
+Markus Elfring and I unknowingly got pulled into a nonsensical
+argument?
+
+Bart
 
