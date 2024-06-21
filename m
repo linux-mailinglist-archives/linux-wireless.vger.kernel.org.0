@@ -1,61 +1,61 @@
-Return-Path: <linux-wireless+bounces-9384-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9385-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8CEB911D8F
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 09:58:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8143911D93
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 09:58:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2819BB23F56
-	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 07:58:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F0D2284117
+	for <lists+linux-wireless@lfdr.de>; Fri, 21 Jun 2024 07:58:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC9B1171E40;
-	Fri, 21 Jun 2024 07:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F382A172762;
+	Fri, 21 Jun 2024 07:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="ahPXlbq0"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="MUL1Ey08"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2069.outbound.protection.outlook.com [40.107.8.69])
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2046.outbound.protection.outlook.com [40.107.7.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F7717166E;
-	Fri, 21 Jun 2024 07:53:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.8.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF57171E6A;
+	Fri, 21 Jun 2024 07:53:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.7.46
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718956427; cv=fail; b=OvSf2UER7B1c7EGqvbsnYMJztGB1w+UfHFHXz6gAB3xFwwtMfG6/zo0lSzy1Bny6bALiAKs0eAPVQwi54qq4Z+km1GCxw474JINMsXPeZeuunfCuw0KBU/YUjEZKATrwJ//d8ESfM1kOVvy7xp+/rvULs0nwAmQwWI9PbtfMip0=
+	t=1718956431; cv=fail; b=GGo9LFkHI6QuYR9xuIqkuVAT5tGE2gSvrhg0aPcRoCB8fnkx4EvD0uoGm3gIQQlv8WhDsRH6RC8jPVCnkjFj26UPLX1/AWT5rqNkgIJubbyw4CFWpnz3ypwTHnVqT8GIDTF49eXp1c2FODLiMazO1ABiBSN+gROuoSDvO4lC+eU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718956427; c=relaxed/simple;
-	bh=fwahuzSqlOgzx7xggO7pGwA/UCEBjcfeVKOkB+5T7E4=;
+	s=arc-20240116; t=1718956431; c=relaxed/simple;
+	bh=+Hc38o8j24z5H8NImnvPilD/fhU5NEpS24m3JhDdxE4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fq5dstTHTGS37vBYGbnn0YBprX9GxCFvbrpfaCeP2+QbNnQBrK+fCTlmOs6KMmn2t5xIfITtsQYSluqKmlFl+r9ckluE6NcQy+MkoK4PScMhzsCURXHp8JF5/e/3gyMibGINZwXs5KqtZo0Wro3GwOvTvjiFrWQsCPLBee9DXPk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=ahPXlbq0; arc=fail smtp.client-ip=40.107.8.69
+	 Content-Type:MIME-Version; b=jidpjJvhS5bR2vji299K+LMg6P5rQXo/znuuxhp0g+HUlslK/aM36nvDgLmu/a4rMU/IdM504M7ZLLyVSBME7UkvnfDdqUetmHNitBeEN/FE/WGXd8sNcOBMPAo6ODRDEY3WrEz5Lc7jh2Gj3geXk0YNqxJjbRDIU7kFyn7wjSs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=MUL1Ey08; arc=fail smtp.client-ip=40.107.7.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=P+f9GsISshIV8M0Dyrm15Y5mozTW7h7pZ6cvp5ilrovPb/AtvyfK3xnrW/9ybo+1Srm9kIN/DMJP6UBLPe8Hw+ri6x26rQTpM82/cPglrv90AUbFPDkYFfzXqvuYtqyTgZ3vLnRwGl3tlUgFnaS4uBFQz0kXZXpGSPbh+/XtQapiJ5zJHx9YYx/VJg1Y4znlX2Knb3qMYQgUYokHen87ZhoOHp5uCeUSx8ySnI7Hfp4+s0ldFoYcsVVc0lrOOW93O52+mP98EhIGlNsRnvo+HPej3SIdNkPBmp8sqin5r85Nn3ZBz5cjmxC/wWEnPNTZ1JgvpHtFpZMMEmiux+iNJw==
+ b=Yu3HUPMGAzMZafN6ZUVcVPN8aHKb/m5VuN77EICIY2SO/CGGTZWMG4wI7npRn1uPdwOz6UGmAYq5mC8sl7tMrIrAPiGiTtuGJC2zBIrSK83hWEdAjtAV0hHRhRTT3RRxVRWgkOEMuroQuiE7mSARYDUP/o7LgseQorV9He7LyiL4M641y55cWEC3O9Uygyh7fxlwB2zcjIudDpqci/OITkJ7k+Qt+okn26zpD9tUUKjIyz3BZoQQmIbllofiFJDfnG6yxUXn2SdIyGSzoJRS9iLVVnb3l8my379B8bUd7u/j6mDiAVPcjUalEcm4QxUvHnKQzmRbvYExpfFttcSwQA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pNbDWSfKHx1T8QiK+SUlWoPo54vRTjDOgM8l/zmkn4U=;
- b=b5DkJITuS6ro5YxjZG+b6qt3wvtb8zuKRTEe/UYdyjr/bT7apnuH2oYrknaVX6StNp2LI2fCNZRXgHEKKe45oj9HXONBUUYGHwM7gzEkEhCtF0U119JJX8wd/t8LwLpFhPp+13UgsdCwcdfWRhNrLM/76mlVQ6XQLECVfWJ1rzWzdPFteUI4uOMl29fLI1ljOj3gkj6cDLe/OkCx4q+D89htYm6wljEo9cXjudarEl3/Ck8rrm8VHQUZpcDVvWOjzIgUgK9cUQhh+/ofb285OnVh66d2fdHUyjw3hgd4++63rdc8PbNp+xvy/sV0i4ldElhbydEpLbZPN/EOSSuX+A==
+ bh=GFc39Lj0uGo092n8QLjDs8jPw9mCJvcmIKCEJw+1DeE=;
+ b=YXczyMr9BFLt99R31oqXuka8GZCsIafeatY7B4FIkSkAVnzy9ND20KNCXgcMZCHpB5bb7PYzF4/dqZb3cVqxKxllwkkiB2zu0FT6CmBBs33t1D4p1WM7ZMaEMD4h/HXZ5E9N4JoGZZCt88cz/BGD9bqw9TyF5+16pbnxih4Zh8c4TVR5FrmFwyGKxs8mEcwYERFx3U++kMz1Y43NT+ED1lya3fldxxXRxBqzqxG78MVkArumXuhdWbh/aPPuai8MRQKLHwQgsYPzPhr3TUnCagQluU5JlkSfs6AiY87PNIe3z2barhTl9/JUmii205mggBGFFY99Nus2XQad+DhFyA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pNbDWSfKHx1T8QiK+SUlWoPo54vRTjDOgM8l/zmkn4U=;
- b=ahPXlbq02MyDnVLcJeCJpxWUxBzvp8U3v2YlWh6RJOckxY2knJ7Bz8xIdw3q41NxFKA83sYthQQs7HH71xSwUOn/R3Z2sUjrYHCC8rLNht+kssKWI416pV7ClPo55/nIlLhvCYpqGBHcxlz4JV0gOJHLfBkiNcqeoxxIez7BhkA=
+ bh=GFc39Lj0uGo092n8QLjDs8jPw9mCJvcmIKCEJw+1DeE=;
+ b=MUL1Ey08FWdnSqRfXQqG3IEDF4m++HSdzo/zAJ1ehT+KflNGrWo2YuILNBSNkRIQRcmjAiGuJwFMDdH9Bhs8f8YDGTBFOWUkAc9MxI6DDH4qsqc70iY2bFyQpEJ/xCm5e2tTnnLdro6bCKPYywaDyWNBjlNcurBWGJ17mZ108qI=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PA4PR04MB9638.eurprd04.prod.outlook.com (2603:10a6:102:273::20)
- by AS8PR04MB8135.eurprd04.prod.outlook.com (2603:10a6:20b:3b0::23) with
+ by AS8PR04MB9190.eurprd04.prod.outlook.com (2603:10a6:20b:44d::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.21; Fri, 21 Jun
- 2024 07:53:42 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.22; Fri, 21 Jun
+ 2024 07:53:44 +0000
 Received: from PA4PR04MB9638.eurprd04.prod.outlook.com
  ([fe80::f950:3bb6:6848:2257]) by PA4PR04MB9638.eurprd04.prod.outlook.com
  ([fe80::f950:3bb6:6848:2257%4]) with mapi id 15.20.7677.030; Fri, 21 Jun 2024
- 07:53:41 +0000
+ 07:53:44 +0000
 From: David Lin <yu-hao.lin@nxp.com>
 To: linux-wireless@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -64,9 +64,9 @@ Cc: linux-kernel@vger.kernel.org,
 	francesco@dolcini.it,
 	tsung-hsien.hsieh@nxp.com,
 	David Lin <yu-hao.lin@nxp.com>
-Subject: [PATCH 20/43] wifi: nxpwifi: add init.c
-Date: Fri, 21 Jun 2024 15:51:45 +0800
-Message-Id: <20240621075208.513497-21-yu-hao.lin@nxp.com>
+Subject: [PATCH 21/43] wifi: nxpwifi: add ioctl.h
+Date: Fri, 21 Jun 2024 15:51:46 +0800
+Message-Id: <20240621075208.513497-22-yu-hao.lin@nxp.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240621075208.513497-1-yu-hao.lin@nxp.com>
 References: <20240621075208.513497-1-yu-hao.lin@nxp.com>
@@ -82,788 +82,537 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9638:EE_|AS8PR04MB8135:EE_
-X-MS-Office365-Filtering-Correlation-Id: f67eee80-6a3b-45c8-c220-08dc91c744a2
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9638:EE_|AS8PR04MB9190:EE_
+X-MS-Office365-Filtering-Correlation-Id: 82e06da8-24e2-41ab-01bf-08dc91c74665
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230037|52116011|376011|1800799021|366013|38350700011;
+	BCL:0;ARA:13230037|1800799021|52116011|376011|366013|38350700011;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?otuZina4hDQZ4QeOJ6SQfA5BLrXR5uf3IUw7aPq/VE1nB5LmmHy9BI/D06Ml?=
- =?us-ascii?Q?2Bq3MheOEAWrwy4JpiQFc4iWGggbZns6n3CaKdlSn3+AcrDTiJnPvK7UysVJ?=
- =?us-ascii?Q?5v37W6+joN4aWUc/fiMo//bXdD7s52HA1cc+qrsLILQ+NuRIjheR79fH0AVB?=
- =?us-ascii?Q?2YQOQ8IcrpQtqRIf0ZA35BU76TxPuRR6pHu/nHxCZ8l07ugqzNZDchIA1PRs?=
- =?us-ascii?Q?RBP9DrIfU9HT7SsUJgy+qQocw8x+jAk+3x08Jli37Cc8rLgDhk33zLGOqYdJ?=
- =?us-ascii?Q?/VIz4FGPGbkgu682ENKGYxHgYzVitoiijTumb3vxk0fPNA97yW2DY6uqWev1?=
- =?us-ascii?Q?A+9WhnR9D6xw7tOKglfjTC2s7ekuWaUlcXm/nZbZf/Oyjx5tE75mxCGJSxr7?=
- =?us-ascii?Q?udGAMw/Bs1CYJgJlhXoEll369xDY9OuiWFkq66vLDdc8rSuqKm35cDYDc3lM?=
- =?us-ascii?Q?/TvXGFiXCrV8uJER7ARh5QXzxbN58AZ2ErrWEyQExtM3lnTdCwGZzbBkpsje?=
- =?us-ascii?Q?w9DDXwWATOTqP5MEAFhiMP0Wi7KdaJmhEefdn+rFl3+C+EGeRg4u0ROAwrAC?=
- =?us-ascii?Q?feSWUvhs4FkvtZR223TTHy88J8uT30fQ1CCfoP+M/rlNxypncEK5w75gGLku?=
- =?us-ascii?Q?ubEMzEPSeUPtOgzUhnzJL8C4/P2EYOfvUwF7vDaYxQ8Gt9Qn4+9kTByWnVg1?=
- =?us-ascii?Q?zmgg3BiJH/7WW4Jni9GHW3lDvEDx/72gZP4WRap0Oopjnc2X4yinkfro+Ym0?=
- =?us-ascii?Q?/3q85bopYxfM2+Na3NIPF9U0ob0NQC5vXnbqMfodRX8nMP/OYKLE8OrJxKqi?=
- =?us-ascii?Q?fhJw7/ES0dYmQcvffabqoXZI98S34fOXbu2D50efifUbXSi6o7Y6LxnASYzT?=
- =?us-ascii?Q?7r2RVnEl41KYxks5147CsGAryDmftgz4QF4AxE0acKU+02rbuiJGzt5Bk+Ig?=
- =?us-ascii?Q?8lxSJglviTk8tXg7GTCoRJfH/N6YFa5UpijI9LePUslTbrCF1IW1Y5G9txdj?=
- =?us-ascii?Q?rBNltaFZXJmxjpQM7Jo+Nq9uv5bKkYStPnE2blwo5JAMm+8/dwmsAo8xTzh6?=
- =?us-ascii?Q?F/2B0GkPytw9W4+pmCNoaB52xgnPE4zLo5ZGHuiOOKWoqkCNB9J1JH+GX2SJ?=
- =?us-ascii?Q?/ntSpkpDFfGsHloA6qQ3aBAZrQeshciy4YHDfP018+lZ7gkSttYzSAlzkJwK?=
- =?us-ascii?Q?bYkcXHo18sUeeZjfPGX43smJzkswh1oDfOqqP8QGlzUBVQEvfjHlN3evQHBm?=
- =?us-ascii?Q?sDs2FZpmVue6gwd2b2PJ+nplUF4alMHatwwcHigwzZj3NdsPsjRtAGdCkzvA?=
- =?us-ascii?Q?5LE6SxC/aHNq2uc64Dg4+Oiv4xWsvQPd4DZ7KEmndRsnhl8JvzGEYhhcczYu?=
- =?us-ascii?Q?2zSx6n8=3D?=
+	=?us-ascii?Q?UBj3RHjaXlVNoOhOBzI9tHIPoAAOrWbdWZbYS1z8+xcjuwZsRnok8ofpZkgi?=
+ =?us-ascii?Q?ut0R89cio6k1Qfc8Vys1LhfJenju3ugcilZ2hbruKZkokKCbJYnR4gibkarD?=
+ =?us-ascii?Q?7ByPcTFq5xSTc+FxECtkyxa3Slyox2fKi8LlysBIBRL3Aq83TB8hdxnX+DSL?=
+ =?us-ascii?Q?ujjrGnwv/KwJwZieTWr8D1/SPmHFdJtIOrPDlyzQ40DrPWGn4t8pDJOVFmQs?=
+ =?us-ascii?Q?WpYs/kU2SWOoYxWtgU6DiEBxPa/2/nEa6ThPYK1DvV/8aA7o8RJGNES5XM0N?=
+ =?us-ascii?Q?ge2+T7P7pw2slLQSMexw+1WyxzPMxxcnQCgIejhv/w9zGxoQqFZ8XpbWWgZL?=
+ =?us-ascii?Q?DwxOA1J7y4JQSS013QP7G1VoCgP89joqDVUFlLtCjkGaUgfeZgYAyk1m4JbK?=
+ =?us-ascii?Q?X12aC2uFoR7RAGPW+kNbrVNDaZASw9xCVIGzuuzNpJ6gan+j1r/IEhf3tBj5?=
+ =?us-ascii?Q?JlSOqc3rl0oG4jD+ZfTTzXJ9vZOmQt4B5H3lA4aePdjq4swUrASh5oPIghQS?=
+ =?us-ascii?Q?aDJkgNrYqxBqK+4QvRnO18hmThI2sjEav9stsR0I5Oz99OMedg47YHQbe801?=
+ =?us-ascii?Q?yVmb3SGe7ZWH5Olad5xSADZ5Aqua7WEzIQ+61CII8a68YXiIAPGPGtUDJT8g?=
+ =?us-ascii?Q?zoHPpOWrSMrZOAYzTtU/baFDeWs7OWNbxniyFpxjxQJWVkKty7o7AbU6rwKj?=
+ =?us-ascii?Q?nvBh+T923Zh/P2UKSj0ReD8I2n0c0Smf8L0yGNkj2QxK9/bn6tzLnkGjuDxr?=
+ =?us-ascii?Q?Ye9Gv11wfJ9fpYMOcLpzqC0iVn04bNxdLQtia+c4GHwy5Z/WPUNVqOu0ptkZ?=
+ =?us-ascii?Q?h2ICwX30NaHWHzEujCkfNinb7Arjg4IH4mOUiXpY9oyY3q5EdIezGMWT/IdN?=
+ =?us-ascii?Q?LmuMcM92ueUY67846eNlGXX0gvw/xMLLVDa0cIa+It0purzznc5yXO0yxIY0?=
+ =?us-ascii?Q?35k2jTKgz/toQt9MPbxmgtS9M0+3KiaO5E/916YhF5PwFfo17KCALap4sDBt?=
+ =?us-ascii?Q?1IGGCX4XDRhw9eel8ef1WEx6iNnPoDyaAKTLOSk+Bw5koaob2TiwpdstK1wG?=
+ =?us-ascii?Q?70DKfIll48z7HkyHgU1gPUlnvypvAao1z/HXuAT1Bs+hudiUh5+DCmDM4Qw1?=
+ =?us-ascii?Q?0fyILG8k0Yq4XkzyCd+lzFJlfDQC2nCrTofG5AK2Fcxpx+POd6F1dLncMkOr?=
+ =?us-ascii?Q?Oz1uxRW9b0lRWxSh7v3/4Y0IiQXOOop2KXIJGL4wHCMG3biZGbnx+5dc2pm1?=
+ =?us-ascii?Q?jvVlgZNAtyTOVbhxb3qRMmi6AusmyiKQGkoAAftYbjfU71gPB/ONXf+5DuOW?=
+ =?us-ascii?Q?dkjd+Cvg1EiiBG6+82AOrmfGAsi5KgFnQgM0P6dkaRr3ccJdv/JNgN31om2h?=
+ =?us-ascii?Q?eVvmfPY=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(52116011)(376011)(1800799021)(366013)(38350700011);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(1800799021)(52116011)(376011)(366013)(38350700011);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?USV+KLPFX66IBimVi9AJjKHsdMaYb9lH5BTZp1t9dadr0QZMD4KPvtXN9t+I?=
- =?us-ascii?Q?7xs5TUFz5tHjwxmVxp5eBNUis7CVonE3NBLy7bMWkuVQAovlRJx4wy3CahQ2?=
- =?us-ascii?Q?mu5fjns/0hE6g6j9CoTrDJmTwJkGwAhiCMK6yTGLMV+a86SYOzODT9NDoS9R?=
- =?us-ascii?Q?vsZ5G7u9sH3eJqYtrbmwWcnGELA2z8ioOAH4Ewk9ghW5LOHAc8YYfIWCenyZ?=
- =?us-ascii?Q?ph08ZY/NlQhohgHcQnNCRIuYCOEQS/fW3Pn0rSVr+x/znyjN/CfM5VA8Dy/Q?=
- =?us-ascii?Q?c/1dn4mx3IAgPIIle4yPCmDQqo8AFN3FaZ5bb0EXzYjLilOLLuWcsJ9NCdbR?=
- =?us-ascii?Q?krgeQte+21+HaYpyWNwntMJtTuySIGcekkEkMGPuJ7uEoTOLS9nT/2ld9C9g?=
- =?us-ascii?Q?xOB3JjocYJRJLLRAELX+63hPoZZW2aQiFwgRFuzAC5wwKitrpEvdMMB6GaXk?=
- =?us-ascii?Q?/yKJpoCZOXKw0UOZgWBdnyS3g6i7KvnDuw4AlUL6Bmn7iil68dSYUVoOxTKR?=
- =?us-ascii?Q?nfNvhR4cL3vWAT2i8G7y57Gt0ppeUB0g7cdd8nSErAgQCFXp1otTEY8wanGa?=
- =?us-ascii?Q?O1zSqU2goE/YLGyp0SYaT33SM9ne9OZxyJ7lkeapk6bUaWL+2NNjDSgOOWHR?=
- =?us-ascii?Q?AWTDrTXb4A2eVQKkonKTuGE2S9mTsXZSE4V/3Nla3WmfiYcts2yFKsWNosZU?=
- =?us-ascii?Q?xs+3YGEXtPrG4XA8LR1r3y2I8vxZ9asKgpnMhWnUHzvQ3dBI8aAVxi9YP2cM?=
- =?us-ascii?Q?GTyzJ7oPs81fQzwxyljVMDef3PVwcQ2GSxsp/lCv+6hm8Mms6Z6+q87HbalO?=
- =?us-ascii?Q?7PZbtlVC1GUpLpWJJGrnAYZriBd2WhCBoIwV4JRTzIsugNkkcVaajrBhAQg5?=
- =?us-ascii?Q?TSqGlqKD6d18PictiFfr3fb8sKCdgDTPDtXj9GnUL3tz2JX/ngLciNLvndsP?=
- =?us-ascii?Q?qfKMTk+sAN8uFF+UKqM+NdTGys4MhIsDysZn0PRHTwpOl5QUF1dUK8genn8O?=
- =?us-ascii?Q?grIofdSnatxolk9TLvrm+kaEKKwqhSLKEKZ9Q8dNS3f08CCdnOitHYiTzZwn?=
- =?us-ascii?Q?w6NZ6ezHZGAg1rStVp3SfrJICyQzCqNdIEmr/7HVYztwcaNjzhwFhrjmhTh3?=
- =?us-ascii?Q?E5RWRkOR6K+5LbhlWPn912ib45qGZJadroQcUTMZ5xuBhfvczVU16k56h8QG?=
- =?us-ascii?Q?0neG+SJZD+b1EwEXCBXQVOuI0eP2sUjpUieMZdQqN/kzfexjDKvtssLrxIur?=
- =?us-ascii?Q?QZUy078IFQahh/GYr8CvDXYSwkiBDZCJKB8Y3yjYyqCTHEmNByDzAOr/VXxe?=
- =?us-ascii?Q?t3p1e19hgNK6C+dfGnMJjq0V96pF/xaj46+37puOXGb7J1ZiKdx8eyP21ZXm?=
- =?us-ascii?Q?kMfioZObdrxrX+kwavhbTOGXDRSXTLvFn0iLJkTLZPnVQlU9W9Wgp0eiZIhL?=
- =?us-ascii?Q?2bCMf0Iss8FERZESKixyD88yFtMar48SSTdWPWEjJryBVLEMiOJcfbLDuJA8?=
- =?us-ascii?Q?woiG5eomq/neUwSeX0EqqpodtOpPiQRYk4QALBBxxlBqCXoDBjSc4R2VdfkV?=
- =?us-ascii?Q?nQ6JND4Gb7XttYlOaJ6r7zgnp7PkvhLfOQvwxQVU?=
+	=?us-ascii?Q?mde35GWc+sSFU3Qf+eVHlh5oaMCKEMjjVr1d0aeVq0Rdgk3edWoLOYbF0E4o?=
+ =?us-ascii?Q?0mV4K5u34uawlM/N4bVHrCqPk70kCd2cqKnSyuCoeXLLWea5J4fR7bhnLuC0?=
+ =?us-ascii?Q?JOyZNuaw1XRtcmJhYRu2apc7UlUOpG13BR3yfavDKOZTwspm3Z1Y1XE7B8sa?=
+ =?us-ascii?Q?1Tx+2lkHLSKeh2hj2aFvhnDlOkB3m1MAdpbrHXzu0qTrwd2jHtpEnh6mZFNZ?=
+ =?us-ascii?Q?ljuKcxUNwg+u/te6nyo/CKN91yN/YSZ47/EZ8tSmN34wLTrX7QvNl7ucKwbm?=
+ =?us-ascii?Q?lLEfQWm6mOTEFxIuJ+snzqfLHcaKDIXwOriOC4BNFjFMXahwqZfzXGy5cM+u?=
+ =?us-ascii?Q?yYklYi6mfZfTbT+E6KRyPHpfKr1EJrzv+Z6qoDyV6NQBx/TuuGkbMJ5n7FUh?=
+ =?us-ascii?Q?HpAnpetE15TNKYng5lcbzlFNyo8nzUELneYRSqjk3cjlMlq6550UZhK6hnPX?=
+ =?us-ascii?Q?kxw3iBQnMYJ7fPYxYDE/vrF7XOr/wWGFSvEQxDAIiZNPCAJxVRAFiG5ZhOhC?=
+ =?us-ascii?Q?wPmNa+Pn/1OIzF3pCxbFxe8qpQ/ZmmUSoAJ+kqLMrzxHTaSJEb/Zjo6dvIEC?=
+ =?us-ascii?Q?3cOOrXrNbz/4jSJLfcb0OKTDHMGnMSrGww/31DH2X3ZVXmN39zElZnnYe8KP?=
+ =?us-ascii?Q?ll1hKfU7LTZ/4p/LKLWo3ubkmHCCTnY1TN7uTOGdGGLDWbcRRbT65nZFMrSv?=
+ =?us-ascii?Q?1idP+7x/0+9meVYpvy+l7Wjg2UZpYuDPC6S0cw3fAwmw+KUj/y7nUSYVHoWQ?=
+ =?us-ascii?Q?UlvCsizFJpV/7KFNoD6b1SER+ZvQ7TdN7/VSyWW+1DyS7dYChief6JGg/XMa?=
+ =?us-ascii?Q?X+EkbwadhFCdsMGYG+mANFmguOZBz1UA/Dru2Fu4ncyrPLKOnq+wWlSb6UX/?=
+ =?us-ascii?Q?VqiGIKec1MW8wWn9ZrAbIIz8eMV59UVf4f1LWuvK0Fvixe6mNooX/ReemalG?=
+ =?us-ascii?Q?cdDXF7fwmOv0mneLM6m5EQS0wnX/ygct9aUVRhAfrkk0w+6MMsBJ7skhYqly?=
+ =?us-ascii?Q?NG4O4M6gbz7IjTT/nJxmB8yXMSUTPit82o9YA/rgeuNdMHIoZSPKCjfAcC5l?=
+ =?us-ascii?Q?MroBY0c1hR1DbCnd9hMzrkvwgrJ7iooXBWP0wan2eYK+KymPJGna5GwD89WJ?=
+ =?us-ascii?Q?ReItTEoq/hkmChKvLSZX04XaXT09p8RhV4rOMNow784xeaN/xEybJQNy+J5j?=
+ =?us-ascii?Q?nfu/h9v7uD+1RWS5F1RtqLvHUXtpdx4sPNC+SQ+V2pG9uFQlHcpGqEqDQTMt?=
+ =?us-ascii?Q?Trj127CMfhyjq7DWErtif86s/MUhySV3bIMn1nd6cdiR6nPFttCsOTOsVw09?=
+ =?us-ascii?Q?/9iaVpm/VEQFsSpx9dEFTHLetBV7liCS+IvyJXeHWBHx6EgJkpFbQB6Q0dPU?=
+ =?us-ascii?Q?CqFp4gZAP+v/5Cc98gRFL74EqcgUZkKtBxD897eWh20U8CbEeccaqjHs5f2Q?=
+ =?us-ascii?Q?nVYortj8S0UYES0+Yi0R0xrXgYYHABk6iZSu5CFNXIQ2QkFHArb2MHyfYW1k?=
+ =?us-ascii?Q?bJpQWD3WrlPNy+qfIJ0Vq2OV5ZOGhLL05+pb8FnWO2DjuPJ/ebuYyqt64T8j?=
+ =?us-ascii?Q?s3UYvW69QXIYpnsG3j2s6clXR8I1IUuCHdOCzQEG?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f67eee80-6a3b-45c8-c220-08dc91c744a2
+X-MS-Exchange-CrossTenant-Network-Message-Id: 82e06da8-24e2-41ab-01bf-08dc91c74665
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9638.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2024 07:53:41.9207
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2024 07:53:44.8570
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XUqbrh8J02Lsr7uq6z708p10XV9flkCv9sCZOrsDn1eIIsIfWJLxcr88FjGs9vaBpQE5oE357UPsfhqxiSz/qA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8135
+X-MS-Exchange-CrossTenant-UserPrincipalName: x1X8P2BO3H0IhteIHzB+M2JZxYHPIQJS5N3pEtWmw3BfjIkcIvm07VM89jH7NqOm4aV3E9wHsYT4hQsdZLcgHg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9190
 
 Signed-off-by: David Lin <yu-hao.lin@nxp.com>
 ---
- drivers/net/wireless/nxp/nxpwifi/init.c | 696 ++++++++++++++++++++++++
- 1 file changed, 696 insertions(+)
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/init.c
+ drivers/net/wireless/nxp/nxpwifi/ioctl.h | 445 +++++++++++++++++++++++
+ 1 file changed, 445 insertions(+)
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/ioctl.h
 
-diff --git a/drivers/net/wireless/nxp/nxpwifi/init.c b/drivers/net/wireless/nxp/nxpwifi/init.c
+diff --git a/drivers/net/wireless/nxp/nxpwifi/ioctl.h b/drivers/net/wireless/nxp/nxpwifi/ioctl.h
 new file mode 100644
-index 000000000000..792eb346a797
+index 000000000000..b55dfb872b76
 --- /dev/null
-+++ b/drivers/net/wireless/nxp/nxpwifi/init.c
-@@ -0,0 +1,696 @@
-+// SPDX-License-Identifier: GPL-2.0-only
++++ b/drivers/net/wireless/nxp/nxpwifi/ioctl.h
+@@ -0,0 +1,445 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
 +/*
-+ * NXP Wireless LAN device driver: HW/FW Initialization
++ * NXP Wireless LAN device driver: ioctl data structures & APIs
 + *
 + * Copyright 2011-2024 NXP
 + */
 +
-+#include "decl.h"
-+#include "ioctl.h"
-+#include "util.h"
-+#include "fw.h"
-+#include "main.h"
-+#include "cmdevt.h"
-+#include "wmm.h"
-+#include "11n.h"
-+
-+/* This function adds a BSS priority table to the table list.
-+ *
-+ * The function allocates a new BSS priority table node and adds it to
-+ * the end of BSS priority table list, kept in driver memory.
-+ */
-+static int nxpwifi_add_bss_prio_tbl(struct nxpwifi_private *priv)
-+{
-+	struct nxpwifi_adapter *adapter = priv->adapter;
-+	struct nxpwifi_bss_prio_node *bss_prio;
-+	struct nxpwifi_bss_prio_tbl *tbl = adapter->bss_prio_tbl;
-+
-+	bss_prio = kzalloc(sizeof(*bss_prio), GFP_KERNEL);
-+	if (!bss_prio)
-+		return -ENOMEM;
-+
-+	bss_prio->priv = priv;
-+	INIT_LIST_HEAD(&bss_prio->list);
-+
-+	spin_lock_bh(&tbl[priv->bss_priority].bss_prio_lock);
-+	list_add_tail(&bss_prio->list, &tbl[priv->bss_priority].bss_prio_head);
-+	spin_unlock_bh(&tbl[priv->bss_priority].bss_prio_lock);
-+
-+	return 0;
-+}
-+
-+static void wakeup_timer_fn(struct timer_list *t)
-+{
-+	struct nxpwifi_adapter *adapter = from_timer(adapter, t, wakeup_timer);
-+
-+	nxpwifi_dbg(adapter, ERROR, "Firmware wakeup failed\n");
-+	adapter->hw_status = NXPWIFI_HW_STATUS_RESET;
-+	nxpwifi_cancel_all_pending_cmd(adapter);
-+
-+	if (adapter->if_ops.card_reset)
-+		adapter->if_ops.card_reset(adapter);
-+}
-+
-+static void fw_dump_work(struct work_struct *work)
-+{
-+	struct nxpwifi_adapter *adapter =
-+		container_of(work, struct nxpwifi_adapter, devdump_work.work);
-+
-+	nxpwifi_upload_device_dump(adapter);
-+}
-+
-+/* This function initializes the private structure and sets default
-+ * values to the members.
-+ *
-+ * Additionally, it also initializes all the locks and sets up all the
-+ * lists.
-+ */
-+int nxpwifi_init_priv(struct nxpwifi_private *priv)
-+{
-+	u32 i;
-+
-+	priv->media_connected = false;
-+	eth_broadcast_addr(priv->curr_addr);
-+	priv->port_open = false;
-+	priv->usb_port = NXPWIFI_USB_EP_DATA;
-+	priv->pkt_tx_ctrl = 0;
-+	priv->bss_mode = NL80211_IFTYPE_UNSPECIFIED;
-+	priv->data_rate = 0;	/* Initially indicate the rate as auto */
-+	priv->is_data_rate_auto = true;
-+	priv->bcn_avg_factor = DEFAULT_BCN_AVG_FACTOR;
-+	priv->data_avg_factor = DEFAULT_DATA_AVG_FACTOR;
-+
-+	priv->auth_flag = 0;
-+	priv->auth_alg = WLAN_AUTH_NONE;
-+
-+	priv->sec_info.wep_enabled = 0;
-+	priv->sec_info.authentication_mode = NL80211_AUTHTYPE_OPEN_SYSTEM;
-+	priv->sec_info.encryption_mode = 0;
-+	for (i = 0; i < ARRAY_SIZE(priv->wep_key); i++)
-+		memset(&priv->wep_key[i], 0, sizeof(struct nxpwifi_wep_key));
-+	priv->wep_key_curr_index = 0;
-+	priv->curr_pkt_filter = HOST_ACT_MAC_DYNAMIC_BW_ENABLE |
-+				HOST_ACT_MAC_RX_ON | HOST_ACT_MAC_TX_ON |
-+				HOST_ACT_MAC_ETHERNETII_ENABLE;
-+
-+	priv->beacon_period = 100; /* beacon interval */
-+	priv->attempted_bss_desc = NULL;
-+	memset(&priv->curr_bss_params, 0, sizeof(priv->curr_bss_params));
-+	priv->listen_interval = NXPWIFI_DEFAULT_LISTEN_INTERVAL;
-+
-+	memset(&priv->prev_ssid, 0, sizeof(priv->prev_ssid));
-+	memset(&priv->prev_bssid, 0, sizeof(priv->prev_bssid));
-+	memset(&priv->assoc_rsp_buf, 0, sizeof(priv->assoc_rsp_buf));
-+	priv->assoc_rsp_size = 0;
-+	priv->atim_window = 0;
-+	priv->tx_power_level = 0;
-+	priv->max_tx_power_level = 0;
-+	priv->min_tx_power_level = 0;
-+	priv->tx_ant = 0;
-+	priv->rx_ant = 0;
-+	priv->tx_rate = 0;
-+	priv->rxpd_htinfo = 0;
-+	priv->rxpd_rate = 0;
-+	priv->rate_bitmap = 0;
-+	priv->data_rssi_last = 0;
-+	priv->data_rssi_avg = 0;
-+	priv->data_nf_avg = 0;
-+	priv->data_nf_last = 0;
-+	priv->bcn_rssi_last = 0;
-+	priv->bcn_rssi_avg = 0;
-+	priv->bcn_nf_avg = 0;
-+	priv->bcn_nf_last = 0;
-+	memset(&priv->wpa_ie, 0, sizeof(priv->wpa_ie));
-+	memset(&priv->aes_key, 0, sizeof(priv->aes_key));
-+	priv->wpa_ie_len = 0;
-+	priv->wpa_is_gtk_set = false;
-+
-+	memset(&priv->assoc_tlv_buf, 0, sizeof(priv->assoc_tlv_buf));
-+	priv->assoc_tlv_buf_len = 0;
-+	memset(&priv->wps, 0, sizeof(priv->wps));
-+	memset(&priv->gen_ie_buf, 0, sizeof(priv->gen_ie_buf));
-+	priv->gen_ie_buf_len = 0;
-+	memset(priv->vs_ie, 0, sizeof(priv->vs_ie));
-+
-+	priv->wmm_required = true;
-+	priv->wmm_enabled = false;
-+	priv->wmm_qosinfo = 0;
-+	priv->curr_bcn_buf = NULL;
-+	priv->curr_bcn_size = 0;
-+	priv->wps_ie = NULL;
-+	priv->wps_ie_len = 0;
-+	priv->ap_11n_enabled = 0;
-+	memset(&priv->roc_cfg, 0, sizeof(priv->roc_cfg));
-+
-+	priv->scan_block = false;
-+
-+	priv->csa_chan = 0;
-+	priv->csa_expire_time = 0;
-+	priv->del_list_idx = 0;
-+	priv->hs2_enabled = false;
-+	memcpy(priv->tos_to_tid_inv, tos_to_tid_inv, MAX_NUM_TID);
-+
-+	nxpwifi_init_11h_params(priv);
-+
-+	return nxpwifi_add_bss_prio_tbl(priv);
-+}
-+
-+/* This function allocates buffers for members of the adapter
-+ * structure.
-+ *
-+ * The memory allocated includes scan table, command buffers, and
-+ * sleep confirm command buffer. In addition, the queues are
-+ * also initialized.
-+ */
-+static int nxpwifi_allocate_adapter(struct nxpwifi_adapter *adapter)
-+{
-+	int ret;
-+
-+	/* Allocate command buffer */
-+	ret = nxpwifi_alloc_cmd_buffer(adapter);
-+	if (ret) {
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "%s: failed to alloc cmd buffer\n",
-+			    __func__);
-+		return -1;
-+	}
-+
-+	adapter->sleep_cfm =
-+		dev_alloc_skb(sizeof(struct nxpwifi_opt_sleep_confirm)
-+			      + INTF_HEADER_LEN);
-+
-+	if (!adapter->sleep_cfm) {
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "%s: failed to alloc sleep cfm\t"
-+			    " cmd buffer\n", __func__);
-+		return -1;
-+	}
-+	skb_reserve(adapter->sleep_cfm, INTF_HEADER_LEN);
-+
-+	return 0;
-+}
-+
-+/* This function initializes the adapter structure and sets default
-+ * values to the members of adapter.
-+ *
-+ * This also initializes the WMM related parameters in the driver private
-+ * structures.
-+ */
-+static void nxpwifi_init_adapter(struct nxpwifi_adapter *adapter)
-+{
-+	struct nxpwifi_opt_sleep_confirm *sleep_cfm_buf = NULL;
-+
-+	skb_put(adapter->sleep_cfm, sizeof(struct nxpwifi_opt_sleep_confirm));
-+
-+	adapter->cmd_sent = false;
-+	adapter->data_sent = true;
-+
-+	adapter->intf_hdr_len = INTF_HEADER_LEN;
-+
-+	adapter->cmd_resp_received = false;
-+	adapter->event_received = false;
-+	adapter->data_received = false;
-+	adapter->assoc_resp_received = false;
-+	adapter->priv_link_lost = NULL;
-+	adapter->host_mlme_link_lost = false;
-+
-+	clear_bit(NXPWIFI_SURPRISE_REMOVED, &adapter->work_flags);
-+
-+	adapter->hw_status = NXPWIFI_HW_STATUS_INITIALIZING;
-+
-+	adapter->ps_mode = NXPWIFI_802_11_POWER_MODE_CAM;
-+	adapter->ps_state = PS_STATE_AWAKE;
-+	adapter->need_to_wakeup = false;
-+
-+	adapter->scan_mode = HOST_BSS_MODE_ANY;
-+	adapter->specific_scan_time = NXPWIFI_SPECIFIC_SCAN_CHAN_TIME;
-+	adapter->active_scan_time = NXPWIFI_ACTIVE_SCAN_CHAN_TIME;
-+	adapter->passive_scan_time = NXPWIFI_PASSIVE_SCAN_CHAN_TIME;
-+	adapter->scan_chan_gap_time = NXPWIFI_DEF_SCAN_CHAN_GAP_TIME;
-+
-+	adapter->scan_probes = 1;
-+
-+	adapter->multiple_dtim = 1;
-+
-+	/* default value in firmware will be used */
-+	adapter->local_listen_interval = 0;
-+
-+	adapter->is_deep_sleep = false;
-+
-+	adapter->delay_null_pkt = false;
-+	adapter->delay_to_ps = 1000;
-+	adapter->enhanced_ps_mode = PS_MODE_AUTO;
-+
-+	/* Disable NULL Pkg generation by default */
-+	adapter->gen_null_pkt = false;
-+	/* Disable pps/uapsd mode by default */
-+	adapter->pps_uapsd_mode = false;
-+	adapter->pm_wakeup_card_req = false;
-+
-+	adapter->pm_wakeup_fw_try = false;
-+
-+	adapter->curr_tx_buf_size = NXPWIFI_TX_DATA_BUF_SIZE_2K;
-+
-+	clear_bit(NXPWIFI_IS_HS_CONFIGURED, &adapter->work_flags);
-+	adapter->hs_cfg.conditions = cpu_to_le32(HS_CFG_COND_DEF);
-+	adapter->hs_cfg.gpio = HS_CFG_GPIO_DEF;
-+	adapter->hs_cfg.gap = HS_CFG_GAP_DEF;
-+	adapter->hs_activated = false;
-+
-+	memset(adapter->event_body, 0, sizeof(adapter->event_body));
-+	adapter->hw_dot_11n_dev_cap = 0;
-+	adapter->hw_dev_mcs_support = 0;
-+	adapter->sec_chan_offset = 0;
-+
-+	nxpwifi_wmm_init(adapter);
-+	atomic_set(&adapter->tx_hw_pending, 0);
-+
-+	sleep_cfm_buf = (struct nxpwifi_opt_sleep_confirm *)
-+					adapter->sleep_cfm->data;
-+	memset(sleep_cfm_buf, 0, adapter->sleep_cfm->len);
-+	sleep_cfm_buf->command = cpu_to_le16(HOST_CMD_802_11_PS_MODE_ENH);
-+	sleep_cfm_buf->size = cpu_to_le16(adapter->sleep_cfm->len);
-+	sleep_cfm_buf->result = 0;
-+	sleep_cfm_buf->action = cpu_to_le16(SLEEP_CONFIRM);
-+	sleep_cfm_buf->resp_ctrl = cpu_to_le16(RESP_NEEDED);
-+
-+	memset(&adapter->sleep_period, 0, sizeof(adapter->sleep_period));
-+	adapter->tx_lock_flag = false;
-+	adapter->null_pkt_interval = 0;
-+	adapter->fw_bands = 0;
-+	adapter->config_bands = 0;
-+	adapter->fw_release_number = 0;
-+	adapter->fw_cap_info = 0;
-+	memset(&adapter->upld_buf, 0, sizeof(adapter->upld_buf));
-+	adapter->event_cause = 0;
-+	adapter->region_code = 0;
-+	adapter->bcn_miss_time_out = DEFAULT_BCN_MISS_TIMEOUT;
-+	memset(&adapter->arp_filter, 0, sizeof(adapter->arp_filter));
-+	adapter->arp_filter_size = 0;
-+	adapter->max_mgmt_ie_index = MAX_MGMT_IE_INDEX;
-+	adapter->key_api_major_ver = 0;
-+	adapter->key_api_minor_ver = 0;
-+	eth_broadcast_addr(adapter->perm_addr);
-+	adapter->iface_limit.sta_intf = NXPWIFI_MAX_STA_NUM;
-+	adapter->iface_limit.uap_intf = NXPWIFI_MAX_UAP_NUM;
-+	adapter->active_scan_triggered = false;
-+	timer_setup(&adapter->wakeup_timer, wakeup_timer_fn, 0);
-+	adapter->devdump_len = 0;
-+	INIT_DELAYED_WORK(&adapter->devdump_work, fw_dump_work);
-+}
-+
-+/* This function sets trans_start per tx_queue
-+ */
-+void nxpwifi_set_trans_start(struct net_device *dev)
-+{
-+	int i;
-+
-+	for (i = 0; i < dev->num_tx_queues; i++)
-+		txq_trans_cond_update(netdev_get_tx_queue(dev, i));
-+
-+	netif_trans_update(dev);
-+}
-+
-+/* This function wakes up all queues in net_device
-+ */
-+void nxpwifi_wake_up_net_dev_queue(struct net_device *netdev,
-+				   struct nxpwifi_adapter *adapter)
-+{
-+	spin_lock_bh(&adapter->queue_lock);
-+	netif_tx_wake_all_queues(netdev);
-+	spin_unlock_bh(&adapter->queue_lock);
-+}
-+
-+/* This function stops all queues in net_device
-+ */
-+void nxpwifi_stop_net_dev_queue(struct net_device *netdev,
-+				struct nxpwifi_adapter *adapter)
-+{
-+	spin_lock_bh(&adapter->queue_lock);
-+	netif_tx_stop_all_queues(netdev);
-+	spin_unlock_bh(&adapter->queue_lock);
-+}
-+
-+/* This function invalidates the list heads.
-+ */
-+static void nxpwifi_invalidate_lists(struct nxpwifi_adapter *adapter)
-+{
-+	struct nxpwifi_private *priv;
-+	s32 i, j;
-+
-+	list_del(&adapter->cmd_free_q);
-+	list_del(&adapter->cmd_pending_q);
-+	list_del(&adapter->scan_pending_q);
-+
-+	for (i = 0; i < adapter->priv_num; i++)
-+		list_del(&adapter->bss_prio_tbl[i].bss_prio_head);
-+
-+	for (i = 0; i < adapter->priv_num; i++) {
-+		if (adapter->priv[i]) {
-+			priv = adapter->priv[i];
-+			for (j = 0; j < MAX_NUM_TID; ++j)
-+				list_del(&priv->wmm.tid_tbl_ptr[j].ra_list);
-+			list_del(&priv->tx_ba_stream_tbl_ptr);
-+			list_del(&priv->rx_reorder_tbl_ptr);
-+			list_del(&priv->sta_list);
-+		}
-+	}
-+}
-+
-+/* This function performs cleanup for adapter structure.
-+ *
-+ * The cleanup is done recursively, by canceling all pending
-+ * commands, freeing the member buffers previously allocated
-+ * (command buffers, scan table buffer, sleep confirm command
-+ * buffer), stopping the timers and calling the cleanup routines
-+ * for every interface.
-+ */
-+static void
-+nxpwifi_adapter_cleanup(struct nxpwifi_adapter *adapter)
-+{
-+	del_timer(&adapter->wakeup_timer);
-+	cancel_delayed_work_sync(&adapter->devdump_work);
-+	nxpwifi_cancel_all_pending_cmd(adapter);
-+	wake_up_interruptible(&adapter->cmd_wait_q.wait);
-+	wake_up_interruptible(&adapter->hs_activate_wait_q);
-+}
-+
-+void nxpwifi_free_cmd_buffers(struct nxpwifi_adapter *adapter)
-+{
-+	nxpwifi_invalidate_lists(adapter);
-+
-+	/* Free command buffer */
-+	nxpwifi_dbg(adapter, INFO, "info: free cmd buffer\n");
-+	nxpwifi_free_cmd_buffer(adapter);
-+
-+	if (adapter->sleep_cfm)
-+		dev_kfree_skb_any(adapter->sleep_cfm);
-+}
-+
-+/*  This function intializes the lock variables and
-+ *  the list heads.
-+ */
-+int nxpwifi_init_lock_list(struct nxpwifi_adapter *adapter)
-+{
-+	struct nxpwifi_private *priv;
-+	s32 i, j;
-+
-+	spin_lock_init(&adapter->int_lock);
-+	spin_lock_init(&adapter->main_proc_lock);
-+	spin_lock_init(&adapter->nxpwifi_cmd_lock);
-+	spin_lock_init(&adapter->queue_lock);
-+	for (i = 0; i < adapter->priv_num; i++) {
-+		if (adapter->priv[i]) {
-+			priv = adapter->priv[i];
-+			spin_lock_init(&priv->wmm.ra_list_spinlock);
-+			spin_lock_init(&priv->curr_bcn_buf_lock);
-+			spin_lock_init(&priv->sta_list_spinlock);
-+		}
-+	}
-+
-+	/* Initialize cmd_free_q */
-+	INIT_LIST_HEAD(&adapter->cmd_free_q);
-+	/* Initialize cmd_pending_q */
-+	INIT_LIST_HEAD(&adapter->cmd_pending_q);
-+	/* Initialize scan_pending_q */
-+	INIT_LIST_HEAD(&adapter->scan_pending_q);
-+
-+	spin_lock_init(&adapter->cmd_free_q_lock);
-+	spin_lock_init(&adapter->cmd_pending_q_lock);
-+	spin_lock_init(&adapter->scan_pending_q_lock);
-+	spin_lock_init(&adapter->rx_proc_lock);
-+
-+	skb_queue_head_init(&adapter->rx_data_q);
-+	skb_queue_head_init(&adapter->tx_data_q);
-+
-+	for (i = 0; i < adapter->priv_num; ++i) {
-+		INIT_LIST_HEAD(&adapter->bss_prio_tbl[i].bss_prio_head);
-+		spin_lock_init(&adapter->bss_prio_tbl[i].bss_prio_lock);
-+	}
-+
-+	for (i = 0; i < adapter->priv_num; i++) {
-+		if (!adapter->priv[i])
-+			continue;
-+		priv = adapter->priv[i];
-+		for (j = 0; j < MAX_NUM_TID; ++j)
-+			INIT_LIST_HEAD(&priv->wmm.tid_tbl_ptr[j].ra_list);
-+		INIT_LIST_HEAD(&priv->tx_ba_stream_tbl_ptr);
-+		INIT_LIST_HEAD(&priv->rx_reorder_tbl_ptr);
-+		INIT_LIST_HEAD(&priv->sta_list);
-+		skb_queue_head_init(&priv->bypass_txq);
-+
-+		spin_lock_init(&priv->tx_ba_stream_tbl_lock);
-+		spin_lock_init(&priv->rx_reorder_tbl_lock);
-+
-+		spin_lock_init(&priv->ack_status_lock);
-+		idr_init(&priv->ack_status_frames);
-+	}
-+
-+	return 0;
-+}
-+
-+/* This function initializes the firmware.
-+ *
-+ * The following operations are performed sequentially -
-+ *      - Allocate adapter structure
-+ *      - Initialize the adapter structure
-+ *      - Initialize the private structure
-+ *      - Add BSS priority tables to the adapter structure
-+ *      - For each interface, send the init commands to firmware
-+ *      - Send the first command in command pending queue, if available
-+ */
-+int nxpwifi_init_fw(struct nxpwifi_adapter *adapter)
-+{
-+	int ret;
-+	struct nxpwifi_private *priv;
-+	u8 i, first_sta = true;
-+	int is_cmd_pend_q_empty;
-+
-+	adapter->hw_status = NXPWIFI_HW_STATUS_INITIALIZING;
-+
-+	/* Allocate memory for member of adapter structure */
-+	ret = nxpwifi_allocate_adapter(adapter);
-+	if (ret)
-+		return -1;
-+
-+	/* Initialize adapter structure */
-+	nxpwifi_init_adapter(adapter);
-+
-+	for (i = 0; i < adapter->priv_num; i++) {
-+		if (adapter->priv[i]) {
-+			priv = adapter->priv[i];
-+
-+			/* Initialize private structure */
-+			ret = nxpwifi_init_priv(priv);
-+			if (ret)
-+				return -1;
-+		}
-+	}
-+
-+	for (i = 0; i < adapter->priv_num; i++) {
-+		if (adapter->priv[i]) {
-+			ret = nxpwifi_sta_init_cmd(adapter->priv[i],
-+						   first_sta, true);
-+			if (ret == -1)
-+				return -1;
-+
-+			first_sta = false;
-+		}
-+	}
-+
-+	spin_lock_bh(&adapter->cmd_pending_q_lock);
-+	is_cmd_pend_q_empty = list_empty(&adapter->cmd_pending_q);
-+	spin_unlock_bh(&adapter->cmd_pending_q_lock);
-+	if (!is_cmd_pend_q_empty) {
-+		/* Send the first command in queue and return */
-+		if (nxpwifi_main_process(adapter) != -1)
-+			ret = -EINPROGRESS;
-+	} else {
-+		adapter->hw_status = NXPWIFI_HW_STATUS_READY;
-+	}
-+
-+	return ret;
-+}
-+
-+/* This function deletes the BSS priority tables.
-+ *
-+ * The function traverses through all the allocated BSS priority nodes
-+ * in every BSS priority table and frees them.
-+ */
-+static void nxpwifi_delete_bss_prio_tbl(struct nxpwifi_private *priv)
-+{
-+	int i;
-+	struct nxpwifi_adapter *adapter = priv->adapter;
-+	struct nxpwifi_bss_prio_node *bssprio_node, *tmp_node;
-+	struct list_head *head;
-+	spinlock_t *lock; /* bss priority lock */
-+
-+	for (i = 0; i < adapter->priv_num; ++i) {
-+		head = &adapter->bss_prio_tbl[i].bss_prio_head;
-+		lock = &adapter->bss_prio_tbl[i].bss_prio_lock;
-+		nxpwifi_dbg(adapter, INFO,
-+			    "info: delete BSS priority table,\t"
-+			    "bss_type = %d, bss_num = %d, i = %d,\t"
-+			    "head = %p\n",
-+			    priv->bss_type, priv->bss_num, i, head);
-+
-+		{
-+			spin_lock_bh(lock);
-+			list_for_each_entry_safe(bssprio_node, tmp_node, head,
-+						 list) {
-+				if (bssprio_node->priv == priv) {
-+					nxpwifi_dbg(adapter, INFO,
-+						    "info: Delete\t"
-+						    "node %p, next = %p\n",
-+						    bssprio_node, tmp_node);
-+					list_del(&bssprio_node->list);
-+					kfree(bssprio_node);
-+				}
-+			}
-+			spin_unlock_bh(lock);
-+		}
-+	}
-+}
-+
-+/* This function frees the private structure, including cleans
-+ * up the TX and RX queues and frees the BSS priority tables.
-+ */
-+void nxpwifi_free_priv(struct nxpwifi_private *priv)
-+{
-+	nxpwifi_clean_txrx(priv);
-+	nxpwifi_delete_bss_prio_tbl(priv);
-+	nxpwifi_free_curr_bcn(priv);
-+}
-+
-+/* This function is used to shutdown the driver.
-+ *
-+ * The following operations are performed sequentially -
-+ *      - Check if already shut down
-+ *      - Make sure the main process has stopped
-+ *      - Clean up the Tx and Rx queues
-+ *      - Delete BSS priority tables
-+ *      - Free the adapter
-+ *      - Notify completion
-+ */
-+void
-+nxpwifi_shutdown_drv(struct nxpwifi_adapter *adapter)
-+{
-+	struct nxpwifi_private *priv;
-+	s32 i;
-+	struct sk_buff *skb;
-+
-+	/* nxpwifi already shutdown */
-+	if (adapter->hw_status == NXPWIFI_HW_STATUS_NOT_READY)
-+		return;
-+
-+	/* cancel current command */
-+	if (adapter->curr_cmd) {
-+		nxpwifi_dbg(adapter, WARN,
-+			    "curr_cmd is still in processing\n");
-+		del_timer_sync(&adapter->cmd_timer);
-+		nxpwifi_recycle_cmd_node(adapter, adapter->curr_cmd);
-+		adapter->curr_cmd = NULL;
-+	}
-+
-+	/* shut down nxpwifi */
-+	nxpwifi_dbg(adapter, MSG,
-+		    "info: shutdown nxpwifi...\n");
-+
-+	/* Clean up Tx/Rx queues and delete BSS priority table */
-+	for (i = 0; i < adapter->priv_num; i++) {
-+		if (adapter->priv[i]) {
-+			priv = adapter->priv[i];
-+
-+			nxpwifi_abort_cac(priv);
-+			nxpwifi_free_priv(priv);
-+		}
-+	}
-+
-+	atomic_set(&adapter->tx_queued, 0);
-+	while ((skb = skb_dequeue(&adapter->tx_data_q)))
-+		nxpwifi_write_data_complete(adapter, skb, 0, 0);
-+
-+	spin_lock_bh(&adapter->rx_proc_lock);
-+
-+	while ((skb = skb_dequeue(&adapter->rx_data_q))) {
-+		struct nxpwifi_rxinfo *rx_info = NXPWIFI_SKB_RXCB(skb);
-+
-+		atomic_dec(&adapter->rx_pending);
-+		priv = adapter->priv[rx_info->bss_num];
-+		if (priv)
-+			priv->stats.rx_dropped++;
-+
-+		dev_kfree_skb_any(skb);
-+	}
-+
-+	spin_unlock_bh(&adapter->rx_proc_lock);
-+
-+	nxpwifi_adapter_cleanup(adapter);
-+
-+	adapter->hw_status = NXPWIFI_HW_STATUS_NOT_READY;
-+}
-+
-+/* This function downloads the firmware to the card.
-+ *
-+ * The actual download is preceded by two sanity checks -
-+ *      - Check if firmware is already running
-+ *      - Check if the interface is the winner to download the firmware
-+ *
-+ * ...and followed by another -
-+ *      - Check if the firmware is downloaded successfully
-+ *
-+ * After download is successfully completed, the host interrupts are enabled.
-+ */
-+int nxpwifi_dnld_fw(struct nxpwifi_adapter *adapter,
-+		    struct nxpwifi_fw_image *pmfw)
-+{
-+	int ret;
-+	u32 poll_num = 1;
-+
-+	/* check if firmware is already running */
-+	ret = adapter->if_ops.check_fw_status(adapter, poll_num);
-+	if (!ret) {
-+		nxpwifi_dbg(adapter, MSG,
-+			    "WLAN FW already running! Skip FW dnld\n");
-+		return 0;
-+	}
-+
-+	/* check if we are the winner for downloading FW */
-+	if (adapter->if_ops.check_winner_status) {
-+		adapter->winner = 0;
-+		ret = adapter->if_ops.check_winner_status(adapter);
-+
-+		poll_num = MAX_FIRMWARE_POLL_TRIES;
-+		if (ret) {
-+			nxpwifi_dbg(adapter, MSG,
-+				    "WLAN read winner status failed!\n");
-+			return ret;
-+		}
-+
-+		if (!adapter->winner) {
-+			nxpwifi_dbg(adapter, MSG,
-+				    "WLAN is not the winner! Skip FW dnld\n");
-+			goto poll_fw;
-+		}
-+	}
-+
-+	if (pmfw) {
-+		/* Download firmware with helper */
-+		ret = adapter->if_ops.prog_fw(adapter, pmfw);
-+		if (ret) {
-+			nxpwifi_dbg(adapter, ERROR,
-+				    "prog_fw failed ret=%#x\n", ret);
-+			return ret;
-+		}
-+	}
-+
-+poll_fw:
-+	/* Check if the firmware is downloaded successfully or not */
-+	ret = adapter->if_ops.check_fw_status(adapter, poll_num);
-+	if (ret)
-+		nxpwifi_dbg(adapter, ERROR,
-+			    "FW failed to be active in time\n");
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(nxpwifi_dnld_fw);
++#ifndef _NXPWIFI_IOCTL_H_
++#define _NXPWIFI_IOCTL_H_
++
++#include <net/lib80211.h>
++
++enum {
++	NXPWIFI_SCAN_TYPE_UNCHANGED = 0,
++	NXPWIFI_SCAN_TYPE_ACTIVE,
++	NXPWIFI_SCAN_TYPE_PASSIVE
++};
++
++#define NXPWIFI_PROMISC_MODE            1
++#define NXPWIFI_MULTICAST_MODE		2
++#define	NXPWIFI_ALL_MULTI_MODE		4
++#define NXPWIFI_MAX_MULTICAST_LIST_SIZE	32
++
++struct nxpwifi_multicast_list {
++	u32 mode;
++	u32 num_multicast_addr;
++	u8 mac_list[NXPWIFI_MAX_MULTICAST_LIST_SIZE][ETH_ALEN];
++};
++
++struct nxpwifi_chan_freq {
++	u32 channel;
++	u32 freq;
++};
++
++struct nxpwifi_ssid_bssid {
++	struct cfg80211_ssid ssid;
++	u8 bssid[ETH_ALEN];
++};
++
++enum {
++	BAND_B = 1,
++	BAND_G = 2,
++	BAND_A = 4,
++	BAND_GN = 8,
++	BAND_AN = 16,
++	BAND_AAC = 32,
++};
++
++#define NXPWIFI_WPA_PASSHPHRASE_LEN 64
++struct wpa_param {
++	u8 pairwise_cipher_wpa;
++	u8 pairwise_cipher_wpa2;
++	u8 group_cipher;
++	u32 length;
++	u8 passphrase[NXPWIFI_WPA_PASSHPHRASE_LEN];
++};
++
++struct wep_key {
++	u8 key_index;
++	u8 is_default;
++	u16 length;
++	u8 key[WLAN_KEY_LEN_WEP104];
++};
++
++#define KEY_MGMT_ON_HOST        0x03
++#define NXPWIFI_AUTH_MODE_AUTO  0xFF
++#define BAND_CONFIG_BG          0x00
++#define BAND_CONFIG_A           0x01
++#define NXPWIFI_SEC_CHAN_BELOW	0x30
++#define NXPWIFI_SEC_CHAN_ABOVE	0x10
++#define NXPWIFI_SUPPORTED_RATES                 14
++#define NXPWIFI_SUPPORTED_RATES_EXT             32
++#define NXPWIFI_PRIO_BK				2
++#define NXPWIFI_PRIO_VI				5
++#define NXPWIFI_SUPPORTED_CHANNELS		2
++#define NXPWIFI_OPERATING_CLASSES		16
++
++struct nxpwifi_uap_bss_param {
++	u8 mac_addr[ETH_ALEN];
++	u8 channel;
++	u8 band_cfg;
++	u16 rts_threshold;
++	u16 frag_threshold;
++	u8 retry_limit;
++	struct nxpwifi_802_11_ssid ssid;
++	u8 bcast_ssid_ctl;
++	u8 radio_ctl;
++	u8 dtim_period;
++	u16 beacon_period;
++	u16 auth_mode;
++	u16 protocol;
++	u16 key_mgmt;
++	u16 key_mgmt_operation;
++	struct wpa_param wpa_cfg;
++	struct wep_key wep_cfg[NUM_WEP_KEYS];
++	struct ieee80211_ht_cap ht_cap;
++	struct ieee80211_vht_cap vht_cap;
++	u8 rates[NXPWIFI_SUPPORTED_RATES];
++	u32 sta_ao_timer;
++	u32 ps_sta_ao_timer;
++	u8 qos_info;
++	u8 power_constraint;
++	struct nxpwifi_types_wmm_info wmm_info;
++};
++
++struct nxpwifi_ds_get_stats {
++	u32 mcast_tx_frame;
++	u32 failed;
++	u32 retry;
++	u32 multi_retry;
++	u32 frame_dup;
++	u32 rts_success;
++	u32 rts_failure;
++	u32 ack_failure;
++	u32 rx_frag;
++	u32 mcast_rx_frame;
++	u32 fcs_error;
++	u32 tx_frame;
++	u32 wep_icv_error[4];
++	u32 bcn_rcv_cnt;
++	u32 bcn_miss_cnt;
++};
++
++#define NXPWIFI_MAX_VER_STR_LEN    128
++
++struct nxpwifi_ver_ext {
++	u32 version_str_sel;
++	char version_str[NXPWIFI_MAX_VER_STR_LEN];
++};
++
++struct nxpwifi_bss_info {
++	u32 bss_mode;
++	struct cfg80211_ssid ssid;
++	u32 bss_chan;
++	u8 country_code[3];
++	u32 media_connected;
++	u32 max_power_level;
++	u32 min_power_level;
++	signed int bcn_nf_last;
++	u32 wep_status;
++	u32 is_hs_configured;
++	u32 is_deep_sleep;
++	u8 bssid[ETH_ALEN];
++};
++
++struct nxpwifi_sta_info {
++	u8 peer_mac[ETH_ALEN];
++	struct station_parameters *params;
++};
++
++#define MAX_NUM_TID     8
++
++#define MAX_RX_WINSIZE  64
++
++struct nxpwifi_ds_rx_reorder_tbl {
++	u16 tid;
++	u8 ta[ETH_ALEN];
++	u32 start_win;
++	u32 win_size;
++	u32 buffer[MAX_RX_WINSIZE];
++};
++
++struct nxpwifi_ds_tx_ba_stream_tbl {
++	u16 tid;
++	u8 ra[ETH_ALEN];
++	u8 amsdu;
++};
++
++#define DBG_CMD_NUM    5
++#define NXPWIFI_DBG_SDIO_MP_NUM    10
++
++struct nxpwifi_debug_info {
++	unsigned int debug_mask;
++	u32 int_counter;
++	u32 packets_out[MAX_NUM_TID];
++	u32 tx_buf_size;
++	u32 curr_tx_buf_size;
++	u32 tx_tbl_num;
++	struct nxpwifi_ds_tx_ba_stream_tbl
++		tx_tbl[NXPWIFI_MAX_TX_BASTREAM_SUPPORTED];
++	u32 rx_tbl_num;
++	struct nxpwifi_ds_rx_reorder_tbl rx_tbl
++		[NXPWIFI_MAX_RX_BASTREAM_SUPPORTED];
++	u16 ps_mode;
++	u32 ps_state;
++	u8 is_deep_sleep;
++	u8 pm_wakeup_card_req;
++	u32 pm_wakeup_fw_try;
++	u8 is_hs_configured;
++	u8 hs_activated;
++	u32 num_cmd_host_to_card_failure;
++	u32 num_cmd_sleep_cfm_host_to_card_failure;
++	u32 num_tx_host_to_card_failure;
++	u32 num_event_deauth;
++	u32 num_event_disassoc;
++	u32 num_event_link_lost;
++	u32 num_cmd_deauth;
++	u32 num_cmd_assoc_success;
++	u32 num_cmd_assoc_failure;
++	u32 num_tx_timeout;
++	u8 is_cmd_timedout;
++	u16 timeout_cmd_id;
++	u16 timeout_cmd_act;
++	u16 last_cmd_id[DBG_CMD_NUM];
++	u16 last_cmd_act[DBG_CMD_NUM];
++	u16 last_cmd_index;
++	u16 last_cmd_resp_id[DBG_CMD_NUM];
++	u16 last_cmd_resp_index;
++	u16 last_event[DBG_CMD_NUM];
++	u16 last_event_index;
++	u8 data_sent;
++	u8 cmd_sent;
++	u8 cmd_resp_received;
++	u8 event_received;
++	u32 last_mp_wr_bitmap[NXPWIFI_DBG_SDIO_MP_NUM];
++	u32 last_mp_wr_ports[NXPWIFI_DBG_SDIO_MP_NUM];
++	u32 last_mp_wr_len[NXPWIFI_DBG_SDIO_MP_NUM];
++	u32 last_mp_curr_wr_port[NXPWIFI_DBG_SDIO_MP_NUM];
++	u8 last_sdio_mp_index;
++};
++
++#define NXPWIFI_KEY_INDEX_UNICAST	0x40000000
++#define PN_LEN				16
++
++struct nxpwifi_ds_encrypt_key {
++	u32 key_disable;
++	u32 key_index;
++	u32 key_len;
++	u8 key_material[WLAN_MAX_KEY_LEN];
++	u8 mac_addr[ETH_ALEN];
++	u8 pn[PN_LEN];		/* packet number */
++	u8 pn_len;
++	u8 is_igtk_key;
++	u8 is_current_wep_key;
++	u8 is_rx_seq_valid;
++	u8 is_igtk_def_key;
++};
++
++struct nxpwifi_power_cfg {
++	u32 is_power_auto;
++	u32 is_power_fixed;
++	u32 power_level;
++};
++
++struct nxpwifi_ds_hs_cfg {
++	u32 is_invoke_hostcmd;
++	/*  Bit0: non-unicast data
++	 *  Bit1: unicast data
++	 *  Bit2: mac events
++	 *  Bit3: magic packet
++	 */
++	u32 conditions;
++	u32 gpio;
++	u32 gap;
++};
++
++struct nxpwifi_ds_wakeup_reason {
++	u16  hs_wakeup_reason;
++};
++
++#define DEEP_SLEEP_ON  1
++#define DEEP_SLEEP_OFF 0
++#define DEEP_SLEEP_IDLE_TIME	100
++#define PS_MODE_AUTO		1
++
++struct nxpwifi_ds_auto_ds {
++	u16 auto_ds;
++	u16 idle_time;
++};
++
++struct nxpwifi_ds_pm_cfg {
++	union {
++		u32 ps_mode;
++		struct nxpwifi_ds_hs_cfg hs_cfg;
++		struct nxpwifi_ds_auto_ds auto_deep_sleep;
++		u32 sleep_period;
++	} param;
++};
++
++struct nxpwifi_11ac_vht_cfg {
++	u8 band_config;
++	u8 misc_config;
++	u32 cap_info;
++	u32 mcs_tx_set;
++	u32 mcs_rx_set;
++};
++
++struct nxpwifi_ds_11n_tx_cfg {
++	u16 tx_htcap;
++	u16 tx_htinfo;
++	u16 misc_config; /* Needed for 802.11AC cards only */
++};
++
++struct nxpwifi_ds_11n_amsdu_aggr_ctrl {
++	u16 enable;
++	u16 curr_buf_size;
++};
++
++struct nxpwifi_ds_ant_cfg {
++	u32 tx_ant;
++	u32 rx_ant;
++};
++
++#define NXPWIFI_NUM_OF_CMD_BUFFER	50
++#define NXPWIFI_SIZE_OF_CMD_BUFFER	2048
++
++enum {
++	NXPWIFI_IE_TYPE_GEN_IE = 0,
++	NXPWIFI_IE_TYPE_ARP_FILTER,
++};
++
++enum {
++	NXPWIFI_REG_MAC = 1,
++	NXPWIFI_REG_BBP,
++	NXPWIFI_REG_RF,
++	NXPWIFI_REG_PMIC,
++	NXPWIFI_REG_CAU,
++};
++
++struct nxpwifi_ds_reg_rw {
++	u32 type;
++	u32 offset;
++	u32 value;
++};
++
++#define MAX_EEPROM_DATA 256
++
++struct nxpwifi_ds_read_eeprom {
++	u16 offset;
++	u16 byte_count;
++	u8 value[MAX_EEPROM_DATA];
++};
++
++struct nxpwifi_ds_mem_rw {
++	u32 addr;
++	u32 value;
++};
++
++#define IEEE_MAX_IE_SIZE		256
++
++#define NXPWIFI_IE_HDR_SIZE	(sizeof(struct nxpwifi_ie) - IEEE_MAX_IE_SIZE)
++
++struct nxpwifi_ds_misc_gen_ie {
++	u32 type;
++	u32 len;
++	u8 ie_data[IEEE_MAX_IE_SIZE];
++};
++
++struct nxpwifi_ds_misc_cmd {
++	u32 len;
++	u8 cmd[NXPWIFI_SIZE_OF_CMD_BUFFER];
++};
++
++#define BITMASK_BCN_RSSI_LOW	BIT(0)
++#define BITMASK_BCN_RSSI_HIGH	BIT(4)
++
++enum subsc_evt_rssi_state {
++	EVENT_HANDLED,
++	RSSI_LOW_RECVD,
++	RSSI_HIGH_RECVD
++};
++
++struct subsc_evt_cfg {
++	u8 abs_value;
++	u8 evt_freq;
++};
++
++struct nxpwifi_ds_misc_subsc_evt {
++	u16 action;
++	u16 events;
++	struct subsc_evt_cfg bcn_l_rssi_cfg;
++	struct subsc_evt_cfg bcn_h_rssi_cfg;
++};
++
++#define NXPWIFI_MEF_MAX_BYTESEQ		6	/* non-adjustable */
++#define NXPWIFI_MEF_MAX_FILTERS		10
++
++struct nxpwifi_mef_filter {
++	u16 repeat;
++	u16 offset;
++	s8 byte_seq[NXPWIFI_MEF_MAX_BYTESEQ + 1];
++	u8 filt_type;
++	u8 filt_action;
++};
++
++struct nxpwifi_mef_entry {
++	u8 mode;
++	u8 action;
++	struct nxpwifi_mef_filter filter[NXPWIFI_MEF_MAX_FILTERS];
++};
++
++struct nxpwifi_ds_mef_cfg {
++	u32 criteria;
++	u16 num_entries;
++	struct nxpwifi_mef_entry *mef_entry;
++};
++
++#define NXPWIFI_MAX_VSIE_LEN       (256)
++#define NXPWIFI_MAX_VSIE_NUM       (8)
++#define NXPWIFI_VSIE_MASK_CLEAR    0x00
++#define NXPWIFI_VSIE_MASK_SCAN     0x01
++#define NXPWIFI_VSIE_MASK_ASSOC    0x02
++#define NXPWIFI_VSIE_MASK_BGSCAN   0x08
++
++enum {
++	NXPWIFI_FUNC_INIT = 1,
++	NXPWIFI_FUNC_SHUTDOWN,
++};
++
++enum COALESCE_OPERATION {
++	RECV_FILTER_MATCH_TYPE_EQ = 0x80,
++	RECV_FILTER_MATCH_TYPE_NE,
++};
++
++enum COALESCE_PACKET_TYPE {
++	PACKET_TYPE_UNICAST = 1,
++	PACKET_TYPE_MULTICAST = 2,
++	PACKET_TYPE_BROADCAST = 3
++};
++
++#define NXPWIFI_COALESCE_MAX_RULES	8
++#define NXPWIFI_COALESCE_MAX_BYTESEQ	4	/* non-adjustable */
++#define NXPWIFI_COALESCE_MAX_FILTERS	4
++#define NXPWIFI_MAX_COALESCING_DELAY	100     /* in msecs */
++
++struct filt_field_param {
++	u8 operation;
++	u8 operand_len;
++	u16 offset;
++	u8 operand_byte_stream[NXPWIFI_COALESCE_MAX_BYTESEQ];
++};
++
++struct nxpwifi_coalesce_rule {
++	u16 max_coalescing_delay;
++	u8 num_of_fields;
++	u8 pkt_type;
++	struct filt_field_param params[NXPWIFI_COALESCE_MAX_FILTERS];
++};
++
++struct nxpwifi_ds_coalesce_cfg {
++	u16 num_of_rules;
++	struct nxpwifi_coalesce_rule rule[NXPWIFI_COALESCE_MAX_RULES];
++};
++
++#endif /* !_NXPWIFI_IOCTL_H_ */
 -- 
 2.34.1
 
