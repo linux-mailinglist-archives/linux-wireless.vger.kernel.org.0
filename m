@@ -1,131 +1,117 @@
-Return-Path: <linux-wireless+bounces-9464-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9465-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70F3A9138DC
-	for <lists+linux-wireless@lfdr.de>; Sun, 23 Jun 2024 10:02:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A624D91390D
+	for <lists+linux-wireless@lfdr.de>; Sun, 23 Jun 2024 10:49:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A7AC2814C2
-	for <lists+linux-wireless@lfdr.de>; Sun, 23 Jun 2024 08:02:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CECB1F21C1A
+	for <lists+linux-wireless@lfdr.de>; Sun, 23 Jun 2024 08:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC9AB450E2;
-	Sun, 23 Jun 2024 08:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A065F3AC1F;
+	Sun, 23 Jun 2024 08:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b="Kuc4qm+R"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zo8V5acx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from vps.xff.cz (vps.xff.cz [195.181.215.36])
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C58417C77;
-	Sun, 23 Jun 2024 08:02:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.181.215.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2543DF9E9;
+	Sun, 23 Jun 2024 08:49:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719129726; cv=none; b=hxp27fIreJAAiqlZaHHd5+4VPzTEmCPyw4U2PacmLd8XYhi7pwMsFvP4LnWjjTsABcuWicCwYCPN0V0j5S5iTFPpo4FEwdQFtcW5w2vp/M9kUA7kSZe8tt9QH91hUmpoF1nBxrZpfeBp4mjgKjH6oYjq8mSITHfAtqODkdevfkI=
+	t=1719132587; cv=none; b=V0LOQzys8tYt9lCid542FTyekoVWhCx/csT76BlVPjsfz6M1Bm0OFbNdy3fqYQm66bKWOQzUPmMBxsIbm9RyQ6UpjBPwVzbCyDuHsWdFrJKT6uBn5tAfKSwbheCReRnTJGTGWQB9fx1yYvc5+iLNPNYyQXsCr9RjMtR6iv4zNoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719129726; c=relaxed/simple;
-	bh=hy2ki87r3CsdFd2uUj+s2wvNocOXNjMZAbPN3I53JH0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TO6Azge1E8ltBil4n/QJVhuuIqlfOpPa/LIlvrTL0364ktaTOWiOliLrbRf6LXyXh7tt3Ff44aBfxF2Zlm+UCIt6pms7o/KnJYSzzg7zwUIbJJiM3wvVPpn1enh03QwqdcuhqPpBB7Svhk3FGMJWV/qi4RJDE2pDhQmquizmUl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz; spf=pass smtp.mailfrom=xff.cz; dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b=Kuc4qm+R; arc=none smtp.client-ip=195.181.215.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xff.cz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xff.cz; s=mail;
-	t=1719129714; bh=hy2ki87r3CsdFd2uUj+s2wvNocOXNjMZAbPN3I53JH0=;
-	h=Date:From:To:Cc:Subject:X-My-GPG-KeyId:References:From;
-	b=Kuc4qm+RLkfMTLfmABd/NF5FdG4goJqKSizgr8Rh95Nv+/dZdA991kg8WfyO3gNc6
-	 +2ReQTYUQd0zLBsoIx2NnvRL+BYtOn83yOvQGtwEs+oThlrW18iyYiKwChHbrVGBv5
-	 3wT9N6tYQpJLkVOqIpvtliVhHaYF9QMqsSky42A0=
-Date: Sun, 23 Jun 2024 10:01:54 +0200
-From: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
-To: Jacobe Zang <jacobe.zang@wesion.com>
-Cc: "arend.vanspriel@broadcom.com" <arend.vanspriel@broadcom.com>, 
-	"kvalo@kernel.org" <kvalo@kernel.org>, "duoming@zju.edu.cn" <duoming@zju.edu.cn>, 
-	"bhelgaas@google.com" <bhelgaas@google.com>, "minipli@grsecurity.net" <minipli@grsecurity.net>, 
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, "brcm80211@lists.linux.dev" <brcm80211@lists.linux.dev>, 
-	"brcm80211-dev-list.pdl@broadcom.com" <brcm80211-dev-list.pdl@broadcom.com>, "robh@kernel.org" <robh@kernel.org>, 
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, 
-	"heiko@sntech.de" <heiko@sntech.de>, Nick Xie <nick@khadas.com>, 
-	"efectn@protonmail.com" <efectn@protonmail.com>, "jagan@edgeble.ai" <jagan@edgeble.ai>, 
-	"dsimic@manjaro.org" <dsimic@manjaro.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
-	"linux-rockchip@lists.infradead.org" <linux-rockchip@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v1 3/3] net: wireless: brcmfmac: Add support for AP6275P
-Message-ID: <ksxio3vzlz4rqcwvmtthskv6lqt33ejzjes557rwnkzex2oihk@52ueay5cwuub>
-Mail-Followup-To: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>, 
-	Jacobe Zang <jacobe.zang@wesion.com>, "arend.vanspriel@broadcom.com" <arend.vanspriel@broadcom.com>, 
-	"kvalo@kernel.org" <kvalo@kernel.org>, "duoming@zju.edu.cn" <duoming@zju.edu.cn>, 
-	"bhelgaas@google.com" <bhelgaas@google.com>, "minipli@grsecurity.net" <minipli@grsecurity.net>, 
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, "brcm80211@lists.linux.dev" <brcm80211@lists.linux.dev>, 
-	"brcm80211-dev-list.pdl@broadcom.com" <brcm80211-dev-list.pdl@broadcom.com>, "robh@kernel.org" <robh@kernel.org>, 
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, 
-	"heiko@sntech.de" <heiko@sntech.de>, Nick Xie <nick@khadas.com>, 
-	"efectn@protonmail.com" <efectn@protonmail.com>, "jagan@edgeble.ai" <jagan@edgeble.ai>, 
-	"dsimic@manjaro.org" <dsimic@manjaro.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
-	"linux-rockchip@lists.infradead.org" <linux-rockchip@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-X-My-GPG-KeyId: EBFBDDE11FB918D44D1F56C1F9F0A873BE9777ED
- <https://xff.cz/key.txt>
-References: <20240620020015.4021696-1-jacobe.zang@wesion.com>
- <20240620020015.4021696-4-jacobe.zang@wesion.com>
- <fro2xcwsnvbxmpszny6g2p36z4zwoq4kegmpvww4twxir5piez@a3c2nbwitmab>
- <TYZPR03MB700154AE39D44B8D166344BF80CB2@TYZPR03MB7001.apcprd03.prod.outlook.com>
+	s=arc-20240116; t=1719132587; c=relaxed/simple;
+	bh=syI/SxmIrlCPRAaFRApCeRw0mtBptNJgzqt/9yPHroc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pZq3wz91hWt1bTsDeZ85T06E49RN2QqKc/Zpksyq3iftM4GQpMZvK5SQ0GM0W4TwLQ04KAygtcIkkxN6oxOWq++jMA+Udq6t5lLUW1dcTslo4dVczQIWgUp9l1nLxFXFVJ/VnOx09/ghekTbBXbuRdhJQU8PHtbHj1VnbUVmRbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zo8V5acx; arc=none smtp.client-ip=209.85.167.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-3d4430b8591so1860004b6e.2;
+        Sun, 23 Jun 2024 01:49:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719132585; x=1719737385; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=eyjIdb9pPb8rVdEIkJ3vL91vHjhqANnfZwHii49nCls=;
+        b=Zo8V5acxJrrErrxg0lxZIYI0nMxsmcnZAr2ngA1Y5DK9hxK8tle3BGEeuXiifQhL/n
+         /Phk4IfNcVWzl0/FVxlgC6cYw1Z+ZW/uPxA9B3dQcUhzl+13tFJ6Wtq/BYmJxVk5oG3t
+         oG/f2psDsuBCsedMCED5WGyBysXQE264YKbjWwKXdr4VK+Af2HfpNpVC6FxSk+g5lqTr
+         25YitZk2Vn5FcFz8HnBnfyCmC9iBQmd3v8MgihGzI1wpqGekKHzNdOca8guh5jpBNdnA
+         OGbMEEKuVkgfJk+jUdYFVYwGADe34yb4mii6NQ1Aiym5+jVearongnm61nQRgypkK8c1
+         mDEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719132585; x=1719737385;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eyjIdb9pPb8rVdEIkJ3vL91vHjhqANnfZwHii49nCls=;
+        b=W0R9/4zvNz/4tXVi34b6J1ZevLsXRzWWUSYZMVL3xnCb3RrgzraQCQ8f04RHbspt+y
+         7klsn7NUmp5dwXp0kX30UlsS2J3QOzejfHexjcGZpdzDhpVQb6IlDAO1SVDZ9PbDG86w
+         W9QujfVpYOZx0Vl22V5kAj18oggW0K3fMXjG6Nj0OJ/mkk3nyoRks+cfXMvJVgq4cbN1
+         FUTOgYtgdhodRSVyZMThFQGE3ES4AQOuJpgGJiTyE83TK72ssu5Y2Q08xy94I13oEDCL
+         eSS2LUoIO3HT/1pbSsk+41jo8PNpjzER0snKrlKEqZZw/3b9DYM4p+9CACjsj5gm8fUr
+         /Twg==
+X-Forwarded-Encrypted: i=1; AJvYcCVa4zBOJKV/K40ZsqiZM5ipgIpoYlnzGAvJIr4t55HYMWqxpDBiXns5p0Bh1CE2+2wpEMHRiS0DOLfH/Lb4em7p00ooN3EapOrEPseN7P0tlBo/uto6O9aoQOjIpx+YuRWfRmgB
+X-Gm-Message-State: AOJu0Yw2notBi4i9hnCgpYjC18+AAp8+gYMcMlzfHgTEGMNhk9OOEVFf
+	rW4ajpnLAf/BML1a/lvhW3QPLsHUwJAtBaBj+TIoC1QupxX2mKi1vtTG4mM2
+X-Google-Smtp-Source: AGHT+IFLCSM3lJV3vst1b0HO/MHiokHxaSRdzsulVqKK+K6oVSy+x1mzeSS/qSPqLMUDQEtfjCufGA==
+X-Received: by 2002:a05:6808:1928:b0:3d2:1d91:68ca with SMTP id 5614622812f47-3d543b7c678mr2349098b6e.36.1719132585027;
+        Sun, 23 Jun 2024 01:49:45 -0700 (PDT)
+Received: from kernelexploit-virtual-machine.localdomain ([121.185.186.233])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-706512900absm4299432b3a.147.2024.06.23.01.49.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Jun 2024 01:49:44 -0700 (PDT)
+From: Jeongjun Park <aha310510@gmail.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] wifi: cfg80211: Fix out-of-bounds in cfg80211_wext_siwscan
+Date: Sun, 23 Jun 2024 17:49:39 +0900
+Message-Id: <20240623084939.6889-1-aha310510@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <TYZPR03MB700154AE39D44B8D166344BF80CB2@TYZPR03MB7001.apcprd03.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Jacobe,
+In the process of searching for matching hardware channels, wreq and 
+wreq->num_channels are checked to see if they are NULL. However, 
+if the value of wreq->num_channels is greater than IW_MAX_FREQUENCIES,
+an out-of-bounds vulnerability occurs.
 
-On Sun, Jun 23, 2024 at 02:21:39AM GMT, Jacobe Zang wrote:
-> > Any reason to strip info about origin of the patch, my SoB and
-> > present this work as your own?
-> 
-> Sincerely express my apology to Ondrej. It's really my mistake. After getting
-> your permission if I could submit the patches. I jsut think if the author and
-> submitter is not the same person is strange so I changed it. Next tiem I will
-> avoid this mistake. Apologize again.
-> 
-> 
-> > I sincerely hope this is just a rookie mistake so please carefully read
-> the URL below:
-> 
-> > https://www.kernel.org/doc/html/latest/process/submitting-patches.html
-> 
-> Thanks for the guidance Arend. After reading the document I realized what a stupid mistake I made.
-> 
-> BTW I have another question, except the SoB of the real author, should I also post the original link in commit message?
+Therefore, you must also add code to check whether the value of 
+wreq->num_channels is within the range.
 
-I suggest keeping at least this part:
+Reguards.
 
-> Partially copied from https://lore.kernel.org/all/c7b331edd65b66521a6605177d654e55051568a3.camel@toradex.com/
-> 
-> (No Signed-off-by provided in the email. The code looks like some
-> data copied probably from a vendor driver and adapted for the upstream
-> one.)
+Signed-by-off: Jeongjun Park <aha310510@gmail.com>
+---
+ net/wireless/scan.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-I'm not the complete author of the patch either. I just figured out why
-just adding device/chip IDs was not enough compared to what Marcel Ziswiler
-tried and expanded the patch from his email, to make it work.
-
-People using baords with AP6275P (eg. I did my debugging on QuartzPro64) will
-also be interested in how to get the firmware for AP6275P, and there are some
-hints for that in the above link, too. (FW filename that is in the patch for the
-driver doesn't match FW name as distributed by eg. SparkLAN, which makes it
-harder to find it just based on FW name from the code)
-
-Although it would be nice to have the firmware available in linux-firmware.
-
-Kind regards,
-	o.
-
-> ---
-> Best Regards
-> Jacobe
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 0222ede0feb6..f253dee041d1 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -3460,6 +3460,10 @@ int cfg80211_wext_siwscan(struct net_device *dev,
+ 			if (wreq && wreq->num_channels) {
+ 				int k;
+ 				int wiphy_freq = wiphy->bands[band]->channels[j].center_freq;
++
++				if (wreq->num_channels > IW_MAX_FREQUENCIES)
++					wreq->num_channels = IW_MAX_FREQUENCIES;
++
+ 				for (k = 0; k < wreq->num_channels; k++) {
+ 					struct iw_freq *freq =
+ 						&wreq->channel_list[k];
+-- 
+2.34.1
 
