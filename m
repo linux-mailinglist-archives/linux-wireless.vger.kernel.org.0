@@ -1,125 +1,134 @@
-Return-Path: <linux-wireless+bounces-9510-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9511-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10EEA9156E3
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jun 2024 21:03:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2FB6915704
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jun 2024 21:14:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 437E51C23079
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jun 2024 19:03:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 811A9283D84
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jun 2024 19:14:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31115143C42;
-	Mon, 24 Jun 2024 19:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 121B619F468;
+	Mon, 24 Jun 2024 19:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="mmrdHLaD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bERgEVUo"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from nbd.name (nbd.name [46.4.11.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE83913D88B
-	for <linux-wireless@vger.kernel.org>; Mon, 24 Jun 2024 19:03:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 920B8107A0;
+	Mon, 24 Jun 2024 19:14:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719255804; cv=none; b=bA8VicrnVUa+wFFrJGU2Y1d4msUdepRsHqU2VBdakSGOADETEWu12kmFotRe79/vwBvJIEwplSpEJ/WH0Y+BOl9k1hDQpW+WxTMUpWCJB6U72V7A7BXMFgTa8lIjPULQc2gGrWdVM/QtplPMlR8dDAs41cRy88X5xFg4zRqq3K0=
+	t=1719256488; cv=none; b=OmnIlWelIkdHUlcqn7F27giRTlFLHz36wT7ySSS6qv+q32sI7BeeQ3nyGxlTnXDCFB/YQwwDQOGbKYKLxsBMTXftxA8lskuwE8arQjUWb+F7gkGmdy4Qz167pUxvc/2VNh3p5tX7t+SnbIBvUWeVfemQNgDDH6i2NQHkKIKR05c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719255804; c=relaxed/simple;
-	bh=BmyF6X6TMrMjOT+TEtzSGymb+9ZyaEDx3NVysZMGJ3Q=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=MICU0e9ouqSpj+Vr8aIcGEbpYgkEvuI6RumZUiV2DAvBwXwhBTmcYM5DAG3QdGoR1Tiwbu6UnUex6HHpVyQgphA1r2eP1+6r3sCpxNl8tVeKbe/pVK9cjNF2uXUhvWoB+LBvMV7kSaNZGO/sRdFKS0gPJItH3LjUiC4YMAqquYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=mmrdHLaD; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
-	Cc:To:From:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=Q74uyUcwtRDpcu2Zgpqe2KqUuJaFev3sdVMOm6XlEk8=; b=mmrdHLaDBaewrUYO22AwvAhp5r
-	iifeg5y9wQjUtqT1ho55eyuPUTwNnZfs9PBTJrbuVaCqDtPHQr57fH03AqTwD1xCO58GSyG7h3xNL
-	KRolRxX6MNSDBPbrKMz7YkG+llCBWUWKAQCZaGdUFBP7qzbR+NQfh5VdAcTpSp7ykMCY=;
-Received: from p4ff13dca.dip0.t-ipconnect.de ([79.241.61.202] helo=nf.local)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96)
-	(envelope-from <nbd@nbd.name>)
-	id 1sLoyB-00GidT-02;
-	Mon, 24 Jun 2024 21:03:15 +0200
-Message-ID: <4c02983e-2377-4c26-bcd6-3100eea19aeb@nbd.name>
-Date: Mon, 24 Jun 2024 21:03:14 +0200
+	s=arc-20240116; t=1719256488; c=relaxed/simple;
+	bh=FAe5RBSeVUQvSoNMovSUxUr4BZQMUMsViBXF99Eg278=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Dpz4vzdo6cqwdjuVBkVurFzA0TjN3wDy2utP08K59gHBqng5Tbn3FLjBKD0UyWTwhqhbp/+T7n7ASPfCKTGBHJgPS0kkE5QkKROPhbwZaVK0lIZTS6071GUPANFxQm8PXt2HR/j/Q8ive9VVNgDViQXI/3MKfytNtl6JzAeXcUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bERgEVUo; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-1f6fabe9da3so38418625ad.0;
+        Mon, 24 Jun 2024 12:14:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719256486; x=1719861286; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XBj9aeVGLx9lk0+gvee4j7l4tMQJNLmoyqkeXTYVawA=;
+        b=bERgEVUolvbKGQykK24TdlC5ejZlX4XvExPyJXztixLrDmKWad3kuHaNs+dueT1Fw/
+         FDRUkDVWIWMGuJHgq2DdL2oKz6BoDfVm1iFFtqkOI1u7Ghu85zhKi35dy7zC7E0v6lET
+         jI8mqgyhs7mn1B9Z/glSePTMPGjL6Hp6neV5Xk/FFB/XaUnfwXCXFHVoUx8Vug//km2Q
+         v/z0WSdBR39VJm7SNZA1uYadeeNZlD30gTz7mCMeJDgBTbpV56Nxp7ciBqwl94Jc736R
+         AmfKOJXnKDKSrPj8e4F0inkz8hWx46sHz/tbFW+LhgOnTcvK4ZTXqwO0ePL0/rOqX+te
+         NL5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719256486; x=1719861286;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XBj9aeVGLx9lk0+gvee4j7l4tMQJNLmoyqkeXTYVawA=;
+        b=rKMxewrooRKX+VYDcS+BWimAN4cSXEIqrxwbJJUOR9UkYVR5VnOWkY+w2fR0ydo+OJ
+         syvueSJG8hFRtVCtVAyy8XqL0dl3WuNGz+B3vIb/EAdseMIlYghTjU2iyqe+gijJVeV4
+         pA60KLvReOPgtQMHwmsNaPZB4Uk7eAmRPrDdn0yM6uLkJ5pFsW9yQQUAwGgU7Dz4+F75
+         +hpmSZbJnjy+ArC8Nwf7fuyO8ymwvOPF1jFMdQt3QGlxmCUlR8j8AJBDKh5Imr4MaUOi
+         IXBpz2ayIUKbWjG2/Z+aIGsfifbvvY/hVLSqpBg09VUmmL9J92fhPiHJznvBALbTVtUX
+         B9Jw==
+X-Forwarded-Encrypted: i=1; AJvYcCXst3EJfJmJQRoTOOH/AT+QYdxJ4MMg0BO9d3MJhZ0e8knlekNr4AIUgkE51UMoTel1zH0l5IW8zbuH/58A6UYk67M1rIpkdIHz6b6xxu494iAGVe/fABPk9WRYMbHzTtM8emCsXnHeO2ZJhmQ=
+X-Gm-Message-State: AOJu0Yx7ZGZ56oLW8kOQ+3+BFpCjuuSn++0m0YWyYBCewADs+sxHFs8D
+	ZA0yVqjG6/NYc2tJmZsmuqILy8YeZR7ePgclh7gGQ/zyiq5t3/13jWNt44IeTduJHg==
+X-Google-Smtp-Source: AGHT+IGvFYoTy5I2/iq38TvjfgSmdy8RInr0OTUkDq3okmECv1F1bB0r1tfPfiQwsS8e0FhFDVsXcw==
+X-Received: by 2002:a17:902:c943:b0:1f9:f6e6:5ace with SMTP id d9443c01a7336-1fa23f159cemr63529085ad.48.1719256485531;
+        Mon, 24 Jun 2024 12:14:45 -0700 (PDT)
+Received: from localhost.localdomain ([187.120.159.154])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fa36cc1d10sm27117305ad.305.2024.06.24.12.14.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Jun 2024 12:14:45 -0700 (PDT)
+From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+To: miriam.rachel.korenblit@intel.com,
+	kvalo@kernel.org,
+	rafael.j.wysocki@intel.com,
+	daniel.lezcano@linaro.org,
+	johannes.berg@intel.com,
+	gregory.greenman@intel.com,
+	dmantipov@yandex.ru
+Cc: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [RESEND PATCH v4] iwlwifi: mvm: adding check if the thermal firmware is running
+Date: Mon, 24 Jun 2024 16:14:26 -0300
+Message-ID: <20240624191428.39681-1-trintaeoitogc@gmail.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 37/47] wifi: mt76: mt762x: extend
- mt76_connac_mcu_sta_basic_tlv for per-link STA
-From: Felix Fietkau <nbd@nbd.name>
-To: sean.wang@kernel.org, lorenzo.bianconi@redhat.com
-Cc: sean.wang@mediatek.com, deren.wu@mediatek.com,
- mingyen.hsieh@mediatek.com, linux-wireless@vger.kernel.org,
- linux-mediatek@lists.infradead.org
-References: <20240613030241.5771-1-sean.wang@kernel.org>
- <20240613030241.5771-38-sean.wang@kernel.org>
- <94abc74b-dcd5-47b2-9364-cfd5d3f28846@nbd.name>
-Content-Language: en-US
-Autocrypt: addr=nbd@nbd.name; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
- cL98efvrjdstUfTCP2pfetyN
-In-Reply-To: <94abc74b-dcd5-47b2-9364-cfd5d3f28846@nbd.name>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 24.06.24 19:44, Felix Fietkau wrote:
-> On 13.06.24 05:02, sean.wang@kernel.org wrote:
->> From: Sean Wang <sean.wang@mediatek.com>
->> 
->> Extend mt76_connac_mcu_sta_basic_tlv with the per-link STA configuration.
->> 
->> The patch we created is a prerequisite to enable the MLO function in the
->> driver. It is purely a refactoring patch so the functionality should
->> remain unchanged.
->> 
->> Co-developed-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
->> Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
->> Co-developed-by: Deren Wu <deren.wu@mediatek.com>
->> Signed-off-by: Deren Wu <deren.wu@mediatek.com>
->> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-> 
-> This patch is broken on non-mt762x drivers, because the functions that
-> call mt76_connac_mcu_sta_basic_tlv may be called with sta == NULL.
-> 
-> I've seen it crash on mt7996 because of that, but mt7915 and mt7615 are
-> likely equally affected.
+In the dmesg is showing the message "failed to read out thermal zone"
+as if the temperature read is failed by don't find the thermal zone.
 
-I've pushed a fixed version to my tree. Please check if it looks correct 
-to you.
+After researching and debugging, I see that this specific error is
+occurrenced because the thermal try read the temperature when is started,
+but the firmware is not running yet.
 
-Thanks,
+For more legibiliti i change the tt.c for return EAGAIN when this was occurrence.
+After this change, in my computer I compile and install kernel in /boot
+and in my dmesg the message "failed to read out thermal zone" is not show
+any more.
 
-- Felix
+I would like to thanks for Rafael Wysocki <refael.j.wysocki@intel.com> ,
+Kalle Valo <kvalo@kernel.org> and Johannes Berg <johannes@sipsolutions.net>
+for your suggestions in my previous patch.
+
+Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/tt.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
+index 8083c4b2ab6b..d1dd334b5049 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
+@@ -620,8 +620,12 @@ static int iwl_mvm_tzone_get_temp(struct thermal_zone_device *device,
+ 
+ 	mutex_lock(&mvm->mutex);
+ 
+-	if (!iwl_mvm_firmware_running(mvm) ||
+-	    mvm->fwrt.cur_fw_img != IWL_UCODE_REGULAR) {
++	if (!iwl_mvm_firmware_running(mvm)) {
++		ret = -EAGAIN;
++		goto out;
++	}
++
++	if (mvm->fwrt.cur_fw_img != IWL_UCODE_REGULAR) {
+ 		ret = -ENODATA;
+ 		goto out;
+ 	}
+-- 
+2.45.2
 
 
