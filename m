@@ -1,395 +1,146 @@
-Return-Path: <linux-wireless+bounces-9477-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9480-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65ACA91412C
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jun 2024 06:39:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B30391430F
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jun 2024 09:01:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D20D01F22C65
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jun 2024 04:39:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D9831C22C29
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jun 2024 07:01:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84509D26D;
-	Mon, 24 Jun 2024 04:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7BBF376E1;
+	Mon, 24 Jun 2024 07:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="DbFNPEm/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="maGnPLBh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7129D272
-	for <linux-wireless@vger.kernel.org>; Mon, 24 Jun 2024 04:38:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B6D2EAE1;
+	Mon, 24 Jun 2024 07:01:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719203940; cv=none; b=Iylt7tPvM3NeW+G1UjWksssgXCHbV9OmTL42kaDYjIdN2atppurYQTNuRfVtvC1QUHqo3BwhFmimQpqARZMXKcyn3RtKRhzB4ZVIPhPW6y89er8vDrf1Zkd0PHVLhK6V4JwxAQaJSRdcgPYGQMj7XSx2Uy3r9KtzssfNqotPFF4=
+	t=1719212464; cv=none; b=ZSucAQGsrEhSZ5Dkre4wHWBn/ztIDgHg/+l65MWYGo9NC3B5gZmbzq6cAbyn9jOLi9yTNRi88SuDeLM+SyJIm2LC4InfzW3buxgo20pDcPIH9c6kSoXp8S0Y7+Ttxtp6aBUNd1TxzYBKOk/ufGM+Fqzb5UzZ9I0sgetQcOyzECo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719203940; c=relaxed/simple;
-	bh=+Rr3VWkKluHWXkQ3NbJQMIeISmCcjS6K4z4WXW8oBIU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TzwLGY7FfTtbE3eY8GtjstGDwHDhvI6bMymdN45gVF23VfTIBZjAFl95FRXAHMfEDk259XY4NbJyZToN9b+JbUQISg8WL+QAYjCXxYSZF57wkvYBKJ3xGpwxAaygoKHC0gC0wzhxuK4KYk6fw9zEEqWV6fKYix4Krnpz8WxsE/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=DbFNPEm/; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45NNIS4V019261;
-	Mon, 24 Jun 2024 04:38:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=iVwv3nfdTkT
-	DoqERiVY3IQEHYOcH5y2aAQ5CDS3PBaI=; b=DbFNPEm/yGRdbNxO7SO+DrvDTiR
-	67ABgpcTAh1S/Bt6Cv/HNrWiO20P6LGWQAFg9bYh59OM8bwx9q4j12mnOTUcRvp9
-	QdwTlAXgSEmrt7HMNLZjwvhlw0xhFhmPIJHyFFlw2eIOi/32JVBfvnXivunyx4Zn
-	y50mW71H0n+6rDKBRt2dy/1AfwcJ+PKMowuln6scIf9rzYdXQJcnPZwBv4davkr3
-	M6hYAYUO2GMe0OyzWrID4J1s5xdG1OBM2XjyS3bBR0DxJ6Su97KlL2HIjXaF1+OG
-	SnEDz22hc5dCr1Lht2DAt3URTe/BfIlmipz2fyKeR0kNGBsz9P0k6aYVIjQ==
-Received: from apblrppmta02.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ywqceanfa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Jun 2024 04:38:55 +0000 (GMT)
-Received: from pps.filterd (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTP id 45O4cp9d000621;
-	Mon, 24 Jun 2024 04:38:51 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 3ywqpkq17q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Jun 2024 04:38:51 +0000
-Received: from APBLRPPMTA02.qualcomm.com (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 45O4cp3K000611;
-	Mon, 24 Jun 2024 04:38:51 GMT
-Received: from hu-devc-blr-u22-a.qualcomm.com (hu-rgnanase-blr.qualcomm.com [10.190.106.79])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 45O4coY7000609
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Jun 2024 04:38:51 +0000
-Received: by hu-devc-blr-u22-a.qualcomm.com (Postfix, from userid 2378837)
-	id 45BE141112; Mon, 24 Jun 2024 10:08:50 +0530 (+0530)
-From: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
-To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org,
-        Ramya Gnanasekar <quic_rgnanase@quicinc.com>
-Subject: [PATCH v6 4/4] wifi: ath12k: Dump additional Tx PDEV HTT stats
-Date: Mon, 24 Jun 2024 10:08:45 +0530
-Message-Id: <20240624043845.3502520-5-quic_rgnanase@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240624043845.3502520-1-quic_rgnanase@quicinc.com>
-References: <20240624043845.3502520-1-quic_rgnanase@quicinc.com>
+	s=arc-20240116; t=1719212464; c=relaxed/simple;
+	bh=t0PxgEC6IJB2/OC++qZP4aNCPyTZC6dwIhUnM/Z799s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gIMJ/AbCKh7snQl7Q13yKMAuAWw7DKMOVzVHVeJV+oPv3c9/5Xeau9uGFMQyBCpcBpX4OLfTzndSpXHZdYzr3NT6sk4ZrAPs+euSxuKbkt8pio6jqZhnlusVZe1JN6zrxeJxNYVe+e3S0wGMQ+GZECxI/gpo0J37bk2OqIM2eWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=maGnPLBh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02BA2C2BBFC;
+	Mon, 24 Jun 2024 07:00:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719212464;
+	bh=t0PxgEC6IJB2/OC++qZP4aNCPyTZC6dwIhUnM/Z799s=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=maGnPLBhS6GLTTrWPaNAsJcmvnSwbVahnrgqKGKE7uX12smJYBZbSZ6q9MZKomNlw
+	 X/DCuIumh4CNAP+l40NBOVcL1l7R9oxEhV5s4iOGYYwtA7HX1M+I1naSM7yy2fBn6C
+	 KZGHf1rBFhgNPggwwxM5bjgzSobTUudw1QoTWurfi7VeiPWFrNPsHg4D4JTWLaDLmR
+	 ZBYjVoWzwYkP4c/q0wSAfPFPueajHaoStGB3Yfvc9HCJNdmvx2rQIH4HnKLIRmP/MV
+	 fckx8yQeGqaUwY1z8SPWp9PV0RozD7DkXze1FQV2HbR8hy1+CrcQsCdIj3ShkGpOtk
+	 oeERESos6oqXQ==
+Message-ID: <4c3d4437-4c24-4db3-855d-f2ba7d0c6f8a@kernel.org>
+Date: Mon, 24 Jun 2024 09:00:56 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: recsnYUBDKIr-kZIAivKBst8nvmk8eFr
-X-Proofpoint-ORIG-GUID: recsnYUBDKIr-kZIAivKBst8nvmk8eFr
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-24_04,2024-06-21_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
- mlxscore=0 lowpriorityscore=0 bulkscore=0 phishscore=0 spamscore=0
- suspectscore=0 priorityscore=1501 malwarescore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2406240035
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 1/2] dt-bindings: net: wireless: qcom,ath11k: describe
+ the ath11k on QCA6390
+To: Kalle Valo <kvalo@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, ath11k@lists.infradead.org,
+ linux-kernel@vger.kernel.org, ath12k@lists.infradead.org,
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+References: <20240605122106.23818-2-brgl@bgdev.pl>
+ <171862259099.4124983.18069958656274980613.kvalo@kernel.org>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <171862259099.4124983.18069958656274980613.kvalo@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Support to dump additional Tx PDEV stats through HTT stats debugfs.
-Following stats dump are supported:
-        1. PDEV control path stat to dump Tx management frame count
-        2. Tx PDEV SIFS histogram stats
-        3. Tx MU MIMO PPDU stats for 802.11ac, 802.11ax and 802.11be
+On 17/06/2024 13:09, Kalle Valo wrote:
+> Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+> 
+>> Add a PCI compatible for the ATH11K module on QCA6390 and describe the
+>> power inputs from the PMU that it consumes.
+>>
+>> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> 
+> 2 patches applied to ath-next branch of ath.git, thanks.
 
-Sample Output:
----------------
-echo 1 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats_type
-cat /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats
+Hi Kalle,
 
-HTT_TX_PDEV_STATS_CMN_TLV:
-mac_id = 0
-comp_delivered = 0
-self_triggers = 13
-......
-......
-HTT_TX_PDEV_STATS_CTRL_PATH_TX_STATS:
-fw_tx_mgmt_subtype =  0:1, 1:0, 2:0, 3:0, 4:38, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:1, 12:0, 13:7, 14:0, 15:0
+Are you sure your tree is properly fed to linux-next? I cannot find
+these patches in linux-next and above repo is not listed in Next/Trees.
 
-HTT_TX_PDEV_STATS_SIFS_HIST_TLV:
-sifs_hist_status =  0:237, 1:185, 2:1, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0
+Every maintainer tree should (IMHO: *MUST*) be fed to linux-next.
 
-HTT_TX_PDEV_AC_MU_PPDU_DISTRIBUTION_STATS:
-ac_mu_mimo_num_seq_posted_nr4 = 0
-ac_mu_mimo_num_ppdu_posted_per_burst_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0
-ac_mu_mimo_num_ppdu_completed_per_burst_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0
-ac_mu_mimo_num_seq_term_status_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0
+You will also get LKP coverage for free, unless your tree is there due
+to scanning korg.
 
-ac_mu_mimo_num_seq_posted_nr8 = 0
-ac_mu_mimo_num_ppdu_posted_per_burst_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0
-ac_mu_mimo_num_ppdu_completed_per_burst_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0
-ac_mu_mimo_num_seq_term_status_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0
+Please look at slides here and implement at least linux-next (although I
+also encourage to opt-in to transparency log and LKP):
+https://lpc.events/event/17/contributions/1498/
 
-HTT_TX_PDEV_AX_MU_PPDU_DISTRIBUTION_STATS:
-ax_mu_mimo_num_seq_posted_nr4 = 0
-ax_mu_mimo_num_ppdu_posted_per_burst_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0
-ax_mu_mimo_num_ppdu_completed_per_burst_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0
-ax_mu_mimo_num_seq_term_status_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0
-
-ax_mu_mimo_num_seq_posted_nr8 = 0
-ax_mu_mimo_num_ppdu_posted_per_burst_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0
-ax_mu_mimo_num_ppdu_completed_per_burst_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0
-ax_mu_mimo_num_seq_term_status_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0
-
-HTT_TX_PDEV_BE_MU_PPDU_DISTRIBUTION_STATS:
-be_mu_mimo_num_seq_posted_nr4 = 0
-be_mu_mimo_num_ppdu_posted_per_burst_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0
-be_mu_mimo_num_ppdu_completed_per_burst_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0
-be_mu_mimo_num_seq_term_status_nr4 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0
-
-be_mu_mimo_num_seq_posted_nr8 = 0
-be_mu_mimo_num_ppdu_posted_per_burst_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0
-be_mu_mimo_num_ppdu_completed_per_burst_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0
-be_mu_mimo_num_seq_term_status_nr8 =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
----
- .../wireless/ath/ath12k/debugfs_htt_stats.c   | 142 ++++++++++++++++++
- .../wireless/ath/ath12k/debugfs_htt_stats.h   |  39 +++++
- 2 files changed, 181 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-index 11daa842ab55..df75c18f7758 100644
---- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-+++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-@@ -249,6 +249,139 @@ htt_print_tx_pdev_stats_sifs_tlv(const void *tag_buf,
- 	stats_req->buf_len = len;
- }
- 
-+static void
-+htt_print_tx_pdev_mu_ppdu_dist_stats_tlv(const void *tag_buf, u16 tag_len,
-+					 struct debug_htt_stats_req *stats_req)
-+{
-+	const struct ath12k_htt_tx_pdev_mu_ppdu_dist_stats_tlv *htt_stats_buf = tag_buf;
-+	char *mode;
-+	u8 j, hw_mode, i, str_buf_len;
-+	u8 *buf = stats_req->buf;
-+	u32 len = stats_req->buf_len;
-+	u32 buf_len = ATH12K_HTT_STATS_BUF_SIZE;
-+	u32 stats_value;
-+	u8 max_ppdu = ATH12K_HTT_STATS_MAX_NUM_MU_PPDU_PER_BURST;
-+	u8 max_sched = ATH12K_HTT_STATS_MAX_NUM_SCHED_STATUS;
-+	char str_buf[ATH12K_HTT_MAX_STRING_LEN];
-+
-+	if (tag_len < sizeof(*htt_stats_buf))
-+		return;
-+
-+	hw_mode = le32_to_cpu(htt_stats_buf->hw_mode);
-+
-+	switch (hw_mode) {
-+	case ATH12K_HTT_STATS_HWMODE_AC:
-+		len += scnprintf(buf + len, buf_len - len,
-+				 "HTT_TX_PDEV_AC_MU_PPDU_DISTRIBUTION_STATS:\n");
-+		mode = "ac";
-+		break;
-+	case ATH12K_HTT_STATS_HWMODE_AX:
-+		len += scnprintf(buf + len, buf_len - len,
-+				 "HTT_TX_PDEV_AX_MU_PPDU_DISTRIBUTION_STATS:\n");
-+		mode = "ax";
-+		break;
-+	case ATH12K_HTT_STATS_HWMODE_BE:
-+		len += scnprintf(buf + len, buf_len - len,
-+				 "HTT_TX_PDEV_BE_MU_PPDU_DISTRIBUTION_STATS:\n");
-+		mode = "be";
-+		break;
-+	default:
-+		return;
-+	}
-+
-+	for (i = 0; i < ATH12K_HTT_STATS_NUM_NR_BINS ; i++) {
-+		len += scnprintf(buf + len, buf_len - len,
-+				 "%s_mu_mimo_num_seq_posted_nr%u = %u\n", mode,
-+				 ((i + 1) * 4), htt_stats_buf->num_seq_posted[i]);
-+		str_buf_len = 0;
-+		memset(str_buf, 0x0, sizeof(str_buf));
-+		for (j = 0; j < ATH12K_HTT_STATS_MAX_NUM_MU_PPDU_PER_BURST ; j++) {
-+			stats_value = le32_to_cpu(htt_stats_buf->num_ppdu_posted_per_burst
-+						  [i * max_ppdu + j]);
-+			str_buf_len += scnprintf(&str_buf[str_buf_len],
-+						ATH12K_HTT_MAX_STRING_LEN - str_buf_len,
-+						" %u:%u,", j, stats_value);
-+		}
-+		/* To overwrite the last trailing comma */
-+		str_buf[str_buf_len - 1] = '\0';
-+		len += scnprintf(buf + len, buf_len - len,
-+				 "%s_mu_mimo_num_ppdu_posted_per_burst_nr%u = %s\n",
-+				 mode, ((i + 1) * 4), str_buf);
-+		str_buf_len = 0;
-+		memset(str_buf, 0x0, sizeof(str_buf));
-+		for (j = 0; j < ATH12K_HTT_STATS_MAX_NUM_MU_PPDU_PER_BURST ; j++) {
-+			stats_value = le32_to_cpu(htt_stats_buf->num_ppdu_cmpl_per_burst
-+						  [i * max_ppdu + j]);
-+			str_buf_len += scnprintf(&str_buf[str_buf_len],
-+						ATH12K_HTT_MAX_STRING_LEN - str_buf_len,
-+						" %u:%u,", j, stats_value);
-+		}
-+		/* To overwrite the last trailing comma */
-+		str_buf[str_buf_len - 1] = '\0';
-+		len += scnprintf(buf + len, buf_len - len,
-+				 "%s_mu_mimo_num_ppdu_completed_per_burst_nr%u = %s\n",
-+				 mode, ((i + 1) * 4), str_buf);
-+		str_buf_len = 0;
-+		memset(str_buf, 0x0, sizeof(str_buf));
-+		for (j = 0; j < ATH12K_HTT_STATS_MAX_NUM_SCHED_STATUS ; j++) {
-+			stats_value = le32_to_cpu(htt_stats_buf->num_seq_term_status
-+						  [i * max_sched + j]);
-+			str_buf_len += scnprintf(&str_buf[str_buf_len],
-+						ATH12K_HTT_MAX_STRING_LEN - str_buf_len,
-+						" %u:%u,", j, stats_value);
-+		}
-+		/* To overwrite the last trailing comma */
-+		str_buf[str_buf_len - 1] = '\0';
-+		len += scnprintf(buf + len, buf_len - len,
-+				 "%s_mu_mimo_num_seq_term_status_nr%u = %s\n\n",
-+				 mode, ((i + 1) * 4), str_buf);
-+	}
-+
-+	stats_req->buf_len = len;
-+}
-+
-+static void
-+htt_print_tx_pdev_stats_sifs_hist_tlv(const void *tag_buf,
-+				      u16 tag_len,
-+				      struct debug_htt_stats_req *stats_req)
-+{
-+	const struct ath12k_htt_tx_pdev_stats_sifs_hist_tlv *htt_stats_buf = tag_buf;
-+	u8 *buf = stats_req->buf;
-+	u32 len = stats_req->buf_len;
-+	u32 buf_len = ATH12K_HTT_STATS_BUF_SIZE;
-+	u16 num_elems = min_t(u16, (tag_len >> 2),
-+			      ATH12K_HTT_TX_PDEV_MAX_SIFS_BURST_HIST_STATS);
-+
-+	len += scnprintf(buf + len, buf_len - len,
-+			 "HTT_TX_PDEV_STATS_SIFS_HIST_TLV:\n");
-+
-+	len += print_array_to_buf(buf, len, "sifs_hist_status",
-+				  htt_stats_buf->sifs_hist_status, num_elems, "\n\n");
-+
-+	stats_req->buf_len = len;
-+}
-+
-+static void
-+htt_print_pdev_ctrl_path_tx_stats_tlv(const void *tag_buf, u16 tag_len,
-+				      struct debug_htt_stats_req *stats_req)
-+{
-+	const struct ath12k_htt_pdev_ctrl_path_tx_stats_tlv *htt_stats_buf = tag_buf;
-+	u8 *buf = stats_req->buf;
-+	u32 len = stats_req->buf_len;
-+	u32 buf_len = ATH12K_HTT_STATS_BUF_SIZE;
-+
-+	if (len < sizeof(*htt_stats_buf))
-+		return;
-+
-+	len += scnprintf(buf + len, buf_len - len,
-+			 "HTT_TX_PDEV_STATS_CTRL_PATH_TX_STATS:\n");
-+	len += print_array_to_buf(buf, len, "fw_tx_mgmt_subtype",
-+				 htt_stats_buf->fw_tx_mgmt_subtype,
-+				 ATH12K_HTT_STATS_SUBTYPE_MAX, "\n\n");
-+
-+	stats_req->buf_len = len;
-+}
-+
- static int ath12k_dbg_htt_ext_stats_parse(struct ath12k_base *ab,
- 					  u16 tag, u16 len, const void *tag_buf,
- 					  void *user_data)
-@@ -268,6 +401,15 @@ static int ath12k_dbg_htt_ext_stats_parse(struct ath12k_base *ab,
- 	case HTT_STATS_TX_PDEV_FLUSH_TAG:
- 		htt_print_tx_pdev_stats_flush_tlv(tag_buf, len, stats_req);
- 		break;
-+	case HTT_STATS_TX_PDEV_SIFS_HIST_TAG:
-+		htt_print_tx_pdev_stats_sifs_hist_tlv(tag_buf, len, stats_req);
-+		break;
-+	case HTT_STATS_PDEV_CTRL_PATH_TX_STATS_TAG:
-+		htt_print_pdev_ctrl_path_tx_stats_tlv(tag_buf, len, stats_req);
-+		break;
-+	case HTT_STATS_MU_PPDU_DIST_TAG:
-+		htt_print_tx_pdev_mu_ppdu_dist_stats_tlv(tag_buf, len, stats_req);
-+		break;
- 	default:
- 		break;
- 	}
-diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
-index 83060c54d00b..878d9cf6e7cb 100644
---- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
-+++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
-@@ -11,6 +11,8 @@
- #define ATH12K_HTT_STATS_COOKIE_LSB		GENMASK_ULL(31, 0)
- #define ATH12K_HTT_STATS_COOKIE_MSB		GENMASK_ULL(63, 32)
- #define ATH12K_HTT_STATS_MAGIC_VALUE		0xF0F0F0F0
-+#define ATH12K_HTT_STATS_SUBTYPE_MAX		16
-+#define ATH12K_HTT_MAX_STRING_LEN		256
- 
- #define ATH12K_HTT_STATS_RESET_BITMAP32_OFFSET(_idx)	((_idx) & 0x1f)
- #define ATH12K_HTT_STATS_RESET_BITMAP64_OFFSET(_idx)	((_idx) & 0x3f)
-@@ -133,6 +135,9 @@ enum ath12k_dbg_htt_tlv_tag {
- 	HTT_STATS_TX_PDEV_UNDERRUN_TAG			= 1,
- 	HTT_STATS_TX_PDEV_SIFS_TAG			= 2,
- 	HTT_STATS_TX_PDEV_FLUSH_TAG			= 3,
-+	HTT_STATS_TX_PDEV_SIFS_HIST_TAG			= 67,
-+	HTT_STATS_PDEV_CTRL_PATH_TX_STATS_TAG		= 102,
-+	HTT_STATS_MU_PPDU_DIST_TAG			= 129,
- 
- 	HTT_STATS_MAX_TAG,
- };
-@@ -142,6 +147,18 @@ enum ath12k_dbg_htt_tlv_tag {
- #define ATH12K_HTT_TX_PDEV_MAX_SIFS_BURST_STATS		9
- #define ATH12K_HTT_TX_PDEV_MAX_FLUSH_REASON_STATS	150
- 
-+/* MU MIMO distribution stats is a 2-dimensional array
-+ * with dimension one denoting stats for nr4[0] or nr8[1]
-+ */
-+#define ATH12K_HTT_STATS_NUM_NR_BINS			2
-+#define ATH12K_HTT_STATS_MAX_NUM_MU_PPDU_PER_BURST	10
-+#define ATH12K_HTT_TX_PDEV_MAX_SIFS_BURST_HIST_STATS	10
-+#define ATH12K_HTT_STATS_MAX_NUM_SCHED_STATUS		9
-+#define ATH12K_HTT_STATS_NUM_SCHED_STATUS_WORDS		\
-+	(ATH12K_HTT_STATS_NUM_NR_BINS * ATH12K_HTT_STATS_MAX_NUM_SCHED_STATUS)
-+#define ATH12K_HTT_STATS_MU_PPDU_PER_BURST_WORDS	\
-+	(ATH12K_HTT_STATS_NUM_NR_BINS * ATH12K_HTT_STATS_MAX_NUM_MU_PPDU_PER_BURST)
-+
- enum ath12k_htt_tx_pdev_underrun_enum {
- 	HTT_STATS_TX_PDEV_NO_DATA_UNDERRUN		= 0,
- 	HTT_STATS_TX_PDEV_DATA_UNDERRUN_BETWEEN_MPDU	= 1,
-@@ -258,4 +275,26 @@ struct ath12k_htt_tx_pdev_stats_sifs_tlv {
- 	DECLARE_FLEX_ARRAY(__le32, sifs_status);
- } __packed;
- 
-+struct ath12k_htt_pdev_ctrl_path_tx_stats_tlv {
-+	__le32 fw_tx_mgmt_subtype[ATH12K_HTT_STATS_SUBTYPE_MAX];
-+} __packed;
-+
-+struct ath12k_htt_tx_pdev_stats_sifs_hist_tlv {
-+	DECLARE_FLEX_ARRAY(__le32, sifs_hist_status);
-+} __packed;
-+
-+enum ath12k_htt_stats_hw_mode {
-+	ATH12K_HTT_STATS_HWMODE_AC = 0,
-+	ATH12K_HTT_STATS_HWMODE_AX = 1,
-+	ATH12K_HTT_STATS_HWMODE_BE = 2,
-+};
-+
-+struct ath12k_htt_tx_pdev_mu_ppdu_dist_stats_tlv {
-+	__le32 hw_mode;
-+	__le32 num_seq_term_status[ATH12K_HTT_STATS_NUM_SCHED_STATUS_WORDS];
-+	__le32 num_ppdu_cmpl_per_burst[ATH12K_HTT_STATS_MU_PPDU_PER_BURST_WORDS];
-+	__le32 num_seq_posted[ATH12K_HTT_STATS_NUM_NR_BINS];
-+	__le32 num_ppdu_posted_per_burst[ATH12K_HTT_STATS_MU_PPDU_PER_BURST_WORDS];
-+} __packed;
-+
- #endif
--- 
-2.34.1
+Best regards,
+Krzysztof
 
 
