@@ -1,169 +1,224 @@
-Return-Path: <linux-wireless+bounces-9504-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9505-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 506C091526A
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jun 2024 17:31:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50CFC915352
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jun 2024 18:20:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 739661C2230E
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jun 2024 15:31:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8BCF1F209AF
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jun 2024 16:20:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0713F19CCED;
-	Mon, 24 Jun 2024 15:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B23CD19DF45;
+	Mon, 24 Jun 2024 16:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Np5jKcQT"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="SALSTwqv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2844F19B3CE;
-	Mon, 24 Jun 2024 15:31:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E24142625;
+	Mon, 24 Jun 2024 16:20:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719243069; cv=none; b=t43wwyp1zreNeErg9nNBiDOY5O9GE3tQL1cdzjIdrHcYVfP9LeUANCELoHUwkeDO015CszSjS3LKq8Ia9AFk1k+1UwSt0es1kFzqH903pq4IzIBAGW8LpXnLO9ltCQi5ffEw86IOQCDAahnGPXnMzTMagFf6Kto/0pwUjecDpv8=
+	t=1719246028; cv=none; b=Tveoqx2HkrmanavA/TTxLDmdmQwAum5tvYLgJydFw3mWkK2YMCbTJtj3BvfQtraNhgqb41MlCAOOXiwaefxTIU/HRCVlNlkAeDftgq0NvIvX9edi5GAwHzO+OvdNHAHR9WFvyRRRgVkUB6HIRuh4dUbhI7PFc+kHhrV9qWp0Ibs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719243069; c=relaxed/simple;
-	bh=Gj1ET0gnfPT9VVrwaIAa4qFWM+9FJ5WfJJ8Gaj9uoFQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rG7jQXWnrqFPCSmaB3rPhKsk8S/ihYoCyP2VP2vHea52oVquvJtS56UObe6dW7EgAKG2R6XYcOocsqp/vMtdTCcQ/TI8jDOha3F1CLZ+wfYDuLgo/r3n/7Pa8PDUT4Zh5HBAcJHndMWwtIK+pvti5NNPUpgzqxo2yiCPzM4KDCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Np5jKcQT; arc=none smtp.client-ip=209.85.208.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2ec1620a956so53917731fa.1;
-        Mon, 24 Jun 2024 08:31:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719243066; x=1719847866; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Gj1ET0gnfPT9VVrwaIAa4qFWM+9FJ5WfJJ8Gaj9uoFQ=;
-        b=Np5jKcQT3VicLmEeHbQATDn8nHhS56TAafc7WIztXw9MUD50bLFAIPlHKGwgncYl9M
-         OLudoD2yFOv255gfGjZUr6VSeR9EuPFONBBDJ6/gIfFGNheCYOn/RKGb3HJ4n4ryA7HV
-         pa8yzbokjvh23G7IouuQueF59W5CEBRJgcxqYDPnq/t+RNImeCHVAikOpNQuxP904cC0
-         LY1JYgeKOWjBV/8loNsQWoo1n+d1LFiM6kJsplnxkm6C6xvcMLVJpBu0SbNTtumXonBf
-         IYJkHZYeT65llHmlRU68xzwgtrQ4RzJR4fePabJQVzvndesL84GpU+nSoaK4RBUfOUID
-         SGIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719243066; x=1719847866;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Gj1ET0gnfPT9VVrwaIAa4qFWM+9FJ5WfJJ8Gaj9uoFQ=;
-        b=hbogdj5gNsxc5n3wUTcpZa8ot7P/33ezWI1WwU5eIeFY/Lr4CXTg5Ck8U8HfiDe5hS
-         Hsv/6vArqfSldsSUP6/4Cs9+h9Ej2qYGjSKBYiAiELFpaTMdfO+HIhLmiiQD1zlPujl5
-         LwXNVZ0DnvOq6mtmEm9qZ1LGMBdyUoU/EWM88quweG8uPXTFYQXBCtGro2+ytzhepYnP
-         FbmYy9imd3GjDpNqEgJiounU0TE479j9gFcS/Gc9TdiZ875qCotOpRLLF4jcT5ZcEAI6
-         Sm7d39ZYn9eV+h/G38r3dobBi9hrfCVPjRqujVf4EfdneXSPy3qVPqGQMisQwZ+rDklW
-         UULA==
-X-Forwarded-Encrypted: i=1; AJvYcCV1mWyLVmIzOFZeBKSaL48HuBmIjS1fJbQ16e56dFQ9A6B2l24xq9YVp3iDOlm+sD3dwxxq/UubjdhK9RrbcgxSe8A1xdMJ8BTQ46PCrwLi3oo2wZIOAkkNXNWRwx2b7+jx5yJ2u45l8BHi1Oqalx5/VyWbuFC9PwlJh3OTqD9QIfzYZrWPXQpHT8z/43MtpcIK9iSG8R/y69+hbJZCe9HanMFBlnuOhVN3uxjmkrO+EyTGBxUu+zzaH7PkGLuPG6aACF10cStb5/ECOg0WB/qqBlfiPaC+Lz7t1FUQ/KQQXNfOnvx1dhrfCHxH8Hcn4/yGRsqoJUuB79Uct0Fva+Fn11rEKfYTHtYV7EnXO48Kgfm07KYX
-X-Gm-Message-State: AOJu0YziUeJ4sGwa0ZUUiyZIjMoiBxULtra7D9VGImc5Q9+1S3YS1VNJ
-	j+/HTusVLx8CWfAyOolPXVmbeZdd1ZuvNYm8pFRf3i/eys/M/V4a5r/XzysX9PlW3jhpWEjZUX3
-	LfiBIkml/PDqSVv7YgPgI3GA79TQ=
-X-Google-Smtp-Source: AGHT+IGOXIoT1yyvzTU3Ej6Jnd5fItzJypxgtcq3Cn2K/G/HW2nUFkGYBhoo/Zo5wXa3klvOARHm0We8kMgwI5CBPKQ=
-X-Received: by 2002:a2e:720b:0:b0:2ec:4096:4bc6 with SMTP id
- 38308e7fff4ca-2ec5b318000mr28549631fa.7.1719243066027; Mon, 24 Jun 2024
- 08:31:06 -0700 (PDT)
+	s=arc-20240116; t=1719246028; c=relaxed/simple;
+	bh=8NGGI5KHfKfsVqNnW0q/3aibm0KPOD/au9dg3nJsN+c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lj8B2R56Gl+Yyq7O1MHblEisnSSMTCuESi5Z6Mw5EXRuxZUbR04c/USno13UKsw/3OLKywIiXixxeQ5LBDlGNhSRf0g/85yysFsN2Kjrjk6SdBpeTiKHK3kPuA9NY24GPeHOTR1/XjJMoX6nKqqWZOHUsvbARqPIupby3V7aVH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=SALSTwqv; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from gaggiata.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 52D731FE39;
+	Mon, 24 Jun 2024 18:20:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1719246015;
+	bh=Omlv3Moxi4pv2704XG/wDQ1PjHBLAkc9T4XMBPrTpYw=;
+	h=Received:From:To:Subject;
+	b=SALSTwqv4K+nXEUqHu2q7lax/LLyIX+/siRqeyCbNgaXqIuW10mkT127Hov9ctSzF
+	 X99SBxsj8YF1lXq8ldqYN5ZDbx5+qKuc3kPanXA2JGoUqA5lLDB56WeAycLvSabpXO
+	 2AwVduHE9iJRCkxzHHIP+LUnFU7L+Rm72GHOI8Ma+Foc8OghBxPew63DOtjxlcuyI3
+	 kpgE/S31xteKr5M2gBFJZLBV3/yy0i55BVjp+uDLnHQifgx0Fxxe7JOM+qzid0sUGk
+	 uriyV+cpEvwKu6IKFMe3aXrT2RT4uKkuCRVamD9DH4sv48M3QkFmeDpj1+q9QgRQKA
+	 WMIMGFmpeIRfQ==
+Received: by gaggiata.pivistrello.it (Postfix, from userid 1000)
+	id EE64A7F9AA; Mon, 24 Jun 2024 18:20:14 +0200 (CEST)
+Date: Mon, 24 Jun 2024 18:20:14 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Brian Norris <briannorris@chromium.org>, Kalle Valo <kvalo@kernel.org>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	David Lin <yu-hao.lin@nxp.com>,
+	Francesco Dolcini <francesco@dolcini.it>
+Subject: Re: [PATCH] [RFC] mwifiex: Fix NULL pointer deref
+Message-ID: <ZnmcvsXZHnQ36auI@gaggiata.pivistrello.it>
+References: <20240619070824.537856-1-s.hauer@pengutronix.de>
+ <87wmmll5mf.fsf@kernel.org>
+ <ZnSHcZttq79cJS3l@google.com>
+ <ZnVCzx3-pvbcYQLm@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240605123850.24857-1-brgl@bgdev.pl> <171889385036.4585.6482250630135606154.git-patchwork-notify@kernel.org>
- <0b144517-4cc5-4c23-be57-d6f5323690ec@163.com> <CAMRc=Mf2C4ywa+wQ6pcq5RtehQD00dDhzvS6sDcD8tAn=UypUA@mail.gmail.com>
- <33c7587b-83a4-4be7-b00a-d30874df8c22@163.com>
-In-Reply-To: <33c7587b-83a4-4be7-b00a-d30874df8c22@163.com>
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date: Mon, 24 Jun 2024 11:30:53 -0400
-Message-ID: <CABBYNZ+X+_RfZ-fVGrBHhAdbneU+613nx1NTw7+e8ep4JtF6nQ@mail.gmail.com>
-Subject: Re: [PATCH v9 0/2] pwrseq: introduce the subsystem and first driver
-To: Lk Sii <lk_sii@163.com>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>, patchwork-bot+bluetooth@kernel.org, marcel@holtmann.org, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	robh@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
-	kvalo@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org, 
-	lgirdwood@gmail.com, broonie@kernel.org, catalin.marinas@arm.com, 
-	will@kernel.org, bhelgaas@google.com, saravanak@google.com, 
-	geert+renesas@glider.be, arnd@arndb.de, neil.armstrong@linaro.org, 
-	m.szyprowski@samsung.com, elder@linaro.org, srinivas.kandagatla@linaro.org, 
-	gregkh@linuxfoundation.org, abel.vesa@linaro.org, mani@kernel.org, 
-	lukas@wunner.de, dmitry.baryshkov@linaro.org, amit.pundir@linaro.org, 
-	wuxilin123@gmail.com, linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org, 
-	linux-pm@vger.kernel.org, bartosz.golaszewski@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZnVCzx3-pvbcYQLm@pengutronix.de>
 
-Hi,
+Hello Sascha,
 
-On Fri, Jun 21, 2024 at 5:05=E2=80=AFAM Lk Sii <lk_sii@163.com> wrote:
->
-> On 2024/6/21 14:36, Bartosz Golaszewski wrote:
-> > On Fri, Jun 21, 2024 at 3:14=E2=80=AFAM Lk Sii <lk_sii@163.com> wrote:
-> >>
-> >>
-> >>
-> >> On 2024/6/20 22:30, patchwork-bot+bluetooth@kernel.org wrote:
-> >>> Hello:
-> >>>
-> >>> This series was applied to bluetooth/bluetooth-next.git (master)
-> >>> by Bartosz Golaszewski <bartosz.golaszewski@linaro.org>:
-> >>>
-> >> Hi luiz,
-> >>
-> >> i am curious why Bartosz is able to merge his changes into bluetooth
-> >> development tree bluetooth-next directly.
-> >>
-> >
-> > This conversation is getting progressively worse...
-> >
-> >> 1)
-> >> his changes should belong to *POWER* scope instead of *Bluetooth*
-> >> obviously, however, there are *NOT* any SOB tag from either power and
-> >> bluetooth maintainer. these changes currently only have below Acked-by
-> >> and Signed-off-by tags:
-> >>
-> >> Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
-> >> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >>
-> >
-> > It's a new subsystem that has been discussed and reviewed for months
-> > and thoroughly tested. Please refer to the cover letter under v8
-> > linked in this thread. It's not related to power-management or
-> > power-supply, it's its own thing but IMO the best place to put it is
-> > under drivers/power/. And I will maintain it.
-> >
-> >> 2)
-> >> his changes have not merged into linus mainline tree yet.
-> >>
-> >
-> > This is why they are in next! They are scheduled to go in during the
-> > upcoming merge window. But since changes belong in multiple trees, we
-> > need a cross-tree merge.
-> >
-> >> 3)
-> >> perhaps, it is safer to pull his changes from linus mainline tree when
-> >> merged than to merge into bluetooth-next firstly.
-> >>
-> >
-> > It's not safer at all, why would spending less time in next be safer?
-> >
-> it seems this patch serial(new subsystem) does not depend on bluetooth
-> and also does not belong to bluetooth subsystem, but have been contained
-> by tip of bluetooth tree.
->
-> why not follow below merging produce?
-> 1) you send this patch serials to Linus to merge within linus mainline tr=
-ee
-> 2) luiz then pull your changes from linus mainline tree.
+On Fri, Jun 21, 2024 at 11:07:27AM +0200, Sascha Hauer wrote:
+> On Thu, Jun 20, 2024 at 12:48:01PM -0700, Brian Norris wrote:
+> > Hi Sascha,
+> > 
+> > On Wed, Jun 19, 2024 at 11:05:28AM +0300, Kalle Valo wrote:
+> > > Sascha Hauer <s.hauer@pengutronix.de> writes:
+> > > 
+> > > > When an Access Point is repeatedly started it happens that the
+> > > > interrupts handler is called with priv->wdev.wiphy being NULL, but
+> > > > dereferenced in mwifiex_parse_single_response_buf() resulting in:
+> > > >
+> > > > | Unable to handle kernel NULL pointer dereference at virtual address 0000000000000140
+> > ...
+> > > > | pc : mwifiex_get_cfp+0xd8/0x15c [mwifiex]
+> > > > | lr : mwifiex_get_cfp+0x34/0x15c [mwifiex]
+> > > > | sp : ffff8000818b3a70
+> > > > | x29: ffff8000818b3a70 x28: ffff000006bfd8a5 x27: 0000000000000004
+> > > > | x26: 000000000000002c x25: 0000000000001511 x24: 0000000002e86bc9
+> > > > | x23: ffff000006bfd996 x22: 0000000000000004 x21: ffff000007bec000
+> > > > | x20: 000000000000002c x19: 0000000000000000 x18: 0000000000000000
+> > > > | x17: 000000040044ffff x16: 00500072b5503510 x15: ccc283740681e517
+> > > > | x14: 0201000101006d15 x13: 0000000002e8ff43 x12: 002c01000000ffb1
+> > > > | x11: 0100000000000000 x10: 02e8ff43002c0100 x9 : 0000ffb100100157
+> > > > | x8 : ffff000003d20000 x7 : 00000000000002f1 x6 : 00000000ffffe124
+> > > > | x5 : 0000000000000001 x4 : 0000000000000003 x3 : 0000000000000000
+> > > > | x2 : 0000000000000000 x1 : 0001000000011001 x0 : 0000000000000000
+> > > > | Call trace:
+> > > > |  mwifiex_get_cfp+0xd8/0x15c [mwifiex]
+> > > > |  mwifiex_parse_single_response_buf+0x1d0/0x504 [mwifiex]
+> > > > |  mwifiex_handle_event_ext_scan_report+0x19c/0x2f8 [mwifiex]
+> > > > |  mwifiex_process_sta_event+0x298/0xf0c [mwifiex]
+> > > > |  mwifiex_process_event+0x110/0x238 [mwifiex]
+> > > > |  mwifiex_main_process+0x428/0xa44 [mwifiex]
+> > > > |  mwifiex_sdio_interrupt+0x64/0x12c [mwifiex_sdio]
+> > > > |  process_sdio_pending_irqs+0x64/0x1b8
+> > > > |  sdio_irq_work+0x4c/0x7c
+> > > > |  process_one_work+0x148/0x2a0
+> > > > |  worker_thread+0x2fc/0x40c
+> > > > |  kthread+0x110/0x114
+> > > > |  ret_from_fork+0x10/0x20
+> > > > | Code: a94153f3 a8c37bfd d50323bf d65f03c0 (f940a000)
+> > > > | ---[ end trace 0000000000000000 ]---
+> > > >
+> > > > Fix this by adding a NULL check before dereferencing this pointer.
+> > > >
+> > > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > > >
+> > > > ---
+> > > >
+> > > > This is the most obvious fix for this problem, but I am not sure if we
+> > > > might want to catch priv->wdev.wiphy being NULL earlier in the call
+> > > > chain.
+> > > 
+> > > I haven't looked at the call but the symptoms sound like that either we
+> > > are enabling the interrupts too early or there's some kind of locking
+> > > problem so that an other cpu doesn't see the change.
+> > 
+> > I agree with Kalle that there's a different underlying bug involved, and
+> > (my conclusion:) we shouldn't whack-a-mole the NULL pointer without
+> > addressing the underlying problem.
+> > 
+> > Looking a bit closer (and without much other context to go on): I believe 
+> > that one potential underlying problem is the complete lack of locking
+> > between cfg80211 entry points (such as mwifiex_add_virtual_intf() or
+> > mwifiex_cfg80211_change_virtual_intf()) and most stuff in the main loop
+> > (mwifiex_main_process()). The former call sites only hold the wiphy
+> > lock, and the latter tends to ... mostly not hold any locks, but rely on
+> > sequentialization with itself, and using its |main_proc_lock| for setup
+> > and teardown. It's all really bad and ready to fall down like a house of
+> > cards at any moment. Unfortunately, no one has spent time on
+> > rearchitecting this driver.
+> > 
+> > So it's possible that mwifiex_process_event() (mwifiex_get_priv_by_id()
+> > / mwifiex_get_priv()) is getting a hold of a not-fully-initialized
+> > 'priv' structure.
+> > 
+> > BTW, in case I can reproduce and poke at your scenario, what exactly
+> > is your test case? Are you just starting / killing / restarting hostapd
+> > in a loop?
+> 
+> I am running plain wpa_supplicant -i mlan0 with this config:
+> 
+> network={
+>         ssid="somessid"
+>         mode=2
+>         frequency=2412
+>         key_mgmt=WPA-PSK WPA-PSK-SHA256
+>         proto=RSN
+>         group=CCMP
+>         pairwise=CCMP
+>         psk="12345678"
+> }
+> 
+> wait for the AP to be established, <ctrl-c> wpa_supplicant and start it
+> again.
+> 
+> It doesn't seem to be a locking problem, see the patch below which fixes
+> my problem. At some point during incoming events the correct adapter->priv[]
+> is selected based on bss_num and bss_type. when adapter->priv[0] is used
+> for AP mode then an incoming event with type MWIFIEX_BSS_TYPE_STA leads
+> to adapter->priv[1] being picked which is unused and doesn't have a
+> wiphy attached to it.
+> 
+> Sascha
+> 
+> -------------------------8<----------------------------
+> 
+> From 3357963821294ff7de26259a154a1cb5bab760cb Mon Sep 17 00:00:00 2001
+> From: Sascha Hauer <s.hauer@pengutronix.de>
+> Date: Tue, 18 Jun 2024 12:20:20 +0200
+> Subject: [PATCH] mwifiex: Do not return unused priv in
+>  mwifiex_get_priv_by_id()
+> 
+> mwifiex_get_priv_by_id() returns the priv pointer corresponding to the
+> bss_num and bss_type, but without checking if the priv is actually
+> currently in use.
+> Unused priv pointers do not have a wiphy attached to them which can lead
+> to NULL pointer dereferences further down the callstack.
+> Fix this by returning only used priv pointers which have priv->bss_mode
+> set to something else than NL80211_IFTYPE_UNSPECIFIED.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  drivers/net/wireless/marvell/mwifiex/main.h | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/marvell/mwifiex/main.h b/drivers/net/wireless/marvell/mwifiex/main.h
+> index 175882485a195..c5164ae41b547 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/main.h
+> +++ b/drivers/net/wireless/marvell/mwifiex/main.h
+> @@ -1287,6 +1287,9 @@ mwifiex_get_priv_by_id(struct mwifiex_adapter *adapter,
+>  
+>  	for (i = 0; i < adapter->priv_num; i++) {
+>  		if (adapter->priv[i]) {
+> +			if (adapter->priv[i]->bss_mode == NL80211_IFTYPE_UNSPECIFIED)
+> +				continue;
+> +
+>  			if ((adapter->priv[i]->bss_num == bss_num) &&
+>  			    (adapter->priv[i]->bss_type == bss_type))
+>  				break;
 
-This was discussed already, but in case you didn't follow if we need
-to incorporate changes earlier we can't really wait the merge window
-for the changes to be merged first into the Linus tree. Anyway Bartosz
-is the maintainer of Power Sequence subsystem, and several others
-drivers, so I think it is safe to trust his judgment here.
+The change looks fine to me.
+
+I am just wondering if this might have anything to do with
+commit a17b9f590f6e ("wifi: mwifiex: Fix interface type change"), maybe you have already looked into it?
+Before that commit a wrong priv pointer was picked (different scenario from what you describe however).
+
+Francesco
+
+
 
