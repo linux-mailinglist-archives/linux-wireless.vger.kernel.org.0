@@ -1,151 +1,125 @@
-Return-Path: <linux-wireless+bounces-9501-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9502-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B65914AF5
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jun 2024 14:49:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E1C8914F74
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jun 2024 16:00:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7303F1C21FFA
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jun 2024 12:49:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E8521C222D9
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jun 2024 14:00:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5CE913B2A5;
-	Mon, 24 Jun 2024 12:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EAEA13B2B8;
+	Mon, 24 Jun 2024 14:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="etUcCmwu"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1aMivJBH";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="O+Cmi+h8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91331137906
-	for <linux-wireless@vger.kernel.org>; Mon, 24 Jun 2024 12:49:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828331E511
+	for <linux-wireless@vger.kernel.org>; Mon, 24 Jun 2024 14:00:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719233380; cv=none; b=peh43OhnrLMhYX8jAQIHcEKf4dCGB93nbbjFLnPV0oERx7+ZztSldyDOX97jm2azJG3NixslBAea00Hl1rQYa0RsEXuJVOvrvJ4OPw4bQ4e4+Bfy7Z06Q0Mu4sDPJhGah1qst4EfxO5x3RTxH6BTvOHVJ/iCgHbS2evFg9m3xTo=
+	t=1719237646; cv=none; b=GipBxmr7XAtXqqL+cCLSYPT7hxlo4AtpM7WnIwsaGqijP8S3nFikWrSCYttKHix34rhKln/7++xQZjcDYmdP0wGmRZEy+NmZCGNAE9K6wbKSAGQ/dSNIDmAbgMSd2gMx/VskbEwXFO0/M0YpowOsPAjNdFFIn0VA8D3HgmMcOqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719233380; c=relaxed/simple;
-	bh=QHMIKV+OMJshxzS1p9AfngEmc6LPOD9dDqtEtMpXq8I=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=E32DW2OPUvsgWzQ/0z02tbcdZVxIGd1tlyNdpoXFOWmKt6rxNYOKcLKDpBb0k/RP1ZIaOayX9I5Cg0KyGHI90vK2PlGpckCimj6axoJQvpjxrdsUi5Gdf+w0KICIk4Ujj2cr2XVNBDRlboXK8Kp3HaqRmwnrIo1PUTeSHgjo4us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=etUcCmwu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAE08C2BBFC;
-	Mon, 24 Jun 2024 12:49:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719233380;
-	bh=QHMIKV+OMJshxzS1p9AfngEmc6LPOD9dDqtEtMpXq8I=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=etUcCmwuCjBBfZr6UL/fPvJKR+dywX+Lrq6LhGO/Wk6gPssR28kKD9mYZlRjC1ayC
-	 pwyoVSQwSo9gX0PxYddzTAotMA5Xmw2O0yR3EO4/DV0MZFPEkF4n5giXBNqvZqgX9i
-	 EDDxfyX/ZC/F97SxKdcwNrnBNwje0Nj0fhHOOvCCwZQfTbm4qTWCAdp2DcuItEqcmW
-	 z3FygDpKjcUaZ/RATL/dNT4NlSQV+DWCQcbldZOL+C8l2V3DZGcoBQZ/OpNeSPt6Zc
-	 3EP4lpL0pP6A8iWrbZDdjc+ZKPDTDP2kvbXzFItXGI6eSt/LHFex+Ptjjp4YkqmWM9
-	 YjUBvlqF1PPNA==
-From: Kalle Valo <kvalo@kernel.org>
-To: "Peer, Ilan" <ilan.peer@intel.com>
-Cc: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>,
-  "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-  "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-  "Berg, Johannes" <johannes.berg@intel.com>
-Subject: Re: [PATCH 6/7] wifi: cfg80211: Add support for interface usage
- notification
-References: <20240605105722.2034610-1-miriam.rachel.korenblit@intel.com>
-	<20240605135233.23d15e758640.I7a62740a6868416acaed01e41157b3c0a7a41b4d@changeid>
-	<875xummndx.fsf@kernel.org>
-	<DM4PR11MB60436A9107BCBC27294DBF22E9C52@DM4PR11MB6043.namprd11.prod.outlook.com>
-	<87ed92nngq.fsf@kernel.org>
-	<DM4PR11MB60435B5F50827F6ED8E8115EE9CC2@DM4PR11MB6043.namprd11.prod.outlook.com>
-Date: Mon, 24 Jun 2024 15:49:37 +0300
-In-Reply-To: <DM4PR11MB60435B5F50827F6ED8E8115EE9CC2@DM4PR11MB6043.namprd11.prod.outlook.com>
-	(Ilan Peer's message of "Sun, 16 Jun 2024 14:58:59 +0000")
-Message-ID: <87sex2ijz2.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1719237646; c=relaxed/simple;
+	bh=RoYjshpK+IIWVzGdkpETLtdAQBZgob90X5dRStXofUw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LAiTRqO54Zik1HsjWNHHiPJ1T6n9ITsocxNrLI0mzArExRMXakQKe7OcLv8c4kfbGuVjTh+D9r4vlMGFluJEM0Esy4TediNLkWYk3cbODAGnaCkRmQaRqfuGyiEwbLa9Qf2q98cS+YrUbLzknQ2vYY3/dKCS+LjHvl7Z3zMkTcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1aMivJBH; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=O+Cmi+h8; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Martin Kaistra <martin.kaistra@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1719237642;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ezCGn8nfKbzDHH0VqZ5NtPqo/qvHBmxvSLOTRshbd5s=;
+	b=1aMivJBHjH3itagBiIF4ukble+L61EQrwyo6zgz2MqPNspt+EFA5KFj70QrscmcbzZinEv
+	q1txSFelP+fOZ3Y+gz4UGXS8fANkKqFPsYxPn4GAzEf8TvGNMbzKwcdg7qN/eSHE76t7PS
+	FmS5UivcMISjKTlC11Y/uEYd86JiUe0+nHdUzqbSbWNuJyL74mLA/Yee1k81DBTsb3/9Ot
+	2gsyIpqazGIxVvfc/rXAXB62Sl7ghJul/Rl2BYtd0nyI6ywMK1DLu8m4PVNLBomQmvd6Mk
+	uJbLhyVF+m6852v0mFGFSy1pcqTkuL7/jGlYs92bSaVqJjYxTM1jJ5XbAXqQNQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1719237642;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ezCGn8nfKbzDHH0VqZ5NtPqo/qvHBmxvSLOTRshbd5s=;
+	b=O+Cmi+h8qhiqCIMCHqxOZCIn6eU6IFJn2CGDWCYX886N16xj8sWu4a0RmkvUH0egsoVaxh
+	UPyiIXIaeb6PrsCA==
+To: linux-wireless@vger.kernel.org
+Cc: Jes Sorensen <Jes.Sorensen@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH] wifi: rtl8xxxu: 8188f: Limit TX power index
+Date: Mon, 24 Jun 2024 16:00:37 +0200
+Message-Id: <20240624140037.231657-1-martin.kaistra@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-"Peer, Ilan" <ilan.peer@intel.com> writes:
+TX power index is read from the efuse on init, the values get written to
+the TX power registers when the channel gets switched.
 
-> Hi,
->
->> >
->> > As depicted above, the need to inform the driver about the intended
->> > usage of the interface is real.
->> 
->> Sure, I can understand the need is real. This just feels like an ugly workaround,
->> not a proper solution.
->> 
->
-> If you have a different solution in mind, please share.
+When the chip has not yet been calibrated, the efuse values are 0xFF,
+which on some boards leads to USB timeouts for reading/writing registers
+after the first frames have been sent.
 
-Yeah, fix the root cause :)
+The vendor driver (v5.11.5-1) checks for these invalid values and sets
+default values instead. Implement something similar in
+rtl8188fu_parse_efuse().
 
->> And the documentation for this is quite vague, I'm worried how do we get
->> similarly working drivers? Let's say if I were to implement a user space
->> application for this, or a driver implementation for that matter, it would be a
->> guessing game for me. For example, what's "soon" in this context? 5 mins, 50
->> secs or 5 secs? Can the mac80211 operation sleep?
->> 
->
-> I understand this is not clear. The intention was to say that by the
-> time the interface is enabled,
-> the interface type might change, and that the driver should be aware
-> of that. I can try to better express
-> this in the command and documentation.
->
->> So user space is now always supposed to always call this nl80211 command
->> and at what stage exactly? Or is it optional? But if it's optional what's the point
->> of adding it?
->> 
->
-> It is optional. User space should use it when it expects the interface type to
-> change before the interface is activated.
+Fixes: c888183b21f3 ("wifi: rtl8xxxu: Support new chip RTL8188FU")
+Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+---
+ drivers/net/wireless/realtek/rtl8xxxu/8188f.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-If this is optional for user space (wpasupplicant, iwd etc.) then the
-driver cannot rely on it being called, no? So this command cannot be
-used for anything important because it's optional. Also I'm worried how
-this will give a different user experience based on if the user space
-calls this optional command or not.
-
-The way I see that this is designed just to workaround one iwlwifi bug,
-not really as a generic nl80211 command which could be useful for all
-drivers. But I'm more than happy to be proven wrong!
-
->> > We encountered several P2P cases in which an interface was added and
->> > P2P Group Ownership Negotiation and P2P Invitation signalling were
->> > completed successfully, but the P2P Group Session establishment failed
->> > since the interface type changed from P2P Client to P2P GO and the
->> > local device was no longer able to accommodate the P2P GO operation
->> > due to resource constraints.
->> >
->> > With this new API, user space can now inform the driver about the
->> > intended usage of the interface so the driver will make the resources
->> > available for all possible interface types. With this the information
->> > exchanged during the P2P signalling would correctly reflect state and
->> > the P2P group session would be able to be established.
->> 
->> Why not allocate the resources during driver initialisation? Or when changing
->> the interface? Why need this weird interface?
->> 
->
-> Allocating resources to all possible interface combinations etc. is waste as
-> not all allocations would eventually be used. 
-
-Sure, in ath11k/ath12k we have problems with resource allocation as
-well, for example how to allocate firmware memory (number of clients vs
-size data buffers etc), and we really should find a solution for that.
-Quite a few people are pushing for INI files to be able to configure
-wireless driver resource allocation but I cannot see how that would be
-accepted to upstream. It would be great find some type of dynamic
-configuration solution for wireless drivers, for example devlink or
-similar.
-
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/8188f.c b/drivers/net/wireless/realtek/rtl8xxxu/8188f.c
+index bd5a0603b4a23..3abf14d7044f3 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/8188f.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/8188f.c
+@@ -697,9 +697,14 @@ static void rtl8188fu_init_statistics(struct rtl8xxxu_priv *priv)
+ 	rtl8xxxu_write32(priv, REG_OFDM0_FA_RSTC, val32);
+ }
+ 
++#define TX_POWER_INDEX_MAX 0x3F
++#define TX_POWER_INDEX_DEFAULT_CCK 0x22
++#define TX_POWER_INDEX_DEFAULT_HT40 0x27
++
+ static int rtl8188fu_parse_efuse(struct rtl8xxxu_priv *priv)
+ {
+ 	struct rtl8188fu_efuse *efuse = &priv->efuse_wifi.efuse8188fu;
++	int i;
+ 
+ 	if (efuse->rtl_id != cpu_to_le16(0x8129))
+ 		return -EINVAL;
+@@ -713,6 +718,16 @@ static int rtl8188fu_parse_efuse(struct rtl8xxxu_priv *priv)
+ 	       efuse->tx_power_index_A.ht40_base,
+ 	       sizeof(efuse->tx_power_index_A.ht40_base));
+ 
++	for (i = 0; i < ARRAY_SIZE(priv->cck_tx_power_index_A); i++) {
++		if (priv->cck_tx_power_index_A[i] > TX_POWER_INDEX_MAX)
++			priv->cck_tx_power_index_A[i] = TX_POWER_INDEX_DEFAULT_CCK;
++	}
++
++	for (i = 0; i < ARRAY_SIZE(priv->ht40_1s_tx_power_index_A); i++) {
++		if (priv->ht40_1s_tx_power_index_A[i] > TX_POWER_INDEX_MAX)
++			priv->ht40_1s_tx_power_index_A[i] = TX_POWER_INDEX_DEFAULT_HT40;
++	}
++
+ 	priv->ofdm_tx_power_diff[0].a = efuse->tx_power_index_A.ht20_ofdm_1s_diff.a;
+ 	priv->ht20_tx_power_diff[0].a = efuse->tx_power_index_A.ht20_ofdm_1s_diff.b;
+ 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.39.2
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
