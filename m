@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-9498-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9499-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 269CA914915
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jun 2024 13:45:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 095B1914929
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jun 2024 13:52:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2F5C287720
-	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jun 2024 11:45:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C8681C20BEB
+	for <lists+linux-wireless@lfdr.de>; Mon, 24 Jun 2024 11:52:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B3513AA2C;
-	Mon, 24 Jun 2024 11:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86BD713B297;
+	Mon, 24 Jun 2024 11:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aOntQANw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UFoybF2Q"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8768513775A;
-	Mon, 24 Jun 2024 11:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1191799F;
+	Mon, 24 Jun 2024 11:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719229543; cv=none; b=lFeQkHvj9UvTCDGwrnPRxJY00ux7luk6PeDs6BWLFqVLd8ywEkMEV/swGmmqxGwi5njcZ7/5I9iIzqoxYqkNytCYHbbaWWu8lnBeDiMAKC5nQaoaVuyLSm6qYDxQwdtjRBy7bvFEKM2OKzqrOj+msLbEH7csz5tthaKSsGpNe4c=
+	t=1719229939; cv=none; b=MvgDnU+pvKMKSkvbBlPS70zLsN7KxtNQmNR0e0Hf276anRQIGVAvyBYp7wt5Bryxbn6XDwdvVrjc4bCHzVwHxQBlSeYn8o7pQ41qL61AuvnxPw/G49DxH+mdIiKuT3HnKD4k0k/C2I2WhigFME86f6nDY/DOGPSbPGPkD/sOIWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719229543; c=relaxed/simple;
-	bh=BsVFyM8P7Q9wi01V+K41RxfR0R5bZXohxwKnTM9eyMM=;
+	s=arc-20240116; t=1719229939; c=relaxed/simple;
+	bh=2OQksbAH8Q9SbTN0REsdjHjArfktyVjTfszbK5EBsSI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Mk0gadGWs22c6oe2NUN+BLYq2sYKJe1XqrtwyvdkbG5mAe1RZnOvh90Xf7B51jQKguea9aC4fDT/wA8tlE27uRAW/BfbJNS1GhkCOo+I4Jh5QzFPLYlBKH/iGF/8/ln2kL+ls7aNyWr+7hZbUVg23J8L5LVlYr+3hzmrIHKCcCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aOntQANw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB6F0C2BBFC;
-	Mon, 24 Jun 2024 11:45:36 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=dktMI0JmaU+mUO9GkSSB+pPmnrmRUcoBLK0AmJy5Ci/ON31LE51182LJARdZWdEUx8pDv9utSphOyBtkFCgkULZOnhlK3Wz4DYbXya65EPdCRcK99aizPb+whenMW2ByUuMQ4zebt8gMolKKVL0kahaYSrkasKzJsV0L4TollSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UFoybF2Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E67C2BBFC;
+	Mon, 24 Jun 2024 11:52:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719229543;
-	bh=BsVFyM8P7Q9wi01V+K41RxfR0R5bZXohxwKnTM9eyMM=;
+	s=k20201202; t=1719229938;
+	bh=2OQksbAH8Q9SbTN0REsdjHjArfktyVjTfszbK5EBsSI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=aOntQANw8KVLcFVfAi+Ahs7/LaOK1Tyj0Hy5VpurNllM5jo5tqMeElcSFLmPYw7E0
-	 ZVWDWVkjSqC0gejvdubgpb7XodwAUFhPSwQZiMEysPYpvOYKR2jIuBXyez/z1b5M+5
-	 QF6ex8qSQ1QcjOI52qnxzUTqOFXpFTTyEpSWF2d68XTI+PU5RX0FXZpL6PEiopYTF+
-	 rVh6GMIhSOL1SrCK980/y6xd/3KeZrZiiv7NL3M5Pt4KO/QwM+/EZc/e6fFOp94FCr
-	 VQPJ42WFaOgIBKi/Be5fk7p9ekxrc3AvOCQrh/V5be0Bn0ZDtbOhW/YkprYDRyeJaY
-	 fVMiDw954IPIA==
-Message-ID: <608b8673-a7d3-4a93-8719-841e451e7ddc@kernel.org>
-Date: Mon, 24 Jun 2024 13:45:34 +0200
+	b=UFoybF2QmzHzDpSA9CXWVyjHiOQ9YPR8OMBi+sPMMP0ssnLVTzoF5t0KVDy3TpASr
+	 4nSE78WUBjzVO5qCAy7ja3PWc0XnLvY15/40j4rMNhbOG5/L49v+tgSMA3CbYqHcmG
+	 Xjwl88GYkGyXJ0vSiawGY+MBFTBP3fRNIihw3efjAmWyVpB+oZqM0Q40IZsFHtaUOP
+	 f9mIyZV8SafgNTw8c9xjpRpImXFhXXXvR/ixsQ+DI9Abw7G29M99T39tCNKNckGoH/
+	 gzPRpKVTDM1fUZE1gfYaI5e2gRT2y6Oj0+NGnrHqps6ggYhAJv15XLydLelLjWH/a9
+	 jiHgveVgULiFg==
+Message-ID: <258459b8-549b-4a63-8d33-76c9631483f1@kernel.org>
+Date: Mon, 24 Jun 2024 13:52:10 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,8 +50,8 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/5] dt-bindings: net: wireless: brcm4329-fmac: add
- clock description.
+Subject: Re: [PATCH v2 1/5] arm64: dts: rockchip: Add AP6275P wireless support
+ to Khadas Edge 2
 To: Jacobe Zang <jacobe.zang@wesion.com>, arend.vanspriel@broadcom.com
 Cc: kvalo@kernel.org, duoming@zju.edu.cn, bhelgaas@google.com,
  minipli@grsecurity.net, linux-wireless@vger.kernel.org,
@@ -62,7 +62,7 @@ Cc: kvalo@kernel.org, duoming@zju.edu.cn, bhelgaas@google.com,
  linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
  linux-kernel@vger.kernel.org
 References: <20240624081906.1399447-1-jacobe.zang@wesion.com>
- <20240624081906.1399447-5-jacobe.zang@wesion.com>
+ <20240624081906.1399447-2-jacobe.zang@wesion.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -108,54 +108,63 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240624081906.1399447-5-jacobe.zang@wesion.com>
+In-Reply-To: <20240624081906.1399447-2-jacobe.zang@wesion.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 24/06/2024 10:19, Jacobe Zang wrote:
-> Add clocks and clock-names for brcm4329-fmac.
-
-Which devices have this clock? All? You now mention driver, but this is
-a binding so please describe hardware.
-
-Subject: drop full stops. In every patch.
-
+> Khadas Edge2 uses the PCI-e Ampak AP6275P 2T2R Wi-Fi 6 module.
 > 
+> Co-developed-by: Muhammed Efe Cetin <efectn@protonmail.com>
+> Signed-off-by: Muhammed Efe Cetin <efectn@protonmail.com>
 > Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
 > ---
->  .../bindings/net/wireless/brcm,bcm4329-fmac.yaml         | 9 +++++++++
->  1 file changed, 9 insertions(+)
+>  .../boot/dts/rockchip/rk3588s-khadas-edge2.dts   | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-> index e564f20d8f415..b9e39a62c3b32 100644
-> --- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-> +++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-> @@ -121,6 +121,15 @@ properties:
->        NVRAM. This would normally be filled in by the bootloader from platform
->        configuration data.
+> diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-khadas-edge2.dts b/arch/arm64/boot/dts/rockchip/rk3588s-khadas-edge2.dts
+> index 3b6286461a746..f674deb6f7da8 100644
+> --- a/arch/arm64/boot/dts/rockchip/rk3588s-khadas-edge2.dts
+> +++ b/arch/arm64/boot/dts/rockchip/rk3588s-khadas-edge2.dts
+> @@ -356,6 +356,22 @@ &pcie2x1l2 {
+>  	reset-gpios = <&gpio3 RK_PD1 GPIO_ACTIVE_HIGH>;
+>  	vpcie3v3-supply = <&vcc3v3_pcie_wl>;
+>  	status = "okay";
+> +
+> +	pcie@0,0 {
+> +		reg = <0x400000 0 0 0 0>;
+> +		#address-cells = <3>;
+> +		#size-cells = <2>;
+> +		ranges;
+> +		device_type = "pci";
+> +		bus-range = <0x40 0x4f>;
+
+Isn't bus-range a property of PCI host bridge, so the parent? This is a
+PCI device, right?
+
+> +
+> +		wifi: wifi@0,0 {
+
+Binding does not say anything about this. Rockchip PCI controller is the
+PCI host bridge, isn't it? Then the pci@0,0 is the child, so what is this?
+
+> +			reg = <0x410000 0 0 0 0>;
+> +			clocks = <&hym8563>;
+> +			clock-names = "32k";
+
+1. Bindings are before the users.
+2. Where is the compatible? Are you sure this validates?
+
+
+> +		};
+> +	};
+> +
+
+No need for this blank line.
+
+>  };
 >  
-> +  clocks:
-> +    description: phandle to the clock connected on rtc clock line.
-
-Drop redundant parts, like "phandle to the".  Just use items with
-description instead of above and maxItems.
-
-> +    maxItems: 1
-> +
-> +  clock-names:
-> +    description: Names of the supplied clocks.
-
-Drop description, completely redundant.
-
-> +    items:
-> +      - const: 32k
-
-32k? That's the name of the clock? In the datasheet?
-
-> +
->  required:
->    - compatible
->    - reg
+>  &pwm11 {
 
 Best regards,
 Krzysztof
