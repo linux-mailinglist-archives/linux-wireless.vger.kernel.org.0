@@ -1,142 +1,145 @@
-Return-Path: <linux-wireless+bounces-9523-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9524-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60FCE915DC2
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2024 06:46:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51DE3915F23
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2024 08:56:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9396C1C21554
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2024 04:46:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35A19B20E7E
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2024 06:56:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDBD043AB2;
-	Tue, 25 Jun 2024 04:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04D3714658D;
+	Tue, 25 Jun 2024 06:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OthhM3tb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="obLPoGLI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6F720330
-	for <linux-wireless@vger.kernel.org>; Tue, 25 Jun 2024 04:46:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0719143C67;
+	Tue, 25 Jun 2024 06:56:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719290772; cv=none; b=uW8wB4FATXocn0ZtuSLvhMZlCKj0Cq6iF+hhrUV1w3NwKXhE07p1VPlLOZ14b+0lkOUcZYhqPX2QVK6QD3b7VsqdLfJTKaNya/qNi0kIEv+rc9NslhiGRqrVA9pbJvpbcpJBKsNz1CqnA0tC/xf0vKfbpEfpNAGVFB/F0jiYelY=
+	t=1719298599; cv=none; b=Uf+W27WO8YaoycW7qM0KAVsJXqAO1zFVKamBso663P3lJxgY8C0a+lQkTjNvZBq3kvjsM4J7SOe+qcG2CRRvamN5cqY1DCWB6xm+fzIZJ3sK+Vkd81fsiAVEIlxUetQIFSTIhscaZMNMcFX6y4cbJqCuXmxEJ5P8mQFa+wQ+Y20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719290772; c=relaxed/simple;
-	bh=6ybpDk0m5qk1ZWIgS+8NhVrcO85QomR7Y8n38PvURg0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AzASJv8PsH2ZRQow9UUtt2+NLX48GULWrf1eIA7ylXZDyavLiSK7afNzQI/yEEKbUIxF5aea7Z8kdtTY62whMGU4DlbfweyUWqWlm7cOy7U/JWoI8kcTXWIwHE+Ed0OutNP54h87d/3IJaGQqtTb6liatJ7Q6wmWLR+HHhwVBHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OthhM3tb; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1719290771; x=1750826771;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=6ybpDk0m5qk1ZWIgS+8NhVrcO85QomR7Y8n38PvURg0=;
-  b=OthhM3tbv3BPy4z/CAN/9j6AqBurXa8Jc+nBhM/l/i5i4zZHCvX+miEw
-   0vjMqYXP7ue4hEPbu1Eg/1Z+5a+y+ImiYr2sjLzJRmWncgm/vk7OoR9TE
-   yCHnShObrb6AGMHOX0slC/NgvnuKzoHiZlMkWo6wNkZycnuaAbKKQvNyL
-   74gpigGj7T91AxoW/1ROqpdsNvawHSD4Sh2R/r6o7Z8yj5FDmr7FB4OIZ
-   ODiSS22OpLxyaaKFzUCuSjJLEiEgMzQLyDuITyVdsJPsInSWGhoe2x3lJ
-   lh2L+qJQbEkkg5T2yK9v3DdgUPm2OkTAKAyFke8DtYnOMam2op+eqvqEn
-   w==;
-X-CSE-ConnectionGUID: PRKpZ46OSLyQBwtPNQ7xYg==
-X-CSE-MsgGUID: P4AdhtuHSOWupprxRyHTJQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11113"; a="33744660"
-X-IronPort-AV: E=Sophos;i="6.08,263,1712646000"; 
-   d="scan'208";a="33744660"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2024 21:46:10 -0700
-X-CSE-ConnectionGUID: HsMMPJ4pTxizg9kXnrh1Ig==
-X-CSE-MsgGUID: NU7OacjETbeycu62XTto/w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,263,1712646000"; 
-   d="scan'208";a="43386497"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 24 Jun 2024 21:46:08 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sLy4E-000E4X-1e;
-	Tue, 25 Jun 2024 04:46:06 +0000
-Date: Tue, 25 Jun 2024 12:45:17 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	gary.chang@realtek.com
-Subject: Re: [PATCH 1/7] wifi: rtw89: wow: append security header offset for
- different cipher
-Message-ID: <202406251226.QBy2sVKF-lkp@intel.com>
-References: <20240620055825.17592-2-pkshih@realtek.com>
+	s=arc-20240116; t=1719298599; c=relaxed/simple;
+	bh=zNj07+1fdLb+Kkx4sM2QIhA4tF5aq2auTeOEjXT/xsU=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=gLRJ/c47Q3iLJa5c9A9/gxO5gL00sXevUvcHwWR2+Hz1o6q8ImdNLKjV4XyS3ST7Szvjhc6Ba8ydzQXDFgvPuz7RH8jJIPomZZAjIlfnhSU0hlsi7Ka42yKYZg1pHyxHLPOA5gI2N0pm9vEODhi5N0iKiti9jCw4nHFaE/fM30g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=obLPoGLI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28222C32781;
+	Tue, 25 Jun 2024 06:56:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719298599;
+	bh=zNj07+1fdLb+Kkx4sM2QIhA4tF5aq2auTeOEjXT/xsU=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=obLPoGLIauEarta+M0u2bjskALZAJd0r/KaYiMhPmk4EeiBAQPRv59fkiSzK7yXsS
+	 voZ2jD7KE7a5IMV/MetpZyrBGtU3Dv25bjnk+P5vzmbSwfVDi4kSKYdp/4oFerLZvR
+	 pK493UrhJSjcDn8tesLMfqUl52GCgEif9pi9ARZEGjVVZoRep2w0AxE/KNMHjmYG2s
+	 pKVDnSJYqFv6LivMZpLd+TyvIuLCtYGi/XU+P1O6Iih76WGjBivBG2xupBhCrKttFW
+	 Dn4T5+Ctsg1/9PBeYL9QvwEiip5NrN4RhUF+uqpW9ip/mK1S3JZ/SzUH6HJmr6x9Oh
+	 /uiwllM89N7Xw==
+From: Kalle Valo <kvalo@kernel.org>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Koen Vandeputte <koen.vandeputte@citymesh.com>,
+  <ath10k@lists.infradead.org>,  linux-wireless
+ <linux-wireless@vger.kernel.org>,  "David S. Miller"
+ <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
+ Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,
+  <netdev@vger.kernel.org>,  Johannes Berg <johannes@sipsolutions.net>,
+  Kees Cook <keescook@chromium.org>
+Subject: Re: ieee80211.h virtual_map splat
+References: <CAPh3n83zb1PwFBFijJKChBqY95zzpYh=2iPf8tmh=YTS6e3xPw@mail.gmail.com>
+	<c470e4ff-3f70-40f6-844a-f9614286509f@quicinc.com>
+Date: Tue, 25 Jun 2024 09:56:35 +0300
+In-Reply-To: <c470e4ff-3f70-40f6-844a-f9614286509f@quicinc.com> (Jeff
+	Johnson's message of "Mon, 24 Jun 2024 20:44:11 -0700")
+Message-ID: <87o77pik7w.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240620055825.17592-2-pkshih@realtek.com>
+Content-Type: text/plain
 
-Hi Ping-Ke,
+Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 
-kernel test robot noticed the following build errors:
+> On 6/21/2024 1:04 AM, Koen Vandeputte wrote:
+>
+>> Hi all,
+>> 
+>> Within OpenWRT, we switched to kernel 6.6 some time ago.
+>> 
+>> During testing on a WiFi WDS setup (ath10k), I noticed an old standing
+>> bug which now prints a lot more data due to the kernel upgrade:
+>> 
+>> - All WDS stations are connected
+>> - The splat occurs
+>> - All WDS station seem to go in timeout and disconnect
+>> - The behavior is fixed after a reboot
+>> 
+>> Yes, we use ath10k-ct over here, but this part of the code is
+>> identical to upstream ath10k.
+>> 
+>> The main issue:
+>> 
+>> memcpy: detected field-spanning write (size 64) of single field
+>> "tim->virtual_map" at
+>> ../ath10k-ct-smallbuffers/ath10k-ct-2024.03.02~eb3f488a/ath10k-6.7/wmi.c:4043
+>> (size 1)
+>> 
+>> 
+>> looks like virtual_map is defined as  "u8 virtual_map[1]", triggering
+>> that error within "include/linux/ieee80211.h"
+>> 
+>> /**
+>>  * struct ieee80211_tim_ie - Traffic Indication Map information element
+>>  * @dtim_count: DTIM Count
+>>  * @dtim_period: DTIM Period
+>>  * @bitmap_ctrl: Bitmap Control
+>>  * @virtual_map: Partial Virtual Bitmap
+>>  *
+>>  * This structure represents the payload of the "TIM element" as
+>>  * described in IEEE Std 802.11-2020 section 9.4.2.5.
+>>  */
+>> struct ieee80211_tim_ie {
+>>         u8 dtim_count;
+>>         u8 dtim_period;
+>>         u8 bitmap_ctrl;
+>>         /* variable size: 1 - 251 bytes */
+>>         u8 virtual_map[1];
+>> } __packed;
+>> 
+>> 
+>> According to this page, defining it this way is actually deprecated:
+>> https://www.kernel.org/doc/html/latest/process/deprecated.html
+>> 
+>> What is the correct way to fix this?
+>> Converting it to "u8 virtual_map[];"  ?
+>
+> Adding netdev to the initial message in the thread.
+> https://lore.kernel.org/all/CAPh3n83zb1PwFBFijJKChBqY95zzpYh=2iPf8tmh=YTS6e3xPw@mail.gmail.com/
+>
+> There was some discussion in the thread, with the observation that the splat 
+> is fixed by:
+> 2ae5c9248e06 ("wifi: mac80211: Use flexible array in struct ieee80211_tim_ie")
+>
+> Followed by discussion if this should be backported.
+>
+> Kees said that "netdev [...] maintainers have asked that contributors not 
+> include "Cc: stable" tags, as they want to evaluate for themselves whether 
+> patches should go to stable or not"
 
-[auto build test ERROR on wireless-next/main]
-[also build test ERROR on wireless/main linus/master v6.10-rc5 next-20240624]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Ping-Ke-Shih/wifi-rtw89-wow-append-security-header-offset-for-different-cipher/20240624-152444
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-patch link:    https://lore.kernel.org/r/20240620055825.17592-2-pkshih%40realtek.com
-patch subject: [PATCH 1/7] wifi: rtw89: wow: append security header offset for different cipher
-config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20240625/202406251226.QBy2sVKF-lkp@intel.com/config)
-compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240625/202406251226.QBy2sVKF-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202406251226.QBy2sVKF-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from drivers/net/wireless/realtek/rtw89/core.c:21:
->> drivers/net/wireless/realtek/rtw89/wow.h:82:45: error: call to undeclared function 'rtw89_is_rtl885xb'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-      82 |         if (!(rtwdev->chip->chip_id == RTL8852A || rtw89_is_rtl885xb(rtwdev)))
-         |                                                    ^
-   1 error generated.
-
-
-vim +/rtw89_is_rtl885xb +82 drivers/net/wireless/realtek/rtw89/wow.h
-
-    77	
-    78	static inline int rtw89_wow_get_sec_hdr_len(struct rtw89_dev *rtwdev)
-    79	{
-    80		struct rtw89_wow_param *rtw_wow = &rtwdev->wow;
-    81	
-  > 82		if (!(rtwdev->chip->chip_id == RTL8852A || rtw89_is_rtl885xb(rtwdev)))
-    83			return 0;
-    84	
-    85		switch (rtw_wow->ptk_alg) {
-    86		case RTW89_WOW_FW_ALG_WEP40:
-    87			return 4;
-    88		case RTW89_WOW_FW_ALG_TKIP:
-    89		case RTW89_WOW_FW_ALG_CCMP:
-    90		case RTW89_WOW_FW_ALG_GCMP_256:
-    91			return 8;
-    92		default:
-    93			return 0;
-    94		}
-    95	}
-    96	
+BTW this rule doesn't apply to wireless subsystem. For wireless patches
+it's ok to "Cc: stable" in patches or anyone can send a request to
+stable maintainers to pick a patch.
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
