@@ -1,62 +1,55 @@
-Return-Path: <linux-wireless+bounces-9532-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9533-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A2EF916CF9
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2024 17:26:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 214FB916D8B
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2024 17:54:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C369328B77D
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2024 15:26:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72204B2631F
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2024 15:54:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE0D170827;
-	Tue, 25 Jun 2024 15:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA34B16FF59;
+	Tue, 25 Jun 2024 15:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y0UWZ99e"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mxptkDUG"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A6016DEB3;
-	Tue, 25 Jun 2024 15:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63DD45978
+	for <linux-wireless@vger.kernel.org>; Tue, 25 Jun 2024 15:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719329117; cv=none; b=BRVCv1K5/A6y0KwdgRCLFre2szcwNV4kGS20AyFMvOLbYxoHQakRRionAyyY8l6kWDqCVdo6Jbc4Cn7XNNGPdZwrYL4jdCbV02ZQXqWV1P/U6SC2fCeojzDfbcU7OG2ai4hmNywV051BR0bNt2ft5JplPMdh7h3tujB76G9sSfM=
+	t=1719330841; cv=none; b=JqJg4pjA5DWhPubNkm8z980KrwcCjh6Q6fem9EN5fmWDHdTBMn3+u4wsGPOrmVaoq2P/heWf4cwodpUcvGlf+qKmhHJnxXe0+Bhqj8GOcj7CAnSwTF4tuJc4KBCJg/9391yvh7f+lktEdkEdny/DtJUUr/wModQCTa73xDPsTWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719329117; c=relaxed/simple;
-	bh=8pXLi0+NE2elKsEGz3Exeg1kDvY+fHABVyxjsl7HrNI=;
+	s=arc-20240116; t=1719330841; c=relaxed/simple;
+	bh=MM9rEZjt1n3fUQ17F0SoJjGbm5zXc4odPQRTmAJEi/8=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=ODNvTAgKscX/o1EnIgH6VdqNReE2+4Hm11ZZSzxFWzwUF1PNe3mq+6VyCPbdH6oiZn9h2xWh4JgWezOzGnL2v2f/PVBNToqJSBDYaZwxC1zmUrVvm5J2edyK61s49OcfTxFXt837I5i2XE6dffpJQlaIWAlLyKjlcrqm5hKjSc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y0UWZ99e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42CBC32781;
-	Tue, 25 Jun 2024 15:25:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=I07rcgcn8XyJh7GHzGfmWR9EPsB0Q8b+Y8Qdkd0CvcjEc5MiCWNdZM74beMLrM2a1OSsSYSSjbmsRaCDtj+tszRK+jFTog/RUOxE03xMha+20HKCMv6QxXYmgQUxJvQj1BDGr6GgE113YjCdmrOGcS1V3IVfhm+YiGtxBEZbakM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mxptkDUG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3EDCC32786;
+	Tue, 25 Jun 2024 15:54:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719329117;
-	bh=8pXLi0+NE2elKsEGz3Exeg1kDvY+fHABVyxjsl7HrNI=;
+	s=k20201202; t=1719330841;
+	bh=MM9rEZjt1n3fUQ17F0SoJjGbm5zXc4odPQRTmAJEi/8=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=Y0UWZ99e81f92pCKDy/ylcK54a2iCMmLSB3RltsaGQs72cjZYgVQ9wGF7SKhM1LRE
-	 6+jSqJQsQQASg4sy82IGvB8FlpAKrBeHjVaS/mnnHY6wu0AegRToWx4WD07pqBbKS3
-	 tXIT9L/oMTdRWeoJyGjg68VZ4vQ6NA4BL9ZDihNaXQUMliXQCVNpCVHgIkfFNCI60B
-	 26eja9WqGWkiQH67YTIAQwFvYfiKKfoiW4Xe6wafdM7zH1RBpayRmZ7jMI4TU6UT5y
-	 P9yVqxDa8mBURa5b8OVPxiuyYw5uuGQtjWx23p4czraCfdxdiPSKfMHsH5arFGaywM
-	 blOFXGQpi2lzw==
+	b=mxptkDUGmtZ18r2xS28etP7Nl/GfLhsLMaHpdqE3gLZra3+NFPRvo1xcI4SphOj6o
+	 rXE8fBpNY65G2DMwJKDwWQDQiY1EZbxHM8BjX0pCeyjlEUwrswy2reS19ltYbGxHdW
+	 zVUCzdxJXoje5WdDCtWT5Es359sjO64jT5uj63C/KwVRY0kcU7TNNY55oCoFGnPDgk
+	 uZ1xtvKqG0biKUCpGfHNW6iL/zJT1dKUoNWu5yUF8MDZR6aBg4RIgGjEGLe7puXvAW
+	 hg1qPMG8qdEd5L1IeNYC5c2fPryeaHVL6wp8IysTieGtVUnuz2k9JcsanrHSKmCp96
+	 vHO/eOc/3ja8g==
 From: Kalle Valo <kvalo@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,  Koen Vandeputte
- <koen.vandeputte@citymesh.com>,  <ath10k@lists.infradead.org>,
-  linux-wireless <linux-wireless@vger.kernel.org>,  "David S. Miller"
- <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Paolo Abeni
- <pabeni@redhat.com>,  <netdev@vger.kernel.org>,  Johannes Berg
- <johannes@sipsolutions.net>,  Kees Cook <keescook@chromium.org>
-Subject: Re: ieee80211.h virtual_map splat
-References: <CAPh3n83zb1PwFBFijJKChBqY95zzpYh=2iPf8tmh=YTS6e3xPw@mail.gmail.com>
-	<c470e4ff-3f70-40f6-844a-f9614286509f@quicinc.com>
-	<87o77pik7w.fsf@kernel.org> <20240625080248.32c3e03d@kernel.org>
-Date: Tue, 25 Jun 2024 18:25:12 +0300
-In-Reply-To: <20240625080248.32c3e03d@kernel.org> (Jakub Kicinski's message of
-	"Tue, 25 Jun 2024 08:02:48 -0700")
-Message-ID: <87jzidhwo7.fsf@kernel.org>
+To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] wifi: ath12k: fix peer metadata parsing
+References: <20240624145418.2043461-1-quic_periyasa@quicinc.com>
+Date: Tue, 25 Jun 2024 18:53:58 +0300
+In-Reply-To: <20240624145418.2043461-1-quic_periyasa@quicinc.com> (Karthikeyan
+	Periyasamy's message of "Mon, 24 Jun 2024 20:24:18 +0530")
+Message-ID: <87frt1hvc9.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -66,40 +59,43 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Jakub Kicinski <kuba@kernel.org> writes:
+Karthikeyan Periyasamy <quic_periyasa@quicinc.com> writes:
 
-> On Tue, 25 Jun 2024 09:56:35 +0300 Kalle Valo wrote:
->> > Adding netdev to the initial message in the thread.
->> > https://lore.kernel.org/all/CAPh3n83zb1PwFBFijJKChBqY95zzpYh=2iPf8tmh=YTS6e3xPw@mail.gmail.com/
->> >
->> > There was some discussion in the thread, with the observation that the splat 
->> > is fixed by:
->> > 2ae5c9248e06 ("wifi: mac80211: Use flexible array in struct ieee80211_tim_ie")
->> >
->> > Followed by discussion if this should be backported.
->> >
->> > Kees said that "netdev [...] maintainers have asked that contributors not 
->> > include "Cc: stable" tags, as they want to evaluate for themselves whether 
->> > patches should go to stable or not"  
->> 
->> BTW this rule doesn't apply to wireless subsystem. For wireless patches
->> it's ok to "Cc: stable" in patches or anyone can send a request to
->> stable maintainers to pick a patch.
+> Currently, the Rx data path only supports parsing peer metadata of version
+> zero. However, the QCN9274 platform configures the peer metadata version
+> as V1B. When V1B peer metadata is parsed using the version zero logic,
+> invalid data is populated, causing valid packets to be dropped. To address
+> this issue, refactor the peer metadata version and add the version based
+> parsing to populate the data from peer metadata correctly.
 >
-> It's an old rule. Quoting documentation:
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 >
->   Stable tree
->   ~~~~~~~~~~~
->   
->   While it used to be the case that netdev submissions were not supposed
->   to carry explicit ``CC: stable@vger.kernel.org`` tags that is no longer
->   the case today. Please follow the standard stable rules in
->   :ref:`Documentation/process/stable-kernel-rules.rst <stable_kernel_rules>`,
->   and make sure you include appropriate Fixes tags!
->   
-> See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#stable-tree
+> Fixes: 287033810990 ("wifi: ath12k: add support for peer meta data version")
+> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 
-Oh, I haven't noticed the change. Thanks for correcting.
+[...]
+
+> +static u16 ath12k_dp_rx_get_peer_id(enum ath12k_peer_metadata_version ver,
+> +				    __le32 peer_metadata)
+> +{
+> +	switch (ver) {
+> +	default:
+> +		WARN_ON(1);
+> +		fallthrough;
+
+I'm a bit wary of using WARN_ON() in data path, so in the pending branch
+I changed this to ath12k_warn():
+
+	default:
+		ath12k_warn(ab, "Unknown peer metadata version: %d", ver);
+		fallthrough;
+
+The benefit is also that now we print the unknown value. Would this
+work?
+
+Please check:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git/commit/?h=pending&id=0228ca402186a123e5c90187f952121de50bf64f
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
