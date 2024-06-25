@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-9560-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9561-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B456917147
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2024 21:53:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16372917148
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2024 21:53:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B96361F24410
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2024 19:53:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C36F0288135
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2024 19:53:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3998417C228;
-	Tue, 25 Jun 2024 19:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5821417C228;
+	Tue, 25 Jun 2024 19:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="M+J6k5mm"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QAD+nxaM"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C82178399
-	for <linux-wireless@vger.kernel.org>; Tue, 25 Jun 2024 19:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCACF178399
+	for <linux-wireless@vger.kernel.org>; Tue, 25 Jun 2024 19:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719345208; cv=none; b=gXTI7exDxPNPytXDUdtwJdj3WA+RaCyWyxTUaT3lrRmUlv7kuH8xeq1yS7mY2f9L2Fz+QngDUYcp7OjkX/S7C6HU7A25ro8uKqhfv9AAfBD7OlwuUxJYBqiUogirWfr0inAKERTWQz3IsGQt0wAisIUmw4KLfgXl5Khc3JuiBlk=
+	t=1719345213; cv=none; b=bW/7KjOSw0/2/g9drjvbyVlZ7Vb33Kce+VI+0WC0umWbxCcg+oUdY3IL/uZLpOII6ekx2mz4YNktytcCx2Fsmd1mM8yWOZn1Jyyx1QXi2piFDWqiqxiZK9qIdUGWUN7P0y64IilraWOzrMyzfVObQVMRG4k9urZ6Z84OYmIhdjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719345208; c=relaxed/simple;
-	bh=pgFvGVwwdnFdOAm3b90qeXhvyDbptJWoA2S78c0umuY=;
+	s=arc-20240116; t=1719345213; c=relaxed/simple;
+	bh=igO16uJYYwBITmL+GTiM8SSs0U1vXzWWLbI4VGL0dXA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ZmP8SpOSk1PkQIM804/nisjo2W+dOimfjx1YVYCJ38TvT7MIdWZ6PfrbBNFZ4n0hj2sUETsskaDjFMZ3Rv1BRUkiaBzQGTJN6z1URdeRLEEVaO06evrXBkuCBpul6A37N/uQs0B3zwMOI3HNmq6HyS0je4u2jp6aBsOS0/tsyHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=M+J6k5mm; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=e1pnaXX/JpgTpclUugGLQk45CvJYmiBEIfSyo334XOL7dJDbzJFGlJFWIMF6dzO/+gYnU1e6gOEyLnhBY3dWIB3HmgFRDcKxD+jSebPpcmmypf0QS6TfD51Jc94CtLL4pyqcrnpzOBMwJp8I0a5ywGeerpa1UD0PsRyYYyhEYX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=QAD+nxaM; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45PGt2er023785;
-	Tue, 25 Jun 2024 19:53:23 GMT
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45PHUZEL024767;
+	Tue, 25 Jun 2024 19:53:29 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	1kkdRj2aX82fu/E1XTgr7rghn9RG8J/uHd+Ooj82Azc=; b=M+J6k5mmopgeTGjv
-	KZr+pB12LEWb8LfJ01Yh0hIg3ZBgaMn5GBhVymsGDNXLztU83Mt2QTDBrcg+sy5Q
-	mpl9ZKWBFCFR2hNJhB1ivVWand5ceGzunrGy3xbPSDnAR1tlPvupmU7zCycyYK3f
-	2MY33kuY5KAdJ6QKN/oJ8Zh9TTHMZGwahkI6rsGvy1jueT5n0M/NNo8mR0lgMSOA
-	EIehrwVg+1yA82EoHnSycbOQcfpJMAXdDqUi/KYIJJuNBtLsj8WRzqY2URioNgO+
-	QDyiwPDJLo9LXTNOKlVxyPYwu6AWDqaqhZdEaycib9pG3HhuO71E1ioJhbKBsK5K
-	IYHdBg==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ywqshqn4s-1
+	69sDzaX7rCcOq1EA3vHdocLJuTsyaOcp5s6CbijiW0I=; b=QAD+nxaMKb95GyU3
+	YouwbJCE4qn0r3/am8wIhiUc9bnivLtT4+FQWH4qbeRJWLEhITHCdRfOrFDYsodZ
+	Uim64mSo/L6tdSwFAGB+K6QCfqU1OvqSXVNMsfLp+Jwiv/U1lCdQadHcG1xVI1rO
+	l9JFAp7B4cvh6mcYKjd71HPGWvgcic+S3akf9aqH/CYKz0jPYw4LnIr94s9XcgZy
+	Wm8ajxcfcjOqKXjxRfbj9xg2Ws9xtjeJYXz4CSObLa/1PzZnrfnBlnwaM/nnbwfB
+	xWBGUD0vUlJ4CWbl3eKLtQtlaHyamE5jNvOy9t3U4hMKAH9clZGT9EyyKN8fJp4q
+	2k8dNQ==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ywqshqn51-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Jun 2024 19:53:22 +0000 (GMT)
+	Tue, 25 Jun 2024 19:53:29 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45PJrLYL027778
+	by NALASPPMTA05.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45PJrSoB006287
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Jun 2024 19:53:21 GMT
+	Tue, 25 Jun 2024 19:53:28 GMT
 Received: from [10.48.244.230] (10.49.16.6) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 25 Jun
- 2024 12:53:21 -0700
-Message-ID: <3d45dfa5-1372-49ae-b8a2-a31709c368a4@quicinc.com>
-Date: Tue, 25 Jun 2024 12:53:21 -0700
+ 2024 12:53:28 -0700
+Message-ID: <67c34e28-d763-4f63-9ee6-ccb5721c49a5@quicinc.com>
+Date: Tue, 25 Jun 2024 12:53:27 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,7 +65,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] wifi: ath12k: Support pdev error stats
+Subject: Re: [PATCH 3/3] wifi: ath12k: Support TQM stats
 Content-Language: en-US
 To: Roopni Devanathan <quic_rdevanat@quicinc.com>,
         <ath12k@lists.infradead.org>
@@ -73,17 +73,17 @@ CC: <linux-wireless@vger.kernel.org>,
         Dinesh Karthikeyan
 	<quic_dinek@quicinc.com>
 References: <20240625042217.1303332-1-quic_rdevanat@quicinc.com>
- <20240625042217.1303332-3-quic_rdevanat@quicinc.com>
+ <20240625042217.1303332-4-quic_rdevanat@quicinc.com>
 From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240625042217.1303332-3-quic_rdevanat@quicinc.com>
+In-Reply-To: <20240625042217.1303332-4-quic_rdevanat@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: xPrZY6WNe5MUuBirKxk9a32MIAmIYu9b
-X-Proofpoint-GUID: xPrZY6WNe5MUuBirKxk9a32MIAmIYu9b
+X-Proofpoint-ORIG-GUID: 1yL8Ur0BdTertmReGynhln_T7AENL8A7
+X-Proofpoint-GUID: 1yL8Ur0BdTertmReGynhln_T7AENL8A7
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-06-25_15,2024-06-25_01,2024-05-17_01
@@ -96,57 +96,41 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamsco
 On 6/24/2024 9:22 PM, Roopni Devanathan wrote:
 > From: Dinesh Karthikeyan <quic_dinek@quicinc.com>
 > 
-> Add support to request pdev error stats from firmware through HTT stats
-> type 5. This stats type gives information such as list of pdev errors,
-> reasons for reset, logging information about recovery, drain and war
-> stats. etc.
+> Add support to request pdev TQM stats from firmware through HTT stats
+> type 6. This stat type gives information such as TQM error, MPDU
+> related information and TQM pdev stats.
 > 
 > Sample output:
 > -------------
-> echo 5 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats_type
+> echo 6 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats_type
 > cat /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats
 > 
-> HTT_HW_STATS_PDEV_ERRS_TLV:
-> mac_id = 0
-> tx_abort = 0
-> tx_abort_fail_count = 0
-> rx_abort = 53
+> HTT_TX_TQM_ERROR_STATS_TLV:
+> q_empty_failure = 0
+> q_not_empty_failure = 0
+> add_msdu_failure = 0
+> 
+> TQM_ERROR_RESET_STATS:
+> tqm_cache_ctl_err = 0
+> tqm_soft_reset = 0
+> tqm_reset_total_num_in_use_link_descs = 0
 > .....
 > 
-> PDEV_PHY_WARM_RESET_REASONS:
-> phy_warm_reset_reason_phy_m3 = 0
-> phy_warm_reset_reason_tx_hw_stuck = 0
-> phy_warm_reset_reason_num_cca_rx_frame_stuck = 0
-> .....
+> HTT_TX_TQM_GEN_MPDU_STATS_TLV:
+> gen_mpdu_end_reason =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
+> 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0
 > 
-> WAL_RX_RECOVERY_STATS:
-> wal_rx_recovery_rst_mac_hang_count = 0
-> wal_rx_recovery_rst_known_sig_count = 0
-> wal_rx_recovery_rst_no_rx_count = 0
-> .....
+> HTT_TX_TQM_LIST_MPDU_STATS_TLV:
+> list_mpdu_end_reason =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0,
+> 10:0, 11:0, 12:0
 > 
-> HTT_RX_DEST_DRAIN_STATS:
-> rx_dest_drain_rx_descs_leak_prevention_done = 0
-> rx_dest_drain_rx_descs_saved_cnt = 0
-> rx_dest_drain_rxdma2reo_leak_detected = 0
-> .....
+> HTT_TX_TQM_LIST_MPDU_CNT_TLV_V:
+> list_mpdu_cnt_hist =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0
 > 
-> HTT_HW_STATS_INTR_MISC_TLV:
-> hw_intr_name = AMPI
-> mask = 0
-> count = 2
-> 
-> HTT_HW_STATS_WHAL_TX_TLV:
-> mac_id = 0
-> last_unpause_ppdu_id = 0
-> hwsch_unpause_wait_tqm_write = 0
-> .....
-> 
-> HTT_HW_WAR_STATS_TLV:
-> mac_id = 0
-> hw_war 0 = 0
-> hw_war 1 = 0
-> .....
+> HTT_TX_TQM_PDEV_STATS_TLV_V:
+> msdu_count = 0
+> mpdu_count = 0
+> remove_msdu = 0
 > 
 > Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 > Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
