@@ -1,61 +1,61 @@
-Return-Path: <linux-wireless+bounces-9528-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9529-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55C309166AD
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2024 13:55:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 738219166C7
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2024 14:00:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BD501F21BEB
-	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2024 11:55:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3CD21C2097B
+	for <lists+linux-wireless@lfdr.de>; Tue, 25 Jun 2024 12:00:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FE0F154C19;
-	Tue, 25 Jun 2024 11:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 492C644C9E;
+	Tue, 25 Jun 2024 12:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="OoW+Ap8q"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="LRgA3Ci/"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E7514D29B;
-	Tue, 25 Jun 2024 11:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6FC06A039
+	for <linux-wireless@vger.kernel.org>; Tue, 25 Jun 2024 12:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719316495; cv=none; b=ni/aYbn7WcELZ2cJ5TY+dTmFAXTQvr20CxXYZ4FnRMm1dYbegUu4CVjAZnzDwY8unOaCrp9Yp4JCGzMt6ZxAKqtukfQKKdjGMbL5sjgik3IW6bRlaggJ3IpXEdsvG9g7Z01nedCToqiBBQJwfMwn35p5EAM+YBx8ghdb3o0Twkw=
+	t=1719316850; cv=none; b=cpyA5lGugobVAkB3Yj1goV3lqcLzj2m9SZxs0quwEHUPDpUcpAruI6hQdQ4N3a29DIHMh56xWVHNDwxZXRjd07VyUkKs0agEQExWropewBjtV4LL06Y2sfm/zqTvIzjwE42vyBMUk23krGpWXXkFCcu904jfZDRFLRA+MKDmAEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719316495; c=relaxed/simple;
-	bh=tdiZzho1yxP3FP7HmO5wX6bXsbOVDiUXTcDyk6knbu0=;
+	s=arc-20240116; t=1719316850; c=relaxed/simple;
+	bh=ornJZfnVe5qMVemUriFFCO6khfr1su5wPIXf7yDm2/U=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MYRkdfvYOHxN0tiGTwrNCLNgkO4+rYm+A2A9teKhRKByLyWgG/X9FEqsDoCn3iYQQa5/q8tQ86+rzGQOblhP2jERNsckdo0Edi+r/iItx1W33Xfl6jVr+nKRJ2L5D0MNr9kqFcBd9oFJ+xz5nAVAkRebx0xuY3ZiypRvdHpHwm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=OoW+Ap8q; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=LkjokzLq3F8uGKHAmXfEN4Un5Z7zdaRa/TO7BEFEW8eZBqN7jHy+WZNwSiuZWQRkhD19puMNLC+s2+glE6VedjdzwM6XwM3tqxo5Bff8Kj61QuXDO7rxCJ55UDAyKLSSgDwezYGudyHFsRl4/GMvNOLU7iYJjfhSBBaXDRdvZrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=LRgA3Ci/; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=tdiZzho1yxP3FP7HmO5wX6bXsbOVDiUXTcDyk6knbu0=;
-	t=1719316491; x=1720526091; b=OoW+Ap8qpRtY3MflXFDwprnVke6ylfjINu8FyRkKvXM8SN1
-	E/lU2lRDQB7OqAV/KMwSq1jlG23EAGoyizGKG/J14m4uOX65cqxBIRyPMfS8NWGbNY6w8IN4vHgou
-	Qs0ob2HwdgnAXLS/l3jQCcRfRh35eET9l7yOAqfUG22HmjtzPV9Lwk5u2ZE9nK8SHdLWGUoqUMgxE
-	JaEsoZwgXMUmBT7FxFuFyAHzcxOJ9Vb5/Cyk7dYUBZrPaW/PqrHzrmEbCcldPRy+87JsgSLKX2nCS
-	K2DlguSLCUWHnb4roCcx9571sqjb4SDFtmZeKWWi8KQVV5+0upCkkN+Bpxrssbpw==;
+	Resent-Cc:Resent-Message-ID; bh=xg0U7GdB0uUfj5/AEfEiDKumzaDBl7TWw7BrFuuJKW0=;
+	t=1719316847; x=1720526447; b=LRgA3Ci/A4ndHNJvaqiP+RxuEqYaL5r5IZl1AXbbWdQgYoU
+	zWUVLByzXkJyDzfxSW49wdJe4/unJokwECzcNko+5XQhgCMKdk8g+hn5buryrioRj8uAmZh6Z7LYs
+	RS9OiI666Vn28JqPG+To67IQaMhp5iJi1Zz42GTLGRQBPzetRtjSicGO3KBkIrjxBJo7RnecVg262
+	M8G9Ku6EQnrnu3iPbMuE8UTDjd61tMdKbwCF6WBpDIGVS+yhYbqg8hzoLGWJPSQXfZ9YESPmbae1P
+	xTqy1fD8wSN9LEiHDkTLsCyL5y/eLR1NXhIXZh4MLCvZlpYx0KraoctaCTlvnS2g==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1sM4l6-00000000fQc-2WYs;
-	Tue, 25 Jun 2024 13:54:48 +0200
-Message-ID: <2fc4b98c0899b0bbbfbfb0c7a60eb0264ce97894.camel@sipsolutions.net>
-Subject: Re: [PATCH net] wifi: cfg80211: Fix out-of-bounds in
- cfg80211_wext_siwscan
+	id 1sM4qq-00000000fgI-0zBE;
+	Tue, 25 Jun 2024 14:00:44 +0200
+Message-ID: <b419cf92eb34ad9f19260baf2a3e728dea52d4f0.camel@sipsolutions.net>
+Subject: Re: [PATCH 6/9] wifi: mac80211: fix label name in
+ ieee80211_start_radar_detection()
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Jeongjun Park <aha310510@gmail.com>
-Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Date: Tue, 25 Jun 2024 13:54:47 +0200
-In-Reply-To: <20240623084939.6889-1-aha310510@gmail.com>
-References: <20240623084939.6889-1-aha310510@gmail.com>
+To: Aditya Kumar Singh <quic_adisi@quicinc.com>
+Cc: linux-wireless@vger.kernel.org
+Date: Tue, 25 Jun 2024 14:00:43 +0200
+In-Reply-To: <20240619040959.1457547-7-quic_adisi@quicinc.com>
+References: <20240619040959.1457547-1-quic_adisi@quicinc.com>
+	 <20240619040959.1457547-7-quic_adisi@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
@@ -67,21 +67,54 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Sun, 2024-06-23 at 17:49 +0900, Jeongjun Park wrote:
-> In the process of searching for matching hardware channels, wreq and=20
-> wreq->num_channels are checked to see if they are NULL. However,=20
-> if the value of wreq->num_channels is greater than IW_MAX_FREQUENCIES,
-> an out-of-bounds vulnerability occurs.
+On Wed, 2024-06-19 at 09:39 +0530, Aditya Kumar Singh wrote:
+> After locks rework [1], ieee80211_start_radar_detection() function is no
+> longer acquiring any lock as such explicitly. Hence, it is not unlocking
+> anything as well. However, label "out_unlock" is still used which creates
+> confusion.
 >=20
-> Therefore, you must also add code to check whether the value of=20
-> wreq->num_channels is within the range.
+> Rename the label to "return_err".
+
+Probably better to get rid of it entirely?
+>=20
+> [1]: https://lore.kernel.org/all/20230828135928.b1c6efffe9ad.I4aec875e25a=
+bc9ef0b5ad1e70b5747fd483fbd3c@changeid/
+
+I _think_ people were suggesting to drop the ":" from that?
+
+> @@ -3477,7 +3477,7 @@ static int ieee80211_start_radar_detection(struct w=
+iphy *wiphy,
+> =20
+>  	if (!list_empty(&local->roc_list) || local->scanning) {
+>  		err =3D -EBUSY;
+> -		goto out_unlock;
+> +		goto return_err;
+
+can drop braces, "return -EBUSY;"
+
+> @@ -3487,12 +3487,12 @@ static int ieee80211_start_radar_detection(struct=
+ wiphy *wiphy,
+>  	err =3D ieee80211_link_use_channel(&sdata->deflink, &chanreq,
+>  					 IEEE80211_CHANCTX_SHARED);
+>  	if (err)
+> -		goto out_unlock;
+> +		goto return_err;
+
+return err;
+=20
+>  	wiphy_delayed_work_queue(wiphy, &sdata->deflink.dfs_cac_timer_work,
+>  				 msecs_to_jiffies(cac_time_ms));
+> =20
+> - out_unlock:
+> + return_err:
+>  	return err;
 >=20
 
-This is the same more or less as=20
+and that can then become "return 0" which is much nicer anyway
 
-https://msgid.link/20240531032010.451295-1-dmantipov@yandex.ru
-
-no?
+Cf. also
+https://staticthinking.wordpress.com/2024/02/28/return-0-is-better-than-ret=
+urn-ret/
 
 johannes
 
