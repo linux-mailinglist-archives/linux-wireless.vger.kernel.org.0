@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-9611-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9612-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2831B918617
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jun 2024 17:42:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D0B091861C
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jun 2024 17:42:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8510AB20342
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jun 2024 15:42:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D2111C221BB
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jun 2024 15:42:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEDC718A935;
-	Wed, 26 Jun 2024 15:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0F318A935;
+	Wed, 26 Jun 2024 15:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U5p64JE5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HzJPmUq5"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B15AA92F
-	for <linux-wireless@vger.kernel.org>; Wed, 26 Jun 2024 15:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98443A92F
+	for <linux-wireless@vger.kernel.org>; Wed, 26 Jun 2024 15:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719416518; cv=none; b=oP5MVRZSBppgEPalg27Huq1WoRHn830Eho7ATJyM4EA8iItanjKKPJLsx1bSbfblnVv6xI5gZUflxDK8turXe3ruQIjD4Enw6PJydS9Q8zSkCb9Z3bkMen6D0Dg3qUbx8/cubQmgX1llPHhJzEnTSiFEJS+6NXD0YzJCnz+gQZI=
+	t=1719416561; cv=none; b=Yqf0T36/GpMP4N4oUPkiCQ55Fey/n0kp4Ul8J8D08OT27hMw+jHNq1Q8Jb/9O15FOZzIYz07rjenwlg4BLhL2Z60AZaA5pWZCsuFRypHSZrLo/D2hNVPv/7ZKhewJ5O5DKYtJ1aDYUDoKBTw6gwJiUl3//VaOTENhk8Wcd3GFHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719416518; c=relaxed/simple;
-	bh=U3zPUmPwStP/4jvwruoRXcg0ehbADGhwirCpV0MeysM=;
+	s=arc-20240116; t=1719416561; c=relaxed/simple;
+	bh=dunIfLY+4WRNsvU6UNanCIkOKgAbPpLCv27myTPXqqw=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=cZ6e4eOeRUs3lkN0SimpyhSUmLzAaSjBlLimtNwQPVn7UtNTn5Z+qAhXLbbXS43x92G38AC5F4zXx9QMgu5ZAR2ZzVzvHWOBxoLIdrw3IF7KibyCMBi/YuC8gN5upBITVhTO+wBM5eMVhuP8MeRuNT9LzLZiKfcplJRaOZjxXcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U5p64JE5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A79FC116B1;
-	Wed, 26 Jun 2024 15:41:57 +0000 (UTC)
+	 Cc:Message-ID:Date; b=Abd9AS9jlntw5zl+dvGnCnfgEhCbxCpZxRypXQO56EBZGqLl19ll3HOAugrdDz3ZAFCRa6dP7LOrA+doEAbkpXf1ND6HuorLu3YpHK+BlIu3G1WaHbkUySJoC8j2E8TlgjKrHsk1Ap09mUuQYlfM1lJ1RhU508MrT0K3+xwtWLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HzJPmUq5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270F5C116B1;
+	Wed, 26 Jun 2024 15:42:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719416518;
-	bh=U3zPUmPwStP/4jvwruoRXcg0ehbADGhwirCpV0MeysM=;
+	s=k20201202; t=1719416561;
+	bh=dunIfLY+4WRNsvU6UNanCIkOKgAbPpLCv27myTPXqqw=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=U5p64JE5pAQZYEaQyXYA8BUGWQu3rg+BzYaMOAjQ0EbZRNBOdblQ0gqBHPOX+uN8A
-	 7tBJWdNL9Q8Ll/CUpopchwbmyQXKpOb+BoE6cCwjEVdnyNwwSgwfRnyryrj9QLHlq3
-	 SenAnMAGd8wxEQYPufNQJzs97l+/DaX+ZuZsVWmrTryxXIu5VP2n1hH2XADg5sxKyj
-	 E/ZQRW1ya8MhoaH1Xd88Wkz/Xm514g0Q7aRmPk6UjfxSquLZoqSKoSY9Oyvk8uFmda
-	 KBEC0tKoEUjLQFNyMCMYpxRJCIBxQqAICAhAFblJh4iFxfLLliXlPCk1Q/3ae7bli+
-	 EEm/ouDdVec+A==
+	b=HzJPmUq5yly+7rVr5TFSBN0ug/fF72MijF8hBtZ4AnyFQcy0NMSqeGmxRUtd8QgQ2
+	 rjz0Uz2suCHIQvG3nLBIE2EuTIUy2xna3G5Z5jkJIRApsdmHslhU8oHurYB5eoFerI
+	 Tb5dTapBaVJ2XQB7ADTOE6vWkbqTSfk5/XKvbAT5aONnvXbIVmivkG+l0O5zof3UGz
+	 ZXZE5G3ucQGlVWtgvo4xTY7B9P7ocyz8jyExhOMuaE7D+574X9P76gCfxQy6R9wkXS
+	 4D+qQtfsrTqYLYuIVpZfAB6xMD7tvfolk+fbMPORFz1GUNb6O0WVTQ75KSkykun4+k
+	 oGWH7GKCzBI2A==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,44 +49,40 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] wifi: ath12k: Fix pdev id sent to firmware for single
- phy
- devices
+Subject: Re: [PATCH] wifi: ath12k: fix peer metadata parsing
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240621102809.3984004-1-quic_rgnanase@quicinc.com>
-References: <20240621102809.3984004-1-quic_rgnanase@quicinc.com>
-To: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
-Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
- Lingbo Kong <quic_lingbok@quicinc.com>,
- Ramya Gnanasekar <quic_rgnanase@quicinc.com>
+In-Reply-To: <20240624145418.2043461-1-quic_periyasa@quicinc.com>
+References: <20240624145418.2043461-1-quic_periyasa@quicinc.com>
+To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Cc: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+ Karthikeyan Periyasamy
+	<quic_periyasa@quicinc.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <171941651550.1568703.13692158978977489041.kvalo@kernel.org>
-Date: Wed, 26 Jun 2024 15:41:57 +0000 (UTC)
+Message-ID: <171941655813.1568703.13556661762295389272.kvalo@kernel.org>
+Date: Wed, 26 Jun 2024 15:42:39 +0000 (UTC)
 
-Ramya Gnanasekar <quic_rgnanase@quicinc.com> wrote:
+Karthikeyan Periyasamy <quic_periyasa@quicinc.com> wrote:
 
-> Pdev id from mac phy capabilities will be sent as a part of
-> HTT/WMI command to firmware. This causes issue with single pdev
-> devices where firmware does not respond to the WMI/HTT request
-> sent from host.
-> 
-> For single pdev devices firmware expects pdev id as 1 for 5 GHz/6 GHz
-> phy and 2 for 2 GHz band. Add wrapper ath12k_mac_get_target_pdev_id()
-> to help fetch right pdev for single pdev devices.
+> Currently, the Rx data path only supports parsing peer metadata of version
+> zero. However, the QCN9274 platform configures the peer metadata version
+> as V1B. When V1B peer metadata is parsed using the version zero logic,
+> invalid data is populated, causing valid packets to be dropped. To address
+> this issue, refactor the peer metadata version and add the version based
+> parsing to populate the data from peer metadata correctly.
 > 
 > Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 > 
-> Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
-> Signed-off-by: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
+> Fixes: 287033810990 ("wifi: ath12k: add support for peer meta data version")
+> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-2c7857677d69 wifi: ath12k: Fix pdev id sent to firmware for single phy devices
+1eeafd64c7b4 wifi: ath12k: fix peer metadata parsing
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240621102809.3984004-1-quic_rgnanase@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240624145418.2043461-1-quic_periyasa@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
