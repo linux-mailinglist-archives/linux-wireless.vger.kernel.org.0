@@ -1,160 +1,342 @@
-Return-Path: <linux-wireless+bounces-9623-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9624-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E71391983D
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jun 2024 21:22:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80A22919AD1
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jun 2024 00:47:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD2DCB20B7D
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jun 2024 19:22:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9771F1C21142
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jun 2024 22:47:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C2C118FC7F;
-	Wed, 26 Jun 2024 19:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3942317CA06;
+	Wed, 26 Jun 2024 22:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="K49AOkXJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TwK2odnI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E233A18A95A
-	for <linux-wireless@vger.kernel.org>; Wed, 26 Jun 2024 19:22:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9382715D5C1
+	for <linux-wireless@vger.kernel.org>; Wed, 26 Jun 2024 22:47:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719429738; cv=none; b=T1Ew6j6uV/bHFbZ+37xvzR7GDpkpqcRP3Ed+ZsgMQteaVAzmPAH7JlHsK4Tzrj5wqPMfyioG8+XWLyhT9DNyUtdTQ60fI01ErkrB3O83oRQeIVQ9yH7dKm7zcLYDqGq2/9WaUh56gHgJ4CTkrscZaDgEyyESuy0gr0HX+AH2PPA=
+	t=1719442024; cv=none; b=bSZtdAFQGpb5H3jlEx5iKMGDL87OV/1UwiVFJf3ea0aIW3XKlMkrpAvdVgPQIrinuhpjjwVpOpuEe4MkC1u1TLTj4cXQ3lpBJWt83HXDzOB7K6O0VkuKd6Kyl4ELfIKCeE5d6xUsyQ3CRrErSCymAh5n8RHb9XQHZIWVi1JyizE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719429738; c=relaxed/simple;
-	bh=g0ZojXJ96tvn0VPVPSP9/fKYgQTaDjvqvPH5bATaV/M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=P4XEI5F9vq1zT3HnyLHfN3uCGG59lzZzttRN2JqCRfF5TKAS7JiUgzOitZrGOogx5Cu+aV6FdCTVb0ApRE12sIKTWD2G4q5l4ewWGbzOE4VgVizFgaORplKdDoJUZc+7AS81T9BFopRb7s4NONlqn5bsABkRbj3hzdNwodSQuJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=K49AOkXJ; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45QAfNXB015295;
-	Wed, 26 Jun 2024 19:22:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	v2sjp0F5mcFlIt3DJ0mprYOW2LfLDouHss96vY/TMsA=; b=K49AOkXJoNyjbLGv
-	snjD86IrkT9SQwtth13W4sqcwPfHFpYBKxQEbClo6CVmXuOygmo/9AB+4Igte/MX
-	NCRsUjCmOzPJOdGwqrlMbMA6DR/Fj6eGSHQzlnTT3yyOQ1fdWMLACgD1y9T/arzr
-	ZYkKkDb1Nnhzv1Q1Ptlo/7rgUqZyQt85q7h1ZugCqG9UgMjPViF5KeAhGCNu1iei
-	rM+h8V913XmDsJt4TafkbXPWzSE+v0qLStTYS9uPYlL5S+gNVaphPhDx/uThRtxC
-	a6IrEtGcc/F6tX4e3sizpTx89zBZGBgUj0rYWtOriVsqGN4PiDb3fm7gbBypXpTn
-	zD2L4A==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 400gcm9e6f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 26 Jun 2024 19:22:13 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45QJMCEc000884
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 26 Jun 2024 19:22:12 GMT
-Received: from [10.48.244.230] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 26 Jun
- 2024 12:22:12 -0700
-Message-ID: <a4cabf3a-0234-407f-9b6b-bac0e705ea20@quicinc.com>
-Date: Wed, 26 Jun 2024 12:22:11 -0700
+	s=arc-20240116; t=1719442024; c=relaxed/simple;
+	bh=qqmtrYMjoPw/pAwoXFDoA+xGuwYupSbXKUI06BGAZsE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TqWYlV5xjgoY/Xyih/ts0mM75yoPThM5FIlbga2Okdk2s54k0CusqJUyO3eCkzuS16yKz2vEHEvn4D1LFhwI3t0jmew3dv3LOKSSSQqrwqs113gyV/TQd1hvvX9f+hxzwob5ZAE0zMDOEuwLGwRadDzfZT9Ag8nbqB8TcejPS4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TwK2odnI; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2c7fa0c9a8cso5151260a91.1
+        for <linux-wireless@vger.kernel.org>; Wed, 26 Jun 2024 15:47:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719442022; x=1720046822; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oMlvMHQzLyxWo+JSSxJjOkifBrE9JkYma4An5kZOCpQ=;
+        b=TwK2odnIhf458LJc2+3ZYul7XOk1LVzaZKSzZIdGsPzhPkOoBV9M5Wmbflzx/5k81N
+         RE64N+VnQgW6ZLzH8S0Qip4uhQ3ujcUHRuI3oYc4gGzuj+aiQTDzQ/92UtYFH1JwtwrA
+         GwTaL0/9CzjsxfZS6c8ozzalrrk6P3CmpIEJ9g1J/Ct908tfB7WfqgbV2THcng5ymttL
+         s7Hzu/gdJUclDqbRDz0wTBDsD3dhUvfkjTgUm8HUherEPKASymHK2f7YUay/bmg4JfKG
+         IxiOJ7ZtFro457HyfRKANnx3uZZu1xFd6x/4EN2tYAYgyFxtVAouD45HV5I3G/tZDyqt
+         FhrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719442022; x=1720046822;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oMlvMHQzLyxWo+JSSxJjOkifBrE9JkYma4An5kZOCpQ=;
+        b=PkPAUB9K2le1HB/FZujDHD+Sb8e59ypXo4J7/3TA7zTmfimrud469g2tOO+gU0o9l3
+         yB3B6IX560XrGtuuvLr5Mj4s033DUT5MxGU2XZ2vpbGAtG5DRHQQLATdj88m/HUjHgtG
+         /IUtyIb4fdAFFPblCeGWZ0Sev9wggkyGDWWTTo1JqPz2t06HDbW4JLtYkjEUyAE0HlHS
+         tjigiUKYFLO3blX+vZGWykuQZUXlUSGX8+lRURxsPJGRxKy6QyxMmNmDmz73/homCeDk
+         8sxvdMDBUoM1IWCr4+BVeUqfPm3omQllZQHMzGi9XXYT9rXh6nB4BF8JlpqkEjlp5RD4
+         8dBA==
+X-Forwarded-Encrypted: i=1; AJvYcCW6wuFAmHpu6Rx0Dkwz1rnvLGvn0BOdnhJj7A+h5hwQrLVq+a9N1eLVZtpyq/0iXoFvKRpJfcYny6CQQGIReF5eS1c/pu2YMTRnQSqVGJQ=
+X-Gm-Message-State: AOJu0Yzz5MggjEe60oU8CMB7J40P8BTpmmb3i61gnKFPICxOsE1vgQ1R
+	M5PBLun3gCt2B7t7XNhLowHDiPM6ZQAaBzVnUfes9t/0GOQXCkZsQE2mrQdkQdVxRyTeIRPp6V7
+	yyCHUQLIWdh74NDj8cDnzDuXaoxM=
+X-Google-Smtp-Source: AGHT+IE+/JtCAKhMWY2UH2YmhbJxhzl3DPdKxMdp4eFXkdlzt7dsMe9eh/DlEpOB/7eavIj3HWw9E1yDYjEgJENzRk8=
+X-Received: by 2002:a17:90b:3b86:b0:2c1:a555:2471 with SMTP id
+ 98e67ed59e1d1-2c8582dc10cmr9064202a91.47.1719442021744; Wed, 26 Jun 2024
+ 15:47:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath12k: Support Transmit DE stats
-Content-Language: en-US
-To: Roopni Devanathan <quic_rdevanat@quicinc.com>,
-        <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Dinesh Karthikeyan
-	<quic_dinek@quicinc.com>
-References: <20240626042221.3090812-1-quic_rdevanat@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240626042221.3090812-1-quic_rdevanat@quicinc.com>
+References: <20240617122609.349582-1-arend.vanspriel@broadcom.com>
+ <CALeDE9O7DCPhoxdMyHmYFOjwdkPRepiaaC92QorzSTXCduZ+xQ@mail.gmail.com>
+ <CAGRGNgWH9U3XeatXA9xpkLz76COuL1xjYcfXQYLTGKBxvy=M-A@mail.gmail.com>
+ <CALeDE9M78so=roEFion9GGo4tV7c+M885=ZNZgi9zKyBur+iMQ@mail.gmail.com>
+ <190355aedf0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <CAG17S_NBO=tTBp9GX=S9C4REbT-Gx634n66+7JERcWbe-KXt-g@mail.gmail.com>
+ <190369b8c10.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <CAG17S_NHC7EqUMtc58eSY9Yoq4K0mvp=C1rcP8PTRzajXW3Csg@mail.gmail.com>
+ <c065ae75-f89e-4b14-9fc3-6ef19e6d144b@broadcom.com> <CAG17S_OMV5TpCO+XwP-6dQNB_zVs+OCoawpngZUshuDOgFOF0w@mail.gmail.com>
+ <1905383f7e0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <CAG17S_MPwwgzup17zwHmNH87RS9mrwn7A8v0FkntQx2du6fLig@mail.gmail.com> <19054769d10.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <19054769d10.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+From: KeithG <ys3al35l@gmail.com>
+Date: Wed, 26 Jun 2024 17:46:50 -0500
+Message-ID: <CAG17S_NojmnuQqLyOAT6+Tq4OLaBVc1FY6J8cqwWvo_VxcNLiA@mail.gmail.com>
+Subject: Re: brcmfmac: how to setup SAE on RPi // Re: [PATCH] wifi: brcmsmac:
+ advertise MFP_CAPABLE to enable WPA3
+To: Arend Van Spriel <arend.vanspriel@broadcom.com>
+Cc: Peter Robinson <pbrobinson@gmail.com>, Julian Calaby <julian.calaby@gmail.com>, 
+	Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org, 
+	brcm80211@lists.linux.dev, Jouni Malinen <j@w1.fi>, hostap@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: h9yfv2yJ3IFbZxcRi5DupzyUboiU_lAX
-X-Proofpoint-ORIG-GUID: h9yfv2yJ3IFbZxcRi5DupzyUboiU_lAX
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-26_11,2024-06-25_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 bulkscore=0
- mlxlogscore=999 clxscore=1015 mlxscore=0 phishscore=0 impostorscore=0
- adultscore=0 malwarescore=0 lowpriorityscore=0 priorityscore=1501
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2406260142
+Content-Transfer-Encoding: quoted-printable
 
-On 6/25/2024 9:22 PM, Roopni Devanathan wrote:
-> From: Dinesh Karthikeyan <quic_dinek@quicinc.com>
-> 
-> Add support to request transmit DE stats from firmware through HTT stats
-> type 8. These stats give information about enqueued packets, discarded
-> packets, failed packets and other information such as power, bandwidth
-> information, number of retries, etc.
-> 
-> Sample output:
-> -------------
-> echo 8 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats_type
-> cat /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats
-> HTT_TX_DE_CMN_STATS_TLV:
-> mac_id = 0
-> tcl2fw_entry_count = 0
-> not_to_fw = 0
-> .....
-> 
-> HTT_TX_DE_EAPOL_PACKETS_STATS_TLV:
-> m1_packets = 0
-> m2_packets = 0
-> m3_packets = 0
-> .....
-> 
-> HTT_TX_DE_CLASSIFY_STATS_TLV:
-> arp_packets = 0
-> igmp_packets = 0
-> dhcp_packets = 0
-> .....
-> 
-> HTT_TX_DE_CLASSIFY_FAILED_STATS_TLV:
-> ap_bss_peer_not_found = 0
-> ap_bcast_mcast_no_peer = 0
-> sta_delete_in_progress = 0
-> .....
-> 
-> HTT_TX_DE_CLASSIFY_STATUS_STATS_TLV:
-> eok = 0
-> classify_done = 0
-> lookup_failed = 0
-> .....
-> 
-> HTT_TX_DE_ENQUEUE_PACKETS_STATS_TLV:
-> enqueued_pkts = 0
-> to_tqm = 0
-> to_tqm_bypass = 0
-> 
-> HTT_TX_DE_ENQUEUE_DISCARD_STATS_TLV:
-> discarded_pkts = 0
-> local_frames = 0
-> is_ext_msdu = 0
-> 
-> HTT_TX_DE_COMPL_STATS_TLV:
-> tcl_dummy_frame = 0
-> tqm_dummy_frame = 0
-> tqm_notify_frame = 0
-> .....
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
-> 
-> Signed-off-by: Dinesh Karthikeyan <quic_dinek@quicinc.com>
-> Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+On Wed, Jun 26, 2024 at 7:30=E2=80=AFAM Arend Van Spriel
+<arend.vanspriel@broadcom.com> wrote:
+>
+> On June 26, 2024 2:05:07 PM KeithG <ys3al35l@gmail.com> wrote:
+>
+> > On Wed, Jun 26, 2024 at 2:48=E2=80=AFAM Arend Van Spriel
+> > <arend.vanspriel@broadcom.com> wrote:
+> >>
+> >> On June 21, 2024 2:24:19 PM KeithG <ys3al35l@gmail.com> wrote:
+> >>
+> >>> On Fri, Jun 21, 2024 at 4:09=E2=80=AFAM Arend van Spriel
+> >>> <arend.vanspriel@broadcom.com> wrote:
+> >>>>
+> >>>> + Jouni
+> >>>>
+> >>>> On 6/20/2024 8:25 PM, KeithG wrote:
+> >>>>> 1718907734.308740: wlan0: WPA: AP group 0x10 network profile group
+> >>>>> 0x18; available group 0x10
+> >>>>> 1718907734.308748: wlan0: WPA: using GTK CCMP
+> >>>>> 1718907734.308758: wlan0: WPA: AP pairwise 0x10 network profile
+> >>>>> pairwise 0x10; available pairwise 0x10
+> >>>>> 1718907734.308767: wlan0: WPA: using PTK CCMP
+> >>>>> 1718907734.308772: wlan0: WPA: AP key_mgmt 0x400 network profile
+> >>>>> key_mgmt 0x400; available key_mgmt 0x0
+> >>>>
+> >>>>
+> >>>> I suspect the message above indicates the problem as there is no
+> >>>> available key_mgmt to select so looked it up in the code and here it=
+ is:
+> >>>>
+> >>>> sel =3D ie.key_mgmt & ssid->key_mgmt;
+> >>>> #ifdef CONFIG_SAE
+> >>>> if ((!(wpa_s->drv_flags & WPA_DRIVER_FLAGS_SAE) &&
+> >>>> !(wpa_s->drv_flags2 & WPA_DRIVER_FLAGS2_SAE_OFFLOAD_STA)) ||
+> >>>> wpas_is_sae_avoided(wpa_s, ssid, &ie))
+> >>>> sel &=3D ~(WPA_KEY_MGMT_SAE | WPA_KEY_MGMT_SAE_EXT_KEY |
+> >>>>    WPA_KEY_MGMT_FT_SAE |
+> >>>> WPA_KEY_MGMT_FT_SAE_EXT_KEY);
+> >>>> #endif /* CONFIG_SAE */
+> >>>> #ifdef CONFIG_IEEE80211R
+> >>>> if (!(wpa_s->drv_flags & (WPA_DRIVER_FLAGS_SME |
+> >>>>             WPA_DRIVER_FLAGS_UPDATE_FT_IES)))
+> >>>> sel &=3D ~WPA_KEY_MGMT_FT;
+> >>>> #endif /* CONFIG_IEEE80211R */
+> >>>> wpa_dbg(wpa_s, MSG_DEBUG,
+> >>>> "WPA: AP key_mgmt 0x%x network profile key_mgmt 0x%x;
+> >>>> available key_mgmt 0x%x",
+> >>>> ie.key_mgmt, ssid->key_mgmt, sel);
+> >>>>
+> >>>> So 0x400 matches the expectation:
+> >>>>
+> >>>> #define WPA_KEY_MGMT_SAE BIT(10)
+> >>>>
+> >>>> You already confirmed that the driver reports SAE and SAE offload
+> >>>> support. So it seems wpas_is_sae_avoided() must return true. That wi=
+ll
+> >>>> check whether the AP and network profile are setup to MFP. This seem=
+s to
+> >>>> be the fact as your hostapd.conf and wpa_supplicant.conf both have
+> >>>> ieee80211w=3D2 defined. This function can only return true when
+> >>>> is enabled in configuration file:
+> >>>>
+> >>>> # sae_check_mfp: Require PMF support to select SAE key_mgmt
+> >>>> # 0 =3D Do not check PMF for SAE (default)
+> >>>> # 1 =3D Limit SAE when PMF is not enabled
+> >>>> #
+> >>>> # When enabled SAE will not be selected if PMF will not be used
+> >>>> # for the connection.
+> >>>> # Scenarios where this check will limit SAE:
+> >>>> #  1) ieee80211w=3D0 is set for the network
+> >>>> #  2) The AP does not have PMF enabled.
+> >>>> #  3) ieee80211w is unset, pmf=3D1 is enabled globally, and
+> >>>> #     the device does not support the BIP cipher.
+> >>>> # Consider the configuration of global parameterss sae_check_mfp=3D1=
+,
+> >>>> pmf=3D1 and a
+> >>>> # network configured with ieee80211w unset and key_mgmt=3DSAE WPA-PS=
+K.
+> >>>> # In the example WPA-PSK will be used if the device does not support
+> >>>> # the BIP cipher or the AP has PMF disabled.
+> >>>> # Limiting SAE with this check can avoid failing to associate to an =
+AP
+> >>>> # that is configured with sae_requires_mfp=3D1 if the device does
+> >>>> # not support PMF due to lack of the BIP cipher.
+> >>>>
+> >>>> The default is not to check it and you wpa_supplicant.conf does not
+> >>>> specify it.
+> >>>>
+> >>>> # cat /etc/wpa_supplicant/wpa_supplicant-wlan0.conf
+> >>>> ctrl_interface=3DDIR=3D/run/wpa_supplicant GROUP=3Dnetdev
+> >>>> update_config=3D1
+> >>>> network=3D{
+> >>>> ssid=3D"deskSAE"
+> >>>> sae_password=3D"secret123"
+> >>>> proto=3DRSN
+> >>>> key_mgmt=3DSAE
+> >>>> pairwise=3DCCMP
+> >>>> ieee80211w=3D2
+> >>>> }
+> >>>>
+> >>>> $ cat /etc/hostapd/hostapd.conf
+> >>>> # interface and driver
+> >>>> interface=3Dap0
+> >>>> driver=3Dnl80211
+> >>>>
+> >>>> # WIFI-Config
+> >>>> ssid=3DdeskSAE
+> >>>> channel=3D1
+> >>>> hw_mode=3Dg
+> >>>>
+> >>>> wpa=3D2
+> >>>> wpa_key_mgmt=3DSAE
+> >>>> wpa_pairwise=3DCCMP
+> >>>> sae_password=3Dsecret123
+> >>>> sae_groups=3D19
+> >>>> ieee80211w=3D2
+> >>>> sae_pwe=3D0
+> >>>>
+> >>>> Regards,
+> >>>> Arend
+> >>>>
+> >>>>
+> >>>>> 1718907734.308779: wlan0: WPA: Failed to select authenticated key
+> >>>>> management type
+> >>>>> 1718907734.308787: wlan0: WPA: Failed to set WPA key management and
+> >>>>> encryption suites
+> >>>
+> >>> Arend,
+> >>>
+> >>> I find the wpa_supplicant docs really hard to understand. I have read
+> >>> through your response a few times and am still a bit confused. Does
+> >>> this have to do with a pure wpa3 versus a wpa2/3 AP?
+> >>
+> >> Correct. If I am not mistaken MFP aka PMF aka 802.11w is mandatory for=
+ WPA3.
+> >>
+> >>> I have tried editing my hostapd.conf and my wpa_supplicant.conf and
+> >>> still cannot get a connection, so I must be doing something wrong.
+> >>> I commented the ieee80211w line on both and it would not connect.
+> >>> I tried changing the wpa_key_mgmt on both ends to be 'SAE WPA_PSK' an=
+d
+> >>> it still would not connect.
+> >>>
+> >>> What *should* the configurations be in the hostapd.conf and
+> >>> wpa_supplicant.conf to negotiate this as a pure wpa3 setup? What
+> >>> should it be to be a wpa2/3 setup? My phone worked fine to connect
+> >>> with the original hostapd setup, but I have no idea what it is doing
+> >>
+> >> As I mentioned in my previous email both config files listed above loo=
+k
+> >> okay to me (might be wrong though). The problem seems to be with
+> >> wpas_is_sae_avoided(). For it to return true the config should have:
+> >>
+> >> sae_check_mfp=3D1
+> >>
+> >> But you don't have that and default is 0 so it should check for MFP. T=
+his
+> >> is where my trail ends. To learn more I would add additional debug pri=
+nts.
+> >> Are you comfortable rebuilding wpa_supplicant from source?
+> >>
+> >> Regards,
+> >> Arend
+> >
+> > Arend,
+> >
+> > Thanks for the reply. I could try to rebuild wpa_supplicant from
+> > source. This is on RPi, so debian *.debs which are a pain, but I think
+> > I can do it.
+> >
+> > Do I understand correctly that 'sae_check_mfp=3D1' is supposed to be in
+> > the hostapd.conf and wpa_supplicant.conf? I can try that and see if
+> > anything changes.
+>
+> Ok. We can try first to put following in wpa_supplicant.conf:
+>
+> sae_check_mfp=3D0
+>
+> Let me know if that makes any difference.
+>
+> > Why would I have to re-build wpa_supplicant?
+>
+> I would provide a patch with additional debug prints so I get better
+> understanding what is going wrong. Would be great if you can apply that a=
+nd
+> rebuild.
+>
+> Regards,
+> Arend
+>
+>
+Arend,
 
+I was able to try it this afternoon.
+My hostapd is still:
+# interface and driver
+interface=3Dap0
+driver=3Dnl80211
+
+# WIFI-Config
+ssid=3DdeskSAE
+channel=3D1
+hw_mode=3Dg
+
+wpa=3D2
+wpa_key_mgmt=3DSAE
+wpa_pairwise=3DCCMP
+sae_password=3Dsecret123
+sae_groups=3D19
+ieee80211w=3D2
+sae_pwe=3D0
+
+and I can still connect from my phone to this AP.
+
+I tried this as my /etc/wpa_supplicant/wpa_supplicant-wlan0.conf
+ctrl_interface=3DDIR=3D/run/wpa_supplicant GROUP=3Dnetdev
+update_config=3D1
+ network=3D{
+  ssid=3D"deskSAE"
+  sae_password=3D"secret123"
+  proto=3DRSN
+  key_mgmt=3DSAE
+  pairwise=3DCCMP
+  ieee80211w=3D2
+  sae_check_mfp=3D1
+}
+
+and when I try to connect, I get:
+# wpa_supplicant -i wlan0 -c /etc/wpa_supplicant/wpa_supplicant-wlan0.conf
+Successfully initialized wpa_supplicant
+Line 10: unknown network field 'sae_check_mfp'.
+Line 11: failed to parse network block.
+Failed to read or parse configuration
+'/etc/wpa_supplicant/wpa_supplicant-wlan0.conf'.
+: CTRL-EVENT-DSCP-POLICY clear_all
+
+my version of wpa_supplicant is
+# wpa_supplicant -v
+wpa_supplicant v2.10
+Copyright (c) 2003-2022, Jouni Malinen <j@w1.fi> and contributors
+
+I will build the latest from git and await your patch.
+
+Keith
 
