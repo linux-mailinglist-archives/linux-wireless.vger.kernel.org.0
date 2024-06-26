@@ -1,170 +1,144 @@
-Return-Path: <linux-wireless+bounces-9564-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9565-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72B52917537
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jun 2024 02:25:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 013ED91753F
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jun 2024 02:36:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 233D328463C
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jun 2024 00:25:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 786C5284345
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jun 2024 00:36:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28BF6522A;
-	Wed, 26 Jun 2024 00:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80812579;
+	Wed, 26 Jun 2024 00:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="np9iFzKL"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="g7OUPIdq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D93D1FDA;
-	Wed, 26 Jun 2024 00:25:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7D563C8
+	for <linux-wireless@vger.kernel.org>; Wed, 26 Jun 2024 00:36:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719361523; cv=none; b=NYnHABCqv7prrKVpcgNSGIHGcaUjQNnhcCN7exfHcmiy/tVBzip3jVRfSHGcxnqDRNTnVVRoiBfkZMLNNTUgp8gN8K6uLaT+C04Ffe3AzrHvt/AFzLTFGH+sG6yvMwJCZprTVWcN5y+4Uv+pCIWb5qeTtVO1Cub8J96kaMX08mQ=
+	t=1719362208; cv=none; b=fX83bw+Ozprmu/i6xHzlr5DlNozIvGYHxvNFCAFgBuDFZXVzOYgO+fmsB8YHQBKmsvAkXcyHQdhQTGNzR+/i45Bqfq6NDBs0Bn970YKmWYmd1kHd3Meq6RV5wR6BjlGcHkKZ74BYd30lXwa/ZzbRbfF4PegM7atcbrzBGgDP0hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719361523; c=relaxed/simple;
-	bh=pdvH9UYQ/SqS+nHU6W6FNxWXK9lUyuz9ljcuqj5ktlg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WCtNjbA2VoKm24pJfUjjOn9WdW/k8O2DGowQeSuzLkR7IzzX3cgUv+pufXEznEhk4Pmfa+Mr6jqz64Nuxu9dCgh9AxBwZ8vT7rY3BwTeXNHd4sMAh3mqlNa9LuHfXCPbSq6fRl2XZhWq+nRgigcTqWXwrkTa8+KwnGvynORN2+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=np9iFzKL; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1719361521; x=1750897521;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=pdvH9UYQ/SqS+nHU6W6FNxWXK9lUyuz9ljcuqj5ktlg=;
-  b=np9iFzKLsFz1QS3GA1bSSOTYKOAZvdMVVx2kzMNFtJdvdIyyTfWQwzoT
-   7b12z0O2fQg9sGeflfF202c2asQnvbcqwNaIJ7a9SGdFmlFKMao9Vsbmv
-   RXzZvOMo1mn2/Iy6CaLrcSc1/WRTh5YKL55AjuLHIYm750DPiTSxzAxQF
-   gLZe7ycyVagkzd8MJgn6S4TjUpjabyqNHQYzsef9lhSHT+jgRJGJXiEKU
-   wZk4ykHcCnHrFWv4Ioyi86yOsLw2yjEH+jC/QbkRQxK4sSGnJyW4rBrQG
-   olA5fxap7sfHpp2hezHUcIq7WybzHiBk6d5Vp9yA52bOffnteaJeXF/+X
-   A==;
-X-CSE-ConnectionGUID: Gqj4rdvCQMSlShS+0dgkLg==
-X-CSE-MsgGUID: L1yRYoHEQnSBVSxmE7f96A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11114"; a="27551453"
-X-IronPort-AV: E=Sophos;i="6.08,265,1712646000"; 
-   d="scan'208";a="27551453"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2024 17:25:21 -0700
-X-CSE-ConnectionGUID: VFKVk0CLRoyaeAVqjy9c6g==
-X-CSE-MsgGUID: Or6R2Nf1SCmTOt4t1u9WuQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,265,1712646000"; 
-   d="scan'208";a="43919377"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 25 Jun 2024 17:25:18 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sMGTM-000Ept-1f;
-	Wed, 26 Jun 2024 00:25:16 +0000
-Date: Wed, 26 Jun 2024 08:24:23 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Lin <yu-hao.lin@nxp.com>, linux-wireless@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	briannorris@chromium.org, kvalo@kernel.org, francesco@dolcini.it,
-	tsung-hsien.hsieh@nxp.com, David Lin <yu-hao.lin@nxp.com>
-Subject: Re: [PATCH 42/43] wifi: nxpwifi: add Makefile and Kconfig files for
- nxpwifi compilation
-Message-ID: <202406260848.0pH4xjvI-lkp@intel.com>
-References: <20240621075208.513497-43-yu-hao.lin@nxp.com>
+	s=arc-20240116; t=1719362208; c=relaxed/simple;
+	bh=4PH8QzohIeYSi51Vo5BU0ogEcYZDxvVqUOMrivMg+7M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ehxD+9F0RFf+yrE1rE8I2KfA/1WiPi2bsYm1FG0/GGfkp7tTgU+qQyDBkElzFvkAgLg20uFRyVfP0osgmENBjPZMWNUrArENio+/iSKrmo9jhFL062mDbQqb0nJ4Oh3qSsvjVRqHz5nHD5+T6752GTuew85kgsa4i8zO6R9Cb6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=g7OUPIdq; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45PH4j7I018178;
+	Wed, 26 Jun 2024 00:36:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	TbdLEe27pad8QYvgFcmoFIfhy5+V7lkkbl31wZ/GXRI=; b=g7OUPIdq271QZX88
+	pnrmryJ/yH6YpMj9da3Npyt/mTTkOzz1oy1z2NCaN4jIzY6+CIUCMvZW7TPDGKDl
+	4+FUyxvVXxFIlnN6kcMV9A7/3JwaCrbV0ZNM8VM3QdXl6k1XNb0SKoXiqH6hzAt9
+	P6PEjBzw+rhKby9kcBWaDqt9gHGsiZN622K9sQeQChdSnn6YZbob6WEYVgkxvbEe
+	ftZ7BCgj7tij7jRwBBpFhldO+Go5kTGPIQYdUmueBANmKWDUUBmPYs9D6Af0HJnI
+	3a2Bt70hUufpyP/doOsrEnTcZ5/zKnd19Fk98adYWcvKqvZfRT/sr3KymjrK/DU1
+	8eKC2Q==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ywkyn84mp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 26 Jun 2024 00:36:40 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45Q0adPb006280
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 26 Jun 2024 00:36:39 GMT
+Received: from [10.50.50.182] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 25 Jun
+ 2024 17:36:37 -0700
+Message-ID: <42e80698-5667-5cf9-f8e1-38c9816889c0@quicinc.com>
+Date: Wed, 26 Jun 2024 06:06:33 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240621075208.513497-43-yu-hao.lin@nxp.com>
-
-Hi David,
-
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on 238d636723a30311e20fde0a361662e829fe488b]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/David-Lin/wifi-nxpwifi-add-11ac-c/20240625-161306
-base:   238d636723a30311e20fde0a361662e829fe488b
-patch link:    https://lore.kernel.org/r/20240621075208.513497-43-yu-hao.lin%40nxp.com
-patch subject: [PATCH 42/43] wifi: nxpwifi: add Makefile and Kconfig files for nxpwifi compilation
-config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20240626/202406260848.0pH4xjvI-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240626/202406260848.0pH4xjvI-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202406260848.0pH4xjvI-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   drivers/net/wireless/nxp/nxpwifi/11n_rxreorder.c: In function 'nxpwifi_11n_dispatch_amsdu_pkt':
->> drivers/net/wireless/nxp/nxpwifi/11n_rxreorder.c:40:47: warning: variable 'rx_hdr' set but not used [-Wunused-but-set-variable]
-      40 |                         struct rx_packet_hdr *rx_hdr;
-         |                                               ^~~~~~
---
-   drivers/net/wireless/nxp/nxpwifi/sta_event.c: In function 'nxpwifi_sta_event_link_lost':
->> drivers/net/wireless/nxp/nxpwifi/sta_event.c:21:13: warning: variable 'reason_code' set but not used [-Wunused-but-set-variable]
-      21 |         u16 reason_code;
-         |             ^~~~~~~~~~~
---
-   drivers/net/wireless/nxp/nxpwifi/sta_rx.c: In function 'nxpwifi_process_rx_packet':
->> drivers/net/wireless/nxp/nxpwifi/sta_rx.c:78:25: warning: variable 'rx_pkt_len' set but not used [-Wunused-but-set-variable]
-      78 |         u16 rx_pkt_off, rx_pkt_len;
-         |                         ^~~~~~~~~~
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH] wifi: ath12k: fix peer metadata parsing
+To: Kalle Valo <kvalo@kernel.org>
+CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20240624145418.2043461-1-quic_periyasa@quicinc.com>
+ <87frt1hvc9.fsf@kernel.org>
+Content-Language: en-US
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+In-Reply-To: <87frt1hvc9.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: G28z-W2S3iTUR94GSMZTtVOFE6XPK73w
+X-Proofpoint-GUID: G28z-W2S3iTUR94GSMZTtVOFE6XPK73w
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-25_19,2024-06-25_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 malwarescore=0
+ mlxscore=0 impostorscore=0 phishscore=0 lowpriorityscore=0 adultscore=0
+ mlxlogscore=999 spamscore=0 clxscore=1015 suspectscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2406260003
 
 
-vim +/rx_hdr +40 drivers/net/wireless/nxp/nxpwifi/11n_rxreorder.c
 
-148be2798f7a0c David Lin 2024-06-21  17  
-148be2798f7a0c David Lin 2024-06-21  18  /* This function will dispatch amsdu packet and forward it to kernel/upper
-148be2798f7a0c David Lin 2024-06-21  19   * layer.
-148be2798f7a0c David Lin 2024-06-21  20   */
-148be2798f7a0c David Lin 2024-06-21  21  static int nxpwifi_11n_dispatch_amsdu_pkt(struct nxpwifi_private *priv,
-148be2798f7a0c David Lin 2024-06-21  22  					  struct sk_buff *skb)
-148be2798f7a0c David Lin 2024-06-21  23  {
-148be2798f7a0c David Lin 2024-06-21  24  	struct rxpd *local_rx_pd = (struct rxpd *)(skb->data);
-148be2798f7a0c David Lin 2024-06-21  25  	int ret;
-148be2798f7a0c David Lin 2024-06-21  26  
-148be2798f7a0c David Lin 2024-06-21  27  	if (le16_to_cpu(local_rx_pd->rx_pkt_type) == PKT_TYPE_AMSDU) {
-148be2798f7a0c David Lin 2024-06-21  28  		struct sk_buff_head list;
-148be2798f7a0c David Lin 2024-06-21  29  		struct sk_buff *rx_skb;
-148be2798f7a0c David Lin 2024-06-21  30  
-148be2798f7a0c David Lin 2024-06-21  31  		__skb_queue_head_init(&list);
-148be2798f7a0c David Lin 2024-06-21  32  
-148be2798f7a0c David Lin 2024-06-21  33  		skb_pull(skb, le16_to_cpu(local_rx_pd->rx_pkt_offset));
-148be2798f7a0c David Lin 2024-06-21  34  		skb_trim(skb, le16_to_cpu(local_rx_pd->rx_pkt_length));
-148be2798f7a0c David Lin 2024-06-21  35  
-148be2798f7a0c David Lin 2024-06-21  36  		ieee80211_amsdu_to_8023s(skb, &list, priv->curr_addr,
-148be2798f7a0c David Lin 2024-06-21  37  					 priv->wdev.iftype, 0, NULL, NULL, false);
-148be2798f7a0c David Lin 2024-06-21  38  
-148be2798f7a0c David Lin 2024-06-21  39  		while (!skb_queue_empty(&list)) {
-148be2798f7a0c David Lin 2024-06-21 @40  			struct rx_packet_hdr *rx_hdr;
-148be2798f7a0c David Lin 2024-06-21  41  
-148be2798f7a0c David Lin 2024-06-21  42  			rx_skb = __skb_dequeue(&list);
-148be2798f7a0c David Lin 2024-06-21  43  			rx_hdr = (struct rx_packet_hdr *)rx_skb->data;
-148be2798f7a0c David Lin 2024-06-21  44  
-148be2798f7a0c David Lin 2024-06-21  45  			if (priv->bss_role == NXPWIFI_BSS_ROLE_UAP)
-148be2798f7a0c David Lin 2024-06-21  46  				ret = nxpwifi_uap_recv_packet(priv, rx_skb);
-148be2798f7a0c David Lin 2024-06-21  47  			else
-148be2798f7a0c David Lin 2024-06-21  48  				ret = nxpwifi_recv_packet(priv, rx_skb);
-148be2798f7a0c David Lin 2024-06-21  49  			if (ret == -1)
-148be2798f7a0c David Lin 2024-06-21  50  				nxpwifi_dbg(priv->adapter, ERROR,
-148be2798f7a0c David Lin 2024-06-21  51  					    "Rx of A-MSDU failed");
-148be2798f7a0c David Lin 2024-06-21  52  		}
-148be2798f7a0c David Lin 2024-06-21  53  		return 0;
-148be2798f7a0c David Lin 2024-06-21  54  	}
-148be2798f7a0c David Lin 2024-06-21  55  
-148be2798f7a0c David Lin 2024-06-21  56  	return -1;
-148be2798f7a0c David Lin 2024-06-21  57  }
-148be2798f7a0c David Lin 2024-06-21  58  
+On 6/25/2024 9:23 PM, Kalle Valo wrote:
+> Karthikeyan Periyasamy <quic_periyasa@quicinc.com> writes:
+> 
+>> Currently, the Rx data path only supports parsing peer metadata of version
+>> zero. However, the QCN9274 platform configures the peer metadata version
+>> as V1B. When V1B peer metadata is parsed using the version zero logic,
+>> invalid data is populated, causing valid packets to be dropped. To address
+>> this issue, refactor the peer metadata version and add the version based
+>> parsing to populate the data from peer metadata correctly.
+>>
+>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+>>
+>> Fixes: 287033810990 ("wifi: ath12k: add support for peer meta data version")
+>> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+> 
+> [...]
+> 
+>> +static u16 ath12k_dp_rx_get_peer_id(enum ath12k_peer_metadata_version ver,
+>> +				    __le32 peer_metadata)
+>> +{
+>> +	switch (ver) {
+>> +	default:
+>> +		WARN_ON(1);
+>> +		fallthrough;
+> 
+> I'm a bit wary of using WARN_ON() in data path, so in the pending branch
+> I changed this to ath12k_warn():
+> 
+> 	default:
+> 		ath12k_warn(ab, "Unknown peer metadata version: %d", ver);
+> 		fallthrough;
+> 
+> The benefit is also that now we print the unknown value. Would this
+> work?
+> 
+> Please check:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git/commit/?h=pending&id=0228ca402186a123e5c90187f952121de50bf64f
+> 
+
+Looks fine to me.
+
+Thanks.
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Karthikeyan Periyasamy
+--
+கார்த்திகேயன் பெரியசாமி
 
