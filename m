@@ -1,101 +1,93 @@
-Return-Path: <linux-wireless+bounces-9610-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9611-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2D9C9185DC
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jun 2024 17:31:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2831B918617
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jun 2024 17:42:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C91FAB2D2E5
-	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jun 2024 15:31:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8510AB20342
+	for <lists+linux-wireless@lfdr.de>; Wed, 26 Jun 2024 15:42:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A1711850A9;
-	Wed, 26 Jun 2024 15:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEDC718A935;
+	Wed, 26 Jun 2024 15:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Ww/8UWnz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U5p64JE5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7054018C338
-	for <linux-wireless@vger.kernel.org>; Wed, 26 Jun 2024 15:30:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B15AA92F
+	for <linux-wireless@vger.kernel.org>; Wed, 26 Jun 2024 15:41:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719415857; cv=none; b=qskISpp5JE1ZyKLMhjN9CnlBGR/VxLeXmRFWKpK+rqDkRANveKFEL2fFOHHJPpV+r+3CKk+tWRN7RGrpJktszGH4vHNiG42l2ro5JNsmDo58a/7k4LybuGM2ISC6Fh2UxOO5mrVLDWbkc/Ad6+c/+sZL9SPBohfwVC0e9bwVU8I=
+	t=1719416518; cv=none; b=oP5MVRZSBppgEPalg27Huq1WoRHn830Eho7ATJyM4EA8iItanjKKPJLsx1bSbfblnVv6xI5gZUflxDK8turXe3ruQIjD4Enw6PJydS9Q8zSkCb9Z3bkMen6D0Dg3qUbx8/cubQmgX1llPHhJzEnTSiFEJS+6NXD0YzJCnz+gQZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719415857; c=relaxed/simple;
-	bh=dJISehPChNg280YDkqVRwTaeCEMcLLvokSJ26dLkvTs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=b5oDc5b0JzetWNtQ7B+8Ll3U5qMBGL8TLUEEuUVmRclBLOOTzUOWAoUKECWkgCuxY1eqYcujaQHA/BzWEeqCao7eurVUY0huXnoY2Mmg6nYjcTRX22fsUSMPatbJBC7ONxR9VBvAva7G1/sWhWJFs+MPELL7pmcTZTx5JIJCtkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Ww/8UWnz; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45QAfjkY029578;
-	Wed, 26 Jun 2024 15:30:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	AoVR0f8c5XaTly5lMjRvh2GcUnOM3ExOJ5sNDJHMFsc=; b=Ww/8UWnzXLjinOuH
-	IBGSbvxE1yCkJq+/Nyo4JlPwZvTXD+bcF3417RmiY+PhBrTXFnOVvPIcqAXztRp2
-	GzCN9+y8GxgM/RprYhJ5Z+9H+9POd790hp/sWQUwHAjQRkPiboNKzR3aYJ3kT2kI
-	3OS8e2k60F86YJ3AVbWS1TPE8r9QQ4HfWxXftgPfGc5/c78WtXwozSn8L2xNmRFH
-	s4vOVGP2NEbKdAnkvGsSfrPrhpywt1HaBL8rISdwisGo4Mzk5aiwKxkSd4brzOd/
-	C9GVOXw1cKYqHdjkqXUuMO8LBl0vg6MkTXFCCaYRz94melA6q9k5n9l9Qi5/bm2C
-	NPv7zw==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ywnm6sp10-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 26 Jun 2024 15:30:50 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45QFUnDt024866
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 26 Jun 2024 15:30:49 GMT
-Received: from [10.48.244.230] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 26 Jun
- 2024 08:30:48 -0700
-Message-ID: <bf4f7295-fb25-401b-b9ae-6c0fab758ce6@quicinc.com>
-Date: Wed, 26 Jun 2024 08:30:48 -0700
+	s=arc-20240116; t=1719416518; c=relaxed/simple;
+	bh=U3zPUmPwStP/4jvwruoRXcg0ehbADGhwirCpV0MeysM=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=cZ6e4eOeRUs3lkN0SimpyhSUmLzAaSjBlLimtNwQPVn7UtNTn5Z+qAhXLbbXS43x92G38AC5F4zXx9QMgu5ZAR2ZzVzvHWOBxoLIdrw3IF7KibyCMBi/YuC8gN5upBITVhTO+wBM5eMVhuP8MeRuNT9LzLZiKfcplJRaOZjxXcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U5p64JE5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A79FC116B1;
+	Wed, 26 Jun 2024 15:41:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719416518;
+	bh=U3zPUmPwStP/4jvwruoRXcg0ehbADGhwirCpV0MeysM=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=U5p64JE5pAQZYEaQyXYA8BUGWQu3rg+BzYaMOAjQ0EbZRNBOdblQ0gqBHPOX+uN8A
+	 7tBJWdNL9Q8Ll/CUpopchwbmyQXKpOb+BoE6cCwjEVdnyNwwSgwfRnyryrj9QLHlq3
+	 SenAnMAGd8wxEQYPufNQJzs97l+/DaX+ZuZsVWmrTryxXIu5VP2n1hH2XADg5sxKyj
+	 E/ZQRW1ya8MhoaH1Xd88Wkz/Xm514g0Q7aRmPk6UjfxSquLZoqSKoSY9Oyvk8uFmda
+	 KBEC0tKoEUjLQFNyMCMYpxRJCIBxQqAICAhAFblJh4iFxfLLliXlPCk1Q/3ae7bli+
+	 EEm/ouDdVec+A==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless] MAINTAINERS: wifi: update ath.git location
-Content-Language: en-US
-To: Kalle Valo <kvalo@kernel.org>, <ath10k@lists.infradead.org>,
-        <ath11k@lists.infradead.org>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240626102632.1554485-1-kvalo@kernel.org>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240626102632.1554485-1-kvalo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: uBuSAKqJ3V8LeYN0z97DHBsI5P66HALB
-X-Proofpoint-ORIG-GUID: uBuSAKqJ3V8LeYN0z97DHBsI5P66HALB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-26_07,2024-06-25_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
- priorityscore=1501 suspectscore=0 phishscore=0 clxscore=1011 spamscore=0
- mlxscore=0 malwarescore=0 mlxlogscore=886 lowpriorityscore=0
- impostorscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2406140001 definitions=main-2406260114
+Subject: Re: [PATCH v2] wifi: ath12k: Fix pdev id sent to firmware for single
+ phy
+ devices
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20240621102809.3984004-1-quic_rgnanase@quicinc.com>
+References: <20240621102809.3984004-1-quic_rgnanase@quicinc.com>
+To: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
+Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
+ Lingbo Kong <quic_lingbok@quicinc.com>,
+ Ramya Gnanasekar <quic_rgnanase@quicinc.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <171941651550.1568703.13692158978977489041.kvalo@kernel.org>
+Date: Wed, 26 Jun 2024 15:41:57 +0000 (UTC)
 
-On 6/26/2024 3:26 AM, Kalle Valo wrote:
-> ath.git tree has moved to a new location. The old location will be an alias to
-> the new location and will work at least until end of 2024, but best to update
-> git trees already now.
+Ramya Gnanasekar <quic_rgnanase@quicinc.com> wrote:
+
+> Pdev id from mac phy capabilities will be sent as a part of
+> HTT/WMI command to firmware. This causes issue with single pdev
+> devices where firmware does not respond to the WMI/HTT request
+> sent from host.
 > 
-> Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> For single pdev devices firmware expects pdev id as 1 for 5 GHz/6 GHz
+> phy and 2 for 2 GHz band. Add wrapper ath12k_mac_get_target_pdev_id()
+> to help fetch right pdev for single pdev devices.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> 
+> Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
+> Signed-off-by: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+
+Patch applied to ath-next branch of ath.git, thanks.
+
+2c7857677d69 wifi: ath12k: Fix pdev id sent to firmware for single phy devices
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20240621102809.3984004-1-quic_rgnanase@quicinc.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
 
