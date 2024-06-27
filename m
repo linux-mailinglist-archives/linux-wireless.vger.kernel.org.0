@@ -1,149 +1,106 @@
-Return-Path: <linux-wireless+bounces-9634-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9635-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D0FF919DA3
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jun 2024 04:59:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A89D919DD8
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jun 2024 05:31:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06E74B22211
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jun 2024 02:59:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F2811F22767
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jun 2024 03:31:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E858134D1;
-	Thu, 27 Jun 2024 02:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C0012E71;
+	Thu, 27 Jun 2024 03:31:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Br2KSja0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C6E13FF6
-	for <linux-wireless@vger.kernel.org>; Thu, 27 Jun 2024 02:59:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562C1291E
+	for <linux-wireless@vger.kernel.org>; Thu, 27 Jun 2024 03:31:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719457179; cv=none; b=jf2EFtGAr4TipOQIsEzIhvy6zopL7PXtVIIoAA2FbBT+Vl3vrvlw2weJOseWeMhDAUep8JlBl4oRBHEMis1gl21fuwvt8f1CHLVoaGQ7S5iyEyEnsD+Scp87zjlIAdfGCZjnK/uzjVtxn6c4FiP+FjJ4hb+rUM6g2RaDfnVLF2A=
+	t=1719459087; cv=none; b=C2daW1G0pBEH1cJyalBDm1KjtuERKflhixqEIVQeJJRQvMxR3WucklU6NPW8d3bIxEkTtaf1c16VpKfZqvFMV3nN/GhlDdDYzfj/FMYI6f7r40XNjp2gKWnOOIBj5R0BQDZ4AXfBwawVenbWanRbN7LBXNca77JwtbKvCebRKls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719457179; c=relaxed/simple;
-	bh=a638qQXRzKXiQ7W6xu9jltvnROy2sCxLakZKBJekvCM=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LcyOg+ocX3M46nBhNitNEWcQUQ5mLlyJqztokB6ax+Q+SYSkcaIocWEKTfPZ06Nc+xmD/MnEWMHPguUf9llnnwEoUtvcjfFlDLXQ4/e+VLEysyYyJLj0lDSSy2A1Z/2d7m5zlc+8dakEagDUXmsva6AQBUG/nEPXjJWXNzjn2n8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 45R2xZ4M12591148, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 45R2xZ4M12591148
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Thu, 27 Jun 2024 10:59:35 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 27 Jun 2024 10:59:35 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 27 Jun
- 2024 10:59:35 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-Subject: [PATCH 4/4] wifi: rtw89: 8852bt: rfk: add RCK
-Date: Thu, 27 Jun 2024 10:58:49 +0800
-Message-ID: <20240627025849.25198-5-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240627025849.25198-1-pkshih@realtek.com>
-References: <20240627025849.25198-1-pkshih@realtek.com>
+	s=arc-20240116; t=1719459087; c=relaxed/simple;
+	bh=9yu/XquQdBW9AIONE/WrsUjyZICkXbAa080Scqmszmo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=BsjIk8ENiysVwpdPaDToIIcyiAasGlajU5aUH09pDHwme6cXBcemx/sxd0LzefCJsLuj6RcmEgChhkpdowbsy7ZWc6ACPAe3GRb9Jek9WUxxPsA3enVxJCTCWbrD4Et5WkZ8dTbOVE2zx1FkKKcDXQ32NxTaWe1QCfvF0r+eCrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Br2KSja0; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45QM3UUZ003769;
+	Thu, 27 Jun 2024 03:31:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	95cfiXka2X0N1nNQgsCOmwJyr15SxQeuo8qD1A+9W40=; b=Br2KSja0u6r392Bl
+	O3KgJCJkkK64wYc+swsQ+K6xp+Ic31/fj2jKdKjJ0LHRCB5niZIJ/0hRZjk9WWTd
+	aX3PhtDDLPaSYwu7vR0MRYvL73GxLbV42onyciP+tK9mFR9/9U2jF8sml1Em8cx3
+	4YTxt2Qstt8583+0kURGbriV566BpG2Jj2sgXaLp2hak4cqsE7dos5QhKmiKztyq
+	Ox//uce1HvhigbjJQYX5w2K9kaybA7OR2W0iSxEEDYNsU2+ZeuJQmWnJmpi3bsx2
+	/DTnGrxNgFqGqzpCOoQbEdnte3KQdC8L08GyHjy04UFLmO42jjBTvFR4g3ql0rX2
+	nNRaGA==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ywmaf3pe9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 27 Jun 2024 03:31:08 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45R3V7vp022395
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 27 Jun 2024 03:31:07 GMT
+Received: from [10.152.202.18] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 26 Jun
+ 2024 20:31:06 -0700
+Message-ID: <d5ac3c9c-b2cc-4558-87c9-0df986ebef65@quicinc.com>
+Date: Thu, 27 Jun 2024 09:01:03 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/9] Revert "wifi: mac80211: move radar detect work to
+ sdata"
+To: Johannes Berg <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240626045216.3754013-1-quic_adisi@quicinc.com>
+ <20240626045216.3754013-2-quic_adisi@quicinc.com>
+ <6b70365be2858b557340d3799fd7965f66bae2ba.camel@sipsolutions.net>
+Content-Language: en-US
+From: Aditya Kumar Singh <quic_adisi@quicinc.com>
+In-Reply-To: <6b70365be2858b557340d3799fd7965f66bae2ba.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: W8AMJLQ0VoeQXOoOFZfAMJkGeUzIjQgf
+X-Proofpoint-GUID: W8AMJLQ0VoeQXOoOFZfAMJkGeUzIjQgf
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-26_17,2024-06-25_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ suspectscore=0 spamscore=0 bulkscore=0 phishscore=0 malwarescore=0
+ clxscore=1015 mlxscore=0 lowpriorityscore=0 priorityscore=1501
+ mlxlogscore=710 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2406140001 definitions=main-2406270025
 
-RCK is synchronize RC calibration. Driver triggers this calibration and
-writes the result to registers.
+On 6/26/24 17:46, Johannes Berg wrote:
+> On Wed, 2024-06-26 at 10:22 +0530, Aditya Kumar Singh wrote:
+>> This reverts commit ce9e660ef32e87441bf59b04f67a24113e82546a.
+> 
+> Should have 12-digit sha1 and title like in a Fixes tag.
+> 
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- .../wireless/realtek/rtw89/rtw8852bt_rfk.c    | 43 +++++++++++++++++++
- .../wireless/realtek/rtw89/rtw8852bt_rfk.h    |  1 +
- 2 files changed, 44 insertions(+)
+Oh okay sure. This was generated by git itself. Will add properly in 
+next version.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c
-index 6c2fecb58940..fa0e49d58112 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c
-@@ -407,6 +407,41 @@ static void _rx_dck(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy)
- 	}
- }
- 
-+static void _rck(struct rtw89_dev *rtwdev, enum rtw89_rf_path path)
-+{
-+	u32 rf_reg5;
-+	u32 rck_val;
-+	u32 val;
-+	int ret;
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[RCK] ====== S%d RCK ======\n", path);
-+
-+	rf_reg5 = rtw89_read_rf(rtwdev, path, RR_RSV1, RFREG_MASK);
-+
-+	rtw89_write_rf(rtwdev, path, RR_RSV1, RR_RSV1_RST, 0x0);
-+	rtw89_write_rf(rtwdev, path, RR_MOD, RR_MOD_MASK, RR_MOD_V_RX);
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[RCK] RF0x00 = 0x%05x\n",
-+		    rtw89_read_rf(rtwdev, path, RR_MOD, RFREG_MASK));
-+
-+	/* RCK trigger */
-+	rtw89_write_rf(rtwdev, path, RR_RCKC, RFREG_MASK, 0x00240);
-+
-+	ret = read_poll_timeout_atomic(rtw89_read_rf, val, val, 2, 30,
-+				       false, rtwdev, path, RR_RCKS, BIT(3));
-+
-+	rck_val = rtw89_read_rf(rtwdev, path, RR_RCKC, RR_RCKC_CA);
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[RCK] rck_val = 0x%x, ret = %d\n",
-+		    rck_val, ret);
-+
-+	rtw89_write_rf(rtwdev, path, RR_RCKC, RFREG_MASK, rck_val);
-+	rtw89_write_rf(rtwdev, path, RR_RSV1, RFREG_MASK, rf_reg5);
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[RCK] RF 0x1b = 0x%x\n",
-+		    rtw89_read_rf(rtwdev, path, RR_RCKC, RFREG_MASK));
-+}
-+
- static void _drck(struct rtw89_dev *rtwdev)
- {
- 	u32 rck_d;
-@@ -3790,6 +3825,14 @@ void rtw8852bt_dpk_init(struct rtw89_dev *rtwdev)
- 	_set_dpd_backoff(rtwdev, RTW89_PHY_0);
- }
- 
-+void rtw8852bt_rck(struct rtw89_dev *rtwdev)
-+{
-+	u8 path;
-+
-+	for (path = 0; path < RF_PATH_NUM_8852BT; path++)
-+		_rck(rtwdev, path);
-+}
-+
- void rtw8852bt_dack(struct rtw89_dev *rtwdev)
- {
- 	u8 phy_map = rtw89_btc_phymap(rtwdev, RTW89_PHY_0, 0);
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.h b/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.h
-index 772a5b099377..09918835c6e8 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.h
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.h
-@@ -7,6 +7,7 @@
- 
- #include "core.h"
- 
-+void rtw8852bt_rck(struct rtw89_dev *rtwdev);
- void rtw8852bt_dack(struct rtw89_dev *rtwdev);
- void rtw8852bt_iqk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx);
- void rtw8852bt_rx_dck(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx);
--- 
-2.25.1
 
 
