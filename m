@@ -1,173 +1,108 @@
-Return-Path: <linux-wireless+bounces-9669-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9670-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B60891AE5D
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jun 2024 19:43:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E27F591AE5F
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jun 2024 19:44:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 675AE1C20DDE
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jun 2024 17:43:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D3BF28235D
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jun 2024 17:44:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2EEF19AA41;
-	Thu, 27 Jun 2024 17:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E098199EAA;
+	Thu, 27 Jun 2024 17:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VTdADRzh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NSsLewCq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3813D13A276;
-	Thu, 27 Jun 2024 17:42:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A0F81C6A7
+	for <linux-wireless@vger.kernel.org>; Thu, 27 Jun 2024 17:43:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719510167; cv=none; b=mEZzDzTcgBCkNVFxcQgsCXEwiPPR8pdaQ9eEr+SuADJgpJSLhLvUBmqOa32485U3tpS9LlBHMRZ+TDsVLeei4kb8MVKeDto/jeaIol7oe4IM9SZpYsLwqmOkhwymOnurcMgd5KDq1bw02jpaxzvzcJ2qLByQS/d+hwZiI7S8bC0=
+	t=1719510240; cv=none; b=WQyvmNa70HAVPuaDhN+YiLV6ZBo67hPc8MvNp+DolMvg4GVmC+anplaQC6jgAKV+f5MFyX/wDnVCRaknd4W60wVCtLgS2NHrFbK5T36NgCVYmQNSRbRnUqs7eEDTci9WkI+pF59ZpwZ9EIfErbdZxLhFMU+888s7+nfGHqX+6X4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719510167; c=relaxed/simple;
-	bh=18BYPSydRsQbk9N5QMUQyO2sQjo6TlTiWGpxHzojhSw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KyidDSNADogLCpwCD4s7io9Y55XSuV3hurXtvRxadQ3+LKzX117Wc0mjLjYa200kUre3NvvOrAOAOT0Ms+2aoQrZnc9kSdHkszwS1KMkrjlbNQQ9qskXRb8AlqcgTpfKRBLdiqQM0YJFwEBaWi1igaag/sZt2KmsWNpwOcgWifU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VTdADRzh; arc=none smtp.client-ip=209.85.222.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-79c0abd3eaaso279031685a.2;
-        Thu, 27 Jun 2024 10:42:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719510165; x=1720114965; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=C4gLrZc+w7mUh5pQdRJLrbFMJm3I4uzQamXREb3EHkk=;
-        b=VTdADRzh28n2H/sT3D5a1LX8OHz/HXL1w+c6yJJ3O8tfDPn13l/vZa9ThscMgQoUcB
-         G565NVO28a7Ow9VS3oDJNkU+zsufguKKzu8CvY/y2tvcbY/wkHs1YV5+824+1CtPByc3
-         qBu84k7QAbCJY7zcqAachMXeTCZBdNtqH1jlApUTpmkZUqrhE9WDoNiioWsXiD4DpPRk
-         TUTAz/5heJkLJRRNNjmhO0amMx5puPnAbfMrR2oP6sURcXDWbqI80/Bo9zD5WL05jY/X
-         LLDk+LXpz/2r0yWOtNioOQSujK6ORmbVjZRD6KYHC263fkr92e9arheYOYPwXdIfFzqP
-         +1MQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719510165; x=1720114965;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=C4gLrZc+w7mUh5pQdRJLrbFMJm3I4uzQamXREb3EHkk=;
-        b=k7m2bmjBJa/Q4abT5CwCU1netPiU3stU3Gp+xj8vs3MQ6mnqJw3u6ItlfY1m1v5V5C
-         QmGk41wDsa+zWkmXXQ19mdAgDVZ1f10qG/MuJuneai8kjY6J1tfvkoLZO3BwDL3+rrXP
-         nGroj0jtZ7Ltrf1+2NnGK+stluf5ER4F7MXzTLnr7uZbK2Jn/HOWyALWLlK3CkpsLM6E
-         QjH7ly3/jSvb/5v421rrQVk69B26+KNpI9RWh3h1QhtrR0747Bh8L27gFHzgC0QAj/kJ
-         4v9I0Nf6cVfO68MvmkyKYrEmuaNmgSw6wSlvCeVYmyHPTMxQTL8B4/eUcNRKn5/dFHZB
-         Eo3A==
-X-Forwarded-Encrypted: i=1; AJvYcCV2j8GimkJ7Kvj67PPt1klXhmmuonoh+G9/Rkw0fL8VOOiNf+csakZ87HEq3grZK6jk9HPZgp+N0iGbDAcFYE7VaMofSdFYp0ek/J8nVZgkcwY9LP416+Ryoy1ob9FVJbH55OUUBzE4NKVF9fE=
-X-Gm-Message-State: AOJu0YxuBfv8DPnwIhhN+kXe2v3EnybXed4t8/S1PrNsxyobLaXKvYBa
-	k71rFAam5mSHP3CI7NzTeFW/p5cGuszajwHVoxe2GXGBsEmAd+BA
-X-Google-Smtp-Source: AGHT+IEknF/hbYmxJv5GVjta1oahcOg+apR9zJOpwBaCGfSsnRnL26OuoL00t/4W2nMAYNcE1+tBCw==
-X-Received: by 2002:a05:620a:1913:b0:79b:e8ca:861b with SMTP id af79cd13be357-79be8ca8876mr1614969285a.17.1719510165141;
-        Thu, 27 Jun 2024 10:42:45 -0700 (PDT)
-Received: from [10.102.4.159] ([208.195.13.130])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-79d5c7ff033sm75464285a.40.2024.06.27.10.42.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Jun 2024 10:42:44 -0700 (PDT)
-Message-ID: <d9f95dcc-6343-4af3-8acc-a150fb4e5923@gmail.com>
-Date: Thu, 27 Jun 2024 10:42:40 -0700
+	s=arc-20240116; t=1719510240; c=relaxed/simple;
+	bh=XGBF4GFzPS+lpA68bAhNFUcHmk0+0gf0K6RVl3Httmw=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=I/t3ZXv1eiwSLdNxyVnV8Nn0tnOOAE4Pr4e3P9aNmUkDqpG+koKxdkzZXD4cbY5yf9xywXHymEGKcpQ7lP5k7kSmghmjlif7AjKdFqC/igjC+p1WFQqTWyHxH8q9GtJjHy1aLKhHnlLpFaKNaXz/pgSVIuNPWwchAE0sxqjjfW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NSsLewCq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8566DC2BBFC;
+	Thu, 27 Jun 2024 17:43:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719510239;
+	bh=XGBF4GFzPS+lpA68bAhNFUcHmk0+0gf0K6RVl3Httmw=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=NSsLewCqmaIaii72vpwEpE8/Nly5FkRszug9HhMhN1+TT7EcnnnOWJtXUyVhWzsF0
+	 kRAidIj34Jadp77iomLAMxoDT9KgkqDU/uXPg+v+rv/jlc84ZvaEUTSrpvxZ5D0pCd
+	 1BbPhvTKVZekbnbRJ6KizUy7LhyVfQSf+UqsyFBQcWDCBB4YLXtdQ7KhXyxgPNP3MF
+	 6LvR1BUjSMf8qJI3lrZh441669FctXoCYzRsaaUgKjHQ2mZyvunlNsAYOj4EWDYSbv
+	 C63gCc5rqE2e+dE+2Y8veu+PIp8izs0Uy6/oAhZIrTVFPAh3CrktsdrIz+/+H1Vt/e
+	 C3ccZUzg9eGRA==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: invalid vht params rate 1920 100kbps nss 2 mcs 9
-To: Baochen Qiang <quic_bqiang@quicinc.com>, Kalle Valo <kvalo@kernel.org>
-Cc: Paul Menzel <pmenzel@molgen.mpg.de>, linux-wireless@vger.kernel.org,
- ath10k@lists.infradead.org, LKML <linux-kernel@vger.kernel.org>
-References: <fba24cd3-4a1e-4072-8585-8402272788ff@molgen.mpg.de>
- <1faa7eee-ed1e-477b-940d-a5cf4478cf73@gmail.com> <87iky7mvxt.fsf@kernel.org>
- <37ba6cb0-d887-4fcf-b7dc-c93a5fc5900f@gmail.com> <875xu6mtgh.fsf@kernel.org>
- <f7faff80-864a-4411-ad28-4f1151bc1e51@quicinc.com>
-Content-Language: en-US
-From: James Prestwood <prestwoj@gmail.com>
-In-Reply-To: <f7faff80-864a-4411-ad28-4f1151bc1e51@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v5 3/4] wifi: ath12k: add factory test mode support
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20240624095305.37189-4-quic_aarasahu@quicinc.com>
+References: <20240624095305.37189-4-quic_aarasahu@quicinc.com>
+To: Aaradhana Sahu <quic_aarasahu@quicinc.com>
+Cc: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+ Aaradhana Sahu
+	<quic_aarasahu@quicinc.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <171951023642.2426772.2204079316674415145.kvalo@kernel.org>
+Date: Thu, 27 Jun 2024 17:43:58 +0000 (UTC)
 
-HI Baochen,
+Aaradhana Sahu <quic_aarasahu@quicinc.com> wrote:
 
-On 6/26/24 1:53 AM, Baochen Qiang wrote:
->
-> On 6/18/2024 6:33 PM, Kalle Valo wrote:
->> + baochen
->>
->> James Prestwood <prestwoj@gmail.com> writes:
->>
->>> Hi Kalle,
->>>
->>> On 6/17/24 8:27 AM, Kalle Valo wrote:
->>>> James Prestwood <prestwoj@gmail.com> writes:
->>>>
->>>>> Hi Paul,
->>>>>
->>>>> On 6/16/24 6:10 AM, Paul Menzel wrote:
->>>>>> Dear Linux folks,
->>>>>>
->>>>>>
->>>>>> Linux 6.10-rc3 (commit a3e18a540541) logged the warning below when
->>>>>> connecting to a public WiFi:
->>>>>>
->>>>>>       ath10k_pci 0000:3a:00.0: invalid vht params rate 1920 100kbps
->>>>>> nss 2 mcs 9
->>>>> This has been reported/discussed [1]. It was hinted that there was a
->>>>> firmware fix for this, but none that I tried got rid of it. I got fed
->>>>> up enough with the logs filling up with this I patched our kernel to
->>>>> remove the warning. AFAICT it appears benign (?). Removing the warning
->>>>> was purely "cosmetic" so other devs stopped complaining about it :)
->>>>>
->>>>> [1] https://www.mail-archive.com/ath10k@lists.infradead.org/msg13406.html
->>>> More reliable link to the discussion:
->>>>
->>>> https://lore.kernel.org/ath10k/76a816d983e6c4d636311738396f97971b5523fb.1612915444.git.skhan@linuxfoundation.org/
->>>>
->>>> I think we should add this workaround I mentioned in 2021:
->>>>
->>>>      "If the firmware still keeps sending invalid rates we should add a
->>>>       specific check to ignore the known invalid values, but not all of
->>>>       them."
->>>>
->>>>      https://lore.kernel.org/ath10k/87h7mktjgi.fsf@codeaurora.org/
->>>>
->>>> I guess that would be mcs == 7 and rate == 1440?
->>> I think its more than this combination (Paul's are different).
->> Good point.
->>
->>> So how many combinations are we willing to add here? Seems like that
->>> could get out of hand if there are more than a few invalid
->>> combinations.
->> Yeah, but there haven't been that many different values reported yet,
->> right? And I expect that ath10k user base will just get smaller in the
->> future so the chances are that we will get less reports.
->>
->>> Would we also want to restrict the workaround to specific
->>> hardware/firmware?
->> Good idea, limiting per hardware would be simple to implement using
->> hw_params. Of course we could even limit this per firmware version using
->> enum ath10k_fw_features, but not sure if that's worth all the extra work.
->>
->> Baochen, do you know more about this firmware bug? Any suggestions?
-> OK, there are two issues here:
->
-> 1. invalid HT rate: "ath10k_pci 0000:02:00.0: invalid ht params rate 1440 100kbps nss 2 mcs 7".
->
-> As commented by Wen quite some time ago, this has been fixed from firmware side, and firmware newer than [ver:241] has the fix included.
-Thanks for pointing this out, I guess I didn't look close enough at the 
-log and missed "ht" vs "vht" when I brought it up on that older thread. 
-I thought i was seeing the same problem even with newer firmware.
->
-> 2. invaid VHT rate: "ath10k_pci 0000:3a:00.0: invalid vht params rate 1920 100kbps nss 2 mcs 9".
->
-> After checking with firmware team, I thought this is because there is a mismatch in rate definition between host and firmware: In host, the rate for 'nss 2 mcs 9' is defined as {1560, 1733}, see supported_vht_mcs_rate_nss2[]. While in firmware this is defined as {1730, 1920}. So seems we can update host definition to avoid this issue.
-That would be great!
+> Add support to process factory test mode commands(FTM) for calibration.
+> By default firmware start with MISSION mode and to process the FTM commands
+> firmware needs to be restarted in FTM mode using module parameter ftm_mode.
+> The pre-request is all the radios should be down before starting the test.
+> 
+> All ath12k test mode interface related commands specified in enum
+> ath_tm_cmd.
+> 
+> When start command ATH_TM_CMD_TESTMODE_START is received, ar state
+> is set to test Mode and FTM daemon sends test mode command to wifi
+> driver via cfg80211. Wifi driver sends these command to firmware as
+> wmi events. If it is segmented commands it will be broken down into
+> multiple segments and encoded with TLV header else it is sent to
+> firmware as it is.
+> 
+> Firmware response via UTF events, wifi driver creates skb and send
+> to cfg80211, cfg80211 sends firmware response to FTM daemon via
+> netlink message.
+> 
+> Command to boot in ftm mode
+> insmod ath12k ftm_mode=1
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00210-QCAHKSWPL_SILICONZ-1
+> 
+> Signed-off-by: Aaradhana Sahu <quic_aarasahu@quicinc.com>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Thanks,
+Now that the wow patchset was applied I saw a new warning:
 
-James
+drivers/net/wireless/ath/ath12k/wow.c: In function 'ath12k_wow_op_resume':
+drivers/net/wireless/ath/ath12k/wow.c:982:17: warning: enumeration value 'ATH12K_HW_STATE_TM' not handled in switch [-Wswitch]
+
+I fixed it adding the new state to ath12k_wow_op_resume(), please check:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git/commit/?h=pending&id=882f310572b27564412e1d6158d1e9709861b7a7
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20240624095305.37189-4-quic_aarasahu@quicinc.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
 
