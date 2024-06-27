@@ -1,102 +1,163 @@
-Return-Path: <linux-wireless+bounces-9653-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9654-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3F0291A40C
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jun 2024 12:39:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23BAD91A440
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jun 2024 12:47:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0F901C216DA
-	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jun 2024 10:39:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4FB34B21CCB
+	for <lists+linux-wireless@lfdr.de>; Thu, 27 Jun 2024 10:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42BE1386BF;
-	Thu, 27 Jun 2024 10:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C1B3148313;
+	Thu, 27 Jun 2024 10:47:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b="jcjLIB+7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="An4EoEJG"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from meesny.iki.fi (meesny.iki.fi [195.140.195.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03BB013DBBB
-	for <linux-wireless@vger.kernel.org>; Thu, 27 Jun 2024 10:38:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=195.140.195.201
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719484722; cv=pass; b=IpfgvjrET8VrWrtn+V6SL6QTvTvazZ1m29UfZZEWxNkAjn4s4fGjKx7h2FadqTzW8IdJuxBNz/DLTQX43FIFyveuyMz2mRShgeLhiK3Cl+z3FZOubj4UJ41JZyPIpMAIJrEk1FPQM/S1wmjncBK3Y8S2FKJNrtx9g5qGOk3qZvM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719484722; c=relaxed/simple;
-	bh=nWd20viaNewFzaX7DFUEK6fFfMwx0tYLBiUF+Tzu6+Q=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=kRy65q+zV3XvA1yUGht3b+2O0lOQWrgu+krh4g5r0THxprj7NhKT7jvGCAw9RlJdwhGKlh9UKwuer9fsnoxZis1vHDStshVJSrJDZNfy96gfjBJuxhD2yWkpkmKsTLmyEwaui1CD0Nonu7qD0bLE1xW67aP0LxuW/PJxObVMt24=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b=jcjLIB+7; arc=pass smtp.client-ip=195.140.195.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: martin-eric.racine)
-	by meesny.iki.fi (Postfix) with ESMTPSA id 4W8w5l6R7szyVF
-	for <linux-wireless@vger.kernel.org>; Thu, 27 Jun 2024 13:38:35 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
-	t=1719484716; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=nWd20viaNewFzaX7DFUEK6fFfMwx0tYLBiUF+Tzu6+Q=;
-	b=jcjLIB+7B1IMaNnqkfOcv0RM6XQR7e6zCmvnEeS+O09/L2ZFaEEZk9a9JwIT9lSDcWV1wK
-	S44EDkgnP+BHKCEdT/B45Tt2cZQYlKQ0AwXtrAFnJwFJtSQioaKuOOPiwb9w3iMSLAigHi
-	3xRWel93SUsi93Aoo76xEDLtxsl+4cE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=meesny; t=1719484716;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=nWd20viaNewFzaX7DFUEK6fFfMwx0tYLBiUF+Tzu6+Q=;
-	b=XMd6aTO2u0eJnB6fTh8G4QgZ8kyMkLfyeB8oskaxjU2rWt39+6Di1diL2zibGL8nVBaTCy
-	uPCol0SlM6rkkNmdWXbMWoqI7CL+sWg3cWgCQvQQOvprZMYHB95i63VabwgUz7ECQfRo3f
-	VYPxd+F95d7IzTCnD1/OAfZZBewqfVk=
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=martin-eric.racine smtp.mailfrom=martin-eric.racine@iki.fi
-ARC-Seal: i=1; s=meesny; d=iki.fi; t=1719484716; a=rsa-sha256; cv=none;
-	b=HE+IwUOFUgigrBplyoA/R7lPsJiFEaJT7ajrw3v+tMvk87Exio5DzIYqp/5DJqy5/IIGNN
-	o2iXt08iiqbbSeeRL3cuxw/+wGWh5JpGmbeG15Lh+9Ny7FAGW0/s52YZFqKVjjbjQggNXP
-	I/tqi5Cq7oa6NLda4g529oD7D+xgylo=
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-366edce6493so3145527f8f.3
-        for <linux-wireless@vger.kernel.org>; Thu, 27 Jun 2024 03:38:35 -0700 (PDT)
-X-Gm-Message-State: AOJu0YxBTzxup+G+Pb0DKi11c+SgLs1fWXRinTraqF4LyT1eaMWrso7o
-	U504QPBsCkDi63D2+q6imFscVrjJbkcNIMRDB+m1m0LKqnT3gfGhVxBKFD6sacCUeV2XpMaZ/No
-	w1CL2/unER7wxRfH/mEZ/M8/RrwY=
-X-Google-Smtp-Source: AGHT+IGLhgD/Mk11sIBjkZLYvgAn85Q8nJzvqVPRMeJcz/05MNryhSbBoZF3ZUO+Js5m/MMH0ml2yzxpXvDJM1ejmvo=
-X-Received: by 2002:a05:6000:1863:b0:366:ecd1:2f38 with SMTP id
- ffacd0b85a97d-366ecd12fb6mr9554596f8f.7.1719484715337; Thu, 27 Jun 2024
- 03:38:35 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97862145B13
+	for <linux-wireless@vger.kernel.org>; Thu, 27 Jun 2024 10:47:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1719485238; cv=none; b=IPmX0TKpSsCEN8txwC2Ahyx7ijeWpEtx/p5Nm0S2o2oF+CMafRnXhM7idTRoIBceOK8jW0VoiTC36qGj/9XXXKi6CxZTvdlgqO0wsAXDvBdaKntuobu0/VKI1d0lD3IqJKQ4AEqq9hXupPpVFyDqIuLcLgOxe91aJs+IcYRlW3Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1719485238; c=relaxed/simple;
+	bh=9zd7UPmSQBZxNz6VkgeBKlQwDk0cYq8owSRhAhNHh7I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cqQGjqAV5xcpLfOvrUXqlZ+O1WlhAWez0XqYPKP3u+AVWA/32Z2IQXPqSzz7TAwyYObX7cJmOn8Hybh4ezRJuLlEzCyluG4EZokvP8jnaeGRCsYkTYyyKMcftLPaTThGHSiE7eSHTwc0jm+3+mL0vNCOW/ZasSsK69QiuNsXo7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=An4EoEJG; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7066cba4ebbso3544028b3a.3
+        for <linux-wireless@vger.kernel.org>; Thu, 27 Jun 2024 03:47:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719485236; x=1720090036; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=6weZCoGkC8VPJ5Cz6/sLBrI0zoEPTf9kcE1sd3WDwJ0=;
+        b=An4EoEJGfEHZ2EMhyhBxhlE0fA6+s5BR/J/NE6pmLzAxz6lQGTXu3DKc4SCYbkCVMW
+         v6VJD49KROAadgPV8/NNH97sGWWSvSFK1X8NZ7AZd/PUJuGSFb1L0YsKTMiWNVE6fjsr
+         XTfOKGpwPNp4hvnO1x0ltFWT/3r+Jj8OIyB+HurFq3vnbWrv8Mls9oR8srzJOoAcOXo0
+         zsBSyjVogdQDi0iW7qLYg5qAupBFThk0BmFR5OzWtcekskhmY0MYAfjKeRVvC4fWwOfl
+         yCrit5aEPyPsTbSnSx0DyZppW6yeFDM6EbVuJ+E5UQiu/C+NSSYAEUfIT0WMjpkQcL5W
+         m5MQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719485236; x=1720090036;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6weZCoGkC8VPJ5Cz6/sLBrI0zoEPTf9kcE1sd3WDwJ0=;
+        b=JfRUnh9aexRs897Mnm+THCS5+vvfryr/urtQlyXSfNlDIs2J+yCsPSkRgmYlzfLn50
+         oSwTe9t31CdmC8kYGULxcMbv0yC2qwlcQ5jMAm87bRmGWxuWc/cXw7SeDNiekpR6Ti4H
+         kJH/tV8RoM4eHccG9duF1+Rg7ufDUcTcRmq9zhXIL8WeHWIC1o43HJDaqG1gXVLX4d+N
+         6T+RzqDb4xwOEqBWEtBwk0Kbdz8X8/9C3k0PUbBOngI2K0oLIN0ovy6Rq7xvwKEVd6E6
+         Uj61M9+E+w0PPoJB6I8S1q9X24qeKD+XZlD/4d6HAjRXUL0qEvA9+y+4FqzGGlOdvfSM
+         C16w==
+X-Gm-Message-State: AOJu0YzKOBrpCIJfgzzNp6aNbowGMojpxh/4zXC/lyy4IUwBBba7HrDr
+	STAjuQvI0tGj2RoTiT5jBot+mLdf1Sp72t44272wUfGScP21QED6a9ISLMQLSCYBf0o/DcvXxxv
+	7sK6XLAb8IqmgrSILfUuT7HODFbU=
+X-Google-Smtp-Source: AGHT+IE2Zs2D8E9X/lxdxI9jqWm7ougLIHUAgqmR3AxkdmwFDIGvS0x2n38/xKZ/xMGNO6c85VIbBvIkFgYgkcxc7Qo=
+X-Received: by 2002:a62:fb07:0:b0:704:14b9:105 with SMTP id
+ d2e1a72fcca58-7066e538954mr11875774b3a.13.1719485235773; Thu, 27 Jun 2024
+ 03:47:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Reply-To: martin-eric.racine@iki.fi
-From: =?UTF-8?Q?Martin=2D=C3=89ric_Racine?= <martin-eric.racine@iki.fi>
-Date: Thu, 27 Jun 2024 13:38:23 +0300
-X-Gmail-Original-Message-ID: <CAPZXPQeJZ_1QtyePvM-PujoBRTbQkyewxrJ3x01ieBHi2A37hQ@mail.gmail.com>
-Message-ID: <CAPZXPQeJZ_1QtyePvM-PujoBRTbQkyewxrJ3x01ieBHi2A37hQ@mail.gmail.com>
-Subject: [iwlegacy] kernel oops
-To: linux-wireless@vger.kernel.org
+References: <20240627103936.4a7cd28f3136.I328a219e45f2e2724cd52e75bb9feee3bf21a463@changeid>
+In-Reply-To: <20240627103936.4a7cd28f3136.I328a219e45f2e2724cd52e75bb9feee3bf21a463@changeid>
+From: Jonas Gorski <jonas.gorski@gmail.com>
+Date: Thu, 27 Jun 2024 12:47:03 +0200
+Message-ID: <CAOiHx=kKuGWhEQrtRXx5HJqR46D8o34ug8iXrc0nBkCFiZzjPw@mail.gmail.com>
+Subject: Re: [PATCH] wifi: mac80211: remove DEAUTH_NEED_MGD_TX_PREP
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, Johannes Berg <johannes.berg@intel.com>, 
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Greetings,
+Hi,
 
-As reported a while back at
-(https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1062421) against
-kernel 6.5 (still present on kernel 6.8.12), iwlegacy ooopses on
-iwl4965 hardware.
+On Thu, 27 Jun 2024 at 10:40, Johannes Berg <johannes@sipsolutions.net> wrote:
+>
+> From: Johannes Berg <johannes.berg@intel.com>
+>
+> This flag is annoying because it puts a lot of logic into mac80211
+> that could just as well be in the driver (only iwlmvm uses it) and
+> the implementation is also broken for MLO.
+>
+> Remove the flag in favour of calling drv_mgd_prepare_tx() without
+> any conditions even for the deauth-while-assoc case. The drivers
+> that implement it can take the appropriate actions, which for the
+> only user of DEAUTH_NEED_MGD_TX_PREP (iwlmvm) is a bit more tricky
+> than the implementation in mac80211 is anyway, and all others have
+> no need and can just exit if info->was_assoc is set.
+>
+> Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> ---
+>  .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 12 ++++----
+>  .../wireless/intel/iwlwifi/mvm/mld-mac80211.c |  2 ++
+>  drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  4 +++
+>  .../wireless/intel/iwlwifi/mvm/time-event.c   |  2 ++
+>  include/net/mac80211.h                        | 22 ++++-----------
+>  net/mac80211/debugfs.c                        |  1 -
+>  net/mac80211/main.c                           |  3 --
+>  net/mac80211/mlme.c                           | 28 ++++---------------
+>  8 files changed, 25 insertions(+), 49 deletions(-)
+>
 
-The bug report contains a lot of auto-collected information. Please
-ping me if anything else is needed.
+(snip)
 
-Thanks!
-Martin-=C3=89ric
+> diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+> index 3d207d79d11f..3804a5fa4a2a 100644
+> --- a/net/mac80211/mlme.c
+> +++ b/net/mac80211/mlme.c
+> @@ -3521,6 +3521,10 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
+>         u64 changed = 0;
+>         struct ieee80211_prep_tx_info info = {
+>                 .subtype = stype,
+> +               .was_assoc = true,
+> +               .link_id = sdata->vif.active_links ?
+> +                               __ffs(sdata->vif.active_links) :
+> +                               0,
+
+Shouldn't the else be -1?
+
+>         };
+>
+>         lockdep_assert_wiphy(local->hw.wiphy);
+> @@ -3569,29 +3573,7 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
+>
+>         /* deauthenticate/disassociate now */
+>         if (tx || frame_buf) {
+> -               /*
+> -                * In multi channel scenarios guarantee that the virtual
+> -                * interface is granted immediate airtime to transmit the
+> -                * deauthentication frame by calling mgd_prepare_tx, if the
+> -                * driver requested so.
+> -                */
+> -               if (ieee80211_hw_check(&local->hw, DEAUTH_NEED_MGD_TX_PREP)) {
+> -                       for (link_id = 0; link_id < ARRAY_SIZE(sdata->link);
+> -                            link_id++) {
+> -                               struct ieee80211_link_data *link;
+> -
+> -                               link = sdata_dereference(sdata->link[link_id],
+> -                                                        sdata);
+> -                               if (!link)
+> -                                       continue;
+> -                               if (link->u.mgd.have_beacon)
+> -                                       break;
+> -                       }
+> -                       if (link_id == IEEE80211_MLD_MAX_NUM_LINKS) {
+> -                               info.link_id = ffs(sdata->vif.active_links) - 1;
+
+Here it would be ffs(0) - 1, which is -1, not 0.
+
+Regards,
+Jonas
 
