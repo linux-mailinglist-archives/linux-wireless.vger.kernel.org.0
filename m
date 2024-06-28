@@ -1,129 +1,105 @@
-Return-Path: <linux-wireless+bounces-9699-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9700-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71BD491C381
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jun 2024 18:13:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EDE291C919
+	for <lists+linux-wireless@lfdr.de>; Sat, 29 Jun 2024 00:32:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0FC11C23034
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jun 2024 16:13:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D13731F229C8
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jun 2024 22:32:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2277F1C8FD4;
-	Fri, 28 Jun 2024 16:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5870F770FD;
+	Fri, 28 Jun 2024 22:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="J5zUkhsY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FcvWo+7F"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6044E158DDC
-	for <linux-wireless@vger.kernel.org>; Fri, 28 Jun 2024 16:13:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050181C20
+	for <linux-wireless@vger.kernel.org>; Fri, 28 Jun 2024 22:32:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719591227; cv=none; b=qxaNN51wa69h1HiUup1iAPbJbswJxzwlBG3q/uj+xVQB9jXUjRyVPPRwQ//VhM8PYKAN7bByc3MVupm62fEiScNzDApS12GURUGxmSwnvoKNgZNPiHulQSYq/UbBNLiezWhpug0eALewOgWnL0svCjjw9Lr2xAznuAPasuPogJo=
+	t=1719613961; cv=none; b=SapvubnYWchioMagpJGgnUTnSsS/JWTIMsICddX/ic5vWaqDQF39UtzkS4DsPA6g86YhzIZdefHMsH57e17CixqJ96cXOdvldowK6eD7DUITSMi+4Z72WVShh0lTJpaN5sxP1tGNUUM47hC3yCg6j90EBKlih2h5/emx2lnNY+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719591227; c=relaxed/simple;
-	bh=/YYNb5zn0ghTMV/nvxfnHiMCUJ9GffxHq4i4qEqD6NA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ULoJVR2BqgJY455CKx+mKRyJICRoVX1Q2kHmxfWtGNRX0vqzh9RJbqOn6BqLEStdODFlrpWcpBHwi//1vCWEXp8S4GKbZMTdMf2It3ssf0H8zcXfoG8UXwaBvFEHc+2WnEhQdRx3x5Bbdml5155L4EXFgPi0YhxPsq7kITLjpLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=J5zUkhsY; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45SFCDYX018783;
-	Fri, 28 Jun 2024 16:13:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	GDK0APNzMJOM3stE4dmEyVIecpSQDIf+9uW9cjzWdUw=; b=J5zUkhsYwMUIyxLE
-	eF5nZCc15H7ShYzcixTiQj738TyRNx0BlrXFNr+6b9gSNkfijeSvSD10fTvLUUnS
-	WRFhKN7wOXA0gFoLaogDp9R0uIksi92fdA+uEoo6AiwzCopYoqfeQCJlizhtceeX
-	wwnya0e1TXvtJD0nFq5O1ADkL9eMvpU8NrrJvtERyfleBEZOR1XxVNViz69Q8XRB
-	ovBGwyHz96Ry6h8Y2NNynsfeI/t4tgn+hNvshorfj501+1MSUFhfkImBsLc8dHxG
-	yHIbvHD8pqjG2lUJ2uwy70oBFwp6u1aIAcVgxMmWhXXHRL3093ATesnOIMyKYr5z
-	EqXyug==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 400f90qp6n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 28 Jun 2024 16:13:41 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45SGDeUK020435
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 28 Jun 2024 16:13:40 GMT
-Received: from [10.216.49.26] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 28 Jun
- 2024 09:13:39 -0700
-Message-ID: <ed6dccf3-2361-481b-8794-0f3805536ed4@quicinc.com>
-Date: Fri, 28 Jun 2024 21:43:35 +0530
+	s=arc-20240116; t=1719613961; c=relaxed/simple;
+	bh=PoZZIfz65dA8PdCWWQMcK/7eiJpLCwqGV2o+haFWwWg=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=JbkbBM2TiR/gwZG1VJcW2gAAj2K3Lx2uW1w+tZgDN8+te7KWYk0p2+cbZJSay4aFngmp+UEiX6YUicFDciWP+FLmxnd0VV8YMOBQZbdEqOeWloSPVGMep7ghG2HQHLS2FzzTS/Vw5wrOIS5+sft9P86ZcvUmUJMnTTHpbzYtbAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FcvWo+7F; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7066f68e22cso904378b3a.2
+        for <linux-wireless@vger.kernel.org>; Fri, 28 Jun 2024 15:32:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719613959; x=1720218759; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pcB1pNo1IbGcYmNDtAcjXDo0YwR9JsWFvwvtD93iEqs=;
+        b=FcvWo+7FNzupxklqIJBfJkeln33Y9fvdR+a3DkjImVDm1SvXzcZiY7exIBBxlhbNuj
+         hQb4QzRvI/J8liecjOTsrja77pe693zPouda4Yb6EojoAmozZNU9fFsDENMoNiiUz9ry
+         stxKfhb4LRaYV3O+SLCuEZeNXTwm0DWpmyFyqzTlnLdOL06xn8aYqvacXVt/tDZ2JppZ
+         NkmF7U4/MkOfnFimEWubPjJkHdta8n6ZGRqNqkazaK6vbbkJ7tdzddud258ZXpPSst2+
+         5kdlj3bevGDkytlOKmP/0vbSVucN03V18ZGglQSt4kMXS8rCBlI6M4rUSPmiChAtt6XE
+         Dpig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719613959; x=1720218759;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pcB1pNo1IbGcYmNDtAcjXDo0YwR9JsWFvwvtD93iEqs=;
+        b=s3LAmHSUNAtEgQZ2VPN/Y/ZODi6f9Byj6RtOO7Ts1skzWfmf9rnEY/fr317FJkNse9
+         XpHgTm1g8frTb0BGebkq8ah5YBg0hprhVzTcWL2qPI8cIBs7kaNXI7zaZte+Ksk+4jrn
+         luf5Kqs6ZVJ1vnCvvueeLuyGdDLL5M5Ydj8AhYKseAzsdvBBAOuC/mxjzrObvazOHX1A
+         zQE+YDuu7y2tKYknvTan+gTDShYzwSS3O1cPIGFl9+YuCR8Pm3DaNJSQ6JQGM0aDUQPz
+         1wfRQ0eb39ZbHPggyW5YZYg+9gClo+hdh1ob/Lk9yts/qo2t95goFfrAyoscasegltUl
+         w0Yg==
+X-Gm-Message-State: AOJu0Yy6Y2CDu2wADVjZDpHpMAEkJTBxBNAinBDrikCFEtDRxUWpi/0t
+	UMtVX3wadXKCYT1kytaFiZ/xfkh8UqsqSvQ7Sih3nr0D+cSTel+QdfbIWg==
+X-Google-Smtp-Source: AGHT+IHjvLwbvPi31TMmRUosGXAd1teWrJoMZ1/mT3XuVJTMxuMdFr8Wg6VghG0UMNj6m9+R5wiXow==
+X-Received: by 2002:aa7:85d5:0:b0:706:2b1f:d443 with SMTP id d2e1a72fcca58-706710041bcmr18791969b3a.29.1719613958965;
+        Fri, 28 Jun 2024 15:32:38 -0700 (PDT)
+Received: from ryzen.lan ([2601:644:8200:dab8::a86])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-72c6a8deff2sm1476012a12.37.2024.06.28.15.32.38
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Jun 2024 15:32:38 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: linux-wireless@vger.kernel.org
+Subject: [PATCH] iw: fix formats under MIPS64/PPC
+Date: Fri, 28 Jun 2024 15:32:37 -0700
+Message-ID: <20240628223237.16222-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 9/9] wifi: mac80211: abort active CAC while freeing the
- links during MLO
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240626045216.3754013-1-quic_adisi@quicinc.com>
- <20240626045216.3754013-10-quic_adisi@quicinc.com>
- <2670d8e27e9c296e3c0de0572f6387aa9ea3ff93.camel@sipsolutions.net>
- <0fe59d00-e911-4eea-af37-e8cdde116c69@quicinc.com>
- <4719e2dc79a3c423f28664e263e038ee2103bb71.camel@sipsolutions.net>
-Content-Language: en-US
-From: Aditya Kumar Singh <quic_adisi@quicinc.com>
-In-Reply-To: <4719e2dc79a3c423f28664e263e038ee2103bb71.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 2kEbc7fBTYCkR-w9dBgQXzPpxw0oqJPo
-X-Proofpoint-GUID: 2kEbc7fBTYCkR-w9dBgQXzPpxw0oqJPo
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-28_11,2024-06-28_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
- spamscore=0 malwarescore=0 mlxlogscore=924 mlxscore=0 adultscore=0
- impostorscore=0 lowpriorityscore=0 phishscore=0 priorityscore=1501
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2406280120
+Content-Transfer-Encoding: 8bit
 
-On 6/28/24 14:30, Johannes Berg wrote:
-> On Thu, 2024-06-27 at 09:47 +0530, Aditya Kumar Singh wrote:
-> 
->>> Not sure I buy that argument though, it feels wrong. Clearly you should
->>> be able to stop this from even cfg80211, it tracks whether radar
->>> detection is running, so whenever the link is removed, you can also stop
->>> it there? Doing it on free seems much too late.
->>>
->>
->> Actually if cfg80211_remove_link() is called, then it is aborted during
->> stop_ap handler. So that path is fine only. This was done in situations
->> where properly interface is not brought down or abruptly brought down.
->> For example AP is started and then directly iw wlanX del is issued.
-> 
-> Still cfg80211 should clean up the link and call stop_ap() etc. If
-> that's broken we need to fix it.
+__SANE_USERSPACE_TYPES__ needs to be defined to get consistent 64-bit
+type defines and to fix -Wformat warnings.
 
-Got it.
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+---
+ iw.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> 
->> Ideally the normal deinit flow should have taken care but just in case
->> if still somehow by passes it then ultimately while freeing the links it
->> will be aborted. May be should I rephrase the commit message?
-> 
-> I think we need to fix the cases where it doesn't clean up properly
-> instead.
-> 
-
-Okay. Let me have a look again properly and comeback.
-
-- Aditya
+diff --git a/iw.h b/iw.h
+index f416d6d..436723f 100644
+--- a/iw.h
++++ b/iw.h
+@@ -1,6 +1,8 @@
+ #ifndef __IW_H
+ #define __IW_H
+ 
++#define __SANE_USERSPACE_TYPES__
++
+ #include <stdbool.h>
+ #include <netlink/netlink.h>
+ #include <netlink/genl/genl.h>
+-- 
+2.45.2
 
 
