@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-9682-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9683-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E33E891B994
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jun 2024 10:13:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33B4C91B9A6
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jun 2024 10:16:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B78FB21E86
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jun 2024 08:13:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E32C228333A
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jun 2024 08:16:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C28CF13C674;
-	Fri, 28 Jun 2024 08:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A12E65024E;
+	Fri, 28 Jun 2024 08:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="RhwJ3p0w"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="QLN//UBq"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA6E79F2
-	for <linux-wireless@vger.kernel.org>; Fri, 28 Jun 2024 08:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E753E79D1
+	for <linux-wireless@vger.kernel.org>; Fri, 28 Jun 2024 08:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719562383; cv=none; b=q8WbXO3wpvEf9UCtIRhDEaP6ugojyzrSXQr4u7D9no/G1fy9JOjwHnuJ3iPi+ffKkTHptjIKYLJ01jQI6oHNvFz/BkjGVwGZtkTQH58ec/zth9bwP1g+NjytADGApM4rPmI8SMHUMDB1cyfPGLbqN0EWz+XUB/10BdXP6ye8nHU=
+	t=1719562595; cv=none; b=D3xIQhcAW+YhCffc97GDg9CGYQoLvh8UY5uvohKm4gB0CBMsgn/gBPN9VookIQFJYFAx2XAHkbopRj1cfVMl3mMTxV3AAvt7a2VhfWaEX4M0LMVigLb/BLaGMokrLytHxc587sjPbuwBMwhzc5bD1caae81FqQCGCblvDu3BPUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719562383; c=relaxed/simple;
-	bh=u9ILEQvGzcYrYK5a5D0UKiXE0pkK+L734W1/XNQoC8k=;
+	s=arc-20240116; t=1719562595; c=relaxed/simple;
+	bh=jkbcDfApoc3a6kTQRVt67Wi83hbaduOJIrtK6PDrWIU=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QYrkZXNxQzLji/FtD/dcRIAkfZ18bgFM5s1v1G0/Xsi5nOG6ibjEqcVnt17ZQSLHF/x1keDmynvp36HwN/igfW9vjjufP1jycY35oKaty7oMdDhlSRXO1io2yCYiNu49EhD5/AR6qQRPOigMe6sjxW3zIc1QlNPXp2wjgnv5FbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=RhwJ3p0w; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=I0nLqZDN6gwFx3zNB8oiVTZCXYDhJDj7QKeEnl3GZw2s946y4SO9ujTGrnV0wPNfYj2Q42AYlsNZrx3rS1gsGODOyh3QM/mq0tZkDzhP21op+uLvv3hC0L6ZReAwcVNB2hRbdy06RxLIAjFLJV9Du3mTBbOXy0TBUqrIeMB0ygY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=QLN//UBq; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=jgWzeyjxNHl6j7Gu/TQNjYhErpXP70xJ3qoulgp/PHs=;
-	t=1719562380; x=1720771980; b=RhwJ3p0wV3dADw/y+0qnsN8P10mVaaHWCsejsQBVDRDvC1R
-	zb5smCffUjXdUuQYjQcFXvzecDvHv7HpQC7IYKw2hRAS+bjzELDvLFpiPc74yrwO8IbiCl5KJ/HQ7
-	oCKb6IymuKQSV/ZuG1yGZGBYxc3+9x8D5Ptk52EZnzfxso8H8SIkE0o2nvJoS+rvLbf7sKiWcfO+D
-	zZ1xm41ZSSqZHrI7y5hsJopounmC2cQdcbmiK+5OwMMsUe1As8YDwrJaSej4tQVF1rxh7TyouZ6Kv
-	09si1oBQzjfLBhTSeVHXMpWcUG5yex17y7gy9Fqd+WPbrG/QBAFZUmcnPcE0tm2A==;
+	Resent-Cc:Resent-Message-ID; bh=9nmE9a3gJXPwiVvhVnNyIAtbt7fKAiKt89PIciBVLNw=;
+	t=1719562593; x=1720772193; b=QLN//UBqJoy9Kv7Hh9LM6Gb4YUIun24/FHU6CbOOtcKVgU7
+	KJlZvsL0XWUynRkuCUZQv/zqnjGQc+P0M9kibUsD4eMF/QHtBkV3/9o0pjylpWd1sxd8eRAi0ZI8s
+	lvQqdNwwGPBXsG4FhFEyk00jgYuc3XE819SkAiMbV/DnoTzR6rYRMTtElAzjPM/+phOruOiFwzwNo
+	XLl4FH2Cn2XvceeThV124KNWVwGGcr2VH96uGySnupV+erz2g4kEz4Cs2MdEroPeLcFASIMuAJdFv
+	SZ1x7IbGPgWjNVEHLP0LdFHlxn1/sPyPRzDO/O9q6L3AmH6eqisPN5deAvVBsNdw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1sN6j2-00000009Uhu-38Ka;
-	Fri, 28 Jun 2024 10:12:56 +0200
-Message-ID: <757b46fb3a4f107e03ded0bd9c97578bc2234a02.camel@sipsolutions.net>
-Subject: Re: [PATCH 02/10] wifi: cfg80211: add support for advertising
- multiple radios belonging to a wiphy
+	id 1sN6mR-00000009VCd-0ngL;
+	Fri, 28 Jun 2024 10:16:27 +0200
+Message-ID: <ba67b440b18876ca4e296a66a5197c2be81921d8.camel@sipsolutions.net>
+Subject: Re: [PATCH 03/10] wifi: cfg80211: extend interface combination
+ check for multi-radio
 From: Johannes Berg <johannes@sipsolutions.net>
 To: Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
 Cc: quic_adisi@quicinc.com, quic_periyasa@quicinc.com, 
 	ath12k@lists.infradead.org
-Date: Fri, 28 Jun 2024 10:12:55 +0200
-In-Reply-To: <defa3f593a3b9bd42099cb945d3fede22f22f072.1718881762.git-series.nbd@nbd.name>
+Date: Fri, 28 Jun 2024 10:16:26 +0200
+In-Reply-To: <47e02b920cce18ed56e3fa7c93537124ce10024a.1718881762.git-series.nbd@nbd.name>
 References: 
 	<cover.a7730420cfba0f204a60e4c30e6b0e07b441ff6b.1718881762.git-series.nbd@nbd.name>
-	 <defa3f593a3b9bd42099cb945d3fede22f22f072.1718881762.git-series.nbd@nbd.name>
+	 <47e02b920cce18ed56e3fa7c93537124ce10024a.1718881762.git-series.nbd@nbd.name>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
@@ -71,49 +71,48 @@ X-malware-bazaar: not-scanned
 
 On Thu, 2024-06-20 at 13:11 +0200, Felix Fietkau wrote:
 >=20
-> + * @NL80211_WIPHY_RADIO_ATTR_FREQ_RANGES: Nested array of frequency rang=
-es
-> + *	supported by this radio.
-
-That could point to &enum nl80211_wiphy_radio_freq_range (if it stays
-this way)
-
-However, also for new arrays defined in this patchset, which if I'm not
-mistaken are
-
- - NL80211_ATTR_WIPHY_RADIOS
- - NL80211_ATTR_WIPHY_INTERFACE_COMBINATIONS
- - NL80211_WIPHY_RADIO_ATTR_FREQ_RANGES
- - NL80211_WIPHY_RADIO_ATTR_INTERFACE_COMBINATIONS
-
-we should probably go with the times and use the multi-attr array
-concept:
-https://www.kernel.org/doc/html/latest/userspace-api/netlink/specs.html#mul=
-ti-attr-arrays
-
-
-That would change the structure so that each of the attributes listed
-above can simply appear multiple times. I would consider at that point
-renaming them all to singular (since each individually represents a
-single entry), and perhaps at that point using a simple structure for
-NL80211_WIPHY_RADIO_ATTR_FREQ_RANGE instead of the nesting. You could
-even just move struct wiphy_radio_freq_range to nl80211.h
-
-> +static int nl80211_put_radio(struct wiphy *wiphy, struct sk_buff *msg, i=
-nt idx)
+> +static inline u32
+> +rdev_get_radio_mask(struct cfg80211_registered_device *rdev,
+> +		    struct net_device *dev)
 > +{
-> +	const struct wiphy_radio *r =3D &wiphy->radio[idx];
-> +	struct nlattr *radio, *freqs, *freq;
-> +	int i;
+> +	struct wiphy *wiphy =3D &rdev->wiphy;
+> +	u32 ret;
 > +
-> +	radio =3D nla_nest_start(msg, idx);
-> +	if (!radio)
-> +		return -ENOBUFS;
+> +	if (!rdev->ops->get_radio_mask)
+> +		return 0;
 > +
-> +	freqs =3D nla_nest_start_noflag(msg, NL80211_WIPHY_RADIO_ATTR_FREQ_RANG=
-ES);
+> +	trace_rdev_get_radio_mask(wiphy, dev);
+> +	ret =3D rdev->ops->get_radio_mask(wiphy, dev);
+> +	trace_rdev_return_int(wiphy, ret);
 
-Either way, however, new code should not use _noflag()
+I'd tend to prefer tracing even if it's not implemented, so we see
+what's going on? Though personally I guess in this case I don't even
+care much since mac80211 will unconditionally implement it ...
+
+> @@ -2366,14 +2374,19 @@ int cfg80211_iter_combinations(struct wiphy *wiph=
+y,
+>  					    void *data),
+>  			       void *data)
+>  {
+> +	const struct wiphy_radio *radio =3D NULL;
+> +	const struct ieee80211_iface_combination *c, *cs;
+>  	const struct ieee80211_regdomain *regdom;
+>  	enum nl80211_dfs_regions region =3D 0;
+> -	int i, j, iftype;
+> +	int i, j, n, iftype;
+>  	int num_interfaces =3D 0;
+>  	u32 used_iftypes =3D 0;
+>  	u32 beacon_int_gcd;
+>  	bool beacon_int_different;
+> =20
+> +	if (params->radio_idx >=3D 0)
+> +		radio =3D &wiphy->radio[params->radio_idx];
+
+Maybe we should have a sanity bounds check?
+
+Or even really just __counted_by() annotations in struct wiphy_radio, so
+we can run with UBSAN in testing (which would be a comment for patch 2,
+but I'm not going to send it there again ;-) ).
 
 johannes
 
