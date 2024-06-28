@@ -1,286 +1,274 @@
-Return-Path: <linux-wireless+bounces-9679-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9680-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADA3091B59C
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jun 2024 05:56:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0482591B5C9
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jun 2024 06:47:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2EAA283551
-	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jun 2024 03:56:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA7111C2230A
+	for <lists+linux-wireless@lfdr.de>; Fri, 28 Jun 2024 04:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2857520319;
-	Fri, 28 Jun 2024 03:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC9BF249F9;
+	Fri, 28 Jun 2024 04:47:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QxGuB6+3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41F92914;
-	Fri, 28 Jun 2024 03:56:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF38A224D2;
+	Fri, 28 Jun 2024 04:47:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719546964; cv=none; b=s3TDcyUwlHUxIvUqkosdvH4Ftlov5am3mpX5Y4dUCN1kctrXJjR7Q2mbB5LdBz+lbtFE0RfOOHAfjDwzzdMBjQKefFqEsAIe0P1F5/HJ2KdPYMx4PstUEprjTh/0AYe2EF4wFWrTE1xPE0Ggb7GoWdxL91EuPvdqtb1Wnzv/G7A=
+	t=1719550027; cv=none; b=FzAQpEPBqvCGotY1ZNitlWawUvAtWcJPrzqAkQS7kIm/BAAD9fUhsO6UJUjQr8Af2z/MjXq58lmYkolBu+vyNvYZxi+l+H7wQu/lubTHk4BQdG8qK7G08i3k0v5LroopcuW4PqmYiRr2ErmgImK8fdIpHy4qKlM+xGtdNeAKdEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719546964; c=relaxed/simple;
-	bh=Wkmvw8dbQPrJwiozcOR16C2Hm+Vhj/iMIRBYaAco/Gc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=kuMH32RuRIOZVvoskZeZBa06J6ME5g9FuAwE6Mpio/Csv4CtGfsiSvh3HOU4EePPzKYP2iB0wnEhwaSJs8LD0vFyNka0yBzaApuivpctvatJJwnAjBAM5Kj+vfQ9bsrDjG84p1tD7C7qCdtqE8JRY+7agMSF5aQS1M/lGOt4kxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 45S3thwrF4028403, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 45S3thwrF4028403
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 28 Jun 2024 11:55:43 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 28 Jun 2024 11:55:44 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 28 Jun 2024 11:55:44 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
- RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
- 15.01.2507.035; Fri, 28 Jun 2024 11:55:44 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Forty Five <mathewegeorge@gmail.com>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        Bernie Huang
-	<phhuang@realtek.com>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>
-Subject: RE: [REGRESSION] Freeze on resume from S3 (bisected)
-Thread-Topic: [REGRESSION] Freeze on resume from S3 (bisected)
-Thread-Index: AQHawgusbA+C/SyMRES67Y/3y6K7kbHOmQDAgAALtgCAAakyAP//jZeAgABJegCADGz2EA==
-Date: Fri, 28 Jun 2024 03:55:43 +0000
-Message-ID: <8583c53fa42848c9855b2b425ac18ca4@realtek.com>
-References: <87tthpwkqf.fsf@gmail.com>
- <2ce41d4129234ba9a91d5b4dcd8a40ee@realtek.com> <87sex93s63.fsf@gmail.com>
- <6970398610c546b1b62e599902c67572@realtek.com>
- <E3FF7BC1-725B-40E2-AAF0-CA41A44B9DF9@gmail.com> <87jzij7mrk.fsf@gmail.com>
-In-Reply-To: <87jzij7mrk.fsf@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: yes
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: multipart/mixed;
-	boundary="_002_8583c53fa42848c9855b2b425ac18ca4realtekcom_"
+	s=arc-20240116; t=1719550027; c=relaxed/simple;
+	bh=OyGnYkVTMeo9E0tebP3hGIKqk4ivb+YBb/w6+AvD+AE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rgBT+Qvw/Y790yi9jbC7VzHKetufeDmmhNhoHWdNKWQNEUOB9kRDJBUrgiSre3QNmmPfZWXBrxShQJGnfnWSlO2k98FmHKxoWTwOjZyT37QmS/1MSxVHng42Nur3lXvAaxfsvV6gW1h9NSIF4gYZ7IoNBuXFxWr5uPfyXy8xzg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QxGuB6+3; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1719550025; x=1751086025;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=OyGnYkVTMeo9E0tebP3hGIKqk4ivb+YBb/w6+AvD+AE=;
+  b=QxGuB6+3iT/QVDQTFze7dzyO8oGSjIfpZ1MFVlnAHwJRkCMo0tn5PTQN
+   oOMHwNBYrAWocGzxIay40K/P+p4WBBlpO8Y+0g20Bv/YAuZmbuublCFs1
+   vpdlVggD89v4dWcrqiefUHOvcVZWmlWF7UPX3CAi8UjL4loc7dNa3Q2ck
+   MoJMNrCNyCSS4y9SoYXAuQIyw7i+v0+JqVUkqUgkd/NlkvLoQGzzfPuU1
+   2NeydzlWYKllXBP1eq38gcV6aL+i4eiTvPUZ/60LMBCtr+9JW+gIrIC1Q
+   ZD3kbzD6YbW/+5P/uGayimdBByaHQ9JIRd9MB1qAIsNnzqYjv01fqjcMn
+   g==;
+X-CSE-ConnectionGUID: WLspNH3lTLW3YPHrv2m6PQ==
+X-CSE-MsgGUID: VwlnMdOHS8+R7nMDW/up8Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11116"; a="16537250"
+X-IronPort-AV: E=Sophos;i="6.09,168,1716274800"; 
+   d="scan'208";a="16537250"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2024 21:47:04 -0700
+X-CSE-ConnectionGUID: ObfNnmmQSqu+01rg6yVn4g==
+X-CSE-MsgGUID: fzcF+uXKR22dAqq/M/L0Cw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,168,1716274800"; 
+   d="scan'208";a="45254061"
+Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 27 Jun 2024 21:47:02 -0700
+Received: from kbuild by 68891e0c336b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sN3Vj-000Gnu-2f;
+	Fri, 28 Jun 2024 04:46:59 +0000
+Date: Fri, 28 Jun 2024 12:46:03 +0800
+From: kernel test robot <lkp@intel.com>
+To: David Lin <yu-hao.lin@nxp.com>, linux-wireless@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+	briannorris@chromium.org, kvalo@kernel.org, francesco@dolcini.it,
+	tsung-hsien.hsieh@nxp.com, David Lin <yu-hao.lin@nxp.com>
+Subject: Re: [PATCH 42/43] wifi: nxpwifi: add Makefile and Kconfig files for
+ nxpwifi compilation
+Message-ID: <202406281235.idQnZtIJ-lkp@intel.com>
+References: <20240621075208.513497-43-yu-hao.lin@nxp.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240621075208.513497-43-yu-hao.lin@nxp.com>
 
---_002_8583c53fa42848c9855b2b425ac18ca4realtekcom_
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Hi David,
 
-Hi Mathew,
+kernel test robot noticed the following build warnings:
 
-Forty Five <mathewegeorge@gmail.com> wrote:
->=20
-> Mathew George <mathewegeorge@gmail.com> writes:
->=20
-> > When I am back at my system, I will reproduce the issue a few more time=
-s with
-> > this kernel, and attach the logs. In the meantime, you could have a loo=
-k at the logs
-> > linked in my first mail. There are logs for most of the bad commits enc=
-ountered in the
-> > bisection.
->=20
-> I've attached more logs.
+[auto build test WARNING on 238d636723a30311e20fde0a361662e829fe488b]
 
-Thanks for the logs, which you met two kinds of problems. One is firmware g=
-ets
-wrong during system resumes, and the other is to close a disappear netdev.=
-=20
-However I still can't dig why it gets wrong. I will focus on latter one fir=
-st.
+url:    https://github.com/intel-lab-lkp/linux/commits/David-Lin/wifi-nxpwifi-add-11ac-c/20240625-161306
+base:   238d636723a30311e20fde0a361662e829fe488b
+patch link:    https://lore.kernel.org/r/20240621075208.513497-43-yu-hao.lin%40nxp.com
+patch subject: [PATCH 42/43] wifi: nxpwifi: add Makefile and Kconfig files for nxpwifi compilation
+config: i386-randconfig-062-20240628 (https://download.01.org/0day-ci/archive/20240628/202406281235.idQnZtIJ-lkp@intel.com/config)
+compiler: gcc-13 (Ubuntu 13.2.0-4ubuntu3) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240628/202406281235.idQnZtIJ-lkp@intel.com/reproduce)
 
-The behavior between no commit [1] and the latest tree + [2] is the time wa=
-iting
-for ACK from scan abort firmware command. The former one is longer, and lat=
-ter
-one is shorter.=20
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202406281235.idQnZtIJ-lkp@intel.com/
 
-I also enable kernel debug KASAN suggested by Johannes to dig problem, but =
-in
-my side I can't see any kernel warning and the crash.=20
+sparse warnings: (new ones prefixed by >>)
+>> drivers/net/wireless/nxp/nxpwifi/uap_cmd.c:541:19: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted __le16 [usertype] size @@     got unsigned int @@
+   drivers/net/wireless/nxp/nxpwifi/uap_cmd.c:541:19: sparse:     expected restricted __le16 [usertype] size
+   drivers/net/wireless/nxp/nxpwifi/uap_cmd.c:541:19: sparse:     got unsigned int
+>> drivers/net/wireless/nxp/nxpwifi/uap_cmd.c:554:29: sparse: sparse: cast from restricted __le16
+>> drivers/net/wireless/nxp/nxpwifi/uap_cmd.c:573:19: sparse: sparse: bad assignment (+=) to restricted __le16
+   drivers/net/wireless/nxp/nxpwifi/uap_cmd.c:584:27: sparse: sparse: bad assignment (+=) to restricted __le16
+   drivers/net/wireless/nxp/nxpwifi/uap_cmd.c:596:27: sparse: sparse: bad assignment (+=) to restricted __le16
+   drivers/net/wireless/nxp/nxpwifi/uap_cmd.c:609:27: sparse: sparse: bad assignment (+=) to restricted __le16
+   drivers/net/wireless/nxp/nxpwifi/uap_cmd.c:622:27: sparse: sparse: bad assignment (+=) to restricted __le16
+   drivers/net/wireless/nxp/nxpwifi/uap_cmd.c:640:27: sparse: sparse: bad assignment (+=) to restricted __le16
+   drivers/net/wireless/nxp/nxpwifi/uap_cmd.c:653:27: sparse: sparse: bad assignment (+=) to restricted __le16
+   drivers/net/wireless/nxp/nxpwifi/uap_cmd.c:666:21: sparse: sparse: cast from restricted __le16
 
-Since I saw 'NetworkManager' and 'hostapd' in code trace, I would like to k=
-now
-if you have two virtual interfaces, which for STA and AP modes? (Please che=
-ck
-this by 'iw dev') If so, is it possible to remove hostapd (AP mode) to see =
-if
-this is a factor causing crash.
+vim +541 drivers/net/wireless/nxp/nxpwifi/uap_cmd.c
 
-Attachment is a debug patch that add more messages and code trace, please h=
-elp
-to reproduce problem with patches of [2] and attachment. If your kernel ena=
-bles
-dynamic debug, need additional commands to have debug message:
-   sudo bash -c 'echo -n "module rtw89_core +p" > /sys/kernel/debug/dynamic=
-_debug/control'
-   sudo bash -c 'echo -n "module rtw89_pci +p" > /sys/kernel/debug/dynamic_=
-debug/control'
-Since there are more than one symptoms causing system freeze, please collec=
-t
-four logs as before. Also please give me two logs that system can normally
-suspend/resume, so I can compare their difference.
+309a0039e40257 David Lin 2024-06-21  521  
+309a0039e40257 David Lin 2024-06-21  522  /* This function prepares AP specific add station command.
+309a0039e40257 David Lin 2024-06-21  523   */
+309a0039e40257 David Lin 2024-06-21  524  static int
+309a0039e40257 David Lin 2024-06-21  525  nxpwifi_cmd_uap_add_new_station(struct nxpwifi_private *priv,
+309a0039e40257 David Lin 2024-06-21  526  				struct host_cmd_ds_command *cmd,
+309a0039e40257 David Lin 2024-06-21  527  				u16 cmd_no, void *data_buf,
+309a0039e40257 David Lin 2024-06-21  528  				u16 cmd_action, u32 cmd_type)
+309a0039e40257 David Lin 2024-06-21  529  {
+309a0039e40257 David Lin 2024-06-21  530  	struct host_cmd_ds_add_station *new_sta = &cmd->params.sta_info;
+309a0039e40257 David Lin 2024-06-21  531  	struct nxpwifi_sta_info *add_sta = (struct nxpwifi_sta_info *)data_buf;
+309a0039e40257 David Lin 2024-06-21  532  	struct station_parameters *params = add_sta->params;
+309a0039e40257 David Lin 2024-06-21  533  	struct nxpwifi_sta_node *sta_ptr;
+309a0039e40257 David Lin 2024-06-21  534  	u8 *pos, *cmd_end;
+309a0039e40257 David Lin 2024-06-21  535  	u16 tlv_len;
+309a0039e40257 David Lin 2024-06-21  536  	struct nxpwifi_ie_types_sta_flag *sta_flag;
+309a0039e40257 David Lin 2024-06-21  537  	int i;
+309a0039e40257 David Lin 2024-06-21  538  
+309a0039e40257 David Lin 2024-06-21  539  	cmd->command = cpu_to_le16(HOST_CMD_ADD_NEW_STATION);
+309a0039e40257 David Lin 2024-06-21  540  	new_sta->action = cpu_to_le16(cmd_action);
+309a0039e40257 David Lin 2024-06-21 @541  	cmd->size = sizeof(struct host_cmd_ds_add_station) + S_DS_GEN;
+309a0039e40257 David Lin 2024-06-21  542  
+309a0039e40257 David Lin 2024-06-21  543  	if (cmd_action == HOST_ACT_ADD_STA)
+309a0039e40257 David Lin 2024-06-21  544  		sta_ptr = nxpwifi_add_sta_entry(priv, add_sta->peer_mac);
+309a0039e40257 David Lin 2024-06-21  545  	else
+309a0039e40257 David Lin 2024-06-21  546  		sta_ptr = nxpwifi_get_sta_entry(priv, add_sta->peer_mac);
+309a0039e40257 David Lin 2024-06-21  547  
+309a0039e40257 David Lin 2024-06-21  548  	if (!sta_ptr)
+309a0039e40257 David Lin 2024-06-21  549  		return -1;
+309a0039e40257 David Lin 2024-06-21  550  
+309a0039e40257 David Lin 2024-06-21  551  	memcpy(new_sta->peer_mac, add_sta->peer_mac, ETH_ALEN);
+309a0039e40257 David Lin 2024-06-21  552  
+309a0039e40257 David Lin 2024-06-21  553  	if (cmd_action == HOST_ACT_REMOVE_STA) {
+309a0039e40257 David Lin 2024-06-21 @554  		cmd->size = cpu_to_le16(cmd->size);
+309a0039e40257 David Lin 2024-06-21  555  		return 0;
+309a0039e40257 David Lin 2024-06-21  556  	}
+309a0039e40257 David Lin 2024-06-21  557  
+309a0039e40257 David Lin 2024-06-21  558  	new_sta->aid = cpu_to_le16(params->aid);
+309a0039e40257 David Lin 2024-06-21  559  	new_sta->listen_interval = cpu_to_le32(params->listen_interval);
+309a0039e40257 David Lin 2024-06-21  560  	new_sta->cap_info = cpu_to_le16(params->capability);
+309a0039e40257 David Lin 2024-06-21  561  
+309a0039e40257 David Lin 2024-06-21  562  	pos = new_sta->tlv;
+309a0039e40257 David Lin 2024-06-21  563  	cmd_end = (u8 *)cmd;
+309a0039e40257 David Lin 2024-06-21  564  	cmd_end += (NXPWIFI_SIZE_OF_CMD_BUFFER - 1);
+309a0039e40257 David Lin 2024-06-21  565  
+309a0039e40257 David Lin 2024-06-21  566  	if (params->sta_flags_set & NL80211_STA_FLAG_WME)
+309a0039e40257 David Lin 2024-06-21  567  		sta_ptr->is_wmm_enabled = 1;
+309a0039e40257 David Lin 2024-06-21  568  	sta_flag = (struct nxpwifi_ie_types_sta_flag *)pos;
+309a0039e40257 David Lin 2024-06-21  569  	sta_flag->header.type = cpu_to_le16(TLV_TYPE_UAP_STA_FLAGS);
+309a0039e40257 David Lin 2024-06-21  570  	sta_flag->header.len = cpu_to_le16(sizeof(__le32));
+309a0039e40257 David Lin 2024-06-21  571  	sta_flag->sta_flags = cpu_to_le32(params->sta_flags_set);
+309a0039e40257 David Lin 2024-06-21  572  	pos += sizeof(struct nxpwifi_ie_types_sta_flag);
+309a0039e40257 David Lin 2024-06-21 @573  	cmd->size += sizeof(struct nxpwifi_ie_types_sta_flag);
+309a0039e40257 David Lin 2024-06-21  574  
+309a0039e40257 David Lin 2024-06-21  575  	if (params->ext_capab_len) {
+309a0039e40257 David Lin 2024-06-21  576  		u8 *data = (u8 *)params->ext_capab;
+309a0039e40257 David Lin 2024-06-21  577  		u16 len = params->ext_capab_len;
+309a0039e40257 David Lin 2024-06-21  578  
+309a0039e40257 David Lin 2024-06-21  579  		tlv_len = nxpwifi_append_data_tlv(WLAN_EID_EXT_CAPABILITY,
+309a0039e40257 David Lin 2024-06-21  580  						  data, len, pos, cmd_end);
+309a0039e40257 David Lin 2024-06-21  581  		if (!tlv_len)
+309a0039e40257 David Lin 2024-06-21  582  			return -1;
+309a0039e40257 David Lin 2024-06-21  583  		pos += tlv_len;
+309a0039e40257 David Lin 2024-06-21  584  		cmd->size += tlv_len;
+309a0039e40257 David Lin 2024-06-21  585  	}
+309a0039e40257 David Lin 2024-06-21  586  
+309a0039e40257 David Lin 2024-06-21  587  	if (params->link_sta_params.supported_rates_len) {
+309a0039e40257 David Lin 2024-06-21  588  		u8 *data = (u8 *)params->link_sta_params.supported_rates;
+309a0039e40257 David Lin 2024-06-21  589  		u16 len = params->link_sta_params.supported_rates_len;
+309a0039e40257 David Lin 2024-06-21  590  
+309a0039e40257 David Lin 2024-06-21  591  		tlv_len = nxpwifi_append_data_tlv(WLAN_EID_SUPP_RATES,
+309a0039e40257 David Lin 2024-06-21  592  						  data, len, pos, cmd_end);
+309a0039e40257 David Lin 2024-06-21  593  		if (!tlv_len)
+309a0039e40257 David Lin 2024-06-21  594  			return -1;
+309a0039e40257 David Lin 2024-06-21  595  		pos += tlv_len;
+309a0039e40257 David Lin 2024-06-21  596  		cmd->size += tlv_len;
+309a0039e40257 David Lin 2024-06-21  597  	}
+309a0039e40257 David Lin 2024-06-21  598  
+309a0039e40257 David Lin 2024-06-21  599  	if (params->uapsd_queues || params->max_sp) {
+309a0039e40257 David Lin 2024-06-21  600  		u8 qos_capability = params->uapsd_queues | (params->max_sp << 5);
+309a0039e40257 David Lin 2024-06-21  601  		u8 *data = &qos_capability;
+309a0039e40257 David Lin 2024-06-21  602  		u16 len = sizeof(u8);
+309a0039e40257 David Lin 2024-06-21  603  
+309a0039e40257 David Lin 2024-06-21  604  		tlv_len = nxpwifi_append_data_tlv(WLAN_EID_QOS_CAPA,
+309a0039e40257 David Lin 2024-06-21  605  						  data, len, pos, cmd_end);
+309a0039e40257 David Lin 2024-06-21  606  		if (!tlv_len)
+309a0039e40257 David Lin 2024-06-21  607  			return -1;
+309a0039e40257 David Lin 2024-06-21  608  		pos += tlv_len;
+309a0039e40257 David Lin 2024-06-21  609  		cmd->size += tlv_len;
+309a0039e40257 David Lin 2024-06-21  610  		sta_ptr->is_wmm_enabled = 1;
+309a0039e40257 David Lin 2024-06-21  611  	}
+309a0039e40257 David Lin 2024-06-21  612  
+309a0039e40257 David Lin 2024-06-21  613  	if (params->link_sta_params.ht_capa) {
+309a0039e40257 David Lin 2024-06-21  614  		u8 *data = (u8 *)params->link_sta_params.ht_capa;
+309a0039e40257 David Lin 2024-06-21  615  		u16 len = sizeof(struct ieee80211_ht_cap);
+309a0039e40257 David Lin 2024-06-21  616  
+309a0039e40257 David Lin 2024-06-21  617  		tlv_len = nxpwifi_append_data_tlv(WLAN_EID_HT_CAPABILITY,
+309a0039e40257 David Lin 2024-06-21  618  						  data, len, pos, cmd_end);
+309a0039e40257 David Lin 2024-06-21  619  		if (!tlv_len)
+309a0039e40257 David Lin 2024-06-21  620  			return -1;
+309a0039e40257 David Lin 2024-06-21  621  		pos += tlv_len;
+309a0039e40257 David Lin 2024-06-21  622  		cmd->size += tlv_len;
+309a0039e40257 David Lin 2024-06-21  623  		sta_ptr->is_11n_enabled = 1;
+309a0039e40257 David Lin 2024-06-21  624  		sta_ptr->max_amsdu =
+309a0039e40257 David Lin 2024-06-21  625  			le16_to_cpu(params->link_sta_params.ht_capa->cap_info) &
+309a0039e40257 David Lin 2024-06-21  626  			IEEE80211_HT_CAP_MAX_AMSDU ?
+309a0039e40257 David Lin 2024-06-21  627  			NXPWIFI_TX_DATA_BUF_SIZE_8K :
+309a0039e40257 David Lin 2024-06-21  628  			NXPWIFI_TX_DATA_BUF_SIZE_4K;
+309a0039e40257 David Lin 2024-06-21  629  	}
+309a0039e40257 David Lin 2024-06-21  630  
+309a0039e40257 David Lin 2024-06-21  631  	if (params->link_sta_params.vht_capa) {
+309a0039e40257 David Lin 2024-06-21  632  		u8 *data = (u8 *)params->link_sta_params.vht_capa;
+309a0039e40257 David Lin 2024-06-21  633  		u16 len = sizeof(struct ieee80211_vht_cap);
+309a0039e40257 David Lin 2024-06-21  634  
+309a0039e40257 David Lin 2024-06-21  635  		tlv_len = nxpwifi_append_data_tlv(WLAN_EID_VHT_CAPABILITY,
+309a0039e40257 David Lin 2024-06-21  636  						  data, len, pos, cmd_end);
+309a0039e40257 David Lin 2024-06-21  637  		if (!tlv_len)
+309a0039e40257 David Lin 2024-06-21  638  			return -1;
+309a0039e40257 David Lin 2024-06-21  639  		pos += tlv_len;
+309a0039e40257 David Lin 2024-06-21  640  		cmd->size += tlv_len;
+309a0039e40257 David Lin 2024-06-21  641  		sta_ptr->is_11ac_enabled = 1;
+309a0039e40257 David Lin 2024-06-21  642  	}
+309a0039e40257 David Lin 2024-06-21  643  
+309a0039e40257 David Lin 2024-06-21  644  	if (params->link_sta_params.opmode_notif_used) {
+309a0039e40257 David Lin 2024-06-21  645  		u8 *data = &params->link_sta_params.opmode_notif;
+309a0039e40257 David Lin 2024-06-21  646  		u16 len = sizeof(u8);
+309a0039e40257 David Lin 2024-06-21  647  
+309a0039e40257 David Lin 2024-06-21  648  		tlv_len = nxpwifi_append_data_tlv(WLAN_EID_OPMODE_NOTIF,
+309a0039e40257 David Lin 2024-06-21  649  						  data, len, pos, cmd_end);
+309a0039e40257 David Lin 2024-06-21  650  		if (!tlv_len)
+309a0039e40257 David Lin 2024-06-21  651  			return -1;
+309a0039e40257 David Lin 2024-06-21  652  		pos += tlv_len;
+309a0039e40257 David Lin 2024-06-21  653  		cmd->size += tlv_len;
+309a0039e40257 David Lin 2024-06-21  654  	}
+309a0039e40257 David Lin 2024-06-21  655  
+309a0039e40257 David Lin 2024-06-21  656  	for (i = 0; i < MAX_NUM_TID; i++) {
+309a0039e40257 David Lin 2024-06-21  657  		if (sta_ptr->is_11n_enabled)
+309a0039e40257 David Lin 2024-06-21  658  			sta_ptr->ampdu_sta[i] =
+309a0039e40257 David Lin 2024-06-21  659  				      priv->aggr_prio_tbl[i].ampdu_user;
+309a0039e40257 David Lin 2024-06-21  660  		else
+309a0039e40257 David Lin 2024-06-21  661  			sta_ptr->ampdu_sta[i] = BA_STREAM_NOT_ALLOWED;
+309a0039e40257 David Lin 2024-06-21  662  	}
+309a0039e40257 David Lin 2024-06-21  663  
+309a0039e40257 David Lin 2024-06-21  664  	memset(sta_ptr->rx_seq, 0xff, sizeof(sta_ptr->rx_seq));
+309a0039e40257 David Lin 2024-06-21  665  
+309a0039e40257 David Lin 2024-06-21  666  	cmd->size = cpu_to_le16(cmd->size);
+309a0039e40257 David Lin 2024-06-21  667  
+309a0039e40257 David Lin 2024-06-21  668  	return 0;
+309a0039e40257 David Lin 2024-06-21  669  }
+309a0039e40257 David Lin 2024-06-21  670  
 
-
-[1] bcbefbd032 wifi: rtw89: add wait/completion for abort scan
-[2] https://lore.kernel.org/linux-wireless/20240517013350.11278-1-pkshih@re=
-altek.com/
-
-Thanks
-Ping-ke
-
-
---_002_8583c53fa42848c9855b2b425ac18ca4realtekcom_
-Content-Type: application/octet-stream; name="0001-debug-scan-abort.patch"
-Content-Description: 0001-debug-scan-abort.patch
-Content-Disposition: attachment; filename="0001-debug-scan-abort.patch";
-	size=7181; creation-date="Fri, 28 Jun 2024 03:18:32 GMT";
-	modification-date="Fri, 28 Jun 2024 03:18:31 GMT"
-Content-Transfer-Encoding: base64
-
-RnJvbSAwZGVjNzAyMDdhYjYyYzg3ZTJmOWIzYTIzMjE2NmUwN2MzMjYwZjM2IE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4KRGF0
-ZTogRnJpLCAyOCBKdW4gMjAyNCAxMToxNzo1OSArMDgwMApTdWJqZWN0OiBbUEFUQ0hdIGRlYnVn
-IHNjYW4gYWJvcnQKClNpZ25lZC1vZmYtYnk6IFBpbmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsu
-Y29tPgotLS0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvZGVidWcuYyAgICB8
-ICAyICstCiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L2Z3LmMgICAgICAgfCAg
-NSArKysKIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvbWFjLmMgICAgICB8ICA0
-ICsrCiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L21hYzgwMjExLmMgfCA0MiAr
-KysrKysrKysrKysrKysrLS0tCiBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3Bj
-aS5jICAgICAgfCAgNCArKwogNSBmaWxlcyBjaGFuZ2VkLCA1MCBpbnNlcnRpb25zKCspLCA3IGRl
-bGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3
-ODkvZGVidWcuYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvZGVidWcuYwpp
-bmRleCA0OWJiYmQwNDkzMTYuLjQ3MDlkNTBiOGZhMSAxMDA2NDQKLS0tIGEvZHJpdmVycy9uZXQv
-d2lyZWxlc3MvcmVhbHRlay9ydHc4OS9kZWJ1Zy5jCisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNz
-L3JlYWx0ZWsvcnR3ODkvZGVidWcuYwpAQCAtMTQsNyArMTQsNyBAQAogI2luY2x1ZGUgInNhci5o
-IgogCiAjaWZkZWYgQ09ORklHX1JUVzg5X0RFQlVHTVNHCi11bnNpZ25lZCBpbnQgcnR3ODlfZGVi
-dWdfbWFzazsKK3Vuc2lnbmVkIGludCBydHc4OV9kZWJ1Z19tYXNrID0gMHg4MDAyMTAwMDsKIEVY
-UE9SVF9TWU1CT0wocnR3ODlfZGVidWdfbWFzayk7CiBtb2R1bGVfcGFyYW1fbmFtZWQoZGVidWdf
-bWFzaywgcnR3ODlfZGVidWdfbWFzaywgdWludCwgMDY0NCk7CiBNT0RVTEVfUEFSTV9ERVNDKGRl
-YnVnX21hc2ssICJEZWJ1Z2dpbmcgbWFzayIpOwpkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2ly
-ZWxlc3MvcmVhbHRlay9ydHc4OS9mdy5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9y
-dHc4OS9mdy5jCmluZGV4IGZiZTA4YzE2MmI5My4uZWVjYjQzYWQ2NzM1IDEwMDY0NAotLS0gYS9k
-cml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L2Z3LmMKKysrIGIvZHJpdmVycy9uZXQv
-d2lyZWxlc3MvcmVhbHRlay9ydHc4OS9mdy5jCkBAIC00ODU1LDYgKzQ4NTUsOSBAQCBpbnQgcnR3
-ODlfZndfaDJjX3NjYW5fb2ZmbG9hZChzdHJ1Y3QgcnR3ODlfZGV2ICpydHdkZXYsCiAJZWxzZQog
-CQljb25kID0gUlRXODlfU0NBTk9GTERfV0FJVF9DT05EX1NUT1A7CiAKKwlwcmludGsoInBrPiAl
-czolZCBzdGFydCBzY2FuIG9mZmxvYWQgYWJvcnQ9JWRcbiIsIF9fZnVuY19fLCBfX0xJTkVfXywK
-KwkJIW9wdGlvbi0+ZW5hYmxlKTsKKwogCXJldCA9IHJ0dzg5X2gyY190eF9hbmRfd2FpdChydHdk
-ZXYsIHNrYiwgd2FpdCwgY29uZCk7CiAJaWYgKHJldCkgewogCQlydHc4OV9kZWJ1ZyhydHdkZXYs
-IFJUVzg5X0RCR19GVywgImZhaWxlZCB0byBzY2FuIG9mbGRcbiIpOwpAQCAtNjI2Nyw2ICs2Mjcw
-LDggQEAgdm9pZCBydHc4OV9od19zY2FuX2NvbXBsZXRlKHN0cnVjdCBydHc4OV9kZXYgKnJ0d2Rl
-diwgc3RydWN0IGllZWU4MDIxMV92aWYgKnZpZiwKIAlpZiAoIXZpZikKIAkJcmV0dXJuOwogCisJ
-cHJpbnRrKCJwaz4gJXM6JWQgYWJvcnQ9JWRcbiIsIF9fZnVuY19fLCBfX0xJTkVfXywgc2Nhbl9p
-bmZvLT5hYm9ydCk7CisKIAlydHc4OV93cml0ZTMyX21hc2socnR3ZGV2LAogCQkJICAgcnR3ODlf
-bWFjX3JlZ19ieV9pZHgocnR3ZGV2LCBtYWMtPnJ4X2ZsdHIsIFJUVzg5X01BQ18wKSwKIAkJCSAg
-IEJfQVhfUlhfRkxUUl9DRkdfTUFTSywKZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNz
-L3JlYWx0ZWsvcnR3ODkvbWFjLmMgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5
-L21hYy5jCmluZGV4IDczNDYyZjMzNDNlMy4uNDhlZjUyMTYxOGUyIDEwMDY0NAotLS0gYS9kcml2
-ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L21hYy5jCisrKyBiL2RyaXZlcnMvbmV0L3dp
-cmVsZXNzL3JlYWx0ZWsvcnR3ODkvbWFjLmMKQEAgLTQ3NTcsNiArNDc1Nyw4IEBAIHJ0dzg5X21h
-Y19jMmhfc2Nhbm9mbGRfcnNwKHN0cnVjdCBydHc4OV9kZXYgKnJ0d2Rldiwgc3RydWN0IHNrX2J1
-ZmYgKnNrYiwKIAkJfQogCQlyZXR1cm47CiAJY2FzZSBSVFc4OV9TQ0FOX0VORF9TQ0FOX05PVElG
-WToKKwkJcHJpbnRrKCJwaz4gJXM6JWQgc2NhbiBlbmQgaGFuZGxlciBhYm9ydD0lZFxuIiwgX19m
-dW5jX18sIF9fTElORV9fLAorCQkJcnR3ZGV2LT5zY2FuX2luZm8uYWJvcnQpOwogCQlpZiAocnR3
-ZGV2LT5zY2FuX2luZm8uYWJvcnQpCiAJCQlyZXR1cm47CiAKQEAgLTQ4OTUsNiArNDg5Nyw3IEBA
-IHJ0dzg5X21hY19jMmhfZG9uZV9hY2soc3RydWN0IHJ0dzg5X2RldiAqcnR3ZGV2LCBzdHJ1Y3Qg
-c2tfYnVmZiAqc2tiX2MyaCwgdTMyIGxlCiAJCQlicmVhazsKIAkJY2FzZSBIMkNfRlVOQ19TQ0FO
-T0ZMRDoKIAkJCWNvbmQgPSBSVFc4OV9TQ0FOT0ZMRF9XQUlUX0NPTkRfU1RBUlQ7CisJCQlwcmlu
-dGsoInBrPiAlczolZCBEQUNLIGZvciBzY2FuIG9mZmxvYWRcbiIsIF9fZnVuY19fLCBfX0xJTkVf
-Xyk7CiAJCQlicmVhazsKIAkJY2FzZSBIMkNfRlVOQ19TQ0FOT0ZMRF9CRToKIAkJCWNvbmQgPSBS
-VFc4OV9TQ0FOT0ZMRF9CRV9XQUlUX0NPTkRfU1RBUlQ7CkBAIC01MjgzLDYgKzUyODYsNyBAQCBz
-dGF0aWMgdm9pZCBydHc4OV9tYWNfYzJoX3NjYW5vZmxkX3JzcF9hdG9taWMoc3RydWN0IHJ0dzg5
-X2RldiAqcnR3ZGV2LAogCQllbHNlCiAJCQljb25kID0gUlRXODlfU0NBTk9GTERfV0FJVF9DT05E
-X1NUT1A7CiAKKwkJcHJpbnRrKCJwaz4gJXM6JWQgc2NhbiBlbmQgSVNSXG4iLCBfX2Z1bmNfXywg
-X19MSU5FX18pOwogCQlydHc4OV9jb21wbGV0ZV9jb25kKGZ3X29mbGRfd2FpdCwgY29uZCwgJmRh
-dGEpOwogCX0KIH0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3
-ODkvbWFjODAyMTEuYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvbWFjODAy
-MTEuYwppbmRleCA0MWIyODZkYTNkNTkuLjlmMmQ0MjU1MmVkMiAxMDA2NDQKLS0tIGEvZHJpdmVy
-cy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9tYWM4MDIxMS5jCisrKyBiL2RyaXZlcnMvbmV0
-L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvbWFjODAyMTEuYwpAQCAtNjAsNiArNjAsMTQgQEAgc3Rh
-dGljIGludCBydHc4OV9vcHNfc3RhcnQoc3RydWN0IGllZWU4MDIxMV9odyAqaHcpCiAJaW50IHJl
-dDsKIAogCW11dGV4X2xvY2soJnJ0d2Rldi0+bXV0ZXgpOworCisJeworCWV4dGVybiB2b2lkIGR1
-bXBfc3RhY2sodm9pZCk7CisKKwlwcmludGsoInBrPiAlczolZFxuIiwgX19mdW5jX18sIF9fTElO
-RV9fKTsKKwlkdW1wX3N0YWNrKCk7CisJfQorCiAJcmV0ID0gcnR3ODlfY29yZV9zdGFydChydHdk
-ZXYpOwogCW11dGV4X3VubG9jaygmcnR3ZGV2LT5tdXRleCk7CiAKQEAgLTcxLDYgKzc5LDE0IEBA
-IHN0YXRpYyB2b2lkIHJ0dzg5X29wc19zdG9wKHN0cnVjdCBpZWVlODAyMTFfaHcgKmh3KQogCXN0
-cnVjdCBydHc4OV9kZXYgKnJ0d2RldiA9IGh3LT5wcml2OwogCiAJbXV0ZXhfbG9jaygmcnR3ZGV2
-LT5tdXRleCk7CisKKwl7CisJZXh0ZXJuIHZvaWQgZHVtcF9zdGFjayh2b2lkKTsKKworCXByaW50
-aygicGs+ICVzOiVkXG4iLCBfX2Z1bmNfXywgX19MSU5FX18pOworCWR1bXBfc3RhY2soKTsKKwl9
-CisKIAlydHc4OV9jb3JlX3N0b3AocnR3ZGV2KTsKIAltdXRleF91bmxvY2soJnJ0d2Rldi0+bXV0
-ZXgpOwogfQpAQCAtMTEyLDggKzEyOCw4IEBAIHN0YXRpYyBpbnQgcnR3ODlfb3BzX2FkZF9pbnRl
-cmZhY2Uoc3RydWN0IGllZWU4MDIxMV9odyAqaHcsCiAJc3RydWN0IHJ0dzg5X3ZpZiAqcnR3dmlm
-ID0gKHN0cnVjdCBydHc4OV92aWYgKil2aWYtPmRydl9wcml2OwogCWludCByZXQgPSAwOwogCi0J
-cnR3ODlfZGVidWcocnR3ZGV2LCBSVFc4OV9EQkdfU1RBVEUsICJhZGQgdmlmICVwTSB0eXBlICVk
-LCBwMnAgJWRcbiIsCi0JCSAgICB2aWYtPmFkZHIsIHZpZi0+dHlwZSwgdmlmLT5wMnApOworCXJ0
-dzg5X2RlYnVnKHJ0d2RldiwgUlRXODlfREJHX1NUQVRFLCAiYWRkIHZpZiAlcCAlcE0gdHlwZSAl
-ZCwgcDJwICVkXG4iLAorCQkgICAgdmlmLCB2aWYtPmFkZHIsIHZpZi0+dHlwZSwgdmlmLT5wMnAp
-OwogCiAJbXV0ZXhfbG9jaygmcnR3ZGV2LT5tdXRleCk7CiAKQEAgLTE3NSw4ICsxOTEsOCBAQCBz
-dGF0aWMgdm9pZCBydHc4OV9vcHNfcmVtb3ZlX2ludGVyZmFjZShzdHJ1Y3QgaWVlZTgwMjExX2h3
-ICpodywKIAlzdHJ1Y3QgcnR3ODlfZGV2ICpydHdkZXYgPSBody0+cHJpdjsKIAlzdHJ1Y3QgcnR3
-ODlfdmlmICpydHd2aWYgPSAoc3RydWN0IHJ0dzg5X3ZpZiAqKXZpZi0+ZHJ2X3ByaXY7CiAKLQly
-dHc4OV9kZWJ1ZyhydHdkZXYsIFJUVzg5X0RCR19TVEFURSwgInJlbW92ZSB2aWYgJXBNIHR5cGUg
-JWQgcDJwICVkXG4iLAotCQkgICAgdmlmLT5hZGRyLCB2aWYtPnR5cGUsIHZpZi0+cDJwKTsKKwly
-dHc4OV9kZWJ1ZyhydHdkZXYsIFJUVzg5X0RCR19TVEFURSwgInJlbW92ZSB2aWYgJXAgJXBNIHR5
-cGUgJWQgcDJwICVkXG4iLAorCQkgICAgdmlmLCB2aWYtPmFkZHIsIHZpZi0+dHlwZSwgdmlmLT5w
-MnApOwogCiAJY2FuY2VsX3dvcmtfc3luYygmcnR3dmlmLT51cGRhdGVfYmVhY29uX3dvcmspOwog
-CWNhbmNlbF9kZWxheWVkX3dvcmtfc3luYygmcnR3dmlmLT5yb2Mucm9jX3dvcmspOwpAQCAtMjAy
-LDggKzIxOCw4IEBAIHN0YXRpYyBpbnQgcnR3ODlfb3BzX2NoYW5nZV9pbnRlcmZhY2Uoc3RydWN0
-IGllZWU4MDIxMV9odyAqaHcsCiAKIAlzZXRfYml0KFJUVzg5X0ZMQUdfQ0hBTkdJTkdfSU5URVJG
-QUNFLCBydHdkZXYtPmZsYWdzKTsKIAotCXJ0dzg5X2RlYnVnKHJ0d2RldiwgUlRXODlfREJHX1NU
-QVRFLCAiY2hhbmdlIHZpZiAlcE0gKCVkKS0+KCVkKSwgcDJwICglZCktPiglZClcbiIsCi0JCSAg
-ICB2aWYtPmFkZHIsIHZpZi0+dHlwZSwgdHlwZSwgdmlmLT5wMnAsIHAycCk7CisJcnR3ODlfZGVi
-dWcocnR3ZGV2LCBSVFc4OV9EQkdfU1RBVEUsICJjaGFuZ2UgdmlmICVwICVwTSAoJWQpLT4oJWQp
-LCBwMnAgKCVkKS0+KCVkKVxuIiwKKwkJICAgIHZpZiwgdmlmLT5hZGRyLCB2aWYtPnR5cGUsIHR5
-cGUsIHZpZi0+cDJwLCBwMnApOwogCiAJcnR3ODlfb3BzX3JlbW92ZV9pbnRlcmZhY2UoaHcsIHZp
-Zik7CiAKQEAgLTg4Miw2ICs4OTgsMTMgQEAgc3RhdGljIGludCBydHc4OV9vcHNfaHdfc2Nhbihz
-dHJ1Y3QgaWVlZTgwMjExX2h3ICpodywgc3RydWN0IGllZWU4MDIxMV92aWYgKnZpZiwKIAlzdHJ1
-Y3QgcnR3ODlfdmlmICpydHd2aWYgPSB2aWZfdG9fcnR3dmlmX3NhZmUodmlmKTsKIAlpbnQgcmV0
-ID0gMDsKIAorCXsKKwlleHRlcm4gdm9pZCBkdW1wX3N0YWNrKHZvaWQpOworCisJcHJpbnRrKCJw
-az4gJXM6JWQgdmlmPSVwXG4iLCBfX2Z1bmNfXywgX19MSU5FX18sIHZpZik7CisJZHVtcF9zdGFj
-aygpOworCX0KKwogCWlmICghUlRXODlfQ0hLX0ZXX0ZFQVRVUkUoU0NBTl9PRkZMT0FELCAmcnR3
-ZGV2LT5mdykpCiAJCXJldHVybiAxOwogCkBAIC05MDUsNiArOTI4LDEzIEBAIHN0YXRpYyB2b2lk
-IHJ0dzg5X29wc19jYW5jZWxfaHdfc2NhbihzdHJ1Y3QgaWVlZTgwMjExX2h3ICpodywKIHsKIAlz
-dHJ1Y3QgcnR3ODlfZGV2ICpydHdkZXYgPSBody0+cHJpdjsKIAorCXsKKwlleHRlcm4gdm9pZCBk
-dW1wX3N0YWNrKHZvaWQpOworCisJcHJpbnRrKCJwaz4gJXM6JWQgdmlmPSVwXG4iLCBfX2Z1bmNf
-XywgX19MSU5FX18sIHZpZik7CisJZHVtcF9zdGFjaygpOworCX0KKwogCWlmICghUlRXODlfQ0hL
-X0ZXX0ZFQVRVUkUoU0NBTl9PRkZMT0FELCAmcnR3ZGV2LT5mdykpCiAJCXJldHVybjsKIApkaWZm
-IC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9wY2kuYyBiL2RyaXZl
-cnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvcGNpLmMKaW5kZXggMDJhZmViM2FjY2U0Li5j
-OTVmYTllNjZjYzQgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3
-ODkvcGNpLmMKKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9wY2kuYwpA
-QCAtNDE2MCw2ICs0MTYwLDggQEAgc3RhdGljIGludCBfX21heWJlX3VudXNlZCBydHc4OV9wY2lf
-c3VzcGVuZChzdHJ1Y3QgZGV2aWNlICpkZXYpCiAJc3RydWN0IHJ0dzg5X2RldiAqcnR3ZGV2ID0g
-aHctPnByaXY7CiAJZW51bSBydHc4OV9jb3JlX2NoaXBfaWQgY2hpcF9pZCA9IHJ0d2Rldi0+Y2hp
-cC0+Y2hpcF9pZDsKIAorCXByaW50aygicGs+ICVzOiVkXG4iLCBfX2Z1bmNfXywgX19MSU5FX18p
-OworCiAJcnR3ODlfd3JpdGUzMl9zZXQocnR3ZGV2LCBSX0FYX1JTVl9DVFJMLCBCX0FYX1dMT0NL
-XzFDX0JJVDYpOwogCXJ0dzg5X3dyaXRlMzJfc2V0KHJ0d2RldiwgUl9BWF9SU1ZfQ1RSTCwgQl9B
-WF9SX0RJU19QUlNUKTsKIAlydHc4OV93cml0ZTMyX2NscihydHdkZXYsIFJfQVhfUlNWX0NUUkws
-IEJfQVhfV0xPQ0tfMUNfQklUNik7CkBAIC00MTk0LDYgKzQxOTYsOCBAQCBzdGF0aWMgaW50IF9f
-bWF5YmVfdW51c2VkIHJ0dzg5X3BjaV9yZXN1bWUoc3RydWN0IGRldmljZSAqZGV2KQogCXN0cnVj
-dCBydHc4OV9kZXYgKnJ0d2RldiA9IGh3LT5wcml2OwogCWVudW0gcnR3ODlfY29yZV9jaGlwX2lk
-IGNoaXBfaWQgPSBydHdkZXYtPmNoaXAtPmNoaXBfaWQ7CiAKKwlwcmludGsoInBrPiAlczolZFxu
-IiwgX19mdW5jX18sIF9fTElORV9fKTsKKwogCXJ0dzg5X3dyaXRlMzJfc2V0KHJ0d2RldiwgUl9B
-WF9SU1ZfQ1RSTCwgQl9BWF9XTE9DS18xQ19CSVQ2KTsKIAlydHc4OV93cml0ZTMyX2NscihydHdk
-ZXYsIFJfQVhfUlNWX0NUUkwsIEJfQVhfUl9ESVNfUFJTVCk7CiAJcnR3ODlfd3JpdGUzMl9jbHIo
-cnR3ZGV2LCBSX0FYX1JTVl9DVFJMLCBCX0FYX1dMT0NLXzFDX0JJVDYpOwotLSAKMi4yNS4xCgo=
-
---_002_8583c53fa42848c9855b2b425ac18ca4realtekcom_--
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
