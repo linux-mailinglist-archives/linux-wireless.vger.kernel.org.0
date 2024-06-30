@@ -1,155 +1,197 @@
-Return-Path: <linux-wireless+bounces-9723-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9724-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FC3F91D0A7
-	for <lists+linux-wireless@lfdr.de>; Sun, 30 Jun 2024 10:44:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C32A991D0BE
+	for <lists+linux-wireless@lfdr.de>; Sun, 30 Jun 2024 11:10:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 287F21F21390
-	for <lists+linux-wireless@lfdr.de>; Sun, 30 Jun 2024 08:44:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A0F8281D62
+	for <lists+linux-wireless@lfdr.de>; Sun, 30 Jun 2024 09:10:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C2B12C54D;
-	Sun, 30 Jun 2024 08:44:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="Gqtk2aL4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5647112D1ED;
+	Sun, 30 Jun 2024 09:09:57 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+Received: from APC01-SG2-obe.outbound.protection.outlook.com (mail-sgaapc01on2138.outbound.protection.outlook.com [40.107.215.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B028039AF4;
-	Sun, 30 Jun 2024 08:43:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719737041; cv=none; b=DFMwl4E2kL9zl2Up46oyu4qi7tdRvGlsSgL4eCkMglFapVeIwmHJqxsQTZ27mhbhtGVm3RN8Drl95pUIL0Y+BU6LQShKZtRr3kSUQeihJZAZlcFphy0OjWSJX2M8q4P3MFPfT3zcfVUZpyUxfGNm1M75QkL6CZ0eazX8wlmuRzw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719737041; c=relaxed/simple;
-	bh=LiuqvRSyYUEcIEYiEIohQUTYIE6wNbj3g07Nvpvw1dI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rvhcI4nIlopITygdzT8XYxGPyail5QzRS9oP5xppwyGRNFgs07qK5WS/meYe3FUo1UBef8bz1N+Z0kiMg5qx2EyO3xbyMF169Tfi5BMbG7ZLG0ZYqgJQ1YNbXTQYl0I13iwm0PLSWfcV3N8fCQauYABA288fb1oF4ph+aHr90Ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=Gqtk2aL4; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1719736988; x=1720341788; i=wahrenst@gmx.net;
-	bh=DWHFm2E/o/V6Cw7bSZdgzS7ATWvaFTxO3EAYiMwnYQ0=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=Gqtk2aL46vidGporVc+8B4Wm0DTc4MDZqFfMQrhgYmocdhWOr97DwUJHWAkEnqI7
-	 dnlLZ9j2DLem/JiB0Rix3qBSGEnIX+7CcHOmC2dldSynU/9qwRKljVhwB4Q7Xkw+W
-	 1n2/or4A0pYXL8p5gZcvQihweDBtDZRFAbJcovJezYj+xbl8xV+f1WNOiPmoFZG1H
-	 momwphcUGCZQhC8zWsYBB44RjdEY9JYV4D/shWOJVeXVPtZ9h14N/McBhc4H9HUwW
-	 i6p9rWmIYpV4Voar2iGcPwHKG5D0CkhABcrBzioaCQ1wE0XfkcWvXVQTqffRMXu1a
-	 N1I/c5haTudE5F0bSQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.1.127] ([37.4.248.43]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MtwYu-1s9k6i2nbY-014cGt; Sun, 30
- Jun 2024 10:43:08 +0200
-Message-ID: <bd661690-1de8-4030-a209-ef26d3559221@gmx.net>
-Date: Sun, 30 Jun 2024 10:43:06 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3835B41C6C;
+	Sun, 30 Jun 2024 09:09:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.215.138
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1719738597; cv=fail; b=KEd7s7xEDTaLAh3bzKdQBYa9hMK89eKX3KpqHUORAKiQS9fT5C7J9z1bbH7uTB1c8xjf2vnaacT9Bwig1pwWbvwfS3GTGkfbiA/2r6oXd/D4pPiUYkkoqQxp1qRBrOyyDtIGS04VnPW83xbvJ7ZZMDMyqd0K0lS1F1X3lcdE3UQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1719738597; c=relaxed/simple;
+	bh=iLrD+8PXYCzwZIE9U0Vvgl5eunFa+Ehh5Yr9EesSs2Q=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Yr7nzlebIlqqJtIGbCBnA6NtwCrBpUnKp31Dwuv0k2Gr4borENhdKQKlOWYAPYj3BygnvrW6xmM+dWG2drWYv+GSs1uLgjv4hI5yAlyiSAsFvDnOnUiQz88LRVct+chHDb/KsvOVl3ysNS2M7EJNoG9Z4S5HMJ+GmQEcrC7fgPY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wesion.com; spf=pass smtp.mailfrom=wesion.com; arc=fail smtp.client-ip=40.107.215.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wesion.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wesion.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=EL7q3I/LNyh9jUxe+7sy8VYq0mIm4fKdlT9xahhGCSg9NWHGn/kq/VFmPPI6XRZKeyauhswsBr7/6uca16EYgw0xpWU1nm9+RO9SsajplHC8C0U9mQT8DNZP047MVo+NocY1cFAXXipveWxzAi9BHkxvpdt5XWHL/CwodRt69tP/61xgxQmJvLdlMkl+NGB1hZyxlhqwtWWAs0e6iptbXPN2/l2CojtlOoRMOYc34BCR/MiUyNxe1qpMe4Qxpv152Y5t6FMAIBeo7GlY+Y6SqSYUFIZAEwS2y+JSPGDVEG0EpIVxpcCUqS5UBz3QtKOYmTTLputWZZb3c3LcUW/F2Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iLrD+8PXYCzwZIE9U0Vvgl5eunFa+Ehh5Yr9EesSs2Q=;
+ b=bUtR0Y5skO2U4eZfEL84CGfbrpkrlGU1g4/wIr1NuDGHUaqKL2J5VAHfXt+KUAkzaZqjUPmsSchNsmbVttYYGLpR7nW1uuQ8dSIaYdpgu3hPeOOhLpY7DM1noN/dUmZdlz1hU/1yaU5kPN2FGKLDn1V+XiLUXkpw1gyGPTi8qIvy3+GDlbyJcKj1xNcesYK2/irJ9FrJzyBTPQdIXH6jWiRoxcw5FsqSV/w4AJe1r1M10ubW9dr1JuJepsHoykrqpaaxAgDWWQ9wY3usMIqVyTi8k5Za/5gI5OpczArIbRfxxV4ymr5D6s/S/Y7cCPGsVidpvBknivVs0t1hhrL7NQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=wesion.com; dmarc=pass action=none header.from=wesion.com;
+ dkim=pass header.d=wesion.com; arc=none
+Received: from TYZPR03MB7001.apcprd03.prod.outlook.com (2603:1096:400:26a::14)
+ by KL1PR03MB8545.apcprd03.prod.outlook.com (2603:1096:820:13e::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7719.28; Sun, 30 Jun
+ 2024 09:09:50 +0000
+Received: from TYZPR03MB7001.apcprd03.prod.outlook.com
+ ([fe80::78dd:5e68:1a9c:36c0]) by TYZPR03MB7001.apcprd03.prod.outlook.com
+ ([fe80::78dd:5e68:1a9c:36c0%6]) with mapi id 15.20.7719.028; Sun, 30 Jun 2024
+ 09:09:50 +0000
+From: Jacobe Zang <jacobe.zang@wesion.com>
+To: Stefan Wahren <wahrenst@gmx.net>, "robh@kernel.org" <robh@kernel.org>,
+	"krzk+dt@kernel.org" <krzk+dt@kernel.org>, "heiko@sntech.de"
+	<heiko@sntech.de>, "kvalo@kernel.org" <kvalo@kernel.org>,
+	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
+	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "conor+dt@kernel.org"
+	<conor+dt@kernel.org>
+CC: "efectn@protonmail.com" <efectn@protonmail.com>, "dsimic@manjaro.org"
+	<dsimic@manjaro.org>, "jagan@edgeble.ai" <jagan@edgeble.ai>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-rockchip@lists.infradead.org"
+	<linux-rockchip@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "arend@broadcom.com" <arend@broadcom.com>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "megi@xff.cz"
+	<megi@xff.cz>, "duoming@zju.edu.cn" <duoming@zju.edu.cn>,
+	"bhelgaas@google.com" <bhelgaas@google.com>, "minipli@grsecurity.net"
+	<minipli@grsecurity.net>, "brcm80211@lists.linux.dev"
+	<brcm80211@lists.linux.dev>, "brcm80211-dev-list.pdl@broadcom.com"
+	<brcm80211-dev-list.pdl@broadcom.com>, Nick Xie <nick@khadas.com>
+Subject: Re: [PATCH v3 4/5] wifi: brcmfmac: Add optional lpo clock enable
+ support
+Thread-Topic: [PATCH v3 4/5] wifi: brcmfmac: Add optional lpo clock enable
+ support
+Thread-Index: AQHaysA7C3v/Z5nX1k2k1WM+yxb95rHf/Y0AgAAE1Wo=
+Date: Sun, 30 Jun 2024 09:09:50 +0000
+Message-ID:
+ <TYZPR03MB7001AC28827A86338BF2B77380D22@TYZPR03MB7001.apcprd03.prod.outlook.com>
+References: <20240630073605.2164346-1-jacobe.zang@wesion.com>
+ <20240630073605.2164346-5-jacobe.zang@wesion.com>
+ <bd661690-1de8-4030-a209-ef26d3559221@gmx.net>
+In-Reply-To: <bd661690-1de8-4030-a209-ef26d3559221@gmx.net>
+Accept-Language: en-US, zh-CN
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=wesion.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TYZPR03MB7001:EE_|KL1PR03MB8545:EE_
+x-ms-office365-filtering-correlation-id: 33a62a13-0d91-4b76-89dc-08dc98e46574
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|376014|1800799024|366016|921020|38070700018;
+x-microsoft-antispam-message-info:
+ =?iso-8859-1?Q?o6X6MSxCJdnbZuXOgTOZ8vO2fnkq9j1S/K9E4vxP/fHiUrflZ6vH+ZS1PM?=
+ =?iso-8859-1?Q?s9puaXPp6LSzqs/MRDdkzsnEPpcPCQfuPcAiSuuE0XMer5PEP1DHlsg6KO?=
+ =?iso-8859-1?Q?03GeCO1IOtrdgJl8Sb4feeEC6LwpnolkJZZv1cXueMg5YJazBLG321axud?=
+ =?iso-8859-1?Q?43BedD+jT8prd3x9wSYFugwtdy6eg3m87zDWo0ngOkPeKE1vHP3fUvfy8c?=
+ =?iso-8859-1?Q?rmCBtjSEQKuVGBa3ZvwhTiA1alPn8LItTmo44bU1AXS48+aX00h+Y7sIs8?=
+ =?iso-8859-1?Q?VotQa8CfshGEvIIU7015YPIuLcdnba1H/MGC9XISR4r5YURVsjbpiL977A?=
+ =?iso-8859-1?Q?V3qw3v2VGShiF9V157d3wupwXewyCF2h1z6St3tTWDjTDm9SYGv80Z9mw2?=
+ =?iso-8859-1?Q?JUrOzEgZvrkVIWlpCkJUElYHVTwx5xnOO6aYn/mDbtpoyHykb4tlr37/tv?=
+ =?iso-8859-1?Q?KkeIjGU2ufSIaaYNNg6Gd0y4asmF2WyXa70ZR96FcN31JpJtl8mWT0Sc2D?=
+ =?iso-8859-1?Q?nCyURxNzTG/6xHeRGvb3fmg3vtriiQQvljbC+OgrXEYydDlPL0kXN+zige?=
+ =?iso-8859-1?Q?rFcnN5mwqgqAfrEFE3Y0opEYxJFVYmduv1p/GwXMXmjiYR9wEc7stZxrns?=
+ =?iso-8859-1?Q?4bcbTw6heQnY7fL9O1waFxiE2qnxRjnkgnGV4NczBumaiGHGh4eHtaJUjn?=
+ =?iso-8859-1?Q?llfeTZpYfDUgqzFSWXhPpnP89TwVWwmeTyin4z7Esu8IErNn9gPRwA1VG3?=
+ =?iso-8859-1?Q?8OHLJdhq3DID5QzkvjHe2RHDukrhTfjtYUumEHBcZbpgUGlrf9rx4bAuCW?=
+ =?iso-8859-1?Q?UD1J6G/B4t8Sq9xIqLtOgb1pF5XD7RiWgOUvmJdJyxCu6ZVXKenESCiC/s?=
+ =?iso-8859-1?Q?brn/M9KCl9MraeUijyBzoBqMKbijGjTs6ixaZQg7jePydtrEWvBR2gVORr?=
+ =?iso-8859-1?Q?B6Nbih5RGzVl+EAWzBm5qdlBNSIwRBwDqr2fAxHio3Hn/ZjN+t6sSt3jXL?=
+ =?iso-8859-1?Q?HcigRQ4gThYNpXbbQN57JGUb21UP0nG0UZxOhTxk5xZ2EA4aYCz1jyKTfc?=
+ =?iso-8859-1?Q?h7k2ub/fX14QGDBb60U8eAnODbuBtJ9X2BVjnaGKpR24QKZQW0Ru7X43TH?=
+ =?iso-8859-1?Q?9rMTnALoFESC5a8Fbdcm0R0HFNNQQRV9zxzmrNDjUlu2SyPs1yf0EljjMY?=
+ =?iso-8859-1?Q?snH4X4hT780sByWLbecfR4o0KlerOELGx/zHaqvW394U0Fap/QD5aiJ96F?=
+ =?iso-8859-1?Q?7+pxDyApv7Z6CZQE1qTgD7sZqCdv+d50+GmQ1jxY+WSuXUOlhIUI0SQTmA?=
+ =?iso-8859-1?Q?/CP/YU7RsUDlk+42IrxhbX8rjEX5ToDxiWifY1L26bprk5jEZw/RjUjs9h?=
+ =?iso-8859-1?Q?WFsWUBQR0b0V1LKCSlmNvhwG7DFYV4Y09RwPbBnxdIq4K4I/0/4Ki2hlut?=
+ =?iso-8859-1?Q?3hPsE7rjjdPLv3wO?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYZPR03MB7001.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(921020)(38070700018);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?HJgngX7hd1TcgeZrV3/BXZ6REs2rHIh7S+ImTKZbVwCmP0n30+ndl45RSU?=
+ =?iso-8859-1?Q?5UD5/mBpp6kwKgOaHoRL5UZeDivyzspx7bZHEf5DQax4W0cSLTQuyC74Eg?=
+ =?iso-8859-1?Q?3TLPzOVJw+50knVMFjAedZAAVwy9+XOX60EtDDUUMvnsrMgN6DkCoN/yo7?=
+ =?iso-8859-1?Q?RBwL4VBNe5/h3/NAOOdC4ciKy9liGOrvyfS7YyW+iE1w3AO4/ensD/oQJG?=
+ =?iso-8859-1?Q?cdepxnhjM2dk8ohDATfqSGWuAHqVZqff3CwftQDtKsDx32eID8iTjP7pNP?=
+ =?iso-8859-1?Q?vGdK/QW8faF88t6KHH+KuTf7KkYkw/pEaiUlp4NZmbaZgNyEcmTb41pZSB?=
+ =?iso-8859-1?Q?EAO/AwqN2qNWjqxr7rTY7Vtyj5rFKmqE1Dm385sC1SFCAROEhIEPOMjXNj?=
+ =?iso-8859-1?Q?gxIgrmy/RlDKUGNjSGmWjQ5HmfacarBMgHv8T8pUZd/4JrpGGISg/aN0ST?=
+ =?iso-8859-1?Q?E8/Hf4rhU3VCWuse5gfZ/pHLxudt5P3gY2JjYCq9VJZZQ//wSJqB9XbW57?=
+ =?iso-8859-1?Q?xN9Hwf3LMVRUpYMFBBeNvg1Y3WBd6XcGaUA2b4uutD7Z5Pyto9lsL6nvRh?=
+ =?iso-8859-1?Q?3ZKQRBDdn8zSZYEADettnntFYYnzMo9/FDNAlNKWzZel4Eeu2rhgW3vm0r?=
+ =?iso-8859-1?Q?Z/AfOA+V09fJ1aXQ88fyAajHkAkDRN5wPFbsauzP/FAKZChWEJY3sK1Nao?=
+ =?iso-8859-1?Q?dsWlxksMZvrbUWwAPZbvcFFbEA1C03zeMxYq/iDqSPX/5leMYHYankjVdZ?=
+ =?iso-8859-1?Q?JLjSAQ27icqn9ms2KZp2oxo+lZ+yb5IE+QF99La+35QOuSmfep0W7b9uc2?=
+ =?iso-8859-1?Q?BqZz8/IEqH0qnBPT8AAyFjEUXYNtPjyLcfJ6PWPaRUEJvE4XEj1+GHnjsT?=
+ =?iso-8859-1?Q?jph/G7HgMEcbcAMILe1sRX+QChZgQeV4QHfzS+i7T6GetKiDeCkfaCfFwq?=
+ =?iso-8859-1?Q?c91FIF6001ggdUm2ubVOV3E1DcwXsvM4quFJM9RBGp1zCGPPhBNqvH+PGE?=
+ =?iso-8859-1?Q?A4a4VRiL8B3v05hbYc6ak7SGheS8oy5speC5vELn8CRJe8IGE3G4PcaVCG?=
+ =?iso-8859-1?Q?c49OxgfRPcvThEJaSehZuiUoFewICe6vAat8TVFrDI636jiL/U73yF7yJD?=
+ =?iso-8859-1?Q?y7qUYuEMoPX6WGMFUvAubF/k6VUVu32IOUji9HXdAtubamtULbCp/0MO6F?=
+ =?iso-8859-1?Q?YT80sfZEjrpOh3zsGqHnzdYwUj381XqrAbeOUVJzksYcWWeCF+dYTVg0S2?=
+ =?iso-8859-1?Q?vF8EgWnNJ+2/lqlW7zxJXLV3ou+wKifrAwQBKvllJwCg3O0f2uJVL7PBM2?=
+ =?iso-8859-1?Q?0zI6b600F/JB6c5Vt4fAyXd4Lw8UkcEzjCm4lWYJTQyKcs5TjosuxjPr7/?=
+ =?iso-8859-1?Q?eUhtJG90/EQ6Qa9zT38+QjLhY9euAJcixGk+Obasj7ZDLSIVERMG/pK+37?=
+ =?iso-8859-1?Q?A3WsrztQmn47zs+cHBygeaYw48FBskdQ6SnOcdVqpJTXcUvto6TpgDobPA?=
+ =?iso-8859-1?Q?gm7+LSuWQevrWIRPprUjY3lNkt+tQ/DWhB3VoYlc527f930DBimYkPPFzb?=
+ =?iso-8859-1?Q?zMweHEranY7GkcW/8jYudO8FTX2a4XnjblxS4lSgPKR40H7vdDHFpqGcvH?=
+ =?iso-8859-1?Q?yzQ9Op7KNf0cvVHQZuEQ0QkGkFNngPeaJ5?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/5] wifi: brcmfmac: Add optional lpo clock enable
- support
-To: Jacobe Zang <jacobe.zang@wesion.com>, robh@kernel.org,
- krzk+dt@kernel.org, heiko@sntech.de, kvalo@kernel.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, conor+dt@kernel.org
-Cc: efectn@protonmail.com, dsimic@manjaro.org, jagan@edgeble.ai,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
- arend@broadcom.com, linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- megi@xff.cz, duoming@zju.edu.cn, bhelgaas@google.com,
- minipli@grsecurity.net, brcm80211@lists.linux.dev,
- brcm80211-dev-list.pdl@broadcom.com, nick@khadas.com
-References: <20240630073605.2164346-1-jacobe.zang@wesion.com>
- <20240630073605.2164346-5-jacobe.zang@wesion.com>
-Content-Language: en-US
-From: Stefan Wahren <wahrenst@gmx.net>
-In-Reply-To: <20240630073605.2164346-5-jacobe.zang@wesion.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:mgMXk3DXRcduwz95csSCv+CkqV380IX24h7ngin2weAe06nSBut
- XRhB1UiQp3lf2b0NYmvfVLy2/mO9OQ7MdSCGUF1luiS5UtcOzG+EOLW42qqlwMhlb4e54Ar
- Ks90Wb/EKJM5mT9LD5u6n2d4dyNSY7FQqhw8asreSyh5xF4QdxvbIl7Zz5Z0NDVEINqzLCH
- 2SlZtn7IAjSBasUem///w==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:mou2LmE+Pqw=;DPg1kwFi8AE287jvIuA+tl/khDX
- kuBJ9gbe+rII+gFJy8tELFBxwny1ffwYSQxDUeKCIWxVv7fO8o1kvYL9dFKhBnM4F26o2hgqC
- ngafc1iyAy51Dt5CPiFzUfhvVXOVOwLh10euaKGwfnZah7nzx6SDpfOEPgZYC03kzqxvt6QoX
- Z5uFSzARf5MExs3Ok3AXzRBBGfm3StKyeVa1D/Y2pm2MjkedX0p4U0CJWFxjQSOly5GChb/u3
- YRX/RtASHZGM/2fOG46JEwsO5hR1mpeSVsoErCprGVeyanNbrO+JhamoGOLFkseSjvavozcVm
- g3yhvrP+lp6YlfqKRAOb2ups6iQeeCIY+rSZUZWIldpBVWZgCXu81Y35kRu7iH75ji9Pw7jv4
- vWecdWERENJSTB0VP2EzumDKUWMA8r5unVHqfjikKygugc3sQHuSZFxSkIMPvuxx5p9QYYktr
- IS4lRAq1EokBMevuY6NDnns9AWp+5oMOXI6V5SYAgPcvmy0ICirTDWujoXRNFQXea+egNu5vJ
- NpSCFAQSAmLhsKL/mPDLh31XJSnZ69M6VYBO9tdQM7T2Yn+qCnc4FYHlve/ULcDS2gaZmvxN/
- NoRjgGDSwxud0ZlxL8r/VzbkR+ViB1wxnYW2h+KLKO1wx2oPkHNOH3vfTt353Z0xZjcTz0IDj
- isq9L2oZDGnq/CF8qTH+wg+UNsRjVx3WeTruimQskvC3KvVz/4zjTJ+5gjoRQImoNi9W0Ng3s
- gzu2uW8uflqzhpk38d5MT2mK3KkqFDm4HTxiEk4EcaAfwzJkuy6Q6frW97wHrGOsGXOoxfpXZ
- HlOq4pMqmz+NNykvuX2Lwl04GbG8TwYzNcgJmXi5srOxo=
+X-OriginatorOrg: wesion.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TYZPR03MB7001.apcprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 33a62a13-0d91-4b76-89dc-08dc98e46574
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jun 2024 09:09:50.1542
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 2dc3bd76-7ac2-4780-a5b7-6c6cc6b5af9b
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: VpSYPieq5q9Elsil23z4fJtutsZYDkYfpNA/RdXZ/hGXHZaeDbx6vr307nNQeArYFcKoax9ydCSYS9D7qOVswQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: KL1PR03MB8545
 
-Hi,
-
-Am 30.06.24 um 09:36 schrieb Jacobe Zang:
-> WiFi modules often require 32kHz clock to function. Add support to
-> enable the clock to PCIe driver.
-the low power clock is independent from the host interface like PCIe. So
-the clock handling should move to the common code. Sorry, not i cannot
-give a good suggestion, what's the best place for this.
->
-> Co-developed-by: Ondrej Jirman <megi@xff.cz>
-> Signed-off-by: Ondrej Jirman <megi@xff.cz>
-> Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
-> ---
->   .../net/wireless/broadcom/brcm80211/brcmfmac/pcie.c    | 10 ++++++++++
->   1 file changed, 10 insertions(+)
->
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/d=
-rivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> index 06698a714b523..e84f562fc91b8 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> @@ -3,6 +3,7 @@
->    * Copyright (c) 2014 Broadcom Corporation
->    */
->
-> +#include <linux/clk.h>
->   #include <linux/kernel.h>
->   #include <linux/module.h>
->   #include <linux/firmware.h>
-> @@ -2411,6 +2412,7 @@ brcmf_pcie_probe(struct pci_dev *pdev, const struc=
-t pci_device_id *id)
->   	struct brcmf_pciedev *pcie_bus_dev;
->   	struct brcmf_core *core;
->   	struct brcmf_bus *bus;
-> +	struct clk *clk;
->
->   	if (!id) {
->   		id =3D pci_match_id(brcmf_pcie_devid_table, pdev);
-> @@ -2422,6 +2424,14 @@ brcmf_pcie_probe(struct pci_dev *pdev, const stru=
-ct pci_device_id *id)
->
->   	brcmf_dbg(PCIE, "Enter %x:%x\n", pdev->vendor, pdev->device);
->
-> +	clk =3D devm_clk_get_optional_enabled(&pdev->dev, "lpo");
-> +	if (IS_ERR(clk))
-> +		return PTR_ERR(clk);
-> +	if (clk) {
-> +		brcmf_dbg(PCIE, "enabling 32kHz clock\n", pdev->vendor, pdev->device)=
-;
-> +		clk_set_rate(clk, 32768);
-> +	}
-> +
->   	ret =3D -ENOMEM;
->   	devinfo =3D kzalloc(sizeof(*devinfo), GFP_KERNEL);
->   	if (devinfo =3D=3D NULL)
-
+Hi Stefan,=0A=
+=0A=
+>> WiFi modules often require 32kHz clock to function. Add support to=0A=
+>> enable the clock to PCIe driver.=0A=
+> the low power clock is independent from the host interface like PCIe. So=
+=0A=
+> the clock handling should move to the common code. Sorry, not i cannot=0A=
+> give a good suggestion, what's the best place for this.=0A=
+=0A=
+I think the clock is used by the PCIe device so enable it in this file. Als=
+o I checked=0A=
+use of clock which in spi[0] or sdio[0] device was enabled similarly to thi=
+s.=0A=
+=0A=
+[0] https://lore.kernel.org/all/20210806081229.721731-4-claudiu.beznea@micr=
+ochip.com/=0A=
+=0A=
+---=0A=
+Best Regards=0A=
+Jacobe=
 
