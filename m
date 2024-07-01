@@ -1,45 +1,45 @@
-Return-Path: <linux-wireless+bounces-9737-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9738-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BABB91D54D
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2024 02:21:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AD7F91D55C
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2024 02:22:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3173B1F24DB7
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2024 00:21:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A07FB20E60
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2024 00:22:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09BC54C6B;
-	Mon,  1 Jul 2024 00:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566C851C42;
+	Mon,  1 Jul 2024 00:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m9QAY0MQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cnr+JcxP"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41B74A07;
-	Mon,  1 Jul 2024 00:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C04A5382;
+	Mon,  1 Jul 2024 00:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719792882; cv=none; b=EhFyMV5bd1uh93kS6yl1s3/3WnTGMydbxJUBfxVyrtiwaoCHm+uanDgyUJMS0wE8HA5/OkU9wniEZljL6d8hXhpf41U4uLetj17n2t0MP30e5KvBybxf+HlYBUj/PfeWzze87A2wb+8FZ/jVI43o9pJgSuJ0ANVLO11Ow/Xl9X8=
+	t=1719792900; cv=none; b=tgqHiqKJOmjWPs03AH/qk4tjTn/rO4exVULgwtTtEyxcFhkRrAwJAFHFiC+qlCdL2AX68vB/ZfbR8NvJFrNeZLqH3+JqCglO8jYnX0IaJ7do4W9YRymn+nnMoMI+WPh7sOmaeuDZXVt/0Zgxvryxfi2JYdXZtqNeXh7tWp0+ltw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719792882; c=relaxed/simple;
-	bh=Q4EBs0UeNiowPayuH2ixLZ0K3jSQYRgZGN00yMuPIYw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dP/QxZCkSXesm1f9DTPBlYefdl+u2d4m5G738UDXWZldzo7lbLnTYlGECGhWM0t5GhBkCQubfA3C2fy5+16Q9yFJql9F8IhPmjD8RbwgsRJtuUd+esE1akx9JspYGWUNDR0XHPYO23knB3Dv0xoTJSTSiYIxqoXeuXFw460ItHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m9QAY0MQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1B08C2BD10;
-	Mon,  1 Jul 2024 00:14:39 +0000 (UTC)
+	s=arc-20240116; t=1719792900; c=relaxed/simple;
+	bh=jWkqHQxtzhYZIeTqCuAdjrMMX4M1bB/KaFpYCUtCLE8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fa3DoRJ3+FzpFezuoZWQu1aNp4W4+jmz9tD08qI6IrBZ7qo8JBe637lhs3lTkP8myzlwRDyKSL/ffUfgQiRpAwx6BVWnQfvuygM6JQvZ1IASZHAeCzggor1Zkn8tjxdyfSwyg21+F2P1EEOx+/DC67Qkc/Iy53BSbkvIWuKSNbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cnr+JcxP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84FB6C2BD10;
+	Mon,  1 Jul 2024 00:14:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719792881;
-	bh=Q4EBs0UeNiowPayuH2ixLZ0K3jSQYRgZGN00yMuPIYw=;
+	s=k20201202; t=1719792900;
+	bh=jWkqHQxtzhYZIeTqCuAdjrMMX4M1bB/KaFpYCUtCLE8=;
 	h=From:To:Cc:Subject:Date:From;
-	b=m9QAY0MQ1VlQdDWJELoGHqURGa3Wegqhpc8cDFLRBqUjr7y6O0hIjTWhCZ66xKtfp
-	 ZO9thhAii5jzRfeQ3pFeqQuWItd61QBbmrUTvIUWbENkQHoexljbq4/Z01qXlyA50P
-	 PdU9Cg0LRi5++/5bqEZDEdvbv/Si49Z5zk4UIjsf9Y0aXruHD4XyAlU7efVQXpDmzc
-	 4OdSZUrMuA5fFH36BRPcIlFPxyeWPzP6E7ToySe8zW5hFj6dbih6gZLiivhEw8pRDm
-	 h5HEkOFxaluQhi1KHBq0rl44ZebrghmS7pQZiRxIEBDunyDKl5fr8YZPRdxoFCml4x
-	 OnZ5Uep7q5V9g==
+	b=Cnr+JcxPGcQfEwX4zgB1ZTiDbFRJfWCLlpaFv51511GY/OBxUCr3o6wNe0UsczgyB
+	 LguhOEXzSvqDnLBPX2XjSlj2jeoa+Q5+eLJwcrxCkhm2ZNUUUKvlTGWbQXKsjfWAC4
+	 oAbthoKxfH5YBB1loR+RzgIUPZCpsCbK0JqI/Qxkzx4DKPhmr5hoVh5gEOSH0tVPo8
+	 55BVHUFDfCtnPuJs0RFbItA8BUpAjzMyNO3cbMm+DzkPkbP3/gxho/w2F3iLwEZQuP
+	 HwWFqJoBCBOn8/g+BcBp5zcmULPbLzthIS3e5my7SrJInNCuAK+xtmQJMagKec1uXz
+	 58A6kN0GSgH0Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -54,9 +54,9 @@ Cc: Dmitry Antipov <dmantipov@yandex.ru>,
 	pabeni@redhat.com,
 	linux-wireless@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 1/5] wifi: cfg80211: wext: add extra SIOCSIWSCAN data check
-Date: Sun, 30 Jun 2024 20:14:29 -0400
-Message-ID: <20240701001438.2921324-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 1/4] wifi: cfg80211: wext: add extra SIOCSIWSCAN data check
+Date: Sun, 30 Jun 2024 20:14:49 -0400
+Message-ID: <20240701001457.2921445-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -66,7 +66,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.161
+X-stable-base: Linux 5.10.220
 Content-Transfer-Encoding: 8bit
 
 From: Dmitry Antipov <dmantipov@yandex.ru>
@@ -88,10 +88,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 2898df10a72ae..a444eb84d621e 100644
+index a6c289a61d30c..76a27b6d45d28 100644
 --- a/net/wireless/scan.c
 +++ b/net/wireless/scan.c
-@@ -2782,10 +2782,14 @@ int cfg80211_wext_siwscan(struct net_device *dev,
+@@ -2772,10 +2772,14 @@ int cfg80211_wext_siwscan(struct net_device *dev,
  	wiphy = &rdev->wiphy;
  
  	/* Determine number of channels, needed to allocate creq */
