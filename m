@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-9750-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9751-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09B3191DA3C
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2024 10:42:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EBAF91DA5E
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2024 10:48:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59089B21DB9
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2024 08:42:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E12F1C20F82
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2024 08:48:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E743D83A18;
-	Mon,  1 Jul 2024 08:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA533129A74;
+	Mon,  1 Jul 2024 08:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UkoFlXfJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zf7TKwRc"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3131824B1;
-	Mon,  1 Jul 2024 08:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F92F83A14;
+	Mon,  1 Jul 2024 08:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719823299; cv=none; b=dEQlXb0QS68aqNhhjm4gep5AwF8hm9T2qqbvI+OaNPEJneTbR7Adl9Rvs8v+mTVEsHaRCiyFOMciXUMWUD26ugnKdmQKxnulNpG4Ma4O3QzaEwCgogCmOv8dbm6CoKf5dLrmpjL9nCO2FKX5TL4Wy4F7Ua+A8E70Li+AiU0ZwOI=
+	t=1719823622; cv=none; b=pU3feRrIgBS67trekYfUBUxlmle5igxHdz3hwYAb6FznzY+GB1ZlZbeG/aBj0NaVCZfuCIyWnFeGm9/VVE6DfCSxhOud2B2gXsZ2/J3m1MWeMtdRF9CJ9tn9r8+HnOzCNYjn0jrBu5dZ/vLqHCH+ZekPIUxjt1DsL3+obSFr5cE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719823299; c=relaxed/simple;
-	bh=hg+g7DiLnSzkTsvXjpWJRV2heN5XuuVLmYBc59TNCUg=;
+	s=arc-20240116; t=1719823622; c=relaxed/simple;
+	bh=eXt8DtOJVKFI5OlO3caEI0BK15ZG8stmVqrzhbjKqss=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eH6X42MPFze4Wc7MrBSH2AwFXHwYwfZaG4r6lywHE0zTMHizDo/9htARk0jtdUoXJ2CgfaHU6no7YC6iyB4DTlYLuuYLv+oI0TNzXcyT1K4VPDm+5oxWF+JFuMdfQSplPgIuozm1BXXuxSLKJtoTZgz1cuJow3rqVxHiKBAO3rQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UkoFlXfJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5590C116B1;
-	Mon,  1 Jul 2024 08:41:32 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=H5r1NFzb2/oYxU9/7lXKIeww1xL2G259oAtrML5AiBJy/ydoJyFFddlhNEZGZIxDd5AYGQPVT0jhlTtF3glyNGzpurxt0or39z1K967BrppVfK1kVNqj7fdnWeo8rbjJArnpsRSpeKc9rwvb3I9SvsRrZ2NCTgk2L2wpazvI9Jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zf7TKwRc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62705C32786;
+	Mon,  1 Jul 2024 08:46:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719823299;
-	bh=hg+g7DiLnSzkTsvXjpWJRV2heN5XuuVLmYBc59TNCUg=;
+	s=k20201202; t=1719823622;
+	bh=eXt8DtOJVKFI5OlO3caEI0BK15ZG8stmVqrzhbjKqss=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UkoFlXfJsZhhnKX24BRkCiNKND2UWpXS+xqQonjFz3XLkR2/9BMFdGS3e8wdZAWOo
-	 0XB+jbnH85jecYk9bhvMNOCFQ8C00l1fV6D3izX8vOCFvhnKR+vAmcelDVOd5q2Nu2
-	 ydZ5yqd0PiJ2PyzAA55nwTiKAs2uchDveGeBlhgDXptedtSsNJh7yMobx53X+/OD4G
-	 mUW4pM2OJzeHsSSq82mAdy5s+5Yw5c6KSz9dPrmsyi4Gg9k3ApexKHgO4OqTQOLzax
-	 RvUCc+ZNtc0K95iaRnksSBJ7fZ9E77n9OGKOAGIXuL35lHUvLHGvnaf6oSWUpeCe1r
-	 LQYq+T7Bzxs4A==
-Message-ID: <3fe026a2-a8d6-4688-863f-1237e71945ea@kernel.org>
-Date: Mon, 1 Jul 2024 10:41:30 +0200
+	b=Zf7TKwRc2X6XRQl0XWRgdmeDERAWtrlJq/KUFyHeYKkjJ56l8el4vKzxrESMehapS
+	 /s/V9WJh8betn6bi/8o7Q2bsSq15VtmKaZECAeCdjlQ7jxytCDCZhFftHMNzT91uj7
+	 /qkmlBpSNbQAfdgAy/PnemJNXauFo1dnKSKimqYCapmFPiz0kvXyecQBHxA4o4TR7U
+	 abg+XKrhdbGeZpfEA654A45qfkGVayK+Wn1OGZLLcv1Wn9wkhTkzOpj/ImcEymxerq
+	 8/noGzMCEjfSWAYSludiyM2hbAXrn9bkpiwluW3ZNvePjpAFHao8gOR6+jCl8OuxWf
+	 +6Zpp5kUG/wNw==
+Message-ID: <eeeb3f1f-5c77-4ca5-b996-17b968b7c2f0@kernel.org>
+Date: Mon, 1 Jul 2024 10:46:52 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,33 +50,20 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] arm64: dts: rockchip: Add AP6275P wireless support
+Subject: Re: [PATCH v3 3/5] arm64: dts: rockchip: Add AP6275P wireless support
  to Khadas Edge 2
-To: Jacobe Zang <jacobe.zang@wesion.com>,
- "arend.vanspriel@broadcom.com" <arend.vanspriel@broadcom.com>
-Cc: "kvalo@kernel.org" <kvalo@kernel.org>,
- "duoming@zju.edu.cn" <duoming@zju.edu.cn>,
- "bhelgaas@google.com" <bhelgaas@google.com>,
- "minipli@grsecurity.net" <minipli@grsecurity.net>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "brcm80211@lists.linux.dev" <brcm80211@lists.linux.dev>,
- "brcm80211-dev-list.pdl@broadcom.com" <brcm80211-dev-list.pdl@broadcom.com>,
- "megi@xff.cz" <megi@xff.cz>, "robh@kernel.org" <robh@kernel.org>,
- "efectn@protonmail.com" <efectn@protonmail.com>,
- "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
- "conor+dt@kernel.org" <conor+dt@kernel.org>,
- "heiko@sntech.de" <heiko@sntech.de>, Nick Xie <nick@khadas.com>,
- "jagan@edgeble.ai" <jagan@edgeble.ai>,
- "dsimic@manjaro.org" <dsimic@manjaro.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-rockchip@lists.infradead.org" <linux-rockchip@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20240624081906.1399447-1-jacobe.zang@wesion.com>
- <20240624081906.1399447-2-jacobe.zang@wesion.com>
- <258459b8-549b-4a63-8d33-76c9631483f1@kernel.org>
- <TYZPR03MB7001D4DE507C919802B2F7F380D52@TYZPR03MB7001.apcprd03.prod.outlook.com>
+To: Jacobe Zang <jacobe.zang@wesion.com>, robh@kernel.org,
+ krzk+dt@kernel.org, heiko@sntech.de, kvalo@kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, conor+dt@kernel.org
+Cc: efectn@protonmail.com, dsimic@manjaro.org, jagan@edgeble.ai,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+ arend@broadcom.com, linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ megi@xff.cz, duoming@zju.edu.cn, bhelgaas@google.com,
+ minipli@grsecurity.net, brcm80211@lists.linux.dev,
+ brcm80211-dev-list.pdl@broadcom.com, nick@khadas.com
+References: <20240630073605.2164346-1-jacobe.zang@wesion.com>
+ <20240630073605.2164346-4-jacobe.zang@wesion.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -122,59 +109,45 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <TYZPR03MB7001D4DE507C919802B2F7F380D52@TYZPR03MB7001.apcprd03.prod.outlook.com>
+In-Reply-To: <20240630073605.2164346-4-jacobe.zang@wesion.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 25/06/2024 10:04, Jacobe Zang wrote:
->>> diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-khadas-edge2.dts b/arch/arm64/boot/dts/rockchip/rk3588s-khadas-edge2.dts
->>> index 3b6286461a746..f674deb6f7da8 100644
->>> --- a/arch/arm64/boot/dts/rockchip/rk3588s-khadas-edge2.dts
->>> +++ b/arch/arm64/boot/dts/rockchip/rk3588s-khadas-edge2.dts
->>> @@ -356,6 +356,22 @@ &pcie2x1l2 {
->>>         reset-gpios = <&gpio3 RK_PD1 GPIO_ACTIVE_HIGH>;
->>>         vpcie3v3-supply = <&vcc3v3_pcie_wl>;
->>>         status = "okay";
->>> +
->>> +     pcie@0,0 {
->>> +             reg = <0x400000 0 0 0 0>;
->>> +             #address-cells = <3>;
->>> +             #size-cells = <2>;
->>> +             ranges;
->>> +             device_type = "pci";
->>> +             bus-range = <0x40 0x4f>;
->>
->> Isn't bus-range a property of PCI host bridge, so the parent? This is a
->> PCI device, right?
->>
->>> +
->>> +             wifi: wifi@0,0 {
->>
->> Binding does not say anything about this. Rockchip PCI controller is the
->> PCI host bridge, isn't it? Then the pci@0,0 is the child, so what is this?
+On 30/06/2024 09:36, Jacobe Zang wrote:
+> Khadas Edge2 uses the PCI-e Ampak AP6275P 2T2R Wi-Fi 6 module. The
+> pcie@0 node can be used as Bridge1, so the wifi@0 node is used as a
+> device under the Bridge1. As a PCIe device the wifi@0 can be probed
+> without compatible.
 > 
-> The host bridge is the parent of pcie@0,0. And pcie@0,0 is Bridge1, so the
-
-Do you want to say Rockchip PCI is PCI-PCI bridge? Bindings do not allow it.
-
-> wifi@0,0 as a device under the Bridge1.
+> Co-developed-by: Muhammed Efe Cetin <efectn@protonmail.com>
+> Signed-off-by: Muhammed Efe Cetin <efectn@protonmail.com>
+> Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
+> ---
+>  .../boot/dts/rockchip/rk3588s-khadas-edge2.dts    | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
 > 
->>
->>> +                     reg = <0x410000 0 0 0 0>;
->>> +                     clocks = <&hym8563>;
->>> +                     clock-names = "32k";
->>
->> 1. Bindings are before the users.
->> 2. Where is the compatible? Are you sure this validates?
-> 
-> Before, the compatible is "pci14e4,449d", but when I checkpatch the warning
-> said that "pci14e4" was not documented, so I remove the compatible which 
-> doesn't affect the Wi-Fi function. I have tried to add "pci14e4" to 
-> vendor-prefixes.yaml but was refused. So whether should I add the compatible 
-> with warning? 
+> diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-khadas-edge2.dts b/arch/arm64/boot/dts/rockchip/rk3588s-khadas-edge2.dts
+> index dbddfc3bb4641..8c152d587aefc 100644
+> --- a/arch/arm64/boot/dts/rockchip/rk3588s-khadas-edge2.dts
+> +++ b/arch/arm64/boot/dts/rockchip/rk3588s-khadas-edge2.dts
+> @@ -283,6 +283,21 @@ &pcie2x1l2 {
+>  	reset-gpios = <&gpio3 RK_PD1 GPIO_ACTIVE_HIGH>;
+>  	vpcie3v3-supply = <&vcc3v3_pcie_wl>;
+>  	status = "okay";
+> +
+> +	pcie@0,0 {
+> +		reg = <0x400000 0 0 0 0>;
+> +		#address-cells = <3>;
+> +		#size-cells = <2>;
+> +		ranges;
+> +		device_type = "pci";
+> +		bus-range = <0x40 0x4f>;
+> +
+> +		wifi: wifi@0,0 {
 
-I talk about dtbs_check, not checkpatch. That checkpatch warning does
-not matter, obviously.
+Where is the compatible (again!)? Test your code - you will see your
+binding is a no-op.
+
 
 Best regards,
 Krzysztof
