@@ -1,161 +1,124 @@
-Return-Path: <linux-wireless+bounces-9784-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9785-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D23FB91E3F9
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2024 17:24:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6E7091E53A
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2024 18:23:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 875111F21162
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2024 15:24:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82A211F23990
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2024 16:23:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1084158D7F;
-	Mon,  1 Jul 2024 15:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B63916D4C7;
+	Mon,  1 Jul 2024 16:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="PH5iVmce"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="fY5tU62/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04111522F
-	for <linux-wireless@vger.kernel.org>; Mon,  1 Jul 2024 15:24:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D527D1E502;
+	Mon,  1 Jul 2024 16:23:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719847452; cv=none; b=TUWBuo/9Q9orcMvkD/eff7+rXAijBhDt5aMz61Yd0k2POrKRa8NTqt91/mUXRKuVQwzuNL7rMpx0pt38/jrDZG/y8DuMFJxAFAMyCHtmoMwurOFAi9WfW2g5AHt1dyTnEGMDj7vrxed1SfVyvYOdlk8pIndx4IQv+tLj/jdn3S8=
+	t=1719851028; cv=none; b=nJo5I/pmuHSToTNYS0FqNIaRjhdNh4ft1ys7DixI5ak4Are/wVBLGvl50k1ES/qf7vDYzGi4HvL7yB0um/e2xVzQXqg+t5cnC17Qfw8voKq50IqvJJYIF05uIXnkNX5/B1xOOmNgVhIRgChpdQHcEhf9G13Iti3lwACUGNSEmTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719847452; c=relaxed/simple;
-	bh=tDm74ae4oD+SeRwX9uqvUJM+h2zrhEa7witmn6JaII4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=CeBSBtUEugXDd6agksexuOkC41UaW5ajql8i7jbRxx6hzWKGZRGSaFSGY1tcsXwIqGVVTK7rAVBn++lh4yKwdFT+mV/D3tlRlnDxG0dEdeqG09Rmpouq74+jxmCQWZ7690erWCtVJiRXMoDoSyMUoqrvJtmP3Jb3V01a/FAu/Ek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=PH5iVmce; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4619iL56030283;
-	Mon, 1 Jul 2024 15:24:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	TbVhLc6/koF2x/qir6yEyR52lJ0YasrLyzsL92gUMkk=; b=PH5iVmceB6MRxMe1
-	W/IZM3uCTQuoxkJclxcLpEhJe+ihxLkynfWk+dWP2SqzzjE2JOevhv3448QxypWb
-	LiffSVqOHzftg60VkMz/2RUQbt8Qz3ztnQT04qxnj+AHHwUeqEszCSrbn96srX59
-	QncEXMw7YX2aqMSbkQebJBTNbuSyGr/0iN75Q3pUsnPp0IWWp+yw5TH3WMKviCrl
-	Qz/SzdcJphbeeC5qEIN0hj/gvWG+UMCXZ9L/cCl+OlU2oXLwCYlEIMTz5pZW5mQu
-	7FGi3lxNodPxJ9ceTXX+PQ3dv2vV6lXhg4yajC7zZDd0LDS3cVwPa7pUWYCzQcJ0
-	MVpxew==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4027mnmxxm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Jul 2024 15:24:01 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 461FO08s031850
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 1 Jul 2024 15:24:00 GMT
-Received: from [10.50.63.139] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 1 Jul 2024
- 08:23:58 -0700
-Message-ID: <ff362ca2-361d-5da7-9d8d-299ba1200bf0@quicinc.com>
-Date: Mon, 1 Jul 2024 20:53:54 +0530
+	s=arc-20240116; t=1719851028; c=relaxed/simple;
+	bh=Ud3k0f++bmCP7hWQnpYEc+m3bgTKGjCo+YcPEKguZLg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=KyXQ3kLgpl+iFPX6XEGAvCo4e9CLyufAf7sTBa2jeRKCTr7r+iRYNpMtTJzUood3g0BtCskPYM2tZAoG/hfAzig1G7aWmrpkLbQzKxI0BkbYM38sHFpANw5uMMI0FYAw8l2/36FHZiNdtzHLlUlJ+lKllOh8584hZLAjBiLwdRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=fY5tU62/; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 7C44B60004;
+	Mon,  1 Jul 2024 16:23:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1719851024;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=0OIw1ocR1thOu8eYtY456hy6sQkLy4RVv5nu2QroPPg=;
+	b=fY5tU62/+Rzy8e30dGr5EXI2dVsnn1LUKBSozZ5RYft8rlml2G1tYG5veKerJippDsAgHq
+	Frj8bKayAioJO+2G1vrT9hqTTlbNTRH0ubVskoT+rZKfTDSQeE1U9fZPrrHMGOidpLEPGk
+	vXrvmchfQ4CgpIA21N+sSNOummwxGz+ZMO1O2p1UqSqfW13RXuwOJsO/6IK4K+Wato/Fp1
+	wwY5rPnzJc6jgdwzu2H3bKZR9QjsuWsTdHFl092ZcXSQu5xtejLP49C3HCWDVT7KT/sdUF
+	bxktLEvI5hR1Ra6KzL12GOLEsgeEmus7g58+z187z1Siiyiw1MaEbgHcx2NVwQ==
+From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Date: Mon, 01 Jul 2024 18:23:20 +0200
+Subject: [PATCH wireless] wifi: wilc1000: fix ies_len type in connect path
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v3 03/10] wifi: cfg80211: extend interface combination
- check for multi-radio
-To: Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
-CC: <johannes@sipsolutions.net>, <quic_adisi@quicinc.com>,
-        <ath12k@lists.infradead.org>
-References: <cover.a50ea6fd728e14cfdaafeb9cfac003364713c8e7.1719843147.git-series.nbd@nbd.name>
- <18a4aae4b14f1005fb5b1ed98173e31b18914155.1719843147.git-series.nbd@nbd.name>
-Content-Language: en-US
-From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-In-Reply-To: <18a4aae4b14f1005fb5b1ed98173e31b18914155.1719843147.git-series.nbd@nbd.name>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: aB7sLNel07RTawiptQ6CnE4qN6ySzFhJ
-X-Proofpoint-GUID: aB7sLNel07RTawiptQ6CnE4qN6ySzFhJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-01_15,2024-07-01_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
- spamscore=0 malwarescore=0 adultscore=0 priorityscore=1501
- lowpriorityscore=0 phishscore=0 mlxscore=0 suspectscore=0 clxscore=1015
- mlxlogscore=855 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2407010118
+Message-Id: <20240701-wilc_fix_ies_data-v1-1-7486cbacf98a@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAPfXgmYC/x2MUQqDMBAFryL7bSBZSwWvIiWE5LVdEJVsUUG8u
+ 0vf3/CYOUlRBUpDc1LFJirLbBDahvI3zR84KcbEnh++98HtMuX4liOaFUv6Jce2Z8cM9JnMWyv
+ s/zdH2qVigiq9rusGKmNIBG0AAAA=
+To: linux-wireless@vger.kernel.org
+Cc: Ajay Singh <ajay.kathat@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Kalle Valo <kvalo@kernel.org>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ linux-kernel@vger.kernel.org, Jozef Hopko <jozef.hopko@altana.com>, 
+ =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+X-Mailer: b4 0.13.0
+X-GND-Sasl: alexis.lothore@bootlin.com
 
+From: Jozef Hopko <jozef.hopko@altana.com>
 
+Commit 205c50306acf ("wifi: wilc1000: fix RCU usage in connect path")
+made sure that the IEs data was manipulated under the relevant RCU section.
+Unfortunately, while doing so, the commit brought a faulty implicit cast
+from int to u8 on the ies_len variable, making the parsing fail to be
+performed correctly if the IEs block is larger than 255 bytes. This failure
+can be observed with Access Points appending a lot of IEs TLVs in their
+beacon frames (reproduced with a Pixel phone acting as an Access Point,
+which brough 273 bytes of IE data in my testing environment).
 
-On 7/1/2024 7:43 PM, Felix Fietkau wrote:
-> Add a field in struct iface_combination_params to check per-radio
-> interface combinations instead of per-wiphy ones.
-> 
-> Signed-off-by: Felix Fietkau <nbd@nbd.name>
-> ---
->   include/net/cfg80211.h  |  5 +++++
->   net/mac80211/util.c     |  5 ++++-
->   net/wireless/rdev-ops.h | 12 ++++++++++++
->   net/wireless/util.c     | 33 ++++++++++++++++++++++++++-------
->   4 files changed, 47 insertions(+), 8 deletions(-)
-> 
-> diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-> index a3cdad3a9305..bb3b803e5468 100644
-> --- a/include/net/cfg80211.h
-> +++ b/include/net/cfg80211.h
-> @@ -1598,6 +1598,7 @@ struct cfg80211_color_change_settings {
->    *
->    * Used to pass interface combination parameters
->    *
-> + * @radio_idx: wiphy radio index or -1 for global
->    * @num_different_channels: the number of different channels we want
->    *	to use for verification
->    * @radar_detect: a bitmap where each bit corresponds to a channel
-> @@ -1611,6 +1612,7 @@ struct cfg80211_color_change_settings {
->    *	the verification
->    */
->   struct iface_combination_params {
-> +	int radio_idx;
->   	int num_different_channels;
->   	u8 radar_detect;
->   	int iftype_num[NUM_NL80211_IFTYPES];
-> @@ -4580,6 +4582,8 @@ struct mgmt_frame_regs {
->    *
->    * @set_hw_timestamp: Enable/disable HW timestamping of TM/FTM frames.
->    * @set_ttlm: set the TID to link mapping.
-> + * @get_radio_mask: get bitmask of radios in use.
-> + *	(invoked with the wiphy mutex held)
->    */
->   struct cfg80211_ops {
->   	int	(*suspend)(struct wiphy *wiphy, struct cfg80211_wowlan *wow);
-> @@ -4941,6 +4945,7 @@ struct cfg80211_ops {
->   				    struct cfg80211_set_hw_timestamp *hwts);
->   	int	(*set_ttlm)(struct wiphy *wiphy, struct net_device *dev,
->   			    struct cfg80211_ttlm_params *params);
-> +	u32	(*get_radio_mask)(struct wiphy *wiphy, struct net_device *dev);
->   };
->   
+Fix IEs parsing by removing this undesired implicit cast.
 
-No documentation for the global iface combination when multi-radio 
-combination present ?
+Fixes: 205c50306acf ("wifi: wilc1000: fix RCU usage in connect path")
+Signed-off-by: Jozef Hopko <jozef.hopko@altana.com>
+Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+---
+The issue has been initially detected by Jozef Hopko, and the resulting
+patch is also from him. He asked me to upstream it on his behalf. I have
+successfuly reproduced the same issue and confirmed that the patch indeed
+fixes the connection to the AP I used. The only update I did is about
+adding details about the issue in commit message and fixing whitespaces.
+The issue has been disclosed to me directly through private mail, so I have
+no relevant Reported-By/Closes tag to provide. I am not sure however why I
+do not manage to make sparse detect this faulty cast.
+---
+ drivers/net/wireless/microchip/wilc1000/hif.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-/* 4.  Radio specific iface combination...
-  */
-struct ieee80211_iface_combination {
-...
-};
+diff --git a/drivers/net/wireless/microchip/wilc1000/hif.c b/drivers/net/wireless/microchip/wilc1000/hif.c
+index d67293142ffb..3c48e1a57b24 100644
+--- a/drivers/net/wireless/microchip/wilc1000/hif.c
++++ b/drivers/net/wireless/microchip/wilc1000/hif.c
+@@ -382,7 +382,8 @@ wilc_parse_join_bss_param(struct cfg80211_bss *bss,
+ 	struct ieee80211_p2p_noa_attr noa_attr;
+ 	const struct cfg80211_bss_ies *ies;
+ 	struct wilc_join_bss_param *param;
+-	u8 rates_len = 0, ies_len;
++	u8 rates_len = 0;
++	int ies_len;
+ 	int ret;
+ 
+ 	param = kzalloc(sizeof(*param), GFP_KERNEL);
 
+---
+base-commit: 21cfb73516c112f0cf0d3ebd3e4bdfbadc819576
+change-id: 20240701-wilc_fix_ies_data-22226322ee7c
 
+Best regards,
 -- 
-Karthikeyan Periyasamy
---
-கார்த்திகேயன் பெரியசாமி
+Alexis Lothoré, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
