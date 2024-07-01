@@ -1,51 +1,52 @@
-Return-Path: <linux-wireless+bounces-9733-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9734-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57A9B91D4D8
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2024 02:12:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C398D91D4EE
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2024 02:13:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D61361F21124
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2024 00:12:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E07E91C209FC
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2024 00:13:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BDF210F9;
-	Mon,  1 Jul 2024 00:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 997A51DDC5;
+	Mon,  1 Jul 2024 00:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nLq1pMLD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cDTd3jFY"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB7329AB;
-	Mon,  1 Jul 2024 00:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E7A1B809;
+	Mon,  1 Jul 2024 00:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719792734; cv=none; b=Xs8eNeJ/UP1uF5GLjTYsm+YxWp6q+IXpeonLXsqOnEt+iPdYCYMKmdTIW7U2PqpCkWZQ7OUBoCwWpNtsrQTqCWXliTZyvm4cWiiyTn/+DXAL1xt8uBlM+pdpCxsi3JFEyKMYI56rsqW8zEJvSMK9SLXQctMWo+MtsTt8XHXGbLo=
+	t=1719792749; cv=none; b=tHyqLYpKQ5dCAcm9NeoqSFQISxE+JCu6CCy3+RJdrNMNytRJ454uCwV8Rdw6zgU+umR+62LcFo4qsPCjWaXPq9i3+aKiuTrbnkJacwHhgUc79gSuUzxXlVZ2TgyJPkagh0BswP5QQNO+pg1LTauKdHNeJ2+/r/3+bEM6N5SucxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719792734; c=relaxed/simple;
-	bh=R2bT5Xe2ba+Nx+hbAaUxNkqWy6reDs+YMC/nS+m3WLk=;
+	s=arc-20240116; t=1719792749; c=relaxed/simple;
+	bh=qosA47Vhtvnlyiu8rd1aoEb9fKbO77uQ7jx7Tr9FaLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U/lj/fCagb7A5RYmVtCttIBVANjbq4r7L8LfATv5EwU6l8I5NNewXcOdeus4oB39xM3VqBUo6rT/6BxW54m8/QH9UvAnzrfUasR/yzxC35Z0aFuf04Oxsw4pW7TT35kK8DbWHUHCxUylwZ+EOdEshlaGKN94vDEyIlPJEoRRl3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nLq1pMLD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D69C32786;
-	Mon,  1 Jul 2024 00:12:13 +0000 (UTC)
+	 MIME-Version; b=IZ5QZ4ZjD6RaxIdI7Sr+MwJ7XUyEO5VMMFT6h6y/LMpjfROUJ6eLnuQvZHHLn20BWzqQtbYO0JSW/c2s1Z8D7H+hBOmUpw8kkedgFb/3d+RfgW4XMUPOx5sPxNNGzhsneyRVqJyJTXZSnCADTSNzTiHvZWIDALUAdmfRrU7M3fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cDTd3jFY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50742C4AF0A;
+	Mon,  1 Jul 2024 00:12:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719792734;
-	bh=R2bT5Xe2ba+Nx+hbAaUxNkqWy6reDs+YMC/nS+m3WLk=;
+	s=k20201202; t=1719792749;
+	bh=qosA47Vhtvnlyiu8rd1aoEb9fKbO77uQ7jx7Tr9FaLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nLq1pMLDIXi37zmaBysGlzL5oOYif/pP0y7fj4qLjuvut4GOKxCGO+PB99pClOcuM
-	 qo2XBkbO7GgCsDutOPseCuiXp7NDMSoDcGSsFha5nvJQ41xkw2FhsOXkUlvMIOn7UL
-	 Scy4M16rOf2pVE9iDj6YRKbx9k0wun6+Yfm9fl7ykcpllECpki8VcmBgj7ZLFcEyRB
-	 9pXwvS2P0ZmnOigS59miBlUMF4TW0wyFWNzBwuNO393dCiYR2eY71Ag4In/XLGyOuD
-	 sZ54Z15C0tKgfh3R4vIZ2Er/wvXnUcN2c2y8h32O7FuIBHzM2ROiat6xBCSEWC3BUg
-	 z1izZWHnKh+Wg==
+	b=cDTd3jFY3aqLyobI51R8XW5BkVf7NAKiPOtDFhaU/cwUXN4c07cuZfpYevYTOHuiI
+	 pKaUZ1mTzh/RuLJv7zpjDevfBnEOa9lOe7epM1f3jEI1Xy2YWqZz4iXYr4F5doBP8f
+	 bx3/aqIDfHqaBkKcYFyVWIAtTEL8Wxc+FD1SykT/av7e3j6IbUiGsCQD3e+0QRE45a
+	 NZXXB3y/dye8qBcd6JySSuE3mUPahcDNJ9VNhjHiz4E7UJ15keGbPiTrjBxSsZRFHa
+	 ZgZDOhgNyiutKZ5pxTmMyisbhMZIY5XJvdJhDwUY2tP3M6vIZcNEWty6+f6K+QGkHp
+	 dkS5gyoi20+wA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Dmitry Antipov <dmantipov@yandex.ru>,
-	syzbot+253cd2d2491df77c93ac@syzkaller.appspotmail.com,
+Cc: Kenton Groombridge <concord@gentoo.org>,
+	Kees Cook <keescook@chromium.org>,
+	Kees Cook <kees@kernel.org>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	johannes@sipsolutions.net,
@@ -55,9 +56,9 @@ Cc: Dmitry Antipov <dmantipov@yandex.ru>,
 	pabeni@redhat.com,
 	linux-wireless@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 02/20] wifi: cfg80211: wext: add extra SIOCSIWSCAN data check
-Date: Sun, 30 Jun 2024 20:11:07 -0400
-Message-ID: <20240701001209.2920293-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.9 07/20] wifi: mac80211: Avoid address calculations via out of bounds array indexing
+Date: Sun, 30 Jun 2024 20:11:12 -0400
+Message-ID: <20240701001209.2920293-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240701001209.2920293-1-sashal@kernel.org>
 References: <20240701001209.2920293-1-sashal@kernel.org>
@@ -72,45 +73,96 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.7
 Content-Transfer-Encoding: 8bit
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Kenton Groombridge <concord@gentoo.org>
 
-[ Upstream commit 6ef09cdc5ba0f93826c09d810c141a8d103a80fc ]
+[ Upstream commit 2663d0462eb32ae7c9b035300ab6b1523886c718 ]
 
-In 'cfg80211_wext_siwscan()', add extra check whether number of
-channels passed via 'ioctl(sock, SIOCSIWSCAN, ...)' doesn't exceed
-IW_MAX_FREQUENCIES and reject invalid request with -EINVAL otherwise.
+req->n_channels must be set before req->channels[] can be used.
 
-Reported-by: syzbot+253cd2d2491df77c93ac@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=253cd2d2491df77c93ac
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://msgid.link/20240531032010.451295-1-dmantipov@yandex.ru
+This patch fixes one of the issues encountered in [1].
+
+[   83.964255] UBSAN: array-index-out-of-bounds in net/mac80211/scan.c:364:4
+[   83.964258] index 0 is out of range for type 'struct ieee80211_channel *[]'
+[...]
+[   83.964264] Call Trace:
+[   83.964267]  <TASK>
+[   83.964269]  dump_stack_lvl+0x3f/0xc0
+[   83.964274]  __ubsan_handle_out_of_bounds+0xec/0x110
+[   83.964278]  ieee80211_prep_hw_scan+0x2db/0x4b0
+[   83.964281]  __ieee80211_start_scan+0x601/0x990
+[   83.964291]  nl80211_trigger_scan+0x874/0x980
+[   83.964295]  genl_family_rcv_msg_doit+0xe8/0x160
+[   83.964298]  genl_rcv_msg+0x240/0x270
+[...]
+
+[1] https://bugzilla.kernel.org/show_bug.cgi?id=218810
+
+Co-authored-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Kenton Groombridge <concord@gentoo.org>
+Link: https://msgid.link/20240605152218.236061-1-concord@gentoo.org
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/mac80211/scan.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index ecea8c08e2701..43eb77b4d2a67 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -3396,10 +3396,14 @@ int cfg80211_wext_siwscan(struct net_device *dev,
- 	wiphy = &rdev->wiphy;
+diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
+index 3da1c5c450358..a142d18fb6824 100644
+--- a/net/mac80211/scan.c
++++ b/net/mac80211/scan.c
+@@ -358,7 +358,8 @@ static bool ieee80211_prep_hw_scan(struct ieee80211_sub_if_data *sdata)
+ 	struct cfg80211_scan_request *req;
+ 	struct cfg80211_chan_def chandef;
+ 	u8 bands_used = 0;
+-	int i, ielen, n_chans;
++	int i, ielen;
++	u32 *n_chans;
+ 	u32 flags = 0;
  
- 	/* Determine number of channels, needed to allocate creq */
--	if (wreq && wreq->num_channels)
-+	if (wreq && wreq->num_channels) {
-+		/* Passed from userspace so should be checked */
-+		if (unlikely(wreq->num_channels > IW_MAX_FREQUENCIES))
-+			return -EINVAL;
- 		n_channels = wreq->num_channels;
--	else
-+	} else {
- 		n_channels = ieee80211_get_num_supported_channels(wiphy);
-+	}
+ 	req = rcu_dereference_protected(local->scan_req,
+@@ -368,34 +369,34 @@ static bool ieee80211_prep_hw_scan(struct ieee80211_sub_if_data *sdata)
+ 		return false;
  
- 	creq = kzalloc(sizeof(*creq) + sizeof(struct cfg80211_ssid) +
- 		       n_channels * sizeof(void *),
+ 	if (ieee80211_hw_check(&local->hw, SINGLE_SCAN_ON_ALL_BANDS)) {
++		local->hw_scan_req->req.n_channels = req->n_channels;
++
+ 		for (i = 0; i < req->n_channels; i++) {
+ 			local->hw_scan_req->req.channels[i] = req->channels[i];
+ 			bands_used |= BIT(req->channels[i]->band);
+ 		}
+-
+-		n_chans = req->n_channels;
+ 	} else {
+ 		do {
+ 			if (local->hw_scan_band == NUM_NL80211_BANDS)
+ 				return false;
+ 
+-			n_chans = 0;
++			n_chans = &local->hw_scan_req->req.n_channels;
++			*n_chans = 0;
+ 
+ 			for (i = 0; i < req->n_channels; i++) {
+ 				if (req->channels[i]->band !=
+ 				    local->hw_scan_band)
+ 					continue;
+-				local->hw_scan_req->req.channels[n_chans] =
++				local->hw_scan_req->req.channels[(*n_chans)++] =
+ 							req->channels[i];
+-				n_chans++;
++
+ 				bands_used |= BIT(req->channels[i]->band);
+ 			}
+ 
+ 			local->hw_scan_band++;
+-		} while (!n_chans);
++		} while (!*n_chans);
+ 	}
+ 
+-	local->hw_scan_req->req.n_channels = n_chans;
+ 	ieee80211_prepare_scan_chandef(&chandef);
+ 
+ 	if (req->flags & NL80211_SCAN_FLAG_MIN_PREQ_CONTENT)
 -- 
 2.43.0
 
