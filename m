@@ -1,163 +1,182 @@
-Return-Path: <linux-wireless+bounces-9749-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9750-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FED791D9DE
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2024 10:23:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09B3191DA3C
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2024 10:42:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F58D1C20F3C
-	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2024 08:23:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59089B21DB9
+	for <lists+linux-wireless@lfdr.de>; Mon,  1 Jul 2024 08:42:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5180282485;
-	Mon,  1 Jul 2024 08:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E743D83A18;
+	Mon,  1 Jul 2024 08:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uKGTUtI+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UkoFlXfJ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D46078C67
-	for <linux-wireless@vger.kernel.org>; Mon,  1 Jul 2024 08:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3131824B1;
+	Mon,  1 Jul 2024 08:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719822170; cv=none; b=tuWqPpOvf3EpfugLHobZr+abjboCuyObpxB0+OrEa/YlTPW2fIcIFK7HYBYa89I0pb0uwIEPruAb6/lGwo6DXTVIchtB/ggTrBum/Eq5Jmdkgg37ixEoVULbLrL2edPcrawkkqYNkTBhgGfzFlGLwlbWLO4DE5Uc5tdFdQroq44=
+	t=1719823299; cv=none; b=dEQlXb0QS68aqNhhjm4gep5AwF8hm9T2qqbvI+OaNPEJneTbR7Adl9Rvs8v+mTVEsHaRCiyFOMciXUMWUD26ugnKdmQKxnulNpG4Ma4O3QzaEwCgogCmOv8dbm6CoKf5dLrmpjL9nCO2FKX5TL4Wy4F7Ua+A8E70Li+AiU0ZwOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719822170; c=relaxed/simple;
-	bh=etDKPv7Xh9jyEOTpkdontCfJuNZCwvUVLWArvma6Xnw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=F7J2uUuL4nTGL/724wWFwheeIKyJwNe9lrGfs0oDCp2/y3ofcXiYYrxoV+NniYlQ5AZsamarHiX2J+niUihBXT+kPAeYnlHmk0WBjIl/1Ix29XEb6yart04GdyFk6cIg1XBQU9MEoUjUF/otOEGaQoOioV9KlqJxmevjAOCm6Cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uKGTUtI+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9130C32786
-	for <linux-wireless@vger.kernel.org>; Mon,  1 Jul 2024 08:22:49 +0000 (UTC)
+	s=arc-20240116; t=1719823299; c=relaxed/simple;
+	bh=hg+g7DiLnSzkTsvXjpWJRV2heN5XuuVLmYBc59TNCUg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eH6X42MPFze4Wc7MrBSH2AwFXHwYwfZaG4r6lywHE0zTMHizDo/9htARk0jtdUoXJ2CgfaHU6no7YC6iyB4DTlYLuuYLv+oI0TNzXcyT1K4VPDm+5oxWF+JFuMdfQSplPgIuozm1BXXuxSLKJtoTZgz1cuJow3rqVxHiKBAO3rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UkoFlXfJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5590C116B1;
+	Mon,  1 Jul 2024 08:41:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719822169;
-	bh=etDKPv7Xh9jyEOTpkdontCfJuNZCwvUVLWArvma6Xnw=;
-	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
-	b=uKGTUtI+44ZVfmyJhsolXFllv3q23tvQsM3Vj1szw1KMmIBRLNydxu+fmUMAcUWwx
-	 X6wfE5fUzlF+c9pGJ4FAV/uDaR5PgL/dRLJJ4bwe/6MqsZNAObt8nCy8F+dvzoq/H1
-	 MMCxpD8EGafV2iZpGHwdt3X7PUMZCE5V9U+cIo07P6HhUMezmmX4WlPNyprCV9LN7Y
-	 heN8v7Z+weN3nu20hVHOvHcGJ6P49z++CegK9pq84rWDZFOsvJwYOQTYkjjE9EkNcz
-	 sPRRa2z2m1TuZ4jmZTnlkgOqNOO6b5M/iBDlhR/zDtELLkJOzM/x3Y1wpZ8Ee1Z2Su
-	 xsUV/5QJ/muMg==
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2ebe6495aedso27869591fa.0
-        for <linux-wireless@vger.kernel.org>; Mon, 01 Jul 2024 01:22:49 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yy+QsB0VSJLruX5doaeiv/VtkFU3Uxij1YF4gjSf1m9tn9aXA3j
-	2wY8maiSqGc7WyvcJRJb0+eCyvRRTKQVAuHTVqFIiheWBaNszf4LeKjj+IS+ihJJGwu2Eoaxr18
-	47ICfC5jjAhq87tvAn3KAeh/RIEQ=
-X-Google-Smtp-Source: AGHT+IG8RbFpu2qiW1h6ieR5fk4bV7qtPVD01aL5AJOdpK06BM0QyhDeHX/bAVd0V7j7qdIDIVZ/loisV06KDGsJlzQ=
-X-Received: by 2002:a2e:88ca:0:b0:2ec:529e:6522 with SMTP id
- 38308e7fff4ca-2ee5e3b3823mr32033411fa.31.1719822167969; Mon, 01 Jul 2024
- 01:22:47 -0700 (PDT)
+	s=k20201202; t=1719823299;
+	bh=hg+g7DiLnSzkTsvXjpWJRV2heN5XuuVLmYBc59TNCUg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=UkoFlXfJsZhhnKX24BRkCiNKND2UWpXS+xqQonjFz3XLkR2/9BMFdGS3e8wdZAWOo
+	 0XB+jbnH85jecYk9bhvMNOCFQ8C00l1fV6D3izX8vOCFvhnKR+vAmcelDVOd5q2Nu2
+	 ydZ5yqd0PiJ2PyzAA55nwTiKAs2uchDveGeBlhgDXptedtSsNJh7yMobx53X+/OD4G
+	 mUW4pM2OJzeHsSSq82mAdy5s+5Yw5c6KSz9dPrmsyi4Gg9k3ApexKHgO4OqTQOLzax
+	 RvUCc+ZNtc0K95iaRnksSBJ7fZ9E77n9OGKOAGIXuL35lHUvLHGvnaf6oSWUpeCe1r
+	 LQYq+T7Bzxs4A==
+Message-ID: <3fe026a2-a8d6-4688-863f-1237e71945ea@kernel.org>
+Date: Mon, 1 Jul 2024 10:41:30 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240624025623.6021-1-pkshih@realtek.com> <20240624025623.6021-2-pkshih@realtek.com>
-In-Reply-To: <20240624025623.6021-2-pkshih@realtek.com>
-Reply-To: wens@kernel.org
-From: Chen-Yu Tsai <wens@kernel.org>
-Date: Mon, 1 Jul 2024 16:22:35 +0800
-X-Gmail-Original-Message-ID: <CAGb2v651jAs9g-UqCeoPgmiigpNDTVY_itvhwq9VBHPuzfdPRg@mail.gmail.com>
-Message-ID: <CAGb2v651jAs9g-UqCeoPgmiigpNDTVY_itvhwq9VBHPuzfdPRg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/4] wireless-regdb: Update regulatory info for Jordan
- (JO) for 2022
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/5] arm64: dts: rockchip: Add AP6275P wireless support
+ to Khadas Edge 2
+To: Jacobe Zang <jacobe.zang@wesion.com>,
+ "arend.vanspriel@broadcom.com" <arend.vanspriel@broadcom.com>
+Cc: "kvalo@kernel.org" <kvalo@kernel.org>,
+ "duoming@zju.edu.cn" <duoming@zju.edu.cn>,
+ "bhelgaas@google.com" <bhelgaas@google.com>,
+ "minipli@grsecurity.net" <minipli@grsecurity.net>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "brcm80211@lists.linux.dev" <brcm80211@lists.linux.dev>,
+ "brcm80211-dev-list.pdl@broadcom.com" <brcm80211-dev-list.pdl@broadcom.com>,
+ "megi@xff.cz" <megi@xff.cz>, "robh@kernel.org" <robh@kernel.org>,
+ "efectn@protonmail.com" <efectn@protonmail.com>,
+ "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+ "conor+dt@kernel.org" <conor+dt@kernel.org>,
+ "heiko@sntech.de" <heiko@sntech.de>, Nick Xie <nick@khadas.com>,
+ "jagan@edgeble.ai" <jagan@edgeble.ai>,
+ "dsimic@manjaro.org" <dsimic@manjaro.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-rockchip@lists.infradead.org" <linux-rockchip@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20240624081906.1399447-1-jacobe.zang@wesion.com>
+ <20240624081906.1399447-2-jacobe.zang@wesion.com>
+ <258459b8-549b-4a63-8d33-76c9631483f1@kernel.org>
+ <TYZPR03MB7001D4DE507C919802B2F7F380D52@TYZPR03MB7001.apcprd03.prod.outlook.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <TYZPR03MB7001D4DE507C919802B2F7F380D52@TYZPR03MB7001.apcprd03.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jun 24, 2024 at 10:56=E2=80=AFAM Ping-Ke Shih <pkshih@realtek.com> =
-wrote:
->
-> The Hashemite Kingdom of Jordan, Telecommunications Regulatory Authority
-> issued pursuant to the provisions of Articles (12A) and (22) of the
-> Telecommunications Law No. 31 of 1995, as amended. [1]
->
-> The effective radiated power (EIRP) of devices used in local radio comput=
-er
-> networks must not exceed the following values:
->
->  - 2400-2483.5 MHz: 100 milliwatts (20 dBm)
->  - 5150-5350 MHz: 200 milliwatts (23 dBm), (ETSI: 20 dBm, DFS)
->  - 5470-5725 MHz: 1 watt (30 dBm), (ETSI: 27 dBm, indoor only, DFS)
->  - 5725-5875 MHz: 200 mW (23 dBm), (ETSI: indoor only)
->  - 5925-6425 MHz:
->    * 25 milliwatts (14 dBm) (for outdoor and portable devices)
->    * 200 milliwatts (23 dBm) (for devices operated indoors only)
->  - 57-71 GHz: 10 W (40 dBm)
->
-> Follow ETSI EN 301 893 [2], which specifies reduced power limit of
-> 20 and 27 dBm for the range 5150-5350 and 5470-5725 respectively for
-> devices that don't implement TPC; and classifies the 5470 - 5725 MHz and
-> 5725 - 5875 MHz ranges as indoor use only; and DFS is required for bands
-> 5250 - 5350 Mhz and 5470 - 5725 Mhz. (Add these rules followed rules of
-> [1] with "ETSI:" annotation)
->
-> [1] https://trc.gov.jo/EchoBusV3.0/SystemAssets/PDF/RSMD/cb9f9a83-43a6-4e=
-66-8432-6e02ecaf465b_RLAN%20Arabic%20%20Final%20-%20clean%20with%2057-71%20=
-GHz.pdf
-> [2] https://www.etsi.org/deliver/etsi_en/301800_301899/301893/02.01.01_60=
-/en_301893v020101p.pdf
->
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> ---
-> v2:
->   - Follow ETSI EN 301 893 to modify limits, and add description in commi=
-t
->     message.
->   - add 57-71 GHz
-> ---
->  db.txt | 12 +++++++++---
->  1 file changed, 9 insertions(+), 3 deletions(-)
->
-> diff --git a/db.txt b/db.txt
-> index 61c46186919e..60343a745ecf 100644
-> --- a/db.txt
-> +++ b/db.txt
-> @@ -957,10 +957,16 @@ country JM: DFS-FCC
->         (5490 - 5730 @ 160), (24), DFS
->         (5735 - 5835 @ 80), (30)
->
-> +# Source:
-> +# https://trc.gov.jo/EchoBusV3.0/SystemAssets/PDF/RSMD/cb9f9a83-43a6-4e6=
-6-8432-6e02ecaf465b_RLAN%20Arabic%20%20Final%20-%20clean%20with%2057-71%20G=
-Hz.pdf
-> +# ETSI EN 301 893: https://www.etsi.org/deliver/etsi_en/301800_301899/30=
-1893/02.01.01_60/en_301893v020101p.pdf
->  country JO: DFS-JP
+On 25/06/2024 10:04, Jacobe Zang wrote:
+>>> diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-khadas-edge2.dts b/arch/arm64/boot/dts/rockchip/rk3588s-khadas-edge2.dts
+>>> index 3b6286461a746..f674deb6f7da8 100644
+>>> --- a/arch/arm64/boot/dts/rockchip/rk3588s-khadas-edge2.dts
+>>> +++ b/arch/arm64/boot/dts/rockchip/rk3588s-khadas-edge2.dts
+>>> @@ -356,6 +356,22 @@ &pcie2x1l2 {
+>>>         reset-gpios = <&gpio3 RK_PD1 GPIO_ACTIVE_HIGH>;
+>>>         vpcie3v3-supply = <&vcc3v3_pcie_wl>;
+>>>         status = "okay";
+>>> +
+>>> +     pcie@0,0 {
+>>> +             reg = <0x400000 0 0 0 0>;
+>>> +             #address-cells = <3>;
+>>> +             #size-cells = <2>;
+>>> +             ranges;
+>>> +             device_type = "pci";
+>>> +             bus-range = <0x40 0x4f>;
+>>
+>> Isn't bus-range a property of PCI host bridge, so the parent? This is a
+>> PCI device, right?
+>>
+>>> +
+>>> +             wifi: wifi@0,0 {
+>>
+>> Binding does not say anything about this. Rockchip PCI controller is the
+>> PCI host bridge, isn't it? Then the pci@0,0 is the child, so what is this?
+> 
+> The host bridge is the parent of pcie@0,0. And pcie@0,0 is Bridge1, so the
 
-Change this to DFS-ETSI given that the official regulations just point
-to ESTI for details.
+Do you want to say Rockchip PCI is PCI-PCI bridge? Bindings do not allow it.
 
-> -       (2402 - 2482 @ 40), (20)
-> -       (5170 - 5250 @ 80), (23)
-> -       (5735 - 5835 @ 80), (23)
-> +       (2400 - 2483.5 @ 40), (20)
-> +       (5150 - 5350 @ 80), (20), DFS
+> wifi@0,0 as a device under the Bridge1.
+> 
+>>
+>>> +                     reg = <0x410000 0 0 0 0>;
+>>> +                     clocks = <&hym8563>;
+>>> +                     clock-names = "32k";
+>>
+>> 1. Bindings are before the users.
+>> 2. Where is the compatible? Are you sure this validates?
+> 
+> Before, the compatible is "pci14e4,449d", but when I checkpatch the warning
+> said that "pci14e4" was not documented, so I remove the compatible which 
+> doesn't affect the Wi-Fi function. I have tried to add "pci14e4" to 
+> vendor-prefixes.yaml but was refused. So whether should I add the compatible 
+> with warning? 
 
-Per ETSI regulations, DFS is only required for 5250 - 5350. Please split
-this into two rules. And please add AUTO-BW to both.
+I talk about dtbs_check, not checkpatch. That checkpatch warning does
+not matter, obviously.
 
-Also, looking at the official regulations again, I believe it is worded
-in a way that does not require TPC for 5150 - 5350. So please raise the
-limit back up to 32 dBm.
+Best regards,
+Krzysztof
 
-
-Thanks
-ChenYu
-
-> +       (5470 - 5725 @ 80), (27), DFS, NO-OUTDOOR
-> +       (5725 - 5875 @ 80), (23), NO-OUTDOOR
-> +       (5925 - 6425 @ 320), (23), NO-OUTDOOR
-> +       (57000 - 71000 @ 2160), (40)
->
->  # Source:
->  # https://www.soumu.go.jp/main_content/000635492.pdf
-> --
-> 2.25.1
->
 
