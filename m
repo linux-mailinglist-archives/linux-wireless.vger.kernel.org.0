@@ -1,117 +1,111 @@
-Return-Path: <linux-wireless+bounces-9854-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9855-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47CD0923F79
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 15:49:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99DED923FB5
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 15:57:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1C841F23BF4
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 13:49:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 548EF28BD81
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 13:57:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C7C1B4C4B;
-	Tue,  2 Jul 2024 13:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED081B580C;
+	Tue,  2 Jul 2024 13:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kEbYUpgt"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SD/4Xdcy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E402A38F83
-	for <linux-wireless@vger.kernel.org>; Tue,  2 Jul 2024 13:49:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 200211B4C5C
+	for <linux-wireless@vger.kernel.org>; Tue,  2 Jul 2024 13:57:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719928176; cv=none; b=omPLedRVzJg2sQj7uPMTp8HOPDFKLk5GRsjXp/9SvXCUAMmHYhLbkrbPnQ4a2+4PCrrzOF+AR+8LDdD4DpFkQrhX9l7+mJfb0CtTHra7Fht67BqSvKqK1DRwXYwQ6Z226pUebjdqz5NsaZvPiUejvKuHIPbuCgfICeAZIhbtlNY=
+	t=1719928649; cv=none; b=iZHbXb/dLKciz3Rhr/j8wDh+KhH/HRyylYEf/6sUvTXD75CckcSIEaMErbnz5+Km2EtB5JexoIW1RD5Dfx6DDWp/rK39Oc1qX2gfDLqHoB33I5doPGWjiRy6txb8rqlcULiYOfRWi2W8rR0N9qRW64+cwsmJNsVo8uw9WCVAb50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719928176; c=relaxed/simple;
-	bh=gKNKa0nlgIHI/MTbG7isQib7yZ9uA/afNheMP2daZjs=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=r5mv7fvcQKlpuGgbDQmisRxCNTtxLZt33Mk2lfwxoB9WXw/3EORvWagCogUgWkj6YR2NtqK3zZ4Fi1hDkztdJKcGCvKR0iwkpvj5zgqHh9elxSuoeFfITHGEgE5FYiqhUxg0qdpSBCIruEY3ZG06VnIlIImfPBEI1uWewIzMlz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kEbYUpgt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B419CC116B1;
-	Tue,  2 Jul 2024 13:49:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719928175;
-	bh=gKNKa0nlgIHI/MTbG7isQib7yZ9uA/afNheMP2daZjs=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=kEbYUpgt2TSZCzMjuxmAVcMzCmyaGHaCEAV+8xXcmfdcjB8vjW+R5InAghRQWE/vc
-	 QKlzn4TYdysu1YMh4pc3xh04u7Hf4AXAZ2wynV5RPe1ZoKMVqgkZOhp3f9Awz/FY01
-	 y0ta6P5dD4UN81bnpAL0DRM4Z66QTT/+KXzhSC6EVD6A0dR/+Qc2uUNDpqsWwQgN/K
-	 eXGo9ZJdRn2OxWWws2SrW1o3YvGdTDIz3S1wn63MtoEqW2jG0PqoocBxJB0fQvDsr1
-	 mPXcS2VPwzR5OMxZtb+uVDUGlD8gQeLNp2+aN6hZr2BUzOPgBFQp0DqUF/wtf25Jcd
-	 Gn8Fl2TUPlLRA==
-From: Kalle Valo <kvalo@kernel.org>
-To: Aaradhana Sahu <quic_aarasahu@quicinc.com>
-Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v5 3/4] wifi: ath12k: add factory test mode support
-References: <20240624095305.37189-1-quic_aarasahu@quicinc.com>
-	<20240624095305.37189-4-quic_aarasahu@quicinc.com>
-Date: Tue, 02 Jul 2024 16:49:32 +0300
-In-Reply-To: <20240624095305.37189-4-quic_aarasahu@quicinc.com> (Aaradhana
-	Sahu's message of "Mon, 24 Jun 2024 15:23:04 +0530")
-Message-ID: <87le2jgaz7.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1719928649; c=relaxed/simple;
+	bh=qt01brAtBuYeYDb5XU6vCoxDmnQV+1+Sre8GzSkYpTs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y/rjK8j3CXG0jgQpKrS/99G9hjeBDM7o+en/+5PQQBO1VBqNiD9nQUKZ5Pn7M3tkFLPndGWn32UwdniFRq+rJ2aFOcr5R3d3rH1GQuyWSBYNZWOJUOL1YppcR4I7kOn0a5T0dJXbAjvG/jiSGUWKImgyBECHIaHzJKK3aEJdhck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SD/4Xdcy; arc=none smtp.client-ip=209.85.210.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-700cd43564eso2086670a34.1
+        for <linux-wireless@vger.kernel.org>; Tue, 02 Jul 2024 06:57:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1719928647; x=1720533447; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ePmiEYi/a4AH0wn7ckFFYm2PTW/+uVYsAN+yRliA3Bs=;
+        b=SD/4Xdcy4fe3ZVO3oqqPa9q++Hszs4ulZr+39UOdXOyvkdKhvwxmZKrmgdd8yCaT44
+         hdfCXKvZYcDiQ3oUXQd/guxEeUHK4MZo+A/3YKrwPtSp0ZTcnPTsqWXmMiNY5mvRbNYL
+         7ew+UjSEDqgPZqHhuchJkmRn0iHR2vzuDgvYouou/tFzOESIL5bAPGwn+631ctrH2xqI
+         X0kdOTs4OyB0RI9VrakfixnBTs09+l5czZ7QAGxKniScmlgTDw/6rjmiqIzh24vGuuMO
+         A0RGrmTmMiw6ig5S0YU4n0qwPMhZQPWQm0wiwN9pGD6uXJLcOIaXQ4ZoTyOLQACl5CZJ
+         lutw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719928647; x=1720533447;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ePmiEYi/a4AH0wn7ckFFYm2PTW/+uVYsAN+yRliA3Bs=;
+        b=l7EKu7M4gRNxqpeVs7DEWze6H1jYuFhI2qxedcxH6nEn/8x/6oNlFkBrXnY+iBHVnu
+         50Dpwu0sL2Op9qRPAQsTZxq2bOJ35Bl6LxOfxzNka+Ywf4pSJodsnjLg3qoxyGJqPWSZ
+         EG6R+lpJYczHYVEyS+PNQqZXUhcI2U5f5HdcJ7kGbBE+V4CbYhas+A/JGO97uKfx46tB
+         Qaxe7LLAvlt2NT5QDL/kxxXY+OImffjOlMCjUIkErVpQ4vOC0VNik4TG1xiBA9ihuA9O
+         BTs2eWaRRBytdHX4NURG+c34F48uL9VEEIArZGmBp5MBHPOJEPnIf9PaftILBfnvgGsp
+         vMdg==
+X-Forwarded-Encrypted: i=1; AJvYcCXx5oLFL1Bow9Owf4AJhkDmMq+fAMKw+wk4hmeqTcOatlpeoMwkWAUMGYlX5XmzFuUj5xL4LzrN4tNK783RuF/jRwxcMo8OxgAYaOeN/3g=
+X-Gm-Message-State: AOJu0YzvGwvbQFex63O0zKFEc9KzVFBAZHMKfxSK3BoycXOEq3bYamPF
+	Bt6lAdC65VwOFDMIwM37W4854+BTayTlS9/DNE61EOVar6JbaLnXk1dLRWhP4qw=
+X-Google-Smtp-Source: AGHT+IH5Vk/edmC8lLAXOlWnBYfSKbo/eOsXpv1FuEvdKG37AODsGoiz394zQKMr5V6bCT7B+XImXQ==
+X-Received: by 2002:a9d:7c84:0:b0:700:cf6e:e261 with SMTP id 46e09a7af769-70207708212mr10589665a34.31.1719928647061;
+        Tue, 02 Jul 2024 06:57:27 -0700 (PDT)
+Received: from localhost ([2603:8080:b800:f700:a6f1:b7be:4c8c:bf62])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-701f7ab6931sm1688615a34.31.2024.07.02.06.57.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Jul 2024 06:57:26 -0700 (PDT)
+Date: Tue, 2 Jul 2024 15:57:23 +0200
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Su Hui <suhui@nfschina.com>
+Cc: arend.vanspriel@broadcom.com, kvalo@kernel.org, johannes.berg@intel.com,
+	kees@kernel.org, a@bayrepo.ru, marcan@marcan.st,
+	quic_alokad@quicinc.com, zyytlz.wz@163.com,
+	petr.tesarik.ext@huawei.com, duoming@zju.edu.cn,
+	colin.i.king@gmail.com, frankyl@broadcom.com, meuleman@broadcom.com,
+	phaber@broadcom.com, linville@tuxdriver.com,
+	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH wireless 1/9]  wifi: cfg80211: avoid garbage value of
+ 'io_type' in  brcmf_cfg80211_attach()
+Message-ID: <ba67020a-04bb-46b8-bc05-751684f71e8a@suswa.mountain>
+References: <20240702122450.2213833-1-suhui@nfschina.com>
+ <20240702122450.2213833-2-suhui@nfschina.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240702122450.2213833-2-suhui@nfschina.com>
 
-Aaradhana Sahu <quic_aarasahu@quicinc.com> writes:
+On Tue, Jul 02, 2024 at 08:24:44PM +0800, Su Hui wrote:
+>  brcmf_fil_cmd_int_get() reads the value of 'io_type' and passes it to
+>  brcmf_fil_cmd_data_get(). Initialize 'io_type' to avoid garbage value.
 
-> Add support to process factory test mode commands(FTM) for calibration.
-> By default firmware start with MISSION mode and to process the FTM commands
-> firmware needs to be restarted in FTM mode using module parameter ftm_mode.
-> The pre-request is all the radios should be down before starting the test.
->
-> All ath12k test mode interface related commands specified in enum
-> ath_tm_cmd.
->
-> When start command ATH_TM_CMD_TESTMODE_START is received, ar state
-> is set to test Mode and FTM daemon sends test mode command to wifi
-> driver via cfg80211. Wifi driver sends these command to firmware as
-> wmi events. If it is segmented commands it will be broken down into
-> multiple segments and encoded with TLV header else it is sent to
-> firmware as it is.
->
-> Firmware response via UTF events, wifi driver creates skb and send
-> to cfg80211, cfg80211 sends firmware response to FTM daemon via
-> netlink message.
->
-> Command to boot in ftm mode
-> insmod ath12k ftm_mode=1
->
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00210-QCAHKSWPL_SILICONZ-1
->
-> Signed-off-by: Aaradhana Sahu <quic_aarasahu@quicinc.com>
+Since you're going to be resending anyway, please delete the space char
+from the start of the line.
 
-I have not reviewed this in detail yet but few first impressions:
+It's weird that brcmf_fil_cmd_data_get() uses the uninitialized data.
+It looks like it just goes to great lengths to preserve the original
+data in io_type...  So it likely is harmless enough but still a strange
+and complicated way write a no-op.
 
-> @@ -626,6 +634,8 @@ struct ath12k {
->  
->  	u32 freq_low;
->  	u32 freq_high;
-> +	struct completion fw_mode_reset;
-> +	u8 ftm_msgref;
->  };
+regards,
+dan carpenter
 
-fw_mode_reset is unused so I removed it in the pending branch.
-
-> @@ -856,6 +867,8 @@ struct ath12k_base {
->  		/* protected by data_lock */
->  		u32 fw_crash_counter;
->  	} stats;
-> +	bool ftm_segment_handler;
-> +	struct ath12k_ftm_event_obj ftm_event_obj;
->  	u32 pktlog_defs_checksum;
-
-ftm_segment_handler is also unused so removed that as well.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
