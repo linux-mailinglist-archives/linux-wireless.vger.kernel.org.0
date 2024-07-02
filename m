@@ -1,75 +1,60 @@
-Return-Path: <linux-wireless+bounces-9876-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9877-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F07E924866
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 21:35:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 604819248BE
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 22:07:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 515D11C21338
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 19:35:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 848681C21EF6
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 20:07:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D6001CB31C;
-	Tue,  2 Jul 2024 19:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A35D1D47D9;
+	Tue,  2 Jul 2024 20:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cet8ZuLH"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="ZvkS0RDA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232866E5ED
-	for <linux-wireless@vger.kernel.org>; Tue,  2 Jul 2024 19:35:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0201D363F
+	for <linux-wireless@vger.kernel.org>; Tue,  2 Jul 2024 20:06:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719948948; cv=none; b=fztIskXJILsrMddmvA/IIgdUHfMw2qK7dkz/P6a8PU73bIV8bgSIbyDz7bnZj16BDh5Guipl6OwCZPAGcqNtIjozFXDBK9Z1jNJi+yA0CI4PDXCl/4nxNl3PpUVmO9o5tvuMCYwxb8zEYTu74Tk7hO5cVkCzQK4ZIBeENX/2jsw=
+	t=1719950816; cv=none; b=vC0gauRxrgSHKt+8qZ9lieVzOnjqYtnCZSYJuE0EfLVtyBKWX5hWMhwQogTXLwHl9ORhYt2bRsRC66wiAN8QWmlYXamq8bmX/oddPj9ysi0DLLIPcXJaGqgo4Elx28uf1JWvf+E0g3YRaiKqr/EZ2z9TCdUNMLNjxGzGoTbXxsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719948948; c=relaxed/simple;
-	bh=T+dBy2dNci5RJopb9tdKqq8CsKoBE+N3egN3m9tlnNg=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=GEFqk0klfQmYyChVmDvpSOvOy5/Q8TRRb2SHnSOqBM0taGfxmo1i0XlMajWClGBjygHHdjZxj8cJqXAyX/wlcU41KNJrLp7AuMHqgQ/zhgv9dGbvb51FxVMqL6yaFkdcUS/V5IET9tFDi1GrB3rzJU35z+MRhPxcxbzR+VYVER8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cet8ZuLH; arc=none smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-707040e3018so3314947a12.1
-        for <linux-wireless@vger.kernel.org>; Tue, 02 Jul 2024 12:35:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719948946; x=1720553746; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+Oju/bUa3Sl/6ZxW148rhD/+3/jGGQZHWr5TFVGcOCQ=;
-        b=cet8ZuLHfT+Jsz7/9SIDNfBbYwzAZL/17HqtxGenfxCNyc2wZl1gyUFp6bfMyl3A3q
-         EkqWUXocb6xTq22Om9nHJvEm2rJ2tKUAnWum9+IceliEYFTR71OkHfhViT/C+QIHOzxD
-         3HcGaynfYdXZY5YOxuPqzXjKnSRJLt1VOZKGPuFqgFc9bv2jhtEFVtL2rPvEgTuiCnR+
-         wfoAH09dFPK/NOfHIhlVHQH0GmaEC6whCnRe7iY/hJsmT8/hNDJETlMp8BA1MKcQKYvq
-         IoB8M1eJ9uxjhwBQ3ZubOCuhzWPHZQoydo/tI84Negb0mOPiztrUdn9ZriaD106mXoI1
-         EVPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719948946; x=1720553746;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+Oju/bUa3Sl/6ZxW148rhD/+3/jGGQZHWr5TFVGcOCQ=;
-        b=Zqnmxg9ghPP0y117ncchmf/hA2Cq5uV4Tp07OT33qSC4Dm9NlhurIdv5QBzObsbLLE
-         bfDaqkAZ6KTWeMPThaem4hiGNbugqCHUTcJ9s9SNQRmIGeiB3AXG4E5lrPzE6WHD4ptq
-         aWDhYFbMtwXQ5XfJJeLePuSpHFMlVfaGaWdHZzy0VPigKyglw+NKi7nLL0uqq5NBXV0P
-         oasM3DSfhUp4xoQfDDLGe9REbMXfVjOPzhv46cCMrX6I/CjI7ZGidlXPfXn0MYF/qBrM
-         MTk12tBoTPYlop4f0yj9eS8FnGY94dcw2A0tnIBWjcMxGmLetfj7qKERs8POKrCJwOn7
-         CY7Q==
-X-Gm-Message-State: AOJu0YyQLhLFwaoroq1JQ1Adnp+SSN37ePWHPbMxj1Gg1XPbcN81AwEv
-	QuiyNRbtmDM2FqaVzWo2teb9WVtZqoOrhBnHOJw5QtSeciERslOGpd28nw==
-X-Google-Smtp-Source: AGHT+IGUbYmysL+BLavXObq1NYu/cobNYfFTie8KLaD835B8NFKw2eFEspkKuNVVCuJvzyVW4jy+cQ==
-X-Received: by 2002:a05:6a21:999e:b0:1bd:feed:c031 with SMTP id adf61e73a8af0-1bef61255c2mr16386444637.28.1719948946066;
-        Tue, 02 Jul 2024 12:35:46 -0700 (PDT)
-Received: from ryzen.lan ([2601:644:8200:dab8::a86])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c91ce6ec6asm9316210a91.26.2024.07.02.12.35.45
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jul 2024 12:35:45 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
+	s=arc-20240116; t=1719950816; c=relaxed/simple;
+	bh=GAwNMvxd+Qvs0ks18/Qpi6jIvI8JlWCs7Hmz6vwfYXE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NAINiamkDoDSlgz566wBhVejK2ICOpggNzpwEiN+vNAFedGgdNMKdYSwiQRV7TXFGo+CSPJ3C1Rb2pNeCLfXAqMmApZL5jZ4ZDq0ITwH1Z1aOfAFIqGzbmCVg/sSpeXo3dtPorw6cIBHuOsxgSB27Vy0Lo1D7f0tNfuRd4/gUMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=ZvkS0RDA; arc=none smtp.client-ip=67.231.154.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
+	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 58954501D70
+	for <linux-wireless@vger.kernel.org>; Tue,  2 Jul 2024 19:58:25 +0000 (UTC)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id A8638940079
+	for <linux-wireless@vger.kernel.org>; Tue,  2 Jul 2024 19:58:17 +0000 (UTC)
+Received: from ben-dt5.candelatech.com (unknown [50.251.239.81])
+	by mail3.candelatech.com (Postfix) with ESMTP id D135313C2B0;
+	Tue,  2 Jul 2024 12:58:16 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com D135313C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1719950296;
+	bh=GAwNMvxd+Qvs0ks18/Qpi6jIvI8JlWCs7Hmz6vwfYXE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ZvkS0RDAq5YDBTZ/OjlW7efFHeRNha21XirCuLYG0XefchSQ1NaR0q7aQVUpY3Bsl
+	 zTqiYGh377URfDZpMOtJ+lIEQnS7jIO8REWKCGoM/1fE6At5mc33u288XCawEdqfRM
+	 hu059Zo1JU0/JGMs8h+4p9gZ46LDCaz9mtJVnEBk=
+From: greearb@candelatech.com
 To: linux-wireless@vger.kernel.org
-Subject: [PATCH] iw: fix formats under MIPS64/PPC
-Date: Tue,  2 Jul 2024 12:35:44 -0700
-Message-ID: <20240702193544.5984-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.45.2
+Cc: Ben Greear <greearb@candelatech.com>
+Subject: [RFC] iwlwifi: allow scanning non PSC channels.
+Date: Tue,  2 Jul 2024 12:58:09 -0700
+Message-ID: <20240702195809.866513-1-greearb@candelatech.com>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -77,28 +62,232 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-MDID: 1719950298-KQ0WV8JPi0zY
+X-MDID-O:
+ us5;at1;1719950298;KQ0WV8JPi0zY;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
 
-__SANE_USERSPACE_TYPES__ needs to be defined to get consistent 64-bit
-type defines and to fix -Wformat warnings.
+From: Ben Greear <greearb@candelatech.com>
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
+I put a 6ghz only AP, 40Mhz wide, on 6Ghz channel 1 (non-psc).
+It is not doing any colocated stuff or beaconning on 2.4/5.
+
+be200 would not scan it.
+
+With this patch, it will scan and associate.  I also patched my
+supplicant to disable NL80211_SCAN_FLAG_COLOCATED_6GHZ flag on
+every 5th scan.  Only with this flag disabled will be200 now
+scan on non-psc channels.
+
+My approach is to relax the only-scan-psc-channels logic in iwlwifi
+when NL80211_SCAN_FLAG_COLOCATED_6GHZ is not set.
+
+The reason I think this might be valid approach (the part about when
+it is not set...)
+
+ @NL80211_SCAN_FLAG_COLOCATED_6GHZ: scan for collocated APs reported by
+ *      2.4/5 GHz APs. When the flag is set, the scan logic will use the
+ *      information from the RNR element found in beacons/probe responses
+ *      received on the 2.4/5 GHz channels to actively scan only the 6GHz
+ *      channels on which APs are expected to be found. Note that when not set,
+ *      the scan logic would scan all 6GHz channels, but since transmission of
+ *      probe requests on non-PSC channels is limited, it is highly likely that
+ *      these channels would passively be scanned. Also note that when the flag
+ *      is set, in addition to the colocated APs, PSC channels would also be
+ *      scanned if the user space has asked for it.
+
+I know patch is full of debugging and at lease the cfg80211 part needs
+to go away.  Maybe iwlwifi part can stay since it will be disabled by
+default anyway, and it is useful for debugging scan issues in case
+someone wants to enable it.
+
+Suggestions for improvement are welcome.
+
+Signed-off-by: Ben Greear <greearb@candelatech.com>
 ---
- Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 57 +++++++++++++++++--
+ net/wireless/scan.c                           | 11 ++++
+ 2 files changed, 63 insertions(+), 5 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index 17be33f..2652fac 100644
---- a/Makefile
-+++ b/Makefile
-@@ -17,6 +17,7 @@ CFLAGS ?= -O2 -g
- CFLAGS += -Wall -Wextra -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common
- CFLAGS += -Werror-implicit-function-declaration -Wsign-compare -Wno-unused-parameter
- CFLAGS += -Wdeclaration-after-statement
-+CFLAGS += -D__SANE_USERSPACE_TYPES__
- CFLAGS += $(CFLAGS_EVAL)
- CFLAGS += $(EXTRA_CFLAGS)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index e975f5ff17b5..05029f366043 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -1666,6 +1666,9 @@ iwl_mvm_umac_scan_cfg_channels_v7(struct iwl_mvm *mvm,
+ 		else
+ 			cfg->flags |= cpu_to_le32((iwl_band <<
+ 						   IWL_CHAN_CFG_FLAGS_BAND_POS));
++		IWL_DEBUG_SCAN(mvm,
++			       "Scan umac-scan-cfg-channels-v7[%i] hw-ch-num: %i  is-psc: %d\n",
++			       i, channels[i]->hw_value, cfg80211_channel_is_psc(channels[i]));
+ 	}
+ }
  
+@@ -1769,13 +1772,20 @@ iwl_mvm_umac_scan_cfg_channels_v7_6g(struct iwl_mvm *mvm,
+ 		     unsolicited_probe_on_chan = false, psc_no_listen = false;
+ 		s8 psd_20 = IEEE80211_RNR_TBTT_PARAMS_PSD_RESERVED;
+ 
++		IWL_DEBUG_SCAN(mvm,
++			       "Scan umac-scan-cfg-channels-v7-6g[%i] hw-ch-num: %i  is-psc: %d  n-6ghz-params: %d  n-ssids:%d  coloc-6ghz: %d\n",
++			       i, params->channels[i]->hw_value, cfg80211_channel_is_psc(params->channels[i]),
++			       params->n_6ghz_params, params->n_ssids,
++			       !!(params->flags & NL80211_SCAN_FLAG_COLOCATED_6GHZ));
++
+ 		/*
+ 		 * Avoid performing passive scan on non PSC channels unless the
+ 		 * scan is specifically a passive scan, i.e., no SSIDs
+ 		 * configured in the scan command.
+ 		 */
+ 		if (!cfg80211_channel_is_psc(params->channels[i]) &&
+-		    !params->n_6ghz_params && params->n_ssids)
++		    !params->n_6ghz_params && params->n_ssids &&
++		    params->flags & NL80211_SCAN_FLAG_COLOCATED_6GHZ)
+ 			continue;
+ 
+ 		cfg->v1.channel_num = params->channels[i]->hw_value;
+@@ -1811,6 +1821,10 @@ iwl_mvm_umac_scan_cfg_channels_v7_6g(struct iwl_mvm *mvm,
+ 			psc_no_listen |= scan_6ghz_params[j].psc_no_listen;
+ 		}
+ 
++		IWL_DEBUG_SCAN(mvm,
++			       "Scan umac-scan-cfg-channels-v7-6g[%i] psc-no-listen: %d  un-sol-probe-on-channel: %d\n",
++			       i, psc_no_listen, unsolicited_probe_on_chan);
++
+ 		/*
+ 		 * In the following cases apply passive scan:
+ 		 * 1. Non fragmented scan:
+@@ -1941,6 +1955,10 @@ iwl_mvm_umac_scan_cfg_channels_v7_6g(struct iwl_mvm *mvm,
+ 		if (version >= 17)
+ 			cfg->v5.psd_20 = psd_20;
+ 
++		IWL_DEBUG_SCAN(mvm,
++			       "Scan umac-scan-cfg-channels-v7-6g[%i] psc-no-listen: %d allow-passive: %d  force_passive: %d  un-sol-probe-on-channel: %d flags: 0x%x\n",
++			       i, psc_no_listen,  unsolicited_probe_on_chan, allow_passive, force_passive, flags);
++
+ 		ch_cnt++;
+ 	}
+ 
+@@ -2068,8 +2086,13 @@ static void iwl_mvm_scan_6ghz_passive_scan(struct iwl_mvm *mvm,
+ 	 */
+ 	if (n_disabled != sband->n_channels) {
+ 		IWL_DEBUG_SCAN(mvm,
+-			       "6GHz passive scan: 6GHz channels enabled\n");
+-		return;
++			       "6GHz passive scan: some 6GHz channels enabled, coloc-6ghz: %d\n",
++			       !!(params->flags & NL80211_SCAN_FLAG_COLOCATED_6GHZ));
++		/* if user has disabled colocated-6ghz flag, they are asking for all channels
++		 * to be scanned, so allow passive scanning.
++		 */
++		if (params->flags & NL80211_SCAN_FLAG_COLOCATED_6GHZ)
++			return;
+ 	}
+ 
+ 	/* all conditions to enable 6ghz passive scan are satisfied */
+@@ -2451,6 +2474,10 @@ iwl_mvm_scan_umac_fill_ch_p_v7(struct iwl_mvm *mvm,
+ 					  channel_cfg_flags,
+ 					  vif->type, version);
+ 
++	IWL_DEBUG_SCAN(mvm,
++		       "Scan umac-scan-cfg-ch-p-v7, enable-passive: %d  n-channels: n_channels: %d\n",
++		       params->enable_6ghz_passive, params->n_channels);
++
+ 	if (params->enable_6ghz_passive) {
+ 		struct ieee80211_supported_band *sband =
+ 			&mvm->nvm_data->bands[NL80211_BAND_6GHZ];
+@@ -2549,6 +2576,9 @@ static int iwl_mvm_scan_umac_v14_and_above(struct iwl_mvm *mvm,
+ 	if (ret)
+ 		return ret;
+ 
++	IWL_DEBUG_SCAN(mvm,
++		       "Scan umac-scan-v14-above, scan-6ghz: %d\n",
++		       params->scan_6ghz);
+ 	if (!params->scan_6ghz) {
+ 		iwl_mvm_scan_umac_fill_probe_p_v4(params,
+ 						  &scan_p->probe_params,
+@@ -2572,12 +2602,19 @@ static int iwl_mvm_scan_umac_v14_and_above(struct iwl_mvm *mvm,
+ 							 params->n_channels,
+ 							 pb, cp, vif->type,
+ 							 version);
++	IWL_DEBUG_SCAN(mvm,
++		       "Scan umac-scan-v14-above, v7-6g count: %d\n",
++		       cp->count);
+ 	if (!cp->count)
+ 		return -EINVAL;
+ 
+ 	if (!params->n_ssids ||
+-	    (params->n_ssids == 1 && !params->ssids[0].ssid_len))
++	    (params->n_ssids == 1 && !params->ssids[0].ssid_len)) {
++		IWL_DEBUG_SCAN(mvm,
++			       "Scan umac-scan-v14-above, setting 6G_PSC_NO_FILTER\n");
++
+ 		cp->flags |= IWL_SCAN_CHANNEL_FLAG_6G_PSC_NO_FILTER;
++	}
+ 
+ 	return 0;
+ }
+@@ -3151,6 +3188,11 @@ int iwl_mvm_sched_scan_start(struct iwl_mvm *mvm,
+ 		}
+ 	}
+ 
++	IWL_DEBUG_SCAN(mvm,
++		       "Scan sched-scan-start, non-psc-included: %d  n-channels: %d scan-colocated-6g: %d\n",
++		       non_psc_included, params.n_channels,
++		       !!((params.flags & NL80211_SCAN_FLAG_COLOCATED_6GHZ)));
++
+ 	if (non_psc_included) {
+ 		params.channels = kmemdup(params.channels,
+ 					  sizeof(params.channels[0]) *
+@@ -3161,8 +3203,13 @@ int iwl_mvm_sched_scan_start(struct iwl_mvm *mvm,
+ 
+ 		for (i = j = 0; i < params.n_channels; i++) {
+ 			if (params.channels[i]->band == NL80211_BAND_6GHZ &&
+-			    !cfg80211_channel_is_psc(params.channels[i]))
++			    (params.flags & NL80211_SCAN_FLAG_COLOCATED_6GHZ) &&
++			    !cfg80211_channel_is_psc(params.channels[i])) {
++				IWL_DEBUG_SCAN(mvm,
++					       "Scan sched-scan-start, skipping non-psc channel[%d]\n",
++					       i);
+ 				continue;
++			}
+ 			params.channels[j++] = params.channels[i];
+ 		}
+ 		params.n_channels = j;
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 1280ff7d6349..d19a463c7bd9 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -826,6 +826,9 @@ static int cfg80211_scan_6ghz(struct cfg80211_registered_device *rdev)
+ 
+ 	n_channels = rdev->wiphy.bands[NL80211_BAND_6GHZ]->n_channels;
+ 
++	pr_info("cfg802311-scan-6ghz, scan-flag-colocated-6ghz: %d\n",
++		!!(rdev_req->flags & NL80211_SCAN_FLAG_COLOCATED_6GHZ));
++
+ 	if (rdev_req->flags & NL80211_SCAN_FLAG_COLOCATED_6GHZ) {
+ 		struct cfg80211_internal_bss *intbss;
+ 
+@@ -1045,6 +1048,9 @@ int cfg80211_scan(struct cfg80211_registered_device *rdev)
+ 			n_channels++;
+ 	}
+ 
++	pr_info("cfg802311-scan, scan-flag-colocated-6ghz: %d\n",
++		!!(rdev_req->flags & NL80211_SCAN_FLAG_COLOCATED_6GHZ));
++
+ 	if (!n_channels) {
+ 		int rv = cfg80211_scan_6ghz(rdev);
+ 		if (rv)
+@@ -1095,6 +1101,11 @@ void ___cfg80211_scan_done(struct cfg80211_registered_device *rdev,
+ 	wdev = rdev_req->wdev;
+ 	request = rdev->int_scan_req ? rdev->int_scan_req : rdev_req;
+ 
++	pr_info("cfg802311-scan-done, scan-flag-colocated-6ghz: %d wdev-running: %d  split-scan-6ghz: %d req-scan-6ghz: %d aborted: %d\n",
++		!!(rdev_req->flags & NL80211_SCAN_FLAG_COLOCATED_6GHZ), wdev_running(wdev),
++		!!(rdev->wiphy.flags & WIPHY_FLAG_SPLIT_SCAN_6GHZ), rdev_req->scan_6ghz,
++		request->info.aborted);
++
+ 	if (wdev_running(wdev) &&
+ 	    (rdev->wiphy.flags & WIPHY_FLAG_SPLIT_SCAN_6GHZ) &&
+ 	    !rdev_req->scan_6ghz && !request->info.aborted &&
 -- 
-2.45.2
+2.42.0
 
 
