@@ -1,112 +1,162 @@
-Return-Path: <linux-wireless+bounces-9816-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9817-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29B09923B39
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 12:18:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE233923B74
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 12:32:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D62101F220C9
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 10:18:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51C8EB223FE
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 10:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49B0E157492;
-	Tue,  2 Jul 2024 10:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B213814F106;
+	Tue,  2 Jul 2024 10:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o3Mu1rdm"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="LJNuB0mP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2504912CD8B
-	for <linux-wireless@vger.kernel.org>; Tue,  2 Jul 2024 10:18:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91352AD17
+	for <linux-wireless@vger.kernel.org>; Tue,  2 Jul 2024 10:32:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719915526; cv=none; b=IfMQXvsuVvwE0vgc304MDtHlLv3UyQwm0CKlhzld0qa77DKjLTytOCvGAMSVy4B98x9WeXyXhqrwx3sC7QgqhzLPrYvJZd+FscYzW/33igGEhmqPQgaooyhua/4C1Df9PhQenOS9BzslpWO/XkWt3y2qnRVvAh7+d1x0gmM3mRs=
+	t=1719916343; cv=none; b=pCYbqJ1nK+pkcyQTamGZdbFmueSj5mCvmsydqeJtS/PmEkDywO2jKXFOiUVw/M3mq8b51GQPYIEwLJkZ78adgaiSad3gXWMzkGHDP9LO3UNKbhXkhbDlQkKue2q+KmhjJhQb1yAT9FvrsoHInSvMLyU69T+MNfZnDi2oE0Sjg5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719915526; c=relaxed/simple;
-	bh=CRjzfm/cbEoxLAEG2O4pIEn5GWYKGji12h6CpdySr1M=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=dgRTc5Mxj/ACIAiXBa0FM1RaWA4Zav1o1+K5VVGIjj7WiAhANzojmMckw46fgB546ZKfr8SMbxOGNOiMqX5QL1e0LQN1czwvpPD9gjnxDAd+H00uWTdtALur2plNWZ+QylxZ6j8y/F2Us/G1dzTuFUZRNvxUX3iaqc3mRuI0yDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o3Mu1rdm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D23ABC116B1;
-	Tue,  2 Jul 2024 10:18:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719915525;
-	bh=CRjzfm/cbEoxLAEG2O4pIEn5GWYKGji12h6CpdySr1M=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=o3Mu1rdm/jyfR8imds6yJmp1ckZY8qpqs0xLnpN1v9tGkY0kLbHPEOw/h2dFnbW5I
-	 DFKLaE9xulAi2BAkwdQHWzLEKhv7/ez4B5ydj4Y+E2ujG9YFGvqisKKBd3VKb+ZRSG
-	 m84xM5UVXmeaHf8/KfXqnmibLkjUwDKWork34nTIkxegWj9LO01pmII/C4Ka3YKRG/
-	 e+EJ9wH/DvLLLw4y4egojSFk/NOL1FgPadfw5BDSg4ikCj8f2y4bEiXoJpsKvypS7J
-	 2bBFUKAJ9JSIOZPLg/TzOnwrQD3vfdzevd9ZhNGZMSUDdkL8WVd+iK+OC8t2lnBWPi
-	 8H1M/L1YebmwQ==
-From: Kalle Valo <kvalo@kernel.org>
-To: Aaradhana Sahu <quic_aarasahu@quicinc.com>
-Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v5 3/4] wifi: ath12k: add factory test mode support
-References: <20240624095305.37189-1-quic_aarasahu@quicinc.com>
-	<20240624095305.37189-4-quic_aarasahu@quicinc.com>
-Date: Tue, 02 Jul 2024 13:18:42 +0300
-In-Reply-To: <20240624095305.37189-4-quic_aarasahu@quicinc.com> (Aaradhana
-	Sahu's message of "Mon, 24 Jun 2024 15:23:04 +0530")
-Message-ID: <87plrwf665.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1719916343; c=relaxed/simple;
+	bh=H2gzOVpRb2R2tdX7McYOdEn6gbOQ471zh4VeRGL2yxI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=O+s3M6So1ZV889T7OcmgRZtq61rLfxz+uiZvkxWV3DhQHhuGW4S3D7nTXvxf0mFb32BArGoA9BBxaV2ycyQoBdwRbRhTjxhLwju4haxPcWcU8FX6qh1lGwAIsQSwUR7MY3rwsP3pYtUUqrPq272xnCEFN5L++eKp82BhnBg+L58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=LJNuB0mP; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4627nMmv006937;
+	Tue, 2 Jul 2024 10:32:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	EEHIeQ68RH/N7etDBWjTgdfHV12LimfW6JMNoEKGk34=; b=LJNuB0mPvCSksobY
+	jAMLT/x4GTb1g1+Af33ZfaWVteMOwZpKEneGGbnt1KlL21oP+S8yuIgZ9HLsTqbd
+	B2UhlEN7HbRv0PkfwFWK8hRVnmPZYCg7+bJ4xFhOLUup1tcLWGwwO6ry5vRTu8Pk
+	yFmR/ioAysCNT5swQPoEahkdmaG6F6a84zB2t7m+45u9KkpXXfMFd3SiabGBx6oJ
+	ErKq/bkD2BLHCPEyvKbCCPET21A+e05VRX2AgF1rDb7XxZmLmiGlmT5GPx6ZBe7y
+	ywvmDK1b3jQ3x5dwknxeQskN5C1tmMxlrXvCmxOzjpCsW19dWKjx6D6e/huK7TQs
+	0pPWsw==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 402bejpysx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 02 Jul 2024 10:32:12 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 462AWB6d022042
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 2 Jul 2024 10:32:11 GMT
+Received: from [10.151.40.197] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 2 Jul 2024
+ 03:32:09 -0700
+Message-ID: <9c3da9ac-490a-d4aa-a830-7272c1a67b9c@quicinc.com>
+Date: Tue, 2 Jul 2024 16:02:06 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v3 07/10] wifi: mac80211: extend ifcomb check functions
+ for multi-radio
+To: Felix Fietkau <nbd@nbd.name>, <linux-wireless@vger.kernel.org>
+CC: <johannes@sipsolutions.net>, <quic_adisi@quicinc.com>,
+        <ath12k@lists.infradead.org>
+References: <cover.a50ea6fd728e14cfdaafeb9cfac003364713c8e7.1719843147.git-series.nbd@nbd.name>
+ <15d63cd77aad2d2eef503676a3f3fbabe78d5828.1719843147.git-series.nbd@nbd.name>
+Content-Language: en-US
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+In-Reply-To: <15d63cd77aad2d2eef503676a3f3fbabe78d5828.1719843147.git-series.nbd@nbd.name>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: dAjvYOXOrjnLmMo8dz54lEwYFeeLp9Ks
+X-Proofpoint-ORIG-GUID: dAjvYOXOrjnLmMo8dz54lEwYFeeLp9Ks
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-02_06,2024-07-02_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=644
+ impostorscore=0 spamscore=0 clxscore=1015 mlxscore=0 suspectscore=0
+ bulkscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2407020078
 
-Aaradhana Sahu <quic_aarasahu@quicinc.com> writes:
 
-> Add support to process factory test mode commands(FTM) for calibration.
-> By default firmware start with MISSION mode and to process the FTM commands
-> firmware needs to be restarted in FTM mode using module parameter ftm_mode.
-> The pre-request is all the radios should be down before starting the test.
->
-> All ath12k test mode interface related commands specified in enum
-> ath_tm_cmd.
->
-> When start command ATH_TM_CMD_TESTMODE_START is received, ar state
-> is set to test Mode and FTM daemon sends test mode command to wifi
-> driver via cfg80211. Wifi driver sends these command to firmware as
-> wmi events. If it is segmented commands it will be broken down into
-> multiple segments and encoded with TLV header else it is sent to
-> firmware as it is.
->
-> Firmware response via UTF events, wifi driver creates skb and send
-> to cfg80211, cfg80211 sends firmware response to FTM daemon via
-> netlink message.
->
-> Command to boot in ftm mode
-> insmod ath12k ftm_mode=1
->
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00210-QCAHKSWPL_SILICONZ-1
->
-> Signed-off-by: Aaradhana Sahu <quic_aarasahu@quicinc.com>
 
-[...]
+On 7/1/2024 7:43 PM, Felix Fietkau wrote:
+> Add support for counting global and per-radio max/current number of
+> channels, as well as checking radio-specific interface combinations.
+> 
+> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> ---
+>   net/mac80211/cfg.c         |   7 +-
+>   net/mac80211/chan.c        |  17 +++--
+>   net/mac80211/ibss.c        |   2 +-
+>   net/mac80211/ieee80211_i.h |   5 +-
+>   net/mac80211/iface.c       |   2 +-
+>   net/mac80211/util.c        | 126 ++++++++++++++++++++++++++------------
+>   6 files changed, 108 insertions(+), 51 deletions(-)
+> 
 
-> --- a/drivers/net/wireless/ath/ath12k/core.c
-> +++ b/drivers/net/wireless/ath/ath12k/core.c
-> @@ -42,6 +42,10 @@ static int ath12k_core_rfkill_config(struct ath12k_base *ab)
->  	return ret;
->  }
->  
-> +bool ath12k_ftm_mode;
-> +module_param_named(ftm_mode, ath12k_ftm_mode, bool, 0444);
-> +MODULE_PARM_DESC(ftm_mode, "Boots up in factory test mode");
+...
 
-In the pending branch I moved these to the beginning of the file,
-otherwise they are quite hidden:
+> @@ -3982,6 +4062,8 @@ int ieee80211_check_combinations(struct ieee80211_sub_if_data *sdata,
+>   	if (iftype != NL80211_IFTYPE_UNSPECIFIED)
+>   		params.iftype_num[iftype] = 1;
+>   
+> +	ieee80211_fill_ifcomb_params(local, &params, shared ? chandef : NULL,
+> +				     sdata);
+>   	list_for_each_entry(ctx, &local->chanctx_list, list) {
+>   		if (ctx->replace_state == IEEE80211_CHANCTX_WILL_BE_REPLACED)
+>   			continue;
+> @@ -3991,28 +4073,9 @@ int ieee80211_check_combinations(struct ieee80211_sub_if_data *sdata,
+>   			params.num_different_channels++;
+>   			continue;
+>   		}
+> -		if (chandef && chanmode == IEEE80211_CHANCTX_SHARED &&
+> -		    cfg80211_chandef_compatible(chandef,
+> -						&ctx->conf.def))
+> -			continue;
+>   		params.num_different_channels++;
+>   	}
+>   
+> -	list_for_each_entry_rcu(sdata_iter, &local->interfaces, list) {
+> -		struct wireless_dev *wdev_iter;
+> -
+> -		wdev_iter = &sdata_iter->wdev;
+> -
+> -		if (sdata_iter == sdata ||
+> -		    !ieee80211_sdata_running(sdata_iter) ||
+> -		    cfg80211_iftype_allowed(local->hw.wiphy,
+> -					    wdev_iter->iftype, 0, 1))
+> -			continue;
+> -
+> -		params.iftype_num[wdev_iter->iftype]++;
+> -		total++;
+> -	}
+> -
+>   	if (total == 1 && !params.radar_detect)
 
-https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git/commit/?h=pending&id=0006b23098b2cb0dded6c650ef9b5a590bfb5a3c
+Here, total is always 1. no ?
+
+>   		return 0;
+>   
+
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Karthikeyan Periyasamy
+--
+கார்த்திகேயன் பெரியசாமி
 
