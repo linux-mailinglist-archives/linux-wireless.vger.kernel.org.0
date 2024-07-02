@@ -1,71 +1,71 @@
-Return-Path: <linux-wireless+bounces-9874-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9875-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F12199247D4
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 21:06:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58833924814
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 21:20:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D185B22887
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 19:06:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 774311C254A3
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 19:20:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A85BA1BBBE5;
-	Tue,  2 Jul 2024 19:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D53E41C9EB1;
+	Tue,  2 Jul 2024 19:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="WxE1e2OD"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="YntR6v/L"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474561EB25
-	for <linux-wireless@vger.kernel.org>; Tue,  2 Jul 2024 19:06:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DFF91514DC
+	for <linux-wireless@vger.kernel.org>; Tue,  2 Jul 2024 19:20:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719947165; cv=none; b=raDeFpHp0vSRQJ0p7XeKiWp/n5Cy3jJARe1pFZLbU3jPXMemWqNCC2pndsZyNA3VicDD2WdLxIijN81IGFqJXYPjf6K5+Q0qLlMHpP/C9zyFYNwsV+xZTSccCxMK+ZUS/guSvT05eFT5TTglGylPf6uvGDluGF+D5ZTmKY+0Gfc=
+	t=1719948035; cv=none; b=ZG+6I8bp4syYYaL5BZAgncJUXAXGIS9yWELeL2t1JJlSIuV4fSHR1v1jCauKVjAALRL38X0d0VvwzZWGhxSBeZHp8/ER7MbSpIRaAPvykhxHmM9Tw4/S5uT/+bFCQQP/PwO66u+x8n/x3OoBh/WziDjVCeb+C9t7FLxGgv3EkjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719947165; c=relaxed/simple;
-	bh=AbaPNSBFzXJgCTYTcTdWT4JDMp0RyeD5f12e97h5XZs=;
+	s=arc-20240116; t=1719948035; c=relaxed/simple;
+	bh=f8iScGg0qCtlQiuVHkZSIDEul2if2zmwp+E3YDGugd4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NGXNr5+W8vK8/LTjif6VAR2KEgfBoE1X45IDvwPS1Xd7UCq98epll60eAdtianobEszDK9mXeHBsmOoUuMF/fe12nK8tXbKLNB77kILogoeGV/bW8cmaSbg/x/qdy7x3U2D+rq63yeEN8Yp3O2PKsLy9Zxqm32vRo29eMfr08tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=WxE1e2OD; arc=none smtp.client-ip=209.85.218.52
+	 In-Reply-To:Content-Type; b=fo4vYawoqxSUGjGTpVYyaceMqPPmHH63//rvZAQqpYp8bzKzA74ESTu2yFU7U4/Enjj0y3h++g44kwD7Iqh99mWpvG7Khbve+sd3LABFhnFE7Dnh9AqHu6sT0+nCX/9HUgP3Nc6p9JgGcAlXbfwPDs22r9vJ8T6q2QRW0CEXRs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=YntR6v/L; arc=none smtp.client-ip=209.85.219.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a754746f3easo110687466b.0
-        for <linux-wireless@vger.kernel.org>; Tue, 02 Jul 2024 12:06:03 -0700 (PDT)
+Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-df4d5d0b8d0so4287269276.2
+        for <linux-wireless@vger.kernel.org>; Tue, 02 Jul 2024 12:20:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1719947162; x=1720551962; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1719948032; x=1720552832; darn=vger.kernel.org;
         h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=BwqyHU4iLN5rpjIkVtdn6eZ40xk9drojEumQiJOYkQw=;
-        b=WxE1e2OD6uv9kQ8G1+2zPYxWmva3BmTzxxMINWyEWb4KftBFloPkKmQaT+TwsU3y7O
-         gZZwibo62OpRd+M1bOb5BfAgsKeue4VOJ0vCBUK2H2HMBlvEcpGeCaicm3AfHVsmIVIw
-         iQaxwgiVwHeQ8MMNoP58C130QHZrUogdRXtLQ=
+        bh=hj1zmcnhleXbnL6Bcl3Wjcp+Aqe5rd/s4n/0FnW3qDA=;
+        b=YntR6v/LByuWAdNdhBN82GVvwxjzFnE5jskmgdFtzKCd5DG6lsaSlsMORiOQ3T1WiJ
+         EWmX2v8xjdMWfInXBhUSDVshEzto/HRyh9kmE4GQASxTV0Rxx6fAfZ2wZlPAYO6XwI3l
+         EstkIMqN2I0OiHEmh3MyTyKf1j4RzGIekJSwk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719947162; x=1720551962;
+        d=1e100.net; s=20230601; t=1719948032; x=1720552832;
         h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=BwqyHU4iLN5rpjIkVtdn6eZ40xk9drojEumQiJOYkQw=;
-        b=py7N+uGH7QSXhjBRexgfOjDwqg1lomE+T/D/MbPI39bEHzGKRH9LP+o1+fS2QYd+J6
-         G/Hc6baGQI0ux8xu0IE4LaWirDNWpWjelcLjDFcbvDJPhU6nO0ziyeOjsVErtSg6balm
-         VPA+Lk11bquBYMAVs+1cpMyFaLJvVaWNuk90qu6fZizII0ZkArfVxmdoUpM7tYGBkbNs
-         cqsZjlxvy3NPNEK7ohU6XER+nwI7rs7vlpWJxuD6TCeFT91lNSFk5gni5tFVQ2azTnxc
-         G1RjQ40J1TVdN+K4RDZ7LIr4rK2NLjfklu7M7lseetmyzoIRfWAP2XB9NawbwATURsE+
-         fFJg==
-X-Forwarded-Encrypted: i=1; AJvYcCVWJ1p+QAoWXn+PcALyxEKTD8E2zPYhOrQcJ7qzDSTKaJSIvGhP1qbqYP4B5ogIycGD4eE2io8CiY2qVt9JOd/CUZeaRkN6bmXdT3SEl6Y=
-X-Gm-Message-State: AOJu0Yx9qwtBaYcNL+MuW+Y8gRj6dwy/flDgzc7LuKmb1ZFRwEAsEOi3
-	GijEwIWPlGY8QN7eL4q5k8EjochnCRw8HRVmkZpfns2JR8qrNolGwMPyZG6brQ==
-X-Google-Smtp-Source: AGHT+IH/LucmvJ3f8fHHg5hD1eTufc+gU2laYnHZQrj4QEBwS65ymOpWeNxHt/x7wFFfcuu5iEiUYQ==
-X-Received: by 2002:a17:906:dacc:b0:a72:455f:e8b with SMTP id a640c23a62f3a-a75142c653amr831102766b.0.1719947161563;
-        Tue, 02 Jul 2024 12:06:01 -0700 (PDT)
+        bh=hj1zmcnhleXbnL6Bcl3Wjcp+Aqe5rd/s4n/0FnW3qDA=;
+        b=ZX1qe8ETTVCfkRzAOsj0SEPiRNbq6QDxZbmNHMWxhxenhoDXTaPjajKhK5FmZuy0x4
+         JCCAf/DmTNeoTzC8H8Vpo4g+WUk1isxNMhzOPAUj64xoZx++Z7QdOOF503VLgMBw32E6
+         7oyxhWGH2Lemb7Ss0Q4ylxR6qTcW4exCvf+tAWFY7Gsym0noq1xLn668yCyHTUUPd2KK
+         keJyJP1gPSpnyoaavKA0Hmqfh/GiA8JCMV4V6GTHFZuwXoQpxRCQtRghlHfBGVkw/TGa
+         4tg7J8X6+UvNmq560lgMAO/vZt3t/nI9L0sU5s2hhkEv8KsMqTtPgTCxR1aifgEkfuA/
+         Rbag==
+X-Forwarded-Encrypted: i=1; AJvYcCWIGVxd36k+BVdK5O55a1TOnovkgvDDrsHjIEQ7ca+JUVsUvfgo+lYNMLv8Az75KejTFNSnNxp+Aa5jOCGtVRgjySl55dGw3Mei6Hfl1K0=
+X-Gm-Message-State: AOJu0Yw0bWhWiync77bAPiEmmtL7gTtlT9H7mwCjF+y6JzwKqOhkSx/D
+	Czxoeg8x82IIQwbR+TpupYwiNoHIFIap3xBOE3oqkT7E12Feb53DFUcsa72KOA==
+X-Google-Smtp-Source: AGHT+IFS3jycrIjeuMHwLrHz8gi3/PYVYiiv4ErswOBy3xTVIB2ShOgd4sZ9sWJY3IuoWDR/EcSPfA==
+X-Received: by 2002:a25:ae12:0:b0:dfb:912:970f with SMTP id 3f1490d57ef6-e036ec79a6bmr7413991276.63.1719948032467;
+        Tue, 02 Jul 2024 12:20:32 -0700 (PDT)
 Received: from [192.168.178.137] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a72ab0b7dcfsm446048966b.209.2024.07.02.12.06.00
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4465143dd1csm44000511cf.53.2024.07.02.12.20.27
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Jul 2024 12:06:01 -0700 (PDT)
-Message-ID: <0446de88-3b73-447f-96d2-4b8461defac2@broadcom.com>
-Date: Tue, 2 Jul 2024 21:05:58 +0200
+        Tue, 02 Jul 2024 12:20:32 -0700 (PDT)
+Message-ID: <612a25e6-745f-4d52-9143-18650cc71362@broadcom.com>
+Date: Tue, 2 Jul 2024 21:20:24 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -73,8 +73,8 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/5] dt-bindings: net: wireless: brcm4329-fmac: add
- clock description for AP6275P Wi-Fi device
+Subject: Re: [PATCH v3 4/5] wifi: brcmfmac: Add optional lpo clock enable
+ support
 To: Jacobe Zang <jacobe.zang@wesion.com>, robh@kernel.org,
  krzk+dt@kernel.org, heiko@sntech.de, kvalo@kernel.org, davem@davemloft.net,
  edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, conor+dt@kernel.org
@@ -86,7 +86,7 @@ Cc: efectn@protonmail.com, dsimic@manjaro.org, jagan@edgeble.ai,
  minipli@grsecurity.net, brcm80211@lists.linux.dev,
  brcm80211-dev-list.pdl@broadcom.com, nick@khadas.com
 References: <20240630073605.2164346-1-jacobe.zang@wesion.com>
- <20240630073605.2164346-3-jacobe.zang@wesion.com>
+ <20240630073605.2164346-5-jacobe.zang@wesion.com>
 From: Arend van Spriel <arend.vanspriel@broadcom.com>
 Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
  xsFNBGP96SABEACfErEjSRi7TA1ttHYaUM3GuirbgqrNvQ41UJs1ag1T0TeyINqG+s6aFuO8
@@ -131,47 +131,35 @@ Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
  NKowQLrlMBGXT4NnRNV0+yHmusXPOPIqQCKEtbWSx9s2slQxmXukPYvLnuRJqkPkvrTgjn5d
  eSE0Dkhni4292/Nn/TnZf5mxCNWH1p3dz/vrT6EIYk2GSJgCLoTkCcqaM6+5E4IwgYOq3UYu
  AAgeEbPV1QeTVAPrntrLb0t0U5vdwG7Xl40baV9OydTv7ghjYZU349w1d5mdxg==
-In-Reply-To: <20240630073605.2164346-3-jacobe.zang@wesion.com>
+In-Reply-To: <20240630073605.2164346-5-jacobe.zang@wesion.com>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000a082c2061c486775"
+	boundary="00000000000087b9a8061c489b4a"
 
---000000000000a082c2061c486775
+--00000000000087b9a8061c489b4a
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
+
+
 On 6/30/2024 9:36 AM, Jacobe Zang wrote:
-> Add clocks and clock-names for brcm4329-fmac.
+> WiFi modules often require 32kHz clock to function. Add support to
+> enable the clock to PCIe driver.
 
 you can add my....
 
 Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Co-developed-by: Ondrej Jirman <megi@xff.cz>
+> Signed-off-by: Ondrej Jirman <megi@xff.cz>
 > Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
 > ---
->   .../bindings/net/wireless/brcm,bcm4329-fmac.yaml          | 8 ++++++++
->   1 file changed, 8 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-> index 2c2093c77ec9a..f542b60e44dc4 100644
-> --- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-> +++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-> @@ -122,6 +122,14 @@ properties:
->         NVRAM. This would normally be filled in by the bootloader from platform
->         configuration data.
->   
-> +  clocks:
-> +    items:
-> +      - description: Wi-Fi RTC clock
+>   .../net/wireless/broadcom/brcm80211/brcmfmac/pcie.c    | 10 ++++++++++
 
-Having a few problems with the description. There is only one LPO clock 
-input on the 43752 chipset. From the AMPAK AP6275P datasheet:
+These changes should really go into of.c.
 
-| 31 | LPO_IN | I | External Low Power Clock input (32.768KHz) |
+>   1 file changed, 10 insertions(+)
 
-I would suggest to use the description from the datasheet or something 
-similar.
-
---000000000000a082c2061c486775
+--00000000000087b9a8061c489b4a
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -242,15 +230,15 @@ BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
 N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
 p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCoWqxrJTBED2/yhHGv
-sR8XzzS71vYUwiUDh8Ccj5vIVjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNDA3MDIxOTA2MDJaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCmFX3KlYYP2wpAINAq
++S0h+f4xsahW1mAJB+r/0YuY4jAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yNDA3MDIxOTIwMzJaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEASUOq1Ck1Oh8EB+upVNwuiIZ0S2zVSEEYVdVN
-IPOg8J7vjrciUGVNZpMnUaX6tF3/Z9auMG/vXo0NCUk0StegnYVXZL4am42eihOS41xl8p6u3RMq
-qb2lMldDAhePzr2hlMqD4a/C0AumwuxkzwMtuIN3eLY/z5MC+YSaIbNFIf8v9oCyiQp/FH0k1M9R
-us7HRs/zH93TqiufPjtO0uK+3DQTFmLculKMaDWv5eDCSQUNHE1JgUuoClZNNGgTFZi2FVw6c8LX
-s5i1y4+71bhqxMz9yWiVPT+JSEcsIIiI2QJmRwOCe431MbQDKlq3aRnh7xhTZ28cFKfpjl/EOxRE
-dQ==
---000000000000a082c2061c486775--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAHG+ZPQgmjp6Mzgshb3jjs5/KF9XzylSeMv8d
+YStFQD96iqegoj/TUUXpqoeI1srCX/CdqDz+GltKQSEvxi/VQH27DddsyLhiE8uTbwgzaV3Ysy4p
+0Hn3X3rDNLnSaqkn//TtVAgArLvzhQtXiC8TkjaEEYoJacEBf8uPys5ug72CN76nxbT9/L0qf+56
+Lj7TraBlvd66EZnbWVrooz9pPoFyY0FgnUF1fRVNy8X7tb8z6ipRdTB499lzahgr1RTuZVllzYwg
+naq7p/T6ZiJamljKyBybfTgTp+QahR6C5mddEtARHIlGboKF2YsTUSdXB/WW+e+j9Ba8oITtbTkZ
+Gw==
+--00000000000087b9a8061c489b4a--
 
