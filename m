@@ -1,71 +1,71 @@
-Return-Path: <linux-wireless+bounces-9873-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9874-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 095A39247A4
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 20:56:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F12199247D4
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 21:06:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 898B81F22CB1
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 18:56:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D185B22887
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 19:06:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3C211CB313;
-	Tue,  2 Jul 2024 18:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A85BA1BBBE5;
+	Tue,  2 Jul 2024 19:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Tio369HV"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="WxE1e2OD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1301CB33A
-	for <linux-wireless@vger.kernel.org>; Tue,  2 Jul 2024 18:56:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474561EB25
+	for <linux-wireless@vger.kernel.org>; Tue,  2 Jul 2024 19:06:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719946587; cv=none; b=ULKjGxZlIoyqS67ue2F6cl5DwSjSc60hIFhSIO70bC9nIJejxkmW/dCvKnp+pfTRUW66gTQ/kHLvvisBroXNVi3Hj45zX6QBuDxNgB7/gelXNgGbtotelCOr8rMDS2T134VI+jb5mXBwk/g3PzI5H8LN2HszUeMSjwm0NsSK8js=
+	t=1719947165; cv=none; b=raDeFpHp0vSRQJ0p7XeKiWp/n5Cy3jJARe1pFZLbU3jPXMemWqNCC2pndsZyNA3VicDD2WdLxIijN81IGFqJXYPjf6K5+Q0qLlMHpP/C9zyFYNwsV+xZTSccCxMK+ZUS/guSvT05eFT5TTglGylPf6uvGDluGF+D5ZTmKY+0Gfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719946587; c=relaxed/simple;
-	bh=yjI8nVvFWc9JN8ROz6kapkFH1Rw8OyD2SQpZQXL42nw=;
+	s=arc-20240116; t=1719947165; c=relaxed/simple;
+	bh=AbaPNSBFzXJgCTYTcTdWT4JDMp0RyeD5f12e97h5XZs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LktoZ6K9CetAvkd1jE2wz+1aB5PDT5ZwmIMH+c4B7wnaLXzdkQ/7MgVkrjs+GwWvd4zjsdZ+IK78xRDTsyPS/WQW1rwXoPoShZO35ZwY8BMWp5m0DWUSdEzdEFzFqAWiawXQO6cdlQBNTEZdNScV2J1jXQAq2pmYUSSICuv8J54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Tio369HV; arc=none smtp.client-ip=209.85.218.47
+	 In-Reply-To:Content-Type; b=NGXNr5+W8vK8/LTjif6VAR2KEgfBoE1X45IDvwPS1Xd7UCq98epll60eAdtianobEszDK9mXeHBsmOoUuMF/fe12nK8tXbKLNB77kILogoeGV/bW8cmaSbg/x/qdy7x3U2D+rq63yeEN8Yp3O2PKsLy9Zxqm32vRo29eMfr08tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=WxE1e2OD; arc=none smtp.client-ip=209.85.218.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a7194ce90afso531905266b.2
-        for <linux-wireless@vger.kernel.org>; Tue, 02 Jul 2024 11:56:25 -0700 (PDT)
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a754746f3easo110687466b.0
+        for <linux-wireless@vger.kernel.org>; Tue, 02 Jul 2024 12:06:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1719946584; x=1720551384; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1719947162; x=1720551962; darn=vger.kernel.org;
         h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=YF+3Lq4hpfJVmt7Kz/6fZo2eb6TeLTJfi5kc4p9+qvs=;
-        b=Tio369HVFfS0vuO/28aKW+3QutaGaZ7vFBCXdbzzgDBx2TVU5HaQOr4Tuoo9vmL6TR
-         fxa41Nov9MV1TZKQpDq68DlLmnUs3e3ZKtkF55tdOyxdpws8unogm84ZX1QA9S8EEQRM
-         fotqyd0iuxVhbpLZuhmjl69LeuOBtAnvcV+TA=
+        bh=BwqyHU4iLN5rpjIkVtdn6eZ40xk9drojEumQiJOYkQw=;
+        b=WxE1e2OD6uv9kQ8G1+2zPYxWmva3BmTzxxMINWyEWb4KftBFloPkKmQaT+TwsU3y7O
+         gZZwibo62OpRd+M1bOb5BfAgsKeue4VOJ0vCBUK2H2HMBlvEcpGeCaicm3AfHVsmIVIw
+         iQaxwgiVwHeQ8MMNoP58C130QHZrUogdRXtLQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719946584; x=1720551384;
+        d=1e100.net; s=20230601; t=1719947162; x=1720551962;
         h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=YF+3Lq4hpfJVmt7Kz/6fZo2eb6TeLTJfi5kc4p9+qvs=;
-        b=wVdjyWZ1/l06DHJaUebEbAonChxb2UtyZFoKOKfntB5exKIQ6Ejl3+pvoGJx6QfSFM
-         /6hRgQBVRbxIz5g9qPA0aeumt74HVhI/jdDKnpVU8t/e3qg/UUGp2smbnoEz+fbAyUvT
-         gRSqdigNpHfYRHOf5yYfEGE9WNdhmaJejhLYmwnKWyE2/UUWpwQnYwkq3ruhAcMsFeWr
-         U4z6opuVAwW4YuWVaeiHQBWSctkIfnKAASe0Hx2COMNX+MPXmSV2YjiTzhPEHukzqgiu
-         wOly9xiEJqG9i//OFQUh8CKtvmrC9VGRpne+7GMW6eQTDgQqGIT1cpoRgjmrf3a4o+9t
-         GJkg==
-X-Forwarded-Encrypted: i=1; AJvYcCVpLvyjkdcsT6KuNx9Ctbt73WcHILRo9A6Ucz/ImK4x3i3kfa0PTYSIGFSa5hLFw7fdn4W6jN1jTem5VO/j3JB0o0U6SX8KRGzowTUli7A=
-X-Gm-Message-State: AOJu0Yz0QEfngl0GcSfVpwVxc6qL8/hNq3D0Xm3Kw1HdM9xss+EMe/cw
-	6v07chxQr8BfqdLj6waOv9EUoS4TJuf2gxo97fxxf2Ryxp27G/40MYjI1KErqA==
-X-Google-Smtp-Source: AGHT+IEZRaZ1BVbdg7i2LbA6OYbJb7VhMvfdxJZ2B9p/HJCSyf4aXVEI4lvRQjGElNqeTccIAb9A6Q==
-X-Received: by 2002:a17:907:d15:b0:a70:c031:3359 with SMTP id a640c23a62f3a-a7514438b44mr781140066b.34.1719946584065;
-        Tue, 02 Jul 2024 11:56:24 -0700 (PDT)
+        bh=BwqyHU4iLN5rpjIkVtdn6eZ40xk9drojEumQiJOYkQw=;
+        b=py7N+uGH7QSXhjBRexgfOjDwqg1lomE+T/D/MbPI39bEHzGKRH9LP+o1+fS2QYd+J6
+         G/Hc6baGQI0ux8xu0IE4LaWirDNWpWjelcLjDFcbvDJPhU6nO0ziyeOjsVErtSg6balm
+         VPA+Lk11bquBYMAVs+1cpMyFaLJvVaWNuk90qu6fZizII0ZkArfVxmdoUpM7tYGBkbNs
+         cqsZjlxvy3NPNEK7ohU6XER+nwI7rs7vlpWJxuD6TCeFT91lNSFk5gni5tFVQ2azTnxc
+         G1RjQ40J1TVdN+K4RDZ7LIr4rK2NLjfklu7M7lseetmyzoIRfWAP2XB9NawbwATURsE+
+         fFJg==
+X-Forwarded-Encrypted: i=1; AJvYcCVWJ1p+QAoWXn+PcALyxEKTD8E2zPYhOrQcJ7qzDSTKaJSIvGhP1qbqYP4B5ogIycGD4eE2io8CiY2qVt9JOd/CUZeaRkN6bmXdT3SEl6Y=
+X-Gm-Message-State: AOJu0Yx9qwtBaYcNL+MuW+Y8gRj6dwy/flDgzc7LuKmb1ZFRwEAsEOi3
+	GijEwIWPlGY8QN7eL4q5k8EjochnCRw8HRVmkZpfns2JR8qrNolGwMPyZG6brQ==
+X-Google-Smtp-Source: AGHT+IH/LucmvJ3f8fHHg5hD1eTufc+gU2laYnHZQrj4QEBwS65ymOpWeNxHt/x7wFFfcuu5iEiUYQ==
+X-Received: by 2002:a17:906:dacc:b0:a72:455f:e8b with SMTP id a640c23a62f3a-a75142c653amr831102766b.0.1719947161563;
+        Tue, 02 Jul 2024 12:06:01 -0700 (PDT)
 Received: from [192.168.178.137] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a750fb362d4sm333643266b.49.2024.07.02.11.56.22
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a72ab0b7dcfsm446048966b.209.2024.07.02.12.06.00
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Jul 2024 11:56:23 -0700 (PDT)
-Message-ID: <efd4272c-81fa-49ec-a3ff-0dfb9b5da7c1@broadcom.com>
-Date: Tue, 2 Jul 2024 20:56:20 +0200
+        Tue, 02 Jul 2024 12:06:01 -0700 (PDT)
+Message-ID: <0446de88-3b73-447f-96d2-4b8461defac2@broadcom.com>
+Date: Tue, 2 Jul 2024 21:05:58 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -73,8 +73,8 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/5] dt-bindings: net: wireless: brcm4329-fmac: add
- pci14e4,449d
+Subject: Re: [PATCH v3 2/5] dt-bindings: net: wireless: brcm4329-fmac: add
+ clock description for AP6275P Wi-Fi device
 To: Jacobe Zang <jacobe.zang@wesion.com>, robh@kernel.org,
  krzk+dt@kernel.org, heiko@sntech.de, kvalo@kernel.org, davem@davemloft.net,
  edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, conor+dt@kernel.org
@@ -86,7 +86,7 @@ Cc: efectn@protonmail.com, dsimic@manjaro.org, jagan@edgeble.ai,
  minipli@grsecurity.net, brcm80211@lists.linux.dev,
  brcm80211-dev-list.pdl@broadcom.com, nick@khadas.com
 References: <20240630073605.2164346-1-jacobe.zang@wesion.com>
- <20240630073605.2164346-2-jacobe.zang@wesion.com>
+ <20240630073605.2164346-3-jacobe.zang@wesion.com>
 From: Arend van Spriel <arend.vanspriel@broadcom.com>
 Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
  xsFNBGP96SABEACfErEjSRi7TA1ttHYaUM3GuirbgqrNvQ41UJs1ag1T0TeyINqG+s6aFuO8
@@ -131,27 +131,47 @@ Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
  NKowQLrlMBGXT4NnRNV0+yHmusXPOPIqQCKEtbWSx9s2slQxmXukPYvLnuRJqkPkvrTgjn5d
  eSE0Dkhni4292/Nn/TnZf5mxCNWH1p3dz/vrT6EIYk2GSJgCLoTkCcqaM6+5E4IwgYOq3UYu
  AAgeEbPV1QeTVAPrntrLb0t0U5vdwG7Xl40baV9OydTv7ghjYZU349w1d5mdxg==
-In-Reply-To: <20240630073605.2164346-2-jacobe.zang@wesion.com>
+In-Reply-To: <20240630073605.2164346-3-jacobe.zang@wesion.com>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="00000000000033cfef061c4845b8"
+	boundary="000000000000a082c2061c486775"
 
---00000000000033cfef061c4845b8
+--000000000000a082c2061c486775
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 6/30/2024 9:36 AM, Jacobe Zang wrote:
-> It's the device id used by AP6275P which is the Wi-Fi module
-> used by Rockchip's RK3588 evaluation board and also used in
-> some other RK3588 boards.
+> Add clocks and clock-names for brcm4329-fmac.
 
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+you can add my....
+
+Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 > Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
 > ---
->   .../devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml      | 1 +
->   1 file changed, 1 insertion(+)
+>   .../bindings/net/wireless/brcm,bcm4329-fmac.yaml          | 8 ++++++++
+>   1 file changed, 8 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
+> index 2c2093c77ec9a..f542b60e44dc4 100644
+> --- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
+> +++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
+> @@ -122,6 +122,14 @@ properties:
+>         NVRAM. This would normally be filled in by the bootloader from platform
+>         configuration data.
+>   
+> +  clocks:
+> +    items:
+> +      - description: Wi-Fi RTC clock
 
---00000000000033cfef061c4845b8
+Having a few problems with the description. There is only one LPO clock 
+input on the 43752 chipset. From the AMPAK AP6275P datasheet:
+
+| 31 | LPO_IN | I | External Low Power Clock input (32.768KHz) |
+
+I would suggest to use the description from the datasheet or something 
+similar.
+
+--000000000000a082c2061c486775
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -222,15 +242,15 @@ BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
 N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
 p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCDGw93/OpyC9vFbUNI0
-KYsgXEqRqM8AJiA6k/pIPqhDODAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNDA3MDIxODU2MjRaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCoWqxrJTBED2/yhHGv
+sR8XzzS71vYUwiUDh8Ccj5vIVjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yNDA3MDIxOTA2MDJaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAYvmEReR1wY5pDjTgWocib9dMwV5j74Lq47Q4
-UQmSwwB/CV95agjOCA9X+892vbeoZDmGvFVKgmd6zDwauhaLItb2rfRHKisXoGPPZusebEbM3Sta
-vYXevPCcOHsj1+5pDjxzCrvAqPnoF8g81GbUNWm0fSmQ7pyeREA4ME+1WZ0RIK+gXyTCpyNNvmbG
-uMVldM2GXPUzBulRWjQ/0xMUyxlKtlUGq0e533AuyoQCk0HTo4kIpD6vE6BEtLs7JKBgkRxGt51L
-WS/LWZxCTVmm6MEAk3h3QlI2qIa6De5qiISp/3FsOfi3Tt5flwHt2Em7WkaBoU0psC1cW+5j0o33
-0A==
---00000000000033cfef061c4845b8--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEASUOq1Ck1Oh8EB+upVNwuiIZ0S2zVSEEYVdVN
+IPOg8J7vjrciUGVNZpMnUaX6tF3/Z9auMG/vXo0NCUk0StegnYVXZL4am42eihOS41xl8p6u3RMq
+qb2lMldDAhePzr2hlMqD4a/C0AumwuxkzwMtuIN3eLY/z5MC+YSaIbNFIf8v9oCyiQp/FH0k1M9R
+us7HRs/zH93TqiufPjtO0uK+3DQTFmLculKMaDWv5eDCSQUNHE1JgUuoClZNNGgTFZi2FVw6c8LX
+s5i1y4+71bhqxMz9yWiVPT+JSEcsIIiI2QJmRwOCe431MbQDKlq3aRnh7xhTZ28cFKfpjl/EOxRE
+dQ==
+--000000000000a082c2061c486775--
 
