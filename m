@@ -1,82 +1,122 @@
-Return-Path: <linux-wireless+bounces-9836-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9845-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F85E923CD0
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 13:48:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9A10923DC7
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 14:28:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40FB81C20C6D
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 11:48:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 858E92881A2
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 12:28:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F307212FB02;
-	Tue,  2 Jul 2024 11:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD32717B431;
+	Tue,  2 Jul 2024 12:25:45 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09571DFD8
-	for <linux-wireless@vger.kernel.org>; Tue,  2 Jul 2024 11:48:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+Received: from mail.nfschina.com (unknown [42.101.60.195])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id 51D31177992;
+	Tue,  2 Jul 2024 12:25:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=42.101.60.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719920925; cv=none; b=mGnOZ/eFiEykuAktDRROJxv74MzGhBOvyakRnUwwWXlO40JwfDV6sI7pSww/0qdPnDKOYXe5Dh9UXs6ZtowIQsXnuBEDkKbIG3PLJuKvproz+7WiWHv0WDEJkSuHzaQe7jDrxKCB53nkBHNubj78UjxGJxkFQcGwSMDVeHNSajQ=
+	t=1719923145; cv=none; b=e0qtcwKEIC8M8ZH1y16eD13s2uYBs97h7TLfgZC9ls2DHkFCs8jM2gfFVEobvDGBLW0NdsVdSYUNTVykJNTSVUzAuiX/3En7F9B3JR90NwJj4Pndgx3jd/D7nYkb0fS1dZVxEMyaO1sC5iVZwpk4ExSTLIc0CwwP2RM1CHK7bMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719920925; c=relaxed/simple;
-	bh=m+C6X4pV0UkL2V3McROpb/Y5t/0KdnLo5PPIoQRHanc=;
-	h=From:To:Subject:In-Reply-To:References:MIME-Version:Content-Type:
-	 Message-ID:Date; b=O5pF2Truud88/bBXryASt9Z4EK49LdKzv7Oz90P8+Fkv2BivB/rXSaW0SEmq9heNid2ii3kPwR6N1J3zNjJ4+JXPrdkUINgcVfPTKkfQ8HXRpyzDCBnYeGmiX0o6wMA/NJkgHC7a6dVIUlfvDHGPDFY27xWaMS29wY+Uv8cTlSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 462BmeuY7881385, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 462BmeuY7881385
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Tue, 2 Jul 2024 19:48:40 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 2 Jul 2024 19:48:40 +0800
-Received: from [127.0.1.1] (172.16.17.57) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 2 Jul
- 2024 19:48:39 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 1/4] wifi: rtw89: 8852bt: rfk: add IQK
-In-Reply-To: <20240627025849.25198-2-pkshih@realtek.com>
-References: <20240627025849.25198-1-pkshih@realtek.com> <20240627025849.25198-2-pkshih@realtek.com>
+	s=arc-20240116; t=1719923145; c=relaxed/simple;
+	bh=N1K5vqUOUCTzc4m7/1paZZiWuB+U2yJoeN9sfduGBOo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DVwRVI/ZdWMiPt6mhR/G3WnWEbRhgWyATfc8XptJt+asglqlsLLXqWdfJG2N3eLRV+dpZMsFxovS8M5wb8XOiNxcKF+vutgl+vAeLOQx3ySJ4xDc72GrVPf79EReCaufA5SMBFNsOtyN6jxX9nl+pTz8rLbzDFmjbK5tIe/TvO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com; spf=pass smtp.mailfrom=nfschina.com; arc=none smtp.client-ip=42.101.60.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nfschina.com
+Received: from localhost.localdomain (unknown [180.167.10.98])
+	by mail.nfschina.com (MailData Gateway V2.8.8) with ESMTPSA id 4FAA36031A631;
+	Tue,  2 Jul 2024 20:25:14 +0800 (CST)
+X-MD-Sfrom: suhui@nfschina.com
+X-MD-SrcIP: 180.167.10.98
+From: Su Hui <suhui@nfschina.com>
+To: arend.vanspriel@broadcom.com,
+	kvalo@kernel.org
+Cc: Su Hui <suhui@nfschina.com>,
+	johannes.berg@intel.com,
+	kees@kernel.org,
+	a@bayrepo.ru,
+	quic_alokad@quicinc.com,
+	zyytlz.wz@163.com,
+	marcan@marcan.st,
+	petr.tesarik.ext@huawei.com,
+	duoming@zju.edu.cn,
+	colin.i.king@gmail.com,
+	u.kleine-koenig@pengutronix.de,
+	quic_jjohnson@quicinc.com,
+	linville@tuxdriver.com,
+	pieterpg@broadcom.com,
+	meuleman@broadcom.com,
+	frankyl@broadcom.com,
+	stanley.hsu@cypress.com,
+	wright.feng@cypress.com,
+	ian.lin@infineon.com,
+	chi-hsien.lin@cypress.com,
+	zajec5@gmail.com,
+	antonio@open-mesh.com,
+	franky.lin@broadcom.com,
+	linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com,
+	linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+Subject: [PATCH wireless 0/9] wifi: cfg80211: avoid some garbage values 
+Date: Tue,  2 Jul 2024 20:24:42 +0800
+Message-Id: <20240702122450.2213833-1-suhui@nfschina.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Message-ID: <d3f71cc3-4e35-45fc-b093-f5f8f27080fb@RTEXMBS04.realtek.com.tw>
-Date: Tue, 2 Jul 2024 19:48:39 +0800
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+Content-Transfer-Encoding: 8bit
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+Clang static checker (scan-build) has some warnings as follows.
 
-> IQ signal calibration is a very important calibration to yield good RF
-> performance. We do this calibration once we are going to an AP. During
-> scanning phase, without this calibration RF performance is still
-> acceptable because it transmits and receives with low data rate at
-> this phase.
-> 
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+included from drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c:16
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil.h:123:2:
+warning:Assigned value is garbage or undefined [core.uninitialized.Assign]
+  123 |         __le32 data_le = cpu_to_le32(*data);
+      |         ^~~~~~~~~~~~~~   ~~~~~~~~~~~~~~~~~~
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c:138:3:warning
+Value stored to 'err' is never read [deadcode.DeadStores]
 
-4 patch(es) applied to rtw-next branch of rtw.git, thanks.
+There are some functions like brcmf_fil_{cmd,iovar,basscfg}_int_get() 
+which read the value of its parameter, but some callers have not 
+initialized these parameters which will be read. And this patchset fixes
+these problems.
 
-f77c5179bc9f wifi: rtw89: 8852bt: rfk: add IQK
-c3d9705de5e7 wifi: rtw89: 8852bt: rfk: add RX DCK
-39f0123e0321 wifi: rtw89: 8852bt: rfk: add DACK
-746f4ae52a38 wifi: rtw89: 8852bt: rfk: add RCK
+BTW, maybe merge this patchset into one patch is more better because
+the num of changed code is small. I split it into multiple patches
+because of these different 'Fixes' tags. 
 
----
-https://github.com/pkshih/rtw.git
+Su Hui (9):
+  wifi: cfg80211: avoid garbage value of 'io_type' in 
+    brcmf_cfg80211_attach()
+  wifi: brcmfmac: avoid garbage value of 'status' in
+    brcmf_c_download_blob()
+  wifi: cfg80211: avoid garbage value of 'noise' in
+    brcmf_cfg80211_dump_survey()
+  wifi: cfg80211: avoid garbage value of 'chanspec' in
+    brcmf_cfg80211_get_channel()
+  wifi: cfg80211: avoid garbage value of 'freq' in
+    brcmf_cfg80211_mgmt_tx()
+  wifi: cfg80211: avoid garbage value of 'wsec' in
+    brcmf_cfg80211_reconfigure_wep()
+  wifi: cfg80211: avoid garbage value of 'wsec' in
+    brcmf_cfg80211_add_key()
+  wifi: cfg80211: avoid garbage value of 'val' in brcmf_set_key_mgmt()
+  wifi: cfg80211: avoid garbage value of 'wsec' in
+    brcmf_cfg80211_{get,config_default}_key()
+
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c     | 18 +++++++++---------
+ .../broadcom/brcm80211/brcmfmac/common.c       |  2 +-
+ 2 files changed, 10 insertions(+), 10 deletions(-)
+
+-- 
+2.30.2
 
 
