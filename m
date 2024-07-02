@@ -1,205 +1,449 @@
-Return-Path: <linux-wireless+bounces-9857-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9861-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1013D92410E
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 16:41:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CDBC924127
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 16:45:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0E5D1C22607
-	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 14:41:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7459283BB9
+	for <lists+linux-wireless@lfdr.de>; Tue,  2 Jul 2024 14:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49EA41BA07C;
-	Tue,  2 Jul 2024 14:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5367B1BB698;
+	Tue,  2 Jul 2024 14:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="AzqBcTtv"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b="NbyX3Mbr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7730DBE7F
-	for <linux-wireless@vger.kernel.org>; Tue,  2 Jul 2024 14:41:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A4E1B583A;
+	Tue,  2 Jul 2024 14:44:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.96.170.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719931300; cv=none; b=u4+7JQgezJqirw0c8sKD2+e+mB6Ql9tkBIwtjl9rsdF5fHoPdOWR07CEHhDLE08Ri4el7fLNsBMlAYPPT1Nsh3yhwPR1sbvBq5Mphs01DSq9mlxeL1OsRedMUk30xGRjkpFdbloPEVXdIYnzG/nuuysecBtWVkxKC49H18hMfDM=
+	t=1719931497; cv=none; b=RZuPI2X31VDOAD4B5t78ss3dqHxklzeZD4KGZwZS1UtxUTo7Bmv7er05s+6ZWWLj+GlA+boD+mh9rMDSzVSVinwStL14RgktnpV66KtlW/Yjfi8Yvq7G5tghUTmpHd29hm3Q8MWA27StQLzASCDT1pWM94JcRWWiJoqpIg60mxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719931300; c=relaxed/simple;
-	bh=ojPBAzscT7qjU002Oye6xDt9BK23Uov875hbN8BHQOk=;
-	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=MBwgoug/YlrVgegr5Ub4d1/BvpN0KiYxSTRUZucY/U6zGKAXbMgo39ODs/wUPRv4tjz0bKKpVg9qbXI98j+ni6HVde+Wm0QOUIdJk0Ca2wTIbqjdGKLjvxjnl1iPXjyFtPh9rkKZkODLg7pyYWXyY4Z+/PQhLSf16X8S4si5MOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=AzqBcTtv; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5295eb47b48so5239283e87.1
-        for <linux-wireless@vger.kernel.org>; Tue, 02 Jul 2024 07:41:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1719931297; x=1720536097; darn=vger.kernel.org;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ojPBAzscT7qjU002Oye6xDt9BK23Uov875hbN8BHQOk=;
-        b=AzqBcTtvDAwcCwwWbgf3CFgbSHA3iGHP4NGfGl7N7NWJ9n2m6vjjTucf7wlsr6zpwr
-         8ibPB2+y+nF29zGPe0hyyoB6Z6lEXQCCfRAICEpJplaQsQ3tFcBWw58PVVpZKlVLMrOf
-         ACVEOEzSa6FJq8tN0EdfYrCqYrEtthetoBI1w=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719931297; x=1720536097;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ojPBAzscT7qjU002Oye6xDt9BK23Uov875hbN8BHQOk=;
-        b=Ki4Xma/P5D70JvtPGVVbmcSwCyFRjYT9szzB6pqiRViDkhOE87wLA4WU5rqSwoZ49W
-         vKqaUErzkzbgLjC8sSFaduXIYwpz+qFkJCL2F0A0GHaXr/g+iCHO8hsme+mazznD8Oh+
-         43lwbmk4KVvjjT9L0g0vKwbS4TD9uMJo4n0lvj+2OEgNEgaTTVZF3pN/n/x2lGtSimfz
-         +jNyJ2XNcxYu/SJ0+aSompaMvr2sHNtI8AbAc9j4rLUslCKaesxOb8128kHDrad6zNmA
-         HfxrjxhEC5emPF15pfnZ0ZLva8yHOFT89qi2+5ceGTFhl0iT0qJ7j9ElkFP4QGbwd3aK
-         y4mg==
-X-Forwarded-Encrypted: i=1; AJvYcCVv+bd8+WS1CIpi19eQdRijlhGrV65iW9XEQT8r55HScinSE4ToJfzjsCzYTu6sFk0zqpelbZhgWbq+MuNr+akrCAfxvB6VfpablSDFp6w=
-X-Gm-Message-State: AOJu0YxTp0FFg6jnAOEn94xmb+Yyh8b62+KSSyYv8k2GghFvUxQdcjoN
-	6V9FkqcEaLU56QtkbQKSznThnXN4aRyG8LHvSgc+q+riFc7X/vCVqozHGUo+1A==
-X-Google-Smtp-Source: AGHT+IHVtX/aDIl+DTQjkyohV5orWbeyrkEnZIQBjZ2/ag5M0yWAft9UtgtEA9wk91x/iUtQEsWbGA==
-X-Received: by 2002:a05:6512:114f:b0:52c:ccb4:ec70 with SMTP id 2adb3069b0e04-52e82661de0mr6094510e87.22.1719931296498;
-        Tue, 02 Jul 2024 07:41:36 -0700 (PDT)
-Received: from [10.229.40.68] ([192.19.176.227])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4258036d034sm99115865e9.43.2024.07.02.07.41.34
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 02 Jul 2024 07:41:35 -0700 (PDT)
-From: Arend Van Spriel <arend.vanspriel@broadcom.com>
-To: Johannes Berg <johannes@sipsolutions.net>, Su Hui <suhui@nfschina.com>, <kvalo@kernel.org>
-CC: <kees@kernel.org>, <a@bayrepo.ru>, <quic_alokad@quicinc.com>, <zyytlz.wz@163.com>, <marcan@marcan.st>, <petr.tesarik.ext@huawei.com>, <duoming@zju.edu.cn>, <colin.i.king@gmail.com>, <u.kleine-koenig@pengutronix.de>, <quic_jjohnson@quicinc.com>, <linville@tuxdriver.com>, <pieterpg@broadcom.com>, <meuleman@broadcom.com>, <frankyl@broadcom.com>, <stanley.hsu@cypress.com>, <wright.feng@cypress.com>, <ian.lin@infineon.com>, <chi-hsien.lin@cypress.com>, <zajec5@gmail.com>, <antonio@open-mesh.com>, <franky.lin@broadcom.com>, <linux-wireless@vger.kernel.org>, <brcm80211@lists.linux.dev>, <brcm80211-dev-list.pdl@broadcom.com>, <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Date: Tue, 02 Jul 2024 16:41:32 +0200
-Message-ID: <19073e4c960.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <2db23d6f3bd62c955c76d30aa2dfc3f03c8c5748.camel@sipsolutions.net>
-References: <20240702122450.2213833-1-suhui@nfschina.com>
- <2db23d6f3bd62c955c76d30aa2dfc3f03c8c5748.camel@sipsolutions.net>
-User-Agent: AquaMail/1.51.5 (build: 105105504)
-Subject: Re: [PATCH wireless 0/9] wifi: cfg80211: avoid some garbage values
+	s=arc-20240116; t=1719931497; c=relaxed/simple;
+	bh=23iAF38dh0738CLKJAID/ku3IAjYnmcdw8xf+7Wmg1w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bmHQVlqjxgg1Gfaq+MRx7uZ7QXtyMWW9SueuSRBN1m1tW8wtWWiMom0pZ8LFXwnMRRaf2ZmuC34FzmFP1MAhI13mp7yhPqlYdX1LKcy5ou/7bFZ09HOhz2sU0zwrl4yXu2DzrpgfZYhknEfuUIKgQVdMLmqzlm0YU+51UeWVPUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net; spf=pass smtp.mailfrom=rjwysocki.net; dkim=fail (2048-bit key) header.d=rjwysocki.net header.i=@rjwysocki.net header.b=NbyX3Mbr reason="signature verification failed"; arc=none smtp.client-ip=79.96.170.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rjwysocki.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rjwysocki.net
+Received: from localhost (127.0.0.1) (HELO v370.home.net.pl)
+ by /usr/run/smtp (/usr/run/postfix/private/idea_relay_lmtp) via UNIX with SMTP (IdeaSmtpServer 6.2.0)
+ id 28f3861e7503a477; Tue, 2 Jul 2024 16:44:45 +0200
+Received: from kreacher.localnet (unknown [195.136.19.94])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cloudserver094114.home.pl (Postfix) with ESMTPSA id 08C87A562AE;
+	Tue,  2 Jul 2024 16:44:45 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rjwysocki.net;
+	s=dkim; t=1719931485;
+	bh=23iAF38dh0738CLKJAID/ku3IAjYnmcdw8xf+7Wmg1w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=NbyX3MbrjYjZqzm34DrgiKAxyjkIgWpyUoF66hSBSRf9aY9jQVhiC7VZf1ch/COzj
+	 KOKLe9ayUt/Sg0ElOajJQ+6kkyPggZKlVUwN3z1mJywtZ287jp9PmWLALBXZjw6cRZ
+	 Nrof6wVkrH+1QGpHlMBGYQHIhrR1hQ9PSHu6kUuDi+PWxyY/ItzH+zYDm6NXsVSjvV
+	 eg1cXEc3IJaYb0YCvegKxROLFaJjTKnAm85H5s5CsmW9N6t26/j1LCwXa4Vk5Ry4Tw
+	 +gPjkQgpd3iWuTDJug5gCZ/rc7eFL6T5we+8kW7qBfqDfDJxVp7DvLHsDXhSSTB03+
+	 oTtM7lrD0Z7WQ==
+From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To: Linux PM <linux-pm@vger.kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Lukasz Luba <lukasz.luba@arm.com>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Zhang Rui <rui.zhang@intel.com>, Shawn Guo <shawnguo@kernel.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Thara Gopinath <thara.gopinath@gmail.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>, linux-wireless@vger.kernel.org,
+ linux-tegra@vger.kernel.org
+Subject:
+ [RESEND][PATCH v1 3/5] thermal: trip: Pass trip pointer to .set_trip_temp()
+ thermal zone callback
+Date: Tue, 02 Jul 2024 16:42:33 +0200
+Message-ID: <8392906.T7Z3S40VBb@rjwysocki.net>
+In-Reply-To: <1890956.tdWV9SEqCh@rjwysocki.net>
+References: <1890956.tdWV9SEqCh@rjwysocki.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000fedfcf061c44b55e"
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="UTF-8"
+X-CLIENT-IP: 195.136.19.94
+X-CLIENT-HOSTNAME: 195.136.19.94
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeeftddrudehgdejjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfjqffogffrnfdpggftiffpkfenuceurghilhhouhhtmecuudehtdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkjghfggfgtgesthfuredttddtjeenucfhrhhomhepfdftrghfrggvlhculfdrucghhihsohgtkhhifdcuoehrjhifsehrjhifhihsohgtkhhirdhnvghtqeenucggtffrrghtthgvrhhnpedvffeuiedtgfdvtddugeeujedtffetteegfeekffdvfedttddtuefhgeefvdejhfenucfkphepudelhedrudefiedrudelrdelgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduleehrddufeeirdduledrleegpdhhvghlohepkhhrvggrtghhvghrrdhlohgtrghlnhgvthdpmhgrihhlfhhrohhmpedftfgrfhgrvghlucflrdcuhgihshhotghkihdfuceorhhjfiesrhhjfiihshhotghkihdrnhgvtheqpdhnsggprhgtphhtthhopedugedprhgtphhtthhopehlihhnuhigqdhpmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhukhgrshiirdhluhgsrgesrghrmhdrtghomhdprhgtphhtthhopegurghnihgvlhdrlhgviigt
+ rghnoheslhhinhgrrhhordhorhhgpdhrtghpthhtohepshhrihhnihhvrghsrdhprghnughruhhvrggurgeslhhinhhugidrihhnthgvlhdrtghomh
+X-DCC--Metrics: v370.home.net.pl 1024; Body=14 Fuz1=14 Fuz2=14
 
---000000000000fedfcf061c44b55e
-Content-Type: text/plain; format=flowed; charset="us-ascii"
-Content-Transfer-Encoding: 8bit
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-On July 2, 2024 2:50:38 PM Johannes Berg <johannes@sipsolutions.net> wrote:
+Out of several drivers implementing the .set_trip_temp() thermal zone
+operation, two don't actually use the trip ID argument passed to it,
+two call __thermal_zone_get_trip() to get a struct thermal_trip
+corresponding to the given trip ID, and the other use the trip ID as an
+index into their own data structures with the assumption that it will
+always match the ordering of entries in the trips table passed to the
+core during thermal zone registration, which is fragile and not really
+guaranteed.
 
-> On Tue, 2024-07-02 at 20:24 +0800, Su Hui wrote:
->>
->> Su Hui (9):
->> wifi: cfg80211: avoid garbage value of 'io_type' in
->> brcmf_cfg80211_attach()
->> wifi: brcmfmac: avoid garbage value of 'status' in
->> brcmf_c_download_blob()
->> wifi: cfg80211: avoid garbage value of 'noise' in
->> brcmf_cfg80211_dump_survey()
->> wifi: cfg80211: avoid garbage value of 'chanspec' in
->> brcmf_cfg80211_get_channel()
->> wifi: cfg80211: avoid garbage value of 'freq' in
->> brcmf_cfg80211_mgmt_tx()
->> wifi: cfg80211: avoid garbage value of 'wsec' in
->> brcmf_cfg80211_reconfigure_wep()
->> wifi: cfg80211: avoid garbage value of 'wsec' in
->> brcmf_cfg80211_add_key()
->> wifi: cfg80211: avoid garbage value of 'val' in brcmf_set_key_mgmt()
->> wifi: cfg80211: avoid garbage value of 'wsec' in
->> brcmf_cfg80211_{get,config_default}_key()
->
-> Uh where did all those line breaks come from?
->
-> anyway all the titles are wrong - all of this is brcmfmac, not cfg80211
+Even though the trip IDs used by the core are in fact their indices in the
+trips table passed to it by the thermal zone creator, that is purely a
+matter of convenience and should not be relied on for correctness.
 
-It made you look though ;-)
+For this reason, modify trip_point_temp_store() to pass a (const) trip
+pointer to .set_trip_temp() and adjust the drivers implementing it
+accordingly.
 
-Gr. AvS
+This helps to simplify the drivers invoking __thermal_zone_get_trip()
+from their .set_trip_temp() callback functions because they will not
+need to do it now and the other drivers can store their internal
+trip indices in the priv field in struct thermal_trip and their
+.set_trip_temp() callback functions can get those indices from there.
+
+The intel_quark_dts thermal driver can instead use the trip type to
+determine the requisite trip index.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/tt.c                          |    2 
+ drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c         |    8 +--
+ drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c |    3 -
+ drivers/thermal/intel/intel_quark_dts_thermal.c                      |   26 +++++++---
+ drivers/thermal/intel/intel_soc_dts_iosf.c                           |   15 +++--
+ drivers/thermal/intel/x86_pkg_temp_thermal.c                         |    9 ++-
+ drivers/thermal/qcom/qcom-spmi-temp-alarm.c                          |   10 +--
+ drivers/thermal/tegra/soctherm.c                                     |   14 +----
+ drivers/thermal/thermal_sysfs.c                                      |    2 
+ include/linux/thermal.h                                              |    3 -
+ 10 files changed, 54 insertions(+), 38 deletions(-)
+
+Index: linux-pm/drivers/thermal/thermal_sysfs.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/thermal_sysfs.c
++++ linux-pm/drivers/thermal/thermal_sysfs.c
+@@ -113,7 +113,7 @@ trip_point_temp_store(struct device *dev
+ 
+ 	if (temp != trip->temperature) {
+ 		if (tz->ops.set_trip_temp) {
+-			ret = tz->ops.set_trip_temp(tz, trip_id, temp);
++			ret = tz->ops.set_trip_temp(tz, trip, temp);
+ 			if (ret)
+ 				goto unlock;
+ 		}
+Index: linux-pm/include/linux/thermal.h
+===================================================================
+--- linux-pm.orig/include/linux/thermal.h
++++ linux-pm/include/linux/thermal.h
+@@ -93,7 +93,8 @@ struct thermal_zone_device_ops {
+ 	int (*set_trips) (struct thermal_zone_device *, int, int);
+ 	int (*change_mode) (struct thermal_zone_device *,
+ 		enum thermal_device_mode);
+-	int (*set_trip_temp) (struct thermal_zone_device *, int, int);
++	int (*set_trip_temp) (struct thermal_zone_device *,
++			      const struct thermal_trip *, int);
+ 	int (*get_crit_temp) (struct thermal_zone_device *, int *);
+ 	int (*set_emul_temp) (struct thermal_zone_device *, int);
+ 	int (*get_trend) (struct thermal_zone_device *,
+Index: linux-pm/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
+===================================================================
+--- linux-pm.orig/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
++++ linux-pm/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
+@@ -638,7 +638,7 @@ out:
+ }
+ 
+ static int iwl_mvm_tzone_set_trip_temp(struct thermal_zone_device *device,
+-				       int trip, int temp)
++				       const struct thermal_trip *trip, int temp)
+ {
+ 	struct iwl_mvm *mvm = thermal_zone_device_priv(device);
+ 	int ret;
+Index: linux-pm/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c
++++ linux-pm/drivers/thermal/intel/int340x_thermal/int340x_thermal_zone.c
+@@ -39,13 +39,14 @@ static int int340x_thermal_get_zone_temp
+ }
+ 
+ static int int340x_thermal_set_trip_temp(struct thermal_zone_device *zone,
+-					 int trip, int temp)
++					 const struct thermal_trip *trip, int temp)
+ {
+ 	struct int34x_thermal_zone *d = thermal_zone_device_priv(zone);
+-	char name[] = {'P', 'A', 'T', '0' + trip, '\0'};
++	unsigned int trip_index = THERMAL_TRIP_PRIV_TO_INT(trip->priv);
++	char name[] = {'P', 'A', 'T', '0' + trip_index, '\0'};
+ 	acpi_status status;
+ 
+-	if (trip > 9)
++	if (trip_index > 9)
+ 		return -EINVAL;
+ 
+ 	status = acpi_execute_simple_method(d->adev->handle, name,
+@@ -144,6 +145,7 @@ struct int34x_thermal_zone *int340x_ther
+ 		zone_trips[i].type = THERMAL_TRIP_PASSIVE;
+ 		zone_trips[i].temperature = THERMAL_TEMP_INVALID;
+ 		zone_trips[i].flags |= THERMAL_TRIP_FLAG_RW_TEMP;
++		zone_trips[i].priv = THERMAL_INT_TO_TRIP_PRIV(i);
+ 	}
+ 
+ 	trip_cnt = int340x_thermal_read_trips(adev, zone_trips, trip_cnt);
+Index: linux-pm/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c
++++ linux-pm/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c
+@@ -225,7 +225,8 @@ static int sys_get_curr_temp(struct ther
+ 	return 0;
+ }
+ 
+-static int sys_set_trip_temp(struct thermal_zone_device *tzd, int trip, int temp)
++static int sys_set_trip_temp(struct thermal_zone_device *tzd,
++			     const struct thermal_trip *trip, int temp)
+ {
+ 	struct proc_thermal_pci *pci_info = thermal_zone_device_priv(tzd);
+ 	int tjmax, _temp;
+Index: linux-pm/drivers/thermal/intel/intel_quark_dts_thermal.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/intel/intel_quark_dts_thermal.c
++++ linux-pm/drivers/thermal/intel/intel_quark_dts_thermal.c
+@@ -195,7 +195,7 @@ static int get_trip_temp(int trip)
+ }
+ 
+ static int update_trip_temp(struct soc_sensor_entry *aux_entry,
+-				int trip, int temp)
++				int trip_index, int temp)
+ {
+ 	u32 out;
+ 	u32 temp_out;
+@@ -230,9 +230,9 @@ static int update_trip_temp(struct soc_s
+ 	 */
+ 	temp_out = temp + QRK_DTS_TEMP_BASE;
+ 	out = (store_ptps & ~(QRK_DTS_MASK_TP_THRES <<
+-		(trip * QRK_DTS_SHIFT_TP)));
++		(trip_index * QRK_DTS_SHIFT_TP)));
+ 	out |= (temp_out & QRK_DTS_MASK_TP_THRES) <<
+-		(trip * QRK_DTS_SHIFT_TP);
++		(trip_index * QRK_DTS_SHIFT_TP);
+ 
+ 	ret = iosf_mbi_write(QRK_MBI_UNIT_RMU, MBI_REG_WRITE,
+ 			     QRK_DTS_REG_OFFSET_PTPS, out);
+@@ -242,10 +242,24 @@ failed:
+ 	return ret;
+ }
+ 
+-static inline int sys_set_trip_temp(struct thermal_zone_device *tzd, int trip,
+-				int temp)
++static inline int sys_set_trip_temp(struct thermal_zone_device *tzd,
++				    const struct thermal_trip *trip,
++				    int temp)
+ {
+-	return update_trip_temp(thermal_zone_device_priv(tzd), trip, temp);
++	unsigned int trip_index;
++
++	switch (trip->type) {
++	case THERMAL_TRIP_HOT:
++		trip_index = QRK_DTS_ID_TP_HOT;
++		break;
++	case THERMAL_TRIP_CRITICAL:
++		trip_index = QRK_DTS_ID_TP_CRITICAL;
++		break;
++	default
++		return -EINVAL;
++	}
++
++	return update_trip_temp(thermal_zone_device_priv(tzd), trip_index, temp);
+ }
+ 
+ static int sys_get_curr_temp(struct thermal_zone_device *tzd,
+Index: linux-pm/drivers/thermal/intel/intel_soc_dts_iosf.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/intel/intel_soc_dts_iosf.c
++++ linux-pm/drivers/thermal/intel/intel_soc_dts_iosf.c
+@@ -129,18 +129,20 @@ err_restore_ptps:
+ 	return status;
+ }
+ 
+-static int sys_set_trip_temp(struct thermal_zone_device *tzd, int trip,
++static int sys_set_trip_temp(struct thermal_zone_device *tzd,
++			     const struct thermal_trip *trip,
+ 			     int temp)
+ {
+ 	struct intel_soc_dts_sensor_entry *dts = thermal_zone_device_priv(tzd);
+ 	struct intel_soc_dts_sensors *sensors = dts->sensors;
++	unsigned int trip_index = THERMAL_TRIP_PRIV_TO_INT(trip->priv);
+ 	int status;
+ 
+ 	if (temp > sensors->tj_max)
+ 		return -EINVAL;
+ 
+ 	mutex_lock(&sensors->dts_update_lock);
+-	status = update_trip_temp(sensors, trip, temp);
++	status = update_trip_temp(sensors, trip_index, temp);
+ 	mutex_unlock(&sensors->dts_update_lock);
+ 
+ 	return status;
+@@ -293,11 +295,12 @@ static void dts_trips_reset(struct intel
+ }
+ 
+ static void set_trip(struct thermal_trip *trip, enum thermal_trip_type type,
+-		     u8 flags, int temp)
++		     u8 flags, int temp, unsigned int index)
+ {
+ 	trip->type = type;
+ 	trip->flags = flags;
+ 	trip->temperature = temp;
++	trip->priv = THERMAL_INT_TO_TRIP_PRIV(index);
+ }
+ 
+ struct intel_soc_dts_sensors *
+@@ -332,7 +335,7 @@ intel_soc_dts_iosf_init(enum intel_soc_d
+ 		sensors->soc_dts[i].sensors = sensors;
+ 
+ 		set_trip(&trips[i][0], THERMAL_TRIP_PASSIVE,
+-			 THERMAL_TRIP_FLAG_RW_TEMP, 0);
++			 THERMAL_TRIP_FLAG_RW_TEMP, 0, 0);
+ 
+ 		ret = update_trip_temp(sensors, 0, 0);
+ 		if (ret)
+@@ -340,10 +343,10 @@ intel_soc_dts_iosf_init(enum intel_soc_d
+ 
+ 		if (critical_trip) {
+ 			temp = sensors->tj_max - crit_offset;
+-			set_trip(&trips[i][1], THERMAL_TRIP_CRITICAL, 0, temp);
++			set_trip(&trips[i][1], THERMAL_TRIP_CRITICAL, 0, temp, 1);
+ 		} else {
+ 			set_trip(&trips[i][1], THERMAL_TRIP_PASSIVE,
+-				 THERMAL_TRIP_FLAG_RW_TEMP, 0);
++				 THERMAL_TRIP_FLAG_RW_TEMP, 0, 1);
+ 			temp = 0;
+ 		}
+ 
+Index: linux-pm/drivers/thermal/intel/x86_pkg_temp_thermal.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/intel/x86_pkg_temp_thermal.c
++++ linux-pm/drivers/thermal/intel/x86_pkg_temp_thermal.c
+@@ -119,9 +119,11 @@ static int sys_get_curr_temp(struct ther
+ }
+ 
+ static int
+-sys_set_trip_temp(struct thermal_zone_device *tzd, int trip, int temp)
++sys_set_trip_temp(struct thermal_zone_device *tzd,
++		  const struct thermal_trip *trip, int temp)
+ {
+ 	struct zone_device *zonedev = thermal_zone_device_priv(tzd);
++	unsigned int trip_index = THERMAL_TRIP_PRIV_TO_INT(trip->priv);
+ 	u32 l, h, mask, shift, intr;
+ 	int tj_max, val, ret;
+ 
+@@ -132,7 +134,7 @@ sys_set_trip_temp(struct thermal_zone_de
+ 
+ 	val = (tj_max - temp)/1000;
+ 
+-	if (trip >= MAX_NUMBER_OF_TRIPS || val < 0 || val > 0x7f)
++	if (trip_index >= MAX_NUMBER_OF_TRIPS || val < 0 || val > 0x7f)
+ 		return -EINVAL;
+ 
+ 	ret = rdmsr_on_cpu(zonedev->cpu, MSR_IA32_PACKAGE_THERM_INTERRUPT,
+@@ -140,7 +142,7 @@ sys_set_trip_temp(struct thermal_zone_de
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	if (trip) {
++	if (trip_index) {
+ 		mask = THERM_MASK_THRESHOLD1;
+ 		shift = THERM_SHIFT_THRESHOLD1;
+ 		intr = THERM_INT_THRESHOLD1_ENABLE;
+@@ -296,6 +298,7 @@ static int pkg_temp_thermal_trips_init(i
+ 
+ 		trips[i].type = THERMAL_TRIP_PASSIVE;
+ 		trips[i].flags |= THERMAL_TRIP_FLAG_RW_TEMP;
++		trips[i].priv = THERMAL_INT_TO_TRIP_PRIV(i);
+ 
+ 		pr_debug("%s: cpu=%d, trip=%d, temp=%d\n",
+ 			 __func__, cpu, i, trips[i].temperature);
+Index: linux-pm/drivers/thermal/qcom/qcom-spmi-temp-alarm.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/qcom/qcom-spmi-temp-alarm.c
++++ linux-pm/drivers/thermal/qcom/qcom-spmi-temp-alarm.c
+@@ -261,17 +261,13 @@ skip:
+ 	return qpnp_tm_write(chip, QPNP_TM_REG_SHUTDOWN_CTRL1, reg);
+ }
+ 
+-static int qpnp_tm_set_trip_temp(struct thermal_zone_device *tz, int trip_id, int temp)
++static int qpnp_tm_set_trip_temp(struct thermal_zone_device *tz,
++				 const struct thermal_trip *trip, int temp)
+ {
+ 	struct qpnp_tm_chip *chip = thermal_zone_device_priv(tz);
+-	struct thermal_trip trip;
+ 	int ret;
+ 
+-	ret = __thermal_zone_get_trip(chip->tz_dev, trip_id, &trip);
+-	if (ret)
+-		return ret;
+-
+-	if (trip.type != THERMAL_TRIP_CRITICAL)
++	if (trip->type != THERMAL_TRIP_CRITICAL)
+ 		return 0;
+ 
+ 	mutex_lock(&chip->lock);
+Index: linux-pm/drivers/thermal/tegra/soctherm.c
+===================================================================
+--- linux-pm.orig/drivers/thermal/tegra/soctherm.c
++++ linux-pm/drivers/thermal/tegra/soctherm.c
+@@ -582,11 +582,11 @@ static int tsensor_group_thermtrip_get(s
+ 	return temp;
+ }
+ 
+-static int tegra_thermctl_set_trip_temp(struct thermal_zone_device *tz, int trip_id, int temp)
++static int tegra_thermctl_set_trip_temp(struct thermal_zone_device *tz,
++					const struct thermal_trip *trip, int temp)
+ {
+ 	struct tegra_thermctl_zone *zone = thermal_zone_device_priv(tz);
+ 	struct tegra_soctherm *ts = zone->ts;
+-	struct thermal_trip trip;
+ 	const struct tegra_tsensor_group *sg = zone->sg;
+ 	struct device *dev = zone->dev;
+ 	int ret;
+@@ -594,11 +594,7 @@ static int tegra_thermctl_set_trip_temp(
+ 	if (!tz)
+ 		return -EINVAL;
+ 
+-	ret = __thermal_zone_get_trip(tz, trip_id, &trip);
+-	if (ret)
+-		return ret;
+-
+-	if (trip.type == THERMAL_TRIP_CRITICAL) {
++	if (trip->type == THERMAL_TRIP_CRITICAL) {
+ 		/*
+ 		 * If thermtrips property is set in DT,
+ 		 * doesn't need to program critical type trip to HW,
+@@ -609,7 +605,7 @@ static int tegra_thermctl_set_trip_temp(
+ 		else
+ 			return 0;
+ 
+-	} else if (trip.type == THERMAL_TRIP_HOT) {
++	} else if (trip->type == THERMAL_TRIP_HOT) {
+ 		int i;
+ 
+ 		for (i = 0; i < THROTTLE_SIZE; i++) {
+@@ -620,7 +616,7 @@ static int tegra_thermctl_set_trip_temp(
+ 				continue;
+ 
+ 			cdev = ts->throt_cfgs[i].cdev;
+-			if (get_thermal_instance(tz, cdev, trip_id))
++			if (thermal_trip_is_bound_to_cdev(tz, trip, cdev))
+ 				stc = find_throttle_cfg_by_name(ts, cdev->type);
+ 			else
+ 				continue;
 
 
 
-
---000000000000fedfcf061c44b55e
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
-
-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
-2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
-Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
-ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
-zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
-sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
-BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
-N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
-p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCAKlUM4ImgXCxlmJ0BH
-tb7nTJmgVvMg5/EK83EFkVXnKjAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNDA3MDIxNDQxMzdaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAijGj2+2lkobAzOQh6mOKG/hUMQJ/ACLZkzTV
-mf6LYme44Wbo1FTbaipjKCjy0FRy9s1heTPBdp0LXnLIscG0gVdKjz1+ARNmTvVC3Vfv19ZVPzZE
-43Nbw/RJL8QaU3ApjN+FwJW+t4rHtd31NGco8nsnrkyk7oo8qTHyDZEtd+qBD6RKpP6+SysKumeT
-TcNqIJYd0LnEvjPuuUi4TEfK2Fum6ID8CLJ8mbJL+b6KRQhFFqfkgH6bZ1bin6+63vufh/jbqMn5
-jG2Uha+54U4CBAhPPyFRxbFf/RMZ8QI7bRYLJmOgikzhKGBCaYrQO48VnrKF4H25fdzEpoYLWzj3
-tw==
---000000000000fedfcf061c44b55e--
 
