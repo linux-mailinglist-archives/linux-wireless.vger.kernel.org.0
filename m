@@ -1,210 +1,143 @@
-Return-Path: <linux-wireless+bounces-9926-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9927-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42240926198
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 15:15:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DB1F9261B6
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 15:23:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 661E41C2179A
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 13:15:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5743E283423
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 13:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 766491E4BE;
-	Wed,  3 Jul 2024 13:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7A4179641;
+	Wed,  3 Jul 2024 13:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YkFaJ7U5"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jyvWpIyC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55CD177980
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Jul 2024 13:15:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5051428F8
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Jul 2024 13:23:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720012548; cv=none; b=HQIes8X2hjAJattjrUxzaNoGpCcKwGxHuosdb9yrzu1EpkytMv+TJKsy0yapQbuee4Fec9YtuIElLN0697I3eaxUXCoz1dg6L94VKi5wKTqlj7moSe4JuLHZS5J6DF7DJrGs/davNFdC9wPaipNrxb8OlhRjWizDnFwpmQe5zIg=
+	t=1720012999; cv=none; b=RMuMQiCjWP6GIKDlxv5ZLy2nau4dVmppa1UfGJ5y3Oarl2gRz42ndczVKQk1Nrv6KwfQpl5DJvBYhOBcmB+cTT7PqMWGNqkYhfr7mry88e5zVWbcCw2xqWScaUh+V+4unf6JFcbhD0STlbCtT0LWe7AT6pLMPmJzuss9B4aT4yQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720012548; c=relaxed/simple;
-	bh=3rkukZEEzuMV2pqevzlB9oFI4QEzriEBRwYqhEdpPUQ=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=Hkep9m3ShCt7hNdrFB7JTD5j2gR0qzhND2lI8Ub2rkW/hZWKs1D/yYqpycrSdAZyzZJhscNywdyvyr3+qwzWapsuAAGVYtePZlAg2fuSqcztME/AJYF3TWPt5DA24G6vQogui/Gst2o049Hmfdv+xuiiEbVj+qyUiW3eg9LVPL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YkFaJ7U5; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720012547; x=1751548547;
-  h=date:from:to:cc:subject:message-id;
-  bh=3rkukZEEzuMV2pqevzlB9oFI4QEzriEBRwYqhEdpPUQ=;
-  b=YkFaJ7U58/pQhqFHmIzPLlq+Ph0zhwak4JKP17wQQMz0/Q5Zs34wG5DC
-   XNH/XJOs0I/K1U3JT6HYVLu7DWLa/zHgGbVpdG3yxz5/oyhcHvCkkOa2H
-   yAfAAcQo5toSMZ/Xw7HBDYSt3gnYH9Aa3SdhD8SnUBkjK/rRkJKMgIh9u
-   Th8hzo/PWTHnkpYS5gyR25wj/CLzmnIRKt1zBzyfkpAzQ2g6rEwOeo+YV
-   0iCP7gBmXvHYohXHdXfJFlTt85cgDNnmeiEY92tUIefxHLXrmVu0vRQRL
-   efAcdnNt4FQ5PmhxbI4ZNPDlNitD4LmJfauaIJsmY6iQD7JZfUS8gxlor
-   A==;
-X-CSE-ConnectionGUID: fmaSDvE3ReqO8OW/g/YoqA==
-X-CSE-MsgGUID: RLNIPpC+SpmqT4b2TglRGQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="20143541"
-X-IronPort-AV: E=Sophos;i="6.09,182,1716274800"; 
-   d="scan'208";a="20143541"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2024 06:15:34 -0700
-X-CSE-ConnectionGUID: F5I7448gTzeIO93VunRdEg==
-X-CSE-MsgGUID: VWzgHcuyRVm2kFlPh1Z8AA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,182,1716274800"; 
-   d="scan'208";a="51209026"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 03 Jul 2024 06:15:34 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sOzpa-000Pjl-26;
-	Wed, 03 Jul 2024 13:15:30 +0000
-Date: Wed, 03 Jul 2024 21:15:22 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
- linux-wireless@vger.kernel.org
-Subject: [wireless:pending] BUILD SUCCESS
- 6e926a73a750e4ffd31abf29d9352fd4d98f220b
-Message-ID: <202407032120.IUxWE9ng-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1720012999; c=relaxed/simple;
+	bh=XkZ36YVkSCYdsa2PZ9dd8KTKzlgKsyNmSOvBW6fXlRM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FGvI4yRSyzhDi3Jfi8lE3rWjNlGcgxzmDCgPlBCW5XJ/aTKiFSBUBtF84ZyJ+F4OKJyqc/vxRod3opfvM6CRoXP+NLtzjq1cvupGD8dIHQ6La0b3GdnVib23FODuBWyRhx0Q2rRiH3QQ+e5k3Hi1deOnKd+JXa/WXeYiVtiFyVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jyvWpIyC; arc=none smtp.client-ip=209.85.161.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-5c47c41eb84so111240eaf.0
+        for <linux-wireless@vger.kernel.org>; Wed, 03 Jul 2024 06:23:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1720012997; x=1720617797; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=u5g2d7cGxt5LUhs3Ln8D9odUoDF0lLXQxROOlmlLiFA=;
+        b=jyvWpIyCy7LZmxcm0VigiCYObo4vP6KKgFIJP14jAx1STjvEpVVu4EFbjizRTrZhiq
+         36s9BNUCMBkaJYKiUDa/hh7nTOxl5ncSqMctElJBGjoCf78Gii6n2utEBESmrAy9uyYa
+         uWHVDJ/XlpZImKDq6cn1lJeEooCvpC4pQcj8K6YbwK72/vAdeHaJWd5LGYaSXavaeipd
+         hroDJvYzU15B+K84zHRMvzQ0iVUJb7PohuX/q66qI1gJ6O0aAbdnAcKQDeoH50mC7Cce
+         NGdgXeEvKsPgDQwLeHUIXOY3zpNhKeR1k4/BGbkwYJYOKHMlE6DNILdRJVNUXXxz7nh+
+         P8Eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720012997; x=1720617797;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=u5g2d7cGxt5LUhs3Ln8D9odUoDF0lLXQxROOlmlLiFA=;
+        b=lgU5RXTPsKOq4KjjGzecqxMX+VtbMAckuWoMxkqAxHcZ1rJ3juH4PWKn7KuT/5OshN
+         nfeqBGcB7HJ2jQLuSJ8NBBTAqRrDleNoxcayO49xeAFNtyP/Fef5PVAoGDWmjvO+f8Db
+         LQZ+sn5IoHwfYAIdK2rqJ4uBilFXBhxyB1tn660D3G8GrlEVSnjFefnzDUlcevKaOYh5
+         OYF6LzbNnMMs+/3yQM8zBM8OGsMscdvOAOzYGgRyRGxQmESVdrLH+yBZ89O9b9wEJIG2
+         e83FK+Ail4RmaISjgyc7sIBCarjSk0uiH0Qp+MyJurXBn1/qgWnBhl/auoIXknHwXzl3
+         X6yA==
+X-Forwarded-Encrypted: i=1; AJvYcCUyyB+w0kNwHMBR/rEBJluEQNbbDTanPsGbO7QW7LbuVfylZnHNiwXXqqfVue1ZLU/r5X0M+CjmfKzt0U4U4g0cY+9Vu2WXrJhdgHrgY+w=
+X-Gm-Message-State: AOJu0Yx/yoCZ6LafjrFJ1FB+go1KaiF0s5oCaWbi9xWzKl+bOdvkN15M
+	UnT1ocQqw/NfFA5a6YFrh6+lOZeCJMgyllVIaOqbvTJHtCfSoyxx20vhckKYlfs=
+X-Google-Smtp-Source: AGHT+IGplWSy9vOCLJA/qnz+gTqhZnkdj7xlESE8azCcFRv+VtomZcElQ/dKFnO84Qfq84NOw3z4Hw==
+X-Received: by 2002:a4a:4884:0:b0:5c4:fc6:c7f5 with SMTP id 006d021491bc7-5c4390512d7mr11084414eaf.5.1720012996656;
+        Wed, 03 Jul 2024 06:23:16 -0700 (PDT)
+Received: from localhost ([2603:8080:b800:f700:a6f1:b7be:4c8c:bf62])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5c46ae49decsm327881eaf.24.2024.07.03.06.23.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Jul 2024 06:23:16 -0700 (PDT)
+Date: Wed, 3 Jul 2024 15:23:14 +0200
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Arend Van Spriel <arend.vanspriel@broadcom.com>
+Cc: Su Hui <suhui@nfschina.com>, Kalle Valo <kvalo@kernel.org>,
+	johannes.berg@intel.com, kees@kernel.org, a@bayrepo.ru,
+	marcan@marcan.st, quic_alokad@quicinc.com, zyytlz.wz@163.com,
+	petr.tesarik.ext@huawei.com, duoming@zju.edu.cn,
+	colin.i.king@gmail.com, frankyl@broadcom.com, meuleman@broadcom.com,
+	phaber@broadcom.com, linville@tuxdriver.com,
+	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH wireless 1/9] wifi: cfg80211: avoid garbage value of
+ 'io_type' in brcmf_cfg80211_attach()
+Message-ID: <3f7bcda7-092f-4d94-80c7-2015e860fbe2@suswa.mountain>
+References: <36cef2a8-10a3-928a-d962-3599333d9ac8@nfschina.com>
+ <19076e6bec0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <19076e6bec0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git pending
-branch HEAD: 6e926a73a750e4ffd31abf29d9352fd4d98f220b  wifi: wilc1000: fix ies_len type in connect path
+On Wed, Jul 03, 2024 at 06:42:32AM +0200, Arend Van Spriel wrote:
+> On July 3, 2024 3:42:18 AM Su Hui <suhui@nfschina.com> wrote:
+> 
+> > On 2024/7/2 23:39, Arend Van Spriel wrote:
+> > > On July 2, 2024 5:29:27 PM Kalle Valo <kvalo@kernel.org> wrote:
+> > > 
+> > > > Arend Van Spriel <arend.vanspriel@broadcom.com> writes:
+> > > > 
+> > > > > On July 2, 2024 3:57:27 PM Dan Carpenter <dan.carpenter@linaro.org>
+> > > > > wrote:
+> > > > > 
+> > > > > > On Tue, Jul 02, 2024 at 08:24:44PM +0800, Su Hui wrote:
+> > > > > > > brcmf_fil_cmd_int_get() reads the value of 'io_type' and passes it to
+> > > > > > > brcmf_fil_cmd_data_get(). Initialize 'io_type' to avoid garbage
+> > > > > > > value.
+> > > > > > 
+> > > > > > Since you're going to be resending anyway, please delete the space
+> > > > > > char
+> > > > > > from the start of the line.
+> > > > > > 
+> > > > > > It's weird that brcmf_fil_cmd_data_get() uses the uninitialized data.
+> > > > > > It looks like it just goes to great lengths to preserve the original
+> > > > > > data in io_type...  So it likely is harmless enough but still a
+> > > > > > strange
+> > > > > > and complicated way write a no-op.
+> > > > > 
+> > > > > Not sure if it helps, but I tried to explain the reason in response to
+> > > > > patch 0 (cover letter).
+> > > > 
+> > > > Would it make more sense to have just one patch? It's the same issue
+> > > > anyway.
+> > > 
+> > > Yes, but I would solve it in brcmf_fil_* functions (fwil.[ch]).
+> > It seems you will send a new patch to solve this issue.
+> > And I guess there is no need for me to resend a v2 patchset or just one
+> > patch.
+> 
+> I am not entirely sure. If both gcc and clang would warn about using
+> uninitialized data I would be fine with these patches rolled into one.
 
-elapsed time: 1558m
+We should definitely fix this, it's just a matter of how.  UBSan will
+also detect these at run time.  And honestly, it's not clear to me where
+these eventually do get copied to?  Is it to the firmware?  In that case
+it might be that we'd treat these as a CVE.
 
-configs tested: 116
-configs skipped: 3
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                             allnoconfig   gcc-13.2.0
-alpha                            allyesconfig   gcc-13.2.0
-alpha                               defconfig   gcc-13.2.0
-arc                              allmodconfig   gcc-13.2.0
-arc                               allnoconfig   gcc-13.2.0
-arc                              allyesconfig   gcc-13.2.0
-arc                                 defconfig   gcc-13.2.0
-arc                         haps_hs_defconfig   gcc-13.2.0
-arm                              allmodconfig   gcc-13.2.0
-arm                               allnoconfig   gcc-13.2.0
-arm                              allyesconfig   gcc-13.2.0
-arm                          collie_defconfig   gcc-13.2.0
-arm                                 defconfig   gcc-13.2.0
-arm                          gemini_defconfig   gcc-13.2.0
-arm                           imxrt_defconfig   gcc-13.2.0
-arm                       netwinder_defconfig   gcc-13.2.0
-arm                        spear3xx_defconfig   gcc-13.2.0
-arm                         wpcm450_defconfig   gcc-13.2.0
-arm64                            allmodconfig   gcc-13.2.0
-arm64                             allnoconfig   gcc-13.2.0
-arm64                               defconfig   gcc-13.2.0
-csky                              allnoconfig   gcc-13.2.0
-csky                                defconfig   gcc-13.2.0
-i386                             allmodconfig   clang-18
-i386                              allnoconfig   clang-18
-i386                             allyesconfig   clang-18
-i386         buildonly-randconfig-001-20240703   clang-18
-i386         buildonly-randconfig-002-20240703   clang-18
-i386         buildonly-randconfig-002-20240703   gcc-13
-i386         buildonly-randconfig-003-20240703   clang-18
-i386         buildonly-randconfig-003-20240703   gcc-13
-i386         buildonly-randconfig-004-20240703   clang-18
-i386         buildonly-randconfig-004-20240703   gcc-13
-i386         buildonly-randconfig-005-20240703   clang-18
-i386         buildonly-randconfig-006-20240703   clang-18
-i386         buildonly-randconfig-006-20240703   gcc-13
-i386                                defconfig   clang-18
-i386                  randconfig-001-20240703   clang-18
-i386                  randconfig-001-20240703   gcc-13
-i386                  randconfig-002-20240703   clang-18
-i386                  randconfig-003-20240703   clang-18
-i386                  randconfig-003-20240703   gcc-13
-i386                  randconfig-004-20240703   clang-18
-i386                  randconfig-004-20240703   gcc-11
-i386                  randconfig-005-20240703   clang-18
-i386                  randconfig-006-20240703   clang-18
-i386                  randconfig-006-20240703   gcc-7
-i386                  randconfig-011-20240703   clang-18
-i386                  randconfig-011-20240703   gcc-13
-i386                  randconfig-012-20240703   clang-18
-i386                  randconfig-012-20240703   gcc-13
-i386                  randconfig-013-20240703   clang-18
-i386                  randconfig-013-20240703   gcc-13
-i386                  randconfig-014-20240703   clang-18
-i386                  randconfig-014-20240703   gcc-13
-i386                  randconfig-015-20240703   clang-18
-i386                  randconfig-015-20240703   gcc-13
-i386                  randconfig-016-20240703   clang-18
-loongarch                        allmodconfig   gcc-13.2.0
-loongarch                         allnoconfig   gcc-13.2.0
-loongarch                           defconfig   gcc-13.2.0
-m68k                             allmodconfig   gcc-13.2.0
-m68k                              allnoconfig   gcc-13.2.0
-m68k                             allyesconfig   gcc-13.2.0
-m68k                                defconfig   gcc-13.2.0
-microblaze                       allmodconfig   gcc-13.2.0
-microblaze                        allnoconfig   gcc-13.2.0
-microblaze                       allyesconfig   gcc-13.2.0
-microblaze                          defconfig   gcc-13.2.0
-mips                              allnoconfig   gcc-13.2.0
-nios2                             allnoconfig   gcc-13.2.0
-nios2                               defconfig   gcc-13.2.0
-openrisc                          allnoconfig   gcc-13.2.0
-openrisc                         allyesconfig   gcc-13.2.0
-openrisc                            defconfig   gcc-13.2.0
-parisc                           allmodconfig   gcc-13.2.0
-parisc                            allnoconfig   gcc-13.2.0
-parisc                           allyesconfig   gcc-13.2.0
-parisc                              defconfig   gcc-13.2.0
-parisc64                            defconfig   gcc-13.2.0
-powerpc                          allmodconfig   gcc-13.2.0
-powerpc                           allnoconfig   gcc-13.2.0
-powerpc                          allyesconfig   gcc-13.2.0
-powerpc                   motionpro_defconfig   gcc-13.2.0
-powerpc                 mpc8315_rdb_defconfig   gcc-13.2.0
-riscv                            allmodconfig   gcc-13.2.0
-riscv                             allnoconfig   gcc-13.2.0
-riscv                            allyesconfig   gcc-13.2.0
-riscv                               defconfig   gcc-13.2.0
-s390                             allmodconfig   clang-19
-s390                              allnoconfig   clang-19
-s390                              allnoconfig   gcc-13.2.0
-s390                             allyesconfig   clang-19
-s390                                defconfig   gcc-13.2.0
-sh                                allnoconfig   gcc-13.2.0
-sh                         ap325rxa_defconfig   gcc-13.2.0
-sh                                  defconfig   gcc-13.2.0
-sh                          polaris_defconfig   gcc-13.2.0
-sh                   rts7751r2dplus_defconfig   gcc-13.2.0
-sh                              ul2_defconfig   gcc-13.2.0
-sparc                       sparc64_defconfig   gcc-13.2.0
-sparc64                             defconfig   gcc-13.2.0
-um                               allmodconfig   gcc-13.2.0
-um                                allnoconfig   clang-17
-um                                allnoconfig   gcc-13.2.0
-um                               allyesconfig   gcc-13.2.0
-um                                  defconfig   gcc-13.2.0
-um                             i386_defconfig   gcc-13.2.0
-um                           x86_64_defconfig   gcc-13.2.0
-x86_64                           alldefconfig   gcc-13.2.0
-x86_64                            allnoconfig   clang-18
-x86_64                           allyesconfig   clang-18
-x86_64                              defconfig   clang-18
-x86_64                          rhel-8.3-rust   clang-18
-xtensa                            allnoconfig   gcc-13.2.0
-xtensa                       common_defconfig   gcc-13.2.0
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+regards,
+dan carpenter
 
