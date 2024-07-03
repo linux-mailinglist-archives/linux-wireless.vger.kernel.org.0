@@ -1,58 +1,58 @@
-Return-Path: <linux-wireless+bounces-9966-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9967-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 650A9926AA9
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 23:45:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44CD4926AAC
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 23:45:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6FAB1F23614
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 21:45:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68D941C2303D
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 21:45:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6037198853;
-	Wed,  3 Jul 2024 21:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D37EB1991B8;
+	Wed,  3 Jul 2024 21:43:48 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D34198836
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Jul 2024 21:43:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC83194A54
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Jul 2024 21:43:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720043026; cv=none; b=BVAa2FRFPeO2FVcz6PF0kg+qOtUwCNIVFFtAV6/todk5TbP69AJfxiov4ka3inGJw4GZ2F7bmyOQg6yuu+p/yTc17pqtsnAieO1fEcX/U3bxQZMdJFUtH2DfiyKoXuqLmKUENhgmbZuiXDZ9agjDgTZOYilu/T2znM6Rv645SMU=
+	t=1720043028; cv=none; b=K7+Y4zTc6455Nj9zPEaqx27rVWTFxLVYT2395fcMMHlQZgcGoLS3YSNN4ClsYHeKpAq+PYpCBFB+VoEmbr9YNRjAJHYOCB2OnItDm35aBM4IAZIj2hSpCFjnS8MN+5MdJvrkidmyWhQH06AB3QM90rzhc1rTX6zX439gbHEHMdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720043026; c=relaxed/simple;
-	bh=BsRb2k1kWlxFWNjynAEmcF0M/HqeBIkEDC/5yz/MlMo=;
+	s=arc-20240116; t=1720043028; c=relaxed/simple;
+	bh=M5H6EPOyjRb4OpuF/XTy2Z6gvWVoYnoJc5CSv4U2y3Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Sq/8433HQcQ/jq9QH800HhuBNf8MeSKMP+NJpd4p8QFCaCfgX2Gm27VlEjcMV+XBgSd2+4YcTdWZ9RSX3NpGafjVkK9H5dynLyHG5k5z6HL9ynaWQvstNd2/2AdQLx/ChNW57LX4HjshYopHflE0cK7d6K4/EsWEEx037iRwCKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.54
+	 MIME-Version; b=QU7yqzfoljFDb2W7PBAMdKXbqHV1bh+81ky6eK83v6EkoeIBVU6omOgJ6Wy5VzHShPH9kze6agqnXoQSmQxtZAJpSSRh5zr5zBajYqUoR6GRnWw57jPsWMJAyWv2xx5X8KmxXbZpnzklDi304WdP9yWjGuguktiQH6AFC0JKv7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-254c411d816so3772fac.1
-        for <linux-wireless@vger.kernel.org>; Wed, 03 Jul 2024 14:43:44 -0700 (PDT)
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-700cee3c5f6so115696a34.1
+        for <linux-wireless@vger.kernel.org>; Wed, 03 Jul 2024 14:43:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720043024; x=1720647824;
+        d=1e100.net; s=20230601; t=1720043026; x=1720647826;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=B6qob4+aEz9AnxDvyJPADamvZqFlBJwBhBj073zgKUw=;
-        b=Iwp63aoDZtKvcdJEZnj2GAR53OvSQCyLktmg9+RFZ+hc0kR8WTOWtpwYd4XJnfeCMq
-         RwjLoWRPyNPyOq6eVhOk2rNeh8SlhCjjgbPj0yVul+EyeC80f+hT3cdC8Rfa1gGSG1Pt
-         cNYpsSovi0BDdirBE2Mp5CGg3duwhh/4tU4NS1AVwqfREpKoz+te9hB1XkNiqfrAb5Py
-         u5SDnRdDD21xo4Sy/Pb9OHpNn4DG58CkCtslaf5Cwg+5lweVTGc6uLljovjH2DLTpAuO
-         qdK6Xp4KWof+ECXu1oimuP7MSVEKXR92PNl0HiYhvrIrMCcS5Rs2k6VUeSSkhk8sEXob
-         trzw==
-X-Forwarded-Encrypted: i=1; AJvYcCW6ay6peeJdiR6FhhfwGWd5h1xQS2afsKP4FPMwrc2U/vlHnv32R6RQSpbiOTw7OrwGdTQoZsFxsNj5l7b4iiI0Lz0fDujA+vyOIH/j5y8=
-X-Gm-Message-State: AOJu0YxrwAs1AoiziScmLn9v+CqRv1f52JbmWtkHI8dCVhPkMt1YLi2d
-	166Oyop2l4EX45/rVTTVh8eIbU/q6EWTRXbzSSk4YtxVkY40/OCy
-X-Google-Smtp-Source: AGHT+IFRqrqB0oJS3To8CcpUlTALffwBa/HcXjrOdTq70HVTagouqm9arBdBlmJYNrdzs27Y8+RfEA==
-X-Received: by 2002:a05:6830:68cd:b0:700:d697:6ca7 with SMTP id 46e09a7af769-70207554355mr12585737a34.0.1720043022162;
-        Wed, 03 Jul 2024 14:43:42 -0700 (PDT)
+        bh=5Zm2u2GDuUR87ImOZGiIFmMyIIv/8lErTyscfyIFe+M=;
+        b=sJ6QkhYscsYIGKiT7xQDACaAAyWr9bAEYreYRlx2dlgsVBDwr4i6mxibiXXEoGDH86
+         XR9BJUZShiM154rVzIhqShGjRP6zhfyEMlZJXm8z9fCBtO6vO8w81F4S7w/NPQfNxuHx
+         R7rUNnvnaJygPFwft+K8lDkNQT4XdiB41TjHjr7rJoIIMOyEj5d9pr1ErOhQaD05S28w
+         JGBQKPpQLdjq+2i9Wkh7qgL+GdFsWpGUFnPi8/a6Xq8vfMh025hIINo9w63VIdcF34e7
+         gVPDqt2/tg0mHTi2CYVV0qEtqw1oOw9YHopoy/0iCuy47THkLh+Yi6KO5j8ZQEJWW9ne
+         Z7yw==
+X-Forwarded-Encrypted: i=1; AJvYcCXNFP9NU0Z6fi25jNQ44cq3FaWZbuCw8R3RUKmvmnaeTAXYp68aVwYjxjTyZEzjskItkfID+gCl7KjoF3NGGEetwlCD9cUaUT35UfvbPSo=
+X-Gm-Message-State: AOJu0Yz/2xcwDSop5sD2PuxfAIInOIhuwjbwKuWojuWBejLSVpYRYM2t
+	icPmfaNqzsJdLyku2qi67osy4iea4Pwt56B7O/4TbVHK1Oo3m1eS7F365oGH
+X-Google-Smtp-Source: AGHT+IHOSLauwODbtAedsub0S622gbphfmI+pOTqu9GNMm9cAI1Tx7iKjETXO6xlPoYg3paWmDA2LQ==
+X-Received: by 2002:a9d:65c5:0:b0:700:ca13:30bc with SMTP id 46e09a7af769-70207763b58mr13703603a34.2.1720043026332;
+        Wed, 03 Jul 2024 14:43:46 -0700 (PDT)
 Received: from sean-ThinkPad-T450s.lan ([207.191.35.252])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-701f7b20953sm2111417a34.54.2024.07.03.14.43.39
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-701f7b20953sm2111417a34.54.2024.07.03.14.43.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jul 2024 14:43:39 -0700 (PDT)
+        Wed, 03 Jul 2024 14:43:44 -0700 (PDT)
 From: sean.wang@kernel.org
 To: nbd@nbd.name,
 	lorenzo.bianconi@redhat.com
@@ -61,9 +61,9 @@ Cc: sean.wang@mediatek.com,
 	mingyen.hsieh@mediatek.com,
 	linux-wireless@vger.kernel.org,
 	linux-mediatek@lists.infradead.org
-Subject: [PATCH 26/29] wifi: mt76: mt7925: update mt7925_mcu_sta_update for MLO
-Date: Wed,  3 Jul 2024 14:42:31 -0700
-Message-Id: <8b39975133d1c41ff724669562bd340eb2894617.1720042294.git.sean.wang@kernel.org>
+Subject: [PATCH 27/29] wifi: mt76: mt7925: add mt7925_mcu_sta_eht_mld_tlv for MLO
+Date: Wed,  3 Jul 2024 14:42:32 -0700
+Message-Id: <a561004e6894a7b68166c25c0bf4b6ecf48fc2b7.1720042294.git.sean.wang@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1720042294.git.sean.wang@kernel.org>
 References: <cover.1720042294.git.sean.wang@kernel.org>
@@ -77,7 +77,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Sean Wang <sean.wang@mediatek.com>
 
-update mt7925_mcu_sta_update for the MLO-enabled firmware.
+add mt7925_mcu_sta_eht_mld_tlv for the MLO-enabled firmware.
 
 Co-developed-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
@@ -85,142 +85,106 @@ Co-developed-by: Deren Wu <deren.wu@mediatek.com>
 Signed-off-by: Deren Wu <deren.wu@mediatek.com>
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  9 +++
- .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 65 ++++++++++++++++++-
- .../net/wireless/mediatek/mt76/mt7925/mcu.h   |  3 +-
- 3 files changed, 75 insertions(+), 2 deletions(-)
+ .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  1 +
+ .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 42 ++++++++++++++++++-
+ .../net/wireless/mediatek/mt76/mt7925/mcu.h   | 11 +++++
+ 3 files changed, 53 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index e636b033b87e..9329c959674f 100644
+index 9329c959674f..d6882c9fd6bc 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -545,6 +545,13 @@ struct sta_rec_muru {
- 	} mimo_ul;
- } __packed;
- 
-+struct sta_rec_remove {
-+	__le16 tag;
-+	__le16 len;
-+	u8 action;
-+	u8 pad[3];
-+} __packed;
-+
- struct sta_phy {
- 	u8 type;
- 	u8 flag;
-@@ -814,6 +821,8 @@ enum {
+@@ -820,6 +820,7 @@ enum {
+ 	STA_REC_HE_6G = 0x17,
  	STA_REC_HE_V2 = 0x19,
  	STA_REC_MLD = 0x20,
++	STA_REC_EHT_MLD = 0x21,
  	STA_REC_EHT = 0x22,
-+	STA_REC_MLD_OFF = 0x23,
-+	STA_REC_REMOVE = 0x25,
- 	STA_REC_PN_INFO = 0x26,
- 	STA_REC_KEY_V3 = 0x27,
- 	STA_REC_HDRT = 0x28,
+ 	STA_REC_MLD_OFF = 0x23,
+ 	STA_REC_REMOVE = 0x25,
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 218efe543dbb..dcb8c506543b 100644
+index dcb8c506543b..36ddc64ed7d6 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -1805,6 +1805,63 @@ mt7925_mcu_sta_cmd(struct mt76_phy *phy,
- 	return mt76_mcu_skb_send_msg(dev, skb, info->cmd, true);
+@@ -1731,6 +1731,42 @@ mt7925_mcu_sta_rate_ctrl_tlv(struct sk_buff *skb,
+ 		       HT_MCS_MASK_NUM);
  }
  
 +static void
-+mt7925_mcu_sta_remove_tlv(struct sk_buff *skb)
++mt7925_mcu_sta_eht_mld_tlv(struct sk_buff *skb,
++			   struct ieee80211_vif *vif, struct ieee80211_sta *sta)
 +{
-+	struct sta_rec_remove *rem;
++	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
++	struct wiphy *wiphy = mvif->phy->mt76->hw->wiphy;
++	const struct wiphy_iftype_ext_capab *ext_capa;
++	struct sta_rec_eht_mld *eht_mld;
 +	struct tlv *tlv;
++	u16 eml_cap;
 +
-+	tlv = mt76_connac_mcu_add_tlv(skb, 0x25, sizeof(*rem));
-+	rem = (struct sta_rec_remove *)tlv;
-+	rem->action = 0;
++	tlv = mt76_connac_mcu_add_tlv(skb, STA_REC_EHT_MLD, sizeof(*eht_mld));
++	eht_mld = (struct sta_rec_eht_mld *)tlv;
++	eht_mld->mld_type = 0xff;
++
++	if (!ieee80211_vif_is_mld(vif))
++		return;
++
++	ext_capa = cfg80211_get_iftype_ext_capa(wiphy,
++						ieee80211_vif_type_p2p(vif));
++	if (!ext_capa)
++		return;
++
++	eml_cap = (vif->cfg.eml_cap & (IEEE80211_EML_CAP_EMLSR_SUPP |
++				       IEEE80211_EML_CAP_TRANSITION_TIMEOUT)) |
++		  (ext_capa->eml_capabilities & (IEEE80211_EML_CAP_EMLSR_PADDING_DELAY |
++						IEEE80211_EML_CAP_EMLSR_TRANSITION_DELAY));
++
++	if (eml_cap & IEEE80211_EML_CAP_EMLSR_SUPP) {
++		eht_mld->eml_cap[0] = u16_get_bits(eml_cap, GENMASK(7, 0));
++		eht_mld->eml_cap[1] = u16_get_bits(eml_cap, GENMASK(15, 8));
++	} else {
++		eht_mld->str_cap[0] = BIT(1);
++	}
 +}
 +
-+static int
-+mt7925_mcu_mlo_sta_cmd(struct mt76_phy *phy,
-+		       struct mt76_sta_cmd_info *info)
-+{
-+	struct mt76_vif *mvif = (struct mt76_vif *)info->vif->drv_priv;
-+	struct mt76_dev *dev = phy->dev;
-+	struct sk_buff *skb;
+ static void
+ mt7925_mcu_sta_mld_tlv(struct sk_buff *skb,
+ 		       struct ieee80211_vif *vif, struct ieee80211_sta *sta)
+@@ -1848,8 +1884,12 @@ mt7925_mcu_mlo_sta_cmd(struct mt76_phy *phy,
+ 		mt7925_mcu_sta_state_v2_tlv(phy, skb, info->link_sta,
+ 					    info->vif, info->rcpi,
+ 					    info->state);
+-		if (info->state != MT76_STA_INFO_STATE_NONE)
 +
-+	skb = __mt76_connac_mcu_alloc_sta_req(dev, mvif, info->wcid,
-+					      MT7925_STA_UPDATE_MAX_SIZE);
-+	if (IS_ERR(skb))
-+		return PTR_ERR(skb);
++		if (info->state != MT76_STA_INFO_STATE_NONE) {
+ 			mt7925_mcu_sta_mld_tlv(skb, info->vif, info->link_sta->sta);
++			mt7925_mcu_sta_eht_mld_tlv(skb, info->vif, info->link_sta->sta);
++		}
 +
-+	if (info->enable)
-+		mt76_connac_mcu_sta_basic_tlv(dev, skb, info->vif,
-+					      info->link_sta,
-+					      info->enable, info->newly);
-+
-+	if (info->enable && info->link_sta) {
-+		mt7925_mcu_sta_phy_tlv(skb, info->vif, info->link_sta);
-+		mt7925_mcu_sta_ht_tlv(skb, info->link_sta);
-+		mt7925_mcu_sta_vht_tlv(skb, info->link_sta);
-+		mt76_connac_mcu_sta_uapsd(skb, info->vif, info->link_sta->sta);
-+		mt7925_mcu_sta_amsdu_tlv(skb, info->vif, info->link_sta);
-+		mt7925_mcu_sta_he_tlv(skb, info->link_sta);
-+		mt7925_mcu_sta_he_6g_tlv(skb, info->link_sta);
-+		mt7925_mcu_sta_eht_tlv(skb, info->link_sta);
-+		mt7925_mcu_sta_rate_ctrl_tlv(skb, info->vif,
-+					     info->link_sta);
-+		mt7925_mcu_sta_state_v2_tlv(phy, skb, info->link_sta,
-+					    info->vif, info->rcpi,
-+					    info->state);
-+		if (info->state != MT76_STA_INFO_STATE_NONE)
-+			mt7925_mcu_sta_mld_tlv(skb, info->vif, info->link_sta->sta);
-+		mt7925_mcu_sta_hdr_trans_tlv(skb, info->vif, info->link_sta);
-+	}
-+
-+	if (!info->enable) {
-+		mt7925_mcu_sta_remove_tlv(skb);
-+		mt76_connac_mcu_add_tlv(skb, STA_REC_MLD_OFF,
-+					sizeof(struct tlv));
-+	}
-+
-+	return mt76_mcu_skb_send_msg(dev, skb, info->cmd, true);
-+}
-+
- int mt7925_mcu_sta_update(struct mt792x_dev *dev,
- 			  struct ieee80211_link_sta *link_sta,
- 			  struct ieee80211_vif *vif, bool enable,
-@@ -1823,6 +1880,7 @@ int mt7925_mcu_sta_update(struct mt792x_dev *dev,
- 	};
- 	struct mt792x_sta *msta;
- 	struct mt792x_link_sta *mlink;
-+	int err;
+ 		mt7925_mcu_sta_hdr_trans_tlv(skb, info->vif, info->link_sta);
+ 	}
  
- 	if (link_sta) {
- 		msta = (struct mt792x_sta *)link_sta->sta->drv_priv;
-@@ -1831,7 +1889,12 @@ int mt7925_mcu_sta_update(struct mt792x_dev *dev,
- 	info.wcid = link_sta ? &mlink->wcid : &mvif->sta.deflink.wcid;
- 	info.newly = link_sta ? state != MT76_STA_INFO_STATE_ASSOC : true;
- 
--	return mt7925_mcu_sta_cmd(&dev->mphy, &info);
-+	if (ieee80211_vif_is_mld(vif))
-+		err = mt7925_mcu_mlo_sta_cmd(&dev->mphy, &info);
-+	else
-+		err = mt7925_mcu_sta_cmd(&dev->mphy, &info);
-+
-+	return err;
- }
- 
- int mt7925_mcu_set_beacon_filter(struct mt792x_dev *dev,
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
-index 545f6b2d524c..8a0196699230 100644
+index 8a0196699230..5703176056db 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
-@@ -492,7 +492,8 @@ struct bss_rlm_tlv {
- 					 sizeof(struct sta_rec_eht) +		\
- 					 sizeof(struct sta_rec_hdr_trans) +	\
- 					 sizeof(struct sta_rec_mld) +		\
--					 sizeof(struct tlv))
-+					 sizeof(struct tlv) * 2 +		\
-+					 sizeof(struct sta_rec_remove))
+@@ -443,6 +443,17 @@ struct sta_rec_mld {
+ 	} __packed link[2];
+ } __packed;
  
- #define MT7925_BSS_UPDATE_MAX_SIZE	(sizeof(struct bss_req_hdr) +		\
- 					 sizeof(struct mt76_connac_bss_basic_tlv) +	\
++struct sta_rec_eht_mld {
++	__le16 tag;
++	__le16 len;
++	u8 nsep;
++	u8 mld_type;
++	u8 __rsv1[1];
++	u8 str_cap[3];
++	u8 eml_cap[3];
++	u8 __rsv2[3];
++} __packed;
++
+ struct bss_ifs_time_tlv {
+ 	__le16 tag;
+ 	__le16 len;
 -- 
 2.25.1
 
