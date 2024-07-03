@@ -1,63 +1,79 @@
-Return-Path: <linux-wireless+bounces-9936-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9937-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C275926669
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 18:51:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFA4C9267F3
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 20:16:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC788285726
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 16:51:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 756D91F211D4
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 18:16:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 654F2181BB2;
-	Wed,  3 Jul 2024 16:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E586218411C;
+	Wed,  3 Jul 2024 18:16:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="p3ZQZlo7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kANRCXyE"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B7D17E907
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Jul 2024 16:51:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB9E185093
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Jul 2024 18:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720025502; cv=none; b=pswjatbXrcKPzu6mbZU0k9O5ljJh4WLJyMM9pT2dRCiANcsaB3cs4ZTKD/075iknelehRWjrmxuyPPOFT1ynJQhxIvWAyN7oanKKwP+TCtAwjbsmHR129IhMjdM3tCgvlUhYMw1n1H1VUAmK7c0xynOBs8VFSmd4GLhV13OZ8co=
+	t=1720030583; cv=none; b=MXITTh2XjarS3RiLSbkOcU+Ba7LhQVqfFxZXkqiPY4tXLcNfP13aBnJjRqB1CnvgL+PpjLhXBo6+5UUZSFRkJKzxx38+R0Pj0Eb8uXKK1tetj2oLZH26zlxrujxWbTlYOC6r5P/hkZlspvZnvb61PzrUaJ+rqVthTtp/T3IsF8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720025502; c=relaxed/simple;
-	bh=9t2452u4aBFp/I0cxbu2wbYWVvFKy2t5Z7W5gdLHQa0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=kgZduY9TuqeiL5uQXqXV1+qekaEpPhYsGKdJkSWXoUcyOOrh9ykD3nsx/1arXslNKLz140QUrnTGx199CxdEKbBkmUrg9Ym9B00xpnhobYS4FLqXNyBdFCkDWJ3Qf7d1ZDiQde/mNyxubySXFo+87i6tpie1WjZJKWOHpFY4V7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=p3ZQZlo7; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 463DmPBu026771;
-	Wed, 3 Jul 2024 16:51:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	dfgcYOl9NSX5jE6lGpVdlhV9P1xyek5lsQeRHbS0HEU=; b=p3ZQZlo7UKaGXd3V
-	uuCahDh4vSvJvy2ehL5fGLzBiz6h+IGy0SXNiNxyrMlpjD4D6SkcKCYx7474gpYk
-	HdJQQnYViX1k5yf/Daovmcfx5dJsYRW3IEYKLk0zPDJEw3DY/K/e7Eo4RE/8Pwx0
-	0aTPeFJIu0SwVpbL3lqteJPJMnGc6wEO1+EBEBZsJGGVrXVq3vCTURRpvhwF6+hD
-	eiB6VB2UCvHGgMDI63AZuXLV1fBtn019/TtR8VDIHOMigDCUDxsJZmLzQhz+wqGc
-	T+gcgP9PAw2p7oyiZ5NL2M7OpUYOiqOVHNaJgdlmwWz8UqviSqr3FZPhIl3Wccyp
-	wrCzUQ==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 404yjhsnh1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Jul 2024 16:51:36 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 463Gpa5P027516
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 3 Jul 2024 16:51:36 GMT
-Received: from [10.48.245.148] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 3 Jul 2024
- 09:51:35 -0700
-Message-ID: <fc6c5ab0-f5cc-480b-a812-5106f99087f0@quicinc.com>
-Date: Wed, 3 Jul 2024 09:51:35 -0700
+	s=arc-20240116; t=1720030583; c=relaxed/simple;
+	bh=INhR2fa0yGgxgtZltkVdypg5VG4+m2mcYKfjkCtHMC0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MFf59tzdgsSFANeZZ6tjF4nA68CVnEc9jeyqrBuaotRhIouwSEqqvkSy/gtcf8DEu2Mej3QK5c0MbvQ6YY45CqwM9NFr6vdzSpjJSwH0ENHK2psDnksQ34F1wxfYf4haIv3BqcOcCtjwtNaHcvQWfcJWDWuFsnNeVUAWCbbUpa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kANRCXyE; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-52e96d4986bso1239631e87.3
+        for <linux-wireless@vger.kernel.org>; Wed, 03 Jul 2024 11:16:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1720030580; x=1720635380; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=e40U7mcSWYdfEv2YmbTar69IueSBy3KQw/j2MAMkE0Q=;
+        b=kANRCXyEpOf3RlTmkqcpEsCKyXl2sQQVUPqi2jYvqHAJRoT3YZRYTDwkQs2W0/0TG0
+         1KLrxXge0D7daBjwVvfonrCCogCDP4bJvXztl2IVdKMtnL0+MDKZ0vMcEaDJpuHSMUBu
+         Yxdn3oa+aLkBhe4IqKag5SYNWvQrA9sWcHUGPyjqcXkLFOGF2f62hGbexhX+FsxP1tHG
+         m6yLUYXB2PWuPnW7rgPcEb+dsqanGUdK5aROyRJEtp2ztXxbyegBRIMYCsRjtWXeIYDG
+         1Hsd9nH+2HFHKw7sj7OHB+jjWdWrtyF87z7r1gmgSA45Is8YCuco8g4SRxIymsHSgZfo
+         TSng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720030580; x=1720635380;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=e40U7mcSWYdfEv2YmbTar69IueSBy3KQw/j2MAMkE0Q=;
+        b=PBojwIApmQ3TV850zas6iEl9G+nr6mopUHENYMJm483R4j0tsxkxoP+RhvFe87+Qks
+         S7vbjb5u+2LMacARArJ0OY0m0gtRkJ2+cuzD1jCoR27WBANdDdNW+5++l3zYVAtTowTr
+         vCPU75huy34eLaS55F9zsYWaya5Zr5mKZ6/ynXtecZTM3D2Y+prEv/yRODOYFeLalHD5
+         /e8AKHzLbj+RrezkmiTepfAXhPj8u1IOSbPZjvC1OY0YPF9bP6E1kPIcreFRUK6km28F
+         VpM2uB24Awrw37LFcdauoiraPG3Hk3sMvC1la2Lyz3171wV95Aa4rt5OBE/Pp/YNSJ5Z
+         f67g==
+X-Forwarded-Encrypted: i=1; AJvYcCXws7BAKl3jYEShtzAkUuXxWBddMxvNLptnPXxsAHjK5jTCKut0tL0em1Py2QcziACKLzWkM2iPVZCDhepOiiAUXy+8yFOWJuHI2SebBOE=
+X-Gm-Message-State: AOJu0YzhTMbtI1LmkJbgTozTroieEHBNSI0OG+ZR7pyHxI50zZF32AI3
+	eTb0Jk/GxVmpyEb4MlqTlUarVTLlAa5UxmKYDlt9G6qAG4/HKLJTivIbWg==
+X-Google-Smtp-Source: AGHT+IFLjV2rEdsgLCpqlW5qwKxf0z2pQDN8I/EMC2I0d3l4UcX2lrt6expAxythTzgQAJQWOUIofQ==
+X-Received: by 2002:a05:6512:3b81:b0:52c:dc25:d706 with SMTP id 2adb3069b0e04-52e8270172cmr8409306e87.52.1720030579751;
+        Wed, 03 Jul 2024 11:16:19 -0700 (PDT)
+Received: from shift.daheim (p200300d5ff30930050f496fffe46beef.dip0.t-ipconnect.de. [2003:d5:ff30:9300:50f4:96ff:fe46:beef])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-58cd108c84bsm1211462a12.47.2024.07.03.11.16.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Jul 2024 11:16:19 -0700 (PDT)
+Received: from localhost.daheim ([127.0.0.1])
+	by shift.daheim with esmtp (Exim 4.97)
+	(envelope-from <chunkeey@gmail.com>)
+	id 1sP5Pz-000000001xA-1nyD;
+	Wed, 03 Jul 2024 20:16:18 +0200
+Message-ID: <19cb41af-6197-4977-b8e8-9c9bcdb3dc61@gmail.com>
+Date: Wed, 3 Jul 2024 20:16:18 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,70 +81,66 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: ath12k: Add WMI control path stats infra
-Content-Language: en-US
-To: Ramya Gnanasekar <quic_rgnanase@quicinc.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, Rajat Soni <quic_rajson@quicinc.com>
-References: <20240701162616.2762256-1-quic_rgnanase@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240701162616.2762256-1-quic_rgnanase@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [REGRESSION] wiphy_register fails for mvm (AX211)
+To: Alexander Wetzel <Alexander@wetzel-home.de>,
+ miriam.rachel.korenblit@intel.com
+Cc: ilan.peer@intel.com, johannes.berg@intel.com, johannes@sipsolutions.net,
+ linux-wireless@vger.kernel.org
+References: <20240618200104.3213638262ef.I2a0031b37623d7763fd0c5405477ea7206a3e923@changeid>
+ <20240702104128.26394-1-Alexander@wetzel-home.de>
+Content-Language: de-DE
+From: Christian Lamparter <chunkeey@gmail.com>
+In-Reply-To: <20240702104128.26394-1-Alexander@wetzel-home.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: lBeaBeho5yrwxq_hTNKwq-q8XzJaghIg
-X-Proofpoint-ORIG-GUID: lBeaBeho5yrwxq_hTNKwq-q8XzJaghIg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-03_12,2024-07-03_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 bulkscore=0
- mlxlogscore=984 clxscore=1015 lowpriorityscore=0 suspectscore=0
- malwarescore=0 mlxscore=0 priorityscore=1501 adultscore=0 impostorscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2407030125
 
-On 7/1/2024 9:26 AM, Ramya Gnanasekar wrote:
-> From: Rajat Soni <quic_rajson@quicinc.com>
+On 7/2/24 12:41 PM, Alexander Wetzel wrote:
+> The commit 5c38bedac16a ("wifi: iwlwifi: mvm: unify and fix interface
+> combinations") breaks mvm hard. wlan interface can't be created and even
+> rmmod fails.
 > 
-> Currently, firmware stats is requested by host through HTT interface.
-> Since HTT interface is already overloaded for data path stats,
-> leveraging control path to request other stats through WMI interface.
+> On driver load I get:
 > 
-> Add debugfs to request the stats and dump the stats forwarded by firmware.
-> 
-> ath12k
-> `-- pci-0000:06:00.0
->     |-- mac0
->         `-- wmi_ctrl_stats
-> 
-> This patch also adds support to request PDEV Tx stats, parse and dump
-> the data sent from firmware.
-> 
-> Usage:
-> echo <stats id> <action> > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/wmi_ctrl_stats
-> 
-> Sample:
-> echo 1 1 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/wmi_ctrl_stats
-> cat /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/wmi_ctrl_stats
-> WMI_CTRL_PATH_PDEV_TX_STATS:
-> fw_tx_mgmt_subtype =  0:0, 1:2, 2:0, 3:0, 4:0, 5:37, 6:0, 7:0, 8:908, 9:0, 10:0, 11:18, 12:2, 13:3, 14:0, 15:0,
-> fw_rx_mgmt_subtype =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0,
-> scan_fail_dfs_violation_time_ms = 0
-> nol_chk_fail_last_chan_freq = 0
-> nol_chk_fail_time_stamp_ms = 0
-> tot_peer_create_cnt = 7
-> tot_peer_del_cnt = 7
-> tot_peer_del_resp_cnt = 7
-> vdev_pause_fail_rt_to_sched_algo_fifo_full_cnt = 0
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-> 
-> Signed-off-by: Rajat Soni <quic_rajson@quicinc.com>
-> Co-developed-by: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
-> Signed-off-by: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> WARNING: CPU: 5 PID: 1358 at net/wireless/core.c:689 wiphy_register+0x8ee/0x920 [cfg80211]
+ran into the same issue. Debugging revealed that the " - 1" is the problem
+because wiphy_verify_combinations checks if the specified limits in n_limits.max
+adds up to at least max_interfaces (=3), which isn't true anymore with the
+" - 1" as the ieee80211_iface_limit with NL80211_IFTYPE_P2P_DEVICE is missing.
+
+Not sure, if this needs fixing in cfg80211 or iwlwifi. But I can confirm that this
+patch "works" (not sure if it's correct/intended though).
+---
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 60bfe42d5386..e40f993b17fd 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -59,13 +59,13 @@ static const struct ieee80211_iface_combination iwl_mvm_iface_combinations[] = {
+  		.num_different_channels = 2,
+  		.max_interfaces = 3,
+  		.limits = iwl_mvm_limits,
+-		.n_limits = ARRAY_SIZE(iwl_mvm_limits) - 1,
++		.n_limits = ARRAY_SIZE(iwl_mvm_limits),
+  	},
+  	{
+  		.num_different_channels = 1,
+  		.max_interfaces = 3,
+  		.limits = iwl_mvm_limits_ap,
+-		.n_limits = ARRAY_SIZE(iwl_mvm_limits_ap) - 1,
++		.n_limits = ARRAY_SIZE(iwl_mvm_limits_ap),
+  	},
+  };
+---
+
+relevant iw phy dump
+
+         valid interface combinations:
+                  * #{ managed } <= 1, #{ P2P-client, P2P-GO } <= 1, #{ P2P-device } <= 1,
+                    total <= 3, #channels <= 2
+                  * #{ managed } <= 1, #{ AP, P2P-client, P2P-GO } <= 1, #{ P2P-device } <= 1,
+                    total <= 3, #channels <= 1
+
+
+Cheers,
+Christian
 
 
