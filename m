@@ -1,70 +1,71 @@
-Return-Path: <linux-wireless+bounces-9904-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9905-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF1F092578D
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 11:59:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7D18925793
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 11:59:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C2B71C259C5
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 09:59:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC0031C25D2A
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 09:59:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030F01422DE;
-	Wed,  3 Jul 2024 09:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35CE8155C81;
+	Wed,  3 Jul 2024 09:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lERIb7Ki"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MHslcbP9"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6262F1428E4
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Jul 2024 09:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F0F1422C9
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Jul 2024 09:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720000759; cv=none; b=jhDKHVYkDSZmM36yeWF0ZW3xHHxpEIv6IOZI8x/m/Vr/edNCYoVkPeJxbE8jAf1ObExtIyy4MrT1XklUQ6MbCwqJy6gZMM89usMFTiKBSq7lvLcfTui0XRZGP3TwMZrXHBeeDc4VuHGaHiRHfqRe8S2dCo2b23+2xooUrplYtGA=
+	t=1720000763; cv=none; b=Nc6w+oZYdElVAlRnxsbOXexzMs+8MkilHtCCTRbx5d8ox75Tzank6pyH2HT1cXb8KxnDf/DYAhKIbcGB5Rb8QbgMfGf8ML0YEZFvkKfeRpG5t23eMDFTeYEtlevtIaHV/cAFyeNSz/ZgtFKnvJ0DdtzQdTeLNyaeNEiQxvSPD+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720000759; c=relaxed/simple;
-	bh=r7BtfqVkyE0G40/SqdqGd68sqY+w3QY4mRO6fHHi6nc=;
+	s=arc-20240116; t=1720000763; c=relaxed/simple;
+	bh=fehBCLNPMBgjV+po50JnP1GYnptAjKZ6spyHotkJ0yw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FHRZ0IrEaQoZQhMakW2DMlzufZUQT/gqzQwDv1OirgBnBIJtFBXBCpC9XpJ49ohkZpRvw48RoHj9qJgZHgFFDlb3HTkoMj7u3o/RNZHm3ALtpWbLgLVe1BceQTlFvRxQ0s0KlxFHpCBUOfKT3RktZi9d05pXHB3mWVSlMMrwRJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lERIb7Ki; arc=none smtp.client-ip=192.198.163.11
+	 MIME-Version; b=IyO5e27esU1eGRzAHvqMBsBQN75XTX6BTRa+ShJVOnKzLa1ZGuV/FiM+UoJ/jOP1VVsrVmVbQOj2VmUnMoCyLDaAdkL61obzbF8kx9VJ904ZnXX5vWwS+BRMba1Jf6V1mOqj/4kPS1kmTG+yu10ORZmJpWF0rukTcE5kKrh0dHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MHslcbP9; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720000758; x=1751536758;
+  t=1720000761; x=1751536761;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=r7BtfqVkyE0G40/SqdqGd68sqY+w3QY4mRO6fHHi6nc=;
-  b=lERIb7KiR/mizQ6rWLVoUsOOog8wYzvUpUh8szQj6PICMjcG30UhpTN6
-   P13SQRNqZ9wKpO9kC6I0aNzeQLkwq9EGoP7c6ZUdghpMFUmYGKlALMIPq
-   Oguf5bmK0Af+13K0zCRlQ5B0ACLg3Q3xJiLkT8xmftLTQu9S0s+gVk1k+
-   lm/lQRYmV+2araMh3L/gaqesSFxKzpLtsEY3dppQB8FprRfLbaDBeL2MR
-   5jau2jTrOTz1wscAUea5riVS6SmzFZS4Kp70Qvlt4eoLNUhafYriex2kU
-   x5WX96aVC4SrS/LVtwJuE29sXAbbwe1h2wPfJD2Mtof/QQtf31qzJSCn7
-   w==;
-X-CSE-ConnectionGUID: SMqnEMEXSc2kh4kyB9m+eA==
-X-CSE-MsgGUID: OM6bMH2FQ02IlU2JQ7lSyg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="27837512"
+  bh=fehBCLNPMBgjV+po50JnP1GYnptAjKZ6spyHotkJ0yw=;
+  b=MHslcbP97m/MaG9/PteviX/23gj7WGBd1/r770FTMM0Y04n6tsViqMv7
+   mOkzCAKM7W0ne9pag3F7k8fDGRRlfQ+7uk9gIGzEQnFlHgkC44pe5Sa2v
+   hdmQvmwOut4X1Lt27eK6qyTUHcbp5Mtuvy+1JwaKGGxEm7B4lylp2E+9z
+   TgQn95GyUSKj0AWLfxSboeqWO2IhOpfEhdcTsX//JFRsL1Nr+dnIbw9AA
+   XVk5JRqvEJEz43psC8xPDRqOX+PJ8Vlgs+aws5MY8OOv3E8tsn3RAN5pn
+   4k/JR0y/VeFZ5sR1yrHF58NW96TjuvTo/+6VQD/rztBSIO1nG/gYqgFTf
+   A==;
+X-CSE-ConnectionGUID: SCXGS5sYQDKVaJg+viEohQ==
+X-CSE-MsgGUID: 9UuO20mMR2exKaqDfVFoNA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="27837521"
 X-IronPort-AV: E=Sophos;i="6.09,181,1716274800"; 
-   d="scan'208";a="27837512"
+   d="scan'208";a="27837521"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2024 02:59:18 -0700
-X-CSE-ConnectionGUID: q/GKnXAQQ+u5rI0LpQdiQQ==
-X-CSE-MsgGUID: 3n6Sym2LTdG2nW87Xgr23A==
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2024 02:59:21 -0700
+X-CSE-ConnectionGUID: iBKAqh2eQb6Kxm2xXFey6w==
+X-CSE-MsgGUID: vwYadu8SSFu0Tizd6Es1zg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.09,181,1716274800"; 
-   d="scan'208";a="45987727"
+   d="scan'208";a="45987736"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2024 02:59:16 -0700
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2024 02:59:18 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
+	Benjamin Berg <benjamin.berg@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 03/18] wifi: iwlwifi: mvm: simplify EMLSR blocking
-Date: Wed,  3 Jul 2024 12:58:51 +0300
-Message-Id: <20240703125541.6995464f0bac.Iac9fe3546ca0a0d6bc6666c822a667ab257419a9@changeid>
+Subject: [PATCH 04/18] wifi: iwlwifi: return a new allocation for hdr page space
+Date: Wed,  3 Jul 2024 12:58:52 +0300
+Message-Id: <20240703125541.044f2cb373f1.I52a807ac6f311b89530e18deacc7452638a6f5d8@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240703095906.833028-1-miriam.rachel.korenblit@intel.com>
 References: <20240703095906.833028-1-miriam.rachel.korenblit@intel.com>
@@ -77,47 +78,240 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-If EMLSR is already blocked for the same reason that
-it's blocked for again, there's no need to actually
-do any work, so exit early from the function. Also,
-print the state after modifying it, so it's clearer.
+Instead of returning the pointer to the structure describing the header
+page, return the pointer to the newly allocated area. This disentangles
+the user from the allocation within the page as it does not need to
+advance the position itself.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/link.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ .../wireless/intel/iwlwifi/pcie/internal.h    |  4 +-
+ .../net/wireless/intel/iwlwifi/pcie/tx-gen2.c | 35 ++++++-------
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c  | 50 ++++++++++---------
+ 3 files changed, 44 insertions(+), 45 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/link.c b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-index 73527781f89a..4e702e7a4b82 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-@@ -1033,15 +1033,17 @@ void iwl_mvm_block_esr(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 	if (WARN_ON(!(reason & IWL_MVM_BLOCK_ESR_REASONS)))
- 		return;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+index f2bb34270ccf..754928062921 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+@@ -623,8 +623,8 @@ void iwl_trans_pcie_tx_reset(struct iwl_trans *trans);
+ int iwl_pcie_txq_alloc(struct iwl_trans *trans, struct iwl_txq *txq,
+ 		       int slots_num, bool cmd_queue);
  
--	if (!(mvmvif->esr_disable_reason & reason)) {
--		IWL_DEBUG_INFO(mvm,
--			       "Blocking EMLSR mode. reason = %s (0x%x)\n",
--			       iwl_get_esr_state_string(reason), reason);
--		iwl_mvm_print_esr_state(mvm, mvmvif->esr_disable_reason);
--	}
-+	if (mvmvif->esr_disable_reason & reason)
-+		return;
-+
-+	IWL_DEBUG_INFO(mvm,
-+		       "Blocking EMLSR mode. reason = %s (0x%x)\n",
-+		       iwl_get_esr_state_string(reason), reason);
+-struct iwl_tso_hdr_page *iwl_pcie_get_page_hdr(struct iwl_trans *trans,
+-					       size_t len, struct sk_buff *skb);
++void *iwl_pcie_get_page_hdr(struct iwl_trans *trans, size_t len,
++			    struct sk_buff *skb);
+ void iwl_pcie_free_tso_page(struct iwl_trans *trans, struct sk_buff *skb);
  
- 	mvmvif->esr_disable_reason |= reason;
+ static inline dma_addr_t
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
+index b897de1b9226..543efb52b084 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
+@@ -130,7 +130,6 @@ static int iwl_txq_gen2_build_amsdu(struct iwl_trans *trans,
+ 	unsigned int mss = skb_shinfo(skb)->gso_size;
+ 	u16 length, amsdu_pad;
+ 	u8 *start_hdr;
+-	struct iwl_tso_hdr_page *hdr_page;
+ 	struct tso_t tso;
  
-+	iwl_mvm_print_esr_state(mvm, mvmvif->esr_disable_reason);
-+
- 	iwl_mvm_exit_esr(mvm, vif, reason, link_to_keep);
+ 	trace_iwlwifi_dev_tx(trans->dev, skb, tfd, sizeof(*tfd),
+@@ -146,12 +145,10 @@ static int iwl_txq_gen2_build_amsdu(struct iwl_trans *trans,
+ 		(3 + snap_ip_tcp_hdrlen + sizeof(struct ethhdr));
+ 
+ 	/* Our device supports 9 segments at most, it will fit in 1 page */
+-	hdr_page = iwl_pcie_get_page_hdr(trans, hdr_room, skb);
+-	if (!hdr_page)
++	start_hdr = iwl_pcie_get_page_hdr(trans, hdr_room, skb);
++	if (!start_hdr)
+ 		return -ENOMEM;
+ 
+-	start_hdr = hdr_page->pos;
+-
+ 	/*
+ 	 * Pull the ieee80211 header to be able to use TSO core,
+ 	 * we will restore it for the tx_status flow.
+@@ -172,32 +169,32 @@ static int iwl_txq_gen2_build_amsdu(struct iwl_trans *trans,
+ 		unsigned int data_left = min_t(unsigned int, mss, total_len);
+ 		unsigned int tb_len;
+ 		dma_addr_t tb_phys;
+-		u8 *subf_hdrs_start = hdr_page->pos;
++		u8 *pos_hdr = start_hdr;
+ 
+ 		total_len -= data_left;
+ 
+-		memset(hdr_page->pos, 0, amsdu_pad);
+-		hdr_page->pos += amsdu_pad;
++		memset(pos_hdr, 0, amsdu_pad);
++		pos_hdr += amsdu_pad;
+ 		amsdu_pad = (4 - (sizeof(struct ethhdr) + snap_ip_tcp_hdrlen +
+ 				  data_left)) & 0x3;
+-		ether_addr_copy(hdr_page->pos, ieee80211_get_DA(hdr));
+-		hdr_page->pos += ETH_ALEN;
+-		ether_addr_copy(hdr_page->pos, ieee80211_get_SA(hdr));
+-		hdr_page->pos += ETH_ALEN;
++		ether_addr_copy(pos_hdr, ieee80211_get_DA(hdr));
++		pos_hdr += ETH_ALEN;
++		ether_addr_copy(pos_hdr, ieee80211_get_SA(hdr));
++		pos_hdr += ETH_ALEN;
+ 
+ 		length = snap_ip_tcp_hdrlen + data_left;
+-		*((__be16 *)hdr_page->pos) = cpu_to_be16(length);
+-		hdr_page->pos += sizeof(length);
++		*((__be16 *)pos_hdr) = cpu_to_be16(length);
++		pos_hdr += sizeof(length);
+ 
+ 		/*
+ 		 * This will copy the SNAP as well which will be considered
+ 		 * as MAC header.
+ 		 */
+-		tso_build_hdr(skb, hdr_page->pos, &tso, data_left, !total_len);
++		tso_build_hdr(skb, pos_hdr, &tso, data_left, !total_len);
+ 
+-		hdr_page->pos += snap_ip_tcp_hdrlen;
++		pos_hdr += snap_ip_tcp_hdrlen;
+ 
+-		tb_len = hdr_page->pos - start_hdr;
++		tb_len = pos_hdr - start_hdr;
+ 		tb_phys = dma_map_single(trans->dev, start_hdr,
+ 					 tb_len, DMA_TO_DEVICE);
+ 		if (unlikely(dma_mapping_error(trans->dev, tb_phys)))
+@@ -211,10 +208,10 @@ static int iwl_txq_gen2_build_amsdu(struct iwl_trans *trans,
+ 		trace_iwlwifi_dev_tx_tb(trans->dev, skb, start_hdr,
+ 					tb_phys, tb_len);
+ 		/* add this subframe's headers' length to the tx_cmd */
+-		le16_add_cpu(&tx_cmd->len, hdr_page->pos - subf_hdrs_start);
++		le16_add_cpu(&tx_cmd->len, tb_len);
+ 
+ 		/* prepare the start_hdr for the next subframe */
+-		start_hdr = hdr_page->pos;
++		start_hdr = pos_hdr;
+ 
+ 		/* put the payload */
+ 		while (data_left) {
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+index f4452732417d..d67ad40634f9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+@@ -1702,12 +1702,13 @@ static int iwl_fill_data_tbs(struct iwl_trans *trans, struct sk_buff *skb,
  }
  
+ #ifdef CONFIG_INET
+-struct iwl_tso_hdr_page *iwl_pcie_get_page_hdr(struct iwl_trans *trans,
+-					       size_t len, struct sk_buff *skb)
++void *iwl_pcie_get_page_hdr(struct iwl_trans *trans,
++			    size_t len, struct sk_buff *skb)
+ {
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+ 	struct iwl_tso_hdr_page *p = this_cpu_ptr(trans_pcie->txqs.tso_hdr_page);
+ 	struct page **page_ptr;
++	void *ret;
+ 
+ 	page_ptr = (void *)((u8 *)skb->cb + trans_pcie->txqs.page_offs);
+ 
+@@ -1744,7 +1745,10 @@ struct iwl_tso_hdr_page *iwl_pcie_get_page_hdr(struct iwl_trans *trans,
+ out:
+ 	*page_ptr = p->page;
+ 	get_page(p->page);
+-	return p;
++	ret = p->pos;
++	p->pos += len;
++
++	return ret;
+ }
+ 
+ static int iwl_fill_data_tbs_amsdu(struct iwl_trans *trans, struct sk_buff *skb,
+@@ -1759,8 +1763,7 @@ static int iwl_fill_data_tbs_amsdu(struct iwl_trans *trans, struct sk_buff *skb,
+ 	unsigned int snap_ip_tcp_hdrlen, ip_hdrlen, total_len, hdr_room;
+ 	unsigned int mss = skb_shinfo(skb)->gso_size;
+ 	u16 length, iv_len, amsdu_pad;
+-	u8 *start_hdr;
+-	struct iwl_tso_hdr_page *hdr_page;
++	u8 *start_hdr, *pos_hdr;
+ 	struct tso_t tso;
+ 
+ 	/* if the packet is protected, then it must be CCMP or GCMP */
+@@ -1783,13 +1786,12 @@ static int iwl_fill_data_tbs_amsdu(struct iwl_trans *trans, struct sk_buff *skb,
+ 		(3 + snap_ip_tcp_hdrlen + sizeof(struct ethhdr)) + iv_len;
+ 
+ 	/* Our device supports 9 segments at most, it will fit in 1 page */
+-	hdr_page = iwl_pcie_get_page_hdr(trans, hdr_room, skb);
+-	if (!hdr_page)
++	pos_hdr = start_hdr = iwl_pcie_get_page_hdr(trans, hdr_room, skb);
++	if (!start_hdr)
+ 		return -ENOMEM;
+ 
+-	start_hdr = hdr_page->pos;
+-	memcpy(hdr_page->pos, skb->data + hdr_len, iv_len);
+-	hdr_page->pos += iv_len;
++	memcpy(pos_hdr, skb->data + hdr_len, iv_len);
++	pos_hdr += iv_len;
+ 
+ 	/*
+ 	 * Pull the ieee80211 header + IV to be able to use TSO core,
+@@ -1812,32 +1814,32 @@ static int iwl_fill_data_tbs_amsdu(struct iwl_trans *trans, struct sk_buff *skb,
+ 			min_t(unsigned int, mss, total_len);
+ 		unsigned int hdr_tb_len;
+ 		dma_addr_t hdr_tb_phys;
+-		u8 *subf_hdrs_start = hdr_page->pos;
++		u8 *subf_hdrs_start = pos_hdr;
+ 
+ 		total_len -= data_left;
+ 
+-		memset(hdr_page->pos, 0, amsdu_pad);
+-		hdr_page->pos += amsdu_pad;
++		memset(pos_hdr, 0, amsdu_pad);
++		pos_hdr += amsdu_pad;
+ 		amsdu_pad = (4 - (sizeof(struct ethhdr) + snap_ip_tcp_hdrlen +
+ 				  data_left)) & 0x3;
+-		ether_addr_copy(hdr_page->pos, ieee80211_get_DA(hdr));
+-		hdr_page->pos += ETH_ALEN;
+-		ether_addr_copy(hdr_page->pos, ieee80211_get_SA(hdr));
+-		hdr_page->pos += ETH_ALEN;
++		ether_addr_copy(pos_hdr, ieee80211_get_DA(hdr));
++		pos_hdr += ETH_ALEN;
++		ether_addr_copy(pos_hdr, ieee80211_get_SA(hdr));
++		pos_hdr += ETH_ALEN;
+ 
+ 		length = snap_ip_tcp_hdrlen + data_left;
+-		*((__be16 *)hdr_page->pos) = cpu_to_be16(length);
+-		hdr_page->pos += sizeof(length);
++		*((__be16 *)pos_hdr) = cpu_to_be16(length);
++		pos_hdr += sizeof(length);
+ 
+ 		/*
+ 		 * This will copy the SNAP as well which will be considered
+ 		 * as MAC header.
+ 		 */
+-		tso_build_hdr(skb, hdr_page->pos, &tso, data_left, !total_len);
++		tso_build_hdr(skb, pos_hdr, &tso, data_left, !total_len);
+ 
+-		hdr_page->pos += snap_ip_tcp_hdrlen;
++		pos_hdr += snap_ip_tcp_hdrlen;
+ 
+-		hdr_tb_len = hdr_page->pos - start_hdr;
++		hdr_tb_len = pos_hdr - start_hdr;
+ 		hdr_tb_phys = dma_map_single(trans->dev, start_hdr,
+ 					     hdr_tb_len, DMA_TO_DEVICE);
+ 		if (unlikely(dma_mapping_error(trans->dev, hdr_tb_phys)))
+@@ -1847,10 +1849,10 @@ static int iwl_fill_data_tbs_amsdu(struct iwl_trans *trans, struct sk_buff *skb,
+ 		trace_iwlwifi_dev_tx_tb(trans->dev, skb, start_hdr,
+ 					hdr_tb_phys, hdr_tb_len);
+ 		/* add this subframe's headers' length to the tx_cmd */
+-		le16_add_cpu(&tx_cmd->len, hdr_page->pos - subf_hdrs_start);
++		le16_add_cpu(&tx_cmd->len, pos_hdr - subf_hdrs_start);
+ 
+ 		/* prepare the start_hdr for the next subframe */
+-		start_hdr = hdr_page->pos;
++		start_hdr = pos_hdr;
+ 
+ 		/* put the payload */
+ 		while (data_left) {
 -- 
 2.34.1
 
