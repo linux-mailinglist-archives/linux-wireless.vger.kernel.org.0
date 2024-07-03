@@ -1,57 +1,58 @@
-Return-Path: <linux-wireless+bounces-9940-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9941-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25DFE926A89
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 23:42:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7091C926A8A
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 23:42:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 575AB1C20BD8
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 21:42:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B8EC1F23173
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 21:42:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F2A81849C4;
-	Wed,  3 Jul 2024 21:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B358191F96;
+	Wed,  3 Jul 2024 21:42:50 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEEB517F51A
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Jul 2024 21:42:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA0817F51A
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Jul 2024 21:42:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720042968; cv=none; b=GqXotjWf5GVRPivFW0OpPBrxnzcIrCcxMsjj603LQMgbq9176LVzOoi39/Z2oWqOtsrItz3ssUZZ07kv5GkYb4v0bJlktt18H55FPcFRGpsQ3t1FxX2eQDlYDRT4QqKy/rglSqIEadb2fksWT5nxmStJh2tJxMPzWh1rYvHbeWE=
+	t=1720042970; cv=none; b=TQk4enQEdHdQXU4UOdjxET8B+FAWIfdirKTPln092RPynIH56yoc2sVFaQnWL7AtCgybC2GJZ6cixW3GJKKealYde9MMAagHf/KZF30hx0/jhIUuIXdIM5KNFQhFGBw1eBnDsOACpljtSaV+N7lorF9fV6fGJX15C6pAyZT24+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720042968; c=relaxed/simple;
-	bh=DTBo5RbdhV/xl/R/PbGjiOOSH131YWBasqnJrn/B5eM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KycFdGIySvfHk1mgLo0nc06+DQrBAyfSRczX0WmdCqrksQjgO6qD6OvTuPcZ9xpg5HCvNOJhh8CL98fzaUUuq82bAtSv6cfowbXwgnl9Yh045Nkl0TaE0bPqE4O/Ra0ZchTCr3R4ceNGUOpP11HKeBWZSwsQGBnlPr1tE7MaHgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.49
+	s=arc-20240116; t=1720042970; c=relaxed/simple;
+	bh=hBBFZBmKbWmJHc6vGhmioiyoyMMl/7LaaxUCKb+yQno=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=MknJqBVcobn6Bc6iZ+xi1GF0C1Y21/sp4g12cLwZ2HWdKAzDOMBWGl+lzzsyIFyNkCKvMZM1rgXTZIAqU6Iz6+xAd/j+jAjOaPfhc7o/4WSSc86HeNM73Yt/ANnhnTMU/NAMclH1OtbW8SrfQdOCVDbFsbADGzLSp2cni8hmDSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-700ce014fdbso82567a34.3
-        for <linux-wireless@vger.kernel.org>; Wed, 03 Jul 2024 14:42:46 -0700 (PDT)
+Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-700cee3c5f6so115687a34.1
+        for <linux-wireless@vger.kernel.org>; Wed, 03 Jul 2024 14:42:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720042966; x=1720647766;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wU10Slj9rAnvBK1nq0gnwTI6g6o8HVgf6xfWPzjhhDc=;
-        b=klRNTRUVNBaWqVKNFJGT17I7wfVpVHPS9D72votIhpjS+M6WFpzSUuBj73X1piyfPG
-         ztehWs8Gt7MF/LEC9sMjj7rlSjAc/2z+Db6l0vK15dwTxo5uoD8K/2JLlctKZ9IEgfAZ
-         4IE6/5Dr61jf81YHWAN7ZlhTEYZcmxpri19rhh9g74AQDlfiEj0v/ZtV8IafQrssVcJ9
-         KVYECZ+MU3r2/CSdJX2odTOODJ0jMgnfS6il+oCpLUvgv3MU9wCn8bilYWSQ2fWX/4mx
-         IGJtjuIED9NmvnbXlnVNPevo/PDZODxc4fu0yAewK7VzOesEQTcIVCKa6D7BOwxtruyk
-         523Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUVaCHQgzA63+Grwj/tCMsbdnHNVEZvtmnPgnYt8V3cIOVif/0FIXRBcW5p1KLcEEkp/6bBKUGOuCq0IMTsns74K75r3EyzeTnm6/3aVMs=
-X-Gm-Message-State: AOJu0YxcRY+XJKJvQmTSHK6iSUAPDftZSoKedWMHMSv2WMAPctSR2QfZ
-	IRXbCz9aV/GXHFfv6D2SfeG0V3loNJP7IZFF+XhErdWR3qDgNQMz
-X-Google-Smtp-Source: AGHT+IGs9LjiOOX50n/PkLYnHZ65tqk8YD1duswUnhyNDzZ1E3riWbqCJWGulMSNkxlMUIwgmwKypg==
-X-Received: by 2002:a05:6830:45aa:b0:702:39:1fbc with SMTP id 46e09a7af769-70207726e80mr11937436a34.2.1720042965736;
-        Wed, 03 Jul 2024 14:42:45 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1720042968; x=1720647768;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2ZTio5F8p35DlD4asDjPvybCMwGfLPum9VeO2lVI5Tw=;
+        b=aXgNHO+FIOkpy0LnFRrM0mNv0SV1ElD3TeMTPy75fx6F0PUd3Eq7k/vEaBwjCDR0AO
+         Dw92oJmTqOXUu/tKgZPzh38c58IWSXdyYqZvKIzmNnE1rTUKElfAz1ribds5aP4abZRM
+         Fe/83etAS0V6xpIApc72yNmcIuj7OxiA5GwPOapoyzH3WIBlehzb88DeELEc0DBnoUA4
+         nJL0ic48anrNxemDRBCHLvtAkwwBai+E4YO0fJgX8V7Iiljr0jCEhgyzdtoAYxmZ5wph
+         OVOSCGqPex1kjQOi7/SLIY0coR2BwVuzX2rYypCHiUf8Dp7EFzuvw56VF/l3Rf4MuurF
+         0AGA==
+X-Forwarded-Encrypted: i=1; AJvYcCXCKCUUMoshNtRpeZk33k6aGy5HWZuHDWMjxrHEaZDJ8mqUhzkkmDVACy9og+8LbIqTYD7eZWZ1liegpG+yAhZ+yLylrDvsIYyHIDitQtY=
+X-Gm-Message-State: AOJu0Ywosod4w+SPq6BHkSAqvdK4CmXQcEjBRW04ZJW0oBWEX4ChbfHn
+	G71BgaxHcXORuEG+ZthLoJWMCcAmXIzMSbbYNXqopILFHyeWWh3KJamCzft+
+X-Google-Smtp-Source: AGHT+IGRunLO6mFzSc2Jy3s5TzQ57XC4kIYZhicOz2t0jYUM6P5DBFc/NWlT3v1DejDwVVb0J3v/0g==
+X-Received: by 2002:a9d:6b15:0:b0:700:d428:1cd1 with SMTP id 46e09a7af769-702077756d3mr12771626a34.3.1720042968011;
+        Wed, 03 Jul 2024 14:42:48 -0700 (PDT)
 Received: from sean-ThinkPad-T450s.lan ([207.191.35.252])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-701f7b20953sm2111417a34.54.2024.07.03.14.42.44
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-701f7b20953sm2111417a34.54.2024.07.03.14.42.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jul 2024 14:42:44 -0700 (PDT)
+        Wed, 03 Jul 2024 14:42:46 -0700 (PDT)
 From: sean.wang@kernel.org
 To: nbd@nbd.name,
 	lorenzo.bianconi@redhat.com
@@ -59,12 +60,13 @@ Cc: sean.wang@mediatek.com,
 	deren.wu@mediatek.com,
 	mingyen.hsieh@mediatek.com,
 	linux-wireless@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	Sean Wang <sean.wang@kernel.org>
-Subject: [PATCH 00/29] Enabling MT7925 MLO Mode Support
-Date: Wed,  3 Jul 2024 14:42:05 -0700
-Message-Id: <cover.1720042294.git.sean.wang@kernel.org>
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH 01/29] wifi: mt76: mt7925: update mt76_connac_mcu_uni_add_dev for MLO
+Date: Wed,  3 Jul 2024 14:42:06 -0700
+Message-Id: <6b2502d0c3a53093f83ae33329e9d782ba2465b3.1720042294.git.sean.wang@kernel.org>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <cover.1720042294.git.sean.wang@kernel.org>
+References: <cover.1720042294.git.sean.wang@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -73,69 +75,33 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Sean Wang <sean.wang@kernel.org>
+From: Sean Wang <sean.wang@mediatek.com>
 
-This patchset introduces comprehensive support for MLO (Multi-Link-
-Operation) mode on the MT7925 Wi-Fi driver. It includes driver
-modifications to ensure seamless operation specifically with MLO-enabled
-firmware environments. The patches included are:
+Set OMAC address with the per-link BSS. The change remains compatible with
+the non-MLO mode and the older firmware.
 
-1) Enable the link handling in the existing neccessary functions
-   in the driver for MLO mode.
-2) Add MCU TLV handling tailored for the MLO-enabled firmware.
-3) Implement .change_vif_links and .change_sta_links callbacks for MLO
-   mode.
-4) Register the MLO capability with mac80211 when the driver is operating
-   with the MLO-enabled firmware.
+Co-developed-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Co-developed-by: Deren Wu <deren.wu@mediatek.com>
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-These changes maintain compatibility with non-MLO mode and the older
-firmware versions.
-
-Sean Wang (29):
-  wifi: mt76: mt7925: update mt76_connac_mcu_uni_add_dev for MLO
-  wifi: mt76: mt7925: update mt7925_mac_link_sta_[add, remove] for MLO
-  wifi: mt76: mt7925: set Tx queue parameters according to link id
-  wifi: mt76: mt7925: set mt7925_mcu_sta_key_tlv according to link id
-  wifi: mt76: mt7925: add mt7925_set_link_key
-  wifi: mt76: mt7925: extend mt7925_mcu_uni_roc_event
-  wifi: mt76: mt7925: add mt7925_change_vif_links
-  wifi: mt76: mt7925: add mt7925_change_sta_links
-  wifi: mt76: mt7925: add link handling in mt7925_mac_sta_add
-  wifi: mt76: mt7925: add link handling in mt7925_mac_sta_remove
-  wifi: mt76: mt7925: add link handling to txwi
-  wifi: mt76: mt7925: add link handling in mt7925_set_key
-  wifi: mt76: mt7925: add link handling to mt7925_change_chanctx
-  wifi: mt76: mt7925: add link handling in the BSS_CHANGED_PS handler
-  wifi: mt76: mt7925: add link handling in mt7925_mcu_set_beacon_filter
-  wifi: mt76: mt7925: add link handling in mt7925_txwi_free
-  wifi: mt76: mt7925: add link handling in mt7925_mac_sta_assoc
-  wifi: mt76: mt7925: add link handling in mt7925_sta_set_decap_offload
-  wifi: mt76: mt7925: update rate index according to link id
-  wifi: mt76: mt7925: report link information in rx status
-  wifi: mt76: add def_wcid to struct mt76_wcid
-  wifi: mt76: mt7925: add mt7925_[assign,unassign]_vif_chanctx
-  wifi: mt76: mt7925: update mt7925_mcu_sta_mld_tlv for MLO
-  wifi: mt76: mt7925: update mt7925_mcu_bss_mld_tlv for MLO
-  wifi: mt76: mt7925: update mt7925_mcu_add_bss_info for MLO
-  wifi: mt76: mt7925: update mt7925_mcu_sta_update for MLO
-  wifi: mt76: mt7925: add mt7925_mcu_sta_eht_mld_tlv for MLO
-  wifi: mt76: mt7925: update mt7925_mcu_sta_rate_ctrl_tlv for MLO
-  wifi: mt76: mt7925: enabling MLO when the firmware supports it
-
- drivers/net/wireless/mediatek/mt76/mac80211.c |   5 +
- drivers/net/wireless/mediatek/mt76/mt76.h     |   7 +
- .../wireless/mediatek/mt76/mt76_connac_mcu.c  |   2 +-
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  11 +
- .../net/wireless/mediatek/mt76/mt7925/init.c  |   6 +
- .../net/wireless/mediatek/mt76/mt7925/mac.c   |  66 +-
- .../net/wireless/mediatek/mt76/mt7925/main.c  | 660 ++++++++++++++++--
- .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 397 +++++++++--
- .../net/wireless/mediatek/mt76/mt7925/mcu.h   |  40 +-
- .../wireless/mediatek/mt76/mt7925/mt7925.h    |  13 +-
- drivers/net/wireless/mediatek/mt76/mt792x.h   |  26 +
- .../net/wireless/mediatek/mt76/mt792x_core.c  |  49 +-
- 12 files changed, 1134 insertions(+), 148 deletions(-)
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index 4e3c8af98fe7..4dce03ddbfa4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -1214,7 +1214,7 @@ int mt76_connac_mcu_uni_add_dev(struct mt76_phy *phy,
+ 	idx = mvif->omac_idx > EXT_BSSID_START ? HW_BSSID_0 : mvif->omac_idx;
+ 	basic_req.basic.hw_bss_idx = idx;
+ 
+-	memcpy(dev_req.tlv.omac_addr, bss_conf->vif->addr, ETH_ALEN);
++	memcpy(dev_req.tlv.omac_addr, bss_conf->addr, ETH_ALEN);
+ 
+ 	cmd = enable ? MCU_UNI_CMD(DEV_INFO_UPDATE) : MCU_UNI_CMD(BSS_INFO_UPDATE);
+ 	data = enable ? (void *)&dev_req : (void *)&basic_req;
 -- 
 2.25.1
 
