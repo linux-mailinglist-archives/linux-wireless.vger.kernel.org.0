@@ -1,58 +1,58 @@
-Return-Path: <linux-wireless+bounces-9959-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9960-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AF8C926AA0
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 23:44:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36217926AA1
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 23:44:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29577B25C71
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 21:44:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D203F1F20F29
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 21:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566D9194C77;
-	Wed,  3 Jul 2024 21:43:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CEED194C95;
+	Wed,  3 Jul 2024 21:43:33 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91BB194C65
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Jul 2024 21:43:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DA4194C85
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Jul 2024 21:43:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720043011; cv=none; b=B8JIWuGJ78AZnq8O/YX6qxr81H1I15+b+Twky9wtz2ocllTRPef6/bpcf8Y/7nJppyb+mY6BC29q6LJW/wJL+jndfrbC82OFLkTJ8tkom1q0op/CnWnAjlyZ5N1EIx3gks6pfNrOOQFTtK9SGcb6JQIx2WL0Qguraq3z7yFc8dM=
+	t=1720043012; cv=none; b=EMsP5iLnfupEBxTVF/oRSwyTdoDxNkYVBrDseWa/RWH4Md3gLaiNqP3sKCCsIPV51MMMUcQSJawu1GA2MTJxAmjPVfbenLjs0YohexF74O6nYSuSW5OQnbIcRyYrwAasraM+iUnyI5n6cT2AJsWUZtDDieT+eEZcVmuUbpS8i4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720043011; c=relaxed/simple;
-	bh=zeQmtMRSYLQMgmy5nGr2uOuAgoTUM/ddMoPu7sAOu0s=;
+	s=arc-20240116; t=1720043012; c=relaxed/simple;
+	bh=MGxBKNhNKEAHOnOWdkVxlzJ5h9LGWEMpMkrlgwINVqs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sGeK5vBBjKqTyh0c6AUec2r0ZwaWhbQ+zY0n4vNcGKtDkluepsbDDhiPXvz6DE1Dhhlg/ig4N5ZCLLHaWrjE23yMGwgs8qXMvxEgkA0731X3PnxEUHz7FQ36r2CRoHK1pVyYl4nBTJ8hradzdKBowojGQ+nVu8YvTuRLU4s1+Dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.47
+	 MIME-Version; b=RmjS61BYeA4EKE1pY/v5M00xFDC7EjJ6fsn3ylrbRqUa+bOf1UHdKyLjsXGWa1W1AkhZ7BTzuKR0Q3lVa+hfvm2Xr+VDA82l83r6s8948RHanEIXzW5+2sopny1k4/QzxwUmbqxV6/7ECYbB9NIMrcv1GDdL+9wjjWsr5d1vGYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-25dff23459cso3577fac.3
-        for <linux-wireless@vger.kernel.org>; Wed, 03 Jul 2024 14:43:29 -0700 (PDT)
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-25cd49906aeso3993fac.2
+        for <linux-wireless@vger.kernel.org>; Wed, 03 Jul 2024 14:43:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720043009; x=1720647809;
+        d=1e100.net; s=20230601; t=1720043010; x=1720647810;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WCSz8cUWGD3Jpbgh3b2PR3W+Co/hw9DDq4m/R/ZmJnU=;
-        b=jxMVGDDyJXIGgNgCblC0UfnGkoefiUzlAB48/TR7G+rlT6u8ORfy8D8PrbaJh3X+xA
-         6AJtcD2KlcnvZ3LfMFnGCQg6qFGWaoFLGUwCpNDPaHfLEBtaeuBoBrEOCecBLMcGgWuc
-         lraOs3fJDGy2eSaUkJvgtKnYaE0HGcb8c7twIP7jbDP2OW5X0mxqaS8E4+0GSRuftYNl
-         PinlpAadi6admH4iUSjfqjqwrWJyZIwSJm8Jhy2fyB07C3YQ2oJYNBtriUKfI/yQtwFn
-         UtwFXgYTjCB1LTz43hrNzURp7TEkVqqITXK2Lk3tG64DWKksR0CggzOibklX1E+bq7C8
-         ptKA==
-X-Forwarded-Encrypted: i=1; AJvYcCWTGm8T1vvvGLvpQaj5a9xw9Hj/w8A6ctZLy6shfinZGczsott9vY1JucSMZKyBvQMgwjhVWR9Vmk9cJF/dxbOYyPCEQx4dV91x6gvTXVY=
-X-Gm-Message-State: AOJu0YzLIglLU2rGaWS8U5SMvXNK8LSwgjjr0kylea9iSHk1WIHnoYFN
-	guUGzlPzuytjKhDRI8SLY+LXtM7baaV/d0t+Ad6fYaI0+mOgFKw8
-X-Google-Smtp-Source: AGHT+IHHdwjRum0Ixy2aektx2Alqi2y35iYb/E46T4+QqCxUIGi/GS+D5lOna7bDGqNjEWMqIfYCRA==
-X-Received: by 2002:a05:6830:68cd:b0:700:d697:6ca7 with SMTP id 46e09a7af769-70207554355mr12585381a34.0.1720043008866;
-        Wed, 03 Jul 2024 14:43:28 -0700 (PDT)
+        bh=ffWOmyzGdQmn/1ElFIgBjJf1v30KLPcOBR1pd24Nq7I=;
+        b=EWI0zp8DFJraTLK9UweeBF6Y3ewq7zSMe6NC/tfBZvVtCwz+v+1b/EnnS0pKKTJTV/
+         2QYmIcRI8aqdRhRS5dp+hzaHliicxagIPdWiRGhwpZWeDEsfYWNOEqjK1t5faXYWvp+M
+         lT0ykxWX2Y25qWiRFz5Hh5IJBMZ5+ExsRWQ9B+7m+y726fPsLDj81OcTczV72WgJoGR2
+         7N4cP43ChPYsQRf42r39giEcPtVTT69Y/T/hC2jLZxf2gP2/CuC8/LNFDv4EZZYzL+QQ
+         kVEU3sZGLClpMZhykVzLCXG8ZVMlPgEMtwP1zAT1sGBYVaRr+h8NXP6Xi0C89aHmmplp
+         +GBw==
+X-Forwarded-Encrypted: i=1; AJvYcCVk1/Tu+sxLZf+f/V6VgVsxgh0nREUEFBVfXDJmOVcWr7/ovlYOzG94JWVAdRcqVdXAJFl1hWsWQBa+qRCHtxd0wy7/2r1uCid1ofgnbpU=
+X-Gm-Message-State: AOJu0YyQ6i2LN/kFpyphvMmWiw5aF00e3onuYGsJBsL50Gn2GLMaV/ng
+	Bjid3FZ+kYI4bmwFTdHi0MGnnZkR9OukNUHtqwDZazHaKrzCAq5c
+X-Google-Smtp-Source: AGHT+IEg9up3tNNH6BCf3a0LDbIZh3GhmduGK33TP3hQf2RrI2NvFjW6FtNxtHICn/l6idPmrPoZVw==
+X-Received: by 2002:a05:6830:8c5:b0:6f9:7373:9421 with SMTP id 46e09a7af769-7020774aa24mr11940398a34.3.1720043010569;
+        Wed, 03 Jul 2024 14:43:30 -0700 (PDT)
 Received: from sean-ThinkPad-T450s.lan ([207.191.35.252])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-701f7b20953sm2111417a34.54.2024.07.03.14.43.27
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-701f7b20953sm2111417a34.54.2024.07.03.14.43.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jul 2024 14:43:27 -0700 (PDT)
+        Wed, 03 Jul 2024 14:43:29 -0700 (PDT)
 From: sean.wang@kernel.org
 To: nbd@nbd.name,
 	lorenzo.bianconi@redhat.com
@@ -61,9 +61,9 @@ Cc: sean.wang@mediatek.com,
 	mingyen.hsieh@mediatek.com,
 	linux-wireless@vger.kernel.org,
 	linux-mediatek@lists.infradead.org
-Subject: [PATCH 19/29] wifi: mt76: mt7925: update rate index according to link id
-Date: Wed,  3 Jul 2024 14:42:24 -0700
-Message-Id: <c3a8a5d70fe792aad6b90e0a9d0c7dfb07b2c1d7.1720042294.git.sean.wang@kernel.org>
+Subject: [PATCH 20/29] wifi: mt76: mt7925: report link information in rx status
+Date: Wed,  3 Jul 2024 14:42:25 -0700
+Message-Id: <b3322836779900612adf2e4ffb409c62ac25c627.1720042294.git.sean.wang@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1720042294.git.sean.wang@kernel.org>
 References: <cover.1720042294.git.sean.wang@kernel.org>
@@ -77,7 +77,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Sean Wang <sean.wang@mediatek.com>
 
-Update rate index according to link id.
+report link information in rx status
 
 Co-developed-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
@@ -85,47 +85,59 @@ Co-developed-by: Deren Wu <deren.wu@mediatek.com>
 Signed-off-by: Deren Wu <deren.wu@mediatek.com>
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/main.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mac80211.c    | 5 +++++
+ drivers/net/wireless/mediatek/mt76/mt76.h        | 1 +
+ drivers/net/wireless/mediatek/mt76/mt7925/main.c | 2 ++
+ 3 files changed, 8 insertions(+)
 
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index e8ba2e4e8484..bb291fe314fb 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -1125,6 +1125,11 @@ mt76_rx_convert(struct mt76_dev *dev, struct sk_buff *skb,
+ 	memcpy(status->chain_signal, mstat.chain_signal,
+ 	       sizeof(mstat.chain_signal));
+ 
++	if (mstat.wcid) {
++		status->link_valid = mstat.wcid->link_valid;
++		status->link_id = mstat.wcid->link_id;
++	}
++
+ 	*sta = wcid_to_sta(mstat.wcid);
+ 	*hw = mt76_phy_hw(dev, mstat.phy_idx);
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 01646538087a..c0e529d0b3ef 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -350,6 +350,7 @@ struct mt76_wcid {
+ 	u8 amsdu:1;
+ 	u8 phy_idx:2;
+ 	u8 link_id:4;
++	bool link_valid;
+ 
+ 	u8 rx_check_pn;
+ 	u8 rx_key_pn[IEEE80211_NUM_TIDS + 1][6];
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index 265ef7ade6e4..173934ec1e71 100644
+index 173934ec1e71..c3ce57d36168 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -1768,9 +1768,12 @@ static void mt7925_link_info_changed(struct ieee80211_hw *hw,
- 				     struct ieee80211_bss_conf *info,
- 				     u64 changed)
- {
--	struct mt76_vif *mvif = (struct mt76_vif *)vif->drv_priv;
-+	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
- 	struct mt792x_phy *phy = mt792x_hw_phy(hw);
- 	struct mt792x_dev *dev = mt792x_hw_dev(hw);
-+	struct mt792x_bss_conf *mconf;
-+
-+	mconf = mt792x_vif_to_link(mvif, info->link_id);
+@@ -809,6 +809,7 @@ static int mt7925_mac_link_sta_add(struct mt76_dev *mdev,
+ 	mlink->wcid.tx_info |= MT_WCID_TX_INFO_SET;
+ 	mlink->last_txs = jiffies;
+ 	mlink->wcid.link_id = link_sta->link_id;
++	mlink->wcid.link_valid = !!link_sta->sta->valid_links;
  
- 	mt792x_mutex_acquire(dev);
- 
-@@ -1784,16 +1787,16 @@ static void mt7925_link_info_changed(struct ieee80211_hw *hw,
+ 	ret = mt76_connac_pm_wake(&dev->mphy, &dev->pm);
+ 	if (ret)
+@@ -1865,6 +1866,7 @@ mt7925_change_vif_links(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 		mconf->link_id = link_id;
+ 		mconf->vif = mvif;
+ 		mlink->wcid.link_id = link_id;
++		mlink->wcid.link_valid = !!vif->valid_links;
  	}
  
- 	if (changed & BSS_CHANGED_MCAST_RATE)
--		mvif->mcast_rates_idx =
-+		mconf->mt76.mcast_rates_idx =
- 				mt7925_get_rates_table(hw, vif, false, true);
- 
- 	if (changed & BSS_CHANGED_BASIC_RATES)
--		mvif->basic_rates_idx =
-+		mconf->mt76.basic_rates_idx =
- 				mt7925_get_rates_table(hw, vif, false, false);
- 
- 	if (changed & (BSS_CHANGED_BEACON |
- 		       BSS_CHANGED_BEACON_ENABLED)) {
--		mvif->beacon_rates_idx =
-+		mconf->mt76.beacon_rates_idx =
- 				mt7925_get_rates_table(hw, vif, true, false);
- 
- 		mt7925_mcu_uni_add_beacon_offload(dev, hw, vif,
+ 	if (hweight16(mvif->valid_links) == 0)
 -- 
 2.25.1
 
