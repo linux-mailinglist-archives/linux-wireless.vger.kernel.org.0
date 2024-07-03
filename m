@@ -1,58 +1,58 @@
-Return-Path: <linux-wireless+bounces-9960-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9961-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36217926AA1
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 23:44:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2DD0926AA2
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 23:44:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D203F1F20F29
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 21:44:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82B9BB262B7
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 21:44:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CEED194C95;
-	Wed,  3 Jul 2024 21:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D87B19413B;
+	Wed,  3 Jul 2024 21:43:34 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DA4194C85
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Jul 2024 21:43:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05762194C94
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Jul 2024 21:43:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720043012; cv=none; b=EMsP5iLnfupEBxTVF/oRSwyTdoDxNkYVBrDseWa/RWH4Md3gLaiNqP3sKCCsIPV51MMMUcQSJawu1GA2MTJxAmjPVfbenLjs0YohexF74O6nYSuSW5OQnbIcRyYrwAasraM+iUnyI5n6cT2AJsWUZtDDieT+eEZcVmuUbpS8i4g=
+	t=1720043014; cv=none; b=Vsui/wB7tL0RhO0bva39X6yDoo94hEceb4Ggcc4agGYGzGsqLlRo1dTA5ksk0NyVKobn90F+lC0juWq0rRcVZWsqSKMTs78+LgFdCTu6AV3SBrrbCiehis62oKBFIHTd+e+W+x2/94sIPqZvI3Ai7axRPYyjy5RUqQfe/m9c3i4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720043012; c=relaxed/simple;
-	bh=MGxBKNhNKEAHOnOWdkVxlzJ5h9LGWEMpMkrlgwINVqs=;
+	s=arc-20240116; t=1720043014; c=relaxed/simple;
+	bh=f6Pfr5Vq6FUAVKa61YJT/hYqrClzFJDo1bmm3YyysQ8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RmjS61BYeA4EKE1pY/v5M00xFDC7EjJ6fsn3ylrbRqUa+bOf1UHdKyLjsXGWa1W1AkhZ7BTzuKR0Q3lVa+hfvm2Xr+VDA82l83r6s8948RHanEIXzW5+2sopny1k4/QzxwUmbqxV6/7ECYbB9NIMrcv1GDdL+9wjjWsr5d1vGYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.42
+	 MIME-Version; b=CbEOyZOMlV7WPdoRpcdrrkpXwKwrSGH8AT4coCG4boiPzelxyBPUNUlYjj9nwnBOPZkmvTN747iZrsgCEzuQSqPCXG2OrzHS8C/OhO5InVsu7qZCC22VKAWFh09pvGJlWWjRwwjhUzzDVgVPJRQf4PuIbM/7ov6Mcu6QgqM09DQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-25cd49906aeso3993fac.2
-        for <linux-wireless@vger.kernel.org>; Wed, 03 Jul 2024 14:43:31 -0700 (PDT)
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-70204bcd5eeso80654a34.2
+        for <linux-wireless@vger.kernel.org>; Wed, 03 Jul 2024 14:43:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720043010; x=1720647810;
+        d=1e100.net; s=20230601; t=1720043012; x=1720647812;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ffWOmyzGdQmn/1ElFIgBjJf1v30KLPcOBR1pd24Nq7I=;
-        b=EWI0zp8DFJraTLK9UweeBF6Y3ewq7zSMe6NC/tfBZvVtCwz+v+1b/EnnS0pKKTJTV/
-         2QYmIcRI8aqdRhRS5dp+hzaHliicxagIPdWiRGhwpZWeDEsfYWNOEqjK1t5faXYWvp+M
-         lT0ykxWX2Y25qWiRFz5Hh5IJBMZ5+ExsRWQ9B+7m+y726fPsLDj81OcTczV72WgJoGR2
-         7N4cP43ChPYsQRf42r39giEcPtVTT69Y/T/hC2jLZxf2gP2/CuC8/LNFDv4EZZYzL+QQ
-         kVEU3sZGLClpMZhykVzLCXG8ZVMlPgEMtwP1zAT1sGBYVaRr+h8NXP6Xi0C89aHmmplp
-         +GBw==
-X-Forwarded-Encrypted: i=1; AJvYcCVk1/Tu+sxLZf+f/V6VgVsxgh0nREUEFBVfXDJmOVcWr7/ovlYOzG94JWVAdRcqVdXAJFl1hWsWQBa+qRCHtxd0wy7/2r1uCid1ofgnbpU=
-X-Gm-Message-State: AOJu0YyQ6i2LN/kFpyphvMmWiw5aF00e3onuYGsJBsL50Gn2GLMaV/ng
-	Bjid3FZ+kYI4bmwFTdHi0MGnnZkR9OukNUHtqwDZazHaKrzCAq5c
-X-Google-Smtp-Source: AGHT+IEg9up3tNNH6BCf3a0LDbIZh3GhmduGK33TP3hQf2RrI2NvFjW6FtNxtHICn/l6idPmrPoZVw==
-X-Received: by 2002:a05:6830:8c5:b0:6f9:7373:9421 with SMTP id 46e09a7af769-7020774aa24mr11940398a34.3.1720043010569;
-        Wed, 03 Jul 2024 14:43:30 -0700 (PDT)
+        bh=RxSmN3RyGqtOMcnaemjIRPhc3UORadWI0djDIJjxFRQ=;
+        b=HlgL5PR5N9tc/piQySqYh95swPu0OV6cBZDIUm3M4VYCO38DFkVtnMWLFcaQTN6fWp
+         1pAfoVtLv/YPFjZ0cLw1+PxrtMmOQ8QpYhoa8e4EYagHkxFSwqo4zc8BSNIRGMEBNe0q
+         XtTrdn3pWHrxbgMqxR84F4d/89WXh9YouUMRYQGNteRcytF/E2BXbSGmggfNH66TydRT
+         JgI9a7jO7NBwHOyAqZY7xFpgQmUnjOT+t5I8lKohVKLPeOBFDhbu11FJRaPG1/CVOt9A
+         5J5vWhlpfkqc1kKXyqvkeqYWBGsdGxtDtEAe1qnp0/YcvlMxl8J8b7lUAksg0nuBBQIX
+         eqIg==
+X-Forwarded-Encrypted: i=1; AJvYcCXqQT7momwHUALetBmf3C30HNCBIjPCIzHKb7biR6Dj6f1dGwjRSYv1du+C7eEqHInEXfjhqoFUnXRg223w6WoQA9MvqRxV9BW/7Q4CjDE=
+X-Gm-Message-State: AOJu0YygmhBm+2X4d0LWHWq8hOTmkqvrvUZF7t/4B60sFeDsysbXKLE8
+	1gSAHzn9tzgy5xkzef+xg8XmQKt5K92phOsHf2Bx2cqSQT5w8fcO4vdB5Dyv
+X-Google-Smtp-Source: AGHT+IF/LGon8YWCTWFG30B8KA0KF181GSiy3MGe5Zpy91+M/CxwYtnXKl8o1WBcM0358pYIOT8lnw==
+X-Received: by 2002:a9d:7e8a:0:b0:700:e0e8:5e2 with SMTP id 46e09a7af769-70207560e89mr12825062a34.0.1720043012083;
+        Wed, 03 Jul 2024 14:43:32 -0700 (PDT)
 Received: from sean-ThinkPad-T450s.lan ([207.191.35.252])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-701f7b20953sm2111417a34.54.2024.07.03.14.43.29
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-701f7b20953sm2111417a34.54.2024.07.03.14.43.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jul 2024 14:43:29 -0700 (PDT)
+        Wed, 03 Jul 2024 14:43:31 -0700 (PDT)
 From: sean.wang@kernel.org
 To: nbd@nbd.name,
 	lorenzo.bianconi@redhat.com
@@ -61,9 +61,9 @@ Cc: sean.wang@mediatek.com,
 	mingyen.hsieh@mediatek.com,
 	linux-wireless@vger.kernel.org,
 	linux-mediatek@lists.infradead.org
-Subject: [PATCH 20/29] wifi: mt76: mt7925: report link information in rx status
-Date: Wed,  3 Jul 2024 14:42:25 -0700
-Message-Id: <b3322836779900612adf2e4ffb409c62ac25c627.1720042294.git.sean.wang@kernel.org>
+Subject: [PATCH 21/29] wifi: mt76: add def_wcid to struct mt76_wcid
+Date: Wed,  3 Jul 2024 14:42:26 -0700
+Message-Id: <c453d6b0045ce09fded4e255dc4673defa0dc2ec.1720042294.git.sean.wang@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1720042294.git.sean.wang@kernel.org>
 References: <cover.1720042294.git.sean.wang@kernel.org>
@@ -77,7 +77,8 @@ Content-Transfer-Encoding: 8bit
 
 From: Sean Wang <sean.wang@mediatek.com>
 
-report link information in rx status
+add def_wcid to struct mt76_wcid to allow per-link wcid to retrieve the
+struct ieee80211_sta structure.
 
 Co-developed-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
@@ -85,56 +86,50 @@ Co-developed-by: Deren Wu <deren.wu@mediatek.com>
 Signed-off-by: Deren Wu <deren.wu@mediatek.com>
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mac80211.c    | 5 +++++
- drivers/net/wireless/mediatek/mt76/mt76.h        | 1 +
+ drivers/net/wireless/mediatek/mt76/mt76.h        | 5 +++++
  drivers/net/wireless/mediatek/mt76/mt7925/main.c | 2 ++
- 3 files changed, 8 insertions(+)
+ 2 files changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
-index e8ba2e4e8484..bb291fe314fb 100644
---- a/drivers/net/wireless/mediatek/mt76/mac80211.c
-+++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
-@@ -1125,6 +1125,11 @@ mt76_rx_convert(struct mt76_dev *dev, struct sk_buff *skb,
- 	memcpy(status->chain_signal, mstat.chain_signal,
- 	       sizeof(mstat.chain_signal));
- 
-+	if (mstat.wcid) {
-+		status->link_valid = mstat.wcid->link_valid;
-+		status->link_id = mstat.wcid->link_id;
-+	}
-+
- 	*sta = wcid_to_sta(mstat.wcid);
- 	*hw = mt76_phy_hw(dev, mstat.phy_idx);
- }
 diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index 01646538087a..c0e529d0b3ef 100644
+index c0e529d0b3ef..f8431b889c78 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt76.h
 +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -350,6 +350,7 @@ struct mt76_wcid {
- 	u8 amsdu:1;
- 	u8 phy_idx:2;
- 	u8 link_id:4;
-+	bool link_valid;
+@@ -368,6 +368,8 @@ struct mt76_wcid {
+ 	struct mt76_sta_stats stats;
  
- 	u8 rx_check_pn;
- 	u8 rx_key_pn[IEEE80211_NUM_TIDS + 1][6];
+ 	struct list_head poll_list;
++
++	struct mt76_wcid *def_wcid;
+ };
+ 
+ struct mt76_txq {
+@@ -1258,6 +1260,9 @@ wcid_to_sta(struct mt76_wcid *wcid)
+ 	if (!wcid || !wcid->sta)
+ 		return NULL;
+ 
++	if (wcid->def_wcid)
++		ptr = wcid->def_wcid;
++
+ 	return container_of(ptr, struct ieee80211_sta, drv_priv);
+ }
+ 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index 173934ec1e71..c3ce57d36168 100644
+index c3ce57d36168..339888086076 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -809,6 +809,7 @@ static int mt7925_mac_link_sta_add(struct mt76_dev *mdev,
- 	mlink->wcid.tx_info |= MT_WCID_TX_INFO_SET;
- 	mlink->last_txs = jiffies;
- 	mlink->wcid.link_id = link_sta->link_id;
-+	mlink->wcid.link_valid = !!link_sta->sta->valid_links;
+@@ -894,6 +894,7 @@ mt7925_mac_sta_add_links(struct mt792x_dev *dev, struct ieee80211_vif *vif,
+ 		rcu_assign_pointer(msta->link[link_id], mlink);
+ 		mlink->sta = msta;
+ 		mlink->pri_link = &sta->deflink;
++		mlink->wcid.def_wcid = &msta->deflink.wcid;
  
- 	ret = mt76_connac_pm_wake(&dev->mphy, &dev->pm);
- 	if (ret)
-@@ -1865,6 +1866,7 @@ mt7925_change_vif_links(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 		mconf->link_id = link_id;
+ 		link_sta = mt792x_sta_to_link_sta(vif, sta, link_id);
+ 		mt7925_mac_link_sta_add(&dev->mt76, vif, link_sta);
+@@ -1867,6 +1868,7 @@ mt7925_change_vif_links(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
  		mconf->vif = mvif;
  		mlink->wcid.link_id = link_id;
-+		mlink->wcid.link_valid = !!vif->valid_links;
+ 		mlink->wcid.link_valid = !!vif->valid_links;
++		mlink->wcid.def_wcid = &mvif->sta.deflink.wcid;
  	}
  
  	if (hweight16(mvif->valid_links) == 0)
