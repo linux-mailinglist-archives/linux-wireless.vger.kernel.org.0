@@ -1,116 +1,127 @@
-Return-Path: <linux-wireless+bounces-9895-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9896-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E284925493
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 09:24:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30E619254C0
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 09:38:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 029901F24E29
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 07:24:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C78901F25735
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 07:38:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A8F131BDD;
-	Wed,  3 Jul 2024 07:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 325FA136E2A;
+	Wed,  3 Jul 2024 07:38:17 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E51134415
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Jul 2024 07:24:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+Received: from mail.nfschina.com (unknown [42.101.60.195])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id 011394DA14;
+	Wed,  3 Jul 2024 07:38:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=42.101.60.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719991489; cv=none; b=G+acrPiAd6+QRYSZIj1FWNgJzpdu+91Qhgkx+JjDLp1k7Em9xD41YicI6Y8RJaHw6haEcc1mnYNIpaPfn17bAOvVW7HBkQ+gXOFBXZhvpScQlS2FIv5oJG+UjDaq2INEe29mOG8zeimRTUOJcJ+4f0I9WdF3R7FhMD1gT+njAps=
+	t=1719992297; cv=none; b=Pf5yMfyu+tduwYBze8rQsBkgW7SJoBYYN+VF1EXfIXyjmdOTfoghIPS+D9G3D4XazHlBIHrmZtQMgTco4czOcQ6cRCyPkAZczDX3q5ZeHmg3HHNw/Bzde+MBhvNusFzSDylzfw/QUHpBNO4GKMtZ/4DRd4n7kobVVm2RZrJT1GY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719991489; c=relaxed/simple;
-	bh=AEy82RQVKwdoF1XRWzeaE3LayoayJxqZSOC3BPnZs/M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q4ERCqf+OiB5OXeSf+hammiclTdlLz3adBg6y6sAsugtXYGMlIL7xga3hnvcxmYqRENKVFtzVevEU5KDfcefwhwncUiAEBGX5dUVM2Vl8Pawik2QtZVqVFXRMbkoZbqma1XvNzWPsgwknrgA8F/BUW+BHk+oS9g6AhTUSPgrGsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1sOuM8-0002CJ-Cr; Wed, 03 Jul 2024 09:24:44 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1sOuM7-006nQf-Tu; Wed, 03 Jul 2024 09:24:43 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1sOuM7-00CPUX-2T;
-	Wed, 03 Jul 2024 09:24:43 +0200
-Date: Wed, 3 Jul 2024 09:24:43 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Brian Norris <briannorris@chromium.org>, Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	David Lin <yu-hao.lin@nxp.com>
-Subject: Re: [PATCH] [RFC] mwifiex: Fix NULL pointer deref
-Message-ID: <ZoT8uxpUvW-V7K-Y@pengutronix.de>
-References: <20240619070824.537856-1-s.hauer@pengutronix.de>
- <87wmmll5mf.fsf@kernel.org>
- <ZnSHcZttq79cJS3l@google.com>
- <ZnVCzx3-pvbcYQLm@pengutronix.de>
- <ZnmcvsXZHnQ36auI@gaggiata.pivistrello.it>
- <ZoQBYMRLVAwM0O0j@pengutronix.de>
- <ZoRku6FmNA8d8lkR@gaggiata.pivistrello.it>
+	s=arc-20240116; t=1719992297; c=relaxed/simple;
+	bh=5jagiKmtXakGpPGsAgYG6voU1kDL/YWcFy95b21TfZ0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type; b=bbC1h/M+vOGDJZiqtIUcJxo0Sadvxf9Ll+4fOwYxXbm6FryneVFXxUbsLcYfHkuTk/qd2MoVa1pHcV3yK8oy6fHxSkzs0kw2bx2UpFEje/QPu4hgEaWK6U/PFKI2AbgKxojAd8JneLSitmPkPOcEu3IFHcX+VHXkzORHmY4Fw10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com; spf=pass smtp.mailfrom=nfschina.com; arc=none smtp.client-ip=42.101.60.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nfschina.com
+Received: from [172.30.20.101] (unknown [180.167.10.98])
+	by mail.nfschina.com (MailData Gateway V2.8.8) with ESMTPSA id 2F029604B3B70;
+	Wed,  3 Jul 2024 15:38:07 +0800 (CST)
+Message-ID: <114387f0-02c3-b4bb-7b79-6589e790add3@nfschina.com>
+Date: Wed, 3 Jul 2024 15:38:04 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZoRku6FmNA8d8lkR@gaggiata.pivistrello.it>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.1
+Subject: Re: [PATCH wireless 1/9] wifi: cfg80211: avoid garbage value of
+ 'io_type' in brcmf_cfg80211_attach()
+Content-Language: en-US
+To: Arend Van Spriel <arend.vanspriel@broadcom.com>,
+ Kalle Valo <kvalo@kernel.org>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>, johannes.berg@intel.com,
+ kees@kernel.org, a@bayrepo.ru, marcan@marcan.st, quic_alokad@quicinc.com,
+ zyytlz.wz@163.com, petr.tesarik.ext@huawei.com, duoming@zju.edu.cn,
+ colin.i.king@gmail.com, frankyl@broadcom.com, meuleman@broadcom.com,
+ phaber@broadcom.com, linville@tuxdriver.com, linux-wireless@vger.kernel.org,
+ brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
+ linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+X-MD-Sfrom: suhui@nfschina.com
+X-MD-SrcIP: 180.167.10.98
+From: Su Hui <suhui@nfschina.com>
+In-Reply-To: <19076e6bec0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 02, 2024 at 10:36:11PM +0200, Francesco Dolcini wrote:
-> On Tue, Jul 02, 2024 at 03:32:16PM +0200, Sascha Hauer wrote:
-> > On Mon, Jun 24, 2024 at 06:20:14PM +0200, Francesco Dolcini wrote:
-> > > On Fri, Jun 21, 2024 at 11:07:27AM +0200, Sascha Hauer wrote:
-> 
-> ...
-> 
-> > > > 
-> > > > From 3357963821294ff7de26259a154a1cb5bab760cb Mon Sep 17 00:00:00 2001
-> > > > From: Sascha Hauer <s.hauer@pengutronix.de>
-> > > > Date: Tue, 18 Jun 2024 12:20:20 +0200
-> > > > Subject: [PATCH] mwifiex: Do not return unused priv in
-> > > >  mwifiex_get_priv_by_id()
-> > > > 
-> > > > mwifiex_get_priv_by_id() returns the priv pointer corresponding to the
-> > > > bss_num and bss_type, but without checking if the priv is actually
-> > > > currently in use.
-> > > > Unused priv pointers do not have a wiphy attached to them which can lead
-> > > > to NULL pointer dereferences further down the callstack.
-> > > > Fix this by returning only used priv pointers which have priv->bss_mode
-> > > > set to something else than NL80211_IFTYPE_UNSPECIFIED.
-> > > > 
-> > > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> 
-> Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> 
-> I guess you should send it as a proper patch?
+On 2024/7/3 12:42, Arend Van Spriel wrote:
+> On July 3, 2024 3:42:18 AM Su Hui <suhui@nfschina.com> wrote:
+>
+>> On 2024/7/2 23:39, Arend Van Spriel wrote:
+>>> On July 2, 2024 5:29:27 PM Kalle Valo <kvalo@kernel.org> wrote:
+>>>
+>>>> Arend Van Spriel <arend.vanspriel@broadcom.com> writes:
+>>>>
+>>>>> On July 2, 2024 3:57:27 PM Dan Carpenter <dan.carpenter@linaro.org>
+>>>>> wrote:
+>>>>>
+>>>>>> On Tue, Jul 02, 2024 at 08:24:44PM +0800, Su Hui wrote:
+>>>>>>> brcmf_fil_cmd_int_get() reads the value of 'io_type' and passes 
+>>>>>>> it to
+>>>>>>> brcmf_fil_cmd_data_get(). Initialize 'io_type' to avoid garbage
+>>>>>>> value.
+>>>>>>
+>>>>>> Since you're going to be resending anyway, please delete the space
+>>>>>> char
+>>>>>> from the start of the line.
+>>>>>>
+>>>>>> It's weird that brcmf_fil_cmd_data_get() uses the uninitialized 
+>>>>>> data.
+>>>>>> It looks like it just goes to great lengths to preserve the original
+>>>>>> data in io_type...  So it likely is harmless enough but still a
+>>>>>> strange
+>>>>>> and complicated way write a no-op.
+>>>>>
+>>>>> Not sure if it helps, but I tried to explain the reason in 
+>>>>> response to
+>>>>> patch 0 (cover letter).
+>>>>
+>>>> Would it make more sense to have just one patch? It's the same issue
+>>>> anyway.
+>>>
+>>> Yes, but I would solve it in brcmf_fil_* functions (fwil.[ch]).
+>> It seems you will send a new patch to solve this issue.
+>> And I guess there is no need for me to resend a v2 patchset or just one
+>> patch.
+>
+> I am not entirely sure. If both gcc and clang would warn about using 
+> uninitialized data I would be fine with these patches rolled into one.
+It's sad that gcc wouldn't warn about this uninitialized data. And my 
+gcc version
+is  10.2.1 20210110 (Debian 10.2.1-6) .
+By the way, I found a funny thing about this uninitialized warning.
+Just with the patch as follows , gcc will give a uninitialized warning.
 
-Yes, I just did this.
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
+@@ -130,6 +130,7 @@ static int brcmf_c_download_blob(struct brcmf_if *ifp,
+         u32 status;
+         s32 err;
 
-Sascha
++       err = brcmf_fil_iovar_int_get(ifp, statvar, &status);
+         brcmf_dbg(TRACE, "Enter\n");
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+         chunk_buf = kzalloc(struct_size(chunk_buf, data, MAX_CHUNK_LEN),
+
+It seems that gcc only issue this uninitialized warning in some sitution.
+I think it's worth a patch to fix this uninitialized problem.  :)
+
+Regards,
+Su Hui
+
 
