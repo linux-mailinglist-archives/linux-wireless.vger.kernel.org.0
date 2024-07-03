@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-9915-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9916-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 820A492579E
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 12:00:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 305AE92579F
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 12:00:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BD311F27060
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 10:00:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1E9C1F26F7C
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 10:00:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ACC014372E;
-	Wed,  3 Jul 2024 09:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DCFC143C5D;
+	Wed,  3 Jul 2024 09:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ck9G0m0n"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cf+ik32M"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA3013DDA3
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Jul 2024 09:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32541143C42
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Jul 2024 09:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720000777; cv=none; b=qcG8VAqrSK5feYZWnt/hwNRaSBoUoEEpdkko2jWeYkGKcypgyrEFDl4WquqOg/YiMLN7neNF0WxqDwxUysAJ6bpvJwRXP4A/Wh6IcUJAoSFjj7+wLgn9gx2bumd0kHHlBIriVxMuS2JelG0LiP/8RlsbSenxDr5Hv9KcLKILzFU=
+	t=1720000779; cv=none; b=kTt2VAQ9XxRpM96T/qBc2/q1EMWD8xN7CqmSTd5txWl4mobN+9GKs6hKGAcNnHxlYZRHS/WJvZujIBOCIBQ5eqVOLZAZjNPa7r169qhDJL4guS1s7dspYjn/Y5/Zzh+IwC79PtpBlmggzH84v1ArU92V3E2EFE7jWlYvF+hIHZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720000777; c=relaxed/simple;
-	bh=Pt86XH9+qh0ajNN0zkt05P6bZ3aKofLa/zqNnn1/kC8=;
+	s=arc-20240116; t=1720000779; c=relaxed/simple;
+	bh=6JEg2PPX93ibgwr62EfDVBEZRiy1dYHN2k+Mg+6wQpE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XcQY6kxMbUG4fYGxwZcRQC4t+oyT7cD1B6a6SvplR2vV0JOZZb/pQCfqNbDhWqYyY8ScEWcS4UKanhalV//4DIrvGRNSROJhfBDvE/3pHqPoR0h43665s+DZwXaXeweYVqazoPGSEFoYo8aQusoYjHsEvhsZiUb6QSRGJOT2HRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ck9G0m0n; arc=none smtp.client-ip=192.198.163.11
+	 MIME-Version; b=kJhALfrMUhX+kksXs1YFnU1ZQbxH6uFwwAPp+w9IsjCcr+Gm082CClj9ZBGrOZqoeA+m6nLIepXnFDN8UreDRbgMoHl18/a2zr6YnsL/rib4MT6gOPPKunRH4YjA5pdaP79UyXPiMDGQ+E692UayfLwsTnweTk12Cszx+IADMps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cf+ik32M; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720000776; x=1751536776;
+  t=1720000778; x=1751536778;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Pt86XH9+qh0ajNN0zkt05P6bZ3aKofLa/zqNnn1/kC8=;
-  b=ck9G0m0nf+quDN9duP/z7jjV+EnUbBUNroltvJbkDo8AXKUCl1KUzoM1
-   qjx/248BZ8BTOxYBlyFrbVJ3+mFYKQuHH58ibf8XR2Xr3LN9w0rTwsJYN
-   J0dH8mLU3m2Dm+2Cd3aYkrHp/frgA42cpcP+nDSxRVVR+VFdugFmmgwL1
-   VWCi99272CKfbGoMswp01nTqTAcUMKoKLWIQI6R3fXwsR1ZX7rqnmxJQT
-   9CD+MQCTKpuk+iDjVDFY+8q5lWtNgJAHyrouRgJ7rrAP/FplpFCY44gTJ
-   ORWm87r2y+I5VDT1sEvFoDtiEVsRaVo/0kKSAkJO2K10eUS3VqehWZkmP
-   Q==;
-X-CSE-ConnectionGUID: 4+/jL3jeRpeBancWthtKxw==
-X-CSE-MsgGUID: oq584hOUQa+P1rbhDxUzQQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="27837559"
+  bh=6JEg2PPX93ibgwr62EfDVBEZRiy1dYHN2k+Mg+6wQpE=;
+  b=cf+ik32MCdtIsQKgXOvNe4kmG2VhFvjKKH8tnCIkTjta/KxlKlZ2qcUd
+   N7fQzrSD8X4YFNX6dwKy1j4MKC1HF7MsMj5NFK+yvlLUamL4B4Tux9j2b
+   nsWLyjDnsz/m47551eP9FnbZfsaNpuU5JwTtCHuK+HWAo+Dfgq5pkLjYs
+   VDiim9iQjxaZlgBykF7kNtXtKKFgpxZHz/nsTpAHkAVqrzFwjyd9CHkzd
+   jB7X23J13FN2wuLyUYP6NfqzuBxfG35w9MujKTIKjwNpGcQ6XdOrWkkkE
+   PkTeCRKuDJi/Sq/vwejXJ7KsczsyUJjvoyD9e0BFbz7xfdb7/FCsoRDh4
+   g==;
+X-CSE-ConnectionGUID: cD3xgMyBQFq3ooYy+eSZBw==
+X-CSE-MsgGUID: aJDNhs4sQB29tzosRgAaFQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="27837563"
 X-IronPort-AV: E=Sophos;i="6.09,181,1716274800"; 
-   d="scan'208";a="27837559"
+   d="scan'208";a="27837563"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2024 02:59:36 -0700
-X-CSE-ConnectionGUID: J0+R3V8vQfeKkNu2R35fLQ==
-X-CSE-MsgGUID: NIaWxKTfRrCsiMNIfG7jkA==
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2024 02:59:37 -0700
+X-CSE-ConnectionGUID: khY6YscRTyCcqA/UkzPuVQ==
+X-CSE-MsgGUID: 4XGpvKs3TT+NXR1ElrnUbA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.09,181,1716274800"; 
-   d="scan'208";a="45987850"
+   d="scan'208";a="45987863"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2024 02:59:34 -0700
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2024 02:59:36 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 14/18] wifi: iwlwifi: document PPAG table command union correctly
-Date: Wed,  3 Jul 2024 12:59:02 +0300
-Message-Id: <20240703125541.2ff5ee61e9ec.I3a1299061e472490c38a9fff4bea319ba20f313a@changeid>
+Subject: [PATCH 15/18] wifi: iwlwifi: fw: api: fix missing RX descriptor kernel-doc
+Date: Wed,  3 Jul 2024 12:59:03 +0300
+Message-Id: <20240703125541.d7adf8b235fe.I91f75e292d1648f61e5e341e1fe58096f858853d@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240703095906.833028-1-miriam.rachel.korenblit@intel.com>
 References: <20240703095906.833028-1-miriam.rachel.korenblit@intel.com>
@@ -79,34 +79,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-This is not documented correctly, fix it.
+The v1/v3 remaining bits are not annotated in kernel-doc,
+fix that.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/api/power.h | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/api/rx.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/power.h b/drivers/net/wireless/intel/iwlwifi/fw/api/power.h
-index 19eb6008fe4b..6e6a92d173cc 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/power.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/power.h
-@@ -569,9 +569,12 @@ enum iwl_ppag_flags {
-  * @v2: version 2
-  * version 3, 4, 5 and 6 are the same structure as v2,
-  *	but has a different format of the flags bitmap
-- * @flags: values from &enum iwl_ppag_flags
-- * @gain: table of antenna gain values per chain and sub-band
-- * @reserved: reserved
-+ * @v1.flags: values from &enum iwl_ppag_flags
-+ * @v1.gain: table of antenna gain values per chain and sub-band
-+ * @v1.reserved: reserved
-+ * @v2.flags: values from &enum iwl_ppag_flags
-+ * @v2.gain: table of antenna gain values per chain and sub-band
-+ * @v2.reserved: reserved
-  */
- union iwl_ppag_table_cmd {
- 	struct {
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h b/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h
+index 8bd85ef90052..691c879cb90d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/rx.h
+@@ -710,7 +710,15 @@ struct iwl_rx_mpdu_desc {
+ 	__le32 reorder_data;
+ 
+ 	union {
++		/**
++		 * @v1: version 1 of the remaining RX descriptor,
++		 *	see &struct iwl_rx_mpdu_desc_v1
++		 */
+ 		struct iwl_rx_mpdu_desc_v1 v1;
++		/**
++		 * @v3: version 3 of the remaining RX descriptor,
++		 *	see &struct iwl_rx_mpdu_desc_v3
++		 */
+ 		struct iwl_rx_mpdu_desc_v3 v3;
+ 	};
+ } __packed; /* RX_MPDU_RES_START_API_S_VER_3,
 -- 
 2.34.1
 
