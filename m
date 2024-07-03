@@ -1,146 +1,107 @@
-Return-Path: <linux-wireless+bounces-9937-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9938-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFA4C9267F3
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 20:16:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DAF99268A9
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 20:57:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 756D91F211D4
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 18:16:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08C9A28E475
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 18:57:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E586218411C;
-	Wed,  3 Jul 2024 18:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF2A188CB4;
+	Wed,  3 Jul 2024 18:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kANRCXyE"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="jRq6LLdM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB9E185093
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Jul 2024 18:16:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE911862A8
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Jul 2024 18:56:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720030583; cv=none; b=MXITTh2XjarS3RiLSbkOcU+Ba7LhQVqfFxZXkqiPY4tXLcNfP13aBnJjRqB1CnvgL+PpjLhXBo6+5UUZSFRkJKzxx38+R0Pj0Eb8uXKK1tetj2oLZH26zlxrujxWbTlYOC6r5P/hkZlspvZnvb61PzrUaJ+rqVthTtp/T3IsF8A=
+	t=1720033023; cv=none; b=DMW8PleXAMgPg7uT06+ZzrmDEhXlz8sKbXDi4rWLXZaROACI9PQi6qM3DlU7d3IYjqCmlkfur0QbpWIyYTkd5F1kwWNAQ3usmehvoESn+QhrbZRDB2OcLm99PCUbpPePZq5QLUlr2TqsMAUR9oyh0+HUvQMdZ+A0hkF90YHen0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720030583; c=relaxed/simple;
-	bh=INhR2fa0yGgxgtZltkVdypg5VG4+m2mcYKfjkCtHMC0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MFf59tzdgsSFANeZZ6tjF4nA68CVnEc9jeyqrBuaotRhIouwSEqqvkSy/gtcf8DEu2Mej3QK5c0MbvQ6YY45CqwM9NFr6vdzSpjJSwH0ENHK2psDnksQ34F1wxfYf4haIv3BqcOcCtjwtNaHcvQWfcJWDWuFsnNeVUAWCbbUpa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kANRCXyE; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-52e96d4986bso1239631e87.3
-        for <linux-wireless@vger.kernel.org>; Wed, 03 Jul 2024 11:16:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720030580; x=1720635380; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=e40U7mcSWYdfEv2YmbTar69IueSBy3KQw/j2MAMkE0Q=;
-        b=kANRCXyEpOf3RlTmkqcpEsCKyXl2sQQVUPqi2jYvqHAJRoT3YZRYTDwkQs2W0/0TG0
-         1KLrxXge0D7daBjwVvfonrCCogCDP4bJvXztl2IVdKMtnL0+MDKZ0vMcEaDJpuHSMUBu
-         Yxdn3oa+aLkBhe4IqKag5SYNWvQrA9sWcHUGPyjqcXkLFOGF2f62hGbexhX+FsxP1tHG
-         m6yLUYXB2PWuPnW7rgPcEb+dsqanGUdK5aROyRJEtp2ztXxbyegBRIMYCsRjtWXeIYDG
-         1Hsd9nH+2HFHKw7sj7OHB+jjWdWrtyF87z7r1gmgSA45Is8YCuco8g4SRxIymsHSgZfo
-         TSng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720030580; x=1720635380;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=e40U7mcSWYdfEv2YmbTar69IueSBy3KQw/j2MAMkE0Q=;
-        b=PBojwIApmQ3TV850zas6iEl9G+nr6mopUHENYMJm483R4j0tsxkxoP+RhvFe87+Qks
-         S7vbjb5u+2LMacARArJ0OY0m0gtRkJ2+cuzD1jCoR27WBANdDdNW+5++l3zYVAtTowTr
-         vCPU75huy34eLaS55F9zsYWaya5Zr5mKZ6/ynXtecZTM3D2Y+prEv/yRODOYFeLalHD5
-         /e8AKHzLbj+RrezkmiTepfAXhPj8u1IOSbPZjvC1OY0YPF9bP6E1kPIcreFRUK6km28F
-         VpM2uB24Awrw37LFcdauoiraPG3Hk3sMvC1la2Lyz3171wV95Aa4rt5OBE/Pp/YNSJ5Z
-         f67g==
-X-Forwarded-Encrypted: i=1; AJvYcCXws7BAKl3jYEShtzAkUuXxWBddMxvNLptnPXxsAHjK5jTCKut0tL0em1Py2QcziACKLzWkM2iPVZCDhepOiiAUXy+8yFOWJuHI2SebBOE=
-X-Gm-Message-State: AOJu0YzhTMbtI1LmkJbgTozTroieEHBNSI0OG+ZR7pyHxI50zZF32AI3
-	eTb0Jk/GxVmpyEb4MlqTlUarVTLlAa5UxmKYDlt9G6qAG4/HKLJTivIbWg==
-X-Google-Smtp-Source: AGHT+IFLjV2rEdsgLCpqlW5qwKxf0z2pQDN8I/EMC2I0d3l4UcX2lrt6expAxythTzgQAJQWOUIofQ==
-X-Received: by 2002:a05:6512:3b81:b0:52c:dc25:d706 with SMTP id 2adb3069b0e04-52e8270172cmr8409306e87.52.1720030579751;
-        Wed, 03 Jul 2024 11:16:19 -0700 (PDT)
-Received: from shift.daheim (p200300d5ff30930050f496fffe46beef.dip0.t-ipconnect.de. [2003:d5:ff30:9300:50f4:96ff:fe46:beef])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-58cd108c84bsm1211462a12.47.2024.07.03.11.16.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jul 2024 11:16:19 -0700 (PDT)
-Received: from localhost.daheim ([127.0.0.1])
-	by shift.daheim with esmtp (Exim 4.97)
-	(envelope-from <chunkeey@gmail.com>)
-	id 1sP5Pz-000000001xA-1nyD;
-	Wed, 03 Jul 2024 20:16:18 +0200
-Message-ID: <19cb41af-6197-4977-b8e8-9c9bcdb3dc61@gmail.com>
-Date: Wed, 3 Jul 2024 20:16:18 +0200
+	s=arc-20240116; t=1720033023; c=relaxed/simple;
+	bh=QDFXI2YhPBCubJ/5lIQiqgoFW4BcyaURvmnEnwDkpFI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=CPE7n4b9gbMv7PGcEZiKtTtG0h7RXRgsUz11gxU73RafaJiO0cs8tSeK4EWSN/hBmCqmGErW3r1yyJTaqAjbLF22rIbnM2ff0d0PrQqe6c07MJrr5JIRFB+qgViq1yyPKfcR0JjcQlWXrNuOwvQcMATJEV3cElVxAwkBwFVEBo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=jRq6LLdM; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=QDFXI2YhPBCubJ/5lIQiqgoFW4BcyaURvmnEnwDkpFI=;
+	t=1720033020; x=1721242620; b=jRq6LLdM/DEYQ1uHXOgujmOhbt+6LXy/J5I41y1MoyJ1bVx
+	SZ1srDqNyzdxIUDD2DICXbZ6qH/NAqEPVB/D6lahWD7ZdbFnYQWajfp6arDKUD4xsVrJo/2etWzy+
+	IHfNXUqdv2R9jZQIXggznaJP0zUs6uvH1c8IgGAynpHUoutd0aQACwXelvh0gb44a23QhUDtWZtUj
+	CCMIT7yDah4bCJxNKZUAqwR4o6hdmnqGlbNcloS68XLCOguDRejxxgp+h6AKLXlO+pNthgwe0fVvK
+	pP1t1NWXX0TlnMx3wIAVPbRXd0Ko0ColpDfyubTrjXaMAu2GvsvFalDeFguMxgnQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1sP59x-0000000A5BY-3Q6Z;
+	Wed, 03 Jul 2024 20:56:54 +0200
+Message-ID: <938f9ad2e93299a3dd73577cdcfb40d4ac14aac2.camel@sipsolutions.net>
+Subject: Re: [REGRESSION] wiphy_register fails for mvm (AX211)
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Christian Lamparter <chunkeey@gmail.com>, Alexander Wetzel
+	 <Alexander@wetzel-home.de>, miriam.rachel.korenblit@intel.com
+Cc: ilan.peer@intel.com, linux-wireless@vger.kernel.org
+Date: Wed, 03 Jul 2024 20:56:52 +0200
+In-Reply-To: <19cb41af-6197-4977-b8e8-9c9bcdb3dc61@gmail.com>
+References: 
+	<20240618200104.3213638262ef.I2a0031b37623d7763fd0c5405477ea7206a3e923@changeid>
+	 <20240702104128.26394-1-Alexander@wetzel-home.de>
+	 <19cb41af-6197-4977-b8e8-9c9bcdb3dc61@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3 (3.52.3-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] wiphy_register fails for mvm (AX211)
-To: Alexander Wetzel <Alexander@wetzel-home.de>,
- miriam.rachel.korenblit@intel.com
-Cc: ilan.peer@intel.com, johannes.berg@intel.com, johannes@sipsolutions.net,
- linux-wireless@vger.kernel.org
-References: <20240618200104.3213638262ef.I2a0031b37623d7763fd0c5405477ea7206a3e923@changeid>
- <20240702104128.26394-1-Alexander@wetzel-home.de>
-Content-Language: de-DE
-From: Christian Lamparter <chunkeey@gmail.com>
-In-Reply-To: <20240702104128.26394-1-Alexander@wetzel-home.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 
-On 7/2/24 12:41 PM, Alexander Wetzel wrote:
-> The commit 5c38bedac16a ("wifi: iwlwifi: mvm: unify and fix interface
-> combinations") breaks mvm hard. wlan interface can't be created and even
-> rmmod fails.
-> 
-> On driver load I get:
-> 
-> WARNING: CPU: 5 PID: 1358 at net/wireless/core.c:689 wiphy_register+0x8ee/0x920 [cfg80211]
-ran into the same issue. Debugging revealed that the " - 1" is the problem
-because wiphy_verify_combinations checks if the specified limits in n_limits.max
-adds up to at least max_interfaces (=3), which isn't true anymore with the
-" - 1" as the ieee80211_iface_limit with NL80211_IFTYPE_P2P_DEVICE is missing.
+On Wed, 2024-07-03 at 20:16 +0200, Christian Lamparter wrote:
+> On 7/2/24 12:41 PM, Alexander Wetzel wrote:
+> > The commit 5c38bedac16a ("wifi: iwlwifi: mvm: unify and fix interface
+> > combinations") breaks mvm hard. wlan interface can't be created and eve=
+n
+> > rmmod fails.
+> >=20
+> > On driver load I get:
+> >=20
+> > WARNING: CPU: 5 PID: 1358 at net/wireless/core.c:689 wiphy_register+0x8=
+ee/0x920 [cfg80211]
+> ran into the same issue. Debugging revealed that the " - 1" is the proble=
+m
+> because wiphy_verify_combinations checks if the specified limits in n_lim=
+its.max
+> adds up to at least max_interfaces (=3D3), which isn't true anymore with =
+the
+> " - 1" as the ieee80211_iface_limit with NL80211_IFTYPE_P2P_DEVICE is mis=
+sing.
+>=20
+> Not sure, if this needs fixing in cfg80211 or iwlwifi. But I can confirm =
+that this
+> patch "works" (not sure if it's correct/intended though).
+>=20
 
-Not sure, if this needs fixing in cfg80211 or iwlwifi. But I can confirm that this
-patch "works" (not sure if it's correct/intended though).
----
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 60bfe42d5386..e40f993b17fd 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -59,13 +59,13 @@ static const struct ieee80211_iface_combination iwl_mvm_iface_combinations[] = {
-  		.num_different_channels = 2,
-  		.max_interfaces = 3,
-  		.limits = iwl_mvm_limits,
--		.n_limits = ARRAY_SIZE(iwl_mvm_limits) - 1,
-+		.n_limits = ARRAY_SIZE(iwl_mvm_limits),
-  	},
-  	{
-  		.num_different_channels = 1,
-  		.max_interfaces = 3,
-  		.limits = iwl_mvm_limits_ap,
--		.n_limits = ARRAY_SIZE(iwl_mvm_limits_ap) - 1,
-+		.n_limits = ARRAY_SIZE(iwl_mvm_limits_ap),
-  	},
-  };
----
+I sent the exact same patch yesterday :)
 
-relevant iw phy dump
+https://lore.kernel.org/20240702130001.8c871a3f0b5a.I08a6542f52f63c5bd66bf3=
+feb09e1998ce7c60e5@changeid/
 
-         valid interface combinations:
-                  * #{ managed } <= 1, #{ P2P-client, P2P-GO } <= 1, #{ P2P-device } <= 1,
-                    total <= 3, #channels <= 2
-                  * #{ managed } <= 1, #{ AP, P2P-client, P2P-GO } <= 1, #{ P2P-device } <= 1,
-                    total <= 3, #channels <= 1
+We have a version that has another array entry for NAN support and then
+subtracts 1 here to add it conditionally again later etc., and this got
+mixed up when sending out the patch.
 
-
-Cheers,
-Christian
-
+johannes
 
