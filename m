@@ -1,95 +1,105 @@
-Return-Path: <linux-wireless+bounces-9881-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9882-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16A22924D32
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 03:42:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1EC0924FDF
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 05:43:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4DA21F23426
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 01:42:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BAA31F22431
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 03:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC92B1373;
-	Wed,  3 Jul 2024 01:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B04A7138E;
+	Wed,  3 Jul 2024 03:43:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H5sqT3VX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.nfschina.com (unknown [42.101.60.195])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id 58CA51FB4;
-	Wed,  3 Jul 2024 01:42:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=42.101.60.195
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D1522318
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Jul 2024 03:43:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719970926; cv=none; b=GfqIjeh0II1/TcimWm8KLHdAZ00WhmiKB1KYC2FmzY1aLxu9bZnJrCWe1KZXX7y0Lkcf5tcfYHY8borugcHKT5AymNKF9jWJZDFQq/gdwzFGssK55BYm59mxKG5UAluWWNCL4yD86Xnv4PKQtnaYQWW0z2xabfor10xecbI2Gpc=
+	t=1719978209; cv=none; b=LmfO4UrHqx+6Bp1YSgCpzIDS6y27AF2jiSR3q5s1NY4ZpkzbuAFybR9XZBQOCFxnSWIgBpGen3jBFmoZl8132WMFFF/G5auJD4I3D5cWievASsPnquj3YWBfdQRsCACRgsDBKi7Sf6mrrgUYGY41gmC7dvDqVMmAuap+VZyVAgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719970926; c=relaxed/simple;
-	bh=/0w+i+Lr65ap+CUE0bx3iXZmGu8G7R70ai0Z4Ilzjm0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type; b=ZxLQj4DWGiSANux5JNSndL3KsL3Jp9TKBNyyl9Kwl8AUkv6ZDq5ETAn6lvJakXjnCdXOMGlqV2sU+nbVy37uEVeNnaBeU8Q1oHRgwxdthBtf4JNYdjWsMQMXqnu9aD+DaPBOc2FZkyzlv83L0aNs/o44VZnCGmkMkuvitJg45yY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com; spf=pass smtp.mailfrom=nfschina.com; arc=none smtp.client-ip=42.101.60.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nfschina.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nfschina.com
-Received: from [172.30.20.101] (unknown [180.167.10.98])
-	by mail.nfschina.com (MailData Gateway V2.8.8) with ESMTPSA id 515B16047B688;
-	Wed,  3 Jul 2024 09:41:46 +0800 (CST)
-Message-ID: <36cef2a8-10a3-928a-d962-3599333d9ac8@nfschina.com>
-Date: Wed, 3 Jul 2024 09:41:45 +0800
+	s=arc-20240116; t=1719978209; c=relaxed/simple;
+	bh=BezaXiQpa3NdJg/JXQXhGoVWm5LPRBMNB73iP579iMU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=g0hJVxbhNcC4I/JJ8YHkh5nVETVomTkRdUxM76y0Nyf0tJTMj0qUCGiqhmCBiF7FZ9aYj32B5WZGA6E8FCzBEblwSopH4phZy4fZlfvLp1qCy/oJbt/bhbi01rICk/It7PTHxCxF+L2oIUDY3Wy1biGpFToSjP/kKr6eM55XIj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H5sqT3VX; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1719978207; x=1751514207;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=BezaXiQpa3NdJg/JXQXhGoVWm5LPRBMNB73iP579iMU=;
+  b=H5sqT3VX+7MnQFQP+oo6sjlbrj5HVKR55v/b6viYZaDwVpAhmMfB2qH6
+   mtMsUYFieCuCtlwU4B0fO2D03FamtNw8+YQKjotPf+b8YRXX9FFTAMF8T
+   ZOg7xdg35YDhtYmPlBh+f3GQYLjuhT0j59tVzAEW689aSatWCPTel64n5
+   WPceKm38O0Uca47DAeoavQkxq86pfCoJA4ATYBhKe7KKThWlI4kpyrDvL
+   GRm13h6gFCQi/uLOVdsFVcN6Xd2CiV5g3tcTopueHBdkjDEHY4bEgYdNB
+   DugSYyRwt084hYey+5/F+6s5EoYzc5jctcnQUic0fHoSKn2B6sr44qJZ5
+   Q==;
+X-CSE-ConnectionGUID: aNSRAKN7QYesEvKzFmggRw==
+X-CSE-MsgGUID: G/ZFOA8ZQRC+WfH/4LEiaQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="17304035"
+X-IronPort-AV: E=Sophos;i="6.09,181,1716274800"; 
+   d="scan'208";a="17304035"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2024 20:43:27 -0700
+X-CSE-ConnectionGUID: K24/yB30QwWDR48rwUuXsw==
+X-CSE-MsgGUID: 8mUg9KFUSyyZ/cDxgpoNog==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,181,1716274800"; 
+   d="scan'208";a="51291055"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2024 20:43:25 -0700
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH 0/5] wifi: iwlwifi: fixes - 03-07-2024
+Date: Wed,  3 Jul 2024 06:43:12 +0300
+Message-Id: <20240703034317.595020-1-miriam.rachel.korenblit@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.1
-Subject: Re: [PATCH wireless 1/9] wifi: cfg80211: avoid garbage value of
- 'io_type' in brcmf_cfg80211_attach()
-Content-Language: en-US
-To: Arend Van Spriel <arend.vanspriel@broadcom.com>,
- Kalle Valo <kvalo@kernel.org>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>, johannes.berg@intel.com,
- kees@kernel.org, a@bayrepo.ru, marcan@marcan.st, quic_alokad@quicinc.com,
- zyytlz.wz@163.com, petr.tesarik.ext@huawei.com, duoming@zju.edu.cn,
- colin.i.king@gmail.com, frankyl@broadcom.com, meuleman@broadcom.com,
- phaber@broadcom.com, linville@tuxdriver.com, linux-wireless@vger.kernel.org,
- brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
- linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-X-MD-Sfrom: suhui@nfschina.com
-X-MD-SrcIP: 180.167.10.98
-From: Su Hui <suhui@nfschina.com>
-In-Reply-To: <1907419a888.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-On 2024/7/2 23:39, Arend Van Spriel wrote:
-> On July 2, 2024 5:29:27 PM Kalle Valo <kvalo@kernel.org> wrote:
->
->> Arend Van Spriel <arend.vanspriel@broadcom.com> writes:
->>
->>> On July 2, 2024 3:57:27 PM Dan Carpenter <dan.carpenter@linaro.org> 
->>> wrote:
->>>
->>>> On Tue, Jul 02, 2024 at 08:24:44PM +0800, Su Hui wrote:
->>>>> brcmf_fil_cmd_int_get() reads the value of 'io_type' and passes it to
->>>>> brcmf_fil_cmd_data_get(). Initialize 'io_type' to avoid garbage 
->>>>> value.
->>>>
->>>> Since you're going to be resending anyway, please delete the space 
->>>> char
->>>> from the start of the line.
->>>>
->>>> It's weird that brcmf_fil_cmd_data_get() uses the uninitialized data.
->>>> It looks like it just goes to great lengths to preserve the original
->>>> data in io_type...  So it likely is harmless enough but still a 
->>>> strange
->>>> and complicated way write a no-op.
->>>
->>> Not sure if it helps, but I tried to explain the reason in response to
->>> patch 0 (cover letter).
->>
->> Would it make more sense to have just one patch? It's the same issue
->> anyway.
->
-> Yes, but I would solve it in brcmf_fil_* functions (fwil.[ch]).
-It seems you will send a new patch to solve this issue.
-And I guess there is no need for me to resend a v2 patchset or just one 
-patch.
+Hi,
+
+A few bugfixes from our tree.
+
+Thanks,
+Miri
+
+Daniel Gabay (1):
+  wifi: iwlwifi: properly set WIPHY_FLAG_SUPPORTS_EXT_KEK_KCK
+
+Emmanuel Grumbach (2):
+  wifi: iwlwifi: mvm: don't wake up rx_sync_waitq upon RFKILL
+  wifi: iwlwifi: mvm: don't send an ROC command with max_delay = 0
+
+Johannes Berg (1):
+  wifi: iwlwifi: mvm: avoid link lookup in statistics
+
+Miri Korenblit (1):
+  wifi: iwlwifi: mvm: avoid NULL dereference
+
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c   | 14 +++++++-------
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c    |  8 +++-----
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c     | 15 +++++++--------
+ .../net/wireless/intel/iwlwifi/mvm/time-event.c | 17 ++++++++++++++---
+ 4 files changed, 31 insertions(+), 23 deletions(-)
+
+-- 
+2.34.1
+
 
