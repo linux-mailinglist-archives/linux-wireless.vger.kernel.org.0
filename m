@@ -1,71 +1,71 @@
-Return-Path: <linux-wireless+bounces-9906-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9907-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A889925795
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 12:00:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 793B7925796
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 12:00:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E52C5283FD2
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 10:00:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E085284087
+	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 10:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D07D61422C9;
-	Wed,  3 Jul 2024 09:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76422142651;
+	Wed,  3 Jul 2024 09:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g5ZKAOuJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Lgtk2vg/"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1CB0155335
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Jul 2024 09:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC45158DB8
+	for <linux-wireless@vger.kernel.org>; Wed,  3 Jul 2024 09:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720000764; cv=none; b=ATCwVWAz2odR5ArIYwxXVNMMwALxDQaWYAbJ4qk19rPTDl5e5z5DgSOeLmPQWvj1rhOPxFsJ26Ve8tosIMzKRCTge8p0AjCLtPu1fsWp5BXHn3BYOLX94vfGCyW+EB0RFk+eLlTa5W6tUakZ7KDRc5MNSAp2I3G/6wTBo1QklYs=
+	t=1720000766; cv=none; b=k5hCLAZZyaZgvfe5voCwzUFmGpX2gHX+b0dHv1VWWqbH2elmsAu7AxCpCio4QVYUIXq3igZUNbhrkfGzCVJbC8LOdTxjj18R8jvmpR4dNHcmqaqWLFzWjO51FhUIox8LjZOXq/HTJoAKOeQ/KL8LimZkVSPyOMuoGb6+P+NOMq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720000764; c=relaxed/simple;
-	bh=WLue8UanZux3fPQZr2PgHN5ljOA3ldFplAn3CSwiJVU=;
+	s=arc-20240116; t=1720000766; c=relaxed/simple;
+	bh=4eXljENTFCg25APOo9p6TKb4gi+WQIC6KnkVCraOmgA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RJpWes94XuaWRqA/ULz3Ki9QGiO2E6iLAcfyLfp7XQ1cw4AXvFrjYIE+O/ZBEwkVLqD3ZHYI6WZIP8s6bmoee6qj2LOAKlWoohdHsB0xXNsubzWNU38YPs+e3EpD7zzGmjkQehE+hkA5yzqunRxkZ0D4e2i1blnGYTIoLyxr/jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g5ZKAOuJ; arc=none smtp.client-ip=192.198.163.11
+	 MIME-Version; b=vCzKMcIsxsxn9T9fheyiEuixJbLmTm7ugvg7cg4/XundpIqFe6If2YRXL5KeZE/GjMU+8bPuxVRru8eDwD9dJs9toowUEJYL9TJu/Q3jYaFJvr61wIsKsvkhkrqMORCheFsWrxm9k04aqf0CxmCeCfSClNMUf7Vus0Z4LXXhx1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Lgtk2vg/; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720000763; x=1751536763;
+  t=1720000764; x=1751536764;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=WLue8UanZux3fPQZr2PgHN5ljOA3ldFplAn3CSwiJVU=;
-  b=g5ZKAOuJ9tkGBn/Nj6DvoKidQ0wWXfwvqxd82UGNTXeLbTefQQFdwHB3
-   VRpWdrR/wvNUS8XzMJ+MQqCba4bXN9SH0AiqOBN2gM8tfR2pua9YXWCzC
-   ydYPpWjLE8Xsf06CSCPmEy0XmI6MPz/Vo2ECCl7jQ6iXkex4OS3B8vP9q
-   0tTtGZBzHPWrx+pI2C/D4pZ264EVfs6sZVwL04kwt7TVrW0HP4q366uiB
-   p/quYJghknkWNVsHmsvcDoik+iNsaEaFvUgq9EcAkiYy6Z3nt5JkCC9p2
-   WEQ5rsyV98wA4uHyclSCbIVW1rHlbSN2C8reJ7oM2lqfvnFz0g2HG4lnM
-   w==;
-X-CSE-ConnectionGUID: Txd+ON8MQ+K9TaN472HPlA==
-X-CSE-MsgGUID: 2rE7eNgITfCUczk5Ae1X9Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="27837525"
+  bh=4eXljENTFCg25APOo9p6TKb4gi+WQIC6KnkVCraOmgA=;
+  b=Lgtk2vg/q1P5yvpYLgBgk4Rj+7Y8ZsqW7tKC79SD/KMQjan/n+tDl47b
+   Z6eFrIi8llTjT+8ov1seqJvkNp3N7bSS/7QntOikvrM7LkhEGN2IkbWcP
+   jH7xJjRGX1fTAjBbVyxeWI1L4DDYK+098f3OVKcNHFxrnCAwoaElnUkOK
+   op1xE1GQIjUPjdE9t1/T8N0TIpz8tGLeA4tpeBR8Z6giC++32qkmsHUNR
+   nRJefG7CxCj8RJVxU8RuYoj1n6VfYgNKPkbgf2NdVmbwdHWIkUgiFuWqW
+   VuaKOpSpAp+tX0QQYgs5N677ScB7nt2muTE/gIHswPj++SNwaE4+BKKND
+   Q==;
+X-CSE-ConnectionGUID: ygZlfi/FT0CfFbfrnO76OA==
+X-CSE-MsgGUID: RKB3TuM2S4eA/BFUzKSeGg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="27837530"
 X-IronPort-AV: E=Sophos;i="6.09,181,1716274800"; 
-   d="scan'208";a="27837525"
+   d="scan'208";a="27837530"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2024 02:59:22 -0700
-X-CSE-ConnectionGUID: NGtae/w1SUqaEzBq3+NBSQ==
-X-CSE-MsgGUID: /uxjoK5zQFemBfg0z1G8QQ==
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2024 02:59:24 -0700
+X-CSE-ConnectionGUID: TMU53BMkTBeUrt2Onk/u3g==
+X-CSE-MsgGUID: 4WEkk+fZTQuNPo6SOIRdAg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.09,181,1716274800"; 
-   d="scan'208";a="45987744"
+   d="scan'208";a="45987752"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2024 02:59:20 -0700
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jul 2024 02:59:22 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Benjamin Berg <benjamin.berg@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 05/18] wifi: iwlwifi: map entire SKB when sending AMSDUs
-Date: Wed,  3 Jul 2024 12:58:53 +0300
-Message-Id: <20240703125541.96c6006f40ff.I55b74bc97c4026761397a7513a559c88a10b6489@changeid>
+Subject: [PATCH 06/18] wifi: iwlwifi: keep the TSO and workaround pages mapped
+Date: Wed,  3 Jul 2024 12:58:54 +0300
+Message-Id: <20240703125541.7ced468fe431.Ibb109867dc680c37fe8d891e9ab9ef64ed5c5d2d@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240703095906.833028-1-miriam.rachel.korenblit@intel.com>
 References: <20240703095906.833028-1-miriam.rachel.korenblit@intel.com>
@@ -80,339 +80,250 @@ Content-Transfer-Encoding: 8bit
 
 From: Benjamin Berg <benjamin.berg@intel.com>
 
-This adds logic to map the entire SKB for AMSDUs. The required scatter
-gather list is allocated together with the space for TSO headers.
-Unmapping happens again when free'ing the TSO header page.
+Map the pages when allocating them so that we will not need to map each
+of the used fragments at a later point.
 
-For now the mapping is unused, this will be changed in a later commit.
+For now the mapping is not used, this will be changed in a later commit.
 
 Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/iwl-trans.h    |   5 +-
- .../wireless/intel/iwlwifi/pcie/internal.h    |  10 +-
- .../net/wireless/intel/iwlwifi/pcie/tx-gen2.c |  20 +--
- drivers/net/wireless/intel/iwlwifi/pcie/tx.c  | 114 ++++++++++++++++--
- 4 files changed, 128 insertions(+), 21 deletions(-)
+ .../wireless/intel/iwlwifi/pcie/internal.h    | 30 +++++++++-
+ .../net/wireless/intel/iwlwifi/pcie/tx-gen2.c | 22 ++++++-
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c  | 60 +++++++++++++++----
+ 3 files changed, 95 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-index ecf94ec2c2b0..015f02122df6 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-@@ -120,6 +120,7 @@ enum CMD_MODE {
- 	CMD_BLOCK_TXQS		= BIT(3),
- 	CMD_SEND_IN_D3          = BIT(4),
- };
-+#define CMD_MODE_BITS 5
- 
- #define DEF_CMD_PAYLOAD_SIZE 320
- 
-@@ -712,7 +713,9 @@ struct iwl_dma_ptr {
- struct iwl_cmd_meta {
- 	/* only for SYNC commands, iff the reply skb is wanted */
- 	struct iwl_host_cmd *source;
--	u32 flags;
-+	u32 flags: CMD_MODE_BITS;
-+	/* sg_offset is valid if it is non-zero */
-+	u32 sg_offset: PAGE_SHIFT;
- 	u32 tbs;
- };
- 
 diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
-index 754928062921..d63c1c284f70 100644
+index d63c1c284f70..b59de4f80b4b 100644
 --- a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
 +++ b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
-@@ -623,9 +623,13 @@ void iwl_trans_pcie_tx_reset(struct iwl_trans *trans);
- int iwl_pcie_txq_alloc(struct iwl_trans *trans, struct iwl_txq *txq,
- 		       int slots_num, bool cmd_queue);
+@@ -603,6 +603,22 @@ struct iwl_tso_hdr_page {
+ 	u8 *pos;
+ };
  
--void *iwl_pcie_get_page_hdr(struct iwl_trans *trans, size_t len,
--			    struct sk_buff *skb);
--void iwl_pcie_free_tso_page(struct iwl_trans *trans, struct sk_buff *skb);
-+dma_addr_t iwl_pcie_get_sgt_tb_phys(struct sg_table *sgt, void *addr);
-+struct sg_table *iwl_pcie_prep_tso(struct iwl_trans *trans, struct sk_buff *skb,
-+				   struct iwl_cmd_meta *cmd_meta,
-+				   u8 **hdr, unsigned int hdr_room);
++/*
++ * Note that we put this struct *last* in the page. By doing that, we ensure
++ * that no TB referencing this page can trigger the 32-bit boundary hardware
++ * bug.
++ */
++struct iwl_tso_page_info {
++	dma_addr_t dma_addr;
++	struct page *next;
++	refcount_t use_count;
++};
 +
-+void iwl_pcie_free_tso_page(struct iwl_trans *trans, struct sk_buff *skb,
-+			    struct iwl_cmd_meta *cmd_meta);
++#define IWL_TSO_PAGE_DATA_SIZE	(PAGE_SIZE - sizeof(struct iwl_tso_page_info))
++#define IWL_TSO_PAGE_INFO(addr)	\
++	((struct iwl_tso_page_info *)(((unsigned long)addr & PAGE_MASK) + \
++				      IWL_TSO_PAGE_DATA_SIZE))
++
+ int iwl_pcie_tx_init(struct iwl_trans *trans);
+ void iwl_pcie_tx_start(struct iwl_trans *trans, u32 scd_base_addr);
+ int iwl_pcie_tx_stop(struct iwl_trans *trans);
+@@ -628,8 +644,18 @@ struct sg_table *iwl_pcie_prep_tso(struct iwl_trans *trans, struct sk_buff *skb,
+ 				   struct iwl_cmd_meta *cmd_meta,
+ 				   u8 **hdr, unsigned int hdr_room);
+ 
+-void iwl_pcie_free_tso_page(struct iwl_trans *trans, struct sk_buff *skb,
+-			    struct iwl_cmd_meta *cmd_meta);
++void iwl_pcie_free_tso_pages(struct iwl_trans *trans, struct sk_buff *skb,
++			     struct iwl_cmd_meta *cmd_meta);
++
++static inline dma_addr_t iwl_pcie_get_tso_page_phys(void *addr)
++{
++	dma_addr_t res;
++
++	res = IWL_TSO_PAGE_INFO(addr)->dma_addr;
++	res += (unsigned long)addr & ~PAGE_MASK;
++
++	return res;
++}
  
  static inline dma_addr_t
  iwl_txq_get_first_tb_dma(struct iwl_txq *txq, int idx)
 diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
-index 543efb52b084..3dcce6a8da50 100644
+index 3dcce6a8da50..10ee2c328458 100644
 --- a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
 +++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
-@@ -119,7 +119,9 @@ static int iwl_txq_gen2_set_tb_with_wa(struct iwl_trans *trans,
- 
- static int iwl_txq_gen2_build_amsdu(struct iwl_trans *trans,
- 				    struct sk_buff *skb,
--				    struct iwl_tfh_tfd *tfd, int start_len,
-+				    struct iwl_tfh_tfd *tfd,
-+				    struct iwl_cmd_meta *out_meta,
-+				    int start_len,
- 				    u8 hdr_len,
- 				    struct iwl_device_tx_cmd *dev_cmd)
+@@ -19,8 +19,10 @@ static struct page *get_workaround_page(struct iwl_trans *trans,
+ 					struct sk_buff *skb)
  {
-@@ -130,6 +132,7 @@ static int iwl_txq_gen2_build_amsdu(struct iwl_trans *trans,
- 	unsigned int mss = skb_shinfo(skb)->gso_size;
- 	u16 length, amsdu_pad;
- 	u8 *start_hdr;
-+	struct sg_table *sgt;
- 	struct tso_t tso;
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
++	struct iwl_tso_page_info *info;
+ 	struct page **page_ptr;
+ 	struct page *ret;
++	dma_addr_t phys;
  
- 	trace_iwlwifi_dev_tx(trans->dev, skb, tfd, sizeof(*tfd),
-@@ -145,8 +148,8 @@ static int iwl_txq_gen2_build_amsdu(struct iwl_trans *trans,
- 		(3 + snap_ip_tcp_hdrlen + sizeof(struct ethhdr));
+ 	page_ptr = (void *)((u8 *)skb->cb + trans_pcie->txqs.page_offs);
  
- 	/* Our device supports 9 segments at most, it will fit in 1 page */
--	start_hdr = iwl_pcie_get_page_hdr(trans, hdr_room, skb);
--	if (!start_hdr)
-+	sgt = iwl_pcie_prep_tso(trans, skb, out_meta, &start_hdr, hdr_room);
-+	if (!sgt)
- 		return -ENOMEM;
+@@ -28,8 +30,22 @@ static struct page *get_workaround_page(struct iwl_trans *trans,
+ 	if (!ret)
+ 		return NULL;
  
- 	/*
-@@ -287,8 +290,8 @@ iwl_tfh_tfd *iwl_txq_gen2_build_tx_amsdu(struct iwl_trans *trans,
++	info = IWL_TSO_PAGE_INFO(page_address(ret));
++
++	/* Create a DMA mapping for the page */
++	phys = dma_map_page_attrs(trans->dev, ret, 0, PAGE_SIZE,
++				  DMA_TO_DEVICE, DMA_ATTR_SKIP_CPU_SYNC);
++	if (unlikely(dma_mapping_error(trans->dev, phys))) {
++		__free_page(ret);
++		return NULL;
++	}
++
++	/* Store physical address and set use count */
++	info->dma_addr = phys;
++	refcount_set(&info->use_count, 1);
++
+ 	/* set the chaining pointer to the previous page if there */
+-	*(void **)((u8 *)page_address(ret) + PAGE_SIZE - sizeof(void *)) = *page_ptr;
++	info->next = *page_ptr;
+ 	*page_ptr = ret;
+ 
+ 	return ret;
+@@ -76,7 +92,7 @@ static int iwl_txq_gen2_set_tb_with_wa(struct iwl_trans *trans,
+ 	 * a new mapping for it so the device will not fail.
  	 */
- 	iwl_txq_gen2_set_tb(trans, tfd, tb_phys, len);
  
--	if (iwl_txq_gen2_build_amsdu(trans, skb, tfd, len + IWL_FIRST_TB_SIZE,
--				     hdr_len, dev_cmd))
-+	if (iwl_txq_gen2_build_amsdu(trans, skb, tfd, out_meta,
-+				     len + IWL_FIRST_TB_SIZE, hdr_len, dev_cmd))
- 		goto out_err;
- 
- 	/* building the A-MSDU might have changed this data, memcpy it now */
-@@ -719,7 +722,7 @@ int iwl_txq_gen2_tx(struct iwl_trans *trans, struct sk_buff *skb,
- 
- 	/* Set up first empty entry in queue's array of Tx/cmd buffers */
- 	out_meta = &txq->entries[idx].meta;
--	out_meta->flags = 0;
-+	memset(out_meta, 0, sizeof(*out_meta));
- 
- 	tfd = iwl_txq_gen2_build_tfd(trans, txq, dev_cmd, skb, out_meta);
- 	if (!tfd) {
-@@ -775,10 +778,11 @@ static void iwl_txq_gen2_unmap(struct iwl_trans *trans, int txq_id)
- 
- 		if (txq_id != trans_pcie->txqs.cmd.q_id) {
- 			int idx = iwl_txq_get_cmd_index(txq, txq->read_ptr);
-+			struct iwl_cmd_meta *cmd_meta = &txq->entries[idx].meta;
+-	if (WARN_ON(len > PAGE_SIZE - sizeof(void *))) {
++	if (WARN_ON(len > IWL_TSO_PAGE_DATA_SIZE)) {
+ 		ret = -ENOBUFS;
+ 		goto unmap;
+ 	}
+@@ -782,7 +798,7 @@ static void iwl_txq_gen2_unmap(struct iwl_trans *trans, int txq_id)
  			struct sk_buff *skb = txq->entries[idx].skb;
  
  			if (!WARN_ON_ONCE(!skb))
--				iwl_pcie_free_tso_page(trans, skb);
-+				iwl_pcie_free_tso_page(trans, skb, cmd_meta);
+-				iwl_pcie_free_tso_page(trans, skb, cmd_meta);
++				iwl_pcie_free_tso_pages(trans, skb, cmd_meta);
  		}
  		iwl_txq_gen2_free_tfd(trans, txq);
  		txq->read_ptr = iwl_txq_inc_wrap(trans, txq->read_ptr);
-@@ -1247,7 +1251,7 @@ int iwl_pcie_gen2_enqueue_hcmd(struct iwl_trans *trans,
- 	out_cmd = txq->entries[idx].cmd;
- 	out_meta = &txq->entries[idx].meta;
- 
--	/* re-initialize to NULL */
-+	/* re-initialize, this also marks the SG list as unused */
- 	memset(out_meta, 0, sizeof(*out_meta));
- 	if (cmd->flags & CMD_WANT_SKB)
- 		out_meta->source = cmd;
 diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-index d67ad40634f9..ac545a39ad2a 100644
+index ac545a39ad2a..e00d85866de9 100644
 --- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
 +++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
-@@ -209,7 +209,8 @@ static void iwl_pcie_clear_cmd_in_flight(struct iwl_trans *trans)
+@@ -209,8 +209,22 @@ static void iwl_pcie_clear_cmd_in_flight(struct iwl_trans *trans)
  	spin_unlock(&trans_pcie->reg_lock);
  }
  
--void iwl_pcie_free_tso_page(struct iwl_trans *trans, struct sk_buff *skb)
-+void iwl_pcie_free_tso_page(struct iwl_trans *trans, struct sk_buff *skb,
-+			    struct iwl_cmd_meta *cmd_meta)
+-void iwl_pcie_free_tso_page(struct iwl_trans *trans, struct sk_buff *skb,
+-			    struct iwl_cmd_meta *cmd_meta)
++static void iwl_pcie_free_and_unmap_tso_page(struct iwl_trans *trans,
++					     struct page *page)
++{
++	struct iwl_tso_page_info *info = IWL_TSO_PAGE_INFO(page_address(page));
++
++	/* Decrease internal use count and unmap/free page if needed */
++	if (refcount_dec_and_test(&info->use_count)) {
++		dma_unmap_page(trans->dev, info->dma_addr, PAGE_SIZE,
++			       DMA_TO_DEVICE);
++
++		__free_page(page);
++	}
++}
++
++void iwl_pcie_free_tso_pages(struct iwl_trans *trans, struct sk_buff *skb,
++			     struct iwl_cmd_meta *cmd_meta)
  {
  	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
  	struct page **page_ptr;
-@@ -224,6 +225,17 @@ void iwl_pcie_free_tso_page(struct iwl_trans *trans, struct sk_buff *skb)
+@@ -221,10 +235,11 @@ void iwl_pcie_free_tso_page(struct iwl_trans *trans, struct sk_buff *skb,
+ 	*page_ptr = NULL;
  
- 		next = *(void **)((u8 *)page_address(next) + PAGE_SIZE -
- 				  sizeof(void *));
-+
-+		/* Unmap the scatter gather list that is on the last page */
-+		if (!next && cmd_meta->sg_offset) {
-+			struct sg_table *sgt;
-+
-+			sgt = (void *)((u8 *)page_address(tmp) +
-+				       cmd_meta->sg_offset);
-+
-+			dma_unmap_sgtable(trans->dev, sgt, DMA_TO_DEVICE, 0);
-+		}
-+
- 		__free_page(tmp);
+ 	while (next) {
++		struct iwl_tso_page_info *info;
+ 		struct page *tmp = next;
+ 
+-		next = *(void **)((u8 *)page_address(next) + PAGE_SIZE -
+-				  sizeof(void *));
++		info = IWL_TSO_PAGE_INFO(page_address(next));
++		next = info->next;
+ 
+ 		/* Unmap the scatter gather list that is on the last page */
+ 		if (!next && cmd_meta->sg_offset) {
+@@ -236,7 +251,7 @@ void iwl_pcie_free_tso_page(struct iwl_trans *trans, struct sk_buff *skb,
+ 			dma_unmap_sgtable(trans->dev, sgt, DMA_TO_DEVICE, 0);
+ 		}
+ 
+-		__free_page(tmp);
++		iwl_pcie_free_and_unmap_tso_page(trans, tmp);
  	}
  }
-@@ -363,11 +375,13 @@ static void iwl_pcie_txq_unmap(struct iwl_trans *trans, int txq_id)
  
- 		if (txq_id != trans_pcie->txqs.cmd.q_id) {
- 			struct sk_buff *skb = txq->entries[txq->read_ptr].skb;
-+			struct iwl_cmd_meta *cmd_meta =
-+				&txq->entries[txq->read_ptr].meta;
- 
+@@ -381,7 +396,7 @@ static void iwl_pcie_txq_unmap(struct iwl_trans *trans, int txq_id)
  			if (WARN_ON_ONCE(!skb))
  				continue;
  
--			iwl_pcie_free_tso_page(trans, skb);
-+			iwl_pcie_free_tso_page(trans, skb, cmd_meta);
+-			iwl_pcie_free_tso_page(trans, skb, cmd_meta);
++			iwl_pcie_free_tso_pages(trans, skb, cmd_meta);
  		}
  		iwl_txq_free_tfd(trans, txq);
  		txq->read_ptr = iwl_txq_inc_wrap(trans, txq->read_ptr);
-@@ -1420,7 +1434,8 @@ int iwl_pcie_enqueue_hcmd(struct iwl_trans *trans,
- 	out_cmd = txq->entries[idx].cmd;
- 	out_meta = &txq->entries[idx].meta;
- 
--	memset(out_meta, 0, sizeof(*out_meta));	/* re-initialize to NULL */
-+	/* re-initialize, this also marks the SG list as unused */
-+	memset(out_meta, 0, sizeof(*out_meta));
- 	if (cmd->flags & CMD_WANT_SKB)
- 		out_meta->source = cmd;
- 
-@@ -1702,8 +1717,8 @@ static int iwl_fill_data_tbs(struct iwl_trans *trans, struct sk_buff *skb,
- }
- 
- #ifdef CONFIG_INET
--void *iwl_pcie_get_page_hdr(struct iwl_trans *trans,
--			    size_t len, struct sk_buff *skb)
-+static void *iwl_pcie_get_page_hdr(struct iwl_trans *trans,
-+				   size_t len, struct sk_buff *skb)
+@@ -1722,7 +1737,9 @@ static void *iwl_pcie_get_page_hdr(struct iwl_trans *trans,
  {
  	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
  	struct iwl_tso_hdr_page *p = this_cpu_ptr(trans_pcie->txqs.tso_hdr_page);
-@@ -1751,6 +1766,84 @@ void *iwl_pcie_get_page_hdr(struct iwl_trans *trans,
- 	return ret;
- }
++	struct iwl_tso_page_info *info;
+ 	struct page **page_ptr;
++	dma_addr_t phys;
+ 	void *ret;
  
-+/**
-+ * iwl_pcie_get_sgt_tb_phys - Find TB address in mapped SG list
-+ * @sgt: scatter gather table
-+ * @addr: Virtual address
-+ *
-+ * Find the entry that includes the address for the given address and return
-+ * correct physical address for the TB entry.
-+ *
-+ * Returns: Address for TB entry
-+ */
-+dma_addr_t iwl_pcie_get_sgt_tb_phys(struct sg_table *sgt, void *addr)
-+{
-+	struct scatterlist *sg;
-+	int i;
+ 	page_ptr = (void *)((u8 *)skb->cb + trans_pcie->txqs.page_offs);
+@@ -1743,23 +1760,42 @@ static void *iwl_pcie_get_page_hdr(struct iwl_trans *trans,
+ 	 *
+ 	 * (see also get_workaround_page() in tx-gen2.c)
+ 	 */
+-	if (p->pos + len < (u8 *)page_address(p->page) + PAGE_SIZE -
+-			   sizeof(void *))
++	if (((unsigned long)p->pos & ~PAGE_MASK) + len < IWL_TSO_PAGE_DATA_SIZE) {
++		info = IWL_TSO_PAGE_INFO(page_address(ret));
+ 		goto out;
++	}
+ 
+ 	/* We don't have enough room on this page, get a new one. */
+-	__free_page(p->page);
++	iwl_pcie_free_and_unmap_tso_page(trans, p->page);
+ 
+ alloc:
+ 	p->page = alloc_page(GFP_ATOMIC);
+ 	if (!p->page)
+ 		return NULL;
+ 	p->pos = page_address(p->page);
 +
-+	for_each_sgtable_dma_sg(sgt, sg, i) {
-+		if (addr >= sg_virt(sg) &&
-+		    (u8 *)addr < (u8 *)sg_virt(sg) + sg_dma_len(sg))
-+			return sg_dma_address(sg) +
-+			       ((unsigned long)addr - (unsigned long)sg_virt(sg));
++	info = IWL_TSO_PAGE_INFO(page_address(ret));
++
+ 	/* set the chaining pointer to NULL */
+-	*(void **)((u8 *)page_address(p->page) + PAGE_SIZE - sizeof(void *)) = NULL;
++	info->next = NULL;
++
++	/* Create a DMA mapping for the page */
++	phys = dma_map_page_attrs(trans->dev, p->page, 0, PAGE_SIZE,
++				  DMA_TO_DEVICE, DMA_ATTR_SKIP_CPU_SYNC);
++	if (unlikely(dma_mapping_error(trans->dev, phys))) {
++		__free_page(p->page);
++		p->page = NULL;
++
++		return NULL;
 +	}
 +
-+	WARN_ON_ONCE(1);
-+
-+	return DMA_MAPPING_ERROR;
-+}
-+
-+/**
-+ * iwl_pcie_prep_tso - Prepare TSO page and SKB for sending
-+ * @trans: transport private data
-+ * @skb: the SKB to map
-+ * @cmd_meta: command meta to store the scatter list information for unmapping
-+ * @hdr: output argument for TSO headers
-+ * @hdr_room: requested length for TSO headers
-+ *
-+ * Allocate space for a scatter gather list and TSO headers and map the SKB
-+ * using the scatter gather list. The SKB is unmapped again when the page is
-+ * free'ed again at the end of the operation.
-+ *
-+ * Returns: newly allocated and mapped scatter gather table with list
-+ */
-+struct sg_table *iwl_pcie_prep_tso(struct iwl_trans *trans, struct sk_buff *skb,
-+				   struct iwl_cmd_meta *cmd_meta,
-+				   u8 **hdr, unsigned int hdr_room)
-+{
-+	struct sg_table *sgt;
-+
-+	if (WARN_ON_ONCE(skb_has_frag_list(skb)))
-+		return NULL;
-+
-+	*hdr = iwl_pcie_get_page_hdr(trans,
-+				     hdr_room + __alignof__(struct sg_table) +
-+				     sizeof(struct sg_table) +
-+				     (skb_shinfo(skb)->nr_frags + 1) *
-+				     sizeof(struct scatterlist),
-+				     skb);
-+	if (!*hdr)
-+		return NULL;
-+
-+	sgt = (void *)PTR_ALIGN(*hdr + hdr_room, __alignof__(struct sg_table));
-+	sgt->sgl = (void *)(sgt + 1);
-+
-+	sg_init_table(sgt->sgl, skb_shinfo(skb)->nr_frags + 1);
-+
-+	sgt->orig_nents = skb_to_sgvec(skb, sgt->sgl, 0, skb->len);
-+	if (WARN_ON_ONCE(sgt->orig_nents <= 0))
-+		return NULL;
-+
-+	/* And map the entire SKB */
-+	if (dma_map_sgtable(trans->dev, sgt, DMA_TO_DEVICE, 0) < 0)
-+		return NULL;
-+
-+	/* Store non-zero (i.e. valid) offset for unmapping */
-+	cmd_meta->sg_offset = (unsigned long) sgt & ~PAGE_MASK;
-+
-+	return sgt;
-+}
-+
- static int iwl_fill_data_tbs_amsdu(struct iwl_trans *trans, struct sk_buff *skb,
- 				   struct iwl_txq *txq, u8 hdr_len,
- 				   struct iwl_cmd_meta *out_meta,
-@@ -1764,6 +1857,7 @@ static int iwl_fill_data_tbs_amsdu(struct iwl_trans *trans, struct sk_buff *skb,
- 	unsigned int mss = skb_shinfo(skb)->gso_size;
- 	u16 length, iv_len, amsdu_pad;
- 	u8 *start_hdr, *pos_hdr;
-+	struct sg_table *sgt;
- 	struct tso_t tso;
++	/* Store physical address and set use count */
++	info->dma_addr = phys;
++	refcount_set(&info->use_count, 1);
+ out:
+ 	*page_ptr = p->page;
+-	get_page(p->page);
++	/* Return an internal reference for the caller */
++	refcount_inc(&info->use_count);
+ 	ret = p->pos;
+ 	p->pos += len;
  
- 	/* if the packet is protected, then it must be CCMP or GCMP */
-@@ -1786,10 +1880,11 @@ static int iwl_fill_data_tbs_amsdu(struct iwl_trans *trans, struct sk_buff *skb,
- 		(3 + snap_ip_tcp_hdrlen + sizeof(struct ethhdr)) + iv_len;
- 
- 	/* Our device supports 9 segments at most, it will fit in 1 page */
--	pos_hdr = start_hdr = iwl_pcie_get_page_hdr(trans, hdr_room, skb);
--	if (!start_hdr)
-+	sgt = iwl_pcie_prep_tso(trans, skb, out_meta, &start_hdr, hdr_room);
-+	if (!sgt)
- 		return -ENOMEM;
- 
-+	pos_hdr = start_hdr;
- 	memcpy(pos_hdr, skb->data + hdr_len, iv_len);
- 	pos_hdr += iv_len;
- 
-@@ -2029,7 +2124,7 @@ int iwl_trans_pcie_tx(struct iwl_trans *trans, struct sk_buff *skb,
- 
- 	/* Set up first empty entry in queue's array of Tx/cmd buffers */
- 	out_meta = &txq->entries[txq->write_ptr].meta;
--	out_meta->flags = 0;
-+	memset(out_meta, 0, sizeof(*out_meta));
- 
- 	/*
- 	 * The second TB (tb1) points to the remainder of the TX command
-@@ -2228,13 +2323,14 @@ void iwl_pcie_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
- 	     read_ptr != tfd_num;
- 	     txq->read_ptr = iwl_txq_inc_wrap(trans, txq->read_ptr),
- 	     read_ptr = iwl_txq_get_cmd_index(txq, txq->read_ptr)) {
-+		struct iwl_cmd_meta *cmd_meta = &txq->entries[read_ptr].meta;
- 		struct sk_buff *skb = txq->entries[read_ptr].skb;
- 
- 		if (WARN_ONCE(!skb, "no SKB at %d (%d) on queue %d\n",
+@@ -2330,7 +2366,7 @@ void iwl_pcie_reclaim(struct iwl_trans *trans, int txq_id, int ssn,
  			      read_ptr, txq->read_ptr, txq_id))
  			continue;
  
--		iwl_pcie_free_tso_page(trans, skb);
-+		iwl_pcie_free_tso_page(trans, skb, cmd_meta);
+-		iwl_pcie_free_tso_page(trans, skb, cmd_meta);
++		iwl_pcie_free_tso_pages(trans, skb, cmd_meta);
  
  		__skb_queue_tail(skbs, skb);
  
