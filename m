@@ -1,86 +1,108 @@
-Return-Path: <linux-wireless+bounces-9987-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9988-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23517927361
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jul 2024 11:53:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB24C9274B6
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jul 2024 13:14:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDB411F23AD9
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jul 2024 09:53:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5576F1F21A9A
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jul 2024 11:14:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019101A3BD1;
-	Thu,  4 Jul 2024 09:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CA701AC23B;
+	Thu,  4 Jul 2024 11:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T1haj+qv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L0qA3wtw"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE7518A93F;
-	Thu,  4 Jul 2024 09:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 329041AB8F8;
+	Thu,  4 Jul 2024 11:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720086797; cv=none; b=a50T3973eSTaVh+dNLXn9mixux2rlubJVbxfFN30vdBk98QvVLmsR1iXvCF4iEtMVk34HHCbZVKwUPTS+Ma0BehuTZzGJhkG/PZ3GL1VSz4z5IEzyA9sV5WWcf/V5wO81GiV1ZFr83Td0/TQk3Z1Xhh1Oh8OG22bEuF/od3RQUc=
+	t=1720091673; cv=none; b=ZY5ntdJ0Y/nb13rPjPOy5tzH9I2UCG1haP2T87NKgsQHrMtWwJvhd9slFUsfZ0rVyLVhi5ciN4KX7uAs8RDYQ4hHqXEyxUmsQNUkqxs49LHtiRLI6Mk2Ya3RUl3tyl+VonqQDNVfVrtiQ81u5is1iFgxpD+9ONRNXTm0GBKEDa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720086797; c=relaxed/simple;
-	bh=B8dMfcWXHdgKDl/LUosbH/t3NH/n75FSpahN1BHbALE=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=HRapoSBOxaR4chm6gKxkpL4RTBzgBohvhiuqmeis2Aonh/LLexDP5XqOZoOpZtW7iSDzZP6NH4IUax+j1ARkhdC9FZcYqBGrz9BBZ/ztjU1MUtwsf8dA+84a1HYCU5nd7bW4vlcbiSGtUnVS+J9fGAFqn/mBAgT55r/aUz/jY2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T1haj+qv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BBDAC3277B;
-	Thu,  4 Jul 2024 09:53:16 +0000 (UTC)
+	s=arc-20240116; t=1720091673; c=relaxed/simple;
+	bh=B/9ysb8z3IRQ0NnrLVY26K1uTUxY+q3sSvvoek04+UE=;
+	h=Content-Type:MIME-Version:From:Subject:To:Cc:Message-Id:Date; b=gTLDrOHKVkCNefuBXvCjvQL0scpYqnZPB3aMcbqLqkP8fQm7uuDeechkjlJ8TJgFGMmts6Qg5fuMpf3Y8k2FWuSwlCIW7BMCjPXXG34uG27Xp2J8ApBE5/A3K8gsSRD6IIwuewZSBW+8316gk6tYaBkXNzjdiUBaIZy4DeLZZOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L0qA3wtw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11DEDC3277B;
+	Thu,  4 Jul 2024 11:14:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720086797;
-	bh=B8dMfcWXHdgKDl/LUosbH/t3NH/n75FSpahN1BHbALE=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=T1haj+qvw5bFe2oh4yNapY4OAhzoWJM9BhfQp5rx1/82Gf5X6q21HxzSG0NoKtA67
-	 VW35vH4xbLEWKnLlSVbCYH3jM5nHG3dkUcNeb0I48G915W+0efedxusZPsKvh3VpvT
-	 pJAaOn3OZeGV4fYkr9LDQC8fIPCymuB+tgOBDlbycV0Rhkcmnt5UebW4hBDHV5NKst
-	 zCn3K+Ld4JHdC/J1Ioaq1KaNZlCq0Xz6OqR2KgGuNT6znoFx4oOI3DaI31MWXNVx+R
-	 7cbXc2nqAmZsIFCOYnmzaJD5Z/rHXSTWI/oQzYkUuOyIFSgzBrZ67hi51fNoRvuk77
-	 MdYrucuUGDWYw==
-From: Kalle Valo <kvalo@kernel.org>
-To: Aleksandr Mishin <amishin@t-argos.ru>
-Cc: Ping-Ke Shih <pkshih@realtek.com>,  <linux-wireless@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>,  <lvc-project@linuxtesting.org>
-Subject: Re: [PATCH net] wifi: rtw89: Fix array index mistake in
- rtw89_sta_info_get_iter()
-References: <20240703210510.11089-1-amishin@t-argos.ru>
-Date: Thu, 04 Jul 2024 12:53:14 +0300
-In-Reply-To: <20240703210510.11089-1-amishin@t-argos.ru> (Aleksandr Mishin's
-	message of "Thu, 4 Jul 2024 00:05:10 +0300")
-Message-ID: <87wmm1cwl1.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=k20201202; t=1720091671;
+	bh=B/9ysb8z3IRQ0NnrLVY26K1uTUxY+q3sSvvoek04+UE=;
+	h=From:Subject:To:Cc:Date:From;
+	b=L0qA3wtwfT7Hux9UwawJSrE3eQBHgaeKdf7YCvVSxTevlJYVTrQ6afjCjI37G0l0h
+	 HWFMrhV2NlrH6SA4mxOqLqDiAmqEV47RirlchjwfP0l8wxJbAeYQnf0jbkZ4FgByVU
+	 F/seOlMVCj8KBAAJmSO8Jj8s49IA9HzKgPT1AC8RESR4dq5RQlQNtPBQVqaIFOFHWQ
+	 o3NXLp1A17pptp0pWlYip+JdMKyJgNWEa8M+g4mKYBp9/nKELydGHkGi9FvC+1Co9S
+	 +ks9Y5Lj0S3ZGLMamcQP1IBvO/7MoNggVIM+vmUId8397T3DEI6utPsdPTslftKk8L
+	 UprR4bgdivpGQ==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+From: Kalle Valo <kvalo@kernel.org>
+Subject: pull-request: wireless-2024-07-04
+To: netdev@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Message-Id: <20240704111431.11DEDC3277B@smtp.kernel.org>
+Date: Thu,  4 Jul 2024 11:14:30 +0000 (UTC)
 
-Aleksandr Mishin <amishin@t-argos.ru> writes:
+Hi,
 
-> In rtw89_sta_info_get_iter() 'status->he_gi' is compared to array size.
-> But then 'rate->he_gi' is used as array index instead of 'status->he_gi'.
-> This can lead to go beyond array boundaries in case of 'rate->he_gi' is
-> not equal to 'status->he_gi' and is bigger than array size. Looks like
-> "copy-paste" mistake.
->
-> Fix this mistake by replacing 'rate->he_gi' with 'status->he_gi'.
->
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
->
-> Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
-> Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+here's a pull request to net tree, more info below. Please let me know if there
+are any problems.
 
-A reminder for maintainers: rtw89 patches go to Ping's rtw tree, not net
-tree.
+Kalle
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+The following changes since commit c40ff9b662d08c86b7a46067155a97af0074bb93:
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+  MAINTAINERS: wifi: update ath.git location (2024-06-26 20:35:30 +0300)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2024-07-04
+
+for you to fetch changes up to 4130c67cd123a36c902cbe9ce5a2efbc33eb18c0:
+
+  wifi: iwlwifi: mvm: check vif for NULL/ERR_PTR before dereference (2024-07-03 16:06:54 +0200)
+
+----------------------------------------------------------------
+wireless fixes for v6.10
+
+Hopefully the last fixes for v6.10. Fix a regression in wilc1000 where
+bitrate Information Elements longer than 255 bytes were broken.
+Few fixes also to mac80211 and iwlwifi.
+
+----------------------------------------------------------------
+Daniel Gabay (1):
+      wifi: iwlwifi: properly set WIPHY_FLAG_SUPPORTS_EXT_KEK_KCK
+
+Emmanuel Grumbach (1):
+      wifi: iwlwifi: mvm: don't wake up rx_sync_waitq upon RFKILL
+
+Johannes Berg (2):
+      wifi: mac80211: fix BSS_CHANGED_UNSOL_BCAST_PROBE_RESP
+      wifi: iwlwifi: mvm: avoid link lookup in statistics
+
+Jozef Hopko (1):
+      wifi: wilc1000: fix ies_len type in connect path
+
+Miri Korenblit (1):
+      wifi: iwlwifi: mvm: check vif for NULL/ERR_PTR before dereference
+
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 14 +++++++-------
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c      |  8 +++-----
+ drivers/net/wireless/intel/iwlwifi/mvm/rx.c       | 15 +++++++--------
+ drivers/net/wireless/microchip/wilc1000/hif.c     |  3 ++-
+ include/net/mac80211.h                            |  2 +-
+ 5 files changed, 20 insertions(+), 22 deletions(-)
+
 
