@@ -1,72 +1,92 @@
-Return-Path: <linux-wireless+bounces-9969-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9970-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47AD2926AAE
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 23:46:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F31D926DD5
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jul 2024 05:03:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC6351F237D7
-	for <lists+linux-wireless@lfdr.de>; Wed,  3 Jul 2024 21:46:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8B68281A54
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jul 2024 03:03:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C0EA190694;
-	Wed,  3 Jul 2024 21:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3109017C67;
+	Thu,  4 Jul 2024 03:03:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="E6YaLKzf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7796B199225
-	for <linux-wireless@vger.kernel.org>; Wed,  3 Jul 2024 21:43:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2DA715AF6
+	for <linux-wireless@vger.kernel.org>; Thu,  4 Jul 2024 03:03:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720043033; cv=none; b=UXXdsqQYp6RZYEEe1OSqMAj9KvJ3/nxeaIrHCrCH+dhLlDSdl3LqIYSKa3bB8gy96pqgSgpqC4zuI+F2TYlDQnfR27nzMVkHXfo+/9352MzvX9DJpQhcz/HFn28zghmR2FMveGBrU13ntBajRWw/f7I05w7AjxA7hmSE4Au0abg=
+	t=1720062199; cv=none; b=XRetYOUGMqnu0XLIgwnLdVeutT0uygSXupAZn6jx6wPulyvS9p04v1MalJSOejXAXCc7zOKl6BBWLXG10aBjIuSi97xXbMdnWFiunlJnyzZIcxIqrOhoLtU05yDimnkbtuoIfry+kETnzVP/VfGSPkz/f6NraQZ1RQBwYVcXfdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720043033; c=relaxed/simple;
-	bh=E27SgwsGh71v1USUawd1DzvMoHzMVVfw44uNpuWdDNk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=p5r1Vp4BU9HlT9OD+ZTGy/LfMaWT3GvvzcgmQMKHHJ3fWEbkNyLoqvYtl5cQiaEnvJOhLGWjzeVpVo//vF8E6+tcYaXHj+tvOBJInH+8d6rz3SI9SxVkfdVLNLmW4ob7Nyj2cFq8ZIOkdwg5+mcutBAmV9z8rkViEHFJZ+B3Rfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-700cee3c5f6so115698a34.1
-        for <linux-wireless@vger.kernel.org>; Wed, 03 Jul 2024 14:43:51 -0700 (PDT)
+	s=arc-20240116; t=1720062199; c=relaxed/simple;
+	bh=eAbd92YIK2R+VcrvjPqGGg4NCF+Faq0RSo7WGEIPKk8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pC/uk1vNi0+G2zB7VpT367dNnSD3NNzMPJbjlkWekHKXpr3oq6atgAZKze5ucscCWNDkwKc01zBmoX3qX5HKuu+3pafBl86TkCAauiEGfqe/InyFsZczziNef6s83kqFAVifgbQg/SCSFQI78N201oe4k+kEjB88b/YyKei5sBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=E6YaLKzf; arc=none smtp.client-ip=185.125.188.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 401913F731
+	for <linux-wireless@vger.kernel.org>; Thu,  4 Jul 2024 03:03:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1720062194;
+	bh=ohrBX0V1iHxcURIO9c2jyrcgYuEKd6isy0JKLA+gdFE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version;
+	b=E6YaLKzfwqSMYP8tGBF0rFTRA10w/TX9GgSFjF3chrMTrTGClts1HqeQbJ1kRyyYo
+	 jXzT5Wh+Bt7LmGpgxGtMK4mBQxMBEnmgEMO02X5nZ47po6RwGR6ISfrexrvGjXbyVc
+	 +CBNdDBSfM7nd6zOFLIWn7AtL7wv4aeEeG4NZXcpJJeWCHXsrYqSjMoGaABnTfrBFB
+	 RVg2VXc9BOaiaSv7odgOR7EaL/lQkTKaUWHnlNt0zcQbdpysQVtJV2aZJuAX07Fg6B
+	 e8bzZlCm9/uLsNMaa2WvrYovEdowxAVv49WBkg0VkghJ5D5Pdw1pSHgUue6/6AHSIm
+	 Q+vnon41aY7UQ==
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-1f70b2475e7so1151015ad.0
+        for <linux-wireless@vger.kernel.org>; Wed, 03 Jul 2024 20:03:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720043030; x=1720647830;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=I/n7VZ7fj0o/3ai4SZ3SKcdBS97sLOgxIRvgNtfo2Zc=;
-        b=mzw0jYA8CGouKxzuR/ifMymRU25LhZExEZyNhW+c1wSH2AZZCxQ/ro5tJdvrv7kKNO
-         gAkPpcC3+9SiGF/OX+glNh+aZGJmUquUxxY7d2RiLqUoVNf3uvdrnNvCqLFK3TwKg4hb
-         WUGPVI8VP7y/CaXlm24I4r6/ZTaHFC16ujQJNXgLL63XFxyGID2FQAeZAaj8ZLlflMqR
-         QKW/UX+1xZVOq4eFetC8glBWnwt2RC1iUdgwsXm+ftr4TxKwRI6sDe5DViaWGG8djjC5
-         2CQGA+tYIxkfXiywQHE6s6IXhur0ApFO6miCxs1Is4f+Adce5i1DEWmdnWMXc11MqZ+m
-         re8w==
-X-Forwarded-Encrypted: i=1; AJvYcCUJN76VqnPNWNbEXAw0TimF9458yG5kh4uM2nI0XVh5QnzNDmGR+xVBW7VMG1Ap7+Aw0/k/ApDyItGG0HW2CSqBmCxsYiZUUrhf/NTx17c=
-X-Gm-Message-State: AOJu0YwjRYTbx0GR0caWylttrKHFeo14Z4PiM9TUSeLxySD8wab/+1ac
-	XPKTItSd799fYlOLfWctffr99b7+ouXZKo91wZIeLWY5B25Wlr5g
-X-Google-Smtp-Source: AGHT+IE4LsxQwXh0EZDYiJMTt6PW30ChD/EOSWZ2xrYLO5k/bhg54hR3h6oqAdq7s9sb9spqCpytDg==
-X-Received: by 2002:a9d:65c5:0:b0:700:ca13:30bc with SMTP id 46e09a7af769-70207763b58mr13703746a34.2.1720043030407;
-        Wed, 03 Jul 2024 14:43:50 -0700 (PDT)
-Received: from sean-ThinkPad-T450s.lan ([207.191.35.252])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-701f7b20953sm2111417a34.54.2024.07.03.14.43.48
+        d=1e100.net; s=20230601; t=1720062192; x=1720666992;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ohrBX0V1iHxcURIO9c2jyrcgYuEKd6isy0JKLA+gdFE=;
+        b=IqAHX0Tx+cCcMncGV9n5UPf3Mn6vhSsmJ22tc8NrrGtdXHXNGZ3ehGt6phcmyxTzs9
+         A9bfSW0F9c1YM6YMucc2D0BS9LVR/qI7FcvbgQMlGJSQMw5uOp8dn3Wc5R96hFEwsKv6
+         jTIj9Qolkodlp22GtulA6s1LagSiXlnHfmuF52ZMUv418okM8jZSrMAuXIlZ76146gx0
+         s/qrJc3+vXs5Zq6/O2nApLEzTinDhvKAFC61kS1NOEbK+ZQAXSfDp8WELRzwwoJQtgdp
+         yFVKj7qzkADe1bhvhOK5mJ8anZx9/IaSoCLK4Q0uJkS35VSZUmtzgHlb38oyIyDcmMuz
+         h0uQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWjV7PBQQB7ey4DjTA3tcBvkQjYlhJr7Ct56QEvHkDMGKup9w3fbwSd34dyRuA3SPg+vrcHzYA20QETs278uhKDsP2LqpnNxpTo+ktn3rM=
+X-Gm-Message-State: AOJu0YxwSspYbKC+rU9qEUuBxWVwP9U9es3RffRxFZJmaTazzUF9VypV
+	2TqnkHBVe7mHMirhuawOhTAEJazlymwuIGW+Sqhw6+nGTUIYrbv43tM6suRmD7JOBYPvFdMnqWb
+	5Zha3Q5J8Nt6OPU6UyrNa2SI+YM1TSL1FsAFvNQYTKxetu6Z/sGL24cUz/bTczOHlx7Tz6fOhi2
+	6YWwwq
+X-Received: by 2002:a17:902:724b:b0:1f7:124:b820 with SMTP id d9443c01a7336-1fb33f0a61amr2494665ad.50.1720062192159;
+        Wed, 03 Jul 2024 20:03:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFMEWUcskLLci8Rsep6v8yYezpc9Xezgy2DUGtZT7vj7K6+huCRlRjsCNdkhNYXQSR//GZHNQ==
+X-Received: by 2002:a17:902:724b:b0:1f7:124:b820 with SMTP id d9443c01a7336-1fb33f0a61amr2494145ad.50.1720062189756;
+        Wed, 03 Jul 2024 20:03:09 -0700 (PDT)
+Received: from rickywu0421-ThinkPad-X1-Carbon-Gen-11.. (211-75-139-220.hinet-ip.hinet.net. [211.75.139.220])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fac15967f2sm110803655ad.260.2024.07.03.20.03.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jul 2024 14:43:48 -0700 (PDT)
-From: sean.wang@kernel.org
-To: nbd@nbd.name,
-	lorenzo.bianconi@redhat.com
-Cc: sean.wang@mediatek.com,
-	deren.wu@mediatek.com,
-	mingyen.hsieh@mediatek.com,
+        Wed, 03 Jul 2024 20:03:09 -0700 (PDT)
+From: En-Wei Wu <en-wei.wu@canonical.com>
+To: kvalo@kernel.org,
+	edumazet@google.com,
+	davem@davemloft.net,
+	en-wei.wu@canonical.com,
 	linux-wireless@vger.kernel.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH 29/29] wifi: mt76: mt7925: enabling MLO when the firmware supports it
-Date: Wed,  3 Jul 2024 14:42:34 -0700
-Message-Id: <fb549a3b3a20995c64d227fb3db75a2fe6f318b1.1720042294.git.sean.wang@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1720042294.git.sean.wang@kernel.org>
-References: <cover.1720042294.git.sean.wang@kernel.org>
+	linux-kernel@vger.kernel.org
+Cc: rickywu0421@gmail.com,
+	syzbot+d6eb9cee2885ec06f5e3@syzkaller.appspotmail.com
+Subject: [PATCH] wifi: virt_wifi: avoid reporting connection success with wrong SSID
+Date: Thu,  4 Jul 2024 11:03:04 +0800
+Message-ID: <20240704030304.16213-1-en-wei.wu@canonical.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,164 +95,100 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Sean Wang <sean.wang@mediatek.com>
+When user issues a connection with a different SSID than the one
+virt_wifi has advertised, the __cfg80211_connect_result() will
+trigger the warning: WARN_ON(bss_not_found).
 
-Register MLD capability for the firmware supporting MLO.
+The issue is because the connection code in virt_wifi does not
+check the SSID from user space (it only checks the BSSID), and
+virt_wifi will call cfg80211_connect_result() with WLAN_STATUS_SUCCESS
+even if the SSID is different from the one virt_wifi has advertised.
+Eventually cfg80211 won't be able to find the cfg80211_bss and generate
+the warning.
 
-Co-developed-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Co-developed-by: Deren Wu <deren.wu@mediatek.com>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Fixed it by checking the SSID (from user space) in the connection code.
+
+Fixes: c7cdba31ed8b ("mac80211-next: rtnetlink wifi simulation device")
+Reported-by: syzbot+d6eb9cee2885ec06f5e3@syzkaller.appspotmail.com
+Signed-off-by: En-Wei Wu <en-wei.wu@canonical.com>
 ---
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  |  1 +
- .../net/wireless/mediatek/mt76/mt7925/init.c  |  6 ++++
- .../net/wireless/mediatek/mt76/mt7925/main.c  | 29 +++++++++++++++++++
- .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 20 +++++++++++++
- .../wireless/mediatek/mt76/mt7925/mt7925.h    |  1 +
- drivers/net/wireless/mediatek/mt76/mt792x.h   |  2 ++
- 6 files changed, 59 insertions(+)
+ drivers/net/wireless/virtual/virt_wifi.c | 24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index d6882c9fd6bc..4242d436de26 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -1402,6 +1402,7 @@ enum {
- 	MT_NIC_CAP_WFDMA_REALLOC,
- 	MT_NIC_CAP_6G,
- 	MT_NIC_CAP_CHIP_CAP = 0x20,
-+	MT_NIC_CAP_EML_CAP = 0x22,
- };
+diff --git a/drivers/net/wireless/virtual/virt_wifi.c b/drivers/net/wireless/virtual/virt_wifi.c
+index 6a84ec58d618..86a8f74be654 100644
+--- a/drivers/net/wireless/virtual/virt_wifi.c
++++ b/drivers/net/wireless/virtual/virt_wifi.c
+@@ -136,6 +136,9 @@ static struct ieee80211_supported_band band_5ghz = {
+ /* Assigned at module init. Guaranteed locally-administered and unicast. */
+ static u8 fake_router_bssid[ETH_ALEN] __ro_after_init = {};
  
- #define UNI_WOW_DETECT_TYPE_MAGIC		BIT(0)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/init.c b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-index c4cbc8976046..039949b344b9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-@@ -179,6 +179,12 @@ static void mt7925_init_work(struct work_struct *work)
- 	mt76_set_stream_caps(&dev->mphy, true);
- 	mt7925_set_stream_he_eht_caps(&dev->phy);
++#define VIRT_WIFI_SSID_LEN 8
++#define VIRT_WIFI_SSID "VirtWifi"
++
+ static void virt_wifi_inform_bss(struct wiphy *wiphy)
+ {
+ 	u64 tsf = div_u64(ktime_get_boottime_ns(), 1000);
+@@ -146,8 +149,8 @@ static void virt_wifi_inform_bss(struct wiphy *wiphy)
+ 		u8 ssid[8];
+ 	} __packed ssid = {
+ 		.tag = WLAN_EID_SSID,
+-		.len = 8,
+-		.ssid = "VirtWifi",
++		.len = VIRT_WIFI_SSID_LEN,
++		.ssid = VIRT_WIFI_SSID,
+ 	};
  
-+	ret = mt7925_init_mlo_caps(&dev->phy);
-+	if (ret) {
-+		dev_err(dev->mt76.dev, "MLO init failed\n");
-+		return;
+ 	informed_bss = cfg80211_inform_bss(wiphy, &channel_5ghz,
+@@ -213,6 +216,8 @@ struct virt_wifi_netdev_priv {
+ 	struct net_device *upperdev;
+ 	u32 tx_packets;
+ 	u32 tx_failed;
++	u32 connect_requested_ssid_len;
++	u8 connect_requested_ssid[IEEE80211_MAX_SSID_LEN];
+ 	u8 connect_requested_bss[ETH_ALEN];
+ 	bool is_up;
+ 	bool is_connected;
+@@ -224,11 +229,21 @@ static int virt_wifi_connect(struct wiphy *wiphy, struct net_device *netdev,
+ 			     struct cfg80211_connect_params *sme)
+ {
+ 	struct virt_wifi_netdev_priv *priv = netdev_priv(netdev);
++	u32 ssid_len;
+ 	bool could_schedule;
+ 
+ 	if (priv->being_deleted || !priv->is_up)
+ 		return -EBUSY;
+ 
++	if (!sme->ssid) {
++		wiphy_err(wiphy, "invalid SSID\n");
++		return -EINVAL;
 +	}
 +
- 	ret = mt76_register_device(&dev->mt76, true, mt76_rates,
- 				   ARRAY_SIZE(mt76_rates));
- 	if (ret) {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index 13b40032cd72..213331a92166 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -236,6 +236,35 @@ mt7925_init_eht_caps(struct mt792x_phy *phy, enum nl80211_band band,
- 	eht_nss->bw._160.rx_tx_mcs13_max_nss = val;
- }
++	ssid_len = min_t(u32, sme->ssid_len, IEEE80211_MAX_SSID_LEN);
++	priv->connect_requested_ssid_len = ssid_len;
++	memcpy(priv->connect_requested_ssid, sme->ssid, ssid_len);
++
+ 	could_schedule = schedule_delayed_work(&priv->connect, HZ * 2);
+ 	if (!could_schedule)
+ 		return -EBUSY;
+@@ -252,12 +267,15 @@ static void virt_wifi_connect_complete(struct work_struct *work)
+ 		container_of(work, struct virt_wifi_netdev_priv, connect.work);
+ 	u8 *requested_bss = priv->connect_requested_bss;
+ 	bool right_addr = ether_addr_equal(requested_bss, fake_router_bssid);
++	bool right_ssid = (priv->connect_requested_ssid_len == VIRT_WIFI_SSID_LEN ?
++			  !memcmp(priv->connect_requested_ssid, VIRT_WIFI_SSID,
++				  priv->connect_requested_ssid_len) : false);
+ 	u16 status = WLAN_STATUS_SUCCESS;
  
-+int mt7925_init_mlo_caps(struct mt792x_phy *phy)
-+{
-+	struct wiphy *wiphy = phy->mt76->hw->wiphy;
-+	static const u8 ext_capa_sta[] = {
-+		[7] = WLAN_EXT_CAPA8_OPMODE_NOTIF,
-+	};
-+	static struct wiphy_iftype_ext_capab ext_capab[] = {
-+		{
-+			.iftype = NL80211_IFTYPE_STATION,
-+			.extended_capabilities = ext_capa_sta,
-+			.extended_capabilities_mask = ext_capa_sta,
-+			.extended_capabilities_len = sizeof(ext_capa_sta),
-+		},
-+	};
-+
-+	if (!(phy->chip_cap & MT792x_CHIP_CAP_MLO_EVT_EN))
-+		return 0;
-+
-+	ext_capab[0].eml_capabilities = phy->eml_cap;
-+	ext_capab[0].mld_capa_and_ops =
-+		u16_encode_bits(1, IEEE80211_MLD_CAP_OP_MAX_SIMUL_LINKS);
-+
-+	wiphy->flags |= WIPHY_FLAG_SUPPORTS_MLO;
-+	wiphy->iftype_ext_capab = ext_capab;
-+	wiphy->num_iftype_ext_capab = ARRAY_SIZE(ext_capab);
-+
-+	return 0;
-+}
-+
- static void
- __mt7925_set_stream_he_eht_caps(struct mt792x_phy *phy,
- 				struct ieee80211_supported_band *sband,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 829d87d4eb95..d4b020b50be1 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -749,6 +749,20 @@ mt7925_mcu_parse_phy_cap(struct mt792x_dev *dev, char *data)
- 	dev->has_eht = cap->eht;
- }
+ 	if (is_zero_ether_addr(requested_bss))
+ 		requested_bss = NULL;
  
-+static void
-+mt7925_mcu_parse_eml_cap(struct mt792x_dev *dev, char *data)
-+{
-+	struct mt7925_mcu_eml_cap {
-+		u8 rsv[4];
-+		__le16 eml_cap;
-+		u8 rsv2[6];
-+	} __packed * cap;
-+
-+	cap = (struct mt7925_mcu_eml_cap *)data;
-+
-+	dev->phy.eml_cap = le16_to_cpu(cap->eml_cap);
-+}
-+
- static int
- mt7925_mcu_get_nic_capability(struct mt792x_dev *dev)
- {
-@@ -803,6 +817,12 @@ mt7925_mcu_get_nic_capability(struct mt792x_dev *dev)
- 		case MT_NIC_CAP_PHY:
- 			mt7925_mcu_parse_phy_cap(dev, tlv->data);
- 			break;
-+		case MT_NIC_CAP_CHIP_CAP:
-+			memcpy(&dev->phy.chip_cap, (void *)skb->data, sizeof(u64));
-+			break;
-+		case MT_NIC_CAP_EML_CAP:
-+			mt7925_mcu_parse_eml_cap(dev, tlv->data);
-+			break;
- 		default:
- 			break;
- 		}
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-index 4c0ecae8e49b..d51cc8a02b9e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-@@ -235,6 +235,7 @@ void mt7925_queue_rx_skb(struct mt76_dev *mdev, enum mt76_rxq_id q,
- 			 struct sk_buff *skb, u32 *info);
- void mt7925_stats_work(struct work_struct *work);
- void mt7925_set_stream_he_eht_caps(struct mt792x_phy *phy);
-+int mt7925_init_mlo_caps(struct mt792x_phy *phy);
- int mt7925_init_debugfs(struct mt792x_dev *dev);
- 
- int mt7925_mcu_set_beacon_filter(struct mt792x_dev *dev,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wireless/mediatek/mt76/mt792x.h
-index 5ede24116748..30635aeba363 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
-@@ -27,6 +27,7 @@
- 
- #define MT792x_CHIP_CAP_CLC_EVT_EN BIT(0)
- #define MT792x_CHIP_CAP_RSSI_NOTIFY_EVT_EN BIT(1)
-+#define MT792x_CHIP_CAP_MLO_EVT_EN BIT(2)
- 
- /* NOTE: used to map mt76_rates. idx may change if firmware expands table */
- #define MT792x_BASIC_RATES_TBL	11
-@@ -163,6 +164,7 @@ struct mt792x_phy {
- #endif
- 	void *clc[MT792x_CLC_MAX_NUM];
- 	u64 chip_cap;
-+	u16 eml_cap;
- 
- 	struct work_struct roc_work;
- 	struct timer_list roc_timer;
+-	if (!priv->is_up || (requested_bss && !right_addr))
++	if (!priv->is_up || (requested_bss && !right_addr) || !right_ssid)
+ 		status = WLAN_STATUS_UNSPECIFIED_FAILURE;
+ 	else
+ 		priv->is_connected = true;
 -- 
-2.25.1
+2.43.0
 
 
