@@ -1,121 +1,104 @@
-Return-Path: <linux-wireless+bounces-9981-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9982-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D952D9270C8
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jul 2024 09:41:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B062F92721F
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jul 2024 10:53:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BDBA28706B
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jul 2024 07:41:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E11F01C23E50
+	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jul 2024 08:53:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5158E172BD8;
-	Thu,  4 Jul 2024 07:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE10D1A4F37;
+	Thu,  4 Jul 2024 08:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t5bBRKlw"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="N8ewp5kH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC31757E7
-	for <linux-wireless@vger.kernel.org>; Thu,  4 Jul 2024 07:40:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B591370;
+	Thu,  4 Jul 2024 08:52:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720078859; cv=none; b=Yohampc20AIWEXOmjAlZ3skUepTpp+/se+836EMsaOo2XIYTq/geKb7OxShPIjTut6aTam0I2XVHE2k7XEUcFFf9fZfzcr48kEtJQFYi8BRf2/BDMVqOO2aMvnll5fW/yDSbt4WzyOuw57GH9GPQXfLWKnzxCxy1RC5fUzEK6ts=
+	t=1720083157; cv=none; b=pmyOqt1vWN4vN1B1hBExZgesoiWTnzaCFwadoEWUOQHqB7m8EYojY7um5GJJFzCp0OEZybjGSz98xwwWBMa+KYd3cfkbk8d33HK3vul6Zut9Tl2qKFEZRsMBEPIxHwRwUwD+BeZH43UYUl210hkwYXKuD5lc+FK9I9jwGeS22BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720078859; c=relaxed/simple;
-	bh=P2X9eNg0zJhDkvS/0QSLrIv8VHwE96wJYW4/7sZgXtw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Hm/DSlU1R4JmrvPSTPmdxT1m+8d4puMqklG2DzxCECcjb7bO/6ldnh5q3pNhRa9+XqESv63uLV2Ch0im9w8qnh3frYAPIH1Darc5Ma5eFkzIeTg00DXCUkb1kQiv6wNjHb1GBi3uF9Fb0dR21iRxkzL0fbi6szh1HdxKxGbJB9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t5bBRKlw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C567C3277B;
-	Thu,  4 Jul 2024 07:40:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720078858;
-	bh=P2X9eNg0zJhDkvS/0QSLrIv8VHwE96wJYW4/7sZgXtw=;
-	h=Date:From:To:Cc:Subject:From;
-	b=t5bBRKlwvSvdw00ufc9mNyP0HwCzQbzF6dHpPrqBMty4WX1SmGT0UvvuUBfxluqLK
-	 5HdwIdPcLf17Mx77rAzAwhKMPeuCNioMPUMGAlbQPNUvEAkOpwnWZ4K/FqxwDOGoQV
-	 S65dKZmg8BpYGQPD4nMmDXkB8bFExxehFKtMFBcCqs7hb3vhGY9Jxp6FaVxtSq+oi8
-	 93JLaSHgTPVLP1gNXQcStIBAvZveTCtsxeUTzZV5Z6NkCTgjbPV8QysLWf4PIvbgvP
-	 V9DXrYpM5NQlSwx8wBeBvxpUyx1Qwppd5HW6YDR2JneTWJP8fj/H2UUF8lenJAP+dA
-	 sPAIAbKE+10Mg==
-Received: by wens.tw (Postfix, from userid 1000)
-	id 6D4915F882; Thu,  4 Jul 2024 15:40:56 +0800 (CST)
-Date: Thu, 4 Jul 2024 15:40:56 +0800
-From: Chen-Yu Tsai <wens@kernel.org>
-To: wireless-regdb@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [ANN] wireless-regdb: master-2024-07-04
-Message-ID: <ZoZSCJeyLpAJhtVU@wens.tw>
+	s=arc-20240116; t=1720083157; c=relaxed/simple;
+	bh=EzvZSv9u4C52XIDviykSLvDAqwCZcCGzJYldUbku4w0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=NdbD+zG5pwGQTlykykRRpPAbvfPvhzh0ZvJ82ynT/9I9ukhOkwjdLNfj85Gc4W0hzboi5pXliVg068QFZ+aABSjabqc6cuj8pZ2esCHuxn/77VMZ0YTNHz9wQxDYVGCa6/WK3nadxaDWjq8INZV6YmmNPKgInEbE7PYpxTQu1tI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=N8ewp5kH; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=Z0GrIIuPiJHUS+FoHoFca7SE4SA2paRmFGCT26MFRPU=;
+	t=1720083151; x=1721292751; b=N8ewp5kHuHpFza/PYM/qogbXfjFLxiAjzhp4qqGubWfqrX/
+	SAPUvKizRTk0bbyf2Esj4YL2kRXfYqFxnFRe1ug98T73Gl6ORBoRNTqjvkTShAGQLyYCpMBqDBy5K
+	P0YzVTnrq5vD9XuYcKYV5R89nYLkhik1eQQkvmLIdWfb9AsIRWkbWQ83IoNpTIy2jWUQDTmb+Qko/
+	oFeRYUU1B9qBhWel63vDW6w7eMmFWBp+De5Fiopmx9Y2JoAfKztcImkLxJ0Hkmaxph883VFuQQjKu
+	XYJRm7kTlnitcYXPf9FNeOBDjM+2nNUr9TRBIdW0sjWevGD7RulB45QK16aGIGIA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1sPICV-0000000CFEO-1uyB;
+	Thu, 04 Jul 2024 10:52:23 +0200
+Message-ID: <cc86acec3c7b0daab85263acba6eef42fe9cd0ec.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: virt_wifi: avoid reporting connection success
+ with wrong SSID
+From: Johannes Berg <johannes@sipsolutions.net>
+To: En-Wei Wu <en-wei.wu@canonical.com>, kvalo@kernel.org,
+ edumazet@google.com,  davem@davemloft.net, linux-wireless@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+Cc: rickywu0421@gmail.com, 
+	syzbot+d6eb9cee2885ec06f5e3@syzkaller.appspotmail.com
+Date: Thu, 04 Jul 2024 10:52:20 +0200
+In-Reply-To: <20240704030304.16213-1-en-wei.wu@canonical.com>
+References: <20240704030304.16213-1-en-wei.wu@canonical.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3 (3.52.3-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="dg4fhU5SQzvHajUY"
-Content-Disposition: inline
+X-malware-bazaar: not-scanned
 
+On Thu, 2024-07-04 at 11:03 +0800, En-Wei Wu wrote:
+>=20
+> +#define VIRT_WIFI_SSID_LEN 8
+> +#define VIRT_WIFI_SSID "VirtWifi"
 
---dg4fhU5SQzvHajUY
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Use strlen(VIRT_WIFI_SSID) for VIRT_WIFI_SSID_LEN maybe? It should be
+constant "enough" for the compiler.
 
-A new release of wireless-regdb (master-2024-07-04) is available at:
+> +	if (!sme->ssid) {
+> +		wiphy_err(wiphy, "invalid SSID\n");
+> +		return -EINVAL;
 
-https://www.kernel.org/pub/software/network/wireless-regdb/wireless-regdb-2024.07.04.tar.xz
+I wouldn't print an error here
 
-The short log of changes since the master-2024-05-08 release is below.
+> +	ssid_len =3D min_t(u32, sme->ssid_len, IEEE80211_MAX_SSID_LEN);
 
---
+The min_t() is unnecessary, cfg80211 won't give you too long SSIDs.
 
-Chen-Yu Tsai (1):
-      wireless-regdb: update regulatory database based on preceding changes
+>  	bool right_addr =3D ether_addr_equal(requested_bss, fake_router_bssid);
+> +	bool right_ssid =3D (priv->connect_requested_ssid_len =3D=3D VIRT_WIFI_=
+SSID_LEN ?
+> +			  !memcmp(priv->connect_requested_ssid, VIRT_WIFI_SSID,
+> +				  priv->connect_requested_ssid_len) : false);
 
-Ping-Ke Shih (19):
-      wireless-regdb: Update regulatory rules for Mongolia (MN) on 6GHz
-      wireless-regdb: Update regulatory rules for Saudi Arabia (SA) on 6GHz
-      wireless-regdb: Update regulatory rules for South Africa (ZA) on 6GHz
-      wireless-regdb: Update regulatory info for Thailand (TH) on 6GHz
-      wireless-regdb: Update regulatory info for Malaysia (MY) for 2022
-      wireless-regdb: Update regulatory info for Morocco (MA) on 6GHz
-      wireless-regdb: Update regulatory info for Chile (CL) on 6GHz
-      wireless-regdb: Update regulatory info for Mexico (MX) on 6GHz
-      wireless-regdb: Update regulatory info for Iceland (IS) on 6GHz
-      wireless-regdb: Update regulatory info for Mauritius(MU) on 6GHz
-      wireless-regdb: Update regulatory info for Argentina (AR) on 6GHz
-      wireless-regdb: Update regulatory info for United Arab Emirates (AE) on 6GHz
-      wireless-regdb: Update regulatory info for Colombia (CO) on 6GHz
-      wireless-regdb: Update regulatory info for Costa Rica (CR) for 2021
-      wireless-regdb: Update regulatory info for Dominican Republic (DO) on 6GHz
-      wireless-regdb: Update regulatory info for Liechtenstein (LI) on 6GHz
-      wireless-regdb: Update regulatory info for Jordan (JO) for 2022
-      wireless-regdb: Update regulatory info for Kenya (KE) for 2022
-      wireless-regdb: Update regulatory info for Macao (MO) for 2024
+the ternary seems odd, why not just
 
+ priv->connect_requested_ssid_len =3D=3D VIRT_WIFI_SSID_LEN &&
+ !memcmp(...);
 
---dg4fhU5SQzvHajUY
-Content-Type: application/pgp-signature; name="signature.asc"
+?
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE2nN1m/hhnkhOWjtHOJpUIZwPJDAFAmaGUggACgkQOJpUIZwP
-JDDUWQ/+Pw40TP5zFnePwyGJI1aoV/7KF02K86L1wAWLE7Kgzxw3QUya5aEnoLEe
-akgw5cgFj5DkNpQVgjh9ur3dSlFD3X0TOiXCDh5pUGvS9iV7dGQKTJMQCjb7WQJa
-x3Y4jE4o17oThrLH9oymbCQ9NUq0G18vHnY9kMSOoe7c1y2zgHlqrUsMay6xbkZQ
-5QKZhd/+bRWqjCvyE1EwKO4yEQyya0ifCVvQoOHrA7YGq+Rclg4GVaKq5oR6jGP3
-EX55sKK7PEL2rWU7t/6Ld7rp/l+u41crWgLiwz8SrXLtQROzGn9ier608msYmCGI
-zmtEn4HKLrp9f1Pnm4gpIAEfBF4+VxCyO7u2szKKHF1aOogYJ0M+xRdxW9IYV87d
-1cvmTONCtov/V7lWggpFtTmwcxOuajML46zjMe8fWnaFNFKZ+4aaHYEXMp6mosLv
-F0C2jwhkOrpMpJ3K2jX+dTIA5/x/IHYBxgjUiI6xiKgjwPNgjbFWDqPRvcN5soCg
-77NpU+V1YT/Ljc9hkIDMoVNJa8+680JUemMtJxeF2Anuv10FJV8CNsDc16w+wwHq
-IsBE5LwdQbBnWoVOPGmCCbCzEbcztQsyUQsCiiietKRhjgLFecHWnv0bfoOT7l2L
-4Lb6NdzZLFoGj0KvbBGxZ7rG2YAwJEfY5DBRQ0GgaLc+lbzdUfs=
-=xYUY
------END PGP SIGNATURE-----
-
---dg4fhU5SQzvHajUY--
+johannes
 
