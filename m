@@ -1,212 +1,162 @@
-Return-Path: <linux-wireless+bounces-10002-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10003-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41CE3928090
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jul 2024 04:47:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5364F9281AD
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jul 2024 08:06:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63E651C20FBA
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jul 2024 02:47:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F26B71F21ED4
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jul 2024 06:06:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8363367;
-	Fri,  5 Jul 2024 02:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B8C11C6A0;
+	Fri,  5 Jul 2024 06:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="DxJeqADe"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PH/XJ4Y/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A66ECF;
-	Fri,  5 Jul 2024 02:47:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED8633C7
+	for <linux-wireless@vger.kernel.org>; Fri,  5 Jul 2024 06:06:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720147668; cv=none; b=kue08TT+XtlqxpP8kosxor6zdCbKD6e3cbC8PdVbNxJ5zRa5nLUkUnmxXzrenjxVD+W21OK95OX+hJc4m1bP2rlM6jEPIxAwv5od6em9Qok9QKPsZCfQfC3BBnFH7xy3kHuULJoe0VplP30ckJpni+viAawM2JuvDSfag6nFSm0=
+	t=1720159595; cv=none; b=ILfq0BYBdOptUN9cra7gsmClpSA5vLJZ6eB3b9xGBcjHMcmLrgOawc4aSHVInCouz1kYcNx+LjfawjllP9D5nVKF/LljG4QcrhVU2+B8Q62CaylG7aQFQURwAezfN1W74Wxr0fHmwrKOjUeTT7kKdukMoKwlGHUpCDMwJL1WZdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720147668; c=relaxed/simple;
-	bh=f0McIqjsWBQADUx1xWkaQx3X8DzvB7aDmb+NakTDKx4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=EOxEH8PNn6QwPWA8SUP/6EUeI2jjPE9fCJJvzdgRzmYsHmU4aloo8oKkX/tmak7V+ThF5QJBy5qqRNN1mheMUvx1UCQCN6g8PUHqJeFNw63AQd/8ujHdvBxSA+AjfaMvhWpE/H3uMdJqwuarNuXtgDbk8ApwAFQzGFNlLP2l198=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=DxJeqADe; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 464NlTE7007685;
-	Fri, 5 Jul 2024 02:47:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	MZDju9pB+4L/qZTGVDF9DmV7kuGMW2ssXwY+xyjksLs=; b=DxJeqADehu2qXYAx
-	Gen8gvxX/Di9nYDs7XpHcsYrYNuSOGbs0i7mRfgGQ7md8Pl2e2ywlCxy+zW5KwSO
-	Zu4N9kjHSPS/6xRczmvKnWFMYmCK/erM9EsqMkX0NKDA4+J2AAw9HC2XQwZ9grWt
-	cjDEspjuq/+PcjoNnkodZHIsQoBYowm8szoXxz4O1nBc5n5vM1Y+87fyCY5+73K2
-	C4ntd/LGx/NyiCIDeze2Qkclf4bGlTfYtzGjkpiMs18v5ZWJXgyQ2gkub5x8eS/Y
-	eCT4sN+OAtSqKM5EB8yCWWNYZVXxjXPFntmXuUSZPMc3WbtHHWr+H56Y96fx8fiX
-	xpQqHA==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4052yhmbr8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Jul 2024 02:47:28 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 4652lRUN009032
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 5 Jul 2024 02:47:27 GMT
-Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 4 Jul 2024
- 19:47:25 -0700
-Message-ID: <462c97dc-f366-4f75-9327-04d9424b819a@quicinc.com>
-Date: Fri, 5 Jul 2024 10:47:24 +0800
+	s=arc-20240116; t=1720159595; c=relaxed/simple;
+	bh=bUgY03L6zivIYSVVkaDUpCnn1+Cd/vYQ41f7mx7r1kQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=G6UIxZT22hyqp4hLWYD2esQXMH/8ZpuopLDBM5Id92ZfLwNRsuSa7wRc0sGymk1tf3BpsylEUawOibYROiXbyeElNRAp02xbpCd+ivDY629dgEyisBeGJn1gJ+8OelL/hFyZR1f4e2WDMiLn/j0x534ADvYPfnYPcIVaZk3MZik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PH/XJ4Y/; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-1fb1c69e936so7482085ad.3
+        for <linux-wireless@vger.kernel.org>; Thu, 04 Jul 2024 23:06:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1720159593; x=1720764393; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RHkxc0UKIg+vQfu04qs07gwLBIHrophB65CpAiITplA=;
+        b=PH/XJ4Y/Y6N5oKqhFu1C/kt/uL46tTepGipu8PF3EmULmu5jbhOnLOPDABHSWeRtKr
+         mZA28I8/f9t0D2+D9TstUie8u6eF3ce1W5GAoxEKFyYH853/WROmOdPZUQK/juWq7TeL
+         7shJsHiOF3UQiAivL/or747DdivCseG19qkATzR5Dxq6lvrOfGw/1RO+eh7//p6Xffuu
+         DUu5b4PEsrRKK67p+L/f/JaLsuNpNta5lcXGE0OJ2LQyd6uzeSsVbmhUNu4CZ3ai+PJm
+         25neBC6VcUngGLrQhrNI1PrBVjBNZPAJjju84a9UTvHmu5/Q2SMsSLZQmy9KmXwHjaPc
+         /BEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720159593; x=1720764393;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RHkxc0UKIg+vQfu04qs07gwLBIHrophB65CpAiITplA=;
+        b=em2kc2NK+B303j5KGZD8kQgGYmq0eO5hB7zUIBlH0XoMwly8zGbLphOElQ6w6DvIhY
+         wtEZQxpciw9ZSNV0uMOHHw84q1BWgK7OURGTs0oEgMNxsvKaDN6heGD2lXsJnx4SUJci
+         yiaaRcXD25dMX8pzj4e2jZ/voRBWl5I7+gfaDhR9QwjqKWqVElfDuH2Ll5GES0DZ8CB6
+         WoWt/cwttLm0G3SG4tWO4gX3uyuDpq2DZD0tgHtMXy+2sX/XKwpjef8Xzhqez1CDQ6Sv
+         v39TqtQrL6rVPL7rKXucjUgfP89RGp5jsclAwSuNey/g+QQsMlVTHTDLe49k0Drs4yQh
+         YlEg==
+X-Gm-Message-State: AOJu0YzUjLhgjIWohYsssuqSjA2YeEOUJg9mpoHcZBW6xdZ2YPBiJ/pE
+	m/+PvnTcVqGue3vj8t2T3+Sw5CrlVLpRyvk0fxIOlYUX8ypHfxMI
+X-Google-Smtp-Source: AGHT+IGUEfRbMM1P1JnslcYuGQ2IKRZxvb2JOOAYjY26JLj9NHw+cWDWBqVR/WxUvX73df9mV9bErg==
+X-Received: by 2002:a17:902:f54f:b0:1fa:2760:c3d0 with SMTP id d9443c01a7336-1fb33edf8a7mr28601615ad.51.1720159592258;
+        Thu, 04 Jul 2024 23:06:32 -0700 (PDT)
+Received: from localhost.localdomain (59-124-166-19.hinet-ip.hinet.net. [59.124.166.19])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-1fb4e7c31afsm4644645ad.2.2024.07.04.23.06.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jul 2024 23:06:31 -0700 (PDT)
+From: Ping-Ke Shih <pkshih@gmail.com>
+To: wens@kernel.org
+Cc: linux-wireless@vger.kernel.org,
+	wireless-regdb@lists.infradead.org
+Subject: [PATCH 1/5] wireless-regdb: Update regulatory info for New Zealand (NZ) for 2022
+Date: Fri,  5 Jul 2024 14:06:09 +0800
+Message-Id: <20240705060613.28909-1-pkshih@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: invalid vht params rate 1920 100kbps nss 2 mcs 9
-To: Paul Menzel <pmenzel@molgen.mpg.de>
-CC: Kalle Valo <kvalo@kernel.org>, James Prestwood <prestwoj@gmail.com>,
-        <linux-wireless@vger.kernel.org>, <ath10k@lists.infradead.org>,
-        LKML
-	<linux-kernel@vger.kernel.org>,
-        Chun Wu <chunwu@qti.qualcomm.com>
-References: <fba24cd3-4a1e-4072-8585-8402272788ff@molgen.mpg.de>
- <1faa7eee-ed1e-477b-940d-a5cf4478cf73@gmail.com> <87iky7mvxt.fsf@kernel.org>
- <37ba6cb0-d887-4fcf-b7dc-c93a5fc5900f@gmail.com> <875xu6mtgh.fsf@kernel.org>
- <f7faff80-864a-4411-ad28-4f1151bc1e51@quicinc.com>
- <082024ce-fdd4-4fb1-8055-6d25f7d2e524@molgen.mpg.de>
-Content-Language: en-US
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <082024ce-fdd4-4fb1-8055-6d25f7d2e524@molgen.mpg.de>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: d_cU7cvgqZOAhIQCxRLfHpClzKdsHIhk
-X-Proofpoint-GUID: d_cU7cvgqZOAhIQCxRLfHpClzKdsHIhk
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-04_21,2024-07-03_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- suspectscore=0 malwarescore=0 adultscore=0 mlxscore=0 phishscore=0
- priorityscore=1501 mlxlogscore=999 impostorscore=0 clxscore=1011
- bulkscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2407050019
 
+From: Ping-Ke Shih <pkshih@realtek.com>
 
+Radiocommunications Regulations (General User Radio Licence for Short Range
+Devices) Notice 2022 listed spectrum:
 
-On 6/26/2024 5:12 PM, Paul Menzel wrote:
-> Dear Baochen,
-> 
-> 
-> Thank you for your reply.
-> 
-> Am 26.06.24 um 10:53 schrieb Baochen Qiang:
-> 
->> On 6/18/2024 6:33 PM, Kalle Valo wrote:
->>> + baochen
->>>
->>> James Prestwood <prestwoj@gmail.com> writes:
-> 
->>>> On 6/17/24 8:27 AM, Kalle Valo wrote:
->>>>> James Prestwood writes:
-> 
->>>>>> On 6/16/24 6:10 AM, Paul Menzel wrote:
-> 
->>>>>>> Linux 6.10-rc3 (commit a3e18a540541) logged the warning below when
->>>>>>> connecting to a public WiFi:
->>>>>>>
->>>>>>>       ath10k_pci 0000:3a:00.0: invalid vht params rate 1920 100kbps nss 2 mcs 9
->>>>>>
->>>>>> This has been reported/discussed [1]. It was hinted that there was a
->>>>>> firmware fix for this, but none that I tried got rid of it. I got fed
->>>>>> up enough with the logs filling up with this I patched our kernel to
->>>>>> remove the warning. AFAICT it appears benign (?). Removing the warning
->>>>>> was purely "cosmetic" so other devs stopped complaining about it :)
->>>>>>
->>>>>> [1] https://www.mail-archive.com/ath10k@lists.infradead.org/msg13406.html
->>>>>
->>>>> More reliable link to the discussion:
->>>>>
->>>>> https://lore.kernel.org/ath10k/76a816d983e6c4d636311738396f97971b5523fb.1612915444.git.skhan@linuxfoundation.org/
->>>>>
->>>>> I think we should add this workaround I mentioned in 2021:
->>>>>
->>>>>      "If the firmware still keeps sending invalid rates we should add a
->>>>>       specific check to ignore the known invalid values, but not all of
->>>>>       them."
->>>>>
->>>>>      https://lore.kernel.org/ath10k/87h7mktjgi.fsf@codeaurora.org/
->>>>>
->>>>> I guess that would be mcs == 7 and rate == 1440?
->>>>
->>>> I think its more than this combination (Paul's are different).
->>>
->>> Good point.
->>>
->>>> So how many combinations are we willing to add here? Seems like that
->>>> could get out of hand if there are more than a few invalid
->>>> combinations.
->>>
->>> Yeah, but there haven't been that many different values reported yet,
->>> right? And I expect that ath10k user base will just get smaller in the
->>> future so the chances are that we will get less reports.
->>>
->>>> Would we also want to restrict the workaround to specific
->>>> hardware/firmware?
->>>
->>> Good idea, limiting per hardware would be simple to implement using
->>> hw_params. Of course we could even limit this per firmware version using
->>> enum ath10k_fw_features, but not sure if that's worth all the extra work.
->>>
->>> Baochen, do you know more about this firmware bug? Any suggestions?
->>
->> OK, there are two issues here:
->>
->> 1. invalid HT rate: "ath10k_pci 0000:02:00.0: invalid ht params rate 1440 100kbps nss 2 mcs 7".
->>
->> As commented by Wen quite some time ago, this has been fixed from
->> firmware side, and firmware newer than [ver:241] has the fix
->> included.
-> This is the issue from 2021, correct?
-> 
->> 2. invaid VHT rate: "ath10k_pci 0000:3a:00.0: invalid vht params rate 1920 100kbps nss 2 mcs 9".
->>
->> After checking with firmware team, I thought this is because there is
->> a mismatch in rate definition between host and firmware: In host, the
->> rate for 'nss 2 mcs 9' is defined as {1560, 1733}, see
->> supported_vht_mcs_rate_nss2[]. While in firmware this is defined as
->> {1730, 1920}. So seems we can update host definition to avoid this
->> issue.
-> Looking through the logs since May 2024, I have four different logs:
-> 
-> 1.  invalid vht params rate 878 100kbps nss 3 mcs 2
-which chip are you using when you hit this nss 3 issue? QCA6174 firmware does not support NSS 3 so really weird.
+2400.0000 - 2483.5000
+  * e.i.r.p. 0 dBW (1 W)
 
-> 2.  invalid vht params rate 960 100kbps nss 1 mcs 9
-> 3.  invalid vht params rate 1730 100kbps nss 2 mcs 9
-> 4.  invalid vht params rate 1920 100kbps nss 2 mcs 9
-OK, these are due to mismatch between host and QCA6174 firmware, we can update host to fix them.
+5150.0000 - 5350.0000
+ * the maximum power is 0 dBW (1 W) e.i.r.p. and
+   the maximum permitted power spectral density is -13 dBW/MHz
+   (17 dBm/Hz, 50 mW/MHz) e.i.r.p.
+ * 5250 - 5350 MHz, If Transmitter Power Control is not used, then the
+   maximum power (e.i.r.p.) value shall be reduced by 3 dB.
 
-> 
-> I believe it’s only happening with Cisco networks. I am happy to test a patch.
-> 
-> By the way, is the firmware version logged by Linux?
-> 
->     ath10k_pci 0000:3a:00.0: qca6174 hw3.2 target 0x05030000 chip_id 0x00340aff sub 1a56:1535
->     ath10k_pci 0000:3a:00.0: kconfig debug 0 debugfs 0 tracing 0 dfs 0 testmode 0
->     ath10k_pci 0000:3a:00.0: firmware ver WLAN.RM.4.4.1-00288- api 6 features wowlan,ignore-otp,mfp crc32 bf907c7c
->     ath10k_pci 0000:3a:00.0: board_file api 2 bmi_id N/A crc32 d2863f91
->     ath10k_pci 0000:3a:00.0: htt-ver 3.87 wmi-op 4 htt-op 3 cal otp max-sta 32 raw 0 hwcrypto 1
-> 
-> Is it 4.4.1-00288? How can I find the file in `/lib/firmware/`?
-> 
-> 
-> Kind regards,
-> 
-> Paul
+5470.0000 - 5725.0000
+ * 5470 - 5725 MHz, transmitter peak power must not exceed -6 dBW (250 mW)
+   If Transmitter Power Control is not used, then the maximum power
+   (e.i.r.p.) value must be reduced by 3 dB.
+
+5725.0000 - 5850.0000
+ * 5725 - 5850 MHz, the transmitter peak power must not exceed 0 dBW (1 W)
+   and the power spectral density must not exceed 17 dBm/MHz.
+
+5925.0000 - 6425.0000
+ * the maximum power is -6 dBW (24 dBm, 250 mW ) e.i.r.p. and
+   the maximum permitted power spectral density is -19 dBW/MHz
+   (11 dBm/MHz, 12.6 mW/MHz) e.i.r.p. for low power devices.
+   Only be used indoors.
+ * the maximum power is -16 dBW (14 dBm, 25 mW ) e.i.r.p. and
+   the maximum permitted power spectral density is -29 dBW/MHz
+   (1 dBm/MHz, 1.26 mW/MHz) e.i.r.p. for very low power devices.
+   Very Low Power applications.
+
+57000.0000 - 71000.0000
+ * for devices transmitting at 10 dBW e.i.r.p or less,
+   the power spectral density must not exceed -7 dBW/MHz e.i.r.p. and
+   the maximum transmit power must not exceed -3 dBW at the antenna port
+   or ports.
+ * for devices transmitting greater than 10 dBW e.i.r.p., the power
+   spectral density shall not exceed 8 dBW/MHz e.i.r.p and antennas with
+   a gain greater than 30 dBi shall be used.
+
+[1] https://gazette.govt.nz/notice/id/2022-go3100
+
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ db.txt | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
+
+diff --git a/db.txt b/db.txt
+index d7592c299c62..266ba2d48731 100644
+--- a/db.txt
++++ b/db.txt
+@@ -1416,12 +1416,16 @@ country NP: DFS-JP
+ 	(5250 - 5330 @ 80), (20), DFS, AUTO-BW
+ 	(5735 - 5835 @ 80), (20)
+ 
++# Source:
++# https://gazette.govt.nz/notice/id/2022-go3100
+ country NZ: DFS-ETSI
+-	(2402 - 2482 @ 40), (30)
+-	(5170 - 5250 @ 80), (17), AUTO-BW
+-	(5250 - 5330 @ 80), (24), DFS, AUTO-BW
+-	(5490 - 5730 @ 160), (24), DFS
+-	(5735 - 5835 @ 80), (30)
++	(2400 - 2483.5 @ 40), (30)
++	(5150 - 5250 @ 80), (30), AUTO-BW
++	(5250 - 5350 @ 80), (27), DFS, AUTO-BW
++	(5470 - 5730 @ 160), (21), DFS
++	(5725 - 5850 @ 80), (30)
++	(5925 - 6425 @ 320), (24), NO-OUTDOOR
++	(57000 - 71000 @ 2160), (40)
+ 
+ country OM: DFS-ETSI
+ 	(2402 - 2482 @ 40), (20)
+-- 
+2.25.1
+
 
