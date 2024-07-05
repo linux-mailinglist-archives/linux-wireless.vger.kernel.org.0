@@ -1,127 +1,127 @@
-Return-Path: <linux-wireless+bounces-9994-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-9995-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E11E2927F22
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jul 2024 01:25:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6DE3927FD6
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jul 2024 03:46:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0044B22E5B
-	for <lists+linux-wireless@lfdr.de>; Thu,  4 Jul 2024 23:25:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BAF11F231AA
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jul 2024 01:46:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00B59143867;
-	Thu,  4 Jul 2024 23:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F0AF79D3;
+	Fri,  5 Jul 2024 01:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mMY9OE+Y"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="OuohWKXA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF274143748
-	for <linux-wireless@vger.kernel.org>; Thu,  4 Jul 2024 23:25:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83AE97F;
+	Fri,  5 Jul 2024 01:46:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720135504; cv=none; b=d9itMUECDkWldLbaDGznMUgZn+1I1NawAOFg1T+n23fMJxQ/tht6J99zAZZGgtKBeo8NL15RdQTDNg4Btgj7X2ylTN2su1c3K99zg9RLKXazKVp0N2ZLtVdo14fTRKPvu+R7bI6TxJW8ofBEPlaYe9lnOGirCIya9OCSLsS3TWE=
+	t=1720143974; cv=none; b=YLWGQdUENqQs2kwObl2WFMKKkZ69LmHXLT6LZvckG27G/oi48XkEjHKOqrMyZObBmyb4UWUywHHTBuYNDBPslaHeG76cR0kqfrJkCT+wjOJZq81mFj2XJc+/8lKJ0Fcn1KQ3pcmIJOSSWWoxPTHc7nCfLdCMzvfVHsd9PmqO98o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720135504; c=relaxed/simple;
-	bh=h/MhLT48xCMPodi/QfEIU2H8ZaCUdDmFDJhZGxscQw0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KhxrAyH+QW9X36pzN3B0yHSGqayHw/kUqgFho6lg5//TE1dco//EbbGj6zYOM/dkbVD3QD3O9P+6zDDQXK1ZA6SlbNHGafMDaVFIAOh9F7uJrifrdrn+8dGfwgZCV6IZyoDhCRnwZjYV7VBk3wqHCcxa57PldkC+6z+yNa3RAw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mMY9OE+Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D23C3277B;
-	Thu,  4 Jul 2024 23:25:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720135504;
-	bh=h/MhLT48xCMPodi/QfEIU2H8ZaCUdDmFDJhZGxscQw0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mMY9OE+YBKmII3oiZLlmhKJuwEya5BjSfhAMfeQoUj9UzeanyfjO0yQcrc7dxSCl2
-	 6hKiPb/dS/dVWO8vcxHPguE4i6N/DCMni7SfThs4k6P3qy37woRZVl9wAsOvSeE5rJ
-	 p5zuwut+XosjVlrYQLNcOJpNKD7zxnfHg5ikOe0UPIIrIxVDDO9Cl4/tI745nxGAe0
-	 HDw/Xwv14HrWbEAWku7HKZJ5J6mS41QtSMJL2cxrrcwVIOGS/bob0frJXrKIB3+KD9
-	 sGlJxiOCTcQs9tdVXzkrmQJIid7CE4bEibxeVoJLe/ff5ORFwa7php5N/WriA8umZ9
-	 y+VHa+xIVvvDA==
-Date: Thu, 4 Jul 2024 16:25:03 -0700
-From: Kees Cook <kees@kernel.org>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH RFC] wifi: ath12k: workaround fortify warnings in
- ath12k_wow_convert_8023_to_80211()
-Message-ID: <202407041551.1DC8C03D@keescook>
-References: <20240704144341.207317-1-kvalo@kernel.org>
+	s=arc-20240116; t=1720143974; c=relaxed/simple;
+	bh=ld8o8FaaAiwbAi0R3l/MkFRMfIc/UxNHZGvhFpzf54U=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=LrayYYfFk/6zb3dGxkJa4kePSejLAWg7aqMjOKNG1n0tZj+794+AZj3fSYpLTxcUF1TXh/KYKPUq4PAVRZKJ9g291X38oBPccpyUAC7r5qIHZJkpIcbvOrdK5vHbJlsa4A2gPEu8s6z/7+bgfl8Fj3OHkwWUQmnVcZ8VFZ31ltY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=fail (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=OuohWKXA reason="key not found in DNS"; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4651jmcP74086069, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1720143948; bh=ld8o8FaaAiwbAi0R3l/MkFRMfIc/UxNHZGvhFpzf54U=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-ID:Content-Transfer-Encoding:MIME-Version;
+	b=OuohWKXAR0uR5LjRgJT7881DQ1V2B3MXscEoV0BJS5Xqc+CVeF2aqsJW9Y0+g7mE3
+	 lue4ubZKxwaIjHrrwmh2HIwYnal5jUs7enjZwXkkUkOm55RuEDm+u5u5ZcFmjJ4fO7
+	 BEerM75yZd5/KGlvVQcHeWgieCRhr32GvAfP1AeFgfxY9n9Jlp+wfHutCYyW+dlRLq
+	 YhGuepifBdumwIYQGqRxDV0hVM0yDX8CUT0b6WlI3jc+cYDj4ti7B9QnhfxeqZOwLU
+	 /2QOzK80PFxwyoG3RQIk/APn+gh8p5gZxPmnbpcoqge8xl+E083weXQ+GfQteFyh7O
+	 X9ibwPELXtz4g==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 4651jmcP74086069
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 5 Jul 2024 09:45:48 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 5 Jul 2024 09:45:48 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 5 Jul 2024 09:45:47 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
+ 15.01.2507.035; Fri, 5 Jul 2024 09:45:47 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "marcin.slusarz@gmail.com" <marcin.slusarz@gmail.com>
+CC: "tpkuester@gmail.com" <tpkuester@gmail.com>,
+        "kvalo@kernel.org"
+	<kvalo@kernel.org>,
+        "Larry.Finger@lwfinger.net" <Larry.Finger@lwfinger.net>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "mslusarz@renau.com" <mslusarz@renau.com>
+Subject: Re: [PATCH] wifi: rtw88: schedule rx work after everything is set up
+Thread-Topic: [PATCH] wifi: rtw88: schedule rx work after everything is set up
+Thread-Index: AQHasFekMjDEF5R7/k+0650S2/2b8bGrUuCQgACfb4CAAAQJAIA7HOaA
+Date: Fri, 5 Jul 2024 01:45:47 +0000
+Message-ID: <96a46df7c4c49b2b033bc7cd8d5cad3306db8ca6.camel@realtek.com>
+References: <13e848c1544245e6aef4b89c3f38daf0@realtek.com>
+	 <20240528110246.477321-1-marcin.slusarz@gmail.com>
+In-Reply-To: <20240528110246.477321-1-marcin.slusarz@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+user-agent: Evolution 3.36.1-2 
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <FB1B320DBC41034B9F67D7044D7B3289@realtek.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240704144341.207317-1-kvalo@kernel.org>
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-On Thu, Jul 04, 2024 at 05:43:41PM +0300, Kalle Valo wrote:
-> From: Kalle Valo <quic_kvalo@quicinc.com>
-> 
-> Johannes reported with GCC 11.4 there's a fortify warning below. The warning is
-> not seen with GCC 12.1 nor 13.2. Weirdly moving the other operand of sum to the
-> other side the warning goes away. This is safe to do as the value of the
-> operand is check earlier. But the code looks worse with this so I'm not sure
-> what to do.
-
-FWIW, this isn't fortify, but -Wrestrict. I would expect the same
-warnings even with CONFIG_FORTIFY_SOURCE disabled. Regardless, it's
-worth figuring out what's going on. It looks like this is GCC's value
-range tracker deciding it sees a way for things to go weird.
-
-I suspect they fixed -Wrestrict in later GCC versions. It might need to
-be version-limited...
-
-> In file included from ./include/linux/string.h:374,
->                  from ./include/linux/bitmap.h:13,
->                  from ./include/linux/cpumask.h:13,
->                  from ./include/linux/sched.h:16,
->                  from ./include/linux/delay.h:23,
->                  from drivers/net/wireless/ath/ath12k/wow.c:7:
-> drivers/net/wireless/ath/ath12k/wow.c: In function ‘ath12k_wow_convert_8023_to_80211.constprop’:
-> ./include/linux/fortify-string.h:114:33: error: ‘__builtin_memcpy’ accessing 18446744073709551611 or more bytes at offsets 0 and 0 overlaps 9223372036854775799 bytes at offset -9223372036854775804 [-Werror=restrict]
-
-These huge negative values imply to me that GCC is looking at some
-signed values somewhere.
-
-> [...]
-> diff --git a/drivers/net/wireless/ath/ath12k/wow.c b/drivers/net/wireless/ath/ath12k/wow.c
-> index c5cba825a84a..e9588bb7561c 100644
-> --- a/drivers/net/wireless/ath/ath12k/wow.c
-> +++ b/drivers/net/wireless/ath/ath12k/wow.c
-> @@ -186,7 +186,7 @@ ath12k_wow_convert_8023_to_80211(struct ath12k *ar,
->  	if (eth_pkt_ofs < ETH_ALEN) {
->  		pkt_ofs = eth_pkt_ofs + a1_ofs;
->  
-> -		if (eth_pkt_ofs + eth_pat_len < ETH_ALEN) {
-> +		if (eth_pat_len < ETH_ALEN - eth_pkt_ofs) {
->  			memcpy(pat, eth_pat, eth_pat_len);
->  			memcpy(bytemask, eth_bytemask, eth_pat_len);
-
-Both eth_pkt_ofs and eth_pat_len are size_t. ETH_ALEN isn't, but it
-would be promoted to size_t here. The value tracker should see that
-eth_pkt_ofs could be [0..ETH_ALEN). eth_pat_len is coming from an "int",
-though, so that might be the confusion. It may think eth_pat_len could
-be [0..UINT_MAX] (i.e. the full range of int within size_t).
-
-So [0..ETH_ALEN) + [0..UINT_MAX] < 6 might be doing something wrong in
-GCC 11.x, and it's not actually doing the size_t promotion correctly,
-or deciding something has wrapped and then thinking eth_pat_len could
-span a giant region of the address space, which freaks out -Wrestrict.
-i.e. it's seeing that for the "if" to be true, eth_pat_len could be large
-enough to wrap around the addition (though this shouldn't be possible
-for 64-bit size_t).
-
-So I could see how [0..UINT_MAX] < 6 - [0..ETH_ALEN) would make it
-happier: the right side is now [1..6], so eth_pat_len becomes [1..6).
-
-Reviewed-by: Kees Cook <kees@kernel.org>
-
--- 
-Kees Cook
+T24gVHVlLCAyMDI0LTA1LTI4IGF0IDEzOjAyICswMjAwLCBNYXJjaW4gxZpsdXNhcnogd3JvdGU6
+DQo+IA0KPiBGcm9tOiBNYXJjaW4gxZpsdXNhcnogPG1zbHVzYXJ6QHJlbmF1LmNvbT4NCj4gDQo+
+IFJpZ2h0IG5vdyBpdCdzIHBvc3NpYmxlIHRvIGhpdCBOVUxMIHBvaW50ZXIgZGVyZWZlcmVuY2Ug
+aW4NCj4gcnR3X3J4X2ZpbGxfcnhfc3RhdHVzIG9uIGh3IG9iamVjdCBhbmQvb3IgaXRzIGZpZWxk
+cyBiZWNhdXNlDQo+IGluaXRpYWxpemF0aW9uIHJvdXRpbmUgY2FuIHN0YXJ0IGdldHRpbmcgVVNC
+IHJlcGxpZXMgYmVmb3JlDQo+IHJ0d19kZXYgaXMgZnVsbHkgc2V0dXAuDQo+IA0KPiBUaGUgc3Rh
+Y2sgdHJhY2UgbG9va3MgbGlrZSB0aGlzOg0KPiANCj4gcnR3X3J4X2ZpbGxfcnhfc3RhdHVzDQo+
+IHJ0dzg4MjFjX3F1ZXJ5X3J4X2Rlc2MNCj4gcnR3X3VzYl9yeF9oYW5kbGVyDQo+IC4uLg0KPiBx
+dWV1ZV93b3JrDQo+IHJ0d191c2JfcmVhZF9wb3J0X2NvbXBsZXRlDQo+IC4uLg0KPiB1c2Jfc3Vi
+bWl0X3VyYg0KPiBydHdfdXNiX3J4X3Jlc3VibWl0DQo+IHJ0d191c2JfaW5pdF9yeA0KPiBydHdf
+dXNiX3Byb2JlDQo+IA0KPiBTbyB3aGlsZSB3ZSBkbyB0aGUgYXN5bmMgc3R1ZmYgcnR3X3VzYl9w
+cm9iZSBjb250aW51ZXMgYW5kIGNhbGxzDQo+IHJ0d19yZWdpc3Rlcl9odywgd2hpY2ggZG9lcyBh
+bGwga2luZHMgb2YgaW5pdGlhbGl6YXRpb24gKGUuZy4NCj4gdmlhIGllZWU4MDIxMV9yZWdpc3Rl
+cl9odykgdGhhdCBydHdfcnhfZmlsbF9yeF9zdGF0dXMgcmVsaWVzIG9uLg0KPiANCj4gRml4IHRo
+aXMgYnkgbW92aW5nIHRoZSBmaXJzdCB1c2Jfc3VibWl0X3VyYiBhZnRlciBldmVyeXRoaW5nDQo+
+IGlzIHNldCB1cC4NCj4gDQo+IEZvciBtZSwgdGhpcyBidWcgbWFuaWZlc3RlZCBhczoNCj4gWyAg
+ICA4Ljg5MzE3N10gcnR3Xzg4MjFjdSAxLTE6MS4yOiBiYW5kIHdyb25nLCBwYWNrZXQgZHJvcHBl
+ZA0KPiBbICAgIDguOTEwOTA0XSBydHdfODgyMWN1IDEtMToxLjI6IGh3LT5jb25mLmNoYW5kZWYu
+Y2hhbiBOVUxMIGluIHJ0d19yeF9maWxsX3J4X3N0YXR1cw0KPiBiZWNhdXNlIEknbSB1c2luZyBM
+YXJyeSdzIGJhY2twb3J0IG9mIHJ0dzg4IGRyaXZlciB3aXRoIHRoZSBOVUxMDQo+IGNoZWNrcyBp
+biBydHdfcnhfZmlsbF9yeF9zdGF0dXMuDQo+IA0KPiBSZXBvcnRlZC1ieTogVGltIEsgPHRwa3Vl
+c3RlckBnbWFpbC5jb20+DQo+IENsb3NlczogDQo+IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xp
+bnV4LXdpcmVsZXNzL0NBK3Nob1dRN1A0OWpoUWFzb2ZEY1RkUWhpdWFyUFRqWUVEYS0tTmlWVng0
+OTRXY3VRd0BtYWlsLmdtYWlsLmNvbS8NCg0KQ2hhbmdlIENsb3NlcyB0byBMaW5rIGR1cmluZyBj
+b21taXR0aW5nIGJlY2F1c2Ugb2Ygbm8gQUNLIGZyb20gVGltLg0KDQo+IFNpZ25lZC1vZmYtYnk6
+IE1hcmNpbiDFmmx1c2FyeiA8bXNsdXNhcnpAcmVuYXUuY29tPg0KPiBDYzogUGluZy1LZSBTaGlo
+IDxwa3NoaWhAcmVhbHRlay5jb20+DQo+IENjOiBMYXJyeSBGaW5nZXIgPExhcnJ5LkZpbmdlckBs
+d2Zpbmdlci5uZXQ+DQo+IENjOiBLYWxsZSBWYWxvIDxrdmFsb0BrZXJuZWwub3JnPg0KPiBDYzog
+bGludXgtd2lyZWxlc3NAdmdlci5rZXJuZWwub3JnDQo+IENjOiBsaW51eC1rZXJuZWxAdmdlci5r
+ZXJuZWwub3JnDQo+IA0KDQoxIHBhdGNoKGVzKSBhcHBsaWVkIHRvIHJ0dy1uZXh0IGJyYW5jaCBv
+ZiBydHcuZ2l0LCB0aGFua3MuDQoNCmFkYzUzOTc4NGM5OCB3aWZpOiBydHc4ODogdXNiOiBzY2hl
+ZHVsZSByeCB3b3JrIGFmdGVyIGV2ZXJ5dGhpbmcgaXMgc2V0IHVwDQoNCi0tLQ0KaHR0cHM6Ly9n
+aXRodWIuY29tL3Brc2hpaC9ydHcuZ2l0DQoNCg==
 
