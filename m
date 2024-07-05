@@ -1,78 +1,78 @@
-Return-Path: <linux-wireless+bounces-10004-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10005-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 585849281AE
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jul 2024 08:06:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C01F89281AF
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jul 2024 08:06:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A0C91C2269E
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jul 2024 06:06:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F14A21C225CE
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jul 2024 06:06:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 014F313F42A;
-	Fri,  5 Jul 2024 06:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7C313C69C;
+	Fri,  5 Jul 2024 06:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="joYSe0VT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aMQODU6z"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D169913C69C
-	for <linux-wireless@vger.kernel.org>; Fri,  5 Jul 2024 06:06:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC5713E898
+	for <linux-wireless@vger.kernel.org>; Fri,  5 Jul 2024 06:06:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720159596; cv=none; b=QGqrEh/LnaiIn60BTdzvFXaqpJiy09QwShze0tGXy0fHPKn/+MSmnOKi8XPZukAIvFc7Yek7MqEwIwC7VLnJqeRkbgaSHDmyyauK/m2J+drxknkPZTYyuqD9iushVvs0czPf5lROjxGKb3XEQVRLHJVB5hjl+0VTlsh4X1kMvBM=
+	t=1720159598; cv=none; b=J67HtZqEKjrZiGefSPCEw3ejQI0arRQJUuM9DcLevha1GHWcEeVRGa+gA27X4u7U2r3B9oqQUcuBAHUC8krndxnkGc6cSuerezI9WvOi6zd9/pRFLFQY/CQNxqXAqHjfuBIuHOf41nLp1kDIwpkiBo/95/1Aw2FSq3XcSiF1yJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720159596; c=relaxed/simple;
-	bh=tvuPPOk2+l38Js+RGqqML8hNKZInclMtr9qpUO8xp+4=;
+	s=arc-20240116; t=1720159598; c=relaxed/simple;
+	bh=8AO1BOe9LkxFuk6+LVcxm00fkFuZuQRZUsJHrjFnFT0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Zl55oQaLn/B9jzLf608sirCuwaA96JWEk9fLRpxZ3x4og4XmxeCde+pb3JigzANpCWUit6Rn4eM8PcOoNS2nGhsAKxGbwzyoApyJHxujePNtqIQhDA/OWi0K9Ok243GsKazBNpK5vNRZ+kpHqZx+/JSu/s9FpRX1OG30nHqgWFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=joYSe0VT; arc=none smtp.client-ip=209.85.214.182
+	 MIME-Version; b=cZ4mOh9E6tcxqryWJ/zMbvQB+q5JC0byULQL5HZR4e9NdRD0NH8L93RCdfOMBijGZ5NTWtcwTvnWT/Z4m5Cmf3nb/ocq93IjywWHEEpF3xNXp0k9y1mY8O/q+WDcYlAFccm8AR32iiTsKuiHQB4SU4bwlylxyjT8CAczev61rhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aMQODU6z; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1fafc9e07f8so8400905ad.0
-        for <linux-wireless@vger.kernel.org>; Thu, 04 Jul 2024 23:06:34 -0700 (PDT)
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1fb3b7d0d56so5602695ad.1
+        for <linux-wireless@vger.kernel.org>; Thu, 04 Jul 2024 23:06:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720159594; x=1720764394; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1720159596; x=1720764396; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DQvaQaAQdlAP66w3G8RuUGqwHRBtrQaO1GdIa+ZsF+E=;
-        b=joYSe0VTeq+Aklh/YmQ7zFIT3/sfr8T+OrYCOsUsHuQd4tUJrcZiOIdknUxwyz/5Lp
-         ENst0wuEEspImmgGf0asbtQJHSUa+9GD+tp6ipio2kIF73Q6fUgydNp0+7RGqU1pN+lP
-         1HXAMwnzOWgqgbOB28CA7CtRfyBa8m4wJ1hOJQmNXUrbcMWCPLDmmJQ71IXVTssPIqeC
-         yS7SZaXo7mL0iS2NfA6TjxHxcRoqe2tN0/TRqxEDfcKyt04o5gKURMM4GBLJPA/sLVnZ
-         9XyWoFbQ++QlMkFrEkXJPRWCdbd9EWF9tdF/bQCrtUkfvpAyo8KCXxDDQ2RZzVBOlo79
-         lZZQ==
+        bh=HmrsxMr4EyNCdAf8dgXZk8rx67sFoHp+GBef47bCff8=;
+        b=aMQODU6zHGJ/GyshDeTQnCsalr54N9neFxSuKdZybp1NQFAYmoUPbwP4eRfrVYzLEg
+         BPVsWi1CEycq/uR6F491HlRjIQ0pgGBbtJwC2yxrQhMQ3+dQ9dzw5oaH7VmEIZNwIUNc
+         6NkLvFLoxUHDOTA5aAgebhKNFgiowcytkRNbsnBSUdWUN5E5tbIH86hwpxSw3D9yqrgE
+         sIwIpoilqaqIv0Pc3LNf7Q3mcSDXMnheUTOwMK81wBot74D1sngT7r8Hty8uaStbIYfp
+         PudpBJbunaJ+bJV133kqgCCR1GLM3cJwXIsh2R3oWNu8KBpf64b0vIPmcD9nyRe58mnm
+         YSrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720159594; x=1720764394;
+        d=1e100.net; s=20230601; t=1720159596; x=1720764396;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DQvaQaAQdlAP66w3G8RuUGqwHRBtrQaO1GdIa+ZsF+E=;
-        b=ETUUNhb3Bb6jYzOyHmEqA8BGT8z1VYCVIXgE+kIeK8j1WtGm7+Gf28EoiV8+xc+5f9
-         dZSCWYFRfQdTF0hlH3SshJmB0uT95RogvVx8kyktf0k6NGNBfk/kQjX5KZnF2JIZ0Cj7
-         wOCulZmSZSJvYC/5y424UWiuQ2wZc0VEbSp1+1nQ9Omi6XHk80BrsRGwZNkzmQBq+bOT
-         Pnyr+LWn6L/i8797amwl2v8XutO7lYWlkQ5LfFGInigAA8gEvDy1clvWAziMoSeKVM4p
-         eCKglqej2Rh0+h62K3fTt5v5h+Q+dPqLx13XzEB4D0yIG3VR0F/GeOnlyopViLO57bpP
-         Ncaw==
-X-Gm-Message-State: AOJu0YxDl4aGY8sa+a9hhLKQ0bCGzbcsGx2NIT41DzI3N8GrCB4Evyca
-	8G4BkEQeHKQquXBFygQOZjDiWiHL/bO0j7dolbj6CM/b6XAuJ4or
-X-Google-Smtp-Source: AGHT+IEDRGyhhcp7focnaTZk7ODz5BDHXv+ZmNW95RwPnBioGRTnqivt7+OiZOh1sjlSUhWRk4dPhA==
-X-Received: by 2002:a17:902:f791:b0:1fb:1497:c304 with SMTP id d9443c01a7336-1fb33c81731mr30403435ad.0.1720159594129;
-        Thu, 04 Jul 2024 23:06:34 -0700 (PDT)
+        bh=HmrsxMr4EyNCdAf8dgXZk8rx67sFoHp+GBef47bCff8=;
+        b=RvqSqTtqJKpOG0JIS/TXw0iBorHV1gHujybY4i+RJSwE7tpzUuEXRiCOKD+OoaudXQ
+         vwaxV+Pazr5Sf9g6T8JsDjQ2Zw7yDWx425dBCgP+wRj8kyRARS2IyT+dF4P9YqH4jADn
+         NXFMxxJiaAPtv77dfpFoCVb/CyxDUe1xxtEFFY4zvOpBwsFpSUjmvQk8ltKtj/9YskDz
+         CFzhAVMWV2Zpjmo4jzxhdDguCyY+LAZeQAhPQg1C8RBk5c/zEG703Y5kXxQQ5B9f1RUL
+         vt7f/WGhXbpbl76DpE0zk9S3N0/9DdgNM5tLZVeDWlmDW0Fvb3yN0yau5afK6OJxT2Tx
+         S0QA==
+X-Gm-Message-State: AOJu0YzZc6sRPse8ljB2fukOQVTPUQcxoEQCRGaQIji+jMTK/vKAoTQ5
+	mC7rOl9Y7qtOF01IQRvTtPbl/pUDhsjHwEUaMEilHedaj5IM27yH0iPJ5KXX
+X-Google-Smtp-Source: AGHT+IGMSTfTB6AYf5SQWBr1P+60ChDEoHW5lpZwxJcIiv5bFn9L1/VdmXOKzocEiCFASQwzy15RDg==
+X-Received: by 2002:a17:902:ce82:b0:1fa:b511:5d31 with SMTP id d9443c01a7336-1fb33e76e16mr30306595ad.27.1720159595609;
+        Thu, 04 Jul 2024 23:06:35 -0700 (PDT)
 Received: from localhost.localdomain (59-124-166-19.hinet-ip.hinet.net. [59.124.166.19])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-1fb4e7c31afsm4644645ad.2.2024.07.04.23.06.32
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-1fb4e7c31afsm4644645ad.2.2024.07.04.23.06.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jul 2024 23:06:33 -0700 (PDT)
+        Thu, 04 Jul 2024 23:06:35 -0700 (PDT)
 From: Ping-Ke Shih <pkshih@gmail.com>
 To: wens@kernel.org
 Cc: linux-wireless@vger.kernel.org,
 	wireless-regdb@lists.infradead.org
-Subject: [PATCH 2/5] wireless-regdb: Update regulatory info for Peru (PE) on 6GHz
-Date: Fri,  5 Jul 2024 14:06:10 +0800
-Message-Id: <20240705060613.28909-2-pkshih@gmail.com>
+Subject: [PATCH 3/5] wireless-regdb: Update regulatory info for Qatar (QA) on 6GHz
+Date: Fri,  5 Jul 2024 14:06:11 +0800
+Message-Id: <20240705060613.28909-3-pkshih@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240705060613.28909-1-pkshih@gmail.com>
 References: <20240705060613.28909-1-pkshih@gmail.com>
@@ -86,17 +86,20 @@ Content-Transfer-Encoding: 8bit
 
 From: Ping-Ke Shih <pkshih@realtek.com>
 
-Ministerial Resolution -2021-MTC/01 decided
+Communications Regulatory Authority, State of Qatar, released
+Class License for the use of RLAN devices over 5925-6425 MHz Band on
+26 April 2022 [2] via page [1].
 
-For the band 5925-7125 MHz, low power indoor case of use.
- - access point
-   maximum EIRP: 30 dBm
-   Limited power spectral density: 5 dBm / MHz
- - user devices
-   maximum EIRP: 24 dBm
-   Limited power spectral density: -1 dBm / MHz
+Technical Requirements for the use of RLAN Devices over 5925-6425MHz
+ - Low Power
+   * e.i.r.p 23 dBm
+   * Indoor Use only
+ - Very Low Power
+   * e.i.r.p 14 dBm
+   * Indoor and Outdoor Use
 
-[1] https://cdn.www.gob.pe/uploads/document/file/1861732/Resoluci%C3%B3n%20Ministerial%20nro%20373-2021-MTC/01.pdf
+[1] https://www.cra.gov.qa/en/document/class-license-for-the-use-of-rlan-devices-over-5925-6425-mhz-band
+[2] https://www.cra.gov.qa/-/media/System/D/2/5/8/D258CF18B83A5613B0D590193CB799CB/Class-License-WIFI-6E-Final-English-032022--V3.ashx
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
@@ -104,25 +107,25 @@ Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
  1 file changed, 3 insertions(+)
 
 diff --git a/db.txt b/db.txt
-index 266ba2d48731..2e862b322f13 100644
+index 2e862b322f13..d6b14c055afb 100644
 --- a/db.txt
 +++ b/db.txt
-@@ -1443,12 +1443,15 @@ country PA: DFS-FCC
- 	(5725 - 5850 @ 80), (36)
- 	(57000 - 64000 @ 2160), (43)
- 
-+# Source:
-+# https://cdn.www.gob.pe/uploads/document/file/1861732/Resoluci%C3%B3n%20Ministerial%20nro%20373-2021-MTC/01.pdf
- country PE: DFS-FCC
- 	(2402 - 2482 @ 40), (20)
- 	(5170 - 5250 @ 80), (17), AUTO-BW
- 	(5250 - 5330 @ 80), (24), DFS, AUTO-BW
+@@ -1559,12 +1559,15 @@ country PY: DFS-FCC
  	(5490 - 5730 @ 160), (24), DFS
  	(5735 - 5835 @ 80), (30)
-+	(5925 - 7125 @ 320), (12), NO-OUTDOOR
  
- country PF: DFS-ETSI
- 	(2402 - 2482 @ 40), (20)
++# Source:
++# https://www.cra.gov.qa/-/media/System/D/2/5/8/D258CF18B83A5613B0D590193CB799CB/Class-License-WIFI-6E-Final-English-032022--V3.ashx
+ country QA: DFS-ETSI
+ 	(2400 - 2483.5 @ 40), (100 mW), NO-OUTDOOR
+ 	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW
+ 	(5250 - 5350 @ 80), (200 mW), NO-OUTDOOR, DFS, AUTO-BW
+ 	(5470 - 5725 @ 160), (100 mW), NO-OUTDOOR, DFS
+ 	(5725 - 5875 @ 80), (100 mW), NO-OUTDOOR, DFS
++	(5925 - 6425 @ 320), (23), NO-OUTDOOR
+ 	(57000 - 66000 @ 2160), (40), NO-OUTDOOR
+ 
+ country RE: DFS-ETSI
 -- 
 2.25.1
 
