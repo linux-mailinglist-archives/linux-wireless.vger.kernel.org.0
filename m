@@ -1,144 +1,209 @@
-Return-Path: <linux-wireless+bounces-10007-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10008-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EF4A9281B1
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jul 2024 08:07:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EFC6928263
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jul 2024 08:56:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9B4E1F2172A
-	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jul 2024 06:07:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB3A21F23502
+	for <lists+linux-wireless@lfdr.de>; Fri,  5 Jul 2024 06:56:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2881C1411E4;
-	Fri,  5 Jul 2024 06:06:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g1FiuYoi"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B13614037D;
+	Fri,  5 Jul 2024 06:56:47 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376E313E898
-	for <linux-wireless@vger.kernel.org>; Fri,  5 Jul 2024 06:06:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B60481CE;
+	Fri,  5 Jul 2024 06:56:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720159601; cv=none; b=cXjOJihhaX8e6H5MtnU5OSgfp67gMNYN60A+YRT1yGBU9n8uMrciY4f1MslXvRcMN/WUcrH8XUz9mlBRWYeZZKoCb5pGZTA8XlBeUQJ4QGmg13GRqFSN0l/bxiHakyRHv9uWA21rEHohXm68nLWFfpzn1xuq6KvJB5R2NxyBWc0=
+	t=1720162607; cv=none; b=fCb0UAiX9p8/NVtx0c5cSiBiEjserq1PYVLodb35aiYHh78Vx5T1GaBSqUt50FjnAlTuMHYuVxJUF97Gj6+8zFCA/dF7NzWzIbakti8Y7oUV8pM52cvWI2hF2NJik21Vmxh0Retq0ANwYT77Cm35iDB6lKoYuwBc2H4RrynZjKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720159601; c=relaxed/simple;
-	bh=9MW/6ix5rdSsmBwzospNR/rhct++kKoY+52dT+GaMt8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Q+vCXBpCbWHx+p7W5UgG9l3gSUoZZB/2ONratb8B/+2kx2k6jrS0gRIhDs90PYj3OnDwqmKr4m1KEYF0pQTA1gTocZ4TUL15MTIJ+FMO9pg27leN1NzlyGtP4XbOICN+59UTlXAS7Kaqjmr4+7E1je/t4nzBdbTaG76S/Jx5JKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g1FiuYoi; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1fa55dbf2e7so7200165ad.2
-        for <linux-wireless@vger.kernel.org>; Thu, 04 Jul 2024 23:06:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720159598; x=1720764398; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EFimwcGPqA/3C6txqo+w6+bkEZEwHJWd41rNjtZetvc=;
-        b=g1FiuYoi10P+UEgmmvjlZi5Eh/xux5uIe2Ax+8QactTyF5RyfYRmTDTEYZQXGatwDn
-         qDNj/AdK+2HMPC5BDQxBnsv+9dbNUtYYeX/nAFtyvsd/PPxLx/ZyCvB94VcG1qf/rBA+
-         mJFls8c1U/91BOk3RVGMS88d6sSn7mTl6TdQi/eh/clKywp26lE3wQ3zGq7i9K+j0RUx
-         H8cgB4Xhioh3dHOUoPTXweTGM7TiA9izBp1luAX4MaZO8A7OJ3ivGAmqhxfijDxoG6j9
-         AcfkSnvtb3nwk4HoCRsAJG9dey5W3bOeg12Gcj9PhHCHMl7LYDcDSZNppCzcVBXUO7HR
-         hAGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720159598; x=1720764398;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EFimwcGPqA/3C6txqo+w6+bkEZEwHJWd41rNjtZetvc=;
-        b=VDE31MhjIfL1o7Ird9Ttq9tnFzD18m55i1I3gTFG5Q5ukQYCDOoEQk1qFwe4VeuiJ6
-         ahdqnoCMcq+LdKqgM9fx499wg6HAJ3ZRtfh+gZd1KINf06KnnI/EJFeFtvdVaxqD+1+s
-         fGoHYH77S7pTp70A8QqlvRHMt8DMGw9lzBVC2NE64TjU7B2KxbAZ/OLEa0r5wCqarKMO
-         cAUPkYd8Fur/Jl9W2RJkW0v8GuA6mC0MQlT0Yp+3r5Qj8VofMwg5OAr9VdPeJdJx4iws
-         ylwXvv/PP9A+WRYOzvHus/d9imjUuf/vtuUDZ3na9F5+Y1mqVMx/qAT3EzvwIxG1UloL
-         BRSw==
-X-Gm-Message-State: AOJu0Yw63WnopE5miMdanYhBIBUL2AoHuU9ypOvSugvwddqyrT9VKj18
-	NPynn1EWcVUD4NtvflURtBw211IN4Zg3U8JvbNKpNUaLRnN/zXiv
-X-Google-Smtp-Source: AGHT+IHAGkebesN9NU6K6lfoSM+YOuC9Q2qmAgtHao3q8/qnW14rcMjreSfpgPl51CEfgtbMlLU/Uw==
-X-Received: by 2002:a17:902:f690:b0:1f6:6ef0:dae4 with SMTP id d9443c01a7336-1fb33e86742mr30741765ad.32.1720159598391;
-        Thu, 04 Jul 2024 23:06:38 -0700 (PDT)
-Received: from localhost.localdomain (59-124-166-19.hinet-ip.hinet.net. [59.124.166.19])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-1fb4e7c31afsm4644645ad.2.2024.07.04.23.06.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jul 2024 23:06:38 -0700 (PDT)
-From: Ping-Ke Shih <pkshih@gmail.com>
-To: wens@kernel.org
-Cc: linux-wireless@vger.kernel.org,
-	wireless-regdb@lists.infradead.org
-Subject: [PATCH 5/5] wireless-regdb: Update regulatory info for Togo (TG) for 2022
-Date: Fri,  5 Jul 2024 14:06:13 +0800
-Message-Id: <20240705060613.28909-5-pkshih@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240705060613.28909-1-pkshih@gmail.com>
-References: <20240705060613.28909-1-pkshih@gmail.com>
+	s=arc-20240116; t=1720162607; c=relaxed/simple;
+	bh=iVxEblD9TtA3Zf9oR6ZntTdkcB11Qbd8DxyUqZeTznA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Lc84IpPBduoO4p2eis4ROOPzRy6vc1XzUQMLcFoI4q3NitzCRUyR6FkNRLnfaH6suBQuDP4IIHmmtcTQvjE0twG5UYZ7qXRWLvZox4oilm9MmYyc19vYUpbJgk/Z60lnE8bzoJ8MOUcROuL09hBv2E92cL6EIxdJXSW+QgUE5Ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [192.168.0.2] (ip5f5af14a.dynamic.kabel-deutschland.de [95.90.241.74])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 8B5E061E64862;
+	Fri,  5 Jul 2024 08:55:47 +0200 (CEST)
+Message-ID: <b30307fd-4417-4220-a3ac-e3e80f23105e@molgen.mpg.de>
+Date: Fri, 5 Jul 2024 08:55:45 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: invalid vht params rate 1920 100kbps nss 2 mcs 9
+To: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: Kalle Valo <kvalo@kernel.org>, James Prestwood <prestwoj@gmail.com>,
+ linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+ LKML <linux-kernel@vger.kernel.org>, Chun Wu <chunwu@qti.qualcomm.com>
+References: <fba24cd3-4a1e-4072-8585-8402272788ff@molgen.mpg.de>
+ <1faa7eee-ed1e-477b-940d-a5cf4478cf73@gmail.com> <87iky7mvxt.fsf@kernel.org>
+ <37ba6cb0-d887-4fcf-b7dc-c93a5fc5900f@gmail.com> <875xu6mtgh.fsf@kernel.org>
+ <f7faff80-864a-4411-ad28-4f1151bc1e51@quicinc.com>
+ <082024ce-fdd4-4fb1-8055-6d25f7d2e524@molgen.mpg.de>
+ <462c97dc-f366-4f75-9327-04d9424b819a@quicinc.com>
+Content-Language: en-US
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <462c97dc-f366-4f75-9327-04d9424b819a@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+Dear Baochen,
 
-Republic ToGolaise released Decision N 226/ARCEP/DG/22.
 
-2400-2483.5 MHz
-  - EIRP 100 mW and 10 mW/MHz density
-5150-5350 MHz
-  - EIRP 200 mW
-  - If TPC is not used, must be reduced by 3 dB
-5470-5850 MHz
-  - EIRP 1W
-  - If TPC is not used, must be reduced by 3 dB
-5925-6425 MHz
-  - LPI
-    * EIRP 23 dBm (200 mW)
-    * EIRP density 10 dBm/MHz
-    * Use limited to indoor
-  - VLP
-    * EIRP 14 dBm (25 mW)
-    * EIRP density -1 dBm/MHz
-57-66 GHz
-  - EIRP 40 dBm and 13 dBm/MHz density
+Am 05.07.24 um 04:47 schrieb Baochen Qiang:
 
-[1] https://arcep.tg/wp-content/uploads/2022/12/Decision-226-22-Determinant-les-categories-et-conditions-techniques-dexploitation-des-appareils-de-faible-puissance-et-de-faible-portee.pdf
+> On 6/26/2024 5:12 PM, Paul Menzel wrote:
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- db.txt | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+>> Am 26.06.24 um 10:53 schrieb Baochen Qiang:
+>>
+>>> On 6/18/2024 6:33 PM, Kalle Valo wrote:
+>>>> + baochen
+>>>>
+>>>> James Prestwood <prestwoj@gmail.com> writes:
+>>
+>>>>> On 6/17/24 8:27 AM, Kalle Valo wrote:
+>>>>>> James Prestwood writes:
+>>
+>>>>>>> On 6/16/24 6:10 AM, Paul Menzel wrote:
 
-diff --git a/db.txt b/db.txt
-index 2a4f1ed524c1..6192dafe9715 100644
---- a/db.txt
-+++ b/db.txt
-@@ -1763,11 +1763,15 @@ country TD: DFS-ETSI
- 	(5250 - 5330 @ 80), (20), DFS, AUTO-BW
- 	(5490 - 5710 @ 160), (27), DFS
- 
-+# Source:
-+# https://arcep.tg/wp-content/uploads/2022/12/Decision-226-22-Determinant-les-categories-et-conditions-techniques-dexploitation-des-appareils-de-faible-puissance-et-de-faible-portee.pdf
- country TG: DFS-ETSI
--	(2402 - 2482 @ 40), (20)
--	(5170 - 5250 @ 40), (20)
--	(5250 - 5330 @ 40), (20), DFS
--	(5490 - 5710 @ 40), (27), DFS
-+	(2400 - 2483.5 @ 40), (100 mW)
-+	(5150 - 5250 @ 40), (200 mW)
-+	(5250 - 5350 @ 40), (20), DFS
-+	(5470 - 5850 @ 40), (27), DFS
-+	(5925 - 6425 @ 320), (23), NO-OUTDOOR
-+	(57000 - 66000 @2160), (40)
- 
- # Source:
- # https://ratchakitcha.soc.go.th/documents/140D100S0000000004000.pdf
--- 
-2.25.1
+>>>>>>>> Linux 6.10-rc3 (commit a3e18a540541) logged the warning below when
+>>>>>>>> connecting to a public WiFi:
+>>>>>>>>
+>>>>>>>>        ath10k_pci 0000:3a:00.0: invalid vht params rate 1920 100kbps nss 2 mcs 9
+>>>>>>>
+>>>>>>> This has been reported/discussed [1]. It was hinted that there was a
+>>>>>>> firmware fix for this, but none that I tried got rid of it. I got fed
+>>>>>>> up enough with the logs filling up with this I patched our kernel to
+>>>>>>> remove the warning. AFAICT it appears benign (?). Removing the warning
+>>>>>>> was purely "cosmetic" so other devs stopped complaining about it :)
+>>>>>>>
+>>>>>>> [1] https://www.mail-archive.com/ath10k@lists.infradead.org/msg13406.html
+>>>>>>
+>>>>>> More reliable link to the discussion:
+>>>>>>
+>>>>>> https://lore.kernel.org/ath10k/76a816d983e6c4d636311738396f97971b5523fb.1612915444.git.skhan@linuxfoundation.org/
+>>>>>>
+>>>>>> I think we should add this workaround I mentioned in 2021:
+>>>>>>
+>>>>>>       "If the firmware still keeps sending invalid rates we should add a
+>>>>>>        specific check to ignore the known invalid values, but not all of
+>>>>>>        them."
+>>>>>>
+>>>>>>       https://lore.kernel.org/ath10k/87h7mktjgi.fsf@codeaurora.org/
+>>>>>>
+>>>>>> I guess that would be mcs == 7 and rate == 1440?
+>>>>>
+>>>>> I think its more than this combination (Paul's are different).
+>>>>
+>>>> Good point.
+>>>>
+>>>>> So how many combinations are we willing to add here? Seems like that
+>>>>> could get out of hand if there are more than a few invalid
+>>>>> combinations.
+>>>>
+>>>> Yeah, but there haven't been that many different values reported yet,
+>>>> right? And I expect that ath10k user base will just get smaller in the
+>>>> future so the chances are that we will get less reports.
+>>>>
+>>>>> Would we also want to restrict the workaround to specific
+>>>>> hardware/firmware?
+>>>>
+>>>> Good idea, limiting per hardware would be simple to implement using
+>>>> hw_params. Of course we could even limit this per firmware version using
+>>>> enum ath10k_fw_features, but not sure if that's worth all the extra work.
+>>>>
+>>>> Baochen, do you know more about this firmware bug? Any suggestions?
+>>>
+>>> OK, there are two issues here:
+>>>
+>>> 1. invalid HT rate: "ath10k_pci 0000:02:00.0: invalid ht params rate 1440 100kbps nss 2 mcs 7".
+>>>
+>>> As commented by Wen quite some time ago, this has been fixed from
+>>> firmware side, and firmware newer than [ver:241] has the fix
+>>> included.
+>> This is the issue from 2021, correct?
+>>
+>>> 2. invaid VHT rate: "ath10k_pci 0000:3a:00.0: invalid vht params rate 1920 100kbps nss 2 mcs 9".
+>>>
+>>> After checking with firmware team, I thought this is because there is
+>>> a mismatch in rate definition between host and firmware: In host, the
+>>> rate for 'nss 2 mcs 9' is defined as {1560, 1733}, see
+>>> supported_vht_mcs_rate_nss2[]. While in firmware this is defined as
+>>> {1730, 1920}. So seems we can update host definition to avoid this
+>>> issue.
+>> Looking through the logs since May 2024, I have four different logs:
+>>
+>> 1.  invalid vht params rate 878 100kbps nss 3 mcs 2
+> 
+> which chip are you using when you hit this nss 3 issue? QCA6174
+> firmware does not support NSS 3 so really weird.
 
+This is all from the same device Dell XPS 13 9360 with QCA6174 and 
+firmware 288.
+
+```
+Mai 20 12:07:09 abreu kernel: Linux version 6.9.0-09705-g08b269af52c0 
+(build@bohemianrhapsody.molgen.mpg.de) (gcc (Debian 13.2.0-23) 13.2.0, 
+GNU ld (GNU Binutils for Debian) 2.
+42) #147 SMP PREEMPT_DYNAMIC Mon May 20 07:33:23 CEST 2024
+[…]
+Mai 20 12:07:11 abreu kernel: ath10k_pci 0000:3a:00.0: firmware ver 
+WLAN.RM.4.4.1-00288- api 6 features wowlan,ignore-otp,mfp crc32 bf907c7c
+[…]
+Mai 20 15:37:55 abreu wpa_supplicant[613]: wlp58s0: Trying to associate 
+with e2:b3:70:83:01:af (SSID='public' freq=5500 MHz)
+[…]
+Mai 20 15:37:55 abreu kernel: wlp58s0: authenticate with 
+e2:b3:70:83:01:af (local address=9c:b6:d0:d1:6a:b1)
+Mai 20 15:37:55 abreu kernel: wlp58s0: send auth to e2:b3:70:83:01:af 
+(try 1/3)
+Mai 20 15:37:55 abreu kernel: wlp58s0: authenticated
+Mai 20 15:37:55 abreu kernel: wlp58s0: associate with e2:b3:70:83:01:af 
+(try 1/3)
+Mai 20 15:37:55 abreu kernel: wlp58s0: RX AssocResp from 
+e2:b3:70:83:01:af (capab=0x1501 status=0 aid=4)
+[…]
+Mai 20 15:39:29 abreu wpa_supplicant[613]: wlp58s0: 
+CTRL-EVENT-SIGNAL-CHANGE above=1 signal=-55 noise=-97 txrate=300000
+[…]
+Mai 20 15:54:44 abreu kernel: ath10k_pci 0000:3a:00.0: invalid vht 
+params rate 878 100kbps nss 3 mcs 2
+```
+
+It was some public WiFi in some restaurant. No idea, what hardware they 
+use. Maybe you can deduce this from the MAC address.
+
+>> 2.  invalid vht params rate 960 100kbps nss 1 mcs 9
+>> 3.  invalid vht params rate 1730 100kbps nss 2 mcs 9
+>> 4.  invalid vht params rate 1920 100kbps nss 2 mcs 9
+> 
+> OK, these are due to mismatch between host and QCA6174 firmware, we
+> can update host to fix them.
+
+Nice. If there would be a test framework to test this, so I do not have 
+to search for a Cisco network, that’d be great.
+
+>> I believe it’s only happening with Cisco networks. I am happy to test a patch.
+
+[…]
+
+
+Kind regards,
+
+Paul
 
