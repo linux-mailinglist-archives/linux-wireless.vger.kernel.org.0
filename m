@@ -1,58 +1,58 @@
-Return-Path: <linux-wireless+bounces-10037-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10038-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 193779291E2
-	for <lists+linux-wireless@lfdr.de>; Sat,  6 Jul 2024 10:29:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A6B99291E3
+	for <lists+linux-wireless@lfdr.de>; Sat,  6 Jul 2024 10:29:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA60F283832
-	for <lists+linux-wireless@lfdr.de>; Sat,  6 Jul 2024 08:29:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06715283959
+	for <lists+linux-wireless@lfdr.de>; Sat,  6 Jul 2024 08:29:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D4A6482F6;
-	Sat,  6 Jul 2024 08:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A508046556;
+	Sat,  6 Jul 2024 08:28:56 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
+Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FAA46556
-	for <linux-wireless@vger.kernel.org>; Sat,  6 Jul 2024 08:28:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376146BFB0
+	for <linux-wireless@vger.kernel.org>; Sat,  6 Jul 2024 08:28:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720254535; cv=none; b=QbRgCurKkOdXoYGZ6xfvwNvRqBuk8codITfkevu/1XmvKi2afNvudt0GRe9zyRGMIsyTndf7Shc3TUOhP6zBeI3LAg6tlDU06sM7whUrAk5tSqVOVNOYBIODpUPTEyppKivTHsvK62GUQy3Y47PgkJPMCRl9Dp5TdBPKhVylI+U=
+	t=1720254536; cv=none; b=pb6pu3EZwWJaiIYYD0312Lq6B/wGnlotXaxK3RIMuig+NMrnQTY0t8nSfquOpXqzpR9ideSJtqOcI9ubzNk0xSlkJlLfh+4zCoIwYo4dim8cOOx8BTJjuRI/vRrsq1Yg9Ag9ZYy8gZLc4hKKFzBOz+1M0LOmsxHqU4gGSh4cd1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720254535; c=relaxed/simple;
-	bh=w9VoeQqVXEkbaJJj8VQM7HcauiPDDZPdCZ0XhLuhcqs=;
+	s=arc-20240116; t=1720254536; c=relaxed/simple;
+	bh=qRyhWPbkhTQbLWJlcFCLAhTsZCUkq/Cci7ttciZIH3o=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=GYfEXpfxrFFH1aVcjRFaaC+aZzTf7+NOjspTsV/gmAwMZMg02qTbK02UjLb+IvRZUJDgv4uT2xIEvRv2SpXBLjgWmnqe969VN4uEKxgYVrsbWAn19sxtzphoA3lWew7Z5X0QUJL+EI7dmzV6W6fHMjCTAfhQF4AASth3icnvLN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.48
+	 MIME-Version; b=dctvBLcyXkYtVEP7I2t2+fj9cbWn025vCHvbnFaOQwLJU1wqC35gsYD1i22v/lOETW0LhjT39XN5a6hSWYJFYZm+kBXJ/YETYsSc4O0voLONGB6nB6rSC0WVfLUFWCK261KSFJmVr4s22OQHi3I9hDk9aSHSOYqEbvxVh+jnUO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-25e3d71030cso261285fac.1
-        for <linux-wireless@vger.kernel.org>; Sat, 06 Jul 2024 01:28:53 -0700 (PDT)
+Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-3d92563bea4so14970b6e.3
+        for <linux-wireless@vger.kernel.org>; Sat, 06 Jul 2024 01:28:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720254533; x=1720859333;
+        d=1e100.net; s=20230601; t=1720254534; x=1720859334;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YHGyXk+WAR8WXx4VibOug2pcg/d+aFy2gVyJKaP8IFg=;
-        b=CjK+QvWzEPR61TV/KQbtGNdmuJ6n0s4ZHnFT2nuM912858CMwOtABptjvcaFZL1BAG
-         6udDjRLntiJQgsTZEjiFkL7VX+jyouRAFzLor7XMhgpmTyoDwL+PoawAXNqgGHy2Dv2b
-         tVLQYaIzE28AaH/UH8sqBds1rz+Tpz7l6QVRePzgjx6pIgeSW/yyQm7GcOU5Zm8mhg5p
-         wE4XBEuEkNWezW2FWhPnntkAyDAW7W9Pa5d8VzR41lvC1nWKKK0bcu/2KTwbvIeGjMc/
-         EDA67B1C1jXKQhFsyXUQRVqPm9eW1B59we/bcL0EvwWljEAslQ0aoU1yB9agTevTsMHF
-         84cQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXLRWYJTLSUojJXucu49dv4Esi7qpueJFbGuZNANRJtiEiLfN4VJ9G8bpPc3ep4Nk0obfPaPTCNkjmziXWBlwJdrIlWOaGm6g59yLFDQE0=
-X-Gm-Message-State: AOJu0YwJf47dJDxdNBpIaSYf3diFMxM6rh/Kq80UMhUyDIxeXZ7Ja0V7
-	zrCxLw7KwtDZxmVj2InAOG+VuqrHJDeYPb+zwy44I0ibC7gC1t4m
-X-Google-Smtp-Source: AGHT+IFDLJSexFdKlH1kAQdK5WdFbGIt4Pp8bOhD5gqac9cia3oXrg+IFO5ZRDdOCGyTsNIUUu4nHw==
-X-Received: by 2002:a05:6871:798e:b0:25e:15e1:35c6 with SMTP id 586e51a60fabf-25e2b5af44dmr6351746fac.0.1720254532685;
-        Sat, 06 Jul 2024 01:28:52 -0700 (PDT)
+        bh=3S6mlsXmirTjv2z8akgtbzv3cHrQXWXD1zrwfiohz18=;
+        b=Bm7UHqye2DjJB3aDN7vJ628iq9NlPSb1Mjopv37dUhtdlzmU1j/VmQYEHPEOH0qIOy
+         hMIwiTvvBTYIZehKE9ws78s37SBCcr74/r98uYo3usGR/TahgeCvnW0AOb6svCziH4Nd
+         twqaA6X+BznVERf0p4D9fPyqdKqTa3dji4cb1eWn9GXX6kTcHeo6Ezmq/Iq0Q++DZ7CC
+         Qng6+LZShvBYUWxZdFwhk2l7SfyByztjLPRIMBFJcy7CdE9QA0QeveTI9eKLxLKTzu4Q
+         A3qDmT7/eS2KB2xiDcs/zICHZzjFNX52jOaT/sSWJmtkh1TigESZS/UW3WdUa1x7rymJ
+         R+gw==
+X-Forwarded-Encrypted: i=1; AJvYcCXwjCZXNBmFNjJH2JTgG6Ag7hFDMiRoC74qc6m/U7Nw477dTGF3Xr83t6Y28VrfcqKEqQ59LQRoqF/bqwD5xMZ1rlhD1a1gyW0gJKZU2wU=
+X-Gm-Message-State: AOJu0YyZ+FhoibzzZHMfo2lsH8GyvPeYnJQ6VweW0KoW3qQctSoHO93C
+	8NlvovAujUQzj3eH2DaKWEvT8+BD0ZBcSvUZ9LaF7FRtcFK+W6AA
+X-Google-Smtp-Source: AGHT+IHh2/AbUPDMj3Hmw3iHC21ScZt1IRJwxGj917xgQkf9TrsovD+xoY+j5YDE28M1gNQs9IHFbA==
+X-Received: by 2002:a05:6870:eca3:b0:25e:c0b:82c5 with SMTP id 586e51a60fabf-25e2bf101admr6656159fac.3.1720254534322;
+        Sat, 06 Jul 2024 01:28:54 -0700 (PDT)
 Received: from sean-ThinkPad-T450s.attlocal.net ([2600:1702:5083:7610:1e13:57ab:ecc5:1fd4])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-25e71070ba1sm10744fac.34.2024.07.06.01.28.51
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-25e71070ba1sm10744fac.34.2024.07.06.01.28.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 06 Jul 2024 01:28:51 -0700 (PDT)
+        Sat, 06 Jul 2024 01:28:53 -0700 (PDT)
 From: sean.wang@kernel.org
 To: nbd@nbd.name,
 	lorenzo.bianconi@redhat.com
@@ -61,9 +61,9 @@ Cc: sean.wang@mediatek.com,
 	mingyen.hsieh@mediatek.com,
 	linux-wireless@vger.kernel.org,
 	linux-mediatek@lists.infradead.org
-Subject: [PATCH v2 18/37] wifi: mt76: mt7925: add link handling in mt7925_sta_set_decap_offload
-Date: Sat,  6 Jul 2024 01:27:58 -0700
-Message-Id: <df2524e3a63a93699bde441e4ab70a70bbac53ef.1720248331.git.sean.wang@kernel.org>
+Subject: [PATCH v2 19/37] wifi: mt76: mt7925: add link handling in mt7925_vif_connect_iter
+Date: Sat,  6 Jul 2024 01:27:59 -0700
+Message-Id: <c8d66043a4d31801249d53dd23f695c28a97a933.1720248331.git.sean.wang@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1720248331.git.sean.wang@kernel.org>
 References: <cover.1720248331.git.sean.wang@kernel.org>
@@ -77,7 +77,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Sean Wang <sean.wang@mediatek.com>
 
-add link handling in mt7925_sta_set_decap_offload
+add link handling in mt7925_vif_connect_iter
 
 Co-developed-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
@@ -85,112 +85,40 @@ Co-developed-by: Deren Wu <deren.wu@mediatek.com>
 Signed-off-by: Deren Wu <deren.wu@mediatek.com>
 Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 ---
- .../net/wireless/mediatek/mt76/mt7925/main.c  | 21 ++++++++++++----
- .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 24 ++++++++++++++-----
- .../wireless/mediatek/mt76/mt7925/mt7925.h    |  3 ++-
- 3 files changed, 36 insertions(+), 12 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/mac.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index 669f28a916c5..791e90f5760f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -1464,16 +1464,27 @@ static void mt7925_sta_set_decap_offload(struct ieee80211_hw *hw,
- 					 bool enabled)
- {
- 	struct mt792x_sta *msta = (struct mt792x_sta *)sta->drv_priv;
-+	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
- 	struct mt792x_dev *dev = mt792x_hw_dev(hw);
-+	unsigned long valid = mvif->valid_links;
-+	u8 i;
- 
- 	mt792x_mutex_acquire(dev);
- 
--	if (enabled)
--		set_bit(MT_WCID_FLAG_HDR_TRANS, &msta->deflink.wcid.flags);
--	else
--		clear_bit(MT_WCID_FLAG_HDR_TRANS, &msta->deflink.wcid.flags);
-+	valid = ieee80211_vif_is_mld(vif) ? mvif->valid_links : BIT(0);
-+
-+	for_each_set_bit(i, &valid, IEEE80211_MLD_MAX_NUM_LINKS) {
-+		struct mt792x_link_sta *mlink;
- 
--	mt7925_mcu_wtbl_update_hdr_trans(dev, vif, sta);
-+		mlink = mt792x_sta_to_link(msta, i);
-+
-+		if (enabled)
-+			set_bit(MT_WCID_FLAG_HDR_TRANS, &mlink->wcid.flags);
-+		else
-+			clear_bit(MT_WCID_FLAG_HDR_TRANS, &mlink->wcid.flags);
-+
-+		mt7925_mcu_wtbl_update_hdr_trans(dev, vif, sta, i);
-+	}
- 
- 	mt792x_mutex_release(dev);
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 9a4dfe53da17..0991af877434 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -887,10 +887,15 @@ mt7925_mcu_sta_hdr_trans_tlv(struct sk_buff *skb,
- 	else
- 		hdr_trans->from_ds = true;
- 
--	if (link_sta)
--		wcid = (struct mt76_wcid *)link_sta->sta->drv_priv;
--	else
-+	if (link_sta) {
-+		struct mt792x_sta *msta = (struct mt792x_sta *)link_sta->sta->drv_priv;
-+		struct mt792x_link_sta *mlink;
-+
-+		mlink = mt792x_sta_to_link(msta, link_sta->link_id);
-+		wcid = &mlink->wcid;
-+	} else {
- 		wcid = &mvif->sta.deflink.wcid;
-+	}
- 
- 	if (!wcid)
- 		return;
-@@ -904,17 +909,24 @@ mt7925_mcu_sta_hdr_trans_tlv(struct sk_buff *skb,
- 
- int mt7925_mcu_wtbl_update_hdr_trans(struct mt792x_dev *dev,
- 				     struct ieee80211_vif *vif,
--				     struct ieee80211_sta *sta)
-+				     struct ieee80211_sta *sta,
-+				     int link_id)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+index 0cb9031e9fdd..cf36750cf709 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mac.c
+@@ -1267,15 +1267,23 @@ mt7925_vif_connect_iter(void *priv, u8 *mac,
+ 			struct ieee80211_vif *vif)
  {
  	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
- 	struct ieee80211_link_sta *link_sta = sta ? &sta->deflink : NULL;
-+	struct mt792x_link_sta *mlink;
-+	struct mt792x_bss_conf *mconf;
- 	struct mt792x_sta *msta;
- 	struct sk_buff *skb;
++	unsigned long valid = ieee80211_vif_is_mld(vif) ?
++			      mvif->valid_links : BIT(0);
+ 	struct mt792x_dev *dev = mvif->phy->dev;
+ 	struct ieee80211_hw *hw = mt76_hw(dev);
++	struct ieee80211_bss_conf *bss_conf;
++	int i;
  
- 	msta = sta ? (struct mt792x_sta *)sta->drv_priv : &mvif->sta;
+ 	if (vif->type == NL80211_IFTYPE_STATION)
+ 		ieee80211_disconnect(vif, true);
  
--	skb = __mt76_connac_mcu_alloc_sta_req(&dev->mt76, &mvif->bss_conf.mt76,
--					      &msta->deflink.wcid,
-+	mlink = mt792x_sta_to_link(msta, link_id);
-+	link_sta = mt792x_sta_to_link_sta(vif, sta, link_id);
-+	mconf = mt792x_vif_to_link(mvif, link_id);
+-	mt76_connac_mcu_uni_add_dev(&dev->mphy, &vif->bss_conf,
+-				    &mvif->sta.deflink.wcid, true);
+-	mt7925_mcu_set_tx(dev, &vif->bss_conf);
++	for_each_set_bit(i, &valid, IEEE80211_MLD_MAX_NUM_LINKS) {
++		bss_conf = mt792x_vif_to_bss_conf(vif, i);
 +
-+	skb = __mt76_connac_mcu_alloc_sta_req(&dev->mt76, &mconf->mt76,
-+					      &mlink->wcid,
- 					      MT7925_STA_UPDATE_MAX_SIZE);
- 	if (IS_ERR(skb))
- 		return PTR_ERR(skb);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-index bcf8541fa31d..1ae66629e39f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-@@ -316,6 +316,7 @@ int mt7925_mcu_add_key(struct mt76_dev *dev, struct ieee80211_vif *vif,
- int mt7925_mcu_set_rts_thresh(struct mt792x_phy *phy, u32 val);
- int mt7925_mcu_wtbl_update_hdr_trans(struct mt792x_dev *dev,
- 				     struct ieee80211_vif *vif,
--				     struct ieee80211_sta *sta);
-+				     struct ieee80211_sta *sta,
-+				     int link_id);
++		mt76_connac_mcu_uni_add_dev(&dev->mphy, bss_conf,
++					    &mvif->sta.deflink.wcid, true);
++		mt7925_mcu_set_tx(dev, bss_conf);
++	}
  
- #endif
+ 	if (vif->type == NL80211_IFTYPE_AP) {
+ 		mt76_connac_mcu_uni_add_bss(dev->phy.mt76, vif, &mvif->sta.deflink.wcid,
 -- 
 2.25.1
 
