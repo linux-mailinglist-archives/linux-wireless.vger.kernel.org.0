@@ -1,53 +1,63 @@
-Return-Path: <linux-wireless+bounces-10057-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10058-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B70FE929391
-	for <lists+linux-wireless@lfdr.de>; Sat,  6 Jul 2024 14:30:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C27A9296AD
+	for <lists+linux-wireless@lfdr.de>; Sun,  7 Jul 2024 07:12:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72144282F47
-	for <lists+linux-wireless@lfdr.de>; Sat,  6 Jul 2024 12:30:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 654C71C20C0F
+	for <lists+linux-wireless@lfdr.de>; Sun,  7 Jul 2024 05:12:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F25B34A35;
-	Sat,  6 Jul 2024 12:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CABCE63C7;
+	Sun,  7 Jul 2024 05:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="g/Dh/Gde"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="LDF4I7Jv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from nbd.name (nbd.name [46.4.11.11])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D7E23BE
-	for <linux-wireless@vger.kernel.org>; Sat,  6 Jul 2024 12:30:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C258B33EA
+	for <linux-wireless@vger.kernel.org>; Sun,  7 Jul 2024 05:12:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720269021; cv=none; b=Qq8TTvYrlDGdsyJBiGtPzQsdKDBgB4DHxWJY1wSosbVUIBBX2HI4kHmw/ze006ekc1blsnSmQGRum6z4BTnuqqg9BeS8sOPiuvJ7Rjo/BJGnpMrupVqfBrhJcLPSusqwYqluCwWRanEJetSyXnP5EN0QD6zyip3nbh/5vSTHtD0=
+	t=1720329159; cv=none; b=I8AB9EKoU5uzEQU9dQTclARw/QoqCKbp66Vqsg0O3sItVvV/h18DfADT2NQgW4LY5iVUjN27+Vx1fQPfPMRfmiej/0IRTmRiI5iVknQbBpQmIBsvCLTokjOkb2Nk4se0c4Q+iyUyK23qpjfNl6kazVsve8XyR4FTQtv31Y3bxzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720269021; c=relaxed/simple;
-	bh=T4ALQvs8er0Nhtk3uSFjjckasshB+kTonY08MaJBgoQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WlB3VFKq4Pa+EwqF4v0r1HE/7kzy7EuwH1tQBfmdxbFEMuQUNHKdSYh2fZZkFxlrCn40hYEO3g/qpwo4nGwRMSxAIyBu+5TZ48EXQLneM7txEYpMlA+7CG0kNpHLuaU/cBRzGm78eRQ1rDIeCV3hT14682rzYlqaa+I7AILv7eY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=g/Dh/Gde; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=mfBkrHmKlL3MZz4wQcwT+94LoICapHD3DjOpZAwXYb0=; b=g/Dh/GdeRhV8Vm2SygUVlfyMD+
-	R3+vH4XSFiN6pCNJcBRpQ4fTD4yw58Xcse/cnD1NyFRLc27niohVBcDMVbGe/Iq8qDOi3d3aeeHAP
-	MJnTxXEFirgCCifmJWshKa3e7VXRK4naKF6+qvaNm2nBa4UkOP/IJtW7iRahenYVVHJk=;
-Received: from p54ae937c.dip0.t-ipconnect.de ([84.174.147.124] helo=nf.local)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96)
-	(envelope-from <nbd@nbd.name>)
-	id 1sQ4YE-003End-32;
-	Sat, 06 Jul 2024 14:30:03 +0200
-Message-ID: <e91f19b0-58e5-4203-b882-7aa676cd13c5@nbd.name>
-Date: Sat, 6 Jul 2024 14:30:02 +0200
+	s=arc-20240116; t=1720329159; c=relaxed/simple;
+	bh=5TmsSOoFHzqGAgs2MpaXPzkNsPVFFxBZF2A55kEKaQ4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=SOkPxVpe+Y9AVpupIn56fEw+gK2GF9tkSyzN++V4Ttz2L34/Eec5/H5RDhmCv/XpWc7iopCg+Sps/CsW4WnRjOMUmvRj3g+ejwi8ErNwzQieUaA6SzssxjwhQkARyTFLj+Zn4BeGrF1Fhs2lTj0p+dPTRJSiZlZ1Twxpt+OXvFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=LDF4I7Jv; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4675CRjs023855;
+	Sun, 7 Jul 2024 05:12:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	hcnRQWF/L5PppnZSQuOTzAJw6ImTWQodDR1139pO1D4=; b=LDF4I7JvYbVZPnEF
+	sdUUlmV4DCGeKFn+bn9ZZ7pIPpkBullSjUVwKz+D6XJwqgRQIFX7oF7mu4M8WH42
+	yDOx1RWWcH0YMN1ziuU55eALGL/RrqnOxu0e9RZxz+uzDasG6tzHiBZzXPMQH1NC
+	6kpprWuWLbx2s3ZzzGsvqTYchXHNN7s0e/R7LW+W059exQNnlK0G2J7BQIXItInP
+	yECVKRciHWcEZuDGI1qzf2R7fB12yVQ7Sb20IJn03k+Im6x0AcGkG4EFnTXdqY5q
+	NbJVT/Gnp3PhTcQKzz4f74oJgcBc+bNM4EEKrSrJxJ2R95yWZnpiTGipmYyyfDps
+	UNgl+g==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 406y77h88a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 07 Jul 2024 05:12:27 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 4675CQIj011987
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 7 Jul 2024 05:12:26 GMT
+Received: from [10.216.57.79] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Sat, 6 Jul 2024
+ 22:12:25 -0700
+Message-ID: <8079de14-ef9d-454f-862f-704dac821ee3@quicinc.com>
+Date: Sun, 7 Jul 2024 10:42:21 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -55,85 +65,91 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/37] wifi: mt76: mt7925: update
- mt76_connac_mcu_uni_add_dev for MLO
-To: sean.wang@kernel.org, lorenzo.bianconi@redhat.com
-Cc: sean.wang@mediatek.com, deren.wu@mediatek.com,
- mingyen.hsieh@mediatek.com, linux-wireless@vger.kernel.org,
- linux-mediatek@lists.infradead.org
-References: <cover.1720248331.git.sean.wang@kernel.org>
- <5c184808c54b4e71c6feec05828a9f1f5be9b14d.1720248331.git.sean.wang@kernel.org>
-From: Felix Fietkau <nbd@nbd.name>
+Subject: Re: [PATCH v2 8/9] wifi: mac80211: handle ieee80211_radar_detected()
+ for MLO
+To: Johannes Berg <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240626045216.3754013-1-quic_adisi@quicinc.com>
+ <20240626045216.3754013-9-quic_adisi@quicinc.com>
+ <9cf07d0861d6c8ee8a2004361a37a3ebb9860ea9.camel@sipsolutions.net>
 Content-Language: en-US
-Autocrypt: addr=nbd@nbd.name; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
- cL98efvrjdstUfTCP2pfetyN
-In-Reply-To: <5c184808c54b4e71c6feec05828a9f1f5be9b14d.1720248331.git.sean.wang@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Aditya Kumar Singh <quic_adisi@quicinc.com>
+In-Reply-To: <9cf07d0861d6c8ee8a2004361a37a3ebb9860ea9.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: ahPmD16r0VHrHOdhsOo6QBgmgvtxcbJN
+X-Proofpoint-ORIG-GUID: ahPmD16r0VHrHOdhsOo6QBgmgvtxcbJN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-07_02,2024-07-05_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 suspectscore=0
+ mlxscore=0 clxscore=1015 priorityscore=1501 spamscore=0 lowpriorityscore=0
+ malwarescore=0 bulkscore=0 adultscore=0 mlxlogscore=590 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2406140001
+ definitions=main-2407070039
 
-On 06.07.24 10:27, sean.wang@kernel.org wrote:
-> From: Sean Wang <sean.wang@mediatek.com>
+On 6/26/24 18:05, Johannes Berg wrote:
+> On Wed, 2024-06-26 at 10:22 +0530, Aditya Kumar Singh wrote:
+>>
+>> Hence, in order to support DFS with MLO, do the following changes -
+>>    * Add channel pointer as an argument to the function
+>>      ieee80211_radar_detected(). During MLO, drivers would have to pass on
+>>      which channel radar is detected.
 > 
-> Set OMAC address with the per-link BSS. The change remains compatible with
-> the non-MLO mode and the older firmware.
+> Makes sense, maybe?
 > 
-> Co-developed-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-> Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-> Co-developed-by: Deren Wu <deren.wu@mediatek.com>
-> Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-> ---
->   drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 6 ++++--
->   1 file changed, 4 insertions(+), 2 deletions(-)
+>>    * In order to pass on this channel information to the radar detected
+>>      worker later on, introduce a linked list 'radar_info' in the structure
+>>      local.
+>>    * When driver calls radar detected, a node is created and added to this
+>>      list and work is scheduled. The work handler takes care to process each
+>>      node and take further action.
 > 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> index 4e3c8af98fe7..18801aaf6764 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> @@ -4,6 +4,7 @@
->   #include <linux/firmware.h>
->   #include "mt76_connac2_mac.h"
->   #include "mt76_connac_mcu.h"
-> +#include "mt792x.h"
->   
->   int mt76_connac_mcu_start_firmware(struct mt76_dev *dev, u32 addr, u32 option)
->   {
-> @@ -1141,7 +1142,8 @@ int mt76_connac_mcu_uni_add_dev(struct mt76_phy *phy,
->   				struct mt76_wcid *wcid,
->   				bool enable)
->   {
-> -	struct mt76_vif *mvif = (struct mt76_vif *)bss_conf->vif->drv_priv;
-> +	struct mt792x_bss_conf *mconf = mt792x_link_conf_to_mconf(bss_conf);
-> +	struct mt76_vif *mvif = &mconf->mt76;
->   	struct mt76_dev *dev = phy->dev;
->   	struct {
->   		struct {
+> Not sure I like that so much, it adds book-keeping and all kinds of
+> extra things.
+> 
+> Couldn't we just have a flag in the channel context or so - there must
+> be one, after all? And perhaps pass the chanctx from the driver instead
+> of the channel?
+> 
+> Actually, we're already having to do a channel/chanctx lookup in
+> ieee80211_dfs_radar_detected_work() so it seems pretty weird to add more
+> complex logic to it...
+> 
+> Please consider just passing the chanctx, and then we can set a flag
+> there, and not have any of this.
+> 
 
-mt76_connac must not rely on mt792x functions, since it is also used by 
-the mt7615 driver. I've reverted this patch to the old version and 
-applied the rest. Please find a different solution for this issue and 
-send a follow-up patch separately.
+So I was trying to implement above suggestion, and I see this -
 
-- Felix
+* Drivers don't have chanctx visible in it. Driver visible part is 
+ieee80211_chanctx_conf (stored in chanctx)
+
+* In order to pass this from driver, I need to access each driver's per 
+interface struct which should have ieee80211_vif. This will have 
+bss_conf pointer and in turn which will have chanctx_conf pointer.
+(per_vif_struct)->vif->bss_conf->chanctx_conf.
+
+* I see for many drivers the place where ieee80211_radar_detected() is 
+called, the interface level struct is not present. So making 
+chanctx_conf mandatory argument to pass requires a lot of code changes 
+across the drivers.
+
+* So in order to keep things simple, we'd have to allow drivers to pass 
+NULL and let the current logic kick in. Iterate over all ctxs and all those.
+
+* If driver passes chanctx_conf, then while going through the ctx, if 
+the flag is set, further process can immediately kick in and other 
+num_ctx checks will be ignored.
+
+* Now if driver has clubbed multiple hardwares under single wiphy due to 
+which num_ctx will be greater than 1, obviously such drivers are bound 
+to pass a valid chanctx_conf or else the event will be dropped.
+
+Sounds fine?
+
 
