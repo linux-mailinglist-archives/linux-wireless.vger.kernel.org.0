@@ -1,145 +1,166 @@
-Return-Path: <linux-wireless+bounces-10082-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10083-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0FE092A9CE
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jul 2024 21:27:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D27692A9D4
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jul 2024 21:31:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 20CD7B21DEC
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jul 2024 19:27:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C0112822E2
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jul 2024 19:31:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D6F14C5BD;
-	Mon,  8 Jul 2024 19:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A7031B815;
+	Mon,  8 Jul 2024 19:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h8IynfUL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MBjcWO8R"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4DF914C58E
-	for <linux-wireless@vger.kernel.org>; Mon,  8 Jul 2024 19:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C7B18E1E
+	for <linux-wireless@vger.kernel.org>; Mon,  8 Jul 2024 19:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720466841; cv=none; b=nTSItN3nP5hIs5LBMGFvfgGE86etZ6NZeFLRJ4y0kCwhBWsX2O9E1vt72OVbx0x+cZYSrWWzvvWAVGIacsncMuaJgcWsd8ZiDVgJat8SUVYCIB7goicrSHe66CXWn22ow4my32aexhLXwqZKIXCRvRJAJ/fOP4cveLGDmO1D4zs=
+	t=1720467067; cv=none; b=Ndn+ebWvdgekCcPFEXvH9rJ07O8bodiFpT8SbqNXLcQbA/Ys+NRrL4DFEqe3UPM0zxS4j08B7uB0klcu/3ue1+fxnRq5JFTuC+8POoR30PJNy35p9wdl0n4NFVrN4WoY9kWKT6+AOKeJi2kZ63p3lHHgxdpcUXhu0IA+UCF/8tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720466841; c=relaxed/simple;
-	bh=sE/TC7a66+gKH45F+CxcE03eguTRbInKlYcv+mCBwOg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IITZRYGG9nOO1D+dC9SePwyh0JxXrWaEM38G46pQYx/IefNgGOSO+Eyx6BSWlikrT3GS7uDdYJnTgzWtFphSRX9r4nCl08pFzIHUgs/4/57hlppIaOo3EvpSRZLWn/GEfwRZd/iUDxK2Bt0zOVufrbmcwYsInOptWVlOTuWgBWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h8IynfUL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 810CCC3277B
-	for <linux-wireless@vger.kernel.org>; Mon,  8 Jul 2024 19:27:20 +0000 (UTC)
+	s=arc-20240116; t=1720467067; c=relaxed/simple;
+	bh=xWIqjEKJWV+KQU2fz3X7SNlmN3/sS27O+Ruv3Ju/x2c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AYVlM2TgNP0iwMvKCNNQEBTzwfaC35xuy8dcZWE9tpRTe8UsVKGR/8PM/bpXX0Gz0V7TpjP5kE97OsY84vO8kk+OdVN/63uvBa1rWVtmed5Hht6HVUQXNcW8RmLzOgvmXtKUAE8K7qRscYDeuJG8CglOvi2kCip11GqDEZUFLTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MBjcWO8R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42C8C116B1;
+	Mon,  8 Jul 2024 19:31:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720466840;
-	bh=sE/TC7a66+gKH45F+CxcE03eguTRbInKlYcv+mCBwOg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=h8IynfULInkFZJZd+lKB7eRQXUHmYQx45MFJI59rKaCaZBSeaOfkIhK0Qsw1OMlxI
-	 Xk1UQHYM10XvXRyJizfJ2ppkvQYmnXWpMkNsdy/rlxDNcQZbLTVJGsRKrKfJ0CrEbh
-	 CJNLsK7cCqOLCx/GV2G8epiUuCyHKjfWCo7/tp3lNyfHO42ecABi6kEnsLmAFFlBhG
-	 DsHP7lheA4hFTb9S/6nrkoAaxRlRHen6pAn+nGOd1xLNi5NyWvBYMUOBkKxCc/yFOS
-	 cdF2+WRMEUe2Yh+4gXi2ERd36uhzfWswkfw1iWhL+jcu+ZzMV1dNrj/sNsTrdKqyYN
-	 g9EHWOO2RA77A==
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-57d0ea30e87so614857a12.1
-        for <linux-wireless@vger.kernel.org>; Mon, 08 Jul 2024 12:27:20 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyoXR4XhuFxKZzo85V0kIn05mcNm+nnDBetLP0kT5bcDncUUmPS
-	e3HmuSeEuJ0Nsf29+x6rmP48a4LqB8/OcgCtfzY33he65CAu5GI+Ph3+XuHEPt94Plv1VqGaLdr
-	Rz9w3CnisWpMGUeHnlIFcTG4a/To=
-X-Google-Smtp-Source: AGHT+IGlXPLDh/xUR0QdG6tUiooL/Ttl/jOvYiURoiIPZH5BiA3hT9s/QM9OzOCVdtjVxuogbkgdANQQSTTXuUU3wTI=
-X-Received: by 2002:a17:907:1dcd:b0:a77:eb34:3b41 with SMTP id
- a640c23a62f3a-a780b69a2a2mr28190066b.2.1720466836912; Mon, 08 Jul 2024
- 12:27:16 -0700 (PDT)
+	s=k20201202; t=1720467066;
+	bh=xWIqjEKJWV+KQU2fz3X7SNlmN3/sS27O+Ruv3Ju/x2c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MBjcWO8Rxw/AEVgfarlNbrRjEQBAGkMfnwdomr6ihG/k8OYy83SAafO7mxx/uDWiX
+	 TsTFnDCqVVdyd84BAPNZl6zMmcdo8m3KICTUYgxNVkVXndaWy34DLpcderCOqzbpTB
+	 tgLi3qYTY+uR7GjZu4KxVbsPRXCIeC4SkkigMfWO5IrmcG/7NInLgQXJJJbaV02WB4
+	 xSnc0Bny1SjcNpOiHb4ZrZITSlbCUGzE0oSfT+fatcNr1aeFvR0yiU713oKjVT5BiV
+	 QrC+79JrWF4C+SrXcxJg8vXcQnpiMMRZhS+SMZEhxfh/Sti78jb2DS8GINPp/bxNpf
+	 nkguuUaTpLIDw==
+Date: Mon, 8 Jul 2024 12:31:06 -0700
+From: Kees Cook <kees@kernel.org>
+To: Kalle Valo <kvalo@kernel.org>, Arnd Bergmann <arnd@arndb.de>
+Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH RFC] wifi: ath12k: workaround fortify warnings in
+ ath12k_wow_convert_8023_to_80211()
+Message-ID: <202407081226.94B1FB24@keescook>
+References: <20240704144341.207317-1-kvalo@kernel.org>
+ <202407041551.1DC8C03D@keescook>
+ <877cdvdgpz.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <f5e72ce2-11db-4f19-8aaf-8fd9b62e5a77@nbd.name> <87bk37dhpo.fsf@kernel.org>
-In-Reply-To: <87bk37dhpo.fsf@kernel.org>
-From: Sean Wang <sean.wang@kernel.org>
-Date: Mon, 8 Jul 2024 12:27:05 -0700
-X-Gmail-Original-Message-ID: <CAGp9Lzp+1xoceuT3Fi=qXpgFyaQyoW_z=TSHrQepByfb6BR-Ow@mail.gmail.com>
-Message-ID: <CAGp9Lzp+1xoceuT3Fi=qXpgFyaQyoW_z=TSHrQepByfb6BR-Ow@mail.gmail.com>
-Subject: Re: pull request: mt76 2024-07-08
-To: Felix Fietkau <nbd@nbd.name>
-Cc: linux-wireless <linux-wireless@vger.kernel.org>, Kalle Valo <kvalo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <877cdvdgpz.fsf@kernel.org>
 
-Hi nbd,
+On Mon, Jul 08, 2024 at 06:51:52PM +0300, Kalle Valo wrote:
+> Kees Cook <kees@kernel.org> writes:
+> 
+> > On Thu, Jul 04, 2024 at 05:43:41PM +0300, Kalle Valo wrote:
+> >> From: Kalle Valo <quic_kvalo@quicinc.com>
+> >> 
+> >> Johannes reported with GCC 11.4 there's a fortify warning below. The warning is
+> >> not seen with GCC 12.1 nor 13.2. Weirdly moving the other operand of sum to the
+> >> other side the warning goes away. This is safe to do as the value of the
+> >> operand is check earlier. But the code looks worse with this so I'm not sure
+> >> what to do.
+> >
+> > FWIW, this isn't fortify, but -Wrestrict.
+> 
+> Ah, thanks for correcting. I just saw fortify-string.h and made the
+> wrong assumption.
+> 
+> > I would expect the same warnings even with CONFIG_FORTIFY_SOURCE
+> > disabled. Regardless, it's worth figuring out what's going on. It
+> > looks like this is GCC's value range tracker deciding it sees a way
+> > for things to go weird.
+> >
+> > I suspect they fixed -Wrestrict in later GCC versions. It might need to
+> > be version-limited...
+> >
+> >> In file included from ./include/linux/string.h:374,
+> >>                  from ./include/linux/bitmap.h:13,
+> >>                  from ./include/linux/cpumask.h:13,
+> >>                  from ./include/linux/sched.h:16,
+> >>                  from ./include/linux/delay.h:23,
+> >>                  from drivers/net/wireless/ath/ath12k/wow.c:7:
+> >> drivers/net/wireless/ath/ath12k/wow.c: In function
+> >> ‘ath12k_wow_convert_8023_to_80211.constprop’:
+> >> ./include/linux/fortify-string.h:114:33: error: ‘__builtin_memcpy’
+> >> accessing 18446744073709551611 or more bytes at offsets 0 and 0
+> >> overlaps 9223372036854775799 bytes at offset -9223372036854775804
+> >> [-Werror=restrict]
+> >
+> > These huge negative values imply to me that GCC is looking at some
+> > signed values somewhere.
+> >
+> >> [...]
+> >> diff --git a/drivers/net/wireless/ath/ath12k/wow.c b/drivers/net/wireless/ath/ath12k/wow.c
+> >> index c5cba825a84a..e9588bb7561c 100644
+> >> --- a/drivers/net/wireless/ath/ath12k/wow.c
+> >> +++ b/drivers/net/wireless/ath/ath12k/wow.c
+> >> @@ -186,7 +186,7 @@ ath12k_wow_convert_8023_to_80211(struct ath12k *ar,
+> >>  	if (eth_pkt_ofs < ETH_ALEN) {
+> >>  		pkt_ofs = eth_pkt_ofs + a1_ofs;
+> >>  
+> >> -		if (eth_pkt_ofs + eth_pat_len < ETH_ALEN) {
+> >> +		if (eth_pat_len < ETH_ALEN - eth_pkt_ofs) {
+> >>  			memcpy(pat, eth_pat, eth_pat_len);
+> >>  			memcpy(bytemask, eth_bytemask, eth_pat_len);
+> >
+> > Both eth_pkt_ofs and eth_pat_len are size_t. ETH_ALEN isn't, but it
+> > would be promoted to size_t here. The value tracker should see that
+> > eth_pkt_ofs could be [0..ETH_ALEN). eth_pat_len is coming from an "int",
+> > though, so that might be the confusion. It may think eth_pat_len could
+> > be [0..UINT_MAX] (i.e. the full range of int within size_t).
+> >
+> > So [0..ETH_ALEN) + [0..UINT_MAX] < 6 might be doing something wrong in
+> > GCC 11.x, and it's not actually doing the size_t promotion correctly,
+> > or deciding something has wrapped and then thinking eth_pat_len could
+> > span a giant region of the address space, which freaks out -Wrestrict.
+> > i.e. it's seeing that for the "if" to be true, eth_pat_len could be large
+> > enough to wrap around the addition (though this shouldn't be possible
+> > for 64-bit size_t).
+> >
+> > So I could see how [0..UINT_MAX] < 6 - [0..ETH_ALEN) would make it
+> > happier: the right side is now [1..6], so eth_pat_len becomes [1..6).
+> 
+> Earlier I did some testing and I noticed that this if test also gives a
+> warning:
+> 
+> 1 + eth_pat_len < ETH_ALEN
+> 
+> But this doesn't have any warning:
+> 
+> 0 + eth_pat_len < ETH_ALEN
+> 
+> And I stopped my investigation there :)
+> 
+> > Reviewed-by: Kees Cook <kees@kernel.org>
+> 
+> So you think this should be applied? It's not really logical so I would
+> prefer to avoid taking it if possible. Or should we just ignore the
+> warning? It only happens on GCC 11 anyway.
 
-I have fixed the build warnings for the patchset. The entire patchset,
-including the fixes, has been pushed
-to this repository https://github.com/objelf/wireless/commits/mt76/
+I suspect this won't be the only place in the kernel where -Wrestrict
+will give weird results with GCC 11, and there are still plenty of folks
+using GCC 11. I think the best option would probably be to version-check
+GCC to gate the addition of -Wrestrict.
 
-The specific changes to fix the warnings are included in the following patc=
-hes:
+Arnd, what do you think? This looks like a more extreme version of
+commit f9fc1ec28bae ("crypto: drivers - avoid memcpy size warning")
 
-"wifi: mt76: mt7925: extend mt7925_mcu_uni_roc_event"
-"wifi: mt76: mt7925: update mt7925_mcu_sta_mld_tlv for MLO"
-"wifi: mt76: mt7925: add link handling in mt7925_txwi_free"
+-Kees
 
-You can cherry-pick the respective patches or pull the tree as needed.
-
-Best regards,
-Sean
-
-On Mon, Jul 8, 2024 at 8:30=E2=80=AFAM Kalle Valo <kvalo@kernel.org> wrote:
->
-> Felix Fietkau <nbd@nbd.name> writes:
->
-> > Hi Kalle,
-> >
-> > here's my first request for 6.11
-> >
-> > - Felix
-> >
-> > The following changes since commit 1b431ba4ef9a760e7643d6fbc53bf522d596=
-50f3:
-> >
-> >   wifi: iwlwifi: mvm: re-enable MLO (2024-07-04 13:50:10 +0200)
-> >
-> > are available in the Git repository at:
-> >
-> >   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2024-07-08
-> >
-> > for you to fetch changes up to 755db1b86ff49027cae37fc57ce8fef608432c4e=
-:
-> >
-> >   wifi: mt76: mt792x: fix scheduler interference in drv own process (20=
-24-07-08 12:23:23 +0200)
-> >
-> > ----------------------------------------------------------------
-> > mt76 patches for 6.11
-> >
-> > - mt7925 MLO support
-> > - mt7925 fix
-> >
-> > ----------------------------------------------------------------
->
-> With this pull request I see (sparse?) warnings:
->
-> drivers/net/wireless/mediatek/mt76/mt7925/mcu.c:365:19: warning: invalid =
-assignment: +=3D
-> drivers/net/wireless/mediatek/mt76/mt7925/mcu.c:365:19:    left side has =
-type int
-> drivers/net/wireless/mediatek/mt76/mt7925/mcu.c:365:19:    right side has=
- type restricted __le16
-> drivers/net/wireless/mediatek/mt76/mt7925/mcu.c:1759:42: warning: incorre=
-ct type in assignment (different base types)
-> drivers/net/wireless/mediatek/mt76/mt7925/mcu.c:1759:42:    expected unsi=
-gned char [usertype] bss_idx
-> drivers/net/wireless/mediatek/mt76/mt7925/mcu.c:1759:42:    got restricte=
-d __le16 [usertype]
-> drivers/net/wireless/mediatek/mt76/mt7925/pci_mac.c:63:51: warning: Using=
- plain integer as NULL pointer
->
-> --
-> https://patchwork.kernel.org/project/linux-wireless/list/
->
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
-tches
->
+-- 
+Kees Cook
 
