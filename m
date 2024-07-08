@@ -1,147 +1,145 @@
-Return-Path: <linux-wireless+bounces-10081-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10082-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C73D392A9CC
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jul 2024 21:26:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0FE092A9CE
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jul 2024 21:27:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3169B282760
-	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jul 2024 19:26:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 20CD7B21DEC
+	for <lists+linux-wireless@lfdr.de>; Mon,  8 Jul 2024 19:27:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81E0014C58E;
-	Mon,  8 Jul 2024 19:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D6F14C5BD;
+	Mon,  8 Jul 2024 19:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="QqSWUFe4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h8IynfUL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A0C14AD10
-	for <linux-wireless@vger.kernel.org>; Mon,  8 Jul 2024 19:26:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4DF914C58E
+	for <linux-wireless@vger.kernel.org>; Mon,  8 Jul 2024 19:27:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720466804; cv=none; b=Brm8wQWtDUnuMwQVhMKBiGboxWCg2m8KBxFpgmdKlcyyCIIhKrZ6QQA3ggivL4G9aoa+HJMlx8HP64rUewkxCF//dN7xmoSNHm8STL6+M9TMgbIa7y8L/n5PBmr5FTyIfpkwHQfUOoRpQIX435rJFULiRr2SaeVRGdy2SHfG530=
+	t=1720466841; cv=none; b=nTSItN3nP5hIs5LBMGFvfgGE86etZ6NZeFLRJ4y0kCwhBWsX2O9E1vt72OVbx0x+cZYSrWWzvvWAVGIacsncMuaJgcWsd8ZiDVgJat8SUVYCIB7goicrSHe66CXWn22ow4my32aexhLXwqZKIXCRvRJAJ/fOP4cveLGDmO1D4zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720466804; c=relaxed/simple;
-	bh=yoalBGunsAhVZHpt4Zz+z9F5awaPae/yF3kNbJXTA5Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QVVk0glH04qYw0jsPyrqznvVgRbdQeV4Hiu5QjIHJW7lA2jrtqxIAA9KttRrnqpE7YTUZ3cVElx8PI9Kt9+HSla+loe4Vg/2NToTTDo6B80jYkHUfmgPVLPmB1nJWedA6evZmi5F/9fllcgkr6fAreQ0Czbc01bWHTw5mHlZhGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=QqSWUFe4; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-6e7e23b42c3so2159068a12.1
-        for <linux-wireless@vger.kernel.org>; Mon, 08 Jul 2024 12:26:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1720466802; x=1721071602; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Emo5pzCrjfNrsol1oVrwdOxe+d/A9gG3XbKfbbvKsdw=;
-        b=QqSWUFe4PRBfxtxoYviLzlWh1Lh0/Uj3Xmqc/pFyUuGNF+k1nvRlgPARyr26MuHxYQ
-         Pr4NUzyJQJvXgvFsr4usoNIqGXg4VAhJcWLdNOcSfEq7YgeYH/mASysQAEd6uAD9QIr3
-         pMK378Ik9O+pB5k35+pRkAiVvH9rQrJ9FQCeA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720466802; x=1721071602;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Emo5pzCrjfNrsol1oVrwdOxe+d/A9gG3XbKfbbvKsdw=;
-        b=ByTPEt97C8QSYLXOdlbgKMMLSEl2PV4bbNB/c4R15w43fjj+Hrip5vfMIh0QjctQwg
-         ho78/W6IjL+tbhOd1uaCtYF3GFYxaNe/a17kP6kaM67kiRi2hx3k7//sF3EWuoNeUbjR
-         7KOgc69b/3tR1rSgLgj/HKXBuEEDrlwwIIuCjU80iegPjSqd47IdXNlQxQ6VyOimzMZ9
-         LSeP/hbM6WTnjGiKEGbEl+/tnbKgGZQX+kEHEyuvGj23/Fk4lTl3V5ewFEdBzI3YTQvO
-         mlP11Uct/C7Y68uIBWysykIV8kkgbSQoX4YcxIiroRSnbbb7gQMGNJ80/kWOuCTG1rrx
-         gzJg==
-X-Gm-Message-State: AOJu0YyT+4Bsli1lieioLYkiH7iqvMn0LxQiwak9cEajM/XE4fiQNvMr
-	QqVKEV8xriHku4l79Ioy8HMPDTchSy8iXR+mJue0gPmn1+uRIANEdW5LfBCVqA==
-X-Google-Smtp-Source: AGHT+IFzWLGpJjfdPjA5LoDyCMlL1inahjNqMJV6Pi2zIPLk2kpujT5ZtrJAD9JSab5j7LYKjxGTVQ==
-X-Received: by 2002:a05:6a20:1582:b0:1c2:94ad:1c66 with SMTP id adf61e73a8af0-1c2982163d9mr331010637.5.1720466802283;
-        Mon, 08 Jul 2024 12:26:42 -0700 (PDT)
-Received: from localhost ([2620:15c:9d:2:3e22:9cde:6b65:e5e8])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-1fbb6a10111sm2283585ad.20.2024.07.08.12.26.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Jul 2024 12:26:41 -0700 (PDT)
-Date: Mon, 8 Jul 2024 12:26:40 -0700
-From: Brian Norris <briannorris@chromium.org>
-To: David Lin <yu-hao.lin@nxp.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kvalo@kernel.org, francesco@dolcini.it, tsung-hsien.hsieh@nxp.com,
-	Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: Re: [PATCH v11 2/2] wifi: mwifiex: add host mlme for AP mode
-Message-ID: <Zow9cOyMvgiddkKw@google.com>
-References: <20240704033001.603419-1-yu-hao.lin@nxp.com>
- <20240704033001.603419-3-yu-hao.lin@nxp.com>
+	s=arc-20240116; t=1720466841; c=relaxed/simple;
+	bh=sE/TC7a66+gKH45F+CxcE03eguTRbInKlYcv+mCBwOg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IITZRYGG9nOO1D+dC9SePwyh0JxXrWaEM38G46pQYx/IefNgGOSO+Eyx6BSWlikrT3GS7uDdYJnTgzWtFphSRX9r4nCl08pFzIHUgs/4/57hlppIaOo3EvpSRZLWn/GEfwRZd/iUDxK2Bt0zOVufrbmcwYsInOptWVlOTuWgBWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h8IynfUL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 810CCC3277B
+	for <linux-wireless@vger.kernel.org>; Mon,  8 Jul 2024 19:27:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720466840;
+	bh=sE/TC7a66+gKH45F+CxcE03eguTRbInKlYcv+mCBwOg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=h8IynfULInkFZJZd+lKB7eRQXUHmYQx45MFJI59rKaCaZBSeaOfkIhK0Qsw1OMlxI
+	 Xk1UQHYM10XvXRyJizfJ2ppkvQYmnXWpMkNsdy/rlxDNcQZbLTVJGsRKrKfJ0CrEbh
+	 CJNLsK7cCqOLCx/GV2G8epiUuCyHKjfWCo7/tp3lNyfHO42ecABi6kEnsLmAFFlBhG
+	 DsHP7lheA4hFTb9S/6nrkoAaxRlRHen6pAn+nGOd1xLNi5NyWvBYMUOBkKxCc/yFOS
+	 cdF2+WRMEUe2Yh+4gXi2ERd36uhzfWswkfw1iWhL+jcu+ZzMV1dNrj/sNsTrdKqyYN
+	 g9EHWOO2RA77A==
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-57d0ea30e87so614857a12.1
+        for <linux-wireless@vger.kernel.org>; Mon, 08 Jul 2024 12:27:20 -0700 (PDT)
+X-Gm-Message-State: AOJu0YyoXR4XhuFxKZzo85V0kIn05mcNm+nnDBetLP0kT5bcDncUUmPS
+	e3HmuSeEuJ0Nsf29+x6rmP48a4LqB8/OcgCtfzY33he65CAu5GI+Ph3+XuHEPt94Plv1VqGaLdr
+	Rz9w3CnisWpMGUeHnlIFcTG4a/To=
+X-Google-Smtp-Source: AGHT+IGlXPLDh/xUR0QdG6tUiooL/Ttl/jOvYiURoiIPZH5BiA3hT9s/QM9OzOCVdtjVxuogbkgdANQQSTTXuUU3wTI=
+X-Received: by 2002:a17:907:1dcd:b0:a77:eb34:3b41 with SMTP id
+ a640c23a62f3a-a780b69a2a2mr28190066b.2.1720466836912; Mon, 08 Jul 2024
+ 12:27:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240704033001.603419-3-yu-hao.lin@nxp.com>
+References: <f5e72ce2-11db-4f19-8aaf-8fd9b62e5a77@nbd.name> <87bk37dhpo.fsf@kernel.org>
+In-Reply-To: <87bk37dhpo.fsf@kernel.org>
+From: Sean Wang <sean.wang@kernel.org>
+Date: Mon, 8 Jul 2024 12:27:05 -0700
+X-Gmail-Original-Message-ID: <CAGp9Lzp+1xoceuT3Fi=qXpgFyaQyoW_z=TSHrQepByfb6BR-Ow@mail.gmail.com>
+Message-ID: <CAGp9Lzp+1xoceuT3Fi=qXpgFyaQyoW_z=TSHrQepByfb6BR-Ow@mail.gmail.com>
+Subject: Re: pull request: mt76 2024-07-08
+To: Felix Fietkau <nbd@nbd.name>
+Cc: linux-wireless <linux-wireless@vger.kernel.org>, Kalle Valo <kvalo@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi David,
+Hi nbd,
 
-On Thu, Jul 04, 2024 at 11:30:01AM +0800, David Lin wrote:
-> Add host based MLME to enable WPA3 functionalities in AP mode.
-> This feature required a firmware with the corresponding V2 Key API
-> support. The feature (WPA3) is currently enabled and verified only
-> on IW416. Also, verified no regression with change when host MLME
-> is disabled.
-> 
-> Signed-off-by: David Lin <yu-hao.lin@nxp.com>
-> Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> Acked-by: Brian Norris <briannorris@chromium.org>
-> ---
-> 
-> v11:
->    - modify 'mwifiex_mgmt_stypes' to allow multi-adapters with different
->      setting of host_mlme_enbaled.
-...
-> -	wiphy->mgmt_stypes = mwifiex_mgmt_stypes;
-> +	if (adapter->host_mlme_enabled) {
-> +		memcpy(adapter->mwifiex_mgmt_stypes,
-> +		       mwifiex_mgmt_stypes,
-> +		       NUM_NL80211_IFTYPES *
-> +		       sizeof(struct ieee80211_txrx_stypes));
-> +
-> +		adapter->mwifiex_mgmt_stypes[NL80211_IFTYPE_AP].tx = 0xffff;
-> +		adapter->mwifiex_mgmt_stypes[NL80211_IFTYPE_AP].rx =
-> +			BIT(IEEE80211_STYPE_ASSOC_REQ >> 4) |
-> +			BIT(IEEE80211_STYPE_REASSOC_REQ >> 4) |
-> +			BIT(IEEE80211_STYPE_PROBE_REQ >> 4) |
-> +			BIT(IEEE80211_STYPE_DISASSOC >> 4) |
-> +			BIT(IEEE80211_STYPE_AUTH >> 4) |
-> +			BIT(IEEE80211_STYPE_DEAUTH >> 4) |
-> +			BIT(IEEE80211_STYPE_ACTION >> 4);
-> +		wiphy->mgmt_stypes = adapter->mwifiex_mgmt_stypes;
-> +	} else {
-> +		wiphy->mgmt_stypes = mwifiex_mgmt_stypes;
-> +	}
->  	wiphy->max_remain_on_channel_duration = 5000;
->  	wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION) |
->  				 BIT(NL80211_IFTYPE_P2P_CLIENT) |
-...
-> --- a/drivers/net/wireless/marvell/mwifiex/main.h
-> +++ b/drivers/net/wireless/marvell/mwifiex/main.h
-> @@ -1008,6 +1008,7 @@ struct mwifiex_adapter {
->  
->  	bool ext_scan;
->  	bool host_mlme_enabled;
-> +	struct ieee80211_txrx_stypes mwifiex_mgmt_stypes[NUM_NL80211_IFTYPES];
+I have fixed the build warnings for the patchset. The entire patchset,
+including the fixes, has been pushed
+to this repository https://github.com/objelf/wireless/commits/mt76/
 
-This wasn't exactly what I had in mind by a "second copy" of
-mwifiex_mgmt_stypes -- that you add a new array to mwifiex_adapter that
-is only sometimes used. I meant something more like a const
-'mwifiex_mgmt_stypes_mlme`, with the appropriate constant values. But I
-suppose this works too, if a bit awkward, and saves a bit of code/data
-duplication.
+The specific changes to fix the warnings are included in the following patc=
+hes:
 
-So, the 'Acked-by' still seems appropriate.
+"wifi: mt76: mt7925: extend mt7925_mcu_uni_roc_event"
+"wifi: mt76: mt7925: update mt7925_mcu_sta_mld_tlv for MLO"
+"wifi: mt76: mt7925: add link handling in mt7925_txwi_free"
 
-Thanks for the patience on this series.
+You can cherry-pick the respective patches or pull the tree as needed.
 
-Brian
+Best regards,
+Sean
+
+On Mon, Jul 8, 2024 at 8:30=E2=80=AFAM Kalle Valo <kvalo@kernel.org> wrote:
+>
+> Felix Fietkau <nbd@nbd.name> writes:
+>
+> > Hi Kalle,
+> >
+> > here's my first request for 6.11
+> >
+> > - Felix
+> >
+> > The following changes since commit 1b431ba4ef9a760e7643d6fbc53bf522d596=
+50f3:
+> >
+> >   wifi: iwlwifi: mvm: re-enable MLO (2024-07-04 13:50:10 +0200)
+> >
+> > are available in the Git repository at:
+> >
+> >   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2024-07-08
+> >
+> > for you to fetch changes up to 755db1b86ff49027cae37fc57ce8fef608432c4e=
+:
+> >
+> >   wifi: mt76: mt792x: fix scheduler interference in drv own process (20=
+24-07-08 12:23:23 +0200)
+> >
+> > ----------------------------------------------------------------
+> > mt76 patches for 6.11
+> >
+> > - mt7925 MLO support
+> > - mt7925 fix
+> >
+> > ----------------------------------------------------------------
+>
+> With this pull request I see (sparse?) warnings:
+>
+> drivers/net/wireless/mediatek/mt76/mt7925/mcu.c:365:19: warning: invalid =
+assignment: +=3D
+> drivers/net/wireless/mediatek/mt76/mt7925/mcu.c:365:19:    left side has =
+type int
+> drivers/net/wireless/mediatek/mt76/mt7925/mcu.c:365:19:    right side has=
+ type restricted __le16
+> drivers/net/wireless/mediatek/mt76/mt7925/mcu.c:1759:42: warning: incorre=
+ct type in assignment (different base types)
+> drivers/net/wireless/mediatek/mt76/mt7925/mcu.c:1759:42:    expected unsi=
+gned char [usertype] bss_idx
+> drivers/net/wireless/mediatek/mt76/mt7925/mcu.c:1759:42:    got restricte=
+d __le16 [usertype]
+> drivers/net/wireless/mediatek/mt76/mt7925/pci_mac.c:63:51: warning: Using=
+ plain integer as NULL pointer
+>
+> --
+> https://patchwork.kernel.org/project/linux-wireless/list/
+>
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
+tches
+>
 
