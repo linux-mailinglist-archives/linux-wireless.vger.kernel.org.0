@@ -1,125 +1,169 @@
-Return-Path: <linux-wireless+bounces-10097-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10098-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 026FA92AF11
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jul 2024 06:25:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2DD692AFA0
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jul 2024 07:58:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A79A1C21CFC
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jul 2024 04:25:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3032E1C218E3
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jul 2024 05:58:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C712A487A5;
-	Tue,  9 Jul 2024 04:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EC6A376EC;
+	Tue,  9 Jul 2024 05:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="fQQSJx3s"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="POAL+C5q"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3D928DB3;
-	Tue,  9 Jul 2024 04:25:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8079B139F
+	for <linux-wireless@vger.kernel.org>; Tue,  9 Jul 2024 05:58:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720499135; cv=none; b=kaqWwoHpcjj+sfryztqbleh0auTWUReg1I/BgeDc4I2cN94nnG0uFyfVpLtFGpI+HYddnMBZX/qVM35t0vhwi3LLsIM+lmHwqC35lu/VsdQenLBBvIgBZyPz5taWq/qMu1Jca1pg7QF2xS93+cStR4LH7OPWyNl3WHs6KwyW6Yg=
+	t=1720504722; cv=none; b=eUBOPPyBa+pGnyCH/JFniLvXmhvsIBLOXcSkyzjA64fZb1PlQZr3KW5M7tITDAJ5KcN0PnbvzT9rJ9QNNxJDutiBn6PSmxR2B0HcJwA++vZMVTrb7K9mbvfh77JSFkk8aJTGTYkYj+qqwmPNBzDDbb9b6vqeUD+ZEwC2KP2G3bU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720499135; c=relaxed/simple;
-	bh=xlUZK+6sDB8jq8BTErl0bTqYq7TYFfrIpzBCtDc5mrk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=OHcluzaQKc7wOM4d1tie6tnaC0IGc1clpPZaqVdQXQNesG6pok6WMxvS+iTm7TQsBRGFaW487AuRazJgm0UXfbGhefkAcSr6rjFFmB+5N8XlAEl5f/Vr4Q1JSRwXeWgFhWjpgBwAOYz+f37Z0Ht3PrZ9hvz/y8BJWsgLDXUk/Vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=fQQSJx3s; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4694PJwX4303240, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1720499119; bh=xlUZK+6sDB8jq8BTErl0bTqYq7TYFfrIpzBCtDc5mrk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=fQQSJx3stDnp5lbVEdFUaCYZVeiOTC/L7/JrX6WYPyB3nja81NY5GC6sbbKrACl0A
-	 E5DaMvqVko/2Kfn8zgEpUtpxAJO+GymPNr0prli8zMVsN+Ui5sRlBekd0m+x1Jn4nm
-	 jNKSItWcKj8I2wOD4EIIBDgmQ147inLzpU6RxqOd+RCGzTND4/roLBxOulmG2INqgD
-	 LVRwMHejPT/+4+cUdQo29gHZlpypypIjX+wI+z2uDx0XO/cQpx81S3118WguDG5DWu
-	 bFjL0cNJ4YqtagpBtYwOQivHGvgrAU0Sp28fkMXlh0af4RFv6YsnmGMmNO9DuITLS4
-	 LWreQLazICTHg==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 4694PJwX4303240
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 9 Jul 2024 12:25:19 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+	s=arc-20240116; t=1720504722; c=relaxed/simple;
+	bh=t3R0IMHKv+2QGFMziSaWB/M9pFdaIWhKmrICHKVP/NQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BwLK9+jxU7vM537KgdfPn9xV/gTblXOgglDegUTb034WNffZNj98xy4NdIPjs9Mv+nIHxrz/HNxt/02EBBiYo7DbhyK6gbUGUjY1tzqjgkTwaIKTuMAvaTs6ccRLqVjKes/qj4mzHDRuUkElylNoliDRDDoCnHJxdomYMPtlFHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=POAL+C5q; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 468N8MIs000983;
+	Tue, 9 Jul 2024 05:58:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=2sqKfWeLb//E5e1NbZQTLB
+	18yv0j8fhAfiIGY6pQEjs=; b=POAL+C5qEefx4HqzuOt03R+kbEQSbq1XvSbRX3
+	nVMVL+qUqv6eZGAXy5C1JfmGFxdiuJ8wX5CBC0CWCXVueDKbuyx0f3D9qa4+y0Y1
+	BrRf1D7mQ7iGofGTW2UQh85+eWbXwJazaY7C0gpK38J/3EzwwEZx6gkHg6YD0K05
+	6pS9o2/ya7CsQWvpookTXQ/ezRWPAskVgxOigRNO7KSVYnkKHqRBq92lGYK8C8yh
+	y17YdB/R3sDBotL4GlHExNMC81oQRmAD2uWHTjd5U4FKTgyNjQ6QVwOO7b46mYMb
+	cA+gVm31sC6YlsK4dcpvU6ozihw9kfjhDAwwWsEp8Zf2HxkQ==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 406x0t5n9m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 Jul 2024 05:58:35 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 4695wYB8009291
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 9 Jul 2024 05:58:34 GMT
+Received: from hu-adisi-blr.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 9 Jul 2024 12:25:20 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 9 Jul 2024 12:25:19 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
- RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
- 15.01.2507.035; Tue, 9 Jul 2024 12:25:19 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Forty Five <mathewegeorge@gmail.com>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        Bernie Huang
-	<phhuang@realtek.com>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>
-Subject: RE: [REGRESSION] Freeze on resume from S3 (bisected)
-Thread-Topic: [REGRESSION] Freeze on resume from S3 (bisected)
-Thread-Index: AQHa0VQl1ZM9p1UVPU2+rvQ8T/H4+rHtmRKw//+qGICAAIjSQA==
-Date: Tue, 9 Jul 2024 04:25:19 +0000
-Message-ID: <e9c35b3d72a34c8e8ac607590917681a@realtek.com>
-References: <draft-87msmrdgkb.fsf@gmail.com> <87h6czdexm.fsf@gmail.com>
- <6673a2dc01a941f5900da7393d160005@realtek.com> <87o777tdbw.fsf@gmail.com>
-In-Reply-To: <87o777tdbw.fsf@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ 15.2.1544.9; Mon, 8 Jul 2024 22:58:32 -0700
+From: Aditya Kumar Singh <quic_adisi@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Aditya Kumar Singh
+	<quic_adisi@quicinc.com>
+Subject: [PATCH] wifi: ath12k: restore ASPM for supported hardwares only
+Date: Tue, 9 Jul 2024 11:28:17 +0530
+Message-ID: <20240709055817.3371406-1-quic_adisi@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: cxWUjw7GihkvnaZ3SejBq5LCiKSa5VzG
+X-Proofpoint-ORIG-GUID: cxWUjw7GihkvnaZ3SejBq5LCiKSa5VzG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-08_15,2024-07-08_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 bulkscore=0
+ lowpriorityscore=0 impostorscore=0 adultscore=0 suspectscore=0
+ phishscore=0 mlxlogscore=877 priorityscore=1501 malwarescore=0 spamscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2407090038
 
-Forty Five <mathewegeorge@gmail.com> wrote:
->=20
-> Ping-Ke Shih <pkshih@realtek.com> writes:
->=20
-> > Right. Only apply [1] in every bisection step.
->=20
-> Patch fails on 57f22c8dab6b266ae. Could you send a version that succeeds?
->=20
-> Bisection log so far:
->=20
-> git bisect start
-> # status: waiting for both good and bad commits
-> # bad: [5bbd9b249880dba032bffa002dd9cd12cd5af09c] Merge tag 'v6.10-p4' of
-> git://git.kernel.org/pub/scm/linux/kernel/git/herbert/crypto-2.6
-> git bisect bad 5bbd9b249880dba032bffa002dd9cd12cd5af09c
-> # status: waiting for good commit(s), bad commit known
-> # good: [bcbefbd032df6bfe925e6afeca82eb9d2cc0cb23] wifi: rtw89: add wait/=
-completion for abort scan
-> git bisect good bcbefbd032df6bfe925e6afeca82eb9d2cc0cb23
-> # bad: [480e035fc4c714fb5536e64ab9db04fedc89e910] Merge tag 'drm-next-202=
-4-03-13' of
-> https://gitlab.freedesktop.org/drm/kernel
-> git bisect bad 480e035fc4c714fb5536e64ab9db04fedc89e910
+During PCI based hardware device start up, ASPM is disabled for all. And
+once firmware is ready, it is restored back. However, not all hardwares
+(for example QCN9274) supports ASPM. Hence there is a need to conditionally
+restore ASPM back. Or else, for such hardwares, issue can be seen during
+sending and receiving packets.
 
-The commit date of culprit bcbefbd032d ("wifi: rtw89: add wait/completion f=
-or abort scan") is
-     CommitDate: Tue Jan 23 13:38:15 2024 +0200
+Introduce a new hardware param supports_aspm which identifies whether a
+given hardware supports ASPM or not and then accordingly restore it.
 
-But, you want to apply to the top of 57f22c8dab6b whose date is=20
-     CommitDate: Fri Jan 19 13:49:16 2024 -0800
-and doesn't contain commit bcbefbd032d, so no need to apply [1] at this poi=
-nt.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 
+Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
+---
+ drivers/net/wireless/ath/ath12k/hw.c  | 6 ++++++
+ drivers/net/wireless/ath/ath12k/hw.h  | 1 +
+ drivers/net/wireless/ath/ath12k/pci.c | 3 ++-
+ 3 files changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/ath/ath12k/hw.c
+index 2e11ea763574..76c0e07a88de 100644
+--- a/drivers/net/wireless/ath/ath12k/hw.c
++++ b/drivers/net/wireless/ath/ath12k/hw.c
+@@ -924,6 +924,8 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
+ 
+ 		.acpi_guid = NULL,
+ 		.supports_dynamic_smps_6ghz = true,
++
++		.supports_aspm = false,
+ 	},
+ 	{
+ 		.name = "wcn7850 hw2.0",
+@@ -1000,6 +1002,8 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
+ 
+ 		.acpi_guid = &wcn7850_uuid,
+ 		.supports_dynamic_smps_6ghz = false,
++
++		.supports_aspm = true,
+ 	},
+ 	{
+ 		.name = "qcn9274 hw2.0",
+@@ -1072,6 +1076,8 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
+ 
+ 		.acpi_guid = NULL,
+ 		.supports_dynamic_smps_6ghz = true,
++
++		.supports_aspm = false,
+ 	},
+ };
+ 
+diff --git a/drivers/net/wireless/ath/ath12k/hw.h b/drivers/net/wireless/ath/ath12k/hw.h
+index e792eb6b249b..4cfbb240bbf4 100644
+--- a/drivers/net/wireless/ath/ath12k/hw.h
++++ b/drivers/net/wireless/ath/ath12k/hw.h
+@@ -187,6 +187,7 @@ struct ath12k_hw_params {
+ 	bool tcl_ring_retry:1;
+ 	bool reoq_lut_support:1;
+ 	bool supports_shadow_regs:1;
++	bool supports_aspm:1;
+ 
+ 	u32 num_tcl_banks;
+ 	u32 max_tx_ring;
+diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
+index 876c029f58f6..ff2199f7754c 100644
+--- a/drivers/net/wireless/ath/ath12k/pci.c
++++ b/drivers/net/wireless/ath/ath12k/pci.c
+@@ -953,7 +953,8 @@ static void ath12k_pci_update_qrtr_node_id(struct ath12k_base *ab)
+ 
+ static void ath12k_pci_aspm_restore(struct ath12k_pci *ab_pci)
+ {
+-	if (test_and_clear_bit(ATH12K_PCI_ASPM_RESTORE, &ab_pci->flags))
++	if (ab_pci->ab->hw_params->supports_aspm &&
++	    test_and_clear_bit(ATH12K_PCI_ASPM_RESTORE, &ab_pci->flags))
+ 		pcie_capability_clear_and_set_word(ab_pci->pdev, PCI_EXP_LNKCTL,
+ 						   PCI_EXP_LNKCTL_ASPMC,
+ 						   ab_pci->link_ctl &
+
+base-commit: 9fddbf081f2da3a20fecda0b58adacbf1379e304
+-- 
+2.34.1
 
 
