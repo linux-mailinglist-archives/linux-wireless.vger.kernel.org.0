@@ -1,177 +1,158 @@
-Return-Path: <linux-wireless+bounces-10118-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10117-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8A7292B4F5
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jul 2024 12:16:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98C9792B4F0
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jul 2024 12:15:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FAF71F216C7
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jul 2024 10:16:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E43D281A28
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jul 2024 10:15:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6863013D89D;
-	Tue,  9 Jul 2024 10:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A6FB13DB92;
+	Tue,  9 Jul 2024 10:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="o0SZFiUe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rlNbXPs2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BEE814F9E2
-	for <linux-wireless@vger.kernel.org>; Tue,  9 Jul 2024 10:16:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE5C38FA5;
+	Tue,  9 Jul 2024 10:15:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720520171; cv=none; b=ffySalDFi94OICmfldAGbAOxeYdwEyVu0139WAJ09SZX/cTcBCicKLOlNEXE1OuoOw0SIjpzsk9Zd4f3Ucm0ufETC6Uqi1VAWmDOF8uk2hswIQrKET8mS1iauoKJ7ZGnURIEnyZzuB300LtYhtJe4fsEeQXbdzUuj+IxvxSqle4=
+	t=1720520113; cv=none; b=TM5aNLBqUku47RO1QPNUrNw3NKNa5eJicOtPkFGddmRAdvqnrxpA41BXXOLrpofDsoCWGRut1BcrkSaKtwcSXuQ20wYfhFQ6Btl8/RP6taiSRkAOLEKkkJK1m1RSGSqqFU8alFpd/ENRIl8u9qVay8TDdOq8HJmhgV+rD/CXM0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720520171; c=relaxed/simple;
-	bh=fqFQYaf6vIk50+G/ID/QIUD1s8y84zcrcawIrhUOedE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Px9P2jYgFg8KFkMqbj21CovUbJlhG9PGku/Lap/B58vlneBfFE5Snj5OioeAKo6bdK4CdwRDGlXpgF+OYf7Eb8hKa5yaelvu2uizuZznMyHrMFuzDBToi2lQwIWJ/a16L7oXO8diS5wyCtMwbPP4HhT24JlqBJ/Dn39OifS2TQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=o0SZFiUe; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46910wxb001714;
-	Tue, 9 Jul 2024 10:16:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	rPup1kK2+RcF+K0PkB3iX3bl7hY61xPiPlbCxOCCQ/4=; b=o0SZFiUe/woS6Aav
-	97jWIcyNVhIk5jTqQehKS0hUIZxyw980v9WWng5KiYq++k0hiViv2cBdQzwFbORS
-	eATMGuKevA4BR4hzOaEF49qynhSuobQ1P26yAcsPvRfumeowWncKWjHXj9NAxeHA
-	I7rXgsm8ZB3sqgagrNoZjn8o7CgRc9JuAo2Iv2Gz2bnumrsRntL/FWRKgwq8yZgn
-	uc36Cn0K5kI7Vo/3e48fN0sfj9LfCH/rKB2XIcqkw1m5vCOFQEcU+bPyN/HsJXXT
-	OnSHx3U/TtZS4/fUWBPpIDAEvdFbUfVR7WroMkt/v7yDi0yIDjGuNoLl6nbjtiaP
-	KOIiFw==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 406xa6614d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Jul 2024 10:15:59 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA02.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 469AFwlk006165
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 9 Jul 2024 10:15:58 GMT
-Received: from [10.152.206.169] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 9 Jul 2024
- 03:15:56 -0700
-Message-ID: <4f0963ff-a822-49b8-3d45-5d90e2c2d511@quicinc.com>
-Date: Tue, 9 Jul 2024 15:44:20 +0530
+	s=arc-20240116; t=1720520113; c=relaxed/simple;
+	bh=tKueqsxqE+0OrUIuFqh4Rl4FDN8EBWKmezJndP6hr30=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=ignyPmve+3iRU3Jwu71o48tuetcHcpnRA56Yere/9fwCT2y1Lah7FOdm4GSF4Er0xFrZuywqBcSGLYdeigYNeO21sHM9MqG+CTcbCYPqBwUhXfBUK3UO8Wq0soW07lCM7QU7bAuK9zmPnTfDp8rAQ3GVHonuWJg8TdwEsgA3HTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rlNbXPs2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15D7DC3277B;
+	Tue,  9 Jul 2024 10:15:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720520113;
+	bh=tKueqsxqE+0OrUIuFqh4Rl4FDN8EBWKmezJndP6hr30=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=rlNbXPs2nEIFRDCoEcpY9/SHyt6VBtndqvip3jyIXEn/08GS7M2ta7QI0m4k6hDl1
+	 7Mznz/YtMGNbx0mlYUqU+1L0mNFB13LK66Y7YfFygOefTOlBAuJZ2dJdQ7GQidTMXn
+	 StqVQMherfjSEpZ0iKv+B98XgGJgm16sMJJXINamvDnlkS+uJI9h+psMobPeQ3G8vL
+	 54/lHUSJQpEYIBW1qpHBffdoz5F51m8h4eVXSFVzoErUrvwAcBTKkDcVGn47w8RAKu
+	 vvShMwiaSAhZH0iC096ueb+yaqKPh12sGxtZtiMGUJU+k581qOU3TuTU0JtdJyHoec
+	 0MuugLI+V0Cww==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.0
-Subject: Re: [PATCH v8 7/8] wifi: ath12k: refactor core start based on
- hardware group
-Content-Language: en-US
-To: Kalle Valo <kvalo@kernel.org>
-CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-References: <20240531180411.1149605-1-quic_hprem@quicinc.com>
- <20240531180411.1149605-8-quic_hprem@quicinc.com> <87plsuql2y.fsf@kernel.org>
- <dd2488bb-43f9-d546-7617-2a54ca3d1a1d@quicinc.com>
- <87ed8ae8ye.fsf@kernel.org>
-From: Harshitha Prem <quic_hprem@quicinc.com>
-In-Reply-To: <87ed8ae8ye.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: XyANtJGN_oqNyLr1i7nIBbA4qzsiBqa2
-X-Proofpoint-ORIG-GUID: XyANtJGN_oqNyLr1i7nIBbA4qzsiBqa2
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-09_01,2024-07-08_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=951
- suspectscore=0 lowpriorityscore=0 impostorscore=0 phishscore=0 spamscore=0
- clxscore=1015 adultscore=0 malwarescore=0 mlxscore=0 bulkscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2407090070
+Subject: Re: wifi: mwifiex: Do not return unused priv in
+ mwifiex_get_priv_by_id()
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20240703072409.556618-1-s.hauer@pengutronix.de>
+References: <20240703072409.556618-1-s.hauer@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ David Lin <yu-hao.lin@nxp.com>, Francesco Dolcini <francesco@dolcini.it>,
+ Brian Norris <briannorris@chromium.org>, kernel@pengutronix.de,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Francesco Dolcini <francesco.dolcini@toradex.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <172052010908.761847.2107697007150958943.kvalo@kernel.org>
+Date: Tue,  9 Jul 2024 10:15:10 +0000 (UTC)
 
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-
-On 7/3/2024 9:58 PM, Kalle Valo wrote:
-> Harshitha Prem <quic_hprem@quicinc.com> writes:
+> mwifiex_get_priv_by_id() returns the priv pointer corresponding to
+> the bss_num and bss_type, but without checking if the priv is actually
+> currently in use.
+> Unused priv pointers do not have a wiphy attached to them which can
+> lead to NULL pointer dereferences further down the callstack.  Fix
+> this by returning only used priv pointers which have priv->bss_mode
+> set to something else than NL80211_IFTYPE_UNSPECIFIED.
 > 
->>>>    +static void ath12k_core_device_cleanup(struct ath12k_base *ab)
->>>> +{
->>>> +	mutex_lock(&ab->core_lock);
->>>> +
->>>> +	if (test_and_clear_bit(ATH12K_FLAG_CORE_HIF_IRQ_ENABLED, &ab->dev_flags))
->>>> +		ath12k_hif_irq_disable(ab);
->>>> +
->>>> +	if (test_bit(ATH12K_FLAG_PDEV_CREATED, &ab->dev_flags))
->>>> +		ath12k_core_pdev_destroy(ab);
->>>> +
->>>> +	if (test_bit(ATH12K_FLAG_REGISTERED, &ab->dev_flags)) {
->>>> +		ath12k_mac_unregister(ab);
->>>> +		ath12k_mac_destroy(ab);
->>>> +	}
->>>> +
->>>> +	mutex_unlock(&ab->core_lock);
->>>> +}
->>> This patch is just abusing flags and because of that we have
->>> spaghetti
->>> code. I have been disliking use of enum ath12k_dev_flags before but this
->>> is just looks too much. I am wondering do we need to cleanup the ath12k
->>> architecture first, reduce the usage of flags and then revisit this
->>> patchset?
->>>
->> yeah., more dev flags :( but flags were needed for the race conditions
->> when multiple devices where involved in a group, some devices would
->> have completed till pdev create some might not. Some crashes were seen
->> because hif_irq_disable was called for a device in a group but that
->> device was not even at the stage of core register. Will check the
->> possibility to  reduce the flag usage but it seemed necessary for
->> multiple device group clean up.
+> Said NULL pointer dereference happened when an Accesspoint was started
+> with wpa_supplicant -i mlan0 with this config:
 > 
-> I think the core problem here is of mixing enum ath12k_hw_state and enum
-> ath12k_dev_flags, it's just a mess even before this patchset. For
-> example, these flags look like they should be part enum ath12k_hw_state
-> instead:
+> network={
+>         ssid="somessid"
+>         mode=2
+>         frequency=2412
+>         key_mgmt=WPA-PSK WPA-PSK-SHA256
+>         proto=RSN
+>         group=CCMP
+>         pairwise=CCMP
+>         psk="12345678"
+> }
 > 
-> 	ATH12K_FLAG_RECOVERY,
-> 	ATH12K_FLAG_UNREGISTERING,
-> 	ATH12K_FLAG_REGISTERED,
-> 	ATH12K_FLAG_QMI_FAIL,
+> When waiting for the AP to be established, interrupting wpa_supplicant
+> with <ctrl-c> and starting it again this happens:
 > 
-> If we have an enum plus set of flags to handle the actual state then it
-> will become difficult to manage it all. Instead we should just have the
-> enum for tracking the state of the driver.
+> | Unable to handle kernel NULL pointer dereference at virtual address 0000000000000140
+> | Mem abort info:
+> |   ESR = 0x0000000096000004
+> |   EC = 0x25: DABT (current EL), IL = 32 bits
+> |   SET = 0, FnV = 0
+> |   EA = 0, S1PTW = 0
+> |   FSC = 0x04: level 0 translation fault
+> | Data abort info:
+> |   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+> |   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+> |   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+> | user pgtable: 4k pages, 48-bit VAs, pgdp=0000000046d96000
+> | [0000000000000140] pgd=0000000000000000, p4d=0000000000000000
+> | Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
+> | Modules linked in: caam_jr caamhash_desc spidev caamalg_desc crypto_engine authenc libdes mwifiex_sdio
+> +mwifiex crct10dif_ce cdc_acm onboard_usb_hub fsl_imx8_ddr_perf imx8m_ddrc rtc_ds1307 lm75 rtc_snvs
+> +imx_sdma caam imx8mm_thermal spi_imx error imx_cpufreq_dt fuse ip_tables x_tables ipv6
+> | CPU: 0 PID: 8 Comm: kworker/0:1 Not tainted 6.9.0-00007-g937242013fce-dirty #18
+> | Hardware name: somemachine (DT)
+> | Workqueue: events sdio_irq_work
+> | pstate: 00000005 (nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> | pc : mwifiex_get_cfp+0xd8/0x15c [mwifiex]
+> | lr : mwifiex_get_cfp+0x34/0x15c [mwifiex]
+> | sp : ffff8000818b3a70
+> | x29: ffff8000818b3a70 x28: ffff000006bfd8a5 x27: 0000000000000004
+> | x26: 000000000000002c x25: 0000000000001511 x24: 0000000002e86bc9
+> | x23: ffff000006bfd996 x22: 0000000000000004 x21: ffff000007bec000
+> | x20: 000000000000002c x19: 0000000000000000 x18: 0000000000000000
+> | x17: 000000040044ffff x16: 00500072b5503510 x15: ccc283740681e517
+> | x14: 0201000101006d15 x13: 0000000002e8ff43 x12: 002c01000000ffb1
+> | x11: 0100000000000000 x10: 02e8ff43002c0100 x9 : 0000ffb100100157
+> | x8 : ffff000003d20000 x7 : 00000000000002f1 x6 : 00000000ffffe124
+> | x5 : 0000000000000001 x4 : 0000000000000003 x3 : 0000000000000000
+> | x2 : 0000000000000000 x1 : 0001000000011001 x0 : 0000000000000000
+> | Call trace:
+> |  mwifiex_get_cfp+0xd8/0x15c [mwifiex]
+> |  mwifiex_parse_single_response_buf+0x1d0/0x504 [mwifiex]
+> |  mwifiex_handle_event_ext_scan_report+0x19c/0x2f8 [mwifiex]
+> |  mwifiex_process_sta_event+0x298/0xf0c [mwifiex]
+> |  mwifiex_process_event+0x110/0x238 [mwifiex]
+> |  mwifiex_main_process+0x428/0xa44 [mwifiex]
+> |  mwifiex_sdio_interrupt+0x64/0x12c [mwifiex_sdio]
+> |  process_sdio_pending_irqs+0x64/0x1b8
+> |  sdio_irq_work+0x4c/0x7c
+> |  process_one_work+0x148/0x2a0
+> |  worker_thread+0x2fc/0x40c
+> |  kthread+0x110/0x114
+> |  ret_from_fork+0x10/0x20
+> | Code: a94153f3 a8c37bfd d50323bf d65f03c0 (f940a000)
+> | ---[ end trace 0000000000000000 ]---
 > 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> Acked-by: Brian Norris <briannorris@chromium.org>
+> Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-ath12k_hw_state is the driver state representation which is used to 
-indicate whether driver has started or in restarting from mac80211 
-prespective where as ath12k_dev_flags closely related to devices and its 
-q6 states.
+Patch applied to wireless-next.git, thanks.
 
-So, ATH12K_FLAG_RECOVERY, ATH12K_FLAG_QMI_FAIL should be in 
-ath12k_dev_flags because these are specific to Q6 crashes and failure. 
-ATH12K_FLAG_UNREGISTERING is actually used to indicate pci_remove is 
-initiated and we should not process any QMI events but may be naming is 
-creating the confusion. ATH12K_FLAG_REGISTERED flag is used whether to 
-recover or not with the information available in mac80211 to reconfig.
+c145eea2f75f wifi: mwifiex: Do not return unused priv in mwifiex_get_priv_by_id()
 
-With hardware abstraction, it can be like 3 devices (ath12k_base) in one 
-ath12k_hw and with ath12k_hw_states alone we might not be able to 
-handle. Because, say device1 is in recovery, device2 is already till QMI 
-firmware ready after device probing and these two devices are not 
-registered to  mac80211 then we cannot set the ath12k_hw_state as ON/OFF 
-or anything else.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20240703072409.556618-1-s.hauer@pengutronix.de/
 
-Hence, we may require two distinct flags, where one holds the driver 
-abstraction state and other is device states. With grouping complexity 
-would increases as we have to sync between the devices and we require 
-two flags. Please let me know your thoughts.
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
-
-Thanks,
-Harshitha
 
