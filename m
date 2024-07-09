@@ -1,65 +1,60 @@
-Return-Path: <linux-wireless+bounces-10100-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10101-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6454F92B145
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jul 2024 09:36:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFDC392B23D
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jul 2024 10:38:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EAA128251F
-	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jul 2024 07:36:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CB181C2174A
+	for <lists+linux-wireless@lfdr.de>; Tue,  9 Jul 2024 08:38:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25CB713BC30;
-	Tue,  9 Jul 2024 07:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4819A152E12;
+	Tue,  9 Jul 2024 08:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="kubutPiP"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="UN6gnUsz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from nbd.name (nbd.name [46.4.11.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9469A14534C
-	for <linux-wireless@vger.kernel.org>; Tue,  9 Jul 2024 07:35:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8DFF12C481
+	for <linux-wireless@vger.kernel.org>; Tue,  9 Jul 2024 08:38:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720510563; cv=none; b=IRE5roKvu6BIOYYYq6zkS2AIUJCA9QuruXJzfZR5OyXybIS430YMVzgCwFQ9L9l7PDOx7+XxY3oFzL/CLlqI8jhdpEQq3uBL3gkfI7Ly49/SkPkBrSZgpQxhlWkElpojJBW6CCryHC+q6tHRIfxHhRFadzYI4CCx5RT7kDfpX74=
+	t=1720514325; cv=none; b=twQQAbVfyD9p+b9N7/jcZR39zC3njU5AaSlJ+RMejwEQd5SKRnbeN7X0jLs7rHZMLSmuKKRABQVtvcVFY/ZZTlUsrmkmYckXyHBDflXa3tC6uq5PKLaFKGrxsmDSBVmh3f02XBcDObYlpeUc1gtvlwRykwMXMDbnl4oQ/p7BQX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720510563; c=relaxed/simple;
-	bh=AkA4yKvw9Z+PNExFNMH6Alu8digK21EXy6pWT2EbeaA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VuCFb1EGK9AEGL83z/mFGIi5OOBC9IFfdM4XZ/V+0Sy3JAqHVNzRbNZrKmJiJrjMl71fWyKD2aY4uTW6awqd9LfRvP3X7vEn/AamTXED5M0XOdsh6Ex0GktklHfmODLxFR3sV6CW0F8HXICTY3W2Ps0q1Mtz5J9BHO9JGtP80qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=kubutPiP; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4697ZabqE483122, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1720510536; bh=AkA4yKvw9Z+PNExFNMH6Alu8digK21EXy6pWT2EbeaA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=kubutPiPzrdqsHgY09QwTWWL3/sbfMADDKzlrDYxoeKlx5SdDO/dmMBm8Qqn0d7t7
-	 uo7XbnZ43iUG7iwJGKSCLJga6i7gj8LQjDllgKB8u6+AOJsX/YoSe9eEzkTlONk4L2
-	 CXccTel6cNLBl5v2TVTkjWE2yOe/MubSOTGSrDmJngSysknviD1KCajjBYyRd6c1WI
-	 RILVQs9Bi/Iq3FmbdwzxYFl7pj2z5m3yn58wI3GojcMUeitMSl8nN3FnvdAxxk6qWE
-	 qEaZ0fM65XANSoDQ1obJD7QTqozy89YEnF8Jx8j8HlS9NMRF25geemLct25G3Q7HT3
-	 qVhdprRbAt9jQ==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 4697ZabqE483122
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 9 Jul 2024 15:35:36 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 9 Jul 2024 15:35:37 +0800
-Received: from localhost.localhost (172.21.69.104) by RTEXMBS03.realtek.com.tw
- (172.21.6.96) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 9 Jul
- 2024 15:35:36 +0800
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
-To: <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>
-Subject: [PATCH] wifi: mac80211: chanctx emulation set CHANGE_CHANNEL when in_reconfig
-Date: Tue, 9 Jul 2024 15:35:31 +0800
-Message-ID: <20240709073531.30565-1-kevin_yang@realtek.com>
-X-Mailer: git-send-email 2.39.0
+	s=arc-20240116; t=1720514325; c=relaxed/simple;
+	bh=5xKnf9FMlOrb66z9zpMBitDiJ/6q6dXfRMnv2XZYZBo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nsDQURUrcrEgMpu7hUDdSTJbTSIVYd6++PRUHmZgpvwL9RKqYOD5HOEQjHxySYmMTL1aHw7XldZylQyI1u9+Kto471xzh4vHsbvVOS4URZCPgsr59JYlCHc1IFnOgCxIhCzmG8fJhkkeQZA1J4n+3CK450mqMAqa3WZk20wBRNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=UN6gnUsz; arc=none smtp.client-ip=46.4.11.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+	s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=y7waa6tblZzLkaQ3m3AohjYubeQ7lSxJ/bcC4+Sv7pM=; b=UN6gnUszq2B/nUQO5cx1GQDJcE
+	t6WI88OMtJDntbJiw0qm8O5b0JTDAXJVriCM8c0eIZwSx04TktZOXhr4ex4fNrs71TBpinnORevo2
+	lc9imNIQYN66XlGRNIf83g3MD2ccHSu6WZtjqnVM+pvdsjlqCW2gO9X+pboiBYIl7EqE=;
+Received: from p54ae937c.dip0.t-ipconnect.de ([84.174.147.124] helo=localhost.localdomain)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+	(Exim 4.96)
+	(envelope-from <nbd@nbd.name>)
+	id 1sR6Mx-004Ln4-28;
+	Tue, 09 Jul 2024 10:38:39 +0200
+From: Felix Fietkau <nbd@nbd.name>
+To: linux-wireless@vger.kernel.org
+Cc: johannes@sipsolutions.net,
+	quic_adisi@quicinc.com,
+	quic_periyasa@quicinc.com,
+	ath12k@lists.infradead.org
+Subject: [PATCH v5 00/10] cfg80211/mac80211: support defining multiple radios per wiphy
+Date: Tue,  9 Jul 2024 10:38:28 +0200
+Message-ID: <cover.8f108602e7f90e91332f131cc9fa115a669a2bf4.1720514221.git-series.nbd@nbd.name>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -67,40 +62,112 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXH36506.realtek.com.tw (172.21.6.27) To
- RTEXMBS03.realtek.com.tw (172.21.6.96)
-X-KSE-ServerInfo: RTEXMBS03.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
 
-Chanctx emulation didn't info IEEE80211_CONF_CHANGE_CHANNEL to drivers
-during ieee80211_restart_hw (ieee80211_emulate_add_chanctx). It caused
-non-chanctx drivers to not stand on the correct channel after recovery.
-RX then behaved abnormally. Finally, disconnection/reconnection occurred.
+The prerequisite for MLO support in cfg80211/mac80211 is that all the links
+participating in MLO must be from the same wiphy/ieee80211_hw. To meet this
+expectation, some drivers may need to group multiple discrete hardware each
+acting as a link in MLO under single wiphy.
 
-So, set IEEE80211_CONF_CHANGE_CHANNEL when in_reconfig.
+With this change, supported frequencies and interface combinations of each
+individual radio are reported to user space. This allows user space to figure
+out the limitations of what combination of channels can be used concurrently.
 
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
----
- net/mac80211/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Each mac80211 channel context is assigned to a radio based on radio specific
+frequency ranges and interface combinations.
 
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index 7578ea56c12f..85a267bdb3e3 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -148,7 +148,7 @@ static u32 ieee80211_calc_hw_conf_chan(struct ieee80211_local *local,
- 	offchannel_flag ^= local->hw.conf.flags & IEEE80211_CONF_OFFCHANNEL;
- 
- 	/* force it also for scanning, since drivers might config differently */
--	if (offchannel_flag || local->scanning ||
-+	if (offchannel_flag || local->scanning || local->in_reconfig ||
- 	    !cfg80211_chandef_identical(&local->hw.conf.chandef, &chandef)) {
- 		local->hw.conf.chandef = chandef;
- 		changed |= IEEE80211_CONF_CHANGE_CHANNEL;
+Even for non-MLO devices, this improves support for devices capable of
+running on multiple channels at the same time.
+
+This is loosely based on Karthikeyan Periyasamy's series
+"[PATCH 00/13] wifi: Add multi physical hardware iface combination support"
+with some differences:
+
+ - a struct wiphy_radio is defined, which holds the frequency ranges and
+   a full struct ieee80211_iface_combination array
+ - a channel context is explicitly assigned to a radio when created
+ - both global and per-radio interface combination limits are checked
+   and enforced on channel context assignment
+ - improve comments/docs and attributes
+ - add cfg80211 helper for checking radio freq range
+
+Changes since PATCH v4:
+ - fix regression in hwsim eht/mld tests
+
+Changes since PATCH v3:
+ - add documentation note for interface combinations
+ - fix ibss ifcomb check
+ - drop redundant/incorrect lines in mac80211 radio ifcomb code
+
+Changes since PATCH v2:
+ - fix locking annotation for get_radio_mask
+ - fix related rcu access in mac80211
+ - fix nl80211 radio data type docs
+ - remove __counted_by
+ - fix unwinding on netlink attr/nest
+ - consmetic fixes
+ - remove WARN_ON_ONCE in hwsim
+
+Changes since PATCH v1:
+ - add nested flag to newly added nested attributes
+ - make per-radio attributes multi-attr
+ - add __counted_by annotation
+ - remove unnecessary tracing
+ - fix hwsim attribute docs
+ - add hwsim attribute policy
+ - add radio index
+
+Changes since RFC v4:
+ - report the first radio's ifcomb as main ifcomb for legacy compatibility
+ - report the global wiphy ifcomb separately
+ - add mac80211_hwsim support
+
+Changes since RFC v3:
+ - fix __ieee80211_get_radio_mask to return per-vif radio mask
+ - fix params->radio in ieee80211_check_combinations()
+ - fix indentation
+ - pass radio_idx in struct iface_combination_params
+ - improve get_radio_mask callback
+
+Changes since RFC v2:
+ - fix uninitialized variables
+ - fix multiple radios with DFS
+ - add support for per-radio beacon interval checking
+
+Changes since RFC:
+ - replace static per-radio number of channels limit with full ifcomb
+   checks
+ - remove band bitmask in favor of only using freq ranges
+
+Felix Fietkau (10):
+  wifi: nl80211: split helper function from nl80211_put_iface_combinations
+  wifi: cfg80211: add support for advertising multiple radios belonging to a wiphy
+  wifi: cfg80211: extend interface combination check for multi-radio
+  wifi: cfg80211: add helper for checking if a chandef is valid on a radio
+  wifi: mac80211: add support for DFS with multiple radios
+  wifi: mac80211: add radio index to ieee80211_chanctx_conf
+  wifi: mac80211: extend ifcomb check functions for multi-radio
+  wifi: mac80211: move code in ieee80211_link_reserve_chanctx to a helper
+  wifi: mac80211: add wiphy radio assignment and validation
+  wifi: mac80211_hwsim: add support for multi-radio wiphy
+
+ drivers/net/wireless/virtual/mac80211_hwsim.c |  74 +++++--
+ drivers/net/wireless/virtual/mac80211_hwsim.h |   4 +-
+ include/net/cfg80211.h                        |  56 ++++-
+ include/net/mac80211.h                        |   2 +-
+ include/uapi/linux/nl80211.h                  |  65 ++++++-
+ net/mac80211/cfg.c                            |   7 +-
+ net/mac80211/chan.c                           | 210 +++++++++++--------
+ net/mac80211/ibss.c                           |   2 +-
+ net/mac80211/ieee80211_i.h                    |   5 +-
+ net/mac80211/iface.c                          |   2 +-
+ net/mac80211/main.c                           |  50 +++--
+ net/mac80211/util.c                           | 147 ++++++++-----
+ net/wireless/nl80211.c                        | 202 +++++++++++++-----
+ net/wireless/rdev-ops.h                       |  12 +-
+ net/wireless/util.c                           |  68 +++++-
+ 15 files changed, 679 insertions(+), 227 deletions(-)
+
+base-commit: 1b431ba4ef9a760e7643d6fbc53bf522d59650f3
 -- 
-2.39.0
-
+git-series 0.9.1
 
