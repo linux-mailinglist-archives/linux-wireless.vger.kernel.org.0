@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-10161-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10162-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB59792DBAF
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jul 2024 00:11:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6031192DBB3
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jul 2024 00:14:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B2D21C20CB2
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jul 2024 22:11:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C8C91C20D2B
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jul 2024 22:14:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E06A146D7D;
-	Wed, 10 Jul 2024 22:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77F08145FE9;
+	Wed, 10 Jul 2024 22:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gHlaJ4zv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RyR4fu68"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB251465B1
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Jul 2024 22:11:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D162B12CD88
+	for <linux-wireless@vger.kernel.org>; Wed, 10 Jul 2024 22:14:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720649500; cv=none; b=WxKuV2L2gwicIlXIp2Zt57kNKuxcwOR+1MoCOUpM57uWXYc3UginuwaIcquqXiZnGmRwZeV1n0z1Q6UAuP+px88Gn6Mqq2QKks4oeTx99HAbsJ04WZll1rDQGYfCM59dMAAXURyPJtkwKyRaBTv5nZyd6rNd0m2nEJGv3/GOCoE=
+	t=1720649669; cv=none; b=qWxj0FMaN2M6pAlhgD0w7X9KdKfdNaBa/PpxfeI7xeOQbKmwNwzkfvoYELVtGSLLFVohiFeixYWF2IUeWOCjvwzc+Vh+SnahMbjoFalTSQ48AbMoMR8sR4V1PgPFJbohzKOUm/ipO6KaT/MALiif2MlxXNgANGmoN3v9CKXAVyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720649500; c=relaxed/simple;
-	bh=qZ9U8YN+f18JOkRbSH6+hag2OH1UF2tA5ZGm7uwRc1A=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=ft3zSjNMrROimNq2QdoI72GjKekuyTYea0qf9b7i1rn4lwu6zB8P6eNN39olClZUY4l75FWYmNMX2dkn+uSMtg38HGeHNdbdbiflkT2Uydppw8grhKNXuuRTeF1wbApJAF6SlSZS4oqFW65330zxlF82wo8ajJhzTJbbLP/mhJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gHlaJ4zv; arc=none smtp.client-ip=209.85.167.44
+	s=arc-20240116; t=1720649669; c=relaxed/simple;
+	bh=3KqhVyxwfarODejuAfBSn6lHpzJSnk8P9uNoFVgrkL0=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=VbzG4jRLCoYMHQVk4H88ed75RaEANufCdBaGvGzcnswKWJc6rUHO5Kw24WgJUi/DIfRVyV4LMcMVIvjlx1XWrwStKAHu1zwojIQHiAjQiMT89AyjuyK75i+kkDBYQK0TGUctUyXOOfROUTqrKRA6ME/GuBKeG0i0uVobk3bFhQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RyR4fu68; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-52ea7bdde68so281316e87.0
-        for <linux-wireless@vger.kernel.org>; Wed, 10 Jul 2024 15:11:37 -0700 (PDT)
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-42797bcfc77so1380945e9.2
+        for <linux-wireless@vger.kernel.org>; Wed, 10 Jul 2024 15:14:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720649496; x=1721254296; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-language:cc:to:subject:from
+        d=gmail.com; s=20230601; t=1720649666; x=1721254466; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
          :user-agent:mime-version:date:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RaHXMA+Rwsh5qEMFjQRgFo7omOu+wdsZBvUMkE+xSEI=;
-        b=gHlaJ4zvpBh5HyLfV0gNyCaUdH1swZaFCZYxlow0m32DU8C0ooBclOMNIgdOxXha1U
-         nCIVnhsuBd4qqgmrSwtuX1AAStX1zbvYcd6xVDX6F0c6BZiPS5NazRo6TH6xnDeOawUY
-         WNw+plaz2JFoqHn4Cc9nBA9jgdB43hrNZD5q3UYjdrrzgchm+Pv+ptbcXIaWqRsC3CGn
-         eGLuR5kTaekUWL6whvYUNJbreG7v/VDJzjeZn4YH7i9dsk0RN+Qy+In/b3/ets2Xqis1
-         WxiCXjzx2xmR8AkcBvEFRLi7GfplCREfHOjq6Y0V+ta4UTWvJQGJCDdZhKc34oTZTIIj
-         MKVw==
+        bh=UKobFKQOdSn9FZe13P3h5TD4OMdIfr31+3uW9KNIZ9w=;
+        b=RyR4fu68H0sd/qq/wdaWMFR6V5MVwEjJ2qao6U5p0JfHD81sOIsJfm2zByl/95bCK2
+         CuWqjJDXbx5QSENguTJzA835HzjoZZhJJE40gp7NHiNgEf45ascaVp91ysL9bGlbAaLz
+         mkD6V25lGCH4TkPIubLXqFKs1JvJkyo4C5fjWWNZRE9a1vL0tOCFo7dHdwio4xsXeAHD
+         Ix/jQxNs/QmRRMMmu0GD2jIUTIa5zzTckIfJ8pa85oij8m2OjhJhPvdQ3SyabV5ZXWEh
+         Q1ZjG6Ah+5FtkL2m2m/0dwdezXmpxTiGE3YjBELwo8iwqAKFVnce4fJeS/6ZhdSOm+mX
+         Zjig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720649496; x=1721254296;
-        h=content-transfer-encoding:content-language:cc:to:subject:from
+        d=1e100.net; s=20230601; t=1720649666; x=1721254466;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
          :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=RaHXMA+Rwsh5qEMFjQRgFo7omOu+wdsZBvUMkE+xSEI=;
-        b=oxU1lbjnFD+wNm1sKHDP++rXfl4G/b8mhlcQjqjJScrBbx05NFibEAM5isOHr6Fd1v
-         wBzKKeAcogHxav6hQQzu9io9i1roJifg7eh6JteLnXavwDQDDwfGAIi6d50QccUYQpZE
-         Mt0xKAmqK/rYUqkT2/GRMAsQJpNoJWN7YdTOnl71LZ7FIDgQYeYBfkPbV8lGskocRgxB
-         0GxO9IS2ouF3zDLtj+tn7AiP2gF9EXzLPZ2EmnocLpKs6yA9SWVXml2yEGWazuJasWQr
-         PNSRigz/FEkB3JTd++WF0xR/EuRZVQo+w9+6iJQ7ur6dSz1INxNJhfmu55/mhcg7Gj4+
-         jxpg==
-X-Gm-Message-State: AOJu0YxcZl2HnZFI97bx2DRbXYGc6HAjkj2CMsDFcHkYg5RqNMNDwr8p
-	6a/Gjw5zFCim1mSMM7lPsk+wI2b5dceeITKxOP+jqIRqYshAt19lVl+3KA==
-X-Google-Smtp-Source: AGHT+IFaXvuRj7q3RV4AAKvEO0aGJteUYLAT58aG53BZAd0cIdr9/BD8+pr7isgmNXzlx67kgQkuwA==
-X-Received: by 2002:a05:6512:1244:b0:52d:8f80:6444 with SMTP id 2adb3069b0e04-52eb99a194cmr4774516e87.32.1720649495716;
-        Wed, 10 Jul 2024 15:11:35 -0700 (PDT)
+        bh=UKobFKQOdSn9FZe13P3h5TD4OMdIfr31+3uW9KNIZ9w=;
+        b=Ht75xk0YMP+dNkzVFy3+Sq4yJJVCw3rwVS5mh8GlzCZrwEyiFOs+6haFj1DAheRsra
+         dU2qcYLBfo+rcazi0kYSWa4YI08QLCIg2NoMmxuB5E238WtKtMhe4oH9wJ8Oq0m8/r8g
+         uOeKh5s1Mp+rDngFX/7DkXgauL2VnfJlz4FXt7ihubbEj6Nm2l8XmwhintI7WLQioQOq
+         YuWCPu8oSaBCN6kJBNoEKfJPXmLoW19+ulD9IzECrcuB4LvXu2JfeIsnSYqAZpe75hlT
+         /wii+uMGCzQI/HO7UwU/0LjWesK7aCscdMIJiSuWdTIqi1C1gaf0VLcNcXIP2wmjEvLb
+         qkNw==
+X-Gm-Message-State: AOJu0YxGByh03rXnlI+UTtPhLFiFg1wjzb8VLvPKe3PB8jc5yT24ALR0
+	pgTg+NbFp5onDIZe1nOmf8w3Rcgb+gSEZJAR/1vGYd+IpeAbtIZw+hVoRA==
+X-Google-Smtp-Source: AGHT+IECWxxayjEqnh9j/E3PsfXC4VB4ypnyVf+BO47R49fcAE9Rheoj0zKUnYvawdAE1zXpLzeLBw==
+X-Received: by 2002:a05:600c:2149:b0:426:686f:cb51 with SMTP id 5b1f17b1804b1-426708fa9bamr40703285e9.40.1720649665824;
+        Wed, 10 Jul 2024 15:14:25 -0700 (PDT)
 Received: from [192.168.1.50] ([79.119.240.95])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a780a6dc721sm193645266b.53.2024.07.10.15.11.34
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4266f736188sm95496525e9.31.2024.07.10.15.14.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 Jul 2024 15:11:35 -0700 (PDT)
-Message-ID: <77906c62-5674-426f-bde1-1b2a12a0339d@gmail.com>
-Date: Thu, 11 Jul 2024 01:11:33 +0300
+        Wed, 10 Jul 2024 15:14:25 -0700 (PDT)
+Message-ID: <335d7fa1-0ba5-4b86-bba5-f98834ace1f8@gmail.com>
+Date: Thu, 11 Jul 2024 01:14:23 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -74,312 +74,40 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: [PATCH v2] wifi: rtw88: usb: Support USB 3 with RTL8822CU/RTL8822BU
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
- Sascha Hauer <sha@pengutronix.de>
 Content-Language: en-US
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>, Nick Morrow <morrownr@gmail.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH] wifi: rtw88: 8821cu: Remove VID/PID 0bda:c82c
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-The Realtek wifi 5 devices which support USB 3 are weird: when first
-plugged in, they pretend to be USB 2. The driver needs to send some
-commands to the device, which make it disappear and come back as a
-USB 3 device.
+From: Nick Morrow <morrownr@gmail.com>
 
-Implement the required commands in rtw88.
+Remove VID/PID 0bda:c82c as it was inadvertently added to the device
+list in driver rtw8821cu. This VID/PID is for the rtw8822cu device
+and it is already in the appropriate place for that device.
 
-When a USB 3 device is plugged into a USB 2 port, rtw88 will try to
-switch it to USB 3 mode only once. The device will disappear and come
-back still in USB 2 mode, of course.
-
-Some people experience heavy interference in the 2.4 GHz band in
-USB 3 mode, so add a module parameter switch_usb_mode with the
-default value 1 to let people disable the switching.
-
+Cc: stable@vger.kernel.org
+Signed-off-by: Nick Morrow <morrownr@gmail.com>
 Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 ---
-v2:
- - Make the module parameter description clearer.
- - Replace rtw_info with rtw_dbg. Add RTW_DBG_USB flag for this purpose.
- - Delete unnecessary parentheses pointed out by checkpatch.
----
- drivers/net/wireless/realtek/rtw88/debug.h    |  1 +
- drivers/net/wireless/realtek/rtw88/main.h     |  2 +
- drivers/net/wireless/realtek/rtw88/reg.h      | 11 +++
- drivers/net/wireless/realtek/rtw88/rtw8822b.c |  1 +
- drivers/net/wireless/realtek/rtw88/rtw8822b.h |  4 +-
- drivers/net/wireless/realtek/rtw88/rtw8822c.c |  1 +
- drivers/net/wireless/realtek/rtw88/rtw8822c.h | 24 +++---
- drivers/net/wireless/realtek/rtw88/usb.c      | 84 +++++++++++++++++++
- 8 files changed, 116 insertions(+), 12 deletions(-)
+ drivers/net/wireless/realtek/rtw88/rtw8821cu.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/debug.h b/drivers/net/wireless/realtek/rtw88/debug.h
-index eb69006c463e..9a1e0e85a13c 100644
---- a/drivers/net/wireless/realtek/rtw88/debug.h
-+++ b/drivers/net/wireless/realtek/rtw88/debug.h
-@@ -25,6 +25,7 @@ enum rtw_debug_mask {
- 	RTW_DBG_HW_SCAN		= 0x00010000,
- 	RTW_DBG_STATE		= 0x00020000,
- 	RTW_DBG_SDIO		= 0x00040000,
-+	RTW_DBG_USB		= 0x00080000,
- 
- 	RTW_DBG_UNEXP		= 0x80000000,
- 	RTW_DBG_ALL		= 0xffffffff
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index 49a3fd4fb7dc..9d21637cf5d5 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -1785,6 +1785,8 @@ struct rtw_efuse {
- 	bool share_ant;
- 	u8 bt_setting;
- 
-+	u8 usb_mode_switch;
-+
- 	struct {
- 		u8 hci;
- 		u8 bw;
-diff --git a/drivers/net/wireless/realtek/rtw88/reg.h b/drivers/net/wireless/realtek/rtw88/reg.h
-index 02ef9a77316b..e7b24465f549 100644
---- a/drivers/net/wireless/realtek/rtw88/reg.h
-+++ b/drivers/net/wireless/realtek/rtw88/reg.h
-@@ -15,6 +15,7 @@
- #define BIT_WLOCK_1C_B6		BIT(5)
- #define REG_SYS_PW_CTRL		0x0004
- #define BIT_PFM_WOWL		BIT(3)
-+#define BIT_APFM_OFFMAC		BIT(9)
- #define REG_SYS_CLK_CTRL	0x0008
- #define BIT_CPU_CLK_EN		BIT(14)
- 
-@@ -133,6 +134,14 @@
- #define REG_PMC_DBG_CTRL1	0xa8
- #define BITS_PMC_BT_IQK_STS	GENMASK(22, 21)
- 
-+#define REG_PAD_CTRL2		0x00C4
-+#define BIT_RSM_EN_V1		BIT(16)
-+#define BIT_NO_PDN_CHIPOFF_V1	BIT(17)
-+#define BIT_MASK_USB23_SW_MODE_V1	GENMASK(19, 18)
-+#define BIT_USB3_USB2_TRANSITION	BIT(20)
-+#define BIT_USB_MODE_U2		1
-+#define BIT_USB_MODE_U3		2
-+
- #define REG_EFUSE_ACCESS	0x00CF
- #define EFUSE_ACCESS_ON		0x69
- #define EFUSE_ACCESS_OFF	0x00
-@@ -568,6 +577,8 @@
- #define BIT_WL_SECURITY_CLK	BIT(15)
- #define BIT_DDMA_EN		BIT(8)
- 
-+#define REG_SW_MDIO		0x10C0
-+
- #define REG_H2C_PKT_READADDR	0x10D0
- #define REG_H2C_PKT_WRITEADDR	0x10D4
- #define REG_FW_DBG6		0x10F8
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-index 2456ff242818..6edb17aea90e 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-@@ -46,6 +46,7 @@ static int rtw8822b_read_efuse(struct rtw_dev *rtwdev, u8 *log_map)
- 
- 	map = (struct rtw8822b_efuse *)log_map;
- 
-+	efuse->usb_mode_switch = u8_get_bits(map->usb_mode, BIT(7));
- 	efuse->rfe_option = map->rfe_option;
- 	efuse->rf_board_option = map->rf_board_option;
- 	efuse->crystal_cap = map->xtal_k;
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.h b/drivers/net/wireless/realtek/rtw88/rtw8822b.h
-index 2dc3a6660f06..cf85e63966a1 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822b.h
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.h
-@@ -72,7 +72,9 @@ struct rtw8822bs_efuse {
- 
- struct rtw8822b_efuse {
- 	__le16 rtl_id;
--	u8 res0[0x0e];
-+	u8 res0[4];
-+	u8 usb_mode;
-+	u8 res1[0x09];
- 
- 	/* power index for four RF paths */
- 	struct rtw_txpwr_idx txpwr_idx_table[4];
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-index 62376d1cca22..bc807b13e9ce 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -49,6 +49,7 @@ static int rtw8822c_read_efuse(struct rtw_dev *rtwdev, u8 *log_map)
- 
- 	map = (struct rtw8822c_efuse *)log_map;
- 
-+	efuse->usb_mode_switch = u8_get_bits(map->usb_mode, BIT(7));
- 	efuse->rfe_option = map->rfe_option;
- 	efuse->rf_board_option = map->rf_board_option;
- 	efuse->crystal_cap = map->xtal_k & XCAP_MASK;
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.h b/drivers/net/wireless/realtek/rtw88/rtw8822c.h
-index 1bc0e7f5d6bb..e2b383d633cd 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.h
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.h
-@@ -59,16 +59,18 @@ struct rtw8822ce_efuse {
- 
- struct rtw8822c_efuse {
- 	__le16 rtl_id;
--	u8 res0[0x0e];
-+	u8 res0[4];
-+	u8 usb_mode;
-+	u8 res1[0x09];
- 
- 	/* power index for four RF paths */
- 	struct rtw_txpwr_idx txpwr_idx_table[4];
- 
- 	u8 channel_plan;		/* 0xb8 */
- 	u8 xtal_k;
--	u8 res1;
-+	u8 res2;
- 	u8 iqk_lck;
--	u8 res2[5];			/* 0xbc */
-+	u8 res3[5];			/* 0xbc */
- 	u8 rf_board_option;
- 	u8 rf_feature_option;
- 	u8 rf_bt_setting;
-@@ -80,21 +82,21 @@ struct rtw8822c_efuse {
- 	u8 rf_antenna_option;		/* 0xc9 */
- 	u8 rfe_option;
- 	u8 country_code[2];
--	u8 res3[3];
-+	u8 res4[3];
- 	u8 path_a_thermal;		/* 0xd0 */
- 	u8 path_b_thermal;
--	u8 res4[2];
-+	u8 res5[2];
- 	u8 rx_gain_gap_2g_ofdm;
--	u8 res5;
--	u8 rx_gain_gap_2g_cck;
- 	u8 res6;
--	u8 rx_gain_gap_5gl;
-+	u8 rx_gain_gap_2g_cck;
- 	u8 res7;
--	u8 rx_gain_gap_5gm;
-+	u8 rx_gain_gap_5gl;
- 	u8 res8;
--	u8 rx_gain_gap_5gh;
-+	u8 rx_gain_gap_5gm;
- 	u8 res9;
--	u8 res10[0x42];
-+	u8 rx_gain_gap_5gh;
-+	u8 res10;
-+	u8 res11[0x42];
- 	union {
- 		struct rtw8822ce_efuse e;
- 		struct rtw8822cu_efuse u;
-diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
-index a55ca5a24227..251a5726f3ee 100644
---- a/drivers/net/wireless/realtek/rtw88/usb.c
-+++ b/drivers/net/wireless/realtek/rtw88/usb.c
-@@ -14,6 +14,11 @@
- #include "ps.h"
- #include "usb.h"
- 
-+static bool rtw_switch_usb_mode = true;
-+module_param_named(switch_usb_mode, rtw_switch_usb_mode, bool, 0644);
-+MODULE_PARM_DESC(switch_usb_mode,
-+		 "Set to N to disable switching to USB 3 mode to avoid potential interference in the 2.4 GHz band (default: Y)");
-+
- #define RTW_USB_MAX_RXQ_LEN	512
- 
- struct rtw_usb_txcb {
-@@ -841,6 +846,77 @@ static void rtw_usb_intf_deinit(struct rtw_dev *rtwdev,
- 	usb_set_intfdata(intf, NULL);
- }
- 
-+static int rtw_usb_switch_mode_new(struct rtw_dev *rtwdev)
-+{
-+	enum usb_device_speed cur_speed;
-+	u8 id = rtwdev->chip->id;
-+	bool can_switch;
-+	u32 pad_ctrl2;
-+
-+	if (rtw_read8(rtwdev, REG_SYS_CFG2 + 3) == 0x20)
-+		cur_speed = USB_SPEED_SUPER;
-+	else
-+		cur_speed = USB_SPEED_HIGH;
-+
-+	if (cur_speed == USB_SPEED_SUPER)
-+		return 0;
-+
-+	pad_ctrl2 = rtw_read32(rtwdev, REG_PAD_CTRL2);
-+
-+	can_switch = !!(pad_ctrl2 & (BIT_MASK_USB23_SW_MODE_V1 |
-+				     BIT_USB3_USB2_TRANSITION));
-+
-+	if (!can_switch) {
-+		rtw_dbg(rtwdev, RTW_DBG_USB,
-+			"Switching to USB 3 mode unsupported by the chip\n");
-+		return 0;
-+	}
-+
-+	/* At this point cur_speed is USB_SPEED_HIGH. If we already tried
-+	 * to switch don't try again - it's a USB 2 port.
-+	 */
-+	if (u32_get_bits(pad_ctrl2, BIT_MASK_USB23_SW_MODE_V1) == BIT_USB_MODE_U3)
-+		return 0;
-+
-+	/* Enable IO wrapper timeout */
-+	if (id == RTW_CHIP_TYPE_8822B || id == RTW_CHIP_TYPE_8821C)
-+		rtw_write8_clr(rtwdev, REG_SW_MDIO + 3, BIT(0));
-+
-+	u32p_replace_bits(&pad_ctrl2, BIT_USB_MODE_U3, BIT_MASK_USB23_SW_MODE_V1);
-+	pad_ctrl2 |= BIT_RSM_EN_V1;
-+
-+	rtw_write32(rtwdev, REG_PAD_CTRL2, pad_ctrl2);
-+	rtw_write8(rtwdev, REG_PAD_CTRL2 + 1, 4);
-+
-+	rtw_write16_set(rtwdev, REG_SYS_PW_CTRL, BIT_APFM_OFFMAC);
-+	usleep_range(1000, 1001);
-+	rtw_write32_set(rtwdev, REG_PAD_CTRL2, BIT_NO_PDN_CHIPOFF_V1);
-+
-+	return 1;
-+}
-+
-+static int rtw_usb_switch_mode(struct rtw_dev *rtwdev)
-+{
-+	u8 id = rtwdev->chip->id;
-+
-+	if (id != RTW_CHIP_TYPE_8822C && id != RTW_CHIP_TYPE_8822B)
-+		return 0;
-+
-+	if (!rtwdev->efuse.usb_mode_switch) {
-+		rtw_dbg(rtwdev, RTW_DBG_USB,
-+			"Switching to USB 3 mode disabled by chip's efuse\n");
-+		return 0;
-+	}
-+
-+	if (!rtw_switch_usb_mode) {
-+		rtw_dbg(rtwdev, RTW_DBG_USB,
-+			"Switching to USB 3 mode disabled by module parameter\n");
-+		return 0;
-+	}
-+
-+	return rtw_usb_switch_mode_new(rtwdev);
-+}
-+
- int rtw_usb_probe(struct usb_interface *intf, const struct usb_device_id *id)
- {
- 	struct rtw_dev *rtwdev;
-@@ -896,6 +972,14 @@ int rtw_usb_probe(struct usb_interface *intf, const struct usb_device_id *id)
- 		goto err_destroy_rxwq;
- 	}
- 
-+	ret = rtw_usb_switch_mode(rtwdev);
-+	if (ret) {
-+		/* Not a fail, but we do need to skip rtw_register_hw. */
-+		rtw_dbg(rtwdev, RTW_DBG_USB, "switching to USB 3 mode\n");
-+		ret = 0;
-+		goto err_destroy_rxwq;
-+	}
-+
- 	ret = rtw_register_hw(rtwdev, rtwdev->hw);
- 	if (ret) {
- 		rtw_err(rtwdev, "failed to register hw\n");
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821cu.c b/drivers/net/wireless/realtek/rtw88/rtw8821cu.c
+index e2c7d9f87683..a019f4085e73 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821cu.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821cu.c
+@@ -31,8 +31,6 @@ static const struct usb_device_id rtw_8821cu_id_table[] = {
+ 	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xc82b, 0xff, 0xff, 0xff),
+ 	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
+-	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xc82c, 0xff, 0xff, 0xff),
+-	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x331d, 0xff, 0xff, 0xff),
+ 	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* D-Link */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(0x7392, 0xc811, 0xff, 0xff, 0xff),
 -- 
 2.45.2
 
