@@ -1,106 +1,121 @@
-Return-Path: <linux-wireless+bounces-10155-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10156-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0454792D7D7
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jul 2024 19:57:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F35A992D8A4
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jul 2024 20:58:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2B13281794
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jul 2024 17:57:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29A731C21252
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jul 2024 18:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5F619539F;
-	Wed, 10 Jul 2024 17:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CBB719596F;
+	Wed, 10 Jul 2024 18:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DVs7nBHd"
+	dkim=pass (2048-bit key) header.d=toblux-com.20230601.gappssmtp.com header.i=@toblux-com.20230601.gappssmtp.com header.b="L3D8RP3u"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2D3848E
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Jul 2024 17:57:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DCBC6F31C
+	for <linux-wireless@vger.kernel.org>; Wed, 10 Jul 2024 18:58:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720634271; cv=none; b=n39Zey2uDPT1GqC2VEuj3hlbI/C7MT2D8wl49GRPKh5n3AW9Xe5M/xQqoVIfTvbvx/h7KYKOwtyVza2eLe7aSCkkADbxIHsanNlXacVhAJ9+h+t0geTtMKEqhoGxrCJ4YENf7JTnVO637q/yowRNS4dzbImfE79a24O0FFEbA6U=
+	t=1720637921; cv=none; b=DVoOf2d+NANV/WsHyURsRkMff4GZkz4olkFeXe2xwTohT3z2p0vtuF40tbpKO2KKP24eO8A8zVw2Lyfi5k5fhL0A0cj9n0ASRErrercOVA1+KlkZWRTgadD9fz3WZHEyXZxcmbquJClZ8zj0PejHBkBVpsP7bxxcuH/zxpoIiwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720634271; c=relaxed/simple;
-	bh=gdLqjCpDLwxbDF582YXqZlohACs8bz6oUymsKUdbgG4=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=LaULoA8OUMgM4zUbZJmuBjK5woObiQt4CPLqp31sneYPYmIf2KKvzmDJGAcfo6ZgsUEiJyl5rrDJzlmx6+b2c38XRL8oo762sL5JZkS8jQTEke8wWCiGWOMhfffOESWc1+i5jZoJhnUg360VPv0W0JIR6UIUHbGkzNq/q3TOaIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DVs7nBHd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1829C32781;
-	Wed, 10 Jul 2024 17:57:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720634270;
-	bh=gdLqjCpDLwxbDF582YXqZlohACs8bz6oUymsKUdbgG4=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=DVs7nBHddK/GKjqTkSLRYtWLisEIEh3vZZZfKCFpDc0uHXZ7cXVwRNZa9mppcEW92
-	 brpydQZjPolQiKrsmlnMuV1LwOtoaLoQkqkCMlgExgzXCopNfvKuLy//l1ogeuuFSH
-	 +w0S/XfaC7cj5uNawweHZSldVk5pDaHozNkyeM1nlP7/W9qqcUex7qy3soUtCqh4xw
-	 IdcWCG83l1MZmd1FqpcUsts5+fma+OEGPHw5VvxvIdZ/WHgfI7wlZTLFGV/Um7dvkO
-	 81xT7dhBmETe3d57H2UrJ61okbfOGSrN4OazJW2E5n5L+17Tt8ZdDtV+0e4FCy+Dxk
-	 yx5S0RZFG7xiw==
-From: Kalle Valo <kvalo@kernel.org>
-To: "Arnd Bergmann" <arnd@arndb.de>
-Cc: "Kees Cook" <kees@kernel.org>,  ath12k@lists.infradead.org,
-  linux-wireless@vger.kernel.org
-Subject: Re: [PATCH RFC] wifi: ath12k: workaround fortify warnings in
- ath12k_wow_convert_8023_to_80211()
-References: <20240704144341.207317-1-kvalo@kernel.org>
-	<202407041551.1DC8C03D@keescook> <877cdvdgpz.fsf@kernel.org>
-	<202407081226.94B1FB24@keescook>
-	<973f9a20-0807-4302-a286-d3ff6478529f@app.fastmail.com>
-Date: Wed, 10 Jul 2024 20:57:47 +0300
-In-Reply-To: <973f9a20-0807-4302-a286-d3ff6478529f@app.fastmail.com> (Arnd
-	Bergmann's message of "Mon, 08 Jul 2024 21:47:44 +0200")
-Message-ID: <87v81d9lk4.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1720637921; c=relaxed/simple;
+	bh=YrfnOc6wEZCSrEGdlpWnhLi4yoU51F7CZXquQNbd7mM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pdfzDe11A2AvOkEAlmJCJJtsa14wDMRYwT8YUYnwp3OKrTY6gIX+nLfICV2z7anDrKa+lKiX8nqCHDeKK3uKDzHlDsUB85cpgufT/2uuD/+SAP/Y3NgB/86K6bXm71wkRi0pdWno0KaEIWz98ExmNU177cUledj7avae/VEC2IE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toblux.com; spf=none smtp.mailfrom=toblux.com; dkim=pass (2048-bit key) header.d=toblux-com.20230601.gappssmtp.com header.i=@toblux-com.20230601.gappssmtp.com header.b=L3D8RP3u; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toblux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=toblux.com
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-52eafec1e84so168556e87.0
+        for <linux-wireless@vger.kernel.org>; Wed, 10 Jul 2024 11:58:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toblux-com.20230601.gappssmtp.com; s=20230601; t=1720637917; x=1721242717; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JJYMRMHzC37gV1kVGMz9CGrplXBbaWXQ72J7tDcGK1s=;
+        b=L3D8RP3u0VoyUGm3yqFn7yuDW+mhLDiU91HGziccv0SlGbqbZc9Ra5D8jA4mRNknBf
+         qumdy6OndaFiVjGvNtz7SbhOSFGJnNn8GdQa+ya1S1WnxkOMpxfIA353g8ZNWHEOA246
+         iigx8w++6XfMc9eBJXyh5pdt+Nr+BEzUaaWFuNXpNUBDg6gQnzJh96Gfr/t08E1ZxoT3
+         qsGssfTjJ2J50tBq9KApNCSPNWgYxI0XgxY3MkMx27FBVmT6LOrAMbUl/Eu6Z/2ycMye
+         5RsW9fh/K+zp4wiEfMco+R7c586jI/w0UcvxVgZoVMnhfZtpZosEl8MUvEVJkwcevVS3
+         EPKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720637917; x=1721242717;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JJYMRMHzC37gV1kVGMz9CGrplXBbaWXQ72J7tDcGK1s=;
+        b=BZGT5nUheEbu6lsvc5M5ZVfg3sD60huB8xxtQYGx+rRqzCVjHR9R/mzy3ErPfdlMwK
+         ZMw12JlAHoa0jKH0ZnkFQbk6ngdchyykNQgBSCI3m5a4K4HTOrkTqCBgzAIPHGzSLHql
+         fZDp/51604ZNq+zm85it8iElB1y/hsVzAJIjsRpdGvwV+ay/qy3Yvs+nLQHZd5HAD5Hy
+         nteDYiw2Sk6gjO/FvY1jFh2ykdfUOQbj78ZhSwaMlJI94EWJoR1/2n6MNH4270mJApaB
+         GPhiNdxbtiBzNbwI+xt4tFh4XIDHZv9R54JRiHGd4AeQYDOcsybQqz+KEevUTl8TPW5c
+         y0hg==
+X-Gm-Message-State: AOJu0YzSnAatlc54fwn83MZCty3p8vwr1SwjumNlJsr4dbjJfxk5VQam
+	PeAZjPRNjPv8yebqaAZL6wFadaNwDkgCygOVuUh1EL0/CBoIFeoHCHMJv2n43mk=
+X-Google-Smtp-Source: AGHT+IHq1gtV4vdpsCvWVBt/1zvuwCclYwi4LpINzmgObh9B6XyVyb0wwj2eTLHWiRBGvtDkGyfWLA==
+X-Received: by 2002:ac2:5e9c:0:b0:52c:84d1:180e with SMTP id 2adb3069b0e04-52eb99d4fd8mr3107760e87.67.1720637917332;
+        Wed, 10 Jul 2024 11:58:37 -0700 (PDT)
+Received: from fedora.fritz.box (aftr-82-135-80-26.dynamic.mnet-online.de. [82.135.80.26])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4266f741553sm91586145e9.40.2024.07.10.11.58.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Jul 2024 11:58:36 -0700 (PDT)
+From: Thorsten Blum <thorsten.blum@toblux.com>
+To: toke@toke.dk,
+	kvalo@kernel.org
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Thorsten Blum <thorsten.blum@toblux.com>
+Subject: [PATCH] wifi: ath9k: Use swap() to improve ath9k_hw_get_nf_hist_mid()
+Date: Wed, 10 Jul 2024 20:57:44 +0200
+Message-ID: <20240710185743.709742-2-thorsten.blum@toblux.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-"Arnd Bergmann" <arnd@arndb.de> writes:
+Use the swap() macro to simplify the ath9k_hw_get_nf_hist_mid() function
+and improve its readability.
 
-> On Mon, Jul 8, 2024, at 21:31, Kees Cook wrote:
->> On Mon, Jul 08, 2024 at 06:51:52PM +0300, Kalle Valo wrote:
->>
->> I suspect this won't be the only place in the kernel where -Wrestrict
->> will give weird results with GCC 11, and there are still plenty of folks
->> using GCC 11. I think the best option would probably be to version-check
->> GCC to gate the addition of -Wrestrict.
->>
->> Arnd, what do you think? This looks like a more extreme version of
->> commit f9fc1ec28bae ("crypto: drivers - avoid memcpy size warning")
->
-> The f9fc1ec28bae patch was the other way around, it showed up
-> in new compilers but not old ones. I don't think I've seen
-> more gcc-11 -Wrestrict warnings during testing, but I'm currently
-> not set up to do a thorough search. If it's the only one, then
-> Kalle's suggested workaround is probably best, but if there
-> are additional warnings on gcc-11, making the warning depend
-> newer compilers is also fine. 
+Fixes the following Coccinelle/coccicheck warning reported by
+swap.cocci:
 
-Honestly I was hoping that we could disable the warning for GCC 11 :)
+  WARNING opportunity for swap()
 
-I feel bad making the code worse due to a compiler problem. For example,
-Intel's zero day bot doesn't seem to use GCC 11 that much anymore, so it
-might surprise more people than just us ath12k folks. (The bot said
-everything was fine but Johannes saw the warning when the code was
-pulled to wireless-next.)
+Compile-tested only.
 
-> I just don't want to give up the warning for new compilers altogether.
+Signed-off-by: Thorsten Blum <thorsten.blum@toblux.com>
+---
+ drivers/net/wireless/ath/ath9k/calib.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-Me neither. I'm just hoping that we could disable it for GCC 11. But of
-course if you think it's better to add the workaround to ath12k, I can
-submit a proper (non-RFC) patch to do that.
-
+diff --git a/drivers/net/wireless/ath/ath9k/calib.c b/drivers/net/wireless/ath/ath9k/calib.c
+index fb270df75eb2..4b331c85509c 100644
+--- a/drivers/net/wireless/ath/ath9k/calib.c
++++ b/drivers/net/wireless/ath/ath9k/calib.c
+@@ -32,11 +32,8 @@ static int16_t ath9k_hw_get_nf_hist_mid(int16_t *nfCalBuffer)
+ 
+ 	for (i = 0; i < ATH9K_NF_CAL_HIST_MAX - 1; i++) {
+ 		for (j = 1; j < ATH9K_NF_CAL_HIST_MAX - i; j++) {
+-			if (sort[j] > sort[j - 1]) {
+-				nfval = sort[j];
+-				sort[j] = sort[j - 1];
+-				sort[j - 1] = nfval;
+-			}
++			if (sort[j] > sort[j - 1])
++				swap(sort[j], sort[j - 1]);
+ 		}
+ 	}
+ 	nfval = sort[(ATH9K_NF_CAL_HIST_MAX - 1) >> 1];
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.45.2
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
