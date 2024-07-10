@@ -1,136 +1,106 @@
-Return-Path: <linux-wireless+bounces-10154-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10155-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3175B92D6A7
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jul 2024 18:38:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0454792D7D7
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jul 2024 19:57:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A96B5B2C97C
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jul 2024 16:36:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2B13281794
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jul 2024 17:57:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E4C31990D2;
-	Wed, 10 Jul 2024 16:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5F619539F;
+	Wed, 10 Jul 2024 17:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H/z9ozLa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DVs7nBHd"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF351990CF
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Jul 2024 16:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2D3848E
+	for <linux-wireless@vger.kernel.org>; Wed, 10 Jul 2024 17:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720629136; cv=none; b=b7IViD56FdJr/TmQtl4aeLbFJSwM/yAvsEddkNowsZW1zSYjIyo0jsdmfm5uHi2hjZww0dx61Suo208vRLZJdiwjQF5mXvuXqddQ4kSJT+XN72DNiLi725X5U1WiLOUKcK0qXsDiinMAgFRwwDeDlmXui0x3nMl66QSQo9OGFSc=
+	t=1720634271; cv=none; b=n39Zey2uDPT1GqC2VEuj3hlbI/C7MT2D8wl49GRPKh5n3AW9Xe5M/xQqoVIfTvbvx/h7KYKOwtyVza2eLe7aSCkkADbxIHsanNlXacVhAJ9+h+t0geTtMKEqhoGxrCJ4YENf7JTnVO637q/yowRNS4dzbImfE79a24O0FFEbA6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720629136; c=relaxed/simple;
-	bh=hnFP08ghhmLsCPktOQYbAMkrQPAkxrxRGDxqtFHLWac=;
-	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=RXI2bWK7iMsNCJcYMH2bEHxBPWRqqbJZY0cD6NC4eP7RHqAHiRyGIlOqNOeeAv32LOwZIUJmUfsBO4iDCWGvMO21zz40yU2HSU8SdJJ8BukSwhl0DWKzj/0S+9C+Pd1CAG/0NL68y7TFHcG27nx/YAtqhpxom345q+ENrd3dDIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H/z9ozLa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA39AC4AF09;
-	Wed, 10 Jul 2024 16:32:14 +0000 (UTC)
+	s=arc-20240116; t=1720634271; c=relaxed/simple;
+	bh=gdLqjCpDLwxbDF582YXqZlohACs8bz6oUymsKUdbgG4=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=LaULoA8OUMgM4zUbZJmuBjK5woObiQt4CPLqp31sneYPYmIf2KKvzmDJGAcfo6ZgsUEiJyl5rrDJzlmx6+b2c38XRL8oo762sL5JZkS8jQTEke8wWCiGWOMhfffOESWc1+i5jZoJhnUg360VPv0W0JIR6UIUHbGkzNq/q3TOaIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DVs7nBHd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1829C32781;
+	Wed, 10 Jul 2024 17:57:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720629135;
-	bh=hnFP08ghhmLsCPktOQYbAMkrQPAkxrxRGDxqtFHLWac=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=H/z9ozLaJnE23FtzBCAXlGJ5lif8GD9qsSc3lu+FnjV/xmskjTy+S0xpOH40adZPJ
-	 kHonytW6QO0KljhbZequgS3jb3zNszoiSlG8IXcBcUTG6ize6w8ZK3AipWW17IF6qa
-	 9UZoVkT2WLW5En2ngA2RFuC6Vy+0J/+Knte7LaZBOJ2Z8AZJNO4u92VXkEyLKL9HoV
-	 W1Igv+Yky9awZAMZUIjjDfxRS+yat220cSKMXU294aijVHYAFtA15YwmqMMank9iq1
-	 61KI94qNZGvEqrDyMhjK9B10e+t1Xz7ulFW9M1w4V+Y1/KpTBi2ohkYlrG6xN74TDD
-	 unXQOERVoCLEg==
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1720634270;
+	bh=gdLqjCpDLwxbDF582YXqZlohACs8bz6oUymsKUdbgG4=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=DVs7nBHddK/GKjqTkSLRYtWLisEIEh3vZZZfKCFpDc0uHXZ7cXVwRNZa9mppcEW92
+	 brpydQZjPolQiKrsmlnMuV1LwOtoaLoQkqkCMlgExgzXCopNfvKuLy//l1ogeuuFSH
+	 +w0S/XfaC7cj5uNawweHZSldVk5pDaHozNkyeM1nlP7/W9qqcUex7qy3soUtCqh4xw
+	 IdcWCG83l1MZmd1FqpcUsts5+fma+OEGPHw5VvxvIdZ/WHgfI7wlZTLFGV/Um7dvkO
+	 81xT7dhBmETe3d57H2UrJ61okbfOGSrN4OazJW2E5n5L+17Tt8ZdDtV+0e4FCy+Dxk
+	 yx5S0RZFG7xiw==
+From: Kalle Valo <kvalo@kernel.org>
+To: "Arnd Bergmann" <arnd@arndb.de>
+Cc: "Kees Cook" <kees@kernel.org>,  ath12k@lists.infradead.org,
+  linux-wireless@vger.kernel.org
+Subject: Re: [PATCH RFC] wifi: ath12k: workaround fortify warnings in
+ ath12k_wow_convert_8023_to_80211()
+References: <20240704144341.207317-1-kvalo@kernel.org>
+	<202407041551.1DC8C03D@keescook> <877cdvdgpz.fsf@kernel.org>
+	<202407081226.94B1FB24@keescook>
+	<973f9a20-0807-4302-a286-d3ff6478529f@app.fastmail.com>
+Date: Wed, 10 Jul 2024 20:57:47 +0300
+In-Reply-To: <973f9a20-0807-4302-a286-d3ff6478529f@app.fastmail.com> (Arnd
+	Bergmann's message of "Mon, 08 Jul 2024 21:47:44 +0200")
+Message-ID: <87v81d9lk4.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] wifi: ath12k: Support Transmit DE stats
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240704090535.827680-1-quic_rdevanat@quicinc.com>
-References: <20240704090535.827680-1-quic_rdevanat@quicinc.com>
-To: Roopni Devanathan <quic_rdevanat@quicinc.com>
-Cc: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
- Dinesh Karthikeyan
-	<quic_dinek@quicinc.com>, Roopni Devanathan <quic_rdevanat@quicinc.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <172062913268.1204645.7974155470467589425.kvalo@kernel.org>
-Date: Wed, 10 Jul 2024 16:32:14 +0000 (UTC)
+Content-Type: text/plain
 
-Roopni Devanathan <quic_rdevanat@quicinc.com> wrote:
+"Arnd Bergmann" <arnd@arndb.de> writes:
 
-> Add support to request transmit DE stats from firmware through HTT stats
-> type 8. These stats give information about enqueued packets, discarded
-> packets, failed packets and other information such as power, bandwidth
-> information, number of retries, etc.
-> 
-> Sample output:
-> -------------
-> echo 8 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats_type
-> cat /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats
-> HTT_TX_DE_CMN_STATS_TLV:
-> mac_id = 0
-> tcl2fw_entry_count = 0
-> not_to_fw = 0
-> .....
-> 
-> HTT_TX_DE_EAPOL_PACKETS_STATS_TLV:
-> m1_packets = 0
-> m2_packets = 0
-> m3_packets = 0
-> .....
-> 
-> HTT_TX_DE_CLASSIFY_STATS_TLV:
-> arp_packets = 0
-> igmp_packets = 0
-> dhcp_packets = 0
-> .....
-> 
-> HTT_TX_DE_CLASSIFY_FAILED_STATS_TLV:
-> ap_bss_peer_not_found = 0
-> ap_bcast_mcast_no_peer = 0
-> sta_delete_in_progress = 0
-> .....
-> 
-> HTT_TX_DE_CLASSIFY_STATUS_STATS_TLV:
-> eok = 0
-> classify_done = 0
-> lookup_failed = 0
-> .....
-> 
-> HTT_TX_DE_ENQUEUE_PACKETS_STATS_TLV:
-> enqueued_pkts = 0
-> to_tqm = 0
-> to_tqm_bypass = 0
-> 
-> HTT_TX_DE_ENQUEUE_DISCARD_STATS_TLV:
-> discarded_pkts = 0
-> local_frames = 0
-> is_ext_msdu = 0
-> 
-> HTT_TX_DE_COMPL_STATS_TLV:
-> tcl_dummy_frame = 0
-> tqm_dummy_frame = 0
-> tqm_notify_frame = 0
-> .....
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
-> 
-> Signed-off-by: Dinesh Karthikeyan <quic_dinek@quicinc.com>
-> Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
+> On Mon, Jul 8, 2024, at 21:31, Kees Cook wrote:
+>> On Mon, Jul 08, 2024 at 06:51:52PM +0300, Kalle Valo wrote:
+>>
+>> I suspect this won't be the only place in the kernel where -Wrestrict
+>> will give weird results with GCC 11, and there are still plenty of folks
+>> using GCC 11. I think the best option would probably be to version-check
+>> GCC to gate the addition of -Wrestrict.
+>>
+>> Arnd, what do you think? This looks like a more extreme version of
+>> commit f9fc1ec28bae ("crypto: drivers - avoid memcpy size warning")
+>
+> The f9fc1ec28bae patch was the other way around, it showed up
+> in new compilers but not old ones. I don't think I've seen
+> more gcc-11 -Wrestrict warnings during testing, but I'm currently
+> not set up to do a thorough search. If it's the only one, then
+> Kalle's suggested workaround is probably best, but if there
+> are additional warnings on gcc-11, making the warning depend
+> newer compilers is also fine. 
 
-In the future, please include Acked-by from v1 unless there are major changes:
+Honestly I was hoping that we could disable the warning for GCC 11 :)
 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240626042221.3090812-1-quic_rdevanat@quicinc.com/
+I feel bad making the code worse due to a compiler problem. For example,
+Intel's zero day bot doesn't seem to use GCC 11 that much anymore, so it
+might surprise more people than just us ath12k folks. (The bot said
+everything was fine but Johannes saw the warning when the code was
+pulled to wireless-next.)
+
+> I just don't want to give up the warning for new compilers altogether.
+
+Me neither. I'm just hoping that we could disable it for GCC 11. But of
+course if you think it's better to add the workaround to ath12k, I can
+submit a proper (non-RFC) patch to do that.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240704090535.827680-1-quic_rdevanat@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
 
