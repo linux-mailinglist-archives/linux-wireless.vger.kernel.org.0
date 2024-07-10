@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-10153-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10154-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1557592D690
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jul 2024 18:34:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3175B92D6A7
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jul 2024 18:38:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4608C1C20DF0
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jul 2024 16:34:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A96B5B2C97C
+	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jul 2024 16:36:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2EA197A88;
-	Wed, 10 Jul 2024 16:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E4C31990D2;
+	Wed, 10 Jul 2024 16:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fzF+BBSU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H/z9ozLa"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2861F194AF8
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Jul 2024 16:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF351990CF
+	for <linux-wireless@vger.kernel.org>; Wed, 10 Jul 2024 16:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720629050; cv=none; b=bpSKpiO/DNM1fQKTWgpIOywpFg7BSaynDkOLCGe+IVm3GxJm7+RVu7HjYRbAV7Ctzl797k5AlyHj56M2DMMDCv7aUBC33Os0rJ+2FgDKuDiApfd3y7FV05Y3xwzipjwY775Vf4cawySOKyMifFx8UwrM0KPwQaWO0NgVn6PSDGo=
+	t=1720629136; cv=none; b=b7IViD56FdJr/TmQtl4aeLbFJSwM/yAvsEddkNowsZW1zSYjIyo0jsdmfm5uHi2hjZww0dx61Suo208vRLZJdiwjQF5mXvuXqddQ4kSJT+XN72DNiLi725X5U1WiLOUKcK0qXsDiinMAgFRwwDeDlmXui0x3nMl66QSQo9OGFSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720629050; c=relaxed/simple;
-	bh=RIfeF0gvxy9BzoF97850w13AzsyU+nnXz4c10sLPe5Y=;
+	s=arc-20240116; t=1720629136; c=relaxed/simple;
+	bh=hnFP08ghhmLsCPktOQYbAMkrQPAkxrxRGDxqtFHLWac=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=J2odE+T125QclLDyawHYjwzQ3CKdAjVBVZ5AjvrUR8ahCF75/7fG14SJBO1cLnn3isZ4QMuQ08PQx0mBo78xf30+FKj4ejDrQkHCR7bPTy1erY57vK1cwi46yibdCchj1y9sF0RRmQG6nH+BVP1S9YkfRem0c8mBZHea+LvtWi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fzF+BBSU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E59FC4AF07;
-	Wed, 10 Jul 2024 16:30:48 +0000 (UTC)
+	 Cc:Message-ID:Date; b=RXI2bWK7iMsNCJcYMH2bEHxBPWRqqbJZY0cD6NC4eP7RHqAHiRyGIlOqNOeeAv32LOwZIUJmUfsBO4iDCWGvMO21zz40yU2HSU8SdJJ8BukSwhl0DWKzj/0S+9C+Pd1CAG/0NL68y7TFHcG27nx/YAtqhpxom345q+ENrd3dDIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H/z9ozLa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA39AC4AF09;
+	Wed, 10 Jul 2024 16:32:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720629049;
-	bh=RIfeF0gvxy9BzoF97850w13AzsyU+nnXz4c10sLPe5Y=;
+	s=k20201202; t=1720629135;
+	bh=hnFP08ghhmLsCPktOQYbAMkrQPAkxrxRGDxqtFHLWac=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=fzF+BBSUcBn+0kvjD1qkyvPvaN5956DMgQi8GzZ7WJmvdUQ8LoKbnuHJmOubH6Vqu
-	 Qn+eUXdLfUOvqvUo8n79mGPqtPrKuuKDHyQndZDKtPJ9q/rbO3989Moxwje2uNSiI6
-	 M4ky5bevxRBIazm4jqcgJaU7SYo8n7tBtSNepR9vbgf9VSHCSfQxnu9KJOboZgu+Ch
-	 y8zlsasypgHrdppgtxTlKhaK/rF6FhxbHrZLsNk+oxVKeMCA0q9riZmRDe5E9oQvvM
-	 Nw6Xldf3rdomHaocSghetU/Nr73k8NgRzLZtsZbvNZcfYRkYoeFiOjN9xNOGipPktS
-	 k0WekHkoBr9vw==
+	b=H/z9ozLaJnE23FtzBCAXlGJ5lif8GD9qsSc3lu+FnjV/xmskjTy+S0xpOH40adZPJ
+	 kHonytW6QO0KljhbZequgS3jb3zNszoiSlG8IXcBcUTG6ize6w8ZK3AipWW17IF6qa
+	 9UZoVkT2WLW5En2ngA2RFuC6Vy+0J/+Knte7LaZBOJ2Z8AZJNO4u92VXkEyLKL9HoV
+	 W1Igv+Yky9awZAMZUIjjDfxRS+yat220cSKMXU294aijVHYAFtA15YwmqMMank9iq1
+	 61KI94qNZGvEqrDyMhjK9B10e+t1Xz7ulFW9M1w4V+Y1/KpTBi2ohkYlrG6xN74TDD
+	 unXQOERVoCLEg==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -58,8 +58,8 @@ Cc: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
  Dinesh Karthikeyan
 	<quic_dinek@quicinc.com>, Roopni Devanathan <quic_rdevanat@quicinc.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <172062904694.1204645.4938880576628428164.kvalo@kernel.org>
-Date: Wed, 10 Jul 2024 16:30:48 +0000 (UTC)
+Message-ID: <172062913268.1204645.7974155470467589425.kvalo@kernel.org>
+Date: Wed, 10 Jul 2024 16:32:14 +0000 (UTC)
 
 Roopni Devanathan <quic_rdevanat@quicinc.com> wrote:
 
@@ -123,11 +123,10 @@ Roopni Devanathan <quic_rdevanat@quicinc.com> wrote:
 > 
 > Signed-off-by: Dinesh Karthikeyan <quic_dinek@quicinc.com>
 > Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Patch applied to ath-next branch of ath.git, thanks.
+In the future, please include Acked-by from v1 unless there are major changes:
 
-04aee7a84779 wifi: ath12k: Support Transmit DE stats
+https://patchwork.kernel.org/project/linux-wireless/patch/20240626042221.3090812-1-quic_rdevanat@quicinc.com/
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/patch/20240704090535.827680-1-quic_rdevanat@quicinc.com/
