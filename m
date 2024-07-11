@@ -1,114 +1,107 @@
-Return-Path: <linux-wireless+bounces-10162-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10163-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6031192DBB3
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jul 2024 00:14:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34B6C92DD4E
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jul 2024 02:13:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C8C91C20D2B
-	for <lists+linux-wireless@lfdr.de>; Wed, 10 Jul 2024 22:14:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 656411C21788
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jul 2024 00:13:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77F08145FE9;
-	Wed, 10 Jul 2024 22:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 028A7383;
+	Thu, 11 Jul 2024 00:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RyR4fu68"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="CjEsfRXu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D162B12CD88
-	for <linux-wireless@vger.kernel.org>; Wed, 10 Jul 2024 22:14:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174B136C;
+	Thu, 11 Jul 2024 00:13:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720649669; cv=none; b=qWxj0FMaN2M6pAlhgD0w7X9KdKfdNaBa/PpxfeI7xeOQbKmwNwzkfvoYELVtGSLLFVohiFeixYWF2IUeWOCjvwzc+Vh+SnahMbjoFalTSQ48AbMoMR8sR4V1PgPFJbohzKOUm/ipO6KaT/MALiif2MlxXNgANGmoN3v9CKXAVyE=
+	t=1720656796; cv=none; b=lhQEXamC5A8KJAz/C2hUGCnm3r2T7lP81F0KuNBnsSlxhOh1DeKKpG4m0VsV9fvz01Lggz+p9NyTWQjfjyo3NGqhtEKMLuDI0EYqCkNntpqdnmbqpK/3VlIasv1fRvHOwppj6yGuF/RYaFpTogjze/9JUT4Wpy3Wai8OTWl9ikc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720649669; c=relaxed/simple;
-	bh=3KqhVyxwfarODejuAfBSn6lHpzJSnk8P9uNoFVgrkL0=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=VbzG4jRLCoYMHQVk4H88ed75RaEANufCdBaGvGzcnswKWJc6rUHO5Kw24WgJUi/DIfRVyV4LMcMVIvjlx1XWrwStKAHu1zwojIQHiAjQiMT89AyjuyK75i+kkDBYQK0TGUctUyXOOfROUTqrKRA6ME/GuBKeG0i0uVobk3bFhQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RyR4fu68; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-42797bcfc77so1380945e9.2
-        for <linux-wireless@vger.kernel.org>; Wed, 10 Jul 2024 15:14:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720649666; x=1721254466; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UKobFKQOdSn9FZe13P3h5TD4OMdIfr31+3uW9KNIZ9w=;
-        b=RyR4fu68H0sd/qq/wdaWMFR6V5MVwEjJ2qao6U5p0JfHD81sOIsJfm2zByl/95bCK2
-         CuWqjJDXbx5QSENguTJzA835HzjoZZhJJE40gp7NHiNgEf45ascaVp91ysL9bGlbAaLz
-         mkD6V25lGCH4TkPIubLXqFKs1JvJkyo4C5fjWWNZRE9a1vL0tOCFo7dHdwio4xsXeAHD
-         Ix/jQxNs/QmRRMMmu0GD2jIUTIa5zzTckIfJ8pa85oij8m2OjhJhPvdQ3SyabV5ZXWEh
-         Q1ZjG6Ah+5FtkL2m2m/0dwdezXmpxTiGE3YjBELwo8iwqAKFVnce4fJeS/6ZhdSOm+mX
-         Zjig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720649666; x=1721254466;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=UKobFKQOdSn9FZe13P3h5TD4OMdIfr31+3uW9KNIZ9w=;
-        b=Ht75xk0YMP+dNkzVFy3+Sq4yJJVCw3rwVS5mh8GlzCZrwEyiFOs+6haFj1DAheRsra
-         dU2qcYLBfo+rcazi0kYSWa4YI08QLCIg2NoMmxuB5E238WtKtMhe4oH9wJ8Oq0m8/r8g
-         uOeKh5s1Mp+rDngFX/7DkXgauL2VnfJlz4FXt7ihubbEj6Nm2l8XmwhintI7WLQioQOq
-         YuWCPu8oSaBCN6kJBNoEKfJPXmLoW19+ulD9IzECrcuB4LvXu2JfeIsnSYqAZpe75hlT
-         /wii+uMGCzQI/HO7UwU/0LjWesK7aCscdMIJiSuWdTIqi1C1gaf0VLcNcXIP2wmjEvLb
-         qkNw==
-X-Gm-Message-State: AOJu0YxGByh03rXnlI+UTtPhLFiFg1wjzb8VLvPKe3PB8jc5yT24ALR0
-	pgTg+NbFp5onDIZe1nOmf8w3Rcgb+gSEZJAR/1vGYd+IpeAbtIZw+hVoRA==
-X-Google-Smtp-Source: AGHT+IECWxxayjEqnh9j/E3PsfXC4VB4ypnyVf+BO47R49fcAE9Rheoj0zKUnYvawdAE1zXpLzeLBw==
-X-Received: by 2002:a05:600c:2149:b0:426:686f:cb51 with SMTP id 5b1f17b1804b1-426708fa9bamr40703285e9.40.1720649665824;
-        Wed, 10 Jul 2024 15:14:25 -0700 (PDT)
-Received: from [192.168.1.50] ([79.119.240.95])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4266f736188sm95496525e9.31.2024.07.10.15.14.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 Jul 2024 15:14:25 -0700 (PDT)
-Message-ID: <335d7fa1-0ba5-4b86-bba5-f98834ace1f8@gmail.com>
-Date: Thu, 11 Jul 2024 01:14:23 +0300
+	s=arc-20240116; t=1720656796; c=relaxed/simple;
+	bh=UtDt4LUfmyajo8Xa1uLEKN3Hah6yNHzOqbokGMBQnJI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Q593zVVV6FzUnyrwI68ZlTnbJ6tenYTzIu/lkUiz6vaPX3/SMjIaoqatep+gbbElRvEnSJrX/k6fA0GUXk0lnnG7VarbdTKpapXLEgiZXkUpp7uwzI/kOsAZtX5m7ogzHrdmtYxSJlrKg7iOlFzaaOhRvIhF+SNOURBcQGkZgqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=CjEsfRXu; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 46B0D39q82658278, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1720656783; bh=UtDt4LUfmyajo8Xa1uLEKN3Hah6yNHzOqbokGMBQnJI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=CjEsfRXunhcAEzkoFogu9pGD7SXmz7uDkT3Xuj2N8sQg7XTABRMuckeZW8xpCNyoC
+	 ihUaP0htPawVnUqFFI6e+v8LHnWVW5GUdU315woY7yyAsiEMHivkBpVy8XfM8rZB/F
+	 PjP83agtXBpmTZxzTA1zNc0XL+P90bLPBGlad+TDj+bNoCy7/Xe6z5SQaqUDkz1cxi
+	 A2CJByqqNA1oJMACl6aL9WZqiWkLOzK6cDrW8cn+6pPEOcxhYo3g3nqVgWd4/8g+9D
+	 N3aWfvF/FcZwWxGivKIz59idw3dTL9R0yf3Ikux/n16C0mGSxJZiqahl2pJc/R7DFe
+	 DNJ3/nbaDC4xA==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 46B0D39q82658278
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 11 Jul 2024 08:13:03 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 11 Jul 2024 08:13:04 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 11 Jul 2024 08:13:03 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
+ 15.01.2507.035; Thu, 11 Jul 2024 08:13:03 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Thorsten Blum <thorsten.blum@toblux.com>,
+        "kvalo@kernel.org"
+	<kvalo@kernel.org>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH] wifi: rtw89: chan: Use swap() to improve rtw89_swap_sub_entity()
+Thread-Topic: [PATCH] wifi: rtw89: chan: Use swap() to improve
+ rtw89_swap_sub_entity()
+Thread-Index: AQHa0vwSHFsha+UcbkOo1WiJogX7JLHwp9bg
+Date: Thu, 11 Jul 2024 00:13:03 +0000
+Message-ID: <3fb72f1fd0594f8981075ee0f3fbb0f7@realtek.com>
+References: <20240710190426.709964-2-thorsten.blum@toblux.com>
+In-Reply-To: <20240710190426.709964-2-thorsten.blum@toblux.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>, Nick Morrow <morrownr@gmail.com>
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: [PATCH] wifi: rtw88: 8821cu: Remove VID/PID 0bda:c82c
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-From: Nick Morrow <morrownr@gmail.com>
+Thorsten Blum <thorsten.blum@toblux.com> wrote:
+> Use the swap() macro to simplify the rtw89_swap_sub_entity() function
+> and improve its readability. Remove the local variable tmp.
+>=20
+> Fixes the following Coccinelle/coccicheck warning reported by
+> swap.cocci:
+>=20
+>   WARNING opportunity for swap()
+>=20
+> Compile-tested only.
+>=20
+> Signed-off-by: Thorsten Blum <thorsten.blum@toblux.com>
 
-Remove VID/PID 0bda:c82c as it was inadvertently added to the device
-list in driver rtw8821cu. This VID/PID is for the rtw8822cu device
-and it is already in the appropriate place for that device.
+The same patch [1] has been applied.=20
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Nick Morrow <morrownr@gmail.com>
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
----
- drivers/net/wireless/realtek/rtw88/rtw8821cu.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821cu.c b/drivers/net/wireless/realtek/rtw88/rtw8821cu.c
-index e2c7d9f87683..a019f4085e73 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8821cu.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8821cu.c
-@@ -31,8 +31,6 @@ static const struct usb_device_id rtw_8821cu_id_table[] = {
- 	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xc82b, 0xff, 0xff, 0xff),
- 	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
--	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xc82c, 0xff, 0xff, 0xff),
--	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x331d, 0xff, 0xff, 0xff),
- 	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* D-Link */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(0x7392, 0xc811, 0xff, 0xff, 0xff),
--- 
-2.45.2
+[1] https://lore.kernel.org/all/20240529020244.129027-1-jiapeng.chong@linux=
+.alibaba.com/
 
 
