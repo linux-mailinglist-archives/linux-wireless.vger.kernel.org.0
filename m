@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-10176-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10177-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D39792DEF0
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jul 2024 05:52:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EC9792DEF1
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jul 2024 05:52:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 253A5284043
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jul 2024 03:52:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41E461C20D9D
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jul 2024 03:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE2C01A28B;
-	Thu, 11 Jul 2024 03:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98F232E62B;
+	Thu, 11 Jul 2024 03:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QSvwLIQl"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="J3FRjNLj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9780E208A1
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Jul 2024 03:52:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F08249FF
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Jul 2024 03:52:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720669945; cv=none; b=Zb/jow2o1MP/0PIOrP/QlTbMfzPtb2GHpDbZu8Z6/zGL6sDUVX+ONhLX0qMsLk5flp72aWs/5xLxg+U6lqcqEzVcF8upsGzeG4iJg/LNo5FXzGdVrDydy5mFw7i8fQBScRUBTwa+BJr+0AApm0Q1luz+MJE4CwFjd6R4OrVggjk=
+	t=1720669947; cv=none; b=WCRfokwf15pUJ4N+3XKe4bLy0tA4vaqrHi5co6EITkGwzHdpVZlYXpt0ZBAYq5baXe89sgVnscVC6HfDNwzagqbwnOChqbU6dUZQ19Z3Njgee7+rEGuSO75wUfrxIo/cjx73x5P3+b/Ly6LzMD0sdAF6N/RKbRw7U02l3RT5JQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720669945; c=relaxed/simple;
-	bh=HO4O2biPt9xLakRfl1cdBu4dEdkDK2Gk371ejpY03ZY=;
+	s=arc-20240116; t=1720669947; c=relaxed/simple;
+	bh=+j3jafW/v32ZX2QHBRam0M37nY07Gt7qCB7IxUKEFiU=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mcgZnZXQBbNMm7tGdPGlZ8Xn1vwSSaPdQyzHJNWuuacxEpdX7qjuzZQn+djysni7ZJxtjS5NiGM5tww1HWn1lgL34gAZiyVu2f8+2bjYZ4O5hMZKxS98Zi/BhjT1PvpfiU7dNdF+CfXtcaQ6fX/UtASHs+OIgJqpBko3JWSLFMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=QSvwLIQl; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version:Content-Type; b=SU6UMzvap8cr9YlF8G1cRNUJnDlw7RR+YTb1mHz6nj0PiFrFXEhbKXEjq1//S34gN8rsIUJv8yeoghk4Sw745cUFVsd81LXNPNjmNYOZN88hRFTfDwEVqx61fDmwNIp9Px0WvkdV1YTkWjJ4p87sYwkYERarRfUMkLRDAY9KW+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=J3FRjNLj; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46B33TRe026442;
-	Thu, 11 Jul 2024 03:52:19 GMT
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46B33Tik004554;
+	Thu, 11 Jul 2024 03:52:20 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	nbArzBOmwNq6PP8bGfRsMJWEpckWnCeWb4ArkdNJ89M=; b=QSvwLIQlwjM4QJjG
-	qrBPliTHifQzX1CaNphVbDZ8iPjENEIPfkbwCBYKVGgKucvjWObeke6MnxolNFe3
-	kYXg3ppTPqE/lx+ppKP05YrZPH7uY8fcnjurSPDn5dSkd4+2KiNlyuAbMem9wntF
-	vFQdL0fDdMQS5f8q9wbOzYzZLzsB7EKYV9A0X9rX0nrbQ/5B9EdFFIMOpkCIVvQV
-	579PnCuXk+qM2gg1VR+yS5Q0SOugs8wF64GbHvY8mxHG3r83yafi4TlFUQ+cf80R
-	pdETWnSe74gFg+5dgaJKIR36e7g9G3ssx+QziBHCx6f1/8ulQjZLShJDLiEUtGd7
-	ulolZQ==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 406we931ec-1
+	6NlrtOBqocIe78wxl7aeqBmoQdv7MxHer0yOqVNdovg=; b=J3FRjNLjTNLop+/d
+	hYv/cIpu4FdzIDzKHXPDfFJrGYM9fQrACiujP+sOCaYHGB23taejTZSGQNNf2zRG
+	PU8NET0tEnVuIKvdOHMo/MhL14fJ0OEnxP8JvbUEWlWZFyKCT5fKbB+hK2P4Tpu9
+	nas9go8gaVt6TxTz97CFuc+s5tiwsVlvdssFIZpYETtrt75GEuChBFQ3boGl0+Av
+	cjqrtA8QcesGlDkNLiiawaI1T+9KrcpF+DsZi1o3kDmZuNjDRbjA9/WnrpSS20yK
+	OnA+EmWWCH4oHRQdxLVA6c2nS+jjGfgI+lLh2y9C5NP4N6buLJhkGyj40m/Q7tml
+	GK7C6A==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 406y3hjr5q-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Jul 2024 03:52:18 +0000 (GMT)
+	Thu, 11 Jul 2024 03:52:20 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46B3qHNq002502
+	by NALASPPMTA03.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46B3qJQV030450
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Jul 2024 03:52:17 GMT
+	Thu, 11 Jul 2024 03:52:19 GMT
 Received: from hu-adisi-blr.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Wed, 10 Jul 2024 20:52:15 -0700
+ 15.2.1544.9; Wed, 10 Jul 2024 20:52:17 -0700
 From: Aditya Kumar Singh <quic_adisi@quicinc.com>
 To: <johannes@sipsolutions.net>
 CC: <linux-wireless@vger.kernel.org>,
         Aditya Kumar Singh
 	<quic_adisi@quicinc.com>
-Subject: [PATCH v3 4/8] wifi: cfg80211: move DFS related members to links[] in wireless_dev
-Date: Thu, 11 Jul 2024 09:21:43 +0530
-Message-ID: <20240711035147.1896538-5-quic_adisi@quicinc.com>
+Subject: [PATCH v3 5/8] wifi: cfg80211: handle DFS per link
+Date: Thu, 11 Jul 2024 09:21:44 +0530
+Message-ID: <20240711035147.1896538-6-quic_adisi@quicinc.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240711035147.1896538-1-quic_adisi@quicinc.com>
 References: <20240711035147.1896538-1-quic_adisi@quicinc.com>
@@ -79,362 +79,489 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: KhV6Fm9riVhvCW6HdxQtY4_uoXf9oKHA
-X-Proofpoint-GUID: KhV6Fm9riVhvCW6HdxQtY4_uoXf9oKHA
+X-Proofpoint-ORIG-GUID: 9EoqiC6dqz0RM8zmPCMptxDff5gmpgtP
+X-Proofpoint-GUID: 9EoqiC6dqz0RM8zmPCMptxDff5gmpgtP
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-07-10_20,2024-07-10_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 impostorscore=0
- bulkscore=0 spamscore=0 suspectscore=0 lowpriorityscore=0 phishscore=0
- priorityscore=1501 mlxlogscore=999 malwarescore=0 mlxscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2406140001
- definitions=main-2407110024
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ spamscore=0 adultscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0
+ clxscore=1015 mlxlogscore=999 impostorscore=0 phishscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2407110024
 
-A few members related to DFS handling are currently under per wireless
-device data structure. However, in order to support DFS with MLO, there is
-a need to have them on a per-link manner.
+Currently, during starting a radar detection, no link id information is
+parsed and passed down. In order to support starting radar detection
+during Multi Link Operation, it is required to pass link id as well.
 
-Hence, as a preliminary step, move members cac_started, cac_start_time
-and cac_time_ms to be on a per-link basis.
+Add changes to first parse and then pass link id in the start radar
+detection path.
 
-Since currently, link ID is not known at all places, use default value of
-0 for now.
+Additionally, update notification APIs to allow drivers/mac80211 to
+pass the link ID.
+
+However, everything is handled at link 0 only until all API's are ready to
+handle it per link.
 
 Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
 ---
- drivers/net/wireless/marvell/mwifiex/11h.c      |  4 ++--
- drivers/net/wireless/marvell/mwifiex/cfg80211.c |  4 ++--
- drivers/net/wireless/quantenna/qtnfmac/event.c  |  6 +++---
- include/net/cfg80211.h                          | 17 +++++++++--------
- net/mac80211/cfg.c                              |  8 ++++----
- net/mac80211/iface.c                            |  2 +-
- net/mac80211/mlme.c                             |  2 +-
- net/mac80211/scan.c                             |  2 +-
- net/mac80211/util.c                             |  2 +-
- net/wireless/ibss.c                             |  2 +-
- net/wireless/mesh.c                             |  2 +-
- net/wireless/mlme.c                             | 11 ++++++-----
- net/wireless/nl80211.c                          | 10 +++++-----
- net/wireless/reg.c                              |  2 +-
- 14 files changed, 38 insertions(+), 36 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/11h.c    |  7 +++--
+ .../net/wireless/marvell/mwifiex/cfg80211.c   |  2 +-
+ .../net/wireless/quantenna/qtnfmac/cfg80211.c |  2 +-
+ .../net/wireless/quantenna/qtnfmac/event.c    |  6 ++--
+ include/net/cfg80211.h                        |  8 +++--
+ net/mac80211/cfg.c                            |  6 ++--
+ net/mac80211/iface.c                          |  2 +-
+ net/mac80211/mlme.c                           |  2 +-
+ net/mac80211/util.c                           |  2 +-
+ net/wireless/mlme.c                           |  9 +++---
+ net/wireless/nl80211.c                        | 24 +++++++++++---
+ net/wireless/rdev-ops.h                       | 13 ++++----
+ net/wireless/reg.c                            | 19 +++++++-----
+ net/wireless/trace.h                          | 31 ++++++++++++-------
+ 14 files changed, 82 insertions(+), 51 deletions(-)
 
 diff --git a/drivers/net/wireless/marvell/mwifiex/11h.c b/drivers/net/wireless/marvell/mwifiex/11h.c
-index b90f922f1cdc..fb2cad096758 100644
+index fb2cad096758..032b93a41d99 100644
 --- a/drivers/net/wireless/marvell/mwifiex/11h.c
 +++ b/drivers/net/wireless/marvell/mwifiex/11h.c
-@@ -117,7 +117,7 @@ void mwifiex_dfs_cac_work_queue(struct work_struct *work)
- 				     dfs_cac_work);
- 
- 	chandef = priv->dfs_chandef;
--	if (priv->wdev.cac_started) {
-+	if (priv->wdev.links[0].cac_started) {
- 		mwifiex_dbg(priv->adapter, MSG,
+@@ -122,7 +122,7 @@ void mwifiex_dfs_cac_work_queue(struct work_struct *work)
  			    "CAC timer finished; No radar detected\n");
  		cfg80211_cac_event(priv->netdev, &chandef,
-@@ -174,7 +174,7 @@ int mwifiex_stop_radar_detection(struct mwifiex_private *priv,
-  */
- void mwifiex_abort_cac(struct mwifiex_private *priv)
- {
--	if (priv->wdev.cac_started) {
-+	if (priv->wdev.links[0].cac_started) {
- 		if (mwifiex_stop_radar_detection(priv, &priv->dfs_chandef))
- 			mwifiex_dbg(priv->adapter, ERROR,
- 				    "failed to stop CAC in FW\n");
-diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-index 155eb0fab12a..3880fe7384e1 100644
---- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-@@ -1880,7 +1880,7 @@ mwifiex_cfg80211_del_station(struct wiphy *wiphy, struct net_device *dev,
- 	struct mwifiex_sta_node *sta_node;
- 	u8 deauth_mac[ETH_ALEN];
- 
--	if (!priv->bss_started && priv->wdev.cac_started) {
-+	if (!priv->bss_started && priv->wdev.links[0].cac_started) {
- 		mwifiex_dbg(priv->adapter, INFO, "%s: abort CAC!\n", __func__);
- 		mwifiex_abort_cac(priv);
- 	}
-@@ -3978,7 +3978,7 @@ mwifiex_cfg80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
- 		return -EBUSY;
- 	}
- 
--	if (priv->wdev.cac_started)
-+	if (priv->wdev.links[0].cac_started)
- 		return -EBUSY;
- 
- 	if (cfg80211_chandef_identical(&params->chandef,
-diff --git a/drivers/net/wireless/quantenna/qtnfmac/event.c b/drivers/net/wireless/quantenna/qtnfmac/event.c
-index 76b07db284f8..8bd1e14e5de9 100644
---- a/drivers/net/wireless/quantenna/qtnfmac/event.c
-+++ b/drivers/net/wireless/quantenna/qtnfmac/event.c
-@@ -520,21 +520,21 @@ static int qtnf_event_handle_radar(struct qtnf_vif *vif,
- 		cfg80211_radar_event(wiphy, &chandef, GFP_KERNEL);
- 		break;
- 	case QLINK_RADAR_CAC_FINISHED:
--		if (!vif->wdev.cac_started)
-+		if (!vif->wdev.links[0].cac_started)
- 			break;
- 
- 		cfg80211_cac_event(vif->netdev, &chandef,
- 				   NL80211_RADAR_CAC_FINISHED, GFP_KERNEL);
- 		break;
- 	case QLINK_RADAR_CAC_ABORTED:
--		if (!vif->wdev.cac_started)
-+		if (!vif->wdev.links[0].cac_started)
- 			break;
- 
- 		cfg80211_cac_event(vif->netdev, &chandef,
- 				   NL80211_RADAR_CAC_ABORTED, GFP_KERNEL);
- 		break;
- 	case QLINK_RADAR_CAC_STARTED:
--		if (vif->wdev.cac_started)
-+		if (vif->wdev.links[0].cac_started)
- 			break;
- 
- 		if (!wiphy_ext_feature_isset(wiphy,
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 192d72c8b465..727a94a6b7c3 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -6194,9 +6194,6 @@ enum ieee80211_ap_reg_power {
-  * @address: The address for this device, valid only if @netdev is %NULL
-  * @is_running: true if this is a non-netdev device that has been started, e.g.
-  *	the P2P Device.
-- * @cac_started: true if DFS channel availability check has been started
-- * @cac_start_time: timestamp (jiffies) when the dfs state was entered.
-- * @cac_time_ms: CAC time in ms
-  * @ps: powersave mode is enabled
-  * @ps_timeout: dynamic powersave timeout
-  * @ap_unexpected_nlportid: (private) netlink port ID of application
-@@ -6220,6 +6217,11 @@ enum ieee80211_ap_reg_power {
-  *	unprotected beacon report
-  * @links: array of %IEEE80211_MLD_MAX_NUM_LINKS elements containing @addr
-  *	@ap and @client for each link
-+ * @links[].cac_started: true if DFS channel availability check has been
-+ *	started
-+ * @links[].cac_start_time: timestamp (jiffies) when the dfs state was
-+ *	entered.
-+ * @links[].cac_time_ms: CAC time in ms
-  * @valid_links: bitmap describing what elements of @links are valid
-  */
- struct wireless_dev {
-@@ -6261,11 +6263,6 @@ struct wireless_dev {
- 	u32 owner_nlportid;
- 	bool nl_owner_dead;
- 
--	/* FIXME: need to rework radar detection for MLO */
--	bool cac_started;
--	unsigned long cac_start_time;
--	unsigned int cac_time_ms;
--
- #ifdef CONFIG_CFG80211_WEXT
- 	/* wext data */
- 	struct {
-@@ -6332,6 +6329,10 @@ struct wireless_dev {
- 				struct cfg80211_internal_bss *current_bss;
- 			} client;
- 		};
-+
-+		bool cac_started;
-+		unsigned long cac_start_time;
-+		unsigned int cac_time_ms;
- 	} links[IEEE80211_MLD_MAX_NUM_LINKS];
- 	u16 valid_links;
- };
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 363dc33103d6..79590afbf200 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1662,7 +1662,7 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev,
- 	ieee80211_link_info_change_notify(sdata, link,
- 					  BSS_CHANGED_BEACON_ENABLED);
- 
--	if (sdata->wdev.cac_started) {
-+	if (sdata->wdev.links[0].cac_started) {
- 		chandef = link_conf->chanreq.oper;
- 		wiphy_delayed_work_cancel(wiphy, &link->dfs_cac_timer_work);
- 		cfg80211_cac_event(sdata->dev, &chandef,
-@@ -3498,9 +3498,9 @@ static void ieee80211_end_cac(struct wiphy *wiphy,
- 		wiphy_delayed_work_cancel(wiphy,
- 					  &sdata->deflink.dfs_cac_timer_work);
- 
--		if (sdata->wdev.cac_started) {
-+		if (sdata->wdev.links[0].cac_started) {
- 			ieee80211_link_release_channel(&sdata->deflink);
--			sdata->wdev.cac_started = false;
-+			sdata->wdev.links[0].cac_started = false;
- 		}
+ 				   NL80211_RADAR_CAC_FINISHED,
+-				   GFP_KERNEL);
++				   GFP_KERNEL, 0);
  	}
  }
-@@ -3955,7 +3955,7 @@ __ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
- 	if (!list_empty(&local->roc_list) || local->scanning)
- 		return -EBUSY;
  
--	if (sdata->wdev.cac_started)
-+	if (sdata->wdev.links[0].cac_started)
- 		return -EBUSY;
+@@ -182,7 +182,8 @@ void mwifiex_abort_cac(struct mwifiex_private *priv)
+ 			    "Aborting delayed work for CAC.\n");
+ 		cancel_delayed_work_sync(&priv->dfs_cac_work);
+ 		cfg80211_cac_event(priv->netdev, &priv->dfs_chandef,
+-				   NL80211_RADAR_CAC_ABORTED, GFP_KERNEL);
++				   NL80211_RADAR_CAC_ABORTED, GFP_KERNEL,
++				   0);
+ 	}
+ }
  
- 	if (WARN_ON(link_id >= IEEE80211_MLD_MAX_NUM_LINKS))
+@@ -221,7 +222,7 @@ int mwifiex_11h_handle_chanrpt_ready(struct mwifiex_private *priv,
+ 				cfg80211_cac_event(priv->netdev,
+ 						   &priv->dfs_chandef,
+ 						   NL80211_RADAR_DETECTED,
+-						   GFP_KERNEL);
++						   GFP_KERNEL, 0);
+ 			}
+ 			break;
+ 		default:
+diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+index 3880fe7384e1..46a83bdf4a81 100644
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -4145,7 +4145,7 @@ static int
+ mwifiex_cfg80211_start_radar_detection(struct wiphy *wiphy,
+ 				       struct net_device *dev,
+ 				       struct cfg80211_chan_def *chandef,
+-				       u32 cac_time_ms)
++				       u32 cac_time_ms, int link_id)
+ {
+ 	struct mwifiex_private *priv = mwifiex_netdev_get_priv(dev);
+ 	struct mwifiex_radar_params radar_params;
+diff --git a/drivers/net/wireless/quantenna/qtnfmac/cfg80211.c b/drivers/net/wireless/quantenna/qtnfmac/cfg80211.c
+index 663d77770fce..8b97accf6638 100644
+--- a/drivers/net/wireless/quantenna/qtnfmac/cfg80211.c
++++ b/drivers/net/wireless/quantenna/qtnfmac/cfg80211.c
+@@ -837,7 +837,7 @@ static int qtnf_channel_switch(struct wiphy *wiphy, struct net_device *dev,
+ static int qtnf_start_radar_detection(struct wiphy *wiphy,
+ 				      struct net_device *ndev,
+ 				      struct cfg80211_chan_def *chandef,
+-				      u32 cac_time_ms)
++				      u32 cac_time_ms, int link_id)
+ {
+ 	struct qtnf_vif *vif = qtnf_netdev_get_priv(ndev);
+ 	int ret;
+diff --git a/drivers/net/wireless/quantenna/qtnfmac/event.c b/drivers/net/wireless/quantenna/qtnfmac/event.c
+index 8bd1e14e5de9..71840f41b73c 100644
+--- a/drivers/net/wireless/quantenna/qtnfmac/event.c
++++ b/drivers/net/wireless/quantenna/qtnfmac/event.c
+@@ -524,14 +524,14 @@ static int qtnf_event_handle_radar(struct qtnf_vif *vif,
+ 			break;
+ 
+ 		cfg80211_cac_event(vif->netdev, &chandef,
+-				   NL80211_RADAR_CAC_FINISHED, GFP_KERNEL);
++				   NL80211_RADAR_CAC_FINISHED, GFP_KERNEL, 0);
+ 		break;
+ 	case QLINK_RADAR_CAC_ABORTED:
+ 		if (!vif->wdev.links[0].cac_started)
+ 			break;
+ 
+ 		cfg80211_cac_event(vif->netdev, &chandef,
+-				   NL80211_RADAR_CAC_ABORTED, GFP_KERNEL);
++				   NL80211_RADAR_CAC_ABORTED, GFP_KERNEL, 0);
+ 		break;
+ 	case QLINK_RADAR_CAC_STARTED:
+ 		if (vif->wdev.links[0].cac_started)
+@@ -542,7 +542,7 @@ static int qtnf_event_handle_radar(struct qtnf_vif *vif,
+ 			break;
+ 
+ 		cfg80211_cac_event(vif->netdev, &chandef,
+-				   NL80211_RADAR_CAC_STARTED, GFP_KERNEL);
++				   NL80211_RADAR_CAC_STARTED, GFP_KERNEL, 0);
+ 		break;
+ 	default:
+ 		pr_warn("%s: unhandled radar event %u\n",
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 727a94a6b7c3..efdea667cb92 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -4837,9 +4837,9 @@ struct cfg80211_ops {
+ 	int	(*start_radar_detection)(struct wiphy *wiphy,
+ 					 struct net_device *dev,
+ 					 struct cfg80211_chan_def *chandef,
+-					 u32 cac_time_ms);
++					 u32 cac_time_ms, int link_id);
+ 	void	(*end_cac)(struct wiphy *wiphy,
+-				struct net_device *dev);
++			   struct net_device *dev, unsigned int link_id);
+ 	int	(*update_ft_ies)(struct wiphy *wiphy, struct net_device *dev,
+ 				 struct cfg80211_update_ft_ies_params *ftie);
+ 	int	(*crit_proto_start)(struct wiphy *wiphy,
+@@ -8741,6 +8741,7 @@ void cfg80211_sta_opmode_change_notify(struct net_device *dev, const u8 *mac,
+  * @chandef: chandef for the current channel
+  * @event: type of event
+  * @gfp: context flags
++ * @link_id: valid link_id for MLO operation or 0 otherwise.
+  *
+  * This function is called when a Channel availability check (CAC) is finished
+  * or aborted. This must be called to notify the completion of a CAC process,
+@@ -8748,7 +8749,8 @@ void cfg80211_sta_opmode_change_notify(struct net_device *dev, const u8 *mac,
+  */
+ void cfg80211_cac_event(struct net_device *netdev,
+ 			const struct cfg80211_chan_def *chandef,
+-			enum nl80211_radar_event event, gfp_t gfp);
++			enum nl80211_radar_event event, gfp_t gfp,
++			unsigned int link_id);
+ 
+ /**
+  * cfg80211_background_cac_abort - Channel Availability Check offchan abort event
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 79590afbf200..57539e03d7d7 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1667,7 +1667,7 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev,
+ 		wiphy_delayed_work_cancel(wiphy, &link->dfs_cac_timer_work);
+ 		cfg80211_cac_event(sdata->dev, &chandef,
+ 				   NL80211_RADAR_CAC_ABORTED,
+-				   GFP_KERNEL);
++				   GFP_KERNEL, 0);
+ 	}
+ 
+ 	drv_stop_ap(sdata->local, sdata, link_conf);
+@@ -3459,7 +3459,7 @@ static int ieee80211_set_bitrate_mask(struct wiphy *wiphy,
+ static int ieee80211_start_radar_detection(struct wiphy *wiphy,
+ 					   struct net_device *dev,
+ 					   struct cfg80211_chan_def *chandef,
+-					   u32 cac_time_ms)
++					   u32 cac_time_ms, int link_id)
+ {
+ 	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
+ 	struct ieee80211_chan_req chanreq = { .oper = *chandef };
+@@ -3487,7 +3487,7 @@ static int ieee80211_start_radar_detection(struct wiphy *wiphy,
+ }
+ 
+ static void ieee80211_end_cac(struct wiphy *wiphy,
+-			      struct net_device *dev)
++			      struct net_device *dev, unsigned int link_id)
+ {
+ 	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
+ 	struct ieee80211_local *local = sdata->local;
 diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 7bb71ac52277..bdaf8e215965 100644
+index bdaf8e215965..e074de893ed6 100644
 --- a/net/mac80211/iface.c
 +++ b/net/mac80211/iface.c
-@@ -552,7 +552,7 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
- 	wiphy_delayed_work_cancel(local->hw.wiphy,
- 				  &sdata->deflink.dfs_cac_timer_work);
- 
--	if (sdata->wdev.cac_started) {
-+	if (sdata->wdev.links[0].cac_started) {
- 		chandef = sdata->vif.bss_conf.chanreq.oper;
- 		WARN_ON(local->suspended);
+@@ -558,7 +558,7 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
  		ieee80211_link_release_channel(&sdata->deflink);
+ 		cfg80211_cac_event(sdata->dev, &chandef,
+ 				   NL80211_RADAR_CAC_ABORTED,
+-				   GFP_KERNEL);
++				   GFP_KERNEL, 0);
+ 	}
+ 
+ 	if (sdata->vif.type == NL80211_IFTYPE_AP) {
 diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 5b83e7b5d664..2258858f7500 100644
+index 2258858f7500..2c7a3dc867e2 100644
 --- a/net/mac80211/mlme.c
 +++ b/net/mac80211/mlme.c
-@@ -3039,7 +3039,7 @@ void ieee80211_dfs_cac_timer_work(struct wiphy *wiphy, struct wiphy_work *work)
- 
- 	lockdep_assert_wiphy(sdata->local->hw.wiphy);
- 
--	if (sdata->wdev.cac_started) {
-+	if (sdata->wdev.links[0].cac_started) {
+@@ -3043,7 +3043,7 @@ void ieee80211_dfs_cac_timer_work(struct wiphy *wiphy, struct wiphy_work *work)
  		ieee80211_link_release_channel(link);
  		cfg80211_cac_event(sdata->dev, &chandef,
  				   NL80211_RADAR_CAC_FINISHED,
-diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
-index b5f2df61c7f6..7d8e7af11029 100644
---- a/net/mac80211/scan.c
-+++ b/net/mac80211/scan.c
-@@ -585,7 +585,7 @@ static bool __ieee80211_can_leave_ch(struct ieee80211_sub_if_data *sdata)
- 		return false;
- 
- 	list_for_each_entry(sdata_iter, &local->interfaces, list) {
--		if (sdata_iter->wdev.cac_started)
-+		if (sdata_iter->wdev.links[0].cac_started)
- 			return false;
+-				   GFP_KERNEL);
++				   GFP_KERNEL, 0);
  	}
+ }
  
 diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index 77d1e44279d0..424d8d6f3824 100644
+index 424d8d6f3824..5996ea728096 100644
 --- a/net/mac80211/util.c
 +++ b/net/mac80211/util.c
-@@ -3462,7 +3462,7 @@ void ieee80211_dfs_cac_cancel(struct ieee80211_local *local)
- 		wiphy_delayed_work_cancel(local->hw.wiphy,
- 					  &sdata->deflink.dfs_cac_timer_work);
- 
--		if (sdata->wdev.cac_started) {
-+		if (sdata->wdev.links[0].cac_started) {
- 			chandef = sdata->vif.bss_conf.chanreq.oper;
- 			ieee80211_link_release_channel(&sdata->deflink);
+@@ -3468,7 +3468,7 @@ void ieee80211_dfs_cac_cancel(struct ieee80211_local *local)
  			cfg80211_cac_event(sdata->dev,
-diff --git a/net/wireless/ibss.c b/net/wireless/ibss.c
-index 34e5acff3935..1e3ed29f7cfc 100644
---- a/net/wireless/ibss.c
-+++ b/net/wireless/ibss.c
-@@ -94,7 +94,7 @@ int __cfg80211_join_ibss(struct cfg80211_registered_device *rdev,
- 
- 	lockdep_assert_held(&rdev->wiphy.mtx);
- 
--	if (wdev->cac_started)
-+	if (wdev->links[0].cac_started)
- 		return -EBUSY;
- 
- 	if (wdev->u.ibss.ssid_len)
-diff --git a/net/wireless/mesh.c b/net/wireless/mesh.c
-index aaca65b66af4..2c6654075ca9 100644
---- a/net/wireless/mesh.c
-+++ b/net/wireless/mesh.c
-@@ -127,7 +127,7 @@ int __cfg80211_join_mesh(struct cfg80211_registered_device *rdev,
- 	if (!rdev->ops->join_mesh)
- 		return -EOPNOTSUPP;
- 
--	if (wdev->cac_started)
-+	if (wdev->links[0].cac_started)
- 		return -EBUSY;
- 
- 	if (!setup->chandef.chan) {
+ 					   &chandef,
+ 					   NL80211_RADAR_CAC_ABORTED,
+-					   GFP_KERNEL);
++					   GFP_KERNEL, 0);
+ 		}
+ 	}
+ }
 diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
-index 4052041a19ea..fddd6a62b942 100644
+index fddd6a62b942..115c8cd28aaf 100644
 --- a/net/wireless/mlme.c
 +++ b/net/wireless/mlme.c
-@@ -1123,13 +1123,14 @@ void cfg80211_cac_event(struct net_device *netdev,
+@@ -1110,18 +1110,19 @@ EXPORT_SYMBOL(__cfg80211_radar_event);
  
- 	trace_cfg80211_cac_event(netdev, event);
+ void cfg80211_cac_event(struct net_device *netdev,
+ 			const struct cfg80211_chan_def *chandef,
+-			enum nl80211_radar_event event, gfp_t gfp)
++			enum nl80211_radar_event event, gfp_t gfp,
++			unsigned int link_id)
+ {
+ 	struct wireless_dev *wdev = netdev->ieee80211_ptr;
+ 	struct wiphy *wiphy = wdev->wiphy;
+ 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
+ 	unsigned long timeout;
  
--	if (WARN_ON(!wdev->cac_started && event != NL80211_RADAR_CAC_STARTED))
-+	if (WARN_ON(!wdev->links[0].cac_started &&
-+		    event != NL80211_RADAR_CAC_STARTED))
+-	/* not yet supported */
+-	if (wdev->valid_links)
++	if (WARN_ON(wdev->valid_links &&
++		    !(wdev->valid_links & BIT(link_id))))
  		return;
  
- 	switch (event) {
- 	case NL80211_RADAR_CAC_FINISHED:
--		timeout = wdev->cac_start_time +
--			  msecs_to_jiffies(wdev->cac_time_ms);
-+		timeout = wdev->links[0].cac_start_time +
-+			  msecs_to_jiffies(wdev->links[0].cac_time_ms);
- 		WARN_ON(!time_after_eq(jiffies, timeout));
- 		cfg80211_set_dfs_state(wiphy, chandef, NL80211_DFS_AVAILABLE);
- 		memcpy(&rdev->cac_done_chandef, chandef,
-@@ -1138,10 +1139,10 @@ void cfg80211_cac_event(struct net_device *netdev,
- 		cfg80211_sched_dfs_chan_update(rdev);
- 		fallthrough;
- 	case NL80211_RADAR_CAC_ABORTED:
--		wdev->cac_started = false;
-+		wdev->links[0].cac_started = false;
- 		break;
- 	case NL80211_RADAR_CAC_STARTED:
--		wdev->cac_started = true;
-+		wdev->links[0].cac_started = true;
- 		break;
- 	default:
- 		WARN_ON(1);
+-	trace_cfg80211_cac_event(netdev, event);
++	trace_cfg80211_cac_event(netdev, event, link_id);
+ 
+ 	if (WARN_ON(!wdev->links[0].cac_started &&
+ 		    event != NL80211_RADAR_CAC_STARTED))
 diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 7397a372c78e..2a6d4e2115d6 100644
+index 2a6d4e2115d6..7e2fd25468c9 100644
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -6066,7 +6066,7 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
- 	if (!rdev->ops->start_ap)
- 		return -EOPNOTSUPP;
- 
--	if (wdev->cac_started)
-+	if (wdev->links[0].cac_started)
- 		return -EBUSY;
- 
- 	if (wdev->links[link_id].ap.beacon_interval)
-@@ -10121,7 +10121,7 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
+@@ -10121,7 +10121,20 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
  		goto unlock;
  	}
  
--	if (cfg80211_beaconing_iface_active(wdev) || wdev->cac_started) {
-+	if (cfg80211_beaconing_iface_active(wdev) || wdev->links[0].cac_started) {
+-	if (cfg80211_beaconing_iface_active(wdev) || wdev->links[0].cac_started) {
++	if (cfg80211_beaconing_iface_active(wdev)) {
++		/* During MLO other link(s) can beacon, only the current link
++		 * can not already beacon
++		 */
++		if (wdev->valid_links &&
++		    !wdev->links[0].ap.beacon_interval) {
++			/* nothing */
++		} else {
++			err = -EBUSY;
++			goto unlock;
++		}
++	}
++
++	if (wdev->links[0].cac_started) {
  		err = -EBUSY;
  		goto unlock;
  	}
-@@ -10144,9 +10144,9 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
- 	err = rdev_start_radar_detection(rdev, dev, &chandef, cac_time_ms);
+@@ -10141,7 +10154,8 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
+ 	if (WARN_ON(!cac_time_ms))
+ 		cac_time_ms = IEEE80211_DFS_MIN_CAC_TIME_MS;
+ 
+-	err = rdev_start_radar_detection(rdev, dev, &chandef, cac_time_ms);
++	err = rdev_start_radar_detection(rdev, dev, &chandef, cac_time_ms,
++					 0);
  	if (!err) {
  		wdev->links[0].ap.chandef = chandef;
--		wdev->cac_started = true;
--		wdev->cac_start_time = jiffies;
--		wdev->cac_time_ms = cac_time_ms;
-+		wdev->links[0].cac_started = true;
-+		wdev->links[0].cac_start_time = jiffies;
-+		wdev->links[0].cac_time_ms = cac_time_ms;
- 	}
- unlock:
- 	wiphy_unlock(wiphy);
+ 		wdev->links[0].cac_started = true;
+@@ -16498,10 +16512,10 @@ nl80211_set_ttlm(struct sk_buff *skb, struct genl_info *info)
+ 	SELECTOR(__sel, NETDEV_UP_NOTMX,		\
+ 		 NL80211_FLAG_NEED_NETDEV_UP |		\
+ 		 NL80211_FLAG_NO_WIPHY_MTX)		\
+-	SELECTOR(__sel, NETDEV_UP_NOTMX_NOMLO,		\
++	SELECTOR(__sel, NETDEV_UP_NOTMX_MLO,		\
+ 		 NL80211_FLAG_NEED_NETDEV_UP |		\
+ 		 NL80211_FLAG_NO_WIPHY_MTX |		\
+-		 NL80211_FLAG_MLO_UNSUPPORTED)		\
++		 NL80211_FLAG_MLO_VALID_LINK_ID)	\
+ 	SELECTOR(__sel, NETDEV_UP_CLEAR,		\
+ 		 NL80211_FLAG_NEED_NETDEV_UP |		\
+ 		 NL80211_FLAG_CLEAR_SKB)		\
+@@ -17396,7 +17410,7 @@ static const struct genl_small_ops nl80211_small_ops[] = {
+ 		.flags = GENL_UNS_ADMIN_PERM,
+ 		.internal_flags = IFLAGS(NL80211_FLAG_NEED_NETDEV_UP |
+ 					 NL80211_FLAG_NO_WIPHY_MTX |
+-					 NL80211_FLAG_MLO_UNSUPPORTED),
++					 NL80211_FLAG_MLO_VALID_LINK_ID),
+ 	},
+ 	{
+ 		.cmd = NL80211_CMD_GET_PROTOCOL_FEATURES,
+diff --git a/net/wireless/rdev-ops.h b/net/wireless/rdev-ops.h
+index ec3f4aa1c807..f5adbf6b5c84 100644
+--- a/net/wireless/rdev-ops.h
++++ b/net/wireless/rdev-ops.h
+@@ -1200,26 +1200,27 @@ static inline int
+ rdev_start_radar_detection(struct cfg80211_registered_device *rdev,
+ 			   struct net_device *dev,
+ 			   struct cfg80211_chan_def *chandef,
+-			   u32 cac_time_ms)
++			   u32 cac_time_ms, int link_id)
+ {
+ 	int ret = -EOPNOTSUPP;
+ 
+ 	trace_rdev_start_radar_detection(&rdev->wiphy, dev, chandef,
+-					 cac_time_ms);
++					 cac_time_ms, link_id);
+ 	if (rdev->ops->start_radar_detection)
+ 		ret = rdev->ops->start_radar_detection(&rdev->wiphy, dev,
+-						       chandef, cac_time_ms);
++						       chandef, cac_time_ms,
++						       link_id);
+ 	trace_rdev_return_int(&rdev->wiphy, ret);
+ 	return ret;
+ }
+ 
+ static inline void
+ rdev_end_cac(struct cfg80211_registered_device *rdev,
+-	     struct net_device *dev)
++	     struct net_device *dev, unsigned int link_id)
+ {
+-	trace_rdev_end_cac(&rdev->wiphy, dev);
++	trace_rdev_end_cac(&rdev->wiphy, dev, link_id);
+ 	if (rdev->ops->end_cac)
+-		rdev->ops->end_cac(&rdev->wiphy, dev);
++		rdev->ops->end_cac(&rdev->wiphy, dev, link_id);
+ 	trace_rdev_return_void(&rdev->wiphy);
+ }
+ 
 diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index 4a27f3823e25..898abc6d0609 100644
+index 898abc6d0609..6489ba943a63 100644
 --- a/net/wireless/reg.c
 +++ b/net/wireless/reg.c
-@@ -4241,7 +4241,7 @@ static void cfg80211_check_and_end_cac(struct cfg80211_registered_device *rdev)
+@@ -4229,6 +4229,8 @@ EXPORT_SYMBOL(regulatory_pre_cac_allowed);
+ static void cfg80211_check_and_end_cac(struct cfg80211_registered_device *rdev)
+ {
+ 	struct wireless_dev *wdev;
++	unsigned int link_id;
++
+ 	/* If we finished CAC or received radar, we should end any
+ 	 * CAC running on the same channels.
+ 	 * the check !cfg80211_chandef_dfs_usable contain 2 options:
+@@ -4241,16 +4243,17 @@ static void cfg80211_check_and_end_cac(struct cfg80211_registered_device *rdev)
  	list_for_each_entry(wdev, &rdev->wiphy.wdev_list, list) {
  		struct cfg80211_chan_def *chandef;
  
--		if (!wdev->cac_started)
-+		if (!wdev->links[0].cac_started)
- 			continue;
+-		if (!wdev->links[0].cac_started)
+-			continue;
++		for_each_valid_link(wdev, link_id) {
++			if (!wdev->links[link_id].cac_started)
++				continue;
  
- 		/* FIXME: radar detection is tied to link 0 for now */
+-		/* FIXME: radar detection is tied to link 0 for now */
+-		chandef = wdev_chandef(wdev, 0);
+-		if (!chandef)
+-			continue;
++			chandef = wdev_chandef(wdev, link_id);
++			if (!chandef)
++				continue;
+ 
+-		if (!cfg80211_chandef_dfs_usable(&rdev->wiphy, chandef))
+-			rdev_end_cac(rdev, wdev->netdev);
++			if (!cfg80211_chandef_dfs_usable(&rdev->wiphy, chandef))
++				rdev_end_cac(rdev, wdev->netdev, link_id);
++		}
+ 	}
+ }
+ 
+diff --git a/net/wireless/trace.h b/net/wireless/trace.h
+index 7fc7de9bcc34..97c21b627791 100644
+--- a/net/wireless/trace.h
++++ b/net/wireless/trace.h
+@@ -806,17 +806,21 @@ DEFINE_EVENT(wiphy_netdev_evt, rdev_flush_pmksa,
+ );
+ 
+ TRACE_EVENT(rdev_end_cac,
+-	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev),
+-	TP_ARGS(wiphy, netdev),
++	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev,
++		 unsigned int link_id),
++	TP_ARGS(wiphy, netdev, link_id),
+ 	TP_STRUCT__entry(
+ 		WIPHY_ENTRY
+ 		NETDEV_ENTRY
++		__field(unsigned int, link_id)
+ 	),
+ 	TP_fast_assign(
+ 		WIPHY_ASSIGN;
+ 		NETDEV_ASSIGN;
++		__entry->link_id = link_id;
+ 	),
+-	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT, WIPHY_PR_ARG, NETDEV_PR_ARG)
++	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", link_id: %d",
++		  WIPHY_PR_ARG, NETDEV_PR_ARG, __entry->link_id)
+ );
+ 
+ DECLARE_EVENT_CLASS(station_add_change,
+@@ -2661,24 +2665,26 @@ TRACE_EVENT(rdev_external_auth,
+ TRACE_EVENT(rdev_start_radar_detection,
+ 	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev,
+ 		 struct cfg80211_chan_def *chandef,
+-		 u32 cac_time_ms),
+-	TP_ARGS(wiphy, netdev, chandef, cac_time_ms),
++		 u32 cac_time_ms, int link_id),
++	TP_ARGS(wiphy, netdev, chandef, cac_time_ms, link_id),
+ 	TP_STRUCT__entry(
+ 		WIPHY_ENTRY
+ 		NETDEV_ENTRY
+ 		CHAN_DEF_ENTRY
+ 		__field(u32, cac_time_ms)
++		__field(int, link_id)
+ 	),
+ 	TP_fast_assign(
+ 		WIPHY_ASSIGN;
+ 		NETDEV_ASSIGN;
+ 		CHAN_DEF_ASSIGN(chandef);
+ 		__entry->cac_time_ms = cac_time_ms;
++		__entry->link_id = link_id;
+ 	),
+ 	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT ", " CHAN_DEF_PR_FMT
+-		  ", cac_time_ms=%u",
++		  ", cac_time_ms=%u, link_id=%d",
+ 		  WIPHY_PR_ARG, NETDEV_PR_ARG, CHAN_DEF_PR_ARG,
+-		  __entry->cac_time_ms)
++		  __entry->cac_time_ms, __entry->link_id)
+ );
+ 
+ TRACE_EVENT(rdev_set_mcast_rate,
+@@ -3492,18 +3498,21 @@ TRACE_EVENT(cfg80211_radar_event,
+ );
+ 
+ TRACE_EVENT(cfg80211_cac_event,
+-	TP_PROTO(struct net_device *netdev, enum nl80211_radar_event evt),
+-	TP_ARGS(netdev, evt),
++	TP_PROTO(struct net_device *netdev, enum nl80211_radar_event evt,
++		 unsigned int link_id),
++	TP_ARGS(netdev, evt, link_id),
+ 	TP_STRUCT__entry(
+ 		NETDEV_ENTRY
+ 		__field(enum nl80211_radar_event, evt)
++		__field(unsigned int, link_id)
+ 	),
+ 	TP_fast_assign(
+ 		NETDEV_ASSIGN;
+ 		__entry->evt = evt;
++		__entry->link_id = link_id;
+ 	),
+-	TP_printk(NETDEV_PR_FMT ",  event: %d",
+-		  NETDEV_PR_ARG, __entry->evt)
++	TP_printk(NETDEV_PR_FMT ",  event: %d, link_id=%u",
++		  NETDEV_PR_ARG, __entry->evt, __entry->link_id)
+ );
+ 
+ DECLARE_EVENT_CLASS(cfg80211_rx_evt,
 -- 
 2.34.1
 
