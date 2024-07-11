@@ -1,1001 +1,432 @@
-Return-Path: <linux-wireless+bounces-10193-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10194-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D5C792ED27
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jul 2024 18:55:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A662192EE13
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jul 2024 19:52:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9401281F5B
-	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jul 2024 16:55:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65237281E16
+	for <lists+linux-wireless@lfdr.de>; Thu, 11 Jul 2024 17:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4968E16D9A6;
-	Thu, 11 Jul 2024 16:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A38112BF3A;
+	Thu, 11 Jul 2024 17:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="jALCXieK"
+	dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b="SwUQFitq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mout.web.de (mout.web.de [217.72.192.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17AB16D4ED
-	for <linux-wireless@vger.kernel.org>; Thu, 11 Jul 2024 16:55:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A790016B72E
+	for <linux-wireless@vger.kernel.org>; Thu, 11 Jul 2024 17:52:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720716947; cv=none; b=dSiUwoXcu5Nc2xy1sENSqXGB/8tgzajd0baCpkr23ubH2+zxBd1AiN4fbG8lqaBo4uFKVQVTDiQMhHdPEGq+ZaKiWUrDdyx10aNoqTKSCopStdKE9nxMYvSIcyG9D265hTd4HKG6Cr+b+Z93QtD0Tz/HKxvApoE3ZrXfc1FGyQI=
+	t=1720720356; cv=none; b=Zf2/iile8g/hMuiPOFEYLEjAAtWkj8ZV2+FlLrvoyBB/FxjVwPnEy3D2W4Clb8n0yhuiVZQbFguUmw8lQfAB33etM2WxwwZ9iocdlfz7YU1qQTVSXY/7Esm8fliyBvjpKI5nSOK+us+t8rudoRvhVoAnpncAeeorED9BtH+C/Ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720716947; c=relaxed/simple;
-	bh=a9Pk8Oy6JLBJHzmOovuLwe9Eml0FhZ1y3vJRzgnjYfQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jXYOm+kiguaIDAb473AFKaeM859qLA6iDVWOj1JoDtQJvdbAX9soe8Cr+aqT7cONrkfpjG9JRgUjGfN/crChoZMOZ4xzfjhezIIPZHu6eXA+T97sENjp3OifKf6AazGXyKxc6bnftqBs5BHpUUNqK4I5FnZgZIr7S0kPL9InJk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=jALCXieK; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46BFmIwb030758;
-	Thu, 11 Jul 2024 16:55:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	k7ZHfo3LQerTE2/QX/oMG9dE1T/YQioLRanWcvJkfGM=; b=jALCXieKA3hXvxk2
-	vryLK0Wd7zcRC7MFsLkZVfoHa0aR2v94rQC7iJ+DHYV3rCOVJrtt0hbcltME6cWp
-	OYEHMEwp7XVCSUwAFUXp4Wda/O3rjRAJHrd4ifDYd6k+RwrW1Y1Ok0Go7Xy65BMn
-	8srHT0zqD79P2t2phYa7a4QVmA7aq393nK1AaPc+IbICzidiVDRN7Tmsu8OOGiqs
-	iCSBfa3HGek8yXOzEQC6gci719Vn1jzIeo1DHagtR1vy08xYMsiLvB0Hb1oOYcbd
-	KDwcaCy6eBuZnC430/euXM7G1hp+28Z6Q3qwBQTIPZz7IiCyjkWAg8cuu2ZlS2aj
-	r2rpJg==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40ajbqr589-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Jul 2024 16:55:39 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46BGtcN3007688
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Jul 2024 16:55:38 GMT
-Received: from hu-ramess-blr.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Thu, 11 Jul 2024 09:55:35 -0700
-From: Rameshkumar Sundaram <quic_ramess@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, Sriram R <quic_srirrama@quicinc.com>,
-        Rameshkumar Sundaram <quic_ramess@quicinc.com>,
-        Jeff Johnson
-	<quic_jjohnson@quicinc.com>
-Subject: [PATCH v6 3/3] wifi: ath12k: prepare sta data structure for MLO handling
-Date: Thu, 11 Jul 2024 22:25:11 +0530
-Message-ID: <20240711165511.3100433-4-quic_ramess@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240711165511.3100433-1-quic_ramess@quicinc.com>
-References: <20240711165511.3100433-1-quic_ramess@quicinc.com>
+	s=arc-20240116; t=1720720356; c=relaxed/simple;
+	bh=ZZr4bxWRV//mvGw/CcmHp2I1MAW1Byj2t6Z33mo5MvU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Md/Fai0kWZG6ymqEOk0y4c5+M453vHUhSGyyD9Ka11KscT5IL99mnOMngd37BspRx3TWYFWrw57yfOURiV7iiaGSfizL9Kaic79MLwbUPNUoHr6ZBhwmrRGQ8S1MJzD2SlHWpdBlyWlh1vjRsngdDqj9OcQX1OliwooKooNBWU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b=SwUQFitq; arc=none smtp.client-ip=217.72.192.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1720720320; x=1721325120; i=spasswolf@web.de;
+	bh=4r4vn1tb2V6Df7FyzN15P1aU1uHDto25svdSej1ksn0=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
+	 References:MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=SwUQFitqDUFM9vBvCqeGJd/eWakcK5ecPllVcJoJnSdG+LZC+++RnmJfKw4iN28g
+	 fPJRZP9mNZ52gLOz4ykrGM6EAd5TaiE+AgzUW+OBLwx3KV8pxtpNxzprx8WiJXTiU
+	 XkHeTXPpQIiNVM1iRdLh5OeOCy6uetdu6Ul8DmDBMLDtV4V/u7h/muZf0F55166rB
+	 TTYgpqgZj3/H6/uUktU/aRtxbYBMmC1Dxih4ifTBhpmr2/ntiWBG9qOm4+SDtN6iV
+	 vGw/QnY9uiJjVoJpdiOP9V2JXFde0NYAxkQTNiQpyMOOkDRz/r5gILng11Lc0LoOe
+	 5R44fOMPVmcS2UurBw==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from localhost.localdomain ([84.119.92.193]) by smtp.web.de
+ (mrweb106 [213.165.67.124]) with ESMTPSA (Nemesis) id
+ 1N5CQh-1sKmiT1zb3-012lLJ; Thu, 11 Jul 2024 19:52:00 +0200
+From: Bert Karwatzki <spasswolf@web.de>
+To: sean.wang@kernel.org
+Cc: Bert Karwatzki <spasswolf@web.de>,
+	deren.wu@mediatek.com,
+	linux-mediatek@lists.infradead.org,
+	linux-wireless@vger.kernel.org,
+	lorenzo.bianconi@redhat.com,
+	mingyen.hsieh@mediatek.com,
+	nbd@nbd.name,
+	sean.wang@mediatek.com
+Subject: patch 46/47 causes NULL pointer deref on mt7921
+Date: Thu, 11 Jul 2024 19:51:53 +0200
+Message-ID: <20240711175156.4465-1-spasswolf@web.de>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: 20240613030241.5771-47-sean.wang@kernel.org
+References: 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: _2IJsiRVoWRqO0h4JKEuvyvVKA6_98Pu
-X-Proofpoint-ORIG-GUID: _2IJsiRVoWRqO0h4JKEuvyvVKA6_98Pu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-11_12,2024-07-11_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 bulkscore=0
- phishscore=0 adultscore=0 priorityscore=1501 impostorscore=0 spamscore=0
- malwarescore=0 suspectscore=0 mlxscore=0 clxscore=1015 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2406140001
- definitions=main-2407110118
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:ypZeE0Kx1xU2P/yuKXKKNuWyO/SL1Us+iPToVRvo2YeCC0+sYH4
+ ysRku+Til2RG90wCCLNF54sPkVpGF6Z0xutpfV24So2vS7xEnagSDVsLH7f+Ov08eNOpg+1
+ BgP6WmbHM3ZlDZOxDJVDSk1kFdH6V9VvQTshZgnI99ZnOQpJdJMtBM0THQaZp9VqWuSjIht
+ wKYy2iA2mvpMObV4vtQ7A==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:2+Ar5bHsKMg=;4v5aacSGKBvpxmfo/k3ZRSO3/lP
+ ITuBVSfJG84QKLalGtd2gX1lFTalosLXfU2BHeKAt5ULw0Vzefc+NeMPg1tr6Bn2q5+JHHT0w
+ UyJVZ9Njui1uIsJS9yN5U/+oFgt7Wc9lUMRjC+iMTdMD9Si5vYFJTaZJMW3Ahmugr2H8u8Fqo
+ 9KduSKC64uYygVOThJyOxrA2RbL9Qw10uAFiB5sg4zB4bk9C7ZBOclJn249O8PpYXFyscVfNJ
+ /8l66gV6X8IgVGqyZ0Zc8xBjS+Gq53U/A2MtzMaBBNG2/2likkJX3d06v3a9EVqj8f2OKRYgK
+ i9RKaewYgGDCAkHRzl4jmffaxyvejksNRdexUIRDaRoQ24I2WHH0Y2kWNSBQ+EfYKRzZlg1XZ
+ rY3Bdq3GYTD0wPARw4BNou4SQSm+3AXNqRuDHkNJHiQ9emq7LxlZnBHRbGUvvnPhi9WHtlkGx
+ yAQmaqKy9B2XwMu12VyKWiUxwpEv8p9GtqgwMW/0DMCKFbURnlZqkNRdcKPZJQ0pRf8Vmuhcx
+ nFNF0uGgrfyI+soulUH35zvhE9woWBBJzD9bV0ePPWmZw88/eDN4QiEVwX1CezDo2yfw4AmH0
+ cPgffleAQgoSjBibQzkFsYg5kLUGJ0wzGtjf3OTx5ea40X1+6qGAAK7BMN9TQP1YGb4qMTdmF
+ MxtA3td+/93w0A/GWUcC9nHqJV6EzeeObAI9RgMEi4pEyPdrFpcqMzREQtf1RUECocCiaX6IW
+ s7iPg/vidFcUcmYktIJxyOE9eEMRWr4OMWiZUItyRi7ks8QYKYbsFlUIRWt048yqS8YumpecD
+ wqesrE3EaN0y7wgTcr7Rrzxg==
 
-From: Sriram R <quic_srirrama@quicinc.com>
+Since linux-next-20240711 my linux system fails to start with a NULL pointer
+error. Hardware: MSI Alpha 15 Laptop Ryzen 5800H with
+04:00.0 Network controller: MEDIATEK Corp. MT7921K (RZ608) Wi-Fi 6E 80MHz
 
-To prepare the driver for MLO support, split the driver sta
-data structure to scale for multiple links. This requires changing
-the use of arsta to per link and not per hw which can now
-comprise of multiple links.
-Also since most configurations from mac80211 are done per link,
-do refactoring of the driver functions to apply these configurations
-at link level.
+[  T843] BUG: unable to handle page fault for address: ffffffffffffffa0
+[  T843] #PF: supervisor read access in kernel mode
+[  T843] #PF: error_code(0x0000) - not-present page
+[  T843] PGD e5c81a067 P4D e5c81a067 PUD e5c81c067 PMD 0=20
+[  T843] Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
+[  T843] CPU: 2 UID: 0 PID: 843 Comm: NetworkManager Not tainted 6.10.0-rc7=
+-next-20240711-dirty #9
+[  T843] Hardware name: Micro-Star International Co., Ltd. Alpha 15 B5EEK/M=
+S-158L, BIOS E158LAMS.107 11/10/2021
+[  T843] RIP: 0010:mt792x_mac_link_bss_remove+0x24/0x110 [mt792x_lib]
+[  T843] Code: 84 00 00 00 00 00 f3 0f 1e fa 41 56 41 55 41 54 49 89 f4 55 =
+48 89 fd 53 48 8b 46 18 48 89 d3 44 0f b7 aa b8 00 00 00 8b 56 60 <66> 83 7=
+8 a0 00 74 0f 83 fa 0e 77 0a 4c 8b b4 d0 28 ff ff ff eb 07
+[  T843] RSP: 0018:ffffbc1b43b3b688 EFLAGS: 00010282
+[  T843] RAX: 0000000000000000 RBX: ffff906ab80a9f00 RCX: 000fffffffe00000
+[  T843] RDX: 0000000000000000 RSI: ffff906ab80a9e20 RDI: ffff9069c1712000
+[  T843] RBP: ffff9069c1712000 R08: ffff9069c0402018 R09: ffffffffab226720
+[  T843] R10: 0000000000000000 R11: 0000000000000000 R12: ffff906ab80a9e20
+[  T843] R13: 0000000000000013 R14: 0000000000000000 R15: ffff906ab80a9990
+[  T843] FS:  00007fb2edd7b500(0000) GS:ffff90786e680000(0000) knlGS:000000=
+0000000000
+[  T843] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  T843] CR2: ffffffffffffffa0 CR3: 000000010a104000 CR4: 0000000000750ef0
+[  T843] PKRU: 55555554
+[  T843] Call Trace:
+[  T843]  <TASK>
+[  T843]  ? __die+0x1e/0x60
+[  T843]  ? page_fault_oops+0x157/0x450
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? search_bpf_extables+0x5a/0x80
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? exc_page_fault+0x2bb/0x670
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? lock_timer_base+0x71/0x90
+[  T843]  ? asm_exc_page_fault+0x26/0x30
+[  T843]  ? mt792x_mac_link_bss_remove+0x24/0x110 [mt792x_lib]
+[  T843]  ? mt792x_remove_interface+0x6e/0x90 [mt792x_lib]
+[  T843]  ? ieee80211_do_stop+0x507/0x7e0 [mac80211]
+[  T843]  ? ieee80211_stop+0x53/0x190 [mac80211]
+[  T843]  ? __dev_close_many+0xa5/0x120
+[  T843]  ? __dev_change_flags+0x18c/0x220
+[  T843]  ? dev_change_flags+0x21/0x60
+[  T843]  ? do_setlink+0xdf9/0x11d0
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? security_sock_rcv_skb+0x33/0x50
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? __nla_validate_parse+0x61/0xd10
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? genl_done+0x53/0x80
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? netlink_dump+0x357/0x410
+[  T843]  ? __rtnl_newlink+0x5d6/0x980
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? genl_family_rcv_msg_dumpit+0xdf/0xf0
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? __kmalloc_cache_noprof+0x44/0x210
+[  T843]  ? rtnl_newlink+0x42/0x60
+[  T843]  ? rtnetlink_rcv_msg+0x152/0x3f0
+[  T843]  ? mptcp_pm_nl_dump_addr+0x180/0x180
+[  T843]  ? rtnl_calcit.isra.0+0x130/0x130
+[  T843]  ? netlink_rcv_skb+0x56/0x100
+[  T843]  ? netlink_unicast+0x199/0x290
+[  T843]  ? netlink_sendmsg+0x21d/0x490
+[  T843]  ? __sock_sendmsg+0x78/0x80
+[  T843]  ? ____sys_sendmsg+0x23f/0x2e0
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? copy_msghdr_from_user+0x68/0xa0
+[  T843]  ? ___sys_sendmsg+0x81/0xd0
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? crng_fast_key_erasure+0xbc/0xf0
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? get_random_bytes_user+0x126/0x140
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? __fdget+0xb1/0xe0
+[  T843]  ? __sys_sendmsg+0x56/0xa0
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? do_syscall_64+0x5f/0x170
+[  T843]  ? entry_SYSCALL_64_after_hwframe+0x55/0x5d
+[  T843]  </TASK>
+[  T843] Modules linked in: bnep nls_ascii nls_cp437 vfat fat snd_ctl_led s=
+nd_hda_codec_realtek snd_hda_codec_generic snd_hda_scodec_component snd_hda=
+_codec_hdmi btusb btrtl btintel snd_hda_intel uvcvideo btbcm snd_intel_dspc=
+fg btmtk snd_hda_codec snd_soc_dmic snd_acp3x_pdm_dma snd_acp3x_rn videobuf=
+2_vmalloc snd_hwdep uvc bluetooth videobuf2_memops snd_soc_core snd_hda_cor=
+e videobuf2_v4l2 snd_pcm_oss snd_mixer_oss videodev snd_pcm snd_rn_pci_acp3=
+x videobuf2_common snd_acp_config snd_timer msi_wmi snd_soc_acpi ecdh_gener=
+ic amd_atl mc ecc sparse_keymap edac_mce_amd wmi_bmof snd ccp k10temp snd_p=
+ci_acp3x soundcore ac battery button hid_sensor_prox hid_sensor_gyro_3d hid=
+_sensor_als hid_sensor_accel_3d hid_sensor_magn_3d hid_sensor_trigger indus=
+trialio_triggered_buffer joydev kfifo_buf industrialio amd_pmc hid_sensor_i=
+io_common evdev hid_multitouch serio_raw mt7921e mt7921_common mt792x_lib m=
+t76_connac_lib mt76 mac80211 libarc4 cfg80211 rfkill msr fuse nvme_fabrics =
+configfs efi_pstore efivarfs autofs4 ext4
+[  T843]  crc32c_generic mbcache jbd2 usbhid amdgpu i2c_algo_bit drm_ttm_he=
+lper xhci_pci ttm drm_exec drm_suballoc_helper xhci_hcd amdxcp drm_buddy hi=
+d_sensor_hub usbcore nvme gpu_sched mfd_core hid_generic crc32c_intel psmou=
+se drm_display_helper amd_sfh i2c_piix4 usb_common nvme_core crc16 r8169 i2=
+c_hid_acpi i2c_hid hid i2c_designware_platform i2c_designware_core
+[  T843] CR2: ffffffffffffffa0
+[  T843] ---[ end trace 0000000000000000 ]---
 
-Split ath12k_sta which is the driver private of ieee80211_sta to store
-link specific information as ath12k_link_sta. For default use cases
-the ath12k_sta will have a preallocated link sta called deflink which will
-be used by non ML STAs and the first link sta of ML STA.
+I bisected the error between linux-6.10-rc7 and linux-next-20240711 and the
+first offending commit which showed a NULL pointer error was
+https://lore.kernel.org/all/20240613030241.5771-47-sean.wang@kernel.org/
+but the error is actually a different but most likely related NULL pointer =
+error.
+To debug this I added some printk to the offending commit:
 
-With MLO Support to be added, remaining link stas will allocated during
-state change where new STA is added. These link stas will be freed when
-STA is deleted.
-
-		Current ath12k_sta(arsta) structure
-
-	 +-----------------+       +----------------+
-	 |                 |       |                |
-	 |   ieee80211_sta |       |  ieee80211_sta |
-	 |   private data  |       |  private data  |
-	 |                 |       |                |
-	 |   ath12k_sta    |       |  ath12k_sta    |
-	 |   (arsta)       |       |   (arsta)      |
-	 |+---------------+|       | +-------------+|
-	 || *arvif (link  ||       | |*arvif (link ||
-	 || vif of an ar  ||       | | vif of an ar||
-	 || say 5GHz)     ||       | | say 6GHz)   ||
-	 |+---------------+|       | +-------------+|
-	 +-----------------+       +----------------+
-
-	Proposed ath12k_sta(ahsta) containing ath12k_link_sta(s) (arsta)
-	(deflink is preallocated member which is always the first link if
-	 ieee80211_sta is ML STA and is the only link sta otherwise)
-
-		+---------------------------------------+
-		|         ieee80211_sta                 |
-		|         private data                  |
-		|                                       |
-		|         ath12k_sta (ahsta)            |
-		| +-------------------------------------+
-		| | ath12k_link_sta deflink (arsta)     |
-		| |                                     |
-		| |  *arvif (link vif of ar (5GHz))     |
-		| +-------------------------------------+
-		| +-------------------------------------+
-		| | ath12k_link_sta *link (arsta)       |
-		| |                                     |
-		| |   *arvif (link vif of ar (6GHz))    |
-		| |                                     |
-		| +-------------------------------------+
-		|                                       |
-		+---------------------------------------+
-
-To refactor existing ath12k_sta to make use of link stas, following
- changes are made,
-
- 1. Limit ieee80211_sta argument mac80211 ops unless otherwise really required.
-
- 2. ath12k_sta now called by variable name arsta stores multiple
-    arstas(ah12k_link_sta) and also has a back pointer to ath12k_sta
-
- 3. Pass ath12k_link_sta to mac functions that passed ieee80211_sta arg
-    and fetch ath12k_sta(ahsta) and sta(ieee80211_sta) internally.
-    This is done to avoid passing link id in all the functions and performing
-    validation across these functions.
-    Rather the validation and sta to arsta conversion can be done only at the
-    mac80211 ops.
-
- 4. In this patchset, only ahsta->deflink is used to be on par with the
-    existing code. When MLO support is added the link id will be used to fetch
-    the arsta.
-
- 5. Change ath12k_sta_to_arsta() to ath12k_vif_to_ahsta() to fetch the
-    ML level sta. The link sta can be fetched from ahsta->link[], or the
-    deflink can be accessed via ahsta->deflink. API to access link
-    sta (arsta) by passing link_id can be introduced with MLO Support.
-
- 6. The ieee80211_sta can be accessed from ahsta using ath12k_ahsta_to_sta()
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
-Co-developed-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
-Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/core.h   |  24 ++-
- drivers/net/wireless/ath/ath12k/dp_mon.c |  14 +-
- drivers/net/wireless/ath/ath12k/dp_rx.c  |  14 +-
- drivers/net/wireless/ath/ath12k/mac.c    | 198 +++++++++++++++--------
- 4 files changed, 172 insertions(+), 78 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index d8d6838fd6e4..13f8695c2337 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -448,15 +448,15 @@ struct ath12k_wbm_tx_stats {
- 	u64 wbm_tx_comp_stats[HAL_WBM_REL_HTT_TX_COMP_STATUS_MAX];
- };
- 
--struct ath12k_sta {
-+struct ath12k_link_sta {
- 	struct ath12k_link_vif *arvif;
-+	struct ath12k_sta *ahsta;
- 
- 	/* the following are protected by ar->data_lock */
- 	u32 changed; /* IEEE80211_RC_* */
- 	u32 bw;
- 	u32 nss;
- 	u32 smps;
--	enum hal_pn_type pn_type;
- 
- 	struct work_struct update_wk;
- 	struct rate_info txrate;
-@@ -464,11 +464,20 @@ struct ath12k_sta {
- 	u64 rx_duration;
- 	u64 tx_duration;
- 	u8 rssi_comb;
-+	u8 link_id;
- 	struct ath12k_rx_peer_stats *rx_stats;
- 	struct ath12k_wbm_tx_stats *wbm_tx_stats;
- 	u32 bw_prev;
- };
- 
-+struct ath12k_sta {
-+	enum hal_pn_type pn_type;
-+	struct ath12k_link_sta deflink;
-+	struct ath12k_link_sta __rcu *link[IEEE80211_MLD_MAX_NUM_LINKS];
-+	/* indicates bitmap of link sta created in FW */
-+	u16 links_map;
-+};
-+
- #define ATH12K_MIN_5G_FREQ 4150
- #define ATH12K_MIN_6G_FREQ 5925
- #define ATH12K_MAX_6G_FREQ 7115
-@@ -674,8 +683,8 @@ struct ath12k_hw {
- 	bool regd_updated;
- 	bool use_6ghz_regd;
- 
--	/* To synchronize concurrent access of ahvif->link[]
--	 * between mac80211 operations.
-+	/* To synchronize concurrent access of ahvif->link[] and
-+	 * ahsta->link[] between mac80211 operations.
- 	 */
- 	struct mutex conf_mutex;
- 	u8 num_radio;
-@@ -1041,11 +1050,16 @@ static inline struct ath12k_vif *ath12k_vif_to_ahvif(struct ieee80211_vif *vif)
- 	return (struct ath12k_vif *)vif->drv_priv;
- }
- 
--static inline struct ath12k_sta *ath12k_sta_to_arsta(struct ieee80211_sta *sta)
-+static inline struct ath12k_sta *ath12k_sta_to_ahsta(struct ieee80211_sta *sta)
- {
- 	return (struct ath12k_sta *)sta->drv_priv;
- }
- 
-+static inline struct ieee80211_sta *ath12k_ahsta_to_sta(struct ath12k_sta *ahsta)
-+{
-+	return container_of((void *)ahsta, struct ieee80211_sta, drv_priv);
-+}
-+
- static inline struct ieee80211_vif *ath12k_ahvif_to_vif(struct ath12k_vif *ahvif)
- {
- 	return container_of((void *)ahvif, struct ieee80211_vif, drv_priv);
-diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
-index 5c6749bc4039..f688f4ad5168 100644
---- a/drivers/net/wireless/ath/ath12k/dp_mon.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
-@@ -2165,7 +2165,7 @@ ath12k_dp_mon_rx_update_peer_rate_table_stats(struct ath12k_rx_peer_stats *rx_st
- }
- 
- static void ath12k_dp_mon_rx_update_peer_su_stats(struct ath12k *ar,
--						  struct ath12k_sta *arsta,
-+						  struct ath12k_link_sta *arsta,
- 						  struct hal_rx_mon_ppdu_info *ppdu_info)
- {
- 	struct ath12k_rx_peer_stats *rx_stats = arsta->rx_stats;
-@@ -2321,7 +2321,8 @@ ath12k_dp_mon_rx_update_user_stats(struct ath12k *ar,
- 				   struct hal_rx_mon_ppdu_info *ppdu_info,
- 				   u32 uid)
- {
--	struct ath12k_sta *arsta = NULL;
-+	struct ath12k_sta *ahsta;
-+	struct ath12k_link_sta *arsta;
- 	struct ath12k_rx_peer_stats *rx_stats = NULL;
- 	struct hal_rx_user_status *user_stats = &ppdu_info->userstats[uid];
- 	struct ath12k_peer *peer;
-@@ -2338,7 +2339,8 @@ ath12k_dp_mon_rx_update_user_stats(struct ath12k *ar,
- 		return;
- 	}
- 
--	arsta = ath12k_sta_to_arsta(peer->sta);
-+	ahsta = ath12k_sta_to_ahsta(peer->sta);
-+	arsta = &ahsta->deflink;
- 	rx_stats = arsta->rx_stats;
- 
- 	if (!rx_stats)
-@@ -2445,7 +2447,8 @@ int ath12k_dp_mon_rx_process_stats(struct ath12k *ar, int mac_id,
- 	struct dp_srng *mon_dst_ring;
- 	struct hal_srng *srng;
- 	struct dp_rxdma_mon_ring *buf_ring;
--	struct ath12k_sta *arsta = NULL;
-+	struct ath12k_sta *ahsta = NULL;
-+	struct ath12k_link_sta *arsta;
- 	struct ath12k_peer *peer;
- 	u64 cookie;
- 	int num_buffs_reaped = 0, srng_id, buf_id;
-@@ -2514,7 +2517,8 @@ int ath12k_dp_mon_rx_process_stats(struct ath12k *ar, int mac_id,
- 			}
- 
- 			if (ppdu_info->reception_type == HAL_RX_RECEPTION_TYPE_SU) {
--				arsta = ath12k_sta_to_arsta(peer->sta);
-+				ahsta = ath12k_sta_to_ahsta(peer->sta);
-+				arsta = &ahsta->deflink;
- 				ath12k_dp_mon_rx_update_peer_su_stats(ar, arsta,
- 								      ppdu_info);
- 			} else if ((ppdu_info->fc_valid) &&
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-index 941bbbd4e777..9ae579e50557 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -1041,13 +1041,14 @@ int ath12k_dp_rx_ampdu_start(struct ath12k *ar,
- 			     struct ieee80211_ampdu_params *params)
- {
- 	struct ath12k_base *ab = ar->ab;
--	struct ath12k_sta *arsta = ath12k_sta_to_arsta(params->sta);
-+	struct ath12k_sta *ahsta = ath12k_sta_to_ahsta(params->sta);
-+	struct ath12k_link_sta *arsta = &ahsta->deflink;
- 	int vdev_id = arsta->arvif->vdev_id;
- 	int ret;
- 
- 	ret = ath12k_dp_rx_peer_tid_setup(ar, params->sta->addr, vdev_id,
- 					  params->tid, params->buf_size,
--					  params->ssn, arsta->pn_type);
-+					  params->ssn, arsta->ahsta->pn_type);
- 	if (ret)
- 		ath12k_warn(ab, "failed to setup rx tid %d\n", ret);
- 
-@@ -1059,7 +1060,8 @@ int ath12k_dp_rx_ampdu_stop(struct ath12k *ar,
- {
- 	struct ath12k_base *ab = ar->ab;
- 	struct ath12k_peer *peer;
--	struct ath12k_sta *arsta = ath12k_sta_to_arsta(params->sta);
-+	struct ath12k_sta *ahsta = ath12k_sta_to_ahsta(params->sta);
-+	struct ath12k_link_sta *arsta = &ahsta->deflink;
- 	int vdev_id = arsta->arvif->vdev_id;
- 	bool active;
- 	int ret;
-@@ -1313,7 +1315,8 @@ ath12k_update_per_peer_tx_stats(struct ath12k *ar,
- 	struct ath12k_base *ab = ar->ab;
- 	struct ath12k_peer *peer;
- 	struct ieee80211_sta *sta;
--	struct ath12k_sta *arsta;
-+	struct ath12k_sta *ahsta;
-+	struct ath12k_link_sta *arsta;
- 	struct htt_ppdu_stats_user_rate *user_rate;
- 	struct ath12k_per_peer_tx_stats *peer_stats = &ar->peer_tx_stats;
- 	struct htt_ppdu_user_stats *usr_stats = &ppdu_stats->user_stats[user];
-@@ -1394,7 +1397,8 @@ ath12k_update_per_peer_tx_stats(struct ath12k *ar,
- 	}
- 
- 	sta = peer->sta;
--	arsta = ath12k_sta_to_arsta(sta);
-+	ahsta = ath12k_sta_to_ahsta(sta);
-+	arsta = &ahsta->deflink;
- 
- 	memset(&arsta->txrate, 0, sizeof(arsta->txrate));
- 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 3a527a888127..b36b9250c924 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -1736,10 +1736,11 @@ static void ath12k_mac_vif_sta_connection_loss_work(struct work_struct *work)
- 
- static void ath12k_peer_assoc_h_basic(struct ath12k *ar,
- 				      struct ath12k_link_vif *arvif,
--				      struct ieee80211_sta *sta,
-+				      struct ath12k_link_sta *arsta,
- 				      struct ath12k_wmi_peer_assoc_arg *arg)
- {
- 	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(arvif->ahvif);
-+	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
- 	struct ieee80211_hw *hw = ath12k_ar_to_hw(ar);
- 	u32 aid;
- 
-@@ -1762,10 +1763,11 @@ static void ath12k_peer_assoc_h_basic(struct ath12k *ar,
- 
- static void ath12k_peer_assoc_h_crypto(struct ath12k *ar,
- 				       struct ath12k_link_vif *arvif,
--				       struct ieee80211_sta *sta,
-+				       struct ath12k_link_sta *arsta,
- 				       struct ath12k_wmi_peer_assoc_arg *arg)
- {
- 	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(arvif->ahvif);
-+	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
- 	struct ieee80211_bss_conf *info = &vif->bss_conf;
- 	struct cfg80211_chan_def def;
- 	struct cfg80211_bss *bss;
-@@ -1824,10 +1826,11 @@ static void ath12k_peer_assoc_h_crypto(struct ath12k *ar,
- 
- static void ath12k_peer_assoc_h_rates(struct ath12k *ar,
- 				      struct ath12k_link_vif *arvif,
--				      struct ieee80211_sta *sta,
-+				      struct ath12k_link_sta *arsta,
- 				      struct ath12k_wmi_peer_assoc_arg *arg)
- {
- 	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(arvif->ahvif);
-+	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
- 	struct wmi_rate_set_arg *rateset = &arg->peer_legacy_rates;
- 	struct cfg80211_chan_def def;
- 	const struct ieee80211_supported_band *sband;
-@@ -1887,10 +1890,11 @@ ath12k_peer_assoc_h_vht_masked(const u16 *vht_mcs_mask)
- 
- static void ath12k_peer_assoc_h_ht(struct ath12k *ar,
- 				   struct ath12k_link_vif *arvif,
--				   struct ieee80211_sta *sta,
-+				   struct ath12k_link_sta *arsta,
- 				   struct ath12k_wmi_peer_assoc_arg *arg)
- {
- 	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(arvif->ahvif);
-+	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
- 	const struct ieee80211_sta_ht_cap *ht_cap = &sta->deflink.ht_cap;
- 	struct cfg80211_chan_def def;
- 	enum nl80211_band band;
-@@ -2048,10 +2052,11 @@ ath12k_peer_assoc_h_vht_limit(u16 tx_mcs_set,
- 
- static void ath12k_peer_assoc_h_vht(struct ath12k *ar,
- 				    struct ath12k_link_vif *arvif,
--				    struct ieee80211_sta *sta,
-+				    struct ath12k_link_sta *arsta,
- 				    struct ath12k_wmi_peer_assoc_arg *arg)
- {
- 	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(arvif->ahvif);
-+	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
- 	const struct ieee80211_sta_vht_cap *vht_cap = &sta->deflink.vht_cap;
- 	struct cfg80211_chan_def def;
- 	enum nl80211_band band;
-@@ -2143,10 +2148,11 @@ static void ath12k_peer_assoc_h_vht(struct ath12k *ar,
- 
- static void ath12k_peer_assoc_h_he(struct ath12k *ar,
- 				   struct ath12k_link_vif *arvif,
--				   struct ieee80211_sta *sta,
-+				   struct ath12k_link_sta *arsta,
- 				   struct ath12k_wmi_peer_assoc_arg *arg)
- {
- 	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(arvif->ahvif);
-+	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
- 	const struct ieee80211_sta_he_cap *he_cap = &sta->deflink.he_cap;
- 	int i;
- 	u8 ampdu_factor, max_nss;
-@@ -2300,11 +2306,12 @@ static void ath12k_peer_assoc_h_he(struct ath12k *ar,
- 
- static void ath12k_peer_assoc_h_he_6ghz(struct ath12k *ar,
- 					struct ath12k_link_vif *arvif,
--					struct ieee80211_sta *sta,
-+					struct ath12k_link_sta *arsta,
- 					struct ath12k_wmi_peer_assoc_arg *arg)
- {
--	const struct ieee80211_sta_he_cap *he_cap = &sta->deflink.he_cap;
- 	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(arvif->ahvif);
-+	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
-+	const struct ieee80211_sta_he_cap *he_cap = &sta->deflink.he_cap;
- 	struct cfg80211_chan_def def;
- 	enum nl80211_band band;
- 	u8 ampdu_factor, mpdu_density;
-@@ -2369,9 +2376,10 @@ static int ath12k_get_smps_from_capa(const struct ieee80211_sta_ht_cap *ht_cap,
- 	return 0;
- }
- 
--static void ath12k_peer_assoc_h_smps(struct ieee80211_sta *sta,
-+static void ath12k_peer_assoc_h_smps(struct ath12k_link_sta *arsta,
- 				     struct ath12k_wmi_peer_assoc_arg *arg)
- {
-+	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
- 	const struct ieee80211_he_6ghz_capa *he_6ghz_capa = &sta->deflink.he_6ghz_capa;
- 	const struct ieee80211_sta_ht_cap *ht_cap = &sta->deflink.ht_cap;
- 	int smps;
-@@ -2399,9 +2407,11 @@ static void ath12k_peer_assoc_h_smps(struct ieee80211_sta *sta,
- 
- static void ath12k_peer_assoc_h_qos(struct ath12k *ar,
- 				    struct ath12k_link_vif *arvif,
--				    struct ieee80211_sta *sta,
-+				    struct ath12k_link_sta *arsta,
- 				    struct ath12k_wmi_peer_assoc_arg *arg)
- {
-+	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
-+
- 	switch (arvif->ahvif->vdev_type) {
- 	case WMI_VDEV_TYPE_AP:
- 		if (sta->wme) {
-@@ -2433,8 +2443,9 @@ static void ath12k_peer_assoc_h_qos(struct ath12k *ar,
- 
- static int ath12k_peer_assoc_qos_ap(struct ath12k *ar,
- 				    struct ath12k_link_vif *arvif,
--				    struct ieee80211_sta *sta)
-+				    struct ath12k_link_sta *arsta)
- {
-+	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
- 	struct ath12k_wmi_ap_ps_arg arg;
- 	u32 max_sp;
- 	u32 uapsd;
-@@ -2595,7 +2606,7 @@ static enum wmi_phy_mode ath12k_mac_get_phymode_eht(struct ath12k *ar,
- 
- static void ath12k_peer_assoc_h_phymode(struct ath12k *ar,
- 					struct ath12k_link_vif *arvif,
--					struct ieee80211_sta *sta,
-+					struct ath12k_link_sta *arsta,
- 					struct ath12k_wmi_peer_assoc_arg *arg)
- {
- 	struct cfg80211_chan_def def;
-@@ -2604,6 +2615,7 @@ static void ath12k_peer_assoc_h_phymode(struct ath12k *ar,
- 	const u16 *vht_mcs_mask;
- 	enum wmi_phy_mode phymode = MODE_UNKNOWN;
- 	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(arvif->ahvif);
-+	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
- 
- 	if (WARN_ON(ath12k_mac_vif_chan(vif, &def)))
- 		return;
-@@ -2740,9 +2752,10 @@ static void ath12k_mac_set_eht_ppe_threshold(const u8 *ppe_thres,
- 
- static void ath12k_peer_assoc_h_eht(struct ath12k *ar,
- 				    struct ath12k_link_vif *arvif,
--				    struct ieee80211_sta *sta,
-+				    struct ath12k_link_sta *arsta,
- 				    struct ath12k_wmi_peer_assoc_arg *arg)
- {
-+	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
- 	const struct ieee80211_sta_eht_cap *eht_cap = &sta->deflink.eht_cap;
- 	const struct ieee80211_sta_he_cap *he_cap = &sta->deflink.he_cap;
- 	const struct ieee80211_eht_mcs_nss_supp_20mhz_only *bw_20;
-@@ -2822,7 +2835,7 @@ static void ath12k_peer_assoc_h_eht(struct ath12k *ar,
- 
- static void ath12k_peer_assoc_prepare(struct ath12k *ar,
- 				      struct ath12k_link_vif *arvif,
--				      struct ieee80211_sta *sta,
-+				      struct ath12k_link_sta *arsta,
- 				      struct ath12k_wmi_peer_assoc_arg *arg,
- 				      bool reassoc)
- {
-@@ -2833,17 +2846,17 @@ static void ath12k_peer_assoc_prepare(struct ath12k *ar,
- 	reinit_completion(&ar->peer_assoc_done);
- 
- 	arg->peer_new_assoc = !reassoc;
--	ath12k_peer_assoc_h_basic(ar, arvif, sta, arg);
--	ath12k_peer_assoc_h_crypto(ar, arvif, sta, arg);
--	ath12k_peer_assoc_h_rates(ar, arvif, sta, arg);
--	ath12k_peer_assoc_h_ht(ar, arvif, sta, arg);
--	ath12k_peer_assoc_h_vht(ar, arvif, sta, arg);
--	ath12k_peer_assoc_h_he(ar, arvif, sta, arg);
--	ath12k_peer_assoc_h_he_6ghz(ar, arvif, sta, arg);
--	ath12k_peer_assoc_h_eht(ar, arvif, sta, arg);
--	ath12k_peer_assoc_h_qos(ar, arvif, sta, arg);
--	ath12k_peer_assoc_h_phymode(ar, arvif, sta, arg);
--	ath12k_peer_assoc_h_smps(sta, arg);
-+	ath12k_peer_assoc_h_basic(ar, arvif, arsta, arg);
-+	ath12k_peer_assoc_h_crypto(ar, arvif, arsta, arg);
-+	ath12k_peer_assoc_h_rates(ar, arvif, arsta, arg);
-+	ath12k_peer_assoc_h_ht(ar, arvif, arsta, arg);
-+	ath12k_peer_assoc_h_vht(ar, arvif, arsta, arg);
-+	ath12k_peer_assoc_h_he(ar, arvif, arsta, arg);
-+	ath12k_peer_assoc_h_he_6ghz(ar, arvif, arsta, arg);
-+	ath12k_peer_assoc_h_eht(ar, arvif, arsta, arg);
-+	ath12k_peer_assoc_h_qos(ar, arvif, arsta, arg);
-+	ath12k_peer_assoc_h_phymode(ar, arvif, arsta, arg);
-+	ath12k_peer_assoc_h_smps(arsta, arg);
- 
- 	/* TODO: amsdu_disable req? */
- }
-@@ -2875,7 +2888,9 @@ static void ath12k_bss_assoc(struct ath12k *ar,
- 	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(ahvif);
- 	struct ath12k_wmi_vdev_up_params params = {};
- 	struct ath12k_wmi_peer_assoc_arg peer_arg;
-+	struct ath12k_link_sta *arsta;
- 	struct ieee80211_sta *ap_sta;
-+	struct ath12k_sta *ahsta;
- 	struct ath12k_peer *peer;
- 	bool is_auth = false;
- 	int ret;
-@@ -2895,7 +2910,15 @@ static void ath12k_bss_assoc(struct ath12k *ar,
- 		return;
- 	}
- 
--	ath12k_peer_assoc_prepare(ar, arvif, ap_sta, &peer_arg, false);
-+	ahsta = ath12k_sta_to_ahsta(ap_sta);
-+	arsta = &ahsta->deflink;
-+
-+	if (WARN_ON(!arsta)) {
-+		rcu_read_unlock();
-+		return;
-+	}
-+
-+	ath12k_peer_assoc_prepare(ar, arvif, arsta, &peer_arg, false);
- 
- 	rcu_read_unlock();
- 
-@@ -3995,20 +4018,25 @@ static int ath12k_clear_peer_keys(struct ath12k_link_vif *arvif,
- }
- 
- static int ath12k_mac_set_key(struct ath12k *ar, enum set_key_cmd cmd,
--			      struct ath12k_link_vif *arvif, struct ieee80211_sta *sta,
-+			      struct ath12k_link_vif *arvif,
-+			      struct ath12k_link_sta *arsta,
- 			      struct ieee80211_key_conf *key)
- {
- 	struct ath12k_vif *ahvif = arvif->ahvif;
- 	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(ahvif);
-+	struct ieee80211_sta *sta = NULL;
- 	struct ath12k_base *ab = ar->ab;
- 	struct ath12k_peer *peer;
--	struct ath12k_sta *arsta;
-+	struct ath12k_sta *ahsta;
- 	const u8 *peer_addr;
- 	int ret = 0;
- 	u32 flags = 0;
- 
- 	lockdep_assert_held(&ar->conf_mutex);
- 
-+	if (arsta)
-+		sta = ath12k_ahsta_to_sta(arsta->ahsta);
-+
- 	if (test_bit(ATH12K_FLAG_HW_CRYPTO_DISABLED, &ab->dev_flags))
- 		return 1;
- 
-@@ -4081,7 +4109,7 @@ static int ath12k_mac_set_key(struct ath12k *ar, enum set_key_cmd cmd,
- 		ath12k_warn(ab, "peer %pM disappeared!\n", peer_addr);
- 
- 	if (sta) {
--		arsta = ath12k_sta_to_arsta(sta);
-+		ahsta = ath12k_sta_to_ahsta(sta);
- 
- 		switch (key->cipher) {
- 		case WLAN_CIPHER_SUITE_TKIP:
-@@ -4090,12 +4118,12 @@ static int ath12k_mac_set_key(struct ath12k *ar, enum set_key_cmd cmd,
- 		case WLAN_CIPHER_SUITE_GCMP:
- 		case WLAN_CIPHER_SUITE_GCMP_256:
- 			if (cmd == SET_KEY)
--				arsta->pn_type = HAL_PN_TYPE_WPA;
-+				ahsta->pn_type = HAL_PN_TYPE_WPA;
- 			else
--				arsta->pn_type = HAL_PN_TYPE_NONE;
-+				ahsta->pn_type = HAL_PN_TYPE_NONE;
- 			break;
- 		default:
--			arsta->pn_type = HAL_PN_TYPE_NONE;
-+			ahsta->pn_type = HAL_PN_TYPE_NONE;
- 			break;
- 		}
- 	}
-@@ -4113,7 +4141,9 @@ static int ath12k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
- 	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
- 	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
- 	struct ath12k_link_vif *arvif;
-+	struct ath12k_link_sta *arsta = NULL;
- 	struct ath12k_vif_cache *cache;
-+	struct ath12k_sta *ahsta;
- 	struct ath12k *ar;
- 	int ret;
- 
-@@ -4154,14 +4184,19 @@ static int ath12k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
- 		return 0;
- 	}
- 
--	/* Note: Currently only deflink of ahvif is used here, once MLO
--	 * support is added the allocated links (i.e ahvif->links[])
-+	if (sta) {
-+		ahsta = ath12k_sta_to_ahsta(sta);
-+		arsta = &ahsta->deflink;
-+	}
-+
-+	/* Note: Currently only deflink of ahvif and ahsta are used here,
-+	 * once MLO support is added the allocated links (i.e ahvif->links[])
- 	 * should be use based on link id passed from mac80211 and such link
- 	 * access needs to be protected with ah->conf_mutex.
- 	 */
- 
- 	mutex_lock(&ar->conf_mutex);
--	ret = ath12k_mac_set_key(ar, cmd, arvif, sta, key);
-+	ret = ath12k_mac_set_key(ar, cmd, arvif, arsta, key);
- 	mutex_unlock(&ar->conf_mutex);
- 	mutex_unlock(&ah->conf_mutex);
- 	return ret;
-@@ -4183,10 +4218,11 @@ ath12k_mac_bitrate_mask_num_vht_rates(struct ath12k *ar,
- 
- static int
- ath12k_mac_set_peer_vht_fixed_rate(struct ath12k_link_vif *arvif,
--				   struct ieee80211_sta *sta,
-+				   struct ath12k_link_sta *arsta,
- 				   const struct cfg80211_bitrate_mask *mask,
- 				   enum nl80211_band band)
- {
-+	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
- 	struct ath12k *ar = arvif->ar;
- 	u8 vht_rate, nss;
- 	u32 rate_code;
-@@ -4229,10 +4265,11 @@ ath12k_mac_set_peer_vht_fixed_rate(struct ath12k_link_vif *arvif,
- 
- static int ath12k_station_assoc(struct ath12k *ar,
- 				struct ath12k_link_vif *arvif,
--				struct ieee80211_sta *sta,
-+				struct ath12k_link_sta *arsta,
- 				bool reassoc)
- {
- 	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(arvif->ahvif);
-+	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
- 	struct ath12k_wmi_peer_assoc_arg peer_arg;
- 	int ret;
- 	struct cfg80211_chan_def def;
-@@ -4248,7 +4285,7 @@ static int ath12k_station_assoc(struct ath12k *ar,
- 	band = def.chan->band;
- 	mask = &arvif->bitrate_mask;
- 
--	ath12k_peer_assoc_prepare(ar, arvif, sta, &peer_arg, reassoc);
-+	ath12k_peer_assoc_prepare(ar, arvif, arsta, &peer_arg, reassoc);
- 
- 	if (peer_arg.peer_nss < 1) {
- 		ath12k_warn(ar->ab,
-@@ -4276,7 +4313,7 @@ static int ath12k_station_assoc(struct ath12k *ar,
- 	 * Note that all other rates and NSS will be disabled for this peer.
- 	 */
- 	if (sta->deflink.vht_cap.vht_supported && num_vht_rates == 1) {
--		ret = ath12k_mac_set_peer_vht_fixed_rate(arvif, sta, mask,
-+		ret = ath12k_mac_set_peer_vht_fixed_rate(arvif, arsta, mask,
- 							 band);
- 		if (ret)
- 			return ret;
-@@ -4305,7 +4342,7 @@ static int ath12k_station_assoc(struct ath12k *ar,
- 	}
- 
- 	if (sta->wme && sta->uapsd_queues) {
--		ret = ath12k_peer_assoc_qos_ap(ar, arvif, sta);
-+		ret = ath12k_peer_assoc_qos_ap(ar, arvif, arsta);
- 		if (ret) {
- 			ath12k_warn(ar->ab, "failed to set qos params for STA %pM for vdev %i: %d\n",
- 				    sta->addr, arvif->vdev_id, ret);
-@@ -4318,8 +4355,9 @@ static int ath12k_station_assoc(struct ath12k *ar,
- 
- static int ath12k_station_disassoc(struct ath12k *ar,
- 				   struct ath12k_link_vif *arvif,
--				   struct ieee80211_sta *sta)
-+				   struct ath12k_link_sta *arsta)
- {
-+	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
- 	int ret;
- 
- 	lockdep_assert_held(&ar->conf_mutex);
-@@ -4343,7 +4381,6 @@ static int ath12k_station_disassoc(struct ath12k *ar,
- static void ath12k_sta_rc_update_wk(struct work_struct *wk)
- {
- 	struct ath12k *ar;
--	struct ath12k_sta *arsta;
- 	struct ath12k_link_vif *arvif;
- 	struct ieee80211_sta *sta;
- 	struct cfg80211_chan_def def;
-@@ -4355,10 +4392,11 @@ static void ath12k_sta_rc_update_wk(struct work_struct *wk)
- 	const struct cfg80211_bitrate_mask *mask;
- 	struct ath12k_wmi_peer_assoc_arg peer_arg;
- 	enum wmi_phy_mode peer_phymode;
-+	struct ath12k_link_sta *arsta;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wire=
+less/mediatek/mt76/mt792x.h
+index 69eb8dac0b70..c17195559b82 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x.h
++++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
+@@ -230,6 +230,7 @@ mt792x_vif_to_link(struct mt792x_vif *mvif, u8 link_id)
  	struct ieee80211_vif *vif;
- 
--	arsta = container_of(wk, struct ath12k_sta, update_wk);
--	sta = container_of((void *)arsta, struct ieee80211_sta, drv_priv);
-+	arsta = container_of(wk, struct ath12k_link_sta, update_wk);
-+	sta = ath12k_ahsta_to_sta(arsta->ahsta);
- 	arvif = arsta->arvif;
- 	vif = ath12k_ahvif_to_vif(arvif->ahvif);
- 	ar = arvif->ar;
-@@ -4389,7 +4427,7 @@ static void ath12k_sta_rc_update_wk(struct work_struct *wk)
- 			   ath12k_mac_max_vht_nss(vht_mcs_mask)));
- 
- 	if (changed & IEEE80211_RC_BW_CHANGED) {
--		ath12k_peer_assoc_h_phymode(ar, arvif, sta, &peer_arg);
-+		ath12k_peer_assoc_h_phymode(ar, arvif, arsta, &peer_arg);
- 		peer_phymode = peer_arg.peer_phymode;
- 
- 		if (bw > bw_prev) {
-@@ -4477,14 +4515,14 @@ static void ath12k_sta_rc_update_wk(struct work_struct *wk)
- 		 * across HT/VHT and for multiple VHT MCS support.
- 		 */
- 		if (sta->deflink.vht_cap.vht_supported && num_vht_rates == 1) {
--			ath12k_mac_set_peer_vht_fixed_rate(arvif, sta, mask,
-+			ath12k_mac_set_peer_vht_fixed_rate(arvif, arsta, mask,
- 							   band);
- 		} else {
- 			/* If the peer is non-VHT or no fixed VHT rate
- 			 * is provided in the new bitrate mask we set the
- 			 * other rates using peer_assoc command.
- 			 */
--			ath12k_peer_assoc_prepare(ar, arvif, sta,
-+			ath12k_peer_assoc_prepare(ar, arvif, arsta,
- 						  &peer_arg, true);
- 
- 			err = ath12k_wmi_send_peer_assoc_cmd(ar, &peer_arg);
-@@ -4502,8 +4540,9 @@ static void ath12k_sta_rc_update_wk(struct work_struct *wk)
+=20
+ 	vif =3D container_of((void *)mvif, struct ieee80211_vif, drv_priv);
++	printk(KERN_INFO "%s %d: vif =3D %px\n", __func__, __LINE__, vif);
+=20
+ 	if (!ieee80211_vif_is_mld(vif) ||
+ 	    link_id >=3D IEEE80211_LINK_UNSPECIFIED)
+@@ -259,6 +260,7 @@ mt792x_link_conf_to_mconf(struct ieee80211_bss_conf *li=
+nk_conf)
+ {
+ 	struct ieee80211_vif *vif =3D link_conf->vif;
+ 	struct mt792x_vif *mvif =3D (struct mt792x_vif *)vif->drv_priv;
++	printk(KERN_INFO "%s %d: vif =3D %px mvif =3D %px\n", __func__, __LINE__,=
+ vif, mvif);
+=20
+ 	return mt792x_vif_to_link(mvif, link_conf->link_id);
  }
- 
- static int ath12k_mac_inc_num_stations(struct ath12k_link_vif *arvif,
--				       struct ieee80211_sta *sta)
-+				       struct ath12k_link_sta *arsta)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net=
+/wireless/mediatek/mt76/mt792x_core.c
+index 813296fad0ed..ff627f5986bd 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+@@ -119,23 +119,34 @@ static void mt792x_mac_link_bss_remove(struct mt792x_=
+dev *dev,
  {
-+	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
- 	struct ath12k *ar = arvif->ar;
- 
- 	lockdep_assert_held(&ar->conf_mutex);
-@@ -4520,8 +4559,9 @@ static int ath12k_mac_inc_num_stations(struct ath12k_link_vif *arvif,
+ 	struct mt792x_bss_conf *mconf =3D mt792x_link_conf_to_mconf(link_conf);
+ 	int idx =3D mlink->wcid.idx;
++	printk(KERN_INFO "%s %d\n", __func__, __LINE__);
+=20
+ 	mt792x_mutex_acquire(dev);
++	printk(KERN_INFO "%s %d\n", __func__, __LINE__);
+ 	mt76_connac_free_pending_tx_skbs(&dev->pm, &mlink->wcid);
++	printk(KERN_INFO "%s %d\n", __func__, __LINE__);
+ 	mt76_connac_mcu_uni_add_dev(&dev->mphy, link_conf, &mlink->wcid, false);
++	printk(KERN_INFO "%s %d\n", __func__, __LINE__);
+=20
+ 	rcu_assign_pointer(dev->mt76.wcid[idx], NULL);
++	printk(KERN_INFO "%s %d\n", __func__, __LINE__);
+=20
+ 	dev->mt76.vif_mask &=3D ~BIT_ULL(mconf->mt76.idx);
++	printk(KERN_INFO "%s %d: mconf->vif =3D %px\n", __func__, __LINE__, mconf=
+->vif);
+ 	mconf->vif->phy->omac_mask &=3D ~BIT_ULL(mconf->mt76.omac_idx);
++	printk(KERN_INFO "%s %d\n", __func__, __LINE__);
+ 	mt792x_mutex_release(dev);
++	printk(KERN_INFO "%s %d\n", __func__, __LINE__);
+=20
+ 	spin_lock_bh(&dev->mt76.sta_poll_lock);
++	printk(KERN_INFO "%s %d\n", __func__, __LINE__);
+ 	if (!list_empty(&mlink->wcid.poll_list))
+ 		list_del_init(&mlink->wcid.poll_list);
+ 	spin_unlock_bh(&dev->mt76.sta_poll_lock);
++	printk(KERN_INFO "%s %d\n", __func__, __LINE__);
+=20
+ 	mt76_wcid_cleanup(&dev->mt76, &mlink->wcid);
++	printk(KERN_INFO "%s %d\n", __func__, __LINE__);
  }
- 
- static void ath12k_mac_dec_num_stations(struct ath12k_link_vif *arvif,
--					struct ieee80211_sta *sta)
-+					struct ath12k_link_sta *arsta)
+=20
+ void mt792x_remove_interface(struct ieee80211_hw *hw,
+@@ -143,6 +154,8 @@ void mt792x_remove_interface(struct ieee80211_hw *hw,
  {
-+	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
- 	struct ath12k *ar = arvif->ar;
- 
- 	lockdep_assert_held(&ar->conf_mutex);
-@@ -4534,17 +4574,17 @@ static void ath12k_mac_dec_num_stations(struct ath12k_link_vif *arvif,
- 
- static int ath12k_mac_station_add(struct ath12k *ar,
- 				  struct ath12k_link_vif *arvif,
--				  struct ieee80211_sta *sta)
-+				  struct ath12k_link_sta *arsta)
- {
- 	struct ath12k_base *ab = ar->ab;
- 	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(arvif->ahvif);
--	struct ath12k_sta *arsta = ath12k_sta_to_arsta(sta);
-+	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
- 	struct ath12k_wmi_peer_create_arg peer_param;
- 	int ret;
- 
- 	lockdep_assert_held(&ar->conf_mutex);
- 
--	ret = ath12k_mac_inc_num_stations(arvif, sta);
-+	ret = ath12k_mac_inc_num_stations(arvif, arsta);
- 	if (ret) {
- 		ath12k_warn(ab, "refusing to associate station: too many connected already (%d)\n",
- 			    ar->max_num_stations);
-@@ -4603,7 +4643,7 @@ static int ath12k_mac_station_add(struct ath12k *ar,
- free_peer:
- 	ath12k_peer_delete(ar, arvif->vdev_id, sta->addr);
- dec_num_station:
--	ath12k_mac_dec_num_stations(arvif, sta);
-+	ath12k_mac_dec_num_stations(arvif, arsta);
- exit:
- 	return ret;
+ 	struct mt792x_vif *mvif =3D (struct mt792x_vif *)vif->drv_priv;
+ 	struct mt792x_dev *dev =3D mt792x_hw_dev(hw);
++	printk(KERN_INFO "%s %d: hw =3D %px vif =3D %px mvif =3D %px dev =3D %px\=
+n",
++			__func__, __LINE__, hw, vif, mvif, dev);
+=20
+ 	mt792x_mac_link_bss_remove(dev, &vif->bss_conf, &mvif->sta.deflink);
  }
-@@ -4647,14 +4687,16 @@ static int ath12k_mac_op_sta_state(struct ieee80211_hw *hw,
- {
- 	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
- 	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
-+	struct ath12k_sta *ahsta = ath12k_sta_to_ahsta(sta);
- 	struct ath12k *ar;
--	struct ath12k_sta *arsta = ath12k_sta_to_arsta(sta);
- 	struct ath12k_link_vif *arvif;
-+	struct ath12k_link_sta *arsta;
- 	struct ath12k_peer *peer;
- 	int ret = 0;
- 
- 	mutex_lock(&ah->conf_mutex);
- 	arvif = &ahvif->deflink;
-+	arsta = &ahsta->deflink;
- 
- 	/* cancel must be done outside the ar->comf_mutex to avoid deadlock */
- 	if ((old_state == IEEE80211_STA_NONE &&
-@@ -4672,10 +4714,15 @@ static int ath12k_mac_op_sta_state(struct ieee80211_hw *hw,
- 	if (old_state == IEEE80211_STA_NOTEXIST &&
- 	    new_state == IEEE80211_STA_NONE) {
- 		memset(arsta, 0, sizeof(*arsta));
-+		rcu_assign_pointer(ahsta->link[0], arsta);
-+		/* TODO use appropriate link id once MLO support is added  */
-+		arsta->link_id = ATH12K_DEFAULT_LINK_ID;
-+		ahsta->links_map = BIT(arsta->link_id);
-+		arsta->ahsta = ahsta;
- 		arsta->arvif = arvif;
- 		INIT_WORK(&arsta->update_wk, ath12k_sta_rc_update_wk);
- 
--		ret = ath12k_mac_station_add(ar, arvif, sta);
-+		ret = ath12k_mac_station_add(ar, arvif, arsta);
- 		if (ret)
- 			ath12k_warn(ar->ab, "Failed to add station: %pM for VDEV: %d\n",
- 				    sta->addr, arvif->vdev_id);
-@@ -4698,7 +4745,7 @@ static int ath12k_mac_op_sta_state(struct ieee80211_hw *hw,
- 			ath12k_dbg(ar->ab, ATH12K_DBG_MAC, "Removed peer: %pM for VDEV: %d\n",
- 				   sta->addr, arvif->vdev_id);
- 
--		ath12k_mac_dec_num_stations(arvif, sta);
-+		ath12k_mac_dec_num_stations(arvif, arsta);
- 		spin_lock_bh(&ar->ab->base_lock);
- 		peer = ath12k_peer_find(ar->ab, arvif->vdev_id, sta->addr);
- 		if (peer && peer->sta == sta) {
-@@ -4713,12 +4760,20 @@ static int ath12k_mac_op_sta_state(struct ieee80211_hw *hw,
- 
- 		kfree(arsta->rx_stats);
- 		arsta->rx_stats = NULL;
-+
-+		if (arsta->link_id < IEEE80211_MLD_MAX_NUM_LINKS) {
-+			rcu_assign_pointer(ahsta->link[arsta->link_id], NULL);
-+			synchronize_rcu();
-+			ahsta->links_map &= ~(BIT(arsta->link_id));
-+			arsta->link_id = ATH12K_INVALID_LINK_ID;
-+			arsta->ahsta = NULL;
-+		}
- 	} else if (old_state == IEEE80211_STA_AUTH &&
- 		   new_state == IEEE80211_STA_ASSOC &&
- 		   (vif->type == NL80211_IFTYPE_AP ||
- 		    vif->type == NL80211_IFTYPE_MESH_POINT ||
- 		    vif->type == NL80211_IFTYPE_ADHOC)) {
--		ret = ath12k_station_assoc(ar, arvif, sta, false);
-+		ret = ath12k_station_assoc(ar, arvif, arsta, false);
- 		if (ret)
- 			ath12k_warn(ar->ab, "Failed to associate station: %pM\n",
- 				    sta->addr);
-@@ -4762,7 +4817,7 @@ static int ath12k_mac_op_sta_state(struct ieee80211_hw *hw,
- 		   (vif->type == NL80211_IFTYPE_AP ||
- 		    vif->type == NL80211_IFTYPE_MESH_POINT ||
- 		    vif->type == NL80211_IFTYPE_ADHOC)) {
--		ret = ath12k_station_disassoc(ar, arvif, sta);
-+		ret = ath12k_station_disassoc(ar, arvif, arsta);
- 		if (ret)
- 			ath12k_warn(ar->ab, "Failed to disassociate station: %pM\n",
- 				    sta->addr);
-@@ -4827,8 +4882,9 @@ static void ath12k_mac_op_sta_rc_update(struct ieee80211_hw *hw,
- 					u32 changed)
- {
- 	struct ath12k *ar;
--	struct ath12k_sta *arsta = ath12k_sta_to_arsta(sta);
-+	struct ath12k_sta *ahsta = ath12k_sta_to_ahsta(sta);
- 	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
-+	struct ath12k_link_sta *arsta;
- 	struct ath12k_link_vif *arvif;
- 	struct ath12k_peer *peer;
- 	u32 bw, smps;
-@@ -4851,6 +4907,13 @@ static void ath12k_mac_op_sta_rc_update(struct ieee80211_hw *hw,
- 		rcu_read_unlock();
- 		return;
- 	}
-+	arsta = rcu_dereference(ahsta->link[link_id]);
-+	if (!arsta) {
-+		rcu_read_unlock();
-+		ath12k_warn(ar->ab, "mac sta rc update failed to fetch link sta on link id %u for peer %pM\n",
-+			    link_id, sta->addr);
-+		return;
-+	}
- 	spin_lock_bh(&ar->ab->base_lock);
- 
- 	peer = ath12k_peer_find(ar->ab, arvif->vdev_id, sta->addr);
-@@ -8284,7 +8347,8 @@ static void ath12k_mac_set_bitrate_mask_iter(void *data,
- 					     struct ieee80211_sta *sta)
- {
- 	struct ath12k_link_vif *arvif = data;
--	struct ath12k_sta *arsta = ath12k_sta_to_arsta(sta);
-+	struct ath12k_sta *ahsta = ath12k_sta_to_ahsta(sta);
-+	struct ath12k_link_sta *arsta = &ahsta->deflink;
- 	struct ath12k *ar = arvif->ar;
- 
- 	if (arsta->arvif != arvif)
-@@ -8301,7 +8365,8 @@ static void ath12k_mac_disable_peer_fixed_rate(void *data,
- 					       struct ieee80211_sta *sta)
- {
- 	struct ath12k_link_vif *arvif = data;
--	struct ath12k_sta *arsta = ath12k_sta_to_arsta(sta);
-+	struct ath12k_sta *ahsta = ath12k_sta_to_ahsta(sta);
-+	struct ath12k_link_sta *arsta = &ahsta->deflink;
- 	struct ath12k *ar = arvif->ar;
- 	int ret;
- 
-@@ -8619,16 +8684,22 @@ static void ath12k_mac_op_sta_statistics(struct ieee80211_hw *hw,
- 					 struct ieee80211_sta *sta,
- 					 struct station_info *sinfo)
- {
--	struct ath12k_sta *arsta = ath12k_sta_to_arsta(sta);
-+	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
-+	struct ath12k_sta *ahsta = ath12k_sta_to_ahsta(sta);
-+	struct ath12k_link_sta *arsta;
- 
-+	mutex_lock(&ah->conf_mutex);
-+	arsta = &ahsta->deflink;
- 	sinfo->rx_duration = arsta->rx_duration;
- 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_RX_DURATION);
- 
- 	sinfo->tx_duration = arsta->tx_duration;
- 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_DURATION);
- 
--	if (!arsta->txrate.legacy && !arsta->txrate.nss)
-+	if (!arsta->txrate.legacy && !arsta->txrate.nss) {
-+		mutex_unlock(&ah->conf_mutex);
- 		return;
-+	}
- 
- 	if (arsta->txrate.legacy) {
- 		sinfo->txrate.legacy = arsta->txrate.legacy;
-@@ -8646,6 +8717,7 @@ static void ath12k_mac_op_sta_statistics(struct ieee80211_hw *hw,
- 	/* TODO: Use real NF instead of default one. */
- 	sinfo->signal = arsta->rssi_comb + ATH12K_DEFAULT_NOISE_FLOOR;
- 	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_SIGNAL);
-+	mutex_unlock(&ah->conf_mutex);
- }
- 
- static int ath12k_mac_op_cancel_remain_on_channel(struct ieee80211_hw *hw,
--- 
-2.34.1
 
+With these I get the following error message on startup:
+
+[  T858] mt792x_remove_interface 157: hw =3D ffff92dc11560900 vif =3D ffff9=
+2dbe072d970 mvif =3D ffff92dbe072de00 dev =3D ffff92dc11562000
+[  T858] mt792x_link_conf_to_mconf 263: vif =3D ffff92dbe072d970 mvif =3D f=
+fff92dbe072de00
+[  T858] mt792x_vif_to_link 233: vif =3D ffff92dbe072d970
+[  T858] mt792x_mac_link_bss_remove 122
+[  T858] mt792x_mac_link_bss_remove 125
+[  T858] mt792x_mac_link_bss_remove 127
+[  T858] mt792x_mac_link_bss_remove 129
+[  T858] mt792x_mac_link_bss_remove 132
+[  T858] mt792x_mac_link_bss_remove 135: mconf->vif =3D 0000000000000000
+[  T858] BUG: kernel NULL pointer dereference, address: 00000000000004b8
+[  T858] #PF: supervisor read access in kernel mode
+[  T858] #PF: error_code(0x0000) - not-present page
+[  T858] PGD 0 P4D 0=20
+[  T858] Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
+[  T858] CPU: 0 PID: 858 Comm: NetworkManager Not tainted 6.10.0-rc5-debug-=
+01238-g1541d63c5fe2-dirty #30
+[  T858] Hardware name: Micro-Star International Co., Ltd. Alpha 15 B5EEK/M=
+S-158L, BIOS E158LAMS.107 11/10/2021
+[  T858] RIP: 0010:mt792x_remove_interface+0x1df/0x2e0 [mt792x_lib]
+[  T858] Code: 85 f0 30 00 00 49 8b 4f 18 e8 5d 4f f0 f7 49 8b 47 18 41 0f =
+b6 4f 01 ba 89 00 00 00 48 c7 c6 90 24 05 c1 48 c7 c7 36 33 05 c1 <48> 8b 8=
+0 b8 04 00 00 49 d3 e4 49 f7 d4 4c 21 a0 10 27 00 00 4c 8d
+[  T858] RSP: 0018:ffff9fcf03db7698 EFLAGS: 00010246
+[  T858] RAX: 0000000000000000 RBX: ffff92dbe072d970 RCX: 0000000000000000
+[  T858] RDX: 0000000000000089 RSI: ffffffffc1052490 RDI: ffffffffc1053336
+[  T858] RBP: ffff92dc11562000 R08: 0000000000000000 R09: 0000000000000003
+[  T858] R10: ffff9fcf03db7550 R11: ffffffffba099d28 R12: 0000000000000001
+[  T858] R13: ffff92dbe072ded8 R14: ffff92dc1156a150 R15: ffff92dbe072de00
+[  T858] FS:  00007fa13c515500(0000) GS:ffff92ea6e600000(0000) knlGS:000000=
+0000000000
+[  T858] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  T858] CR2: 00000000000004b8 CR3: 00000001046a2000 CR4: 0000000000750ef0
+[  T858] PKRU: 55555554
+[  T858] Call Trace:
+[  T858]  <TASK>
+[  T858]  ? __die+0x1e/0x60
+[  T858]  ? page_fault_oops+0x157/0x450
+[  T858]  ? _prb_read_valid+0x273/0x2e0
+[  T858]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T858]  ? exc_page_fault+0x331/0x670
+[  T858]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T858]  ? prb_read_valid+0x16/0x20
+[  T858]  ? asm_exc_page_fault+0x26/0x30
+[  T858]  ? mt792x_remove_interface+0x1df/0x2e0 [mt792x_lib]
+[  T858]  ? mt792x_remove_interface+0x1c3/0x2e0 [mt792x_lib]
+[  T858]  ? ieee80211_do_stop+0x507/0x7e0 [mac80211]
+[  T858]  ? ieee80211_stop+0x53/0x190 [mac80211]
+[  T858]  ? __dev_close_many+0xa5/0x120
+[  T858]  ? __dev_change_flags+0x18c/0x220
+[  T858]  ? dev_change_flags+0x21/0x60
+[  T858]  ? do_setlink+0xdf9/0x11d0
+[  T858]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T858]  ? __kmalloc_large_node+0x7e/0xb0
+[  T858]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T858]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T858]  ? security_sock_rcv_skb+0x33/0x50
+[  T858]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T858]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T858]  ? __nla_validate_parse+0x61/0xd10
+[  T858]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T858]  ? genl_done+0x53/0x80
+[  T858]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T858]  ? netlink_dump+0x357/0x410
+[  T858]  ? __rtnl_newlink+0x5d1/0x980
+[  T858]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T858]  ? genl_family_rcv_msg_dumpit+0xdf/0xf0
+[  T858]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T858]  ? kmalloc_trace_noprof+0x44/0x210
+[  T858]  ? rtnl_newlink+0x42/0x60
+[  T858]  ? rtnetlink_rcv_msg+0x14d/0x3f0
+[  T858]  ? mptcp_pm_nl_dump_addr+0x180/0x180
+[  T858]  ? rtnl_calcit.isra.0+0x130/0x130
+[  T858]  ? netlink_rcv_skb+0x56/0x100
+[  T858]  ? netlink_unicast+0x199/0x290
+[  T858]  ? netlink_sendmsg+0x21d/0x490
+[  T858]  ? __sock_sendmsg+0x78/0x80
+[  T858]  ? ____sys_sendmsg+0x23f/0x2e0
+[  T858]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T858]  ? copy_msghdr_from_user+0x68/0xa0
+[  T858]  ? ___sys_sendmsg+0x81/0xd0
+[  T858]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T858]  ? crng_fast_key_erasure+0xbc/0xf0
+[  T858]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T858]  ? get_random_bytes_user+0x126/0x140
+[  T858]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T858]  ? __fdget+0xb1/0xe0
+[  T858]  ? __sys_sendmsg+0x56/0xa0
+[  T858]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T858]  ? do_syscall_64+0x5f/0x170
+[  T858]  ? entry_SYSCALL_64_after_hwframe+0x55/0x5d
+[  T858]  </TASK>
+[  T858] Modules linked in: cmac bnep nls_ascii nls_cp437 vfat fat snd_ctl_=
+led snd_hda_codec_realtek snd_hda_codec_generic snd_hda_scodec_component bt=
+usb snd_hda_codec_hdmi btrtl btintel btbcm btmtk snd_hda_intel amd_atl snd_=
+intel_dspcfg bluetooth snd_acp3x_pdm_dma snd_soc_dmic snd_acp3x_rn snd_hda_=
+codec uvcvideo snd_soc_core videobuf2_vmalloc uvc snd_hwdep videobuf2_memop=
+s videobuf2_v4l2 snd_hda_core videodev snd_pcm_oss snd_mixer_oss snd_pcm sn=
+d_rn_pci_acp3x snd_acp_config videobuf2_common snd_timer msi_wmi snd_soc_ac=
+pi ecdh_generic ecc mc sparse_keymap edac_mce_amd snd wmi_bmof k10temp ccp =
+snd_pci_acp3x soundcore battery ac button joydev hid_sensor_magn_3d hid_sen=
+sor_gyro_3d hid_sensor_als hid_sensor_accel_3d hid_sensor_prox hid_sensor_t=
+rigger industrialio_triggered_buffer kfifo_buf industrialio amd_pmc hid_sen=
+sor_iio_common evdev hid_multitouch serio_raw mt7921e mt7921_common mt792x_=
+lib mt76_connac_lib mt76 mac80211 libarc4 cfg80211 rfkill msr fuse nvme_fab=
+rics efi_pstore configfs efivarfs autofs4 ext4
+[  T858]  crc32c_generic crc16 mbcache jbd2 usbhid amdgpu i2c_algo_bit xhci=
+_pci drm_ttm_helper ttm xhci_hcd drm_exec drm_suballoc_helper amdxcp nvme d=
+rm_buddy hid_sensor_hub usbcore gpu_sched nvme_core mfd_core hid_generic cr=
+c32c_intel psmouse amd_sfh i2c_piix4 usb_common t10_pi drm_display_helper r=
+8169 i2c_hid_acpi i2c_hid hid i2c_designware_platform i2c_designware_core
+[  T858] CR2: 00000000000004b8
+[  T858] ---[ end trace 0000000000000000 ]---
+
+So the problem is here that mconf->vif is still NULL probably because
+on mt7921 nobody is bothering to set it.
+
+I did a similar investigation for the error in linux-next-20240711
+
+void mt792x_mac_link_bss_remove(struct mt792x_dev *dev,
+				struct mt792x_bss_conf *mconf,
+				struct mt792x_link_sta *mlink)
+{
+	struct ieee80211_vif *vif =3D container_of((void *)mconf->vif,
+						 struct ieee80211_vif, drv_priv);
+	struct ieee80211_bss_conf *link_conf;
+	int idx =3D mlink->wcid.idx;
+
+	printk(KERN_INFO "%s %d: dev =3D %px mconf =3D %px mlink =3D %px vif =3D %=
+px\n",
+			__func__, __LINE__, dev, mconf, mlink, vif);
+	link_conf =3D mt792x_vif_to_bss_conf(vif, mconf->link_id);
+
+This leads to the following message on startup
+=20
+[  T848] mt792x_mac_link_bss_remove 147: dev =3D ffff9403c1672000 mconf =3D=
+ ffff9403c1a35e20 mlink =3D ffff9403c1a35f00 vif =3D fffffffffffffb70
+[  T848] BUG: unable to handle page fault for address: ffffffffffffffa0
+[  T848] #PF: supervisor read access in kernel mode
+[  T848] #PF: error_code(0x0000) - not-present page
+[skipped backtrace]
+
+showing that vif is an invalid (though not NULL) pointer here, too.
+
+Bert Karwatzki
 
