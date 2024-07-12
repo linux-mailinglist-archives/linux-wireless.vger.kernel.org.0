@@ -1,145 +1,121 @@
-Return-Path: <linux-wireless+bounces-10203-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10204-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8E3892F6B3
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jul 2024 10:08:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8118492F76A
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jul 2024 10:57:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92178282AD1
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jul 2024 08:08:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 384A61F21613
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jul 2024 08:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3136F3EA71;
-	Fri, 12 Jul 2024 08:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AEB213E03A;
+	Fri, 12 Jul 2024 08:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="seffB5Di"
+	dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b="HYJF8aCl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from nbd.name (nbd.name [46.4.11.11])
+Received: from mout.web.de (mout.web.de [217.72.192.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7044B1C2E
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Jul 2024 08:08:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746E685C56
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Jul 2024 08:57:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720771696; cv=none; b=VENTpjmI5QtDRdOH2GA/il6oNbQIjdTWzMv2bjM3fReMwhAc6CJLeMuIXGX3YICRCAgAQeeD+Y8GpPkYICS22dn0XCJ2nuRay2QK6GlketiW6OL7ijp/IIgE5KxpycqJTy0KIJNcrgXwoyAplSvUQq/mp1aRFftr8NunTsG7UQY=
+	t=1720774665; cv=none; b=hP38Kq9eq9R+PgsG6Rb2ML/bhitA8F/vn/OzxGs0IF2o/cmolfbnc5cNtYrIbRwD23nG2wggT6xqT8d3Pio0nFGpaDRMBszkzur5k7oXUDrRcRq7NX+IzTipRbgeHnO6uN/aM3xohTf5b4C/k3LUOfQcIo2a05NMMOOMwCGCQ5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720771696; c=relaxed/simple;
-	bh=BmA7vCAWYw6bUgxqhHzPuNp0MhFSZ8ACUtZ6582tL0E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=X2PDywbaJDdQWHYnYZhfqMrGJZ48nH0xZBjfXxuggOHX0PqdpkXU3ZjXOLsCaTDyidP5mZ+uT20kPo9xxQKTGofM+mq2GQAAKs0BTRwRjklnMcrkdtsYK+Brk8lpBO2/lqxx4ynKUGu/W5CQ55dps+vQliIJYC1HIRiQt0oPHqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=seffB5Di; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Cc:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=lNdwKoOTKXOlt1ukDSjeUdr7nsC1ocojNWmFClFGV8Q=; b=seffB5Di/CPW5Uw23/L1jJv9XI
-	Fu9JJJyJUtxFvrN9IJuVlATBqMZVAo9htYdEMzYzhDfyTMkcB7r8B4b68PqNE6PzWpr3XOVds2Cm4
-	JykDByaZJPh2HC0/P4mnUPQ1/J2qeML8Jz0Gf+1CcpYcg760pgBWrLSXPafNhwSJKGCE=;
-Received: from [2a01:599:113:53fc:e4:139f:ce36:fd98] (helo=nf.local)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96)
-	(envelope-from <nbd@nbd.name>)
-	id 1sSBK7-0066v2-1A;
-	Fri, 12 Jul 2024 10:08:11 +0200
-Message-ID: <1df0c5cc-ce58-450e-9f91-7f8f599cb11d@nbd.name>
-Date: Fri, 12 Jul 2024 10:08:10 +0200
+	s=arc-20240116; t=1720774665; c=relaxed/simple;
+	bh=MeJe//Em7DgPJmlc6Kvw+nqubwtouh8oC6mMmD0kJtY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=qYTgXl57bSE1FMpBh2bvy1+raW9RL3f77sIZ4C8LTD2Mnygw4/jM8XXyyh7aChQk/opYkJS7kDXzwoF09jYfV5JmbT7pwwfmyoKh42i6wsnygxxI4WLnEJH6Q6H/vVHolgJN1m5xV54nnAyz++yx5uUlR7GkzciCxiyZrj7l3Hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b=HYJF8aCl; arc=none smtp.client-ip=217.72.192.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1720774639; x=1721379439; i=spasswolf@web.de;
+	bh=q818iMHzVBVmVT4CCTpT313nYF1LwDuhQ5Wo0/o9I78=;
+	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
+	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=HYJF8aClPG9Gs4DK7tVi/DfrW95Nyj1KYJIsN8ORTIZKTwGxLYix1I931TO/E4hN
+	 JVqTCh3gqQBJG87hmKlN4j+kzvlpnk8PgY3saVP48bmzwA3/C6QYVvZ1AzzSzlG6S
+	 ArSt6onXC27X2IAxan6UGekhpIoaDhGzxFazge90BqVWErn9nWXf33VwC2faJ+I7c
+	 sEyAtF8B4IHM6YK/p4rs/g6nw1QjuljDkMTEc9Bhb2liiiG8V5y1SJNNP8UY+fPY/
+	 wuU4X9SyCzQ89Q9TCjNscznjfkiDlf06OZ3iNHfGacGvfvcrPMjTknWy3Qp/yQoTV
+	 CyEYaIPR912Y1m5KxA==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.0.101] ([84.119.92.193]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1Mav2X-1rvs4i00AV-00apCg; Fri, 12
+ Jul 2024 10:57:19 +0200
+Message-ID: <bed2ef069bf991032f95f556b23fc5c8f725d535.camel@web.de>
+Subject: Re: patch 46/47 causes NULL pointer deref on mt7921
+From: Bert Karwatzki <spasswolf@web.de>
+To: Sean Wang <sean.wang@kernel.org>
+Cc: deren.wu@mediatek.com, linux-mediatek@lists.infradead.org, 
+	linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com, 
+	mingyen.hsieh@mediatek.com, nbd@nbd.name, sean.wang@mediatek.com
+Date: Fri, 12 Jul 2024 10:57:17 +0200
+In-Reply-To: <CAGp9LzoXMoAW6dVZjTf-JcD_wiU4yXpGwkLaVyWXTkaV2MOKwg@mail.gmail.com>
+References: <20240711175156.4465-1-spasswolf@web.de>
+	 <CAGp9LzoXMoAW6dVZjTf-JcD_wiU4yXpGwkLaVyWXTkaV2MOKwg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.52.3-1 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] ath10k: failed to flush transmit queue
-To: Cedric Veilleux <veilleux.cedric@gmail.com>,
- linux-wireless@vger.kernel.org
-References: <CA+Xfe4FjUmzM5mvPxGbpJsF3SvSdE5_wgxvgFJ0bsdrKODVXCQ@mail.gmail.com>
-From: Felix Fietkau <nbd@nbd.name>
-Content-Language: en-US
-Autocrypt: addr=nbd@nbd.name; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
- cL98efvrjdstUfTCP2pfetyN
-In-Reply-To: <CA+Xfe4FjUmzM5mvPxGbpJsF3SvSdE5_wgxvgFJ0bsdrKODVXCQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:sIKhldBgcjtPKQWFe/buZTda0sdouDZcp2V6JqwlSh2q62Cho/j
+ nlvjuMSklrXtpSk/fLVcwwI9KF1ynsLTvKWUQFlMd7Rto36C5jDKvyehU8kDyn6qcpEJAa8
+ tveUAXeqfU3im8TZpo694cEKX3eNq/6EQgCGkKEEjXCCqIRkyeRW7F7nvPTGJGj5TNfSSLO
+ XXuFYRxCEBrEYtq80c4Fg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:jMP8WPPszMA=;rdREfHQyvwNxa8u0hXghW38V7ot
+ eZ9nVu3nHgi5maCFhOMdIF0XryFuMG4PPG9VwU4DnKkJl6m2j8bOFMRdSrgf2iX+b0RYr0nUI
+ otQjns3KiVM0+tH6JkyKFAawEPY9Zzf4oznh1u3fa9pIW28OJ0jO0cWdJnG+lvKZXTjoaau6N
+ qEUoR+4FQCuENBF1p5/FXZjvwsAb5IWwsVAkyR9RL+u4xWDd0XN4gSSUyeK++U2EObVvelcj+
+ Uh1ABbJj7AmdHm70pv+9VSL7Ftc4uWA55xSDHRZ0e3rm9RHkYzTYINvvDYpBqCPOe7YOfDAe5
+ 0EqFh2DQvf4t5bEKN9UA+5xNoa2N3tWw9GI5+S0HMsbK/z5VharQqpRoyHPe3Rb5Dwcq62pcE
+ woN76ppHr8d3JQ2UmnOsEv/r4XV8EREgjzLjt3FxEp2bRgcEelFvL0pODHiAgp0yZ6XQ0aM7N
+ JHC5zYIkvCRqWdAaoKXIE23JuXJjQ0gdqeIu4WldD54L5ztQYIeJW1aVZKrb9Mn7+fDNN8P2a
+ jP+KG6ZJJ8KpsvMeQ1IPKE3Vhw2WvTdmdzmIxtN5MX+2ge4ooUTRQosD0gYrH39d6qRokibW4
+ CZDE++9kF3dS5V51QWR4UYAH4KQUeR5iR9jVTselV5CVAwtuzmG5y3SgDuIoDtw+MP0dLx4kS
+ n6P/z2wXneYlZMXN4be3VT0FVvr8mr7HzQ/Pg+QYXePgUWa/XcUyTRzSxwc/MW/bA98bUCUqj
+ pvDVqDgvsMDLld0Dg/7lBqlRhCJwOXv4VNMmoRj6SCh+kRovzD1ul6ls+KVnclOwR8Ra7ayJo
+ +BfNt4N9j1QaR9ph/EKyrM1A==
 
-On 12.07.24 04:23, Cedric Veilleux wrote:
-> AP mode.
-> Both 2.4 and 5ghz channels.
-> 
-> Using WLE600VX (QCA986x/988x), we are seeing the following errors in
-> kernel logs:
-> 
-> [12978.022077] ath10k_pci 0000:04:00.0: failed to flush transmit queue
-> (skip 0 ar-state 1): 0
-> [13343.069189] ath10k_pci 0000:04:00.0: failed to flush transmit queue
-> (skip 0 ar-state 1): 0
-> 
-> They are somewhat random but frequent. Can happen once a day or many
-> times per hour.
-> 
-> They are associated with 3-4 seconds of radio silence. Full packet
-> loss. Then everything resumes normally, STA are still associated and
-> traffic resumes.
-> 
-> I have tested with major kernel versions:
-> 
-> 6.1.97: stable (tested for many days on 10+ access points)
-> 6.2.16: stable (tested for few hours single machine)
-> 6.3.13: stable (tested for few hours single machine)
-> 
-> 6.4.16: unstable  (we have errors within an hour)
-> 6.5.13: unstable  (we have errors within an hour)
-> 6.6.39: unstable  (we have errors within an hour)
-> 6.7.12: unstable  (we have errors within an hour)
-> 6.8.10: unstable  (we have errors within an hour)
-> 6.9.7: unstable  (we have errors within an hour)
-> 
->  From these tests I believe something changed in 6.4 series causing
-> instabilities and the dreaded "failed to flush transmit queue" error.
-> 
-> This is a custom linux distribution. Only change is the kernel. All
-> other packages are same versions. Everything rebuilt from source using
-> bitbake/yocto. Same linux-firmware files.
+Am Donnerstag, dem 11.07.2024 um 18:40 -0500 schrieb Sean Wang:
+> Hi Bert,
+>
+> Thanks for the detailed debug log. I've quickly made a change to fix
+> the issue. Right now, I can't access the test environment, but I'll
+> test it and send it out as soon as possible. Here's the patch.
+>
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> index 2e6268cb06c0..1bab93d049df 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> @@ -303,6 +303,7 @@ mt7921_add_interface(struct ieee80211_hw *hw,
+> struct ieee80211_vif *vif)
+>
+>         mvif->bss_conf.mt76.omac_idx =3D mvif->bss_conf.mt76.idx;
+>         mvif->phy =3D phy;
+> +       mvif->bss_conf.vif =3D mvif;
+>         mvif->bss_conf.mt76.band_idx =3D 0;
+>         mvif->bss_conf.mt76.wmm_idx =3D mvif->bss_conf.mt76.idx %
+> MT76_CONNAC_MAX_WMM_SETS;
+>
 
-I'm pretty sure it's caused by this commit:
+I tested your patch with linux-next-20240711 where it works fine and with =
+linux-
+next-20240712 where the mediatek related error are solved, too, but gdm ha=
+ngs on
+startup (with no related log messages, which I'm sure is a different probl=
+em).
 
-commit 0b75a1b1e42e07ae84e3a11d2368b418546e2bec
-Author: Johannes Berg <johannes.berg@intel.com>
-Date:   Fri Mar 31 16:59:16 2023 +0200
-
-     wifi: mac80211: flush queues on STA removal
-
-I guess somebody needs to look into making the queue flush on ath10k 
-more reliable (or even better, implement a more lightweight .flush_sta op).
-
-I don't have time to do the work myself, but hopefully this information 
-could help somebody else take care of it.
-
-- Felix
+Bert Karwatzki
 
