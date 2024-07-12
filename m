@@ -1,53 +1,53 @@
-Return-Path: <linux-wireless+bounces-10202-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10203-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48A1592F6A7
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jul 2024 10:02:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8E3892F6B3
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jul 2024 10:08:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E57C21F24AE0
-	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jul 2024 08:02:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92178282AD1
+	for <lists+linux-wireless@lfdr.de>; Fri, 12 Jul 2024 08:08:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C63AD2EB1D;
-	Fri, 12 Jul 2024 08:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3136F3EA71;
+	Fri, 12 Jul 2024 08:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="CJWr3mZP"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="seffB5Di"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0892539A
-	for <linux-wireless@vger.kernel.org>; Fri, 12 Jul 2024 08:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7044B1C2E
+	for <linux-wireless@vger.kernel.org>; Fri, 12 Jul 2024 08:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720771342; cv=none; b=bwPE2iew0Wbgg5bLFS5h41D5H+8UCJ5EElzk4k7gT6/Gs4gjtd2QCe05o/IL23Vp52DX0qLwa8lpt4Xlv6vqpiYM3prxhQXBkIagmE7CZnHFJT/V0Iwb/6ecJerKshNKUEzrKD667aklC5D8p9m4q1r+YuWHmzMRFKvL0rYdh0U=
+	t=1720771696; cv=none; b=VENTpjmI5QtDRdOH2GA/il6oNbQIjdTWzMv2bjM3fReMwhAc6CJLeMuIXGX3YICRCAgAQeeD+Y8GpPkYICS22dn0XCJ2nuRay2QK6GlketiW6OL7ijp/IIgE5KxpycqJTy0KIJNcrgXwoyAplSvUQq/mp1aRFftr8NunTsG7UQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720771342; c=relaxed/simple;
-	bh=Nil1TPBocZYInEJu8MTbCzt3aDsmmpP1W3RBmkwSQ+U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G7XuWK8/tpZ80T4Fq497kX4kz2P+moWIMD6BG3Ou6AHB5ysYerziQnmVvG5awEL0Nf/NrSE7kUSIY4DkdW9VVi0BDs3S39g2HRtfnTzgChoLh6Wz2SxNZ6UbOWXUHHBiAVfANa3MXA9OiBoqqnGbbt1eDGUdGfvmZ0/ipIWjaRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=CJWr3mZP; arc=none smtp.client-ip=46.4.11.11
+	s=arc-20240116; t=1720771696; c=relaxed/simple;
+	bh=BmA7vCAWYw6bUgxqhHzPuNp0MhFSZ8ACUtZ6582tL0E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=X2PDywbaJDdQWHYnYZhfqMrGJZ48nH0xZBjfXxuggOHX0PqdpkXU3ZjXOLsCaTDyidP5mZ+uT20kPo9xxQKTGofM+mq2GQAAKs0BTRwRjklnMcrkdtsYK+Brk8lpBO2/lqxx4ynKUGu/W5CQ55dps+vQliIJYC1HIRiQt0oPHqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=seffB5Di; arc=none smtp.client-ip=46.4.11.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
 	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	References:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Cc:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Lslx8tIOsfw8hTHbrDg3UygBYOuBMROGtD9ihT2TypQ=; b=CJWr3mZPmp4he6Xw1o4CU8T8lu
-	UvqwXQBnPRygfCGoURWaY7o/sC0vx2uB/IDlN85K59ohbwi6yNjFMs4cj8tmdSMBgwjt8wF6JvgND
-	N6mKMgYHhVnQiOvF4qVuRmn6ijP2xoFFzJy/m9xhfSs3E2q/t3x9m5GVHOvF3suJ/3lE=;
+	bh=lNdwKoOTKXOlt1ukDSjeUdr7nsC1ocojNWmFClFGV8Q=; b=seffB5Di/CPW5Uw23/L1jJv9XI
+	Fu9JJJyJUtxFvrN9IJuVlATBqMZVAo9htYdEMzYzhDfyTMkcB7r8B4b68PqNE6PzWpr3XOVds2Cm4
+	JykDByaZJPh2HC0/P4mnUPQ1/J2qeML8Jz0Gf+1CcpYcg760pgBWrLSXPafNhwSJKGCE=;
 Received: from [2a01:599:113:53fc:e4:139f:ce36:fd98] (helo=nf.local)
 	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.96)
 	(envelope-from <nbd@nbd.name>)
-	id 1sSBEA-0066ry-2t;
-	Fri, 12 Jul 2024 10:02:02 +0200
-Message-ID: <b9e3d2d1-383e-45a0-883f-d3d917592f14@nbd.name>
-Date: Fri, 12 Jul 2024 10:02:01 +0200
+	id 1sSBK7-0066v2-1A;
+	Fri, 12 Jul 2024 10:08:11 +0200
+Message-ID: <1df0c5cc-ce58-450e-9f91-7f8f599cb11d@nbd.name>
+Date: Fri, 12 Jul 2024 10:08:10 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -55,13 +55,12 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: mac80211_hwsim: correct MODULE_PARM_DESC of
- multi_radio
-To: Zong-Zhe Yang <kevin_yang@realtek.com>, johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org
-References: <20240712074938.26437-1-kevin_yang@realtek.com>
-Content-Language: en-US
+Subject: Re: [REGRESSION] ath10k: failed to flush transmit queue
+To: Cedric Veilleux <veilleux.cedric@gmail.com>,
+ linux-wireless@vger.kernel.org
+References: <CA+Xfe4FjUmzM5mvPxGbpJsF3SvSdE5_wgxvgFJ0bsdrKODVXCQ@mail.gmail.com>
 From: Felix Fietkau <nbd@nbd.name>
+Content-Language: en-US
 Autocrypt: addr=nbd@nbd.name; keydata=
  xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
  ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
@@ -85,17 +84,62 @@ Autocrypt: addr=nbd@nbd.name; keydata=
  TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
  GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
  cL98efvrjdstUfTCP2pfetyN
-In-Reply-To: <20240712074938.26437-1-kevin_yang@realtek.com>
+In-Reply-To: <CA+Xfe4FjUmzM5mvPxGbpJsF3SvSdE5_wgxvgFJ0bsdrKODVXCQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 12.07.24 09:49, Zong-Zhe Yang wrote:
-> Correct the name field in multi_radio's MODULE_PARM_DESC.
+On 12.07.24 04:23, Cedric Veilleux wrote:
+> AP mode.
+> Both 2.4 and 5ghz channels.
 > 
-> Fixes: d2601e34a102 ("wifi: mac80211_hwsim: add support for multi-radio wiphy")
-> Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Acked-by: Felix Fietkau <nbd@nbd.name>
+> Using WLE600VX (QCA986x/988x), we are seeing the following errors in
+> kernel logs:
+> 
+> [12978.022077] ath10k_pci 0000:04:00.0: failed to flush transmit queue
+> (skip 0 ar-state 1): 0
+> [13343.069189] ath10k_pci 0000:04:00.0: failed to flush transmit queue
+> (skip 0 ar-state 1): 0
+> 
+> They are somewhat random but frequent. Can happen once a day or many
+> times per hour.
+> 
+> They are associated with 3-4 seconds of radio silence. Full packet
+> loss. Then everything resumes normally, STA are still associated and
+> traffic resumes.
+> 
+> I have tested with major kernel versions:
+> 
+> 6.1.97: stable (tested for many days on 10+ access points)
+> 6.2.16: stable (tested for few hours single machine)
+> 6.3.13: stable (tested for few hours single machine)
+> 
+> 6.4.16: unstable  (we have errors within an hour)
+> 6.5.13: unstable  (we have errors within an hour)
+> 6.6.39: unstable  (we have errors within an hour)
+> 6.7.12: unstable  (we have errors within an hour)
+> 6.8.10: unstable  (we have errors within an hour)
+> 6.9.7: unstable  (we have errors within an hour)
+> 
+>  From these tests I believe something changed in 6.4 series causing
+> instabilities and the dreaded "failed to flush transmit queue" error.
+> 
+> This is a custom linux distribution. Only change is the kernel. All
+> other packages are same versions. Everything rebuilt from source using
+> bitbake/yocto. Same linux-firmware files.
 
-Thanks
+I'm pretty sure it's caused by this commit:
 
+commit 0b75a1b1e42e07ae84e3a11d2368b418546e2bec
+Author: Johannes Berg <johannes.berg@intel.com>
+Date:   Fri Mar 31 16:59:16 2023 +0200
+
+     wifi: mac80211: flush queues on STA removal
+
+I guess somebody needs to look into making the queue flush on ath10k 
+more reliable (or even better, implement a more lightweight .flush_sta op).
+
+I don't have time to do the work myself, but hopefully this information 
+could help somebody else take care of it.
+
+- Felix
 
