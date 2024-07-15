@@ -1,75 +1,75 @@
-Return-Path: <linux-wireless+bounces-10238-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10239-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D12C9931D48
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jul 2024 00:46:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C50E931D62
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jul 2024 01:00:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 527771F22828
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2024 22:46:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50FCE1C214FF
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2024 23:00:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D515F13D533;
-	Mon, 15 Jul 2024 22:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 131151422D1;
+	Mon, 15 Jul 2024 23:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ygproN6H"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NpO9EvTH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F4C13B585
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Jul 2024 22:46:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ADA413D24C
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Jul 2024 23:00:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721083610; cv=none; b=IjFyYxp3wBnnMknIKAbSNr3BAW731WJvUXwxvDhfvggcllOdfJS+444sDre5gH8hAsm2IWzOwXJmNRQi+t4yeqILcAQ4uJ/Iyj8d2EO8kdwSg/gRZrJpDP4J7gLWRVcA77lY+FREKEgpkZfe8oRf+G6A/gs8gccJePZpgNMyRrE=
+	t=1721084429; cv=none; b=XsUb27rU/Z6yS1rNJFJYKhr2mPXLPxhx5iDw1JrfMT631CTgFyAgOkZdX0Kl999faGZ8UO8BY1DPEJ7bHX6nIWqcpyG7T1/HIQiLUYGJ7AyvwfM04wDEjefxlqYOU9cdLCiFccR7BaY4FBf4g1u6/al6cbJUsiK8VjcQhagv94Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721083610; c=relaxed/simple;
-	bh=QBduxMJn/8/VoYF+kBKf4aPNndK2PEZIT4i/cR4yh00=;
+	s=arc-20240116; t=1721084429; c=relaxed/simple;
+	bh=b8rTag0SrLpLjulAdbl1o2anNWP1yfQ/jzPs3pG/BV0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HCAKQX39f3wW5KfgXXH41OOdYtDfPw9NUvEgzhcXyxe1yZQgbPQaBscbSQiWQDO28GtrJP6HEB/3cchIChGuzy74N0KNFgsgNHWenLi7Uc/xJhcLFM7yvvmoilOmn1/o//DORdZpNih6NVOnGwmB9MkmynOLSIaMuo6O/Sdxd5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ygproN6H; arc=none smtp.client-ip=209.85.218.54
+	 In-Reply-To:Content-Type; b=LyqIh+qlm6vBe0X2PN8UCWk/qD6YkvRLnz3aWWYY+zMZHqbwLDDWE6t3sntEHOC4CtQzVI5FTa46ifX9dGXHtrjjUo9RdiVvTkkFukjBYC+CZ5Puo6+sPVWrD2R3eMsUbcdnsW4yNzKIJk/5CCnsS77Ax6B5LdT4V+QVHW14AjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NpO9EvTH; arc=none smtp.client-ip=209.85.218.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a77bf336171so794665066b.1
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Jul 2024 15:46:49 -0700 (PDT)
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a77e6dd7f72so584056366b.3
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Jul 2024 16:00:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1721083607; x=1721688407; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1721084424; x=1721689224; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=/DrQDTkdWhn+Ce7ZQ8t9MzeROhcASOFp1mS0+Men98I=;
-        b=ygproN6HuPmxAZ2LpsGfrTMxWIndv0e2eTh3eBD5l/24QS0rbmi8+ynETIW6ZA/ITe
-         kQYZz8mTGhJ2fHvLXtdzvwFsuyWapMJQEjVu/PXr6emEppvWXKJtkSo+BgO31icmlV8O
-         QDOL/sl4XDVms50cKQxmrw65747iY3HClPEB5hrmP4gdYCAeU2Lb+Ki028tlVYvBAPG0
-         j8eovP7mDarZ3nuznRqoda++7AEZmQmGTAfRPi0b9f70M8B7AUGrwutYs0o8HaMeC8Xn
-         zIra5Th8wPysSWTgLY1oClz9csvaTbs/nipv+mo4CsxYLXBN49wk22duQjG8KFBOjFso
-         NwHw==
+        bh=k1gow5zppJqzN+25NcOcRbu7QXGXHf8jI5DLjDA8opQ=;
+        b=NpO9EvTHpFhtooFm9dMsSZ2cuvvTWu9XGxZdrs8c7OG3KD5kAm4O645tB0EYpFbfS+
+         XIlBPP9MAzZfFIazlpSv0Mkup6tODZr68Bak/rkZHJk2LsSWA9BOEprKmVIhEo1yFGAJ
+         EmkVyaerE2ikvJ1cpGfg6Dz3xfRr3GQmuWozHp3FVB2DSncEnFH5wtBzAHHCfTFuv18M
+         zf3mZ56Bbx0T02N6UlbZO0xHEt+7TEBI5sVl530YQIP3LxvPNJcHRuNDNmdKVRSvAKmb
+         rDwy/9sDvFR7kjlDdv2zJqjEOGz4MWEKr0ik3z4O0X+lU/jXSDQtNlgjAqEOHIyXZeQy
+         VXWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721083607; x=1721688407;
+        d=1e100.net; s=20230601; t=1721084424; x=1721689224;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/DrQDTkdWhn+Ce7ZQ8t9MzeROhcASOFp1mS0+Men98I=;
-        b=VpdjRplLM1xUZu7iFIa55XiG/ZWJEA6MnrH2jq2giUUm5yH4t1A+ta+7bFVFFvGenz
-         XUkuosuTFBczlLWiZeGoJ7QKk7+s6hYkIrvCXqt4MBjk6e9jTpvWGT5ZG1COrvZOZtD2
-         pZoV7S+V7JH3eMhAlVE7m1dj8t/OOuIwcIeMj40FU/XIEHddd77fELJKHNybJgQrf0c2
-         VHq1reNJWt9yqMeiIB/7Raoyyd2u6p/WMEIzC89CeV2XMausSCBNRmMtFaNgSqDWxohr
-         qQlJiqjmtrW0xO1FO0kPZlx8/0vffA19VFwBu2IjJGCdeID2RvdzB9cGioJiLuCEX461
-         akYA==
-X-Forwarded-Encrypted: i=1; AJvYcCUcQ4NlBGyjshuanJIBhbr4HRfz9tjnrzLqpnKPxNlc5jDvSOwRMRCMHvFCBoWgkqMiS7407ZpkbxQu7wzbCtczNr0+TbCujYJqlbeowsQ=
-X-Gm-Message-State: AOJu0YwIiuwnBebX9IqCVqMe39XuX9lThw7aJLhoZClGtILRnWT46lIw
-	Oy352+nKjS1j31fXeuiGzIMDEYO+weoNnOeqleSrLs9O4TU4lBAb2W+Oq4ISEe8=
-X-Google-Smtp-Source: AGHT+IG4DEesDMZcuysfgLZvQ/+OAO3Qsg+dE/NjXv/QQ07Ez023CbJmTu8w+jAxCcCb3jgETbq3fg==
-X-Received: by 2002:a17:906:489:b0:a77:abc3:48e2 with SMTP id a640c23a62f3a-a79edc4be78mr2890166b.25.1721083607319;
-        Mon, 15 Jul 2024 15:46:47 -0700 (PDT)
+        bh=k1gow5zppJqzN+25NcOcRbu7QXGXHf8jI5DLjDA8opQ=;
+        b=u6PV0o9Kdb+P9vk1W6M1VsWbnHlBCZ/7u/162cY28h6MCHOlBsYAbH8CuXMm/0bbc1
+         oDLAUKBzPn4JpD6qQbR/RE3XF2HmXG4u/QVhwvV+d9xoW5mSoYD8sA5fQ0XLxVQcEILk
+         zH5jhmAunjnhLXBu1yBnMJ7NORU2IdEYLz0se6tStFX9FJFRbKUW2WHCRSjXZNH7ofk2
+         Sj0BKcqsrxXtOpPspU1Tn2OG/0W425XoVkl7B6dTDwDrhUNSsTDkUto1WwHdk/nlu+od
+         gQm8dgGx6BdMp0JzaJLum1Mc8uQYk/1p4HYtdQpVNE9S72nJKX796xXGTgShH5ad36lO
+         eJjw==
+X-Forwarded-Encrypted: i=1; AJvYcCWItwWIQOBXMcx91smYvlbMpeWWFHNpB7dyEdzmLAoj366d0TvtgJJwfj/0rlDwkxTdtVRNa5xOVnmynKmGQGR7QzvT5ky5dI5Y5pI7BtM=
+X-Gm-Message-State: AOJu0YzwMfsrpQix8Z2nU0rgzz5t4y0FX98VM2EddZPdZU0n6wvweiCb
+	qMn733UzD6RU+qIgSaCezWcmXZhLIe1S8UjDXZvjDrXdHxbpUoHX/+r+eEeKbj8=
+X-Google-Smtp-Source: AGHT+IG/V4q1z5lcWEefALSNgD02693YZRqaRsgZF0ien3pd9o9z1XJ7SyGL9yQnRcaMgWd7aPFUNw==
+X-Received: by 2002:a17:906:27c8:b0:a77:c7d8:fe16 with SMTP id a640c23a62f3a-a79eaa5b6dbmr22287966b.62.1721084424263;
+        Mon, 15 Jul 2024 16:00:24 -0700 (PDT)
 Received: from [192.168.105.194] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a79bc5d1a73sm247528966b.87.2024.07.15.15.46.44
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a79bc5d00aasm246528366b.90.2024.07.15.16.00.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Jul 2024 15:46:46 -0700 (PDT)
-Message-ID: <a077b6ce-4fe9-43da-9c6a-454df609fdfb@linaro.org>
-Date: Tue, 16 Jul 2024 00:46:43 +0200
+        Mon, 15 Jul 2024 16:00:23 -0700 (PDT)
+Message-ID: <08b70537-d23c-414c-a539-d5166e9e27c1@linaro.org>
+Date: Tue, 16 Jul 2024 01:00:21 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -77,8 +77,10 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: net: wireless: add ath12k pcie bindings
-To: Patrick Wildt <patrick@blueri.se>, Andrew Lunn <andrew@lunn.ch>
+Subject: Re: [PATCH 2/2] arm64: dts: qcom: x1e80100-yoga: add wifi calibration
+ variant
+To: Patrick Wildt <patrick@blueri.se>,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Cc: Kalle Valo <kvalo@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
@@ -89,8 +91,9 @@ Cc: Kalle Valo <kvalo@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
  devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
  linux-kernel@vger.kernel.org, Johan Hovold <johan+linaro@kernel.org>
 References: <ZpV6o8JUJWg9lZFE@windev.fritz.box>
- <ZpV7B9uGVpeTSCzp@windev.fritz.box>
- <d921bf20-1d83-492f-ab88-0f23de26a649@lunn.ch> <ZpWQKMX9jhb-nNlh@mone.local>
+ <ZpV7OeGNIGGpqNC0@windev.fritz.box>
+ <cisap4ctuolfrs6hjqxz45fqtckcy6uhjzma2shcxkso73jvoh@jj7l4bgftoir>
+ <ZpWbUjHna1cE5zHW@mone.local>
 Content-Language: en-US
 From: Konrad Dybcio <konrad.dybcio@linaro.org>
 Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
@@ -128,47 +131,61 @@ Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
  nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
  izWDgYvmBE8=
-In-Reply-To: <ZpWQKMX9jhb-nNlh@mone.local>
+In-Reply-To: <ZpWbUjHna1cE5zHW@mone.local>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 15.07.2024 11:10 PM, Patrick Wildt wrote:
-> Am Mon, Jul 15, 2024 at 10:54:18PM +0200 schrieb Andrew Lunn:
->> On Mon, Jul 15, 2024 at 09:39:51PM +0200, Patrick Wildt wrote:
->>> Add devicetree bindings for Qualcomm ath12k PCIe devices such as WCN7850
->>> for which the calibration data variant may need to be described.
+On 16.07.2024 12:01 AM, Patrick Wildt wrote:
+> Am Tue, Jul 16, 2024 at 12:51:53AM +0300 schrieb Dmitry Baryshkov:
+>> On Mon, Jul 15, 2024 at 09:40:41PM GMT, Patrick Wildt wrote:
+>>> Describe the bus topology for PCIe domain 4 and add the ath12k
+>>> calibration variant so that the board file (calibration data) can be
+>>> loaded.
+>>>
+>>> Signed-off-by: Patrick Wildt <patrick@blueri.se>
+>>> ---
+>>>  .../boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts      |  9 +++++++++
+>>>  arch/arm64/boot/dts/qcom/x1e80100.dtsi                 | 10 ++++++++++
+>>>  2 files changed, 19 insertions(+)
+>>>
+>>> diff --git a/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts b/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
+>>> index fbff558f5b07..f569f0fbd1fc 100644
+>>> --- a/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
+>>> +++ b/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
+>>> @@ -635,6 +635,15 @@ &pcie4_phy {
+>>>  	status = "okay";
+>>>  };
+>>>  
+>>> +&pcie4_port0 {
+>>> +	wifi@0 {
+>>> +		compatible = "pci17cb,1107";
+>>> +		reg = <0x10000 0x0 0x0 0x0 0x0>;
+>>> +
+>>> +		qcom,ath12k-calibration-variant = "LES790";
 >>
->> Hi Patrick
+>> It doesn't look like it follows the rest of the calibration variants.
 >>
->> General, the device tree binding and the needed changes to the driver
->> to implement the binding are in the same patchset. I don't see
->> anything implementing qcom,ath12k-calibration-variant here? Does the
->> driver already support this, and you are just fixing up missing
->> documentation?
->>
->> 	Andrew
+>> Something like "Lenovo_Y7x" or "Lenovo_Yoga7x" sounds more logical.
 > 
-> Hi there,
+> This is what's both in the DSDT
 > 
-> technically I could try and make that change, but I don't actually run
-> this driver or Linux at all; this change is for running OpenBSD on that
-> machine with a correctly defined device tree.
+>   Device (WLN)
+>   {
+>     [...]
+>     Name (BDFE, "BDF_LES790")
 > 
-> The realities of Linux being the de facto upstream for device tree
-> bindings force me to submit changes here so they end up being usable
-> for other operating systems as well.
+> and kvalo's board-2.bin for this machine:
 > 
-> I would assume that eventually someone that runs Linux will adjust the
-> ath12k driver as well, because this kind of binding has been used for
-> both ath10k and ath11k and this is just a copy with a name change for
-> ath12k.
+>   $ strings board-2.bin | grep LES
+>   bus=pci,vendor=17cb,device=1107,subsystem-vendor=17aa,subsystem-device=e0e9,qmi-chip-id=2,qmi-board-id=255,variant=LES790
+> 
+> I don't think we can hand-pick these strings, they come from whoever
+> decided upon them and fed them into ACPI tables and QC's binaries.
 
-Paraphrasing a certain company.. Linux <3 OpenBSD!
+Huh, great nod from qca!
+Looks like there's even a bit more hw supported in there..
 
-Since as you mentioned Linux is the de facto upstream for dt-bindings,
-many people identify those two.. I think a solution that would keep
-everyone reasonably happy is dropping a line about your usage in the
-cover letter
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
 Konrad
 
