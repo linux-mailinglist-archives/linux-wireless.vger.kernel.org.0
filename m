@@ -1,124 +1,120 @@
-Return-Path: <linux-wireless+bounces-10221-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10222-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D3F39311A8
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2024 11:50:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DA6B9312C8
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2024 13:05:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1264284FCE
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2024 09:50:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29277284003
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2024 11:05:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7DD5186289;
-	Mon, 15 Jul 2024 09:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CB29187321;
+	Mon, 15 Jul 2024 11:05:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NtQ9UOM0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtpbg154.qq.com (smtpbg154.qq.com [15.184.224.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77B0335C0;
-	Mon, 15 Jul 2024 09:50:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=15.184.224.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D38186E5B
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Jul 2024 11:05:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721037008; cv=none; b=MPedI5fetRoEh3lmRt7e3Ln5dHP3yYeES3WMH/Zq6bwqQoft8fJShmjxK/pIKEGj+TjLXpxiD62jcZcl9QO69YfdQvQwHOu+R8wyC9eTIN8hfolES0m8fly+9l7uM7jYUTtmII+w9kux1xybgnfNqza1fxRI+oeSWaJ8tRMsT90=
+	t=1721041509; cv=none; b=JqPsBGjkg0IYPFi9ZOzxroL0M5IUdVQ17BwLQxsnM6678R3kShM8CUcJCv0q79ffVCc23KFImGGsPjKohb0wSlDmtEZN/RbT+Rjv01icW1IILVN3oKX/Elz6rE3B7BC5b7JAlHnRw3FWOh3Mu//0iEF2QzjmHufyXENjKNwgWY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721037008; c=relaxed/simple;
-	bh=8Wqe6jMM+VpytjTp0IknaTsCK85fp+DTV+hMsMcvZQ4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ldERAR2jsPIaZlPOpgHmrAqUv5saO8kp2YfpoCbrk8gh28HgzybIN7rxBzNYGC46M9Kh5etuk8beBUvKTzY5ghGpti6t0TN2qncY8KmlUNxtxjpz8Rk70P6xTyzQggxqOCD9Ed1l1i/S/BReAlMSrV9n73WdymLxfzVoYnc8GPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; arc=none smtp.client-ip=15.184.224.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-X-QQ-mid: bizesmtp89t1721036861toicl6cc
-X-QQ-Originating-IP: +1vDfVCq/sJoRCMWUwHIAZGyJFSNel82oHF6cTZdGjs=
-Received: from localhost.localdomain ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 15 Jul 2024 17:47:38 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 11744980703197485822
-From: WangYuli <wangyuli@uniontech.com>
-To: kuba@kernel.org,
-	kvalo@kernel.org,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	guanwentao@uniontech.com,
-	sergio.it.consultant@gmail.com,
-	nbd@nbd.name,
-	lorenzo@kernel.org,
-	shayne.chen@mediatek.com,
-	deren.wu@mediatek.com,
-	mingyen.hsieh@mediatek.com,
-	chui-hao.chiu@mediatek.com
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	WangYuli <wangyuli@uniontech.com>
-Subject: [RESEND. PATCH] drivers/mediatek: Fix some mt7601u vendor could not connect
-Date: Mon, 15 Jul 2024 17:47:14 +0800
-Message-ID: <A9442D62405552CE+20240715094714.1553336-1-wangyuli@uniontech.com>
-X-Mailer: git-send-email 2.43.4
+	s=arc-20240116; t=1721041509; c=relaxed/simple;
+	bh=BKGCF57ktGcwFavmZdke3GjE0czge/kXI1/7/ewu2ns=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=G/Z9icaT5edVAKhY88s2glVfVPdJ515detQ2UJ0dYeObWEuK6pQKxgpkG2GSm/Pap+jJuzMio1EYrLOz02lDBPEETEAlnEb4Bqmv9r7FB3DSS3kNTiz4JMPHd48LuZ1WOi+03cSpmM043qmR4rWT+RA/tLVq1FwE94s6w358Bt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NtQ9UOM0; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a77e7420697so542361766b.1
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Jul 2024 04:05:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1721041507; x=1721646307; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-language:cc:to:subject:from
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=M4f5pbtly4kxRWOwiegDAN7Z5vBr7/pebQsXpWTnPms=;
+        b=NtQ9UOM0LzgSs7MfI8hQmS9lfSl3ckyskwzAvs3vYzQVDnJzf4ZNru3Ins6R0j400i
+         he8huNYvu477Rtvz08L1OBYnRSmETK5bL4d31c2teUqM+Xc62QU5K8l+Gyc6yixMQJJ1
+         qSiAzy4V1C8cSdHpp5DhF2/ANW0BFqYQU1sXHOIv4kNzfEHDDRa/mj49dX+h36HK7Dmz
+         mKJiABkn/i+wWC6AxFKkYMc+awV8xqfrzUYTbzER/015SmXPDasDBf2VQ0C73oySEhOa
+         ui1JLpQ1h16RstueVmbfFDyTaUDDv9+PDhO0Dr8jqVG2HjrnsVpwGyfrBXJoK8oIoIv0
+         SxNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721041507; x=1721646307;
+        h=content-transfer-encoding:content-language:cc:to:subject:from
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=M4f5pbtly4kxRWOwiegDAN7Z5vBr7/pebQsXpWTnPms=;
+        b=gnySuZfgf43jmIsV/njKqHlGSX4G6Y7FJUUw5n8Az4R4NMW6ZxTtYdHXJJvbfeafeF
+         ajXDaIqsC/0JCuBhemVNHANBQuCotvq3zp9/aO5s7ipQs9EYu50o34WRSNFhKusGiw2m
+         CglpJykk+NRzbrSx3FddZiMZvBHCrxV5U3f2+lFr9GtX4AEbelPTi4GAow+IzGlELuFp
+         bN4u0S8Hnlu187nQB/FLA6pdCv4Gi2dzSH5HgsQ0oIsAievpCjQBRiFBs9vSL2Y7ZrQY
+         hSgb+78KmBuKfFGmp/hEZTRvoNpJXIPiq+aeSsHxfPjli7rp3D5xy+bZANgR8n7RL4h+
+         8x7g==
+X-Gm-Message-State: AOJu0YzUQLfzlNgdaHPplfCv6toBbakyxbA333uV7oZE/jZMSRDAhcEp
+	hR8hijI7t7TTtYp4an6A2vToY1roZRg/LxU2pUT3tAQCQIzY+FrcFnM7Ow==
+X-Google-Smtp-Source: AGHT+IGV7VrrCn75Epul1xx+0ruGrPW5UFThmgwBfPlTagHAUO2RnLBTgrp7FkD0XenZNiuYZt4oDA==
+X-Received: by 2002:a17:906:4886:b0:a77:b5e7:ee7b with SMTP id a640c23a62f3a-a780b89cb94mr1006353866b.71.1721041506315;
+        Mon, 15 Jul 2024 04:05:06 -0700 (PDT)
+Received: from [192.168.0.50] ([79.119.240.95])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a79bc820f2bsm201579966b.206.2024.07.15.04.05.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 Jul 2024 04:05:05 -0700 (PDT)
+Message-ID: <e28bbf72-678a-438b-b5dc-d4ae8b8f71f0@gmail.com>
+Date: Mon, 15 Jul 2024 14:05:03 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+User-Agent: Mozilla Thunderbird
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: rtw88: The debugfs interface reads registers from the wrong device
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Some mt7601 devices cannot establish a connection properly.
-This patch fixes the issue.
-We do not know why, but it just works.
+Hi,
 
-Link: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1716301/comments/52
-Link: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1716301/comments/53
-Link: https://github.com/kuba-moo/mt7601u/issues/64
-Link: https://www.mediatek.com/products/broadband-wifi/mt7601u
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
----
- drivers/net/wireless/mediatek/mt7601u/mcu.c | 1 -
- drivers/net/wireless/mediatek/mt7601u/phy.c | 5 -----
- 2 files changed, 6 deletions(-)
+To reproduce the problem, you need a computer with two wifi
+devices supported by rtw88. It's especially easy to notice
+the problem if one of the devices is USB and the other is PCI,
+because the PCI device will have various values in the
+registers 0x300..0x3ff, but the USB device will have all
+0xeaeaeaea there.
 
-diff --git a/drivers/net/wireless/mediatek/mt7601u/mcu.c b/drivers/net/wireless/mediatek/mt7601u/mcu.c
-index 1b5cc271a9e1..15751d11b4dc 100644
---- a/drivers/net/wireless/mediatek/mt7601u/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt7601u/mcu.c
-@@ -446,7 +446,6 @@ static int mt7601u_load_firmware(struct mt7601u_dev *dev)
- 	mt7601u_wr(dev, 0x94c, 0);
- 	mt7601u_wr(dev, MT_FCE_PSE_CTRL, 0);
- 
--	mt7601u_vendor_reset(dev);
- 	msleep(5);
- 
- 	mt7601u_wr(dev, 0xa44, 0);
-diff --git a/drivers/net/wireless/mediatek/mt7601u/phy.c b/drivers/net/wireless/mediatek/mt7601u/phy.c
-index d4cd2215aba9..f3c14a1552df 100644
---- a/drivers/net/wireless/mediatek/mt7601u/phy.c
-+++ b/drivers/net/wireless/mediatek/mt7601u/phy.c
-@@ -589,8 +589,6 @@ void mt7601u_phy_recalibrate_after_assoc(struct mt7601u_dev *dev)
- 	if (test_bit(MT7601U_STATE_REMOVED, &dev->state))
- 		return;
- 
--	mt7601u_mcu_calibrate(dev, MCU_CAL_DPD, dev->curr_temp);
--
- 	mt7601u_rxdc_cal(dev);
- }
- 
-@@ -1160,9 +1158,6 @@ static int mt7601u_init_cal(struct mt7601u_dev *dev)
- 	if (ret)
- 		return ret;
- 	ret = mt7601u_mcu_calibrate(dev, MCU_CAL_RXIQ, 0);
--	if (ret)
--		return ret;
--	ret = mt7601u_mcu_calibrate(dev, MCU_CAL_DPD, dev->dpd_temp);
- 	if (ret)
- 		return ret;
- 
--- 
-2.43.4
+1. Let's assume the driver for the PCI device is already loaded.
+   I have RTL8822CE.
 
+2. Mount debugfs:
+
+   # mount -t debugfs none /sys/kernel/debug
+
+3. Check page 0x300:
+
+   # cat /sys/kernel/debug/ieee80211/phy0/rtw88/mac_3
+     00000300  f7138000    33330000    ffffb000    00000000
+     .....
+
+4. Plug the USB device. I used RTL8811CU.
+
+5. Check page 0x300 again:
+
+   # cat /sys/kernel/debug/ieee80211/phy0/rtw88/mac_3
+     00000300  eaeaeaea    eaeaeaea    eaeaeaea    eaeaeaea
+     .....
+
+6. Bonus: unload rtw88_8821cu and check page 0x300 again to get
+   a null pointer dereference:
+
+   # rmmod rtw88_8821cu
+   # cat /sys/kernel/debug/ieee80211/phy0/rtw88/mac_3
 
