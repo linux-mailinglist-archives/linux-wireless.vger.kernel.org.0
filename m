@@ -1,71 +1,70 @@
-Return-Path: <linux-wireless+bounces-10219-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10220-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A617930F01
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2024 09:43:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FE74930F28
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2024 09:54:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEA9C1C21224
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2024 07:43:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 732B01C20E34
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2024 07:54:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 208F6184126;
-	Mon, 15 Jul 2024 07:43:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD3BD6AC0;
+	Mon, 15 Jul 2024 07:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="hZOtxLom"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="DMgmBJa6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com [209.85.222.43])
+Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68610174EC6
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Jul 2024 07:43:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F3128F0
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Jul 2024 07:54:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721029390; cv=none; b=uBEArQJWEa4mmFhtXwxqcZ2Yw6fyCUvyspobDHeKt1owj+OjwzAnmh9lmM+aFuXSwLkQuJgVZoNoUuPTP4Q8OIZBEfJSv0hUS/qFD39qlkb3gW/4TkXqvL5daGiKEMA4jJC0qNgN9ELdnEniy/zV41xs4NaQlOpdf0df9PmHZwk=
+	t=1721030080; cv=none; b=gvXI3dTQcFHrXrFCSRK1rfgpPuVvMf+GXrj+VCuKY0mfZ28mdBfW9dtyU+6QqsTuxQtOn2iVs5ySSk5aq24Ma8bmGw3FJ380KLleoBclxch3RbHqgeB+YRLychWWH+Wc4n3evLYSx2v/hs1HY395J4TYFA1lYmvOaMYCMmgmVQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721029390; c=relaxed/simple;
-	bh=6eYhN8zEHpM5RI+0cFIFo+i0++fbkjNFeBsrYutzrfQ=;
+	s=arc-20240116; t=1721030080; c=relaxed/simple;
+	bh=BlUwvJQW/L/xv42RPf4ptABrus5/4fNc78h6cBDlkss=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aOG6+M58FmNm8DjzUXtDXUZCfRkH/xkZKNW3MUAw3dtYlvSRZYHXrBYz4FPGFDFOehQ2mDyu5jeZni+yRdR9Kjf8xmojlYMLDfiQ6cwW4572bpI7UgbK3dShqBqZVt9Z5UssddZhONPEchcNXZRhcR11fEFfTsitznLpgGRD/EU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=hZOtxLom; arc=none smtp.client-ip=209.85.222.43
+	 In-Reply-To:Content-Type; b=NcIzj1/LMZZxTgQjQuJ8poEVvkSesEpdmVcb+OgGECg8sSFUI2cCPOMHkd2KzykI0Znf7RoPSQEaTdyBeRSKBRy6cqMXgcFydqCXDdMjUlg2a8Z/Yucw5QBfInd+WGI2bUXYN2X/GCHV1w/ANPRHRbKOYAKZqQ2PPLwBJ9x+Wtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=DMgmBJa6; arc=none smtp.client-ip=209.85.217.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-81179da9049so1274543241.1
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Jul 2024 00:43:08 -0700 (PDT)
+Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-48fdf2d5309so1554950137.1
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Jul 2024 00:54:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1721029387; x=1721634187; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1721030078; x=1721634878; darn=vger.kernel.org;
         h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=t6f/8xOMmdXWk0+o87qH6zrVPB+uY92fhQmrPpkJbRo=;
-        b=hZOtxLomOWNYyGmt537fcyWKCc264i53ub83f9yN/7uy+Eb3s8fKY5xUGYr8Ux8udt
-         sSqGpIR4yS+pKT0YlZbQx6WCQp3siXNvf+AG/PH9PzBgQtZUrrC6to4TOcb4eBQEcCis
-         Zni2gqaTV4nKaOmIcbDfGmBaPc0icE2ToBzW4=
+        bh=bWr2z4K10onaYtmAZqdtHVcZPkbA6VMQJbIKCa0gYYw=;
+        b=DMgmBJa6D3sfSQpnqiBXrT1ir9LftXeVKYDy2HpuTIql/MUfG0naWbv5vg1nuOUrWI
+         7UJhrjMqWIOXUNJpMrrGrDTPlTB278z/sHXvzDg3U0fp4KGKYxt9mRmSt5r/HBh2gzv5
+         /x8pDZm3onsRJ0c6QBoySMUYMybfFi/HbOnFU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721029387; x=1721634187;
+        d=1e100.net; s=20230601; t=1721030078; x=1721634878;
         h=in-reply-to:autocrypt:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=t6f/8xOMmdXWk0+o87qH6zrVPB+uY92fhQmrPpkJbRo=;
-        b=j61PUdoRu1pdzGcM4iIUKW5vlCehQM9P6xMLZAxtAF/TsUqqf+8SqKiy1nUakthTt8
-         1Br/zwKz4P+1CQ0iBWKvAz+yJyhYvA+vK+YvCWajY4IfSKUvK4AvFPALyYxnCihp5x65
-         pxlpudzH/DGTTS5uVvaf8OEJheZ52RyniaG500z0zOEBcXZwkSx5gUT3F20u8zkQ+SWL
-         XlYM9L2Fj8UPXtU7c4LjJsTiojYOP9r7WlsCV70wUZ/p1YQMhO5h2bL+Rh69GTioxriI
-         2dkDRLBG1uyyU86G1/ScVDywyYon1cP/FjzaFq8Hd5EUEhfBAXPbwsiU+r+OIsp9GIF6
-         /K7w==
-X-Forwarded-Encrypted: i=1; AJvYcCVrtF+RJR+0vdvp2VAL5IUB+9QovdDfwJWdbYml8o+lj/nwUai996dchXbQ9s08Xi2KGWjrTeUZYFK2ZnLrbsPgaC6O7JLPz3N4IU98s1E=
-X-Gm-Message-State: AOJu0YxqFENs9RJ2kLZYV8fPyTVV9GT9IzJINbx4IAbGR9/uQ7D5mrKr
-	pXM0MNoT+mgLi8tSLsDMvCp9CSEzxw1uc4oPc4m/10hH654Z0rDImeSynRHM4A==
-X-Google-Smtp-Source: AGHT+IFyZDf+S5ViYKyE6C2mNs3Y+NBMCC23/3jJ3b/HWGCElW6E3N5LZlCFgXPcktjIfTDTLKECJA==
-X-Received: by 2002:a05:6102:419e:b0:48f:df86:da4 with SMTP id ada2fe7eead31-4903213d8d1mr21579353137.20.1721029387020;
-        Mon, 15 Jul 2024 00:43:07 -0700 (PDT)
+        bh=bWr2z4K10onaYtmAZqdtHVcZPkbA6VMQJbIKCa0gYYw=;
+        b=hD6Gq/Dpo8ejr/wizxn2K+2DN+TkSwyFNisQGYRUYTk2fUEJEqwbuwy+MdHN9NZ5HB
+         kYCLHDJSzoaNyABY7/H+r/kvZHX4v3vzaN7R4DQ50GDaiy2ibY1//0Fq5DU+3s6nLb0f
+         gioDiMSek6YgRlUmLcVGAM3CqKLW57TOPqvPFeYcI93JhPJO0WBZseksqfcVtTwkpQZL
+         1IXwEgJoAv9TViMhf8398wMmP3B2n2ecAUTy/OqUVfpesNrfdBxsiTLa6ltACvFDh/xz
+         nnGL9lE9ZYPmZaldo7KBq3/uRBaR/07t3IU3GcUlB9KX05IFC9OftguZkgSQ/OGOAxFX
+         iBcQ==
+X-Gm-Message-State: AOJu0YzuX3zqYZ+YdHGF1Qe5siyxBzBffyx8VIQBMwkbS4aC8x0YIfCA
+	NmIpLG2SNm8xfaav05SEwAjqenCaoXJSqjxr+AX/kgJqfOiwb8Xhc4Mswm1tBQ==
+X-Google-Smtp-Source: AGHT+IHMJGDpIoi5S5aN24g8FHtJY/Nc8rXT7JIuLi7NiIcw+nV4tibAcSQ0z30b8Gj3+YhRIJub0w==
+X-Received: by 2002:a05:6102:d8a:b0:48f:eb4a:b0a2 with SMTP id ada2fe7eead31-4903211bb7emr21981171137.8.1721030077967;
+        Mon, 15 Jul 2024 00:54:37 -0700 (PDT)
 Received: from [100.92.8.215] ([217.166.247.56])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a160c855dfsm175879985a.132.2024.07.15.00.43.05
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-44f5b7bba8esm22243321cf.3.2024.07.15.00.54.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Jul 2024 00:43:06 -0700 (PDT)
-Message-ID: <1f111630-a3f8-4678-a637-1650344e2bd5@broadcom.com>
-Date: Mon, 15 Jul 2024 09:43:03 +0200
+        Mon, 15 Jul 2024 00:54:36 -0700 (PDT)
+Message-ID: <9c763adf-56b0-4b69-b204-95d46c990656@broadcom.com>
+Date: Mon, 15 Jul 2024 09:54:33 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -73,28 +72,32 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: brcmfmac: how to setup SAE on RPi // Re: [PATCH] wifi: brcmsmac:
- advertise MFP_CAPABLE to enable WPA3
-To: KeithG <ys3al35l@gmail.com>
-Cc: Peter Robinson <pbrobinson@gmail.com>,
- Julian Calaby <julian.calaby@gmail.com>, Kalle Valo <kvalo@kernel.org>,
- linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
- Jouni Malinen <j@w1.fi>, hostap@lists.infradead.org
-References: <20240617122609.349582-1-arend.vanspriel@broadcom.com>
- <190369b8c10.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <CAG17S_NHC7EqUMtc58eSY9Yoq4K0mvp=C1rcP8PTRzajXW3Csg@mail.gmail.com>
- <c065ae75-f89e-4b14-9fc3-6ef19e6d144b@broadcom.com>
- <CAG17S_OMV5TpCO+XwP-6dQNB_zVs+OCoawpngZUshuDOgFOF0w@mail.gmail.com>
- <1905383f7e0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <CAG17S_MPwwgzup17zwHmNH87RS9mrwn7A8v0FkntQx2du6fLig@mail.gmail.com>
- <19054769d10.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <CAG17S_NojmnuQqLyOAT6+Tq4OLaBVc1FY6J8cqwWvo_VxcNLiA@mail.gmail.com>
- <19058122ea8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <CAG17S_Paw=634Q5zNm8jM2c_66OMscN1ngxR53kF=DJHKU2N1A@mail.gmail.com>
- <CAG17S_OMU2QbeMnue+RWqFErhbPKVCmFR90VMOYkVy+aMcdoBQ@mail.gmail.com>
- <1905a29df60.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <CAG17S_OL+zskWOQty2rzZG8+Ddb+qeR4bQYCZ53qJ00-9QVeiQ@mail.gmail.com>
- <CAG17S_Ngcgvg9i5S-DixKDXn0-nZuS=0_=gT0bL2HxyYS_zK3Q@mail.gmail.com>
+Subject: Re: brcmfmac: Unexpected brcmf_set_channel: set chanspec 0xd022 fail,
+ reason -52 - Part 2
+To: Johannes Berg <johannes@sipsolutions.net>,
+ Stefan Wahren <wahrenst@gmx.net>, Arend van Spriel <aspriel@gmail.com>,
+ Franky Lin <franky.lin@broadcom.com>,
+ Hante Meuleman <hante.meuleman@broadcom.com>
+Cc: linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
+ SHA-cyfmac-dev-list@infineon.com, Hector Martin <marcan@marcan.st>,
+ Kalle Valo <kvalo@kernel.org>
+References: <d9c9336a-6314-4de9-aead-8b865bb30f05@gmx.net>
+ <cb07408d-af14-4b01-bd96-15c480989643@gmx.net>
+ <5c462fac-b27d-41c0-a62c-a8951bf445d2@gmx.net>
+ <d8f7dc94-40f5-4544-9693-01d7cbc6fefb@broadcom.com>
+ <ca0fd1c5-380d-4756-a33a-cb6c84014ce4@gmx.net>
+ <89d3f34a-3427-4871-971c-d960a16918ac@broadcom.com>
+ <004dabc3-c345-4d90-9348-5caa9b1f3849@gmx.net>
+ <c3996f70-bb2a-4d26-a7e9-a1b062fa0474@broadcom.com>
+ <0e5eba2f-e524-4f0d-8217-2770c57ad5ed@gmx.net>
+ <18c8d7da558.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <f3af378f-fae4-4a98-a5b1-24173d17b64e@gmx.net>
+ <18c921b1690.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <18c9224abb0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <d90cc093-e3fc-4af4-9a4a-5f4bd9a7cb1f@gmx.net>
+ <19541618e400c95a448f7e8c79590c01df214782.camel@sipsolutions.net>
+ <18d1388fbe8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <99977c876429f33d8dbab18d7c3e71590585263b.camel@sipsolutions.net>
 From: Arend van Spriel <arend.vanspriel@broadcom.com>
 Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
  xsFNBGP96SABEACfErEjSRi7TA1ttHYaUM3GuirbgqrNvQ41UJs1ag1T0TeyINqG+s6aFuO8
@@ -139,28 +142,61 @@ Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
  NKowQLrlMBGXT4NnRNV0+yHmusXPOPIqQCKEtbWSx9s2slQxmXukPYvLnuRJqkPkvrTgjn5d
  eSE0Dkhni4292/Nn/TnZf5mxCNWH1p3dz/vrT6EIYk2GSJgCLoTkCcqaM6+5E4IwgYOq3UYu
  AAgeEbPV1QeTVAPrntrLb0t0U5vdwG7Xl40baV9OydTv7ghjYZU349w1d5mdxg==
-In-Reply-To: <CAG17S_Ngcgvg9i5S-DixKDXn0-nZuS=0_=gT0bL2HxyYS_zK3Q@mail.gmail.com>
+In-Reply-To: <99977c876429f33d8dbab18d7c3e71590585263b.camel@sipsolutions.net>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000004ba639061d44611a"
+	boundary="0000000000007717ad061d448a97"
 
---0000000000004ba639061d44611a
+--0000000000007717ad061d448a97
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 7/1/2024 10:54 PM, KeithG wrote:
-> I do get a ton of this in the log, though:
-> [  113.543122] brcmfmac: brcmf_set_channel: set chanspec 0xd022 fail, reason -52
-> ...
+On 2/13/2024 11:15 AM, Johannes Berg wrote:
+> On Tue, 2024-01-16 at 19:29 +0100, Arend Van Spriel wrote:
+>>>>
+>>>> I modified brcmf_construct_chaninfo() to store the
+>>>> IEEE80211_CHAN_DISABLED flag within orig_flags in case the flags had it.
+>>>> This avoid the issue. Not sure this is the proper solution.
+>>>
+>>> orig_flags are from when the wiphy is registered - does the driver only
+>>> set up proper flags after that?
+>>
+>> Long time ago we discussed about this. So brcmfmac provides a superset of
+>> channels during wiphy_register() and none of them are disabled as they
+>> could never be enabled. After that the driver may disable a subset as it
+>> syncs with the device. I think we used strict custom reg flag, but that
+>> seems to have gone. Could that have the result Stefan is observing?
+>>
+> 
+> All this confuses me way more than it should, I guess.
+> 
+> We do still have REGULATORY_STRICT_REG, no? And that sets even
+> orig_flags:
+> 
+>          if (lr->initiator == NL80211_REGDOM_SET_BY_DRIVER &&
+>              request_wiphy && request_wiphy == wiphy &&
+>              request_wiphy->regulatory_flags & REGULATORY_STRICT_REG) {
+>                  /*
+>                   * This guarantees the driver's requested regulatory domain
+>                   * will always be used as a base for further regulatory
+>                   * settings
+>                   */
+>                  chan->flags = chan->orig_flags =
+>                          map_regdom_flags(reg_rule->flags) | bw_flags;
+> 
+> 
+> But brcmf_construct_chaninfo() looks a bit more like it really should be
+> setting a custom regulatory with all the channels listed, a bit like
+> what iwlwifi/mvm does, with REGULATORY_WIPHY_SELF_MANAGED?
+> 
+> Maybe we should start from the beginning: what does this actually
+> _want_?
 
-I suspect this is the same issue that Stefan Wahren reported a while 
-ago. That thread dried up which is probably my bad. That chanspec 0xd022 
-is encoded channel info translating to "band=5G bw=20MHz channel=34". As 
-far as I know channel 34 is an old Japan channel. Not sure if it is 
-valid today. So we can remove them probably. However, these messages are 
-also reported on some channels that are valid in certain regions. Need 
-to discuss with Johannes what the best option is. Will revive the 
-original email thread [1].
+Picking up this trail [1] after a long time (sorry). So the firmware has 
+its own regulatory database. So upon connecting to an AP the firmware 
+can change its country setting based on the country element the AP uses. 
+In the driver we want to update the set of enabled channels. Maybe this 
+is more or less what iwlwifi does?
 
 Regards,
 Arend
@@ -168,7 +204,7 @@ Arend
 [1] 
 https://lore.kernel.org/all/d9c9336a-6314-4de9-aead-8b865bb30f05@gmx.net/
 
---0000000000004ba639061d44611a
+--0000000000007717ad061d448a97
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -239,15 +275,15 @@ BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
 N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
 p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCbOXv/ET1AAJz8HNXU
-rNrS6ryRr04ruxyXfXQ/HEDN1TAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNDA3MTUwNzQzMDdaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCClPIPW3Enr6T7eu3Ut
+ZbrBJEfSVcBfCtZHy22fMZ9k3jAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yNDA3MTUwNzU0MzhaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAsBwHSctmU0bEfo/duq8vhfjdqMHrb1ciOrSG
-O527HikEyair1gNsVfN7i59OLoaOqC4EI2Lyt7R16HwlzoMH5rsOp2VRLTsdosaV3p03Iw+0N4I9
-Bncq62zX0oVjpwT508srmeSps+0XNu2w43gNGdmAbCc+g3WJi3p/JQX1gFMbr4KomUmcU0k3n4U7
-x21maEiYA9A3jvKZdtwlRKBYQsEk3qpX7wF2VexUeuh0t2MFX0nzrlI+1j6PiT8LMbGZDEeTHYVd
-x6W7slfIrBHoooH/9RnfRp35OWuN88KuIfEOhWOceAYdzN/eytDS7fTohGuDPosA3yyI11w8rOyS
-MA==
---0000000000004ba639061d44611a--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEANeRW2QZsFsjDEkqz3WVA/TWOqd7spHraSEtl
+eYg1JhjJ+1ZTtdfnR/1zibqc+ftZClo7uz7yOs220adi9/Nwd/54HcQrHow6WqkcVw0f2QD4HTqZ
+w7GTNAvSJSCa4QqsZvSLJAdLAHGBd3Z8KQ2Z7zYvywFryvcOxi9ikg/I92kvDfE946EUMq6I/EGv
+P8oCYDNbmp+gKoE5l+U0bK1Ea7WJYsXxEvYjNphnZETNoOdNpH6UiTExq64SSNMfADWdwds7RNrW
+4GEe5359y62mU6olUgfEzGRkzratfwhdDD662y69ONLa5RD99Gza73xhiZB4rgiEWVWLiggvkCeC
+6w==
+--0000000000007717ad061d448a97--
 
