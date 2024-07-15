@@ -1,75 +1,75 @@
-Return-Path: <linux-wireless+bounces-10239-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10240-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C50E931D62
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jul 2024 01:00:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 811CA931D67
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jul 2024 01:02:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50FCE1C214FF
-	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2024 23:00:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A865282BD8
+	for <lists+linux-wireless@lfdr.de>; Mon, 15 Jul 2024 23:02:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 131151422D1;
-	Mon, 15 Jul 2024 23:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D8F1428F3;
+	Mon, 15 Jul 2024 23:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NpO9EvTH"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="F5ZKjzgr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ADA413D24C
-	for <linux-wireless@vger.kernel.org>; Mon, 15 Jul 2024 23:00:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1C3913D24C
+	for <linux-wireless@vger.kernel.org>; Mon, 15 Jul 2024 23:02:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721084429; cv=none; b=XsUb27rU/Z6yS1rNJFJYKhr2mPXLPxhx5iDw1JrfMT631CTgFyAgOkZdX0Kl999faGZ8UO8BY1DPEJ7bHX6nIWqcpyG7T1/HIQiLUYGJ7AyvwfM04wDEjefxlqYOU9cdLCiFccR7BaY4FBf4g1u6/al6cbJUsiK8VjcQhagv94Q=
+	t=1721084550; cv=none; b=XgYDM3G72u4i6OpvKFB18tSmXNG9o/eHlI3OSgBxE6KVZ0a6NGpvyJAl3g50KUsvvUsXC+v6hXebUnigE7HPeF4wweEu+llciwUU/hXyDs4DAwWH2NVKP71lgLytoFvr3wmgxll08LRzMIG/q5CA/KmjlUnRZcBB8QvKqzues6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721084429; c=relaxed/simple;
-	bh=b8rTag0SrLpLjulAdbl1o2anNWP1yfQ/jzPs3pG/BV0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LyqIh+qlm6vBe0X2PN8UCWk/qD6YkvRLnz3aWWYY+zMZHqbwLDDWE6t3sntEHOC4CtQzVI5FTa46ifX9dGXHtrjjUo9RdiVvTkkFukjBYC+CZ5Puo6+sPVWrD2R3eMsUbcdnsW4yNzKIJk/5CCnsS77Ax6B5LdT4V+QVHW14AjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NpO9EvTH; arc=none smtp.client-ip=209.85.218.44
+	s=arc-20240116; t=1721084550; c=relaxed/simple;
+	bh=Bv79ufjb/YuQlGBQSareRbyJTsESDapwqk8Zs05cIRU=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=nsvQMpG+9VQKEW3UV8gYkOIgze+XwhuIjG4d6gTtMLjgSdtSZbgJisMAFidnp2XT2UbCiFdZdiA2fsdTX1SsC0CW/4I0HZOrFnKsgraNFEf9/qvKCZyLFwhGk5EARh9+zGJNmiqrnHgNkKFJe1H4KgnXzVhrS+8lFm1Ud9/fWNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=F5ZKjzgr; arc=none smtp.client-ip=209.85.208.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a77e6dd7f72so584056366b.3
-        for <linux-wireless@vger.kernel.org>; Mon, 15 Jul 2024 16:00:25 -0700 (PDT)
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-58b3fee65d8so5708396a12.3
+        for <linux-wireless@vger.kernel.org>; Mon, 15 Jul 2024 16:02:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1721084424; x=1721689224; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=k1gow5zppJqzN+25NcOcRbu7QXGXHf8jI5DLjDA8opQ=;
-        b=NpO9EvTHpFhtooFm9dMsSZ2cuvvTWu9XGxZdrs8c7OG3KD5kAm4O645tB0EYpFbfS+
-         XIlBPP9MAzZfFIazlpSv0Mkup6tODZr68Bak/rkZHJk2LsSWA9BOEprKmVIhEo1yFGAJ
-         EmkVyaerE2ikvJ1cpGfg6Dz3xfRr3GQmuWozHp3FVB2DSncEnFH5wtBzAHHCfTFuv18M
-         zf3mZ56Bbx0T02N6UlbZO0xHEt+7TEBI5sVl530YQIP3LxvPNJcHRuNDNmdKVRSvAKmb
-         rDwy/9sDvFR7kjlDdv2zJqjEOGz4MWEKr0ik3z4O0X+lU/jXSDQtNlgjAqEOHIyXZeQy
-         VXWQ==
+        d=linaro.org; s=google; t=1721084547; x=1721689347; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=3JmOGQR0ysnaffgZprc/f1WSqfrX8yr74EjZqjERQnU=;
+        b=F5ZKjzgrzwPZHJTANwZuL2VSzbKad9nPsZF0byPuYXdkhmXcCXsWX+ggdkt6GtsTE/
+         gZ/XMWzONka/w/EGw6QDSI2ZYZJLcPHfEgFkNE0fELDpV3qrusbUeE57U7q4D+CyyfAf
+         oc3qbC1IG3TkXXozxScSrMZSweHnQF9uMkncgsLoF2qsAj7049+zUL1ppXswtMD2T0Kn
+         j7N6nk9RkmCjRpiPvyrD5H2vgRPAOAZ4XQxnp7ef7RKig62LOK8KtedmfrbfQij7gJVy
+         Td9X/A+Orvxl+RmG3k5TFketpGWLxolVtTwlsxAeJP91FkGYqgoVCM88QRIjulH6BZE4
+         vAFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721084424; x=1721689224;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=k1gow5zppJqzN+25NcOcRbu7QXGXHf8jI5DLjDA8opQ=;
-        b=u6PV0o9Kdb+P9vk1W6M1VsWbnHlBCZ/7u/162cY28h6MCHOlBsYAbH8CuXMm/0bbc1
-         oDLAUKBzPn4JpD6qQbR/RE3XF2HmXG4u/QVhwvV+d9xoW5mSoYD8sA5fQ0XLxVQcEILk
-         zH5jhmAunjnhLXBu1yBnMJ7NORU2IdEYLz0se6tStFX9FJFRbKUW2WHCRSjXZNH7ofk2
-         Sj0BKcqsrxXtOpPspU1Tn2OG/0W425XoVkl7B6dTDwDrhUNSsTDkUto1WwHdk/nlu+od
-         gQm8dgGx6BdMp0JzaJLum1Mc8uQYk/1p4HYtdQpVNE9S72nJKX796xXGTgShH5ad36lO
-         eJjw==
-X-Forwarded-Encrypted: i=1; AJvYcCWItwWIQOBXMcx91smYvlbMpeWWFHNpB7dyEdzmLAoj366d0TvtgJJwfj/0rlDwkxTdtVRNa5xOVnmynKmGQGR7QzvT5ky5dI5Y5pI7BtM=
-X-Gm-Message-State: AOJu0YzwMfsrpQix8Z2nU0rgzz5t4y0FX98VM2EddZPdZU0n6wvweiCb
-	qMn733UzD6RU+qIgSaCezWcmXZhLIe1S8UjDXZvjDrXdHxbpUoHX/+r+eEeKbj8=
-X-Google-Smtp-Source: AGHT+IG/V4q1z5lcWEefALSNgD02693YZRqaRsgZF0ien3pd9o9z1XJ7SyGL9yQnRcaMgWd7aPFUNw==
-X-Received: by 2002:a17:906:27c8:b0:a77:c7d8:fe16 with SMTP id a640c23a62f3a-a79eaa5b6dbmr22287966b.62.1721084424263;
-        Mon, 15 Jul 2024 16:00:24 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1721084547; x=1721689347;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3JmOGQR0ysnaffgZprc/f1WSqfrX8yr74EjZqjERQnU=;
+        b=BV0w6yEpo2pKBTB11kndzhjmvjtXfn/JOrpvveGsVXccbs1A5t0efpGxQRr/MI3cEP
+         IE5sQavdcl0B1k2TB0Hmr9/Rm37jLy50+K/pCTFwR9KYunOhhLw+gB+iv/+9Z5WrvWgg
+         urs5cAaW9ttmuu6G97kmyb4/XgI4obk0Y3cU1EI1GghYhcG0Bgd88/eRzPvgukYjdsqe
+         v8PD3e7Wa45JHNQQu747nZ7VT2jP/gsNsHkIkIJhtryCuEg75d8Ry3McMSR08kzHLEcZ
+         mkCPWQxD7Dc3cPt0j2kw2DxE5jAIIpPZe37tJYZsxDOtq+s+2PsIcqf+QfD8L1Z79AVJ
+         hcbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXUdi/fbp7F0dD7PD3HtCPAAruyBG3TQdBFoVT5OknKHGiCfaWC/V8EDjWvxPPprc9sSfoZKBLo2xc31SBJ+Y/FZdz2vVYtokdhd+iv9dg=
+X-Gm-Message-State: AOJu0Yy46sHKIsCgkEuzdyI444PC0gpw5zlqfhv9dEbIiqlFNed8v69p
+	ZYLN6kSe6zdyChNnjpalNM9Zs0QfwZPMQO604j4npnQvz98wTjvlNV7o3z3WqPk=
+X-Google-Smtp-Source: AGHT+IEua67mNuG+vGiUh4kmzyHArfDV7peqK60g6E310elKRd08At/haCUvoXeti39nqYDGkkXjfQ==
+X-Received: by 2002:a17:906:2b12:b0:a77:9d57:97ad with SMTP id a640c23a62f3a-a79ea46d6ecmr21463966b.40.1721084546823;
+        Mon, 15 Jul 2024 16:02:26 -0700 (PDT)
 Received: from [192.168.105.194] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a79bc5d00aasm246528366b.90.2024.07.15.16.00.22
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a79bc7f21a4sm247073566b.113.2024.07.15.16.02.24
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Jul 2024 16:00:23 -0700 (PDT)
-Message-ID: <08b70537-d23c-414c-a539-d5166e9e27c1@linaro.org>
-Date: Tue, 16 Jul 2024 01:00:21 +0200
+        Mon, 15 Jul 2024 16:02:26 -0700 (PDT)
+Message-ID: <9dc823e9-eef1-41a8-b151-43558cdd7c09@linaro.org>
+Date: Tue, 16 Jul 2024 01:02:23 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -79,6 +79,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 2/2] arm64: dts: qcom: x1e80100-yoga: add wifi calibration
  variant
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 To: Patrick Wildt <patrick@blueri.se>,
  Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Cc: Kalle Valo <kvalo@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
@@ -94,8 +95,8 @@ References: <ZpV6o8JUJWg9lZFE@windev.fritz.box>
  <ZpV7OeGNIGGpqNC0@windev.fritz.box>
  <cisap4ctuolfrs6hjqxz45fqtckcy6uhjzma2shcxkso73jvoh@jj7l4bgftoir>
  <ZpWbUjHna1cE5zHW@mone.local>
+ <08b70537-d23c-414c-a539-d5166e9e27c1@linaro.org>
 Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
 Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  xsFNBF9ALYUBEADWAhxdTBWrwAgDQQzc1O/bJ5O7b6cXYxwbBd9xKP7MICh5YA0DcCjJSOum
  BB/OmIWU6X+LZW6P88ZmHe+KeyABLMP5s1tJNK1j4ntT7mECcWZDzafPWF4F6m4WJOG27kTJ
@@ -131,61 +132,64 @@ Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
  nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
  izWDgYvmBE8=
-In-Reply-To: <ZpWbUjHna1cE5zHW@mone.local>
+In-Reply-To: <08b70537-d23c-414c-a539-d5166e9e27c1@linaro.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 16.07.2024 12:01 AM, Patrick Wildt wrote:
-> Am Tue, Jul 16, 2024 at 12:51:53AM +0300 schrieb Dmitry Baryshkov:
->> On Mon, Jul 15, 2024 at 09:40:41PM GMT, Patrick Wildt wrote:
->>> Describe the bus topology for PCIe domain 4 and add the ath12k
->>> calibration variant so that the board file (calibration data) can be
->>> loaded.
+On 16.07.2024 1:00 AM, Konrad Dybcio wrote:
+> On 16.07.2024 12:01 AM, Patrick Wildt wrote:
+>> Am Tue, Jul 16, 2024 at 12:51:53AM +0300 schrieb Dmitry Baryshkov:
+>>> On Mon, Jul 15, 2024 at 09:40:41PM GMT, Patrick Wildt wrote:
+>>>> Describe the bus topology for PCIe domain 4 and add the ath12k
+>>>> calibration variant so that the board file (calibration data) can be
+>>>> loaded.
+>>>>
+>>>> Signed-off-by: Patrick Wildt <patrick@blueri.se>
+>>>> ---
+>>>>  .../boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts      |  9 +++++++++
+>>>>  arch/arm64/boot/dts/qcom/x1e80100.dtsi                 | 10 ++++++++++
+>>>>  2 files changed, 19 insertions(+)
+>>>>
+>>>> diff --git a/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts b/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
+>>>> index fbff558f5b07..f569f0fbd1fc 100644
+>>>> --- a/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
+>>>> +++ b/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
+>>>> @@ -635,6 +635,15 @@ &pcie4_phy {
+>>>>  	status = "okay";
+>>>>  };
+>>>>  
+>>>> +&pcie4_port0 {
+>>>> +	wifi@0 {
+>>>> +		compatible = "pci17cb,1107";
+>>>> +		reg = <0x10000 0x0 0x0 0x0 0x0>;
+>>>> +
+>>>> +		qcom,ath12k-calibration-variant = "LES790";
 >>>
->>> Signed-off-by: Patrick Wildt <patrick@blueri.se>
->>> ---
->>>  .../boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts      |  9 +++++++++
->>>  arch/arm64/boot/dts/qcom/x1e80100.dtsi                 | 10 ++++++++++
->>>  2 files changed, 19 insertions(+)
+>>> It doesn't look like it follows the rest of the calibration variants.
 >>>
->>> diff --git a/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts b/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
->>> index fbff558f5b07..f569f0fbd1fc 100644
->>> --- a/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
->>> +++ b/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
->>> @@ -635,6 +635,15 @@ &pcie4_phy {
->>>  	status = "okay";
->>>  };
->>>  
->>> +&pcie4_port0 {
->>> +	wifi@0 {
->>> +		compatible = "pci17cb,1107";
->>> +		reg = <0x10000 0x0 0x0 0x0 0x0>;
->>> +
->>> +		qcom,ath12k-calibration-variant = "LES790";
+>>> Something like "Lenovo_Y7x" or "Lenovo_Yoga7x" sounds more logical.
 >>
->> It doesn't look like it follows the rest of the calibration variants.
+>> This is what's both in the DSDT
 >>
->> Something like "Lenovo_Y7x" or "Lenovo_Yoga7x" sounds more logical.
+>>   Device (WLN)
+>>   {
+>>     [...]
+>>     Name (BDFE, "BDF_LES790")
+>>
+>> and kvalo's board-2.bin for this machine:
+>>
+>>   $ strings board-2.bin | grep LES
+>>   bus=pci,vendor=17cb,device=1107,subsystem-vendor=17aa,subsystem-device=e0e9,qmi-chip-id=2,qmi-board-id=255,variant=LES790
+>>
+>> I don't think we can hand-pick these strings, they come from whoever
+>> decided upon them and fed them into ACPI tables and QC's binaries.
 > 
-> This is what's both in the DSDT
+> Huh, great nod from qca!
+> Looks like there's even a bit more hw supported in there..
 > 
->   Device (WLN)
->   {
->     [...]
->     Name (BDFE, "BDF_LES790")
-> 
-> and kvalo's board-2.bin for this machine:
-> 
->   $ strings board-2.bin | grep LES
->   bus=pci,vendor=17cb,device=1107,subsystem-vendor=17aa,subsystem-device=e0e9,qmi-chip-id=2,qmi-board-id=255,variant=LES790
-> 
-> I don't think we can hand-pick these strings, they come from whoever
-> decided upon them and fed them into ACPI tables and QC's binaries.
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-Huh, great nod from qca!
-Looks like there's even a bit more hw supported in there..
-
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Ref: https://git.codelinaro.org/clo/ath-firmware/ath12k-firmware/-/blob/main/WCN7850/hw2.0/board-2.bin
 
 Konrad
 
