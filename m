@@ -1,260 +1,126 @@
-Return-Path: <linux-wireless+bounces-10247-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10248-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B1F5931F06
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jul 2024 04:53:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 191F3931F0B
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jul 2024 04:56:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0672E2816E6
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jul 2024 02:53:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AC621C21613
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jul 2024 02:56:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D516863AE;
-	Tue, 16 Jul 2024 02:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 379B315E9B;
+	Tue, 16 Jul 2024 02:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=dd-wrt.com header.i=@dd-wrt.com header.b="TBDbV1Jh"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="mRhy4LzV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.as201155.net (mail.as201155.net [185.84.6.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162A7C15B
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Jul 2024 02:53:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.84.6.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C8F1170F
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Jul 2024 02:56:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721098384; cv=none; b=VmNzs2WabJ+BFxlNm/U9ViyjDKCimOl+7/vO2Cmx8o7F7U0/V8Rooz5wT729qexP7uv7eH0hg2XChDYwgb3oOaod3NW1KQmkZj9/O2bkfti09iI1C1NUhJNbbSj7Itf94+J4cizrfibRZApEjEhzQ5exS7xGcv8vKmYiCb1JC9s=
+	t=1721098572; cv=none; b=Ji+MDFsZkYQfueFQvSswZMBSzC62ZYtkrX4IpZJscNqZxTxxBgFycecZX9h7YogAS2zFmnDXFDqQBdJhNmotSQT1xbxE6qPJylFokjsSs82288ru6Hm3jFX7nzDyCMdEAF9Vkgxyra9XRh+O/sbw/hwG5EFrG2tBkgTKE1nNc1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721098384; c=relaxed/simple;
-	bh=PHKMrU0Eaz+K9NuTAECI1leDDzs5eT/ysnhCvHBl4f4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nbr5+YKXtJbbgxcF5Uwj0lyrIJtj42WHtbU1UCwVTgPUnZj5p6RPoSmOTTi/WNJ14SvC0OI5pC5LkfJbX+9dwwfdPyORHfa9Az8TcS2PRwMsysim0oTzknp5kdXICIycabWy+WQU9pgs4gSRKPDCOSll/pk8iT9+iLZ7HQWxyYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dd-wrt.com; spf=pass smtp.mailfrom=dd-wrt.com; dkim=pass (1024-bit key) header.d=dd-wrt.com header.i=@dd-wrt.com header.b=TBDbV1Jh; arc=none smtp.client-ip=185.84.6.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dd-wrt.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dd-wrt.com
-Received: from smtps.newmedia-net.de ([2a05:a1c0:0:de::167]:42954 helo=webmail.newmedia-net.de)
-	by mail.as201155.net with esmtps  (TLS1) tls TLS_RSA_WITH_AES_256_CBC_SHA
-	(Exim 4.97.1)
-	(envelope-from <s.gottschall@dd-wrt.com>)
-	id 1sTYGK-000000006ZN-0feA;
-	Tue, 16 Jul 2024 04:49:56 +0200
-X-SASI-Hits: BODY_SIZE_6000_6999 0.000000, BODY_SIZE_7000_LESS 0.000000,
-	CTE_7BIT 0.000000, DKIM_ALIGNS 0.000000, DKIM_SIGNATURE 0.000000,
-	HTML_00_01 0.050000, HTML_00_10 0.050000, INFO_TLD 0.000000,
-	IN_REP_TO 0.000000, LEGITIMATE_SIGNS 0.000000,
-	MSGID_SAMEAS_FROM_HEX_844412 0.100000, MSG_THREAD 0.000000,
-	MULTIPLE_REAL_RCPTS 0.000000, NO_FUR_HEADER 0.000000, OUTBOUND 0.000000,
-	OUTBOUND_SOPHOS 0.000000, REFERENCES 0.000000, SENDER_NO_AUTH 0.000000,
-	SINGLE_URI_IN_BODY 0.000000, SUSP_DH_NEG 0.000000,
-	URI_WITH_PATH_ONLY 0.000000, USER_AGENT 0.000000, __ANY_URI 0.000000,
-	__BODY_NO_MAILTO 0.000000, __BOUNCE_CHALLENGE_SUBJ 0.000000,
-	__BOUNCE_NDR_SUBJ_EXEMPT 0.000000, __BULK_NEGATE 0.000000,
-	__CP_URI_IN_BODY 0.000000, __CT 0.000000, __CTE 0.000000,
-	__CT_TEXT_PLAIN 0.000000, __DKIM_ALIGNS_1 0.000000, __DKIM_ALIGNS_2 0.000000,
-	__DQ_NEG_DOMAIN 0.000000, __DQ_NEG_HEUR 0.000000, __DQ_NEG_IP 0.000000,
-	__FORWARDED_MSG 0.000000, __FRAUD_BODY_WEBMAIL 0.000000,
-	__FRAUD_WEBMAIL 0.000000, __FROM_DOMAIN_NOT_IN_BODY 0.000000,
-	__FROM_NAME_NOT_IN_BODY 0.000000, __FUR_RDNS_SOPHOS 0.000000,
-	__HAS_CC_HDR 0.000000, __HAS_FROM 0.000000, __HAS_MSGID 0.000000,
-	__HAS_REFERENCES 0.000000, __HEADER_ORDER_FROM 0.000000,
-	__HTTPS_URI 0.000000, __INVOICE_MULTILINGUAL 0.000000, __IN_REP_TO 0.000000,
-	__MAIL_CHAIN 0.000000, __MAIL_CHAIN_OLD 0.000000,
-	__MIME_BOUND_CHARSET 0.000000, __MIME_TEXT_ONLY 0.000000,
-	__MIME_TEXT_P 0.000000, __MIME_TEXT_P1 0.000000, __MIME_VERSION 0.000000,
-	__MOZILLA_USER_AGENT 0.000000, __MSGID_HEX_844412 0.000000,
-	__MULTIPLE_RCPTS_TO_X2 0.000000, __NO_HTML_TAG_RAW 0.000000,
-	__OUTBOUND_SOPHOS_FUR 0.000000, __OUTBOUND_SOPHOS_FUR_IP 0.000000,
-	__OUTBOUND_SOPHOS_FUR_RDNS 0.000000, __PASSWORD_IN_BODY 0.000000,
-	__PHISH_SPEAR_REASONS 0.000000, __PHISH_SPEAR_REASONS1 0.000000,
-	__PHISH_SPEAR_SUBJECT 0.000000, __PHISH_SPEAR_SUBJ_ALERT 0.000000,
-	__PHISH_SPEAR_SUBJ_PREDICATE 0.000000, __RCVD_PASS 0.000000,
-	__REFERENCES 0.000000, __SANE_MSGID 0.000000, __SCAN_D_NEG 0.000000,
-	__SCAN_D_NEG2 0.000000, __SCAN_D_NEG_HEUR 0.000000,
-	__SCAN_D_NEG_HEUR2 0.000000, __SINGLE_URI_TEXT 0.000000,
-	__SUBJ_ALPHA_END 0.000000, __SUBJ_ALPHA_NEGATE 0.000000,
-	__SUBJ_REPLY 0.000000, __TO_MALFORMED_2 0.000000, __TO_NAME 0.000000,
-	__TO_NAME_DIFF_FROM_ACC 0.000000, __TO_REAL_NAMES 0.000000,
-	__URI_IN_BODY 0.000000, __URI_MAILTO 0.000000, __URI_NOT_IMG 0.000000,
-	__URI_NO_WWW 0.000000, __URI_NS 0.000000, __URI_WITH_PATH 0.000000,
-	__USER_AGENT 0.000000, __X_MAILSCANNER 0.000000
-X-SASI-Probability: 8%
-X-SASI-RCODE: 200
-X-SASI-Version: Antispam-Engine: 5.1.4, AntispamData: 2024.7.16.21520
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=dd-wrt.com; s=mikd;
-	h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID; bh=P/mNpNZGpIAFzV8lcrI5lpAvdsHULBdYqcZbPE1xBIo=;
-	b=TBDbV1JhZJZ6JUWvmR9y3T1huWPPYu3S2zabZDAZk7eTy3CzPd/CfP5VCrTf/fKKbsn0jWIg8iKC6Bmo4YQ81DdKZPSa1JMWf9gSdTTsO8rcvIKcpQwYn9/+KV8tsk7A1U5k9lW3OcxPIhMLGl5kwe7/KNegjApVKKWH5PcPey4=;
-Message-ID: <420ae7cf-7b7a-4350-9dbb-00f00485acb8@dd-wrt.com>
-Date: Tue, 16 Jul 2024 04:49:29 +0200
+	s=arc-20240116; t=1721098572; c=relaxed/simple;
+	bh=2kWXORceaMz/Tlcjy39mXwZMGDonNFx1M+oSq5xSsGw=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=qAemIJL6SSlbkv2lZ0F344sUTMGd6wnEy8d/WyVMmJbwP6lryXKKudPeakoiUBb3KdQ0gKyb2XSQ1wlcJzJA+SyQM/1KNkQuVoQhR0qbrcUTT/lke729/tiOvG+6g+acMzWDzgIdvL8+kZQNkVqYIaUMdhvoL2bBFDE8ljbXBg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=mRhy4LzV; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 46G2u4wtD360508, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1721098564; bh=2kWXORceaMz/Tlcjy39mXwZMGDonNFx1M+oSq5xSsGw=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-ID:Content-Transfer-Encoding:MIME-Version;
+	b=mRhy4LzVC0xcxwKKEayS/miTGq5fphDHabaRGK6FjBsZIFVHZ7XOqnH7jyDsqkCX1
+	 EW/aHTGziFIIwJHNoKO+VZxicukFEdmH4jisx8ka3s+yNbNfKKz7ILUFvZDp3WVbRJ
+	 8x8IHkyc6NeogLsjh8SQQgPvKYC74qfzdi6eFCsnI8ODVm0CtWAXDo4w5ajrm1kkfe
+	 hIsouI0kdRex/LQ+YOVx0FDMEXTY5TaGEi5+Imb8n5bNOsDfi9vtDD4tGB6WTyLgOw
+	 XfYlMt3+A5e/7uCCJ4WR4/xktp3bY7nylrGYKdBAA9bfRwqaWOhmxSAmBaif2nS3b3
+	 FT51DoOASdI/g==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 46G2u4wtD360508
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 16 Jul 2024 10:56:04 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 16 Jul 2024 10:56:04 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 16 Jul 2024 10:56:03 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
+ 15.01.2507.035; Tue, 16 Jul 2024 10:56:03 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>
+Subject: Re: rtw88: The debugfs interface reads registers from the wrong device
+Thread-Topic: rtw88: The debugfs interface reads registers from the wrong
+ device
+Thread-Index: AQHa1qbdlNhPu3M8PEuf9XqbWbxrtbH3IEAAgADosQCAABroAA==
+Date: Tue, 16 Jul 2024 02:56:03 +0000
+Message-ID: <cd6a2acf3c2c36d938b40140b52a779516f446a9.camel@realtek.com>
+References: <e28bbf72-678a-438b-b5dc-d4ae8b8f71f0@gmail.com>
+	 <77b8adc4-daa9-4869-8773-c5de9eb84299@gmail.com>
+	 <1d00170b5f0a39bdff6f759de300a402209ace03.camel@realtek.com>
+In-Reply-To: <1d00170b5f0a39bdff6f759de300a402209ace03.camel@realtek.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+user-agent: Evolution 3.36.1-2 
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <9E3A26B11277454C898308ABCC1271AC@realtek.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [RFC PATCH] ath11k: fix peer addition/deletion error on sta band
- migration
-To: Christian 'Ansuel' Marangi <ansuelsmth@gmail.com>,
- ath11k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-References: <20220603164559.27769-1-ansuelsmth@gmail.com>
-From: Sebastian Gottschall <s.gottschall@dd-wrt.com>
-In-Reply-To: <20220603164559.27769-1-ansuelsmth@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass (webmail.newmedia-net.de: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=s.gottschall@dd-wrt.com; helo=webmail.newmedia-net.de;
-X-SA-Exim-Connect-IP: 127.0.0.1
-X-SA-Exim-Mail-From: s.gottschall@dd-wrt.com
-X-SA-Exim-Scanned: No (on webmail.newmedia-net.de); SAEximRunCond expanded to false
-X-NMN-MailScanner-Information: Please contact the ISP for more information
-X-NMN-MailScanner-ID: 1sTYFx-000EWf-B3
-X-NMN-MailScanner: Found to be clean
-X-NMN-MailScanner-From: s.gottschall@dd-wrt.com
-X-Received:  from localhost.localdomain ([127.0.0.1] helo=webmail.newmedia-net.de)
-	by webmail.newmedia-net.de with esmtp (Exim 4.72)
-	(envelope-from <s.gottschall@dd-wrt.com>)
-	id 1sTYFx-000EWf-B3; Tue, 16 Jul 2024 04:49:33 +0200
 
-
-Am 03.06.2022 um 18:45 schrieb Christian 'Ansuel' Marangi:
-> This patch try to fix the following error.
->
-> Wed Jun  1 22:19:30 2022 kern.warn kernel: [  119.561227] ath11k c000000.wifi: peer already added vdev id 0 req, vdev id 1 present
-> Wed Jun  1 22:19:30 2022 kern.warn kernel: [  119.561282] ath11k c000000.wifi: Failed to add peer: 28:c2:1f:xx:xx:xx for VDEV: 0
-> Wed Jun  1 22:19:30 2022 kern.warn kernel: [  119.568053] ath11k c000000.wifi: Failed to add station: 28:c2:1f:xx:xx:xx for VDEV: 0
-> Wed Jun  1 22:19:31 2022 daemon.notice hostapd: wlan2: STA 28:c2:1f:xx:xx:xx IEEE 802.11: Could not add STA to kernel driver
-> Wed Jun  1 22:19:31 2022 daemon.notice hostapd: wlan2: STA 28:c2:1f:xx:xx:xx IEEE 802.11: did not acknowledge authentication response
-> Wed Jun  1 22:19:31 2022 daemon.notice hostapd: wlan1: AP-STA-DISCONNECTED 28:c2:1f:xx:xx:xx
-> Wed Jun  1 22:19:31 2022 daemon.info hostapd: wlan1: STA 28:c2:1f:xx:xx:xx IEEE 802.11: disassociated due to inactivity
-> Wed Jun  1 22:19:32 2022 daemon.info hostapd: wlan1: STA 28:c2:1f:xx:xx:xx IEEE 802.11: deauthenticated due to inactivity (timer DEAUTH/REMOVE)
->
-> To repro this:
-> - Have 2 Wifi with the same bssid and pass on different band (2.4 and
-> 5GHz)
-> - Enable 802.11r Fast Transaction with same mobility domain
-> - FT Protocol: FT over the Air
->  From a openwrt system issue the command (with the correct mac)
-> ubus call hostapd.wlan1 wnm_disassoc_imminent '{"addr":"28:C2:1F:xx:xx:xx"}'
-> Notice the log printing the errors.
->
-> The cause of this error has been investigated and we found that this is
-> related to the WiFi Fast Transaction feature. We observed that this is
-> triggered when the router tells the device to change band. In this case
-> the device first auth to the other band and then the disconnect path
-> from the prev band is triggered.
-> This is problematic with the current rhash implementation since the
-> addrs is used as key and the logic of "adding first, delete later"
-> conflicts with the rhash logic.
-> In fact peer addition will fail since the peer is already added and with
-> that fixed a peer deletion will cause unitended effect by removing the
-> peer just added.
->
-> Current solution to this is to add additional logic to the peer delete,
-> make sure we are deleting the correct peer taken from the rhash
-> table (and fallback to the peer list) and for the peer add logic delete
-> the peer entry for the rhash list before adding the new one (counting as
-> an error only when a peer with the same vlan_id is asked to be added).
->
-> With this change, a sta can correctly transition from 2.4GHz and 5GHZ
-> with no drop and no error are printed.
->
-> Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.5.0.1-01208-QCAHKSWPL_SILICONZ-1
->
-> Fixes: 7b0c70d92a43 ("ath11k: Add peer rhash table support")
-> Signed-off-by: Christian 'Ansuel' Marangi <ansuelsmth@gmail.com>
-> ---
->
-> Some additional comments external to this patch.
-> I tried to find different way to fix this...
-> One of them would be mod the logic of the rhash and using as a key both
-> the vlan_id and the addr but this is problematic for the function
-> where ath11k_peer_find_by_addr is used as vlan_id is not always available.
->
-> I honestly think a correct solution would be have a rhash list per vdev_id
-> or per mac_id but again this is problematic for some function that just handles
-> data and have only the addr as a way to identify the peer.
->
-> So unless some change are done to the firmware to provide the vlan_id in the
-> msdu data this to me seems to be the only solution to correctly handle this case.
->
-> Another solution I tried was to add to the peer some additional info and put
-> the rhash addition in the peer delete logic by passing the "to-be-added peer" to
-> the peer to delete but I notice that it's unreliable since it can happent that
-> the new peer hasn't been mapped at the time the peer delete is called.
->
-> So this is really how to handle the rhash table in this corner case.
-> Considering how peer are handled in theory it should never happen to have
-> dangling peer that are not deleted.
->
-> Hoping this is not too much of an hack and we find a good solution for this
-> problem.
->
->   drivers/net/wireless/ath/ath11k/peer.c | 30 ++++++++++++++++++++++----
->   1 file changed, 26 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/net/wireless/ath/ath11k/peer.c b/drivers/net/wireless/ath/ath11k/peer.c
-> index 9e22aaf34b88..1ae7af02c364 100644
-> --- a/drivers/net/wireless/ath/ath11k/peer.c
-> +++ b/drivers/net/wireless/ath/ath11k/peer.c
-> @@ -302,6 +302,21 @@ static int __ath11k_peer_delete(struct ath11k *ar, u32 vdev_id, const u8 *addr)
->   	spin_lock_bh(&ab->base_lock);
->   
->   	peer = ath11k_peer_find_by_addr(ab, addr);
-> +	/* Check if the found peer is what we want to remove.
-> +	 * While the sta is transitioning to another band we may
-> +	 * have 2 peer with the same addr assigned to different
-> +	 * vdev_id. Make sure we are deleting the correct peer.
-> +	 */
-> +	if (peer && peer->vdev_id == vdev_id)
-> +		ath11k_peer_rhash_delete(ab, peer);
-> +
-> +	/* Fallback to peer list search if the correct peer can't be found.
-> +	 * Skip the deletion of the peer from the rhash since it has already
-> +	 * been deleted in peer add.
-> +	 */
-> +	if (!peer)
-> +		peer = ath11k_peer_find(ab, vdev_id, addr);
-> +
->   	if (!peer) {
->   		spin_unlock_bh(&ab->base_lock);
->   		mutex_unlock(&ab->tbl_mtx_lock);
-> @@ -312,8 +327,6 @@ static int __ath11k_peer_delete(struct ath11k *ar, u32 vdev_id, const u8 *addr)
->   		return -EINVAL;
->   	}
->   
-> -	ath11k_peer_rhash_delete(ab, peer);
-> -
->   	spin_unlock_bh(&ab->base_lock);
->   	mutex_unlock(&ab->tbl_mtx_lock);
->   
-> @@ -372,8 +385,17 @@ int ath11k_peer_create(struct ath11k *ar, struct ath11k_vif *arvif,
->   	spin_lock_bh(&ar->ab->base_lock);
->   	peer = ath11k_peer_find_by_addr(ar->ab, param->peer_addr);
->   	if (peer) {
-> -		spin_unlock_bh(&ar->ab->base_lock);
-> -		return -EINVAL;
-> +		if (peer->vdev_id == param->vdev_id) {
-> +			spin_unlock_bh(&ar->ab->base_lock);
-> +			return -EINVAL;
-> +		}
-> +
-> +		/* Assume sta is transitioning to another band.
-> +		 * Remove here the peer from rhash.
-> +		 */
-> +		mutex_lock(&ar->ab->tbl_mtx_lock);
-> +		ath11k_peer_rhash_delete(ar->ab, peer);
-> +		mutex_unlock(&ar->ab->tbl_mtx_lock);
->   	}
->   	spin_unlock_bh(&ar->ab->base_lock);
->   
-
-after doing some research for finding a weired ath11k firmware crash i 
-found out that this patch is the source for the problem
-it seems that in case that multiple bssid's are in use (not for roaming 
-purpose) the wifi crashes on peer delete under some circumstances
-originally this issue was discovered by another party. so please check 
-the following link for more details and logs 
-https://github.com/openwrt/openwrt/issues/14693
-
-Sebastian
-
+T24gVHVlLCAyMDI0LTA3LTE2IGF0IDAxOjE5ICswMDAwLCBQaW5nLUtlIFNoaWggd3JvdGU6DQo+
+IE9uIE1vbiwgMjAyNC0wNy0xNSBhdCAxNDoyNiArMDMwMCwgQml0dGVyYmx1ZSBTbWl0aCB3cm90
+ZToNCj4gPiBPbiAxNS8wNy8yMDI0IDE0OjA1LCBCaXR0ZXJibHVlIFNtaXRoIHdyb3RlOg0KPiA+
+ID4gSGksDQo+ID4gPiANCj4gPiA+IFRvIHJlcHJvZHVjZSB0aGUgcHJvYmxlbSwgeW91IG5lZWQg
+YSBjb21wdXRlciB3aXRoIHR3byB3aWZpDQo+ID4gPiBkZXZpY2VzIHN1cHBvcnRlZCBieSBydHc4
+OC4gSXQncyBlc3BlY2lhbGx5IGVhc3kgdG8gbm90aWNlDQo+ID4gPiB0aGUgcHJvYmxlbSBpZiBv
+bmUgb2YgdGhlIGRldmljZXMgaXMgVVNCIGFuZCB0aGUgb3RoZXIgaXMgUENJLA0KPiA+ID4gYmVj
+YXVzZSB0aGUgUENJIGRldmljZSB3aWxsIGhhdmUgdmFyaW91cyB2YWx1ZXMgaW4gdGhlDQo+ID4g
+PiByZWdpc3RlcnMgMHgzMDAuLjB4M2ZmLCBidXQgdGhlIFVTQiBkZXZpY2Ugd2lsbCBoYXZlIGFs
+bA0KPiA+ID4gMHhlYWVhZWFlYSB0aGVyZS4NCj4gPiA+IA0KPiA+ID4gMS4gTGV0J3MgYXNzdW1l
+IHRoZSBkcml2ZXIgZm9yIHRoZSBQQ0kgZGV2aWNlIGlzIGFscmVhZHkgbG9hZGVkLg0KPiA+ID4g
+ICAgSSBoYXZlIFJUTDg4MjJDRS4NCj4gPiA+IA0KPiA+ID4gMi4gTW91bnQgZGVidWdmczoNCj4g
+PiA+IA0KPiA+ID4gICAgIyBtb3VudCAtdCBkZWJ1Z2ZzIG5vbmUgL3N5cy9rZXJuZWwvZGVidWcN
+Cj4gPiA+IA0KPiA+ID4gMy4gQ2hlY2sgcGFnZSAweDMwMDoNCj4gPiA+IA0KPiA+ID4gICAgIyBj
+YXQgL3N5cy9rZXJuZWwvZGVidWcvaWVlZTgwMjExL3BoeTAvcnR3ODgvbWFjXzMNCj4gPiA+ICAg
+ICAgMDAwMDAzMDAgIGY3MTM4MDAwICAgIDMzMzMwMDAwICAgIGZmZmZiMDAwICAgIDAwMDAwMDAw
+DQo+ID4gPiAgICAgIC4uLi4uDQo+ID4gPiANCj4gPiA+IDQuIFBsdWcgdGhlIFVTQiBkZXZpY2Uu
+IEkgdXNlZCBSVEw4ODExQ1UuDQo+ID4gPiANCj4gPiA+IDUuIENoZWNrIHBhZ2UgMHgzMDAgYWdh
+aW46DQo+ID4gPiANCj4gPiA+ICAgICMgY2F0IC9zeXMva2VybmVsL2RlYnVnL2llZWU4MDIxMS9w
+aHkwL3J0dzg4L21hY18zDQo+ID4gPiAgICAgIDAwMDAwMzAwICBlYWVhZWFlYSAgICBlYWVhZWFl
+YSAgICBlYWVhZWFlYSAgICBlYWVhZWFlYQ0KPiA+ID4gICAgICAuLi4uLg0KPiA+ID4gDQo+ID4g
+PiA2LiBCb251czogdW5sb2FkIHJ0dzg4Xzg4MjFjdSBhbmQgY2hlY2sgcGFnZSAweDMwMCBhZ2Fp
+biB0byBnZXQNCj4gPiA+ICAgIGEgbnVsbCBwb2ludGVyIGRlcmVmZXJlbmNlOg0KPiA+ID4gDQo+
+ID4gPiAgICAjIHJtbW9kIHJ0dzg4Xzg4MjFjdQ0KPiA+ID4gICAgIyBjYXQgL3N5cy9rZXJuZWwv
+ZGVidWcvaWVlZTgwMjExL3BoeTAvcnR3ODgvbWFjXzMNCj4gPiANCj4gPiBJIGZvcmdvdCB0byBz
+YXk6IG15IGtlcm5lbCBpcyA2LjkuOC1hcmNoMS0xIGZyb20gQXJjaCBMaW51eC4NCj4gPiBUaGUg
+cHJvYmxlbSBhbHNvIGhhcHBlbnMgd2l0aCBrZXJuZWwgNi45LjggcGx1cyBydHc4OCBmcm9tDQo+
+ID4gcnR3LW5leHQuDQo+IA0KPiBUaGlzIGxpbWl0YXRpb24gaXMgZXhpc3Rpbmcgc2luY2UgaW5p
+dGlhbCBkcml2ZXIuDQo+IA0KPiBUbyByZWFkIGEgcmFuZ2Ugb2YgbGFyZ2UgcmVnaXN0ZXJzIGFy
+ZWEsIGZvciBleGFtcGxlLCB3ZSBuZWVkIHRvDQo+IGEgcmFuZ2UgdmlhIHdyaXRlIG9wZXJhdGlv
+biBhbmQgc3RvcmUgYXMgYSBwcml2YXRlIGRhdGEsIGFuZA0KPiB0aGVuIHVzZSByZWFkIG9wZXJh
+dGlvbiB3aXRoIHByaXZhdGUgZGF0YSB0byByZWFkIHJlZ2lzdGVycy4NCj4gDQo+IFRoZSBsaW1p
+dGF0aW9uIGlzIGJlY2F1c2UgdGhlIHByaXZhdGUgZGF0YSBpcyBzdGF0aWMgdmFyaWFibGUuDQo+
+IEEgcG9zc2libGUgc29sdXRpb24gaXMgdG8gZHVwbGljYXRlIHN0YXRpYyB2YXJpYWJsZSBpbnRv
+IHJ0d2Rldi4NCj4gTm90IHN1cmUgaWYgaXQgaXMgd29ydGggdG8gYWRqdXN0IGNvZGVzIGZvciBk
+ZWJ1ZyBwdXJwb3NlIG9ubHkuDQo+IA0KPiBBbm90aGVyIGVhc2llciBzb2x1dGlvbiBpcyB0byBh
+dm9pZCBjcmVhdGluZyBkZWJ1Z2ZzIGZvciBzZWNvbmQNCj4gYWRhcHRlci4gSG93IGRvIHlvdSB0
+aGluaz8NCj4gDQoNClRoaW5rIGEgbGl0dGxlIGJpdCBmdXJ0aGVyLiBJIHdpbGwgdHJ5IHRvIGR1
+cGxpY2F0ZSBzdGF0aWMgdmFyaWFibGVzDQp0byBzdXBwb3J0IG11bHRpcGxlIGFkYXB0ZXJzLiAN
+Cg0KDQo=
 
