@@ -1,101 +1,76 @@
-Return-Path: <linux-wireless+bounces-10266-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10267-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D94493298F
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jul 2024 16:46:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 525349329CE
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jul 2024 17:00:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8106B1C20B41
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jul 2024 14:46:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA919282482
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jul 2024 15:00:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DDCC1A0AED;
-	Tue, 16 Jul 2024 14:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 223E0195B27;
+	Tue, 16 Jul 2024 15:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="kTllUNj9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cOvJDmo7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2214F19B3D6;
-	Tue, 16 Jul 2024 14:41:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3211DFF0;
+	Tue, 16 Jul 2024 15:00:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721140876; cv=none; b=NRpYYWjfWd9aLDvgExSijffbGgqi8AhHJrGx77TxUMjB0xypv+5oobL6IJXDKDnA2mDSDdeVN7W+TXq4pxsOH91NvFCcD+gWjdM9xmQnEUtb5QegezyJKDJLqAnG92shcVM8icBseUks6UmCLo9kRMxsYgkBWz+nFSxCa0YOk84=
+	t=1721142033; cv=none; b=gk2bynEGOpjHbumCP2CqT65QOiTGG73N+Y6fpPlY9UqNiurs9VhshIdXKPCQ8NPOBjuf2modphHYKMzVzxpchi5NoP332oljdDq642g5znIfHaOOVt8h5AHUhUU8z75YZDjEJH31K51AU+51Kfw6S+ChUfzngW6x44usOPnJ7m8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721140876; c=relaxed/simple;
-	bh=anaUBK+dep9/rBEfBe2oKEYQuVt/IGTEAa2GVzdz6HA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=oqagY7jcEs9ahnB20tOLXKZSUbCMg8NtZACvmZd3EvBnkfRvvvlelV6GL6xUreTZDwDoOHO5grCehp5QIG7bh5kpIPUZ/Khc8/iRmv/wrHVsvxE4j+oKmYJbDwZlokmVi2X1gJ5CBrTlaVFnmWyZe6HkpTWIH4159OmqGRPEfcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=kTllUNj9; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46GDR4Y7021550;
-	Tue, 16 Jul 2024 14:41:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	z+ZiobYmNSqYGyNF4Jfh80LXbvHZvZQKCWqa2am9DI4=; b=kTllUNj93P/HRCOx
-	ipWFjO0DpNseMuVr2nWXZKDi/YlDssq6DYIvHGmWJkL21HzAV451yi8rSz2mJ1eF
-	XNRXpTIDBtBAkY7b693TK0n4XIp2e1xZZ594Djbgkrab/XF6WOeKeN/pW/we98vz
-	a+hj5DlNBmNrmNDUcmC1CZje5R9IAe8s7b4eY1QJamDDHsrBTdsoXJ7IA9mjmWiz
-	o+qNbKxymhoNLIhB1LiBUvq53w2D0J7Vzk5llJUPZf7+M6lnvYPmr2XdjY/yWAVc
-	FlsiuNvz+1hoUMI+QgyC9InoAsyHs1vlxeGKfhJO1R50cQLLgjCqI6RIHYIM2A88
-	jeeo/w==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40bgk6qbvf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Jul 2024 14:41:00 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46GEex7E011074
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Jul 2024 14:40:59 GMT
-Received: from [10.227.110.203] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 16 Jul
- 2024 07:40:57 -0700
-Message-ID: <69825f6e-c981-4f02-b10f-27e0799804e1@quicinc.com>
-Date: Tue, 16 Jul 2024 07:40:57 -0700
+	s=arc-20240116; t=1721142033; c=relaxed/simple;
+	bh=uYe9BapfTsJ13P9ZljegPThBOOGzlgPGt1rLPJq/+iA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=GHM7RnVl+GxN7Gc1/zX2H+o0i5oA1sT/d7mfuvW8gybJw7iv+9Pq4QTfhLxCqKwMK1SlGqcSwz3ApJjgzQTSPo8sRhwRRhe06Ra2FOxX9+Uq0ibK3iNFoquLWcx1KHVsndsiOJ3s8lpVKCJvsc+AmTr+O2C3aLo3LjIuWJoRNFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cOvJDmo7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7C951C4AF0F;
+	Tue, 16 Jul 2024 15:00:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721142032;
+	bh=uYe9BapfTsJ13P9ZljegPThBOOGzlgPGt1rLPJq/+iA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=cOvJDmo7Qo70vfoKH3LCj/Ay/cisN3fWNCwNH0Cd1pillnKj36xafDzm8FuB6/e1+
+	 Q5SXcRZIBntMt0ZAPoxnbPUd+90npTYrGvMOg0P7T5aeSVzHJAcUch61tBNIpOMCYx
+	 OPs6JPrcihbJDcf6W5hHcrw3AKFiadlgdQzLBsUW0cuIX0EuhbPUQ3bDVQoMd+d1gd
+	 PYa15i9dStUmwngKdM0dmNwiMl4EaOkXMZ51bDCTcLt30DInNRJiS/gBaxTNJtgM/h
+	 4tB8/IM/kq7gUz1bEWgyq5EhXAELw14P/85v8tW4mDX1Pwn41mCphca2VPkP+KQAQz
+	 mUFS6A7NonKYg==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 6616DC43443;
+	Tue, 16 Jul 2024 15:00:32 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] wifi: ath12k: fix build vs old compiler
-Content-Language: en-US
-To: Paolo Abeni <pabeni@redhat.com>, <netdev@vger.kernel.org>
-CC: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
-        "Baochen Qiang" <quic_bqiang@quicinc.com>,
-        <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        "David S.
- Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>
-References: <3175f87d7227e395b330fd88fb840c1645084ea7.1721127979.git.pabeni@redhat.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <3175f87d7227e395b330fd88fb840c1645084ea7.1721127979.git.pabeni@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: D0U0g0cqZEMhSIbmynx_k5R8aMzOjk27
-X-Proofpoint-ORIG-GUID: D0U0g0cqZEMhSIbmynx_k5R8aMzOjk27
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-15_19,2024-07-16_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- bulkscore=0 mlxlogscore=752 suspectscore=0 clxscore=1015 mlxscore=0
- lowpriorityscore=0 adultscore=0 spamscore=0 phishscore=0 malwarescore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2407160109
+Subject: Re: [PATCH net] wifi: ath12k: fix build vs old compiler
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <172114203241.4794.15315713329706160319.git-patchwork-notify@kernel.org>
+Date: Tue, 16 Jul 2024 15:00:32 +0000
+References: <3175f87d7227e395b330fd88fb840c1645084ea7.1721127979.git.pabeni@redhat.com>
+In-Reply-To: <3175f87d7227e395b330fd88fb840c1645084ea7.1721127979.git.pabeni@redhat.com>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, kvalo@kernel.org, jjohnson@kernel.org,
+ quic_bqiang@quicinc.com, linux-wireless@vger.kernel.org,
+ ath12k@lists.infradead.org, kuba@kernel.org, davem@davemloft.net,
+ edumazet@google.com
 
-On 7/16/2024 4:06 AM, Paolo Abeni wrote:
+Hello:
+
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Tue, 16 Jul 2024 13:06:39 +0200 you wrote:
 > gcc 11.4.1-3 warns about memcpy() with overlapping pointers:
 > 
 > drivers/net/wireless/ath/ath12k/wow.c: In function ‘ath12k_wow_convert_8023_to_80211.constprop’:
@@ -124,21 +99,16 @@ On 7/16/2024 4:06 AM, Paolo Abeni wrote:
 >   232 |                         memcpy(pat, eth_pat, eth_pat_len);
 >       |                         ^~~~~~
 > 
-> The sum of size_t operands can overflow SIZE_MAX, triggering the
-> warning.
-> Address the issue using the suitable helper.
-> 
-> Fixes: 4a3c212eee0e ("wifi: ath12k: add basic WoW functionalities")
-> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-> ---
-> Only built tested. Sending directly to net to reduce the RTT, but no
-> objections to go through the WiFi tree first
+> [...]
 
-Since Kalle is on holiday please go ahead and take this via net.
-This looks nicer than Kalle's version :)
+Here is the summary with links:
+  - [net] wifi: ath12k: fix build vs old compiler
+    https://git.kernel.org/netdev/net-next/c/b49991d83bba
 
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
 
