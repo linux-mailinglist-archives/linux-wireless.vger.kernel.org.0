@@ -1,165 +1,146 @@
-Return-Path: <linux-wireless+bounces-10252-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10253-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B44F69323A6
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jul 2024 12:14:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61354932499
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jul 2024 13:07:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E56CF1C22922
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jul 2024 10:14:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2481128552F
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jul 2024 11:07:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 734D21990A7;
-	Tue, 16 Jul 2024 10:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFC5A1990A5;
+	Tue, 16 Jul 2024 11:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NTEDsi9k"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gzqVIB87"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54F5198A20
-	for <linux-wireless@vger.kernel.org>; Tue, 16 Jul 2024 10:13:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C00196C7B
+	for <linux-wireless@vger.kernel.org>; Tue, 16 Jul 2024 11:07:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721124829; cv=none; b=usxuSLeM9k57Q8krmjY+Xhls/jOvx2W7OffaVLxeE4wp1xLZYQf+NrH8h6gK79sT7e6rSjRL1TiAyUgUeiHpQ2OBKl+acLQJ4RAyGpETMDsshzb4VCMufcxAJ4YudqVs1V55hVQqHOHA44gjw8Yyp3sXXEioGXKTLSxOgQ5xvZg=
+	t=1721128050; cv=none; b=SwaQf1lEh7aLlOo2XjuP190cDq91f90igHWvP7/py4wedEE9fmC5CMakIJOD38FGfyUCIXbsi8zIbDqhYpl0iEhb9biFudrHDbP6ncetJQUxNOAYO1u3wDT5hYRh6DJ8wh9Pdcx0XEBluk9iyINae4I2d+S54YJPAdo8qkVgpW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721124829; c=relaxed/simple;
-	bh=f8Gky9YqWDCmNh8MKNY9H8sRB+mkfPsGLsY2vGiP7+Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tI3c7OTnTj+UnvYV3IqEqfH7yRtWFYFC+8Wdm/IIj39lxUICxsUiqQsgbz3LrE59xNIZ+KGzggykE4yr6Xy98la8UZYYShdsJ4jVBSAyo5CCmLDeeccLCuizobXtcl1rY4AdAohVVhbR9gv/uMNWKs8SV3fFovq+3if1JdKkK28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NTEDsi9k; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-70b3c0a00f2so3239172b3a.3
-        for <linux-wireless@vger.kernel.org>; Tue, 16 Jul 2024 03:13:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1721124827; x=1721729627; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=g6gMwbuavCbnycNTjRaKx9Abv3DoqBPYUEzkdAtOD14=;
-        b=NTEDsi9kYF9duQPxqkOq3Bkr6Vol49BNRWzhV2wsTBiR7MJtBd+1IRNl4jzjrxoUAv
-         Ykd5vKc7d+ndCODB7vfiibVcjhTZ6DkOt98lfgDBgb0QTKO1LfpaUmfF/TuD8x7oS9XD
-         C+sd80RtqFIrVMON04BADFTBcEywMkjURVrCO4sQf4Sd56oPOTrjirsk+VgyNUI0JvkR
-         IjzBRi0FEk4DLGimAtE/KdozIezmWTU0VYTR6nGHDPgafu6qtCrWU8PFPoLIEB6KUqyP
-         kLYXTr3nvppS6V/MQ1Simq77QoMT5FvSVNHjjH9E33TIgzc4bmPdoTayW/ZGytsTvTDb
-         ddjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721124827; x=1721729627;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=g6gMwbuavCbnycNTjRaKx9Abv3DoqBPYUEzkdAtOD14=;
-        b=AywD7jlpnUgZ2RXqA6cMGbPRQmlULV8zqSFdK0uufIdxMFkw7mwnFhaw6CBExp2PcO
-         8lXjGrPaJy1BGIEFFH85RvgfAnJR03kW4Dfdx+YDtVdNlr4du4sEQDLwwtA1h9ItQFzi
-         AzRAgS5hh2uxvZvDG2VxYAy9w8DWKdg0vc+/PmaPiZn8ro7t9wxthiSUc6j1YHJR4C2A
-         P8W7hRP6Fj6/KsGUk6GbZxR2NXk9VE5eM1zenw2PeqJAHmzs7EeGJi2nRAqFvNNyjYCU
-         5YFToZclBc7q6HXOI+mflbDDSNsVYhikmrDVqIjcn71Mldl3loSnOIecAQNvrp7xDpHG
-         SkUA==
-X-Forwarded-Encrypted: i=1; AJvYcCUedzknarBequ9GGoRFoKtqGR6J/b3ozHJxkZkEB6QMc1rnu/Fti0DcZZZohbHqgw7/fDJtNkV6sA0ZlI4FpZnBR5Y0tKdcbXglSs4CgDE=
-X-Gm-Message-State: AOJu0Yyo0y8VeBxqYHcJPrvkP13SXh3w0UbsoP20kyuWiXXUob8QlyS4
-	e/IjFpm2FTm7sNiZI/W9rBVYwPVNgsn/ySt/1z1ghYJazZ3HHQzRR3AA/uYvWQ==
-X-Google-Smtp-Source: AGHT+IEDJskFirz6paZGF1HW14iR2GuRPxyEKCS91A1U9kJEn0J3pLh5f3w2w9WhXlu21KxqWnu3BQ==
-X-Received: by 2002:a05:6a00:170d:b0:706:6272:417 with SMTP id d2e1a72fcca58-70c1fbd50acmr2120187b3a.10.1721124827058;
-        Tue, 16 Jul 2024 03:13:47 -0700 (PDT)
-Received: from thinkpad ([220.158.156.207])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70b7eb9e285sm5915488b3a.8.2024.07.16.03.13.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jul 2024 03:13:46 -0700 (PDT)
-Date: Tue, 16 Jul 2024 15:43:35 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Patrick Wildt <patrick@blueri.se>
-Cc: Kalle Valo <kvalo@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+	s=arc-20240116; t=1721128050; c=relaxed/simple;
+	bh=ksg9S2Lx7KorDm/hrBtFt0KGof42WCBKh1f7g5GEq6Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sFYKaMk7EY1gGI68Lo+zkklrrky3EQQwdGYJyvrS3GzfrV4RbaXCvXE1Zd3G26k3Xcrh/N4oIDTWqFk8TkYBWAIyY5AuzetzQbeUJUVVd24gn4iKg3n3qqYw64DbXssfEp023VwP+Y2uXSQba1GakYsvqNNwbtoBWEdwxW3yAs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gzqVIB87; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1721128047;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Hvvnj1XLuLsMaLUuoqgaQm4hXgNbSPKG0xi9JLjL1II=;
+	b=gzqVIB874ZFJ2dVy9ba0a3pTYnBGiMYm/VELiuxpeyWdTwj9BUrgpOOWf5WPzACvG7vgui
+	t3crXIjHiECOcc0EjpnMaKLz2uh8JE70mYhkfdYFGhsIUdJu6jfKyVg1PdfFZjOtyeSg/h
+	iq75jXuif/ohAREWbGPZPPcUpG5FdK0=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-321-njBfylUNN9GjlMHzilKnrg-1; Tue,
+ 16 Jul 2024 07:07:23 -0400
+X-MC-Unique: njBfylUNN9GjlMHzilKnrg-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 657B01955BF2;
+	Tue, 16 Jul 2024 11:07:20 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.45.225.70])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id ACA591955D47;
+	Tue, 16 Jul 2024 11:07:16 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Kalle Valo <kvalo@kernel.org>,
+	Jeff Johnson <jjohnson@kernel.org>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	linux-wireless@vger.kernel.org,
+	ath12k@lists.infradead.org,
+	Jakub Kicinski <kuba@kernel.org>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Andy Gross <agross@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Steev Klimaszewski <steev@kali.org>, linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>
-Subject: Re: [PATCH 2/2] arm64: dts: qcom: x1e80100-yoga: add wifi
- calibration variant
-Message-ID: <20240716101335.GK3446@thinkpad>
-References: <ZpV6o8JUJWg9lZFE@windev.fritz.box>
- <ZpV7OeGNIGGpqNC0@windev.fritz.box>
+	Eric Dumazet <edumazet@google.com>
+Subject: [PATCH net] wifi: ath12k: fix build vs old compiler
+Date: Tue, 16 Jul 2024 13:06:39 +0200
+Message-ID: <3175f87d7227e395b330fd88fb840c1645084ea7.1721127979.git.pabeni@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZpV7OeGNIGGpqNC0@windev.fritz.box>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-On Mon, Jul 15, 2024 at 09:40:41PM +0200, Patrick Wildt wrote:
-> Describe the bus topology for PCIe domain 4 and add the ath12k
-> calibration variant so that the board file (calibration data) can be
-> loaded.
-> 
-> Signed-off-by: Patrick Wildt <patrick@blueri.se>
+gcc 11.4.1-3 warns about memcpy() with overlapping pointers:
 
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+drivers/net/wireless/ath/ath12k/wow.c: In function ‘ath12k_wow_convert_8023_to_80211.constprop’:
+./include/linux/fortify-string.h:114:33: error: ‘__builtin_memcpy’ accessing 18446744073709551611 or more bytes at offsets 0 and 0 overlaps 9223372036854775799 bytes at offset -9223372036854775804 [-Werror=restrict]
+  114 | #define __underlying_memcpy     __builtin_memcpy
+      |                                 ^
+./include/linux/fortify-string.h:637:9: note: in expansion of macro ‘__underlying_memcpy’
+  637 |         __underlying_##op(p, q, __fortify_size);                        \
+      |         ^~~~~~~~~~~~~
+./include/linux/fortify-string.h:682:26: note: in expansion of macro ‘__fortify_memcpy_chk’
+  682 | #define memcpy(p, q, s)  __fortify_memcpy_chk(p, q, s,                  \
+      |                          ^~~~~~~~~~~~~~~~~~~~
+drivers/net/wireless/ath/ath12k/wow.c:190:25: note: in expansion of macro ‘memcpy’
+  190 |                         memcpy(pat, eth_pat, eth_pat_len);
+      |                         ^~~~~~
+./include/linux/fortify-string.h:114:33: error: ‘__builtin_memcpy’ accessing 18446744073709551605 or more bytes at offsets 0 and 0 overlaps 9223372036854775787 bytes at offset -9223372036854775798 [-Werror=restrict]
+  114 | #define __underlying_memcpy     __builtin_memcpy
+      |                                 ^
+./include/linux/fortify-string.h:637:9: note: in expansion of macro ‘__underlying_memcpy’
+  637 |         __underlying_##op(p, q, __fortify_size);                        \
+      |         ^~~~~~~~~~~~~
+./include/linux/fortify-string.h:682:26: note: in expansion of macro ‘__fortify_memcpy_chk’
+  682 | #define memcpy(p, q, s)  __fortify_memcpy_chk(p, q, s,                  \
+      |                          ^~~~~~~~~~~~~~~~~~~~
+drivers/net/wireless/ath/ath12k/wow.c:232:25: note: in expansion of macro ‘memcpy’
+  232 |                         memcpy(pat, eth_pat, eth_pat_len);
+      |                         ^~~~~~
 
-- Mani
+The sum of size_t operands can overflow SIZE_MAX, triggering the
+warning.
+Address the issue using the suitable helper.
 
-> ---
->  .../boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts      |  9 +++++++++
->  arch/arm64/boot/dts/qcom/x1e80100.dtsi                 | 10 ++++++++++
->  2 files changed, 19 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts b/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
-> index fbff558f5b07..f569f0fbd1fc 100644
-> --- a/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
-> +++ b/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
-> @@ -635,6 +635,15 @@ &pcie4_phy {
->  	status = "okay";
->  };
->  
-> +&pcie4_port0 {
-> +	wifi@0 {
-> +		compatible = "pci17cb,1107";
-> +		reg = <0x10000 0x0 0x0 0x0 0x0>;
-> +
-> +		qcom,ath12k-calibration-variant = "LES790";
-> +	};
-> +};
-> +
->  &pcie6a {
->  	perst-gpios = <&tlmm 152 GPIO_ACTIVE_LOW>;
->  	wake-gpios = <&tlmm 154 GPIO_ACTIVE_LOW>;
-> diff --git a/arch/arm64/boot/dts/qcom/x1e80100.dtsi b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-> index 7bca5fcd7d52..70eeacd4f9ad 100644
-> --- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-> @@ -3085,6 +3085,16 @@ &mc_virt SLAVE_EBI1 QCOM_ICC_TAG_ALWAYS>,
->  			phy-names = "pciephy";
->  
->  			status = "disabled";
-> +
-> +			pcie4_port0: pcie@0 {
-> +				device_type = "pci";
-> +				reg = <0x0 0x0 0x0 0x0 0x0>;
-> +				bus-range = <0x01 0xff>;
-> +
-> +				#address-cells = <3>;
-> +				#size-cells = <2>;
-> +				ranges;
-> +			};
->  		};
->  
->  		pcie4_phy: phy@1c0e000 {
-> -- 
-> 2.45.2
-> 
-> 
+Fixes: 4a3c212eee0e ("wifi: ath12k: add basic WoW functionalities")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+---
+Only built tested. Sending directly to net to reduce the RTT, but no
+objections to go through the WiFi tree first
+---
+ drivers/net/wireless/ath/ath12k/wow.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath12k/wow.c b/drivers/net/wireless/ath/ath12k/wow.c
+index c5cba825a84a..bead19db2c9a 100644
+--- a/drivers/net/wireless/ath/ath12k/wow.c
++++ b/drivers/net/wireless/ath/ath12k/wow.c
+@@ -186,7 +186,7 @@ ath12k_wow_convert_8023_to_80211(struct ath12k *ar,
+ 	if (eth_pkt_ofs < ETH_ALEN) {
+ 		pkt_ofs = eth_pkt_ofs + a1_ofs;
+ 
+-		if (eth_pkt_ofs + eth_pat_len < ETH_ALEN) {
++		if (size_add(eth_pkt_ofs, eth_pat_len) < ETH_ALEN) {
+ 			memcpy(pat, eth_pat, eth_pat_len);
+ 			memcpy(bytemask, eth_bytemask, eth_pat_len);
+ 
+@@ -228,7 +228,7 @@ ath12k_wow_convert_8023_to_80211(struct ath12k *ar,
+ 	} else if (eth_pkt_ofs < prot_ofs) {
+ 		pkt_ofs = eth_pkt_ofs - ETH_ALEN + a3_ofs;
+ 
+-		if (eth_pkt_ofs + eth_pat_len < prot_ofs) {
++		if (size_add(eth_pkt_ofs, eth_pat_len) < prot_ofs) {
+ 			memcpy(pat, eth_pat, eth_pat_len);
+ 			memcpy(bytemask, eth_bytemask, eth_pat_len);
+ 
 -- 
-மணிவண்ணன் சதாசிவம்
+2.45.2
+
 
