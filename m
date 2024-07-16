@@ -1,109 +1,169 @@
-Return-Path: <linux-wireless+bounces-10264-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10265-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57D8893290E
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jul 2024 16:37:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAF16932976
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jul 2024 16:45:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 102BF285E95
-	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jul 2024 14:37:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E141D1C22B8F
+	for <lists+linux-wireless@lfdr.de>; Tue, 16 Jul 2024 14:45:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E28A1AAE3D;
-	Tue, 16 Jul 2024 14:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62AC119DF86;
+	Tue, 16 Jul 2024 14:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nucRSNlw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OQ3/nhHI"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A2719E7DC;
-	Tue, 16 Jul 2024 14:29:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C5F19D06B;
+	Tue, 16 Jul 2024 14:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721140144; cv=none; b=XlsFHNSFrKGYnPyWP9JfFn6XTJPNNdllPwX7VVPLOkGnO8ULyM62QUSiH5hvlzxs07LwI2bwo1HRi4Kx9n5JQvZGXdCy3OgO/Qwln0DyO5M+3+VJYV9lGxzEYIeQ/qkI7fgLzOJJkU1N8GQXsXGpxgX53QFcNT06zmLBsoqslxM=
+	t=1721140605; cv=none; b=A+nQd+NSJ9Kn7+d8HSCKV8KAuqJuGqinxrRLSfVMJgZrxe7yGc/FYqYQiKum8D5BymgoxQ5ogIWQxIOZsZcMDVBmYvN9LUZtaaXTVVAUsKOYLGYh5HhWYWIzc7Ytnp0SstWIETXzE9GdD73jBS6paRAbkpc6MqvLZVJYhgthjX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721140144; c=relaxed/simple;
-	bh=SIucrbmhZqyMTuOmVJeRoHzWhoIQOE0Ug9b8r4PES5E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RKEehwD+Y7sVHchVOfIIk2BicQt8i53eeNCONz0f7oDOyswi1tpYast+g3UETUJkKzSSR0ZGe2yDjhq974rK58HYzwTJRCwieO7zh0XYiCgdy7iV1Tpj6JUnnLMPhQNMxVZTq/NWmp/hUT2pGAatD2HmMVQdu2em5jMTdYYcyNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nucRSNlw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D0AC4AF10;
-	Tue, 16 Jul 2024 14:29:02 +0000 (UTC)
+	s=arc-20240116; t=1721140605; c=relaxed/simple;
+	bh=rh/F+QHKEAkTOiReTIKrvCHD3pmWrMmymqO9bdbCLk0=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=WZ/8FVWxM0e1z/lT7rRL2fyX6ik7x4yiDZv+6JSwIizRIPT7GnfuGSGZlbmBveA7yoFF6q5eivztIXxzxC32GQ6Dqkir1GukKX1uKxEalu4EfjpGMgDlihp9rmPTdnjweLh3Cds6eus0WwKKjePjOja1f1eUfNGICsIvuJUuv9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OQ3/nhHI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99799C116B1;
+	Tue, 16 Jul 2024 14:36:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721140143;
-	bh=SIucrbmhZqyMTuOmVJeRoHzWhoIQOE0Ug9b8r4PES5E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nucRSNlwXWcDkv3lM1dXFDKR8AmcaacT8KC7lLLcsvxhpNML9a8w2YsR0tO+IKXJm
-	 IA9KvjWu1xsOLsm59F8mnXApUmjIkh7H2xg6kQkHjMtzE0kcnuzsIbFLC7jhoL169v
-	 hsZ3EF8XeSuUh1+MGUxNF3JeNMCtn2dDj+SO9tL9j0pcsj+j5LAS/kN+w9kn1Jmyln
-	 Q83uIchloGuBSVev7IH2LzdkHygy/0yK3mV5vg11hrmHv+jPoF0v+2d+oM8ewCk5KJ
-	 sOtCANDXXiAiB0lFCBi1H22gQDvQvTJVb6MyTSE7aNE5T2eDyQa16UEF4S9GFPoysH
-	 B53jKpBcohM8g==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Daniel Gabay <daniel.gabay@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	gregory.greenman@intel.com,
-	emmanuel.grumbach@intel.com,
-	ilan.peer@intel.com,
-	shaul.triebitz@intel.com,
-	benjamin.berg@intel.com,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 13/15] wifi: iwlwifi: properly set WIPHY_FLAG_SUPPORTS_EXT_KEK_KCK
-Date: Tue, 16 Jul 2024 10:28:10 -0400
-Message-ID: <20240716142825.2713416-13-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240716142825.2713416-1-sashal@kernel.org>
-References: <20240716142825.2713416-1-sashal@kernel.org>
+	s=k20201202; t=1721140604;
+	bh=rh/F+QHKEAkTOiReTIKrvCHD3pmWrMmymqO9bdbCLk0=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=OQ3/nhHIWj50RgNy0e57bnILEnJCTdv6PTadddklumZfgwIbpX4I2snJdhoGGTGuk
+	 FRoTAmJSG01DaoW1c2+J4pAhEY/js7lZdfBfm48OFp89OEdsWQgQNEwJ/WKEefLGNg
+	 /Ibd961fRNyySJmKIQPGpx8vbj5xfkSLDq/Yi3nf1kY59kYN1sPMTIJU8c4Nh1oaBk
+	 9sKWCDJGB8IcySC4EoOAT3zQJuHKzcBWbAgBNP3PYgV69HQLf1TfaPbVu+w6w9kNeQ
+	 QmJr6AlIPSZ785xXRxGt41PKvk5n1bHVgxyVxCQ4lyDFXYoOHJhbrbyymwRBg+E8dA
+	 Wdo1Or2+VeELw==
+Date: Tue, 16 Jul 2024 07:36:40 -0700
+From: Kees Cook <kees@kernel.org>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, Kees Cook <keescook@chromium.org>,
+ "Paul E . McKenney" <paulmck@kernel.org>
+CC: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+ Baochen Qiang <quic_bqiang@quicinc.com>, linux-wireless@vger.kernel.org,
+ ath12k@lists.infradead.org, Jakub Kicinski <kuba@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>
+Subject: Re: [PATCH net] wifi: ath12k: fix build vs old compiler
+User-Agent: K-9 Mail for Android
+In-Reply-To: <93d282fb-4691-460a-aa5b-13e9ef054cdb@quicinc.com>
+References: <3175f87d7227e395b330fd88fb840c1645084ea7.1721127979.git.pabeni@redhat.com> <a7950e7b-2275-4b6d-b8e1-4f50d0bc28e6@quicinc.com> <93d282fb-4691-460a-aa5b-13e9ef054cdb@quicinc.com>
+Message-ID: <A4FF7C44-06C7-4241-B33E-1E9684A979E0@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.99
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Daniel Gabay <daniel.gabay@intel.com>
 
-[ Upstream commit 4ec17ce716bdaf680288ce680b4621b52483cc96 ]
 
-The WIPHY_FLAG_SUPPORTS_EXT_KEK_KCK should be set based on the
-WOWLAN_KEK_KCK_MATERIAL command version. Currently, the command
-version in the firmware has advanced to 4, which prevents the
-flag from being set correctly, fix that.
+On July 16, 2024 7:03:55 AM PDT, Jeff Johnson <quic_jjohnson@quicinc=2Ecom=
+> wrote:
+>On 7/16/2024 7:00 AM, Jeff Johnson wrote:
+>> On 7/16/2024 4:06 AM, Paolo Abeni wrote:
+>>> gcc 11=2E4=2E1-3 warns about memcpy() with overlapping pointers:
+>>>
+>>> drivers/net/wireless/ath/ath12k/wow=2Ec: In function =E2=80=98ath12k_w=
+ow_convert_8023_to_80211=2Econstprop=E2=80=99:
+>>> =2E/include/linux/fortify-string=2Eh:114:33: error: =E2=80=98__builtin=
+_memcpy=E2=80=99 accessing 18446744073709551611 or more bytes at offsets 0 =
+and 0 overlaps 9223372036854775799 bytes at offset -9223372036854775804 [-W=
+error=3Drestrict]
+>>>   114 | #define __underlying_memcpy     __builtin_memcpy
+>>>       |                                 ^
+>>> =2E/include/linux/fortify-string=2Eh:637:9: note: in expansion of macr=
+o =E2=80=98__underlying_memcpy=E2=80=99
+>>>   637 |         __underlying_##op(p, q, __fortify_size);              =
+          \
+>>>       |         ^~~~~~~~~~~~~
+>>> =2E/include/linux/fortify-string=2Eh:682:26: note: in expansion of mac=
+ro =E2=80=98__fortify_memcpy_chk=E2=80=99
+>>>   682 | #define memcpy(p, q, s)  __fortify_memcpy_chk(p, q, s,        =
+          \
+>>>       |                          ^~~~~~~~~~~~~~~~~~~~
+>>> drivers/net/wireless/ath/ath12k/wow=2Ec:190:25: note: in expansion of =
+macro =E2=80=98memcpy=E2=80=99
+>>>   190 |                         memcpy(pat, eth_pat, eth_pat_len);
+>>>       |                         ^~~~~~
+>>> =2E/include/linux/fortify-string=2Eh:114:33: error: =E2=80=98__builtin=
+_memcpy=E2=80=99 accessing 18446744073709551605 or more bytes at offsets 0 =
+and 0 overlaps 9223372036854775787 bytes at offset -9223372036854775798 [-W=
+error=3Drestrict]
+>>>   114 | #define __underlying_memcpy     __builtin_memcpy
+>>>       |                                 ^
+>>> =2E/include/linux/fortify-string=2Eh:637:9: note: in expansion of macr=
+o =E2=80=98__underlying_memcpy=E2=80=99
+>>>   637 |         __underlying_##op(p, q, __fortify_size);              =
+          \
+>>>       |         ^~~~~~~~~~~~~
+>>> =2E/include/linux/fortify-string=2Eh:682:26: note: in expansion of mac=
+ro =E2=80=98__fortify_memcpy_chk=E2=80=99
+>>>   682 | #define memcpy(p, q, s)  __fortify_memcpy_chk(p, q, s,        =
+          \
+>>>       |                          ^~~~~~~~~~~~~~~~~~~~
+>>> drivers/net/wireless/ath/ath12k/wow=2Ec:232:25: note: in expansion of =
+macro =E2=80=98memcpy=E2=80=99
+>>>   232 |                         memcpy(pat, eth_pat, eth_pat_len);
+>>>       |                         ^~~~~~
+>>>
+>>> The sum of size_t operands can overflow SIZE_MAX, triggering the
+>>> warning=2E
+>>> Address the issue using the suitable helper=2E
+>>>
+>>> Fixes: 4a3c212eee0e ("wifi: ath12k: add basic WoW functionalities")
+>>> Signed-off-by: Paolo Abeni <pabeni@redhat=2Ecom>
+>>> ---
+>>> Only built tested=2E Sending directly to net to reduce the RTT, but no
+>>> objections to go through the WiFi tree first
+>>> ---
+>>>  drivers/net/wireless/ath/ath12k/wow=2Ec | 4 ++--
+>>>  1 file changed, 2 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/drivers/net/wireless/ath/ath12k/wow=2Ec b/drivers/net/wir=
+eless/ath/ath12k/wow=2Ec
+>>> index c5cba825a84a=2E=2Ebead19db2c9a 100644
+>>> --- a/drivers/net/wireless/ath/ath12k/wow=2Ec
+>>> +++ b/drivers/net/wireless/ath/ath12k/wow=2Ec
+>>> @@ -186,7 +186,7 @@ ath12k_wow_convert_8023_to_80211(struct ath12k *ar=
+,
+>>>  	if (eth_pkt_ofs < ETH_ALEN) {
+>>>  		pkt_ofs =3D eth_pkt_ofs + a1_ofs;
+>>> =20
+>>> -		if (eth_pkt_ofs + eth_pat_len < ETH_ALEN) {
+>>> +		if (size_add(eth_pkt_ofs, eth_pat_len) < ETH_ALEN) {
+>>>  			memcpy(pat, eth_pat, eth_pat_len);
+>>>  			memcpy(bytemask, eth_bytemask, eth_pat_len);
+>>> =20
+>>> @@ -228,7 +228,7 @@ ath12k_wow_convert_8023_to_80211(struct ath12k *ar=
+,
+>>>  	} else if (eth_pkt_ofs < prot_ofs) {
+>>>  		pkt_ofs =3D eth_pkt_ofs - ETH_ALEN + a3_ofs;
+>>> =20
+>>> -		if (eth_pkt_ofs + eth_pat_len < prot_ofs) {
+>>> +		if (size_add(eth_pkt_ofs, eth_pat_len) < prot_ofs) {
+>>>  			memcpy(pat, eth_pat, eth_pat_len);
+>>>  			memcpy(bytemask, eth_bytemask, eth_pat_len);
+>>> =20
+>>=20
+>> Duplicate of https://msgid=2Elink/20240704144341=2E207317-1-kvalo@kerne=
+l=2Eorg ??
+>
+>Let me add Kees & Paul to see if they prefer your solution
 
-Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240703064026.a0f162108575.If1a9785727d2a1b0197a396680965df1b53d4096@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Heh, yeah, that works too! Avoid the overflow via saturating addition=2E
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 801098c5183b6..4e8bdd3d701bf 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -532,7 +532,7 @@ int iwl_mvm_mac_setup_register(struct iwl_mvm *mvm)
- 		hw->wiphy->features |= NL80211_FEATURE_WFA_TPC_IE_IN_PROBES;
- 
- 	if (iwl_fw_lookup_cmd_ver(mvm->fw, WOWLAN_KEK_KCK_MATERIAL,
--				  IWL_FW_CMD_VER_UNKNOWN) == 3)
-+				  IWL_FW_CMD_VER_UNKNOWN) >= 3)
- 		hw->wiphy->flags |= WIPHY_FLAG_SUPPORTS_EXT_KEK_KCK;
- 
- 	if (fw_has_api(&mvm->fw->ucode_capa,
--- 
-2.43.0
+Reviewed-by: Kees Cook<kees@kernel=2Eorg>
 
+--=20
+Kees Cook
 
