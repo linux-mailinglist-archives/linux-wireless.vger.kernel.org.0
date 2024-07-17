@@ -1,76 +1,62 @@
-Return-Path: <linux-wireless+bounces-10316-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10317-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E887E934342
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2024 22:37:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 865709343C6
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2024 23:24:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97626283590
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2024 20:37:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B812E1C21C30
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2024 21:24:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE571CD3D;
-	Wed, 17 Jul 2024 20:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7F61850A0;
+	Wed, 17 Jul 2024 21:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZHyk9xzi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gK/tkL3f"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A77422611
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Jul 2024 20:37:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B771CD26;
+	Wed, 17 Jul 2024 21:24:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721248653; cv=none; b=CCKZpP6g7+3mlfo5gv+Xk37BLqLzVC86IaN1roMU9bBTE6v/fDwCpH0VUSxWoR3PejQGEdAnRauV5uw0StpMGElzeR7N1zjpr6waPEUFxWzMrmNsotwONTH3msgTFqYfeSA5uKxyNU+JD/3ox14OMrrSB3DM3Ra1cIKBPZEWf8A=
+	t=1721251463; cv=none; b=PrR1mohsksHEJBIdgRo0Zhfn4J9fLvA21GWbd4wYvWhS3ag5UWQD2TpPFps4VmnykYhRSOYdht096svZcU87SGbPLGPvnuI9FwO8QO/hdC71dHH1ivhdTt+OXieACbjPGV+99xpiJYmThLhhF2LWaLeLYUYJeDrAAz3DjMU+7DE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721248653; c=relaxed/simple;
-	bh=Axa3+fJrm+kDX4tcl99tyN59zaR0l/jTZrzGSuyHfak=;
+	s=arc-20240116; t=1721251463; c=relaxed/simple;
+	bh=1EY+vvc7jNlEdDJjAXGm1QryO1IfYmX5lIziu+1P168=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SnPp5Ov1tBAE13BT9Ge0w/P29r8NEU0NoYdUwupRxNJqDxE4SxsSnfefFOvn+2qWiYw+IUSjkefZUl2Gx1SqPUsBpzCK90F3Xv6KAJ2cW9tnW03RLEIlgHOksZuFo8aQBv725OOurKnsAlazPJi6rF7em0eF0lsDgC587K4U/Zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZHyk9xzi; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1721248651; x=1752784651;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Axa3+fJrm+kDX4tcl99tyN59zaR0l/jTZrzGSuyHfak=;
-  b=ZHyk9xziWcETKvAtaq0hxPseDsMQrarh9wi7Klz3pfSJWB+QZ8D6snO/
-   wXq5QkkG6Mn51fhjExVbbpwK262AqxbDu3dIajILjowkIUazXOaUnMsuL
-   GgsO3SI6h+5XzLG5qIQDjeO46D5fv3OcUaGZun/vQdLjkhdAJc8xbty36
-   IytQm9kTU4BByiVtpV0qDBQWi+dk3dPTewyjBDvnZlOVTcJX+rVF3VZ9s
-   5gcPNy1O0T156rR0iwc6esngZ5ktFDOtr+ElIMddX2vMJC78uoXb3neop
-   /O7sAmBSPJeC/ZirXckdApkvhG+u04Fm+kNu4sB8zJXUJCYs3PhgXJDd3
-   A==;
-X-CSE-ConnectionGUID: GVSLB7wbSr6MALgZ2zE8aA==
-X-CSE-MsgGUID: FJJOK2WjSC6LL2mmqnSS7A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11136"; a="36222488"
-X-IronPort-AV: E=Sophos;i="6.09,215,1716274800"; 
-   d="scan'208";a="36222488"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2024 13:37:30 -0700
-X-CSE-ConnectionGUID: u1mitnfkSdqdT6Tgg6RIjw==
-X-CSE-MsgGUID: 8ksHjwr5SGS+JnJiQ+l+wQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,215,1716274800"; 
-   d="scan'208";a="50607096"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 17 Jul 2024 13:37:30 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sUBOx-000gek-1n;
-	Wed, 17 Jul 2024 20:37:27 +0000
-Date: Thu, 18 Jul 2024 04:36:30 +0800
-From: kernel test robot <lkp@intel.com>
-To: Lingbo Kong <quic_lingbok@quicinc.com>, ath12k@lists.infradead.org
-Cc: oe-kbuild-all@lists.linux.dev, linux-wireless@vger.kernel.org,
-	quic_lingbok@quicinc.com
-Subject: Re: [PATCH 2/4] wifi: ath12k: Add Support for enabling or disabling
- specific features based on ACPI bitflag
-Message-ID: <202407180403.SFqsPj0v-lkp@intel.com>
-References: <20240717111023.78798-3-quic_lingbok@quicinc.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=nj9CpQtJPAPfwv5TfJ3izrqNF2wNjIjRwPFq0NvcsDJeQCLwI2EaWbcYL391F1oz1ssIVBCpb1IXdK4dgSMwtqnjYi1iOkmo369kijDhMKxEg7c4l86iJdbYrf3maVukmSqnIzqdKl2v8uvN/iP2OZ9QIcmL16VCc0q7/Ljq9BM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gK/tkL3f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F1AC2BD10;
+	Wed, 17 Jul 2024 21:24:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721251463;
+	bh=1EY+vvc7jNlEdDJjAXGm1QryO1IfYmX5lIziu+1P168=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gK/tkL3f97uSs56KpwRiMUV5Bwx3eXpVEi/WJjpgUZEX0th0IeqcGp0ItIgThbd9E
+	 He+DVz2m1tMAa4wNF10MU6hQgtyYZpDaEQdKA++QhGAp49Tz/5eX9y7M+gVBozW8hU
+	 oh3lctY8/fVWcDZpGzmQLJ3WyN+itS6m8Kf1Z1M1NGteuMEBwkHHuvWKV2r6thTBR3
+	 WGGkVt0FibIraYnmzlnTYqhaWjkC/8RCRfebIYqA12cSVX+2KIPkQB352ORqY+osft
+	 dyueKLESA3NX3q+Pm01BYwNXDxAXRiqZZn1TMhb78cnylJFgQb5tYxvVUKRpTBwzSD
+	 HcMkB5oFXHUBQ==
+Date: Wed, 17 Jul 2024 14:24:21 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Linux PM <linux-pm@vger.kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+	Stefan Lippers-Hollmann <s.l-h@gmx.de>,
+	Oleksandr Natalenko <oleksandr@natalenko.name>,
+	Ben Greear <greearb@candelatech.com>
+Subject: Re: [PATCH v2] thermal: core: Allow thermal zones to tell the core
+ to ignore them
+Message-ID: <20240717212421.GA1191@sol.localdomain>
+References: <4950004.31r3eYUQgx@rjwysocki.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -79,69 +65,85 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240717111023.78798-3-quic_lingbok@quicinc.com>
+In-Reply-To: <4950004.31r3eYUQgx@rjwysocki.net>
 
-Hi Lingbo,
+On Wed, Jul 17, 2024 at 09:45:02PM +0200, Rafael J. Wysocki wrote:
+> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> 
+> The iwlwifi wireless driver registers a thermal zone that is only needed
+> when the network interface handled by it is up and it wants that thermal
+> zone to be effectively ignored by the core otherwise.
+> 
+> Before commit a8a261774466 ("thermal: core: Call monitor_thermal_zone()
+> if zone temperature is invalid") that could be achieved by returning
+> an error code from the thermal zone's .get_temp() callback because the
+> core did not really handle errors returned by it almost at all.
+> However, commit a8a261774466 made the core attempt to recover from the
+> situation in which the temperature of a thermal zone cannot be
+> determined due to errors returned by its .get_temp() and is always
+> invalid from the core's perspective.
+> 
+> That was done because there are thermal zones in which .get_temp()
+> returns errors to start with due to some difficulties related to the
+> initialization ordering, but then it will start to produce valid
+> temperature values at one point.
+> 
+> Unfortunately, the simple approach taken by commit a8a261774466,
+> which is to poll the thermal zone periodically until its .get_temp()
+> callback starts to return valid temperature values, is at odds with
+> the special thermal zone in iwlwifi in which .get_temp() may always
+> return an error because its network interface may always be down.  If
+> that happens, every attempt to invoke the thermal zone's .get_temp()
+> callback resulting in an error causes the thermal core to print a
+> dev_warn() message to the kernel log which is super-noisy.
+> 
+> To address this problem, make the core handle the case in which
+> .get_temp() returns 0, but the temperature value returned by it
+> is not actually valid, in a special way.  Namely, make the core
+> completely ignore the invalid temperature value coming from
+> .get_temp() in that case, which requires folding in
+> update_temperature() into its caller and a few related changes.
+> 
+> On the iwlwifi side, modify iwl_mvm_tzone_get_temp() to return 0
+> and put THERMAL_TEMP_INVALID into the temperature return memory
+> location instead of returning an error when the firmware is not
+> running or it is not of the right type.
+> 
+> Also, to clearly separate the handling of invalid temperature
+> values from the thermal zone initialization, introduce a special
+> THERMAL_TEMP_INIT value specifically for the latter purpose.
+> 
+> Fixes: a8a261774466 ("thermal: core: Call monitor_thermal_zone() if zone temperature is invalid")
+> Closes: https://lore.kernel.org/linux-pm/20240715044527.GA1544@sol.localdomain/
+> Reported-by: Eric Biggers <ebiggers@kernel.org>
+> Reported-by: Stefan Lippers-Hollmann <s.l-h@gmx.de>
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=201761
+> Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
+> Tested-by: Stefan Lippers-Hollmann <s.l-h@gmx.de>
+> Cc: 6.10+ <stable@vger.kernel.org> # 6.10+
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> ---
+> 
+> v1 -> v2:
+>    * It is safer to retain the old behavior in thermal_zone_get_temp(),
+>      which is the second place where the .get_temp() zone callback is
+>      used, so make it return -ENODATA if the temperature value coming
+>      from that callback is invalid.
+>    * Add Tested-by: for Stefan.
+> 
+> I have retained the previous Tested-by because the part of the patch that has
+> been tested remains unchanged.
+> 
+> ---
+>  drivers/net/wireless/intel/iwlwifi/mvm/tt.c |    7 +++
+>  drivers/thermal/thermal_core.c              |   51 +++++++++++++---------------
+>  drivers/thermal/thermal_core.h              |    3 +
+>  drivers/thermal/thermal_helpers.c           |    2 +
+>  4 files changed, 35 insertions(+), 28 deletions(-)
 
-kernel test robot noticed the following build errors:
+This makes the log messages go away for me.  However I had to resolve a conflict
+in drivers/net/wireless/intel/iwlwifi/mvm/tt.c to apply this patch to the latest
+upstream.
 
-[auto build test ERROR on db1ce56e6e1d395dd42a3cd6332a871d9be59c45]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Lingbo-Kong/wifi-ath12k-Add-support-for-obtaining-the-buffer-type-ACPI-function-bitmap/20240717-211701
-base:   db1ce56e6e1d395dd42a3cd6332a871d9be59c45
-patch link:    https://lore.kernel.org/r/20240717111023.78798-3-quic_lingbok%40quicinc.com
-patch subject: [PATCH 2/4] wifi: ath12k: Add Support for enabling or disabling specific features based on ACPI bitflag
-config: alpha-allyesconfig (https://download.01.org/0day-ci/archive/20240718/202407180403.SFqsPj0v-lkp@intel.com/config)
-compiler: alpha-linux-gcc (GCC) 13.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240718/202407180403.SFqsPj0v-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202407180403.SFqsPj0v-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/net/wireless/ath/ath12k/core.c: In function 'ath12k_core_rfkill_config':
->> drivers/net/wireless/ath/ath12k/core.c:33:15: error: 'struct ath12k_base' has no member named 'acpi'
-      33 |         if (ab->acpi.acpi_disable_rfkill)
-         |               ^~
---
-   drivers/net/wireless/ath/ath12k/mac.c: In function 'ath12k_mac_copy_eht_cap':
->> drivers/net/wireless/ath/ath12k/mac.c:5488:19: error: 'struct ath12k_base' has no member named 'acpi'
-    5488 |             ar->ab->acpi.acpi_disable_11be)
-         |                   ^~
-
-
-vim +33 drivers/net/wireless/ath/ath12k/core.c
-
-    24	
-    25	static int ath12k_core_rfkill_config(struct ath12k_base *ab)
-    26	{
-    27		struct ath12k *ar;
-    28		int ret = 0, i;
-    29	
-    30		if (!(ab->target_caps.sys_cap_info & WMI_SYS_CAP_INFO_RFKILL))
-    31			return 0;
-    32	
-  > 33		if (ab->acpi.acpi_disable_rfkill)
-    34			return 0;
-    35	
-    36		for (i = 0; i < ab->num_radios; i++) {
-    37			ar = ab->pdevs[i].ar;
-    38	
-    39			ret = ath12k_mac_rfkill_config(ar);
-    40			if (ret && ret != -EOPNOTSUPP) {
-    41				ath12k_warn(ab, "failed to configure rfkill: %d", ret);
-    42				return ret;
-    43			}
-    44		}
-    45	
-    46		return ret;
-    47	}
-    48	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+- Eric
 
