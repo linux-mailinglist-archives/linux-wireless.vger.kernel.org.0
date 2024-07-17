@@ -1,96 +1,100 @@
-Return-Path: <linux-wireless+bounces-10282-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10283-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 866AC933602
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2024 06:25:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F0FF9336BA
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2024 08:12:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B5A32842E9
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2024 04:25:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9572B216A1
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2024 06:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38FF7494;
-	Wed, 17 Jul 2024 04:25:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="MJuWMCjI"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A72B125C9;
+	Wed, 17 Jul 2024 06:12:26 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB07C469D
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Jul 2024 04:25:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56BA4125AC
+	for <linux-wireless@vger.kernel.org>; Wed, 17 Jul 2024 06:12:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721190338; cv=none; b=T50U4rZNBPutkOlol/vojI5UI0bTJkmrpYiiBhLcfnk89xzh4RgfbdwJu71i45+J8fvru9yTNW0lm1V0xXspIWeo7wrrZFwKOAwqZXRcKC6+qzTqmxWFyOESUiwckce+u7EJJRpW/XS9/yfSqtnxhX1UaZAOhuL61f+C4GckaM8=
+	t=1721196746; cv=none; b=Jwffnla9lTxA50q1kFj+J4Pd3e4nPSjYzx3endQ6GR0WLor7L73/6d7xpU07wqlPf8XSZl+ov1BOU5bUbROaY7lLOItyq3FUrWrSBV/WCZ2JInoaL0A9V1x+lxyL0anKc6TPm2iiM82ln6y0VvCy16bok3GhdME4b4wNoA486RU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721190338; c=relaxed/simple;
-	bh=Cftz8DC9Cq0uHt+9ZzQt++X9bvD3tPHZTY/NCrRPqpk=;
-	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date; b=k/WxlN5v/68+k5pVGehBx7r6yw7/pRfJbMXcC2/iXIGuq1xbRQZ6llXZeYf7x3c/C/hacEpH6Q9eAbIKXxOG7tfsnElSQgVTDfSMe7FutzSCMXQt1PX/nPBwrmR/J+3wmKfOX51H4q5eFG3V8oGLG0q6e36sQ56JeuISjWNPHkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=MJuWMCjI; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 46H4PWF801707851, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1721190332; bh=Cftz8DC9Cq0uHt+9ZzQt++X9bvD3tPHZTY/NCrRPqpk=;
-	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date;
-	b=MJuWMCjIkvi9jCcgtVCjyras9HSpgXKIaZ5xYnu9vwMJrOlpFHS/y2pMjdogwnRtX
-	 mja1DeS/twQDYCKBPE/MWuhM6k2A/2GOteXLw1FSTeQopKqjyjIAaBqDrO509UswaX
-	 6NqpWhkJ6/vYyAQ9C3fF1Wc2Ym+Ofot2SvDwcZsaMFXl+ubBAv7LG2YZ2uxFalY954
-	 O6FOX/EbglFLdujGXRiPXWZilpIMLtyeZzVlAEwYXMvxXEWNGeXRVQzEPPO5s+pN2b
-	 iaXatKFsRsE7upHWIMNiMmF4RHdX9HQ4Fl8pxhqeANT5WJSIYXtqjMdj5A3uyKTnfG
-	 3JyZNPu/gXuBg==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 46H4PWF801707851
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 17 Jul 2024 12:25:32 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 17 Jul 2024 12:25:33 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 17 Jul
- 2024 12:25:33 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC: Ping-Ke Shih <pkshih@realtek.com>, Nick Morrow <morrownr@gmail.com>
-Subject: Re: [PATCH] wifi: rtw88: 8821cu: Remove VID/PID 0bda:c82c
-In-Reply-To: <335d7fa1-0ba5-4b86-bba5-f98834ace1f8@gmail.com>
-References: <335d7fa1-0ba5-4b86-bba5-f98834ace1f8@gmail.com>
+	s=arc-20240116; t=1721196746; c=relaxed/simple;
+	bh=4f3fcVvU4gRFuVFMBNoTOgdn8pYdktibC9FrBSuVlg4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XcdYYY9mkJXMJvs61iaa7D8S6tD/JPeK7/SGr1XO8j4BQbINN0O3Ge64cE7mxqSaYc1HBoKY5FIaHXMabtdA6T7MeVEfvK4Yu85pMF8db+65aa1PZ/vRC2hAVzX93L9/L15MYT6S+zEu7YY/w3GR/3r0DkrpRjUAO4iixeyu+JI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sTxth-0003EI-Rs; Wed, 17 Jul 2024 08:12:17 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sTxtg-0009Jr-Vl; Wed, 17 Jul 2024 08:12:17 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sTxtg-001s4c-2l;
+	Wed, 17 Jul 2024 08:12:16 +0200
+Date: Wed, 17 Jul 2024 08:12:16 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Brian Norris <briannorris@chromium.org>, Kalle Valo <kvalo@kernel.org>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] wifi: mwifiex: add support for WPA-PSK-SHA256
+Message-ID: <ZpdgwCyoYPAFLBJI@pengutronix.de>
+References: <20240716-mwifiex-wpa-psk-sha256-v1-0-05ae70f37bb3@pengutronix.de>
+ <20240716-mwifiex-wpa-psk-sha256-v1-2-05ae70f37bb3@pengutronix.de>
+ <20240716195731.GB85916@francesco-nb>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Message-ID: <ef15d62c-7613-42fc-81a3-526cad21faa7@RTEXMBS04.realtek.com.tw>
-Date: Wed, 17 Jul 2024 12:25:33 +0800
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240716195731.GB85916@francesco-nb>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
-Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+Hi Francesco,
 
-> From: Nick Morrow <morrownr@gmail.com>
+On Tue, Jul 16, 2024 at 09:57:31PM +0200, Francesco Dolcini wrote:
+> Hello Sascha,
 > 
-> Remove VID/PID 0bda:c82c as it was inadvertently added to the device
-> list in driver rtw8821cu. This VID/PID is for the rtw8822cu device
-> and it is already in the appropriate place for that device.
+> On Tue, Jul 16, 2024 at 01:33:28PM +0200, Sascha Hauer wrote:
+> > This adds support for the WPA-PSK AKM suite with SHA256 as hashing
+> > method (WPA-PSK-SHA256). Tested with a wpa_supplicant provided AP
+> > using key_mgmt=WPA-PSK-SHA256.
 > 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Nick Morrow <morrownr@gmail.com>
-> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+> Do you have any more details on which chip/firmware you tested?
+> The change looks good, I am just wondering if there are reasons this
+> might create issue on some specific chip/firmware combination.
 
-1 patch(es) applied to rtw-next branch of rtw.git, thanks.
+I have a IW416 with firmware 16.92.21.p119. The change itself is derived
+from the downstream driver. The downstream driver also sets the
+KEY_MGMT_PSK_SHA256 bit unconditionally for all chip/firmware
+combinations so I think this change should be ok.
 
-0af8cd2822f3 wifi: rtw88: 8821cu: Remove VID/PID 0bda:c82c
+Sascha
 
----
-https://github.com/pkshih/rtw.git
-
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
