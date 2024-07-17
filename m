@@ -1,123 +1,147 @@
-Return-Path: <linux-wireless+bounces-10315-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10316-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9408D934338
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2024 22:29:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E887E934342
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2024 22:37:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 515351F215A3
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2024 20:29:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97626283590
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2024 20:37:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F5DA1EA71;
-	Wed, 17 Jul 2024 20:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE571CD3D;
+	Wed, 17 Jul 2024 20:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="GBsuSi1+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZHyk9xzi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0042C181B8E
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Jul 2024 20:29:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A77422611
+	for <linux-wireless@vger.kernel.org>; Wed, 17 Jul 2024 20:37:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721248177; cv=none; b=K9O6M6zdx6QR9/hTBhR8v3gXYqtsRC/W3O65GrfT7Puh/50WlP1o7KauuzPVJcev5o3jjX7/s5p53TtmZ4rVYlMmWhSlZ6vNoH3h7gxzdaryOaDAY7KQoS3hGo+4f8BF2sbnkTKFPU29zHfP9i2L7iLh6aLCs7+GxaFGHE+9/rI=
+	t=1721248653; cv=none; b=CCKZpP6g7+3mlfo5gv+Xk37BLqLzVC86IaN1roMU9bBTE6v/fDwCpH0VUSxWoR3PejQGEdAnRauV5uw0StpMGElzeR7N1zjpr6waPEUFxWzMrmNsotwONTH3msgTFqYfeSA5uKxyNU+JD/3ox14OMrrSB3DM3Ra1cIKBPZEWf8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721248177; c=relaxed/simple;
-	bh=Umz+iIL546odVY0kgI0cl2Key896mKOXlbty/jmuyYQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=lLSj8BdZ2DvBgkCWqD8vF7+8Y2Ftl5NyC9J/FIZAbH/KjT5v7cTIX8lb6XJBZW+2Y26emtKHNPQodDLJ+/CqYSjA46IbQPk2iwLYMGlxPwspkq3maP1XHXghW6cK2xES9jEstb6h9pNxu53K9mkHtulPJS+NcoeX11XbM0K5xmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=GBsuSi1+; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46HFq1rK028343;
-	Wed, 17 Jul 2024 20:29:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	BvMOdXxPx7FQVfR+b1ORo9g1/OmWkFB/985dirZ0xhw=; b=GBsuSi1+USXJT3fI
-	eQOQkWFVvvrwzJg+Iqi6pi0uCToyYJYHe2VDVW3qcxSQFqkdL//NljIPlBezh30j
-	N2+5EKQeuGZi/sWFQz/8l8NnU6teSsdZJJ1IDXoO3tkwPCjuP+FF/RpmtZ3D/70k
-	6lkDuh46v6KLQTi7cLAK1NOvzWJtXnj70qt/lwN9WTQ113sAfYheV6IPv+4PRs6s
-	hxgwYf0t7R8jAb5eQvbvVzKtleC+Wo30UfnXDJZJiH4s+Ngi6qsXgDNb171Cbqhq
-	hFRE5HYRitUyrY5CGqh9DaiiZPEadVCwdKRsTf2SDuIPdvFLHdbhyu1ZU+VOmciC
-	O4ZikQ==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40dwfpkn33-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Jul 2024 20:29:29 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46HKTSiJ022091
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Jul 2024 20:29:28 GMT
-Received: from [10.48.247.102] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 17 Jul
- 2024 13:29:27 -0700
-Message-ID: <89c39516-38b5-4085-9aa0-42b9dd0c0d89@quicinc.com>
-Date: Wed, 17 Jul 2024 13:29:27 -0700
+	s=arc-20240116; t=1721248653; c=relaxed/simple;
+	bh=Axa3+fJrm+kDX4tcl99tyN59zaR0l/jTZrzGSuyHfak=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SnPp5Ov1tBAE13BT9Ge0w/P29r8NEU0NoYdUwupRxNJqDxE4SxsSnfefFOvn+2qWiYw+IUSjkefZUl2Gx1SqPUsBpzCK90F3Xv6KAJ2cW9tnW03RLEIlgHOksZuFo8aQBv725OOurKnsAlazPJi6rF7em0eF0lsDgC587K4U/Zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZHyk9xzi; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1721248651; x=1752784651;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Axa3+fJrm+kDX4tcl99tyN59zaR0l/jTZrzGSuyHfak=;
+  b=ZHyk9xziWcETKvAtaq0hxPseDsMQrarh9wi7Klz3pfSJWB+QZ8D6snO/
+   wXq5QkkG6Mn51fhjExVbbpwK262AqxbDu3dIajILjowkIUazXOaUnMsuL
+   GgsO3SI6h+5XzLG5qIQDjeO46D5fv3OcUaGZun/vQdLjkhdAJc8xbty36
+   IytQm9kTU4BByiVtpV0qDBQWi+dk3dPTewyjBDvnZlOVTcJX+rVF3VZ9s
+   5gcPNy1O0T156rR0iwc6esngZ5ktFDOtr+ElIMddX2vMJC78uoXb3neop
+   /O7sAmBSPJeC/ZirXckdApkvhG+u04Fm+kNu4sB8zJXUJCYs3PhgXJDd3
+   A==;
+X-CSE-ConnectionGUID: GVSLB7wbSr6MALgZ2zE8aA==
+X-CSE-MsgGUID: FJJOK2WjSC6LL2mmqnSS7A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11136"; a="36222488"
+X-IronPort-AV: E=Sophos;i="6.09,215,1716274800"; 
+   d="scan'208";a="36222488"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2024 13:37:30 -0700
+X-CSE-ConnectionGUID: u1mitnfkSdqdT6Tgg6RIjw==
+X-CSE-MsgGUID: 8ksHjwr5SGS+JnJiQ+l+wQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,215,1716274800"; 
+   d="scan'208";a="50607096"
+Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 17 Jul 2024 13:37:30 -0700
+Received: from kbuild by 68891e0c336b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sUBOx-000gek-1n;
+	Wed, 17 Jul 2024 20:37:27 +0000
+Date: Thu, 18 Jul 2024 04:36:30 +0800
+From: kernel test robot <lkp@intel.com>
+To: Lingbo Kong <quic_lingbok@quicinc.com>, ath12k@lists.infradead.org
+Cc: oe-kbuild-all@lists.linux.dev, linux-wireless@vger.kernel.org,
+	quic_lingbok@quicinc.com
+Subject: Re: [PATCH 2/4] wifi: ath12k: Add Support for enabling or disabling
+ specific features based on ACPI bitflag
+Message-ID: <202407180403.SFqsPj0v-lkp@intel.com>
+References: <20240717111023.78798-3-quic_lingbok@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: ath11k: Add firmware coredump collection support
-Content-Language: en-US
-To: Miaoqing Pan <quic_miaoqing@quicinc.com>, Kalle Valo <kvalo@kernel.org>
-CC: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20240605034639.3942219-1-quic_miaoqing@quicinc.com>
- <874j8xb4m5.fsf@kernel.org>
- <870d1749-6f6c-4ca9-b852-7a511e70103e@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <870d1749-6f6c-4ca9-b852-7a511e70103e@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: l993qM9sCa9qbK9el2OnnVlutYhDjVTW
-X-Proofpoint-GUID: l993qM9sCa9qbK9el2OnnVlutYhDjVTW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-17_15,2024-07-17_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- lowpriorityscore=0 suspectscore=0 clxscore=1015 bulkscore=0 mlxscore=0
- adultscore=0 phishscore=0 spamscore=0 malwarescore=0 mlxlogscore=963
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2407170154
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240717111023.78798-3-quic_lingbok@quicinc.com>
 
-On 7/12/2024 2:38 AM, Miaoqing Pan wrote:
-> On 7/11/2024 12:20 AM, Kalle Valo wrote:
->> Miaoqing Pan <quic_miaoqing@quicinc.com> writes:
->> I feel that the QMI changes should be in a separat patch and explaining
->> in detail what they are about. Didn't review those now as there's no
->> explanation.
-> 
-> Minor changes for updating 'iaddr' definition. IMO, don't need a 
-> separate patch.
-> struct target_mem_chunk {
->          u32 prev_size;
->          u32 prev_type;
->          dma_addr_t paddr;
-> -       u32 *vaddr;
-> -       void __iomem *iaddr;
-> +       union {
-> +               u32 *vaddr;
-> +               void __iomem *iaddr;
-> +       } v;
->   };
+Hi Lingbo,
 
-Putting something into a union isn't minor.
-You should justify the reason for doing it and defend why it is safe to do it.
+kernel test robot noticed the following build errors:
 
-And note that if you make it an anonymous union then most, if not all, of the
-code changes are unnecessary.
+[auto build test ERROR on db1ce56e6e1d395dd42a3cd6332a871d9be59c45]
 
-/jeff
+url:    https://github.com/intel-lab-lkp/linux/commits/Lingbo-Kong/wifi-ath12k-Add-support-for-obtaining-the-buffer-type-ACPI-function-bitmap/20240717-211701
+base:   db1ce56e6e1d395dd42a3cd6332a871d9be59c45
+patch link:    https://lore.kernel.org/r/20240717111023.78798-3-quic_lingbok%40quicinc.com
+patch subject: [PATCH 2/4] wifi: ath12k: Add Support for enabling or disabling specific features based on ACPI bitflag
+config: alpha-allyesconfig (https://download.01.org/0day-ci/archive/20240718/202407180403.SFqsPj0v-lkp@intel.com/config)
+compiler: alpha-linux-gcc (GCC) 13.3.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240718/202407180403.SFqsPj0v-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202407180403.SFqsPj0v-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   drivers/net/wireless/ath/ath12k/core.c: In function 'ath12k_core_rfkill_config':
+>> drivers/net/wireless/ath/ath12k/core.c:33:15: error: 'struct ath12k_base' has no member named 'acpi'
+      33 |         if (ab->acpi.acpi_disable_rfkill)
+         |               ^~
+--
+   drivers/net/wireless/ath/ath12k/mac.c: In function 'ath12k_mac_copy_eht_cap':
+>> drivers/net/wireless/ath/ath12k/mac.c:5488:19: error: 'struct ath12k_base' has no member named 'acpi'
+    5488 |             ar->ab->acpi.acpi_disable_11be)
+         |                   ^~
+
+
+vim +33 drivers/net/wireless/ath/ath12k/core.c
+
+    24	
+    25	static int ath12k_core_rfkill_config(struct ath12k_base *ab)
+    26	{
+    27		struct ath12k *ar;
+    28		int ret = 0, i;
+    29	
+    30		if (!(ab->target_caps.sys_cap_info & WMI_SYS_CAP_INFO_RFKILL))
+    31			return 0;
+    32	
+  > 33		if (ab->acpi.acpi_disable_rfkill)
+    34			return 0;
+    35	
+    36		for (i = 0; i < ab->num_radios; i++) {
+    37			ar = ab->pdevs[i].ar;
+    38	
+    39			ret = ath12k_mac_rfkill_config(ar);
+    40			if (ret && ret != -EOPNOTSUPP) {
+    41				ath12k_warn(ab, "failed to configure rfkill: %d", ret);
+    42				return ret;
+    43			}
+    44		}
+    45	
+    46		return ret;
+    47	}
+    48	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
