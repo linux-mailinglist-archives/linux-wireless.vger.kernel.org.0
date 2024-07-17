@@ -1,109 +1,223 @@
-Return-Path: <linux-wireless+bounces-10309-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10310-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FBC09340CC
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2024 18:53:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF23C93412B
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2024 19:07:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 400BC281BFF
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2024 16:53:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FEDB1F247CC
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2024 17:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D621802AC;
-	Wed, 17 Jul 2024 16:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD4B61822DF;
+	Wed, 17 Jul 2024 17:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="DQTPAB/1"
+	dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b="g3XoKAhz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mout.web.de (mout.web.de [217.72.192.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435801822EB
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Jul 2024 16:52:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B67E17E914
+	for <linux-wireless@vger.kernel.org>; Wed, 17 Jul 2024 17:06:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721235178; cv=none; b=kXWSNlETljaVdvQlFFpw0lOmK7PkNLifVrqh8gW+4bS11BuOLmraLBKe/wqc6pek3WhfiRmPvL0StKKdkp8G+7K9G93Izv+GkQH/ToJrCasoaUDilKIkfw7tZG8JfkbWcjRA8HLs7/ngGQm3+jEzTzXx2Okb8My+fWmg9V5VROA=
+	t=1721235971; cv=none; b=tDD3myEJV1nzQHFUaImo7722FoZBXEBqlD6UshXcQj9xEZsGZFYXS4MHxA8pcxlXFQz3fO6RTwMRr/YO47cJ3cerNPA7HKmN2LAX0ZURP7FSAf9wMFi3eMbeBgfaZl0NVHFMBubGppg0w5sPZFMTpt3diKhSbMMdx6Qnbjhc5fY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721235178; c=relaxed/simple;
-	bh=4YAAeUJ0X4XhOo1PzqdO4ZVupnpx8Eybs7xvZRl6Myc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=paL7OXB0XDLv0OB1xzpjZB/gPZ8IqQXnZs5gt0pf+7RyvgWUeWiH/NTGS4QdsqFYru/lbGCol9qR3V/nIutDB7B7+xZXKviGp8wfeN1sYDhZmOfYi1Vz1zBk1cfhK8PR6ky1tFBDotnSW8KXyXxnNPrmckU/+B3i/V5myM5edEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=DQTPAB/1; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46HFU1Ms026964;
-	Wed, 17 Jul 2024 16:52:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	45UmRJ7ZHy7SA4EUjFm8uA/DrWJ2ETjmEUjhHjfDFTI=; b=DQTPAB/15bAA0DY/
-	CeA6MY1lj16gMiQBFTHG52e01Or6pclr5oio0XUwKAYymk+kN/e0Bz+5BSBjJ6Gd
-	3lddAenIuGNlzHnxfrq1MASpUJwTDEhXDO9++aATxtiYGIGBzpPXeArOJowOfaia
-	s2M83FtLX7ktYmzdjWNGW40jGbxXlHclgN/cVDIHy/EWd8m2jPgDJIos6ynbl+Ps
-	gIAaCPyokTIpiSjGE3PbyV7qAmZGeMyDxaVBXqelQbS2hM3XH/c0qL1VR1zlTRAy
-	kgthhLu7PFWN9mhX0joZR0XbsXbU+X7pqnSqXoKeyCkSA/ZAOehJhk1tiirHSMbU
-	gqzvDQ==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40dwfs372w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Jul 2024 16:52:54 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46HGqrwD009409
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Jul 2024 16:52:53 GMT
-Received: from [10.48.247.102] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 17 Jul
- 2024 09:52:53 -0700
-Message-ID: <09528d9c-589a-470f-974a-b6f617a35d98@quicinc.com>
-Date: Wed, 17 Jul 2024 09:52:53 -0700
+	s=arc-20240116; t=1721235971; c=relaxed/simple;
+	bh=S3lHqHTQgfmjhveeTzjasOsVgA8xNBXOvzjPHcLEYzs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=EViZXvDt02MMarTQvIoyq9wVDF+yjvBBwxDNdKjTEWi9VScXOga6dGT0IEOO3GXzfws99RZuV1FCqKr1rYMYH36f+x1avR+296TZa9eRITFB/cSgrHZhQy9DH7utLMtomRxUlCLf8YK7hvdUCV+Y1PN9MoR5EpPj5uf8xpdYtbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b=g3XoKAhz; arc=none smtp.client-ip=217.72.192.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1721235947; x=1721840747; i=spasswolf@web.de;
+	bh=JS9l16PVBf3CPuE/IoF9QcmvRwbKgU8Emdyp10Gv804=;
+	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
+	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=g3XoKAhz9Q9NkOsGcMVY3z3gXVtSlVRjt1PKVhV7t22EhOnSj2e9I6FzfLGEwcNS
+	 Eao6HSjRiWfE1060q6/5FB2eixJwdfRJunu7Lkeztlre9twBC5U4IvL1Ko4InhGfD
+	 1t/iv1HPZGdebIsZCJg+OG5UKIlIT6yURS9T9guxqB3Rk6jJvYB4G8dtUk9qQfSD+
+	 WMepDGW7LjlV3DbPg0I/KAyQAgbURoNZ2ODShnqqNJ4FPB1eof6/JwdTdtpWeM3XM
+	 pdl4osKbvx8p7vVu1EokuKAxP6cLUOkOv3McNae4qpCg5yMTcdJBI2evY+wbMTvZk
+	 PQRV3va9xIUYZlRR5g==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.0.101] ([84.119.92.193]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1Mx0Ij-1s9H3w0TtL-00wlrp; Wed, 17
+ Jul 2024 19:05:47 +0200
+Message-ID: <9fb7ac97d2ca472db469aefefbfeb94e0f886508.camel@web.de>
+Subject: Re: patch 46/47 causes NULL pointer deref on mt7921
+From: Bert Karwatzki <spasswolf@web.de>
+To: Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@kernel.org>
+Cc: deren.wu@mediatek.com, linux-mediatek@lists.infradead.org, 
+	linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com, 
+	mingyen.hsieh@mediatek.com, sean.wang@mediatek.com, spasswolf@web.de
+Date: Wed, 17 Jul 2024 19:05:45 +0200
+In-Reply-To: <2599b886-9c63-4989-a08a-7feab28f7c49@nbd.name>
+References: <20240711175156.4465-1-spasswolf@web.de>
+	 <CAGp9LzoXMoAW6dVZjTf-JcD_wiU4yXpGwkLaVyWXTkaV2MOKwg@mail.gmail.com>
+	 <adb192a59c44aa8708e80df30a6a47816a03e50f.camel@web.de>
+	 <4e943a62736f955af5d9cd1aff7e2b9c084c8885.camel@web.de>
+	 <2599b886-9c63-4989-a08a-7feab28f7c49@nbd.name>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.52.3-1 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] wifi: ath12k: Add support for reading variant from
- ACPI to download board data file
-Content-Language: en-US
-To: Lingbo Kong <quic_lingbok@quicinc.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240717111023.78798-1-quic_lingbok@quicinc.com>
- <20240717111023.78798-5-quic_lingbok@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240717111023.78798-5-quic_lingbok@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: -aezhsWpaP1GohegOT1WkokjjPDN96CF
-X-Proofpoint-GUID: -aezhsWpaP1GohegOT1WkokjjPDN96CF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-17_13,2024-07-17_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0 mlxlogscore=991
- impostorscore=0 mlxscore=0 phishscore=0 suspectscore=0 clxscore=1015
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2407170128
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:5Y0zIpG0dEUlu94qLZ2BTXfr7UbIgXbOKFrRqnfHQZE9mH+mRjm
+ BmvbJ3OQBjSwNwMoqJ2fbpkAyv0lGxffcYIjMNo/LIAudWMmKnCi5ilBqw1tmQyHI3lp356
+ 07FzFWxbQ2OZHwsuPhVnSuCyX2f6LNinQ1O/3DsgwQBCqqYr29Il03ZNDo/cxusUecx0pnG
+ X2sI0c0sYtKrbBgsXjZaQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:Aj5SW7ozQHw=;rSwDhhEwSHY1/mjriirHhfFm06x
+ ay6BbyENr6BSjuHp0WyPa3dIDw3actF27zcLYJAHLokyMw+XAUn2by+KCbQuCXQqXFAaC6v80
+ qX+V1noW2cMQrbTdjWQU+lRvl9r4XOxBBitom8k61+orRvnehEdDAYqyxuhej//z9ojouqsLt
+ aIiVLLiJu/610cR4ZjF5hbJwhB2ZCYTNitj4Y/BoQBuCnMCFDYKI22VA9Pbcmug2AJFHvGsgP
+ k+XXBlCoNlsDUW2LTlmvHw8v8MEWAZljC/tazafm287sh8/jjBrmV2K6jyaOSnH0PiLlKTX5S
+ zBkqDbykUnfEvgOYFnhc/NGgODiYXhD1OCdF/2XJATExImWd92oEM2u+Enz/oSG0QOZWC2bh3
+ adOWLFQvo6ftgpKtaEXaWXisNuoTMHCQCOsAceTdw7Yjd2cew9MJgJ61YuQPknHQWFENigZJR
+ 9Ad7PTXzhSde5HePyKga22FEz8Tj497Tjm9R0phgoyJC8ZJcexHo+rznD/50ISYpdVEsiPoD0
+ sQ24WmAyZRb+wRx/8tVg+4i5nDSd4JtPPpNfeHihwkM3Z40nfS+OEKCaOTq6DweyFg4l74bXB
+ Bd43Qz1iabf9bqoMsfV4N5f+k5JCDfxYaquCQ1pvsmUBj4yUuZUZkC9wBEzdwzE+nYIsM6+O7
+ ox/yRGr8XwFj0fReRGSehaNuqleVuNJWz8+sUs639GMn0szdYc3vQf2BmaHLrMywGnMGFoJqY
+ 3b1bxd8QjtcQqG+eKZvHd5YymX5Bsh61wbIWZS/fJxdgNcjRvSaaDD1R+N0jP8PriDRdYLuPe
+ 4FPvT2z8yvZoCpYCUMxcaKiQ==
 
-On 7/17/2024 4:10 AM, Lingbo Kong wrote:
-> Currently, ath12k does not support reading variant from ACPI board data
-> filename extension for downloading board data file.
-> 
-> To address this issue, obtain the string of the ACPI data filename
-> extension and use it as part of the string to search for the board data
-> file from board-2.bin.
-> 
-> This patch will not affect QCN9274, because only WCN7850 supports ACPI.
-> 
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-> 
-> Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Am Mittwoch, dem 17.07.2024 um 17:25 +0200 schrieb Felix Fietkau:
+> On 17.07.24 16:38, Bert Karwatzki wrote:
+> > Am Freitag, dem 12.07.2024 um 13:06 +0200 schrieb Bert Karwatzki:
+> > > Am Donnerstag, dem 11.07.2024 um 18:40 -0500 schrieb Sean Wang:
+> > > > Hi Bert,
+> > > >
+> > > > Thanks for the detailed debug log. I've quickly made a change to f=
+ix
+> > > > the issue. Right now, I can't access the test environment, but I'l=
+l
+> > > > test it and send it out as soon as possible. Here's the patch.
+> > > >
+> > > > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> > > > b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> > > > index 2e6268cb06c0..1bab93d049df 100644
+> > > > --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> > > > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> > > > @@ -303,6 +303,7 @@ mt7921_add_interface(struct ieee80211_hw *hw,
+> > > > struct ieee80211_vif *vif)
+> > > >
+> > > >         mvif->bss_conf.mt76.omac_idx =3D mvif->bss_conf.mt76.idx;
+> > > >         mvif->phy =3D phy;
+> > > > +       mvif->bss_conf.vif =3D mvif;
+> > > >         mvif->bss_conf.mt76.band_idx =3D 0;
+> > > >         mvif->bss_conf.mt76.wmm_idx =3D mvif->bss_conf.mt76.idx %
+> > > > MT76_CONNAC_MAX_WMM_SETS;
+> > > >
+> > >
+> > > I wrote earlier that this patch works fine with linux-next-20240711 =
+and at first
+> > > it did, but then another NULL pointer error occured. I'm not sure if=
+ I can
+> > > bisect this as it does not trigger automatically it seems. Also I'm =
+currently
+> > > bisecting the problem with linux-20240712
+> > >
+> > > Bert Karwatzki
+> >
+> > Now the above mentioned NULL pointer dereference has happended again, =
+this time
+> > on linux-next-20240716. It cann be triggered by repeatedly turning the=
+ Wifi off
+> > and on again. For further investigation I created this patch:
+> >
+> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> > b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> > index 2e6268cb06c0..3ecedf7bc9f3 100644
+> > --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+> > @@ -303,6 +303,8 @@ mt7921_add_interface(struct ieee80211_hw *hw, stru=
+ct
+> > ieee80211_vif *vif)
+> >
+> >   	mvif->bss_conf.mt76.omac_idx =3D mvif->bss_conf.mt76.idx;
+> >   	mvif->phy =3D phy;
+> > +	WARN(!phy, "%s: phy =3D NULL\n", __func__);
+> > +	mvif->bss_conf.vif =3D mvif;
+> >   	mvif->bss_conf.mt76.band_idx =3D 0;
+> >   	mvif->bss_conf.mt76.wmm_idx =3D mvif->bss_conf.mt76.idx %
+> > MT76_CONNAC_MAX_WMM_SETS;
+> >
+> > @@ -1182,6 +1184,12 @@ static void mt7921_ipv6_addr_change(struct ieee=
+80211_hw
+> > *hw,
+> >   				    struct inet6_dev *idev)
+> >   {
+> >   	struct mt792x_vif *mvif =3D (struct mt792x_vif *)vif->drv_priv;
+> > +	printk(KERN_INFO "%s: mvif =3D %px\n", __func__, mvif);
+> > +	printk(KERN_INFO "%s: mvif->phy =3D %px\n", __func__, mvif->phy);
+> > +	if (!mvif->phy) {
+> > +		printk(KERN_INFO "%s: mvif->phy =3D NULL\n", __func__);
+> > +		return;
+> > +	}
+> >   	struct mt792x_dev *dev =3D mvif->phy->dev;
+> >   	struct inet6_ifaddr *ifa;
+> >   	struct in6_addr ns_addrs[IEEE80211_BSS_ARP_ADDR_LIST_LEN];
+> >
+> > And the result is this (the WARN in mt7921_add_interface did not trigg=
+er):
+> >
+> > [  367.121740] [    T861] wlp4s0: deauthenticating from 54:67:51:3d:a2=
+:d2 by
+> > local choice (Reason: 3=3DDEAUTH_LEAVING)
+> > [  367.209603] [    T861] mt7921_ipv6_addr_change: mvif =3D ffff954e75=
+00de40
+> > [  367.209615] [    T861] mt7921_ipv6_addr_change: mvif->phy =3D 00000=
+00000000000
+> > [  367.209621] [    T861] mt7921_ipv6_addr_change: mvif->phy =3D NULL
+> > [  367.250026] [    T861] mt7921_ipv6_addr_change: mvif =3D ffff954e75=
+00de40
+> > [  367.250034] [    T861] mt7921_ipv6_addr_change: mvif->phy =3D ffff9=
+54e44427768
+> > [  367.251537] [    T861] mt7921_ipv6_addr_change: mvif =3D ffff954e75=
+00de40
+> > [  367.251542] [    T861] mt7921_ipv6_addr_change: mvif->phy =3D ffff9=
+54e44427768
+> > [  369.977123] [    T862] wlp4s0: authenticate with 54:67:51:3d:a2:d2 =
+(local
+> > address=3Dc8:94:02:c1:bd:69)
+> > [  369.984864] [    T862] wlp4s0: send auth to 54:67:51:3d:a2:d2 (try =
+1/3)
+> > [  370.006199] [    T104] wlp4s0: authenticated
+> > [  370.006680] [    T104] wlp4s0: associate with 54:67:51:3d:a2:d2 (tr=
+y 1/3)
+> > [  370.059080] [     T98] wlp4s0: RX AssocResp from 54:67:51:3d:a2:d2
+> > (capab=3D0x511 status=3D0 aid=3D2)
+> > [  370.064067] [     T98] wlp4s0: associated
+> >
+> > So mvif->phy can be NULL at the start of mt7921_ipv6_addr_change. The =
+early
+> > return in that case avoids the NULL pointer and mvif->phy has its usua=
+l value
+> > again on the next call to mt7921_ipv6_addr_change so Wifi is working a=
+gain. I
+> > don't know how this could happen but perhaps you have an idea.
+>
+> This change should fix it: https://nbd.name/p/0747f54f
+> Please test.
+>
+> Thanks,
+>
+> - Felix
+>
+
+Your fix works. (I added a WARN() statement on the early return, to see if=
+ mvif-
+>phy actually was NULL during testing).
+
+Bert Karwatzki
 
 
