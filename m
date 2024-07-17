@@ -1,58 +1,61 @@
-Return-Path: <linux-wireless+bounces-10284-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10285-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 594219336FE
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2024 08:26:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ACBF933881
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2024 10:07:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AB0B1C2090A
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2024 06:26:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BD1A1F22A27
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2024 08:07:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A257B12B6C;
-	Wed, 17 Jul 2024 06:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A2D3210E4;
+	Wed, 17 Jul 2024 08:07:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="f3SrOmit"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ADCB12E48
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Jul 2024 06:26:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA951CFB2;
+	Wed, 17 Jul 2024 08:07:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721197588; cv=none; b=dj0xit7o/sgr5vi/TgCuu0HCwC1v7pYAJgAKR8fzY5DNvljQebu4voJU1Z5WY+yAIWLQow0zBmZDtnCPfXcfd3rwMZBycMuopeJNDM86HnY6xqwfeR6koQp+iHSUTcsAJqQCvz6VQEdrgmXCoNtSkhf7I2Q/H+iFjPu9bkKQ4L0=
+	t=1721203652; cv=none; b=Cwv0tTzmqLpYdCwtNrMifFFOLBDPTWdZwOReRS7QFnRWDQxQWbEmU4JWzy4k+3E84DomC2HUemoPAIrRX9dDHonzdNR3rwtfcTX3anz2Zt9vEOWaTG4o+5f1pCBINP4/4nLmTCW/XqR5O6MJBKuGhQ5MIRNGK5/0qVBB/HqnF3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721197588; c=relaxed/simple;
-	bh=x0AKMoZUBDBo20leKTYdtGaRJKtvDiirN9eJUat42nc=;
+	s=arc-20240116; t=1721203652; c=relaxed/simple;
+	bh=SiWXbwwNoXHiMKBB89gYG1XRfZLJ4H76huUnddKDHKk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Yeq8LsxDyJ3T1BiwNUMCpDugWiDU3iyKCvO107knLR3JbEtTG3SndDdPQ4GKJUbE9ZC74a+yg753MNK0unX/IEACIxEe7rAIBEToXKhEUpBccsFplwYYaQQQsNPan8hGF/nDT07a1K9BOs3YQUjYouef+xfgeETHtLcVO1om0zA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1sTy7L-0003ns-Bc; Wed, 17 Jul 2024 08:26:23 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1sTy7K-0009PE-T7; Wed, 17 Jul 2024 08:26:22 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1sTy7K-001vf0-2Y;
-	Wed, 17 Jul 2024 08:26:22 +0200
-Date: Wed, 17 Jul 2024 08:26:22 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Brian Norris <briannorris@chromium.org>, Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=VOBN+o9XCVpkbdHax4wdEhMd8PnSZ+lzePYxG515uPGjU38hDrcP9IAPbZ+XoQRNnFYA36ff/rqpf3MZLKLHZ5hnPhJ0vLIVEixFqLU4gKfQyAk3rh2tog1O7kpVF6MYzdGg9VhKPQ1LBv7ClZNvqj3N/aYp5YQMKgmh2X5pUPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=f3SrOmit; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb (31-10-206-125.static.upc.ch [31.10.206.125])
+	by mail11.truemail.it (Postfix) with ESMTPA id A5ACC1F9E7;
+	Wed, 17 Jul 2024 10:07:24 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1721203644;
+	bh=vLQMPlC02JQSQqaWVs2IcoBB8RNijQnBdINp4CaZiO0=; h=From:To:Subject;
+	b=f3SrOmitVOSamXNWvhYLDo2+TzvqZmKpnp6O0vR1UmdXgYQHWGV+/lfZ2998Shyd0
+	 agcEuAWSRwWHCu0ec9LEriYC6BqsY1VhQj9hdzVbGISRO00Qj55J2BgTI5PtzluF90
+	 5497DpNpkC4BUV4p+GKC/mUtvNIPZDmhVq6SHO8SV7Acuov7b8/QexpLTqrIkWcCgR
+	 ywMqPXbIxxWnhPnaYO7XED44B0e7Ok55Otv35wujvsgoCwx8lYgv2aNbjuuHQZU5wF
+	 nAbyahzTLNttJihLhpe6MzUE1qeyDjKatugezCeo/eMt008skSl/9PQbjs3xfrDKI8
+	 dDJZLNZfc+xdA==
+Date: Wed, 17 Jul 2024 10:07:23 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Francesco Dolcini <francesco@dolcini.it>,
+	Brian Norris <briannorris@chromium.org>,
+	Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 1/2] wifi: mwifiex: simplify WPA flags setting
-Message-ID: <ZpdkDqJK63_a0ncW@pengutronix.de>
+Message-ID: <20240717080723.GB3312@francesco-nb>
 References: <20240716-mwifiex-wpa-psk-sha256-v1-0-05ae70f37bb3@pengutronix.de>
  <20240716-mwifiex-wpa-psk-sha256-v1-1-05ae70f37bb3@pengutronix.de>
  <20240716194826.GA85916@francesco-nb>
+ <ZpdkDqJK63_a0ncW@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -61,64 +64,52 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240716194826.GA85916@francesco-nb>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+In-Reply-To: <ZpdkDqJK63_a0ncW@pengutronix.de>
 
-On Tue, Jul 16, 2024 at 09:48:26PM +0200, Francesco Dolcini wrote:
-> Hello Sasha,
-> thanks for your patch.
-> 
-> On Tue, Jul 16, 2024 at 01:33:27PM +0200, Sascha Hauer wrote:
-> > The WPA flags setting only depends on the wpa_versions bitfield and not
-> > on the AKM suite, so move it out of the switch/case to simplify the code
-> > a bit. No functional change intended.
+On Wed, Jul 17, 2024 at 08:26:22AM +0200, Sascha Hauer wrote:
+> On Tue, Jul 16, 2024 at 09:48:26PM +0200, Francesco Dolcini wrote:
+> > On Tue, Jul 16, 2024 at 01:33:27PM +0200, Sascha Hauer wrote:
+> > > The WPA flags setting only depends on the wpa_versions bitfield and not
+> > > on the AKM suite, so move it out of the switch/case to simplify the code
+> > > a bit. No functional change intended.
+> > > 
+> > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> 
-> Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> 
-> > ---
-> >  drivers/net/wireless/marvell/mwifiex/uap_cmd.c | 27 +++++++-------------------
-> >  1 file changed, 7 insertions(+), 20 deletions(-)
+> > Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 > > 
-> > diff --git a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
-> > index 491e366119096..8d0cd84d27698 100644
-> > --- a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
-> > +++ b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
-> > @@ -46,31 +46,18 @@ int mwifiex_set_secure_params(struct mwifiex_private *priv,
-> >  
-> >  	bss_config->key_mgmt_operation |= KEY_MGMT_ON_HOST;
-> >  
-> > +	if (params->crypto.wpa_versions & NL80211_WPA_VERSION_1)
-> > +		bss_config->protocol = PROTOCOL_WPA;
-> > +	if (params->crypto.wpa_versions & NL80211_WPA_VERSION_2)
-> > +		bss_config->protocol |= PROTOCOL_WPA2;
-> > +
+> > > ---
+> > >  drivers/net/wireless/marvell/mwifiex/uap_cmd.c | 27 +++++++-------------------
+> > >  1 file changed, 7 insertions(+), 20 deletions(-)
+> > > 
+> > > diff --git a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
+> > > index 491e366119096..8d0cd84d27698 100644
+> > > --- a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
+> > > +++ b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
+> > > @@ -46,31 +46,18 @@ int mwifiex_set_secure_params(struct mwifiex_private *priv,
+> > >  
+> > >  	bss_config->key_mgmt_operation |= KEY_MGMT_ON_HOST;
+> > >  
+> > > +	if (params->crypto.wpa_versions & NL80211_WPA_VERSION_1)
+> > > +		bss_config->protocol = PROTOCOL_WPA;
+> > > +	if (params->crypto.wpa_versions & NL80211_WPA_VERSION_2)
+> > > +		bss_config->protocol |= PROTOCOL_WPA2;
+> > > +
+> > 
+> > I am wondering what happens if NL80211_WPA_VERSION_1 is not set, no idea
+> > what's the content of bss_config->protocol ...
+> > 
+> > in any case this is not something that you introduced, but maybe worth
+> > having a look?
 > 
-> I am wondering what happens if NL80211_WPA_VERSION_1 is not set, no idea
-> what's the content of bss_config->protocol ...
+> bss_config is kzalloced in the only caller of mwifiex_set_secure_params(),
+> so bss_config->protocol is zero on entry.
 > 
-> in any case this is not something that you introduced, but maybe worth
-> having a look?
+> It might be worth setting it to zero explicitly here to make the code
+> better understandable without having to look at the callers.
 
-bss_config is kzalloced in the only caller of mwifiex_set_secure_params(),
-so bss_config->protocol is zero on entry.
+Thanks for looking into this, to me the change is fine as it is, up to
+you if you want to improve it this way.
 
-It might be worth setting it to zero explicitly here to make the code
-better understandable without having to look at the callers.
+Francesco
 
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
