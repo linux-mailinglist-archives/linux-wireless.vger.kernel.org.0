@@ -1,191 +1,136 @@
-Return-Path: <linux-wireless+bounces-10292-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10293-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 734B393394C
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2024 10:42:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40979933970
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2024 10:55:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBF551F21C4A
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2024 08:42:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDCCB1F228C5
+	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2024 08:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D45B13987B;
-	Wed, 17 Jul 2024 08:42:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="fypPRxLZ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E3D4436A;
+	Wed, 17 Jul 2024 08:55:21 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FFD21CA9F
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Jul 2024 08:42:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE763D552
+	for <linux-wireless@vger.kernel.org>; Wed, 17 Jul 2024 08:55:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721205753; cv=none; b=sLEMpKstwoTdCDFaEaN2D01SRRHYvirkwNOTNnu9yKfNw/f7gY4u1WzYoq2K0NiRQ1oFbtf36Ok5PQOO42XXbllATIY8GLL49xI2YSMdO0v1Adze0fqMSLmLxH/k6HzNG3yW6KvbS21qvD96iJZVwWmcqmDud9Orfvrjhha2z4A=
+	t=1721206521; cv=none; b=eerQiHtDQYO2gOm8prJ7tDx34wA4mzD0B57EZGPgacF0qlEG4QSAv7zkmMH7Kw0dLBdiwULwDICaozuR80Gqg9wlvVydPw54OuwVqC2aIBTsIipVUmnlxidsWZCl/AIhzTVfGtI4sk/MHsT11OexfYPkQ62L5efpZkJyhFHjHEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721205753; c=relaxed/simple;
-	bh=r6uYUYKR/YngTkYrYAdKErgFAmyeP6wUs2Zy+9dEzGY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ezhcrOQ74PQr1vZGi/xnrwgHTV6J1ovUQHWzCGOaChd/cBThggtmgFyqN+OQazsiG1p7+KfPcIk3rBz2AzONOwEhVgVEz5XA2batYv1zjZdemoMQUAip0+TlQ8qLNqv5gk9cbO9gyyH7EXh94pL23DsChfQc+JCN3bZJCea6Ng8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=fypPRxLZ; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46H6gxhX029210;
-	Wed, 17 Jul 2024 08:42:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	+A34RHYEqSPPVDgGu5ptqBFqvmH+w7wZ4mRVXiEHmt0=; b=fypPRxLZI5HyP+XC
-	DadELIypIcrpikfs8dfeSVFRdD8xKiH1V5KiqwU541MfiDq0UXM9wsKxkT8P74jY
-	ujebhz+kU/ybeHuG4hiZRUCMWBwhW1ZbGHiObrwcqLHwaR27U5+7SujPjHiwsbaD
-	ju0tR9q7UAZ0gS48xi2n4kLQwA0QouXKL4WyecBjBPOys4zsv09VuW5EP2FL/CnX
-	DIMEBlvWTKi4kQvns9xVOHBNSfWD/mgtoxMS+fPMcuzz8+0HyPAQ+iDd52ginlmA
-	Ev9JE90yaWpziNTobqZY4bdlQTb2qXXookC7/0n12q2QPU+1drhjO5ZZpod7MeuC
-	o/5zzw==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40dwj1hqyy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Jul 2024 08:42:27 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA01.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46H8gQAn018026
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Jul 2024 08:42:26 GMT
-Received: from [10.152.203.156] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 17 Jul
- 2024 01:42:25 -0700
-Message-ID: <399f334b-60fd-9aba-bc8c-ef4ed5cbc411@quicinc.com>
-Date: Wed, 17 Jul 2024 14:12:22 +0530
+	s=arc-20240116; t=1721206521; c=relaxed/simple;
+	bh=1o9NnCS5PFgehegy/2iCaP/tZvyPdrd9+bHy87ixTrA=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=sSztFXKY1xiRjKbJxuVTkrRxMEpBJ3pdlCZPK05mRURilb7Eou2Sy1hbUFmh/3uCKu4i6y29HwXJJchMLdJvn3BoJ0abcKQ9tea/jScauQSnq6ZHIr85nW2gZbUPykKLsbph+dCL2Vqrl/DqOYxBAERO10Vn4FFGdRQeMkiiKCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-7fdfb3333e5so101302639f.1
+        for <linux-wireless@vger.kernel.org>; Wed, 17 Jul 2024 01:55:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721206519; x=1721811319;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NdDPjV/eZIgLnqahMbmgyG641NqS6NNL12DNmPmds4A=;
+        b=YzBgR5p3vaxZEKR7ZJOWtturMGWFGkUDiV9jETEq+nVNncjJwXoj9UEnbyAGrMNGaN
+         xrg76zwdLFyQJocHZgo5syClD+1kmO/+vyziRgPtFxZ8HqRz8aiCljQPpeLxyoOhxQTW
+         cj6uUoQPBwlkMRVpcU0ubfCNqimqAG3UlQXLpPwDa5Jm/A+m3aNFMHFZqgiaDnVrt/vL
+         ljFkMw4k6ipQUkYqLK3612D0NHsXGR6fRYqxnkVI0gQCFFBptG24VX8PdOKmTDHmFt69
+         OQw5OPYk+lDPlM8hXgKwsvPNKs9iAP2UwSFHOjD1Uo2/z9/Fc+YbtJ+HUDQ4RFagdP8y
+         NeAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWWYHV4rn7TjF2mRdv2r1SXpqZTpy5uIEOrZODgr6KrE4G1yaRMMI8XNNXzIr1rnPRFjeUepQ8P3kjtkMkhB1IHU5J8zSlbdzaiIfVJJCs=
+X-Gm-Message-State: AOJu0YyniCkxsAhV8Ru0J0dHH0UUY1Z2dE2KUnAqVd7fCbXTyjMMT48C
+	q6fe5LsZSgvNqnU5C877M17MQ+8y33TkXfXQ7edf917EGfdMnB/h9zlVndyvgxuLW98RgUhZNWo
+	aLoXTFKELw0fVn0JFe2nPMW937ZAis+yns8mLZkA0wS4tMjJGdPJSCJY=
+X-Google-Smtp-Source: AGHT+IHxVUdQxdjp7BOCw87PPq2Jugv5RDYoWPi4+D9EoJEGYyQgZrDe6jH2oUBnr22TyhVbs0JLmqFH1tl+kbNusX0rihz+k0i4
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.0
-Subject: Re: [PATCH v4] wifi: ath12k: Add firmware coredump collection support
-Content-Language: en-US
-To: Jeff Johnson <quic_jjohnson@quicinc.com>
-CC: <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>
-References: <20240716063932.2627087-1-quic_ssreeela@quicinc.com>
- <ba6d7724-577a-4188-9205-58081c84f853@quicinc.com>
-From: Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>
-In-Reply-To: <ba6d7724-577a-4188-9205-58081c84f853@quicinc.com>
+X-Received: by 2002:a05:6638:410b:b0:4bb:5dc8:5a77 with SMTP id
+ 8926c6da1cb9f-4c21567f207mr30170173.0.1721206519255; Wed, 17 Jul 2024
+ 01:55:19 -0700 (PDT)
+Date: Wed, 17 Jul 2024 01:55:19 -0700
+In-Reply-To: <0000000000000346a6061cc5b897@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000002a80cf061d6d9f16@google.com>
+Subject: Re: [syzbot] [wireless?] WARNING in __cfg80211_bss_update (2)
+From: syzbot <syzbot+1a797e1c81be78a2ace7@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, johannes@sipsolutions.net, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: M30ZerNvvePTmCImnSAVNd5oaHqb9mxP
-X-Proofpoint-ORIG-GUID: M30ZerNvvePTmCImnSAVNd5oaHqb9mxP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-17_05,2024-07-16_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=975 phishscore=0
- lowpriorityscore=0 bulkscore=0 adultscore=0 malwarescore=0 suspectscore=0
- mlxscore=0 impostorscore=0 clxscore=1011 priorityscore=1501 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
- definitions=main-2407170066
 
-On 7/17/2024 4:42 AM, Jeff Johnson wrote:
-> On 7/15/2024 11:39 PM, Sowmiya Sree Elavalagan wrote:
->> In case of firmware assert snapshot of firmware memory is essential for
->> debugging. Add firmware coredump collection support for PCI bus.
->> Collect RDDM and firmware paging dumps from MHI and pack them in TLV
->> format and also pack various memory shared during QMI phase in separate
->> TLVs.  Add necessary header and share the dumps to user space using dev
->> coredump framework. Coredump collection is disabled by default and can
->> be enabled using menuconfig. Dump collected for a radio is 55 MB
->> approximately.
->>
->> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.2.1-00201-QCAHKSWPL_SILICONZ-1
->> Tested-on: WCN7850 WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
->>
->> Signed-off-by: Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>
->> ---
->> v4:
->>   - Fixed Kasan warning vmalloc-out-of-bounds in ath12k_pci_coredump_download
->>   - Rebased on ToT
->> v3:
->>   - Fixed SPDX comment style for coredump.c file
->>     Changed Kconfig description.
->> v2:
->>   - Fixed errors shown by ath12k-check
->> ---
-> ...
->> +	dump_tlv = buf;
->> +	dump_tlv->type = cpu_to_le32(FW_CRASH_DUMP_RDDM_DATA);
->> +	dump_tlv->tlv_len = cpu_to_le32(dump_seg_sz[FW_CRASH_DUMP_RDDM_DATA]);
->> +	buf += COREDUMP_TLV_HDR_SIZE;
->> +
->> +	/* append all segments together as they are all part of a single contiguous
->> +	 * block of memory
->> +	 */
->> +	for (i = 0; i < rddm_img->entries; i++) {
->> +		if (!rddm_img->mhi_buf[i].buf)
->> +			continue;
->> +
->> +		memcpy_fromio(buf, (void const __iomem *)rddm_img->mhi_buf[i].buf,
->> +			      rddm_img->mhi_buf[i].len);
->> +		buf += rddm_img->mhi_buf[i].len;
->> +	}
->> +
->> +	mem_idx = FW_CRASH_DUMP_REMOTE_MEM_DATA;
->> +	for (; mem_idx < FW_CRASH_DUMP_TYPE_MAX; mem_idx++) {
->> +		if (!dump_seg_sz[i] || mem_idx == FW_CRASH_DUMP_NONE)
-> 
-> this looks really strange testing dump_seg_size[i]
-> 
-> the first time through the loop i will be set to the value of
-> rddm_img->entries since that is the value it will have from:
-> 	for (i = 0; i < rddm_img->entries; i++) {
-> 
-> but subsequent times through the loop i will be set to the value of
-> ab->qmi.mem_seg_count since that is the value it will have from:
-> 		for (i = 0; i < ab->qmi.mem_seg_count; i++) {
-> 
-> did you really want to test dump_seg_size[mem_idx]?
-> 
->> +			continue;
->> +
->> +		dump_tlv = buf;
->> +		dump_tlv->type = cpu_to_le32(mem_idx);
->> +		dump_tlv->tlv_len = cpu_to_le32(dump_seg_sz[mem_idx]);
->> +		buf += COREDUMP_TLV_HDR_SIZE;
->> +
->> +		for (i = 0; i < ab->qmi.mem_seg_count; i++) {
->> +			mem_type = ath12k_coredump_get_dump_type
->> +							(ab->qmi.target_mem[i].type);
->> +
->> +			if (mem_type != mem_idx)
->> +				continue;
->> +
->> +			if (!ab->qmi.target_mem[i].paddr) {
->> +				ath12k_dbg(ab, ATH12K_DBG_PCI,
->> +					   "Skipping mem region type %d",
->> +					   ab->qmi.target_mem[i].type);
->> +				continue;
->> +			}
->> +
->> +			memcpy_fromio(buf, ab->qmi.target_mem[i].v.ioaddr,
->> +				      ab->qmi.target_mem[i].size);
->> +			buf += ab->qmi.target_mem[i].size;
->> +		}
->> +	}
->> +
->> +	queue_work(ab->workqueue, &ab->dump_work);
->> +}
-> 
+syzbot has found a reproducer for the following issue on:
 
-Hi Jeff,
+HEAD commit:    58f9416d413a Merge branch 'ice-support-to-dump-phy-config-..
+git tree:       net-next
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=14cae9e9980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=db697e01efa9d1d7
+dashboard link: https://syzkaller.appspot.com/bug?extid=1a797e1c81be78a2ace7
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=152be1fd980000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16446b4e980000
 
-My Bad, posted wrong version of my changes. Thanks for catching it. 
-Yes, my intention was to check dump_seg_size[mem_idx]. I will update and send the next version.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/3fb480f5ebf6/disk-58f9416d.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/1a62eb04b3aa/vmlinux-58f9416d.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/67d14a897f84/bzImage-58f9416d.xz
 
-Thanks,
-Sowmiya Sree
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+1a797e1c81be78a2ace7@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 24 at net/wireless/scan.c:1743 cfg80211_combine_bsses net/wireless/scan.c:1743 [inline]
+WARNING: CPU: 1 PID: 24 at net/wireless/scan.c:1743 __cfg80211_bss_update+0x1b4a/0x2170 net/wireless/scan.c:1983
+Modules linked in:
+CPU: 1 PID: 24 Comm: ksoftirqd/1 Not tainted 6.10.0-rc6-syzkaller-01414-g58f9416d413a #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/07/2024
+RIP: 0010:cfg80211_combine_bsses net/wireless/scan.c:1743 [inline]
+RIP: 0010:__cfg80211_bss_update+0x1b4a/0x2170 net/wireless/scan.c:1983
+Code: e1 07 fe c1 38 c1 0f 8c 44 fb ff ff 48 8b 7c 24 70 e8 ba 04 24 f7 e9 35 fb ff ff e8 80 e6 bd f6 90 0f 0b 90 e9 bb fb ff ff 90 <0f> 0b 90 48 89 ef e8 7b 9a de f9 84 c0 0f 84 9f 00 00 00 e8 5e e6
+RSP: 0018:ffffc900001e6db8 EFLAGS: 00010287
+RAX: ffff888024282410 RBX: ffff888024282810 RCX: dffffc0000000000
+RDX: ffff8880176f8000 RSI: 0000000000000000 RDI: 0000000000000006
+RBP: ffff88802a031810 R08: ffffffff8ad83d6b R09: 0245006400000000
+R10: 0000505050505050 R11: 0003000000000000 R12: ffff88802a031800
+R13: 0000000000000000 R14: dffffc0000000000 R15: ffff888024282800
+FS:  0000000000000000(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000000066ab50 CR3: 000000000e132000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ cfg80211_inform_single_bss_data+0xd51/0x2030 net/wireless/scan.c:2331
+ cfg80211_inform_bss_data+0x3dd/0x5a70 net/wireless/scan.c:3159
+ cfg80211_inform_bss_frame_data+0x3bc/0x720 net/wireless/scan.c:3249
+ ieee80211_bss_info_update+0x8a7/0xbc0 net/mac80211/scan.c:226
+ ieee80211_scan_rx+0x526/0x9c0 net/mac80211/scan.c:340
+ __ieee80211_rx_handle_packet net/mac80211/rx.c:5223 [inline]
+ ieee80211_rx_list+0x2b02/0x3780 net/mac80211/rx.c:5460
+ ieee80211_rx_napi+0x18a/0x3c0 net/mac80211/rx.c:5483
+ ieee80211_rx include/net/mac80211.h:5132 [inline]
+ ieee80211_handle_queued_frames+0xe7/0x1e0 net/mac80211/main.c:439
+ tasklet_action_common+0x321/0x4d0 kernel/softirq.c:785
+ handle_softirqs+0x2c4/0x970 kernel/softirq.c:554
+ run_ksoftirqd+0xca/0x130 kernel/softirq.c:928
+ smpboot_thread_fn+0x544/0xa30 kernel/smpboot.c:164
+ kthread+0x2f0/0x390 kernel/kthread.c:389
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+
+
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
