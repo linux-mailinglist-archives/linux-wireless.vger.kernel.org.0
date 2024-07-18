@@ -1,303 +1,191 @@
-Return-Path: <linux-wireless+bounces-10319-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10320-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D3959344BF
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2024 00:24:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E32829345A9
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2024 03:16:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 285CA28456B
-	for <lists+linux-wireless@lfdr.de>; Wed, 17 Jul 2024 22:24:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFCECB21BB0
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2024 01:16:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71AE94D8AF;
-	Wed, 17 Jul 2024 22:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A08F1620;
+	Thu, 18 Jul 2024 01:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I8u0vUq/"
+	dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b="taqWRA0j"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mout.web.de (mout.web.de [212.227.15.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E0E374F6
-	for <linux-wireless@vger.kernel.org>; Wed, 17 Jul 2024 22:23:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BFBD394
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2024 01:16:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721255038; cv=none; b=KXsaNIlllBA4UjhHScaeyQgO63khKBx4htxotS325UAJVi9K2XStEIfc2sdbClXPUrOZdRsD4kbWVPve5zO2/VdYLaDzqXEc73pT1Yx2AnImlz5N9e4i9GlFhBjY8xR4kVTVxsarIVBZp+idRChY9+unLqpSF+n/xaVuImf3dTU=
+	t=1721265382; cv=none; b=hoHCBakysb9l9SVMlcbf47obU8ZU/g/IyqBc7R9BKuKrzLxkkqYua/ZXWpnjyImrL83CAj+o38LIE/0klzvAFAtC9aBGkU6HEmtcBjNxB4iXvN2XJeOy0Baf/q4EweydxbiqLU8C04wyiRgjArENKzgjBm+HORCCdqWWJ5wBHgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721255038; c=relaxed/simple;
-	bh=KhQdKRK+nE1da60iAIN2V9+g3FlBbHVB80lmL/9PKR0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cp4QLP1MWh5go8cwLGHeWsxZdrm8B7jVypdlf5NEmRptbFJUwzpbKxQt3ioCV4UBn0einW+2ZFLaOgh8Pd4No35h/4NDskVMldQy30HClmF6kfcrioytQ5LBraqjkno0u5u4wdC4zIrdOyJuHmtASLZsH6Vb3JTRTedG/9G36+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I8u0vUq/; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1721255035; x=1752791035;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=KhQdKRK+nE1da60iAIN2V9+g3FlBbHVB80lmL/9PKR0=;
-  b=I8u0vUq/Epzb3zUPbjarqm53V6UztK2mm46Whupw+FfIJHRzHfpA31II
-   9JRwRpFMY+32JKJL5kA3CdCc0KDFvix6oH0xyesNPdoDqkSY7fww2tlsI
-   JTSwUl7HdmlQO1Ke1p5w6+a7323UgqBJnYaHmfn0sNiw+QnGZIp5uX6HX
-   WWHUlOys6THmgJc0m84Y2Qe2sTa55HwBKsAHyROx/f4xyT8hKdN3y8Dv1
-   Y/h9WhlI84asGcGXSLDydX8pgSvxqoZRxIdXHw/+r+OIwCE0KnW4IBd+T
-   8pOLxJz9sVhXEwvHrIZs6gFVom6spxA32c8CytbTIToJSq25dp7ocgNzV
-   A==;
-X-CSE-ConnectionGUID: yZGTLf9cQ6iHLDn0aoaN2g==
-X-CSE-MsgGUID: NJldEojoTaCL4YjixDPyAA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11136"; a="29946482"
-X-IronPort-AV: E=Sophos;i="6.09,215,1716274800"; 
-   d="scan'208";a="29946482"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2024 15:23:55 -0700
-X-CSE-ConnectionGUID: bUkjAXm+R6S1PKCVY2qKwg==
-X-CSE-MsgGUID: g4r8hmz2TVCkIHsUgLrWWA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,215,1716274800"; 
-   d="scan'208";a="54869811"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 17 Jul 2024 15:23:53 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sUD3u-000gj2-2e;
-	Wed, 17 Jul 2024 22:23:50 +0000
-Date: Thu, 18 Jul 2024 06:23:37 +0800
-From: kernel test robot <lkp@intel.com>
-To: Lingbo Kong <quic_lingbok@quicinc.com>, ath12k@lists.infradead.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-wireless@vger.kernel.org, quic_lingbok@quicinc.com
-Subject: Re: [PATCH 2/4] wifi: ath12k: Add Support for enabling or disabling
- specific features based on ACPI bitflag
-Message-ID: <202407180617.CiqV9Bdm-lkp@intel.com>
-References: <20240717111023.78798-3-quic_lingbok@quicinc.com>
+	s=arc-20240116; t=1721265382; c=relaxed/simple;
+	bh=+uBw5rX7HkfpmlYDLmSfK/j1FDx5sECVUkaCwMBqDcw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=lEgkAokV7A/I9aFSWQz3LtC5ib8JT0uAUN7+FcS03YDFh0wwr/+CEf+/3VdmOkpKOltFrsLir+OlbQ/XfVz8S8dMmobneV1b1bmSPJET4FbJAt6yVY2E8NYwoTgUPtm1TCPs5ouh859AdPZr+yrwLMrmNfA09xOQE6/1ghBMTI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b=taqWRA0j; arc=none smtp.client-ip=212.227.15.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1721265377; x=1721870177; i=spasswolf@web.de;
+	bh=j8F3tpIxMWL4YjjRHZoKIIqqxZpuUQ4NIlW96Rka8Mc=;
+	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
+	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=taqWRA0jeP5AiCP1EAcc1V4SVq5+BQFo5KTGOXN9Qv785bhAMGMk/E2X+s/Fuljv
+	 S+Dmm6UuWtP2z0ZMZ0uHrxpZKTuXZJ0A7KNFXVsH9eRgSsfuzp227MSJ79+UyPgzF
+	 uPpmVNHPRI+tK9Cp1dzdaNMQ//+FjGoTxw6AowFab4eAv9x4mV5tyabUKkgeo4JuA
+	 LykU1Z9teUH3+C3x5Xqv/Ua7au8zitpvbJh6MS8tnv1+rSOFseeIvcMwvp+S0RkGw
+	 hvxLJKUp0qE/nbyAFMWEtNgSNxJ/m6cAFnmHTUSUj9AU8pgJbf2/5nj89GvAoFbum
+	 G2jAV5AveDJQezZXLg==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.0.101] ([84.119.92.193]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1M59n6-1sVM7Z2Gea-005tR5; Thu, 18
+ Jul 2024 03:10:09 +0200
+Message-ID: <308958f4c5689fd920c3915f4878850a09310b18.camel@web.de>
+Subject: Re: patch 46/47 causes NULL pointer deref on mt7921
+From: Bert Karwatzki <spasswolf@web.de>
+To: Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@kernel.org>
+Cc: deren.wu@mediatek.com, linux-mediatek@lists.infradead.org, 
+	linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com, 
+	mingyen.hsieh@mediatek.com, sean.wang@mediatek.com, spasswolf@web.de
+Date: Thu, 18 Jul 2024 03:10:07 +0200
+In-Reply-To: <9fb7ac97d2ca472db469aefefbfeb94e0f886508.camel@web.de>
+References: <20240711175156.4465-1-spasswolf@web.de>
+	 <CAGp9LzoXMoAW6dVZjTf-JcD_wiU4yXpGwkLaVyWXTkaV2MOKwg@mail.gmail.com>
+	 <adb192a59c44aa8708e80df30a6a47816a03e50f.camel@web.de>
+	 <4e943a62736f955af5d9cd1aff7e2b9c084c8885.camel@web.de>
+	 <2599b886-9c63-4989-a08a-7feab28f7c49@nbd.name>
+	 <9fb7ac97d2ca472db469aefefbfeb94e0f886508.camel@web.de>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.52.3-1 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240717111023.78798-3-quic_lingbok@quicinc.com>
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:r2lo/zWQksxO8joft6Pgx0zUs9Oyjyt77rX7Stdp8p029CZEO+I
+ pP3U0ObWMckpnu508+rsvA/+iU28VBfLhUTlTVDdbiJeovi3pyI7rbxiN+xBuwt7IwItSKk
+ rjmFf1V2CM2jaKXLm5WMWojPJwZOBbex91IhLo9oxRlaZu2NLUGH5svL0XIeyD+B444yT1J
+ 8HqLuxLcO81QPzRT/7vwg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:mcBrr9cU5Z8=;zN2o2oq8uI1Jr6EZloSXICOmXpY
+ usWMepdLnCGtoIkYwZuhd+rSx9kgZ+d+hGhwVcaTMAXBVn/jHswNf4S7qnPyRUBtkodaqWH82
+ vu4pCn1NTp2zkRbLwg1pkXSuTgRWM1Cjl0sL0cD4KYBaB/QElg09Rdt80BDXc04tHAxcKl5cU
+ 3h39rDfsaeQN3vhjO2STiYCzQwOHoDocg09n/24UAUCmvQvPocwfpbFE8lt66bentaxI/OZc6
+ AWgpJD7vuKVE+Sun4tKpKiRQB4HbmlkKC8jdd5flbOKQzsOV4ok1qhFCguZko3UcYpsBjMFNg
+ SVMtuMh87bXvVb0LjiIOBQvhGXukbQVDmZvPY0Y1zjyeT/g78w8Y1YRgKzQERY+SNtU/zZ7J0
+ 6syWoqmt3DA80j9YZbj7aql/Qy/NoTWik1iNfRX5bJHQ/t2X+Cn4LMSEVhVv3yhILy+d9//dU
+ j1BQp10Joo2gVKRU5o1rdb1jQWIVz+8XvHnQrq+uC7FcA2Kv4g9l+6vYx/utOw3TpcyDMz3lw
+ sogOq+YgHsoqATRMaXiZk5uJNwqKEKNuUijtbU7F/HxaS2nbLUMRZ3b0vRPx/Po+wWFakqObJ
+ xW6BnvYMEA4mFl/rull46ikYawufu00Ybyy9xU7BJ/I1Z722oAxMEF4QSMHefHhrrCVVzD5KS
+ fLanjYIQLdo/ZtcI8wcC96CGB0g4Gh4ouSF4I8hs+qz8tRZVk2hHBAO/TqXxF6whN2Fgb5l6l
+ DWrFEkS4iRPXf8icXmdWykuuX2ORQ4PpF6UZaOfQSfW4PRbZs4uBmUO+Zd5a/SZtV6MlODkYq
+ Rq3BT1hJ5GzefqpAVr3LbhGQ==
 
-Hi Lingbo,
+Am Mittwoch, dem 17.07.2024 um 19:05 +0200 schrieb Bert Karwatzki:
+> Am
+>
+> Your fix works. (I added a WARN() statement on the early return, to see =
+if mvif-
+> > phy actually was NULL during testing).
+>
+> Bert Karwatzki
+>
 
-kernel test robot noticed the following build errors:
+While your fix works there was still the question why the driver is sudden=
+ly
+forgetting mvif->phy? So I've been testing with this script:
 
-[auto build test ERROR on db1ce56e6e1d395dd42a3cd6332a871d9be59c45]
+#!/bin/sh
+for i in $(seq 1 100);
+do
+		nmcli radio wifi off
+		nmcli radio wifi on
+	# wait for wifi
+	sleep 3
+done
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Lingbo-Kong/wifi-ath12k-Add-support-for-obtaining-the-buffer-type-ACPI-function-bitmap/20240717-211701
-base:   db1ce56e6e1d395dd42a3cd6332a871d9be59c45
-patch link:    https://lore.kernel.org/r/20240717111023.78798-3-quic_lingbok%40quicinc.com
-patch subject: [PATCH 2/4] wifi: ath12k: Add Support for enabling or disabling specific features based on ACPI bitflag
-config: um-allmodconfig (https://download.01.org/0day-ci/archive/20240718/202407180617.CiqV9Bdm-lkp@intel.com/config)
-compiler: clang version 19.0.0git (https://github.com/llvm/llvm-project a0c6b8aef853eedaa0980f07c0a502a5a8a9740e)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240718/202407180617.CiqV9Bdm-lkp@intel.com/reproduce)
+together with this patch:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202407180617.CiqV9Bdm-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from drivers/net/wireless/ath/ath12k/core.c:9:
-   In file included from include/linux/remoteproc.h:40:
-   In file included from include/linux/virtio.h:7:
-   In file included from include/linux/scatterlist.h:8:
-   In file included from include/linux/mm.h:2258:
-   include/linux/vmstat.h:514:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-     514 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-         |                               ~~~~~~~~~~~ ^ ~~~
-   In file included from drivers/net/wireless/ath/ath12k/core.c:9:
-   In file included from include/linux/remoteproc.h:40:
-   In file included from include/linux/virtio.h:7:
-   In file included from include/linux/scatterlist.h:9:
-   In file included from arch/um/include/asm/io.h:24:
-   include/asm-generic/io.h:548:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     548 |         val = __raw_readb(PCI_IOBASE + addr);
-         |                           ~~~~~~~~~~ ^
-   include/asm-generic/io.h:561:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     561 |         val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
-         |                                                         ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/little_endian.h:37:51: note: expanded from macro '__le16_to_cpu'
-      37 | #define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
-         |                                                   ^
-   In file included from drivers/net/wireless/ath/ath12k/core.c:9:
-   In file included from include/linux/remoteproc.h:40:
-   In file included from include/linux/virtio.h:7:
-   In file included from include/linux/scatterlist.h:9:
-   In file included from arch/um/include/asm/io.h:24:
-   include/asm-generic/io.h:574:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     574 |         val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
-         |                                                         ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/little_endian.h:35:51: note: expanded from macro '__le32_to_cpu'
-      35 | #define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
-         |                                                   ^
-   In file included from drivers/net/wireless/ath/ath12k/core.c:9:
-   In file included from include/linux/remoteproc.h:40:
-   In file included from include/linux/virtio.h:7:
-   In file included from include/linux/scatterlist.h:9:
-   In file included from arch/um/include/asm/io.h:24:
-   include/asm-generic/io.h:585:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     585 |         __raw_writeb(value, PCI_IOBASE + addr);
-         |                             ~~~~~~~~~~ ^
-   include/asm-generic/io.h:595:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     595 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
-         |                                                       ~~~~~~~~~~ ^
-   include/asm-generic/io.h:605:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     605 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
-         |                                                       ~~~~~~~~~~ ^
-   include/asm-generic/io.h:693:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     693 |         readsb(PCI_IOBASE + addr, buffer, count);
-         |                ~~~~~~~~~~ ^
-   include/asm-generic/io.h:701:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     701 |         readsw(PCI_IOBASE + addr, buffer, count);
-         |                ~~~~~~~~~~ ^
-   include/asm-generic/io.h:709:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     709 |         readsl(PCI_IOBASE + addr, buffer, count);
-         |                ~~~~~~~~~~ ^
-   include/asm-generic/io.h:718:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     718 |         writesb(PCI_IOBASE + addr, buffer, count);
-         |                 ~~~~~~~~~~ ^
-   include/asm-generic/io.h:727:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     727 |         writesw(PCI_IOBASE + addr, buffer, count);
-         |                 ~~~~~~~~~~ ^
-   include/asm-generic/io.h:736:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     736 |         writesl(PCI_IOBASE + addr, buffer, count);
-         |                 ~~~~~~~~~~ ^
->> drivers/net/wireless/ath/ath12k/core.c:33:10: error: no member named 'acpi' in 'struct ath12k_base'
-      33 |         if (ab->acpi.acpi_disable_rfkill)
-         |             ~~  ^
-   13 warnings and 1 error generated.
---
-   In file included from drivers/net/wireless/ath/ath12k/mac.c:7:
-   In file included from include/net/mac80211.h:18:
-   In file included from include/linux/if_ether.h:19:
-   In file included from include/linux/skbuff.h:17:
-   In file included from include/linux/bvec.h:10:
-   In file included from include/linux/highmem.h:8:
-   In file included from include/linux/cacheflush.h:5:
-   In file included from arch/um/include/asm/cacheflush.h:4:
-   In file included from arch/um/include/asm/tlbflush.h:9:
-   In file included from include/linux/mm.h:2258:
-   include/linux/vmstat.h:514:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-     514 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-         |                               ~~~~~~~~~~~ ^ ~~~
-   In file included from drivers/net/wireless/ath/ath12k/mac.c:7:
-   In file included from include/net/mac80211.h:18:
-   In file included from include/linux/if_ether.h:19:
-   In file included from include/linux/skbuff.h:17:
-   In file included from include/linux/bvec.h:10:
-   In file included from include/linux/highmem.h:12:
-   In file included from include/linux/hardirq.h:11:
-   In file included from arch/um/include/asm/hardirq.h:5:
-   In file included from include/asm-generic/hardirq.h:17:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:14:
-   In file included from arch/um/include/asm/io.h:24:
-   include/asm-generic/io.h:548:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     548 |         val = __raw_readb(PCI_IOBASE + addr);
-         |                           ~~~~~~~~~~ ^
-   include/asm-generic/io.h:561:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     561 |         val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
-         |                                                         ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/little_endian.h:37:51: note: expanded from macro '__le16_to_cpu'
-      37 | #define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
-         |                                                   ^
-   In file included from drivers/net/wireless/ath/ath12k/mac.c:7:
-   In file included from include/net/mac80211.h:18:
-   In file included from include/linux/if_ether.h:19:
-   In file included from include/linux/skbuff.h:17:
-   In file included from include/linux/bvec.h:10:
-   In file included from include/linux/highmem.h:12:
-   In file included from include/linux/hardirq.h:11:
-   In file included from arch/um/include/asm/hardirq.h:5:
-   In file included from include/asm-generic/hardirq.h:17:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:14:
-   In file included from arch/um/include/asm/io.h:24:
-   include/asm-generic/io.h:574:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     574 |         val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
-         |                                                         ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/little_endian.h:35:51: note: expanded from macro '__le32_to_cpu'
-      35 | #define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
-         |                                                   ^
-   In file included from drivers/net/wireless/ath/ath12k/mac.c:7:
-   In file included from include/net/mac80211.h:18:
-   In file included from include/linux/if_ether.h:19:
-   In file included from include/linux/skbuff.h:17:
-   In file included from include/linux/bvec.h:10:
-   In file included from include/linux/highmem.h:12:
-   In file included from include/linux/hardirq.h:11:
-   In file included from arch/um/include/asm/hardirq.h:5:
-   In file included from include/asm-generic/hardirq.h:17:
-   In file included from include/linux/irq.h:20:
-   In file included from include/linux/io.h:14:
-   In file included from arch/um/include/asm/io.h:24:
-   include/asm-generic/io.h:585:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     585 |         __raw_writeb(value, PCI_IOBASE + addr);
-         |                             ~~~~~~~~~~ ^
-   include/asm-generic/io.h:595:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     595 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
-         |                                                       ~~~~~~~~~~ ^
-   include/asm-generic/io.h:605:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     605 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
-         |                                                       ~~~~~~~~~~ ^
-   include/asm-generic/io.h:693:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     693 |         readsb(PCI_IOBASE + addr, buffer, count);
-         |                ~~~~~~~~~~ ^
-   include/asm-generic/io.h:701:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     701 |         readsw(PCI_IOBASE + addr, buffer, count);
-         |                ~~~~~~~~~~ ^
-   include/asm-generic/io.h:709:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     709 |         readsl(PCI_IOBASE + addr, buffer, count);
-         |                ~~~~~~~~~~ ^
-   include/asm-generic/io.h:718:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     718 |         writesb(PCI_IOBASE + addr, buffer, count);
-         |                 ~~~~~~~~~~ ^
-   include/asm-generic/io.h:727:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     727 |         writesw(PCI_IOBASE + addr, buffer, count);
-         |                 ~~~~~~~~~~ ^
-   include/asm-generic/io.h:736:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     736 |         writesl(PCI_IOBASE + addr, buffer, count);
-         |                 ~~~~~~~~~~ ^
->> drivers/net/wireless/ath/ath12k/mac.c:5488:14: error: no member named 'acpi' in 'struct ath12k_base'
-    5488 |             ar->ab->acpi.acpi_disable_11be)
-         |             ~~~~~~  ^
-   13 warnings and 1 error generated.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index 4f30426afbb7..206f10473d92 100644
+=2D-- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -1182,6 +1182,10 @@ static void mt7921_ipv6_addr_change(struct ieee8021=
+1_hw
+*hw,
+                                    struct inet6_dev *idev)
+ {
+        struct mt792x_vif *mvif =3D (struct mt792x_vif *)vif->drv_priv;
++       if (!mvif->phy) {
++               WARN(1, "mvif->phy =3D=3D NULL\n");
++               return;
++       }
+        struct mt792x_dev *dev =3D mvif->phy->dev;
+        struct inet6_ifaddr *ifa;
+        struct in6_addr ns_addrs[IEEE80211_BSS_ARP_ADDR_LIST_LEN];
 
 
-vim +33 drivers/net/wireless/ath/ath12k/core.c
+On linux-6.10 the script can be run several times without triggering a war=
+ning
+while on linux-next-20240716 running the script will trigger several warni=
+ngs.
+In the end the result of a bisection is this as the first commit to trigge=
+r the
+warning:
+commit 574e609c4e6a0843a9ed53de79e00da8fb3e7437
+Author: Felix Fietkau <nbd@nbd.name>
+Date:   Thu Jul 4 15:09:47 2024 +0200
 
-    24	
-    25	static int ath12k_core_rfkill_config(struct ath12k_base *ab)
-    26	{
-    27		struct ath12k *ar;
-    28		int ret = 0, i;
-    29	
-    30		if (!(ab->target_caps.sys_cap_info & WMI_SYS_CAP_INFO_RFKILL))
-    31			return 0;
-    32	
-  > 33		if (ab->acpi.acpi_disable_rfkill)
-    34			return 0;
-    35	
-    36		for (i = 0; i < ab->num_radios; i++) {
-    37			ar = ab->pdevs[i].ar;
-    38	
-    39			ret = ath12k_mac_rfkill_config(ar);
-    40			if (ret && ret != -EOPNOTSUPP) {
-    41				ath12k_warn(ab, "failed to configure rfkill: %d", ret);
-    42				return ret;
-    43			}
-    44		}
-    45	
-    46		return ret;
-    47	}
-    48	
+    wifi: mac80211: clear vif drv_priv after remove_interface when stoppin=
+g
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+    Avoid reusing stale driver data when an interface is brought down and =
+up
+    again. In order to avoid having to duplicate the memset in every singl=
+e
+    driver, do it here.
+
+    Signed-off-by: Felix Fietkau <nbd@nbd.name>
+    Link: https://patch.msgid.link/20240704130947.48609-1-nbd@nbd.name
+    Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 6d969d9f1ac9..97aee0a1a39a 100644
+=2D-- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -689,8 +689,12 @@ static void ieee80211_do_stop(struct ieee80211_sub_if=
+_data
+*sdata, bool going_do
+
+ 		fallthrough;
+ 	default:
+-		if (going_down)
+-			drv_remove_interface(local, sdata);
++		if (!going_down)
++			break;
++		drv_remove_interface(local, sdata);
++
++		/* Clear private driver data to prevent reuse */
++		memset(sdata->vif.drv_priv, 0, local->hw.vif_data_size);
+ 	}
+
+ 	ieee80211_recalc_ps(local);
+
+As this is in generic mac80211 code this could probably also affect other
+drivers and their ipv6_addr_change function. (which in turn could easily b=
+e
+fixed by an early exit when mvif->phy =3D=3D NULL)
+
+Bert Karwatzki
 
