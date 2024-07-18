@@ -1,158 +1,166 @@
-Return-Path: <linux-wireless+bounces-10365-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10366-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 891DB9370E3
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2024 00:55:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA8AE937141
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2024 01:46:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9EDF2B21062
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2024 22:55:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7607F1F2217B
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2024 23:46:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDAD2145A00;
-	Thu, 18 Jul 2024 22:55:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="NfqGCVNn"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E38A423B0;
+	Thu, 18 Jul 2024 23:46:38 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A8A7E0E9
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2024 22:55:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386AF146D6E
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2024 23:46:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721343321; cv=none; b=qeuTY1GlMLVvw1pIksBrHelBK/y+CEZthllkMRCm+UR8TXOckj85BMM0WMHd0bj8l5nORogp6sss9sQ38Ty05Hw+C0Fvg/trrHsJUY4QckrAb3PmtpO1DTaR/B+ioTsAXEvOl/vr5NUcjuBLprGPPza0MAzi3OIaLA2kPHsyDaU=
+	t=1721346398; cv=none; b=WKYCL8XsgR5XhuCxdTxEWGQxOtwqKvfPkX8XOn/2HySv/Wc2RXmCRqWHMy3B5pQDXhEZDBn6KznQN5YLM9Ch0Wjg/RTDf7wvKs7mT8YRwTUvUTdl6EfPQSSM5pOCD+7KkYjijNseaO+7CDTnBk7MRqY6x2KQZPiTcKVDtGqTqYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721343321; c=relaxed/simple;
-	bh=GOfYFhDLUQ4SAuosej7e1TQonx93ed170tiVJhPnL2c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DqzQJij4orBLCNTlaDAOwjE4Q0CybOZPjOa6IcVATzd36JZ6EbpE5r1u+Kc0i4dz+jjC21qi0R8Sl6xX++vn1/1EM1oRDYDSn4i8ojXeYMjXHyzt0Ef1EAc+qOQ5vfoRjU5rQLMh7cZBG+7ddgpgQaa2DojR8j7XIW/phr1K/QI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=NfqGCVNn; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-1fb53bfb6easo11294355ad.2
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2024 15:55:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1721343320; x=1721948120; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Vdk6amR3ns9k94lR5EZk37+L9hpzLXv/vSzrTyKW9k4=;
-        b=NfqGCVNnHUDhtCb2vPEP3tw/AvhLL9qbLHV07TwWVA0YZQf0t9vymeBWZu7QBCGE91
-         zoUTRYamAez2i7DliE/YB3sCxT6suwE6i7irEztBvSfuXzGjncmILqkcP7sT7+AQ+sZp
-         tnH9U4sIHvZpvQmW6rL1FsDbNccuOWuiwscvU=
+	s=arc-20240116; t=1721346398; c=relaxed/simple;
+	bh=O15ldoM4uhG+C9xTtWNbYILdLmU+t1Rc5NHJPAydHrY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SmUTy/Fe8bfWfZvrGJH9R+8Pa6N9KLIJaz/gD2U7PfCuwBi9ttwWobno0atNacpwh/D0pt8sXsvCw/CUhtj7Mfxofbu2eLSSetAZ5uiv4WEtPscjkY/1oVKKUP8n0WI/yX1NG7C6+9db7tuFh5QvcndGX5xc173C9UprGANsBPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-2610c095ea1so13606fac.3
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2024 16:46:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721343320; x=1721948120;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Vdk6amR3ns9k94lR5EZk37+L9hpzLXv/vSzrTyKW9k4=;
-        b=GqBTc2D3IS4Gu6xdfAHhJbTzNFblzebkyclhP1qX5k1CLDLP63dwDWaOnnVZs1pdMq
-         4+7KlCjrbxxVvAlXxgVi4IPU8IYkgD7dKXI3aVTCGz9Zl8zTy+P28O/G+/TwUrdc5Twy
-         +muLHY/qRot4H2/Ug9XCLSrJeFm/Dp5tEmyq1/61uh1C8FEaDWwfQsXLSSCwV1Rrd+XG
-         /kWSZrZJfE2S84L/c+JlksjREsMk3McwWOVY2k6XbdIxzCGhwcYIBBKjvlScXW3wA+IB
-         jFo+we5PQbLFxNzMPjAwypz7WR6O5z9EXplzzO6dl7Ozy0EjU5+IcqLrWIS473t5sNzb
-         PAoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW2kuLhcP/H1rKhPagWOJx3yZx3yZBsx+jbZ6l7FBxdAtpDkMikr2DMaRD+XN1MYyK2I+Jo4HWFqneWrFHHB9MnvKJZR1APz/if5pQHpc4=
-X-Gm-Message-State: AOJu0YytVbiLZuqk9np5k9CK4PV9fySmkmaqZ0A1lEeuRedG/lWFTpk2
-	bOL3e01DZ7AMdWOWJZl+g7Yr8nvfHTwbdqw0eF2u/b2GQILbVoMDK4yHYS1lKg==
-X-Google-Smtp-Source: AGHT+IHxqkJVExwWDt6K0KKTzJbmP4SxnCojPaN81CJY7ukRJquPtmiyHtpquREgFCuVrflVFmQoaA==
-X-Received: by 2002:a17:902:c401:b0:1fb:dffb:bc99 with SMTP id d9443c01a7336-1fc4e68cd5amr63135225ad.53.1721343319735;
-        Thu, 18 Jul 2024 15:55:19 -0700 (PDT)
-Received: from localhost ([2620:15c:9d:2:35aa:f87d:7549:3938])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-1fd64d20160sm973385ad.228.2024.07.18.15.55.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Jul 2024 15:55:19 -0700 (PDT)
-Date: Thu, 18 Jul 2024 15:55:18 -0700
-From: Brian Norris <briannorris@chromium.org>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Francesco Dolcini <francesco@dolcini.it>, Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: Re: [PATCH v2 2/2] wifi: mwifiex: add support for WPA-PSK-SHA256
-Message-ID: <ZpmdVq2CkxRcLxvO@google.com>
-References: <20240717-mwifiex-wpa-psk-sha256-v2-0-eb53d5082b62@pengutronix.de>
- <20240717-mwifiex-wpa-psk-sha256-v2-2-eb53d5082b62@pengutronix.de>
+        d=1e100.net; s=20230601; t=1721346396; x=1721951196;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kumYOpt90WwIURjW83CrBNCxrFrm56wRKCJC8GtXD4I=;
+        b=TapLjAMeli2C345GFzpDLkme/wqkkNVe9ibzJDC5LOk2Ch4/Y9XCIjeKkvXKhzzlCU
+         zcUIDdZ9AN0HywHCoL9HUhHgWL4bpCmlK1kZAJM4TdiUbzwvufmjZmRwSo0Nk8RXSUnB
+         lyPINowLltH5bhPQaZ9pixTXC1o0TPmWOeV3BKeoxb2VDEIH+pfs3YSopMEX9cuhhqhl
+         z+/KTJ7G1aRonJ2vZGlyfV9Y66r0rYIeCEjK2RH0TfGeNv4Q4oXCqmW3n8SjcrdmXltW
+         YrO29bIcs57eQjcy+rezI1hStcRN3tE6Lnwfa+sGmOXxVUTy1idrzoEFrD4Yy7L20Pjv
+         jG/g==
+X-Forwarded-Encrypted: i=1; AJvYcCVCBBS6x5WA+pRwDKrOPr72Lv08x5sfLYuEo3Y1oApz1ZaLWPVr9uZo/q+LBnOAWt1lh6/KyIegwgO/k5zcNrFW9KnupsaLXnz+Nu/hBpg=
+X-Gm-Message-State: AOJu0YzmkCoGiUZWIOJkqYytpxwdxPr6+s8QTsgB1XbDtUbi8nv/ra0A
+	IPpYz/MlKBJNAVh8fmP1su+7z7lQv4Dt6gJSmqfshH7EEtRcdWVY
+X-Google-Smtp-Source: AGHT+IFRf7TjBSxNEPCzpgioy5JjkDTiqmmUFLR3bozjk/syGEwERkAtjw3rXmpWtwdoOUzOIwQD1Q==
+X-Received: by 2002:a05:6808:10ce:b0:3d9:36ba:2ce with SMTP id 5614622812f47-3dadf4dfc21mr768420b6e.1.1721346396099;
+        Thu, 18 Jul 2024 16:46:36 -0700 (PDT)
+Received: from sean-ThinkPad-T450s.attlocal.net ([2600:1702:5083:7610:3c59:65c4:19fc:c2eb])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3dae0978889sm70677b6e.13.2024.07.18.16.46.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Jul 2024 16:46:35 -0700 (PDT)
+From: sean.wang@kernel.org
+To: nbd@nbd.name,
+	lorenzo.bianconi@redhat.com
+Cc: sean.wang@mediatek.com,
+	deren.wu@mediatek.com,
+	mingyen.hsieh@mediatek.com,
+	linux-wireless@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	Bert Karwatzki <spasswolf@web.de>
+Subject: [PATCH] wifi: mt76: mt7921: fix null pointer access in mt792x_mac_link_bss_remove
+Date: Thu, 18 Jul 2024 16:46:33 -0700
+Message-Id: <20240718234633.12737-1-sean.wang@kernel.org>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240717-mwifiex-wpa-psk-sha256-v2-2-eb53d5082b62@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 
-Hi Sascha,
+From: Sean Wang <sean.wang@mediatek.com>
 
-On Wed, Jul 17, 2024 at 10:30:08AM +0200, Sascha Hauer wrote:
-> This adds support for the WPA-PSK AKM suite with SHA256 as hashing
-> method (WPA-PSK-SHA256). Tested with a wpa_supplicant provided AP
-> using key_mgmt=WPA-PSK-SHA256.
-> 
-> Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  drivers/net/wireless/marvell/mwifiex/fw.h      | 1 +
->  drivers/net/wireless/marvell/mwifiex/uap_cmd.c | 3 +++
->  2 files changed, 4 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
-> index 3adc447b715f6..1c76754b616ff 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/fw.h
-> +++ b/drivers/net/wireless/marvell/mwifiex/fw.h
-> @@ -415,6 +415,7 @@ enum MWIFIEX_802_11_PRIVACY_FILTER {
->  #define KEY_MGMT_NONE               0x04
->  #define KEY_MGMT_PSK                0x02
->  #define KEY_MGMT_EAP                0x01
-> +#define KEY_MGMT_PSK_SHA256         0x100
->  #define CIPHER_TKIP                 0x04
->  #define CIPHER_AES_CCMP             0x08
->  #define VALID_CIPHER_BITMAP         0x0c
-> diff --git a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
-> index 7f822660fd955..c055fdc7114ba 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
-> @@ -60,6 +60,9 @@ int mwifiex_set_secure_params(struct mwifiex_private *priv,
->  		case WLAN_AKM_SUITE_PSK:
->  			bss_config->key_mgmt = KEY_MGMT_PSK;
->  			break;
-> +		case WLAN_AKM_SUITE_PSK_SHA256:
-> +			bss_config->key_mgmt = KEY_MGMT_PSK_SHA256;
-> +			break;
+Fix null pointer access in mt792x_mac_link_bss_remove.
 
-I feel like this relates to previous questions you've had [1], and while
-I think the answer at the time made sense to me (basically, EAP and PSK
-are mutually exclusive), it makes less sense to me here that PSK-SHA256
-is mutually exclusive with PSK. And in particular, IIUC, this means that
-the ordering in a wpa_supplicant.conf line like
+To prevent null pointer access, we should assign the vif to bss_conf in
+mt7921_add_interface. This ensures that subsequent operations on the BSS
+can properly reference the correct vif.
 
-  key_mgmt=WPA-PSK WPA-PSK-SHA256
+[  T843] Call Trace:
+[  T843]  <TASK>
+[  T843]  ? __die+0x1e/0x60
+[  T843]  ? page_fault_oops+0x157/0x450
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? search_bpf_extables+0x5a/0x80
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? exc_page_fault+0x2bb/0x670
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? lock_timer_base+0x71/0x90
+[  T843]  ? asm_exc_page_fault+0x26/0x30
+[  T843]  ? mt792x_mac_link_bss_remove+0x24/0x110 [mt792x_lib]
+[  T843]  ? mt792x_remove_interface+0x6e/0x90 [mt792x_lib]
+[  T843]  ? ieee80211_do_stop+0x507/0x7e0 [mac80211]
+[  T843]  ? ieee80211_stop+0x53/0x190 [mac80211]
+[  T843]  ? __dev_close_many+0xa5/0x120
+[  T843]  ? __dev_change_flags+0x18c/0x220
+[  T843]  ? dev_change_flags+0x21/0x60
+[  T843]  ? do_setlink+0xdf9/0x11d0
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? security_sock_rcv_skb+0x33/0x50
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? __nla_validate_parse+0x61/0xd10
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? genl_done+0x53/0x80
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? netlink_dump+0x357/0x410
+[  T843]  ? __rtnl_newlink+0x5d6/0x980
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? genl_family_rcv_msg_dumpit+0xdf/0xf0
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? __kmalloc_cache_noprof+0x44/0x210
+[  T843]  ? rtnl_newlink+0x42/0x60
+[  T843]  ? rtnetlink_rcv_msg+0x152/0x3f0
+[  T843]  ? mptcp_pm_nl_dump_addr+0x180/0x180
+[  T843]  ? rtnl_calcit.isra.0+0x130/0x130
+[  T843]  ? netlink_rcv_skb+0x56/0x100
+[  T843]  ? netlink_unicast+0x199/0x290
+[  T843]  ? netlink_sendmsg+0x21d/0x490
+[  T843]  ? __sock_sendmsg+0x78/0x80
+[  T843]  ? ____sys_sendmsg+0x23f/0x2e0
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? copy_msghdr_from_user+0x68/0xa0
+[  T843]  ? ___sys_sendmsg+0x81/0xd0
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? crng_fast_key_erasure+0xbc/0xf0
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? get_random_bytes_user+0x126/0x140
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? __fdget+0xb1/0xe0
+[  T843]  ? __sys_sendmsg+0x56/0xa0
+[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  T843]  ? do_syscall_64+0x5f/0x170
+[  T843]  ? entry_SYSCALL_64_after_hwframe+0x55/0x5d
+[  T843]  </TASK>
 
-matters -- only the latter will actually be in use.
+Fixes: 1541d63c5fe2 ("wifi: mt76: mt7925: add mt7925_mac_link_bss_remove to remove per-link BSS")
+Reported-by: Bert Karwatzki <spasswolf@web.de>
+Closes: https://lore.kernel.org/linux-wireless/2fee61f8c903d02a900ca3188c3742c7effd102e.camel@web.de/#b
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Is that intended? Is this really a single-value field, and not a
-multiple-option bitfield?
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index 2e6268cb06c0..1bab93d049df 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -303,6 +303,7 @@ mt7921_add_interface(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
+ 
+ 	mvif->bss_conf.mt76.omac_idx = mvif->bss_conf.mt76.idx;
+ 	mvif->phy = phy;
++	mvif->bss_conf.vif = mvif;
+ 	mvif->bss_conf.mt76.band_idx = 0;
+ 	mvif->bss_conf.mt76.wmm_idx = mvif->bss_conf.mt76.idx % MT76_CONNAC_MAX_WMM_SETS;
+ 
+-- 
+2.25.1
 
-Or if these are really mutually exclusive, then maybe we're on the wrong
-track here:
-  https://patchwork.kernel.org/project/linux-wireless/patch/20240530130156.1651174-1-s.hauer@pengutronix.de/
-  wifi: mwifiex: increase max_num_akm_suites
-
-In any case, something feels off here, because the nl80211 API doesn't
-say anything about the ordering of AKM suites being relevant.
-
-Brian
-
->  		default:
->  			break;
->  		}
-> 
-> -- 
-> 2.39.2
-> 
-
-[1] Subject: Re: [EXT] Re: [PATCH v10 2/2] wifi: mwifiex: add host mlme for AP mode
-    https://lore.kernel.org/all/Zmvjw3aG9j8kW0Ld@pengutronix.de/
-    https://lore.kernel.org/all/PA4PR04MB9638B7F0F4E49F79057C15FBD1CD2@PA4PR04MB9638.eurprd04.prod.outlook.com/
 
