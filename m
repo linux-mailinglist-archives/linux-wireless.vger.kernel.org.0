@@ -1,169 +1,126 @@
-Return-Path: <linux-wireless+bounces-10350-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10351-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60440934CB1
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2024 13:42:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C736934CDB
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2024 13:58:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19811281F97
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2024 11:42:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF53C1F22852
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2024 11:58:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A6FD13A257;
-	Thu, 18 Jul 2024 11:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F16B313B780;
+	Thu, 18 Jul 2024 11:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X+5Wzbo8"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="mWufwUOg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8E5558BA;
-	Thu, 18 Jul 2024 11:42:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5281113AD38
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2024 11:58:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721302933; cv=none; b=T/FNgAYcdpPKjxBFzUGV4Ngx5Ivpaxrf4qixxElSim+h+Qjfb4m5YTfKxiWPm6CGUlIdxJh5MRhXsNBgs/GS7mLDVExM/jFqbRYnGHoL0Z/IZHrI/XQGKxDtgpPOR/IUbmZJ+MBfLU3j2HjA1SIO887H8CY7h4QWJQXJtuV8U7M=
+	t=1721303914; cv=none; b=A2Oq0KMRIq5DGxB1ObD6/UBvU5hw8qtMhZeZbzCg1Zelg7hg2b1xDQy25LLWvzFEv03GJUTeJgvR2TV8eMG0GLGU/E71ex2Do/LFpXceiJNwmoNTsq8lkl+OSo4rfxpGmWwWlczTE+cVFAf8pAiv6Tv+qwiP6FSjK7qRF2wxvCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721302933; c=relaxed/simple;
-	bh=jSLxpc8wkxTgKpeFNSG3xETxoREa5rhzKqkP1DGPhJo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=j+5ybotf2zjHkULYDDzz1WteWE6DjQt7MZHPvtUkFSiTN9wgF72Wnfk6WEOGJ0dcFXczotNAYQTr1TnIosTr5u8UrJaJ7zUI58IxB6Vdr6gKFrL4zM7rFCzTAsoCp0cI8A1gQES+BAbwnlUm7vCjAJtVBzEqAxhcKA7mmFyadgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X+5Wzbo8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6714C4AF12;
-	Thu, 18 Jul 2024 11:42:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721302932;
-	bh=jSLxpc8wkxTgKpeFNSG3xETxoREa5rhzKqkP1DGPhJo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=X+5Wzbo89lLyTdgW2Lr6ep4NwdVxMqITeYw7qikQbzpQctbNntPXBaE0kBVrwdzi1
-	 vNJFARNVDNqv79tq2NciDgjmpGOygQe2phcCgocXKnnohju1XbMQDcKJgDnqXlCFV7
-	 1rnf1dagB5MGq9mUHRB8QlbVDkfTBZyJo7H05Qu5fLi/fAWNLRZz2TocFfMk8guElm
-	 b/dKGyjyLt4wtKPWm2tUHYz2TXLzrArwtuTe7x4qSvXTMTPU9xRzdnahp47sTewxrK
-	 RYh7q7UzQ3c9kGCe8UbQwfpnwQ8A5U6hycH3sF/sWXJPd5BW1LX3KUAhS7Ur3jDRQl
-	 ApvAaGZ6XaRAw==
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-25e23e0492dso114971fac.3;
-        Thu, 18 Jul 2024 04:42:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWpWUTKD3qZbFbLyFjxhKQDFyPzEcLalObgOUwBOgqXk/s3lX7RjqSFHHgrCN+ZM6QqQBUrTfSu88BV3yvT7MkF8xx3HrFvfoGeR63JmBzP/hRZ2OfOhrNB/mABIqjcekoDLpnxvP294o0RYIuDnbxPDmmziAPIks94qvdGh1RMyVYipGgKvA==
-X-Gm-Message-State: AOJu0YxrJ1OrXxifQD+V1iiqgTdqlOfpR0cZuMduPj5j1AAoyTwd94Me
-	xYbnoWomhBD3A5UGAIZHyM8XPOFjlLODXJ/pIFOxTHQ08WxfZLNEekl/bcoqgHumWJ1EPEDVe2G
-	gM0v9Hqel1AM0Be3RG8vVE1LD/7c=
-X-Google-Smtp-Source: AGHT+IE2wr/y+LGWtWs2b70t8ZWMMoqeLUJ/TymgWf5Y8DMgWtCQF0GroDDcvugz4bkpm3GT+q3lNf+WvckTpv8iQNY=
-X-Received: by 2002:a05:687c:2bcc:b0:254:d417:351f with SMTP id
- 586e51a60fabf-260ee846b1fmr1537278fac.1.1721302932051; Thu, 18 Jul 2024
- 04:42:12 -0700 (PDT)
+	s=arc-20240116; t=1721303914; c=relaxed/simple;
+	bh=FFrNdvWWjN63s42BKAKBM8xaz6ftXrgEKRS6jcbmJL8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=q3MoTWt4JGZgfPZ9h/CFh1IpkeSjcV1a3oWMfqiiNhBf8hkoT5IKdMvf9j/5yZXQs2YKrThZZjgmFWhGkOf5uh9KrxS1JqH7Olcw2LThIrEQ2TgIEuhEB2X9aBho7uM5RDX9PvxrwL4a/lGhx7fR/SFwwwp5s+sWBdF2vPwsZ6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=mWufwUOg; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-42122ac2f38so1575215e9.1
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2024 04:58:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1721303909; x=1721908709; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eT3/r8iq9vh5IHb+laarDBOv4FqNaSgzXd7Frm5ubA4=;
+        b=mWufwUOgGu9tdiTbF+wwaBViwZ/n4VkZG88CacADd3i1zoS9DkkZusfrOmHeK/jtli
+         Np/roYCnPe/6gkZWafuTul7lmwqWOct92+bai0+qHrEjtsqT/9krxKTRlxCe2zq2rYvv
+         ASYfWg4jaZMhWrVKMb9zOq5kI/rJQviCHWeK/o9qB7DB2ECMjFjn7SMvqlH8SLgGQGxz
+         CJplTKapwkiyg8sm6kBEKMrj68Iez0l3L60XL0SrUo5m82q3VKstqAULLMEROCSnuErU
+         pc71vIg7gz5X+z4zGwuqAeyodqQUmUyBvspOf974PiNE080Sr97Gn+/iH0N0vhRxCO7z
+         NxzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721303909; x=1721908709;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eT3/r8iq9vh5IHb+laarDBOv4FqNaSgzXd7Frm5ubA4=;
+        b=jK1d1B6TKOag4fVLpCO7S19KgbkifeTIB28LRdORQje0kgcg8wfu4fwShSQBt5QLDv
+         1fU5SW9SobZtsk54r7f6hU0++dWWiWH6Dx9plqqHuSRCaKt6GWhKS7VJyNmciTf2CfDe
+         ufJ6OhmJBa2R61HJNWQkIqRy63wXLBeV45qsDDA4bGCDKfBPdt/jJ0RmNrY0C1nmYQmk
+         80zu/UjpskMLa7dxZ/bA/u88pHLsOLR52X18j90y9nOAehlQ0MCQ7esGwAO4pyFTmvVA
+         fsEMWOYuaodEKEZbtWYS0Az8CVbBjRn48xfoa4Qfh4yQ1V05McPc/xPKI/tIZflarexJ
+         Ps3g==
+X-Forwarded-Encrypted: i=1; AJvYcCX2ifd6v3LS8BBpHpp7uL2Sh4pKvPIhR7xs1Kun7a5k/ZxEwOK2OPl5yCijAIFshAkg7sXAS2Le6o2cyPwpPKy7z6tOz8oKmy+Xr7ZCVpE=
+X-Gm-Message-State: AOJu0Ywft0yXwagHGc0ZJx/HYceUHr03gEbU4qNninW9haa+Q19a61fF
+	N3MrPjLE+56IXDa8SH0eWtFKxQYLMSVtvT8lD1bdIcYretTwJoG5v2rGsujNZwk=
+X-Google-Smtp-Source: AGHT+IHpOFhVVOR50WDCPfi6DXrjDJkGmwaqmpgdsmAo5+FCsTxtL42b6u3Rfj/yngP1z/p7fq9EnA==
+X-Received: by 2002:a05:600c:4751:b0:426:5cc7:82f with SMTP id 5b1f17b1804b1-427d2b527demr5295885e9.13.1721303909431;
+        Thu, 18 Jul 2024 04:58:29 -0700 (PDT)
+Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:58d4:2f84:5fcd:8259])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-368467a34dcsm2258703f8f.109.2024.07.18.04.58.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Jul 2024 04:58:29 -0700 (PDT)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Kalle Valo <kvalo@kernel.org>,
+	Jeff Johnson <jjohnson@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath11k@lists.infradead.org,
+	ath12k@lists.infradead.org,
+	linux-pci@vger.kernel.org,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH v2] Kconfig: reduce the amount of power sequencing noise
+Date: Thu, 18 Jul 2024 13:58:27 +0200
+Message-ID: <172130382340.64067.7765392027721457700.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240717142803.53248-1-brgl@bgdev.pl>
+References: <20240717142803.53248-1-brgl@bgdev.pl>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <4950004.31r3eYUQgx@rjwysocki.net> <20240717212421.GA1191@sol.localdomain>
-In-Reply-To: <20240717212421.GA1191@sol.localdomain>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 18 Jul 2024 13:41:59 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hc=tVDBiRrJqgVNZ5Bi59vqHQt-fYEV-quw8nnZVqJtg@mail.gmail.com>
-Message-ID: <CAJZ5v0hc=tVDBiRrJqgVNZ5Bi59vqHQt-fYEV-quw8nnZVqJtg@mail.gmail.com>
-Subject: Re: [PATCH v2] thermal: core: Allow thermal zones to tell the core to
- ignore them
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Linux PM <linux-pm@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
-	Lukasz Luba <lukasz.luba@arm.com>, Miri Korenblit <miriam.rachel.korenblit@intel.com>, 
-	Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org, 
-	Stefan Lippers-Hollmann <s.l-h@gmx.de>, Oleksandr Natalenko <oleksandr@natalenko.name>, 
-	Ben Greear <greearb@candelatech.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 17, 2024 at 11:24=E2=80=AFPM Eric Biggers <ebiggers@kernel.org>=
- wrote:
->
-> On Wed, Jul 17, 2024 at 09:45:02PM +0200, Rafael J. Wysocki wrote:
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> >
-> > The iwlwifi wireless driver registers a thermal zone that is only neede=
-d
-> > when the network interface handled by it is up and it wants that therma=
-l
-> > zone to be effectively ignored by the core otherwise.
-> >
-> > Before commit a8a261774466 ("thermal: core: Call monitor_thermal_zone()
-> > if zone temperature is invalid") that could be achieved by returning
-> > an error code from the thermal zone's .get_temp() callback because the
-> > core did not really handle errors returned by it almost at all.
-> > However, commit a8a261774466 made the core attempt to recover from the
-> > situation in which the temperature of a thermal zone cannot be
-> > determined due to errors returned by its .get_temp() and is always
-> > invalid from the core's perspective.
-> >
-> > That was done because there are thermal zones in which .get_temp()
-> > returns errors to start with due to some difficulties related to the
-> > initialization ordering, but then it will start to produce valid
-> > temperature values at one point.
-> >
-> > Unfortunately, the simple approach taken by commit a8a261774466,
-> > which is to poll the thermal zone periodically until its .get_temp()
-> > callback starts to return valid temperature values, is at odds with
-> > the special thermal zone in iwlwifi in which .get_temp() may always
-> > return an error because its network interface may always be down.  If
-> > that happens, every attempt to invoke the thermal zone's .get_temp()
-> > callback resulting in an error causes the thermal core to print a
-> > dev_warn() message to the kernel log which is super-noisy.
-> >
-> > To address this problem, make the core handle the case in which
-> > .get_temp() returns 0, but the temperature value returned by it
-> > is not actually valid, in a special way.  Namely, make the core
-> > completely ignore the invalid temperature value coming from
-> > .get_temp() in that case, which requires folding in
-> > update_temperature() into its caller and a few related changes.
-> >
-> > On the iwlwifi side, modify iwl_mvm_tzone_get_temp() to return 0
-> > and put THERMAL_TEMP_INVALID into the temperature return memory
-> > location instead of returning an error when the firmware is not
-> > running or it is not of the right type.
-> >
-> > Also, to clearly separate the handling of invalid temperature
-> > values from the thermal zone initialization, introduce a special
-> > THERMAL_TEMP_INIT value specifically for the latter purpose.
-> >
-> > Fixes: a8a261774466 ("thermal: core: Call monitor_thermal_zone() if zon=
-e temperature is invalid")
-> > Closes: https://lore.kernel.org/linux-pm/20240715044527.GA1544@sol.loca=
-ldomain/
-> > Reported-by: Eric Biggers <ebiggers@kernel.org>
-> > Reported-by: Stefan Lippers-Hollmann <s.l-h@gmx.de>
-> > Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D201761
-> > Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
-> > Tested-by: Stefan Lippers-Hollmann <s.l-h@gmx.de>
-> > Cc: 6.10+ <stable@vger.kernel.org> # 6.10+
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > ---
-> >
-> > v1 -> v2:
-> >    * It is safer to retain the old behavior in thermal_zone_get_temp(),
-> >      which is the second place where the .get_temp() zone callback is
-> >      used, so make it return -ENODATA if the temperature value coming
-> >      from that callback is invalid.
-> >    * Add Tested-by: for Stefan.
-> >
-> > I have retained the previous Tested-by because the part of the patch th=
-at has
-> > been tested remains unchanged.
-> >
-> > ---
-> >  drivers/net/wireless/intel/iwlwifi/mvm/tt.c |    7 +++
-> >  drivers/thermal/thermal_core.c              |   51 +++++++++++++------=
----------
-> >  drivers/thermal/thermal_core.h              |    3 +
-> >  drivers/thermal/thermal_helpers.c           |    2 +
-> >  4 files changed, 35 insertions(+), 28 deletions(-)
->
-> This makes the log messages go away for me.  However I had to resolve a c=
-onflict
-> in drivers/net/wireless/intel/iwlwifi/mvm/tt.c to apply this patch to the=
- latest
-> upstream.
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-Thanks for the heads-up, I've rebased it on top of the current
-mainline while applying.
+
+On Wed, 17 Jul 2024 16:28:03 +0200, Bartosz Golaszewski wrote:
+> Kconfig will ask the user twice about power sequencing: once for the QCom
+> WCN power sequencing driver and then again for the PCI power control
+> driver using it.
+> 
+> Let's automate the selection of PCI_PWRCTL by introducing a new hidden
+> symbol: HAVE_PWRCTL which should be selected by all platforms that have
+> the need to include PCI power control code (right now: only ARCH_QCOM).
+> 
+> [...]
+
+I'm picking this up into my pwrseq/for-current branch. I'll be off next week
+so I want to give the autobuilders the chance to play with this and I'll send
+a PR to Linus with another pwrseq fix I have queued tomorrow evening.
+
+Let me know if there are any objections.
+
+[1/1] Kconfig: reduce the amount of power sequencing noise
+      commit: ed70aaac7c359540d3d8332827fa60b6a45e15f2
+
+Best regards,
+-- 
+Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
