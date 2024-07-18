@@ -1,135 +1,123 @@
-Return-Path: <linux-wireless+bounces-10361-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10362-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FF2E935143
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2024 19:29:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43CCC935219
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2024 21:21:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51E561C2179D
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2024 17:29:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 458CD1C21A60
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2024 19:21:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F52C14535F;
-	Thu, 18 Jul 2024 17:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78E6C144D3B;
+	Thu, 18 Jul 2024 19:21:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="FCzYwxUe"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.164])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CCE14535C
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2024 17:29:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF9713A257
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2024 19:21:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.164
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721323772; cv=none; b=I4GIqHLDoTqs+iAtahiWMQRdTgXCwL19CY3fm71ZNa58AbPsXT9K9RCOfkPfq/2gPcsvX79P79p3Zck8xKZbDyLLN9R33UsvC5dch3raFF3vuQSB5s+J1uHzM83HMT1x+jZ4Ht09sq0VSxKq6+jaaAm0f+H/qktoUwVfVbba4X4=
+	t=1721330463; cv=none; b=SuC/BE7lJPLBHb67imNQBfHCaDBEl+qgWR3SWDTOB+ZMbRVR8haOMOhAK02pk+N8tvX2CNpToeU+I6xq8GN4p18GnEE1SX8dBiuTiGGGMruIZtsDtaOfYZ/L/3sOZDU++VVPyR3fFk/79XjVbfghu1AvSi/gv7A67WnTMl1zGcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721323772; c=relaxed/simple;
-	bh=Me+zMtshmruILAJekqfPLJtdDLKanWL4ysXOljsidMM=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=P3iEtASu8B3KwD7T/vawC+LahINQQmjI7p5cOmR1xrRluxtkkVed/ssxADjvhaMEPHi1F3bjbdJDC2PZODM0x5tdjY4Dg/OJQ065d5zl+p1x5GTa0IsEPFBZ0JM/CB1ejN4wetsBMuOOLfwDpjzHZRbBXPoB3KVBGwu1GL5OpIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-802d5953345so147911539f.3
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2024 10:29:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721323769; x=1721928569;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MI6B+T6B6Yllk4n4lA/+kUOT7tKQRBNZs27asQNbJRk=;
-        b=OudIhhubFQxReDz14nTaUhkWGwkBJrp8WLW3PlGsMUX1/rQZUoS0KJBqDZoZ1jClEY
-         Ru5YUL4M43I3OcAVQqzScVIOMvIU9kAaow/6sNNHtSNluC6Uowu07ex+IveMh3IHZhVw
-         UGRc/fuj43nvyGUc3V6u0mLn6WDmjypS+Y/GDnP8WIwdawf+pryntCpOaEOC4XoFflsh
-         Iga1BVc/x5hgfEvorlHi7ZgPFt0aNN0mZZu9Xqehkb8feqBXDczA6G7Y+Bvn1gOwkOxc
-         N42dldgVdv59nReQhptBduMhQ++OzNnn++E2v2wQAjCDf/PMZpM/q9vbIsSQaTVbkBO+
-         Ue+A==
-X-Forwarded-Encrypted: i=1; AJvYcCX9aDmVkzBLZLT74bRTMiU5EbNL+3RuT64uNEvr0fYtNdrl2Q12Pg+POG/7IPXHlWkJdLdjbSKSbmMGnzwafipZdaF9Ppco9oi2KhhGqtA=
-X-Gm-Message-State: AOJu0Yxz95UDqd9AGT1x3cgi/IJMKtkFaIda7B04E0VpZQuha23zVIOX
-	9j/22QW+x0YFaIy5vEsGAq/NOKx7Bt5eNugEukQpiLD61x1gqYpNhMe/B5TihjRJTARTXwVq0Ep
-	hxHPlPuAJ1apCTyrnMjkpSLjLj1C2s85/njyzBmDZpdPfmt4ch8Sz3W0=
-X-Google-Smtp-Source: AGHT+IERgHkd4uuoZ+3Je2Bx9HBGOS8T1yx931DaNK/jipVmfOTjBPpZ1rECyeaZyHUrMuyZnUOUzjyo8T/ubuuUb+p32FE0mk8b
+	s=arc-20240116; t=1721330463; c=relaxed/simple;
+	bh=aeM+On/YtbFK9tVyic+dFsk3HaI60N9cG5Gvt6fimUM=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=ptoqNIDgiLOIDUzOLlo64Me4qZu8A1kJBXa/ggkiZtT52H3bunquF2mWFH8ajD7/R9wn7jVA78KJZiwLgOAY8tNvJWG8G/i8CceIiO+/pOaZ3dqK+mSM3YT82cQMGr8Q6IzDNXVso8CMefSvSGTfmXyVrp5QxFmgiaB7HRj89VM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=FCzYwxUe; arc=none smtp.client-ip=67.231.154.164
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 71611300077;
+	Thu, 18 Jul 2024 19:20:52 +0000 (UTC)
+Received: from [192.168.100.159] (unknown [50.251.239.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id C007213C2B0;
+	Thu, 18 Jul 2024 12:20:51 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com C007213C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1721330451;
+	bh=aeM+On/YtbFK9tVyic+dFsk3HaI60N9cG5Gvt6fimUM=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=FCzYwxUef0Uf/MkYXbyUs9Smlort5dVvMiYPQFdmFMIxoNdo5tb/bpQyLT3Uk4Mzt
+	 vZ4phxffYycyQm6yH5McWm4FXryz46BGvcVDRl65e9qFDC77RfU0g+luu0IFn6rFWD
+	 2Zv4NUFX/04LBMYNR4Cu9L8t3yvwQc4tRucMi87E=
+Message-ID: <3379abec-9251-ac6b-3760-4f1838f31445@candelatech.com>
+Date: Thu, 18 Jul 2024 12:20:51 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6602:6c04:b0:809:9052:663b with SMTP id
- ca18e2360f4ac-81710040ec1mr5068439f.1.1721323769504; Thu, 18 Jul 2024
- 10:29:29 -0700 (PDT)
-Date: Thu, 18 Jul 2024 10:29:29 -0700
-In-Reply-To: <000000000000fdef8706191a3f7b@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000d3354f061d88ebca@google.com>
-Subject: Re: [syzbot] [wireless?] WARNING in __rate_control_send_low (2)
-From: syzbot <syzbot+8dd98a9e98ee28dc484a@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@google.com, johannes@sipsolutions.net, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 06/18] wifi: iwlwifi: keep the TSO and workaround pages
+ mapped
+Content-Language: en-US
+From: Ben Greear <greearb@candelatech.com>
+To: "Berg, Benjamin" <benjamin.berg@intel.com>,
+ "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>,
+ "johannes@sipsolutions.net" <johannes@sipsolutions.net>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "Berg, Johannes" <johannes.berg@intel.com>
+References: <20240703095906.833028-1-miriam.rachel.korenblit@intel.com>
+ <20240703125541.7ced468fe431.Ibb109867dc680c37fe8d891e9ab9ef64ed5c5d2d@changeid>
+ <a0a7dbf2-b4c5-ddf8-59e9-7e8a067e2f11@candelatech.com>
+ <64fefdf4c689a4fe039917f69b9f6d61aca0db92.camel@intel.com>
+ <4abe931d-f6ec-adb6-9b78-23d4c0c4b1a2@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <4abe931d-f6ec-adb6-9b78-23d4c0c4b1a2@candelatech.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-MDID: 1721330453-KOd6nLzqOQ8B
+X-MDID-O:
+ us5;at1;1721330453;KOd6nLzqOQ8B;<greearb@candelatech.com>;50171c4d2da3acbebc7f7131b075104c
 
-syzbot has found a reproducer for the following issue on:
+On 7/11/24 09:09, Ben Greear wrote:
+> On 7/10/24 23:15, Berg, Benjamin wrote:
+>> Hi Ben,
+>>
+>> yes, you need to apply:
+>>
+>> commit 003eae5a28c6c9d50290a4ac9b955be912f24c9f
+>> Author: Benjamin Berg <benjamin.berg@intel.com>
+>> Date:   Tue Jul 9 14:31:49 2024 +0200
+>>
+>>      wifi: iwlwifi: correctly reference TSO page information
+>>
+>>
+>> I had not fully tested the last revision and the error slipped
+>> unfortunately.
+> 
+> Hello Benjamin,
+> 
+> Sorry I did not notice that patch on the mailing list on my own.  I re-applied
+> the 6/18 and 7/18 patches, and the fix you mention above, and system appears stable.
 
-HEAD commit:    51835949dda3 Merge tag 'net-next-6.11' of git://git.kernel..
-git tree:       net-next
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=17a2f61d980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=d3bdd09ea2371c89
-dashboard link: https://syzkaller.appspot.com/bug?extid=8dd98a9e98ee28dc484a
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14608749980000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=178b9195980000
+Hello,
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/9690deac1819/disk-51835949.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/54d261dbb3f0/vmlinux-51835949.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/e61465cd524f/bzImage-51835949.xz
+We found another regression in our patched 6.10-ish kernel.  Before I apply these 3
+patches:
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+8dd98a9e98ee28dc484a@syzkaller.appspotmail.com
+wifi: iwlwifi: keep the TSO and workaround pages mapped
+wifi: iwlwifi: use already mapped data when TXing an AMSDU
+wifi: iwlwifi: correctly reference TSO page information
 
-------------[ cut here ]------------
-no supported rates for sta (null) (0xffffffff, band 0) in rate_mask 0x0 with flags 0x0
-WARNING: CPU: 0 PID: 956 at net/mac80211/rate.c:385 __rate_control_send_low+0x659/0x890 net/mac80211/rate.c:380
-Modules linked in:
-CPU: 0 PID: 956 Comm: kworker/u8:6 Not tainted 6.10.0-syzkaller-04472-g51835949dda3 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/27/2024
-Workqueue: events_unbound cfg80211_wiphy_work
-RIP: 0010:__rate_control_send_low+0x659/0x890 net/mac80211/rate.c:380
-Code: 8b 14 24 0f 85 de 01 00 00 8b 0a 48 c7 c7 60 91 e2 8c 48 8b 74 24 10 44 89 f2 44 8b 44 24 1c 44 8b 4c 24 0c e8 98 47 5b f6 90 <0f> 0b 90 90 e9 71 fe ff ff 89 d9 80 e1 07 80 c1 03 38 c1 0f 8c db
-RSP: 0018:ffffc9000438f4c0 EFLAGS: 00010246
-RAX: 2943e4de4f1a2b00 RBX: 000000000000000c RCX: ffff8880210a1e00
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: ffff88801f2367a8 R08: ffffffff815878a2 R09: fffffbfff1c39d94
-R10: dffffc0000000000 R11: fffffbfff1c39d94 R12: 0000000000000800
-R13: 000000000000000c R14: 00000000ffffffff R15: dffffc0000000000
-FS:  0000000000000000(0000) GS:ffff8880b9400000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000000000066a010 CR3: 000000007f050000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- rate_control_send_low+0x1a8/0x770 net/mac80211/rate.c:405
- rate_control_get_rate+0x20e/0x5e0 net/mac80211/rate.c:921
- ieee80211_tx_h_rate_ctrl+0xc88/0x1a10 net/mac80211/tx.c:763
- invoke_tx_handlers_late+0xb3/0x18e0 net/mac80211/tx.c:1848
- ieee80211_tx+0x2e3/0x470 net/mac80211/tx.c:1969
- __ieee80211_tx_skb_tid_band+0x4e2/0x610 net/mac80211/tx.c:6101
- ieee80211_tx_skb_tid_band net/mac80211/ieee80211_i.h:2297 [inline]
- ieee80211_handle_roc_started+0x267/0x440 net/mac80211/offchannel.c:248
- _ieee80211_start_next_roc+0x7a1/0xb00 net/mac80211/offchannel.c:381
- cfg80211_wiphy_work+0x2db/0x490 net/wireless/core.c:440
- process_one_work kernel/workqueue.c:3231 [inline]
- process_scheduled_works+0xa2c/0x1830 kernel/workqueue.c:3312
- worker_thread+0x86d/0xd40 kernel/workqueue.c:3390
- kthread+0x2f0/0x390 kernel/kthread.c:389
- ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
+Then I see around 4Gbps TCP upload on my test rig.  After this, it runs very poorly,
+perhaps bouncing up to high speed for a second or two, but mostly averaging 80Mbps
+or so after it runs for a bit.
 
+What are these patches trying to solve, and are you able to see good TCP upload performance
+with these patches applied?
 
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+Thanks,
+Ben
+
 
