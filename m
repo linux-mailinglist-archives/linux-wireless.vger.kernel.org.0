@@ -1,182 +1,180 @@
-Return-Path: <linux-wireless+bounces-10344-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10345-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 940ED934898
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2024 09:07:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B508934A5F
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2024 10:50:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B71651C210D5
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2024 07:07:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D52BA2888A5
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2024 08:50:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F1C41C7F;
-	Thu, 18 Jul 2024 07:07:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TxTn59iO"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258E17EEF5;
+	Thu, 18 Jul 2024 08:46:26 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA208488
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2024 07:07:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 752C97E591
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2024 08:46:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721286467; cv=none; b=syy6oRufQgL7m0dSgx38+54tYo4h8iGQ04m6yd2l3XXXgPo88q59z1zeZregjpZG4lEnIxTv20GHYue30xsrX3HitU7RLtvPRDvcGGqm9JtxbAAZze5IhxL9GoUIBCMYrZvlBBuYICq7VYx2IRoyc98DOaRQTukRbgWYmlX+ENw=
+	t=1721292386; cv=none; b=lhJIolZ5B4nNpN6xYzlIghq/fXJaCU7UOq63phgZ9fQt5OxQ3/rO4ISgIy6pScetsWjXdN9NPBd9NWkCGZVXynuGrSBV68rgOmLf5wcxpjiC1hnp0xf7f07iwaS+23FDkUYGRUYdS0TaHnJcg1trCvCXBWykxHSPYMJMYHVRndg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721286467; c=relaxed/simple;
-	bh=RCeS1dL/bFbXXSZ94eaR+trz+wOufUEu54cfbt9QmE0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JQnar8p1KjxPn4Mo+cpFVGdyACk63JBxu+onsXw/kck6TlpUbA+oi2NAq9r84da/KgCP8d4/3Xuc6R6Hwxy1jv3vkR/GECCIKnIl0+WQ2aaXU0Hm/8QaLRUEkKjxNUdvV2KgIwlm6bQ1eMHQBV0lrAoEm3HMCo9xTEBwvtnvO5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TxTn59iO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 980B5C4AF0D
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2024 07:07:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721286466;
-	bh=RCeS1dL/bFbXXSZ94eaR+trz+wOufUEu54cfbt9QmE0=;
-	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
-	b=TxTn59iOwY4XaRN69XM8ZUOXLiIpPRFSn8MIDqjPV5/eMautxetJ2x+O6r353ZujN
-	 lhkpddukuvJWJGpa+NZjZIdd+Gocj96xpgv0dFgq+Eq+19FQYH1FDvaxikPtg045H6
-	 +xF2Yc2lJBVciywXVcuOX5jPsdYGb33OUjPA7qHBWEMS7d4dlbzPtPkuCquJ0jLiXo
-	 oZWqkh2yUqgySICs2LVQLRXSLNXcggJsnT3BajQytsmFVN2gngeepmnJq/RHB/YnOV
-	 IEM7nOjlSGfZKbW2PdHOacX1HewqreoehdKXT7HpU/dGlgtRLlIz49SSR6yEiGSbyD
-	 04ZaBmC2HZW/A==
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2ee817dac89so4744011fa.1
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2024 00:07:46 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yww+ZGQJXmy5J9hSmo11DFDQ2nKHG69eW5etXutRDCMCBJUD4hN
-	VXSNypsMPRGLD4QB9zmrpmsWQgrLmyMNDtB1M6lrl8jfnG28+e8SSXdX9PNevIteQ5DoUHxSnLB
-	jRgiCq5PTFu6+667Qf1/RxHCh454=
-X-Google-Smtp-Source: AGHT+IELI3GPH8ew30Fd6iEiF9QPuwDB/yL26IDXfGyGMZR0/aM3h9S/XMWBiqRDazydkod6z1oCMh0A8v02Q5AySoo=
-X-Received: by 2002:a2e:22c4:0:b0:2eb:ec25:b759 with SMTP id
- 38308e7fff4ca-2ef0624aad6mr4224211fa.3.1721286464814; Thu, 18 Jul 2024
- 00:07:44 -0700 (PDT)
+	s=arc-20240116; t=1721292386; c=relaxed/simple;
+	bh=wV5ybvQPor2bnJGgnEn0Oh+kFS+xgnjnr0Hxc8kRgHA=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=FGjc0CJl3+FJ2dTuLmZnxZQNQiPMSj4AKGK18u88J0c6REA2OXH9BSEJuBP6DPkBB+ON8/NiKSkDvECvkvTwF46Y2wEztEmSyNoIZvlrL/SCuvFibk9kFMKFezsVMzpQLbN6sxGpqled9LqkO0DupGWkfysmZZqy9Q0TVj7lnes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-7f3b0bc9cf6so103716739f.0
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2024 01:46:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721292383; x=1721897183;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4zPAYIuXO5OCe6dNXtaa4wLM0bA3nIGaPdAwSXVyIi4=;
+        b=E4Rq5KibVatVrRYEABwqvWG6qYI+GDATrsFEcp1DNXK3SvRSoOtCIL9KeERcSy2TMu
+         0uKyy+NPay7KxNtMwG6MaeFAZOh0roM+DPasB1UcuWEV+VyBjI2BUps7ABaWW7bmAlyL
+         evJGWnDxsyh3NVEruJTjtyPmlmr0yYGjE8VXhK8VLbbkxdM4NwQrj9hLXUULQHkSDhRc
+         NhDW6m/MOt3qW2fgHthPYT3HO1OtvGxbH5QhBUF9m4Vkm+lPAvXp4OlokLnQ/RSqTic9
+         m8ckXWq0HNP+b8N6UkLszG8L1hDZ4DPn5gJ3tCx6S8LUjIXBYRIHFGD3UL6TZ/JFRdo9
+         xIhg==
+X-Forwarded-Encrypted: i=1; AJvYcCV2LnNvSS7FPGEUTF5etujmdN4Kg2ohkxqe3hHgAJMwUDR1GNePmdDA7GQU/H2dO23W2QOTd3eWaLD9DmB+1NR3TiWacqCSA4Ck8IIGiJM=
+X-Gm-Message-State: AOJu0YyWdvOhKAZjRPkQ4L0v8rK0kSaiEhcf+gxfdOphHp36owXMxiqx
+	v/wQIRKbJx5d26C2JLppyrB2Crz7ARzA1f0o7/53Ssy9Sm8HsR4Ti5PPvxSfkpnO47ur5e8PZxX
+	bUDvup/tRMF+/b0CmjQ5KqpEV9UqVAV9kns8BQ2C+aMwIyf59/lSLuq8=
+X-Google-Smtp-Source: AGHT+IHfTQRHpCcbQEQMMigbvGYeylVBPR6NAUlcDpcwGlttqEKqQ56bCIDRYDV+m5WxrLtGPQzHuSWwSK9BUAxYbpReV8TK97NX
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240718031718.19403-1-pkshih@gmail.com>
-In-Reply-To: <20240718031718.19403-1-pkshih@gmail.com>
-Reply-To: wens@kernel.org
-From: Chen-Yu Tsai <wens@kernel.org>
-Date: Thu, 18 Jul 2024 15:07:31 +0800
-X-Gmail-Original-Message-ID: <CAGb2v67CxDRfazXSHEpKDhAYULggf1Jqgd+Aj=JEJyGnZ1Ge=A@mail.gmail.com>
-Message-ID: <CAGb2v67CxDRfazXSHEpKDhAYULggf1Jqgd+Aj=JEJyGnZ1Ge=A@mail.gmail.com>
-Subject: Re: [PATCH] wireless-regdb: Add regulatory info for Namibia (NA) for 2023
-To: Ping-Ke Shih <pkshih@gmail.com>
-Cc: linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org
+X-Received: by 2002:a05:6e02:219c:b0:397:3a28:94e8 with SMTP id
+ e9e14a558f8ab-3973a28973fmr25725ab.3.1721292383653; Thu, 18 Jul 2024 01:46:23
+ -0700 (PDT)
+Date: Thu, 18 Jul 2024 01:46:23 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000152438061d819d0b@google.com>
+Subject: [syzbot] [wireless?] divide error in mac80211_hwsim_link_info_changed
+From: syzbot <syzbot+c6f3c081bf956c97e4de@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, kvalo@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 18, 2024 at 11:17=E2=80=AFAM Ping-Ke Shih <pkshih@gmail.com> wr=
-ote:
->
-> From: Ping-Ke Shih <pkshih@realtek.com>
->
-> COMMUNICATIONS REGULATORY AUTHORITY OF NAMIBIA released NOTICE IN TERMS O=
-F
-> THE REGULATIONS REGARDING THE SUBMISSIONS OF INTERCONNECTION AGREEMENTS
-> AND TARIFFS on 3 April 2023 [1].
->
-> * 2400-2483.5 MHz
->   100 mW e.i.r.p.
->
-> * 5150-5350 MHz
->   200 mW mean e.i.r.p.
->   Restricted to indoor use
->   The maximum mean e.i.r.p. density shall be limited to 10 mW/MHz
->   (ETSI [2]: 200mW (23dBm) -6 dBm to be 17 dBm; DFS 5250-5350)
+Hello,
 
-EN 301 893 says for devices without TPC, the limit is lowered 3 dBm only,
-as you mentioned below.
+syzbot found the following issue on:
 
-I previously requested -6 dBm because that country's regulation said
-that "TPC is required".
+HEAD commit:    51835949dda3 Merge tag 'net-next-6.11' of git://git.kernel..
+git tree:       net-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=15f207a5980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=d3bdd09ea2371c89
+dashboard link: https://syzkaller.appspot.com/bug?extid=c6f3c081bf956c97e4de
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
 
-> * 5470-5725 MHz
->   250 mW e.i.r.p.
->   Indoor as well as outdoor use allowed.
->   The maximum mean e.i.r.p. density shall be limited to 50 mW/MHz
->   (ETSI [2]: 250mW (24dBm) -6 dBm to be 18 dBm; DFS)
+Unfortunately, I don't have any reproducer for this issue yet.
 
-Same here, without TPC the limit is lowered by 3 dBm.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/9690deac1819/disk-51835949.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/54d261dbb3f0/vmlinux-51835949.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/e61465cd524f/bzImage-51835949.xz
 
->
-> * 5725-5 875 MHz
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+c6f3c081bf956c97e4de@syzkaller.appspotmail.com
 
-          ^ drop the space
+Oops: divide error: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 0 PID: 11 Comm: kworker/u8:0 Not tainted 6.10.0-syzkaller-04472-g51835949dda3 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/07/2024
+Workqueue: events_unbound cfg80211_wiphy_work
 
->   PTP/PTMP: max mean e.i.r.p =3D 4 W
->   Mesh/AP-MP: max mean e.i.r.p =3D 2 W
->   (ETSI [3]: The FWA device shall have the capability to reduce the
->    operating mean EIRP level to a level not exceeding 24 dBm for
->    ChS =3D 20 MHz and 21 dBm for ChS =3D 10 MHz. 24 dBm is adopted)
+RIP: 0010:mac80211_hwsim_link_info_changed+0x409/0xf00 drivers/net/wireless/virtual/mac80211_hwsim.c:2547
+Code: 00 fc ff df 43 80 7c 3d 00 00 48 8b 44 24 20 74 0f 48 8b 7c 24 20 e8 a6 ff 0d fb 48 8b 44 24 20 48 8b 08 89 ce 48 89 d8 31 d2 <48> f7 f6 29 d1 48 69 f1 e8 03 00 00 4c 89 f7 31 d2 b9 05 00 00 00
+RSP: 0018:ffffc900001077a0 EFLAGS: 00010246
 
-Per ETSI EN 302 502, this range requires DFS.
+RAX: 00061d780b08a1f3 RBX: 00061d780b08a1f3 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000040
+RBP: ffffc90000107890 R08: ffffffff8183f431 R09: 1ffffffff25f9ec5
+R10: dffffc0000000000 R11: ffffffff813597f0 R12: 0000000000000200
+R13: 1ffff1100c778e08 R14: ffff888063bc7048 R15: dffffc0000000000
+FS:  0000000000000000(0000) GS:ffff8880b9400000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000110c34d35b CR3: 000000006a936000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ drv_link_info_changed+0x53d/0x8b0
+ ieee80211_offchannel_return+0x3a4/0x530 net/mac80211/offchannel.c:160
+ __ieee80211_scan_completed+0x77f/0xb60 net/mac80211/scan.c:495
+ ieee80211_scan_work+0x1cc/0x1da0 net/mac80211/scan.c:1162
+ cfg80211_wiphy_work+0x2db/0x490 net/wireless/core.c:440
+ process_one_work kernel/workqueue.c:3231 [inline]
+ process_scheduled_works+0xa2c/0x1830 kernel/workqueue.c:3312
+ worker_thread+0x86d/0xd40 kernel/workqueue.c:3390
+ kthread+0x2f0/0x390 kernel/kthread.c:389
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:mac80211_hwsim_link_info_changed+0x409/0xf00 drivers/net/wireless/virtual/mac80211_hwsim.c:2547
+Code: 00 fc ff df 43 80 7c 3d 00 00 48 8b 44 24 20 74 0f 48 8b 7c 24 20 e8 a6 ff 0d fb 48 8b 44 24 20 48 8b 08 89 ce 48 89 d8 31 d2 <48> f7 f6 29 d1 48 69 f1 e8 03 00 00 4c 89 f7 31 d2 b9 05 00 00 00
+RSP: 0018:ffffc900001077a0 EFLAGS: 00010246
+RAX: 00061d780b08a1f3 RBX: 00061d780b08a1f3 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000040
+RBP: ffffc90000107890 R08: ffffffff8183f431 R09: 1ffffffff25f9ec5
+R10: dffffc0000000000 R11: ffffffff813597f0 R12: 0000000000000200
+R13: 1ffff1100c778e08 R14: ffff888063bc7048 R15: dffffc0000000000
+FS:  0000000000000000(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f37c5e6dfc8 CR3: 000000001f47a000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+----------------
+Code disassembly (best guess), 3 bytes skipped:
+   0:	df 43 80             	filds  -0x80(%rbx)
+   3:	7c 3d                	jl     0x42
+   5:	00 00                	add    %al,(%rax)
+   7:	48 8b 44 24 20       	mov    0x20(%rsp),%rax
+   c:	74 0f                	je     0x1d
+   e:	48 8b 7c 24 20       	mov    0x20(%rsp),%rdi
+  13:	e8 a6 ff 0d fb       	call   0xfb0dffbe
+  18:	48 8b 44 24 20       	mov    0x20(%rsp),%rax
+  1d:	48 8b 08             	mov    (%rax),%rcx
+  20:	89 ce                	mov    %ecx,%esi
+  22:	48 89 d8             	mov    %rbx,%rax
+  25:	31 d2                	xor    %edx,%edx
+* 27:	48 f7 f6             	div    %rsi <-- trapping instruction
+  2a:	29 d1                	sub    %edx,%ecx
+  2c:	48 69 f1 e8 03 00 00 	imul   $0x3e8,%rcx,%rsi
+  33:	4c 89 f7             	mov    %r14,%rdi
+  36:	31 d2                	xor    %edx,%edx
+  38:	b9 05 00 00 00       	mov    $0x5,%ecx
 
-> * 5925-6425 MHz
->   - 23 dBm (200mW) mean e.i.r.p
->     Restricted to indoor use only.
->     Mean e.i.r.p density for in-band emissions =3D 10 dBM/MHz
 
-         Should be dBm (I know it says dBM in the doc)  ^
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
->   - 14 dBm (25) e.i.r.p mW
->     Very Low Power (VLP) indoor outdoor use.
->     Maximum meand e.i.r.p. for inband emissions =3D 1 dBm/MHz
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-                  ^ extra d
->
-> * 57-66 GHz
->   40 dBm (10W) mean e.i.r.p
->   23 dBm/MHz e.i.r.p. density
->   Indoor use only
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-The rest looks good.
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
-ChenYu
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
 
-> The EN 301 893 [2] specifies reduced power limit of 23 and 27 dBm for
-> 5150-5350 MHz and 5470-5725 MHz respectively for devices that don't
-> implement TPC. Also reduced TPC requires being able to reduce TX power by
-> up to 6 dB. The DFS applicable frequency range are 5250-5350 MHz and
-> 5470-5725 MHz.
->
-> [1] https://www.cran.na/yglilidy/2023/04/GG-8060-dated-3-April-2023.pdf
-> [2] EN 301 893 https://www.etsi.org/deliver/etsi_en/301800_301899/301893/=
-02.01.01_60/en_301893v020101p.pdf
-> [3] EN 302 502 https://www.etsi.org/deliver/etsi_en/302500_302599/302502/=
-02.01.01_60/en_302502v020101p.pdf
->
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-> ---
->  db.txt | 11 +++++++++++
->  1 file changed, 11 insertions(+)
->
-> diff --git a/db.txt b/db.txt
-> index 6192dafe9715..2a50afb60c06 100644
-> --- a/db.txt
-> +++ b/db.txt
-> @@ -1355,6 +1355,17 @@ country MY: DFS-FCC
->         (5735 - 5835 @ 80), (1000 mW)
->         (5925 - 6425 @ 320), (200 mW), NO-OUTDOOR
->
-> +# Source:
-> +# https://www.cran.na/yglilidy/2023/04/GG-8060-dated-3-April-2023.pdf
-> +country NA: DFS-ETSI
-> +       (2400 - 2483.5 @ 40), (100 mW)
-> +       (5150 - 5250 @ 80), (17), AUTO-BW, NO-OUTDOOR
-> +       (5250 - 5350 @ 80), (17), DFS, AUTO-BW, NO-OUTDOOR
-> +       (5470 - 5725 @ 160), (18), DFS
-> +       (5725 - 5875 @ 80), (24)
-> +       (5925 - 6425 @ 320), (23), NO-OUTDOOR
-> +       (57000 - 66000 @ 2160), (40), NO-OUTDOOR
-> +
->  country NG: DFS-ETSI
->         (2402 - 2482 @ 40), (20)
->         (5250 - 5330 @ 80), (30), DFS
-> --
-> 2.25.1
->
+If you want to undo deduplication, reply with:
+#syz undup
 
