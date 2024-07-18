@@ -1,126 +1,153 @@
-Return-Path: <linux-wireless+bounces-10351-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10353-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C736934CDB
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2024 13:58:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04559934CE9
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2024 14:07:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF53C1F22852
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2024 11:58:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEA8C1F23DF5
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2024 12:07:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F16B313B780;
-	Thu, 18 Jul 2024 11:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CB8E13B7A3;
+	Thu, 18 Jul 2024 12:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="mWufwUOg"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QLbF0Jug"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5281113AD38
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2024 11:58:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3AC912C473
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2024 12:07:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721303914; cv=none; b=A2Oq0KMRIq5DGxB1ObD6/UBvU5hw8qtMhZeZbzCg1Zelg7hg2b1xDQy25LLWvzFEv03GJUTeJgvR2TV8eMG0GLGU/E71ex2Do/LFpXceiJNwmoNTsq8lkl+OSo4rfxpGmWwWlczTE+cVFAf8pAiv6Tv+qwiP6FSjK7qRF2wxvCE=
+	t=1721304465; cv=none; b=arwsTdHG3D0Yzp16iE2IjvN/UDW8NOLxykgiSmLZxd2cPlixUOE3Slqznc4YyXBjRKE06Lo/YjZG9poyVaAUdVU2oiG6XMISzBSz3K/j7ATpa7ZU5JYh6nq1nzggfh9AWNwkbTUwetIFyHPEiGy9brKxD84XYp6Eol4EzSP6zP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721303914; c=relaxed/simple;
-	bh=FFrNdvWWjN63s42BKAKBM8xaz6ftXrgEKRS6jcbmJL8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q3MoTWt4JGZgfPZ9h/CFh1IpkeSjcV1a3oWMfqiiNhBf8hkoT5IKdMvf9j/5yZXQs2YKrThZZjgmFWhGkOf5uh9KrxS1JqH7Olcw2LThIrEQ2TgIEuhEB2X9aBho7uM5RDX9PvxrwL4a/lGhx7fR/SFwwwp5s+sWBdF2vPwsZ6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=mWufwUOg; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-42122ac2f38so1575215e9.1
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2024 04:58:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1721303909; x=1721908709; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eT3/r8iq9vh5IHb+laarDBOv4FqNaSgzXd7Frm5ubA4=;
-        b=mWufwUOgGu9tdiTbF+wwaBViwZ/n4VkZG88CacADd3i1zoS9DkkZusfrOmHeK/jtli
-         Np/roYCnPe/6gkZWafuTul7lmwqWOct92+bai0+qHrEjtsqT/9krxKTRlxCe2zq2rYvv
-         ASYfWg4jaZMhWrVKMb9zOq5kI/rJQviCHWeK/o9qB7DB2ECMjFjn7SMvqlH8SLgGQGxz
-         CJplTKapwkiyg8sm6kBEKMrj68Iez0l3L60XL0SrUo5m82q3VKstqAULLMEROCSnuErU
-         pc71vIg7gz5X+z4zGwuqAeyodqQUmUyBvspOf974PiNE080Sr97Gn+/iH0N0vhRxCO7z
-         NxzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721303909; x=1721908709;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eT3/r8iq9vh5IHb+laarDBOv4FqNaSgzXd7Frm5ubA4=;
-        b=jK1d1B6TKOag4fVLpCO7S19KgbkifeTIB28LRdORQje0kgcg8wfu4fwShSQBt5QLDv
-         1fU5SW9SobZtsk54r7f6hU0++dWWiWH6Dx9plqqHuSRCaKt6GWhKS7VJyNmciTf2CfDe
-         ufJ6OhmJBa2R61HJNWQkIqRy63wXLBeV45qsDDA4bGCDKfBPdt/jJ0RmNrY0C1nmYQmk
-         80zu/UjpskMLa7dxZ/bA/u88pHLsOLR52X18j90y9nOAehlQ0MCQ7esGwAO4pyFTmvVA
-         fsEMWOYuaodEKEZbtWYS0Az8CVbBjRn48xfoa4Qfh4yQ1V05McPc/xPKI/tIZflarexJ
-         Ps3g==
-X-Forwarded-Encrypted: i=1; AJvYcCX2ifd6v3LS8BBpHpp7uL2Sh4pKvPIhR7xs1Kun7a5k/ZxEwOK2OPl5yCijAIFshAkg7sXAS2Le6o2cyPwpPKy7z6tOz8oKmy+Xr7ZCVpE=
-X-Gm-Message-State: AOJu0Ywft0yXwagHGc0ZJx/HYceUHr03gEbU4qNninW9haa+Q19a61fF
-	N3MrPjLE+56IXDa8SH0eWtFKxQYLMSVtvT8lD1bdIcYretTwJoG5v2rGsujNZwk=
-X-Google-Smtp-Source: AGHT+IHpOFhVVOR50WDCPfi6DXrjDJkGmwaqmpgdsmAo5+FCsTxtL42b6u3Rfj/yngP1z/p7fq9EnA==
-X-Received: by 2002:a05:600c:4751:b0:426:5cc7:82f with SMTP id 5b1f17b1804b1-427d2b527demr5295885e9.13.1721303909431;
-        Thu, 18 Jul 2024 04:58:29 -0700 (PDT)
-Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:58d4:2f84:5fcd:8259])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-368467a34dcsm2258703f8f.109.2024.07.18.04.58.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jul 2024 04:58:29 -0700 (PDT)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-To: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Kalle Valo <kvalo@kernel.org>,
-	Jeff Johnson <jjohnson@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org,
-	ath12k@lists.infradead.org,
-	linux-pci@vger.kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH v2] Kconfig: reduce the amount of power sequencing noise
-Date: Thu, 18 Jul 2024 13:58:27 +0200
-Message-ID: <172130382340.64067.7765392027721457700.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240717142803.53248-1-brgl@bgdev.pl>
-References: <20240717142803.53248-1-brgl@bgdev.pl>
+	s=arc-20240116; t=1721304465; c=relaxed/simple;
+	bh=8yWJ7TnJGEx6Z4FinhbhMVxJpb96T8TkpynnlbZxg60=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PALRJTZhUru8PSfKp6cBFPwAvBsFbxCHMaE4RDLBZQqH/C8x8Mpd3xqZvhgHG0zN1hRTTVGemsfXf14wGHQB4oBiinX32FCDQaFsO9iLieKziblQvVIHJXOjwYAr7INyzJTwnIe6gb2gn6z62Cj4bPednNY9O8OdzH64QzxS4Ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=QLbF0Jug; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46I99X7D021476;
+	Thu, 18 Jul 2024 12:07:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=pndvzF7nO5Elqztx3Sqvyv
+	7X2PpO1NWK3xJVjqiSHAo=; b=QLbF0Jug6iFYNL1uAjDUqyCRCq8L2PE2WrtYTc
+	v+2bZFQj/3hSaJ8KIG5irnPK7CEwq5TG5YYDm7ZQSv/USsrMOgur+xxCf0e9V1y9
+	7wyGeSW6rFKrlUXERQRwmQs66YHi5ig+WlkYbLNAPK14zO6uHQtlg6LmwFBnRz4/
+	T9bqo7pkQP3sOFzOmLRP6/rUqOCnTVVgm08YlKxl7ytVfnLwjsotHcxgBZZTbVYN
+	EvYmwi6gICWQo9EOFK4q02oSI3S1YEmER0Lb7Q9GsyhfGKBb8+HaG1r7QR9zm9hB
+	n2/9e1kJBTDKlAvEdL1RqJ1/D+DNeWS3Z7JjtR1eWIu/WdWA==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40dwfpnd40-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Jul 2024 12:07:37 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA03.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46IC7avl011939
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 18 Jul 2024 12:07:36 GMT
+Received: from lingbok-Birman-PHX.qca.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Thu, 18 Jul 2024 05:07:35 -0700
+From: Lingbo Kong <quic_lingbok@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, <quic_lingbok@quicinc.com>
+Subject: [PATCH v5 0/3] wifi: ath12k: report station mode stats
+Date: Thu, 18 Jul 2024 20:07:22 +0800
+Message-ID: <20240718120725.130265-1-quic_lingbok@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: Kz-Wyan6oh2xj7FuTl5vvC8sSa9rKWth
+X-Proofpoint-GUID: Kz-Wyan6oh2xj7FuTl5vvC8sSa9rKWth
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-18_07,2024-07-18_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ lowpriorityscore=0 suspectscore=0 clxscore=1015 bulkscore=0 mlxscore=0
+ adultscore=0 phishscore=0 spamscore=0 malwarescore=0 mlxlogscore=929
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2407180081
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Currently, the transmit rate, the receive rate and signal strength of "iw
+dev xxx station dump" always show an invalid value. 
+
+This is because ath12k has no logic to handle this relevant information.
+
+To solve this issue, ath12k parses the information passed by the firmware
+and passes it to mac80211.
+
+After that, "iw dev xxx station dump" show the correct value.
+Such as:
+
+Station 00:03:7f:12:03:03 (on wlo1)
+        inactive time:  600 ms
+        rx bytes:       4642228
+        rx packets:     23796
+        tx bytes:       933967
+        tx packets:     8761
+        tx retries:     66
+        tx failed:      0
+        beacon loss:    0
+        beacon rx:      8925
+        rx drop misc:   191
+        signal:         -20 dBm
+        beacon signal avg:      -18 dBm
+        tx bitrate:     1441.1 MBit/s 80MHz EHT-MCS 13 EHT-NSS 2 EHT-GI 0
+        tx duration:    0 us
+        rx bitrate:     1801.4 MBit/s 80MHz EHT-MCS 11 EHT-NSS 3 EHT-GI 0
+        rx duration:    0 us
+
+v5:
+1.use ieee80211_find_sta_by_ifaddr() to avoid using base_lock
+
+v4:
+1.rebase ath-pending-202404181533
+2.change ATH12K_EHT_MCS_MAX from 13 to 15
+
+v3:
+1.change wmi_vdev_stats_event to wmi_vdev_stats_params
+
+v2:
+1.change copyright
+2.change name according Naming conventions for structures
+
+Lingbo Kong (3):
+  wifi: ath12k: report station mode transmit rate
+  wifi: ath12k: report station mode receive rate for IEEE 802.11be
+  wifi: ath12k: report station mode signal strength
+
+ drivers/net/wireless/ath/ath12k/core.h    |   5 +
+ drivers/net/wireless/ath/ath12k/dp_rx.c   |  20 ++-
+ drivers/net/wireless/ath/ath12k/dp_rx.h   |   3 +
+ drivers/net/wireless/ath/ath12k/dp_tx.c   | 117 +++++++++++++++++-
+ drivers/net/wireless/ath/ath12k/hal_rx.h  |   3 +
+ drivers/net/wireless/ath/ath12k/hal_tx.h  |   7 +-
+ drivers/net/wireless/ath/ath12k/mac.c     | 141 +++++++++++++++++++++-
+ drivers/net/wireless/ath/ath12k/mac.h     |   4 +-
+ drivers/net/wireless/ath/ath12k/rx_desc.h |   3 +
+ drivers/net/wireless/ath/ath12k/wmi.c     | 130 ++++++++++++++++++++
+ drivers/net/wireless/ath/ath12k/wmi.h     |  49 +++++++-
+ 11 files changed, 472 insertions(+), 10 deletions(-)
 
 
-On Wed, 17 Jul 2024 16:28:03 +0200, Bartosz Golaszewski wrote:
-> Kconfig will ask the user twice about power sequencing: once for the QCom
-> WCN power sequencing driver and then again for the PCI power control
-> driver using it.
-> 
-> Let's automate the selection of PCI_PWRCTL by introducing a new hidden
-> symbol: HAVE_PWRCTL which should be selected by all platforms that have
-> the need to include PCI power control code (right now: only ARCH_QCOM).
-> 
-> [...]
-
-I'm picking this up into my pwrseq/for-current branch. I'll be off next week
-so I want to give the autobuilders the chance to play with this and I'll send
-a PR to Linus with another pwrseq fix I have queued tomorrow evening.
-
-Let me know if there are any objections.
-
-[1/1] Kconfig: reduce the amount of power sequencing noise
-      commit: ed70aaac7c359540d3d8332827fa60b6a45e15f2
-
-Best regards,
+base-commit: db1ce56e6e1d395dd42a3cd6332a871d9be59c45
 -- 
-Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+2.34.1
+
 
