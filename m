@@ -1,183 +1,135 @@
-Return-Path: <linux-wireless+bounces-10360-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10361-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E892E935120
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2024 19:12:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FF2E935143
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2024 19:29:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 575BBB209C6
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2024 17:11:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51E561C2179D
+	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2024 17:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D8A71442FF;
-	Thu, 18 Jul 2024 17:11:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="qr2ir7aB"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F52C14535F;
+	Thu, 18 Jul 2024 17:29:32 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward206a.mail.yandex.net (forward206a.mail.yandex.net [178.154.239.87])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D03213DBA2
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2024 17:11:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CCE14535C
+	for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2024 17:29:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721322714; cv=none; b=VfIdvO8eLN5eZIqbP+LW9mzh3TBJxrpM2bWeWWB8tq6NQjxJ53HBlwN1W0R/86BroweGubu+HYacMpMHT2DlxtxgmbM4xiunY93J1VKdtKqUpI1xcUPDTsYMV5PP3/qjpl1fsvkxlDU9GloCeQm/pc0rh2yqL4J279FMLRVJgaI=
+	t=1721323772; cv=none; b=I4GIqHLDoTqs+iAtahiWMQRdTgXCwL19CY3fm71ZNa58AbPsXT9K9RCOfkPfq/2gPcsvX79P79p3Zck8xKZbDyLLN9R33UsvC5dch3raFF3vuQSB5s+J1uHzM83HMT1x+jZ4Ht09sq0VSxKq6+jaaAm0f+H/qktoUwVfVbba4X4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721322714; c=relaxed/simple;
-	bh=3zfbbS37MUFj474xYhH7+D46b0Ivdu1rXer2nFpzq00=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=Kwq59qi4nssyq1pbZVoscYrm+Jxs3rCHinXU698Al/PG9YECnk4YI0L4SnI+t8M31ANkIIrGVzBieX10N9uSohsRSpIXmj3XzwyKtjOtQID78NIXcgjJ5PokmZpOHUVIFWemMuTA6tfWtC6bA2i34Tt+OIf5t6ZtK0K94je+z1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=qr2ir7aB; arc=none smtp.client-ip=178.154.239.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from forward102a.mail.yandex.net (forward102a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d102])
-	by forward206a.mail.yandex.net (Yandex) with ESMTPS id E90B8672C8
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2024 20:03:54 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-81.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-81.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:63d4:0:640:3833:0])
-	by forward102a.mail.yandex.net (Yandex) with ESMTPS id 7806460A99;
-	Thu, 18 Jul 2024 20:03:46 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-81.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id h3NNKh1o6Cg0-jKlntQHo;
-	Thu, 18 Jul 2024 20:03:45 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1721322225; bh=ik1leWECDtVRpfb12IUUdKQ5I/5erigduxzW7uacuMY=;
-	h=Subject:To:From:Cc:Date:Message-ID;
-	b=qr2ir7aBIF/IZLl4YkEgAFggHCrwMBETQTXHRFWao2WbaH4gGMqHBo+ejEhiZ8zfz
-	 IWWzBO8G43k8iai1uQNOlzXBfTOoXj0GkdVOBfaoCdU4kkWPuHZMdxpb+I77qp390c
-	 xT9bK0WW+178L+XpzNs9Er47Cr7nh5RmoUnXuuBQ=
-Authentication-Results: mail-nwsmtp-smtp-production-main-81.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-Message-ID: <1ff58acb-4171-46ff-8a33-821600a8d8e4@yandex.ru>
-Date: Thu, 18 Jul 2024 20:03:43 +0300
+	s=arc-20240116; t=1721323772; c=relaxed/simple;
+	bh=Me+zMtshmruILAJekqfPLJtdDLKanWL4ysXOljsidMM=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=P3iEtASu8B3KwD7T/vawC+LahINQQmjI7p5cOmR1xrRluxtkkVed/ssxADjvhaMEPHi1F3bjbdJDC2PZODM0x5tdjY4Dg/OJQ065d5zl+p1x5GTa0IsEPFBZ0JM/CB1ejN4wetsBMuOOLfwDpjzHZRbBXPoB3KVBGwu1GL5OpIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-802d5953345so147911539f.3
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2024 10:29:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721323769; x=1721928569;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MI6B+T6B6Yllk4n4lA/+kUOT7tKQRBNZs27asQNbJRk=;
+        b=OudIhhubFQxReDz14nTaUhkWGwkBJrp8WLW3PlGsMUX1/rQZUoS0KJBqDZoZ1jClEY
+         Ru5YUL4M43I3OcAVQqzScVIOMvIU9kAaow/6sNNHtSNluC6Uowu07ex+IveMh3IHZhVw
+         UGRc/fuj43nvyGUc3V6u0mLn6WDmjypS+Y/GDnP8WIwdawf+pryntCpOaEOC4XoFflsh
+         Iga1BVc/x5hgfEvorlHi7ZgPFt0aNN0mZZu9Xqehkb8feqBXDczA6G7Y+Bvn1gOwkOxc
+         N42dldgVdv59nReQhptBduMhQ++OzNnn++E2v2wQAjCDf/PMZpM/q9vbIsSQaTVbkBO+
+         Ue+A==
+X-Forwarded-Encrypted: i=1; AJvYcCX9aDmVkzBLZLT74bRTMiU5EbNL+3RuT64uNEvr0fYtNdrl2Q12Pg+POG/7IPXHlWkJdLdjbSKSbmMGnzwafipZdaF9Ppco9oi2KhhGqtA=
+X-Gm-Message-State: AOJu0Yxz95UDqd9AGT1x3cgi/IJMKtkFaIda7B04E0VpZQuha23zVIOX
+	9j/22QW+x0YFaIy5vEsGAq/NOKx7Bt5eNugEukQpiLD61x1gqYpNhMe/B5TihjRJTARTXwVq0Ep
+	hxHPlPuAJ1apCTyrnMjkpSLjLj1C2s85/njyzBmDZpdPfmt4ch8Sz3W0=
+X-Google-Smtp-Source: AGHT+IERgHkd4uuoZ+3Je2Bx9HBGOS8T1yx931DaNK/jipVmfOTjBPpZ1rECyeaZyHUrMuyZnUOUzjyo8T/ubuuUb+p32FE0mk8b
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Johannes Berg <johannes.berg@intel.com>,
- Benjamin Berg <benjamin.berg@intel.com>
-Cc: linux-wireless@vger.kernel.org, lvc-project@linuxtesting.org
-From: Dmitry Antipov <dmantipov@yandex.ru>
-Subject: Managing debugfs entries and
- https://syzkaller.appspot.com/bug?extid=d5dc2801166df6d34774
-Autocrypt: addr=dmantipov@yandex.ru; keydata=
- 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
- A/UwwXBRuvydGV0=
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-Received: by 2002:a05:6602:6c04:b0:809:9052:663b with SMTP id
+ ca18e2360f4ac-81710040ec1mr5068439f.1.1721323769504; Thu, 18 Jul 2024
+ 10:29:29 -0700 (PDT)
+Date: Thu, 18 Jul 2024 10:29:29 -0700
+In-Reply-To: <000000000000fdef8706191a3f7b@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000d3354f061d88ebca@google.com>
+Subject: Re: [syzbot] [wireless?] WARNING in __rate_control_send_low (2)
+From: syzbot <syzbot+8dd98a9e98ee28dc484a@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, johannes@sipsolutions.net, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-The following quirk looks like a (briefly tested with CONFIG_KMEMLEAK)
-fix for https://syzkaller.appspot.com/bug?extid=d5dc2801166df6d34774:
+syzbot has found a reproducer for the following issue on:
 
-diff --git a/net/mac80211/debugfs_sta.c b/net/mac80211/debugfs_sta.c
-index 1e9389c49a57..8224257e5d93 100644
---- a/net/mac80211/debugfs_sta.c
-+++ b/net/mac80211/debugfs_sta.c
-@@ -1284,7 +1284,9 @@ void ieee80211_sta_debugfs_add(struct sta_info *sta)
+HEAD commit:    51835949dda3 Merge tag 'net-next-6.11' of git://git.kernel..
+git tree:       net-next
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=17a2f61d980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=d3bdd09ea2371c89
+dashboard link: https://syzkaller.appspot.com/bug?extid=8dd98a9e98ee28dc484a
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14608749980000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=178b9195980000
 
-  void ieee80211_sta_debugfs_remove(struct sta_info *sta)
-  {
--       debugfs_remove_recursive(sta->debugfs_dir);
-+       if (!sta->debugfs_shared)
-+               debugfs_remove_recursive(sta->debugfs_dir);
-+       sta->debugfs_shared = false;
-         sta->debugfs_dir = NULL;
-  }
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/9690deac1819/disk-51835949.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/54d261dbb3f0/vmlinux-51835949.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/e61465cd524f/bzImage-51835949.xz
 
-@@ -1319,6 +1321,7 @@ void ieee80211_link_sta_debugfs_add(struct link_sta_info *link_sta)
-                         return;
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+8dd98a9e98ee28dc484a@syzkaller.appspotmail.com
 
-                 link_sta->debugfs_dir = link_sta->sta->debugfs_dir;
-+               link_sta->sta->debugfs_shared = true;
-         }
+------------[ cut here ]------------
+no supported rates for sta (null) (0xffffffff, band 0) in rate_mask 0x0 with flags 0x0
+WARNING: CPU: 0 PID: 956 at net/mac80211/rate.c:385 __rate_control_send_low+0x659/0x890 net/mac80211/rate.c:380
+Modules linked in:
+CPU: 0 PID: 956 Comm: kworker/u8:6 Not tainted 6.10.0-syzkaller-04472-g51835949dda3 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/27/2024
+Workqueue: events_unbound cfg80211_wiphy_work
+RIP: 0010:__rate_control_send_low+0x659/0x890 net/mac80211/rate.c:380
+Code: 8b 14 24 0f 85 de 01 00 00 8b 0a 48 c7 c7 60 91 e2 8c 48 8b 74 24 10 44 89 f2 44 8b 44 24 1c 44 8b 4c 24 0c e8 98 47 5b f6 90 <0f> 0b 90 90 e9 71 fe ff ff 89 d9 80 e1 07 80 c1 03 38 c1 0f 8c db
+RSP: 0018:ffffc9000438f4c0 EFLAGS: 00010246
+RAX: 2943e4de4f1a2b00 RBX: 000000000000000c RCX: ffff8880210a1e00
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffff88801f2367a8 R08: ffffffff815878a2 R09: fffffbfff1c39d94
+R10: dffffc0000000000 R11: fffffbfff1c39d94 R12: 0000000000000800
+R13: 000000000000000c R14: 00000000ffffffff R15: dffffc0000000000
+FS:  0000000000000000(0000) GS:ffff8880b9400000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000000066a010 CR3: 000000007f050000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ rate_control_send_low+0x1a8/0x770 net/mac80211/rate.c:405
+ rate_control_get_rate+0x20e/0x5e0 net/mac80211/rate.c:921
+ ieee80211_tx_h_rate_ctrl+0xc88/0x1a10 net/mac80211/tx.c:763
+ invoke_tx_handlers_late+0xb3/0x18e0 net/mac80211/tx.c:1848
+ ieee80211_tx+0x2e3/0x470 net/mac80211/tx.c:1969
+ __ieee80211_tx_skb_tid_band+0x4e2/0x610 net/mac80211/tx.c:6101
+ ieee80211_tx_skb_tid_band net/mac80211/ieee80211_i.h:2297 [inline]
+ ieee80211_handle_roc_started+0x267/0x440 net/mac80211/offchannel.c:248
+ _ieee80211_start_next_roc+0x7a1/0xb00 net/mac80211/offchannel.c:381
+ cfg80211_wiphy_work+0x2db/0x490 net/wireless/core.c:440
+ process_one_work kernel/workqueue.c:3231 [inline]
+ process_scheduled_works+0xa2c/0x1830 kernel/workqueue.c:3312
+ worker_thread+0x86d/0xd40 kernel/workqueue.c:3390
+ kthread+0x2f0/0x390 kernel/kthread.c:389
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
 
-         DEBUGFS_ADD(ht_capa);
-diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
-index 9195d5a2de0a..d76ba36ca794 100644
---- a/net/mac80211/sta_info.h
-+++ b/net/mac80211/sta_info.h
-@@ -708,6 +708,7 @@ struct sta_info {
 
-  #ifdef CONFIG_MAC80211_DEBUGFS
-         struct dentry *debugfs_dir;
-+       bool debugfs_shared;
-  #endif
-
-         struct codel_params cparams;
-
-So what about managing debugfs entries wih krefs? E.g.:
-
-diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
-index 9195d5a2de0a..1f4561533530 100644
---- a/net/mac80211/sta_info.h
-+++ b/net/mac80211/sta_info.h
-@@ -466,6 +466,15 @@ struct ieee80211_fragment_cache {
-  	unsigned int next;
-  };
-
-+#ifdef CONFIG_MAC80211_DEBUGFS
-+
-+struct sta_debugfs_entry {
-+	struct dentry *debugfs_dir;
-+	struct kref kref;
-+};
-+
-+#endif /* CONFIG_MAC80211_DEBUGFS */
-+
-  /*
-   * The bandwidth threshold below which the per-station CoDel parameters will be
-   * scaled to be more lenient (to prevent starvation of slow stations). This
-@@ -563,7 +572,7 @@ struct link_sta_info {
-  	enum ieee80211_sta_rx_bandwidth cur_max_bandwidth;
-
-  #ifdef CONFIG_MAC80211_DEBUGFS
--	struct dentry *debugfs_dir;
-+	struct sta_debugfs_entry *debugfs_entry;
-  #endif
-
-  	struct ieee80211_link_sta *pub;
-@@ -707,7 +716,7 @@ struct sta_info {
-  	struct sta_ampdu_mlme ampdu_mlme;
-
-  #ifdef CONFIG_MAC80211_DEBUGFS
--	struct dentry *debugfs_dir;
-+	struct sta_debugfs_entry *debugfs_entry;
-  #endif
-
-  	struct codel_params cparams;
-
-Dmitry
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
