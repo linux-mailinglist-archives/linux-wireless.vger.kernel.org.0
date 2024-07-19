@@ -1,50 +1,63 @@
-Return-Path: <linux-wireless+bounces-10392-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10393-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D84259378D7
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2024 15:59:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F3419378FD
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2024 16:10:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12BFA1C21683
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2024 13:59:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13A151F22CD7
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2024 14:10:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF36D143881;
-	Fri, 19 Jul 2024 13:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B7681442FB;
+	Fri, 19 Jul 2024 14:10:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="bxwN9Sod"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D526135A79;
-	Fri, 19 Jul 2024 13:59:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.181.97.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B855313C9A9;
+	Fri, 19 Jul 2024 14:10:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721397579; cv=none; b=OAG4R46VUqVdM9qp5Bl8j5T1sddB+Q3aR5rz3aagd3xsGCfs68IXNYOwZ2DeLQkqGr+4b/aoiptrwB/uNzihbOVd65lUDHCR54TaCY+zpV/6o8wfv1crx9XhsNDia5HGSPu3mok1z9IISHVkVPDCOtVwLCzxLGr5jcxlg6o4D5I=
+	t=1721398244; cv=none; b=t1993Xvi50MPWZJDNEXuM/oa22agdUfIb/W9cq0HWgI7L2rXksiQFRr7ruBz3gDYEHxTBF4OcsyqFubFkJq1Ym3fJ4n23HfAFlhbsQ2S5RJVOfpywZDQpPo8dFoWR3d4k1f2IdJfgZMbgnooIBvv19cyYW6ghdSrwOdFqCc+EDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721397579; c=relaxed/simple;
-	bh=CPRQ2AzofVjzVpyIMUJ9syVL0qe638Z9cjHJX8hhcXE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
-	 In-Reply-To:Content-Type; b=L1tZ/w95eF3ukylIg9o0k2veamJbnEK+GobGr8EYr1CHCkcIayxjkcR15ezrVU5D4zGefvRHJ0ziolUvZklJG6lnPahn6490QDr6nSaqxxY+Eh3FdSS137VtaHvDMNUVCHbDVzxiLJOA90n8kiSyyl5X0jQTujYAhwZ5MRD6ipM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=I-love.SAKURA.ne.jp; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp; arc=none smtp.client-ip=202.181.97.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=I-love.SAKURA.ne.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp
-Received: from fsav114.sakura.ne.jp (fsav114.sakura.ne.jp [27.133.134.241])
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 46JDxKl6097974;
-	Fri, 19 Jul 2024 22:59:20 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from www262.sakura.ne.jp (202.181.97.72)
- by fsav114.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav114.sakura.ne.jp);
- Fri, 19 Jul 2024 22:59:20 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav114.sakura.ne.jp)
-Received: from [192.168.1.6] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
-	(authenticated bits=0)
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 46JDxKjw097970
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-	Fri, 19 Jul 2024 22:59:20 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Message-ID: <15930e85-3b82-4119-b1ef-d899ac03fa3d@I-love.SAKURA.ne.jp>
-Date: Fri, 19 Jul 2024 22:59:20 +0900
+	s=arc-20240116; t=1721398244; c=relaxed/simple;
+	bh=Ks0ZhbQi1yrk7EuHKFw5vN6rbvbZt1/k4HeR6o3+a8E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=iA/RcDaTwoTiA7/cOt/NPvw96MKxiZPTt1KMyPmB4TDzFGuFjNn6uG0JLThX9tBomFWcfiyYjAMG9K6wQSSc7kOqWj4TwEsAom1EZQLMYizgQieTlVvvKuM13yLOr/uwA06I82UB57ZFf8ZPfXBLQH2OFMUH01T12PVFy07Nhjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=bxwN9Sod; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46JBGqTM010390;
+	Fri, 19 Jul 2024 14:10:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	dQH2jNQy0JqFB9jEU0yvzPfpjLt2So36InmB746BOG0=; b=bxwN9SodpQOaW8YR
+	OP0xYkf9rZxZ3BfaToDc0EElO3KrEOOuw0kiEYFpr2cIySN7yalKWxpHdueW8vhj
+	oZyeWGbDmXnD1Z2kcQMfpiIbWmMOmRTNKL+oxYsms6mW9XUy4h/DFLDJOc+XuC5M
+	CJQatyT7NJmIRk4dUGmHe1LkBgReSNea3+mqNcUSnFmwG0sm5aa2Gbfw4C+CpCN1
+	CxAUqS1evyaVV9Etwau8oUgzrLNi1/ue/uIX93s7JX0oW+DoARjBZSTbGXnmeVIn
+	9nd+8PRTw0jAjMlKn9tlJjmZ81ZfS5tg0GOaYV0ZkN+q9LbnVnq96Jf7qyfOPjAa
+	i1kLQw==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40fe459p8c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 19 Jul 2024 14:10:40 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46JEAdkl014122
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 19 Jul 2024 14:10:39 GMT
+Received: from [10.48.247.102] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 19 Jul
+ 2024 07:10:36 -0700
+Message-ID: <c26af1cb-747a-462d-8e13-af948bbb8171@quicinc.com>
+Date: Fri, 19 Jul 2024 07:10:36 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -52,58 +65,70 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [syzbot] [wireless?] INFO: task hung in
- rfkill_global_led_trigger_worker (3)
-To: Krzysztof Kozlowski <krzk@kernel.org>,
-        Johannes Berg <johannes@sipsolutions.net>
-References: <000000000000114385061d997d9c@google.com>
+Subject: Re: [PATCH] wifi: ath12k: use 128 bytes aligned iova in transmit path
+ for WCN7850
 Content-Language: en-US
-Cc: syzbot+50499e163bfa302dfe7b@syzkaller.appspotmail.com,
-        syzkaller-bugs <syzkaller-bugs@googlegroups.com>,
-        Network Development <netdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-In-Reply-To: <000000000000114385061d997d9c@google.com>
-Content-Type: text/plain; charset=UTF-8
+To: Baochen Qiang <quic_bqiang@quicinc.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, <kernel@quicinc.com>,
+        <netdev@vger.kernel.org>
+References: <20240715023814.20242-1-quic_bqiang@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240715023814.20242-1-quic_bqiang@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: T58X8atz_8Ey9GE3Oj7W9Tiif5DrwHLz
+X-Proofpoint-GUID: T58X8atz_8Ey9GE3Oj7W9Tiif5DrwHLz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-19_06,2024-07-18_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 clxscore=1015
+ mlxlogscore=999 impostorscore=0 priorityscore=1501 malwarescore=0
+ adultscore=0 mlxscore=0 lowpriorityscore=0 spamscore=0 phishscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2407190108
 
-This is a deadlock which lockdep cannot detect.
-Please check which lock should be taken first.
+On 7/14/2024 7:38 PM, Baochen Qiang wrote:
+> In transmit path, it is likely that the iova is not aligned to PCIe TLP
+> max payload size, which is 128 for WCN7850. Normally in such cases hardware
+> is expected to split the packet into several parts in a manner such that
+> they, other than the first one, have aligned iova. However due to hardware
+> limitations, WCN7850 does not behave like that properly with some specific
+> unaligned iova in transmit path. This easily results in target hang in a
+> KPI transmit test: packet send/receive failure, WMI command send timeout
+> etc. Also fatal error seen in PCIe level:
+> 
+> 	...
+> 	Capabilities: ...
+> 		...
+> 		DevSta: ... FatalErr+ ...
+> 		...
+> 	...
+> 
+> Work around this by manually moving/reallocating payload buffer such that
+> we can map it to a 128 bytes aligned iova. The moving requires sufficient
+> head room or tail room in skb: for the former we can do ourselves a favor
+> by asking some extra bytes when registering with mac80211, while for the
+> latter we can do nothing.
+> 
+> Moving/reallocating buffer consumes additional CPU cycles, but the good news
+> is that an aligned iova increases PCIe efficiency. In my tests on some X86
+> platforms the KPI results are almost consistent.
+> 
+> Since this is seen only with WCN7850, add a new hardware parameter to
+> differentiate from others.
 
-2 locks held by syz.1.2508/23558:
- #0: ffff88805ff4f100 (&dev->mutex){....}-{3:3}, at: device_lock include/linux/device.h:1009 [inline]
- #0: ffff88805ff4f100 (&dev->mutex){....}-{3:3}, at: nfc_unregister_device+0x63/0x2a0 net/nfc/core.c:1165
- #1: ffffffff8f8e1b88 (rfkill_global_mutex){+.+.}-{3:3}, at: rfkill_unregister+0xd0/0x230 net/rfkill/core.c:1149
-2 locks held by syz.4.2510/23544:
- #0: ffffffff8f8e1b88 (rfkill_global_mutex){+.+.}-{3:3}, at: rfkill_fop_write+0x1a9/0x790 net/rfkill/core.c:1297
- #1: ffff88805ff4f100 (&dev->mutex){....}-{3:3}, at: device_lock include/linux/device.h:1009 [inline]
- #1: ffff88805ff4f100 (&dev->mutex){....}-{3:3}, at: nfc_dev_down net/nfc/core.c:143 [inline]
- #1: ffff88805ff4f100 (&dev->mutex){....}-{3:3}, at: nfc_rfkill_set_block+0x50/0x310 net/nfc/core.c:179
+I asked for expert opinion on this patch and received the following response.
+Baochen, can you take a look at this suggestion?
 
-On 2024/07/19 22:15, syzbot wrote:
-> Hello,
-> 
-> syzbot found the following issue on:
-> 
-> HEAD commit:    b1bc554e009e Merge tag 'media/v6.11-1' of git://git.kernel..
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=14478ba5980000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=2899dbd4b1c2b65c
-> dashboard link: https://syzkaller.appspot.com/bug?extid=50499e163bfa302dfe7b
-> compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-> 
-> Unfortunately, I don't have any reproducer for this issue yet.
-> 
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/c44f53981874/disk-b1bc554e.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/04c685d98327/vmlinux-b1bc554e.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/3627aa754881/bzImage-b1bc554e.xz
-> 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+50499e163bfa302dfe7b-Pl5Pbv+GP7P466ipTTIvnc23WoclnBCfAL8bYrjMMd8@public.gmane.org
-> 
-
+> Aligning headers is sometimes done, but it appears the driver
+> doesn't support scatter gather? I think the author may want to advertise
+> scatter and linearize manually in the driver, to a correct offset.
+> Because now core is linearizing the skb in validate_xmit_skb()
+> and then the driver moves it a second time..
 
 
 
