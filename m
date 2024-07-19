@@ -1,189 +1,197 @@
-Return-Path: <linux-wireless+bounces-10388-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10389-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D44B93771E
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2024 13:27:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57E209377C2
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2024 14:30:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E98D1C20CA0
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2024 11:27:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B7092813C2
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2024 12:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40FB824A0;
-	Fri, 19 Jul 2024 11:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E0FF84A50;
+	Fri, 19 Jul 2024 12:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b="bAH24AYz"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="aNtfOCu2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81011E502
-	for <linux-wireless@vger.kernel.org>; Fri, 19 Jul 2024 11:27:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00C6823B8
+	for <linux-wireless@vger.kernel.org>; Fri, 19 Jul 2024 12:30:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721388426; cv=none; b=pWSHRiFdoGlZUHaCW/WTTJI1N6zCpyJC95eIXtA5tXYBwpcDooF8GvQ3ijJcG4JEBQoJQnthbx0baO9Nbujbmoa6Xmra9wKEI+b6Ept6hrR4UaALD2+1RHTuWQqq+k1aP4YFlSwNu+jvV7YszWZ/wewGsk2T3aeJDNKHOaT9p1Q=
+	t=1721392252; cv=none; b=ZfOsV4CqTU48BMzyzXYXHNQvq2BROF5itMkae1BEtINhPw+EixADqP345cW4PIiE9wgZI3HTwVU9I+qgBV3kMKTWlrAk8GPfHP9ZMVK8lrcebNkE2xdxMR6SrYxj+LgIokhsDMonlxpLya+1S0cw6zSjDj0N40ulNmvXMFW/qY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721388426; c=relaxed/simple;
-	bh=NAHuGRol/HPY39JMl6yxX8+3Hrt0DX7GgLBbkuqi//s=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CpgfvDRRO7N4SCWoIA1w0o48U+x6j089Ekp1Qg6u87UwX9RtQJnIRIajI7+y4Q5OEFTzG6vlBVQQP+oVgAXikSj+ObNhya3CJ2RKYrbYLzgGt2hOy9AF2XNENHobEQnM+MvxTaNBOOm5BFEWdrPGOqjieeJYBUFyZ+fR2x57dWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b=bAH24AYz; arc=none smtp.client-ip=212.227.15.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1721388392; x=1721993192; i=spasswolf@web.de;
-	bh=9FDPWtZa5BiBTQ3GHY8kUVw1DOEUjjH3tOcbPfWdgNw=;
-	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
-	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=bAH24AYzAcxd+AwDKTLwlHBcSse5HmcY/uZFgMzaGN/zvNYKZtqi4oqFoeUEm2X/
-	 PgdSCwjAQuEKdo+PnDKyvslDFxwo5cr6n8xVGcnlaz3Fj3gkXyUdn0/ulQs3y/3Mk
-	 H+PyAj+XaVBpAN84RQyrRyw77mdUxumpBitRHf0lKe6LHzt0uIsQNw9V4J7bgVLmh
-	 1hOAd4P2yX11gvHaXIAbg759RSk/ScJv8sQa3zlsrAopFZuTzCLcfP4MA+r9Ees65
-	 nK0TuifYFDm40v7mq/jefTknb4tYJISyO9srMXOB2k1r/LGMO1nTBAc6AAZXGOUnO
-	 xuXb9AuNKmdospTDKw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.0.101] ([84.119.92.193]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MBjIG-1scURo05fg-0070pW; Fri, 19
- Jul 2024 13:26:32 +0200
-Message-ID: <7a4db04f7088a9d818037321412f7ac968d965cd.camel@web.de>
-Subject: Re: [PATCH] wifi: mt76: mt7921: fix null pointer access in
- mt792x_mac_link_bss_remove
-From: Bert Karwatzki <spasswolf@web.de>
-To: sean.wang@kernel.org, nbd@nbd.name, lorenzo.bianconi@redhat.com
-Cc: sean.wang@mediatek.com, deren.wu@mediatek.com,
- mingyen.hsieh@mediatek.com,  linux-wireless@vger.kernel.org,
- linux-mediatek@lists.infradead.org,  spasswolf@web.de
-Date: Fri, 19 Jul 2024 13:26:30 +0200
-In-Reply-To: <20240718234633.12737-1-sean.wang@kernel.org>
-References: <20240718234633.12737-1-sean.wang@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.52.3-1 
+	s=arc-20240116; t=1721392252; c=relaxed/simple;
+	bh=nu/RE8fnpGyxBBU7FeJ27Nn6eoQVDJlaj1fu/dARe+I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tqd1eiiqBYPKHzgwLw2fUp0pk1Lmrxx0skgm3VWaUe4LiyJTvt4DFjkL3kKpVmQKKEzNmksUbeUbc5bH5DlLWa9TQ0jMwpqZHWC39wRS+wU4V0VFR22eVWGPT/2fOUR1lX6jeFxhIfxORMHLhxpK8cIB5xwRxNLYhAbSXdm6Hjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=aNtfOCu2; arc=none smtp.client-ip=67.231.154.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 7326B9C0087;
+	Fri, 19 Jul 2024 12:30:40 +0000 (UTC)
+Received: from [192.168.1.23] (unknown [98.97.37.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id 1389D13C2B0;
+	Fri, 19 Jul 2024 05:30:37 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 1389D13C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1721392237;
+	bh=nu/RE8fnpGyxBBU7FeJ27Nn6eoQVDJlaj1fu/dARe+I=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=aNtfOCu2vZaG1HPvdqJl9uTvf2R5nnGf5g2v+N1+PnJkDIIqZIfbR4B1XdJql1azg
+	 CoT8q0Bzi+/mlDz2Rt94KdtofkhGNGX8wOlO38kHT6ByCFwDAfDq4He7qXl9AXQZ0q
+	 lYa9uZksdzHiRNs1x47EmPoBYmg+bXeXoftS2/bQ=
+Message-ID: <c0ca8993-ee46-4b5e-b500-7eeec0752e3e@candelatech.com>
+Date: Fri, 19 Jul 2024 05:30:36 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ALX7alao3XcqIRK5g3lr4ihIgNWuUOosbfoXbMSwe9tamIny5My
- NrgORDm1xdVmF+4uUXA9N2OjXCqTM0NaHwtpomJTAKZAk09490KkyyRX6aSOEaTxRpxpspU
- whqQR4JKT401bVfhW0/VKYzFGwT1vV+6SjxVqK5MIEzRxjyH6A/zU90hoktJTMXXj2of0ZX
- sdaD2lZ/fJOksr6h41b+w==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:HkluRDPJt8U=;xx4jJ3QJkve//VYTaJa1uiL5lo2
- C1U6hcpR4aEQ/pJnbh9hYdFWgKIMJ5JpIibdTLPY4e/l226zfzRifzKidsH0IxsHpzM6Gg6LK
- DG4T7V8HoghaYWk3Pf3FBs/dRxk8he5iwIQ9mLOawbwm9uOaYIbWnNP6sHJT65MhrSwY7SkWe
- HneRfglHpRZ/FvIqWzlfaVYjA5fl8M4VqzJfoOdGVJ7KudzwTQv/hf4+Ht4mpTjeMmPt0msos
- VsuAG7S8PXJnNNbnQwWlnZMq+cN8P2LHGKOwotUibBJoyUfnmvOjOulOF+DrrlW4FGwg4U7/g
- DIt0JHAoaogLah9YHlI9KaosYqgF8h+FFYGxbQ5GtoEjeVFlEoAQDi2uJYYmj9ff3q2zBHgnn
- yBl/zPxzMfuFxDBIueOwfguL37o6ss+KvL00dqhmMORuykoTLDc1WBRfYPhu7F5Lao1LSmZGV
- VLKTzhU6QL4eesVhtKQogAA3krdE/dTlptvyamMCwLuBOBeRaFESSTdkCamyqligvAm++HzF3
- kgSC52fPJ8Qfe9vQR/eTXP95Fp7N86d7RNtwW5TLGIei7Q5IsOdpVEE25OyyxvdKvz1Irh/ue
- mzw0jpQenY0/Jh5F/SGZJGl0fYAzjNHbQmjZ+KRgfM/TSKgBnGUc2OvopZXHKKcPFemEol/x2
- +dbkVEeIZwShtjEejfEGLaJl1kLMk5dNW/u6tq1ppy4MJvw7Ci7O8RlAC9dYr4ui/OqaQs8hy
- 3yC0PRlEcdcWuF3V+SiFGkb3jbz7LLIq3jkcK6hfBDsoD9HlxIEdZz1Esy1J6IXZltRZznU2r
- uvM3sz+wfg5028JGbSI3zryw==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 06/18] wifi: iwlwifi: keep the TSO and workaround pages
+ mapped
+To: "Berg, Benjamin" <benjamin.berg@intel.com>,
+ "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>,
+ "johannes@sipsolutions.net" <johannes@sipsolutions.net>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "Berg, Johannes" <johannes.berg@intel.com>
+References: <20240703095906.833028-1-miriam.rachel.korenblit@intel.com>
+ <20240703125541.7ced468fe431.Ibb109867dc680c37fe8d891e9ab9ef64ed5c5d2d@changeid>
+ <a0a7dbf2-b4c5-ddf8-59e9-7e8a067e2f11@candelatech.com>
+ <64fefdf4c689a4fe039917f69b9f6d61aca0db92.camel@intel.com>
+ <4abe931d-f6ec-adb6-9b78-23d4c0c4b1a2@candelatech.com>
+ <3379abec-9251-ac6b-3760-4f1838f31445@candelatech.com>
+ <141e44a9ddb6e5a1a9981c4eacad8c3a5e8f5b52.camel@intel.com>
+Content-Language: en-MW
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <141e44a9ddb6e5a1a9981c4eacad8c3a5e8f5b52.camel@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-MDID: 1721392241-CrhRWHPuoOBe
+X-MDID-O:
+ us5;at1;1721392241;CrhRWHPuoOBe;<greearb@candelatech.com>;50171c4d2da3acbebc7f7131b075104c
 
-Am Donnerstag, dem 18.07.2024 um 16:46 -0700 schrieb sean.wang@kernel.org:
-> From: Sean Wang <sean.wang@mediatek.com>
->
-> Fix null pointer access in mt792x_mac_link_bss_remove.
->
-> To prevent null pointer access, we should assign the vif to bss_conf in
-> mt7921_add_interface. This ensures that subsequent operations on the BSS
-> can properly reference the correct vif.
->
-> [  T843] Call Trace:
-> [  T843]  <TASK>
-> [  T843]  ? __die+0x1e/0x60
-> [  T843]  ? page_fault_oops+0x157/0x450
-> [  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [  T843]  ? search_bpf_extables+0x5a/0x80
-> [  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [  T843]  ? exc_page_fault+0x2bb/0x670
-> [  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [  T843]  ? lock_timer_base+0x71/0x90
-> [  T843]  ? asm_exc_page_fault+0x26/0x30
-> [  T843]  ? mt792x_mac_link_bss_remove+0x24/0x110 [mt792x_lib]
-> [  T843]  ? mt792x_remove_interface+0x6e/0x90 [mt792x_lib]
-> [  T843]  ? ieee80211_do_stop+0x507/0x7e0 [mac80211]
-> [  T843]  ? ieee80211_stop+0x53/0x190 [mac80211]
-> [  T843]  ? __dev_close_many+0xa5/0x120
-> [  T843]  ? __dev_change_flags+0x18c/0x220
-> [  T843]  ? dev_change_flags+0x21/0x60
-> [  T843]  ? do_setlink+0xdf9/0x11d0
-> [  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [  T843]  ? security_sock_rcv_skb+0x33/0x50
-> [  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [  T843]  ? __nla_validate_parse+0x61/0xd10
-> [  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [  T843]  ? genl_done+0x53/0x80
-> [  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [  T843]  ? netlink_dump+0x357/0x410
-> [  T843]  ? __rtnl_newlink+0x5d6/0x980
-> [  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [  T843]  ? genl_family_rcv_msg_dumpit+0xdf/0xf0
-> [  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [  T843]  ? __kmalloc_cache_noprof+0x44/0x210
-> [  T843]  ? rtnl_newlink+0x42/0x60
-> [  T843]  ? rtnetlink_rcv_msg+0x152/0x3f0
-> [  T843]  ? mptcp_pm_nl_dump_addr+0x180/0x180
-> [  T843]  ? rtnl_calcit.isra.0+0x130/0x130
-> [  T843]  ? netlink_rcv_skb+0x56/0x100
-> [  T843]  ? netlink_unicast+0x199/0x290
-> [  T843]  ? netlink_sendmsg+0x21d/0x490
-> [  T843]  ? __sock_sendmsg+0x78/0x80
-> [  T843]  ? ____sys_sendmsg+0x23f/0x2e0
-> [  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [  T843]  ? copy_msghdr_from_user+0x68/0xa0
-> [  T843]  ? ___sys_sendmsg+0x81/0xd0
-> [  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [  T843]  ? crng_fast_key_erasure+0xbc/0xf0
-> [  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [  T843]  ? get_random_bytes_user+0x126/0x140
-> [  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [  T843]  ? __fdget+0xb1/0xe0
-> [  T843]  ? __sys_sendmsg+0x56/0xa0
-> [  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [  T843]  ? do_syscall_64+0x5f/0x170
-> [  T843]  ? entry_SYSCALL_64_after_hwframe+0x55/0x5d
-> [  T843]  </TASK>
->
-> Fixes: 1541d63c5fe2 ("wifi: mt76: mt7925: add mt7925_mac_link_bss_remove=
- to remove per-link BSS")
-> Reported-by: Bert Karwatzki <spasswolf@web.de>
-> Closes: https://lore.kernel.org/linux-wireless/2fee61f8c903d02a900ca3188=
-c3742c7effd102e.camel@web.de/#b
-> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7921/main.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/=
-net/wireless/mediatek/mt76/mt7921/main.c
-> index 2e6268cb06c0..1bab93d049df 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> @@ -303,6 +303,7 @@ mt7921_add_interface(struct ieee80211_hw *hw, struct=
- ieee80211_vif *vif)
->
->  	mvif->bss_conf.mt76.omac_idx =3D mvif->bss_conf.mt76.idx;
->  	mvif->phy =3D phy;
-> +	mvif->bss_conf.vif =3D mvif;
->  	mvif->bss_conf.mt76.band_idx =3D 0;
->  	mvif->bss_conf.mt76.wmm_idx =3D mvif->bss_conf.mt76.idx % MT76_CONNAC_=
-MAX_WMM_SETS;
->
-I've been testing this since you suggested it on 11.7.2024 and it works fi=
-ne.
+On 7/19/24 00:22, Berg, Benjamin wrote:
+> Hi,
+> 
+> have you applied all patches? It'll be slightly slower until you apply
+> the last patch in the series (and break completely unless you have the
+> bugfix obviously).
 
-Tested-by: Bert Karwatzki <spasswolf@web.de>
+I applied those three in my email below, on top of everything else that seemed
+pertintent to iwlwifi/mac80211, but always possible I mis-applied something
+or missed another patch.
 
-Bert Karwatzki
+I think I'll just leave those out and test again when i rebase on 6.11.
+If you do start getting other reports of slowdowns, however...I think these
+will be the suspect patches.
+
+Thanks,
+Ben
+
+> 
+> A slowdown to 80MBit/s seems a bit like we are getting packet loss and
+> the AMSDU is simply not send out. I suppose, that could happen if some
+> of the DMA mapping is failing, but I really do not have a good idea
+> right now.
+> 
+> I do think that these patches have gone through quite some verification
+> and were working well for us.
+> 
+> 
+> As for the value of the patchset, the thing to keep in mind is that we
+> send out large SKBs that are spanning multiple pages. Before the patch,
+> we would do mapping as below, where h1, … and m1, … are each mappings
+> that only span a small part of a page (h_n is the header for the nth
+> packet while m_n is the corresponding message data):
+> 
+> TSO page: |- h1 -|- h2 -|- h3 -|- h4 -| …
+> SKB page 1: |- m1     -|- m2      -|
+> SKB page 2: |- m2 -|-  m3  -|- m4 -|
+> SKB page 3: |- m4 -|- …
+> 
+> With the patches applied, each of the pages will be mapped in a single
+> chunk. This brings down the number of DMA mappings and also avoids
+> partial mappings which can very be particularly expensive depending on
+> the IOMMU configuration.
+> 
+> Only the last patch in the series removes the old mappings (obviously
+> you also need the later bugfix commit). So you might see a slight
+> slowdown if the patch "wifi: iwlwifi: use already mapped data when
+> TXing an AMSDU" is not applied.
+> 
+> But not a slowdown to 80MBit/s …
+> 
+> Benjamin
+> 
+> On Thu, 2024-07-18 at 12:20 -0700, Ben Greear wrote:
+>> On 7/11/24 09:09, Ben Greear wrote:
+>>> On 7/10/24 23:15, Berg, Benjamin wrote:
+>>>> Hi Ben,
+>>>>
+>>>> yes, you need to apply:
+>>>>
+>>>> commit 003eae5a28c6c9d50290a4ac9b955be912f24c9f
+>>>> Author: Benjamin Berg <benjamin.berg@intel.com>
+>>>> Date:   Tue Jul 9 14:31:49 2024 +0200
+>>>>
+>>>>       wifi: iwlwifi: correctly reference TSO page information
+>>>>
+>>>>
+>>>> I had not fully tested the last revision and the error slipped
+>>>> unfortunately.
+>>>
+>>> Hello Benjamin,
+>>>
+>>> Sorry I did not notice that patch on the mailing list on my own.  I
+>>> re-applied
+>>> the 6/18 and 7/18 patches, and the fix you mention above, and
+>>> system appears stable.
+>>
+>> Hello,
+>>
+>> We found another regression in our patched 6.10-ish kernel.  Before I
+>> apply these 3
+>> patches:
+>>
+>> wifi: iwlwifi: keep the TSO and workaround pages mapped
+>> wifi: iwlwifi: use already mapped data when TXing an AMSDU
+>> wifi: iwlwifi: correctly reference TSO page information
+>>
+>> Then I see around 4Gbps TCP upload on my test rig.  After this, it
+>> runs very poorly,
+>> perhaps bouncing up to high speed for a second or two, but mostly
+>> averaging 80Mbps
+>> or so after it runs for a bit.
+>>
+>> What are these patches trying to solve, and are you able to see good
+>> TCP upload performance
+>> with these patches applied?
+>>
+>> Thanks,
+>> Ben
+>>
+> 
+> Intel Deutschland GmbH
+> Registered Address: Am Campeon 10, 85579 Neubiberg, Germany
+> Tel: +49 89 99 8853-0, www.intel.de
+> Managing Directors: Sean Fennelly, Jeffrey Schneiderman, Tiffany Doon Silva
+> Chairperson of the Supervisory Board: Nicole Lau
+> Registered Office: Munich
+> Commercial Register: Amtsgericht Muenchen HRB 186928
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
 
