@@ -1,122 +1,107 @@
-Return-Path: <linux-wireless+bounces-10367-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10368-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83F68937188
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2024 02:34:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F069372A9
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2024 05:07:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38677281B9F
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2024 00:34:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 643B71F21A14
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2024 03:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF64210F1;
-	Fri, 19 Jul 2024 00:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8015029CE6;
+	Fri, 19 Jul 2024 03:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="rkf1Kh5Z"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cvm2+am5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3CE210E6
-	for <linux-wireless@vger.kernel.org>; Fri, 19 Jul 2024 00:34:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB81286A8
+	for <linux-wireless@vger.kernel.org>; Fri, 19 Jul 2024 03:07:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721349268; cv=none; b=Kt+71TJDqbZFpC5H3lEUKM3efdzZmVKPEYIbpuBPZo3GdIMYAHOjPSNOZS1pHYLDyA7rebj3W+GdkPUKRIQH/6r7uzgWrCWhUcsMa0IEYpolJ6Sz8meCNdc+hAjbWdNdTaAzF8C1yyaK8leaQTfrprsEEkifxotkAdgQu5xscME=
+	t=1721358447; cv=none; b=WdKCP4gXmuazOTdpVpmNraffH4AY1lQXIjCrdAJIWICGTBdOEGZLBu0naxvdtD/yqBiLp9saYZHP7ky0VEG7ezBa3VDO/7495weTOMYQvsdlq2aslxXdpoyTfyK8edkx2175k2neh3SPepXiWus2Qf+bUqsZi+oBZ0PalwrVSTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721349268; c=relaxed/simple;
-	bh=2Mz6zdLp7YXFZT/3ZLEyoSfJlnNJEgmZHqgHZLW+cRE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=AyIutRY3Yh6XOyN1vnsmYaMQzwnnc6uepUfyLfIgz1QvX0IGPB2UBvMNzS1TTvZ6UlW8QMsmrWde45F9uyiSRnYoclX5gvri4lxmwrnJ20oOjd6O/UE8IOK/txof9hF86TLn4xj9wJR20x6ud/mRl1EbKA1F96xbwp8fYFFvC7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=rkf1Kh5Z; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 46J0YDAy84045834, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1721349253; bh=2Mz6zdLp7YXFZT/3ZLEyoSfJlnNJEgmZHqgHZLW+cRE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=rkf1Kh5Z9NCZMMTt1V+xTmKhQHa0PTV+qq2pPwHVZiAony9CzkRLVgbm2OJRbjX1H
-	 prtuWr8z164h4nRVKncP5cwtGpqRKzs9YBlo8t6J+0IGKuqVXxRIMpRROat8dfQVh3
-	 FER3raya14Jl/xJuzsIHN1YqLdOXyU6Cn5ps5M3f7AVNi7KbW2xqUiOtL4wcZWp1lk
-	 YKG2ezDGkFluRZ+Y5hGChKCe4fi0sv5DTwxG/O+zUBgwI5X24JBXbG5v4E66e3LuUs
-	 xKMUKjitsCJagsBFMiHjfV1+6znC3a4fzKcjoRzUv0+ArOlzai7VI6tzbHmHAsto6e
-	 s5OxS3tcploRw==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 46J0YDAy84045834
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 19 Jul 2024 08:34:13 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 19 Jul 2024 08:34:14 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 19 Jul 2024 08:34:13 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
- RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
- 15.01.2507.035; Fri, 19 Jul 2024 08:34:13 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: "Jesuiter, Henry" <henry.jesuiter@softing.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC: "Le Suire, Michael" <Michael.Suire@Softing.com>,
-        "Sperling, Tobias"
-	<Tobias.Sperling@Softing.com>
-Subject: RE: Performance of Reassociation 
-Thread-Topic: Performance of Reassociation 
-Thread-Index: AQHa2EeueyCxNvdWakyDpuL0/ysvurH8K4CQgAAv1i+AANfq8A==
-Date: Fri, 19 Jul 2024 00:34:13 +0000
-Message-ID: <d28a43de3a2c43a4882696b6fc87747f@realtek.com>
-References: <BE1P281MB22104B386701ADEEE1E741269EA32@BE1P281MB2210.DEUP281.PROD.OUTLOOK.COM>
- <ef8f3c47b3264aedad776ff248fa635d@realtek.com>
- <BE1P281MB22102E859A8EFF4475843FB89EAC2@BE1P281MB2210.DEUP281.PROD.OUTLOOK.COM>
-In-Reply-To: <BE1P281MB22102E859A8EFF4475843FB89EAC2@BE1P281MB2210.DEUP281.PROD.OUTLOOK.COM>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1721358447; c=relaxed/simple;
+	bh=ZBgbVY1dMaONu78QBCJn6K8doA+gMjSbNABg8mq0epQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hx/4j5rsdezoFTQU53KX+BweHgwu15gfgEhW/mvGZb+OwmxEX1VWWxXjmfb4Z40LpNEtJ5PGtHLUicZb8Wzq+sdekM3/F9pYw3WUzFgKggw7CMZ65+WMKR+Fmvhv/Hq23NR6oppU1zWEsRLYmzCFkrTXosTGUBR/oxW+zRsvD9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cvm2+am5; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a77e6dd7f72so146526666b.3
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2024 20:07:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1721358443; x=1721963243; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X2aBN439CgxyqsWC/FKZX/cRexlSuHG40IikgmWyCH4=;
+        b=cvm2+am5snrnIHMDOH5ecALUnkTL+FbwsbB0OmGW90QsoJ1qoGNibu64et7F85HmKm
+         U1+MClMcY/643HC+3aTiw2IwGzp/7+YOZo/OdSa1oHtJiFsvW0gewKVCcwJv+wqOCyFI
+         0siSlvN5mh2WQjpdy2ronCl/PZm7ZYhgXGHwb4EpYoVeZoSpmWRYZknnz1HptD7yjYym
+         9Q7uAyYnqqQtMx5yxghT+oY63l3mo/MJx5VUVAnmofdBA8bM5MgdJIOmX12rF+bXjoCP
+         Ij0chdSdsAP4vnny+/FoawVDhoBthc3T36Nf3eAri+DqnMm/EQ/7yT70EY4+32rnRuCz
+         ry/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721358443; x=1721963243;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=X2aBN439CgxyqsWC/FKZX/cRexlSuHG40IikgmWyCH4=;
+        b=epRNnYSDcqqfilbdNY6vO5xbFMQAcG0Q+tue9yiqbZlcfbSZBDrzQTPLRlCCmVZBHK
+         Jb3z0Qjo3ePT3biHwuAnYl92Q8yu66k8bz4wMZH3csWum+XqUxXVG+FkzGqHNT7YvGAC
+         tbc/BO69or44ZETn4l/xFsyvcB3kybmwll2Lbt//DWjtMIjmGZRqi5KGaKLg0TC9I3rn
+         J9tUSwSZ/IC+j3zF+oX5/XTcGztTIC80JThT+jrAnl1Xu09Jn5W1pHx8NM0a2puPn1pP
+         k7BKBDuzDIMTDzvsui5JHvBr5XZZoiy6GW6Qnn5MlW+QH+pnoT6OD3ACI+t9FHgFjPEQ
+         9wDA==
+X-Gm-Message-State: AOJu0YxZKNrdnvzyQg7Y65RL4rXOKRDAX6L04LA3/BgjadcF55Om0ksC
+	eSHJf6KI0jqdKTjN2VX94ALr67jM94K3q+Z6/RHulYGItdS7/08UwTqdQYVUQs1f9T98kSli0MV
+	7fsrKSDuhaym9nLf6GAi08p4uj1U=
+X-Google-Smtp-Source: AGHT+IEJE61cAf3fLd8YLQ+hDm+7GTnb8etkVZpYIxtEOSpYiChPVVa/B3u7xEdF2li1npL4Zce3tmzzq8pJ0ASkkxk=
+X-Received: by 2002:a17:906:b798:b0:a6f:61c7:dea7 with SMTP id
+ a640c23a62f3a-a7a01158645mr422794566b.18.1721358442926; Thu, 18 Jul 2024
+ 20:07:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20240705060613.28909-1-pkshih@gmail.com> <20240705060613.28909-5-pkshih@gmail.com>
+ <CAGb2v64mLd+jhwL2EXZ=zTJZ2VuMXTa==NvAqib=xQrNg-ufkQ@mail.gmail.com>
+In-Reply-To: <CAGb2v64mLd+jhwL2EXZ=zTJZ2VuMXTa==NvAqib=xQrNg-ufkQ@mail.gmail.com>
+From: Ping-Ke Shih <pkshih@gmail.com>
+Date: Fri, 19 Jul 2024 11:07:12 +0800
+Message-ID: <CAHrRpunYADgM3NcrSC38GPzqGwUBePA84zLMM5u91kz81ZsU5w@mail.gmail.com>
+Subject: Re: [PATCH 5/5] wireless-regdb: Update regulatory info for Togo (TG)
+ for 2022
+To: wens@kernel.org
+Cc: linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-SmVzdWl0ZXIsIEhlbnJ5IDxoZW5yeS5qZXN1aXRlckBzb2Z0aW5nLmNvbT4gd3JvdGU6DQo+IFBp
-bmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPsKgd3JvdGU6DQo+ID4gRG9lcyBpdCBtZWFu
-IDQ1MG1zIG9uIGtlcm5lbCA1LjE1LCBidXQgOTAwbXMgb24ga2VybmVsIDUuNCBmb3IgUlRMODgy
-MmNlPw0KPiBbSmVzdWl0ZXIsIEhlbnJ5XQ0KPiBBY3R1YWxseSBpdCdzIHRoZSBmb2xsb3dpbmc6
-DQo+ICAgKiBhYm91dCA0NTBtcyBmb3IgS2VybmVsIDYuOCAoVWJ1bnR1IDI0LjA0KSwgaTUtNzMw
-MFUNCj4gICAqIGFib3V0IDYwMG1zIGZvciBLZXJuZWwgNi42IChCdWlsZHJvb3QpLCBDT01pLk1Y
-IDYNCj4gICAqIGFib3V0IDYwMG1zIGZvciBLZXJuZWwgNS4xNSAoVWJ1bnR1IDIwLjA0KSwgaTUt
-NzMwMFUNCj4gICAqIGFib3V0IDcwMG1zIC0gOTAwbXMgZm9yIEtlcm5lbCA1LjQgKFlvY3RvIDMu
-My42KSwgQ09NaS5NWCA2DQoNCk5vIGlkZWEgd2h5IHRoZXkgYXJlIGRpZmZlcmVudCBzaW5jZSBS
-VEw4ODIyQ0UgZG9lc24ndCBoYXZlIG11Y2ggY2hhbmdlIGZvciBhIGxvbmcgdGltZS4NCg0KPiA+
-IEkgbWVhc3VyZSBydHdfY2hpcF9wcmVwYXJlX3R4KCkgd2hpY2ggaXMgdG8gZG8gcGh5IGNhbGli
-cmF0aW9uLiBUaGUgY29zdCBpcyBhYm91dCAxOTBtcyBvbiAyR0h6IGFuZCA1R0h6DQo+IGNoYW5u
-ZWxzLg0KPiBbSmVzdWl0ZXIsIEhlbnJ5XQ0KPiBUaGlzIGlzIHRoZSBzYW1lIGZ1bmN0aW9uIHRo
-YXQgaXMgY2FsbGVkIG9uIHJvYW1pbmcsIGFuZCB3ZSBhcmUgZXhwZXJpZW5jaW5nIHNpbWlsYXIg
-cmVzdWx0cyBoZXJlLiBUaGFua3MNCj4gZm9yIHRoZSBlZmZvcnQuDQo+IA0KPiA+IFRoZSBjb3N0
-cyBJIHBvc3RlZCBhcmUgaGFyZHdhcmUtcmVsYXRlZC4gSWdub3JlIElFRUU4MDIxMV9DT05GX0lE
-TEUgdG8gYXZvaWQgY2FsbGluZw0KPiBydHdfZW50ZXJfaXBzKCkvcnR3X2xlYXZlX2lwcygpLCBz
-YXZpbmcgMjAwbXMgdG8gcG93ZXIgb24gaGFyZHdhcmUuDQo+IFtKZXN1aXRlciwgSGVucnldDQo+
-IFdlIHRob3VnaHQgYWJvdXQgdGhhdCB0b28sIGJ1dCB3ZSBzZWUgbm8gZWFzeSB3YXkgdG8gYXZv
-aWQgdGhlIHBvd2VyIGRvd24gYmVmb3JlaGFuZCwgc2luY2Ugd2UgYXJlIG5vdCBhYmxlDQo+IHRv
-IGRpc3Rpbmd1aXNoIGEgcG93ZXIgZG93biBkdWUgdG8gcm9hbWluZyBmcm9tIGEgcG93ZXIgZG93
-biBkdWUgdG8gb3RoZXIgcmVhc29ucy4gU28gLSBzaW5jZSB0aGUgY2hpcCBpcw0KPiBwb3dlcmVk
-IGRvd24gLSB3ZSBjYW4ndCAganVzdCBza2lwIHRoZSBwb3dlciB1cCBoZXJlLiBBbnkgaWRlYXMg
-YXJlIHdlbGNvbWUg8J+YiS4NCg0KTWF5YmUgeW91IGNhbiBzdGFydCBhIGRlbHllZF93b3JrIHdp
-dGggMSBzZWNvbmQgZGVsYXkgd2hlbiBlbnRlcmluZyB0bw0KcnR3X2VudGVyX2lwcygpIGJ1dCBu
-b3QgYWN0dWFsbHkgZW50ZXIuIEZvciBub3JtYWwgdXNlIGNhc2UsIGFmdGVyIDENCnNlY29uZCwg
-Y2FsbCBydHdfZW50ZXJfaXBzKCkgdG8gcG93ZXIgZG93bi4gRm9yIHJvYW1pbmcgY2FzZSwgaXQg
-bXVzdA0KYXNrIHRvIHBvd2VyIG9uIGJ5IHJ0d19sZWF2ZV9pcHMoKSBpbW1lZGlhdGVseSwgc28g
-Y2FuY2VsIHRoZSBkZWxheWVkX3dvcmsNCmFuZCBubyBhY3R1YWxseSBwb3dlciBvZmYvb24gaW4g
-dGhpcyBjYXNlLg0KDQoxIHNlY29uZCBpcyBhbiBleGFtcGxlLCBtYXliZSBuZWVkIG1vcmUgdGlt
-ZS4gRmluZSB0dW5lIHRoZSB2YWx1ZSBieQ0KeW91ciBleHBlcmltZW50IHJlc3VsdC4NCg0KPiAN
-Cj4gT25lIG1vcmUgcXVlc3Rpb24uIElzIHRoZXJlIGEgd2F5IHRvIHVzZSA4MDIuMTFyIChmYXN0
-IHJvYW1pbmcpIHdpdGggdGhlIG1haW5saW5lIGRyaXZlcj8NCg0KQXMgSSBrbm93LCA4MDIuMTFy
-IGlzIG1haW5seSBpbXBsZW1lbnRlZCBpbiB3cGFfc3VwcGxpY2FudC4gSSBkb24ndCByZW1lbWJl
-ciANCmRyaXZlcnMgbmVlZCB0byBpbXBsZW1lbnQgc3BlY2lhbCBoYW5kbGVzIGZvciB0aGF0LiAN
-Cg0KDQo=
+Chen-Yu Tsai <wens@kernel.org> wrote:
+>
+> On Fri, Jul 5, 2024 at 2:06=E2=80=AFPM Ping-Ke Shih <pkshih@gmail.com> wr=
+ote:
+> >
+> > 5925-6425 MHz
+> >   - LPI
+> >     * EIRP 23 dBm (200 mW)
+> >     * EIRP density 10 dBm/MHz
+>
+> The document you linked to suggests it is actually -10 dBm/MHz,
+> which kind of makes it useless as the total e.i.r.p for a 20 MHz
+> channel would be 2 mW or 3 dBm...
+>
+> And the PSD for LP being lower than VLP seems like an error.
+
+Since it looks like an error, I keep the power limit as I made, but
+add some description by v2.
+
+Thanks for the review.
+Ping-Ke
 
