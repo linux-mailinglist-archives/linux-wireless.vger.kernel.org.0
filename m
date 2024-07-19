@@ -1,103 +1,154 @@
-Return-Path: <linux-wireless+bounces-10398-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10399-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF2C1937D76
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2024 23:26:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8468937E08
+	for <lists+linux-wireless@lfdr.de>; Sat, 20 Jul 2024 01:34:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B37A2812F7
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2024 21:26:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6A7A1C20A87
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2024 23:34:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 152D0145B34;
-	Fri, 19 Jul 2024 21:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A51865EE8D;
+	Fri, 19 Jul 2024 23:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="k8r22iWO"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="RTP9NDlR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-io1-f50.google.com (mail-io1-f50.google.com [209.85.166.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E812BB05
-	for <linux-wireless@vger.kernel.org>; Fri, 19 Jul 2024 21:26:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB66A35
+	for <linux-wireless@vger.kernel.org>; Fri, 19 Jul 2024 23:34:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721424368; cv=none; b=IkfRU7vAjyIsB66BGnY9ud64JltmOpp1/YvR7+RfshLmFJ/7rS8mO+ImEU5Tdw7o6AG07Iy5LmiFKEYDENufegWXcuTRsFsk2mJ4qFpmjyhMudbqMBnZvFm+nuGkCh6anQtJCN0GIP2zkIUhoYr6RxUfzKNTabOp07JUemJGUyI=
+	t=1721432054; cv=none; b=pvFa+l9E2kINRSOEXh2D0cW9Tn0x0kLd+rqp5fSZ8bOeKkQqYXZBFkV9FBje3qnAsB0bRbfYlfXJMuLsWctFRNFwBWVusnQkzR+FuT93AsuDa3FqRb9LMbnIGe48Fr4sP+IIrVLWm4lbR6CHstRCgtgXhaUIU2OSphg0Z3lVQTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721424368; c=relaxed/simple;
-	bh=rIUIudV3W4EelKHjVdbAz3TupXvxJb8HU8cRrgggIwc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RHm3DVs2a2DWf7QKOy6rKoWUPTZr/DtAX9YR4m8Kmkl0IajvhDrGYp2iFN4mX06A/LTtnmMJuIVDBMPryZ1xJouF2dw4o73dfcRk61guzFXQAJAbVjYSAT97C0IniaoHkXdJl73lMkeG0ovpRGeF/p++OSsQu5vGPoxPqLba17g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=k8r22iWO; arc=none smtp.client-ip=209.85.166.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-io1-f50.google.com with SMTP id ca18e2360f4ac-80557928673so96879239f.2
-        for <linux-wireless@vger.kernel.org>; Fri, 19 Jul 2024 14:26:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1721424364; x=1722029164; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rIUIudV3W4EelKHjVdbAz3TupXvxJb8HU8cRrgggIwc=;
-        b=k8r22iWOuyWIbuqQ9N2a38UfiAtjMk4NggwWSN3kxrcDIxIaOyxscwpKOeqwKuJ0XI
-         1bi6YJPGBDjtZkHR+FS63QkbQuab9N9LzCx1cLMpmemIbmvURcszHPBbc+wCgaAAo5Nd
-         ilzfpwM7IeWoxLJqNo9mGlv1jqUEdh/uRJA1g=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721424364; x=1722029164;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rIUIudV3W4EelKHjVdbAz3TupXvxJb8HU8cRrgggIwc=;
-        b=csWT7qZ7+T/XhSjsrvcf8VR7TAe6CC5eM7BW+KvshhACwmdZlWUMK4Co4CEx/KvGWj
-         2jb/ZSE2r8+RCGOrcHUJp12yCf2qnx8P0Wj0SAXwWWtDvjhrSh9jCfYCA6G5+ue9SoJa
-         VzVNVqfZ8N/cwSw+l3GX0rDGgkuJeoVHy8C/bn3zHbXIYNdEdJry2nKSqq/8GIKEmWQN
-         fxyWEFH+JgNVdrv7ra+TO6ht80R/R370At6Bek3PoHi+4NzY7mxMprqmCrkU2EXgI/mz
-         qiBA5wTXCOi6V5MToas0vJzlBsmDSq8c9oYIP0a6jmvYS59aL0C+9JW22WU+epgAlx2v
-         BT5w==
-X-Forwarded-Encrypted: i=1; AJvYcCX0LfrFZ3QlUT/7K5vkvO+D+m5SklHeJgZ4OGiKpqDItqaocJkCTYozj/Qwjxjj6WzV8JSTAL+ULq1Gg0mlin+j+76Z+NkqBvByO783ujg=
-X-Gm-Message-State: AOJu0YzA9UtseQ0oHP8j6WEmNVvq9QmY98fsyMBQUTfL/TWQWZABwN2t
-	tFgt7FkZZNugHhlm9bVnOj+IxkmddwQn73/P+CKd5fdnTzFKzxneYLW41tTnmw==
-X-Google-Smtp-Source: AGHT+IEiTPDsV72AfgDxBbXkqBMrB1vv3zaXpnz+M6Y2UShrsiWah2qsgNBOmPFY5+0G0fmtM4R9tw==
-X-Received: by 2002:a05:6602:6c1c:b0:80d:19e4:9d63 with SMTP id ca18e2360f4ac-81aa4dc3a36mr144818839f.3.1721424364015;
-        Fri, 19 Jul 2024 14:26:04 -0700 (PDT)
-Received: from arowa.c.googlers.com.com (214.62.225.35.bc.googleusercontent.com. [35.225.62.214])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4c2343ab449sm473825173.113.2024.07.19.14.26.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jul 2024 14:26:03 -0700 (PDT)
-From: Arowa Suliman <arowa@chromium.org>
-X-Google-Original-From: Arowa Suliman <arowa@chromium.com>
-To: mingyen.hsieh@mediatek.com
-Cc: Eric-SY.Chang@mediatek.com,
-	Leon.Yen@mediatek.com,
-	Quan.Zhou@mediatek.com,
-	Ryder.Lee@mediatek.com,
-	Sean.Wang@mediatek.com,
-	Shayne.Chen@mediatek.com,
-	Soul.Huang@mediatek.com,
-	ch.yeh@mediatek.com,
-	deren.wu@mediatek.com,
-	km.lin@mediatek.com,
-	linux-mediatek@lists.infradead.org,
-	linux-wireless@vger.kernel.org,
-	lorenzo@kernel.org,
-	nbd@nbd.name,
-	posh.sun@mediatek.com,
-	robin.chiu@mediatek.com,
-	Arowa Suliman <arowa@chromium.org>
-Subject: Re: [v2] wifi: mt76: mt7921: introduce CSA support
-Date: Fri, 19 Jul 2024 21:25:48 +0000
-Message-ID: <20240719212548.1121903-1-arowa@chromium.com>
-X-Mailer: git-send-email 2.45.2.1089.g2a221341d9-goog
-In-Reply-To: <20240530084455.4290-1-mingyen.hsieh@mediatek.com>
-References: <20240530084455.4290-1-mingyen.hsieh@mediatek.com>
+	s=arc-20240116; t=1721432054; c=relaxed/simple;
+	bh=JQHexYYiN0r/zrHA+n1qhJdF/2yMZIx/UDCFyWlQMyY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=J83TkKGUH9dfXYCkJUiKB1+tdl6J8o0YIIct107JauWoRS+RjsD2jhCLF/KvFFsDZPwIlOlUC92VCQ3ZGio4aDBv8VtB6Cr4OxT9wICazURWwtx0pQvyc1kd1I1rKvEqX1vHSxZQDqIQVIEa3oo8k13+tcI2H+nDrOdt/+rvojw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=RTP9NDlR; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46JLDWXo015560;
+	Fri, 19 Jul 2024 23:34:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	oWnKe6cSlpMEboJMgrFxqlVNMH1ku2P2gQnO/eMy6pg=; b=RTP9NDlR6ILfqJB5
+	qtYjW0ZK7gsXZ7nXODGgi7vlvXQUP51boljo7IMbZfI7av2QA9Hw9Uf0GkOc03iK
+	ICTu5WweEBkMFAN1Yi/hsjv7/DJ8B4pcCvWRgvWMySJm8ARkPIfte2y2USYYuD42
+	zktgZznzR1XfghIMBNEvYFl1TnARkugyPLxtEd6lEuxWXxCs0k7yW0/7T52i5sPf
+	8gTEbZkx0HDT/zQKvxv7dxYCaBD/jQ867euwOHcGMFjr7IdHeDrkUZ/WNUekK4Za
+	kjBgdRWe2oh5CK+iZPxXjxrS1ofRsjE+FGpwmtP0NC+goTRvIAAWeywug67EC0b5
+	4+7j6w==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40fe2utnnv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 19 Jul 2024 23:34:09 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46JNY8Dt022776
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 19 Jul 2024 23:34:08 GMT
+Received: from [10.48.244.127] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 19 Jul
+ 2024 16:34:08 -0700
+Message-ID: <7e656bae-fb88-47b7-ab5e-41dc0c7a7f0d@quicinc.com>
+Date: Fri, 19 Jul 2024 16:34:07 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] wifi: ath12k: Dump PDEV transmit rate HTT stats
+To: Lingbo Kong <quic_lingbok@quicinc.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240718064659.109893-1-quic_lingbok@quicinc.com>
+ <20240718064659.109893-2-quic_lingbok@quicinc.com>
+Content-Language: en-US
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240718064659.109893-2-quic_lingbok@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: -lLS4ai_b5pliRtpeocwtCH4ZE6N3VSC
+X-Proofpoint-GUID: -lLS4ai_b5pliRtpeocwtCH4ZE6N3VSC
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-19_09,2024-07-18_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 adultscore=0
+ mlxscore=0 lowpriorityscore=0 mlxlogscore=753 spamscore=0 phishscore=0
+ priorityscore=1501 impostorscore=0 malwarescore=0 clxscore=1015
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2407190174
 
-Tested-by: Arowa Suliman <arowa@chromium.org>
+On 7/17/2024 11:46 PM, Lingbo Kong wrote:
+> Support to dump PDEV transmit rate stats through HTT debugfs stats type 9.
+> 
+> Sample output:
+> -------------------------
+> echo 9 > /sys/kernel/debug/ath12k/pci-0000\:03\:00.0/mac0/htt_stats_type
+> cat /sys/kernel/debug/ath12k/pci-0000\:03\:00.0/mac0/htt_stats
+> HTT_TX_PDEV_RATE_STATS_TLV:
+> mac_id = 0
+> tx_ldpc = 1088
+> ac_mu_mimo_tx_ldpc = 0
+> ax_mu_mimo_tx_ldpc = 0
+> ofdma_tx_ldpc = 0
+> rts_cnt = 941
+> rts_success = 180
+> ack_rssi = 4294967168
+> Legacy CCK Rates: 1 Mbps: 830, 2 Mbps: 0, 5.5 Mbps: 0, 12 Mbps: 0
+> Legacy OFDM Rates: 6 Mbps: 942, 9 Mbps: 0, 12 Mbps: 0, 18 Mbps: 0
+>                    24 Mbps: 0, 36 Mbps: 0, 48 Mbps: 0, 54 Mbps: 0
+> HE LTF: 1x: 0, 2x: 957, 4x: 132
+> tx_mcs =  0:342, 1:260, 2:171, 3:148, 4:31, 5:34, 6:93, 7:10, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0
+> ax_mu_mimo_tx_mcs =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0
+> ofdma_tx_mcs =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0
+> tx_nss = 1:754, 2:335, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0
+> ac_mu_mimo_tx_nss = 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0
+> ax_mu_mimo_tx_nss = 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0
+> ofdma_tx_nss = 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0
+> tx_bw =  0:1089, 1:0, 2:0, 3:0, 4:0
+> tx_stbc =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0
+> tx_gi[0] = 0:210, 1:260, 2:171, 3:148, 4:31, 5:34, 6:93, 7:10, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0
+> tx_gi[1] = 0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0
+> tx_gi[2] = 0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0
+> tx_gi[3] = 0:132, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0
+> ac_mu_mimo_tx_gi[0] = 0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0
+> ac_mu_mimo_tx_gi[1] = 0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0
+> ac_mu_mimo_tx_gi[2] = 0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0
+> ac_mu_mimo_tx_gi[3] = 0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0
+> ax_mu_mimo_tx_gi[0] = 0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0
+> ax_mu_mimo_tx_gi[1] = 0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0
+> ax_mu_mimo_tx_gi[2] = 0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0
+> ax_mu_mimo_tx_gi[3] = 0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0
+> ofdma_tx_gi[0] =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0
+> ofdma_tx_gi[1] =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0
+> ofdma_tx_gi[2] =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0
+> ofdma_tx_gi[3] =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0
+> tx_su_mcs =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0
+> tx_mu_mcs =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0
+> ac_mu_mimo_tx_mcs =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0
+> ac_mu_mimo_tx_bw =  0:0, 1:0, 2:0, 3:0
+> ax_mu_mimo_tx_bw =  0:0, 1:0, 2:0, 3:0
+> ofdma_tx_bw =  0:0, 1:0, 2:0, 3:0
+> tx_pream =  0:942, 1:830, 2:0, 3:0, 4:1850, 5:0, 6:0
+> tx_dcm =  0:131, 1:0, 2:0, 3:0, 4:0
+> 
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> 
+> Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+
 
 
