@@ -1,78 +1,78 @@
-Return-Path: <linux-wireless+bounces-10370-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10371-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C2B09372BA
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2024 05:24:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A64CB9372BB
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2024 05:24:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4034B2826DD
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2024 03:24:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5ACCA1F21BB4
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2024 03:24:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E2C1182C5;
-	Fri, 19 Jul 2024 03:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA1221373;
+	Fri, 19 Jul 2024 03:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fnx3ZgmH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OhdixpDV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6083BA39
-	for <linux-wireless@vger.kernel.org>; Fri, 19 Jul 2024 03:23:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF3A18C36
+	for <linux-wireless@vger.kernel.org>; Fri, 19 Jul 2024 03:24:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721359441; cv=none; b=XA1rBtnrRdsw9qRsOOC34swjsT6lGOh/+Mofz7/rcEITeJJDBTH87vBE/smGTxYPyzVY6RkGw+alZ0F92+6XZKPeDQw9WWEIvD17v5qz3knX4Ga/79CdY+gE0ol3gtm7cwC0TZF5bZJLnAPwI6pSiLu6/fvk7gX3aHBWyfVJR9s=
+	t=1721359443; cv=none; b=DEY0/hgi6YOVSXKhUZLCoI+T27gK722EX0oBWx/zGASdOyIpnu/eJDiFJQAoZtsasXteW51pdTg82n6sInivNy7uCSp4c9NMTUeOsoLOAwX3W+qe2VBLWIPondNJigSPKlGdF6J9SXS8DsMLtD3rmTa+2LWgkWCQbRvibX111+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721359441; c=relaxed/simple;
-	bh=VklYZoXqgMfBxBpZEtm4ST/Iow2HUDBJBm/23lH76XM=;
+	s=arc-20240116; t=1721359443; c=relaxed/simple;
+	bh=qcdnDfkpvxauVmtznJvkpmndce0/FB8LO5n6/HUQ8rY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RhXzbZ1SnBkZDenZdSUW66IVZlu8JyIoOS1/irtEpnbfFV+QntxNcbEHvpXu4dbHTw8dDlDoriTWc4jwE/e8cO9nbDZWVEU5ixwNbj5HAWbvAofqMqX7mBoPNe3LLj/98fbrsCt9ezngnaM8+7Q7Iea49be5fM2otC+9zn4H9Z0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fnx3ZgmH; arc=none smtp.client-ip=209.85.210.177
+	 MIME-Version; b=cZnUBtjtETgmmRdcGLnuO/xSN+rrrq2pn6feZKJj8SFsNH2Zs81VcKoHXayqywRU4cVFUM8y2c6mRTAr4VGEgUjsC6Br1U3pe58AgBLN24te9+/xsb8oLuVv0j6WWndX/b4ezCfoGscSViXUk1riBIeNNXpWaM2as4NCl9ghus4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OhdixpDV; arc=none smtp.client-ip=209.85.167.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-70b5117ae06so361996b3a.2
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2024 20:23:59 -0700 (PDT)
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-3cabac56b38so931531b6e.3
+        for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2024 20:24:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721359439; x=1721964239; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1721359441; x=1721964241; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hw9MxDYjCDZPKe0pPKGa20/2reQTiIpQlhrmRrwXuGY=;
-        b=fnx3ZgmHTd7dRITNLNMV2q+D+uKnK7uvjcLeMbNfLG7s8o+MhYk/5AxKHl8AoGgRJ1
-         BUhausMo5MePN6S9de+fqwlYwUCnvQDnVtT72jHBv4MdpJorU/l8VKF52AhWfJJTK3K9
-         vvIphgYWF1d5QY2KN8u4K9y9IJeyQ63ixwJzlT4MIALMy8BXSEz4f+fwsfWWFGKI6guc
-         5DA8ZiSw1evc09+r/cIsTlL4FvN5QxACwn3l6qUk102c0VXdGB8N5lN/WtdN12D7mJ0d
-         NG/Y/YOrMrh9dNCuMluASM3WiA7p9TFdaa8iy+rYEth12opSrpbDpa3mqh9Csi3QIcBL
-         vzHQ==
+        bh=XOB5L+4P12y/gtLQ+IRtAPkliKJSy/BYtMjXT7c6v1g=;
+        b=OhdixpDVPyykBK5fnGq+3X3fnUHJ9yB/yEFzR60BNpYKK0qFOoRYpwEMbtDauTtkCI
+         WFqyqsIO89qSqm1zh1MWkrM+GA4fNc5Z8E0+1k+VZxFiGVjBzuGDTOlgObIOUuFpl5CY
+         CIeNdiwbkl6C+8eSQUIH2TEixXonjRJKQI2X6XTIoVbUebE219CX0tMvk6lGqHkbD9P8
+         oh8xq7DgcS5JC6yhRyyLmaHsBMBFfL/9986JI2ZAA20tR4Og92qRYQZSO5VzamdccVY2
+         tf8E08Bk6TzoIyV2gKMHEELwfBrjfkvxaJS49wDq0gvJVKvkBtyhCAtQ0XQv8y04wpGT
+         0lzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721359439; x=1721964239;
+        d=1e100.net; s=20230601; t=1721359441; x=1721964241;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hw9MxDYjCDZPKe0pPKGa20/2reQTiIpQlhrmRrwXuGY=;
-        b=Vm8mrH5VMqgBHxYoRojyl7oHIAufSfOdaKxJ8Kp7AYEWZk6faSDtJ/v8hPdyvPnZYl
-         ubWZp/Go439xbhMbCPMDHjtreqokgR6rINv2bg96/HRyfVLRcohuqPssAhKWV1+Vz4ID
-         zS+nMsiirNN4fz634cwt3zDjPq7soqqIBuDrgMF9OVKVrbKeuI9YjMTT/jMcFoMqB7nX
-         QhVj1sThnnKVTpqYrZauAzAxy3zW/gAa/M2Kz9vNwY614iy6m0vCeLDnmpmpJ/yTEFCV
-         WsatApc9Fh9IPj6gnqqrbKCAZ/IT3YHMqp6qBtM50SYmulh+pLoACGvltzWayIPIKaTT
-         LzRg==
-X-Gm-Message-State: AOJu0Yz3fBueWv6s/gy94W/s+AWk5Oomlbc2s5jgIiLB4DrA7NLSvcyj
-	Uct6qvq+HH1CKpmvuC/FfRa+aY39yZ7NbtDp60C28CcMFX6UMrhzpVhPRNgC
-X-Google-Smtp-Source: AGHT+IH3QDE73aAhx7uVbuP5X1jQyZQZTQlKAU8dt8Owuy+t+9KZh+fRw0cGEJOdioXFi4LV0cdwnQ==
-X-Received: by 2002:a05:6a00:4b4d:b0:70b:29bf:bbde with SMTP id d2e1a72fcca58-70cfc8f8d6cmr1977912b3a.12.1721359438917;
-        Thu, 18 Jul 2024 20:23:58 -0700 (PDT)
+        bh=XOB5L+4P12y/gtLQ+IRtAPkliKJSy/BYtMjXT7c6v1g=;
+        b=I8m79OlQq/zP8VfYZ+TIaSq2q1gSRlQ8NLKmAPFa5z7D6sc5w0dpTq53UYK7pI1QPq
+         tQcKCf3iMcQ0MW6twWyDxyAvJSTG8m0g1e0i1DAlmTYg8r7o4XOK+i1G8bN68lxlJ0Qd
+         eY89FyP61bPrroFPFB55yt1gjR69f8w1xkTSTFvcce0JEj8MkwYCQORrPc5uSNufiHKI
+         u1So09l3jDXDKU0H10W8rVUNd2oIxrNQk31vgrfnmC4+USYRGtPF8K+V9WI2bT+OQpUq
+         eYypT96t+JoSs3qyKGAvehAh9mq+TWkN3RoeHuImgwysr9CcL3noVUzM6SRvqot+R01D
+         B5vA==
+X-Gm-Message-State: AOJu0Yz6bKIZYN0PQCnxeKCn16u46WKtJYVBgyWwK/bI6P8dzd8/VGvi
+	ggZnB9iOxpowCXwEEBiACk55LFtSd7o8N+4iumdkerF8E/0kd2n44WljcJBY
+X-Google-Smtp-Source: AGHT+IE6VqxdC/ZJ64XKk2UliGMq04mqrmW3jQ/nDLxkar3Sz7SlW33VVmW12GTj1HqS68EfPirYZA==
+X-Received: by 2002:a05:6808:1441:b0:3d9:29c1:be41 with SMTP id 5614622812f47-3dad1f3f4e6mr8888148b6e.10.1721359440622;
+        Thu, 18 Jul 2024 20:24:00 -0700 (PDT)
 Received: from localhost.localdomain (59-124-166-19.hinet-ip.hinet.net. [59.124.166.19])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-70cff59fd9csm279160b3a.173.2024.07.18.20.23.57
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-70cff59fd9csm279160b3a.173.2024.07.18.20.23.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jul 2024 20:23:58 -0700 (PDT)
+        Thu, 18 Jul 2024 20:23:59 -0700 (PDT)
 From: Ping-Ke Shih <pkshih@gmail.com>
 To: wens@kernel.org
 Cc: linux-wireless@vger.kernel.org,
 	wireless-regdb@lists.infradead.org
-Subject: [PATCH v2 2/5] wireless-regdb: Update regulatory info for Peru (PE) on 6GHz
-Date: Fri, 19 Jul 2024 11:23:23 +0800
-Message-Id: <20240719032326.7353-2-pkshih@gmail.com>
+Subject: [PATCH v2 3/5] wireless-regdb: Update regulatory info for El Salvador (SV) on 6GHz
+Date: Fri, 19 Jul 2024 11:23:24 +0800
+Message-Id: <20240719032326.7353-3-pkshih@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240719032326.7353-1-pkshih@gmail.com>
 References: <20240719032326.7353-1-pkshih@gmail.com>
@@ -86,19 +86,23 @@ Content-Transfer-Encoding: 8bit
 
 From: Ping-Ke Shih <pkshih@realtek.com>
 
-Ministerial Resolution -2021-MTC/01 decided
+The General Superintendency of Electricity and Telecommunications Makes
+Knowledge to the General issued resolution No. T-0408-2023.
 
-For the band 5925-7125 MHz, low power indoor case of use.
+Free use within the entire band for WLAN (WiFi) application, from
+5925 MHz to 7125 MHz, must have following technical and operation
+conditions:
  - access point
-   maximum EIRP: 30 dBm
-   Limited power spectral density: 5 dBm / MHz
- - user devices
-   maximum EIRP: 24 dBm
-   Limited power spectral density: -1 dBm / MHz
+   * P.I.R.E 30 dBm
+   * spectral density of P.I.R.E. 5 dBm/Mhz
+ - client
+   * P.I.R.E 24 dBm
+   * spectral density of P.I.R.E. -1 dBm/Mhz
+ - Indoor use only permitted
 
 With minimum bandwidth 20MHz and PSD -1 dBm/MHz, 12 dBm is adopted.
 
-[1] https://cdn.www.gob.pe/uploads/document/file/1861732/Resoluci%C3%B3n%20Ministerial%20nro%20373-2021-MTC/01.pdf
+[1] https://www.siget.gob.sv/actualizacion-de-cuadro-nacional-de-atribucion-de-frecuencias-t-0408-2023/
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
@@ -110,24 +114,23 @@ v2:
  1 file changed, 3 insertions(+)
 
 diff --git a/db.txt b/db.txt
-index 5cada55b51eb..1e0a14b8670f 100644
+index 1e0a14b8670f..31a051f242e5 100644
 --- a/db.txt
 +++ b/db.txt
-@@ -1443,12 +1443,15 @@ country PA: DFS-FCC
- 	(5725 - 5850 @ 80), (36)
- 	(57000 - 64000 @ 2160), (43)
+@@ -1736,11 +1736,14 @@ country SR: DFS-ETSI
+ 	(5250 - 5330 @ 80), (20), DFS, AUTO-BW
+ 	(5490 - 5710 @ 160), (27), DFS
  
 +# Source:
-+# https://cdn.www.gob.pe/uploads/document/file/1861732/Resoluci%C3%B3n%20Ministerial%20nro%20373-2021-MTC/01.pdf
- country PE: DFS-FCC
++# https://www.siget.gob.sv/actualizacion-de-cuadro-nacional-de-atribucion-de-frecuencias-t-0408-2023/
+ country SV: DFS-FCC
  	(2402 - 2482 @ 40), (20)
- 	(5170 - 5250 @ 80), (17), AUTO-BW
- 	(5250 - 5330 @ 80), (24), DFS, AUTO-BW
- 	(5490 - 5730 @ 160), (24), DFS
- 	(5735 - 5835 @ 80), (30)
+ 	(5170 - 5250 @ 20), (17)
+ 	(5250 - 5330 @ 20), (23), DFS
+ 	(5735 - 5835 @ 20), (30)
 +	(5925 - 7125 @ 320), (12), NO-OUTDOOR
  
- country PF: DFS-ETSI
+ country SY:
  	(2402 - 2482 @ 40), (20)
 -- 
 2.25.1
