@@ -1,166 +1,122 @@
-Return-Path: <linux-wireless+bounces-10366-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10367-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA8AE937141
-	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2024 01:46:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83F68937188
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2024 02:34:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7607F1F2217B
-	for <lists+linux-wireless@lfdr.de>; Thu, 18 Jul 2024 23:46:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38677281B9F
+	for <lists+linux-wireless@lfdr.de>; Fri, 19 Jul 2024 00:34:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E38A423B0;
-	Thu, 18 Jul 2024 23:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF64210F1;
+	Fri, 19 Jul 2024 00:34:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="rkf1Kh5Z"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386AF146D6E
-	for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2024 23:46:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3CE210E6
+	for <linux-wireless@vger.kernel.org>; Fri, 19 Jul 2024 00:34:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721346398; cv=none; b=WKYCL8XsgR5XhuCxdTxEWGQxOtwqKvfPkX8XOn/2HySv/Wc2RXmCRqWHMy3B5pQDXhEZDBn6KznQN5YLM9Ch0Wjg/RTDf7wvKs7mT8YRwTUvUTdl6EfPQSSM5pOCD+7KkYjijNseaO+7CDTnBk7MRqY6x2KQZPiTcKVDtGqTqYc=
+	t=1721349268; cv=none; b=Kt+71TJDqbZFpC5H3lEUKM3efdzZmVKPEYIbpuBPZo3GdIMYAHOjPSNOZS1pHYLDyA7rebj3W+GdkPUKRIQH/6r7uzgWrCWhUcsMa0IEYpolJ6Sz8meCNdc+hAjbWdNdTaAzF8C1yyaK8leaQTfrprsEEkifxotkAdgQu5xscME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721346398; c=relaxed/simple;
-	bh=O15ldoM4uhG+C9xTtWNbYILdLmU+t1Rc5NHJPAydHrY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SmUTy/Fe8bfWfZvrGJH9R+8Pa6N9KLIJaz/gD2U7PfCuwBi9ttwWobno0atNacpwh/D0pt8sXsvCw/CUhtj7Mfxofbu2eLSSetAZ5uiv4WEtPscjkY/1oVKKUP8n0WI/yX1NG7C6+9db7tuFh5QvcndGX5xc173C9UprGANsBPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-2610c095ea1so13606fac.3
-        for <linux-wireless@vger.kernel.org>; Thu, 18 Jul 2024 16:46:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721346396; x=1721951196;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kumYOpt90WwIURjW83CrBNCxrFrm56wRKCJC8GtXD4I=;
-        b=TapLjAMeli2C345GFzpDLkme/wqkkNVe9ibzJDC5LOk2Ch4/Y9XCIjeKkvXKhzzlCU
-         zcUIDdZ9AN0HywHCoL9HUhHgWL4bpCmlK1kZAJM4TdiUbzwvufmjZmRwSo0Nk8RXSUnB
-         lyPINowLltH5bhPQaZ9pixTXC1o0TPmWOeV3BKeoxb2VDEIH+pfs3YSopMEX9cuhhqhl
-         z+/KTJ7G1aRonJ2vZGlyfV9Y66r0rYIeCEjK2RH0TfGeNv4Q4oXCqmW3n8SjcrdmXltW
-         YrO29bIcs57eQjcy+rezI1hStcRN3tE6Lnwfa+sGmOXxVUTy1idrzoEFrD4Yy7L20Pjv
-         jG/g==
-X-Forwarded-Encrypted: i=1; AJvYcCVCBBS6x5WA+pRwDKrOPr72Lv08x5sfLYuEo3Y1oApz1ZaLWPVr9uZo/q+LBnOAWt1lh6/KyIegwgO/k5zcNrFW9KnupsaLXnz+Nu/hBpg=
-X-Gm-Message-State: AOJu0YzmkCoGiUZWIOJkqYytpxwdxPr6+s8QTsgB1XbDtUbi8nv/ra0A
-	IPpYz/MlKBJNAVh8fmP1su+7z7lQv4Dt6gJSmqfshH7EEtRcdWVY
-X-Google-Smtp-Source: AGHT+IFRf7TjBSxNEPCzpgioy5JjkDTiqmmUFLR3bozjk/syGEwERkAtjw3rXmpWtwdoOUzOIwQD1Q==
-X-Received: by 2002:a05:6808:10ce:b0:3d9:36ba:2ce with SMTP id 5614622812f47-3dadf4dfc21mr768420b6e.1.1721346396099;
-        Thu, 18 Jul 2024 16:46:36 -0700 (PDT)
-Received: from sean-ThinkPad-T450s.attlocal.net ([2600:1702:5083:7610:3c59:65c4:19fc:c2eb])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3dae0978889sm70677b6e.13.2024.07.18.16.46.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jul 2024 16:46:35 -0700 (PDT)
-From: sean.wang@kernel.org
-To: nbd@nbd.name,
-	lorenzo.bianconi@redhat.com
-Cc: sean.wang@mediatek.com,
-	deren.wu@mediatek.com,
-	mingyen.hsieh@mediatek.com,
-	linux-wireless@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	Bert Karwatzki <spasswolf@web.de>
-Subject: [PATCH] wifi: mt76: mt7921: fix null pointer access in mt792x_mac_link_bss_remove
-Date: Thu, 18 Jul 2024 16:46:33 -0700
-Message-Id: <20240718234633.12737-1-sean.wang@kernel.org>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1721349268; c=relaxed/simple;
+	bh=2Mz6zdLp7YXFZT/3ZLEyoSfJlnNJEgmZHqgHZLW+cRE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=AyIutRY3Yh6XOyN1vnsmYaMQzwnnc6uepUfyLfIgz1QvX0IGPB2UBvMNzS1TTvZ6UlW8QMsmrWde45F9uyiSRnYoclX5gvri4lxmwrnJ20oOjd6O/UE8IOK/txof9hF86TLn4xj9wJR20x6ud/mRl1EbKA1F96xbwp8fYFFvC7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=rkf1Kh5Z; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 46J0YDAy84045834, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1721349253; bh=2Mz6zdLp7YXFZT/3ZLEyoSfJlnNJEgmZHqgHZLW+cRE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=rkf1Kh5Z9NCZMMTt1V+xTmKhQHa0PTV+qq2pPwHVZiAony9CzkRLVgbm2OJRbjX1H
+	 prtuWr8z164h4nRVKncP5cwtGpqRKzs9YBlo8t6J+0IGKuqVXxRIMpRROat8dfQVh3
+	 FER3raya14Jl/xJuzsIHN1YqLdOXyU6Cn5ps5M3f7AVNi7KbW2xqUiOtL4wcZWp1lk
+	 YKG2ezDGkFluRZ+Y5hGChKCe4fi0sv5DTwxG/O+zUBgwI5X24JBXbG5v4E66e3LuUs
+	 xKMUKjitsCJagsBFMiHjfV1+6znC3a4fzKcjoRzUv0+ArOlzai7VI6tzbHmHAsto6e
+	 s5OxS3tcploRw==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 46J0YDAy84045834
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 19 Jul 2024 08:34:13 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 19 Jul 2024 08:34:14 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 19 Jul 2024 08:34:13 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
+ 15.01.2507.035; Fri, 19 Jul 2024 08:34:13 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: "Jesuiter, Henry" <henry.jesuiter@softing.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: "Le Suire, Michael" <Michael.Suire@Softing.com>,
+        "Sperling, Tobias"
+	<Tobias.Sperling@Softing.com>
+Subject: RE: Performance of Reassociation 
+Thread-Topic: Performance of Reassociation 
+Thread-Index: AQHa2EeueyCxNvdWakyDpuL0/ysvurH8K4CQgAAv1i+AANfq8A==
+Date: Fri, 19 Jul 2024 00:34:13 +0000
+Message-ID: <d28a43de3a2c43a4882696b6fc87747f@realtek.com>
+References: <BE1P281MB22104B386701ADEEE1E741269EA32@BE1P281MB2210.DEUP281.PROD.OUTLOOK.COM>
+ <ef8f3c47b3264aedad776ff248fa635d@realtek.com>
+ <BE1P281MB22102E859A8EFF4475843FB89EAC2@BE1P281MB2210.DEUP281.PROD.OUTLOOK.COM>
+In-Reply-To: <BE1P281MB22102E859A8EFF4475843FB89EAC2@BE1P281MB2210.DEUP281.PROD.OUTLOOK.COM>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Sean Wang <sean.wang@mediatek.com>
-
-Fix null pointer access in mt792x_mac_link_bss_remove.
-
-To prevent null pointer access, we should assign the vif to bss_conf in
-mt7921_add_interface. This ensures that subsequent operations on the BSS
-can properly reference the correct vif.
-
-[  T843] Call Trace:
-[  T843]  <TASK>
-[  T843]  ? __die+0x1e/0x60
-[  T843]  ? page_fault_oops+0x157/0x450
-[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  T843]  ? search_bpf_extables+0x5a/0x80
-[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  T843]  ? exc_page_fault+0x2bb/0x670
-[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  T843]  ? lock_timer_base+0x71/0x90
-[  T843]  ? asm_exc_page_fault+0x26/0x30
-[  T843]  ? mt792x_mac_link_bss_remove+0x24/0x110 [mt792x_lib]
-[  T843]  ? mt792x_remove_interface+0x6e/0x90 [mt792x_lib]
-[  T843]  ? ieee80211_do_stop+0x507/0x7e0 [mac80211]
-[  T843]  ? ieee80211_stop+0x53/0x190 [mac80211]
-[  T843]  ? __dev_close_many+0xa5/0x120
-[  T843]  ? __dev_change_flags+0x18c/0x220
-[  T843]  ? dev_change_flags+0x21/0x60
-[  T843]  ? do_setlink+0xdf9/0x11d0
-[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  T843]  ? security_sock_rcv_skb+0x33/0x50
-[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  T843]  ? __nla_validate_parse+0x61/0xd10
-[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  T843]  ? genl_done+0x53/0x80
-[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  T843]  ? netlink_dump+0x357/0x410
-[  T843]  ? __rtnl_newlink+0x5d6/0x980
-[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  T843]  ? genl_family_rcv_msg_dumpit+0xdf/0xf0
-[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  T843]  ? __kmalloc_cache_noprof+0x44/0x210
-[  T843]  ? rtnl_newlink+0x42/0x60
-[  T843]  ? rtnetlink_rcv_msg+0x152/0x3f0
-[  T843]  ? mptcp_pm_nl_dump_addr+0x180/0x180
-[  T843]  ? rtnl_calcit.isra.0+0x130/0x130
-[  T843]  ? netlink_rcv_skb+0x56/0x100
-[  T843]  ? netlink_unicast+0x199/0x290
-[  T843]  ? netlink_sendmsg+0x21d/0x490
-[  T843]  ? __sock_sendmsg+0x78/0x80
-[  T843]  ? ____sys_sendmsg+0x23f/0x2e0
-[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  T843]  ? copy_msghdr_from_user+0x68/0xa0
-[  T843]  ? ___sys_sendmsg+0x81/0xd0
-[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  T843]  ? crng_fast_key_erasure+0xbc/0xf0
-[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  T843]  ? get_random_bytes_user+0x126/0x140
-[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  T843]  ? __fdget+0xb1/0xe0
-[  T843]  ? __sys_sendmsg+0x56/0xa0
-[  T843]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  T843]  ? do_syscall_64+0x5f/0x170
-[  T843]  ? entry_SYSCALL_64_after_hwframe+0x55/0x5d
-[  T843]  </TASK>
-
-Fixes: 1541d63c5fe2 ("wifi: mt76: mt7925: add mt7925_mac_link_bss_remove to remove per-link BSS")
-Reported-by: Bert Karwatzki <spasswolf@web.de>
-Closes: https://lore.kernel.org/linux-wireless/2fee61f8c903d02a900ca3188c3742c7effd102e.camel@web.de/#b
-Signed-off-by: Sean Wang <sean.wang@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7921/main.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 2e6268cb06c0..1bab93d049df 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -303,6 +303,7 @@ mt7921_add_interface(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
- 
- 	mvif->bss_conf.mt76.omac_idx = mvif->bss_conf.mt76.idx;
- 	mvif->phy = phy;
-+	mvif->bss_conf.vif = mvif;
- 	mvif->bss_conf.mt76.band_idx = 0;
- 	mvif->bss_conf.mt76.wmm_idx = mvif->bss_conf.mt76.idx % MT76_CONNAC_MAX_WMM_SETS;
- 
--- 
-2.25.1
-
+SmVzdWl0ZXIsIEhlbnJ5IDxoZW5yeS5qZXN1aXRlckBzb2Z0aW5nLmNvbT4gd3JvdGU6DQo+IFBp
+bmctS2UgU2hpaCA8cGtzaGloQHJlYWx0ZWsuY29tPsKgd3JvdGU6DQo+ID4gRG9lcyBpdCBtZWFu
+IDQ1MG1zIG9uIGtlcm5lbCA1LjE1LCBidXQgOTAwbXMgb24ga2VybmVsIDUuNCBmb3IgUlRMODgy
+MmNlPw0KPiBbSmVzdWl0ZXIsIEhlbnJ5XQ0KPiBBY3R1YWxseSBpdCdzIHRoZSBmb2xsb3dpbmc6
+DQo+ICAgKiBhYm91dCA0NTBtcyBmb3IgS2VybmVsIDYuOCAoVWJ1bnR1IDI0LjA0KSwgaTUtNzMw
+MFUNCj4gICAqIGFib3V0IDYwMG1zIGZvciBLZXJuZWwgNi42IChCdWlsZHJvb3QpLCBDT01pLk1Y
+IDYNCj4gICAqIGFib3V0IDYwMG1zIGZvciBLZXJuZWwgNS4xNSAoVWJ1bnR1IDIwLjA0KSwgaTUt
+NzMwMFUNCj4gICAqIGFib3V0IDcwMG1zIC0gOTAwbXMgZm9yIEtlcm5lbCA1LjQgKFlvY3RvIDMu
+My42KSwgQ09NaS5NWCA2DQoNCk5vIGlkZWEgd2h5IHRoZXkgYXJlIGRpZmZlcmVudCBzaW5jZSBS
+VEw4ODIyQ0UgZG9lc24ndCBoYXZlIG11Y2ggY2hhbmdlIGZvciBhIGxvbmcgdGltZS4NCg0KPiA+
+IEkgbWVhc3VyZSBydHdfY2hpcF9wcmVwYXJlX3R4KCkgd2hpY2ggaXMgdG8gZG8gcGh5IGNhbGli
+cmF0aW9uLiBUaGUgY29zdCBpcyBhYm91dCAxOTBtcyBvbiAyR0h6IGFuZCA1R0h6DQo+IGNoYW5u
+ZWxzLg0KPiBbSmVzdWl0ZXIsIEhlbnJ5XQ0KPiBUaGlzIGlzIHRoZSBzYW1lIGZ1bmN0aW9uIHRo
+YXQgaXMgY2FsbGVkIG9uIHJvYW1pbmcsIGFuZCB3ZSBhcmUgZXhwZXJpZW5jaW5nIHNpbWlsYXIg
+cmVzdWx0cyBoZXJlLiBUaGFua3MNCj4gZm9yIHRoZSBlZmZvcnQuDQo+IA0KPiA+IFRoZSBjb3N0
+cyBJIHBvc3RlZCBhcmUgaGFyZHdhcmUtcmVsYXRlZC4gSWdub3JlIElFRUU4MDIxMV9DT05GX0lE
+TEUgdG8gYXZvaWQgY2FsbGluZw0KPiBydHdfZW50ZXJfaXBzKCkvcnR3X2xlYXZlX2lwcygpLCBz
+YXZpbmcgMjAwbXMgdG8gcG93ZXIgb24gaGFyZHdhcmUuDQo+IFtKZXN1aXRlciwgSGVucnldDQo+
+IFdlIHRob3VnaHQgYWJvdXQgdGhhdCB0b28sIGJ1dCB3ZSBzZWUgbm8gZWFzeSB3YXkgdG8gYXZv
+aWQgdGhlIHBvd2VyIGRvd24gYmVmb3JlaGFuZCwgc2luY2Ugd2UgYXJlIG5vdCBhYmxlDQo+IHRv
+IGRpc3Rpbmd1aXNoIGEgcG93ZXIgZG93biBkdWUgdG8gcm9hbWluZyBmcm9tIGEgcG93ZXIgZG93
+biBkdWUgdG8gb3RoZXIgcmVhc29ucy4gU28gLSBzaW5jZSB0aGUgY2hpcCBpcw0KPiBwb3dlcmVk
+IGRvd24gLSB3ZSBjYW4ndCAganVzdCBza2lwIHRoZSBwb3dlciB1cCBoZXJlLiBBbnkgaWRlYXMg
+YXJlIHdlbGNvbWUg8J+YiS4NCg0KTWF5YmUgeW91IGNhbiBzdGFydCBhIGRlbHllZF93b3JrIHdp
+dGggMSBzZWNvbmQgZGVsYXkgd2hlbiBlbnRlcmluZyB0bw0KcnR3X2VudGVyX2lwcygpIGJ1dCBu
+b3QgYWN0dWFsbHkgZW50ZXIuIEZvciBub3JtYWwgdXNlIGNhc2UsIGFmdGVyIDENCnNlY29uZCwg
+Y2FsbCBydHdfZW50ZXJfaXBzKCkgdG8gcG93ZXIgZG93bi4gRm9yIHJvYW1pbmcgY2FzZSwgaXQg
+bXVzdA0KYXNrIHRvIHBvd2VyIG9uIGJ5IHJ0d19sZWF2ZV9pcHMoKSBpbW1lZGlhdGVseSwgc28g
+Y2FuY2VsIHRoZSBkZWxheWVkX3dvcmsNCmFuZCBubyBhY3R1YWxseSBwb3dlciBvZmYvb24gaW4g
+dGhpcyBjYXNlLg0KDQoxIHNlY29uZCBpcyBhbiBleGFtcGxlLCBtYXliZSBuZWVkIG1vcmUgdGlt
+ZS4gRmluZSB0dW5lIHRoZSB2YWx1ZSBieQ0KeW91ciBleHBlcmltZW50IHJlc3VsdC4NCg0KPiAN
+Cj4gT25lIG1vcmUgcXVlc3Rpb24uIElzIHRoZXJlIGEgd2F5IHRvIHVzZSA4MDIuMTFyIChmYXN0
+IHJvYW1pbmcpIHdpdGggdGhlIG1haW5saW5lIGRyaXZlcj8NCg0KQXMgSSBrbm93LCA4MDIuMTFy
+IGlzIG1haW5seSBpbXBsZW1lbnRlZCBpbiB3cGFfc3VwcGxpY2FudC4gSSBkb24ndCByZW1lbWJl
+ciANCmRyaXZlcnMgbmVlZCB0byBpbXBsZW1lbnQgc3BlY2lhbCBoYW5kbGVzIGZvciB0aGF0LiAN
+Cg0KDQo=
 
