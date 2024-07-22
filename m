@@ -1,74 +1,74 @@
-Return-Path: <linux-wireless+bounces-10432-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10433-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95D96938DED
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jul 2024 13:07:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC896938E2A
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jul 2024 13:43:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F3B41F21B82
-	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jul 2024 11:07:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67FF31F2191B
+	for <lists+linux-wireless@lfdr.de>; Mon, 22 Jul 2024 11:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08F731EB56;
-	Mon, 22 Jul 2024 11:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8630027702;
+	Mon, 22 Jul 2024 11:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EvqvjMMs"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g+pFm0UF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6425823DE
-	for <linux-wireless@vger.kernel.org>; Mon, 22 Jul 2024 11:07:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC3F17597
+	for <linux-wireless@vger.kernel.org>; Mon, 22 Jul 2024 11:43:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721646454; cv=none; b=DVzgGAB2PYc6QGEaO8dUjNbNhug1zpQAtH6WVQIpwkFfq2Z4Fu/P211R7D+juim/25dskxLVxJb7Q6fyinZW2qoJFBM2sFIlwBatQ+RQf0C4pKIs4V8z2/oP66FwTdAZ2OTjrkXJe/3KndfVAV8I0b3kxyJZ5dQUUDYdbwCEcbg=
+	t=1721648606; cv=none; b=Ep7ZhsfeQnclwPwFNIzs0CvMIdj54dHoP2BcPCvkxUiJlJpQK0WyCEcLJLPP6pdDJcd0rMeHxcrc42I4MR121VGF2o15cUQFGHWjwYhd7pz/yyOjCBVCaOzFAJg6SrOOgV5LJUO8ogvFXLASBMcm6wvEhaTs38xYZ5ezbFOWmII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721646454; c=relaxed/simple;
-	bh=f1pxP8nMm6dmumKDmIYGhLPcOUYKAskzzXx72HrNDPo=;
+	s=arc-20240116; t=1721648606; c=relaxed/simple;
+	bh=+YoJl37GupD9CGD14o2L5dfew+nSeomM0cav7/Z5WL4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Sybrnep5VbN9t9nwar4O4WyaQBsScY03Xr2Qdc92V4xUCgJxSWo60o9vw2i/IN5Za0Oc/U1DzqRvKqbOV2cKdVhLaHeOs8t5VQjMNUEyoL+ND9QL1H+2OEKClmq16k5FXh5/vebNMdCRWS7TssIo4FL6xSs5YJiJgnkYGHp1hz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EvqvjMMs; arc=none smtp.client-ip=209.85.218.52
+	 In-Reply-To:Content-Type; b=Arp7S6FDQiIh0U79gV4et8fR1WHvmm9FEn2fElvqo+hAC/So9Ik4o+9rAgzzpNSbrw/sryJ2LrnC+dU7XrZzJtIKE4bABrqqsneEv6ee0Z6Ec2iCK7Lrl3D7YBJh4zpvl+U4H8BCTa1pIXQkp0pBrPqYzmVvF+wIgdGoxdWU1tU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g+pFm0UF; arc=none smtp.client-ip=209.85.218.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a77baa87743so434979866b.3
-        for <linux-wireless@vger.kernel.org>; Mon, 22 Jul 2024 04:07:33 -0700 (PDT)
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a77b550128dso430500166b.0
+        for <linux-wireless@vger.kernel.org>; Mon, 22 Jul 2024 04:43:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721646452; x=1722251252; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1721648603; x=1722253403; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=eMVMPyN1mrPCgy/B/XwHjm2akhZzPBYAUj6M5ftc60Y=;
-        b=EvqvjMMsDDwC/xbj9ktvWm/cGC6wf8TI2aCO7cK2kkpsSw2g+aIy7vYx541qlTDHye
-         vRwIEVwssMw++bsn8JljtfJbQ5tSNA1lc1Jezk5QssKnuP5hi9y/A0YURDQLo4Osiumq
-         EsnaWLL7m7N5nl75Zpne9i41pl1KU8sHb00iYAANcJiwC3GFmQNaSHiWQ6fEcvNxe/rO
-         zWHaJnHahWkraBMV/3hAummlVfNn3ysja6j18LImOoiZzoPHccPZEfjVx4GoD5CC4Y8p
-         hT21SRDyP0tkKmnmdKqmBfLK8DfpSvgmxvveVo9ZPdXlOGRUljiOElPoytcTeuPF622x
-         0NGA==
+        bh=5010jcDvjAPb+qCt+fZ10QUoiU+P1ntn2eDsLW9e8SE=;
+        b=g+pFm0UFyyh3XixvgslplJQV+ZzWmbXzmtAV1NKPhUa2f8A+GHqPuRXddRFeq0zmDS
+         UJ8piv2Y3HZR1RkNF1TZl+u9DroRnLROno/me61AZGkJV/HfbsC6RV1th948ZAK8on+u
+         7t4Qg8XB8V5VQnlMfXeW+4TZ8CbQ5pK5vKp4DarrJhyD0CGgyFT+waCL6g/zeMs4dwt0
+         hOKXx5RzZDk+dmd8V8PWfJxirWgigqZhg91MX7sSVmjjiR0FSaQJiAcmMl+ZeuweeHnT
+         y38mliWGKdoP2N2MOLF1OOmyY02k+KQBXESbe6getawpPB8enDXMfYZdc0w9Zc/5us4B
+         UX6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721646452; x=1722251252;
+        d=1e100.net; s=20230601; t=1721648603; x=1722253403;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eMVMPyN1mrPCgy/B/XwHjm2akhZzPBYAUj6M5ftc60Y=;
-        b=Qht7DZ0eOI1zyoqEmzpUYCQF2kA8bsrFq6iBWpAQbKkp/9N0nX8MNTBOUMt0ihjOZ0
-         yUqWtheLhKVhBNdGio57y8rv4VtbZfczaiVRlTL9FxptI1Ny0I7koRrNNJ0rGiSkp4/C
-         Kdu0AApmLn9ZUUijrvP2ip7yITaU6sOLkoh+Km+0Pf09789qUzveOO/YbXtSCM6eazLY
-         krav4cmeVqr8yyGhEkslTrw0oRiyZgjXDIXkLtmuZGGLC4/lQvjtafc0L+DJ9Z35rPw6
-         tnGfQoyQWwRA1u1jk2jnevOHuNblFJNzip1JbW/ZCekRtxO0xs+nehij2fS6ebIiwmEl
-         gDaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX/5hvQu26kor2fSe04m8IcDrExUMcY8GnXZVH+ovTBttYXVIoy5Vz2YiFVvvWmXQr3QrMMKoMXk/AWIDiR4VnJMJukbwNfbY7m9Mv5PWs=
-X-Gm-Message-State: AOJu0YyoqjcjtaRM86WwcegzUnyUMtl3nQ69CVW59D9HsDDzwa32qtyV
-	ODO30zFxyHMUSOCZxsGLJolD4cAsJM1v4XvCvCjArD/7uTN7wQ79U2/85w==
-X-Google-Smtp-Source: AGHT+IH8gVVldKH2Akjg//sFtRiHmDj9MlpyO+ULrPHqPB7ibt8V5UnUMr2pmdJZ7ox0sFzXebJMdw==
-X-Received: by 2002:a17:907:3e1a:b0:a7a:1273:bc63 with SMTP id a640c23a62f3a-a7a4bd0a711mr499066866b.0.1721646451485;
-        Mon, 22 Jul 2024 04:07:31 -0700 (PDT)
+        bh=5010jcDvjAPb+qCt+fZ10QUoiU+P1ntn2eDsLW9e8SE=;
+        b=xM3ZwS+GLAIhVP0ewmztNP7TOOWq7c/jCRRbXi1ivOwxI+5LEck8NXO5BfSxLGDc0Q
+         J/xgcGkTGl+45Hv5ybfcoWJ5N/hdycYP/LiJFOQSbllNaX2Tv1f4GNypmzeM2W+BV1mB
+         5OKo9c6WsFwp3z0HwodgO+sM3vFjVcv0UgZ1unaWr5tGMwVEZrSqKtuPd7TT28NWfhso
+         nGz3gMNvvBj1RY79/v/a4dh0WBemZtydelMpeokKBbmwDgn1WNVW8Hegcl58qSLZlC5K
+         jKQAAcX1jDhbQR6OdnEpiLFmALxpgP/U3yLikNtrgqaIFhMhamYHP8UBqSDAgfd5Pv9j
+         +oYg==
+X-Forwarded-Encrypted: i=1; AJvYcCUhJLrk5T/Gou6A1dOl/6/ad71AzJFWKj4AdJRtjVpP+WEbT/TZh1sKQOAEgH+yLZJIbDjptsHXw98zRSoBmJZ3e5VlL50ZsIK9aeMRcck=
+X-Gm-Message-State: AOJu0Yxbk76i+Iij7tK7e0jE5i9bPrYfLizjy/rBifUHJecwiqRU69Wf
+	ZZRNRhOWE0YjZS7l2PGnGxR/SfSD4b/P/WTq3sPYRBeadam1BSCgiBfjPA==
+X-Google-Smtp-Source: AGHT+IF1re0lGqSoyeYHbVZyCvjicG0tbIIDhieTCwMvUjhCpSOebuONUCBRnHNbL8i94Rriemm8LQ==
+X-Received: by 2002:a17:907:6d10:b0:a72:44d8:3051 with SMTP id a640c23a62f3a-a7a4c051a77mr495163366b.16.1721648603135;
+        Mon, 22 Jul 2024 04:43:23 -0700 (PDT)
 Received: from [192.168.0.50] ([79.119.240.114])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7a3c785d16sm410392266b.1.2024.07.22.04.07.30
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7a81b9cbdesm7846766b.59.2024.07.22.04.43.21
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Jul 2024 04:07:31 -0700 (PDT)
-Message-ID: <bb7f5d98-1b9c-4235-b3b3-1f7da36d3e8d@gmail.com>
-Date: Mon, 22 Jul 2024 14:07:29 +0300
+        Mon, 22 Jul 2024 04:43:22 -0700 (PDT)
+Message-ID: <67646f1a-250b-4939-9358-b0d076fa87f7@gmail.com>
+Date: Mon, 22 Jul 2024 14:43:20 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -76,39 +76,50 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] wifi: rtw88: 8703b: Fix reported RX band width
-To: Ping-Ke Shih <pkshih@realtek.com>,
+Subject: Re: [PATCH v2 1/2] wifi: rtw88: 8822c: Fix reported RX band width
+To: Johannes Berg <johannes@sipsolutions.net>,
  "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Fiona Klute <fiona.klute@gmx.de>
-References: <2fbacb83-3e47-4f37-a70a-fb9f4719eb26@gmail.com>
- <712d08e3-fc90-48ad-bb61-bb601b2cf953@gmail.com>
- <aac7a0fa33fc4593bc291b2c9c800519@realtek.com>
+Cc: Ping-Ke Shih <pkshih@realtek.com>
+References: <d3267712-e458-4a02-9408-f3d443185207@gmail.com>
+ <e4ff967f72cc2138b9171e81ccadc35488c45559.camel@sipsolutions.net>
 Content-Language: en-US
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <aac7a0fa33fc4593bc291b2c9c800519@realtek.com>
+In-Reply-To: <e4ff967f72cc2138b9171e81ccadc35488c45559.camel@sipsolutions.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 22/07/2024 06:39, Ping-Ke Shih wrote:
-> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->> The definition of GET_RX_DESC_BW is incorrect. Fix it according to the
->> GET_RX_STATUS_DESC_BW_8703B macro from the official driver.
+On 22/07/2024 13:58, Johannes Berg wrote:
+> On Mon, 2024-07-22 at 13:50 +0300, Bitterblue Smith wrote:
+>> "iw dev wlp2s0 station dump" shows incorrect rx bitrate:
 >>
->> Tested only with RTL8812AU, which uses the same bits.
+>> tx bitrate:     866.7 MBit/s VHT-MCS 9 80MHz short GI VHT-NSS 2
+>> rx bitrate:     86.7 MBit/s VHT-MCS 9 VHT-NSS 1
 >>
->> Cc: stable@vger.kernel.org
-> 
-> Add a Fixes tag? as well as patch 1/2. 
-> Otherwise looks good to me. 
-> 
+>> This is because the RX band width is calculated incorrectly. Fix the
+>> calculation according to the phydm_rxsc_2_bw() function from the
+>> official drivers.
+>>
+>> After:
+>>
+>> tx bitrate:     866.7 MBit/s VHT-MCS 9 80MHz short GI VHT-NSS 2
+>> rx bitrate:     390.0 MBit/s VHT-MCS 9 80MHz VHT-NSS 1
+>>
+>> It also works correctly with the AP configured for 20 MHz and 40 MHz.
+>>
+>> Tested with RTL8822CE.
+>>
+>> Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
 >> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>> ---
+>> v2:
+>>  - Use Fixes instead of Cc: stable.
+>>
 > 
+> For the record, if you want it backported, you really should have
+> _both_. Having the Fixes: is good, but will not necessarily lead to it
+> being backported when/where you want it.
 > 
+> johannes
 
-Done.
-
-By the way, there is another problem with the RX rate: rtw88
-doesn't report if short guard interval was used. The older
-chips like RTL8703B have the sgi_en bit in the PHY status
-struct, but I couldn't find out how the newer chips do it.
+Oh. But my other patches were backported when I used Fixes.
 
