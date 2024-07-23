@@ -1,80 +1,78 @@
-Return-Path: <linux-wireless+bounces-10455-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10456-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB0B193A411
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jul 2024 17:58:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93FEB93A4B4
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jul 2024 19:10:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A603D284925
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jul 2024 15:58:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6E0A1C22305
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jul 2024 17:10:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B72A156F5D;
-	Tue, 23 Jul 2024 15:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7D7014D431;
+	Tue, 23 Jul 2024 17:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="l0mNkX4l"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="mMx0VAGt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4DDD157468
-	for <linux-wireless@vger.kernel.org>; Tue, 23 Jul 2024 15:58:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EFA714A4C9
+	for <linux-wireless@vger.kernel.org>; Tue, 23 Jul 2024 17:10:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721750323; cv=none; b=EeDZFO0JMIAZAgIPaGycHzzaJpi5BKSqZMn974rn7OWQZ6oPOhQFjYsH2z1qUNmRUmS7TGcxZcA/CBXU+HdeQlq/jEF0JlgDi6NHiEwdPU3MfbzxXQyeRNAy1Q+dQzV8kWhi9ELdWMP8sGw2lcTTC6wV2VTTo6YzWqRo3zDVjYc=
+	t=1721754616; cv=none; b=drkoKeHLds6OELss3kIIhAW/kVvkmJFcEULg2wPStVxeQWjhjO3cOkhEAN97+YgPMRm/iNlKAsYThbvanHZo68ajUwEWhqhIXKp0+IMlMpYk5JqLASoKl9HvyH0Q75SCrcoSxgMCKhYiUk5NpojukTaxS1pWp85V5UPCd1Ws6yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721750323; c=relaxed/simple;
-	bh=0cjdKOYSrhY8s26sotnrUscHJG4VMR0ddQo114J2yKk=;
+	s=arc-20240116; t=1721754616; c=relaxed/simple;
+	bh=svR8y78lfBq3qZtNe+9eUZ+m77MqcRxgyK9WiUS8rqE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sf6bBHUu05pxdPAOFvyGILo7pMLoucFyzGzwpVI8OH7444oa9MIx9LXxQfVXN63XJJVhL3FSI+JlkVMzDWLQ8TI8WIEJow2fBqWzIrKw9mN+LkWwdjt0mtkr7k7PxyHLDc4NGS+MJCQ7MwjJ0E12+BrHFPzHsC9Cj/t3EVrdFuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=l0mNkX4l; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-70cec4aa1e4so2816476b3a.1
-        for <linux-wireless@vger.kernel.org>; Tue, 23 Jul 2024 08:58:41 -0700 (PDT)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q86WL6vYr7W/9P12mtDkyw8ybFxcuYCOe1uYB0xoCDs1vunM9D/F17KvbpaI5zlHGH4X9LxuJYcJga5ki1ImePAHehNayaY4LtVH8mZ7ago6nnZTjkg5h1jvkNH30F5cbszvS1Np0q6FZ2DQRDRSqES7ssXIwgEvr6SUTO1mRBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=mMx0VAGt; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1fa9ecfb321so7183395ad.0
+        for <linux-wireless@vger.kernel.org>; Tue, 23 Jul 2024 10:10:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1721750321; x=1722355121; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1721754615; x=1722359415; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yxMshVPFdKCTFIUSW7cw9L8v3CsrBB2PAnKA86oz4mg=;
-        b=l0mNkX4lCx2UiKDkQofre9ItOJIv6ar42SLKdQs315yeGWR9jEOrj071gt3srZsJr0
-         iy2hsHxLJMV+/+0BGrtxj0D7oVwlIgHTLeKCsd31dT70xlWPvEW/spLH0d009TRQmd5H
-         geQxg+RWWc01rUFP+SSIZLc5UCcd91WGJyHBwg4a16ok3dM1Adhfhm3k0pMJoxIScgFN
-         FX0zHt5dknPeDV5EvKzKHbSNNfS/aUB0fp0gOcw7bJ0UsNkF7mdcjjyhHEfyV6s7DL5F
-         ndS9ON/6AxX0dwaDvGrGf1Bfjz96+gIKohgIMhS6H5AQf/cmgcAKKiaSSFMrRRHQGwg+
-         HSnA==
+        bh=mfXh0e5qvlr9V94xYRTDIYHCRmA4p3PKN50LXFEptwo=;
+        b=mMx0VAGtqa1uRrKheiCo+sDClgIafBvJNNEmh2Ap+e/I3aI9WbBaNcIk3cbFvUkwGe
+         BksSYGTGn6goJzRsv5gyMKnW2HwPfuw9/dEe5wyKugKLjXZ2aZwEslkfpY6wmWMqgP47
+         Yu+W8a+yBimBbHHnBg8DSp6Y/vntx0/61twZI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721750321; x=1722355121;
+        d=1e100.net; s=20230601; t=1721754615; x=1722359415;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yxMshVPFdKCTFIUSW7cw9L8v3CsrBB2PAnKA86oz4mg=;
-        b=iE1ghTFqsi68/1vZ25SEu1kz/4agkbaCFel+if+AJaI+bTA7qxyCF+15JyYT4Cq7F6
-         +vSt37KCpT5nytkl1pDzI0WUd0k15kqR4e+B7RyhynOphv0CXZ+nAVFBB701ycsPBt6R
-         rscPIytkljlUIc4niXzH4Fp34vXOfwJx5riTgVC8IW9eUS0FAscAQV4uvNS8eKPRAC23
-         JNpu+d3AKf4pNUveH5yN6GXG16/TFUn9kJM/xnBX06LYmLJjvBspmln/VdpqdTNCQ76l
-         YNCNjcCV4Htt8W3dLcTGg24MYEniR32I0mbOyDxmd1lIrKDuCTn+FZ32J78nwQyx4Gka
-         SvwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUzxwx2UXSVhXCGmIwZnLX/SZRWXr+yDkZ9n6q/bssSMtL5MerrHPY28k8DhZ6qyTF1svN6cCWyRWss3Xf0yshqt7oDl3j3ga3aBwd2XPA=
-X-Gm-Message-State: AOJu0YwALluadcYryCQ/tAMKGQeLGSN7jszfmsq2J69CsogDro0DfvhX
-	lKkyaYce00E9BY9SNnM+iNF7ZDMYj7cnGdBqJ5u7OcdlT9WeuTjayC0dGx50Y2t1RiD5lnO6a/7
-	7+Q==
-X-Google-Smtp-Source: AGHT+IGN1DM2mfd/B146aH9qkl9pN0ZEn9PdD7IHJ03qLrC2xEfy8R96KXgRMlhn4MOOAtv1vv/i6Q==
-X-Received: by 2002:a05:6a00:2e9a:b0:70e:98e3:1c17 with SMTP id d2e1a72fcca58-70e98e346a3mr545239b3a.27.1721750320704;
-        Tue, 23 Jul 2024 08:58:40 -0700 (PDT)
-Received: from google.com (33.5.83.34.bc.googleusercontent.com. [34.83.5.33])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70d1370c6adsm5153893b3a.56.2024.07.23.08.58.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jul 2024 08:58:40 -0700 (PDT)
-Date: Tue, 23 Jul 2024 15:58:36 +0000
-From: Carlos Llamas <cmllamas@google.com>
-To: Veerendranath Jakkam <quic_vjakkam@quicinc.com>
-Cc: johannes@sipsolutions.net, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] wifi: cfg80211: fix reporting failed MLO links status
- with cfg80211_connect_done
-Message-ID: <Zp_TLK2-C4LYC-yl@google.com>
-References: <20240722194146.1736608-1-quic_vjakkam@quicinc.com>
+        bh=mfXh0e5qvlr9V94xYRTDIYHCRmA4p3PKN50LXFEptwo=;
+        b=jFG1D0yORrX6pJoS4xOQ5QzmdEMdB9Uj0KLGsNrwQpZBuBojdsDcUyK+BeFsxi78lc
+         nNkLkSSAj6jefaFJ89d0NVTpgbf8Be6OmUKrFomolUyTE8BwPCAcnEPo163qSnzu9mB9
+         1iVkXVf1hjql9iSMVddyrL7N5KQZ3MGRFSVR8zCmeL8aBwN6f9gTjSF9oOxKjBLCh3BZ
+         AXuBKDAnOn7zucS1wceHBf33BoV+FRxo60c0Yn6FDmymdwyNLl7rd1wSKZWsgDQ7AQ9X
+         CwmBv7O4KG/gRZnDaFlKC1cbIBAfCYCNlTvtsKddC4I5hucpsHsGjRAmjvLTdmsa4eab
+         W9fg==
+X-Forwarded-Encrypted: i=1; AJvYcCW2njxT3u/D/3/rdKqlWg6/JSB8e+pE28TNTC9mHqVE/ACvZm1dXv3Jsl03Hh56Srs0d5Cl7M+M2rAs45gQ42d3DQ525d6SMv0pWDAuQZs=
+X-Gm-Message-State: AOJu0Yxiu7+QJfYceJtXQK7BA5fPZJPgIA4VKL9Tz2qkj9tUU3Kcuuyq
+	RJSYFK3TySVgYSzgdi+5ZDud73sD4tIQfIuQj1YyJpcjoNOtxFb/GOmxNyDhAQ==
+X-Google-Smtp-Source: AGHT+IHvniJlM77jc39PhRZdLCQJ2B+vWgh38JfugkBonmrTqOIcCFDNiTRqD6b0b4xRovDi/FP/Kg==
+X-Received: by 2002:a17:903:2442:b0:1fd:64ef:da17 with SMTP id d9443c01a7336-1fdb5f6b603mr37015895ad.41.1721754614633;
+        Tue, 23 Jul 2024 10:10:14 -0700 (PDT)
+Received: from localhost ([2620:15c:9d:2:3be5:f451:a5db:11b4])
+        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-2cb772c20fbsm10440114a91.10.2024.07.23.10.10.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 23 Jul 2024 10:10:14 -0700 (PDT)
+Date: Tue, 23 Jul 2024 10:10:12 -0700
+From: Brian Norris <briannorris@chromium.org>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Francesco Dolcini <francesco@dolcini.it>, Kalle Valo <kvalo@kernel.org>,
+	David Lin <yu-hao.lin@nxp.com>, linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/3] wifi: mwifiex: fix key_mgmt setting
+Message-ID: <Zp_j9P6jTzMpCqO-@google.com>
+References: <20240723-mwifiex-wpa-psk-sha256-v3-0-025168a91da1@pengutronix.de>
+ <20240723-mwifiex-wpa-psk-sha256-v3-2-025168a91da1@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -83,38 +81,26 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240722194146.1736608-1-quic_vjakkam@quicinc.com>
+In-Reply-To: <20240723-mwifiex-wpa-psk-sha256-v3-2-025168a91da1@pengutronix.de>
 
-On Tue, Jul 23, 2024 at 01:11:46AM +0530, Veerendranath Jakkam wrote:
-> Individual MLO links connection status not copied to
-> EVENT_CONNECT_RESULT data while processing the connect response
-> information in cfg80211_connect_done(). Due to this failed links also
-> indicated with success status in EVENT_CONNECT_RESULT.
+On Tue, Jul 23, 2024 at 09:09:58AM +0200, Sascha Hauer wrote:
+> bss_config->key_mgmt specifies the AKM suites that are usable in
+> hardware. This variable is set to specific values while iterating
+> over the advertised AKM suites. This means the final value of the
+> variable depends on the order of the entries in the AKM suites
+> array. Instead of setting the variable, just set the relevant bits
+> in the key_mgmt bit field to make us independent of the order of
+> entries.
+> This behaviour is derived from the downstream driver that does the
+> same.
+> Also, set bss_config->key_mgmt to zero explicitly right before the
+> loop. bss_config has been zero allocated by the caller already, but
+> do so again to safe the reader from following the code path.
 > 
-> To fix this, copy the individual MLO links status to
-> EVENT_CONNECT_RESULT data.
-
-Does this need a Fixes: tag then?
-
-> 
-> Signed-off-by: Veerendranath Jakkam <quic_vjakkam@quicinc.com>
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > ---
->  net/wireless/sme.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/net/wireless/sme.c b/net/wireless/sme.c
-> index e419aa8c4a5a..d9d7bf8bb5c1 100644
-> --- a/net/wireless/sme.c
-> +++ b/net/wireless/sme.c
-> @@ -1045,6 +1045,7 @@ void cfg80211_connect_done(struct net_device *dev,
->  			cfg80211_hold_bss(
->  				bss_from_pub(params->links[link].bss));
->  		ev->cr.links[link].bss = params->links[link].bss;
-> +		ev->cr.links[link].status = params->links[link].status;
->  
->  		if (params->links[link].addr) {
->  			ev->cr.links[link].addr = next;
-> -- 
-> 2.34.1
-> 
+>  drivers/net/wireless/marvell/mwifiex/uap_cmd.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+
+Acked-by: Brian Norris <briannorris@chromium.org>
 
