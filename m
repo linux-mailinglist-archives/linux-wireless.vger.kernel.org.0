@@ -1,163 +1,134 @@
-Return-Path: <linux-wireless+bounces-10451-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10452-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF340939FFE
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jul 2024 13:35:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC0F093A05D
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jul 2024 14:04:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96E171F23145
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jul 2024 11:35:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BB161F22516
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jul 2024 12:04:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91591509AF;
-	Tue, 23 Jul 2024 11:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5E714B07D;
+	Tue, 23 Jul 2024 12:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="cZ2PxFsl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DHGkUNrJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984881514E9
-	for <linux-wireless@vger.kernel.org>; Tue, 23 Jul 2024 11:35:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C5017BD5;
+	Tue, 23 Jul 2024 12:04:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721734541; cv=none; b=bGNFmPa7j0Louxwxk3scRSVzR/RYjcMZyw32ZhuPBdujpsgT6FT3FaSJweykY8i0qf0/FORfmV9sDHUCHR8ZBL0PyQsi02yXxzBjDdwLDXZwj+9voInKiK72apf6ChYRS7OeBxLjaRHhURwfavNrKxTAC8B0Lk/xCcdsF8H1uBA=
+	t=1721736256; cv=none; b=qN3hAEW2ARcnpBwMzdfHcXL+2kpgwhbXWBbFBRD6jV1FqZv5m8zacw6S8cNC3k1Z8AV5XWN4td/K47KQfPY4KzMvEi0nhB648JmQuIidccv4m/Men1rGeQX1crRaOZX8IoVB/5UNx/7R5v7y0XbdPfnhc3TOgIKNj8S1PfNRwAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721734541; c=relaxed/simple;
-	bh=aocUrPksI14PkJFiUcTIs8zsOxmk/lZVnAIK69jQ1WU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=kehy0ruK05bu2vW6obxiBx8eofc23gwrS9/3Y1yIIVOjZn0+e3MRYL4tLVizUKs6Wj/1XtfHo/QF+W4IwfOZHvpcPGmiTK8PWYMp4QwKtJ0+bAI5ivv3d7/bLkjoBY03BmC6m6C6IFUTXo+BjeKvW6Eq730TNq1bbrvvjKBX2jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=cZ2PxFsl; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=rj7VJ5HZy6s2/1zcFiJLmdGzTEZImvEkqTud+84HBSw=;
-	t=1721734539; x=1722944139; b=cZ2PxFslgu7apXJ/nLuVVSTJLs0lH7uKj5Mgtr/cxW80gCd
-	/s/RkYxEMaNOZfwl3R2XoVy4+RGRTgZqE7iIl0c2dKvE6N+NUlYCpTz0UxTvR6TNF9HPDaVbKJwcr
-	qX+wPYf9IcIGohjNknEEHSq85QW+ECyowSRbSSLDS1giYrhnsV9n03y3YNsfCB3vkfm8rh9HfdIBZ
-	t50TaOvlOP2WKOawmxUx7QqvtjXF5grbKJ7cn3Eyhcc/ZBVJH4BtEvD5sakzz9j5OIKM+OIk2uc0F
-	PeGr+Go0mIQq6uiqBfGJ803TSbrFsit4SmsFAPUGWVjUEXv+x4EeXdUGJ2qu8aPQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1sWDnq-0000000BBcd-1r6G;
-	Tue, 23 Jul 2024 13:35:34 +0200
-Message-ID: <6415e114cd05cc63fd9b82bed95c7bdf545bc805.camel@sipsolutions.net>
-Subject: Re: Managing debugfs entries and
- https://syzkaller.appspot.com/bug?extid=d5dc2801166df6d34774
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Dmitry Antipov <dmantipov@yandex.ru>, "Berg, Benjamin"
-	 <benjamin.berg@intel.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, 
- "lvc-project@linuxtesting.org"
-	 <lvc-project@linuxtesting.org>
-Date: Tue, 23 Jul 2024 13:35:33 +0200
-In-Reply-To: <e545816b-22ae-4837-9597-86483ad37374@yandex.ru>
-References: <1ff58acb-4171-46ff-8a33-821600a8d8e4@yandex.ru>
-	 <2e57365ad4b0a5e63bf1d54ff776d57d08d462b0.camel@intel.com>
-	 <e545816b-22ae-4837-9597-86483ad37374@yandex.ru>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3 (3.52.3-1.fc40) 
+	s=arc-20240116; t=1721736256; c=relaxed/simple;
+	bh=FAe5RBSeVUQvSoNMovSUxUr4BZQMUMsViBXF99Eg278=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hm71b/90zzQNjf177NTw/Ogd1XJBz4aoIqh8tnyC4SWuACe8fWIQv0sjmIODcMQUrWnU5LngGsoJwaLXEWBScxHUtxYs2YOb67y/52hdwuTHizFH1gKA67V07x05M0Rk1itkalmNRc0MoETLgk+WqoCuGj8FJoRbUaoQz8h+CQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DHGkUNrJ; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1fd640a6454so4777545ad.3;
+        Tue, 23 Jul 2024 05:04:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1721736254; x=1722341054; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XBj9aeVGLx9lk0+gvee4j7l4tMQJNLmoyqkeXTYVawA=;
+        b=DHGkUNrJbXHCzO9XrpyibKyD3il+ej7n9fozYyQpYfUXHFhRaT7D8iHfmB0ZtJdQIU
+         Sn0uzLfJy/EGO/nd9vhf8nS32VJtCuMFGD+qNquCp8PBYx49/10jkF3bYLUUXcg+Uug5
+         dHOYN9KnQRaCxzKw6Rl2fzbfhhm37NsveU7HO0BTWDdH4NEnsJiFW1bw8yP5PglKGyqW
+         BPve79JnzwzGyrvDd1M2D42vonBMIP9NnXIzeYAymNO7YzObCyjjjf/VmgY/1Cf/lKcG
+         dk13QG+tUx6Dh733tcfArO74g1Nsu+z0n2Eo5BlFcD3Tlh3qqC45lY9tdWQmfsHFaN37
+         NClA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721736254; x=1722341054;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XBj9aeVGLx9lk0+gvee4j7l4tMQJNLmoyqkeXTYVawA=;
+        b=keEYE8Tp6IRIIqQ3Mj2gav0+4zzR7IqxsoDU35Niu6+jLHKcDKB44/ZYIy9axuBwqk
+         YKMvI21OxPhspHe64NAiyriyfzp+TMyElyM+cwEprhnnzTrATdXvB+c9bkEEFQTXcyzk
+         A47STcb0Nxxl/LPU3Y0QbLG61KKwFHJO68vVpuGIWHefL8IND5CeAoWfZa9ZnT3a8sdS
+         ebgpIvtNhjWx6SWl2RG3MQgIVmmB3nVB1Y9QbyOuNIDzs1VnL9nw7cTe5INz+HzdYxEJ
+         mrwr2QVguynufIEKmWTshxPxOTSsjIjNG78qp9Jlt3kIWSsA5jlkMBQivumC60EBRD3d
+         I/PA==
+X-Forwarded-Encrypted: i=1; AJvYcCVOxoTyBVxPX6VAAY1gCJBstF88NMqokOYkvpVP6DLmIIKmXdpHIqqBLiNur1M74tiHi4nGY4MqB3kKipTSDeMB6itHPB9NHdkT1OIDvKAEQeqOHdvkSYXPN7yu4MSMioey7F9zn5WqG0iAe3s=
+X-Gm-Message-State: AOJu0YwzCEx5ASLkfnq9N8+c7iy5sb4i1/+4lc6swTmjflDEtMvXbLTo
+	SsQvSX1BnZs9MuFwRM7CVo7DoQJykMqfktfSRBhcmxTDnN0LrRvu
+X-Google-Smtp-Source: AGHT+IFV1wzilscCcwyJqyFjDIjRJLIzHo/Nk8lJzUvjtc+tXd6K3q9sz6+HJaaZdgVsxqFfLxyz3g==
+X-Received: by 2002:a17:902:cec1:b0:1fd:9c2d:2f1b with SMTP id d9443c01a7336-1fd9c2d3180mr53822025ad.52.1721736253908;
+        Tue, 23 Jul 2024 05:04:13 -0700 (PDT)
+Received: from localhost.localdomain ([177.21.142.242])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70d1444b58dsm4979473b3a.18.2024.07.23.05.04.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Jul 2024 05:04:13 -0700 (PDT)
+From: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+To: miriam.rachel.korenblit@intel.com,
+	kvalo@kernel.org,
+	rafael.j.wysocki@intel.com,
+	daniel.lezcano@linaro.org,
+	johannes.berg@intel.com,
+	gregory.greenman@intel.com,
+	dmantipov@yandex.ru
+Cc: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [RESEND PATCH v4] iwlwifi: mvm: adding check if the thermal firmware is running
+Date: Tue, 23 Jul 2024 09:03:02 -0300
+Message-ID: <20240723120321.2537-1-trintaeoitogc@gmail.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 
-On Tue, 2024-07-23 at 14:19 +0300, Dmitry Antipov wrote:
-> On 7/19/24 12:38 PM, Berg, Benjamin wrote:
->=20
-> > So, the simple way to prevent this error is to make sure that
-> > ieee80211_debugfs_recreate_netdev is never called while we have a
-> > station. In the case of this report we seem to be getting there via a
-> > mac address change (i.e. ieee80211_change_mac) and the sane thing would
-> > be to just return -EBUSY instead of permitting the operation to
-> > continue.
->=20
-> Just to check whether I understand this:
->=20
-> diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-> index a3485e4c6132..d5adbe5b3e51 100644
-> --- a/net/mac80211/ieee80211_i.h
-> +++ b/net/mac80211/ieee80211_i.h
-> @@ -1173,6 +1173,8 @@ struct ieee80211_sub_if_data {
->=20
->   	u16 restart_active_links;
->=20
-> +	u32 sta_count;
+In the dmesg is showing the message "failed to read out thermal zone"
+as if the temperature read is failed by don't find the thermal zone.
 
-That's probably one way of doing it, but it's rather ad-hoc, really what
-we should be doing is check more things in whether we allow the change
-or not, it looks like now it can only happen in the window between
-starting auth/assoc and actually having a connection, which is anyway
-wrong to allow it in.
+After researching and debugging, I see that this specific error is
+occurrenced because the thermal try read the temperature when is started,
+but the firmware is not running yet.
 
-So more like below.
+For more legibiliti i change the tt.c for return EAGAIN when this was occurrence.
+After this change, in my computer I compile and install kernel in /boot
+and in my dmesg the message "failed to read out thermal zone" is not show
+any more.
 
-johannes
+I would like to thanks for Rafael Wysocki <refael.j.wysocki@intel.com> ,
+Kalle Valo <kvalo@kernel.org> and Johannes Berg <johannes@sipsolutions.net>
+for your suggestions in my previous patch.
 
+Signed-off-by: Guilherme Giacomo Simoes <trintaeoitogc@gmail.com>
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/tt.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -204,7 +204,6 @@ static int ieee80211_can_powered_addr_change(struct iee=
-e80211_sub_if_data *sdata
- 	struct ieee80211_roc_work *roc;
- 	struct ieee80211_local *local =3D sdata->local;
- 	struct ieee80211_sub_if_data *scan_sdata;
--	int ret =3D 0;
-=20
- 	lockdep_assert_wiphy(local->hw.wiphy);
-=20
-@@ -220,10 +219,8 @@ static int ieee80211_can_powered_addr_change(struct ie=
-ee80211_sub_if_data *sdata
- 		if (roc->sdata !=3D sdata)
- 			continue;
-=20
--		if (roc->started) {
--			ret =3D -EBUSY;
--			goto unlock;
--		}
-+		if (roc->started)
-+			return -EBUSY;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
+index 8083c4b2ab6b..d1dd334b5049 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tt.c
+@@ -620,8 +620,12 @@ static int iwl_mvm_tzone_get_temp(struct thermal_zone_device *device,
+ 
+ 	mutex_lock(&mvm->mutex);
+ 
+-	if (!iwl_mvm_firmware_running(mvm) ||
+-	    mvm->fwrt.cur_fw_img != IWL_UCODE_REGULAR) {
++	if (!iwl_mvm_firmware_running(mvm)) {
++		ret = -EAGAIN;
++		goto out;
++	}
++
++	if (mvm->fwrt.cur_fw_img != IWL_UCODE_REGULAR) {
+ 		ret = -ENODATA;
+ 		goto out;
  	}
-=20
- 	/* And if this iface is scanning */
-@@ -231,7 +228,7 @@ static int ieee80211_can_powered_addr_change(struct iee=
-e80211_sub_if_data *sdata
- 		scan_sdata =3D rcu_dereference_protected(local->scan_sdata,
- 						       lockdep_is_held(&local->hw.wiphy->mtx));
- 		if (sdata =3D=3D scan_sdata)
--			ret =3D -EBUSY;
-+			return -EBUSY;
- 	}
-=20
- 	switch (sdata->vif.type) {
-@@ -240,13 +237,15 @@ static int ieee80211_can_powered_addr_change(struct i=
-eee80211_sub_if_data *sdata
- 		/* More interface types could be added here but changing the
- 		 * address while powered makes the most sense in client modes.
- 		 */
-+		if (sdata->u.mgd.auth_data || sdata->u.mgd.assoc_data ||
-+		    sdata->u.mgd.associated)
-+			return -EBUSY;
- 		break;
- 	default:
--		ret =3D -EOPNOTSUPP;
-+		return -EOPNOTSUPP;
- 	}
-=20
--unlock:
--	return ret;
-+	return 0;
- }
-=20
- static int _ieee80211_change_mac(struct ieee80211_sub_if_data *sdata,
+-- 
+2.45.2
 
 
