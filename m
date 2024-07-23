@@ -1,147 +1,96 @@
-Return-Path: <linux-wireless+bounces-10441-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10442-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C843D939751
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jul 2024 02:11:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDE939397E4
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jul 2024 03:27:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BFD91F2210D
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jul 2024 00:11:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 910311F21E10
+	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jul 2024 01:27:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63DB318D;
-	Tue, 23 Jul 2024 00:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E6EB7E574;
+	Tue, 23 Jul 2024 01:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="G3BrmQYF"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="GweM4/de"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEE217F
-	for <linux-wireless@vger.kernel.org>; Tue, 23 Jul 2024 00:11:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15FDD433A0
+	for <linux-wireless@vger.kernel.org>; Tue, 23 Jul 2024 01:27:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721693464; cv=none; b=aBqrUx3ymnMJMC9k8tAopqXKBmhEs66cDwv7WQad7mbykeuzBf1alxi3xATcbvGkqRqiEEH7YWKLlRE2F+6qiTbSRD9sAil8GNbCkIScOuLDZJEXOdqNg0Ipj4slUIgTRnlsuBr+Dned6QZpiDbcoog7r11Hm3Tt6Q9p4mnRKNI=
+	t=1721698059; cv=none; b=gAwba4ybICA79Lw5ZaX+9Y77CORGE4S2mXLvjedWr4xHEF8eyNJdaRZaLF3VLtd2g+K0qPyjrJag28lb/EqhBHkCQ3uQO0fqfZP7ztP+qvlShcWuYbh3JN+UMIV0L9FrDFJV+mxX/9aTx4K9gF24vni3llFsMWX6s1Yd5SEBne0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721693464; c=relaxed/simple;
-	bh=G665Cp7FB0K8Xwe5xcg6GuZWSVY1eJf0cxA1r13yWdk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=kfGgDXAvOrSqp9l46NkMusSt8dpve2wZ3MTuEsxJ2EcqH//BLeYjd8mD87Sgi9LsnDe7OWqPqRuBI37HcDD9AHvbkunGBKooVfRDUepSmmwQoPCxvL0vtHluM7UgLB/yPCEs21LAJOqHh+zZWJYibnimts/4ngX7jZncWFvrDdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=G3BrmQYF; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46MAn9Xd003255;
-	Tue, 23 Jul 2024 00:10:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Xc/7c8EyA7NuKLSZkl8JnxYlf9iDnVc1uk3+MRq8y+I=; b=G3BrmQYFihRgqY4g
-	jF3xyP/BZVHC+GHIwCoz6vSHvZOxyBuKqtvCWQeZ7yf7PveybPwdn0qvSlQ1Fhg4
-	qkObnfZ8Mn6dIzqfm+2N1Hkl4dKJiGJh9y2vEukf76iLX7cbvDxF0r4QNEjbRIcK
-	c9OSFL/XcXoc/Od1r9QvmjIldUlJG+mIFY37ihf8d6zgUY8vKmMgu6oMRJFjkvCq
-	vHUkERYjwo6vqkBnaFRz/uE0XOHKmE7ouqDEfB0B5MI5TblcJxq+nOywBbrAGbDe
-	xisjaW43357ghY/XYto9n/34vhxoj5Fv2cKTP5KgK1LK6ESC4Y1MuaJkuckidbKx
-	dQ8VLQ==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40g6h8w0re-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 Jul 2024 00:10:57 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46N0Auep008278
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 23 Jul 2024 00:10:56 GMT
-Received: from [10.111.176.36] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 22 Jul
- 2024 17:10:56 -0700
-Message-ID: <a1ed48fb-8b90-4cfb-81b9-dc2c5cc49cde@quicinc.com>
-Date: Mon, 22 Jul 2024 17:10:55 -0700
+	s=arc-20240116; t=1721698059; c=relaxed/simple;
+	bh=bk8f3mAmOfOcYzys3vaBsTDCAlA4HtYX63tneGZ4hMA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=EOVWez5NRpJI5tcECn/x1MhbG+4ayurjjmv4gPbj7rFK1Tgnwk/dJWrCvReww52M337Ww/tNe6dOnb74JlQWiYMQq5MVYsZBE3bXhdv4KRVNsCBLerpLY2/s6uU8OLMrbdeBuqHEexY7hXu4RZ24eae70N/5Gq1y/tELRlQn1jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=GweM4/de; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 46N1RQML0284053, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1721698046; bh=bk8f3mAmOfOcYzys3vaBsTDCAlA4HtYX63tneGZ4hMA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=GweM4/del+oz/SljFmiivLoERAXbANZp756Zz3BeCab0RiNCU8SZI/wBgfpuEyn6p
+	 CIYIpjLU48wAl4md0yUJHiSrqzFWirDPXk4AkJp3Z91szaCYpRzX9ka3gW6ri4y+7J
+	 dFp30el5C0AamfSZTZXIUSlgRRfyFCViXucND9KYdBoA8YKPOd4/Ecen7CSbxDhhz6
+	 3fDkmAo3XhROLmo1ucAvAk98d29hIGVaxDiwey9VQWqUaiTkRghEZpJoJauYrEW0wQ
+	 Egt0Vd9UlId4pW1sRouW9ETh5xOd+lvVoZvPY8JwoLYOvurH6Zfz16HaDVE7Ab/RlF
+	 WjZtayoaDcDDg==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 46N1RQML0284053
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 23 Jul 2024 09:27:26 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 23 Jul 2024 09:27:26 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 23 Jul 2024 09:27:25 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
+ 15.01.2507.035; Tue, 23 Jul 2024 09:27:25 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: Fiona Klute <fiona.klute@gmx.de>
+Subject: RE: [PATCH 2/2] wifi: rtw88: 8703b: Fix reported RX band width
+Thread-Topic: [PATCH 2/2] wifi: rtw88: 8703b: Fix reported RX band width
+Thread-Index: AQHa28ETJnl9hjuhWUS8/RxWhlNz+rICGbEA///3X4CAAXRXAA==
+Date: Tue, 23 Jul 2024 01:27:25 +0000
+Message-ID: <b445207793b94e349eaf69bcedb428bb@realtek.com>
+References: <2fbacb83-3e47-4f37-a70a-fb9f4719eb26@gmail.com>
+ <712d08e3-fc90-48ad-bb61-bb601b2cf953@gmail.com>
+ <aac7a0fa33fc4593bc291b2c9c800519@realtek.com>
+ <bb7f5d98-1b9c-4235-b3b3-1f7da36d3e8d@gmail.com>
+In-Reply-To: <bb7f5d98-1b9c-4235-b3b3-1f7da36d3e8d@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] wifi: ath11k: Add firmware coredump collection support
-Content-Language: en-US
-To: Miaoqing Pan <quic_miaoqing@quicinc.com>, <kvalo@kernel.org>
-CC: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20240712100442.1790499-1-quic_miaoqing@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240712100442.1790499-1-quic_miaoqing@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: JTaYKtg2sEg5Bqa1UpTrFS591zcvPtRM
-X-Proofpoint-GUID: JTaYKtg2sEg5Bqa1UpTrFS591zcvPtRM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-22_17,2024-07-22_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- adultscore=0 mlxscore=0 malwarescore=0 phishscore=0 bulkscore=0
- mlxlogscore=999 suspectscore=0 lowpriorityscore=0 clxscore=1015
- impostorscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2407110000 definitions=main-2407220180
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-On 7/12/2024 3:04 AM, Miaoqing Pan wrote:
-> In case of firmware assert snapshot of firmware memory is essential for
-> debugging. Add firmware coredump collection support for PCI bus.
-> Collect RDDM and firmware paging dumps from MHI and pack them in TLV
-> format and also pack various memory shared during QMI phase in separate
-> TLVs.  Add necessary header and share the dumps to user space using dev
-> coredump framework. Coredump collection is disabled by default and can
-> be enabled using menuconfig. Dump collected for a radio is 55 MB
-> approximately.
-> 
-> The changeset is mostly copied from:
-> https://lore.kernel.org/all/20240325183414.4016663-1-quic_ssreeela@quicinc.com/.
-> 
-> Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-04358-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
-> 
-> Signed-off-by: Miaoqing Pan <quic_miaoqing@quicinc.com>
-> ---
-> v2: fix implicit declaration of function 'vzalloc'.
-> v3: fix vmalloc-out-of-bounds and remove CONFIG_ATH11K_COREDUMP.
-...
-> @@ -102,8 +102,10 @@ struct target_mem_chunk {
->  	u32 prev_size;
->  	u32 prev_type;
->  	dma_addr_t paddr;
-> -	u32 *vaddr;
-> -	void __iomem *iaddr;
-> +	union {
-> +		u32 *vaddr;
-> +		void __iomem *iaddr;
-> +	} v;
->  };
-
-replicating late-arriving v2 comments here:
-
-On 7/12/2024 2:38 AM, Miaoqing Pan wrote:
-> On 7/11/2024 12:20 AM, Kalle Valo wrote:
->> Miaoqing Pan <quic_miaoqing@quicinc.com> writes:
->> I feel that the QMI changes should be in a separat patch and explaining
->> in detail what they are about. Didn't review those now as there's no
->> explanation.
->
-> Minor changes for updating 'iaddr' definition. IMO, don't need a
-> separate patch.
-
-Putting something into a union isn't minor.
-You should justify the reason for doing it and defend why it is safe to do it.
-
-And note that if you make it an anonymous union then most, if not all, of the
-code changes are unnecessary.
-
-/jeff
-
-
-
-
+Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBCeSB0
+aGUgd2F5LCB0aGVyZSBpcyBhbm90aGVyIHByb2JsZW0gd2l0aCB0aGUgUlggcmF0ZTogcnR3ODgN
+Cj4gZG9lc24ndCByZXBvcnQgaWYgc2hvcnQgZ3VhcmQgaW50ZXJ2YWwgd2FzIHVzZWQuIFRoZSBv
+bGRlcg0KPiBjaGlwcyBsaWtlIFJUTDg3MDNCIGhhdmUgdGhlIHNnaV9lbiBiaXQgaW4gdGhlIFBI
+WSBzdGF0dXMNCj4gc3RydWN0LCBidXQgSSBjb3VsZG4ndCBmaW5kIG91dCBob3cgdGhlIG5ld2Vy
+IGNoaXBzIGRvIGl0Lg0KDQpUaGUgbmV3ZXIgY2hpcHMgZG9uJ3QgaGF2ZSB0aGF0IGJpdCBmb3Ig
+UlguDQoNCg0K
 
