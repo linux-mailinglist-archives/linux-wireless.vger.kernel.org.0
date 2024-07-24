@@ -1,91 +1,105 @@
-Return-Path: <linux-wireless+bounces-10474-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10475-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3DFC93AE47
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2024 11:06:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF16193AF21
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2024 11:36:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F774284E9C
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2024 09:06:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EC2D2831E7
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2024 09:36:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462FE14C59A;
-	Wed, 24 Jul 2024 09:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79E745336B;
+	Wed, 24 Jul 2024 09:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="BMmLNSgW"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="C7aT2+oI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE33B14B095;
-	Wed, 24 Jul 2024 09:06:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 683B613DDC2;
+	Wed, 24 Jul 2024 09:36:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721811999; cv=none; b=a+8h3u+twFmmpD0YfHfI997oWITJwslP3GbcUvOu7o5x0Rwf9iuOk4xEx8R+9zuJU3uGCwhO4KkKvkh34Tn3fwP4HERb3F5F63/ZOnh1+FEGov7fec93626xYsUpGw8Ze5pZZAD9g2DUzFmRpSSNTa0wg4GO/0Wi/ktKQDjioqw=
+	t=1721813801; cv=none; b=NtA/c6ZCxEB74H0aSAtVJd9lskm1J1sj7vh4iYeCvZ+ylHGul+xeyzjCI057091mOg1O1+V3xHNCb0kIacq7nuHn8qcBOU7vTDylXfqlQ7to8pEah6uIvvZxUWhBQ1q1nfTrb4xXdPu8vA8IZH5+ANxdswTCUFS+hZLhc0NJkKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721811999; c=relaxed/simple;
-	bh=QrFxDcN4n10oTiBQIOKDoz81+N9yJcI+JrDQSMc3bAM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nV4P/GIdePYC4yuFPPYizLVZzkXcFNHFGS0snjOAdPA0DDWUBrZOGQV5bZQbryO/dYo68dgFmLlK3BGQf5z8L1+eBUcl/GQ+n7aO13Jf8Ev2gnouPMzFP2T5X6B+zOQsH15oQjPpODdT+uNZbyDytrX/dngJZ/uPluoBpO+5vIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=BMmLNSgW; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+	s=arc-20240116; t=1721813801; c=relaxed/simple;
+	bh=La77EI5N5q2GMTwHDJWq5kA72eNXvF1GPhtzwQ0NKxk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=B6jN3kwT6hLbzJ94f7BXvvnyeCWsR8wXltMkjwq61eWvwU8A4aibEmflnVjd+CKMMj0OEw+jTDeHOYVYMfr+T6RP7ThAS4+wx12EqHvLglalPe+mcUE7LshuPCr84VrKIvDG3GXvBQ6LuFbzIZkFsikRQXl+iI8qAbdcs3w1ED4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=C7aT2+oI; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=QrFxDcN4n10oTiBQIOKDoz81+N9yJcI+JrDQSMc3bAM=;
-	t=1721811997; x=1723021597; b=BMmLNSgWERq2pGvna94KZn8L9anOvRlRJCqcTE0pO2m3pc/
-	Dp6sE6aWlfPFWrnSkAMrvRLxAJh5h2300EtSG/U3US2KvX5vYK5aVdc2PzUuF6A6BKI9esYvYZDYq
-	FB3mTL1K9OmAxBTYlhw66UISnOjXC3J/uUjX9/5acydULb3EQ5Bta3j0UO7qM51I4IrW0RzLZ8B5v
-	VWlBkjp6D1HisQmi/IH8dLzKNrSLpwFAW0aeC4FoC6U1Lbv5xCOIllUGfTSHr5wDMg4q7WojnaQmu
-	XwnO2uLlSYFc3PTTfuVB/D2IzI6QyG+ICckkOWS16/15PMwVkeY00pzfN/BEfo3w==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1sWXxC-0000000DL4k-0XoI;
-	Wed, 24 Jul 2024 11:06:34 +0200
-Message-ID: <fcfc079f251657f9017f86b626e0595897cb8163.camel@sipsolutions.net>
-Subject: Re: [PATCH] scripts: add macro_checker script to check unused
- parameters in macros
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Andrew Morton <akpm@linux-foundation.org>, Julian Sun
-	 <sunjunchao2870@gmail.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, jack@suse.cz, brauner@kernel.org, 
- viro@zeniv.linux.org.uk, masahiroy@kernel.org, n.schier@avm.de,
- ojeda@kernel.org,  djwong@kernel.org, kvalo@kernel.org
-Date: Wed, 24 Jul 2024 11:06:33 +0200
-In-Reply-To: <20240723150931.42f206f9cd86bc391b48c790@linux-foundation.org>
-References: <20240723091154.52458-1-sunjunchao2870@gmail.com>
-	 <20240723150931.42f206f9cd86bc391b48c790@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3 (3.52.3-1.fc40) 
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:Reply-To:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	In-Reply-To:References; bh=hjn9u+OdaMy0APR3lesVd6VwainbD/Tq9CR8YxQHmzo=;
+	t=1721813799; x=1722245799; b=C7aT2+oIsCEbHEuEaNUH1Iv7ZeXsz0M07Uxe7TeTSN1Qmwx
+	pJSKeLxX7RU/e5/OKuqWyN6h7shZN0YXUsdIwgcONBspW4dzwe2VBqLPiT733LlVNo3OFRu2g0pDt
+	60K8cxmRfnEBc2qNOzb7FkXvMwZA+IzFlmb40SyhPwKSuCLId7tyUL/exBV5HSCLAHzTXdF/83kWB
+	nVHAF+tzSv1s1PhCTcIOxFAJpg867nCPSlx5gIqsr9xh5jx0hlekk62V526ZXVQBlaUzXVpKLY4C1
+	uUdBf8ld+LrI8kOy3MK4N6q2FdNAb+ivX0558wga6b0KIgs7ILo49bsnwDk19fIQ==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1sWYQB-0006Zs-8l; Wed, 24 Jul 2024 11:36:31 +0200
+Message-ID: <0124ff39-7d63-49f8-bacd-3a40ce37ec4d@leemhuis.info>
+Date: Wed, 24 Jul 2024 11:36:30 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+Subject: Re: [PATCH] wifi: mt76: mt7921: fix null pointer access in
+ mt792x_mac_link_bss_remove
+To: sean.wang@kernel.org, nbd@nbd.name, lorenzo.bianconi@redhat.com
+Cc: sean.wang@mediatek.com, deren.wu@mediatek.com,
+ mingyen.hsieh@mediatek.com, linux-wireless@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, Bert Karwatzki <spasswolf@web.de>,
+ Mike Lothian <mike@fireburn.co.uk>,
+ Linux kernel regressions list <regressions@lists.linux.dev>
+References: <20240718234633.12737-1-sean.wang@kernel.org>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Content-Language: en-US, de-DE
+In-Reply-To: <20240718234633.12737-1-sean.wang@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1721813799;26d02e41;
+X-HE-SMSGID: 1sWYQB-0006Zs-8l
 
->=20
-> Makes me wonder who will run this, and why.
-
-I suspect once it's there we could convince folks like the 0-day robot
-maintainers or Jakub for nipa [1] to run it and at least flag newly
-reported issues.
-
-[1] https://github.com/linux-netdev/nipa
 
 
-Or maybe run it with W=3D1 like we run kernel-doc then (cmd_checkdoc and
-"$(call cmd,checkdoc)")?
+On 19.07.24 01:46, sean.wang@kernel.org wrote:
+> From: Sean Wang <sean.wang@mediatek.com>
+> 
+> Fix null pointer access in mt792x_mac_link_bss_remove.
+> 
+> To prevent null pointer access, we should assign the vif to bss_conf in
+> mt7921_add_interface. This ensures that subsequent operations on the BSS
+> can properly reference the correct vif.
+>
+> [...]
+>> Fixes: 1541d63c5fe2 ("wifi: mt76: mt7925: add
+mt7925_mac_link_bss_remove to remove per-link BSS")
+> Reported-by: Bert Karwatzki <spasswolf@web.de>
+> Closes: https://lore.kernel.org/linux-wireless/2fee61f8c903d02a900ca3188c3742c7effd102e.camel@web.de/#b
+> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
 
-johannes
+TWIMC, Mike (now CCed) ran into the problem and on bugzilla confirmed
+that this fixes the problem:
 
+https://bugzilla.kernel.org/show_bug.cgi?id=219084
+https://lore.kernel.org/all/CAHbf0-HOS-jdRGvJOBmEgaaox3PDbDSTgnnZkZF9pz37Bmh2iw@mail.gmail.com/
 
-
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
 
