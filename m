@@ -1,111 +1,134 @@
-Return-Path: <linux-wireless+bounces-10462-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10463-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0165E93A980
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2024 00:54:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13E2D93AB78
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2024 05:04:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B09FE2842F6
-	for <lists+linux-wireless@lfdr.de>; Tue, 23 Jul 2024 22:54:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E62BEB22F89
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2024 03:04:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75BAE25760;
-	Tue, 23 Jul 2024 22:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 438591B949;
+	Wed, 24 Jul 2024 03:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fireburn-co-uk.20230601.gappssmtp.com header.i=@fireburn-co-uk.20230601.gappssmtp.com header.b="bsm7d/Er"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hqxBF3B3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA80728E8
-	for <linux-wireless@vger.kernel.org>; Tue, 23 Jul 2024 22:54:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9824A00;
+	Wed, 24 Jul 2024 03:04:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721775268; cv=none; b=nxfRycvdBopAIA3Zbz6MYjSuBSfMhGf2RH3Jw1yCQbUPq8JBsLLxDRhs8dKq+HRTuCo9s+IOWxBO8m5tdM6CBpjbb2QXPtLkjdPRQMPc9nWhdkDGV06taL3nGMpkCoU7oGpO72VtAgAYqvi/8XAGkfwQamhF8Z7+/OmcvpLxrvg=
+	t=1721790249; cv=none; b=hRvWBk14n9JahaXXn/zkQMnTIbPGyOtKJ+EWU3ag4Orzmr6PUbyKgT4Oc0oRCjwrUE9JcgLHpyf/QAq2/KQD9KvEy1odtDczDqdA0oGM/Q8jLGB76iFVfSkArhQUJuK94OSHxOs0XOxsjzSRbdR8nrvaR8EnDcb/ClP3cMZOUaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721775268; c=relaxed/simple;
-	bh=VYlgYqkZeIdrFki6QqRWOIsGTyAHnP066oVKUjDpUXY=;
+	s=arc-20240116; t=1721790249; c=relaxed/simple;
+	bh=ir2p808DDlbmnPfYSAHgOiYn2a/peBOuTuHTPOzlUs8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=ULN9SLY/0+zilUjvqkvpi4pcZgNQld9OC+by4fna5jgQTKQLBZRid1UBOOy4cBuCkjfYEpIJpPpxCKwrl/b3ziHwcXVg6ux5W7dRiEkxhdSD2xS6zaxnqMuMZAvBc3LRVPErg2Rt5upLlzRUChTBVlOdNbIQt3hSzOtVKJTUMX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk; spf=none smtp.mailfrom=fireburn.co.uk; dkim=pass (2048-bit key) header.d=fireburn-co-uk.20230601.gappssmtp.com header.i=@fireburn-co-uk.20230601.gappssmtp.com header.b=bsm7d/Er; arc=none smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fireburn.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=fireburn.co.uk
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-75cda3719efso862926a12.3
-        for <linux-wireless@vger.kernel.org>; Tue, 23 Jul 2024 15:54:26 -0700 (PDT)
+	 To:Cc:Content-Type; b=IYiyhBxX/Mrjkixd0Y3huvoLLsFuuuVO/PEKTs9z1RtyVZF5jlQsrYhqCT75cSeEqGxGg4sxgatSzi1zCATTJWUaO0wPJENtpwsZadSvhZvlROddkdHTTLvpWYo+ASf2OU2PEbKs0jAPRes2ux+0vV4TyiL014MqCiismcJq1oU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hqxBF3B3; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2f01e9f53e3so29241931fa.1;
+        Tue, 23 Jul 2024 20:04:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fireburn-co-uk.20230601.gappssmtp.com; s=20230601; t=1721775266; x=1722380066; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ep2ebY/LgQ+HSlIevoblsK15p/7sA/ZLC1oJoiyHAv0=;
-        b=bsm7d/ErIrQ9HpbtV5Clv2wGK4/dJXaVCIIWexZHWGThM/du8mHyOrAXXNvNeaoDVC
-         52F/VkvR4ysuHxSNHhQDlS4dXSEcylCeStTLySaB2gkMjTGPF41GDrArSu13+VzoRGYT
-         FeCv1Korqi/LgNyt9ng947l9Ol/xNmpqmp/e7MNLoZK5fvgxCUFm9vXI+bgBzFnTJC5r
-         d5EKHWbuE4C7X+6i7bkOuDe4FLVG63R7ypaWvs7aQHqkxreF2liNWYyeMKa6SpNNj2lj
-         KsKaOMBNYbit6aolUjYvexogPcyLBS1Dp9hNHuafueR/K8T28DZGJ+E7tf4ZPzNLsZok
-         iFDA==
+        d=gmail.com; s=20230601; t=1721790245; x=1722395045; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WP6cBs+BulTekqwtkBUSULVpWzfMdW1wh1fz5BAJN0I=;
+        b=hqxBF3B3DBtxKmo+gpK9ETKoZbgyTuu64ePtbBfB/KmWPZd3uNcC6J+8IkzQELmNkk
+         BO2/Rny6a9/Q10Xw/AnklmStXEywS0sVfC8QiSmA6OUmMlHgGF/tOF6LVGam1GQu/8vp
+         e/vEScRXeVMtW2FLCekUZyWiBk3lzcRaO7RxxxonwssmKjO5h0bi0vNzMDTelljrt5Jw
+         JGCf2jLI5nmLfa5+2kbg9Nt6sb+uhT6jVATXMjAsP73T8plSEfA5v7CFQEvoGIibuLo8
+         EveAi39EPiZvNvHk+6y/86u6xEFKVVQSTFssY1LEzYBcTfhFGXLTDaKTFVIZahBwIZoW
+         PwKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721775266; x=1722380066;
-        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ep2ebY/LgQ+HSlIevoblsK15p/7sA/ZLC1oJoiyHAv0=;
-        b=f8nrSIpocEBfFUKZfP3OAli0TsD3c3C4Bj8+avYD/VAovUS2lojZE2tVqqFfLyk4No
-         j7AXnwHJ9Fggot0YpWMVeabt9RecLmjHMNQGUAgz7ftUf3VokmnBqjKdhWLlBCDZWTqg
-         rJLBbJg3arFSDoccU2wxCuhw8e2jOH69aGlIb7vdeCEvltOxNDgRo0e+3PWnKrOWZlfl
-         If1KMWz+aSHr7eRzZ2PT86T4MHxHGTcosO6IzH62fGizQSkmfSbOudQtK9p5Akpo6pOn
-         bhWKZ6B41Q9FDJR+/ErN/ILcGvzNR6WdB2e98KrnKqDeVAoifEaR/LaRZ3ULePCGkgEu
-         5SnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVpgNfIbLWIq8I3GRBM2vvBt+QdHzzGCwGZrugniTQlJ9QCljL4/Y9+SZ07gEfOP1UzXsWSz/ijOWjZnEEiWWiiO9rEH4IxCvcDN2r1IWs=
-X-Gm-Message-State: AOJu0YwnpviyK7fqg2V54Y0iS8PVyyK1kXDwWTpOu2WPFExtVdmNqBS3
-	1DzKCkbD5fsUYQ/8bHn0NmH5r3OMiI/PKozf9zApj9TKnqZNYCD7Ga/MOqQWScjCsZbr1/yfHfG
-	ESQ5hRsA9jj+k7j3Eu1Gt9I+A821LdIGxazxXrU8sf2lhmj6vZg==
-X-Google-Smtp-Source: AGHT+IH+ElKzqkLIg26Sar8bilbRkscy97e39d2IcoV+9SVcpAFhNKNU4lCKEWQdlFr7x1JEQms5Z7YONAX6cIFutS8=
-X-Received: by 2002:a05:6a20:3942:b0:1be:cea:d381 with SMTP id
- adf61e73a8af0-1c46196dd75mr689855637.18.1721775266084; Tue, 23 Jul 2024
- 15:54:26 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1721790245; x=1722395045;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WP6cBs+BulTekqwtkBUSULVpWzfMdW1wh1fz5BAJN0I=;
+        b=czNjd1GmWomCf1+JyxzefuHohEBimvSEYsqfybryYlJtrBSG6F49MnwZDRxbgWNKLh
+         ByLJfVpZogd/kfvtiqhgk8/utawVJkKwtB+SGbV8qtvzUfTKhb0TJ8ujCB/jLSXw8JXz
+         eJN+vwg8Q4RbQyRx41ubQkDFIHxZWpK3Pqd832M8ePm8YK9lTJwOx2Z17oXck4gGQLdn
+         iMPXUjLNwcKnSTCSq2UKq37Wnu8Nbk+q+k/QcioJ01hx7AskuIOf31TebXk+yPnYewJk
+         Z8fEiWwDRKgbTRQrwJ1UeLnCF+OdJDW41GF+Jhj5GjAFAxJDvuXEMXjireK4GQAIa/Fi
+         9Pjw==
+X-Forwarded-Encrypted: i=1; AJvYcCWUdp+IIZ+xUewSN+m/CSsHp8dRsERPUfyroRPBb11w+TEqjEii7kdKpIGJzWShCMJq2oMpjXsnV8HvfPWUikyRL4/NhpljJN8b1ZKBOda4OIgEi4GX5FhBZ36cIzpYN1CThtvJalLVtzJVtA==
+X-Gm-Message-State: AOJu0YwMlX1I/2OzETXv/4sKEcV93fdcX7sDWWR46s78lhGGJ1QOik2U
+	3zVAhOHzxqiAKGbLS8iRjlAYBsuT5/GHZuw4hEuCRYPfugUgXOd4MAJvn+Z3L3KP3ch2MknQrkt
+	RXr95leMyfW/AziJZrAqjmBwFH2k=
+X-Google-Smtp-Source: AGHT+IFUuJ+b2C5SjIAcLydtlJ+5QxZdTbyus1M3xiSkOWJuiih78IYx3YTAjQQSWXyd3UZ+t67885N3SxfsaBKaDvc=
+X-Received: by 2002:a2e:7010:0:b0:2ee:52f4:266 with SMTP id
+ 38308e7fff4ca-2f02b6f9370mr13673201fa.3.1721790244880; Tue, 23 Jul 2024
+ 20:04:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <bug-219084-13339@https.bugzilla.kernel.org/> <bug-219084-13339-lIpQrjSBmB@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-219084-13339-lIpQrjSBmB@https.bugzilla.kernel.org/>
-From: Mike Lothian <mike@fireburn.co.uk>
-Date: Tue, 23 Jul 2024 23:54:15 +0100
-Message-ID: <CAHbf0-HOS-jdRGvJOBmEgaaox3PDbDSTgnnZkZF9pz37Bmh2iw@mail.gmail.com>
-Subject: Fwd: [Bug 219084] RIP: 0010:mt792x_mac_link_bss_remove+0x2b/0x100
-To: sean.wang@mediatek.com, linux-wireless@vger.kernel.org
+References: <20240723091154.52458-1-sunjunchao2870@gmail.com> <20240723150931.42f206f9cd86bc391b48c790@linux-foundation.org>
+In-Reply-To: <20240723150931.42f206f9cd86bc391b48c790@linux-foundation.org>
+From: Julian Sun <sunjunchao2870@gmail.com>
+Date: Tue, 23 Jul 2024 23:03:53 -0400
+Message-ID: <CAHB1NagijZv=M28x+QDF8aS7rVGaPsXdaLgJvRyLODPL0DTe0w@mail.gmail.com>
+Subject: Re: [PATCH] scripts: add macro_checker script to check unused
+ parameters in macros
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, jack@suse.cz, brauner@kernel.org, 
+	viro@zeniv.linux.org.uk, masahiroy@kernel.org, n.schier@avm.de, 
+	ojeda@kernel.org, djwong@kernel.org, kvalo@kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Sean
+Andrew Morton <akpm@linux-foundation.org> =E4=BA=8E2024=E5=B9=B47=E6=9C=882=
+3=E6=97=A5=E5=91=A8=E4=BA=8C 18:09=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Tue, 23 Jul 2024 05:11:54 -0400 Julian Sun <sunjunchao2870@gmail.com> =
+wrote:
+>
+> > Hi,
+> >
+> > Recently, I saw a patch[1] on the ext4 mailing list regarding
+> > the correction of a macro definition error. Jan mentioned
+> > that "The bug in the macro is a really nasty trap...".
+> > Because existing compilers are unable to detect
+> > unused parameters in macro definitions. This inspired me
+> > to write a script to check for unused parameters in
+> > macro definitions and to run it.
+>
+>
+> > Seems a useful contribution thanks.  And a nice changelog!
+Thanks for your review and kind words.
+>
+> >  scripts/macro_checker.py | 101 +++++++++++++++++++++++++++++++++++++++
+>
+>
+> > Makes me wonder who will run this, and why.  Perhaps a few people will
+> > run ls and wonder "hey, what's that".  But many people who might have
+> > been interested in running this simply won't know about it.
+Yeah. For example, I am not familiar with these current checking tools...
+>
+>
+> > "make help | grep check" shows we have a few ad-hoc integrations but I
+> > wonder if we would benefit from a top-level `make static-checks'
+> > target?
+I have another idea. I asked some of my friends,  they are familiar
+with scripts/checkpatch.pl and usually use it to check patches before
+submitting them. Therefore, can we integrate some checking tools like
+includecheck and macro_checker into checkpatch? This way, when
+contributors use this tool, it will automatically check the modified
+source files. The benefit is that contributors can benefit from these
+tools without knowing their existence, and over time, all source files
+will be checked.
 
-I bisected this bug back to one of your commits
 
-Would you mind taking a look
-
-Thanks
-
-Mike
-
----------- Forwarded message ---------
-From: <bugzilla-daemon@kernel.org>
-Date: Tue, 23 Jul 2024 at 09:33
-Subject: [Bug 219084] RIP: 0010:mt792x_mac_link_bss_remove+0x2b/0x100
-To: <mike@fireburn.co.uk>
-
-
-https://bugzilla.kernel.org/show_bug.cgi?id=219084
-
---- Comment #3 from Artem S. Tashkinov (aros@gmx.com) ---
-Sean Wang, is not on this bug tracker, so it would be nice if you sent your
-findings to  linux-wireless@vger.kernel.org and sean.wang@mediatek.com
-
-Thanks.
-
---
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You reported the bug.
+Best regards,
+--=20
+Julian Sun <sunjunchao2870@gmail.com>
 
