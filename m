@@ -1,161 +1,196 @@
-Return-Path: <linux-wireless+bounces-10471-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10472-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A722A93AC3E
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2024 07:27:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5796D93AD95
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2024 09:58:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53C9D1F22146
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2024 05:27:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A7E31C20940
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2024 07:58:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94F825632;
-	Wed, 24 Jul 2024 05:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD90981AC4;
+	Wed, 24 Jul 2024 07:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="GwI654e1"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="e1Am3DbK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB989208D7
-	for <linux-wireless@vger.kernel.org>; Wed, 24 Jul 2024 05:26:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489F21B285;
+	Wed, 24 Jul 2024 07:58:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721798821; cv=none; b=NrSaqASEwRkjBeAW9j22zx7ITW89lpXZsDzZP1u49fXbuT30w/w8fPdngPWmcr+2dliDt0EzxOfAEAnYKowN7M1IJ/K6HxSD6fKJeKUROGmjYGzsM+LCpJcnExdg/RSBZVGJUX3eWkG6Nb5MgoNaxMv5E8U2Xo0AXp6sX/cSrG4=
+	t=1721807917; cv=none; b=hldEA62jB/VOOHicMZ86rkEfJTMQOI7lfXGKzzSny8NCaucGe6pDZTCu/8dDO23IsS5DB8FZF39fn8uGviotKXMXL0w4kCn6icDNE5XrvGnyPXXXYsEWHVqQEzVXOe7DR8PdrMHp/q+cioQauaLllxpDyAba+fj5Er6CFIBkC78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721798821; c=relaxed/simple;
-	bh=hKT8AdGJXxbnSjb5N17pNWh/rNFsJcZ0AJnr5dIT0NM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qr/rLubRiF/YJPftI2gchNaO8sAz7uHLUsNdDRSiFdErNd2g+IJKWioopClkYkbiB8ibq2Qx//PS6iTCWPnPACJ8Ei4QV4qrX27OrQDZ7yuLVIc8I153qLnpNhNya5WtjkQTz8NJb8jWCgDVMGXlwtYRr5at82DOrSQ8RnMKKh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=GwI654e1; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 46O5QwDvA1894650, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1721798818; bh=hKT8AdGJXxbnSjb5N17pNWh/rNFsJcZ0AJnr5dIT0NM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=GwI654e16e13t7/h8IAKJEnpyM6CDuvrSKoLxDnV1VhXP15xSEjjMMN/s8bngD0a2
-	 RGOgkNa1BYToXwFSOJF3jyKBk7lNRqxbvKV8Ya4EAsnDDa99BJx63A97BHAid7n9V9
-	 upNrYTJTUQN2ZHoO8Lau5na3B9rzQyzlrMSrMiDyR/bYReMGIHpVjCWDj4liAFCNj/
-	 GATC2xpJCLsfyKlQJ628yQvbfelp7lsHfLGVewVwLrZE3LQCQsgiSRMXGZ3cWBoVIW
-	 cj4aPPvPudX2nZkLixFGeeTEjb7S4XE7FksdnBMP0WAr+XAp6TBhUqF4rLwAhrMgob
-	 i/N7zBn6cmdIA==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 46O5QwDvA1894650
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Wed, 24 Jul 2024 13:26:58 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 24 Jul 2024 13:26:58 +0800
-Received: from [127.0.1.1] (172.16.23.66) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 24 Jul
- 2024 13:26:57 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <damon.chen@realtek.com>, <kevin_yang@realtek.com>
-Subject: [PATCH 4/4] wifi: rtw89: fix typo of rtw89_phy_ra_updata_XXX
-Date: Wed, 24 Jul 2024 13:26:26 +0800
-Message-ID: <20240724052626.12774-5-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240724052626.12774-1-pkshih@realtek.com>
-References: <20240724052626.12774-1-pkshih@realtek.com>
+	s=arc-20240116; t=1721807917; c=relaxed/simple;
+	bh=iRCRHXO7lCIyO8Op+JZCTGyMLbGizL8QKXIZmrNQiZo=;
+	h=Message-ID:Date:MIME-Version:From:Cc:To:Subject:Content-Type; b=XCRrzKk8CTj3RegvXs8k9sO9cIdBgAiO5b4wyObFbCO3eHShoGqLEm4Q6S2qMoqpXgFnOdNLNHdXg09PG2NVXcOL9JvnE/1zqNFh4q4RvwSp2MvB6YlQjr4VexgjmfHoBCiGlKJ4LB24cqMEoDtuou+X0s5Y+i/Ql9hnxKQUDsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=e1Am3DbK; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:Subject
+	:To:Reply-To:Cc:From:MIME-Version:Date:Message-ID:From:Sender:Reply-To:
+	Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=f+QZer3xnRAMYn9uqN9HcU3KEgUHNksandpcoaHZmog=; t=1721807915;
+	x=1722239915; b=e1Am3DbKLADrIUOhXilZgiM+NNtI2G4ku/wxH9dfkQWSm0PDvWlhegnECTVz1
+	7c4aatjpMPq65wADL4YKXPu8qih182ZfNcKxPbNGMYaHH8wJ+/JRUQhTS52UmsAOHOdw1xMZhmjbg
+	iXni0yVYRE1UGxPRjjRf8jPfKOKEQIRqhgMZXKvqDwkgzdW+Du93xdmoFqDKi2o0V2dXnAy3Lwfri
+	YRrni66+qiY2OJR9/LXBSl1vZr93UDzjI83eFxnE29SaXUQHBIwLkaR3eBFKHmiJiTER+AZGviByZ
+	6JtzZL8CHIGYONJR2V6jFPzDRUKX/Gm1JSrw0p4jtwQWja+rdQ==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1sWWtL-000445-HZ; Wed, 24 Jul 2024 09:58:31 +0200
+Message-ID: <8c91352f-a404-4ba6-aa27-1253468c830d@leemhuis.info>
+Date: Wed, 24 Jul 2024 09:58:30 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Content-Language: en-US, de-DE
+Cc: Michael <ZeroBeat@gmx.de>,
+ Linux kernel regressions list <regressions@lists.linux.dev>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, Kalle Valo <kvalo@kernel.org>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+To: Johannes Berg <johannes@sipsolutions.net>, Felix Fietkau <nbd@nbd.name>,
+ Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>
+Subject: [regression] mt76x2u: NULL pointer dereference since recent change to
+ fix chanctx emulation for monitor mode
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1721807915;f6c98a9f;
+X-HE-SMSGID: 1sWWtL-000445-HZ
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+Hi, Thorsten here, the Linux kernel's regression tracker.
 
-`updata` should be `update`
+Johannes, Felix, Lorenzo, Ryder, I noticed a report about a regression
+in bugzilla.kernel.org that (for my untrained eyes) appears to be a bug
+in some code paths of mt76x2u that was exposed by 0d9c2beed116e6 ("wifi:
+mac80211: fix monitor channel with chanctx emulation") [v6.10-rc5,
+v6.9.7] from Johannes.
 
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/mac80211.c | 4 ++--
- drivers/net/wireless/realtek/rtw89/phy.c      | 8 ++++----
- drivers/net/wireless/realtek/rtw89/phy.h      | 2 +-
- 3 files changed, 7 insertions(+), 7 deletions(-)
+As many (most?) kernel developers don't keep an eye on the bug tracker,
+I decided to write this mail. To quote from
+https://bugzilla.kernel.org/show_bug.cgi?id=219086 :
 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
-index b95fa288c5f5..7d6a44eb8a99 100644
---- a/drivers/net/wireless/realtek/rtw89/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
-@@ -783,7 +783,7 @@ static void rtw89_ra_mask_info_update_iter(void *data, struct ieee80211_sta *sta
- 
- 	rtwsta->use_cfg_mask = true;
- 	rtwsta->mask = *br_data->mask;
--	rtw89_phy_ra_updata_sta(br_data->rtwdev, sta, IEEE80211_RC_SUPP_RATES_CHANGED);
-+	rtw89_phy_ra_update_sta(br_data->rtwdev, sta, IEEE80211_RC_SUPP_RATES_CHANGED);
- }
- 
- static void rtw89_ra_mask_info_update(struct rtw89_dev *rtwdev,
-@@ -925,7 +925,7 @@ static void rtw89_ops_sta_rc_update(struct ieee80211_hw *hw,
- {
- 	struct rtw89_dev *rtwdev = hw->priv;
- 
--	rtw89_phy_ra_updata_sta(rtwdev, sta, changed);
-+	rtw89_phy_ra_update_sta(rtwdev, sta, changed);
- }
- 
- static int rtw89_ops_add_chanctx(struct ieee80211_hw *hw,
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index ad11d1414874..9579260b5a73 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -462,7 +462,7 @@ static void rtw89_phy_ra_sta_update(struct rtw89_dev *rtwdev,
- 	ra->csi_mode = csi_mode;
- }
- 
--void rtw89_phy_ra_updata_sta(struct rtw89_dev *rtwdev, struct ieee80211_sta *sta,
-+void rtw89_phy_ra_update_sta(struct rtw89_dev *rtwdev, struct ieee80211_sta *sta,
- 			     u32 changed)
- {
- 	struct rtw89_sta *rtwsta = (struct rtw89_sta *)sta->drv_priv;
-@@ -610,17 +610,17 @@ void rtw89_phy_rate_pattern_vif(struct rtw89_dev *rtwdev,
- 	rtw89_debug(rtwdev, RTW89_DBG_RA, "unset rate pattern\n");
- }
- 
--static void rtw89_phy_ra_updata_sta_iter(void *data, struct ieee80211_sta *sta)
-+static void rtw89_phy_ra_update_sta_iter(void *data, struct ieee80211_sta *sta)
- {
- 	struct rtw89_dev *rtwdev = (struct rtw89_dev *)data;
- 
--	rtw89_phy_ra_updata_sta(rtwdev, sta, IEEE80211_RC_SUPP_RATES_CHANGED);
-+	rtw89_phy_ra_update_sta(rtwdev, sta, IEEE80211_RC_SUPP_RATES_CHANGED);
- }
- 
- void rtw89_phy_ra_update(struct rtw89_dev *rtwdev)
- {
- 	ieee80211_iterate_stations_atomic(rtwdev->hw,
--					  rtw89_phy_ra_updata_sta_iter,
-+					  rtw89_phy_ra_update_sta_iter,
- 					  rtwdev);
- }
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.h b/drivers/net/wireless/realtek/rtw89/phy.h
-index d8df553b9cb0..512f17d808fe 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.h
-+++ b/drivers/net/wireless/realtek/rtw89/phy.h
-@@ -894,7 +894,7 @@ void rtw89_phy_set_txpwr_limit_ru(struct rtw89_dev *rtwdev,
- 
- void rtw89_phy_ra_assoc(struct rtw89_dev *rtwdev, struct ieee80211_sta *sta);
- void rtw89_phy_ra_update(struct rtw89_dev *rtwdev);
--void rtw89_phy_ra_updata_sta(struct rtw89_dev *rtwdev, struct ieee80211_sta *sta,
-+void rtw89_phy_ra_update_sta(struct rtw89_dev *rtwdev, struct ieee80211_sta *sta,
- 			     u32 changed);
- void rtw89_phy_rate_pattern_vif(struct rtw89_dev *rtwdev,
- 				struct ieee80211_vif *vif,
--- 
-2.25.1
+>  Michael 2024-07-23 15:38:43 UTC
+> 
+> After a user opened this discussion:
+> https://github.com/ZerBea/hcxdumptool/discussions/465
+> 
+> Jul 21 05:40:39 rpi4b-aarch kernel: mt76x2u 2-2:1.0 wlan1: entered promiscuous mode
+> Jul 21 05:40:45 rpi4b-aarch kernel: Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+> Jul 21 05:40:45 rpi4b-aarch kernel: Mem abort info:
+> Jul 21 05:40:45 rpi4b-aarch kernel:   ESR = 0x0000000096000044
+> Jul 21 05:40:45 rpi4b-aarch kernel:   EC = 0x25: DABT (current EL), IL = 32 bits
+> Jul 21 05:40:45 rpi4b-aarch kernel:   SET = 0, FnV = 0
+> Jul 21 05:40:45 rpi4b-aarch kernel:   EA = 0, S1PTW = 0
+> Jul 21 05:40:45 rpi4b-aarch kernel:   FSC = 0x04: level 0 translation fault
+> Jul 21 05:40:45 rpi4b-aarch kernel: Data abort info:
+> Jul 21 05:40:45 rpi4b-aarch kernel:   ISV = 0, ISS = 0x00000044, ISS2 = 0x00000000
+> Jul 21 05:40:45 rpi4b-aarch kernel:   CM = 0, WnR = 1, TnD = 0, TagAccess = 0
+> Jul 21 05:40:45 rpi4b-aarch kernel:   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+> Jul 21 05:40:45 rpi4b-aarch kernel: user pgtable: 4k pages, 48-bit VAs, pgdp=0000000041300000
+> Jul 21 05:40:45 rpi4b-aarch kernel: [0000000000000000] pgd=0000000000000000, p4d=0000000000000000
+> Jul 21 05:40:45 rpi4b-aarch kernel: Internal error: Oops: 0000000096000044 [#1] PREEMPT SMP
+> 
+> I decided to run a test (AMD RYZEN & Arch Linux) on kernel 6.9.10 and 6.10 which confirmed the problem:
+> Trying to inject a 802.11 packet caused my AMD systems to become unresponsive.
+> I don't have a dmesg log, because my entire system crashed - need to power off!
+> 
+> To reproduce on kernel 6.9.5 up to 6.10:
+> plug in an ALFA AWUS036ACM (mt76x2u)
+> set monitor mode
+> set WiFi channel and inject a packet
+> $ sudo hcxdumptool -i wlp5s0f4u2 --rcascan=active
+> or
+> sudo ./aireplay-ng --test wlp5s0f4u2
+> 
+> Kernel 6.6.40 is not affected and the user reported that kernel 6.8.2 is not affected, too.
+> That looks like a regression and git bisect identified the commit that caused the problem:
+> 
+> commit 0d9c2beed116e623ac30810d382bd67163650f98
+> Author: Johannes Berg <johannes.berg@intel.com>
+> Date:   Wed Jun 12 12:23:51 2024 +0200
+> 
+>     wifi: mac80211: fix monitor channel with chanctx emulation
+>     
+>     After the channel context emulation, there were reports that
+>     changing the monitor channel no longer works. This is because
+>     those drivers don't have WANT_MONITOR_VIF, so the setting the
+>     channel always exits out quickly.
+>     
+>     Fix this by always allocating the virtual monitor sdata, and
+>     simply not telling the driver about it unless it wanted to.
+>     This way, we have an interface/sdata to bind the chanctx to,
+>     and the emulation can work correctly.
+>     
+>     Cc: stable@vger.kernel.org
+>     Fixes: 0a44dfc07074 ("wifi: mac80211: simplify non-chanctx drivers")
+>     Reported-and-tested-by: Savyasaachi Vanga <savyasaachiv@gmail.com>
+>     Closes: https://lore.kernel.org/r/chwoymvpzwtbmzryrlitpwmta5j6mtndocxsyqvdyikqu63lon@gfds653hkknl
+>     Link: https://msgid.link/20240612122351.b12d4a109dde.I1831a44417faaab92bea1071209abbe4efbe3fba@changeid
+>     Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> 
+>  net/mac80211/driver-ops.c | 17 +++++++++++++++++
+>  net/mac80211/iface.c      | 21 +++++++++------------
+>  net/mac80211/util.c       |  2 +-
+>  3 files changed, 27 insertions(+), 13 deletions(-)
+> 
+> Looks like the patch which should fix monitor mode breaks mt76x2u driver.
+> 
+> BTW:
+> Reasons for me to set severity to high:
+> "Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000"
+> and
+> running a simple command from which I would not have expected that my entire system crashes.
+> 
+> [tag] [reply] [−]
+> Private
+> Comment 1 Michael 2024-07-23 17:17:13 UTC
+> 
+> After some more tests, I'm not longer sure that the problem is caused by the commit mentioned. It looks like it is only a symptom.
+> I tested several mt76 devices e.g. this one:
+> D 148f:761a Ralink Technology, Corp. MT7610U ("Archer T2U" 2.4G+5G WLAN Adapter
+> 
+> Driver is mt76x0u:
+> $ hcxdumptool -l
+>   0	  3	503eaa1a736c	f49da7d6f202	*	wlp48s0f4u2u4   	mt76x0u	NETLINK
+> 
+> All of them are running into the same problem as mentioned above,
+> while other devices are working as expected, e.g.:
+> ID 2357:010c TP-Link TL-WN722N v2/v3 [Realtek RTL8188EUS]
+> 
+> Driver is rtl8xxxu
+> $ hcxdumptool -l
+>   0	  3	9ca2f4094fe1	c8aacc8562e3	+	wlp48s0f4u2u4   	rtl8xxxu	NETLINK
+> 
+> This leads me to the assumption that the "chanctx emulation" inside the mt76 series driver caused the real problem.
 
+The reporter is CCed.
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
+
+P.S.: let me use this mail to also add the report to the list of tracked
+regressions to ensure it's doesn't fall through the cracks:
+
+#regzbot introduced: 0d9c2beed116e623ac30810d382bd67163650f98
+#regzbot title: net: mt76x2u: NULL pointer dereference since recent
+change to fix chanctx emulation for monitor mode
+#regzbot from: Michael <ZeroBeat@gmx.de>
+#regzbot duplicate: https://bugzilla.kernel.org/show_bug.cgi?id=219086
+#regzbot ignore-activity
 
