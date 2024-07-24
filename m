@@ -1,322 +1,108 @@
-Return-Path: <linux-wireless+bounces-10477-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10478-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0F9893AF83
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2024 12:00:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89EBB93B02E
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2024 13:15:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4FA8B221FF
-	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2024 10:00:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FDE51F2120E
+	for <lists+linux-wireless@lfdr.de>; Wed, 24 Jul 2024 11:15:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B9C915688C;
-	Wed, 24 Jul 2024 10:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD8D157A53;
+	Wed, 24 Jul 2024 11:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="FeTzLx5H";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="6kEefEPX";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="FeTzLx5H";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="6kEefEPX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ogmqw4H1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D7D156677;
-	Wed, 24 Jul 2024 10:00:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F620156F46
+	for <linux-wireless@vger.kernel.org>; Wed, 24 Jul 2024 11:15:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721815221; cv=none; b=Sn/mxqs2RMIiAaQFGAEDhql5/Cg4KpqP2Y6m7k2p7vmM31q4C6z+JB2zFCsAb3sIaZTINPBuMpOS58xKBWAQMp+SpWLudI9WNOqRB5XQUxp9kRdAlyxh5tgr14Yh6EiULvSYoN0yoHbkyzUO+1KDMY4Udm2Ls+B4ljzpyIhmHX8=
+	t=1721819724; cv=none; b=DtR7GclOJBOiDUay9qA1tmuFEN9M3O9bZmM7FDCIrPsa66yvEA1kNhwog41leQ3DaVNP3zg/OAUsIAZvKVkrmXHJsa2MOa4AJ/lbdGr7Cvha75zU9CFAQzIbN2arFhNQBY1RvVZNDBezziEkyr+iT/kXTN9tzx/CffQutroEPgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721815221; c=relaxed/simple;
-	bh=f10rItVYXRubfcNqUk0BXFInui1uuX+3y+ov42cbLQM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c6eQfPFqD/8N/YfF0VqNXx2/HLxt+1oK5TM0MIWyxDcDQlFT+enVQrlodHSrPga89h6cd0Yx8k4B22s4h1gCjinLuE4KNy58FpJ+RK0QA0ZTeCbztNJ2LwhflaP4frrqJVPaInXSI2cOdFfuJw36VyqzamSMqtRJLo6vjjxrwMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=FeTzLx5H; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=6kEefEPX; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=FeTzLx5H; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=6kEefEPX; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 6394D1F799;
-	Wed, 24 Jul 2024 10:00:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1721815217; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TpLfdH0t/K9aVtW5Hspq7/+1p8nI88/qmSg6AYu2evQ=;
-	b=FeTzLx5H23ADJfyUmR6RfFYZXHcJdY3qCpgZvgFNFrDsOFT5YWGixmTdFWQ/d4+0WtKqRJ
-	DF2EL1sGNyFGmApkpLYVnoZcVjAf5aMQMXXfxJLeA4WZWkIVrDnuffL6yZ1z4ZrRI68nlB
-	oHXYp8orn/bE9/urm/oYp8rQjtOJArw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1721815217;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TpLfdH0t/K9aVtW5Hspq7/+1p8nI88/qmSg6AYu2evQ=;
-	b=6kEefEPX2Gc5J+9oAgF5KLDNep/j4CcOBs0TfsO0xWnEAfEF5v3L2r+34wI/yblzFZQO5v
-	9n6hlciM+Hr/oACw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1721815217; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TpLfdH0t/K9aVtW5Hspq7/+1p8nI88/qmSg6AYu2evQ=;
-	b=FeTzLx5H23ADJfyUmR6RfFYZXHcJdY3qCpgZvgFNFrDsOFT5YWGixmTdFWQ/d4+0WtKqRJ
-	DF2EL1sGNyFGmApkpLYVnoZcVjAf5aMQMXXfxJLeA4WZWkIVrDnuffL6yZ1z4ZrRI68nlB
-	oHXYp8orn/bE9/urm/oYp8rQjtOJArw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1721815217;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TpLfdH0t/K9aVtW5Hspq7/+1p8nI88/qmSg6AYu2evQ=;
-	b=6kEefEPX2Gc5J+9oAgF5KLDNep/j4CcOBs0TfsO0xWnEAfEF5v3L2r+34wI/yblzFZQO5v
-	9n6hlciM+Hr/oACw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3B96613411;
-	Wed, 24 Jul 2024 10:00:17 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id okKFDrHQoGa9XgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 24 Jul 2024 10:00:17 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id D507FA0990; Wed, 24 Jul 2024 12:00:01 +0200 (CEST)
-Date: Wed, 24 Jul 2024 12:00:01 +0200
-From: Jan Kara <jack@suse.cz>
-To: Julian Sun <sunjunchao2870@gmail.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, jack@suse.cz, brauner@kernel.org,
-	viro@zeniv.linux.org.uk, masahiroy@kernel.org,
-	akpm@linux-foundation.org, n.schier@avm.de, ojeda@kernel.org,
-	djwong@kernel.org, kvalo@kernel.org
-Subject: Re: [PATCH] scripts: add macro_checker script to check unused
- parameters in macros
-Message-ID: <20240724100001.qdfexiwinuysqz7x@quack3>
-References: <20240723091154.52458-1-sunjunchao2870@gmail.com>
+	s=arc-20240116; t=1721819724; c=relaxed/simple;
+	bh=nYrAHsM0RZYC7QJeUBLUjTkSrTLsddHZZh/W5bu52Ds=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=W+OyK9LpYViHrwmuari6B4S0jL+P0lcs8EZRSWPd4n+nR2PH+6T6lCUWAkdT9ZM/6PhOyYhWRVkO+sbjiWC2SiiuGcHOk5jQDnK3nxk2TBSE8DGY7jYcS8hDro65tYEP/OPDy3Xm4eomS1BOulbOKarzLJ/s52O0g7fWO0eVjX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ogmqw4H1; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3685b9c8998so3007737f8f.0
+        for <linux-wireless@vger.kernel.org>; Wed, 24 Jul 2024 04:15:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1721819721; x=1722424521; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nYrAHsM0RZYC7QJeUBLUjTkSrTLsddHZZh/W5bu52Ds=;
+        b=Ogmqw4H13Mme1PgMWYFC045Y+G92tHU3KQqvBgRbmxq9ZqnJPdnNaVSC1Wfntr+2UX
+         6+TpefGTMF5YzWJQlQlABQzmGIcNWFROCD5IXLnb7PC1JjfXGRd9HBB2N4vkD9U1qVru
+         uV43KroKuWaBXKQ71dGdZ2RzobHIO9gL8bsdaopEm9FS4F/evO+WEarcNx+RPK3bN+os
+         5DLyegOnb0UrZO2hN60YyhZy8cf654Sio8Lg98hMCTUggOisA+EnCieKbyg1KcnY1nae
+         qXFqTrJl/fInFukW0JMYrO6e0TZLJUrvx/73msOKhIVLNfFq8NgtFkx+uWmbOo3DWzCi
+         l70w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721819721; x=1722424521;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=nYrAHsM0RZYC7QJeUBLUjTkSrTLsddHZZh/W5bu52Ds=;
+        b=U7mVhZc5GMVAnooExv2BZB/ETQL4pRNFcFei76VVh7jjp5MDNuN5qzWPDbL0YEKnt+
+         /8xBg6V14We+zUT8QWeLl4delZkt6CLb2PHv7WK6BbmAYEawa0dP9aLRGgsfWlsqg1sE
+         K+XkK7LHu5IdVf71iw7LaZcvYRzunDYEpgg9O50eoQaHOzUN8JRCL8RUw4x2jlHZolRV
+         FUowXLssY21yo1Bf6Qfw/r/7a90qqLcMEqR6LlL3HtxojXBHSL2hjd09heMQw7A1LqKI
+         UuC1XHFYy+8G8vLOR9WAjI5QX1qaF+Lf6mrJoW6HfmtMVljDBilud6GMdjg4439MRoaG
+         vN5A==
+X-Gm-Message-State: AOJu0YyTkonFt09Df9SwQb6ueA7O1L0BotEVnnkShrcVY5e4ZiiEcKJi
+	PManoXcUX0wBDHWEUcb0MpVfxbeunCv6JA+o5KQtC4nItq9b8o1k1ForJWuI
+X-Google-Smtp-Source: AGHT+IF05yvOe54qUFI3agX0Yw/OqiC6aGW+b1HYO5wGTqb/fpNlTyW7LYYcXAvFkXu2CM3H/5tqug==
+X-Received: by 2002:adf:fe4e:0:b0:369:9358:4634 with SMTP id ffacd0b85a97d-369f5a76f43mr1330769f8f.19.1721819721365;
+        Wed, 24 Jul 2024 04:15:21 -0700 (PDT)
+Received: from [192.168.0.188] (asfd-05-b2-v4wan-170068-cust1033.vm14.cable.virginm.net. [80.192.20.10])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-369b77b4d2bsm12015620f8f.63.2024.07.24.04.15.20
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 24 Jul 2024 04:15:21 -0700 (PDT)
+Message-ID: <d115c07d-4e3e-4e9d-9704-f0cbe159b986@gmail.com>
+Date: Wed, 24 Jul 2024 12:15:19 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240723091154.52458-1-sunjunchao2870@gmail.com>
-X-Spamd-Result: default: False [-3.60 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	RCVD_COUNT_THREE(0.00)[3];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:email]
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spam-Score: -3.60
+User-Agent: Mozilla Thunderbird
+Content-Language: en-GB
+To: linux-wireless@vger.kernel.org
+From: Adam Macdonald <adampoke111@gmail.com>
+Subject: iwlwifi ring buffer log spam on kernel 6.10
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi!
+Greetings,
 
-On Tue 23-07-24 05:11:54, Julian Sun wrote:
-> Recently, I saw a patch[1] on the ext4 mailing list regarding
-> the correction of a macro definition error. Jan mentioned
-> that "The bug in the macro is a really nasty trap...".
-> Because existing compilers are unable to detect
-> unused parameters in macro definitions. This inspired me
-> to write a script to check for unused parameters in
-> macro definitions and to run it.
-> 
-> Surprisingly, the script uncovered numerous issues across
-> various subsystems, including filesystems, drivers, and sound etc.
-> 
-> Some of these issues involved parameters that were accepted
-> but never used, for example:
-> 	#define	XFS_DAENTER_DBS(mp,w)	\
-> 	(XFS_DA_NODE_MAXDEPTH + (((w) == XFS_DATA_FORK) ? 2 : 0))
-> where mp was unused.
-> 
-> While others are actual bugs.
-> For example:
-> 	#define HAL_SEQ_WCSS_UMAC_CE0_SRC_REG(x) \
-> 		(ab->hw_params.regs->hal_seq_wcss_umac_ce0_src_reg)
-> 	#define HAL_SEQ_WCSS_UMAC_CE0_DST_REG(x) \
-> 		(ab->hw_params.regs->hal_seq_wcss_umac_ce0_dst_reg)
-> 	#define HAL_SEQ_WCSS_UMAC_CE1_SRC_REG(x) \
-> 		(ab->hw_params.regs->hal_seq_wcss_umac_ce1_src_reg)
-> 	#define HAL_SEQ_WCSS_UMAC_CE1_DST_REG(x) \
-> 		(ab->hw_params.regs->hal_seq_wcss_umac_ce1_dst_reg)
-> where x was entirely unused, and instead, a local variable ab was used.
-> 
-> I have submitted patches[2-5] to fix some of these issues,
-> but due to the large number, many still remain unaddressed.
-> I believe that the kernel and matainers would benefit from
-> this script to check for unused parameters in macro definitions.
-> 
-> It should be noted that it may cause some false positives
-> in conditional compilation scenarios, such as
-> 	#ifdef DEBUG
-> 	static int debug(arg) {};
-> 	#else
-> 	#define debug(arg)
-> 	#endif
-> So the caller needs to manually verify whether it is a true
-> issue. But this should be fine, because Maintainers should only
-> need to review their own subsystems, which typically results
-> in only a few reports.
+I have just upgraded to the Linux kernel 6.10 on Arch Linux last night and am having issues with the thermal driver (iwlwifi) for my Intel AX210 (8086:2725) being unable to read out one of the thermal zones (the only thermal zone?).
 
-Useful script! Thanks!
+The following log message is repeated about 3-4 times a second in the kernel ring buffer log.
 
-I think you could significantly reduce these false positives by checking
-whether the macro definition ends up being empty, 0, or "do { } while (0)"
-and in those cases don't issue a warning about unused arguments because it
-is pretty much guaranteed the author meant it this way in these cases. You
-seem to be already detecting the last pattern so adding the first two
-should be easy.
+[...]
+thermal thermal_zone3: failed to read out thermal zone (-61)
+[...]
 
-								Honza
+The offending driver:
+$ cat /sys/class/thermal/thermal_zone3/type
+iwlwifi_1
 
-> 
-> [1]: https://patchwork.ozlabs.org/project/linux-ext4/patch/1717652596-58760-1-git-send-email-carrionbent@linux.alibaba.com/
-> [2]: https://lore.kernel.org/linux-xfs/20240721112701.212342-1-sunjunchao2870@gmail.com/
-> [3]: https://lore.kernel.org/linux-bcachefs/20240721123943.246705-1-sunjunchao2870@gmail.com/
-> [4]: https://sourceforge.net/p/linux-f2fs/mailman/message/58797811/
-> [5]: https://sourceforge.net/p/linux-f2fs/mailman/message/58797812/
-> 
-> Signed-off-by: Julian Sun <sunjunchao2870@gmail.com>
-> ---
->  scripts/macro_checker.py | 101 +++++++++++++++++++++++++++++++++++++++
->  1 file changed, 101 insertions(+)
->  create mode 100755 scripts/macro_checker.py
-> 
-> diff --git a/scripts/macro_checker.py b/scripts/macro_checker.py
-> new file mode 100755
-> index 000000000000..cd10c9c10d31
-> --- /dev/null
-> +++ b/scripts/macro_checker.py
-> @@ -0,0 +1,101 @@
-> +#!/usr/bin/python3
-> +# SPDX-License-Identifier: GPL-2.0
-> +# Author: Julian Sun <sunjunchao2870@gmail.com>
-> +
-> +""" Find macro definitions with unused parameters. """
-> +
-> +import argparse
-> +import os
-> +import re
-> +
-> +macro_pattern = r"#define\s+(\w+)\(([^)]*)\)"
-> +# below two vars were used to reduce false positives
-> +do_while0_pattern = r"\s*do\s*\{\s*\}\s*while\s*\(\s*0\s*\)"
-> +correct_macros = []
-> +
-> +def check_macro(macro_line, report):
-> +    match = re.match(macro_pattern, macro_line)
-> +    if match:
-> +        macro_def = re.sub(macro_pattern, '', macro_line)
-> +        identifier = match.group(1)
-> +        content = match.group(2)
-> +        arguments = [item.strip() for item in content.split(',') if item.strip()]
-> +
-> +        if (re.match(do_while0_pattern, macro_def)):
-> +            return
-> +
-> +        for arg in arguments:
-> +            # used to reduce false positives
-> +            if "..." in arg:
-> +                continue
-> +            if not arg in macro_def and report == False:
-> +                return
-> +            if not arg in macro_def and identifier not in correct_macros:
-> +                print(f"Argument {arg} is not used in function-line macro {identifier}")
-> +                return
-> +
-> +        correct_macros.append(identifier)
-> +
-> +
-> +# remove comment and whitespace
-> +def macro_strip(macro):
-> +    comment_pattern1 = r"\/\/*"
-> +    comment_pattern2 = r"\/\**\*\/"
-> +
-> +    macro = macro.strip()
-> +    macro = re.sub(comment_pattern1, '', macro)
-> +    macro = re.sub(comment_pattern2, '', macro)
-> +
-> +    return macro
-> +
-> +def file_check_macro(file_path, report):
-> +    # only check .c and .h file
-> +    if not file_path.endswith(".c") and not file_path.endswith(".h"):
-> +        return
-> +
-> +    with open(file_path, "r") as f:
-> +        while True:
-> +            line = f.readline()
-> +            if not line:
-> +                return
-> +
-> +            macro = re.match(macro_pattern, line)
-> +            if macro:
-> +                macro = macro_strip(macro.string)
-> +                while macro[-1] == '\\':
-> +                    macro = macro[0:-1]
-> +                    macro = macro.strip()
-> +                    macro += f.readline()
-> +                    macro = macro_strip(macro)
-> +                check_macro(macro, report)
-> +
-> +def get_correct_macros(path):
-> +    file_check_macro(path, False)
-> +
-> +def dir_check_macro(dir_path):
-> +
-> +    for dentry in os.listdir(dir_path):
-> +        path = os.path.join(dir_path, dentry)
-> +        if os.path.isdir(path):
-> +            dir_check_macro(path)
-> +        elif os.path.isfile(path):
-> +            get_correct_macros(path)
-> +            file_check_macro(path, True)
-> +
-> +
-> +def main():
-> +    parser = argparse.ArgumentParser()
-> +
-> +    parser.add_argument("path", type=str, help="The file or dir path that needs check")
-> +    args = parser.parse_args()
-> +
-> +    if os.path.isfile(args.path):
-> +        get_correct_macros(args.path)
-> +        file_check_macro(args.path, True)
-> +    elif os.path.isdir(args.path):
-> +        dir_check_macro(args.path)
-> +    else:
-> +        print(f"{args.path} doesn't exit or is neither a file nor a dir")
-> +
-> +if __name__ == "__main__":
-> +    main()
-> \ No newline at end of file
-> -- 
-> 2.39.2
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+I am currently running 6.10.0-arch1-2, but was previously running 6.9.10-arch1 without this log spam occurring.
+It is important to note, however, that on 6.9.10 it would previously fail to read out the thermal zone _once_, but not continue to retry forever & fill the log:
+
+Jul 23 14:26:09 milky kernel: thermal thermal_zone3: failed to read out thermal zone (-61)
+
+Thank you for taking the time to read this email
+Cheers,
+Adam
+
 
