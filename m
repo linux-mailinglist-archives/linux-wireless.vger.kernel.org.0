@@ -1,77 +1,66 @@
-Return-Path: <linux-wireless+bounces-10503-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10504-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7664E93C0A2
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2024 13:17:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A040493C154
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2024 14:01:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28DB51F22021
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2024 11:17:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C1682833DB
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2024 12:01:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741B7197531;
-	Thu, 25 Jul 2024 11:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44066198E75;
+	Thu, 25 Jul 2024 12:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YkvAInGd"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="fuBHopfw"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD76E176224
-	for <linux-wireless@vger.kernel.org>; Thu, 25 Jul 2024 11:17:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E7B22089
+	for <linux-wireless@vger.kernel.org>; Thu, 25 Jul 2024 12:01:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721906270; cv=none; b=GM+8n1atheliiBYAWXids+kfJiTN76F0gb8RMrdZH7PhCJ0k+j4IO227Vw7ZCOPnFxUcjiFTJ8A/VV99XM8+DN/0UmKRlYdqKhKe/O6LsurS/Gt9Xy+s4ANEbL7aKrNzV+LeRsvs8kGRUeV5hBW7hWAHed5WMOy1C1B9sduNRqI=
+	t=1721908871; cv=none; b=c4KBp4I+s+qaLPHPn6qlqALsjTg1SqnGNWSlvfQ/xD8a/bwc0BGgmaT5DB2kgqcvPH5d9jEvQ+gmqzLSu7fZ4U0kYrCaygFEnV9qdgMIMeI5M3ehFQrS39mN16Bic4RfnWn5Y9IwzgkWX1/YZcPJcHwst5+IQKvboHHheOO+0Bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721906270; c=relaxed/simple;
-	bh=IlWRHGkj1xvFgb07sdbHpMJWyMcjPpoyZdRVjVGKWMo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DocH9D6G0Yr5rAQGHzUixi2GxFf+AXvpn5vuStONBzUBM7YPeyIoGmcE8JvAhwM5ey7bd6mU67pTp5fLNITIjvLnswGqzsTyrtqrUOwRBa0fLsrJubjNdKwLu7CtGJLzMrX8PvvUPVCkwJEATBP9V0MebYbFrEl6Yu2zTtayGCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YkvAInGd; arc=none smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-52efa9500e0so29854e87.3
-        for <linux-wireless@vger.kernel.org>; Thu, 25 Jul 2024 04:17:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721906267; x=1722511067; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QziBxkYKt+VIzFlhjGx7Rv3QhuQxX28nbND8txDa1Ss=;
-        b=YkvAInGdgBoGlnfaRxCC/G2jGR3xDPfTw/BWiPkgGiSwl1seS4mozCNTvkALmVU5dL
-         iKUM6szAJ9lHZTjaWuVw3Cg7Hapt4Z6XveDZ5EYAiABFt1K5BjGSbZBdbHbS9Lt0QRQJ
-         mVCFjYRWplzRsaR3PjUW67KnAPy6YtaZuDpa3IZ2ta2SdZ6wMKNlYOxlJGcXkgG9lW8L
-         O2XAkmZVY4FO58OARCvBKAln8a9kpHcckl1R+Y8tb3VnkLSxYe82fUr8JBCDgX0qtH7y
-         q5BGi4p/dzeGF2+4KFzrBkNFZ0dVXkoNCgQgYhiGZcKKFaehwOV95xhVSPVOLhQ4WMqh
-         yLLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721906267; x=1722511067;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QziBxkYKt+VIzFlhjGx7Rv3QhuQxX28nbND8txDa1Ss=;
-        b=ErYfcFeFz6fEAwoG0OWCSl8jnrz95RYbq4hzJ5bo3Azu1kSJ3ap2a64DRMLv4t3uIk
-         Pk7VCMRwezdNaFJMbdD3wdvWcvqOs73FzhWjG9EM/TrgzfeS3D96QSCtWISnN1Oa46DH
-         H0dVjD0+Hy4OA0l13r0cuCwwAspolJc3UgIXJu3Q4I7zVQ9QAHsJ8BL4pZGN+lKve5Qt
-         VvEcOrR5R0BfBIz44wwD4Y21x2YAWo7xAAlVuQtS85Gw26j1oCPP2stDYLAD1XeERzJF
-         +MrYgEpj/hdQqykD/2LIj4D/C2XJ1Q/OrctZRdoZGDeakVs8XYZRmL81QwlKRWR782bB
-         wuEA==
-X-Gm-Message-State: AOJu0YyOT1CvEyzsmliQ/dbD/n8r3TkdVnOQXrNDkHC9+PEjd0JRqrTH
-	45VoZyVOF0fPBSmWzoDH94qpfYWj/LRv6muKe3O72Fn174GaCuUvnEE3MORX5E0=
-X-Google-Smtp-Source: AGHT+IEMWh5/541DghZ9txi029jWKevnd195xCLfp8eTtPOm9BByriQgcqCrS365PJcwLetFLj9qMw==
-X-Received: by 2002:a05:6512:3f0d:b0:52c:8596:5976 with SMTP id 2adb3069b0e04-52fd6092e60mr1404646e87.55.1721906266544;
-        Thu, 25 Jul 2024 04:17:46 -0700 (PDT)
-Received: from localhost.localdomain ([2a00:1fa0:c425:ef2b:660f:471e:2957:2cff])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52fd5c0866dsm190532e87.121.2024.07.25.04.17.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Jul 2024 04:17:46 -0700 (PDT)
-From: Dmitry Kandybka <d.kandybka@gmail.com>
-To: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-Cc: linux-wireless@vger.kernel.org,
-	Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] wifi: ath9k: fix possible integer overflow in ath9k_get_et_stats()
-Date: Thu, 25 Jul 2024 14:17:43 +0300
-Message-ID: <20240725111743.14422-1-d.kandybka@gmail.com>
-X-Mailer: git-send-email 2.43.5
+	s=arc-20240116; t=1721908871; c=relaxed/simple;
+	bh=rqRBBcg3aSl+I61JJ/HYS/jdBqMp9/ZbxeaCI2zS064=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=W+HnWC2gQA+gY5tlJEHdGWWPplA6QZ4fv0gt4NFyheTrzsbFYqx3tyFEH8owqEXb7DGdVI2quYNI5Ui3GLyCMeG6NcTn55/9wMOn5ygFUBl0lHyF/dM3/sKgOPggaYS+V+rdS5ADc7wPxY8/6UD7/L+V8qqO0pJ+V6UL4A3vSb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=fuBHopfw; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46P7FoGm003701;
+	Thu, 25 Jul 2024 12:01:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=bIKLHfdNJXtWsXRTjDlb/L
+	GCciquef0/wZ3XoVwTIeA=; b=fuBHopfwM42Hv7eN5wc7CP2v1mg5zPONO4/1Jq
+	Q+SZLjWsK4xKubzJ7+WGUkgvwsY8RAcr89AqU/gmnY9t3LmNkY41hyIHtfwputTS
+	PvGl2TABMNGATelf0SkqdKrrG6LybMzb73sNXqW57EhZU7MCq4F/bxStoZPb7axS
+	fwFXg9RPCUfV5oKsX3pVJNP8xUyOjPpXWddIPVTta9FDk+I/5wQ5xAxWpKFKSYQM
+	T/AqmWDMzqMqRC3eOH6ITO2lRcHH9hIGu9gAy8MDr7Zz2OcUw/cJrKRFnD2l3HdV
+	yHZxFDA1VwiL7MbqNCSTU8WksBqCCY770ybSMQ8n+bKOocLA==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40g5auw5mp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 25 Jul 2024 12:01:01 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA05.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46PC10uE019158
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 25 Jul 2024 12:01:00 GMT
+Received: from kangyang.ap.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Thu, 25 Jul 2024 05:00:58 -0700
+From: kangyang <quic_kangyang@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, <quic_kangyang@quicinc.com>
+Subject: [PATCH 00/11] wifi: ath12k: some fixes and clean up for monitor mode
+Date: Thu, 25 Jul 2024 20:00:24 +0800
+Message-ID: <20240725120035.493-1-quic_kangyang@quicinc.com>
+X-Mailer: git-send-email 2.34.1.windows.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -79,36 +68,50 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: Bu0indDI7mztIJs7TPKd-yEqouyqeG8R
+X-Proofpoint-GUID: Bu0indDI7mztIJs7TPKd-yEqouyqeG8R
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-25_11,2024-07-25_03,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 bulkscore=0 malwarescore=0 suspectscore=0 mlxscore=0
+ clxscore=1011 phishscore=0 spamscore=0 adultscore=0 mlxlogscore=824
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2407250082
 
-In 'ath9k_get_et_stats()', promote TX stats counters to 'u64'
-to avoid possible integer overflow. Compile tested only.
+From: Kang Yang <quic_kangyang@quicinc.com>
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+This patch set does some fixes and clean up for monitor mode.
 
-Signed-off-by: Dmitry Kandybka <d.kandybka@gmail.com>
----
- drivers/net/wireless/ath/ath9k/debug.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Kang Yang (11):
+  wifi: ath12k: remove unused variable monitor_present
+  wifi: ath12k: optimize storage size for struct ath12k
+  wifi: ath12k: fix struct hal_rx_ppdu_end_user_stats
+  wifi: ath12k: fix struct hal_rx_ppdu_start
+  wifi: ath12k: fix struct hal_rx_phyrx_rssi_legacy_info
+  wifi: ath12k: fix struct hal_rx_mpdu_start
+  wifi: ath12k: properly handling the state variables of monitor mode
+  wifi: ath12k: delete NSS and TX power setting for monitor vdev
+  wifi: ath12k: use tail MSDU to get MSDU information
+  wifi: ath12k: fix A-MSDU indication in monitor mode
+  wifi: ath12k: delete mon reap timer
 
-diff --git a/drivers/net/wireless/ath/ath9k/debug.c b/drivers/net/wireless/ath/ath9k/debug.c
-index d84e3ee7b5d9..886a102e5b02 100644
---- a/drivers/net/wireless/ath/ath9k/debug.c
-+++ b/drivers/net/wireless/ath/ath9k/debug.c
-@@ -1325,11 +1325,11 @@ void ath9k_get_et_stats(struct ieee80211_hw *hw,
- 	struct ath_softc *sc = hw->priv;
- 	int i = 0;
- 
--	data[i++] = (sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_pkts_all +
-+	data[i++] = ((u64)sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_pkts_all +
- 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BK)].tx_pkts_all +
- 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VI)].tx_pkts_all +
- 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VO)].tx_pkts_all);
--	data[i++] = (sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_bytes_all +
-+	data[i++] = ((u64)sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_bytes_all +
- 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BK)].tx_bytes_all +
- 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VI)].tx_bytes_all +
- 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VO)].tx_bytes_all);
+ drivers/net/wireless/ath/ath12k/core.c   |   5 ++
+ drivers/net/wireless/ath/ath12k/core.h   |  23 +++--
+ drivers/net/wireless/ath/ath12k/dp.c     |  25 ------
+ drivers/net/wireless/ath/ath12k/dp_mon.c | 108 ++++++++++++-----------
+ drivers/net/wireless/ath/ath12k/hal_rx.h |  53 ++++++-----
+ drivers/net/wireless/ath/ath12k/mac.c    |  24 +++--
+ 6 files changed, 114 insertions(+), 124 deletions(-)
+
+
+base-commit: db1ce56e6e1d395dd42a3cd6332a871d9be59c45
 -- 
-2.43.5
+2.34.1
 
 
