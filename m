@@ -1,203 +1,245 @@
-Return-Path: <linux-wireless+bounces-10519-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10520-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7DDD93C6DF
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2024 17:57:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 539F093C6EE
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2024 18:00:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96ECF283E1E
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2024 15:57:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D23121F21B3B
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2024 16:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57BC519D895;
-	Thu, 25 Jul 2024 15:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D71D31990BB;
+	Thu, 25 Jul 2024 16:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pp9zgOTY"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=zerobeat@gmx.de header.b="gvChuMHc"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA0F19CCE6;
-	Thu, 25 Jul 2024 15:57:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A59E12B7F;
+	Thu, 25 Jul 2024 16:00:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721923030; cv=none; b=s1Or3xv53+Lc7xQDEAlAX67ns3CZO/Xe8x7xrPcO/gooyFEBzT3rTvcI2NLR8dp2EVYXX40l0Pd6R81EYHl9FwriOjwiUgQemK1NtoACOAOyuQjYaXclXExCzrfQ2mZ4AtX7Kg2TVLwmuTYqr61AnfXjJ7FZJTYmKVAYRKqaBZU=
+	t=1721923222; cv=none; b=kcoSrvewQm313RMk9SlAwieVoA8r8fDHenUKMKhNSIpBze9JJRChPiSVH/1+k/j3HNU4EEMBBBAKtbNBPoQBT2wCIxV6u+839/S6z06/DNA6RxhY32f4pigRQhe+CIJo+uVGqnuXa3iam5Bgpz0jLjVFca1smdV0NH2YRLpY5EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721923030; c=relaxed/simple;
-	bh=DEjWokAS1tF5Gx7dsEKPyZPuVua+VuisEbemaZcECas=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X/VZTdvr7VL2Hyd2RCDdgFMAJS1PkaedoAJ6b8ySI9uG6B78LK3FrQNnP0jOBkAJKpAYIqtcfGJi2KZFZ9UoO2XC0/Bh4thVtGEl083WSIsaZg27hJzC9HZox9y6z7dL2BnGvpUs6rEGUhX7lIya33lvdgmVgFTNzUX6+Ic3F6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pp9zgOTY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C28C32782;
-	Thu, 25 Jul 2024 15:57:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721923029;
-	bh=DEjWokAS1tF5Gx7dsEKPyZPuVua+VuisEbemaZcECas=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Pp9zgOTYSywWUhhBdavHvd7mek3umvIJNYtDbPfuLvH/5kbi+fsFvzCOKRrLiT87A
-	 NE8Kd9GkiMJ3hrJa3dLiEFpTCmKpdp7yiqDsS9qYBuGn+vHrswFS/bd00Bro0U2Li0
-	 VV2P/CgpI2tZ4yOJMfdeYn+hfD5Myon1oF1j2IF51/ygM1K/cMqOsMAiTMS1+BFEOZ
-	 pwDDRF0V6EhRMKL3YDEH63cDh/h4JsjfdldOafknuGQbl9NHBOfuo31gOuiVPFNZNQ
-	 x3N76k6L6Uq99hd4D5otWuZClgWFT1IL5dd3Ll1wjwVH9oIYtWVdJcn9wB4ZLfpM3f
-	 5fQuywi/Cqe3w==
-Date: Thu, 25 Jul 2024 17:57:05 +0200
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: ZeroBeat <ZeroBeat@gmx.de>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	Linux regressions mailing list <regressions@lists.linux.dev>,
-	Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>, Kalle Valo <kvalo@kernel.org>
-Subject: Re: [regression] mt76x2u: NULL pointer dereference since recent
- change to fix chanctx emulation for monitor mode
-Message-ID: <ZqJ10ZKHPGM6LbsM@lore-desk>
-References: <8c91352f-a404-4ba6-aa27-1253468c830d@leemhuis.info>
- <c4a67a0418e7068fc534f39f3c1dce21d082dd8f.camel@sipsolutions.net>
- <231c6ea5-b8a3-4500-b994-46a45b6ab515@gmx.de>
+	s=arc-20240116; t=1721923222; c=relaxed/simple;
+	bh=RNh3KEmRYU1W924T6+TJklHxaoR0AIcBRcFDWEQRhrs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=e93OosTBPDYo9B2p85hfQRVPuzhhl74TCYb0oaajQdTy8MNj7UIhxzTpzhrqnqBAp9oVWYRETAl03BBroHqzbICxxO2Etw1sBTYv9OcpvI693J3O2gooJds/UqclohEKPoom8sQW/tVKHfniNroBNZy5rnIXrmXfYRV7W1dmHBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=zerobeat@gmx.de header.b=gvChuMHc; arc=none smtp.client-ip=212.227.17.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1721923207; x=1722528007; i=zerobeat@gmx.de;
+	bh=RNh3KEmRYU1W924T6+TJklHxaoR0AIcBRcFDWEQRhrs=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=gvChuMHcgcbjubk55sdJo8SinNo6+C5jhl/t2xKIHLRTmLQXvhM+/JvVtcs0z0y6
+	 thV/mBKLoLJ+KASz6OFx/CgakVeiOGHIDeKZdsPEcTrDvN+Br1ystjUpj1e44VRmd
+	 h0nZyxukZZ7k/PtWgkaRk2Za1OGSheTS6hxDdTFaQFdjLJeHX7DuYzFBHHgqo8tvX
+	 bIIAXf+0oeT2r5kwJ1rORzl9AKFK6o8+gmeCdDf9WplyfrBKsWkjyj2CeLVMwBbZk
+	 VAE0isJGRI7EXHb1/FY1U8K4ypY/i++zak29uKGJY68iNWAexlC3spomA52EUDRv4
+	 /utfB/YuQdK0nPBJuw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.0.2] ([79.194.93.171]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M3DJl-1saar40hI5-00CnHX; Thu, 25
+ Jul 2024 18:00:07 +0200
+Message-ID: <852b737f-c158-4bb4-b5de-7b7d3d1d5331@gmx.de>
+Date: Thu, 25 Jul 2024 18:00:06 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="RpOihqr+zsT1aoD+"
-Content-Disposition: inline
-In-Reply-To: <231c6ea5-b8a3-4500-b994-46a45b6ab515@gmx.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [regression] mt76x2u: NULL pointer dereference since recent
+ change to fix chanctx emulation for monitor mode
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+ Linux regressions mailing list <regressions@lists.linux.dev>,
+ Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, Kalle Valo <kvalo@kernel.org>
+References: <8c91352f-a404-4ba6-aa27-1253468c830d@leemhuis.info>
+ <c4a67a0418e7068fc534f39f3c1dce21d082dd8f.camel@sipsolutions.net>
+ <231c6ea5-b8a3-4500-b994-46a45b6ab515@gmx.de> <ZqJ10ZKHPGM6LbsM@lore-desk>
+Content-Language: de-DE, en-US
+From: ZeroBeat <ZeroBeat@gmx.de>
+In-Reply-To: <ZqJ10ZKHPGM6LbsM@lore-desk>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------sdDa8lv0SjGvO9cTXSM0UNI4"
+X-Provags-ID: V03:K1:6ce4CIob128aIhfAWyaIT24RQC2XVRY6GM78R5YHNqwkGAUk9i4
+ 7wZOZBijBcrLknYcZopasmWaKXr4vRFn+xb7iPmezH+QYXQxv56YGU0KnsGgLtutTdVwyA+
+ l6CqJKamjixLjhaK72c3eSCHMs4mf4GNcNYkn14q1zF6UvYXQpKa5Cexr/urKUBIg6NVBSL
+ 7Fu0EFtpnvg0quUsQvXfg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:Q8SqSk5IkqU=;rGAi5a2GFprytAS2XQcHz+OyxOP
+ 9l+UjNSxGjzXqK325tDpSdL/aKFTNoLejqDCXRyfBWTdEsHEA1xnpw4YanBZluK/yP+0ehpr5
+ xBv6OxuEC+SFxIvvaI0ZGBmQh4duCzZEqFXQ8Huv0gBUBf6ZgH9Rk5oePVAkn++VVSGy1Uu/0
+ gbtRkfNv/czizu8IQ9+UKSigu2MqbyFrtQBSN9I4TgtcKy0cFP4d520fZZwE7fM6uTTOZuYbc
+ Z2mKO2dQW14zlF9o5+h3Kpa/uY8U2EqPkNGJxTAdI3KRzYqNXLtUUsukVwFsHJoFNC1y1AQma
+ S8oy2WChSY5WiySKMFwdfIP2CTJNUCtEm7Hltqild1uL/T9CfHTN2HHerfVuzjsovbFuZPhQm
+ OYdJDY4QOCStJ1r2BIrwR4q2x19QZTBVzO+JOh6bW9Px0Z3u//qmbG1qU++NzOIrF+Q/XfVCY
+ qZyEJ96sa9O/yOC8VZVVkmGX3qRjM0VGQToc+n1zVHFJGNzWeSDUb4i02UxW/KGc6ORMCDtYw
+ aQhFVdQm8rftbf+eMmURGSSqrQbl9Xz5F/NkB4IWIC87CWzz6mGFHynWal15GpjI3if4yE88D
+ Usg4fwJElJ+Ii163C0fhvrLj1wdlxiFQTHUZjn6U+7OBl+3c6IcKbmvF9jz00LOlj6qif416y
+ W0Fu+auXaf0a2HxWUqOw+y0NFtwkm44PIGvej9Vfz/GRXU1MPCd7ldGQGwfysaj/ddayCJ1Jv
+ 1IxbBOiShMrvM/Vij4CMUZGgNWTiy8nhRp0Uc7eDUXuTnGjnT62B34/I5aFkxxZKMcpM/4KVO
+ IDRs31jHUT22qJQv1O4Dxbng==
 
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------sdDa8lv0SjGvO9cTXSM0UNI4
+Content-Type: multipart/mixed; boundary="------------sQfvmcqOu9sq3F56lYtANScV";
+ protected-headers="v1"
+From: ZeroBeat <ZeroBeat@gmx.de>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+ Linux regressions mailing list <regressions@lists.linux.dev>,
+ Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, Kalle Valo <kvalo@kernel.org>
+Message-ID: <852b737f-c158-4bb4-b5de-7b7d3d1d5331@gmx.de>
+Subject: Re: [regression] mt76x2u: NULL pointer dereference since recent
+ change to fix chanctx emulation for monitor mode
+References: <8c91352f-a404-4ba6-aa27-1253468c830d@leemhuis.info>
+ <c4a67a0418e7068fc534f39f3c1dce21d082dd8f.camel@sipsolutions.net>
+ <231c6ea5-b8a3-4500-b994-46a45b6ab515@gmx.de> <ZqJ10ZKHPGM6LbsM@lore-desk>
+In-Reply-To: <ZqJ10ZKHPGM6LbsM@lore-desk>
 
---RpOihqr+zsT1aoD+
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+--------------sQfvmcqOu9sq3F56lYtANScV
+Content-Type: multipart/mixed; boundary="------------73i5QSksggjoR90W2Pu6mhGv"
+
+--------------73i5QSksggjoR90W2Pu6mhGv
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+
+SSd2ZSBhZGRlZCBzZXZlcmFsIGRlYnVnIHByaW50ayAtIG5vIGx1Y2ssIHlldC4NCg0KUmVn
+YXJkcw0KTWlrZQ0KDQoNCkFtIDI1LjA3LjI0IHVtIDE3OjU3IHNjaHJpZWIgTG9yZW56byBC
+aWFuY29uaToNCj4+IEp1c3QgdG8gbWVudGlvbiBpdCBoZXJlLiBUaGUgcmVncmVzc2lvbiBo
+YXMgbm93IHJlYWNoZWQgdGhlIGxvbmd0ZXJtIGtlcm5lbDoNCj4+IGFmZmVjdGVkIGRldmlj
+ZXM6IG10NzYgc2VyaWVzIChub3QgYWZmZWN0ZWQgbXQ3NjAxdSkNCj4+DQo+Pg0KPj4gYmVm
+b3JlIHVwZGF0ZToNCj4+ICQgdW5hbWUgLXINCj4+IDYuNi40MC0yLWx0cw0KPj4NCj4+ICQg
+c3VkbyBoY3hkdW1wdG9vbCAtaSB3bHA1czBmNHUyIC0tcmNhc2Nhbj1hY3RpdmUNCj4+IF5D
+DQo+PiAzOCBQYWNrZXQocykgY2FwdHVyZWQgYnkga2VybmVsDQo+PiAwIFBhY2tldChzKSBk
+cm9wcGVkIGJ5IGtlcm5lbA0KPj4gMTQgUFJPQkVSRVNQT05TRShzKSBjYXB0dXJlZA0KPj4N
+Cj4+IGV4aXQgb24gc2lndGVybQ0KPj4NCj4+DQo+Pg0KPj4gYWZ0ZXIgdXBkYXRlOg0KPj4g
+JCB1bmFtZSAtcg0KPj4gNi42LjQxLTEtbHRzDQo+Pg0KPj4gJCBzdWRvIGhjeGR1bXB0b29s
+IC1pIHdscDQ4czBmNHUydTEgLS1yY2FzY2FuPWFjdGl2ZQ0KPj4gXkMNCj4+IDAgUGFja2V0
+KHMpIGNhcHR1cmVkIGJ5IGtlcm5lbA0KPj4gMCBQYWNrZXQocykgZHJvcHBlZCBieSBrZXJu
+ZWwNCj4+IFdhcm5pbmc6IHRvbyBsZXNzIHBhY2tldHMgcmVjZWl2ZWQgKG1vbml0b3IgbW9k
+ZSBtYXkgbm90IHdvcmsgYXMgZXhwZWN0ZWQpDQo+PiBQb3NzaWJsZSByZWFzb25zOg0KPj4g
+ICBubyB0cmFuc21pdHRlciBpbiByYW5nZQ0KPj4gICBmcmFtZXMgYXJlIGZpbHRlcmVkIG91
+dCBieSBCUEYNCj4+ICAgZHJpdmVyIGlzIGJyb2tlbg0KPj4gV2FybmluZzogbm8gUFJPQkVS
+RVNQT05TRVMgcmVjZWl2ZWQgKGZyYW1lIGluamVjdGlvbiBtYXkgbm90IHdvcmsgYXMgZXhw
+ZWN0ZWQpDQo+PiBQb3NzaWJsZSByZWFzb25zOg0KPj4gICBubyBBUCBpbiByYW5nZQ0KPj4g
+ICBmcmFtZXMgYXJlIGZpbHRlcmVkIG91dCBieSBCUEYNCj4+ICAgZHJpdmVyIGlzIGJyb2tl
+bg0KPj4gICBkcml2ZXIgZG9lcyBub3Qgc3VwcG9ydCBmcmFtZSBpbmplY3Rpb24NCj4+DQo+
+PiBleGl0IG9uIHNpZ3Rlcm0NCj4+DQo+Pg0KPj4gQmVzdCByZWdhcmRzDQo+PiBNaWtlDQo+
+IA0KPiBIaSwNCj4gDQo+IEkgYW0gbG9va2luZyBpbnRvIGl0LiBJIHdpbGwgZ2V0IGJhY2sg
+dG8geW91Lg0KPiANCj4gUmVnYXJkcywNCj4gTG9yZW56bw0KPiANCj4+DQo+Pg0KPj4NCj4+
+DQo+Pg0KPj4NCj4+IEFtIDI0LjA3LjI0IHVtIDEwOjQ3IHNjaHJpZWIgSm9oYW5uZXMgQmVy
+ZzoNCj4+PiBPbiBXZWQsIDIwMjQtMDctMjQgYXQgMDk6NTggKzAyMDAsIExpbnV4IHJlZ3Jl
+c3Npb24gdHJhY2tpbmcgKFRob3JzdGVuDQo+Pj4gTGVlbWh1aXMpIHdyb3RlOg0KPj4+PiBI
+aSwgVGhvcnN0ZW4gaGVyZSwgdGhlIExpbnV4IGtlcm5lbCdzIHJlZ3Jlc3Npb24gdHJhY2tl
+ci4NCj4+Pj4NCj4+Pj4gSm9oYW5uZXMsIEZlbGl4LCBMb3JlbnpvLCBSeWRlciwgSSBub3Rp
+Y2VkIGEgcmVwb3J0IGFib3V0IGEgcmVncmVzc2lvbg0KPj4+PiBpbiBidWd6aWxsYS5rZXJu
+ZWwub3JnIHRoYXQgKGZvciBteSB1bnRyYWluZWQgZXllcykgYXBwZWFycyB0byBiZSBhIGJ1
+Zw0KPj4+PiBpbiBzb21lIGNvZGUgcGF0aHMgb2YgbXQ3NngydSB0aGF0IHdhcyBleHBvc2Vk
+IGJ5IDBkOWMyYmVlZDExNmU2ICgid2lmaToNCj4+Pj4gbWFjODAyMTE6IGZpeCBtb25pdG9y
+IGNoYW5uZWwgd2l0aCBjaGFuY3R4IGVtdWxhdGlvbiIpIFt2Ni4xMC1yYzUsDQo+Pj4+IHY2
+LjkuN10gZnJvbSBKb2hhbm5lcy4NCj4+Pj4NCj4+Pj4gQXMgbWFueSAobW9zdD8pIGtlcm5l
+bCBkZXZlbG9wZXJzIGRvbid0IGtlZXAgYW4gZXllIG9uIHRoZSBidWcgdHJhY2tlciwNCj4+
+Pj4gSSBkZWNpZGVkIHRvIHdyaXRlIHRoaXMgbWFpbC4gVG8gcXVvdGUgZnJvbQ0KPj4+PiBo
+dHRwczovL2J1Z3ppbGxhLmtlcm5lbC5vcmcvc2hvd19idWcuY2dpP2lkPTIxOTA4NiA6DQo+
+Pj4+DQo+Pj4+PiAgICBNaWNoYWVsIDIwMjQtMDctMjMgMTU6Mzg6NDMgVVRDDQo+Pj4+Pg0K
+Pj4+Pj4gQWZ0ZXIgYSB1c2VyIG9wZW5lZCB0aGlzIGRpc2N1c3Npb246DQo+Pj4+PiBodHRw
+czovL2dpdGh1Yi5jb20vWmVyQmVhL2hjeGR1bXB0b29sL2Rpc2N1c3Npb25zLzQ2NQ0KPj4+
+Pj4NCj4+Pj4+IEp1bCAyMSAwNTo0MDozOSBycGk0Yi1hYXJjaCBrZXJuZWw6IG10NzZ4MnUg
+Mi0yOjEuMCB3bGFuMTogZW50ZXJlZCBwcm9taXNjdW91cyBtb2RlDQo+Pj4+PiBKdWwgMjEg
+MDU6NDA6NDUgcnBpNGItYWFyY2gga2VybmVsOiBVbmFibGUgdG8gaGFuZGxlIGtlcm5lbCBO
+VUxMIHBvaW50ZXIgZGVyZWZlcmVuY2UgYXQgdmlydHVhbCBhZGRyZXNzIDAwMDAwMDAwMDAw
+MDAwMDANCj4+Pj4+IEp1bCAyMSAwNTo0MDo0NSBycGk0Yi1hYXJjaCBrZXJuZWw6IE1lbSBh
+Ym9ydCBpbmZvOg0KPj4+Pj4gSnVsIDIxIDA1OjQwOjQ1IHJwaTRiLWFhcmNoIGtlcm5lbDog
+ICBFU1IgPSAweDAwMDAwMDAwOTYwMDAwNDQNCj4+Pj4+IEp1bCAyMSAwNTo0MDo0NSBycGk0
+Yi1hYXJjaCBrZXJuZWw6ICAgRUMgPSAweDI1OiBEQUJUIChjdXJyZW50IEVMKSwgSUwgPSAz
+MiBiaXRzDQo+Pj4+PiBKdWwgMjEgMDU6NDA6NDUgcnBpNGItYWFyY2gga2VybmVsOiAgIFNF
+VCA9IDAsIEZuViA9IDANCj4+Pj4+IEp1bCAyMSAwNTo0MDo0NSBycGk0Yi1hYXJjaCBrZXJu
+ZWw6ICAgRUEgPSAwLCBTMVBUVyA9IDANCj4+Pj4+IEp1bCAyMSAwNTo0MDo0NSBycGk0Yi1h
+YXJjaCBrZXJuZWw6ICAgRlNDID0gMHgwNDogbGV2ZWwgMCB0cmFuc2xhdGlvbiBmYXVsdA0K
+Pj4+Pj4gSnVsIDIxIDA1OjQwOjQ1IHJwaTRiLWFhcmNoIGtlcm5lbDogRGF0YSBhYm9ydCBp
+bmZvOg0KPj4+Pj4gSnVsIDIxIDA1OjQwOjQ1IHJwaTRiLWFhcmNoIGtlcm5lbDogICBJU1Yg
+PSAwLCBJU1MgPSAweDAwMDAwMDQ0LCBJU1MyID0gMHgwMDAwMDAwMA0KPj4+Pj4gSnVsIDIx
+IDA1OjQwOjQ1IHJwaTRiLWFhcmNoIGtlcm5lbDogICBDTSA9IDAsIFduUiA9IDEsIFRuRCA9
+IDAsIFRhZ0FjY2VzcyA9IDANCj4+Pj4+IEp1bCAyMSAwNTo0MDo0NSBycGk0Yi1hYXJjaCBr
+ZXJuZWw6ICAgR0NTID0gMCwgT3ZlcmxheSA9IDAsIERpcnR5Qml0ID0gMCwgWHMgPSAwDQo+
+Pj4+PiBKdWwgMjEgMDU6NDA6NDUgcnBpNGItYWFyY2gga2VybmVsOiB1c2VyIHBndGFibGU6
+IDRrIHBhZ2VzLCA0OC1iaXQgVkFzLCBwZ2RwPTAwMDAwMDAwNDEzMDAwMDANCj4+Pj4+DQo+
+Pj4NCj4+PiBOb3QgdG9vIHdlbGwtdmVyc2VkIHdpdGggQVJNLCBkb2VzIHRoYXQgdGVsIG1l
+IGFueXRoaW5nIGFib3V0IHdoZXJlIGluDQo+Pj4gdGhlIGNvZGUgdGhlIGNyYXNoIHdhcz8g
+V2l0aG91dCBhbnkgZnVydGhlciBpbmZvcm1hdGlvbiBJIGRvbid0IHRoaW5rIEkNCj4+PiBj
+YW4gc2VlIGFueXRoaW5nIGhlcmUsIGFuZCBJIGRvbid0IGhhdmUgYW4gYWZmZWN0ZWQgZGV2
+aWNlLg0KPj4+DQo+Pj4gam9oYW5uZXMNCj4gDQo+IA0KPiANCj4gDQo+IA0K
+--------------73i5QSksggjoR90W2Pu6mhGv
+Content-Type: application/pgp-keys; name="OpenPGP_0x375516A45DB88630.asc"
+Content-Disposition: attachment; filename="OpenPGP_0x375516A45DB88630.asc"
+Content-Description: OpenPGP public key
 Content-Transfer-Encoding: quoted-printable
 
-> Just to mention it here. The regression has now reached the longterm kern=
-el:
-> affected devices: mt76 series (not affected mt7601u)
->=20
->=20
-> before update:
-> $ uname -r
-> 6.6.40-2-lts
->=20
-> $ sudo hcxdumptool -i wlp5s0f4u2 --rcascan=3Dactive
-> ^C
-> 38 Packet(s) captured by kernel
-> 0 Packet(s) dropped by kernel
-> 14 PROBERESPONSE(s) captured
->=20
-> exit on sigterm
->=20
->=20
->=20
-> after update:
-> $ uname -r
-> 6.6.41-1-lts
->=20
-> $ sudo hcxdumptool -i wlp48s0f4u2u1 --rcascan=3Dactive
-> ^C
-> 0 Packet(s) captured by kernel
-> 0 Packet(s) dropped by kernel
-> Warning: too less packets received (monitor mode may not work as expected)
-> Possible reasons:
->  no transmitter in range
->  frames are filtered out by BPF
->  driver is broken
-> Warning: no PROBERESPONSES received (frame injection may not work as expe=
-cted)
-> Possible reasons:
->  no AP in range
->  frames are filtered out by BPF
->  driver is broken
->  driver does not support frame injection
->=20
-> exit on sigterm
->=20
->=20
-> Best regards
-> Mike
+-----BEGIN PGP PUBLIC KEY BLOCK-----
 
-Hi,
+xsBNBE5aUQ0BCADlsVJE1z92lgySX+Nro7RSqTCAd6y41EljlISd8fGCoFbu0UBO
+OPHFVQ1RYvjdRf29IUqfrtGjzucMBFs0Z061rna+omw4LqwMeMlMk1GLMWttCAnm
+PQIYqj5BcqtIp5jh1vRggdg3Am6DTHhjqAAnGO+94sW2XnBLESRayGdBrQtUH2UL
+Qe1XvTtG066HB3RtzPNO7irB/UDBs7PfJgXmvF1sQB7UyqEMaMr1Oi5DzYGn8AVa
+zWTjuN7nQ5D8w3hnGbXmtPwm8dhKUO/UQjtOty8K95/0dP4Py/roBUTbNxzrC+Iz
+FAiU5t4l83T1cg8fERl9a3kBB++A0y3OFmi7ABEBAAHNGlplcm9CZWF0IDxaZXJv
+QmVhdEBnbXguZGU+wsB4BBMBAgAiBQJOWlENAhsjBgsJCAcDAgYVCAIJCgsEFgID
+AQIeAQIXgAAKCRA3VRakXbiGMJLfB/4uTRxIRDrMrKXoy5IshxbyPpcKPt2fFsyJ
+7lwozr8bZbYJfbrdXpYH2Arzegqy+gStJ94UNw3e2heihS0x+x8ukOHJ4XmzocDT
+TgQDiciLF/y/T9GwvEeHiaws024hZ729w5eA/Gaa046lkYt6eqfW9+VIkzWMAl0V
+/pNa63QVfHhZWBuj8EYIyCVhysxBa0tDyRPK1Ulih42lDXWCd1yN/ddaKE+m/+Nu
+yWSybV2w/yaboWLQWZNVRRLcdFnognXUo2P3+MM8XNP6EePtQgJaKQ7vfm7RmM8F
+3R8gX6lOiDIPZCoatsbSyPdlQ/rVkIDZ6FT0VW9yfdkV1RRLoCd5zsBNBE5aUQ0B
+CADV1OCkQeXFo+C76N4QMxGf72FGrbbdTMQcyTtVAEgMh5Kkzuuf5OfP5FCGxOtw
+YVXFe8mZeO3C6RrYid2GR0HFkx/wV4w/W68bRa85Hb6hxVddgmPhwvsJQpXItTaX
+AjKH5soPHBmPZcl+3KUfqfL/nA4x4JrUJeMaM/X8Gek+uVbTKhwTvObSxPG6DvOd
+mfHyUM0bhFV48ooC6IIc+VaHwyY1cgCLliErHrpKhIqP/N+UZpwDtZ+r0fFYIkuw
+eJvU+qJmgEgyKrSHY06GspHOMSk5OclLQ8vxvyPbTeemz7fnnYlDc+yBLUfi5/wf
+hW0vBI/pAhFVIvTCOtuLbgVhABEBAAHCwF8EGAECAAkFAk5aUQ0CGwwACgkQN1UW
+pF24hjC74gf/V9YDe9ZnOUobCghW5qMK0wT2EGcl85rAQ878Awt0/ZMiHaCyAvXp
+gsXVKeBFwfGzLdp5RGZJGYnEv3SltrF8uPslcCVmiFe+sZzR8RP61b6fdtRj8x+u
+UMKMojonhQWNbkGcFtjbFZcbL91kjTwXJP8QV/KRaw6w2BtZf8he4LiCU3Mj1VVw
+DIu16iodSb84NyvRRJtoW9qRakS78aDCHhJuPV0o8dDhZie1OqJDFODrlRsfPSCK
+59xYsi6FMxT1fTp9mnh52Qre1YEvOtYgaps8mvtLI0wuJ4QwLgbGPk5WJvooGkKS
+9e9rzZBHTO1QuH+ZvMR4+BDER+Pj9nXw4Q=3D=3D
+=3D5ikK
+-----END PGP PUBLIC KEY BLOCK-----
 
-I am looking into it. I will get back to you.
+--------------73i5QSksggjoR90W2Pu6mhGv--
 
-Regards,
-Lorenzo
+--------------sQfvmcqOu9sq3F56lYtANScV--
 
->=20
->=20
->=20
->=20
->=20
->=20
-> Am 24.07.24 um 10:47 schrieb Johannes Berg:
-> > On Wed, 2024-07-24 at 09:58 +0200, Linux regression tracking (Thorsten
-> > Leemhuis) wrote:
-> > > Hi, Thorsten here, the Linux kernel's regression tracker.
-> > >=20
-> > > Johannes, Felix, Lorenzo, Ryder, I noticed a report about a regression
-> > > in bugzilla.kernel.org that (for my untrained eyes) appears to be a b=
-ug
-> > > in some code paths of mt76x2u that was exposed by 0d9c2beed116e6 ("wi=
-fi:
-> > > mac80211: fix monitor channel with chanctx emulation") [v6.10-rc5,
-> > > v6.9.7] from Johannes.
-> > >=20
-> > > As many (most?) kernel developers don't keep an eye on the bug tracke=
-r,
-> > > I decided to write this mail. To quote from
-> > > https://bugzilla.kernel.org/show_bug.cgi?id=3D219086 :
-> > >=20
-> > > >   Michael 2024-07-23 15:38:43 UTC
-> > > >=20
-> > > > After a user opened this discussion:
-> > > > https://github.com/ZerBea/hcxdumptool/discussions/465
-> > > >=20
-> > > > Jul 21 05:40:39 rpi4b-aarch kernel: mt76x2u 2-2:1.0 wlan1: entered =
-promiscuous mode
-> > > > Jul 21 05:40:45 rpi4b-aarch kernel: Unable to handle kernel NULL po=
-inter dereference at virtual address 0000000000000000
-> > > > Jul 21 05:40:45 rpi4b-aarch kernel: Mem abort info:
-> > > > Jul 21 05:40:45 rpi4b-aarch kernel:   ESR =3D 0x0000000096000044
-> > > > Jul 21 05:40:45 rpi4b-aarch kernel:   EC =3D 0x25: DABT (current EL=
-), IL =3D 32 bits
-> > > > Jul 21 05:40:45 rpi4b-aarch kernel:   SET =3D 0, FnV =3D 0
-> > > > Jul 21 05:40:45 rpi4b-aarch kernel:   EA =3D 0, S1PTW =3D 0
-> > > > Jul 21 05:40:45 rpi4b-aarch kernel:   FSC =3D 0x04: level 0 transla=
-tion fault
-> > > > Jul 21 05:40:45 rpi4b-aarch kernel: Data abort info:
-> > > > Jul 21 05:40:45 rpi4b-aarch kernel:   ISV =3D 0, ISS =3D 0x00000044=
-, ISS2 =3D 0x00000000
-> > > > Jul 21 05:40:45 rpi4b-aarch kernel:   CM =3D 0, WnR =3D 1, TnD =3D =
-0, TagAccess =3D 0
-> > > > Jul 21 05:40:45 rpi4b-aarch kernel:   GCS =3D 0, Overlay =3D 0, Dir=
-tyBit =3D 0, Xs =3D 0
-> > > > Jul 21 05:40:45 rpi4b-aarch kernel: user pgtable: 4k pages, 48-bit =
-VAs, pgdp=3D0000000041300000
-> > > >=20
-> >=20
-> > Not too well-versed with ARM, does that tel me anything about where in
-> > the code the crash was? Without any further information I don't think I
-> > can see anything here, and I don't have an affected device.
-> >=20
-> > johannes
-
-
-
-
-
-
---RpOihqr+zsT1aoD+
-Content-Type: application/pgp-signature; name="signature.asc"
+--------------sdDa8lv0SjGvO9cTXSM0UNI4
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZqJ10QAKCRA6cBh0uS2t
-rBXrAP4pg667GN/0mnG3RU12IINowXbqv3rtMWNyo3K8jnNcRgEAoQwSdDoRwnnT
-h+IrmcYqeDSz+waZ/AERuVKwDka4/A8=
-=dT/5
+wsB5BAABCAAjFiEEWSDOHFZ5SK/SwKm3N1UWpF24hjAFAmaidoYFAwAAAAAACgkQN1UWpF24hjCN
+AQgApUURpWG91CkBn6flRbLraJJGIJ+R+Bl3sQ6UaXwA4FwM7Z6V38yv16DelCIr/B3JJ+DYcdjz
+kPDfVWXMkCDVFaSWqk/mqUx4ZWxYRx8IRR9fhqHgQRG/RsuGzRXusurMl6Kxx/64yaWHUGH9pXpN
+AoqcK6yoxwnJGD0tbOV35f51zbhoh7u6Hww7tWSmZbcKSFBmfC+SVhnNpGMLJtctT+IOqUhZ+FdI
+jM48UxZOLhQhVYmYfkhcYpNagwEn5s/AuWzeINoZmqZ9DuMYWlmjvQDxCBkGqE1Y9GvrmCTBWEMf
++IYBTUPWIwYTAjL0O+23Wpw0XJdhFXjKL+dd2URORQ==
+=GLNm
 -----END PGP SIGNATURE-----
 
---RpOihqr+zsT1aoD+--
+--------------sdDa8lv0SjGvO9cTXSM0UNI4--
 
