@@ -1,206 +1,173 @@
-Return-Path: <linux-wireless+bounces-10499-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10500-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7558493BEC3
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2024 11:10:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6F7693BED8
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2024 11:15:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 315DD28229C
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2024 09:10:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CD3F283B46
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2024 09:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35743196D9E;
-	Thu, 25 Jul 2024 09:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB89817109F;
+	Thu, 25 Jul 2024 09:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="VuW17b5c"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XAUIdSjF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward103b.mail.yandex.net (forward103b.mail.yandex.net [178.154.239.150])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492C81741EF
-	for <linux-wireless@vger.kernel.org>; Thu, 25 Jul 2024 09:10:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38DB481E;
+	Thu, 25 Jul 2024 09:15:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721898634; cv=none; b=KxUYErn5wOMHyMr1D0MeghHhSFJplvWzNwWlApOsbmZme/9FJdGWJxlYNMF3oLn87+26Fr7tFvnPCu1dzRsy4tNOf9o6GePOCbrYxp6rayaMZ8b9FgIWvsKtR46I7tMc0adNNvGtQzxQOR2dNqVeSwGPkYpiH5Kb/lxC+cHRsEM=
+	t=1721898948; cv=none; b=BC/GomjfyCchbzcrg+fGh6HQGEvsfGJBbI8XD7J+Pj90+rBWbaVf0ichqqrXZxyyujlf4DBSsL0mLVHjQn3hyHIPb69MgTJwmsgD4Gdoyfy0srbxdElsrFXwtdKndeCRd1IGB9zqhzugYxY5ikhr9MyWX51ap0jzJYq2T5CmuMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721898634; c=relaxed/simple;
-	bh=nWMZ0Y3aXuI9YwV0yhrsjqy7A3rH8SSYfMaFTzVLp6E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TXMWsAe2SuDPM1fYYzMTynRxtRtTBZoEdBTRMIt/OduPazySKmSictlWpGcinNSxSjgjiKZekotAnygFreHnQbCSJQzQ/s2agR5k5B66xu57SH0rO/sDYVmzBFo2qxjMqDPitCPNMTWFqx3NOiy5r4L1jAP15MV2l6aYA45J/2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=VuW17b5c; arc=none smtp.client-ip=178.154.239.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from mail-nwsmtp-smtp-production-main-44.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-44.sas.yp-c.yandex.net [IPv6:2a02:6b8:c24:a33:0:640:d837:0])
-	by forward103b.mail.yandex.net (Yandex) with ESMTPS id 1A1A260917;
-	Thu, 25 Jul 2024 12:10:22 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-44.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id KAM1Su5Qm8c0-eJrdix6z;
-	Thu, 25 Jul 2024 12:10:21 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1721898621; bh=7wghcsEtHmUU7lZcKVKGQxpP/saU/W9Ri0pCWTCr5Jo=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=VuW17b5cWPdg40z5PB+DKmQ62lRT8YIobEXIHyiiQZihErS7qO0SHjC+v737I4C/2
-	 jvivq1OZfTYFy7/r0Vgx7y8ZbTv9Udh6uNVklOBjh0UutZ6+R6+5Eo1u77ZRIQJauO
-	 msvRmeeEnIyOB3Ng90s0aSd8Ww4lT/6OTHY9mf7g=
-Authentication-Results: mail-nwsmtp-smtp-production-main-44.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Dmitry Antipov <dmantipov@yandex.ru>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Dmitry Kandybka <d.kandybka@gmail.com>,
-	linux-wireless@vger.kernel.org,
-	Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] wifi: mac80211: refactor block ack management code
-Date: Thu, 25 Jul 2024 12:09:25 +0300
-Message-ID: <20240725090925.6022-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1721898948; c=relaxed/simple;
+	bh=OcwgtfgPw0hhdhtKtHhoQsMyS9KzBLMScSWx7P0e2cs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=laOP2VNMVMOXZA+jEDTyZ67TCEmX+EpUhnSv8RVNTsFmOg/Ow8HwndqxaIFoCmFPuMiJoTZw2a0w2BUIf7X1bRftgjo+39H4trp8IllNTNjkNmI6ZoBmEzY919v5gmVylx4sqTUGJOt9KaIhkLN2DsPk3nsEyc+VaJgGvehHa8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XAUIdSjF; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5a108354819so942869a12.0;
+        Thu, 25 Jul 2024 02:15:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1721898945; x=1722503745; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ysBx5Z51EpiZcBKUWEbzyyIn2+Nt7E1e5BC6UDT7EQE=;
+        b=XAUIdSjFFoUFoYSvFiO24+hIwLYFo1hvbSbHT8wXlTmAxH+mOb32i2SdLfd1wAUEJW
+         EOFvJNCa2nCXRVmFzLALNxnnLSREs78CXay8fh3DOIKRkxTTrIH8qGBr0a3MazA03M5y
+         mKtwkfipMuGF6cuat8wI2Lrn2gFb4azlwc25Wv8sE7UibTVCEdqY+FaocGx5Z1IKGjiO
+         ao2y+26mMma12qR/eKIdwJXRfMte+r8595XjYM/xNv5YZqqekNierStb9sZN6ZNBhGiT
+         T6aLMDzMFCqdlbMywMqdyrrD7UW/h91P99vlgkmEhOtYOTzfrA3zHR08YN5NYljvREZV
+         QGLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721898945; x=1722503745;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ysBx5Z51EpiZcBKUWEbzyyIn2+Nt7E1e5BC6UDT7EQE=;
+        b=mbKiVOc5uXgzqHqE2oP5HSBqdEYkpJA+CQ38qZsMZR85ooelmY+FoOKFW6jOn2dZ3O
+         t/CWSxGCDqGsTOyVkJRxSGCc04h4gINf7ltGqSUOFcfQfvyVK6DqjzaWrA3/DXW7sQts
+         HRgbhmYdxM6mCm8Dt9sd1mJrjqfbe0kBUgsjHtbYXdlLGg35wgpAyzPzbV5xmmSVcoR/
+         oQGz9x8jzJ8brmfjoiYy8fl4+N2f5eVWgYAYJlAF3EeCEPjgitC42ujcEF2hUdXHt482
+         zOGSsNbTQG8RuMyH+KQcjjOP451L3jyNJw/YJvgYM2ic+eZhKdkstY1xCZD/MwgE87lT
+         zTuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXOzGJbjHspFnYUMPQy/82ehSRqKSCUrQ06nVXNx4xSL/xuA8ovr6h+vIAZ8OtI9VFoer9ET41wYsg9e0S6kw/lEEYWhBNWBtFMAFvbk+/aezvGjROES9k5Wc/g5Dh7L8fsn7Rf+pn7sa7O/7uPXilzAKyVADzYeSRrFXr64yMq0ywk1ea3hhxBIw==
+X-Gm-Message-State: AOJu0Yzc7h7TPUmUND/Sf6j3oWMSPMtORqrMT0Os4mNj1uTBRFrOHiC1
+	IDTj/64/kGLBe+/HGKoaAnTTZYcPuidt+6VCgT/XGB7jfk8DrakVpqD1u//WvwYzXsafu7XRAtq
+	P+LFTTKhDVA1Y/3yLhS/3H9wcj+M=
+X-Google-Smtp-Source: AGHT+IGhAa6wCja7qg4dQ0/wwMduOr4UN/fm29G/e5fxGtFKB4d6+ysR2xYbfM2QDED6KN/IpGrm/XlhsbvHP2bcUcs=
+X-Received: by 2002:a50:f68d:0:b0:5a2:8bef:c370 with SMTP id
+ 4fb4d7f45d1cf-5ac6261dc83mr996668a12.15.1721898945272; Thu, 25 Jul 2024
+ 02:15:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240725075830.63585-1-sunjunchao2870@gmail.com> <20240725085156.dezpnf44cilt46su@quack3>
+In-Reply-To: <20240725085156.dezpnf44cilt46su@quack3>
+From: Julian Sun <sunjunchao2870@gmail.com>
+Date: Thu, 25 Jul 2024 05:15:34 -0400
+Message-ID: <CAHB1NagCqP4k9XvmAoyZ8NaRb0Y-bT1unnnOsmnt-mE6_k=8Rg@mail.gmail.com>
+Subject: Re: [PATCH] scripts: reduce false positives in the macro_checker script.
+To: Jan Kara <jack@suse.cz>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	brauner@kernel.org, viro@zeniv.linux.org.uk, masahiroy@kernel.org, 
+	akpm@linux-foundation.org, n.schier@avm.de, ojeda@kernel.org, 
+	djwong@kernel.org, kvalo@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Introduce 'ieee80211_mgmt_ba()' to avoid code duplication between
-'ieee80211_send_addba_resp()', 'ieee80211_send_addba_request()',
-and 'ieee80211_send_delba()', ensure that all related addresses
-are '__aligned(2)', and prefer convenient 'ether_addr_copy()'
-over generic 'memcpy()'. No functional changes expected.
+Jan Kara <jack@suse.cz> =E4=BA=8E2024=E5=B9=B47=E6=9C=8825=E6=97=A5=E5=91=
+=A8=E5=9B=9B 04:52=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Thu 25-07-24 03:58:30, Julian Sun wrote:
+> > Reduce false positives in the macro_checker
+> > in the following scenarios:
+> >   1. Conditional compilation
+> >   2. Macro definitions with only a single character
+> >   3. Macro definitions as (0) and (1)
+> >
+> > Before this patch:
+> >       sjc@sjc:linux$ ./scripts/macro_checker.py  fs | wc -l
+> >       99
+> >
+> > After this patch:
+> >       sjc@sjc:linux$ ./scripts/macro_checker.py  fs | wc -l
+> >       11
+> >
+> > Most of the current warnings are valid now.
+> >
+> > Signed-off-by: Julian Sun <sunjunchao2870@gmail.com>
+> ...
+> >  def file_check_macro(file_path, report):
+> > +    # number of conditional compiling
+> > +    cond_compile =3D 0
+> >      # only check .c and .h file
+> >      if not file_path.endswith(".c") and not file_path.endswith(".h"):
+> >          return
+> > @@ -57,7 +72,14 @@ def file_check_macro(file_path, report):
+> >          while True:
+> >              line =3D f.readline()
+> >              if not line:
+> > -                return
+> > +                break
+> > +            line =3D line.strip()
+> > +            if line.startswith(cond_compile_mark):
+> > +                cond_compile +=3D 1
+> > +                continue
+> > +            if line.startswith(cond_compile_end):
+> > +                cond_compile -=3D 1
+> > +                continue
+> >
+> >              macro =3D re.match(macro_pattern, line)
+> >              if macro:
+> > @@ -67,6 +89,11 @@ def file_check_macro(file_path, report):
+> >                      macro =3D macro.strip()
+> >                      macro +=3D f.readline()
+> >                      macro =3D macro_strip(macro)
+> > +                if file_path.endswith(".c")  and cond_compile !=3D 0:
+> > +                    continue
+> > +                # 1 is for #ifdef xxx at the beginning of the header f=
+ile
+> > +                if file_path.endswith(".h") and cond_compile !=3D 1:
+> > +                    continue
+> >                  check_macro(macro, report)
+> >
+> >  def get_correct_macros(path):
+>
+>
+> > So I don't think this is right. As far as I understand this skips any m=
+acros
+> > that are conditionally defined? Why? There is a lot of them and checkin=
+g
+> > them is beneficial... The patterns you have added should be dealing wit=
+h
+> > most of the conditional defines anyway.
+Yes, this skips all checks for conditional macro. This is because I
+observed that almost all false positives come from conditional
+compilation. Testing showed that skipping them does not cause the
+genuine warnings to disappear.
+Also as you said, it may still lead to skipping checks for genuinely
+problematic macro definitions. Perhaps we could provide an option that
+allows users to control whether or not to check macros under
+conditional compilation?
+>
+>                                                                 Honza
+> --
+> Jan Kara <jack@suse.com>
+> SUSE Labs, CR
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- include/net/mac80211.h     |  2 +-
- net/mac80211/agg-rx.c      | 15 +--------------
- net/mac80211/agg-tx.c      | 15 +--------------
- net/mac80211/ht.c          | 15 +--------------
- net/mac80211/ieee80211_i.h | 23 +++++++++++++++++++++++
- 5 files changed, 27 insertions(+), 43 deletions(-)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 0a04eaf5343c..9406f687cffb 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -2487,7 +2487,7 @@ struct ieee80211_link_sta {
-  * @spp_amsdu: indicates whether the STA uses SPP A-MSDU or not.
-  */
- struct ieee80211_sta {
--	u8 addr[ETH_ALEN];
-+	u8 addr[ETH_ALEN] __aligned(2);
- 	u16 aid;
- 	u16 max_rx_aggregation_subframes;
- 	bool wme;
-diff --git a/net/mac80211/agg-rx.c b/net/mac80211/agg-rx.c
-index 9bffac7a4974..fe7eab4b681b 100644
---- a/net/mac80211/agg-rx.c
-+++ b/net/mac80211/agg-rx.c
-@@ -207,20 +207,7 @@ static void ieee80211_send_addba_resp(struct sta_info *sta, u8 *da, u16 tid,
- 		return;
- 
- 	skb_reserve(skb, local->hw.extra_tx_headroom);
--	mgmt = skb_put_zero(skb, 24);
--	memcpy(mgmt->da, da, ETH_ALEN);
--	memcpy(mgmt->sa, sdata->vif.addr, ETH_ALEN);
--	if (sdata->vif.type == NL80211_IFTYPE_AP ||
--	    sdata->vif.type == NL80211_IFTYPE_AP_VLAN ||
--	    sdata->vif.type == NL80211_IFTYPE_MESH_POINT)
--		memcpy(mgmt->bssid, sdata->vif.addr, ETH_ALEN);
--	else if (sdata->vif.type == NL80211_IFTYPE_STATION)
--		memcpy(mgmt->bssid, sdata->vif.cfg.ap_addr, ETH_ALEN);
--	else if (sdata->vif.type == NL80211_IFTYPE_ADHOC)
--		memcpy(mgmt->bssid, sdata->u.ibss.bssid, ETH_ALEN);
--
--	mgmt->frame_control = cpu_to_le16(IEEE80211_FTYPE_MGMT |
--					  IEEE80211_STYPE_ACTION);
-+	mgmt = ieee80211_mgmt_ba(skb, da, sdata);
- 
- 	skb_put(skb, 1 + sizeof(mgmt->u.action.u.addba_resp));
- 	mgmt->u.action.category = WLAN_CATEGORY_BACK;
-diff --git a/net/mac80211/agg-tx.c b/net/mac80211/agg-tx.c
-index 677bbbac9f16..1c18b862ef8c 100644
---- a/net/mac80211/agg-tx.c
-+++ b/net/mac80211/agg-tx.c
-@@ -74,20 +74,7 @@ static void ieee80211_send_addba_request(struct ieee80211_sub_if_data *sdata,
- 		return;
- 
- 	skb_reserve(skb, local->hw.extra_tx_headroom);
--	mgmt = skb_put_zero(skb, 24);
--	memcpy(mgmt->da, da, ETH_ALEN);
--	memcpy(mgmt->sa, sdata->vif.addr, ETH_ALEN);
--	if (sdata->vif.type == NL80211_IFTYPE_AP ||
--	    sdata->vif.type == NL80211_IFTYPE_AP_VLAN ||
--	    sdata->vif.type == NL80211_IFTYPE_MESH_POINT)
--		memcpy(mgmt->bssid, sdata->vif.addr, ETH_ALEN);
--	else if (sdata->vif.type == NL80211_IFTYPE_STATION)
--		memcpy(mgmt->bssid, sdata->vif.cfg.ap_addr, ETH_ALEN);
--	else if (sdata->vif.type == NL80211_IFTYPE_ADHOC)
--		memcpy(mgmt->bssid, sdata->u.ibss.bssid, ETH_ALEN);
--
--	mgmt->frame_control = cpu_to_le16(IEEE80211_FTYPE_MGMT |
--					  IEEE80211_STYPE_ACTION);
-+	mgmt = ieee80211_mgmt_ba(skb, da, sdata);
- 
- 	skb_put(skb, 1 + sizeof(mgmt->u.action.u.addba_req));
- 
-diff --git a/net/mac80211/ht.c b/net/mac80211/ht.c
-index 79caeb485fd5..1c2b7dd8976a 100644
---- a/net/mac80211/ht.c
-+++ b/net/mac80211/ht.c
-@@ -467,20 +467,7 @@ void ieee80211_send_delba(struct ieee80211_sub_if_data *sdata,
- 		return;
- 
- 	skb_reserve(skb, local->hw.extra_tx_headroom);
--	mgmt = skb_put_zero(skb, 24);
--	memcpy(mgmt->da, da, ETH_ALEN);
--	memcpy(mgmt->sa, sdata->vif.addr, ETH_ALEN);
--	if (sdata->vif.type == NL80211_IFTYPE_AP ||
--	    sdata->vif.type == NL80211_IFTYPE_AP_VLAN ||
--	    sdata->vif.type == NL80211_IFTYPE_MESH_POINT)
--		memcpy(mgmt->bssid, sdata->vif.addr, ETH_ALEN);
--	else if (sdata->vif.type == NL80211_IFTYPE_STATION)
--		memcpy(mgmt->bssid, sdata->vif.cfg.ap_addr, ETH_ALEN);
--	else if (sdata->vif.type == NL80211_IFTYPE_ADHOC)
--		memcpy(mgmt->bssid, sdata->u.ibss.bssid, ETH_ALEN);
--
--	mgmt->frame_control = cpu_to_le16(IEEE80211_FTYPE_MGMT |
--					  IEEE80211_STYPE_ACTION);
-+	mgmt = ieee80211_mgmt_ba(skb, da, sdata);
- 
- 	skb_put(skb, 1 + sizeof(mgmt->u.action.u.delba));
- 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index a3485e4c6132..fdd2bad15076 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -2136,6 +2136,29 @@ void ieee80211_process_addba_request(struct ieee80211_local *local,
- 				     struct ieee80211_mgmt *mgmt,
- 				     size_t len);
- 
-+static inline struct ieee80211_mgmt *
-+ieee80211_mgmt_ba(struct sk_buff *skb, const u8 *da,
-+		  struct ieee80211_sub_if_data *sdata)
-+{
-+	struct ieee80211_mgmt *mgmt = skb_put_zero(skb, 24);
-+
-+	ether_addr_copy(mgmt->da, da);
-+	ether_addr_copy(mgmt->sa, sdata->vif.addr);
-+
-+	if (sdata->vif.type == NL80211_IFTYPE_AP ||
-+	    sdata->vif.type == NL80211_IFTYPE_AP_VLAN ||
-+	    sdata->vif.type == NL80211_IFTYPE_MESH_POINT)
-+		ether_addr_copy(mgmt->bssid, sdata->vif.addr);
-+	else if (sdata->vif.type == NL80211_IFTYPE_STATION)
-+		ether_addr_copy(mgmt->bssid, sdata->vif.cfg.ap_addr);
-+	else if (sdata->vif.type == NL80211_IFTYPE_ADHOC)
-+		ether_addr_copy(mgmt->bssid, sdata->u.ibss.bssid);
-+
-+	mgmt->frame_control = cpu_to_le16(IEEE80211_FTYPE_MGMT |
-+					  IEEE80211_STYPE_ACTION);
-+	return mgmt;
-+}
-+
- int __ieee80211_stop_tx_ba_session(struct sta_info *sta, u16 tid,
- 				   enum ieee80211_agg_stop_reason reason);
- void ieee80211_start_tx_ba_cb(struct sta_info *sta, int tid,
--- 
-2.45.2
-
+Thanks,
+--=20
+Julian Sun <sunjunchao2870@gmail.com>
 
