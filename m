@@ -1,231 +1,255 @@
-Return-Path: <linux-wireless+bounces-10501-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10502-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7CC393BF56
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2024 11:48:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAEB293BF5D
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2024 11:49:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 453271F21995
-	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2024 09:48:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57DBB1F211D2
+	for <lists+linux-wireless@lfdr.de>; Thu, 25 Jul 2024 09:49:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B87417624F;
-	Thu, 25 Jul 2024 09:48:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DED016AD7;
+	Thu, 25 Jul 2024 09:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="THNAsLDN";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="VBguy6DJ";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="THNAsLDN";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="VBguy6DJ"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="jAAK12Y5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2611613BC3D;
-	Thu, 25 Jul 2024 09:48:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE2F198A05
+	for <linux-wireless@vger.kernel.org>; Thu, 25 Jul 2024 09:49:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721900888; cv=none; b=YTTNMQXKkqmpYe7gL1QpPuiygjnGkfiwFIgQgiLOpU8UBnmknT5Qa2FLi137eXFkIDPFhwtCdl/Z8d0vc3JsehXnd0+FU2CQFaLr5KZ1yAq4vQ0S89Ty+gxPn3DFwksb0Kd6BAQyc2ateXTr35smIxGFNpXc5sjvis6zndX8tHc=
+	t=1721900962; cv=none; b=WNOpZZRxFMyJHcMIMU0nCdprqJLztHQF4LhyKjlLBsFG4kCgQv3+HtO4ftMJjRGToT3EywhfF6BsdIVq7fqqQHl8E/T0c8fP86mAIGNe5yljcKQ+4BjtVsbU8XpvdH7lR+inDyYKEpUatM6GCirZ2Ag1Q6FKXAnT7BTzg1sT0VI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721900888; c=relaxed/simple;
-	bh=5wggwBQsW0pIfGbJ70JBF5Vd/5UgTjPCBJLNzOnc29E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CSHZPdw1zbRcpJXBa65YjxYtzWietVz0+Pjbt4Nlb1tUOGTEfXSmBpPlqewgKqwyBqg+6oD2z0jY7NIlbWpx/poVajlepSxpXchvr07FjggqpM6RhXtHilg0KGIamok8aAoSmYAoZ/JHT4GiZOEZdH6dHIr2UelKEXE1EeAMEDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=THNAsLDN; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=VBguy6DJ; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=THNAsLDN; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=VBguy6DJ; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 308A61F7EB;
-	Thu, 25 Jul 2024 09:48:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1721900884; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HuyF32rp6Kjocy/ertr/PhV83euRJZA/Fmh4YzsdV+Q=;
-	b=THNAsLDN7X9bvvm5494WZ72d5VokNw+EED3N+XV4V57J1EhnmaMnNKPak0FXBLfCBT0awc
-	WdWy7aQu9tAjgV78xGEBfT9dyhNAdNG2BtdBNCYQlYnTWYvN0KRnsHTSS9H6M2fgn+nkoN
-	5+4gi212JKuUQ9TeU6se2zG8E6vHCIg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1721900884;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HuyF32rp6Kjocy/ertr/PhV83euRJZA/Fmh4YzsdV+Q=;
-	b=VBguy6DJgf02pdZ9UX4HHJCdP70sRE5Al7cc5kPeDQ1gKrzjo/vTsJ5HMsSGN6mW41L/HN
-	1T268tux0nYRl6Ag==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=THNAsLDN;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=VBguy6DJ
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1721900884; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HuyF32rp6Kjocy/ertr/PhV83euRJZA/Fmh4YzsdV+Q=;
-	b=THNAsLDN7X9bvvm5494WZ72d5VokNw+EED3N+XV4V57J1EhnmaMnNKPak0FXBLfCBT0awc
-	WdWy7aQu9tAjgV78xGEBfT9dyhNAdNG2BtdBNCYQlYnTWYvN0KRnsHTSS9H6M2fgn+nkoN
-	5+4gi212JKuUQ9TeU6se2zG8E6vHCIg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1721900884;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HuyF32rp6Kjocy/ertr/PhV83euRJZA/Fmh4YzsdV+Q=;
-	b=VBguy6DJgf02pdZ9UX4HHJCdP70sRE5Al7cc5kPeDQ1gKrzjo/vTsJ5HMsSGN6mW41L/HN
-	1T268tux0nYRl6Ag==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 20D841368A;
-	Thu, 25 Jul 2024 09:48:04 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 9Q4ACFQfomYFPgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 25 Jul 2024 09:48:04 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id C7B09A0996; Thu, 25 Jul 2024 11:48:03 +0200 (CEST)
-Date: Thu, 25 Jul 2024 11:48:03 +0200
-From: Jan Kara <jack@suse.cz>
-To: Julian Sun <sunjunchao2870@gmail.com>
-Cc: Jan Kara <jack@suse.cz>, linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, brauner@kernel.org,
-	viro@zeniv.linux.org.uk, masahiroy@kernel.org,
-	akpm@linux-foundation.org, n.schier@avm.de, ojeda@kernel.org,
-	djwong@kernel.org, kvalo@kernel.org
-Subject: Re: [PATCH] scripts: reduce false positives in the macro_checker
- script.
-Message-ID: <20240725094803.vvq7nvgjaupu5vjg@quack3>
-References: <20240725075830.63585-1-sunjunchao2870@gmail.com>
- <20240725085156.dezpnf44cilt46su@quack3>
- <CAHB1NagCqP4k9XvmAoyZ8NaRb0Y-bT1unnnOsmnt-mE6_k=8Rg@mail.gmail.com>
+	s=arc-20240116; t=1721900962; c=relaxed/simple;
+	bh=tOsXnujWCs4qjA0HafrOAyWkecHFrY8O/+VRuOmHGnI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NtEe3+UIdsSkAPZ6jlcmgjFmyoLWKlUJf9oqyj1NaQ9Ct5d4BAdghxZiokt2wKmoBlvZGAAUmcMu7It1qZyNjdNqWPIoU0+Yf69pOm0YNUaE9oC44c6oRymfgZLt/g/t2En0fyY06O8YrEKTNXa9U9LZlRHoH1UmijavAr8iVIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=jAAK12Y5; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46P9fJDu009311;
+	Thu, 25 Jul 2024 09:48:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=4KF4yERWDTYx8Cx9KSKG61
+	bpOzj/JomvYCW4XNG8wFo=; b=jAAK12Y5pj2x5ic1sGUSMStKH+RxSl4WyEcSr6
+	EL624q3Fjqh9nfAV2bxBlm8YVUyDjZMDDZg6MXQ3po0i5xmY+ypar/s7zO77x162
+	2uyjPqG8FhxdYnBHX27+9rUazb9BW71S0SfuLsRzaegPFLF0OyfxD+JEPLGzSUcP
+	QrbQ27GwbLCwrTikF61V8cPat2xDAbjjtUEeCkWtiKm/ujGF68q40cS77qRqTOsh
+	dk1RDmRSUKSp7iAoA//FMf2Sw6BsA7xryG3MivEqW3JUUI6PZkWd34r8KwLspjLH
+	IVyO+tcVnuvR8yzVlkAzTqEuHYeWTY9bGXyYy8ATPtKXyguw==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40g487mr6u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 25 Jul 2024 09:48:53 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46P9mpTT003675
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 25 Jul 2024 09:48:51 GMT
+Received: from hu-ramess-blr.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Thu, 25 Jul 2024 02:48:49 -0700
+From: Rameshkumar Sundaram <quic_ramess@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Rameshkumar Sundaram
+	<quic_ramess@quicinc.com>,
+        Sriram R <quic_srirrama@quicinc.com>
+Subject: [PATCH] wifi: ath12k: prepare vif config caching for MLO
+Date: Thu, 25 Jul 2024 15:18:36 +0530
+Message-ID: <20240725094836.287448-1-quic_ramess@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHB1NagCqP4k9XvmAoyZ8NaRb0Y-bT1unnnOsmnt-mE6_k=8Rg@mail.gmail.com>
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 308A61F7EB
-X-Spam-Score: -3.81
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-3.81 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ARC_NA(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	RCVD_TLS_LAST(0.00)[];
-	DWL_DNSWL_BLOCKED(0.00)[suse.cz:dkim];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sjc:email]
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: RbxBHngAy66exybHJst-pqg2UvUfRZL6
+X-Proofpoint-GUID: RbxBHngAy66exybHJst-pqg2UvUfRZL6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-25_09,2024-07-25_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 spamscore=0
+ suspectscore=0 phishscore=0 priorityscore=1501 mlxlogscore=999
+ malwarescore=0 adultscore=0 impostorscore=0 clxscore=1015
+ lowpriorityscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2407110000 definitions=main-2407250065
 
-On Thu 25-07-24 05:15:34, Julian Sun wrote:
-> Jan Kara <jack@suse.cz> 于2024年7月25日周四 04:52写道：
-> >
-> > On Thu 25-07-24 03:58:30, Julian Sun wrote:
-> > > Reduce false positives in the macro_checker
-> > > in the following scenarios:
-> > >   1. Conditional compilation
-> > >   2. Macro definitions with only a single character
-> > >   3. Macro definitions as (0) and (1)
-> > >
-> > > Before this patch:
-> > >       sjc@sjc:linux$ ./scripts/macro_checker.py  fs | wc -l
-> > >       99
-> > >
-> > > After this patch:
-> > >       sjc@sjc:linux$ ./scripts/macro_checker.py  fs | wc -l
-> > >       11
-> > >
-> > > Most of the current warnings are valid now.
-> > >
-> > > Signed-off-by: Julian Sun <sunjunchao2870@gmail.com>
-> > ...
-> > >  def file_check_macro(file_path, report):
-> > > +    # number of conditional compiling
-> > > +    cond_compile = 0
-> > >      # only check .c and .h file
-> > >      if not file_path.endswith(".c") and not file_path.endswith(".h"):
-> > >          return
-> > > @@ -57,7 +72,14 @@ def file_check_macro(file_path, report):
-> > >          while True:
-> > >              line = f.readline()
-> > >              if not line:
-> > > -                return
-> > > +                break
-> > > +            line = line.strip()
-> > > +            if line.startswith(cond_compile_mark):
-> > > +                cond_compile += 1
-> > > +                continue
-> > > +            if line.startswith(cond_compile_end):
-> > > +                cond_compile -= 1
-> > > +                continue
-> > >
-> > >              macro = re.match(macro_pattern, line)
-> > >              if macro:
-> > > @@ -67,6 +89,11 @@ def file_check_macro(file_path, report):
-> > >                      macro = macro.strip()
-> > >                      macro += f.readline()
-> > >                      macro = macro_strip(macro)
-> > > +                if file_path.endswith(".c")  and cond_compile != 0:
-> > > +                    continue
-> > > +                # 1 is for #ifdef xxx at the beginning of the header file
-> > > +                if file_path.endswith(".h") and cond_compile != 1:
-> > > +                    continue
-> > >                  check_macro(macro, report)
-> > >
-> > >  def get_correct_macros(path):
-> >
-> >
-> > > So I don't think this is right. As far as I understand this skips any macros
-> > > that are conditionally defined? Why? There is a lot of them and checking
-> > > them is beneficial... The patterns you have added should be dealing with
-> > > most of the conditional defines anyway.
-> Yes, this skips all checks for conditional macro. This is because I
-> observed that almost all false positives come from conditional
-> compilation. Testing showed that skipping them does not cause the
-> genuine warnings to disappear.
-> Also as you said, it may still lead to skipping checks for genuinely
-> problematic macro definitions. Perhaps we could provide an option that
-> allows users to control whether or not to check macros under
-> conditional compilation?
+Currently vif configuration cache pointers are placed in arvif and
+caching is done whenever a link vif configuration is received before
+driver created vdev for it (i.e. before channel is assigned),
+this is possible because current code only uses default
+link(ahvif->deflink) which is preallocated.
 
-Yes, that could be useful.
+With MLO changes the ieee80211_vif drv priv is now ahvif and its
+arvifs(link vif) other than deflink can be allocated dynamically
+during channel assignment. Hence maintain link level cache
+in ahvif and whenever channel is assigned for link vif and vdev is created,
+flush the corresponding link vif cache from ahvif.
 
-								Honza
+Current code uses cache of ATH12K_DEFAULT_LINK_ID(0) which is the cache
+of ahvif->deflink.
+
+Co-developed-by: Sriram R <quic_srirrama@quicinc.com>
+Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
+Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
+---
+Depends-on:
+[PATCH v6 0/3] wifi: ath12k: prepare vif and sta datastructure
+Link: https://lore.kernel.org/linux-wireless/20240711165511.3100433-4-quic_ramess@quicinc.com/
+---
+ drivers/net/wireless/ath/ath12k/core.h |  2 +-
+ drivers/net/wireless/ath/ath12k/mac.c  | 39 +++++++++++++-------------
+ 2 files changed, 21 insertions(+), 20 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+index 13f8695c2337..5b880f6970a3 100644
+--- a/drivers/net/wireless/ath/ath12k/core.h
++++ b/drivers/net/wireless/ath/ath12k/core.h
+@@ -272,7 +272,6 @@ struct ath12k_link_vif {
+ 	u32 punct_bitmap;
+ 	u8 link_id;
+ 	struct ath12k_vif *ahvif;
+-	struct ath12k_vif_cache *cache;
+ 	struct ath12k_rekey_data rekey_data;
+ };
+ 
+@@ -306,6 +305,7 @@ struct ath12k_vif {
+ 
+ 	struct ath12k_link_vif deflink;
+ 	struct ath12k_link_vif __rcu *link[IEEE80211_MLD_MAX_NUM_LINKS];
++	struct ath12k_vif_cache *cache[IEEE80211_MLD_MAX_NUM_LINKS];
+ 	/* indicates bitmap of link vif created in FW */
+ 	u16 links_map;
+ };
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index b36b9250c924..4063787cdfcf 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -3455,18 +3455,19 @@ static void ath12k_mac_bss_info_changed(struct ath12k *ar,
+ 	}
+ }
+ 
+-static struct ath12k_vif_cache *ath12k_arvif_get_cache(struct ath12k_link_vif *arvif)
++static struct ath12k_vif_cache *ath12k_ahvif_get_link_cache(struct ath12k_vif *ahvif,
++							    u8 link_id)
+ {
+-	if (!arvif->cache)
+-		arvif->cache = kzalloc(sizeof(*arvif->cache), GFP_KERNEL);
++	if (!ahvif->cache[link_id])
++		ahvif->cache[link_id] = kzalloc(sizeof(*ahvif->cache[0]), GFP_KERNEL);
+ 
+-	return arvif->cache;
++	return ahvif->cache[link_id];
+ }
+ 
+-static void ath12k_arvif_put_cache(struct ath12k_link_vif *arvif)
++static void ath12k_ahvif_put_link_cache(struct ath12k_vif *ahvif, u8 link_id)
+ {
+-	kfree(arvif->cache);
+-	arvif->cache = NULL;
++	kfree(ahvif->cache[link_id]);
++	ahvif->cache[link_id] = NULL;
+ }
+ 
+ static void ath12k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
+@@ -3493,15 +3494,14 @@ static void ath12k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
+ 
+ 	if (!ar) {
+ 		/* TODO Once link vif is fetched based on link id from
+-		 * info, avoid using the deflink above and cache the link
+-		 * configs in ahvif per link.
++		 * info, avoid using ATH12K_DEFAULT_LINK_ID.
+ 		 */
+-		cache = ath12k_arvif_get_cache(arvif);
++		cache = ath12k_ahvif_get_link_cache(ahvif, ATH12K_DEFAULT_LINK_ID);
+ 		if (!cache) {
+ 			mutex_unlock(&ah->conf_mutex);
+ 			return;
+ 		}
+-		arvif->cache->bss_conf_changed |= changed;
++		cache->bss_conf_changed |= changed;
+ 		mutex_unlock(&ah->conf_mutex);
+ 		return;
+ 	}
+@@ -4172,7 +4172,7 @@ static int ath12k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+ 			return -EINVAL;
+ 		}
+ 
+-		cache = ath12k_arvif_get_cache(arvif);
++		cache = ath12k_ahvif_get_link_cache(ahvif, ATH12K_DEFAULT_LINK_ID);
+ 		if (!cache) {
+ 			mutex_unlock(&ah->conf_mutex);
+ 			return -ENOSPC;
+@@ -5103,7 +5103,7 @@ static int ath12k_mac_op_conf_tx(struct ieee80211_hw *hw,
+ 	ar = ath12k_get_ar_by_vif(hw, vif);
+ 	if (!ar) {
+ 		/* cache the info and apply after vdev is created */
+-		cache = ath12k_arvif_get_cache(arvif);
++		cache = ath12k_ahvif_get_link_cache(ahvif, ATH12K_DEFAULT_LINK_ID);
+ 		if (!cache) {
+ 			mutex_unlock(&ah->conf_mutex);
+ 			return -ENOSPC;
+@@ -6819,10 +6819,11 @@ int ath12k_mac_vdev_create(struct ath12k *ar, struct ath12k_link_vif *arvif)
+ 	return ret;
+ }
+ 
+-static void ath12k_mac_vif_cache_flush(struct ath12k *ar,  struct ath12k_link_vif *arvif)
++static void ath12k_mac_vif_cache_flush(struct ath12k *ar, struct ath12k_link_vif *arvif)
+ {
+-	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(arvif->ahvif);
+-	struct ath12k_vif_cache *cache = arvif->cache;
++	struct ath12k_vif *ahvif = arvif->ahvif;
++	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(ahvif);
++	struct ath12k_vif_cache *cache = ahvif->cache[arvif->link_id];
+ 	struct ath12k_base *ab = ar->ab;
+ 
+ 	int ret;
+@@ -6853,7 +6854,7 @@ static void ath12k_mac_vif_cache_flush(struct ath12k *ar,  struct ath12k_link_vi
+ 			ath12k_warn(ab, "unable to apply set key param to vdev %d ret %d\n",
+ 				    arvif->vdev_id, ret);
+ 	}
+-	ath12k_arvif_put_cache(arvif);
++	ath12k_ahvif_put_link_cache(ahvif, arvif->link_id);
+ }
+ 
+ static struct ath12k *ath12k_mac_assign_vif_to_vdev(struct ieee80211_hw *hw,
+@@ -7059,7 +7060,7 @@ static int ath12k_mac_vdev_delete(struct ath12k *ar, struct ath12k_link_vif *arv
+ 	spin_unlock_bh(&ar->data_lock);
+ 
+ 	ath12k_peer_cleanup(ar, arvif->vdev_id);
+-	ath12k_arvif_put_cache(arvif);
++	ath12k_ahvif_put_link_cache(ahvif, arvif->link_id);
+ 
+ 	idr_for_each(&ar->txmgmt_idr,
+ 		     ath12k_mac_vif_txmgmt_idr_remove, vif);
+@@ -7099,7 +7100,7 @@ static void ath12k_mac_op_remove_interface(struct ieee80211_hw *hw,
+ 		/* if we cached some config but never received assign chanctx,
+ 		 * free the allocated cache.
+ 		 */
+-		ath12k_arvif_put_cache(arvif);
++		ath12k_ahvif_put_link_cache(ahvif, ATH12K_DEFAULT_LINK_ID);
+ 		mutex_unlock(&ah->conf_mutex);
+ 		return;
+ 	}
+
+base-commit: db1ce56e6e1d395dd42a3cd6332a871d9be59c45
+prerequisite-patch-id: f87638504028796f96a183930bf1799f55b9d268
+prerequisite-patch-id: dc15d6df954760395ff72d9bcf14aace5adefbe7
+prerequisite-patch-id: b43d0571ad6b42c80a16e65dc2c54657f3cd3dc5
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.25.1
+
 
