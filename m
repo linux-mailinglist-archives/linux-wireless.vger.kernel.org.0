@@ -1,149 +1,229 @@
-Return-Path: <linux-wireless+bounces-10540-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10541-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5243F93CC93
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2024 03:58:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBCAE93CCE0
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2024 05:13:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C56721F22199
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2024 01:58:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17F7FB21B61
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2024 03:13:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 279911802E;
-	Fri, 26 Jul 2024 01:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E74D1210E4;
+	Fri, 26 Jul 2024 03:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="sCdbpKw+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SmL25kBq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97864AD2C
-	for <linux-wireless@vger.kernel.org>; Fri, 26 Jul 2024 01:58:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA8D22611;
+	Fri, 26 Jul 2024 03:13:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721959097; cv=none; b=nqkCMZD9xubiz1cIfK/df2Up4tMLa+FeQRkNwLMmgKHUk7OKWaAuz7XiCrSEj5Gq3uA2VtposmHncRc5KlvYQcbXuFp70XlknqJRxjWRNziRd9tZABaoLysGP/XB4VXSs0QQkpmcq8UoNAqEL59fxHbs72k7ZhH0C13UvRJpKII=
+	t=1721963598; cv=none; b=YisuC+FJbZ404gTI/QasQR/4ahz9PMUNx1PyKiLdhvd6+69wlXhxGcx2mGiEkrCyjvMxcy1AX7OAwSUYUt2iN46hNF3o3DlxVNSnw1LCNb9d+k3Vyucz+tVIdVa3qngbE13h7pdxR9n1ARTVZjqjUbwrTEqdXZMoLLZ36AKWDIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721959097; c=relaxed/simple;
-	bh=D+eTvbZ512xHoSgm2rQYoVChciCSc8flswPRX9ZpruA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=gX5ZC99wTNjEWH0HUIePvRD+hEjOFGoDgzbpwgozi56X7oD0L6Pivp0XyXi/P8qF22bc4ABUn4kDrfTwx6V8bAoYRy8H3q4bcXJldsf4X6CJY3vkygkzF1q7RYCmq20l/PGl8KlbzzcjNjX1N/xSlnX6DEnau6mWSQWaEQsHlm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=sCdbpKw+; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 46Q1vX5b94122972, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1721959053; bh=D+eTvbZ512xHoSgm2rQYoVChciCSc8flswPRX9ZpruA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=sCdbpKw+3FRhpOogG225hcWJ+MfhUx2B1b1X/Frzppg2rUedwD/tf+olVErodcx7x
-	 78Pn7B6kkuoNauH0PJHADG5fA2RX6dOAipKnv9O2SVD3Jg7m1PmEsz/SXjmmnoms78
-	 uGH9cSiiWwbRxpmgI63M0PT2j4oQ8FdH6mpcgC/EAq+LdIDZ0j90MyQzNXiJBV1LDt
-	 6Zu5rFop9ZzGRawkPwSwR0G1RtJLH1xYUFdFo7wu/O3jX4D8FH20DUfnmMt9lPXENL
-	 qwvNFVYgaTzDpOzPcesL0cxSWhxHdzUx1Z2Sg1QX1bfm0zvZYskSe+MBJVGuRms1kL
-	 6GnrBjA1bt9xw==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 46Q1vX5b94122972
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 26 Jul 2024 09:57:33 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 26 Jul 2024 09:57:33 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 26 Jul 2024 09:57:33 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
- RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
- 15.01.2507.035; Fri, 26 Jul 2024 09:57:33 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Jeff Johnson <quic_jjohnson@quicinc.com>,
-        kangyang
-	<quic_kangyang@quicinc.com>,
-        "ath12k@lists.infradead.org"
-	<ath12k@lists.infradead.org>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH 11/11] wifi: ath12k: delete mon reap timer
-Thread-Topic: [PATCH 11/11] wifi: ath12k: delete mon reap timer
-Thread-Index: AQHa3op7dKDzs7rtBUe0esVv8QOyB7IHn1wAgAChFWA=
-Date: Fri, 26 Jul 2024 01:57:32 +0000
-Message-ID: <52318022dbe745da8b18892c26d78bec@realtek.com>
-References: <20240725120035.493-1-quic_kangyang@quicinc.com>
- <20240725120035.493-12-quic_kangyang@quicinc.com>
- <2a44b24b-f122-44de-a053-fee07753eb7e@quicinc.com>
-In-Reply-To: <2a44b24b-f122-44de-a053-fee07753eb7e@quicinc.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1721963598; c=relaxed/simple;
+	bh=Ay8xxu+taRpgSAApBS8YRZsW8nYWYCytrPALo5KpbuY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ahg+Tk0O5hejaWWHPW0siQ02pM3tHDQVRQy5r7jhf7+j+/fg7Hakb5iDzNPxHEr5kFGv8cWeGBSAXf9uDGYwgWwUWu0C+kz3bYZkv2cvEuv7EirBN+XB7m9XyL/p5vtY2xl1ay2E7O2mwsVVVfJCsBeXtGQzdYSRj51+s/CbYe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SmL25kBq; arc=none smtp.client-ip=209.85.160.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-260f863108fso426671fac.1;
+        Thu, 25 Jul 2024 20:13:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1721963596; x=1722568396; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ci2Gck85EvPCemYSkdaGllILSEgdeKb2oHQPF4Q/Le8=;
+        b=SmL25kBqx5KJvjikWHaPsnyNNSpD0//6g6BqwuYNmy8YficGP5Qd22BGWwEpuMwdjF
+         jx/cBzo9lMm6mJgXtKxAsGOybcRxRZFPtPu8eLrne44OkVJzALn+4JIKeXlN3CNAbVP2
+         VZwm2/TVLhPtnB8qV+6kjhWNlE9FoOE+QtqbAzL5eD0osfjJ6aO7702M9QqejDFlp1BV
+         mDlhykuvMl6He/MertmCwX06Nkwyk1jI9x5JvuR+9we3o3LKMK/wXrhCk4hXU8gKN1Zb
+         Sv/j7NoNn92DKPzF0h+8V+5+JUN0JezGyfN31B+fvIUOdo9wtU46BZZaVpv95RaZJq3I
+         ARQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721963596; x=1722568396;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ci2Gck85EvPCemYSkdaGllILSEgdeKb2oHQPF4Q/Le8=;
+        b=J5vRK1c1NQw1SGpQreLmYWOEu35nnVScf2wSoC3dkaI4p43VE0G6j00JVQcifLFtmF
+         /hnG5H77Izll2k9XGXONq2TBGwzAhvwqFFsc7ksisjUrsHGFWUVGxIt/XFCoaOHO9Fq4
+         DBu63KXkjRFekPJaRmXFEVqCwKCPgfb877MX/XyupYA2lXNUqFuhc8mbIozUzQvQLVHT
+         S19kcxmxJQr0eERxowV6+P9aQxAkQZZUu9BsfYQHIILhxmFhdrlS55/gUUjj9zE41nG1
+         ruCk0svVKtnd9siY/gmjuAM5ztbQ3xslv/b6uBacZztTSjV5hN8PRMRLjh6ovGLpGyBv
+         7kPA==
+X-Forwarded-Encrypted: i=1; AJvYcCW9MfyyhSG9g5oH/8aheKI5+6N+bNg8Zqqd+Kqr0HyXPrIrKT+RfN0/iMMmVUbHstBnjuJyVT1KJZ4jRIDgITaeR/mh9B2nYMQPwjJnwNNPtd1ZxMFx3ejvF6zsjSIkD1iaHg/phHRKMHMbtGE9vd0jYIr+FLpM7HuBGQCqxKwmvSaJ3JbDHKKz0w==
+X-Gm-Message-State: AOJu0YxlS/d9c1tOgjLAeY+fanqKvU8hS5oF+ucpelkZpCof0ZfJCKXi
+	ibSbgBDciTjfagR8jjVMxZ3d0VdwBYfAOCfg+RAnkzWWzU9el5EtGarE6oOH
+X-Google-Smtp-Source: AGHT+IHs0+z0rH8aFg/4yNzNXT6MvnCERGSAbtn6QHnH/2s3SBFq8Gi/yzYBmc0Sm4hD35LUr+J1tQ==
+X-Received: by 2002:a05:6870:828e:b0:254:a09c:6ddf with SMTP id 586e51a60fabf-264a0d34e62mr4816325fac.24.1721963595908;
+        Thu, 25 Jul 2024 20:13:15 -0700 (PDT)
+Received: from localhost ([114.242.33.243])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70ead6e18dfsm1852757b3a.11.2024.07.25.20.13.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Jul 2024 20:13:15 -0700 (PDT)
+From: Julian Sun <sunjunchao2870@gmail.com>
+To: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kbuild@vger.kernel.org
+Cc: jack@suse.cz,
+	brauner@kernel.org,
+	viro@zeniv.linux.org.uk,
+	masahiroy@kernel.org,
+	akpm@linux-foundation.org,
+	n.schier@avm.de,
+	ojeda@kernel.org,
+	djwong@kernel.org,
+	kvalo@kernel.org,
+	Julian Sun <sunjunchao2870@gmail.com>
+Subject: [PATCH v2] scripts: reduce false positives in the macro_checker script.
+Date: Thu, 25 Jul 2024 23:13:10 -0400
+Message-Id: <20240726031310.254742-1-sunjunchao2870@gmail.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Transfer-Encoding: 8bit
 
-SGkgSmVmZiwNCg0KSmVmZiBKb2huc29uIDxxdWljX2pqb2huc29uQHF1aWNpbmMuY29tPiB3cm90
-ZToNCj4gDQo+IE9uIDcvMjUvMjAyNCA1OjAwIEFNLCBrYW5neWFuZyB3cm90ZToNCj4gPiBGcm9t
-OiBLYW5nIFlhbmcgPHF1aWNfa2FuZ3lhbmdAcXVpY2luYy5jb20+DQo+ID4NCj4gPiBDdXJyZW50
-bHkgbW9uIHJlYXAgdGltZXIgaXMgbm90IHVzZWQsIGFuZCBpdCBpcyBub3QgbmVlZGVkIGFueW1v
-cmUuDQo+ID4NCj4gPiBTbyByZW1vdmUgcmVsYXRlZCBjb2RlLg0KPiA+DQo+ID4gVGVzdGVkLW9u
-OiBXQ043ODUwIGh3Mi4wIFBDSSBXTEFOLkhNVC4xLjAuYzUtMDA0ODEtUUNBSE1UU1dQTF9WMS4w
-X1YyLjBfU0lMSUNPTlotMw0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogS2FuZyBZYW5nIDxxdWlj
-X2thbmd5YW5nQHF1aWNpbmMuY29tPg0KPiA+IC0tLQ0KPiA+ICBkcml2ZXJzL25ldC93aXJlbGVz
-cy9hdGgvYXRoMTJrL2NvcmUuaCB8ICAyIC0tDQo+ID4gIGRyaXZlcnMvbmV0L3dpcmVsZXNzL2F0
-aC9hdGgxMmsvZHAuYyAgIHwgMjUgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPiA+ICAyIGZp
-bGVzIGNoYW5nZWQsIDI3IGRlbGV0aW9ucygtKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2RyaXZl
-cnMvbmV0L3dpcmVsZXNzL2F0aC9hdGgxMmsvY29yZS5oIGIvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
-YXRoL2F0aDEyay9jb3JlLmgNCj4gPiBpbmRleCBkYWY3YzA0YmI3MjguLjgzZWY5MmVjZGMzOSAx
-MDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9hdGgvYXRoMTJrL2NvcmUuaA0K
-PiA+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2F0aC9hdGgxMmsvY29yZS5oDQo+ID4gQEAg
-LTg4OCw4ICs4ODgsNiBAQCBzdHJ1Y3QgYXRoMTJrX2Jhc2Ugew0KPiA+ICAgICAgIHN0cnVjdCBh
-dGgxMmtfZGJyaW5nX2NhcCAqZGJfY2FwczsNCj4gPiAgICAgICB1MzIgbnVtX2RiX2NhcDsNCj4g
-Pg0KPiA+IC0gICAgIHN0cnVjdCB0aW1lcl9saXN0IG1vbl9yZWFwX3RpbWVyOw0KPiA+IC0NCj4g
-PiAgICAgICBzdHJ1Y3QgY29tcGxldGlvbiBodGNfc3VzcGVuZDsNCj4gPg0KPiA+ICAgICAgIHU2
-NCBmd19zb2NfZHJvcF9jb3VudDsNCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxl
-c3MvYXRoL2F0aDEyay9kcC5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvYXRoL2F0aDEyay9kcC5j
-DQo+ID4gaW5kZXggNjFhYTc4ZDhiZDhjLi41NDdlY2I0MTk4MDkgMTAwNjQ0DQo+ID4gLS0tIGEv
-ZHJpdmVycy9uZXQvd2lyZWxlc3MvYXRoL2F0aDEyay9kcC5jDQo+ID4gKysrIGIvZHJpdmVycy9u
-ZXQvd2lyZWxlc3MvYXRoL2F0aDEyay9kcC5jDQo+ID4gQEAgLTk3NCw4ICs5NzQsNiBAQCB2b2lk
-IGF0aDEya19kcF9wZGV2X2ZyZWUoc3RydWN0IGF0aDEya19iYXNlICphYikNCj4gPiAgew0KPiA+
-ICAgICAgIGludCBpOw0KPiA+DQo+ID4gLSAgICAgZGVsX3RpbWVyX3N5bmMoJmFiLT5tb25fcmVh
-cF90aW1lcik7DQo+ID4gLQ0KPiA+ICAgICAgIGZvciAoaSA9IDA7IGkgPCBhYi0+bnVtX3JhZGlv
-czsgaSsrKQ0KPiA+ICAgICAgICAgICAgICAgYXRoMTJrX2RwX3J4X3BkZXZfZnJlZShhYiwgaSk7
-DQo+ID4gIH0NCj4gPiBAQCAtMTAyMCwyNyArMTAxOCw2IEBAIHZvaWQgYXRoMTJrX2RwX2hhbF9y
-eF9kZXNjX2luaXQoc3RydWN0IGF0aDEya19iYXNlICphYikNCj4gPiAgICAgICAgICAgICAgIGFi
-LT5oYWxfcnhfb3BzLT5yeF9kZXNjX2dldF9kZXNjX3NpemUoKTsNCj4gPiAgfQ0KPiA+DQo+ID4g
-LXN0YXRpYyB2b2lkIGF0aDEya19kcF9zZXJ2aWNlX21vbl9yaW5nKHN0cnVjdCB0aW1lcl9saXN0
-ICp0KQ0KPiA+IC17DQo+ID4gLSAgICAgc3RydWN0IGF0aDEya19iYXNlICphYiA9IGZyb21fdGlt
-ZXIoYWIsIHQsIG1vbl9yZWFwX3RpbWVyKTsNCj4gPiAtICAgICBpbnQgaTsNCj4gPiAtDQo+ID4g
-LSAgICAgZm9yIChpID0gMDsgaSA8IGFiLT5od19wYXJhbXMtPm51bV9yeGRtYV9wZXJfcGRldjsg
-aSsrKQ0KPiA+IC0gICAgICAgICAgICAgYXRoMTJrX2RwX21vbl9wcm9jZXNzX3JpbmcoYWIsIGks
-IE5VTEwsIERQX01PTl9TRVJWSUNFX0JVREdFVCwNCj4gPiAtICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIEFUSDEyS19EUF9SWF9NT05JVE9SX01PREUpOw0KPiA+IC0NCj4g
-PiAtICAgICBtb2RfdGltZXIoJmFiLT5tb25fcmVhcF90aW1lciwgamlmZmllcyArDQo+ID4gLSAg
-ICAgICAgICAgICAgIG1zZWNzX3RvX2ppZmZpZXMoQVRIMTJLX01PTl9USU1FUl9JTlRFUlZBTCkp
-Ow0KPiA+IC19DQo+ID4gLQ0KPiA+IC1zdGF0aWMgdm9pZCBhdGgxMmtfZHBfbW9uX3JlYXBfdGlt
-ZXJfaW5pdChzdHJ1Y3QgYXRoMTJrX2Jhc2UgKmFiKQ0KPiA+IC17DQo+ID4gLSAgICAgaWYgKGFi
-LT5od19wYXJhbXMtPnJ4ZG1hMV9lbmFibGUpDQo+ID4gLSAgICAgICAgICAgICByZXR1cm47DQo+
-ID4gLQ0KPiA+IC0gICAgIHRpbWVyX3NldHVwKCZhYi0+bW9uX3JlYXBfdGltZXIsIGF0aDEya19k
-cF9zZXJ2aWNlX21vbl9yaW5nLCAwKTsNCj4gPiAtfQ0KPiA+IC0NCj4gPiAgaW50IGF0aDEya19k
-cF9wZGV2X2FsbG9jKHN0cnVjdCBhdGgxMmtfYmFzZSAqYWIpDQo+ID4gIHsNCj4gPiAgICAgICBz
-dHJ1Y3QgYXRoMTJrICphcjsNCj4gPiBAQCAtMTA1MSw4ICsxMDI4LDYgQEAgaW50IGF0aDEya19k
-cF9wZGV2X2FsbG9jKHN0cnVjdCBhdGgxMmtfYmFzZSAqYWIpDQo+ID4gICAgICAgaWYgKHJldCkN
-Cj4gPiAgICAgICAgICAgICAgIGdvdG8gb3V0Ow0KPiA+DQo+ID4gLSAgICAgYXRoMTJrX2RwX21v
-bl9yZWFwX3RpbWVyX2luaXQoYWIpOw0KPiA+IC0NCj4gPiAgICAgICAvKiBUT0RPOiBQZXItcGRl
-diByeCByaW5nIHVubGlrZSB0eCByaW5nIHdoaWNoIGlzIG1hcHBlZCB0byBkaWZmZXJlbnQgQUMn
-cyAqLw0KPiA+ICAgICAgIGZvciAoaSA9IDA7IGkgPCBhYi0+bnVtX3JhZGlvczsgaSsrKSB7DQo+
-ID4gICAgICAgICAgICAgICBhciA9IGFiLT5wZGV2c1tpXS5hcjsNCj4gDQoNCk5vdCBzdXJlIGlm
-IHlvdSBzZW5kIG91dCB0aGlzIG1haWwgaW5jb21wbGV0ZWx5LiBMb3JlIFsxXSBkb2Vzbid0IGhh
-dmUgY29tcGxldGUNCm1lc3NhZ2UgbmVpdGhlci4NCg0KWzFdIGh0dHBzOi8vbG9yZS5rZXJuZWwu
-b3JnL2xpbnV4LXdpcmVsZXNzLzJhNDRiMjRiLWYxMjItNDRkZS1hMDUzLWZlZTA3NzUzZWI3ZUBx
-dWljaW5jLmNvbS9ULyNtMTAxMWE4OTExMzAwOWExNGM5ZDQ1MGRiYTMxZDhkMTFkMzZiNWI2Yg0K
-DQo=
+Reduce false positives in the macro_checker
+in the following scenarios:
+  1. Macro definitions with only a single character
+  2. Macro definitions as (0) and (1)
+  3. Macro definitions as empty
+
+Also provide an option (-v) that alow users to control
+whether or not to check conditional macros. When -v is
+specified, conditional macros are checked; otherwise,
+thet are not.
+
+Before this patch:
+	sjc@sjc:linux$ ./scripts/macro_checker.py  fs | wc -l
+	99
+
+After this patch:
+	sjc@sjc:linux$ ./scripts/macro_checker.py  fs | wc -l
+	11
+	sjc@sjc:linux$ ./scripts/macro_checker.py  -v fs | wc -l
+	31
+
+Signed-off-by: Julian Sun <sunjunchao2870@gmail.com>
+---
+ scripts/macro_checker.py | 50 ++++++++++++++++++++++++++++++++--------
+ 1 file changed, 40 insertions(+), 10 deletions(-)
+
+diff --git a/scripts/macro_checker.py b/scripts/macro_checker.py
+index cd10c9c10d31..ba550982e98f 100755
+--- a/scripts/macro_checker.py
++++ b/scripts/macro_checker.py
+@@ -8,10 +8,20 @@ import argparse
+ import os
+ import re
+ 
++parser = argparse.ArgumentParser()
++
++parser.add_argument("path", type=str, help="The file or dir path that needs check")
++parser.add_argument("-v", "--verbose", action="store_true",
++                    help="Check conditional macros, but may lead to more false positives")
++args = parser.parse_args()
++
+ macro_pattern = r"#define\s+(\w+)\(([^)]*)\)"
+-# below two vars were used to reduce false positives
+-do_while0_pattern = r"\s*do\s*\{\s*\}\s*while\s*\(\s*0\s*\)"
++# below vars were used to reduce false positives
++fp_patterns = [r"\s*do\s*\{\s*\}\s*while\s*\(\s*0\s*\)",
++               r"\(?0\)?", r"\(?1\)?"]
+ correct_macros = []
++cond_compile_mark = "#if"
++cond_compile_end = "#endif"
+ 
+ def check_macro(macro_line, report):
+     match = re.match(macro_pattern, macro_line)
+@@ -21,15 +31,25 @@ def check_macro(macro_line, report):
+         content = match.group(2)
+         arguments = [item.strip() for item in content.split(',') if item.strip()]
+ 
+-        if (re.match(do_while0_pattern, macro_def)):
++        macro_def = macro_def.strip()
++        if not macro_def:
++            return
++        # used to reduce false positives, like #define endfor_nexthops(rt) }
++        if len(macro_def) == 1:
+             return
+ 
++        for fp_pattern in fp_patterns:
++            if (re.match(fp_pattern, macro_def)):
++                return
++
+         for arg in arguments:
+             # used to reduce false positives
+             if "..." in arg:
+-                continue
++                return
++        for arg in arguments:
+             if not arg in macro_def and report == False:
+                 return
++            # if there is a correct macro with the same name, do not report it.
+             if not arg in macro_def and identifier not in correct_macros:
+                 print(f"Argument {arg} is not used in function-line macro {identifier}")
+                 return
+@@ -49,6 +69,8 @@ def macro_strip(macro):
+     return macro
+ 
+ def file_check_macro(file_path, report):
++    # number of conditional compiling
++    cond_compile = 0
+     # only check .c and .h file
+     if not file_path.endswith(".c") and not file_path.endswith(".h"):
+         return
+@@ -57,7 +79,14 @@ def file_check_macro(file_path, report):
+         while True:
+             line = f.readline()
+             if not line:
+-                return
++                break
++            line = line.strip()
++            if line.startswith(cond_compile_mark):
++                cond_compile += 1
++                continue
++            if line.startswith(cond_compile_end):
++                cond_compile -= 1
++                continue
+ 
+             macro = re.match(macro_pattern, line)
+             if macro:
+@@ -67,6 +96,12 @@ def file_check_macro(file_path, report):
+                     macro = macro.strip()
+                     macro += f.readline()
+                     macro = macro_strip(macro)
++                if not args.verbose:
++                    if file_path.endswith(".c")  and cond_compile != 0:
++                        continue
++                    # 1 is for #ifdef xxx at the beginning of the header file
++                    if file_path.endswith(".h") and cond_compile != 1:
++                        continue
+                 check_macro(macro, report)
+ 
+ def get_correct_macros(path):
+@@ -84,11 +119,6 @@ def dir_check_macro(dir_path):
+ 
+ 
+ def main():
+-    parser = argparse.ArgumentParser()
+-
+-    parser.add_argument("path", type=str, help="The file or dir path that needs check")
+-    args = parser.parse_args()
+-
+     if os.path.isfile(args.path):
+         get_correct_macros(args.path)
+         file_check_macro(args.path, True)
+-- 
+2.39.2
+
 
