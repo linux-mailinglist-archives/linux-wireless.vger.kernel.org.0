@@ -1,107 +1,111 @@
-Return-Path: <linux-wireless+bounces-10545-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10546-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C65393D25A
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2024 13:32:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 585C693D287
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2024 13:47:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 319231F212E3
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2024 11:32:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D40E281F74
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2024 11:47:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B7217A580;
-	Fri, 26 Jul 2024 11:32:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EE05219EA;
+	Fri, 26 Jul 2024 11:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XCrNa0lP"
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="NiQlaDrr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from forward103b.mail.yandex.net (forward103b.mail.yandex.net [178.154.239.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F7C17838B
-	for <linux-wireless@vger.kernel.org>; Fri, 26 Jul 2024 11:32:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F8F2B9C4
+	for <linux-wireless@vger.kernel.org>; Fri, 26 Jul 2024 11:47:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721993575; cv=none; b=GqF4N4EJGL4IjO/A/zeYHXY3uVxD5TE/ONOEh8qSwbTmkoVttaoRwu4ms8/X66T/x/nUPbou+GvWjzxhQs1niIGc+Xjxv+yuupEELSwSbLfXwT7JPl+D3S3ME7oA2hgDh5P52T/YdleOYXSwzcpD6s1FQG7YTRsnjkg31LOlNoE=
+	t=1721994434; cv=none; b=Ft50XPKxov0EUpKXbLniEHbNWVMGvWr5blh4YI29jmZ8rRAZBBTemEfzKn421sKT6sh4Nq5oLpOxRPWFknNBBxuSNSNfHRT+wdD8EqQhGj/JR0Dn1FwnvJ5uzdDkLrCESL1MckcbdrfvR8X4LGa4oYQqYQ1rZ3PtbvbOCkuAIn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721993575; c=relaxed/simple;
-	bh=w9xFYhmu1Bzy8WoLpg3H1kMbSk/5sIlDqvltcKRXSjk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bwVfOOoblorDk298pfXT1tF1hWw5Evqhgb73SkVXfK5zNC7Z+xz3Zs6BBAbhQZAe5b6bTyVCsHli1fGeBzwO7WRIzph0Eg35lVFwI3jGvukHWY7HH0tFWQbgzVrT6Fbtuiu413LZCRwpUL34PXPIcbTg9KpIYStsxT+2QRXeRiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XCrNa0lP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8331C4AF07
-	for <linux-wireless@vger.kernel.org>; Fri, 26 Jul 2024 11:32:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721993574;
-	bh=w9xFYhmu1Bzy8WoLpg3H1kMbSk/5sIlDqvltcKRXSjk=;
-	h=References:In-Reply-To:From:Date:Subject:To:List-Id:Cc:From;
-	b=XCrNa0lPj6JYDGkcffcr8HqmBpkFlGZvRONm0y+KfnHqmS7PqY0PcgL6w9UmOi28z
-	 /DmbzLEGj9qnpqYxxOZjVprRiZ9gyTl1QQ8nvtFI5q2IArWTdxp7KiENHy78nakMmu
-	 rZlvRO8hSITVFnbD3J/Vq5pEurBqyZvVy63VsRxsgzxJq+SgQcfSVJ8fDqYYKdFM0n
-	 Bd21qN2/dpjoTunQEx7bmQGNhUnJlJ0PCxkY1aWbc9/u9sUfyh7M9/Y0nuN9ZJrWH/
-	 WrWx/qhvg5awNP47+Jc0kavKvOPx53gcZcXM6IOsBg20z0lBvOO1HGWoBFtKlqShuE
-	 x7f1WHZWAmMGA==
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-66493332ebfso17336097b3.3
-        for <linux-wireless@vger.kernel.org>; Fri, 26 Jul 2024 04:32:54 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXPuagkYNsSn0i1XZg0nNDs3Ebke3gwSEWIZE3ZAWdFkFhaMe9EWXMV9iEUjLcgRwZ2djv+l8d2cCxTsIpcmiNmby6FpbI2ryxYA4vPtRY=
-X-Gm-Message-State: AOJu0YzTyptG0VfMnrbaROQInLJTT8ehul2tYie6sz6FWvWO+G6kWrxQ
-	yz1dKeKtbLxTo0oDxUVNW+3Q9XSnHpWLsOdW59sqVKSW227xVPNZDIm0yLXyDSsKj+AYxll0j0d
-	xFfP5dIonGeOJRti7AzoxxlWdKO0=
-X-Google-Smtp-Source: AGHT+IF66Xsb6EysU8CaIQd6YwLPPit8Un4f+snzvBgCraLWhDTxmNy/Mm4ivO8x82y9XaSWvGJ9JPT+WlaNZXOEn1E=
-X-Received: by 2002:a81:8a82:0:b0:652:d0a9:87de with SMTP id
- 00721157ae682-675b70fbf95mr54199737b3.35.1721993574096; Fri, 26 Jul 2024
- 04:32:54 -0700 (PDT)
+	s=arc-20240116; t=1721994434; c=relaxed/simple;
+	bh=+9cDj2A2sm7YxBxGE/6lhrwn76uK5Sx/QRjMOH8xrE8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SHmhjXtL7MWG04qRNqMf9bWNJ2tldrCZlIewuvIBfgLf6BU2Wn+FsiskA3hs/YVpvw+pic3+jbBkHVJymugwa2IUBzbVBQSqVecNggL5ZFmRprYDFLOuZWqA+DxkAB5WsqQKclJt+nU22Me0Js3pIu/BslCZlrK9tICLDR53Wpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=NiQlaDrr; arc=none smtp.client-ip=178.154.239.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+Received: from mail-nwsmtp-smtp-production-main-45.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-45.sas.yp-c.yandex.net [IPv6:2a02:6b8:c23:2146:0:640:e7:0])
+	by forward103b.mail.yandex.net (Yandex) with ESMTPS id 2BD0A60B10;
+	Fri, 26 Jul 2024 14:47:02 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-45.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id xkPI1j7Ula60-qj0zupLe;
+	Fri, 26 Jul 2024 14:47:01 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1721994421; bh=TpI/0MBn/Ut28fZ++un9uklnz1cRFnzwLgLELxrAcnE=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=NiQlaDrr/BlQPPwFHPekSwDD0ClN7L2ZT4HhO1vLafyK0rd7GcIOH2C9E3GQpuBd8
+	 KdLQz1ocTPalySUGxfXRydProCA6RtRZ2uYFCReSZk2diDpk1Gygl6vS6HsxJbEPoC
+	 oJAp2DDP6+bBRzX3Xzx2DUaJBuaROQR10102trBE=
+Authentication-Results: mail-nwsmtp-smtp-production-main-45.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Dmitry Antipov <dmantipov@yandex.ru>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: Chin-Yen Lee <timlee@realtek.com>,
+	linux-wireless@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	syzbot+6c6c08700f9480c41fe3@syzkaller.appspotmail.com
+Subject: [PATCH] wifi: rtw88: always wait for both firmware loading attempts
+Date: Fri, 26 Jul 2024 14:46:57 +0300
+Message-ID: <20240726114657.25396-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <MW5PR11MB581002D586D332CACEB335BAA3AB2@MW5PR11MB5810.namprd11.prod.outlook.com>
- <CA+5PVA6zGFMsV16BhmbB9QnZQ9UsUw1-44MK6gOc84MnhroDXA@mail.gmail.com> <92696aa1704e43897cbed421136845745e023127.camel@sipsolutions.net>
-In-Reply-To: <92696aa1704e43897cbed421136845745e023127.camel@sipsolutions.net>
-From: Josh Boyer <jwboyer@kernel.org>
-Date: Fri, 26 Jul 2024 07:32:42 -0400
-X-Gmail-Original-Message-ID: <CA+5PVA4zbkNYyigULrcOons7bCx2yL+Jgg7jWjo7AOn3d0bOGw@mail.gmail.com>
-Message-ID: <CA+5PVA4zbkNYyigULrcOons7bCx2yL+Jgg7jWjo7AOn3d0bOGw@mail.gmail.com>
-Subject: Re: pull request: iwlwifi firmware updates 2024-07-25
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Josh Boyer <jwboyer@kernel.org>, 
-	"Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>, 
-	"linux-firmware@kernel.org" <linux-firmware@kernel.org>, "kyle@infradead.org" <kyle@infradead.org>, 
-	"Hutchings, Ben" <ben@decadent.org.uk>, "Ben Ami, Golan" <golan.ben.ami@intel.com>, 
-	"Yang, You-Sheng" <vicamo.yang@canonical.com>, Wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 25, 2024 at 4:46=E2=80=AFPM Johannes Berg <johannes@sipsolution=
-s.net> wrote:
->
-> On Thu, 2024-07-25 at 16:03 -0400, Josh Boyer wrote:
-> > >
-> > >   http://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmwa=
-re.git tags/iwlwifi-fw-2024-07
-> >
-> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux=
--firmware.git
-> > tags/iwlwifi-fw-2024-07
-> > fatal: couldn't find remote ref tags/iwlwifi-fw-2024-07
-> >
-> > Did you forget to push the tag out?
-> >
->
-> That's ... curious :)
->
-> Seems like the day ("-25") got cut off at the end, we've always used
-> dated tags here, and there is one from today around the time Miri and I
-> were discussing this issue, named "iwlwifi-fw-2024-07-25", which also
-> matches the subject. No idea how it got cut off in the email though.
+In 'rtw_wait_firmware_completion()', always wait for both (regular and
+wowlan) firmware loading attempts. Otherwise if 'rtw_usb_intf_init()'
+has failed in 'rtw_usb_probe()', 'rtw_usb_disconnect()' may issue
+'ieee80211_free_hw()' when one of 'rtw_load_firmware_cb()' (usually
+the wowlan one) is still in progress, causing UAF detected by KASAN.
 
-OK, thanks for the info.
+Fixes: c8e5695eae99 ("rtw88: load wowlan firmware if wowlan is supported")
+Reported-by: syzbot+6c6c08700f9480c41fe3@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6c6c08700f9480c41fe3
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+ drivers/net/wireless/realtek/rtw88/main.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-Merged and pushed out.
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index 7ab7a988b123..33a7577557a5 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -1313,20 +1313,21 @@ static int rtw_wait_firmware_completion(struct rtw_dev *rtwdev)
+ {
+ 	const struct rtw_chip_info *chip = rtwdev->chip;
+ 	struct rtw_fw_state *fw;
++	int ret = 0;
+ 
+ 	fw = &rtwdev->fw;
+ 	wait_for_completion(&fw->completion);
+ 	if (!fw->firmware)
+-		return -EINVAL;
++		ret = -EINVAL;
+ 
+ 	if (chip->wow_fw_name) {
+ 		fw = &rtwdev->wow_fw;
+ 		wait_for_completion(&fw->completion);
+ 		if (!fw->firmware)
+-			return -EINVAL;
++			ret = -EINVAL;
+ 	}
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static enum rtw_lps_deep_mode rtw_update_lps_deep_mode(struct rtw_dev *rtwdev,
+-- 
+2.45.2
 
-https://gitlab.com/kernel-firmware/linux-firmware/-/merge_requests/261
-
-josh
 
