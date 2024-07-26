@@ -1,144 +1,107 @@
-Return-Path: <linux-wireless+bounces-10544-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10545-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EBA093D134
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2024 12:31:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C65393D25A
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2024 13:32:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D103D1C20A5E
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2024 10:31:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 319231F212E3
+	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2024 11:32:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD03C14277;
-	Fri, 26 Jul 2024 10:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B7217A580;
+	Fri, 26 Jul 2024 11:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="kM4SMsPg"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XCrNa0lP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 300C517838A
-	for <linux-wireless@vger.kernel.org>; Fri, 26 Jul 2024 10:30:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F7C17838B
+	for <linux-wireless@vger.kernel.org>; Fri, 26 Jul 2024 11:32:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721989808; cv=none; b=fd1HNhO92ggCjD5CD3e027CuxXGdpQjyBBlQEJmgM14hQB7+07v0/UL6eo+3J2idvZfqvKAmbYItUWx3cqHyaBeXaJlvfRs+9Ni+ljV05bJCGLh4ZWtz1jenHp7tZfUQ3lSjv3OP5ZHDZlLdukgKAeqQ9Nisq5kLw3zyHkhsHbo=
+	t=1721993575; cv=none; b=GqF4N4EJGL4IjO/A/zeYHXY3uVxD5TE/ONOEh8qSwbTmkoVttaoRwu4ms8/X66T/x/nUPbou+GvWjzxhQs1niIGc+Xjxv+yuupEELSwSbLfXwT7JPl+D3S3ME7oA2hgDh5P52T/YdleOYXSwzcpD6s1FQG7YTRsnjkg31LOlNoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721989808; c=relaxed/simple;
-	bh=S4EraJ0gz7aJxvg4Dj+tcVe+O+pCtjnposgoFCAnbws=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tHK+T28Nv/MaHGLjHYpJbjW2OoAw4/YdbgmkiP+dWAZBC31yUQdCGxC9WGe1bLmVdqd/EBLipUsJgVbVmKSG1Cg9JsU41iwqOPBeUukbExkmD8uRkcTEe/DFaXbO6II+TGxt6wFAFfP1rMagPIE9/DboydBGqNlwiZr3bZ6K8hY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=kM4SMsPg; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=u94D9r50ayZrrAHSAkZ56RgXy7gMX46ml6UAqxiHh1Y=;
-	t=1721989805; x=1723199405; b=kM4SMsPgOVX+58H39ZpcmwGzTFGthIeJJVqPzaRBpC+doJi
-	XnvYdFtqvwD6YvLGyFwXddoIRBxnGCP5YWbORARzbi7d8GrpizE3CSbQJzUtQHnuKMMPfFyZ4yPRL
-	PbsGdnEoJu0j4FZL/g3WlaEDaeDh9B0coX6cZJZZA6vlKb90qRrn5WttyCUqyl3ZbevzVv1uW65H/
-	zZsYJ7pct1VJ67eTRqmkfCsEt5W31cU8Uemt9kX8HrFTrvxES5Zt6T1NEw0m562BDJConeMkzvLQO
-	m/DA7aAeYjSKld367XsbtPc09G6Y/Q5+v1LiexdBqHbUMEenb/ZUaCq9T8YjYLVQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1sXID3-00000000N3Y-0gsz;
-	Fri, 26 Jul 2024 12:30:01 +0200
-Message-ID: <6ab2dc9c3afe753ca6fdcdd1421e7a1f47e87b84.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: mac80211: avoid warning of no supported legacy
- rate if empty rate mask for rate control
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: linux-wireless@vger.kernel.org
-Date: Fri, 26 Jul 2024 12:30:00 +0200
-In-Reply-To: <20240726031520.7616-1-pkshih@realtek.com>
-References: <20240726031520.7616-1-pkshih@realtek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3 (3.52.3-1.fc40) 
+	s=arc-20240116; t=1721993575; c=relaxed/simple;
+	bh=w9xFYhmu1Bzy8WoLpg3H1kMbSk/5sIlDqvltcKRXSjk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bwVfOOoblorDk298pfXT1tF1hWw5Evqhgb73SkVXfK5zNC7Z+xz3Zs6BBAbhQZAe5b6bTyVCsHli1fGeBzwO7WRIzph0Eg35lVFwI3jGvukHWY7HH0tFWQbgzVrT6Fbtuiu413LZCRwpUL34PXPIcbTg9KpIYStsxT+2QRXeRiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XCrNa0lP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8331C4AF07
+	for <linux-wireless@vger.kernel.org>; Fri, 26 Jul 2024 11:32:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721993574;
+	bh=w9xFYhmu1Bzy8WoLpg3H1kMbSk/5sIlDqvltcKRXSjk=;
+	h=References:In-Reply-To:From:Date:Subject:To:List-Id:Cc:From;
+	b=XCrNa0lPj6JYDGkcffcr8HqmBpkFlGZvRONm0y+KfnHqmS7PqY0PcgL6w9UmOi28z
+	 /DmbzLEGj9qnpqYxxOZjVprRiZ9gyTl1QQ8nvtFI5q2IArWTdxp7KiENHy78nakMmu
+	 rZlvRO8hSITVFnbD3J/Vq5pEurBqyZvVy63VsRxsgzxJq+SgQcfSVJ8fDqYYKdFM0n
+	 Bd21qN2/dpjoTunQEx7bmQGNhUnJlJ0PCxkY1aWbc9/u9sUfyh7M9/Y0nuN9ZJrWH/
+	 WrWx/qhvg5awNP47+Jc0kavKvOPx53gcZcXM6IOsBg20z0lBvOO1HGWoBFtKlqShuE
+	 x7f1WHZWAmMGA==
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-66493332ebfso17336097b3.3
+        for <linux-wireless@vger.kernel.org>; Fri, 26 Jul 2024 04:32:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXPuagkYNsSn0i1XZg0nNDs3Ebke3gwSEWIZE3ZAWdFkFhaMe9EWXMV9iEUjLcgRwZ2djv+l8d2cCxTsIpcmiNmby6FpbI2ryxYA4vPtRY=
+X-Gm-Message-State: AOJu0YzTyptG0VfMnrbaROQInLJTT8ehul2tYie6sz6FWvWO+G6kWrxQ
+	yz1dKeKtbLxTo0oDxUVNW+3Q9XSnHpWLsOdW59sqVKSW227xVPNZDIm0yLXyDSsKj+AYxll0j0d
+	xFfP5dIonGeOJRti7AzoxxlWdKO0=
+X-Google-Smtp-Source: AGHT+IF66Xsb6EysU8CaIQd6YwLPPit8Un4f+snzvBgCraLWhDTxmNy/Mm4ivO8x82y9XaSWvGJ9JPT+WlaNZXOEn1E=
+X-Received: by 2002:a81:8a82:0:b0:652:d0a9:87de with SMTP id
+ 00721157ae682-675b70fbf95mr54199737b3.35.1721993574096; Fri, 26 Jul 2024
+ 04:32:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+References: <MW5PR11MB581002D586D332CACEB335BAA3AB2@MW5PR11MB5810.namprd11.prod.outlook.com>
+ <CA+5PVA6zGFMsV16BhmbB9QnZQ9UsUw1-44MK6gOc84MnhroDXA@mail.gmail.com> <92696aa1704e43897cbed421136845745e023127.camel@sipsolutions.net>
+In-Reply-To: <92696aa1704e43897cbed421136845745e023127.camel@sipsolutions.net>
+From: Josh Boyer <jwboyer@kernel.org>
+Date: Fri, 26 Jul 2024 07:32:42 -0400
+X-Gmail-Original-Message-ID: <CA+5PVA4zbkNYyigULrcOons7bCx2yL+Jgg7jWjo7AOn3d0bOGw@mail.gmail.com>
+Message-ID: <CA+5PVA4zbkNYyigULrcOons7bCx2yL+Jgg7jWjo7AOn3d0bOGw@mail.gmail.com>
+Subject: Re: pull request: iwlwifi firmware updates 2024-07-25
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Josh Boyer <jwboyer@kernel.org>, 
+	"Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>, 
+	"linux-firmware@kernel.org" <linux-firmware@kernel.org>, "kyle@infradead.org" <kyle@infradead.org>, 
+	"Hutchings, Ben" <ben@decadent.org.uk>, "Ben Ami, Golan" <golan.ben.ami@intel.com>, 
+	"Yang, You-Sheng" <vicamo.yang@canonical.com>, Wireless <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi PK,
+On Thu, Jul 25, 2024 at 4:46=E2=80=AFPM Johannes Berg <johannes@sipsolution=
+s.net> wrote:
+>
+> On Thu, 2024-07-25 at 16:03 -0400, Josh Boyer wrote:
+> > >
+> > >   http://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmwa=
+re.git tags/iwlwifi-fw-2024-07
+> >
+> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux=
+-firmware.git
+> > tags/iwlwifi-fw-2024-07
+> > fatal: couldn't find remote ref tags/iwlwifi-fw-2024-07
+> >
+> > Did you forget to push the tag out?
+> >
+>
+> That's ... curious :)
+>
+> Seems like the day ("-25") got cut off at the end, we've always used
+> dated tags here, and there is one from today around the time Miri and I
+> were discussing this issue, named "iwlwifi-fw-2024-07-25", which also
+> matches the subject. No idea how it got cut off in the email though.
 
-Thanks for taking a lot at the syzbot report! It's been on my list for a
-while, but didn't get to it.
+OK, thanks for the info.
 
-> The commit 9df66d5b9f45 ("cfg80211: fix default HE tx bitrate mask in 2G
-> band") correct bitmask of HE MCS, and settings of empty legacy rate plus
-> HE MCS rate are correctly recognized instead of returning -EINVAL,
-> so empty legacy rate propagates to __rate_control_send_low() and warn
-> no supported rate.
->=20
-> Since the rate_mask is intentionally set to empty via nl80211,=C2=A0
+Merged and pushed out.
 
-That's all true, however,
+https://gitlab.com/kernel-firmware/linux-firmware/-/merge_requests/261
 
-> change logic
-> to avoid warning no supported rate if rate_mask is empty.
-
-I don't necessarily think this follows.
-
-> diff --git a/net/mac80211/rate.c b/net/mac80211/rate.c
-> index 4dc1def69548..5787cb20de42 100644
-> --- a/net/mac80211/rate.c
-> +++ b/net/mac80211/rate.c
-> @@ -377,7 +377,7 @@ static void __rate_control_send_low(struct ieee80211_=
-hw *hw,
->  		info->control.rates[0].idx =3D i;
->  		break;
->  	}
-> -	WARN_ONCE(i =3D=3D sband->n_bitrates,
-> +	WARN_ONCE(i =3D=3D sband->n_bitrates && rate_mask,
->  		  "no supported rates for sta %pM (0x%x, band %d) in rate_mask 0x%x wi=
-th flags 0x%x\n",
->  		  sta ? sta->addr : NULL,
->  		  sta ? sta->deflink.supp_rates[sband->band] : -1,
-
-The warning is still valid - we're trying to pick a low rate with a NULL
-station (i.e. we don't even really know where to send the frame), but we
-don't have any rates to do so with.
-
-Obviously this will remove the warning in this case, but I think the
-underlying issue is that we're actually using the rate mask, intended
-for the connection on the interface, for offchannel TX (looking at the
-stack dump).
-
-We had this precise discussion previously for scanning, and just like
-there, fixed in ab9177d83c04 ("wifi: mac80211: don't use rate mask for
-scanning"), I feel the right way to approach this issue here would be to
-similarly not use the rate mask for offchannel TX, which is I think
-pretty much the same situation, you could have a rate mask set for only
-2.4 GHz where the connection is (and empty for other bands), which is
-accepted by cfg80211 and mac80211, but then do offchannel TX on 5 GHz
-anyway.
-
-So I think the right way to approach this would be to do something like=20
-
-diff --git a/net/mac80211/offchannel.c b/net/mac80211/offchannel.c
-index 28d03196ef75..33361b4d9acf 100644
---- a/net/mac80211/offchannel.c
-+++ b/net/mac80211/offchannel.c
-@@ -830,6 +830,8 @@ int ieee80211_mgmt_tx(struct wiphy *wiphy, struct wirel=
-ess_dev *wdev,
- 		flags =3D IEEE80211_TX_INTFL_NL80211_FRAME_TX |
- 			IEEE80211_TX_CTL_REQ_TX_STATUS;
-=20
-+	flags |=3D IEEE80211_TX_CTRL_SCAN_TX;
-+
- 	if (params->no_cck)
- 		flags |=3D IEEE80211_TX_CTL_NO_CCK_RATE;
-=20
-
-though at that point we need to rename that flag too, I guess.
-
-
-johannes
+josh
 
