@@ -1,170 +1,90 @@
-Return-Path: <linux-wireless+bounces-10552-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10553-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB58993DC81
-	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jul 2024 02:23:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C572993DCED
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jul 2024 03:30:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4DDE2817D8
-	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jul 2024 00:23:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 493D2B2316F
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jul 2024 01:30:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D8F139F;
-	Sat, 27 Jul 2024 00:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13235A21;
+	Sat, 27 Jul 2024 01:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="ZDCHeys5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fPvXvUKU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mr85p00im-hyfv06011401.me.com (mr85p00im-hyfv06011401.me.com [17.58.23.191])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F51B195
-	for <linux-wireless@vger.kernel.org>; Sat, 27 Jul 2024 00:23:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC42417E9;
+	Sat, 27 Jul 2024 01:30:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722039826; cv=none; b=pZcAC/EZkAMKSqj3PK/4nEIVjDD1J9KyXSw7uHdD2sKECDZ9FalzFNEUV5O69KSh38gPSJNOsRygYOvw/Ai1obbITM7aNamsFldEvbU+lBjEQKm82zTD/4rmAMU+xRLd2+s8xuZ2J25efO1I72HQHg5oTQ+iaxesN5TYu5YDV0k=
+	t=1722043834; cv=none; b=GfJKtLVBememsrCuvlzHFkUYY7YSQZN2zVypTzPLk91iC1ikfJJWvyj9MuRmyrzMLaEAOydouQgckEfnCSimW4GJDV3CSyNi2gCdalfaeUDxAyEM0LvoHYhak+zXfku4jKoacwYbzi5l4u7ekpTka+SpxOxpzbf8DUH/2Qywmmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722039826; c=relaxed/simple;
-	bh=cnPsn611UjJ02M558mWmVyCwR6qA++WjYS1aQhoNmkU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uuqTaMa4hP1eMWcGXONgvFxhxPBgzOXz6g3n7mfadXgYPGDnFim4oAd3PzAZJ5nDak/nUDhGF0bwyoA6leGFzs+ZfEgm4FDLn6W79E3bLRJEzh8NooaPmEFXozXDb9M90IxJ3XnS+HbBvufFUO3CYTzOzFos17JMa75gEeyCYRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=ZDCHeys5; arc=none smtp.client-ip=17.58.23.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1722039823;
-	bh=OF//PZdzhsZCrVIwn37lsY6lbpixHa5B2D3Ug9HdfCY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	b=ZDCHeys5+W4QQC0BTyKvSy4P/1nCb4GcXZBMDblyCu+9u9jFBSGd8uAFvEtW0EbCu
-	 MrJEmo4OyMXZVjRro0mt1zPU5CXYBltrq8XqdzHbmXlryfy72yM+t/5ebCeqSastgA
-	 541zfKMDZ3JYGmVJwkmIkh+U0TgL8LPAezFpn+SOhdW2XlanxKG619byAoRgIba8qw
-	 eF7GupEiBV3WmlIJJ6kLFnAN2JW5EYml1uGrHUsgEFdejt9B0DEqXGbQuFmahvN2bQ
-	 MXW4kqtfyqm9U46fldIa3JeBoVp50hRryOjqvziAWKb+Q9gzzAUXD98G7H9pA5gE/v
-	 F7OORGHhIpmUg==
-Received: from [192.168.1.26] (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
-	by mr85p00im-hyfv06011401.me.com (Postfix) with ESMTPSA id 5BE2D357AE22;
-	Sat, 27 Jul 2024 00:23:39 +0000 (UTC)
-Message-ID: <d1267639-c885-4a27-ac15-b4199e38ec99@icloud.com>
-Date: Sat, 27 Jul 2024 08:23:35 +0800
+	s=arc-20240116; t=1722043834; c=relaxed/simple;
+	bh=z50IqyaxepmWaGfG4giFOgMsvXCwiojLTUqIfJ3SBDo=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=U6bzas54k7TukL4R+I2H+CQKb7MiRmHjZCnXdw0Y3kOG52RrCqIvtjsIuFTHkQUchO7+JygFGccBDF7imAaO8ixIM1bVA+FLJb+yv7oN0PddDuh0Ak+uAZ2JPq0wC7BhZbD2aBQAUdfkApYokmlq2lKGStMIcyqRElm3OlzHvBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fPvXvUKU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 84D66C32786;
+	Sat, 27 Jul 2024 01:30:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722043833;
+	bh=z50IqyaxepmWaGfG4giFOgMsvXCwiojLTUqIfJ3SBDo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=fPvXvUKUBPdhChD83uifdEEvrAlDwB5hy+O1R7zIRtEuVDWuu3OpdW6s1RMx+fqtG
+	 Zqelyolmod1J3R3jGAKjsBuWPA48U/HfBWu5vHojoFOHcVjQdjqaSwehapQ+pnC/dR
+	 nnhRsudDvV+7vaTq1N/EtEdvFrQvWBvPBfyAWjXPoN1Vw/8IHo8pkj+TnFYomicAqZ
+	 0h1rfM1ngxsyLK3Il8oVFMzgFGPBDJNGgDG620P+H1NHO2QZbZQO3Ab/OY7yleGcA6
+	 tZ8OBM2YLzdidvgHcAfFO8XRFgiC/HSM3lReLPzvNS8vU77dkoydhZpAJ4Xlyw0P5Q
+	 obNdul5iW0gaA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 74DBBC4333B;
+	Sat, 27 Jul 2024 01:30:33 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: rfkill: Correct parameter type for
- rfkill_set_hw_state_reason()
-To: Jeff Johnson <quic_jjohnson@quicinc.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>
-References: <20240715-rfkill_fix-v1-1-a9f2d56b4716@quicinc.com>
- <dcd0d83a-af37-4ef5-8351-a435ab115ed0@quicinc.com>
-Content-Language: en-US
-From: Zijun Hu <zijun_hu@icloud.com>
-In-Reply-To: <dcd0d83a-af37-4ef5-8351-a435ab115ed0@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: s-IoaBAszZJHQ0P83u8KIpUXIsGDRpc7
-X-Proofpoint-ORIG-GUID: s-IoaBAszZJHQ0P83u8KIpUXIsGDRpc7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-26_14,2024-07-26_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999
- clxscore=1011 phishscore=0 malwarescore=0 suspectscore=0 bulkscore=0
- mlxscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2407270001
+Content-Transfer-Encoding: 8bit
+Subject: Re: pull-request: wireless-2024-07-26
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <172204383347.20059.8375450317517385004.git-patchwork-notify@kernel.org>
+Date: Sat, 27 Jul 2024 01:30:33 +0000
+References: <20240726122638.942420-3-johannes@sipsolutions.net>
+In-Reply-To: <20240726122638.942420-3-johannes@sipsolutions.net>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 
-On 2024/7/27 06:51, Jeff Johnson wrote:
-> On 7/15/2024 6:39 AM, Zijun Hu wrote:
->> From: Zijun Hu <quic_zijuhu@quicinc.com>
->>
->> Change type of parameter @reason to enum rfkill_hard_block_reasons for
->> API rfkill_set_hw_state_reason() according to its comments.
->>
->> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
->> ---
->>  include/linux/rfkill.h | 5 ++---
->>  net/rfkill/core.c      | 7 +------
->>  2 files changed, 3 insertions(+), 9 deletions(-)
->>
->> diff --git a/include/linux/rfkill.h b/include/linux/rfkill.h
->> index 373003ace639..4f7558267541 100644
->> --- a/include/linux/rfkill.h
->> +++ b/include/linux/rfkill.h
->> @@ -147,7 +147,7 @@ void rfkill_destroy(struct rfkill *rfkill);
->>   * Prefer to use rfkill_set_hw_state if you don't need any special reason.
->>   */
->>  bool rfkill_set_hw_state_reason(struct rfkill *rfkill,
->> -				bool blocked, unsigned long reason);
->> +		bool blocked, enum rfkill_hard_block_reasons reason);
-> 
-> function parameters should align on (
-> 
-will correct it for v2
->>  /**
->>   * rfkill_set_hw_state - Set the internal rfkill hardware block state
->>   * @rfkill: pointer to the rfkill class to modify.
->> @@ -279,8 +279,7 @@ static inline void rfkill_destroy(struct rfkill *rfkill)
->>  }
->>  
->>  static inline bool rfkill_set_hw_state_reason(struct rfkill *rfkill,
->> -					      bool blocked,
->> -					      unsigned long reason)
->> +		bool blocked, enum rfkill_hard_block_reasons reason)
-> 
-> function parameters should align on (
-> 
+Hello:
 
-will correct it for v2
->>  {
->>  	return blocked;
->>  }
->> diff --git a/net/rfkill/core.c b/net/rfkill/core.c
->> index 7a5367628c05..f8ed6431b2f5 100644
->> --- a/net/rfkill/core.c
->> +++ b/net/rfkill/core.c
->> @@ -539,18 +539,13 @@ bool rfkill_get_global_sw_state(const enum rfkill_type type)
->>  #endif
->>  
->>  bool rfkill_set_hw_state_reason(struct rfkill *rfkill,
->> -				bool blocked, unsigned long reason)
->> +		bool blocked, enum rfkill_hard_block_reasons reason)
+This pull request was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Fri, 26 Jul 2024 14:24:39 +0200 you wrote:
+> Hi,
 > 
-> function parameters should align on (
+> So, given netdevconf last week, and vacations etc., I'm sending
+> now a couple of more urgent/obvious fixes. Next week Kalle will
+> be around again I think, so he'll probably have more fixes for
+> drivers then, but I figured I'd get a few obvious ones out.
 > 
-will correct it for v2
->>  {
->>  	unsigned long flags;
->>  	bool ret, prev;
->>  
->>  	BUG_ON(!rfkill);
->>  
->> -	if (WARN(reason & ~(RFKILL_HARD_BLOCK_SIGNAL |
->> -			    RFKILL_HARD_BLOCK_NOT_OWNER),
->> -		 "hw_state reason not supported: 0x%lx", reason))
->> -		return rfkill_blocked(rfkill);
->> -
-> 
-> did you validate that all callers are actually passing a valid enum?
-> that is something you should describe in your commit since this is a change
-> beyond just changing the prototype
-> 
-yes. actually, ALL callers within kernel tree only use enum for the API.
-will add that description within v2.
-thanks
->>  	spin_lock_irqsave(&rfkill->lock, flags);
->>  	prev = !!(rfkill->hard_block_reasons & reason);
->>  	if (blocked) {
->>
->> ---
->> base-commit: 338a93cf4a18c2036b567e9f613367f7a52f2511
->> change-id: 20240715-rfkill_fix-335afa2e88ca
->>
->> Best regards,
-> 
+> [...]
+
+Here is the summary with links:
+  - pull-request: wireless-2024-07-26
+    https://git.kernel.org/netdev/net/c/f99d93de93c2
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
