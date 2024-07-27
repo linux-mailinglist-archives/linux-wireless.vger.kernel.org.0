@@ -1,452 +1,128 @@
-Return-Path: <linux-wireless+bounces-10562-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10563-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99B1993DDCA
-	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jul 2024 10:07:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 721F493DE81
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jul 2024 12:03:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC7961C209F2
-	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jul 2024 08:07:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 058082839A2
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jul 2024 10:03:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A882825745;
-	Sat, 27 Jul 2024 08:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5A9642045;
+	Sat, 27 Jul 2024 10:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="n6OGnb+x"
+	dkim=pass (1024-bit key) header.d=dd-wrt.com header.i=@dd-wrt.com header.b="sijTrzUr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.as201155.net (mail.as201155.net [185.84.6.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB5318641
-	for <linux-wireless@vger.kernel.org>; Sat, 27 Jul 2024 08:07:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70922328B6
+	for <linux-wireless@vger.kernel.org>; Sat, 27 Jul 2024 10:03:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.84.6.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722067666; cv=none; b=thAO2or+H7c4tv3nZGm0EX/RCsSAJ7cwu8Mxg6xpItExr6nMLUsDH8svMJSG7GivwX97cAnl8uo1/SAV26FST+48UsT3mV4w8ldLY7wk1wmKBI/gu8CqUqyco4WmnvWsdb0Jn/I0g0qpGzhKeSOnNXR3sJanOa8TAZ/S0NPJLH4=
+	t=1722074584; cv=none; b=M2aqRaikEJfIkPREBJZHTfN0wFIq9Ma9//MzBjiEfqzPvdZiM+TfmfbLboVt8ktm62MyqTLFlP4Z9pKl9prIY1e74IZNmwLDorqpIefxIjWUE9gWOk9pfO9uV8BAUYDjmtuZOm+dlGlYQkrVlaPB/Lv1CTBntEcbmydWZDztgaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722067666; c=relaxed/simple;
-	bh=elYKeLVHdcUfK2wimkKHiX+f815evsbG7XSKEBoVioY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aQXmrQgoOrLnbH//lneuuuxY/Li3Wgikg8VgfciQHbAx5mXWAEKYQCMzFRNIgtC7Lj80TEJrOXumGHNdSK5UKLLqh5o98cCf9E5UnwRU6NGZF7oWYO7peyaK3q1nm7E5J+UXzatOjVRnxxlX12MRknxbpSedo2PsE1Oev96W4l0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=n6OGnb+x; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 46R87g2L21417826, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1722067663; bh=elYKeLVHdcUfK2wimkKHiX+f815evsbG7XSKEBoVioY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=n6OGnb+xGRUQu1lThv/P57Iv6HGLzPxm8qMucUuF0lLf1A/sgX9P/1tD70YBNSHVX
-	 wWVXXf8aCa8yy8hOxJjD0OsTB6kiyLWjEZqey2Y3RRb1KdVDg/za0y5voLDTi/fjyT
-	 YaBg71CsDix2bGe8kRe+vuvnY1MwPdy5mUV040SOfYRMS/Ct2DpAzMfmTFb0thQ/u+
-	 6tc1CsOoZcNQAVFXqZtfq67FYKLsT8f3zmw4FX64H2cb42teL0Q8FziG/5Ul5T44od
-	 98DaAYcXCbBcfcgbp/CbQ9XMqEp2JvKTVws5ChWXLM8KC48hFA3Ayv5KvBSV1Dyvha
-	 lzcKFg47GKIJg==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 46R87g2L21417826
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Sat, 27 Jul 2024 16:07:42 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Sat, 27 Jul 2024 16:07:42 +0800
-Received: from [127.0.1.1] (172.16.17.30) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Sat, 27 Jul
- 2024 16:07:36 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <kevin_yang@realtek.com>
-Subject: [PATCH 7/7] wifi: rtw89: pass chanctx_idx to rtw89_btc_{path_}phymap()
-Date: Sat, 27 Jul 2024 16:06:50 +0800
-Message-ID: <20240727080650.12195-8-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240727080650.12195-1-pkshih@realtek.com>
-References: <20240727080650.12195-1-pkshih@realtek.com>
+	s=arc-20240116; t=1722074584; c=relaxed/simple;
+	bh=tEd7ooambl03GIxeUt6rGYe3J5qo1MovlOtmTFvXhww=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=DMEu+fQ9r7p4B0gkRLXecV4oQeh5BCeILdCXarg5PyfnEVrvsItdEN966ZjxwbMyNc/YCLNR09m/k0KCDSZqlUAGXQ1moPL4g55Usx54FNm5nllNWoPNz//fEkQEtjlF3F9hLR2sEHW1TaBb7/DaKObfvKs2QxL1ebAk9fk+AaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dd-wrt.com; spf=pass smtp.mailfrom=dd-wrt.com; dkim=pass (1024-bit key) header.d=dd-wrt.com header.i=@dd-wrt.com header.b=sijTrzUr; arc=none smtp.client-ip=185.84.6.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dd-wrt.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dd-wrt.com
+Received: from smtps.newmedia-net.de ([2a05:a1c0:0:de::167]:48362 helo=webmail.newmedia-net.de)
+	by mail.as201155.net with esmtps  (TLS1) tls TLS_RSA_WITH_AES_256_CBC_SHA
+	(Exim 4.97.1)
+	(envelope-from <s.gottschall@dd-wrt.com>)
+	id 1sXeDa-000000000zF-1wpG;
+	Sat, 27 Jul 2024 12:00:03 +0200
+X-SASI-Hits: BODYTEXTP_SIZE_3000_LESS 0.000000, BODY_SIZE_1000_LESS 0.000000,
+	BODY_SIZE_2000_LESS 0.000000, BODY_SIZE_5000_LESS 0.000000,
+	BODY_SIZE_500_599 0.000000, BODY_SIZE_7000_LESS 0.000000, CTE_7BIT 0.000000,
+	DKIM_ALIGNS 0.000000, DKIM_SIGNATURE 0.000000, HTML_00_01 0.050000,
+	HTML_00_10 0.050000, IN_REP_TO 0.000000, LEGITIMATE_SIGNS 0.000000,
+	MSGID_SAMEAS_FROM_HEX_844412 0.100000, MSG_THREAD 0.000000,
+	MULTIPLE_REAL_RCPTS 0.000000, NO_CTA_FOUND 0.000000,
+	NO_CTA_URI_FOUND 0.000000, NO_FUR_HEADER 0.000000, NO_URI_HTTPS 0.000000,
+	OUTBOUND 0.000000, OUTBOUND_SOPHOS 0.000000, REFERENCES 0.000000,
+	SENDER_NO_AUTH 0.000000, SUSP_DH_NEG 0.000000, USER_AGENT 0.000000,
+	__ANY_URI 0.000000, __BODY_NO_MAILTO 0.000000,
+	__BOUNCE_CHALLENGE_SUBJ 0.000000, __BOUNCE_NDR_SUBJ_EXEMPT 0.000000,
+	__BULK_NEGATE 0.000000, __CT 0.000000, __CTE 0.000000,
+	__CT_TEXT_PLAIN 0.000000, __DKIM_ALIGNS_1 0.000000, __DKIM_ALIGNS_2 0.000000,
+	__DQ_NEG_DOMAIN 0.000000, __DQ_NEG_HEUR 0.000000, __DQ_NEG_IP 0.000000,
+	__FORWARDED_MSG 0.000000, __FROM_DOMAIN_NOT_IN_BODY 0.000000,
+	__FUR_RDNS_SOPHOS 0.000000, __HAS_CC_HDR 0.000000, __HAS_FROM 0.000000,
+	__HAS_MSGID 0.000000, __HAS_REFERENCES 0.000000,
+	__HEADER_ORDER_FROM 0.000000, __IN_REP_TO 0.000000, __MAIL_CHAIN 0.000000,
+	__MIME_BOUND_CHARSET 0.000000, __MIME_TEXT_ONLY 0.000000,
+	__MIME_TEXT_P 0.000000, __MIME_TEXT_P1 0.000000, __MIME_VERSION 0.000000,
+	__MOZILLA_USER_AGENT 0.000000, __MSGID_HEX_844412 0.000000,
+	__MULTIPLE_RCPTS_TO_X2 0.000000, __NO_HTML_TAG_RAW 0.000000,
+	__OUTBOUND_SOPHOS_FUR 0.000000, __OUTBOUND_SOPHOS_FUR_IP 0.000000,
+	__OUTBOUND_SOPHOS_FUR_RDNS 0.000000, __PHISH_SPEAR_SUBJECT 0.000000,
+	__PHISH_SPEAR_SUBJ_ALERT 0.000000, __PHISH_SPEAR_SUBJ_PREDICATE 0.000000,
+	__RCVD_PASS 0.000000, __REFERENCES 0.000000, __SANE_MSGID 0.000000,
+	__SCAN_D_NEG 0.000000, __SCAN_D_NEG2 0.000000, __SCAN_D_NEG_HEUR 0.000000,
+	__SCAN_D_NEG_HEUR2 0.000000, __SUBJ_ALPHA_END 0.000000,
+	__SUBJ_ALPHA_NEGATE 0.000000, __SUBJ_REPLY 0.000000,
+	__TO_MALFORMED_2 0.000000, __TO_NAME 0.000000,
+	__TO_NAME_DIFF_FROM_ACC 0.000000, __TO_REAL_NAMES 0.000000,
+	__URI_NO_MAILTO 0.000000, __URI_NO_WWW 0.000000, __USER_AGENT 0.000000,
+	__X_MAILSCANNER 0.000000
+X-SASI-Probability: 8%
+X-SASI-RCODE: 200
+X-SASI-Version: Antispam-Engine: 5.1.4, AntispamData: 2024.7.27.92417
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=dd-wrt.com; s=mikd;
+	h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:Message-ID; bh=OFbtf2rb8LQbBQsG+YxU/GYv6bh3Zq86eK1TSFfuEV8=;
+	b=sijTrzUrD8D+ASeNn+hlf4rrR6aU6OxQuJUQvaoPg+EnExZGDlIA2JeJ4tnWbB4FrezhAu5JNGLrT0Tg2GHXiu+QkMPqdElxVWyI+U0bi9uk04BNODFt2j7uzVIq7dsj3Kkur/YX4L6Xo9/q9Sgp235Ir3Esoc2F23CF8thhkOw=;
+Message-ID: <dd2e9f4b-2cc8-486d-a6cc-2f7f77217109@dd-wrt.com>
+Date: Sat, 27 Jul 2024 11:59:40 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [RFC PATCH] ath11k: fix peer addition/deletion error on sta band
+ migration
+From: Sebastian Gottschall <s.gottschall@dd-wrt.com>
+To: Christian 'Ansuel' Marangi <ansuelsmth@gmail.com>,
+ ath11k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+References: <20220603164559.27769-1-ansuelsmth@gmail.com>
+ <420ae7cf-7b7a-4350-9dbb-00f00485acb8@dd-wrt.com>
+In-Reply-To: <420ae7cf-7b7a-4350-9dbb-00f00485acb8@dd-wrt.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass (webmail.newmedia-net.de: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=s.gottschall@dd-wrt.com; helo=webmail.newmedia-net.de;
+X-SA-Exim-Connect-IP: 127.0.0.1
+X-SA-Exim-Mail-From: s.gottschall@dd-wrt.com
+X-SA-Exim-Scanned: No (on webmail.newmedia-net.de); SAEximRunCond expanded to false
+X-NMN-MailScanner-Information: Please contact the ISP for more information
+X-NMN-MailScanner-ID: 1sXeDH-000FWd-Uw
+X-NMN-MailScanner: Found to be clean
+X-NMN-MailScanner-From: s.gottschall@dd-wrt.com
+X-Received:  from localhost.localdomain ([127.0.0.1] helo=webmail.newmedia-net.de)
+	by webmail.newmedia-net.de with esmtp (Exim 4.72)
+	(envelope-from <s.gottschall@dd-wrt.com>)
+	id 1sXeDH-000FWd-Uw; Sat, 27 Jul 2024 11:59:44 +0200
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-Originally, rtw89_btc_phymap() and rtw89_btc_path_phymap() access chan
-with hard-code RTW89_CHANCTX_0. But, they are problematic when the chip
-supports multiple channels.
+Am 16.07.2024 um 04:49 schrieb Sebastian Gottschall:
+> I honestly think a correct solution would be have a rhash list per 
+> vdev_id
+> or per mac_id but again this is problematic for some function that 
+> just handles
+> data and have only the addr as a way to identify the peer. 
 
-So, change their prototype and pass chanctx_idx ahead. Let callers still
-pass RTW89_CHANCTX_0 for now, but we will refine callers in the following.
 
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/coex.h     | 10 ++++++----
- .../net/wireless/realtek/rtw89/rtw8851b_rfk.c | 10 +++++-----
- .../net/wireless/realtek/rtw89/rtw8852a_rfk.c | 20 +++++++++----------
- .../net/wireless/realtek/rtw89/rtw8852b_rfk.c | 12 +++++------
- .../wireless/realtek/rtw89/rtw8852bt_rfk.c    | 10 +++++-----
- .../net/wireless/realtek/rtw89/rtw8852c_rfk.c | 12 +++++------
- drivers/net/wireless/realtek/rtw89/rtw8922a.c |  2 +-
- 7 files changed, 39 insertions(+), 37 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/coex.h b/drivers/net/wireless/realtek/rtw89/coex.h
-index 72e3c77d2a3a..de53b56632f7 100644
---- a/drivers/net/wireless/realtek/rtw89/coex.h
-+++ b/drivers/net/wireless/realtek/rtw89/coex.h
-@@ -291,9 +291,10 @@ void rtw89_coex_recognize_ver(struct rtw89_dev *rtwdev);
- 
- static inline u8 rtw89_btc_phymap(struct rtw89_dev *rtwdev,
- 				  enum rtw89_phy_idx phy_idx,
--				  enum rtw89_rf_path_bit paths)
-+				  enum rtw89_rf_path_bit paths,
-+				  enum rtw89_chanctx_idx chanctx_idx)
- {
--	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_CHANCTX_0);
-+	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, chanctx_idx);
- 	u8 phy_map;
- 
- 	phy_map = FIELD_PREP(BTC_RFK_PATH_MAP, paths) |
-@@ -305,9 +306,10 @@ static inline u8 rtw89_btc_phymap(struct rtw89_dev *rtwdev,
- 
- static inline u8 rtw89_btc_path_phymap(struct rtw89_dev *rtwdev,
- 				       enum rtw89_phy_idx phy_idx,
--				       enum rtw89_rf_path path)
-+				       enum rtw89_rf_path path,
-+				       enum rtw89_chanctx_idx chanctx_idx)
- {
--	return rtw89_btc_phymap(rtwdev, phy_idx, BIT(path));
-+	return rtw89_btc_phymap(rtwdev, phy_idx, BIT(path), chanctx_idx);
- }
- 
- /* return bt req len in TU */
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
-index 1312e299e1aa..7942f334066c 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c
-@@ -1589,7 +1589,7 @@ static void _doiqk(struct rtw89_dev *rtwdev, bool force,
- 		   enum rtw89_phy_idx phy_idx, u8 path)
- {
- 	struct rtw89_iqk_info *iqk_info = &rtwdev->iqk;
--	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, RF_AB);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, RF_AB, RTW89_CHANCTX_0);
- 	u32 backup_rf_val[RTW8851B_IQK_SS][BACKUP_RF_REGS_NR];
- 	u32 backup_bb_val[BACKUP_BB_REGS_NR];
- 
-@@ -3257,7 +3257,7 @@ void rtw8851b_dack(struct rtw89_dev *rtwdev)
- 
- void rtw8851b_iqk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
- {
--	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0, RTW89_CHANCTX_0);
- 	u32 tx_en;
- 
- 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_IQK, BTC_WRFK_START);
-@@ -3273,7 +3273,7 @@ void rtw8851b_iqk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
- 
- void rtw8851b_rx_dck(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
- {
--	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0, RTW89_CHANCTX_0);
- 	u32 tx_en;
- 
- 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_RXDCK, BTC_WRFK_START);
-@@ -3288,7 +3288,7 @@ void rtw8851b_rx_dck(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
- 
- void rtw8851b_dpk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
- {
--	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0, RTW89_CHANCTX_0);
- 	u32 tx_en;
- 
- 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_DPK, BTC_WRFK_START);
-@@ -3310,7 +3310,7 @@ void rtw8851b_dpk_track(struct rtw89_dev *rtwdev)
- 
- void rtw8851b_tssi(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy, bool hwtx_en)
- {
--	u8 phy_map = rtw89_btc_phymap(rtwdev, phy, RF_A);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, phy, RF_A, RTW89_CHANCTX_0);
- 	u8 i;
- 
- 	rtw89_debug(rtwdev, RTW89_DBG_TSSI, "[TSSI] %s: phy=%d\n", __func__, phy);
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
-index b059f6ff6e8f..6bae8bc07e93 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
-@@ -497,7 +497,7 @@ static void _dac_cal(struct rtw89_dev *rtwdev, bool force)
- {
- 	struct rtw89_dack_info *dack = &rtwdev->dack;
- 	u32 rf0_0, rf1_0;
--	u8 phy_map = rtw89_btc_phymap(rtwdev, RTW89_PHY_0, RF_AB);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, RTW89_PHY_0, RF_AB, RTW89_CHANCTX_0);
- 
- 	dack->dack_done = false;
- 	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]DACK b\n");
-@@ -804,7 +804,7 @@ static bool _iqk_one_shot(struct rtw89_dev *rtwdev,
- 	struct rtw89_iqk_info *iqk_info = &rtwdev->iqk;
- 	bool fail = false;
- 	u32 iqk_cmd = 0x0;
--	u8 phy_map = rtw89_btc_path_phymap(rtwdev, phy_idx, path);
-+	u8 phy_map = rtw89_btc_path_phymap(rtwdev, phy_idx, path, RTW89_CHANCTX_0);
- 	u32 addr_rfc_ctl = 0x0;
- 
- 	if (path == RF_PATH_A)
-@@ -1612,7 +1612,7 @@ static void _doiqk(struct rtw89_dev *rtwdev, bool force,
- 	struct rtw89_iqk_info *iqk_info = &rtwdev->iqk;
- 	u32 backup_bb_val[BACKUP_BB_REGS_NR];
- 	u32 backup_rf_val[RTW8852A_IQK_SS][BACKUP_RF_REGS_NR];
--	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, RF_AB);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, RF_AB, RTW89_CHANCTX_0);
- 
- 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_IQK, BTC_WRFK_ONESHOT_START);
- 
-@@ -1658,7 +1658,7 @@ static void _iqk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx, bool forc
- static void _set_rx_dck(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
- 			enum rtw89_rf_path path, bool is_afe)
- {
--	u8 phy_map = rtw89_btc_path_phymap(rtwdev, phy, path);
-+	u8 phy_map = rtw89_btc_path_phymap(rtwdev, phy, path, RTW89_CHANCTX_0);
- 	u32 ori_val;
- 
- 	rtw89_debug(rtwdev, RTW89_DBG_RFK,
-@@ -1802,7 +1802,7 @@ static void _dpk_reload_kip(struct rtw89_dev *rtwdev, u32 *reg,
- static u8 _dpk_one_shot(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy,
- 			enum rtw89_rf_path path, enum rtw8852a_dpk_id id)
- {
--	u8 phy_map  = rtw89_btc_path_phymap(rtwdev, phy, path);
-+	u8 phy_map  = rtw89_btc_path_phymap(rtwdev, phy, path, RTW89_CHANCTX_0);
- 	u16 dpk_cmd = 0x0;
- 	u32 val;
- 	int ret;
-@@ -3514,7 +3514,7 @@ static void _tssi_pre_tx(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy)
- 	u8 bw = chan->band_width;
- 	u8 band = chan->band_type;
- 	u32 tx_en;
--	u8 phy_map = rtw89_btc_phymap(rtwdev, phy, 0);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, phy, 0, RTW89_CHANCTX_0);
- 	s8 power;
- 	s16 xdbm;
- 	u32 i, tx_counter = 0;
-@@ -3602,7 +3602,7 @@ void rtw8852a_rck(struct rtw89_dev *rtwdev)
- 
- void rtw8852a_dack(struct rtw89_dev *rtwdev)
- {
--	u8 phy_map = rtw89_btc_phymap(rtwdev, RTW89_PHY_0, 0);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, RTW89_PHY_0, 0, RTW89_CHANCTX_0);
- 
- 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_DACK, BTC_WRFK_START);
- 	_dac_cal(rtwdev, false);
-@@ -3612,7 +3612,7 @@ void rtw8852a_dack(struct rtw89_dev *rtwdev)
- void rtw8852a_iqk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
- {
- 	u32 tx_en;
--	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0, RTW89_CHANCTX_0);
- 
- 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_IQK, BTC_WRFK_START);
- 	rtw89_chip_stop_sch_tx(rtwdev, phy_idx, &tx_en, RTW89_SCH_TX_SEL_ALL);
-@@ -3632,7 +3632,7 @@ void rtw8852a_rx_dck(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx,
- 		     bool is_afe)
- {
- 	u32 tx_en;
--	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0, RTW89_CHANCTX_0);
- 
- 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_RXDCK, BTC_WRFK_START);
- 	rtw89_chip_stop_sch_tx(rtwdev, phy_idx, &tx_en, RTW89_SCH_TX_SEL_ALL);
-@@ -3647,7 +3647,7 @@ void rtw8852a_rx_dck(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx,
- void rtw8852a_dpk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
- {
- 	u32 tx_en;
--	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0, RTW89_CHANCTX_0);
- 
- 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_DPK, BTC_WRFK_START);
- 	rtw89_chip_stop_sch_tx(rtwdev, phy_idx, &tx_en, RTW89_SCH_TX_SEL_ALL);
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
-index 72072042aca6..776a45d1fe33 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
-@@ -1613,7 +1613,7 @@ static void _doiqk(struct rtw89_dev *rtwdev, bool force,
- 	struct rtw89_iqk_info *iqk_info = &rtwdev->iqk;
- 	u32 backup_bb_val[BACKUP_BB_REGS_NR];
- 	u32 backup_rf_val[RTW8852B_IQK_SS][BACKUP_RF_REGS_NR];
--	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, RF_AB);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, RF_AB, RTW89_CHANCTX_0);
- 
- 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_IQK, BTC_WRFK_ONESHOT_START);
- 
-@@ -3757,7 +3757,7 @@ void rtw8852b_rck(struct rtw89_dev *rtwdev)
- 
- void rtw8852b_dack(struct rtw89_dev *rtwdev)
- {
--	u8 phy_map = rtw89_btc_phymap(rtwdev, RTW89_PHY_0, 0);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, RTW89_PHY_0, 0, RTW89_CHANCTX_0);
- 
- 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_DACK, BTC_WRFK_START);
- 	_dac_cal(rtwdev, false);
-@@ -3766,7 +3766,7 @@ void rtw8852b_dack(struct rtw89_dev *rtwdev)
- 
- void rtw8852b_iqk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
- {
--	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0, RTW89_CHANCTX_0);
- 	u32 tx_en;
- 
- 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_IQK, BTC_WRFK_START);
-@@ -3782,7 +3782,7 @@ void rtw8852b_iqk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
- 
- void rtw8852b_rx_dck(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
- {
--	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0, RTW89_CHANCTX_0);
- 	u32 tx_en;
- 
- 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_RXDCK, BTC_WRFK_START);
-@@ -3797,7 +3797,7 @@ void rtw8852b_rx_dck(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
- 
- void rtw8852b_dpk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
- {
--	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0, RTW89_CHANCTX_0);
- 	u32 tx_en;
- 
- 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_DPK, BTC_WRFK_START);
-@@ -3819,7 +3819,7 @@ void rtw8852b_dpk_track(struct rtw89_dev *rtwdev)
- 
- void rtw8852b_tssi(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy, bool hwtx_en)
- {
--	u8 phy_map = rtw89_btc_phymap(rtwdev, phy, RF_AB);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, phy, RF_AB, RTW89_CHANCTX_0);
- 	u32 tx_en;
- 	u8 i;
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c
-index 56ca3fea8459..278f907fd895 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852bt_rfk.c
-@@ -1760,7 +1760,7 @@ static void _doiqk(struct rtw89_dev *rtwdev, bool force,
- 	struct rtw89_iqk_info *iqk_info = &rtwdev->iqk;
- 	u32 backup_bb_val[BACKUP_BB_REGS_NR];
- 	u32 backup_rf_val[RTW8852BT_SS][BACKUP_RF_REGS_NR];
--	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, RF_AB);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, RF_AB, RTW89_CHANCTX_0);
- 
- 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_IQK, BTC_WRFK_ONESHOT_START);
- 
-@@ -3835,7 +3835,7 @@ void rtw8852bt_rck(struct rtw89_dev *rtwdev)
- 
- void rtw8852bt_dack(struct rtw89_dev *rtwdev)
- {
--	u8 phy_map = rtw89_btc_phymap(rtwdev, RTW89_PHY_0, 0);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, RTW89_PHY_0, 0, RTW89_CHANCTX_0);
- 
- 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_DACK, BTC_WRFK_START);
- 	_dac_cal(rtwdev, false);
-@@ -3844,7 +3844,7 @@ void rtw8852bt_dack(struct rtw89_dev *rtwdev)
- 
- void rtw8852bt_iqk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
- {
--	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0, RTW89_CHANCTX_0);
- 	u32 tx_en;
- 
- 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_IQK, BTC_WRFK_START);
-@@ -3860,7 +3860,7 @@ void rtw8852bt_iqk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
- 
- void rtw8852bt_rx_dck(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
- {
--	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0, RTW89_CHANCTX_0);
- 	u32 tx_en;
- 
- 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_RXDCK, BTC_WRFK_START);
-@@ -3892,7 +3892,7 @@ void rtw8852bt_dpk_track(struct rtw89_dev *rtwdev)
- void rtw8852bt_tssi(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy, bool hwtx_en)
- {
- 	static const u32 reg[2] = {R_DPD_CH0A, R_DPD_CH0B};
--	u8 phy_map = rtw89_btc_phymap(rtwdev, phy, RF_AB);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, phy, RF_AB, RTW89_CHANCTX_0);
- 	u32 reg_backup[2] = {};
- 	u32 tx_en;
- 	u8 i;
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
-index 7c529304c5b8..6e199e82690b 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c
-@@ -588,7 +588,7 @@ static void _dac_cal(struct rtw89_dev *rtwdev, bool force)
- {
- 	struct rtw89_dack_info *dack = &rtwdev->dack;
- 	u32 rf0_0, rf1_0;
--	u8 phy_map = rtw89_btc_phymap(rtwdev, RTW89_PHY_0, RF_AB);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, RTW89_PHY_0, RF_AB, RTW89_CHANCTX_0);
- 
- 	dack->dack_done = false;
- 	rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]DACK b\n");
-@@ -1521,7 +1521,7 @@ static void _doiqk(struct rtw89_dev *rtwdev, bool force,
- 	struct rtw89_iqk_info *iqk_info = &rtwdev->iqk;
- 	u32 backup_bb_val[BACKUP_BB_REGS_NR];
- 	u32 backup_rf_val[RTW8852C_IQK_SS][BACKUP_RF_REGS_NR];
--	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, RF_AB);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, RF_AB, RTW89_CHANCTX_0);
- 
- 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_IQK, BTC_WRFK_ONESHOT_START);
- 
-@@ -4114,7 +4114,7 @@ void rtw8852c_rck(struct rtw89_dev *rtwdev)
- 
- void rtw8852c_dack(struct rtw89_dev *rtwdev)
- {
--	u8 phy_map = rtw89_btc_phymap(rtwdev, RTW89_PHY_0, 0);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, RTW89_PHY_0, 0, RTW89_CHANCTX_0);
- 
- 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_DACK, BTC_WRFK_START);
- 	_dac_cal(rtwdev, false);
-@@ -4124,7 +4124,7 @@ void rtw8852c_dack(struct rtw89_dev *rtwdev)
- void rtw8852c_iqk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
- {
- 	u32 tx_en;
--	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0, RTW89_CHANCTX_0);
- 
- 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_IQK, BTC_WRFK_START);
- 	rtw89_chip_stop_sch_tx(rtwdev, phy_idx, &tx_en, RTW89_SCH_TX_SEL_ALL);
-@@ -4205,7 +4205,7 @@ void rtw8852c_rx_dck_track(struct rtw89_dev *rtwdev)
- 	const struct rtw89_chan *chan = rtw89_chan_get(rtwdev, RTW89_CHANCTX_0);
- 	struct rtw89_rx_dck_info *rx_dck = &rtwdev->rx_dck;
- 	enum rtw89_phy_idx phy_idx = RTW89_PHY_0;
--	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0, RTW89_CHANCTX_0);
- 	u8 dck_channel;
- 	u8 cur_thermal;
- 	u32 tx_en;
-@@ -4262,7 +4262,7 @@ void rtw8852c_dpk_init(struct rtw89_dev *rtwdev)
- void rtw8852c_dpk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx)
- {
- 	u32 tx_en;
--	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, 0, RTW89_CHANCTX_0);
- 
- 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_DPK, BTC_WRFK_START);
- 	rtw89_chip_stop_sch_tx(rtwdev, phy_idx, &tx_en, RTW89_SCH_TX_SEL_ALL);
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922a.c b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-index 4e77ea55767b..e611534eeae1 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-@@ -1956,7 +1956,7 @@ static void _wait_rx_mode(struct rtw89_dev *rtwdev, u8 kpath)
- static void rtw8922a_rfk_channel(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
- {
- 	enum rtw89_phy_idx phy_idx = rtwvif->phy_idx;
--	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, RF_AB);
-+	u8 phy_map = rtw89_btc_phymap(rtwdev, phy_idx, RF_AB, RTW89_CHANCTX_0);
- 	u32 tx_en;
- 
- 	rtw89_btc_ntfy_wl_rfk(rtwdev, phy_map, BTC_WRFKT_CHLK, BTC_WRFK_START);
--- 
-2.25.1
+regarding this comment. i made a patch which exactly does that thing and 
+solves the problem. there are just 2 functions which
+have the problem. but both can be handled in a easy way. these are wmi 
+events for kick station etc. in such a case i just kick them from all
+mac's
 
 
