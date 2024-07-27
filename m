@@ -1,113 +1,170 @@
-Return-Path: <linux-wireless+bounces-10551-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10552-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E758C93DAD9
-	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jul 2024 00:54:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB58993DC81
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jul 2024 02:23:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F9B4284532
-	for <lists+linux-wireless@lfdr.de>; Fri, 26 Jul 2024 22:54:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4DDE2817D8
+	for <lists+linux-wireless@lfdr.de>; Sat, 27 Jul 2024 00:23:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE3214C5B0;
-	Fri, 26 Jul 2024 22:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D8F139F;
+	Sat, 27 Jul 2024 00:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hauke-m.de header.i=@hauke-m.de header.b="Pt827JED"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="ZDCHeys5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+Received: from mr85p00im-hyfv06011401.me.com (mr85p00im-hyfv06011401.me.com [17.58.23.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA53812;
-	Fri, 26 Jul 2024 22:54:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F51B195
+	for <linux-wireless@vger.kernel.org>; Sat, 27 Jul 2024 00:23:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722034470; cv=none; b=a4CDPx1nb2WuXQsR4YFeKzZh8oh2Vwa9pVJTj8Fxwxlw9ZiEZYA9cVssvOIXlsdk9jsgJhgHYJiYhAZj5jzQSmXBK/OKrF5485+PAoR6pqpIcpxbSuvJaklrcrgFqWhk+mklO//Zx/AktmwqyduaPKLJyphtL+G9OpRgtWmvXmE=
+	t=1722039826; cv=none; b=pZcAC/EZkAMKSqj3PK/4nEIVjDD1J9KyXSw7uHdD2sKECDZ9FalzFNEUV5O69KSh38gPSJNOsRygYOvw/Ai1obbITM7aNamsFldEvbU+lBjEQKm82zTD/4rmAMU+xRLd2+s8xuZ2J25efO1I72HQHg5oTQ+iaxesN5TYu5YDV0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722034470; c=relaxed/simple;
-	bh=KKD6p/UTkke7Sr6KY++J/QdqRmvj2G3eGw3nTtCdEdQ=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=uLlEdA2HGIfFeqBbIbRrTZ3GuhLmevy1pmKklDxrjeBYhUqxALU1RjbXWPy5ByJNe4EbLqe6cNENwFo3h25IumHpBLQo/jHxdi5EEJdHK4vZjanRNllgYjML97/lddyzAQsCTrApMuwAlhLQod2iKVEcxoHUZWHJn4oB8u1BLCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hauke-m.de; spf=pass smtp.mailfrom=hauke-m.de; dkim=pass (2048-bit key) header.d=hauke-m.de header.i=@hauke-m.de header.b=Pt827JED; arc=none smtp.client-ip=80.241.56.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hauke-m.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hauke-m.de
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4WW33M1KCdz9sWt;
-	Sat, 27 Jul 2024 00:54:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hauke-m.de; s=MBO0001;
-	t=1722034463;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=NtyOCnKJWBnAbIlOSCkfErDrQOfPUdHdFFyoeRL8MOs=;
-	b=Pt827JEDR88sXtkDIH2dX2SiBpwr8sebvsvtn8FOasmv68TyxN+YTilDMM9JywiU4sEXKm
-	+RUD7s0i8O4yG6au00czlTPWYadQDpbSguwxS7QS2IvJS8S1XuH5Q547r1dNwfJTALYutW
-	hsYAOE9Hv8R1dgYl/DF5M6trNbcFABR1GmaYxMX8oCvPm5U8RNvfReMds37MuI6TThY4E+
-	vHRuiRQVMMclEPEgMGL8gS2/UrvuvtqO558qEsTU9YLkf3GYBjAbO85tzX+S26cTrtIF9W
-	NRwPugvB2hxYbLQX7Xo1yvdrO1omkLqPJtC4NaJdsLypr+B6HkH6wkMS8YEJTg==
-Message-ID: <6d402141-a457-4096-a487-56b4140361be@hauke-m.de>
-Date: Sat, 27 Jul 2024 00:54:21 +0200
+	s=arc-20240116; t=1722039826; c=relaxed/simple;
+	bh=cnPsn611UjJ02M558mWmVyCwR6qA++WjYS1aQhoNmkU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uuqTaMa4hP1eMWcGXONgvFxhxPBgzOXz6g3n7mfadXgYPGDnFim4oAd3PzAZJ5nDak/nUDhGF0bwyoA6leGFzs+ZfEgm4FDLn6W79E3bLRJEzh8NooaPmEFXozXDb9M90IxJ3XnS+HbBvufFUO3CYTzOzFos17JMa75gEeyCYRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=ZDCHeys5; arc=none smtp.client-ip=17.58.23.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; t=1722039823;
+	bh=OF//PZdzhsZCrVIwn37lsY6lbpixHa5B2D3Ug9HdfCY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	b=ZDCHeys5+W4QQC0BTyKvSy4P/1nCb4GcXZBMDblyCu+9u9jFBSGd8uAFvEtW0EbCu
+	 MrJEmo4OyMXZVjRro0mt1zPU5CXYBltrq8XqdzHbmXlryfy72yM+t/5ebCeqSastgA
+	 541zfKMDZ3JYGmVJwkmIkh+U0TgL8LPAezFpn+SOhdW2XlanxKG619byAoRgIba8qw
+	 eF7GupEiBV3WmlIJJ6kLFnAN2JW5EYml1uGrHUsgEFdejt9B0DEqXGbQuFmahvN2bQ
+	 MXW4kqtfyqm9U46fldIa3JeBoVp50hRryOjqvziAWKb+Q9gzzAUXD98G7H9pA5gE/v
+	 F7OORGHhIpmUg==
+Received: from [192.168.1.26] (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
+	by mr85p00im-hyfv06011401.me.com (Postfix) with ESMTPSA id 5BE2D357AE22;
+	Sat, 27 Jul 2024 00:23:39 +0000 (UTC)
+Message-ID: <d1267639-c885-4a27-ac15-b4199e38ec99@icloud.com>
+Date: Sat, 27 Jul 2024 08:23:35 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: rfkill: Correct parameter type for
+ rfkill_set_hw_state_reason()
+To: Jeff Johnson <quic_jjohnson@quicinc.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>
+References: <20240715-rfkill_fix-v1-1-a9f2d56b4716@quicinc.com>
+ <dcd0d83a-af37-4ef5-8351-a435ab115ed0@quicinc.com>
 Content-Language: en-US
-To: stable@vger.kernel.org
-Cc: miriam.rachel.korenblit@intel.com, johannes.berg@intel.com,
- quic_ramess@quicinc.com, linux-wireless@vger.kernel.org,
- netdev@vger.kernel.org
-From: Hauke Mehrtens <hauke@hauke-m.de>
-Subject: stable backport: wifi: mac80211: track capability/opmode NSS
- separately
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Zijun Hu <zijun_hu@icloud.com>
+In-Reply-To: <dcd0d83a-af37-4ef5-8351-a435ab115ed0@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4WW33M1KCdz9sWt
+X-Proofpoint-GUID: s-IoaBAszZJHQ0P83u8KIpUXIsGDRpc7
+X-Proofpoint-ORIG-GUID: s-IoaBAszZJHQ0P83u8KIpUXIsGDRpc7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-26_14,2024-07-26_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxlogscore=999
+ clxscore=1011 phishscore=0 malwarescore=0 suspectscore=0 bulkscore=0
+ mlxscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2407270001
 
-Hi,
+On 2024/7/27 06:51, Jeff Johnson wrote:
+> On 7/15/2024 6:39 AM, Zijun Hu wrote:
+>> From: Zijun Hu <quic_zijuhu@quicinc.com>
+>>
+>> Change type of parameter @reason to enum rfkill_hard_block_reasons for
+>> API rfkill_set_hw_state_reason() according to its comments.
+>>
+>> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+>> ---
+>>  include/linux/rfkill.h | 5 ++---
+>>  net/rfkill/core.c      | 7 +------
+>>  2 files changed, 3 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/include/linux/rfkill.h b/include/linux/rfkill.h
+>> index 373003ace639..4f7558267541 100644
+>> --- a/include/linux/rfkill.h
+>> +++ b/include/linux/rfkill.h
+>> @@ -147,7 +147,7 @@ void rfkill_destroy(struct rfkill *rfkill);
+>>   * Prefer to use rfkill_set_hw_state if you don't need any special reason.
+>>   */
+>>  bool rfkill_set_hw_state_reason(struct rfkill *rfkill,
+>> -				bool blocked, unsigned long reason);
+>> +		bool blocked, enum rfkill_hard_block_reasons reason);
+> 
+> function parameters should align on (
+> 
+will correct it for v2
+>>  /**
+>>   * rfkill_set_hw_state - Set the internal rfkill hardware block state
+>>   * @rfkill: pointer to the rfkill class to modify.
+>> @@ -279,8 +279,7 @@ static inline void rfkill_destroy(struct rfkill *rfkill)
+>>  }
+>>  
+>>  static inline bool rfkill_set_hw_state_reason(struct rfkill *rfkill,
+>> -					      bool blocked,
+>> -					      unsigned long reason)
+>> +		bool blocked, enum rfkill_hard_block_reasons reason)
+> 
+> function parameters should align on (
+> 
 
-Please backport the following patch back to the stable series 6.6 and 6.1:
-commit a8bca3e9371dc5e276af4168be099b2a05554c2a
-Author: Johannes Berg <johannes.berg@intel.com>
-Date:   Wed Feb 28 12:01:57 2024 +0100
+will correct it for v2
+>>  {
+>>  	return blocked;
+>>  }
+>> diff --git a/net/rfkill/core.c b/net/rfkill/core.c
+>> index 7a5367628c05..f8ed6431b2f5 100644
+>> --- a/net/rfkill/core.c
+>> +++ b/net/rfkill/core.c
+>> @@ -539,18 +539,13 @@ bool rfkill_get_global_sw_state(const enum rfkill_type type)
+>>  #endif
+>>  
+>>  bool rfkill_set_hw_state_reason(struct rfkill *rfkill,
+>> -				bool blocked, unsigned long reason)
+>> +		bool blocked, enum rfkill_hard_block_reasons reason)
+> 
+> function parameters should align on (
+> 
+will correct it for v2
+>>  {
+>>  	unsigned long flags;
+>>  	bool ret, prev;
+>>  
+>>  	BUG_ON(!rfkill);
+>>  
+>> -	if (WARN(reason & ~(RFKILL_HARD_BLOCK_SIGNAL |
+>> -			    RFKILL_HARD_BLOCK_NOT_OWNER),
+>> -		 "hw_state reason not supported: 0x%lx", reason))
+>> -		return rfkill_blocked(rfkill);
+>> -
+> 
+> did you validate that all callers are actually passing a valid enum?
+> that is something you should describe in your commit since this is a change
+> beyond just changing the prototype
+> 
+yes. actually, ALL callers within kernel tree only use enum for the API.
+will add that description within v2.
+thanks
+>>  	spin_lock_irqsave(&rfkill->lock, flags);
+>>  	prev = !!(rfkill->hard_block_reasons & reason);
+>>  	if (blocked) {
+>>
+>> ---
+>> base-commit: 338a93cf4a18c2036b567e9f613367f7a52f2511
+>> change-id: 20240715-rfkill_fix-335afa2e88ca
+>>
+>> Best regards,
+> 
 
-     wifi: mac80211: track capability/opmode NSS separately
-
-There is a small conflict in the copyright year update in 
-net/mac80211/sta_info.h, just take the 2024 version.
-
-
-On kernel 6.1 please backport this patch first to make the other one apply:
-commit 57b341e9ab13e5688491bfd54f8b5502416c8905
-Author: Rameshkumar Sundaram <quic_ramess@quicinc.com>
-Date:   Tue Feb 7 17:11:46 2023 +0530
-
-     wifi: mac80211: Allow NSS change only up to capability
-
-
-
-This commit fixes a throughput regression introduced into Linux stable 
-with the backport of following commit:
-
-commit dd6c064cfc3fc18d871107c6f5db8837e88572e4
-Author: Johannes Berg <johannes.berg@intel.com>
-Date:   Mon Jan 29 15:53:55 2024 +0100
-
-     wifi: mac80211: set station RX-NSS on reconfig
-
-On older kernel versions it is harder to backport the fixes, maybe 
-revert the offending commit in Linux stable 5.15 and older.
-
-This regression was found by multiple users of OpenWrt in Wifi AP mode.
-See the discussion in this forum thread: 
-https://forum.openwrt.org/t/openwrt-23-05-4-service-release/204514/111
-
-Thank you KONG from the OpenWrt forum for finding the commit which 
-reduced the Wifi throughput.
-
-
-Hauke
 
