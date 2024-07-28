@@ -1,60 +1,62 @@
-Return-Path: <linux-wireless+bounces-10574-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10575-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FAE193E2C7
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jul 2024 03:16:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76A5993E2DB
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jul 2024 03:18:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51FFD1C20D06
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jul 2024 01:16:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37199281EA2
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jul 2024 01:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56F913A24B;
-	Sun, 28 Jul 2024 00:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC6113C8F0;
+	Sun, 28 Jul 2024 00:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RBufl0bl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rTznLrXC"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CCBE194C68;
-	Sun, 28 Jul 2024 00:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4D0198823;
+	Sun, 28 Jul 2024 00:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722128089; cv=none; b=JY5VPrfIOQcg90Y8ynwvejDV7ZdulV7p6aom6ks8NsgHDWH3hSIXw5uiz5JuLIKTB6+8kqas9+gqUtbjiMu36GAfajqqRce2SE9xBYTCnK1ZHl9bx5DPF8zUw3Su7/1DQOqhXPy0JiW3K3cbhPqzRHgxLclxoN8hCvQ+bigOri8=
+	t=1722128103; cv=none; b=pxvhIPcZyUxxCr6PmA5Go66hsYwKyemaPqhosREPaprdvlNYtNLzrr3QbnwWEvOxRHIDh9plNzeJUtfCpU2qxeJy9Pj38/uOn5Fs8CPdefy8zFbh4J708IEhTibeXap6Kzywy9ulpra6rHgFCfj39D0rMFH8WMcjA5lDYnxvX4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722128089; c=relaxed/simple;
-	bh=UFjFLGyWMrNDUcEKM4QvLGE1aXNITIWrX5TYMzsTATw=;
+	s=arc-20240116; t=1722128103; c=relaxed/simple;
+	bh=MA3XM1jeguBBrdp4swl4qkAPtLoHxSwGVkYozfJv89o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fZVeFbv0f6wd39mvs5q51Jx/2P7E9zB6Ok5HcUA6lZQJgY6h7c9wgfgFLsJEFL3Em2OXDO8BhOThVJUQZFcqhDT1eAUZFx2RenlON409l5wZfADacOmRj243sr95ajDRa/AqfYu7ytrTvCigfEks5ic3iCE14LZ7qKjSQmn9knY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RBufl0bl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F17F4C4AF0E;
-	Sun, 28 Jul 2024 00:54:47 +0000 (UTC)
+	 MIME-Version; b=Jdieaw+5kodGDxLc5NeOWuZe7au22XZTY5TiB1ubYaekViRb6bOEVh3NV2nFXIEbODs+2enox030IrejE4AsEmkJZeO5OHU9emizooiyY2AJmy8Oh7n53sROhPqpgJv0gbtMlg+qT86nKPkNSKPBhdE7w+fELKk+WC9EKG0UX3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rTznLrXC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC9E9C4AF07;
+	Sun, 28 Jul 2024 00:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722128089;
-	bh=UFjFLGyWMrNDUcEKM4QvLGE1aXNITIWrX5TYMzsTATw=;
+	s=k20201202; t=1722128103;
+	bh=MA3XM1jeguBBrdp4swl4qkAPtLoHxSwGVkYozfJv89o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RBufl0blouI9ulLRK6WumMOCzyhapaB5MDpVlDJkzfKzofYHbbfF17DaaQON7sXMj
-	 w42ddZlL6vXU8e9kMZo5LJrbhNEItVJTCnnhFSMOP/ec5bap9I5utUfJrD4Vke4naS
-	 tIGzAeJYd7i3y1P8vahfeKMwqSPaCiwzxGQ1400xxYF6j12yHTHx3F9rkUUFpCFIq3
-	 Gcvmwa6IWIO4RrVKYHheu2/hhZYSd9x3NhGve4qez5FLMbTDiYedRzDEYviBItBpjo
-	 IGmCwmmYXAWLw6+qU6B7eOtXBTiewTO4JXHUTPm65GFJuNy4utgH5OBNirEwRsY4zT
-	 j4RKp+zwyzZxA==
+	b=rTznLrXCDc5+UBdAHflJ4Nk7tgGW5sbgnpLuqnSefurgbPuqGKzRRo2LNL1EDQzqX
+	 1Ob7pgTkV6b3ATryRbJUTEEzoIptYoxrxDS9ZA3ZxBHWcAt5iiqAil9kHP96u21vE1
+	 LAHxDnq+cem94VR8829qZd0TsUiN4LtkQKVSzp/WIeGpQ8P2o0vw6+45nboik/kPMB
+	 pJo2Ob8n/wkBrxMf2ifb1Q+OK88rR0LaF+ZfW08eUZWoMX05Dm5ZRRuT20FqO3Jrwg
+	 y9zi18vZITdroBiSu3hD0mPNBCz1IplPN323h4N2sIKd/pRXaZ729v4TPEX8FB1IO/
+	 Wpq0EnS2afzMg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	jjohnson@kernel.org,
+	johannes@sipsolutions.net,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
 	linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 03/15] wifi: ath12k: fix memory leak in ath12k_dp_rx_peer_frag_setup()
-Date: Sat, 27 Jul 2024 20:54:24 -0400
-Message-ID: <20240728005442.1729384-3-sashal@kernel.org>
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 09/15] wifi: nl80211: don't give key data to userspace
+Date: Sat, 27 Jul 2024 20:54:30 -0400
+Message-ID: <20240728005442.1729384-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240728005442.1729384-1-sashal@kernel.org>
 References: <20240728005442.1729384-1-sashal@kernel.org>
@@ -69,38 +71,53 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.43
 Content-Transfer-Encoding: 8bit
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 3d60041543189438cd1b03a1fa40ff6681c77970 ]
+[ Upstream commit a7e5793035792cc46a1a4b0a783655ffa897dfe9 ]
 
-Currently the resource allocated by crypto_alloc_shash() is not
-freed in case ath12k_peer_find() fails, resulting in memory leak.
+When a key is requested by userspace, there's really no need
+to include the key data, the sequence counter is really what
+userspace needs in this case. The fact that it's included is
+just a historic quirk.
 
-Add crypto_free_shash() to fix it.
+Remove the key data.
 
-This is found during code review, compile tested only.
-
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240526124226.24661-1-quic_bqiang@quicinc.com
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20240627104411.b6a4f097e4ea.I7e6cc976cb9e8a80ef25a3351330f313373b4578@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_rx.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/wireless/nl80211.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-index dbcbe7e0cd2a7..a5b6e2e078d33 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -2756,6 +2756,7 @@ int ath12k_dp_rx_peer_frag_setup(struct ath12k *ar, const u8 *peer_mac, int vdev
- 	peer = ath12k_peer_find(ab, vdev_id, peer_mac);
- 	if (!peer) {
- 		spin_unlock_bh(&ab->base_lock);
-+		crypto_free_shash(tfm);
- 		ath12k_warn(ab, "failed to find the peer to set up fragment info\n");
- 		return -ENOENT;
- 	}
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 053258b4e28d2..be5c42d6ffbea 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -4473,10 +4473,7 @@ static void get_key_callback(void *c, struct key_params *params)
+ 	struct nlattr *key;
+ 	struct get_key_cookie *cookie = c;
+ 
+-	if ((params->key &&
+-	     nla_put(cookie->msg, NL80211_ATTR_KEY_DATA,
+-		     params->key_len, params->key)) ||
+-	    (params->seq &&
++	if ((params->seq &&
+ 	     nla_put(cookie->msg, NL80211_ATTR_KEY_SEQ,
+ 		     params->seq_len, params->seq)) ||
+ 	    (params->cipher &&
+@@ -4488,10 +4485,7 @@ static void get_key_callback(void *c, struct key_params *params)
+ 	if (!key)
+ 		goto nla_put_failure;
+ 
+-	if ((params->key &&
+-	     nla_put(cookie->msg, NL80211_KEY_DATA,
+-		     params->key_len, params->key)) ||
+-	    (params->seq &&
++	if ((params->seq &&
+ 	     nla_put(cookie->msg, NL80211_KEY_SEQ,
+ 		     params->seq_len, params->seq)) ||
+ 	    (params->cipher &&
 -- 
 2.43.0
 
