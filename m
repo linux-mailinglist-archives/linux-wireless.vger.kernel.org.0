@@ -1,73 +1,73 @@
-Return-Path: <linux-wireless+bounces-10587-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10588-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBB4793E917
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jul 2024 21:42:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B22393E918
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jul 2024 21:44:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8006528166B
-	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jul 2024 19:42:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3E3B281671
+	for <lists+linux-wireless@lfdr.de>; Sun, 28 Jul 2024 19:44:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50453B669;
-	Sun, 28 Jul 2024 19:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35DE7664C6;
+	Sun, 28 Jul 2024 19:44:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k7mH8g84"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ak5cV043"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89BA38C06
-	for <linux-wireless@vger.kernel.org>; Sun, 28 Jul 2024 19:42:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4782F8C06
+	for <linux-wireless@vger.kernel.org>; Sun, 28 Jul 2024 19:44:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722195758; cv=none; b=U78x+CS39Y2++nVrbx+9N1eUycps5GgBg89MtSZBT4+unya4vRY7U6UejbxQWUwllHfU2fWWfSWTR/6UHV/J/IZe3kxsMc7hYO75ZXL+OGryiDgKD5zl7dNS6R/Lp+p0xnGhaxoj5Sw3AKmOgK2nSmEOGEpaO1TtJ88wWxzSEhw=
+	t=1722195883; cv=none; b=f+KfxidUc7ha/PgmgdUXa9rhaF42VlxHys3dhwkhqcZEJry3JKOxafaSWZMbLRzT2fLAiofcgTMQKiodSjaOip4XcIKhBn8RjajbB1VCU0/yZ6L2X79y4YpX3P+CzePLi/+WkD3uM9U0KyLAZdpnELD3w72nwbhxZgpc/Fd4Rr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722195758; c=relaxed/simple;
-	bh=6zOTC0cmn+UnzQ/wHkDqJnGeuxUEn5PyfeUKWouydX4=;
+	s=arc-20240116; t=1722195883; c=relaxed/simple;
+	bh=5NwSAFfOvYVZqJz+3m0prpxcrJb+ZXQmcYlQ3CsrucE=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=G6yB4plHsbgGeY1QxobCWL6XylOWgP7aUSmyQOgT9BRF943vXC2F1BP80iVkFG+QpFqmNvwrXPqoe9ua7LHPBGHsTJPc4eXS+sLNfBHB8A/GIQ2uuUVcNm224Zfm0wMXguOVfLap/2neZZEVzG4uaXJcCMX3VW+Xbx4QXSEvnXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k7mH8g84; arc=none smtp.client-ip=209.85.208.45
+	 In-Reply-To:Content-Type; b=OuFIchKznkAqug8nIYaDGjfYfFPJ9fdXYMP9c+CLKxfII1viac1q8s3iUd9Ttoghf1OKgc2t0udjjevdVyQSnu3ydGrzNPIG9K29bi9N8QtRobT1e7fNfpG62lvV/hiK4HunrVk74xinOvhicSwOyYhLNvAUtaK1gX8dQ0nI2SY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ak5cV043; arc=none smtp.client-ip=209.85.218.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5a156557026so4313065a12.2
-        for <linux-wireless@vger.kernel.org>; Sun, 28 Jul 2024 12:42:36 -0700 (PDT)
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a7aada2358fso536950366b.0
+        for <linux-wireless@vger.kernel.org>; Sun, 28 Jul 2024 12:44:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722195755; x=1722800555; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1722195879; x=1722800679; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=L2rGEQ1q8wDYD248t6Z/UJo8GkMRvxVZQZMJvH6xmo0=;
-        b=k7mH8g84+IAUoDJ+WiySI/9fYR12qDjVlgySy5YAbQJHj1ViMp4CWl4n5mk/UdsJIP
-         BU2yEmdbr1V74tfWWaFLchkBTfzxCIAYUk7S1AGpzjyaYStnFFwYzPeswOAbnMIy09Et
-         TZi6/SRlUSruH4L++IMi4VP3t1v/vpmYcujiTDJulanXjdCx5XYTFr8bQEimIoQJB2He
-         hpR6Iii8UMIVYDYnFVDYPtG91yJknUreSVCoQduvKoJWmbqXpHdr1ap8CT7gFgLImwPo
-         DUfvZAGzXdzF2yUjRldaB0487xjK3gJeJVmrE3udycIwuhImgvvzsXBKGfIXua4SudfV
-         H7Yg==
+        bh=E7xcrHU0Szu9UHcNAjXMt+V1H9/ISPInQp2II3fpdd0=;
+        b=ak5cV043+8FDSVSbvLP+Zj2ZVFCfD277LtsVnypnGqsrIyfGIOyECdKYaTCbvvmeeU
+         izqctn18r5sCOOQmXxFO78H7GDBBDsifoB8jUtbGxZ5lG6ar4I1DtHiMo8yXnGv6X5ze
+         uVGOiwUWSMKq3Rcizk7tvlHC5QuG9hzX94IvPLnRaYzWktTbnQhWt4nZscBFkFcjWSKI
+         50r8dL/bM8Ti0Ck5HkLEwD9izt1YoLNKI3umnrW/qFiy/DGNlQCDKZp/iBcDErkQlloS
+         IOCGR6E+lu4D029VGHFzCisxac3HVLg/En14szeHe9b8MTKhbXGWSy55y0xa6rXDbJnu
+         RXww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722195755; x=1722800555;
+        d=1e100.net; s=20230601; t=1722195879; x=1722800679;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=L2rGEQ1q8wDYD248t6Z/UJo8GkMRvxVZQZMJvH6xmo0=;
-        b=OtMGRDc1wEd8VYat+MGXiznm3Key7eEIYvrJd6bs4vPLV3yHTM0K4JzMkoBxArKKiW
-         QKilr0E5pLG+nmtLvB/SDpbsaxWkP750TyK0hJWLDQquhGJQ+pQ4kT40AznBNoTm6BlT
-         sAfD/KE3jPx5Yjv150EE5WMf/4F8claPWFFOkjl/ZpSRFy/BPkEq84VMxPgJiMpdXgH/
-         4ZNF+ID/E3l+Jd+9zCaDT2o7lgF9sW0OUW258Cn8NzEn2lhUTVmQpQk+JEOH1EwWE9a5
-         G+ZphvKlzYs2qKHiLGCIBbc+2BrH3Qu32TbrCIi+IT5EvfBUq4F0HsSXMbbmZEeSHfL6
-         WcYg==
-X-Gm-Message-State: AOJu0YwNmGwgihjbdk4GmHFQ64apV/aGJdBYFcfwzYSG0iT1XdvwP7sx
-	NyIeA8wUvPyUXccgBwsuXL/ABGb/7xkIL93gdR7FFuM/0kN5iFjIuyoFwg==
-X-Google-Smtp-Source: AGHT+IFdbDVr4MEFulQST5R269frxBCg7Om7qmWSGVadKAdVOeGVY9WjnjS9dP9xDDS9JJsVVbPaAg==
-X-Received: by 2002:a17:907:86a7:b0:a72:af8e:15af with SMTP id a640c23a62f3a-a7d400d71e4mr449136366b.49.1722195754430;
-        Sun, 28 Jul 2024 12:42:34 -0700 (PDT)
+        bh=E7xcrHU0Szu9UHcNAjXMt+V1H9/ISPInQp2II3fpdd0=;
+        b=DzAYSThrj/HGs3Le3RkI/WvLeFakRnwkfuo//07vsbV2OFkcFXsIueeoAAwJ9Vrj4y
+         02+cPpptzAgfJnCxGxl4Pto5mPoLsvGxpv7PfeuZPpdM+4rPozs/x1kS7P/lr2BXwnA7
+         TEzRTbT6PHy6j/jBpGe0jBoetRxsy3ogLwiuJCUcIJR4moGjU+zHGM9XLdi0kYSDYyiO
+         dq2SRPCqLpvDhRqWMMoSot+I462AISdfLaUASk43XZiJYROA4edCZqxOB676vOqKrmfJ
+         gYOamTETgpR+51Za3sPz/vWZp+icnRF4tSXxRgX5kAWAm3Rww8s9A9KkXeD3NbEK40JB
+         EjtA==
+X-Gm-Message-State: AOJu0YzP67tIj0yLnHtT9tTwf7OPXYBXVCt5U1zFu6M00dt2KBMMpplZ
+	PBRb7Dif4QjQyrLUL7MkrG8HI9rg2zk5hyvrzNTLTO1CO0kbeDsQzihEsA==
+X-Google-Smtp-Source: AGHT+IEBOZq5bZRtAsktyesNPhkabQ299a/Hy0SzCAgyPVWb3A9UOaM/WhmFZKTUQWuCwYpevRq9bQ==
+X-Received: by 2002:a17:907:72d1:b0:a72:5967:b34 with SMTP id a640c23a62f3a-a7d3fa3f215mr487886266b.22.1722195878974;
+        Sun, 28 Jul 2024 12:44:38 -0700 (PDT)
 Received: from [192.168.0.50] ([79.119.240.114])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7acad9068esm414781766b.153.2024.07.28.12.42.33
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7aca51eea0sm420098766b.0.2024.07.28.12.44.37
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 28 Jul 2024 12:42:34 -0700 (PDT)
-Message-ID: <a549707a-09f4-4787-8111-65cc266675d6@gmail.com>
-Date: Sun, 28 Jul 2024 22:42:32 +0300
+        Sun, 28 Jul 2024 12:44:38 -0700 (PDT)
+Message-ID: <323190ee-5b88-4d37-bad0-b721cdfead1a@gmail.com>
+Date: Sun, 28 Jul 2024 22:44:35 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,7 +75,8 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH 3/4] wifi: rtw88: usb: Support RX aggregation
+Subject: [PATCH 4/4] wifi: rtw88: Enable USB RX aggregation for
+ 8822c/8822b/8821c
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 Cc: Ping-Ke Shih <pkshih@realtek.com>, Sascha Hauer <sha@pengutronix.de>
@@ -85,111 +86,204 @@ In-Reply-To: <c03390ce-34c2-42dd-9bd6-b231bb1f2fae@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-The chips can be configured to aggregate several frames into a single
-USB transfer. Modify rtw_usb_rx_handler() to support this case.
+Enable USB RX aggregation when there is at least 1 Mbps RX or TX
+traffic, otherwise disable it.
 
-RX aggregation improves the RX speed on certain ARM systems, like the
-NanoPi NEO Core2.
+USB RX aggregation improves the RX speed on certain ARM systems, like
+the NanoPi NEO Core2. With RTL8811CU, before: 28 Mbps, after: 231 Mbps.
 
-Currently none of the chips are configured to aggregate frames.
+The official drivers for these chips use the same logic for SDIO, but
+for some reason rtw88_sdio always enables RX aggregation, so this patch
+only toggles aggregation for USB devices.
 
-Tested with RTL8811CU and RTL8723DU.
+RTL8703B is likely not found in USB devices, and RTL8723DU doesn't like
+aggregation.
 
 Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 ---
- drivers/net/wireless/realtek/rtw88/usb.c | 57 +++++++++++++++---------
- 1 file changed, 37 insertions(+), 20 deletions(-)
+ drivers/net/wireless/realtek/rtw88/main.c     | 18 +++++++++++----
+ drivers/net/wireless/realtek/rtw88/main.h     |  1 +
+ drivers/net/wireless/realtek/rtw88/rtw8821c.c | 23 +++++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c | 23 +++++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c | 23 +++++++++++++++++++
+ 5 files changed, 84 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
-index 73948078068f..d61be1029a7b 100644
---- a/drivers/net/wireless/realtek/rtw88/usb.c
-+++ b/drivers/net/wireless/realtek/rtw88/usb.c
-@@ -546,11 +546,12 @@ static void rtw_usb_rx_handler(struct work_struct *work)
- 	struct rtw_usb *rtwusb = container_of(work, struct rtw_usb, rx_work);
- 	struct rtw_dev *rtwdev = rtwusb->rtwdev;
- 	const struct rtw_chip_info *chip = rtwdev->chip;
--	struct rtw_rx_pkt_stat pkt_stat;
-+	u32 pkt_desc_sz = chip->rx_pkt_desc_sz;
- 	struct ieee80211_rx_status rx_status;
-+	u32 pkt_offset, next_pkt, urb_len;
-+	struct rtw_rx_pkt_stat pkt_stat;
-+	struct sk_buff *next_skb = NULL;
- 	struct sk_buff *skb;
--	u32 pkt_desc_sz = chip->rx_pkt_desc_sz;
--	u32 pkt_offset;
- 	u8 *rx_desc;
- 	int limit;
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index 9d9d33a4a503..b3a089b4f707 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -210,8 +210,10 @@ static void rtw_watch_dog_work(struct work_struct *work)
+ 	struct rtw_dev *rtwdev = container_of(work, struct rtw_dev,
+ 					      watch_dog_work.work);
+ 	struct rtw_traffic_stats *stats = &rtwdev->stats;
++	const struct rtw_chip_info *chip = rtwdev->chip;
+ 	struct rtw_watch_dog_iter_data data = {};
+ 	bool busy_traffic = test_bit(RTW_FLAG_BUSY_TRAFFIC, rtwdev->flags);
++	u32 tx_unicast_shift, rx_unicast_shift;
+ 	bool ps_active;
  
-@@ -559,29 +560,44 @@ static void rtw_usb_rx_handler(struct work_struct *work)
- 		if (!skb)
- 			break;
+ 	mutex_lock(&rtwdev->mutex);
+@@ -236,13 +238,21 @@ static void rtw_watch_dog_work(struct work_struct *work)
+ 	else
+ 		ps_active = false;
  
--		rx_desc = skb->data;
--		chip->ops->query_rx_desc(rtwdev, rx_desc, &pkt_stat,
--					 &rx_status);
--		pkt_offset = pkt_desc_sz + pkt_stat.drv_info_sz +
--			     pkt_stat.shift;
--
--		if (pkt_stat.is_c2h) {
--			skb_put(skb, pkt_stat.pkt_len + pkt_offset);
--			rtw_fw_c2h_cmd_rx_irqsafe(rtwdev, pkt_offset, skb);
--			continue;
--		}
--
- 		if (skb_queue_len(&rtwusb->rx_queue) >= RTW_USB_MAX_RXQ_LEN) {
- 			dev_dbg_ratelimited(rtwdev->dev, "failed to get rx_queue, overflow\n");
- 			dev_kfree_skb_any(skb);
- 			continue;
- 		}
+-	ewma_tp_add(&stats->tx_ewma_tp,
+-		    (u32)(stats->tx_unicast >> RTW_TP_SHIFT));
+-	ewma_tp_add(&stats->rx_ewma_tp,
+-		    (u32)(stats->rx_unicast >> RTW_TP_SHIFT));
++	tx_unicast_shift = stats->tx_unicast >> RTW_TP_SHIFT;
++	rx_unicast_shift = stats->rx_unicast >> RTW_TP_SHIFT;
++
++	ewma_tp_add(&stats->tx_ewma_tp, tx_unicast_shift);
++	ewma_tp_add(&stats->rx_ewma_tp, rx_unicast_shift);
+ 	stats->tx_throughput = ewma_tp_read(&stats->tx_ewma_tp);
+ 	stats->rx_throughput = ewma_tp_read(&stats->rx_ewma_tp);
  
--		skb_put(skb, pkt_stat.pkt_len);
--		skb_reserve(skb, pkt_offset);
--		rtw_rx_stats(rtwdev, pkt_stat.vif, skb);
--		memcpy(skb->cb, &rx_status, sizeof(rx_status));
--		ieee80211_rx_irqsafe(rtwdev->hw, skb);
-+		urb_len = skb->len;
++	if (rtw_hci_type(rtwdev) == RTW_HCI_TYPE_USB && chip->ops->rx_aggregation) {
++		if (tx_unicast_shift < 1 && rx_unicast_shift < 1)
++			chip->ops->rx_aggregation(rtwdev, false);
++		else
++			chip->ops->rx_aggregation(rtwdev, true);
++	}
 +
-+		do {
-+			rx_desc = skb->data;
-+			chip->ops->query_rx_desc(rtwdev, rx_desc, &pkt_stat,
-+						 &rx_status);
-+			pkt_offset = pkt_desc_sz + pkt_stat.drv_info_sz +
-+				     pkt_stat.shift;
-+
-+			next_pkt = round_up(pkt_stat.pkt_len + pkt_offset, 8);
-+
-+			if (urb_len >= next_pkt + pkt_desc_sz)
-+				next_skb = skb_clone(skb, GFP_KERNEL);
-+
-+			if (pkt_stat.is_c2h) {
-+				skb_trim(skb, pkt_stat.pkt_len + pkt_offset);
-+				rtw_fw_c2h_cmd_rx_irqsafe(rtwdev, pkt_offset, skb);
-+			} else {
-+				skb_pull(skb, pkt_offset);
-+				skb_trim(skb, pkt_stat.pkt_len);
-+				rtw_rx_stats(rtwdev, pkt_stat.vif, skb);
-+				memcpy(skb->cb, &rx_status, sizeof(rx_status));
-+				ieee80211_rx_irqsafe(rtwdev->hw, skb);
-+			}
-+
-+			skb = next_skb;
-+			if (skb)
-+				skb_pull(next_skb, next_pkt);
-+
-+			urb_len -= next_pkt;
-+			next_skb = NULL;
-+		} while (skb && urb_len >= pkt_desc_sz);
- 	}
+ 	/* reset tx/rx statictics */
+ 	stats->tx_unicast = 0;
+ 	stats->rx_unicast = 0;
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index 9d21637cf5d5..65bedd1668cc 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -888,6 +888,7 @@ struct rtw_chip_ops {
+ 	void (*fill_txdesc_checksum)(struct rtw_dev *rtwdev,
+ 				     struct rtw_tx_pkt_info *pkt_info,
+ 				     u8 *txdesc);
++	void (*rx_aggregation)(struct rtw_dev *rtwdev, bool enable);
+ 
+ 	/* for coex */
+ 	void (*coex_set_init)(struct rtw_dev *rtwdev);
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+index 55b6fe874710..3efdb41f22c5 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+@@ -1276,6 +1276,28 @@ static void rtw8821c_fill_txdesc_checksum(struct rtw_dev *rtwdev,
+ 	fill_txdesc_checksum_common(txdesc, 16);
  }
  
-@@ -625,6 +641,7 @@ static void rtw_usb_read_port_complete(struct urb *urb)
- 			if (skb)
- 				dev_kfree_skb_any(skb);
- 		} else {
-+			skb_put(skb, urb->actual_length);
- 			skb_queue_tail(&rtwusb->rx_queue, skb);
- 			queue_work(rtwusb->rxwq, &rtwusb->rx_work);
- 		}
++static void rtw8821c_rx_aggregation(struct rtw_dev *rtwdev, bool enable)
++{
++	u8 size, timeout;
++	u16 val16;
++
++	rtw_write32_set(rtwdev, REG_RXDMA_AGG_PG_TH, BIT_EN_PRE_CALC);
++	rtw_write8_set(rtwdev, REG_TXDMA_PQ_MAP, BIT_RXDMA_AGG_EN);
++	rtw_write8_clr(rtwdev, REG_RXDMA_AGG_PG_TH + 3, BIT(7));
++
++	if (enable) {
++		size = 0x5;
++		timeout = 0x20;
++	} else {
++		size = 0x0;
++		timeout = 0x1;
++	}
++	val16 = u16_encode_bits(size, BIT_RXDMA_AGG_PG_TH) |
++		u16_encode_bits(timeout, BIT_DMA_AGG_TO_V1);
++
++	rtw_write16(rtwdev, REG_RXDMA_AGG_PG_TH, val16);
++}
++
+ static struct rtw_pwr_seq_cmd trans_carddis_to_cardemu_8821c[] = {
+ 	{0x0086,
+ 	 RTW_PWR_CUT_ALL_MSK,
+@@ -1724,6 +1746,7 @@ static struct rtw_chip_ops rtw8821c_ops = {
+ 	.set_gid_table		= rtw_bf_set_gid_table,
+ 	.cfg_csi_rate		= rtw_bf_cfg_csi_rate,
+ 	.fill_txdesc_checksum	= rtw8821c_fill_txdesc_checksum,
++	.rx_aggregation		= rtw8821c_rx_aggregation,
+ 
+ 	.coex_set_init		= rtw8821c_coex_cfg_init,
+ 	.coex_set_ant_switch	= rtw8821c_coex_cfg_ant_switch,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+index 0949eaa2b6c1..52bcdf3cf043 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+@@ -1638,6 +1638,28 @@ static void rtw8822b_fill_txdesc_checksum(struct rtw_dev *rtwdev,
+ 	fill_txdesc_checksum_common(txdesc, words);
+ }
+ 
++static void rtw8822b_rx_aggregation(struct rtw_dev *rtwdev, bool enable)
++{
++	u8 size, timeout;
++	u16 val16;
++
++	rtw_write32_set(rtwdev, REG_RXDMA_AGG_PG_TH, BIT_EN_PRE_CALC);
++	rtw_write8_set(rtwdev, REG_TXDMA_PQ_MAP, BIT_RXDMA_AGG_EN);
++	rtw_write8_clr(rtwdev, REG_RXDMA_AGG_PG_TH + 3, BIT(7));
++
++	if (enable) {
++		size = 0x5;
++		timeout = 0x20;
++	} else {
++		size = 0x0;
++		timeout = 0x1;
++	}
++	val16 = u16_encode_bits(size, BIT_RXDMA_AGG_PG_TH) |
++		u16_encode_bits(timeout, BIT_DMA_AGG_TO_V1);
++
++	rtw_write16(rtwdev, REG_RXDMA_AGG_PG_TH, val16);
++}
++
+ static const struct rtw_pwr_seq_cmd trans_carddis_to_cardemu_8822b[] = {
+ 	{0x0086,
+ 	 RTW_PWR_CUT_ALL_MSK,
+@@ -2214,6 +2236,7 @@ static struct rtw_chip_ops rtw8822b_ops = {
+ 	.adaptivity_init	= rtw8822b_adaptivity_init,
+ 	.adaptivity		= rtw8822b_adaptivity,
+ 	.fill_txdesc_checksum	= rtw8822b_fill_txdesc_checksum,
++	.rx_aggregation		= rtw8822b_rx_aggregation,
+ 
+ 	.coex_set_init		= rtw8822b_coex_cfg_init,
+ 	.coex_set_ant_switch	= rtw8822b_coex_cfg_ant_switch,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+index 2a90a879196b..9d3ed8992133 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+@@ -4612,6 +4612,28 @@ static void rtw8822c_fill_txdesc_checksum(struct rtw_dev *rtwdev,
+ 	fill_txdesc_checksum_common(txdesc, words);
+ }
+ 
++static void rtw8822c_rx_aggregation(struct rtw_dev *rtwdev, bool enable)
++{
++	u8 size, timeout;
++	u16 val16;
++
++	rtw_write32_set(rtwdev, REG_RXDMA_AGG_PG_TH, BIT_EN_PRE_CALC);
++	rtw_write8_set(rtwdev, REG_TXDMA_PQ_MAP, BIT_RXDMA_AGG_EN);
++	rtw_write8_clr(rtwdev, REG_RXDMA_AGG_PG_TH + 3, BIT(7));
++
++	if (enable) {
++		size = 0x5;
++		timeout = 0x20;
++	} else {
++		size = 0x0;
++		timeout = 0x1;
++	}
++	val16 = u16_encode_bits(size, BIT_RXDMA_AGG_PG_TH) |
++		u16_encode_bits(timeout, BIT_DMA_AGG_TO_V1);
++
++	rtw_write16(rtwdev, REG_RXDMA_AGG_PG_TH, val16);
++}
++
+ static const struct rtw_pwr_seq_cmd trans_carddis_to_cardemu_8822c[] = {
+ 	{0x0086,
+ 	 RTW_PWR_CUT_ALL_MSK,
+@@ -5036,6 +5058,7 @@ static struct rtw_chip_ops rtw8822c_ops = {
+ 	.config_tx_path		= rtw8822c_config_tx_path,
+ 	.config_txrx_mode	= rtw8822c_config_trx_mode,
+ 	.fill_txdesc_checksum	= rtw8822c_fill_txdesc_checksum,
++	.rx_aggregation		= rtw8822c_rx_aggregation,
+ 
+ 	.coex_set_init		= rtw8822c_coex_cfg_init,
+ 	.coex_set_ant_switch	= NULL,
 -- 
 2.45.2
 
