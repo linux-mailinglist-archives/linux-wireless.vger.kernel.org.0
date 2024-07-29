@@ -1,220 +1,166 @@
-Return-Path: <linux-wireless+bounces-10616-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10617-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94EED93F3B7
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 13:12:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 713EF93F6E5
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 15:43:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12B801F221E0
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 11:12:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23931281F2B
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 13:43:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3896F7441F;
-	Mon, 29 Jul 2024 11:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B179314AD19;
+	Mon, 29 Jul 2024 13:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b="E8kFx1dm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MLXi+Rnj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.17.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8ED223CE
-	for <linux-wireless@vger.kernel.org>; Mon, 29 Jul 2024 11:12:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56248005C;
+	Mon, 29 Jul 2024 13:43:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722251558; cv=none; b=fJgSYN1oKorLvdHyar09twEH5OTLHFTfxcoYryWj8FQezT0IsiQdNKZ3K6mOzdrLfIvSe2b8zq/jnPjlf1UQFQZDX1jXLRrLS9c3Xv5/tzd2oQpGolWh1O5aPs9NiAlQ9Hyu5r8f8FmSM7zVTmvzG/CLnOkRNl+yr/uf63ndGiE=
+	t=1722260619; cv=none; b=gsjmwPU+sRZ4yClhiV1HNoeGIJUNDobqDV6/niNusNwOOXXbAZ9+MYXuUBsd1UqsosOekAjGXoP9EhnjSvbljh5LuhGmwIwemrrCfAjGQJDo31jRajU6IFtgwTfRMjyBi+TZQ7t10ye1lfcFf60IDLQx3W8VeKM7H7nMydd5Uio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722251558; c=relaxed/simple;
-	bh=KczlxJwvLb/gMnSYO7ImSnba6klbQdzw0b6viP7AWEM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=h/98CNz2cIvJAPK4THtcilwI3vjPll7lMbxwfr4vUKJhZFQeoVoZ8tUDeRLLdT4ZXWP6Bntz5FtYdn22sHRCrrsKvLcSMV8lPP7tzOI+ZChBX4MXRDcM2vXSoBmtYp2ejlIHgi77CYHF2zYBF28kP08OLtbCWsAfHVF1qtI6Yeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b=E8kFx1dm; arc=none smtp.client-ip=212.227.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1722251537; x=1722856337; i=spasswolf@web.de;
-	bh=373Xd6dyy934ztzDW+fda1E/9NFwuo6oroUTGcI7MXg=;
-	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
-	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=E8kFx1dmqU/5hhqZRYOJ0oH3vTlF/wIIA9vtFBMhKOTj6hia0XQddovVC9kYIFox
-	 xxiDOw/3e4VFOEeNJoYp42Z6/WRm0qWNN/TP4UsUjbOxEgZK6LOh5K3raww01+E/B
-	 cZaakANEk58vxepPjOPqBFstcFp8htrZHsOgou3O/+OfMEX7KOB7vzzCKCDQQF88A
-	 k3riYMnKYQ6CVj8p2DWNXsOz9oVBEqiqx3My8FnOaa3kaCtRx0OH4+wg0rfQYHh5J
-	 oPvG7FALalqlGVEcmk7LG+i7qUWVNnYCd1O8nJaoKGDOh5Q4HyMuGHeDqH4H+xinw
-	 4xdNaZHg/r6Nsg5qhA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.0.101] ([84.119.92.193]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MBS6v-1sPpSo0i23-009CB3; Mon, 29
- Jul 2024 13:12:17 +0200
-Message-ID: <65621cad9a22df881745e9333a5c3696bdbb8df3.camel@web.de>
-Subject: Re: patch 46/47 causes NULL pointer deref on mt7921
-From: Bert Karwatzki <spasswolf@web.de>
-To: Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@kernel.org>
-Cc: deren.wu@mediatek.com, linux-mediatek@lists.infradead.org, 
-	linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com, 
-	mingyen.hsieh@mediatek.com, sean.wang@mediatek.com, spasswolf@web.de
-Date: Mon, 29 Jul 2024 13:12:15 +0200
-In-Reply-To: <2599b886-9c63-4989-a08a-7feab28f7c49@nbd.name>
-References: <20240711175156.4465-1-spasswolf@web.de>
-	 <CAGp9LzoXMoAW6dVZjTf-JcD_wiU4yXpGwkLaVyWXTkaV2MOKwg@mail.gmail.com>
-	 <adb192a59c44aa8708e80df30a6a47816a03e50f.camel@web.de>
-	 <4e943a62736f955af5d9cd1aff7e2b9c084c8885.camel@web.de>
-	 <2599b886-9c63-4989-a08a-7feab28f7c49@nbd.name>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.52.3-1 
+	s=arc-20240116; t=1722260619; c=relaxed/simple;
+	bh=zzsCJ7whFPZHlCzi0K9wdzqqFDFkagpKKuyBi2JGQ4U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CF5OV8hWiEyfqm+yoEr45t3bpBjx8UKrpUUDQvmxONd7RfDVIZS3bo19JsiXAOpG9CDDEIenr38YfifCD8GP3Cvpb5qosg/3NpT/N0xTndfWjC4T3tH1W8KvumV51BjkRIGoR+ttPe91BblZN/lLGziUEYcioKf0uF9T0xvx/mY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MLXi+Rnj; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2ef2cb7d562so46401451fa.3;
+        Mon, 29 Jul 2024 06:43:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722260616; x=1722865416; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hj4EojyPa3nkcWjxnXuz+mzsRSbP4+g7BeKvDtSYTtM=;
+        b=MLXi+RnjxgJlVa0Vo9qHNeXZcOkgXu6OuO7hHpP5lqLuaprMT7WBj4wiJME/Q1xAUA
+         VkGhDkLcAe9IasTetaxBDrVi7dHu6vqVZPLvHQYQJBYJvN1PUSLYqcbPjl2jAZ2v5KVM
+         XwgZjVzchvkCyaR1ZmW+uIUdXhcd4aPfceM9VD8weCekrlBVVyWsljACE4KQASPLJa3Q
+         0kvWxjlxhq9c/os5nKMosu4viGKuYzuklM5zGNe8Dh4Er3A83LznwS5lVIgL+yZiI3ZD
+         kAu/sBbVPGpGDhyC/pVXQ+ArIEVlzwogShK0tp1nGK/Rxx3cuh++dl1auXZqXOH8G7G0
+         5ufg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722260616; x=1722865416;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hj4EojyPa3nkcWjxnXuz+mzsRSbP4+g7BeKvDtSYTtM=;
+        b=Llp9P1oRfeZ7C2dRQXMHXJa+7C7uzThCiJuWUFBWZigmhcjmF3EflxzJNhwyVFeQpJ
+         Wucz6qMyUqIzIIC8d2VbIjctYcBQ32qs6uAPoJ9roxizFKyvIltZE4rrC351cz+k0PpX
+         GsN7872O3jL148EgPIjr//Khgy1tHTNN9XsUFJtyDlisGnkLp5VxrGUbsuwxdqXOnYUs
+         jm88/qZB24I747Q0dMaQLxbj7dlkRIR0Jk8JN9kj+8k2cKW6B452fNacpsEONXtTsQ3a
+         2dWutvx9vVtvT4r00Ztc+wxSag+EJfh+o5uLqrTTHHD0/uFM2QLE2pXz5kgQ+LCRNZMI
+         Op2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXAgEeVx1fhFfdXuZoI7+rdxeZDtzodce/WUMC3OWcB5WQl5HixtSd6lJjJdAuhlc8tMFP2yrFLhwKvP9Jb98YVJKDJye9UGYK5MnsixSYvflfAhJrjLHiKP+ypoqHq
+X-Gm-Message-State: AOJu0Yw5xjaxJpx6qtllimjUvPKjHOUW5s8mS993y+pHsytxNrJneg7r
+	dboSX/NHoTeb6ubCi1R+dFovHs/7XWdURjsaj5qHFqwBRcKCoDZd
+X-Google-Smtp-Source: AGHT+IFWcvfSA6H/Fveto0C2nD7ipfoGEYAQa8wj7qhQzrtiL/syC20upw4OQKo9ISarEXIM/YwY/A==
+X-Received: by 2002:a2e:8e95:0:b0:2ef:3258:4961 with SMTP id 38308e7fff4ca-2f12ecd295dmr63821791fa.15.1722260615456;
+        Mon, 29 Jul 2024 06:43:35 -0700 (PDT)
+Received: from sacco.station (net-2-44-141-41.cust.vodafonedsl.it. [2.44.141.41])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4282113ddbcsm7278035e9.19.2024.07.29.06.43.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jul 2024 06:43:35 -0700 (PDT)
+From: Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
+To: johannes@sipsolutions.net,
+	sashal@kernel.org,
+	gregkh@linuxfoundation.org
+Cc: linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	javier.carrasco.cruz@gmail.com,
+	skhan@linuxfoundation.org,
+	stable@vger.kernel.org,
+	Johannes Berg <johannes.berg@intel.com>,
+	syzbot+07bee335584b04e7c2f8@syzkaller.appspotmail.com,
+	Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
+Subject: [PATCH] wifi: mac80211: check basic rates validity
+Date: Mon, 29 Jul 2024 15:43:18 +0200
+Message-ID: <20240729134318.291424-1-vincenzo.mezzela@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:dRjJ0/4GnlWP4i7mxWW0JtIIwxqBxnqKBQc4z14H6z2OB4gl0Fr
- uYyphgoUY1ZuD1hESd7Giz+5rP2lXxn3jpg7yWgqnevX6wBgtwd1cz53WSIeGPmtXFceZ04
- nfPc4DItEzZ7IGvUToCBRgmb2o816uIWdcDbU2XYuP8nv8zQcIp0oSzohq0xmDZ57v5FVPC
- KPyNKUnkl5Y2sXY4rt11w==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:UalprcfjusQ=;BTzDiMugZoYzOUWdOD5ImiS4BI/
- oR6DXOZslIzQn3vlmqodqPGmEB6Cy9RFT0p5IvXwwm3irxHkt5sPRUwgYfbuddgafOrD+usiV
- H7YPmCz4ueKsgd0mGxqNqfmo2HnSxs6W79K6lx4sENIuXfCr2P9+x8zdMOXNbmPqr9qdxn4Gm
- 27tUukP9evL7IZ8YTzqgN2h3/PDrxk7pDFoKoZe0+uKZdzKuyIqNWccOZlCOz+jmvWAVbs5Gt
- fRDOk6z/gNkP36R1gUy8oLujvCApArKRIBRl+MtnIvH2h8pXrnhGV7rsVLNMf6taXBjNXY2jq
- LzuQI5Og/87K8Xr8WX2CtRwA9b2xHA6Q3Si0wszAoqNLqxsInKXMkjm7524/uX6n4SInfQqUx
- l4bHtz+YVsnyJGSyPi+SbeJeeIiO1Tcx1pOHLbpptzowo6AR34yZ0UVT1pCdaxLXR/AsFBsQM
- 8UQ23RsVHSP0ufs0gymERhVL6czzwQfD2QUo8wMg1fWJdHMhxe+Y566FMcYx6q/zWOw5rHkbf
- 1Vil4kdhPugboDS7qUCXxYiLRpq32g9hlor0bTEerctYeLdGnxCvwzrSei5DmHS4dPAHqTsRp
- q7tyFwoDViyAJeBOdnCryoilOBpYg1TzcMnw/p7+JHQNT9/hM0u+Iyd9no30/sE5YuQV4/Tt9
- NvXQ2qqqCfvPhLIpVg4q1qUEH1TpyhS65VLq2GNwB85hJHOnzvuDtMlRD8E8KTUl1A2Ggka1s
- 0kDfzM2PYfn3relg/7JS963p1LOIbFV64FWXYkyqVuYoSUByaLMEa10a0v0PAZwIwivSumgM4
- ltkelWlzbpO5e7pxiepYxuUg==
+Content-Transfer-Encoding: 8bit
 
-Am Mittwoch, dem 17.07.2024 um 17:25 +0200 schrieb Felix Fietkau:
-> On 17.07.24 16:38, Bert Karwatzki wrote:
-> > Am Freitag, dem 12.07.2024 um 13:06 +0200 schrieb Bert Karwatzki:
-> > > Am Donnerstag, dem 11.07.2024 um 18:40 -0500 schrieb Sean Wang:
-> > > > Hi Bert,
-> > > >
-> > > > Thanks for the detailed debug log. I've quickly made a change to f=
-ix
-> > > > the issue. Right now, I can't access the test environment, but I'l=
-l
-> > > > test it and send it out as soon as possible. Here's the patch.
-> > > >
-> > > > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> > > > b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> > > > index 2e6268cb06c0..1bab93d049df 100644
-> > > > --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> > > > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> > > > @@ -303,6 +303,7 @@ mt7921_add_interface(struct ieee80211_hw *hw,
-> > > > struct ieee80211_vif *vif)
-> > > >
-> > > >         mvif->bss_conf.mt76.omac_idx =3D mvif->bss_conf.mt76.idx;
-> > > >         mvif->phy =3D phy;
-> > > > +       mvif->bss_conf.vif =3D mvif;
-> > > >         mvif->bss_conf.mt76.band_idx =3D 0;
-> > > >         mvif->bss_conf.mt76.wmm_idx =3D mvif->bss_conf.mt76.idx %
-> > > > MT76_CONNAC_MAX_WMM_SETS;
-> > > >
-> > >
-> > > I wrote earlier that this patch works fine with linux-next-20240711 =
-and at first
-> > > it did, but then another NULL pointer error occured. I'm not sure if=
- I can
-> > > bisect this as it does not trigger automatically it seems. Also I'm =
-currently
-> > > bisecting the problem with linux-20240712
-> > >
-> > > Bert Karwatzki
-> >
-> > Now the above mentioned NULL pointer dereference has happended again, =
-this time
-> > on linux-next-20240716. It cann be triggered by repeatedly turning the=
- Wifi off
-> > and on again. For further investigation I created this patch:
-> >
-> > diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> > b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> > index 2e6268cb06c0..3ecedf7bc9f3 100644
-> > --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> > +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> > @@ -303,6 +303,8 @@ mt7921_add_interface(struct ieee80211_hw *hw, stru=
-ct
-> > ieee80211_vif *vif)
-> >
-> >   	mvif->bss_conf.mt76.omac_idx =3D mvif->bss_conf.mt76.idx;
-> >   	mvif->phy =3D phy;
-> > +	WARN(!phy, "%s: phy =3D NULL\n", __func__);
-> > +	mvif->bss_conf.vif =3D mvif;
-> >   	mvif->bss_conf.mt76.band_idx =3D 0;
-> >   	mvif->bss_conf.mt76.wmm_idx =3D mvif->bss_conf.mt76.idx %
-> > MT76_CONNAC_MAX_WMM_SETS;
-> >
-> > @@ -1182,6 +1184,12 @@ static void mt7921_ipv6_addr_change(struct ieee=
-80211_hw
-> > *hw,
-> >   				    struct inet6_dev *idev)
-> >   {
-> >   	struct mt792x_vif *mvif =3D (struct mt792x_vif *)vif->drv_priv;
-> > +	printk(KERN_INFO "%s: mvif =3D %px\n", __func__, mvif);
-> > +	printk(KERN_INFO "%s: mvif->phy =3D %px\n", __func__, mvif->phy);
-> > +	if (!mvif->phy) {
-> > +		printk(KERN_INFO "%s: mvif->phy =3D NULL\n", __func__);
-> > +		return;
-> > +	}
-> >   	struct mt792x_dev *dev =3D mvif->phy->dev;
-> >   	struct inet6_ifaddr *ifa;
-> >   	struct in6_addr ns_addrs[IEEE80211_BSS_ARP_ADDR_LIST_LEN];
-> >
-> > And the result is this (the WARN in mt7921_add_interface did not trigg=
-er):
-> >
-> > [  367.121740] [    T861] wlp4s0: deauthenticating from 54:67:51:3d:a2=
-:d2 by
-> > local choice (Reason: 3=3DDEAUTH_LEAVING)
-> > [  367.209603] [    T861] mt7921_ipv6_addr_change: mvif =3D ffff954e75=
-00de40
-> > [  367.209615] [    T861] mt7921_ipv6_addr_change: mvif->phy =3D 00000=
-00000000000
-> > [  367.209621] [    T861] mt7921_ipv6_addr_change: mvif->phy =3D NULL
-> > [  367.250026] [    T861] mt7921_ipv6_addr_change: mvif =3D ffff954e75=
-00de40
-> > [  367.250034] [    T861] mt7921_ipv6_addr_change: mvif->phy =3D ffff9=
-54e44427768
-> > [  367.251537] [    T861] mt7921_ipv6_addr_change: mvif =3D ffff954e75=
-00de40
-> > [  367.251542] [    T861] mt7921_ipv6_addr_change: mvif->phy =3D ffff9=
-54e44427768
-> > [  369.977123] [    T862] wlp4s0: authenticate with 54:67:51:3d:a2:d2 =
-(local
-> > address=3Dc8:94:02:c1:bd:69)
-> > [  369.984864] [    T862] wlp4s0: send auth to 54:67:51:3d:a2:d2 (try =
-1/3)
-> > [  370.006199] [    T104] wlp4s0: authenticated
-> > [  370.006680] [    T104] wlp4s0: associate with 54:67:51:3d:a2:d2 (tr=
-y 1/3)
-> > [  370.059080] [     T98] wlp4s0: RX AssocResp from 54:67:51:3d:a2:d2
-> > (capab=3D0x511 status=3D0 aid=3D2)
-> > [  370.064067] [     T98] wlp4s0: associated
-> >
-> > So mvif->phy can be NULL at the start of mt7921_ipv6_addr_change. The =
-early
-> > return in that case avoids the NULL pointer and mvif->phy has its usua=
-l value
-> > again on the next call to mt7921_ipv6_addr_change so Wifi is working a=
-gain. I
-> > don't know how this could happen but perhaps you have an idea.
->
-> This change should fix it: https://nbd.name/p/0747f54f
-> Please test.
->
-> Thanks,
->
-> - Felix
->
+From: Johannes Berg <johannes.berg@intel.com>
 
-The BUG is still present in linux-6.11-rc1.
+commit ce04abc3fcc62cd5640af981ebfd7c4dc3bded28 upstream.
 
-Bert Karwatzki
+When userspace sets basic rates, it might send us some rates
+list that's empty or consists of invalid values only. We're
+currently ignoring invalid values and then may end up with a
+rates bitmap that's empty, which later results in a warning.
+
+Reject the call if there were no valid rates.
+
+[ Conflict resolution involved adjusting the patch to accommodate
+changes in the function signature of ieee80211_parse_bitrates and
+ieee80211_check_rate_mask ]
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reported-by: syzbot+07bee335584b04e7c2f8@syzkaller.appspotmail.com
+Tested-by: syzbot+07bee335584b04e7c2f8@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=07bee335584b04e7c2f8
+Signed-off-by: Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
+---
+Hi,
+please note that a backport of the same patch for v5.15 is available at
+[1].
+
+Thanks,
+Vincenzo
+
+- [1] https://lore.kernel.org/all/20240727125033.1774143-1-vincenzo.mezzela@gmail.com/
+ net/mac80211/cfg.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
+
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 2c60fc165801..d121a3b460f4 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -2577,6 +2577,17 @@ static int ieee80211_change_bss(struct wiphy *wiphy,
+ 	if (!sband)
+ 		return -EINVAL;
+ 
++	if (params->basic_rates) {
++		if (!ieee80211_parse_bitrates(sdata->vif.bss_conf.chandef.width,
++					      wiphy->bands[sband->band],
++					      params->basic_rates,
++					      params->basic_rates_len,
++					      &sdata->vif.bss_conf.basic_rates))
++			return -EINVAL;
++		changed |= BSS_CHANGED_BASIC_RATES;
++		ieee80211_check_rate_mask(&sdata->deflink);
++	}
++
+ 	if (params->use_cts_prot >= 0) {
+ 		sdata->vif.bss_conf.use_cts_prot = params->use_cts_prot;
+ 		changed |= BSS_CHANGED_ERP_CTS_PROT;
+@@ -2600,16 +2611,6 @@ static int ieee80211_change_bss(struct wiphy *wiphy,
+ 		changed |= BSS_CHANGED_ERP_SLOT;
+ 	}
+ 
+-	if (params->basic_rates) {
+-		ieee80211_parse_bitrates(sdata->vif.bss_conf.chandef.width,
+-					 wiphy->bands[sband->band],
+-					 params->basic_rates,
+-					 params->basic_rates_len,
+-					 &sdata->vif.bss_conf.basic_rates);
+-		changed |= BSS_CHANGED_BASIC_RATES;
+-		ieee80211_check_rate_mask(&sdata->deflink);
+-	}
+-
+ 	if (params->ap_isolate >= 0) {
+ 		if (params->ap_isolate)
+ 			sdata->flags |= IEEE80211_SDATA_DONT_BRIDGE_PACKETS;
+-- 
+2.43.0
+
 
