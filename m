@@ -1,95 +1,132 @@
-Return-Path: <linux-wireless+bounces-10614-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10615-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C66B193F326
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 12:50:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6FC793F33F
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 12:52:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44114B20AEC
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 10:50:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C73C1F229D6
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 10:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5BA13A258;
-	Mon, 29 Jul 2024 10:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D8C6145A05;
+	Mon, 29 Jul 2024 10:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdG7V54A"
+	dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b="H6l7e0ng"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.web.de (mout.web.de [212.227.15.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811025F873;
-	Mon, 29 Jul 2024 10:50:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0FAB1448EE;
+	Mon, 29 Jul 2024 10:52:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722250242; cv=none; b=EE2GXg4eYW3wgzShemalSa4B0dpKZXBxki7kf5bocMKgMZiK1sXVFnJm83YUtbprlD8K6tib1qVBNzjNuTe0Zlgg/nSSt8xSKRoQW0ktnu+60T4jhYT61pFuSz54/D+kof6lr56FPo9bswMRHf05eNTm0zvsPY9IuxBkaZ58W3g=
+	t=1722250324; cv=none; b=ZGYbOeQvrhP+LTyPgoecbHQuruJaWdkG76Msta5bzxctdDVL+2t9GPlokUXHsrZm2WjzoLn3GEg0TATvSTfPFFQA84MSX+EqnPNXjHoXWEDJuIh9YVpseeIgZzn8WsoAce8xHJU+pRhVEgeIvGg8QsnB2TlBdmWYJ/A7LWDHtk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722250242; c=relaxed/simple;
-	bh=LnRwNbodf/bqj7+CHx905Rbrn2Ad1v38MIm4mDrcPxs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WBpSV46pR1OyvmaXlQqWe4Nhyi70q4fBQ+9h5rDt7XXezDg/Hf8Ax7iwiaag9BDAmf3QeYS9U0cDbIvqI6O+5OpV6mjZ/M5UmA4OqICm7bSGNJW2+9Zo9LDpv7tNqsaRkLwlfj2ENizPjNNZIf8oC1hAIaaYyJcmaH/PPI7qZss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdG7V54A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64DE1C32786;
-	Mon, 29 Jul 2024 10:50:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722250242;
-	bh=LnRwNbodf/bqj7+CHx905Rbrn2Ad1v38MIm4mDrcPxs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qdG7V54A0NCu3D7ECvsW95BYaNil3nLn6yOVAz8JxRBPAilEeSk/LKgiDhXrjd/eH
-	 K7Q4Q29lbjpYmFBOhphTXjYnjlFjwBjwU5lD8bc0LvfJ8ynnYQoYZwZ+ClWUh9UXkU
-	 9rkbgnTjXEqOUijYWDxw6RQtprBqW3aoHvi1zlhU=
-Date: Mon, 29 Jul 2024 12:50:38 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
-Cc: johannes@sipsolutions.net, sashal@kernel.org,
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-	javier.carrasco.cruz@gmail.com, skhan@linuxfoundation.org,
-	stable@vger.kernel.org, Johannes Berg <johannes.berg@intel.com>,
-	syzbot+19013115c9786bfd0c4e@syzkaller.appspotmail.com
-Subject: Re: [PATCH v5.15] wifi: mac80211: check basic rates validity
-Message-ID: <2024072903-chihuahua-contrite-c1a6@gregkh>
-References: <20240727125033.1774143-1-vincenzo.mezzela@gmail.com>
+	s=arc-20240116; t=1722250324; c=relaxed/simple;
+	bh=UKU0+6XQvE45shRp6oaLQnN0VhMCLZCW6ebTfIiQyNw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=MrL4AfHRNFyTJFExnWkn1eMgIS1cvGIWAd0bvvggpirinLalsu6dozOyLKt4O4HdgJl78IAlisnF5WR3fQkNX892JHpd9eCWQV0mXx5WGMv81YCi9uAdLdvBsLhuMiC7rmXSixgNXTFyisWlsiaSy79o8dr5CRL3rz5kmZdi2yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b=H6l7e0ng; arc=none smtp.client-ip=212.227.15.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1722250289; x=1722855089; i=spasswolf@web.de;
+	bh=UKU0+6XQvE45shRp6oaLQnN0VhMCLZCW6ebTfIiQyNw=;
+	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
+	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=H6l7e0ngedySH2ri9PuAssVZli8MpOzeYijRMGHTjQYYLxQStp0URHKI5hJfgPCJ
+	 hhyzVfOaMm9UCwA/gm6rBulgMPT5lqcl7M+ooQ5PgrXwHL5QHfwdmDPFpUbd3pKzJ
+	 bHvXh1QDCFS8kWDCIUea00ED0Hq7suGhLZUhG9+2SYMLl0aXt6oiehupHhmCBf/77
+	 PdlUQVHQ1sWOklywUpjPMLPU82T7K4Ogj8WUWHYnbmdVx0GPZYjrrLSzaHtj8dj2G
+	 qDjFHr42vBsi9poBbkrV44Yx1muycrGtO8fR1eFDmKg4l+2H7EK3+Oal0GNeTZ3Ue
+	 YpeLuKA+YR26UtZ2vQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.0.101] ([84.119.92.193]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1N9431-1sATl011fD-011Pg1; Mon, 29
+ Jul 2024 12:51:29 +0200
+Message-ID: <81a6dad7119069d446a982d1c7da4fff5726d26b.camel@web.de>
+Subject: Re: [PATCH] wifi: mt76: mt7921: fix null pointer access in
+ mt792x_mac_link_bss_remove
+From: Bert Karwatzki <spasswolf@web.de>
+To: Linux regressions mailing list <regressions@lists.linux.dev>, 
+	sean.wang@kernel.org, nbd@nbd.name, lorenzo.bianconi@redhat.com
+Cc: sean.wang@mediatek.com, deren.wu@mediatek.com,
+ mingyen.hsieh@mediatek.com,  linux-wireless@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, Mike Lothian <mike@fireburn.co.uk>,
+ spasswolf@web.de
+Date: Mon, 29 Jul 2024 12:51:27 +0200
+In-Reply-To: <0124ff39-7d63-49f8-bacd-3a40ce37ec4d@leemhuis.info>
+References: <20240718234633.12737-1-sean.wang@kernel.org>
+	 <0124ff39-7d63-49f8-bacd-3a40ce37ec4d@leemhuis.info>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.52.3-1 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240727125033.1774143-1-vincenzo.mezzela@gmail.com>
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:j1RMugOP/j6u4SMk77QS9vWWp21YeqQCRRQR5w5sswoDnCS/HGf
+ TMRB+c5xM73+mk9qC985oAETAFekn7Y2yYxa6hwcZrEo7TuxR3Mlz6lDdMzmPuVMmt7j1fY
+ J++Nb5l8kB9rv1OFTc9GfG/VT9zb4KpjGpjI56i0hZf+uv6FP0JoMHeq6/t0wTJ2J4LKdTf
+ fe7ar0YtWt0RpbcG1MRRg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:U8jKZwb7VWw=;kuRLRAvfIPSTU9UccI3eB9yRjgm
+ EAgFfyM//5gc2yiXQ+Nmm9bSootVdj77T5jnNCSJIb0Jv+/U9xb7mcOHWRGXcXQBtcD2nuC6V
+ dUXDXpwwyc7cxzklNHyCDOLELs/qeHpya+Jzj+djCi+H2fVSP8Y2n+n6Ot7jItKDhfjU+Q6Ym
+ Qm8L/xhq8T0CaHfG3i/wvjLI0FE2XkWXLAzQr/WPaoRhK8WujjZRAc8yTD/nTz5oot7koFave
+ y6haNdXpO8CA7aUiwrE3KrEFn2YMxZ4+MHsqzHFIB6k2Ag7bQpdDP//0LybgsXCTKHPks6OIZ
+ PdaCvdNsSqcAcTtp1+MxcdMiZCjGKDIkOuuVWt+nWEibLFoXRXWU52s5872x1ZtEAXxJ5sidg
+ R7dlQY86JjlnhinVHYsgfhyuqF3lHedZzo56HdH4T5y25Vb5bOLeNca0wb12ola2hK5RvwBaM
+ 890ZHWfhOFRUq+ZeLG034Idp5n8d8X+kX9mGGcBbc4xIgzJtLPKZskI1Xrfv3sSdcogeRUTH3
+ DS/ZchbGQs7WuSMoiV6TjOkwmIVD3exWSkyA1R+M08iAHbzvKbNzZImtFBOFtYlfveECHOrSX
+ 47sMsVxVCRr0+CBgzVvsJU64SfY6crSH4Pu5VK9JK7dbAbTodsM0R2220xTaZ40x0KFcW2D4M
+ b3O76BrC2VvXR1cnyHN5D7wOQG5iX+lVkf92QB4JUhbgH4mTrImmxPyxX+z1qw81ixEEninFJ
+ RoGTjaCTIYRlUogJ8gp86HxyZo7HOdSCivzPIiQieNZHh+M+6IyyGGkVc+us7crFUivshQky3
+ 1+p3zp+i/+KXiR8d8DDR+PFw==
 
-On Sat, Jul 27, 2024 at 02:50:33PM +0200, Vincenzo Mezzela wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
-> 
-> commit ce04abc3fcc62cd5640af981ebfd7c4dc3bded28 upstream.
-> 
-> When userspace sets basic rates, it might send us some rates
-> list that's empty or consists of invalid values only. We're
-> currently ignoring invalid values and then may end up with a
-> rates bitmap that's empty, which later results in a warning.
-> 
-> Reject the call if there were no valid rates.
-> 
-> [ Conflict resolution involved adjusting the patch to accommodate
-> changes in the function signature of ieee80211_parse_bitrates,
-> specifically the updated first parameter ]
-> 
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> Reported-by: syzbot+19013115c9786bfd0c4e@syzkaller.appspotmail.com
-> Tested-by: syzbot+19013115c9786bfd0c4e@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=19013115c9786bfd0c4e
-> Signed-off-by: Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
-> ---
->  net/mac80211/cfg.c | 21 +++++++++++----------
->  1 file changed, 11 insertions(+), 10 deletions(-)
-> 
+Am Mittwoch, dem 24.07.2024 um 11:36 +0200 schrieb Linux regression tracki=
+ng
+(Thorsten Leemhuis):
+>
+> On 19.07.24 01:46, sean.wang@kernel.org wrote:
+> > From: Sean Wang <sean.wang@mediatek.com>
+> >
+> > Fix null pointer access in mt792x_mac_link_bss_remove.
+> >
+> > To prevent null pointer access, we should assign the vif to bss_conf i=
+n
+> > mt7921_add_interface. This ensures that subsequent operations on the B=
+SS
+> > can properly reference the correct vif.
+> >
+> > [...]
+> > > Fixes: 1541d63c5fe2 ("wifi: mt76: mt7925: add
+> mt7925_mac_link_bss_remove to remove per-link BSS")
+> > Reported-by: Bert Karwatzki <spasswolf@web.de>
+> > Closes: https://lore.kernel.org/linux-wireless/2fee61f8c903d02a900ca31=
+88c3742c7effd102e.camel@web.de/#b
+> > Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+>
+> TWIMC, Mike (now CCed) ran into the problem and on bugzilla confirmed
+> that this fixes the problem:
+>
+> https://bugzilla.kernel.org/show_bug.cgi?id=3D219084
+> https://lore.kernel.org/all/CAHbf0-HOS-jdRGvJOBmEgaaox3PDbDSTgnnZkZF9pz3=
+7Bmh2iw@mail.gmail.com/
+>
+> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+> --
+> Everything you wanna know about Linux kernel regression tracking:
+> https://linux-regtracking.leemhuis.info/about/#tldr
+> If I did something stupid, please tell me, as explained on that page.
 
-We can't take a patch for 5.15 without it also being in 6.1.y for
-obvious reasons.  Please provide a working version for that branch
-first, and then resend this backport and we will be glad to queue it up.
+Unfortunately this NULL pointer dereference made it into linux-6.11-rc1.
 
-thanks,
-
-greg k-h
+Bert Karwatzki
 
