@@ -1,71 +1,72 @@
-Return-Path: <linux-wireless+bounces-10605-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10606-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5920793EF62
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 10:06:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AC4D93EF85
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 10:12:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B9311C2190E
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 08:06:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC000281ED3
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 08:12:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE688136E21;
-	Mon, 29 Jul 2024 08:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73914139CEF;
+	Mon, 29 Jul 2024 08:11:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="AvYMWIzE"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="EWpYRdZP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24EDB13213C
-	for <linux-wireless@vger.kernel.org>; Mon, 29 Jul 2024 08:05:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A348D78C98
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Jul 2024 08:11:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722240361; cv=none; b=uBgHlYtZoCh8SIphTcdu+8uymGSqr+hyV2QxUiEKhReb68U9o9bPPadiWquxngWHx5G10nt36cY48TZxtHRy5KzkqOFMCJ45E2zhDQO4OslZ2sD2R/ksIAJYNWUgvF2tW9SuWj2zcpa+G0sFaIHDMdAMlNSxpxKZlQQx4yCEuJI=
+	t=1722240716; cv=none; b=eRTJm2YgBx0p8h8EUlYaLVgu4qUkgQiOmTfbA+qeJGqQjvuCxkf20WhzYUZfYv6fPUqXfBXP5E94GMHS2ZZf0eXkXrVZNx2r5rKQ2CInYCqZZRsSEL6NItEMjUsPQGZ298zbcGyfY0YJwfaid76pZPixeHlQz6s+LAmJYQTA4ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722240361; c=relaxed/simple;
-	bh=n8Rx/zdmS57QY4dB3glmMrAOg1vw7OYCpVhNhDCu8BE=;
+	s=arc-20240116; t=1722240716; c=relaxed/simple;
+	bh=csmoB5idqcCPefW1AXeDNFDunmmcF2B6jgzWGOvHV1I=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a/kkLYG9pH+7Eg65AWywSfNQVnwFPUoRsL8F49JJ/y7RxeWIb4N7aWT7uWhNbTjKo+rpjh0+J/3Vfp2Yoyh6qg1HI6LmrepPmYV64aTY0rC38dvrll8TYywRgbdYLHk6snoOXstntbZ9XfRaRn2ysChJaMDL6Q88QaGsldbXfug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=AvYMWIzE; arc=none smtp.client-ip=209.85.219.54
+	 In-Reply-To:Content-Type; b=rQPVSKOjk9vdagyvTI6/XGtbq5NbaVqnfdskQxoWqxhpr0/R/AJZ9mDUrtT12CgSxjdrgst9UqN03ET50pR7EZ1u814BcnJJLq1dWEow3UpBJyN3mCTIsS6E0fJH89IedN9bcY1AU++S4Hq7l4I7jGGvPjdIvVLWg6Krb+LWbVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=EWpYRdZP; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6b7a3b75133so22061096d6.2
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Jul 2024 01:05:59 -0700 (PDT)
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-428163f7635so12499415e9.2
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Jul 2024 01:11:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1722240359; x=1722845159; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1722240713; x=1722845513; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=OLxQ+oltHXvWTm73jCnAzYaGS2Qwqp5wgJznleOQdko=;
-        b=AvYMWIzEi5Ek17AaQEgMmflFCJfGOgEazhzAbihf3+BXJXBWnX5Pm9qI8G4EMRcztE
-         audTFOX6Qjj+7fbsSk8pKwWdqA9nFbmimjppC5jJxtqrnqakOjT5m28LRTUB7qDkA6Ba
-         YSYY1y7EBYHFDg3fkij0g4HmTBiPo4vDgAw2E=
+        bh=PtxIoI01sIjPH0N/O0yucMttPw3HqhezE6RqcXzaLWA=;
+        b=EWpYRdZP73IByyAi8JcNsQv1ZrhRoznCt1B4Ogr6N9UjwJzu68OxXaahOULi1b5Aqv
+         jzQ1DthNLlUqRYauv0KC3ZHLKD+hS4EIV4FWQVoh8Tlw2CHCjnOKW6UFbmbq134IRplU
+         o+6Xr90lrxZsc5Nr3wVLDfAS/wI83I98amGbk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722240359; x=1722845159;
+        d=1e100.net; s=20230601; t=1722240713; x=1722845513;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=OLxQ+oltHXvWTm73jCnAzYaGS2Qwqp5wgJznleOQdko=;
-        b=MyrfDGfEhNRiuIdA47GRdhVollomRpEkep0/LWUSwardz4iWjVnvcAJr+FfjghdO0c
-         pugynFWp9K3RIZy8T4wB7ZWuh2NgfrfYKGnwjiKKAUW/YvZsPAlI/AaD7b818+w9qma1
-         rxtEywSneCq/qG/n8oYgc3/qWqJ9k9E3gwrFql6DlDN3D+FMQ3yPxDItHYIpkySu5n0i
-         zAinJZd+wIeBqLyEzd3Z5oiRdvLtFPQt9ASnmZQz6zISG0b7x7+Nmu2byvrIhOY5pagy
-         p6jsWFm+lWVZojCX/UWAttOhAYZsX/uXMDrsMTwAZEz+Ok46hufE0FB//hiUGZxf+Qpp
-         QJ0w==
-X-Gm-Message-State: AOJu0YxEa0iH6o30A2DlbujUqRnkIvpcFMNuKHKZDly8Xr2VwctH5kb5
-	yPb8cYcyu8w5B6uJI9D/Vx9g2yjuOLMg9zLE+KAZw/kGxotpDjuGHqRFAM0o7w==
-X-Google-Smtp-Source: AGHT+IHDxRS/Qj/GgqaFGs7FuOIX0yBdKNkaZhJs4PVEqzZvCi316pZ+Yn2S8PHH0tjxLiWg/3zRpw==
-X-Received: by 2002:ad4:5ae1:0:b0:6b5:23eb:3a4d with SMTP id 6a1803df08f44-6bb55a0cd98mr109431496d6.27.1722240359085;
-        Mon, 29 Jul 2024 01:05:59 -0700 (PDT)
+        bh=PtxIoI01sIjPH0N/O0yucMttPw3HqhezE6RqcXzaLWA=;
+        b=tRyoHDTXx4xkF80hAHJn9Y5TrAekYemBCK/fXNkhKcZb9QET7YvdE0OVJ8VdgcYApr
+         kTeHFVl4wxSGyFA9sOLFwdVFWiSPtHC+Xe2z6I/lzxW4P1fqvBTUbAmJBh/r87koyaVQ
+         Nq75d2UrTp6i14DQmHO+TK7FyvS3sZCzg1ASJ72UYp0Ndp1LT81cLHutW0JV3XCqxJfz
+         Q68VpVJK//EL2AcgGixeTdYYxyIY0U+hODblEajVfCDAgmkPyHK1oWxroOFuTjIx59Bs
+         PoYQm8xZ2ezte7hx4xV2ilBdH93h/7j15e0OwH9ZY8vpWAoSB+YvNySv6fmJYg2nS3YP
+         4qcA==
+X-Forwarded-Encrypted: i=1; AJvYcCVB5tT463709+IXUXIhta4taUPGcyDLDh84nXA8f6xlcwnRV0W7PiInOqSe6fa+bfGLnB/6hszyHDVmOoZ4qZ/NkaTTvzCVAd9C+iDivr0=
+X-Gm-Message-State: AOJu0YwLPNGy7mJmFdFwLLX7N2D/RvP22EmnXlMS5ldZDC3EiipIy27R
+	thKIlpwwLVL8JUzsrsRSBFzA+YdviiJFJ7/2Y4ojhohIgR3qyoxynVL5GcGL8Q==
+X-Google-Smtp-Source: AGHT+IEkPnyGxlNxPr8rOm1//BHb13++chZqYWICdkIAEUcyxWMPSDKu9ODbOje5jSTEy0OxHq6Lww==
+X-Received: by 2002:a5d:4604:0:b0:368:7422:d966 with SMTP id ffacd0b85a97d-36b5cf11550mr4475214f8f.33.1722240712854;
+        Mon, 29 Jul 2024 01:11:52 -0700 (PDT)
 Received: from [10.176.68.61] ([192.19.176.250])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6bb3f922b63sm48741156d6.67.2024.07.29.01.05.58
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4280f8da2f7sm101566355e9.10.2024.07.29.01.11.51
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Jul 2024 01:05:58 -0700 (PDT)
-Message-ID: <d14bcb85-2b43-4961-863f-42eb14227051@broadcom.com>
-Date: Mon, 29 Jul 2024 10:05:56 +0200
+        Mon, 29 Jul 2024 01:11:52 -0700 (PDT)
+Message-ID: <1c1fe7ec-1d6b-46ce-a90d-29ca6be01109@broadcom.com>
+Date: Mon, 29 Jul 2024 10:11:50 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -73,14 +74,20 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFT v2] wifi: brcmfmac: add flag for random seed during firmware
- download
-To: Jacobe Zang <jacobe.zang@wesion.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "brcm80211@lists.linux.dev" <brcm80211@lists.linux.dev>
-References: <20240728193904.35820-1-arend.vanspriel@broadcom.com>
- <TYZPR03MB700147CA6C80F34B8E3D5CC280B72@TYZPR03MB7001.apcprd03.prod.outlook.com>
- <TYZPR03MB70019A591F0717F365A3392280B72@TYZPR03MB7001.apcprd03.prod.outlook.com>
+Subject: Re: [PATCH v4 5/5] wifi: brcmfmac: add flag for random seed during
+ firmware download
+To: Jacobe Zang <jacobe.zang@wesion.com>, robh@kernel.org,
+ krzk+dt@kernel.org, heiko@sntech.de, kvalo@kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, conor+dt@kernel.org
+Cc: efectn@protonmail.com, dsimic@manjaro.org, jagan@edgeble.ai,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+ arend@broadcom.com, linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ megi@xff.cz, duoming@zju.edu.cn, bhelgaas@google.com,
+ minipli@grsecurity.net, brcm80211@lists.linux.dev,
+ brcm80211-dev-list.pdl@broadcom.com, nick@khadas.com
+References: <20240729070102.3770318-1-jacobe.zang@wesion.com>
+ <20240729070102.3770318-6-jacobe.zang@wesion.com>
 Content-Language: en-US
 From: Arend van Spriel <arend.vanspriel@broadcom.com>
 Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
@@ -126,23 +133,31 @@ Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
  NKowQLrlMBGXT4NnRNV0+yHmusXPOPIqQCKEtbWSx9s2slQxmXukPYvLnuRJqkPkvrTgjn5d
  eSE0Dkhni4292/Nn/TnZf5mxCNWH1p3dz/vrT6EIYk2GSJgCLoTkCcqaM6+5E4IwgYOq3UYu
  AAgeEbPV1QeTVAPrntrLb0t0U5vdwG7Xl40baV9OydTv7ghjYZU349w1d5mdxg==
-In-Reply-To: <TYZPR03MB70019A591F0717F365A3392280B72@TYZPR03MB7001.apcprd03.prod.outlook.com>
+In-Reply-To: <20240729070102.3770318-6-jacobe.zang@wesion.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 7/29/2024 8:25 AM, Jacobe Zang wrote:
->> I found that in drivers/net/wirless/broadcom/brcm80211/brcmfmac/bus.h has already prepared an > enumeration like these.
->> enum brcmf_fwvendor {
->>          BRCMF_FWVENDOR_WCC,
->>          BRCMF_FWVENDOR_CYW,
->>          BRCMF_FWVENDOR_BCA,
->>          /* keep last */
->>          BRCMF_FWVENDOR_NUM,
->>          BRCMF_FWVENDOR_INVALID
->> };
->> So should we delete them? Because you also changed BRCMF_FWVENDOR_ to BRCMF_DRVDATA_
-> 
-> Sorry, please ignore this comment, I didn't notice these were two enums with different purposes
+On 7/29/2024 9:01 AM, Jacobe Zang wrote:
+> Providing the random seed to firmware was tied to the fact that the
+> device has a valid OTP, which worked for some Apple chips. However,
+> it turns out the BCM43752 device also needs the random seed in order
+> to get firmware running. Suspect it is simply tied to the firmware
+> branch used for the device. Introducing a mechanism to allow setting
+> it for a device through the device table.
 
-Ignored ;-)
+Not exactly what I meant by using my patch "as is". I would have kept 
+the two patches separate, but it is not a deal breaker for me.
+
+Regards,
+Arend
+
+> Co-developed-by: Ondrej Jirman <megi@xff.cz>
+> Signed-off-by: Ondrej Jirman <megi@xff.cz>
+> Co-developed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
+> ---
+>   .../broadcom/brcm80211/brcmfmac/pcie.c        | 52 ++++++++++++++++---
+>   .../broadcom/brcm80211/include/brcm_hw_ids.h  |  2 +
+>   2 files changed, 46 insertions(+), 8 deletions(-)
 
