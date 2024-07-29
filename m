@@ -1,227 +1,178 @@
-Return-Path: <linux-wireless+bounces-10639-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10640-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8303693FC7F
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 19:36:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CA7293FDB8
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 20:50:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DCC94B21387
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 17:36:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 334D928232F
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 18:50:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 606CB1474CE;
-	Mon, 29 Jul 2024 17:36:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZXbiP8UZ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5B9186E37;
+	Mon, 29 Jul 2024 18:50:30 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A97F80633
-	for <linux-wireless@vger.kernel.org>; Mon, 29 Jul 2024 17:36:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722274565; cv=fail; b=IIhy9Pqx5iHdFVpX/RH8CCWx3gnCkOKuYNFtKhH8KVixZzxfPt+JQ9JRKV4RrSUIw8/VsN1P1FrG3DvacNak8MBPyEY07kzB9pZ0LLvLTOzbXTgoCJ+fqV6PsWEJEpwplACha5nzvk37iHbU6kU4FOmOvEF/BDZnusmwPSeWwq8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722274565; c=relaxed/simple;
-	bh=hY7jBeKno6kefoKyBs0HAhpvDIcSxd6Gb7zqJiKe84w=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=WlwEEX/V0t/K2+2QWKcjmO2lJHjQBziWvvyHvkWQvQwz/7ArTVHnC6xOnHYAmT8CUXd8mjXrUDjZ3W4iSFYL/h1kDCRhg9nXuLW4KVg7rwfHf3PWmNhJSirLPGm8QGfIMoP4nf3BAmg1s99FgykSrF2etDb21+IybeQjCH2rGb0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZXbiP8UZ; arc=fail smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1722274563; x=1753810563;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=hY7jBeKno6kefoKyBs0HAhpvDIcSxd6Gb7zqJiKe84w=;
-  b=ZXbiP8UZSJHOY78mrrVhWH3zR6y8icT3L/n+zIr+QYRngYFeu7VahJ1c
-   u4Gxx6vlBpa9LgZYtAB1jb2m3+za58OywUUNxxdbfBJHKSbJeNfAhIInK
-   Bphx3aYdE8EUH3lxeN+6fIvenONX8xcAJ0zxReuGkhrBCU7XmTWI8+1iu
-   KOrITtr11ibeCnQ8CR77QH4W5A9f5HWhR8Yi6zQw7dVnBnmpAUCouTtKw
-   q6Y+GIW2k/lgq65mbWr8yLmMqeDG4oxjorQCnWITGlVgeTG9vQmodwI8d
-   vMy8GMvhopxV1DMVZH8ZOMYMZi4OsLrplR6cFI8iI7xhkBC9RCZgiscS4
-   A==;
-X-CSE-ConnectionGUID: thwnVQNrRSqxNJ6hCaEjSA==
-X-CSE-MsgGUID: SOZDVO/sTdqALXN924wnOA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="23801320"
-X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; 
-   d="scan'208";a="23801320"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2024 10:36:02 -0700
-X-CSE-ConnectionGUID: w7+Qdc5DRi69WBalwlxmfQ==
-X-CSE-MsgGUID: HwgxWX/TS4SkYAtyNANKnA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; 
-   d="scan'208";a="54636310"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by orviesa007.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 29 Jul 2024 10:36:02 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 29 Jul 2024 10:36:01 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Mon, 29 Jul 2024 10:36:01 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.100)
- by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 29 Jul 2024 10:36:01 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hYKj8sQDLgbmhRtN1HkPbFTXQJ0BIVwALrMKTIHD2OhC2c4nHkHWqDL6yoao9+DNYF196Rdayxww+Gi5/XNFmaSv0ZHHUBzHkS/fStUAeg3gORPJv4C2EWvyRNkYf82QG20Fn7UYa/hW9wKCqYsOWgenqXJtVqGeGcVMGRBNAaGHJPL5QWGh42dhWuyJPVBtwkC/9v76JK94xwqtB6queiwnugCpuy7VbFdJtvs0pf814O/IFrQwoiSukba5zyXV6emBFSzbhPcB6k/+4QakC6u9slBVeJestbn/DIkKlFMmCkO7YLNNF2lDflLCliJtMFlNsfrpp/n9z+gv8n/0sg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hY7jBeKno6kefoKyBs0HAhpvDIcSxd6Gb7zqJiKe84w=;
- b=vvZcMOpltBj5KbAoWFQbF4C7FI3pvNKY8G0wzMzX4a+iNCO4MA+mAOSyghv5bFqS2vVGFEZMhRzLGrLWCOlcRg8RKY6mkMIfXY5c+7XAC3E0anHcJZiOVg6O7Wp4tPyY+WSQpTECMvwodWtp9pz12B2Gup6kMXhyjYU1XY0g7jGgYN7W8CZl7u8EDbKnoU4QeeT6OBdXhpcyWHQwgbIdXz1kwPmHE4CZAebmxm3HoFPqTsF/DNKa7Twj4j6yl5jO0rJ9W/e327axS0QG/Bqh1hDzgdnHoMSZQsvkvLl0+u92T50qE889gf9bMELScbcX1tDkXtTYnN3aSntikTKFBA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SA1PR11MB5825.namprd11.prod.outlook.com (2603:10b6:806:234::5)
- by DM4PR11MB6550.namprd11.prod.outlook.com (2603:10b6:8:b4::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.27; Mon, 29 Jul
- 2024 17:35:55 +0000
-Received: from SA1PR11MB5825.namprd11.prod.outlook.com
- ([fe80::41f9:e955:b104:4c0b]) by SA1PR11MB5825.namprd11.prod.outlook.com
- ([fe80::41f9:e955:b104:4c0b%4]) with mapi id 15.20.7807.026; Mon, 29 Jul 2024
- 17:35:55 +0000
-From: "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>
-To: "greearb@candelatech.com" <greearb@candelatech.com>, "Korenblit, Miriam
- Rachel" <miriam.rachel.korenblit@intel.com>, "johannes@sipsolutions.net"
-	<johannes@sipsolutions.net>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 08/17] wifi: iwlwifi: mvm: set ul_mu_data_disable when
- needed
-Thread-Topic: [PATCH 08/17] wifi: iwlwifi: mvm: set ul_mu_data_disable when
- needed
-Thread-Index: AQHa4d1L2kcpRchpAUuiG9XbH/eckrIN98sA
-Date: Mon, 29 Jul 2024 17:35:55 +0000
-Message-ID: <cd7d7553040cf8eb704721712e94767fac47ee6f.camel@intel.com>
-References: <20240729172018.1993751-1-miriam.rachel.korenblit@intel.com>
-	 <20240729201718.fef270d2995b.I328237837df30e1cb98764987eaaf8e8993e058c@changeid>
-	 <eb5c63dc-8934-50fe-3b08-24db25c80bb3@candelatech.com>
-In-Reply-To: <eb5c63dc-8934-50fe-3b08-24db25c80bb3@candelatech.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.52.3 (3.52.3-1.fc40) 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR11MB5825:EE_|DM4PR11MB6550:EE_
-x-ms-office365-filtering-correlation-id: 1a625cc2-1a55-4692-5fbf-08dcaff4e676
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|1800799024|38070700018;
-x-microsoft-antispam-message-info: =?utf-8?B?NlZTeUhETHQ4TVdzU1JzRmc4S2VTQ2JtWk9SdkN1amo0Mk1FSTRnY3VWVlZE?=
- =?utf-8?B?eWdpUFlnQUR6YjgvNlA5TFlMbFpseDRWVmlnZEZML0ZpbFF5SzFIYjRQVjRy?=
- =?utf-8?B?NDlTWXFiK2s5UXpiaEVlOXc5NWlYcTBUMjVKVG9ucXRsYjZPNlRHci9sWHlt?=
- =?utf-8?B?bmNENzc2aTg5TGNwZys1d08ydlJ3TkQ1TUVZbDJveHNtNVd0QkJHM3NaTHJt?=
- =?utf-8?B?SlNKSk00SFhnczRaY21JQUcyb01qV1l5OW1NYjJ6N3NZV0czcnh4MWtlK3lj?=
- =?utf-8?B?YStYNGhlTW9NZHZndjNCcHpLQy9nU3c5L08yUFYxeTdsS3JOVVhBY0l4T0Nj?=
- =?utf-8?B?Z1pCVGxhWjg1Und4WE44aDJBRkZVcDMzblpXNzVZRkhCSDk0T0NxamIzNi9N?=
- =?utf-8?B?RmgwZnJXUjVsZUN0dE1HeWlpRk5GOUpoVWowNWJnYlBORHY5by9kOWJFdUlQ?=
- =?utf-8?B?T0lvU09raytuWFlOcE80WlpVRkdmbU9KakM3dFNXT2pvQXNZczI5c2h1Wk1o?=
- =?utf-8?B?d1ZZNm91NU9OcXhkemhhenprdkNXaWlxUTJNNzBUVmhRMnhQQzBBMGtnd2k1?=
- =?utf-8?B?dTBlcXdFMEdEbzZCcXRSL3VQdEhXVHJRLy94MU5TZ1RUR3d1MEI5WFg3dWhZ?=
- =?utf-8?B?WEZJbzhITkVXdFhQQzJDN3AxaDRxWHdrdkNnczRTSDYyL3NsdE9VT1ZlS1d5?=
- =?utf-8?B?UU1ReTMzUk5NdzJ5aDZjNGI4dUc3UFAxNXREYy9PYVhDSmxBYXovMXcrcml6?=
- =?utf-8?B?OG44QVAzdjNPWCtJUUJrTEJXZkdHQjQ5dGw5S3dtQVRRbEZ6aC9mVWVKem1B?=
- =?utf-8?B?SDdMZWFCcU05SmErb0VLWFBKMjRoOWhSdmFkM05zVUdOR0VhN3plQzFjRTNO?=
- =?utf-8?B?cm0zODBFNE1EZFA0S3QrSDRvVG55VDVqbUxxK1IxUTRJVDBROFdwZ1ZjVWJ2?=
- =?utf-8?B?dXpCVG5LK2hYTXpOWnpZc3lvUDNZVVp0T0FQaytEc0lPTXZRbHRWVXVtUVFk?=
- =?utf-8?B?TjJ0QjhvRjFqNzgxUitxbGxYaEMyZmxpdlBGWnlzZm9vVUd1K2h2SzVDOW40?=
- =?utf-8?B?eFNpSjBnUUhFWm81Z1ZQbmZDT29BQ21FMnpMeXlldHN0WGlMSGI0OTVuanhM?=
- =?utf-8?B?Wmc4ZCtENG8yVW5CZmlVZFcwU3gwVWxUZU1kYy9GOXBVTjZzTUt4emF4ZFFP?=
- =?utf-8?B?cUF1aVJzMVBhSWNFZlJzSzNoUEZWODhHQ3BwWHR1bXRmWjRURUVITytIODRR?=
- =?utf-8?B?RTlLOXNEQ3JUZUozYVdjTVNjK1p0NmJXRXc5bFB6RDFRaDRQaE96SnFGbGY1?=
- =?utf-8?B?eWMvVjgzVWVqUVlLOG5Kc2hLNTNPNFhWcyt6bTlwcTBzVjlubEV1ejl3YlI3?=
- =?utf-8?B?STJna0RvSmo2NzVVdXZkeSthWkVyUUNxSEthRUZjK1FscDBIUEoxTmY5T1VS?=
- =?utf-8?B?Q25YbGpWQUxYaWhEYksvZll4dERtNm9BdVFkeUVwVGJCSHV5ZG95RHE5U3F5?=
- =?utf-8?B?YWNXamNIb0Uyb2g1MlNTS3BhYWRiZ1JDOGdBdWt1WFhsT1dBeDdVN004bXNh?=
- =?utf-8?B?V3daTTNWVUpJQzljT0R2bTNqSHJKbnZLbXRtUENHbndndVJ3dWFzMzFLT0hL?=
- =?utf-8?B?SVBtN3JlNDgrM3FPRmk2UjJxenVzN0EzWWNRNUVwN0FtbmxITzBkU09FQ3o1?=
- =?utf-8?B?Z25xYlA4dDU3dlN4NXFSVlB4aHgydHllZ0JtZGNLRXFOVUl1aHA4UWVWenV5?=
- =?utf-8?B?RFkvT3ZtQXlzUkcvU1VXd0xzMGEwODdoSDNWZC9KQmZhL3pHZFVBUXlIU1h0?=
- =?utf-8?B?NzVVY2oxWDlKbDFYbHZrWjdxOHFyeVZvMWFjREVVV3F1MExSNUI1UkVkY1ZE?=
- =?utf-8?B?ZXNyK2FpekFxMXRxY3lWUDBtUjh4UjQvYnBFQ0tZREZjVUE9PQ==?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR11MB5825.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?bXpWeEc0S2J3cDE2eEVza1ErUFVmdVB2Mkcwa2tCazg1RmxLdDQvLzRnRklL?=
- =?utf-8?B?SW9STUpObTArNGh0UnFzUmc5RS9QSlhLdytEMXVnaGtSdU9sQmJrQksxMHlH?=
- =?utf-8?B?RWVhOG54Z3F6aUV1b3BNTlJMRFdTR080YmlISWJJVjZFUmY5SmFwdWxsUGlj?=
- =?utf-8?B?V1FwMFdOUVgvcld4a1ZOR2ZvY0drYTRFOFhtbzNMaUM5OWlsNWh0VkVMeUtZ?=
- =?utf-8?B?ZHVkTUxtYis0THhFWFhiN2ZNS3JjRVR2SDFQVjdwRTdHSSsrT2ViMkpaUy9o?=
- =?utf-8?B?UGhmdGpWYWYxdzlVTTg4VEdlUXZtdXEyZ2VwRTNBcXgrckF2TTFlWWx0Y0F5?=
- =?utf-8?B?VlQzbkNPM1VmZFFxR0RKS0Z0UFRuYW54c2twUjZZNFM3Sk5hdzZFZ25TSTJ2?=
- =?utf-8?B?YWNBTGdITFltTVVmUURUcTgvb0pGNW10d2lpM2NBOCtESklsdzhZQUQvZmE4?=
- =?utf-8?B?dWQrOE5uVElXMWJHVTZqMGV4K0FQdmd4alhKS2d6dFcvNWFMekJUc2d5R3ZL?=
- =?utf-8?B?WXA2eHlySU5ZWDhhdWY4OSs0MEZ1dVZtckR1YlZ5dkhweHE1QSs4NFhQNXRl?=
- =?utf-8?B?MlF3TnhoZ2N1Mk1HTWFoa2JTRXE5cDNiWGtacXNqWVd3SC9HL2hKMnVnK1ZR?=
- =?utf-8?B?dUdFYTBJYlZBZ09lYkNJRFExbkdlUnlITjFuNGhJWTV2V3l3ZHp2L1V1MmYy?=
- =?utf-8?B?dGFGZ3prOThKelg3N1lBUXMvVnZrTGUrTXhyQUZOU1RuNzRHai9ub042QytV?=
- =?utf-8?B?cFFQRnphbGNWWVprQThVUHpqMW1hRld5OUIrMkFaUGtCUkl1WmZFMnNlaHF2?=
- =?utf-8?B?QWdhcnVqQkZlSnZDQUZlTzlFYkRjd0xoTHEwYTRkTzVJd0dMV292Smp0R3FL?=
- =?utf-8?B?NjUwOVZnek1menBvVHcrTzU5Sys3VkNjRGNHSnkwVmNtWFJBbm5uOTlrWmRD?=
- =?utf-8?B?TUJBS252bXUxcSt0TlpZaGdPZGF4TjhDOEIyeGExTVFabVlJeXBndnBXMWwv?=
- =?utf-8?B?c2hxN0dnVmpXUzk5ZXNaZndqM0NYUHFMVWdoeEM2NUJqUmprZXp6Tlkxa1pB?=
- =?utf-8?B?OWpJc1MwSXRiWThDMVlIUU5ZdEQ3czZCbndaL3haV0RncUxiYkcvb3BnNy9U?=
- =?utf-8?B?dlFYSzBEcVFSc1dWeDVwOFFGSzMra0xNenpkWVIrdmtjSTA1dVdraXBtbkhB?=
- =?utf-8?B?dTU3WnNjNHVEVU1CT0dFcmRuZTY3WlNMWHdUZSs1UitMb2JNQWlGYnpIUFU4?=
- =?utf-8?B?WjFtTHN3UktWcTRHT0V4cHE3STI0SWd4WC9mWVJ2MlRuamcrTUxFdHFxMFdY?=
- =?utf-8?B?WU4ycGE4QThWcTJRcWFsaXVjeVlGY3gxekxnczRaeDBvQThYMnNGSDFLUG9I?=
- =?utf-8?B?cFR2V2o5OVllY2s0Z001Mk92TTdkdFJrOGI4YWZnUnBXWFozUG0zVnR5RXEw?=
- =?utf-8?B?K0hxTStFaU9tbGY4WW5NS0dPQnJmRENqdnEwYkNnU1Y1TzZ4cDdvc3JsenMv?=
- =?utf-8?B?ME5pcHI2WlVVQ05ZRkN4b283V0RLeS9lNHI0bmplMTA4SkdLRXlqTkRsTlNH?=
- =?utf-8?B?QXlheXU5WmdTZ0dUeFMzTkFCSjB1NDl0WXBTR2hrNFlNTUxwWVY1VXg5SmpY?=
- =?utf-8?B?Zit0RUpYdm9IOWg0dFZFRFZSdUFvVWpVZGIvMTZyay8zNzYxeWhLdGxlSnBX?=
- =?utf-8?B?OXY1bi9ibjJaTGpMd2tscmtJTGJ4Q1lZSlRIbjVFQ215OW1CTGgyZUhGWWZ5?=
- =?utf-8?B?S0lkU0x3c1JNY2xhU3VUdTdKTFEyMlRMKzBrZ200M2dxMER0dGlpU216Zlcv?=
- =?utf-8?B?Wkl5ZXhIRzJUSys2RzhPNzY1ZmJPTHREZzhNM0VvVE1ldnAzQ09QRk9Dbk9k?=
- =?utf-8?B?QjV1U0RUM24rMTBaamVPM2dtSGc2emxtVW8vK0FuM013c2c0bVZzdTd5QWFL?=
- =?utf-8?B?d0pUZ2srcitobVBPOTRncmJjdENNQ1VFRE9nWWZPRFlZRFVLbnM2VkI3bVFu?=
- =?utf-8?B?Vm9ZenN0Tzd0d2kxampTSktvL3U3NHdod0xhU1BucGs0eGdtR1VOWDdtbkdp?=
- =?utf-8?B?aWpFMnNrZXo3WkdaR0NiVGJIZHFYemN3RVBDaEhaV0JlQUdlOE9sN3lvcTVl?=
- =?utf-8?B?d3RxRUZWUFhqem9mYUl3K0NuWS9mUzhGTi8wc280TUR5ZHhLTVorVWhoeGN5?=
- =?utf-8?B?NWc9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <E35E3F5B04FC2D45BDDD08997B506A85@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12EBD16B38D
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Jul 2024 18:50:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.69
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722279030; cv=none; b=kfVVVYc33kGESrGr7kCI4Q6Tj1tFHkqsBSGHLPB6IIq0r/XULEk5VJsLG0GnLOEUr5UKMSAk737EApzUwXFmlJHeQ5O+ZB8WTDl+pq1E4n5ou9ipC+tRZZpol6psILvmNPmYOQLM9kSkNWadKaKXDZ+ZGq2NVdzjp6ct69gx0Cc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722279030; c=relaxed/simple;
+	bh=eY4ugEDb6jRzq/pexxxehLVeNuXwCCtl5z9EorIXf/4=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Zwq7L3ZuntXPKmNrkzvSeja7PwAaVwGLzNmY2kOhuHZCey0FXaGckeKh2pu12uH8oJ5f2WUfvAKgW4+JlX+fxZQe8IVMzaUq+HrGzt9LQf6oXbfRuSUqqPOYMSXOgI9NY4sHiX0wd4on0z0Y7xR4r0/xQRpuSb7LlFL75dON8pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-81f901cd3b5so471611839f.1
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Jul 2024 11:50:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722279028; x=1722883828;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4HdwkffihZ+EwPucL3qbfXXPnxbwonIAqD5Z4x1q1uo=;
+        b=TY3F9pByBwzX5VTIfyyOzlgYUzz4W5iqbsz0aWMc99OcSZTifza6E873hrJBqwhGlX
+         eSr45Hur5ZPImUXMaEo8xPcpRM5JmVI8n+u3fX7UmjZn9jfE3Zoe/qOg+PsUx3m+AbIr
+         keB8ViGhe7aTch2IMUaM7x6skI1infHEKNmVoexubQUf893mIpGfCyuL9e5OUB3H0PAs
+         VI1F+D58p6xKY5ZCOYDHhDeBF8tQGp6Olb71/pCyiHxM5ePpa0UlymSinzLfCxqR6Uov
+         CCb8uT5YgTrekWh+A0mH6YuXc0vYN/3IFstyO+Bw+TCzXc8WkbTLH9oDEqgDYxtFIcb1
+         Uitg==
+X-Forwarded-Encrypted: i=1; AJvYcCX15nq2F5Mxl9B3P0z4KPaiTYcX8uZ/JhskRztKwSS9X4j/jHlR/Se5L/5VKYFY5dey3JvvT6707gLZe7F5jdNQEghf7lnZow1MF7QYhu8=
+X-Gm-Message-State: AOJu0YySl5ZfmFlJe+hSo8dSZ+AEn/28UxMWDrqTsw00ZdS1/gC5hyhp
+	1/8hJVTfFL1y65iPs81b0se0Qn5O0RknCIe4YHQw6PzteHNeP87jZFZFcloI8V56Lgj60g79Afn
+	tle4hjJzEnHkoBSJUjMIoeGSpSSWW7dOppq9guubsU5s377SElqkwRrg=
+X-Google-Smtp-Source: AGHT+IFvoN+itrC2YNMnV/kLznBYA9SKUsPbIpvfu6ywevT+cqAAWOHCiqDTZp9Sor1ce36bj8KsGn3jsftcBWEmKbLQmQKngVX7
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB5825.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1a625cc2-1a55-4692-5fbf-08dcaff4e676
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Jul 2024 17:35:55.2796
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Efnqya+nFqpFSMbKN9DP0H5iJYLNe+zYG2/xG7kbRsesLtFpGCBhiBIPnH1ZDcuJGugP9RjExUuMNNo3oCo0v1qVOxSn2auMtcEDO210X8I=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6550
-X-OriginatorOrg: intel.com
+X-Received: by 2002:a05:6638:4118:b0:4c2:8a0c:380d with SMTP id
+ 8926c6da1cb9f-4c64a5d960bmr708206173.3.1722279028080; Mon, 29 Jul 2024
+ 11:50:28 -0700 (PDT)
+Date: Mon, 29 Jul 2024 11:50:28 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000ac553b061e675573@google.com>
+Subject: [syzbot] [wireless?] WARNING in plfxlc_mac_release
+From: syzbot <syzbot+51a42f7c2e399392ea82@syzkaller.appspotmail.com>
+To: kvalo@kernel.org, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	srini.raju@purelifi.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-SGkgQmVuLA0KDQpPbiBNb24sIDIwMjQtMDctMjkgYXQgMTA6MzEgLTA3MDAsIEJlbiBHcmVlYXIg
-d3JvdGU6DQo+IE9uIDcvMjkvMjQgMTA6MjAsIE1pcmkgS29yZW5ibGl0IHdyb3RlOg0KPiA+IEZy
-b206IEVtbWFudWVsIEdydW1iYWNoIDxlbW1hbnVlbC5ncnVtYmFjaEBpbnRlbC5jb20+DQo+ID4g
-DQo+ID4gVGhlIGZpcm13YXJlIG5lZWRzIHRvIGtub3cgd2hhdCB3ZSBoYWQgaW4gdGhlIEhFIENB
-UCwgcHJvcGFnYXRlIHRoYXQNCj4gPiBzZXR0aW5nIHRvIHRoZSBmaXJtd2FyZSB0aHJvdWdoIHRo
-ZSBMSU5LIGNvbW1hbmQuDQo+IA0KPiBIZWxsbyBFbW1hbnVlbCwNCj4gDQo+IERvZXMgdGhpcyBo
-YXBwZW4gdG8gZml4IGEgZmlybXdhcmUgY3Jhc2g/wqAgSSBoaXQgYSBGVyBjcmFzaCB3aGVuIGRv
-aW5nDQo+IGJlMjAwIHVwbG9hZCB0ZXN0IHRvIGFuIG10azc5OTYgdGVzdGJlZCBBUCwgYW5kIHBv
-c3NpYmx5IGl0IHdvdWxkDQo+IHRyaWdnZXIgdGhpcy4uLg0KPiANCg0KV2hpbGUgSSBhbHdheXMg
-cmVjb21tZW5kIHRvIHVzZSBvdXIgbGF0ZXN0IGNvZGUsIEkgZG9uJ3Qgc2VlIGhvdyB0aGlzIGNv
-dWxkIGZpeCBhIGZpcm13YXJlIGNyYXNoLA0KZXNwZWNpYWxseSBzaW5jZSB0aGUgZmlybXdhcmUg
-ZG9lc24ndCBzdXBwb3J0IHRoaXMgeWV0LiBUaGUgQVBJIGlzIGRlY2xhcmVkLCBidXQgdGhlIGlt
-cGxlbWVudGF0aW9uDQppcyBub3QgaW4gcGxhY2UgeWV0Lg0K
+Hello,
+
+syzbot found the following issue on:
+
+HEAD commit:    933069701c1b Merge tag '6.11-rc-smb3-server-fixes' of git:..
+git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
+console output: https://syzkaller.appspot.com/x/log.txt?x=14faa9e6980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=f828342678294017
+dashboard link: https://syzkaller.appspot.com/bug?extid=51a42f7c2e399392ea82
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17d80965980000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16ccfd3d980000
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/22dd51445d03/disk-93306970.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/f85f111961d5/vmlinux-93306970.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/7971b4814e87/bzImage-93306970.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+51a42f7c2e399392ea82@syzkaller.appspotmail.com
+
+usb 1-1: New USB device found, idVendor=2ef5, idProduct=000a, bcdDevice=21.c2
+usb 1-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+plfxlc 1-1:1.167: Firmware Version: 0
+plfxlc 1-1:1.167: Unit type is station
+plfxlc 1-1:1.167: vendor command failed (-71)
+plfxlc 1-1:1.167: FPGA download failed (-22)
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 41 at drivers/net/wireless/purelifi/plfxlc/mac.c:105 plfxlc_mac_release+0x89/0xb0 drivers/net/wireless/purelifi/plfxlc/mac.c:105
+Modules linked in:
+CPU: 0 UID: 0 PID: 41 Comm: kworker/0:2 Not tainted 6.10.0-syzkaller-g933069701c1b #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/27/2024
+Workqueue: usb_hub_wq hub_event
+RIP: 0010:plfxlc_mac_release+0x89/0xb0 drivers/net/wireless/purelifi/plfxlc/mac.c:105
+Code: 3d f8 66 fd 48 8d bb 08 33 00 00 be ff ff ff ff e8 5c 61 f5 02 31 ff 89 c3 89 c6 e8 21 f3 66 fd 85 db 75 d4 e8 18 f8 66 fd 90 <0f> 0b 90 5b 5d e9 0d f8 66 fd 48 c7 c7 d8 9e 32 8a e8 21 f1 bb fd
+RSP: 0018:ffffc900004c6f50 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff83ec60bf
+RDX: ffff888105ab3a00 RSI: ffffffff83ec60c8 RDI: 0000000000000005
+RBP: 0000000000000001 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: 1ffff92000098df1
+R13: ffff88810f6eb000 R14: ffff8881137eb080 R15: ffff88810f6eb078
+FS:  0000000000000000(0000) GS:ffff8881f6200000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000055993fa01a80 CR3: 000000010d7ae000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ probe+0x84a/0xba0 drivers/net/wireless/purelifi/plfxlc/usb.c:694
+ usb_probe_interface+0x309/0x9d0 drivers/usb/core/driver.c:399
+ call_driver_probe drivers/base/dd.c:578 [inline]
+ really_probe+0x23e/0xa90 drivers/base/dd.c:656
+ __driver_probe_device+0x1de/0x440 drivers/base/dd.c:798
+ driver_probe_device+0x4c/0x1b0 drivers/base/dd.c:828
+ __device_attach_driver+0x1df/0x310 drivers/base/dd.c:956
+ bus_for_each_drv+0x157/0x1e0 drivers/base/bus.c:457
+ __device_attach+0x1e8/0x4b0 drivers/base/dd.c:1028
+ bus_probe_device+0x17f/0x1c0 drivers/base/bus.c:532
+ device_add+0x114b/0x1a70 drivers/base/core.c:3679
+ usb_set_configuration+0x10cb/0x1c50 drivers/usb/core/message.c:2210
+ usb_generic_driver_probe+0xb1/0x110 drivers/usb/core/generic.c:254
+ usb_probe_device+0xec/0x3e0 drivers/usb/core/driver.c:294
+ call_driver_probe drivers/base/dd.c:578 [inline]
+ really_probe+0x23e/0xa90 drivers/base/dd.c:656
+ __driver_probe_device+0x1de/0x440 drivers/base/dd.c:798
+ driver_probe_device+0x4c/0x1b0 drivers/base/dd.c:828
+ __device_attach_driver+0x1df/0x310 drivers/base/dd.c:956
+ bus_for_each_drv+0x157/0x1e0 drivers/base/bus.c:457
+ __device_attach+0x1e8/0x4b0 drivers/base/dd.c:1028
+ bus_probe_device+0x17f/0x1c0 drivers/base/bus.c:532
+ device_add+0x114b/0x1a70 drivers/base/core.c:3679
+ usb_new_device+0xd90/0x1a10 drivers/usb/core/hub.c:2651
+ hub_port_connect drivers/usb/core/hub.c:5521 [inline]
+ hub_port_connect_change drivers/usb/core/hub.c:5661 [inline]
+ port_event drivers/usb/core/hub.c:5821 [inline]
+ hub_event+0x2e66/0x4f50 drivers/usb/core/hub.c:5903
+ process_one_work+0x9c5/0x1b40 kernel/workqueue.c:3231
+ process_scheduled_works kernel/workqueue.c:3312 [inline]
+ worker_thread+0x6c8/0xf20 kernel/workqueue.c:3390
+ kthread+0x2c1/0x3a0 kernel/kthread.c:389
+ ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
