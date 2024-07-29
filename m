@@ -1,52 +1,74 @@
-Return-Path: <linux-wireless+bounces-10618-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10619-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42FD693F701
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 15:50:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD9A593F708
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 15:51:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC76928127C
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 13:50:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46C241F22516
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 13:51:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ECDE148FE1;
-	Mon, 29 Jul 2024 13:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E38B614A0B7;
+	Mon, 29 Jul 2024 13:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="KJqrb5W9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YsKoto9t"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546401E515;
-	Mon, 29 Jul 2024 13:50:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359B8146D54;
+	Mon, 29 Jul 2024 13:51:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722261007; cv=none; b=BeIHe8aPJBaLqm40J/ceBmb5Xeg9oUnYG5sNrjcpq7zazzpaOqjkpwNGCaqV+E+oRxYb7MFS5tEwbxNd8O/21MONaPTdZT5PB0MvibeHOz0yi0iWdiXdbqXjywXEtX7VWRndf4W8z2mTsyVT3alLy0p7FJ8LekcpGPbknljbF1o=
+	t=1722261100; cv=none; b=clst8a6eWIJsC4veGOR81q51iZnTPm6psld4hswrEBbuOIAQnPOOXdbH+lJW796FoTPMsnbs/DzJYc+VVKEQbRjkkqegkXHtm71x4jjjs8fJsev1HzIQW2+4LMoi7hNHu6C4Z63U1VUQrKLm80c+kfPSFecWSp43ctUFrzaaBr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722261007; c=relaxed/simple;
-	bh=Y88pXK83406HjjGj/zFnZd3lYT3ci/aeqPXOfD3LW/M=;
+	s=arc-20240116; t=1722261100; c=relaxed/simple;
+	bh=dGgxHdxK9Nz8ttP6xXbqgVN4uZntUdYOZV5Esl1EkGo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HGMqmaKLUoEzRjx4q9N1mpxXM1kDXH8XW6OfvE1XnyExuqzj6RGq6Y1ipHsXgrFdP1D+g/gDzviRUghvtye7EpJn9mpp0prvVAVRDmooa8ZkPvrw6hhr8bAdyjMbOL595F+eyesiGKl/xOYCSo/B+9CRTxJ2n0Ysv+BWv1cbN9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=KJqrb5W9; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=HRwq4iryWCGtxaVXelfLfM8LtnioMELn/jHh8pE2A+Q=;
-	t=1722261005; x=1722693005; b=KJqrb5W9ka6K3oTEkVn2VUYotoQNWNMKxAWoTe/kakykxLh
-	xJzOdAuN5VBM1tG3BpZ+pZ2gNPnZANW581Kjtrt63a055GuCM58P0CPLFr+hz8EeNKxiM6KiBVlJ3
-	nGWmkbAdKAT3szmRba46NIKMEvztZ2H+/WKLuqSpeJ4KdBSzgv2kO9EjfLG5iukK5z3j7OLkTCn8R
-	I/W6VsFcYG3qxegaYJQGdiKamMI8Zre4HSyCyFk1UwxfXYIMc3oXbnh/sUMCi4AxHR6Bqs6V0cRny
-	A+dEbXFmK/tTvXFNuGPesVpQpJRRnAByKglkRUS8yBEgMaKnT2v3Ii9+M4o9CsBw==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1sYQlC-0000uL-Pn; Mon, 29 Jul 2024 15:49:58 +0200
-Message-ID: <c6f93f9d-db6e-40c8-9973-18374af08ab1@leemhuis.info>
-Date: Mon, 29 Jul 2024 15:49:58 +0200
+	 In-Reply-To:Content-Type; b=cWBmeZE3dT7hdq1bpL2jAkiPJZGc+7Ro7XDpoV14apnWmx0AsOdzfIzpIR+gfvqPMMpAn0ChBJTCtRs5+xx3dkKe2B0sG7AYm02si0ArAlYSGhM/devzcyXRxr5Wz774aeY0EaTdJmgnEW+NHrLlLwDemhid56iOLdevWXcZ3Fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YsKoto9t; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-427b1d4da32so10403905e9.0;
+        Mon, 29 Jul 2024 06:51:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722261097; x=1722865897; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6CO8WnhTC1H7YGD6SVa9aO98KuKo2+EKb84xRYCvBOI=;
+        b=YsKoto9tD9dxb+lVVjCczccLrcDL3aS7knrzcegbzJpKkDGN2+vx48ayRQnEfugV8E
+         KYJzX/cBT6iI8gJ0285DOilg+U+/TyuEsrhPUj3po5kY0e0rpNGNalFvLRZqAWRR5b6G
+         ZdkplMMzu0BqfcTlFhaCsMeWPVTFPLcJaqlslQHJdESS5yGVQNdcsABVSlvINmU1xj78
+         ur5BoycACIC+8VdlHuJdMENaCQUaoLok0Q9gmkf5GSMSJNwHaeQECwwoBmqmWBBECqji
+         Sk3zkOh/NAIGBS5f0/P0TxBRLAGilD5wAK87KyvSstWFwlT32YANh0Arhi9tCtcCtgiT
+         x8cw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722261097; x=1722865897;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6CO8WnhTC1H7YGD6SVa9aO98KuKo2+EKb84xRYCvBOI=;
+        b=Kx1gWIc0AajA4jHLvYLGWIP242NeaBbwDS73+VBs2jj+pMG2Vky1UPzAHrvjkRAPRI
+         RgOwQrSnIbPAnmY1TT+ASuX83wC6d8R9wy2KGfp5qOta5wN00WjMYTuZNoCAS4cZNvun
+         sKTe6SG1uAmYgHULiSdYK2mvu4V4KmLU8INDmFW5og/Uw7XzrkRUDtKyXPko4iu68zro
+         lboZena8hlrUdkA5uev4cdSdodVl2S22WGH1QTn6sa9q54ZT8an+0phWSAuXYT3lBZsg
+         lgG+SRE3tuUu1DNQYEgvfQa4V1bKck0ibR7z/5fEhZqbPxAqpBg65y1OCXW39KGHob0O
+         UYVA==
+X-Forwarded-Encrypted: i=1; AJvYcCWg0s92WR8zVNREwBn99IpC36eAp6oe/aheYAcpiqSnRdwteq5C1RqOBdZR8MsXDKJ00yB32WIJm7okiXA69thSlKvpSJuzFQcjjzmJgyjOw+B0quQGS7Jhx+SvLQBL
+X-Gm-Message-State: AOJu0YyDYEExV0PqH3hnPURZkT7gDD8sDbtBHzsiGm5gHAnA2ghGGOR7
+	YRilOe7NzQ+rKy7q23F9NUmgKK58kI7li8cmVBz+pp0EoGrS+czI
+X-Google-Smtp-Source: AGHT+IGARp64ICzA9Z1l8URj5gd4y0wI+dWEaat1soYHb86f054IGloD632JjaWFp/QBUafZCtRPTQ==
+X-Received: by 2002:a05:600c:3585:b0:424:71f7:77f2 with SMTP id 5b1f17b1804b1-42811fde0bbmr47663175e9.16.1722261097007;
+        Mon, 29 Jul 2024 06:51:37 -0700 (PDT)
+Received: from [192.168.1.17] (net-2-44-141-41.cust.vodafonedsl.it. [2.44.141.41])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4281ef5a416sm22616965e9.33.2024.07.29.06.51.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 29 Jul 2024 06:51:36 -0700 (PDT)
+Message-ID: <32760fe6-160d-410a-b85d-6f26687f405a@gmail.com>
+Date: Mon, 29 Jul 2024 15:51:34 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -54,56 +76,96 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: mt76: mt7921: fix null pointer access in
- mt792x_mac_link_bss_remove
-To: Bert Karwatzki <spasswolf@web.de>,
- Linux regressions mailing list <regressions@lists.linux.dev>,
- sean.wang@kernel.org, nbd@nbd.name, lorenzo.bianconi@redhat.com
-Cc: sean.wang@mediatek.com, deren.wu@mediatek.com,
- mingyen.hsieh@mediatek.com, linux-wireless@vger.kernel.org,
- linux-mediatek@lists.infradead.org, Mike Lothian <mike@fireburn.co.uk>
-References: <20240718234633.12737-1-sean.wang@kernel.org>
- <0124ff39-7d63-49f8-bacd-3a40ce37ec4d@leemhuis.info>
- <81a6dad7119069d446a982d1c7da4fff5726d26b.camel@web.de>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <81a6dad7119069d446a982d1c7da4fff5726d26b.camel@web.de>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH] wifi: mac80211: check basic rates validity
+To: johannes@sipsolutions.net, sashal@kernel.org, gregkh@linuxfoundation.org
+Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ javier.carrasco.cruz@gmail.com, skhan@linuxfoundation.org,
+ stable@vger.kernel.org, Johannes Berg <johannes.berg@intel.com>,
+ syzbot+07bee335584b04e7c2f8@syzkaller.appspotmail.com
+References: <20240729134318.291424-1-vincenzo.mezzela@gmail.com>
+Content-Language: en-US
+From: vincenzo mezzela <vincenzo.mezzela@gmail.com>
+In-Reply-To: <20240729134318.291424-1-vincenzo.mezzela@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1722261005;64e50b16;
-X-HE-SMSGID: 1sYQlC-0000uL-Pn
 
-On 29.07.24 12:51, Bert Karwatzki wrote:
-> Am Mittwoch, dem 24.07.2024 um 11:36 +0200 schrieb Linux regression tracking
-> (Thorsten Leemhuis):
->>
->> On 19.07.24 01:46, sean.wang@kernel.org wrote:
->>> From: Sean Wang <sean.wang@mediatek.com>
->>>
->>> Fix null pointer access in mt792x_mac_link_bss_remove.
->>>
->>> To prevent null pointer access, we should assign the vif to bss_conf in
->>> mt7921_add_interface. This ensures that subsequent operations on the BSS
->>> can properly reference the correct vif.
->>>
->>> [...]
->>>> Fixes: 1541d63c5fe2 ("wifi: mt76: mt7925: add
->> mt7925_mac_link_bss_remove to remove per-link BSS")
->>> Reported-by: Bert Karwatzki <spasswolf@web.de>
->>> Closes: https://lore.kernel.org/linux-wireless/2fee61f8c903d02a900ca3188c3742c7effd102e.camel@web.de/#b
->>> Signed-off-by: Sean Wang <sean.wang@mediatek.com>
->>
->> TWIMC, Mike (now CCed) ran into the problem and on bugzilla confirmed
->> that this fixes the problem:
->>
->> https://bugzilla.kernel.org/show_bug.cgi?id=219084
->> https://lore.kernel.org/all/CAHbf0-HOS-jdRGvJOBmEgaaox3PDbDSTgnnZkZF9pz37Bmh2iw@mail.gmail.com/
-> 
-> Unfortunately this NULL pointer dereference made it into linux-6.11-rc1.
+On 7/29/24 15:43, Vincenzo Mezzela wrote:
+> From: Johannes Berg <johannes.berg@intel.com>
+>
+> commit ce04abc3fcc62cd5640af981ebfd7c4dc3bded28 upstream.
+>
+> When userspace sets basic rates, it might send us some rates
+> list that's empty or consists of invalid values only. We're
+> currently ignoring invalid values and then may end up with a
+> rates bitmap that's empty, which later results in a warning.
+>
+> Reject the call if there were no valid rates.
+>
+> [ Conflict resolution involved adjusting the patch to accommodate
+> changes in the function signature of ieee80211_parse_bitrates and
+> ieee80211_check_rate_mask ]
+>
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> Reported-by: syzbot+07bee335584b04e7c2f8@syzkaller.appspotmail.com
+> Tested-by: syzbot+07bee335584b04e7c2f8@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=07bee335584b04e7c2f8
+> Signed-off-by: Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
+> ---
+> Hi,
+> please note that a backport of the same patch for v5.15 is available at
+> [1].
+>
+> Thanks,
+> Vincenzo
+>
+> - [1] https://lore.kernel.org/all/20240727125033.1774143-1-vincenzo.mezzela@gmail.com/
+>   net/mac80211/cfg.c | 21 +++++++++++----------
+>   1 file changed, 11 insertions(+), 10 deletions(-)
+>
+> diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+> index 2c60fc165801..d121a3b460f4 100644
+> --- a/net/mac80211/cfg.c
+> +++ b/net/mac80211/cfg.c
+> @@ -2577,6 +2577,17 @@ static int ieee80211_change_bss(struct wiphy *wiphy,
+>   	if (!sband)
+>   		return -EINVAL;
+>   
+> +	if (params->basic_rates) {
+> +		if (!ieee80211_parse_bitrates(sdata->vif.bss_conf.chandef.width,
+> +					      wiphy->bands[sband->band],
+> +					      params->basic_rates,
+> +					      params->basic_rates_len,
+> +					      &sdata->vif.bss_conf.basic_rates))
+> +			return -EINVAL;
+> +		changed |= BSS_CHANGED_BASIC_RATES;
+> +		ieee80211_check_rate_mask(&sdata->deflink);
+> +	}
+> +
+>   	if (params->use_cts_prot >= 0) {
+>   		sdata->vif.bss_conf.use_cts_prot = params->use_cts_prot;
+>   		changed |= BSS_CHANGED_ERP_CTS_PROT;
+> @@ -2600,16 +2611,6 @@ static int ieee80211_change_bss(struct wiphy *wiphy,
+>   		changed |= BSS_CHANGED_ERP_SLOT;
+>   	}
+>   
+> -	if (params->basic_rates) {
+> -		ieee80211_parse_bitrates(sdata->vif.bss_conf.chandef.width,
+> -					 wiphy->bands[sband->band],
+> -					 params->basic_rates,
+> -					 params->basic_rates_len,
+> -					 &sdata->vif.bss_conf.basic_rates);
+> -		changed |= BSS_CHANGED_BASIC_RATES;
+> -		ieee80211_check_rate_mask(&sdata->deflink);
+> -	}
+> -
+>   	if (params->ap_isolate >= 0) {
+>   		if (params->ap_isolate)
+>   			sdata->flags |= IEEE80211_SDATA_DONT_BRIDGE_PACKETS;
+Hi,
+this is a backport for v6.1, I forgot to add the TAG in the subject of 
+the email.
+Should I resend a new patch with the correct version TAG?
 
-Thx for letting us known. Seems this happened due to unlucky timing. But
-the fix afaics will be part of this weeks -net pull , so it should be
-fixed by -rc2 unless something odd happens. Ciao, Thorsten
+Thanks,
+Vincenzo
 
