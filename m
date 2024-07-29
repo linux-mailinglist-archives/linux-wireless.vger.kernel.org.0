@@ -1,133 +1,182 @@
-Return-Path: <linux-wireless+bounces-10602-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10603-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 305BC93EE7A
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 09:35:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0FF393EEEF
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 09:48:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 491771C2166C
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 07:35:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CB89280E12
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 07:48:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D7485C5E;
-	Mon, 29 Jul 2024 07:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2FDB126F2A;
+	Mon, 29 Jul 2024 07:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nBVdmPxn"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="cpVG+w1C"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD2A8563E;
-	Mon, 29 Jul 2024 07:35:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CCD12BF25
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Jul 2024 07:48:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722238511; cv=none; b=C6hda2WGo/4XFX2ADcUf3LnonQR3nLz/45ChvpXs8pkKCq0mzwBndG+B6OjQWGHzwcMNtF7Q8zpbqGKJ9egXHjv2Fo1aZts8HFJ7nM/+BXKME6I/od2MehXKXl/sKgGxIffa7vabaUSN1HpsBpPH8vHmGoG18lQKPD/lreP1MBQ=
+	t=1722239324; cv=none; b=U0SrIABbcgmdyafgeGhT5lJSJ4lSxAnfxS+1aU+lO6wG2P4tzWj2CisSHx/+XsMhpJpfibTTg0RLtPczHCUgcWM9mJFI+munUdLRiunJt5gFeJj51KvdHxAuOjMbIs81vxUhiriFCtSJSRDj0XdUtd6HtZ2gq9X/sqSEHtNQZQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722238511; c=relaxed/simple;
-	bh=gyRMn/ZRT8UeeZ9ZlmeuVUiCI2n55MR2NKAn/5uQ2Kg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y9CJwPp50wjtuYNNxtSmr8vSQ6pT6jU5BYMfFAwEtBQQI/lX721wPmaavSpsK18ImN5RlKpuzlQuRuxoXnqE3g3P/4nd16JLEt7+w++bIt0dFgG+S6LkO4iDEYQafYP6+ICTnIIZeELAFxsiXco6ygGg9FAWsDHEho+SpHXHE+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nBVdmPxn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A545C32786;
-	Mon, 29 Jul 2024 07:35:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722238510;
-	bh=gyRMn/ZRT8UeeZ9ZlmeuVUiCI2n55MR2NKAn/5uQ2Kg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nBVdmPxnfwUe1lhpDN0VPiG2GuVMSYvhsM4D1IHWiD0xODPoCJGO3it9K0KaB2xOq
-	 Cye3iXX2TJqQp0bZ78Tsx37FqW239ItnlIxul5XDRy9n+R/yB3DrYOchmyuLd8FN++
-	 WLuwP2IyHoCsHZtxgHoHk+MwZTpUbOuEGJ4KhF+apHp5qZcD1HMUxoyDwzHmNHFU1n
-	 VfI8uDt91dwyWkAJKELGvXj4mkVljagKqfNfTglCmzVfbgy3LGK7+IoXeAkGK5bEtI
-	 3ALizYx+3K1KnSxOS3tL5QEYK5uQPaQZkEfm2kdAwHGkpQFYvu0r8xa6CrYMXobehf
-	 q55ZelSpdacnQ==
-Message-ID: <1724f480-369d-4b4a-9384-1c6b33b00433@kernel.org>
-Date: Mon, 29 Jul 2024 09:35:00 +0200
+	s=arc-20240116; t=1722239324; c=relaxed/simple;
+	bh=nMEoiC+5kl4Tal9N/7gG+vmNS/jnhK4N3vlnx3v6jJk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fTWK1UEGcyuLuTPDpXUR1/iauP2RMltkoKzpU+qUWxtDLGAt1x2a4EG9eQZKNSsdy8KLQtox35S0z5Y0zwGg+tXhLrvRQ0ojFUtXRnDtqMnCKQjcdDHphEqPlmGI2BXXjpV9N5PGee+lb4ajfbZP8zGyq63XgAFuuxVkqjb0vqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=cpVG+w1C; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 46T7mQJO13673723, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1722239306; bh=nMEoiC+5kl4Tal9N/7gG+vmNS/jnhK4N3vlnx3v6jJk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=cpVG+w1CdoyOl1kB23bH+61UkqL9HYCHj4h4e4vaLe/EGM3XxQrjj4dc8zydESzHi
+	 IQn+L92Kjk5Wcko6Av9xPcXevJvgJoI0zQQZzg5qrPxvMQ3/7RFYJ66p780BTYCqjd
+	 KhX8Mw84gRxchhsBWa68HSDoSSDf2W5CIeniosOV5On+0XhZFf4eHe3IK6iItSyn4c
+	 bOwYd4xsDDW53vJkrXhI43jRo9YyLvfoo267sMZyNTo2EyzIkC83/JAaEYZKluZ87e
+	 YCXDo7aX9TErQeiM9j277HPM/l0znWu4WVhqVr/Iz5YFBFHiTZbuuHNMv1xhMS5SKB
+	 gps1CS8pGOUNQ==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 46T7mQJO13673723
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 29 Jul 2024 15:48:26 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 29 Jul 2024 15:48:26 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 29 Jul
+ 2024 15:48:26 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>
+Subject: [PATCH v2] wifi: mac80211: don't use rate mask for offchannel TX neither
+Date: Mon, 29 Jul 2024 15:48:16 +0800
+Message-ID: <20240729074816.20323-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/5] dt-bindings: net: wireless: brcm4329-fmac: add
- clock description for AP6275P Wi-Fi device
-To: Jacobe Zang <jacobe.zang@wesion.com>, robh@kernel.org,
- krzk+dt@kernel.org, heiko@sntech.de, kvalo@kernel.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- conor+dt@kernel.org, arend.vanspriel@broadcom.com
-Cc: efectn@protonmail.com, dsimic@manjaro.org, jagan@edgeble.ai,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
- arend@broadcom.com, linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- megi@xff.cz, duoming@zju.edu.cn, bhelgaas@google.com,
- minipli@grsecurity.net, brcm80211@lists.linux.dev,
- brcm80211-dev-list.pdl@broadcom.com, nick@khadas.com
-References: <20240729070102.3770318-1-jacobe.zang@wesion.com>
- <20240729070102.3770318-3-jacobe.zang@wesion.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
- QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
- gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
- /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
- iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
- VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
- 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
- xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
- eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
- AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
- MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
- Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
- ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
- vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
- oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
- lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
- t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
- uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
- 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
- 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240729070102.3770318-3-jacobe.zang@wesion.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-On 29/07/2024 09:00, Jacobe Zang wrote:
-> Add clocks and clock-names for brcm4329-fmac.
+Like the commit ab9177d83c04 ("wifi: mac80211: don't use rate mask for
+scanning"), ignore incorrect settings to avoid no supported rate warning
+reported by syzbot.
 
-Why? Which devices have it? If only your newest addon, then squash the
-patches and add appropriate allOf:if:then disallowing the clocks for
-others. Or maybe all of them have it? Why commit msg does not explain
-anything about the hardware?
+The syzbot did bisect and found cause is commit 9df66d5b9f45 ("cfg80211:
+fix default HE tx bitrate mask in 2G band"), which however corrects
+bitmask of HE MCS and recognizes correctly settings of empty legacy rate
+plus HE MCS rate instead of returning -EINVAL.
 
-> 
-> Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
-> ---
+As suggestions [1], follow the change of SCAN TX to consider this case of
+offchannel TX as well.
 
-Best regards,
-Krzysztof
+[1] https://lore.kernel.org/linux-wireless/6ab2dc9c3afe753ca6fdcdd1421e7a1f47e87b84.camel@sipsolutions.net/T/#m2ac2a6d2be06a37c9c47a3d8a44b4f647ed4f024
+
+Reported-by: syzbot+8dd98a9e98ee28dc484a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-wireless/000000000000fdef8706191a3f7b@google.com/
+Fixes: 9df66d5b9f45 ("cfg80211: fix default HE tx bitrate mask in 2G band")
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+v2:
+  - change along with suggestions like SCAN_TX flag
+---
+ include/net/mac80211.h    | 7 ++++---
+ net/mac80211/offchannel.c | 1 +
+ net/mac80211/rate.c       | 2 +-
+ net/mac80211/scan.c       | 2 +-
+ net/mac80211/tx.c         | 2 +-
+ 5 files changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 45ad37adbe32..7b3f56d862de 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -953,8 +953,9 @@ enum mac80211_tx_info_flags {
+  *	of their QoS TID or other priority field values.
+  * @IEEE80211_TX_CTRL_MCAST_MLO_FIRST_TX: first MLO TX, used mostly internally
+  *	for sequence number assignment
+- * @IEEE80211_TX_CTRL_SCAN_TX: Indicates that this frame is transmitted
+- *	due to scanning, not in normal operation on the interface.
++ * @IEEE80211_TX_CTRL_DONT_USE_RATE_MASK: Don't use rate mask for this frame
++ *	which is transmitted due to scanning or offchannel TX, not in normal
++ *	operation on the interface.
+  * @IEEE80211_TX_CTRL_MLO_LINK: If not @IEEE80211_LINK_UNSPECIFIED, this
+  *	frame should be transmitted on the specific link. This really is
+  *	only relevant for frames that do not have data present, and is
+@@ -975,7 +976,7 @@ enum mac80211_tx_control_flags {
+ 	IEEE80211_TX_CTRL_NO_SEQNO		= BIT(7),
+ 	IEEE80211_TX_CTRL_DONT_REORDER		= BIT(8),
+ 	IEEE80211_TX_CTRL_MCAST_MLO_FIRST_TX	= BIT(9),
+-	IEEE80211_TX_CTRL_SCAN_TX		= BIT(10),
++	IEEE80211_TX_CTRL_DONT_USE_RATE_MASK	= BIT(10),
+ 	IEEE80211_TX_CTRL_MLO_LINK		= 0xf0000000,
+ };
+ 
+diff --git a/net/mac80211/offchannel.c b/net/mac80211/offchannel.c
+index 65e1e9e971fd..5810d938edc4 100644
+--- a/net/mac80211/offchannel.c
++++ b/net/mac80211/offchannel.c
+@@ -964,6 +964,7 @@ int ieee80211_mgmt_tx(struct wiphy *wiphy, struct wireless_dev *wdev,
+ 	}
+ 
+ 	IEEE80211_SKB_CB(skb)->flags = flags;
++	IEEE80211_SKB_CB(skb)->control.flags |= IEEE80211_TX_CTRL_DONT_USE_RATE_MASK;
+ 
+ 	skb->dev = sdata->dev;
+ 
+diff --git a/net/mac80211/rate.c b/net/mac80211/rate.c
+index 4dc1def69548..3dc9752188d5 100644
+--- a/net/mac80211/rate.c
++++ b/net/mac80211/rate.c
+@@ -890,7 +890,7 @@ void ieee80211_get_tx_rates(struct ieee80211_vif *vif,
+ 	if (ieee80211_is_tx_data(skb))
+ 		rate_control_apply_mask(sdata, sta, sband, dest, max_rates);
+ 
+-	if (!(info->control.flags & IEEE80211_TX_CTRL_SCAN_TX))
++	if (!(info->control.flags & IEEE80211_TX_CTRL_DONT_USE_RATE_MASK))
+ 		mask = sdata->rc_rateidx_mask[info->band];
+ 
+ 	if (dest[0].idx < 0)
+diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
+index b5f2df61c7f6..1c5d99975ad0 100644
+--- a/net/mac80211/scan.c
++++ b/net/mac80211/scan.c
+@@ -649,7 +649,7 @@ static void ieee80211_send_scan_probe_req(struct ieee80211_sub_if_data *sdata,
+ 				cpu_to_le16(IEEE80211_SN_TO_SEQ(sn));
+ 		}
+ 		IEEE80211_SKB_CB(skb)->flags |= tx_flags;
+-		IEEE80211_SKB_CB(skb)->control.flags |= IEEE80211_TX_CTRL_SCAN_TX;
++		IEEE80211_SKB_CB(skb)->control.flags |= IEEE80211_TX_CTRL_DONT_USE_RATE_MASK;
+ 		ieee80211_tx_skb_tid_band(sdata, skb, 7, channel->band);
+ 	}
+ }
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index f861d99e5f05..f14a2a388e60 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -699,7 +699,7 @@ ieee80211_tx_h_rate_ctrl(struct ieee80211_tx_data *tx)
+ 	txrc.skb = tx->skb;
+ 	txrc.reported_rate.idx = -1;
+ 
+-	if (unlikely(info->control.flags & IEEE80211_TX_CTRL_SCAN_TX)) {
++	if (unlikely(info->control.flags & IEEE80211_TX_CTRL_DONT_USE_RATE_MASK)) {
+ 		txrc.rate_idx_mask = ~0;
+ 	} else {
+ 		txrc.rate_idx_mask = tx->sdata->rc_rateidx_mask[info->band];
+-- 
+2.25.1
 
 
