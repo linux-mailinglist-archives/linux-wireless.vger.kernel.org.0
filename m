@@ -1,147 +1,102 @@
-Return-Path: <linux-wireless+bounces-10637-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10638-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24B2793FC5D
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 19:22:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D624193FC7A
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 19:31:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0412280E2A
-	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 17:22:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9183D28248C
+	for <lists+linux-wireless@lfdr.de>; Mon, 29 Jul 2024 17:31:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A5716B39D;
-	Mon, 29 Jul 2024 17:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D9C681204;
+	Mon, 29 Jul 2024 17:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q0V64W6v"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="jdYUeCVJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9731215ECD0
-	for <linux-wireless@vger.kernel.org>; Mon, 29 Jul 2024 17:20:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB2C5028C
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Jul 2024 17:31:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722273660; cv=none; b=IdCEXi9iDw/M6rQYPqHVjzvdJTgMovX+eHgJGVBour+rIwPXeoyfz6PHLzNYfue4auovFkgSY1y9hYcSh5PelGCOa8HcpcSAIo0XU4JlEWcozM90UmCKA4ny3171u/IRItXtl4p8g1k4dwVqc66gBLkOEyAt8nI3NFq1Aw3crQY=
+	t=1722274315; cv=none; b=G4n/XI9Op2TgFE9eLjxG3MLm3n5FBbeQ8KHuba9FFrQ3bExhbYG1T6wS0Y8jznT22LDY3TB6i7FzTa9TnRhpTBYEQ2axXoq/kXN5XDZ/vU+K1ybXmr7RQeKZ5QhTX9CUSp2Dt47b2G9jfS3ZivhxJYR7XP7eausIrcGFeaug0+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722273660; c=relaxed/simple;
-	bh=4UhQzKGlL0ekd0gFFlMSc+Vr66BfAa4rrLPBIqA536M=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IViJujQrQgpu48GAM7lNGSGLoWuGaERB8Fa72JWRcj2bARtrL4o+7lOGe6YD68Y2UMhgh34vsx35AVm62bwK6664IrVCC34TNjmK/t6TO7bhFdKkw0YHH8eWuXLEgwRlq6RZKms8+m8xJABYCG+o0NluKl0PuICuwSubSX8yCbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q0V64W6v; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1722273659; x=1753809659;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=4UhQzKGlL0ekd0gFFlMSc+Vr66BfAa4rrLPBIqA536M=;
-  b=Q0V64W6v2b3usjznV3YgCUkz4deIQFHTLnqx2DLo51CuMFhOr84g6u3e
-   cNPnYqCOX9+4pmtD1aVR8X0XWlQvwB7vAUvcT76XtT8v8wcE8/NTu5Sbo
-   dFxF/ot/fmzDRB33EeWQ/z2dUpEJmU+E+pOr/9jbVdKQdai5HAnaA/JjN
-   oqaCo0qoEjONSxmuvBkI27xszKHXu4LY5BuooW47HZlap52HRCVcBYumh
-   K17cRGEbmtdkhYm1uvHoXHM++AvrY4G9p1pqHfiAmlcwjqtaWxZlmXzKW
-   VX/59yR0JnyG0vIMmmDvfzj4b62IKqvL1U+1xZlBz3VAUOMjycCuZyPio
-   g==;
-X-CSE-ConnectionGUID: pvh22pG2TgiLr2b82zkv+Q==
-X-CSE-MsgGUID: iRiFAfEYTjW2L8vgCMWwDg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="31445638"
-X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; 
-   d="scan'208";a="31445638"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2024 10:20:59 -0700
-X-CSE-ConnectionGUID: 5mBXfpOeQ7mIniUGTkKhGQ==
-X-CSE-MsgGUID: +nT3EISpSs+j/COmcdyqOA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; 
-   d="scan'208";a="54288373"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2024 10:20:57 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Daniel Gabay <daniel.gabay@intel.com>
-Subject: [PATCH 17/17] wifi: iwlwifi: mvm: add and improve EMLSR debug info
-Date: Mon, 29 Jul 2024 20:20:18 +0300
-Message-Id: <20240729201718.02bd85837c87.I85480c9c4fab0f7a574dd69cbeafd82674146921@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240729172018.1993751-1-miriam.rachel.korenblit@intel.com>
-References: <20240729172018.1993751-1-miriam.rachel.korenblit@intel.com>
+	s=arc-20240116; t=1722274315; c=relaxed/simple;
+	bh=4kagxN/QA1mE29wM0zSskACI7b/JDPoAltX6MngHAkY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Mno9uGcPmk2sF5sEWj5Ckk50Uqpxoy9i8wQOxfGjw8HsZNvRZ1Bjynlf3fF75lwJsBY9Bwn+iZcp1Or56Hkz9X02GxBfr4QrFwW04Ad2fjjh6soYvMCKHvebyrno9Ef/IaKd+TOREAhfGnQoE0UtzsfIP8X8DXWJfn2YVmlJlLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=jdYUeCVJ; arc=none smtp.client-ip=67.231.154.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
+	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 26B3E30352A
+	for <linux-wireless@vger.kernel.org>; Mon, 29 Jul 2024 17:31:52 +0000 (UTC)
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 0CE3C8C0090;
+	Mon, 29 Jul 2024 17:31:43 +0000 (UTC)
+Received: from [192.168.100.159] (unknown [50.251.239.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id 5350513C2B0;
+	Mon, 29 Jul 2024 10:31:43 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 5350513C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1722274303;
+	bh=4kagxN/QA1mE29wM0zSskACI7b/JDPoAltX6MngHAkY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=jdYUeCVJ+/vYGDc9lYyXBvHjbhDgJIJEkOEiV9rEfm/CxdY/d9x0rU0mfMAZXNLt7
+	 H+RV6uCxFFFCh4YGSuLCduiJDU3p1qOcCf/f6sssNbM6m/HqPlR0DMQ/Z+ORWt2nhW
+	 O8BeDkqdg66nvwJZ947J6wBC6fFT++esX9oLo0a8=
+Message-ID: <eb5c63dc-8934-50fe-3b08-24db25c80bb3@candelatech.com>
+Date: Mon, 29 Jul 2024 10:31:43 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 08/17] wifi: iwlwifi: mvm: set ul_mu_data_disable when
+ needed
+Content-Language: en-US
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+ johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,
+ Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+References: <20240729172018.1993751-1-miriam.rachel.korenblit@intel.com>
+ <20240729201718.fef270d2995b.I328237837df30e1cb98764987eaaf8e8993e058c@changeid>
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <20240729201718.fef270d2995b.I328237837df30e1cb98764987eaaf8e8993e058c@changeid>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MDID: 1722274305-ISB5-UUnAegG
+X-MDID-O:
+ us5;at1;1722274305;ISB5-UUnAegG;<greearb@candelatech.com>;75a4f4635234d3da72e9a6f449db0bf8
 
-Add prints of the per-link MPDU counters, and change the other MPDU
-counters related prints to use DL_INFO, which is already used for all
-EMLSR tests anyway, instead of DL_STATS which pollutes the logs with all
-the RX signal info.
+On 7/29/24 10:20, Miri Korenblit wrote:
+> From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+> 
+> The firmware needs to know what we had in the HE CAP, propagate that
+> setting to the firmware through the LINK command.
 
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Daniel Gabay <daniel.gabay@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c | 2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rx.c           | 7 +++++--
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c          | 2 +-
- 3 files changed, 7 insertions(+), 4 deletions(-)
+Hello Emmanuel,
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-index ed30247de407..72bb6865dd63 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-@@ -223,7 +223,7 @@ static void iwl_mvm_restart_mpdu_count(struct iwl_mvm *mvm,
- 		spin_unlock_bh(&mvmsta->mpdu_counters[q].lock);
- 	}
- 
--	IWL_DEBUG_STATS(mvm, "MPDU counters are cleared\n");
-+	IWL_DEBUG_INFO(mvm, "MPDU counters are cleared\n");
- }
- 
- static int iwl_mvm_esr_mode_active(struct iwl_mvm *mvm,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
-index bc8078875c5a..3b5bbece63f6 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
-@@ -1009,8 +1009,8 @@ static void iwl_mvm_update_esr_mode_tpt(struct iwl_mvm *mvm)
- 		spin_unlock_bh(&mvmsta->mpdu_counters[q].lock);
- 	}
- 
--	IWL_DEBUG_STATS(mvm, "total Tx MPDUs: %ld. total Rx MPDUs: %ld\n",
--			total_tx, total_rx);
-+	IWL_DEBUG_INFO(mvm, "total Tx MPDUs: %ld. total Rx MPDUs: %ld\n",
-+		       total_tx, total_rx);
- 
- 	/* If we don't have enough MPDUs - exit EMLSR */
- 	if (total_tx < IWL_MVM_ENTER_ESR_TPT_THRESH &&
-@@ -1020,6 +1020,9 @@ static void iwl_mvm_update_esr_mode_tpt(struct iwl_mvm *mvm)
- 		return;
- 	}
- 
-+	IWL_DEBUG_INFO(mvm, "Secondary Link %d: Tx MPDUs: %ld. Rx MPDUs: %ld\n",
-+		       sec_link, sec_link_tx, sec_link_rx);
-+
- 	/* Calculate the percentage of the secondary link TX/RX */
- 	sec_link_tx_perc = total_tx ? sec_link_tx * 100 / total_tx : 0;
- 	sec_link_rx_perc = total_rx ? sec_link_rx * 100 / total_rx : 0;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-index 550c97a014b9..cf4d6425f634 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-@@ -4455,7 +4455,7 @@ void iwl_mvm_count_mpdu(struct iwl_mvm_sta *mvm_sta, u8 fw_sta_id, u32 count,
- 		       sizeof(queue_counter->per_link));
- 		queue_counter->window_start = jiffies;
- 
--		IWL_DEBUG_STATS(mvm, "MPDU counters are cleared\n");
-+		IWL_DEBUG_INFO(mvm, "MPDU counters are cleared\n");
- 	}
- 
- 	for (int i = 0; i < IWL_FW_MAX_LINK_ID; i++)
+Does this happen to fix a firmware crash?  I hit a FW crash when doing
+be200 upload test to an mtk7996 testbed AP, and possibly it would
+trigger this...
+
+Thanks,
+Ben
+
 -- 
-2.34.1
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
 
 
