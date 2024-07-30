@@ -1,94 +1,94 @@
-Return-Path: <linux-wireless+bounces-10670-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10671-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 221E3940A1A
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 09:41:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C45B5940C2B
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 10:48:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A56D4282570
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 07:41:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80668288313
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 08:48:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72BE18EFF3;
-	Tue, 30 Jul 2024 07:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D5FA18EFE4;
+	Tue, 30 Jul 2024 08:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="DuFs5c1r"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LbcB6YLB"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830891684AE
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Jul 2024 07:41:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B6C43152;
+	Tue, 30 Jul 2024 08:48:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722325281; cv=none; b=IbgX65Kc3yn7MCqC/ogxzHmHC2bMmhqjNsfqEGJmqefCKIpGP5KWHU/mvgR9Z1TunKo75QWCe8bkpmtR9hcZgvdu1glHhqroG5CZ0DrlOQ0HKGHmJkxxpyR3Le90KljTSiSeGI4wiQHrdiX5B5aVkcW2NWScGy2B8J5490OXcpg=
+	t=1722329299; cv=none; b=WOMXGZSyQdnSCsyZ+Lp2bquxm3W19S+wMddqlrim1Ux0AMATjVZegAG3XqjT1QhSyATqRN88h3XuTWKLzcJBEPnaC9Vnl0DMwLtVVgbKRrw8EjL/lGLiXheEbnYPhTSO9JZEChyOG93h9SBqwRGk4lIFzhh3JpWBV1EvBis/780=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722325281; c=relaxed/simple;
-	bh=NDxlxKIyHniNqtEnr8ZSJjTPTv/uLi/EH7kvWNDrCpI=;
-	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID:Date; b=e0ZNfIno8stKhtqhyKc66IVMqTZrAN0vCqa2pQejPm/h2O9xfF9HCXmPLsjwlZw7XfOPcHPnf44oeFpPHyxMyMUvdMMYy2JQnyPGzfS1UJip2UY5O2PKDlzvYF0LyMF3g5wSLgwzwkOD6eQsBnVa5AZHjsLEjietyRHKrCnbmHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=DuFs5c1r; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 46U7exjaF859537, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1722325259; bh=NDxlxKIyHniNqtEnr8ZSJjTPTv/uLi/EH7kvWNDrCpI=;
-	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Content-Transfer-Encoding:Message-ID:Date;
-	b=DuFs5c1rsCyDfTuuPE+smLw1IdBIQYnye8SM/Qte/1myJX33dqXsPlFdiO/C9pves
-	 hWCHbEAOpBcnDawF2kK0VMubn/4h9xZnx88X6V5prwzO1+9yySF1qYhy8BkqMnjvl6
-	 F3PdUugcucrbv6kpAeephV/n3WYy6tRxk2VSujvYW2hIV4BSAHYXnPc8m1syXl7Cwj
-	 IbKBAOgVW0kuckA17FKm/dQGJwf/debciEQehTHao0omfs9qqhGVC9JBbIDd8HBtSq
-	 llWffjeR6MpA1HDxEfeaYzDBMVDqUjUex/GsPshti9ip7ambzJWjAGGE2AtKpsFBCa
-	 842rwKKrvdC1w==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 46U7exjaF859537
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 30 Jul 2024 15:40:59 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 30 Jul 2024 15:40:59 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 30 Jul
- 2024 15:40:58 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: " =?utf-8?q?Marcin_=C5=9Alusarz?= " <marcin.slusarz@gmail.com>,
-        <linux-wireless@vger.kernel.org>
-CC: =?utf-8?q?Marcin_=C5=9Alusarz?= <mslusarz@renau.com>,
-        Po-Hao Huang
-	<phhuang@realtek.com>, Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo
-	<kvalo@kernel.org>
-Subject: Re: [PATCH] wifi: rtw88: usb: unbreak multicast
-In-Reply-To: <20240614102835.518348-1-mslusarz@renau.com>
-References: <CA+GA0_vcUneM4Uo8fg0=4sCK049uhjv+NskotRbNg9Em0cnyUQ@mail.gmail.com> <20240614102835.518348-1-mslusarz@renau.com>
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1722329299; c=relaxed/simple;
+	bh=2ed6FnghtNjFIlxxsxnvwh86CKxY7CD4v+Yuh554HAw=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=St7pmAovLNlbNsynzFpUAQkrrUzJSqbxca5IdPqJOwTcfcZRKVFtQ8FptJDIkuUzs3nVvBITRp2ZlgteD6O1jjup1sSqZdqPY1V3zbEWrTma+V8v8XNP/Kfwri+UaGNWInG5QVLzgO+RODsCyyP10utvTiTb70aaJTJps1vXpho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LbcB6YLB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F139C32782;
+	Tue, 30 Jul 2024 08:48:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722329298;
+	bh=2ed6FnghtNjFIlxxsxnvwh86CKxY7CD4v+Yuh554HAw=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=LbcB6YLBBxlQfe9lMCGIrIdZCQ1dPiKY5SKgEABJ03oSBab9Uu4Bai+Y2NLzep6td
+	 9QCcffLHeMfi9F2n9qsd8yj1vFfZsPNVa2pebUO3b9s81reFsXNL252kK3guhuSium
+	 K06myIIh7WAB6TcxP+oCZSJ9hhUMrysUDX+mtINQ/iujrOme0RBnUNc1N7PN2Jsw6N
+	 jBCi5prb0RL8Idcic08AzrOd4lBHAniwB1mDiHZUayPCE5vNW1fxDO/UXmexIw7+bz
+	 +Cn54kaMPHD5ApgBnuNxwoAIaR5/43LasZWm5CKQquMbs2pQzhpa98pTPQxYwmA550
+	 846LUOjYN+emA==
+From: Kalle Valo <kvalo@kernel.org>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: linux-kernel@vger.kernel.org,  Brian Norris <briannorris@chromium.org>,
+  Francesco Dolcini <francesco@dolcini.it>,
+  linux-wireless@vger.kernel.org,  David Lin <yu-hao.lin@nxp.com>
+Subject: Re: [PATCH] wifi: mwifiex: increase max_num_akm_suites
+References: <20240530130156.1651174-1-s.hauer@pengutronix.de>
+	<ZpY4-PpxgMOH0wQB@pengutronix.de>
+Date: Tue, 30 Jul 2024 11:48:15 +0300
+In-Reply-To: <ZpY4-PpxgMOH0wQB@pengutronix.de> (Sascha Hauer's message of
+	"Tue, 16 Jul 2024 11:10:16 +0200")
+Message-ID: <87bk2f9sfk.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-Message-ID: <339e1162-9604-46f9-86bd-5f7aacbca4b9@RTEXMBS04.realtek.com.tw>
-Date: Tue, 30 Jul 2024 15:40:58 +0800
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+Content-Type: text/plain
 
-IiA9P3V0Zi04P3E/TWFyY2luXz1DNT05QWx1c2Fyej89ICIgPG1hcmNpbi5zbHVzYXJ6QGdtYWls
-LmNvbT4gd3JvdGU6Cgo+IEhpZ2ggcXVldWUgaXMgbm90IGZ1bmN0aW9uaW5nLCBmb3Igc29tZSBy
-ZWFzb24uCj4gQnJva2VuIGJ5IDA3NmY3ODZhMGFlMTRhODFmNDAzMTRiOTZhMmQ4MTVlMjY0YmMy
-MTMKPiAKPiBTaWduZWQtb2ZmLWJ5OiBNYXJjaW4gxZpsdXNhcnogPG1zbHVzYXJ6QHJlbmF1LmNv
-bT4KPiBDYzogUG8tSGFvIEh1YW5nIDxwaGh1YW5nQHJlYWx0ZWsuY29tPgo+IENjOiBQaW5nLUtl
-IFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4KPiBDYzogS2FsbGUgVmFsbyA8a3ZhbG9Aa2VybmVs
-Lm9yZz4KClNtaXRoIHNlbnQgYSBwYXRjaCBbMV0gdGhhdCBmaW5kcyBjYXVzZSBhbmQgZml4ZXMg
-dGhlIG11bHRpY2FzdCBwcm9ibGVtLgpIb3dldmVyLCB2ZW5kb3IgZHJpdmVyIGhhcyBiZWVuIGNo
-YW5nZWQgdGhlIGZsb3cgYSBsaXR0bHQgYml0LCB3ZSB3aWxsIG1ha2UKYW4gbmV3IHBhdGNoIGZv
-ciB0aGlzIHByb2JsZW0uCgpTbywgc2V0IHBhdGNoc2V0IHN0YXRlIHRvIFN1cGVyc2VkZWQKClsx
-XSBodHRwczovL2xvcmUua2VybmVsLm9yZy9saW51eC13aXJlbGVzcy85MTc0YTc3Ni00NzcxLTQz
-NTEtODVmYS00NzZlMjQwZDhhY2VAZ21haWwuY29tL1QvI21lZTJjYjhhZmIwOWY0YmVlMzMzYWIw
-NDFkZWZlMjA1MjVkNzdmNTllCgo=
+Sascha Hauer <s.hauer@pengutronix.de> writes:
+
+> On Thu, May 30, 2024 at 03:01:56PM +0200, Sascha Hauer wrote:
+>> The maximum number of AKM suites will be set to two if not specified by
+>> the driver. Set it to CFG80211_MAX_NUM_AKM_SUITES to let userspace
+>> specify up to ten AKM suites in the akm_suites array.
+>> 
+>> Without only the first two AKM suites will be used, further ones are
+>> ignored.
+>> 
+>> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+>> ---
+>> 
+>> Current wpa_supplicant/hostapd only put a maximum of two into the
+>> akm_suites array as well, a patch changing this can be found here:
+>> http://lists.infradead.org/pipermail/hostap/2024-May/042720.html
+>
+> This was recently merged:
+> http://lists.infradead.org/pipermail/hostap/2024-July/042802.html
+>
+> Kalle, given that userspace now would be able to make use of a bigger
+> AKM suites array, can we merge this patch for the kernel as well?
+
+I changed the state to New now so it's back in my queue.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
