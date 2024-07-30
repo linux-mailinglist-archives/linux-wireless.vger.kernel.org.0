@@ -1,153 +1,179 @@
-Return-Path: <linux-wireless+bounces-10661-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10662-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D8739406BD
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 07:11:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A3B09407BE
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 07:47:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F0771C226E8
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 05:11:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A70281C22279
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 05:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 798511662E8;
-	Tue, 30 Jul 2024 05:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6590F14883F;
+	Tue, 30 Jul 2024 05:47:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="GtUlpQMk"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="tla8638U"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB8B79B8E;
-	Tue, 30 Jul 2024 05:11:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29BF48C0B
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Jul 2024 05:47:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722316279; cv=none; b=jC7QSwqzyKb89U30soja6HgripiXna//x2uWXYGz6jrHpjqNJUGWRx6podiFopJ7dxk1a8dZSlt9G6ZYiA8/bz9oPjosTVnMH8VJ0p+r9DS0zdVKh8sjVxsnp3vCwiy1yo/4iNotbR811GN0xM8y8FZewSUrBwA1HPYuAajT+I0=
+	t=1722318473; cv=none; b=bWfL8HBPyd3hp1g6kFu9Py0LgIli4DQynTHSioxii1lo9VxxJK5BDzGxeBfwyUAkUDzfB8Qct6aVDCgbCOvRS0dFK/NezpFyrnLL4Kb8wGt68bppewXdId9TOHyrXlHRp52LPMO7FXel2+Rn7GvmNblotdiW8NO9Vi3VdmmT8oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722316279; c=relaxed/simple;
-	bh=y+xJg/pVcJ1y/GxBn6qUhLzXw2h4YczuJeQD8VE2xG4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KiGKsBPqC8OiW/M2w3nbc/ajZDlKdE0vqZWtTF7d+snQXLGkLcRKiJPl4HHTQwEUaaIP2XWRBcitBCTDIwylvBtMjwMmcc9YkBtyNStc6lqPVeXwXCeUI9Ck0rQIzlqlG1N2uxOQn9rxgBX0kfVgp003j/eeCotDMunnlj+CSzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=GtUlpQMk; arc=none smtp.client-ip=212.227.15.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1722316220; x=1722921020; i=wahrenst@gmx.net;
-	bh=g2qT0PqPzss90wszs6Vw/sUubex/AK94mW4YSO8z+6g=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=GtUlpQMkqXYlCdfWx8/dX0Wq2i6sof9gWcfWs64aI6BJI3qKXo5+AodwEWK9DWlA
-	 qdbZJl00uu9DO9wgVIbwnYx8jfGZ0s5QYVYeOwxNJA+3dXSLSlFhuhDug0PkV83LI
-	 HJciUHdFGIpJrkMfT/yjUkyP2mR+cXomXFm8XaIxS0emkgkyso5T4BJaNqAGSLz59
-	 nOlEZfPY3HD72EzVhl0enqT6jUq16emh66uYAHxezsQUB4wiCFoo0pOsoa+Rf/bCu
-	 kBQoB3127MY4K+K1SOFniXT7bztwsts/ohM52GHds0Ccj8kU6eJts9Agn1FN2l546
-	 ZO3uZL9hAi5j4qWOdg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.1.127] ([37.4.248.43]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mqs0R-1rvQLd2h8b-00m67u; Tue, 30
- Jul 2024 07:10:20 +0200
-Message-ID: <0b2cb5ca-f134-4733-a931-9e192e47c65d@gmx.net>
-Date: Tue, 30 Jul 2024 07:10:16 +0200
+	s=arc-20240116; t=1722318473; c=relaxed/simple;
+	bh=Z5Z9YHSuRj9ofDOALBIPerwSPIz3+O8TZhzF26ljdx8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Th9v60VSMgE6CbbuNrlMz5N72qwmq0GnGS8UJZ0Cp3l3n0HFvaLXjlJXOISo9YLCX7K8iTuViOg2+pem4VhdhSus9WEwey89nB6amjpOEHFMn7ec4Ath87hzRWAkOlzYfZ5acEtiCWsgJUzxCBZ4UBxM6pdgQ1eLT6cZk4H451Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=tla8638U; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 46U5lZt85746319, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1722318455; bh=Z5Z9YHSuRj9ofDOALBIPerwSPIz3+O8TZhzF26ljdx8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=tla8638U6S6mRqCET0yWfBYYvCeJvQKERlAumso42Jv586l4zY6lVNb7rBrs4DSpd
+	 oUl6AqnPTVwBzkjaEmjVyDrIPqPTBJeI+e0cz93ozD2NGJfjgk/Nsbgj5jS79lr/Ay
+	 O3QH3SQTqOdiMf50/eVc8DNwOElEcIcPw4QtundoxnXU3hfsP3e3Lk30ljZgPzKqGr
+	 ViiAIzyB3socCZ9CaNDQyAE9OEpHgv7YfK4ns7ejcu73QUoo8gaglieAVTnpz3h5EJ
+	 KkjxGpEsSopf4sEQFrtfKhExbkJhhn0dhlwnZTiaHZOqoyWxm0qhRMQ3KjyuaIWNtE
+	 Apkain2jSaMmQ==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 46U5lZt85746319
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 30 Jul 2024 13:47:35 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 30 Jul 2024 13:47:35 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 30 Jul 2024 13:47:35 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
+ 15.01.2507.035; Tue, 30 Jul 2024 13:47:35 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: Sascha Hauer <sha@pengutronix.de>
+Subject: RE: [PATCH 4/4] wifi: rtw88: Enable USB RX aggregation for 8822c/8822b/8821c
+Thread-Topic: [PATCH 4/4] wifi: rtw88: Enable USB RX aggregation for
+ 8822c/8822b/8821c
+Thread-Index: AQHa4SaYNUpCVu7qYkCj5dGtFlHeg7IOvtDw
+Date: Tue, 30 Jul 2024 05:47:35 +0000
+Message-ID: <a4e147a24d5d4165a336432d89773025@realtek.com>
+References: <c03390ce-34c2-42dd-9bd6-b231bb1f2fae@gmail.com>
+ <323190ee-5b88-4d37-bad0-b721cdfead1a@gmail.com>
+In-Reply-To: <323190ee-5b88-4d37-bad0-b721cdfead1a@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 4/5] wifi: brcmfmac: Add optional lpo clock enable
- support
-To: Jacobe Zang <jacobe.zang@wesion.com>, robh@kernel.org,
- krzk+dt@kernel.org, heiko@sntech.de, kvalo@kernel.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, conor+dt@kernel.org
-Cc: efectn@protonmail.com, dsimic@manjaro.org, jagan@edgeble.ai,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
- arend@broadcom.com, linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- megi@xff.cz, duoming@zju.edu.cn, bhelgaas@google.com,
- minipli@grsecurity.net, brcm80211@lists.linux.dev,
- brcm80211-dev-list.pdl@broadcom.com, nick@khadas.com
-References: <20240730033053.4092132-1-jacobe.zang@wesion.com>
- <20240730033053.4092132-5-jacobe.zang@wesion.com>
-Content-Language: en-US
-From: Stefan Wahren <wahrenst@gmx.net>
-In-Reply-To: <20240730033053.4092132-5-jacobe.zang@wesion.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:8WNkQqDKD6KnO7CaHnNyvZKHD2ZLfpHZ1KvW+8D6yIJ+YdzOq/6
- CLWdUvzbu9l6YctXbf1haRex8PX2JKcQU7WhDqvAMzzMsm0/6HAKqHK0DRnctKDabAs5BFZ
- vthC6Ht7+pR02+u8OGMUjdtgk+oE3lYNkxhNpFYnAVOFycdKUFvB88ZkSJ5bFY724iQYRV+
- Tuwsjq0ksT2Qcf7t1diEg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:nd+W6xGWmI4=;A2cfTUJ99aOtAX+YCl0i1dYvdGn
- gY8LRgEJiagSJAvzjLo+cxqcN9VESNtTRJi9hoM9ziTMuej/tBgQQsP7MgG43c40YNV2JIIUP
- zJQFD680l97chT4EvmvCycxhn5qU8JNSfYHBmonmQbC+Q+T+WAW9pfNm6U1KDt0E/AwS3jhrc
- r718kLHUxjeK6MA3cvv4UC9gUMdLBhC7wST4tXu4K4L5qK1z60i6ln4DDJgBJNrlj56OMv8ld
- qijT74jCjIf8yOKIhlve+/bOCvFONfBKh/JuVlefEOABQ5PRQmOLya0XNtfq8Q0Jixif/gCxd
- TWUKlZfKnL2AuXXzl8Yu5KViNX+fbBCnCGf4CzPSXT0jiOcOfPYTHdwDjWilOFt3we5aik5Oe
- uxoPvt6CpHUkI7VwX2vqi2zcR8EkoPH5FnzzdDfF+VwO1U6LOEPpmhIL3QGfiiFNvkfCQKXaO
- FcEG7Fn8ScOcG+THZNobY1VgeafUJ1OhS69VcarqU4FbT8BRZPx24o7KZE9Z462ljJl5GX6UH
- Uu+0n+E/BZkcjksmo3oQcJB+eXADkhWdTJ1u0xWIThc5Nh3OOS2RPam8/a/dbsb/G8/zsAWlV
- vhzkPh/Q9RK8j2MYXuKWi+nFZenzFU9KZG+XjmdjhhwaWVNqsAtwLW/DnEJTjDhLctPatGuTS
- GEtSWP5tZtmgB6E3SKFlOghoSCAj3xz8VXIZpJilYua+EbRkvmuwmUMb+trLyL6DU/sLz19QK
- 42yut5KRB/w5+tWdzdB4rt20sjl8bNwO10reoIKWt31a1oYp96fRXkeoKb/dWStZ1yI7rk+2S
- k0ufOL0hbl5TsgctUT3VJ2Sg==
 
-Hi Jacobe,
-
-Am 30.07.24 um 05:30 schrieb Jacobe Zang:
-> WiFi modules often require 32kHz clock to function. Add support to
-> enable the clock to PCIe driver.
->
-> Co-developed-by: Ondrej Jirman <megi@xff.cz>
-> Signed-off-by: Ondrej Jirman <megi@xff.cz>
-> Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
-> ---
->   drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c | 8 ++++++++
->   1 file changed, 8 insertions(+)
->
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/dri=
-vers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-> index e406e11481a62..6246e3fd7399f 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-> @@ -6,6 +6,7 @@
->   #include <linux/of.h>
->   #include <linux/of_irq.h>
->   #include <linux/of_net.h>
-> +#include <linux/clk.h>
->
->   #include <defs.h>
->   #include "debug.h"
-> @@ -70,6 +71,7 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus=
-_type bus_type,
->   {
->   	struct brcmfmac_sdio_pd *sdio =3D &settings->bus.sdio;
->   	struct device_node *root, *np =3D dev->of_node;
-> +	struct clk *clk;
->   	const char *prop;
->   	int irq;
->   	int err;
-> @@ -113,6 +115,12 @@ void brcmf_of_probe(struct device *dev, enum brcmf_=
-bus_type bus_type,
->   		of_node_put(root);
->   	}
->
-> +	clk =3D devm_clk_get_optional_enabled(dev, "lpo");
-> +	if (!IS_ERR_OR_NULL(clk)) {
-> +		brcmf_dbg(INFO, "enabling 32kHz clock\n");
-> +		clk_set_rate(clk, 32768);
-> +	}
-even if the clock is optional, there should be a proper error handling
-(e.g. the -EPROBE_DEFER case).
-
-Best regards
-> +
->   	if (!np || !of_device_is_compatible(np, "brcm,bcm4329-fmac"))
->   		return;
->
-
+Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiANCj4g
+RW5hYmxlIFVTQiBSWCBhZ2dyZWdhdGlvbiB3aGVuIHRoZXJlIGlzIGF0IGxlYXN0IDEgTWJwcyBS
+WCBvciBUWA0KPiB0cmFmZmljLCBvdGhlcndpc2UgZGlzYWJsZSBpdC4NCj4gDQo+IFVTQiBSWCBh
+Z2dyZWdhdGlvbiBpbXByb3ZlcyB0aGUgUlggc3BlZWQgb24gY2VydGFpbiBBUk0gc3lzdGVtcywg
+bGlrZQ0KPiB0aGUgTmFub1BpIE5FTyBDb3JlMi4gV2l0aCBSVEw4ODExQ1UsIGJlZm9yZTogMjgg
+TWJwcywgYWZ0ZXI6IDIzMSBNYnBzLg0KPiANCj4gVGhlIG9mZmljaWFsIGRyaXZlcnMgZm9yIHRo
+ZXNlIGNoaXBzIHVzZSB0aGUgc2FtZSBsb2dpYyBmb3IgU0RJTywgYnV0DQo+IGZvciBzb21lIHJl
+YXNvbiBydHc4OF9zZGlvIGFsd2F5cyBlbmFibGVzIFJYIGFnZ3JlZ2F0aW9uLCBzbyB0aGlzIHBh
+dGNoDQo+IG9ubHkgdG9nZ2xlcyBhZ2dyZWdhdGlvbiBmb3IgVVNCIGRldmljZXMuDQo+IA0KPiBS
+VEw4NzAzQiBpcyBsaWtlbHkgbm90IGZvdW5kIGluIFVTQiBkZXZpY2VzLCBhbmQgUlRMODcyM0RV
+IGRvZXNuJ3QgbGlrZQ0KPiBhZ2dyZWdhdGlvbi4NCg0KUGxlYXNlIGV4cGxpY2l0bHkgc2V0IC5y
+eF9hZ2dyZWdhdGlvbiA9IE5VTEwgdG8gdGhlc2UgdHdvIGNoaXBzLCBzbw0Kd2Uga25vdyB0aGVz
+ZSB0d28gY2hpcHMgZG9uJ3QgaGF2ZSB0aGlzIGZlYXR1cmUuDQoNCj4gDQo+IFNpZ25lZC1vZmYt
+Ynk6IEJpdHRlcmJsdWUgU21pdGggPHJ0bDg4MjFjZXJmZTJAZ21haWwuY29tPg0KPiAtLS0NCj4g
+IGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvbWFpbi5jICAgICB8IDE4ICsrKysr
+KysrKysrLS0tLQ0KPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9tYWluLmgg
+ICAgIHwgIDEgKw0KPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9ydHc4ODIx
+Yy5jIHwgMjMgKysrKysrKysrKysrKysrKysrKw0KPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVh
+bHRlay9ydHc4OC9ydHc4ODIyYi5jIHwgMjMgKysrKysrKysrKysrKysrKysrKw0KPiAgZHJpdmVy
+cy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9ydHc4ODIyYy5jIHwgMjMgKysrKysrKysrKysr
+KysrKysrKw0KPiAgNSBmaWxlcyBjaGFuZ2VkLCA4NCBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9u
+cygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3
+ODgvbWFpbi5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9tYWluLmMNCj4g
+aW5kZXggOWQ5ZDMzYTRhNTAzLi5iM2EwODliNGY3MDcgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMv
+bmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvbWFpbi5jDQo+ICsrKyBiL2RyaXZlcnMvbmV0L3dp
+cmVsZXNzL3JlYWx0ZWsvcnR3ODgvbWFpbi5jDQo+IEBAIC0yMTAsOCArMjEwLDEwIEBAIHN0YXRp
+YyB2b2lkIHJ0d193YXRjaF9kb2dfd29yayhzdHJ1Y3Qgd29ya19zdHJ1Y3QgKndvcmspDQo+ICAg
+ICAgICAgc3RydWN0IHJ0d19kZXYgKnJ0d2RldiA9IGNvbnRhaW5lcl9vZih3b3JrLCBzdHJ1Y3Qg
+cnR3X2RldiwNCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IHdhdGNoX2RvZ193b3JrLndvcmspOw0KPiAgICAgICAgIHN0cnVjdCBydHdfdHJhZmZpY19zdGF0
+cyAqc3RhdHMgPSAmcnR3ZGV2LT5zdGF0czsNCj4gKyAgICAgICBjb25zdCBzdHJ1Y3QgcnR3X2No
+aXBfaW5mbyAqY2hpcCA9IHJ0d2Rldi0+Y2hpcDsNCj4gICAgICAgICBzdHJ1Y3QgcnR3X3dhdGNo
+X2RvZ19pdGVyX2RhdGEgZGF0YSA9IHt9Ow0KPiAgICAgICAgIGJvb2wgYnVzeV90cmFmZmljID0g
+dGVzdF9iaXQoUlRXX0ZMQUdfQlVTWV9UUkFGRklDLCBydHdkZXYtPmZsYWdzKTsNCj4gKyAgICAg
+ICB1MzIgdHhfdW5pY2FzdF9zaGlmdCwgcnhfdW5pY2FzdF9zaGlmdDsNCj4gICAgICAgICBib29s
+IHBzX2FjdGl2ZTsNCj4gDQo+ICAgICAgICAgbXV0ZXhfbG9jaygmcnR3ZGV2LT5tdXRleCk7DQo+
+IEBAIC0yMzYsMTMgKzIzOCwyMSBAQCBzdGF0aWMgdm9pZCBydHdfd2F0Y2hfZG9nX3dvcmsoc3Ry
+dWN0IHdvcmtfc3RydWN0ICp3b3JrKQ0KPiAgICAgICAgIGVsc2UNCj4gICAgICAgICAgICAgICAg
+IHBzX2FjdGl2ZSA9IGZhbHNlOw0KPiANCj4gLSAgICAgICBld21hX3RwX2FkZCgmc3RhdHMtPnR4
+X2V3bWFfdHAsDQo+IC0gICAgICAgICAgICAgICAgICAgKHUzMikoc3RhdHMtPnR4X3VuaWNhc3Qg
+Pj4gUlRXX1RQX1NISUZUKSk7DQo+IC0gICAgICAgZXdtYV90cF9hZGQoJnN0YXRzLT5yeF9ld21h
+X3RwLA0KPiAtICAgICAgICAgICAgICAgICAgICh1MzIpKHN0YXRzLT5yeF91bmljYXN0ID4+IFJU
+V19UUF9TSElGVCkpOw0KPiArICAgICAgIHR4X3VuaWNhc3Rfc2hpZnQgPSBzdGF0cy0+dHhfdW5p
+Y2FzdCA+PiBSVFdfVFBfU0hJRlQ7DQo+ICsgICAgICAgcnhfdW5pY2FzdF9zaGlmdCA9IHN0YXRz
+LT5yeF91bmljYXN0ID4+IFJUV19UUF9TSElGVDsNCg0Ke3R4LHJ4fV91bmljYXN0X21icHMgYmVj
+YXVzZSAnc2hpZnQnIGlzIHRvIGdldCBNYnBzLg0KDQo+ICsNCj4gKyAgICAgICBld21hX3RwX2Fk
+ZCgmc3RhdHMtPnR4X2V3bWFfdHAsIHR4X3VuaWNhc3Rfc2hpZnQpOw0KPiArICAgICAgIGV3bWFf
+dHBfYWRkKCZzdGF0cy0+cnhfZXdtYV90cCwgcnhfdW5pY2FzdF9zaGlmdCk7DQo+ICAgICAgICAg
+c3RhdHMtPnR4X3Rocm91Z2hwdXQgPSBld21hX3RwX3JlYWQoJnN0YXRzLT50eF9ld21hX3RwKTsN
+Cj4gICAgICAgICBzdGF0cy0+cnhfdGhyb3VnaHB1dCA9IGV3bWFfdHBfcmVhZCgmc3RhdHMtPnJ4
+X2V3bWFfdHApOw0KPiANCj4gKyAgICAgICBpZiAocnR3X2hjaV90eXBlKHJ0d2RldikgPT0gUlRX
+X0hDSV9UWVBFX1VTQiAmJiBjaGlwLT5vcHMtPnJ4X2FnZ3JlZ2F0aW9uKSB7DQo+ICsgICAgICAg
+ICAgICAgICBpZiAodHhfdW5pY2FzdF9zaGlmdCA8IDEgJiYgcnhfdW5pY2FzdF9zaGlmdCA8IDEp
+DQo+ICsgICAgICAgICAgICAgICAgICAgICAgIGNoaXAtPm9wcy0+cnhfYWdncmVnYXRpb24ocnR3
+ZGV2LCBmYWxzZSk7DQo+ICsgICAgICAgICAgICAgICBlbHNlDQo+ICsgICAgICAgICAgICAgICAg
+ICAgICAgIGNoaXAtPm9wcy0+cnhfYWdncmVnYXRpb24ocnR3ZGV2LCB0cnVlKTsNCj4gKyAgICAg
+ICB9DQoNCk1vdmUgdGhpcyBjaHVuayB0byBhIGZ1bmN0aW9uIHdpdGggYXJndW1lbnRzIHt0eCxy
+eH1fdW5pY2FzdF9tYnBzLg0KVGhlIGZ1bmN0aW9uIG5hbWUgbWlnaHQgYmUgc29tZXRoaW5nIGxp
+a2UgcnR3X2R5bmFtaWNfdXNiX3J4X2FnZ3JlZ2F0aW9uKCkuDQoNCj4gKw0KPiAgICAgICAgIC8q
+IHJlc2V0IHR4L3J4IHN0YXRpY3RpY3MgKi8NCj4gICAgICAgICBzdGF0cy0+dHhfdW5pY2FzdCA9
+IDA7DQo+ICAgICAgICAgc3RhdHMtPnJ4X3VuaWNhc3QgPSAwOw0KPiBkaWZmIC0tZ2l0IGEvZHJp
+dmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9tYWluLmggYi9kcml2ZXJzL25ldC93aXJl
+bGVzcy9yZWFsdGVrL3J0dzg4L21haW4uaA0KPiBpbmRleCA5ZDIxNjM3Y2Y1ZDUuLjY1YmVkZDE2
+NjhjYyAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9t
+YWluLmgNCj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9tYWluLmgN
+Cj4gQEAgLTg4OCw2ICs4ODgsNyBAQCBzdHJ1Y3QgcnR3X2NoaXBfb3BzIHsNCj4gICAgICAgICB2
+b2lkICgqZmlsbF90eGRlc2NfY2hlY2tzdW0pKHN0cnVjdCBydHdfZGV2ICpydHdkZXYsDQo+ICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBzdHJ1Y3QgcnR3X3R4X3BrdF9pbmZv
+ICpwa3RfaW5mbywNCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHU4ICp0
+eGRlc2MpOw0KPiArICAgICAgIHZvaWQgKCpyeF9hZ2dyZWdhdGlvbikoc3RydWN0IHJ0d19kZXYg
+KnJ0d2RldiwgYm9vbCBlbmFibGUpOw0KPiANCj4gICAgICAgICAvKiBmb3IgY29leCAqLw0KPiAg
+ICAgICAgIHZvaWQgKCpjb2V4X3NldF9pbml0KShzdHJ1Y3QgcnR3X2RldiAqcnR3ZGV2KTsNCj4g
+ZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcnR3ODgyMWMu
+Yw0KPiBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcnR3ODgyMWMuYw0KPiBp
+bmRleCA1NWI2ZmU4NzQ3MTAuLjNlZmRiNDFmMjJjNSAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9u
+ZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9ydHc4ODIxYy5jDQo+ICsrKyBiL2RyaXZlcnMvbmV0
+L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcnR3ODgyMWMuYw0KPiBAQCAtMTI3Niw2ICsxMjc2LDI4
+IEBAIHN0YXRpYyB2b2lkIHJ0dzg4MjFjX2ZpbGxfdHhkZXNjX2NoZWNrc3VtKHN0cnVjdCBydHdf
+ZGV2ICpydHdkZXYsDQo+ICAgICAgICAgZmlsbF90eGRlc2NfY2hlY2tzdW1fY29tbW9uKHR4ZGVz
+YywgMTYpOw0KPiAgfQ0KPiANCj4gK3N0YXRpYyB2b2lkIHJ0dzg4MjFjX3J4X2FnZ3JlZ2F0aW9u
+KHN0cnVjdCBydHdfZGV2ICpydHdkZXYsIGJvb2wgZW5hYmxlKQ0KPiArew0KPiArICAgICAgIHU4
+IHNpemUsIHRpbWVvdXQ7DQo+ICsgICAgICAgdTE2IHZhbDE2Ow0KPiArDQo+ICsgICAgICAgcnR3
+X3dyaXRlMzJfc2V0KHJ0d2RldiwgUkVHX1JYRE1BX0FHR19QR19USCwgQklUX0VOX1BSRV9DQUxD
+KTsNCj4gKyAgICAgICBydHdfd3JpdGU4X3NldChydHdkZXYsIFJFR19UWERNQV9QUV9NQVAsIEJJ
+VF9SWERNQV9BR0dfRU4pOw0KPiArICAgICAgIHJ0d193cml0ZThfY2xyKHJ0d2RldiwgUkVHX1JY
+RE1BX0FHR19QR19USCArIDMsIEJJVCg3KSk7DQo+ICsNCj4gKyAgICAgICBpZiAoZW5hYmxlKSB7
+DQo+ICsgICAgICAgICAgICAgICBzaXplID0gMHg1Ow0KPiArICAgICAgICAgICAgICAgdGltZW91
+dCA9IDB4MjA7DQo+ICsgICAgICAgfSBlbHNlIHsNCj4gKyAgICAgICAgICAgICAgIHNpemUgPSAw
+eDA7DQo+ICsgICAgICAgICAgICAgICB0aW1lb3V0ID0gMHgxOw0KPiArICAgICAgIH0NCj4gKyAg
+ICAgICB2YWwxNiA9IHUxNl9lbmNvZGVfYml0cyhzaXplLCBCSVRfUlhETUFfQUdHX1BHX1RIKSB8
+DQo+ICsgICAgICAgICAgICAgICB1MTZfZW5jb2RlX2JpdHModGltZW91dCwgQklUX0RNQV9BR0df
+VE9fVjEpOw0KPiArDQo+ICsgICAgICAgcnR3X3dyaXRlMTYocnR3ZGV2LCBSRUdfUlhETUFfQUdH
+X1BHX1RILCB2YWwxNik7DQo+ICt9DQo+ICsNCg0KQWxsIHVzZSB0aGUgc2FtZSBzZXR0aW5ncy4g
+TW92ZSB0aGlzIHRvIHJ0d191c2JfcnhfYWdncmVnYXRpb24oKSBjYWxsZWQgYnkNCnJ0d19keW5h
+bWljX3VzYl9yeF9hZ2dyZWdhdGlvbigpLg0KDQoNCg0K
 
