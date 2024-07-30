@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-10663-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10664-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D665940801
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 08:03:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53475940806
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 08:04:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7F9A283CF6
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 06:03:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D50AFB2359A
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 06:04:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14AA416B3B9;
-	Tue, 30 Jul 2024 06:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB19E167DB9;
+	Tue, 30 Jul 2024 06:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EB5YXv7l"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VupzIOaf"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7215624;
-	Tue, 30 Jul 2024 06:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59A3624;
+	Tue, 30 Jul 2024 06:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722319414; cv=none; b=kBv//lnK2eLrw94WmlTruRVKZD/E60fiDJ8OhiN0hpysJ0OpT62INlf9ddv0CwRIXn+DegN1+ehDSitYaVun+h97mJJ9+gJRQNdqjTNjPyT80VPxIxgX7rlzvrzfwtwbvYBt9pDZ29N9L+N6acxMo+gm9CFH6LqaytPJnTt4Vg8=
+	t=1722319422; cv=none; b=el/Sgq91/a+NynfnrABxjkIM7MjXB+e+UigIiP9Os6+itGAJD21XfuaSTmvTI8sQ87cCauTg4avoJ5lEUbq0jBTdRLGWqHPC763HxU9Z2nsOm3OtO2xdJt9mIlUcbrIMWpFvU//OI1vIp1bU+k3ZCl6LOtITVLuOsRGcnMwZvHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722319414; c=relaxed/simple;
-	bh=oL8vRiWidptUNxRTdT1hQz8E7qWGGM60Lp/Ehe5Ovtc=;
+	s=arc-20240116; t=1722319422; c=relaxed/simple;
+	bh=J1drVKJOLr7ECqy0xr8VVmAHJ0xro7tTHQnAtctm4Jg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cS2PXXRsTXlUdZ5jIcNMUUiJlBE9/hETDLoL2zEY0hDLkSS7vRu/1WB3eG/qqt/ZCNaS22lAvCUBvlAzzICcN+9LkcC/V9GFdzp2skgzwYg+22Q1ibFQVBy6IKxhyFqPvIuDLyX7HD5HjccBpYjVWzgnk8kG2ldQ7olSNDNzqhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EB5YXv7l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1214C32782;
-	Tue, 30 Jul 2024 06:03:24 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=Sqam9Ua4H8OgUoQkCzCNP2ZARhlvlxDBDrScQiL/T8gXXnSyBXG1xGkFs3LfzWZuL5gheMBmurHmskN3+vMGf4MNKvtpqRaCUof2xVDBxwGJFCKSY2kQPhWfVlLftIWlhYopiwHaM0G87XCac6PjyJFJHuLRvdE4Wl3ZFdrsZDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VupzIOaf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00472C4AF09;
+	Tue, 30 Jul 2024 06:03:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722319413;
-	bh=oL8vRiWidptUNxRTdT1hQz8E7qWGGM60Lp/Ehe5Ovtc=;
+	s=k20201202; t=1722319422;
+	bh=J1drVKJOLr7ECqy0xr8VVmAHJ0xro7tTHQnAtctm4Jg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=EB5YXv7l9n3q695IC0pKlQVMp4pqApvOVDQteLhLc69Tvd35UcnGZZjZ8T0t3Bg6z
-	 YG0aNWW1kPKSkeyXObYIlgXo81ZW530aZApkmSmxg/yAnXBLS8xMKHH7izqUZzx0bx
-	 3DYQAIAEDU+eJonvn8CAYg7vY3DkABYZaujRPIErZUMYaUmAKChYwkYkEJHN1VCE2y
-	 5DXWoCMFg+9C6cGsDnc7Kos5dsfM/zcqEygjYTdmlgxcoNPzKWMQsLFJtruU6d6QUc
-	 6hEnCboEnRU9NWBQtA8qbbjrIyr2oS1I5Kj5xwbgR4Dg3YTm/3yKbRjRqaRhmzcVN3
-	 76ja7zN6Tk7vA==
-Message-ID: <841572d7-ecb6-4c11-a890-aa29fd58adf4@kernel.org>
-Date: Tue, 30 Jul 2024 08:03:21 +0200
+	b=VupzIOafU5MV+C/FfeoUDuldze0mfrhBAZ/Kp6Nk/Sv94V3Bwycxj5O+TWk85zLUn
+	 Orgpj8wRJxohBKQ2t41qWNLBq9E4nFnMTX1RCQpppNEod+ABoNOEc2XCD584Ftcc7q
+	 GvZfxR0kGu+AnvLFb6NIiVZXIhK3Oy4Avos1drmqzkXq/2kDPZ92vB1OK7xtW7drqZ
+	 tpQU5SZ6Iek3rOmQrcvWKlG50ru2hKqhXGt+TtmWCYubLrSwVjeWBXCNun/SAby6wF
+	 3hWRmO6Os9izN2t18ILa/RQjILxPzpNnnJnjP9F3RYyFsvi/h5XPafU0vcXMbXqTho
+	 8JT8yeW7G7t9w==
+Message-ID: <06894f75-f066-42b3-92e5-8d2eef7b1341@kernel.org>
+Date: Tue, 30 Jul 2024 08:03:27 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,8 +50,8 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/5] dt-bindings: net: wireless: brcm4329-fmac: add
- pci14e4,449d
+Subject: Re: [PATCH v5 2/5] dt-bindings: net: wireless: brcm4329-fmac: add
+ clock description for AP6275P
 To: Jacobe Zang <jacobe.zang@wesion.com>, robh@kernel.org,
  krzk+dt@kernel.org, heiko@sntech.de, kvalo@kernel.org, davem@davemloft.net,
  edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, conor+dt@kernel.org
@@ -64,7 +64,7 @@ Cc: efectn@protonmail.com, dsimic@manjaro.org, jagan@edgeble.ai,
  brcm80211-dev-list.pdl@broadcom.com, nick@khadas.com,
  Arend van Spriel <arend.vanspriel@broadcom.com>
 References: <20240730033053.4092132-1-jacobe.zang@wesion.com>
- <20240730033053.4092132-2-jacobe.zang@wesion.com>
+ <20240730033053.4092132-3-jacobe.zang@wesion.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -110,19 +110,19 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240730033053.4092132-2-jacobe.zang@wesion.com>
+In-Reply-To: <20240730033053.4092132-3-jacobe.zang@wesion.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 30/07/2024 05:30, Jacobe Zang wrote:
-> It's the device id used by AP6275P which is the Wi-Fi module
-> used by Rockchip's RK3588 evaluation board and also used in
-> some other RK3588 boards.
+> Not only AP6275P Wi-Fi device but also all Broadcom wireless devices allow
+> external low power clock input. In DTS the clock as an optional choice in
+> the absence of an internal clock.
 > 
-> Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 > Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof
