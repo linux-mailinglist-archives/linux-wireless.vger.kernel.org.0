@@ -1,220 +1,262 @@
-Return-Path: <linux-wireless+bounces-10694-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10695-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D230941EEC
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 19:38:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92AA1941EF6
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 19:42:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A48601F225F7
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 17:38:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9251EB219A4
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 17:42:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BC90189915;
-	Tue, 30 Jul 2024 17:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A88481A76C6;
+	Tue, 30 Jul 2024 17:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="LRGoCPiZ"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="FmaFzoJ0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094C31A76C6;
-	Tue, 30 Jul 2024 17:38:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96051A76D7
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Jul 2024 17:42:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722361100; cv=none; b=gNZbbI90QNJUIOKwmRPRdxf1st9I4EV1ey98HegzBxL9xVYdeOnlfa0eTr25sAccWE6ZMwy5pvh+knSiV4cbB77KLLQTjZjklX27gcAAVdxUBh2E1zTTWu6IvPBn481ymXyHaF+Hv7oeAhJ6vZwlw0yg9tonoUPQHWIxtvXj/08=
+	t=1722361355; cv=none; b=PwfroODmGKql2qcRUHMlMVUgOKJG6ynaF3NGlCIXyUS/dxYWm5MuyIjHPXF1keuRCMvFSL/7KtPAdQYQkVSMKfYTKNdwrB004anwcLqX3Vj46c4WUDr50i9Zdhik7f4PnKMtEY1mO5RxRaFrE+DaYn1QE4D+Co9peGgR53T+jio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722361100; c=relaxed/simple;
-	bh=9IUleP8OzhpQtp7S1NkmiFennhuOo0B3m/rmGIOk5+M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fu8QHHZRAvb4T9vVmSMKP5zDZmNMK0aJ2OohYkNegAX4I+RJq56iDFujjGhx4rrcU9vWbfFZuE6IO0DnyyMf5mP//OROSIoHOlP4/0VBCEP1Uw5ipaSrWfDC7sV28jwh048+2VPc3VBWW4EQSwfX6J7PVBGSfqm9E/X6DIHbV/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=LRGoCPiZ; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1722361096;
-	bh=9IUleP8OzhpQtp7S1NkmiFennhuOo0B3m/rmGIOk5+M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LRGoCPiZ0JAyuj7ggrTjMFyQRrwTvDzXOiWdMhoyjs55Te5FcWuCA9a2yMO90y6B+
-	 pm7uqlKSKJrS5muy4DTbqQ6E+8r9o8x9wEsFFqKeGj3mDABsPgU6mzkqbTz8UuWop3
-	 sCZcybBDE31UicBaqMaCTGoKoqMiJ1C4q9LMvnjLdRVHs6q8WLCqZzN8ibQGKy/FZb
-	 KvYHjpHqbX6y7gROPQ/4oZSkWsa4lwQevOiozL9vzus5VKGUzoUxzzbP9BD2HNtns7
-	 o6laaQKI8jsgDLBP5MqYg6P1eV5x9fMMEL0KQveiRtfMJl9/DRYlUpGkHrJohdWGu1
-	 EU+ryKM3Pt85w==
-Received: from mercury (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sre)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id CC1AA3781139;
-	Tue, 30 Jul 2024 17:38:16 +0000 (UTC)
-Received: by mercury (Postfix, from userid 1000)
-	id 70AD510609BB; Tue, 30 Jul 2024 19:38:16 +0200 (CEST)
-Date: Tue, 30 Jul 2024 19:38:16 +0200
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Arend Van Spriel <arend.vanspriel@broadcom.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, 
-	Jacobe Zang <jacobe.zang@wesion.com>, robh@kernel.org, krzk+dt@kernel.org, heiko@sntech.de, 
-	kvalo@kernel.org, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, conor+dt@kernel.org, Linus Walleij <linus.walleij@linaro.org>, 
-	efectn@protonmail.com, dsimic@manjaro.org, jagan@edgeble.ai, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	arend@broadcom.com, linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	megi@xff.cz, duoming@zju.edu.cn, bhelgaas@google.com, minipli@grsecurity.net, 
-	brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com, nick@khadas.com
-Subject: Re: [PATCH v5 2/5] dt-bindings: net: wireless: brcm4329-fmac: add
- clock description for AP6275P
-Message-ID: <k3dhdsa5bjzad2ha5e2uurg2azzs773ier5thkot4w2qcvnv54@yuf52eluqsae>
-References: <20240730033053.4092132-1-jacobe.zang@wesion.com>
- <20240730033053.4092132-3-jacobe.zang@wesion.com>
- <191025b5268.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <f45c1fa7-f321-4a1f-b65c-6ed326a18268@kernel.org>
- <191030eac78.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <3d3b8e0a-7492-4db1-bd73-c30a488edaa7@kernel.org>
- <191035b8c28.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+	s=arc-20240116; t=1722361355; c=relaxed/simple;
+	bh=N3uuXXZoH1xJHLS4V5vDOr2HXmCytO6yjjbRt9q5Aqg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=OkjmGX+aNprRho4ZARji47xTqtk3BbGvUSddCX/d2P2HI8nV180HUCzUT5WXZZ+0NpWyJlLAJ1neZZ0dm72ByPZjifPFLGbEM+oohU7Ha30tMy74qjhFGDa+F5ocIXJNJLFhugcJdX6Viuw1nVBnrdUKjgPYsSBEEsrx6msw/LE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=FmaFzoJ0; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46UHOmjs019504;
+	Tue, 30 Jul 2024 17:42:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	bq8xja2xzlzpu2A6w+JVWtU8aDuACipuRD1X29P2cNI=; b=FmaFzoJ0bf4E6Kdf
+	OzzuZB6pZumhZxms8H19MGHSXEdlv3xDanyX8NxJjLHOanFt9k3q6kiNbDVLuizM
+	IvFpFEkTs2uRS66GvUa3m8BvPVY3SenPP2K2btrwPdRHGuzaqcAHmxnxcB3VP6yw
+	pKL/ajtQKGi6owoE1Ae2TwaefqTgsG6Hy4yHRIyitAtpP7Ik8UXUdQb7Sbj6uO11
+	SRyWE9JPSkoOrOXyb6CJlBDtyhJVwLOx1zS4O1AhmclcuNKu3XAnk7ejWc/qFwGT
+	Jmbc172Qvc+QKBgYjLiY8LOs+RQeDWZ26Hdij/8ySgLHX2Wc6amOnGFWkJhHJrzT
+	jqNnFA==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40ms96rfuv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Jul 2024 17:42:22 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46UHgLY3029175
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Jul 2024 17:42:21 GMT
+Received: from [10.227.110.203] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 30 Jul
+ 2024 10:42:20 -0700
+Message-ID: <6d516ba0-854e-4aec-8a53-4c2c658e9512@quicinc.com>
+Date: Tue, 30 Jul 2024 10:42:20 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="jf2alk6nvvmfsvtq"
-Content-Disposition: inline
-In-Reply-To: <191035b8c28.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/2] wifi: ath11k: use union for vaddr and iaddr in
+ target_mem_chunk
+Content-Language: en-US
+To: Miaoqing Pan <quic_miaoqing@quicinc.com>, <kvalo@kernel.org>
+CC: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20240730035955.788768-1-quic_miaoqing@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240730035955.788768-1-quic_miaoqing@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: R_W9Rpw0SPONok-ngGp_ty2HoyBG5waR
+X-Proofpoint-GUID: R_W9Rpw0SPONok-ngGp_ty2HoyBG5waR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-30_13,2024-07-30_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ impostorscore=0 mlxlogscore=999 bulkscore=0 malwarescore=0 phishscore=0
+ priorityscore=1501 clxscore=1015 lowpriorityscore=0 spamscore=0
+ adultscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2407300121
 
+On 7/29/2024 8:59 PM, Miaoqing Pan wrote:
+> The value of 'ab->hw_params.fixed_mem_region' determins that
 
---jf2alk6nvvmfsvtq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+s/determins/determines/
 
-Hi,
+> only one variable 'vaddr' or 'iaddr' is used in target_mem_chunk.
+> So use union instead, easy to check whether the memory is set
+> or not.
+> 
+> Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-04358-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
+> 
+> Signed-off-by: Miaoqing Pan <quic_miaoqing@quicinc.com>
+> ---
+>  drivers/net/wireless/ath/ath11k/qmi.c | 45 ++++++++++++++-------------
+>  drivers/net/wireless/ath/ath11k/qmi.h |  8 +++--
+>  2 files changed, 29 insertions(+), 24 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
+> index 1bc648920ab6..ee32027badcf 100644
+> --- a/drivers/net/wireless/ath/ath11k/qmi.c
+> +++ b/drivers/net/wireless/ath/ath11k/qmi.c
+> @@ -1955,19 +1955,21 @@ static void ath11k_qmi_free_target_mem_chunk(struct ath11k_base *ab)
+>  	int i;
+>  
+>  	for (i = 0; i < ab->qmi.mem_seg_count; i++) {
+> -		if ((ab->hw_params.fixed_mem_region ||
+> -		     test_bit(ATH11K_FLAG_FIXED_MEM_RGN, &ab->dev_flags)) &&
+> -		     ab->qmi.target_mem[i].iaddr)
+> -			iounmap(ab->qmi.target_mem[i].iaddr);
+> +		if (!ab->qmi.target_mem[i].v.iaddr)
 
-On Tue, Jul 30, 2024 at 01:16:57PM GMT, Arend Van Spriel wrote:
-> On July 30, 2024 12:18:20 PM Krzysztof Kozlowski <krzk@kernel.org> wrote:
->=20
-> > On 30/07/2024 11:52, Arend Van Spriel wrote:
-> > > On July 30, 2024 11:01:43 AM Krzysztof Kozlowski <krzk@kernel.org> wr=
-ote:
-> > >=20
-> > > > On 30/07/2024 08:37, Arend Van Spriel wrote:
-> > > > > + Linus W
-> > > > >=20
-> > > > > On July 30, 2024 5:31:15 AM Jacobe Zang <jacobe.zang@wesion.com> =
-wrote:
-> > > > >=20
-> > > > > > Not only AP6275P Wi-Fi device but also all Broadcom wireless de=
-vices allow
-> > > > > > external low power clock input. In DTS the clock as an optional=
- choice in
-> > > > > > the absence of an internal clock.
-> > > > > >=20
-> > > > > > Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> > > > > > Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
-> > > > > > ---
-> > > > > > .../bindings/net/wireless/brcm,bcm4329-fmac.yaml          | 8 +=
-+++++++
-> > > > > > 1 file changed, 8 insertions(+)
-> > > > > >=20
-> > > > > > diff --git
-> > > > > > a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-f=
-mac.yaml
-> > > > > > b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-f=
-mac.yaml
-> > > > > > index 2c2093c77ec9a..a3607d55ef367 100644
-> > > > > > --- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm43=
-29-fmac.yaml
-> > > > > > +++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm43=
-29-fmac.yaml
-> > > > > > @@ -122,6 +122,14 @@ properties:
-> > > > > > NVRAM. This would normally be filled in by the bootloader from =
-platform
-> > > > > > configuration data.
-> > > > > >=20
-> > > > > > +  clocks:
-> > > > > > +    items:
-> > > > > > +      - description: External Low Power Clock input (32.768KHz)
-> > > > > > +
-> > > > > > +  clock-names:
-> > > > > > +    items:
-> > > > > > +      - const: lpo
-> > > > > > +
-> > > > >=20
-> > > > > We still have an issue that this clock input is also present in t=
-he
-> > > > > bindings specification broadcom-bluetooth.yaml (not in bluetooth
-> > > > > subfolder). This clock is actually a chip resource. What happens =
-if both
-> > > > > are defined and both wifi and bt drivers try to enable this clock=
-? Can this
-> > > > > be expressed in yaml or can we only put a textual warning in the =
-property
-> > > > > descriptions?
-> > > >=20
-> > > > Just like all clocks, what would happen? It will be enabled.
-> > >=20
-> > > Oh, wow! Cool stuff. But seriously is it not a problem to have two en=
-tities
-> > > controlling one and the same clock? Is this use-case taken into accou=
-nt by
-> > > the clock framework?
-> >=20
-> > Yes, it is handled correctly. That's a basic use-case, handled by CCF
-> > since some years (~12?). Anyway, whatever OS is doing (or not doing)
-> > with the clocks is independent of the bindings here. The question is
->=20
-> Agree. Probably the bindings would not be the place to document this if it
-> would be an issue.
->=20
-> > about hardware - does this node, which represents PCI interface of the
-> > chip, has/uses the clocks.
->=20
-> The schematics I found for the wifi module and the khadas edge platform s=
-how
-> these are indeed wired to the chip.
+see my comment at the end about potentially adding a new member to test for NULL
 
-I have a Rockchip RK3588 Evaluation Board on my desk, which uses the
-same WLAN AP6275P module. I think I already commented on a prior
-version of this series: The LPO clock is needed to make the PCIe
-device visible on the bus. That means this series only works if the
-clock has already been running. Otherwise the PCIe driver will never
-be probed. To become visible the devices requires:
+> +			continue;
+>  
+> -		if (!ab->qmi.target_mem[i].vaddr)
+> +		if (ab->hw_params.fixed_mem_region ||
+> +		    test_bit(ATH11K_FLAG_FIXED_MEM_RGN, &ab->dev_flags)) {
+> +			iounmap(ab->qmi.target_mem[i].v.iaddr);
+> +			ab->qmi.target_mem[i].v.iaddr = NULL;
+>  			continue;
+> +		}
+>  
+>  		dma_free_coherent(ab->dev,
+>  				  ab->qmi.target_mem[i].prev_size,
+> -				  ab->qmi.target_mem[i].vaddr,
+> +				  ab->qmi.target_mem[i].v.vaddr,
+>  				  ab->qmi.target_mem[i].paddr);
+> -		ab->qmi.target_mem[i].vaddr = NULL;
+> +		ab->qmi.target_mem[i].v.vaddr = NULL;
+>  	}
+>  }
+>  
+> @@ -1984,22 +1986,22 @@ static int ath11k_qmi_alloc_target_mem_chunk(struct ath11k_base *ab)
+>  		/* Firmware reloads in coldboot/firmware recovery.
+>  		 * in such case, no need to allocate memory for FW again.
+>  		 */
+> -		if (chunk->vaddr) {
+> +		if (chunk->v.vaddr) {
+>  			if (chunk->prev_type == chunk->type &&
+>  			    chunk->prev_size == chunk->size)
+>  				continue;
+>  
+>  			/* cannot reuse the existing chunk */
+>  			dma_free_coherent(ab->dev, chunk->prev_size,
+> -					  chunk->vaddr, chunk->paddr);
+> -			chunk->vaddr = NULL;
+> +					  chunk->v.vaddr, chunk->paddr);
+> +			chunk->v.vaddr = NULL;
+>  		}
+>  
+> -		chunk->vaddr = dma_alloc_coherent(ab->dev,
+> -						  chunk->size,
+> -						  &chunk->paddr,
+> -						  GFP_KERNEL | __GFP_NOWARN);
+> -		if (!chunk->vaddr) {
+> +		chunk->v.vaddr = dma_alloc_coherent(ab->dev,
+> +						    chunk->size,
+> +						    &chunk->paddr,
+> +						    GFP_KERNEL | __GFP_NOWARN);
+> +		if (!chunk->v.vaddr) {
+>  			if (ab->qmi.mem_seg_count <= ATH11K_QMI_FW_MEM_REQ_SEGMENT_CNT) {
+>  				ath11k_dbg(ab, ATH11K_DBG_QMI,
+>  					   "dma allocation failed (%d B type %u), will try later with small size\n",
+> @@ -2055,10 +2057,10 @@ static int ath11k_qmi_assign_target_mem_chunk(struct ath11k_base *ab)
+>  			}
+>  
+>  			ab->qmi.target_mem[idx].paddr = res.start;
+> -			ab->qmi.target_mem[idx].iaddr =
+> +			ab->qmi.target_mem[idx].v.iaddr =
+>  				ioremap(ab->qmi.target_mem[idx].paddr,
+>  					ab->qmi.target_mem[i].size);
+> -			if (!ab->qmi.target_mem[idx].iaddr)
+> +			if (!ab->qmi.target_mem[idx].v.iaddr)
+>  				return -EIO;
+>  
+>  			ab->qmi.target_mem[idx].size = ab->qmi.target_mem[i].size;
+> @@ -2068,7 +2070,7 @@ static int ath11k_qmi_assign_target_mem_chunk(struct ath11k_base *ab)
+>  			break;
+>  		case BDF_MEM_REGION_TYPE:
+>  			ab->qmi.target_mem[idx].paddr = ab->hw_params.bdf_addr;
+> -			ab->qmi.target_mem[idx].vaddr = NULL;
+> +			ab->qmi.target_mem[idx].v.iaddr = NULL;
+>  			ab->qmi.target_mem[idx].size = ab->qmi.target_mem[i].size;
+>  			ab->qmi.target_mem[idx].type = ab->qmi.target_mem[i].type;
+>  			idx++;
+> @@ -2083,18 +2085,19 @@ static int ath11k_qmi_assign_target_mem_chunk(struct ath11k_base *ab)
+>  				if (hremote_node) {
+>  					ab->qmi.target_mem[idx].paddr =
+>  							res.start + host_ddr_sz;
+> -					ab->qmi.target_mem[idx].iaddr =
+> +					ab->qmi.target_mem[idx].v.iaddr =
+>  						ioremap(ab->qmi.target_mem[idx].paddr,
+>  							ab->qmi.target_mem[i].size);
+> -					if (!ab->qmi.target_mem[idx].iaddr)
+> +					if (!ab->qmi.target_mem[idx].v.iaddr)
+>  						return -EIO;
+>  				} else {
+>  					ab->qmi.target_mem[idx].paddr =
+>  						ATH11K_QMI_CALDB_ADDRESS;
+> +					ab->qmi.target_mem[idx].v.iaddr = NULL;
+>  				}
+>  			} else {
+>  				ab->qmi.target_mem[idx].paddr = 0;
+> -				ab->qmi.target_mem[idx].vaddr = NULL;
+> +				ab->qmi.target_mem[idx].v.iaddr = NULL;
+>  			}
+>  			ab->qmi.target_mem[idx].size = ab->qmi.target_mem[i].size;
+>  			ab->qmi.target_mem[idx].type = ab->qmi.target_mem[i].type;
+> diff --git a/drivers/net/wireless/ath/ath11k/qmi.h b/drivers/net/wireless/ath/ath11k/qmi.h
+> index 7e06d100af57..63c957a7075e 100644
+> --- a/drivers/net/wireless/ath/ath11k/qmi.h
+> +++ b/drivers/net/wireless/ath/ath11k/qmi.h
+> @@ -1,7 +1,7 @@
+>  /* SPDX-License-Identifier: BSD-3-Clause-Clear */
+>  /*
+>   * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
+> - * Copyright (c) 2021-2023 Qualcomm Innovation Center, Inc. All rights reserved.
+> + * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
+>   */
+>  
+>  #ifndef ATH11K_QMI_H
+> @@ -102,8 +102,10 @@ struct target_mem_chunk {
+>  	u32 prev_size;
+>  	u32 prev_type;
+>  	dma_addr_t paddr;
+> -	u32 *vaddr;
+> -	void __iomem *iaddr;
+> +	union {
+> +		u32 *vaddr;
+> +		void __iomem *iaddr;
+> +	} v;
 
-1. The LPO clock to be enabled
-2. Power to be applied
-3. The WL_EN gpio to be configured correctly
+is there a reason you didn't incorporate my prior observation:
 
-If one of the above is not met, the device will not even appear in
-'lspci'. I believe the binding needs to take into consideration, that
-pwrseq is needed for the PCIe side. Fortuantely the heavy lifting of
-creating the proper infrastructure for this has already been done by
-Bartosz Golaszewski for Qualcomm WLAN chips. What is missing is a
-pwrseq driver for the Broadcom chip (or this specific module?).
+...if you make it an anonymous union then most, if not all, of the
+code changes are unnecessary.
 
-Greetings,
+I'm also thinking it may make the code even cleaner to add a third member to
+the union:
+	void *anyaddr
 
--- Sebastian
+So you set and clear either vaddr or iaddr based upon the usage, but test
+anyaddr when testing for NULL
 
---jf2alk6nvvmfsvtq
-Content-Type: application/pgp-signature; name="signature.asc"
+>  };
+>  
+>  struct target_info {
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmapJP4ACgkQ2O7X88g7
-+ppEtw//U1k4jbWPNYlqHLMqe+zCNqwKR5lm/UcmOBN5NZbS+CUQkPZxNBGlVGmV
-GN7dnCABPzlKtbi+IybAV9D3zuZ9pjWqoUmqXDENHluMxyevsPqeIqUdg+QWQbgr
-5XbEXHYbGSl2Ous+jbo3pUBC+riwepUOqO9lMVS/AjpeOgX1JyOIpYEOT9IAqrRn
-ZMHASWZ8jZZCgXZcivEAkpVXhz9TrxDjGZzUKe8zXu4JawYlZt7z1bD3pwoxyQ7J
-KRZpVm3a5RWSJzWcPefJwJ2mhk+/TmDJHMhn+bGtg5j/IoNiBAqFn+hiNRcn1S9E
-Bprr5IAJEs/jYjyytrCAm013AXPpI29pd9k5zBTbj8OeS0DKZA1dOi8gDhB89jVo
-wC/+s6YU2RYC4DwY5FXBjvoZGb2jCALl9vWb2Hhrk9OLtjtphUEz3aPkZYnARWpo
-ElAVz0x76stHIfe4DOIautJHlH9zf4TaBEiqv8M4Sx2fM10Kq5sps6gbSESNLyru
-rswZR4SJwBnJfcAarov9LcWiESEztmGm5HRVGehHqw2470kyUprdElP2h3YLudfx
-frNemcdHN9IByCVz70O6m9sHl9wTaIDCRaFul8DlNalIRbcHNE4Gw1Pr7P8t7rRZ
-pe2MsIYPSY9JzvYlRcuztpgaGHmChUSdhTMhQdbu6x416/EFaOY=
-=lH9x
------END PGP SIGNATURE-----
-
---jf2alk6nvvmfsvtq--
 
