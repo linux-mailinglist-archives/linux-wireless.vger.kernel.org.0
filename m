@@ -1,91 +1,113 @@
-Return-Path: <linux-wireless+bounces-10687-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10688-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DA6F94143A
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 16:23:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C324C941527
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 17:10:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98639B2874A
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 14:23:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 002191C237E2
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 15:10:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49A521A2542;
-	Tue, 30 Jul 2024 14:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6391A2C0F;
+	Tue, 30 Jul 2024 15:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NvbBtKND"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Z64rV9eE"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 198B5522F;
-	Tue, 30 Jul 2024 14:23:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460D61A2C0B
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Jul 2024 15:10:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722349409; cv=none; b=uj5zYPV4G2t/USFctbqBAnMp9GqVbsH/h93ZLP32BTk6Qikn0AzmD6bknHFmLzEtDXI8gQ+pjQsfftWWozRI5sjb6Sg1r7YXFoEazV0BfyttZScLuHcTLE1UAoqnUIFLp2aKaj8LvOGeqVos7Na75JL3wrr7NDxwN963mtUwQjk=
+	t=1722352251; cv=none; b=ZpRqp/rUmZ9CXwdDj/iwY82bxCnb/KWkuIlTW+vEiZnbHNBzxtR8I3k5LD6g+is0dCFRjCV7VVOHBDacFK5T2gTGbpjUo11v+R2L8x7hbLh2zAGxGUYeBtrhG53XHygf77wu2sZj5Boktne35YBho67PO9yE5Bax5lgBVGO6cGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722349409; c=relaxed/simple;
-	bh=i0ER6Tvx6ftHCDdpxoVZ7IFUk+d001vA/10jeF9Jez4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YQswvFiOuAeXS6ckBzvtaIJ3rTmSay6glp+J9EJ87cVmWIe+q6fkIC8GuzqJa8tz9nptkf/unxJKVe4m7BqMPU/ZQKizzTGVhSw/yjd02dRII5XjxePZSB68/AZ1QhpXa9ffNMwYdZypPpbGpJ2yHnqbHVeivSy2yFBh3fHuRH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NvbBtKND; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 113F7C4AF0C;
-	Tue, 30 Jul 2024 14:23:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1722349408;
-	bh=i0ER6Tvx6ftHCDdpxoVZ7IFUk+d001vA/10jeF9Jez4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NvbBtKND9TY0/CkXohua22qv/7FyqryOimZS3JShkq0xtU8zwqgRXGSOUEiFRMGcC
-	 GbA8FaZ/zYSw3JycfhyvqJVZW5KIqvczEjIfwcnhzx1Av8VXU2x7koyvSK8eXtLUVr
-	 BM5sM31ujzRvHfJb7szLeshP5SZnkw6uZROJ36NQ=
-Date: Tue, 30 Jul 2024 16:23:25 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
-Cc: johannes@sipsolutions.net, sashal@kernel.org,
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-	javier.carrasco.cruz@gmail.com, skhan@linuxfoundation.org,
-	stable@vger.kernel.org, Johannes Berg <johannes.berg@intel.com>,
-	syzbot+07bee335584b04e7c2f8@syzkaller.appspotmail.com
-Subject: Re: [PATCH] wifi: mac80211: check basic rates validity
-Message-ID: <2024073014-borrowing-justifier-18c8@gregkh>
-References: <20240729134318.291424-1-vincenzo.mezzela@gmail.com>
+	s=arc-20240116; t=1722352251; c=relaxed/simple;
+	bh=pjNQjmEtQshjgupf7ubr+Q5otLoPs32n3uBz33/+FcY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ExwuMJ2ykdCRVnzLoXEEcd577uARcTb/4ybbyLyMxRzzY4EkWup7FzWVSKBdDr6wbYAPv/DSbmHoUkXL9Ad1wdpXmjj5t1o9tAoRf2DPFeVgiz2WXMdcXSpQjFaZz+vLNYn9pK3iOd1sEJSyaxgr+qwRPpIupnTD2nhWGgqtBkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Z64rV9eE; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46U9NCJ1021139;
+	Tue, 30 Jul 2024 15:10:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	pjNQjmEtQshjgupf7ubr+Q5otLoPs32n3uBz33/+FcY=; b=Z64rV9eEmwUolICt
+	cIQWXlwm8hI7hWr96ItX+zjymlwtd0wIINMz+sexEfqq3ThFER4nQQwr4/kkId8f
+	nPkCoA+mTuqo3MRIndXsKW/vK8b18Zxgb1wQNImjK3fCzuvCZnK35/fRKnkZPubQ
+	ok44cY20cCZgUKHEG3/CNhLhzzEjcbuikDZqOf/X4oErAZbpCLh2o1PEpCOaEgtj
+	htJvfItBNFj5tvkq1NIRD+i0DZY9/ruf0PEnuoxJvbqBlfqXyTogeXlaTr8tLrz5
+	l8Vtkp/NijjthTGL9pRPZ9QUwYpMX47dsb+L9dHFTdr/CnXdpVZmaTSLXiZ37GTX
+	VDEDqQ==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40mqw77y13-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Jul 2024 15:10:45 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46UFAiwv032243
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Jul 2024 15:10:44 GMT
+Received: from [10.227.110.203] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 30 Jul
+ 2024 08:10:44 -0700
+Message-ID: <f7a78f85-db8a-4ce0-beb6-fb64d81bcc17@quicinc.com>
+Date: Tue, 30 Jul 2024 08:10:43 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240729134318.291424-1-vincenzo.mezzela@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath12k: Modify print_array_to_buf() to support
+ arrays with 1-based semantics
+Content-Language: en-US
+To: Roopni Devanathan <quic_rdevanat@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240730035154.3723773-1-quic_rdevanat@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240730035154.3723773-1-quic_rdevanat@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: zC1NvRSVq3ZniEpwyEoiO4uK7L2yCLyj
+X-Proofpoint-GUID: zC1NvRSVq3ZniEpwyEoiO4uK7L2yCLyj
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-30_12,2024-07-30_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ mlxlogscore=237 spamscore=0 impostorscore=0 lowpriorityscore=0
+ clxscore=1015 bulkscore=0 adultscore=0 suspectscore=0 malwarescore=0
+ phishscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2407300104
 
-On Mon, Jul 29, 2024 at 03:43:18PM +0200, Vincenzo Mezzela wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
-> 
-> commit ce04abc3fcc62cd5640af981ebfd7c4dc3bded28 upstream.
-> 
-> When userspace sets basic rates, it might send us some rates
-> list that's empty or consists of invalid values only. We're
-> currently ignoring invalid values and then may end up with a
-> rates bitmap that's empty, which later results in a warning.
-> 
-> Reject the call if there were no valid rates.
-> 
-> [ Conflict resolution involved adjusting the patch to accommodate
-> changes in the function signature of ieee80211_parse_bitrates and
-> ieee80211_check_rate_mask ]
-> 
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-> Reported-by: syzbot+07bee335584b04e7c2f8@syzkaller.appspotmail.com
-> Tested-by: syzbot+07bee335584b04e7c2f8@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=07bee335584b04e7c2f8
-> Signed-off-by: Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
-> ---
-> Hi,
-> please note that a backport of the same patch for v5.15 is available at
-> [1].
+In the future if you need to repost a patch, please add a REPOST tag to the
+subject, and below the "---" explain the reason for the repost.
 
-Please resend [1] as it's gone from my queue.
+Having duplicate subjects confuses the reviewers and perhaps some of the
+automated tooling.
 
-greg k-h
+Also suggest you use scripts/get_maintainer.pl to properly populate the list
+of recipients in the future:
+
+% scripts/get_maintainer.pl --no-rolestats drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
+Kalle Valo <kvalo@kernel.org>
+Jeff Johnson <jjohnson@kernel.org>
+linux-wireless@vger.kernel.org
+ath12k@lists.infradead.org
+linux-kernel@vger.kernel.org
+
+(Normally you send To: the people and Cc: the lists)
+
+/jeff
 
