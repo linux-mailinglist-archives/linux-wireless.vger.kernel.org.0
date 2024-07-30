@@ -1,101 +1,120 @@
-Return-Path: <linux-wireless+bounces-10683-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10684-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CEC0941134
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 13:53:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A54C9412A7
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 14:56:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B68701F23D04
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 11:53:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 214F01C229CD
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 12:56:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C2EE19580A;
-	Tue, 30 Jul 2024 11:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E3618E77B;
+	Tue, 30 Jul 2024 12:56:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="ugf7IYCj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b5tHK93+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from out203-205-221-173.mail.qq.com (out203-205-221-173.mail.qq.com [203.205.221.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA81166316;
-	Tue, 30 Jul 2024 11:52:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8646D442C
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Jul 2024 12:56:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722340381; cv=none; b=G2NQ53NDX4dt8ggdcaffQ/AOwD9Q7QpOLpf5S7SDvr6HpbAVO8N/KB14Loxg1TsYcuoQXwmvVDXD1Pcz6sGOssPR9U3/Fk4er0SZWgziZtF1AaVsJ6wlYfHzGeYxNXtCVmL11tWuRZrJWZZpoQNWjdIT2dtzxJvUvAKqhdT9j78=
+	t=1722344165; cv=none; b=lOTsGgUmB/SmVqF4p8UrcH6NnBQYIfx+sFJoa1kOuGVXVE5VyyhH9sdkim2h3MEeBwigkMYGP9y5I/9zoOHU8BjqPX8gctFhXF12Rpz2eX6rFzMQi9cIbtApchmXSEGltFKzjiO7obRoCJXQn3DLFeR355+5FtdxMxJrzk690fY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722340381; c=relaxed/simple;
-	bh=3U2t4PjSm3nGE8tUHltVJ/FufrtRhfcNuKwP2zsJLvE=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=hmdCz+rOJcujNqNUJ3zSdO2fqvH7fSCR2rx81FsS2jHt3S6Ydrlyd7ozoP0TgLKF2MwAgq1GHX7DNnvHh0c4nr5aZ9fZpfx0qhwucqAsz3eVt29y7kEN1WEzuuuR7ovDXz2L98AHYGYz+zmh9Bv5TuFXGLNrrMbQu7FYZrad92w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=ugf7IYCj; arc=none smtp.client-ip=203.205.221.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1722340374; bh=rfuhs/Z+9bw5iQ2Bo/tcqR1/U5bKvoVkGTLb5omlojc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ugf7IYCjSzDJh/zWUzxMmY5bqU1VFwUqNyY7c6MmXLQUindOXi3E8lzqMY6q2epqC
-	 gK73xVYHQNfriLyvFuKJ9Fya2+JP5Zvv+SUZUCAoQIlFerBTV27pdwfmGokxjYV1LO
-	 OncFn+YpgGEYd+HNkgIPZdvcg0rzxiATJdhBe6uY=
-Received: from pek-lxu-l1.wrs.com ([111.198.225.4])
-	by newxmesmtplogicsvrsza15-1.qq.com (NewEsmtp) with SMTP
-	id BB1A7E97; Tue, 30 Jul 2024 19:46:49 +0800
-X-QQ-mid: xmsmtpt1722340009t3xxspdre
-Message-ID: <tencent_48A8AECCEEC30C8EE7C8C6F692C2064D4906@qq.com>
-X-QQ-XMAILINFO: OOPJ7pYMv25ttYYXMSLL7LDhJwHo7h14cxc7k5mpeuZwgYP8Mgv1XHhcsz0T9b
-	 7TwKBMYlbE/WcyWEdhBLspwEWyduLVLQ9sL1c7Y8ktRrqr9ckpBOBZ9YhP/ctFYI9iVT0nI6s/uq
-	 0GE6DMKC+DECxAxzO4G3bp02TFcLFaeHQ5Qw9mmheAZyWH42X4gtztPQjPuu6JlP3OZ3WKqh37mn
-	 tN7gey74LGv+D+j7bnCI1DREyy+zsJPLoBXCVT9sCdJd2CIVjHIYFfcSG2ea7XrHZlCgGUYEJkPK
-	 Rta2CchhEQqgrBYl0htASiWroGERVje13kIS4xdhNCsNt7+QmmR23+p1pxacHQs+fosNYAkQuEvu
-	 8Zi37Euz6c+fADGzWMyBYHBF9ffeCr+UGJKkTrIxgq3nRfX11W5yZMnPxs/sWJK9ZrLS/dEk8MxB
-	 RWjjtrrucIwa1Q0MtSZImZnePJElsJdKQZe2wyiqfgVQ/MQvrAy+cUm7da+w1s94bbE6Z2ncpCsb
-	 4Y2CLfvG2leTzmbmYmW5Db9M6XZsX6002O16yjNZhVcCt4jvQ20vazRqerVo8KhEl4rD/JMBDkFX
-	 zogRkkzWGy4C1HVh0m/OrYTLwXyL0Vr1XMxW3/4dvFJsDJ3v394dvGQeAfoukTe8LK69bRuKZS3W
-	 UL/GCnFEF5X3skDiUO5HSu3jOHsmviKsp6boWxddLNbIjBg850ay1xlHWSosusVTKFiMRMtV0yu9
-	 vpVmhKQLP/2r4hbcq2h1BThb86vXp5waYKlHT05eq9XiZC9RzRm6f+C/xvm7KHJrOiUHs/8chpOY
-	 aP+rLt6AsiKtFMDSzMc8dd89vy95ahoKFs1ml+OvYfHPn/gUVvVE07cJzk/wI+JdVSK6EhZEHx4h
-	 yFDvxHN7Iwc3MdYWz+QGCemrDvqAr3MVnKTRTP6IIFv8DDg3EaLws5Lpmyudw1t4ufqlOpIqtaUW
-	 n7SfZN0ZQ=
-X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
-From: Edward Adam Davis <eadavis@qq.com>
-To: kvalo@kernel.org
-Cc: eadavis@qq.com,
-	linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	srini.raju@purelifi.com,
-	syzbot+51a42f7c2e399392ea82@syzkaller.appspotmail.com,
-	syzkaller-bugs@googlegroups.com
-Subject: Re: [PATCH] wifi: plfxlc: remove assert for mac->lock
-Date: Tue, 30 Jul 2024 19:46:50 +0800
-X-OQ-MSGID: <20240730114649.498184-2-eadavis@qq.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <877cd39nhg.fsf@kernel.org>
-References: <877cd39nhg.fsf@kernel.org>
+	s=arc-20240116; t=1722344165; c=relaxed/simple;
+	bh=7nXWt09b0nexn4zGWUYjj/r8yRR7NsQPoiQBTgYjiUY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nMyVQGviVLNkZdQqajqvEBRCygJVGWTEVs1jX2Fro0M8enWeu3ZQMPheYwK/+R1mTzI33Cto/rqQyJCUGiIO9TBknyvtRDvkCqxzsIKQiz/ZV6GLw4NSu+Ll/8iUuieJjEIiSJdFOAm1SO6bK9BesCe4RN0zyL1OdGYaNRpWHZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b5tHK93+; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2f035ae1083so60161021fa.3
+        for <linux-wireless@vger.kernel.org>; Tue, 30 Jul 2024 05:56:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722344161; x=1722948961; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oq+yo1Kdix6Ioo1L4vXZKkGorFSkj97G3xcCP1Bnu9E=;
+        b=b5tHK93+F3dVFpNlETZQIWnZaItDqPdAYB019pe1suqu3o9nEB4LMMe7SoAqSGARz0
+         xCGBSLXGMa/L2v7VdO/QHYcgAPtNEipsJsOI3qFAsKRQaks58oPBD3nsXTq8v5Bkc33L
+         lcp7aLRTyfp/pFUsTMETpOSJQm8lVdsaKLlGSAB5nTInF8IYusXR9VkV3+htXChfrBQ4
+         2Zr0hxnsXPNiZhY9zr8B/5UPOpvF6ANAG+hsOHhJOQieeGuFejlrRLf23APO/vXEXJwz
+         ZhFeRihIhLRSdwH3/SCM/h4LgA9KC1RvG6cn/+mI117BTmOj5IfeKunGZV0JCMK3Yncm
+         DpiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722344161; x=1722948961;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oq+yo1Kdix6Ioo1L4vXZKkGorFSkj97G3xcCP1Bnu9E=;
+        b=j/Vp+iihdDPBIaljtzkiGGF5TOval+xFAtBDtCLVZgWWhMpJhaxsBknUOALgil/1uC
+         YyixKTAWZPsnL1zVHEKrD6oEIowhTImCFR6AIYboMM/6tOMM6aSEJyVf5ctSOewApoED
+         9KePBIjh025HvyB2L1bT6XKm3sHXHP6KcOZD31nzEfq/zgdIUYHtKnfW7/kXFIjBp46I
+         rkYQPzuq1VQ6DFD/6SEbQ8lvqE403oeQQL5Q29UjHAiYbdCHGH9LlI3pbiDKWNOVBnBD
+         libHtfweaLB3v3mGitvXsOSzRqSjitXgH3trBDNgsGkC4we3mw3NOAB48QH7WbvbGCAc
+         ze9g==
+X-Forwarded-Encrypted: i=1; AJvYcCUzVlKDQXA1fefLVoL9z8nab3iis12BH11WhbRjHKPxHIyXUlaVucDlLLatdvt1r2pFTxbVF3pPp27QYPpaDEBgxtGdUUICCXMXPdphVdQ=
+X-Gm-Message-State: AOJu0YzKvPkJtMUNZESbZdzW9SEdaQWCTSlstqdY5uyez8eCJoBw1nEY
+	hnc+8hnsGKyTkWRldS1zjHe8slJ7c4dotYGn+rqgdf1KF6/YMwZ9
+X-Google-Smtp-Source: AGHT+IEJmJi0Z6ozaj8Da2kBWl4+LXKKsijQVUlF7XDA0z2CB3uFutLxKM74ARBNa4XzLVLsLjQs1A==
+X-Received: by 2002:a2e:7d0b:0:b0:2ef:2016:2637 with SMTP id 38308e7fff4ca-2f12ea9bf15mr68760101fa.0.1722344160195;
+        Tue, 30 Jul 2024 05:56:00 -0700 (PDT)
+Received: from [192.168.0.50] ([79.119.240.114])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5ac63590e73sm7241688a12.35.2024.07.30.05.55.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Jul 2024 05:55:59 -0700 (PDT)
+Message-ID: <4f052989-5fb9-4c5c-950e-a3d34e6499ab@gmail.com>
+Date: Tue, 30 Jul 2024 15:55:58 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] wifi: rtw88: Avoid using macid 0 in AP mode
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Sascha Hauer <sha@pengutronix.de>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+References: <9174a776-4771-4351-85fa-476e240d8ace@gmail.com>
+ <e4be0a75-43b2-4ae5-9aab-5c4a88e78097@gmail.com>
+ <9356af89520243ccacc0be72b8b03252@realtek.com>
+Content-Language: en-US
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <9356af89520243ccacc0be72b8b03252@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, 30 Jul 2024 13:35:07 +0300, Kalle Valo wrote:
-> > syzbot report WARNING in plfxlc_mac_release, according to the context,
-> > there is not need assert for mac->lock.
+On 30/07/2024 09:33, Ping-Ke Shih wrote:
+> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>>
+>> In AP mode, the firmware stops transmitting beacons if it receives
+>> H2C_CMD_RA_INFO for macid 0.
+>>
+>> Leave macid 0 unused in AP mode. Macid 1 is already reserved for
+>> broadcast/multicast. Assign macid 2 to the first connected client.
 > 
-> The commit message should explain _why_ the assert is not needed.
-> Otherwise it looks that you are randomly removing it to get rid of the
-> warning.
-mac->lock is used to protect mac data, but after calling plfxlc_mac_release(), 
-there are two functions:ieee80211_unregister_hw() and ieee80211_free_hw(),
-there is no action to operate on mac data in these two functions, so mac->lock
-is not required.
+> Seemingly we missed to set mac_id in TX desc for a long time.
+> 
+> +#define RTW_TX_DESC_W1_MACID GENMASK(7, 0)
+>  #define RTW_TX_DESC_W1_QSEL GENMASK(12, 8)
+>  #define RTW_TX_DESC_W1_RATE_ID GENMASK(20, 16)
+> 
+> The mac_id should be from rtwvif->mac_id or si->mac_id according to
+> operating mode and role.
+> 
+> And I suppose mac_id assignment for AP is mac_id 0 for broadcast/multicast, and
+> other mac_id can be used by connected stations regularly. 
+> 
 
-On the other hand, there is no holding action for mac->lock before calling plfxlc_mac_release.
+What about the concurrent AP + station scenario? Will the
+station vif use the next available macid, whatever that is?
+Just wondering, I don't use concurrent mode.
 
---
-Edward
-
+Also, do you mean that you will do all this? It's not clear to me.
 
