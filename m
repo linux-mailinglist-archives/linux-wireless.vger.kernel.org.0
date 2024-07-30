@@ -1,113 +1,136 @@
-Return-Path: <linux-wireless+bounces-10688-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10689-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C324C941527
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 17:10:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44719941903
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 18:28:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 002191C237E2
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 15:10:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3FE11F23855
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 16:28:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6391A2C0F;
-	Tue, 30 Jul 2024 15:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 003711A6160;
+	Tue, 30 Jul 2024 16:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Z64rV9eE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gTAr9yz7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460D61A2C0B
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Jul 2024 15:10:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04FF1078F
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Jul 2024 16:27:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722352251; cv=none; b=ZpRqp/rUmZ9CXwdDj/iwY82bxCnb/KWkuIlTW+vEiZnbHNBzxtR8I3k5LD6g+is0dCFRjCV7VVOHBDacFK5T2gTGbpjUo11v+R2L8x7hbLh2zAGxGUYeBtrhG53XHygf77wu2sZj5Boktne35YBho67PO9yE5Bax5lgBVGO6cGU=
+	t=1722356876; cv=none; b=OgS7CW/8ij0hZGLV4UXXv3lqEGoEnTAauLGlhEPj7Y9mX50p52wCeLBXyLC28Cfkkk4a3jw6fKK7B+G9krmd0JDsBentXGulOj8bmrq1UKT47zUg+vkyT1NqQGvyw//C/52ZV+YE1L8CtETs0by5LpCXWudQLmtoiWrODcdS7o4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722352251; c=relaxed/simple;
-	bh=pjNQjmEtQshjgupf7ubr+Q5otLoPs32n3uBz33/+FcY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ExwuMJ2ykdCRVnzLoXEEcd577uARcTb/4ybbyLyMxRzzY4EkWup7FzWVSKBdDr6wbYAPv/DSbmHoUkXL9Ad1wdpXmjj5t1o9tAoRf2DPFeVgiz2WXMdcXSpQjFaZz+vLNYn9pK3iOd1sEJSyaxgr+qwRPpIupnTD2nhWGgqtBkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Z64rV9eE; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46U9NCJ1021139;
-	Tue, 30 Jul 2024 15:10:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	pjNQjmEtQshjgupf7ubr+Q5otLoPs32n3uBz33/+FcY=; b=Z64rV9eEmwUolICt
-	cIQWXlwm8hI7hWr96ItX+zjymlwtd0wIINMz+sexEfqq3ThFER4nQQwr4/kkId8f
-	nPkCoA+mTuqo3MRIndXsKW/vK8b18Zxgb1wQNImjK3fCzuvCZnK35/fRKnkZPubQ
-	ok44cY20cCZgUKHEG3/CNhLhzzEjcbuikDZqOf/X4oErAZbpCLh2o1PEpCOaEgtj
-	htJvfItBNFj5tvkq1NIRD+i0DZY9/ruf0PEnuoxJvbqBlfqXyTogeXlaTr8tLrz5
-	l8Vtkp/NijjthTGL9pRPZ9QUwYpMX47dsb+L9dHFTdr/CnXdpVZmaTSLXiZ37GTX
-	VDEDqQ==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40mqw77y13-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jul 2024 15:10:45 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46UFAiwv032243
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jul 2024 15:10:44 GMT
-Received: from [10.227.110.203] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 30 Jul
- 2024 08:10:44 -0700
-Message-ID: <f7a78f85-db8a-4ce0-beb6-fb64d81bcc17@quicinc.com>
-Date: Tue, 30 Jul 2024 08:10:43 -0700
+	s=arc-20240116; t=1722356876; c=relaxed/simple;
+	bh=8PygYswFZPPTs/7xvBnDe8rF1GuAYw8rgs9nScBZjEM=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=ZTzu/dKhN4SQxQSNGYc3vtkjJpNep4qplghZdMfUin3oJdFuzSMMPKw37oOLdWShouJhLEJbsnP++CNPsJf3FbEEojezkNzDjqGt+aJVfaKRtsx/16rWtEYcb3ftIB4gIGoT4QV5X5dy+4w2XJja2N6YFr3JBnSiZKtgvf9OeSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gTAr9yz7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9BF6C4AF0A;
+	Tue, 30 Jul 2024 16:27:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722356876;
+	bh=8PygYswFZPPTs/7xvBnDe8rF1GuAYw8rgs9nScBZjEM=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=gTAr9yz7Eu64uTXqh3ZSgtzVTUA2250p6OdFw50Aw9Oty2yaD2GLn5bbx+KH522U5
+	 /KtYW4KVCVfi6O2W/OO6lAqJA9ONruIfPX1GMgFfuarjkyCjSLXP6tyh9HiCHICLmH
+	 zwxxR5nU1DZYcnGCvN1Bnv+IlK4haN3mZtA/i0HDda4RdIec9LVPks6zzarOuIf2lv
+	 UtXAftWZ5m+DQY5AkI22JtUf56XRtiWFhuDfDolEULxvRBejUER+NCyIlyuDYkU7d1
+	 hgIfC1r6Rwp/2Uy0LsCh/aJDDw1z335SgSw32BWVasKu8cbxv4Rcf0VaVQ/iZjuB1v
+	 Lo4NKXKMxJhCQ==
+From: Kalle Valo <kvalo@kernel.org>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+  "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>
+Subject: Re: rtw88: The debugfs interface reads registers from the wrong device
+References: <e28bbf72-678a-438b-b5dc-d4ae8b8f71f0@gmail.com>
+	<77b8adc4-daa9-4869-8773-c5de9eb84299@gmail.com>
+	<1d00170b5f0a39bdff6f759de300a402209ace03.camel@realtek.com>
+	<cd6a2acf3c2c36d938b40140b52a779516f446a9.camel@realtek.com>
+Date: Tue, 30 Jul 2024 19:27:53 +0300
+In-Reply-To: <cd6a2acf3c2c36d938b40140b52a779516f446a9.camel@realtek.com>
+	(Ping-Ke Shih's message of "Tue, 16 Jul 2024 02:56:03 +0000")
+Message-ID: <87o76elu9i.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath12k: Modify print_array_to_buf() to support
- arrays with 1-based semantics
-Content-Language: en-US
-To: Roopni Devanathan <quic_rdevanat@quicinc.com>,
-        <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240730035154.3723773-1-quic_rdevanat@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240730035154.3723773-1-quic_rdevanat@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: zC1NvRSVq3ZniEpwyEoiO4uK7L2yCLyj
-X-Proofpoint-GUID: zC1NvRSVq3ZniEpwyEoiO4uK7L2yCLyj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-30_12,2024-07-30_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- mlxlogscore=237 spamscore=0 impostorscore=0 lowpriorityscore=0
- clxscore=1015 bulkscore=0 adultscore=0 suspectscore=0 malwarescore=0
- phishscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2407300104
+Content-Type: text/plain
 
-In the future if you need to repost a patch, please add a REPOST tag to the
-subject, and below the "---" explain the reason for the repost.
+Ping-Ke Shih <pkshih@realtek.com> writes:
 
-Having duplicate subjects confuses the reviewers and perhaps some of the
-automated tooling.
+> On Tue, 2024-07-16 at 01:19 +0000, Ping-Ke Shih wrote:
+>
+>> On Mon, 2024-07-15 at 14:26 +0300, Bitterblue Smith wrote:
+>> > On 15/07/2024 14:05, Bitterblue Smith wrote:
+>> > > Hi,
+>> > > 
+>> > > To reproduce the problem, you need a computer with two wifi
+>> > > devices supported by rtw88. It's especially easy to notice
+>> > > the problem if one of the devices is USB and the other is PCI,
+>> > > because the PCI device will have various values in the
+>> > > registers 0x300..0x3ff, but the USB device will have all
+>> > > 0xeaeaeaea there.
+>> > > 
+>> > > 1. Let's assume the driver for the PCI device is already loaded.
+>> > >    I have RTL8822CE.
+>> > > 
+>> > > 2. Mount debugfs:
+>> > > 
+>> > >    # mount -t debugfs none /sys/kernel/debug
+>> > > 
+>> > > 3. Check page 0x300:
+>> > > 
+>> > >    # cat /sys/kernel/debug/ieee80211/phy0/rtw88/mac_3
+>> > >      00000300  f7138000    33330000    ffffb000    00000000
+>> > >      .....
+>> > > 
+>> > > 4. Plug the USB device. I used RTL8811CU.
+>> > > 
+>> > > 5. Check page 0x300 again:
+>> > > 
+>> > >    # cat /sys/kernel/debug/ieee80211/phy0/rtw88/mac_3
+>> > >      00000300  eaeaeaea    eaeaeaea    eaeaeaea    eaeaeaea
+>> > >      .....
+>> > > 
+>> > > 6. Bonus: unload rtw88_8821cu and check page 0x300 again to get
+>> > >    a null pointer dereference:
+>> > > 
+>> > >    # rmmod rtw88_8821cu
+>> > >    # cat /sys/kernel/debug/ieee80211/phy0/rtw88/mac_3
+>> > 
+>> > I forgot to say: my kernel is 6.9.8-arch1-1 from Arch Linux.
+>> > The problem also happens with kernel 6.9.8 plus rtw88 from
+>> > rtw-next.
+>> 
+>> This limitation is existing since initial driver.
+>> 
+>> To read a range of large registers area, for example, we need to
+>> a range via write operation and store as a private data, and
+>> then use read operation with private data to read registers.
+>> 
+>> The limitation is because the private data is static variable.
+>> A possible solution is to duplicate static variable into rtwdev.
+>> Not sure if it is worth to adjust codes for debug purpose only.
+>> 
+>> Another easier solution is to avoid creating debugfs for second
+>> adapter. How do you think?
+>> 
+>
+> Think a little bit further. I will try to duplicate static variables
+> to support multiple adapters. 
 
-Also suggest you use scripts/get_maintainer.pl to properly populate the list
-of recipients in the future:
+BTW in drivers all static variables need to be const just because of
+issues like this. Static non-const variables are a big no.
 
-% scripts/get_maintainer.pl --no-rolestats drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-Kalle Valo <kvalo@kernel.org>
-Jeff Johnson <jjohnson@kernel.org>
-linux-wireless@vger.kernel.org
-ath12k@lists.infradead.org
-linux-kernel@vger.kernel.org
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-(Normally you send To: the people and Cc: the lists)
-
-/jeff
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
