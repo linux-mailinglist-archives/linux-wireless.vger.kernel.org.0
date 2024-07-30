@@ -1,130 +1,192 @@
-Return-Path: <linux-wireless+bounces-10667-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10668-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D3A9940874
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 08:37:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27014940881
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 08:40:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9A9D283405
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 06:37:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57E621C2289A
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 06:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF1916C440;
-	Tue, 30 Jul 2024 06:37:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="UNxOmMl+"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14C6E10E3;
+	Tue, 30 Jul 2024 06:40:01 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40FCF7FBAC
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Jul 2024 06:37:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B28A524C
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Jul 2024 06:39:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722321436; cv=none; b=kgYKMkr1gpgvL/MvkffXmj2WFsOIi5kMFcehq4HV/u/354iaBsGB6QhM3wt2lKj21nlf6OC0xqDIhqwDGDSHtQbaTf9NNWHHKc4apN8KeIqjMeQuHuLnnCQ0cLZsE7DqSdKJZpex6x0SsGIdcNawOzj7morCgyCXWP9hH4nYslc=
+	t=1722321601; cv=none; b=kuG+a7LVrK59GnSCSjUa2H+P/tg2DFgjyEogiPVV4Ij+oeMNCjcsAOfIv6Svr641WdipqTgAhnnheZVa3+zeUA8jZ+6T0ScqUckfi13dkhGIbb8Nl3CHyV0jKlvwQdcuRREsVxN2y/t8lvqx7RVQhi0lvmhXcaZCeDe3Bs0pAkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722321436; c=relaxed/simple;
-	bh=N47Qs6ylcphzAUtYxaZMJgXp9Hzc7IfQwO9V19FO3ms=;
-	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=rzpWM84MpxojoWEw3L7N2fnWoi/ydzUA/0H851ElqLY/dSREKczcPJRmIRXKu45dati+FRapM5OEisDsHQIrstuAkLh2DZmpQtLP/3nUcUGB5j2aQMFyGOEIxg6ophdhWX1cwlhA9kGWqzoxCIBjtgdO/coSRn0sK+j10Cd7RIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=UNxOmMl+; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1fc5549788eso30510005ad.1
-        for <linux-wireless@vger.kernel.org>; Mon, 29 Jul 2024 23:37:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1722321434; x=1722926234; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=d8n8rYBKoxfcGnZbJLvEREPokWsFDiloFhCfdKHeZA0=;
-        b=UNxOmMl+jxkf6YnKJctgui1i7rf8X2l5K0keWflVRIkS1DItWOrNWcPJrspO2gAkjI
-         WBH/fXwA7G8oPkTTE4/ZVuy3j+/9tGyASds7ghFKPU2RNcjTZDAUvTvnFfb5ccK+cxHW
-         0Ahfm7d5beHfMwrRS7PxuAw9NXYnhmcwF/O3g=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722321434; x=1722926234;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=d8n8rYBKoxfcGnZbJLvEREPokWsFDiloFhCfdKHeZA0=;
-        b=WkWsqnU6fv5SSA5A2VzZspUaE+ZnutS3qKk3uSM5j5Nks/MgrQNORvc1NzWOx76sRD
-         X2f6HhEVHpwGOqjp7CceqDFnxr+nmtvpJvymMDL8wDWRsI2ZIE2asfaBCTG2wBq3ys0n
-         lbG5SO9UkY7klXeBiiXnWpQ/VU8ribCkjmRnGLoeSeZDBCAFTk3GFkdAZ6hqzQfabIJ/
-         A7V74BssMesgX/EJ9huSqH3FacHpHMSULBED/SoLQoVvX00VspeTtQSxiN3HT0641MXT
-         LJLw3M30zecDJ9IACm86d14cP3R47207t/I2LitEGNs+NfHd7S9GkPm/TxSUUhkeU69L
-         LM8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVol3fyRkDoaPFA1D455863pVUBHv9A5SZjdkuhyiduTnF0HlxOfKd8++ZyQGwqvTo9BjoBTd5OV7zoIlwNUcL79MXphlm2Ya4sAwIfZVA=
-X-Gm-Message-State: AOJu0YzfeBRhkHXb3TVI1t+Qp9unR9N02cT3S+XeJNnPxUaUmr40BJkB
-	X0PNq44I8S94wiDnEgHICLBX1pLCKn0rlDewG0bkIxeFuEh4LSsJW2z40HGavA==
-X-Google-Smtp-Source: AGHT+IEbAYsTcrcjdD3UrZN6PQy+Do67Ei8GuSEd9YQg6UqH56tJFOZ2LAJA39UhwaNb5oNVG9ACLg==
-X-Received: by 2002:a17:90a:6b4c:b0:2c9:7ebd:b957 with SMTP id 98e67ed59e1d1-2cf7e1df0abmr10618508a91.11.1722321434495;
-        Mon, 29 Jul 2024 23:37:14 -0700 (PDT)
-Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2cdb7608b88sm11733257a91.56.2024.07.29.23.37.07
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 29 Jul 2024 23:37:14 -0700 (PDT)
-From: Arend Van Spriel <arend.vanspriel@broadcom.com>
-To: Jacobe Zang <jacobe.zang@wesion.com>, <robh@kernel.org>, <krzk+dt@kernel.org>, <heiko@sntech.de>, <kvalo@kernel.org>, <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>, <conor+dt@kernel.org>, Linus Walleij <linus.walleij@linaro.org>
-CC: <efectn@protonmail.com>, <dsimic@manjaro.org>, <jagan@edgeble.ai>, <devicetree@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>, <linux-rockchip@lists.infradead.org>, <linux-kernel@vger.kernel.org>, <arend@broadcom.com>, <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>, <megi@xff.cz>, <duoming@zju.edu.cn>, <bhelgaas@google.com>, <minipli@grsecurity.net>, <brcm80211@lists.linux.dev>, <brcm80211-dev-list.pdl@broadcom.com>, <nick@khadas.com>
-Date: Tue, 30 Jul 2024 08:37:05 +0200
-Message-ID: <191025b5268.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <20240730033053.4092132-3-jacobe.zang@wesion.com>
-References: <20240730033053.4092132-1-jacobe.zang@wesion.com>
- <20240730033053.4092132-3-jacobe.zang@wesion.com>
-User-Agent: AquaMail/1.51.5 (build: 105105504)
-Subject: Re: [PATCH v5 2/5] dt-bindings: net: wireless: brcm4329-fmac: add clock description for AP6275P
+	s=arc-20240116; t=1722321601; c=relaxed/simple;
+	bh=1+uEfNJ+Xzfk0mVZqR8mqbwIpkLDZauGP0/KFKMFQtI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cTjd/vl2HR9dUbz7IgFzF9Nj/s4qFHC32iZ6tP0ivjAahyfNwNiB5fnb0nggNV3h9UUFvd8zTr9XgQIiPWYTHHP1yXLWXhLCl/su+NAeDBwAn72SxUYx7V8ldQqbDqiOcNaUWQ1SzPGB1Xu0nyUY/5n65ae01ug9PJGR1xIiKKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sYgWX-00047a-Vh; Tue, 30 Jul 2024 08:39:54 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sYgWX-003Ds1-BJ; Tue, 30 Jul 2024 08:39:53 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sYgWX-0092jf-0n;
+	Tue, 30 Jul 2024 08:39:53 +0200
+Date: Tue, 30 Jul 2024 08:39:53 +0200
+From: Sascha Hauer <sha@pengutronix.de>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: Re: [PATCH 3/4] wifi: rtw88: usb: Support RX aggregation
+Message-ID: <ZqiKuUI_9Pk4ktXk@pengutronix.de>
+References: <c03390ce-34c2-42dd-9bd6-b231bb1f2fae@gmail.com>
+ <a549707a-09f4-4787-8111-65cc266675d6@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset="us-ascii"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a549707a-09f4-4787-8111-65cc266675d6@gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
-+ Linus W
-
-On July 30, 2024 5:31:15 AM Jacobe Zang <jacobe.zang@wesion.com> wrote:
-
-> Not only AP6275P Wi-Fi device but also all Broadcom wireless devices allow
-> external low power clock input. In DTS the clock as an optional choice in
-> the absence of an internal clock.
->
-> Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
+On Sun, Jul 28, 2024 at 10:42:32PM +0300, Bitterblue Smith wrote:
+> The chips can be configured to aggregate several frames into a single
+> USB transfer. Modify rtw_usb_rx_handler() to support this case.
+> 
+> RX aggregation improves the RX speed on certain ARM systems, like the
+> NanoPi NEO Core2.
+> 
+> Currently none of the chips are configured to aggregate frames.
+> 
+> Tested with RTL8811CU and RTL8723DU.
+> 
+> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 > ---
-> .../bindings/net/wireless/brcm,bcm4329-fmac.yaml          | 8 ++++++++
-> 1 file changed, 8 insertions(+)
->
-> diff --git 
-> a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml 
-> b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-> index 2c2093c77ec9a..a3607d55ef367 100644
-> --- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-> +++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-> @@ -122,6 +122,14 @@ properties:
-> NVRAM. This would normally be filled in by the bootloader from platform
-> configuration data.
->
-> +  clocks:
-> +    items:
-> +      - description: External Low Power Clock input (32.768KHz)
+>  drivers/net/wireless/realtek/rtw88/usb.c | 57 +++++++++++++++---------
+>  1 file changed, 37 insertions(+), 20 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
+> index 73948078068f..d61be1029a7b 100644
+> --- a/drivers/net/wireless/realtek/rtw88/usb.c
+> +++ b/drivers/net/wireless/realtek/rtw88/usb.c
+> @@ -546,11 +546,12 @@ static void rtw_usb_rx_handler(struct work_struct *work)
+>  	struct rtw_usb *rtwusb = container_of(work, struct rtw_usb, rx_work);
+>  	struct rtw_dev *rtwdev = rtwusb->rtwdev;
+>  	const struct rtw_chip_info *chip = rtwdev->chip;
+> -	struct rtw_rx_pkt_stat pkt_stat;
+> +	u32 pkt_desc_sz = chip->rx_pkt_desc_sz;
+>  	struct ieee80211_rx_status rx_status;
+> +	u32 pkt_offset, next_pkt, urb_len;
+> +	struct rtw_rx_pkt_stat pkt_stat;
+> +	struct sk_buff *next_skb = NULL;
+>  	struct sk_buff *skb;
+> -	u32 pkt_desc_sz = chip->rx_pkt_desc_sz;
+> -	u32 pkt_offset;
+>  	u8 *rx_desc;
+>  	int limit;
+>  
+> @@ -559,29 +560,44 @@ static void rtw_usb_rx_handler(struct work_struct *work)
+>  		if (!skb)
+>  			break;
+>  
+> -		rx_desc = skb->data;
+> -		chip->ops->query_rx_desc(rtwdev, rx_desc, &pkt_stat,
+> -					 &rx_status);
+> -		pkt_offset = pkt_desc_sz + pkt_stat.drv_info_sz +
+> -			     pkt_stat.shift;
+> -
+> -		if (pkt_stat.is_c2h) {
+> -			skb_put(skb, pkt_stat.pkt_len + pkt_offset);
+> -			rtw_fw_c2h_cmd_rx_irqsafe(rtwdev, pkt_offset, skb);
+> -			continue;
+> -		}
+> -
+>  		if (skb_queue_len(&rtwusb->rx_queue) >= RTW_USB_MAX_RXQ_LEN) {
+>  			dev_dbg_ratelimited(rtwdev->dev, "failed to get rx_queue, overflow\n");
+>  			dev_kfree_skb_any(skb);
+>  			continue;
+>  		}
+>  
+> -		skb_put(skb, pkt_stat.pkt_len);
+> -		skb_reserve(skb, pkt_offset);
+> -		rtw_rx_stats(rtwdev, pkt_stat.vif, skb);
+> -		memcpy(skb->cb, &rx_status, sizeof(rx_status));
+> -		ieee80211_rx_irqsafe(rtwdev->hw, skb);
+> +		urb_len = skb->len;
 > +
-> +  clock-names:
-> +    items:
-> +      - const: lpo
+> +		do {
+> +			rx_desc = skb->data;
+> +			chip->ops->query_rx_desc(rtwdev, rx_desc, &pkt_stat,
+> +						 &rx_status);
+> +			pkt_offset = pkt_desc_sz + pkt_stat.drv_info_sz +
+> +				     pkt_stat.shift;
 > +
+> +			next_pkt = round_up(pkt_stat.pkt_len + pkt_offset, 8);
+> +
+> +			if (urb_len >= next_pkt + pkt_desc_sz)
+> +				next_skb = skb_clone(skb, GFP_KERNEL);
 
-We still have an issue that this clock input is also present in the 
-bindings specification broadcom-bluetooth.yaml (not in bluetooth 
-subfolder). This clock is actually a chip resource. What happens if both 
-are defined and both wifi and bt drivers try to enable this clock? Can this 
-be expressed in yaml or can we only put a textual warning in the property 
-descriptions?
+You could add a:
+			else
+				next_skb = NULL;
 
-Regards,
-Arend
+here and drop the next_skb = NULL from the end of the loop. No
+functional change, but easier to read.
 
+> +
+> +			if (pkt_stat.is_c2h) {
+> +				skb_trim(skb, pkt_stat.pkt_len + pkt_offset);
+> +				rtw_fw_c2h_cmd_rx_irqsafe(rtwdev, pkt_offset, skb);
+> +			} else {
+> +				skb_pull(skb, pkt_offset);
+> +				skb_trim(skb, pkt_stat.pkt_len);
+> +				rtw_rx_stats(rtwdev, pkt_stat.vif, skb);
+> +				memcpy(skb->cb, &rx_status, sizeof(rx_status));
+> +				ieee80211_rx_irqsafe(rtwdev->hw, skb);
+> +			}
+> +
+> +			skb = next_skb;
+> +			if (skb)
+> +				skb_pull(next_skb, next_pkt);
 
+You could use skb instead of next_skb here. Both are the same, so no
+functional change, just makes it a bit easier to read when you use the
+same variable that you just tested for validity.
+
+> +
+> +			urb_len -= next_pkt;
+> +			next_skb = NULL;
+> +		} while (skb && urb_len >= pkt_desc_sz);
+
+You can drop the urb_len >= pkt_desc_sz check. It will be exactly true
+when skb is non NULL as well.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
