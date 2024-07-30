@@ -1,263 +1,130 @@
-Return-Path: <linux-wireless+bounces-10666-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10667-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DE10940870
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 08:33:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D3A9940874
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 08:37:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 716B91C2283B
-	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 06:33:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9A9D283405
+	for <lists+linux-wireless@lfdr.de>; Tue, 30 Jul 2024 06:37:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC2915FA6A;
-	Tue, 30 Jul 2024 06:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF1916C440;
+	Tue, 30 Jul 2024 06:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="pse39uki"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="UNxOmMl+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF077FBAC
-	for <linux-wireless@vger.kernel.org>; Tue, 30 Jul 2024 06:33:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40FCF7FBAC
+	for <linux-wireless@vger.kernel.org>; Tue, 30 Jul 2024 06:37:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722321226; cv=none; b=jnwb3tRyvxIVbMTzAILMjlyxdg33HYuIR44Xd0excl8v8RCh0Rbo/3VoXsDzGlq6pOFO+QPbZLbJ2HIrvMHjWxhmttOG9a6Irrq9IwUHmOU82/uZROkescw27rThYs3mgGdAYUy96v5IjGlQUQDkpWjXxF904pVUeqqFOn8rGBs=
+	t=1722321436; cv=none; b=kgYKMkr1gpgvL/MvkffXmj2WFsOIi5kMFcehq4HV/u/354iaBsGB6QhM3wt2lKj21nlf6OC0xqDIhqwDGDSHtQbaTf9NNWHHKc4apN8KeIqjMeQuHuLnnCQ0cLZsE7DqSdKJZpex6x0SsGIdcNawOzj7morCgyCXWP9hH4nYslc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722321226; c=relaxed/simple;
-	bh=thUmxdbSsEro90zL2P/8pYOgzQGQh5F5A0pwnG1GnuI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=A0+qum4ZFK4tD9gAp+TVAfuuLpKIiKvfPi78x07tQ1Dywcv0s0lMZSHa6GK4/wYdgOvb9/0X0GIJ4ogcfOtjYdOyHcYL5AhsP/VWc5cbLlpkXElT1HTCSDeF8ckGmhRIhAuqOVKf6ythOFG+eXusVZ0oQ3AaYJie4+orTr8MJ74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=pse39uki; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46TMdUKc019417;
-	Tue, 30 Jul 2024 06:33:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=JnWfdS0OhURUwpOcoTFf5W
-	LLjx1k8Skvt5ZH/5eL7mU=; b=pse39ukij9rVfKlFuxwxbcYSvuk3N5BZO7FWvG
-	L0eKxIGLTJ/uoCsTeFqkVIvaqrrvC5VDT1w4cOGbPU6RL5w7yCl0m313K+fA+ni4
-	dghRx/qAH5sqOr8tU7s12ylOz3+eq3NO3efMmk38oZgh/dCA16AwJqm699OgFsjA
-	Y4+MY4rx6j5x/OfxEMPvdPNGUnM/6i8BwJ4dmscLX7iuo9BGsmtN0yK13uIm2WzV
-	iLS3VBwOltd8bI+sZhmebnvUKWKjpPdtJoQP/3TNsAueGW5qbR3moeGNlZ2ptaoq
-	38MMhJa6UmN8cv2vhqERlSP3U8L0We9F7MBg5jj8+xtwZ3cg==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40mqurpcyc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jul 2024 06:33:40 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46U6XeiW015883
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jul 2024 06:33:40 GMT
-Received: from hu-ramess-blr.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Mon, 29 Jul 2024 23:33:37 -0700
-From: Rameshkumar Sundaram <quic_ramess@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Rameshkumar Sundaram
-	<quic_ramess@quicinc.com>,
-        Sriram R <quic_srirrama@quicinc.com>,
-        Jeff Johnson
-	<quic_jjohnson@quicinc.com>
-Subject: [PATCH v2] wifi: ath12k: prepare vif config caching for MLO
-Date: Tue, 30 Jul 2024 12:03:23 +0530
-Message-ID: <20240730063323.3766958-1-quic_ramess@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1722321436; c=relaxed/simple;
+	bh=N47Qs6ylcphzAUtYxaZMJgXp9Hzc7IfQwO9V19FO3ms=;
+	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=rzpWM84MpxojoWEw3L7N2fnWoi/ydzUA/0H851ElqLY/dSREKczcPJRmIRXKu45dati+FRapM5OEisDsHQIrstuAkLh2DZmpQtLP/3nUcUGB5j2aQMFyGOEIxg6ophdhWX1cwlhA9kGWqzoxCIBjtgdO/coSRn0sK+j10Cd7RIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=UNxOmMl+; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1fc5549788eso30510005ad.1
+        for <linux-wireless@vger.kernel.org>; Mon, 29 Jul 2024 23:37:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1722321434; x=1722926234; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=d8n8rYBKoxfcGnZbJLvEREPokWsFDiloFhCfdKHeZA0=;
+        b=UNxOmMl+jxkf6YnKJctgui1i7rf8X2l5K0keWflVRIkS1DItWOrNWcPJrspO2gAkjI
+         WBH/fXwA7G8oPkTTE4/ZVuy3j+/9tGyASds7ghFKPU2RNcjTZDAUvTvnFfb5ccK+cxHW
+         0Ahfm7d5beHfMwrRS7PxuAw9NXYnhmcwF/O3g=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722321434; x=1722926234;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=d8n8rYBKoxfcGnZbJLvEREPokWsFDiloFhCfdKHeZA0=;
+        b=WkWsqnU6fv5SSA5A2VzZspUaE+ZnutS3qKk3uSM5j5Nks/MgrQNORvc1NzWOx76sRD
+         X2f6HhEVHpwGOqjp7CceqDFnxr+nmtvpJvymMDL8wDWRsI2ZIE2asfaBCTG2wBq3ys0n
+         lbG5SO9UkY7klXeBiiXnWpQ/VU8ribCkjmRnGLoeSeZDBCAFTk3GFkdAZ6hqzQfabIJ/
+         A7V74BssMesgX/EJ9huSqH3FacHpHMSULBED/SoLQoVvX00VspeTtQSxiN3HT0641MXT
+         LJLw3M30zecDJ9IACm86d14cP3R47207t/I2LitEGNs+NfHd7S9GkPm/TxSUUhkeU69L
+         LM8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVol3fyRkDoaPFA1D455863pVUBHv9A5SZjdkuhyiduTnF0HlxOfKd8++ZyQGwqvTo9BjoBTd5OV7zoIlwNUcL79MXphlm2Ya4sAwIfZVA=
+X-Gm-Message-State: AOJu0YzfeBRhkHXb3TVI1t+Qp9unR9N02cT3S+XeJNnPxUaUmr40BJkB
+	X0PNq44I8S94wiDnEgHICLBX1pLCKn0rlDewG0bkIxeFuEh4LSsJW2z40HGavA==
+X-Google-Smtp-Source: AGHT+IEbAYsTcrcjdD3UrZN6PQy+Do67Ei8GuSEd9YQg6UqH56tJFOZ2LAJA39UhwaNb5oNVG9ACLg==
+X-Received: by 2002:a17:90a:6b4c:b0:2c9:7ebd:b957 with SMTP id 98e67ed59e1d1-2cf7e1df0abmr10618508a91.11.1722321434495;
+        Mon, 29 Jul 2024 23:37:14 -0700 (PDT)
+Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2cdb7608b88sm11733257a91.56.2024.07.29.23.37.07
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 29 Jul 2024 23:37:14 -0700 (PDT)
+From: Arend Van Spriel <arend.vanspriel@broadcom.com>
+To: Jacobe Zang <jacobe.zang@wesion.com>, <robh@kernel.org>, <krzk+dt@kernel.org>, <heiko@sntech.de>, <kvalo@kernel.org>, <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>, <conor+dt@kernel.org>, Linus Walleij <linus.walleij@linaro.org>
+CC: <efectn@protonmail.com>, <dsimic@manjaro.org>, <jagan@edgeble.ai>, <devicetree@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>, <linux-rockchip@lists.infradead.org>, <linux-kernel@vger.kernel.org>, <arend@broadcom.com>, <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>, <megi@xff.cz>, <duoming@zju.edu.cn>, <bhelgaas@google.com>, <minipli@grsecurity.net>, <brcm80211@lists.linux.dev>, <brcm80211-dev-list.pdl@broadcom.com>, <nick@khadas.com>
+Date: Tue, 30 Jul 2024 08:37:05 +0200
+Message-ID: <191025b5268.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <20240730033053.4092132-3-jacobe.zang@wesion.com>
+References: <20240730033053.4092132-1-jacobe.zang@wesion.com>
+ <20240730033053.4092132-3-jacobe.zang@wesion.com>
+User-Agent: AquaMail/1.51.5 (build: 105105504)
+Subject: Re: [PATCH v5 2/5] dt-bindings: net: wireless: brcm4329-fmac: add clock description for AP6275P
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; format=flowed; charset="us-ascii"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: iUdFUeiQ0LAi7o4yKXiSGXJxLjujhppZ
-X-Proofpoint-ORIG-GUID: iUdFUeiQ0LAi7o4yKXiSGXJxLjujhppZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-30_06,2024-07-26_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- mlxlogscore=999 spamscore=0 phishscore=0 lowpriorityscore=0 adultscore=0
- clxscore=1011 bulkscore=0 malwarescore=0 mlxscore=0 impostorscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2407300047
 
-Currently vif configuration cache pointers are placed in arvif and
-caching is done whenever a link vif configuration is received before
-driver created vdev for it (i.e. before channel is assigned),
-this is possible because current code only uses default
-link(ahvif->deflink) which is preallocated.
++ Linus W
 
-With MLO changes the ieee80211_vif drv priv is now ahvif and its
-arvifs(link vif) other than deflink can be allocated dynamically
-during channel assignment. Hence maintain link level cache
-in ahvif and whenever channel is assigned for link vif and vdev is created,
-flush the corresponding link vif cache from ahvif.
+On July 30, 2024 5:31:15 AM Jacobe Zang <jacobe.zang@wesion.com> wrote:
 
-Current code uses cache of ATH12K_DEFAULT_LINK_ID(0) which is the cache
-of ahvif->deflink.
+> Not only AP6275P Wi-Fi device but also all Broadcom wireless devices allow
+> external low power clock input. In DTS the clock as an optional choice in
+> the absence of an internal clock.
+>
+> Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
+> ---
+> .../bindings/net/wireless/brcm,bcm4329-fmac.yaml          | 8 ++++++++
+> 1 file changed, 8 insertions(+)
+>
+> diff --git 
+> a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml 
+> b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
+> index 2c2093c77ec9a..a3607d55ef367 100644
+> --- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
+> +++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
+> @@ -122,6 +122,14 @@ properties:
+> NVRAM. This would normally be filled in by the bootloader from platform
+> configuration data.
+>
+> +  clocks:
+> +    items:
+> +      - description: External Low Power Clock input (32.768KHz)
+> +
+> +  clock-names:
+> +    items:
+> +      - const: lpo
+> +
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+We still have an issue that this clock input is also present in the 
+bindings specification broadcom-bluetooth.yaml (not in bluetooth 
+subfolder). This clock is actually a chip resource. What happens if both 
+are defined and both wifi and bt drivers try to enable this clock? Can this 
+be expressed in yaml or can we only put a textual warning in the property 
+descriptions?
 
-Co-developed-by: Sriram R <quic_srirrama@quicinc.com>
-Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
-Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
----
-v2:
- - Added Tested-on Tag
+Regards,
+Arend
 
-Depends-on:
-[PATCH v6 0/3] wifi: ath12k: prepare vif and sta datastructure
-Link: https://lore.kernel.org/linux-wireless/20240711165511.3100433-4-quic_ramess@quicinc.com/
----
- drivers/net/wireless/ath/ath12k/core.h |  2 +-
- drivers/net/wireless/ath/ath12k/mac.c  | 39 +++++++++++++-------------
- 2 files changed, 21 insertions(+), 20 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index 13f8695c2337..5b880f6970a3 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -272,7 +272,6 @@ struct ath12k_link_vif {
- 	u32 punct_bitmap;
- 	u8 link_id;
- 	struct ath12k_vif *ahvif;
--	struct ath12k_vif_cache *cache;
- 	struct ath12k_rekey_data rekey_data;
- };
- 
-@@ -306,6 +305,7 @@ struct ath12k_vif {
- 
- 	struct ath12k_link_vif deflink;
- 	struct ath12k_link_vif __rcu *link[IEEE80211_MLD_MAX_NUM_LINKS];
-+	struct ath12k_vif_cache *cache[IEEE80211_MLD_MAX_NUM_LINKS];
- 	/* indicates bitmap of link vif created in FW */
- 	u16 links_map;
- };
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index b36b9250c924..4063787cdfcf 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -3455,18 +3455,19 @@ static void ath12k_mac_bss_info_changed(struct ath12k *ar,
- 	}
- }
- 
--static struct ath12k_vif_cache *ath12k_arvif_get_cache(struct ath12k_link_vif *arvif)
-+static struct ath12k_vif_cache *ath12k_ahvif_get_link_cache(struct ath12k_vif *ahvif,
-+							    u8 link_id)
- {
--	if (!arvif->cache)
--		arvif->cache = kzalloc(sizeof(*arvif->cache), GFP_KERNEL);
-+	if (!ahvif->cache[link_id])
-+		ahvif->cache[link_id] = kzalloc(sizeof(*ahvif->cache[0]), GFP_KERNEL);
- 
--	return arvif->cache;
-+	return ahvif->cache[link_id];
- }
- 
--static void ath12k_arvif_put_cache(struct ath12k_link_vif *arvif)
-+static void ath12k_ahvif_put_link_cache(struct ath12k_vif *ahvif, u8 link_id)
- {
--	kfree(arvif->cache);
--	arvif->cache = NULL;
-+	kfree(ahvif->cache[link_id]);
-+	ahvif->cache[link_id] = NULL;
- }
- 
- static void ath12k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
-@@ -3493,15 +3494,14 @@ static void ath12k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- 
- 	if (!ar) {
- 		/* TODO Once link vif is fetched based on link id from
--		 * info, avoid using the deflink above and cache the link
--		 * configs in ahvif per link.
-+		 * info, avoid using ATH12K_DEFAULT_LINK_ID.
- 		 */
--		cache = ath12k_arvif_get_cache(arvif);
-+		cache = ath12k_ahvif_get_link_cache(ahvif, ATH12K_DEFAULT_LINK_ID);
- 		if (!cache) {
- 			mutex_unlock(&ah->conf_mutex);
- 			return;
- 		}
--		arvif->cache->bss_conf_changed |= changed;
-+		cache->bss_conf_changed |= changed;
- 		mutex_unlock(&ah->conf_mutex);
- 		return;
- 	}
-@@ -4172,7 +4172,7 @@ static int ath12k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
- 			return -EINVAL;
- 		}
- 
--		cache = ath12k_arvif_get_cache(arvif);
-+		cache = ath12k_ahvif_get_link_cache(ahvif, ATH12K_DEFAULT_LINK_ID);
- 		if (!cache) {
- 			mutex_unlock(&ah->conf_mutex);
- 			return -ENOSPC;
-@@ -5103,7 +5103,7 @@ static int ath12k_mac_op_conf_tx(struct ieee80211_hw *hw,
- 	ar = ath12k_get_ar_by_vif(hw, vif);
- 	if (!ar) {
- 		/* cache the info and apply after vdev is created */
--		cache = ath12k_arvif_get_cache(arvif);
-+		cache = ath12k_ahvif_get_link_cache(ahvif, ATH12K_DEFAULT_LINK_ID);
- 		if (!cache) {
- 			mutex_unlock(&ah->conf_mutex);
- 			return -ENOSPC;
-@@ -6819,10 +6819,11 @@ int ath12k_mac_vdev_create(struct ath12k *ar, struct ath12k_link_vif *arvif)
- 	return ret;
- }
- 
--static void ath12k_mac_vif_cache_flush(struct ath12k *ar,  struct ath12k_link_vif *arvif)
-+static void ath12k_mac_vif_cache_flush(struct ath12k *ar, struct ath12k_link_vif *arvif)
- {
--	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(arvif->ahvif);
--	struct ath12k_vif_cache *cache = arvif->cache;
-+	struct ath12k_vif *ahvif = arvif->ahvif;
-+	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(ahvif);
-+	struct ath12k_vif_cache *cache = ahvif->cache[arvif->link_id];
- 	struct ath12k_base *ab = ar->ab;
- 
- 	int ret;
-@@ -6853,7 +6854,7 @@ static void ath12k_mac_vif_cache_flush(struct ath12k *ar,  struct ath12k_link_vi
- 			ath12k_warn(ab, "unable to apply set key param to vdev %d ret %d\n",
- 				    arvif->vdev_id, ret);
- 	}
--	ath12k_arvif_put_cache(arvif);
-+	ath12k_ahvif_put_link_cache(ahvif, arvif->link_id);
- }
- 
- static struct ath12k *ath12k_mac_assign_vif_to_vdev(struct ieee80211_hw *hw,
-@@ -7059,7 +7060,7 @@ static int ath12k_mac_vdev_delete(struct ath12k *ar, struct ath12k_link_vif *arv
- 	spin_unlock_bh(&ar->data_lock);
- 
- 	ath12k_peer_cleanup(ar, arvif->vdev_id);
--	ath12k_arvif_put_cache(arvif);
-+	ath12k_ahvif_put_link_cache(ahvif, arvif->link_id);
- 
- 	idr_for_each(&ar->txmgmt_idr,
- 		     ath12k_mac_vif_txmgmt_idr_remove, vif);
-@@ -7099,7 +7100,7 @@ static void ath12k_mac_op_remove_interface(struct ieee80211_hw *hw,
- 		/* if we cached some config but never received assign chanctx,
- 		 * free the allocated cache.
- 		 */
--		ath12k_arvif_put_cache(arvif);
-+		ath12k_ahvif_put_link_cache(ahvif, ATH12K_DEFAULT_LINK_ID);
- 		mutex_unlock(&ah->conf_mutex);
- 		return;
- 	}
-
-base-commit: db1ce56e6e1d395dd42a3cd6332a871d9be59c45
-prerequisite-patch-id: f87638504028796f96a183930bf1799f55b9d268
-prerequisite-patch-id: dc15d6df954760395ff72d9bcf14aace5adefbe7
-prerequisite-patch-id: b43d0571ad6b42c80a16e65dc2c54657f3cd3dc5
--- 
-2.25.1
 
 
