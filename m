@@ -1,63 +1,55 @@
-Return-Path: <linux-wireless+bounces-10724-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10725-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 407A39429A0
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2024 10:52:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0860F942A63
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2024 11:26:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2218B20DC1
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2024 08:52:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31B851C208B2
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2024 09:26:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529CD1A8BF7;
-	Wed, 31 Jul 2024 08:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1782E450E2;
+	Wed, 31 Jul 2024 09:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V9SkYUnF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JD7WVuiY"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D5DD18CBED
-	for <linux-wireless@vger.kernel.org>; Wed, 31 Jul 2024 08:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E888801
+	for <linux-wireless@vger.kernel.org>; Wed, 31 Jul 2024 09:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722415913; cv=none; b=T6zPkQnCeLcBNKhQ3qSfA4BqOuaQzNA0hvkCBDdeInHCQeANvCcnruYpMN5CvbvUf+Jdp0wnBJUJFx4NU71+gg7kYNcptctV+CrVbpxVZ2mg4C9s5L8wKdAgfU4j4PhMZgQZ28R9fFZbQd7mQ2ETpoVMd64mr7NADKTaz69sBYQ=
+	t=1722417973; cv=none; b=m3zGPV2n5NiQKLmm+GNhxhMj/O27m5V6zHKiAwa2wLFPwaeAS0PzjojfxUR8q/uP62Omc1NNx5jsnkj9MOGYQzw3OucWamzi9axP/CFgA9KCn42QFRT+IM1z4YAs0vceHAWgu4loDYEaft19/UIXVaKUkZHLUSILQHR7Gg5AXP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722415913; c=relaxed/simple;
-	bh=eq6ZbUjCp8yGbWbk+wUwlkkjoHUI0f5wvuxs5k0tigE=;
+	s=arc-20240116; t=1722417973; c=relaxed/simple;
+	bh=h6eXRHjZsqz0eZnrXmoQcFkkUJXwicTIi2HYUrwkARY=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=DDdazQmEs7PaYZQD8ELWkCfx6MM5VTnvGNqJW0SOEr+ybdCI+HtjmcOvuAB6OQgF6U0oh8+0oI9S6yBBsnvXOkzn9ihKGLtAhQMZvkC5BAzC8CGECIp2fOJFkaAUHOFC53mLUOUpGIEjig6JCqpUvCLkTG9ezYpMgZXNR0KUxN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V9SkYUnF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C6D7C4AF0E;
-	Wed, 31 Jul 2024 08:51:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=u596tEVBWUY2ZODTsDK1hStXm5ELnG2sZAQTcmXy7bz68QCXxOgQg33Lr/nsF429KCbl/AohiXH5IROYi45wHwQGbX4MX/Qp+mmBLRdKwJ+iAY2LJW5GbQIkseWzIYmDeNesSLiH6oqlI+AHvFcfCfMeoU+gdbd+pg5bn4PYcpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JD7WVuiY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B729CC116B1;
+	Wed, 31 Jul 2024 09:26:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722415912;
-	bh=eq6ZbUjCp8yGbWbk+wUwlkkjoHUI0f5wvuxs5k0tigE=;
+	s=k20201202; t=1722417972;
+	bh=h6eXRHjZsqz0eZnrXmoQcFkkUJXwicTIi2HYUrwkARY=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=V9SkYUnFJq677ztCX6/2lYBJMv7eaeT/1xWxCqFjlEKd/ysfKPMBllkmI1H4KNjJ0
-	 I5pTbW2SziHqGgW08Isvty/RSlpW4iVq+v50h1UH08X3ZghSlCCEj9xjEys7dBlF0J
-	 msz2YMvJ8BS0AhOT8za2h1To27sK0t5qtjyYS/pdo5Cx7flqCAaSCvWhXTGYBD6ELN
-	 NppBFfdaLbY9xNf+8LqsfCuZIPN652buyc/I2yOEZddGSSQtvUpLJpSkYy4/m07jl5
-	 O3YTh39sLPPD02RLDU9wx4VTHwu5gbM2oqBez6W/XhE1Xn1mQYHrddjBuzyyrrnhSy
-	 uv/dVhcZNsItQ==
+	b=JD7WVuiYA7JCwfCqR+mw3ra7zATSbP8ElEMlhhcu1xz30wKUWGha4sLzmtTRlGmtH
+	 r9KnQdsLLf1AbAlh0qRYeUIUZl5B6eRsIohY5Q83Buhy97N/PKxwwfsSWhj2V6XZEi
+	 n+jqolUwvFbS1GcTwBxh9UlgMjVYW4XF2XFmtf5aulaIo0k/uPonJFaeOabD3lgO5d
+	 waTOpP/i+3tTxiz9H2p99bnsGv7PB3/1SWID4SPjOub+/Cwwe3suyX52C13sQFZGA/
+	 WnqCKR4DR6kZ7vZFhISlYjhbagKP7vEfAVRvrO6qlr2OSk3/HShhNyBn88HV+6tEZs
+	 pjvpa83vAOGhQ==
 From: Kalle Valo <kvalo@kernel.org>
-To: Bert Karwatzki <spasswolf@web.de>
-Cc: Felix Fietkau <nbd@nbd.name>,  Sean Wang <sean.wang@kernel.org>,
-  deren.wu@mediatek.com,  linux-mediatek@lists.infradead.org,
-  linux-wireless@vger.kernel.org,  lorenzo.bianconi@redhat.com,
-  mingyen.hsieh@mediatek.com,  sean.wang@mediatek.com
-Subject: Re: patch 46/47 causes NULL pointer deref on mt7921
-References: <20240711175156.4465-1-spasswolf@web.de>
-	<CAGp9LzoXMoAW6dVZjTf-JcD_wiU4yXpGwkLaVyWXTkaV2MOKwg@mail.gmail.com>
-	<adb192a59c44aa8708e80df30a6a47816a03e50f.camel@web.de>
-	<4e943a62736f955af5d9cd1aff7e2b9c084c8885.camel@web.de>
-	<2599b886-9c63-4989-a08a-7feab28f7c49@nbd.name>
-	<65621cad9a22df881745e9333a5c3696bdbb8df3.camel@web.de>
-Date: Wed, 31 Jul 2024 11:51:49 +0300
-In-Reply-To: <65621cad9a22df881745e9333a5c3696bdbb8df3.camel@web.de> (Bert
-	Karwatzki's message of "Mon, 29 Jul 2024 13:12:15 +0200")
-Message-ID: <87frrqkkpm.fsf@kernel.org>
+To: "Dylan E." <dylan.eskew@candelatech.com>
+Cc: johannes@sipsolutions.net,  linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v3] iw: scan: add EHT beacon info support
+References: <20240729220421.2030748-2-dylan.eskew@candelatech.com>
+Date: Wed, 31 Jul 2024 12:26:09 +0300
+In-Reply-To: <20240729220421.2030748-2-dylan.eskew@candelatech.com> (Dylan
+	E.'s message of "Mon, 29 Jul 2024 15:04:22 -0700")
+Message-ID: <87bk2dlxou.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -67,30 +59,16 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Bert Karwatzki <spasswolf@web.de> writes:
+"Dylan E." <dylan.eskew@candelatech.com> writes:
 
-> Am Mittwoch, dem 17.07.2024 um 17:25 +0200 schrieb Felix Fietkau:
+> Update and add to the old EHT beacon info implementation to print
+> EHT PHY and MAC capabilities as well as MCS/NSS information for WiFi-7
+> beacons.
 >
->> On 17.07.24 16:38, Bert Karwatzki wrote:
->>
->> > So mvif->phy can be NULL at the start of mt7921_ipv6_addr_change. The early
->> > return in that case avoids the NULL pointer and mvif->phy has its usual value
->> > again on the next call to mt7921_ipv6_addr_change so Wifi is working again. I
->> > don't know how this could happen but perhaps you have an idea.
->>
->> This change should fix it: https://nbd.name/p/0747f54f
->> Please test.
->
-> The BUG is still present in linux-6.11-rc1.
+> Signed-off-by: Dylan E. <dylan.eskew@candelatech.com>
 
-I'm not sure what's the status with this. There's one mt76 patch going
-to v6.11-rc2:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git/commit/?id=6557a28f3e3a54cff4f0dcdd1dfa649b26557ab3
-
-But that looks to be a fix for a different problem, right? Felix, are
-you planning to submit that 0747f54f as a proper patch? I could then
-take it to wireless tree.
+I assume your last name is not "E.". We use full legal names in From and
+s-o-b fields, the same name as you would use to sign a legal document.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
