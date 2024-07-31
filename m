@@ -1,89 +1,113 @@
-Return-Path: <linux-wireless+bounces-10756-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10755-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5D229433F5
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2024 18:14:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B38E9433F2
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2024 18:14:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A8041F24DA4
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2024 16:14:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B149282954
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2024 16:14:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F093C1BB6B2;
-	Wed, 31 Jul 2024 16:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2211BB6B2;
+	Wed, 31 Jul 2024 16:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="ZhS3voQW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r4fqyeEn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35291B29A7
-	for <linux-wireless@vger.kernel.org>; Wed, 31 Jul 2024 16:14:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA19F1B29A7
+	for <linux-wireless@vger.kernel.org>; Wed, 31 Jul 2024 16:14:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722442450; cv=none; b=QwngxcKCoI7rg7DWxbWowOrAHe1ZplNb2meefdY5IEc729q0zgyRWrG1aJIQBS+FQlvi6jptzQfhBxywyK4M8B+sKMiJoAgYyY/E+D2z+utpNFr+lU0bgVfKjaxIbaTJ5yD8GqkSm6ljbzVe1/fGT7wukJFHR/NKxPzEu2fAdkE=
+	t=1722442443; cv=none; b=EGJD66SorJmzRAQ51y6ka6v+iPi2swBdHC0zigIDio17rRhw2HDcTVFhoy3/uFzD/RgApRmrncfGoJTEDq/bDKULOF6EHW5Jene02ptMS2sdiylUZ24pb+DY+46Wlsapn1HAMLX0ahi/ZFniI0whBUynUvHj5s5w0m2IHZM+pj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722442450; c=relaxed/simple;
-	bh=IDvyFcrV4a+Fp8uQoeZa7lRsG3SBu5cWL4QFaQw3ox4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eV5jLHdxm5e2CVtL89jJR1jrxbhN123OOwXVznXr8K4xtwRn6CapGRXHUoPnbjm234c6xT5O1l4oVrn9IYkEWZStwQja1n+rZjfl9HDWMa6ob3NRA8X0mvbCJgFg1o9o4De04wwLsI0pdfs7pBBlYkCVKMk498VKIleYU+ip/68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=ZhS3voQW; arc=none smtp.client-ip=67.231.154.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 8557444008F;
-	Wed, 31 Jul 2024 16:14:00 +0000 (UTC)
-Received: from [10.0.0.141] (c-73-239-116-235.hsd1.wa.comcast.net [73.239.116.235])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 84D8213C2B0;
-	Wed, 31 Jul 2024 09:13:59 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 84D8213C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1722442440;
-	bh=IDvyFcrV4a+Fp8uQoeZa7lRsG3SBu5cWL4QFaQw3ox4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZhS3voQW5f+glXQ2bUhkHF1I32MyeYLr2M5bvfRY70wtzQVAXQkjywMPITKxh1m18
-	 bwjfG7izpTndAosTiXw4PePUV0b5xH8e3n6FJmD2b9Sr5++VqBXm4MHEDjpmA+Dc/K
-	 KOlUshqsw3is0k3pI4UhuDkwZtIDi0dtodMF8qzs=
-Message-ID: <f2219dd4-3ae6-42f2-bd9e-2fb0112a65af@candelatech.com>
-Date: Wed, 31 Jul 2024 09:13:58 -0700
+	s=arc-20240116; t=1722442443; c=relaxed/simple;
+	bh=FI4to2s/kw3JnehGaIGMy9gv9Bjt9lTDL7rbCa8lSBo=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=hXC2mr9EMlu6fD1at3JYxDdIf9JPt1/qmo0UlqFC4PJuEHMx/XsBQoyx4QD11zhLF6NPvh9QJHurE4pL0Ua16st9MBrDH4ZW0lCVy1FPPy8dJ2KbUrJZIoEjt35LGchdrZlKyYnOjqiyDekZJPRHqSRiLdGFl5UpRasTWtT97U4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r4fqyeEn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 518FDC116B1;
+	Wed, 31 Jul 2024 16:14:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722442443;
+	bh=FI4to2s/kw3JnehGaIGMy9gv9Bjt9lTDL7rbCa8lSBo=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=r4fqyeEn6UuM1nr5vTH369N+YnegkQy5R0JFuxZEoFG8HTWG7RVyBtnAwDY0c+b4j
+	 EhxxD7O//qobp+G3A5VSFsYv97TFF3+SY1E8E+TKtGE/15rhBPG74sFinIDTBmNwek
+	 5nfpzO0j5nwbWZM7cUrudF2nwV94C6CvM1V5qxF6L7ADSMhGoxeGn5tBqpSR0l6kaC
+	 pJMD7K6p+L3ywN7FZFro4Owju8QWo/F3LE3orPER1muDlaCyBt7I4RrykNOU8/i5a1
+	 4xhTFTD8UikIv6rE9h/Sb6+U+4Jw9hzcCt/kJVVL9frVuOCE5/AnVWFs71WiDNb91g
+	 d1mqJJHfm1N7w==
+From: Kalle Valo <kvalo@kernel.org>
+To: "Arnd Bergmann" <arnd@arndb.de>
+Cc: "Kees Cook" <kees@kernel.org>,  ath12k@lists.infradead.org,
+  linux-wireless@vger.kernel.org
+Subject: Re: [PATCH RFC] wifi: ath12k: workaround fortify warnings in
+ ath12k_wow_convert_8023_to_80211()
+References: <20240704144341.207317-1-kvalo@kernel.org>
+	<202407041551.1DC8C03D@keescook> <877cdvdgpz.fsf@kernel.org>
+	<202407081226.94B1FB24@keescook>
+	<973f9a20-0807-4302-a286-d3ff6478529f@app.fastmail.com>
+	<87v81d9lk4.fsf@kernel.org>
+Date: Wed, 31 Jul 2024 19:14:00 +0300
+In-Reply-To: <87v81d9lk4.fsf@kernel.org> (Kalle Valo's message of "Wed, 10 Jul
+	2024 20:57:47 +0300")
+Message-ID: <87r0b98rp3.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] iw: scan: add EHT beacon info support
-To: Kalle Valo <kvalo@kernel.org>
-Cc: johannes@sipsolutions.net, linux-wireless@vger.kernel.org
-References: <20240729220421.2030748-2-dylan.eskew@candelatech.com>
- <87bk2dlxou.fsf@kernel.org>
-Content-Language: en-US
-From: "Dylan E." <dylan.eskew@candelatech.com>
-In-Reply-To: <87bk2dlxou.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MDID: 1722442441-Qrfary-m8Dp2
-X-MDID-O:
- us5;at1;1722442441;Qrfary-m8Dp2;<dylan.eskew@candelatech.com>;9989741adba0574bb335b9e9d00002fb
+Content-Type: text/plain
 
-Ah, I did not realize. I will rectify this.
+Kalle Valo <kvalo@kernel.org> writes:
 
-- Dylan
-
-On 7/31/24 02:26, Kalle Valo wrote:
-> "Dylan E." <dylan.eskew@candelatech.com> writes:
+> "Arnd Bergmann" <arnd@arndb.de> writes:
 >
->> Update and add to the old EHT beacon info implementation to print
->> EHT PHY and MAC capabilities as well as MCS/NSS information for WiFi-7
->> beacons.
+>> On Mon, Jul 8, 2024, at 21:31, Kees Cook wrote:
+>>> On Mon, Jul 08, 2024 at 06:51:52PM +0300, Kalle Valo wrote:
+>>>
+>>> I suspect this won't be the only place in the kernel where -Wrestrict
+>>> will give weird results with GCC 11, and there are still plenty of folks
+>>> using GCC 11. I think the best option would probably be to version-check
+>>> GCC to gate the addition of -Wrestrict.
+>>>
+>>> Arnd, what do you think? This looks like a more extreme version of
+>>> commit f9fc1ec28bae ("crypto: drivers - avoid memcpy size warning")
 >>
->> Signed-off-by: Dylan E. <dylan.eskew@candelatech.com>
-> I assume your last name is not "E.". We use full legal names in From and
-> s-o-b fields, the same name as you would use to sign a legal document.
+>> The f9fc1ec28bae patch was the other way around, it showed up
+>> in new compilers but not old ones. I don't think I've seen
+>> more gcc-11 -Wrestrict warnings during testing, but I'm currently
+>> not set up to do a thorough search. If it's the only one, then
+>> Kalle's suggested workaround is probably best, but if there
+>> are additional warnings on gcc-11, making the warning depend
+>> newer compilers is also fine. 
 >
+> Honestly I was hoping that we could disable the warning for GCC 11 :)
+>
+> I feel bad making the code worse due to a compiler problem. For example,
+> Intel's zero day bot doesn't seem to use GCC 11 that much anymore, so it
+> might surprise more people than just us ath12k folks. (The bot said
+> everything was fine but Johannes saw the warning when the code was
+> pulled to wireless-next.)
+>
+>> I just don't want to give up the warning for new compilers altogether.
+>
+> Me neither. I'm just hoping that we could disable it for GCC 11. But of
+> course if you think it's better to add the workaround to ath12k, I can
+> submit a proper (non-RFC) patch to do that.
+
+For the archives: Paolo found a nicer way which is now commited:
+
+https://git.kernel.org/linus/b49991d83bba
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
