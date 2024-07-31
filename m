@@ -1,74 +1,73 @@
-Return-Path: <linux-wireless+bounces-10758-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10759-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8D6994348C
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2024 18:58:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB61694348D
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2024 18:58:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC9531C23121
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2024 16:58:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF8A21C23A73
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2024 16:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80B381BC09A;
-	Wed, 31 Jul 2024 16:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A52B934CDE;
+	Wed, 31 Jul 2024 16:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OijMSoC2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fR6W1XDH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0AFF12B93
-	for <linux-wireless@vger.kernel.org>; Wed, 31 Jul 2024 16:58:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7BA612B93
+	for <linux-wireless@vger.kernel.org>; Wed, 31 Jul 2024 16:58:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722445085; cv=none; b=OPxIJqc4g7yopq4BOfW9aKaZUsvJ9ILGvv6UUVH5xelKZPRuoHIzwf2DewyNgK1Xi5rImZrbD6WTMtECBgpQ8wbZDzCSP1TVxU8glxZo2gcn1F0p8ccqjT8Ue+MrU7EOO7/fjeL3Upy2C2tyKqUcbvdpScf1xnPqyLlRaGIzaMc=
+	t=1722445108; cv=none; b=j5b2zpt7DGKhtLQXpIO6J4gXn9Qp14XU6jdBC6sguU+zuLrrEl2OFLCcYUoFm0ff/XOV9thMSakc2T9HhCuTmUTPEzEkQtJ/2hElOywxiXu0LKmdYpcsrb5J/3JypM5vKpaTSeXDgd66CmZn4y1RfPYTg3ptItNNjpIZtlhueV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722445085; c=relaxed/simple;
-	bh=S2O4GT7mcs8HYNmiCEsTRlyJqhFOvtKNLXigsTbTqwg=;
+	s=arc-20240116; t=1722445108; c=relaxed/simple;
+	bh=GNfHDc8RvSoXeee1TZx6e4RQx2X78IpzTQh9invsXIg=;
 	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=jHd9KWypVhlXzW9xM12+KtV0aY94OhF3ZyQfMrf5B2Z49rmqmEkuxQN5UR9w1IVW3gAPW8or21KXu9BgL6rRupfR/QRp6I8T742/UUM09tQp5a2vKbzGEMZtgM2oTSzcVcBVkiuYCvsfzffi9tZEQPXvBcMyhpVgm69Tg2lmTaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OijMSoC2; arc=none smtp.client-ip=209.85.218.53
+	 In-Reply-To:Content-Type; b=mXa+kYY5tw4CpRDPq7yD3aUON3RHg1UMS48z9oPVRx5fLSd3ANTpwXxY59ppssyPikAtmmWh++hbRYOYrsZ3XC+qW4eBCXUMHSuY/nuZTiIZ2Cg/kTcvnHS56uVO98dziCHfgis7daSWY44soSfy+b3vz3qjLUjvJ1HBjHbOPcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fR6W1XDH; arc=none smtp.client-ip=209.85.208.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a7aa4ca9d72so752505066b.0
-        for <linux-wireless@vger.kernel.org>; Wed, 31 Jul 2024 09:58:03 -0700 (PDT)
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5af6a1afa63so6405834a12.0
+        for <linux-wireless@vger.kernel.org>; Wed, 31 Jul 2024 09:58:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722445082; x=1723049882; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1722445104; x=1723049904; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=CXbrb01I+eCN8PTzhjNxZ4nFmOIXCmDYLgnTYR7LTcY=;
-        b=OijMSoC2BpnbmxDNe7omWPbMWAcyyupln5usjQhe4FI2caxuBLjBZfe2ljv6WFlpP6
-         Anq5lNq/vAAjuvhPy+HefZzIKXbryA0lD8WCs1s2twNahS033FikBR063PqdJRMPFCpn
-         RnIJ/DuBfUTvf5gm8XVchuh24DFruZJCZWRrf2vrL3kJg2OtqjFapgj2DK85kPy08ZK6
-         1zMgRv12gE4NCSTcwuad6Tyhcja758g46gOtg0pvWNYQPmAlp+nDHcltg0jL/xTm0fuj
-         H2h8jIcf6Qz1drC/uPTRElPV7NZ4/yWNukLBEqJI92497OAIV3FEHWo3HAA6tZj+rjkK
-         y7Mg==
+        bh=9Ms5SpcWI2npDSdAaEsj0yu4OvFyJZuVX5mxy8yfWmQ=;
+        b=fR6W1XDHBIbOib9CQAxwM/PUObcboq/VjQz1zLNHxYFCNuHGUlGaEYL9E2l2e1bDmP
+         nAOu+/lURdsNy4AGc6CX8pp89oDJD/AkLfgr3ntJQUdd4LrmkcLG40WHzxf6dYmp801w
+         WAIL59VysjBESHTbZK0J1fD9y4ETm62xtry4EoPSK77e2UeaQCQxx7lvEuyhEzr8DWbm
+         WlmKlBtgavyWNKBUVnVnCDBQ8MB7ppIwI0qn6XAUyxH7wT8VAl5QcEr0PSVuZYExFQXP
+         LdYsH5+14FFHMwu9VYNn35XaehfQdF+0a3ObxMslVX8IYTFkTDE5jAU6Hj4DElLWcgZs
+         sucw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722445082; x=1723049882;
+        d=1e100.net; s=20230601; t=1722445104; x=1723049904;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:subject:from:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CXbrb01I+eCN8PTzhjNxZ4nFmOIXCmDYLgnTYR7LTcY=;
-        b=pD/ywIAytZ8HzAiF1SQch4rHasiWOCe5soGaflIEVdxlovvKgaAz92F9vBYivyblE4
-         a0B9Z2FSuNF9L16KSk8a2eTNyilXVbEGyfXjLsEzkL6HttYoV7aCFoawl61/qLmZ/F22
-         IjczXPFk3xSNnbY/7wlSLKcidqxSUHN+yivl/OXXPzoG6/E9kyQ0EqkN40egKC+GIa4A
-         a6s/lFBCkasXfEZMJlPks3wU+nQ/brRUZZy+fWP6DJ+m45HRr7vMqWze2tfwBKgkRMGs
-         mk4+z1YOW3/rG8Ky1dCuLZ6LmcPLgRN9DqtFvGaguBBnxNHeXXbwryQWSi7ZAWQrL92w
-         g9FA==
-X-Forwarded-Encrypted: i=1; AJvYcCWsLUsCoc8Et/oAbmTj92ZsC3JcqbKK56dAylp7udwD1JUBMZ/zVf8RqYedTqUtKmfFrlBm7h52jhFPg9+9EZ1vRajLF9OYsBICgSl7jeA=
-X-Gm-Message-State: AOJu0YzLhmq6q/tsYsfuqvkIeXoNmXWUIbhGfjRzmPizUbHd1tjijybg
-	BEskOBJxBG3GACoBHjPR6E4SxZdnYoNG5lG01EIR5zJm0sOtSlhnIn7ewA==
-X-Google-Smtp-Source: AGHT+IFNUD+zVgCylhib4DJAlgfzYkt4a+9+Lk02wOgJIHljImXa3bMTcfjAF0RZda6NTlqD8oydtg==
-X-Received: by 2002:a17:906:c10f:b0:a7a:a33e:47cc with SMTP id a640c23a62f3a-a7d40185a3emr1126894666b.59.1722445081650;
-        Wed, 31 Jul 2024 09:58:01 -0700 (PDT)
+        bh=9Ms5SpcWI2npDSdAaEsj0yu4OvFyJZuVX5mxy8yfWmQ=;
+        b=OFWi1dwpu4pkYsTDYWcIdM6n5sq1vVUHQ4PM6G179vq2P0OgFHcUISGWKDbjdJ6SXN
+         le9G+47YnBEcx9itbR9CRKOpcMeKbX7deH6m2buLX+ujnuaYpYxDe8aoDUfDo3MV0Wkn
+         vOMHuF7Ct+eQEg+ob8eHc6BG6w/Iz8iqmrwwMUnrMXFHNinJhRryCWR7pozL9RrtDmjb
+         fKdBXxHygsPS2EJL9NxUFV+JFrvGg8f2xTjD9RbertqXKCkq/S4D/TVDeg27N5x6ElXm
+         kYW1r6EOqZXueWjghSacO3qpvSmDCOIcQcGkcTIZcVfYSDiVmWXBH4zS04eZxJLm8+PC
+         kNtg==
+X-Gm-Message-State: AOJu0YzAtmgDJXBQaw67ukq2VjIqlTJFyUa2rC9ToxyZww+IVqERT6YL
+	Q7513E+bAVyf2J7Sn1xn8f5LVi886kfDx02Enbn4uyguaedSAMJqbgMpSw==
+X-Google-Smtp-Source: AGHT+IFy4FXWn4pBChYnedbV7uCu+5USF/zA9Kqdjudx5n0tP1nvfL7re1g9m+T7wXMc7zx330T8EQ==
+X-Received: by 2002:a05:6402:1e93:b0:57d:5c96:72aa with SMTP id 4fb4d7f45d1cf-5b01d84addcmr10783574a12.0.1722445104178;
+        Wed, 31 Jul 2024 09:58:24 -0700 (PDT)
 Received: from [192.168.0.50] ([79.119.240.114])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7acad9d41esm785395966b.154.2024.07.31.09.58.00
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5ac631b033fsm8953541a12.1.2024.07.31.09.58.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 31 Jul 2024 09:58:01 -0700 (PDT)
-Message-ID: <152dece9-f328-4ad4-95df-5eeae85f6056@gmail.com>
-Date: Wed, 31 Jul 2024 19:57:59 +0300
+        Wed, 31 Jul 2024 09:58:23 -0700 (PDT)
+Message-ID: <94e7ec04-94f2-4e7c-ae7f-81027ae11484@gmail.com>
+Date: Wed, 31 Jul 2024 19:58:21 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -77,108 +76,133 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: Re: [PATCH 1/4] wifi: rtw88: Init RX burst length for
- 8822cu/8822bu/8821cu
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Sascha Hauer <sha@pengutronix.de>
+Subject: Re: [PATCH 3/4] wifi: rtw88: usb: Support RX aggregation
+To: Sascha Hauer <sha@pengutronix.de>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ Ping-Ke Shih <pkshih@realtek.com>
 References: <c03390ce-34c2-42dd-9bd6-b231bb1f2fae@gmail.com>
- <4a8ac99c87214b4c92dde42e26006964@realtek.com>
+ <a549707a-09f4-4787-8111-65cc266675d6@gmail.com>
+ <ZqiKuUI_9Pk4ktXk@pengutronix.de>
 Content-Language: en-US
-In-Reply-To: <4a8ac99c87214b4c92dde42e26006964@realtek.com>
+In-Reply-To: <ZqiKuUI_9Pk4ktXk@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 30/07/2024 06:57, Ping-Ke Shih wrote:
-> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->> Init RX burst length according to the USB speed.
+On 30/07/2024 09:39, Sascha Hauer wrote:
+> On Sun, Jul 28, 2024 at 10:42:32PM +0300, Bitterblue Smith wrote:
+>> The chips can be configured to aggregate several frames into a single
+>> USB transfer. Modify rtw_usb_rx_handler() to support this case.
 >>
->> This is needed in order to make USB RX aggregation work.
+>> RX aggregation improves the RX speed on certain ARM systems, like the
+>> NanoPi NEO Core2.
 >>
->> Tested with RTL8811CU.
-> 
-> Having a throughput after this change would be better.
-> 
+>> Currently none of the chips are configured to aggregate frames.
+>>
+>> Tested with RTL8811CU and RTL8723DU.
 >>
 >> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 >> ---
->> I would mention in the commit message what BIT_DMA_BURST_CNT,
->> BIT_DMA_MODE, and BIT_DROP_DATA_EN are doing, but I don't know.
-> 
-> That will be helpful to other developers. Please put them in second paragraph. 
-> 
-> [...]
-> 
->> +static void rtw8821cu_init_burst_pkt_len(struct rtw_dev *rtwdev)
->> +{
->> +       u8 rxdma, burst_size;
+>>  drivers/net/wireless/realtek/rtw88/usb.c | 57 +++++++++++++++---------
+>>  1 file changed, 37 insertions(+), 20 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
+>> index 73948078068f..d61be1029a7b 100644
+>> --- a/drivers/net/wireless/realtek/rtw88/usb.c
+>> +++ b/drivers/net/wireless/realtek/rtw88/usb.c
+>> @@ -546,11 +546,12 @@ static void rtw_usb_rx_handler(struct work_struct *work)
+>>  	struct rtw_usb *rtwusb = container_of(work, struct rtw_usb, rx_work);
+>>  	struct rtw_dev *rtwdev = rtwusb->rtwdev;
+>>  	const struct rtw_chip_info *chip = rtwdev->chip;
+>> -	struct rtw_rx_pkt_stat pkt_stat;
+>> +	u32 pkt_desc_sz = chip->rx_pkt_desc_sz;
+>>  	struct ieee80211_rx_status rx_status;
+>> +	u32 pkt_offset, next_pkt, urb_len;
+>> +	struct rtw_rx_pkt_stat pkt_stat;
+>> +	struct sk_buff *next_skb = NULL;
+>>  	struct sk_buff *skb;
+>> -	u32 pkt_desc_sz = chip->rx_pkt_desc_sz;
+>> -	u32 pkt_offset;
+>>  	u8 *rx_desc;
+>>  	int limit;
+>>  
+>> @@ -559,29 +560,44 @@ static void rtw_usb_rx_handler(struct work_struct *work)
+>>  		if (!skb)
+>>  			break;
+>>  
+>> -		rx_desc = skb->data;
+>> -		chip->ops->query_rx_desc(rtwdev, rx_desc, &pkt_stat,
+>> -					 &rx_status);
+>> -		pkt_offset = pkt_desc_sz + pkt_stat.drv_info_sz +
+>> -			     pkt_stat.shift;
+>> -
+>> -		if (pkt_stat.is_c2h) {
+>> -			skb_put(skb, pkt_stat.pkt_len + pkt_offset);
+>> -			rtw_fw_c2h_cmd_rx_irqsafe(rtwdev, pkt_offset, skb);
+>> -			continue;
+>> -		}
+>> -
+>>  		if (skb_queue_len(&rtwusb->rx_queue) >= RTW_USB_MAX_RXQ_LEN) {
+>>  			dev_dbg_ratelimited(rtwdev->dev, "failed to get rx_queue, overflow\n");
+>>  			dev_kfree_skb_any(skb);
+>>  			continue;
+>>  		}
+>>  
+>> -		skb_put(skb, pkt_stat.pkt_len);
+>> -		skb_reserve(skb, pkt_offset);
+>> -		rtw_rx_stats(rtwdev, pkt_stat.vif, skb);
+>> -		memcpy(skb->cb, &rx_status, sizeof(rx_status));
+>> -		ieee80211_rx_irqsafe(rtwdev->hw, skb);
+>> +		urb_len = skb->len;
 >> +
->> +       rxdma = BIT_DMA_BURST_CNT | BIT_DMA_MODE;
+>> +		do {
+>> +			rx_desc = skb->data;
+>> +			chip->ops->query_rx_desc(rtwdev, rx_desc, &pkt_stat,
+>> +						 &rx_status);
+>> +			pkt_offset = pkt_desc_sz + pkt_stat.drv_info_sz +
+>> +				     pkt_stat.shift;
 >> +
->> +       if (rtw_read8(rtwdev, REG_SYS_CFG2 + 3) == 0x20)
->> +               burst_size = BIT_DMA_BURST_SIZE_1024;
->> +       else if ((rtw_read8(rtwdev, REG_USB_USBSTAT) & 0x3) == 0x1)
->> +               burst_size = BIT_DMA_BURST_SIZE_512;
->> +       else
->> +               burst_size = BIT_DMA_BURST_SIZE_64;
+>> +			next_pkt = round_up(pkt_stat.pkt_len + pkt_offset, 8);
 >> +
->> +       u8p_replace_bits(&rxdma, burst_size, BIT_DMA_BURST_SIZE);
->> +
->> +       rtw_write8(rtwdev, REG_RXDMA_MODE, rxdma);
->> +       rtw_write16_set(rtwdev, REG_TXDMA_OFFSET_CHK, BIT_DROP_DATA_EN);
->> +}
->> +
+>> +			if (urb_len >= next_pkt + pkt_desc_sz)
+>> +				next_skb = skb_clone(skb, GFP_KERNEL);
 > 
-> All use the same setup. 
-> Can we move it to usb.c? Maybe rtw_usb_interface_cfg() is a good place?
-> (still exclude untested chips.)
+> You could add a:
+> 			else
+> 				next_skb = NULL;
+> 
+> here and drop the next_skb = NULL from the end of the loop. No
+> functional change, but easier to read.
+> 
+>> +
+>> +			if (pkt_stat.is_c2h) {
+>> +				skb_trim(skb, pkt_stat.pkt_len + pkt_offset);
+>> +				rtw_fw_c2h_cmd_rx_irqsafe(rtwdev, pkt_offset, skb);
+>> +			} else {
+>> +				skb_pull(skb, pkt_offset);
+>> +				skb_trim(skb, pkt_stat.pkt_len);
+>> +				rtw_rx_stats(rtwdev, pkt_stat.vif, skb);
+>> +				memcpy(skb->cb, &rx_status, sizeof(rx_status));
+>> +				ieee80211_rx_irqsafe(rtwdev->hw, skb);
+>> +			}
+>> +
+>> +			skb = next_skb;
+>> +			if (skb)
+>> +				skb_pull(next_skb, next_pkt);
+> 
+> You could use skb instead of next_skb here. Both are the same, so no
+> functional change, just makes it a bit easier to read when you use the
+> same variable that you just tested for validity.
+> 
+>> +
+>> +			urb_len -= next_pkt;
+>> +			next_skb = NULL;
+>> +		} while (skb && urb_len >= pkt_desc_sz);
+> 
+> You can drop the urb_len >= pkt_desc_sz check. It will be exactly true
+> when skb is non NULL as well.
+> 
+> Sascha
 > 
 
-rtw_usb_interface_cfg() is a good place. I will move it there.
-The other chips will complicate it a bit, but that's okay.
-
-RTL8723DU doesn't check for USB 3, of course:
-
-	if (rtwusb->udev->speed == USB_SPEED_HIGH)
-		burst_size = BIT_DMA_BURST_SIZE_512;
-	else
-		burst_size = BIT_DMA_BURST_SIZE_64;
-
-RTL8821AU/RTL8812AU:
-
-	if (chip->id == RTW_CHIP_TYPE_8821A)
-		speedvalue = BIT(7);
-	else
-		speedvalue = rtw_read8(rtwdev, REG_SYS_CFG2 + 3);
-
-	if (speedvalue & BIT(7)) { /* USB 2/1.1 Mode */
-		temp = rtw_read8(rtwdev, 0xfe17);
-		if (((temp >> 4) & 0x03) == 0)
-			burst_size = BIT_DMA_BURST_SIZE_512;
-		else
-			burst_size = BIT_DMA_BURST_SIZE_64;
-	} else { /* USB3 Mode */
-		burst_size = BIT_DMA_BURST_SIZE_1024;
-	}
-
-RTL8814AU:
-
-	speedvalue = rtw_read8(rtwdev, REG_SYS_CFG2 + 3);
-
-	if (speedvalue & BIT(7)) { /* USB 2/1.1 Mode */
-		if (rtwusb->udev->speed == USB_SPEED_HIGH)
-			burst_size = BIT_DMA_BURST_SIZE_512;
-		else
-			burst_size = BIT_DMA_BURST_SIZE_64;
-	} else { /* USB3 Mode */
-		burst_size = BIT_DMA_BURST_SIZE_1024;
-	}
-
-I don't understand why we can't just check rtwusb->udev->speed
-instead of reading various registers. Then they could all use
-the same code.
-
-(By the way, RTL8821AU/RTL8812AU is ready now. I will send
-the patches after this patch set is sorted out. There are about
-16 smaller patches to prepare things, and then the new driver.)
+That all sounds correct, thank you.
 
