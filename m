@@ -1,116 +1,111 @@
-Return-Path: <linux-wireless+bounces-10770-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10771-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63B2294377F
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2024 23:03:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 233C8943B0B
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 02:23:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D61351F214B6
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2024 21:03:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C251E1F214CA
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 00:22:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23DC16EB5C;
-	Wed, 31 Jul 2024 21:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBE3B15746F;
+	Thu,  1 Aug 2024 00:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WewRtKBH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q5sQV981"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D0F1BC40
-	for <linux-wireless@vger.kernel.org>; Wed, 31 Jul 2024 21:03:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6A2157467;
+	Thu,  1 Aug 2024 00:12:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722459796; cv=none; b=m6sMo0EQeOr4eEnBo9xqCLUoOxbNsADRCmB3+sHTPFaIOHo4At64ZgZdOJ5z3+nO/BcV2zO7ie+OCftEKQkpgYejJW6Su00EkTE2t/QBYyEgIWhITQVotrxVk3XtX+/GRoAVSg1BTS9lKsXUB+clJNVwkhOG+lJsr8NaSd9W30E=
+	t=1722471165; cv=none; b=TOQBfoZsHK4jWYgwnHLA4ApptZYzdk0VOUpjqGWA9cVoBWHwrCymzCrRDTF8WKSu69sGLYTYs6yFofS/uloSt39137Zi910tgykOHClmywCyx3SUldv8gjVJx1oyGy37t4HuesPtdguggYVKflmu+YOIXjHrZZcfiLA24Ud6Vm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722459796; c=relaxed/simple;
-	bh=rL4aYxJAksAlSkFK9iccAjjDh8j3GfU4Olq7/8IE3iA=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=KcH/TarrfScEVqOV/Y5liB8df3biz/gUlbSL+SfVv+oDsYQJdUkOsOEqH0Ylkeun9LB5N7uDs+HTXGFM62ZsMc2MX5+pRGAv3vv6+zSSC02Wl2TrQofwa+MMvOWuPlYkwyac0ADWNRF7BqO9mU3ofFIES/mUu8NDyNBgYKSHxXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WewRtKBH; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-70eb0ae23e4so4488961b3a.0
-        for <linux-wireless@vger.kernel.org>; Wed, 31 Jul 2024 14:03:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722459794; x=1723064594; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=heA5fGeiUXQUV80txRPOrwakMWk5sMqZPg61Yuac1ZA=;
-        b=WewRtKBHG819+lFbxMbB5NkRN7A7mqr54dJJ+0s0RWBImDJgupPggOrNeTZBMUyrYL
-         7/rPrHLgP2tMmMGShXeoc+vxCNwpvtj1DxcrgNNzcrJfEE8Crgle/EUny3Eb9mzvbxmE
-         gZZFRvAWvuDDweYsoQx/tYzOuBtykhPx+vlBRfQ0tmyQX003KyhuY3F2Sc25ZNGbr1+i
-         n7GYlINPTha+0BGZpGEiYsSN7Bjw6/0p/WUHjE65nyzN/6DYvexPl9lKUn7AGPbD+7J8
-         zDf1XXuk2dPUKMcBU5uIy3M76C4gl+6ci07neKEZlXvLTedjuq3zM9+APNETaBIXLLxY
-         Wl6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722459794; x=1723064594;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=heA5fGeiUXQUV80txRPOrwakMWk5sMqZPg61Yuac1ZA=;
-        b=Q0ZnAWU1uVY9k7c17mFSk0c/83mq05rG6EBSoc+IBciBAw+9JyJ2pRPTg6xhnJBpP3
-         7lI1CZNO6Wl/gHKNIYdDOA1bg0aNrhuyDeEZIcppvL5iHgzY2Bwto6DUtZlOVLUw/Mcv
-         8rbyYmZUjBiRtKhk8PHHPmJd1PQ53k0oEgFZBRc1dRT6//EQtea0CwviGTEp+bPy122x
-         e8JM+mq7bChmpPzvnQeSiTjBDAI3zO4RCaf/UCi2mZJUuHAbVykve+S9Gq0YAnYx1i/g
-         ZWQrujldAymG2/hPwyeKA7XqI99Fj1gSEJWuP3um6cMqorm0YrDRra6Sch4kZvw5+C2U
-         CmvA==
-X-Gm-Message-State: AOJu0Yz5WBKwZ7Em/SyMY6L6LHh8hgn/QcojQXQuWuk1Qh6iuPTVZAbc
-	SZuIQ5UWMletjl7SnQGqBa3TBUpJ3huqvg+9cwSucIXLJ7DU0pt2roPs/A==
-X-Google-Smtp-Source: AGHT+IHaP0rPOD8RscSHyy3+EzWhg7TiV3vbA8J7/CwvQGlsmvPKpjUBZl05bZRTe7parg2pLJWJOw==
-X-Received: by 2002:a05:6a20:d81a:b0:1c0:f1c9:6835 with SMTP id adf61e73a8af0-1c68d25f8c6mr746153637.51.1722459793772;
-        Wed, 31 Jul 2024 14:03:13 -0700 (PDT)
-Received: from ryzen.lan ([2601:644:8200:dab8::a86])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70ead6e13f9sm10368946b3a.21.2024.07.31.14.03.13
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Jul 2024 14:03:13 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: linux-wireless@vger.kernel.org
-Subject: [PATCH] net: ath9k: use devm for gpio_request_one
-Date: Wed, 31 Jul 2024 14:03:08 -0700
-Message-ID: <20240731210312.7622-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1722471165; c=relaxed/simple;
+	bh=mkbH1HDvlQU+3/cr6kcml5JYntra0ISK9U/XzN7Q2S0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=F3rEJDEgN+UyyOwDWZGKWIIPBC/5jBVlK3rPkf1bOsXq5jfs5+iMQlteK+T/T2tk41MA9lv38XvtDfkHWO4NREAQxX2izhsq/+amWgtzjU2XmVHKWRmJxKmHuS2NDPwyh0tDdMepPEYzR0kJOrBXmTrUL5vLbfHSYmlgzVepOS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q5sQV981; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 821B5C32786;
+	Thu,  1 Aug 2024 00:12:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722471165;
+	bh=mkbH1HDvlQU+3/cr6kcml5JYntra0ISK9U/XzN7Q2S0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=q5sQV981+9WaRmgMxTQQa3jLsaQDDfkWa2H6T33/TXNZQfa46c9ApLK/HO1ccB1r1
+	 tOWJmPlZyD3gaQ62gaETnUdDFbfmKGXbCFUVxC7DHE/XnWu0wUcwNPGl4PqNeUy2QV
+	 n40uOu/7tJs8Ne6Km1dK9GP9zEdx7itgnDKV1Ves2EDBWz8EKv7UWItBtBboCwyx3H
+	 0yEpDn3ImhX0xXrLJg5VtPvFepR2yXMevvILZo/lzH9sBheDAO308FM8UsoNQrQoxU
+	 8qt9QgIslXZtNqZpzRVCCw4JD1VCK+FN8ymKQcb6o+lR0L6TP+LO6w+sY/F3Umzy6y
+	 S/4sE8L9/+5fg==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>,
+	kvalo@kernel.org,
+	jjohnson@kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath12k@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.10 038/121] wifi: ath12k: initialize 'ret' in ath12k_qmi_load_file_target_mem()
+Date: Wed, 31 Jul 2024 19:59:36 -0400
+Message-ID: <20240801000834.3930818-38-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240801000834.3930818-1-sashal@kernel.org>
+References: <20240801000834.3930818-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-Simpler.
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
+[ Upstream commit bb0b0a6b96e6de854cb1e349e17bd0e8bf421a59 ]
+
+smatch flagged the following issue:
+
+drivers/net/wireless/ath/ath12k/qmi.c:2619 ath12k_qmi_load_file_target_mem() error: uninitialized symbol 'ret'.
+
+The reality is that 'ret' is initialized in every path through
+ath12k_qmi_load_file_target_mem() except one, the case where the input
+'len' is 0, and hence the "while (remaining)" loop is never entered.
+But to make sure this case is also handled, add an initializer to the
+declaration of 'ret'.
+
+No functional changes, compile tested only.
+
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240504-qmi_load_file_target_mem-v1-1-069fc44c45eb@quicinc.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/hw.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath12k/qmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/hw.c b/drivers/net/wireless/ath/ath9k/hw.c
-index 5982e0db45f9..04a4b9ea61c3 100644
---- a/drivers/net/wireless/ath/ath9k/hw.c
-+++ b/drivers/net/wireless/ath/ath9k/hw.c
-@@ -2732,7 +2732,7 @@ static void ath9k_hw_gpio_cfg_soc(struct ath_hw *ah, u32 gpio, bool out,
- 	if (ah->caps.gpio_requested & BIT(gpio))
- 		return;
+diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
+index 5484112859a66..6d1ebbba17d9b 100644
+--- a/drivers/net/wireless/ath/ath12k/qmi.c
++++ b/drivers/net/wireless/ath/ath12k/qmi.c
+@@ -2538,7 +2538,7 @@ static int ath12k_qmi_load_file_target_mem(struct ath12k_base *ab,
+ 	struct qmi_wlanfw_bdf_download_resp_msg_v01 resp = {};
+ 	struct qmi_txn txn;
+ 	const u8 *temp = data;
+-	int ret;
++	int ret = 0;
+ 	u32 remaining = len;
  
--	err = gpio_request_one(gpio, out ? GPIOF_OUT_INIT_LOW : GPIOF_IN, label);
-+	err = devm_gpio_request_one(ah->dev, gpio, out ? GPIOF_OUT_INIT_LOW : GPIOF_IN, label);
- 	if (err) {
- 		ath_err(ath9k_hw_common(ah), "request GPIO%d failed:%d\n",
- 			gpio, err);
-@@ -2801,10 +2801,8 @@ void ath9k_hw_gpio_free(struct ath_hw *ah, u32 gpio)
- 
- 	WARN_ON(gpio >= ah->caps.num_gpio_pins);
- 
--	if (ah->caps.gpio_requested & BIT(gpio)) {
--		gpio_free(gpio);
-+	if (ah->caps.gpio_requested & BIT(gpio))
- 		ah->caps.gpio_requested &= ~BIT(gpio);
--	}
- }
- EXPORT_SYMBOL(ath9k_hw_gpio_free);
- 
+ 	req = kzalloc(sizeof(*req), GFP_KERNEL);
 -- 
-2.45.2
+2.43.0
 
 
