@@ -1,126 +1,118 @@
-Return-Path: <linux-wireless+bounces-10715-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10716-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9506A94271A
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2024 08:41:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03B9B94275D
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2024 09:05:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7ABD1C2138E
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2024 06:41:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4FAE28448C
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2024 07:05:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040DA183CA7;
-	Wed, 31 Jul 2024 06:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7321B18B495;
+	Wed, 31 Jul 2024 07:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Fe/GF8iL"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="jiYimF4p"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22065170858
-	for <linux-wireless@vger.kernel.org>; Wed, 31 Jul 2024 06:41:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C0B16938C
+	for <linux-wireless@vger.kernel.org>; Wed, 31 Jul 2024 07:05:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722408093; cv=none; b=WY8r7D4HPvE8kRraVqc/ecEZZxLCT4AHmXWyTbRdn/tJVpXv6yduCqOpcJyYELs2RswB7MWI8rb9lwA8xhOCp50qG6QFPrmJONb81HtPi6OUduy3PNuk0DjXk9Dium3hRLhs7A3MjPf60R31vDhbNC2eneac0NZfjwnMOi6vf5w=
+	t=1722409532; cv=none; b=TOcmWZUc4POI3nwSD8QvvMnxAQviQRl2tZXs9fC/5T7wHFQ+ZIWWZgcnFOUeUMX3ohaiURtW0xCjPM/fGwa6u+M0zLIhfuqw2JHJUiE+bJVikch49QmgAaZU8a5ddPchXJEyTNZyUuE2EF9yFkGiq8HmRU4Ztdw7Wc0lDdiFbTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722408093; c=relaxed/simple;
-	bh=xAM5KuCUk7fhZ0Bjto448CcHX5hPz++gECDIEyxNyJ8=;
-	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=j3gLv5zgsuShAWhzN8tzdmandUQVR/1PZmQ2qU9b2urVNDR4M1hlkUI99tfB87Uc+NJ3ABE4gCyCZtRHhymuAuxK0oHO9fXNmbGC/s/C/u0wHJTdsaLiCz8ishOT8z2eJ0l1EG36MHvZBtYO0Gw2UYx9znV3vQoq2pFqj1M7UYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Fe/GF8iL; arc=none smtp.client-ip=209.85.222.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7a1e31bc183so170006085a.3
-        for <linux-wireless@vger.kernel.org>; Tue, 30 Jul 2024 23:41:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1722408090; x=1723012890; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YzcsKxSamtz5qYylBq+mulofl7DNdl/8yBGrG+evBvI=;
-        b=Fe/GF8iLsPMNu/gtWyxDLrOrBhgj8eKUJW+JtQ2NPfIsWqHNmcoScqOH36SAlZeZTO
-         T8Ky4GrvXo3TJOjiNoCyPK9tXwzSFGBUGoJkcGailaK8afqea+y9dwJGWs/bE+mNtgIW
-         AeJhYEG/UzZOWiFYsLXozy1chmtWWXOLEqOxM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722408090; x=1723012890;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YzcsKxSamtz5qYylBq+mulofl7DNdl/8yBGrG+evBvI=;
-        b=En/0/Pb/vgEuB8h/IGzoiy+5CyiB8YFjJJLKuy4TSW0JC+pGcM2bq9LVIKa65l+TZP
-         i0WFNqigFqMAC0jQUD+cGRegxztEVu3srAxkjHPf8cGzAFXynEKMK4HCMhtkb7VbgQ39
-         vkejY1gUkDlQO+pcB8m1u79K2AaNOmnKWHGVLj9FAugnN5B4vUobO5ssXc/roT/y4uEO
-         aqPzrkIMjjKAFTRYxgst/dmh8Me9QPtoXABAP88t/CoQ3L/pKAFrQz2Y1C0IF5hoaIh8
-         vjiaqX/uIlZgXCTRZbI3E5RaFQkk4tvV2LYRgSKZOchnCEjZagF3JFca2HhmW4a7Kl0s
-         tB6A==
-X-Forwarded-Encrypted: i=1; AJvYcCVdXhK5rxKPAG087nqniOQTwURbvs8W1X076zU+jLM8EKMDrjrnWME4GOc666uE9T9/XEWlsObVSbMBmpvm8a6WoCLWnEhGqobSz51RsbY=
-X-Gm-Message-State: AOJu0YzMmZ9RVtoMV6xS7v9JuSGSsVxSMurWZgOUTzFKri8CFC/aRTof
-	ba2kCanefY2qrKxy8t6YMkmN+F1zZ8BGZVwIq321KzQj6gTpqV+lsdknJNQwDQ==
-X-Google-Smtp-Source: AGHT+IHVSnCSNUiDXZ50W1IsLXQBwnHUTc3D4diJbcUDSRlur70rvvyzQTE+g2F4ctDA9qBB1UnD+w==
-X-Received: by 2002:a05:620a:4494:b0:7a2:e53:3f67 with SMTP id af79cd13be357-7a20e534344mr1952685a.19.1722408090009;
-        Tue, 30 Jul 2024 23:41:30 -0700 (PDT)
-Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a1d73ed33bsm710259685a.58.2024.07.30.23.41.26
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 30 Jul 2024 23:41:29 -0700 (PDT)
-From: Arend Van Spriel <arend.vanspriel@broadcom.com>
-To: Jacobe Zang <jacobe.zang@wesion.com>, <robh@kernel.org>, <krzk+dt@kernel.org>, <heiko@sntech.de>, <kvalo@kernel.org>, <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>, <conor+dt@kernel.org>
-CC: <efectn@protonmail.com>, <dsimic@manjaro.org>, <jagan@edgeble.ai>, <devicetree@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>, <linux-rockchip@lists.infradead.org>, <linux-kernel@vger.kernel.org>, <arend@broadcom.com>, <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>, <megi@xff.cz>, <duoming@zju.edu.cn>, <bhelgaas@google.com>, <minipli@grsecurity.net>, <brcm80211@lists.linux.dev>, <brcm80211-dev-list.pdl@broadcom.com>, <nick@khadas.com>
-Date: Wed, 31 Jul 2024 08:41:24 +0200
-Message-ID: <1910785a220.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <20240731061132.703368-4-jacobe.zang@wesion.com>
-References: <20240731061132.703368-1-jacobe.zang@wesion.com>
- <20240731061132.703368-4-jacobe.zang@wesion.com>
-User-Agent: AquaMail/1.51.5 (build: 105105504)
-Subject: Re: [PATCH v6 3/5] arm64: dts: rockchip: Add AP6275P wireless support to Khadas Edge 2
+	s=arc-20240116; t=1722409532; c=relaxed/simple;
+	bh=0PE3u7JAeR0lh4nwvl4uxEGBcvAWU2cVVw2VGYIZDMM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QJXxEvTDnuqe71kN5ZEdu6+MA/w5LbeXKqgvDoN6Os9wMTohYv+K7eBIEvu8si6/DbNWFIKv2+cEHHPwEV8rPkn3PI7yjcsqFLHTsdJFAFlsQOmYCPNApU+5XOBmQAIuUBEdpl8h0xevuKAaqedHW6GNCUm++sfqipThtNn7uCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=jiYimF4p; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 46V75Pq742075350, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1722409525; bh=0PE3u7JAeR0lh4nwvl4uxEGBcvAWU2cVVw2VGYIZDMM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=jiYimF4pzCA+OFyYwq2D+/xFh3ETsQnGpQ9isDUIZogjJFh74einNsqV1mDJWtfPK
+	 P6QeeNM5c8onuUI09tXaBFaIrS8sqBnH+MOvw7iPoPMDVSGKlqnbmUEpeZmPs5+eyZ
+	 UiKvTpMxDFeINqQzwHv0ygsj6kWVSbj2d8Qr2yr0chbBiBojewfQb4v3VKmGIQBzfD
+	 bbVtRTcys9sA39XLKQ7SJNwsWOo4q2XKUIO/tVUz5PRBivfXwsvjwvaI6PTI8HjCGK
+	 JK1d9SYHo7IcQnpobb0SlELPIxBvynLJANN7FB6YD0qyBWzz3qZZnhFyRjR1G1g6km
+	 ka2LoNqS3n66A==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 46V75Pq742075350
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Wed, 31 Jul 2024 15:05:25 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 31 Jul 2024 15:05:26 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 31 Jul
+ 2024 15:05:25 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+CC: <gary.chang@realtek.com>, <dian_syuan0116@realtek.com>,
+        <damon.chen@realtek.com>, <phhuang@realtek.com>
+Subject: [PATCH 0/5] wifi: rtw89: increase 8922a firmware format to 1 and support HW encryption for unicast management
+Date: Wed, 31 Jul 2024 15:05:01 +0800
+Message-ID: <20240731070506.46100-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset="us-ascii"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-On July 31, 2024 8:11:58 AM Jacobe Zang <jacobe.zang@wesion.com> wrote:
+First two patches are to support new firmware command formats, so needs
+to increase supported firmware format to 1, which old driver will not
+use this kind of new firmware.
 
-> Khadas Edge2 uses the PCI-e Ampak AP6275P 2T2R Wi-Fi 6 module. The
-> pcie@0 node can be used as Bridge1, so the wifi@0 node is used as a
-> device under the Bridge1.
->
-> Co-developed-by: Muhammed Efe Cetin <efectn@protonmail.com>
-> Signed-off-by: Muhammed Efe Cetin <efectn@protonmail.com>
-> Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
-> ---
-> .../boot/dts/rockchip/rk3588s-khadas-edge2.dts   | 16 ++++++++++++++++
-> 1 file changed, 16 insertions(+)
->
-> diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-khadas-edge2.dts 
-> b/arch/arm64/boot/dts/rockchip/rk3588s-khadas-edge2.dts
-> index dbddfc3bb4641..b80a552dad883 100644
-> --- a/arch/arm64/boot/dts/rockchip/rk3588s-khadas-edge2.dts
-> +++ b/arch/arm64/boot/dts/rockchip/rk3588s-khadas-edge2.dts
-> @@ -283,6 +283,22 @@ &pcie2x1l2 {
->  reset-gpios = <&gpio3 RK_PD1 GPIO_ACTIVE_HIGH>;
->  vpcie3v3-supply = <&vcc3v3_pcie_wl>;
->  status = "okay";
-> +
-> + pcie@0,0 {
-> + reg = <0x400000 0 0 0 0>;
-> + #address-cells = <3>;
-> + #size-cells = <2>;
-> + ranges;
-> + device_type = "pci";
-> + bus-range = <0x40 0x4f>;
-> +
-> + wifi: wifi@0,0 {
-> + compatible = "pci14e4,449d";
+Newer chips RTL8852C and RTL8922A can support unicast management encryption,
+enable them accordingly by patch 4/5.
 
-Probably need to add "brcm,bcm4329-fmac" as well here.
+Other two patches are to fix issues we found during testing.
 
-Regards,
-Arend
+Chih-Kang Chang (1):
+  wifi: rtw89: avoid to add interface to list twice when SER
 
+Dian-Syuan Yang (1):
+  wifi: rtw89: correct VHT TX rate on 20MHz connection
+
+Kuan-Chung Chen (2):
+  wifi: rtw89: 8922a: new implementation for RFK pre-notify H2C
+  wifi: rtw89: add support for HW encryption in unicast management
+    frames
+
+Po-Hao Huang (1):
+  wifi: rtw89: 8922a: Add new fields for scan offload H2C command
+
+ drivers/net/wireless/realtek/rtw89/cam.c      | 12 ++-
+ drivers/net/wireless/realtek/rtw89/core.c     | 29 ++++---
+ drivers/net/wireless/realtek/rtw89/core.h     |  3 +
+ drivers/net/wireless/realtek/rtw89/fw.c       | 84 +++++++++++++------
+ drivers/net/wireless/realtek/rtw89/fw.h       | 19 ++++-
+ drivers/net/wireless/realtek/rtw89/mac.c      |  7 ++
+ drivers/net/wireless/realtek/rtw89/mac80211.c |  4 +-
+ drivers/net/wireless/realtek/rtw89/phy.c      |  7 +-
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c |  1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |  1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c |  1 +
+ .../net/wireless/realtek/rtw89/rtw8852bt.c    |  1 +
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |  1 +
+ drivers/net/wireless/realtek/rtw89/rtw8922a.c |  5 +-
+ drivers/net/wireless/realtek/rtw89/util.h     | 18 ++++
+ 15 files changed, 147 insertions(+), 46 deletions(-)
+
+-- 
+2.25.1
 
 
