@@ -1,58 +1,63 @@
-Return-Path: <linux-wireless+bounces-10723-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10724-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49301942959
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2024 10:40:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 407A39429A0
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2024 10:52:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 788451C21CB7
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2024 08:40:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2218B20DC1
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2024 08:52:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0081AAE07;
-	Wed, 31 Jul 2024 08:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529CD1A8BF7;
+	Wed, 31 Jul 2024 08:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FDEiaVIy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V9SkYUnF"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D7718B480
-	for <linux-wireless@vger.kernel.org>; Wed, 31 Jul 2024 08:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D5DD18CBED
+	for <linux-wireless@vger.kernel.org>; Wed, 31 Jul 2024 08:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722415156; cv=none; b=pfTZwkj4NFXj6ln8ED55BzJkzLIr5ULMw5BbfsJY5xBNZjsS9uYpoFkLq1N/DgGQ+SgjFRE/FGnAfXz/WpF84Ch3azgawwnkO8bjjp+HQqZJpO68SqqPAYk7hUmM+vDOvKRb+6Z6IPTi3hHzTqDEVx1EMHXxx4FBJvGaRDcesMo=
+	t=1722415913; cv=none; b=T6zPkQnCeLcBNKhQ3qSfA4BqOuaQzNA0hvkCBDdeInHCQeANvCcnruYpMN5CvbvUf+Jdp0wnBJUJFx4NU71+gg7kYNcptctV+CrVbpxVZ2mg4C9s5L8wKdAgfU4j4PhMZgQZ28R9fFZbQd7mQ2ETpoVMd64mr7NADKTaz69sBYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722415156; c=relaxed/simple;
-	bh=jrwQsEAjcjkE/X/RjuSLuXXQWRQkIXg8bt8p9d6WVZ4=;
+	s=arc-20240116; t=1722415913; c=relaxed/simple;
+	bh=eq6ZbUjCp8yGbWbk+wUwlkkjoHUI0f5wvuxs5k0tigE=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=lmjsSXhuVDAQmvAI2KaqeoVl5G2LLdkIC8xu2evGdXq9F7lYqscJpoxdM6/knGyQ68RVBNLfiGdL/qqw0UeD0JUa2o+Rk+rPGSAN3rPJ9M8nst6ak1D3wxxg3bymfnq4kCq9PDIW5kXf5Z8FSnWqeO6ToP+MBmr5hmX7fofYpUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FDEiaVIy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB1F4C116B1;
-	Wed, 31 Jul 2024 08:39:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DDdazQmEs7PaYZQD8ELWkCfx6MM5VTnvGNqJW0SOEr+ybdCI+HtjmcOvuAB6OQgF6U0oh8+0oI9S6yBBsnvXOkzn9ihKGLtAhQMZvkC5BAzC8CGECIp2fOJFkaAUHOFC53mLUOUpGIEjig6JCqpUvCLkTG9ezYpMgZXNR0KUxN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V9SkYUnF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C6D7C4AF0E;
+	Wed, 31 Jul 2024 08:51:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722415156;
-	bh=jrwQsEAjcjkE/X/RjuSLuXXQWRQkIXg8bt8p9d6WVZ4=;
+	s=k20201202; t=1722415912;
+	bh=eq6ZbUjCp8yGbWbk+wUwlkkjoHUI0f5wvuxs5k0tigE=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=FDEiaVIyra0i5uTYdWR3g2LdtMdLk12FCZSlWBDhJ2N5zvHFvbmb4eSCnHyUgB6jX
-	 NtbQf6ziAwGnS+5h9AG7jIlO8AmWXrqO5XVHdH3KL6coTWIUfGWfPFtAW1FFFP6Q5s
-	 /wi327Q+OZrMoo57NZhd80tqCibma8+t7ZhndoxalaWvXXdpyBbZjUap5sFoMKUbSu
-	 /v+ffXqLpKJTRJyyW4juDb1pFMFZ/gT5sLwo4Ma2SkvVwwI622WEC6UGxMZQtzrznm
-	 d/r899KeLPSN1hkmR613+CFLX4qfYedY5pWOWrf+iKeY2ghpg8E7lmbzj+jJHZhmMZ
-	 a6LYbswmxBdWA==
+	b=V9SkYUnFJq677ztCX6/2lYBJMv7eaeT/1xWxCqFjlEKd/ysfKPMBllkmI1H4KNjJ0
+	 I5pTbW2SziHqGgW08Isvty/RSlpW4iVq+v50h1UH08X3ZghSlCCEj9xjEys7dBlF0J
+	 msz2YMvJ8BS0AhOT8za2h1To27sK0t5qtjyYS/pdo5Cx7flqCAaSCvWhXTGYBD6ELN
+	 NppBFfdaLbY9xNf+8LqsfCuZIPN652buyc/I2yOEZddGSSQtvUpLJpSkYy4/m07jl5
+	 O3YTh39sLPPD02RLDU9wx4VTHwu5gbM2oqBez6W/XhE1Xn1mQYHrddjBuzyyrrnhSy
+	 uv/dVhcZNsItQ==
 From: Kalle Valo <kvalo@kernel.org>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-  Zong-Zhe Yang <kevin_yang@realtek.com>
-Subject: Re: [PATCH 1/2] wifi: rtw88: select WANT_DEV_COREDUMP
-References: <20240718070616.42217-1-pkshih@realtek.com>
-	<87sevrkoxb.fsf@kernel.org>
-	<5db66445dbd1454ea6c2a6f8fc664725@realtek.com>
-Date: Wed, 31 Jul 2024 11:39:13 +0300
-In-Reply-To: <5db66445dbd1454ea6c2a6f8fc664725@realtek.com> (Ping-Ke Shih's
-	message of "Wed, 31 Jul 2024 00:38:09 +0000")
-Message-ID: <87jzh2klam.fsf@kernel.org>
+To: Bert Karwatzki <spasswolf@web.de>
+Cc: Felix Fietkau <nbd@nbd.name>,  Sean Wang <sean.wang@kernel.org>,
+  deren.wu@mediatek.com,  linux-mediatek@lists.infradead.org,
+  linux-wireless@vger.kernel.org,  lorenzo.bianconi@redhat.com,
+  mingyen.hsieh@mediatek.com,  sean.wang@mediatek.com
+Subject: Re: patch 46/47 causes NULL pointer deref on mt7921
+References: <20240711175156.4465-1-spasswolf@web.de>
+	<CAGp9LzoXMoAW6dVZjTf-JcD_wiU4yXpGwkLaVyWXTkaV2MOKwg@mail.gmail.com>
+	<adb192a59c44aa8708e80df30a6a47816a03e50f.camel@web.de>
+	<4e943a62736f955af5d9cd1aff7e2b9c084c8885.camel@web.de>
+	<2599b886-9c63-4989-a08a-7feab28f7c49@nbd.name>
+	<65621cad9a22df881745e9333a5c3696bdbb8df3.camel@web.de>
+Date: Wed, 31 Jul 2024 11:51:49 +0300
+In-Reply-To: <65621cad9a22df881745e9333a5c3696bdbb8df3.camel@web.de> (Bert
+	Karwatzki's message of "Mon, 29 Jul 2024 13:12:15 +0200")
+Message-ID: <87frrqkkpm.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -62,26 +67,30 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Ping-Ke Shih <pkshih@realtek.com> writes:
+Bert Karwatzki <spasswolf@web.de> writes:
 
-> Kalle Valo <kvalo@kernel.org> wrote:
->> Ping-Ke Shih <pkshih@realtek.com> writes:
->> 
->> > From: Zong-Zhe Yang <kevin_yang@realtek.com>
->> >
->> > We have invoked device coredump when fw crash.
->> > Should select WANT_DEV_COREDUMP by ourselves.
->> >
->> > Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
->> > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
->> 
->> Should these two go to wireless tree? If yes, please assign the patches
->> to me on patchwork. But rtw tree is fine for me as well, your call.
+> Am Mittwoch, dem 17.07.2024 um 17:25 +0200 schrieb Felix Fietkau:
 >
-> For most distro, other drivers select this flag, so not urgent to have these
-> two patches. Then they will go via rtw tree. Thanks. 
+>> On 17.07.24 16:38, Bert Karwatzki wrote:
+>>
+>> > So mvif->phy can be NULL at the start of mt7921_ipv6_addr_change. The early
+>> > return in that case avoids the NULL pointer and mvif->phy has its usual value
+>> > again on the next call to mt7921_ipv6_addr_change so Wifi is working again. I
+>> > don't know how this could happen but perhaps you have an idea.
+>>
+>> This change should fix it: https://nbd.name/p/0747f54f
+>> Please test.
+>
+> The BUG is still present in linux-6.11-rc1.
 
-Makes sense, thanks.
+I'm not sure what's the status with this. There's one mt76 patch going
+to v6.11-rc2:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git/commit/?id=6557a28f3e3a54cff4f0dcdd1dfa649b26557ab3
+
+But that looks to be a fix for a different problem, right? Felix, are
+you planning to submit that 0747f54f as a proper patch? I could then
+take it to wireless tree.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
