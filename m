@@ -1,110 +1,120 @@
-Return-Path: <linux-wireless+bounces-10764-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10765-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35FEF943533
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2024 19:56:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 861FC943576
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2024 20:13:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8D971F23402
-	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2024 17:56:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 007801F21B36
+	for <lists+linux-wireless@lfdr.de>; Wed, 31 Jul 2024 18:13:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A2DC381A4;
-	Wed, 31 Jul 2024 17:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4605F481DD;
+	Wed, 31 Jul 2024 18:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="W1S0iIlT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EUBeAoJs"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4BB1799F
-	for <linux-wireless@vger.kernel.org>; Wed, 31 Jul 2024 17:56:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21DB5481B1
+	for <linux-wireless@vger.kernel.org>; Wed, 31 Jul 2024 18:13:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722448578; cv=none; b=TnPEDav9WhJW1e2sfhkSAuBhUWO8S1qMhySQfD8/fqNigyCvcj8kVkf+QOIsM1uSqlebtU54pqdty/8ly9Tc/+0aTer5sazlinVVckpPw4uN7OCmjHOlQY1fzMeKqc7rpPTcxAv0UDPfh7c0LJ4dgGhdv8VhHCFx4oFLfLe1Y18=
+	t=1722449607; cv=none; b=UnTFLY7aA8hNDpu2Qz6/cDKJorx7b/0AKsZasYeJN6+DD+RxXFzn8ZxL3k9GAxFUvWsQngal/dOc9mdi25H2wj1z9wLCoBfFM4ZpfzYZjs/qUBIkvkmcS3dtfjB2N4KB5eSxFoV/415/IXT/6ISjzDzjrpW24fDxJ0fmPpYnTxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722448578; c=relaxed/simple;
-	bh=GKNdWU8kDKKCtkK3dL12ezTyL5kn46tTE4VRmWYI1j4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=LOLlnyZg2EMX2x0fZhs2+OTDtlGNyY670WqL6F51352rgie6Pjf4Q0PBRuA0YRfaaiuN8nNX7ymE/YqvtOoWtKOKofZN7salKPl4kKz6uEMwlUcd19oYnQfj1b1qCZgtqSNMTP2vKKxz6smVGI+Ea+tylIWDP6smVs67sLvqr9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=W1S0iIlT; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46VCXt6n031641;
-	Wed, 31 Jul 2024 17:56:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	mioISJehhtWtXAXFLAz+BflYe85ptWXAnSZ9obXoXn4=; b=W1S0iIlTAhMnlADq
-	aRMQo4dvXcNILBSy6s8JsqI6/KRfD9NqG6wcLkdDuab0cCGcVBampQmPGvR4KT46
-	fKq2h8pBob6BuJc+jqCiXL2pLrwm+rSyxTbB5lz7I9b0y/aCtV3QLGwpih1TnEXQ
-	e/6yZWqRH8V6r7ENVwd9Rr5rswT0xzv5wzeD+TZ/0V1Er+dxQtpnp0d0paP+0sJE
-	gJ4gJ0rGZNwulDvgtZ08l8+CD96oRUdas0ASVFBAx4+71DMhJek4j7kntUPugQTD
-	kkTxiJbPKnv/XuaZc9YzDED53eKnVf7hw+sGkei14WEoyuVty+uX1IBa3mFgNNZa
-	X9oZeg==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40mp8n4jgp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 31 Jul 2024 17:56:07 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 46VHu5mD030673
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 31 Jul 2024 17:56:05 GMT
-Received: from [10.111.177.34] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 31 Jul
- 2024 10:56:05 -0700
-Message-ID: <6f47df34-3ae3-4619-b52a-1140f9a6e384@quicinc.com>
-Date: Wed, 31 Jul 2024 10:56:04 -0700
+	s=arc-20240116; t=1722449607; c=relaxed/simple;
+	bh=/mWtXWuhFymOY0cwkGyAdgtXGxbMeCBxXQjOP6ErTbw=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=tSmQ8I+CQA8NEnE4SVDQll0uMEu+NRNNQ4eEi56SW24k6RpYn+wPLs9cFOKqV+oC8tYWI348Ied1LfEzcWVNetq/2btYsKYbmrWNGOrzdE3rzuxV2bIJEW09klSZKknWE1xROgFyEUU16wUgDYuTNFnCRwRSvOt3mWGjnukiUXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EUBeAoJs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDD1AC116B1;
+	Wed, 31 Jul 2024 18:13:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722449606;
+	bh=/mWtXWuhFymOY0cwkGyAdgtXGxbMeCBxXQjOP6ErTbw=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=EUBeAoJs3VI+ln9p7cspWwUEnZrumGooIoqDJ7rFwmrW7HBctaSpirQ2RRowt1DVy
+	 SOi+ZyRUr/w02MF03t12H5gSS9hVKnCTbCilhBwLjXBZRkkWqH1na4ahenbe9Xr/Qa
+	 D/Vo9QrFXEl9HvYLxUlXpq1E3G1XpiXnD4u5kE8gMpfOinqai2bNZjnX08xMPbhh0d
+	 yobVRIZdv0fD/n1ErAU1caskQM3X9CVL7DRyPF5QPSFBJieOEjVrPWi/yHkUbOnhSF
+	 Tm24MIXNJjfXnW4+cXw2xBM1ojOTsoqYDMJHZD9wH+S898eWnf9HI92jDRmdpkBeDq
+	 zogY+YfHwBAaQ==
+From: Kalle Valo <kvalo@kernel.org>
+To: Felix Fietkau <nbd@nbd.name>
+Cc: Cedric Veilleux <veilleux.cedric@gmail.com>,
+  linux-wireless@vger.kernel.org,
+    ath10k@lists.infradead.org
+Subject: Re: [REGRESSION] ath10k: failed to flush transmit queue
+References: <CA+Xfe4FjUmzM5mvPxGbpJsF3SvSdE5_wgxvgFJ0bsdrKODVXCQ@mail.gmail.com>
+	<1df0c5cc-ce58-450e-9f91-7f8f599cb11d@nbd.name>
+Date: Wed, 31 Jul 2024 21:13:23 +0300
+In-Reply-To: <1df0c5cc-ce58-450e-9f91-7f8f599cb11d@nbd.name> (Felix Fietkau's
+	message of "Fri, 12 Jul 2024 10:08:10 +0200")
+Message-ID: <87le1hjupo.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/3] wifi: ath12k: report station mode transmit rate
-Content-Language: en-US
-To: Lingbo Kong <quic_lingbok@quicinc.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240731113645.54738-1-quic_lingbok@quicinc.com>
- <20240731113645.54738-2-quic_lingbok@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240731113645.54738-2-quic_lingbok@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: PREX3MicXtPtQPiMD0BP-4TItqYldgir
-X-Proofpoint-ORIG-GUID: PREX3MicXtPtQPiMD0BP-4TItqYldgir
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-31_10,2024-07-31_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=852
- impostorscore=0 spamscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0
- bulkscore=0 malwarescore=0 mlxscore=0 clxscore=1015 phishscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2407310125
+Content-Type: text/plain
 
-On 7/31/2024 4:36 AM, Lingbo Kong wrote:
-...
->  drivers/net/wireless/ath/ath12k/core.h    |   2 +
->  drivers/net/wireless/ath/ath12k/dp_rx.h   |   3 +
->  drivers/net/wireless/ath/ath12k/dp_tx.c   | 134 +++++++++++++++++++++-
->  drivers/net/wireless/ath/ath12k/hal_rx.h  |   3 +
+Felix Fietkau <nbd@nbd.name> writes:
 
-My Qualcomm Innovation Center copyright checker reports:
-drivers/net/wireless/ath/ath12k/hal_rx.h copyright missing 2024
+> On 12.07.24 04:23, Cedric Veilleux wrote:
+>
+>> AP mode.
+>> Both 2.4 and 5ghz channels.
+>> Using WLE600VX (QCA986x/988x), we are seeing the following errors in
+>> kernel logs:
+>> [12978.022077] ath10k_pci 0000:04:00.0: failed to flush transmit
+>> queue
+>> (skip 0 ar-state 1): 0
+>> [13343.069189] ath10k_pci 0000:04:00.0: failed to flush transmit queue
+>> (skip 0 ar-state 1): 0
+>> They are somewhat random but frequent. Can happen once a day or many
+>> times per hour.
+>> They are associated with 3-4 seconds of radio silence. Full packet
+>> loss. Then everything resumes normally, STA are still associated and
+>> traffic resumes.
+>> I have tested with major kernel versions:
+>> 6.1.97: stable (tested for many days on 10+ access points)
+>> 6.2.16: stable (tested for few hours single machine)
+>> 6.3.13: stable (tested for few hours single machine)
+>> 6.4.16: unstable  (we have errors within an hour)
+>> 6.5.13: unstable  (we have errors within an hour)
+>> 6.6.39: unstable  (we have errors within an hour)
+>> 6.7.12: unstable  (we have errors within an hour)
+>> 6.8.10: unstable  (we have errors within an hour)
+>> 6.9.7: unstable  (we have errors within an hour)
+>>  From these tests I believe something changed in 6.4 series causing
+>> instabilities and the dreaded "failed to flush transmit queue" error.
+>> This is a custom linux distribution. Only change is the kernel. All
+>> other packages are same versions. Everything rebuilt from source using
+>> bitbake/yocto. Same linux-firmware files.
+>
+> I'm pretty sure it's caused by this commit:
+>
+> commit 0b75a1b1e42e07ae84e3a11d2368b418546e2bec
+> Author: Johannes Berg <johannes.berg@intel.com>
+> Date:   Fri Mar 31 16:59:16 2023 +0200
+>
+>     wifi: mac80211: flush queues on STA removal
+>
+> I guess somebody needs to look into making the queue flush on ath10k
+> more reliable (or even better, implement a more lightweight .flush_sta
+> op).
+>
+> I don't have time to do the work myself, but hopefully this
+> information could help somebody else take care of it.
 
+Adding ath10k list so that everyone see this.
 
->  drivers/net/wireless/ath/ath12k/hal_tx.h  |   7 +-
->  drivers/net/wireless/ath/ath12k/mac.c     |  79 +++++++++++++
->  drivers/net/wireless/ath/ath12k/mac.h     |   4 +-
->  drivers/net/wireless/ath/ath12k/rx_desc.h |   1 +
->  8 files changed, 227 insertions(+), 6 deletions(-)
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
