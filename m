@@ -1,63 +1,64 @@
-Return-Path: <linux-wireless+bounces-10798-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10799-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33EFC943F6E
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 03:40:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0098943F83
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 03:43:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC53E1F2841F
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 01:40:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F17531C21F0F
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 01:43:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7712E1E5652;
-	Thu,  1 Aug 2024 00:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73EB51E675A;
+	Thu,  1 Aug 2024 00:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FWBNjy/K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RSe698KP"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE721E564F;
-	Thu,  1 Aug 2024 00:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43CCE1E6756;
+	Thu,  1 Aug 2024 00:39:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472730; cv=none; b=mxztZZzShZErMYm+j+kX4s3co+da5PDnPZj+bi1An1OI9+HpkVJ+D1w8l9aY5I1B5ZFuxGM/ly8NVNJ44rsdeZR2ejp/9QJMjPRfG6+ISFypIPhVOkzxFr9vxvLu52+yH2GTtVRihisMYpZdAd5XqnOqbIwY/Qs2Xompo/AOMyU=
+	t=1722472795; cv=none; b=RjJxPpB/PIg68Fv3S65TvDfhA19grfqWQhomQXdfYdM3tUH34kwyGbK3CtrFlzZpQRVtGPEBC5tOPvaouL9UO7n3hpCQinKl4yfnLhc3L2QEcFracOxfuBA7BQ31G0JFQpGYF61peR3PvCOrRaFMbmrVumn79co4izNAN1i137s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472730; c=relaxed/simple;
-	bh=Nh8jBYjDktKvKPL0C1JI3mSUaOWowveMciHPpddwskI=;
+	s=arc-20240116; t=1722472795; c=relaxed/simple;
+	bh=4BXR4JcvO9vGctGO2IBOSUS0T0Yfa+JJK3OZfM9KkmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bq1ihyDHhQKz92pgrAQayxMcM5l64reppiF2nShpfSowaJChgnf5jp4Ltoxr8ICMyIXkDUGULXe7HJCwrPeUm5BUCKMXa0vFD5MuArsgNHUJbXF4kT+SJ/DVYD1vvdSUFmbEpcmsUZot+oEMwN/HDm8RO8sPiwOAtHfa6kRonqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FWBNjy/K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0510FC116B1;
-	Thu,  1 Aug 2024 00:38:48 +0000 (UTC)
+	 MIME-Version; b=hH3OA2faJHlhSJNRb7X88qlMxBz1OuBeccnpf4oIy79DnRJPfNfNoGnuDiRvJeET53lBHwANVnKEIMqoPWCHICDAq04ywmtpYlnRFanVXbCG1ngtdKnKW9R/RTUhunbQaoOZq48I5TqPh2HrktvPR6JmiO2fEMbIiZfz2oIjisc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RSe698KP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 540A7C4AF12;
+	Thu,  1 Aug 2024 00:39:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472730;
-	bh=Nh8jBYjDktKvKPL0C1JI3mSUaOWowveMciHPpddwskI=;
+	s=k20201202; t=1722472794;
+	bh=4BXR4JcvO9vGctGO2IBOSUS0T0Yfa+JJK3OZfM9KkmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FWBNjy/Kxvx/QDDP4K1L1jnXrU/gUuDzD5CCiPP1u4lnC4FZ/rYbDlF6swMHUugrJ
-	 Km/eGa3cx5OHjd3OcOGBV1p0tNAW5udIwyFof9YyIUAgtVIXoaU4xnRlTrwhYjLWVL
-	 dBvylnp4kD3a1hVosjkjDOvVNKdAvWSMu0hUIKloWELODwWiMA56IQlpz5CD/uDehA
-	 Qf8EYbRgfeJVYdjiShoW4ArhyhVA8KC7P9KdoofhXZR15F7CO5XLhxzjmGUyv4y1y+
-	 GCOhvN03bH1fC/+oSK2iXxVVST9rA9AwMJY82+Aq+kju4oT0bSNWjCYoNzAVsFMwym
-	 OpxNlbl5vARpg==
+	b=RSe698KPxHPVN2XDwm3Yn5jFM0sIIa8c9wREf3QlFnn+4IyoSeWaARWPEM3Nx7a9w
+	 vkx487/AXE+NDChMEDfdIzGBFNZfAR5lNlE6tcRHPyFPRGfDvjhqfgAwDrSWRP8FH9
+	 a1bs2ADg8W20maYCaGoX3pvWKDqJ0GqRQdEtC6OPa3RHBBdupeGcz9Aq6pxXuRd6Xi
+	 XTnFpdrQq/oZkpjQcl+vVpDwJq/lxglEjzKcx67+WpQC8vWwYSwc3J0dFM12HQqqyz
+	 HFJ4zwbvaU+BqzBP80xHKny1XFh2Vejri/pGHT+1QWKcV08cEk2TVbzfSz6h4u8VDN
+	 W+/HMvwKNUIig==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Sascha Hauer <s.hauer@pengutronix.de>,
-	Brian Norris <briannorris@chromium.org>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Kalle Valo <kvalo@kernel.org>,
+Cc: Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	dmantipov@yandex.ru,
-	linus.walleij@linaro.org,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 38/38] wifi: mwifiex: Do not return unused priv in mwifiex_get_priv_by_id()
-Date: Wed, 31 Jul 2024 20:35:44 -0400
-Message-ID: <20240801003643.3938534-38-sashal@kernel.org>
+	johannes@sipsolutions.net,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 10/22] wifi: cfg80211: make hash table duplicates more survivable
+Date: Wed, 31 Jul 2024 20:38:39 -0400
+Message-ID: <20240801003918.3939431-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240801003643.3938534-1-sashal@kernel.org>
-References: <20240801003643.3938534-1-sashal@kernel.org>
+In-Reply-To: <20240801003918.3939431-1-sashal@kernel.org>
+References: <20240801003918.3939431-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -66,113 +67,132 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.223
+X-stable-base: Linux 5.4.281
 Content-Transfer-Encoding: 8bit
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit c145eea2f75ff7949392aebecf7ef0a81c1f6c14 ]
+[ Upstream commit 7f12e26a194d0043441f870708093d9c2c3bad7d ]
 
-mwifiex_get_priv_by_id() returns the priv pointer corresponding to
-the bss_num and bss_type, but without checking if the priv is actually
-currently in use.
-Unused priv pointers do not have a wiphy attached to them which can
-lead to NULL pointer dereferences further down the callstack.  Fix
-this by returning only used priv pointers which have priv->bss_mode
-set to something else than NL80211_IFTYPE_UNSPECIFIED.
+Jiazi Li reported that they occasionally see hash table duplicates
+as evidenced by the WARN_ON() in rb_insert_bss() in this code.  It
+isn't clear how that happens, nor have I been able to reproduce it,
+but if it does happen, the kernel crashes later, when it tries to
+unhash the entry that's now not hashed.
 
-Said NULL pointer dereference happened when an Accesspoint was started
-with wpa_supplicant -i mlan0 with this config:
+Try to make this situation more survivable by removing the BSS from
+the list(s) as well, that way it's fully leaked here (as had been
+the intent in the hash insert error path), and no longer reachable
+through the list(s) so it shouldn't be unhashed again later.
 
-network={
-        ssid="somessid"
-        mode=2
-        frequency=2412
-        key_mgmt=WPA-PSK WPA-PSK-SHA256
-        proto=RSN
-        group=CCMP
-        pairwise=CCMP
-        psk="12345678"
-}
-
-When waiting for the AP to be established, interrupting wpa_supplicant
-with <ctrl-c> and starting it again this happens:
-
-| Unable to handle kernel NULL pointer dereference at virtual address 0000000000000140
-| Mem abort info:
-|   ESR = 0x0000000096000004
-|   EC = 0x25: DABT (current EL), IL = 32 bits
-|   SET = 0, FnV = 0
-|   EA = 0, S1PTW = 0
-|   FSC = 0x04: level 0 translation fault
-| Data abort info:
-|   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-|   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-|   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-| user pgtable: 4k pages, 48-bit VAs, pgdp=0000000046d96000
-| [0000000000000140] pgd=0000000000000000, p4d=0000000000000000
-| Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
-| Modules linked in: caam_jr caamhash_desc spidev caamalg_desc crypto_engine authenc libdes mwifiex_sdio
-+mwifiex crct10dif_ce cdc_acm onboard_usb_hub fsl_imx8_ddr_perf imx8m_ddrc rtc_ds1307 lm75 rtc_snvs
-+imx_sdma caam imx8mm_thermal spi_imx error imx_cpufreq_dt fuse ip_tables x_tables ipv6
-| CPU: 0 PID: 8 Comm: kworker/0:1 Not tainted 6.9.0-00007-g937242013fce-dirty #18
-| Hardware name: somemachine (DT)
-| Workqueue: events sdio_irq_work
-| pstate: 00000005 (nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-| pc : mwifiex_get_cfp+0xd8/0x15c [mwifiex]
-| lr : mwifiex_get_cfp+0x34/0x15c [mwifiex]
-| sp : ffff8000818b3a70
-| x29: ffff8000818b3a70 x28: ffff000006bfd8a5 x27: 0000000000000004
-| x26: 000000000000002c x25: 0000000000001511 x24: 0000000002e86bc9
-| x23: ffff000006bfd996 x22: 0000000000000004 x21: ffff000007bec000
-| x20: 000000000000002c x19: 0000000000000000 x18: 0000000000000000
-| x17: 000000040044ffff x16: 00500072b5503510 x15: ccc283740681e517
-| x14: 0201000101006d15 x13: 0000000002e8ff43 x12: 002c01000000ffb1
-| x11: 0100000000000000 x10: 02e8ff43002c0100 x9 : 0000ffb100100157
-| x8 : ffff000003d20000 x7 : 00000000000002f1 x6 : 00000000ffffe124
-| x5 : 0000000000000001 x4 : 0000000000000003 x3 : 0000000000000000
-| x2 : 0000000000000000 x1 : 0001000000011001 x0 : 0000000000000000
-| Call trace:
-|  mwifiex_get_cfp+0xd8/0x15c [mwifiex]
-|  mwifiex_parse_single_response_buf+0x1d0/0x504 [mwifiex]
-|  mwifiex_handle_event_ext_scan_report+0x19c/0x2f8 [mwifiex]
-|  mwifiex_process_sta_event+0x298/0xf0c [mwifiex]
-|  mwifiex_process_event+0x110/0x238 [mwifiex]
-|  mwifiex_main_process+0x428/0xa44 [mwifiex]
-|  mwifiex_sdio_interrupt+0x64/0x12c [mwifiex_sdio]
-|  process_sdio_pending_irqs+0x64/0x1b8
-|  sdio_irq_work+0x4c/0x7c
-|  process_one_work+0x148/0x2a0
-|  worker_thread+0x2fc/0x40c
-|  kthread+0x110/0x114
-|  ret_from_fork+0x10/0x20
-| Code: a94153f3 a8c37bfd d50323bf d65f03c0 (f940a000)
-| ---[ end trace 0000000000000000 ]---
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240703072409.556618-1-s.hauer@pengutronix.de
+Link: https://lore.kernel.org/r/20231026013528.GA24122@Jiazi.Li
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://msgid.link/20240607181726.36835-2-johannes@sipsolutions.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/main.h | 3 +++
- 1 file changed, 3 insertions(+)
+ net/wireless/scan.c | 46 +++++++++++++++++++++++++++++++++------------
+ 1 file changed, 34 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/main.h b/drivers/net/wireless/marvell/mwifiex/main.h
-index f4e3dce10d654..5b14fe08811e8 100644
---- a/drivers/net/wireless/marvell/mwifiex/main.h
-+++ b/drivers/net/wireless/marvell/mwifiex/main.h
-@@ -1310,6 +1310,9 @@ mwifiex_get_priv_by_id(struct mwifiex_adapter *adapter,
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index c74882e3c3096..b28e652514e80 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -1003,7 +1003,7 @@ struct cfg80211_bss *cfg80211_get_bss(struct wiphy *wiphy,
+ }
+ EXPORT_SYMBOL(cfg80211_get_bss);
  
- 	for (i = 0; i < adapter->priv_num; i++) {
- 		if (adapter->priv[i]) {
-+			if (adapter->priv[i]->bss_mode == NL80211_IFTYPE_UNSPECIFIED)
-+				continue;
+-static void rb_insert_bss(struct cfg80211_registered_device *rdev,
++static bool rb_insert_bss(struct cfg80211_registered_device *rdev,
+ 			  struct cfg80211_internal_bss *bss)
+ {
+ 	struct rb_node **p = &rdev->bss_tree.rb_node;
+@@ -1019,7 +1019,7 @@ static void rb_insert_bss(struct cfg80211_registered_device *rdev,
+ 
+ 		if (WARN_ON(!cmp)) {
+ 			/* will sort of leak this BSS */
+-			return;
++			return false;
+ 		}
+ 
+ 		if (cmp < 0)
+@@ -1030,6 +1030,7 @@ static void rb_insert_bss(struct cfg80211_registered_device *rdev,
+ 
+ 	rb_link_node(&bss->rbn, parent, p);
+ 	rb_insert_color(&bss->rbn, &rdev->bss_tree);
++	return true;
+ }
+ 
+ static struct cfg80211_internal_bss *
+@@ -1056,6 +1057,34 @@ rb_find_bss(struct cfg80211_registered_device *rdev,
+ 	return NULL;
+ }
+ 
++static void cfg80211_insert_bss(struct cfg80211_registered_device *rdev,
++				struct cfg80211_internal_bss *bss)
++{
++	lockdep_assert_held(&rdev->bss_lock);
 +
- 			if ((adapter->priv[i]->bss_num == bss_num) &&
- 			    (adapter->priv[i]->bss_type == bss_type))
- 				break;
++	if (!rb_insert_bss(rdev, bss))
++		return;
++	list_add_tail(&bss->list, &rdev->bss_list);
++	rdev->bss_entries++;
++}
++
++static void cfg80211_rehash_bss(struct cfg80211_registered_device *rdev,
++                                struct cfg80211_internal_bss *bss)
++{
++	lockdep_assert_held(&rdev->bss_lock);
++
++	rb_erase(&bss->rbn, &rdev->bss_tree);
++	if (!rb_insert_bss(rdev, bss)) {
++		list_del(&bss->list);
++		if (!list_empty(&bss->hidden_list))
++			list_del_init(&bss->hidden_list);
++		if (!list_empty(&bss->pub.nontrans_list))
++			list_del_init(&bss->pub.nontrans_list);
++		rdev->bss_entries--;
++	}
++	rdev->bss_generation++;
++}
++
+ static bool cfg80211_combine_bsses(struct cfg80211_registered_device *rdev,
+ 				   struct cfg80211_internal_bss *new)
+ {
+@@ -1331,9 +1360,7 @@ cfg80211_bss_update(struct cfg80211_registered_device *rdev,
+ 			bss_ref_get(rdev, pbss);
+ 		}
+ 
+-		list_add_tail(&new->list, &rdev->bss_list);
+-		rdev->bss_entries++;
+-		rb_insert_bss(rdev, new);
++		cfg80211_insert_bss(rdev, new);
+ 		found = new;
+ 	}
+ 
+@@ -2142,10 +2169,7 @@ void cfg80211_update_assoc_bss_entry(struct wireless_dev *wdev,
+ 		if (!WARN_ON(!__cfg80211_unlink_bss(rdev, new)))
+ 			rdev->bss_generation++;
+ 	}
+-
+-	rb_erase(&cbss->rbn, &rdev->bss_tree);
+-	rb_insert_bss(rdev, cbss);
+-	rdev->bss_generation++;
++	cfg80211_rehash_bss(rdev, cbss);
+ 
+ 	list_for_each_entry_safe(nontrans_bss, tmp,
+ 				 &cbss->pub.nontrans_list,
+@@ -2153,9 +2177,7 @@ void cfg80211_update_assoc_bss_entry(struct wireless_dev *wdev,
+ 		bss = container_of(nontrans_bss,
+ 				   struct cfg80211_internal_bss, pub);
+ 		bss->pub.channel = chan;
+-		rb_erase(&bss->rbn, &rdev->bss_tree);
+-		rb_insert_bss(rdev, bss);
+-		rdev->bss_generation++;
++		cfg80211_rehash_bss(rdev, bss);
+ 	}
+ 
+ done:
 -- 
 2.43.0
 
