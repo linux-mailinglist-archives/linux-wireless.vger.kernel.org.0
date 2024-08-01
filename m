@@ -1,57 +1,61 @@
-Return-Path: <linux-wireless+bounces-10792-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10793-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18AF7943EB0
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 03:25:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DE61943DFF
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 03:14:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A12DB2C0A3
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 01:12:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE04F280F10
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 01:14:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D691940BE;
-	Thu,  1 Aug 2024 00:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 693E41D2786;
+	Thu,  1 Aug 2024 00:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bszhs9Ip"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E2gr4dDh"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C065192B79;
-	Thu,  1 Aug 2024 00:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383A41D174A;
+	Thu,  1 Aug 2024 00:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472209; cv=none; b=DfUVHGp+XcIEMDgiPHHvlfCUWcvATvnjt08I/l8eJdavTRr3xuqSAYVnZP66+QWxW7oT2JOYJDpT1Z0AqYbZkPuMHTdJ7FPiGAfMjCNlO8EGcTTPWVqIp7gOTZqywQeuxrVpyPRGvt1j0dStXny/fgqVuACvniJCv8RXYkmsMrc=
+	t=1722472227; cv=none; b=sDZoUQN6BZZY66RMBlH+wAxFghm2cfwUWCM7gm2aW1RBK94mxVr4CytX9PF8m7TFNHvxTluzjux8yfa0bilSbvRbMxYtJpeiNtQDPgWdtvgEjt3pG5hhFWUWBAXj42WjZ2P+wLeUKt4xFNWfOHFk1r9hbdkBYp09SzGDCNxnFH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472209; c=relaxed/simple;
-	bh=5HkpZF+C9dwJjcFENfmNhps01cjNjs3wQgezjJIbfjE=;
+	s=arc-20240116; t=1722472227; c=relaxed/simple;
+	bh=8Jiwx4KROWWm8HorzXwj4rAUyed0jdnz4V0S2o5UDO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cZqTx3V6y2/2Q1bbGFZok9d/Vurw5THH9BLhZY7w+tAtTg4RGUMKLkE4tKkg53qoLpOwwglpnbckhkYMGM8hOg/Ko0suvWDRMSFDb6ogj9TfITfISRnK7ad3SxTpBnrz9cDFGhh+cJZZknajtR+XCyKUxA4zWbj9ldFB4BOZxOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bszhs9Ip; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23982C4AF0C;
-	Thu,  1 Aug 2024 00:30:08 +0000 (UTC)
+	 MIME-Version; b=aMRFkDC3GkxbSVXnUMJuPqKoNTePHtkcjEPrN3pahLLbDtmQIhbd0XnS4x1XiLbJAk+VXH+nyCytIz02ZyKauXaCtcnv0DdS+NPPJJuY93ZhA+Ie6JZN+9CQj6iMGLAW8v/4BM4cPBQTkTZX0ANiCi50fe1y5naTljWnWrazX3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E2gr4dDh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAF57C32786;
+	Thu,  1 Aug 2024 00:30:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472209;
-	bh=5HkpZF+C9dwJjcFENfmNhps01cjNjs3wQgezjJIbfjE=;
+	s=k20201202; t=1722472227;
+	bh=8Jiwx4KROWWm8HorzXwj4rAUyed0jdnz4V0S2o5UDO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bszhs9IpqCOm7+kM+Ju5MWbj+66wCujzRzzELJxDXTcZxLIERYnHRupDHhC3obJlH
-	 Mj5AZVKR9svQIvK9AAw/nF5lnKFL11hfUXmxcloL/LU4Ww1QtxVAvGoo5/sEAh3POJ
-	 e9/RTSExT+O5qAu8ERdXoWh+mqJHXFsQFaLnxB65dVqFiJFmwF62GQRne1Tuh9hUlF
-	 y1/U+/oRbjXErd7YUkzMcjZMZQ/D/AK6h8xjEELGoTidwmH2yLW4WtVlfeEmfBCfZ7
-	 CRLFv058Vp12df4cTchm73obgnTcNokTCHJBT1gefTj2xFvjSrXaZaA5AdpIqYJEUI
-	 d+eyI12iYOxcg==
+	b=E2gr4dDhey/B1k3A+uxfSLqK1500DCEOY/AM8sADiy15UmcnvtO4NOorlswBYiY/N
+	 OS6vnhB6fthT40+4frm/pB6RvRvWFPOoDqbG8CVguhyUbWkPms5VVwHNqVhHvZFE9/
+	 o/I9NvZN1wSSiKHMeMYOfOB0HfmOiOKtoT4UHmuIzTP/9xXc8GYc56CUqLIehbhXuB
+	 OgLG4TNQIEdLJeEJw7pjNOx6LyRWPguyt3cp71aKsKiKmOHcO/Dzmnu5Z5Hyru8gR+
+	 M1PQcu8Jel3o/s37umEtn2jIvs5gEEmV+t8WtLKwBqYMo0Y0btSrnjpRddT5pt+Tog
+	 ikBBIUXgbShYg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 27/61] wifi: iwlwifi: fw: avoid bad FW config on RXQ DMA failure
-Date: Wed, 31 Jul 2024 20:25:45 -0400
-Message-ID: <20240801002803.3935985-27-sashal@kernel.org>
+	johannes@sipsolutions.net,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 37/61] wifi: cfg80211: make hash table duplicates more survivable
+Date: Wed, 31 Jul 2024 20:25:55 -0400
+Message-ID: <20240801002803.3935985-37-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801002803.3935985-1-sashal@kernel.org>
 References: <20240801002803.3935985-1-sashal@kernel.org>
@@ -68,54 +72,127 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 6ccfc7c49b6d99e3b857afb064e56a004b0a5e03 ]
+[ Upstream commit 7f12e26a194d0043441f870708093d9c2c3bad7d ]
 
-In practice, iwl_trans_get_rxq_dma_data() will not fail,
-it only can do that if called with the wrong arguments.
-But it does have an error value and doesn't initialize
-the argument when it fails, so don't use the value then.
+Jiazi Li reported that they occasionally see hash table duplicates
+as evidenced by the WARN_ON() in rb_insert_bss() in this code.  It
+isn't clear how that happens, nor have I been able to reproduce it,
+but if it does happen, the kernel crashes later, when it tries to
+unhash the entry that's now not hashed.
 
+Try to make this situation more survivable by removing the BSS from
+the list(s) as well, that way it's fully leaked here (as had been
+the intent in the hash insert error path), and no longer reachable
+through the list(s) so it shouldn't be unhashed again later.
+
+Link: https://lore.kernel.org/r/20231026013528.GA24122@Jiazi.Li
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240512072733.faf3a1b87589.I77c950173cb914676fbd28483e5ef420bb9f1bc9@changeid
+Link: https://msgid.link/20240607181726.36835-2-johannes@sipsolutions.net
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/init.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/wireless/scan.c | 46 +++++++++++++++++++++++++++++++++------------
+ 1 file changed, 34 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/init.c b/drivers/net/wireless/intel/iwlwifi/fw/init.c
-index 135bd48bfe9fa..d8b083be5b6b5 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/init.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/init.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-  * Copyright (C) 2017 Intel Deutschland GmbH
-- * Copyright (C) 2019-2021 Intel Corporation
-+ * Copyright (C) 2019-2021, 2024 Intel Corporation
-  */
- #include "iwl-drv.h"
- #include "runtime.h"
-@@ -135,7 +135,9 @@ int iwl_configure_rxq(struct iwl_fw_runtime *fwrt)
- 		struct iwl_trans_rxq_dma_data data;
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 3cd162e53173b..d18716e5b2cc2 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -1534,7 +1534,7 @@ struct cfg80211_bss *cfg80211_get_bss(struct wiphy *wiphy,
+ }
+ EXPORT_SYMBOL(cfg80211_get_bss);
  
- 		cmd->data[i].q_num = i + 1;
--		iwl_trans_get_rxq_dma_data(fwrt->trans, i + 1, &data);
-+		ret = iwl_trans_get_rxq_dma_data(fwrt->trans, i + 1, &data);
-+		if (ret)
-+			goto out;
+-static void rb_insert_bss(struct cfg80211_registered_device *rdev,
++static bool rb_insert_bss(struct cfg80211_registered_device *rdev,
+ 			  struct cfg80211_internal_bss *bss)
+ {
+ 	struct rb_node **p = &rdev->bss_tree.rb_node;
+@@ -1550,7 +1550,7 @@ static void rb_insert_bss(struct cfg80211_registered_device *rdev,
  
- 		cmd->data[i].fr_bd_cb = cpu_to_le64(data.fr_bd_cb);
- 		cmd->data[i].urbd_stts_wrptr =
-@@ -149,6 +151,7 @@ int iwl_configure_rxq(struct iwl_fw_runtime *fwrt)
+ 		if (WARN_ON(!cmp)) {
+ 			/* will sort of leak this BSS */
+-			return;
++			return false;
+ 		}
  
- 	ret = iwl_trans_send_cmd(fwrt->trans, &hcmd);
+ 		if (cmp < 0)
+@@ -1561,6 +1561,7 @@ static void rb_insert_bss(struct cfg80211_registered_device *rdev,
  
-+out:
- 	kfree(cmd);
+ 	rb_link_node(&bss->rbn, parent, p);
+ 	rb_insert_color(&bss->rbn, &rdev->bss_tree);
++	return true;
+ }
  
- 	if (ret)
+ static struct cfg80211_internal_bss *
+@@ -1587,6 +1588,34 @@ rb_find_bss(struct cfg80211_registered_device *rdev,
+ 	return NULL;
+ }
+ 
++static void cfg80211_insert_bss(struct cfg80211_registered_device *rdev,
++				struct cfg80211_internal_bss *bss)
++{
++	lockdep_assert_held(&rdev->bss_lock);
++
++	if (!rb_insert_bss(rdev, bss))
++		return;
++	list_add_tail(&bss->list, &rdev->bss_list);
++	rdev->bss_entries++;
++}
++
++static void cfg80211_rehash_bss(struct cfg80211_registered_device *rdev,
++                                struct cfg80211_internal_bss *bss)
++{
++	lockdep_assert_held(&rdev->bss_lock);
++
++	rb_erase(&bss->rbn, &rdev->bss_tree);
++	if (!rb_insert_bss(rdev, bss)) {
++		list_del(&bss->list);
++		if (!list_empty(&bss->hidden_list))
++			list_del_init(&bss->hidden_list);
++		if (!list_empty(&bss->pub.nontrans_list))
++			list_del_init(&bss->pub.nontrans_list);
++		rdev->bss_entries--;
++	}
++	rdev->bss_generation++;
++}
++
+ static bool cfg80211_combine_bsses(struct cfg80211_registered_device *rdev,
+ 				   struct cfg80211_internal_bss *new)
+ {
+@@ -1862,9 +1891,7 @@ cfg80211_bss_update(struct cfg80211_registered_device *rdev,
+ 			bss_ref_get(rdev, pbss);
+ 		}
+ 
+-		list_add_tail(&new->list, &rdev->bss_list);
+-		rdev->bss_entries++;
+-		rb_insert_bss(rdev, new);
++		cfg80211_insert_bss(rdev, new);
+ 		found = new;
+ 	}
+ 
+@@ -2651,10 +2678,7 @@ void cfg80211_update_assoc_bss_entry(struct wireless_dev *wdev,
+ 		if (!WARN_ON(!__cfg80211_unlink_bss(rdev, new)))
+ 			rdev->bss_generation++;
+ 	}
+-
+-	rb_erase(&cbss->rbn, &rdev->bss_tree);
+-	rb_insert_bss(rdev, cbss);
+-	rdev->bss_generation++;
++	cfg80211_rehash_bss(rdev, cbss);
+ 
+ 	list_for_each_entry_safe(nontrans_bss, tmp,
+ 				 &cbss->pub.nontrans_list,
+@@ -2662,9 +2686,7 @@ void cfg80211_update_assoc_bss_entry(struct wireless_dev *wdev,
+ 		bss = container_of(nontrans_bss,
+ 				   struct cfg80211_internal_bss, pub);
+ 		bss->pub.channel = chan;
+-		rb_erase(&bss->rbn, &rdev->bss_tree);
+-		rb_insert_bss(rdev, bss);
+-		rdev->bss_generation++;
++		cfg80211_rehash_bss(rdev, bss);
+ 	}
+ 
+ done:
 -- 
 2.43.0
 
