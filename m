@@ -1,59 +1,61 @@
-Return-Path: <linux-wireless+bounces-10789-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10790-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAA13943D9C
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 03:03:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDCB0943DAF
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 03:05:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FED11F2232E
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 01:03:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99A4028389B
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 01:05:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAACD1CC45E;
-	Thu,  1 Aug 2024 00:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A5C1CD674;
+	Thu,  1 Aug 2024 00:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Iu/Nglh/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dClvUDxN"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801F61CC458;
-	Thu,  1 Aug 2024 00:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1E91CD671;
+	Thu,  1 Aug 2024 00:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471960; cv=none; b=mvf5BA8NELBKFX4MF7RvSS1dYGAeI3Z0+WC+5FmM0ujbMt4W4GQMe+pdUj/H68+jWyfrJeN43DHH9OHJWq3vCzNdM8D0XpQL0SNvMHJnFDEE8iA2mCMffGPCD/AbqzPV1DC9EYNVturqXjNRo1mfv/L4ZBtcX+CJ1zMzaOvHLwg=
+	t=1722471973; cv=none; b=igWM+U/Lw6npyLF8+4u4O0MTplTQUtebL/fRQ0ka9ZhkAlrZwbOkj1k/RSWVdOmHKXxvRidKhIcumx8MoSWyVIf3NBFlnixwCFwk6um12HKt2WOXeXOkmNKPH/nOW2zwmsmUh78BFdtWh08cdQRFcEPfUmlquzBvayYJwsXzQ60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471960; c=relaxed/simple;
-	bh=2dbAlhQnnC06QCvYigvkWNjnDcUUWgPVvAw8cLKNxrU=;
+	s=arc-20240116; t=1722471973; c=relaxed/simple;
+	bh=xXp28d+LevbnCb2k4mhPlJvufedugpFigDDV2av5ysU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KIE58A0diwbGE97EC83zmuOJdQgsKbPJDu9Hy6G99fFm6ZNH34Vm5fmb+Fz+aTMp0yKTwWRysth0t4HzRv/vmuB+oFwzsRrHfl/Ap7hf+TX1CeAT49xg8Nj9rhCKe2wYqd1PxWOfRqak6dGAyBB0nCvHL8z2IBHo37yGQNvxKVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Iu/Nglh/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42E5DC116B1;
-	Thu,  1 Aug 2024 00:25:59 +0000 (UTC)
+	 MIME-Version; b=Qqw+uWjbNuQmvo5sLstnUthCsCqz1AeBJuJt9xTRaRBBiuNFUxnM9gxk0NyezhEmX3i+XsiKZjxY6JzfMtL2Df2/+h3tRlPN9zVVoZEM6PCsYZISpDJHfqJzrosyqBEZUqlOIl4KqVYOegsAz10EI3GXZT5gTxhwpmT+n5fNsfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dClvUDxN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59238C32786;
+	Thu,  1 Aug 2024 00:26:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471960;
-	bh=2dbAlhQnnC06QCvYigvkWNjnDcUUWgPVvAw8cLKNxrU=;
+	s=k20201202; t=1722471972;
+	bh=xXp28d+LevbnCb2k4mhPlJvufedugpFigDDV2av5ysU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iu/Nglh/Dw2BgT7hes/WtV0tY3WmECmK5n3rY59ewiqjLPVna1HzMF7I9yTbd7TZB
-	 ryuDu/BB0X7Co/qjbCuX9kou6L3Kp2LL3uUF/1dYdEnjxq5wHj9RJagrvWWtjK46g2
-	 G/UdwApk1vF3rjN8n+YS+/FaaLNplbjX+XQ5TnfePTvRIJztw1LDuMB76QumQvJjPc
-	 sK1oNcy8HSSytaUHSO20AeeizSZoza3B1Avuow7j9T+V6QFwVLVm+5407eRUJjcXUR
-	 hggrTh9eD7RICo6hl5eLTSByDhKjwzJT/ToilqNLyE5/7Sde6XtksUAqGLLoKlKdwv
-	 BAs3/A6gK/5dw==
+	b=dClvUDxNSpDIMU5cfyCjIcN2VvafzjfbRkorbSxZgak0s4Hx4qPTjTVjN84pYFY+z
+	 MN1U64cx+y9clcvnSpBs9k0+RXYK7+G406JfC0gQ1ld2GCF4+RJwWTP0dl1XvNUjH/
+	 36r/4iE0I5YXdwIXSGSxLGtNfFHDtMqsYxeB450xgLWV3EUgjYVqd7k1D5p6esd3W/
+	 YHE0p4RLVHuGeu2NsUVbKsw9hsfPmQl3e3WEy2q0pZ7kaBTRzoqtBuJbxdaV3/0Qm/
+	 y5CpJ8yOMo3Bz11SWuuWiMzZcDnfdFVlsBkkN+gv+1j+36UehfwfHoPsCN0fKjWEQX
+	 mU8Qgcd0sSs3w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Marcin=20=C5=9Alusarz?= <mslusarz@renau.com>,
-	Tim K <tpkuester@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Larry Finger <Larry.Finger@lwfinger.net>,
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+	Brian Norris <briannorris@chromium.org>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
 	Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.6 76/83] wifi: rtw88: usb: schedule rx work after everything is set up
-Date: Wed, 31 Jul 2024 20:18:31 -0400
-Message-ID: <20240801002107.3934037-76-sashal@kernel.org>
+	Sasha Levin <sashal@kernel.org>,
+	dmantipov@yandex.ru,
+	linus.walleij@linaro.org,
+	johannes.berg@intel.com,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 82/83] wifi: mwifiex: Do not return unused priv in mwifiex_get_priv_by_id()
+Date: Wed, 31 Jul 2024 20:18:37 -0400
+Message-ID: <20240801002107.3934037-82-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801002107.3934037-1-sashal@kernel.org>
 References: <20240801002107.3934037-1-sashal@kernel.org>
@@ -63,106 +65,115 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.43
 Content-Transfer-Encoding: 8bit
 
-From: Marcin Ślusarz <mslusarz@renau.com>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-[ Upstream commit adc539784c98a7cc602cbf557debfc2e7b9be8b3 ]
+[ Upstream commit c145eea2f75ff7949392aebecf7ef0a81c1f6c14 ]
 
-Right now it's possible to hit NULL pointer dereference in
-rtw_rx_fill_rx_status on hw object and/or its fields because
-initialization routine can start getting USB replies before
-rtw_dev is fully setup.
+mwifiex_get_priv_by_id() returns the priv pointer corresponding to
+the bss_num and bss_type, but without checking if the priv is actually
+currently in use.
+Unused priv pointers do not have a wiphy attached to them which can
+lead to NULL pointer dereferences further down the callstack.  Fix
+this by returning only used priv pointers which have priv->bss_mode
+set to something else than NL80211_IFTYPE_UNSPECIFIED.
 
-The stack trace looks like this:
+Said NULL pointer dereference happened when an Accesspoint was started
+with wpa_supplicant -i mlan0 with this config:
 
-rtw_rx_fill_rx_status
-rtw8821c_query_rx_desc
-rtw_usb_rx_handler
-...
-queue_work
-rtw_usb_read_port_complete
-...
-usb_submit_urb
-rtw_usb_rx_resubmit
-rtw_usb_init_rx
-rtw_usb_probe
+network={
+        ssid="somessid"
+        mode=2
+        frequency=2412
+        key_mgmt=WPA-PSK WPA-PSK-SHA256
+        proto=RSN
+        group=CCMP
+        pairwise=CCMP
+        psk="12345678"
+}
 
-So while we do the async stuff rtw_usb_probe continues and calls
-rtw_register_hw, which does all kinds of initialization (e.g.
-via ieee80211_register_hw) that rtw_rx_fill_rx_status relies on.
+When waiting for the AP to be established, interrupting wpa_supplicant
+with <ctrl-c> and starting it again this happens:
 
-Fix this by moving the first usb_submit_urb after everything
-is set up.
+| Unable to handle kernel NULL pointer dereference at virtual address 0000000000000140
+| Mem abort info:
+|   ESR = 0x0000000096000004
+|   EC = 0x25: DABT (current EL), IL = 32 bits
+|   SET = 0, FnV = 0
+|   EA = 0, S1PTW = 0
+|   FSC = 0x04: level 0 translation fault
+| Data abort info:
+|   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+|   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+|   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+| user pgtable: 4k pages, 48-bit VAs, pgdp=0000000046d96000
+| [0000000000000140] pgd=0000000000000000, p4d=0000000000000000
+| Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
+| Modules linked in: caam_jr caamhash_desc spidev caamalg_desc crypto_engine authenc libdes mwifiex_sdio
++mwifiex crct10dif_ce cdc_acm onboard_usb_hub fsl_imx8_ddr_perf imx8m_ddrc rtc_ds1307 lm75 rtc_snvs
++imx_sdma caam imx8mm_thermal spi_imx error imx_cpufreq_dt fuse ip_tables x_tables ipv6
+| CPU: 0 PID: 8 Comm: kworker/0:1 Not tainted 6.9.0-00007-g937242013fce-dirty #18
+| Hardware name: somemachine (DT)
+| Workqueue: events sdio_irq_work
+| pstate: 00000005 (nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+| pc : mwifiex_get_cfp+0xd8/0x15c [mwifiex]
+| lr : mwifiex_get_cfp+0x34/0x15c [mwifiex]
+| sp : ffff8000818b3a70
+| x29: ffff8000818b3a70 x28: ffff000006bfd8a5 x27: 0000000000000004
+| x26: 000000000000002c x25: 0000000000001511 x24: 0000000002e86bc9
+| x23: ffff000006bfd996 x22: 0000000000000004 x21: ffff000007bec000
+| x20: 000000000000002c x19: 0000000000000000 x18: 0000000000000000
+| x17: 000000040044ffff x16: 00500072b5503510 x15: ccc283740681e517
+| x14: 0201000101006d15 x13: 0000000002e8ff43 x12: 002c01000000ffb1
+| x11: 0100000000000000 x10: 02e8ff43002c0100 x9 : 0000ffb100100157
+| x8 : ffff000003d20000 x7 : 00000000000002f1 x6 : 00000000ffffe124
+| x5 : 0000000000000001 x4 : 0000000000000003 x3 : 0000000000000000
+| x2 : 0000000000000000 x1 : 0001000000011001 x0 : 0000000000000000
+| Call trace:
+|  mwifiex_get_cfp+0xd8/0x15c [mwifiex]
+|  mwifiex_parse_single_response_buf+0x1d0/0x504 [mwifiex]
+|  mwifiex_handle_event_ext_scan_report+0x19c/0x2f8 [mwifiex]
+|  mwifiex_process_sta_event+0x298/0xf0c [mwifiex]
+|  mwifiex_process_event+0x110/0x238 [mwifiex]
+|  mwifiex_main_process+0x428/0xa44 [mwifiex]
+|  mwifiex_sdio_interrupt+0x64/0x12c [mwifiex_sdio]
+|  process_sdio_pending_irqs+0x64/0x1b8
+|  sdio_irq_work+0x4c/0x7c
+|  process_one_work+0x148/0x2a0
+|  worker_thread+0x2fc/0x40c
+|  kthread+0x110/0x114
+|  ret_from_fork+0x10/0x20
+| Code: a94153f3 a8c37bfd d50323bf d65f03c0 (f940a000)
+| ---[ end trace 0000000000000000 ]---
 
-For me, this bug manifested as:
-[    8.893177] rtw_8821cu 1-1:1.2: band wrong, packet dropped
-[    8.910904] rtw_8821cu 1-1:1.2: hw->conf.chandef.chan NULL in rtw_rx_fill_rx_status
-because I'm using Larry's backport of rtw88 driver with the NULL
-checks in rtw_rx_fill_rx_status.
-
-Link: https://lore.kernel.org/linux-wireless/CA+shoWQ7P49jhQasofDcTdQhiuarPTjYEDa--NiVVx494WcuQw@mail.gmail.com/
-Signed-off-by: Marcin Ślusarz <mslusarz@renau.com>
-Cc: Tim K <tpkuester@gmail.com>
-Cc: Ping-Ke Shih <pkshih@realtek.com>
-Cc: Larry Finger <Larry.Finger@lwfinger.net>
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20240528110246.477321-1-marcin.slusarz@gmail.com
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Acked-by: Brian Norris <briannorris@chromium.org>
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20240703072409.556618-1-s.hauer@pengutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/usb.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/main.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
-index a0188511099a1..98f81e3ae13e7 100644
---- a/drivers/net/wireless/realtek/rtw88/usb.c
-+++ b/drivers/net/wireless/realtek/rtw88/usb.c
-@@ -740,7 +740,6 @@ static struct rtw_hci_ops rtw_usb_ops = {
- static int rtw_usb_init_rx(struct rtw_dev *rtwdev)
- {
- 	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
--	int i;
+diff --git a/drivers/net/wireless/marvell/mwifiex/main.h b/drivers/net/wireless/marvell/mwifiex/main.h
+index 7bdec6c622481..dc6b4cf616bea 100644
+--- a/drivers/net/wireless/marvell/mwifiex/main.h
++++ b/drivers/net/wireless/marvell/mwifiex/main.h
+@@ -1290,6 +1290,9 @@ mwifiex_get_priv_by_id(struct mwifiex_adapter *adapter,
  
- 	rtwusb->rxwq = create_singlethread_workqueue("rtw88_usb: rx wq");
- 	if (!rtwusb->rxwq) {
-@@ -752,13 +751,19 @@ static int rtw_usb_init_rx(struct rtw_dev *rtwdev)
- 
- 	INIT_WORK(&rtwusb->rx_work, rtw_usb_rx_handler);
- 
-+	return 0;
-+}
+ 	for (i = 0; i < adapter->priv_num; i++) {
+ 		if (adapter->priv[i]) {
++			if (adapter->priv[i]->bss_mode == NL80211_IFTYPE_UNSPECIFIED)
++				continue;
 +
-+static void rtw_usb_setup_rx(struct rtw_dev *rtwdev)
-+{
-+	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
-+	int i;
-+
- 	for (i = 0; i < RTW_USB_RXCB_NUM; i++) {
- 		struct rx_usb_ctrl_block *rxcb = &rtwusb->rx_cb[i];
- 
- 		rtw_usb_rx_resubmit(rtwusb, rxcb);
- 	}
--
--	return 0;
- }
- 
- static void rtw_usb_deinit_rx(struct rtw_dev *rtwdev)
-@@ -895,6 +900,8 @@ int rtw_usb_probe(struct usb_interface *intf, const struct usb_device_id *id)
- 		goto err_destroy_rxwq;
- 	}
- 
-+	rtw_usb_setup_rx(rtwdev);
-+
- 	return 0;
- 
- err_destroy_rxwq:
+ 			if ((adapter->priv[i]->bss_num == bss_num) &&
+ 			    (adapter->priv[i]->bss_type == bss_type))
+ 				break;
 -- 
 2.43.0
 
