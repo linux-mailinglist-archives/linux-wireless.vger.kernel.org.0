@@ -1,50 +1,50 @@
-Return-Path: <linux-wireless+bounces-10777-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10778-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52F90943C3B
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 02:35:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96C54943C3E
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 02:36:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82B781C21AC8
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 00:35:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3647C1F23BE3
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 00:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991281AD40F;
-	Thu,  1 Aug 2024 00:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AC7A1BBBD3;
+	Thu,  1 Aug 2024 00:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sutiCheL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HqOfXuf2"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4621369B0;
-	Thu,  1 Aug 2024 00:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217D01B29AD;
+	Thu,  1 Aug 2024 00:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471399; cv=none; b=s+TxR387pMzEfLxF9m6fOT/doec60qpuDxmTlMx2Ca7Eekm0waphPbJHqr0hgE/j6phfZFayyZntEx3SBfDvJG6oC0HOEFoCWtyNklzSaAodgAhStfSK2fv/fU1aUrdPgW9mqfdgn4n+oVprcqTV/KS1BLdt3qY/wLqPFwbzlks=
+	t=1722471401; cv=none; b=dnFfsabN3hiBJwtIFucxujj1RFgOR/JOsVCw42U4YAuXVixSi+fr2Rw3Q696tmrXvlj/VOBTUymfVdE+rzoHCuEV1qWD2DITaMnhoIMCqRi7nUcBM2CiF8fBlM+uC9Gh8eHp+19gOJeMXdgpm2V1hwtHK7RI22im/l8wXTmpccw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471399; c=relaxed/simple;
-	bh=xKmG+h3e/pfzKAgMRNuiHHVyFsZSiwtJDc2oAsA24Mw=;
+	s=arc-20240116; t=1722471401; c=relaxed/simple;
+	bh=UR3INt0/72J9XTSXmIIA4ENQUx98eBliSrcf4LK3lvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NCi24A/sj09iRZXbh/K7ayrMEczZGPUDH2v6Qs1YKBdq4zJ3h6byQOfDEUduyx/jIlTvRvkb2mLs5MIcbn5aJzKft7XM9oWu7sGA6aFWIInoNMkqXzS9I+sVEoYTyvGXjC9fmEFFX0SDqHLgSmKyyOSOIHveXjunwx0rG4haHhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sutiCheL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E9CC116B1;
-	Thu,  1 Aug 2024 00:16:38 +0000 (UTC)
+	 MIME-Version; b=Jc7Li2Mex0KxQAfIA0NfIFuoSwpBUQw3wQtPmdH5Q47sOD8tM15shWCdciC9YILlocJEglaF8My2da7OHymDht7rOFzfEAW4FQxZ0Dx5xx6PF9SZEQ3ejgn2FOOzm4FW1KLO/2GPo725RrhLWtIw2BPjXWjqE7btnPmh2yHrzGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HqOfXuf2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C51EAC32786;
+	Thu,  1 Aug 2024 00:16:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471399;
-	bh=xKmG+h3e/pfzKAgMRNuiHHVyFsZSiwtJDc2oAsA24Mw=;
+	s=k20201202; t=1722471401;
+	bh=UR3INt0/72J9XTSXmIIA4ENQUx98eBliSrcf4LK3lvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sutiCheLBgEaKEA9PGxAUlelgLiztsg5Ge37ux+gqdM1MgCF+TI7iZujCsk63H7Tm
-	 0FAHMmv67LXpTQzzpyC5orpo85NJ0XzOvEwFcyYju0To0OZ7e0cUpx50Jhrt5TjDah
-	 JjPFX6FQkQ0Uh5Uk+4LcjWjtl7l1C8zK7hIiP7tlKAX+XsnlF5DJT7Uc6bj9sYqlkD
-	 Q8J+faRwH3qW78a92BRSMOiBvrHM6bLw5Ydl0+sHoTA2CNlMLtYPDct9XeFQ/ydhak
-	 Z0kAqrL20iolFH1N51oiE6L1u0+yBHHcs7MSdgfw/VblFzoBMrIhCuz2L2o5aoN7Lf
-	 U6Yx2zYc49lJw==
+	b=HqOfXuf2IFV3G5UD72AQ/tB5dCMoKZEfb5LUOQD8Bhj9sT0P1Bfo5GqYqtQqm+lWA
+	 lh8lxNDCx4xWYl+1gs+gYkdQUWVa0Ow8OcBgFb73B3fXibz3v/Dxz01gskS/t7hdB9
+	 T3NaQVms0s8wJbuJVXRlqXiwa1ypGrbTezDKfNaiVV6k4Bcj0lteK87hvMZEr98MEy
+	 fmqBvenImhAL13Hd5rPt1fTeW5eFEdFx3uYOPw/JeYow4qYvu+LyiF9PHBlCjfmo4N
+	 zrKKv3+aScigXnSQzUqxlETJ26cKXpxTwmAKvKPtVakgoz8ajqhIEPJSbHEO94YSGf
+	 LH8EAvmtGBZaQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Aaradhana Sahu <quic_aarasahu@quicinc.com>,
+Cc: Ajith C <quic_ajithc@quicinc.com>,
 	Jeff Johnson <quic_jjohnson@quicinc.com>,
 	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>,
@@ -52,9 +52,9 @@ Cc: Aaradhana Sahu <quic_aarasahu@quicinc.com>,
 	jjohnson@kernel.org,
 	linux-wireless@vger.kernel.org,
 	ath12k@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.10 086/121] wifi: ath12k: fix uninitialize symbol error on ath12k_peer_assoc_h_he()
-Date: Wed, 31 Jul 2024 20:00:24 -0400
-Message-ID: <20240801000834.3930818-86-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 087/121] wifi: ath12k: fix firmware crash due to invalid peer nss
+Date: Wed, 31 Jul 2024 20:00:25 -0400
+Message-ID: <20240801000834.3930818-87-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801000834.3930818-1-sashal@kernel.org>
 References: <20240801000834.3930818-1-sashal@kernel.org>
@@ -69,52 +69,55 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Aaradhana Sahu <quic_aarasahu@quicinc.com>
+From: Ajith C <quic_ajithc@quicinc.com>
 
-[ Upstream commit 19b77e7c656a3e125319cc3ef347b397cf042bf6 ]
+[ Upstream commit db163a463bb93cd3e37e1e7b10b9726fb6f95857 ]
 
-Smatch throws following errors
+Currently, if the access point receives an association
+request containing an Extended HE Capabilities Information
+Element with an invalid MCS-NSS, it triggers a firmware
+crash.
 
-drivers/net/wireless/ath/ath12k/mac.c:1922 ath12k_peer_assoc_h_he() error: uninitialized symbol 'rx_mcs_80'.
-drivers/net/wireless/ath/ath12k/mac.c:1922 ath12k_peer_assoc_h_he() error: uninitialized symbol 'rx_mcs_160'.
-drivers/net/wireless/ath/ath12k/mac.c:1924 ath12k_peer_assoc_h_he() error: uninitialized symbol 'rx_mcs_80'.
+This issue arises when EHT-PHY capabilities shows support
+for a bandwidth and MCS-NSS set for that particular
+bandwidth is filled by zeros and due to this, driver obtains
+peer_nss as 0 and sending this value to firmware causes
+crash.
 
-In ath12k_peer_assoc_h_he() rx_mcs_80 and rx_mcs_160 variables
-remain uninitialized in the following conditions:
-1. Whenever the value of mcs_80 become equal to
-   IEEE80211_HE_MCS_NOT_SUPPORTED then rx_mcs_80 remains uninitialized.
-2. Whenever phy capability is not supported 160 channel width and
-   value of mcs_160 become equal to IEEE80211_HE_MCS_NOT_SUPPORTED
-   then rx_mcs_160 remains uninitialized.
+Address this issue by implementing a validation step for
+the peer_nss value before passing it to the firmware. If
+the value is greater than zero, proceed with forwarding
+it to the firmware. However, if the value is invalid,
+reject the association request to prevent potential
+firmware crashes.
 
-Initialize these variables during declaration.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00188-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Aaradhana Sahu <quic_aarasahu@quicinc.com>
+Signed-off-by: Ajith C <quic_ajithc@quicinc.com>
 Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://patch.msgid.link/20240611031017.297927-3-quic_aarasahu@quicinc.com
+Link: https://patch.msgid.link/20240613053528.2541645-1-quic_ajithc@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/mac.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 805cb084484a4..678a08ab22f03 100644
+index 678a08ab22f03..f328b650059ad 100644
 --- a/drivers/net/wireless/ath/ath12k/mac.c
 +++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -1881,7 +1881,9 @@ static void ath12k_peer_assoc_h_he(struct ath12k *ar,
- {
- 	const struct ieee80211_sta_he_cap *he_cap = &sta->deflink.he_cap;
- 	int i;
--	u8 ampdu_factor, rx_mcs_80, rx_mcs_160, max_nss;
-+	u8 ampdu_factor, max_nss;
-+	u8 rx_mcs_80 = IEEE80211_HE_MCS_NOT_SUPPORTED;
-+	u8 rx_mcs_160 = IEEE80211_HE_MCS_NOT_SUPPORTED;
- 	u16 mcs_160_map, mcs_80_map;
- 	bool support_160;
- 	u16 v;
+@@ -3847,6 +3847,11 @@ static int ath12k_station_assoc(struct ath12k *ar,
+ 
+ 	ath12k_peer_assoc_prepare(ar, vif, sta, &peer_arg, reassoc);
+ 
++	if (peer_arg.peer_nss < 1) {
++		ath12k_warn(ar->ab,
++			    "invalid peer NSS %d\n", peer_arg.peer_nss);
++		return -EINVAL;
++	}
+ 	ret = ath12k_wmi_send_peer_assoc_cmd(ar, &peer_arg);
+ 	if (ret) {
+ 		ath12k_warn(ar->ab, "failed to run peer assoc for STA %pM vdev %i: %d\n",
 -- 
 2.43.0
 
