@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-10800-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10801-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08416943FA1
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 03:46:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE9FA943FC2
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 03:50:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C6021F21749
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 01:46:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 743C31F210D0
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 01:50:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C6C1E8BCA;
-	Thu,  1 Aug 2024 00:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 229FE1C9EC2;
+	Thu,  1 Aug 2024 00:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y1PwMtJJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mUKInJTF"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29CF1E8BB7;
-	Thu,  1 Aug 2024 00:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA042170A3C;
+	Thu,  1 Aug 2024 00:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722472822; cv=none; b=n+gHgt0zHSkIrH4j7FPWDERKnG807PzMsS7Q/xd3or08n7otIzrPIQjy8GELu/E/gjeMQ6Fy3k86+ieqABv1G+jykAFEbBnaqUr4wtmBl2My8hlojzfBeZ9kB7DlA/k4vGrpyVjD5GnvCXeNF2PagkATKmlwCo6gD2EfPRK4i3c=
+	t=1722472870; cv=none; b=CpZLWT/5G09MQRIj4B4tQ6DHwOJusWUsgmy9hV0h/kkjD9KhwRQOxNej4IVqs168n5w2s1WmbIMF3Zp29l+n7kct2LqdHpBBxFpK8HW66LwTToI7HHiE2vpzKHsFtJEdl4qjSETCRZmQnPkFaUHf+uHfpyKNCANW9EDeRwlO+nA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722472822; c=relaxed/simple;
-	bh=jpH5QLHPeL4UPbHzhYfTGVPS+btmG64QSgSRXdaGc6I=;
+	s=arc-20240116; t=1722472870; c=relaxed/simple;
+	bh=/T/WOUqglZM5VGsry8EYlw0dkYeiHwm2QVE0zYOmcTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gp3fnbpWFIFzZwmI8DG0/8lN6hpUWZLJP5cSmVhNGinsgMqRa/f6o8OvIgsBbQinLhfW5fSTLDCyqamargGrLrkAKA6FoP/fWQM3aTsbbdRxaFN61motnUXkMD28rBpPXsx/oq0m5N8CJjIUOi2MWeyuxTvTzyuAQ0+j7SpTE70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y1PwMtJJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 986C8C116B1;
-	Thu,  1 Aug 2024 00:40:20 +0000 (UTC)
+	 MIME-Version; b=jjQm86hgzgZ3yk5u9hu5N8k9Jr6Q+FxgHZjto+7Ma82vhvxVnodYPsl9FM4iI+kGpv9epw6IjTujRMGxIHYmIgeC+Sx8DkBXJjHiVnU08oG5WQoWLuBEMWMpUP1ezcrvrUzh8EoX7aCsYwm4ivLxXiaItIy99d88d//wsn6xrWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mUKInJTF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87CF7C32786;
+	Thu,  1 Aug 2024 00:41:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722472821;
-	bh=jpH5QLHPeL4UPbHzhYfTGVPS+btmG64QSgSRXdaGc6I=;
+	s=k20201202; t=1722472869;
+	bh=/T/WOUqglZM5VGsry8EYlw0dkYeiHwm2QVE0zYOmcTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y1PwMtJJ9H52Im4kqrfheem1msmTR2a9lHkRgZNYq+BEMXuvkUNjiwTRigC4+Jeqz
-	 55p0ZlxaTq8DPIb5XK/65CokAGXDBzSKWZ3Tlx25ZNxbj4uFG+3UlB+UUgmcZVvCjZ
-	 q7UUguUvQGqijCYG6IXJ9QHrY70Yu4AuoY6NDJWroUHrajPZuqod9qwjANXPaLjwFI
-	 aUB/QtjRmaVbcNYp+XsvxkwRYZtdJalakBahSwg/xfQNbuVLTVSfjb6kEKfBcfVy24
-	 MYjDeP+vm9F08mGT0hF9sXcZKYaZerRvEzFgGwaMbu2n0V7QGqBLIPLx76IBQgXDTl
-	 KlVLF59/OkHLQ==
+	b=mUKInJTFBE6JNZ/6HBNEXnaXcMIpENY8XXxqrJMqy6EkZ65rTf0bnx6Zak03HiYX9
+	 1lXlAS1U0CDDGnFLWW6dZUXjALgOiBqry2srsINwxfkq1R6uZKsNTEyPrmSS5JGuWN
+	 bLvBLDXCu2T3gBK5/KJv9zIRLeRixwid1m4o5f7M407GRYZ5m8GQTbC4FRWVFG2nHO
+	 thVWv5ogqDCrWKxlPyWEW26GGsCGqoGHaSDs8InVCnrJTleG/8Jip/6o+sFUky6iWY
+	 ChXI3FJW7P5B5gjeQk//w5lS5it/zHTCfoZq/oDbj3JOsrp/0+3ITZJMWpuMShXut8
+	 Wae2B7368vHgg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -50,14 +50,15 @@ Cc: Sascha Hauer <s.hauer@pengutronix.de>,
 	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	dmantipov@yandex.ru,
+	johannes.berg@intel.com,
 	linus.walleij@linaro.org,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 22/22] wifi: mwifiex: Do not return unused priv in mwifiex_get_priv_by_id()
-Date: Wed, 31 Jul 2024 20:38:51 -0400
-Message-ID: <20240801003918.3939431-22-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 14/14] wifi: mwifiex: Do not return unused priv in mwifiex_get_priv_by_id()
+Date: Wed, 31 Jul 2024 20:40:22 -0400
+Message-ID: <20240801004037.3939932-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240801003918.3939431-1-sashal@kernel.org>
-References: <20240801003918.3939431-1-sashal@kernel.org>
+In-Reply-To: <20240801004037.3939932-1-sashal@kernel.org>
+References: <20240801004037.3939932-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -66,7 +67,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.281
+X-stable-base: Linux 4.19.319
 Content-Transfer-Encoding: 8bit
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
@@ -160,10 +161,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+)
 
 diff --git a/drivers/net/wireless/marvell/mwifiex/main.h b/drivers/net/wireless/marvell/mwifiex/main.h
-index fa5634af40f7c..2e7f31bf38002 100644
+index 7e526014b6385..89774e0316bdc 100644
 --- a/drivers/net/wireless/marvell/mwifiex/main.h
 +++ b/drivers/net/wireless/marvell/mwifiex/main.h
-@@ -1307,6 +1307,9 @@ mwifiex_get_priv_by_id(struct mwifiex_adapter *adapter,
+@@ -1306,6 +1306,9 @@ mwifiex_get_priv_by_id(struct mwifiex_adapter *adapter,
  
  	for (i = 0; i < adapter->priv_num; i++) {
  		if (adapter->priv[i]) {
