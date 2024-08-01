@@ -1,61 +1,60 @@
-Return-Path: <linux-wireless+bounces-10786-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10787-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6510943D5C
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 02:56:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCFA2943D75
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 02:59:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6089B286790
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 00:56:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE8EB1C220AA
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 00:59:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685F31C5799;
-	Thu,  1 Aug 2024 00:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2A991C823C;
+	Thu,  1 Aug 2024 00:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PsTuqunz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o+RS/rCG"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF171C5795;
-	Thu,  1 Aug 2024 00:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96651C8236;
+	Thu,  1 Aug 2024 00:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471877; cv=none; b=UXQLl/dd/6ZU67Pbi6rO9nqjv5jOA2krO0MIBGJBrwmYrOjYQ4C53ZMsc8czRJyB+Y4I6UDTA89/EZPSxLlE0E2OJawJV44O+YLMr3LOXCsPBUEY6mSHErYK8fXS+5HwZyXEb5yDIklp8TLWh+ev+BeqJhKDncnRiCiZFi9fifk=
+	t=1722471913; cv=none; b=lu3jNQ37GPBIBZBqcDHwkvq4XuZj+8Fenl/28TAz+tjp2MQDwWqmSkrJ5pFmeJllerKPg6pXQnAzEPBDiVDBlvfllixXjvRC+hdT9fCui3VR0dzSR5J1ZJMbE8LkbVOn9/2TKI7hWQzvbqz2xXJyzCUO9mXvlPbqcKQ1Vo1sAZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471877; c=relaxed/simple;
-	bh=lCke2NneBJe6C4+wyrpyK6/0iAmf9yF+EZ/6rfo6XTg=;
+	s=arc-20240116; t=1722471913; c=relaxed/simple;
+	bh=CS0tl7iB7NP5U40I27ijngRzJAdRKaIBmMsT+b4PXfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mF1Pv57tRdk846+2Ctx7POzlGeeqE5fcZylaX4VfsMHdbXVWKPxfcQL/0IQt2Cm4SxpwhMG+Al7PrBIHOiklE0iR+zEst+Alj2LRW83XYKbr2caCiWbr5TIqbLigLlaOAZWlRK7G9WTybBDfCZq/xz+zeHe5+A1i6OeY0sszvIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PsTuqunz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 680CEC116B1;
-	Thu,  1 Aug 2024 00:24:35 +0000 (UTC)
+	 MIME-Version; b=p5l0oF6nl2L9TzX6pVQP04LWrnKXiU42PfNgqVyJ0SyBgDTbRuoq/MdO3dY7pCn2XRGqxUmQ8NbVkifVOy9v1pf1Z5RoRl/yyRDdQbidHuXw6RTkPSElM49BW2pHCTFB5hjtsGUXFSGd4um9EJz3+tcbtOnRqzyweiqwMFiwIio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o+RS/rCG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 580B7C116B1;
+	Thu,  1 Aug 2024 00:25:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471876;
-	bh=lCke2NneBJe6C4+wyrpyK6/0iAmf9yF+EZ/6rfo6XTg=;
+	s=k20201202; t=1722471913;
+	bh=CS0tl7iB7NP5U40I27ijngRzJAdRKaIBmMsT+b4PXfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PsTuqunz+UyyNuoZJbBR4ZP6B8d2yW6IVTrBf7cwxyASnb/QGKzWb8hO7SoYUqrE1
-	 7T6skoxMLkfPHNOTxTwprZ361lxAgJI14un3pTByS6OLxHw8oEUY4PYN8kogvAsLra
-	 ZA1LiRFihtI+PVRibuAIp8X5WKEhe9h9kxwGYDGJgPBdvxL6hWci2bc5MOudijB1C7
-	 7/hSjAOUibQECIg97w4ViC3mb7HY2JiR9vSsZNl/qOOZN35aKAE7WGK1ik8cW05cXy
-	 MT9HVG0l2m+mJzjtiw/zKIowJ36qNuERDXe0R+YrkkCoSueGUt55AP7TqWMd4hcY4K
-	 3E0+H/IVbtQIA==
+	b=o+RS/rCGXf3dkY4IQt7MoXpq6qbF753KGIkaRhsBgKH9h8i2sO9ZIGlso8ESFBDQ/
+	 z36AzoBHU5ho4hvygarxoVjGgL0sbvU864j7a2i+9/WGk461p8xvSTsklE9Vv/XJul
+	 /Lfm4YwFdVi8io2thzznMgDcBbfEY8wts62VmaFBEiXsur+B/1jVdqAOHjDWoLaLS7
+	 7OWmz4wJOkIRnHpmwgmjLQSbKFXNOg9NjBQb+hRIuADZ+a8Moo8DBuspj4JJ+e9VdF
+	 HBXDs/DIvRDNI9y8vhVt+VG+Mxj8xX9VeHrzhM3spDEN6eOJcavQGAHh3XdvWIw+AI
+	 sQ7w5CBZr8fzg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
+Cc: Aaradhana Sahu <quic_aarasahu@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
+	kvalo@kernel.org,
+	jjohnson@kernel.org,
 	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 49/83] wifi: cfg80211: make hash table duplicates more survivable
-Date: Wed, 31 Jul 2024 20:18:04 -0400
-Message-ID: <20240801002107.3934037-49-sashal@kernel.org>
+	ath12k@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.6 59/83] wifi: ath12k: fix uninitialize symbol error on ath12k_peer_assoc_h_he()
+Date: Wed, 31 Jul 2024 20:18:14 -0400
+Message-ID: <20240801002107.3934037-59-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801002107.3934037-1-sashal@kernel.org>
 References: <20240801002107.3934037-1-sashal@kernel.org>
@@ -70,128 +69,52 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.43
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Aaradhana Sahu <quic_aarasahu@quicinc.com>
 
-[ Upstream commit 7f12e26a194d0043441f870708093d9c2c3bad7d ]
+[ Upstream commit 19b77e7c656a3e125319cc3ef347b397cf042bf6 ]
 
-Jiazi Li reported that they occasionally see hash table duplicates
-as evidenced by the WARN_ON() in rb_insert_bss() in this code.  It
-isn't clear how that happens, nor have I been able to reproduce it,
-but if it does happen, the kernel crashes later, when it tries to
-unhash the entry that's now not hashed.
+Smatch throws following errors
 
-Try to make this situation more survivable by removing the BSS from
-the list(s) as well, that way it's fully leaked here (as had been
-the intent in the hash insert error path), and no longer reachable
-through the list(s) so it shouldn't be unhashed again later.
+drivers/net/wireless/ath/ath12k/mac.c:1922 ath12k_peer_assoc_h_he() error: uninitialized symbol 'rx_mcs_80'.
+drivers/net/wireless/ath/ath12k/mac.c:1922 ath12k_peer_assoc_h_he() error: uninitialized symbol 'rx_mcs_160'.
+drivers/net/wireless/ath/ath12k/mac.c:1924 ath12k_peer_assoc_h_he() error: uninitialized symbol 'rx_mcs_80'.
 
-Link: https://lore.kernel.org/r/20231026013528.GA24122@Jiazi.Li
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://msgid.link/20240607181726.36835-2-johannes@sipsolutions.net
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+In ath12k_peer_assoc_h_he() rx_mcs_80 and rx_mcs_160 variables
+remain uninitialized in the following conditions:
+1. Whenever the value of mcs_80 become equal to
+   IEEE80211_HE_MCS_NOT_SUPPORTED then rx_mcs_80 remains uninitialized.
+2. Whenever phy capability is not supported 160 channel width and
+   value of mcs_160 become equal to IEEE80211_HE_MCS_NOT_SUPPORTED
+   then rx_mcs_160 remains uninitialized.
+
+Initialize these variables during declaration.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00188-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Aaradhana Sahu <quic_aarasahu@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://patch.msgid.link/20240611031017.297927-3-quic_aarasahu@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c | 46 +++++++++++++++++++++++++++++++++------------
- 1 file changed, 34 insertions(+), 12 deletions(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 74db51348a7ff..4d88e797ae49f 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -1562,7 +1562,7 @@ struct cfg80211_bss *cfg80211_get_bss(struct wiphy *wiphy,
- }
- EXPORT_SYMBOL(cfg80211_get_bss);
- 
--static void rb_insert_bss(struct cfg80211_registered_device *rdev,
-+static bool rb_insert_bss(struct cfg80211_registered_device *rdev,
- 			  struct cfg80211_internal_bss *bss)
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 61435e4489b9f..5bcfc1cf5adc8 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -1614,7 +1614,9 @@ static void ath12k_peer_assoc_h_he(struct ath12k *ar,
  {
- 	struct rb_node **p = &rdev->bss_tree.rb_node;
-@@ -1578,7 +1578,7 @@ static void rb_insert_bss(struct cfg80211_registered_device *rdev,
- 
- 		if (WARN_ON(!cmp)) {
- 			/* will sort of leak this BSS */
--			return;
-+			return false;
- 		}
- 
- 		if (cmp < 0)
-@@ -1589,6 +1589,7 @@ static void rb_insert_bss(struct cfg80211_registered_device *rdev,
- 
- 	rb_link_node(&bss->rbn, parent, p);
- 	rb_insert_color(&bss->rbn, &rdev->bss_tree);
-+	return true;
- }
- 
- static struct cfg80211_internal_bss *
-@@ -1615,6 +1616,34 @@ rb_find_bss(struct cfg80211_registered_device *rdev,
- 	return NULL;
- }
- 
-+static void cfg80211_insert_bss(struct cfg80211_registered_device *rdev,
-+				struct cfg80211_internal_bss *bss)
-+{
-+	lockdep_assert_held(&rdev->bss_lock);
-+
-+	if (!rb_insert_bss(rdev, bss))
-+		return;
-+	list_add_tail(&bss->list, &rdev->bss_list);
-+	rdev->bss_entries++;
-+}
-+
-+static void cfg80211_rehash_bss(struct cfg80211_registered_device *rdev,
-+                                struct cfg80211_internal_bss *bss)
-+{
-+	lockdep_assert_held(&rdev->bss_lock);
-+
-+	rb_erase(&bss->rbn, &rdev->bss_tree);
-+	if (!rb_insert_bss(rdev, bss)) {
-+		list_del(&bss->list);
-+		if (!list_empty(&bss->hidden_list))
-+			list_del_init(&bss->hidden_list);
-+		if (!list_empty(&bss->pub.nontrans_list))
-+			list_del_init(&bss->pub.nontrans_list);
-+		rdev->bss_entries--;
-+	}
-+	rdev->bss_generation++;
-+}
-+
- static bool cfg80211_combine_bsses(struct cfg80211_registered_device *rdev,
- 				   struct cfg80211_internal_bss *new)
- {
-@@ -1876,9 +1905,7 @@ __cfg80211_bss_update(struct cfg80211_registered_device *rdev,
- 			bss_ref_get(rdev, bss_from_pub(tmp->pub.transmitted_bss));
- 		}
- 
--		list_add_tail(&new->list, &rdev->bss_list);
--		rdev->bss_entries++;
--		rb_insert_bss(rdev, new);
-+		cfg80211_insert_bss(rdev, new);
- 		found = new;
- 	}
- 
-@@ -3111,19 +3138,14 @@ void cfg80211_update_assoc_bss_entry(struct wireless_dev *wdev,
- 		if (!WARN_ON(!__cfg80211_unlink_bss(rdev, new)))
- 			rdev->bss_generation++;
- 	}
--
--	rb_erase(&cbss->rbn, &rdev->bss_tree);
--	rb_insert_bss(rdev, cbss);
--	rdev->bss_generation++;
-+	cfg80211_rehash_bss(rdev, cbss);
- 
- 	list_for_each_entry_safe(nontrans_bss, tmp,
- 				 &cbss->pub.nontrans_list,
- 				 nontrans_list) {
- 		bss = bss_from_pub(nontrans_bss);
- 		bss->pub.channel = chan;
--		rb_erase(&bss->rbn, &rdev->bss_tree);
--		rb_insert_bss(rdev, bss);
--		rdev->bss_generation++;
-+		cfg80211_rehash_bss(rdev, bss);
- 	}
- 
- done:
+ 	const struct ieee80211_sta_he_cap *he_cap = &sta->deflink.he_cap;
+ 	int i;
+-	u8 ampdu_factor, rx_mcs_80, rx_mcs_160, max_nss;
++	u8 ampdu_factor, max_nss;
++	u8 rx_mcs_80 = IEEE80211_HE_MCS_NOT_SUPPORTED;
++	u8 rx_mcs_160 = IEEE80211_HE_MCS_NOT_SUPPORTED;
+ 	u16 mcs_160_map, mcs_80_map;
+ 	bool support_160;
+ 	u16 v;
 -- 
 2.43.0
 
