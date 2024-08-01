@@ -1,61 +1,59 @@
-Return-Path: <linux-wireless+bounces-10779-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10780-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF3A9943CC0
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 02:42:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41F4C943CCA
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 02:42:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9488B1F27D45
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 00:42:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 735181C2100E
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 00:42:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48AE31D3639;
-	Thu,  1 Aug 2024 00:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D069520010A;
+	Thu,  1 Aug 2024 00:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O3sWPoVv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HOvNHEvj"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C03413A243;
-	Thu,  1 Aug 2024 00:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EA1200106;
+	Thu,  1 Aug 2024 00:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722471493; cv=none; b=Odk4RjIiPHrnhfoqYkxL1vhem1JKRUSuBZ8Y0KAOQ2+38WBKuXpNKBKny4/oQeBcnaXhjbvrehHEe+/n9z3iutPlw3HSZEHklCOLUukn9AOKo8r7sz5qkjFese0zMNwYMvtEaJpK72RveKUwUogtq3N2zo39o0qnZDpkiQP34Hc=
+	t=1722471497; cv=none; b=SKJnXxJfBAhqpDG8b7dAH+F949O1qYwEC6QTuj6O1XmF4q6ECxvQC6k75IH156tsZ9LLGg6t0iZNAnsawYcNeQHxMSYRDpxw3TR4GzJbIkEkfz+KXikWHEsf4BcAz1MXrMws6fzCxAAhuOgOClZCfvZJlkwRfYy6AHeIjU1CM9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722471493; c=relaxed/simple;
-	bh=ycidui46Gmttz+Hw1zuY0ii6yJV6fpP0BH2pgijwDMs=;
+	s=arc-20240116; t=1722471497; c=relaxed/simple;
+	bh=2dbAlhQnnC06QCvYigvkWNjnDcUUWgPVvAw8cLKNxrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=svVCnpf6WtlWYjSFAqImMAJBfc876ktWIHwalTKymWyB9zhZk71tX/YW9tE1YZRIERri9S1El/VvhNRjCAb1CgmZN5w1rF5CHMEXkKJDmqHlq1BAA5o5SDD+4JUveihOjthoCoEFUhVlFwfnEyuO7Eg0HZ3Qqv2Afy/H7ZVTIao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O3sWPoVv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55DF6C116B1;
-	Thu,  1 Aug 2024 00:18:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=c5RppSjrsKm6MQ2W0Bgtruj4k97CCqSCz6q5Tfvf6+dDz8OO5PliZhA1OlHBUe7xFD2/csBemdPUKeVWHzsaELgyeRFP96QFBgaDubTqOePJLchQkDF3jbbVihaThF0s5wczIf3436pBczI2G69yhpv47UGfS7BC7R3uXNOZnSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HOvNHEvj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6370FC116B1;
+	Thu,  1 Aug 2024 00:18:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722471492;
-	bh=ycidui46Gmttz+Hw1zuY0ii6yJV6fpP0BH2pgijwDMs=;
+	s=k20201202; t=1722471497;
+	bh=2dbAlhQnnC06QCvYigvkWNjnDcUUWgPVvAw8cLKNxrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O3sWPoVvoEsaZ1PemiHL1uyzLJ+aO085r5utS5kVQ8V4z23t9F/gd8GLDY8hDtfTY
-	 b40tIwGIclMtLNGZCrcSwRTL3d6bJUu92laLmUB3H0brQtUR8yUD6yDLl+9X/NRN2W
-	 uqrpmZhICLF0b5KFvyt/uAiqDuMp1L6RyuS3SoKBtCbrsc1WkjPg0DlpmjhhnHuXWk
-	 CT0u7p4yYmHR91rN2pD7iLE22ruHvbL7N2xpgr7urYnmu5wV8UL3x+lOoo8+y+Msxh
-	 UZGR8i8SqUhflJYniKUVEB3E/k+T5Kl7hmb5sM55aoc8dpN60DpHnFRvlqJRZ/6FV+
-	 18g5+idr8Cx+g==
+	b=HOvNHEvjNRX+3WP0WMHYEaUXUPGSVrTm0Bn5wMXKLAKLEx2xmrqZdlhVhz+Lely5r
+	 ++QvvBbiFDgO5mHqczSLAg5+nSraGEkuj7iipWrSHonGOfqJzJszChHpCHEJmM40JI
+	 1bzqCT8Nl+LV+lEGnGZ7w6bfLETrDqT35DjXONDd9dmHuCVCGePJ7SRvzIkSguP/G/
+	 ASmHwpYAwBeR8ZwRDARp0LhrJf8NTQQiaRL5vEbIoDUTjaXVc0niZUQAIGoR0wW8lq
+	 JlU8qSwBieC5eXcRiQKupMzMxpjNm93PSuaAOgclGlMWFHAm3ZEf+fsiICFSg0VZwz
+	 utTzzx8ztSXhA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	gregory.greenman@intel.com,
-	shaul.triebitz@intel.com,
-	quic_adisi@quicinc.com,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 109/121] wifi: iwlwifi: mvm: don't send an ROC command with max_delay = 0
-Date: Wed, 31 Jul 2024 20:00:47 -0400
-Message-ID: <20240801000834.3930818-109-sashal@kernel.org>
+Cc: =?UTF-8?q?Marcin=20=C5=9Alusarz?= <mslusarz@renau.com>,
+	Tim K <tpkuester@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Larry Finger <Larry.Finger@lwfinger.net>,
+	Kalle Valo <kvalo@kernel.org>,
+	linux-wireless@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 112/121] wifi: rtw88: usb: schedule rx work after everything is set up
+Date: Wed, 31 Jul 2024 20:00:50 -0400
+Message-ID: <20240801000834.3930818-112-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240801000834.3930818-1-sashal@kernel.org>
 References: <20240801000834.3930818-1-sashal@kernel.org>
@@ -65,71 +63,106 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.2
 Content-Transfer-Encoding: 8bit
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Marcin Ślusarz <mslusarz@renau.com>
 
-[ Upstream commit 187accaa328dc4de98064eef176841b8a4716f96 ]
+[ Upstream commit adc539784c98a7cc602cbf557debfc2e7b9be8b3 ]
 
-The firmware can't handle that (it will crash with ASSERT 300A).
-This happened because we looked at vif->bss_conf which is not
-the right bss_conf to look at in case of an MLD connection.
-Fix iwl_mvm_roc_duration_and_delay to iterate on the active links to
-get the right value for the dtim_interval.
+Right now it's possible to hit NULL pointer dereference in
+rtw_rx_fill_rx_status on hw object and/or its fields because
+initialization routine can start getting USB replies before
+rtw_dev is fully setup.
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://patch.msgid.link/20240703064027.e12f8d84c8fd.I3dd9f720c678c06ec7a5bf7ca56e21cf0b614c8c@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+The stack trace looks like this:
+
+rtw_rx_fill_rx_status
+rtw8821c_query_rx_desc
+rtw_usb_rx_handler
+...
+queue_work
+rtw_usb_read_port_complete
+...
+usb_submit_urb
+rtw_usb_rx_resubmit
+rtw_usb_init_rx
+rtw_usb_probe
+
+So while we do the async stuff rtw_usb_probe continues and calls
+rtw_register_hw, which does all kinds of initialization (e.g.
+via ieee80211_register_hw) that rtw_rx_fill_rx_status relies on.
+
+Fix this by moving the first usb_submit_urb after everything
+is set up.
+
+For me, this bug manifested as:
+[    8.893177] rtw_8821cu 1-1:1.2: band wrong, packet dropped
+[    8.910904] rtw_8821cu 1-1:1.2: hw->conf.chandef.chan NULL in rtw_rx_fill_rx_status
+because I'm using Larry's backport of rtw88 driver with the NULL
+checks in rtw_rx_fill_rx_status.
+
+Link: https://lore.kernel.org/linux-wireless/CA+shoWQ7P49jhQasofDcTdQhiuarPTjYEDa--NiVVx494WcuQw@mail.gmail.com/
+Signed-off-by: Marcin Ślusarz <mslusarz@renau.com>
+Cc: Tim K <tpkuester@gmail.com>
+Cc: Ping-Ke Shih <pkshih@realtek.com>
+Cc: Larry Finger <Larry.Finger@lwfinger.net>
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20240528110246.477321-1-marcin.slusarz@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/intel/iwlwifi/mvm/time-event.c | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtw88/usb.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-index 31bc80cdcb7d5..97cfd72312f2f 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-@@ -984,12 +984,21 @@ void iwl_mvm_roc_duration_and_delay(struct ieee80211_vif *vif,
- 				    u32 *duration_tu,
- 				    u32 *delay)
+diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
+index a0188511099a1..98f81e3ae13e7 100644
+--- a/drivers/net/wireless/realtek/rtw88/usb.c
++++ b/drivers/net/wireless/realtek/rtw88/usb.c
+@@ -740,7 +740,6 @@ static struct rtw_hci_ops rtw_usb_ops = {
+ static int rtw_usb_init_rx(struct rtw_dev *rtwdev)
  {
--	u32 dtim_interval = vif->bss_conf.dtim_period *
--		vif->bss_conf.beacon_int;
-+	struct ieee80211_bss_conf *link_conf;
-+	unsigned int link_id;
-+	u32 dtim_interval = 0;
+ 	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
+-	int i;
  
- 	*delay = AUX_ROC_MIN_DELAY;
- 	*duration_tu = MSEC_TO_TU(duration_ms);
+ 	rtwusb->rxwq = create_singlethread_workqueue("rtw88_usb: rx wq");
+ 	if (!rtwusb->rxwq) {
+@@ -752,13 +751,19 @@ static int rtw_usb_init_rx(struct rtw_dev *rtwdev)
  
-+	rcu_read_lock();
-+	for_each_vif_active_link(vif, link_conf, link_id) {
-+		dtim_interval =
-+			max_t(u32, dtim_interval,
-+			      link_conf->dtim_period * link_conf->beacon_int);
-+	}
-+	rcu_read_unlock();
+ 	INIT_WORK(&rtwusb->rx_work, rtw_usb_rx_handler);
+ 
++	return 0;
++}
 +
- 	/*
- 	 * If we are associated we want the delay time to be at least one
- 	 * dtim interval so that the FW can wait until after the DTIM and
-@@ -998,8 +1007,10 @@ void iwl_mvm_roc_duration_and_delay(struct ieee80211_vif *vif,
- 	 * Since we want to use almost a whole dtim interval we would also
- 	 * like the delay to be for 2-3 dtim intervals, in case there are
- 	 * other time events with higher priority.
-+	 * dtim_interval should never be 0, it can be 1 if we don't know it
-+	 * (we haven't heard any beacon yet).
- 	 */
--	if (vif->cfg.assoc) {
-+	if (vif->cfg.assoc && !WARN_ON(!dtim_interval)) {
- 		*delay = min_t(u32, dtim_interval * 3, AUX_ROC_MAX_DELAY);
- 		/* We cannot remain off-channel longer than the DTIM interval */
- 		if (dtim_interval <= *duration_tu) {
++static void rtw_usb_setup_rx(struct rtw_dev *rtwdev)
++{
++	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
++	int i;
++
+ 	for (i = 0; i < RTW_USB_RXCB_NUM; i++) {
+ 		struct rx_usb_ctrl_block *rxcb = &rtwusb->rx_cb[i];
+ 
+ 		rtw_usb_rx_resubmit(rtwusb, rxcb);
+ 	}
+-
+-	return 0;
+ }
+ 
+ static void rtw_usb_deinit_rx(struct rtw_dev *rtwdev)
+@@ -895,6 +900,8 @@ int rtw_usb_probe(struct usb_interface *intf, const struct usb_device_id *id)
+ 		goto err_destroy_rxwq;
+ 	}
+ 
++	rtw_usb_setup_rx(rtwdev);
++
+ 	return 0;
+ 
+ err_destroy_rxwq:
 -- 
 2.43.0
 
