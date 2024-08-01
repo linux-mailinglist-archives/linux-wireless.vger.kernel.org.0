@@ -1,281 +1,187 @@
-Return-Path: <linux-wireless+bounces-10823-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10824-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0186B945130
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 18:58:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7598F9451D5
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 19:46:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40590B229A6
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 16:58:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2ADAA286EF0
+	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 17:46:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85A1B1B4C3D;
-	Thu,  1 Aug 2024 16:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD6011B9B42;
+	Thu,  1 Aug 2024 17:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b="U4mKjoyQ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dRFX/tPV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.14])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896D61B8EAD;
-	Thu,  1 Aug 2024 16:58:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DBE1B9B37
+	for <linux-wireless@vger.kernel.org>; Thu,  1 Aug 2024 17:46:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722531506; cv=none; b=iKkDz6nasPIz/lKf8x164zSyb1bV0kgMiGystqpMPNd4Qg0rCQNWyxZ9AhjljfnrLJm0rVMTnOMcJG/4NuMR7gXgcCsjEiGVa0KbfYyhwHpPuQta9ah2JEAXwZSKJZzBhP2dGhUK1esULhFCQ1FaoSYmiJXG3xaxvQeim0Q+BSg=
+	t=1722534391; cv=none; b=rINmW9wH1wQeHALVhTg1hUPYHmJoEdt6HhEnFqseoaKcSlogM5YdCkKmmHcCl49SmrhSeMBR8RACOxaI7TBncZWrxqtj4pGJRaGxraOPOnBnHlD+WJOY58tBGwxFQnFbjsy9belpN7gD3c3eQHJ3cTjn4cj+tVLv2Nph1irAqJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722531506; c=relaxed/simple;
-	bh=ZI34vjqxI7yPIRPabWzSdrt1Lzynw0RymZUQcWX0qXY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=qlpYLgryRA+nu7IrKfGsIQiRII9it0AzQhAZ3OjQQS2thCzHdChxqKVbl68GMFmkQp7J9an8n3nVOrcJjDn/CXST5ozH/Lxo78RH8UcXnSQ2jZf6HlcCwVHSrpFRClWimZpYxAYpZfIubB38Ah7HtUpXXkw3F8v6xqadojbwLy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b=U4mKjoyQ; arc=none smtp.client-ip=212.227.15.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1722531483; x=1723136283; i=spasswolf@web.de;
-	bh=/mOvDuH31mixq8nqy0ztmB/EKm8jqbrQctqS6v/XGl4=;
-	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
-	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=U4mKjoyQD1o4dzNCNr9scDcazpaq9vzTzqwAIrOlZtGiqkipn7nNazIioeNpfevU
-	 NRzdsCKMeEQ+Z40wXp5ZieUsD+yel1WpOuiN/S7CWck/anSjy8vjG5AXVU9YeUZyL
-	 nkfyAEJB2FQ5n5jCnVwyE8L4vyg0bESE0jnM1BV46FcfjQqFV7NEDXmsRnL66G4cc
-	 9ZxAIydFfH7m3798xPU6zgnU75OnxSRjCViv2UVkepuOisO+Qxf9uQjGAW8HQuVKi
-	 qokwuWGYNUiRLI5vDEjSGCr0x7olEg+t33qYFimAkBt2visF5sPQHHKnCtsBXLy5Q
-	 h76tUz8UnpvgeNEYkg==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.0.101] ([84.119.92.193]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MA4fW-1sNyHQ3dNK-00GIJj; Thu, 01
- Aug 2024 18:58:02 +0200
-Message-ID: <f7197c55d059cc8ddbf6c3def16dc414c5ec0b42.camel@web.de>
-Subject: Re: [PATCH] wifi: mt76: mt7921: fix null pointer access in
- mt792x_mac_link_bss_remove
-From: Bert Karwatzki <spasswolf@web.de>
-To: Mike Lothian <mike@fireburn.co.uk>, Linux regressions mailing list
-	 <regressions@lists.linux.dev>
-Cc: sean.wang@kernel.org, nbd@nbd.name, lorenzo.bianconi@redhat.com, 
-	sean.wang@mediatek.com, deren.wu@mediatek.com, mingyen.hsieh@mediatek.com, 
-	linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	spasswolf@web.de
-Date: Thu, 01 Aug 2024 18:57:59 +0200
-In-Reply-To: <CAHbf0-Hn=ZyYpk7bS1yLK7K3ZpfWKgt3-t=c9Nhdj3Ov3H84mQ@mail.gmail.com>
-References: <20240718234633.12737-1-sean.wang@kernel.org>
-	 <0124ff39-7d63-49f8-bacd-3a40ce37ec4d@leemhuis.info>
-	 <CAHbf0-Hn=ZyYpk7bS1yLK7K3ZpfWKgt3-t=c9Nhdj3Ov3H84mQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.52.3-1 
+	s=arc-20240116; t=1722534391; c=relaxed/simple;
+	bh=lqUBCglzn3f4G/USTNUZWIqwmTKyh9NTx5PNNci0oUk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gDKolvPcQGGH2+33B0p2Bsmzvf2uXol/sJGHggzQ4AEIUkK1kEaX1c/qZ1qQoLTpF3Q6R4wFG3dsWI+e96bWozeEJvWTcP0j0RM2egtl3KlbhgT4rOvFXvft2jZ9WbT0jCEthNz95JXgiJouATu7n41Qu9FC/hB5uhMuY10l0h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dRFX/tPV; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1722534388;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=IdydxZIGJr3ghOK2fEzH68i3FlzUyX1ZkiOar1Iub4w=;
+	b=dRFX/tPV4f6iP2XtdCy/ukBmKmFOsf/rz/SADRumAgOr9H0HCnPfxlO8rMHOHyWKe2DVq4
+	oJV5GKZfQuaEs9mmtcbiQCHYJd/XGP27CxQF99lvzoHUB+J0i1v44Ev4HuMtnSTuDtgKQv
+	5h8YN/oHMfra7PxVEG8DAwmFm7wX5kA=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-84-9Nwo6SSJOZa5Ec18B8BXbg-1; Thu, 01 Aug 2024 13:46:27 -0400
+X-MC-Unique: 9Nwo6SSJOZa5Ec18B8BXbg-1
+Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-5b78e856a85so45659a12.2
+        for <linux-wireless@vger.kernel.org>; Thu, 01 Aug 2024 10:46:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722534386; x=1723139186;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IdydxZIGJr3ghOK2fEzH68i3FlzUyX1ZkiOar1Iub4w=;
+        b=R5UnfdP/gz01cIfobf9yv9p8y7qWGbbO7+d5JKeBbOb2Z6s3fqO5K6c49p7262Sycn
+         Bb4EnQKO2qHpcUMK8NI63WW6K5+C2HZ6ikKqOPbhHM5WfeY+WLkG9MJswgeZZvQcB20S
+         mEd0eG4oS9d5Mrypr5VdrYtdiwUdGUmaqlZyOtrfqtNl3le0CHvATWP0YPdHwaS9CzkK
+         dC7aZ9HbiNn+78Qg85kEnAPilVaDAdq0UIe8ZQ41JYiks1/YsK7cUEPFVRvIaU7RwV8o
+         k/JUo/plio0vycCAQLuqEMV6qnJX/itaaMQGB1w/cmRhgp/pFo5TdDnmtH9LSHb9Xv3Z
+         0ZAw==
+X-Forwarded-Encrypted: i=1; AJvYcCUS2h7wJEK+44tg3JSA/44XCXbdWhXVaF17CL8zRjY/TeaQkx0sJeUqWUvMjIqXguBvJJlWPJ8MAOUZ74z5EA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKqV3SGO/YXQZYBNYkgHEYuROlPaekC4Q+U46ZAS4GFBQMqDMo
+	Po7j2Kx6DjH/Xs1zody6MBpNEP6mYwqeZpkgFuwL0odVhL1mib9u/+930HspG52oqwGokCtAABF
+	e+/P9c9wxgapB3j5XGdGvRurGNLPdfh8bFY114m/pJ4os43qfaES55NJHno0G2OMj
+X-Received: by 2002:a17:907:3da7:b0:a7d:a4d2:a2a7 with SMTP id a640c23a62f3a-a7dc4e50c01mr44424166b.3.1722534386290;
+        Thu, 01 Aug 2024 10:46:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH5Km5jd9cOTYruluysPjH0y6sNbWlr0amJSpmaneqU1ki99pbWjXrxV2Pr+1gBC+OPuM4UGw==
+X-Received: by 2002:a17:907:3da7:b0:a7d:a4d2:a2a7 with SMTP id a640c23a62f3a-a7dc4e50c01mr44419866b.3.1722534385669;
+        Thu, 01 Aug 2024 10:46:25 -0700 (PDT)
+Received: from eisenberg.fritz.box ([2001:16b8:3d4b:3000:1a1d:18ca:1d82:9859])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7dc9e83848sm5339066b.177.2024.08.01.10.46.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Aug 2024 10:46:25 -0700 (PDT)
+From: Philipp Stanner <pstanner@redhat.com>
+To: Jonathan Corbet <corbet@lwn.net>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Boris Brezillon <bbrezillon@kernel.org>,
+	Arnaud Ebalard <arno@natisbad.org>,
+	Srujana Challa <schalla@marvell.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Jon Mason <jdmason@kudzu.us>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Allen Hubbe <allenbh@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Kevin Cernekee <cernekee@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Mark Brown <broonie@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Philipp Stanner <pstanner@redhat.com>,
+	Jie Wang <jie.wang@intel.com>,
+	Adam Guerin <adam.guerin@intel.com>,
+	Shashank Gupta <shashank.gupta@intel.com>,
+	Damian Muszynski <damian.muszynski@intel.com>,
+	Nithin Dabilpuram <ndabilpuram@marvell.com>,
+	Bharat Bhushan <bbhushan2@marvell.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
+	Breno Leitao <leitao@debian.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	John Ogness <john.ogness@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>
+Cc: linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-ide@vger.kernel.org,
+	qat-linux@intel.com,
+	linux-crypto@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	ntb@lists.linux.dev,
+	linux-pci@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	linux-sound@vger.kernel.org
+Subject: [PATCH 00/10] Remove pcim_iomap_regions_request_all()
+Date: Thu,  1 Aug 2024 19:45:58 +0200
+Message-ID: <20240801174608.50592-1-pstanner@redhat.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:D3ZiO6A7SyYNsUkH17ivk05uxqWGmmscTUBsY/AOcrC5RuMrT9K
- CbNBBA4ZruAfvfY8wUFkzDT45mlqCvfggfg3YZq5tEg9o805u9jVUNX4ulwtuhalb5tNl9s
- +mDvJc0HzpHFB+vq1jx3zzt+IZdFmDcnyG+YBAF+ogJBGNLwL2+1suNhou0qx3VmdwcdvrG
- 5TDewtw6rwiWP7JL+Zw0Q==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:oYKo5puL6Lk=;pFwf0KR/IgHvFXZB4lSx2li+qzq
- RYDg2y1DARSMaCFYZ4FQK4w9ghuH5z3OUwYSCZXn1AXitARfJuZR6Gcikva/ttGI1SxSufTFJ
- dSxAEAm1y/RunSMGNaNW1Uzl50jruC47vMZ5xStR8moUHnA5mHjbKE+k/h1t2tK/yr16+Hw17
- j2lfn3yeuzrcMM3Q922lPkOH0ZgKIFtNie0t20NO2Dz4BWp4N1Z/uHJkvnYpxbJONtTm4c40H
- VFzx9rHgzLBp+4Xonv/fQ+1NUCU58gu16hhC/x1EB2Rl6IBzervuKK7fpGy/v6A0lMcVfSvoQ
- Kys+CKFdLhAMVGOU7QL/euYRVi1dnFvg8efxyUFBulYEsLtH75wUjI7i/FweCf3pzsWo4b43D
- yozZzBZdPtZXRZjOIIzedRmgVZjJiOwNuHMcBcsZpk1m3aVu9h/dAdMrOid88QlrHZSLpuAZK
- Y98RsABvF3nMPc936BiOs8ghIcrbcz2OvqGcZX2tjT1a/1oAhY1zGH8+9XWjcIYOnf2EwJb1v
- 0XKIfoCUsO+PZ0T9HlmQJdbj80bDcQdrn4/yLkNgY7EN5Jp2HKkkweeFBFelO14bZlTyOWLls
- k9KEO2WuJ/R+MQqcdRAONrcWq9Qwbv+a/2XfmNq7fT4DdxZxOlwhAPiDc0w0ePPd+z4pohbM/
- Kl4es/upSdtqjmnV1xGdUgNiIllWwE4XvBcjVDEAevMupKA/FKX9twFXLibIWLo4tyhvs8X+W
- XmLAZ1zufycXjOT50vkHhj8RtmT6tRHU79YyzYCMIxyjVLTRvcyKpiMbfm2/Cdy3nar3av5Iw
- yoPSyti/Gq1CI6SRXG38mMuA==
+Content-Transfer-Encoding: 8bit
 
-Am Donnerstag, dem 01.08.2024 um 13:38 +0100 schrieb Mike Lothian:
-> I also saw the following after I restarted my router on two machines -
-> they both have this fix applied already:
->
-> Aug 01 08:59:33 quark kernel: BUG: kernel NULL pointer dereference,
-> address: 0000000000000008
-> Aug 01 08:59:33 quark kernel: #PF: supervisor read access in kernel mode
-> Aug 01 08:59:33 quark kernel: #PF: error_code(0x0000) - not-present page
-> Aug 01 08:59:33 quark kernel: PGD 0 P4D 0
-> Aug 01 08:59:33 quark kernel: Oops: Oops: 0000 [#1] PREEMPT SMP
-> Aug 01 08:59:33 quark kernel: CPU: 13 UID: 0 PID: 468 Comm:
-> NetworkManager Not tainted 6.11.0-rc1-tip+ #3200
-> 9c927d6f3c59d826d15d8e39c195392d1d16b8a8
-> Aug 01 08:59:33 quark kernel: Hardware name: Micro Computer (HK) Tech
-> Limited EliteMini Series/HPBSD, BIOS 1.02 03/28/2024
-> Aug 01 08:59:33 quark kernel: RIP: 0010:mt7921_ipv6_addr_change
-> Aug 01 08:59:33 quark kernel: Code: 41 57 41 56 41 54 53 48 83 e4 f0
-> 48 83 ec 50 48 8b 86 70 09 00 00 0f b6 8e 90 04 00 00 4c 8d ba 68 02
-> 00 00 49 89 d6 4c 89 ff <48> 8b 58 08 88 4c 24 04 66 c7 44 24 05 00 00
-> c6 44 24 07 00 66 c7
-> Aug 01 08:59:33 quark kernel: RSP: 0018:ffffc900069373b0 EFLAGS: 0001028=
-2
-> Aug 01 08:59:33 quark kernel: RAX: 0000000000000000 RBX:
-> ffff888106740920 RCX: 0000000000000000
-> Aug 01 08:59:33 quark kernel: RDX: ffff888106854800 RSI:
-> ffff88810bb35ca0 RDI: ffff888106854a68
-> Aug 01 08:59:33 quark kernel: RBP: ffffc90006937420 R08:
-> 0000000000000000 R09: ffff888104c98200
-> Aug 01 08:59:33 quark kernel: R10: ffffffff7fff0000 R11:
-> 0000000000000020 R12: 0000000000000002
-> Aug 01 08:59:33 quark kernel: R13: 0000000000000000 R14:
-> ffff888106854800 R15: ffff888106854a68
-> Aug 01 08:59:33 quark kernel: FS:  00007f4265049400(0000)
-> GS:ffff888c2df40000(0000) knlGS:0000000000000000
-> Aug 01 08:59:33 quark kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 000000008=
-0050033
-> Aug 01 08:59:33 quark kernel: CR2: 0000000000000008 CR3:
-> 0000000117250000 CR4: 0000000000350ef0
-> Aug 01 08:59:33 quark kernel: Call Trace:
-> Aug 01 08:59:33 quark kernel:  <TASK>
-> Aug 01 08:59:33 quark kernel:  ? __die_body+0x66/0xb0
-> Aug 01 08:59:33 quark kernel:  ? page_fault_oops+0x39a/0x410
-> Aug 01 08:59:33 quark kernel:  ? exc_page_fault+0x59/0xa0
-> Aug 01 08:59:33 quark kernel:  ? asm_exc_page_fault+0x22/0x30
-> Aug 01 08:59:33 quark kernel:  ? mt7921_ipv6_addr_change
-> Aug 01 08:59:33 quark kernel:  ? __try_to_del_timer_sync
-> Aug 01 08:59:33 quark kernel:  ieee80211_ifa6_changed+0x68/0x120
-> Aug 01 08:59:33 quark kernel:  atomic_notifier_call_chain+0x45/0xc0
-> Aug 01 08:59:33 quark kernel:  addrconf_ifdown+0x521/0x7d0
-> Aug 01 08:59:33 quark kernel:  addrconf_notify+0x1ed/0x4a0
-> Aug 01 08:59:33 quark kernel:  raw_notifier_call_chain+0x45/0xb0
-> Aug 01 08:59:33 quark kernel:  __dev_notify_flags+0xf4/0x200
-> Aug 01 08:59:33 quark kernel:  dev_change_flags+0x49/0x50
-> Aug 01 08:59:33 quark kernel:  do_setlink+0x49b/0x1300
-> Aug 01 08:59:33 quark kernel:  ? terminate_walk+0x6b/0x100
-> Aug 01 08:59:33 quark kernel:  ? __nla_validate_parse
-> Aug 01 08:59:33 quark kernel:  ? filename_lookup+0xc7/0x1b0
-> Aug 01 08:59:33 quark kernel:  rtnl_newlink+0xb6a/0xde0
-> Aug 01 08:59:33 quark kernel:  ? __wake_up_sync_key+0x51/0x80
-> Aug 01 08:59:33 quark kernel:  ? scm_destroy+0xc/0x30
-> Aug 01 08:59:33 quark kernel:  ? security_capable+0x38/0x50
-> Aug 01 08:59:33 quark kernel:  rtnetlink_rcv_msg+0x2dd/0x330
-> Aug 01 08:59:33 quark kernel:  ? select_task_rq_fair
-> Aug 01 08:59:33 quark kernel:  ? rtnetlink_bind+0x30/0x30
-> Aug 01 08:59:33 quark kernel:  netlink_rcv_skb+0xb5/0xf0
-> Aug 01 08:59:33 quark kernel:  netlink_unicast+0x230/0x330
-> Aug 01 08:59:33 quark kernel:  netlink_sendmsg+0x3b1/0x460
-> Aug 01 08:59:33 quark kernel:  ____sys_sendmsg
-> Aug 01 08:59:33 quark kernel:  ? chacha_block_generic+0x6a/0x130
-> Aug 01 08:59:33 quark kernel:  ___sys_sendmsg+0x282/0x2a0
-> Aug 01 08:59:33 quark kernel:  ? __fget_files+0x95/0xb0
-> Aug 01 08:59:33 quark kernel:  __se_sys_sendmsg+0xf4/0x120
-> Aug 01 08:59:33 quark kernel:  do_syscall_64+0x7e/0x130
-> Aug 01 08:59:33 quark kernel:  ? pollwake+0x52/0x60
-> Aug 01 08:59:33 quark kernel:  ? do_task_dead+0x50/0x50
-> Aug 01 08:59:33 quark kernel:  ? __wake_up_locked_key+0x48/0x70
-> Aug 01 08:59:33 quark kernel:  ? eventfd_write+0x193/0x1b0
-> Aug 01 08:59:33 quark kernel:  ? syscall_exit_to_user_mode+0x93/0xc0
-> Aug 01 08:59:33 quark kernel:  ? vfs_write+0xfa/0x3d0
-> Aug 01 08:59:33 quark kernel:  ? __fget_files+0x95/0xb0
-> Aug 01 08:59:33 quark kernel:  ? __fget_files+0x95/0xb0
-> Aug 01 08:59:33 quark kernel:  ? ksys_write+0x8f/0xb0
-> Aug 01 08:59:33 quark kernel:  ? arch_exit_to_user_mode_prepare+0x11/0x5=
-0
-> Aug 01 08:59:33 quark kernel:  ? syscall_exit_to_user_mode+0x93/0xc0
-> Aug 01 08:59:33 quark kernel:  ? do_syscall_64+0x8a/0x130
-> Aug 01 08:59:33 quark kernel:  ? syscall_exit_to_user_mode+0x93/0xc0
-> Aug 01 08:59:33 quark kernel:  ? do_syscall_64+0x8a/0x130
-> Aug 01 08:59:33 quark kernel:  ? do_syscall_64+0x8a/0x130
-> Aug 01 08:59:33 quark kernel:  ? do_syscall_64+0x8a/0x130
-> Aug 01 08:59:33 quark kernel:  ? arch_exit_to_user_mode_prepare+0x11/0x5=
-0
-> Aug 01 08:59:33 quark kernel:  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-> Aug 01 08:59:33 quark kernel: RIP: 0033:0x7f4264d31fae
-> Aug 01 08:59:33 quark kernel: Code: 20 89 54 24 1c 48 89 74 24 10 89
-> 7c 24 08 e8 a9 75 f7 ff 41 89 c0 8b 54 24 1c 48 8b 74 24 10 b8 2e 00
-> 00 00 8b 7c 24 08 0f 05 <48> 3d 00 f0 ff ff 77 3a 44 89 c7 48 89 44 24
-> 08 e8 fd 75 f7 ff 48
-> Aug 01 08:59:33 quark kernel: RSP: 002b:00007ffff4b1afa0 EFLAGS:
-> 00000293 ORIG_RAX: 000000000000002e
-> Aug 01 08:59:33 quark kernel: RAX: ffffffffffffffda RBX:
-> 000055c35260c570 RCX: 00007f4264d31fae
-> Aug 01 08:59:33 quark kernel: RDX: 0000000000000000 RSI:
-> 00007ffff4b1afe0 RDI: 000000000000000d
-> Aug 01 08:59:33 quark kernel: RBP: 00007ffff4b1b050 R08:
-> 0000000000000000 R09: 0000000000000000
-> Aug 01 08:59:33 quark kernel: R10: 000000000000009d R11:
-> 0000000000000293 R12: 0000000000000004
-> Aug 01 08:59:33 quark kernel: R13: 0000000000000000 R14:
-> 0000000000000000 R15: 0000000000000000
-> Aug 01 08:59:33 quark kernel:  </TASK>
-> Aug 01 08:59:33 quark kernel: Modules linked in:
-> Aug 01 08:59:33 quark kernel: CR2: 0000000000000008
-> Aug 01 08:59:33 quark kernel: ---[ end trace 0000000000000000 ]---
-> Aug 01 08:59:33 quark kernel: RIP: 0010:mt7921_ipv6_addr_change
-> Aug 01 08:59:33 quark kernel: Code: 41 57 41 56 41 54 53 48 83 e4 f0
-> 48 83 ec 50 48 8b 86 70 09 00 00 0f b6 8e 90 04 00 00 4c 8d ba 68 02
-> 00 00 49 89 d6 4c 89 ff <48> 8b 58 08 88 4c 24 04 66 c7 44 24 05 00 00
-> c6 44 24 07 00 66 c7
-> Aug 01 08:59:33 quark kernel: RSP: 0018:ffffc900069373b0 EFLAGS: 0001028=
-2
-> Aug 01 08:59:33 quark kernel: RAX: 0000000000000000 RBX:
-> ffff888106740920 RCX: 0000000000000000
-> Aug 01 08:59:33 quark kernel: RDX: ffff888106854800 RSI:
-> ffff88810bb35ca0 RDI: ffff888106854a68
-> Aug 01 08:59:33 quark kernel: RBP: ffffc90006937420 R08:
-> 0000000000000000 R09: ffff888104c98200
-> Aug 01 08:59:33 quark kernel: R10: ffffffff7fff0000 R11:
-> 0000000000000020 R12: 0000000000000002
-> Aug 01 08:59:33 quark kernel: R13: 0000000000000000 R14:
-> ffff888106854800 R15: ffff888106854a68
-> Aug 01 08:59:33 quark kernel: FS:  00007f4265049400(0000)
-> GS:ffff888c2df40000(0000) knlGS:0000000000000000
-> Aug 01 08:59:33 quark kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 000000008=
-0050033
-> Aug 01 08:59:33 quark kernel: CR2: 0000000000000008 CR3:
-> 0000000117250000 CR4: 0000000000350ef0
->
-> On Wed, 24 Jul 2024 at 10:36, Linux regression tracking (Thorsten
-> Leemhuis) <regressions@leemhuis.info> wrote:
-> >
-> >
-> >
-> > On 19.07.24 01:46, sean.wang@kernel.org wrote:
-> > > From: Sean Wang <sean.wang@mediatek.com>
-> > >
-> > > Fix null pointer access in mt792x_mac_link_bss_remove.
-> > >
-> > > To prevent null pointer access, we should assign the vif to bss_conf=
- in
-> > > mt7921_add_interface. This ensures that subsequent operations on the=
- BSS
-> > > can properly reference the correct vif.
-> > >
-> > > [...]
-> > > > Fixes: 1541d63c5fe2 ("wifi: mt76: mt7925: add
-> > mt7925_mac_link_bss_remove to remove per-link BSS")
-> > > Reported-by: Bert Karwatzki <spasswolf@web.de>
-> > > Closes: https://lore.kernel.org/linux-wireless/2fee61f8c903d02a900ca=
-3188c3742c7effd102e.camel@web.de/#b
-> > > Signed-off-by: Sean Wang <sean.wang@mediatek.com>
-> >
-> > TWIMC, Mike (now CCed) ran into the problem and on bugzilla confirmed
-> > that this fixes the problem:
-> >
-> > https://bugzilla.kernel.org/show_bug.cgi?id=3D219084
-> > https://lore.kernel.org/all/CAHbf0-HOS-jdRGvJOBmEgaaox3PDbDSTgnnZkZF9p=
-z37Bmh2iw@mail.gmail.com/
-> >
-> > Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' ha=
-t)
-> > --
-> > Everything you wanna know about Linux kernel regression tracking:d
-> > https://linux-regtracking.leemhuis.info/about/#tldr
-> > If I did something stupid, please tell me, as explained on that page.
+Hi all,
 
-The fix to this issue has been posted here by Felix Fietkau:
-> Am Mittwoch, dem 17.07.2024 um 17:25 +0200 schrieb Felix Fietkau:
->
-> This change should fix it: https://nbd.name/p/0747f54f
-> Please test.
->
-> Thanks,
->
-> - Felix
+the PCI subsystem is currently working on cleaning up its devres API. To
+do so, a few functions will be replaced with better alternatives.
 
-Bert Karwatzki
+This series removes pcim_iomap_regions_request_all(), which has been
+deprecated already, and accordingly replaces the calls to
+pcim_iomap_table() (which were only necessary because of
+pcim_iomap_regions_request_all() in the first place) with calls to
+pcim_iomap().
+
+Would be great if you can take a look whether this behaves as you
+intended for your respective component.
+
+Cheers,
+Philipp
+
+Philipp Stanner (10):
+  PCI: Make pcim_request_all_regions() a public function
+  ata: ahci: Replace deprecated PCI functions
+  crypto: qat - replace deprecated PCI functions
+  crypto: marvell - replace deprecated PCI functions
+  intel_th: pci: Replace deprecated PCI functions
+  wifi: iwlwifi: replace deprecated PCI functions
+  ntb: idt: Replace deprecated PCI functions
+  serial: rp2: Remove deprecated PCI functions
+  ALSA: korg1212: Replace deprecated PCI functions
+  PCI: Remove pcim_iomap_regions_request_all()
+
+ .../driver-api/driver-model/devres.rst        |  1 -
+ drivers/ata/acard-ahci.c                      |  6 +-
+ drivers/ata/ahci.c                            |  6 +-
+ drivers/crypto/intel/qat/qat_420xx/adf_drv.c  | 11 +++-
+ drivers/crypto/intel/qat/qat_4xxx/adf_drv.c   | 11 +++-
+ .../marvell/octeontx2/otx2_cptpf_main.c       | 14 +++--
+ .../marvell/octeontx2/otx2_cptvf_main.c       | 13 ++--
+ drivers/hwtracing/intel_th/pci.c              |  9 ++-
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   | 16 ++---
+ drivers/ntb/hw/idt/ntb_hw_idt.c               | 13 ++--
+ drivers/pci/devres.c                          | 59 +------------------
+ drivers/tty/serial/rp2.c                      | 12 ++--
+ include/linux/pci.h                           |  3 +-
+ sound/pci/korg1212/korg1212.c                 |  6 +-
+ 14 files changed, 76 insertions(+), 104 deletions(-)
+
+-- 
+2.45.2
+
 
