@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-10839-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10840-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD7589455A7
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Aug 2024 02:42:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CB4D9455BB
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Aug 2024 02:45:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AA4428299A
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Aug 2024 00:42:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF47D1C21DC5
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Aug 2024 00:45:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDB86BE4F;
-	Fri,  2 Aug 2024 00:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E5FBDDA6;
+	Fri,  2 Aug 2024 00:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iihRnCfn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uo6xTSzo"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6974A5672;
-	Fri,  2 Aug 2024 00:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47976FC11;
+	Fri,  2 Aug 2024 00:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722559339; cv=none; b=dVl1yafjAmeNcU0psJ4nArOgYC+htYdm9Cn85lzCIBL/bWU0HJkUSKjqXlU4OXnvNA8Y6AqSFlnXrLa3JJ4+CVy0vUzMX6myhFqPvxegrDeS+rOB7tzhhktW8fjoiEt6gw7Bs1c59pPBg3II3X/Rne/2brRKSeChay5SfLTHWdk=
+	t=1722559430; cv=none; b=NVlTaMyAHGhJ0NIW9sxhRoiHBkwOYHmfLkKe/bPXbNRah9dETtARqFlh6Q1cRmKihVV2hTUtLifqk0jXyeiBlRQcpI2Ym0T33/cUitW+R7xPYV50tPOQ5/gknU63XBKB7GpgMojJRx9QALVZVuOPt/0XhckoigyYjIJtXXzroX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722559339; c=relaxed/simple;
-	bh=V8dQQ7UGH+1AhEx8lI11JZBKmXrcr/VuZFYYSJkrEak=;
+	s=arc-20240116; t=1722559430; c=relaxed/simple;
+	bh=kb4Er6Cc/3bSSz/8+h2xyIo0D6MrCX3wmU15n/+pTP0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PX91TQOnpuK6L4V3Jlvu+1+v0O8gJLXvlOVYKmFFGV5iw7l1or1o6a0R/XCRfxMP4Gi+Vr3pmfNJGpYwAm/K3iEG97LAw1nW3OqBc72SJwGuSC0CSFCq9HM4p+V1Ha9xu5FSk+e+MWGfi/lMc5YUr6ZAOJG+IDaKKc9vJAN3rm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iihRnCfn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27D83C4AF0F;
-	Fri,  2 Aug 2024 00:42:13 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=TIqigBEFZ0O1+A9cVE3ft1LGAkI87g996nwQC1sTD4ccOfVPxW+0cGRe/ccFQOGVyirzoJgTW3K5Sb0KXLfV1ac1qZx7kQ/B9x3HipcxPjUJ0dCpJ5hEfOk2GtIvjA5/QTaijC4A6jeIVu2pWr4K5I3+GkT3ZrVuQgFW8Pwh4J8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uo6xTSzo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ABEBC32786;
+	Fri,  2 Aug 2024 00:43:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722559339;
-	bh=V8dQQ7UGH+1AhEx8lI11JZBKmXrcr/VuZFYYSJkrEak=;
+	s=k20201202; t=1722559430;
+	bh=kb4Er6Cc/3bSSz/8+h2xyIo0D6MrCX3wmU15n/+pTP0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iihRnCfnP7YVmtMb8C1Rz03oNHFtwU7dDTowokFfsOY8NMqPNu6QVcnKpz90DPH26
-	 QjDV22jNLw2go8Kr74TC3Hmka/0Gqt4Uq+3ImmUsSU2EDJ+dufyeNXyzr8Gl+u8WUZ
-	 XWFjgdpp/RY/tecBq/u4D5zsv40Bl/aTrASw1rDRHmeck2o3jI1WsXhT84QKkCcq+g
-	 Tfo+uKXKmJss9N2Y3BhJ5z+Sgm3lCcIQ9Miryf/aD7CSY3EnrTM9Kn72jwIGJIfRE7
-	 aB9S+ROAi3Z57xa13AjLsWlcyQG1cWQjv/Pp6nzgD9d+kdHEPIOwNnysK32qPZSNpP
-	 LDjUj/rw6KTYQ==
-Message-ID: <1e021b7b-b1f7-4604-9e97-370758ac4f4e@kernel.org>
-Date: Fri, 2 Aug 2024 09:42:11 +0900
+	b=uo6xTSzoCXC043p3mLgTWknUf2rgHWo4IFal2y4TRyUUKWXjgfeKteXHeJNatnzOP
+	 ykkxBx3M95QinqY4Uv5iDO76L/kujQMnFqwqg6DeoIm+NXGq3X++6CYhj2sy2GBpkN
+	 NOo+A2zv0NM0kImpcj8SiB+B3JipANpbEQECkm3Fedbwfxv1nLLZRWx/z8Omk+P95Z
+	 NxGW0uSIFBPNDS0bt+kWwgJTsZWqzFbCivIZEmePwopMavMqI8C9EBRYgytCrvX0d7
+	 eZgLVg2vJm3/11jtiULsDyUC0bKIbg33RizwDkqtSTzGGhJXgM4ArliEWdyu2U60AS
+	 c/ID1txi6dvZw==
+Message-ID: <15efa538-fe9d-4dfd-ab22-cd6361c39c8b@kernel.org>
+Date: Fri, 2 Aug 2024 09:43:43 +0900
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,8 +50,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/10] PCI: Make pcim_request_all_regions() a public
- function
+Subject: Re: [PATCH 02/10] ata: ahci: Replace deprecated PCI functions
 To: Philipp Stanner <pstanner@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
  Niklas Cassel <cassel@kernel.org>,
  Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
@@ -90,24 +89,25 @@ Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
  ntb@lists.linux.dev, linux-pci@vger.kernel.org,
  linux-serial@vger.kernel.org, linux-sound@vger.kernel.org
 References: <20240801174608.50592-1-pstanner@redhat.com>
- <20240801174608.50592-2-pstanner@redhat.com>
+ <20240801174608.50592-3-pstanner@redhat.com>
 From: Damien Le Moal <dlemoal@kernel.org>
 Content-Language: en-US
 Organization: Western Digital Research
-In-Reply-To: <20240801174608.50592-2-pstanner@redhat.com>
+In-Reply-To: <20240801174608.50592-3-pstanner@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 8/2/24 02:45, Philipp Stanner wrote:
-> In order to remove the deprecated function
-> pcim_iomap_regions_request_all(), a few drivers need an interface to
-> request all BARs a PCI-Device offers.
+On 8/2/24 02:46, Philipp Stanner wrote:
+> pcim_iomap_regions_request_all() and pcim_iomap_table() have been
+> deprecated by the PCI subsystem in commit e354bb84a4c1 ("PCI: Deprecate
+> pcim_iomap_table(), pcim_iomap_regions_request_all()").
 > 
-> Make pcim_request_all_regions() a public interface.
+> Replace these functions with their successors, pcim_iomap() and
+> pcim_request_all_regions()
 > 
 > Signed-off-by: Philipp Stanner <pstanner@redhat.com>
 
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Acked-by: Damien Le Moal <dlemoal@kernel.org>
 
 -- 
 Damien Le Moal
