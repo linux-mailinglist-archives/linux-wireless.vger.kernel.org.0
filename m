@@ -1,114 +1,173 @@
-Return-Path: <linux-wireless+bounces-10853-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10854-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8BDF945749
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Aug 2024 07:09:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9119D94575F
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Aug 2024 07:18:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D0CA1F22299
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Aug 2024 05:09:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F338EB238B7
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Aug 2024 05:18:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7BC1F5F6;
-	Fri,  2 Aug 2024 05:09:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ljnbP8MA"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A4EC3715E;
+	Fri,  2 Aug 2024 05:18:14 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA901C2BD
-	for <linux-wireless@vger.kernel.org>; Fri,  2 Aug 2024 05:09:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AFC51C2BD;
+	Fri,  2 Aug 2024 05:18:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722575386; cv=none; b=ivq7kX0bBQccgW0/+GBNn2vyr0Ax46cwjYpAZcHO6gyELTIFHhZAXbCAw2seN+bAKOO5Frd9WB+6ZuQmW68477h5l4StA9rWlx0qYnTnS8YxlDvfMLedBsn1xDYTcccRKCS/wLAbcN4FhekpVpQ2bvYtZxPCGk6HtSrAdi4EsJk=
+	t=1722575894; cv=none; b=i0cisxMM0G+WCnrNAZcGBI8CULO2Zdk2SijNYooJfG94V75FYajF+gg6HAka2X9WSQiW/nULBlBBQh2WpjAp9MNtXmajvPW4/YvJQuo2MpmMeReTG1T52R+raT27QQL42BG+8JzUuOverj3Vb/mVPyqalkCHCZoszn8AHVr6ns0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722575386; c=relaxed/simple;
-	bh=QU1xql99hzEwvG8x9j+Z4Ka0EHpllKL9hNkY53AN3Kg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WmAnkULuJHbryNwgBoU5Ke5oHmSXfMBxNgyVsfBg5u32/zDVGtfusqmw3d+0Lm2h3h2ihTyrSJIwHtOfTrdQ2g626tZsfnKfHqwoWxQc0vHR2Z49xatKa/DBUZZQbNy47MtBhBbpO6DD3XI25K9TXwJl6xm7jbW2QK5oP75AYq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ljnbP8MA; arc=none smtp.client-ip=209.85.210.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-70936061d0dso5133869a34.2
-        for <linux-wireless@vger.kernel.org>; Thu, 01 Aug 2024 22:09:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1722575384; x=1723180184; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Rq+c3N3L/d6kGtbA/DP2X2zUDS6cgLKqPw9tuzDnkSU=;
-        b=ljnbP8MA0DDGUpWNxmztuxfG+rFLc57l0OPLVvuOTkXgE26QBZUP7Ktc2HM9UhTPKz
-         wAzi35G0zEhzRuDQ0A6oR8xu9+/d9ML52xVS9AbEsyUhsP/OtQMWFbh+KgOhkYRjepp6
-         o7tZzOnEwqQBL2mtWghy3jln/BZjpTuP8CsVS8QDf6IrzTaidUUSsbpJo6gEtLkTqAzQ
-         Cynv+qwm9e6UrVgG1uaXCmVtV+UDISd3uB/DgQNQLmvBwyAv3WHJzmopnF3lJyGuBQx2
-         cKIt0ZptUq92yL+aoDO5xWXuvgMTA6E4hJS/lp/Voyfxbvx0vcreBct3cKPCLwQKz+a2
-         of2Q==
+	s=arc-20240116; t=1722575894; c=relaxed/simple;
+	bh=KBnywWN7spBgCoWrsqgsxLIdipGHzAll/sCSzpFWEyA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=V6PBJPxYyNRdpa1+QI++EP6Uaj7Ic5N8lDlBxOu750aV1vb6PsDB47NO+e0mQo4YtIKeKw2RQItkK2r/RaM1R9qAHykyabTKAH45GKCGCdlV4Vg/RLPBe38ZYQ1CqKDho4vDlh1vTJpKogqow00pnlBCOIlEgmKPAwT+uH9qfJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-58ef19aa69dso8253832a12.3;
+        Thu, 01 Aug 2024 22:18:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722575384; x=1723180184;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1722575890; x=1723180690;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Rq+c3N3L/d6kGtbA/DP2X2zUDS6cgLKqPw9tuzDnkSU=;
-        b=K+B7+ll3m31euRX+cnUV8wq0kPqhJRtHN9MASzEtVlRGm3f/jESKxsG0Z+do+b4Eg+
-         +EN2tpJZd8dyHlev5k9kmgMH0daNxLL3L5JnrAAcuUb/MLp20TqUKUxgLsfg7FsA0OIy
-         b22vxlf2OKDIFuaEixRawm0E5DaIhrVcaGJCTtCjYXeY6gDpIz1xY9jPMZ89lPRjP1Wv
-         nkgiCY77NHUZercuFY4rTZfDFSWKBnGqq0D/tKTCCSywtlYYGAIa2Id/8dc4b5bF/gCk
-         H75IFYxMwA7M1P64RnTxYhhXr67HsodkvTBmlUEzj1D6KkO2Mq7NFjXFUSzUY6AKjNRq
-         6BHg==
-X-Forwarded-Encrypted: i=1; AJvYcCWjXH5A9n3Z0dJLkc9SNDxeBt6mXzRC2QVP2y9giZMsOuPwWNd2Crn5NDdiJxL8REy0RIc4fxd0ehOV7KBEe81YI5X9hk2X5W68NkoPh+g=
-X-Gm-Message-State: AOJu0YyjoF5pPyZ5q7aFFmHuzhOttt6ElVESub0Qg2FaHxFCwY8VvL0V
-	LnZwkTx0JCZ7v8ScQju8UfJMuZqeM7BRzndiP/mHMYYuIzvl6x4RTnp1+Ty/QWc=
-X-Google-Smtp-Source: AGHT+IFHMM12oDUl0en2AKNNRADDpJwfvQEZZbY8zm3USIXwUYHAZj/AB+5quKsspn7TfJuQuxr78g==
-X-Received: by 2002:a05:6830:280a:b0:707:1794:6f9c with SMTP id 46e09a7af769-709b996085dmr2033716a34.22.1722575383748;
-        Thu, 01 Aug 2024 22:09:43 -0700 (PDT)
-Received: from localhost ([2603:8080:b800:f700:920b:58f5:7792:ff2c])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-70a31ec3713sm338827a34.44.2024.08.01.22.09.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Aug 2024 22:09:43 -0700 (PDT)
-Date: Fri, 2 Aug 2024 00:09:35 -0500
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: miriam.rachel.korenblit@intel.com, kvalo@kernel.org,
-	johannes.berg@intel.com, gregory.greenman@intel.com,
-	benjamin.berg@intel.com, daniel.gabay@intel.com,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RESEND] wifi: iwlwifi: mvm: fix an error code in
- iwl_mvm_alloc_sta_after_restart()
-Message-ID: <575625da-60bc-4444-a5f3-a7acf925f1e5@suswa.mountain>
-References: <20240802042740.1567091-1-make24@iscas.ac.cn>
+        bh=Dj9j6buMhufweuDFvVlwLCMoSOMtU4O0dz381mpjwf4=;
+        b=fVC1DIR94NNYU3OwicWAq7JuTqBx2Slfqvu6fwMkG8PwRgxv4CiPqxov0qZLZyKnmX
+         hcLZvsOorqA6AjkylJR1YDQH9nkHh/b+7lLgqFbyIHQsWEEenZutANysa4UUZARWqsxk
+         TnfNDs4KkPNuYEp3RBsAqfzldshqJ4dlVkZ8khly7oTQ7YjRHXmujA8IV7I1AK5jReq0
+         gzaB6WeULr6x+cbi2ZKUgcSsL3QV1GRruU/ya+ZoUzrvTOVxc4UEs465WYUnsmcHi95V
+         pWqq5bnTu0XakZD46LhCVUo8WScHBjUbCsTIaqRh+jDBnCE05Jth8S70ArFvHlHLjz02
+         vmbg==
+X-Forwarded-Encrypted: i=1; AJvYcCVGOGiU24XCawof6ZBCwgDO0Vixg/XrgM1HQoguOAZnK+mbu2T10DLf05qW/MWgGy2vEu2DSKiyoM0vC0aFz5Rr4SqnxrDv8DomDbk9k9H7P7WJi+oS3fJl9F8fvcVkmuMsVWinNM9AuquMOCFHbkw2/iuQG2YC+W6cQBlNlFH1u2V0NikEAp2aHJ46wnn/PVc9j4JOHtp6K7Q7HA1VsZvNGupo/8wQFLFZfn9K3T1/83IBsXUluqnu9BYuAD2G0bT4wa1s4kuxz98uzfKJi/TZ/YHXen+Knuf2jjPn9jVcnQ7fUT5DhzhuIPTYeatViFCZECfwvDFc6zthqQ==
+X-Gm-Message-State: AOJu0Yxv3c+Y2kf+tnE1FMjI5e0we43oIRLvW5bv0K7Nhgs3BCc91Eqh
+	z488b60G4LoXJzNSHl+tpB8+bxLSG4k1dKgNyIIwkdoM9BpksYpdWKmCaadQ
+X-Google-Smtp-Source: AGHT+IEh5xEcJZskqc4PliKP+yyJGP+S6jENM5xVY36nf+NI5thZLVuR/7sYo+93sVyNAhnzwAgWVg==
+X-Received: by 2002:a17:907:7e92:b0:a7a:929f:c0c2 with SMTP id a640c23a62f3a-a7dc509f3a9mr168123766b.51.1722575890007;
+        Thu, 01 Aug 2024 22:18:10 -0700 (PDT)
+Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:69? ([2a0b:e7c0:0:107::aaaa:69])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7dc9ecb085sm52827166b.212.2024.08.01.22.18.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 Aug 2024 22:18:09 -0700 (PDT)
+Message-ID: <8d2e03ac-2a08-4a25-9929-dad375afb738@kernel.org>
+Date: Fri, 2 Aug 2024 07:18:05 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240802042740.1567091-1-make24@iscas.ac.cn>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 08/10] serial: rp2: Remove deprecated PCI functions
+To: Philipp Stanner <pstanner@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+ Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>,
+ Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>,
+ Boris Brezillon <bbrezillon@kernel.org>, Arnaud Ebalard <arno@natisbad.org>,
+ Srujana Challa <schalla@marvell.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+ Kalle Valo <kvalo@kernel.org>, Serge Semin <fancer.lancer@gmail.com>,
+ Jon Mason <jdmason@kudzu.us>, Dave Jiang <dave.jiang@intel.com>,
+ Allen Hubbe <allenbh@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Kevin Cernekee <cernekee@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ Mark Brown <broonie@kernel.org>, David Lechner <dlechner@baylibre.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Jie Wang <jie.wang@intel.com>, Adam Guerin <adam.guerin@intel.com>,
+ Shashank Gupta <shashank.gupta@intel.com>,
+ Damian Muszynski <damian.muszynski@intel.com>,
+ Nithin Dabilpuram <ndabilpuram@marvell.com>,
+ Bharat Bhushan <bbhushan2@marvell.com>,
+ Johannes Berg <johannes.berg@intel.com>,
+ Gregory Greenman <gregory.greenman@intel.com>,
+ Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+ Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
+ Breno Leitao <leitao@debian.org>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ John Ogness <john.ogness@linutronix.de>, Thomas Gleixner <tglx@linutronix.de>
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-ide@vger.kernel.org, qat-linux@intel.com,
+ linux-crypto@vger.kernel.org, linux-wireless@vger.kernel.org,
+ ntb@lists.linux.dev, linux-pci@vger.kernel.org,
+ linux-serial@vger.kernel.org, linux-sound@vger.kernel.org
+References: <20240801174608.50592-1-pstanner@redhat.com>
+ <20240801174608.50592-9-pstanner@redhat.com>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <20240801174608.50592-9-pstanner@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The Subject says RESEND but doesn't explain why you are resending.
-You probably meant v2, but again it needs an explanation.
+On 01. 08. 24, 19:46, Philipp Stanner wrote:
+> pcim_iomap_table() and pcim_iomap_regions_request_all() have been
+> deprecated by the PCI subsystem in commit e354bb84a4c1 ("PCI: Deprecate
+> pcim_iomap_table(), pcim_iomap_regions_request_all()").
+> 
+> Replace these functions with their successors, pcim_iomap() and
+> pcim_request_all_regions()
 
-On Fri, Aug 02, 2024 at 12:27:40PM +0800, Ma Ke wrote:
-> This error path should return -EINVAL instead of success.
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
 
-Why do you feel that way?  Have you tested it?  What is the user visible
-effect of this bug?
+> Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+> ---
+>   drivers/tty/serial/rp2.c | 12 +++++++-----
+>   1 file changed, 7 insertions(+), 5 deletions(-)
 
-I slightly feel hypocritical because I have send lots of commit messages
-with exactly this commit message.  The difference is that I only send
-really easy patches where it's obvious what the intent was.  A normal
-kernel developer wouldn't need to leave their email client or view any
-outside information to see that my patch is correct.  If a patch is not
-dead easy, I normally just report it.  (Sometimes I report dead easy
-bugs as well because I am lazy and maybe it's the end of my work day
-or whatever).
-
-This patch on the other hand is more subtle and it's not clear why the
-continue statements changed into returns.
-
-regards,
-dan carpenter
+thanks,
+-- 
+js
+suse labs
 
 
