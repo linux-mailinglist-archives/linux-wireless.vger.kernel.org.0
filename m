@@ -1,93 +1,116 @@
-Return-Path: <linux-wireless+bounces-10838-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10839-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 295CE9454F2
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Aug 2024 01:39:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD7589455A7
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Aug 2024 02:42:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D33DD1F23F16
-	for <lists+linux-wireless@lfdr.de>; Thu,  1 Aug 2024 23:39:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AA4428299A
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Aug 2024 00:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B56F814D6ED;
-	Thu,  1 Aug 2024 23:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDB86BE4F;
+	Fri,  2 Aug 2024 00:42:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iihRnCfn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-io1-f71.google.com (mail-io1-f71.google.com [209.85.166.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9C414D294
-	for <linux-wireless@vger.kernel.org>; Thu,  1 Aug 2024 23:39:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6974A5672;
+	Fri,  2 Aug 2024 00:42:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722555545; cv=none; b=gZAbheJrvUVcVMaS2XDW6Ds4T2bXBh+FKihx2XGUcrrnjSQMqTcJ5UDrg9W4GpQfqndf5GPCnp2cHXHZtnmG9iUOnJFoIKOgvCIpN7oABWrcuHi744aMpc5g4u2FYGCyCojHpi4oijDYlvAqf8M4M/etcxkmj9LUtFYL4Cs1xy4=
+	t=1722559339; cv=none; b=dVl1yafjAmeNcU0psJ4nArOgYC+htYdm9Cn85lzCIBL/bWU0HJkUSKjqXlU4OXnvNA8Y6AqSFlnXrLa3JJ4+CVy0vUzMX6myhFqPvxegrDeS+rOB7tzhhktW8fjoiEt6gw7Bs1c59pPBg3II3X/Rne/2brRKSeChay5SfLTHWdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722555545; c=relaxed/simple;
-	bh=UmmXi35nfuScAHUEeIJwGppaSmZBoW8i5FyJvfJEzhE=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=EnVzE6VAb9vt/shJBCzHo2cvJgmgcbTxFqhA8CmW78SPwawcGZR+QyHkGI0QdPve5wApnGr+zaLiJMxlMs0xevvzYV6UpnY8fgxJCqEPndbE38J5zEjGN0D5b+2ezH1r0owsuT/JZYRTGWZXv7xcD4+OKQcSc94uEvD8RBLb3Vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-81fa44764bbso842546039f.3
-        for <linux-wireless@vger.kernel.org>; Thu, 01 Aug 2024 16:39:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722555543; x=1723160343;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ODcuns1LudBlqI4V0K87ttGH2rAEsrJeBiRSk4hIkus=;
-        b=SoV4MGoxl66mTg+Kn0sC6tNQLQjVS5S1gZ/cVU8NQk7UN3Tq70QYolEbOEeSWgLzZ8
-         xbc5mnArD7X/rFrYaN6bX8W8nWifQ+Iqpf5h6qVwdA1LWq7k9PtEgtdo8WGu3vPDuRke
-         mwrlQ4D6mogn4mp1RzgJjlPQ02BOVIefwhIl+YGXDXQleMCPzVBCmy39LeCxjR74856E
-         zyssMo8GlFXfPecmPMp05CJ3fXYUrSIrjitKGX9XkwPom7WK5WxEWnJHpfgPwnD7axZ8
-         rxAtXUzvDBf36p5NwDgPdDVItZ1ea9YDYCRrUdb87PoWM12R57SFnM6xunx4hjmoagfa
-         QXmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXxI/nmPq6Kj2N65w5t4ImrhH2oWpxaOkK+/BqjmRv6FjNepJ/jJBv95qTFjGJqzAcSJrPRKFersGwxez/9NoMNOCHO7QK0Dy/8tAqJupk=
-X-Gm-Message-State: AOJu0YwlWvHd16zCJ2LAEWhUyj7+F1ePX2kZ59847ZsyvcOTOOYYFVAL
-	ME/dVO1ysVK2NwqZ5/PsoNNwA8jSH76PXegB7Og9IzuGcS4WvqV1uYT7mECPFU+pDAYrC5aTIzy
-	smi9pquSTVhlvgq9Em4iBO04XeJ6Mu5BXLnuTKuZGULIHb5yXDyjY8pY=
-X-Google-Smtp-Source: AGHT+IG8TxilfBblIK7ewxLG6HE/mrHKCIseSqawEomYlhrUYVYyt4OhOTyyY0tgYhO72VI3qfqc9z4ejv5s988bgf3cBNUSPSDA
+	s=arc-20240116; t=1722559339; c=relaxed/simple;
+	bh=V8dQQ7UGH+1AhEx8lI11JZBKmXrcr/VuZFYYSJkrEak=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PX91TQOnpuK6L4V3Jlvu+1+v0O8gJLXvlOVYKmFFGV5iw7l1or1o6a0R/XCRfxMP4Gi+Vr3pmfNJGpYwAm/K3iEG97LAw1nW3OqBc72SJwGuSC0CSFCq9HM4p+V1Ha9xu5FSk+e+MWGfi/lMc5YUr6ZAOJG+IDaKKc9vJAN3rm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iihRnCfn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27D83C4AF0F;
+	Fri,  2 Aug 2024 00:42:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722559339;
+	bh=V8dQQ7UGH+1AhEx8lI11JZBKmXrcr/VuZFYYSJkrEak=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=iihRnCfnP7YVmtMb8C1Rz03oNHFtwU7dDTowokFfsOY8NMqPNu6QVcnKpz90DPH26
+	 QjDV22jNLw2go8Kr74TC3Hmka/0Gqt4Uq+3ImmUsSU2EDJ+dufyeNXyzr8Gl+u8WUZ
+	 XWFjgdpp/RY/tecBq/u4D5zsv40Bl/aTrASw1rDRHmeck2o3jI1WsXhT84QKkCcq+g
+	 Tfo+uKXKmJss9N2Y3BhJ5z+Sgm3lCcIQ9Miryf/aD7CSY3EnrTM9Kn72jwIGJIfRE7
+	 aB9S+ROAi3Z57xa13AjLsWlcyQG1cWQjv/Pp6nzgD9d+kdHEPIOwNnysK32qPZSNpP
+	 LDjUj/rw6KTYQ==
+Message-ID: <1e021b7b-b1f7-4604-9e97-370758ac4f4e@kernel.org>
+Date: Fri, 2 Aug 2024 09:42:11 +0900
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6638:3788:b0:4c2:9573:49af with SMTP id
- 8926c6da1cb9f-4c8d56f8d03mr60315173.6.1722555543269; Thu, 01 Aug 2024
- 16:39:03 -0700 (PDT)
-Date: Thu, 01 Aug 2024 16:39:03 -0700
-In-Reply-To: <000000000000839d4d060a0fab97@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000434672061ea7b797@google.com>
-Subject: Re: [v6.1] WARNING in ieee80211_check_rate_mask
-From: syzbot <syzbot+07bee335584b04e7c2f8@syzkaller.appspotmail.com>
-To: gregkh@linuxfoundation.org, javier.carrasco.cruz@gmail.com, 
-	johannes.berg@intel.com, johannes@sipsolutions.net, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	patches@lists.linux.dev, sashal@kernel.org, skhan@linuxfoundation.org, 
-	stable-commits@vger.kernel.org, stable@vger.kernel.org, 
-	syzkaller-lts-bugs@googlegroups.com, vincenzo.mezzela@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/10] PCI: Make pcim_request_all_regions() a public
+ function
+To: Philipp Stanner <pstanner@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+ Niklas Cassel <cassel@kernel.org>,
+ Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>,
+ Boris Brezillon <bbrezillon@kernel.org>, Arnaud Ebalard <arno@natisbad.org>,
+ Srujana Challa <schalla@marvell.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+ Kalle Valo <kvalo@kernel.org>, Serge Semin <fancer.lancer@gmail.com>,
+ Jon Mason <jdmason@kudzu.us>, Dave Jiang <dave.jiang@intel.com>,
+ Allen Hubbe <allenbh@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Kevin Cernekee <cernekee@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
+ Takashi Iwai <tiwai@suse.com>, Mark Brown <broonie@kernel.org>,
+ David Lechner <dlechner@baylibre.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Jie Wang <jie.wang@intel.com>, Adam Guerin <adam.guerin@intel.com>,
+ Shashank Gupta <shashank.gupta@intel.com>,
+ Damian Muszynski <damian.muszynski@intel.com>,
+ Nithin Dabilpuram <ndabilpuram@marvell.com>,
+ Bharat Bhushan <bbhushan2@marvell.com>,
+ Johannes Berg <johannes.berg@intel.com>,
+ Gregory Greenman <gregory.greenman@intel.com>,
+ Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+ Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
+ Breno Leitao <leitao@debian.org>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ John Ogness <john.ogness@linutronix.de>, Thomas Gleixner <tglx@linutronix.de>
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-ide@vger.kernel.org, qat-linux@intel.com,
+ linux-crypto@vger.kernel.org, linux-wireless@vger.kernel.org,
+ ntb@lists.linux.dev, linux-pci@vger.kernel.org,
+ linux-serial@vger.kernel.org, linux-sound@vger.kernel.org
+References: <20240801174608.50592-1-pstanner@redhat.com>
+ <20240801174608.50592-2-pstanner@redhat.com>
+From: Damien Le Moal <dlemoal@kernel.org>
+Content-Language: en-US
+Organization: Western Digital Research
+In-Reply-To: <20240801174608.50592-2-pstanner@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-syzbot suspects this issue could be fixed by backporting the following commit:
+On 8/2/24 02:45, Philipp Stanner wrote:
+> In order to remove the deprecated function
+> pcim_iomap_regions_request_all(), a few drivers need an interface to
+> request all BARs a PCI-Device offers.
+> 
+> Make pcim_request_all_regions() a public interface.
+> 
+> Signed-off-by: Philipp Stanner <pstanner@redhat.com>
 
-commit ce04abc3fcc62cd5640af981ebfd7c4dc3bded28
-git tree: upstream
-Author: Johannes Berg <johannes.berg@intel.com>
-Date:   Fri Feb 24 09:52:19 2023 +0000
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
 
-    wifi: mac80211: check basic rates validity
+-- 
+Damien Le Moal
+Western Digital Research
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=15d0b26d980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=59059e181681c079
-dashboard link: https://syzkaller.appspot.com/bug?extid=07bee335584b04e7c2f8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=122bb7a5180000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=14dfa479180000
-
-
-Please keep in mind that other backports might be required as well.
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
 
