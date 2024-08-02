@@ -1,100 +1,94 @@
-Return-Path: <linux-wireless+bounces-10858-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10859-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20BE69457FF
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Aug 2024 08:15:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C926C94586F
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Aug 2024 09:11:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9A3A285C42
-	for <lists+linux-wireless@lfdr.de>; Fri,  2 Aug 2024 06:15:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45F91B23121
+	for <lists+linux-wireless@lfdr.de>; Fri,  2 Aug 2024 07:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65EFD22318;
-	Fri,  2 Aug 2024 06:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E32DF15AD9C;
+	Fri,  2 Aug 2024 07:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="BnHlWIOC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LbmAZl5H"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14D420B28
-	for <linux-wireless@vger.kernel.org>; Fri,  2 Aug 2024 06:15:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C6D1598E3
+	for <linux-wireless@vger.kernel.org>; Fri,  2 Aug 2024 07:11:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722579340; cv=none; b=tx+ZpjYXqgVUTBd0ONR03NEKlfLzk/j3j97NJexWsNWPpC5I6VPQ04akD0u9ULzgzhUjldYjtoeY6dAAk5BervH9A5SynGBt8OKZXyTKBPpRI1D4raydwPaebro1uJCpjkcJjB1vMWa/RTTjhZICjcEAls/Xbn4M+ruWLaytLYM=
+	t=1722582686; cv=none; b=DwXhVoTdnNSUjiJdakvDzqgQAnk1G12rD9Wri2aKr7Nv+ajEi0RMgO6C5e9JfhlMOta4804jlRZ0pg/6aYf1+oQKQsTiormCk5a6OwX7NnmEEviRY7qEC3jZRKYpQBObfhRdWs20qgUfmQ1bF+1LEFiFKprdlMKCGYzGtNmH0Qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722579340; c=relaxed/simple;
-	bh=AmqNsV8nqsnLJXl2aXz49KA5sVG/46tml/UVKXJ3gFY=;
-	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=nCeTZBfTdD0JHyLTW32ecl9f5TcwWCG4YRKtbrU3j1bH0jqB3oqexgpj1HoserAwBJDKtFc7GqXj0mRMRHj53xt08b5T4PR1gizwe34Ll7QT2C/h2D61ZMidVOyFceeXZ6EF97qpBpbnj1fvVdA+SrVULw3B6juqCQ7mTTlrFTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=BnHlWIOC; arc=none smtp.client-ip=209.85.222.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-7a1dac7f0b7so488377185a.0
-        for <linux-wireless@vger.kernel.org>; Thu, 01 Aug 2024 23:15:38 -0700 (PDT)
+	s=arc-20240116; t=1722582686; c=relaxed/simple;
+	bh=LVUmsQy0KJmBZ59E9Yj2LFomv5aKkmvnSV3+zITXWqE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=n90aJa5TdwAg3AeWrOelqsFTqXAb0AECdi8v52VHZRT/WXGzy7heGh3ub2OFJqazVHGf4RJjvhi3EIq+stGLXI7pTTONf8S7zBkSk9KsDM2j2yxFBwR/D2XInRXZQuvbbPKMr++AKqV/v0YzSFklfANaTTTxavuGRkb9VW7hfy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LbmAZl5H; arc=none smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5a156557026so10348189a12.2
+        for <linux-wireless@vger.kernel.org>; Fri, 02 Aug 2024 00:11:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1722579337; x=1723184137; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FyQb+n4X+KUaDGFpyPWUqKhiSG4T2BXE+nFp2uohapc=;
-        b=BnHlWIOCGndf7Itf4DRJetdW6VZjzxWq3juBiy60gjT4y+w7SK8I5NJe5EAvOGlA3c
-         4UstsyTb/pq7eKQ7aB9vpAkTdZYzsC9GUpNL14qQJQtnkajyhvRUwhlGKvz75Lexsn5K
-         8oaEoMzkPrvq7lD5FYtYnofxSI4fTtft7cQAI=
+        d=gmail.com; s=20230601; t=1722582683; x=1723187483; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=rL3LCwXqnNTYA9Y4g7jU1WfA6AXlGw5PuhRK9q1C4/Q=;
+        b=LbmAZl5HqA9gpu1UTyLDhABpMfvKi/1W556GpJUhv0amqy63YZQ1cTSoiAlKw69fX0
+         4K/lAzlzTWjZCxnUM3Z9Y00IvOlvFLA7vzbheZL1ZhtJBa/pbQLXs/9JE8tOCFGGqBMx
+         LWdJkDFvQKOBih4daAL/2EgD6UBwiCXSLXZnwNcPkZefTYLsFwTYQFoehfdCauIUJpqk
+         gdJqVZz7KfHXP1ua3FGHDo/qyb+grbuAA77m8+MJOP2jhoGQSC1aWsH5UaHyRb/dGMoS
+         paEH+e/4rlmE3Lupe3wnfBfisbekuUOOi69XcmzZF9FCjASFVKP3jQJSG+KF11W8gsnv
+         w/Cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722579337; x=1723184137;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FyQb+n4X+KUaDGFpyPWUqKhiSG4T2BXE+nFp2uohapc=;
-        b=MFtHshv9KaMS23TKw0GBjk2Fr4VrFK2VZbkirWDJs3waqKog9Xm14ERa8reogFv6kO
-         9tM8h0LEqwuvpQo1kX6710jlfPL8P61K9qNWRGLEIVlFmgh23wyJAMvvfu+BAmlIq2zv
-         QZJcxbsQfY5YnpwQ6X8DQde+Wspc3PwrL5qFtpSq7dMnTR0UbsD4jBGkffBUdnAIhms3
-         G9bewVPeUNVbci0p4w103MHnTmR4HxtAVOMIwpiUMVPwl+uZ1m4SC90mtY97ApJeRIjD
-         RE5ibd7BWtiYXHtjLVuQbBfqiCsxfRDkbBE6X4ug7K6ZlNYf8a5uSJcx27KTqvBkiSRU
-         Pe7Q==
-X-Gm-Message-State: AOJu0Yw8X9D8QTBu9RIhQk0IFbzdPxTtYG66H6l4JgfDSF93vK9JBHAQ
-	E/9C0VsSZeY6j2eyXfyx7XqMPjU+gHkiLY8aIcskfZ6VA2Q16998MyLSEwJuCg==
-X-Google-Smtp-Source: AGHT+IHsvQGA8qutqv8vEb8iCAcPIb6DiIMW6AI10kEUxQMKSwNgSW8zoiF1ZVrKynbuE1o0Zu+mHw==
-X-Received: by 2002:a05:620a:2988:b0:79d:6dd7:5da0 with SMTP id af79cd13be357-7a34efc1241mr285009485a.47.1722579337426;
-        Thu, 01 Aug 2024 23:15:37 -0700 (PDT)
-Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a34f624219sm60788885a.0.2024.08.01.23.15.36
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 01 Aug 2024 23:15:36 -0700 (PDT)
-From: Arend Van Spriel <arend.vanspriel@broadcom.com>
-To: Dmitry Kandybka <d.kandybka@gmail.com>
-CC: <linux-wireless@vger.kernel.org>, <lvc-project@linuxtesting.org>, Dmitry Antipov <dmantipov@yandex.ru>
-Date: Fri, 02 Aug 2024 08:15:35 +0200
-Message-ID: <19111bab758.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <20240801101531.6626-1-d.kandybka@gmail.com>
-References: <20240801101531.6626-1-d.kandybka@gmail.com>
-User-Agent: AquaMail/1.51.5 (build: 105105504)
-Subject: Re: [PATCH] wifi: brcmsmac: clean up unnecessary current_ampdu_cnt and related checks
+        d=1e100.net; s=20230601; t=1722582683; x=1723187483;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rL3LCwXqnNTYA9Y4g7jU1WfA6AXlGw5PuhRK9q1C4/Q=;
+        b=P/rfH0e9xPAgwHtxaWbCimAGbJ6uaDE18Sv0S7XJZo/oOThHUFKBQBXj7HEy4KSTHO
+         S1mbvjq/wIuXYw8QZr78L8xhuo9JIpeMJ2bOBjefSZ6QxPH8j6gdnE49UjVKMl4EonPQ
+         c6vib25HERFj8SYegEGyh3GiXOxY5riU9vJcT9STXCYogx+pICY2TbtWJbD6I+ORaQLL
+         4FtPbU/QyM/C+ZUj0z5FcWhF7Lu1hPbohbjpHLY5c66jkBbsMtCtqyVuPCbHD9vD7fHb
+         p6+EzJezRTj8izkx9rN+LgbAD1jBKwv7tapa6oEO8cyVZHZ1mqbZJHle26MdV4kM0Nwf
+         BrkQ==
+X-Gm-Message-State: AOJu0YzrZyaD2U1SbkuCXcLmLHtAJzvafp7IMDWjd376u9DrcWw9jm7z
+	pKjI96MxQHvV2qAtqzOii+JIQt+WUkLbK3iv3NtV00VKmA8HJDWmrzyAQjhGaJLd3vlk9Iz8fTe
+	a+/4s1qbiRYxCNyskzqVfYoVCbrD8Sg==
+X-Google-Smtp-Source: AGHT+IEWi+M3sYrEJ8/kXVwNsKMRWQtmQiXh7HBmAwg7L5Y46O0LeQtUAz/OQhNC+oLIoNjxQF2iX6OqExmJfXcXiUA=
+X-Received: by 2002:a17:907:720f:b0:a7a:c083:8571 with SMTP id
+ a640c23a62f3a-a7dc517a6c8mr167605266b.52.1722582683193; Fri, 02 Aug 2024
+ 00:11:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset="us-ascii"
-Content-Transfer-Encoding: 8bit
+References: <20240719032326.7353-1-pkshih@gmail.com> <20240719032326.7353-4-pkshih@gmail.com>
+ <CAGb2v66QO-F6r6Ay5yLiYwFXxob6JGnv_4k-oZiZJWfboGt0pQ@mail.gmail.com>
+In-Reply-To: <CAGb2v66QO-F6r6Ay5yLiYwFXxob6JGnv_4k-oZiZJWfboGt0pQ@mail.gmail.com>
+From: Ping-Ke Shih <pkshih@gmail.com>
+Date: Fri, 2 Aug 2024 15:11:12 +0800
+Message-ID: <CAHrRpukJ=uPx+J-KD0TcPcYyMwNMb2t__7sQfMPv=PnizHkVYQ@mail.gmail.com>
+Subject: Re: [PATCH v2 4/5] wireless-regdb: Update regulatory info for Togo
+ (TG) for 2022
+To: wens@kernel.org
+Cc: linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 
-On August 1, 2024 12:15:35 PM Dmitry Kandybka <d.kandybka@gmail.com> wrote:
-
-> In 'brcms_c_ffpld_check_txfunfl()', 'current_ampdu_cnt' is hardcoded to
-> zero, so 'txunfl_ratio' is always zero as well and some dead code can be
-> removed. Compile tested only.
+Chen-Yu Tsai <wens@kernel.org> wrote:
 >
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> > v2:
+> >   - in commit message, describe typo that 5925-6425 LPI should be EIRP
+> >     density 10 dBm/MHz. Otherwise, PSD for LPI is lower than VLP.
+>
+> I applied this patch for now. But could you reach out to the ARCEP to
+> notify them of this, and ask for clarification?
 
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Dmitry Kandybka <d.kandybka@gmail.com>
-> ---
-> .../broadcom/brcm80211/brcmsmac/ampdu.c       | 22 +------------------
-> 1 file changed, 1 insertion(+), 21 deletions(-)
-
-
-
+Sure. I will contact ARCEP.
 
