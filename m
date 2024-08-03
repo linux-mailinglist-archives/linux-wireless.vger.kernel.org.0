@@ -1,120 +1,130 @@
-Return-Path: <linux-wireless+bounces-10880-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10881-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B9619469E4
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 Aug 2024 15:47:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 084CF946B1B
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 Aug 2024 21:53:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3C012816BC
-	for <lists+linux-wireless@lfdr.de>; Sat,  3 Aug 2024 13:47:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 664A61F21AD3
+	for <lists+linux-wireless@lfdr.de>; Sat,  3 Aug 2024 19:53:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0453249659;
-	Sat,  3 Aug 2024 13:47:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F4F33CF1;
+	Sat,  3 Aug 2024 19:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="LNQ45uOr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gbO9Vzhe"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A44136E09
-	for <linux-wireless@vger.kernel.org>; Sat,  3 Aug 2024 13:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330B518E10;
+	Sat,  3 Aug 2024 19:53:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722692839; cv=none; b=LxOVIlwu0Q1kk1HctYS7wvtKMn1nlNQYKHSUTGHKDkehM7rCS6lzuiZ2oTqrPCbm1jj25kEhr9yvnPK+p+b7pZ/q42hlo/g0C9ABdOwv1OCf3P0PYZMytYAjDDCITmhooBd/CVgYW/sqOgqv0P1iBVmubPkGczRRpkga954YJIM=
+	t=1722714784; cv=none; b=d+FFtj9zlXP5KM+ISWraAW82btvrqKWbKN7qknOHOhOitDF9KziICMcb2efrsViQzmuUy4rAbQiRJoit7gzIoXiryNJ6Q5udVCcA8T3vLJqYVs+uQ59bRlW6czFt3AU3ipFhE5FvovzkUwflXdcvgA7LFNb/d97KPzrbVxl+RGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722692839; c=relaxed/simple;
-	bh=NYA6sYQwjyHrZaAyGTauiIPxEqDC/y2kBfxFAb1PwZY=;
-	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=ZgSnPknyIagYx/lpo3t7PdpCAYbUF8ztxHWDFSTGWplf9FttbY4KDiTHF7qhZ/dDwl0ITIV9e7uwXyv7hdu7cLPc7poS2t0/Hs8fl3l3O7teFNgrMN0sp7B/xJTSVOt6zOVh0WI+SC3FVh4lVSFbY5MUnWoMbNoStZYVOQBuEFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=LNQ45uOr; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5a309d1a788so11456520a12.3
-        for <linux-wireless@vger.kernel.org>; Sat, 03 Aug 2024 06:47:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1722692836; x=1723297636; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=B5RT1Qu2F1uakgzsI7iEt4bY0NeXn3F9JOiq2sORjJM=;
-        b=LNQ45uOriaKzL9ebRq3WAJ2prO13UtFhrPH7bG6UtUoRVPYaCDX5naQV0+e5ocbfzN
-         25i6ysw0kNEw9HqQJQs5Dx4MCdc+PMjoUapdk9fYuQvRHJY/ve2e+J4cVzEsqhMBMvvA
-         k6mC2KmVXV6UkVjxD2GIa4HwousF3Mw4gPCKI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722692836; x=1723297636;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=B5RT1Qu2F1uakgzsI7iEt4bY0NeXn3F9JOiq2sORjJM=;
-        b=Jh3gKN/bg2666s1O6xbFxTwon1y4aR++rjLSucfjcgjabTX5l1kltaO3ftb5qqTO5d
-         DS8NytSORkXd1MmsX1ZdV5wAzpQBEad5hhaYFyxZUvUm8H9063wEZNi3vIo73nVSoau+
-         5PHmchnjOusiZ5+B7kM1lmgE21tByxh6ER0fmvO6AUUGixGwejLQharxXDQSQW4l+vi7
-         64/YBjmorjDvtwr3rMToGYGSh2abjS5EO4u8hzefcS+Lg4Y95my0np5A/jJAWQGYXs1F
-         dB1bJSEoToGLmPh6h6qVWsqPFhTQ2l1ab4TMDW7k2XRVDi0GhYNj4g5eTPiZNbT1LsAI
-         icGA==
-X-Gm-Message-State: AOJu0YwkvWSzUzzp0MqHwKkxVN+Mh71TWpPPKuaCVvJ2GvAm08c8S0iF
-	Q3vaa83r4OByZ5ZnQD8fO5ZmuIbwFIk9pjHpqnIIVCAmXWqzJuISMBFAK1z6X5jq7He3JYG/KX9
-	AQBWw
-X-Google-Smtp-Source: AGHT+IH5sxguhxTGPtrzWoIPbbAkQ7FJ4XYNcIEzg1Fzyecpd8e+DAtDtrRTDth4ddyzyAeWlhJzrw==
-X-Received: by 2002:aa7:d5c1:0:b0:5a2:189:6306 with SMTP id 4fb4d7f45d1cf-5b7f40a71c3mr4958811a12.18.1722692835699;
-        Sat, 03 Aug 2024 06:47:15 -0700 (PDT)
-Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5b839c2dbe8sm2389737a12.37.2024.08.03.06.47.14
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 03 Aug 2024 06:47:15 -0700 (PDT)
-From: Arend Van Spriel <arend.vanspriel@broadcom.com>
-To: Florian Fainelli <florian.fainelli@broadcom.com>, Jacobe Zang <jacobe.zang@wesion.com>
-CC: <linux-wireless@vger.kernel.org>, <brcm80211@lists.linux.dev>, Ondrej Jirman <megi@xff.cz>
-Date: Sat, 03 Aug 2024 15:47:15 +0200
-Message-ID: <191187e96b8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <f2cc346e-63b0-4fb7-b954-5dc3e597b7e1@broadcom.com>
-References: <20240802083400.166753-1-arend.vanspriel@broadcom.com>
- <f2cc346e-63b0-4fb7-b954-5dc3e597b7e1@broadcom.com>
-User-Agent: AquaMail/1.51.5 (build: 105105504)
-Subject: Re: [RFT] wifi: brcmfmac: Add optional lpo clock enable support
+	s=arc-20240116; t=1722714784; c=relaxed/simple;
+	bh=cO1njgqj1MdIys3zEUAKB60pjD++czAPnaJB2qZeMjI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=hOEFQe0pF17ExVY9b6OXM/ACt9buFG8GejcuJiFFHAPeN0t/6StEBvUdRXvCoJ5520YWbGYHzRub8eBIuxN8nltxYDYd1qhWPeVQARkjEQVgVH1T1N4hMrWRL+Qqfv7K95ESDY6xVLZ17XhDlgW6q/gmH6i7YuRwWSiBo9KyAXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gbO9Vzhe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B7D03C116B1;
+	Sat,  3 Aug 2024 19:53:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722714783;
+	bh=cO1njgqj1MdIys3zEUAKB60pjD++czAPnaJB2qZeMjI=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=gbO9Vzhe4Q2t6M6Anaf72tuWGNoTztkRwaVXobXonM3K+z2Uzg3ROlaTF38HLekI/
+	 PC0+IE5UB/JY/Hyut9ornpJY3yc7cy536OYVO95dYWk8OKt5nFhj+ZCPe9XNglS7WZ
+	 DRZZ2wzrSAHQ2Yu3/igaATrLQjTL9m4s98x8GPcjHuVCvtkS5iHr3oS2nS5ptN1MTn
+	 THUBG3Wid/0fwNNZb5ZR13OwKI3Vq7Rvr5E1ZIbt3l+w/InH6PIdeXYE80a4yCDJKt
+	 dmp27AhhoAh4cMf4oyaxbtHECZTBRep8utKwn3n3MkGWZPvucV0TDoO2wXlFCE1eiX
+	 lwVc/qkjMf35A==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D901C3DA4A;
+	Sat,  3 Aug 2024 19:53:03 +0000 (UTC)
+From: Janne Grunau via B4 Relay <devnull+j.jannau.net@kernel.org>
+Date: Sat, 03 Aug 2024 21:52:55 +0200
+Subject: [PATCH] wifi: brcmfmac: cfg80211: Handle SSID based pmksa deletion
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset="us-ascii"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240803-brcmfmac_pmksa_del_ssid-v1-1-4e85f19135e1@jannau.net>
+X-B4-Tracking: v=1; b=H4sIAJaKrmYC/x3MQQqAIBBA0avErBOsKYiuEiGmYw1lhQMRRHdPW
+ r7F/w8IJSaBvngg0cXCx55RlQW4xe4zKfbZUOu60Z1GNSUXQ7TOnHEVazxtRoS9QoctBcIWUUO
+ uz0SB7/88jO/7AZiy8PppAAAA
+To: Arend van Spriel <arend.vanspriel@broadcom.com>, 
+ Kalle Valo <kvalo@kernel.org>, Hector Martin <marcan@marcan.st>, 
+ Linus Walleij <linus.walleij@linaro.org>
+Cc: linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev, 
+ brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org, 
+ asahi@lists.linux.dev, stable@vger.kernel.org, Janne Grunau <j@jannau.net>
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1950; i=j@jannau.net;
+ h=from:subject:message-id;
+ bh=kwa63Uu8k2lWu1jh8mzzIZRococdlt5kl/m4MUAUTEw=;
+ b=owGbwMvMwCW2UNrmdq9+ahrjabUkhrR1XfMEpu1b+fuSsfFsHu0AC7n/HqLvPkyYsUf8qoPE2
+ WVB35WOd5SyMIhxMciKKbIkab/sYFhdoxhT+yAMZg4rE8gQBi5OAZjI3HmMDPcyXdbdTkgSbX8v
+ +P1v2493CbJP93htlxD64/Ku96rAllBGhnYeTsmJeakhXxj4GP6WHDzR8etU5P9NPK1xZpKlydc
+ 6mQE=
+X-Developer-Key: i=j@jannau.net; a=openpgp;
+ fpr=8B336A6BE4E5695E89B8532B81E806F586338419
+X-Endpoint-Received: by B4 Relay for j@jannau.net/default with auth_id=62
+X-Original-From: Janne Grunau <j@jannau.net>
+Reply-To: j@jannau.net
 
-On August 2, 2024 7:28:51 PM Florian Fainelli 
-<florian.fainelli@broadcom.com> wrote:
+From: Janne Grunau <j@jannau.net>
 
-> On 8/2/24 01:34, Arend van Spriel wrote:
->> From: Jacobe Zang <jacobe.zang@wesion.com>
->>
->> WiFi modules often require 32kHz clock to function. Add support to
->> enable the clock to PCIe driver and move "brcm,bcm4329-fmac" check
->> to the top of brcmf_of_probe
->>
->> Co-developed-by: Ondrej Jirman <megi@xff.cz>
->> Signed-off-by: Ondrej Jirman <megi@xff.cz>
->> Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
->> [arend: handle -EPROBE_DEFER scenario]
->> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
->
-> This looks fine for a cold boot case, how about handling suspend/resume
-> where the clock might have been disabled, do we need to deal with an
-> "always-on" Device Tree property as well as whether the device is
-> enabled for wake-up or not?
+wpa_supplicant 2.11 sends since 1efdba5fdc2c ("Handle PMKSA flush in the
+driver for SAE/OWE offload cases") SSID based PMKSA del commands.
+brcmfmac is not prepared and tries to dereference the NULL bssid and
+pmkid pointers in cfg80211_pmksa. PMKID_V3 operations support SSID based
+updates so copy the SSID.
 
-Thanks, Florian
+Fixes: a96202acaea4 ("wifi: brcmfmac: cfg80211: Add support for PMKID_V3 operations")
+Cc: stable@vger.kernel.org
+Signed-off-by: Janne Grunau <j@jannau.net>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-When the external LPO is disabled the chip will fallback on the internal (I 
-think). So it is not an issue for wakeup scenario, but if the clock is not 
-enabled upon resume we should deal with it. Could go in separate patch.
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index 5fe0e671ecb3..826b768196e2 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -4320,9 +4320,16 @@ brcmf_pmksa_v3_op(struct brcmf_if *ifp, struct cfg80211_pmksa *pmksa,
+ 		/* Single PMK operation */
+ 		pmk_op->count = cpu_to_le16(1);
+ 		length += sizeof(struct brcmf_pmksa_v3);
+-		memcpy(pmk_op->pmk[0].bssid, pmksa->bssid, ETH_ALEN);
+-		memcpy(pmk_op->pmk[0].pmkid, pmksa->pmkid, WLAN_PMKID_LEN);
+-		pmk_op->pmk[0].pmkid_len = WLAN_PMKID_LEN;
++		if (pmksa->bssid)
++			memcpy(pmk_op->pmk[0].bssid, pmksa->bssid, ETH_ALEN);
++		if (pmksa->pmkid) {
++			memcpy(pmk_op->pmk[0].pmkid, pmksa->pmkid, WLAN_PMKID_LEN);
++			pmk_op->pmk[0].pmkid_len = WLAN_PMKID_LEN;
++		}
++		if (pmksa->ssid && pmksa->ssid_len) {
++			memcpy(pmk_op->pmk[0].ssid.SSID, pmksa->ssid, pmksa->ssid_len);
++			pmk_op->pmk[0].ssid.SSID_len = pmksa->ssid_len;
++		}
+ 		pmk_op->pmk[0].time_left = cpu_to_le32(alive ? BRCMF_PMKSA_NO_EXPIRY : 0);
+ 	}
+ 
 
-I can inquire about my assumption above.
+---
+base-commit: 0c3836482481200ead7b416ca80c68a29cfdaabd
+change-id: 20240803-brcmfmac_pmksa_del_ssid-3c35efe35330
 
-Regards,
-Arend
-
+Best regards,
+-- 
+Janne Grunau <j@jannau.net>
 
 
 
