@@ -1,88 +1,156 @@
-Return-Path: <linux-wireless+bounces-10897-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10898-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6323B946E2B
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 Aug 2024 11:56:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D5F6946E5B
+	for <lists+linux-wireless@lfdr.de>; Sun,  4 Aug 2024 13:04:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D97A7B20EE5
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 Aug 2024 09:56:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 304D71C2108A
+	for <lists+linux-wireless@lfdr.de>; Sun,  4 Aug 2024 11:04:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E2A0249ED;
-	Sun,  4 Aug 2024 09:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE1B2C6AF;
+	Sun,  4 Aug 2024 11:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oDiLJOnw"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Po1AmelC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006F323759;
-	Sun,  4 Aug 2024 09:56:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E2922081
+	for <linux-wireless@vger.kernel.org>; Sun,  4 Aug 2024 11:04:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722765374; cv=none; b=j28JG0uOCj5Uf/AgVSuk2VNXO6ULkoeFZQ+Qaynw1tsJTvkN0x+62jK6gsZDDwaCb+NDT2DZ9IVz60dOj3TYT4RUAxqzSQCG4fz1brDcjIu8BEnixv8xi2kk4WVqNYUjOWfVfbpEvk9BrAwX7yV40ve4yd4rSX+hLOSM1b2LTRw=
+	t=1722769468; cv=none; b=aewDPhPJ06Y6VOz5vBM2JMaR6P+mz0eL+hawbdxNi78OCMRFs0ou5pq8mbdJnpi1Y0XQEQ+P25yygAnIc8uHnVvNN+j0ms3x9ylzRZgmyamP5HZ08LOABqiYFl7mZ32hM8hp4+oFdeQrMTINBV+DUofT8uApve1/mvzv88EdWqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722765374; c=relaxed/simple;
-	bh=6GYgW1pBDBnhlAKtizrPp43IWcryMt4Azi1dzXoCvgc=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=mtpH7YVs98ef7e/b2FfzSEiI1dB1Xv/Fi+d6hN1loPVxlhiunJLkpKOZiaY/Zg37VUFuW5iTYRNohZ4QrEZWzZcOwKSoFFgOhkf6RJQIAc/f9MWJTCv68qEZ9Ai3+1lP+7HEwP8i11I6MckNKOuu3oGh2R5vB1DJIbyoe7UOoe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oDiLJOnw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D25C32786;
-	Sun,  4 Aug 2024 09:56:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722765373;
-	bh=6GYgW1pBDBnhlAKtizrPp43IWcryMt4Azi1dzXoCvgc=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=oDiLJOnwzA0J4o0OpLS6Q0pkgt/1WpuYclKUFXXJHLAwMsSp+GfesATO+Mg0DwIUU
-	 mncuCeSX1ffvQ0SFplZhTAyQq/9ivBchR7ZZkQ8D5orkq+MYOvQaqgFIHsom9vSinV
-	 7RR/QDDCemM+0blfVkS/DHE4HEv0vZBDzSiYA9SyFlCt6ZiIzLtGejwlGx8iU/9b6W
-	 jDhLIq4ZFZnjGwZxWL67wAHXMZ4zUMfY+unU94Qc8rXQuNr+Mxxcpy8DbHawHU3KZ2
-	 JPgG9cLXr8fvFsfV+RmBusS9ziPscrH9qo3leD7VK1Cxe9QAzph40WdBoGmEEd5GNI
-	 ZT2AeIGJNvE8Q==
-From: Kalle Valo <kvalo@kernel.org>
-To: Shengyu Qu <wiagn233@outlook.com>
-Cc: kernel test robot <lkp@intel.com>,  nbd@nbd.name,  lorenzo@kernel.org,
-  ryder.lee@mediatek.com,  shayne.chen@mediatek.com,
-  sean.wang@mediatek.com,  matthias.bgg@gmail.com,
-  angelogioacchino.delregno@collabora.com,  chui-hao.chiu@mediatek.com,
-  emmanuel.grumbach@intel.com,  StanleyYP.Wang@mediatek.com,
-  meichia.chiu@mediatek.com,  johannes.berg@intel.com,
-  quic_adisi@quicinc.com,  allen.ye@mediatek.com,  bo.jiao@mediatek.com,
-  linux-wireless@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  linux-arm-kernel@lists.infradead.org,
-  linux-mediatek@lists.infradead.org,  oe-kbuild-all@lists.linux.dev,
-  Sujuan Chen <sujuan.chen@mediatek.com>
-Subject: Re: [PATCH v5] wifi: mt76: mt7915: add wds support when wed is enabled
-References: <TY3P286MB2611CB2F4F5FA27D782AA80A98BC2@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
-	<202408041039.BqVRJOqp-lkp@intel.com>
-	<TY3P286MB2611C363575C77278946A4B498BD2@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
-Date: Sun, 04 Aug 2024 12:56:07 +0300
-In-Reply-To: <TY3P286MB2611C363575C77278946A4B498BD2@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
-	(Shengyu Qu's message of "Sun, 4 Aug 2024 17:28:20 +0800")
-Message-ID: <87o7687gso.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1722769468; c=relaxed/simple;
+	bh=y8faSsy3GMkV8+GvhOybBMLzLnoGhpSAV3sFruwiIFM=;
+	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=oZJBVlwXjzqAGyyhb2V0XwgqHDszrEhMU/5BuVaIwCQBFzVlyde0LC/QE/KUewQRuuUYyA8r05SH+vwNwOgMaQzNU8hncaYOWd0Tr1yiRlCGSBwvtXUR3iarWZwnTZw/Uqxqw+GMSK01ABPMbChCSSr5oQElTHHe8L015QBE704=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Po1AmelC; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5af6a1afa7bso11002377a12.1
+        for <linux-wireless@vger.kernel.org>; Sun, 04 Aug 2024 04:04:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1722769465; x=1723374265; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sdhNjk3nlOQkHBfzhb9NvFAahhOzsHQURPXiWKXebgw=;
+        b=Po1AmelCAj1I3shf9bDUU9AKOag2KjZZV9kJbfcHimukVUVR8XZR1q7D+pZLecwAyB
+         d73YyZd4pYQxrUWP9PqmLjfWf44IV53FbZYmumdsh1vw9mHLvcGup2rm+SvjoqUlQCmf
+         UOa7ajqT7b9DdqPgoL/4cgVz+EmOklgEEg5IA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722769465; x=1723374265;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sdhNjk3nlOQkHBfzhb9NvFAahhOzsHQURPXiWKXebgw=;
+        b=wxaa9yccCQx/G9Tz+EYs5y3qIgTwRq2ccvmGyVElc+z17vwa8nRonLxVbPSU7WI9mk
+         XFdhOXygvCqUwItqdHW++w9dibucbx6DYpKIb6JAkx3GFf9yBYHeTtlLKRBifl8JAFUj
+         U6YzzgFJktAFQ0XKXWBcaFWd+6MPyuxoPvvzaPMbwD7VlHw1rTA+6JmzU7oziEazL+LX
+         guabehFzvZzarvlSRDaL/nARkTg0Jg0FA+G83TIRQbr670VvnXcKr2lLwGtat0L+EOon
+         07fsiI/tJeZUgAZbrzqgvf56QtDdnunmTarZQlChrHzis3bUNJO0bahvRXdnVZSPcy/h
+         Z+SQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWoUMnNps+m48Ffe0Wuh3czqSWL68l4cZ87hUINNLWHYg4QeCV5sx5Jd1I0QCF1GEPiQhnNNETxWpPYeaK/b1ZL84ejp6120FY1SYs7XTY=
+X-Gm-Message-State: AOJu0YwkvsVHhdP55CG2Ny3KNBUN16BK152se0TOGf3GXGPWZ1mOsGuD
+	QLI4b8irGtMkZo4/6UVyuCJuEi3FGDVSG0zotuheKlzdvMufG5oDoQuCn70wDw==
+X-Google-Smtp-Source: AGHT+IEFqAVqs9u6rzoc50lPwUIjKavo1CRQSGr6cYJBJrJGT82XBk1cw13Mtd2Q46406CN2I5y5xg==
+X-Received: by 2002:aa7:df97:0:b0:5a2:68a2:ae52 with SMTP id 4fb4d7f45d1cf-5b7f0dcf294mr6016827a12.0.1722769465200;
+        Sun, 04 Aug 2024 04:04:25 -0700 (PDT)
+Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5b83c32be67sm3453474a12.97.2024.08.04.04.04.24
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 04 Aug 2024 04:04:24 -0700 (PDT)
+From: Arend Van Spriel <arend.vanspriel@broadcom.com>
+To: Aditya Garg <gargaditya08@live.com>, Janne Grunau <j@jannau.net>, <devnull+j.jannau.net@kernel.org>
+CC: <asahi@lists.linux.dev>, <brcm80211-dev-list.pdl@broadcom.com>, <brcm80211@lists.linux.dev>, <kvalo@kernel.org>, <linus.walleij@linaro.org>, LKML <linux-kernel@vger.kernel.org>, <linux-wireless@vger.kernel.org>, Hector Martin <marcan@marcan.st>, <stable@vger.kernel.org>
+Date: Sun, 04 Aug 2024 13:04:25 +0200
+Message-ID: <1911d0fdea8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <MA0P287MB021725DE596EF4E5294FA5DDB8BD2@MA0P287MB0217.INDP287.PROD.OUTLOOK.COM>
+References: <MA0P287MB021718EE92FC809CB2BB0F82B8BD2@MA0P287MB0217.INDP287.PROD.OUTLOOK.COM>
+ <306c3010-a6ac-4f8a-a986-88c1a137ed84@app.fastmail.com>
+ <MA0P287MB021725DE596EF4E5294FA5DDB8BD2@MA0P287MB0217.INDP287.PROD.OUTLOOK.COM>
+User-Agent: AquaMail/1.51.5 (build: 105105504)
+Subject: Re: [PATCH] wifi: brcmfmac: cfg80211: Handle SSID based pmksa deletion
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; format=flowed; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 
-Shengyu Qu <wiagn233@outlook.com> writes:
+On August 4, 2024 8:27:04 AM Aditya Garg <gargaditya08@live.com> wrote:
 
-> This error report is a false warning. "struct mtk_wed_device" needs
-> "CONFIG_NET_MEDIATEK_SOC_WED" to be defined.
+> Hi
+>
+> WPA3 is broken on T2 Macs (atleast on 4364) for a long time. I was under 
+> the impression brcmfmac doesn't support it.
+>
+> Anyways, I've asked a fedora user to compile a kernel with CONFIG_BRCMDBG.
+>
+> If you want logs without it, look over here:
+> https://pastebin.com/fnhH30JA
 
-I didn't investigate anything but based on your description that sounds
-wrong. The code should should not be compiled if it depends on
-CONFIG_NET_MEDIATEK_SOC_WED but that's not set. We have zero rule for
-compilation errors or warnings.
+Not sure what to make of this. The interface comes up without any obvious 
+error and then another interface is created by another driver:
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+[ 7.006441] rtl8xxxu 1-8.3:1.0 wlp0s20f0u8u3: renamed from wlan0
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+That interface connects:
+
+[ 9.103599] wlp0s20f0u8u3: authenticate with 98:da:c4:af:1f:c2 (local 
+address=2e:87:9a:a9:38:66)
+[ 9.103605] wlp0s20f0u8u3: send auth to 98:da:c4:af:1f:c2 (try 1/3)
+[ 9.109051] wlp0s20f0u8u3: authenticated
+[ 9.110202] wlp0s20f0u8u3: associate with 98:da:c4:af:1f:c2 (try 1/3)
+[ 9.126945] wlp0s20f0u8u3: RX AssocResp from 98:da:c4:af:1f:c2 
+(capab=0x1431 status=0 aid=5)
+[ 9.127678] usb 1-8.3: rtl8xxxu_bss_info_changed: HT supported
+[ 9.128606] wlp0s20f0u8u3: associated
+
+Is brcmfmac setup to connect to the same access point. There are a lot of 
+unknowns here.
+
+Regards,
+Arend
+
+> ________________________________________
+> From: Janne Grunau <j@jannau.net>
+> Sent: 04 August 2024 11:49
+> To: Aditya Garg; devnull+j.jannau.net@kernel.org
+> Cc: arend.vanspriel@broadcom.com; asahi@lists.linux.dev; 
+> brcm80211-dev-list.pdl@broadcom.com; brcm80211@lists.linux.dev; 
+> kvalo@kernel.org; linus.walleij@linaro.org; LKML; 
+> linux-wireless@vger.kernel.org; Hector Martin; stable@vger.kernel.org
+> Subject: Re: [PATCH] wifi: brcmfmac: cfg80211: Handle SSID based pmksa deletion
+>
+> Hej,
+>
+> On Sun, Aug 4, 2024, at 05:10, Aditya Garg wrote:
+>> Hi
+>>
+>> wpa_supplicant 2.11 broke Wi-Fi on T2 Macs as well, but this patch
+>> doesn't seem to be fixing Wi-Fi. Instead, it's breaking it even on
+>> older 2.10 wpa_supplicant. Tested by a user on bcm4364b2 wifi chip with
+>> a WPA2-PSK [AES] network. dmesg output:
+>
+> On bcm4377, bcm4378 and bcm4388 (chipsets used in M1/M2 macs)
+> WPA3-SAE and WPA2-PSK still works with Fedora's wpa_supplicant 2.10.
+> Fedora's package carried SAE offload patches in 2.10.
+> wpa_supplicant 2.11 still doesn't work with this patch but it prevents a
+> kernel oops after a disconnect (due to an authentication timeout in the
+> current broken state) in wpa_supplicant.
+>
+> I'll continue to debug the wpa_supplicant 2.11
+>
+> best regards,
+> Janne
+
+
+
 
