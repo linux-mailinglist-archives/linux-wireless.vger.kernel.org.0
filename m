@@ -1,78 +1,78 @@
-Return-Path: <linux-wireless+bounces-10937-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10938-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B75709476AF
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 10:04:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 257D49476BB
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 10:05:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E86551C20F3A
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 08:04:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6ED5EB21937
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 08:05:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBEA9155753;
-	Mon,  5 Aug 2024 08:02:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A093156F2A;
+	Mon,  5 Aug 2024 08:02:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JOHj6gTS"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="V5G3sj3M"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276B51552FC
-	for <linux-wireless@vger.kernel.org>; Mon,  5 Aug 2024 08:02:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4498156862
+	for <linux-wireless@vger.kernel.org>; Mon,  5 Aug 2024 08:02:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722844938; cv=none; b=hu99oMRtGqT5tF3V/VbKPNqwEA9/u+JLv/5/x5zb09p8ysnPS+DRUsuCP8gLdML6TD5S7nrBE1RMctv/SS1teXSb/YYGMvJbvfTIZh1a+eSQ0IcfqRFrhtSJQBIvHmhQZrI9LlTXz8TwgewImNUg9iMJfeHDAUcvjcgvwWUFu30=
+	t=1722844942; cv=none; b=IuxHuRIVxXOQ1P9T6GSvLQsWHOP08uIGo/hoVIfg+/coKlgB9VQHOUMWzeRMLhOQZpjwW++3YnGFksJbfMHqLNMV+SEkrNCzTADRd09iDpogyDYyFZOoKyWGWi0g8Ud3XRhVWLNnEp8/Eeomd4yQrfcj3qMvTlEXrE8YrutNaS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722844938; c=relaxed/simple;
-	bh=T/Lr5R3ZpRsNgk4LNzf4i3JOmIq6wzNv8zvkRdHooAQ=;
+	s=arc-20240116; t=1722844942; c=relaxed/simple;
+	bh=Yo+Ns2b3URhNU5TB+CvEDymuFVQ4WXMZyjfGA5NqkhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=La27ptZY2uCXZxbHuomPGdjPKkSHVeiQRCWeTVARHtwaKkIGOHEnPyopKuxKfNXUx5HMYWf2mAQUy+Ym0JQSsHht9kDaOb2aAD8JZhtV0mhaM0/51Uh3L2K6Ie6hjTf6Y6MjkKE+pnIDHnV3+umz6eHxPq+O84xJIUJRZrSJjZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JOHj6gTS; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=KsW0Mfxh6FUtTEWKTnyajkewQjIrHlqOzWTmj+VYpM3U3C7T6IN219jA4VKkUrcYcNFAFVu7P939m41yKZI5q1xsw1LaZcU81hcUG8BBva5DcVupf6gs0M6eTRDFsYMA2jzSE/GOAECR3ZyvLlvpx54V/kJUn71oixjn1ByHZgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=V5G3sj3M; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722844936;
+	s=mimecast20190719; t=1722844939;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VIcu667vSRZRiKEHakO3GAIgbzPtgHQvNS3his8mZEo=;
-	b=JOHj6gTSxw2RHUI3fLDTy2KoN14j6gEqkXxo/Y/jmfl7g40YvTc108L7xM7vteXDGjF2uA
-	pJ291aZvBDpMd6NqVgFhkyS3hTsnJnTIk5+zvZ4/Dfr8KPB9LW3k4b3vwSuTD0v5igK4Qz
-	+tbzWQ6tV82P+XkTaWdx+jEuPcOIAuQ=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=o1zjbMHqB0PmusT+nYJ2VtJ9oVjApsikg9aShs5wyaI=;
+	b=V5G3sj3MkUOA87kGLPR3oSzmqobG157A4LOli+OGJw2g7ML8dUVZCkfDBwhQ82I8MnKUQ3
+	H5OwAjFeH6vNMOZpmnCX3AnOiEUzQ6zmgKS8wBiQwCLXqKaES9JR9ZJ5B98ajdPR/Wx0tn
+	pupetqzaOvUcE7mKqzU9ZGCPvEORGe8=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-386-ggwB1IMjPMK1irMuc2ACOA-1; Mon, 05 Aug 2024 04:02:14 -0400
-X-MC-Unique: ggwB1IMjPMK1irMuc2ACOA-1
-Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-52f89aa7019so1007877e87.2
-        for <linux-wireless@vger.kernel.org>; Mon, 05 Aug 2024 01:02:14 -0700 (PDT)
+ us-mta-611-VhQdcpjANti3zzDeOuxq7w-1; Mon, 05 Aug 2024 04:02:16 -0400
+X-MC-Unique: VhQdcpjANti3zzDeOuxq7w-1
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-a77cd5611c5so79463066b.2
+        for <linux-wireless@vger.kernel.org>; Mon, 05 Aug 2024 01:02:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722844933; x=1723449733;
+        d=1e100.net; s=20230601; t=1722844935; x=1723449735;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VIcu667vSRZRiKEHakO3GAIgbzPtgHQvNS3his8mZEo=;
-        b=wWNaYPfiM60zZQew+PlIk6c99WHo3X7xmA6cV5AMRPozgf69ZHPvCgM7g+9ZH+97ZC
-         4TOxcu7BxYu//mhNADJyI/aPALT+of6uGFZMvnaeOp3XrabOLgZzaq1dhZ13/GPes4mK
-         SLi/7TlpPrY524oNwVFmiSYUh0JGVqJIFElMEtASJOQvixBWvwGi5HspkJ6xFZK9Rh2u
-         qTWpcqQv2PkCdK7540t0IZyobJKr5Il51w4R1Jy+gI/MQBWVuHZXMKktU2StLTXwJg8G
-         94B/8vAjFptpnr36rjH5msqvvcorR7q+enJikgHtEARY7WJwp775/zJU5KcAopwt0Os9
-         TDiw==
-X-Forwarded-Encrypted: i=1; AJvYcCW2zC2rhV17wMkf24DgfRfMkme/xsfKGe2u7AdPCk+gmDtfrNL/LonvE5NVihQINhbnAYEmM9vnpCfkSux+YA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJvfrS2eSvO/Dk44hXXO40CeDcw7moIbej3icsYKqEQxD+zHTa
-	I+uZGCJtaClds1l9KOfj8WITKaNY3r0Vvm+TsT86Kn1vfFM/W+YRnLBJ0FukqpfcIflZopOK2mI
-	smwFD5guV62z6YjZrT9eLZLUhQTWDLlLMKrbdKLhzsRkbTP4ULsy1Ant8rBlWKuBA
-X-Received: by 2002:a05:6512:1307:b0:52e:ccf5:7c3e with SMTP id 2adb3069b0e04-530bb3bd143mr3696336e87.7.1722844933150;
-        Mon, 05 Aug 2024 01:02:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHwcaUohyPPqlQalc7Ds7xBVbw16Nwe2cO8DiX+lGZ7pO2pVwTP2h5T41+23RRZFgk9XX2iTg==
-X-Received: by 2002:a05:6512:1307:b0:52e:ccf5:7c3e with SMTP id 2adb3069b0e04-530bb3bd143mr3696318e87.7.1722844932669;
-        Mon, 05 Aug 2024 01:02:12 -0700 (PDT)
+        bh=o1zjbMHqB0PmusT+nYJ2VtJ9oVjApsikg9aShs5wyaI=;
+        b=ksdLm4ARx/ijmt4KmiFRSo4t28sbI+spuloH4IfBogReOxG+zRVCcpeSF9tPihjF+g
+         GoY5+nOH1wCfsxzLbolR3RKRxsfb9ANJsN4IGOBWAe+6763848riRocJKwpk2DuZZZCT
+         XGFKk8oXNtSLsNKfpd3/QZEtCC0vfcXijX7VSggwbZQJ+0owOXZegSe2YPTb9bqOKX5Q
+         pdhTvyOwf95qwXpqKvK5GhOyax+RGoZdib+pSD8zSkBOSaVOkear6DE3x47A6SMO69be
+         kjrxCJhoY03Q59fLGsaw4UdyGJTRBj91GGqwjzclpBYc0q0MjH3tvNcVbrdtXjYfsiTZ
+         7BtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWOxGp2J7VdlaR1/CXiKl3plRxnitYao3kzvcShS5E9ywMRZ3WXkxhTNoi2vNKCm90jIp1ipSUnn45TFaiddA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwH65Bttp4EmiwxEbrjB9tZDK9frtzhTBG7fZPqbxoULLEgPb2n
+	vXJvvpOIwpHwhWi+qrPXs57/B54sy1d12EdyknwEZzL0u/qo+3MqMo947PdvoN5UT7zfPXSmeN1
+	AzMDHVBMVshL6kVAdELWHCtzSSfsFPLka/7NK6giC6zekTW8D2lKexF9mtottd/LK
+X-Received: by 2002:a17:906:f583:b0:a7a:81bb:ceeb with SMTP id a640c23a62f3a-a7dc4ae7defmr473033566b.0.1722844935124;
+        Mon, 05 Aug 2024 01:02:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHKuHik2ajcs17LmubcaIaCUkrAqH7M1NRkgMmBZVBefF6pfGv29aIhP8ECYMtriJwflIFmgg==
+X-Received: by 2002:a17:906:f583:b0:a7a:81bb:ceeb with SMTP id a640c23a62f3a-a7dc4ae7defmr473031766b.0.1722844934632;
+        Mon, 05 Aug 2024 01:02:14 -0700 (PDT)
 Received: from eisenberg.fritz.box (200116b82df07e000a5f4891a3b0b190.dip.versatel-1u1.de. [2001:16b8:2df0:7e00:a5f:4891:a3b0:b190])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7de8d0868bsm277958966b.143.2024.08.05.01.02.10
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7de8d0868bsm277958966b.143.2024.08.05.01.02.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Aug 2024 01:02:12 -0700 (PDT)
+        Mon, 05 Aug 2024 01:02:14 -0700 (PDT)
 From: Philipp Stanner <pstanner@redhat.com>
 To: Jonathan Corbet <corbet@lwn.net>,
 	Damien Le Moal <dlemoal@kernel.org>,
@@ -126,9 +126,9 @@ Cc: linux-doc@vger.kernel.org,
 	linux-pci@vger.kernel.org,
 	linux-serial@vger.kernel.org,
 	linux-sound@vger.kernel.org
-Subject: [PATCH v2 05/10] intel_th: pci: Replace deprecated PCI functions
-Date: Mon,  5 Aug 2024 10:01:32 +0200
-Message-ID: <20240805080150.9739-7-pstanner@redhat.com>
+Subject: [PATCH v2 06/10] wifi: iwlwifi: replace deprecated PCI functions
+Date: Mon,  5 Aug 2024 10:01:33 +0200
+Message-ID: <20240805080150.9739-8-pstanner@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240805080150.9739-2-pstanner@redhat.com>
 References: <20240805080150.9739-2-pstanner@redhat.com>
@@ -149,39 +149,48 @@ pcim_request_all_regions()
 
 Signed-off-by: Philipp Stanner <pstanner@redhat.com>
 ---
- drivers/hwtracing/intel_th/pci.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/hwtracing/intel_th/pci.c b/drivers/hwtracing/intel_th/pci.c
-index 0d7b9839e5b6..e9d8d28e055f 100644
---- a/drivers/hwtracing/intel_th/pci.c
-+++ b/drivers/hwtracing/intel_th/pci.c
-@@ -23,7 +23,6 @@ enum {
- 	TH_PCI_RTIT_BAR		= 4,
- };
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+index 719ddc4b72c5..6b282276e7b5 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+@@ -3534,7 +3534,6 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
+ 	struct iwl_trans_pcie *trans_pcie, **priv;
+ 	struct iwl_trans *trans;
+ 	int ret, addr_size;
+-	void __iomem * const *table;
+ 	u32 bar0;
  
--#define BAR_MASK (BIT(TH_PCI_CONFIG_BAR) | BIT(TH_PCI_STH_SW_BAR))
+ 	/* reassign our BAR 0 if invalid due to possible runtime PM races */
+@@ -3657,22 +3656,15 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
+ 		}
+ 	}
  
- #define PCI_REG_NPKDSC	0x80
- #define NPKDSC_TSACT	BIT(5)
-@@ -83,10 +82,16 @@ static int intel_th_pci_probe(struct pci_dev *pdev,
- 	if (err)
- 		return err;
+-	ret = pcim_iomap_regions_request_all(pdev, BIT(0), DRV_NAME);
++	ret = pcim_request_all_regions(pdev, DRV_NAME);
+ 	if (ret) {
+-		dev_err(&pdev->dev, "pcim_iomap_regions_request_all failed\n");
++		dev_err(&pdev->dev, "pcim_request_all_regions failed\n");
+ 		goto out_no_pci;
+ 	}
  
--	err = pcim_iomap_regions_request_all(pdev, BAR_MASK, DRIVER_NAME);
-+	err = pcim_request_all_regions(pdev, DRIVER_NAME);
- 	if (err)
- 		return err;
- 
-+	if (!pcim_iomap(pdev, TH_PCI_CONFIG_BAR, 0))
-+		return -ENOMEM;
-+
-+	if (!pcim_iomap(pdev, TH_PCI_STH_SW_BAR, 0))
-+		return -ENOMEM;
-+
- 	if (pdev->resource[TH_PCI_RTIT_BAR].start) {
- 		resource[TH_MMIO_RTIT] = pdev->resource[TH_PCI_RTIT_BAR];
- 		r++;
+-	table = pcim_iomap_table(pdev);
+-	if (!table) {
+-		dev_err(&pdev->dev, "pcim_iomap_table failed\n");
+-		ret = -ENOMEM;
+-		goto out_no_pci;
+-	}
+-
+-	trans_pcie->hw_base = table[0];
++	trans_pcie->hw_base = pcim_iomap(pdev, 0, 0);
+ 	if (!trans_pcie->hw_base) {
+-		dev_err(&pdev->dev, "couldn't find IO mem in first BAR\n");
++		dev_err(&pdev->dev, "pcim_iomap failed\n");
+ 		ret = -ENODEV;
+ 		goto out_no_pci;
+ 	}
 -- 
 2.45.2
 
