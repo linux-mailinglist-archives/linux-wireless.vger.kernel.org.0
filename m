@@ -1,41 +1,41 @@
-Return-Path: <linux-wireless+bounces-10929-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10930-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7895094762E
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 09:36:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 771A5947634
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 09:36:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB2811F21D29
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 07:36:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99B7E1C2138F
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 07:36:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E516150990;
-	Mon,  5 Aug 2024 07:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DFE415443D;
+	Mon,  5 Aug 2024 07:35:04 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from APC01-SG2-obe.outbound.protection.outlook.com (mail-sgaapc01on2103.outbound.protection.outlook.com [40.107.215.103])
+Received: from APC01-SG2-obe.outbound.protection.outlook.com (mail-sgaapc01on2105.outbound.protection.outlook.com [40.107.215.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D53814F9E6;
-	Mon,  5 Aug 2024 07:34:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.215.103
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A715015383D;
+	Mon,  5 Aug 2024 07:35:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.215.105
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722843300; cv=fail; b=eSPjTkArRQSNkGW2RJPy1bGuTLKqneY/pXxocvSOGUpA5NJsM4aQ8GAjKjj+twCaBKqy4r4HVSurQ9olzTIlQ7djVldrt+gGs+uqNTOENMTe4bqUyUNpWmQBJWfqy6artby9YWoJPhl1vjCod6DSl27QWKF6PXYUhYlsZ68ZEXw=
+	t=1722843304; cv=fail; b=WYUSijFlvE2rDoyyM1PoOd02y/OEntdMMqbLOweu9C2pENTVWofKBfSP8efegjO5+QJcrydsbuB7FvgMUOftavHHW7mip4+wPryFp9GRYN1m1UX7hs9nr0SK2Q5TZloNF/8vyjJC1yUpYczSMPE6IAZPgiL+63SrFZFDVQpvk00=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722843300; c=relaxed/simple;
-	bh=mR5ASTteSedxZYVvoFpPHRrXeiLivjQPNPfhqqaTliU=;
+	s=arc-20240116; t=1722843304; c=relaxed/simple;
+	bh=z/JMI1ioorJsC5rpgzgpHUYttwWsJh+gThzg/mM6S6Y=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ifU1QEbLXfLScqEKqNDBkMStPzUQQY8GPjgFicL+iDLhQ69PTzEK22KUSsv0rsT1uvozQpKJKNTF2Qx6/Cd5fvv7HyXCtLYzUUR9nWpcnLC4AdwnXZnKHDiri7M7j7+wNneWLR4ms/PeA+ZWXjxarYeQrYOGlH62H1fuDXOKkM0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wesion.com; spf=pass smtp.mailfrom=wesion.com; arc=fail smtp.client-ip=40.107.215.103
+	 Content-Type:MIME-Version; b=d7tj6cvwI2zkmLcGfYo3qmlZjpASELebJUe8BPWars6V4Xu0dje/y/tNK0yHOqp6aHpdwDAoRhL93A/o9jKaQf+B1FyTCcevZB6dXmkotWStgQ7ph/bWdT1VOHGwTMHJXZsTYC4d7gdGkcgMxbBdUGVnK1tUWpdlMPj84jStJ2I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wesion.com; spf=pass smtp.mailfrom=wesion.com; arc=fail smtp.client-ip=40.107.215.105
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wesion.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wesion.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cSlPd/BwpkOvHpAM0kLbAAhOTlmF8kGrSFW3+44RyXosLksazJ0sS9ILbISfVTRluCqiD3ENZir4Ho9mOyyC8Xj2DVbXIsUaWJ2+Czni3ku5dtVn/kc0BKcJneoogGKnEU+kEFla6oUUFIlqQ3+BUwF8mScrPYduP28iTfpPvdB/L27cgGfnAki9jYw4rVKq08BHZ/j5UKrsXKX9Z3GykQbrAUXCQMH/e0lQ+Wa7YY3WG4Tlh4oNX87YEFI2F1Jex27wZ0IIMJfmgCy7CPEd8TIt/353CkqTjAHXEh+fXGCJIbSB6KN5LsHlONPyhQNxl+tgbaHIlGilLcupXaFiww==
+ b=EsOi/Dd7SUc4tCyf+0rRJhpuvr+i6WWoLa4lF9XD8/EWLJsvJndbVHpJJM9UhTL/HxFDHJdkZS4JCAmEyqEHsc3/w06jh2M85ci6U8ii7JTAQsJ8qm37u2sLiEu+CA8LxKliH8FQ9xzORThaz5enR8/zkYOqDPArsLxHj2drbBvHD6PPIak4M8g+lJbWkf4lQZKYWqCqF1+lAjQdRNI4dS15ul6mDENo4r85jLDcdXqOjC7hO7hU0RJD5UtpeekZMlbPIAUxE9EqoHp5+nchA9COegilqNzcoiyw8GCIeUXOilnNIs087kKBcq6dAVYbO8cWJtgV4jnZkHoRN7f4dw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NtKNOAdCR0o6r0PtMudKDdC8rQXrTjHn5IR45Tic5BE=;
- b=cO6PCC3uMyd6jZ2JAmxN8sz3V55VCP9xv5A7YxHuZF6v2Minj/l45sHuFdlZQaCvEmkEcwiGf95QFM4Q5RcMWz+8Gwv0bk6fWUcwSdqqToZZ7ReR7c9GBamxUGom3IK2XQ8+Ovtuc2LWCI79vf2QdpZ9UCmP3sCqGeiCljxnRMYi8zN79C01nOiM70A3RaQwgReY1bu5k/DBGCGTVRPuYsTOiXJNQ83Av+3ewWCD+oRETqjD1tc2aoWjPjTa2OUXgdbMl2VZOXFt0oBOw+q0WIl2IvaJUdVveQ1aFijc3/A+98x+ekia04i4QGmCo9vIU5laCMZ9edrDSorKjpMFfQ==
+ bh=ZWqN2d2WV5H3rjNNY/SuBA/Is/G4XlfllfCP+MEOJRA=;
+ b=XFzC0gNcMCnjGypfjcecaBtnTLldAKrBEdVYSeUNB0bPOdGZuc2NUu8rP81JelDyiWH+FZhBvROY+9PtVpUeTYFEWTU4skL4vzFrxDtQ+B9vw4GbAbcDZWh9hKrZ7Bj3v+F29CsC6+l8QY0l+Uq/62hAEAcblMbVUCsUZwba33Tj97dqISdBtc+YVGtv2ruOGrgRcNTWdwSNVJ1Rcgvavv6fLZD81mf8U1mNUinjM6K+Ekcl8TRSbZup0SaHIA/Js3Gzglrkul2smZA+hIBIRdYuj8+Wf7yags9ZPByXWOLlPVhSl9t7rzkDox1mAMr0iZw3oOanxMmgDoImTemnsA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=wesion.com; dmarc=pass action=none header.from=wesion.com;
  dkim=pass header.d=wesion.com; arc=none
@@ -45,11 +45,11 @@ Received: from TYZPR03MB7001.apcprd03.prod.outlook.com (2603:1096:400:26a::14)
  by JH0PR03MB8052.apcprd03.prod.outlook.com (2603:1096:990:37::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.25; Mon, 5 Aug
- 2024 07:34:55 +0000
+ 2024 07:34:59 +0000
 Received: from TYZPR03MB7001.apcprd03.prod.outlook.com
  ([fe80::78dd:5e68:1a9c:36c0]) by TYZPR03MB7001.apcprd03.prod.outlook.com
  ([fe80::78dd:5e68:1a9c:36c0%6]) with mapi id 15.20.7828.024; Mon, 5 Aug 2024
- 07:34:55 +0000
+ 07:34:59 +0000
 From: Jacobe Zang <jacobe.zang@wesion.com>
 To: robh@kernel.org,
 	krzk+dt@kernel.org,
@@ -79,9 +79,9 @@ Cc: efectn@protonmail.com,
 	brcm80211-dev-list.pdl@broadcom.com,
 	nick@khadas.com,
 	Jacobe Zang <jacobe.zang@wesion.com>
-Subject: [PATCH v8 4/5] wifi: brcmfmac: Add optional lpo clock enable support
-Date: Mon,  5 Aug 2024 15:34:24 +0800
-Message-Id: <20240805073425.3492078-5-jacobe.zang@wesion.com>
+Subject: [PATCH v8 5/5] wifi: brcmfmac: add flag for random seed during firmware download
+Date: Mon,  5 Aug 2024 15:34:25 +0800
+Message-Id: <20240805073425.3492078-6-jacobe.zang@wesion.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240805073425.3492078-1-jacobe.zang@wesion.com>
 References: <20240805073425.3492078-1-jacobe.zang@wesion.com>
@@ -97,85 +97,86 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: TYZPR03MB7001:EE_|JH0PR03MB8052:EE_
-X-MS-Office365-Filtering-Correlation-Id: 55bd7744-8b7c-4290-d2f3-08dcb52119ae
+X-MS-Office365-Filtering-Correlation-Id: d3a8ced0-665e-415f-a0fb-08dcb5211c39
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|52116014|366016|7416014|376014|1800799024|38350700014|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?qWTY8P+ttPHeEnTsUhC/kQGdTpuT6U98oa8yOZ0na2dt9opM9kLbJ62HOQrR?=
- =?us-ascii?Q?OG5a5qLaVsTLoPehIpFIuyxWo/00Ek+yFB9xyegPXSiEH9Jns4BtzwH3dsaH?=
- =?us-ascii?Q?wpPu1iIEEhXD5Vsr1PfHD8NbrBpG5Zm4W3uIqfU8nADh8+LtetKu+BYz3tSa?=
- =?us-ascii?Q?1nbGrA3ZG9FZoY4TR6wZxAQicEfqvZtLM6Qxion9ZhfDX5nAdijTg1XYdo36?=
- =?us-ascii?Q?H7nKGQ3koV/PK54TfTNS9gbUG2h9d6nCZqwYjmKxA7wC/vNEGLhJZM/UxQxt?=
- =?us-ascii?Q?VDaqV1IA3alxL6QJe7pMUxDhT8fIRy5ioLf5vfJR+E2LbfNpmkS9UFS9JYfv?=
- =?us-ascii?Q?S+RwURE/I5nXIqiIn6oGswIRUZaEHTg3O5u8mfEPC2bPS1tkJqR5i3XGJu2h?=
- =?us-ascii?Q?C+dE++itf/79ohheSPKoLc26GKz6lUt27uvX9sXP36RDAD1iOvwqxNs3rTsd?=
- =?us-ascii?Q?kI4PZJ3vdp+ycYbKPPDsW+OVm2ZDGVoWYpbi71vbbAZvk4mM6O94pmVBUl2c?=
- =?us-ascii?Q?BrWYovXDHNkagkjvSTDgrmCH8+eEmgbGGgG1wielfLCoCD+WlrlSUTlu2eql?=
- =?us-ascii?Q?zKWjDLRADKv+wMuoHExanuC3AiYCTIgLScCphILhN4x2ntBTHnBYFw0gb/vb?=
- =?us-ascii?Q?b2Ln9XZ18EIGK5ShHaqgpCirsMy6sh8jsAKESV2gE/z7YXd9f2XSy5HHpk3I?=
- =?us-ascii?Q?Z4v9lw6u6lF6srZG4jMJxi8sUpAPphwddgi5iM+VRluev/jY0hI/53fKdzM0?=
- =?us-ascii?Q?yydgeN7B1c6E/VuwdeEoOqeQCo1Nx3+czrpAXs/z5sk+KRwQIvfRAi4lutUF?=
- =?us-ascii?Q?EIXo6aX/FxpJzOKr3MowmJ9BVyeo2jR0neKMcrjIW0JQLuA628GoXwR3Q5XV?=
- =?us-ascii?Q?T2Y1HSKlgU4YTIsODqENz69SEWF3fPXETRfkSRws/BICb8MIENxQdt1UeGoJ?=
- =?us-ascii?Q?1CQko9voVVsWj9yFgTnDIIvI5Nv8mSzIxWCERuDOKRyrwEZOwosvUVVMtIsT?=
- =?us-ascii?Q?KhsPO3XjHkN9LeUNc8nWtvN3tRt/yhSmRKazSkX6tjxpwIiVQ+qHzYSqCxP9?=
- =?us-ascii?Q?t68T6eATNltsWdk3l0On4A1y9vplmlDiR66jflWWBTdYrVnJy7n4t5KWRmU0?=
- =?us-ascii?Q?Wqb0O0WYltUL6gVHrGOH5mjkS3/poOATq2EzycFXq5AhaxeUzJe+ue29HsIi?=
- =?us-ascii?Q?ufLtw+H05rtYHTDjD4CSM6T6zYDpR4UxB5sLncs6o4ZaDWXDsSV3SUlep5PJ?=
- =?us-ascii?Q?u/yrJV/fEeU59FD1OPiZNECBhGBc93F0rHfVqZ3twEGvOoIK8kfZ8CBI2EsT?=
- =?us-ascii?Q?GPNmPYolCwCdxCfnttvFdF1RqFB3DuUZFWE/QjuVrT+hCh7mZxqUqwkTnVlR?=
- =?us-ascii?Q?/Ng6iFdgTH8kXsXhTX3ewaV/meNekMz3Sgxd2yJzY4ZR7KlAzve2AlangMIE?=
- =?us-ascii?Q?8A0h9UBYyNE=3D?=
+	=?us-ascii?Q?EXdolgxyHNPHKSU2Cy7zag3D3+4AVKB2GDJx7UUHW6noZ5EjUSnfMIkSHsWP?=
+ =?us-ascii?Q?+9cfEUc9HlLmPMLXRrC48zwZ0spt/j1zZ3ZYBpFyY0uJOHJA0HfO/+aQfwnG?=
+ =?us-ascii?Q?xWasPeBF0HXjp5WEKqLowOZgjAV4lZDqjacddEMkHmJDssLZyNDxkZSH5gl2?=
+ =?us-ascii?Q?7BQxvcm2lCiL5BGa5AVmGVUclN34c0AlHkSzTxZUw67yQwa5lUWZmMjUPIXq?=
+ =?us-ascii?Q?kh1n7v6VjkWwwrJNHt7JmYR3ke84RhhjAGQwe+uYcK3qMn3v/JUwuOd3eioq?=
+ =?us-ascii?Q?UYN4XoHxPgoTwKPiHuYKbLHK3/SA0caeRLiHI9t9K1H+nT55mozNQckjbi83?=
+ =?us-ascii?Q?M07Yt3qvDykDMxOG5kWr9TMfIi1Wl8hDKGDWo2ph168G5J9a5IgNBvuDTghR?=
+ =?us-ascii?Q?mn25vyymfp38BeRuDop+6n9f4BaCyoqIBCrPcm5w2JL5Hy1bTR086VsDTztQ?=
+ =?us-ascii?Q?1DK+CpqmQQiSEJj8+zRK+tRawTqcXpjZA237clPuKmr4V+ZhJRAxSNYmtQVK?=
+ =?us-ascii?Q?5V4MAQdlkPSsOe32E+E1HVFW6mygKlXN3mDRYmUrAgy3TgqJcRi244ca/Tzo?=
+ =?us-ascii?Q?8kjThWz3DiqSqjRWD+AMsULUxqK1UbzOJihHtpqzQSQbkVpDu/ua/VUun13z?=
+ =?us-ascii?Q?qnSiLwwMdKwn3dLtprmkJxXIW1n3p9M3sG9v86wh3LsHcesbR9fQNpHEt7tV?=
+ =?us-ascii?Q?GDyDUAfDGDQMz120pQ1XSpTSeEU+PJnPZPfnf2ZFivH+qh2HjgZTa0SumTBl?=
+ =?us-ascii?Q?E6ULMglpxJXTV/2neDbLKxeZpWCjS4sEAkiKWF/l7E5O5rdzvjgvOJgrXSOx?=
+ =?us-ascii?Q?JNf9HosvHmGzc/ahNA9vm0LLRP4ydWMX9YD0Nu+BegMbjjaU3nrSEZavvMrt?=
+ =?us-ascii?Q?u++TeCYywqik9CF+cR2Bh+NlDhCxq2IU/k7gwBLOksClZZ4N5ZARybtCStML?=
+ =?us-ascii?Q?TYZF+vIqn6ZV7Gpvq2liUlkoCfFNuL76z1bVrsnfIYGjFDw6Aaw+X0HmZeEW?=
+ =?us-ascii?Q?QlLQqh6kgp1HK2q4tq57DkKoBE4Hi2sFdIwW7UFHIMrRnmFDxztPNk0lke0W?=
+ =?us-ascii?Q?4a/ABgD8EyWvtqIUvZQYaiZb6LF5OPJEZPOATqkfsFSRyOcCubdJ5XgaF6cu?=
+ =?us-ascii?Q?9n0Oto5qziA4TYhhIaIIoLdxBhrqx69aWbpny97hEGNnKCQp6G5qDxD59PAs?=
+ =?us-ascii?Q?UN/pxx5Ur+1+oYvat3Nw0WgFYIs9FieXtCxGgEIOlXO6km9+xEjBBY24U9BF?=
+ =?us-ascii?Q?iXvW3dJDv9sqiTKCdG0VAhY65y6FK2NyNNoZSd9LQzrVveshYg6Go1WDc3Zo?=
+ =?us-ascii?Q?d+wfB6VoPMYoNNo9nDK/Kko9aRHWXoS3cOwj7sFGE6tnqVqZnW1I6uNg4tVH?=
+ =?us-ascii?Q?pvxn0NQARM0HAXM5n80D8Xt+JvLpSLWtCIzqlHi8MqbJ7kgIZb0/L73cCiRT?=
+ =?us-ascii?Q?AbfQHHVBReI=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYZPR03MB7001.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(366016)(7416014)(376014)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?v82F1kl0Vu52tLec+sk/ZankSfjCPrgnotSxRPzmgxJTs98lxOtP7SlePmyC?=
- =?us-ascii?Q?Wr+rJPj7Bfof/PUc7zbdzaLCH4c4LquxQ2CUgnwwM8qg2hBOa85n69XN/0KX?=
- =?us-ascii?Q?OBf4uR1ZdFCNqeUSycZEAPQ/2xxd1WU+go64Hg8u8R8xJB4BYwOcIyqUlgLN?=
- =?us-ascii?Q?+BeR76+hJE1tY1oh8WbjOc+FYKhTFzwPEbg/qa+Xb61XfyGxXi2CBqOLhUTO?=
- =?us-ascii?Q?u3SCpK9C6l4ql8VAU6bynFw+WVGoyCtrQL1+CNLVUW479UYjF1KQchrn8W81?=
- =?us-ascii?Q?M8zALeaoCFSVthYuprblUQ4YJ9OIvY6FzvRdOcqs2eZvkCQcpBOL2cKcUR+F?=
- =?us-ascii?Q?n+gNej3h/LBLpH7LoceINmL+uuJcB0fdLgA8XZdptjaWmBoN03fl444mN2jH?=
- =?us-ascii?Q?O9LoYnA9cyh3JLNhhwWaEseNoJ0Cb7CMYUWC8Kioa0gZ6VabWBFp+GvhKrcn?=
- =?us-ascii?Q?kYgiZZ5jc3/uZqIOlROGYcVqI5Y0W9xmaXBw9d23wDfCvacrXMbuws9xSDTr?=
- =?us-ascii?Q?TDLC3exdyy9cYqiqvKiZUGCTnupvlvCnXZquVRSQUV3J3WDuKcznQY+22T+m?=
- =?us-ascii?Q?Vr0PLhpVjwOahlsv02LVD/Jz/GbOKFTe2tYQbgIM8YRuAst+aX3yaJVbgfux?=
- =?us-ascii?Q?kEJSz1RwclDur1KNm5uktGRPfdlN811tFfZOtG9pIF8jSP3ayr7udemlJXgs?=
- =?us-ascii?Q?+ZmHI9Qc2kgyF+lR+yKpOlOdClVFWcu6ecF1GP0zkBQfkrXmfNNVTyKQvvTA?=
- =?us-ascii?Q?N+jIUwYGzbBKNFjjvZqIN0muPHatSs80xQGNDujfz6f1RJHBHG0g5H1xuQtv?=
- =?us-ascii?Q?RDtz/qFNo5vLYg2E4QyKckZqDRSfImboedIztFyK2yfWjDOncICfyyNRnZVG?=
- =?us-ascii?Q?6OVLoeFz1AHXfs0/5jUVQFVbffx3W+z3QHj8VB/8ASA5mjg+GVPUCNvo05RF?=
- =?us-ascii?Q?S5AY2LBCOFQIH0nVBoqQ9W36ATmuymVRgKyf4yiC+N+2ddcltyOm1VSHUdiy?=
- =?us-ascii?Q?BcYXO3j3bKkGErdpg8IyXKrPXoOKvGrBnD/PW9OOfuBedlAt+bvfKNNCtQbt?=
- =?us-ascii?Q?Fkc3CtT5yYMi7lijKzaHeMFeIiw7N8syiIm5gqlaAxR+/DDzSQIpg4M1+dyD?=
- =?us-ascii?Q?eenjBuQQ3cGHvOjH9X402qnvazOIM76WPEIrxdzYiH/O4XrOT2GRFimEMAba?=
- =?us-ascii?Q?H9xAXyGTeMXIhjpGzE0kDApO842iG/SYwlxLypG7fhRfKynhGCr7wGP6Yrkc?=
- =?us-ascii?Q?O1OUA+moiUisX72AHgQFZtmWPFdG7/hBhAFkP3deUO5r6mF7ENVkrnKnWbRu?=
- =?us-ascii?Q?GqvexbMrJfoq3WQA6HcUp/3BlNRW5Yz5YVRQVV/1YSDGHH0wi/2PJaHH8a8A?=
- =?us-ascii?Q?pF5piv/Q47W3npD768vIu+IMAplxVXgjvtz6eX1r940yPHbz3L7nbV9fT/0C?=
- =?us-ascii?Q?Z2EkhvcA1vbKwbQlRXnt2XSIwkAGnsx3QiA6JjnYZqgPHPxkR3cWRZxV3C3s?=
- =?us-ascii?Q?/IMThy9TaDEG81OWvlY7SfwW+g8zSFmYTk3lCFBZXoOTlbaIrVYCaScLDXSC?=
- =?us-ascii?Q?pmW1Kju2EcxWF8+L50jBS662VFuYWbw96Fz4B6Dv?=
+	=?us-ascii?Q?Eb7JHmxOY1/Zho0yKofC4KoNfiTrSgvItQnCEPxCWl+maoDC+CJJBbiOPi2k?=
+ =?us-ascii?Q?M+IoT0wCj5UK3UnMYfX4+vHrWEMPDjZW7dPuJSHtXVBuRWkthW2sVQQ2a4/I?=
+ =?us-ascii?Q?+ZMgeA5cPDfdP3+3q3gxQFUjLoqDgLHcPWYpr18HYaNBK3DSuRoiLzGL3cGw?=
+ =?us-ascii?Q?n/yLO79pggH4eplG+mMqhXrAOs16xIVL/nuzwPTALI8DgDRsAGGaUPkrjHbv?=
+ =?us-ascii?Q?xbC0MB+lbsHMcG/07hReUpT2MPkVD9oRzEB+5hd41bGxfCPwYdA9TaTT0MQ2?=
+ =?us-ascii?Q?aO/nD5kgWVS0MMTYqbD06Sv9nDjIgFH2f47Fk1xvQ6WB1NyDwVF9WICQxhOZ?=
+ =?us-ascii?Q?576eI4EgHEJ2d1FI5GNmgpzc6HKonaZ6KSplcYnq2MyVZNu6tKvJeI0s9F9w?=
+ =?us-ascii?Q?hubkN0kU+6nDZiqCmV8AFV5nUHtlcrHYsTMPRjP6Pg8PA+RydvBrEItjDeKc?=
+ =?us-ascii?Q?JRypnHWKbtPlveL41aGDF+a3AZ4b7L99DfvcICJcHIs59uMPdndC+96ewp5m?=
+ =?us-ascii?Q?vQzniNn0Dl7+8vao/8QuPQ/3FN3fOANXx98Ajts5ByQkzVxBsTlGpiTpVfz3?=
+ =?us-ascii?Q?C4pnECebLuY8cgad8yem4CyTuvBLH3RkdvqK4fscUtjsllQb1WJb5ofHDau7?=
+ =?us-ascii?Q?tHnN5bZTLQM4c+mFaguA3JP2/obFBxF9zfUXk07p0LH2TIXPJwe/aC9V/lYF?=
+ =?us-ascii?Q?KvJh9AehdulLZQbxVxfKkqUrD18DLn/0NkByZs0Eej8d+0somSjs8cacDcMf?=
+ =?us-ascii?Q?7bQBwswkOY7nG92lAWKuM0Xzunrx6iyysmpTYV+aKKeRtWSESpAm4LzOBc0a?=
+ =?us-ascii?Q?Wokb4iMkKm9RYdKnEDPM7GnBEEbYnIwXc3DYW9LSqajWHCKhEAUPaMS2Brhx?=
+ =?us-ascii?Q?XRwkasZoWpEK1PLWxBFXVFSmtgRAKvVXi263/NefCayWX5fSFJGHIBFY5Xm0?=
+ =?us-ascii?Q?vxuaP86mn7BxlROtWJgkMB4gMiXrffirvFT/lVnEryqRySmS6ohnSiSBKGUs?=
+ =?us-ascii?Q?p8JMysl3+uB/m+mHlTSbLMgeQBPhMjt0PGUa4uYxIKUcL1afRHRYMxiku5yW?=
+ =?us-ascii?Q?9WgmfGrtSime4Xm9w65ageYKnyRWAtmYCyYYHto5xNg6BOFyL2RhFXs5jXe0?=
+ =?us-ascii?Q?X94yXax1bTInegv4btfs1P+V82sL4o1KtmDl67lRvZfxA62yIAPBUpo++pJO?=
+ =?us-ascii?Q?cOt2EmZ9SXBREVO+ajKXJTFlQA9IChse8/mz5OUU9YZbs0dF6g+jq69leYe1?=
+ =?us-ascii?Q?trBPlV3ZHxtN9sj7/W2uhLiNag9k7Ri+nwLGGzODaH3JSVsD2tG00jaBeJay?=
+ =?us-ascii?Q?3tWjuUrQUHc2OY5+Q+bDmfZ2mHXv+g9ZtwA85br541Bm0nF1DS2fRxdPMSgF?=
+ =?us-ascii?Q?9/EMOCFtV0qb63xAbKUgi2Xk73ffLwYJnziZJg0ZbxnVRsmv26uqGdq8kMGB?=
+ =?us-ascii?Q?6B0U9csEr6iiRtdEVsyCBlLLeY9paSFHnzqG8Sn5TGB0V75s8q4/31BPTa3K?=
+ =?us-ascii?Q?pSIF+ZBUiPblLSFjBPq2SyC2vy2FCf3QNfASSI83M5EObQJZi56/12Iq3AeR?=
+ =?us-ascii?Q?3HlJWQNZH3Ow8dKz2KXKhSNHB2pMmwRwDLy2WdLw?=
 X-OriginatorOrg: wesion.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 55bd7744-8b7c-4290-d2f3-08dcb52119ae
+X-MS-Exchange-CrossTenant-Network-Message-Id: d3a8ced0-665e-415f-a0fb-08dcb5211c39
 X-MS-Exchange-CrossTenant-AuthSource: TYZPR03MB7001.apcprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2024 07:34:55.1137
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2024 07:34:59.3135
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 2dc3bd76-7ac2-4780-a5b7-6c6cc6b5af9b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9WMnInpc1akEKpQ/2VMO7QNG+vIMUK95niz4QmVglXLJ8zd10Ic5FzjbEgebvdKrT+65niVIx/nVKXBfMbkBiA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: +Rm1Wj/piI2O+G59wwlpRSaZi36kImTbscFsG72Fpz9Y5PXfF99sB37jiLnWVpsrK9tlS7qzPVubEMeWZ87L0w==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: JH0PR03MB8052
 
-WiFi modules often require 32kHz clock to function. Add support to
-enable the clock to PCIe driver and move "brcm,bcm4329-fmac" check
-to the top of brcmf_of_probe. Change function prototypes from void
-to int and add appropriate errno's for return values that will be
-send to bus when error occurred.
+Providing the random seed to firmware was tied to the fact that the
+device has a valid OTP, which worked for some Apple chips. However,
+it turns out the BCM43752 device also needs the random seed in order
+to get firmware running. Suspect it is simply tied to the firmware
+branch used for the device. Introducing a mechanism to allow setting
+it for a device through the device table.
 
 Co-developed-by: Ondrej Jirman <megi@xff.cz>
 Signed-off-by: Ondrej Jirman <megi@xff.cz>
@@ -183,269 +184,156 @@ Co-developed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
 ---
- .../broadcom/brcm80211/brcmfmac/bcmsdh.c      |  4 +++
- .../broadcom/brcm80211/brcmfmac/common.c      |  6 +++-
- .../wireless/broadcom/brcm80211/brcmfmac/of.c | 28 +++++++++++++------
- .../wireless/broadcom/brcm80211/brcmfmac/of.h |  9 +++---
- .../broadcom/brcm80211/brcmfmac/pcie.c        |  3 ++
- .../broadcom/brcm80211/brcmfmac/sdio.c        | 18 ++++++++----
- .../broadcom/brcm80211/brcmfmac/usb.c         |  3 ++
- 7 files changed, 52 insertions(+), 19 deletions(-)
+ .../broadcom/brcm80211/brcmfmac/pcie.c        | 52 ++++++++++++++++---
+ .../broadcom/brcm80211/include/brcm_hw_ids.h  |  2 +
+ 2 files changed, 46 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-index 13391c2d82aae..ee3ca85c4a47b 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-@@ -951,6 +951,10 @@ int brcmf_sdiod_probe(struct brcmf_sdio_dev *sdiodev)
- 		ret = -ENODEV;
- 		goto out;
- 	}
-+	if (IS_ERR(sdiodev->bus)) {
-+		ret = PTR_ERR(sdiodev->bus);
-+		goto out;
-+	}
- 	brcmf_sdiod_host_fixup(sdiodev->func2->card->host);
- out:
- 	if (ret)
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-index b24faae35873d..6c5d26f9b7661 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-@@ -561,8 +561,12 @@ struct brcmf_mp_device *brcmf_get_module_param(struct device *dev,
- 	if (!found) {
- 		/* No platform data for this device, try OF and DMI data */
- 		brcmf_dmi_probe(settings, chip, chiprev);
--		brcmf_of_probe(dev, bus_type, settings);
- 		brcmf_acpi_probe(dev, bus_type, settings);
-+		i = brcmf_of_probe(dev, bus_type, settings);
-+		if (i < 0) {
-+			kfree(settings);
-+			settings = ERR_PTR(i);
-+		}
- 	}
- 	return settings;
- }
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-index e406e11481a62..5f61363fb5d0e 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-@@ -6,6 +6,7 @@
- #include <linux/of.h>
- #include <linux/of_irq.h>
- #include <linux/of_net.h>
-+#include <linux/clk.h>
- 
- #include <defs.h>
- #include "debug.h"
-@@ -65,17 +66,21 @@ static int brcmf_of_get_country_codes(struct device *dev,
- 	return 0;
- }
- 
--void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
--		    struct brcmf_mp_device *settings)
-+int brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
-+		   struct brcmf_mp_device *settings)
- {
- 	struct brcmfmac_sdio_pd *sdio = &settings->bus.sdio;
- 	struct device_node *root, *np = dev->of_node;
-+	struct clk *clk;
- 	const char *prop;
- 	int irq;
- 	int err;
- 	u32 irqf;
- 	u32 val;
- 
-+	if (!np || !of_device_is_compatible(np, "brcm,bcm4329-fmac"))
-+		return 0;
-+
- 	/* Apple ARM64 platforms have their own idea of board type, passed in
- 	 * via the device tree. They also have an antenna SKU parameter
- 	 */
-@@ -105,7 +110,7 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
- 		board_type = devm_kstrdup(dev, tmp, GFP_KERNEL);
- 		if (!board_type) {
- 			of_node_put(root);
--			return;
-+			return 0;
- 		}
- 		strreplace(board_type, '/', '-');
- 		settings->board_type = board_type;
-@@ -113,8 +118,13 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
- 		of_node_put(root);
- 	}
- 
--	if (!np || !of_device_is_compatible(np, "brcm,bcm4329-fmac"))
--		return;
-+	clk = devm_clk_get_optional_enabled(dev, "lpo");
-+	if (!IS_ERR_OR_NULL(clk)) {
-+		brcmf_dbg(INFO, "enabling 32kHz clock\n");
-+		clk_set_rate(clk, 32768);
-+	} else if (PTR_ERR_OR_ZERO(clk) == -EPROBE_DEFER) {
-+		return -EPROBE_DEFER;
-+	}
- 
- 	err = brcmf_of_get_country_codes(dev, settings);
- 	if (err)
-@@ -123,23 +133,25 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
- 	of_get_mac_address(np, settings->mac);
- 
- 	if (bus_type != BRCMF_BUSTYPE_SDIO)
--		return;
-+		return 0;
- 
- 	if (of_property_read_u32(np, "brcm,drive-strength", &val) == 0)
- 		sdio->drive_strength = val;
- 
- 	/* make sure there are interrupts defined in the node */
- 	if (!of_property_present(np, "interrupts"))
--		return;
-+		return 0;
- 
- 	irq = irq_of_parse_and_map(np, 0);
- 	if (!irq) {
- 		brcmf_err("interrupt could not be mapped\n");
--		return;
-+		return 0;
- 	}
- 	irqf = irqd_get_trigger_type(irq_get_irq_data(irq));
- 
- 	sdio->oob_irq_supported = true;
- 	sdio->oob_irq_nr = irq;
- 	sdio->oob_irq_flags = irqf;
-+
-+	return 0;
- }
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.h
-index 10bf52253337e..ae124c73fc3b7 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.h
-@@ -3,11 +3,12 @@
-  * Copyright (c) 2014 Broadcom Corporation
-  */
- #ifdef CONFIG_OF
--void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
--		    struct brcmf_mp_device *settings);
-+int brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
-+		   struct brcmf_mp_device *settings);
- #else
--static void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
--			   struct brcmf_mp_device *settings)
-+static int brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
-+			  struct brcmf_mp_device *settings)
- {
-+	return 0;
- }
- #endif /* CONFIG_OF */
 diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-index 06698a714b523..c34405a6d38b8 100644
+index c34405a6d38b8..e88fa4cd62a1d 100644
 --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
 +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-@@ -2457,6 +2457,9 @@ brcmf_pcie_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 		ret = -ENOMEM;
- 		goto fail;
- 	}
-+	ret = PTR_ERR_OR_ZERO(devinfo->settings);
-+	if (ret < 0)
-+		goto fail;
+@@ -66,6 +66,7 @@ BRCMF_FW_DEF(4365C, "brcmfmac4365c-pcie");
+ BRCMF_FW_DEF(4366B, "brcmfmac4366b-pcie");
+ BRCMF_FW_DEF(4366C, "brcmfmac4366c-pcie");
+ BRCMF_FW_DEF(4371, "brcmfmac4371-pcie");
++BRCMF_FW_CLM_DEF(43752, "brcmfmac43752-pcie");
+ BRCMF_FW_CLM_DEF(4377B3, "brcmfmac4377b3-pcie");
+ BRCMF_FW_CLM_DEF(4378B1, "brcmfmac4378b1-pcie");
+ BRCMF_FW_CLM_DEF(4378B3, "brcmfmac4378b3-pcie");
+@@ -104,6 +105,7 @@ static const struct brcmf_firmware_mapping brcmf_pcie_fwnames[] = {
+ 	BRCMF_FW_ENTRY(BRCM_CC_43664_CHIP_ID, 0xFFFFFFF0, 4366C),
+ 	BRCMF_FW_ENTRY(BRCM_CC_43666_CHIP_ID, 0xFFFFFFF0, 4366C),
+ 	BRCMF_FW_ENTRY(BRCM_CC_4371_CHIP_ID, 0xFFFFFFFF, 4371),
++	BRCMF_FW_ENTRY(BRCM_CC_43752_CHIP_ID, 0xFFFFFFFF, 43752),
+ 	BRCMF_FW_ENTRY(BRCM_CC_4377_CHIP_ID, 0xFFFFFFFF, 4377B3), /* revision ID 4 */
+ 	BRCMF_FW_ENTRY(BRCM_CC_4378_CHIP_ID, 0x0000000F, 4378B1), /* revision ID 3 */
+ 	BRCMF_FW_ENTRY(BRCM_CC_4378_CHIP_ID, 0xFFFFFFE0, 4378B3), /* revision ID 5 */
+@@ -358,6 +360,7 @@ struct brcmf_pciedev_info {
+ 			  u16 value);
+ 	struct brcmf_mp_device *settings;
+ 	struct brcmf_otp_params otp;
++	bool fwseed;
+ #ifdef DEBUG
+ 	u32 console_interval;
+ 	bool console_active;
+@@ -1720,14 +1723,14 @@ static int brcmf_pcie_download_fw_nvram(struct brcmf_pciedev_info *devinfo,
+ 		memcpy_toio(devinfo->tcm + address, nvram, nvram_len);
+ 		brcmf_fw_nvram_free(nvram);
  
- 	bus = kzalloc(sizeof(*bus), GFP_KERNEL);
- 	if (!bus) {
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-index 6b38d9de71af6..7d79e2db201b5 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-@@ -3943,7 +3943,7 @@ static const struct brcmf_buscore_ops brcmf_sdio_buscore_ops = {
- 	.write32 = brcmf_sdio_buscore_write32,
+-		if (devinfo->otp.valid) {
++		if (devinfo->fwseed) {
+ 			size_t rand_len = BRCMF_RANDOM_SEED_LENGTH;
+ 			struct brcmf_random_seed_footer footer = {
+ 				.length = cpu_to_le32(rand_len),
+ 				.magic = cpu_to_le32(BRCMF_RANDOM_SEED_MAGIC),
+ 			};
+ 
+-			/* Some Apple chips/firmwares expect a buffer of random
++			/* Some chips/firmwares expect a buffer of random
+ 			 * data to be present before NVRAM
+ 			 */
+ 			brcmf_dbg(PCIE, "Download random seed\n");
+@@ -2399,6 +2402,37 @@ static void brcmf_pcie_debugfs_create(struct device *dev)
+ }
+ #endif
+ 
++struct brcmf_pcie_drvdata {
++	enum brcmf_fwvendor vendor;
++	bool fw_seed;
++};
++
++enum {
++	BRCMF_DRVDATA_CYW,
++	BRCMF_DRVDATA_BCA,
++	BRCMF_DRVDATA_WCC,
++	BRCMF_DRVDATA_WCC_SEED,
++};
++
++static const struct brcmf_pcie_drvdata drvdata[] = {
++	[BRCMF_DRVDATA_CYW] = {
++		.vendor = BRCMF_FWVENDOR_CYW,
++		.fw_seed = false,
++	},
++	[BRCMF_DRVDATA_BCA] = {
++		.vendor = BRCMF_FWVENDOR_BCA,
++		.fw_seed = false,
++	},
++	[BRCMF_DRVDATA_WCC] = {
++		.vendor = BRCMF_FWVENDOR_WCC,
++		.fw_seed = false,
++	},
++	[BRCMF_DRVDATA_WCC_SEED] = {
++		.vendor = BRCMF_FWVENDOR_WCC,
++		.fw_seed = true,
++	},
++};
++
+ /* Forward declaration for pci_match_id() call */
+ static const struct pci_device_id brcmf_pcie_devid_table[];
+ 
+@@ -2480,9 +2514,10 @@ brcmf_pcie_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	bus->bus_priv.pcie = pcie_bus_dev;
+ 	bus->ops = &brcmf_pcie_bus_ops;
+ 	bus->proto_type = BRCMF_PROTO_MSGBUF;
+-	bus->fwvid = id->driver_data;
+ 	bus->chip = devinfo->coreid;
+ 	bus->wowl_supported = pci_pme_capable(pdev, PCI_D3hot);
++	bus->fwvid = drvdata[id->driver_data].vendor;
++	devinfo->fwseed = drvdata[id->driver_data].fw_seed;
+ 	dev_set_drvdata(&pdev->dev, bus);
+ 
+ 	ret = brcmf_alloc(&devinfo->pdev->dev, devinfo->settings);
+@@ -2668,14 +2703,14 @@ static const struct dev_pm_ops brcmf_pciedrvr_pm = {
+ 		BRCM_PCIE_VENDOR_ID_BROADCOM, (dev_id), \
+ 		PCI_ANY_ID, PCI_ANY_ID, \
+ 		PCI_CLASS_NETWORK_OTHER << 8, 0xffff00, \
+-		BRCMF_FWVENDOR_ ## fw_vend \
++		BRCMF_DRVDATA_ ## fw_vend \
+ 	}
+ #define BRCMF_PCIE_DEVICE_SUB(dev_id, subvend, subdev, fw_vend) \
+ 	{ \
+ 		BRCM_PCIE_VENDOR_ID_BROADCOM, (dev_id), \
+ 		(subvend), (subdev), \
+ 		PCI_CLASS_NETWORK_OTHER << 8, 0xffff00, \
+-		BRCMF_FWVENDOR_ ## fw_vend \
++		BRCMF_DRVDATA_ ## fw_vend \
+ 	}
+ 
+ static const struct pci_device_id brcmf_pcie_devid_table[] = {
+@@ -2703,9 +2738,10 @@ static const struct pci_device_id brcmf_pcie_devid_table[] = {
+ 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4366_5G_DEVICE_ID, BCA),
+ 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4371_DEVICE_ID, WCC),
+ 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43596_DEVICE_ID, CYW),
+-	BRCMF_PCIE_DEVICE(BRCM_PCIE_4377_DEVICE_ID, WCC),
+-	BRCMF_PCIE_DEVICE(BRCM_PCIE_4378_DEVICE_ID, WCC),
+-	BRCMF_PCIE_DEVICE(BRCM_PCIE_4387_DEVICE_ID, WCC),
++	BRCMF_PCIE_DEVICE(BRCM_PCIE_4377_DEVICE_ID, WCC_SEED),
++	BRCMF_PCIE_DEVICE(BRCM_PCIE_4378_DEVICE_ID, WCC_SEED),
++	BRCMF_PCIE_DEVICE(BRCM_PCIE_4387_DEVICE_ID, WCC_SEED),
++	BRCMF_PCIE_DEVICE(BRCM_PCIE_43752_DEVICE_ID, WCC_SEED),
+ 
+ 	{ /* end: all zeroes */ }
  };
- 
--static bool
-+static int
- brcmf_sdio_probe_attach(struct brcmf_sdio *bus)
- {
- 	struct brcmf_sdio_dev *sdiodev;
-@@ -3953,6 +3953,7 @@ brcmf_sdio_probe_attach(struct brcmf_sdio *bus)
- 	u32 reg_val;
- 	u32 drivestrength;
- 	u32 enum_base;
-+	int ret = -EBADE;
- 
- 	sdiodev = bus->sdiodev;
- 	sdio_claim_host(sdiodev->func1);
-@@ -4001,8 +4002,9 @@ brcmf_sdio_probe_attach(struct brcmf_sdio *bus)
- 						   BRCMF_BUSTYPE_SDIO,
- 						   bus->ci->chip,
- 						   bus->ci->chiprev);
--	if (!sdiodev->settings) {
-+	if (IS_ERR_OR_NULL(sdiodev->settings)) {
- 		brcmf_err("Failed to get device parameters\n");
-+		ret = PTR_ERR_OR_ZERO(sdiodev->settings);
- 		goto fail;
- 	}
- 	/* platform specific configuration:
-@@ -4071,7 +4073,7 @@ brcmf_sdio_probe_attach(struct brcmf_sdio *bus)
- 	/* allocate header buffer */
- 	bus->hdrbuf = kzalloc(MAX_HDR_READ + bus->head_align, GFP_KERNEL);
- 	if (!bus->hdrbuf)
--		return false;
-+		return -ENOMEM;
- 	/* Locate an appropriately-aligned portion of hdrbuf */
- 	bus->rxhdr = (u8 *) roundup((unsigned long)&bus->hdrbuf[0],
- 				    bus->head_align);
-@@ -4082,11 +4084,11 @@ brcmf_sdio_probe_attach(struct brcmf_sdio *bus)
- 	if (bus->poll)
- 		bus->pollrate = 1;
- 
--	return true;
-+	return 0;
- 
- fail:
- 	sdio_release_host(sdiodev->func1);
--	return false;
-+	return ret;
- }
- 
- static int
-@@ -4446,6 +4448,7 @@ struct brcmf_sdio *brcmf_sdio_probe(struct brcmf_sdio_dev *sdiodev)
- 	struct brcmf_sdio *bus;
- 	struct workqueue_struct *wq;
- 	struct brcmf_fw_request *fwreq;
-+	int probe_attach_result;
- 
- 	brcmf_dbg(TRACE, "Enter\n");
- 
-@@ -4474,7 +4477,8 @@ struct brcmf_sdio *brcmf_sdio_probe(struct brcmf_sdio_dev *sdiodev)
- 	bus->brcmf_wq = wq;
- 
- 	/* attempt to attach to the dongle */
--	if (!(brcmf_sdio_probe_attach(bus))) {
-+	probe_attach_result = brcmf_sdio_probe_attach(bus);
-+	if (probe_attach_result < 0) {
- 		brcmf_err("brcmf_sdio_probe_attach failed\n");
- 		goto fail;
- 	}
-@@ -4546,6 +4550,8 @@ struct brcmf_sdio *brcmf_sdio_probe(struct brcmf_sdio_dev *sdiodev)
- 
- fail:
- 	brcmf_sdio_remove(bus);
-+	if (probe_attach_result < 0)
-+		return ERR_PTR(probe_attach_result);
- 	return NULL;
- }
- 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-index 9a105e6debe1f..f7db46ae44906 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-@@ -1272,6 +1272,9 @@ static int brcmf_usb_probe_cb(struct brcmf_usbdev_info *devinfo,
- 		ret = -ENOMEM;
- 		goto fail;
- 	}
-+	ret = PTR_ERR_OR_ZERO(devinfo->settings);
-+	if (ret < 0)
-+		goto fail;
- 
- 	if (!brcmf_usb_dlneeded(devinfo)) {
- 		ret = brcmf_alloc(devinfo->dev, devinfo->settings);
+diff --git a/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h b/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
+index 44684bf1b9acc..c1e22c589d85e 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
++++ b/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
+@@ -52,6 +52,7 @@
+ #define BRCM_CC_43664_CHIP_ID		43664
+ #define BRCM_CC_43666_CHIP_ID		43666
+ #define BRCM_CC_4371_CHIP_ID		0x4371
++#define BRCM_CC_43752_CHIP_ID		43752
+ #define BRCM_CC_4377_CHIP_ID		0x4377
+ #define BRCM_CC_4378_CHIP_ID		0x4378
+ #define BRCM_CC_4387_CHIP_ID		0x4387
+@@ -94,6 +95,7 @@
+ #define BRCM_PCIE_4366_5G_DEVICE_ID	0x43c5
+ #define BRCM_PCIE_4371_DEVICE_ID	0x440d
+ #define BRCM_PCIE_43596_DEVICE_ID	0x4415
++#define BRCM_PCIE_43752_DEVICE_ID	0x449d
+ #define BRCM_PCIE_4377_DEVICE_ID	0x4488
+ #define BRCM_PCIE_4378_DEVICE_ID	0x4425
+ #define BRCM_PCIE_4387_DEVICE_ID	0x4433
 -- 
 2.34.1
 
