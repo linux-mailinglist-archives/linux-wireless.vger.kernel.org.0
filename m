@@ -1,123 +1,124 @@
-Return-Path: <linux-wireless+bounces-10914-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10920-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B0DC947564
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 08:40:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C020947590
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 08:50:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F86C282596
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 06:40:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37ED7280CD1
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 06:50:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B7F149DE2;
-	Mon,  5 Aug 2024 06:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 811741448D2;
+	Mon,  5 Aug 2024 06:50:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="ehzcHu/o"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-22.smtpout.orange.fr [80.12.242.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C081E4B2
-	for <linux-wireless@vger.kernel.org>; Mon,  5 Aug 2024 06:39:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17FF913F43B
+	for <linux-wireless@vger.kernel.org>; Mon,  5 Aug 2024 06:50:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722839977; cv=none; b=ElezzkcD5gStRzrznS1OEzbZBydEWuQaCWMWYw8oFvrd+4NUNj/3+KrHj6YhOMufWH5nFKtCnl7cNHT7AE8FkWlZ/02lU0V1RtEh35TqzaffsI25pCf5oD0/ztl5d8c0APgYpzcmjevYuqsIwo/EoXXXR9yfO9Ve00vKzPhKl9Q=
+	t=1722840623; cv=none; b=DFGLfSg6dtqwjbKSwNwjgaMDGUwcbhm2MobWUXj1t0vh8L0iBghw/OoE7e+tuU8dZ+YKuSPnNRUdjqvHZqZq0btw16LIGV6nLPdZeLheZecfNhse+W8eVuM9s05bpJ6AAdUCYB0i1m64sTiME+Sk7JncCQj462E7TqOOJMCrx+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722839977; c=relaxed/simple;
-	bh=rDHqS/kVURL2gTGl82KO6UdTC3NaPTLnwlW/E1+VadU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=bBZqeL76kaH4HqMRViXCL0R15LDbUufncgOZRzLgkhveqTJ76gzK+NvDWGyi7QpLhcBsWPUR5njCJhvdrzGMO9CoG3xVva5oB+3riuYD6QyouFtM/yZWWw1Vxk4obRnAms9O3M/m1utypaHl0pAaJEy4fDJwthrWfFwMLQq/afE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sarNI-00039F-Rh; Mon, 05 Aug 2024 08:39:20 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sarNH-004e4A-MS; Mon, 05 Aug 2024 08:39:19 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sarNH-000M8i-1w;
-	Mon, 05 Aug 2024 08:39:19 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 05 Aug 2024 08:39:15 +0200
-Subject: [PATCH v4 3/3] wifi: mwifiex: add support for WPA-PSK-SHA256
+	s=arc-20240116; t=1722840623; c=relaxed/simple;
+	bh=UF7et2QqACNgp6O1SUQXlgg+/VGMgi+IZGWPoTIYheU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=T6ve9dSS2emTUmQPSlD5XDELv4kmKOFmyLpuRBDlvfI8R8PxamfbRH6hjTb9FkKfAEUlxMre700uwHqKEkHuCXQr4nuq9CLjNOX/qCAarpWhi+53GI4j3KwLPpYZagM0/XcB/J9vxMIrwUp4MAqOMJGnHle9qktOKM2wwwZkL3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=ehzcHu/o; arc=none smtp.client-ip=80.12.242.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from fedora.home ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id arOns5eD41n2IarOnsUUL2; Mon, 05 Aug 2024 08:40:55 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1722840055;
+	bh=bhu0kj/E+bTLzKxE31tljXZoIT0Y2DQ63u7XVU/JDPc=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=ehzcHu/oAgH+tJ/8KcriYSs256oALIWR7NiwC25+g8kjWSAuXtxBPK8jP6uoIWYEX
+	 m8K9a8b+oSN0bX1ZgBFfvaWs6rZYxWOOpVkrGWsEvV6FUdXsJM7fMap3f6yPEVp7WQ
+	 zU/SehWywmRy1ZoSMB27mvnmi9pt7nvyRpCGDEE2VIOZkMbhaDt0n/eAA0rVX7EYaG
+	 vitndP/CswLd1ezgrPSET3uqUDBtWAmKJYaVC4bjFqSx9EADHBfB8iXf8buvw52QLc
+	 21Xw1i4Lk3/ZTSEuKoPAUAWASMoK4EwJ9IJtyfzPJCJPicCvtcG9vnT8lTsf7xeLrq
+	 1fdKgLL3K3WDQ==
+X-ME-Helo: fedora.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 05 Aug 2024 08:40:55 +0200
+X-ME-IP: 90.11.132.44
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: stas.yakovlev@gmail.com,
+	kvalo@kernel.org,
+	gregkh@linuxfoundation.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH v2 0/3] Constify struct lib80211_crypto_ops
+Date: Mon,  5 Aug 2024 08:40:36 +0200
+Message-ID: <cover.1722839425.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240805-mwifiex-wpa-psk-sha256-v4-3-e1eee80508e6@pengutronix.de>
-References: <20240805-mwifiex-wpa-psk-sha256-v4-0-e1eee80508e6@pengutronix.de>
-In-Reply-To: <20240805-mwifiex-wpa-psk-sha256-v4-0-e1eee80508e6@pengutronix.de>
-To: Brian Norris <briannorris@chromium.org>, 
- Francesco Dolcini <francesco@dolcini.it>, Kalle Valo <kvalo@kernel.org>
-Cc: David Lin <yu-hao.lin@nxp.com>, linux-wireless@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>, 
- Francesco Dolcini <francesco.dolcini@toradex.com>
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1722839959; l=1911;
- i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=rDHqS/kVURL2gTGl82KO6UdTC3NaPTLnwlW/E1+VadU=;
- b=WwHZbWKf8ooh/sB3mfP82ij81YNBAXRGXGjJIzMOkyWhpmpCJ6vSa4/Ppn7fXm/IfKe0IzQJp
- lvvG/fxjRo7CQvHOSf3Bj7JKsB/EncbCwrVBlO+xucpw+iBLy3QuczV
-X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
- pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: s.hauer@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+Content-Transfer-Encoding: 8bit
 
-This adds support for the WPA-PSK AKM suite with SHA256 as hashing
-method (WPA-PSK-SHA256). Tested with a wpa_supplicant provided AP
-using key_mgmt=WPA-PSK-SHA256.
+This serie constify struct lib80211_crypto_ops. This sutructure is
+mostly some function pointers, so having it in a read-only section
+when possible is safer.
 
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Link: https://lore.kernel.org/r/20240717-mwifiex-wpa-psk-sha256-v2-2-eb53d5082b62@pengutronix.de
-Acked-by: Brian Norris <briannorris@chromium.org>
-Link: https://lore.kernel.org/r/20240723-mwifiex-wpa-psk-sha256-v3-3-025168a91da1@pengutronix.de
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/net/wireless/marvell/mwifiex/fw.h      | 1 +
- drivers/net/wireless/marvell/mwifiex/uap_cmd.c | 3 +++
- 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
-index 65799ae3bc723..e91def0afa14d 100644
---- a/drivers/net/wireless/marvell/mwifiex/fw.h
-+++ b/drivers/net/wireless/marvell/mwifiex/fw.h
-@@ -419,6 +419,7 @@ enum MWIFIEX_802_11_PRIVACY_FILTER {
- #define KEY_MGMT_NONE               0x04
- #define KEY_MGMT_PSK                0x02
- #define KEY_MGMT_EAP                0x01
-+#define KEY_MGMT_PSK_SHA256         0x100
- #define KEY_MGMT_SAE                0x400
- #define CIPHER_TKIP                 0x04
- #define CIPHER_AES_CCMP             0x08
-diff --git a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
-index 7214b6cf304a9..1c0ceac6b27fb 100644
---- a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
-+++ b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
-@@ -61,6 +61,9 @@ int mwifiex_set_secure_params(struct mwifiex_private *priv,
- 		case WLAN_AKM_SUITE_PSK:
- 			bss_config->key_mgmt |= KEY_MGMT_PSK;
- 			break;
-+		case WLAN_AKM_SUITE_PSK_SHA256:
-+			bss_config->key_mgmt |= KEY_MGMT_PSK_SHA256;
-+			break;
- 		case WLAN_AKM_SUITE_SAE:
- 			bss_config->key_mgmt |= KEY_MGMT_SAE;
- 			break;
+The 1st patch, update some function prototypes and data structures in
+lib80211.
+
+The 2nd patch constifies some struct lib80211_crypto_ops in lib80211.
+This moves some data to a read-only section, so increase overall
+security.
+
+The 3rd patch does the same for staging/rtl8192e.
+
+Note that the functions have looked in staging/rtl8192e look really
+similar to the ones in lib80211. Maybe it could be removed in favor of
+the latter.
+
+
+Each patch in the serie has been compile tested only.
+
+
+Changes in v2:
+  - patch 1: Update ipw2x00/libipw_wx.c as well   [Simon Horman]
+  - patch 2, 3 : no changes
+
+
+Christophe JAILLET (3):
+  lib80211: Handle const struct lib80211_crypto_ops in lib80211
+  lib80211: Constify struct lib80211_crypto_ops
+  staging: rtl8192e: Constify struct lib80211_crypto_ops
+
+ drivers/net/wireless/intel/ipw2x00/libipw_wx.c |  2 +-
+ drivers/staging/rtl8192e/rtllib_crypt_ccmp.c   |  2 +-
+ drivers/staging/rtl8192e/rtllib_crypt_tkip.c   |  2 +-
+ drivers/staging/rtl8192e/rtllib_crypt_wep.c    |  2 +-
+ drivers/staging/rtl8192e/rtllib_wx.c           |  2 +-
+ include/net/lib80211.h                         |  8 ++++----
+ net/wireless/lib80211.c                        | 10 +++++-----
+ net/wireless/lib80211_crypt_ccmp.c             |  2 +-
+ net/wireless/lib80211_crypt_tkip.c             |  2 +-
+ net/wireless/lib80211_crypt_wep.c              |  2 +-
+ 10 files changed, 17 insertions(+), 17 deletions(-)
 
 -- 
-2.39.2
+2.45.2
 
 
