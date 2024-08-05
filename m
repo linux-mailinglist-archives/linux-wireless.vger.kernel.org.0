@@ -1,90 +1,92 @@
-Return-Path: <linux-wireless+bounces-10962-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10963-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD873947CC1
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 16:22:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9819947CD9
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 16:31:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A699282BB0
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 14:22:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25FC9B2102D
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 14:31:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6AA913A41F;
-	Mon,  5 Aug 2024 14:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D27B51016;
+	Mon,  5 Aug 2024 14:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="cLrYov1w"
+	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="r5zXWhJe"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [178.154.239.149])
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F0A13A878
-	for <linux-wireless@vger.kernel.org>; Mon,  5 Aug 2024 14:22:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D0C78297
+	for <linux-wireless@vger.kernel.org>; Mon,  5 Aug 2024 14:31:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722867761; cv=none; b=SJU4TtenSVXa36Yw/mJ9I13acnhiQVHkGC9bZ/7FmmcoorpV2pVQ3WJfDbiyAq8ZgJetE9B3ARDg2QfRSDYfZVwp0nVvSwcLgYA3ugyjk7iISrkTv3IoVbF97UijV1soB9VTeiIIAo8cEZkSo2VpOJOmxZUNpGhWOuaEmYG0UkU=
+	t=1722868280; cv=none; b=hzYokDvNi1nfg5Emc/3q2UctTZb23ty5Y2fzrMZ5JjIL+kUy6MdxNM0Pt/iRU3Bb3P60USU635aakhnca1yWBWjbE21O3plH99d8jrwT6CtYni8abARN/Ec2lLKINKlsXWbU/xCnAIUsGX5Vdswj8HWlSc04eiPUChT5xYKj+qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722867761; c=relaxed/simple;
-	bh=PT+dQzbuFS2MhShjH9OoJ6q2i0ha9UBVLsQYaIajI9c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RK1sBX63xR47Te8qcGQn82EqvNqNhEpzNrKlt4fuUdM1gQMrzmVxV+mIjWHEgtwvYJtI4MobkpAuUUW+p5INb+CSxQiKOl+QLLbzk9mM/JZyrg5bRb11irJuwWqHd5Z45EBe2M2VoChbGd3N/zRZWIqdsgKsqBVzjpcw8SHnUzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=cLrYov1w; arc=none smtp.client-ip=178.154.239.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from mail-nwsmtp-smtp-production-main-45.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-45.sas.yp-c.yandex.net [IPv6:2a02:6b8:c1c:38d:0:640:9af4:0])
-	by forward102b.mail.yandex.net (Yandex) with ESMTPS id 4007460A3C;
-	Mon,  5 Aug 2024 17:22:30 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-45.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id SMcAiB0pI4Y0-PsosaBsR;
-	Mon, 05 Aug 2024 17:22:29 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1722867749; bh=NJYv1DSY7P9gpCs9lZW7N0vK9JJikhAJIbPiVqkO0Lo=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=cLrYov1wODlmBBFfG1Ctt6AtTpqewFR3xZTMeoYPlWtnoFShdFj0YM1VyJOcrapR+
-	 YYoFmUl+jzoc7IGLmelJDobzLOjH5o+YzMbqFTWuZ+dMxhwI6zdoLPwIZDhMmSI5jJ
-	 ixTQmrELs/50EZX6cuMAYHgUCwrRqShYfB+N3JcM=
-Authentication-Results: mail-nwsmtp-smtp-production-main-45.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Dmitry Antipov <dmantipov@yandex.ru>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] wifi: mac80211: free skb on error path in ieee80211_beacon_get_ap()
-Date: Mon,  5 Aug 2024 17:20:35 +0300
-Message-ID: <20240805142035.227847-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1722868280; c=relaxed/simple;
+	bh=VT5yFT9c41Qe+Y+hoo6g0S8Acvs5LzzZDS14huOoPBE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=SznZIQp2CiN+vZs3zyFF/m4Y40Pw+D8ueKXhRPyfb4ehPbBj41gyb7IbjhKGcy5pNkX6IVLf7wAxHAtlHXIW3m5YyD95m2lzcmKUvA1z1/AvGTyH7KRd2XEcnsZq93aYU4mKnhGEZFhrPvXe0volxMBdUa8XTE/hU0f/yGfHt3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=r5zXWhJe; arc=none smtp.client-ip=45.145.95.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+	t=1722868276; bh=VT5yFT9c41Qe+Y+hoo6g0S8Acvs5LzzZDS14huOoPBE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=r5zXWhJetVO1Tq2vHRHHy1MpoA5koDIWy2Jy/haztyX8yBnHt0CH5TEf7DkZiXw9o
+	 OD8CsL9N4IzWENE+xQmjG2VPU64mQAn93NBYAO2Q1LYM63G6YNX6Ey8Nd0zRA2RHCi
+	 2QtT2ozP3tvbRGOYoSH0fCtJS7/NHeZPadenr8jwkAAFosdW6msTeKa8JW9Yy3VLHt
+	 PK1GEHwqHVktf3ITCTUnHNbDeOaFz/0vceyDZBKk8hmAxUj4So/BIXRt11tLAVatIY
+	 JSE1AFIRSMkVTcO3aJgRpFBLkDIcQIBN7HM59TOzmDWJ9eqjBz28EqUb4NgTMct1WG
+	 9Z3uvXsQHObjg==
+To: Chien Wong <m@xv97.com>
+Cc: linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] wifi: ath9k_htc: limit MTU
+In-Reply-To: <fc8659fb-7e86-4d29-8966-1f17383b0efe@xv97.com>
+References: <20240405145211.15185-1-m@xv97.com> <8734nrp4uy.fsf@toke.dk>
+ <fc8659fb-7e86-4d29-8966-1f17383b0efe@xv97.com>
+Date: Mon, 05 Aug 2024 16:31:15 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87ttfzdoss.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-In 'ieee80211_beacon_get_ap()', free allocated skb in case of error
-returned by 'ieee80211_beacon_protect()'. Compile tested only.
+Chien Wong <m@xv97.com> writes:
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- net/mac80211/tx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+>>> Shouldn't this be the same as the extra_tx_headroom set above? Not sure
+>>> what the +4 is for in that assignment, but it seems a bit odd to not be
+>>> consistent. Did you verify that an MTU of 1580 works without crashing?
+>>> 
+>>> Maybe this should just be:
+>>> 
+>>> 	hw->max_mtu = MAX_USB_WLAN_TX_PIPE_MSG_SIZE - hw->extra_tx_headroom;
+>>> 
+>>> just to be sure?
+>
+> The +4 is for the header at the very beginning of the USB packet:
+>  >/* hif_usb_send_mgmt() in hif_usb.c */
+>  >	hdr = skb_push(skb, 4);
+>  >	*hdr++ = cpu_to_le16(skb->len - 4);
+>  >	*hdr++ = cpu_to_le16(ATH_USB_TX_STREAM_MODE_TAG);
+>
+> I suppose that the four bytes are consumed by the USB hardware and they 
+> do not occupy buffer in the firmware. And my experiment proved this.
+> Unfortunately, setting MTU=1580 alone could not prevent the firmware 
+> from crashing. The MTU only limits upper layer length, not taking MAC 
+> overhead into account. That's why we need to take other measures such as
+> dropping packets before sending via USB, as proposed by my earlier
+> patch.
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 72a9ba8bc5fd..506c2ca29b64 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -5347,8 +5347,10 @@ ieee80211_beacon_get_ap(struct ieee80211_hw *hw,
- 	if (beacon->tail)
- 		skb_put_data(skb, beacon->tail, beacon->tail_len);
- 
--	if (ieee80211_beacon_protect(skb, local, sdata, link) < 0)
-+	if (ieee80211_beacon_protect(skb, local, sdata, link) < 0) {
-+		dev_kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	ieee80211_beacon_get_finish(hw, vif, link, offs, beacon, skb,
- 				    chanctx_conf, csa_off_base);
--- 
-2.45.2
+Well, we can also just take the upper layer overhead into account in the
+MTU limit? Presumably there's a maximum MTU size that you can use
+without the firmware crashing? So just set the MTU limit to that :)
 
+-Toke
 
