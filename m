@@ -1,92 +1,107 @@
-Return-Path: <linux-wireless+bounces-10963-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10964-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9819947CD9
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 16:31:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4292F94817C
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 20:17:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25FC9B2102D
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 14:31:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E07F01F21059
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 18:17:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D27B51016;
-	Mon,  5 Aug 2024 14:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF8D156F42;
+	Mon,  5 Aug 2024 18:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="r5zXWhJe"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HW/aLg8B"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D0C78297
-	for <linux-wireless@vger.kernel.org>; Mon,  5 Aug 2024 14:31:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4B7143C69
+	for <linux-wireless@vger.kernel.org>; Mon,  5 Aug 2024 18:17:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722868280; cv=none; b=hzYokDvNi1nfg5Emc/3q2UctTZb23ty5Y2fzrMZ5JjIL+kUy6MdxNM0Pt/iRU3Bb3P60USU635aakhnca1yWBWjbE21O3plH99d8jrwT6CtYni8abARN/Ec2lLKINKlsXWbU/xCnAIUsGX5Vdswj8HWlSc04eiPUChT5xYKj+qg=
+	t=1722881839; cv=none; b=SyaVznRfEN7fTs1IzVBGZUywqwNe0MD3YryhTMCqe6/Yvgcm6DKQIzQ7Ozv/qL378DD41cWyn7wznpHK4Utyouxwiiy/cc2erglTvMcudyiyesJ6PVTBue5dp/d8L0EM9fVl9Og+nWXttEwUpf24K67sYrsfCRcwzii4LW3vU3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722868280; c=relaxed/simple;
-	bh=VT5yFT9c41Qe+Y+hoo6g0S8Acvs5LzzZDS14huOoPBE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=SznZIQp2CiN+vZs3zyFF/m4Y40Pw+D8ueKXhRPyfb4ehPbBj41gyb7IbjhKGcy5pNkX6IVLf7wAxHAtlHXIW3m5YyD95m2lzcmKUvA1z1/AvGTyH7KRd2XEcnsZq93aYU4mKnhGEZFhrPvXe0volxMBdUa8XTE/hU0f/yGfHt3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=r5zXWhJe; arc=none smtp.client-ip=45.145.95.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-	t=1722868276; bh=VT5yFT9c41Qe+Y+hoo6g0S8Acvs5LzzZDS14huOoPBE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=r5zXWhJetVO1Tq2vHRHHy1MpoA5koDIWy2Jy/haztyX8yBnHt0CH5TEf7DkZiXw9o
-	 OD8CsL9N4IzWENE+xQmjG2VPU64mQAn93NBYAO2Q1LYM63G6YNX6Ey8Nd0zRA2RHCi
-	 2QtT2ozP3tvbRGOYoSH0fCtJS7/NHeZPadenr8jwkAAFosdW6msTeKa8JW9Yy3VLHt
-	 PK1GEHwqHVktf3ITCTUnHNbDeOaFz/0vceyDZBKk8hmAxUj4So/BIXRt11tLAVatIY
-	 JSE1AFIRSMkVTcO3aJgRpFBLkDIcQIBN7HM59TOzmDWJ9eqjBz28EqUb4NgTMct1WG
-	 9Z3uvXsQHObjg==
-To: Chien Wong <m@xv97.com>
-Cc: linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] wifi: ath9k_htc: limit MTU
-In-Reply-To: <fc8659fb-7e86-4d29-8966-1f17383b0efe@xv97.com>
-References: <20240405145211.15185-1-m@xv97.com> <8734nrp4uy.fsf@toke.dk>
- <fc8659fb-7e86-4d29-8966-1f17383b0efe@xv97.com>
-Date: Mon, 05 Aug 2024 16:31:15 +0200
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87ttfzdoss.fsf@toke.dk>
+	s=arc-20240116; t=1722881839; c=relaxed/simple;
+	bh=D8+tT1xSLpaf1vdLABOn8y9yvyIbsxyREjoyMgwFKm0=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=LM9vOD1pS3X4GHiW731ZGuZk57Ta3ft2JkuxcFoC84f4m92j3N7F+ZHMRn2Xz/1Nx2uEGzUS7tN/yUuuXQyIaCZvkdYY/wfd/5XpkOXdQJbkiGf9VwgU2LqvMenGhZ1BJHubTt+ORX6IGJ8ax/6FVnN4Wdbn8AbHvGa8X6j8CdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HW/aLg8B; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-70d2b921cdfso9605372b3a.0
+        for <linux-wireless@vger.kernel.org>; Mon, 05 Aug 2024 11:17:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722881837; x=1723486637; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-language:cc:to:subject:from
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HHYJLOblerfTESYd1f7gtqU72eY7daGBvO9xKa/hYSY=;
+        b=HW/aLg8Bq4XidlNZSwj68WCwQsXORSGcq9jQgZI/j5b1sYxISXve2NQX5ew8Z/r62b
+         dvltiRMjh3kZ8EZZl1gDdmyiU+8r8p1Zxm2N4Fe0rtqNrjnrib3fnTHG0UomhaEF0dz+
+         LyzVDi954M2vGA/zgJXziJaPxhG3WVzXdVSJHg/BmbGRMpL5Of7TUpZLEDJayhzuwnAb
+         ooDJr9hUJSO9le3j++MBkQBGq2AsX4zAaFb0B/AY88X8PkyErtYELepnI+alqL0Dl4KU
+         yQgN91QCSPOgnXQCMFe3aYuDhZtCv4i8u08XgRP7kTgkkYCKPpysZiPl+Q3NxKJevdfT
+         QMNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722881837; x=1723486637;
+        h=content-transfer-encoding:content-language:cc:to:subject:from
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=HHYJLOblerfTESYd1f7gtqU72eY7daGBvO9xKa/hYSY=;
+        b=wKW7gl34OkJzXAOIV1jauZ7lmO18pfLNH+k8wqxqpD88Q3UnPMrZp4ccCbzS8X2Szp
+         DfpapOl54W/SebEiP6HPlPsuLUSQed1S7q+HPCNmljmyQWU0pg71yKW3GTC4sRqcrmSb
+         LFLMP/O/xBEIVKF66Z8IiwA3FkfXi2aonN0L2/+yQH04OotWGav/4MzZPBnHUX2TYsAR
+         URH+OL9TH29m5Fuw+DiFtqATf0twV4dAy7bceSxMH6VmGOdxlFkBdkPHcQxV4kvNuny0
+         j+0mEX/PmOa+PBNuEpY1hk3zc51O8wNtraMFNkJLA7DHcEalLqoiMHTjX+PuQddEd+ML
+         D5bA==
+X-Gm-Message-State: AOJu0Yw4W43UJ6bR7amERMEXdtWS33sn73uM40YXvfG+igM1twNoP8fe
+	Gv4q8UyTrG+ntkVDcFXFztHszYsMYF8B6OSOsGv1ZH3wd5sxKGkOC7qwMg==
+X-Google-Smtp-Source: AGHT+IGjK5ooJ8zst3ebgeb2sW6OukNwIC2IbDXIIP0mLmm6/uF5yWVSunV3IjIAl5O2BbBLNpKSzg==
+X-Received: by 2002:a05:6a00:4b04:b0:706:6b4e:64c7 with SMTP id d2e1a72fcca58-7106cf9cf2dmr14966222b3a.9.1722881836644;
+        Mon, 05 Aug 2024 11:17:16 -0700 (PDT)
+Received: from [172.16.40.166] ([103.78.35.70])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7106ec439f1sm5691803b3a.78.2024.08.05.11.17.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 Aug 2024 11:17:16 -0700 (PDT)
+Message-ID: <45213523-32f6-4e82-958b-6271e8b7e366@gmail.com>
+Date: Tue, 6 Aug 2024 02:17:12 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+From: Nathaniel Chin <thegamingorangutans@gmail.com>
+Subject: wireless-regdb: Inaccurate regulatory rules for Brunei (BN)
+To: linux-wireless@vger.kernel.org
+Cc: wireless-regdb@lists.infradead.org
+Content-Language: en-GB
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Chien Wong <m@xv97.com> writes:
+Hi,
 
->>> Shouldn't this be the same as the extra_tx_headroom set above? Not sure
->>> what the +4 is for in that assignment, but it seems a bit odd to not be
->>> consistent. Did you verify that an MTU of 1580 works without crashing?
->>> 
->>> Maybe this should just be:
->>> 
->>> 	hw->max_mtu = MAX_USB_WLAN_TX_PIPE_MSG_SIZE - hw->extra_tx_headroom;
->>> 
->>> just to be sure?
->
-> The +4 is for the header at the very beginning of the USB packet:
->  >/* hif_usb_send_mgmt() in hif_usb.c */
->  >	hdr = skb_push(skb, 4);
->  >	*hdr++ = cpu_to_le16(skb->len - 4);
->  >	*hdr++ = cpu_to_le16(ATH_USB_TX_STREAM_MODE_TAG);
->
-> I suppose that the four bytes are consumed by the USB hardware and they 
-> do not occupy buffer in the firmware. And my experiment proved this.
-> Unfortunately, setting MTU=1580 alone could not prevent the firmware 
-> from crashing. The MTU only limits upper layer length, not taking MAC 
-> overhead into account. That's why we need to take other measures such as
-> dropping packets before sending via USB, as proposed by my earlier
-> patch.
+I've noticed that the current values in the regdb for Brunei do not 
+match with the Brunei Darussalam Radio Spectrum Plan (2014-2015 version) 
+<https://www.aiti.gov.bn/media/voqau1jw/brunei-darussalam-radio-spectrum-plan-2014-2015.pdf> 
+and the Telecommunications (Exemption from Sections 33,34(1)(b) and 35) 
+Notification, 2018 
+<https://www.agc.gov.bn/AGC%20Images/LAWS/Gazette_PDF/2018/S039.pdf>.
 
-Well, we can also just take the upper layer overhead into account in the
-MTU limit? Presumably there's a maximum MTU size that you can use
-without the firmware crashing? So just set the MTU limit to that :)
+Which both state that the authorised bands are: 2.4000 - 2.4835 GHz at a 
+max of 200 mW; 5.150-5.350 GHz at a max of 1000 mW (2018 document); and 
+5.725 - 5.850 GHz at a max of 1000/4000 mW (with the latter requiring a 
+license).
 
--Toke
+Additionally the 2015 document refers to FCC and ETSI regulations and I 
+don't see any mention of Japanese regulations?
+
+Best regards,
+Nathaniel Chin
+
+P.S I've had to resend this email because initially it was sent as HTML 
+instead of plain text so if you've received two copies: sorry.
 
