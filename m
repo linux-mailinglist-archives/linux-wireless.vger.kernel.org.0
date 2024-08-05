@@ -1,185 +1,393 @@
-Return-Path: <linux-wireless+bounces-10970-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10975-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E08194823E
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 21:23:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4C239482AB
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 21:54:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 299D11F22B09
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 19:23:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E97F11C21D8D
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 19:54:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A897916B743;
-	Mon,  5 Aug 2024 19:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24DCB16C6A6;
+	Mon,  5 Aug 2024 19:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="tVDDAPM4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VWHVWQOy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from nbd.name (nbd.name [46.4.11.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E796B16A952
-	for <linux-wireless@vger.kernel.org>; Mon,  5 Aug 2024 19:23:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0190C16C69D
+	for <linux-wireless@vger.kernel.org>; Mon,  5 Aug 2024 19:53:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722885820; cv=none; b=AjEucnBPDQ7hHAWwQcdfvgyYQ7WykD75wt7MgBBFbAx0cu7Favbrz8LcixT+zh1cnRqt7XjRBwmJJtay1lkOI81FjpQHzQAXGzM2fvcUajVn9JNjnaiOaZnG67pAHiz09Ls2pseIU0C8myOC5Ju2Mp6eFBYn5JgNDEeNB4DKE/I=
+	t=1722887623; cv=none; b=GMpEJmFhbfB1wR6KmexRibBQ3OJ967khVWMkYOlmRSwd7dtSiepBbis2fRDyKJsTqz8FHQS3itrctcv+GTrIIUZfqi8ispcUL0oPN6GRwlipDvOgKFTVPppRquSjPG/00ES8OqhPI6aSNI2SpZQ71TbuoAvViCctAApC10c+ubI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722885820; c=relaxed/simple;
-	bh=e14meo4vm/W9CUI8Qb5PXcIGJCJ0UNStQKC0/DQmYl8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KmUSBA30NgzFJMndHVR33mI5t679gBXItWNvyEb+KKLkTmFzSoOeLNToi4SAR7tZKMgMmpynVsCRYZa785AVaY0Y03xcsOaHslkW03nIYKbL/fAZ3+nXaEA8EwibOhLJKg+IJG/to4VfULtsCqV7usRuNohUbqj8URM4rjxg5XI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=tVDDAPM4; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=oRJjrTA0PNIw4kWKLnN547aLQx5u/TICMg5/gyFZsrQ=; b=tVDDAPM4Ig2ytSJbhuBoooV9oe
-	MEz9rnynNNgtH79lAckmt8Ds2gurZwnx6IF+t2+d/GqPTWRIkGBjr09pt7w9VM3qOQgpRGh/yVXIS
-	tzJj11x4iuDdJ0zX/S2sSZ8NftM1WXOxjg91Qr8MBt2v+mqYl8rXzr/0D932XDriSiL8=;
-Received: from p54ae9b72.dip0.t-ipconnect.de ([84.174.155.114] helo=localhost.localdomain)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
-	(Exim 4.96)
-	(envelope-from <nbd@nbd.name>)
-	id 1sb3Iv-00EHlS-09;
-	Mon, 05 Aug 2024 21:23:37 +0200
-From: Felix Fietkau <nbd@nbd.name>
-To: linux-wireless@vger.kernel.org
+	s=arc-20240116; t=1722887623; c=relaxed/simple;
+	bh=Mw0RDouU1I1sPSBwY75Cn88uJxxkjVgEec7n5ZsDqME=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=qhl2RLgO53UGcDz48WDvxFxVe8Ask/lQgnKEh+BWrGlHWfdQ2QyNCfBpXfBPY2Y2gknFjGfkfde3Fkiwh5yQo9ULnXIZm2vvKfh572Moew0io4Rlkhwl39P7VIWdPOsaqgZepoZMhdNOpHp/FiUKV3rBG8KjsjLupdjZgtkndjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VWHVWQOy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43594C4AF0D;
+	Mon,  5 Aug 2024 19:53:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722887622;
+	bh=Mw0RDouU1I1sPSBwY75Cn88uJxxkjVgEec7n5ZsDqME=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=VWHVWQOyiaIctsX1aQEFEHDd4e+mXRn9rtAO8yEza45qv14sXappunsFMoJKjSv1U
+	 xPakvezLFyjWOeiPvSBQCqwJhCnFGFxl3MExT6WKXqsqE1IpsROg+ZjKZlKVpei3oQ
+	 xdP3s/CoZQpcND5TMBrMxwNVm2S2eNGy2yuCyPUNI0F4Rr+D7OWSHNjr7CnW383ZC5
+	 L0+PUmJIDtNE3/nT+cLOhpjB4tClNynvJ3+wClKtmz5LRWb+6iRAvuq9hnqwQhGi+A
+	 icyr2tnh9OAHNM1RhjHwUVG17Gunvuefao4qON/cpSU2B7K8p+1jbpelCXFEsA9QM3
+	 O4tIzCDewNr8w==
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id 6D4F614AD244; Mon, 05 Aug 2024 21:53:39 +0200 (CEST)
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>
+To: Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
 Cc: johannes@sipsolutions.net
-Subject: [RFC 6/6] wifi: mac80211: check vif radio_mask for monitor mode rx
-Date: Mon,  5 Aug 2024 21:23:34 +0200
-Message-ID: <7d713206957ec56dc297d5645203b45341578588.1722885720.git-series.nbd@nbd.name>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <cover.c32cfe64c671566c111b1b7ea426dbd1e8f2c568.1722885720.git-series.nbd@nbd.name>
-References: <cover.c32cfe64c671566c111b1b7ea426dbd1e8f2c568.1722885720.git-series.nbd@nbd.name>
+Subject: Re: [PATCH] wifi: mac80211: add AQL support for broadcast packets
+In-Reply-To: <20240805182547.14971-1-nbd@nbd.name>
+References: <20240805182547.14971-1-nbd@nbd.name>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date: Mon, 05 Aug 2024 21:53:39 +0200
+Message-ID: <87le1apwzg.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-When restricting a monitor vif to only operate on a specific set of radios,
-filter out rx packets belonging to other radios. This only works if drivers
-fill in radio_valid and radio_idx in the rx status.
+Felix Fietkau <nbd@nbd.name> writes:
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
----
- include/net/mac80211.h |  3 ++-
- net/mac80211/rx.c      | 58 +++++++++++++++++++++++--------------------
- 2 files changed, 35 insertions(+), 26 deletions(-)
+> Excessive broadcast traffic with little competing unicast traffic can easily
+> flood hardware queues, leading to throughput issues. Additionally, filling
+> the hardware queues with too many packets breaks FQ for broadcast data.
+> Fix this by enabling AQL for broadcast packets.
+>
+> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> ---
+>  include/net/cfg80211.h     |  1 +
+>  include/net/mac80211.h     |  2 +-
+>  net/mac80211/debugfs.c     | 13 +++++++--
+>  net/mac80211/ieee80211_i.h |  2 ++
+>  net/mac80211/main.c        |  1 +
+>  net/mac80211/sta_info.c    | 17 +++++++++++-
+>  net/mac80211/sta_info.h    |  3 ++-
+>  net/mac80211/status.c      |  5 ++--
+>  net/mac80211/tx.c          | 55 ++++++++++++++++++++------------------
+>  9 files changed, 66 insertions(+), 33 deletions(-)
+>
+> diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+> index 192d72c8b465..c2a9af1e3c5e 100644
+> --- a/include/net/cfg80211.h
+> +++ b/include/net/cfg80211.h
+> @@ -3420,6 +3420,7 @@ enum wiphy_params_flags {
+>  /* The per TXQ device queue limit in airtime */
+>  #define IEEE80211_DEFAULT_AQL_TXQ_LIMIT_L	5000
+>  #define IEEE80211_DEFAULT_AQL_TXQ_LIMIT_H	12000
+> +#define IEEE80211_DEFAULT_AQL_TXQ_LIMIT_BC	50000
+>  
+>  /* The per interface airtime threshold to switch to lower queue limit */
+>  #define IEEE80211_AQL_THRESHOLD			24000
+> diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+> index 0a04eaf5343c..5bdc6e05be1b 100644
+> --- a/include/net/mac80211.h
+> +++ b/include/net/mac80211.h
+> @@ -1221,8 +1221,8 @@ struct ieee80211_tx_info {
+>  	    status_data_idr:1,
+>  	    status_data:13,
+>  	    hw_queue:4,
+> +	    tx_time_mc:1,
+>  	    tx_time_est:10;
+> -	/* 1 free bit */
+>  
+>  	union {
+>  		struct {
+> diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
+> index 02b5476a4376..a5aa5e02b2e1 100644
+> --- a/net/mac80211/debugfs.c
+> +++ b/net/mac80211/debugfs.c
+> @@ -215,11 +215,13 @@ static ssize_t aql_pending_read(struct file *file,
+>  			"VI     %u us\n"
+>  			"BE     %u us\n"
+>  			"BK     %u us\n"
+> +			"BC/MC  %u us\n"
+>  			"total  %u us\n",
+>  			atomic_read(&local->aql_ac_pending_airtime[IEEE80211_AC_VO]),
+>  			atomic_read(&local->aql_ac_pending_airtime[IEEE80211_AC_VI]),
+>  			atomic_read(&local->aql_ac_pending_airtime[IEEE80211_AC_BE]),
+>  			atomic_read(&local->aql_ac_pending_airtime[IEEE80211_AC_BK]),
+> +			atomic_read(&local->aql_bc_pending_airtime),
+>  			atomic_read(&local->aql_total_pending_airtime));
+>  	return simple_read_from_buffer(user_buf, count, ppos,
+>  				       buf, len);
+> @@ -245,7 +247,8 @@ static ssize_t aql_txq_limit_read(struct file *file,
+>  			"VO	%u		%u\n"
+>  			"VI	%u		%u\n"
+>  			"BE	%u		%u\n"
+> -			"BK	%u		%u\n",
+> +			"BK	%u		%u\n"
+> +			"BC/MC	%u\n",
+>  			local->aql_txq_limit_low[IEEE80211_AC_VO],
+>  			local->aql_txq_limit_high[IEEE80211_AC_VO],
+>  			local->aql_txq_limit_low[IEEE80211_AC_VI],
+> @@ -253,7 +256,8 @@ static ssize_t aql_txq_limit_read(struct file *file,
+>  			local->aql_txq_limit_low[IEEE80211_AC_BE],
+>  			local->aql_txq_limit_high[IEEE80211_AC_BE],
+>  			local->aql_txq_limit_low[IEEE80211_AC_BK],
+> -			local->aql_txq_limit_high[IEEE80211_AC_BK]);
+> +			local->aql_txq_limit_high[IEEE80211_AC_BK],
+> +			local->aql_txq_limit_bc);
+>  	return simple_read_from_buffer(user_buf, count, ppos,
+>  				       buf, len);
+>  }
+> @@ -279,6 +283,11 @@ static ssize_t aql_txq_limit_write(struct file *file,
+>  	else
+>  		buf[count] = '\0';
+>  
+> +	if (sscanf(buf, "mcast %u", &q_limit_low) == 1) {
+> +		local->aql_txq_limit_bc = q_limit_low;
+> +		return count;
+> +	}
+> +
+>  	if (sscanf(buf, "%u %u %u", &ac, &q_limit_low, &q_limit_high) != 3)
+>  		return -EINVAL;
+>  
+> diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+> index a3485e4c6132..304cce0b771d 100644
+> --- a/net/mac80211/ieee80211_i.h
+> +++ b/net/mac80211/ieee80211_i.h
+> @@ -1349,10 +1349,12 @@ struct ieee80211_local {
+>  	spinlock_t handle_wake_tx_queue_lock;
+>  
+>  	u16 airtime_flags;
+> +	u32 aql_txq_limit_bc;
+>  	u32 aql_txq_limit_low[IEEE80211_NUM_ACS];
+>  	u32 aql_txq_limit_high[IEEE80211_NUM_ACS];
+>  	u32 aql_threshold;
+>  	atomic_t aql_total_pending_airtime;
+> +	atomic_t aql_bc_pending_airtime;
+>  	atomic_t aql_ac_pending_airtime[IEEE80211_NUM_ACS];
+>  
+>  	const struct ieee80211_ops *ops;
+> diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+> index a3104b6ea6f0..6abf85a58133 100644
+> --- a/net/mac80211/main.c
+> +++ b/net/mac80211/main.c
+> @@ -952,6 +952,7 @@ struct ieee80211_hw *ieee80211_alloc_hw_nm(size_t priv_data_len,
+>  	spin_lock_init(&local->rx_path_lock);
+>  	spin_lock_init(&local->queue_stop_reason_lock);
+>  
+> +	local->aql_txq_limit_bc = IEEE80211_DEFAULT_AQL_TXQ_LIMIT_BC;
+>  	for (i = 0; i < IEEE80211_NUM_ACS; i++) {
+>  		INIT_LIST_HEAD(&local->active_txqs[i]);
+>  		spin_lock_init(&local->active_txq_lock[i]);
+> diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+> index aa22f09e6d14..ed73f5b7af81 100644
+> --- a/net/mac80211/sta_info.c
+> +++ b/net/mac80211/sta_info.c
+> @@ -2352,13 +2352,28 @@ EXPORT_SYMBOL(ieee80211_sta_recalc_aggregates);
+>  
+>  void ieee80211_sta_update_pending_airtime(struct ieee80211_local *local,
+>  					  struct sta_info *sta, u8 ac,
+> -					  u16 tx_airtime, bool tx_completed)
+> +					  u16 tx_airtime, bool tx_completed,
+> +					  bool mcast)
+>  {
+>  	int tx_pending;
+>  
+>  	if (!wiphy_ext_feature_isset(local->hw.wiphy, NL80211_EXT_FEATURE_AQL))
+>  		return;
+>  
+> +	if (mcast) {
+> +		if (!tx_completed) {
+> +			atomic_add(tx_airtime, &local->aql_bc_pending_airtime);
+> +			return;
+> +		}
+> +
+> +		tx_pending = atomic_sub_return(tx_airtime,
+> +					       &local->aql_bc_pending_airtime);
+> +		if (tx_pending < 0)
+> +			atomic_cmpxchg(&local->aql_bc_pending_airtime,
+> +				       tx_pending, 0);
+> +		return;
+> +	}
+> +
+>  	if (!tx_completed) {
+>  		if (sta)
+>  			atomic_add(tx_airtime,
+> diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
+> index 9195d5a2de0a..ad449f8dfa76 100644
+> --- a/net/mac80211/sta_info.h
+> +++ b/net/mac80211/sta_info.h
+> @@ -147,7 +147,8 @@ struct airtime_info {
+>  
+>  void ieee80211_sta_update_pending_airtime(struct ieee80211_local *local,
+>  					  struct sta_info *sta, u8 ac,
+> -					  u16 tx_airtime, bool tx_completed);
+> +					  u16 tx_airtime, bool tx_completed,
+> +					  bool mcast);
+>  
+>  struct sta_info;
+>  
+> diff --git a/net/mac80211/status.c b/net/mac80211/status.c
+> index dd8f857a1fbc..2ef98964a485 100644
+> --- a/net/mac80211/status.c
+> +++ b/net/mac80211/status.c
+> @@ -734,7 +734,7 @@ static void ieee80211_report_used_skb(struct ieee80211_local *local,
+>  		ieee80211_sta_update_pending_airtime(local, sta,
+>  						     skb_get_queue_mapping(skb),
+>  						     tx_time_est,
+> -						     true);
+> +						     true, info->tx_time_mc);
+>  		rcu_read_unlock();
+>  	}
+>  
+> @@ -1158,10 +1158,11 @@ void ieee80211_tx_status_ext(struct ieee80211_hw *hw,
+>  		/* Do this here to avoid the expensive lookup of the sta
+>  		 * in ieee80211_report_used_skb().
+>  		 */
+> +		bool mcast = IEEE80211_SKB_CB(skb)->tx_time_mc;
+>  		ieee80211_sta_update_pending_airtime(local, sta,
+>  						     skb_get_queue_mapping(skb),
+>  						     tx_time_est,
+> -						     true);
+> +						     true, mcast);
+>  		ieee80211_info_set_tx_time_est(IEEE80211_SKB_CB(skb), 0);
+>  	}
+>  
+> diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+> index 72a9ba8bc5fd..dfa532d44280 100644
+> --- a/net/mac80211/tx.c
+> +++ b/net/mac80211/tx.c
+> @@ -2554,7 +2554,7 @@ static u16 ieee80211_store_ack_skb(struct ieee80211_local *local,
+>  
+>  		spin_lock_irqsave(&local->ack_status_lock, flags);
+>  		id = idr_alloc(&local->ack_status_frames, ack_skb,
+> -			       1, 0x2000, GFP_ATOMIC);
+> +			       1, 0x1000, GFP_ATOMIC);
+>  		spin_unlock_irqrestore(&local->ack_status_lock, flags);
+>  
+>  		if (id >= 0) {
+> @@ -3981,20 +3981,20 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
+>  encap_out:
+>  	info->control.vif = vif;
+>  
+> -	if (tx.sta &&
+> -	    wiphy_ext_feature_isset(local->hw.wiphy, NL80211_EXT_FEATURE_AQL)) {
+> -		bool ampdu = txq->ac != IEEE80211_AC_VO;
+> +	if (wiphy_ext_feature_isset(local->hw.wiphy, NL80211_EXT_FEATURE_AQL)) {
+> +		bool ampdu = txq->sta && txq->ac != IEEE80211_AC_VO;
+>  		u32 airtime;
+>  
+>  		airtime = ieee80211_calc_expected_tx_airtime(hw, vif, txq->sta,
+>  							     skb->len, ampdu);
+> -		if (airtime) {
+> -			airtime = ieee80211_info_set_tx_time_est(info, airtime);
+> -			ieee80211_sta_update_pending_airtime(local, tx.sta,
+> -							     txq->ac,
+> -							     airtime,
+> -							     false);
+> -		}
+> +		if (!airtime)
+> +			return skb;
+> +
+> +		airtime = ieee80211_info_set_tx_time_est(info, airtime);
+> +		info->tx_time_mc = !tx.sta;
+> +		ieee80211_sta_update_pending_airtime(local, tx.sta, txq->ac,
+> +						     airtime, false,
+> +						     info->tx_time_mc);
+>  	}
+>  
+>  	return skb;
+> @@ -4046,6 +4046,7 @@ struct ieee80211_txq *ieee80211_next_txq(struct ieee80211_hw *hw, u8 ac)
+>  	struct ieee80211_txq *ret = NULL;
+>  	struct txq_info *txqi = NULL, *head = NULL;
+>  	bool found_eligible_txq = false;
+> +	bool aql_check;
+>  
+>  	spin_lock_bh(&local->active_txq_lock[ac]);
+>  
+> @@ -4069,26 +4070,27 @@ struct ieee80211_txq *ieee80211_next_txq(struct ieee80211_hw *hw, u8 ac)
+>  	if (!head)
+>  		head = txqi;
+>  
+> +	aql_check = ieee80211_txq_airtime_check(hw, &txqi->txq);
+> +	if (aql_check)
+> +		found_eligible_txq = true;
+> +
+>  	if (txqi->txq.sta) {
+>  		struct sta_info *sta = container_of(txqi->txq.sta,
+>  						    struct sta_info, sta);
+> -		bool aql_check = ieee80211_txq_airtime_check(hw, &txqi->txq);
+> -		s32 deficit = ieee80211_sta_deficit(sta, txqi->txq.ac);
+>  
+> -		if (aql_check)
+> -			found_eligible_txq = true;
+> -
+> -		if (deficit < 0)
+> +		if (ieee80211_sta_deficit(sta, txqi->txq.ac) < 0) {
+>  			sta->airtime[txqi->txq.ac].deficit +=
+>  				sta->airtime_weight;
+> -
+> -		if (deficit < 0 || !aql_check) {
+> -			list_move_tail(&txqi->schedule_order,
+> -				       &local->active_txqs[txqi->txq.ac]);
+> -			goto begin;
+> +			aql_check = false;
+>  		}
+>  	}
+>  
+> +	if (!aql_check) {
+> +		list_move_tail(&txqi->schedule_order,
+> +				   &local->active_txqs[txqi->txq.ac]);
+> +		goto begin;
+> +	}
+> +
+>  	if (txqi->schedule_round == local->schedule_round[ac])
+>  		goto out;
+>  
+> @@ -4153,7 +4155,8 @@ bool ieee80211_txq_airtime_check(struct ieee80211_hw *hw,
+>  		return true;
+>  
+>  	if (!txq->sta)
+> -		return true;
+> +		return atomic_read(&local->aql_bc_pending_airtime) <
+> +		       local->aql_txq_limit_bc;
+>  
+>  	if (unlikely(txq->tid == IEEE80211_NUM_TIDS))
+>  		return true;
+> @@ -4202,15 +4205,15 @@ bool ieee80211_txq_may_transmit(struct ieee80211_hw *hw,
+>  
+>  	spin_lock_bh(&local->active_txq_lock[ac]);
+>  
+> -	if (!txqi->txq.sta)
+> -		goto out;
+> -
+>  	if (list_empty(&txqi->schedule_order))
+>  		goto out;
+>  
+>  	if (!ieee80211_txq_schedule_airtime_check(local, ac))
+>  		goto out;
+>  
+> +	if (!txqi->txq.sta)
+> +		goto out;
+> +
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 7a5418713dfc..6222f4f44ac2 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -1619,6 +1619,8 @@ enum mac80211_rx_encoding {
-  * @ampdu_reference: A-MPDU reference number, must be a different value for
-  *	each A-MPDU but the same for each subframe within one A-MPDU
-  * @zero_length_psdu_type: radiotap type of the 0-length PSDU
-+ * @radio_valid: if the index of the radio in radio_idx is valid.
-+ * @radio_idx: index of the wiphy radio that the frame was received on.
-  * @link_valid: if the link which is identified by @link_id is valid. This flag
-  *	is set only when connection is MLO.
-  * @link_id: id of the link used to receive the packet. This is used along with
-@@ -1656,6 +1658,7 @@ struct ieee80211_rx_status {
- 	u8 chains;
- 	s8 chain_signal[IEEE80211_MAX_CHAINS];
- 	u8 zero_length_psdu_type;
-+	u8 radio_valid:1, radio_idx:5;
- 	u8 link_valid:1, link_id:4;
- };
- 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 718f02f0a181..de4196fa3eb5 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -762,8 +762,8 @@ ieee80211_rx_monitor(struct ieee80211_local *local, struct sk_buff *origskb,
- 		     struct ieee80211_rate *rate)
- {
- 	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(origskb);
--	struct ieee80211_sub_if_data *sdata;
--	struct sk_buff *monskb = NULL;
-+	struct ieee80211_sub_if_data *sdata, *prev_sdata = NULL;
-+	struct sk_buff *skb, *monskb = NULL;
- 	int present_fcs_len = 0;
- 	unsigned int rtap_space = 0;
- 	struct ieee80211_sub_if_data *monitor_sdata =
-@@ -837,40 +837,46 @@ ieee80211_rx_monitor(struct ieee80211_local *local, struct sk_buff *origskb,
- 	ieee80211_handle_mu_mimo_mon(monitor_sdata, origskb, rtap_space);
- 
- 	list_for_each_entry_rcu(sdata, &local->mon_list, u.mntr.list) {
--		bool last_monitor = list_is_last(&sdata->u.mntr.list,
--						 &local->mon_list);
-+		if (status->radio_valid &&
-+		    !(sdata->wdev.radio_mask & BIT(status->radio_idx)))
-+			continue;
-+
-+		if (!prev_sdata) {
-+			prev_sdata = sdata;
-+			continue;
-+		}
- 
- 		if (!monskb)
- 			monskb = ieee80211_make_monitor_skb(local, &origskb,
- 							    rate, rtap_space,
--							    only_monitor &&
--							    last_monitor);
-+							    false);
-+		if (!monskb)
-+			continue;
- 
--		if (monskb) {
--			struct sk_buff *skb;
-+		skb = skb_clone(monskb, GFP_ATOMIC);
-+		if (!skb)
-+			continue;
- 
--			if (last_monitor) {
--				skb = monskb;
--				monskb = NULL;
--			} else {
--				skb = skb_clone(monskb, GFP_ATOMIC);
--			}
-+		skb->dev = prev_sdata->dev;
-+		dev_sw_netstats_rx_add(skb->dev, skb->len);
-+		netif_receive_skb(skb);
-+		prev_sdata = sdata;
-+	}
- 
--			if (skb) {
--				skb->dev = sdata->dev;
--				dev_sw_netstats_rx_add(skb->dev, skb->len);
--				netif_receive_skb(skb);
--			}
-+	if (prev_sdata) {
-+		if (monskb)
-+			skb = monskb;
-+		else
-+			skb = ieee80211_make_monitor_skb(local, &origskb,
-+							 rate, rtap_space,
-+							 only_monitor);
-+		if (skb) {
-+			skb->dev = prev_sdata->dev;
-+			dev_sw_netstats_rx_add(skb->dev, skb->len);
-+			netif_receive_skb(skb);
- 		}
--
--		if (last_monitor)
--			break;
- 	}
- 
--	/* this happens if last_monitor was erroneously false */
--	dev_kfree_skb(monskb);
--
--	/* ditto */
- 	if (!origskb)
- 		return NULL;
- 
--- 
-git-series 0.9.1
+I'm not sure this last change makes any difference? Before, if !sta,
+we'll always return true. After, if
+ieee80211_txq_schedule_airtime_check() returns false, we'll return true,
+and if ieee80211_txq_schedule_airtime_check() returns true, we'll go to
+the same sta check, so if !sta we'll still return true. So changing the
+order of the checks is a bit pointless?
+
+In fact, it seems to me that the logic here around
+ieee80211_txq_schedule_airtime_check() is reversed; shouldn't we be
+returning *false* (from the may_schedule) if
+ieee80211_txq_schedule_airtime_check() returns false?
+
+-Toke
 
