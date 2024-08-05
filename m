@@ -1,127 +1,103 @@
-Return-Path: <linux-wireless+bounces-10901-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10902-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEDC8946E9C
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 Aug 2024 14:24:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C550394734D
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 04:18:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A204F2815E9
-	for <lists+linux-wireless@lfdr.de>; Sun,  4 Aug 2024 12:24:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81219281020
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 02:18:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64D7F381B8;
-	Sun,  4 Aug 2024 12:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DEB63F9D5;
+	Mon,  5 Aug 2024 02:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="LH05jqf/";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="QF7WWZbN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c+MtMLIH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from fhigh8-smtp.messagingengine.com (fhigh8-smtp.messagingengine.com [103.168.172.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D27481D1
-	for <linux-wireless@vger.kernel.org>; Sun,  4 Aug 2024 12:24:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F5542A94;
+	Mon,  5 Aug 2024 02:18:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722774259; cv=none; b=D98e8cIS8+gRsdSAaC0l3OHSDCDI5ZdGwOMTKvUuvbdM3SiUliljEbd8a43Sl1eEacMNS9zcJK8tmONRCBjnDIa4kJo5/IW7Fjj2ujXcW5y8MAjF9Ss2RGxuBwCENK5FBPObzT5BA624VMKyasSDJOqMvqxLe+9SQYOApr0g9Ks=
+	t=1722824307; cv=none; b=r8eL7RQwTxpF2MWuXWiN3UD43VEUTgVM2qWCN9++cNo39NCNXt+dqQEDdNsgBBUPxllehP9ees3sBe1Ij4DjqZxIzL76I+6BcsaiQkux4QXL6iYhVlBhxU/V2Eh3Lk0y6oaNctmdukoMbhW2CscHowJH2OXsyF89sdAq4td+ysQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722774259; c=relaxed/simple;
-	bh=/8vPRURRgMyU8ZdXUZCXtVYzd9RIwywFDiONXk6refc=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:Subject:Content-Type; b=Ejn62SLO9kS5FkRe3tle0YiqOp493JpYwUN1lUxLIq/qPRAdvsxnmlxtr5oOPlMHrdeMdWEuliYVC7CCYaKPH3fGY3A8uRZ8C/LBZUSLa8oncqMijavHFp9ZxOIwB4cO2OREre6tyuSquLlDwwpB7JG9fWNucrZ8LjEGlEHhiCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=LH05jqf/; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=QF7WWZbN; arc=none smtp.client-ip=103.168.172.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailfhigh.nyi.internal (Postfix) with ESMTP id BAF6A114E9D5;
-	Sun,  4 Aug 2024 08:24:16 -0400 (EDT)
-Received: from wimap26 ([10.202.2.86])
-  by compute6.internal (MEProxy); Sun, 04 Aug 2024 08:24:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:message-id:mime-version:reply-to
-	:subject:subject:to:to; s=fm2; t=1722774256; x=1722860656; bh=/8
-	vPRURRgMyU8ZdXUZCXtVYzd9RIwywFDiONXk6refc=; b=LH05jqf/3VvseFEL+3
-	uCkTWBwp+jJimF8o0nFTAxxdTxqdEu7C5sKosQKlVHCRyu6QCTocOoa8ZEEAH7tR
-	SLVI0j9JgMH+1lPOGxkZ2SspLTVXFpLNbQNK9DSpqZdomoxErwRHSEkIaGhZTfyC
-	8p7e74mPgi7DV4uY5T9WLfyAwbfUv6+NC5uEuIBGZE81piC7NPSzws67PuGs776K
-	W1x1pf67McwEYcK6bNqIM4sDgcO50LqrJy7GiL4wh5vGQXeZuJXpl0I2uWXWwZhW
-	5q/e1Tn6/8tCUXivPXQQajf5iWZCr3IiYZs0T4r/rx1TxUoiVhtWkana5Rr7h0Oh
-	SAYg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm3; t=1722774256; x=1722860656; bh=/8vPRURRgMyU8
-	ZdXUZCXtVYzd9RIwywFDiONXk6refc=; b=QF7WWZbNH0m6lNduuqPxXcRka4owh
-	toRoPKMVDiy+ni99D41KaEwYCVyi9+ROQjoOfTbIOMQ3mwJE7zwfKsI0Hx1yyKfi
-	IEpTtxhPG4GJpM3xt5mcJ5YJoleEDIKohUpQcDapgi1SV/9vMh12DK6dcnRiEhaZ
-	q499wJi+6doRPIznVJvcGx8IYGgNTNpkDsw4b7dAmQbaJKvQOU1bG1PsRUmsrxh1
-	y/DXiAUuT1kKIK3eSBmcJGMqrqWRvIt7ZqqGMlfr4fxUgcWu/SjIxrdJCu3Hxlr2
-	4fJFuThHrTnIzzHmREvIBjJl22Oy2vBSeL1BFncwL3pGru2/OzAXPwW7A==
-X-ME-Sender: <xms:8HKvZqkVm-_3wEKAkyDFBMUenXVhjzxZ988R7MNfMDksB05GPeD31g>
-    <xme:8HKvZh0rQCh-0tVNiMLuwlA-FNtXwWt1k7JC_uhql_YIzWcbRj1ofUahf_HRo0K36
-    6LLdz1C9K2NENSszjY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrkeeggdehvdcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefoggffhffvvefkufgtgfesthejredtredttdenucfhrhhomhepfdflrghnnhgv
-    ucfirhhunhgruhdfuceojhesjhgrnhhnrghurdhnvghtqeenucggtffrrghtthgvrhhnpe
-    ejteffgeeugeeggedtudekjeevuedvkedvfedvgfehieeltefhfeeigfekveeggeenucff
-    ohhmrghinheprhgvughhrghtrdgtohhmpdifuddrfhhinecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomhepjhesjhgrnhhnrghurdhnvghtpdhnsggp
-    rhgtphhtthhopedt
-X-ME-Proxy: <xmx:8HKvZorBKqYix0VkSqDCG66Yk3DG8UeEapB5mwYenBZESIH3E8Kwlw>
-    <xmx:8HKvZunPMYaqvPIW1Odl51oTOyqQsPfURrAIrI0PZp4j1g0A29WnQQ>
-    <xmx:8HKvZo2gENlAE3t7U8VQ12_G_pSe7I8T904VevXh-GoHbRtWVMlVQw>
-    <xmx:8HKvZlumNSWGYlmCD4uDJf2Wa5gz6gRlzgGQZY_iXbkDxlSxhSv6fA>
-    <xmx:8HKvZio3jeh1GdctDBZf-JzcJudfB-FmyM6_vJC5nl78WqPoA6jCaJC_>
-Feedback-ID: i47b949f6:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 3BEE819C0079; Sun,  4 Aug 2024 08:24:16 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1722824307; c=relaxed/simple;
+	bh=jT7CQvRhW8taPMY4BcCMX2qVxPHm0tLcFeBHgunm6IM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=dIYGzju0Awal4Yk1yi6T5FMkzUOk7KKT3XPA+W4BRU4ePEcv0yAcAONE6kYwiRkxqMn37V5raTeobG/2MfLozNKDmaDjEGd8/b7Wsm3DQIQLtZK5VG0tlEgazUxQ9GRD3Pj3L2o1xcVhv7xA8M1Zu7b8keiwdkWi5wibLlU3Tq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c+MtMLIH; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-70d18112b60so3880179b3a.1;
+        Sun, 04 Aug 2024 19:18:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722824305; x=1723429105; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jT7CQvRhW8taPMY4BcCMX2qVxPHm0tLcFeBHgunm6IM=;
+        b=c+MtMLIH/lbocbv6hTkt0ptk8/d/7aiX6R9c0Jzm8v2I/91YUQ9Pzkw7NjRAwXXHMN
+         wuP5xZOAR8OSnhJGlYXL+N7zJmq4D28UuRjXNN8/c5B6fVb6+xXix+o3StTlp7//4xzz
+         yCNWtutTBfiSZIMWYcyGZuMa19N21MAVXXSQZHZYxAh5ZTBIUN/FE6cTImpjRAFPVrUh
+         XcKwWLwM1O2sqrwg9zhxCeBUMogsuCR3zBHMA4EsdlVp2hqMlZ/NvtywJXMGM7SSV1Gt
+         p9CH98DFgkxsYJRaqYB57vOFIf1E0VzoMT9mcwsjhA7F3Lv3pmCAdWZBIF+1Gg+aOl2n
+         rIoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722824305; x=1723429105;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jT7CQvRhW8taPMY4BcCMX2qVxPHm0tLcFeBHgunm6IM=;
+        b=HjvLOlSyTYhsKQDPSw6FdPnOmxxZ5NJY1aso1eNGzy8f0J5McZfzKgGeUS2eD46snR
+         Bf33AJEuFZcspFLkjjhxgGkKztM/eAxLj7NjglZ/Nc8dZ1AenOdQbhPsR3CbG8ZCrAqd
+         IwhEUNVZuHnQwUEVzk/byR4iShQh/xOTf/HOokn9Ev9U/IJ45A286O8NTokI9KD8b1hL
+         Oh99y/Ty51EJ8nHjJKRh509wcZcFBTr6F5jfJKxkTHUxxpKMUdzcFeXd58rTCUXR6VcM
+         U0BZC7CtXxvWiNN5jRxFUJj+cCKARWCyQBYJcQpFIvbRKZcgjbKgU4AnSKXwzXwGfwl9
+         qykg==
+X-Forwarded-Encrypted: i=1; AJvYcCUEU14YgvcqQoQeRZCZ0wsxfwrT8IAK3z6YR15uSjx1SktsgeGSDbplOX8aC1MGwOCiHdqQ6RQZcPfOX8RX11Roo5n8Mg/c+ZU301YX7bHdR+9IlbGbZnNQsnw4MWgm5Wr7nIFE9BY+IJ1n8xEQUNBhLBwyEF3YgFUMy1f66oo+QanTSeGgnYM=
+X-Gm-Message-State: AOJu0Yx15u8ZiHp1oKNiU8T5QnIo0+bXcHA6Tn6yuI3thpCa8jog6w/6
+	Ja5GNbXEInpvesGtcn538f42G+W7wNcR1m9RgzY6N+hAhkwY2qk=
+X-Google-Smtp-Source: AGHT+IGmv8HtpX3mOmL8aLB0jq6Pnp6Rj+WYd8ikUIFq5559iKMNNa6zYN+uyDbgmkzNtwZ8fhopwQ==
+X-Received: by 2002:a05:6a00:6f5b:b0:70e:98e2:c76e with SMTP id d2e1a72fcca58-7106d9f5bb3mr16110775b3a.6.1722824305186;
+        Sun, 04 Aug 2024 19:18:25 -0700 (PDT)
+Received: from swift.. ([123.113.245.40])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7106ed2ce47sm4487683b3a.203.2024.08.04.19.18.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 Aug 2024 19:18:24 -0700 (PDT)
+From: LidongLI <wirelessdonghack@gmail.com>
+To: gregkh@linuxfoundation.org
+Cc: kvalo@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	mark.esler@canonical.com,
+	stf_xl@wp.pl,
+	wirelessdonghack@gmail.com
+Subject: Re: Ubuntu RT2X00 WIFI USB Driver Kernel NULL pointer Dereference&Use-After-Free Vulnerability
+Date: Mon,  5 Aug 2024 10:18:16 +0800
+Message-Id: <20240805021816.1921074-1-wirelessdonghack@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <2024080359-getaway-concave-623e@gregkh>
+References: <2024080359-getaway-concave-623e@gregkh>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Sun, 04 Aug 2024 14:23:56 +0200
-From: "Janne Grunau" <j@jannau.net>
-To: hostap@lists.infradead.org,
- "Vinayak Yadawad" <vinayak.yadawad@broadcom.com>
-Cc: "Aditya Garg" <gargaditya08@live.com>,
- "Arend Van Spriel" <arend.vanspriel@broadcom.com>,
- "Hector Martin" <marcan@marcan.st>, linux-wireless@vger.kernel.org,
- linux-wireless@vger.kernel.org, asahi@lists.linux.dev
-Message-Id: <92fe4dd4-21a4-4559-8441-32ef86672de6@app.fastmail.com>
-Subject: wpa_supplicant 2.11 breaks WPA2-PSK / WPA3-SAE authentication on Linux'
- brcmfmac
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hej,
+Hi Greg,
 
-wpa_supplicant 2.11 on Linux's 6.9.y / 6.10.y brcmfmac driver runs in
-authentication timeouts with WPA2-PSK and WPA3-SAE. This was reported
-with Apple silicon devices using Fedora Asahi remix with a patched
-driver as well as other devices without additional brcmfmac patches. See
-https://bugzilla.redhat.com/show_bug.cgi?id=2302577 for some reports.
+We tried it, and after configuring the udev rules, I can run the proof of concept (PoC) and reproduce the previous issue without using sudo
 
-I've bisected this to
-https://w1.fi/cgit/hostap/commit/?id=41638606054a09867fe3f9a2b5523aa4678cbfa5
-"Mark authorization completed on driver indication during 4-way HS
-offload". Reverting this commit on top of hostap_2_11 properly
-authenticates the connections. Looking at that change and the code it
-looks clearly broken to to me. As far as I can see is
-`assoc_info.authorized` for the nl80211 driver only set when
-QCA_WLAN_VENDOR_ATTR_ROAM_AUTH_AUTHORIZED is set (in main, I did not
-check older revisions). This doesn't seem appropriate to expect this on
-chipsets from different vendors.
 
-A revert looks to me like a possible/proper fix. I can send that later
-if no alternative materializes.
 
-Thanks and best regards,
-Janne
+
+
+
+Best regards,
 
