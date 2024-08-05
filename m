@@ -1,131 +1,122 @@
-Return-Path: <linux-wireless+bounces-10922-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10923-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46DD99475E0
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 09:18:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28B3E9475F6
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 09:24:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6A17B209E8
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 07:18:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 599701C21056
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 07:24:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F3C5145A0B;
-	Mon,  5 Aug 2024 07:18:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UOj0OSHk"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57F10149C50;
+	Mon,  5 Aug 2024 07:23:52 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD8A6A01E;
-	Mon,  5 Aug 2024 07:18:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D12149006
+	for <linux-wireless@vger.kernel.org>; Mon,  5 Aug 2024 07:23:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722842301; cv=none; b=oaCB8kL7SY7VtKP+5Yw7tsZTESC1wAkQrrfSgVmLTWGe1qhRC994HHezSX9PNhNIBxsbBKiWSAzwZWmbNZzpQy5OnYmv4wqkE8AIkGIeA/ZeR2BlRAWr8gS0XQyVeLqAf1OkPm38S58+GpUqs8bip3c1hwqiTZxOsW5XRyLuKq8=
+	t=1722842632; cv=none; b=BVet36nbLDJFCt4tWkdEiRwXmuxgjQeULRoV7JoWGTfC2mTjKemQ+0bxJ0Pc3JGrH+qwYoOxLNpvvPIEWfba4vcTMlZM8ODre5wXGfgkcOfHYo0IZa7UjkYYrNfKayH2YRvNXWo8gi3YqCPXMgChjCuS1qj5vMQTOLkGLucuMFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722842301; c=relaxed/simple;
-	bh=fniE8tuhdokX16cHRGF9TxpDQlWgeT3TOL9mIKL38bU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WY35B54c4KFfC2qTZx2nC8zTGjqAkb7vShdOB0i9Bw4dv/q1URzUvjKvmQaffNd5BbeunlnXwW0UDXXa7nQ3mWd1r1aZZ5cQV3hl6Pxi2upnxdRl6b6J3oRDEFXm3H9HczUHzEMkrIofIOyEtsgDyYvYdekfVN0tp3hJELk2Esc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UOj0OSHk; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2cf93dc11c6so6594063a91.1;
-        Mon, 05 Aug 2024 00:18:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722842299; x=1723447099; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/el0xGNFTdbbDtr5pZPM8/5Ct8VQl2stpFBoM0IeY1A=;
-        b=UOj0OSHk41vRFZGAve/q8+z2JmyneNPBw3Z/HW9RgG5K97+ts226S02fmD7cXO2eLO
-         wSem259a4jhElF+xo+F2s+lpf5Xn8rn8jaZciSxxb1s2qDXpfjj1OY3bVk/VXCsYawOu
-         0Mjro2ol/XAkqznh3/yhSvsXZsHRgLG5rKPLyrtVVAgPnERvv/fEVgfgbpY/AYBIqK14
-         bZ/8ggrNkmT1Ijx497KWkjtPL3Pjw1xV7XTy4z0dl2gnraaklLQmdVoGbKBiHzpZ/EjG
-         6YcivxtfgX41yphLMFek5EsQcFmMeQx2lsbxm5brktO+fUVdYq53Yf2z5Xx1SZEt6tGY
-         gGfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722842299; x=1723447099;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/el0xGNFTdbbDtr5pZPM8/5Ct8VQl2stpFBoM0IeY1A=;
-        b=k+zno/p+Q0fJmH5I243cCU2bT0hV+r55Wl038HrCEtNnv4PvZ73d+PiLqaYQOObhad
-         T6kJIvcrTKIE3elFW33kTQZBhuq3VpG7Mls8J4ABJY1m3nLMOiO2RQlLegYgRqvP+C1/
-         xbK3ay9EIOxU9ecEmBbXyx1zymUgBfGyixRZxOItrPLeqKA5TXiC/C4i/uJxrsxN/hmb
-         d+r2fSxncTG5pdzuuMcBxrPZE+RR3+j1QtYhr18WiX3gUmFtLJsXF0Cr1S1wZuit4Hpk
-         4AmCKU9KgOxXOiO8ldEJy2FNcmgWmr95pp2BFycbV8qqmkrjOrPw5LXrIfAhsUfh4YMF
-         0y3w==
-X-Forwarded-Encrypted: i=1; AJvYcCViFzvMniDV4XPZ3U92fN5ZZ6WrFkutntwnyWkoFhBMhWZ4Rr3C0KkqczdE5zHPa/s6qRzkKCANiHoDH3PXYPAbVeSC1n5a6EML23wW6A4UPno36skqBY8pdzXikb1BxtpMiKBI
-X-Gm-Message-State: AOJu0Yz4Rza7tCWDdw9dPoWmWY3ZYM72rpqFXZ+AgXxI8zLwRBQiFBcx
-	CH3epJglEPXPFS5nEyv5HlOOJXj1IqbN8SROgCJIsFrFqThChxSF
-X-Google-Smtp-Source: AGHT+IHOjps80DUneOXvRsMhTqimZWaMVNi12LGFI9HVEfB5rRDEhUQya6OsdFDNELE3faQYIfKU/g==
-X-Received: by 2002:a17:90b:17cb:b0:2c9:321:1bf1 with SMTP id 98e67ed59e1d1-2cff955e51fmr13968237a91.39.1722842299500;
-        Mon, 05 Aug 2024 00:18:19 -0700 (PDT)
-Received: from 904-569.realtek.com.tw (59-124-166-19.hinet-ip.hinet.net. [59.124.166.19])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2cffaf69d54sm6316927a91.12.2024.08.05.00.18.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Aug 2024 00:18:19 -0700 (PDT)
-From: hhorace <hhoracehsu@gmail.com>
-To: johannes@sipsolutions.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	hhorace <hhoracehsu@gmail.com>
-Subject: [PATCH] wifi: cfg80211: fix bug of mapping AF3x to incorrect User Priority
-Date: Mon,  5 Aug 2024 15:17:42 +0800
-Message-ID: <20240805071743.2112-1-hhoracehsu@gmail.com>
-X-Mailer: git-send-email 2.42.0.windows.2
+	s=arc-20240116; t=1722842632; c=relaxed/simple;
+	bh=jGxNrQyxYkIg93fCVIgqPVaXGqNnR8YL7EzBArjezJU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ggbHmoQYTTzp1vB+6a76jv3+/aOh9hjEjQdGX9R+o9fpuKwgSbeip+q56tY2UeusiKktE6BIZJs+wx7BIIzX+DpHJi6v1LfSl2I4R5PPkh2n6lPEhHZiwzogv2AHMwzZmDl9VW7hwWbVQbp2t6fvfJ3nf+7l69wNdzT968n4jJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sas4J-0001Pz-VG; Mon, 05 Aug 2024 09:23:47 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sas4I-004ebw-QV; Mon, 05 Aug 2024 09:23:46 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sas4I-002wYS-2K;
+	Mon, 05 Aug 2024 09:23:46 +0200
+Date: Mon, 5 Aug 2024 09:23:46 +0200
+From: Sascha Hauer <sha@pengutronix.de>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: Re: [PATCH v2 3/4] wifi: rtw88: usb: Support RX aggregation
+Message-ID: <ZrB-AtNmj2NAv752@pengutronix.de>
+References: <60856bbc-8701-4aee-804c-3d8c00d4f5c5@gmail.com>
+ <ac43a1bb-d735-43df-b6bf-41c44148c9e2@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ac43a1bb-d735-43df-b6bf-41c44148c9e2@gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
-According to RFC8325 4.3, Multimedia Streaming: AF31(011010, 26), 
-AF32(011100, 28), AF33(011110, 30) maps to User Priority = 4 
-and AC_VI (Video).
+On Sat, Aug 03, 2024 at 12:34:20AM +0300, Bitterblue Smith wrote:
+> The chips can be configured to aggregate several frames into a single
+> USB transfer. Modify rtw_usb_rx_handler() to support this case.
+> 
+> RX aggregation improves the RX speed on certain ARM systems, like the
+> NanoPi NEO Core2.
+> 
+> Currently none of the chips are configured to aggregate frames.
+> 
+> Tested with RTL8811CU and RTL8723DU.
+> 
+> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+> ---
+> v2:
+>  - Simplify the code and make it more readable.
+>  - Rebase on top of latest rtw-next.
+> ---
+>  drivers/net/wireless/realtek/rtw88/usb.c | 61 ++++++++++++++++--------
+>  1 file changed, 40 insertions(+), 21 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
+> index 10f1d724370e..4c7ba5c76a57 100644
+> --- a/drivers/net/wireless/realtek/rtw88/usb.c
+> +++ b/drivers/net/wireless/realtek/rtw88/usb.c
+> @@ -546,11 +546,12 @@ static void rtw_usb_rx_handler(struct work_struct *work)
+>  	struct rtw_usb *rtwusb = container_of(work, struct rtw_usb, rx_work);
+>  	struct rtw_dev *rtwdev = rtwusb->rtwdev;
+>  	const struct rtw_chip_info *chip = rtwdev->chip;
+> -	struct rtw_rx_pkt_stat pkt_stat;
+> +	u32 pkt_desc_sz = chip->rx_pkt_desc_sz;
+>  	struct ieee80211_rx_status rx_status;
+> +	u32 pkt_offset, next_pkt, urb_len;
+> +	struct rtw_rx_pkt_stat pkt_stat;
+> +	struct sk_buff *next_skb = NULL;
 
-However, the original code remain the default three Most Significant
-Bits (MSBs) of the DSCP, which makes AF3x map to User Priority = 3
-and AC_BE (Best Effort).
+Nit: With the changes in this version initialization to NULL is no
+longer necessary.
 
-Signed-off-by: hhorace <hhoracehsu@gmail.com>
----
- net/wireless/util.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+Otherwise:
 
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index 082c6f9..4e04618 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -998,7 +998,6 @@ unsigned int cfg80211_classify8021d(struct sk_buff *skb,
- 	 * Diffserv Service Classes no update is needed:
- 	 * - Standard: DF
- 	 * - Low Priority Data: CS1
--	 * - Multimedia Streaming: AF31, AF32, AF33
- 	 * - Multimedia Conferencing: AF41, AF42, AF43
- 	 * - Network Control Traffic: CS7
- 	 * - Real-Time Interactive: CS4
-@@ -1026,6 +1025,12 @@ unsigned int cfg80211_classify8021d(struct sk_buff *skb,
- 		/* Broadcasting video: CS3 */
- 		ret = 4;
- 		break;
-+	case 26:
-+	case 28:
-+	case 30:
-+		/* Multimedia Streaming: AF31, AF32, AF33 */
-+		ret = 4;
-+		break;
- 	case 40:
- 		/* Signaling: CS5 */
- 		ret = 5;
+Reviewed-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+Sascha
+
 -- 
-2.42.0.windows.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
