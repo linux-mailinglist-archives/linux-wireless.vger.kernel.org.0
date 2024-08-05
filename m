@@ -1,170 +1,152 @@
-Return-Path: <linux-wireless+bounces-10944-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10945-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C4DC947767
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 10:37:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E9E894776B
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 10:38:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE6DFB20BA5
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 08:37:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9EAC1C20CEA
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 08:38:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F455149DF0;
-	Mon,  5 Aug 2024 08:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB8514E2FD;
+	Mon,  5 Aug 2024 08:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="P1Y3RjiD";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pqV+9Hl0"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="NbzH7i6G"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7B713D882;
-	Mon,  5 Aug 2024 08:36:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF0714B973
+	for <linux-wireless@vger.kernel.org>; Mon,  5 Aug 2024 08:38:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722847014; cv=none; b=Xpz9XMoJgbHyuXQKO0wdVARyMv02LTbWJhd1TJ09hQdFVmuLanIgyvKUOZ6NcYFkpDH7gqmQHkD/CZ8zoE7xUx7ITRttrRERBke8iIT7ACVuCYhfqr3HUHeK68xfH6qSkYHjN6yl8otP7+H2CErhqocM2mT0En7WTbsfmyeWn9Q=
+	t=1722847083; cv=none; b=jQ5Ff9WfrOVFm7h585Fi7EeJjq4CzVNN/fICJCzbctHjJAnJsJ/JGfQoAVGu3ypYLnpKMZiw3OYK/g72A4Y2hNZTLSoRuf5q3FhyxDQ0k3pRC0SNARdA8nqNcm/ujnuOS7fM5eqELqPiIVna3wXRd3wN399QUoZEm7nQr7yYaDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722847014; c=relaxed/simple;
-	bh=PjtUfg2dBkrxwoYebMLa4QJFsaKgxx/xvAKUDYqI72k=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=mqP/FdU7St4irOn5uCrEFCz2iVWVGYhZXFksaEzhEpU3s4IE3orT1gd3KP2b6Dt+RsBJBX59Rs3K4ziCeTZGQoflHx6AsbsZqlhFc/p0T/rgNq0mO+0bIKVXlhTZhRQpjqNzlgy2BZvmk4cnDHuCm9K3yV3Ei6bcx+p2BqJ2G9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=P1Y3RjiD; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pqV+9Hl0; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1722847010;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RCsHJr1SeKMqzqkT0AejdrkUq3Lrh5QDrzPRJxr0exw=;
-	b=P1Y3RjiDmTGcQmSQQSM0W4znmGk/TCQCPnBQ2rnJqCyEd9NJYv6YQVAq1nZh5m8kru3laR
-	PNw4QQnbpuI2iI6MLvuDKCiAyBy8uSMcM//UM5D8wXXXQ/vZc3B1mJhqsZzSLe6saI7sZz
-	8oAuYEPtwizF+X3zGCW+nLJjExy+fmBoPTfUhbG+UL7yFLNPeClaIh3Ia7zwaic2DAAuWP
-	U8v0SWrugVSerc1SDFOGzTCK8SIdWgYAdhbKJex1enhxiV8r+2+Ufn1zXyLF+3ZqlVPUBP
-	AN25nlXKUC5QfZrlk7OKPeJoVAucipy4TXR35vAVKhbNvIRh6d2vKpbYO12O3g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1722847010;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RCsHJr1SeKMqzqkT0AejdrkUq3Lrh5QDrzPRJxr0exw=;
-	b=pqV+9Hl0F6DWyoS2cDiBSEc2UWx8wdnbmtCzvRPcBe/wtKMCg8KJf5Dvywkt94TF+1U5Tf
-	P4Nyg+Tm/2f4e5Cw==
-To: syzbot <syzbot+41e4341f493f1155aa3d@syzkaller.appspotmail.com>,
- anna-maria@linutronix.de, frederic@kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- syzkaller-bugs@googlegroups.com
-Cc: Johannes Berg <johannes@sipsolutions.net>, Kalle Valo
- <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: Re: [syzbot] [kernel?] WARNING in hrtimer_forward (3)
-In-Reply-To: <000000000000331d30061eeaf927@google.com>
-References: <000000000000331d30061eeaf927@google.com>
-Date: Mon, 05 Aug 2024 10:36:49 +0200
-Message-ID: <87plqn5psu.ffs@tglx>
+	s=arc-20240116; t=1722847083; c=relaxed/simple;
+	bh=X6jcxMd+FRPQlkV1oJKr2Tp9S0aJ1mG8uhJOvWbeKWU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VinkijyAjsXjoEOxiSFBCLWNy6S1AyCbPzNdmbCbEYmkzvg0tTPKGFnE4ugDDkFc+4J3ry26sfoupn9bCu0FyVKO4BKZhwOjrtNb6QBX7SsX3nA0AF2kGTeN7t5/pwAziTc1C6eAYi2jEdTGcd7YdB4dLHjmU5D7FSDQln3sGaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=NbzH7i6G; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-70eb73a9f14so7706562b3a.2
+        for <linux-wireless@vger.kernel.org>; Mon, 05 Aug 2024 01:38:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1722847081; x=1723451881; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=lwKaJV11ZNo64nhEmzjMhGqxhmedgN2za3+jM9f935A=;
+        b=NbzH7i6GIBVA6D5/Amznl0or0B2YuNWrfKP9AzZLLDQ0mzUY5atNs0IFB2tS3+fz5V
+         fAzrLRQRcHEvcvrYDx1yu/Ftvn3nU82eg62T05vqgS0Bdc2yAw6LDHSDP+A/i7QFcYR+
+         TVXM4hBBr4EdCgSO9wHLRtt4Nq3+ixl/Lqg7M=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722847081; x=1723451881;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lwKaJV11ZNo64nhEmzjMhGqxhmedgN2za3+jM9f935A=;
+        b=K+zyNP5PSY7Y1PDzCQmUacwtBuuY2vwxVdV+KI3V+GRCM+MkGafP/Wb9J1PuooWXwj
+         /X4VjHFKBr7slWPYVrzBeZIwIRAsUCMhtqMAE9izoJ0W4GvnL8OliG26zESMqAX7QAgH
+         p5O3Dq/0qbAjb7sNPp9dexpiw6IjudRxT1Qba6cSTRyaO0XRgSHFHcvcK62rpkolvOPa
+         XIWdfkG2WUZURABPGTpf+mQaSj3JYK4HZoFJkSHbeLr6q8XwuJaTZox08lsNmRYjhBmg
+         ZoE8O674RZR/RX/6oB3RBtaMwVSXOQTpiZiT5q51XKoNjS4lZ/8FMUwvXuaOwXOi2287
+         /EWg==
+X-Forwarded-Encrypted: i=1; AJvYcCVpM48VNMFt9DpSsefWZiiIVSk4u0Vh5MjTKm6PkKO+9WqiMsPDvk/ByJvXiaZ0ZUbcIGr65BSmou3qo5OlsJoEcus3Ie4ZufXb0zPyp6U=
+X-Gm-Message-State: AOJu0YyyPpeVI8/En/EsGkvsNzCK1TluzsfWYPhaBN+3lDG/SPKeQUSp
+	L8zdRHmDQKUhzkAjqDKPxphVP3DQU7UzCbTGauaeXtq7f+e6qJqV9CBkEYtc0w==
+X-Google-Smtp-Source: AGHT+IGkudqNL0fTBNkSAE89yZQ5MD4zd9FpMTyItlaPtVglqeJXDe8fDvsl1Fh4ANkwyM3hm/+jBQ==
+X-Received: by 2002:a05:6a20:9193:b0:1c2:8d91:634 with SMTP id adf61e73a8af0-1c6996b9324mr16846423637.45.1722847080953;
+        Mon, 05 Aug 2024 01:38:00 -0700 (PDT)
+Received: from [10.176.68.61] ([192.19.176.250])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1ff58f53c4csm62072535ad.72.2024.08.05.01.37.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 Aug 2024 01:38:00 -0700 (PDT)
+Message-ID: <32ddf003-0547-4905-9c87-899b9074ede3@broadcom.com>
+Date: Mon, 5 Aug 2024 10:37:52 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 3/5] arm64: dts: rockchip: Add AP6275P wireless support
+ to Khadas Edge 2
+To: Jacobe Zang <jacobe.zang@wesion.com>, robh@kernel.org,
+ krzk+dt@kernel.org, heiko@sntech.de, kvalo@kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, conor+dt@kernel.org
+Cc: efectn@protonmail.com, dsimic@manjaro.org, jagan@edgeble.ai,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+ arend@broadcom.com, linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ megi@xff.cz, duoming@zju.edu.cn, bhelgaas@google.com,
+ minipli@grsecurity.net, brcm80211@lists.linux.dev,
+ brcm80211-dev-list.pdl@broadcom.com, nick@khadas.com
+References: <20240805073425.3492078-1-jacobe.zang@wesion.com>
+ <20240805073425.3492078-4-jacobe.zang@wesion.com>
+Content-Language: en-US
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
+Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
+ 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
+In-Reply-To: <20240805073425.3492078-4-jacobe.zang@wesion.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 05 2024 at 00:53, syzbot wrote:
+On 8/5/2024 9:34 AM, Jacobe Zang wrote:
+> Khadas Edge2 uses the PCI-e Ampak AP6275P 2T2R Wi-Fi 6 module. The
+> pcie@0 node can be used as Bridge1, so the wifi@0 node is used as a
+> device under the Bridge1.
 
-Cc+ wireless folks.
-
-> Hello,
->
-> syzbot found the following issue on:
->
-> HEAD commit:    3d650ab5e7d9 selftests/bpf: Fix a btf_dump selftest failure
-> git tree:       bpf-next
-> console output: https://syzkaller.appspot.com/x/log.txt?x=17e154d3980000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=5efb917b1462a973
-> dashboard link: https://syzkaller.appspot.com/bug?extid=41e4341f493f1155aa3d
-> compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
->
-> Unfortunately, I don't have any reproducer for this issue yet.
->
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/630e210de8d9/disk-3d650ab5.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/3576ca35748a/vmlinux-3d650ab5.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/5b33f099abfa/bzImage-3d650ab5.xz
->
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+41e4341f493f1155aa3d@syzkaller.appspotmail.com
->
-> ------------[ cut here ]------------
-> WARNING: CPU: 0 PID: 11474 at kernel/time/hrtimer.c:1048 hrtimer_forward+0x210/0x2d0 kernel/time/hrtimer.c:1048
-
-That tries to forward a hrtimer which is currently enqueued.
-
-> Modules linked in:
-> CPU: 0 UID: 0 PID: 11474 Comm: syz.2.2194 Not tainted 6.10.0-syzkaller-12666-g3d650ab5e7d9 #0
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/27/2024
-> RIP: 0010:hrtimer_forward+0x210/0x2d0 kernel/time/hrtimer.c:1048
-> Code: 00 49 89 1e 48 8b 04 24 eb 07 e8 bb e7 12 00 31 c0 48 83 c4 30 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc e8 a1 e7 12 00 90 <0f> 0b 90 eb e0 4c 89 f0 31 d2 49 f7 f4 48 89 04 24 49 89 c6 4d 0f
-> RSP: 0018:ffffc90000007bf8 EFLAGS: 00010246
-> RAX: ffffffff81809d7f RBX: 0000000000000001 RCX: ffff888026059e00
-> RDX: 0000000000000101 RSI: 0000000000000001 RDI: 0000000000000000
-> RBP: 00000042facd7bc5 R08: ffffffff81809c13 R09: 1ffffffff26e4d1f
-> R10: dffffc0000000000 R11: ffffffff81358260 R12: 00000000061a8000
-> R13: ffff88807db07080 R14: 000000000044e132 R15: 1ffff1100fb60e0c
-> FS:  00007fa65d4636c0(0000) GS:ffff8880b9200000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 00007f478b2356c0 CR3: 000000005beac000 CR4: 00000000003506f0
-> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> DR3: 0000000000000000 DR6: 00000000ffff0ff0 DR7: 0000000000000600
-> Call Trace:
->  <IRQ>
->  hrtimer_forward_now include/linux/hrtimer.h:355 [inline]
->  mac80211_hwsim_beacon+0x192/0x1f0 drivers/net/wireless/virtual/mac80211_hwsim.c:2354
-
-This is the timer callback. So something has re-started the timer before
-the soft interrupt was able to run ....
-
->  __run_hrtimer kernel/time/hrtimer.c:1689 [inline]
->  __hrtimer_run_queues+0x59b/0xd50 kernel/time/hrtimer.c:1753
->  hrtimer_run_softirq+0x19a/0x2c0 kernel/time/hrtimer.c:1770
->  handle_softirqs+0x2c4/0x970 kernel/softirq.c:554
->  __do_softirq kernel/softirq.c:588 [inline]
->  invoke_softirq kernel/softirq.c:428 [inline]
->  __irq_exit_rcu+0xf4/0x1c0 kernel/softirq.c:637
->  irq_exit_rcu+0x9/0x30 kernel/softirq.c:649
->  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1043 [inline]
->  sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1043
->  </IRQ>
->  <TASK>
->  asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
-
-mac80211_hwsim_link_info_changed() and mac80211_hwsim_config() can
-re-start the timer concurrently to a running softirq callback. I can't
-see any serialization there.
-
-The check for hrtimer_queued() is not cutting it as that's a lockless
-check and becomes true when the timer is dequeued for expiry.
-
-So the following can happen:
-
-CPU0                            CPU1
-
-hrtimer_softirq()
-    lock_base();
-    dequeue_timer(t);
-    base->running = t;
-    unlock_base(t);
-                                if (!hrtimer_queued(t))
-    t->fn(t)				hrtimer_start(t);
-      ....
-      hrtimer_forward(t);       <- FAIL
-
-Replacing hrtimer_queued() with hrtimer_active() should solve the
-hrtimer race, but I wonder whether the concurrency between the soft
-interrupt and the config/info changes has other side effects.
-
-Thanks,
-
-        tglx
+Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Co-developed-by: Muhammed Efe Cetin <efectn@protonmail.com>
+> Signed-off-by: Muhammed Efe Cetin <efectn@protonmail.com>
+> Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
+> ---
+>   .../boot/dts/rockchip/rk3588s-khadas-edge2.dts   | 16 ++++++++++++++++
+>   1 file changed, 16 insertions(+)
 
