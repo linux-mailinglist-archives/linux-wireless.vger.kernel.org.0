@@ -1,113 +1,117 @@
-Return-Path: <linux-wireless+bounces-10956-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10957-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31EFE9479A0
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 12:26:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C55AF947A30
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 13:02:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC6B2281848
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 10:26:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EAEA1F21295
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 11:02:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87D9157460;
-	Mon,  5 Aug 2024 10:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3531A14E2FA;
+	Mon,  5 Aug 2024 11:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NFf/3R7R"
+	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="jcpDq/6u"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C380F156F5B
-	for <linux-wireless@vger.kernel.org>; Mon,  5 Aug 2024 10:22:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C148913AD11
+	for <linux-wireless@vger.kernel.org>; Mon,  5 Aug 2024 11:02:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722853323; cv=none; b=Dh0pXJ9Q2E6GCBogcKKl7Th1OZ5h/syb0Y2Ccxhlytl2fpg1dmnNeyzvAAendFoPgfxvTBs2fBZF5qnRwGIpIR928M+zXxwSzd1/kVq+RDXZttkousMlptg3i576/KBbT/yXnUBLpiX0nJhm6PKsyfpHGpJStFt82ato4FuyMBk=
+	t=1722855770; cv=none; b=Cdx5RC7rXGV7mTKg20YyBUGEXHJEstd8mZuJ4EXf5bpYWXTtL+8NHqF+UUvkVHagL3f3iXk8jAWvkMj4OCQyi2iWGvXX9OnJUHAs4uuYXJJPQ7ogED9rJNUMPz5Sz6of7Hpnq0xQPYWQiH4C1Ko3OFTOPsNbUmafc4GwswAj4oU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722853323; c=relaxed/simple;
-	bh=6KDt+JmP1HRccqMzAJ7O3BYqToFx6PIMOFQll+8+U+A=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=msIKRXdEzjJBZkrWyGgfSLrFDc2bxqxOd9tNZtLfeGLkpMrasyks6oJswZW0Jl27DWMkCczW8859rr9Ybv7RdqMiCv0g7kTWyH1NCTu9DBlTi+BNFJX951u6++BDX7BgLalAwQyYOI9azsaxQowV7yQhZDHLqRNlzNogbhd1nI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NFf/3R7R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 930E0C32782;
-	Mon,  5 Aug 2024 10:22:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722853323;
-	bh=6KDt+JmP1HRccqMzAJ7O3BYqToFx6PIMOFQll+8+U+A=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=NFf/3R7Ry7ZHoy8l0wIboTlLm1JLNUB9MqNAk+qaf9/zVFfJGBGBY35wmt3h/WyTh
-	 GBZgWRemao98doyS7JdKi4rA3dSepeuxYiQKd1Sg9oFZEr6fTM9QD71xC6ewi10l0Y
-	 KnzXnNETmOzih7cE55rT8iC9V+2K/xEh6zym1qi3T6Urw9N+fU8OqH68m3t9TdpL3k
-	 4d9/3egkCzyfLmQv0/O7PNvFo2y98VUC5JdrokBb/+/gdHlEIGki1lG2z7F+V0GNmk
-	 o7OSKV4XVHHTjOnFx1h8iiDhFudmY2LgEjqe7qMTIEgeOIs/4lC86A4x0H4sFfLZHv
-	 avbdQl/84AwWA==
-From: Kalle Valo <kvalo@kernel.org>
-To: SALVATORE BUONO <tottobuono@gmail.com>
-Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org
-Subject: Re: Problem with driver ath10k_pci
-References: <CAH_QiWBD3DdGL-GocHjakJvwrZNMzoiJ+RfCm5iiZf8msbbJ8g@mail.gmail.com>
-Date: Mon, 05 Aug 2024 13:22:00 +0300
-In-Reply-To: <CAH_QiWBD3DdGL-GocHjakJvwrZNMzoiJ+RfCm5iiZf8msbbJ8g@mail.gmail.com>
-	(SALVATORE BUONO's message of "Fri, 2 Aug 2024 20:55:52 +0200")
-Message-ID: <877ccvjmlz.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1722855770; c=relaxed/simple;
+	bh=lTdWPeczTo3SWczuPjNZqpBN6E7vSRF94/kpeZ3mtUI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UttNhuF7WHTLDye6r9kFwyfNaWOCulMbzys8h57l7RH/LuyDLLlI3js5ww8y3SSyqa/TRG5XEUBRc+xrISULId0GZY9UNf94l06ReVscTonqTX/e1noBC5DNIZ3ndg1MtPs65gINiuJO8FA+YNJ4nl+SeYMUyDJtzcuaCJmEa58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=jcpDq/6u; arc=none smtp.client-ip=45.145.95.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
+From: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+	t=1722855752; bh=lTdWPeczTo3SWczuPjNZqpBN6E7vSRF94/kpeZ3mtUI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=jcpDq/6udxLGxOGYJJOTgwPlE5ZlxJcMabLJHYLFgPCrCf2kGb1d6am9SPQ2xvLvR
+	 JTmLaf/V2RtpHN20GHKMG0bIXDZy4sPAE4HfTONaMk8havZmNKFNW5eWS4XTIZLKyo
+	 hmoAxcwl+/oTDJ5CU+BO/HstcH5F5IdHMt12JSZMWZt6BNF7QR5Qoc1s7gSXyKqVbD
+	 PRapk6szRc2w1+I27FtE/i87fbHj/LxhlTH9QSdNWu8B0yQE3soVJhRCyQaDKjY/Xu
+	 EcLDbMWXYsXjMhXX1nwiq86wInRewPreULX5UbP9MpzN9incqcJY6AVOTyU8Y8+gZc
+	 njIV++C54LZhg==
+To: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Wang Ming <machel@vivo.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
+	Minjie Du <duminjie@vivo.com>
+Cc: linux-wireless@vger.kernel.org,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	dan.g.tob@gmail.com
+Subject: [PATCH] wifi: ath9k: Remove error checks when creating debugfs entries
+Date: Mon,  5 Aug 2024 13:02:22 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <20240805110225.19690-1-toke@toke.dk>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-SALVATORE BUONO <tottobuono@gmail.com> writes:
+From: Toke Høiland-Jørgensen <toke@redhat.com>
 
-> Good morning, there is a problem with this driver with new version of
-> ubuntu, since before I update to 24.04 it works correctly, but now it does
-> not work anymore after sleep/suspension. It disconnects and I tried a lot
-> of commands to restart the wifi module but it does not work. This is the
-> discussion on ubuntu forum, but no solution is found. Can you fix it?
->
->
-> *Salvatore Buono*
-> salvatore@salvatore-Inspiron-5515:~$ sudo dmesg | grep ath10k
-> [    3.509206] ath10k_pci 0000:02:00.0: enabling device (0000 -> 0002)
-> [    3.511043] ath10k_pci 0000:02:00.0: pci irq msi oper_irq_mode 2 irq_mode 0 reset_mode 0
-> [    3.734071] ath10k_pci 0000:02:00.0: qca6174 hw3.2 target 0x05030000 chip_id 0x00340aff sub 1028:0310
-> [    3.734081] ath10k_pci 0000:02:00.0: kconfig debug 0 debugfs 1 tracing 1 dfs 0 testmode 0
-> [    3.734432] ath10k_pci 0000:02:00.0: firmware ver WLAN.RM.4.4.1-00309- api 6 features wowlan,ignore-otp,mfp crc32 0793bcf2
-> [    3.799439] ath10k_pci 0000:02:00.0: board_file api 2 bmi_id N/A crc32 d2863f91
-> [    3.881223] ath10k_pci 0000:02:00.0: htt-ver 3.87 wmi-op 4 htt-op 3 cal otp max-sta 32 raw 0 hwcrypto 1
-> [    5.804589] ath10k_pci 0000:02:00.0 wlp2s0: renamed from wlan0
-> [  394.964239] ath10k_pci 0000:02:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x000b address=0xfb294f50 flags=0x0070]
-> [  402.843038] ath10k_pci 0000:02:00.0: pci irq msi oper_irq_mode 2 irq_mode 0 reset_mode 0
-> [  403.045772] ath10k_pci 0000:02:00.0: qca6174 hw3.2 target 0x05030000 chip_id 0x00340aff sub 1028:0310
-> [  403.045788] ath10k_pci 0000:02:00.0: kconfig debug 0 debugfs 1 tracing 1 dfs 0 testmode 0
-> [  403.046353] ath10k_pci 0000:02:00.0: firmware ver WLAN.RM.4.4.1-00309- api 6 features wowlan,ignore-otp,mfp crc32 0793bcf2
-> [  403.110616] ath10k_pci 0000:02:00.0: board_file api 2 bmi_id N/A crc32 d2863f91
-> [  403.197531] ath10k_pci 0000:02:00.0: htt-ver 3.87 wmi-op 4 htt-op 3 cal otp max-sta 32 raw 0 hwcrypto 1
-> [  403.259722] ath10k_pci 0000:02:00.0 wlp2s0: renamed from wlan0
-> [  418.545075] ath10k_pci 0000:02:00.0: timed out waiting peer stats info
-> [  423.537127] ath10k_pci 0000:02:00.0: wmi command 90113 timeout, restarting hardware
-> [  423.537147] ath10k_pci 0000:02:00.0: could not request stats (-11)
-> [  423.549132] ath10k_pci 0000:02:00.0: could not request peer stats info: -108
-> [  423.559691] ath10k_pci 0000:02:00.0: failed to read hi_board_data address: -16
-> [  426.587606] ath10k_pci 0000:02:00.0: failed to receive initialized event from target: 00000000
-> [  429.603807] ath10k_pci 0000:02:00.0: failed to receive initialized event from target: 00000000
-> [  429.603824] ath10k_pci 0000:02:00.0: failed to wait for target init: -110
-> [  429.606647] ath10k_pci 0000:02:00.0: failed to delete WMI vdev 1: -108
-> [  429.606657] ath10k_pci 0000:02:00.0: failed to set 2g txpower 46: -108
-> [  429.606661] ath10k_pci 0000:02:00.0: failed to setup tx power 23: -108
-> [  429.606664] ath10k_pci 0000:02:00.0: failed to recalc tx power: -108
-> [  429.606855] ath10k_pci 0000:02:00.0: failed to flush transmit queue (skip 1 ar-state 2): 5000
-> [  429.606898] ath10k_pci 0000:02:00.0: failed to flush transmit queue (skip 1 ar-state 2): 5000
+We should not be checking the return values from debugfs creation at all: the
+debugfs functions are designed to handle errors of previously called functions
+and just transparently abort the creation of debugfs entries when debugfs is
+disabled. If we check the return value and abort driver initialisation, we break
+the driver if debugfs is disabled (such as when booting with debugfs=off).
 
-You need to report this to Ubuntu. We don't support distro kernels, only
-vanilla kernel.org releases.
+Earlier versions of ath9k accidentally did the right thing by checking the
+return value, but only for NULL, not for IS_ERR(). This was "fixed" by the two
+commits referenced below, breaking ath9k with debugfs=off starting from the 6.6
+kernel (as reported in the Bugzilla linked below).
 
-Adding also ath10k list.
+Restore functionality by just getting rid of the return value check entirely.
 
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219122
+Fixes: 1e4134610d93 ("wifi: ath9k: use IS_ERR() with debugfs_create_dir()")
+Fixes: 6edb4ba6fb5b ("wifi: ath9k: fix parameter check in ath9k_init_debug()")
+Reported-by: dan.g.tob@gmail.com
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+---
+ drivers/net/wireless/ath/ath9k/debug.c         | 2 --
+ drivers/net/wireless/ath/ath9k/htc_drv_debug.c | 2 --
+ 2 files changed, 4 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath9k/debug.c b/drivers/net/wireless/ath/ath9k/debug.c
+index d84e3ee7b5d9..bf3da631c69f 100644
+--- a/drivers/net/wireless/ath/ath9k/debug.c
++++ b/drivers/net/wireless/ath/ath9k/debug.c
+@@ -1380,8 +1380,6 @@ int ath9k_init_debug(struct ath_hw *ah)
+ 
+ 	sc->debug.debugfs_phy = debugfs_create_dir("ath9k",
+ 						   sc->hw->wiphy->debugfsdir);
+-	if (IS_ERR(sc->debug.debugfs_phy))
+-		return -ENOMEM;
+ 
+ #ifdef CONFIG_ATH_DEBUG
+ 	debugfs_create_file("debug", 0600, sc->debug.debugfs_phy,
+diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c b/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
+index f7c6d9bc9311..9437d69877cc 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
++++ b/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
+@@ -486,8 +486,6 @@ int ath9k_htc_init_debug(struct ath_hw *ah)
+ 
+ 	priv->debug.debugfs_phy = debugfs_create_dir(KBUILD_MODNAME,
+ 					     priv->hw->wiphy->debugfsdir);
+-	if (IS_ERR(priv->debug.debugfs_phy))
+-		return -ENOMEM;
+ 
+ 	ath9k_cmn_spectral_init_debug(&priv->spec_priv, priv->debug.debugfs_phy);
+ 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.45.2
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
