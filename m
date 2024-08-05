@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-10910-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10911-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8DD59474A6
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 07:31:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EAAE9474AA
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 07:31:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED2D02814A1
-	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 05:31:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D8BB1F2151A
+	for <lists+linux-wireless@lfdr.de>; Mon,  5 Aug 2024 05:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 979B313FD72;
-	Mon,  5 Aug 2024 05:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424351428E0;
+	Mon,  5 Aug 2024 05:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TT1aq1u3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uUoVgU1I"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6AE63A;
-	Mon,  5 Aug 2024 05:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BCFA934;
+	Mon,  5 Aug 2024 05:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722835882; cv=none; b=dovTvbNgC5FE8Sj3p0t/ZCLLSbuaCysiMs9VuVSmlzZJE8l4owZ7JsANTyh3Y5SuGwhSmhLHU/Vgvoz8uL9JOT9LDZYpnk1mh09MCZB5Ou+8AnR6m5b5pPkOBi2RwfEWRxNmHl2wGaS/X7Ah3iIkyvBJ1Cpau12J2MAbJetWPHc=
+	t=1722835908; cv=none; b=XOA5nUAurUnxWiWHN4PO98YdTbCIvanMlIXmkOnhP/9zYmbFG5PNHvi0ypJ5EIA5iptssCqg14rtKeQYiA6PId7Q8rg/wF4Pd3Z4XvQDVLrHsP0UxZMeruZLoklh/7vwkHHPM+e8ETufL+4F5/HSNKSuNvraN1g7jnwDHxbkOd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722835882; c=relaxed/simple;
-	bh=rvtbyErBZrQRF5idd5IgE6dAMI6AhdxFMYDfmhoMPXo=;
+	s=arc-20240116; t=1722835908; c=relaxed/simple;
+	bh=n3NtmQvJlQ5vB+svvAz6BIt3hbOaafeeRuHejPZS0Lk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rlbBPuz+X/W2fbARY45fUv4tRt38WYc0Ciqn5nF70/9Y6TUPkfqG2FvcrW7xEKgnzQm5ekVYA38A+pMUksUgpDI1ISybt9YB32v5Xvo0hwg5ucxiQ1oHNmuQLPmud62rWOyrSO3Rh/pJOXcH7+eagd5FyjsmnVEywDpEXDd573U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TT1aq1u3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A329C32782;
-	Mon,  5 Aug 2024 05:31:15 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=Uba7KRwonkbiUZSlJv1Pv7S61nCXLxJWjfdgwXJRQdOpPBi6R4bORPTlJTAsaroBFuHp634uPudv/QlzWuqaRhpKORDb7DIW24oy76dvr2AffFQzzTHlMv5+bCMClD464qDC4+gnSPvtU6axQ4NbcYxE9RqHOoQFec8Tpo54Ldk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uUoVgU1I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD75C32782;
+	Mon,  5 Aug 2024 05:31:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722835881;
-	bh=rvtbyErBZrQRF5idd5IgE6dAMI6AhdxFMYDfmhoMPXo=;
+	s=k20201202; t=1722835907;
+	bh=n3NtmQvJlQ5vB+svvAz6BIt3hbOaafeeRuHejPZS0Lk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TT1aq1u3eU9oNWB5OqEeH7lZSnGkeIVGh7fv5r7eqXnxvVq68bJHEd0W6GClsWXzb
-	 qfA88u14RBiLVzUV3frWucUr/zLcX9gwsyocfE0UE+7T4xfoTYB7HAlcDxPuUSpPs1
-	 zXxzV55RSE+W2iXBxIiAtt/9jT5lBYDxBGejQN6+Zi9TR6/bE/lPZ6xi2RUfewoMd/
-	 JsjK5natveF6N+mksUEvr4N+nWIKZqlFFsgMLBFnecXHiwW2b8/ykGwfBi/YBK3Cd2
-	 Rsu80SrDohIq5K7a9F28FzUsZg/MjF2SYPyvwPnuvEV3zHhhfOJUHWjxClTJdvsAK1
-	 +qpYO4JJEWSVg==
-Message-ID: <645ae5c7-5421-4bf2-9aac-8151b7db4e0b@kernel.org>
-Date: Mon, 5 Aug 2024 07:31:13 +0200
+	b=uUoVgU1IA43v6CTc3Sy3VJAcq7OAXmSbZxQl1jcwo+1kNYbj5Mya6jEZZw72NiZ0e
+	 YVCHVxC3fwt7lh+J+pSTSS7cY2aNUWsasYJPTtOPJF+ybpq35YdhSWKQP1r3XfQJU0
+	 hi9q4r1T++C0Wet4ltHiYFP/zTXAHgTslwn9zHWz8S4fqoCvlr2ls6s9uaePc21yGz
+	 pDCk7LLt9owU8QPwR0f8KZt/RBNuHh5g9kimepEH4QtXNgkCw1TOP89huRqi65Qhtr
+	 gexEP7pGbP0KladU1LHjNIZBE17SV2vooAcC6QcIGURFudiIlZhzUEnJctuS9ZQpXw
+	 7/E72kEnaUo8Q==
+Message-ID: <88d08de1-ce0f-4fe2-975b-29e451f5659e@kernel.org>
+Date: Mon, 5 Aug 2024 07:31:39 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,8 +50,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] dt-bindings: net: bluetooth: qualcomm: add QCA9379
- compatible
+Subject: Re: [PATCH 4/4] Bluetooth: hci_qca: add compatible for QCA9379
 To: Felix Kaechele <felix@kaechele.ca>, Marcel Holtmann
  <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -64,7 +63,7 @@ Cc: linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
  linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
  linux-mmc@vger.kernel.org
 References: <20240805040131.450412-1-felix@kaechele.ca>
- <20240805040131.450412-4-felix@kaechele.ca>
+ <20240805040131.450412-5-felix@kaechele.ca>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -110,31 +109,35 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240805040131.450412-4-felix@kaechele.ca>
+In-Reply-To: <20240805040131.450412-5-felix@kaechele.ca>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 05/08/2024 06:01, Felix Kaechele wrote:
-> Document that the QCA9379, as a member of the QCA6174 family, is
-> supported by the existing driver.
+> The QCA9379 (Naples) is a WiFi and Bluetooth SoC in the QCA6174 (Rome)
+> family. As such it is supported by this driver.
+> 
+> According to the naming format defined in the code, the driver will
+> request the following firmware files for a QCA9379-3:
+> - nvm_00150100.bin
+> - rampatch_00150100.bin
 > 
 > Signed-off-by: Felix Kaechele <felix@kaechele.ca>
 > ---
->  .../devicetree/bindings/net/bluetooth/qualcomm-bluetooth.yaml   | 2 ++
->  1 file changed, 2 insertions(+)
+>  drivers/bluetooth/hci_qca.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/net/bluetooth/qualcomm-bluetooth.yaml b/Documentation/devicetree/bindings/net/bluetooth/qualcomm-bluetooth.yaml
-> index 68c5ed111417..f968b0d236e0 100644
-> --- a/Documentation/devicetree/bindings/net/bluetooth/qualcomm-bluetooth.yaml
-> +++ b/Documentation/devicetree/bindings/net/bluetooth/qualcomm-bluetooth.yaml
-> @@ -19,6 +19,7 @@ properties:
->        - qcom,qca2066-bt
->        - qcom,qca6174-bt
->        - qcom,qca9377-bt
-> +      - qcom,qca9379-bt
+> diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+> index ca6466676902..06895bafd3b6 100644
+> --- a/drivers/bluetooth/hci_qca.c
+> +++ b/drivers/bluetooth/hci_qca.c
+> @@ -2690,6 +2690,7 @@ static const struct of_device_id qca_bluetooth_of_match[] = {
+>  	{ .compatible = "qcom,qca6174-bt" },
+>  	{ .compatible = "qcom,qca6390-bt", .data = &qca_soc_data_qca6390},
+>  	{ .compatible = "qcom,qca9377-bt" },
+> +	{ .compatible = "qcom,qca9379-bt" },
 
-Then use fallback of 9377 or any other device. I still wonder why you do
-not require any supplies.
+Let's don't grow this that way. Use existing fallback.
 
 Best regards,
 Krzysztof
