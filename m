@@ -1,109 +1,166 @@
-Return-Path: <linux-wireless+bounces-10983-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-10984-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ACF7948705
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 03:34:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03C7A94870D
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 03:41:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11478282B3B
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 01:34:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AB071F21DC4
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 01:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F33664A;
-	Tue,  6 Aug 2024 01:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF5AF3D7A;
+	Tue,  6 Aug 2024 01:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="DAwrwcWW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EVoP/heg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5C4EC4
-	for <linux-wireless@vger.kernel.org>; Tue,  6 Aug 2024 01:34:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A50B4685
+	for <linux-wireless@vger.kernel.org>; Tue,  6 Aug 2024 01:41:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722908065; cv=none; b=SRoqaxFmUk2Olzf1Lbm2gQVtR0cgU/fz3c9h/bIzognK2FkywPfD0q6ViV4g3bDS+8cCMNGk2JEyT53QljlCJ3Yo5Oj5pH2IhDBvtN+2ylzZQSoLZo+CmTZNBKadQGRNs96gMnBMog1AuM/jjakXTRRa4/5lyU3G9/Zv9ZlhqGE=
+	t=1722908486; cv=none; b=eLSeZPCgrOrVAy1gikSBNstiwqztvxkU1f8HlPG4TKw1UYjV68TmKmXa++hqk+2tiBmW1H9E4x8IVdy1c56HP5kVYpBUJEqDidbILA2P8PZrEfQMLRLw5yqDlOI/6a1zJM65DZrnkcHBoQ1E8f+8YMjdJcK6PBTX0u7JYEXVT3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722908065; c=relaxed/simple;
-	bh=rxYvGLSzf5ZH7F1Mw/DkNOMua8w8DUE/sEfMnBmwVsQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jykT/30osBNWqiJZzXHpQ8JFsp6tHYM2ak37f0QAaFSfP1KX5Xc3bZwBOJdhPK/CZqC+4qsD+6kpMdUkxU5XBHHObuigYoZbqGNMzor3jJLl2onse3kGdYMrJgPCVNU6kwlglhyyj5hWXGVlJqOHGrnRI/w15Dw7IVyj4SihO2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=DAwrwcWW; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: fadb5a74539311ef87684b57767b52b1-20240806
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=yA/pLuSk66sK8UsQhzMj528hGdJ/mrt4nVFSOMEKOzU=;
-	b=DAwrwcWWcD4MZGu28ekQXsxzAoXteKCSrB0EI7gU+7WEzr5cNmD3qBS/3V38RopBngxK/JGJXA0ZjJQzY76Dhj1rt3w1pX4bOWi7gLgOdAhMY3xMkcZ576C8QAjsHGk6eZGcLMWfVG8UZvCmLrWXGMQJ3pwJsnFV2lJ2EMq5bWU=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.41,REQID:5a97128f-6675-476d-a035-ede0ce3fd919,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6dc6a47,CLOUDID:1e34376e-a1c8-43d5-b285-20e4a374b307,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,
-	SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: fadb5a74539311ef87684b57767b52b1-20240806
-Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw02.mediatek.com
-	(envelope-from <mingyen.hsieh@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1712585814; Tue, 06 Aug 2024 09:34:10 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Tue, 6 Aug 2024 09:34:10 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Tue, 6 Aug 2024 09:34:10 +0800
-From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
-	<Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
-	<Eric-SY.Chang@mediatek.com>, <km.lin@mediatek.com>,
-	<robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-	<Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
-	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
-	<mingyen.hsieh@mediatek.com>
-Subject: [PATCH] wifi: mt76: mt7921: fix wrong UNII-4 freq range check for the channel usage
-Date: Tue, 6 Aug 2024 09:34:08 +0800
-Message-ID: <20240806013408.17874-1-mingyen.hsieh@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+	s=arc-20240116; t=1722908486; c=relaxed/simple;
+	bh=hJKgg8CCu2igWkSUacDV7gmap9brjZNtT2H6wKLrVwU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CwswTHXwCjkPOoC7qAdM958YuGMTTwlXLcF4OCC3RUlwywxpVWsVMlVkO83WnorZxUSgyrzhhb3+WzNuVWy3UN2WhTM05ojlvT1VkiskzIIudaYNOswi+ME9SD0z9WSQ49sq2yzaoGd/54G36JGNCrOvGbW9fWTjd7Hn8Af750o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EVoP/heg; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1fc587361b6so513805ad.2
+        for <linux-wireless@vger.kernel.org>; Mon, 05 Aug 2024 18:41:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722908485; x=1723513285; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FFYqZlD61J1XKPI8ZI8UjX7kHI2kRP3uf64n1IZUVZ8=;
+        b=EVoP/hegSaxnGcI9FUptYpxy07XP8yo9AGnrnObjWEvyJslzGM7T0uRHRiZZ7ZFKcJ
+         ZV3pA+W3cxJHKf2t/x2LGdl3prPMzacZ/UeEkEAsN+iIYovTqmIE0jrFzDwyMEW3jtbE
+         jKDoAQ9j0LkoCKAMJE7rYhP2tpgO3SMcFQibeoVLz3FaC2LmEhNEvH7RbenLsGt44icN
+         +i3nQw1TUa5TLQv5G2Y5osdOMk76zJXrrVDqyMlMWncvJVocwzWVPz7pLkw1zQgsA4MM
+         H3hkKA8I5Upj5la0QJKpWDWHTQS7KeqQTvwQ2vgwPo6kVijB9aLIFPKgWua5R+F2BMHL
+         Qz5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722908485; x=1723513285;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FFYqZlD61J1XKPI8ZI8UjX7kHI2kRP3uf64n1IZUVZ8=;
+        b=V9XiXBr2vT3zsigG9xs7NdFhD17f0Rh/GamuVKS2pKnNMGGFfNZV0xtqF+hOG3fKJa
+         mCV0CMwAVmA3VVVbD3FVk5pSx41Ir7KphwOYWiRTjk4Tba5onZyzJvGJoZFgzg6ZHXSY
+         +ADtQI7nYUSZvk5JcWJUACdWSYvYWrDfWjimlm/OPOFgl5nSSA+XcCaTElDW5ANHCttd
+         cxbj9X/bBMWgtcuQWOp77+G5e9WMXTMNbxrjEJepB4ILFGVHXf8FyGINw/mwpoA41Dp/
+         lz8E8e574tC/u9pEAe2VjKoPkYp9Xfna/lWbJ6ci8ODcPUTMVotV2ZcN+dCi8Wu24/47
+         zrIw==
+X-Gm-Message-State: AOJu0Yzbj/8m1JmBzK0bHL9rITq0VWSVGw+iDZaTRCdmmu3/ngqGB175
+	Syb+T2AiL7RgLPWXDCmo8ynXGztjH7/ZUBD1MFs8Pgrjb/GGTfTvw8DZL5UV
+X-Google-Smtp-Source: AGHT+IE72hNPuekbGVd95RFLEjUrCmMZMGYrsr+qmcDGgp81iYD1k2cb9FLjsXG/jdZxWdhqj9OHlA==
+X-Received: by 2002:a17:903:280e:b0:1fd:ac9f:4050 with SMTP id d9443c01a7336-1ff57387114mr98747515ad.35.1722908484694;
+        Mon, 05 Aug 2024 18:41:24 -0700 (PDT)
+Received: from localhost.localdomain (59-124-166-19.hinet-ip.hinet.net. [59.124.166.19])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-1ff58f556c8sm76004845ad.94.2024.08.05.18.41.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Aug 2024 18:41:24 -0700 (PDT)
+From: Ping-Ke Shih <pkshih@gmail.com>
+To: wens@kernel.org
+Cc: linux-wireless@vger.kernel.org,
+	wireless-regdb@lists.infradead.org
+Subject: [PATCH] wireless-regdb: Update regulatory info for Bahrain (BH) for 2024
+Date: Tue,  6 Aug 2024 09:41:09 +0800
+Message-Id: <20240806014109.5258-1-pkshih@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-The check should start from 5845 to 5925, which includes
-channels 169, 173, and 177.
+The Telecommunications Regulatory Authority of Bahrain (TRA) announces that
+Internet users in the Kingdom will soon be able to benefit from faster and
+more efficient Wi-Fi 6 technologies, allowing them to enjoy the full
+capabilities of both fibre and 5G. This is in line with the Kingdom's
+adoption of radio spectrum ranges 5470 - 5725 MHz and 5925 - 6425 MHz
+for Wi-Fi 6 and Wi-Fi 6E applications [1].
 
-Fixes: 09382d8f8641 ("wifi: mt76: mt7921: update the channel usage when the regd domain changed")
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Find "Technical Specifications - Requirements for Type Approval" [2] via
+WEB page [3]:
+
+- 2400 - 2483.5 MHz
+  * 100 mW e.i.r.p
+- 5150 - 5350 MHz
+  * 200 mW e.i.r.p
+  * indoor use only
+  * Devices must use (TPC) and (DFS) mitigation techniques
+    - EN 301 893: without TPC limit to 23 dBm
+- 5470 - 5725 MHz
+  * 500 mW e.i.r.p
+  * Maximum mean e.i.r.p density for in-band emissions:
+    50 mW/MHz in any 1 MHz band
+  * Indoor & outdoor use
+  * DFS and TPC is assumed to be implemented
+    - EN 301 893: without TPC limit to 27 dBm
+- 5725 - 5875 MHz
+  * 2W e.i.r.p (10 MHz channel)
+  * Indoor & outdoor use
+  * DFS and TPC is assumed to be implemented
+    - EN 302 502: The FWA device shall have the capability to reduce the
+      operating mean EIRP level to a level not exceeding 24 dBm for
+      ChS = 20 MHz and 21 dBm for ChS = 10 MHz.
+- 5925 - 6425 MHz
+  * LPI 200 mW e.i.r.p
+    - Indoor use only
+    - An adequate spectrum sharing mechanism shall be implemented
+  * VLP 25 mW e.i.r.p
+    - Indoor and outdoor use
+    - An adequate spectrum sharing mechanism shall be implemented
+- 57 - 66 GHz
+  * 10 W (40 dBm) e.i.r.p
+  * Adequate spectrum sharing mechanism shall be implemented.
+  * Fixed outdoor installations are not allowed
+
+[1] https://www.tra.org.bh/en/en/article/bahrain-approves-radio-spectrum-for-faster-wi-fi-6-technologies
+[2] https://tra-website-prod-01.s3-me-south-1.amazonaws.com/Media/Documents/Publications/20240227160125242_dudbapc5_5dk.pdf
+[3] https://www.tra.org.bh/en/category/apply-for-type-approval
+
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ db.txt | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index ef0c721d26e3..57672c69150e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -83,7 +83,7 @@ mt7921_regd_channel_update(struct wiphy *wiphy, struct mt792x_dev *dev)
- 		}
+diff --git a/db.txt b/db.txt
+index 4eaeaae616d8..e46beae64ca4 100644
+--- a/db.txt
++++ b/db.txt
+@@ -280,11 +280,16 @@ country BG: DFS-ETSI
+ 	# II.H03 of the List, BDS EN 302 567-2
+ 	(57000 - 66000 @ 2160), (40)
  
- 		/* UNII-4 */
--		if (IS_UNII_INVALID(0, 5850, 5925))
-+		if (IS_UNII_INVALID(0, 5845, 5925))
- 			ch->flags |= IEEE80211_CHAN_DISABLED;
- 	}
+-country BH: DFS-JP
+-	(2402 - 2482 @ 40), (20)
+-	(5170 - 5250 @ 20), (20)
+-	(5250 - 5330 @ 20), (20), DFS
+-	(5735 - 5835 @ 20), (20)
++# Source:
++# https://tra-website-prod-01.s3-me-south-1.amazonaws.com/Media/Documents/Publications/20240227160125242_dudbapc5_5dk.pdf
++# (via https://www.tra.org.bh/en/category/apply-for-type-approval)
++country BH: DFS-ETSI
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5350 @ 80), (200 mW), DFS, NO-OUTDOOR
++	(5470 - 5725 @ 80), (27), DFS
++	(5725 - 5875 @ 80), (24), DFS
++	(5925 - 6425 @ 320), (200 mW), NO-OUTDOOR
++	(57000 - 66000 @ 2160), (40), NO-OUTDOOR
  
+ country BL: DFS-ETSI
+ 	(2402 - 2482 @ 40), (20)
 -- 
-2.18.0
+2.25.1
 
 
