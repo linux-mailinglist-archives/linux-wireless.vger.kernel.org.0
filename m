@@ -1,63 +1,72 @@
-Return-Path: <linux-wireless+bounces-11015-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11016-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CFCE949529
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 18:04:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FF3494956C
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 18:20:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E72201F2805A
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 16:04:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A5CA1F215E0
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 16:20:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A78C82498;
-	Tue,  6 Aug 2024 16:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 793072C697;
+	Tue,  6 Aug 2024 16:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ZPuEDhEb"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CX32w/a6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D8E4CB5B
-	for <linux-wireless@vger.kernel.org>; Tue,  6 Aug 2024 16:02:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB48918D635
+	for <linux-wireless@vger.kernel.org>; Tue,  6 Aug 2024 16:20:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722960148; cv=none; b=kyNWWCgr9VJBOcEgmErGL/afmYHuAB/F+2s1VksVNI44ndbwf5Qbd7cGt2mhx2duXJiWCwlYZjULQLqMBFr01FJ6LeZ9mu1pGEFEsxwEjqz9wWXH9eqoUKrLu7TlGscN1YtRseUGBODeNna1E1VpUfg+JsOv8/kf+vxRlBuCoQU=
+	t=1722961218; cv=none; b=ToZMG0u47LQwDB20rpnUCiZKb6DK89AiJ3iR8nzEUMbaj+p09tHBhqppejn9+UFZMi45+RQB95LXynclQlZ67OZ+elzzuDX89n5XBdU28smw5b7kzyIUUiuKkaVoKn+S6qs1AKLR81qS+Sauc+09l7mQK03MP8yi+fGQVr/ogRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722960148; c=relaxed/simple;
-	bh=TOMcLfKEqEDWMjMI3BW8BIrIGt2bVGtz3NHB74r1yQ8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=NT0xbyPvk1q/NeGgdOK+fDs7TSMVoJhRJrEXqLgJHOU3fGKPMjtmYamF1Zu2IDy4RjWV+Sd230v1t1sbdLW6IzVF/3nZK73auMhZOKFOm6Wvc5OS8XHTdgvnE0D3u6C7AD2dSaBKQanwfjmBZY8RzKLdUNg89K5KnZQ+w0iRnmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ZPuEDhEb; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 476BfYvD013610;
-	Tue, 6 Aug 2024 16:02:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	2OaG93OVWa3c/MU+QduFh7Ljn3vB5Sy+MTjdH+1YsF4=; b=ZPuEDhEbA7zgrHNR
-	HXy8Q6UeXg4uRyVnl0T6UbE8DMCN1rHoy+tPJMZuDKd09NjbQN0fueJwaCKdg9/W
-	SQeQEIEIx7WTmOKcHh/6SpDa2BsCmW/X8hDNYxyW7ENt507raGA4++UoPkIaVvY7
-	0J5VL1fbGfgfhdufmi6HysEUoC1YO8WrAG6MPVkjEbZoPr1UZDpdn10s/xpVbgdL
-	oRIsICSWeDOb122+tpNUvg1XsYlkw7ykJpvgfGFYQ3w90uLwG1VHzLABbVBtYp1a
-	FbRyxic9V7WLsX74+DzU32uiWmtACdW5bDprauUGovditrfXO2GVuXr9yB3dE0Ee
-	l8s45w==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40sdu97ua4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 06 Aug 2024 16:02:21 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 476G2K7I014655
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 6 Aug 2024 16:02:20 GMT
-Received: from [10.216.31.210] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 6 Aug 2024
- 09:02:17 -0700
-Message-ID: <1510a11a-c31c-4a05-80c0-bffa81fa340a@quicinc.com>
-Date: Tue, 6 Aug 2024 21:32:14 +0530
+	s=arc-20240116; t=1722961218; c=relaxed/simple;
+	bh=QGF0k1TWGzE5jzgFSuFqA69+VB3snYnp5wXjwUr0sOo=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=b1mhFN/xHgCSvl4Rp55YEuFDwFaJ3IrrXeQ8Q6yHcTZbeCSxiKTjHTZnWwjtrAcH+UYg4EcLMkea6XpPP9lxNZPMFwPkoPY5bymm8hJ2pYONTE+vCWfiebsAbOYjBzugGtkrPIWuB4ipcOtrCPdWIDqUAuy1MZzi7p6XS9AWODI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CX32w/a6; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5b9d48d1456so1067a12.1
+        for <linux-wireless@vger.kernel.org>; Tue, 06 Aug 2024 09:20:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722961215; x=1723566015; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KiN/Ze1hmgU2V1p7KS3+VNNxl5hiUjHqOyplxxEBFaI=;
+        b=CX32w/a6YvUhNma5+Dr58xnEXK00R+SQyL5cpajr6ZJkn1/lebsiaBM8njr7z+7jSf
+         JroVTrhurT+USyWCrcuV38TMa9HN/0zdV+VhsWjHeDxkKDtkLOHgyKyizX+xrTBaKUqY
+         Nfaz91YePWm/xyjfL41BUuUJCUfUWK5gDD14mQvQ9Q2sXsi/f0s2oE7koKsjUwrXPasU
+         8A8rXF/TTTcr+BPaAD/u0H9FRiC0KzcLYxlGz4gnZnfkoBygIZUCFlLq1OpgBFQQPfFq
+         4vJjzLGo7uk75kcbiK/v1Wi89zOxccDse8hw+KsT2IbkxwInosu9i5PZbeIADB6fk6qQ
+         Tx6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722961215; x=1723566015;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=KiN/Ze1hmgU2V1p7KS3+VNNxl5hiUjHqOyplxxEBFaI=;
+        b=Wd3fIZSc61z/Mcp03mxzPjHyMAMlMP/0ms7Rm0mJaHAVVpTjAhDVMYR0dQNkTYCaS2
+         9ExxUmXL3CuoyX2at4ya0RHaaoaJ8J+/UZDZr8zY+wdpJZ6bSH1kM/mbDdUVl/ZGhFJd
+         178Kx4j/p9p+sCMehooyRL+kqsNiZ3TVqEhlwFNs+COfNxXlLvLBGGa/V4viHrPTBnbv
+         Hz6ZYuSu5qWVD86Hjzk8eGFfU/f+di9/YU6v06Xg3eC5CsCyjnRSZHLVCLqpFBvc2FlS
+         IxEil2OpRZNWkzLa7e0je62qlzD3bCaaalDklz9+lhoAjbhFatUpgym50oFbCYBDhxLL
+         5vAg==
+X-Gm-Message-State: AOJu0YxRBP/HZaxubEFe0O2c7vjX7Ly5mrDdm4Oil4IrMI1q+4Zb3ndg
+	DhhXmPVHfAs3X18xa5hk5Up7kIXD+9j4bo8M+egvU2Y1JzBwO54bDz4jtA==
+X-Google-Smtp-Source: AGHT+IGdrCLFnf7a73zGsWvxGDVdLqhTp+2va6OMy0bJT+QUGhfAo98Rvn1pNMfbGDqmQ3Yj9c3YGw==
+X-Received: by 2002:a50:eaca:0:b0:58c:36e:51bf with SMTP id 4fb4d7f45d1cf-5b80a6e0a79mr14228669a12.3.1722961214790;
+        Tue, 06 Aug 2024 09:20:14 -0700 (PDT)
+Received: from [192.168.0.50] ([79.119.240.114])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5b83a446b37sm6011208a12.57.2024.08.06.09.20.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 Aug 2024 09:20:14 -0700 (PDT)
+Message-ID: <2a808244-93d0-492c-b304-ae1974df5df9@gmail.com>
+Date: Tue, 6 Aug 2024 19:20:11 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,86 +74,58 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/3] wifi: ath12k: prepare vif data structure for MLO
- handling
-To: Kalle Valo <kvalo@kernel.org>,
-        Rameshkumar Sundaram
-	<quic_ramess@quicinc.com>
-CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        Sriram R
-	<quic_srirrama@quicinc.com>
-References: <20240711165511.3100433-1-quic_ramess@quicinc.com>
- <20240711165511.3100433-2-quic_ramess@quicinc.com>
- <87plql6djk.fsf@kernel.org>
 Content-Language: en-US
-From: Aditya Kumar Singh <quic_adisi@quicinc.com>
-In-Reply-To: <87plql6djk.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH] wifi: rtlwifi: rtl8192du: Initialise value32 in
+ _rtl92du_init_queue_reserved_page
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 0e90sPM32qo_N9QhDSDSwFseHc6XlBH8
-X-Proofpoint-GUID: 0e90sPM32qo_N9QhDSDSwFseHc6XlBH8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-06_12,2024-08-06_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
- lowpriorityscore=0 mlxlogscore=820 suspectscore=0 malwarescore=0
- clxscore=1011 phishscore=0 spamscore=0 bulkscore=0 mlxscore=0
- impostorscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2407110000 definitions=main-2408060112
 
-On 8/6/24 17:58, Kalle Valo wrote:
-> Rameshkumar Sundaram <quic_ramess@quicinc.com> writes:
-> 
->> From: Sriram R <quic_srirrama@quicinc.com>
->>
->> To prepare the driver for MLO support, split the driver vif
->> data structure to scale for multiple links. This requires changing
->> the use of arvif to per link and not per hw which can now
->> comprise of multiple links.
->> Also since most configurations from mac80211 are done per link, do refactoring
->> of the driver functions to apply these configurations at link level.
-> 
-> Something I noticed while reviewing this patchset:
-> 
->>   static int ath12k_mac_op_add_interface(struct ieee80211_hw *hw,
->>   				       struct ieee80211_vif *vif)
->>   {
->> -	struct ath12k_vif *arvif = ath12k_vif_to_arvif(vif);
->> +	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
->> +	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
->> +	struct ath12k_link_vif *arvif;
->>   	int i;
->>   
->> -	memset(arvif, 0, sizeof(*arvif));
->> +	mutex_lock(&ah->conf_mutex);
->> +	memset(ahvif, 0, sizeof(*ahvif));
-> 
-> Here we are we clearing ahvif so ahvif->deflink is NULL.
+GCC complains:
 
-deflink is not a pointer member. It is statically defined inside ahvif. 
-So basically this memsets the whole deflink memory region to 0.
-> 
->> -	arvif->vif = vif;
->> +	ahvif->ah = ah;
->> +	ahvif->vif = vif;
->> +	arvif = &ahvif->deflink;
-> 
-> So here we assign arvif to NULL.
+   In file included from include/linux/ieee80211.h:21,
+                    from include/net/mac80211.h:20,
+                    from drivers/net/wireless/realtek/rtlwifi/rtl8192du/../wifi.h:14,
+                    from drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.c:4:
+   In function 'u32p_replace_bits',
+       inlined from '_rtl92du_init_queue_reserved_page.isra' at drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.c:225:2:
+>> include/linux/bitfield.h:189:18: warning: 'value32' is used uninitialized [-Wuninitialized]
 
-This would be a still valid pointer.
-> 
->> +	arvif->ahvif = ahvif;
-> 
-> And because arvif is NULL this is a null pointer reference, right? Or am
-> I missing something?
+Part of the variable is indeed left uninitialised.
 
-So since it is valid pointer, this is not a NULL pointer de-reference.
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202408062100.DWhN0CYH-lkp@intel.com/
+Fixes: e769c67105d3 ("wifi: rtlwifi: Add rtl8192du/hw.{c,h}")
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+---
+Kalle and Ping-Ke,
 
+Kernel 6.11 will be the first one to include this driver.
+Should this patch go to the wireless tree?
+---
+ drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.c
+index 700c6e2bcad1..ff458fb8514d 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192du/hw.c
+@@ -181,11 +181,11 @@ static void _rtl92du_init_queue_reserved_page(struct ieee80211_hw *hw,
+ 	struct rtl_hal *rtlhal = rtl_hal(rtlpriv);
+ 	u32 txqpagenum, txqpageunit;
+ 	u32 txqremainingpage;
++	u32 value32 = 0;
+ 	u32 numhq = 0;
+ 	u32 numlq = 0;
+ 	u32 numnq = 0;
+ 	u32 numpubq;
+-	u32 value32;
+ 
+ 	if (rtlhal->macphymode != SINGLEMAC_SINGLEPHY) {
+ 		numpubq = NORMAL_PAGE_NUM_PUBQ_92D_DUAL_MAC;
 -- 
-Aditya
+2.45.2
 
 
