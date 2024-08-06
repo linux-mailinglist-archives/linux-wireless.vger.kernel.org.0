@@ -1,151 +1,289 @@
-Return-Path: <linux-wireless+bounces-11008-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11009-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E598E948D94
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 13:23:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6719948E09
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 13:44:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96C741F24E34
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 11:23:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30E031F2346F
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 11:44:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 799D41BD51D;
-	Tue,  6 Aug 2024 11:23:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E34491BBBFE;
+	Tue,  6 Aug 2024 11:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b="oJ7lbiCQ"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="p7LLklAs"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.14])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0597813B2AC
-	for <linux-wireless@vger.kernel.org>; Tue,  6 Aug 2024 11:23:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018A71C2335
+	for <linux-wireless@vger.kernel.org>; Tue,  6 Aug 2024 11:44:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722943400; cv=none; b=h3Tc7uSm53Y40ePlTLn85pbQpECWk4SbWEEMVc3Zo8PrGYFWHFyhgdacgnAlDdhQwaxOOn/LtWqpR+Yb/DDZdjzt8URwVCU4VpBzDmj38bdN+V6J0wP5c9xt4GfdoOyx7zH3PPSl4FzEV+Bgc9ha/pSXC2Jj+DBjuVmRDb/GTEU=
+	t=1722944671; cv=none; b=PVxw521A/FvgJAtsGlrtRrm5yUA8XfhHVNPxhFivJHWgMEhNBJ2hwfWUbdltAyn6/jtKnv5VYwAQdaWOa7EXW198dd3s41h1D8G2nLu8T5OlFmsPk1X2FKdivrTP35ljOIU+A3WGfCtOBgq5fZP5MZbhawg7hR8b1YcpTidVKLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722943400; c=relaxed/simple;
-	bh=thhyCG8O8U6kuKj9aIHpf7uV/qFOC0ybSHZeJOFTDEE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=kH/4v40cfs8f9w1tkRjEyLd81DMFSdRWJhNRORzA5of7nnqnuULPbbpcbxyvhyL7/C21twXl2avZbnjCcISRqoWww0rq1sR4kAGBqEDbKRtGWLqJmIkFNSZNGGwGg4Zi//kv6vibK7NYRvNY/nHtu1pG19kAa9LWnIgWYc89TXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b=oJ7lbiCQ; arc=none smtp.client-ip=212.227.15.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1722943365; x=1723548165; i=spasswolf@web.de;
-	bh=7xWKLX+TQ8lgw1qTY76UXfpS0ItWUagRIMGYR7j8nrY=;
-	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
-	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=oJ7lbiCQc8pp1b5aoHbiDawLLoSmZ/4NRU24YOu//mlFlPu5HZf8A44TjHiRtmSD
-	 vlRUru4S/FhFQCX031vBWBMPFDKhvVO8hTyrxjz5yGUrOvOLWnePGqEaJYb0HdY/A
-	 de5qxC/TZxnwhIh8DKwtCAefKxfpbsbY9pi2T//Twi89cQRAdy6gKXV/MD9u9uJRo
-	 lF6qPVtu5dJw5+0XiXxaymbXz6dOywwld68UvnxrsdKCfqXgVkLVuDI1suDUet7ti
-	 MXcAI7HY7VbKtAignyKAN6d86FOc2qxXa23BC9ikc671ffKAUOQv4oguw7WTzS/5l
-	 FaV5bcnygQ7J8rrfmw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.0.101] ([84.119.92.193]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MW9vi-1shTF1381q-00TRL5; Tue, 06
- Aug 2024 13:22:45 +0200
-Message-ID: <e32ab97963e850b4425e4f5c45d2c502d50be480.camel@web.de>
-Subject: Re: patch 46/47 causes NULL pointer deref on mt7921
-From: Bert Karwatzki <spasswolf@web.de>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@kernel.org>, 
-	deren.wu@mediatek.com, linux-mediatek@lists.infradead.org, 
-	linux-wireless@vger.kernel.org, lorenzo.bianconi@redhat.com, 
-	mingyen.hsieh@mediatek.com, sean.wang@mediatek.com, spasswolf@web.de
-Date: Tue, 06 Aug 2024 13:22:44 +0200
-In-Reply-To: <87frrqkkpm.fsf@kernel.org>
-References: <20240711175156.4465-1-spasswolf@web.de>
-		<CAGp9LzoXMoAW6dVZjTf-JcD_wiU4yXpGwkLaVyWXTkaV2MOKwg@mail.gmail.com>
-		<adb192a59c44aa8708e80df30a6a47816a03e50f.camel@web.de>
-		<4e943a62736f955af5d9cd1aff7e2b9c084c8885.camel@web.de>
-		<2599b886-9c63-4989-a08a-7feab28f7c49@nbd.name>
-		<65621cad9a22df881745e9333a5c3696bdbb8df3.camel@web.de>
-	 <87frrqkkpm.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.53.2-1 
+	s=arc-20240116; t=1722944671; c=relaxed/simple;
+	bh=QoMihQnDTNaBkeH9BQeTdb3hGog0XjDVhPwsByCT/WA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=nDiBw8uwTT+MehowHCeLgyOO+kBUWRtZuiiPc18D4hREjdNrU+PZKAvZfBPTIHUEpnLGvTaa6uVe4gjVZtiLmh96LvYHYhQIJq3pWQiLZGKxw9tDI/smvlWQKbNMb/R4K3JCRlgAVQf5cGJVAghCrIuzz73l2nOELE27NpWDseo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=p7LLklAs; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 476BOd9x014249;
+	Tue, 6 Aug 2024 11:43:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	WmLcSkLFCG1BhCumOi1Mmi74vgBmmeesT3B0kaLQ/Qk=; b=p7LLklAspT/3msir
+	+qOYisqTmQAfYJBZc0ligmdgTA3B4UJxfrdGvnG20OVf7uaUsW10stpugPpWu1TD
+	njG5qQgfXaOz8QL/h0DbyniWr/e83KpsNSVBtZ9Qi1uIoiS4OLmKwpO9AQilJBAm
+	5b51geLHWMzsLrO2GOH1P+jimd9jQiCDMXIhBIkpaSE6Mj567GLPmAmja7YH67dv
+	srxzMHw0daFAp+S6farOvlqDZzRc3TxerIx6RLkeQcDv1zG7PhQ0kw2/Q8xMIVZ1
+	y6jKGBaRc34lk+xTnCFf1bO/Xiw/6lukAy9J26oK67iJ7tlB8XLsmQ8F7dZFz8vM
+	gOAecg==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40sdu971ej-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 06 Aug 2024 11:43:59 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA01.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 476Bhwkb004145
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 6 Aug 2024 11:43:58 GMT
+Received: from [10.152.206.169] (10.80.80.8) by nalasex01c.na.qualcomm.com
+ (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 6 Aug 2024
+ 04:43:56 -0700
+Message-ID: <b2e9ea45-f043-ed40-f03b-af4b25929e16@quicinc.com>
+Date: Tue, 6 Aug 2024 17:13:53 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:gST20yxtMJVjZRb11EdUOk2IEKYFhTO57N0EUKBUyGeDUI8NoW0
- wvSBytxsHX1ICmU+gvfiSzHVyCjnomfNq1p4E+mlmANuBZSiLboPiq2ToVR02/AufM0sMXA
- 1XJHuLJrHBP6yJ5dglSKjxNabxTEYuuVRZNzf98G/iukd5aSBvA+Cc3KrH6heiSiKyUkM1C
- Aot2CB2bOSF6TTDBBcw8w==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:+iF3Prgvv1c=;22pWPW0OQuMK05MtcLjq5NR1DE5
- 5zZ8yKMecNVP8n1//Bytt+79dpEyF2kxoxb8a+IJVk7eRv3ZWMZfrsOxic7uxV87CDs7RCsOY
- lsdrKAL8I/Tw33lycmVltHG88tl9s4WVa1+hfOKRcrDytEFWg3DO6ErrYZ5lFaLARNSZf2qfN
- UwZKeEkbbDViU2FSSQOBgbggDLRMl3AvqXe6/LHCEHIvRKhcN1yDPpiKDT2YRUi1hWcJ+WKPh
- 6Kv5BXCs0iuxqC8tZu7qmiubxOQsTwGhrJLywJvJqFg9YulTuizItEpLokCr3P6yNlOGdMpim
- jdndWeW30vREqb+ckALCh2O9PCX6oNf7VtSiqKZylvpQ609LhE7AQF2SP2LjOpb/6qpg7v2UD
- UbyXb19tGV2blBENG8ohRTQj+H66yu5U/E8/mRA9xtZNdbP+qaYaZomNZrNcvck7LsiGvR+y+
- 6uxDm+h16q+AlD5VIsMCVrveECGikMlstxjKKSr+zCNv81RboRVJmFnePn7GiFmyM4uFa7vlr
- WPA3szF1f4SytsoEi6hbdJeesDtTnlpzGM64STy0/Fh67mm2+jNUn+tka1hy8Yz4gQm+E2tTn
- 2f3P/Tk0yw52hxNt/2fwoPz/BEcnbvEDoDVeYFZkLJ1f7c4tGTxyudBHyBVG0kPVA0iPjNvjj
- vGVmKudLrKswRJUlxepEEojgdbBrR0G4lPuMcHy2xFSY7C8VicPCSy2FyQwtUmO+HxOE3EN6R
- Df1WW002jO3doGu59R4Ga+uIZUpviT+UeN0L1ZkQms1mMkpmaIDF2Bl0tqGns3Aw2ZzaVLMSo
- qmbXvLtw1tLnCCpfmiXswTrw==
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.0
+Subject: Re: [PATCH v8 7/8] wifi: ath12k: refactor core start based on
+ hardware group
+Content-Language: en-US
+To: Kalle Valo <kvalo@kernel.org>
+CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+References: <20240531180411.1149605-1-quic_hprem@quicinc.com>
+ <20240531180411.1149605-8-quic_hprem@quicinc.com> <87plsuql2y.fsf@kernel.org>
+ <dd2488bb-43f9-d546-7617-2a54ca3d1a1d@quicinc.com>
+ <87ed8ae8ye.fsf@kernel.org>
+ <4f0963ff-a822-49b8-3d45-5d90e2c2d511@quicinc.com>
+ <8734ni6vdg.fsf@kernel.org>
+From: Harshitha Prem <quic_hprem@quicinc.com>
+In-Reply-To: <8734ni6vdg.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: AWm1PmNvVOH0ONeZuXsWPaIcrk3quDkb
+X-Proofpoint-GUID: AWm1PmNvVOH0ONeZuXsWPaIcrk3quDkb
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-06_08,2024-08-06_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
+ lowpriorityscore=0 mlxlogscore=999 suspectscore=0 malwarescore=0
+ clxscore=1011 phishscore=0 spamscore=0 bulkscore=0 mlxscore=0
+ impostorscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2407110000 definitions=main-2408060081
 
-Am Mittwoch, dem 31.07.2024 um 11:51 +0300 schrieb Kalle Valo:
-> Bert Karwatzki <spasswolf@web.de> writes:
->
-> > Am Mittwoch, dem 17.07.2024 um 17:25 +0200 schrieb Felix Fietkau:
-> >
-> > > On 17.07.24 16:38, Bert Karwatzki wrote:
-> > >
-> > > > So mvif->phy can be NULL at the start of mt7921_ipv6_addr_change. =
-The early
-> > > > return in that case avoids the NULL pointer and mvif->phy has its =
-usual value
-> > > > again on the next call to mt7921_ipv6_addr_change so Wifi is worki=
-ng again. I
-> > > > don't know how this could happen but perhaps you have an idea.
-> > >
-> > > This change should fix it: https://nbd.name/p/0747f54f
-> > > Please test.
-> >
-> > The BUG is still present in linux-6.11-rc1.
->
-> I'm not sure what's the status with this. There's one mt76 patch going
-> to v6.11-rc2:
->
-> https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git/co=
-mmit/?id=3D6557a28f3e3a54cff4f0dcdd1dfa649b26557ab3
->
-> But that looks to be a fix for a different problem, right? Felix, are
-> you planning to submit that 0747f54f as a proper patch? I could then
-> take it to wireless tree.
->
-The Bug is still present in linux-6.11-rc2 and linux-next-20240806. Also t=
-he
-mvif->phy NULL check in the original patch is not neccessary (and feels a =
-little
-out of place as mvif->phy is not needed anymore). This patch is sufficient=
- to
-fix the NULL pointer dereference:
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 1bab93d049df..23b228804289 100644
-=2D-- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -1183,7 +1183,7 @@ static void mt7921_ipv6_addr_change(struct ieee80211=
-_hw
-*hw,
-                                    struct inet6_dev *idev)
- {
-        struct mt792x_vif *mvif =3D (struct mt792x_vif *)vif->drv_priv;
--       struct mt792x_dev *dev =3D mvif->phy->dev;
-+       struct mt792x_dev *dev =3D mt792x_hw_dev(hw);
-        struct inet6_ifaddr *ifa;
-        struct in6_addr ns_addrs[IEEE80211_BSS_ARP_ADDR_LIST_LEN];
-        struct sk_buff *skb;
 
-Bert Karwatzki
+
+On 8/6/2024 11:33 AM, Kalle Valo wrote:
+> Harshitha Prem <quic_hprem@quicinc.com> writes:
+> 
+>> On 7/3/2024 9:58 PM, Kalle Valo wrote:
+>>> Harshitha Prem <quic_hprem@quicinc.com> writes:
+>>>
+>>>>>>     +static void ath12k_core_device_cleanup(struct ath12k_base *ab)
+>>>>>> +{
+>>>>>> +	mutex_lock(&ab->core_lock);
+>>>>>> +
+>>>>>> +	if (test_and_clear_bit(ATH12K_FLAG_CORE_HIF_IRQ_ENABLED, &ab->dev_flags))
+>>>>>> +		ath12k_hif_irq_disable(ab);
+>>>>>> +
+>>>>>> +	if (test_bit(ATH12K_FLAG_PDEV_CREATED, &ab->dev_flags))
+>>>>>> +		ath12k_core_pdev_destroy(ab);
+>>>>>> +
+>>>>>> +	if (test_bit(ATH12K_FLAG_REGISTERED, &ab->dev_flags)) {
+>>>>>> +		ath12k_mac_unregister(ab);
+>>>>>> +		ath12k_mac_destroy(ab);
+>>>>>> +	}
+>>>>>> +
+>>>>>> +	mutex_unlock(&ab->core_lock);
+>>>>>> +}
+>>>>> This patch is just abusing flags and because of that we have
+>>>>> spaghetti
+>>>>> code. I have been disliking use of enum ath12k_dev_flags before but this
+>>>>> is just looks too much. I am wondering do we need to cleanup the ath12k
+>>>>> architecture first, reduce the usage of flags and then revisit this
+>>>>> patchset?
+>>>>>
+>>>> yeah., more dev flags :( but flags were needed for the race conditions
+>>>> when multiple devices where involved in a group, some devices would
+>>>> have completed till pdev create some might not. Some crashes were seen
+>>>> because hif_irq_disable was called for a device in a group but that
+>>>> device was not even at the stage of core register. Will check the
+>>>> possibility to  reduce the flag usage but it seemed necessary for
+>>>> multiple device group clean up.
+>>> I think the core problem here is of mixing enum ath12k_hw_state and
+>>> enum
+>>> ath12k_dev_flags, it's just a mess even before this patchset. For
+>>> example, these flags look like they should be part enum ath12k_hw_state
+>>> instead:
+>>> 	ATH12K_FLAG_RECOVERY,
+>>> 	ATH12K_FLAG_UNREGISTERING,
+>>> 	ATH12K_FLAG_REGISTERED,
+>>> 	ATH12K_FLAG_QMI_FAIL,
+>>> If we have an enum plus set of flags to handle the actual state then
+>>> it
+>>> will become difficult to manage it all. Instead we should just have the
+>>> enum for tracking the state of the driver.
+>>>
+>>
+>> ath12k_hw_state is the driver state representation which is used to
+>> indicate whether driver has started or in restarting from mac80211
+>> prespective where as ath12k_dev_flags closely related to devices and
+>> its q6 states.
+>>
+>> So, ATH12K_FLAG_RECOVERY, ATH12K_FLAG_QMI_FAIL should be in
+>> ath12k_dev_flags because these are specific to Q6 crashes and failure.
+>> ATH12K_FLAG_UNREGISTERING is actually used to indicate pci_remove is
+>> initiated and we should not process any QMI events but may be naming
+>> is creating the confusion. ATH12K_FLAG_REGISTERED flag is used whether
+>> to recover or not with the information available in mac80211 to
+>> reconfig.
+>>
+>> With hardware abstraction, it can be like 3 devices (ath12k_base) in
+>> one ath12k_hw and with ath12k_hw_states alone we might not be able to
+>> handle. Because, say device1 is in recovery, device2 is already till
+>> QMI firmware ready after device probing and these two devices are not
+>> registered to  mac80211 then we cannot set the ath12k_hw_state as
+>> ON/OFF or anything else.
+>>
+>> Hence, we may require two distinct flags, where one holds the driver
+>> abstraction state and other is device states. With grouping complexity
+>> would increases as we have to sync between the devices and we require
+>> two flags. Please let me know your thoughts.
+> 
+> Can you elaborate, for example provide exact state machine description
+> for all these states? I just can't understand how using several flags in
+> addition of an enum as different states makes anything easier to manage.
+> To me that sounds just like spaghetti code.
+> 
+No new flags are introduced in this patchset, I have revisited and 
+removed it any new flags. But, there are some existing flags which seems 
+to be necessary in case of firmware crash or QMI handshake failure 
+scenario.
+
+Please find the details of how each flags/state in device 
+(ath12k_dev_flags) is used currently :
+
+  1. ATH12K_CAC_RUNNING - This is used to indicate whether any ongoing 
+CAC is in progress for the radio in device, if yes, then we should not 
+handle any data packets or management packets that are received over dp 
+rx or wmi event respectively during this state.
+The state is set during vdev start that is initiated via 
+assign_vif_chanctx or switch_vif_chanctx. here, the vif_chanctx is from 
+mac80211 but the data rx or wmi event is from the device which are both 
+different context. We cannot sync between them, so this flag helps in 
+avoiding processing the packets.
+
+  2. ATH12K_FLAG_CRASH_FLUSH - this is used to indicate that the QMI 
+connection between the host driver and Q6 is lost. This is set as soon 
+as driver receives an QMI server exit event. So, once this is set we 
+have to ensure that no data packets to be queued for hardware and no WMI 
+commands are posted to firmware. All the calls to send any WMI command 
+or data packet would be from mac80211.
+
+3. ATH12K_FLAG_RAW_MODE - this flag indicates that the firmware or 
+hardware operates in RAW mode. Based on this we have to set the rx/tx 
+decap type to indicate firmware how to handle packets from this type of 
+vif. (Do we necessary need to keep in dev_flags? may be dev_mode)
+
+4. ATH12K_FLAG_HW_CRYPTO_DISABLED - this indicates whether software 
+encryption is set or not in raw mode.
+
+5. ATH12K_FLAG_RECOVERY - This is set during QMI server exit but not 
+used anywhere. (Unused. Remove?)
+
+6. ATH12K_FLAG_UNREGISTERING - this is set during pci remove. if this 
+flag is set driver should avoid handling any mhi events/QMI events 
+received from the target/hardware. (May be rename to pci shutdown?)
+
+7. ATH12K_FLAG_REGISTERED - this is set once the device is successfully 
+registered to mac80211. So, later if this device encounters any firmware 
+crash, it can be recovered smoothly without registering. Also, this flag 
+is used during pci_suspend scenario. If device crashes even before 
+registering to mac80211 we have to avoid recovering it and this flags 
+helps the same.
+
+Once firmware crash is occurred, after collecting the dumps again the 
+QMI handshake for that device will start from QMI server arrive to 
+ATH12K_QMI_EVENT_FW_READY and in firmware ready we should not start the 
+core again rather init only few and try to reconfigure the device with 
+available data from mac80211.
+
+8. ATH12K_FLAG_QMI_FAIL - this is set when any of the QMI handshakes 
+fail and tested in rmmod case to skip the cleanup process.
+
+The following flags are added by MCC team, I am not so clear on the use 
+case seems like there are few cases in suspend use case where they need 
+these states.
+
+9. ATH12K_FLAG_HTC_SUSPEND_COMPLETE - Used for htc suspend case.
+10. ATH12K_FLAG_CE_IRQ_ENABLED
+11. ATH12K_FLAG_EXT_IRQ_ENABLED
+
+
+So, these device states are more closely related to the 
+hardware/firmware in which state it is whether firmware crashed after 
+mac80211 register or before and based on it whether driver can process 
+the dp tx/rx or wmi tx/rx as these would be from different context. Not 
+sure, how we will be able to sync among various contexts/threads without 
+these flags, please let me know your thoughts?
+
+
+Now, on the otherhand, we have ath12k_hw_state which is used by mac80211 
+during recovery or driver start or stop.
+
+
+In multiple device grouping, say if we have 3 pci devices connected  and 
+grouped, each of them will be probed separately and core_init would be 
+done for each. During core_init, QMI init would be called. So, now 
+device1, device2 and device3 would have invoked the QMI init. Since the 
+QMI handshake happens between host and Q6 processor separately for each 
+device (QMI handshake would be in order for that particular device but 
+is asynchronous between the devices in group), driver would not have 
+control on which device (whether device1/device2/device3) will receive 
+the QMI server arrive event first. Hence, we are using mutex as well as 
+defer mechanism to sync the devices as some of the MLO partner device 
+params has to be filled in QMI host cap. Kindly refer below patchset.
+
+https://patchwork.kernel.org/project/linux-wireless/patch/20240520131409.676931-1-quic_hprem@quicinc.com/
+
+> What I'm thinking is we should cleanup ath12k_core_start(). Now it's
+> basically asynchronous (ie. qmi.c calls
+> ath12k_core_qmi_firmware_ready()) but if we change it to be synchronous
+> (using completions etc.) I believe we could get rid of lots of these
+> annoying flags. In other words, if ath12k_core_start() returns with zero
+> then the firmware has booted succesfully.
+> 
+Sorry, I could not get your question, because already 
+ath12k_core_start() is called from ath12k_core_qmi_firmware_ready() 
+which means firmware has booted successfully and in core_start we 
+register to mac80211 and enable the irqs.
+
+Thanks,
+Harshitha
 
