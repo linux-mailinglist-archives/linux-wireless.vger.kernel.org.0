@@ -1,267 +1,284 @@
-Return-Path: <linux-wireless+bounces-11041-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11042-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E54B949713
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 19:47:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DA3B949748
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 20:08:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC8EF282810
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 17:47:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B0F2284AFC
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 18:08:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D8B74E26;
-	Tue,  6 Aug 2024 17:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 981304594C;
+	Tue,  6 Aug 2024 18:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JH2w2BoO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XwIOFLNt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9688F762EF
-	for <linux-wireless@vger.kernel.org>; Tue,  6 Aug 2024 17:47:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62BEA40875;
+	Tue,  6 Aug 2024 18:08:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722966461; cv=none; b=sodDgwd+slpt5OcKBMp3OduKQGUhGkPuqCy6CrAgQNFbMesjVSX7O0Y+QvafJSikWUX5KnwlChj3xRKoLz//qTpgyiGm0NZXmSuDMcvJzlmM5oftzh17vR1x6TymG+2qE2OJeDqU8FPk9DdfqFjgD1npB7jQkultkRrjkckHLvw=
+	t=1722967696; cv=none; b=WpLKuyg53hSS2SK8KYyY2pNCRtKH8byuzB9NtNqsUe1qRqmI1xarMnsFd5miXLHg9nAOGSzP2YnIUOiXGeog9JrEEAOsjNLpwxn1qGOQ2UmWGe6G+AXHrjDpudcevb9DwUCygqHcFXtx3DnUGN0aAo4c/G/MC+YqitKyOTHYD90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722966461; c=relaxed/simple;
-	bh=F1Xqqw5H1d6LJpgWNtIHaaR0eHJG4G3BgRkpUgm5ypk=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=GuQAr7EEA6Ke6Z6+MjzGQMWGUNdvX+yDqKI6xsvpifXzqoRsJGWU4p2bHDwlZLJhOcAoGi+IEpfUTzl+7NiQzMc3Spa1UwZ5A93XENiPHNYQxpAuHWEzOzxrosWU8Yab+a/XFdrbEzeu1mLrCNimyUkAkUlehAe4QWqY7K7Frl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JH2w2BoO; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a7ad02501c3so92533866b.2
-        for <linux-wireless@vger.kernel.org>; Tue, 06 Aug 2024 10:47:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722966458; x=1723571258; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=iD5zmmU44/dH61DO+JJYxKDQxPxwOjlmbQ3tJbwIFf0=;
-        b=JH2w2BoOIhM7GWrPVPhnIXkBgJUQFKEu+PP+whgp5BUmeDgZuf50Q8ytZwYyPT17b+
-         UOTFDMpn/vXSBl+WknxFaxaCLdrzCNqPD+w31fGMPyjnFmwcLqZWeBr1xmIs43Ad2Hn8
-         cf51kOs/2rzd7BITz2kw3gXkzLZhr5TSGeG/o0AXA01I9SWqYAWcT0yNMh2fJT2S4xpX
-         uwDm7XZ+tPO04uTdQTXwnAJoe2q4YFxwXZksKwvXXxjtMx560s6uzxo35FCEcDlnkz5o
-         JgqjwpM+9gP+kAQwM7+rks9+nbv2HAb9R55lukBrv8PFaRlvDCGI+pOFEwT2wZABYpWa
-         pdEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722966458; x=1723571258;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iD5zmmU44/dH61DO+JJYxKDQxPxwOjlmbQ3tJbwIFf0=;
-        b=HCaXngh7K25HnZhLqcfOZxFXvixjlOWGE1HMI9kGq1ywK5HqZtPTtzSdkb74nnT1As
-         l/uByQsgZCtYCs9cd4PRzCOEowBI4ce3NDbYEMRjsVZIKzvFuVNzjMjirDWFVt4PxS/R
-         RQqvBuKmf1+krk1hPY+DyNMuz8b9/1mEToSYcjDY8YDdsATdaXWp/bNN93lGIKsfBmgf
-         OCJVUpPRklcKUCxL1oU2VeCQQ3qR2x6RSIe3qFTmZnoy97HKR5T/Yht8R8Z9HVk7Wfky
-         4ckFhbmI4xxh6YjsPvuQSUelbw+dUMvL/Gfpvlsflzn9jdiNZlEIgp5/5hHPPTQhSq2T
-         NuuA==
-X-Gm-Message-State: AOJu0YySO+FXbgKXgEeWhqLA8w3pS2zMFafd2Wekn2nMA1f8CcCstKZ1
-	7uHWy8kfW5Wu/ovK0QXMPLbRUPFSWmJjfxVWldlSnZJP6bdh4RlPZsoXtg==
-X-Google-Smtp-Source: AGHT+IEYpN2N7OrZdWozvLORzvd0sl5GL3UY+uCvT2P30MrZHfNn1LvQWLrUbN4wXamfUwUZMwVt5Q==
-X-Received: by 2002:a17:906:c115:b0:a7d:9f92:9107 with SMTP id a640c23a62f3a-a7dc51bdf6cmr1051189966b.58.1722966457550;
-        Tue, 06 Aug 2024 10:47:37 -0700 (PDT)
-Received: from [192.168.0.50] ([79.119.240.114])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7dc9c0b6casm564509766b.51.2024.08.06.10.47.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 06 Aug 2024 10:47:37 -0700 (PDT)
-Message-ID: <3b7b3655-9ec5-4277-b0ff-5535b1fdf281@gmail.com>
-Date: Tue, 6 Aug 2024 20:47:35 +0300
+	s=arc-20240116; t=1722967696; c=relaxed/simple;
+	bh=Pio7eRsl6VoHHo6puRlzv4zHn+1CVPdub+C7U9Kagxk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=TaFVHU/aZp2FU6hd6Da6ulbjE8rqraLq43KQGeTS4lSw/wNfdmZobSuP3GYgP2uAdchab3w7jT5nI52KRfcsARsRFVr/LNLtGDWnQrFltHr/zrfiYUgaPPjUlO5RR4++a5E6QGd/rkTe9fnsXndHmJZBZ5qOvCzSiC/sz2O5SNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XwIOFLNt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6948C32786;
+	Tue,  6 Aug 2024 18:08:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722967695;
+	bh=Pio7eRsl6VoHHo6puRlzv4zHn+1CVPdub+C7U9Kagxk=;
+	h=Date:From:To:Cc:Subject:From;
+	b=XwIOFLNtUlDroHzZABNmcYxAgszzcVKJPvG8vl5YoRyX2QqXUdOpjoGVeo9O7D1Vz
+	 FdI52FqxhlPMtT4XSdgSFS5xuhsGkFemJGPuxX1XETTbjiy3bNyYwJ8H//9xPpNwqC
+	 m7uiiEwJ6gHbE5Hjtbq7YqY4ABpdCean6Vtoq76LQouWOT7AMvaEmKmsCJjKN57rWx
+	 8e9/4tWMBFlGPSrN8g1Xhx4iJK7k/2q20k3CfKpx+b3w3Er9W8WHDmrsIcIUrbCem1
+	 j/B7DfPmn8ObOK0PSZSkzgJVf0GabeLFbcK4sF+JD2U2smpJar1umAJB3JS4yCIKJw
+	 gJkOhNKoP6dGw==
+Date: Tue, 6 Aug 2024 12:08:12 -0600
+From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To: Kalle Valo <kvalo@kernel.org>,
+	Stanislav Yakovlev <stas.yakovlev@gmail.com>,
+	Ajay Singh <ajay.kathat@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	libertas-dev@lists.infradead.org, netdev@vger.kernel.org,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH][next] wifi: radiotap: Avoid -Wflex-array-member-not-at-end
+ warnings
+Message-ID: <ZrJmjM4izqDqwIrc@cute>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH v3 4/4] wifi: rtw88: Enable USB RX aggregation for
- 8822c/8822b/8821c
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>, Sascha Hauer <sha@pengutronix.de>
-References: <acc5ccc7-e573-472f-96d2-582716046aa6@gmail.com>
-Content-Language: en-US
-In-Reply-To: <acc5ccc7-e573-472f-96d2-582716046aa6@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Enable USB RX aggregation when there is at least 1 Mbps RX or TX
-traffic, otherwise disable it.
+-Wflex-array-member-not-at-end was introduced in GCC-14, and we are
+getting ready to enable it, globally.
 
-USB RX aggregation improves the RX speed on certain ARM systems, like
-the NanoPi NEO Core2. With RTL8821CU, before: 28 Mbps, after: 231 Mbps.
+So, in order to avoid ending up with a flexible-array member in the
+middle of multiple other structs, we use the `__struct_group()`
+helper to create a new tagged `struct ieee80211_radiotap_header_hdr`.
+This structure groups together all the members of the flexible
+`struct ieee80211_radiotap_header` except the flexible array.
 
-The official drivers for these chips use the same logic for SDIO, but
-for some reason the SDIO driver in rtw88 always enables RX aggregation,
-so this patch only toggles aggregation for USB devices.
+As a result, the array is effectively separated from the rest of the
+members without modifying the memory layout of the flexible structure.
+We then change the type of the middle struct members currently causing
+trouble from `struct ieee80211_radiotap_header` to `struct
+ieee80211_radiotap_header_hdr`.
 
-RTL8703B is likely not found in USB devices, and RTL8723DU doesn't like
-aggregation.
+We also want to ensure that in case new members need to be added to the
+flexible structure, they are always included within the newly created
+tagged struct. For this, we use `static_assert()`. This ensures that the
+memory layout for both the flexible structure and the new tagged struct
+is the same after any changes.
 
-Tested-by: Sascha Hauer <s.hauer@pengutronix.de>
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+This approach avoids having to implement `struct ieee80211_radiotap_header_hdr`
+as a completely separate structure, thus preventing having to maintain
+two independent but basically identical structures, closing the door
+to potential bugs in the future.
+
+So, with these changes, fix the following warnings:
+drivers/net/wireless/ath/wil6210/txrx.c:309:50: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+drivers/net/wireless/intel/ipw2x00/ipw2100.c:2521:50: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+drivers/net/wireless/intel/ipw2x00/ipw2200.h:1146:42: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+drivers/net/wireless/intel/ipw2x00/libipw.h:595:36: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+drivers/net/wireless/marvell/libertas/radiotap.h:34:42: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+drivers/net/wireless/marvell/libertas/radiotap.h:5:42: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+drivers/net/wireless/microchip/wilc1000/mon.c:10:42: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+drivers/net/wireless/microchip/wilc1000/mon.c:15:42: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+drivers/net/wireless/virtual/mac80211_hwsim.c:758:42: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+drivers/net/wireless/virtual/mac80211_hwsim.c:767:42: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 ---
-v3:
- - Add Tested-by: Sascha Hauer <s.hauer@pengutronix.de>
+ drivers/net/wireless/ath/wil6210/txrx.c       |  2 +-
+ drivers/net/wireless/intel/ipw2x00/ipw2100.c  |  2 +-
+ drivers/net/wireless/intel/ipw2x00/ipw2200.h  |  2 +-
+ .../net/wireless/marvell/libertas/radiotap.h  |  4 +-
+ drivers/net/wireless/microchip/wilc1000/mon.c |  4 +-
+ drivers/net/wireless/virtual/mac80211_hwsim.c |  4 +-
+ include/net/ieee80211_radiotap.h              | 43 +++++++++++--------
+ 7 files changed, 33 insertions(+), 28 deletions(-)
 
-v2:
- - Rename {tx,rx}_unicast_shift to {tx,rx}_unicast_mbps.
- - Move the RX aggregation code from rtw8822c.c, rtw8822b.c, rtw8821c.c
-   to usb.c.
- - Delete the rx_aggregation member from struct rtw_chip_ops and add
-   dynamic_rx_agg member to struct rtw_hci_ops.
- - Rebase on top of the latest rtw-next.
----
- drivers/net/wireless/realtek/rtw88/hci.h  |  7 ++++
- drivers/net/wireless/realtek/rtw88/main.c | 13 +++++---
- drivers/net/wireless/realtek/rtw88/pci.c  |  1 +
- drivers/net/wireless/realtek/rtw88/sdio.c |  1 +
- drivers/net/wireless/realtek/rtw88/usb.c  | 40 +++++++++++++++++++++++
- 5 files changed, 58 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/hci.h b/drivers/net/wireless/realtek/rtw88/hci.h
-index 830d7532f2a3..96aeda26014e 100644
---- a/drivers/net/wireless/realtek/rtw88/hci.h
-+++ b/drivers/net/wireless/realtek/rtw88/hci.h
-@@ -18,6 +18,7 @@ struct rtw_hci_ops {
- 	void (*deep_ps)(struct rtw_dev *rtwdev, bool enter);
- 	void (*link_ps)(struct rtw_dev *rtwdev, bool enter);
- 	void (*interface_cfg)(struct rtw_dev *rtwdev);
-+	void (*dynamic_rx_agg)(struct rtw_dev *rtwdev, bool enable);
- 
- 	int (*write_data_rsvd_page)(struct rtw_dev *rtwdev, u8 *buf, u32 size);
- 	int (*write_data_h2c)(struct rtw_dev *rtwdev, u8 *buf, u32 size);
-@@ -72,6 +73,12 @@ static inline void rtw_hci_interface_cfg(struct rtw_dev *rtwdev)
- 	rtwdev->hci.ops->interface_cfg(rtwdev);
- }
- 
-+static inline void rtw_hci_dynamic_rx_agg(struct rtw_dev *rtwdev, bool enable)
-+{
-+	if (rtwdev->hci.ops->dynamic_rx_agg)
-+		rtwdev->hci.ops->dynamic_rx_agg(rtwdev, enable);
-+}
-+
- static inline int
- rtw_hci_write_data_rsvd_page(struct rtw_dev *rtwdev, u8 *buf, u32 size)
+diff --git a/drivers/net/wireless/ath/wil6210/txrx.c b/drivers/net/wireless/ath/wil6210/txrx.c
+index f29ac6de7139..b7cc29939d59 100644
+--- a/drivers/net/wireless/ath/wil6210/txrx.c
++++ b/drivers/net/wireless/ath/wil6210/txrx.c
+@@ -306,7 +306,7 @@ static void wil_rx_add_radiotap_header(struct wil6210_priv *wil,
+ 				       struct sk_buff *skb)
  {
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 9c58b7a41b95..fd944248e6e7 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -212,6 +212,7 @@ static void rtw_watch_dog_work(struct work_struct *work)
- 	struct rtw_traffic_stats *stats = &rtwdev->stats;
- 	struct rtw_watch_dog_iter_data data = {};
- 	bool busy_traffic = test_bit(RTW_FLAG_BUSY_TRAFFIC, rtwdev->flags);
-+	u32 tx_unicast_mbps, rx_unicast_mbps;
- 	bool ps_active;
+ 	struct wil6210_rtap {
+-		struct ieee80211_radiotap_header rthdr;
++		struct ieee80211_radiotap_header_hdr rthdr;
+ 		/* fields should be in the order of bits in rthdr.it_present */
+ 		/* flags */
+ 		u8 flags;
+diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2100.c b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
+index b6636002c7d2..9d5524c8e95d 100644
+--- a/drivers/net/wireless/intel/ipw2x00/ipw2100.c
++++ b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
+@@ -2518,7 +2518,7 @@ static void isr_rx_monitor(struct ipw2100_priv *priv, int i,
+ 	 * to build this manually element by element, we can write it much
+ 	 * more efficiently than we can parse it. ORDER MATTERS HERE */
+ 	struct ipw_rt_hdr {
+-		struct ieee80211_radiotap_header rt_hdr;
++		struct ieee80211_radiotap_header_hdr rt_hdr;
+ 		s8 rt_dbmsignal; /* signal in dbM, kluged to signed */
+ 	} *ipw_rt;
  
- 	mutex_lock(&rtwdev->mutex);
-@@ -236,13 +237,17 @@ static void rtw_watch_dog_work(struct work_struct *work)
- 	else
- 		ps_active = false;
+diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2200.h b/drivers/net/wireless/intel/ipw2x00/ipw2200.h
+index 8ebf09121e17..becdd3bc5235 100644
+--- a/drivers/net/wireless/intel/ipw2x00/ipw2200.h
++++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.h
+@@ -1143,7 +1143,7 @@ struct ipw_prom_priv {
+  * structure is provided regardless of any bits unset.
+  */
+ struct ipw_rt_hdr {
+-	struct ieee80211_radiotap_header rt_hdr;
++	struct ieee80211_radiotap_header_hdr rt_hdr;
+ 	u64 rt_tsf;      /* TSF */	/* XXX */
+ 	u8 rt_flags;	/* radiotap packet flags */
+ 	u8 rt_rate;	/* rate in 500kb/s */
+diff --git a/drivers/net/wireless/marvell/libertas/radiotap.h b/drivers/net/wireless/marvell/libertas/radiotap.h
+index 1ed5608d353f..95b427196f5a 100644
+--- a/drivers/net/wireless/marvell/libertas/radiotap.h
++++ b/drivers/net/wireless/marvell/libertas/radiotap.h
+@@ -2,7 +2,7 @@
+ #include <net/ieee80211_radiotap.h>
  
--	ewma_tp_add(&stats->tx_ewma_tp,
--		    (u32)(stats->tx_unicast >> RTW_TP_SHIFT));
--	ewma_tp_add(&stats->rx_ewma_tp,
--		    (u32)(stats->rx_unicast >> RTW_TP_SHIFT));
-+	tx_unicast_mbps = stats->tx_unicast >> RTW_TP_SHIFT;
-+	rx_unicast_mbps = stats->rx_unicast >> RTW_TP_SHIFT;
-+
-+	ewma_tp_add(&stats->tx_ewma_tp, tx_unicast_mbps);
-+	ewma_tp_add(&stats->rx_ewma_tp, rx_unicast_mbps);
- 	stats->tx_throughput = ewma_tp_read(&stats->tx_ewma_tp);
- 	stats->rx_throughput = ewma_tp_read(&stats->rx_ewma_tp);
+ struct tx_radiotap_hdr {
+-	struct ieee80211_radiotap_header hdr;
++	struct ieee80211_radiotap_header_hdr hdr;
+ 	u8 rate;
+ 	u8 txpower;
+ 	u8 rts_retries;
+@@ -31,7 +31,7 @@ struct tx_radiotap_hdr {
+ #define IEEE80211_FC_DSTODS          0x0300
  
-+	rtw_hci_dynamic_rx_agg(rtwdev,
-+			       tx_unicast_mbps >= 1 || rx_unicast_mbps >= 1);
-+
- 	/* reset tx/rx statictics */
- 	stats->tx_unicast = 0;
- 	stats->rx_unicast = 0;
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
-index 5d0580da13fb..0b9b8807af2c 100644
---- a/drivers/net/wireless/realtek/rtw88/pci.c
-+++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -1601,6 +1601,7 @@ static struct rtw_hci_ops rtw_pci_ops = {
- 	.deep_ps = rtw_pci_deep_ps,
- 	.link_ps = rtw_pci_link_ps,
- 	.interface_cfg = rtw_pci_interface_cfg,
-+	.dynamic_rx_agg = NULL,
+ struct rx_radiotap_hdr {
+-	struct ieee80211_radiotap_header hdr;
++	struct ieee80211_radiotap_header_hdr hdr;
+ 	u8 flags;
+ 	u8 rate;
+ 	u8 antsignal;
+diff --git a/drivers/net/wireless/microchip/wilc1000/mon.c b/drivers/net/wireless/microchip/wilc1000/mon.c
+index 03b7229a0ff5..56cdc7a193dd 100644
+--- a/drivers/net/wireless/microchip/wilc1000/mon.c
++++ b/drivers/net/wireless/microchip/wilc1000/mon.c
+@@ -7,12 +7,12 @@
+ #include "cfg80211.h"
  
- 	.read8 = rtw_pci_read8,
- 	.read16 = rtw_pci_read16,
-diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
-index 763aa8212a4b..21d0754dd7f6 100644
---- a/drivers/net/wireless/realtek/rtw88/sdio.c
-+++ b/drivers/net/wireless/realtek/rtw88/sdio.c
-@@ -1157,6 +1157,7 @@ static struct rtw_hci_ops rtw_sdio_ops = {
- 	.deep_ps = rtw_sdio_deep_ps,
- 	.link_ps = rtw_sdio_link_ps,
- 	.interface_cfg = rtw_sdio_interface_cfg,
-+	.dynamic_rx_agg = NULL,
+ struct wilc_wfi_radiotap_hdr {
+-	struct ieee80211_radiotap_header hdr;
++	struct ieee80211_radiotap_header_hdr hdr;
+ 	u8 rate;
+ } __packed;
  
- 	.read8 = rtw_sdio_read8,
- 	.read16 = rtw_sdio_read16,
-diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
-index 4c7ba5c76a57..cbb5e17e65d1 100644
---- a/drivers/net/wireless/realtek/rtw88/usb.c
-+++ b/drivers/net/wireless/realtek/rtw88/usb.c
-@@ -766,6 +766,45 @@ static void rtw_usb_interface_cfg(struct rtw_dev *rtwdev)
- 	rtw_usb_init_burst_pkt_len(rtwdev);
- }
+ struct wilc_wfi_radiotap_cb_hdr {
+-	struct ieee80211_radiotap_header hdr;
++	struct ieee80211_radiotap_header_hdr hdr;
+ 	u8 rate;
+ 	u8 dump;
+ 	u16 tx_flags;
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
+index d86e6ff4523d..6ab0f3a6f26c 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
+@@ -763,7 +763,7 @@ static const struct rhashtable_params hwsim_rht_params = {
+ };
  
-+static void rtw_usb_dynamic_rx_agg_v1(struct rtw_dev *rtwdev, bool enable)
-+{
-+	u8 size, timeout;
-+	u16 val16;
-+
-+	rtw_write32_set(rtwdev, REG_RXDMA_AGG_PG_TH, BIT_EN_PRE_CALC);
-+	rtw_write8_set(rtwdev, REG_TXDMA_PQ_MAP, BIT_RXDMA_AGG_EN);
-+	rtw_write8_clr(rtwdev, REG_RXDMA_AGG_PG_TH + 3, BIT(7));
-+
-+	if (enable) {
-+		size = 0x5;
-+		timeout = 0x20;
-+	} else {
-+		size = 0x0;
-+		timeout = 0x1;
-+	}
-+	val16 = u16_encode_bits(size, BIT_RXDMA_AGG_PG_TH) |
-+		u16_encode_bits(timeout, BIT_DMA_AGG_TO_V1);
-+
-+	rtw_write16(rtwdev, REG_RXDMA_AGG_PG_TH, val16);
-+}
-+
-+static void rtw_usb_dynamic_rx_agg(struct rtw_dev *rtwdev, bool enable)
-+{
-+	switch (rtwdev->chip->id) {
-+	case RTW_CHIP_TYPE_8822C:
-+	case RTW_CHIP_TYPE_8822B:
-+	case RTW_CHIP_TYPE_8821C:
-+		rtw_usb_dynamic_rx_agg_v1(rtwdev, enable);
-+		break;
-+	case RTW_CHIP_TYPE_8723D:
-+		/* Doesn't like aggregation. */
-+		break;
-+	case RTW_CHIP_TYPE_8703B:
-+		/* Likely not found in USB devices. */
-+		break;
-+	}
-+}
-+
- static struct rtw_hci_ops rtw_usb_ops = {
- 	.tx_write = rtw_usb_tx_write,
- 	.tx_kick_off = rtw_usb_tx_kick_off,
-@@ -775,6 +814,7 @@ static struct rtw_hci_ops rtw_usb_ops = {
- 	.deep_ps = rtw_usb_deep_ps,
- 	.link_ps = rtw_usb_link_ps,
- 	.interface_cfg = rtw_usb_interface_cfg,
-+	.dynamic_rx_agg = rtw_usb_dynamic_rx_agg,
+ struct hwsim_radiotap_hdr {
+-	struct ieee80211_radiotap_header hdr;
++	struct ieee80211_radiotap_header_hdr hdr;
+ 	__le64 rt_tsft;
+ 	u8 rt_flags;
+ 	u8 rt_rate;
+@@ -772,7 +772,7 @@ struct hwsim_radiotap_hdr {
+ } __packed;
  
- 	.write8  = rtw_usb_write8,
- 	.write16 = rtw_usb_write16,
+ struct hwsim_radiotap_ack_hdr {
+-	struct ieee80211_radiotap_header hdr;
++	struct ieee80211_radiotap_header_hdr hdr;
+ 	u8 rt_flags;
+ 	u8 pad;
+ 	__le16 rt_channel;
+diff --git a/include/net/ieee80211_radiotap.h b/include/net/ieee80211_radiotap.h
+index 91762faecc13..029137023779 100644
+--- a/include/net/ieee80211_radiotap.h
++++ b/include/net/ieee80211_radiotap.h
+@@ -24,31 +24,36 @@
+  * struct ieee80211_radiotap_header - base radiotap header
+  */
+ struct ieee80211_radiotap_header {
+-	/**
+-	 * @it_version: radiotap version, always 0
+-	 */
+-	uint8_t it_version;
+-
+-	/**
+-	 * @it_pad: padding (or alignment)
+-	 */
+-	uint8_t it_pad;
+-
+-	/**
+-	 * @it_len: overall radiotap header length
+-	 */
+-	__le16 it_len;
+-
+-	/**
+-	 * @it_present: (first) present word
+-	 */
+-	__le32 it_present;
++	/* New members MUST be added within the __struct_group() macro below. */
++	__struct_group(ieee80211_radiotap_header_hdr, hdr, __packed,
++		/**
++		 * @it_version: radiotap version, always 0
++		 */
++		uint8_t it_version;
++
++		/**
++		 * @it_pad: padding (or alignment)
++		 */
++		uint8_t it_pad;
++
++		/**
++		 * @it_len: overall radiotap header length
++		 */
++		__le16 it_len;
++
++		/**
++		 * @it_present: (first) present word
++		 */
++		__le32 it_present;
++	);
+ 
+ 	/**
+ 	 * @it_optional: all remaining presence bitmaps
+ 	 */
+ 	__le32 it_optional[];
+ } __packed;
++static_assert(offsetof(struct ieee80211_radiotap_header, it_optional) == sizeof(struct ieee80211_radiotap_header_hdr),
++	      "struct member likely outside of __struct_group()");
+ 
+ /* version is always 0 */
+ #define PKTHDR_RADIOTAP_VERSION	0
 -- 
-2.45.2
+2.34.1
 
 
