@@ -1,150 +1,130 @@
-Return-Path: <linux-wireless+bounces-11045-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11046-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B56D949AF0
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 00:08:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB962949B3F
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 00:21:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5943BB21BCE
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 22:08:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 578D21F234AA
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 22:21:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC5916EC0B;
-	Tue,  6 Aug 2024 22:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74B26171E64;
+	Tue,  6 Aug 2024 22:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="uAHXZgtV"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="OuvuJ/Sb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4A9158DC2;
-	Tue,  6 Aug 2024 22:04:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C630516EB70
+	for <linux-wireless@vger.kernel.org>; Tue,  6 Aug 2024 22:21:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722981872; cv=none; b=QfIko93/k4YSuCi3m/4xebQ3XW49UxnNCBmjvossaEWCQ1Duq7wWFXU4a2enk2/UYgSjaIdhbUiEsePY3sw3HB+btXQvJ0Ha8ZtX2l9uZjS6TOf9c1c+WfZBDRr7+DsqMaOPB7aVaYWkow51RMtR4Z0Ab7LOjbXvUjl9NBSsKPA=
+	t=1722982890; cv=none; b=S1NDxxog73IUDSDIj9hVHIV/LOeq5QR3RlNIIHPseJqBHDtwdFCN94dJEPRSye0p/BwcjHkokJOyDi6bbGEnSVJGIQ1YmZel22vPVkrMVzQuoMKmsxoP2pjzhPteInQo9kRJwkb8J+QPsEU/pHALRHVgg94AcQfxVhYwmeRb5Ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722981872; c=relaxed/simple;
-	bh=IK1yrsfgEjQIKVGGbWPMPH/rDmLHpfmvRvFqYw+/sCY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lCA8T9HP0E3+jyvwbfufWLqeFAc/5u18/DyTFfevjDLPLUcFAt24pdTmL6ouXzPNbzaWI+7vlik/HIM4SFInoWqVxSgDSkosPf+B7AqLFp6maeMlf2M9PCPSmy3LLI21WI0Tg8uKPgsihV/+ZoSSgl9ToUWjhMd5AC2Vu1+FYs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=uAHXZgtV; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=201702; t=1722981865;
-	bh=x92JJMnksrdswWDvcf98xWpAg3P6+kdAl4wC+lFFrHM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=uAHXZgtVb0Z4ejy+B3LsjhUjlogoyvcqzyDWBDFa3nO29n3YZlTLHgyRjUJDzpq8r
-	 e3peacasSB4hCBFOGeirNTN3fKxDjtUv8204LaPlmsN3U6A4UiLsvRsIM44csbOSJS
-	 TsAJ8ieB967NYpXUiq9qaRrnxL43CRr5XRdGNLu7WQWOgfOjbxFxDnElu3wzd3Dtot
-	 bkXpMKV8ddY1Ah36CVvEpx8R1s5z4KeC2T7BtT/2Xj1Y+jh3SDY5krmoXIQQQA/LMu
-	 UYpIZtKBHCS//YXtQuLSzG/qVMzhadu0TFlUnF/IC4HZWBWuhlJeHdPlU7j9qGRGsn
-	 QpvQqGaGI5Ucw==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WdnQd3RwFz4w2J;
-	Wed,  7 Aug 2024 08:04:25 +1000 (AEST)
-Date: Wed, 7 Aug 2024 08:04:23 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>, ath12k@lists.infradead.org,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: linux-next: request to include ath.git tree
-Message-ID: <20240807080423.45efb506@canb.auug.org.au>
-In-Reply-To: <87ed7163yd.fsf@kernel.org>
-References: <87ed7163yd.fsf@kernel.org>
+	s=arc-20240116; t=1722982890; c=relaxed/simple;
+	bh=v66udmK0rRGksUFuN16ixCVyNQ5EVz1XHUvq67tEUMQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FKBVqArjmhI82ZkdqscrjJgUj0BQCcLWCbpiwxwrqpCKc6VVKQ/FajCpzR4VpK6bakBYzjjkO1+2DvBRXhJ+fZElcUm+VqjrpBGOZnS37oalXN/4gtNwSwWqgKLR/8HrlyCVmgksiKr64cuoXeS43xnG4CE6BReUw0XGOD0WSLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=OuvuJ/Sb; arc=none smtp.client-ip=209.85.221.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-4f52bd5b555so188615e0c.1
+        for <linux-wireless@vger.kernel.org>; Tue, 06 Aug 2024 15:21:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1722982887; x=1723587687; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QJXkpPUC6YxA/IHuLkQwK8On6NY8CUwc3hGpVUDqevI=;
+        b=OuvuJ/SbYqgZEaowQzH3i4WP9CjYgNlhRyMgmqYmaw2c5TuCqjBQ+5sovlW9mMG3sc
+         e5RRm3gR1w9CexrLZGR8J1ArkxEomXNzBHR2X9nC371msmFV7JxpTGHF8XMRPSyGPLkl
+         ywaE6Xado2jQmuorAMqp1NuU1PPuntYEWs0FU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722982887; x=1723587687;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QJXkpPUC6YxA/IHuLkQwK8On6NY8CUwc3hGpVUDqevI=;
+        b=HOWGgPB/JHBeLvUtQD6QPtBUaIpH9XxpKBlkVh4BdxN0NJzCRLl8fvDTVbEn96Ri4L
+         Usym3mHWv1OCUaebq8SPd4L4WspUL50WVZNXn3vsVS4ZocVwjFxaEq3+E8Knej0Yrv7V
+         oh0p7H0nbHfatThbU/EAy3fjZh3jaCd+Abkp8N5Jy4XbE2DsWzpUmMbtnwp1HhXrazwm
+         oCGi5KepHk2q66bLcwzhL+yCdK1wNx7RZoObjL17NVaHirmdK8S/ulDZzGP+PGQpM8/b
+         fh+7/L+Q40XWjI+B0R/VOWv2XXE79L/MmFrGs+RldobdhCvLkVg4q9D0hlkurrL5w/i0
+         /dEQ==
+X-Gm-Message-State: AOJu0Yz7whLIsK5h+m3iO/ZI7aYxsVISUudh5bAVxaaftTxLEaNI3r/K
+	T5/cJHe8Nzbj+X0U0SioVBMxOphZPOy+zAQE+BfjIwTZu4957Vj8HEvNg6xRSQ==
+X-Google-Smtp-Source: AGHT+IGDw1dquZEKngoVE3CxzATiloW2KmMWUKHN7gjHVVEVKfyVwAcup9CQeWcCvnV9aLa6uRvxHA==
+X-Received: by 2002:a05:6122:549:b0:4f5:24e0:26d4 with SMTP id 71dfb90a1353d-4f8f54e6eb5mr159493e0c.1.1722982887651;
+        Tue, 06 Aug 2024 15:21:27 -0700 (PDT)
+Received: from localhost (114.152.245.35.bc.googleusercontent.com. [35.245.152.114])
+        by smtp.gmail.com with UTF8SMTPSA id 71dfb90a1353d-4f8a1a396c2sm1378832e0c.6.2024.08.06.15.21.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 Aug 2024 15:21:27 -0700 (PDT)
+From: David Ruth <druth@chromium.org>
+To: nbd@nbd.name,
+	lorenzo@kernel.org
+Cc: linux-wireless@vger.kernel.org,
+	timvp@chromium.org,
+	sean.wang@mediatek.com,
+	ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com,
+	David Ruth <druth@chromium.org>
+Subject: [PATCH] wifi: mt76: mt7921: Cancel scan work on unregister.
+Date: Tue,  6 Aug 2024 22:21:13 +0000
+Message-ID: <20240806222113.2689446-1-druth@chromium.org>
+X-Mailer: git-send-email 2.46.0.rc2.264.g509ed76dc8-goog
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/2Dxztpywhj4hqJGc_IHL1im";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 8bit
 
---Sig_/2Dxztpywhj4hqJGc_IHL1im
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+This change cancels delayed work on the scan_work workqueue before
+the workqueue is destroyed by the call to iee80211_unregister_hw in
+mt76_unregister_device.
 
-Hi Kalle,
+Without this change, if the device rapidly registered and
+unregistered, work will attempt to execute on the workqueue after it
+is destroyed.
 
-On Tue, 06 Aug 2024 18:55:38 +0300 Kalle Valo <kvalo@kernel.org> wrote:
->
-> ath.git is a tree for Atheros and Qualcomm Wi-Fi drivers residing under
-> drivers/net/wireless/ath/. Jeff and I are the maintainers. Over the
-> years multiple people have been requesting including the tree to
-> linux-next and finally we are biting the bullet.
->=20
-> So we are requesting to pull two branches from our ath.git tree to linux-=
-next:
->=20
-> git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git for-current
-> git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git for-next
->=20
-> for-current feeds the wireless tree and for-next feeds the wireless-next
-> tree.
+Signed-off-by: David Ruth <druth@chromium.org>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/pci.c  | 2 ++
+ drivers/net/wireless/mediatek/mt76/mt7921/sdio.c | 2 ++
+ 2 files changed, 4 insertions(+)
 
-Added from today.  I have listed just you as a contect, should I list
-anyone else (or a mailing list)?
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+index a7430216a80d..2c89bbccce4e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
+@@ -42,7 +42,9 @@ static void mt7921e_unregister_device(struct mt792x_dev *dev)
+ {
+ 	int i;
+ 	struct mt76_connac_pm *pm = &dev->pm;
++	struct mt792x_phy *phy = dev->mt76.phy->priv;
+ 
++	cancel_delayed_work_sync(&phy->scan_work);
+ 	cancel_work_sync(&dev->init_work);
+ 	mt76_unregister_device(&dev->mt76);
+ 	mt76_for_each_q_rx(&dev->mt76, i)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+index 004d942ee11a..1bcfb6944a1f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+@@ -41,7 +41,9 @@ static void mt7921s_txrx_worker(struct mt76_worker *w)
+ static void mt7921s_unregister_device(struct mt792x_dev *dev)
+ {
+ 	struct mt76_connac_pm *pm = &dev->pm;
++	struct mt792x_phy *phy = dev->mt76.phy->priv;
+ 
++	cancel_delayed_work_sync(&phy->scan_work);
+ 	cancel_work_sync(&dev->init_work);
+ 	mt76_unregister_device(&dev->mt76);
+ 	cancel_delayed_work_sync(&pm->ps_work);
+-- 
+2.46.0.rc2.264.g509ed76dc8-goog
 
-> Because our for-next branch is very active one problem with is that the
-> chances of having conflicts between the branches is high and that would
-> be extra work for you :/ Do you have any suggestions for this? For
-> example, should we create temporary merges for you or something like
-> that? Just for this reason we do try to keep the number of patches going
-> to for-current minimal and only take important fixes.
-
-Well, your for-next branch should only contain patches that are ready
-for integration i.e. reviewed and unit tested, so it should not be all
-that busy.  I expect you may also have a development branch for patches
-you are still testing.  Otherwise, you should concentrate on your own
-tree and I will notify you of conflicts (and ask advice if the
-conflicts are too difficult for me to resolve).
-
-Thanks for adding your subsystem tree as a participant of linux-next.  As
-you may know, this is not a judgement of your code.  The purpose of
-linux-next is for integration testing and to lower the impact of
-conflicts between subsystems in the next merge window.=20
-
-You will need to ensure that the patches/commits in your tree/series have
-been:
-     * submitted under GPL v2 (or later) and include the Contributor's
-        Signed-off-by,
-     * posted to the relevant mailing list,
-     * reviewed by you (or another maintainer of your subsystem tree),
-     * successfully unit tested, and=20
-     * destined for the current or next Linux merge window.
-
-Basically, this should be just what you would send to Linus (or ask him
-to fetch).  It is allowed to be rebased if you deem it necessary.
-
---=20
-Cheers,
-Stephen Rothwell=20
-sfr@canb.auug.org.au
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/2Dxztpywhj4hqJGc_IHL1im
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmaynegACgkQAVBC80lX
-0GywuAf/a8+0nKxZXozMmMWGjZtvuHmORM3yJrjEFklRRq1SCSqf7pd4KADfJld7
-38ihuNDqgtvjFFX5xvG5SFOYM3+s1jhguyiCAN70kKF/fV7WYa8Bo/m6jHuZuGta
-cMcnuCZVVOFy0CZX5NqTYb0Kdqlu2S8IIq00CVa+SCr60PCsHrfMwYTYiu4LPNyv
-Sw3qtDMvZw7+LjbOcvjl1GLW1xKiE6B1mZ/ylq7aqMs9rmZSpHho3y2SvfFRJLQ6
-NPI38NojMzo9xL0lNTXS+cIF34YofOKb8jIlEDs/cWKvNJmAPgJZk+7N7CiY251B
-EtdmdWuVwCWrXgRFKlfumCUlB1wSJw==
-=e4jz
------END PGP SIGNATURE-----
-
---Sig_/2Dxztpywhj4hqJGc_IHL1im--
 
