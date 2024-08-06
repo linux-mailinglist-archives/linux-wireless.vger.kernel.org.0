@@ -1,61 +1,61 @@
-Return-Path: <linux-wireless+bounces-11026-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11024-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A03D6949632
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 19:03:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99222949628
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 19:03:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B44FD1C21C1C
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 17:03:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB8E81C21EB0
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 17:03:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D840F47A6A;
-	Tue,  6 Aug 2024 17:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D247D811F7;
+	Tue,  6 Aug 2024 17:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="w6lrU0D6"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="MMb06L3w"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0C536AF2;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D88C58ABC;
 	Tue,  6 Aug 2024 17:01:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.248
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722963707; cv=none; b=hveah81TIF31FtAPy0PUSx2OlYNMe9dXsOjsHF+V2z4g/vdOnr8tlUm7PyU3FrVlzXuM20AxXUypMh7GYambzQyHofystHCHQLaQF/BxIPFf4ztGUlTam29qk0GiYbXmCyWyIjP0p03eIfqrrn9jmDilm6bldNfDa1NItKbMsLs=
+	t=1722963706; cv=none; b=lU19/tIq+zYAi9WZr87XpolTotKDupPzbdLurBMLrS3d7yk8oljApNpxUysRYWNCYkjcfh/+PEroSYvDSsOnEr38Ph+7VsZxJH2Z5cvPy2nSQ9Pnvc3MG/mBI800T+DAfhiiM5WQGW7t5gd4Kn7s8VC6NsdiQNrRrYFHEV71bjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722963707; c=relaxed/simple;
-	bh=s9ls56z9EXC6FMVqQgOGldYdOlUuJ6EkYecrJ0P1CAQ=;
+	s=arc-20240116; t=1722963706; c=relaxed/simple;
+	bh=njzi15DEQhPVnLuUWg6LbYEdq1X49amrFHA77K8lves=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kIfkV58lUrEuTnpio+TSTDeQlkKWCkuBATht2EvDPDKHLynmP0Sow7+FUduDndE3SsYha4NcnKrvRFWCGjc+6suZLnKb2ISCF96B647GieXTTfn47aNf8wh1NSyqAUia3YsIOti8FVkzMjWxxIUBMuBd9Zou4TkqVqNUocvffi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=w6lrU0D6; arc=none smtp.client-ip=198.47.23.248
+	 MIME-Version:Content-Type; b=pr9gbP1P0S3p2lFdM+Q6uDz2XlB81syGIZ9NWpxB0iZFCTGfQL6HeXJcD8ndAkvOeANnhV9M272xAM/7vuHH6lxLBkD4/b+e7Id7ZeZ0i4szHhfklz2RxtZjPKUb8K3Sg0o9kGHL+TWC+ZfR8JJy2lqGgJa7qWlFP6OHdeGQPk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=MMb06L3w; arc=none smtp.client-ip=198.47.19.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 476H1X30007445;
-	Tue, 6 Aug 2024 12:01:33 -0500
+	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 476H1YoP055285;
+	Tue, 6 Aug 2024 12:01:34 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1722963693;
-	bh=HD9HtT3y3kELi/D7P4cFEzdMCmJZwSMeTRCmpWulFt4=;
+	s=ti-com-17Q1; t=1722963694;
+	bh=07KbZeehpcyGvkPeWri3Tawihq5XS2PjZoq4HYO85po=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=w6lrU0D6f3XH3lk9ASdS71XrdY6MXoMmNl7EX/AV/z/MexWLCHhle5hYqSikQWZV+
-	 J0OhPKbeIBrufR+RL9e+wHM80GJsCh6vou5NWqDgbr+yAcVGupDRfYlAwCFhlq68H0
-	 R/Tp0aaqdSukh64cJypCzWVTC85649AAoBEpWxSw=
-Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 476H1Xld067329
+	b=MMb06L3wcxp5C6mvxXMLRpV7ObIIu0muHz+m15u42tpJ8xapPK50lMTAUbCjmCdU0
+	 lQbyehJ9OH2fMVOZYing0uWN8fw7BoHoC1C8szDQmLkNVKglEjyV4W7lHu81J+mJK7
+	 p9csq4Tj7ulH0FcjeSYal7sz7BC+LEERNpgPlYNw=
+Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
+	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 476H1YmT067341
 	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 6 Aug 2024 12:01:33 -0500
-Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+	Tue, 6 Aug 2024 12:01:34 -0500
+Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 6
- Aug 2024 12:01:33 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ Aug 2024 12:01:34 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Tue, 6 Aug 2024 12:01:32 -0500
+ Frontend Transport; Tue, 6 Aug 2024 12:01:34 -0500
 Received: from localhost (udb0389739.dhcp.ti.com [137.167.1.149])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 476H1Vvg037019;
-	Tue, 6 Aug 2024 12:01:32 -0500
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 476H1XsC037057;
+	Tue, 6 Aug 2024 12:01:34 -0500
 From: Michael Nemanov <michael.nemanov@ti.com>
 To: Kalle Valo <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
@@ -67,9 +67,9 @@ To: Kalle Valo <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>,
         <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
 CC: Sabeeh Khan <sabeeh-khan@ti.com>, Michael Nemanov <michael.nemanov@ti.com>
-Subject: [PATCH v3 05/17] wifi: cc33xx: Add acx.c, acx.h
-Date: Tue, 6 Aug 2024 20:00:06 +0300
-Message-ID: <20240806170018.638585-6-michael.nemanov@ti.com>
+Subject: [PATCH v3 06/17] wifi: cc33xx: Add event.c, event.h
+Date: Tue, 6 Aug 2024 20:00:07 +0300
+Message-ID: <20240806170018.638585-7-michael.nemanov@ti.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240806170018.638585-1-michael.nemanov@ti.com>
 References: <20240806170018.638585-1-michael.nemanov@ti.com>
@@ -83,1874 +83,486 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-These file contain various WLAN-oriented APIs
+Unlike in wlcore, events are queued on linked list
+(cc->event_list) and are handled outside the IRQ
+context. This will be more clear when looking at main.c
 
 Signed-off-by: Michael Nemanov <michael.nemanov@ti.com>
 ---
- drivers/net/wireless/ti/cc33xx/acx.c | 1011 ++++++++++++++++++++++++++
- drivers/net/wireless/ti/cc33xx/acx.h |  835 +++++++++++++++++++++
- 2 files changed, 1846 insertions(+)
- create mode 100644 drivers/net/wireless/ti/cc33xx/acx.c
- create mode 100644 drivers/net/wireless/ti/cc33xx/acx.h
+ drivers/net/wireless/ti/cc33xx/event.c | 385 +++++++++++++++++++++++++
+ drivers/net/wireless/ti/cc33xx/event.h |  71 +++++
+ 2 files changed, 456 insertions(+)
+ create mode 100644 drivers/net/wireless/ti/cc33xx/event.c
+ create mode 100644 drivers/net/wireless/ti/cc33xx/event.h
 
-diff --git a/drivers/net/wireless/ti/cc33xx/acx.c b/drivers/net/wireless/ti/cc33xx/acx.c
+diff --git a/drivers/net/wireless/ti/cc33xx/event.c b/drivers/net/wireless/ti/cc33xx/event.c
 new file mode 100644
-index 000000000000..3c9b590e69b1
+index 000000000000..76cd8d57897a
 --- /dev/null
-+++ b/drivers/net/wireless/ti/cc33xx/acx.c
-@@ -0,0 +1,1011 @@
++++ b/drivers/net/wireless/ti/cc33xx/event.c
+@@ -0,0 +1,385 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
 + * Copyright (C) 2022-2024 Texas Instruments Incorporated - https://www.ti.com/
 + */
 +
 +#include "acx.h"
++#include "event.h"
++#include "ps.h"
++#include "io.h"
++#include "scan.h"
 +
-+int cc33xx_acx_clear_statistics(struct cc33xx *cc)
-+{
-+	struct acx_header *acx;
-+	int ret = 0;
++#define CC33XX_WAIT_EVENT_FAST_POLL_COUNT 20
 +
-+	cc33xx_debug(DEBUG_ACX, "acx clear statistics");
++struct cc33xx_event_mailbox {
++	__le32 events_vector;
 +
-+	acx = kzalloc(sizeof(*acx), GFP_KERNEL);
-+	if (!acx) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
++	u8 number_of_scan_results;
++	u8 number_of_sched_scan_results;
 +
-+	ret = cc33xx_cmd_configure(cc, ACX_CLEAR_STATISTICS, acx, sizeof(*acx));
-+	if (ret < 0) {
-+		cc33xx_warning("failed to clear firmware statistics: %d", ret);
-+		goto out;
-+	}
++	__le16 channel_switch_role_id_bitmap;
 +
-+out:
-+	kfree(acx);
-+	return ret;
-+}
++	s8 rssi_snr_trigger_metric[NUM_OF_RSSI_SNR_TRIGGERS];
 +
-+int cc33xx_acx_wake_up_conditions(struct cc33xx *cc, struct cc33xx_vif *wlvif,
-+				  u8 wake_up_event, u8 listen_interval)
-+{
-+	struct acx_wake_up_condition *wake_up;
-+	int ret;
++	/* bitmap of removed links */
++	__le32 hlid_removed_bitmap;
 +
-+	cc33xx_debug(DEBUG_ACX,
-+		     "acx wake up conditions (wake_up_event %d listen_interval %d)",
-+		     wake_up_event, listen_interval);
++	/* rx ba constraint */
++	__le16 rx_ba_role_id_bitmap; /* 0xfff means any role. */
++	__le16 rx_ba_allowed_bitmap;
 +
-+	wake_up = kzalloc(sizeof(*wake_up), GFP_KERNEL);
-+	if (!wake_up) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
++	/* bitmap of roc completed (by role id) */
++	__le16 roc_completed_bitmap;
 +
-+	wake_up->wake_up_event = wake_up_event;
-+	wake_up->listen_interval = listen_interval;
++	/* bitmap of stations (by role id) with bss loss */
++	__le16 bss_loss_bitmap;
 +
-+	ret = cc33xx_cmd_configure(cc, WAKE_UP_CONDITIONS_CFG,
-+				   wake_up, sizeof(*wake_up));
-+	if (ret < 0) {
-+		cc33xx_warning("could not set wake up conditions: %d", ret);
-+		goto out;
-+	}
++	/* bitmap of stations (by HLID) which exceeded max tx retries */
++	__le16 tx_retry_exceeded_bitmap;
 +
-+out:
-+	kfree(wake_up);
-+	return ret;
-+}
++	/* time sync high msb*/
++	__le16 time_sync_tsf_high_msb;
 +
-+int cc33xx_acx_sleep_auth(struct cc33xx *cc, u8 sleep_auth)
-+{
-+	struct acx_sleep_auth *auth;
-+	int ret;
++	/* bitmap of inactive stations (by HLID) */
++	__le16 inactive_sta_bitmap;
 +
-+	cc33xx_debug(DEBUG_ACX, "acx sleep auth %d", sleep_auth);
++	/* time sync high lsb*/
++	__le16 time_sync_tsf_high_lsb;
 +
-+	auth = kzalloc(sizeof(*auth), GFP_KERNEL);
-+	if (!auth) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
++	/* rx BA win size indicated by RX_BA_WIN_SIZE_CHANGE_EVENT_ID */
++	u8 rx_ba_role_id;
++	u8 rx_ba_link_id;
++	u8 rx_ba_win_size;
++	u8 padding;
 +
-+	auth->sleep_auth = sleep_auth;
++	/* smart config */
++	u8 sc_ssid_len;
++	u8 sc_pwd_len;
++	u8 sc_token_len;
++	u8 padding1;
++	u8 sc_ssid[32];
++	u8 sc_pwd[64];
++	u8 sc_token[32];
 +
-+	ret = cc33xx_cmd_configure(cc, ACX_SLEEP_AUTH, auth, sizeof(*auth));
-+	if (ret < 0) {
-+		cc33xx_error("could not configure sleep_auth to %d: %d",
-+			     sleep_auth, ret);
-+		goto out;
-+	}
++	/* smart config sync channel */
++	u8 sc_sync_channel;
++	u8 sc_sync_band;
 +
-+	cc->sleep_auth = sleep_auth;
-+out:
-+	kfree(auth);
-+	return ret;
-+}
++	/* time sync low msb*/
++	__le16 time_sync_tsf_low_msb;
 +
-+int cc33xx_ble_enable(struct cc33xx *cc, u8 ble_enable)
-+{
-+	struct debug_header *buf;
-+	int ret;
++	/* radar detect */
++	u8 radar_channel;
++	u8 radar_type;
 +
-+	cc33xx_debug(DEBUG_ACX, "ble enable");
++	/* time sync low lsb*/
++	__le16 time_sync_tsf_low_lsb;
 +
-+	buf = kzalloc(sizeof(*buf), GFP_KERNEL);
-+	if (!buf) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
++	u8 ble_event[260];
 +
-+	ret = cc33xx_cmd_debug(cc, BLE_ENABLE, buf, sizeof(*buf));
-+	if (ret < 0) {
-+		cc33xx_error("could not enable ble");
-+		goto out;
-+	}
++} __packed;
 +
-+	cc->ble_enable = 1;
-+out:
-+	kfree(buf);
-+	return ret;
-+}
-+
-+int cc33xx_acx_tx_power(struct cc33xx *cc, struct cc33xx_vif *wlvif,
-+			int power)
-+{
-+	struct acx_tx_power_cfg *acx;
-+	int ret;
-+
-+	cc33xx_debug(DEBUG_ACX, "acx TX_POWER_CFG %d", power);
-+
-+	if (power < CC33XX_MIN_TXPWR) {
-+		cc33xx_warning("Configured Tx power %d dBm. Increasing to minimum %d dBm",
-+			       power, CC33XX_MIN_TXPWR);
-+		power = CC33XX_MIN_TXPWR;
-+	} else if (power > CC33XX_MAX_TXPWR) {
-+		cc33xx_warning("Configured Tx power %d dBm is bigger than upper limit: %d dBm. Attenuating to max limit",
-+			       power, CC33XX_MAX_TXPWR);
-+		power = CC33XX_MAX_TXPWR;
-+	}
-+
-+	acx = kzalloc(sizeof(*acx), GFP_KERNEL);
-+	if (!acx) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	acx->role_id = wlvif->role_id;
-+	acx->tx_power = power;
-+
-+	ret = cc33xx_cmd_configure(cc, TX_POWER_CFG, acx, sizeof(*acx));
-+	if (ret < 0) {
-+		cc33xx_warning("Configure of tx power failed: %d", ret);
-+		goto out;
-+	}
-+
-+	wlvif->power_level = power;
-+
-+out:
-+	kfree(acx);
-+	return ret;
-+}
-+
-+static int cc33xx_acx_mem_map(struct cc33xx *cc,
-+			      struct acx_header *memeroy_map, size_t len)
-+{
-+	int ret;
-+
-+	cc33xx_debug(DEBUG_ACX, "acx mem map");
-+
-+	ret = cc33xx_cmd_interrogate(cc, MEM_MAP_INTR, memeroy_map,
-+				     sizeof(struct acx_header), len);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int cc33xx_acx_get_fw_versions(struct cc33xx *cc,
-+				      struct cc33xx_acx_fw_versions *get_fw_versions,
-+				      size_t len)
-+{
-+	int ret;
-+
-+	cc33xx_debug(DEBUG_ACX, "acx get FW versions");
-+
-+	ret = cc33xx_cmd_interrogate(cc, GET_FW_VERSIONS_INTR, get_fw_versions,
-+				     sizeof(struct cc33xx_acx_fw_versions), len);
-+	if (ret < 0)
-+		return ret;
-+	return 0;
-+}
-+
-+int cc33xx_acx_slot(struct cc33xx *cc, struct cc33xx_vif *wlvif,
-+		    enum acx_slot_type slot_time)
-+{
-+	struct acx_slot *slot;
-+	int ret;
-+
-+	cc33xx_debug(DEBUG_ACX, "acx slot");
-+
-+	slot = kzalloc(sizeof(*slot), GFP_KERNEL);
-+	if (!slot) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	slot->role_id = wlvif->role_id;
-+	slot->slot_time = slot_time;
-+	ret = cc33xx_cmd_configure(cc, SLOT_CFG, slot, sizeof(*slot));
-+
-+	if (ret < 0) {
-+		cc33xx_warning("failed to set slot time: %d", ret);
-+		goto out;
-+	}
-+
-+out:
-+	kfree(slot);
-+	return ret;
-+}
-+
-+int cc33xx_acx_group_address_tbl(struct cc33xx *cc, bool enable, void *mc_list, u32 mc_list_len)
-+{
-+	struct acx_dot11_grp_addr_tbl *acx;
-+	int ret;
-+
-+	acx = kzalloc(sizeof(*acx), GFP_KERNEL);
-+	if (!acx) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	cc33xx_debug(DEBUG_ACX, "acx group address tbl");
-+
-+	acx->enabled = enable;
-+	acx->num_groups = mc_list_len;
-+	memcpy(acx->mac_table, mc_list, mc_list_len * ETH_ALEN);
-+
-+	ret = cc33xx_cmd_configure(cc, DOT11_GROUP_ADDRESS_TBL,
-+				   acx, sizeof(*acx));
-+	if (ret < 0) {
-+		cc33xx_warning("failed to set group addr table: %d", ret);
-+		goto out;
-+	}
-+out:
-+	kfree(acx);
-+	return ret;
-+}
-+
-+int cc33xx_acx_beacon_filter_opt(struct cc33xx *cc, struct cc33xx_vif *wlvif,
-+				 bool enable_filter)
-+{
-+	struct acx_beacon_filter_option *beacon_filter = NULL;
-+	int ret = 0;
-+
-+	cc33xx_debug(DEBUG_ACX, "acx beacon filter opt enable=%d",
-+		     enable_filter);
-+
-+	if (enable_filter &&
-+	    cc->conf.host_conf.conn.bcn_filt_mode == CONF_BCN_FILT_MODE_DISABLED)
-+		goto out;
-+
-+	beacon_filter = kzalloc(sizeof(*beacon_filter), GFP_KERNEL);
-+	if (!beacon_filter) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	beacon_filter->role_id = wlvif->role_id;
-+	beacon_filter->enable = enable_filter;
-+
-+	/* When set to zero, and the filter is enabled, beacons
-+	 * without the unicast TIM bit set are dropped.
-+	 */
-+	beacon_filter->max_num_beacons = 0;
-+
-+	ret = cc33xx_cmd_configure(cc, BEACON_FILTER_OPT,
-+				   beacon_filter, sizeof(*beacon_filter));
-+	if (ret < 0) {
-+		cc33xx_warning("failed to set beacon filter opt: %d", ret);
-+		goto out;
-+	}
-+
-+out:
-+	kfree(beacon_filter);
-+	return ret;
-+}
-+
-+int cc33xx_acx_beacon_filter_table(struct cc33xx *cc, struct cc33xx_vif *wlvif)
-+{
-+	struct acx_beacon_filter_ie_table *ie_table;
-+	struct conf_bcn_filt_rule *r = &cc->conf.host_conf.conn.bcn_filt_ie0;
-+	struct conf_bcn_filt_rule *itr_end;
-+	int idx = 0;
-+	int ret;
-+	bool vendor_spec = false;
-+
-+	cc33xx_debug(DEBUG_ACX, "acx beacon filter table");
-+
-+	if (WARN_ON(cc->conf.host_conf.conn.bcn_filt_ie_count > CONF_MAX_BCN_FILT_IE_COUNT))
-+		return -EINVAL;
-+
-+	itr_end = r + cc->conf.host_conf.conn.bcn_filt_ie_count;
-+
-+	ie_table = kzalloc(sizeof(*ie_table), GFP_KERNEL);
-+	if (!ie_table) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	/* configure default beacon pass-through rules */
-+	ie_table->role_id = wlvif->role_id;
-+	ie_table->num_ie = 0;
-+
-+	while (r < itr_end) {
-+		ie_table->table[idx++] = r->ie;
-+		ie_table->table[idx++] = r->rule;
-+
-+		if (r->ie == WLAN_EID_VENDOR_SPECIFIC) {
-+			/* only one vendor specific ie allowed */
-+			if (vendor_spec)
-+				continue;
-+
-+			/* for vendor specific rules configure the
-+			 * additional fields
-+			 */
-+			memcpy(&ie_table->table[idx], r->oui,
-+			       CONF_BCN_IE_OUI_LEN);
-+			idx += CONF_BCN_IE_OUI_LEN;
-+			ie_table->table[idx++] = r->type;
-+			memcpy(&ie_table->table[idx], r->version,
-+			       CONF_BCN_IE_VER_LEN);
-+			idx += CONF_BCN_IE_VER_LEN;
-+			vendor_spec = true;
-+		}
-+
-+		ie_table->num_ie++;
-+		r++;
-+	}
-+
-+	ret = cc33xx_cmd_configure(cc, BEACON_FILTER_TABLE,
-+				   ie_table, sizeof(*ie_table));
-+	if (ret < 0) {
-+		cc33xx_warning("failed to set beacon filter table: %d", ret);
-+		goto out;
-+	}
-+
-+out:
-+	kfree(ie_table);
-+	return ret;
-+}
-+
-+int cc33xx_assoc_info_cfg(struct cc33xx *cc, struct cc33xx_vif *wlvif,
-+			  struct ieee80211_sta *sta, u16 aid)
-+{
-+	struct assoc_info_cfg *cfg;
-+	int ret;
-+
-+	cc33xx_debug(DEBUG_ACX, "acx aid");
-+
-+	cfg = kzalloc(sizeof(*cfg), GFP_KERNEL);
-+	if (!cfg) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	cfg->role_id = wlvif->role_id;
-+	cfg->aid = cpu_to_le16(aid);
-+	cfg->wmm_enabled = wlvif->wmm_enabled;
-+
-+	cfg->nontransmitted = wlvif->nontransmitted;
-+	cfg->bssid_index = wlvif->bssid_index;
-+	cfg->bssid_indicator = wlvif->bssid_indicator;
-+	cfg->ht_supported = sta->deflink.ht_cap.ht_supported;
-+	cfg->vht_supported = sta->deflink.vht_cap.vht_supported;
-+	cfg->has_he = sta->deflink.he_cap.has_he;
-+	memcpy(cfg->transmitter_bssid, wlvif->transmitter_bssid, ETH_ALEN);
-+	ret = cc33xx_cmd_configure(cc, ASSOC_INFO_CFG, cfg, sizeof(*cfg));
-+	if (ret < 0) {
-+		cc33xx_warning("failed to set aid: %d", ret);
-+		goto out;
-+	}
-+
-+out:
-+	kfree(cfg);
-+	return ret;
-+}
-+
-+int cc33xx_acx_set_preamble(struct cc33xx *cc, struct cc33xx_vif *wlvif,
-+			    enum acx_preamble_type preamble)
-+{
-+	struct acx_preamble *acx;
-+	int ret;
-+
-+	cc33xx_debug(DEBUG_ACX, "acx_set_preamble");
-+
-+	acx = kzalloc(sizeof(*acx), GFP_KERNEL);
-+	if (!acx) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	acx->role_id = wlvif->role_id;
-+	acx->preamble = preamble;
-+
-+	ret = cc33xx_cmd_configure(cc, PREAMBLE_TYPE_CFG, acx, sizeof(*acx));
-+	if (ret < 0) {
-+		cc33xx_warning("Setting of preamble failed: %d", ret);
-+		goto out;
-+	}
-+
-+out:
-+	kfree(acx);
-+	return ret;
-+}
-+
-+int cc33xx_acx_cts_protect(struct cc33xx *cc, struct cc33xx_vif *wlvif,
-+			   enum acx_ctsprotect_type ctsprotect)
-+{
-+	struct acx_ctsprotect *acx;
-+	int ret;
-+
-+	cc33xx_debug(DEBUG_ACX, "acx_set_ctsprotect");
-+
-+	acx = kzalloc(sizeof(*acx), GFP_KERNEL);
-+	if (!acx) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	acx->role_id = wlvif->role_id;
-+	acx->ctsprotect = ctsprotect;
-+
-+	ret = cc33xx_cmd_configure(cc, CTS_PROTECTION_CFG, acx, sizeof(*acx));
-+	if (ret < 0) {
-+		cc33xx_warning("Setting of ctsprotect failed: %d", ret);
-+		goto out;
-+	}
-+
-+out:
-+	kfree(acx);
-+	return ret;
-+}
-+
-+int cc33xx_acx_statistics(struct cc33xx *cc, void *stats)
-+{
-+	int ret;
-+
-+	cc33xx_debug(DEBUG_ACX, "acx statistics");
-+
-+	ret = cc33xx_cmd_interrogate(cc, ACX_STATISTICS, stats,
-+				     sizeof(struct acx_header),
-+				     sizeof(struct cc33xx_acx_statistics));
-+	if (ret < 0) {
-+		cc33xx_warning("acx statistics failed: %d", ret);
-+		return -ENOMEM;
-+	}
-+
-+	return 0;
-+}
-+
-+int cc33xx_update_ap_rates(struct cc33xx *cc, u8 role_id,
-+			   u32 basic_rates_set, u32 supported_rates)
-+{
-+	struct ap_rates_class_cfg *cfg;
-+	int ret;
-+
-+	cc33xx_debug(DEBUG_AP, "Attempting to Update Basic Rates and Supported Rates");
-+
-+	cfg = kzalloc(sizeof(*cfg), GFP_KERNEL);
-+
-+	if (!cfg) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	cfg->basic_rates_set = cpu_to_le32(basic_rates_set);
-+	cfg->supported_rates = cpu_to_le32(supported_rates);
-+	cfg->role_id = role_id;
-+	ret = cc33xx_cmd_configure(cc, AP_RATES_CFG, cfg, sizeof(*cfg));
-+	if (ret < 0) {
-+		cc33xx_warning("Updating AP Rates  failed: %d", ret);
-+		goto out;
-+	}
-+
-+out:
-+	kfree(cfg);
-+	return ret;
-+}
-+
-+int cc33xx_tx_param_cfg(struct cc33xx *cc, struct cc33xx_vif *wlvif, u8 ac,
-+			u8 cw_min, u16 cw_max, u8 aifsn, u16 txop, bool acm,
-+			u8 ps_scheme, u8 is_mu_edca, u8 mu_edca_aifs,
-+			u8 mu_edca_ecw_min_max, u8 mu_edca_timer)
-+{
-+	struct tx_param_cfg *cfg;
-+	int ret = 0;
-+
-+	cc33xx_debug(DEBUG_ACX,
-+		     "tx param cfg %d cw_ming %d cw_max %d aifs %d txop %d",
-+		     ac, cw_min, cw_max, aifsn, txop);
-+
-+	cc33xx_debug(DEBUG_ACX, "tx param cfg ps_scheme %d is_mu_edca %d mu_edca_aifs %d mu_edca_ecw_min_max %d mu_edca_timer %d",
-+		     ps_scheme, is_mu_edca, mu_edca_aifs, mu_edca_ecw_min_max,
-+		     mu_edca_timer);
-+
-+	cfg = kzalloc(sizeof(*cfg), GFP_KERNEL);
-+
-+	if (!cfg) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	cfg->role_id = wlvif->role_id;
-+	cfg->ac = ac;
-+	cfg->cw_min = cw_min;
-+	cfg->cw_max = cpu_to_le16(cw_max);
-+	cfg->aifsn = aifsn;
-+	cfg->tx_op_limit = cpu_to_le16(txop);
-+	cfg->acm = cpu_to_le16(acm);
-+	cfg->ps_scheme = ps_scheme;
-+	cfg->is_mu_edca = is_mu_edca;
-+	cfg->mu_edca_aifs = mu_edca_aifs;
-+	cfg->mu_edca_ecw_min_max = mu_edca_ecw_min_max;
-+	cfg->mu_edca_timer = mu_edca_timer;
-+
-+	ret = cc33xx_cmd_configure(cc, TX_PARAMS_CFG, cfg, sizeof(*cfg));
-+	if (ret < 0) {
-+		cc33xx_warning("tx param cfg failed: %d", ret);
-+		goto out;
-+	}
-+
-+out:
-+	kfree(cfg);
-+	return ret;
-+}
-+
-+int cc33xx_acx_init_mem_config(struct cc33xx *cc)
-+{
-+	int ret;
-+
-+	cc->target_mem_map = kzalloc(sizeof(*cc->target_mem_map),
-+				     GFP_KERNEL);
-+	if (!cc->target_mem_map) {
-+		cc33xx_error("couldn't allocate target memory map");
-+		return -ENOMEM;
-+	}
-+
-+	/* we now ask for the firmware built memory map */
-+	ret = cc33xx_acx_mem_map(cc, (void *)cc->target_mem_map,
-+				 sizeof(struct cc33xx_acx_mem_map));
-+	if (ret < 0) {
-+		cc33xx_error("couldn't retrieve firmware memory map");
-+		kfree(cc->target_mem_map);
-+		cc->target_mem_map = NULL;
-+		return ret;
-+	}
-+
-+	/* initialize TX block book keeping */
-+	cc->tx_blocks_available =
-+		le32_to_cpu(cc->target_mem_map->num_tx_mem_blocks);
-+	cc33xx_debug(DEBUG_TX, "available tx blocks: %d",
-+		     cc->tx_blocks_available);
-+
-+	cc33xx_debug(DEBUG_TX,
-+		     "available tx descriptor: %d available rx blocks %d",
-+		     cc->target_mem_map->num_tx_descriptor,
-+		     cc->target_mem_map->num_rx_mem_blocks);
-+
-+	return 0;
-+}
-+
-+int cc33xx_acx_init_get_fw_versions(struct cc33xx *cc)
-+{
-+	int ret;
-+
-+	cc->fw_ver = kzalloc(sizeof(*cc->fw_ver),
-+			     GFP_KERNEL);
-+	if (!cc->fw_ver) {
-+		cc33xx_error("couldn't allocate cc33xx_acx_fw_versions");
-+		return -ENOMEM;
-+	}
-+
-+	ret = cc33xx_acx_get_fw_versions(cc, (void *)cc->fw_ver,
-+					 sizeof(struct cc33xx_acx_fw_versions));
-+	if (ret < 0) {
-+		cc33xx_error("couldn't retrieve firmware versions");
-+		kfree(cc->fw_ver);
-+		cc->fw_ver = NULL;
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+int cc33xx_acx_set_ht_information(struct cc33xx *cc, struct cc33xx_vif *wlvif,
-+				  u16 ht_operation_mode, u32 he_oper_params,
-+				  u16 he_oper_nss_set)
-+{
-+	struct cc33xx_acx_ht_information *acx;
-+	int ret = 0;
-+
-+	cc33xx_debug(DEBUG_ACX, "acx ht information setting");
-+
-+	acx = kzalloc(sizeof(*acx), GFP_KERNEL);
-+	if (!acx) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	acx->role_id = wlvif->role_id;
-+	acx->ht_protection =
-+		(u8)(ht_operation_mode & IEEE80211_HT_OP_MODE_PROTECTION);
-+	acx->rifs_mode = 0;
-+	acx->gf_protection =
-+		!!(ht_operation_mode & IEEE80211_HT_OP_MODE_NON_GF_STA_PRSNT);
-+
-+	acx->dual_cts_protection = 0;
-+
-+	cc33xx_debug(DEBUG_ACX, "HE operation: 0x%xm mcs: 0x%x",
-+		     he_oper_params, he_oper_nss_set);
-+
-+	acx->he_operation = cpu_to_le32(he_oper_params);
-+	acx->bss_basic_mcs_set = cpu_to_le16(he_oper_nss_set);
-+	acx->qos_info_more_data_ack_bit = 0;
-+	ret = cc33xx_cmd_configure(cc, BSS_OPERATION_CFG, acx, sizeof(*acx));
-+
-+	if (ret < 0) {
-+		cc33xx_warning("acx ht information setting failed: %d", ret);
-+		goto out;
-+	}
-+
-+out:
-+	kfree(acx);
-+	return ret;
-+}
-+
-+/* setup BA session receiver setting in the FW. */
-+int cc33xx_acx_set_ba_receiver_session(struct cc33xx *cc, u8 tid_index, u16 ssn,
-+				       bool enable, u8 peer_hlid, u8 win_size)
-+{
-+	struct cc33xx_acx_ba_receiver_setup *acx;
-+	int ret;
-+
-+	cc33xx_debug(DEBUG_ACX, "acx ba receiver session setting");
-+
-+	acx = kzalloc(sizeof(*acx), GFP_KERNEL);
-+	if (!acx) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	acx->hlid = peer_hlid;
-+	acx->tid = tid_index;
-+	acx->enable = enable;
-+	acx->win_size =	win_size;
-+	acx->ssn = cpu_to_le16(ssn);
-+
-+	ret = cc33xx_cmd_configure_failsafe(cc, BA_SESSION_RX_SETUP_CFG,
-+					    acx, sizeof(*acx),
-+					    BIT(CMD_STATUS_NO_RX_BA_SESSION));
-+	if (ret < 0) {
-+		cc33xx_warning("acx ba receiver session failed: %d", ret);
-+		goto out;
-+	}
-+
-+	/* sometimes we can't start the session */
-+	if (ret == CMD_STATUS_NO_RX_BA_SESSION) {
-+		cc33xx_warning("no fw rx ba on tid %d", tid_index);
-+		ret = -EBUSY;
-+		goto out;
-+	}
-+
-+	ret = 0;
-+out:
-+	kfree(acx);
-+	return ret;
-+}
-+
-+int cc33xx_acx_tsf_info(struct cc33xx *cc,
-+			struct cc33xx_vif *wlvif, u64 *mactime)
-+{
-+	struct cc33xx_acx_fw_tsf_information *tsf_info;
-+	int ret = 0;
-+
-+	tsf_info = kzalloc(sizeof(*tsf_info), GFP_KERNEL);
-+	if (!tsf_info) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	tsf_info->role_id = wlvif->role_id;
-+
-+	*mactime = le32_to_cpu(tsf_info->current_tsf_low) |
-+		((u64)le32_to_cpu(tsf_info->current_tsf_high) << 32);
-+
-+out:
-+	kfree(tsf_info);
-+	return ret;
-+}
-+
-+int cc33xx_acx_config_ps(struct cc33xx *cc, struct cc33xx_vif *wlvif)
-+{
-+	struct cc33xx_acx_config_ps *config_ps;
-+	int ret;
-+
-+	cc33xx_debug(DEBUG_ACX, "acx config ps");
-+
-+	config_ps = kzalloc(sizeof(*config_ps), GFP_KERNEL);
-+	if (!config_ps) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	config_ps->exit_retries = cc->conf.host_conf.conn.psm_exit_retries;
-+	config_ps->enter_retries = cc->conf.host_conf.conn.psm_entry_retries;
-+	config_ps->null_data_rate = cpu_to_le32(wlvif->basic_rate);
-+
-+	ret = cc33xx_cmd_configure(cc, ACX_CONFIG_PS, config_ps,
-+				   sizeof(*config_ps));
-+
-+	if (ret < 0) {
-+		cc33xx_warning("acx config ps failed: %d", ret);
-+		goto out;
-+	}
-+
-+out:
-+	kfree(config_ps);
-+	return ret;
-+}
-+
-+int cc33xx_acx_average_rssi(struct cc33xx *cc,
-+			    struct cc33xx_vif *wlvif, s8 *avg_rssi)
-+{
-+	struct acx_roaming_stats *acx;
-+	int ret = 0;
-+
-+	cc33xx_debug(DEBUG_ACX, "acx roaming statistics");
-+
-+	acx = kzalloc(sizeof(*acx), GFP_KERNEL);
-+	if (!acx) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	acx->role_id = wlvif->role_id;
-+
-+	ret = cc33xx_cmd_interrogate(cc, RSSI_INTR,
-+				     acx, sizeof(*acx), sizeof(*acx));
-+	if (ret	< 0) {
-+		cc33xx_warning("acx roaming statistics failed: %d", ret);
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	*avg_rssi = acx->rssi_beacon;
-+
-+out:
-+	kfree(acx);
-+	return ret;
-+}
-+
-+static const u16 cc33xx_idx_to_rate_100kbps[] = {
-+	10, 20, 55, 110, 60, 90, 120, 180, 240, 360, 480, 540
++struct event_node {
++	struct llist_node node;
++	struct cc33xx_event_mailbox event_data;
 +};
 +
-+int cc33xx_acx_get_tx_rate(struct cc33xx *cc, struct cc33xx_vif *wlvif,
-+			   struct station_info *sinfo)
++void deffer_event(struct cc33xx *cc,
++		  const void *event_payload, size_t event_length)
 +{
-+	struct acx_preamble_and_tx_rate *acx;
-+	int ret;
++	struct event_node *event_node;
++	bool ret;
 +
-+	cc33xx_debug(DEBUG_ACX, "acx set tx rate");
++	if (WARN_ON(event_length != sizeof(event_node->event_data)))
++		return;
 +
-+	acx = kzalloc(sizeof(*acx), GFP_KERNEL);
-+	if (!acx) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
++	event_node = kzalloc(sizeof(*event_node), GFP_KERNEL);
++	if (WARN_ON(!event_node))
++		return;
 +
-+	acx->role_id = wlvif->role_id;
++	memcpy(&event_node->event_data,
++	       event_payload, sizeof(event_node->event_data));
 +
-+	ret = cc33xx_cmd_interrogate(cc, GET_PREAMBLE_AND_TX_RATE_INTR,
-+				     acx, sizeof(*acx), sizeof(*acx));
-+	if (ret	< 0) {
-+		cc33xx_warning("acx get preamble and tx rate failed: %d", ret);
-+		ret = -ENOMEM;
-+		goto out;
-+	}
++	llist_add(&event_node->node, &cc->event_list);
++	ret = queue_work(cc->freezable_wq, &cc->irq_deferred_work);
 +
-+	sinfo->txrate.flags = 0;
-+	if (acx->preamble == CONF_PREAMBLE_TYPE_AC_VHT)
-+		sinfo->txrate.flags = RATE_INFO_FLAGS_VHT_MCS;
-+	else if ((acx->preamble >= CONF_PREAMBLE_TYPE_AX_SU) &&
-+		 (acx->preamble <= CONF_PREAMBLE_TYPE_AX_TB_NDP_FB))
-+		sinfo->txrate.flags = RATE_INFO_FLAGS_HE_MCS;
-+	else if ((acx->preamble == CONF_PREAMBLE_TYPE_N_MIXED_MODE) ||
-+		 (acx->preamble == CONF_PREAMBLE_TYPE_GREENFIELD))
-+		sinfo->txrate.flags = RATE_INFO_FLAGS_MCS;
-+
-+	if (acx->tx_rate >= CONF_HW_RATE_INDEX_MCS0)
-+		sinfo->txrate.mcs = acx->tx_rate - CONF_HW_RATE_INDEX_MCS0;
-+	else
-+		sinfo->txrate.legacy = cc33xx_idx_to_rate_100kbps[acx->tx_rate - 1];
-+
-+	sinfo->txrate.nss = 1;
-+	sinfo->txrate.bw = RATE_INFO_BW_20;
-+	sinfo->txrate.he_gi = NL80211_RATE_INFO_HE_GI_3_2;
-+	sinfo->txrate.he_dcm = 0;
-+	sinfo->txrate.he_ru_alloc = 0;
-+	sinfo->txrate.n_bonded_ch = 0;
-+	sinfo->filled |= BIT_ULL(NL80211_STA_INFO_TX_BITRATE);
-+
-+out:
-+	kfree(acx);
-+	return ret;
++	cc33xx_debug(DEBUG_IRQ, "Queued deferred work (%d)", ret);
 +}
 +
-+#ifdef CONFIG_PM
-+/* Set the global behaviour of RX filters - On/Off + default action */
-+int cc33xx_acx_default_rx_filter_enable(struct cc33xx *cc, bool enable,
-+					enum rx_filter_action action)
++static inline struct llist_node *get_event_list(struct cc33xx *cc)
 +{
-+	struct acx_default_rx_filter *acx;
-+	int ret;
++	struct llist_node *node;
 +
-+	cc33xx_debug(DEBUG_ACX, "acx default rx filter en: %d act: %d",
-+		     enable, action);
++	node = llist_del_all(&cc->event_list);
++	if (!node)
++		return NULL;
 +
-+	acx = kzalloc(sizeof(*acx), GFP_KERNEL);
-+	if (!acx)
-+		return -ENOMEM;
-+
-+	acx->enable = enable;
-+	acx->default_action = action;
-+	acx->special_packet_bitmask = 0;
-+
-+	ret = cc33xx_cmd_configure(cc, ACX_ENABLE_RX_DATA_FILTER, acx,
-+				   sizeof(*acx));
-+	if (ret < 0) {
-+		cc33xx_warning("acx default rx filter enable failed: %d", ret);
-+		goto out;
-+	}
-+
-+out:
-+	kfree(acx);
-+	return ret;
++	return llist_reverse_order(node);
 +}
 +
-+static int cc33xx_rx_filter_get_fields_size(struct cc33xx_rx_filter *filter)
++void flush_deferred_event_list(struct cc33xx *cc)
 +{
-+	int i, fields_size = 0;
++	struct event_node *event_node, *tmp;
++	struct llist_node *event_list;
 +
-+	for (i = 0; i < filter->num_fields; i++) {
-+		fields_size += filter->fields[i].len - sizeof(u8 *)
-+					+ sizeof(struct cc33xx_rx_filter_field);
-+	}
-+
-+	return fields_size;
-+}
-+
-+static void cc33xx_rx_filter_flatten_fields(struct cc33xx_rx_filter *filter,
-+					    u8 *buf)
-+{
-+	int i;
-+	struct cc33xx_rx_filter_field *field;
-+
-+	for (i = 0; i < filter->num_fields; i++) {
-+		field = (struct cc33xx_rx_filter_field *)buf;
-+
-+		field->offset = filter->fields[i].offset;
-+		field->flags = filter->fields[i].flags;
-+		field->len = filter->fields[i].len;
-+
-+		memcpy(&field->pattern, filter->fields[i].pattern, field->len);
-+		buf += sizeof(struct cc33xx_rx_filter_field) - sizeof(u8 *);
-+		buf += field->len;
++	event_list = get_event_list(cc);
++	llist_for_each_entry_safe(event_node, tmp, event_list, node) {
++		kfree(event_node);
 +	}
 +}
 +
-+/* Configure or disable a specific RX filter pattern */
-+int cc33xx_acx_set_rx_filter(struct cc33xx *cc, u8 index, bool enable,
-+			     struct cc33xx_rx_filter *filter)
++static int wait_for_event_or_timeout(struct cc33xx *cc, u32 mask, bool *timeout)
 +{
-+	struct acx_rx_filter_cfg *acx;
-+	int fields_size = 0;
-+	int acx_size;
-+	int ret;
-+
-+	WARN_ON(enable && !filter);
-+	WARN_ON(index >= CC33XX_MAX_RX_FILTERS);
-+
-+	cc33xx_debug(DEBUG_ACX,
-+		     "acx set rx filter idx: %d enable: %d filter: %p",
-+		     index, enable, filter);
-+
-+	if (enable) {
-+		fields_size = cc33xx_rx_filter_get_fields_size(filter);
-+
-+		cc33xx_debug(DEBUG_ACX, "act: %d num_fields: %d field_size: %d",
-+			     filter->action, filter->num_fields, fields_size);
-+	}
-+
-+	acx_size = ALIGN(sizeof(*acx) + fields_size, 4);
-+	acx = kzalloc(acx_size, GFP_KERNEL);
-+
-+	if (!acx)
-+		return -ENOMEM;
-+
-+	acx->enable = enable;
-+	acx->index = index;
-+
-+	if (enable) {
-+		acx->num_fields = filter->num_fields;
-+		acx->action = filter->action;
-+		cc33xx_rx_filter_flatten_fields(filter, acx->fields);
-+	}
-+
-+	cc33xx_dump(DEBUG_ACX, "RX_FILTER: ", acx, acx_size);
-+
-+	ret = cc33xx_cmd_configure(cc, ACX_SET_RX_DATA_FILTER, acx, acx_size);
-+	if (ret < 0) {
-+		cc33xx_warning("setting rx filter failed: %d", ret);
-+		goto out;
-+	}
-+
-+out:
-+	kfree(acx);
-+	return ret;
-+}
-+#endif /* CONFIG_PM */
-+
-+/* this command is basically the same as cc33xx_acx_ht_capabilities,
-+ * with the addition of supported rates. they should be unified in
-+ * the next fw api change
-+ */
-+int cc33xx_acx_set_peer_cap(struct cc33xx *cc,
-+			    struct ieee80211_sta_ht_cap *ht_cap,
-+			    struct ieee80211_sta_he_cap *he_cap,
-+			    struct cc33xx_vif *wlvif, bool allow_ht_operation,
-+			    u32 rate_set, u8 hlid)
-+{
-+	struct cc33xx_acx_peer_cap *acx;
++	u32 event;
++	unsigned long timeout_time;
++	u16 poll_count = 0;
 +	int ret = 0;
-+	u32 ht_capabilites = 0;
-+	u8 *cap_info = NULL;
-+	u8 dcm_max_const_rx_mask = IEEE80211_HE_PHY_CAP3_DCM_MAX_CONST_RX_MASK;
-+	u8 partial_bw_ext_range = IEEE80211_HE_PHY_CAP6_PARTIAL_BW_EXT_RANGE;
++	struct event_node *event_node, *tmp;
++	struct llist_node *event_list;
++	u32 vector;
 +
-+	cc33xx_debug(DEBUG_ACX,
-+		     "acx set cap ht_supp: %d ht_cap: %d rates: 0x%x",
-+		     ht_cap->ht_supported, ht_cap->cap, rate_set);
++	*timeout = false;
 +
-+	acx = kzalloc(sizeof(*acx), GFP_KERNEL);
-+	if (!acx) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
++	timeout_time = jiffies + msecs_to_jiffies(CC33XX_EVENT_TIMEOUT);
 +
-+	if (allow_ht_operation && ht_cap->ht_supported) {
-+		/* no need to translate capabilities - use the spec values */
-+		ht_capabilites = ht_cap->cap;
++	do {
++		if (time_after(jiffies, timeout_time)) {
++			cc33xx_debug(DEBUG_CMD, "timeout waiting for event %d",
++				     (int)mask);
++			*timeout = true;
++			goto out;
++		}
 +
-+		/* this bit is not employed by the spec but only by FW to
-+		 * indicate peer HT support
-+		 */
-+		ht_capabilites |= CC33XX_HT_CAP_HT_OPERATION;
++		poll_count++;
++		if (poll_count < CC33XX_WAIT_EVENT_FAST_POLL_COUNT)
++			usleep_range(50, 51);
++		else
++			usleep_range(1000, 5000);
 +
-+		/* get data from A-MPDU parameters field */
-+		acx->ampdu_max_length = ht_cap->ampdu_factor;
-+		acx->ampdu_min_spacing = ht_cap->ampdu_density;
-+	}
++		vector = 0;
++		event_list = get_event_list(cc);
++		llist_for_each_entry_safe(event_node, tmp, event_list, node) {
++			vector |= le32_to_cpu(event_node->event_data.events_vector);
++		}
 +
-+	acx->ht_capabilites = cpu_to_le32(ht_capabilites);
-+	acx->supported_rates = cpu_to_le32(rate_set);
-+
-+	acx->role_id = wlvif->role_id;
-+	acx->has_he = he_cap->has_he;
-+	memcpy(acx->mac_cap_info, he_cap->he_cap_elem.mac_cap_info, 6);
-+	cap_info = he_cap->he_cap_elem.phy_cap_info;
-+	acx->nominal_packet_padding = (cap_info[8] & NOMINAL_PACKET_PADDING);
-+	/* Max DCM constelation for RX - bits [4:3] in PHY capabilities byte 3 */
-+	acx->dcm_max_constelation = (cap_info[3] & dcm_max_const_rx_mask) >> 3;
-+	acx->er_upper_supported = ((cap_info[6] & partial_bw_ext_range) != 0);
-+	ret = cc33xx_cmd_configure(cc, PEER_CAP_CFG, acx, sizeof(*acx));
-+
-+	if (ret < 0) {
-+		cc33xx_warning("acx ht capabilities setting failed: %d", ret);
-+		goto out;
-+	}
++		event  = vector & mask;
++	} while (!event);
 +
 +out:
-+	kfree(acx);
++
 +	return ret;
 +}
 +
-+int cc33xx_acx_trigger_fw_assert(struct cc33xx *cc)
++int cc33xx_wait_for_event(struct cc33xx *cc, enum cc33xx_wait_event event,
++			  bool *timeout)
 +{
-+	struct debug_header *buf;
-+	int ret;
++	u32 local_event;
 +
-+	cc33xx_debug(DEBUG_ACX, "acx trigger firmware assert");
++	switch (event) {
++	case CC33XX_EVENT_PEER_REMOVE_COMPLETE:
++		local_event = PEER_REMOVE_COMPLETE_EVENT_ID;
++		break;
 +
-+	buf = kzalloc(sizeof(*buf), GFP_KERNEL);
-+	if (!buf) {
-+		ret = -ENOMEM;
-+		goto out;
++	case CC33XX_EVENT_DFS_CONFIG_COMPLETE:
++		local_event = DFS_CHANNELS_CONFIG_COMPLETE_EVENT;
++		break;
++
++	default:
++		/* event not implemented */
++		return 0;
 +	}
-+
-+	ret = cc33xx_cmd_debug(cc, TRIGGER_FW_ASSERT, buf, sizeof(*buf));
-+	if (ret < 0) {
-+		cc33xx_error("failed to trigger firmware assert");
-+		goto out;
-+	}
-+
-+out:
-+	kfree(buf);
-+	return ret;
++	return wait_for_event_or_timeout(cc, local_event, timeout);
 +}
-diff --git a/drivers/net/wireless/ti/cc33xx/acx.h b/drivers/net/wireless/ti/cc33xx/acx.h
++
++static void cc33xx_event_sched_scan_completed(struct cc33xx *cc, u8 status)
++{
++	cc33xx_debug(DEBUG_EVENT,
++		     "PERIODIC_SCAN_COMPLETE_EVENT (status 0x%0x)", status);
++
++	if (cc->mac80211_scan_stopped) {
++		cc->mac80211_scan_stopped = false;
++	} else {
++		if (cc->sched_vif) {
++			ieee80211_sched_scan_stopped(cc->hw);
++			cc->sched_vif = NULL;
++		}
++	}
++}
++
++static void cc33xx_event_channel_switch(struct cc33xx *cc,
++					unsigned long roles_bitmap,
++				 bool success)
++{
++	struct cc33xx_vif *wlvif;
++	struct ieee80211_vif *vif;
++
++	cc33xx_debug(DEBUG_EVENT, "%s: roles=0x%lx success=%d",
++		     __func__, roles_bitmap, success);
++
++	cc33xx_for_each_wlvif(cc, wlvif) {
++		if (wlvif->role_id == CC33XX_INVALID_ROLE_ID ||
++		    !test_bit(wlvif->role_id, &roles_bitmap))
++			continue;
++
++		if (!test_and_clear_bit(WLVIF_FLAG_CS_PROGRESS,
++					&wlvif->flags))
++			continue;
++
++		vif = cc33xx_wlvif_to_vif(wlvif);
++
++		if (wlvif->bss_type == BSS_TYPE_STA_BSS) {
++			ieee80211_chswitch_done(vif, success, 0);
++			cancel_delayed_work(&wlvif->channel_switch_work);
++		} else {
++			set_bit(WLVIF_FLAG_BEACON_DISABLED, &wlvif->flags);
++			ieee80211_csa_finish(vif, 0);
++		}
++	}
++}
++
++static void cc33xx_disconnect_sta(struct cc33xx *cc, unsigned long sta_bitmap)
++{
++	u32 num_packets = cc->conf.host_conf.tx.max_tx_retries;
++	struct cc33xx_vif *wlvif;
++	struct ieee80211_vif *vif;
++	struct ieee80211_sta *sta;
++	const u8 *addr;
++	int h;
++
++	for_each_set_bit(h, &sta_bitmap, CC33XX_MAX_LINKS) {
++		bool found = false;
++		/* find the ap vif connected to this sta */
++		cc33xx_for_each_wlvif_ap(cc, wlvif) {
++			if (!test_bit(h, wlvif->ap.sta_hlid_map))
++				continue;
++			found = true;
++			break;
++		}
++		if (!found)
++			continue;
++
++		vif = cc33xx_wlvif_to_vif(wlvif);
++		addr = cc->links[h].addr;
++
++		rcu_read_lock();
++		sta = ieee80211_find_sta(vif, addr);
++		if (sta) {
++			cc33xx_debug(DEBUG_EVENT, "remove sta %d", h);
++			ieee80211_report_low_ack(sta, num_packets);
++		}
++		rcu_read_unlock();
++	}
++}
++
++static void cc33xx_event_max_tx_failure(struct cc33xx *cc,
++					unsigned long sta_bitmap)
++{
++	cc33xx_disconnect_sta(cc, sta_bitmap);
++}
++
++static void cc33xx_event_roc_complete(struct cc33xx *cc)
++{
++	if (cc->roc_vif)
++		ieee80211_ready_on_channel(cc->hw);
++}
++
++static void cc33xx_event_beacon_loss(struct cc33xx *cc,
++				     unsigned long roles_bitmap)
++{
++	/* We are HW_MONITOR device. On beacon loss - queue
++	 * connection loss work. Cancel it on REGAINED event.
++	 */
++	struct cc33xx_vif *wlvif;
++	struct ieee80211_vif *vif;
++	int delay = cc->conf.host_conf.conn.synch_fail_thold;
++
++	delay *= cc->conf.host_conf.conn.bss_lose_timeout;
++
++	cc33xx_info("Beacon loss detected. roles:0x%lx", roles_bitmap);
++
++	cc33xx_for_each_wlvif_sta(cc, wlvif) {
++		if (wlvif->role_id == CC33XX_INVALID_ROLE_ID ||
++		    !test_bit(wlvif->role_id, &roles_bitmap))
++			continue;
++
++		vif = cc33xx_wlvif_to_vif(wlvif);
++
++		/* don't attempt roaming in case of p2p */
++		if (wlvif->p2p) {
++			ieee80211_connection_loss(vif);
++			continue;
++		}
++
++		/* if the work is already queued, it should take place.
++		 * We don't want to delay the connection loss
++		 * indication any more.
++		 */
++		ieee80211_queue_delayed_work(cc->hw,
++					     &wlvif->connection_loss_work,
++					     msecs_to_jiffies(delay));
++
++		ieee80211_cqm_beacon_loss_notify(vif, GFP_KERNEL);
++	}
++}
++
++void process_deferred_events(struct cc33xx *cc)
++{
++	struct event_node *event_node, *tmp;
++	struct llist_node *event_list;
++	u32 vector;
++
++	event_list = get_event_list(cc);
++
++	llist_for_each_entry_safe(event_node, tmp, event_list, node) {
++		struct cc33xx_event_mailbox *event_data;
++
++		event_data = &event_node->event_data;
++
++		vector = le32_to_cpu(event_node->event_data.events_vector);
++		cc33xx_debug(DEBUG_EVENT, "MBOX vector: 0x%x", vector);
++
++		if (vector & SCAN_COMPLETE_EVENT_ID) {
++			cc33xx_debug(DEBUG_EVENT, "scan results: %d",
++				     event_node->event_data.number_of_scan_results);
++
++			if (cc->scan_wlvif)
++				cc33xx_scan_completed(cc, cc->scan_wlvif);
++		}
++
++		if (vector & PERIODIC_SCAN_COMPLETE_EVENT_ID)
++			cc33xx_event_sched_scan_completed(cc, 1);
++
++		if (vector & BSS_LOSS_EVENT_ID) {
++			u16 bss_loss_bitmap = le16_to_cpu(event_data->bss_loss_bitmap);
++
++			cc33xx_event_beacon_loss(cc, bss_loss_bitmap);
++		}
++
++		if (vector & MAX_TX_FAILURE_EVENT_ID) {
++			u16 tx_retry_exceeded_bitmap =
++				le16_to_cpu(event_data->tx_retry_exceeded_bitmap);
++
++			cc33xx_event_max_tx_failure(cc, tx_retry_exceeded_bitmap);
++		}
++
++		if (vector & PERIODIC_SCAN_REPORT_EVENT_ID) {
++			cc33xx_debug(DEBUG_EVENT,
++				     "PERIODIC_SCAN_REPORT (results %d)",
++				     event_data->number_of_sched_scan_results);
++
++			cc33xx_scan_sched_scan_results(cc);
++		}
++
++		if (vector & CHANNEL_SWITCH_COMPLETE_EVENT_ID) {
++			u16 channel_switch_role_id_bitmap =
++				le16_to_cpu(event_data->channel_switch_role_id_bitmap);
++
++			cc33xx_event_channel_switch(cc, channel_switch_role_id_bitmap, true);
++		}
++
++		if (vector & REMAIN_ON_CHANNEL_COMPLETE_EVENT_ID)
++			cc33xx_event_roc_complete(cc);
++
++		kfree(event_node);
++	}
++}
+diff --git a/drivers/net/wireless/ti/cc33xx/event.h b/drivers/net/wireless/ti/cc33xx/event.h
 new file mode 100644
-index 000000000000..f250758c3da5
+index 000000000000..7952f0b7b4aa
 --- /dev/null
-+++ b/drivers/net/wireless/ti/cc33xx/acx.h
-@@ -0,0 +1,835 @@
++++ b/drivers/net/wireless/ti/cc33xx/event.h
+@@ -0,0 +1,71 @@
 +/* SPDX-License-Identifier: GPL-2.0-only
 + *
 + * Copyright (C) 2022-2024 Texas Instruments Incorporated - https://www.ti.com/
 + */
 +
-+#ifndef __ACX_H__
-+#define __ACX_H__
++#ifndef __EVENT_H__
++#define __EVENT_H__
 +
-+#include "cmd.h"
-+#include "debug.h"
-+
-+enum {
-+	/* Regular PS: simple sending of packets */
-+	PS_SCHEME_LEGACY         = 0,
-+	/* UPSD: sending a packet triggers a UPSD downstream*/
-+	PS_SCHEME_UPSD_TRIGGER   = 1,
-+	/* Mixed mode is partially supported: we are not going to sleep, and
-+	 * triggers (on APSD AC's) are not sent when service period ends with
-+	 * more_data = 1.
-+	 */
-+	PS_SCHEME_MIXED_MODE     = 2,
-+	/* Legacy PSPOLL: a PSPOLL packet will be sent before every data packet
-+	 * transmission in this queue.
-+	 */
-+	PS_SCHEME_LEGACY_PSPOLL  = 3,
-+	/* Scheduled APSD mode. */
-+	PS_SCHEME_SAPSD          = 4,
-+	/* No PSPOLL: move to active after first packet. no need to sent pspoll */
-+	PS_SCHEME_NOPSPOLL       = 5,
-+
-+	MAX_PS_SCHEME = PS_SCHEME_NOPSPOLL
-+};
-+
-+/* Target's information element */
-+struct acx_header {
-+	struct cc33xx_cmd_header cmd;
-+
-+	/* acx (or information element) header */
-+	__le16 id;
-+
-+	/* payload length (not including headers */
-+	__le16 len;
-+} __packed;
-+
-+struct debug_header {
-+	struct cc33xx_cmd_header cmd;
-+
-+	/* debug (or information element) header */
-+	__le16 id;
-+
-+	/* payload length (not including headers */
-+	__le16 len;
-+} __packed;
-+
-+enum cc33xx_role {
-+	CC33XX_ROLE_STA = 0,
-+	CC33XX_ROLE_IBSS,
-+	CC33XX_ROLE_AP,
-+	CC33XX_ROLE_DEVICE,
-+	CC33XX_ROLE_P2P_CL,
-+	CC33XX_ROLE_P2P_GO,
-+	CC33XX_ROLE_MESH_POINT,
-+
-+	ROLE_TRANSCEIVER     = 16,
-+
-+	CC33XX_INVALID_ROLE_TYPE = 0xff
-+};
-+
-+enum cc33xx_psm_mode {
-+	/* Active mode */
-+	CC33XX_PSM_CAM = 0,
-+
-+	/* Power save mode */
-+	CC33XX_PSM_PS = 1,
-+
-+	/* Extreme low power */
-+	CC33XX_PSM_ELP = 2,
-+
-+	CC33XX_PSM_MAX = CC33XX_PSM_ELP,
-+
-+	/* illegal out of band value of PSM mode */
-+	CC33XX_PSM_ILLEGAL = 0xff
-+};
-+
-+struct acx_sleep_auth {
-+	struct acx_header header;
-+
-+	/* The sleep level authorization of the device. */
-+	/* 0 - Always active*/
-+	/* 1 - Power down mode: light / fast sleep*/
-+	/* 2 - ELP mode: Deep / Max sleep*/
-+	u8  sleep_auth;
-+	u8  padding[3];
-+} __packed;
-+
-+enum acx_slot_type {
-+	SLOT_TIME_LONG = 0,
-+	SLOT_TIME_SHORT = 1,
-+	DEFAULT_SLOT_TIME = SLOT_TIME_SHORT,
-+	MAX_SLOT_TIMES = 0xFF
-+};
-+
-+struct acx_slot {
-+	struct acx_header header;
-+
-+	u8 role_id;
-+	u8 slot_time;
-+	u8 reserved[2];
-+} __packed;
-+
-+#define ACX_MC_ADDRESS_GROUP_MAX	(20)
-+#define ADDRESS_GROUP_MAX_LEN		(ETH_ALEN * ACX_MC_ADDRESS_GROUP_MAX)
-+
-+struct acx_dot11_grp_addr_tbl {
-+	struct acx_header header;
-+
-+	u8 enabled;
-+	u8 num_groups;
-+	u8 pad[2];
-+	u8 mac_table[ADDRESS_GROUP_MAX_LEN];
-+} __packed;
-+
-+struct acx_beacon_filter_option {
-+	struct acx_header header;
-+
-+	u8 role_id;
-+	u8 enable;
-+	/* The number of beacons without the unicast TIM
-+	 * bit set that the firmware buffers before
-+	 * signaling the host about ready frames.
-+	 * When set to 0 and the filter is enabled, beacons
-+	 * without the unicast TIM bit set are dropped.
-+	 */
-+	u8 max_num_beacons;
-+	u8 pad;
-+} __packed;
-+
-+/* ACXBeaconFilterEntry (not 221)
-+ * Byte Offset     Size (Bytes)    Definition
-+ * ===========     ============    ==========
-+ * 0               1               IE identifier
-+ * 1               1               Treatment bit mask
++/* Mbox events
 + *
-+ * ACXBeaconFilterEntry (221)
-+ * Byte Offset     Size (Bytes)    Definition
-+ * ===========     ============    ==========
-+ * 0               1               IE identifier
-+ * 1               1               Treatment bit mask
-+ * 2               3               OUI
-+ * 5               1               Type
-+ * 6               2               Version
-+ *
-+ *
-+ * Treatment bit mask - The information element handling:
-+ * bit 0 - The information element is compared and transferred
-+ * in case of change.
-+ * bit 1 - The information element is transferred to the host
-+ * with each appearance or disappearance.
-+ * Note that both bits can be set at the same time.
++ * The event mechanism is based on a pair of event buffers (buffers A and
++ * B) at fixed locations in the target's memory. The host processes one
++ * buffer while the other buffer continues to collect events. If the host
++ * is not processing events, an interrupt is issued to signal that a buffer
++ * is ready. Once the host is done with processing events from one buffer,
++ * it signals the target (with an ACK interrupt) that the event buffer is
++ * free.
 + */
 +
 +enum {
-+	BEACON_FILTER_TABLE_MAX_IE_NUM				= 32,
-+	BEACON_FILTER_TABLE_MAX_VENDOR_SPECIFIC_IE_NUM		= 6,
-+	BEACON_FILTER_TABLE_IE_ENTRY_SIZE			= 2,
-+	BEACON_FILTER_TABLE_EXTRA_VENDOR_SPECIFIC_IE_SIZE	= 6
-+};
-+
-+#define BEACON_FILTER_TABLE_MAX_SIZE					\
-+		((BEACON_FILTER_TABLE_MAX_IE_NUM *			\
-+		BEACON_FILTER_TABLE_IE_ENTRY_SIZE) +			\
-+		(BEACON_FILTER_TABLE_MAX_VENDOR_SPECIFIC_IE_NUM *	\
-+		BEACON_FILTER_TABLE_EXTRA_VENDOR_SPECIFIC_IE_SIZE))
-+
-+struct acx_beacon_filter_ie_table {
-+	struct acx_header header;
-+
-+	u8 role_id;
-+	u8 num_ie;
-+	u8 pad[2];
-+	u8 table[BEACON_FILTER_TABLE_MAX_SIZE];
-+} __packed;
-+
-+struct acx_energy_detection {
-+	struct acx_header header;
-+
-+	/* The RX Clear Channel Assessment threshold in the PHY */
-+	__le16 rx_cca_threshold;
-+	u8 tx_energy_detection;
-+	u8 pad;
-+} __packed;
-+
-+struct acx_event_mask {
-+	struct acx_header header;
-+
-+	__le32 event_mask;
-+	__le32 high_event_mask; /* Unused */
-+} __packed;
-+
-+struct acx_tx_power_cfg {
-+	struct acx_header header;
-+
-+	u8 role_id;
-+	s8 tx_power;
-+	u8 padding[2];
-+} __packed;
-+
-+struct acx_wake_up_condition {
-+	struct acx_header header;
-+
-+	u8 wake_up_event;
-+	u8 listen_interval;
-+	u8 padding[2];
-+} __packed;
-+
-+struct assoc_info_cfg {
-+	struct acx_header header;
-+
-+	u8 role_id;
-+	__le16 aid;
-+	u8 wmm_enabled;
-+	u8 nontransmitted;
-+	u8 bssid_index;
-+	u8 bssid_indicator;
-+	u8 transmitter_bssid[ETH_ALEN];
-+	u8 ht_supported;
-+	u8 vht_supported;
-+	u8 has_he;
-+} __packed;
-+
-+enum acx_preamble_type {
-+	ACX_PREAMBLE_LONG = 0,
-+	ACX_PREAMBLE_SHORT = 1
-+};
-+
-+struct acx_preamble {
-+	struct acx_header header;
-+
-+	/* When set, the WiLink transmits the frames with a short preamble and
-+	 * when cleared, the WiLink transmits the frames with a long preamble.
-+	 */
-+	u8 role_id;
-+	u8 preamble;
-+	u8 padding[2];
-+} __packed;
-+
-+enum acx_ctsprotect_type {
-+	CTSPROTECT_DISABLE = 0,
-+	CTSPROTECT_ENABLE = 1
-+};
-+
-+struct acx_ctsprotect {
-+	struct acx_header header;
-+	u8 role_id;
-+	u8 ctsprotect;
-+	u8 padding[2];
-+} __packed;
-+
-+struct ap_rates_class_cfg {
-+	struct acx_header header;
-+	u8 role_id;
-+	__le32 basic_rates_set;
-+	__le32 supported_rates;
-+	u8 padding[3];
-+} __packed;
-+
-+struct tx_param_cfg {
-+	struct acx_header header;
-+
-+	u8 role_id;
-+	u8 ac;
-+	u8 aifsn;
-+	u8 cw_min;
-+
-+	__le16 cw_max;
-+	__le16 tx_op_limit;
-+
-+	__le16 acm;
-+
-+	u8 ps_scheme;
-+
-+	u8 is_mu_edca;
-+	u8 mu_edca_aifs;
-+	u8 mu_edca_ecw_min_max;
-+	u8 mu_edca_timer;
-+
-+	u8 reserved;
-+} __packed;
-+
-+struct cc33xx_acx_config_memory {
-+	struct acx_header header;
-+
-+	u8 rx_mem_block_num;
-+	u8 tx_min_mem_block_num;
-+	u8 num_stations;
-+	u8 num_ssid_profiles;
-+	__le32 total_tx_descriptors;
-+	u8 dyn_mem_enable;
-+	u8 tx_free_req;
-+	u8 rx_free_req;
-+	u8 tx_min;
-+	u8 fwlog_blocks;
-+	u8 padding[3];
-+} __packed;
-+
-+struct cc33xx_acx_mem_map {
-+	struct acx_header header;
-+
-+	/* Number of blocks FW allocated for TX packets */
-+	__le32 num_tx_mem_blocks;
-+
-+	/* Number of blocks FW allocated for RX packets */
-+	__le32 num_rx_mem_blocks;
-+
-+	/* Number of TX descriptor that allocated. */
-+	__le32 num_tx_descriptor;
-+
-+	__le32 tx_result;
-+
-+} __packed;
-+
-+struct cc33xx_acx_fw_versions {
-+	struct acx_header header;
-+
-+	__le16 major_version;
-+	__le16 minor_version;
-+	__le16 api_version;
-+	__le16 build_version;
-+
-+	u8 phy_version[6];
-+	u8 padding[2];
-+} __packed;
-+
-+/* special capability bit (not employed by the 802.11n spec) */
-+#define CC33XX_HT_CAP_HT_OPERATION BIT(16)
-+
-+/* ACX_HT_BSS_OPERATION
-+ * Configure HT capabilities - AP rules for behavior in the BSS.
-+ */
-+struct cc33xx_acx_ht_information {
-+	struct acx_header header;
-+
-+	u8 role_id;
-+
-+	/* Values: 0 - RIFS not allowed, 1 - RIFS allowed */
-+	u8 rifs_mode;
-+
-+	/* Values: 0 - 3 like in spec */
-+	u8 ht_protection;
-+
-+	/* Values: 0 - GF protection not required, 1 - GF protection required */
-+	u8 gf_protection;
-+
-+	/* Values: 0 - Dual CTS protection not required,
-+	 *         1 - Dual CTS Protection required
-+	 * Note: When this value is set to 1 FW will protect all TXOP with RTS
-+	 * frame and will not use CTS-to-self regardless of the value of the
-+	 * ACX_CTS_PROTECTION information element
-+	 */
-+	u8 dual_cts_protection;
-+
-+	__le32 he_operation;
-+
-+	__le16 bss_basic_mcs_set;
-+	u8 qos_info_more_data_ack_bit;
-+
-+} __packed;
-+
-+struct cc33xx_acx_ba_receiver_setup {
-+	struct acx_header header;
-+
-+	/* Specifies link id, range 0-31 */
-+	u8 hlid;
-+
-+	u8 tid;
-+
-+	u8 enable;
-+
-+	/* Windows size in number of packets */
-+	u8 win_size;
-+
-+	/* BA session starting sequence number.  RANGE 0-FFF */
-+	__le16 ssn;
-+
-+	u8 padding[2];
-+} __packed;
-+
-+struct cc33xx_acx_fw_tsf_information {
-+	struct acx_header header;
-+
-+	u8 role_id;
-+	u8 padding1[3];
-+	__le32 current_tsf_high;
-+	__le32 current_tsf_low;
-+	__le32 last_bttt_high;
-+	__le32 last_tbtt_low;
-+	u8 last_dtim_count;
-+	u8 padding2[3];
-+} __packed;
-+
-+struct cc33xx_acx_config_ps {
-+	struct acx_header header;
-+
-+	u8 exit_retries;
-+	u8 enter_retries;
-+	u8 padding[2];
-+	__le32 null_data_rate;
-+} __packed;
-+
-+#define ACX_RATE_MGMT_ALL_PARAMS 0xff
-+
-+struct acx_default_rx_filter {
-+	struct acx_header header;
-+	u8 enable;
-+
-+	/* action of type FILTER_XXX */
-+	u8 default_action;
-+
-+	/* special packet bitmask - packet that use for trigger the host */
-+	u8 special_packet_bitmask;
-+
-+	u8 padding;
-+} __packed;
-+
-+struct acx_rx_filter_cfg {
-+	struct acx_header header;
-+
-+	u8 enable;
-+
-+	/* 0 - WL1271_MAX_RX_FILTERS-1 */
-+	u8 index;
-+
-+	u8 action;
-+
-+	u8 num_fields;
-+	u8 fields[];
-+} __packed;
-+
-+struct acx_roaming_stats {
-+	struct acx_header header;
-+
-+	u8	role_id;
-+	u8	pad[3];
-+	__le32	missed_beacons;
-+	u8	snr_data;
-+	u8	snr_bacon;
-+	s8	rssi_data;
-+	s8	rssi_beacon;
-+} __packed;
-+
-+enum cfg {
-+	CTS_PROTECTION_CFG			= 0,
-+	TX_PARAMS_CFG				= 1,
-+	ASSOC_INFO_CFG				= 2,
-+	PEER_CAP_CFG				= 3,
-+	BSS_OPERATION_CFG			= 4,
-+	SLOT_CFG				= 5,
-+	PREAMBLE_TYPE_CFG			= 6,
-+	DOT11_GROUP_ADDRESS_TBL			= 7,
-+	BA_SESSION_RX_SETUP_CFG			= 8,
-+	ACX_SLEEP_AUTH				= 9,
-+	STATIC_CALIBRATION_CFG			= 10,
-+	AP_RATES_CFG				= 11,
-+	WAKE_UP_CONDITIONS_CFG			= 12,
-+	SET_ANTENNA_SELECT_CFG			= 13,
-+	TX_POWER_CFG				= 14,
-+	VENDOR_IE_CFG				= 15,
-+	START_COEX_STATISTICS_CFG		= 16,
-+	BEACON_FILTER_OPT			= 17,
-+	BEACON_FILTER_TABLE			= 18,
-+	ACX_ENABLE_RX_DATA_FILTER		= 19,
-+	ACX_SET_RX_DATA_FILTER			= 20,
-+	ACX_GET_DATA_FILTER_STATISTICS		= 21,
-+	TWT_SETUP				= 22,
-+	TWT_TERMINATE				= 23,
-+	TWT_SUSPEND				= 24,
-+	TWT_RESUME				= 25,
-+	ANT_DIV_ENABLE				= 26,
-+	ANT_DIV_SET_RSSI_THRESHOLD		= 27,
-+	ANT_DIV_SELECT_DEFAULT_ANTENNA		= 28,
-+
-+	LAST_CFG_VALUE,
-+	MAX_DOT11_CFG = LAST_CFG_VALUE,
-+
-+	MAX_CFG = 0xFFFF	/*force enumeration to 16bits*/
-+};
-+
-+enum cmd_debug {
-+	UPLINK_MULTI_USER_CFG,
-+	UPLINK_MULTI_USER_DATA_CFG,
-+	OPERATION_MODE_CTRL_CFG,
-+	UPLINK_POWER_HEADER_CFG,
-+	MCS_FIXED_RATE_CFG,
-+	GI_LTF_CFG,
-+	TRANSMIT_OMI_CFG,
-+	TB_ONLY_CFG,
-+	BA_SESSION_CFG,
-+	FORCE_PS_CFG,
-+	RATE_OVERRRIDE_CFG,
-+	BLS_CFG,
-+	BLE_ENABLE,
-+	SET_TSF,
-+	RTS_TH_CFG,
-+	LINK_ADAPT_CFG,
-+	CALIB_BITMAP_CFG,
-+	PWR_PARTIAL_MODES_CFG,
-+	TRIGGER_FW_ASSERT,
-+	BURST_MODE_CFG,
-+
-+	LAST_DEBUG_VALUE,
-+
-+	MAX_DEBUG = 0xFFFF /*force enumeration to 16bits*/
-+
-+};
-+
-+enum interrogate_opt {
-+	MEM_MAP_INTR = 0,
-+	GET_FW_VERSIONS_INTR = 1,
-+	RSSI_INTR = 2,
-+	GET_ANTENNA_SELECT_INTR = 3,
-+	GET_PREAMBLE_AND_TX_RATE_INTR = 4,
-+	GET_MAC_ADDRESS = 5,
-+	READ_COEX_STATISTICS = 6,
-+	LAST_IE_VALUE,
-+	MAX_DOT11_IE = LAST_IE_VALUE,
-+
-+	MAX_IE = 0xFFFF /*force enumeration to 16bits*/
++	RSSI_SNR_TRIGGER_0_EVENT_ID              = BIT(0),
++	RSSI_SNR_TRIGGER_1_EVENT_ID              = BIT(1),
++	RSSI_SNR_TRIGGER_2_EVENT_ID              = BIT(2),
++	RSSI_SNR_TRIGGER_3_EVENT_ID              = BIT(3),
++	RSSI_SNR_TRIGGER_4_EVENT_ID              = BIT(4),
++	RSSI_SNR_TRIGGER_5_EVENT_ID              = BIT(5),
++	RSSI_SNR_TRIGGER_6_EVENT_ID              = BIT(6),
++	RSSI_SNR_TRIGGER_7_EVENT_ID              = BIT(7),
++
++	EVENT_MBOX_ALL_EVENT_ID			 = 0x7fffffff,
 +};
 +
 +enum {
-+	ACX_STATISTICS = LAST_CFG_VALUE,
-+	ACX_CONFIG_PS,
-+	ACX_CLEAR_STATISTICS		 = 0x0054,
++	SCAN_COMPLETE_EVENT_ID                   = BIT(8),
++	RADAR_DETECTED_EVENT_ID                  = BIT(9),
++	CHANNEL_SWITCH_COMPLETE_EVENT_ID         = BIT(10),
++	BSS_LOSS_EVENT_ID                        = BIT(11),
++	MAX_TX_FAILURE_EVENT_ID                  = BIT(12),
++	DUMMY_PACKET_EVENT_ID                    = BIT(13),
++	INACTIVE_STA_EVENT_ID                    = BIT(14),
++	PEER_REMOVE_COMPLETE_EVENT_ID            = BIT(15),
++	PERIODIC_SCAN_COMPLETE_EVENT_ID          = BIT(16),
++	BA_SESSION_RX_CONSTRAINT_EVENT_ID        = BIT(17),
++	REMAIN_ON_CHANNEL_COMPLETE_EVENT_ID      = BIT(18),
++	DFS_CHANNELS_CONFIG_COMPLETE_EVENT       = BIT(19),
++	PERIODIC_SCAN_REPORT_EVENT_ID            = BIT(20),
++	RX_BA_WIN_SIZE_CHANGE_EVENT_ID           = BIT(21),
++	SMART_CONFIG_SYNC_EVENT_ID               = BIT(22),
++	SMART_CONFIG_DECODE_EVENT_ID             = BIT(23),
++	TIME_SYNC_EVENT_ID                       = BIT(24),
++	FW_LOGGER_INDICATION                     = BIT(25),
 +};
 +
-+struct cc33xx_acx_error_stats {
-+	__le32 error_frame_non_ctrl;
-+	__le32 error_frame_ctrl;
-+	__le32 error_frame_during_protection;
-+	__le32 null_frame_tx_start;
-+	__le32 null_frame_cts_start;
-+	__le32 bar_retry;
-+	__le32 num_frame_cts_nul_flid;
-+	__le32 tx_abort_failure;
-+	__le32 tx_resume_failure;
-+	__le32 rx_cmplt_db_overflow_cnt;
-+	__le32 elp_while_rx_exch;
-+	__le32 elp_while_tx_exch;
-+	__le32 elp_while_tx;
-+	__le32 elp_while_nvic_pending;
-+	__le32 rx_excessive_frame_len;
-+	__le32 burst_mismatch;
-+	__le32 tbc_exch_mismatch;
-+} __packed;
++/* events the driver might want to wait for */
++enum cc33xx_wait_event {
++	CC33XX_EVENT_ROLE_STOP_COMPLETE,
++	CC33XX_EVENT_PEER_REMOVE_COMPLETE,
++	CC33XX_EVENT_DFS_CONFIG_COMPLETE
++};
 +
-+#define NUM_OF_RATES_INDEXES 30
-+struct cc33xx_acx_tx_stats {
-+	__le32 tx_prepared_descs;
-+	__le32 tx_cmplt;
-+	__le32 tx_template_prepared;
-+	__le32 tx_data_prepared;
-+	__le32 tx_template_programmed;
-+	__le32 tx_data_programmed;
-+	__le32 tx_burst_programmed;
-+	__le32 tx_starts;
-+	__le32 tx_stop;
-+	__le32 tx_start_templates;
-+	__le32 tx_start_int_templates;
-+	__le32 tx_start_fw_gen;
-+	__le32 tx_start_data;
-+	__le32 tx_start_null_frame;
-+	__le32 tx_exch;
-+	__le32 tx_retry_template;
-+	__le32 tx_retry_data;
-+	__le32 tx_retry_per_rate[NUM_OF_RATES_INDEXES];
-+	__le32 tx_exch_pending;
-+	__le32 tx_exch_expiry;
-+	__le32 tx_done_template;
-+	__le32 tx_done_data;
-+	__le32 tx_done_int_template;
-+	__le32 tx_cfe1;
-+	__le32 tx_cfe2;
-+	__le32 frag_called;
-+	__le32 frag_mpdu_alloc_failed;
-+	__le32 frag_init_called;
-+	__le32 frag_in_process_called;
-+	__le32 frag_tkip_called;
-+	__le32 frag_key_not_found;
-+	__le32 frag_need_fragmentation;
-+	__le32 frag_bad_mblk_num;
-+	__le32 frag_failed;
-+	__le32 frag_cache_hit;
-+	__le32 frag_cache_miss;
-+} __packed;
++#define NUM_OF_RSSI_SNR_TRIGGERS 8
 +
-+struct cc33xx_acx_rx_stats {
-+	__le32 rx_beacon_early_term;
-+	__le32 rx_out_of_mpdu_nodes;
-+	__le32 rx_hdr_overflow;
-+	__le32 rx_dropped_frame;
-+	__le32 rx_done_stage;
-+	__le32 rx_done;
-+	__le32 rx_defrag;
-+	__le32 rx_defrag_end;
-+	__le32 rx_cmplt;
-+	__le32 rx_pre_complt;
-+	__le32 rx_cmplt_task;
-+	__le32 rx_phy_hdr;
-+	__le32 rx_timeout;
-+	__le32 rx_rts_timeout;
-+	__le32 rx_timeout_wa;
-+	__le32 defrag_called;
-+	__le32 defrag_init_called;
-+	__le32 defrag_in_process_called;
-+	__le32 defrag_tkip_called;
-+	__le32 defrag_need_defrag;
-+	__le32 defrag_decrypt_failed;
-+	__le32 decrypt_key_not_found;
-+	__le32 defrag_need_decrypt;
-+	__le32 rx_tkip_replays;
-+	__le32 rx_xfr;
-+} __packed;
++struct cc33xx;
 +
-+struct cc33xx_acx_isr_stats {
-+	__le32 irqs;
-+} __packed;
++int cc33xx_wait_for_event(struct cc33xx *cc, enum cc33xx_wait_event event,
++			  bool *timeout);
++void deffer_event(struct cc33xx *cc, const void *event_payload, size_t event_length);
++void process_deferred_events(struct cc33xx *cc);
++void flush_deferred_event_list(struct cc33xx *cc);
 +
-+#define PWR_STAT_MAX_CONT_MISSED_BCNS_SPREAD 10
-+
-+struct cc33xx_acx_pwr_stats {
-+	__le32 missing_bcns_cnt;
-+	__le32 rcvd_bcns_cnt;
-+	__le32 connection_out_of_sync;
-+	__le32 cont_miss_bcns_spread[PWR_STAT_MAX_CONT_MISSED_BCNS_SPREAD];
-+	__le32 rcvd_awake_bcns_cnt;
-+	__le32 sleep_time_count;
-+	__le32 sleep_time_avg;
-+	__le32 sleep_cycle_avg;
-+	__le32 sleep_percent;
-+	__le32 ap_sleep_active_conf;
-+	__le32 ap_sleep_user_conf;
-+	__le32 ap_sleep_counter;
-+} __packed;
-+
-+struct cc33xx_acx_rx_filter_stats {
-+	__le32 beacon_filter;
-+	__le32 arp_filter;
-+	__le32 mc_filter;
-+	__le32 dup_filter;
-+	__le32 data_filter;
-+	__le32 ibss_filter;
-+	__le32 protection_filter;
-+	__le32 accum_arp_pend_requests;
-+	__le32 max_arp_queue_dep;
-+} __packed;
-+
-+struct cc33xx_acx_rx_rate_stats {
-+	__le32 rx_frames_per_rates[50];
-+} __packed;
-+
-+#define AGGR_STATS_TX_AGG	16
-+#define AGGR_STATS_RX_SIZE_LEN	16
-+
-+struct cc33xx_acx_aggr_stats {
-+	__le32 tx_agg_rate[AGGR_STATS_TX_AGG];
-+	__le32 tx_agg_len[AGGR_STATS_TX_AGG];
-+	__le32 rx_size[AGGR_STATS_RX_SIZE_LEN];
-+} __packed;
-+
-+#define PIPE_STATS_HW_FIFO	11
-+
-+struct cc33xx_acx_pipeline_stats {
-+	__le32 hs_tx_stat_fifo_int;
-+	__le32 hs_rx_stat_fifo_int;
-+	__le32 enc_tx_stat_fifo_int;
-+	__le32 enc_rx_stat_fifo_int;
-+	__le32 rx_complete_stat_fifo_int;
-+	__le32 pre_proc_swi;
-+	__le32 post_proc_swi;
-+	__le32 sec_frag_swi;
-+	__le32 pre_to_defrag_swi;
-+	__le32 defrag_to_rx_xfer_swi;
-+	__le32 dec_packet_in;
-+	__le32 dec_packet_in_fifo_full;
-+	__le32 dec_packet_out;
-+	__le16 pipeline_fifo_full[PIPE_STATS_HW_FIFO];
-+	__le16 padding;
-+} __packed;
-+
-+#define DIVERSITY_STATS_NUM_OF_ANT	2
-+
-+struct cc33xx_acx_diversity_stats {
-+	__le32 num_of_packets_per_ant[DIVERSITY_STATS_NUM_OF_ANT];
-+	__le32 total_num_of_toggles;
-+} __packed;
-+
-+struct cc33xx_acx_thermal_stats {
-+	__le16 irq_thr_low;
-+	__le16 irq_thr_high;
-+	__le16 tx_stop;
-+	__le16 tx_resume;
-+	__le16 false_irq;
-+	__le16 adc_source_unexpected;
-+} __packed;
-+
-+#define CC33XX_NUM_OF_CALIBRATIONS_ERRORS 18
-+struct cc33xx_acx_calib_failure_stats {
-+	__le16 fail_count[CC33XX_NUM_OF_CALIBRATIONS_ERRORS];
-+	__le32 calib_count;
-+} __packed;
-+
-+struct cc33xx_roaming_stats {
-+	s32 rssi_level;
-+} __packed;
-+
-+struct cc33xx_dfs_stats {
-+	__le32 num_of_radar_detections;
-+} __packed;
-+
-+struct cc33xx_acx_statistics {
-+	struct acx_header header;
-+
-+	struct cc33xx_acx_error_stats		error;
-+	struct cc33xx_acx_tx_stats		tx;
-+	struct cc33xx_acx_rx_stats		rx;
-+	struct cc33xx_acx_isr_stats		isr;
-+	struct cc33xx_acx_pwr_stats		pwr;
-+	struct cc33xx_acx_rx_filter_stats	rx_filter;
-+	struct cc33xx_acx_rx_rate_stats		rx_rate;
-+	struct cc33xx_acx_aggr_stats		aggr_size;
-+	struct cc33xx_acx_pipeline_stats	pipeline;
-+	struct cc33xx_acx_diversity_stats	diversity;
-+	struct cc33xx_acx_thermal_stats		thermal;
-+	struct cc33xx_acx_calib_failure_stats	calib;
-+	struct cc33xx_roaming_stats		roaming;
-+	struct cc33xx_dfs_stats			dfs;
-+} __packed;
-+
-+/* ACX_PEER_CAP
-+ * this struct is very similar to cc33xx_acx_ht_capabilities, with the
-+ * addition of supported rates
-+ */
-+#define NOMINAL_PACKET_PADDING (0xC0)
-+struct cc33xx_acx_peer_cap {
-+	struct acx_header header;
-+
-+	u8 role_id;
-+
-+	/* rates supported by the remote peer */
-+	__le32 supported_rates;
-+
-+	/* bitmask of capability bits supported by the peer */
-+	__le32 ht_capabilites;
-+	/* This the maximum A-MPDU length supported by the AP. The FW may not
-+	 * exceed this length when sending A-MPDUs
-+	 */
-+	u8 ampdu_max_length;
-+
-+	/* This is the minimal spacing required when sending A-MPDUs to the AP*/
-+	u8 ampdu_min_spacing;
-+
-+	/* HE capabilities */
-+	u8 mac_cap_info[8];
-+
-+	/* Nominal packet padding value, used for determining the packet extension duration */
-+	u8 nominal_packet_padding;
-+
-+	/* HE peer support */
-+	bool has_he;
-+
-+	u8 dcm_max_constelation;
-+
-+	u8 er_upper_supported;
-+
-+	u8 padding;
-+} __packed;
-+
-+struct acx_preamble_and_tx_rate {
-+	struct acx_header header;
-+	u16 tx_rate;
-+	u8 preamble;
-+	u8 role_id;
-+} __packed;
-+
-+int cc33xx_acx_wake_up_conditions(struct cc33xx *cc, struct cc33xx_vif *wlvif,
-+				  u8 wake_up_event, u8 listen_interval);
-+int cc33xx_acx_sleep_auth(struct cc33xx *cc, u8 sleep_auth);
-+int cc33xx_ble_enable(struct cc33xx *cc, u8 ble_enable);
-+int cc33xx_acx_tx_power(struct cc33xx *cc, struct cc33xx_vif *wlvif, int power);
-+int cc33xx_acx_slot(struct cc33xx *cc, struct cc33xx_vif *wlvif,
-+		    enum acx_slot_type slot_time);
-+int cc33xx_acx_group_address_tbl(struct cc33xx *cc, bool enable, void *mc_list, u32 mc_list_len);
-+int cc33xx_acx_beacon_filter_opt(struct cc33xx *cc, struct cc33xx_vif *wlvif,
-+				 bool enable_filter);
-+int cc33xx_acx_beacon_filter_table(struct cc33xx *cc, struct cc33xx_vif *wlvif);
-+int cc33xx_assoc_info_cfg(struct cc33xx *cc, struct cc33xx_vif *wlvif,
-+			  struct ieee80211_sta *sta, u16 aid);
-+int cc33xx_acx_set_preamble(struct cc33xx *cc, struct cc33xx_vif *wlvif,
-+			    enum acx_preamble_type preamble);
-+int cc33xx_acx_cts_protect(struct cc33xx *cc, struct cc33xx_vif *wlvif,
-+			   enum acx_ctsprotect_type ctsprotect);
-+int cc33xx_acx_statistics(struct cc33xx *cc, void *stats);
-+int cc33xx_tx_param_cfg(struct cc33xx *cc, struct cc33xx_vif *wlvif, u8 ac,
-+			u8 cw_min, u16 cw_max, u8 aifsn, u16 txop, bool acm,
-+			u8 ps_scheme, u8 is_mu_edca, u8 mu_edca_aifs,
-+			u8 mu_edca_ecw_min_max, u8 mu_edca_timer);
-+int cc33xx_update_ap_rates(struct cc33xx *cc, u8 role_id,
-+			   u32 basic_rates_set, u32 supported_rates);
-+int cc33xx_acx_init_mem_config(struct cc33xx *cc);
-+int cc33xx_acx_init_get_fw_versions(struct cc33xx *cc);
-+int cc33xx_acx_set_ht_information(struct cc33xx *cc, struct cc33xx_vif *wlvif,
-+				  u16 ht_operation_mode, u32 he_oper_params,
-+				  u16 he_oper_nss_set);
-+int cc33xx_acx_set_ba_receiver_session(struct cc33xx *cc, u8 tid_index, u16 ssn,
-+				       bool enable, u8 peer_hlid, u8 win_size);
-+int cc33xx_acx_tsf_info(struct cc33xx *cc,
-+			struct cc33xx_vif *wlvif, u64 *mactime);
-+int cc33xx_acx_config_ps(struct cc33xx *cc, struct cc33xx_vif *wlvif);
-+int cc33xx_acx_get_tx_rate(struct cc33xx *cc, struct cc33xx_vif *wlvif,
-+			   struct station_info *sinfo);
-+int cc33xx_acx_average_rssi(struct cc33xx *cc,
-+			    struct cc33xx_vif *wlvif, s8 *avg_rssi);
-+int cc33xx_acx_default_rx_filter_enable(struct cc33xx *cc, bool enable,
-+					enum rx_filter_action action);
-+int cc33xx_acx_set_rx_filter(struct cc33xx *cc, u8 index, bool enable,
-+			     struct cc33xx_rx_filter *filter);
-+int cc33xx_acx_clear_statistics(struct cc33xx *cc);
-+int cc33xx_acx_set_peer_cap(struct cc33xx *cc,
-+			    struct ieee80211_sta_ht_cap *ht_cap,
-+			    struct ieee80211_sta_he_cap *he_cap,
-+			    struct cc33xx_vif *wlvif, bool allow_ht_operation,
-+			    u32 rate_set, u8 hlid);
-+int cc33xx_acx_trigger_fw_assert(struct cc33xx *cc);
-+
-+#endif /* __CC33XX_ACX_H__ */
++#endif /* __EVENT_H__ */
 -- 
 2.34.1
 
