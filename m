@@ -1,308 +1,222 @@
-Return-Path: <linux-wireless+bounces-11019-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11027-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A81BB9495FA
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 18:57:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D794C949634
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 19:04:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 513DF281C95
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 16:57:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E433F1C214FA
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 17:04:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B3647A66;
-	Tue,  6 Aug 2024 16:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 928F0155726;
+	Tue,  6 Aug 2024 17:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="dvEGv7G7"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="OIivsS0I"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B2A46434;
-	Tue,  6 Aug 2024 16:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23287824BD;
+	Tue,  6 Aug 2024 17:01:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722963433; cv=none; b=X20q+ldrP/HnUsoId1DZR7TQFN5NNTF3r/uFLYWbMxDXzd3Rnu+nqZnnEcV90O2VTZTu0iOfJlZsKGMwbSo9ooLemXa1D4emXAVl132mNgePyi+T2+FdlLcvnaFLUz3YOOZvni5f5kmr8McHaq1W1Ww4rJGICZHd0Q2CD9sZ33k=
+	t=1722963709; cv=none; b=CkgBzf3oqWmF2D3K1ExCNQYLbTPu5i1lakT/GwmjCWSpkZ+JzmFDoL+cJ503Il2ztZQYDTTmVxM48Z9UzqiJmC/m5vKMkZw0cZE973FSHFy/72mNcO9x73JeDZyPZ33G2pg7rnFyD17+3IIJiOEH9oMxh2l311X1r/1QpP1iZho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722963433; c=relaxed/simple;
-	bh=yXSSj0OKIjSuoijmFTTFpnwQq3sFBOvfEK9wVIIxsdM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=WOO2HV/wlh7iHvY9xgtVK6ehMObY6idkoHcJWLMSUrmYvIiwWvp2EN0N7LFVImMmSYm0KPW8/QFTOKuHaqXhG01uYkMfN+19bQ+Wf859Zx3rqhVwtFsvmNQkAY+gOpCwCnw5IuhGodwQO2m6FKZdsbU1YGlJKp3J54LNR3zyEnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=dvEGv7G7; arc=none smtp.client-ip=198.47.23.249
+	s=arc-20240116; t=1722963709; c=relaxed/simple;
+	bh=yirhGRV8z3dzeaOicxTi8mzJ0iWfFkm2TMlo4tNY++o=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=rQXwr7AfXiAGO7BKuOxFnBXGqJweQ+mQ/3b/LoR8V29hRNb3Fs4g/JX8KhXkgkWBamzVxUKuDi9kMECTdKhX0qcpbn5+hOcL2HKL0xLjTCHS5cVq5YNGlxPh7r0m6ej+ppFE2yLPcO8XjdPwE9hIPfoehhbrJJ4CzWcR3kEVhfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=OIivsS0I; arc=none smtp.client-ip=198.47.23.249
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 476GukMk116693;
-	Tue, 6 Aug 2024 11:56:46 -0500
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 476H1PE8117593;
+	Tue, 6 Aug 2024 12:01:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1722963406;
-	bh=mQjTipe4OQ4FhVMs34OkjvA09o7h2p1kQzb44d14ZWY=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=dvEGv7G7+qXmiwA/K6ohQL/PqOgrmx5mepJVFP6QUi58eiEY10VP52ucI84pUroCW
-	 C9PdLNlTdY/DESV29BNNCSUDh+XJgEpfr/OJqzhIv18fCoYlTv9/UXtu4jpa7ZEIXG
-	 s6g6X9vv+JRllEQ+AIy0M6yTFB8bC/N2TPapDunk=
-Received: from DLEE102.ent.ti.com (dlee102.ent.ti.com [157.170.170.32])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 476GukoC064220
+	s=ti-com-17Q1; t=1722963685;
+	bh=DMqQCiCBes+KWaNgnlpy9KYLebMmh7WObGdpYCJSN/U=;
+	h=From:To:CC:Subject:Date;
+	b=OIivsS0IwrayvssOxNAliBL1QDib/KM9ZrKHPq7NusTWz1YS8IF3whBZj96o/0q+3
+	 4sMRsISEIbRlBUPWVCEXAUVd4K0z0ch29iYT+nvyzDA69sfsJNRofB9slvZR8RJUI1
+	 PfDjRwa4GgEVH7OOL4j0NvA3zMrt0rTvNZu3h6So=
+Received: from DFLE102.ent.ti.com (dfle102.ent.ti.com [10.64.6.23])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 476H1PWf006203
 	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 6 Aug 2024 11:56:46 -0500
-Received: from DLEE112.ent.ti.com (157.170.170.23) by DLEE102.ent.ti.com
- (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+	Tue, 6 Aug 2024 12:01:25 -0500
+Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE102.ent.ti.com
+ (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 6
- Aug 2024 11:56:45 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE112.ent.ti.com
- (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ Aug 2024 12:01:25 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Tue, 6 Aug 2024 11:56:45 -0500
-Received: from [10.250.212.206] ([10.250.212.206])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 476GugcT027612;
-	Tue, 6 Aug 2024 11:56:43 -0500
-Message-ID: <dd1864c2-70db-4df0-beb2-814c7e26afb1@ti.com>
-Date: Tue, 6 Aug 2024 19:56:42 +0300
+ Frontend Transport; Tue, 6 Aug 2024 12:01:25 -0500
+Received: from localhost (udb0389739.dhcp.ti.com [137.167.1.149])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 476H1O8W038613;
+	Tue, 6 Aug 2024 12:01:24 -0500
+From: Michael Nemanov <michael.nemanov@ti.com>
+To: Kalle Valo <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo
+ Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski
+	<krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC: Sabeeh Khan <sabeeh-khan@ti.com>, Michael Nemanov <michael.nemanov@ti.com>
+Subject: [PATCH v3 00/17] wifi: cc33xx: Add driver for new TI CC33xx wireless device family
+Date: Tue, 6 Aug 2024 20:00:01 +0300
+Message-ID: <20240806170018.638585-1-michael.nemanov@ti.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/17] Add cc33xx.h, cc33xx_i.h
-To: Krzysztof Kozlowski <krzk@kernel.org>, Kalle Valo <kvalo@kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Breno Leitao <leitao@debian.org>,
-        Justin Stitt <justinstitt@google.com>,
-        Kees Cook <keescook@chromium.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC: "Khan, Sabeeh" <sabeeh-khan@ti.com>
-References: <20240521171841.884576-1-michael.nemanov@ti.com>
- <20240521171841.884576-2-michael.nemanov@ti.com>
- <383554c5-aef5-4c3f-bf67-dfdc83324897@kernel.org>
-Content-Language: en-US
-From: "Nemanov, Michael" <michael.nemanov@ti.com>
-In-Reply-To: <383554c5-aef5-4c3f-bf67-dfdc83324897@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-On 5/22/2024 12:38 PM, Krzysztof Kozlowski wrote:
-> 
->> +	struct core_status *core_status;
->> +	u8 last_fw_rls_idx;
->> +	u8 command_result[CC33XX_CMD_MAX_SIZE];
->> +	u16 result_length;
->> +	struct partial_rx_frame partial_rx;
->> +
->> +	unsigned long flags;
->> +
->> +	void *nvs_mac_addr;
->> +	size_t nvs_mac_addr_len;
->> +	struct cc33xx_fw_download *fw_download;
->> +
->> +	struct mac_address addresses[CC33XX_NUM_MAC_ADDRESSES];
->> +
->> +	unsigned long links_map[BITS_TO_LONGS(CC33XX_MAX_LINKS)];
->> +	unsigned long roles_map[BITS_TO_LONGS(CC33XX_MAX_ROLES)];
->> +	unsigned long roc_map[BITS_TO_LONGS(CC33XX_MAX_ROLES)];
->> +	unsigned long rate_policies_map[BITS_TO_LONGS(CC33XX_MAX_RATE_POLICIES)];
->> +
->> +	u8 session_ids[CC33XX_MAX_LINKS];
->> +
->> +	struct list_head wlvif_list;
->> +
->> +	u8 sta_count;
->> +	u8 ap_count;
->> +
->> +	struct cc33xx_acx_mem_map *target_mem_map;
->> +
->> +	/* Accounting for allocated / available TX blocks on HW */
->> +
->> +	u32 tx_blocks_available;
->> +	u32 tx_allocated_blocks;
->> +
->> +	/* Accounting for allocated / available Tx packets in HW */
->> +
->> +	u32 tx_allocated_pkts[NUM_TX_QUEUES];
->> +
->> +	/* Time-offset between host and chipset clocks */
->> +
->> +	/* Frames scheduled for transmission, not handled yet */
->> +	int tx_queue_count[NUM_TX_QUEUES];
->> +	unsigned long queue_stop_reasons[NUM_TX_QUEUES * CC33XX_NUM_MAC_ADDRESSES];
->> +
->> +	/* Frames received, not handled yet by mac80211 */
->> +	struct sk_buff_head deferred_rx_queue;
->> +
->> +	/* Frames sent, not returned yet to mac80211 */
->> +	struct sk_buff_head deferred_tx_queue;
->> +
->> +	struct work_struct tx_work;
->> +	struct workqueue_struct *freezable_wq;
->> +
->> +	/*freezable wq for netstack_work*/
->> +	struct workqueue_struct *freezable_netstack_wq;
->> +
->> +	/* Pending TX frames */
->> +	unsigned long tx_frames_map[BITS_TO_LONGS(CC33XX_MAX_TX_DESCRIPTORS)];
->> +	struct sk_buff *tx_frames[CC33XX_MAX_TX_DESCRIPTORS];
->> +	int tx_frames_cnt;
->> +
->> +	/* FW Rx counter */
->> +	u32 rx_counter;
->> +
->> +	/* Intermediate buffer, used for packet aggregation */
->> +	u8 *aggr_buf;
->> +	u32 aggr_buf_size;
->> +	size_t max_transaction_len;
->> +
->> +	/* Reusable dummy packet template */
->> +	struct sk_buff *dummy_packet;
->> +
->> +	/* Network stack work  */
->> +	struct work_struct netstack_work;
->> +	/* FW log buffer */
->> +	u8 *fwlog;
->> +
->> +	/* Number of valid bytes in the FW log buffer */
->> +	ssize_t fwlog_size;
->> +
->> +	/* Hardware recovery work */
->> +	struct work_struct recovery_work;
->> +
->> +	struct work_struct irq_deferred_work;
->> +
->> +	/* Reg domain last configuration */
->> +	DECLARE_BITMAP(reg_ch_conf_last, 64);
->> +	/* Reg domain pending configuration */
->> +	DECLARE_BITMAP(reg_ch_conf_pending, 64);
->> +
->> +	/* Lock-less list for deferred event handling */
->> +	struct llist_head event_list;
->> +	/* The mbox event mask */
->> +	u32 event_mask;
->> +	/* events to unmask only when ap interface is up */
->> +	u32 ap_event_mask;
->> +
->> +	/* Are we currently scanning */
->> +	struct cc33xx_vif *scan_wlvif;
->> +	struct cc33xx_scan scan;
->> +	struct delayed_work scan_complete_work;
->> +
->> +	struct ieee80211_vif *roc_vif;
->> +	struct delayed_work roc_complete_work;
->> +
->> +	struct cc33xx_vif *sched_vif;
->> +
->> +	u8 mac80211_scan_stopped;
->> +
->> +	/* The current band */
->> +	enum nl80211_band band;
->> +
->> +	/* in dBm */
->> +	int power_level;
->> +
->> +	struct cc33xx_stats stats;
->> +
->> +	__le32 *buffer_32;
->> +
->> +	/* Current chipset configuration */
->> +	struct cc33xx_conf_file conf;
->> +
->> +	bool enable_11a;
->> +
->> +	/* bands supported by this instance of cc33xx */
->> +	struct ieee80211_supported_band bands[CC33XX_NUM_BANDS];
->> +
->> +	/* wowlan trigger was configured during suspend.
->> +	 * (currently, only "ANY" and "PATTERN" trigger is supported)
->> +	 */
->> +
->> +	bool keep_device_power;
->> +
->> +	/* AP-mode - links indexed by HLID. The global and broadcast links
->> +	 * are always active.
->> +	 */
->> +	struct cc33xx_link links[CC33XX_MAX_LINKS];
->> +
->> +	/* number of currently active links */
->> +	int active_link_count;
->> +
->> +	/* AP-mode - a bitmap of links currently in PS mode according to FW */
->> +	unsigned long ap_fw_ps_map;
->> +
->> +	/* AP-mode - a bitmap of links currently in PS mode in mac80211 */
->> +	unsigned long ap_ps_map;
->> +
->> +	/* Quirks of specific hardware revisions */
->> +	unsigned int quirks;
->> +
->> +	/* number of currently active RX BA sessions */
->> +	int ba_rx_session_count;
->> +
->> +	/* AP-mode - number of currently connected stations */
->> +	int active_sta_count;
->> +
->> +	/* last wlvif we transmitted from */
->> +	struct cc33xx_vif *last_wlvif;
->> +
->> +	/* work to fire when Tx is stuck */
->> +	struct delayed_work tx_watchdog_work;
->> +
->> +	/* HW HT (11n) capabilities */
->> +	struct ieee80211_sta_ht_cap ht_cap[CC33XX_NUM_BANDS];
->> +
->> +	/* the current dfs region */
->> +	enum nl80211_dfs_regions dfs_region;
->> +	bool radar_debug_mode;
->> +
->> +	/* RX Data filter rule state - enabled/disabled */
->> +	/* used in CONFIG PM AND W8 Code */
->> +	unsigned long rx_filter_enabled[BITS_TO_LONGS(CC33XX_MAX_RX_FILTERS)];
->> +
->> +	/* mutex for protecting the tx_flush function */
->> +	struct mutex flush_mutex;
->> +
->> +	/* sleep auth value currently configured to FW */
->> +	int sleep_auth;
->> +
->> +	/*ble_enable value - 1=enabled, 0=disabled. */
->> +	int ble_enable;
->> +
->> +	/* parameters for joining a TWT agreement */
->> +	int min_wake_duration_usec;
->> +	int min_wake_interval_mantissa;
->> +	int min_wake_interval_exponent;
->> +	int max_wake_interval_mantissa;
->> +	int max_wake_interval_exponent;
->> +
->> +	/* the number of allocated MAC addresses in this chip */
->> +	int num_mac_addr;
->> +
->> +	/* sta role index - if 0 - wlan0 primary station interface,
->> +	 * if 1 - wlan2 - secondary station interface
->> +	 */
->> +	u8 sta_role_idx;
->> +
->> +	u16 max_cmd_size;
->> +
->> +	struct completion nvs_loading_complete;
->> +	struct completion command_complete;
->> +
->> +	/* dynamic fw traces */
->> +	u32 dynamic_fw_traces;
->> +
->> +	/* buffer for sending commands to FW */
->> +	u8 cmd_buf[CC33XX_CMD_BUFFER_SIZE];
->> +
->> +	/* number of keys requiring extra spare mem-blocks */
->> +	int extra_spare_key_count;
-> 
-> This entire struct is quite unmanageable...
-> 
+Hello everyone,
 
- From what I saw many wireless drivers hold their private members in a 
-single structure of roughly the same size. Most of these are unrelated 
-to each other so I doubt grouping them in sub-structures will improve 
-readability.
+This series adds support for CC33xx which is a new family of WLAN IEEE802.11 a/b/g/n/ax
+and BLE 5.4 transceivers by Texas Instruments. These devices are 20MHz single spatial stream
+enabling STA (IEEE802.11ax) and AP (IEEE802.11n only) roles as well as both roles simultaneously.
+Communication to the CC33xx is done via 4-bit SDIO with two extra GPIOs: Enable and Interrupt.
 
+This driver's architecture is a soft-MAC and derivative of existing wl18xx + wlcore code [1].
+It has been tested with the AM335x, AM625x, and i.MX8-MP evaluation kits.
+
+Data sheet: https://www.ti.com/lit/gpn/cc3301
+
+All code passes sparse, smatch, coccicheck and checkpatch with very few pragmatic exceptions.
+
+Driver is split on file boundary as required by Linux-wireless wiki:
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#new_driver
+
+
+Change log:
+v3:
+* Added missing sign-offs
+* Fixed multiple warnings for memcpy overflow
+* Fixed commit message and description of device-tree bindings
+
+v2:
+* Fixed build bug on non-ARM architectures
+* Removed driver version
+* Removed trivial debug traces
+* Removed debug parameters for cc33xx module
+* Fixed multiple type compatibility warnings
+* Minor fixes
+Link: https://lore.kernel.org/linux-wireless/20240609182102.2950457-1-michael.nemanov@ti.com/
+
+v1:
+* Added dt-bindings
+* Removed debugfs to ease review
+* Fix build issue with CONFIG_CFG80211_CERTIFICATION_ONUS
+* Fix multiple build warnings found with Clang 18 and W=12
+Link: https://lore.kernel.org/linux-wireless/20240521171841.884576-1-michael.nemanov@ti.com/
+
+
+Test log:
+https://0x0.st/XVBS.log
+
+[1] It was considered implementing CC33xx as another user of wlcore but The
+differences in HW, host interface, IRQ functionality, Rx/Tx behavior and supported features
+were too significant so this was abandoned.
+
+Michael Nemanov
+Texas Instruments
+
+Michael Nemanov (17):
+  wifi: cc33xx: Add cc33xx.h, cc33xx_i.h
+  wifi: cc33xx: Add debug.h
+  wifi: cc33xx: Add sdio.c, io.c, io.h
+  wifi: cc33xx: Add cmd.c, cmd.h
+  wifi: cc33xx: Add acx.c, acx.h
+  wifi: cc33xx: Add event.c, event.h
+  wifi: cc33xx: Add boot.c, boot.h
+  wifi: cc33xx: Add main.c
+  wifi: cc33xx: Add rx.c, rx.h
+  wifi: cc33xx: Add tx.c, tx.h
+  wifi: cc33xx: Add init.c, init.h
+  wifi: cc33xx: Add scan.c, scan.h
+  wifi: cc33xx: Add conf.h
+  wifi: cc33xx: Add ps.c, ps.h
+  wifi: cc33xx: Add testmode.c, testmode.h
+  wifi: cc33xx: Add Kconfig, Makefile
+  dt-bindings: net: wireless: cc33xx: Add ti,cc33xx.yaml
+
+ .../bindings/net/wireless/ti,cc33xx.yaml      |   56 +
+ drivers/net/wireless/ti/Kconfig               |    1 +
+ drivers/net/wireless/ti/Makefile              |    1 +
+ drivers/net/wireless/ti/cc33xx/Kconfig        |   24 +
+ drivers/net/wireless/ti/cc33xx/Makefile       |   10 +
+ drivers/net/wireless/ti/cc33xx/acx.c          | 1011 +++
+ drivers/net/wireless/ti/cc33xx/acx.h          |  835 +++
+ drivers/net/wireless/ti/cc33xx/boot.c         |  363 +
+ drivers/net/wireless/ti/cc33xx/boot.h         |   24 +
+ drivers/net/wireless/ti/cc33xx/cc33xx.h       |  483 ++
+ drivers/net/wireless/ti/cc33xx/cc33xx_i.h     |  459 ++
+ drivers/net/wireless/ti/cc33xx/cmd.c          | 2030 ++++++
+ drivers/net/wireless/ti/cc33xx/cmd.h          |  700 ++
+ drivers/net/wireless/ti/cc33xx/conf.h         | 1246 ++++
+ drivers/net/wireless/ti/cc33xx/debug.h        |   92 +
+ drivers/net/wireless/ti/cc33xx/event.c        |  385 ++
+ drivers/net/wireless/ti/cc33xx/event.h        |   71 +
+ drivers/net/wireless/ti/cc33xx/init.c         |  232 +
+ drivers/net/wireless/ti/cc33xx/init.h         |   15 +
+ drivers/net/wireless/ti/cc33xx/io.c           |  131 +
+ drivers/net/wireless/ti/cc33xx/io.h           |   26 +
+ drivers/net/wireless/ti/cc33xx/main.c         | 5853 +++++++++++++++++
+ drivers/net/wireless/ti/cc33xx/ps.c           |  117 +
+ drivers/net/wireless/ti/cc33xx/ps.h           |   16 +
+ drivers/net/wireless/ti/cc33xx/rx.c           |  393 ++
+ drivers/net/wireless/ti/cc33xx/rx.h           |   86 +
+ drivers/net/wireless/ti/cc33xx/scan.c         |  750 +++
+ drivers/net/wireless/ti/cc33xx/scan.h         |  363 +
+ drivers/net/wireless/ti/cc33xx/sdio.c         |  584 ++
+ drivers/net/wireless/ti/cc33xx/testmode.c     |  359 +
+ drivers/net/wireless/ti/cc33xx/testmode.h     |   12 +
+ drivers/net/wireless/ti/cc33xx/tx.c           | 1411 ++++
+ drivers/net/wireless/ti/cc33xx/tx.h           |  160 +
+ 33 files changed, 18299 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/wireless/ti,cc33xx.yaml
+ create mode 100644 drivers/net/wireless/ti/cc33xx/Kconfig
+ create mode 100644 drivers/net/wireless/ti/cc33xx/Makefile
+ create mode 100644 drivers/net/wireless/ti/cc33xx/acx.c
+ create mode 100644 drivers/net/wireless/ti/cc33xx/acx.h
+ create mode 100644 drivers/net/wireless/ti/cc33xx/boot.c
+ create mode 100644 drivers/net/wireless/ti/cc33xx/boot.h
+ create mode 100644 drivers/net/wireless/ti/cc33xx/cc33xx.h
+ create mode 100644 drivers/net/wireless/ti/cc33xx/cc33xx_i.h
+ create mode 100644 drivers/net/wireless/ti/cc33xx/cmd.c
+ create mode 100644 drivers/net/wireless/ti/cc33xx/cmd.h
+ create mode 100644 drivers/net/wireless/ti/cc33xx/conf.h
+ create mode 100644 drivers/net/wireless/ti/cc33xx/debug.h
+ create mode 100644 drivers/net/wireless/ti/cc33xx/event.c
+ create mode 100644 drivers/net/wireless/ti/cc33xx/event.h
+ create mode 100644 drivers/net/wireless/ti/cc33xx/init.c
+ create mode 100644 drivers/net/wireless/ti/cc33xx/init.h
+ create mode 100644 drivers/net/wireless/ti/cc33xx/io.c
+ create mode 100644 drivers/net/wireless/ti/cc33xx/io.h
+ create mode 100644 drivers/net/wireless/ti/cc33xx/main.c
+ create mode 100644 drivers/net/wireless/ti/cc33xx/ps.c
+ create mode 100644 drivers/net/wireless/ti/cc33xx/ps.h
+ create mode 100644 drivers/net/wireless/ti/cc33xx/rx.c
+ create mode 100644 drivers/net/wireless/ti/cc33xx/rx.h
+ create mode 100644 drivers/net/wireless/ti/cc33xx/scan.c
+ create mode 100644 drivers/net/wireless/ti/cc33xx/scan.h
+ create mode 100644 drivers/net/wireless/ti/cc33xx/sdio.c
+ create mode 100644 drivers/net/wireless/ti/cc33xx/testmode.c
+ create mode 100644 drivers/net/wireless/ti/cc33xx/testmode.h
+ create mode 100644 drivers/net/wireless/ti/cc33xx/tx.c
+ create mode 100644 drivers/net/wireless/ti/cc33xx/tx.h
+
+-- 
+2.34.1
 
 
