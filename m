@@ -1,56 +1,85 @@
-Return-Path: <linux-wireless+bounces-11043-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11044-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB03194978D
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 20:26:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 915C894979C
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 20:36:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC02A1C216D4
-	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 18:26:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB0621C21A96
+	for <lists+linux-wireless@lfdr.de>; Tue,  6 Aug 2024 18:36:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52425757F8;
-	Tue,  6 Aug 2024 18:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABDAE76035;
+	Tue,  6 Aug 2024 18:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gEtm+6EU"
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="qzUBASle"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2611E7441A;
-	Tue,  6 Aug 2024 18:26:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288F16F2E6
+	for <linux-wireless@vger.kernel.org>; Tue,  6 Aug 2024 18:36:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722968761; cv=none; b=RPChqb+ixBlYAnsW8K7N1Dh4t68NuQNbu0FLKQEgbeg2duF1XTzyZaw7ftbsEu+1tHK1Hvflm/MPL9L7QTBE5UNoFMt+GYgA9ZypbYMYTlOUga9DSIQQuyoKFKXR0JWy4EmuVz9p1CHwjXjF+pdXwW0WqyWD+Qcjpd3U4mbbFaM=
+	t=1722969412; cv=none; b=b7kVurENz2bzqd0ObLy/pxma5a8SWTgFurngYxV4I0vMYPRUekOIVtCm9D1N+bVMeHMa3gmGrcBLHFBrh+wiUjWmFUZW/2kxYXyX0tlDpJTq1XsEHghrOUpE/g+GS/j3sfJ/v/+JfFsgy4hVjejIyThD6h6CtCgjwgq05oqX2lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722968761; c=relaxed/simple;
-	bh=lotPUQ9QRBFAHLBZdlRIVzGHFm7a/eTQA7EXznivsSA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=ce/LU7wHmj1PxUQnkiaegU3+Q3IiH1ZOE5zDgq2/lFA6GKq6alVvq1nL9ruDpv1nCPaBGTwJtI4QiMXGnO654wP1qlBvyoVimG3juJz0/hdFKdqVprmk7VKIomdOCZ0WlMX/JcTGn/9tH/WSPZbt8iUMeyHEirLRm8G3RiF/6vY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gEtm+6EU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65189C32786;
-	Tue,  6 Aug 2024 18:26:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722968761;
-	bh=lotPUQ9QRBFAHLBZdlRIVzGHFm7a/eTQA7EXznivsSA=;
-	h=Date:From:To:Cc:Subject:From;
-	b=gEtm+6EUxII0iAG2BETCHFLkkM98uMi1CuRWpnNgP2XvcSOH3gWODCdP0VwDqOQVb
-	 5ELqwrMkHnhSagYlFipBMyTnzHcO/859AKSc3h/WCI/IisLyjCG0MAclmJ4+TVWgPq
-	 d5sdEbFXppmYXIRprj43abCnp8KE+EOFQmNsk/eoGBQXqsdPkMLrMr9i3W3t7bArNE
-	 1tIbrltZJgGcZltatkM/AveXHkHQtQrokW7PKaGjBv46J7wW6vPNJQTq57704sU6ln
-	 2sen803610k0X4GH+2mpp8TPGpEt4U0vSl/v1vnFDWkI0IMmQ/rt3Aq5wXRGIaqnSX
-	 gMVZa6MqOkqag==
-Date: Tue, 6 Aug 2024 12:25:57 -0600
-From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To: Stanislav Yakovlev <stas.yakovlev@gmail.com>,
-	Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH][next] wifi: ipw2x00: libipw: Avoid
- -Wflex-array-member-not-at-end warnings
-Message-ID: <ZrJqtUpCI+uCeb4D@cute>
+	s=arc-20240116; t=1722969412; c=relaxed/simple;
+	bh=lD1CXg8ewgeFDdS9UW1qlnYh29XhmwAyYiYoddDl1pk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dg3VrPyq1latqD2qpUXeQvtWJ3nminjEuELxx5AEl/kWjICH/sYbAkRfzB3AwBn2ko/tqUxMCKK1G0YRYEkMcpp4lu9iY0FmR8eljNtYq+4mC1FLR1C1rQuQi70jl+r6dm3DR7iX4AQtKJ/r1qf9FElnQcXDMqaTpdAnnCroL+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=pass smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=qzUBASle; arc=none smtp.client-ip=209.85.210.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=g.harvard.edu
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-70b3b62025dso545750a34.0
+        for <linux-wireless@vger.kernel.org>; Tue, 06 Aug 2024 11:36:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1722969410; x=1723574210; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=QmTu6CdLhKUuviA48G6Tr36ATMsK0k+PUHlqmhgRePo=;
+        b=qzUBASleLVMeuDgJdBnHQSKRSdof+rpyEn4HitKx6cemRHfIUxFUoZQB3Uc/siFsiu
+         I1+H8CIEqueYd10anqrTJU1Wclg2Q9lsP5noZC7+DI1oX7aA/Yeo8pRBauEeTsCPaDFX
+         caVDDXbe97jFztqft2ndoeAKfd+llmkeZ62AJlJ0Qu3ZOzrb+8Rdpq+yO7mn4TEpoFPw
+         USRt+BrxyEat72fyJUafnJSFux+2Plt4mH0yJiWlOOzR0/AIQU4sN2ikZLFN8eBjnRp7
+         yMm3tJXucXmKwMhcKTyitnniwphBGCYkAa2o2V1mQQU5ABuaoG/r2oHVjQFLCyGtwZ/2
+         mGeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722969410; x=1723574210;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QmTu6CdLhKUuviA48G6Tr36ATMsK0k+PUHlqmhgRePo=;
+        b=etyrVSbDd8bs3DgaeFKN1hpj8PqW4JCHZJ1sV/u2EW0tLI0K5EFX8EaZlB2B4DGlja
+         KWkIrV5tMr7gbsYEwXi3QVP3Wxx2MI59x2kQohAR1HgqJFkg6vuxvFu2ozfO1qyKOayj
+         q93J7U3N1KFlie+EDW8XPi131PqtZIhuuUTAa2ryJCQM9kyei3+1oXttd+Nulx+wqjRx
+         ZJR0g0+3o8QLmTFLYRSZSiRucmq0uHBwlC8nPMwJoldl1KJB2qVBJ1BR+bn0wYp8O526
+         tEUptgZYcN6Lth76Y6UDxTn+8ouFMvEcsiP70rVQ40mIi4dt73Rhx+oXOF9ysc4ilClR
+         qhuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUq3ac4/Rtx/sR3NqJRM+PgOAUH6dvYKqiK1YP2/jcFMlvo8tHyuc2ARgyp/I/nxOW30sJd643XhV2sevhK5SoHxcci8SrawuYAbtr22Ss=
+X-Gm-Message-State: AOJu0YzmKAyEABDuYnRsZPjsOANh5Y+HhTgKeHmFhDoCcP5ji7IuIzfO
+	KYnGCpsLeXjpR4At2JmzMJF5IdDzceuyIBpSzZfwoFpKDeCIHLhV2nEITM4Xrg==
+X-Google-Smtp-Source: AGHT+IEnkJ7Z2uIaGOQDKmaJUB8KkdOaHVtwQNHPo7SWgBve6YLjfN5VB16mdbxnI9tcxLO7BTyxxA==
+X-Received: by 2002:a05:6830:4882:b0:703:7842:6c00 with SMTP id 46e09a7af769-709b323a22amr19236323a34.15.1722969410083;
+        Tue, 06 Aug 2024 11:36:50 -0700 (PDT)
+Received: from rowland.harvard.edu (iolanthe.rowland.org. [192.131.102.54])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4518a76f863sm40057131cf.82.2024.08.06.11.36.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Aug 2024 11:36:49 -0700 (PDT)
+Date: Tue, 6 Aug 2024 14:36:47 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: color Ice <wirelessdonghack@gmail.com>
+Cc: gregkh@linuxfoundation.org, kvalo@kernel.org,
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-wireless@vger.kernel.org, mark.esler@canonical.com,
+	stf_xl@wp.pl
+Subject: Re: Ubuntu RT2X00 WIFI USB Driver Kernel NULL pointer
+ Dereference&Use-After-Free Vulnerability
+Message-ID: <ffc826fe-4753-4e7b-92aa-080f58b73c39@rowland.harvard.edu>
+References: <2024080359-getaway-concave-623e@gregkh>
+ <20240806015904.1004435-1-wirelessdonghack@gmail.com>
+ <bc57c8b3-4334-4595-8b5a-5233316edcfb@rowland.harvard.edu>
+ <CAOV16XF8cEg7+HAFQiCUrt9-Dp4M+-TANjQqRXH87AAdgzmNMg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -59,166 +88,29 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <CAOV16XF8cEg7+HAFQiCUrt9-Dp4M+-TANjQqRXH87AAdgzmNMg@mail.gmail.com>
 
--Wflex-array-member-not-at-end was introduced in GCC-14, and we are
-getting ready to enable it, globally.
+On Wed, Aug 07, 2024 at 12:47:26AM +0800, color Ice wrote:
+> Hi,
+> 
+> I'm glad that you can address this issue. I believe that this is indeed a
+> vulnerability because the issue is caused by the rt2x00 driver's failure to
+> properly shut down its async queues. While it requires sudo to execute, it
+> is still a problem as it can trigger a kernel system exception. We can
+> imagine that this vulnerability could be executed without root permissions
+> in certain scenarios. For instance, in many embedded systems, configuring
+> udev rules might be necessary to ensure automated operations, and in such
+> scenarios, it can be triggered without root permissions.
+> 
+> Therefore, I believe that from a vulnerability perspective, it should
+> indeed be eligible for a CVE, as it can be fixed and it is indeed a flaw.
+> If this vulnerability is not addressed, future driver processing and
+> adaptation may encounter robustness and security issues. I believe security
+> issues should be handled with the corresponding seriousness.
+> 
+> Thank you.
 
-So, in order to avoid ending up with a flexible-array member in the
-middle of multiple other structs, we use the `__struct_group()`
-helper to create a new tagged `struct libipw_hdr_3addr_hdr`.
-This structure groups together all the members of the flexible
-`struct libipw_hdr_3addr` except the flexible array.
+You didn't answer my question.  Are you able to test patches?
 
-As a result, the array is effectively separated from the rest of the
-members without modifying the memory layout of the flexible structure.
-We then change the type of the middle struct members currently causing
-trouble from `struct libipw_hdr_3addr` to `struct libipw_hdr_3addr_hdr`.
-
-We also want to ensure that when new members need to be added to the
-flexible structure, they are always included within the newly created
-tagged struct. For this, we use `static_assert()`. This ensures that the
-memory layout for both the flexible structure and the new tagged struct
-is the same after any changes.
-
-This approach avoids having to implement `struct libipw_hdr_3addr_hdr`
-as a completely separate structure, thus preventing having to maintain
-two independent but basically identical structures, closing the door
-to potential bugs in the future.
-
-Also, remove a couple of unused structures `struct libipw_ibss_dfs` and
-`struct libipw_assoc_request`.
-
-So, with these changes, fix the following warnings:
-drivers/net/wireless/intel/ipw2x00/libipw.h:403:33: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/intel/ipw2x00/libipw.h:420:33: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/intel/ipw2x00/libipw.h:433:33: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/intel/ipw2x00/libipw.h:441:33: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/intel/ipw2x00/libipw.h:447:33: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/intel/ipw2x00/libipw.h:460:33: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/intel/ipw2x00/libipw.h:468:33: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/intel/ipw2x00/libipw.h:476:33: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/intel/ipw2x00/libipw.h:592:36: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
- drivers/net/wireless/intel/ipw2x00/libipw.h | 46 ++++++++-------------
- 1 file changed, 18 insertions(+), 28 deletions(-)
-
-diff --git a/drivers/net/wireless/intel/ipw2x00/libipw.h b/drivers/net/wireless/intel/ipw2x00/libipw.h
-index 9065ca5b0208..bad080d33c07 100644
---- a/drivers/net/wireless/intel/ipw2x00/libipw.h
-+++ b/drivers/net/wireless/intel/ipw2x00/libipw.h
-@@ -345,14 +345,19 @@ struct libipw_hdr_2addr {
- } __packed;
- 
- struct libipw_hdr_3addr {
--	__le16 frame_ctl;
--	__le16 duration_id;
--	u8 addr1[ETH_ALEN];
--	u8 addr2[ETH_ALEN];
--	u8 addr3[ETH_ALEN];
--	__le16 seq_ctl;
-+	/* New members MUST be added within the __struct_group() macro below. */
-+	__struct_group(libipw_hdr_3addr_hdr, hdr, __packed,
-+		__le16 frame_ctl;
-+		__le16 duration_id;
-+		u8 addr1[ETH_ALEN];
-+		u8 addr2[ETH_ALEN];
-+		u8 addr3[ETH_ALEN];
-+		__le16 seq_ctl;
-+	);
- 	u8 payload[];
- } __packed;
-+static_assert(offsetof(struct libipw_hdr_3addr, payload) == sizeof(struct libipw_hdr_3addr_hdr),
-+	      "struct member likely outside of __struct_group()");
- 
- struct libipw_hdr_4addr {
- 	__le16 frame_ctl;
-@@ -400,7 +405,7 @@ struct libipw_info_element {
- */
- 
- struct libipw_auth {
--	struct libipw_hdr_3addr header;
-+	struct libipw_hdr_3addr_hdr header;
- 	__le16 algorithm;
- 	__le16 transaction;
- 	__le16 status;
-@@ -417,7 +422,7 @@ struct libipw_channel_switch {
- } __packed;
- 
- struct libipw_action {
--	struct libipw_hdr_3addr header;
-+	struct libipw_hdr_3addr_hdr header;
- 	u8 category;
- 	u8 action;
- 	union {
-@@ -430,7 +435,7 @@ struct libipw_action {
- } __packed;
- 
- struct libipw_disassoc {
--	struct libipw_hdr_3addr header;
-+	struct libipw_hdr_3addr_hdr header;
- 	__le16 reason;
- } __packed;
- 
-@@ -438,13 +443,13 @@ struct libipw_disassoc {
- #define libipw_deauth libipw_disassoc
- 
- struct libipw_probe_request {
--	struct libipw_hdr_3addr header;
-+	struct libipw_hdr_3addr_hdr header;
- 	/* SSID, supported rates */
- 	u8 variable[];
- } __packed;
- 
- struct libipw_probe_response {
--	struct libipw_hdr_3addr header;
-+	struct libipw_hdr_3addr_hdr header;
- 	__le32 time_stamp[2];
- 	__le16 beacon_interval;
- 	__le16 capability;
-@@ -456,16 +461,8 @@ struct libipw_probe_response {
- /* Alias beacon for probe_response */
- #define libipw_beacon libipw_probe_response
- 
--struct libipw_assoc_request {
--	struct libipw_hdr_3addr header;
--	__le16 capability;
--	__le16 listen_interval;
--	/* SSID, supported rates, RSN */
--	u8 variable[];
--} __packed;
--
- struct libipw_reassoc_request {
--	struct libipw_hdr_3addr header;
-+	struct libipw_hdr_3addr_hdr header;
- 	__le16 capability;
- 	__le16 listen_interval;
- 	u8 current_ap[ETH_ALEN];
-@@ -473,7 +470,7 @@ struct libipw_reassoc_request {
- } __packed;
- 
- struct libipw_assoc_response {
--	struct libipw_hdr_3addr header;
-+	struct libipw_hdr_3addr_hdr header;
- 	__le16 capability;
- 	__le16 status;
- 	__le16 aid;
-@@ -588,13 +585,6 @@ struct libipw_channel_map {
- 	u8 map;
- } __packed;
- 
--struct libipw_ibss_dfs {
--	struct libipw_info_element ie;
--	u8 owner[ETH_ALEN];
--	u8 recovery_interval;
--	struct libipw_channel_map channel_map[];
--};
--
- struct libipw_csa {
- 	u8 mode;
- 	u8 channel;
--- 
-2.34.1
-
+Alan Stern
 
