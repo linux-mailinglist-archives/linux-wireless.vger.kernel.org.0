@@ -1,138 +1,140 @@
-Return-Path: <linux-wireless+bounces-11075-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11076-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32F3A94A3DE
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 11:13:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D23DE94A42A
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 11:21:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E252D28355C
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 09:13:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 748071F24DE9
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 09:21:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 541A21CB32D;
-	Wed,  7 Aug 2024 09:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48FD31CCB2B;
+	Wed,  7 Aug 2024 09:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="F0ws4b/L"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gki+FWDk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D761CB327;
-	Wed,  7 Aug 2024 09:12:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C32811E2
+	for <linux-wireless@vger.kernel.org>; Wed,  7 Aug 2024 09:20:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723021945; cv=none; b=HsH6n/mL7u6p62QSydzS+yMgcCXRa4fZA6XGzXGcQkQlSh0cXx4BHd2siX5AZmeg1Wjlr6/C+S9F28iBu0/dD7TmimWzak3z/TAlOGirMhfFf4GH/rERClDGJtD4EuxDK7lK0AbpNHf8Wr8x4oZyrGwOFvuiqSbaqPJ3rxWHVvI=
+	t=1723022416; cv=none; b=qA8aT41FZWsfmimYmKa3wC8ywKlEst6pqwagSwkz2aNK73HOwu+zcCEtOVwSMzznZI0jSc1rtZsMys0jN6GKiMV6YcGHIYO5MnR2Il+ACfHAS1mO4N/2//eaB5+RtBblfVohcvRa0Aw+v0P5yTU37iRe44muwqNChNRYmDc8o34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723021945; c=relaxed/simple;
-	bh=CJNm1GubiAX2fLXyxwYfBDtfMO8OYXU9LaZ1zSUcUFA=;
-	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=H0A5/f2flD6/uHL7Bm+nAo7es/VuwUDNiVXwbnYOIyxCG51ux7dpTlvJSQby+pjQ5JyXPlcfYOzkvOidwVZV5/AI3oTpC805uRa7ZQi5l5oZrLmV6SkqEH69oAzxSQlHQK7/kvULIV57pXnhqfz8+Z7ANed5wkHS0KlqkcozJO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=F0ws4b/L; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	Reply-To:Subject:Cc:To:From:MIME-Version:Date:Message-ID:From:Sender:Reply-To
-	:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=NC29QY+AFTQHnrlEBxtLkRVzp5/68wW+9kEMyNjfTz4=; t=1723021943;
-	x=1723453943; b=F0ws4b/LSn2FUme5Hu43gUKuEITHUWEm0xJsUjhC44enxh6TF2vBarh2KkNps
-	CvmihNPPzSva0I/iu0VJLVS0oOXIUwEGNOq10A+DDNyQwLw0+I+auYPl/PenEzFNe36LiF+VHmdfe
-	vf3LPWZI/HIq5/jeXe7sh4RcX7ParCs+I1jTMps911Xvr0jUnQhaiyVxR2MsHsePfkEpz2SzQr6+/
-	pHaKZpo7ldm3yRMetJLkinyh8rMMjnN0xg5oA0EU7e6fPzohABLEk2mstI1Ou+Ivvk/1B77RPcxi/
-	bYEaEEcHplDSH1FCvvUOsfomrJtwLGXLYmFo4VrWPBPiH43nOw==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1sbciS-0001H5-Ab; Wed, 07 Aug 2024 11:12:20 +0200
-Message-ID: <7a43d26e-95eb-49d4-bc02-434c239909ff@leemhuis.info>
-Date: Wed, 7 Aug 2024 11:12:19 +0200
+	s=arc-20240116; t=1723022416; c=relaxed/simple;
+	bh=9EnVftXVQX8DQRImvxhrpfvL4NSOIAveu8bVaaXe7iI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eqtvBPRbdWppN7DTSXtqct1EikKrzkyy7X9kG8vxpDyCMuG/eUkXLg0L23f7TNvp3daVXhClCHQloM5ne3obQjYzMfKk5lFMxYBlWyepelzmP63tlpFfzRIdorYUZeKNYaFa/+2TmKeG4PlrhFH5qgkdH8imvXRqnQjM4X3q+KU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gki+FWDk; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723022414; x=1754558414;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=9EnVftXVQX8DQRImvxhrpfvL4NSOIAveu8bVaaXe7iI=;
+  b=gki+FWDkWU/juUyt3XOO6f4lwiU+74WZdG2IZ8W4sWVzBe/WIa27vBXM
+   37AHKKlnUnKtx3jiaKyZlWLcenjYGRA9sEdCfnmTOEw/Y1XC1tiM0zA6u
+   WXAK1atS4qjytsAbeKbp2jS3jIYlLrkfnp7KB7xSqkZgyKyGzW4aqVMPH
+   b7YqJKTLxSORVr5aDygJ2JgyiPGOHKhDtR90jqb2RKzc1SDWIjSitdu2Y
+   ZCBOqObtEqkepAYU+UuXTPBytuTnb7OwQFCp4NmCTYv1jQD/JhvXvZrAO
+   SkG33cNXhvM19nF30AuTzh8TLhDMfirL8gCqQty35mcQWmMG0fMR4qlzO
+   A==;
+X-CSE-ConnectionGUID: wHJUXwmuTfG4LFeN9r2q0w==
+X-CSE-MsgGUID: DN1ik2pnQievNoKTwzsG+g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11156"; a="21223620"
+X-IronPort-AV: E=Sophos;i="6.09,269,1716274800"; 
+   d="scan'208";a="21223620"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2024 02:20:13 -0700
+X-CSE-ConnectionGUID: wmfEZko7Q+uOQf1HlCkJag==
+X-CSE-MsgGUID: B0k27i1mTH6RZCQT47491Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,269,1716274800"; 
+   d="scan'208";a="56760713"
+Received: from unknown (HELO b6bf6c95bbab) ([10.239.97.151])
+  by fmviesa009.fm.intel.com with ESMTP; 07 Aug 2024 02:20:09 -0700
+Received: from kbuild by b6bf6c95bbab with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sbcpv-0005GC-2d;
+	Wed, 07 Aug 2024 09:20:05 +0000
+Date: Wed, 7 Aug 2024 17:19:37 +0800
+From: kernel test robot <lkp@intel.com>
+To: David Ruth <druth@chromium.org>, nbd@nbd.name, lorenzo@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, linux-wireless@vger.kernel.org,
+	timvp@chromium.org, sean.wang@mediatek.com, ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com, David Ruth <druth@chromium.org>
+Subject: Re: [PATCH] wifi: mt76: mt7921: Cancel scan work on unregister.
+Message-ID: <202408071657.Qkyy8VqM-lkp@intel.com>
+References: <20240806222113.2689446-1-druth@chromium.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-To: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
-Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
- Johannes Berg <johannes.berg@intel.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>,
- Linux kernel regressions list <regressions@lists.linux.dev>
-Subject: [regression] Significant WiFi Speed Reduction with Kernel Versions >
- 6.8.12 on Intel Wi-Fi 6 AX203
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1723021943;9525817b;
-X-HE-SMSGID: 1sbciS-0001H5-Ab
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240806222113.2689446-1-druth@chromium.org>
 
-Hi, Thorsten here, the Linux kernel's regression tracker.
+Hi David,
 
-Mukesh Sisodiya, I noticed a report about a regression in
-bugzilla.kernel.org that appears to be caused by a change of yours:
+kernel test robot noticed the following build errors:
 
-099a47dbe71b75 ("wifi: iwlwifi: Add support for new 802.11be device")
-[v6.9-rc1]
+[auto build test ERROR on wireless-next/main]
+[also build test ERROR on wireless/main linus/master v6.11-rc2 next-20240807]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-As many (most?) kernel developers don't keep an eye on the bug tracker,
-I decided to write this mail. To quote from
-https://bugzilla.kernel.org/show_bug.cgi?id=219114 :
+url:    https://github.com/intel-lab-lkp/linux/commits/David-Ruth/wifi-mt76-mt7921-Cancel-scan-work-on-unregister/20240807-065202
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+patch link:    https://lore.kernel.org/r/20240806222113.2689446-1-druth%40chromium.org
+patch subject: [PATCH] wifi: mt76: mt7921: Cancel scan work on unregister.
+config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20240807/202408071657.Qkyy8VqM-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 14.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240807/202408071657.Qkyy8VqM-lkp@intel.com/reproduce)
 
-> I am experiencing a significant reduction in WiFi download speeds when
-> using any Linux kernel version greater than 6.8.12. The issue does not
-> occur with kernel versions 6.8.12 or lower. The only change is the
-> firmware version loaded by the kernel (I have attached the full output
-> of "dmesg | grep iwlwifi" for both kernel versions as text files). I
-> have also tried downgrading the firmware, but it did not resolve the
-> issue. The problem occurs across different Linux distributions,
-> indicating that it is related to the default kernel.
-> 
-> Hardware Details:
-> 
-> Laptop Model: Acer Nitro 5 AN-515-58
-> Network Card: Intel® Wi-Fi 6 AX203, REV=0x370
-> CPU: Intel i7-12700H
-> Bluetooth: Intel Corp. AX201 Bluetooth
-> 
-> Additional Information:
-> 
-> lspci -nnkv | sed -n ‘/Network/,/^$/p’:
-> 0000:00:14.3 Network controller [0280]: Intel Corporation Alder Lake-P PCH CNVi WiFi [8086:51f0] (rev 01)
->         Subsystem: Rivet Networks Dual Band Wi-Fi 6(802.11ax) Killer AX1650i 160MHz 2x2 [Cyclone Peak] [1a56:1652]
->         Flags: bus master, fast devsel, latency 0, IRQ 16, IOMMU group 10
->         Memory at 6105274000 (64-bit, non-prefetchable) [size=16K]
->         Capabilities: <access denied>
->         Kernel driver in use: iwlwifi
->         Kernel modules: iwlwifi
-> 
-> lsusb | grep Bluetooth:
-> Bus 003 Device 003: ID 8087:0026 Intel Corp. AX201 Bluetooth
-> 
-> Thank you for your assistance.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202408071657.Qkyy8VqM-lkp@intel.com/
 
-See the ticket for more details and the bisection. Note, you have to use
-bugzilla to reach the reporter, as I sadly[1] can not CCed them in mails
-like this.
+All errors (new ones prefixed by >>):
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+   drivers/net/wireless/mediatek/mt76/mt7921/sdio.c: In function 'mt7921s_unregister_device':
+>> drivers/net/wireless/mediatek/mt76/mt7921/sdio.c:44:47: error: invalid type argument of '->' (have 'struct mt76_phy')
+      44 |         struct mt792x_phy *phy = dev->mt76.phy->priv;
+         |                                               ^~
 
-[1] because bugzilla.kernel.org tells users upon registration their
-"email address will never be displayed to logged out users"
 
-P.S.: let me use this mail to also add the report to the list of tracked
-regressions to ensure it's doesn't fall through the cracks:
+vim +44 drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
 
-#regzbot introduced: 099a47dbe71b75
-#regzbot title: wifi: iwlwifi: WiFi Speed Reduction on Intel Wi-Fi 6 AX203
-#regzbot from: siero.o.p.33
-#regzbot duplicate: https://bugzilla.kernel.org/show_bug.cgi?id=219114
-#regzbot ignore-activity
+    40	
+    41	static void mt7921s_unregister_device(struct mt792x_dev *dev)
+    42	{
+    43		struct mt76_connac_pm *pm = &dev->pm;
+  > 44		struct mt792x_phy *phy = dev->mt76.phy->priv;
+    45	
+    46		cancel_delayed_work_sync(&phy->scan_work);
+    47		cancel_work_sync(&dev->init_work);
+    48		mt76_unregister_device(&dev->mt76);
+    49		cancel_delayed_work_sync(&pm->ps_work);
+    50		cancel_work_sync(&pm->wake_work);
+    51	
+    52		mt76s_deinit(&dev->mt76);
+    53		mt7921s_wfsys_reset(dev);
+    54		skb_queue_purge(&dev->mt76.mcu.res_q);
+    55	
+    56		mt76_free_device(&dev->mt76);
+    57	}
+    58	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
