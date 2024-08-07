@@ -1,127 +1,135 @@
-Return-Path: <linux-wireless+bounces-11102-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11103-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E03BB94B0E7
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 22:07:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BC9494B11B
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 22:17:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CAB91F2437E
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 20:07:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C18B28111F
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 20:17:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E913814263B;
-	Wed,  7 Aug 2024 20:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CEA18286A;
+	Wed,  7 Aug 2024 20:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RJhyBLGk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OCvN1uOi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB23364BC
-	for <linux-wireless@vger.kernel.org>; Wed,  7 Aug 2024 20:07:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDCAA2B9C6
+	for <linux-wireless@vger.kernel.org>; Wed,  7 Aug 2024 20:17:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723061262; cv=none; b=Aili2Tj7B+tD4iprZX8/REQCLPh2XMiGaigI49QwwBqVfHdIoZjDaMjZIsBR2/IA+AF4JuzweNOnN5i+fFzcsTDwuq/wRCidYgrKVknRG2AnrD5i1HaS5+BtkuPv/gXJUMM3k/oPdJO1KhgTnh6JFdWezHK5kyUrp5yMpuUVBiM=
+	t=1723061842; cv=none; b=q4uvxfZGXCA5kVBhA1lUHqUtOnLExlLsily7OxxBSRPxvKADFbjRndOEzDPhSiUFwQtwFXCqqaDbbHbsQczZsUfU/b7TIoPZKQ2S/Xa77KA+8vmcYxYWUUtQxhYxOHNhLXzv6ihKaX2BZmzjn58MGgeur25lMtDJVk5TVIT41sA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723061262; c=relaxed/simple;
-	bh=CXNYnMOvTngcjKhCxk3U23uLs3ajC3GspqRY0lDBINk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lwkQXJXAQ6rYM7t0bAyxCSfCddHImGOg7gQwPHr1FAgxnxEoYCpdnJ3BuaaKWtymCvcfdhL9Jiw5vx17ec2W8pSH8I1p5qAeJSEcaqmaBtcfymp+dyFdCwx43xWa7SK5G9zKq+3Z84RMhTsjUgKmoDGDrAnlwD8DeW4nIPjrl+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RJhyBLGk; arc=none smtp.client-ip=209.85.210.49
+	s=arc-20240116; t=1723061842; c=relaxed/simple;
+	bh=UuZ2f6IWHZQHV7yV7aYk9fIupZa52Zt6pmXyUDYP6JA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=r6lll18Zq7wMGY26ZSjHtUqv3uw8/bNVRAKGgudaSlTtJhy4JkEGQCbKCm51zNHxZGJ4KJNJFPBW97+9EUcp1embAx8ZIphuRphFj7a9tT6Rl0rlHLXHYPTj/B2NPNah7jVRnuuHj1wYcYDAs/VZLZgB744Ix/Mnt4m0H0pTS4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OCvN1uOi; arc=none smtp.client-ip=209.85.218.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-70943713472so104670a34.2
-        for <linux-wireless@vger.kernel.org>; Wed, 07 Aug 2024 13:07:41 -0700 (PDT)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a7ad02501c3so27428466b.2
+        for <linux-wireless@vger.kernel.org>; Wed, 07 Aug 2024 13:17:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723061260; x=1723666060; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YQoryzgEQdmWu97fZ0il4tX9n46IYJbR/bXv36XZePg=;
-        b=RJhyBLGk8FFGKsBslNFr5lNbBrmORlXJzUWWurn7sdaDMiGOFITZ0KSqnzIR4AcMkM
-         GsxMh3c2hEiKFfBkNuwF2yJTFwR5lMx9hZyVMVy3ZPBZw8I1XOWSpnViujtcCZ0fjHZf
-         A6bX3topcTd9LOoJjcnzBNYRUVyDEFNrkkcDg5ziDEi7bbffnF948ZI/iM/35HaC3OnD
-         Yj+QpV3Snm9L1OFHDQbUnkYEMEv7MvWDkgOxKgXfzA/SIZRL+KUIxkt9/LIoMuowNUV4
-         UMeZA5Ge5ls73fn37/eW51P5Y9sy6RHyfjy8kYuXyVU3yO7HDKbZCWMlP0cvYMXCLpSD
-         342g==
+        d=gmail.com; s=20230601; t=1723061839; x=1723666639; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DDFXcM0AQln08y/HqaDv9i1t4wfrxc5yWfl2VQERkQ4=;
+        b=OCvN1uOinK81ySGDn/UbN1TJ+NNQdWLlyQGfqyOpoSAokw2aopiKkh0h1WVfwwcEmd
+         ZLfhlpnx1DPik9ZUev5iigTO9km3zySI9bYnDxvFYdBKAlPLI/L/lMsTdnGfRt1pYhvp
+         QMudMBmSHpK5Izufk33W2/QnaeQ9Xb4XPzCj8W1q2GsykF8e4rEVAMZf2d6z163V/zki
+         zEI/F+h3E1tZet+L8kA23Azv7ra8J6JTOy5Xp45udvpMH9y7RqDSrTiaWe6rgA65RES+
+         Wd78wnDfYmLzkX5CWhVQuuYHkTGViILdT9fiyrMBwUCQwL41FsC98kQiuo1I6zCJAGWD
+         jMKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723061260; x=1723666060;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YQoryzgEQdmWu97fZ0il4tX9n46IYJbR/bXv36XZePg=;
-        b=I8Fqzvimr3aGSaOmkzlQNsGoQaaP3fTYQzXcWWpw/Dec1CGDdcCr52l6gw9qgMyonp
-         APC1MUEV/Z4N0Qh+F/atVP8GgRSXx5g0PYtj35rQR8c2M3q36rfAfQf3cmHEDzpQKttR
-         84KJBJ8bhYInD/d4mbeM8FrPpTFMkWDWX+QH84x2UiBH+VVZetnnGQuNFnopDqEIA3Xm
-         LvdjwtM13t4hfBSoya75AmD+h5qW0IMDfho8SXM3Eoi3Bao8+afZsiKljZ+yW4yCsEBL
-         le+qYxZkUZm7h35jdD/6gmqYhGmhj4X6kgf6z7unnNcIxUnWruWyXk+TsMk2HUPb+sjG
-         P2Tg==
-X-Gm-Message-State: AOJu0YzDKHLfWYro+OAVty004j4uAfuDK6S8N5HnvjPvRGlY2sLcOTGz
-	kzA8ItDGqvDHpTI1fZrGtfCzsTEusZ4MSnS88z1UhHr5SuHJgFZn37ws5KAHlJA6ONn9AJxPQ/G
-	E0wkM5ZdT5obDR84T3eKHrZkARV7bPA==
-X-Google-Smtp-Source: AGHT+IHqIY6BYsgMR9L2Gmro8SiC5YgoWHyLjKG0AKtsmdS8khW0fg5v7v+1EwkHMQ9ZAifzk4/kWMDDRalKisTiRh0=
-X-Received: by 2002:a05:6830:630a:b0:709:2fa3:1337 with SMTP id
- 46e09a7af769-709b321e02bmr26551138a34.14.1723061260432; Wed, 07 Aug 2024
- 13:07:40 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1723061839; x=1723666639;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DDFXcM0AQln08y/HqaDv9i1t4wfrxc5yWfl2VQERkQ4=;
+        b=tNkpUT/DjnaTS06rIjJKrDFTFxMnxH5shAy57mUDciPYP1YF4B3KGGE9cjQsMUO1Ef
+         3/z+kszc3p/Lu89QcwxAttcPCEXbqBuenwM9lVp0FRqUWjZAVYxM89K3L428Gds6cOPL
+         MgD2ZLW+zztn5PINrX5zUvmXW2/OaKo6T4Q9JbGWsNNCC7CP1wb8FcQj5er2actsG8BH
+         NmCNoJD6/gowfdgalwisn89GY7pyFs4Bu2hv0kgZ4epQ5yAHxWEGFiXgKUdcYbz15J8+
+         cynXuRZqlgJt4I08QJG5eHKqUE1dWyDsYafix1mTpJUISMlOsir+RFJY9V3VTlMqUIXW
+         KuSg==
+X-Forwarded-Encrypted: i=1; AJvYcCX/8d78UHxKPYvnBXYScw0BEkLnX/Lv8krZTSi+7MzY0megAu4l9BBCbVMT7wbOfkjzp5yhCFfEtfH/H1C14IVTkdl7N6oJFp2Wr7fiFjY=
+X-Gm-Message-State: AOJu0YzspvI56rXDATjMWfWQVApj4Ipf2pDlMc3vMli9evWDy5/uPrck
+	mg3AJhQR4tg5zhZeK+9zPNdC5WsnCpoQpJ25YflAAs9MeANQn98U
+X-Google-Smtp-Source: AGHT+IFqmilCxuVIz8T186lJGWJ8QDI2oCgrPSxeY3/wCi4LeERf4O2NyFnegPs4r7HJn3WYSiKvRA==
+X-Received: by 2002:a17:907:6ea3:b0:a7a:a4be:2f95 with SMTP id a640c23a62f3a-a7dc4fdf818mr1415659966b.5.1723061838745;
+        Wed, 07 Aug 2024 13:17:18 -0700 (PDT)
+Received: from [192.168.0.50] ([79.119.240.114])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7dc9c0c557sm666092066b.53.2024.08.07.13.17.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 07 Aug 2024 13:17:18 -0700 (PDT)
+Message-ID: <0ff637e5-1d85-4e3a-a105-e41cd5be4172@gmail.com>
+Date: Wed, 7 Aug 2024 23:17:14 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240731210243.7467-1-rosenp@gmail.com> <201f06b6-14f5-41bb-8897-49665cf14b66@nbd.name>
- <CAKxU2N9r3Y=Z+rtPbCteWA8-5fRb2NTy2e4xG+=7JvhtzHPg7A@mail.gmail.com> <5dfa4b5a-d8eb-42a8-92bb-81e713fe3395@nbd.name>
-In-Reply-To: <5dfa4b5a-d8eb-42a8-92bb-81e713fe3395@nbd.name>
-From: Rosen Penev <rosenp@gmail.com>
-Date: Wed, 7 Aug 2024 13:07:29 -0700
-Message-ID: <CAKxU2N_9naiGUk8uOwWNUNbzf8SFPdYPt-Wzg93pksjau2tLLA@mail.gmail.com>
-Subject: Re: [PATCH] net: ath9k: use devm for request_irq
-To: Felix Fietkau <nbd@nbd.name>
-Cc: linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/4] wifi: rtw88: Enable USB RX aggregation for
+ 8822c/8822b/8821c
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Sascha Hauer <sha@pengutronix.de>
+References: <acc5ccc7-e573-472f-96d2-582716046aa6@gmail.com>
+ <3b7b3655-9ec5-4277-b0ff-5535b1fdf281@gmail.com>
+ <8218e3aeb62b463d9562ae02213e29ee@realtek.com>
+Content-Language: en-US
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <8218e3aeb62b463d9562ae02213e29ee@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Aug 7, 2024 at 1:05=E2=80=AFPM Felix Fietkau <nbd@nbd.name> wrote:
->
-> On 07.08.24 20:52, Rosen Penev wrote:
-> > On Wed, Aug 7, 2024 at 10:47=E2=80=AFAM Felix Fietkau <nbd@nbd.name> wr=
-ote:
-> >>
-> >> On 31.07.24 23:02, Rosen Penev wrote:
-> >> > Avoids having to manually call free_irq. Simplifies code slightly.
-> >> >
-> >> > Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> >> > ---
-> >> >   drivers/net/wireless/ath/ath9k/ahb.c | 7 ++-----
-> >> >   drivers/net/wireless/ath/ath9k/pci.c | 9 +++------
-> >> >   2 files changed, 5 insertions(+), 11 deletions(-)
-> >> >
-> >> > diff --git a/drivers/net/wireless/ath/ath9k/ahb.c b/drivers/net/wire=
-less/ath/ath9k/ahb.c
-> >> > index 1a6697b6e3b4..29f67ded8fe2 100644
-> >> > --- a/drivers/net/wireless/ath/ath9k/ahb.c
-> >> > +++ b/drivers/net/wireless/ath/ath9k/ahb.c
-> >> > @@ -118,7 +118,7 @@ static int ath_ahb_probe(struct platform_device =
-*pdev)
-> >> >       sc->mem =3D mem;
-> >> >       sc->irq =3D irq;
-> >> >
-> >> > -     ret =3D request_irq(irq, ath_isr, IRQF_SHARED, "ath9k", sc);
-> >> > +     ret =3D devm_request_irq(&pdev->dev, irq, ath_isr, IRQF_SHARED=
-, "ath9k", sc);
-> >> Sorry for the late response, but I think this patch is wrong any may
-> >> need to be reverted. If there is an error during probe, and the IRQ
-> >> fires for some reason, there could be an use-after-free bug when the I=
-RQ
-> >> handler accesses the data in sc.
-> >> The explicit freq_irq calls were preventing that from happening.
-> > How about keeping the devm variant and replacing free_irq with
-> > devm_free_irq in probe?
->
-> If you do that, then using the devm variant is completely pointless.
-> I think a full revert is the best option.
-OTOH it still allows removing free_irq from _remove, but I see your point.
->
-> - Felix
+On 07/08/2024 03:37, Ping-Ke Shih wrote:
+> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>> @@ -236,13 +237,17 @@ static void rtw_watch_dog_work(struct work_struct *work)
+>>         else
+>>                 ps_active = false;
+>>
+>> -       ewma_tp_add(&stats->tx_ewma_tp,
+>> -                   (u32)(stats->tx_unicast >> RTW_TP_SHIFT));
+>> -       ewma_tp_add(&stats->rx_ewma_tp,
+>> -                   (u32)(stats->rx_unicast >> RTW_TP_SHIFT));
+>> +       tx_unicast_mbps = stats->tx_unicast >> RTW_TP_SHIFT;
+>> +       rx_unicast_mbps = stats->rx_unicast >> RTW_TP_SHIFT;
+>> +
+>> +       ewma_tp_add(&stats->tx_ewma_tp, tx_unicast_mbps);
+>> +       ewma_tp_add(&stats->rx_ewma_tp, rx_unicast_mbps);
+>>         stats->tx_throughput = ewma_tp_read(&stats->tx_ewma_tp);
+>>         stats->rx_throughput = ewma_tp_read(&stats->rx_ewma_tp);
+>>
+>> +       rtw_hci_dynamic_rx_agg(rtwdev,
+>> +                              tx_unicast_mbps >= 1 || rx_unicast_mbps >= 1);
+>> +
+> 
+> Not sure if you have tried RTL8822CU with this dynamic_rx_agg? 
+> I suspect RTL8822CU can't access IO before rtw_leave_lps(), at least RTL8822CE can't.
+> Let's move rtw_hci_dynamic_rx_agg() right after rtw_phy_dynamic_mechanism() below.
+> 
+> Sorry to forget this point on v2 review. 
+> 
+>>         /* reset tx/rx statictics */
+>>         stats->tx_unicast = 0;
+>>         stats->rx_unicast = 0;
+> 
+> 
+> 
+
+I received RTL8822CU (LM842) two days ago and tested these
+patches with it, but I was too lazy to update the commit
+messages. I didn't notice any problems. The RX speed measured
+with iperf3 before was ~200 Mbps, after it's ~300 Mbps on my
+x86_64 laptop.
+
+I will move the function call.
 
