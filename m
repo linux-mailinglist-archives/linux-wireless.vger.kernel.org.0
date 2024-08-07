@@ -1,109 +1,99 @@
-Return-Path: <linux-wireless+bounces-11081-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11082-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF8BC94A713
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 13:39:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A41594A782
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 14:09:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B58EB237CE
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 11:39:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A0591C2084C
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 12:09:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 693691E2863;
-	Wed,  7 Aug 2024 11:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72FE11E4EF5;
+	Wed,  7 Aug 2024 12:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fBg+5xhM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s6RAR6/Y"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E3A1DF69A
-	for <linux-wireless@vger.kernel.org>; Wed,  7 Aug 2024 11:39:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0D11E213B;
+	Wed,  7 Aug 2024 12:09:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723030761; cv=none; b=DLmxsNq0LGV/lk1u4qgh5lKh5eEVHlQMFZTjnpfISpiy4z9HPvjpRhVhd86tVan+x5tKd06lD3sibOSHBC5IbKHRudtdY8rx1G7Kr2gvwVY58ySbiFykt1ng7RI5YQcvW92PfpwjiCV3wUFj4N6dY35r4BbL9JvkmBTxo+m3OdQ=
+	t=1723032542; cv=none; b=j/vKX5MSknVFmkiJk3kvvT+OF/Cv5t2fVytGsNQzGK/P/pboHhyQrpItn6hMVJE7YjdGjCBU14u8MiXZUhbmckdxeBXEHemVt4W+JpsRlDn8SXP3Sy9hXtRf+aNOYwr2qx9veSg68rzY+QXVVfSiFRNbQi9gSF+ensWPs9xZclo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723030761; c=relaxed/simple;
-	bh=Dhr3h+oklaBA8hjgno/SaZcjPJ8+9JMssBSDUQ2p878=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jmsXFzp9BGx3QfuG0J400LXQcP3f8OjDnClrxRJHZkHQRf9lOICiiHrGcl06io7zCegE9q4h1R2CU14mjP6wr1eVfo5yzGwT0XAAwmj6cwFFqp1kkE3I8G77cvIPiC+/tWTwsJy5eHs7pmrgCcqmL/HzBo9KeUazhsC4auIYcg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fBg+5xhM; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723030758;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5S7xIbSbjmLQrN3ZIyMbc2A3F+RtNTgafiZdzQ8yuo8=;
-	b=fBg+5xhMNKZSwZs6CwXLeaTUu9ozV/coDlgURHFIGoRqpqbDmryjfR2Hsha+fkFbVVODO2
-	yRRJGsrlSpoRzHA9tJl4v1V8mhzQxF8WyjmAdP7VwD6nytbeNt6gFlZOPNUzxfU5Ht96FE
-	5O8huREFoOwlGlrrqazFo8/kG0+eA9A=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-591-U_lXVfatPFGCAf9WE5SZqQ-1; Wed, 07 Aug 2024 07:39:17 -0400
-X-MC-Unique: U_lXVfatPFGCAf9WE5SZqQ-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-42809eb7b99so4564725e9.0
-        for <linux-wireless@vger.kernel.org>; Wed, 07 Aug 2024 04:39:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723030756; x=1723635556;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5S7xIbSbjmLQrN3ZIyMbc2A3F+RtNTgafiZdzQ8yuo8=;
-        b=CjQYTSJtZ7Q5RELhUZsJGAfOtf8T0XCSmRqTheVtuhZnjz9wm3G2yEnhpS5L+a4hWx
-         Rq0jKcCNyxIZ+BWID3ZvTf3kS7HLv03epyS6oB0AW1ZexUiS7e0QwpFt7SpmlWHpeJS0
-         VDqSFsOwSiIPgeNvDicgUvlLNTbSafFqsUe6uYsPmm58TmzA+RQCl6My2FiLV8cGRkVm
-         wKjYIbdlvUraIWYmlkceDUi244XwgmAPSi7TLjvKbItGt/3I8s6/CsXz3BiFsxAXI2bE
-         FOvDDkG8j26nsR/slpXBFJW8qbTPcTOP17pwikgTgOoHPQNIHAZd3sIeP1XBOpvEf4A4
-         LqXg==
-X-Forwarded-Encrypted: i=1; AJvYcCVlj82FboAAqcCjndj+G37RfBMjQ4Lk6g9c1NTX6QDqJEf3rWMkFgd9Bcl4IGAAipP0nuukSYSP+wVmo1GEluH2Goa7BOE0no36InS8vJo=
-X-Gm-Message-State: AOJu0YxNyJeyxAhw/WbZsCjWJdpdrANi2djl1G/0P2BGQssudpuOrX+J
-	hV6L9VTDNhIJjd0VXhgsjXAqTrStLnlhhOvJO0ytha0f9LEDvzlrNPBXr0VnHnSK/KtwpHd0MYu
-	KlsVDmf4gz16v2FGW3xH19sHFcTit47zQJx2GSywd2VuI2tfrf0DZlWPIKuo55+54
-X-Received: by 2002:a05:600c:3b0a:b0:428:e820:37dc with SMTP id 5b1f17b1804b1-429050c89d6mr14574555e9.7.1723030756441;
-        Wed, 07 Aug 2024 04:39:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFklACx+3IMygHGRA0VycboRHfK6J5n7H+H6JoVNd5OcTlO8tJgAb5+09LYCAuJsMNV8sTyJg==
-X-Received: by 2002:a05:600c:3b0a:b0:428:e820:37dc with SMTP id 5b1f17b1804b1-429050c89d6mr14574125e9.7.1723030755505;
-        Wed, 07 Aug 2024 04:39:15 -0700 (PDT)
-Received: from debian ([92.62.32.42])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429059cbfaesm23154735e9.42.2024.08.07.04.39.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Aug 2024 04:39:15 -0700 (PDT)
-Date: Wed, 7 Aug 2024 13:39:12 +0200
-From: Guillaume Nault <gnault@redhat.com>
-To: hhorace <hhoracehsu@gmail.com>
-Cc: johannes@sipsolutions.net, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kvalo@kernel.org, horms@kernel.org, idosch@nvidia.com
-Subject: Re: [PATCH wireless-next v2] wifi: cfg80211: fix bug of mapping AF3x
- to incorrect User Priority
-Message-ID: <ZrNc4FHH8I3VD0io@debian>
-References: <20240805071743.2112-1-hhoracehsu@gmail.com>
- <20240807082205.1369-1-hhoracehsu@gmail.com>
+	s=arc-20240116; t=1723032542; c=relaxed/simple;
+	bh=artTwD2nsy2eklPPMWNHy14zX1ZDoUqCGhD8PD+B6nU=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=AoQp25qbDnbfbRa1QKq1Fvw+rE3OJIZtyk3D954bweS/kexXiNA89EsK4dygQhtAJEUc9+t/42wo/3Wh+O/jwTPxblDtDAt1+EDAeJPQS2WScCWtJ1hUqgu/PdpOu4tRzmWQlE/BTRqiRrj6tA8aBev636MCxRstvXrRGTw6GSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s6RAR6/Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB2D9C32782;
+	Wed,  7 Aug 2024 12:08:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723032541;
+	bh=artTwD2nsy2eklPPMWNHy14zX1ZDoUqCGhD8PD+B6nU=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=s6RAR6/Y9y2lhzyd+QZjcJpW//3W19Fn9TOCsKF0LdEsYNz/z2arMDMKXJAbrR0Uj
+	 4SzdJSBO7+PqyHAhaJtigZCUuJpfA4ukutmKRjlT9CUqv4GHuYgE9Hy8y+HLgpypHA
+	 YinAC0kDClsQLUj0CUFC0bY+7ngDmL38SOJWI30hHdmKMEfCqZMW3eO2IGeRYNfXk/
+	 opaaDOB+kCRvud4KkVdVxTM2yQBliS1Nn0yvOgHTxartctEIZOCfvGybX8oY2VNhQM
+	 xV7eqhakL0v1Sb+bIDOVB65BqvscNSckGUHIuhkfjVlvTad6YeDL/Ey3z+WJBWH8yv
+	 ziqNsLRA3vE/g==
+From: Kalle Valo <kvalo@kernel.org>
+To: kernel test robot <lkp@intel.com>
+Cc: David Ruth <druth@chromium.org>,  nbd@nbd.name,  lorenzo@kernel.org,
+  oe-kbuild-all@lists.linux.dev,  linux-wireless@vger.kernel.org,
+  timvp@chromium.org,  sean.wang@mediatek.com,  ryder.lee@mediatek.com,
+  shayne.chen@mediatek.com
+Subject: Re: [PATCH] wifi: mt76: mt7921: Cancel scan work on unregister.
+References: <20240806222113.2689446-1-druth@chromium.org>
+	<202408071730.Ux9Cr643-lkp@intel.com>
+Date: Wed, 07 Aug 2024 15:08:58 +0300
+In-Reply-To: <202408071730.Ux9Cr643-lkp@intel.com> (kernel test robot's
+	message of "Wed, 7 Aug 2024 18:31:09 +0800")
+Message-ID: <87plqkilgl.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240807082205.1369-1-hhoracehsu@gmail.com>
+Content-Type: text/plain
 
-On Wed, Aug 07, 2024 at 04:22:05PM +0800, hhorace wrote:
-> According to RFC8325 4.3, Multimedia Streaming: AF31(011010, 26),
-> AF32(011100, 28), AF33(011110, 30) maps to User Priority = 4
-> and AC_VI (Video).
-> 
-> However, the original code remain the default three Most Significant
-> Bits (MSBs) of the DSCP, which makes AF3x map to User Priority = 3
-> and AC_BE (Best Effort).
-> 
+kernel test robot <lkp@intel.com> writes:
 
-Reviewed-by: Guillaume Nault <gnault@redhat.com>
+> Hi David,
+>
+> kernel test robot noticed the following build errors:
+>
+> [auto build test ERROR on wireless-next/main]
+> [also build test ERROR on wireless/main linus/master v6.11-rc2 next-20240807]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
 
+I suspect this should be tested on top of Felix's tree:
+
+MEDIATEK MT76 WIRELESS LAN DRIVER
+M:	Felix Fietkau <nbd@nbd.name>
+M:	Lorenzo Bianconi <lorenzo@kernel.org>
+M:	Ryder Lee <ryder.lee@mediatek.com>
+R:	Shayne Chen <shayne.chen@mediatek.com>
+R:	Sean Wang <sean.wang@mediatek.com>
+L:	linux-wireless@vger.kernel.org
+S:	Maintained
+T:	git https://github.com/nbd168/wireless
+F:	Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+F:	drivers/net/wireless/mediatek/mt76/
+
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+Yeah, using --base is very much recommended.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
