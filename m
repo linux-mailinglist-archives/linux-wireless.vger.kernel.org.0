@@ -1,121 +1,169 @@
-Return-Path: <linux-wireless+bounces-11059-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11060-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAD47949FA8
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 08:09:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41FA294A155
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 09:06:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 651161F245E4
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 06:09:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EE6B1C254D6
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 07:06:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D847019D8BB;
-	Wed,  7 Aug 2024 06:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04A341C4610;
+	Wed,  7 Aug 2024 07:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HdnzMYuZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d1bZ8v97"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0CAC19D081;
-	Wed,  7 Aug 2024 06:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5BEF1C37B9;
+	Wed,  7 Aug 2024 07:06:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723010950; cv=none; b=XQkX1eHvadP0KUBjXaWizDBWvcreVpg23uICuof5SwT6qqERZ+yPj5gGVMSjuTV6kF9c2it0fSksRPTUPe0m/CpG3qkucw+QY2KEJSDqcsJm5qgl9q/AUVcvp+4YDFNpA4R5dDN3/hRRUP3ilSyFzloU+/7eRTvfnbtw5lNevW0=
+	t=1723014372; cv=none; b=lCjUUpRjd521wyI6ghTntKZvatCNQVexCrKAzpezCBCnAu4X3t4Nvxubj+U6DAzGA1/+ojgPJ/H28ZlJI3ZGv8jU2S1QccCU3QI1ilt+9+ORrQc1lbdRGQyE15MS795yKrmqYQNZOtU3veWB7psyHWik24MFmCkejFFs3SsRa00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723010950; c=relaxed/simple;
-	bh=SuxFkzjIjdP0NFpzTyDjZFERVPF4wIASkMgOigUWRKE=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=LyI1eYYEzeBNGfOmvP+ibft0a1haDzdRK+9KDWPP6Wsl9oar9g3bAKl8uXEfex3ByIv+J9c191fKI+TjIFGFdZPenBzoMfesD/BP5+kjtUpG8QQbPtJYRfj3hWrl84gVWYNH29Mwl/gRCay/mcStuvO9oVVy0t+Lwij+sPvOYVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HdnzMYuZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B830C32782;
-	Wed,  7 Aug 2024 06:09:08 +0000 (UTC)
+	s=arc-20240116; t=1723014372; c=relaxed/simple;
+	bh=LnwyqeKWUJeVVtgYbUdGOIDZEmxBbivJVk+fCFggxWk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BWADFYOy9w0PkND0IgL77x+MEL/Gry3tAceOCOjZ8A3vnU+pYBk2d+8tNKmsw1r3JY2yy88CnMuF65y+Is2jvHA05g96InIqC+Bu3cQFhPX0OXhFgw7RRsaZmIiCg/OW4NS0RVtKeZKb6tTHqJE+RpLEDiy9bVKEzL1RPYztGg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d1bZ8v97; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93AF3C32782;
+	Wed,  7 Aug 2024 07:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723010950;
-	bh=SuxFkzjIjdP0NFpzTyDjZFERVPF4wIASkMgOigUWRKE=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=HdnzMYuZ4TZqqo6zRJqsZ1OqX4n9QZWmqMK2Ravq5beXVYX2GfvZ35zSAh7jRSFVa
-	 5pFyfHVfZX267w/aCG2i7RGUcIa4O8csXTBfi1VYg9uWuYRZO7OiWPIzrghDRsLDOR
-	 HD6DpjRfKcltql+7jDkgAEdzzW4qMztE/rbb6hAO6gY3w8zDgsqI8B3bDLT0KNvhB8
-	 pWtzVlG4RvXK7ZZm8FyuQcZM7wR7o33tcDzWu1GFMabmr1j0sXo5aBVCTvSNxf8RqH
-	 UYbBiy/FwgFlOExS3jscuP/9rhafdWSktC5YU8dSAE0uumyTgOU9US0NqxilIGIzJf
-	 LPFzujPS4yH+w==
-From: Kalle Valo <kvalo@kernel.org>
-To: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,  ath12k@lists.infradead.org,
-  linux-wireless@vger.kernel.org,  linux-kernel@vger.kernel.org
-Subject: Re: linux-next: request to include ath.git tree
-References: <87ed7163yd.fsf@kernel.org>
-	<20240807080423.45efb506@canb.auug.org.au>
-Date: Wed, 07 Aug 2024 09:09:07 +0300
-In-Reply-To: <20240807080423.45efb506@canb.auug.org.au> (Stephen Rothwell's
-	message of "Wed, 7 Aug 2024 08:04:23 +1000")
-Message-ID: <87wmks50fw.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=k20201202; t=1723014372;
+	bh=LnwyqeKWUJeVVtgYbUdGOIDZEmxBbivJVk+fCFggxWk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=d1bZ8v97SuOKK3hmyukDVfZ7Aa4PHU0Hyj+C3DF8DIAMKcSBQhAi83CsJ7+O4lxTa
+	 pmlQKi0o25Wajxs8k7lYtTZIJYMFXvmU2SlXJ7uyfn5NlcHpfGoJT6FgL01G9UUUna
+	 YUUPdgB9yNpFyL1XRJJ6NzactXBEG6S8Qg0H4Zmdg95m4+D55lN1i51Bfo3bHTDhMv
+	 f61b7Fp5qbYcQlyLa/qVHaYI9k7Bl8U2VPsdy8COA6yniCXeSZEJEvLjBotlhee6Lq
+	 JBDsgIHznVZhYAD/83gwmRw3CklgnmB8iN5UCAVbsccsXDmzAKF85Cecml4usbW52Q
+	 HODqnd+iUGyMg==
+Message-ID: <40031203-63c6-46b5-b647-d344d4503bb7@kernel.org>
+Date: Wed, 7 Aug 2024 09:06:04 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 17/17] dt-bindings: net: wireless: cc33xx: Add
+ ti,cc33xx.yaml
+To: Michael Nemanov <michael.nemanov@ti.com>, Kalle Valo <kvalo@kernel.org>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-wireless@vger.kernel.org,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: Sabeeh Khan <sabeeh-khan@ti.com>
+References: <20240806170018.638585-1-michael.nemanov@ti.com>
+ <20240806170018.638585-18-michael.nemanov@ti.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240806170018.638585-18-michael.nemanov@ti.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Stephen Rothwell <sfr@canb.auug.org.au> writes:
+On 06/08/2024 19:00, Michael Nemanov wrote:
 
-> Hi Kalle,
->
-> On Tue, 06 Aug 2024 18:55:38 +0300 Kalle Valo <kvalo@kernel.org> wrote:
->>
->> ath.git is a tree for Atheros and Qualcomm Wi-Fi drivers residing under
->> drivers/net/wireless/ath/. Jeff and I are the maintainers. Over the
->> years multiple people have been requesting including the tree to
->> linux-next and finally we are biting the bullet.
->> 
->> So we are requesting to pull two branches from our ath.git tree to linux-next:
->> 
->> git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git for-current
->> git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git for-next
->> 
->> for-current feeds the wireless tree and for-next feeds the wireless-next
->> tree.
->
-> Added from today.
+Thank you for your patch. There is something to discuss/improve.
 
-Thanks!
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - ti,cc3300
+> +      - ti,cc3301
+> +      - ti,cc3350
+> +      - ti,cc3351
+> +
+> +  reg:
+> +    description:
+> +      must be set to 2
 
-> I have listed just you as a contect, should I list anyone else (or a
-> mailing list)?
+Then just const: 2 and drop free form text.
 
-Please add Jeff and our ath10k list (all our build reports go to the
-ath10k list):
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    description:
+> +      The out-of-band interrupt line.
+> +      Can be IRQ_TYPE_EDGE_RISING or IRQ_TYPE_LEVEL_HIGH.
+> +      If property is omitted, SDIO in-band IRQ will be used.
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    // SDIO example:
 
-Jeff Johnson <jjohnson@kernel.org>
-ath10k@lists.infradead.org
+Drop, obvious.
 
->> Because our for-next branch is very active one problem with is that the
->> chances of having conflicts between the branches is high and that would
->> be extra work for you :/ Do you have any suggestions for this? For
->> example, should we create temporary merges for you or something like
->> that? Just for this reason we do try to keep the number of patches going
->> to for-current minimal and only take important fixes.
->
-> Well, your for-next branch should only contain patches that are ready
-> for integration i.e. reviewed and unit tested, so it should not be all
-> that busy.  I expect you may also have a development branch for patches
-> you are still testing.
+> +    mmc {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        wifi@1{
 
-Yeah, we do have a separate pending branch which is used for testing and
-review.
+Missing space.
 
-> Otherwise, you should concentrate on your own tree and I will notify
-> you of conflicts (and ask advice if the conflicts are too difficult
-> for me to resolve).
+Also, this does not match reg. Test your DTS with W=1 and FIX ALL warnings.
 
-Great, that sounds good.
+Best regards,
+Krzysztof
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
