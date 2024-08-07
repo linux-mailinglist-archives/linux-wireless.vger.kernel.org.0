@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-11068-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11070-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B45694A266
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 10:09:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C1094A275
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 10:12:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14A4D1F23DF3
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 08:09:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E64741F25E94
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 08:12:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A95819A28F;
-	Wed,  7 Aug 2024 08:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A22921C8241;
+	Wed,  7 Aug 2024 08:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VX1CswZC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XmhdBrco"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82832868D
-	for <linux-wireless@vger.kernel.org>; Wed,  7 Aug 2024 08:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DDEB19412A
+	for <linux-wireless@vger.kernel.org>; Wed,  7 Aug 2024 08:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723018191; cv=none; b=pSHnbusVSTV1+9QIoINIm+obL4xO1IhpI2bPbKQMaV3wAwpO4SM1HrPWYAFbtHxwBDyc0+1yjz4LaIfPMYHfrvBJyEK202JBugX5mlWRn4T8G6KKGT6iJKZIKluQlmEanQScrUB2WIR/HZIkm+JugqqKVutsFuJhNRVm4wL6BMA=
+	t=1723018349; cv=none; b=XQHt6lvyFnWQpQS8IvD6+hySZXwxa5hHJDlEHVyjM8BAqqAsY5OoDGBz1qr7BlqNCY/tYi0TVIwptGrszKrLHSOfWkHvEJxvFC8+m0iJjriV46ZCrDAIGHFzdG0E3/KANDdf/+Ep6+qhOgfCbDkoCTsPllGn7sFqkrEpITcVndg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723018191; c=relaxed/simple;
-	bh=udMylYuK8HYXdKoGhrjwWETQV3x2IYojbCwCuoIuW8E=;
+	s=arc-20240116; t=1723018349; c=relaxed/simple;
+	bh=z4jy2OldyQ2272u65CGvY4b6tkV3J9CS4dsiIX6ncog=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=UeUie7Sm/UdXkRI/v+dnQYxjcSi4CCIklQFqRMm5qISZa+QqCd5bTg9V3lbEvb7xEbnAQJDn9NWOJNzfjBGe15Ti3HHFOgkosHTcbOGqWysazQRjshfOlhJBe4ub2msRv58Bp37oLGJ8UlWN+00PPWy/NEyyIhQCGod7GTBgyJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VX1CswZC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA98C32782;
-	Wed,  7 Aug 2024 08:09:49 +0000 (UTC)
+	 Cc:Message-ID:Date; b=gqFAA+3Ugpkb63Qc0t3dLM+4nShEhEPmffENbTjZQ5M3mU3pwhagJvD5axhk8tnk9VpOsAm4nHy/uZqZLEN825gBIYAZJTLBEvoeJy4MT2RdOiyOwsga/wWGiNPxq5Xq6nwc7kCjAr3iUbfiKgQTc2rCIW2kr5bs//tRYP8GaS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XmhdBrco; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1D27C32782;
+	Wed,  7 Aug 2024 08:12:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723018190;
-	bh=udMylYuK8HYXdKoGhrjwWETQV3x2IYojbCwCuoIuW8E=;
+	s=k20201202; t=1723018349;
+	bh=z4jy2OldyQ2272u65CGvY4b6tkV3J9CS4dsiIX6ncog=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=VX1CswZC+CBZs/Im/HFRDf85cQOPfdL9DycPI0/mWqS46tsdam6eeXDEgRV3v63d0
-	 HFVQvYXTW9AMsJQTdyPj93j3Kz+jJ7yGNJu3IJA8B4Xv1IJXZNCcXcB8qzx08PYixn
-	 9r6Zs941ZdBlUE+pu/esW1kgxQ0sAcgH3SIOTcpAkHnMatSVJMG1Z9JScUc3p8WzrQ
-	 mx2lBSt6yYLBnYxaznoX3OhHBJsDcpgqhyCUIRIHkTciK1uM2lm9j+N+gYszcjWfW2
-	 OxvEpkxfFePyxzXhC60rND9hQG0nvf49bUuZRo4R2sviUjT9mPH77joOkNwuoQSsvc
-	 3w4Toe2JbR7lg==
+	b=XmhdBrco0MnGDmCc8JvBF19yHCzan136xatlPgqlzMktKWkksGfwXriuWfV43z6RV
+	 IcSbYC9tnIp12gu0xTFoQsTwtnk6jWcr3qip2JxJMFxleJupw0nQmO+JGfBM+eyqWZ
+	 RsiLseKxn/wiDr1Un/Vo0Pav14NcPM9O1uRVPZ+lTCDq6CoSfT7PgfGOylcjQ+h1G4
+	 nYuAY0fcaryx7PvHIg4JGDyKH07ln73j2yq5pHG7dVLPxWzj6XdW9owbcYKhUjyGAx
+	 1I386TqCS6h5X8E4g2A8hQNrqa5ZhdoTslFbYkG/Djov6PK7+toT7dcL62+3yi1uK0
+	 cCKyAiOt8/T9Q==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,41 +49,47 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: ath12k: restore ASPM for supported hardwares only
+Subject: Re: [PATCH 1/2] wifi: ath12k: fix BSS chan info request WMI command
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240709055817.3371406-1-quic_adisi@quicinc.com>
-References: <20240709055817.3371406-1-quic_adisi@quicinc.com>
-To: Aditya Kumar Singh <quic_adisi@quicinc.com>
+In-Reply-To: <20240331183232.2158756-2-quic_kathirve@quicinc.com>
+References: <20240331183232.2158756-2-quic_kathirve@quicinc.com>
+To: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
 Cc: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
- Aditya Kumar Singh
-	<quic_adisi@quicinc.com>
+ P Praneesh <quic_ppranees@quicinc.com>,
+ Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <172301818779.3837211.5023880648651887884.kvalo@kernel.org>
-Date: Wed,  7 Aug 2024 08:09:49 +0000 (UTC)
+Message-ID: <172301834629.3837211.1799134700273766054.kvalo@kernel.org>
+Date: Wed,  7 Aug 2024 08:12:27 +0000 (UTC)
 
-Aditya Kumar Singh <quic_adisi@quicinc.com> wrote:
+Karthikeyan Kathirvel <quic_kathirve@quicinc.com> wrote:
 
-> During PCI based hardware device start up, ASPM is disabled for all. And
-> once firmware is ready, it is restored back. However, not all hardwares
-> (for example QCN9274) supports ASPM. Hence there is a need to conditionally
-> restore ASPM back. Or else, for such hardwares, issue can be seen during
-> sending and receiving packets.
+> Currently, the firmware returns incorrect pdev_id information in
+> WMI_PDEV_BSS_CHAN_INFO_EVENTID, leading to incorrect filling of
+> the pdev's survey information.
 > 
-> Introduce a new hardware param supports_aspm which identifies whether a
-> given hardware supports ASPM or not and then accordingly restore it.
+> To prevent this issue, when requesting BSS channel information
+> through WMI_PDEV_BSS_CHAN_INFO_REQUEST_CMDID, firmware expects
+> pdev_id as one of the arguments in this WMI command.
+> 
+> Add pdev_id to the struct wmi_pdev_bss_chan_info_req_cmd and fill it
+> during ath12k_wmi_pdev_bss_chan_info_request(). This resolves the
+> issue of sending the correct pdev_id in WMI_PDEV_BSS_CHAN_INFO_EVENTID.
 > 
 > Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 > 
-> Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
+> Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+> Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
 > Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Patch applied to ath-next branch of ath.git, thanks.
+2 patches applied to ath-next branch of ath.git, thanks.
 
-8be12629b428 wifi: ath12k: restore ASPM for supported hardwares only
+59529c982f85 wifi: ath12k: fix BSS chan info request WMI command
+dd98d54db29f wifi: ath12k: match WMI BSS chan info structure with firmware definition
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240709055817.3371406-1-quic_adisi@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240331183232.2158756-2-quic_kathirve@quicinc.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
