@@ -1,74 +1,53 @@
-Return-Path: <linux-wireless+bounces-11103-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11104-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BC9494B11B
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 22:17:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D53A94B123
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 22:20:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C18B28111F
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 20:17:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E1911C21263
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 20:20:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CEA18286A;
-	Wed,  7 Aug 2024 20:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B850B364BC;
+	Wed,  7 Aug 2024 20:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OCvN1uOi"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="US8Or4US"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from nbd.name (nbd.name [46.4.11.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDCAA2B9C6
-	for <linux-wireless@vger.kernel.org>; Wed,  7 Aug 2024 20:17:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936F72B9C6
+	for <linux-wireless@vger.kernel.org>; Wed,  7 Aug 2024 20:20:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723061842; cv=none; b=q4uvxfZGXCA5kVBhA1lUHqUtOnLExlLsily7OxxBSRPxvKADFbjRndOEzDPhSiUFwQtwFXCqqaDbbHbsQczZsUfU/b7TIoPZKQ2S/Xa77KA+8vmcYxYWUUtQxhYxOHNhLXzv6ihKaX2BZmzjn58MGgeur25lMtDJVk5TVIT41sA=
+	t=1723062042; cv=none; b=hKaskO7A9bMzZpxhmCzFesdzSnpl9HnCOsRSFVqNB5yGEETImqwpBGN+OzNGD9CWw208afZtAadDKUWrD0jDQHgqxvyJBzhiH6ef7civtJ3w54CywTRhWpDFiiDgCom9I69lwAZb2MCiTKnimlezmLkimpCwRI/tYms7i32mkHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723061842; c=relaxed/simple;
-	bh=UuZ2f6IWHZQHV7yV7aYk9fIupZa52Zt6pmXyUDYP6JA=;
+	s=arc-20240116; t=1723062042; c=relaxed/simple;
+	bh=5ATO8FsK6/zShOAUHH7p3unefiGJ9xMZX+xVdI4wQcE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=r6lll18Zq7wMGY26ZSjHtUqv3uw8/bNVRAKGgudaSlTtJhy4JkEGQCbKCm51zNHxZGJ4KJNJFPBW97+9EUcp1embAx8ZIphuRphFj7a9tT6Rl0rlHLXHYPTj/B2NPNah7jVRnuuHj1wYcYDAs/VZLZgB744Ix/Mnt4m0H0pTS4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OCvN1uOi; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a7ad02501c3so27428466b.2
-        for <linux-wireless@vger.kernel.org>; Wed, 07 Aug 2024 13:17:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723061839; x=1723666639; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DDFXcM0AQln08y/HqaDv9i1t4wfrxc5yWfl2VQERkQ4=;
-        b=OCvN1uOinK81ySGDn/UbN1TJ+NNQdWLlyQGfqyOpoSAokw2aopiKkh0h1WVfwwcEmd
-         ZLfhlpnx1DPik9ZUev5iigTO9km3zySI9bYnDxvFYdBKAlPLI/L/lMsTdnGfRt1pYhvp
-         QMudMBmSHpK5Izufk33W2/QnaeQ9Xb4XPzCj8W1q2GsykF8e4rEVAMZf2d6z163V/zki
-         zEI/F+h3E1tZet+L8kA23Azv7ra8J6JTOy5Xp45udvpMH9y7RqDSrTiaWe6rgA65RES+
-         Wd78wnDfYmLzkX5CWhVQuuYHkTGViILdT9fiyrMBwUCQwL41FsC98kQiuo1I6zCJAGWD
-         jMKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723061839; x=1723666639;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DDFXcM0AQln08y/HqaDv9i1t4wfrxc5yWfl2VQERkQ4=;
-        b=tNkpUT/DjnaTS06rIjJKrDFTFxMnxH5shAy57mUDciPYP1YF4B3KGGE9cjQsMUO1Ef
-         3/z+kszc3p/Lu89QcwxAttcPCEXbqBuenwM9lVp0FRqUWjZAVYxM89K3L428Gds6cOPL
-         MgD2ZLW+zztn5PINrX5zUvmXW2/OaKo6T4Q9JbGWsNNCC7CP1wb8FcQj5er2actsG8BH
-         NmCNoJD6/gowfdgalwisn89GY7pyFs4Bu2hv0kgZ4epQ5yAHxWEGFiXgKUdcYbz15J8+
-         cynXuRZqlgJt4I08QJG5eHKqUE1dWyDsYafix1mTpJUISMlOsir+RFJY9V3VTlMqUIXW
-         KuSg==
-X-Forwarded-Encrypted: i=1; AJvYcCX/8d78UHxKPYvnBXYScw0BEkLnX/Lv8krZTSi+7MzY0megAu4l9BBCbVMT7wbOfkjzp5yhCFfEtfH/H1C14IVTkdl7N6oJFp2Wr7fiFjY=
-X-Gm-Message-State: AOJu0YzspvI56rXDATjMWfWQVApj4Ipf2pDlMc3vMli9evWDy5/uPrck
-	mg3AJhQR4tg5zhZeK+9zPNdC5WsnCpoQpJ25YflAAs9MeANQn98U
-X-Google-Smtp-Source: AGHT+IFqmilCxuVIz8T186lJGWJ8QDI2oCgrPSxeY3/wCi4LeERf4O2NyFnegPs4r7HJn3WYSiKvRA==
-X-Received: by 2002:a17:907:6ea3:b0:a7a:a4be:2f95 with SMTP id a640c23a62f3a-a7dc4fdf818mr1415659966b.5.1723061838745;
-        Wed, 07 Aug 2024 13:17:18 -0700 (PDT)
-Received: from [192.168.0.50] ([79.119.240.114])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7dc9c0c557sm666092066b.53.2024.08.07.13.17.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Aug 2024 13:17:18 -0700 (PDT)
-Message-ID: <0ff637e5-1d85-4e3a-a105-e41cd5be4172@gmail.com>
-Date: Wed, 7 Aug 2024 23:17:14 +0300
+	 In-Reply-To:Content-Type; b=IRqg5mV6zKJ4y1T0LvyJIb+RwzxC3g0OFj6HJwcSut2QGrs+6ykWkbHV3ZVH2joOEUeh+FkS49tJpz6AiCBfslG3I1T6/8mdRyr72yTyTomx3ORg9UmJlvJDd+KCAfmsgcNEvw/AOTFYuwaegLanSzwP/EHJplj3BP5nPx0vJR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=US8Or4US; arc=none smtp.client-ip=46.4.11.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=M/HK9axg+LwwDG6VcXz29jOsPE6FvwMSHS1qjW3rgJs=; b=US8Or4USfZG7nHWq5UORDq0uWM
+	quXHIwu/qy98EYQrOqXqaWJJxPM/L93+UZtgDJk8Nq2FjEJpjy4CRH4dS6Ly1lyLtdvAINlUFMI81
+	EFEbHgNhoh3y8/D0RMpCVvDmOxzMqoZfuA78g/HwOJWhIrcaB3mCKynOXx9yzmxR7Hho=;
+Received: from p54ae9b72.dip0.t-ipconnect.de ([84.174.155.114] helo=nf.local)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96)
+	(envelope-from <nbd@nbd.name>)
+	id 1sbn9C-00Es2R-1P;
+	Wed, 07 Aug 2024 22:20:38 +0200
+Message-ID: <48cdd408-ab33-4b2e-83e3-73a89c10e368@nbd.name>
+Date: Wed, 7 Aug 2024 22:20:38 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -76,60 +55,82 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/4] wifi: rtw88: Enable USB RX aggregation for
- 8822c/8822b/8821c
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Sascha Hauer <sha@pengutronix.de>
-References: <acc5ccc7-e573-472f-96d2-582716046aa6@gmail.com>
- <3b7b3655-9ec5-4277-b0ff-5535b1fdf281@gmail.com>
- <8218e3aeb62b463d9562ae02213e29ee@realtek.com>
+Subject: Re: [PATCH] net: ath9k: use devm for request_irq
+To: Rosen Penev <rosenp@gmail.com>
+Cc: linux-wireless@vger.kernel.org
+References: <20240731210243.7467-1-rosenp@gmail.com>
+ <201f06b6-14f5-41bb-8897-49665cf14b66@nbd.name>
+ <CAKxU2N9r3Y=Z+rtPbCteWA8-5fRb2NTy2e4xG+=7JvhtzHPg7A@mail.gmail.com>
+ <5dfa4b5a-d8eb-42a8-92bb-81e713fe3395@nbd.name>
+ <CAKxU2N_9naiGUk8uOwWNUNbzf8SFPdYPt-Wzg93pksjau2tLLA@mail.gmail.com>
 Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <8218e3aeb62b463d9562ae02213e29ee@realtek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Felix Fietkau <nbd@nbd.name>
+Autocrypt: addr=nbd@nbd.name; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
+ cL98efvrjdstUfTCP2pfetyN
+In-Reply-To: <CAKxU2N_9naiGUk8uOwWNUNbzf8SFPdYPt-Wzg93pksjau2tLLA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 07/08/2024 03:37, Ping-Ke Shih wrote:
-> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->> @@ -236,13 +237,17 @@ static void rtw_watch_dog_work(struct work_struct *work)
->>         else
->>                 ps_active = false;
+On 07.08.24 22:07, Rosen Penev wrote:
+> On Wed, Aug 7, 2024 at 1:05 PM Felix Fietkau <nbd@nbd.name> wrote:
 >>
->> -       ewma_tp_add(&stats->tx_ewma_tp,
->> -                   (u32)(stats->tx_unicast >> RTW_TP_SHIFT));
->> -       ewma_tp_add(&stats->rx_ewma_tp,
->> -                   (u32)(stats->rx_unicast >> RTW_TP_SHIFT));
->> +       tx_unicast_mbps = stats->tx_unicast >> RTW_TP_SHIFT;
->> +       rx_unicast_mbps = stats->rx_unicast >> RTW_TP_SHIFT;
->> +
->> +       ewma_tp_add(&stats->tx_ewma_tp, tx_unicast_mbps);
->> +       ewma_tp_add(&stats->rx_ewma_tp, rx_unicast_mbps);
->>         stats->tx_throughput = ewma_tp_read(&stats->tx_ewma_tp);
->>         stats->rx_throughput = ewma_tp_read(&stats->rx_ewma_tp);
+>> On 07.08.24 20:52, Rosen Penev wrote:
+>> > On Wed, Aug 7, 2024 at 10:47 AM Felix Fietkau <nbd@nbd.name> wrote:
+>> >>
+>> >> On 31.07.24 23:02, Rosen Penev wrote:
+>> >> > Avoids having to manually call free_irq. Simplifies code slightly.
+>> >> >
+>> >> > Signed-off-by: Rosen Penev <rosenp@gmail.com>
+>> >> > ---
+>> >> >   drivers/net/wireless/ath/ath9k/ahb.c | 7 ++-----
+>> >> >   drivers/net/wireless/ath/ath9k/pci.c | 9 +++------
+>> >> >   2 files changed, 5 insertions(+), 11 deletions(-)
+>> >> >
+>> >> > diff --git a/drivers/net/wireless/ath/ath9k/ahb.c b/drivers/net/wireless/ath/ath9k/ahb.c
+>> >> > index 1a6697b6e3b4..29f67ded8fe2 100644
+>> >> > --- a/drivers/net/wireless/ath/ath9k/ahb.c
+>> >> > +++ b/drivers/net/wireless/ath/ath9k/ahb.c
+>> >> > @@ -118,7 +118,7 @@ static int ath_ahb_probe(struct platform_device *pdev)
+>> >> >       sc->mem = mem;
+>> >> >       sc->irq = irq;
+>> >> >
+>> >> > -     ret = request_irq(irq, ath_isr, IRQF_SHARED, "ath9k", sc);
+>> >> > +     ret = devm_request_irq(&pdev->dev, irq, ath_isr, IRQF_SHARED, "ath9k", sc);
+>> >> Sorry for the late response, but I think this patch is wrong any may
+>> >> need to be reverted. If there is an error during probe, and the IRQ
+>> >> fires for some reason, there could be an use-after-free bug when the IRQ
+>> >> handler accesses the data in sc.
+>> >> The explicit freq_irq calls were preventing that from happening.
+>> > How about keeping the devm variant and replacing free_irq with
+>> > devm_free_irq in probe?
 >>
->> +       rtw_hci_dynamic_rx_agg(rtwdev,
->> +                              tx_unicast_mbps >= 1 || rx_unicast_mbps >= 1);
->> +
-> 
-> Not sure if you have tried RTL8822CU with this dynamic_rx_agg? 
-> I suspect RTL8822CU can't access IO before rtw_leave_lps(), at least RTL8822CE can't.
-> Let's move rtw_hci_dynamic_rx_agg() right after rtw_phy_dynamic_mechanism() below.
-> 
-> Sorry to forget this point on v2 review. 
-> 
->>         /* reset tx/rx statictics */
->>         stats->tx_unicast = 0;
->>         stats->rx_unicast = 0;
-> 
-> 
-> 
+>> If you do that, then using the devm variant is completely pointless.
+>> I think a full revert is the best option.
+> OTOH it still allows removing free_irq from _remove, but I see your point.
 
-I received RTL8822CU (LM842) two days ago and tested these
-patches with it, but I was too lazy to update the commit
-messages. I didn't notice any problems. The RX speed measured
-with iperf3 before was ~200 Mbps, after it's ~300 Mbps on my
-x86_64 laptop.
+No, because you'd have the same use-after-free bug there as well.
 
-I will move the function call.
+- Felix
+
 
