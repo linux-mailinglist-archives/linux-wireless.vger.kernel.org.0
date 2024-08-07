@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-11060-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11061-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41FA294A155
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 09:06:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C321794A158
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 09:07:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EE6B1C254D6
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 07:06:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F37101C25728
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 07:07:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04A341C4610;
-	Wed,  7 Aug 2024 07:06:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7310B1C3F32;
+	Wed,  7 Aug 2024 07:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d1bZ8v97"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uGFh8xJ+"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5BEF1C37B9;
-	Wed,  7 Aug 2024 07:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD3F1BC9EB;
+	Wed,  7 Aug 2024 07:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723014372; cv=none; b=lCjUUpRjd521wyI6ghTntKZvatCNQVexCrKAzpezCBCnAu4X3t4Nvxubj+U6DAzGA1/+ojgPJ/H28ZlJI3ZGv8jU2S1QccCU3QI1ilt+9+ORrQc1lbdRGQyE15MS795yKrmqYQNZOtU3veWB7psyHWik24MFmCkejFFs3SsRa00=
+	t=1723014422; cv=none; b=MQoma1ookF5kM93TXa780s7LX6FihmTDCKn+YehgV4IQzg8sBsoCKqQXEruL44tOALhZWus1ju2c6o/nAMJRVsI/9gcEZHHPZt+P/eVpfJhgx8ZXvzXLnGvyYXzkhMRCLJ3rt8L8t8HwsxnVFzpOVE9huf75tDIFAt/czJ+K5QI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723014372; c=relaxed/simple;
-	bh=LnwyqeKWUJeVVtgYbUdGOIDZEmxBbivJVk+fCFggxWk=;
+	s=arc-20240116; t=1723014422; c=relaxed/simple;
+	bh=5b2oHAdQ8QwOdkSPsVRzrSCW8Gl4PtJ2LWn9+ptNfOo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BWADFYOy9w0PkND0IgL77x+MEL/Gry3tAceOCOjZ8A3vnU+pYBk2d+8tNKmsw1r3JY2yy88CnMuF65y+Is2jvHA05g96InIqC+Bu3cQFhPX0OXhFgw7RRsaZmIiCg/OW4NS0RVtKeZKb6tTHqJE+RpLEDiy9bVKEzL1RPYztGg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d1bZ8v97; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93AF3C32782;
-	Wed,  7 Aug 2024 07:06:07 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=Lc+yL8p4JfYsWWo+t4/ksnCZkneE7GxsZTYraINhpdKy+YvlWlNwN+vdKhfKrg3afc0t8Ly9H/Uazd3JsOxwZUTdHMmbl68g/rAWgtyIRCq/fLRl19EKhKJOZDPNFQC0KFopnsrlBa+wAstmmqXa71JMLRSVLngLNU4wBKBrlxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uGFh8xJ+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2658EC32782;
+	Wed,  7 Aug 2024 07:06:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723014372;
-	bh=LnwyqeKWUJeVVtgYbUdGOIDZEmxBbivJVk+fCFggxWk=;
+	s=k20201202; t=1723014421;
+	bh=5b2oHAdQ8QwOdkSPsVRzrSCW8Gl4PtJ2LWn9+ptNfOo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=d1bZ8v97SuOKK3hmyukDVfZ7Aa4PHU0Hyj+C3DF8DIAMKcSBQhAi83CsJ7+O4lxTa
-	 pmlQKi0o25Wajxs8k7lYtTZIJYMFXvmU2SlXJ7uyfn5NlcHpfGoJT6FgL01G9UUUna
-	 YUUPdgB9yNpFyL1XRJJ6NzactXBEG6S8Qg0H4Zmdg95m4+D55lN1i51Bfo3bHTDhMv
-	 f61b7Fp5qbYcQlyLa/qVHaYI9k7Bl8U2VPsdy8COA6yniCXeSZEJEvLjBotlhee6Lq
-	 JBDsgIHznVZhYAD/83gwmRw3CklgnmB8iN5UCAVbsccsXDmzAKF85Cecml4usbW52Q
-	 HODqnd+iUGyMg==
-Message-ID: <40031203-63c6-46b5-b647-d344d4503bb7@kernel.org>
-Date: Wed, 7 Aug 2024 09:06:04 +0200
+	b=uGFh8xJ+LMVnRK0rfuPaFbnNDatmN1aOEbD6bd/haDMO5dyVeqOVNfDBubc11qxJP
+	 CwQXIzsD3inCDZPfnEm6n0OKVN+jRzTiiFdEqbpne0EE3sNgTI9l/gdVcQc/MBp3Th
+	 Wit/UjnshRc+se53qpjBzfF4xnS/q5aRRHIX28rjQdyWLhGKdol3FRT47rAW+w/yke
+	 Ntvqk6Mi2W1hhUYmRlN1xPvntJSReADmVpz32IS0+kMwds+v1C6fXm/l5iLz/NhqUS
+	 c4++oPrFVq4YHzy7lYf6fCUZoxaIDQ4xlJ5uXfkEjoNKTCMfNxlbPxHnr6tcYHaykC
+	 ALCB6ABxu4c6w==
+Message-ID: <a36b8ece-5e46-439e-8463-855394be69a7@kernel.org>
+Date: Wed, 7 Aug 2024 09:06:55 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -113,55 +113,14 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 06/08/2024 19:00, Michael Nemanov wrote:
+> Add device-tree bindings for the CC33xx family.
+> 
+> Signed-off-by: Michael Nemanov <michael.nemanov@ti.com>
+> ---
+>  .../bindings/net/wireless/ti,cc33xx.yaml      | 56 +++++++++++++++++++
 
-Thank you for your patch. There is something to discuss/improve.
-
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - ti,cc3300
-> +      - ti,cc3301
-> +      - ti,cc3350
-> +      - ti,cc3351
-> +
-> +  reg:
-> +    description:
-> +      must be set to 2
-
-Then just const: 2 and drop free form text.
-
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    description:
-> +      The out-of-band interrupt line.
-> +      Can be IRQ_TYPE_EDGE_RISING or IRQ_TYPE_LEVEL_HIGH.
-> +      If property is omitted, SDIO in-band IRQ will be used.
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    // SDIO example:
-
-Drop, obvious.
-
-> +    mmc {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        wifi@1{
-
-Missing space.
-
-Also, this does not match reg. Test your DTS with W=1 and FIX ALL warnings.
+Also, bindings always come before users, but maybe the maintainers will
+re-order things since you expect here some squashing.
 
 Best regards,
 Krzysztof
