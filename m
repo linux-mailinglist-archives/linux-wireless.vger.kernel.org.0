@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-11090-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11091-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E80094AAC5
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 16:55:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5A8394AD5E
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 17:52:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F0391C21535
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 14:55:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85C931F22E43
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 15:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D02E080638;
-	Wed,  7 Aug 2024 14:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E1E12C46F;
+	Wed,  7 Aug 2024 15:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="AvbZIWhZ"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="CXsiJ7qa"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960BB3EA9A;
-	Wed,  7 Aug 2024 14:55:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1DD84D0F;
+	Wed,  7 Aug 2024 15:51:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.248
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723042529; cv=none; b=Odpo28MJiWbypRqirOvwDHu5O19ZfrJ4Ptade70GFCBYDHTADTr/xVae8dOf7Zyz05kEPcPYU7yDV7ygoMUCDy2koSzG9osJupLT2itL174tOThFabUMPyvpNApcy1vhFgSldvGdAJXbHaeY/NG8Lm6DGarL9WXBGCXF2FqEd1g=
+	t=1723045915; cv=none; b=GjIu8AN6svu6SXppv/FynxvhXBqbCcfPMHiATYgcx6hP6mB1baHW3IANRiT/qGfsrP0EDyWsO47QulOvHN45tpKT3FdnXdQO0SSJY/E3iywXZ4mXWHzwdyhsZGIVBsUqgnH0fMXKoxZ/L4+95QAawdFpcuqwf+uagMHjytPhqrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723042529; c=relaxed/simple;
-	bh=Y6bjRDCBCO5kBeL3l6MJlOzYWzvB7zZ6CXPmw2/LDt8=;
+	s=arc-20240116; t=1723045915; c=relaxed/simple;
+	bh=tq1kRIdkXXLmifGbrLj+K4OAlODh+bgQQ+deN5tg44o=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Mg2lB2arypcYO07/xIkHgai7h9OGPT7svKgAHCMLy79KRuIVt491kX5hzEyaqVKUedJ6lXX88gygZFw8U1EXlHjZzIHf4pPwx9X2RidAhyc61vR1YJWVl8qdNqXryMSRrsDoOUeb3nGBppB2MXpLN7GxHRwoY8x4YRFH3bTAQS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=AvbZIWhZ; arc=none smtp.client-ip=198.47.23.249
+	 In-Reply-To:Content-Type; b=K9qNOd4ClkocHc6fOo5RpNNYIJ/EVQWSvs5vto5NmI5C1hZtI0WORL18D6RZqUmcO1A3HjuqGEeTZCCtFoeHk+uCkI7lWIp58qqJ6Xw/nm4i1EFnoyMD3H/CmoO8Nmrw6jcYx7SLFd0UsYuTBjxqQUmlqqmX2w2MBsSAhV+i7ZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=CXsiJ7qa; arc=none smtp.client-ip=198.47.23.248
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 477EtKBO039766;
-	Wed, 7 Aug 2024 09:55:20 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 477Fpjg1114243;
+	Wed, 7 Aug 2024 10:51:45 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1723042520;
-	bh=f34AOrvZhL2gScq8E1BslSWfE+Ba56tXOrZSmR99RYM=;
+	s=ti-com-17Q1; t=1723045906;
+	bh=DFX4wIOpKaPspxP+zUbhiDATcnb9TKhja6y4k+FVRpc=;
 	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=AvbZIWhZxuXhlgNqpp2hwKv90M5e8Jil9AQojvKQWgOmaSb3IiZe5kXN4Aa6ZaQsn
-	 T1jGFh87m+v002WNVZBtXjeQWzcXeumsxjn+V5ZEDF5XJXb0O3wlbtsZkPpt+ApVwj
-	 PghWnxbqlmaEbk1q1IGVdcM/SO1YdbJl1t5PmRkg=
-Received: from DFLE101.ent.ti.com (dfle101.ent.ti.com [10.64.6.22])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 477EtKuN061439
+	b=CXsiJ7qaH+snf61hYdI72XYDQStBnZp5ZuQHwOJftzULiSWhDw7DOIQUFQxwiGlZj
+	 Af3dvHvbxJhaxTqiJNxrXhxhFLu2PcJY6v1NYd9GKx3eQZoCLYCcm4l55I8gW0Udp+
+	 j8GUB4pFq+eFbavXrLKx+vLMmQ0GjIDGZZ2H9nWQ=
+Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 477Fpjcd097114
 	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 7 Aug 2024 09:55:20 -0500
-Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE101.ent.ti.com
- (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+	Wed, 7 Aug 2024 10:51:45 -0500
+Received: from DFLE102.ent.ti.com (10.64.6.23) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 7
- Aug 2024 09:55:19 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ Aug 2024 10:51:45 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE102.ent.ti.com
+ (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Wed, 7 Aug 2024 09:55:19 -0500
+ Frontend Transport; Wed, 7 Aug 2024 10:51:45 -0500
 Received: from [137.167.6.133] (lt5cg1094w5k.dhcp.ti.com [137.167.6.133])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 477EtGqZ022066;
-	Wed, 7 Aug 2024 09:55:17 -0500
-Message-ID: <68d0852a-2390-4fe4-be16-3f691e99bd86@ti.com>
-Date: Wed, 7 Aug 2024 17:55:16 +0300
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 477Fpg4I014276;
+	Wed, 7 Aug 2024 10:51:42 -0500
+Message-ID: <0da6f8ce-e220-47b9-86dd-537ad4b328e5@ti.com>
+Date: Wed, 7 Aug 2024 18:51:42 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,7 +65,8 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 03/17] wifi: cc33xx: Add sdio.c, io.c, io.h
+Subject: Re: [PATCH v3 17/17] dt-bindings: net: wireless: cc33xx: Add
+ ti,cc33xx.yaml
 To: Krzysztof Kozlowski <krzk@kernel.org>, Kalle Valo <kvalo@kernel.org>,
         "David S . Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
@@ -78,49 +79,80 @@ To: Krzysztof Kozlowski <krzk@kernel.org>, Kalle Valo <kvalo@kernel.org>,
         <linux-kernel@vger.kernel.org>
 CC: Sabeeh Khan <sabeeh-khan@ti.com>
 References: <20240806170018.638585-1-michael.nemanov@ti.com>
- <20240806170018.638585-4-michael.nemanov@ti.com>
- <5020193f-64f5-48ff-8597-8e6a5ca0fb36@kernel.org>
+ <20240806170018.638585-18-michael.nemanov@ti.com>
+ <40031203-63c6-46b5-b647-d344d4503bb7@kernel.org>
 Content-Language: en-US
 From: "Nemanov, Michael" <michael.nemanov@ti.com>
-In-Reply-To: <5020193f-64f5-48ff-8597-8e6a5ca0fb36@kernel.org>
+In-Reply-To: <40031203-63c6-46b5-b647-d344d4503bb7@kernel.org>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-On 8/7/2024 10:12 AM, Krzysztof Kozlowski wrote:
-
-
-
->> +static const struct of_device_id cc33xx_sdio_of_match_table[] = {
->> +	{ .compatible = "ti,cc3300", .data = &cc33xx_data },
->> +	{ .compatible = "ti,cc3301", .data = &cc33xx_data },
->> +	{ .compatible = "ti,cc3350", .data = &cc33xx_data },
->> +	{ .compatible = "ti,cc3351", .data = &cc33xx_data },
->> +	{ }
->> +};
+On 8/7/2024 10:06 AM, Krzysztof Kozlowski wrote:
+> On 06/08/2024 19:00, Michael Nemanov wrote:
 > 
+> Thank you for your patch. There is something to discuss/improve.
 > 
-> Eh? What happened here? So devices are compatibles thus make them
-> compatible in the bindings.
-> 
-
-I thought this is the right way to do it (originally taken from [1]).
-How can I solve it via DT bindings?
-
-> 
+>> +properties:
+>> +  compatible:
+>> +    enum:
+>> +      - ti,cc3300
+>> +      - ti,cc3301
+>> +      - ti,cc3350
+>> +      - ti,cc3351
 >> +
->> +module_param(dump, bool, 0600);
->> +MODULE_PARM_DESC(dump, "Enable sdio read/write dumps.");
+>> +  reg:
+>> +    description:
+>> +      must be set to 2
 > 
-> This should be rather debug interface, not module param.
+> Then just const: 2 and drop free form text.
+> 
+>> +    maxItems: 1
+>> +
+>> +  interrupts:
+>> +    description:
+>> +      The out-of-band interrupt line.
+>> +      Can be IRQ_TYPE_EDGE_RISING or IRQ_TYPE_LEVEL_HIGH.
+>> +      If property is omitted, SDIO in-band IRQ will be used.
+>> +    maxItems: 1
+>> +
+>> +required:
+>> +  - compatible
+>> +  - reg
+>> +
+>> +additionalProperties: false
+>> +
+>> +examples:
+>> +  - |
+>> +    #include <dt-bindings/interrupt-controller/irq.h>
+>> +
+>> +    // SDIO example:
+> 
+> Drop, obvious.
+> 
+>> +    mmc {
+>> +        #address-cells = <1>;
+>> +        #size-cells = <0>;
+>> +
+>> +        wifi@1{
+> 
+> Missing space.
+> 
+> Also, this does not match reg. Test your DTS with W=1 and FIX ALL warnings.
+> 
+> Best regards,
+> Krzysztof
 > 
 
-Meaning debugFS?
+Will fix all above.
+
+I'm currently testing my .yaml with:
+make dt_binding_check DT_CHECKER_FLAGS=-m \ 
+DT_SCHEMA_FILES=Documentation/devicetree/bindings/net/wireless/ti,cc33xx.yaml
+
+It reports no warnings. Adding W=1 doesn't seem to change anything. Am I 
+missing something?
 
 Thanks and regards,
 Michael.
-
-
-[1] 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/wireless/ti/wlcore/sdio.c#n204
 
