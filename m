@@ -1,117 +1,118 @@
-Return-Path: <linux-wireless+bounces-11099-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11100-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ED2794AF15
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 19:47:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2550894B001
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 20:52:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 643B9282065
-	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 17:47:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA736282E5D
+	for <lists+linux-wireless@lfdr.de>; Wed,  7 Aug 2024 18:52:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BA4912CDBA;
-	Wed,  7 Aug 2024 17:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF0513B7A3;
+	Wed,  7 Aug 2024 18:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="BuyQTQIm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mdarkrQj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from nbd.name (nbd.name [46.4.11.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C0080BEC
-	for <linux-wireless@vger.kernel.org>; Wed,  7 Aug 2024 17:47:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E162770E
+	for <linux-wireless@vger.kernel.org>; Wed,  7 Aug 2024 18:52:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723052854; cv=none; b=Ikv1O3YuzxdZpEkBM6j6nW2KFQYjgKeaz3uYRYts0uV1L8uAeiO3oSxu5vssHyefaOXAcT5B2OfvHRORoZADogsSUh3qTdqm7bsS354ZG/iCFQK1n/GWjbUtaDKEG8ZAU1fbTQ3YQpCqsInEV9He9IXMX7iaq8G7EDQ11oeKkoY=
+	t=1723056762; cv=none; b=te/B5FvBRJBF/060KL9UMK3icVbZo90tt3wD/HpATm1MccbJSGF45JETcwpuSQwr4srazhUheyjC2sQzSIgeOw7sXWFPgJgeuR2w8Qq9f8an1hDgpfiCSdU4A0hBsB1thDD+GhhN4RrPOTNOzGMuscqZeXFDWs//qiI6Mp5QBEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723052854; c=relaxed/simple;
-	bh=IWfSs7DE7fuxfEt+Flzx0n6RnazWTskvESEOBvukFwc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=spP+iRpOFNaZDiYJShmvYR9MWju8fzaMb5joBv1ZUt682jpyba7AvRI+4pBwBK2P06IRQutjFGY6UbdVNc93YEpTGaU5xo1iHwlTFEH5RmCPywpvqQuc9PB6NPLDGjpcGpxNczw+jU4g0A8On19v74rx7KS69dtCbhPZW2qkkvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=BuyQTQIm; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Cc:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=gLRZCi9Tls6P7x7v5aJ7/CCS1kJ+/vJt/X9giKyRePE=; b=BuyQTQImAjOKwrJw17CXYV5lPD
-	puKSt73MSMGo5y9B0YVYQsU+Ox4NQHwGwoiZehB58G43Kb1DI4k/2hELctAQO7ZblgkQoP2fM6Ynj
-	8jsGjIB3yLhLRN+lDmT5QO4j46SQbOyp/Us+PyNcEQSuDLnlsF63kPQ74nKkIBV1bz54=;
-Received: from p54ae9b72.dip0.t-ipconnect.de ([84.174.155.114] helo=nf.local)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96)
-	(envelope-from <nbd@nbd.name>)
-	id 1sbkkt-00EqSQ-1j;
-	Wed, 07 Aug 2024 19:47:23 +0200
-Message-ID: <201f06b6-14f5-41bb-8897-49665cf14b66@nbd.name>
-Date: Wed, 7 Aug 2024 19:47:23 +0200
+	s=arc-20240116; t=1723056762; c=relaxed/simple;
+	bh=/RE+qo4nF+RqJW8EqxK+J/6JRHIJ4SMx/cl2oR0mILQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jbVeZwcOweWsfNzKwjCRzk9nL8IT5AiAAj0fjq3Wiq0pqU/xlIh6pMX1wLKWpTg6wuGH8UK2eQZ4GvT1PS1ZCnx4hRLSABmW1PnjUPqpi65etYm/fgvEUEyTL3Ab8seYPD6+v6z27waaZsAmYjAdVsJBEKF679mHDfuxYt+t5hk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mdarkrQj; arc=none smtp.client-ip=209.85.128.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-66108213e88so1708707b3.1
+        for <linux-wireless@vger.kernel.org>; Wed, 07 Aug 2024 11:52:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723056759; x=1723661559; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xWgMkhYZh1+KfFpr10mKvEePbUNIXpWsaWUZwsjLLrc=;
+        b=mdarkrQjXWSQmzbcB4svIeLezNAtMB2qHioAWmSHv3b+XurF7IVoFb897B4QsbyO5k
+         D831LnXYDVR+/2ZA4JvoGGxGgt3o6JkJKoz4ZV9TOD7RILynv47bCBr0kU6fmgPilKw7
+         5VapeDsQDxbYHuQjfmko1qXLhnQq0/++O94cHdWJpACbFc8s4KQHADv9Gt4JqW2KdM/a
+         56vKkHqe3muYyF4N8iUsyEascKbq2CRSaEhd1Id+QRTc76ZFgtTGMj55ymHN0d9+XLpV
+         DFrNEs5thxZSxFommEGn4XThEw7t0wK17o//u1VymIwfRf6GuSx4A4pKxmk81oTCVw01
+         X3YQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723056759; x=1723661559;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xWgMkhYZh1+KfFpr10mKvEePbUNIXpWsaWUZwsjLLrc=;
+        b=COpJxAYSXx0wnEnu7pkXFUeQKPBAPsjh+9I0llEiSTzJ6EJBwt7/u1epjSTYG3qJCh
+         LrhngqaW8wQ7v+rxKqQAZF5OSb7UWRuWRrSPbrZVtitqoDhlD6YSGNqrjZn3+Xl8Yj00
+         DEgkNfGr6yYqoULevVqHgv1wlYvyI+D0xho0sB6V9QgsBN4p+XDdlo26Gby0ugZFyBph
+         +1Qrgu8ua8BkugRFoBtD8F5esyJlSqQ6qWrJwzaVRqHfJ4ExeBC1mPweXLZ5JSnz+hYw
+         +E6/rDOrc2eHU+I2AbOPOnlLwsd3tMnN+obNj39qhiI/vUTqetjpZXiYiNF2RpylHlgr
+         FUOw==
+X-Gm-Message-State: AOJu0Yy8km5XKd0UPu/2l1n2oMIE8g34XEdRUiZq0MBIkK0ycEAOk5Ss
+	r7e9gZzJRS+ARQv2AKdweZe47qucOd1AtAFsPrUrOm0R68wPGVrrn+w4gyAxTROGSGR2wCrFy9v
+	GkS2+KODQl7KnkIsCdzVl6A5vL4o=
+X-Google-Smtp-Source: AGHT+IFvWguNAi1f4Oc4m9JEyBqa9UyF1mT1MQEvK9UtB+5xnQnvJAJVVg1Z2cIoH0gojc8Kmp4JkP04op32xRf7xfA=
+X-Received: by 2002:a0d:de87:0:b0:64b:44b4:e13 with SMTP id
+ 00721157ae682-689630489ccmr217933987b3.28.1723056759435; Wed, 07 Aug 2024
+ 11:52:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+References: <20240731210243.7467-1-rosenp@gmail.com> <201f06b6-14f5-41bb-8897-49665cf14b66@nbd.name>
+In-Reply-To: <201f06b6-14f5-41bb-8897-49665cf14b66@nbd.name>
+From: Rosen Penev <rosenp@gmail.com>
+Date: Wed, 7 Aug 2024 11:52:28 -0700
+Message-ID: <CAKxU2N9r3Y=Z+rtPbCteWA8-5fRb2NTy2e4xG+=7JvhtzHPg7A@mail.gmail.com>
 Subject: Re: [PATCH] net: ath9k: use devm for request_irq
-To: Rosen Penev <rosenp@gmail.com>, linux-wireless@vger.kernel.org
-References: <20240731210243.7467-1-rosenp@gmail.com>
-From: Felix Fietkau <nbd@nbd.name>
-Content-Language: en-US
-Autocrypt: addr=nbd@nbd.name; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
- cL98efvrjdstUfTCP2pfetyN
-In-Reply-To: <20240731210243.7467-1-rosenp@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+To: Felix Fietkau <nbd@nbd.name>
+Cc: linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 31.07.24 23:02, Rosen Penev wrote:
-> Avoids having to manually call free_irq. Simplifies code slightly.
-> 
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> ---
->   drivers/net/wireless/ath/ath9k/ahb.c | 7 ++-----
->   drivers/net/wireless/ath/ath9k/pci.c | 9 +++------
->   2 files changed, 5 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath9k/ahb.c b/drivers/net/wireless/ath/ath9k/ahb.c
-> index 1a6697b6e3b4..29f67ded8fe2 100644
-> --- a/drivers/net/wireless/ath/ath9k/ahb.c
-> +++ b/drivers/net/wireless/ath/ath9k/ahb.c
-> @@ -118,7 +118,7 @@ static int ath_ahb_probe(struct platform_device *pdev)
->   	sc->mem = mem;
->   	sc->irq = irq;
->   
-> -	ret = request_irq(irq, ath_isr, IRQF_SHARED, "ath9k", sc);
-> +	ret = devm_request_irq(&pdev->dev, irq, ath_isr, IRQF_SHARED, "ath9k", sc);
-Sorry for the late response, but I think this patch is wrong any may 
-need to be reverted. If there is an error during probe, and the IRQ 
-fires for some reason, there could be an use-after-free bug when the IRQ 
-handler accesses the data in sc.
-The explicit freq_irq calls were preventing that from happening.
-
-- Felix
-
+On Wed, Aug 7, 2024 at 10:47=E2=80=AFAM Felix Fietkau <nbd@nbd.name> wrote:
+>
+> On 31.07.24 23:02, Rosen Penev wrote:
+> > Avoids having to manually call free_irq. Simplifies code slightly.
+> >
+> > Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> > ---
+> >   drivers/net/wireless/ath/ath9k/ahb.c | 7 ++-----
+> >   drivers/net/wireless/ath/ath9k/pci.c | 9 +++------
+> >   2 files changed, 5 insertions(+), 11 deletions(-)
+> >
+> > diff --git a/drivers/net/wireless/ath/ath9k/ahb.c b/drivers/net/wireles=
+s/ath/ath9k/ahb.c
+> > index 1a6697b6e3b4..29f67ded8fe2 100644
+> > --- a/drivers/net/wireless/ath/ath9k/ahb.c
+> > +++ b/drivers/net/wireless/ath/ath9k/ahb.c
+> > @@ -118,7 +118,7 @@ static int ath_ahb_probe(struct platform_device *pd=
+ev)
+> >       sc->mem =3D mem;
+> >       sc->irq =3D irq;
+> >
+> > -     ret =3D request_irq(irq, ath_isr, IRQF_SHARED, "ath9k", sc);
+> > +     ret =3D devm_request_irq(&pdev->dev, irq, ath_isr, IRQF_SHARED, "=
+ath9k", sc);
+> Sorry for the late response, but I think this patch is wrong any may
+> need to be reverted. If there is an error during probe, and the IRQ
+> fires for some reason, there could be an use-after-free bug when the IRQ
+> handler accesses the data in sc.
+> The explicit freq_irq calls were preventing that from happening.
+How about keeping the devm variant and replacing free_irq with
+devm_free_irq in probe?
+>
+> - Felix
+>
 
