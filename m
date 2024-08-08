@@ -1,69 +1,71 @@
-Return-Path: <linux-wireless+bounces-11144-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11145-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F76A94C5A5
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 22:23:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEC4394C5A6
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 22:24:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30597288A20
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 20:23:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BB731C2161C
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 20:24:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1079715B986;
-	Thu,  8 Aug 2024 20:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF956158DA3;
+	Thu,  8 Aug 2024 20:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gwyGSqXW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TljDum6h"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6F3158D7F
-	for <linux-wireless@vger.kernel.org>; Thu,  8 Aug 2024 20:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C04A15B98F
+	for <linux-wireless@vger.kernel.org>; Thu,  8 Aug 2024 20:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723148596; cv=none; b=ktm8x9Sdt11FI/WBHobTKQ5o0oIXgGnKKf5l6gcH2zrMKn9Mi1TzMQJVtRjloC7YEW3Tni6J3ZERo4RXJsl9q9LaYCZI+d+88U+rBfc25KG2fAOVXULGI+4QqWcgBQ7FkM8yf2oKxxJakMxSpnV5MeUgGQqTaRKx/rjsi0d/kfA=
+	t=1723148597; cv=none; b=H4sxGkFM8MWRdmwZklH6z/DSv2pUEEvXNfVFhn1GMBKGpCMbGxQgNz+pLMkZaDYddDIAnREkxDOc3Tggbx40dVuUAS3suunu5w5N8+M/qkMTzd2220TJMrQ7sy/be4yN77x/vwsy0/p0eWjzNaPINdWrxiC2HK8iitz94WE/aR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723148596; c=relaxed/simple;
-	bh=/49CYzd6N7ZY004PiipnuHZImv81GXobqQf9XWe48/o=;
+	s=arc-20240116; t=1723148597; c=relaxed/simple;
+	bh=IoolkF+bgVcJIZkKBbsM0KUgMBjkeNcF7FpINWH/X84=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rm6/a/4gXZBJnba1d8gigyg0nAZE3LmnQWL1eeq8YUHWNw+THG5tcdRFiFCkMw9gK+s01/AKhasBynevgXpt/AcL/mYpZkeZSp3PttLjNFnA65nlMUSB26idKqdsUHRujJtfUcUhcn+CqcpILWE3uJwt9nI73yoox8ZiCKpbHhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gwyGSqXW; arc=none smtp.client-ip=192.198.163.8
+	 MIME-Version; b=Sv31iKmOiDaFnToSm+8ihh1FIogxMHh37jPjNPRyuRBlSiAFvXAfKmrd7qxnrb0S47QvLb1TI0v/S+rIxV+UavS5QZFmUwRR7fy5GWmWVgZPG6JoUQYpny+UzhvstDix4nshNFpbf0RrMJANOjZuW/rPagcGu+pRoucU84RJztA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TljDum6h; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723148595; x=1754684595;
+  t=1723148596; x=1754684596;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=/49CYzd6N7ZY004PiipnuHZImv81GXobqQf9XWe48/o=;
-  b=gwyGSqXWQcaN8jsGZTxn/DwwX+q8G47omHnUs7a79g8b3AxqMU60mON7
-   owL3jVgBED1xbwHdKVUMJwh8b5egZW+vlenJTsSlqxLiqA2n9Z61bwcbF
-   OWCF8QRXLVo5aV87+8mO/oZL4ArtNsLYeQ1cEv6RiohkKP3LWNkoUcXLR
-   NEVhYK/Ji7Lqeq1YdAlp6MDyZ/NQHYkG/5CoK/UJCts1AH9mHlsUPx2N1
-   3h2IJOccin1Ohs0w3CA2IDJEjXfMBea/Gdc7RLxoCezPCgLueH+leWhQo
-   V60ADWOx4Rt7r0Q5TVos6ibaqAaqrCRLpvFUsADne3T9aSlQpaFyWJvgX
-   g==;
-X-CSE-ConnectionGUID: H3/9zEKhRGuAhf2Fh9JPqg==
-X-CSE-MsgGUID: WFrHzwt4TmWIPUfBR/cOvA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="38808854"
+  bh=IoolkF+bgVcJIZkKBbsM0KUgMBjkeNcF7FpINWH/X84=;
+  b=TljDum6hxqFhfyeogXMaIdVBzVrJ5l0kLJ4TPT3agvyOejU4mc5xkgLI
+   3zuCtq1vY3DG6V1M0bjMB403Ish9fLeUCu6mgD+Eokd/o1hok4o3Mc74a
+   o0AueogYUMS3CrpgONI698PX8dMtcHOw4FJd33D5OOzQTTjYl1CvSHpuV
+   DV9UgAPinDM4u5aYVt/i2WUU95VK+1/EqWKVsaPopkrecoLBDkmTPIIcu
+   6Lb74IR4qXsFPglAyyuRDKjTn4PYhtwtbdDuXpkuH4ly8kR/hWwqGgxgb
+   7CRSodJTN3p7vCa8vpTkGcNs0bK2HF3UpYly75qBx0lwfexTCbo7/whfy
+   Q==;
+X-CSE-ConnectionGUID: V3hN1/3bQXyZWAFu/GiIpg==
+X-CSE-MsgGUID: 6944QZgZRxqeZLu8lsHfEw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="38808858"
 X-IronPort-AV: E=Sophos;i="6.09,274,1716274800"; 
-   d="scan'208";a="38808854"
+   d="scan'208";a="38808858"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 13:23:14 -0700
-X-CSE-ConnectionGUID: 66cFEM2zRZqQi5UqO+EEYA==
-X-CSE-MsgGUID: i2HcdAsAS4qK+NogWRzNdA==
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 13:23:16 -0700
+X-CSE-ConnectionGUID: jlAQ08QaT5qZJZef4t2kDw==
+X-CSE-MsgGUID: NSwKkNwPSMy3c2AOU7IZmA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.09,274,1716274800"; 
-   d="scan'208";a="57305317"
+   d="scan'208";a="57305330"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 13:23:13 -0700
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 13:23:14 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 09/13] wifi: iwlwifi: use default command queue watchdog timeout
-Date: Thu,  8 Aug 2024 23:22:45 +0300
-Message-Id: <20240808232017.87af3f063025.I2222981ead13f6a917f2d4b116c5b94200dc9e51@changeid>
+Cc: linux-wireless@vger.kernel.org,
+	Johannes Berg <johannes.berg@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Subject: [PATCH 10/13] wifi: iwlwifi: mvm: cleanup iwl_mvm_get_wd_timeout
+Date: Thu,  8 Aug 2024 23:22:46 +0300
+Message-Id: <20240808232017.7a6944bc2e38.I532b4b5487c6be9203ff4db9742d7cc5b148d502@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240808202249.4004087-1-miriam.rachel.korenblit@intel.com>
 References: <20240808202249.4004087-1-miriam.rachel.korenblit@intel.com>
@@ -76,89 +78,206 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-We used to have the opmode configuring it to the trans according to the
-debug tlv value (FW_DBG_TRIGGER_TXQ_TIMERS).
-But this debug is not used, so trans can just have the default value
-hardcoded.
+This used to extract the timeout from the debug TLV
+(FW_DBG_TRIGGER_TXQ_TIMERS), which is not in use.
+Cleanup iwl_mvm_get_wd_timeout to not consider the debug TLV.
 
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/dvm/main.c   | 2 --
- drivers/net/wireless/intel/iwlwifi/iwl-trans.h  | 2 --
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c    | 4 ----
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 4 +++-
- 4 files changed, 3 insertions(+), 9 deletions(-)
+ .../net/wireless/intel/iwlwifi/mvm/mld-sta.c  |  4 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  3 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c  | 16 ++---
+ .../net/wireless/intel/iwlwifi/mvm/utils.c    | 60 ++++---------------
+ 4 files changed, 22 insertions(+), 61 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/main.c b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-index 65b7c68e5ca7..e0b14be25b02 100644
---- a/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-+++ b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
-@@ -1325,8 +1325,6 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
- 		       iwlwifi_mod_params.amsdu_size);
- 	}
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
+index d5a204e52076..071de9372843 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
+@@ -216,7 +216,7 @@ int iwl_mvm_mld_add_bcast_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 	static const u8 _baddr[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+ 	const u8 *baddr = _baddr;
+ 	unsigned int wdg_timeout =
+-		iwl_mvm_get_wd_timeout(mvm, vif, false, false);
++		iwl_mvm_get_wd_timeout(mvm, vif);
+ 	u16 *queue;
  
--	trans_cfg.cmd_q_wdg_timeout = IWL_WATCHDOG_DISABLED;
+ 	lockdep_assert_held(&mvm->mutex);
+@@ -254,7 +254,7 @@ int iwl_mvm_mld_add_mcast_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 	struct iwl_mvm_int_sta *msta = &mvm_link->mcast_sta;
+ 	static const u8 _maddr[] = {0x03, 0x00, 0x00, 0x00, 0x00, 0x00};
+ 	const u8 *maddr = _maddr;
+-	unsigned int timeout = iwl_mvm_get_wd_timeout(mvm, vif, false, false);
++	unsigned int timeout = iwl_mvm_get_wd_timeout(mvm, vif);
+ 
+ 	lockdep_assert_held(&mvm->mutex);
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index 65b66f01bef9..68464f892e85 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -2587,8 +2587,7 @@ u8 iwl_mvm_tcm_load_percentage(u32 airtime, u32 elapsed);
+ 
+ void iwl_mvm_nic_restart(struct iwl_mvm *mvm, bool fw_error);
+ unsigned int iwl_mvm_get_wd_timeout(struct iwl_mvm *mvm,
+-				    struct ieee80211_vif *vif,
+-				    bool tdls, bool cmd_q);
++				    struct ieee80211_vif *vif);
+ void iwl_mvm_connection_loss(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 			     const char *errmsg);
+ void iwl_mvm_event_frame_timeout_callback(struct iwl_mvm *mvm,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+index cf4d6425f634..74bbeebe69d5 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+@@ -900,7 +900,7 @@ static int iwl_mvm_sta_alloc_queue_tvqm(struct iwl_mvm *mvm,
+ 	struct iwl_mvm_txq *mvmtxq =
+ 		iwl_mvm_txq_from_tid(sta, tid);
+ 	unsigned int wdg_timeout =
+-		iwl_mvm_get_wd_timeout(mvm, mvmsta->vif, false, false);
++		iwl_mvm_get_wd_timeout(mvm, mvmsta->vif);
+ 	int queue = -1;
+ 
+ 	lockdep_assert_held(&mvm->mutex);
+@@ -1080,7 +1080,7 @@ static void iwl_mvm_unshare_queue(struct iwl_mvm *mvm, int queue)
+ 		return;
+ 
+ 	mvmsta = iwl_mvm_sta_from_mac80211(sta);
+-	wdg_timeout = iwl_mvm_get_wd_timeout(mvm, mvmsta->vif, false, false);
++	wdg_timeout = iwl_mvm_get_wd_timeout(mvm, mvmsta->vif);
+ 
+ 	ssn = IEEE80211_SEQ_TO_SN(mvmsta->tid_data[tid].seq_number);
+ 
+@@ -1330,7 +1330,7 @@ static int iwl_mvm_sta_alloc_queue(struct iwl_mvm *mvm,
+ 		.frame_limit = IWL_FRAME_LIMIT,
+ 	};
+ 	unsigned int wdg_timeout =
+-		iwl_mvm_get_wd_timeout(mvm, mvmsta->vif, false, false);
++		iwl_mvm_get_wd_timeout(mvm, mvmsta->vif);
+ 	int queue = -1;
+ 	u16 queue_tmp;
+ 	unsigned long disable_agg_tids = 0;
+@@ -1622,7 +1622,7 @@ void iwl_mvm_realloc_queues_after_restart(struct iwl_mvm *mvm,
+ {
+ 	struct iwl_mvm_sta *mvm_sta = iwl_mvm_sta_from_mac80211(sta);
+ 	unsigned int wdg =
+-		iwl_mvm_get_wd_timeout(mvm, mvm_sta->vif, false, false);
++		iwl_mvm_get_wd_timeout(mvm, mvm_sta->vif);
+ 	int i;
+ 	struct iwl_trans_txq_scd_cfg cfg = {
+ 		.sta_id = mvm_sta->deflink.sta_id,
+@@ -2359,7 +2359,7 @@ int iwl_mvm_send_add_bcast_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
+ 	int queue;
+ 	int ret;
+ 	unsigned int wdg_timeout =
+-		iwl_mvm_get_wd_timeout(mvm, vif, false, false);
++		iwl_mvm_get_wd_timeout(mvm, vif);
+ 	struct iwl_trans_txq_scd_cfg cfg = {
+ 		.fifo = IWL_MVM_TX_FIFO_VO,
+ 		.sta_id = mvmvif->deflink.bcast_sta.sta_id,
+@@ -2568,7 +2568,7 @@ int iwl_mvm_add_mcast_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
+ 		.aggregate = false,
+ 		.frame_limit = IWL_FRAME_LIMIT,
+ 	};
+-	unsigned int timeout = iwl_mvm_get_wd_timeout(mvm, vif, false, false);
++	unsigned int timeout = iwl_mvm_get_wd_timeout(mvm, vif);
+ 	int ret;
+ 
+ 	lockdep_assert_held(&mvm->mutex);
+@@ -3207,7 +3207,7 @@ int iwl_mvm_sta_tx_agg_oper(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 	struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
+ 	struct iwl_mvm_tid_data *tid_data = &mvmsta->tid_data[tid];
+ 	unsigned int wdg_timeout =
+-		iwl_mvm_get_wd_timeout(mvm, vif, sta->tdls, false);
++		iwl_mvm_get_wd_timeout(mvm, vif);
+ 	int queue, ret;
+ 	bool alloc_queue = true;
+ 	enum iwl_mvm_queue_status queue_status;
+@@ -4326,7 +4326,7 @@ int iwl_mvm_add_pasn_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 	u16 queue;
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+ 	unsigned int wdg_timeout =
+-		iwl_mvm_get_wd_timeout(mvm, vif, false, false);
++		iwl_mvm_get_wd_timeout(mvm, vif);
+ 	bool mld = iwl_mvm_has_mld_api(mvm->fw);
+ 	u32 type = mld ? STATION_TYPE_PEER : IWL_STA_LINK;
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
+index edcc6e2cb76a..1d1364d03f02 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/utils.c
+@@ -747,58 +747,20 @@ bool iwl_mvm_is_vif_assoc(struct iwl_mvm *mvm)
+ }
+ 
+ unsigned int iwl_mvm_get_wd_timeout(struct iwl_mvm *mvm,
+-				    struct ieee80211_vif *vif,
+-				    bool tdls, bool cmd_q)
++				    struct ieee80211_vif *vif)
+ {
+-	struct iwl_fw_dbg_trigger_tlv *trigger;
+-	struct iwl_fw_dbg_trigger_txq_timer *txq_timer;
+-	unsigned int default_timeout = cmd_q ?
+-		IWL_DEF_WD_TIMEOUT :
++	unsigned int default_timeout =
+ 		mvm->trans->trans_cfg->base_params->wd_timeout;
+ 
+-	if (!iwl_fw_dbg_trigger_enabled(mvm->fw, FW_DBG_TRIGGER_TXQ_TIMERS)) {
+-		/*
+-		 * We can't know when the station is asleep or awake, so we
+-		 * must disable the queue hang detection.
+-		 */
+-		if (fw_has_capa(&mvm->fw->ucode_capa,
+-				IWL_UCODE_TLV_CAPA_STA_PM_NOTIF) &&
+-		    vif && vif->type == NL80211_IFTYPE_AP)
+-			return IWL_WATCHDOG_DISABLED;
+-		return default_timeout;
+-	}
 -
- 	trans_cfg.command_groups = iwl_dvm_groups;
- 	trans_cfg.command_groups_size = ARRAY_SIZE(iwl_dvm_groups);
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-index 6148acbac6af..c6f51e3bc3c6 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-@@ -386,7 +386,6 @@ struct iwl_dump_sanitize_ops {
-  * @cmd_queue: the index of the command queue.
-  *	Must be set before start_fw.
-  * @cmd_fifo: the fifo for host commands
-- * @cmd_q_wdg_timeout: the timeout of the watchdog timer for the command queue.
-  * @no_reclaim_cmds: Some devices erroneously don't set the
-  *	SEQ_RX_FRAME bit on some notifications, this is the
-  *	list of such notifications to filter. Max length is
-@@ -412,7 +411,6 @@ struct iwl_trans_config {
- 
- 	u8 cmd_queue;
- 	u8 cmd_fifo;
--	unsigned int cmd_q_wdg_timeout;
- 	const u8 *no_reclaim_cmds;
- 	unsigned int n_no_reclaim_cmds;
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index d69556c406a8..c703f74ac64d 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -1437,10 +1437,6 @@ iwl_op_mode_mvm_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
- 	trans_cfg.cb_data_offs = offsetof(struct ieee80211_tx_info,
- 					  driver_data[2]);
- 
--	/* Set a short watchdog for the command queue */
--	trans_cfg.cmd_q_wdg_timeout =
--		iwl_mvm_get_wd_timeout(mvm, NULL, false, true);
+-	trigger = iwl_fw_dbg_get_trigger(mvm->fw, FW_DBG_TRIGGER_TXQ_TIMERS);
+-	txq_timer = (void *)trigger->data;
 -
- 	snprintf(mvm->hw->wiphy->fw_version,
- 		 sizeof(mvm->hw->wiphy->fw_version),
- 		 "%.31s", fw->fw_version);
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index 719ddc4b72c5..3b9943eb6934 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -1967,7 +1967,6 @@ void iwl_trans_pcie_configure(struct iwl_trans *trans,
+-	if (tdls)
+-		return le32_to_cpu(txq_timer->tdls);
+-
+-	if (cmd_q)
+-		return le32_to_cpu(txq_timer->command_queue);
+-
+-	if (WARN_ON(!vif))
+-		return default_timeout;
+-
+-	switch (ieee80211_vif_type_p2p(vif)) {
+-	case NL80211_IFTYPE_ADHOC:
+-		return le32_to_cpu(txq_timer->ibss);
+-	case NL80211_IFTYPE_STATION:
+-		return le32_to_cpu(txq_timer->bss);
+-	case NL80211_IFTYPE_AP:
+-		return le32_to_cpu(txq_timer->softap);
+-	case NL80211_IFTYPE_P2P_CLIENT:
+-		return le32_to_cpu(txq_timer->p2p_client);
+-	case NL80211_IFTYPE_P2P_GO:
+-		return le32_to_cpu(txq_timer->p2p_go);
+-	case NL80211_IFTYPE_P2P_DEVICE:
+-		return le32_to_cpu(txq_timer->p2p_device);
+-	case NL80211_IFTYPE_MONITOR:
+-		return default_timeout;
+-	default:
+-		WARN_ON(1);
+-		return mvm->trans->trans_cfg->base_params->wd_timeout;
+-	}
++	/*
++	 * We can't know when the station is asleep or awake, so we
++	 * must disable the queue hang detection.
++	 */
++	if (fw_has_capa(&mvm->fw->ucode_capa,
++			IWL_UCODE_TLV_CAPA_STA_PM_NOTIF) &&
++	    vif->type == NL80211_IFTYPE_AP)
++		return IWL_WATCHDOG_DISABLED;
++	return default_timeout;
+ }
  
- 	trans_pcie->txqs.cmd.q_id = trans_cfg->cmd_queue;
- 	trans_pcie->txqs.cmd.fifo = trans_cfg->cmd_fifo;
--	trans_pcie->txqs.cmd.wdg_timeout = trans_cfg->cmd_q_wdg_timeout;
- 	trans_pcie->txqs.page_offs = trans_cfg->cb_data_offs;
- 	trans_pcie->txqs.dev_cmd_offs = trans_cfg->cb_data_offs + sizeof(void *);
- 	trans_pcie->txqs.queue_alloc_cmd_ver = trans_cfg->queue_alloc_cmd_ver;
-@@ -3567,6 +3566,9 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct pci_dev *pdev,
- 	}
- 	trans->max_skb_frags = IWL_TRANS_PCIE_MAX_FRAGS(trans_pcie);
- 
-+	/* Set a short watchdog for the command queue */
-+	trans_pcie->txqs.cmd.wdg_timeout = IWL_DEF_WD_TIMEOUT;
-+
- 	trans_pcie->txqs.tso_hdr_page = alloc_percpu(struct iwl_tso_hdr_page);
- 	if (!trans_pcie->txqs.tso_hdr_page) {
- 		ret = -ENOMEM;
+ void iwl_mvm_connection_loss(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
 -- 
 2.34.1
 
