@@ -1,147 +1,122 @@
-Return-Path: <linux-wireless+bounces-11119-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11120-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7580994B98B
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 11:16:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9694794B9A0
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 11:25:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27B321F21B1C
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 09:16:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41BA91F2178D
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 09:25:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 499CE14659F;
-	Thu,  8 Aug 2024 09:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D70B84047;
+	Thu,  8 Aug 2024 09:25:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WVWZtWQu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SUyzZmNv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDE92575F
-	for <linux-wireless@vger.kernel.org>; Thu,  8 Aug 2024 09:16:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F548C0B
+	for <linux-wireless@vger.kernel.org>; Thu,  8 Aug 2024 09:25:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723108592; cv=none; b=CMVed73SGGpezZlW/r0Qi/gRIE4TGcrfvilhMikJAWI3E+jmDFwzdyhPDyar3WXYjQvQBNNm2DYwhTfuHDMHHaEQg13arVejSsL9YvFviFtIAAUca/e9JLbarD9lYW7kOOFGmyftj+APWHdH7CIbSiVrQmrtCc89Vuo5lqJjOXY=
+	t=1723109119; cv=none; b=NHWBhjf9JhfRXmRE14Os7cfwwz8VULX7N2p6vAxw7Zk4z3VuWQOi+xgPyDC7e+ztI6/cHGyYPQve1gicA0DMCpYMyswAKyztlkW3ilqona0XPtMIqMcGoDyziMITSXmRepAh0h538VCOqSQT0nsdF29HildgistP5Z7aOwHMxc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723108592; c=relaxed/simple;
-	bh=1asTwMFHGcZEwP0gWoT8JYjTyYPyyjcxr5sq/S1Ki+o=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qUt4Yg8j6hNBaU9iV+3gNMWyDomfsCaXjtRh8GbQccA/BKZw1FFyhB9FcyozvW1dnZn1FbRzNhuckJpBOYtujSKIoVhJGQlZMNkK080mcJvhuWiQ1qOWt8KzAVI8bl8G6bGZrX7qU2fZFQE0JcCJapu5ow0Dv2uG1U8qSPtvyus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WVWZtWQu; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1fc692abba4so6736255ad.2
-        for <linux-wireless@vger.kernel.org>; Thu, 08 Aug 2024 02:16:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723108590; x=1723713390; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=eocFVHN/6ohwo4QNwzLA+WaIXfVG93HZGXc2CcAdhoY=;
-        b=WVWZtWQu8X+1bBqYVQydrGKtikj9vMfBv9amvKyHIzznUYE0zUH9hlRj8hx3rY0sDO
-         EJ2MAejLWYVvkU7Eo1iH82ecJ+ZLFKlHcXemG5Mz8pA52MHfLcrLEmUj0qHsasi6fpjX
-         k6Xt7tEkvjaEnZLlE3bxIILnpBD92HxraEzInQIFmqss1QznudgqarWixo7YwlvUjjA1
-         kjM4hL2zC3izwmRLzaW0+uymhDPEsazp3og+xH7RZKrEAcad+2n4fyWIz77K8kHBUhhz
-         kLA2W2b8XjH+bEfWkys6sm9AQa/2R8CbGcK+FbkCHEgGT9pRLixZ9d8rSjEpBO1Xs+jV
-         TX3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723108590; x=1723713390;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eocFVHN/6ohwo4QNwzLA+WaIXfVG93HZGXc2CcAdhoY=;
-        b=ZTO5j/LTvhloKrEflxKMMranpa8xQNQ1eN7XK8Hz3QRfveAtBQigNpjMlrC3KOubwW
-         BXzhaXwpHFkAkLrzDs7d5JvajVLjaTZcSnjiIUWe4o/nzXhmwJCYdw6XKyYt/VZWr5/p
-         V2u3cBnlyEX/7qhu05T40LsJcRCEAOkyUuItx0PR+/H0hhwLN4p+gt/wXUpQt0S3EdDg
-         /ldlcGaYB17c2BU8CT1Tpw2CVFE9xv2LtryA5+8Q7tkYT/VzYotvSrv2xZ1DjA3XsQF/
-         o7ywHltxpZ6G9zfNIvm8aoZVmDiePgO60sJ+Tm3u2RImKOxNfCRfCwextHstRoODsgLs
-         NE9Q==
-X-Gm-Message-State: AOJu0YylFoC7W38FHesqLdw3IiQIm9r6vYr27VGEZcdPEN1gHsvOjqmN
-	HPHi38Q73gGn1QYd+idcRe9X/c8a7tcb8kSftgSvU5kZ6qwS+rxm
-X-Google-Smtp-Source: AGHT+IEiALhZ9IsdsFXvmR7fuhNOIyJLqVpzCC2cecEB0t8OyK65LJUJuPKbRgbkhIUV4oFUIBf5ww==
-X-Received: by 2002:a17:902:d505:b0:1fd:a360:446f with SMTP id d9443c01a7336-200953e2db2mr16231755ad.65.1723108589666;
-        Thu, 08 Aug 2024 02:16:29 -0700 (PDT)
-Received: from localhost.localdomain (59-124-166-19.hinet-ip.hinet.net. [59.124.166.19])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-1ff59179793sm119948565ad.200.2024.08.08.02.16.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Aug 2024 02:16:29 -0700 (PDT)
-From: Ping-Ke Shih <pkshih@gmail.com>
-To: wens@kernel.org
-Cc: linux-wireless@vger.kernel.org,
-	wireless-regdb@lists.infradead.org
-Subject: [PATCH] wireless-regdb: Update regulatory info for Guatemala (GT) for 2020
-Date: Thu,  8 Aug 2024 17:16:11 +0800
-Message-Id: <20240808091611.57112-1-pkshih@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1723109119; c=relaxed/simple;
+	bh=R+yhwvyq3X4Cjlnq5b8+cVCyhP0cgWC8HUd63SpH3vs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=D3fqzH7N9yXrMYRKo/rRFSDNvyw9A8Gh6R4lahGeTv1mwb4gu68lMb3Dl/BwjflzFxYN1qTOo5dpx7sg72LDO7NoM2kRLimsA25eo31JjsacqMm9oT98ccn6jUuu5rdlvaLoM7squCZmgFN5bru5bDpADXNjewi4sQOBcsSJtJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SUyzZmNv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA2A4C32782;
+	Thu,  8 Aug 2024 09:25:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723109119;
+	bh=R+yhwvyq3X4Cjlnq5b8+cVCyhP0cgWC8HUd63SpH3vs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=SUyzZmNvIjN6co5gX7kBgOsi8A2nG4pjnWfxgJaPyUrVZ+S5QvHzJgl3sBccgXB3T
+	 FpHW1e7aA8Y4oWIK/ZeXD5xTQD6O9nmJj9qW/euHVhrMeO2LqckDLlKOvthHd9wcFn
+	 zY8MA+CH+IdSqqF/+L5j8rG04nRKCo7AxERyNZuXTnFdYD29y0hGOVWhllov/F+3sg
+	 Rl/oLHtV8vhnIDwJ/1lR11Poc8kqs1KNu19xanR69i6I7Xvzqj1K4e/v0R0awEcTgt
+	 OMPJ9XrXIPXeCGgEsaDJPiYpk3yfgFnWuzg60CcHjV7wgMJPqbJHgHM+kf/QaTe+Pi
+	 h/bDFfVSycP/A==
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id 41A8D14AD64C; Thu, 08 Aug 2024 11:25:15 +0200 (CEST)
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>
+To: Felix Fietkau <nbd@nbd.name>, Rosen Penev <rosenp@gmail.com>, Kalle Valo
+ <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] net: ath9k: use devm for request_irq
+In-Reply-To: <48cdd408-ab33-4b2e-83e3-73a89c10e368@nbd.name>
+References: <20240731210243.7467-1-rosenp@gmail.com>
+ <201f06b6-14f5-41bb-8897-49665cf14b66@nbd.name>
+ <CAKxU2N9r3Y=Z+rtPbCteWA8-5fRb2NTy2e4xG+=7JvhtzHPg7A@mail.gmail.com>
+ <5dfa4b5a-d8eb-42a8-92bb-81e713fe3395@nbd.name>
+ <CAKxU2N_9naiGUk8uOwWNUNbzf8SFPdYPt-Wzg93pksjau2tLLA@mail.gmail.com>
+ <48cdd408-ab33-4b2e-83e3-73a89c10e368@nbd.name>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date: Thu, 08 Aug 2024 11:25:15 +0200
+Message-ID: <87plqjpds4.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+Felix Fietkau <nbd@nbd.name> writes:
 
-Superintendence of Telecommunications of Guatemala released NATIONAL TABLE
-OF ATTRIBUTION OF FREQUENCIES RADIO ELECTRICS on 2020 [1] on page [2].
+> On 07.08.24 22:07, Rosen Penev wrote:
+>> On Wed, Aug 7, 2024 at 1:05=E2=80=AFPM Felix Fietkau <nbd@nbd.name> wrot=
+e:
+>>>
+>>> On 07.08.24 20:52, Rosen Penev wrote:
+>>> > On Wed, Aug 7, 2024 at 10:47=E2=80=AFAM Felix Fietkau <nbd@nbd.name> =
+wrote:
+>>> >>
+>>> >> On 31.07.24 23:02, Rosen Penev wrote:
+>>> >> > Avoids having to manually call free_irq. Simplifies code slightly.
+>>> >> >
+>>> >> > Signed-off-by: Rosen Penev <rosenp@gmail.com>
+>>> >> > ---
+>>> >> >   drivers/net/wireless/ath/ath9k/ahb.c | 7 ++-----
+>>> >> >   drivers/net/wireless/ath/ath9k/pci.c | 9 +++------
+>>> >> >   2 files changed, 5 insertions(+), 11 deletions(-)
+>>> >> >
+>>> >> > diff --git a/drivers/net/wireless/ath/ath9k/ahb.c b/drivers/net/wi=
+reless/ath/ath9k/ahb.c
+>>> >> > index 1a6697b6e3b4..29f67ded8fe2 100644
+>>> >> > --- a/drivers/net/wireless/ath/ath9k/ahb.c
+>>> >> > +++ b/drivers/net/wireless/ath/ath9k/ahb.c
+>>> >> > @@ -118,7 +118,7 @@ static int ath_ahb_probe(struct platform_devic=
+e *pdev)
+>>> >> >       sc->mem =3D mem;
+>>> >> >       sc->irq =3D irq;
+>>> >> >
+>>> >> > -     ret =3D request_irq(irq, ath_isr, IRQF_SHARED, "ath9k", sc);
+>>> >> > +     ret =3D devm_request_irq(&pdev->dev, irq, ath_isr, IRQF_SHAR=
+ED, "ath9k", sc);
+>>> >> Sorry for the late response, but I think this patch is wrong any may
+>>> >> need to be reverted. If there is an error during probe, and the IRQ
+>>> >> fires for some reason, there could be an use-after-free bug when the=
+ IRQ
+>>> >> handler accesses the data in sc.
+>>> >> The explicit freq_irq calls were preventing that from happening.
+>>> > How about keeping the devm variant and replacing free_irq with
+>>> > devm_free_irq in probe?
+>>>
+>>> If you do that, then using the devm variant is completely pointless.
+>>> I think a full revert is the best option.
+>> OTOH it still allows removing free_irq from _remove, but I see your poin=
+t.
+>
+> No, because you'd have the same use-after-free bug there as well.
 
-* GTM-30
-  - 2,400.0 - 2,483.5 MHz, 500 mW (26.99 dBm)
+Alright, let's revert. Kalle, can you just do the revert, or should I
+send a patch for it?
 
-* GTM-45
-  indoor operation
-  - 5,150 - 5,350 MHz, 200 mW (23.01 dBm)
-  - 5,470 - 5,725 MHz, 250 mW (23.98 dBm)
-  - 5,725 - 5,850 MHz, 500 mW (26.99 dBm)
-
-* GTM-51
-  indoor environments
-  - 5,925 - 6,425  200 mW (23.01 dBm)
-  - 6,425 - 6,525  200 mW (23.01 dBm)
-  - 6,525 - 6,875  150 mW (21.76 dBm)
-  - 6,875 - 7,125  150 mW (21.76 dBm)
-
-* GTM-40
-  used mainly inside buildings
-  - 57 - 66 GHz 20 mW (13.1 dBm)
-
-[1] https://sit.gob.gt/download/9685/tabla-nacional-de-atribucion-de-frecuencias/01WRXSS3QHSADNOSHDZ5HIWXE4TFFW3YIU/4.%20Tabla%20Nacional%20Atribuci%C3%B3n%20Frecuencias%20(Pies%20de%20P%C3%A1gina)
-[2] https://sit.gob.gt/gerencia-de-frecuencias/frecuencias/tabla-nacional-de-atribucion-de-frecuencias/
-
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- db.txt | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
-
-diff --git a/db.txt b/db.txt
-index e46beae64ca4..c0b8ea54c9d5 100644
---- a/db.txt
-+++ b/db.txt
-@@ -779,11 +779,18 @@ country GR: DFS-ETSI
- 	# 60 GHz band channels 1-4 (ETSI EN 302 567)
- 	(57000 - 66000 @ 2160), (40)
- 
--country GT: DFS-FCC
--	(2402 - 2472 @ 40), (30)
--	(5170 - 5250 @ 80), (17), AUTO-BW
--	(5250 - 5330 @ 80), (23), DFS, AUTO-BW
--	(5735 - 5835 @ 80), (30)
-+# Source:
-+# https://sit.gob.gt/download/9685/tabla-nacional-de-atribucion-de-frecuencias/01WRXSS3QHSADNOSHDZ5HIWXE4TFFW3YIU/4.%20Tabla%20Nacional%20Atribuci%C3%B3n%20Frecuencias%20(Pies%20de%20P%C3%A1gina)
-+country GT:
-+	(2400 - 2483.5 @ 40), (500 mW)
-+	(5150 - 5350 @ 80), (200 mW), NO-OUTDOOR
-+	(5470 - 5725 @ 160), (250 mW), NO-OUTDOOR
-+	(5725 - 5850 @ 160), (500 mW), NO-OUTDOOR
-+	(5925 - 6425 @ 320), (200 mW), NO-OUTDOOR
-+	(6425 - 6525 @ 320), (200 mW), NO-OUTDOOR
-+	(6525 - 6875 @ 320), (150 mW), NO-OUTDOOR
-+	(6875 - 7125 @ 320), (150 mW), NO-OUTDOOR
-+	(57000 - 66000 @ 2160), (20 mW), NO-OUTDOOR
- 
- country GU: DFS-FCC
- 	(2402 - 2472 @ 40), (30)
--- 
-2.25.1
-
+-Toke
 
