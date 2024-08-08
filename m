@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-11147-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11148-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD8D194C5A8
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 22:24:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EC2094C5A9
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 22:24:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9390B1F2145A
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 20:24:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05B2B1F20F54
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 20:24:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 632B1158D7F;
-	Thu,  8 Aug 2024 20:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AA2015920E;
+	Thu,  8 Aug 2024 20:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KRFiE/sr"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ezOZ+DQi"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C577A15D5C1
-	for <linux-wireless@vger.kernel.org>; Thu,  8 Aug 2024 20:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70C315920B
+	for <linux-wireless@vger.kernel.org>; Thu,  8 Aug 2024 20:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723148601; cv=none; b=NQ+/qyJRosMt9cVyYK3Sao9qNWQz1Q/y7CgM9W8pTa2w2q9M+boYRqaPO/TlTo4FpEbT2lMGcmWuL9JFAxuhIqoT87L3Sci4IactptWQpwjQTNS1lQBqau/7ZiC1sM45yR0HmlyqF6Dr0YRNamJE2e1Phqln4lxjDIMLR6XKDoU=
+	t=1723148604; cv=none; b=M2dxe18E15jcHjAAZgeTxez/MFYsbOK8qM/ESMPBG6nuOqPwjmqNv8t/DC8vTtMj5odyHRdyUAkMRfjRocvE86JYNxisl9ZoTaRU0uTMq5+Re4VMfNCCvxddvaCz9FaAlhtuHLcXh80hFPqPBOQ36fYiBYEtQwM4CVjY168TZRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723148601; c=relaxed/simple;
-	bh=JmZGHjDmkZRhxs9y+Es471c5l15L7ZyJLf7ffm78xlc=;
+	s=arc-20240116; t=1723148604; c=relaxed/simple;
+	bh=KvK2ziTuGp6TKxSMfgRLa6728jWxTlfxjaDtJq9o80M=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Clm4mT4kSkPswx53A9fO3bLeOOx634NmCL42sCaeiLaUodpdPOnvUVceqrC1bOebXnhtkHhihRRWgltCKRXth0U5Dsndzt8PnpDGBsAVZ8nuJHYf0oIJTxqNtkPVFZHORhPbWPgUNHxQE4Jw6wPAgrN4ynWQMPAWG4/YtabbKEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KRFiE/sr; arc=none smtp.client-ip=192.198.163.8
+	 MIME-Version; b=bPsAsU4TXgo688jFbeyV4CcLzy36NtmQzMK41aXIm/cebTHpxMLN8d6USNpajdC+7Oav2dBmhTPj6TTPU68IR2U7/E+GXjXf/FodsFT0imv3PT3TkM/boeWHvdC5GMrLz2JFvUPIg4gJBmKu7gV4WgVejf+KMYcePFlXNxbltLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ezOZ+DQi; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723148600; x=1754684600;
+  t=1723148603; x=1754684603;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=JmZGHjDmkZRhxs9y+Es471c5l15L7ZyJLf7ffm78xlc=;
-  b=KRFiE/srjFOBWGT8tNI8yq4Fyx5aK0bq31C9+tMergThHQUYtrf85lMi
-   a2xV/gczAFTopBgl7tDuEDc7YLlQwSc0n2uaB15MdCItwlEoOc8hhIUqc
-   viHU0WOpYbCDejfxWh9HoZSVK+zarCi+e5A25hENZMArz50CjSnSS1DxL
-   1KKm8AKwTbf1aPIkI0k6RabtP5eBhJQMIGYksZOwrl3RlizObPM2l2Siu
-   vJOeE9Wu3HhJhf2jd7GPepyp1fdlzOOB1Qm9lxhXR15PefHyKjXeMW1GQ
-   Xo+Fv3+rQG4505g6kCr9RJcGrfLR08u6Je26CTl7P8iI7KI4ky9rbOlAq
-   A==;
-X-CSE-ConnectionGUID: FHdtL8ZHSmeA8p+uMdwR3Q==
-X-CSE-MsgGUID: 0EvF9IhrQeWGMG/oczDNjg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="38808868"
+  bh=KvK2ziTuGp6TKxSMfgRLa6728jWxTlfxjaDtJq9o80M=;
+  b=ezOZ+DQi2Ju6QyH6Bpldrx5g6SRGCgvUGptJfZMVu3WVh70CWKf2dGek
+   Ikq5E3yTerL6FWpmvJdMFyDMV34SOGvgjC020yv8tdO5J77AaavExT1y2
+   6NVWdyZ5L87G0ybq54KAWRaJMGmAnbXoIWbtqMPi/hUD/9/7Xl+8UlBlp
+   nrxc3302OL78iaV6bJVK1O28/SABVRLwLCBx1FsJH+fYmzCTcj5pxiBPB
+   DSa8B/2rUVvf3LyUgSxi+H7HadEZ467udUYWcfCEFV17tUkPup+R5hBLg
+   yoWncchbuYVFElcuGwBJeiHLz4TtGAA4ebHSca81Sws3MXUHRelt1bO9z
+   Q==;
+X-CSE-ConnectionGUID: 5zANVtkfSmy1ES1veq4FTw==
+X-CSE-MsgGUID: x2uxP6LJSlOjAay5/VBW+w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="38808871"
 X-IronPort-AV: E=Sophos;i="6.09,274,1716274800"; 
-   d="scan'208";a="38808868"
+   d="scan'208";a="38808871"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 13:23:19 -0700
-X-CSE-ConnectionGUID: GXFfDZhJTsuqAhDyZuM3HQ==
-X-CSE-MsgGUID: R3/Ve5FJQweic2+XPcgogQ==
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 13:23:21 -0700
+X-CSE-ConnectionGUID: 6gO9CQ/KRu+BKodCmpsMFg==
+X-CSE-MsgGUID: JGZc05HFSwegwfrZjK3k0Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.09,274,1716274800"; 
-   d="scan'208";a="57305346"
+   d="scan'208";a="57305354"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 13:23:17 -0700
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 13:23:19 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 12/13] wifi: iwlwifi: mvm: drop wrong STA selection in TX
-Date: Thu,  8 Aug 2024 23:22:48 +0300
-Message-Id: <20240808232017.45ad105dc7fe.I6d45c82e5758395d9afb8854057ded03c7dc81d7@changeid>
+	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Subject: [PATCH 13/13] wifi: iwlwifi: allow only CN mcc from WRDD
+Date: Thu,  8 Aug 2024 23:22:49 +0300
+Message-Id: <20240808232017.fe6ea7aa4b39.I86004687a2963fe26f990770aca103e2f5cb1628@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240808202249.4004087-1-miriam.rachel.korenblit@intel.com>
 References: <20240808202249.4004087-1-miriam.rachel.korenblit@intel.com>
@@ -77,57 +77,74 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
-This shouldn't happen at all, since in station mode all MMPDUs
-go through the TXQ for the STA, and not this function. There
-may or may not be a race in mac80211 through which this might
-happen for some frames while a station is being added, but in
-that case we can also just drop the frame and pretend the STA
-didn't exist yet.
+Block other mcc expect CN from WRDD ACPI.
 
-Also, the code is simply wrong since it uses deflink, and it's
-not easy to fix it since the mvmvif->ap_sta pointer cannot be
-used without the mutex, and perhaps the right link might not
-even be known.
-
-Just drop the frame at that point instead of trying to fix it
-up.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c    | 16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c       | 5 +++++
+ drivers/net/wireless/intel/iwlwifi/fw/regulatory.h | 2 ++
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.c       | 2 +-
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.h       | 2 --
+ 4 files changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index af892c8291d4..f3f5cfd3baaa 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -839,20 +839,10 @@ void iwl_mvm_mac_tx(struct ieee80211_hw *hw,
- 	if (ieee80211_is_mgmt(hdr->frame_control))
- 		sta = NULL;
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+index 79774c8c7ff4..d20cd49773c9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+@@ -357,6 +357,11 @@ int iwl_acpi_get_mcc(struct iwl_fw_runtime *fwrt, char *mcc)
+ 	}
  
--	/* If there is no sta, and it's not offchannel - send through AP */
-+	/* this shouldn't even happen: just drop */
- 	if (!sta && info->control.vif->type == NL80211_IFTYPE_STATION &&
--	    !offchannel) {
--		struct iwl_mvm_vif *mvmvif =
--			iwl_mvm_vif_from_mac80211(info->control.vif);
--		u8 ap_sta_id = READ_ONCE(mvmvif->deflink.ap_sta_id);
+ 	mcc_val = wifi_pkg->package.elements[1].integer.value;
++	if (mcc_val != BIOS_MCC_CHINA) {
++		ret = -EINVAL;
++		IWL_DEBUG_RADIO(fwrt, "ACPI WRDD is supported only for CN\n");
++		goto out_free;
++	}
+ 
+ 	mcc[0] = (mcc_val >> 8) & 0xff;
+ 	mcc[1] = mcc_val & 0xff;
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
+index c2209948b4c0..81787501d4a4 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
+@@ -45,6 +45,8 @@
+ #define IWL_WTAS_ENABLE_IEC_MSK	0x4
+ #define IWL_WTAS_USA_UHB_MSK		BIT(16)
+ 
++#define BIOS_MCC_CHINA 0x434e
++
+ /*
+  * The profile for revision 2 is a superset of revision 1, which is in
+  * turn a superset of revision 0.  So we can store all revisions
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
+index 754fc5014fbf..091fb6fd7c78 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
+@@ -638,7 +638,7 @@ int iwl_uefi_get_mcc(struct iwl_fw_runtime *fwrt, char *mcc)
+ 		goto out;
+ 	}
+ 
+-	if (data->mcc != UEFI_MCC_CHINA) {
++	if (data->mcc != BIOS_MCC_CHINA) {
+ 		ret = -EINVAL;
+ 		IWL_DEBUG_RADIO(fwrt, "UEFI WRDD is supported only for CN\n");
+ 		goto out;
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.h b/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
+index 0b2477190070..e525d449e656 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
+@@ -151,8 +151,6 @@ struct uefi_cnv_var_splc {
+ 	u32 default_pwr_limit;
+ } __packed;
+ 
+-#define UEFI_MCC_CHINA 0x434e
 -
--		if (ap_sta_id < mvm->fw->ucode_capa.num_stations) {
--			/* mac80211 holds rcu read lock */
--			sta = rcu_dereference(mvm->fw_id_to_mac_id[ap_sta_id]);
--			if (IS_ERR_OR_NULL(sta))
--				goto drop;
--		}
--	}
-+	    !offchannel)
-+		goto drop;
- 
- 	if (tmp_sta && !sta && link_id != IEEE80211_LINK_UNSPECIFIED &&
- 	    !ieee80211_is_probe_resp(hdr->frame_control)) {
+ /* struct uefi_cnv_var_wrdd - WRDD table as defined in UEFI
+  * @revision: the revision of the table
+  * @mcc: country identifier as defined in ISO/IEC 3166-1 Alpha 2 code
 -- 
 2.34.1
 
