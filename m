@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-11142-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11143-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E69E94C5A3
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 22:23:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A56E94C5A4
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 22:23:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8124BB215BD
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 20:23:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BBCF1C21BE9
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 20:23:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF3C15B10D;
-	Thu,  8 Aug 2024 20:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3264715B542;
+	Thu,  8 Aug 2024 20:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PSkKja5K"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iI4DIXUM"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F610155A25
-	for <linux-wireless@vger.kernel.org>; Thu,  8 Aug 2024 20:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B03115B0F4
+	for <linux-wireless@vger.kernel.org>; Thu,  8 Aug 2024 20:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723148594; cv=none; b=hMc3KNCko4CXYcoCXRtY7x/pyUrb5uiiD//7Evfw9t41yeq6G7nym6k9JRN9s6i9s9UdaJgJB3rvC5CoCpekZPhx8f+UrbT0xXoTLn2w4mXrL9u31zZSJNTqQ0ec8NvksJ408xoS6n2bu57iSy5pAx7AnpWkjIcqOOUnAeaVgf8=
+	t=1723148595; cv=none; b=cHNJyvE2HFlv0xRK1/blHtFAOsT4uYAE6MFZsr3qYm7ztGU3XcGY1NBiXQmIMPcyXqwInJthcKleDDYCBUObkaZb13N9OtJshNFA0fn5hr5EtNu0hGOO4KO7eOyC1Ir9SHUuXyRtyflyOF3A7VmtykFQv07SB+TfQ41GC/WzIK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723148594; c=relaxed/simple;
-	bh=BuCcH+LtaTBzjNW2HDouyMrko7gU2m6QYP4MueXgsbI=;
+	s=arc-20240116; t=1723148595; c=relaxed/simple;
+	bh=zOtFqVJQ6aawOIPvMuMp25drxU1zs7i/FYmUT6N4WR8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tY1nV8YQczfL++pyPLQq8gHSdgTznvzMZVdvjSFnu5vUG1PyD2af6WnmM6KDTaIsE6FieqBNAbkSl2WmNmDFAkG8zMVj7E2GAldnkBTsKNOeMcwg8Dddb77VJQsSt2G+ph4FqzYQwjYpnG0NX5ihx7UlDtpy9vipRHcZzqglHno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PSkKja5K; arc=none smtp.client-ip=192.198.163.8
+	 MIME-Version; b=nEkx0PA4iBU+Z/Arq6QtiQFMFBqo24WmyqU4y2rBOCQtgDIHi7dOoZGSIDNajBFzchcgjH3e+4wneFgC7wP3vXDjdrtoOfrkyi1KgHjg8dWhPsSprh4oB3hXugJZe9MC+O0hVR3bK6CpIe8XwFIvb6GUI66wxvfbQWmqyWKABDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iI4DIXUM; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723148593; x=1754684593;
+  t=1723148594; x=1754684594;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=BuCcH+LtaTBzjNW2HDouyMrko7gU2m6QYP4MueXgsbI=;
-  b=PSkKja5KRJvVqsi7O2E4PtrhAJc2NxbjlfRc5OlOlTlEiEzmV5vG2dhw
-   2lmEbwjWakGnDKcCm3BDc/tELX/bRcJATdx1dVF3qLuLJYNrvmuVmAps1
-   C3NjIBB+j9Hd6kLnM9WSzaMHUhpp7u0zAj4lvgJaUCykVlhUERGMGmVWq
-   Xr2ig2j7KcVW70wVuxWul0jjCR01kCr3KIeUZtoyqiU1fW5AAnz6j+doA
-   9vdcQbZh5pv7rJ8wYldfxf1NQRjhU99rfZbMPZSpohdM+z7sW25lPgTbw
-   HOOx1bDGpGCR26JBP8TDDE+uHKjg8i/UCCwoZaosllnEQuZlGN2OwGJzK
-   g==;
-X-CSE-ConnectionGUID: ML3+gTsnShmJnuu+inhctA==
-X-CSE-MsgGUID: YaixQ8CsRriCzwNAZscbqg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="38808847"
+  bh=zOtFqVJQ6aawOIPvMuMp25drxU1zs7i/FYmUT6N4WR8=;
+  b=iI4DIXUMZv0azxQwuOPufHLuC3ufk6+LmQ2Vgvu8addGsh/Xv3l49skg
+   rgLf2vb57yy4HLNObd6J1af0hqlziwIY4jLyHNq8Cng5QAdiATatAx5sz
+   lArlDJuaI9JylX1qj37tZrZuoK6oY10QlRqR2p87Mq4pLgEMn14Q4huNe
+   m1bxbVfizuHMA5SwnexKXQYoweSZPIypvBi3kl9b964slJw0e6zyCv3rK
+   PdAdAhnADyiSibAgkRo6/QFJ+sYdRY/tF60KvHgyCAZ4D//FHGTf3fi2O
+   vzuvhwbjDiRsZ9r1lnJPUpL7WrVT76KDChgj404/AaPEzo+SUsUY5ySpn
+   w==;
+X-CSE-ConnectionGUID: /S2+uH82SJ6FcHnghU5Z0w==
+X-CSE-MsgGUID: FKkcMozNTZaYUbYrS40xYg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="38808850"
 X-IronPort-AV: E=Sophos;i="6.09,274,1716274800"; 
-   d="scan'208";a="38808847"
+   d="scan'208";a="38808850"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 13:23:12 -0700
-X-CSE-ConnectionGUID: 9ThThVF/QT63YiaG3ubNXA==
-X-CSE-MsgGUID: JtOmN3ovSs2sjLli8PWbwA==
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 13:23:13 -0700
+X-CSE-ConnectionGUID: oB8pbPquT0uryJ9e9LeI6A==
+X-CSE-MsgGUID: rprayx8MSkWpA1vtoRZ7wQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.09,274,1716274800"; 
-   d="scan'208";a="57305311"
+   d="scan'208";a="57305315"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 13:23:10 -0700
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 13:23:11 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH 07/13] wifi: iwlwifi: mvm: handle the new EML OMN failure notification
-Date: Thu,  8 Aug 2024 23:22:43 +0300
-Message-Id: <20240808232017.273bc77a027b.I9f2d3ea851050f6031ac07bbe69eb38000fd5683@changeid>
+	Ilan Peer <ilan.peer@intel.com>
+Subject: [PATCH 08/13] wifi: iwlwifi: mvm: Stop processing MCC update if there was no change
+Date: Thu,  8 Aug 2024 23:22:44 +0300
+Message-Id: <20240808232017.60dd273d00e0.I985b3bc61ca4a6cac7c1d1365b5c0afba04f3031@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240808202249.4004087-1-miriam.rachel.korenblit@intel.com>
 References: <20240808202249.4004087-1-miriam.rachel.korenblit@intel.com>
@@ -77,108 +77,55 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-Take the proper action upon EML OMN frame failure.
-ticket=jira:WIFI-428051
+When processing a MCC update notification from the firmware, if
+the firmware indicates that the regulatory configuration didn't
+change, abort the flow and do not notify higher layers.
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/link.c |  3 +-
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  2 ++
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c  | 30 +++++++++++++++++++
- 3 files changed, 34 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/nvm.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/link.c b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-index 3a6e0a90a3ef..d151d935e12a 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-@@ -17,7 +17,8 @@
- 	HOW(EXIT_COEX)			\
- 	HOW(EXIT_BANDWIDTH)		\
- 	HOW(EXIT_CSA)			\
--	HOW(EXIT_LINK_USAGE)
-+	HOW(EXIT_LINK_USAGE)		\
-+	HOW(EXIT_FAIL_ENTRY)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
+index 836ca22597bc..80ec59c58ae4 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
+@@ -611,6 +611,7 @@ void iwl_mvm_rx_chub_update_mcc(struct iwl_mvm *mvm,
+ 	char mcc[3];
+ 	struct ieee80211_regdomain *regd;
+ 	int wgds_tbl_idx;
++	bool changed = false;
  
- static const char *const iwl_mvm_esr_states_names[] = {
- #define NAME_ENTRY(x) [ilog2(IWL_MVM_ESR_##x)] = #x,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index f9e676374daa..65b66f01bef9 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -368,6 +368,7 @@ struct iwl_mvm_vif_link_info {
-  *	preventing the enablement of EMLSR
-  * @IWL_MVM_ESR_EXIT_CSA: CSA happened, so exit EMLSR
-  * @IWL_MVM_ESR_EXIT_LINK_USAGE: Exit EMLSR due to low tpt on secondary link
-+ * @IWL_MVM_ESR_EXIT_FAIL_ENTRY: Exit EMLSR due to entry failure
-  */
- enum iwl_mvm_esr_state {
- 	IWL_MVM_ESR_BLOCKED_PREVENTION	= 0x1,
-@@ -382,6 +383,7 @@ enum iwl_mvm_esr_state {
- 	IWL_MVM_ESR_EXIT_BANDWIDTH	= 0x80000,
- 	IWL_MVM_ESR_EXIT_CSA		= 0x100000,
- 	IWL_MVM_ESR_EXIT_LINK_USAGE	= 0x200000,
-+	IWL_MVM_ESR_EXIT_FAIL_ENTRY	= 0x400000,
- };
+ 	lockdep_assert_held(&mvm->mutex);
  
- #define IWL_MVM_BLOCK_ESR_REASONS 0xffff
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index 0b91877592a8..d69556c406a8 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -159,6 +159,31 @@ static void iwl_mvm_rx_esr_mode_notif(struct iwl_mvm *mvm,
- 				  iwl_mvm_get_primary_link(vif));
+@@ -630,10 +631,15 @@ void iwl_mvm_rx_chub_update_mcc(struct iwl_mvm *mvm,
+ 	IWL_DEBUG_LAR(mvm,
+ 		      "RX: received chub update mcc cmd (mcc '%s' src %d)\n",
+ 		      mcc, src);
+-	regd = iwl_mvm_get_regdomain(mvm->hw->wiphy, mcc, src, NULL);
++	regd = iwl_mvm_get_regdomain(mvm->hw->wiphy, mcc, src, &changed);
+ 	if (IS_ERR_OR_NULL(regd))
+ 		return;
+ 
++	if (!changed) {
++		IWL_DEBUG_LAR(mvm, "RX: No change in the regulatory data\n");
++		goto out;
++	}
++
+ 	wgds_tbl_idx = iwl_mvm_get_sar_geo_profile(mvm);
+ 	if (wgds_tbl_idx < 1)
+ 		IWL_DEBUG_INFO(mvm,
+@@ -644,5 +650,7 @@ void iwl_mvm_rx_chub_update_mcc(struct iwl_mvm *mvm,
+ 			       wgds_tbl_idx);
+ 
+ 	regulatory_set_wiphy_regd(mvm->hw->wiphy, regd);
++
++out:
+ 	kfree(regd);
  }
- 
-+static void iwl_mvm_rx_esr_trans_fail_notif(struct iwl_mvm *mvm,
-+					    struct iwl_rx_cmd_buffer *rxb)
-+{
-+	struct iwl_rx_packet *pkt = rxb_addr(rxb);
-+	struct iwl_esr_trans_fail_notif *notif = (void *)pkt->data;
-+	struct ieee80211_vif *vif = iwl_mvm_get_bss_vif(mvm);
-+
-+	if (IS_ERR_OR_NULL(vif))
-+		return;
-+
-+	IWL_DEBUG_INFO(mvm, "Failed to %s eSR on link %d, reason %d\n",
-+		       le32_to_cpu(notif->activation) ? "enter" : "exit",
-+		       le32_to_cpu(notif->link_id),
-+		       le32_to_cpu(notif->err_code));
-+	/* If we couldn't exit EMLSR, the AP may send us data on the link we
-+	 * removed so we don't have much choice, just disconnect...
-+	 * If we can't enter EMLSR, go back to single link.
-+	 */
-+	if (le32_to_cpu(notif->activation))
-+		iwl_mvm_exit_esr(mvm, vif, IWL_MVM_ESR_EXIT_FAIL_ENTRY,
-+				 iwl_mvm_get_primary_link(vif));
-+	else
-+		iwl_mvm_connection_loss(mvm, vif, "emlsr exit failed");
-+}
-+
- static void iwl_mvm_rx_monitor_notif(struct iwl_mvm *mvm,
- 				     struct iwl_rx_cmd_buffer *rxb)
- {
-@@ -486,6 +511,10 @@ static const struct iwl_rx_handlers iwl_mvm_rx_handlers[] = {
- 	RX_HANDLER_GRP(SCAN_GROUP, CHANNEL_SURVEY_NOTIF,
- 		       iwl_mvm_rx_channel_survey_notif, RX_HANDLER_ASYNC_LOCKED,
- 		       struct iwl_umac_scan_channel_survey_notif),
-+	RX_HANDLER_GRP(MAC_CONF_GROUP, EMLSR_TRANS_FAIL_NOTIF,
-+		       iwl_mvm_rx_esr_trans_fail_notif,
-+		       RX_HANDLER_ASYNC_LOCKED_WIPHY,
-+		       struct iwl_esr_trans_fail_notif),
- };
- #undef RX_HANDLER
- #undef RX_HANDLER_GRP
-@@ -616,6 +645,7 @@ static const struct iwl_hcmd_names iwl_mvm_mac_conf_names[] = {
- 	HCMD_NAME(STA_REMOVE_CMD),
- 	HCMD_NAME(STA_DISABLE_TX_CMD),
- 	HCMD_NAME(ROC_CMD),
-+	HCMD_NAME(EMLSR_TRANS_FAIL_NOTIF),
- 	HCMD_NAME(ROC_NOTIF),
- 	HCMD_NAME(CHANNEL_SWITCH_ERROR_NOTIF),
- 	HCMD_NAME(MISSED_VAP_NOTIF),
 -- 
 2.34.1
 
