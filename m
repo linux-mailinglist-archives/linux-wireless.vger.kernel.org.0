@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-11137-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11138-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A7F794C59D
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 22:23:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F09094C59E
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 22:23:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 297571F22876
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 20:23:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 501FA1C209AD
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 20:23:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51659158DB1;
-	Thu,  8 Aug 2024 20:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29CE91591F3;
+	Thu,  8 Aug 2024 20:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dbFZ9jsj"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RTvkxM3M"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7998D155A25
-	for <linux-wireless@vger.kernel.org>; Thu,  8 Aug 2024 20:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D4D158DA0
+	for <linux-wireless@vger.kernel.org>; Thu,  8 Aug 2024 20:23:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723148586; cv=none; b=THvE6YeeOqsMO2Ta1Af7nWFfPF4fh/Bli4Hyk+VrS1uorj5K6Ku7vga3xQeFlTHDEpjkkLB2q/N7PoY4sM42i8TahiA/FYlm9Qb2mxlRHdh4VZ8vFg/7ywHp3yUAfxs4d+4uHqcfPoXYhnIfvpPcmzVPZekoAdEgoEtvvoAorOE=
+	t=1723148588; cv=none; b=k+9FRk+FlhlFvmfYTWRqWNS6sZlctJTucRcoQTOwtBmZSyzi8k5Suqmf8aJWHHSywKHQv0AyB4Ol+58zaZD+x0FaJuF2GAkoISnEy4tSpOrkrDdD4KmY6NKYCSoTCFSoe2ePb5vW3NspPf6Mazv1qPx7sz/cJ81jVk7hvBkoPI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723148586; c=relaxed/simple;
-	bh=8LtJ2Yc+UKzDnGNMjIQcmLl6PDDATWxUwyAULVDgAeQ=;
+	s=arc-20240116; t=1723148588; c=relaxed/simple;
+	bh=kWLKIOFTnqErhnq/7X3ep8qEyoWgLJNIM6KpB3wyL80=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=iv5feTICsOehCB2z8MV51mEDjWaZ0Fq7HWjRR8fKSFb5dzwvM1LTOUMfO1skJdQB+ugCd2fk/CGhjYAkoreFNprQU/KBar9fR4b74fS9eGFChEJfYDEWrcPka/mWoeX1znAzLGvvv5bx7Q8MIZhp6D3P+T4o5saDmoFyb78Db6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dbFZ9jsj; arc=none smtp.client-ip=192.198.163.8
+	 MIME-Version; b=T7ygAP+zTepzAuzWD/iomaDMJ847RP7NiAE5y6CSiWGutKdqnP4Bx2HP/y/0fD+yq7xNfMN/8sCF3n9/b9MjNFd76pR/nnHu4PSsrFL1dJXb4+FT+pJLx0DIM7sZh4RJz5ZmnIBPZxNdWER7A7qfRbTEVluG7psaJH3g3JYrchw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RTvkxM3M; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723148585; x=1754684585;
+  t=1723148586; x=1754684586;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=8LtJ2Yc+UKzDnGNMjIQcmLl6PDDATWxUwyAULVDgAeQ=;
-  b=dbFZ9jsj1TEkCnVjYrRp++LXcdilMXCxlCVfpcl8iJQcAX52d7yLuUU2
-   16NZi7WoxRJQGkEEcXDxdgwCtJMe6ziufG09JaK21/ZcX+Y65kYjAqew9
-   7/ucgBlXVrFZ3mRdhqrKZveA/UD5YyVdlIN/O3P/PELQ8yjTrTDLW+2Nf
-   JpLjzv1aKnSwnoWxHBqRENcUh3SBwnAGvmFM4IP1IGFz/2JdffwCAi2rj
-   1YVo2J403NmpbzDjGbbY0SM8+bMPzNM7s6BLBlZ8NAA3BmfOf3bffizwH
-   T+dHU2sPObtx/wJimXy4ew29Q4W+PhWjYZ/ps9GSxopMQ287nelTs4Ld8
-   g==;
-X-CSE-ConnectionGUID: JXPzUofYScOKd6jMTfRBMA==
-X-CSE-MsgGUID: ZCGx6Q4dSB6/Yup/E1v7Iw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="38808833"
+  bh=kWLKIOFTnqErhnq/7X3ep8qEyoWgLJNIM6KpB3wyL80=;
+  b=RTvkxM3Mb3L/ulYxkxG1G+rFwnX+oIPFMo2VRJGPWuNukrGaN0KTjCOl
+   cuVDN3Hx+lEiTcjuwU+EPcN8GMMOitX1JlGRu9JMN+77vHIY84rcaNawd
+   FDcRfF45MXfAEUtMidSItVCqFiBxbEqAqHTvaANnZRcqZ0gTcgrFejLDA
+   /E+Ykc0lxQWledPwgun2kLHmIWvTBlnC5A1zw0Bq6HSpmebyoH9BdFE1e
+   Yu8fF+zVTy/sS/t/Cox6xxsS6I7j7VbQA9OYOaurxHFJ6S04joJlDeTpN
+   9MjIWUwfA7falZIiVEuI/c7aQmX+5ztc82jlpHoQcdANExicc9rw7oVUw
+   w==;
+X-CSE-ConnectionGUID: wsH+bBjBTZ+VIqJjcNg+uQ==
+X-CSE-MsgGUID: rZ+3rBLpRxaQA/IxdBolnQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="38808836"
 X-IronPort-AV: E=Sophos;i="6.09,274,1716274800"; 
-   d="scan'208";a="38808833"
+   d="scan'208";a="38808836"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 13:23:04 -0700
-X-CSE-ConnectionGUID: d3BjZYVuSUq0neW4NLCWPw==
-X-CSE-MsgGUID: eM8kUs8+STaF3RXrQ2sIxw==
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 13:23:06 -0700
+X-CSE-ConnectionGUID: MC6q+FYaSrmgG/naFnJmhA==
+X-CSE-MsgGUID: 5wd8X/83RW+omdlwtFgAzg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.09,274,1716274800"; 
-   d="scan'208";a="57305283"
+   d="scan'208";a="57305287"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 13:23:02 -0700
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 13:23:04 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH 02/13] wifi: iwlwifi: mvm: rename iwl_missed_beacons_notif
-Date: Thu,  8 Aug 2024 23:22:38 +0300
-Message-Id: <20240808232017.b5c3a83a05ef.I698611582b5ca8395f42a535c51f7230307e2c6f@changeid>
+Subject: [PATCH 03/13] wifi: iwlwifi: mvm: add the new API for the missed beacons notification
+Date: Thu,  8 Aug 2024 23:22:39 +0300
+Message-Id: <20240808232017.4ea52360b32e.Ibc25dcabd8aeadda906549482a6c77bc42fb55bb@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240808202249.4004087-1-miriam.rachel.korenblit@intel.com>
 References: <20240808202249.4004087-1-miriam.rachel.korenblit@intel.com>
@@ -79,81 +79,56 @@ Content-Transfer-Encoding: 8bit
 
 From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-A new version is coming up. Rename the current struct to include the
-current version.
-
-s/iwl_missed_beacons_notif/iwl_missed_beacons_notif_v4
+Note that the new API does not have the same notification ID as the
+previous notification: the new notification belongs to the group 0x3.
 
 Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/api/commands.h | 2 +-
- drivers/net/wireless/intel/iwlwifi/fw/api/mac.h      | 4 ++--
- drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c    | 2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c         | 2 +-
- 4 files changed, 5 insertions(+), 5 deletions(-)
+ .../wireless/intel/iwlwifi/fw/api/mac-cfg.h   | 25 +++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h b/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h
-index 377fac278511..852ea5d14051 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/commands.h
-@@ -401,7 +401,7 @@ enum iwl_legacy_cmds {
- 	REDUCE_TX_POWER_CMD = 0x9f,
- 
- 	/**
--	 * @MISSED_BEACONS_NOTIFICATION: &struct iwl_missed_beacons_notif
-+	 * @MISSED_BEACONS_NOTIFICATION: &struct iwl_missed_beacons_notif_v4
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
+index 56b880e68870..5fc7967df6c5 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
+@@ -61,6 +61,10 @@ enum iwl_mac_conf_subcmd_ids {
+ 	 * @ROC_CMD: &struct iwl_roc_req
  	 */
- 	MISSED_BEACONS_NOTIFICATION = 0xa2,
+ 	ROC_CMD = 0xE,
++	/**
++	 * @MISSED_BEACONS_NOTIF: &struct iwl_missed_beacons_notif
++	 */
++	MISSED_BEACONS_NOTIF = 0xF6,
+ 	/**
+ 	 * @ROC_NOTIF: &struct iwl_roc_notif
+ 	 */
+@@ -665,4 +669,25 @@ struct iwl_mvm_esr_mode_notif {
+ 	__le32 action;
+ } __packed; /* ESR_MODE_RECOMMENDATION_NTFY_API_S_VER_1 */
  
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/mac.h b/drivers/net/wireless/intel/iwlwifi/fw/api/mac.h
-index bcbbf8c4a297..490215e71e5d 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/mac.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/mac.h
-@@ -378,7 +378,7 @@ struct iwl_missed_beacons_notif_ver_3 {
- } __packed; /* MISSED_BEACON_NTFY_API_S_VER_3 */
- 
- /**
-- * struct iwl_missed_beacons_notif - information on missed beacons
-+ * struct iwl_missed_beacons_notif_v4 - information on missed beacons
-  * ( MISSED_BEACONS_NOTIFICATION = 0xa2 )
-  * @link_id: fw link ID
-  * @consec_missed_beacons_since_last_rx: number of consecutive missed
-@@ -387,7 +387,7 @@ struct iwl_missed_beacons_notif_ver_3 {
-  * @num_expected_beacons: number of expected beacons
-  * @num_recvd_beacons: number of received beacons
-  */
--struct iwl_missed_beacons_notif {
-+struct iwl_missed_beacons_notif_v4 {
- 	__le32 link_id;
- 	__le32 consec_missed_beacons_since_last_rx;
- 	__le32 consec_missed_beacons;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-index dfcc96f18b4f..9209814b465c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-@@ -1590,7 +1590,7 @@ void iwl_mvm_rx_missed_beacons_notif(struct iwl_mvm *mvm,
- 				     struct iwl_rx_cmd_buffer *rxb)
- {
- 	struct iwl_rx_packet *pkt = rxb_addr(rxb);
--	struct iwl_missed_beacons_notif *mb = (void *)pkt->data;
-+	struct iwl_missed_beacons_notif_v4 *mb = (void *)pkt->data;
- 	struct iwl_fw_dbg_trigger_missed_bcon *bcon_trig;
- 	struct iwl_fw_dbg_trigger_tlv *trigger;
- 	u32 stop_trig_missed_bcon, stop_trig_missed_bcon_since_rx;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index be20c8e3a389..dd2631ff452d 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -396,7 +396,7 @@ static const struct iwl_rx_handlers iwl_mvm_rx_handlers[] = {
- 
- 	RX_HANDLER(MISSED_BEACONS_NOTIFICATION, iwl_mvm_rx_missed_beacons_notif,
- 		   RX_HANDLER_ASYNC_LOCKED_WIPHY,
--		   struct iwl_missed_beacons_notif),
-+		   struct iwl_missed_beacons_notif_v4),
- 
- 	RX_HANDLER(REPLY_ERROR, iwl_mvm_rx_fw_error, RX_HANDLER_SYNC,
- 		   struct iwl_error_resp),
++/**
++ * struct iwl_missed_beacons_notif - sent when by the firmware upon beacon loss
++ *  ( MISSED_BEACONS_NOTIF = 0xF6 )
++ * @link_id: fw link ID
++ * @consec_missed_beacons_since_last_rx: number of consecutive missed
++ *	beacons since last RX.
++ * @consec_missed_beacons: number of consecutive missed beacons
++ * @other_link_id: used in EMLSR only. The fw link ID for
++ *	&consec_missed_beacons_other_link. IWL_MVM_FW_LINK_ID_INVALID (0xff) if
++ *	invalid.
++ * @consec_missed_beacons_other_link: number of consecutive missed beacons on
++ *	&other_link_id.
++ */
++struct iwl_missed_beacons_notif {
++	__le32 link_id;
++	__le32 consec_missed_beacons_since_last_rx;
++	__le32 consec_missed_beacons;
++	__le32 other_link_id;
++	__le32 consec_missed_beacons_other_link;
++} __packed; /* MISSED_BEACON_NTFY_API_S_VER_5 */
++
+ #endif /* __iwl_fw_api_mac_cfg_h__ */
 -- 
 2.34.1
 
