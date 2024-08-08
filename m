@@ -1,71 +1,77 @@
-Return-Path: <linux-wireless+bounces-11118-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11119-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D922794B96A
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 10:59:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7580994B98B
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 11:16:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FE581F21D4D
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 08:59:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27B321F21B1C
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 09:16:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D054188CC8;
-	Thu,  8 Aug 2024 08:59:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 499CE14659F;
+	Thu,  8 Aug 2024 09:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KM47AUyU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WVWZtWQu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5AE146019
-	for <linux-wireless@vger.kernel.org>; Thu,  8 Aug 2024 08:59:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDE92575F
+	for <linux-wireless@vger.kernel.org>; Thu,  8 Aug 2024 09:16:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723107570; cv=none; b=GSJArPk+EswLrvE4tWFx//njuI2Z+AFHc+95RLAXYRg+oZMrUH+1bAkYvR0wI3t/07DXgFqY7zNqbYSXxdtS9IgIZRHd9WLawr+s2NwflS0y+yilexiurievcWjh6XCUPxyPsdWtzDR3fGD8m6z0GaRCpxa80JKtA5eHRA4pyR0=
+	t=1723108592; cv=none; b=CMVed73SGGpezZlW/r0Qi/gRIE4TGcrfvilhMikJAWI3E+jmDFwzdyhPDyar3WXYjQvQBNNm2DYwhTfuHDMHHaEQg13arVejSsL9YvFviFtIAAUca/e9JLbarD9lYW7kOOFGmyftj+APWHdH7CIbSiVrQmrtCc89Vuo5lqJjOXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723107570; c=relaxed/simple;
-	bh=F3xVsznyETlRg5wYtweRekzYR8vyv4wtIqm9zF8RKv4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oCNeyMc1CBYBWOO4DRwcZnQFQzqzjqca7FPTMbPwhij05h7JB4493xDps5wtAjvBMiHZnw/XPnmgZPWamDlxkVK3672eJO5mAxd976gw/MgorSOYQZzLJmt/RlEnVFaWM0QL/DQUFOlGlvEWuf75zkpTr86S9C9LrCYq/wNgw+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KM47AUyU; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723107569; x=1754643569;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=F3xVsznyETlRg5wYtweRekzYR8vyv4wtIqm9zF8RKv4=;
-  b=KM47AUyUZfIavoCme/2yQeQXArzetSAUlHARbK7x4IK5UH6aiDGiALHu
-   Ch5LcNBsDA1AyL3uKgmSAqppXrw9ezMHMmQJoXdjia7HlUELR7atmhlu5
-   zO5XE7qxkewN9XobDENi3n06AwTmTpSDyvb28ljVfY1G3Z76b4OTrLvOW
-   Du2qhGFdZhKvUSn6qcxPSU3rzoepFVlcrn0Z0N+NamS2V2j92JAU42c7R
-   nKsdSwT+EUJdmplCTVM86vnXPBQMZBcykxZFy6VhWXt+UOEGAXGOiDr5l
-   dukcncJacgH6ovDjBFkc5W2vtsDvMPhiKv6s3kCY9PXiGn5luWLJH97gH
-   g==;
-X-CSE-ConnectionGUID: 3lLAcJ+jT9CigdX4uPsMnw==
-X-CSE-MsgGUID: lCFqz0YCTW2dxroC1+WqUw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11157"; a="21078860"
-X-IronPort-AV: E=Sophos;i="6.09,272,1716274800"; 
-   d="scan'208";a="21078860"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 01:59:28 -0700
-X-CSE-ConnectionGUID: k/N7ZO0ITXeaeTlqh6RtfQ==
-X-CSE-MsgGUID: kozUkj+MRdyVUxqwx/FuBA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,272,1716274800"; 
-   d="scan'208";a="88059392"
-Received: from egrumbac-mobl1.ger.corp.intel.com (HELO egrumbac-mobl1.intel.com) ([10.245.251.236])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 01:59:25 -0700
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-To: johannes@sipsolutions.net
-Cc: j@w1.fi,
-	linux-wireless@vger.kernel.org,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH] wifi: mac80211: fix the comeback long retry times
-Date: Thu,  8 Aug 2024 11:59:16 +0300
-Message-ID: <20240808085916.23519-1-emmanuel.grumbach@intel.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1723108592; c=relaxed/simple;
+	bh=1asTwMFHGcZEwP0gWoT8JYjTyYPyyjcxr5sq/S1Ki+o=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qUt4Yg8j6hNBaU9iV+3gNMWyDomfsCaXjtRh8GbQccA/BKZw1FFyhB9FcyozvW1dnZn1FbRzNhuckJpBOYtujSKIoVhJGQlZMNkK080mcJvhuWiQ1qOWt8KzAVI8bl8G6bGZrX7qU2fZFQE0JcCJapu5ow0Dv2uG1U8qSPtvyus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WVWZtWQu; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1fc692abba4so6736255ad.2
+        for <linux-wireless@vger.kernel.org>; Thu, 08 Aug 2024 02:16:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723108590; x=1723713390; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=eocFVHN/6ohwo4QNwzLA+WaIXfVG93HZGXc2CcAdhoY=;
+        b=WVWZtWQu8X+1bBqYVQydrGKtikj9vMfBv9amvKyHIzznUYE0zUH9hlRj8hx3rY0sDO
+         EJ2MAejLWYVvkU7Eo1iH82ecJ+ZLFKlHcXemG5Mz8pA52MHfLcrLEmUj0qHsasi6fpjX
+         k6Xt7tEkvjaEnZLlE3bxIILnpBD92HxraEzInQIFmqss1QznudgqarWixo7YwlvUjjA1
+         kjM4hL2zC3izwmRLzaW0+uymhDPEsazp3og+xH7RZKrEAcad+2n4fyWIz77K8kHBUhhz
+         kLA2W2b8XjH+bEfWkys6sm9AQa/2R8CbGcK+FbkCHEgGT9pRLixZ9d8rSjEpBO1Xs+jV
+         TX3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723108590; x=1723713390;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eocFVHN/6ohwo4QNwzLA+WaIXfVG93HZGXc2CcAdhoY=;
+        b=ZTO5j/LTvhloKrEflxKMMranpa8xQNQ1eN7XK8Hz3QRfveAtBQigNpjMlrC3KOubwW
+         BXzhaXwpHFkAkLrzDs7d5JvajVLjaTZcSnjiIUWe4o/nzXhmwJCYdw6XKyYt/VZWr5/p
+         V2u3cBnlyEX/7qhu05T40LsJcRCEAOkyUuItx0PR+/H0hhwLN4p+gt/wXUpQt0S3EdDg
+         /ldlcGaYB17c2BU8CT1Tpw2CVFE9xv2LtryA5+8Q7tkYT/VzYotvSrv2xZ1DjA3XsQF/
+         o7ywHltxpZ6G9zfNIvm8aoZVmDiePgO60sJ+Tm3u2RImKOxNfCRfCwextHstRoODsgLs
+         NE9Q==
+X-Gm-Message-State: AOJu0YylFoC7W38FHesqLdw3IiQIm9r6vYr27VGEZcdPEN1gHsvOjqmN
+	HPHi38Q73gGn1QYd+idcRe9X/c8a7tcb8kSftgSvU5kZ6qwS+rxm
+X-Google-Smtp-Source: AGHT+IEiALhZ9IsdsFXvmR7fuhNOIyJLqVpzCC2cecEB0t8OyK65LJUJuPKbRgbkhIUV4oFUIBf5ww==
+X-Received: by 2002:a17:902:d505:b0:1fd:a360:446f with SMTP id d9443c01a7336-200953e2db2mr16231755ad.65.1723108589666;
+        Thu, 08 Aug 2024 02:16:29 -0700 (PDT)
+Received: from localhost.localdomain (59-124-166-19.hinet-ip.hinet.net. [59.124.166.19])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-1ff59179793sm119948565ad.200.2024.08.08.02.16.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Aug 2024 02:16:29 -0700 (PDT)
+From: Ping-Ke Shih <pkshih@gmail.com>
+To: wens@kernel.org
+Cc: linux-wireless@vger.kernel.org,
+	wireless-regdb@lists.infradead.org
+Subject: [PATCH] wireless-regdb: Update regulatory info for Guatemala (GT) for 2020
+Date: Thu,  8 Aug 2024 17:16:11 +0800
+Message-Id: <20240808091611.57112-1-pkshih@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -74,50 +80,68 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When we had a comeback, we will never use the default timeout values
-again because comeback is never cleared.
-Clear comeback if we send another association request which will allow
-to start a default timer after Tx status.
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-The problem was seen with iwlwifi where the tx_status on the association
-request is handled before the association response frame (which is the
-usual case).
+Superintendence of Telecommunications of Guatemala released NATIONAL TABLE
+OF ATTRIBUTION OF FREQUENCIES RADIO ELECTRICS on 2020 [1] on page [2].
 
-1) Tx assoc request 1/3
-2) Rx assoc response (comeback, timeout = 1 second)
-3) wait 1 second
-4) Tx assoc request 2/3
-5) Set timer to IEEE80211_ASSOC_TIMEOUT_LONG = 500ms (1 second after
-   round_up)
-6) tx_status on frame sent in 4) is ignored because comeback is still
-   true
-7) AP does not reply with assoc response
-8) wait 1s <= This is where the bug is felt
-9) Tx assoc request 3/3
+* GTM-30
+  - 2,400.0 - 2,483.5 MHz, 500 mW (26.99 dBm)
 
-With this fix, in step 6 we will reset the timer to
-IEEE80211_ASSOC_TIMEOUT_SHORT = 100ms and we will wait only 100ms in
-step 8.
+* GTM-45
+  indoor operation
+  - 5,150 - 5,350 MHz, 200 mW (23.01 dBm)
+  - 5,470 - 5,725 MHz, 250 mW (23.98 dBm)
+  - 5,725 - 5,850 MHz, 500 mW (26.99 dBm)
 
-Fixes: b133fdf07db8 ("wifi: mac80211: Skip association timeout update after comeback rejection")
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+* GTM-51
+  indoor environments
+  - 5,925 - 6,425  200 mW (23.01 dBm)
+  - 6,425 - 6,525  200 mW (23.01 dBm)
+  - 6,525 - 6,875  150 mW (21.76 dBm)
+  - 6,875 - 7,125  150 mW (21.76 dBm)
+
+* GTM-40
+  used mainly inside buildings
+  - 57 - 66 GHz 20 mW (13.1 dBm)
+
+[1] https://sit.gob.gt/download/9685/tabla-nacional-de-atribucion-de-frecuencias/01WRXSS3QHSADNOSHDZ5HIWXE4TFFW3YIU/4.%20Tabla%20Nacional%20Atribuci%C3%B3n%20Frecuencias%20(Pies%20de%20P%C3%A1gina)
+[2] https://sit.gob.gt/gerencia-de-frecuencias/frecuencias/tabla-nacional-de-atribucion-de-frecuencias/
+
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- net/mac80211/mlme.c | 1 +
- 1 file changed, 1 insertion(+)
+ db.txt | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 4779a18ab75d..0285924269cf 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -7660,6 +7660,7 @@ static int ieee80211_do_assoc(struct ieee80211_sub_if_data *sdata)
- 	lockdep_assert_wiphy(sdata->local->hw.wiphy);
+diff --git a/db.txt b/db.txt
+index e46beae64ca4..c0b8ea54c9d5 100644
+--- a/db.txt
++++ b/db.txt
+@@ -779,11 +779,18 @@ country GR: DFS-ETSI
+ 	# 60 GHz band channels 1-4 (ETSI EN 302 567)
+ 	(57000 - 66000 @ 2160), (40)
  
- 	assoc_data->tries++;
-+	assoc_data->comeback = false;
- 	if (assoc_data->tries > IEEE80211_ASSOC_MAX_TRIES) {
- 		sdata_info(sdata, "association with %pM timed out\n",
- 			   assoc_data->ap_addr);
+-country GT: DFS-FCC
+-	(2402 - 2472 @ 40), (30)
+-	(5170 - 5250 @ 80), (17), AUTO-BW
+-	(5250 - 5330 @ 80), (23), DFS, AUTO-BW
+-	(5735 - 5835 @ 80), (30)
++# Source:
++# https://sit.gob.gt/download/9685/tabla-nacional-de-atribucion-de-frecuencias/01WRXSS3QHSADNOSHDZ5HIWXE4TFFW3YIU/4.%20Tabla%20Nacional%20Atribuci%C3%B3n%20Frecuencias%20(Pies%20de%20P%C3%A1gina)
++country GT:
++	(2400 - 2483.5 @ 40), (500 mW)
++	(5150 - 5350 @ 80), (200 mW), NO-OUTDOOR
++	(5470 - 5725 @ 160), (250 mW), NO-OUTDOOR
++	(5725 - 5850 @ 160), (500 mW), NO-OUTDOOR
++	(5925 - 6425 @ 320), (200 mW), NO-OUTDOOR
++	(6425 - 6525 @ 320), (200 mW), NO-OUTDOOR
++	(6525 - 6875 @ 320), (150 mW), NO-OUTDOOR
++	(6875 - 7125 @ 320), (150 mW), NO-OUTDOOR
++	(57000 - 66000 @ 2160), (20 mW), NO-OUTDOOR
+ 
+ country GU: DFS-FCC
+ 	(2402 - 2472 @ 40), (30)
 -- 
-2.45.2
+2.25.1
 
 
