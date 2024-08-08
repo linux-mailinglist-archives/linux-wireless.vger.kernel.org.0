@@ -1,98 +1,135 @@
-Return-Path: <linux-wireless+bounces-11134-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11135-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E78694C489
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 20:39:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 953A694C59B
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 22:23:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 385DA288BF3
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 18:39:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A39ED1C2093F
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 20:23:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCFB813DDD9;
-	Thu,  8 Aug 2024 18:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D4F3148308;
+	Thu,  8 Aug 2024 20:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RELpqUmz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Yet1paOn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12949479;
-	Thu,  8 Aug 2024 18:39:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4EAB9460
+	for <linux-wireless@vger.kernel.org>; Thu,  8 Aug 2024 20:23:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723142357; cv=none; b=N1MI3MBeVZGP0NuxwmYvD+1rTrEwTpysiOzsSurMmQ+yYLHiCfofh2ZRJKoxn6iQpcXL5S0796lvSkgYSY1t0yxC8+F0eStvZkdIFL2wYFlXiDXgX1RanYxffvk2W+88shVHBvXTx1knGKmMvWJ5nmlHlnD7QloD5L+sheU7w0o=
+	t=1723148584; cv=none; b=HrQrt7d/5NeR0uPJUJt8MsBjhrnM7XAUAXP5BJIu37cBHioOnWdZX6MAwNCsQtPsq5O67L69BbvxEPRuEjY0rf1xrnIaejUvxZBGHVpxPfHFHMn9KstJN4xELqDbOkL8hLZdPJRYAkdl/tw6LDzrEEGXTduL2W2cbTQB5mwakKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723142357; c=relaxed/simple;
-	bh=OD5QFyd3js9Q8D/CbcwQSOoSYA5oX+Ue/b6PWIfIdSk=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=oIXNS5cTumWc9J5Hxbi4IpUPKgFBD3edrMqFpcjjDU5/+0IIJ73ZhrFuns04bxkBedip7vZqApENYCw7zCF50BvuacX8bkE7fAaxTE2E/I7SYWg/EdKX9A8IChefnWO8dhkVuhs7Ej/XNvf3U2YIXyQAlc4nufKRP+/gG7yhzHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RELpqUmz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CCDAC32782;
-	Thu,  8 Aug 2024 18:39:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723142357;
-	bh=OD5QFyd3js9Q8D/CbcwQSOoSYA5oX+Ue/b6PWIfIdSk=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=RELpqUmzh26C6qc/6F5dKzm1eowqq3EG8AMPJF3ZR274dk2jgO2XqJhH84mJCpaRX
-	 Ja9+NfDKIH+GwidKw1H120gTpMJctBw1+pf9h5pe1YybhqEWttpohhDoTSEqU8+dG1
-	 AyK/7qBE1McJ+8M7C/YatXrdnSjgKUojTeoQE46aFSpCqrl+Jo3kiok5MJG1Msvx3J
-	 0hfwqVrnjlDyTtFElRKoOKzcdYXFmldl20StsaXA4NDzw6L0lAvYypGCdsqyURzbkN
-	 ZP8jC8CiaRSrd1tGJdjfLKNEubW1nOoMLSzJn9iT+52OcfgxCjz+Ca3hiRi0bgGSAK
-	 fjOzqgnUBiEqQ==
-From: Kalle Valo <kvalo@kernel.org>
-To: Benjamin Berg <benjamin@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org,  benjamin.berg@intel.com,
-  miriam.rachel.korenblit@intel.com,  regressions@lists.linux.dev,
-  johannes@sipsolutions.net,  Chris Bainbridge
- <chris.bainbridge@gmail.com>,  Ben Greear <greearb@candelatech.com>
-Subject: Re: [PATCH] wifi: iwlwifi: correctly lookup DMA address in SG table
-References: <20240808172948.303258-1-benjamin@sipsolutions.net>
-Date: Thu, 08 Aug 2024 21:39:13 +0300
-In-Reply-To: <20240808172948.303258-1-benjamin@sipsolutions.net> (Benjamin
-	Berg's message of "Thu, 8 Aug 2024 19:29:48 +0200")
-Message-ID: <87jzgq3lm6.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1723148584; c=relaxed/simple;
+	bh=6OJmwqK6+LQOw/idpRunFsxhTge0BOw0JO/2ojyISXY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iUxmOj0Hoj5oP+1LO6szZxSRggm30WgEEt8IraYOcU/6Q+XvJWQoYM2+PowtsPGo2hCc3lZtKyUw4S3EKaAcmQtHaPEbvp8UuH+UgqxXnw1/ZpKuUWx7xtyOr6xLEauBUUlm7/eglBabIjU/hpOVu9eNmC2Qo/9s7Aau4Y9LTOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Yet1paOn; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723148582; x=1754684582;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=6OJmwqK6+LQOw/idpRunFsxhTge0BOw0JO/2ojyISXY=;
+  b=Yet1paOnAx94dw0kMYcHvxZwpub8mi6qQOERCOEfllVrF4lNwfFYXTla
+   zsN+owFHT6T6O1B4Y9c/hPLVTPGCs1yUYq2zk/7cj/2N2IbkTtKrHJs+H
+   6NTY9CmL4SipveU4R4vZo3NE1obdGdo2elPkt2hCc1Dvb/f1nG6fGOTf6
+   9z/VoPsaIKCsRscmgXKp7TgRAEZzNqKuowtNhsqC/v1pWMaFry8aEdIcx
+   6LpoZ9RotKwtA+n7Ia4FxvmwEZr3os+8Gbk+OQjCGYQ1m+YMrZyCih3v3
+   EadvWDCSwjSg9a18U36rl7Y3GxZUy7UaHk7256ME/70gf/gsKlvFSP1Ye
+   w==;
+X-CSE-ConnectionGUID: L3fLV0h7SZWWfTEPkOkFwA==
+X-CSE-MsgGUID: vbSfJ2NaRtmH3eM9RJ0oNA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="38808824"
+X-IronPort-AV: E=Sophos;i="6.09,274,1716274800"; 
+   d="scan'208";a="38808824"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 13:23:01 -0700
+X-CSE-ConnectionGUID: nmXEeJQOTkiIQVfgnbe7fg==
+X-CSE-MsgGUID: njQmzAF9TzaE0uUmHWo3OQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,274,1716274800"; 
+   d="scan'208";a="57305266"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 13:22:59 -0700
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH 00/13] wifi: iwlwifi: updates - 29-08-08
+Date: Thu,  8 Aug 2024 23:22:36 +0300
+Message-Id: <20240808202249.4004087-1-miriam.rachel.korenblit@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Organization: Intel Israel (74) Limited
+Content-Transfer-Encoding: 8bit
 
-Benjamin Berg <benjamin@sipsolutions.net> writes:
+Hi,
 
-> From: Benjamin Berg <benjamin.berg@intel.com>
->
-> The code to lookup the scatter gather table entry assumed that it was
-> possible to use sg_virt() in order to lookup the DMA address in a mapped
-> scatter gather table. However, this assumption is incorrect as the DMA
-> mapping code may merge multiple entries into one. In that case, the DMA
-> address space may have e.g. two consecutive pages which is correctly
-> represented by the scatter gather list entry, however the virtual
-> addresses for these two pages may differ and the relationship cannot be
-> resolved anymore.
->
-> Avoid this problem entirely by working with the offset into the mapped
-> area instead of using virtual addresses. With that we only use the DMA
-> length and DMA address from the scatter gather list entries. The
-> underlying DMA/IOMMU code is therefore free to merge two entries into
-> one even if the virtual addresses space for the area is not continuous.
->
-> Fixes: 90db50755228 ("wifi: iwlwifi: use already mapped data when TXing an AMSDU")
-> Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-> Closes: https://lore.kernel.org/r/ZrNRoEbdkxkKFMBi@debian.local
-> Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+This patch set contains a few features, bugfixes and cleanups.
 
-Reminder to myself: if this passes the tests it should go to wireless
-tree. Assigned the patch to me on patchwork.
+Miri
 
-Miri, if you agree please give an Acked-by.
+Anjaneyulu (1):
+  wifi: iwlwifi: allow only CN mcc from WRDD
+
+Daniel Gabay (1):
+  wifi: iwlwifi: mvm: Offload RLC/SMPS functionality to firmware
+
+Emmanuel Grumbach (6):
+  wifi: iwlwifi: mvm: rename iwl_missed_beacons_notif
+  wifi: iwlwifi: mvm: add the new API for the missed beacons notification
+  wifi: iwlwifi: mvm: handle the new missed beacons notification
+  wifi: iwlwifi: mvm: exit EMLSR if both links are missing beacons
+  wifi: iwlwifi: mvm: add API for EML OMN frame failure
+  wifi: iwlwifi: mvm: handle the new EML OMN failure notification
+
+Ilan Peer (1):
+  wifi: iwlwifi: mvm: Stop processing MCC update if there was no change
+
+Johannes Berg (1):
+  wifi: iwlwifi: mvm: drop wrong STA selection in TX
+
+Miri Korenblit (3):
+  wifi: iwlwifi: use default command queue watchdog timeout
+  wifi: iwlwifi: mvm: cleanup iwl_mvm_get_wd_timeout
+  wifi: iwlwifi: bump FW API to 93 for BZ/SC devices
+
+ drivers/net/wireless/intel/iwlwifi/cfg/bz.c   |  2 +-
+ drivers/net/wireless/intel/iwlwifi/cfg/sc.c   |  2 +-
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c |  2 -
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c  |  5 ++
+ .../wireless/intel/iwlwifi/fw/api/commands.h  |  2 +-
+ .../wireless/intel/iwlwifi/fw/api/mac-cfg.h   | 55 ++++++++++++++
+ .../net/wireless/intel/iwlwifi/fw/api/mac.h   |  4 +-
+ .../wireless/intel/iwlwifi/fw/regulatory.h    |  2 +
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.c  |  2 +-
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.h  |  2 -
+ .../net/wireless/intel/iwlwifi/iwl-trans.h    |  2 -
+ .../wireless/intel/iwlwifi/mvm/constants.h    |  3 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/link.c |  3 +-
+ .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c | 74 ++++++++++++++++---
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 25 +++----
+ .../net/wireless/intel/iwlwifi/mvm/mld-sta.c  |  4 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  | 14 +++-
+ drivers/net/wireless/intel/iwlwifi/mvm/nvm.c  | 10 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  | 49 ++++++++++--
+ .../net/wireless/intel/iwlwifi/mvm/phy-ctxt.c |  6 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c  | 16 ++--
+ .../net/wireless/intel/iwlwifi/mvm/utils.c    | 64 ++++------------
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   |  4 +-
+ 23 files changed, 241 insertions(+), 111 deletions(-)
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.34.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
