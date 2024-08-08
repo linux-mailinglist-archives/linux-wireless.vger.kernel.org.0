@@ -1,120 +1,112 @@
-Return-Path: <linux-wireless+bounces-11127-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11128-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C582F94BC9A
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 13:55:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27A4A94BEE0
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 15:55:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B46C28470A
-	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 11:55:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58C391C23CF6
+	for <lists+linux-wireless@lfdr.de>; Thu,  8 Aug 2024 13:55:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF27F187854;
-	Thu,  8 Aug 2024 11:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3D018E741;
+	Thu,  8 Aug 2024 13:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cmAKh2dT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AjQtoA7E"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC7F4A33
-	for <linux-wireless@vger.kernel.org>; Thu,  8 Aug 2024 11:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC03518E740
+	for <linux-wireless@vger.kernel.org>; Thu,  8 Aug 2024 13:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723118111; cv=none; b=GKKFjEAXuWYlvX9ztJIYLnIutvJBWknevPKtTL2Qoqu22gQ+CH/qx5LD5mDiWt+O5qyZu3wCM8W50mWm7SAVxIU3BOWefNtXifI/4TBbYOTgmp+MJQBZqL9DqemxMh/mT6jo2NezgNCLF+4lMjGA6/if1GJdJ0rmvnTohhoDhZg=
+	t=1723125287; cv=none; b=mz+08WZCx4xBpjCIormhN+kEkOntMsXMvHsXjLtZedeYt+4E1AIqNUcdi2CsCQZe4pz/iUXHWYjGekbwDAi7vfHJjmpBk+lFWM33XtVXpCBgjhTbrHBMceAc7K6hZ1Z34AL63p9b88U250Xp+Tu99oREr/V5Z9D944zzTbJLRhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723118111; c=relaxed/simple;
-	bh=xSKSefyu2JIZwNPbODT8Q+4ar5m3IfPGumVk0YnRGZ8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GDdmNBPdvHXulM5Qr3PKbzlLoqRn3Nez4lLaERTcv58ZI3cdU7N26pWY1uzPkE+baLCsa7H1ALext1Y8miZE5gaEkj6N7eVWNCexomwLrAIKD3ivLGSYM4xlY56g5U7Vuy5cRiM1YDcJtEwixBc23q1rxxyy6QW+8kRSyuXcU48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cmAKh2dT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 281F4C4AF09
-	for <linux-wireless@vger.kernel.org>; Thu,  8 Aug 2024 11:55:11 +0000 (UTC)
+	s=arc-20240116; t=1723125287; c=relaxed/simple;
+	bh=nkObpOmCwLhZ5WtPiXbo12v6b7I55cOTWSNb1UA4iA0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=o4s+SFfFRUek5Nl+pI1fgOCR67+mqwhtzXHBVtiPOYsYhhpX+hAuFI3Sr/kUuClUJX7fKnR9aC4x9bYc+ORkij+SziuaSnw03OxsIFpSymNQ4h611GbebmspRYh0zAIbqgrs7q8KMv1AAeCtxotZ6iDKak+OZQ6F7v4pDB4IYDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AjQtoA7E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD01C32782;
+	Thu,  8 Aug 2024 13:54:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723118111;
-	bh=xSKSefyu2JIZwNPbODT8Q+4ar5m3IfPGumVk0YnRGZ8=;
-	h=References:In-Reply-To:From:Date:Subject:To:List-Id:Cc:From;
-	b=cmAKh2dTDdHihsehI4oTOOYIrSj40HS+sTEad7o0zQfrdKWkjLfoXZuzeeVpgLVTK
-	 P5h4lNAT7jgW9abIVinl+zOAlO+Lk3Lp5AZmZ5zvKohBCm3pW3hCYf61PGCrNdfecn
-	 +rS5IwbYRGdS2GbY/hYwch7FibZzFskn7KBq0T+QKNGxtThmmOc/uBZdbkDgnH1qh5
-	 QP2tS89xgQniIvLuLSIhIdJMk+0AdNqPYkvGC2E2PvwzPhSNtTHgueS93fJN7N7Zvk
-	 xubhWX3dHgG5h/I9ys9QCwxMmmU+4mToGIuRgihcMXy5dE7tiH7BXIq0HpOLk2PzKw
-	 ArhqwziaMu43g==
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-691c85525ebso8055937b3.0
-        for <linux-wireless@vger.kernel.org>; Thu, 08 Aug 2024 04:55:11 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU6GFCI0ziK6zH06CrqVSE5JYKAM3uvm3RPsPTZ5XzbzL4C1cQih2YTo9XEzWMIHGSGjfApVJPzs88XKVLuxzO8oJUinzZlP0jCpNBzRpk=
-X-Gm-Message-State: AOJu0YxeYSYC/k/dqcomtkUI8ZrHiabzv+4KFDBz57SDixKIeecV+X6Q
-	3TPgvltaENdAb2RKHJ8joi8DiZv/9fxAYQ3YS//4fpdagFyDL3NZB3D/h3xPdp8u8T+h84yrQk/
-	Fb1eC13nOEwvMkcg2uWxJZBQRPMM=
-X-Google-Smtp-Source: AGHT+IFvxXJxn87rf5Vo+OU9A+/f4BWSdjFh+gxHFI/KzRbgzXNtsvQv36jYXRJuYC+NVChkzzHqmw0J0kVhm/kirwY=
-X-Received: by 2002:a05:690c:e1f:b0:65f:e4f0:8347 with SMTP id
- 00721157ae682-69bf7924043mr18248087b3.13.1723118110388; Thu, 08 Aug 2024
- 04:55:10 -0700 (PDT)
+	s=k20201202; t=1723125287;
+	bh=nkObpOmCwLhZ5WtPiXbo12v6b7I55cOTWSNb1UA4iA0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=AjQtoA7E3/9K2JistB9hZi0dmjmmPzlatZnnAutOjyxjbDktB23H+crHRz9nXHv5V
+	 OEep1kUk1z5YniKdELz48XmIuCtVj06ueRbE4+4yFsu4ZYtDvnYQvGjxjRAGyPjYxB
+	 GyCUGurt/wlECX50034Ec7Kn9Ayg1ECImyvku/AYT5XZKeLOYaGsnWTDG0u8rkRZOt
+	 Av37PsEW1LmZ100VsQsvwJOVuJDj0tDnqTO26eNcUn5676jMguKu5qu2y9BpRpFukO
+	 OOTSNPsJ3lFROKSfXGPCGHFr2Dussxj4rt8io5gIuFmmLnv2e/yo+EuTAIkMmK4/zo
+	 RRdsaZAtZzvsg==
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id 0B22B14AD703; Thu, 08 Aug 2024 15:54:44 +0200 (CEST)
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Felix Fietkau <nbd@nbd.name>, Rosen Penev <rosenp@gmail.com>,
+ linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] net: ath9k: use devm for request_irq
+In-Reply-To: <87o7632qff.fsf@kernel.org>
+References: <20240731210243.7467-1-rosenp@gmail.com>
+ <201f06b6-14f5-41bb-8897-49665cf14b66@nbd.name>
+ <CAKxU2N9r3Y=Z+rtPbCteWA8-5fRb2NTy2e4xG+=7JvhtzHPg7A@mail.gmail.com>
+ <5dfa4b5a-d8eb-42a8-92bb-81e713fe3395@nbd.name>
+ <CAKxU2N_9naiGUk8uOwWNUNbzf8SFPdYPt-Wzg93pksjau2tLLA@mail.gmail.com>
+ <48cdd408-ab33-4b2e-83e3-73a89c10e368@nbd.name> <87plqjpds4.fsf@toke.dk>
+ <87zfpn2ua8.fsf@kernel.org> <87jzgrpaf9.fsf@toke.dk>
+ <87o7632qff.fsf@kernel.org>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date: Thu, 08 Aug 2024 15:54:44 +0200
+Message-ID: <87ed6zp1az.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <f6b548ef4c1a2404dc1f7a497c24a82c9247a3bd.camel@realtek.com>
-In-Reply-To: <f6b548ef4c1a2404dc1f7a497c24a82c9247a3bd.camel@realtek.com>
-From: Josh Boyer <jwboyer@kernel.org>
-Date: Thu, 8 Aug 2024 07:54:59 -0400
-X-Gmail-Original-Message-ID: <CA+5PVA4OTOzD6fZdPdeTEzanSh2pFe7DgWb1M2hrqfA91-vfRw@mail.gmail.com>
-Message-ID: <CA+5PVA4OTOzD6fZdPdeTEzanSh2pFe7DgWb1M2hrqfA91-vfRw@mail.gmail.com>
-Subject: Re: pull request: rtw89: add firmware of 8852bt v0.29.91.0 and 8852c v0.27.97.0
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: "linux-firmware@kernel.org" <linux-firmware@kernel.org>, 
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, Timlee <timlee@realtek.com>, 
-	Damon Chen <damon.chen@realtek.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 7, 2024 at 9:53=E2=80=AFPM Ping-Ke Shih <pkshih@realtek.com> wr=
-ote:
->
-> Hi,
->
-> Add RTL8852BT and RTL8852C-1 firmware of rtw89 driver.
->
-> Thank you
-> Ping-Ke
->
-> ---
-> The following changes since commit e131a437050360bf31b0ad7b69667432947acb=
-ab:
->
->   Merge branch 'intel-20240805' into 'main' (2024-08-05 11:41:14 +0000)
->
-> are available in the Git repository at:
->
->   https://github.com/pkshih/linux-firmware.git tags/rtw-fw-2024-08-08
+Kalle Valo <kvalo@kernel.org> writes:
 
-Merged and pushed out.
+> Toke H=C3=B8iland-J=C3=B8rgensen <toke@kernel.org> writes:
+>
+>>> But honestly more and more I'm starting to think that we should just
+>>> reject all these "drive-by cleanups". We have better things to do than
+>>> fixing unnecessary their bugs. Thoughts?
+>>
+>> Hmm, yeah, maybe. I do kinda like the fact that people send patches to
+>> improve small things, though. We all started out as new to the kernel,
+>> and I appreciate the fact that people try to improve our "commons" in
+>> this way even if it's small things.
+>
+> Yeah, you have a point. It's just that the extra work from cleanups
+> feels so unnecessary compared to the practical benefits. And most of the
+> time we don't hear from these people ever again, that's why I call them
+> "drive-by cleanup".
 
-https://gitlab.com/kernel-firmware/linux-firmware/-/merge_requests/268
+Sure, I share the frustration, and not everyone turns into regular
+contributors. But I like to think that even those who don't get
+something else out of it at least. And on our side I guess there's a
+balance to be struck between being welcoming and not expending too much
+effort on it :)
 
+>> I do try to be critical of things that can break stuff before ack'ing
+>> these fixes, but I'll admit that it seems like I don't have that great
+>> of a track record for judging "correct" in this context (cf this one,
+>> and that debugfs regression). So I guess you're right that I should at
+>> least raise the bar somewhat; will try to recalibrate and say no more :)
+>
+> You are doing a great job :) Nobody can catch all bugs in review, I
+> would say there is a small percentage (5%?) of all cleanup patches that
+> cause issues. Though it would be cool to see some real statistics.
 
-josh
+Thanks! Yeah, would love to see some statistics, but I suppose it's not
+trivial to identity "cleanup patches" in the first place in a way that
+can be automated. Maybe something to poke at sometime one has time to
+spare (ha!) or needs a break from the regular drudgery :)
 
->
-> for you to fetch changes up to 1a0cbeb75372e047920bb17ba12a1d5f8ca59066:
->
->   rtw89: 8852c: add fw format-1 v0.27.97.0 (2024-08-08 09:40:40 +0800)
->
-> ----------------------------------------------------------------
-> Chin-Yen Lee (1):
->       rtw89: 8852c: add fw format-1 v0.27.97.0
->
-> Ping-Ke Shih (1):
->       rtw89: 8852bt: add firmware 0.29.91.0
->
->  WHENCE                  |   4 +++-
->  rtw89/rtw8852bt_fw.bin  | Bin 0 -> 897512 bytes
->  rtw89/rtw8852c_fw-1.bin | Bin 0 -> 2180616 bytes
->  3 files changed, 3 insertions(+), 1 deletion(-)
->  create mode 100644 rtw89/rtw8852bt_fw.bin
->  create mode 100644 rtw89/rtw8852c_fw-1.bin
->
+-Toke
 
