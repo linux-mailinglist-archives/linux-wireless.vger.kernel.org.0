@@ -1,55 +1,55 @@
-Return-Path: <linux-wireless+bounces-11230-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11231-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A9F494D5F6
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Aug 2024 20:03:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42EFE94D642
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Aug 2024 20:25:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 106FE281ECF
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Aug 2024 18:03:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4CEC2828C3
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Aug 2024 18:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 269C23770D;
-	Fri,  9 Aug 2024 18:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DBB44DA04;
+	Fri,  9 Aug 2024 18:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="iS8W/9ep"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="myLNDJp5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1C31CA94
-	for <linux-wireless@vger.kernel.org>; Fri,  9 Aug 2024 18:03:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2685F321A3
+	for <linux-wireless@vger.kernel.org>; Fri,  9 Aug 2024 18:25:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723226632; cv=none; b=W1UpSyAWtXY2gHkmINKcAUDCL2iwjvla/nIOEkO3lDpTTlmNhnHnzwf9nmhhGm0o3+1BZEXMbqaM/yi/aDo3moQ8ldGp1kyzQ5InZ7H0hRuNjuAoDNNtZ85mG2ZhaAqq329eARQ0NAmxvB8O6P34sZsS3lF5/aYsldGWSyKEI/U=
+	t=1723227941; cv=none; b=izjKJ9RNMi1BnS/OWhAHysFdQDRFDuyh2c8ly6SLVWJ+JZq1+lj4MtM2klmwewv8OqWkRbWROCxtZeicaQw13hHX2RS9y3zGpXtPHALQlrqmi+kAIxOaN0FTheTJngOHJLhri8Fs3/euAJCRPzalTp1jJCBlheKFcr5VNYjoYvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723226632; c=relaxed/simple;
-	bh=1YCWIii/i6R5rT/daIoObdAdlccM6AMejZ+PHrkgCyI=;
+	s=arc-20240116; t=1723227941; c=relaxed/simple;
+	bh=E5yWKcgLheANY4YMhWs9pqSOYa3FUapj7gaVFNwqgUE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jPdqe/xrmf3GauYT2scdUZas2KXUC/knXeTnMgC7ok5i1S/laIJuhoAYmWHqz38gpT9tjNbG+ZgIHhbaENEh4GxOF2Z4/HnmNxQcFM9ByZSV2Clb55PeyaPTykRGokfAayngSa531aJ3NYJDHzc9NQ14w/P6SKXfnRAwwIgxOoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=iS8W/9ep; arc=none smtp.client-ip=67.231.154.183
+	 In-Reply-To:Content-Type; b=S91OeD4ged6kT1swIW4KDtI6JBmuk3vpGJpH/v5AnbAS9ma5aD19iQ3HtlMMia03lITD7w5Q/imCSL+qdZsM+1rfIyjCmuLQMfBtzLd65rUfA0caJUUIrwHFLvmNsMPjTQSZyzLTv29oHdGw2iPdyNGZXCbwbfqZApu3mKm+lrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=myLNDJp5; arc=none smtp.client-ip=148.163.129.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
 X-Virus-Scanned: Proofpoint Essentials engine
 Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id EF77F24006E;
-	Fri,  9 Aug 2024 18:03:40 +0000 (UTC)
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 9DBB7A80061;
+	Fri,  9 Aug 2024 18:25:30 +0000 (UTC)
 Received: from [192.168.0.11] (c-98-247-188-21.hsd1.wa.comcast.net [98.247.188.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id EA3F013C2B0;
-	Fri,  9 Aug 2024 11:03:39 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com EA3F013C2B0
+	by mail3.candelatech.com (Postfix) with ESMTPSA id C566813C2B0;
+	Fri,  9 Aug 2024 11:25:28 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com C566813C2B0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1723226620;
-	bh=1YCWIii/i6R5rT/daIoObdAdlccM6AMejZ+PHrkgCyI=;
+	s=default; t=1723227929;
+	bh=E5yWKcgLheANY4YMhWs9pqSOYa3FUapj7gaVFNwqgUE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iS8W/9epPVaSrbePBNd8uc0alMa7D8U4cW3iQdEMA+yTxIc/APwOGbmG7XzBOrE0c
-	 Dx+a2eBevE3AuKF5ai8fnExrJU+sLqOFuEG4NtBlv4v/TrW9DDrvYVLBsW7CimluZy
-	 DM4XJUvbcodT+RfNZDwy7VS0PBb8/xc8eW+g5kEk=
-Message-ID: <c7e27caf-3001-4069-9e26-54e544a2e06e@candelatech.com>
-Date: Fri, 9 Aug 2024 11:03:38 -0700
+	b=myLNDJp5CR2fzHpvrp8i7xFieSdmB12vvH6DJYNxMBJTUW0h8dmTpnb++ErFtMS6Z
+	 AfSGeeysw9H88Ezh7o6h2hBNf11JZijlykgMfEGjY79dU/amJHFWjPfFZMh4Ygyi/f
+	 NN3K5i6reeIMwzrBbXwqqJg6z2T0gclbc+vnfhJw=
+Message-ID: <ea1eeb13-c568-4381-812a-dec4246a440e@candelatech.com>
+Date: Fri, 9 Aug 2024 11:25:27 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -57,200 +57,184 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: iwlwifi: correctly lookup DMA address in SG table
-To: Ben Greear <greearb@candelatech.com>,
- Benjamin Berg <benjamin@sipsolutions.net>, linux-wireless@vger.kernel.org
-Cc: benjamin.berg@intel.com, miriam.rachel.korenblit@intel.com,
- regressions@lists.linux.dev, johannes@sipsolutions.net,
- Kalle Valo <kvalo@kernel.org>, Chris Bainbridge
- <chris.bainbridge@gmail.com>, Rory Little <rory.little@candelatech.com>
-References: <20240808172948.303258-1-benjamin@sipsolutions.net>
- <85f652fa-7dc1-44ca-e185-6ecfc6269de7@candelatech.com>
+Subject: Re: [PATCH 06/20] wifi: iwlwifi: mvm: handle TPE advertised by AP
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+ johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org, Johannes Berg <johannes.berg@intel.com>,
+ Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+References: <20240527160615.1549563-1-miriam.rachel.korenblit@intel.com>
+ <20240527190228.32f1e2e1447c.I58ac91c38585362aa42bb4a8a59c7d88e67bc40b@changeid>
 Content-Language: en-US
 From: Rory Little <rory@candelatech.com>
-In-Reply-To: <85f652fa-7dc1-44ca-e185-6ecfc6269de7@candelatech.com>
+In-Reply-To: <20240527190228.32f1e2e1447c.I58ac91c38585362aa42bb4a8a59c7d88e67bc40b@changeid>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-MDID: 1723226622-of81SaQTi8ec
+Content-Transfer-Encoding: 7bit
+X-MDID: 1723227931-X8lzWAqcQvYM
 X-MDID-O:
- us5;at1;1723226622;of81SaQTi8ec;<rory@candelatech.com>;9e529b45f983a2e6a3ac1f2f5cf09fc3
+ us5;ut7;1723227931;X8lzWAqcQvYM;<rory@candelatech.com>;4795e16813503716592b0d896134c7a6
 
 Hi,
 
-We have tested this on our system and verified that we are no longer 
-seeing the issue with this patch applied.
+We noticed that our transmit throughput dropped by ~20-30% and bisected 
+the issue to this patch. We will dig around a bit more to investigate 
+why this seems to be happening...
 
 - Rory
 
-On 8/8/24 10:36, Ben Greear wrote:
-> On 8/8/24 10:29, Benjamin Berg wrote:
->> From: Benjamin Berg <benjamin.berg@intel.com>
+On 5/27/24 09:06, Miri Korenblit wrote:
+> From: Johannes Berg <johannes.berg@intel.com>
 > 
-> Hello,
+> 6 GHz BSS SP client shall respect TX power limits advertised
+> by the AP in TPE elements, send the data to the firmware using
+> the AP_TX_POWER_CONSTRAINTS_CMD command, so do that.
 > 
-> We'll try testing this on our systems...
+> Co-developed-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+> Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+> ---
+>   .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 11 ++++
+>   .../wireless/intel/iwlwifi/mvm/mld-mac80211.c | 55 ++++++++++++++++---
+>   drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  6 ++
+>   3 files changed, 63 insertions(+), 9 deletions(-)
 > 
-> Thanks,
-> Ben
-> 
->>
->> The code to lookup the scatter gather table entry assumed that it was
->> possible to use sg_virt() in order to lookup the DMA address in a mapped
->> scatter gather table. However, this assumption is incorrect as the DMA
->> mapping code may merge multiple entries into one. In that case, the DMA
->> address space may have e.g. two consecutive pages which is correctly
->> represented by the scatter gather list entry, however the virtual
->> addresses for these two pages may differ and the relationship cannot be
->> resolved anymore.
->>
->> Avoid this problem entirely by working with the offset into the mapped
->> area instead of using virtual addresses. With that we only use the DMA
->> length and DMA address from the scatter gather list entries. The
->> underlying DMA/IOMMU code is therefore free to merge two entries into
->> one even if the virtual addresses space for the area is not continuous.
->>
->> Fixes: 90db50755228 ("wifi: iwlwifi: use already mapped data when 
->> TXing an AMSDU")
->> Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
->> Closes: https://lore.kernel.org/r/ZrNRoEbdkxkKFMBi@debian.local
->> Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
->>
->> ---
->>
->> Note that I was not yet able to fully verify this patch, but will
->> probably get results tomorrow. Unfortunately, much of the testing we do
->> internally happens on machines that do not reproduce the problem.
->>
->> Also, I think Ben already reported the same issue much earlier. At the
->> time, I was not yet aware of the internal reproductions and did not take
->> the report seriously.
->> ---
->>   .../wireless/intel/iwlwifi/pcie/internal.h    |  2 +-
->>   .../net/wireless/intel/iwlwifi/pcie/tx-gen2.c |  4 ++-
->>   drivers/net/wireless/intel/iwlwifi/pcie/tx.c  | 25 +++++++++++--------
->>   3 files changed, 19 insertions(+), 12 deletions(-)
->>
->> diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h 
->> b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
->> index b59de4f80b4b..3af9c2b40ef1 100644
->> --- a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
->> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
->> @@ -639,7 +639,7 @@ void iwl_trans_pcie_tx_reset(struct iwl_trans 
->> *trans);
->>   int iwl_pcie_txq_alloc(struct iwl_trans *trans, struct iwl_txq *txq,
->>                  int slots_num, bool cmd_queue);
->> -dma_addr_t iwl_pcie_get_sgt_tb_phys(struct sg_table *sgt, void *addr);
->> +dma_addr_t iwl_pcie_get_sgt_tb_phys(struct sg_table *sgt, unsigned 
->> int offset);
->>   struct sg_table *iwl_pcie_prep_tso(struct iwl_trans *trans, struct 
->> sk_buff *skb,
->>                      struct iwl_cmd_meta *cmd_meta,
->>                      u8 **hdr, unsigned int hdr_room);
->> diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c 
->> b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
->> index 2e780fb2da42..54d26523f692 100644
->> --- a/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
->> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx-gen2.c
->> @@ -168,6 +168,7 @@ static int iwl_txq_gen2_build_amsdu(struct 
->> iwl_trans *trans,
->>       struct ieee80211_hdr *hdr = (void *)skb->data;
->>       unsigned int snap_ip_tcp_hdrlen, ip_hdrlen, total_len, hdr_room;
->>       unsigned int mss = skb_shinfo(skb)->gso_size;
->> +    unsigned int data_offset = 0;
->>       dma_addr_t start_hdr_phys;
->>       u16 length, amsdu_pad;
->>       u8 *start_hdr;
->> @@ -260,7 +261,7 @@ static int iwl_txq_gen2_build_amsdu(struct 
->> iwl_trans *trans,
->>               int ret;
->>               tb_len = min_t(unsigned int, tso.size, data_left);
->> -            tb_phys = iwl_pcie_get_sgt_tb_phys(sgt, tso.data);
->> +            tb_phys = iwl_pcie_get_sgt_tb_phys(sgt, data_offset);
->>               /* Not a real mapping error, use direct comparison */
->>               if (unlikely(tb_phys == DMA_MAPPING_ERROR))
->>                   goto out_err;
->> @@ -272,6 +273,7 @@ static int iwl_txq_gen2_build_amsdu(struct 
->> iwl_trans *trans,
->>                   goto out_err;
->>               data_left -= tb_len;
->> +            data_offset += tb_len;
->>               tso_build_data(skb, &tso, tb_len);
->>           }
->>       }
->> diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c 
->> b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
->> index 22d482ae53d9..78f417cdb9ac 100644
->> --- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
->> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
->> @@ -1814,23 +1814,24 @@ static void *iwl_pcie_get_page_hdr(struct 
->> iwl_trans *trans,
->>   /**
->>    * iwl_pcie_get_sgt_tb_phys - Find TB address in mapped SG list
->>    * @sgt: scatter gather table
->> - * @addr: Virtual address
->> + * @offset: Offset into the mapped memory (i.e. SKB payload data)
->>    *
->> - * Find the entry that includes the address for the given address and 
->> return
->> - * correct physical address for the TB entry.
->> + * Find the DMA address that corresponds to the SKB payload data at the
->> + * position given by @offset.
->>    *
->>    * Returns: Address for TB entry
->>    */
->> -dma_addr_t iwl_pcie_get_sgt_tb_phys(struct sg_table *sgt, void *addr)
->> +dma_addr_t iwl_pcie_get_sgt_tb_phys(struct sg_table *sgt, unsigned 
->> int offset)
->>   {
->>       struct scatterlist *sg;
->> +    unsigned int sg_offset = 0;
->>       int i;
->>       for_each_sgtable_dma_sg(sgt, sg, i) {
->> -        if (addr >= sg_virt(sg) &&
->> -            (u8 *)addr < (u8 *)sg_virt(sg) + sg_dma_len(sg))
->> -            return sg_dma_address(sg) +
->> -                   ((unsigned long)addr - (unsigned long)sg_virt(sg));
->> +        if (offset >= sg_offset && offset < sg_offset + sg_dma_len(sg))
->> +            return sg_dma_address(sg) + offset - sg_offset;
->> +
->> +        sg_offset += sg_dma_len(sg);
->>       }
->>       WARN_ON_ONCE(1);
->> @@ -1875,7 +1876,9 @@ struct sg_table *iwl_pcie_prep_tso(struct 
->> iwl_trans *trans, struct sk_buff *skb,
->>       sg_init_table(sgt->sgl, skb_shinfo(skb)->nr_frags + 1);
->> -    sgt->orig_nents = skb_to_sgvec(skb, sgt->sgl, 0, skb->len);
->> +    /* Only map the data, not the header (it is copied to the TSO 
->> page) */
->> +    sgt->orig_nents = skb_to_sgvec(skb, sgt->sgl, skb_headlen(skb),
->> +                       skb->data_len);
->>       if (WARN_ON_ONCE(sgt->orig_nents <= 0))
->>           return NULL;
->> @@ -1900,6 +1903,7 @@ static int iwl_fill_data_tbs_amsdu(struct 
->> iwl_trans *trans, struct sk_buff *skb,
->>       struct ieee80211_hdr *hdr = (void *)skb->data;
->>       unsigned int snap_ip_tcp_hdrlen, ip_hdrlen, total_len, hdr_room;
->>       unsigned int mss = skb_shinfo(skb)->gso_size;
->> +    unsigned int data_offset = 0;
->>       u16 length, iv_len, amsdu_pad;
->>       dma_addr_t start_hdr_phys;
->>       u8 *start_hdr, *pos_hdr;
->> @@ -2000,7 +2004,7 @@ static int iwl_fill_data_tbs_amsdu(struct 
->> iwl_trans *trans, struct sk_buff *skb,
->>                             data_left);
->>               dma_addr_t tb_phys;
->> -            tb_phys = iwl_pcie_get_sgt_tb_phys(sgt, tso.data);
->> +            tb_phys = iwl_pcie_get_sgt_tb_phys(sgt, data_offset);
->>               /* Not a real mapping error, use direct comparison */
->>               if (unlikely(tb_phys == DMA_MAPPING_ERROR))
->>                   return -EINVAL;
->> @@ -2011,6 +2015,7 @@ static int iwl_fill_data_tbs_amsdu(struct 
->> iwl_trans *trans, struct sk_buff *skb,
->>                           tb_phys, size);
->>               data_left -= size;
->> +            data_offset += size;
->>               tso_build_data(skb, &tso, size);
->>           }
->>       }
-> 
+> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+> index 752fdb6a783f..88bc0baabf7e 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+> @@ -2768,6 +2768,13 @@ iwl_mvm_bss_info_changed_station_common(struct iwl_mvm *mvm,
+>   
+>   	if (changes & BSS_CHANGED_BANDWIDTH)
+>   		iwl_mvm_update_link_smps(vif, link_conf);
+> +
+> +	if (changes & BSS_CHANGED_TPE) {
+> +		IWL_DEBUG_CALIB(mvm, "Changing TPE\n");
+> +		iwl_mvm_send_ap_tx_power_constraint_cmd(mvm, vif,
+> +							link_conf,
+> +							false);
+> +	}
+>   }
+>   
+>   static void iwl_mvm_bss_info_changed_station(struct iwl_mvm *mvm,
+> @@ -5122,6 +5129,10 @@ static int __iwl_mvm_assign_vif_chanctx(struct iwl_mvm *mvm,
+>   		}
+>   
+>   		iwl_mvm_update_quotas(mvm, false, NULL);
+> +
+> +		iwl_mvm_send_ap_tx_power_constraint_cmd(mvm, vif,
+> +							link_conf,
+> +							false);
+>   	}
+>   
+>   	goto out;
+> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+> index 00433d1c8564..b2b6dbdcc44f 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+> @@ -345,6 +345,11 @@ __iwl_mvm_mld_assign_vif_chanctx(struct iwl_mvm *mvm,
+>   		rcu_read_unlock();
+>   	}
+>   
+> +	if (vif->type == NL80211_IFTYPE_STATION)
+> +		iwl_mvm_send_ap_tx_power_constraint_cmd(mvm, vif,
+> +							link_conf,
+> +							false);
+> +
+>   	/* then activate */
+>   	ret = iwl_mvm_link_changed(mvm, vif, link_conf,
+>   				   LINK_CONTEXT_MODIFY_ACTIVE |
+> @@ -524,9 +529,37 @@ static void iwl_mvm_mld_unassign_vif_chanctx(struct ieee80211_hw *hw,
+>   }
+>   
+>   static void
+> +iwl_mvm_tpe_sta_cmd_data(struct iwl_txpower_constraints_cmd *cmd,
+> +			 const struct ieee80211_bss_conf *bss_info)
+> +{
+> +	u8 i;
+> +
+> +	/*
+> +	 * NOTE: the 0 here is IEEE80211_TPE_CAT_6GHZ_DEFAULT,
+> +	 * we fully ignore IEEE80211_TPE_CAT_6GHZ_SUBORDINATE
+> +	 */
+> +
+> +	BUILD_BUG_ON(ARRAY_SIZE(cmd->psd_pwr) !=
+> +		     ARRAY_SIZE(bss_info->tpe.psd_local[0].power));
+> +
+> +	/* if not valid, mac80211 puts default (max value) */
+> +	for (i = 0; i < ARRAY_SIZE(cmd->psd_pwr); i++)
+> +		cmd->psd_pwr[i] = min(bss_info->tpe.psd_local[0].power[i],
+> +				      bss_info->tpe.psd_reg_client[0].power[i]);
+> +
+> +	BUILD_BUG_ON(ARRAY_SIZE(cmd->eirp_pwr) !=
+> +		     ARRAY_SIZE(bss_info->tpe.max_local[0].power));
+> +
+> +	for (i = 0; i < ARRAY_SIZE(cmd->eirp_pwr); i++)
+> +		cmd->eirp_pwr[i] = min(bss_info->tpe.max_local[0].power[i],
+> +				       bss_info->tpe.max_reg_client[0].power[i]);
+> +}
+> +
+> +void
+>   iwl_mvm_send_ap_tx_power_constraint_cmd(struct iwl_mvm *mvm,
+>   					struct ieee80211_vif *vif,
+> -					struct ieee80211_bss_conf *bss_conf)
+> +					struct ieee80211_bss_conf *bss_conf,
+> +					bool is_ap)
+>   {
+>   	struct iwl_txpower_constraints_cmd cmd = {};
+>   	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+> @@ -546,19 +579,22 @@ iwl_mvm_send_ap_tx_power_constraint_cmd(struct iwl_mvm *mvm,
+>   	    link_info->fw_link_id == IWL_MVM_FW_LINK_ID_INVALID)
+>   		return;
+>   
+> -	if (bss_conf->chanreq.oper.chan->band != NL80211_BAND_6GHZ ||
+> -	    bss_conf->chanreq.oper.chan->flags &
+> -		    IEEE80211_CHAN_NO_6GHZ_VLP_CLIENT)
+> +	if (bss_conf->chanreq.oper.chan->band != NL80211_BAND_6GHZ)
+>   		return;
+>   
+>   	cmd.link_id = cpu_to_le16(link_info->fw_link_id);
+> -	/*
+> -	 * Currently supporting VLP Soft AP only.
+> -	 */
+> -	cmd.ap_type = cpu_to_le16(IWL_6GHZ_AP_TYPE_VLP);
+>   	memset(cmd.psd_pwr, DEFAULT_TPE_TX_POWER, sizeof(cmd.psd_pwr));
+>   	memset(cmd.eirp_pwr, DEFAULT_TPE_TX_POWER, sizeof(cmd.eirp_pwr));
+>   
+> +	if (is_ap) {
+> +		cmd.ap_type = cpu_to_le16(IWL_6GHZ_AP_TYPE_VLP);
+> +	} else if (bss_conf->power_type == IEEE80211_REG_UNSET_AP) {
+> +		return;
+> +	} else {
+> +		cmd.ap_type = cpu_to_le16(bss_conf->power_type - 1);
+> +		iwl_mvm_tpe_sta_cmd_data(&cmd, bss_conf);
+> +	}
+> +
+>   	ret = iwl_mvm_send_cmd_pdu(mvm,
+>   				   WIDE_ID(PHY_OPS_GROUP,
+>   					   AP_TX_POWER_CONSTRAINTS_CMD),
+> @@ -580,7 +616,8 @@ static int iwl_mvm_mld_start_ap_ibss(struct ieee80211_hw *hw,
+>   	guard(mvm)(mvm);
+>   
+>   	if (vif->type == NL80211_IFTYPE_AP)
+> -		iwl_mvm_send_ap_tx_power_constraint_cmd(mvm, vif, link_conf);
+> +		iwl_mvm_send_ap_tx_power_constraint_cmd(mvm, vif,
+> +							link_conf, true);
+>   
+>   	/* Send the beacon template */
+>   	ret = iwl_mvm_mac_ctxt_beacon_changed(mvm, vif, link_conf);
+> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+> index f3d9b8355c6b..9b939225990a 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+> @@ -2962,4 +2962,10 @@ iwl_mvm_bt_coex_calculate_esr_mode(struct iwl_mvm *mvm,
+>   				   bool primary);
+>   int iwl_mvm_esr_non_bss_link(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+>   			     unsigned int link_id, bool active);
+> +
+> +void
+> +iwl_mvm_send_ap_tx_power_constraint_cmd(struct iwl_mvm *mvm,
+> +					struct ieee80211_vif *vif,
+> +					struct ieee80211_bss_conf *bss_conf,
+> +					bool is_ap);
+>   #endif /* __IWL_MVM_H__ */
 
