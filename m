@@ -1,65 +1,68 @@
-Return-Path: <linux-wireless+bounces-11152-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11153-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA9E094C7DD
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Aug 2024 03:05:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21F6F94C7E3
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Aug 2024 03:08:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC0E31C215F5
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Aug 2024 01:05:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DA701C2146C
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Aug 2024 01:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4F62F2A;
-	Fri,  9 Aug 2024 01:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B325638B;
+	Fri,  9 Aug 2024 01:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="cWP2C6fg"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="BXffRjkv"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F085F38B
-	for <linux-wireless@vger.kernel.org>; Fri,  9 Aug 2024 01:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33614C7D
+	for <linux-wireless@vger.kernel.org>; Fri,  9 Aug 2024 01:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723165506; cv=none; b=F4s8scbP8FuwoX508b2glgpInK2x963NVNBEE3OpMMrlewVP4b5JsmM7X3Uq7l7gezk0BG7YiEvJLS37sJdiq95ZG8lNrVFrXa5e2iEHqKyo1QE/eWXWnBsnQoLo9FEAJB2+KMrJt7k4zEJNPZhsWvZ+pZCpw5uoOk6t6RHXRC4=
+	t=1723165732; cv=none; b=uX75SoeFQPWb3CQAOjuu6rP4TX5j0UqIdYI4uNOzKq5elFopmkfcZK4olH1nDXDal/1XzmJk3wHUW0rZH/b9VL17j3tnUS9UmrONnJUpB9qcoDLqtx/vQn+i2fUV5C7VHFT9WkB1ORQddjHfkKu4e71R+vDVmFyuXAChmOBEbFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723165506; c=relaxed/simple;
-	bh=/GsGsDMDsSn+UaGgY+mo6IFDeVk0gLd/dRo2LK1AEnw=;
+	s=arc-20240116; t=1723165732; c=relaxed/simple;
+	bh=xRyVIGAhnT588mTqVChmj77An8dMtRXXwEPTL8x+oeI=;
 	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date; b=U6k+qVN04rANuVsPcTxgsb3JhOWdpeajtg6QnrG3U+8k6avNzB+zkd4PRIpB4LTl3dN5FQH70yPzHefHUM6EKY+AfriKCeq15csKyAOzObW4q0bQSDPjE84qIxfzB3ggjvB7t8VxkPW17IRaUfoFcdkPkItwujW9FGLd8SlgrZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=cWP2C6fg; arc=none smtp.client-ip=211.75.126.72
+	 Content-Type:Message-ID:Date; b=o86hq+ZpsQvqea6C6qbFDHs6fPeMVIDcQzoOwDkzr4/CZTAyDhSEkyILPcINx4rjCse4OwekrNuBFtB74qhiRl62fVEcvALSoiO2BtdVRBmDc7FE8/QUMyzxttCngTYUlTMl54vtZOPBf0jLj+OvlypQQkiQe+fskmxuBPI+Oq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=BXffRjkv; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 47914x5B2128368, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 47918ZZ80143371, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1723165499; bh=/GsGsDMDsSn+UaGgY+mo6IFDeVk0gLd/dRo2LK1AEnw=;
+	t=1723165715; bh=xRyVIGAhnT588mTqVChmj77An8dMtRXXwEPTL8x+oeI=;
 	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
 	 Content-Type:Message-ID:Date;
-	b=cWP2C6fgZsk5yMk04Vc/1/R38Ek4cRB11yVhhzjywb9b2BUOKYSu6OdPXG4xnu9h0
-	 xEdQDBOkjLsNhHfH8vMWGpiwSQ88R3jKatwYnWumTJt+jjEGObJkoubpCigrI1OEDw
-	 IS9djptqSiDeFtiguXVbgjaLKhTJoKxohmHLAkd5jczhQOr43lv94in7U2chyDPN5t
-	 1MmthhZ2WQuwHCGl+DqHtKmbw48R3KWB496mZhbhFlPaJRe2dKLEe0+v9A1BuFUlbE
-	 pe+HwQHJLSick38EbyxOkhI0dMZcl1MMel8zs1yTsGhRL0fj9gAiTzqvIgSMp6+6NT
-	 EtCPctcDsfwcg==
+	b=BXffRjkvdWeQMScplhOjehZPCyf+hohxTxnqmmINX0cckZRK5A2A1YkwAXW1OZpfI
+	 PhN646jp9+14MhdAItbMjjzaezzCxwvKLqIKxAKRjzhuDulN2g2K9xUjE8U8cjxRXU
+	 eSZgwekn75qzOhgE8V7ZzV7aQE0/GESFgyW3Xwb7zbA3zn573M+Kb4SDkZVSVYVvqU
+	 Rgbofq2jigLyyuL3ESwpNjrNEFXlkdMedEeTgjx0ZOpnLMwZt3huVA/k8axNPZ9QBH
+	 KaODQJs/WuVrwFKR2tzQ6GPrQ2tdq9+DjDdXCv35JAGFRn0YoUQFUogTojHoqG6X9+
+	 HHaZ10PCIydLg==
 Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 47914x5B2128368
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Fri, 9 Aug 2024 09:04:59 +0800
+	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 47918ZZ80143371
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 9 Aug 2024 09:08:35 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 9 Aug 2024 09:05:00 +0800
+ 15.1.2507.39; Fri, 9 Aug 2024 09:08:35 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 9 Aug
- 2024 09:04:59 +0800
+ 2024 09:08:35 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
-CC: <timlee@realtek.com>
-Subject: Re: [PATCH 1/5] wifi: rtw89: 8852c: support firmware format up to v1
-In-Reply-To: <20240805090028.27768-2-pkshih@realtek.com>
-References: <20240805090028.27768-1-pkshih@realtek.com> <20240805090028.27768-2-pkshih@realtek.com>
+To: Peter Robinson <pbrobinson@gmail.com>,
+        Jes Sorensen
+	<Jes.Sorensen@gmail.com>, Kalle Valo <kvalo@kernel.org>,
+        <linux-wireless@vger.kernel.org>
+CC: Peter Robinson <pbrobinson@gmail.com>
+Subject: Re: [PATCH] wifi: rtl8xxxu: drop reference to staging drivers
+In-Reply-To: <20240805221910.3765214-1-pbrobinson@gmail.com>
+References: <20240805221910.3765214-1-pbrobinson@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -67,30 +70,23 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
-Message-ID: <7bda0484-d029-41ac-b4f2-834a0ef5d81e@RTEXMBS04.realtek.com.tw>
-Date: Fri, 9 Aug 2024 09:04:59 +0800
+Message-ID: <73c4d850-a0bd-43e6-8b7a-321b55c75c2e@RTEXMBS04.realtek.com.tw>
+Date: Fri, 9 Aug 2024 09:08:35 +0800
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+Peter Robinson <pbrobinson@gmail.com> wrote:
 
-> Driver has supported different WoWLAN reason code by commit 0e5210217768
-> ("wifi: rtw89: wow: update WoWLAN reason register for different FW")
-> since firmware version 0.27.80.0. The old driver can't support two
-> kinds of WoWLAN reason, so increase firmware format to v1.
+> The Kconfig notes mention staging drivers that have
+> since been removed so update the driver's description
+> so it no longer references the staging rtl8723au and
+> rtl8192u drivers which have now been deleted.
 > 
-> Also driver tables of BB and RF registers and power values will be added
-> into v1 format.
-> 
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
 
-5 patch(es) applied to rtw-next branch of rtw.git, thanks.
+1 patch(es) applied to rtw-next branch of rtw.git, thanks.
 
-45ae0e8cf8c7 wifi: rtw89: 8852c: support firmware format up to v1
-0f683c2cf673 wifi: rtw89: wow: implement PS mode for net-detect
-c0bc1bce12e4 wifi: rtw89: wow: add WoWLAN net-detect support
-e99dd80c8a18 wifi: rtw89: wow: add delay option for net-detect
-9fd284aaaead wifi: rtw89: wow: add net-detect support for 8852c
+1b84378b8fe1 wifi: rtl8xxxu: drop reference to staging drivers
 
 ---
 https://github.com/pkshih/rtw.git
