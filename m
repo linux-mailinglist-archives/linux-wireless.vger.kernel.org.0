@@ -1,105 +1,120 @@
-Return-Path: <linux-wireless+bounces-11175-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11176-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EA9E94CD08
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Aug 2024 11:13:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19C1B94CD47
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Aug 2024 11:27:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C1E71F21BF6
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Aug 2024 09:13:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4B72281802
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Aug 2024 09:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0DF18FDC9;
-	Fri,  9 Aug 2024 09:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CF0719149A;
+	Fri,  9 Aug 2024 09:27:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="ZocnFN+p"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7428618FC8D
-	for <linux-wireless@vger.kernel.org>; Fri,  9 Aug 2024 09:13:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF5718FDBC;
+	Fri,  9 Aug 2024 09:27:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723194784; cv=none; b=Z0blBgv8qGQyOv/B7LJQNe8MRS7sSPtlhCFq6FaTgAxF4l5btIa/2U1OgD5OSMay2LXo3Rs9rjohgoSFr6Mzm5mfPi62nwIu/t48zrsj2K45Au88qC8bSJppFY6ODgawKMbPo7CXCLHVispZzW0nVlDkyftEDM7bcqIF6yu/bTU=
+	t=1723195663; cv=none; b=P47dWNe5K+lVVj5KE2RZEhKTkErqxmSlu5K2g1F6z/fqrfTzot/k6GX2E10AVyWhgiY11CR/9qLAKsHQhxyFOH1Odp0micPUmb+3aYKUtiBTsqSv2SrU97eZoHo8pgveZr9/lZdGtq84WDCI6rrw2ov1WDH8r3XVmhIAAeOvvec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723194784; c=relaxed/simple;
-	bh=e4DNm1/lJ7U+4PWb6B02i+0u5KN8oACNjU3d7VFKIIQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ntceGrIc0zNCTfzlA0YuQ5uyHbdfall00hMwSVQSuM8hk2Hr5alUyLtg8Gyg8hWAKNnSJ8CqhBz8Cn2FFd5sDLJY+LK82f9Rg8E3GzEpnMarfJmOOxWgqCR4SeJYNk0SI6AExIfWcHVWq3+RUJTzwCQ2ptv0fV+cffFPRabYVW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1scLfl-0002QM-Mo; Fri, 09 Aug 2024 11:12:33 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1scLfk-005dED-Dg; Fri, 09 Aug 2024 11:12:32 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1scLfk-00Al7G-0x;
-	Fri, 09 Aug 2024 11:12:32 +0200
-Date: Fri, 9 Aug 2024 11:12:32 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: Brian Norris <briannorris@chromium.org>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Kalle Valo <kvalo@kernel.org>,
-	Yogesh Ashok Powar <yogeshp@marvell.com>,
-	Bing Zhao <bzhao@marvell.com>,
-	"John W. Linville" <linville@tuxdriver.com>,
-	Amitkumar Karwar <akarwar@marvell.com>,
-	Avinash Patil <patila@marvell.com>,
-	Kiran Divekar <dkiran@marvell.com>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kernel@pengutronix.de" <kernel@pengutronix.de>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] mwifiex: duplicate static structs used in driver
+	s=arc-20240116; t=1723195663; c=relaxed/simple;
+	bh=n3NhaaEDX80/2TzfeEQq8Sqn7B7+AA/mO1GNp1zKs5g=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=InCX4unFuXre+3cP9OROcCWlp9XWJsDi1A2hIcMe4fs36tfbGIHbuIDg/8S8YhLamtgwCJszOL+XN3rjsQs3nWulwG1f+aOD7qQg0iMPyrO4R/pwUIFP6UUznYBBSMX+TEh9DXuAK1kdmTaJhAiFnpskvUVThjBOGozWIefiyQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=ZocnFN+p; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4799Qm1gA631844, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1723195608; bh=n3NhaaEDX80/2TzfeEQq8Sqn7B7+AA/mO1GNp1zKs5g=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=ZocnFN+pA1Gb/ZoBrHmRad/UhssL0zRzWAzYYw7sXIiKWaVaQNX3RwjC8O7AVs3k3
+	 3eUFIAEKFkSKpbHlrPAaYOu+u99XLIqv2Xgkd9mBXm6DF+TvkrZDdzGnPt9NmvygLO
+	 KsXz2D0RLIIW8Mt1cgPUEMDuGE9F3On3rnn0DUPv6Wr/Pr4BSaLxWmW8Pm1bkFQH9Y
+	 wZUb1pjcedIgHD0EVdPBlSgAOwpyj35pp/aQbncyPkHy5VbV6tqDDse/aGP2FpmRSW
+	 7xrmTwsi4y0+t9Fd9QnyQk9xD9maAFoh3Qxq9ktTrnFnmVjq0T3Q2jo2afT+0vw9sx
+	 yhhroR9HWM1qQ==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 4799Qm1gA631844
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 9 Aug 2024 17:26:48 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 9 Aug 2024 17:26:49 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 9 Aug 2024 17:26:48 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::1a1:9ae3:e313:52e7%5]) with mapi id
+ 15.01.2507.035; Fri, 9 Aug 2024 17:26:48 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+CC: Brian Norris <briannorris@chromium.org>,
+        Francesco Dolcini
+	<francesco@dolcini.it>,
+        Kalle Valo <kvalo@kernel.org>,
+        Yogesh Ashok Powar
+	<yogeshp@marvell.com>,
+        Bing Zhao <bzhao@marvell.com>,
+        "John W. Linville"
+	<linville@tuxdriver.com>,
+        Amitkumar Karwar <akarwar@marvell.com>,
+        "Avinash
+ Patil" <patila@marvell.com>,
+        Kiran Divekar <dkiran@marvell.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kernel@pengutronix.de" <kernel@pengutronix.de>,
+        "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH] mwifiex: duplicate static structs used in driver instances
+Thread-Topic: [PATCH] mwifiex: duplicate static structs used in driver
  instances
-Message-ID: <ZrXdgIJe6U4sJJwU@pengutronix.de>
+Thread-Index: AQHa6jPW1qXxj1kE10+gt4nIKUPfkrIenWTw//+AnwCAAIns8A==
+Date: Fri, 9 Aug 2024 09:26:48 +0000
+Message-ID: <33fa77bdf10b48a48105f25ebed50fe0@realtek.com>
 References: <20240809-mwifiex-duplicate-static-structs-v1-1-6837b903b1a4@pengutronix.de>
  <4021e822699b44939f6a4731290e2627@realtek.com>
+ <ZrXdgIJe6U4sJJwU@pengutronix.de>
+In-Reply-To: <ZrXdgIJe6U4sJJwU@pengutronix.de>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4021e822699b44939f6a4731290e2627@realtek.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
-On Fri, Aug 09, 2024 at 08:49:32AM +0000, Ping-Ke Shih wrote:
-> Sascha Hauer <s.hauer@pengutronix.de> wrote:
-> > +       wiphy->bands[NL80211_BAND_2GHZ] = devm_kmemdup(adapter->dev,
-> > +                                                      &mwifiex_band_2ghz,
-> > +                                                      sizeof(mwifiex_band_2ghz),
-> > +                                                      GFP_KERNEL);
-> 
-> It seems like you forget to free the duplicate memory somewhere?
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> On Fri, Aug 09, 2024 at 08:49:32AM +0000, Ping-Ke Shih wrote:
+> > Sascha Hauer <s.hauer@pengutronix.de> wrote:
+> > > +       wiphy->bands[NL80211_BAND_2GHZ] =3D devm_kmemdup(adapter->dev=
+,
+> > > +                                                      &mwifiex_band_=
+2ghz,
+> > > +                                                      sizeof(mwifiex=
+_band_2ghz),
+> > > +                                                      GFP_KERNEL);
+> >
+> > It seems like you forget to free the duplicate memory somewhere?
+>=20
+> It's freed automatically when adapter->dev is released, see the various
+> devm_* functions
+>=20
 
-It's freed automatically when adapter->dev is released, see the various
-devm_* functions
+Cool. Thanks for the info.=20
 
-Sascha
-
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
