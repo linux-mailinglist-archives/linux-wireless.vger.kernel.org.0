@@ -1,61 +1,61 @@
-Return-Path: <linux-wireless+bounces-11193-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11194-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCB0794CDA4
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Aug 2024 11:50:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B3A994CDA5
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Aug 2024 11:51:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37EA91F221F0
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Aug 2024 09:50:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43ACC281234
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Aug 2024 09:51:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9EF1197A67;
-	Fri,  9 Aug 2024 09:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F325197A97;
+	Fri,  9 Aug 2024 09:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="FGinxDfo"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="JV8E0KLJ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012065.outbound.protection.outlook.com [52.101.66.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A25A1974FE;
-	Fri,  9 Aug 2024 09:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A427192B87;
+	Fri,  9 Aug 2024 09:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.65
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723196815; cv=fail; b=qfGY2yx6K2qVXIKRjlwi6ZbDcQxs4M3SZrtfipgsWNEDk+lCnXdaH83qcVvnzCuR2GIDNL78d0Ws5npy18bv2GazNP1jOXkxNZQ2j/d78+22nQmEhHPAIJNKJV/vvA5Qjstmm1G5VHIouDN24aLCWPJlNN50YHJ1CeM7+pq/hQk=
+	t=1723196818; cv=fail; b=lJ/4R1b2tNpdgd5XHSbD7d9n8xznvwZkEOw8dyLJXzbPdixEFmbu4ScBMR6f8/sW4z+N7Nx4kOxjTwbYLQOabEBEh28zpKfIbbOoPusSs4qQab4jB1ZVAERM4wedQcpk7C8eas34fHEoL/3WLqstRQVmvEufMaKb5zlhgtxVoNE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723196815; c=relaxed/simple;
-	bh=rCuRIgysCkC8jmUYDplCaucoyYkXkw9glgGZxByP5Lk=;
+	s=arc-20240116; t=1723196818; c=relaxed/simple;
+	bh=4jneY9QPHv+/KYl3GvjaaIAsVBkH1CncQL74fk8/1a4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=cJO8kcx9b+OSLCjuaJu0FOiq7NnIRoR/aULHJxWqIRgl0VfC6kuWYB2DA0UJr4n8iCb3NI+bVl//4+Rigz6LMsueDr5Kk9Mv6zZOdDGNWVt5ByU5NIO4WaenLzcnzR7dcWFYuJBfSZ7T7qUI4YsJf+xl/BAAGjAPnzfzdnd3J4g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=FGinxDfo; arc=fail smtp.client-ip=52.101.66.65
+	 Content-Type:MIME-Version; b=pTS/zpBrx9CPddVmJw/WQcM0PQJcivX4zVQveygPpq5wDo65q75xwdoyIrxKslRjjFTBzU2pli3tBYxn6uNzkro3zS94hl2BR/TfWrlF8akUOqvjSCzkIqn3nqrHt9NKsPketCAJeg2fzG+uVIcWh0DVbevE17pgSXb4ShnNt/k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=JV8E0KLJ; arc=fail smtp.client-ip=52.101.66.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KdgobPyAiEZ8UiYekprT2NFkqFIgEfjcJAbnI0nzOfFydsMYQn8FNAJVKBMdDInEvbqMLXu96qt1x91nh3d8vAbLHxoNf4rhUSmf4jgdPfCvKmGCMD1cT/xyBR8QNhOPG+I2nMxUOYttDqNq9OtJR/kM89F83r8LDkvR4W+n1O5x/le3g1DVH3x+Iev9bHUFds6RB02xxGT3V/rX8z0+AU7hw8RcgfhPaWhGidkA6Y872P23e7I8LPOIgwuR9FhHE8PvWpDXqBAH1SlbE0sjfpReF+dIlqcC8rXYKIrwsEtp9EII1OSDbT9zTUQcMD/U9yQTNU0MPbEYa7NdqSGaJQ==
+ b=ClYYBGGKwo2f3FePuv41N1mwVjZNfk2assR6zoiKZONtNkm3HMhVQjDo2lzgbx8liaBIkSDKFeEhDPdZ3bhDG+LLF+AgMT7p9Dbua4VK4Wf4CgMGEbgzwYbExNRyROGpK6255y/G/7/uwZejAmOHnxmEi7PXu5elLlg9ZD4gVlTwztFuJCQ8mQnggDGp56V6nSQh8vRuOC0Q7N9HeX076NwoyTEXBQGXYJVYHhWty984T8BWjQ9ZWXjA1NZuU0UdSqdgZlmXvI34vhuen0W3os550Hv+G4ZW0fMYGAQtqWjIEnOR3ZIFLpKwzRTHFQhcD07b8was3Vj3O4rN4p8/fg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dPFrIYLL82q+pqGXLwMyp/wE9AFpwXImrMeLmKCD9t4=;
- b=ufnZPuhog7MW8BHZWvB4VGXsZBTXO9xuL8Q7Cw5wI/ktgvQBxP1J9YpnZDAhP+tchysHa8Qv1dOWJTpESbmVmaIfqw4/8Zet7ciasc4MMsbyHIDUIk7OGayOS7IYzKVxyVi80X1NZbRh1m5BwaDEn4KJ4XveQe/t5bkXr3hC68iQ596pQ/4NibI56OWyhfMhnZohzWsfRTE2eZCec7C6ibdmylGtWHfm7HS0eXlEg7eHho1JWJInTx+u5NOyr9TSsznp68H4lf3vz6P2an4VQHc/KjmDZdeRhiutcZdd9wXO/Ca+wYghTt9f0R2cHKVzLinGymzGF6GFXWScLIKKCQ==
+ bh=0+9PUGqbaRn9zMe5jATArZOPJPjoi0ukRVI0tRimJfM=;
+ b=y9LKuNZON1uO6odCHQUCSFQClTsthEAQg5pcX0I6CWr8zBz28XPrbEGihz/DOH+lzOvzKbBPsDRrT5uf4HnHthPaDe2P3m6Qiz5YWgiT0aNfbx8trgMzDKifpwZ3HPU6Rn0a8d4Uew191zKTdBDJHnF/u/kTlMSdDgaB5Dtr83LEyV5pvxsJiiNop0oM/vspfiKjGTk7jQGeWZgxXlEPplO3ZjbDVtumNrVzHYKoKcgI9F4GgII5j59Ez1qDXsRqZWNpYV3UyIAt/wddxSxq/PsQDY6aJK7YKpcBf8oftveQB/q0LMIGf37XIklUc/ekSRG/7RB0LOaB1rWAFLCewA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dPFrIYLL82q+pqGXLwMyp/wE9AFpwXImrMeLmKCD9t4=;
- b=FGinxDfogfxsfWjb/qo5RwaDtBLpxZzs/nllTw5F4hE9ByLMXyuCoj3jm2Rk4VGvgluYtMaC3DuJW2L82hary4m3Jeh2OYAqbw2aUn//EvCsiYZInOJIu8C5xb0OObmf0Gh5K142gWcNj0DrIzUh1VPQY9c/cG8W9oSxlj7PxoYTAEFN91snTnzKxrTI0S+K5KAs8zaqiTe2wkYdydC1Vt2qAl8Osh+iUu/6dEvjU+FiCsUWqGKtSHHC+lJLdlbDdM9rX8S70lpKYVwcd9puZPekeXe64LfXZZXsvx4UbxbW7H8acnH9RZltLu1qswAal3V7BR/5gxTxU8PGlruJYw==
+ bh=0+9PUGqbaRn9zMe5jATArZOPJPjoi0ukRVI0tRimJfM=;
+ b=JV8E0KLJC2cSVG+p3BV2Ku5YrSH4n58ZUjNOpbHJME2ngl5m2etEYItEzYwf9G3FsZG38pFH+gf1xTqiCDlFFqPkfF9QDHo6VcxzQWi8Xgnao5OfwnuK0bQKxtvhqOlmNPh5OGFx0h6P7Wo9pGKg2M+fEfp53/YrPf2V60TOLjhfGNnW5M4tEdiIcNA64BsuWLfqBgTtRkmu6p1vT7FNR/jIkI610jSBrl5iw9x6KUYVziDqFVUeQfNR2nEPqquYk+Ym3/3m3RhCOyBi9Ica0yX5E0Hj/Y9IIvDEDFVjmTdw+k5j697axXnsEAOYQyBg+IY6RK6P+fqH7AP8YB3RhQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PA4PR04MB9638.eurprd04.prod.outlook.com (2603:10a6:102:273::20)
  by GVXPR04MB9949.eurprd04.prod.outlook.com (2603:10a6:150:112::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.13; Fri, 9 Aug
- 2024 09:46:44 +0000
+ 2024 09:46:47 +0000
 Received: from PA4PR04MB9638.eurprd04.prod.outlook.com
  ([fe80::f950:3bb6:6848:2257]) by PA4PR04MB9638.eurprd04.prod.outlook.com
  ([fe80::f950:3bb6:6848:2257%5]) with mapi id 15.20.7828.023; Fri, 9 Aug 2024
- 09:46:44 +0000
+ 09:46:47 +0000
 From: David Lin <yu-hao.lin@nxp.com>
 To: linux-wireless@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -65,9 +65,9 @@ Cc: linux-kernel@vger.kernel.org,
 	francesco@dolcini.it,
 	tsung-hsien.hsieh@nxp.com,
 	David Lin <yu-hao.lin@nxp.com>
-Subject: [PATCH v2 16/43] wifi: nxpwifi: add debugfs.c
-Date: Fri,  9 Aug 2024 17:45:06 +0800
-Message-Id: <20240809094533.1660-17-yu-hao.lin@nxp.com>
+Subject: [PATCH v2 17/43] wifi: nxpwifi: add decl.h
+Date: Fri,  9 Aug 2024 17:45:07 +0800
+Message-Id: <20240809094533.1660-18-yu-hao.lin@nxp.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240809094533.1660-1-yu-hao.lin@nxp.com>
 References: <20240809094533.1660-1-yu-hao.lin@nxp.com>
@@ -84,1130 +84,383 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PA4PR04MB9638:EE_|GVXPR04MB9949:EE_
-X-MS-Office365-Filtering-Correlation-Id: da044a13-78ac-4199-6abb-08dcb8582d5e
+X-MS-Office365-Filtering-Correlation-Id: c37f16b2-f20a-49eb-0c5c-08dcb8582f45
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|52116014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?dD84lBPtIPMhU3WFX/Qwlb/5qY4VaRFvpLaPbqqrYctPgX65mgUGC2rk3Q6v?=
- =?us-ascii?Q?/NmFMKUofrTQdHKxsvTHrzd85IJOIcCbQinvCMJT+k6/VAT7qRRe94IKc+fk?=
- =?us-ascii?Q?3hBkooJj4xEqfHiKaDpqfp5cLTeOdjccXvk1UEI1B6UC42TZBVtj1B8dcmTY?=
- =?us-ascii?Q?cLaUNWpwWZdR0/b9OORa3M4+gOri+UXWnjfLs1Jg7bGBWKhGm+VQlYwvuVJg?=
- =?us-ascii?Q?YVFg0DhDESUFXrXi2Js4dGzMNRY3mTzReABBPpd1i9vprd8JVj42EQU8haVO?=
- =?us-ascii?Q?PJ6cxQJczuAo5GR23J9WY9PU71SS1voa8HSDkvEBaokOJLWgxgLmHCECJZel?=
- =?us-ascii?Q?tfZvez76re7VdhNXlNmhTOQ43DTI5qJcGTxSPb7WArxZ7+V4D5z02pX/bTmq?=
- =?us-ascii?Q?vpnuHCuMe8OKjzknGVmpx3sHvyTESnYIyqQtc7ybq5/1SUkXfWSah61ToCuF?=
- =?us-ascii?Q?Mzd5tzZ/3semwcAEDIfNsmW4HGOELtRkvEuiFIW570Pqv2GI53aThfDoxmi+?=
- =?us-ascii?Q?EZS3Y5t1eNbwOA98ItJQjTbnQJDgNFY4TrPPAHSYnlN358FWEKBqQ9qfkaoR?=
- =?us-ascii?Q?nwfZ5STbmyTmVbrN4PtNACR3N83Cyst3p0P2P+X3PzUYZ2N6O3oNIBKmEe7Y?=
- =?us-ascii?Q?6NTYWe9wRHnraOCmmNc1wX5RwBkp2fuwG8L+2yAmnPOVNhNNxAfgcwMfRQNO?=
- =?us-ascii?Q?T9Z2v27qZkjREvoRFs6V93h+f4IGWAbcvyi4rioxr5hW+GPWicFCQmgLuja/?=
- =?us-ascii?Q?bW+iVB0nrXklo92+KAqUvGXq1KVrfBXTubNsjWdB/mUS4p/J/4uVOgk+FZUO?=
- =?us-ascii?Q?YpHEvwhWUoceZsi1elo4GFJYh3vAXEVcrXrMU7yHFwLsGcCC6OM/RQeuuYmt?=
- =?us-ascii?Q?aUX1R+fRmtY1cnwwHnA1GfXmP1u6ujm4Y6AJ+J/WWve+YuOm4Cv8bkN+WtBa?=
- =?us-ascii?Q?7s8YK2dXfHCSjp2GzAMLFhyxkR/HWYjXG63aAtH2XIj9bro51HvgK4kizb0F?=
- =?us-ascii?Q?ButwPAIc3pHc6FcrrMU2I5ynk5sDbbTx+IU6i631NzptXhKyPoIjXVMvUiG0?=
- =?us-ascii?Q?XRCqg1Z+R3uhOY2hFjRi5MjNjxui81Gcb2+cVGpwuy5HPPhfDyvX1fSa2xGG?=
- =?us-ascii?Q?uRIslmQfd6cYFOQBd6wacaGSnGrIhyG5ZTUqyOBYudT8udacO/Vqz7ZCgG0v?=
- =?us-ascii?Q?N6EPZuWwQ02pW0z7dlS/Foy9rENDM+ZHc5xccKjsmX51PXXiuHvq1TNjmDa/?=
- =?us-ascii?Q?+ZpJFv+9Dp2q2jNBlOC4IdLoUfCa1EOF0c/UyPCGTAWn+b3lQ1a8WTNK8gez?=
- =?us-ascii?Q?p45SyjRu5d7vmB6YSP9I3FPA0hiIXWH5NZnjAOgqEM5Lbg=3D=3D?=
+	=?us-ascii?Q?BjWGqmRi3nheJPT1L5LRzgYpDgSqsjOtYygViRzPTENVxElMkwHlQyTVqDqZ?=
+ =?us-ascii?Q?JhbZ6cSZm738sSRmU62dBc4zJCnwaNeV52/ISz8vDVBa5SjNV4/Z6V5aEnrV?=
+ =?us-ascii?Q?aLCoCTUqzUTBML9CixFujV9zSt2shQMd7MGUH7vRIUVk8sMWagHSwuulKTQW?=
+ =?us-ascii?Q?lDOqVcRVx0b8RHF6joEZBJayrHJHSgBsn8b3OrcXZnHPOf8iL+c+S8169tU2?=
+ =?us-ascii?Q?g63c4CvUFnonr1CliUCv+aOgdrQZEjFZPD9icZayU3OBYbuSrmH3tFZXLXEA?=
+ =?us-ascii?Q?OwsN6jn3oHUylgspe8sZNND7yzG1hEd/rbWpDw797REun67fPY3Pstq3rIuf?=
+ =?us-ascii?Q?Gz5FT65gd9h+6Jnd5savGpah3d9/ykeiwNZ384cdRJyyT91eSaFgPshRYo8T?=
+ =?us-ascii?Q?A1YBf1c/t2FncGVyuq4LKiN+qKdxTK+dZcyabUDnGzbqd0T47iCB0d4iQNa4?=
+ =?us-ascii?Q?bJrnS+OYjYwwGktWAeg3UVCbyDAqeXMs7TGBIl5Sw55AqLqUf5i4eRo+Ov5v?=
+ =?us-ascii?Q?TK/vRZFCY13T/cbDemL9PwqWxtjmIygr9qOwCc5uRaV/NJxnmy9im2BEjzHb?=
+ =?us-ascii?Q?/6PdMeGvwRyD40+opw51kt8w5l0QGtKQPQSsl4kFv83z5ZBrrABk1zliVIyp?=
+ =?us-ascii?Q?f467cQqhJf5vJ3ySJhUCn/Gunm8zdcBPzR3bPnL9ra4lRUENt1d6YNi/o/27?=
+ =?us-ascii?Q?dr3Vl9uVkpBI0PP4IvxsiuqN3yDsGlal53o7n+gRO8KgYpIzqx40Cwi+cREW?=
+ =?us-ascii?Q?VOUgRLbFcZz1i0bjqmA/Be7luTMLg9b4jR37nqumddBYFx4bMixuHgVmUrS6?=
+ =?us-ascii?Q?tQQSQajjewCAwEHibk5O5pgbssEMQSX9z9tkrG97aD5xlHVhD9hK3QEV44MH?=
+ =?us-ascii?Q?gsRlwHmjTnoT3Mw4cUNbPhe9WOp2dORkwp5izrN5gUbziy/4bHq4x2WGTKAV?=
+ =?us-ascii?Q?Vn3xqMwiw6t9pYWyHO6zhevADD8XyeWWVn8qjY2SQbMrVKF1kazNcBR5VGaZ?=
+ =?us-ascii?Q?D/yjwhBx7LAl1z//8Q7Cl0OkkmT2JcRnCYk2vrbGJO4boVdGFD6yrueWKnYl?=
+ =?us-ascii?Q?eKnT9btrjkrVpWDZEpZpu5LQINDrHL1TP/HqR541iiTM71ccS+ZwdMnzMCXs?=
+ =?us-ascii?Q?OdFWeiVJS/WvO3wtLX4n/qeRLUFQUTZ2BHF3OwDbnGieARL6JmUCmqVqgRJv?=
+ =?us-ascii?Q?ZNCLRLP87/ZU8YngeHOoZEKMSCeSN6ht+UqAz3UlMj0uLIZvVSjhT0e1L1lR?=
+ =?us-ascii?Q?HJ6vjFMUyjj+a/6DRbKLI728Bripj7zMvIom68Xo3aCIR4UH5WG6qbvun6id?=
+ =?us-ascii?Q?ZMaknBUFWwoMBdYTqoyZCOrczaejqnlxkS+2TZHUnICjVw=3D=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(52116014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?L4t7M7EM24DI/OzUlSW3KoRJ+Zxo5cLTvy9F6EhqpF3yHEswv7jns1nJOBEZ?=
- =?us-ascii?Q?uQAN4wGUksttUWba+OV2MgqoXV4rS0N3j6xgQjErVUx2uJsqgBDfP0+Fuedk?=
- =?us-ascii?Q?TxyaamcwyCkWko2pV8q5bhXVbQrqQ4A9miVdxVobbenZdPMyUrE1MaBYfIYf?=
- =?us-ascii?Q?QL4SB9FLSZzKJyBBBruuDVaKzOQozJ1n9elaHiITj6+y9U8lFqYPtoTtzkGQ?=
- =?us-ascii?Q?y/jfT5kCFDpyTXiy8xUGOH8/0kIczwWjULx+spo5IZhJk6WWHK01jbsaFu+2?=
- =?us-ascii?Q?E/F5FLtQ8aoTxY09t6CjEFylB6jr1e4hRAsTSV9sYxNDNTp651xqwgbu0Jnq?=
- =?us-ascii?Q?+Rx4m4eQa1ArIMB1pir2XqJ/FWFvucjsvK3BDNUkHLPAGCJL45I8cmIcxr73?=
- =?us-ascii?Q?Kt+ZQcz3ehq0acMT6uui1wMsV/0/7oFA1Kza+CO7M64Fzy9umhP3W2rZoFPB?=
- =?us-ascii?Q?Mh0nF60px/X8XzF77Jr7j/NgZJpOEe6vCu4oxiO8cH2Xf9Gj29NNDlTgg7vV?=
- =?us-ascii?Q?8m0u7JX/AwI7BDawDEYHgWPr7nZBmADQJkoxxuU8/7Y0EBbXqAe4hDEeh7cY?=
- =?us-ascii?Q?SObqlAMModHX6v7syzfpnkYNw/Pe+3QsXPGasobN91v/kGRiouJx3Jmb80u8?=
- =?us-ascii?Q?DWAdyqqdk2sW6aYoN8K91V8a+LvLbYF8GE4e1EiJknRmLqRBo+hSCnGBPin1?=
- =?us-ascii?Q?Z7LJ0HPl31dh2jAKWGKG91ihJ4fYdhdm6QFoAck8Ceal0kQrMXgCf+//IXkN?=
- =?us-ascii?Q?E6k42h55akPmw+5nSPCSjdrdwMEpuWfUv83i0uk3tOtK/4vV9cFUWQpuMtjD?=
- =?us-ascii?Q?0rzIXFubHADMOZjLagPNu3VX/YB6bLv4n9cuvLd79Eyf7mtwDxcpYMT9SOLO?=
- =?us-ascii?Q?umqwFn3Q79kHWCUcribcj9MSNJCpeIGfAzuuuSta9XKa83EgC5d+2O+nCHhB?=
- =?us-ascii?Q?riANMaAXOUpXQkbPVFpxr1PE6JwOB7jmU6fjEBU1qnnqVnyNxEx87q2+/KC1?=
- =?us-ascii?Q?IRJhMYJRfO/q/rxt08BXU0tW+5Me7srzGx/OrF564mZv2rxoxdXYByu3HeOP?=
- =?us-ascii?Q?ZIr3b84T4E3zQDDgPSRvD2U99fFGX9MuieI0AyrdY2rcx93p3wOF1fPt9l3F?=
- =?us-ascii?Q?Qpa/aiD8w7oJxg9f9cbAHw/Xlva9MQZ52JnAl2s4Rkzwdmd6DsRX08kRNKND?=
- =?us-ascii?Q?bNAM5J6pTUZwA1lANuQ277kiHD37Z9GjvbL9fwJSAL/8BRBEqK9ZCgRttUbo?=
- =?us-ascii?Q?GazfJ3sxtMQdBoDDMryTo+VKV9qt+fOkELjaam0Ex5TeMWQY397jmKDlVfD0?=
- =?us-ascii?Q?RRW83KUXklPexr5sQprijRdO93CQ/zpZauA8545MUwAuzVmapjNlef2AfaZU?=
- =?us-ascii?Q?1ID0RrUNFZp+3E3DEDzPJW9SE0AqgAO4zprcMMGN1EEfdwq1hA60bFbVbgxW?=
- =?us-ascii?Q?VgJl+wq+fOXFvqm93g3ecyOI1FAySOMsVa7dWEwQDEaI6+MrA59CSafTjmxf?=
- =?us-ascii?Q?XvMNPjvlv2Mk3/LrkDEX8nWj/FQEMbWb3Oe+RlwaQm33TdHR/l79Nmg+ES7n?=
- =?us-ascii?Q?AXJ30dbbh8pdg/Qx7ViwJXqdwppf2e80vwaJkKemso3jgFtIspCVY68L1Oft?=
- =?us-ascii?Q?IPjr8wskL0adXW4MsNCOCTZMYh3PYVPvinnjQpDE25kf?=
+	=?us-ascii?Q?z2UmRLwNd/7P4/qvFkiDzUFmXo6cNmWCzglgKhUKqGqtv1V1RcMF6vEcIzEm?=
+ =?us-ascii?Q?P70aS2tZ9grYWzAdTh2y9uf0gryi8ZjI2OHAK+sbwADaxVxlpbZkQAHDCkC8?=
+ =?us-ascii?Q?QS1jRMFSxgimTAnVWLGmzB6gkDIzIvZL15ysrK0kbzq5SgYWfFTgpp7dbpej?=
+ =?us-ascii?Q?8RvxfKDovF+bsYvULsaudD6cBIHFf8J3QStU8YRFqvQFho1l8VH5pASFcBIJ?=
+ =?us-ascii?Q?DzLL4cxjyMQUG3IYDlihhrtC6UYu0/2Ifn4SMH0AYe1GjMn37+09XqPG3KrT?=
+ =?us-ascii?Q?IZO2eGRkbQcW6/ehq32FYSzv7pUKThz49ydgOKezqzjeUOuLAxuD+SqqOvpT?=
+ =?us-ascii?Q?4eg5xNDTeLPotMZOCqOoMxI8TAEZP3chcPUYObGkk3X20zoCO4NlxdwA5FYi?=
+ =?us-ascii?Q?uD27NBcznr6UYbaGUDzcM2mWlZ/qRzXRp/2RDBV0CsdtdfWo+fITgwid6yvT?=
+ =?us-ascii?Q?OSLaF4DIzk1fViN2Zrp0TAmy/RYuk83xfd8mCWR/yVBzsrIFw+tsaIReNFyj?=
+ =?us-ascii?Q?pml9o6lAWG9DnAbZkks0RpTu0Fqnw+0N20S/K9r/f1WlzGv5I99yfbEK0+L9?=
+ =?us-ascii?Q?q09SyX2CzRhoGFplWZDmc9LMvw4CZgmTEmeJ4HKqI09ZhEiaEQQx1bptyBLQ?=
+ =?us-ascii?Q?ZfCoE5eG1DcIWS/AZ+9Qm5XUGZETNoPW/hyCiavqXqkWiqsHx3vgJUDcEKnk?=
+ =?us-ascii?Q?Uw70pG5xzmF8KLxxneGu0drh7oYGTi/I404AeHg7E6E99aeqqTZZ5/U7aY8e?=
+ =?us-ascii?Q?j1Nf9Nb3ypuGhYbSqshsZTyAIrtTVuaP7NvrEdaCdvsO9kawVyX6vsUPgkxn?=
+ =?us-ascii?Q?zNpJgKhhBd0NBvk+7Ab/D5ilYkLXZTkuo6b2qdFvFPhMhgba3PulVfc44oQ7?=
+ =?us-ascii?Q?IGg9ru2Q+XATKFD9BvcvIEQPCBdR3gLi0FBxTalFPp01ZaSAI2AQJu+bbJFW?=
+ =?us-ascii?Q?Cs+KAcnx3JeVjGSF3Klc4ZQz4G1t7qudnU3ypdPdfGMTqrmokFcjNNos9+gW?=
+ =?us-ascii?Q?O1lmV7L5Y4GNQIv5LRcQj6hy11za8X5nCtXpGcVZPmNhwtBImM7LCMVVkvTl?=
+ =?us-ascii?Q?euQookQBSgcO9StmU9Faa7gumkPgq9ZHB0QM4t7PX0PqEoJBs4q5wtyXAOEx?=
+ =?us-ascii?Q?ko/c0BaDOzVg4AcGXncM4APOdj2iXFEVGhiggULykxzbe6AyJvhBF67m/zIy?=
+ =?us-ascii?Q?L8ud+NX/hPXZJjbxWATLuizJD+B856SgEgbRK42cPnoxCoKn+saCV3epxLQa?=
+ =?us-ascii?Q?y4rkCNFV4gOOIigbgV3zPcQ1hW0JSa0AOoEbUQqhNjzEXoVGGXDiHQYgMXB0?=
+ =?us-ascii?Q?9OxWyYLwUsk0jCsuxN/Q8FZKKdFSYPZcKeKUCVrv9aEgiHWjdqjAw72kn1EK?=
+ =?us-ascii?Q?6aRl91L/YK5d6ncopZ5JY2P0ukH8usBVxp+ZkQzzd1b93NK/HYDdONUD97Y7?=
+ =?us-ascii?Q?olV4GgOIBeKDJ/GcLuktqsNI/ZWuqgb4+Wm1CGqDHHNeEox+3INYdCKpyrD4?=
+ =?us-ascii?Q?2x/TcFqcL+W5SPLNGK1CPST5qLYP9tU+9sgquMg8/B48JxE/MxfrYRkak8me?=
+ =?us-ascii?Q?/4LkelwcyLpAd18Ms5+Eyc9XIt+E67ZZMTCA5u2O2ZsjUcEcfjPg6QX+Ie6X?=
+ =?us-ascii?Q?6kiWKgVB0ckHRVoqT76I8ygpLUxJDz48EDhVo1LbfrT4?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: da044a13-78ac-4199-6abb-08dcb8582d5e
+X-MS-Exchange-CrossTenant-Network-Message-Id: c37f16b2-f20a-49eb-0c5c-08dcb8582f45
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9638.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2024 09:46:43.9589
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2024 09:46:47.1008
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VuKHy6ApfbTQDQzWJEWFwpwz5KwdwsXQXjDqSphl2B/mQhKvvcVuF72D4/XUq3wnlgUL+wvowuDzH6UpkbagxA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: mmQI055HW92zTc1nxgN4H95ey6zQ7tSOxU89iRLv+Mfk3lezhWXp465lxGxpHKQpda9s1kNKhH8pP+tH2zm+ug==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB9949
 
 ---
- drivers/net/wireless/nxp/nxpwifi/debugfs.c | 1041 ++++++++++++++++++++
- 1 file changed, 1041 insertions(+)
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/debugfs.c
+ drivers/net/wireless/nxp/nxpwifi/decl.h | 294 ++++++++++++++++++++++++
+ 1 file changed, 294 insertions(+)
+ create mode 100644 drivers/net/wireless/nxp/nxpwifi/decl.h
 
-diff --git a/drivers/net/wireless/nxp/nxpwifi/debugfs.c b/drivers/net/wireless/nxp/nxpwifi/debugfs.c
+diff --git a/drivers/net/wireless/nxp/nxpwifi/decl.h b/drivers/net/wireless/nxp/nxpwifi/decl.h
 new file mode 100644
-index 000000000000..a8a5f815f7fa
+index 000000000000..930f777f064f
 --- /dev/null
-+++ b/drivers/net/wireless/nxp/nxpwifi/debugfs.c
-@@ -0,0 +1,1041 @@
-+// SPDX-License-Identifier: GPL-2.0-only
++++ b/drivers/net/wireless/nxp/nxpwifi/decl.h
+@@ -0,0 +1,294 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
 +/*
-+ * NXP Wireless LAN device driver: debugfs
++ * NXP Wireless LAN device driver: generic data structures and APIs
 + *
 + * Copyright 2011-2024 NXP
 + */
 +
-+#include <linux/debugfs.h>
++#ifndef _NXPWIFI_DECL_H_
++#define _NXPWIFI_DECL_H_
 +
-+#include "main.h"
-+#include "cmdevt.h"
-+#include "11n.h"
++#undef pr_fmt
++#define pr_fmt(fmt)	KBUILD_MODNAME ": " fmt
 +
-+static struct dentry *nxpwifi_dfs_dir;
++#include <linux/wait.h>
++#include <linux/timer.h>
++#include <linux/ieee80211.h>
++#include <uapi/linux/if_arp.h>
++#include <net/cfg80211.h>
 +
-+static char *bss_modes[] = {
-+	"UNSPECIFIED",
-+	"ADHOC",
-+	"STATION",
-+	"AP",
-+	"AP_VLAN",
-+	"WDS",
-+	"MONITOR",
-+	"MESH_POINT",
-+	"P2P_CLIENT",
-+	"P2P_GO",
-+	"P2P_DEVICE",
++#define NXPWIFI_BSS_COEX_COUNT	     2
++#define NXPWIFI_MAX_BSS_NUM         (2)
++
++#define NXPWIFI_MAX_CSA_COUNTERS     5
++
++#define NXPWIFI_DMA_ALIGN_SZ	    64
++#define NXPWIFI_RX_HEADROOM	    64
++#define MAX_TXPD_SZ		    32
++#define INTF_HDR_ALIGN		     4
++/* special FW 4 address management header */
++#define NXPWIFI_MIN_DATA_HEADER_LEN (NXPWIFI_DMA_ALIGN_SZ + INTF_HDR_ALIGN + \
++				     MAX_TXPD_SZ)
++
++#define NXPWIFI_MGMT_FRAME_HEADER_SIZE	8	/* sizeof(pkt_type)
++						 *   + sizeof(tx_control)
++						 */
++
++#define FRMCTL_LEN                2
++#define DURATION_LEN              2
++#define SEQCTL_LEN                2
++#define NXPWIFI_MGMT_HEADER_LEN   (FRMCTL_LEN + FRMCTL_LEN + ETH_ALEN + \
++				   ETH_ALEN + ETH_ALEN + SEQCTL_LEN + ETH_ALEN)
++
++#define AUTH_ALG_LEN              2
++#define AUTH_TRANSACTION_LEN      2
++#define AUTH_STATUS_LEN           2
++#define NXPWIFI_AUTH_BODY_LEN     (AUTH_ALG_LEN + AUTH_TRANSACTION_LEN + \
++				   AUTH_STATUS_LEN)
++
++#define HOST_MLME_AUTH_PENDING    BIT(0)
++#define HOST_MLME_AUTH_DONE       BIT(1)
++
++#define HOST_MLME_MGMT_MASK       (BIT(IEEE80211_STYPE_AUTH >> 4) | \
++				   BIT(IEEE80211_STYPE_DEAUTH >> 4) | \
++				   BIT(IEEE80211_STYPE_DISASSOC >> 4))
++
++#define AUTH_TX_DEFAULT_WAIT_TIME 2400
++
++#define WLAN_AUTH_NONE            0xFFFF
++
++#define NXPWIFI_MAX_TX_BASTREAM_SUPPORTED	2
++#define NXPWIFI_MAX_RX_BASTREAM_SUPPORTED	16
++
++#define NXPWIFI_STA_AMPDU_DEF_TXWINSIZE        64
++#define NXPWIFI_STA_AMPDU_DEF_RXWINSIZE        64
++#define NXPWIFI_STA_COEX_AMPDU_DEF_RXWINSIZE   16
++
++#define NXPWIFI_UAP_AMPDU_DEF_TXWINSIZE        32
++
++#define NXPWIFI_UAP_COEX_AMPDU_DEF_RXWINSIZE   16
++
++#define NXPWIFI_UAP_AMPDU_DEF_RXWINSIZE        16
++#define NXPWIFI_11AC_STA_AMPDU_DEF_TXWINSIZE   64
++#define NXPWIFI_11AC_STA_AMPDU_DEF_RXWINSIZE   64
++#define NXPWIFI_11AC_UAP_AMPDU_DEF_TXWINSIZE   64
++#define NXPWIFI_11AC_UAP_AMPDU_DEF_RXWINSIZE   64
++
++#define NXPWIFI_DEFAULT_BLOCK_ACK_TIMEOUT  0xffff
++
++#define NXPWIFI_RATE_BITMAP_MCS0   32
++
++#define NXPWIFI_RX_DATA_BUF_SIZE     (4 * 1024)
++#define NXPWIFI_RX_CMD_BUF_SIZE	     (2 * 1024)
++
++#define MAX_BEACON_PERIOD                  (4000)
++#define MIN_BEACON_PERIOD                  (50)
++#define MAX_DTIM_PERIOD                    (100)
++#define MIN_DTIM_PERIOD                    (1)
++
++#define NXPWIFI_RTS_MIN_VALUE              (0)
++#define NXPWIFI_RTS_MAX_VALUE              (2347)
++#define NXPWIFI_FRAG_MIN_VALUE             (256)
++#define NXPWIFI_FRAG_MAX_VALUE             (2346)
++#define NXPWIFI_WMM_VERSION                0x01
++#define NXPWIFI_WMM_SUBTYPE                0x01
++
++#define NXPWIFI_RETRY_LIMIT                14
++#define NXPWIFI_SDIO_BLOCK_SIZE            256
++
++#define NXPWIFI_BUF_FLAG_REQUEUED_PKT      BIT(0)
++#define NXPWIFI_BUF_FLAG_BRIDGED_PKT	   BIT(1)
++#define NXPWIFI_BUF_FLAG_EAPOL_TX_STATUS   BIT(3)
++#define NXPWIFI_BUF_FLAG_ACTION_TX_STATUS  BIT(4)
++#define NXPWIFI_BUF_FLAG_AGGR_PKT          BIT(5)
++
++#define NXPWIFI_BRIDGED_PKTS_THR_HIGH      1024
++#define NXPWIFI_BRIDGED_PKTS_THR_LOW        128
++
++/* 54M rates, index from 0 to 11 */
++#define NXPWIFI_RATE_INDEX_MCS0 12
++/* 12-27=MCS0-15(BW20) */
++#define NXPWIFI_BW20_MCS_NUM 15
++
++/* Rate index for OFDM 0 */
++#define NXPWIFI_RATE_INDEX_OFDM0   4
++
++#define NXPWIFI_MAX_STA_NUM		3
++#define NXPWIFI_MAX_UAP_NUM		3
++
++#define NXPWIFI_A_BAND_START_FREQ	5000
++
++/* SDIO Aggr data packet special info */
++#define SDIO_MAX_AGGR_BUF_SIZE		(256 * 255)
++#define BLOCK_NUMBER_OFFSET		15
++#define SDIO_HEADER_OFFSET		28
++
++#define NXPWIFI_SIZE_4K 0x4000
++
++enum nxpwifi_bss_type {
++	NXPWIFI_BSS_TYPE_STA = 0,
++	NXPWIFI_BSS_TYPE_UAP = 1,
++	NXPWIFI_BSS_TYPE_ANY = 0xff,
 +};
 +
-+/* Proc info file read handler.
-+ *
-+ * This function is called when the 'info' file is opened for reading.
-+ * It prints the following driver related information -
-+ *      - Driver name
-+ *      - Driver version
-+ *      - Driver extended version
-+ *      - Interface name
-+ *      - BSS mode
-+ *      - Media state (connected or disconnected)
-+ *      - MAC address
-+ *      - Total number of Tx bytes
-+ *      - Total number of Rx bytes
-+ *      - Total number of Tx packets
-+ *      - Total number of Rx packets
-+ *      - Total number of dropped Tx packets
-+ *      - Total number of dropped Rx packets
-+ *      - Total number of corrupted Tx packets
-+ *      - Total number of corrupted Rx packets
-+ *      - Carrier status (on or off)
-+ *      - Tx queue status (started or stopped)
-+ *
-+ * For STA mode drivers, it also prints the following extra -
-+ *      - ESSID
-+ *      - BSSID
-+ *      - Channel
-+ *      - Region code
-+ *      - Multicast count
-+ *      - Multicast addresses
-+ */
-+static ssize_t
-+nxpwifi_info_read(struct file *file, char __user *ubuf,
-+		  size_t count, loff_t *ppos)
-+{
-+	struct nxpwifi_private *priv =
-+		(struct nxpwifi_private *)file->private_data;
-+	struct net_device *netdev = priv->netdev;
-+	struct netdev_hw_addr *ha;
-+	struct netdev_queue *txq;
-+	unsigned long page = get_zeroed_page(GFP_KERNEL);
-+	char *p = (char *)page, fmt[64];
-+	struct nxpwifi_bss_info info;
-+	ssize_t ret;
-+	int i = 0;
-+
-+	if (!p)
-+		return -ENOMEM;
-+
-+	memset(&info, 0, sizeof(info));
-+	ret = nxpwifi_get_bss_info(priv, &info);
-+	if (ret)
-+		goto free_and_exit;
-+
-+	nxpwifi_drv_get_driver_version(priv->adapter, fmt, sizeof(fmt) - 1);
-+
-+	nxpwifi_get_ver_ext(priv, 0);
-+
-+	p += sprintf(p, "driver_name = ");
-+	p += sprintf(p, "\"nxpwifi\"\n");
-+	p += sprintf(p, "driver_version = %s", fmt);
-+	p += sprintf(p, "\nverext = %s", priv->version_str);
-+	p += sprintf(p, "\ninterface_name=\"%s\"\n", netdev->name);
-+
-+	if (info.bss_mode >= ARRAY_SIZE(bss_modes))
-+		p += sprintf(p, "bss_mode=\"%d\"\n", info.bss_mode);
-+	else
-+		p += sprintf(p, "bss_mode=\"%s\"\n", bss_modes[info.bss_mode]);
-+
-+	p += sprintf(p, "media_state=\"%s\"\n",
-+		     (!priv->media_connected ? "Disconnected" : "Connected"));
-+	p += sprintf(p, "mac_address=\"%pM\"\n", netdev->dev_addr);
-+
-+	if (GET_BSS_ROLE(priv) == NXPWIFI_BSS_ROLE_STA) {
-+		p += sprintf(p, "multicast_count=\"%d\"\n",
-+			     netdev_mc_count(netdev));
-+		p += sprintf(p, "essid=\"%.*s\"\n", info.ssid.ssid_len,
-+			     info.ssid.ssid);
-+		p += sprintf(p, "bssid=\"%pM\"\n", info.bssid);
-+		p += sprintf(p, "channel=\"%d\"\n", (int)info.bss_chan);
-+		p += sprintf(p, "country_code = \"%s\"\n", info.country_code);
-+		p += sprintf(p, "region_code=\"0x%x\"\n",
-+			     priv->adapter->region_code);
-+
-+		netdev_for_each_mc_addr(ha, netdev)
-+			p += sprintf(p, "multicast_address[%d]=\"%pM\"\n",
-+					i++, ha->addr);
-+	}
-+
-+	p += sprintf(p, "num_tx_bytes = %lu\n", priv->stats.tx_bytes);
-+	p += sprintf(p, "num_rx_bytes = %lu\n", priv->stats.rx_bytes);
-+	p += sprintf(p, "num_tx_pkts = %lu\n", priv->stats.tx_packets);
-+	p += sprintf(p, "num_rx_pkts = %lu\n", priv->stats.rx_packets);
-+	p += sprintf(p, "num_tx_pkts_dropped = %lu\n", priv->stats.tx_dropped);
-+	p += sprintf(p, "num_rx_pkts_dropped = %lu\n", priv->stats.rx_dropped);
-+	p += sprintf(p, "num_tx_pkts_err = %lu\n", priv->stats.tx_errors);
-+	p += sprintf(p, "num_rx_pkts_err = %lu\n", priv->stats.rx_errors);
-+	p += sprintf(p, "carrier %s\n", ((netif_carrier_ok(priv->netdev))
-+					 ? "on" : "off"));
-+	p += sprintf(p, "tx queue");
-+	for (i = 0; i < netdev->num_tx_queues; i++) {
-+		txq = netdev_get_tx_queue(netdev, i);
-+		p += sprintf(p, " %d:%s", i, netif_tx_queue_stopped(txq) ?
-+			     "stopped" : "started");
-+	}
-+	p += sprintf(p, "\n");
-+
-+	ret = simple_read_from_buffer(ubuf, count, ppos, (char *)page,
-+				      (unsigned long)p - page);
-+
-+free_and_exit:
-+	free_page(page);
-+	return ret;
-+}
-+
-+/* Proc getlog file read handler.
-+ *
-+ * This function is called when the 'getlog' file is opened for reading
-+ * It prints the following log information -
-+ *      - Number of multicast Tx frames
-+ *      - Number of failed packets
-+ *      - Number of Tx retries
-+ *      - Number of multicast Tx retries
-+ *      - Number of duplicate frames
-+ *      - Number of RTS successes
-+ *      - Number of RTS failures
-+ *      - Number of ACK failures
-+ *      - Number of fragmented Rx frames
-+ *      - Number of multicast Rx frames
-+ *      - Number of FCS errors
-+ *      - Number of Tx frames
-+ *      - WEP ICV error counts
-+ *      - Number of received beacons
-+ *      - Number of missed beacons
-+ */
-+static ssize_t
-+nxpwifi_getlog_read(struct file *file, char __user *ubuf,
-+		    size_t count, loff_t *ppos)
-+{
-+	struct nxpwifi_private *priv =
-+		(struct nxpwifi_private *)file->private_data;
-+	unsigned long page = get_zeroed_page(GFP_KERNEL);
-+	char *p = (char *)page;
-+	ssize_t ret;
-+	struct nxpwifi_ds_get_stats stats;
-+
-+	if (!p)
-+		return -ENOMEM;
-+
-+	memset(&stats, 0, sizeof(stats));
-+	ret = nxpwifi_get_stats_info(priv, &stats);
-+	if (ret)
-+		goto free_and_exit;
-+
-+	p += sprintf(p, "\n"
-+		     "mcasttxframe     %u\n"
-+		     "failed           %u\n"
-+		     "retry            %u\n"
-+		     "multiretry       %u\n"
-+		     "framedup         %u\n"
-+		     "rtssuccess       %u\n"
-+		     "rtsfailure       %u\n"
-+		     "ackfailure       %u\n"
-+		     "rxfrag           %u\n"
-+		     "mcastrxframe     %u\n"
-+		     "fcserror         %u\n"
-+		     "txframe          %u\n"
-+		     "wepicverrcnt-1   %u\n"
-+		     "wepicverrcnt-2   %u\n"
-+		     "wepicverrcnt-3   %u\n"
-+		     "wepicverrcnt-4   %u\n"
-+		     "bcn_rcv_cnt   %u\n"
-+		     "bcn_miss_cnt   %u\n",
-+		     stats.mcast_tx_frame,
-+		     stats.failed,
-+		     stats.retry,
-+		     stats.multi_retry,
-+		     stats.frame_dup,
-+		     stats.rts_success,
-+		     stats.rts_failure,
-+		     stats.ack_failure,
-+		     stats.rx_frag,
-+		     stats.mcast_rx_frame,
-+		     stats.fcs_error,
-+		     stats.tx_frame,
-+		     stats.wep_icv_error[0],
-+		     stats.wep_icv_error[1],
-+		     stats.wep_icv_error[2],
-+		     stats.wep_icv_error[3],
-+		     stats.bcn_rcv_cnt,
-+		     stats.bcn_miss_cnt);
-+
-+	ret = simple_read_from_buffer(ubuf, count, ppos, (char *)page,
-+				      (unsigned long)p - page);
-+
-+free_and_exit:
-+	free_page(page);
-+	return ret;
-+}
-+
-+/* Sysfs histogram file read handler.
-+ *
-+ * This function is called when the 'histogram' file is opened for reading
-+ * It prints the following histogram information -
-+ *      - Number of histogram samples
-+ *      - Receive packet number of each rx_rate
-+ *      - Receive packet number of each snr
-+ *      - Receive packet number of each nosie_flr
-+ *      - Receive packet number of each signal streath
-+ */
-+static ssize_t
-+nxpwifi_histogram_read(struct file *file, char __user *ubuf,
-+		       size_t count, loff_t *ppos)
-+{
-+	struct nxpwifi_private *priv =
-+		(struct nxpwifi_private *)file->private_data;
-+	ssize_t ret;
-+	struct nxpwifi_histogram_data *phist_data;
-+	int i, value;
-+	unsigned long page = get_zeroed_page(GFP_KERNEL);
-+	char *p = (char *)page;
-+
-+	if (!p)
-+		return -ENOMEM;
-+
-+	if (!priv || !priv->hist_data) {
-+		ret = -EFAULT;
-+		goto free_and_exit;
-+	}
-+
-+	phist_data = priv->hist_data;
-+
-+	p += sprintf(p, "\n"
-+		     "total samples = %d\n",
-+		     atomic_read(&phist_data->num_samples));
-+
-+	p += sprintf(p,
-+		     "rx rates (in Mbps): 0=1M   1=2M 2=5.5M  3=11M   4=6M   5=9M  6=12M\n"
-+		     "7=18M  8=24M  9=36M  10=48M  11=54M 12-27=MCS0-15(BW20) 28-43=MCS0-15(BW40)\n");
-+
-+	if (ISSUPP_11ACENABLED(priv->adapter->fw_cap_info)) {
-+		p += sprintf(p,
-+			     "44-53=MCS0-9(VHT:BW20) 54-63=MCS0-9(VHT:BW40) 64-73=MCS0-9(VHT:BW80)\n\n");
-+	} else {
-+		p += sprintf(p, "\n");
-+	}
-+
-+	for (i = 0; i < NXPWIFI_MAX_RX_RATES; i++) {
-+		value = atomic_read(&phist_data->rx_rate[i]);
-+		if (value)
-+			p += sprintf(p, "rx_rate[%02d] = %d\n", i, value);
-+	}
-+
-+	if (ISSUPP_11ACENABLED(priv->adapter->fw_cap_info)) {
-+		for (i = NXPWIFI_MAX_RX_RATES; i < NXPWIFI_MAX_AC_RX_RATES;
-+		     i++) {
-+			value = atomic_read(&phist_data->rx_rate[i]);
-+			if (value)
-+				p += sprintf(p, "rx_rate[%02d] = %d\n",
-+					   i, value);
-+		}
-+	}
-+
-+	for (i = 0; i < NXPWIFI_MAX_SNR; i++) {
-+		value =  atomic_read(&phist_data->snr[i]);
-+		if (value)
-+			p += sprintf(p, "snr[%02ddB] = %d\n", i, value);
-+	}
-+	for (i = 0; i < NXPWIFI_MAX_NOISE_FLR; i++) {
-+		value = atomic_read(&phist_data->noise_flr[i]);
-+		if (value)
-+			p += sprintf(p, "noise_flr[%02ddBm] = %d\n",
-+				     (int)(i - 128), value);
-+	}
-+	for (i = 0; i < NXPWIFI_MAX_SIG_STRENGTH; i++) {
-+		value = atomic_read(&phist_data->sig_str[i]);
-+		if (value)
-+			p += sprintf(p, "sig_strength[-%02ddBm] = %d\n",
-+				i, value);
-+	}
-+
-+	ret = simple_read_from_buffer(ubuf, count, ppos, (char *)page,
-+				      (unsigned long)p - page);
-+
-+free_and_exit:
-+	free_page(page);
-+	return ret;
-+}
-+
-+static ssize_t
-+nxpwifi_histogram_write(struct file *file, const char __user *ubuf,
-+			size_t count, loff_t *ppos)
-+{
-+	struct nxpwifi_private *priv = (void *)file->private_data;
-+
-+	if (priv && priv->hist_data)
-+		nxpwifi_hist_data_reset(priv);
-+	return 0;
-+}
-+
-+static struct nxpwifi_debug_info info;
-+
-+/* Proc debug file read handler.
-+ *
-+ * This function is called when the 'debug' file is opened for reading
-+ * It prints the following log information -
-+ *      - Interrupt count
-+ *      - WMM AC VO packets count
-+ *      - WMM AC VI packets count
-+ *      - WMM AC BE packets count
-+ *      - WMM AC BK packets count
-+ *      - Maximum Tx buffer size
-+ *      - Tx buffer size
-+ *      - Current Tx buffer size
-+ *      - Power Save mode
-+ *      - Power Save state
-+ *      - Deep Sleep status
-+ *      - Device wakeup required status
-+ *      - Number of wakeup tries
-+ *      - Host Sleep configured status
-+ *      - Host Sleep activated status
-+ *      - Number of Tx timeouts
-+ *      - Number of command timeouts
-+ *      - Last timed out command ID
-+ *      - Last timed out command action
-+ *      - Last command ID
-+ *      - Last command action
-+ *      - Last command index
-+ *      - Last command response ID
-+ *      - Last command response index
-+ *      - Last event
-+ *      - Last event index
-+ *      - Number of host to card command failures
-+ *      - Number of sleep confirm command failures
-+ *      - Number of host to card data failure
-+ *      - Number of deauthentication events
-+ *      - Number of disassociation events
-+ *      - Number of link lost events
-+ *      - Number of deauthentication commands
-+ *      - Number of association success commands
-+ *      - Number of association failure commands
-+ *      - Number of commands sent
-+ *      - Number of data packets sent
-+ *      - Number of command responses received
-+ *      - Number of events received
-+ *      - Tx BA stream table (TID, RA)
-+ *      - Rx reorder table (TID, TA, Start window, Window size, Buffer)
-+ */
-+static ssize_t
-+nxpwifi_debug_read(struct file *file, char __user *ubuf,
-+		   size_t count, loff_t *ppos)
-+{
-+	struct nxpwifi_private *priv =
-+		(struct nxpwifi_private *)file->private_data;
-+	unsigned long page = get_zeroed_page(GFP_KERNEL);
-+	char *p = (char *)page;
-+	ssize_t ret;
-+
-+	if (!p)
-+		return -ENOMEM;
-+
-+	ret = nxpwifi_get_debug_info(priv, &info);
-+	if (ret)
-+		goto free_and_exit;
-+
-+	p += nxpwifi_debug_info_to_buffer(priv, p, &info);
-+
-+	ret = simple_read_from_buffer(ubuf, count, ppos, (char *)page,
-+				      (unsigned long)p - page);
-+
-+free_and_exit:
-+	free_page(page);
-+	return ret;
-+}
-+
-+static u32 saved_reg_type, saved_reg_offset, saved_reg_value;
-+
-+/* Proc regrdwr file write handler.
-+ *
-+ * This function is called when the 'regrdwr' file is opened for writing
-+ *
-+ * This function can be used to write to a register.
-+ */
-+static ssize_t
-+nxpwifi_regrdwr_write(struct file *file,
-+		      const char __user *ubuf, size_t count, loff_t *ppos)
-+{
-+	char *buf;
-+	int ret;
-+	u32 reg_type = 0, reg_offset = 0, reg_value = UINT_MAX;
-+	int rv;
-+
-+	buf = memdup_user_nul(ubuf, min(count, (size_t)(PAGE_SIZE - 1)));
-+	if (IS_ERR(buf))
-+		return PTR_ERR(buf);
-+
-+	rv = sscanf(buf, "%u %x %x", &reg_type, &reg_offset, &reg_value);
-+
-+	if (rv != 3) {
-+		ret = -EINVAL;
-+		goto done;
-+	}
-+
-+	if (reg_type == 0 || reg_offset == 0) {
-+		ret = -EINVAL;
-+		goto done;
-+	} else {
-+		saved_reg_type = reg_type;
-+		saved_reg_offset = reg_offset;
-+		saved_reg_value = reg_value;
-+		ret = count;
-+	}
-+done:
-+	kfree(buf);
-+	return ret;
-+}
-+
-+/* Proc regrdwr file read handler.
-+ *
-+ * This function is called when the 'regrdwr' file is opened for reading
-+ *
-+ * This function can be used to read from a register.
-+ */
-+static ssize_t
-+nxpwifi_regrdwr_read(struct file *file, char __user *ubuf,
-+		     size_t count, loff_t *ppos)
-+{
-+	struct nxpwifi_private *priv =
-+		(struct nxpwifi_private *)file->private_data;
-+	unsigned long addr = get_zeroed_page(GFP_KERNEL);
-+	char *buf = (char *)addr;
-+	int pos = 0, ret = 0;
-+	u32 reg_value;
-+
-+	if (!buf)
-+		return -ENOMEM;
-+
-+	if (!saved_reg_type) {
-+		/* No command has been given */
-+		pos += snprintf(buf, PAGE_SIZE, "0");
-+		goto done;
-+	}
-+	/* Set command has been given */
-+	if (saved_reg_value != UINT_MAX) {
-+		ret = nxpwifi_reg_write(priv, saved_reg_type, saved_reg_offset,
-+					saved_reg_value);
-+
-+		pos += snprintf(buf, PAGE_SIZE, "%u 0x%x 0x%x\n",
-+				saved_reg_type, saved_reg_offset,
-+				saved_reg_value);
-+
-+		ret = simple_read_from_buffer(ubuf, count, ppos, buf, pos);
-+
-+		goto done;
-+	}
-+	/* Get command has been given */
-+	ret = nxpwifi_reg_read(priv, saved_reg_type,
-+			       saved_reg_offset, &reg_value);
-+	if (ret) {
-+		ret = -EINVAL;
-+		goto done;
-+	}
-+
-+	pos += snprintf(buf, PAGE_SIZE, "%u 0x%x 0x%x\n", saved_reg_type,
-+			saved_reg_offset, reg_value);
-+
-+	ret = simple_read_from_buffer(ubuf, count, ppos, buf, pos);
-+
-+done:
-+	free_page(addr);
-+	return ret;
-+}
-+
-+/* Proc debug_mask file read handler.
-+ * This function is called when the 'debug_mask' file is opened for reading
-+ * This function can be used read driver debugging mask value.
-+ */
-+static ssize_t
-+nxpwifi_debug_mask_read(struct file *file, char __user *ubuf,
-+			size_t count, loff_t *ppos)
-+{
-+	struct nxpwifi_private *priv =
-+		(struct nxpwifi_private *)file->private_data;
-+	unsigned long page = get_zeroed_page(GFP_KERNEL);
-+	char *buf = (char *)page;
-+	size_t ret = 0;
-+	int pos = 0;
-+
-+	if (!buf)
-+		return -ENOMEM;
-+
-+	pos += snprintf(buf, PAGE_SIZE, "debug mask=0x%08x\n",
-+			priv->adapter->debug_mask);
-+	ret = simple_read_from_buffer(ubuf, count, ppos, buf, pos);
-+
-+	free_page(page);
-+	return ret;
-+}
-+
-+/* Proc debug_mask file read handler.
-+ * This function is called when the 'debug_mask' file is opened for reading
-+ * This function can be used read driver debugging mask value.
-+ */
-+static ssize_t
-+nxpwifi_debug_mask_write(struct file *file, const char __user *ubuf,
-+			 size_t count, loff_t *ppos)
-+{
-+	int ret;
-+	unsigned long debug_mask;
-+	struct nxpwifi_private *priv = (void *)file->private_data;
-+	char *buf;
-+
-+	buf = memdup_user_nul(ubuf, min(count, (size_t)(PAGE_SIZE - 1)));
-+	if (IS_ERR(buf))
-+		return PTR_ERR(buf);
-+
-+	if (kstrtoul(buf, 0, &debug_mask)) {
-+		ret = -EINVAL;
-+		goto done;
-+	}
-+
-+	priv->adapter->debug_mask = debug_mask;
-+	ret = count;
-+done:
-+	kfree(buf);
-+	return ret;
-+}
-+
-+/* debugfs verext file write handler.
-+ * This function is called when the 'verext' file is opened for write
-+ */
-+static ssize_t
-+nxpwifi_verext_write(struct file *file, const char __user *ubuf,
-+		     size_t count, loff_t *ppos)
-+{
-+	int ret;
-+	u32 versionstrsel;
-+	struct nxpwifi_private *priv = (void *)file->private_data;
-+
-+	ret = kstrtou32_from_user(ubuf, count, 10, &versionstrsel);
-+	if (ret)
-+		return ret;
-+
-+	priv->versionstrsel = versionstrsel;
-+
-+	return count;
-+}
-+
-+/* Proc verext file read handler.
-+ * This function is called when the 'verext' file is opened for reading
-+ * This function can be used read driver exteneed verion string.
-+ */
-+static ssize_t
-+nxpwifi_verext_read(struct file *file, char __user *ubuf,
-+		    size_t count, loff_t *ppos)
-+{
-+	struct nxpwifi_private *priv =
-+		(struct nxpwifi_private *)file->private_data;
-+	char buf[256];
-+	int ret;
-+
-+	nxpwifi_get_ver_ext(priv, priv->versionstrsel);
-+	ret = snprintf(buf, sizeof(buf), "version string: %s\n",
-+		       priv->version_str);
-+
-+	return simple_read_from_buffer(ubuf, count, ppos, buf, ret);
-+}
-+
-+/* Proc memrw file write handler.
-+ * This function is called when the 'memrw' file is opened for writing
-+ * This function can be used to write to a memory location.
-+ */
-+static ssize_t
-+nxpwifi_memrw_write(struct file *file, const char __user *ubuf, size_t count,
-+		    loff_t *ppos)
-+{
-+	int ret;
-+	char cmd;
-+	struct nxpwifi_ds_mem_rw mem_rw;
-+	u16 cmd_action;
-+	struct nxpwifi_private *priv = (void *)file->private_data;
-+	char *buf;
-+
-+	buf = memdup_user_nul(ubuf, min(count, (size_t)(PAGE_SIZE - 1)));
-+	if (IS_ERR(buf))
-+		return PTR_ERR(buf);
-+
-+	ret = sscanf(buf, "%c %x %x", &cmd, &mem_rw.addr, &mem_rw.value);
-+	if (ret != 3) {
-+		ret = -EINVAL;
-+		goto done;
-+	}
-+
-+	if ((cmd == 'r') || (cmd == 'R')) {
-+		cmd_action = HOST_ACT_GEN_GET;
-+		mem_rw.value = 0;
-+	} else if ((cmd == 'w') || (cmd == 'W')) {
-+		cmd_action = HOST_ACT_GEN_SET;
-+	} else {
-+		ret = -EINVAL;
-+		goto done;
-+	}
-+
-+	memcpy(&priv->mem_rw, &mem_rw, sizeof(mem_rw));
-+	ret = nxpwifi_send_cmd(priv, HOST_CMD_MEM_ACCESS, cmd_action, 0,
-+			       &mem_rw, true);
-+	if (!ret)
-+		ret = count;
-+
-+done:
-+	kfree(buf);
-+	return ret;
-+}
-+
-+/* Proc memrw file read handler.
-+ * This function is called when the 'memrw' file is opened for reading
-+ * This function can be used to read from a memory location.
-+ */
-+static ssize_t
-+nxpwifi_memrw_read(struct file *file, char __user *ubuf,
-+		   size_t count, loff_t *ppos)
-+{
-+	struct nxpwifi_private *priv = (void *)file->private_data;
-+	unsigned long addr = get_zeroed_page(GFP_KERNEL);
-+	char *buf = (char *)addr;
-+	int ret, pos = 0;
-+
-+	if (!buf)
-+		return -ENOMEM;
-+
-+	pos += snprintf(buf, PAGE_SIZE, "0x%x 0x%x\n", priv->mem_rw.addr,
-+			priv->mem_rw.value);
-+	ret = simple_read_from_buffer(ubuf, count, ppos, buf, pos);
-+
-+	free_page(addr);
-+	return ret;
-+}
-+
-+static u32 saved_offset = -1, saved_bytes = -1;
-+
-+/* Proc rdeeprom file write handler.
-+ *
-+ * This function is called when the 'rdeeprom' file is opened for writing
-+ *
-+ * This function can be used to write to a RDEEPROM location.
-+ */
-+static ssize_t
-+nxpwifi_rdeeprom_write(struct file *file,
-+		       const char __user *ubuf, size_t count, loff_t *ppos)
-+{
-+	char *buf;
-+	int ret = 0;
-+	int offset = -1, bytes = -1;
-+	int rv;
-+
-+	buf = memdup_user_nul(ubuf, min(count, (size_t)(PAGE_SIZE - 1)));
-+	if (IS_ERR(buf))
-+		return PTR_ERR(buf);
-+
-+	rv = sscanf(buf, "%d %d", &offset, &bytes);
-+
-+	if (rv != 2) {
-+		ret = -EINVAL;
-+		goto done;
-+	}
-+
-+	if (offset == -1 || bytes == -1) {
-+		ret = -EINVAL;
-+		goto done;
-+	} else {
-+		saved_offset = offset;
-+		saved_bytes = bytes;
-+		ret = count;
-+	}
-+done:
-+	kfree(buf);
-+	return ret;
-+}
-+
-+/* Proc rdeeprom read write handler.
-+ *
-+ * This function is called when the 'rdeeprom' file is opened for reading
-+ *
-+ * This function can be used to read from a RDEEPROM location.
-+ */
-+static ssize_t
-+nxpwifi_rdeeprom_read(struct file *file, char __user *ubuf,
-+		      size_t count, loff_t *ppos)
-+{
-+	struct nxpwifi_private *priv =
-+		(struct nxpwifi_private *)file->private_data;
-+	unsigned long addr = get_zeroed_page(GFP_KERNEL);
-+	char *buf = (char *)addr;
-+	int pos, ret, i;
-+	u8 value[MAX_EEPROM_DATA];
-+
-+	if (!buf)
-+		return -ENOMEM;
-+
-+	if (saved_offset == -1) {
-+		/* No command has been given */
-+		pos = snprintf(buf, PAGE_SIZE, "0");
-+		goto done;
-+	}
-+
-+	/* Get command has been given */
-+	ret = nxpwifi_eeprom_read(priv, (u16)saved_offset,
-+				  (u16)saved_bytes, value);
-+	if (ret) {
-+		ret = -EINVAL;
-+		goto out_free;
-+	}
-+
-+	pos = snprintf(buf, PAGE_SIZE, "%d %d ", saved_offset, saved_bytes);
-+
-+	for (i = 0; i < saved_bytes; i++)
-+		pos += scnprintf(buf + pos, PAGE_SIZE - pos, "%d ", value[i]);
-+
-+done:
-+	ret = simple_read_from_buffer(ubuf, count, ppos, buf, pos);
-+out_free:
-+	free_page(addr);
-+	return ret;
-+}
-+
-+/* Proc hscfg file write handler
-+ * This function can be used to configure the host sleep parameters.
-+ */
-+static ssize_t
-+nxpwifi_hscfg_write(struct file *file, const char __user *ubuf,
-+		    size_t count, loff_t *ppos)
-+{
-+	struct nxpwifi_private *priv = (void *)file->private_data;
-+	char *buf;
-+	int ret, arg_num;
-+	struct nxpwifi_ds_hs_cfg hscfg;
-+	int conditions = HS_CFG_COND_DEF;
-+	u32 gpio = HS_CFG_GPIO_DEF, gap = HS_CFG_GAP_DEF;
-+
-+	buf = memdup_user_nul(ubuf, min(count, (size_t)(PAGE_SIZE - 1)));
-+	if (IS_ERR(buf))
-+		return PTR_ERR(buf);
-+
-+	arg_num = sscanf(buf, "%d %x %x", &conditions, &gpio, &gap);
-+
-+	memset(&hscfg, 0, sizeof(struct nxpwifi_ds_hs_cfg));
-+
-+	if (arg_num > 3) {
-+		nxpwifi_dbg(priv->adapter, ERROR,
-+			    "Too many arguments\n");
-+		ret = -EINVAL;
-+		goto done;
-+	}
-+
-+	if (arg_num >= 1 && arg_num < 3)
-+		nxpwifi_set_hs_params(priv, HOST_ACT_GEN_GET,
-+				      NXPWIFI_SYNC_CMD, &hscfg);
-+
-+	if (arg_num) {
-+		if (conditions == HS_CFG_CANCEL) {
-+			nxpwifi_cancel_hs(priv, NXPWIFI_ASYNC_CMD);
-+			ret = count;
-+			goto done;
-+		}
-+		hscfg.conditions = conditions;
-+	}
-+	if (arg_num >= 2)
-+		hscfg.gpio = gpio;
-+	if (arg_num == 3)
-+		hscfg.gap = gap;
-+
-+	hscfg.is_invoke_hostcmd = false;
-+	nxpwifi_set_hs_params(priv, HOST_ACT_GEN_SET,
-+			      NXPWIFI_SYNC_CMD, &hscfg);
-+
-+	nxpwifi_enable_hs(priv->adapter);
-+	clear_bit(NXPWIFI_IS_HS_ENABLING, &priv->adapter->work_flags);
-+	ret = count;
-+done:
-+	kfree(buf);
-+	return ret;
-+}
-+
-+/* Proc hscfg file read handler
-+ * This function can be used to read host sleep configuration
-+ * parameters from driver.
-+ */
-+static ssize_t
-+nxpwifi_hscfg_read(struct file *file, char __user *ubuf,
-+		   size_t count, loff_t *ppos)
-+{
-+	struct nxpwifi_private *priv = (void *)file->private_data;
-+	unsigned long addr = get_zeroed_page(GFP_KERNEL);
-+	char *buf = (char *)addr;
-+	int pos, ret;
-+	struct nxpwifi_ds_hs_cfg hscfg;
-+
-+	if (!buf)
-+		return -ENOMEM;
-+
-+	nxpwifi_set_hs_params(priv, HOST_ACT_GEN_GET,
-+			      NXPWIFI_SYNC_CMD, &hscfg);
-+
-+	pos = snprintf(buf, PAGE_SIZE, "%u 0x%x 0x%x\n", hscfg.conditions,
-+		       hscfg.gpio, hscfg.gap);
-+
-+	ret = simple_read_from_buffer(ubuf, count, ppos, buf, pos);
-+
-+	free_page(addr);
-+	return ret;
-+}
-+
-+static ssize_t
-+nxpwifi_timeshare_coex_read(struct file *file, char __user *ubuf,
-+			    size_t count, loff_t *ppos)
-+{
-+	struct nxpwifi_private *priv = file->private_data;
-+	char buf[3];
-+	bool timeshare_coex;
-+	int ret;
-+	unsigned int len;
-+
-+	if (priv->adapter->fw_api_ver != NXPWIFI_FW_V15)
-+		return -EOPNOTSUPP;
-+
-+	ret = nxpwifi_send_cmd(priv, HOST_CMD_ROBUST_COEX,
-+			       HOST_ACT_GEN_GET, 0, &timeshare_coex, true);
-+	if (ret)
-+		return ret;
-+
-+	len = sprintf(buf, "%d\n", timeshare_coex);
-+	return simple_read_from_buffer(ubuf, count, ppos, buf, len);
-+}
-+
-+static ssize_t
-+nxpwifi_timeshare_coex_write(struct file *file, const char __user *ubuf,
-+			     size_t count, loff_t *ppos)
-+{
-+	bool timeshare_coex;
-+	struct nxpwifi_private *priv = file->private_data;
-+	int ret;
-+
-+	if (priv->adapter->fw_api_ver != NXPWIFI_FW_V15)
-+		return -EOPNOTSUPP;
-+
-+	ret = kstrtobool_from_user(ubuf, count, &timeshare_coex);
-+	if (ret)
-+		return ret;
-+
-+	ret = nxpwifi_send_cmd(priv, HOST_CMD_ROBUST_COEX,
-+			       HOST_ACT_GEN_SET, 0, &timeshare_coex, true);
-+	if (ret)
-+		return ret;
-+	else
-+		return count;
-+}
-+
-+static ssize_t
-+nxpwifi_reset_write(struct file *file,
-+		    const char __user *ubuf, size_t count, loff_t *ppos)
-+{
-+	struct nxpwifi_private *priv = file->private_data;
-+	struct nxpwifi_adapter *adapter = priv->adapter;
-+	bool result;
-+	int rc;
-+
-+	rc = kstrtobool_from_user(ubuf, count, &result);
-+	if (rc)
-+		return rc;
-+
-+	if (!result)
-+		return -EINVAL;
-+
-+	if (adapter->if_ops.card_reset) {
-+		dev_info(adapter->dev, "Resetting per request\n");
-+		adapter->if_ops.card_reset(adapter);
-+	}
-+
-+	return count;
-+}
-+
-+static ssize_t
-+nxpwifi_fake_radar_detect_write(struct file *file,
-+				const char __user *ubuf,
-+				size_t count, loff_t *ppos)
-+{
-+	struct nxpwifi_private *priv = file->private_data;
-+	struct nxpwifi_adapter *adapter = priv->adapter;
-+	bool result;
-+	int rc;
-+
-+	rc = kstrtobool_from_user(ubuf, count, &result);
-+	if (rc)
-+		return rc;
-+
-+	if (!result)
-+		return -EINVAL;
-+
-+	if (priv->wdev.cac_started) {
-+		nxpwifi_dbg(adapter, MSG,
-+			    "Generate fake radar detected during CAC\n");
-+		if (nxpwifi_stop_radar_detection(priv, &priv->dfs_chandef))
-+			nxpwifi_dbg(adapter, ERROR,
-+				    "Failed to stop CAC in FW\n");
-+		cancel_delayed_work_sync(&priv->dfs_cac_work);
-+		cfg80211_cac_event(priv->netdev, &priv->dfs_chandef,
-+				   NL80211_RADAR_CAC_ABORTED, GFP_KERNEL);
-+		cfg80211_radar_event(adapter->wiphy, &priv->dfs_chandef,
-+				     GFP_KERNEL);
-+	} else {
-+		if (priv->bss_chandef.chan->dfs_cac_ms) {
-+			nxpwifi_dbg(adapter, MSG,
-+				    "Generate fake radar detected\n");
-+			cfg80211_radar_event(adapter->wiphy,
-+					     &priv->dfs_chandef,
-+					     GFP_KERNEL);
-+		}
-+	}
-+
-+	return count;
-+}
-+
-+#define NXPWIFI_DFS_ADD_FILE(name) debugfs_create_file(#name, 0644,     \
-+				   priv->dfs_dev_dir, priv,             \
-+				   &nxpwifi_dfs_##name##_fops)
-+
-+#define NXPWIFI_DFS_FILE_OPS(name)                                      \
-+static const struct file_operations nxpwifi_dfs_##name##_fops = {       \
-+	.read = nxpwifi_##name##_read,                                  \
-+	.write = nxpwifi_##name##_write,                                \
-+	.open = simple_open,                                            \
-+}
-+
-+#define NXPWIFI_DFS_FILE_READ_OPS(name)                                 \
-+static const struct file_operations nxpwifi_dfs_##name##_fops = {       \
-+	.read = nxpwifi_##name##_read,                                  \
-+	.open = simple_open,                                            \
-+}
-+
-+#define NXPWIFI_DFS_FILE_WRITE_OPS(name)                                \
-+static const struct file_operations nxpwifi_dfs_##name##_fops = {       \
-+	.write = nxpwifi_##name##_write,                                \
-+	.open = simple_open,                                            \
-+}
-+
-+NXPWIFI_DFS_FILE_READ_OPS(info);
-+NXPWIFI_DFS_FILE_READ_OPS(debug);
-+NXPWIFI_DFS_FILE_READ_OPS(getlog);
-+NXPWIFI_DFS_FILE_OPS(regrdwr);
-+NXPWIFI_DFS_FILE_OPS(rdeeprom);
-+NXPWIFI_DFS_FILE_OPS(memrw);
-+NXPWIFI_DFS_FILE_OPS(hscfg);
-+NXPWIFI_DFS_FILE_OPS(histogram);
-+NXPWIFI_DFS_FILE_OPS(debug_mask);
-+NXPWIFI_DFS_FILE_OPS(timeshare_coex);
-+NXPWIFI_DFS_FILE_WRITE_OPS(reset);
-+NXPWIFI_DFS_FILE_WRITE_OPS(fake_radar_detect);
-+NXPWIFI_DFS_FILE_OPS(verext);
-+
-+/* This function creates the debug FS directory structure and the files.
-+ */
-+void
-+nxpwifi_dev_debugfs_init(struct nxpwifi_private *priv)
-+{
-+	if (!nxpwifi_dfs_dir || !priv)
-+		return;
-+
-+	priv->dfs_dev_dir = debugfs_create_dir(priv->netdev->name,
-+					       nxpwifi_dfs_dir);
-+
-+	NXPWIFI_DFS_ADD_FILE(info);
-+	NXPWIFI_DFS_ADD_FILE(debug);
-+	NXPWIFI_DFS_ADD_FILE(getlog);
-+	NXPWIFI_DFS_ADD_FILE(regrdwr);
-+	NXPWIFI_DFS_ADD_FILE(rdeeprom);
-+
-+	NXPWIFI_DFS_ADD_FILE(memrw);
-+	NXPWIFI_DFS_ADD_FILE(hscfg);
-+	NXPWIFI_DFS_ADD_FILE(histogram);
-+	NXPWIFI_DFS_ADD_FILE(debug_mask);
-+	NXPWIFI_DFS_ADD_FILE(timeshare_coex);
-+	NXPWIFI_DFS_ADD_FILE(reset);
-+	NXPWIFI_DFS_ADD_FILE(fake_radar_detect);
-+	NXPWIFI_DFS_ADD_FILE(verext);
-+}
-+
-+/* This function removes the debug FS directory structure and the files.
-+ */
-+void
-+nxpwifi_dev_debugfs_remove(struct nxpwifi_private *priv)
-+{
-+	if (!priv)
-+		return;
-+
-+	debugfs_remove_recursive(priv->dfs_dev_dir);
-+}
-+
-+/* This function creates the top level proc directory.
-+ */
-+void
-+nxpwifi_debugfs_init(void)
-+{
-+	if (!nxpwifi_dfs_dir)
-+		nxpwifi_dfs_dir = debugfs_create_dir("nxpwifi", NULL);
-+}
-+
-+/* This function removes the top level proc directory.
-+ */
-+void
-+nxpwifi_debugfs_remove(void)
-+{
-+	debugfs_remove(nxpwifi_dfs_dir);
-+}
++enum nxpwifi_bss_role {
++	NXPWIFI_BSS_ROLE_STA = 0,
++	NXPWIFI_BSS_ROLE_UAP = 1,
++	NXPWIFI_BSS_ROLE_ANY = 0xff,
++};
++
++#define BSS_ROLE_BIT_MASK    BIT(0)
++
++#define GET_BSS_ROLE(priv)   ((priv)->bss_role & BSS_ROLE_BIT_MASK)
++
++enum nxpwifi_data_frame_type {
++	NXPWIFI_DATA_FRAME_TYPE_ETH_II = 0,
++	NXPWIFI_DATA_FRAME_TYPE_802_11,
++};
++
++struct nxpwifi_fw_image {
++	u8 *helper_buf;
++	u32 helper_len;
++	u8 *fw_buf;
++	u32 fw_len;
++};
++
++struct nxpwifi_802_11_ssid {
++	u32 ssid_len;
++	u8 ssid[IEEE80211_MAX_SSID_LEN];
++};
++
++struct nxpwifi_wait_queue {
++	wait_queue_head_t wait;
++	int status;
++};
++
++struct nxpwifi_rxinfo {
++	struct sk_buff *parent;
++	u8 bss_num;
++	u8 bss_type;
++	u8 use_count;
++	u8 buf_type;
++	u16 pkt_len;
++};
++
++struct nxpwifi_txinfo {
++	u8 flags;
++	u8 bss_num;
++	u8 bss_type;
++	u8 aggr_num;
++	u32 pkt_len;
++	u8 ack_frame_id;
++	u64 cookie;
++};
++
++enum nxpwifi_wmm_ac_e {
++	WMM_AC_BK,
++	WMM_AC_BE,
++	WMM_AC_VI,
++	WMM_AC_VO
++} __packed;
++
++struct nxpwifi_types_wmm_info {
++	u8 oui[4];
++	u8 subtype;
++	u8 version;
++	u8 qos_info;
++	u8 reserved;
++	struct ieee80211_wmm_ac_param ac[IEEE80211_NUM_ACS];
++} __packed;
++
++struct nxpwifi_arp_eth_header {
++	struct arphdr hdr;
++	u8 ar_sha[ETH_ALEN];
++	u8 ar_sip[4];
++	u8 ar_tha[ETH_ALEN];
++	u8 ar_tip[4];
++} __packed;
++
++struct nxpwifi_chan_stats {
++	u8 chan_num;
++	u8 bandcfg;
++	u8 flags;
++	s8 noise;
++	u16 total_bss;
++	u16 cca_scan_dur;
++	u16 cca_busy_dur;
++} __packed;
++
++#define NXPWIFI_HIST_MAX_SAMPLES	1048576
++#define NXPWIFI_MAX_RX_RATES		     44
++#define NXPWIFI_MAX_AC_RX_RATES		     74
++#define NXPWIFI_MAX_SNR			    256
++#define NXPWIFI_MAX_NOISE_FLR		    256
++#define NXPWIFI_MAX_SIG_STRENGTH	    256
++
++struct nxpwifi_histogram_data {
++	atomic_t rx_rate[NXPWIFI_MAX_AC_RX_RATES];
++	atomic_t snr[NXPWIFI_MAX_SNR];
++	atomic_t noise_flr[NXPWIFI_MAX_NOISE_FLR];
++	atomic_t sig_str[NXPWIFI_MAX_SIG_STRENGTH];
++	atomic_t num_samples;
++};
++
++struct nxpwifi_iface_comb {
++	u8 sta_intf;
++	u8 uap_intf;
++};
++
++struct nxpwifi_radar_params {
++	struct cfg80211_chan_def *chandef;
++	u32 cac_time_ms;
++} __packed;
++
++struct nxpwifi_11h_intf_state {
++	bool is_11h_enabled;
++	bool is_11h_active;
++} __packed;
++
++#define NXPWIFI_FW_DUMP_IDX		0xff
++#define NXPWIFI_FW_DUMP_MAX_MEMSIZE     0x160000
++#define NXPWIFI_DRV_INFO_IDX		20
++#define FW_DUMP_MAX_NAME_LEN		8
++#define FW_DUMP_HOST_READY      0xEE
++#define FW_DUMP_DONE			0xFF
++#define FW_DUMP_READ_DONE		0xFE
++
++struct memory_type_mapping {
++	u8 mem_name[FW_DUMP_MAX_NAME_LEN];
++	u8 *mem_ptr;
++	u32 mem_size;
++	u8 done_flag;
++};
++
++enum rdwr_status {
++	RDWR_STATUS_SUCCESS = 0,
++	RDWR_STATUS_FAILURE = 1,
++	RDWR_STATUS_DONE = 2
++};
++
++enum nxpwifi_chan_band {
++	BAND_2GHZ = 0,
++	BAND_5GHZ,
++	BAND_6GHZ,
++	BAND_4GHZ,
++};
++
++enum nxpwifi_chan_width {
++	CHAN_BW_20MHZ = 0,
++	CHAN_BW_10MHZ,
++	CHAN_BW_40MHZ,
++	CHAN_BW_80MHZ,
++	CHAN_BW_8080MHZ,
++	CHAN_BW_160MHZ,
++	CHAN_BW_5MHZ,
++};
++
++enum nxpwifi_chan_offset {
++	SEC_CHAN_NONE = 0,
++	SEC_CHAN_ABOVE = 1,
++	SEC_CHAN_5MHZ = 2,
++	SEC_CHAN_BELOW = 3
++};
++
++#endif /* !_NXPWIFI_DECL_H_ */
 -- 
 2.34.1
 
