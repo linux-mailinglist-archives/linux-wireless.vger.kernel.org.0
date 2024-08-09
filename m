@@ -1,93 +1,141 @@
-Return-Path: <linux-wireless+bounces-11224-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11225-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21BE094D060
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Aug 2024 14:42:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0DC294D22F
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Aug 2024 16:29:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E7271C214D7
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Aug 2024 12:42:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D075281866
+	for <lists+linux-wireless@lfdr.de>; Fri,  9 Aug 2024 14:29:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E9A1946C4;
-	Fri,  9 Aug 2024 12:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 820A5195FEA;
+	Fri,  9 Aug 2024 14:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="kboeo9Dv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Biu17mnn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3F017BBF;
-	Fri,  9 Aug 2024 12:42:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E812197A88
+	for <linux-wireless@vger.kernel.org>; Fri,  9 Aug 2024 14:29:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723207335; cv=none; b=b3/AVdi/MOQUeuW4fK2OOO4tqZW1JJ4vdK6Z2rRYOmVPuZJwaubXGxDvqeCSiK51uJWO49DhZ7QwkE3s0MV2EuXEsFPrVolnjZsMFkDc/qZlIhjYLZotBSgvJv1ULNnV7m+VBgmuF1MGd3bf7vJV3mO86CDhpCPbGsgqHG5FQxk=
+	t=1723213748; cv=none; b=D0yQ/Dhk14dlC6iioZc0/ZVE6e+u0G3IpF7YzxvRk/Rd7yebg39a5NHHLfvTDrcp0vyVQOfXSMtfSftANdHqd41Pe/IF4XFh72kwTPPWH9GwqlMycmmX9HSVWbyucalvucHXsUH/tbrkZgGLR+zhpf1fFP9TjBhe4/pKAQ3NgU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723207335; c=relaxed/simple;
-	bh=yIahYZ07aWyWxU0yFWmwIGEE58zc5LynmOxxqoncrns=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J3bzqGN4PCbghyX6U8lsMlXTKjnokmCnQu6jUyx0PWWXH9mtCmXdGeapxZKIdSCkmiL4LX408jyC4ohW578Ay5CQCSbAZAS2QGZAMRsoHZifwx7ZdPuBU+z5EXyAhN1e9x5GKRu8B9oJhrsRwTL7NtSeCn9nUPAmFVybTIp/riA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=kboeo9Dv; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from gaggiata.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 36FBA2123B;
-	Fri,  9 Aug 2024 14:42:10 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1723207330;
-	bh=mAdsZ4ZkKnviA8Ia2Q4VxyaL5nzQPmXGq5rdi5fFuIE=;
-	h=Received:From:To:Subject;
-	b=kboeo9DvXEQBA3X6Pm6PymITn7ioU/zrnzj5lc+Jj24qm8DQi6NLWOtKIpBNoHlUe
-	 Uny5+wW5ERFbm+r3lmRv98Y8KjtarN4gpfDYBJ23V9kK7eO6+NQCyAx+q1jtjoMMxz
-	 8MMUwjtvQShJVO0s1Cnp1glaw7bzWUm74kR1opWG7XOeDQ10ZeVn+8kUMGxOjKy/E1
-	 XSF6N6+GCzMAlTB5oOJvimC3ahOisjxmW9Moo9JkBuyPNLjtk/khkpPTjNHtMVGqDO
-	 qG8x0SalHdlIN88hnD9F1HRJPmF7CC9ul+oPnwbWUMLhfQ2n72lMMOz2oaC1EQmu2q
-	 38nojC1YirAQw==
-Received: by gaggiata.pivistrello.it (Postfix, from userid 1000)
-	id CC2017F99B; Fri,  9 Aug 2024 14:42:09 +0200 (CEST)
-Date: Fri, 9 Aug 2024 14:42:09 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Brian Norris <briannorris@chromium.org>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Kalle Valo <kvalo@kernel.org>,
-	Yogesh Ashok Powar <yogeshp@marvell.com>,
-	Bing Zhao <bzhao@marvell.com>,
-	"John W. Linville" <linville@tuxdriver.com>,
-	Amitkumar Karwar <akarwar@marvell.com>,
-	Avinash Patil <patila@marvell.com>,
-	Kiran Divekar <dkiran@marvell.com>, linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel@pengutronix.de,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mwifiex: duplicate static structs used in driver
- instances
-Message-ID: <ZrYOoTRWlKTL_e3o@gaggiata.pivistrello.it>
-References: <20240809-mwifiex-duplicate-static-structs-v1-1-6837b903b1a4@pengutronix.de>
+	s=arc-20240116; t=1723213748; c=relaxed/simple;
+	bh=1DpMIwjYrxzhcdFiyt6vv5L5bslGMP21p/QGue97o+I=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=ncJa+1ZTcsrfueYT0hTDDA6PamKi2VK7qckghk3j4qiq+J8yADx7NBTnwQVuQOLoUxPvUYfVK3IiB6UINn6c6C3tJz6kywjv+53T6CfH9BnZ61CRIUrOkNg1LUkY9NLN3TxrjYUrZYfxvl7C3mpmN095iCOdexplJocBWCjjrjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Biu17mnn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D31AC4AF0E;
+	Fri,  9 Aug 2024 14:29:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723213748;
+	bh=1DpMIwjYrxzhcdFiyt6vv5L5bslGMP21p/QGue97o+I=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=Biu17mnn57A5Mv1km4BvauhVsPdR9zEpZxQ3umEJbDQualSozkC+ddqeJ1vsNhFFb
+	 HcehSlbEWiw2UXUc+b0jDxC3P8Suj/eI55geDec3kzup0hL5hfvz/yfCjjrTxonkqA
+	 GxzZxLsWPw4ZCTyX/rXVs9RySLMNXbJBl2CLIO+0GjtxP25axl/+VZZg/TQWmyx4Qj
+	 wRf0DCGMdxZUNoW0H7ZUR38/ZfEBXFaZj4Ugu1J1b9Yjt572xzFcQgtHzVkigpppr6
+	 AtKAOWoY0i0RC8wp8F2eBVRDQ0fLI5ZvqEMaQmA5HM9u5djeujqx6Agd4OSith2uYF
+	 Zh8x6wuLeFjkA==
+From: Kalle Valo <kvalo@kernel.org>
+To: Rameshkumar Sundaram <quic_ramess@quicinc.com>
+Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>,  Sriram
+ R <quic_srirrama@quicinc.com>
+Subject: Re: [PATCH v6 1/3] wifi: ath12k: prepare vif data structure for MLO
+ handling
+References: <20240711165511.3100433-1-quic_ramess@quicinc.com>
+	<20240711165511.3100433-2-quic_ramess@quicinc.com>
+	<87frrj70nz.fsf@kernel.org> <87sevf2seg.fsf@kernel.org>
+	<2b78c227-ef2e-4d98-baf3-762e4f5bd155@quicinc.com>
+Date: Fri, 09 Aug 2024 17:29:05 +0300
+In-Reply-To: <2b78c227-ef2e-4d98-baf3-762e4f5bd155@quicinc.com> (Rameshkumar
+	Sundaram's message of "Thu, 8 Aug 2024 22:12:26 +0530")
+Message-ID: <87bk213h3i.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240809-mwifiex-duplicate-static-structs-v1-1-6837b903b1a4@pengutronix.de>
+Content-Type: text/plain
 
-On Fri, Aug 09, 2024 at 10:11:33AM +0200, Sascha Hauer wrote:
-> mwifiex_band_2ghz and mwifiex_band_5ghz are statically allocated, but
-> used and modified in driver instances. Duplicate them before using
-> them in driver instances so that different driver instances do not
-> influence each other.
-> 
-> This was observed on a board which has one PCIe and one SDIO mwifiex
-> adapter. It blew up in mwifiex_setup_ht_caps(). This was called with
-> the statically allocated struct which is modified in this function.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: d6bffe8bb520 ("mwifiex: support for creation of AP interface")
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Rameshkumar Sundaram <quic_ramess@quicinc.com> writes:
 
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> On 8/8/2024 4:27 PM, Kalle Valo wrote:
+>> Kalle Valo <kvalo@kernel.org> writes:
+>> 
+>>> Rameshkumar Sundaram <quic_ramess@quicinc.com> writes:
+>>>
+>>>> Locking:
+>>>>   Currently modifications to members of arvif and arsta are
+>>>> protected by ar->conf_mutex
+>>>>   and it stays as such.
+>>>>   Now with these hw level structure (ahvif) being introduced, any modifications
+>>>>   to its members and link objects (i.e., arvifs[] which are dynamically allocated)
+>>>>   needs to be protected for writing and ah->conf_mutex is used for the same.
+>>>>   Also, atomic contexts(say WMI events and certain mac_ops) that
+>>>> we currently have in driver
+>>>>   will not(shouldn't be allowed) do any modifications but can read them and
+>>>>   rcu_read_lock() is used for the same.
+>>>
+>>> Please elaborate more about your locking design. Because of past bad
+>>> contributions from Qualcomm the bar is really high for adding any new
+>>> locks. I'm doing the locking analysis right now but it would help a lot
+>>> if you could provide your own analysis.
+>
+> The new ah->conf_mutex is particularly introduced to protect the
+> members and dynamically allocated link objects of ahvif and ahsta
+> (ahvif/sta->links[]) in process context (i.e. between call backs from
+> mac80211 and ath12k's workers)
+> The same is protected by rcu in case of atomic contexts(tasklets of
+> WMI and in datapath)
 
+I need more info than that. I can't understand which conf_mutex protects
+what data exactly, currently it just looks random to me.
+
+Let's take an example:
+
+static void ath12k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
+...
+	mutex_lock(&ah->conf_mutex);
+	arvif = &ahvif->deflink;
+	ar = ath12k_get_ar_by_vif(hw, vif);
+	if (!ar) {
+		cache = ath12k_arvif_get_cache(arvif);
+...
+
+	mutex_lock(&ar->conf_mutex);
+
+	ath12k_mac_bss_info_changed(ar, arvif, info, changed);
+
+So first mac80211 calls ath12k_mac_op_bss_info_changed() with wiphy
+mutex held. Then ath12k takes ah->conf_mutex and soon after also
+ar->conf_mutex. So we are basically holding three locks and it's not
+clear for me the difference between ah and ar mutexes. For example, do
+ath12k_get_ar_by_vif() & ath12k_arvif_get_cache() require ah->conf_mutex
+to be held? Or why are we taking it here?
+
+I guess ahvif->deflink access does not require any protection because in
+ath12k_mac_op_tx() we access ahvif->deflink without any protection:
+
+	struct ath12k_link_vif *arvif = &ahvif->deflink;
+
+Anyway, I just could not understand this locking design and besides it
+just looks uncessarily complex. I propose dropping the new conf_mutex in
+this patchset altogether and handle the locking in a separate patchset
+later on.
+
+AFAICS removing ah->conf_mutex from this patchset should be safe as
+mac80211 is holding the wiphy mutex already. Of course I might have
+missed something but at least that's what it looks like.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
