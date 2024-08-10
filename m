@@ -1,424 +1,168 @@
-Return-Path: <linux-wireless+bounces-11251-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11252-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCD2194DC12
-	for <lists+linux-wireless@lfdr.de>; Sat, 10 Aug 2024 11:45:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B451C94DC23
+	for <lists+linux-wireless@lfdr.de>; Sat, 10 Aug 2024 11:55:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1CBD1C21110
-	for <lists+linux-wireless@lfdr.de>; Sat, 10 Aug 2024 09:45:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2559DB217BA
+	for <lists+linux-wireless@lfdr.de>; Sat, 10 Aug 2024 09:55:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7B01514EE;
-	Sat, 10 Aug 2024 09:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4336415278E;
+	Sat, 10 Aug 2024 09:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=marvell.com header.i=@marvell.com header.b="SSulglNs"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="am08aGf8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28AEB15252D;
-	Sat, 10 Aug 2024 09:45:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.156.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723283113; cv=fail; b=okgJKGcJZs9ZlnyBtH+LbwdWbUrEGjX75xf1sanTFRtBc//h61kGpJNZUy1VDt3cROHRAsipvxrEneyH+Q3DDCtpfMOIiIQ6ew18W07ay2AjKO/DD1FmHxgQLxvEIjopPtKVaS+NgN5BLw97ho2SsxrPUPUIyt42DdradIIAxRw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723283113; c=relaxed/simple;
-	bh=x+E8VKux6WdjTvrYBoUTXcoRAf5gjQbwvfZWfEyB1W0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=J4pEimJAKSUJJjNEt9obL3DEU3hIaMqCqDYlz56KV2DnUCzHwR37owLXvNFywWdAnzy3pQruQybIkKL3279WPUK5C1XO81IOjQ9EVO+l+OYSAjDW6wSL1nte+aOL928zs2Y0iyQ6/gHDxWcK6K8c3hq/3p5wUz+F9gwWBq/eSv0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (1024-bit key) header.d=marvell.com header.i=@marvell.com header.b=SSulglNs; arc=fail smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47A9hEEM022813;
-	Sat, 10 Aug 2024 02:44:15 -0700
-Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2042.outbound.protection.outlook.com [104.47.66.42])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 40x5eqr16w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 10 Aug 2024 02:44:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gW+16Mr5H6/rjZBGFpuid8pgNaXq9V/2YoVC4+QehIKmi7yn89vp/taM87X4qUMithIheP+EPeToyPPsQmXRNAUR5nNaOb1kCdpR2CpsTl3vdCiXut7P70xREipIp5e2Io5FB8NRrCKpcb2dPjs6q4Qb6ArZi7CmbhdcYQptYpR+tVvSulHC3Ap6LpKcAzeHXb6a8tBaTuvNfsFQRF6wowQf7bIpMyGqGaP4KN1DnqCcj5cjow0ku4HSi5112vPGK0UpbabVMY9hqBt1NDEjJfct9BH7RVZIeKtoMZZYeIHUqdxoC7I9lV92GEbf9QMEct9Q79x3Os526sSMFik/GA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LSwAucnzv45W/FAOsEMEt0sFBKhVTVcvevO7/T47HZY=;
- b=HXUFjCtalJZerO0tOjhoQk8gTNiVzkcbT058Iax09cfnYsLtDa7s040YHqDxyLvKEFd98LGAoqkrXSK5ARKDnGWllGLMqSEMTXJemYCIr/6s90dyF+D5vAQycxleTnHit+MJYOzqYuf/Af7Rizy9uPXNc9092pGrdy2zrx80Q93PjTiWhORQ3iOrOqCtv6H7tPiwS1cWA1Xt9fIW8d6Wu4JbGy/asWA+LFZQmcYQ+wwz/oYEHR2G+WnFx3nzevAsQZBebUMUgoK7iYjsVajJE3Ft+8e0e1X5WjwsEY/vQyAdx0SLHIPC5s3MOgo/NVlS4Nyb3aOPjKSGwP0MkHOONw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=marvell.com; dmarc=pass action=none header.from=marvell.com;
- dkim=pass header.d=marvell.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LSwAucnzv45W/FAOsEMEt0sFBKhVTVcvevO7/T47HZY=;
- b=SSulglNsHtdmh7mc3M1vAsXi2PXxfSnNU7gTgJKXDAhIjKAG+zu3EujJTqEKxw7qaFG2TBfCdgmXd+BWyxV868yPHUe/51ejvXEoPGkEYkFdKUd0N9zysFeUfn5vyuCSRkBNL9RsXpUDCe3NdjSZu73nHVZPAXoQjFWq41jetY0=
-Received: from BY3PR18MB4707.namprd18.prod.outlook.com (2603:10b6:a03:3ca::23)
- by LV3PR18MB6205.namprd18.prod.outlook.com (2603:10b6:408:27b::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.17; Sat, 10 Aug
- 2024 09:44:11 +0000
-Received: from BY3PR18MB4707.namprd18.prod.outlook.com
- ([fe80::e225:5161:1478:9d30]) by BY3PR18MB4707.namprd18.prod.outlook.com
- ([fe80::e225:5161:1478:9d30%6]) with mapi id 15.20.7849.015; Sat, 10 Aug 2024
- 09:44:10 +0000
-From: Sai Krishna Gajula <saikrishnag@marvell.com>
-To: Jacobe Zang <jacobe.zang@wesion.com>, "robh@kernel.org" <robh@kernel.org>,
-        "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-        "heiko@sntech.de"
-	<heiko@sntech.de>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com"
-	<edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "conor+dt@kernel.org"
-	<conor+dt@kernel.org>,
-        "arend.vanspriel@broadcom.com"
-	<arend.vanspriel@broadcom.com>
-CC: "efectn@protonmail.com" <efectn@protonmail.com>,
-        "dsimic@manjaro.org"
-	<dsimic@manjaro.org>,
-        "jagan@edgeble.ai" <jagan@edgeble.ai>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-        "linux-rockchip@lists.infradead.org"
-	<linux-rockchip@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "arend@broadcom.com" <arend@broadcom.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "megi@xff.cz"
-	<megi@xff.cz>,
-        "duoming@zju.edu.cn" <duoming@zju.edu.cn>,
-        "bhelgaas@google.com" <bhelgaas@google.com>,
-        "minipli@grsecurity.net"
-	<minipli@grsecurity.net>,
-        "brcm80211@lists.linux.dev"
-	<brcm80211@lists.linux.dev>,
-        "brcm80211-dev-list.pdl@broadcom.com"
-	<brcm80211-dev-list.pdl@broadcom.com>,
-        "nick@khadas.com" <nick@khadas.com>
-Subject: RE: [PATCH v9 4/5] wifi: brcmfmac: Add optional lpo clock enable
- support
-Thread-Topic: [PATCH v9 4/5] wifi: brcmfmac: Add optional lpo clock enable
- support
-Thread-Index: AQHa6wnZZmQ4lQ/000ShjcZ5lhEIpA==
-Date: Sat, 10 Aug 2024 09:44:09 +0000
-Message-ID:
- <BY3PR18MB47072A9CC7E1EEB4BD1FC063A0BB2@BY3PR18MB4707.namprd18.prod.outlook.com>
-References: <20240810035141.439024-1-jacobe.zang@wesion.com>
- <20240810035141.439024-5-jacobe.zang@wesion.com>
-In-Reply-To: <20240810035141.439024-5-jacobe.zang@wesion.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BY3PR18MB4707:EE_|LV3PR18MB6205:EE_
-x-ms-office365-filtering-correlation-id: f4ba4554-f9ae-453a-149a-08dcb920fc22
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|376014|7416014|38070700018|921020;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?Tm59C2HVxJOl3Z//2QofhfQTCMyG4gc08TSDfawK5m2ArpLe03D5DKjjFwkI?=
- =?us-ascii?Q?BbepBq77p5tq4E0A0W2KA3Xu/mcfGRPR1o7bUG6mMKJacWsQoI1HvC23Xwl6?=
- =?us-ascii?Q?Jm0fa2uOgkuY7jfH42lQWIneJlVjjTg804GkO38m8Gyih9ywIWW4i8LughrE?=
- =?us-ascii?Q?bhoyDXU2Vc2uw+/5btwKlCd2HUEtsorCQ4QropxoI7AhvjOXTklrWMsfTzAr?=
- =?us-ascii?Q?2AQmgRdP6AO6p4YQjL5zT184807/wBqOudXl3g5L03glC4bgso8JFxPHwpLD?=
- =?us-ascii?Q?N3k3qrQwP+s/HPv0nP/Oy9Xeqnyh/b9ikOJdZHSA1+W2Rk6gw2bwJ0/A92Vk?=
- =?us-ascii?Q?ibvTvdvFD6EW/kg4DUhI4OsL5KiS66Jqo5Iv7ovI7s6dfT+WW8LUE7xKUahI?=
- =?us-ascii?Q?+MnRU1cSZ+YSsE7/Cl8x73XhEV/9OtQXMRN1kd2w4hJlPvtdO1ypyjv1O5zX?=
- =?us-ascii?Q?TfeC9XNVdQbp4TU/QRk3sXVcArqs1DxQ4Op9PodxGDuXW6zUGQpsza4Mhszs?=
- =?us-ascii?Q?hIIHS9DP/xrN1Qx8Um0ltzlsKkiURbTgw4Hmch6O9mTO7RTZMd11yx5gIBSd?=
- =?us-ascii?Q?eUsP7FMBeRKOEsQL6UbFxxscz2CCF4fPtKADfNIdLbFYI6Z8lIhYGdgDX4HF?=
- =?us-ascii?Q?N56U8Qr8bc7d4q6n9PIPbrW2LEMejUgSdylFq85zSO9ZLdYzjGAcF4MCWEcn?=
- =?us-ascii?Q?ACQQ0ItcPX+P742M+OgPKXzC3wRbyqrJAlfn2EWNXho8BRKIO+rcSKCv7f8o?=
- =?us-ascii?Q?TywvsKmcQz8KFWM0PFeyMCnuhDlHpDywFHCDgRc+t7z2haQB6O20IoCrITmP?=
- =?us-ascii?Q?+LOVYkQn66uBkx9rPNCmajEDdHSj7asSeLMSkdvZVw+dz9B6Ps4vfPwwx06H?=
- =?us-ascii?Q?T16lTuHmUN2DZqMkP0Xb7LHH0z2PjANjoG6YX/aS4zIsRvcwbS0ZjxTd8l3g?=
- =?us-ascii?Q?jTRb6P3rxocYN3lFBJXnH4fzHUzo2BdXTx6LAfthcm1ekpzUgg9NXS7ueUsC?=
- =?us-ascii?Q?3Qyf1gITJxH80VuFlmt7N4m0e4dDHBD3V2EFhAjmcd/6nKxOAiqqw0T3o+22?=
- =?us-ascii?Q?q7/crTBfpyOoO0MfIUJc7KVj1ocT/xOtBWXiSWwHAnH7FX79CSZ2Gu73U/ex?=
- =?us-ascii?Q?aoHD+3ltfwSuA+vc1ZcIZJpKDynoDBpgyaA7JKV7kOu/ZZIvoHI1fNg2ocJO?=
- =?us-ascii?Q?iZma8enEGR/e2O4QTC8x7EuWuFni1c5URjJztK1QMGBW8eF8VFfJRAuz6Bve?=
- =?us-ascii?Q?F2eDiiejnkD4ac0xX+UDDZHP9d5d8keIWL1HZ5G3XNRz3UGj3fc2Nl/buQkT?=
- =?us-ascii?Q?bHFBw7vv5MXU8oC/psgmkCnuzDakJ4REqHXGFEye+UvPWhBfT5EEFWBNv15v?=
- =?us-ascii?Q?3wsxIvJqmht4XuILgLFc1sgrB0v/8VI44y7k5ePmjllWsUK+O4dRetZft1Tq?=
- =?us-ascii?Q?0VEqhiqJLqI=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY3PR18MB4707.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(38070700018)(921020);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?qGwT3ksBWuF4enfFqZBPmpICrnDTsCNGqiF6ugjIAKUj9d6ZYkaAPiY9F5E0?=
- =?us-ascii?Q?f+BUiC/xWdgkMOLvrj+YQ6mWUZwLO88Mnt3zU3DCab95L5M+1jLvlUFrjQT1?=
- =?us-ascii?Q?FwQF0+D1fMzb3TZM5Asr1uDk1F7M7u5l+famjrXOe+Qv37JLxWJHFblAD9Ze?=
- =?us-ascii?Q?rhAgTRuDJfzc5aj4itakn9tdxsvpeUL6rqZOorzuQ+0V7C5DDIBni1xzSOA4?=
- =?us-ascii?Q?VjXoQ3YJ/5ucoujhvxVSVcDkB7jHFP5RPcmYpO1iCe4BV14xzWFcw/zuHKmG?=
- =?us-ascii?Q?AwM4T8ILGS6SU2Sy/vCN4LLT89Qmp3eKgw5JQSZLhp6KSsnbIfC3D3TWyfbS?=
- =?us-ascii?Q?Yl+IfohDzGsUZyUckN/tP7FsbY06Wnn/J97DzKUHbQ8famHk0wh9yjSGyb4a?=
- =?us-ascii?Q?eth6VFkEAV89KnVU5nsispq9ACtyhV4WG3SCS6xl1NOvzH+WMStauhZd7ioH?=
- =?us-ascii?Q?BbYjUbYRMppm0I/HJUIabO4TKG1QcT61zJrIJASVE5OYpP3r1yQ99iwzPuVL?=
- =?us-ascii?Q?CGvYsSNl70AZUzHQb1zJeVSbKfxSa5h1iFZua2GjjkfqHIpGpIxQoPKiP3i0?=
- =?us-ascii?Q?0uuf5n+eSoQgoQ01tCUZjTkC7ucJmytK+xqD88x0LdYObzY6evgybgxCHJaP?=
- =?us-ascii?Q?RotAaTwXspHeuYcwbeT0obEpm5VJqqqnfbrn9lUgf2xW4nMP3rqJALg2nCH8?=
- =?us-ascii?Q?PrBDTn2dFAnA/W0xHTiWbGruJPZAhImNmS/UcFBAsuVI1/3ym6+jiwDPb3PJ?=
- =?us-ascii?Q?Eoyq6d3B4+3O83vnJewD2U8fAD5Cw7A2jIDRUHNDueXk2AqobZvDAzE31p3I?=
- =?us-ascii?Q?WS1Q2Pg46VZkUOeM5KjyU1FwNbNR2IgIcvn6oFg8INzONc0W/C8e8laqER6A?=
- =?us-ascii?Q?xeM/jTh1UdGPpJIPV1pbl/Vls2YjDz6Pz6+WBAfmgYqhlWAbelQdKgWct0gV?=
- =?us-ascii?Q?Nx3McTgqvfPgsJdYR7PE8GsvHQV4s9UiBBL6ax3V/HqLRiKASAjCeaPDM8Mw?=
- =?us-ascii?Q?c19hjTAk8DLpmlkZL9NXTY+0xQF5z1MBv1gjRJ2Z4vnJkVdhQt7HfTdkWjtC?=
- =?us-ascii?Q?cNB6NADpuRMd+DEux/fLV5o1/qbiBzVtqx0lD1lhnmmY87eXnbrPcgWnEERi?=
- =?us-ascii?Q?BxbzVSrqhP/SzDtatnpEEffa4Xfk/qZZiA53P3Y9IYzJcfaDezq4V5L7gXLt?=
- =?us-ascii?Q?nabsSA60PhUX08MwTqRm7+T8WNKUwQscBzmturlh9fUTzwt1cvAx6DhrRE+1?=
- =?us-ascii?Q?fw/OMGfEBC6nt1aKtWSZTfRVAgZlgvOoSYnecGq5Nyy6iY813fL4eZHBxFem?=
- =?us-ascii?Q?YIAliReTyZZKYthaaaHi+hu3nkY8qQSqBpKjYA/sbaizmLyM9pokM3utsbZz?=
- =?us-ascii?Q?AG+exr7kj/PzZbgJ+tFf91FOnRN4eJeT+0SXH2pbru/ikI+3mLHAMM/49kyJ?=
- =?us-ascii?Q?8/rrLGLxWMn5fDAtpHxRSDx3742LySnpouvye4rBXb+XQGThODeotTcTderk?=
- =?us-ascii?Q?q6Md0jaqlDyfTDE7YYV36WlSOnIXRxW0IBgC9vS4Qp2C87DL6EJZiBk/Zm/m?=
- =?us-ascii?Q?wsg2r9edY9i1PEEpkhcyeuXtwHFNBuFl0awgLDvA?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C6D1798C;
+	Sat, 10 Aug 2024 09:55:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723283734; cv=none; b=jAC4LS/ap58sTQ/a5BI88jJbWQyMXVef3WN1CUIxT2/S3GdRiT1QmIiYFfJYpChJuuL7kbK++KxdFY+vGSUXLwvfWuQxRJDcwOt2pvWKQe2wnIoA3wX6Zhxsj1SLD4nl7ZWklEE2X1MzxjBhSQ9dzd/De+vkvJoxcpzmbTKqjlU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723283734; c=relaxed/simple;
+	bh=hRpxI5aWlAWLkEnnePj1K7YJsxCy/fCjF/Ajo2Tq60w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fhDpPWdwxiiPjLbIhGbMH1R3qlSvro/00CP74lCC0sMiJ2jSucxRIeYjWgebICo5pRvCcKsMAjMHQBS4M0dpEt3rHOGuWtZ/ZdjiQEH5WeV/h/tVORs4kaZUn59VVx9k4IhUAJ3tmXx++PzxEMGIy1kpFo5y4Y9JRMU/1moZBY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=am08aGf8; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5a156556fb4so3369505a12.3;
+        Sat, 10 Aug 2024 02:55:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723283731; x=1723888531; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7FJPxArVt2QCQnOFcPrUVyt9riSmvMq3yX/VBcIgITE=;
+        b=am08aGf8VeQROz+u9M+a2ihbn4C8v4ms92NoIMbtl+xUEuPF6YnmRGwwsnlHfwl5pO
+         A2//Efma0U2v/l6iQE3ZurxjT9WJ82n+VNW87p0r01ur1QTX6e0QW9hC45T70r0PLqAb
+         HIt2aoF9DtxOI+aVN8fPjh/fL3UiaiGswps4sVRzcS5ffycnOhmGCzz4/a8LgFzIO2Np
+         hmQdjuNUhV61uIavt9xd3FuI2wwXQOI961xiG43bLjTieDo9rbY6GR0KZt0A1Vibjtye
+         fLXXULJANrPqHuVXDYpTpzJ1AFxPKRt4FAVJ5E0BBr76Uo6S6zA96MF3eaUtB/ZyGq3E
+         /blA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723283731; x=1723888531;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7FJPxArVt2QCQnOFcPrUVyt9riSmvMq3yX/VBcIgITE=;
+        b=Id2CMiZGArAENtXA9AOzBsK5eJQC0X6moE3Y4wy3IbKql584M7SxBWhvm2Dy6b6Mrg
+         2wRlRA5ZizQxucc35Lp4XbugV3qzfcdUHcnsX3kOnUSM/K6BoDLrjIZS1b52Ajn3D6Lr
+         uyINbWrtnxhIaryV0BeAXSNGNx3Y4BiZjgP53cWK4aDEls8J4ZSBlZ9DZCBpR12CDS9a
+         yzKiPZFn/mII09Qx7/89c57QA1KMx6ClkxEc4cc6Fb/d2TjUlBsSS+Q8bTUf0rqwO7n9
+         Z8IBMe4RJm2gdqZp4atL7Lgr8FPaab5jhqVn/FCESLQG4rbWtygvqNMWVhnzN4RGPXHS
+         GBKw==
+X-Forwarded-Encrypted: i=1; AJvYcCU/W9RuZa41nEDvN22dCCBVuRUKjfwaW8PmmbNGOEwdsufGCNhRDjhNrEoDxv+hk3pNXcn8a9PNa5A0DTc17y80l7nmrq83kCsOCE+ebF/HMD0ljM/0ZJzSJX3/PRK1
+X-Gm-Message-State: AOJu0YxZ/ni1nNNWAhCyVhInpHlH0WVXYscDwmVnCQG3j6wGWYTFnM27
+	zc1k5s8+1UP+QJjD3Z+kommoP3DghrpexkWRRZRU5tQ0OO4N4+jg
+X-Google-Smtp-Source: AGHT+IE1W/czQOB9ClkuLcLzYYTh1KZWVB8qiFT80780wV3w7KtOVpZFsp/F0DXlel7sPTRBCPkiEQ==
+X-Received: by 2002:a17:906:6a02:b0:a7d:2a62:40e9 with SMTP id a640c23a62f3a-a80aa65a470mr311172866b.50.1723283730347;
+        Sat, 10 Aug 2024 02:55:30 -0700 (PDT)
+Received: from sacco.station (net-93-65-244-85.cust.vodafonedsl.it. [93.65.244.85])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a80bb21375esm55994866b.174.2024.08.10.02.55.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 10 Aug 2024 02:55:29 -0700 (PDT)
+From: Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
+To: johannes@sipsolutions.net,
+	sashal@kernel.org,
+	gregkh@linuxfoundation.org
+Cc: linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	javier.carrasco.cruz@gmail.com,
+	skhan@linuxfoundation.org,
+	stable@vger.kernel.org,
+	Johannes Berg <johannes.berg@intel.com>,
+	syzbot+19013115c9786bfd0c4e@syzkaller.appspotmail.com,
+	Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
+Subject: [PATCH v5.15 RESEND] wifi: mac80211: check basic rates validity
+Date: Sat, 10 Aug 2024 11:54:31 +0200
+Message-ID: <20240810095432.89063-1-vincenzo.mezzela@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: marvell.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BY3PR18MB4707.namprd18.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f4ba4554-f9ae-453a-149a-08dcb920fc22
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Aug 2024 09:44:09.9575
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: xn1wzT7j9DunmLcMImIHfeRT0IckqbgTcOuOcJQqepfVSNygbXpw3l+RZ+cZtzoG0/p0fcNAyZCXr8K2XZtDVA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR18MB6205
-X-Proofpoint-GUID: -G7yGSkzBLJK3D6REpyZERlXFXmdpExA
-X-Proofpoint-ORIG-GUID: -G7yGSkzBLJK3D6REpyZERlXFXmdpExA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-10_06,2024-08-07_01,2024-05-17_01
+Content-Transfer-Encoding: 8bit
 
+From: Johannes Berg <johannes.berg@intel.com>
 
-> -----Original Message-----
-> From: Jacobe Zang <jacobe.zang@wesion.com>
-> Sent: Saturday, August 10, 2024 9:22 AM
-> To: robh@kernel.org; krzk+dt@kernel.org; heiko@sntech.de;
-> kvalo@kernel.org; davem@davemloft.net; edumazet@google.com;
-> kuba@kernel.org; pabeni@redhat.com; conor+dt@kernel.org;
-> arend.vanspriel@broadcom.com
-> Cc: efectn@protonmail.com; dsimic@manjaro.org; jagan@edgeble.ai;
-> devicetree@vger.kernel.org; linux-arm-kernel@lists.infradead.org; linux-
-> rockchip@lists.infradead.org; linux-kernel@vger.kernel.org;
-> arend@broadcom.com; linux-wireless@vger.kernel.org;
-> netdev@vger.kernel.org; megi@xff.cz; duoming@zju.edu.cn;
-> bhelgaas@google.com; minipli@grsecurity.net; brcm80211@lists.linux.dev;
-> brcm80211-dev-list.pdl@broadcom.com; nick@khadas.com; Jacobe Zang
-> <jacobe.zang@wesion.com>
-> Subject:  [PATCH v9 4/5] wifi: brcmfmac: Add optional lpo clock
-> enable support
->=20
-> WiFi modules often require 32kHz clock to function. Add support to enable
-> the clock to PCIe driver and move "brcm,bcm4329-fmac" check to the top of
-> brcmf_of_probe. Change function prototypes from void to int and add
-> appropriate errno's for return
-> WiFi modules often require 32kHz clock to function. Add support to enable
-> the clock to PCIe driver and move "brcm,bcm4329-fmac" check to the top of
-> brcmf_of_probe. Change function prototypes from void to int and add
-> appropriate errno's for return values that will be send to bus when error
-> occurred.
->=20
-> Co-developed-by: Ondrej Jirman <megi@xff.cz>
-> Signed-off-by: Ondrej Jirman <megi@xff.cz>
-> Co-developed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
-> ---
->  .../broadcom/brcm80211/brcmfmac/bcmsdh.c      |  4 +-
->  .../broadcom/brcm80211/brcmfmac/common.c      |  3 +-
->  .../wireless/broadcom/brcm80211/brcmfmac/of.c | 53 +++++++++++--------
-> .../wireless/broadcom/brcm80211/brcmfmac/of.h |  9 ++--
->  .../broadcom/brcm80211/brcmfmac/pcie.c        |  3 ++
->  .../broadcom/brcm80211/brcmfmac/sdio.c        | 24 ++++++---
->  .../broadcom/brcm80211/brcmfmac/usb.c         |  3 ++
->  7 files changed, 63 insertions(+), 36 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> index 13391c2d82aae..b2ede4e579c5c 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> @@ -947,8 +947,8 @@ int brcmf_sdiod_probe(struct brcmf_sdio_dev
-> *sdiodev)
->=20
->  	/* try to attach to the target device */
->  	sdiodev->bus =3D brcmf_sdio_probe(sdiodev);
-> -	if (!sdiodev->bus) {
-> -		ret =3D -ENODEV;
-> +	if (IS_ERR(sdiodev->bus)) {
-> +		ret =3D PTR_ERR(sdiodev->bus);
->  		goto out;
->  	}
->  	brcmf_sdiod_host_fixup(sdiodev->func2->card->host);
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-> index b24faae35873d..58d50918dd177 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-> @@ -561,7 +561,8 @@ struct brcmf_mp_device
-> *brcmf_get_module_param(struct device *dev,
->  	if (!found) {
->  		/* No platform data for this device, try OF and DMI data */
->  		brcmf_dmi_probe(settings, chip, chiprev);
-> -		brcmf_of_probe(dev, bus_type, settings);
-> +		if (brcmf_of_probe(dev, bus_type, settings) =3D=3D -
-> EPROBE_DEFER)
-> +			return ERR_PTR(-EPROBE_DEFER);
->  		brcmf_acpi_probe(dev, bus_type, settings);
->  	}
->  	return settings;
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-> index e406e11481a62..f19dc7355e0e8 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-> @@ -6,6 +6,7 @@
->  #include <linux/of.h>
->  #include <linux/of_irq.h>
->  #include <linux/of_net.h>
-> +#include <linux/clk.h>
->=20
->  #include <defs.h>
->  #include "debug.h"
-> @@ -65,17 +66,21 @@ static int brcmf_of_get_country_codes(struct device
-> *dev,
->  	return 0;
->  }
->=20
-> -void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
-> -		    struct brcmf_mp_device *settings)
-> +int brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
-> +		   struct brcmf_mp_device *settings)
->  {
->  	struct brcmfmac_sdio_pd *sdio =3D &settings->bus.sdio;
->  	struct device_node *root, *np =3D dev->of_node;
-> +	struct clk *clk;
->  	const char *prop;
+commit ce04abc3fcc62cd5640af981ebfd7c4dc3bded28 upstream.
 
-Small nit, please check if reverse x-mas tree order need to be follow here.
+When userspace sets basic rates, it might send us some rates
+list that's empty or consists of invalid values only. We're
+currently ignoring invalid values and then may end up with a
+rates bitmap that's empty, which later results in a warning.
 
->  	int irq;
->  	int err;
->  	u32 irqf;
->  	u32 val;
->=20
-> +	if (!np || !of_device_is_compatible(np, "brcm,bcm4329-fmac"))
-> +		return 0;
-> +
->  	/* Apple ARM64 platforms have their own idea of board type, passed
-> in
->  	 * via the device tree. They also have an antenna SKU parameter
->  	 */
-> @@ -105,7 +110,7 @@ void brcmf_of_probe(struct device *dev, enum
-> brcmf_bus_type bus_type,
->  		board_type =3D devm_kstrdup(dev, tmp, GFP_KERNEL);
->  		if (!board_type) {
->  			of_node_put(root);
-> -			return;
-> +			return 0;
->  		}
->  		strreplace(board_type, '/', '-');
->  		settings->board_type =3D board_type;
-> @@ -113,33 +118,39 @@ void brcmf_of_probe(struct device *dev, enum
-> brcmf_bus_type bus_type,
->  		of_node_put(root);
->  	}
->=20
-> -	if (!np || !of_device_is_compatible(np, "brcm,bcm4329-fmac"))
-> -		return;
-> -
->  	err =3D brcmf_of_get_country_codes(dev, settings);
->  	if (err)
->  		brcmf_err("failed to get OF country code map (err=3D%d)\n",
-> err);
->=20
->  	of_get_mac_address(np, settings->mac);
->=20
-> -	if (bus_type !=3D BRCMF_BUSTYPE_SDIO)
-> -		return;
-> +	if (bus_type =3D=3D BRCMF_BUSTYPE_SDIO) {
-> +		if (of_property_read_u32(np, "brcm,drive-strength", &val) =3D=3D
-> 0)
-> +			sdio->drive_strength =3D val;
->=20
-> -	if (of_property_read_u32(np, "brcm,drive-strength", &val) =3D=3D 0)
-> -		sdio->drive_strength =3D val;
-> +		/* make sure there are interrupts defined in the node */
-> +		if (!of_property_present(np, "interrupts"))
-> +			return 0;
->=20
-> -	/* make sure there are interrupts defined in the node */
-> -	if (!of_property_present(np, "interrupts"))
-> -		return;
-> +		irq =3D irq_of_parse_and_map(np, 0);
-> +		if (!irq) {
-> +			brcmf_err("interrupt could not be mapped\n");
-> +			return 0;
-> +		}
-> +		irqf =3D irqd_get_trigger_type(irq_get_irq_data(irq));
-> +
-> +		sdio->oob_irq_supported =3D true;
-> +		sdio->oob_irq_nr =3D irq;
-> +		sdio->oob_irq_flags =3D irqf;
-> +	}
->=20
-> -	irq =3D irq_of_parse_and_map(np, 0);
-> -	if (!irq) {
-> -		brcmf_err("interrupt could not be mapped\n");
-> -		return;
-> +	clk =3D devm_clk_get_optional_enabled(dev, "lpo");
-> +	if (!IS_ERR_OR_NULL(clk)) {
-> +		brcmf_dbg(INFO, "enabling 32kHz clock\n");
-> +		return clk_set_rate(clk, 32768);
-> +	} else {
-> +		return PTR_ERR_OR_ZERO(clk);
->  	}
-> -	irqf =3D irqd_get_trigger_type(irq_get_irq_data(irq));
->=20
-> -	sdio->oob_irq_supported =3D true;
-> -	sdio->oob_irq_nr =3D irq;
-> -	sdio->oob_irq_flags =3D irqf;
-> +	return 0;
+Reject the call if there were no valid rates.
 
-....
-....
+[ Conflict resolution involved adjusting the patch to accommodate
+changes in the function signature of ieee80211_parse_bitrates,
+specifically the updated first parameter ]
 
->  /* Detach and free everything */
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-> index 9a105e6debe1f..f7db46ae44906 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-> @@ -1272,6 +1272,9 @@ static int brcmf_usb_probe_cb(struct
-> brcmf_usbdev_info *devinfo,
->  		ret =3D -ENOMEM;
->  		goto fail;
->  	}
-> +	ret =3D PTR_ERR_OR_ZERO(devinfo->settings);
-> +	if (ret < 0)
-> +		goto fail;
->=20
->  	if (!brcmf_usb_dlneeded(devinfo)) {
->  		ret =3D brcmf_alloc(devinfo->dev, devinfo->settings);
-> --
-> 2.34.1
->=20
-Reviewed-by:  Sai Krishna <saikrishnag@marvell.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reported-by: syzbot+19013115c9786bfd0c4e@syzkaller.appspotmail.com
+Tested-by: syzbot+19013115c9786bfd0c4e@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=19013115c9786bfd0c4e
+Signed-off-by: Vincenzo Mezzela <vincenzo.mezzela@gmail.com>
+---
+Hi,
+I'm resending the backport for v5.15 [1], following the one I previously
+sent for v6.1 [2].
+
+Best regards,
+Vincenzo
+
+- [1] https://lore.kernel.org/all/20240727125033.1774143-1-vincenzo.mezzela@gmail.com/
+- [2] https://lore.kernel.org/all/20240729134318.291424-1-vincenzo.mezzela@gmail.com/
+
+ net/mac80211/cfg.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
+
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index f277ce839ddb..85abd3ff07b4 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -2339,6 +2339,17 @@ static int ieee80211_change_bss(struct wiphy *wiphy,
+ 	if (!sband)
+ 		return -EINVAL;
+ 
++	if (params->basic_rates) {
++		if (!ieee80211_parse_bitrates(&sdata->vif.bss_conf.chandef,
++					      wiphy->bands[sband->band],
++					      params->basic_rates,
++					      params->basic_rates_len,
++					      &sdata->vif.bss_conf.basic_rates))
++			return -EINVAL;
++		changed |= BSS_CHANGED_BASIC_RATES;
++		ieee80211_check_rate_mask(sdata);
++	}
++
+ 	if (params->use_cts_prot >= 0) {
+ 		sdata->vif.bss_conf.use_cts_prot = params->use_cts_prot;
+ 		changed |= BSS_CHANGED_ERP_CTS_PROT;
+@@ -2362,16 +2373,6 @@ static int ieee80211_change_bss(struct wiphy *wiphy,
+ 		changed |= BSS_CHANGED_ERP_SLOT;
+ 	}
+ 
+-	if (params->basic_rates) {
+-		ieee80211_parse_bitrates(&sdata->vif.bss_conf.chandef,
+-					 wiphy->bands[sband->band],
+-					 params->basic_rates,
+-					 params->basic_rates_len,
+-					 &sdata->vif.bss_conf.basic_rates);
+-		changed |= BSS_CHANGED_BASIC_RATES;
+-		ieee80211_check_rate_mask(sdata);
+-	}
+-
+ 	if (params->ap_isolate >= 0) {
+ 		if (params->ap_isolate)
+ 			sdata->flags |= IEEE80211_SDATA_DONT_BRIDGE_PACKETS;
+-- 
+2.43.0
+
 
