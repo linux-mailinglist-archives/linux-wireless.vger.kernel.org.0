@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-11261-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11262-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4081694DDEE
-	for <lists+linux-wireless@lfdr.de>; Sat, 10 Aug 2024 20:33:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0CBB94DDF0
+	for <lists+linux-wireless@lfdr.de>; Sat, 10 Aug 2024 20:33:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 662541C20C39
-	for <lists+linux-wireless@lfdr.de>; Sat, 10 Aug 2024 18:33:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11FE41C2134E
+	for <lists+linux-wireless@lfdr.de>; Sat, 10 Aug 2024 18:33:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1283F61FD8;
-	Sat, 10 Aug 2024 18:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11472139CEE;
+	Sat, 10 Aug 2024 18:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="CEyQHuRj"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="YDra8nW/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2D679C4
-	for <linux-wireless@vger.kernel.org>; Sat, 10 Aug 2024 18:32:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B01713A253
+	for <linux-wireless@vger.kernel.org>; Sat, 10 Aug 2024 18:32:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723314771; cv=none; b=WK00hwtuMwzPNNyDjIHpyI5dCuwjSpo+N6MGVsQ11C2JiSP4fxCIzrke+BtHvesYhLcDoJyN5K/cAuOWW8q8hSGr5/0UaYK/rrHYptdR7fHNR+1UwRra7DtseT2MddIGGzoJuKwqgIaW6B8nHjQdD+kHhep3mhWESh3c4tkrDGI=
+	t=1723314776; cv=none; b=bpkSoIzk5V6z0NN5Fgr8lFvQAg6zK22ln/OmIgroyrPyftgOobulJRK+COyzmtbUes0a6GRarwAgjXdOS+AfQJitFsN8TliITggD0/LjVboQKiLmBH7SxbHElkfRfZ+FkjP5+vH71+3a3lAh9sNyHuzJhxmEXxbnbwnEIdYMPi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723314771; c=relaxed/simple;
+	s=arc-20240116; t=1723314776; c=relaxed/simple;
 	bh=VacrKqjT12DQWFLHJLsfIBg5hsy8fLzWFq+alMsvooM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=axXiKIn4/gufjcwRXMLajVB2Mj8Y7kRy9Wkb0O2WXYa6wA0bQ2asM3MPdhh7BRXKS3UbzJ/u8OzKvrbbcJR5YjjD8QSl3VAUThVNWWmI8/6me0TEE8zXdQM/PyoddB8DmU+tAsqfy/CbojzEIORNgbUIyZfuE3F40vQjNJ7m8WM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=CEyQHuRj; arc=none smtp.client-ip=209.85.208.51
+	 In-Reply-To:Content-Type; b=RigMPGs5oHU/S6yZFrJMnwfVGIUrOugp7+//ZXu8xU1VKlAozthAKrMS2OV0e0PleokHkE0CnhoAe84u7HvPoXYy0PcoOlZnt+7jkc2QBw02q4e9oXbSmN/Z4s7rpkEWvORFEC/A+pNyMZLsOQjPAvRvVIn5tNYtDjMm6sZse14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=YDra8nW/; arc=none smtp.client-ip=209.85.218.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5a15692b6f6so3475413a12.0
-        for <linux-wireless@vger.kernel.org>; Sat, 10 Aug 2024 11:32:47 -0700 (PDT)
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a7a9e25008aso374468666b.0
+        for <linux-wireless@vger.kernel.org>; Sat, 10 Aug 2024 11:32:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1723314766; x=1723919566; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1723314771; x=1723919571; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:to:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
         bh=u8muDajrGX3FO5dD48egl2aXV9/qSThjd9VJkKWphN4=;
-        b=CEyQHuRjxHC6llSCjeeK71HNeNrRvFQBFWJGE61IYUxT20wB4okj9CowPWtn1U0yZ7
-         6FEeYMAssetNYiQM89haRRqYO0c+/7orXgusqO8+KIz7epo3VBfK5sAfpqohIMt/FVn5
-         OgEgW1ktP3t7nWVHX69pFXajGGrh537jt9bFs=
+        b=YDra8nW/3rjMwpdVLhkmNxtJ2SHWnmFYKFm+cPPY6IlMoAotlwONkxUJgDAaO64er0
+         GgFpJOP5GUHpCh4Ue/klHXdtpat2pVPtZo/S2PWO8H0jPX65yrnC22prnEFPfkcoCYNG
+         KzBanJuZ2blw6TUa4J8lYeLY52rkXHXddfpXg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723314766; x=1723919566;
+        d=1e100.net; s=20230601; t=1723314771; x=1723919571;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
         bh=u8muDajrGX3FO5dD48egl2aXV9/qSThjd9VJkKWphN4=;
-        b=uE2kl84s/ol/sSDq9m/g1IiYRww6QFFhwmQ2ZWVewErrHX7rMwobgKU+sPenY7FkH2
-         rKz3x7RETykAgTrcmw4Wpk5Q1U3iy5k78U1eZqq4RLC+3FQ+FAV9ciHObAkDZ4XXBIL2
-         nhbNq68yH98bgPqleNaOw1T2qJb1AOr7VijhI5KBDBJQacnp4yLOnmEvxfvBdXc+YMoY
-         +n+8QlEpUpO0dGriYRLntANCYoRBnumyElATiMaoBfcKnjee75LNTiNBvO0PlX69BY0X
-         Zv1J2JWRM1mhsv89Z94MOAh6ht4+pY43sOs+qSmJqySqPqjJTgEB5oCO2wPOsuzdkZ3T
-         /maA==
-X-Forwarded-Encrypted: i=1; AJvYcCU76tndkyy97emI5hwcvM08UmzB5JYJBVj5VVSjx2+J5YsswHyxpRPFDlf5wyh8FNoG+hn/3bvSY5l9j+CrSvw328IXpC1MhuIY6rnCro8=
-X-Gm-Message-State: AOJu0YyNxmKVBcvRBubqZBz4UwpTTfFlyVtOpPQa3Q/IKhnc2n6wj32S
-	6DrkTlL5r2N0AMBYKwPdAIVUPy7ldYhgpKMggJk38Dd8HTbzCo59/7z/R4ba+Q==
-X-Google-Smtp-Source: AGHT+IGop/ZoDA+Oc8+5qDzv25GL3CgFjr289f/SrTe7d5Ea2cqgNbnjGz8/e5qHIsy+G1LA+Xr+wA==
-X-Received: by 2002:a05:6402:90e:b0:59e:65d1:a56b with SMTP id 4fb4d7f45d1cf-5bd0a6668camr4516382a12.34.1723314765837;
-        Sat, 10 Aug 2024 11:32:45 -0700 (PDT)
+        b=BJeuCkXHy80eTgFrHoDvwC7ADnbyeYZCLB1/eHEvobYK7wjScvIXoktzFA/1ohMV/t
+         PqsmER9Xzl+BxJ7IQKIfRQbJrz+ZWezzxdj+wNzXJb0Z/+dwplX0GDufIlOzvltnX3dd
+         LA3xu7lRLscAvKYXGrmXkRfczgSBpBkgku6oZHl25hSSKoSaHKMRyMW33s5fjFzQRR6k
+         zPqud678/BzHbmAQK/5PAXgkYq00S3swYuY/oaGoWpqNbcOOGlP7pjn0eOqMltfwxcnV
+         y4l3by05ubPsZElbLaU1B86GRnvsRp1SJf7Ugl2F0+KilHK6I7CP3WfudYTImw3DLhP0
+         gqjA==
+X-Forwarded-Encrypted: i=1; AJvYcCX1y9L0T5kkmKrCMNe5+6bxTN/a/TxlyxLkkASPu9+7fmFWLQYfQ4wBt6MrOPFVGYl1Agq7F0uwZAj514f5i0LHH3Rk1eIbde2nSrq0rXc=
+X-Gm-Message-State: AOJu0YzcdlyBRtxSDO9xFtJNPbHWdk/PwHjvl3G+IxB9KWF5E61L7Kz8
+	RTEI4jjv6Y8C85X/zh0dvKwdUkxLbgdY9sDRCko9IND1OxVHCJAo92W6WQxp+w==
+X-Google-Smtp-Source: AGHT+IFXh7cTxFRswFB21Qe1oiRIGT9vU7kgXTaII9dWIL3bZbqeNjqAb2dSA1bo5MXu4eCB4cG/2Q==
+X-Received: by 2002:a17:907:e69e:b0:a6f:4a42:1976 with SMTP id a640c23a62f3a-a80aa5dff21mr428744866b.37.1723314771330;
+        Sat, 10 Aug 2024 11:32:51 -0700 (PDT)
 Received: from [192.168.178.137] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5bd187f2abasm768760a12.8.2024.08.10.11.32.44
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a80bb08ffa0sm88575466b.9.2024.08.10.11.32.50
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 10 Aug 2024 11:32:45 -0700 (PDT)
-Message-ID: <fb9947fa-bca8-4c51-9feb-bf7ac6c6cc22@broadcom.com>
-Date: Sat, 10 Aug 2024 20:32:42 +0200
+        Sat, 10 Aug 2024 11:32:50 -0700 (PDT)
+Message-ID: <ff518c21-fcbb-4cfc-b5e3-40c0d4d18f0c@broadcom.com>
+Date: Sat, 10 Aug 2024 20:32:47 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
