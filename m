@@ -1,179 +1,424 @@
-Return-Path: <linux-wireless+bounces-11250-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11251-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 793D494DBE9
-	for <lists+linux-wireless@lfdr.de>; Sat, 10 Aug 2024 11:18:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCD2194DC12
+	for <lists+linux-wireless@lfdr.de>; Sat, 10 Aug 2024 11:45:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E8541F21D38
-	for <lists+linux-wireless@lfdr.de>; Sat, 10 Aug 2024 09:18:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1CBD1C21110
+	for <lists+linux-wireless@lfdr.de>; Sat, 10 Aug 2024 09:45:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B8214C586;
-	Sat, 10 Aug 2024 09:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7B01514EE;
+	Sat, 10 Aug 2024 09:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="DVrKuxq0";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="B5Pu48Uf"
+	dkim=pass (1024-bit key) header.d=marvell.com header.i=@marvell.com header.b="SSulglNs"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from fhigh7-smtp.messagingengine.com (fhigh7-smtp.messagingengine.com [103.168.172.158])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E65145323
-	for <linux-wireless@vger.kernel.org>; Sat, 10 Aug 2024 09:17:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723281478; cv=none; b=HpflFlTbp1wuUVxwWIn1wsz/TlauWzx2mDeu7Jf9WlAbaCZupSXP78YRp6/NgAFVRc0StZ99dpWmLE52KR4zdbzWzOc5ZaNul9WWVZjgMWyJC8KFJ/WVilfXHSKJv8mWsojf1/ejCeI29V0J2Z92RqCkGr/fot8tPszZc8hZHWw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723281478; c=relaxed/simple;
-	bh=mpVn6hSvCBO1sk5odNTAgq3bKxjAVo5Fn2GckBZi1ks=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=cW+6cC9fwlX6oBQM8FaogUin/PNsv2v178s6tluh3BlTcicVaAmStZmA35ph7cRW49FI1XAKN1t3E2ykR5EoiCm/gsa6r24SsDli/ZeFP0HF9fqE+htIrv2vKeyX/mhgTlXJj9pn63KWNDOUjvgSlVVoO5CSe1LvoR2tRYDCDto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=DVrKuxq0; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=B5Pu48Uf; arc=none smtp.client-ip=103.168.172.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailfhigh.nyi.internal (Postfix) with ESMTP id 92C9B1151AD8;
-	Sat, 10 Aug 2024 05:17:55 -0400 (EDT)
-Received: from wimap26 ([10.202.2.86])
-  by compute6.internal (MEProxy); Sat, 10 Aug 2024 05:17:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1723281475;
-	 x=1723367875; bh=mpVn6hSvCBO1sk5odNTAgq3bKxjAVo5Fn2GckBZi1ks=; b=
-	DVrKuxq02dczEsz1vx+FK+kZ1L7v73xe9MwXOXGqfh0HDbN9Jrn9HxNoxJpMCIxd
-	WXXqmfCifaR8u+fDX6JNFuyg0uOExd59ljkZv8aPE7+L4wqIjAlOU9ZgNJM8dqa3
-	QNBQNFxUoxRHL9k8X5oGmREd0AV28zZB0tQlKjJNg14VzhbhE8Uh6OETzcOdnv/V
-	H0xtfkac2Ty4E4OYpVaEPDeX2cRoejBMCB4X8P51TjcF1lpD72K4iD/gh1llsfa3
-	t87ZE6OIM6H81OunSs00z6aSnRAMwVXW99NIWbx1jHxLUcCYDvnFx4L0DHP+/sKt
-	oobS/rzD780HLvodyr8pLg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1723281475; x=
-	1723367875; bh=mpVn6hSvCBO1sk5odNTAgq3bKxjAVo5Fn2GckBZi1ks=; b=B
-	5Pu48UfxSVp/l/rLwcDeowU0GnWRnZtZryPTCWNYNNCEzmlY7LTx4PMNNnnF8vet
-	/HhC6kk7vtzYDjt4CFi1GVs+hPA/HvuQ2lO9SVmZ0wj7L7RlsyUuju7jHjs35ndL
-	hy03Ck14FSD6Aj1sV5e5W/WdgR1uAVmHaPau7/v4kylZ7dKRp9mHNaWRRLR6Emzq
-	ZRoQBArFeVp/qIPc524JEKQGHYugfJ0BDoNvNS8EolLYypMa4oKX35HyNwlq1Txv
-	mbRhnfS1iqnRiqp8aewkU9HGdMc6aMbDwQZOZ0bkljfAqdO4nxOH5SvkLb6zRw1s
-	x+H5HYBHQilNVhC3aneRA==
-X-ME-Sender: <xms:QzC3ZnLD5p1p2NBTWnWEZkNXNaVGlnOr1CGZluk7fOTMBIIC6LQ4iw>
-    <xme:QzC3ZrK_59_jkMZf4GCJEUWd4uTdk2OyNtGNPcyJDfKiwthHAN1Uf0daPKPrX8PyG
-    46RWFuWv63Zvo2t8kg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrleeigddugecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
-    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
-    hsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredttden
-    ucfhrhhomhepfdflrghnnhgvucfirhhunhgruhdfuceojhesjhgrnhhnrghurdhnvghtqe
-    enucggtffrrghtthgvrhhnpeffudejkefgfeeivdejteelieelgeduvdfgtefgveegkeeh
-    udelgeehgeetffevtdenucffohhmrghinheprhgvughhrghtrdgtohhmpdifuddrfhhipd
-    hkvghrnhgvlhdrohhrghdpfhgvughorhgrphhrohhjvggtthdrohhrghenucevlhhushht
-    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjsehjrghnnhgruhdrnh
-    gvthdpnhgspghrtghpthhtohepkedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohep
-    rghrvghnugdrvhgrnhhsphhrihgvlhessghrohgruggtohhmrdgtohhmpdhrtghpthhtoh
-    epvhhinhgrhigrkhdrhigruggrfigrugessghrohgruggtohhmrdgtohhmpdhrtghpthht
-    ohephhhoshhtrghpsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoh
-    eprghsrghhiheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehgrghrghgr
-    ughithihrgdtkeeslhhivhgvrdgtohhmpdhrtghpthhtohepmhgrrhgtrghnsehmrghrtg
-    grnhdrshhtpdhrtghpthhtoheplhhinhhugidqfihirhgvlhgvshhssehvghgvrhdrkhgv
-    rhhnvghlrdhorhhgpdhrtghpthhtohepjhesfidurdhfih
-X-ME-Proxy: <xmx:QzC3ZvviXpcT1eXF1ENNkJ-iBURExhXBvNymXQNLl6mtCEOHTZDuEw>
-    <xmx:QzC3ZgaTm-HaTvedWRRHHI2oYcRyqgBbF8xFB7ptr0IYmTNk72-7rw>
-    <xmx:QzC3ZubBIM9yKMDOZMSnkm7mvf6JA4vbdXes0SUrqw-hiWR91zgDiA>
-    <xmx:QzC3ZkDPFVS-vDsONXTmNlHDz10EbsWlcTJzJo9ppQUGn8jqxcV41A>
-    <xmx:QzC3Zm6aaDi4RtM210qZaI_VmHVZDw2msDBikdhvzz97r3E2OsrtjSdN>
-Feedback-ID: i47b949f6:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 1055C19C0079; Sat, 10 Aug 2024 05:17:55 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28AEB15252D;
+	Sat, 10 Aug 2024 09:45:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.156.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723283113; cv=fail; b=okgJKGcJZs9ZlnyBtH+LbwdWbUrEGjX75xf1sanTFRtBc//h61kGpJNZUy1VDt3cROHRAsipvxrEneyH+Q3DDCtpfMOIiIQ6ew18W07ay2AjKO/DD1FmHxgQLxvEIjopPtKVaS+NgN5BLw97ho2SsxrPUPUIyt42DdradIIAxRw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723283113; c=relaxed/simple;
+	bh=x+E8VKux6WdjTvrYBoUTXcoRAf5gjQbwvfZWfEyB1W0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=J4pEimJAKSUJJjNEt9obL3DEU3hIaMqCqDYlz56KV2DnUCzHwR37owLXvNFywWdAnzy3pQruQybIkKL3279WPUK5C1XO81IOjQ9EVO+l+OYSAjDW6wSL1nte+aOL928zs2Y0iyQ6/gHDxWcK6K8c3hq/3p5wUz+F9gwWBq/eSv0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (1024-bit key) header.d=marvell.com header.i=@marvell.com header.b=SSulglNs; arc=fail smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47A9hEEM022813;
+	Sat, 10 Aug 2024 02:44:15 -0700
+Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2042.outbound.protection.outlook.com [104.47.66.42])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 40x5eqr16w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 10 Aug 2024 02:44:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gW+16Mr5H6/rjZBGFpuid8pgNaXq9V/2YoVC4+QehIKmi7yn89vp/taM87X4qUMithIheP+EPeToyPPsQmXRNAUR5nNaOb1kCdpR2CpsTl3vdCiXut7P70xREipIp5e2Io5FB8NRrCKpcb2dPjs6q4Qb6ArZi7CmbhdcYQptYpR+tVvSulHC3Ap6LpKcAzeHXb6a8tBaTuvNfsFQRF6wowQf7bIpMyGqGaP4KN1DnqCcj5cjow0ku4HSi5112vPGK0UpbabVMY9hqBt1NDEjJfct9BH7RVZIeKtoMZZYeIHUqdxoC7I9lV92GEbf9QMEct9Q79x3Os526sSMFik/GA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LSwAucnzv45W/FAOsEMEt0sFBKhVTVcvevO7/T47HZY=;
+ b=HXUFjCtalJZerO0tOjhoQk8gTNiVzkcbT058Iax09cfnYsLtDa7s040YHqDxyLvKEFd98LGAoqkrXSK5ARKDnGWllGLMqSEMTXJemYCIr/6s90dyF+D5vAQycxleTnHit+MJYOzqYuf/Af7Rizy9uPXNc9092pGrdy2zrx80Q93PjTiWhORQ3iOrOqCtv6H7tPiwS1cWA1Xt9fIW8d6Wu4JbGy/asWA+LFZQmcYQ+wwz/oYEHR2G+WnFx3nzevAsQZBebUMUgoK7iYjsVajJE3Ft+8e0e1X5WjwsEY/vQyAdx0SLHIPC5s3MOgo/NVlS4Nyb3aOPjKSGwP0MkHOONw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=marvell.com; dmarc=pass action=none header.from=marvell.com;
+ dkim=pass header.d=marvell.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LSwAucnzv45W/FAOsEMEt0sFBKhVTVcvevO7/T47HZY=;
+ b=SSulglNsHtdmh7mc3M1vAsXi2PXxfSnNU7gTgJKXDAhIjKAG+zu3EujJTqEKxw7qaFG2TBfCdgmXd+BWyxV868yPHUe/51ejvXEoPGkEYkFdKUd0N9zysFeUfn5vyuCSRkBNL9RsXpUDCe3NdjSZu73nHVZPAXoQjFWq41jetY0=
+Received: from BY3PR18MB4707.namprd18.prod.outlook.com (2603:10b6:a03:3ca::23)
+ by LV3PR18MB6205.namprd18.prod.outlook.com (2603:10b6:408:27b::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.17; Sat, 10 Aug
+ 2024 09:44:11 +0000
+Received: from BY3PR18MB4707.namprd18.prod.outlook.com
+ ([fe80::e225:5161:1478:9d30]) by BY3PR18MB4707.namprd18.prod.outlook.com
+ ([fe80::e225:5161:1478:9d30%6]) with mapi id 15.20.7849.015; Sat, 10 Aug 2024
+ 09:44:10 +0000
+From: Sai Krishna Gajula <saikrishnag@marvell.com>
+To: Jacobe Zang <jacobe.zang@wesion.com>, "robh@kernel.org" <robh@kernel.org>,
+        "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+        "heiko@sntech.de"
+	<heiko@sntech.de>,
+        "kvalo@kernel.org" <kvalo@kernel.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "edumazet@google.com"
+	<edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        "conor+dt@kernel.org"
+	<conor+dt@kernel.org>,
+        "arend.vanspriel@broadcom.com"
+	<arend.vanspriel@broadcom.com>
+CC: "efectn@protonmail.com" <efectn@protonmail.com>,
+        "dsimic@manjaro.org"
+	<dsimic@manjaro.org>,
+        "jagan@edgeble.ai" <jagan@edgeble.ai>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+        "linux-rockchip@lists.infradead.org"
+	<linux-rockchip@lists.infradead.org>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+        "arend@broadcom.com" <arend@broadcom.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "megi@xff.cz"
+	<megi@xff.cz>,
+        "duoming@zju.edu.cn" <duoming@zju.edu.cn>,
+        "bhelgaas@google.com" <bhelgaas@google.com>,
+        "minipli@grsecurity.net"
+	<minipli@grsecurity.net>,
+        "brcm80211@lists.linux.dev"
+	<brcm80211@lists.linux.dev>,
+        "brcm80211-dev-list.pdl@broadcom.com"
+	<brcm80211-dev-list.pdl@broadcom.com>,
+        "nick@khadas.com" <nick@khadas.com>
+Subject: RE: [PATCH v9 4/5] wifi: brcmfmac: Add optional lpo clock enable
+ support
+Thread-Topic: [PATCH v9 4/5] wifi: brcmfmac: Add optional lpo clock enable
+ support
+Thread-Index: AQHa6wnZZmQ4lQ/000ShjcZ5lhEIpA==
+Date: Sat, 10 Aug 2024 09:44:09 +0000
+Message-ID:
+ <BY3PR18MB47072A9CC7E1EEB4BD1FC063A0BB2@BY3PR18MB4707.namprd18.prod.outlook.com>
+References: <20240810035141.439024-1-jacobe.zang@wesion.com>
+ <20240810035141.439024-5-jacobe.zang@wesion.com>
+In-Reply-To: <20240810035141.439024-5-jacobe.zang@wesion.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BY3PR18MB4707:EE_|LV3PR18MB6205:EE_
+x-ms-office365-filtering-correlation-id: f4ba4554-f9ae-453a-149a-08dcb920fc22
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|1800799024|376014|7416014|38070700018|921020;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?Tm59C2HVxJOl3Z//2QofhfQTCMyG4gc08TSDfawK5m2ArpLe03D5DKjjFwkI?=
+ =?us-ascii?Q?BbepBq77p5tq4E0A0W2KA3Xu/mcfGRPR1o7bUG6mMKJacWsQoI1HvC23Xwl6?=
+ =?us-ascii?Q?Jm0fa2uOgkuY7jfH42lQWIneJlVjjTg804GkO38m8Gyih9ywIWW4i8LughrE?=
+ =?us-ascii?Q?bhoyDXU2Vc2uw+/5btwKlCd2HUEtsorCQ4QropxoI7AhvjOXTklrWMsfTzAr?=
+ =?us-ascii?Q?2AQmgRdP6AO6p4YQjL5zT184807/wBqOudXl3g5L03glC4bgso8JFxPHwpLD?=
+ =?us-ascii?Q?N3k3qrQwP+s/HPv0nP/Oy9Xeqnyh/b9ikOJdZHSA1+W2Rk6gw2bwJ0/A92Vk?=
+ =?us-ascii?Q?ibvTvdvFD6EW/kg4DUhI4OsL5KiS66Jqo5Iv7ovI7s6dfT+WW8LUE7xKUahI?=
+ =?us-ascii?Q?+MnRU1cSZ+YSsE7/Cl8x73XhEV/9OtQXMRN1kd2w4hJlPvtdO1ypyjv1O5zX?=
+ =?us-ascii?Q?TfeC9XNVdQbp4TU/QRk3sXVcArqs1DxQ4Op9PodxGDuXW6zUGQpsza4Mhszs?=
+ =?us-ascii?Q?hIIHS9DP/xrN1Qx8Um0ltzlsKkiURbTgw4Hmch6O9mTO7RTZMd11yx5gIBSd?=
+ =?us-ascii?Q?eUsP7FMBeRKOEsQL6UbFxxscz2CCF4fPtKADfNIdLbFYI6Z8lIhYGdgDX4HF?=
+ =?us-ascii?Q?N56U8Qr8bc7d4q6n9PIPbrW2LEMejUgSdylFq85zSO9ZLdYzjGAcF4MCWEcn?=
+ =?us-ascii?Q?ACQQ0ItcPX+P742M+OgPKXzC3wRbyqrJAlfn2EWNXho8BRKIO+rcSKCv7f8o?=
+ =?us-ascii?Q?TywvsKmcQz8KFWM0PFeyMCnuhDlHpDywFHCDgRc+t7z2haQB6O20IoCrITmP?=
+ =?us-ascii?Q?+LOVYkQn66uBkx9rPNCmajEDdHSj7asSeLMSkdvZVw+dz9B6Ps4vfPwwx06H?=
+ =?us-ascii?Q?T16lTuHmUN2DZqMkP0Xb7LHH0z2PjANjoG6YX/aS4zIsRvcwbS0ZjxTd8l3g?=
+ =?us-ascii?Q?jTRb6P3rxocYN3lFBJXnH4fzHUzo2BdXTx6LAfthcm1ekpzUgg9NXS7ueUsC?=
+ =?us-ascii?Q?3Qyf1gITJxH80VuFlmt7N4m0e4dDHBD3V2EFhAjmcd/6nKxOAiqqw0T3o+22?=
+ =?us-ascii?Q?q7/crTBfpyOoO0MfIUJc7KVj1ocT/xOtBWXiSWwHAnH7FX79CSZ2Gu73U/ex?=
+ =?us-ascii?Q?aoHD+3ltfwSuA+vc1ZcIZJpKDynoDBpgyaA7JKV7kOu/ZZIvoHI1fNg2ocJO?=
+ =?us-ascii?Q?iZma8enEGR/e2O4QTC8x7EuWuFni1c5URjJztK1QMGBW8eF8VFfJRAuz6Bve?=
+ =?us-ascii?Q?F2eDiiejnkD4ac0xX+UDDZHP9d5d8keIWL1HZ5G3XNRz3UGj3fc2Nl/buQkT?=
+ =?us-ascii?Q?bHFBw7vv5MXU8oC/psgmkCnuzDakJ4REqHXGFEye+UvPWhBfT5EEFWBNv15v?=
+ =?us-ascii?Q?3wsxIvJqmht4XuILgLFc1sgrB0v/8VI44y7k5ePmjllWsUK+O4dRetZft1Tq?=
+ =?us-ascii?Q?0VEqhiqJLqI=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY3PR18MB4707.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(38070700018)(921020);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?qGwT3ksBWuF4enfFqZBPmpICrnDTsCNGqiF6ugjIAKUj9d6ZYkaAPiY9F5E0?=
+ =?us-ascii?Q?f+BUiC/xWdgkMOLvrj+YQ6mWUZwLO88Mnt3zU3DCab95L5M+1jLvlUFrjQT1?=
+ =?us-ascii?Q?FwQF0+D1fMzb3TZM5Asr1uDk1F7M7u5l+famjrXOe+Qv37JLxWJHFblAD9Ze?=
+ =?us-ascii?Q?rhAgTRuDJfzc5aj4itakn9tdxsvpeUL6rqZOorzuQ+0V7C5DDIBni1xzSOA4?=
+ =?us-ascii?Q?VjXoQ3YJ/5ucoujhvxVSVcDkB7jHFP5RPcmYpO1iCe4BV14xzWFcw/zuHKmG?=
+ =?us-ascii?Q?AwM4T8ILGS6SU2Sy/vCN4LLT89Qmp3eKgw5JQSZLhp6KSsnbIfC3D3TWyfbS?=
+ =?us-ascii?Q?Yl+IfohDzGsUZyUckN/tP7FsbY06Wnn/J97DzKUHbQ8famHk0wh9yjSGyb4a?=
+ =?us-ascii?Q?eth6VFkEAV89KnVU5nsispq9ACtyhV4WG3SCS6xl1NOvzH+WMStauhZd7ioH?=
+ =?us-ascii?Q?BbYjUbYRMppm0I/HJUIabO4TKG1QcT61zJrIJASVE5OYpP3r1yQ99iwzPuVL?=
+ =?us-ascii?Q?CGvYsSNl70AZUzHQb1zJeVSbKfxSa5h1iFZua2GjjkfqHIpGpIxQoPKiP3i0?=
+ =?us-ascii?Q?0uuf5n+eSoQgoQ01tCUZjTkC7ucJmytK+xqD88x0LdYObzY6evgybgxCHJaP?=
+ =?us-ascii?Q?RotAaTwXspHeuYcwbeT0obEpm5VJqqqnfbrn9lUgf2xW4nMP3rqJALg2nCH8?=
+ =?us-ascii?Q?PrBDTn2dFAnA/W0xHTiWbGruJPZAhImNmS/UcFBAsuVI1/3ym6+jiwDPb3PJ?=
+ =?us-ascii?Q?Eoyq6d3B4+3O83vnJewD2U8fAD5Cw7A2jIDRUHNDueXk2AqobZvDAzE31p3I?=
+ =?us-ascii?Q?WS1Q2Pg46VZkUOeM5KjyU1FwNbNR2IgIcvn6oFg8INzONc0W/C8e8laqER6A?=
+ =?us-ascii?Q?xeM/jTh1UdGPpJIPV1pbl/Vls2YjDz6Pz6+WBAfmgYqhlWAbelQdKgWct0gV?=
+ =?us-ascii?Q?Nx3McTgqvfPgsJdYR7PE8GsvHQV4s9UiBBL6ax3V/HqLRiKASAjCeaPDM8Mw?=
+ =?us-ascii?Q?c19hjTAk8DLpmlkZL9NXTY+0xQF5z1MBv1gjRJ2Z4vnJkVdhQt7HfTdkWjtC?=
+ =?us-ascii?Q?cNB6NADpuRMd+DEux/fLV5o1/qbiBzVtqx0lD1lhnmmY87eXnbrPcgWnEERi?=
+ =?us-ascii?Q?BxbzVSrqhP/SzDtatnpEEffa4Xfk/qZZiA53P3Y9IYzJcfaDezq4V5L7gXLt?=
+ =?us-ascii?Q?nabsSA60PhUX08MwTqRm7+T8WNKUwQscBzmturlh9fUTzwt1cvAx6DhrRE+1?=
+ =?us-ascii?Q?fw/OMGfEBC6nt1aKtWSZTfRVAgZlgvOoSYnecGq5Nyy6iY813fL4eZHBxFem?=
+ =?us-ascii?Q?YIAliReTyZZKYthaaaHi+hu3nkY8qQSqBpKjYA/sbaizmLyM9pokM3utsbZz?=
+ =?us-ascii?Q?AG+exr7kj/PzZbgJ+tFf91FOnRN4eJeT+0SXH2pbru/ikI+3mLHAMM/49kyJ?=
+ =?us-ascii?Q?8/rrLGLxWMn5fDAtpHxRSDx3742LySnpouvye4rBXb+XQGThODeotTcTderk?=
+ =?us-ascii?Q?q6Md0jaqlDyfTDE7YYV36WlSOnIXRxW0IBgC9vS4Qp2C87DL6EJZiBk/Zm/m?=
+ =?us-ascii?Q?wsg2r9edY9i1PEEpkhcyeuXtwHFNBuFl0awgLDvA?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Sat, 10 Aug 2024 11:17:33 +0200
-From: "Janne Grunau" <j@jannau.net>
-To: "Jouni Malinen" <j@w1.fi>
-Cc: hostap@lists.infradead.org,
- "Vinayak Yadawad" <vinayak.yadawad@broadcom.com>,
- "Aditya Garg" <gargaditya08@live.com>,
- "arend.vanspriel@broadcom.com" <arend.vanspriel@broadcom.com>,
- "Hector Martin" <marcan@marcan.st>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- asahi@lists.linux.dev
-Message-Id: <d82c88a2-77f7-4308-97fa-c5b4446e2cf5@app.fastmail.com>
-In-Reply-To: <ZrclLHJ63RxnG/B3@w1.fi>
-References: <92fe4dd4-21a4-4559-8441-32ef86672de6@app.fastmail.com>
- <ZrclLHJ63RxnG/B3@w1.fi>
-Subject: Re: wpa_supplicant 2.11 breaks WPA2-PSK / WPA3-SAE authentication on Linux'
- brcmfmac
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+X-OriginatorOrg: marvell.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BY3PR18MB4707.namprd18.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f4ba4554-f9ae-453a-149a-08dcb920fc22
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Aug 2024 09:44:09.9575
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: xn1wzT7j9DunmLcMImIHfeRT0IckqbgTcOuOcJQqepfVSNygbXpw3l+RZ+cZtzoG0/p0fcNAyZCXr8K2XZtDVA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR18MB6205
+X-Proofpoint-GUID: -G7yGSkzBLJK3D6REpyZERlXFXmdpExA
+X-Proofpoint-ORIG-GUID: -G7yGSkzBLJK3D6REpyZERlXFXmdpExA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-10_06,2024-08-07_01,2024-05-17_01
 
-Hej,
 
-On Sat, Aug 10, 2024, at 10:30, Jouni Malinen wrote:
-> On Sun, Aug 04, 2024 at 02:23:56PM +0200, Janne Grunau wrote:
->> wpa_supplicant 2.11 on Linux's 6.9.y / 6.10.y brcmfmac driver runs in
->> authentication timeouts with WPA2-PSK and WPA3-SAE. This was reported
->> with Apple silicon devices using Fedora Asahi remix with a patched
->> driver as well as other devices without additional brcmfmac patches.
->> See https://bugzilla.redhat.com/show_bug.cgi?id=2302577 for some
->> reports.
->>
->> I've bisected this to
->> https://w1.fi/cgit/hostap/commit/?id=41638606054a09867fe3f9a2b5523aa4678cbfa5
->> "Mark authorization completed on driver indication during 4-way HS
->> offload". Reverting this commit on top of hostap_2_11 properly
->> authenticates the connections. Looking at that change and the code it
->> looks clearly broken to to me. As far as I can see is
->> `assoc_info.authorized` for the nl80211 driver only set when
->> QCA_WLAN_VENDOR_ATTR_ROAM_AUTH_AUTHORIZED is set (in main, I did not
->> check older revisions). This doesn't seem appropriate to expect this
->> on chipsets from different vendors.
->
-> This commit is from Broadcom to fix some race conditions with the 4-
-> way handshake offload which I'm assuming is for a Broadcom driver..
-> Whether that is for brcmfmac is unknown to me, though.
->
-> It looks like the goal here was to move completion of the connection
-> from the association event to EVENT_PORT_AUTHORIZED, i.e., the
-> NL80211_CMD_PORT_AUTHORIZED event from the driver. Is that event not
-> delivered by brcmfmac? I did not see any full wpa_supplicant debug
-> logs for these issues based on a quick look, so I could not check
-> that myself.
+> -----Original Message-----
+> From: Jacobe Zang <jacobe.zang@wesion.com>
+> Sent: Saturday, August 10, 2024 9:22 AM
+> To: robh@kernel.org; krzk+dt@kernel.org; heiko@sntech.de;
+> kvalo@kernel.org; davem@davemloft.net; edumazet@google.com;
+> kuba@kernel.org; pabeni@redhat.com; conor+dt@kernel.org;
+> arend.vanspriel@broadcom.com
+> Cc: efectn@protonmail.com; dsimic@manjaro.org; jagan@edgeble.ai;
+> devicetree@vger.kernel.org; linux-arm-kernel@lists.infradead.org; linux-
+> rockchip@lists.infradead.org; linux-kernel@vger.kernel.org;
+> arend@broadcom.com; linux-wireless@vger.kernel.org;
+> netdev@vger.kernel.org; megi@xff.cz; duoming@zju.edu.cn;
+> bhelgaas@google.com; minipli@grsecurity.net; brcm80211@lists.linux.dev;
+> brcm80211-dev-list.pdl@broadcom.com; nick@khadas.com; Jacobe Zang
+> <jacobe.zang@wesion.com>
+> Subject:  [PATCH v9 4/5] wifi: brcmfmac: Add optional lpo clock
+> enable support
+>=20
+> WiFi modules often require 32kHz clock to function. Add support to enable
+> the clock to PCIe driver and move "brcm,bcm4329-fmac" check to the top of
+> brcmf_of_probe. Change function prototypes from void to int and add
+> appropriate errno's for return
+> WiFi modules often require 32kHz clock to function. Add support to enable
+> the clock to PCIe driver and move "brcm,bcm4329-fmac" check to the top of
+> brcmf_of_probe. Change function prototypes from void to int and add
+> appropriate errno's for return values that will be send to bus when error
+> occurred.
+>=20
+> Co-developed-by: Ondrej Jirman <megi@xff.cz>
+> Signed-off-by: Ondrej Jirman <megi@xff.cz>
+> Co-developed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
+> ---
+>  .../broadcom/brcm80211/brcmfmac/bcmsdh.c      |  4 +-
+>  .../broadcom/brcm80211/brcmfmac/common.c      |  3 +-
+>  .../wireless/broadcom/brcm80211/brcmfmac/of.c | 53 +++++++++++--------
+> .../wireless/broadcom/brcm80211/brcmfmac/of.h |  9 ++--
+>  .../broadcom/brcm80211/brcmfmac/pcie.c        |  3 ++
+>  .../broadcom/brcm80211/brcmfmac/sdio.c        | 24 ++++++---
+>  .../broadcom/brcm80211/brcmfmac/usb.c         |  3 ++
+>  7 files changed, 63 insertions(+), 36 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+> index 13391c2d82aae..b2ede4e579c5c 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+> @@ -947,8 +947,8 @@ int brcmf_sdiod_probe(struct brcmf_sdio_dev
+> *sdiodev)
+>=20
+>  	/* try to attach to the target device */
+>  	sdiodev->bus =3D brcmf_sdio_probe(sdiodev);
+> -	if (!sdiodev->bus) {
+> -		ret =3D -ENODEV;
+> +	if (IS_ERR(sdiodev->bus)) {
+> +		ret =3D PTR_ERR(sdiodev->bus);
+>  		goto out;
+>  	}
+>  	brcmf_sdiod_host_fixup(sdiodev->func2->card->host);
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
+> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
+> index b24faae35873d..58d50918dd177 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
+> @@ -561,7 +561,8 @@ struct brcmf_mp_device
+> *brcmf_get_module_param(struct device *dev,
+>  	if (!found) {
+>  		/* No platform data for this device, try OF and DMI data */
+>  		brcmf_dmi_probe(settings, chip, chiprev);
+> -		brcmf_of_probe(dev, bus_type, settings);
+> +		if (brcmf_of_probe(dev, bus_type, settings) =3D=3D -
+> EPROBE_DEFER)
+> +			return ERR_PTR(-EPROBE_DEFER);
+>  		brcmf_acpi_probe(dev, bus_type, settings);
+>  	}
+>  	return settings;
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+> index e406e11481a62..f19dc7355e0e8 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+> @@ -6,6 +6,7 @@
+>  #include <linux/of.h>
+>  #include <linux/of_irq.h>
+>  #include <linux/of_net.h>
+> +#include <linux/clk.h>
+>=20
+>  #include <defs.h>
+>  #include "debug.h"
+> @@ -65,17 +66,21 @@ static int brcmf_of_get_country_codes(struct device
+> *dev,
+>  	return 0;
+>  }
+>=20
+> -void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
+> -		    struct brcmf_mp_device *settings)
+> +int brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
+> +		   struct brcmf_mp_device *settings)
+>  {
+>  	struct brcmfmac_sdio_pd *sdio =3D &settings->bus.sdio;
+>  	struct device_node *root, *np =3D dev->of_node;
+> +	struct clk *clk;
+>  	const char *prop;
 
-The following place in brcmf_bss_roaming_done() is the only place where
-NL80211_CMD_PORT_AUTHORIZED event is posted.
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c#n6402
+Small nit, please check if reverse x-mas tree order need to be follow here.
 
-In my initial analysis I missed that the NL80211_CMD_PORT_AUTHORIZED is
-delivered directly to wpa_supplicant.
+>  	int irq;
+>  	int err;
+>  	u32 irqf;
+>  	u32 val;
+>=20
+> +	if (!np || !of_device_is_compatible(np, "brcm,bcm4329-fmac"))
+> +		return 0;
+> +
+>  	/* Apple ARM64 platforms have their own idea of board type, passed
+> in
+>  	 * via the device tree. They also have an antenna SKU parameter
+>  	 */
+> @@ -105,7 +110,7 @@ void brcmf_of_probe(struct device *dev, enum
+> brcmf_bus_type bus_type,
+>  		board_type =3D devm_kstrdup(dev, tmp, GFP_KERNEL);
+>  		if (!board_type) {
+>  			of_node_put(root);
+> -			return;
+> +			return 0;
+>  		}
+>  		strreplace(board_type, '/', '-');
+>  		settings->board_type =3D board_type;
+> @@ -113,33 +118,39 @@ void brcmf_of_probe(struct device *dev, enum
+> brcmf_bus_type bus_type,
+>  		of_node_put(root);
+>  	}
+>=20
+> -	if (!np || !of_device_is_compatible(np, "brcm,bcm4329-fmac"))
+> -		return;
+> -
+>  	err =3D brcmf_of_get_country_codes(dev, settings);
+>  	if (err)
+>  		brcmf_err("failed to get OF country code map (err=3D%d)\n",
+> err);
+>=20
+>  	of_get_mac_address(np, settings->mac);
+>=20
+> -	if (bus_type !=3D BRCMF_BUSTYPE_SDIO)
+> -		return;
+> +	if (bus_type =3D=3D BRCMF_BUSTYPE_SDIO) {
+> +		if (of_property_read_u32(np, "brcm,drive-strength", &val) =3D=3D
+> 0)
+> +			sdio->drive_strength =3D val;
+>=20
+> -	if (of_property_read_u32(np, "brcm,drive-strength", &val) =3D=3D 0)
+> -		sdio->drive_strength =3D val;
+> +		/* make sure there are interrupts defined in the node */
+> +		if (!of_property_present(np, "interrupts"))
+> +			return 0;
+>=20
+> -	/* make sure there are interrupts defined in the node */
+> -	if (!of_property_present(np, "interrupts"))
+> -		return;
+> +		irq =3D irq_of_parse_and_map(np, 0);
+> +		if (!irq) {
+> +			brcmf_err("interrupt could not be mapped\n");
+> +			return 0;
+> +		}
+> +		irqf =3D irqd_get_trigger_type(irq_get_irq_data(irq));
+> +
+> +		sdio->oob_irq_supported =3D true;
+> +		sdio->oob_irq_nr =3D irq;
+> +		sdio->oob_irq_flags =3D irqf;
+> +	}
+>=20
+> -	irq =3D irq_of_parse_and_map(np, 0);
+> -	if (!irq) {
+> -		brcmf_err("interrupt could not be mapped\n");
+> -		return;
+> +	clk =3D devm_clk_get_optional_enabled(dev, "lpo");
+> +	if (!IS_ERR_OR_NULL(clk)) {
+> +		brcmf_dbg(INFO, "enabling 32kHz clock\n");
+> +		return clk_set_rate(clk, 32768);
+> +	} else {
+> +		return PTR_ERR_OR_ZERO(clk);
+>  	}
+> -	irqf =3D irqd_get_trigger_type(irq_get_irq_data(irq));
+>=20
+> -	sdio->oob_irq_supported =3D true;
+> -	sdio->oob_irq_nr =3D irq;
+> -	sdio->oob_irq_flags =3D irqf;
+> +	return 0;
 
->> A revert looks to me like a possible/proper fix. I can send that
->> later if no alternative materializes.
->
-> I'm inclined to revert this if it is indeed the case that
-> NL80211_CMD_PORT_AUTHORIZED is not delivered reliably by the upstream
-> driver and this commit was tested only with some non-upstream
-> versions.
+....
+....
 
-I intend extend the upstream kernel driver to post
-NL80211_CMD_PORT_AUTHORIZED after successful connection with
-authentication offload. I expect that the change will be accepted for
-the stable kernel. Infineon/Cypress have non-upstream patches for the
-brcmfmac driver which implement it already.
-
-A revert in wpa_supplicant might be still appropriate until exteded
-kernel drivers are deployed. The wpa_supplicant Fedora package carries
-the revert as patch:
-https://src.fedoraproject.org/rpms/wpa_supplicant/c/c2eac195adadd2c48b04f8752cc46b12a351e69c
-
-thanks,
-Janne
+>  /* Detach and free everything */
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+> index 9a105e6debe1f..f7db46ae44906 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+> @@ -1272,6 +1272,9 @@ static int brcmf_usb_probe_cb(struct
+> brcmf_usbdev_info *devinfo,
+>  		ret =3D -ENOMEM;
+>  		goto fail;
+>  	}
+> +	ret =3D PTR_ERR_OR_ZERO(devinfo->settings);
+> +	if (ret < 0)
+> +		goto fail;
+>=20
+>  	if (!brcmf_usb_dlneeded(devinfo)) {
+>  		ret =3D brcmf_alloc(devinfo->dev, devinfo->settings);
+> --
+> 2.34.1
+>=20
+Reviewed-by:  Sai Krishna <saikrishnag@marvell.com>
 
