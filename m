@@ -1,388 +1,198 @@
-Return-Path: <linux-wireless+bounces-11234-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11235-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6963294D72A
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Aug 2024 21:24:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5672B94DA21
+	for <lists+linux-wireless@lfdr.de>; Sat, 10 Aug 2024 04:21:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2011028323D
-	for <lists+linux-wireless@lfdr.de>; Fri,  9 Aug 2024 19:24:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D654B22AC7
+	for <lists+linux-wireless@lfdr.de>; Sat, 10 Aug 2024 02:21:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCBC415F40A;
-	Fri,  9 Aug 2024 19:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5219749641;
+	Sat, 10 Aug 2024 02:21:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LnQ0y62t"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="E6Asb0GG"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC682B9A9;
-	Fri,  9 Aug 2024 19:24:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD7BA48;
+	Sat, 10 Aug 2024 02:21:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723231464; cv=none; b=gtC8Gz3R4oltIlrRw0LDLlpNbtO/QT+Gul+MiKDt218LVhQm8xUS2ocQMpSyHlshuBqZ6jvGRVZVvPrw/XvNzXBJ2Ane4U3Il3ap5tKol7SDZOCrqtJVYYkmOQPdCQwybNDSa27w5uuW6Z1DRG9/jLY2LxhhZQDzCkzorE4enq4=
+	t=1723256484; cv=none; b=YNo5dS4bjBZaNkxjsuXWdSaQD4CdJOBKiyZEHcpLeN/oOawXLlwxk6XJ+BfbE/Yzft+9GAbe38ZjhLIHmNk6JJ4284Vph/LLg2Pt0/9cCbngfUuPMvgWg+gutVlNTdrUDZYJySeMc71Xcx3ErRXn/CMhYPK5OkAEUHIUEgcIlrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723231464; c=relaxed/simple;
-	bh=+b7GDuXQp5NLlZE3+tHcPN1nqxx9393TnHwfURdPcDU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=NTtaAUE9jswJyJH0pUk/+pqo4md9spWBZfAD/5SBXfYMFOmEkw8k8i+4dOE30x5l/+JeT+IemX/IlZ0JMAMiySQ/VtXLi1qx+ieFf4sXgXMIgN8wkBfK61lOS1s3QfV3sGwYoOokjpb3p8LXmFhREEncIj0XuiCfTw/kcEFovNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LnQ0y62t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16441C32782;
-	Fri,  9 Aug 2024 19:24:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723231464;
-	bh=+b7GDuXQp5NLlZE3+tHcPN1nqxx9393TnHwfURdPcDU=;
-	h=Date:From:To:Cc:Subject:From;
-	b=LnQ0y62t7JAOGGTRvoTXf2RiNenBK3m/9u3L+O8oaC/GzSEduuaglPXvnS89Y4EAm
-	 JZ8RpfTrEPL1vbM/2UevOFw+uJrumbIQ1bMhQVkVy5pW85TjawdK6Y6ntykUPUq3wz
-	 FhKD7QP/fuZiFBKvQMMbyykcPu/7qtdS3NP4R2jU1B3DdJqcQsrvISuXd0FzN4/KQw
-	 A9tHfcM22lQ8LnnoLHRll91hRMcdJnccTuIxmam/KinBO0Zkql+cYnB6xwZw/1TV5n
-	 a9xMbDahChdeQR38r6jqh6BhzR92vdzX4NNM8xDL7/SpnBSkQkzxDeqiPqGw/B8mXf
-	 kjmptzRa+YhAA==
-Date: Fri, 9 Aug 2024 13:24:20 -0600
-From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH v2][next] wifi: iwlwifi: mvm: Use __counted_by() and avoid
- -Wfamnae warnings
-Message-ID: <ZrZs5KL5Pz9tIinr@cute>
+	s=arc-20240116; t=1723256484; c=relaxed/simple;
+	bh=c8XOrfbLn4szTf8GfdDJDvKMldI5+D24v2UFaIrfRls=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=mTzqdg5icx4LH52kJv8q6UWowWmW292/9SUF/0bRQ5gfvCs/pdaKfs1RUcmCnqPfa25dCQ+Xl0t5KAh3tyEaOfGV0xTJYUTuwZhytui/M56F3ltxUlsWvua5K9FbhdfSuipvwhjqlDQ8YQouMSf+JvEorF8G5wqAdSKDlDJsw6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=E6Asb0GG; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47A0Xjqu032443;
+	Sat, 10 Aug 2024 02:21:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	98RgCUpNJYLjdc9KHu/DCjP9Nu3Ihp6wUSaZA+69PCo=; b=E6Asb0GG+7f5sL14
+	8ls8bpDZ5zB4CTFcrr9joR2GsomJ3FjHBu5l878PQGHPkPPe5DDcMPXOOJKqXirw
+	kG8RonmovXXZRL2RIbDO202SfbJ+VmPonDazXc8xudOpGxlsSdI/OMDIowkcn05g
+	Og740XDHIonkp6tyc0V/J1TVB8Zm+4dM0XoRxSxwyrAKx8ItAKUOYYfaqc5hg3If
+	KBUGTPHFdZd25LfMvKWAkV2OQbEbTg5EDxqrjJrszVrCICKjUhrjdO4WUNUb6odL
+	P44ZGkY8uQrwEX+UKWmYUjyeXFS35Hm07Thg00YGG2jwb+eNYqLR0OrDdPY94Q80
+	5mCz7g==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40wwjn03uk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 10 Aug 2024 02:21:13 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 47A2LBgC012871
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 10 Aug 2024 02:21:11 GMT
+Received: from [10.111.178.37] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 9 Aug 2024
+ 19:21:11 -0700
+Message-ID: <8d31adac-fd43-4cf9-8fc8-655b359a573c@quicinc.com>
+Date: Fri, 9 Aug 2024 19:21:10 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH][next] wifi: ath11k: Avoid -Wflex-array-member-not-at-end
+ warnings
+To: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Kalle Valo
+	<kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
+CC: <linux-wireless@vger.kernel.org>, <ath11k@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <linux-hardening@vger.kernel.org>
+References: <ZrZB3Rjswe0ZXtug@cute>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <ZrZB3Rjswe0ZXtug@cute>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: xvaVOjwy3M799k-1WttWrW3yKTBXUBF7
+X-Proofpoint-ORIG-GUID: xvaVOjwy3M799k-1WttWrW3yKTBXUBF7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-10_01,2024-08-07_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxlogscore=999
+ malwarescore=0 adultscore=0 lowpriorityscore=0 clxscore=1011 bulkscore=0
+ priorityscore=1501 phishscore=0 impostorscore=0 mlxscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
+ definitions=main-2408100016
 
--Wflex-array-member-not-at-end was introduced in GCC-14, and we are
-getting ready to enable it, globally.
+On 8/9/2024 9:20 AM, Gustavo A. R. Silva wrote:
+> -Wflex-array-member-not-at-end was introduced in GCC-14, and we are
+> getting ready to enable it, globally.
+> 
+> Move the conflicting declaration to the end of the structure. Notice
+> that `struct ieee80211_chanctx_conf` is a flexible structure --a
+> structure that contains a flexible-array member.
+> 
+> Also, remove a couple of unused structures.
+> 
+> Fix the following warnings:
+> drivers/net/wireless/ath/ath11k/core.h:409:39: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> drivers/net/wireless/ath/ath11k/dp.h:1309:24: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> drivers/net/wireless/ath/ath11k/dp.h:1368:24: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> 
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> ---
+>  drivers/net/wireless/ath/ath11k/core.h |  4 +++-
+>  drivers/net/wireless/ath/ath11k/dp.h   | 23 -----------------------
+>  2 files changed, 3 insertions(+), 24 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
+> index df24f0e409af..e283415dccf3 100644
+> --- a/drivers/net/wireless/ath/ath11k/core.h
+> +++ b/drivers/net/wireless/ath/ath11k/core.h
+> @@ -406,11 +406,13 @@ struct ath11k_vif {
+>  	bool wpaie_present;
+>  	bool bcca_zero_sent;
+>  	bool do_not_send_tmpl;
+> -	struct ieee80211_chanctx_conf chanctx;
+>  	struct ath11k_arp_ns_offload arp_ns_offload;
+>  	struct ath11k_rekey_data rekey_data;
+>  
+>  	struct ath11k_reg_tpc_power_info reg_tpc_info;
+> +
+> +	/* Must be last - ends in a flexible-array member. */
+> +	struct ieee80211_chanctx_conf chanctx;
 
-So, use the `DEFINE_FLEX()` helper for multiple on-stack definitions
-of flexible structures where the size of their flexible-array members
-are known at compile-time, and refactor the rest of the code,
-accordingly.
+there is something illogical about this since the vif is allocated using
+sizeof() and hence there will never be memory allocated for the flexible
+array, and it is assigned using either struct assignment or memcpy using the
+struct size which (fortunately) would not transfer the flexible array contents:
+		arvif->chanctx = *ctx;
 
-In order to allow for the use of `DEFINE_FLEX()`, a couple of
-structures were annotated with the `__counted_by()` attribute.
+		memcpy(&arvif->chanctx, ctx, sizeof(*ctx));
 
-With these changes, fix the following warnings:
-drivers/net/wireless/intel/iwlwifi/mvm/d3.c:124:52: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2053:51: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2148:43: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2211:43: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+since ath11k doesn't actually use the drv_priv[] I guess this change is OK, it
+is just strange to me.
 
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
-Changes in v2:
- - Fix use of keylen variable.
+also makes me wonder why ath11k keeps a copy of the chanctx instead of just
+getting it from the underlying ieee80211_link_data. but that is outside the
+scope of this discussion.
 
- .../net/wireless/intel/iwlwifi/fw/api/sta.h   |   2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c   | 126 ++++++++----------
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c  |   2 +-
- include/net/mac80211.h                        |   2 +-
- 4 files changed, 61 insertions(+), 71 deletions(-)
+>  };
+>  
+>  struct ath11k_vif_iter {
+> diff --git a/drivers/net/wireless/ath/ath11k/dp.h b/drivers/net/wireless/ath/ath11k/dp.h
+> index 2f6dd69d3be2..65d2bc0687c8 100644
+> --- a/drivers/net/wireless/ath/ath11k/dp.h
+> +++ b/drivers/net/wireless/ath/ath11k/dp.h
+> @@ -1305,18 +1305,6 @@ struct htt_ppdu_stats_user_rate {
+>  #define HTT_TX_INFO_PEERID(_flags) \
+>  			FIELD_GET(HTT_PPDU_STATS_TX_INFO_FLAGS_PEERID_M, _flags)
+>  
+> -struct htt_tx_ppdu_stats_info {
+> -	struct htt_tlv tlv_hdr;
+> -	u32 tx_success_bytes;
+> -	u32 tx_retry_bytes;
+> -	u32 tx_failed_bytes;
+> -	u32 flags; /* %HTT_PPDU_STATS_TX_INFO_FLAGS_ */
+> -	u16 tx_success_msdus;
+> -	u16 tx_retry_msdus;
+> -	u16 tx_failed_msdus;
+> -	u16 tx_duration; /* united in us */
+> -} __packed;
+> -
+>  enum  htt_ppdu_stats_usr_compln_status {
+>  	HTT_PPDU_STATS_USER_STATUS_OK,
+>  	HTT_PPDU_STATS_USER_STATUS_FILTERED,
+> @@ -1364,17 +1352,6 @@ struct htt_ppdu_stats_usr_cmpltn_ack_ba_status {
+>  	u32 success_bytes;
+>  } __packed;
+>  
+> -struct htt_ppdu_stats_usr_cmn_array {
+> -	struct htt_tlv tlv_hdr;
+> -	u32 num_ppdu_stats;
+> -	/* tx_ppdu_stats_info is filled by multiple struct htt_tx_ppdu_stats_info
+> -	 * elements.
+> -	 * tx_ppdu_stats_info is variable length, with length =
+> -	 *     number_of_ppdu_stats * sizeof (struct htt_tx_ppdu_stats_info)
+> -	 */
+> -	struct htt_tx_ppdu_stats_info tx_ppdu_info[];
+> -} __packed;
+> -
+>  struct htt_ppdu_user_stats {
+>  	u16 peer_id;
+>  	u32 tlv_flags;
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/sta.h b/drivers/net/wireless/intel/iwlwifi/fw/api/sta.h
-index d7f8a276b683..fe6bd34fefa3 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/sta.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/sta.h
-@@ -479,7 +479,7 @@ struct iwl_mvm_wep_key_cmd {
- 	u8 decryption_type;
- 	u8 flags;
- 	u8 reserved;
--	struct iwl_mvm_wep_key wep_key[];
-+	struct iwl_mvm_wep_key wep_key[] __counted_by(num_keys);
- } __packed; /* SEC_CURR_WEP_KEY_CMD_API_S_VER_2 */
- 
- /**
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index b4d650583ac2..b19579dd8de3 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -120,19 +120,15 @@ static void iwl_mvm_wowlan_program_keys(struct ieee80211_hw *hw,
- 	switch (key->cipher) {
- 	case WLAN_CIPHER_SUITE_WEP40:
- 	case WLAN_CIPHER_SUITE_WEP104: { /* hack it for now */
--		struct {
--			struct iwl_mvm_wep_key_cmd wep_key_cmd;
--			struct iwl_mvm_wep_key wep_key;
--		} __packed wkc = {
--			.wep_key_cmd.mac_id_n_color =
--				cpu_to_le32(FW_CMD_ID_AND_COLOR(mvmvif->id,
--								mvmvif->color)),
--			.wep_key_cmd.num_keys = 1,
--			/* firmware sets STA_KEY_FLG_WEP_13BYTES */
--			.wep_key_cmd.decryption_type = STA_KEY_FLG_WEP,
--			.wep_key.key_index = key->keyidx,
--			.wep_key.key_size = key->keylen,
--		};
-+		DEFINE_FLEX(struct iwl_mvm_wep_key_cmd, wkc, wep_key, num_keys, 1);
-+
-+		wkc->mac_id_n_color =
-+			cpu_to_le32(FW_CMD_ID_AND_COLOR(mvmvif->id,
-+							mvmvif->color));
-+		/* firmware sets STA_KEY_FLG_WEP_13BYTES */
-+		wkc->decryption_type = STA_KEY_FLG_WEP;
-+		wkc->wep_key[0].key_index = key->keyidx;
-+		wkc->wep_key[0].key_size = key->keylen;
- 
- 		/*
- 		 * This will fail -- the key functions don't set support
-@@ -142,18 +138,18 @@ static void iwl_mvm_wowlan_program_keys(struct ieee80211_hw *hw,
- 		if (key->flags & IEEE80211_KEY_FLAG_PAIRWISE)
- 			break;
- 
--		memcpy(&wkc.wep_key.key[3], key->key, key->keylen);
-+		memcpy(&wkc->wep_key[0].key[3], key->key, key->keylen);
- 		if (key->keyidx == mvmvif->tx_key_idx) {
- 			/* TX key must be at offset 0 */
--			wkc.wep_key.key_offset = 0;
-+			wkc->wep_key[0].key_offset = 0;
- 		} else {
- 			/* others start at 1 */
- 			data->wep_key_idx++;
--			wkc.wep_key.key_offset = data->wep_key_idx;
-+			wkc->wep_key[0].key_offset = data->wep_key_idx;
- 		}
- 
- 		mutex_lock(&mvm->mutex);
--		ret = iwl_mvm_send_cmd_pdu(mvm, WEP_KEY, 0, sizeof(wkc), &wkc);
-+		ret = iwl_mvm_send_cmd_pdu(mvm, WEP_KEY, 0, __struct_size(wkc), wkc);
- 		data->error = ret != 0;
- 
- 		mvm->ptk_ivlen = key->iv_len;
-@@ -2049,10 +2045,8 @@ static bool iwl_mvm_mlo_gtk_rekey(struct iwl_wowlan_status_data *status,
- 		struct iwl_wowlan_mlo_gtk *mlo_key = &status->mlo_keys[i];
- 		struct ieee80211_key_conf *key, *old_key;
- 		struct ieee80211_key_seq seq;
--		struct {
--			struct ieee80211_key_conf conf;
--			u8 key[32];
--		} conf = {};
-+		DEFINE_FLEX(struct ieee80211_key_conf, conf, key, keylen,
-+			    WOWLAN_KEY_MAX_SIZE);
- 		u16 flags = le16_to_cpu(mlo_key->flags);
- 		int j, link_id, key_id, key_type;
- 
-@@ -2069,40 +2063,40 @@ static bool iwl_mvm_mlo_gtk_rekey(struct iwl_wowlan_status_data *status,
- 			    key_type >= WOWLAN_MLO_GTK_KEY_NUM_TYPES))
- 			continue;
- 
--		conf.conf.cipher = old_keys->cipher[link_id][key_type];
-+		conf->cipher = old_keys->cipher[link_id][key_type];
- 		/* WARN_ON? */
--		if (!conf.conf.cipher)
-+		if (!conf->cipher)
- 			continue;
- 
--		conf.conf.keylen = 0;
--		switch (conf.conf.cipher) {
-+		conf->keylen = 0;
-+		switch (conf->cipher) {
- 		case WLAN_CIPHER_SUITE_CCMP:
- 		case WLAN_CIPHER_SUITE_GCMP:
--			conf.conf.keylen = WLAN_KEY_LEN_CCMP;
-+			conf->keylen = WLAN_KEY_LEN_CCMP;
- 			break;
- 		case WLAN_CIPHER_SUITE_GCMP_256:
--			conf.conf.keylen = WLAN_KEY_LEN_GCMP_256;
-+			conf->keylen = WLAN_KEY_LEN_GCMP_256;
- 			break;
- 		case WLAN_CIPHER_SUITE_BIP_GMAC_128:
--			conf.conf.keylen = WLAN_KEY_LEN_BIP_GMAC_128;
-+			conf->keylen = WLAN_KEY_LEN_BIP_GMAC_128;
- 			break;
- 		case WLAN_CIPHER_SUITE_BIP_GMAC_256:
--			conf.conf.keylen = WLAN_KEY_LEN_BIP_GMAC_256;
-+			conf->keylen = WLAN_KEY_LEN_BIP_GMAC_256;
- 			break;
- 		case WLAN_CIPHER_SUITE_AES_CMAC:
--			conf.conf.keylen = WLAN_KEY_LEN_AES_CMAC;
-+			conf->keylen = WLAN_KEY_LEN_AES_CMAC;
- 			break;
- 		case WLAN_CIPHER_SUITE_BIP_CMAC_256:
--			conf.conf.keylen = WLAN_KEY_LEN_BIP_CMAC_256;
-+			conf->keylen = WLAN_KEY_LEN_BIP_CMAC_256;
- 			break;
- 		}
- 
--		if (WARN_ON(!conf.conf.keylen ||
--			    conf.conf.keylen > sizeof(conf.key)))
-+		if (WARN_ON(!conf->keylen ||
-+			    conf->keylen > WOWLAN_KEY_MAX_SIZE))
- 			continue;
- 
--		memcpy(conf.conf.key, mlo_key->key, conf.conf.keylen);
--		conf.conf.keyidx = key_id;
-+		memcpy(conf->key, mlo_key->key, conf->keylen);
-+		conf->keyidx = key_id;
- 
- 		old_key = old_keys->key[link_id][key_id];
- 		if (old_key) {
-@@ -2114,7 +2108,7 @@ static bool iwl_mvm_mlo_gtk_rekey(struct iwl_wowlan_status_data *status,
- 
- 		IWL_DEBUG_WOWLAN(mvm, "Add MLO key id %d, link id %d\n",
- 				 key_id, link_id);
--		key = ieee80211_gtk_rekey_add(vif, &conf.conf, link_id);
-+		key = ieee80211_gtk_rekey_add(vif, conf, link_id);
- 		if (WARN_ON(IS_ERR(key))) {
- 			ret = false;
- 			goto out;
-@@ -2144,30 +2138,28 @@ static bool iwl_mvm_gtk_rekey(struct iwl_wowlan_status_data *status,
- {
- 	int i, j;
- 	struct ieee80211_key_conf *key;
--	struct {
--		struct ieee80211_key_conf conf;
--		u8 key[32];
--	} conf = {
--		.conf.cipher = gtk_cipher,
--	};
-+	DEFINE_FLEX(struct ieee80211_key_conf, conf, key, keylen,
-+		    WOWLAN_KEY_MAX_SIZE);
- 	int link_id = vif->active_links ? __ffs(vif->active_links) : -1;
- 
-+	conf->cipher = gtk_cipher;
-+
- 	BUILD_BUG_ON(WLAN_KEY_LEN_CCMP != WLAN_KEY_LEN_GCMP);
--	BUILD_BUG_ON(sizeof(conf.key) < WLAN_KEY_LEN_CCMP);
--	BUILD_BUG_ON(sizeof(conf.key) < WLAN_KEY_LEN_GCMP_256);
--	BUILD_BUG_ON(sizeof(conf.key) < WLAN_KEY_LEN_TKIP);
--	BUILD_BUG_ON(sizeof(conf.key) < sizeof(status->gtk[0].key));
-+	BUILD_BUG_ON(conf->keylen < WLAN_KEY_LEN_CCMP);
-+	BUILD_BUG_ON(conf->keylen < WLAN_KEY_LEN_GCMP_256);
-+	BUILD_BUG_ON(conf->keylen < WLAN_KEY_LEN_TKIP);
-+	BUILD_BUG_ON(conf->keylen < sizeof(status->gtk[0].key));
- 
- 	switch (gtk_cipher) {
- 	case WLAN_CIPHER_SUITE_CCMP:
- 	case WLAN_CIPHER_SUITE_GCMP:
--		conf.conf.keylen = WLAN_KEY_LEN_CCMP;
-+		conf->keylen = WLAN_KEY_LEN_CCMP;
- 		break;
- 	case WLAN_CIPHER_SUITE_GCMP_256:
--		conf.conf.keylen = WLAN_KEY_LEN_GCMP_256;
-+		conf->keylen = WLAN_KEY_LEN_GCMP_256;
- 		break;
- 	case WLAN_CIPHER_SUITE_TKIP:
--		conf.conf.keylen = WLAN_KEY_LEN_TKIP;
-+		conf->keylen = WLAN_KEY_LEN_TKIP;
- 		break;
- 	default:
- 		WARN_ON(1);
-@@ -2177,14 +2169,14 @@ static bool iwl_mvm_gtk_rekey(struct iwl_wowlan_status_data *status,
- 		if (!status->gtk[i].len)
- 			continue;
- 
--		conf.conf.keyidx = status->gtk[i].id;
-+		conf->keyidx = status->gtk[i].id;
- 		IWL_DEBUG_WOWLAN(mvm,
- 				 "Received from FW GTK cipher %d, key index %d\n",
--				 conf.conf.cipher, conf.conf.keyidx);
--		memcpy(conf.conf.key, status->gtk[i].key,
-+				 conf->cipher, conf->keyidx);
-+		memcpy(conf->key, status->gtk[i].key,
- 		       sizeof(status->gtk[i].key));
- 
--		key = ieee80211_gtk_rekey_add(vif, &conf.conf, link_id);
-+		key = ieee80211_gtk_rekey_add(vif, conf, link_id);
- 		if (IS_ERR(key))
- 			return false;
- 
-@@ -2207,41 +2199,39 @@ iwl_mvm_d3_igtk_bigtk_rekey_add(struct iwl_wowlan_status_data *status,
- 				struct iwl_multicast_key_data *key_data)
- {
- 	struct ieee80211_key_conf *key_config;
--	struct {
--		struct ieee80211_key_conf conf;
--		u8 key[WOWLAN_KEY_MAX_SIZE];
--	} conf = {
--		.conf.cipher = cipher,
--		.conf.keyidx = key_data->id,
--	};
-+	DEFINE_FLEX(struct ieee80211_key_conf, conf, key, keylen,
-+		    WOWLAN_KEY_MAX_SIZE);
- 	struct ieee80211_key_seq seq;
- 	int link_id = vif->active_links ? __ffs(vif->active_links) : -1;
- 
-+	conf->cipher = cipher;
-+	conf->keyidx = key_data->id;
-+
- 	if (!key_data->len)
- 		return true;
- 
--	iwl_mvm_d3_set_igtk_bigtk_ipn(key_data, &seq, conf.conf.cipher);
-+	iwl_mvm_d3_set_igtk_bigtk_ipn(key_data, &seq, conf->cipher);
- 
- 	switch (cipher) {
- 	case WLAN_CIPHER_SUITE_BIP_GMAC_128:
--		conf.conf.keylen = WLAN_KEY_LEN_BIP_GMAC_128;
-+		conf->keylen = WLAN_KEY_LEN_BIP_GMAC_128;
- 		break;
- 	case WLAN_CIPHER_SUITE_BIP_GMAC_256:
--		conf.conf.keylen = WLAN_KEY_LEN_BIP_GMAC_256;
-+		conf->keylen = WLAN_KEY_LEN_BIP_GMAC_256;
- 		break;
- 	case WLAN_CIPHER_SUITE_AES_CMAC:
--		conf.conf.keylen = WLAN_KEY_LEN_AES_CMAC;
-+		conf->keylen = WLAN_KEY_LEN_AES_CMAC;
- 		break;
- 	case WLAN_CIPHER_SUITE_BIP_CMAC_256:
--		conf.conf.keylen = WLAN_KEY_LEN_BIP_CMAC_256;
-+		conf->keylen = WLAN_KEY_LEN_BIP_CMAC_256;
- 		break;
- 	default:
- 		WARN_ON(1);
- 	}
--	BUILD_BUG_ON(sizeof(conf.key) < sizeof(key_data->key));
--	memcpy(conf.conf.key, key_data->key, conf.conf.keylen);
-+	BUILD_BUG_ON(WOWLAN_KEY_MAX_SIZE < sizeof(key_data->key));
-+	memcpy(conf->key, key_data->key, conf->keylen);
- 
--	key_config = ieee80211_gtk_rekey_add(vif, &conf.conf, link_id);
-+	key_config = ieee80211_gtk_rekey_add(vif, conf, link_id);
- 	if (IS_ERR(key_config))
- 		return false;
- 	ieee80211_set_key_rx_seq(key_config, 0, &seq);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-index 15e64d94d6ea..1502f577a942 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-@@ -4350,8 +4350,8 @@ int iwl_mvm_add_pasn_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 		goto out;
- 
- 	keyconf->cipher = cipher;
--	memcpy(keyconf->key, key, key_len);
- 	keyconf->keylen = key_len;
-+	memcpy(keyconf->key, key, keyconf->keylen);
- 	keyconf->flags = IEEE80211_KEY_FLAG_PAIRWISE;
- 
- 	if (mld) {
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 0a04eaf5343c..d3f6056daf8a 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -2222,7 +2222,7 @@ struct ieee80211_key_conf {
- 	u16 flags;
- 	s8 link_id;
- 	u8 keylen;
--	u8 key[];
-+	u8 key[] __counted_by(keylen);
- };
- 
- #define IEEE80211_MAX_PN_LEN	16
--- 
-2.34.1
+the second part if definitely ok.
+
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
 
