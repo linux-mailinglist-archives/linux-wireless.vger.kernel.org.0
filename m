@@ -1,67 +1,72 @@
-Return-Path: <linux-wireless+bounces-11260-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11261-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B98E394DD82
-	for <lists+linux-wireless@lfdr.de>; Sat, 10 Aug 2024 17:41:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4081694DDEE
+	for <lists+linux-wireless@lfdr.de>; Sat, 10 Aug 2024 20:33:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F2AA2822B3
-	for <lists+linux-wireless@lfdr.de>; Sat, 10 Aug 2024 15:41:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 662541C20C39
+	for <lists+linux-wireless@lfdr.de>; Sat, 10 Aug 2024 18:33:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FC851662E4;
-	Sat, 10 Aug 2024 15:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1283F61FD8;
+	Sat, 10 Aug 2024 18:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="F2HFU594"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="CEyQHuRj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from omta034.useast.a.cloudfilter.net (omta034.useast.a.cloudfilter.net [44.202.169.33])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7DF15AAB8
-	for <linux-wireless@vger.kernel.org>; Sat, 10 Aug 2024 15:41:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2D679C4
+	for <linux-wireless@vger.kernel.org>; Sat, 10 Aug 2024 18:32:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723304506; cv=none; b=qA9xtmfu5lfD9fTHNtjVrcBKnIKyaano1kvQOkvu8vuu72IrXQXV+9HIlKlTL/i1SF0DQr416KRMVs0v2ji0EaGDBF75jhCrq95Z5IHCWGZ3w57qfqaasqBQg4HzlK0j4DlZL53U0VDIeZLxu0ItUbujRfopMsJY9i7f80TwYHE=
+	t=1723314771; cv=none; b=WK00hwtuMwzPNNyDjIHpyI5dCuwjSpo+N6MGVsQ11C2JiSP4fxCIzrke+BtHvesYhLcDoJyN5K/cAuOWW8q8hSGr5/0UaYK/rrHYptdR7fHNR+1UwRra7DtseT2MddIGGzoJuKwqgIaW6B8nHjQdD+kHhep3mhWESh3c4tkrDGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723304506; c=relaxed/simple;
-	bh=o62VIjOPLALNmxGLCiVL2Zsve94rbDHXk3qMOQbZyAA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X+8FHdgnQ5HD/jGM14bKYhuHVk7/dj3b3S0JEvUps9DOOCNfroOTIK9z8cyX8V6t+/WnphPnNhpmy4dx3PMGKeY/Z2jUtyZCYu3kfUuwaRgCrusri0o9C1AYiGe/8Pi0ZT9F3ONt1IzZpYPEFEohbYpOpkKf+PD1IEUOqCmNNKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=F2HFU594; arc=none smtp.client-ip=44.202.169.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
-Received: from eig-obgw-6005a.ext.cloudfilter.net ([10.0.30.201])
-	by cmsmtp with ESMTPS
-	id cnpBsy1Dj1zuHcoDpssxtQ; Sat, 10 Aug 2024 15:41:37 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-	by cmsmtp with ESMTPS
-	id coDosZ6SdRBkMcoDosLMQm; Sat, 10 Aug 2024 15:41:36 +0000
-X-Authority-Analysis: v=2.4 cv=CbPD56rl c=1 sm=1 tr=0 ts=66b78a30
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=frY+GlAHrI6frpeK1MvySw==:17
- a=IkcTkHD0fZMA:10 a=yoJbH4e0A30A:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8
- a=oKrQ66Li5qe5zRcEOgYA:9 a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22
- a=TjNXssC_j7lpFel5tvFf:22 a=Xt_RvD8W3m28Mn_h3AK8:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=14Lw9ijUqufXCJHVSEUKjfux6K/+0xEy2ibtU/QVJd8=; b=F2HFU5946l41S5Ql/lZv+emjHf
-	ihq/ln7mxZ3Ajr7RrEC1PZqsp/JTcThniZQYIlTcFNjZoKfLOVAD8aAvRuIl7SYlBRXSTZ6GYZsw8
-	hyCCR6F9wdJyNpkJpehoNtFGNMaOX7I1mLUXXndfIuIrbD+pHwalT8NR6tbxJgLH/20UHucLJKghI
-	NEqSTKA4YcQUDnO3Cdi+yriIdP6bzIXaOPTOKqRYswV2vwybfuFJtTPINxRtREZHWBWwzNLm7SCZM
-	R0Mu4OIC7w+57NpqRUbpqee03nO2sXMe1+ykVCwacuboFak6O+bvUk2xCLDsm1034geEwOQmOnbTU
-	9vA7XxSQ==;
-Received: from [201.172.173.139] (port=52890 helo=[192.168.15.5])
-	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <gustavo@embeddedor.com>)
-	id 1scoDm-0032aY-2q;
-	Sat, 10 Aug 2024 10:41:35 -0500
-Message-ID: <0070b332-b617-4454-ac7b-85b1d78fef68@embeddedor.com>
-Date: Sat, 10 Aug 2024 09:41:29 -0600
+	s=arc-20240116; t=1723314771; c=relaxed/simple;
+	bh=VacrKqjT12DQWFLHJLsfIBg5hsy8fLzWFq+alMsvooM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=axXiKIn4/gufjcwRXMLajVB2Mj8Y7kRy9Wkb0O2WXYa6wA0bQ2asM3MPdhh7BRXKS3UbzJ/u8OzKvrbbcJR5YjjD8QSl3VAUThVNWWmI8/6me0TEE8zXdQM/PyoddB8DmU+tAsqfy/CbojzEIORNgbUIyZfuE3F40vQjNJ7m8WM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=CEyQHuRj; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5a15692b6f6so3475413a12.0
+        for <linux-wireless@vger.kernel.org>; Sat, 10 Aug 2024 11:32:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1723314766; x=1723919566; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=u8muDajrGX3FO5dD48egl2aXV9/qSThjd9VJkKWphN4=;
+        b=CEyQHuRjxHC6llSCjeeK71HNeNrRvFQBFWJGE61IYUxT20wB4okj9CowPWtn1U0yZ7
+         6FEeYMAssetNYiQM89haRRqYO0c+/7orXgusqO8+KIz7epo3VBfK5sAfpqohIMt/FVn5
+         OgEgW1ktP3t7nWVHX69pFXajGGrh537jt9bFs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723314766; x=1723919566;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=u8muDajrGX3FO5dD48egl2aXV9/qSThjd9VJkKWphN4=;
+        b=uE2kl84s/ol/sSDq9m/g1IiYRww6QFFhwmQ2ZWVewErrHX7rMwobgKU+sPenY7FkH2
+         rKz3x7RETykAgTrcmw4Wpk5Q1U3iy5k78U1eZqq4RLC+3FQ+FAV9ciHObAkDZ4XXBIL2
+         nhbNq68yH98bgPqleNaOw1T2qJb1AOr7VijhI5KBDBJQacnp4yLOnmEvxfvBdXc+YMoY
+         +n+8QlEpUpO0dGriYRLntANCYoRBnumyElATiMaoBfcKnjee75LNTiNBvO0PlX69BY0X
+         Zv1J2JWRM1mhsv89Z94MOAh6ht4+pY43sOs+qSmJqySqPqjJTgEB5oCO2wPOsuzdkZ3T
+         /maA==
+X-Forwarded-Encrypted: i=1; AJvYcCU76tndkyy97emI5hwcvM08UmzB5JYJBVj5VVSjx2+J5YsswHyxpRPFDlf5wyh8FNoG+hn/3bvSY5l9j+CrSvw328IXpC1MhuIY6rnCro8=
+X-Gm-Message-State: AOJu0YyNxmKVBcvRBubqZBz4UwpTTfFlyVtOpPQa3Q/IKhnc2n6wj32S
+	6DrkTlL5r2N0AMBYKwPdAIVUPy7ldYhgpKMggJk38Dd8HTbzCo59/7z/R4ba+Q==
+X-Google-Smtp-Source: AGHT+IGop/ZoDA+Oc8+5qDzv25GL3CgFjr289f/SrTe7d5Ea2cqgNbnjGz8/e5qHIsy+G1LA+Xr+wA==
+X-Received: by 2002:a05:6402:90e:b0:59e:65d1:a56b with SMTP id 4fb4d7f45d1cf-5bd0a6668camr4516382a12.34.1723314765837;
+        Sat, 10 Aug 2024 11:32:45 -0700 (PDT)
+Received: from [192.168.178.137] (f215227.upc-f.chello.nl. [80.56.215.227])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5bd187f2abasm768760a12.8.2024.08.10.11.32.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 10 Aug 2024 11:32:45 -0700 (PDT)
+Message-ID: <fb9947fa-bca8-4c51-9feb-bf7ac6c6cc22@broadcom.com>
+Date: Sat, 10 Aug 2024 20:32:42 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -69,157 +74,219 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH][next] wifi: ath11k: Avoid -Wflex-array-member-not-at-end
- warnings
-To: Jeff Johnson <quic_jjohnson@quicinc.com>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>, Kalle Valo
- <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-References: <ZrZB3Rjswe0ZXtug@cute>
- <8d31adac-fd43-4cf9-8fc8-655b359a573c@quicinc.com>
+Subject: Re: [PATCH v9 4/5] wifi: brcmfmac: Add optional lpo clock enable
+ support
+To: jacobe.zang@wesion.com, Sai Krishna Gajula <saikrishnag@marvell.com>,
+ "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
+ <krzk+dt@kernel.org>, "heiko@sntech.de" <heiko@sntech.de>,
+ "kvalo@kernel.org" <kvalo@kernel.org>,
+ "davem@davemloft.net" <davem@davemloft.net>,
+ "edumazet@google.com" <edumazet@google.com>,
+ "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com"
+ <pabeni@redhat.com>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
+ "efectn@protonmail.com" <efectn@protonmail.com>,
+ "dsimic@manjaro.org" <dsimic@manjaro.org>,
+ "jagan@edgeble.ai" <jagan@edgeble.ai>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-rockchip@lists.infradead.org" <linux-rockchip@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "arend@broadcom.com" <arend@broadcom.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "megi@xff.cz"
+ <megi@xff.cz>, "duoming@zju.edu.cn" <duoming@zju.edu.cn>,
+ "bhelgaas@google.com" <bhelgaas@google.com>,
+ "minipli@grsecurity.net" <minipli@grsecurity.net>,
+ "brcm80211@lists.linux.dev" <brcm80211@lists.linux.dev>,
+ "brcm80211-dev-list.pdl@broadcom.com" <brcm80211-dev-list.pdl@broadcom.com>,
+ "nick@khadas.com" <nick@khadas.com>
+References: <20240810035141.439024-1-jacobe.zang@wesion.com>
+ <20240810035141.439024-5-jacobe.zang@wesion.com>
+ <BY3PR18MB47072A9CC7E1EEB4BD1FC063A0BB2@BY3PR18MB4707.namprd18.prod.outlook.com>
+ <d9a182e4-c620-476d-8eb2-752dfd1ba4f8@wesion.com>
 Content-Language: en-US
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <8d31adac-fd43-4cf9-8fc8-655b359a573c@quicinc.com>
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
+Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
+ 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
+In-Reply-To: <d9a182e4-c620-476d-8eb2-752dfd1ba4f8@wesion.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 201.172.173.139
-X-Source-L: No
-X-Exim-ID: 1scoDm-0032aY-2q
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: ([192.168.15.5]) [201.172.173.139]:52890
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 4
-X-Org: HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfMvC1G8qKozlrFGPEGMShNGzyyKKs5rvjA6cdZ+SYE0P363WFoo/i5wFQgUe3QuVhE/6YPVN6Xf2C84HNio7a5wzG9oB7VHSyOviGsDAiblpkMJWjrDE
- 01NjtlLNd7N84TaDlYy2KVv6lm6uUajmR7aEbA0AQzxYMBR1VpcAhxpYtgzb567QWXTBxFw4PmeDT4AQOy0shVqPHplKkTPBLgc5hpSHUbJ027BO5bKvitTh
+Content-Transfer-Encoding: 8bit
 
-
-
-On 09/08/24 20:21, Jeff Johnson wrote:
-> On 8/9/2024 9:20 AM, Gustavo A. R. Silva wrote:
->> -Wflex-array-member-not-at-end was introduced in GCC-14, and we are
->> getting ready to enable it, globally.
+On 8/10/2024 12:08 PM, jacobe.zang@wesion.com wrote:
+> 
+> 
+> On 2024/8/10 17:44, Sai Krishna Gajula <saikrishnag@marvell.com> wrote:
 >>
->> Move the conflicting declaration to the end of the structure. Notice
->> that `struct ieee80211_chanctx_conf` is a flexible structure --a
->> structure that contains a flexible-array member.
+>> > -----Original Message-----
+>> > From: Jacobe Zang <jacobe.zang@wesion.com>
+>> > Sent: Saturday, August 10, 2024 9:22 AM
+>> > To: robh@kernel.org; krzk+dt@kernel.org; heiko@sntech.de;
+>> > kvalo@kernel.org; davem@davemloft.net; edumazet@google.com;
+>> > kuba@kernel.org; pabeni@redhat.com; conor+dt@kernel.org;
+>> > arend.vanspriel@broadcom.com
+>> > Cc: efectn@protonmail.com; dsimic@manjaro.org; jagan@edgeble.ai;
+>> > devicetree@vger.kernel.org; linux-arm-kernel@lists.infradead.org; 
+>> linux-
+>> > rockchip@lists.infradead.org; linux-kernel@vger.kernel.org;
+>> > arend@broadcom.com; linux-wireless@vger.kernel.org;
+>> > netdev@vger.kernel.org; megi@xff.cz; duoming@zju.edu.cn;
+>> > bhelgaas@google.com; minipli@grsecurity.net; brcm80211@lists.linux.dev;
+>> > brcm80211-dev-list.pdl@broadcom.com; nick@khadas.com; Jacobe Zang
+>> > <jacobe.zang@wesion.com>
+>> > Subject:  [PATCH v9 4/5] wifi: brcmfmac: Add optional lpo clock
+>> > enable support
+>> >
+>> > WiFi modules often require 32kHz clock to function. Add support to 
+>> enable
+>> > the clock to PCIe driver and move "brcm,bcm4329-fmac" check to the 
+>> top of
+>> > brcmf_of_probe. Change function prototypes from void to int and add
+>> > appropriate errno's for return
+>> > WiFi modules often require 32kHz clock to function. Add support to 
+>> enable
+>> > the clock to PCIe driver and move "brcm,bcm4329-fmac" check to the 
+>> top of
+>> > brcmf_of_probe. Change function prototypes from void to int and add
+>> > appropriate errno's for return values that will be send to bus when 
+>> error
+>> > occurred.
+>> >
+>> > Co-developed-by: Ondrej Jirman <megi@xff.cz>
+>> > Signed-off-by: Ondrej Jirman <megi@xff.cz>
+>> > Co-developed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+>> > Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+>> > Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
+>> > ---
+>> >   .../broadcom/brcm80211/brcmfmac/bcmsdh.c      |  4 +-
+>> >   .../broadcom/brcm80211/brcmfmac/common.c      |  3 +-
+>> >   .../wireless/broadcom/brcm80211/brcmfmac/of.c | 53 
+>> +++++++++++--------
+>> > .../wireless/broadcom/brcm80211/brcmfmac/of.h |  9 ++--
+>> >   .../broadcom/brcm80211/brcmfmac/pcie.c        |  3 ++
+>> >   .../broadcom/brcm80211/brcmfmac/sdio.c        | 24 ++++++---
+>> >   .../broadcom/brcm80211/brcmfmac/usb.c         |  3 ++
+>> >   7 files changed, 63 insertions(+), 36 deletions(-)
+>> >
+>> > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+>> > b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+>> > index 13391c2d82aae..b2ede4e579c5c 100644
+>> > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+>> > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+>> > @@ -947,8 +947,8 @@ int brcmf_sdiod_probe(struct brcmf_sdio_dev
+>> > *sdiodev)
+>> >
+>> >       /* try to attach to the target device */
+>> >       sdiodev->bus = brcmf_sdio_probe(sdiodev);
+>> > -    if (!sdiodev->bus) {
+>> > -        ret = -ENODEV;
+>> > +    if (IS_ERR(sdiodev->bus)) {
+>> > +        ret = PTR_ERR(sdiodev->bus);
+>> >           goto out;
+>> >       }
+>> >       brcmf_sdiod_host_fixup(sdiodev->func2->card->host);
+>> > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
+>> > b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
+>> > index b24faae35873d..58d50918dd177 100644
+>> > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
+>> > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
+>> > @@ -561,7 +561,8 @@ struct brcmf_mp_device
+>> > *brcmf_get_module_param(struct device *dev,
+>> >       if (!found) {
+>> >           /* No platform data for this device, try OF and DMI data */
+>> >           brcmf_dmi_probe(settings, chip, chiprev);
+>> > -        brcmf_of_probe(dev, bus_type, settings);
+>> > +        if (brcmf_of_probe(dev, bus_type, settings) == -
+>> > EPROBE_DEFER)
+>> > +            return ERR_PTR(-EPROBE_DEFER);
+>> >           brcmf_acpi_probe(dev, bus_type, settings);
+>> >       }
+>> >       return settings;
+>> > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+>> > b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+>> > index e406e11481a62..f19dc7355e0e8 100644
+>> > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+>> > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+>> > @@ -6,6 +6,7 @@
+>> >   #include <linux/of.h>
+>> >   #include <linux/of_irq.h>
+>> >   #include <linux/of_net.h>
+>> > +#include <linux/clk.h>
+>> >
+>> >   #include <defs.h>
+>> >   #include "debug.h"
+>> > @@ -65,17 +66,21 @@ static int brcmf_of_get_country_codes(struct device
+>> > *dev,
+>> >       return 0;
+>> >   }
+>> >
+>> > -void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
+>> > -            struct brcmf_mp_device *settings)
+>> > +int brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
+>> > +           struct brcmf_mp_device *settings)
+>> >   {
+>> >       struct brcmfmac_sdio_pd *sdio = &settings->bus.sdio;
+>> >       struct device_node *root, *np = dev->of_node;
+>> > +    struct clk *clk;
+>> >       const char *prop;
 >>
->> Also, remove a couple of unused structures.
+>> Small nit, please check if reverse x-mas tree order need to be follow 
+>> here.
 >>
->> Fix the following warnings:
->> drivers/net/wireless/ath/ath11k/core.h:409:39: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
->> drivers/net/wireless/ath/ath11k/dp.h:1309:24: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
->> drivers/net/wireless/ath/ath11k/dp.h:1368:24: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
->>
->> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
->> ---
->>   drivers/net/wireless/ath/ath11k/core.h |  4 +++-
->>   drivers/net/wireless/ath/ath11k/dp.h   | 23 -----------------------
->>   2 files changed, 3 insertions(+), 24 deletions(-)
->>
->> diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
->> index df24f0e409af..e283415dccf3 100644
->> --- a/drivers/net/wireless/ath/ath11k/core.h
->> +++ b/drivers/net/wireless/ath/ath11k/core.h
->> @@ -406,11 +406,13 @@ struct ath11k_vif {
->>   	bool wpaie_present;
->>   	bool bcca_zero_sent;
->>   	bool do_not_send_tmpl;
->> -	struct ieee80211_chanctx_conf chanctx;
->>   	struct ath11k_arp_ns_offload arp_ns_offload;
->>   	struct ath11k_rekey_data rekey_data;
->>   
->>   	struct ath11k_reg_tpc_power_info reg_tpc_info;
->> +
->> +	/* Must be last - ends in a flexible-array member. */
->> +	struct ieee80211_chanctx_conf chanctx;
+>> >       int irq;
+>> >       int err;
+>> >       u32 irqf;
 > 
-> there is something illogical about this since the vif is allocated using
-> sizeof() and hence there will never be memory allocated for the flexible
-> array, and it is assigned using either struct assignment or memcpy using the
-> struct size which (fortunately) would not transfer the flexible array contents:
-> 		arvif->chanctx = *ctx;
-> 
-> 		memcpy(&arvif->chanctx, ctx, sizeof(*ctx));
+> It can be seen from this line that there should be no need to follow the 
+> reverse x-mas tree order. Because it is a struct variable, so place with 
+> other struct ones.
 
-Yes; this is why I didn't include a 'Fixes' tag.
+As driver maintainer I do not care about such neatness, but maybe Kalle 
+has another preference. The code above looks fine to me.
 
-In any case, middle-flex-arrays are deprecated and should either be
-removed/refactored[1][2] or placed at the very bottom in any nested
-structures. :)
+Regards,
+Arend
 
-> 
-> since ath11k doesn't actually use the drv_priv[] I guess this change is OK, it
-> is just strange to me.
-> 
-> also makes me wonder why ath11k keeps a copy of the chanctx instead of just
-> getting it from the underlying ieee80211_link_data. but that is outside the
-> scope of this discussion.
-> 
->>   };
->>   
->>   struct ath11k_vif_iter {
->> diff --git a/drivers/net/wireless/ath/ath11k/dp.h b/drivers/net/wireless/ath/ath11k/dp.h
->> index 2f6dd69d3be2..65d2bc0687c8 100644
->> --- a/drivers/net/wireless/ath/ath11k/dp.h
->> +++ b/drivers/net/wireless/ath/ath11k/dp.h
->> @@ -1305,18 +1305,6 @@ struct htt_ppdu_stats_user_rate {
->>   #define HTT_TX_INFO_PEERID(_flags) \
->>   			FIELD_GET(HTT_PPDU_STATS_TX_INFO_FLAGS_PEERID_M, _flags)
->>   
->> -struct htt_tx_ppdu_stats_info {
->> -	struct htt_tlv tlv_hdr;
->> -	u32 tx_success_bytes;
->> -	u32 tx_retry_bytes;
->> -	u32 tx_failed_bytes;
->> -	u32 flags; /* %HTT_PPDU_STATS_TX_INFO_FLAGS_ */
->> -	u16 tx_success_msdus;
->> -	u16 tx_retry_msdus;
->> -	u16 tx_failed_msdus;
->> -	u16 tx_duration; /* united in us */
->> -} __packed;
->> -
->>   enum  htt_ppdu_stats_usr_compln_status {
->>   	HTT_PPDU_STATS_USER_STATUS_OK,
->>   	HTT_PPDU_STATS_USER_STATUS_FILTERED,
->> @@ -1364,17 +1352,6 @@ struct htt_ppdu_stats_usr_cmpltn_ack_ba_status {
->>   	u32 success_bytes;
->>   } __packed;
->>   
->> -struct htt_ppdu_stats_usr_cmn_array {
->> -	struct htt_tlv tlv_hdr;
->> -	u32 num_ppdu_stats;
->> -	/* tx_ppdu_stats_info is filled by multiple struct htt_tx_ppdu_stats_info
->> -	 * elements.
->> -	 * tx_ppdu_stats_info is variable length, with length =
->> -	 *     number_of_ppdu_stats * sizeof (struct htt_tx_ppdu_stats_info)
->> -	 */
->> -	struct htt_tx_ppdu_stats_info tx_ppdu_info[];
->> -} __packed;
->> -
->>   struct htt_ppdu_user_stats {
->>   	u16 peer_id;
->>   	u32 tlv_flags;
-> 
-> the second part if definitely ok.
-> 
-> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-Thanks
---
-Gustavo
-
-[1] https://lore.kernel.org/linux-hardening/ZrOQa2gew5yadyt3@cute/
-[2] https://lore.kernel.org/linux-hardening/ZrJqtUpCI+uCeb4D@cute/
 
