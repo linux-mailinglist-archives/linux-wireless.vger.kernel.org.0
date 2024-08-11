@@ -1,251 +1,96 @@
-Return-Path: <linux-wireless+bounces-11269-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11270-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D198694E070
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Aug 2024 10:10:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3782894E270
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 Aug 2024 19:31:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6ED811C20E6F
-	for <lists+linux-wireless@lfdr.de>; Sun, 11 Aug 2024 08:10:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E36612818C1
+	for <lists+linux-wireless@lfdr.de>; Sun, 11 Aug 2024 17:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10951208B6;
-	Sun, 11 Aug 2024 08:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9EB927457;
+	Sun, 11 Aug 2024 17:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IayuqrgV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jr5eHBy2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95BB200A3;
-	Sun, 11 Aug 2024 08:10:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B7C27447
+	for <linux-wireless@vger.kernel.org>; Sun, 11 Aug 2024 17:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723363847; cv=none; b=XeClIvAgoZaGJtxn6VFdTDQVF+VmDsjysx0Qll107LmlzmbxCtXyORzwQNA1UqOLkDTvMGom9cLPt4kYHnd/aFTF0dxxaA1YSs9IYp9aKyOr2LAoxkUBsTgMjUeX35e4LGW8oIRfiAScqm5ScOm1mepfsviAnbsFgVu704+P/Vc=
+	t=1723397468; cv=none; b=NRwlE3ljKlv61UBLeGlK5oE5mmQIryCgQKAq9WWCf0iX+P2F3y1VI3yiyuMfpRPLb+qX0vv9wfZ7M7rPqqQUIZlDWOQezasfv1ef41X2FdKZDmxbi9piGmR9/FZgblZj1JtA//15dHQTOOjqH5Vz/CMiA33IZ0qsvE09otZHZzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723363847; c=relaxed/simple;
-	bh=nZFC08tDh3nttnNBJVhskJcR0F7oLOKEuY05u6lL1vI=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=CxuA3ZVID5pTIIFclHEdIT1knXHjNHJI/d3WPmySbEVwAU+HT++rYazskaqCw5hawz5sjmZsNoxVhv+mfLITfJqWpOtnnfjqKdpV9EEAcyq26hFfk/tmvWUVns2t7ieZH+FGFqrjc6BzdI0p1S65tJkLuoB0OYwVSR9SCqHynDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IayuqrgV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F856C4AF0C;
-	Sun, 11 Aug 2024 08:10:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723363847;
-	bh=nZFC08tDh3nttnNBJVhskJcR0F7oLOKEuY05u6lL1vI=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=IayuqrgVtF03hxP3tVa0X2jMdwJIQiZvedasEzt4EiDzetg/YWqw+N3rHwOUgj1O7
-	 glWVz2/gjDD8FiVKSJCHkDIkCJXTMZ6qDM/YbL/NWJ8z7JGsUd5OYXqHyPNNZFkGJj
-	 gYB4t2FWWnQdSTtDD9lgpCezPjYX4TRLQ7x0dT96pPH22G2GD4nakyMQxWA98Imdey
-	 IdUYWoNzWedlDi8tZWfK8QwP+Owg9tnWU9v3y3AoknpKEJ7h8fTipsA8OwSpEhCYlD
-	 198BwYKta2npoYls9aUNOuSxuf5kzTa4BkaVBAOaASOOL9jTicowjyAceLcKdzcinD
-	 Tj0bIFimIcfUg==
-From: Kalle Valo <kvalo@kernel.org>
-To: Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc: jacobe.zang@wesion.com,  Sai Krishna Gajula <saikrishnag@marvell.com>,
-  "robh@kernel.org" <robh@kernel.org>,  "krzk+dt@kernel.org"
- <krzk+dt@kernel.org>,  "heiko@sntech.de" <heiko@sntech.de>,
-  "davem@davemloft.net" <davem@davemloft.net>,  "edumazet@google.com"
- <edumazet@google.com>,  "kuba@kernel.org" <kuba@kernel.org>,
-  "pabeni@redhat.com" <pabeni@redhat.com>,  "conor+dt@kernel.org"
- <conor+dt@kernel.org>,  "efectn@protonmail.com" <efectn@protonmail.com>,
-  "dsimic@manjaro.org" <dsimic@manjaro.org>,  "jagan@edgeble.ai"
- <jagan@edgeble.ai>,  "devicetree@vger.kernel.org"
- <devicetree@vger.kernel.org>,  "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
-  "linux-rockchip@lists.infradead.org"
- <linux-rockchip@lists.infradead.org>,  "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>,  "arend@broadcom.com"
- <arend@broadcom.com>,  "linux-wireless@vger.kernel.org"
- <linux-wireless@vger.kernel.org>,  "netdev@vger.kernel.org"
- <netdev@vger.kernel.org>,  "megi@xff.cz" <megi@xff.cz>,
-  "duoming@zju.edu.cn" <duoming@zju.edu.cn>,  "bhelgaas@google.com"
- <bhelgaas@google.com>,  "minipli@grsecurity.net" <minipli@grsecurity.net>,
-  "brcm80211@lists.linux.dev" <brcm80211@lists.linux.dev>,
-  "brcm80211-dev-list.pdl@broadcom.com"
- <brcm80211-dev-list.pdl@broadcom.com>,  "nick@khadas.com"
- <nick@khadas.com>
-Subject: Re: [PATCH v9 4/5] wifi: brcmfmac: Add optional lpo clock enable
- support
-References: <20240810035141.439024-1-jacobe.zang@wesion.com>
-	<20240810035141.439024-5-jacobe.zang@wesion.com>
-	<BY3PR18MB47072A9CC7E1EEB4BD1FC063A0BB2@BY3PR18MB4707.namprd18.prod.outlook.com>
-	<d9a182e4-c620-476d-8eb2-752dfd1ba4f8@wesion.com>
-	<fb9947fa-bca8-4c51-9feb-bf7ac6c6cc22@broadcom.com>
-Date: Sun, 11 Aug 2024 11:10:39 +0300
-In-Reply-To: <fb9947fa-bca8-4c51-9feb-bf7ac6c6cc22@broadcom.com> (Arend van
-	Spriel's message of "Sat, 10 Aug 2024 20:32:42 +0200")
-Message-ID: <8734nb32f4.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1723397468; c=relaxed/simple;
+	bh=3oYIfin0PEE+fHRc99To4AiacyuocVX4Dn1rgUOhJBY=;
+	h=From:Content-Type:Mime-Version:Subject:Message-Id:References:To:
+	 Date; b=YmEV1jWWWL7X2Pc2+8REnRekd7gw9a2Af+FwGqv02sxP0Newts9aX99cmVOPt9zAAgzkg6PCuqOXaxUATW0NUmkKXSd+EtVrf9swb+1bflWRYpbye9DohxQtQ+yTjl3H8xdKKFHgr/uN//csDxcsTAD7RbnEzfcjfyt54zZbiiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Jr5eHBy2; arc=none smtp.client-ip=209.85.208.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2f029e9c9cfso56276521fa.2
+        for <linux-wireless@vger.kernel.org>; Sun, 11 Aug 2024 10:31:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723397465; x=1724002265; darn=vger.kernel.org;
+        h=date:to:references:message-id:subject:mime-version
+         :content-transfer-encoding:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3oYIfin0PEE+fHRc99To4AiacyuocVX4Dn1rgUOhJBY=;
+        b=Jr5eHBy2ndbKWYEGYuStZox8/uj9E/Cf2Je3b4nJwudV2Qp96bgFPPUmbW7t39NKLO
+         Z3VzqBkaSxuBW4/7BQefYRALqfVgFPSY1CltC37ItFg6MMvfOVaKGp8+BWX7leep4ZTp
+         qN82k8ZtlFb12w98oLcJDGYSfc9njoR8ytPEXk0wEkYKBTDD3PG2z35UvXDug5Bw6Wiu
+         LBNGG+sMXl1CuYbdOB9SRIHUpSWGh5QxTTb8zQp5dppXubP6jPTp9ROYSmmOXxXIiwTy
+         wmVCGkup+rEL1OrencMqHl14MI9X7GUywyJT/KODGA7z+kWWCwYTaLxmulQuLscJvvTv
+         /WmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723397465; x=1724002265;
+        h=date:to:references:message-id:subject:mime-version
+         :content-transfer-encoding:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3oYIfin0PEE+fHRc99To4AiacyuocVX4Dn1rgUOhJBY=;
+        b=uesTsfO6dFXTiJb0KcYghRXfdiQPoAAb8NzsErAWb4LywHPKKqMaikytYfHh9fRZU3
+         42bY0/8b1nOqLx1sD5apMiOD4e8mddSmvXUGlB2b1WYKxFZEN6Pv7XK46LdBMJwgO2hX
+         2WqJoojK5DO+KpuwZYUUtLSpwlKEP03m50NUUIizG4HcNxgkNyrlyTp0c55oQisZ/Nzq
+         2DqjY0kFPU2PSe29p+t75s/Fi4KBnFnMwL0jfIW1TYJcvFORbcxcgLftnAo+oOxwiS96
+         vGG9xpkBM9NnpZ3/SnejcK6fM0TVp6yJd+ELet8G7kNKHsVoUagVEujTG14NRU6X7HS+
+         vRXg==
+X-Gm-Message-State: AOJu0YwMT+wDfg3hJw7vIUvN1lGyQ2bmvyNyVsdQ6taj/r74LhBh9onJ
+	A5XC0nQaJArnouM9BC56xYNu0uJMMD/hsppmnGRyPuSSsxglnCGcW7dLXkYzs3g=
+X-Google-Smtp-Source: AGHT+IG/dyHBp8cObQ2ll/4VmSDGJy7B2vyKU/PohkblR0P2pUdeHG1CmyfC98lc1Z09BzUNfTqqeg==
+X-Received: by 2002:a2e:d09:0:b0:2ef:29cd:3191 with SMTP id 38308e7fff4ca-2f1a6cdcf30mr58911941fa.35.1723397464352;
+        Sun, 11 Aug 2024 10:31:04 -0700 (PDT)
+Received: from smtpclient.apple ([169.224.80.19])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a80bb212bd2sm162814666b.176.2024.08.11.10.31.03
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 11 Aug 2024 10:31:03 -0700 (PDT)
+From: MOHAMMAD RASIM <mohammad.rasim96@gmail.com>
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
+Subject: [question] is it possible to enable monitor mode /packet injection on
+ wcn3990
+Message-Id: <56BBE89F-FF40-47C4-A4B9-F492FD8F6E2A@gmail.com>
+References: <CACq04CG8WCGDxf6Krx3bjxHU5OtYJJNOtD77TtPQhTfdy6ey_g@mail.gmail.com>
+To: linux-wireless@vger.kernel.org
+Date: Sun, 11 Aug 2024 20:30:51 +0300
+X-Mailer: Apple Mail (2.3774.600.62)
 
-Arend van Spriel <arend.vanspriel@broadcom.com> writes:
+Hi,
+I have a device that has the wcn3990 wifi chip that uses the ath10k_snoc =
+driver, i tried to put it in monitor mode, the "set monitor" mode =
+command succeed but can't get any scanning working after that, does the =
+chip support such mode?has anyone tried monitor mode with this chip or =
+other snoc chips?
 
-> On 8/10/2024 12:08 PM, jacobe.zang@wesion.com wrote:
->
->> On 2024/8/10 17:44, Sai Krishna Gajula <saikrishnag@marvell.com>
->> wrote:
->>>
->>> > -----Original Message-----
->>> > From: Jacobe Zang <jacobe.zang@wesion.com>
->>> > Sent: Saturday, August 10, 2024 9:22 AM
->>> > To: robh@kernel.org; krzk+dt@kernel.org; heiko@sntech.de;
->>> > kvalo@kernel.org; davem@davemloft.net; edumazet@google.com;
->>> > kuba@kernel.org; pabeni@redhat.com; conor+dt@kernel.org;
->>> > arend.vanspriel@broadcom.com
->>> > Cc: efectn@protonmail.com; dsimic@manjaro.org; jagan@edgeble.ai;
->>> > devicetree@vger.kernel.org; linux-arm-kernel@lists.infradead.org;
->>> linux-
->>> > rockchip@lists.infradead.org; linux-kernel@vger.kernel.org;
->>> > arend@broadcom.com; linux-wireless@vger.kernel.org;
->>> > netdev@vger.kernel.org; megi@xff.cz; duoming@zju.edu.cn;
->>> > bhelgaas@google.com; minipli@grsecurity.net; brcm80211@lists.linux.de=
-v;
->>> > brcm80211-dev-list.pdl@broadcom.com; nick@khadas.com; Jacobe Zang
->>> > <jacobe.zang@wesion.com>
->>> > Subject:=C2=A0 [PATCH v9 4/5] wifi: brcmfmac: Add optional lpo clock
->>> > enable support
->>> >
->>> > WiFi modules often require 32kHz clock to function. Add support
->>> to enable
->>> > the clock to PCIe driver and move "brcm,bcm4329-fmac" check to
->>> the top of
->>> > brcmf_of_probe. Change function prototypes from void to int and add
->>> > appropriate errno's for return
->>> > WiFi modules often require 32kHz clock to function. Add support
->>> to enable
->>> > the clock to PCIe driver and move "brcm,bcm4329-fmac" check to
->>> the top of
->>> > brcmf_of_probe. Change function prototypes from void to int and add
->>> > appropriate errno's for return values that will be send to bus
->>> when error
->>> > occurred.
->>> >
->>> > Co-developed-by: Ondrej Jirman <megi@xff.cz>
->>> > Signed-off-by: Ondrej Jirman <megi@xff.cz>
->>> > Co-developed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
->>> > Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
->>> > Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
->>> > ---
->>> >=C2=A0=C2=A0 .../broadcom/brcm80211/brcmfmac/bcmsdh.c=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 |=C2=A0 4 +-
->>> >=C2=A0=C2=A0 .../broadcom/brcm80211/brcmfmac/common.c=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 |=C2=A0 3 +-
->>> >=C2=A0=C2=A0 .../wireless/broadcom/brcm80211/brcmfmac/of.c | 53
->>> +++++++++++--------
->>> > .../wireless/broadcom/brcm80211/brcmfmac/of.h |=C2=A0 9 ++--
->>> >=C2=A0=C2=A0 .../broadcom/brcm80211/brcmfmac/pcie.c=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 3 ++
->>> >=C2=A0=C2=A0 .../broadcom/brcm80211/brcmfmac/sdio.c=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 | 24 ++++++---
->>> >=C2=A0=C2=A0 .../broadcom/brcm80211/brcmfmac/usb.c=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 3 ++
->>> >=C2=A0=C2=A0 7 files changed, 63 insertions(+), 36 deletions(-)
->>> >
->>> > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
->>> > b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
->>> > index 13391c2d82aae..b2ede4e579c5c 100644
->>> > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
->>> > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
->>> > @@ -947,8 +947,8 @@ int brcmf_sdiod_probe(struct brcmf_sdio_dev
->>> > *sdiodev)
->>> >
->>> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* try to attach to the target de=
-vice */
->>> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sdiodev->bus =3D brcmf_sdio_probe=
-(sdiodev);
->>> > -=C2=A0=C2=A0=C2=A0 if (!sdiodev->bus) {
->>> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret =3D -ENODEV;
->>> > +=C2=A0=C2=A0=C2=A0 if (IS_ERR(sdiodev->bus)) {
->>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ret =3D PTR_ERR(sdiodev->=
-bus);
->>> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto out;
->>> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->>> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 brcmf_sdiod_host_fixup(sdiodev->f=
-unc2->card->host);
->>> > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
->>> > b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
->>> > index b24faae35873d..58d50918dd177 100644
->>> > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
->>> > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
->>> > @@ -561,7 +561,8 @@ struct brcmf_mp_device
->>> > *brcmf_get_module_param(struct device *dev,
->>> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!found) {
->>> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* No pla=
-tform data for this device, try OF and DMI data */
->>> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 brcmf_dmi=
-_probe(settings, chip, chiprev);
->>> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 brcmf_of_probe(dev, bus_t=
-ype, settings);
->>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (brcmf_of_probe(dev, b=
-us_type, settings) =3D=3D -
->>> > EPROBE_DEFER)
->>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 r=
-eturn ERR_PTR(-EPROBE_DEFER);
->>> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 brcmf_acp=
-i_probe(dev, bus_type, settings);
->>> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->>> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return settings;
->>> > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
->>> > b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
->>> > index e406e11481a62..f19dc7355e0e8 100644
->>> > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
->>> > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
->>> > @@ -6,6 +6,7 @@
->>> >=C2=A0=C2=A0 #include <linux/of.h>
->>> >=C2=A0=C2=A0 #include <linux/of_irq.h>
->>> >=C2=A0=C2=A0 #include <linux/of_net.h>
->>> > +#include <linux/clk.h>
->>> >
->>> >=C2=A0=C2=A0 #include <defs.h>
->>> >=C2=A0=C2=A0 #include "debug.h"
->>> > @@ -65,17 +66,21 @@ static int brcmf_of_get_country_codes(struct devi=
-ce
->>> > *dev,
->>> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return 0;
->>> >=C2=A0=C2=A0 }
->>> >
->>> > -void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
->>> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 s=
-truct brcmf_mp_device *settings)
->>> > +int brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
->>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct =
-brcmf_mp_device *settings)
->>> >=C2=A0=C2=A0 {
->>> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct brcmfmac_sdio_pd *sdio =3D=
- &settings->bus.sdio;
->>> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct device_node *root, *np =3D=
- dev->of_node;
->>> > +=C2=A0=C2=A0=C2=A0 struct clk *clk;
->>> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const char *prop;
->>>
->>> Small nit, please check if reverse x-mas tree order need to be
->>> follow here.
->>>
->>> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int irq;
->>> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int err;
->>> >=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u32 irqf;
->> It can be seen from this line that there should be no need to follow
->> the reverse x-mas tree order. Because it is a struct variable, so
->> place with other struct ones.
->
-> As driver maintainer I do not care about such neatness, but maybe
-> Kalle has another preference. The code above looks fine to me.
-
-We haven't been strongly requiring reverse x-mas tree in wireless code,
-it has been just a preference. Also for me the code above looks fine.
-
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+Regards=
 
