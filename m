@@ -1,129 +1,105 @@
-Return-Path: <linux-wireless+bounces-11312-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11313-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A35C394EECA
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Aug 2024 15:53:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ABEB94EF72
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Aug 2024 16:25:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6562D282442
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Aug 2024 13:53:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D91D1C212D7
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Aug 2024 14:25:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A27C1836E2;
-	Mon, 12 Aug 2024 13:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A1917E902;
+	Mon, 12 Aug 2024 14:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f8IUVvFK"
+	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="IM0PIP/a"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DED17BB11
-	for <linux-wireless@vger.kernel.org>; Mon, 12 Aug 2024 13:51:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23C616C440
+	for <linux-wireless@vger.kernel.org>; Mon, 12 Aug 2024 14:24:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723470684; cv=none; b=KRbinGvcx9d06so+j9y7UpyrJ38H3oa5snyCaLS/+4w/wEURkGeySdjhs36pdOLS986N9PXH/l0Az3Z/HnwyGQ/QPzOYzG1l3dasyOTW+Wqpat83lPsVKp/2GuDEdcIQ7DYEYNxWY95bCq+OACl2rcsRtVXBIWc/jouqR7bqw68=
+	t=1723472697; cv=none; b=ZrsjpbUKmuwChFnZMhGWrjp2bovwRYBF1diFtx1PoW/ek66u8MBqxSsGwffoIwMHtWU66SiOnb46Q4XQNRwhauul2SXdSGmyLJm6HLse3C/imqISeZKK8rQ0HS+3/p4t1K3PVIblj3s264dsTF4AnBHgZHdCH+GNINeD7+mQfbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723470684; c=relaxed/simple;
-	bh=M9XmR40yrAsZitl3Ss77i42V2mDg8K8PPxjlunZWUYU=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=lQaQuj/dYMuW4gs3wNRQn7P19GzCJa2fJ25TxedJTOadsx7FRt1HqQC714YaSIeaSEQakWifeYuAzPPcWUdb4o3pOOZ+JRFP+MskCEo65tfE5eMkWYDSb5v5xOj7da+abIC8h74lp22/nAIsCedGC8yu5YuNZ/AWPdS3gMHhOYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f8IUVvFK; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4280b3a7efaso32520585e9.0
-        for <linux-wireless@vger.kernel.org>; Mon, 12 Aug 2024 06:51:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723470681; x=1724075481; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Sv96XB4gZxCxlU1SRHBLRK7/Tf/KJItVDb5kLcxytxc=;
-        b=f8IUVvFKDb5zNJeF7XFGMzp1Qhq7n9rZlD7Bnx24HU/yca2vBegfyINa9kVJDHK3am
-         tjA+SzykBTxNZHHtHqyqIwZwa7iqaL13zx52rKotvv1mzVShQRIy9I0VdOmu2/YdwhmZ
-         e+jj/jTZEjKplyJgiqZ5aELFOxbzWfNNWml6Rk2KxXakBCNvhQVc12kMG7nUkq8xAryu
-         LPeWieMjUpZ1dmbx5yCYasaMOghOvUdD71jQlYi9G4XAMqHNqUeTazC22kP/iCHWmBue
-         9WHd6dRgMSWAxKpyjqhJ6deY3Z7LU4fodRpkH+kY+6H7PcmZe6EoD/ZhoGh1vUKC78+n
-         JipA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723470681; x=1724075481;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Sv96XB4gZxCxlU1SRHBLRK7/Tf/KJItVDb5kLcxytxc=;
-        b=GVXUemzDZZ54anYJpLy88bJmT2dQ8ueKmFBd41ALEHUmByDTjLDMROSl2FT6tfFY23
-         apmnWnAj9cvoBj1hrd5yRfDwiC6Rx/xU7g9ZlPJSVrfaIWNzFlwWFDHwg8EzwNbzt+me
-         X73ZxBJep8+tc4G3Np3koWHM6/9oZ7IlRS1r2TR3r+rVi/WM5h8oulH9vr1gkp7hQXEe
-         t5mmYtWW+/autnZzRpoFjgJsFTgmVPDR+v1wHFSmFCTbsjT5hVzwvQrD4iycLj/c3qub
-         PxcEieDnJLMS7GayPQI/XSlHHne0U7S98Pll+C1F/2bGke/PsC3IdCpn/gyloxJmYBVK
-         jZCQ==
-X-Gm-Message-State: AOJu0YwLZ0IvWJi7elDUg6/1zEbA7a5RXZ7yHojG7Ieuew5ddteZbpqv
-	MILy8r+C46f4AWsmnfunRGCwnYhf1pBDzYVL74/q/Qp9SL+Qqr2i
-X-Google-Smtp-Source: AGHT+IGT5u1NqSmVw0khE+rObz5Dg6ToYQAWxdK+XuqNfbiah4Ndgm9Eh0u5p4ztbQyuH0eo20TEng==
-X-Received: by 2002:a05:600c:4f0d:b0:425:69b7:3361 with SMTP id 5b1f17b1804b1-429d48188bemr4324935e9.18.1723470680629;
-        Mon, 12 Aug 2024 06:51:20 -0700 (PDT)
-Received: from smtpclient.apple ([169.224.80.19])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4290c74a855sm188663005e9.25.2024.08.12.06.51.19
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 12 Aug 2024 06:51:20 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1723472697; c=relaxed/simple;
+	bh=vR2XHx8f1rgvtnEtyGrGviHy4x+gjOJWd41PhUrs9dw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qRSeDS7iKAJBHeCZT44Z7msa4KREFT2+D+ynZZY6RzkmIHzqI0mzp1ksDm+UrFD/rwn3WCAyxlUtwYez8zKicHanmnhS/MSlFJvKWelLOd2NtaJ9VVv4xBms39WMylyb5LwV0l1mrij3YE+J/o6zIM3qLH0Z1LiMtnNY1lPE0mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=IM0PIP/a; arc=none smtp.client-ip=45.145.95.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
+From: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+	t=1723472692; bh=vR2XHx8f1rgvtnEtyGrGviHy4x+gjOJWd41PhUrs9dw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=IM0PIP/afRcwfropNGQpmck5/enxbfDf/EMZXNFjbFXrL+CIEmJ4HGSyjluOFSv3T
+	 aZmm4h/9+xB6ZVgGSbEiCNdiy8mYmCkaVITWbPwaGdzwysU422lEt4aHBJzZ/7oj4Q
+	 rV3Zqa1jlfTAljRSKUtA4Pjs17Uvc62xIc+A203sOXQFVYSh4z9cSGFFwBMFFyHvBz
+	 V1RxyKMb0pNYv7wh07y9dP5O/1eR0u5f4Ie7SNuGSdbbKN2AfzajznpEzYYwYXkp1V
+	 w/W83Knwdl+RSj6xf4uQWLHGX+2NIeo/8QPTzNzokQoI4Oow5SANoHWkuC4AmP52rw
+	 2oSs1C9UiQ60w==
+To: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+Cc: linux-wireless@vger.kernel.org,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	syzbot+98afa303be379af6cdb2@syzkaller.appspotmail.com
+Subject: [PATCH] wifi: ath9k_htc: Use __skb_set_length() for resetting urb before resubmit
+Date: Mon, 12 Aug 2024 16:24:46 +0200
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <20240812142447.12328-1-toke@toke.dk>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
-Subject: Re: [question] is it possible to enable monitor mode /packet
- injection on wcn3990
-From: MOHAMMAD RASIM <mohammad.rasim96@gmail.com>
-In-Reply-To: <87zfpigr5t.fsf@kernel.org>
-Date: Mon, 12 Aug 2024 16:51:07 +0300
-Cc: linux-wireless@vger.kernel.org,
- ath10k@lists.infradead.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <D802221D-56B0-4CBB-833A-EA548A36FC7E@gmail.com>
-References: <CACq04CG8WCGDxf6Krx3bjxHU5OtYJJNOtD77TtPQhTfdy6ey_g@mail.gmail.com>
- <56BBE89F-FF40-47C4-A4B9-F492FD8F6E2A@gmail.com> <87zfpigr5t.fsf@kernel.org>
-To: Kalle Valo <kvalo@kernel.org>
-X-Mailer: Apple Mail (2.3774.600.62)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+From: Toke Høiland-Jørgensen <toke@redhat.com>
 
+Syzbot points out that skb_trim() has a sanity check on the existing length of
+the skb, which can be uninitialised in some error paths. The intent here is
+clearly just to reset the length to zero before resubmitting, so switch to
+calling __skb_set_length(skb, 0) directly. In addition, __skb_set_length()
+already contains a call to skb_reset_tail_pointer(), so remove the redundant
+call.
 
-> On 12 Aug 2024, at 10:02=E2=80=AFAM, Kalle Valo <kvalo@kernel.org> =
-wrote:
->=20
-> + ath10k list
->=20
->> I have a device that has the wcn3990 wifi chip that uses the
->> ath10k_snoc driver, i tried to put it in monitor mode, the "set
->> monitor" mode command succeed but can't get any scanning working =
-after
->> that, does the chip support such mode?has anyone tried monitor mode
->> with this chip or other snoc chips?
->=20
-> I doubt that WCN3990 firmware supports monitor mode, though just
-> guessing here.
->=20
-> --=20
-> https://patchwork.kernel.org/project/linux-wireless/list/
->=20
-> =
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpat=
-ches
+The syzbot report came from ath9k_hif_usb_reg_in_cb(), but there's a similar
+usage of skb_trim() in ath9k_hif_usb_rx_cb(), change both while we're at it.
 
-Some people has got monitor mode working under android ( different =
-driver, qcacld-2.0, and qcacld-3.0) with these kind of chips: =
-https://github.com/kimocoder/qualcomm_android_monitor_mode/
+Reported-by: syzbot+98afa303be379af6cdb2@syzkaller.appspotmail.com
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+---
+ drivers/net/wireless/ath/ath9k/hif_usb.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
+index 0c7841f95228..a3733c9b484e 100644
+--- a/drivers/net/wireless/ath/ath9k/hif_usb.c
++++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
+@@ -716,8 +716,7 @@ static void ath9k_hif_usb_rx_cb(struct urb *urb)
+ 	}
+ 
+ resubmit:
+-	skb_reset_tail_pointer(skb);
+-	skb_trim(skb, 0);
++	__skb_set_length(skb, 0);
+ 
+ 	usb_anchor_urb(urb, &hif_dev->rx_submitted);
+ 	ret = usb_submit_urb(urb, GFP_ATOMIC);
+@@ -754,8 +753,7 @@ static void ath9k_hif_usb_reg_in_cb(struct urb *urb)
+ 	case -ESHUTDOWN:
+ 		goto free_skb;
+ 	default:
+-		skb_reset_tail_pointer(skb);
+-		skb_trim(skb, 0);
++		__skb_set_length(skb, 0);
+ 
+ 		goto resubmit;
+ 	}
+-- 
+2.46.0
 
-Some older chips (wcn3680  think) even supported packet injection(using =
-the older  qcacld-2.0 driver).
-
-Commits in the newer  qcacld-3.0 driver (that supported the wcn3990) did =
-contain hints that monitor mode and packet injection should work.
-
-So maybe the firmware does support it?
-
-Regards=
 
