@@ -1,203 +1,234 @@
-Return-Path: <linux-wireless+bounces-11318-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11319-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 820AE94F5D8
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Aug 2024 19:33:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0270394F612
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Aug 2024 19:49:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FE101F222E0
-	for <lists+linux-wireless@lfdr.de>; Mon, 12 Aug 2024 17:33:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 261421C21C96
+	for <lists+linux-wireless@lfdr.de>; Mon, 12 Aug 2024 17:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2241713A3F2;
-	Mon, 12 Aug 2024 17:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B8A139587;
+	Mon, 12 Aug 2024 17:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K5vk4H36"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ts2erVym"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D50F18800E
-	for <linux-wireless@vger.kernel.org>; Mon, 12 Aug 2024 17:33:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1E7187332
+	for <linux-wireless@vger.kernel.org>; Mon, 12 Aug 2024 17:49:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723484019; cv=none; b=a+iJIcsMmaQwvMEV1s+5ZOmbSIRbJgInmEigDkTCc0SoRJJCuvxDckzepBi8LWHzgo/VlSuEvOaDGhTAwTqy0V1Vjd4VeBUbaHOLiQCiFTk3tz1um48+Hjw51JTi0exRf0zhrlDYHOQEMMn7+gTWrX7jEBSl5Zau/tVlqT/bpxE=
+	t=1723484975; cv=none; b=gYjPEsayF3069vA3LJZjSMNB2/vX20b+dzGh+PzBlGeyAjAaAla/v2QYL7n0H6HSm1jpKize+LsrgkicFTlgayIcDmf1SGmraZ5iMJO2OKajSSkLEYgFinv0CCMyG42+ru6QFAb2eRUlTKKQQbZU+wHSB4TkJzZrZ+ZX1AU5Hlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723484019; c=relaxed/simple;
-	bh=J1OlJN0KMLR0zCfeNLQekZwvFckOFooHWwJOUJP5o6g=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
-	 In-Reply-To:Content-Type; b=m4gsQFa06I093nrxGQHYxpLxLOXElKA9e4/z7PBRIsOpCgLvKtMVAiPFZy71ARV1lSAXY3ZTWS48uZOJrr++9XX6bqGKj5BpQYb7rRt/1TIKdLAubnVjrJMEbchGtVK2Oqsxi7i+hmiaFLB6gIcU/GPxV5VAQPV5PUXfgoLgeSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K5vk4H36; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5af6a1afa63so5404268a12.0
-        for <linux-wireless@vger.kernel.org>; Mon, 12 Aug 2024 10:33:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723484015; x=1724088815; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fNtiuyn57wimdjlrR1mgpCvsCFleEbroM/SCyyNnp7g=;
-        b=K5vk4H36fO9GwEweCsBYHNtSsKel6Xe6kRfgzzy0K62sjv9GVArq/WgXSXOVheVRZz
-         CGHSFTGWmzPbSH9lf0t+gMxcSiLlr5+O0KYUn9RlDLwUyBe2K4E/BXlji4RaWxahUNJr
-         gkR7G2e4TdLqq41jBkvhYVQz+RArYaPwzHrs6GYnCK1Jux2Dovruwto4OjDDXIhV5sJ3
-         4Jh/67QgFrn8sYHHwlznpQMJpsx4IORRivEQYrDrbmDlOl+obPL+YBiHX2H4Qyzk3R4v
-         doNESrOT6xUFAwSdwcnILbbPMmSUoM7sjXFpLYi65ufTLvw2xoz6x+Q0n/VIDPtTncx/
-         ZmJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723484015; x=1724088815;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fNtiuyn57wimdjlrR1mgpCvsCFleEbroM/SCyyNnp7g=;
-        b=oT+WfJAjkPTNMU9bhKEJiuAsX7oiXa12MpDA8Q9ZyAh/s/lM5WzARBWSydVvAFmAes
-         p6iE/eKw6GgKckTsT3lsD+PaLq6jrB84I7r+o/UVYj5FZP1KmtP36TQzVQvL/Aubm9sw
-         7K5poIRYTirktYHv3qhcQNDBl7bT856FJ6YNiVb8OUZ3g14TL6St2hSuaI+hTjVecKV/
-         r+vKIXs+P99vBTiMwRlfKWklcLF07vvZ2+QylZOWNIsaJh3Y7bD7bxQedYV64nUvXIb8
-         LfnhdA8cox/Ovff6I+BWWvOwrxBxYKcxp5A4pzclJM5HQN+Ic+luUUsYzetS5bAxS3yC
-         FE2Q==
-X-Gm-Message-State: AOJu0YwiUIpDKpigVlACQ2Y002ICTnM/pK3iZp2sQ3/t1rE5Re13ormL
-	ZSiT784Al21kLcmE6yxcsMEd915JkZCIzo8YD7LoqdK/cbPrKRLF+mS4yQ==
-X-Google-Smtp-Source: AGHT+IH2S/uqRvhXne/3rXJ59ZEqUDgqzmDZ4OLXaH8g+ZRO+A5MCHSsmA6rMDXpD4Ct57C3lEc6cQ==
-X-Received: by 2002:a17:907:6d27:b0:a7a:b385:37c5 with SMTP id a640c23a62f3a-a80ed1d4638mr76024566b.17.1723484014742;
-        Mon, 12 Aug 2024 10:33:34 -0700 (PDT)
-Received: from [10.100.121.195] ([152.193.78.90])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a80bb1cce87sm249887766b.101.2024.08.12.10.33.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Aug 2024 10:33:34 -0700 (PDT)
-Message-ID: <9eafac85-2262-4f92-a70b-32109f65c05a@gmail.com>
-Date: Mon, 12 Aug 2024 10:33:30 -0700
+	s=arc-20240116; t=1723484975; c=relaxed/simple;
+	bh=MGqT/prF1iKLJ62cd+uoKZk6vCYhZyJELNUmiAjfwEQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iSAaeZf7vxY3RwG+XXFVS34ya0ZpKqk+XQFdIdkT7ZUw01pI5qXuXkHPSwv3d/TubHs2gCVz7tPqD692k8bmZ36YCTBXCB9yS4H5tZop1yJbbnUiwddvNqMHH2dfRLCkjMdOwBx5sBt3yZ0ZHqYIIqQ/S3C9WZQLRdkzpWv3rFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ts2erVym; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723484974; x=1755020974;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=MGqT/prF1iKLJ62cd+uoKZk6vCYhZyJELNUmiAjfwEQ=;
+  b=Ts2erVymkk+WkhyE53qJM+dMaHVvRjfT6S+WuyywrC0C05Y50XcOySWz
+   K24NVr2OkfOR7i8oKMPl3+iHV+ln2Q1rzS6gJ9BfcuIul3mV1NwBbiS7r
+   GTZ66ajbOY9BC9wBTKwy185CBZfsse+zW3a/C58BHDEhW2e/v6YkD2IjO
+   np3c4G6ihVOm2GndcLbk4iuBAEI0EwCBbFgPL22hchhmbcOkqo5va51ll
+   cGaaSIUBxMeG7jg/E11nRRB1+8mOFKfsgmo1k68wmaJmO9GlPLp3BuO8R
+   0BNzY1BTBmGJ+ljHDX+iFgMGPVTn5LaGGbYZ2x8ERTVZzUk35q41kS35u
+   w==;
+X-CSE-ConnectionGUID: IPWhtfuLThWduiI9mRZ3yA==
+X-CSE-MsgGUID: GIwCu7ZyROeu+z6LOtDYWQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11162"; a="21744129"
+X-IronPort-AV: E=Sophos;i="6.09,283,1716274800"; 
+   d="scan'208";a="21744129"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2024 10:49:33 -0700
+X-CSE-ConnectionGUID: 5R8UcN10Szig/0gj5iXALg==
+X-CSE-MsgGUID: Pu11fbKbT/KpwXSRVwkq/g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,283,1716274800"; 
+   d="scan'208";a="63199086"
+Received: from unknown (HELO b6bf6c95bbab) ([10.239.97.151])
+  by orviesa003.jf.intel.com with ESMTP; 12 Aug 2024 10:49:31 -0700
+Received: from kbuild by b6bf6c95bbab with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sdZAe-000C1r-39;
+	Mon, 12 Aug 2024 17:49:28 +0000
+Date: Tue, 13 Aug 2024 01:49:26 +0800
+From: kernel test robot <lkp@intel.com>
+To: johannes@sipsolutions.net
+Cc: oe-kbuild-all@lists.linux.dev, linux-wireless@vger.kernel.org,
+	Issam Hamdi <ih@simonwunderlich.de>,
+	Kretschmer Mathias <mathias.kretschmer@fit.fraunhofer.de>
+Subject: Re: [PATCH] cfg80211: Set the channel definition for the different
+ Wi-Fi modes when starting CAC
+Message-ID: <202408130125.u2jlMVQM-lkp@intel.com>
+References: <20240812120909.2721400-1-root@hissam.office.simonwunderlich.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: ath10k "failed to install key for vdev 0 peer <mac>: -110"
-From: James Prestwood <prestwoj@gmail.com>
-To: "open list:MEDIATEK MT76 WIRELESS LAN DRIVER"
- <linux-wireless@vger.kernel.org>, ath10k@lists.infradead.org
-References: <e780560a-86eb-4189-ab5d-3bed3ee5825e@gmail.com>
- <c407064a-1c2f-46ec-ac57-32bf9cf6f5c6@gmail.com>
-Content-Language: en-US
-In-Reply-To: <c407064a-1c2f-46ec-ac57-32bf9cf6f5c6@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240812120909.2721400-1-root@hissam.office.simonwunderlich.net>
 
-Hi,
+Hi root,
 
-So I have no resolution to this (trying to get the AP vendor to chase it 
-down), but I'm toying with the idea of trying to work around whatever 
-issue the AP is having when this occurs. The only thing I can think of 
-is that there is a 3 second delay between the authentication and 
-reassociation, and perhaps this is causing some timeout in the AP and in 
-turn the deauth.
+kernel test robot noticed the following build warnings:
 
-I'm wondering how long it should take to add/remove a key from the 
-firmware? 3 seconds seems very long, and I question if this timeout is 
-really necessary or was just chosen arbitrarily? Is this something that 
-could be lowered down to e.g. 1 second without negative impacts? The 
-code in question is in ath10k_install_key:
+[auto build test WARNING on wireless-next/main]
+[also build test WARNING on wireless/main linus/master v6.11-rc3 next-20240812]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-ret = ath10k_send_key(arvif, key, cmd, macaddr, flags);
-if (ret)
-     return ret;
+url:    https://github.com/intel-lab-lkp/linux/commits/root/cfg80211-Set-the-channel-definition-for-the-different-Wi-Fi-modes-when-starting-CAC/20240812-202257
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+patch link:    https://lore.kernel.org/r/20240812120909.2721400-1-root%40hissam.office.simonwunderlich.net
+patch subject: [PATCH] cfg80211: Set the channel definition for the different Wi-Fi modes when starting CAC
+config: arm-u8500_defconfig (https://download.01.org/0day-ci/archive/20240813/202408130125.u2jlMVQM-lkp@intel.com/config)
+compiler: arm-linux-gnueabi-gcc (GCC) 14.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240813/202408130125.u2jlMVQM-lkp@intel.com/reproduce)
 
-time_left = wait_for_completion_timeout(&ar->install_key_done, 3 * HZ);
-if (time_left == 0)
-     return -ETIMEDOUT;
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202408130125.u2jlMVQM-lkp@intel.com/
 
-Thanks,
+All warnings (new ones prefixed by >>):
 
-James
+   net/wireless/nl80211.c: In function 'nl80211_start_radar_detection':
+>> net/wireless/nl80211.c:10146:17: warning: enumeration value 'NL80211_IFTYPE_UNSPECIFIED' not handled in switch [-Wswitch]
+   10146 |                 switch (wdev->iftype) {
+         |                 ^~~~~~
+>> net/wireless/nl80211.c:10146:17: warning: enumeration value 'NL80211_IFTYPE_STATION' not handled in switch [-Wswitch]
+>> net/wireless/nl80211.c:10146:17: warning: enumeration value 'NL80211_IFTYPE_AP_VLAN' not handled in switch [-Wswitch]
+>> net/wireless/nl80211.c:10146:17: warning: enumeration value 'NL80211_IFTYPE_WDS' not handled in switch [-Wswitch]
+>> net/wireless/nl80211.c:10146:17: warning: enumeration value 'NL80211_IFTYPE_MONITOR' not handled in switch [-Wswitch]
+>> net/wireless/nl80211.c:10146:17: warning: enumeration value 'NL80211_IFTYPE_P2P_CLIENT' not handled in switch [-Wswitch]
+>> net/wireless/nl80211.c:10146:17: warning: enumeration value 'NL80211_IFTYPE_P2P_DEVICE' not handled in switch [-Wswitch]
+>> net/wireless/nl80211.c:10146:17: warning: enumeration value 'NL80211_IFTYPE_NAN' not handled in switch [-Wswitch]
+>> net/wireless/nl80211.c:10146:17: warning: enumeration value 'NUM_NL80211_IFTYPES' not handled in switch [-Wswitch]
+>> net/wireless/nl80211.c:10146:17: warning: enumeration value 'NL80211_IFTYPE_MAX' not handled in switch [-Wswitch]
 
-On 7/15/24 4:54 AM, James Prestwood wrote:
-> I forgot to mention:
->
-> QCA6174 hw3.0 firmware WLAN.RM.4.4.1-00288-
->
-> The higher rate of frequency is happening on kernel 5.15, although as 
-> I said only at one location with a different AP vendor. We have many 
-> other 5.15 devices with significantly less instances of this 
-> happening. I also checked a few of our newer software releases using 
-> kernel 6.2, and the timeout occurred there as well, but no real impact 
-> (no disconnect, no assoc timeout).
->
-> On 7/12/24 6:11 AM, James Prestwood wrote:
->> Hi,
->>
->> I've seen this error mentioned on random forum posts, but its always 
->> associated with a kernel crash/warning or some very obvious negative 
->> behavior. I've noticed this occasionally and at one location very 
->> frequently during FT roaming, specifically just after CMD_ASSOCIATE 
->> is issued. For our company run networks I'm not seeing any negative 
->> behavior apart from a 3 second delay in sending the re-association 
->> frame since the kernel waits for this timeout. But we have some 
->> networks our clients run on that we do not own (different vendor), 
->> and we are seeing association timeouts after this error occurs and in 
->> some cases the AP is sending a deauthentication with reason code 8 
->> instead of replying with a reassociation reply and an error status, 
->> which is quite odd.
->>
->> We are chasing down this with the vendor of these APs as well, but 
->> the behavior always happens after we see this key removal 
->> failure/timeout on the client side. So it would appear there is 
->> potentially a problem on both the client and AP. My guess is 
->> _something_ about the re-association frame changes when this error is 
->> encountered, but I cannot see how that would be the case. We are 
->> working to get PCAPs now, but its through a 3rd party, so that timing 
->> is out of my control.
->>
->> From the kernel code this error would appear innocuous, the old key 
->> is failing to be removed but it gets immediately replaced by the new 
->> key. And we don't see that addition failing. Am I understanding that 
->> logic correctly? I.e. this logic:
->>
->> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/net/mac80211/key.c#n503 
->>
->>
->> Below are a few kernel logs of the issue happening, some with the 
->> deauth being sent by the AP, some with just timeouts:
->>
->> --- No deauth frame sent, just association timeouts after the error ---
->>
->> Jul 11 00:05:30 kernel: wlan0: disconnect from AP <previous BSS> for 
->> new assoc to <new BSS>
->> Jul 11 00:05:33 kernel: ath10k_pci 0000:02:00.0: failed to install 
->> key for vdev 0 peer <previous BSS>: -110
->> Jul 11 00:05:33 kernel: wlan0: failed to remove key (0, <previous 
->> BSS>) from hardware (-110)
->> Jul 11 00:05:33 kernel: wlan0: associate with <new BSS> (try 1/3)
->> Jul 11 00:05:33 kernel: wlan0: associate with <new BSS> (try 2/3)
->> Jul 11 00:05:33 kernel: wlan0: associate with <new BSS> (try 3/3)
->> Jul 11 00:05:33 kernel: wlan0: association with <new BSS> timed out
->> Jul 11 00:05:36 kernel: wlan0: authenticate with <new BSS>
->> Jul 11 00:05:36 kernel: wlan0: send auth to <new BSS>a (try 1/3)
->> Jul 11 00:05:36 kernel: wlan0: authenticated
->> Jul 11 00:05:36 kernel: wlan0: associate with <new BSS> (try 1/3)
->> Jul 11 00:05:36 kernel: wlan0: RX AssocResp from <new BSS> 
->> (capab=0x1111 status=0 aid=16)
->> Jul 11 00:05:36 kernel: wlan0: associated
->>
->> --- Deauth frame sent amidst the association timeouts ---
->>
->> Jul 11 00:43:18 kernel: wlan0: disconnect from AP <previous BSS> for 
->> new assoc to <new BSS>
->> Jul 11 00:43:21 kernel: ath10k_pci 0000:02:00.0: failed to install 
->> key for vdev 0 peer <previous BSS>: -110
->> Jul 11 00:43:21 kernel: wlan0: failed to remove key (0, <previous 
->> BSS>) from hardware (-110)
->> Jul 11 00:43:21 kernel: wlan0: associate with <new BSS> (try 1/3)
->> Jul 11 00:43:21 kernel: wlan0: deauthenticated from <new BSS> while 
->> associating (Reason: 8=DISASSOC_STA_HAS_LEFT)
->> Jul 11 00:43:24 kernel: wlan0: authenticate with <new BSS>
->> Jul 11 00:43:24 kernel: wlan0: send auth to <new BSS> (try 1/3)
->> Jul 11 00:43:24 kernel: wlan0: authenticated
->> Jul 11 00:43:24 kernel: wlan0: associate with <new BSS> (try 1/3)
->> Jul 11 00:43:24 kernel: wlan0: RX AssocResp from <new BSS> 
->> (capab=0x1111 status=0 aid=101)
->> Jul 11 00:43:24 kernel: wlan0: associated
->>
+
+vim +/NL80211_IFTYPE_UNSPECIFIED +10146 net/wireless/nl80211.c
+
+ 10068	
+ 10069	static int nl80211_start_radar_detection(struct sk_buff *skb,
+ 10070						 struct genl_info *info)
+ 10071	{
+ 10072		struct cfg80211_registered_device *rdev = info->user_ptr[0];
+ 10073		struct net_device *dev = info->user_ptr[1];
+ 10074		struct wireless_dev *wdev = dev->ieee80211_ptr;
+ 10075		struct wiphy *wiphy = wdev->wiphy;
+ 10076		struct cfg80211_chan_def chandef;
+ 10077		enum nl80211_dfs_regions dfs_region;
+ 10078		unsigned int cac_time_ms;
+ 10079		int err = -EINVAL;
+ 10080	
+ 10081		flush_delayed_work(&rdev->dfs_update_channels_wk);
+ 10082	
+ 10083		switch (wdev->iftype) {
+ 10084		case NL80211_IFTYPE_AP:
+ 10085		case NL80211_IFTYPE_P2P_GO:
+ 10086		case NL80211_IFTYPE_MESH_POINT:
+ 10087		case NL80211_IFTYPE_ADHOC:
+ 10088			break;
+ 10089		default:
+ 10090			/* caution - see cfg80211_beaconing_iface_active() below */
+ 10091			return -EINVAL;
+ 10092		}
+ 10093	
+ 10094		wiphy_lock(wiphy);
+ 10095	
+ 10096		dfs_region = reg_get_dfs_region(wiphy);
+ 10097		if (dfs_region == NL80211_DFS_UNSET)
+ 10098			goto unlock;
+ 10099	
+ 10100		err = nl80211_parse_chandef(rdev, info, &chandef);
+ 10101		if (err)
+ 10102			goto unlock;
+ 10103	
+ 10104		err = cfg80211_chandef_dfs_required(wiphy, &chandef, wdev->iftype);
+ 10105		if (err < 0)
+ 10106			goto unlock;
+ 10107	
+ 10108		if (err == 0) {
+ 10109			err = -EINVAL;
+ 10110			goto unlock;
+ 10111		}
+ 10112	
+ 10113		if (!cfg80211_chandef_dfs_usable(wiphy, &chandef)) {
+ 10114			err = -EINVAL;
+ 10115			goto unlock;
+ 10116		}
+ 10117	
+ 10118		if (nla_get_flag(info->attrs[NL80211_ATTR_RADAR_BACKGROUND])) {
+ 10119			err = cfg80211_start_background_radar_detection(rdev, wdev,
+ 10120									&chandef);
+ 10121			goto unlock;
+ 10122		}
+ 10123	
+ 10124		if (cfg80211_beaconing_iface_active(wdev) || wdev->cac_started) {
+ 10125			err = -EBUSY;
+ 10126			goto unlock;
+ 10127		}
+ 10128	
+ 10129		/* CAC start is offloaded to HW and can't be started manually */
+ 10130		if (wiphy_ext_feature_isset(wiphy, NL80211_EXT_FEATURE_DFS_OFFLOAD)) {
+ 10131			err = -EOPNOTSUPP;
+ 10132			goto unlock;
+ 10133		}
+ 10134	
+ 10135		if (!rdev->ops->start_radar_detection) {
+ 10136			err = -EOPNOTSUPP;
+ 10137			goto unlock;
+ 10138		}
+ 10139	
+ 10140		cac_time_ms = cfg80211_chandef_dfs_cac_time(&rdev->wiphy, &chandef);
+ 10141		if (WARN_ON(!cac_time_ms))
+ 10142			cac_time_ms = IEEE80211_DFS_MIN_CAC_TIME_MS;
+ 10143	
+ 10144		err = rdev_start_radar_detection(rdev, dev, &chandef, cac_time_ms);
+ 10145		if (!err) {
+ 10146			switch (wdev->iftype) {
+ 10147			case NL80211_IFTYPE_MESH_POINT:
+ 10148				wdev->u.mesh.chandef = chandef;
+ 10149				break;
+ 10150			case NL80211_IFTYPE_ADHOC:
+ 10151				wdev->u.ibss.chandef = chandef;
+ 10152				break;
+ 10153			case NL80211_IFTYPE_OCB:
+ 10154				wdev->u.ocb.chandef = chandef;
+ 10155				break;
+ 10156			case NL80211_IFTYPE_AP:
+ 10157			case NL80211_IFTYPE_P2P_GO:
+ 10158				wdev->links[0].ap.chandef = chandef;
+ 10159				break;
+ 10160			}
+ 10161			wdev->cac_started = true;
+ 10162			wdev->cac_start_time = jiffies;
+ 10163			wdev->cac_time_ms = cac_time_ms;
+ 10164		}
+ 10165	unlock:
+ 10166		wiphy_unlock(wiphy);
+ 10167	
+ 10168		return err;
+ 10169	}
+ 10170	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
