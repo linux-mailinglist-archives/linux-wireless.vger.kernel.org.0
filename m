@@ -1,109 +1,109 @@
-Return-Path: <linux-wireless+bounces-11366-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11367-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E7B0950B13
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 19:04:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2838E950B22
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 19:06:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A618284917
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 17:04:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF7381F234D2
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 17:06:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6727355892;
-	Tue, 13 Aug 2024 17:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4D671A2575;
+	Tue, 13 Aug 2024 17:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="S8ZUxRmB"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QkI07sgh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4111A0AF8
-	for <linux-wireless@vger.kernel.org>; Tue, 13 Aug 2024 17:04:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FC201F959
+	for <linux-wireless@vger.kernel.org>; Tue, 13 Aug 2024 17:05:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723568670; cv=none; b=I3ghmlVj5NHrupxVtqo7WTOIEAu6Qsp+pKG8fL61705FQy3aXbIIkC1XQ4AH8GB5QDc6+TiqmtuKgqZMkfhpLuVzDoyvbUPV5H6/xQkgK4d1dyB5ccv5bO31dtjbMVmZQzryL3CA+Rt6MBfj8rcXywRXjR8CoVCbF9TC8pg224A=
+	t=1723568758; cv=none; b=Nlbx99R080MCPeMGBKSJncghXWoO55zqVtA48CPDuYbxzE6q8dkURaiMB6X/4ENM/K9tLokDFe/gbJGb53e8D8jJraSYtrXSegkNM/buMhHP5aSuGdWKFP8ArAbgtI09c7GFeljS9LvdjVIE4Ce/uH9LkWpxwG9iQ72zsD0opcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723568670; c=relaxed/simple;
-	bh=xrsSftCVhZOtu3KXEIZqEaoX5GuKzU/oyvGNRAnSz6I=;
-	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=U1DLQ6yGXnV6m4Sdjq+Ams+pfYE7wnIbVCYAj/w4p7lzlUN4jyl7vsZS2vgTuhuCYRMEUZRBT46e7kBecUI3phx/KImJoDUCevc3Gahi3xzZv1/PtHqksmHeJO1vc0ZSteaN9YwXurJwoz++c1wQvhDHgUMnwFipRVXXycUa0F0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=S8ZUxRmB; arc=none smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2ef32fea28dso63095281fa.2
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Aug 2024 10:04:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1723568667; x=1724173467; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bmfVHiTAghiA5/icoM+TOI1VecjW2wcU/5Ch8OWg9QQ=;
-        b=S8ZUxRmB3QVtjbh236oJVFK+07wp3nGNLXG8YRXnEE0xoK8NtteZUKR0uxfzDOF9/u
-         KM3rOCDA4eDSrYnXRCXdjAnX6yxp7AfvL85rzuI1ng8KbCclPAiMphXQ6Yuphqb1AIYQ
-         n7SE1aR95WtsmgjnHFLT/O4pX5B+uQ3u78/v4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723568667; x=1724173467;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bmfVHiTAghiA5/icoM+TOI1VecjW2wcU/5Ch8OWg9QQ=;
-        b=e3z1daCZ4UiIaxV7+YaaymmjmUNvimbOwFjFtmBjjfw6bvkO2cCeABWM3zuc4AnsdB
-         x5aB+d9OaJ+JQ7oGJ1ZavMmU2sSjiZFfjgcmYDbpZNHXsOmuytGGpjJOnSbcWEcSQj8d
-         YMgkperXdfJBI+t1fHFMQhH4SICftY6D0xdvyZH3rNj27HH1THGx6Xk6pHqymro2uDJo
-         g8DZMGQzyBvgZKB5Ff10yzGLTYafnoS24inT+vRGZUvp9EEHDtmb+K0l+CyMidwX8y2x
-         A1PPYMfZL2h94UmOGiXI/aFqdGmdIrX5i+Wmztc+IoqnXEuKtHC7qvFlDY2noXubud5C
-         +dUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUTQLOz7UzHoSwDJ5fdPoNge2qr7hY3hVHD3J1Aw2VhjRTvC+SqEOAnHMqaovRkJlJtzYIdS1//Synfwd/TS3YmN3wH+bgi6lHm5/J4HJ8=
-X-Gm-Message-State: AOJu0Yzbe+NAFuOM4SHQtbZMjW9Bg1aqYAxhbNTvsIZM/FLp00GCSyXc
-	h26QX2g84lbhOPNZ2G6sOLPfDjogKFYuHS6APL2D1ongT8W2DPl+pWYyA1f6pw==
-X-Google-Smtp-Source: AGHT+IGMS+LrGaCj1Lg+QZmrrlMH0Ixfn/L59zuCwNIRqWw0O7FBQUZWwFW5fNKu3n2lX5Yg9gyCBQ==
-X-Received: by 2002:a2e:f19:0:b0:2ee:80b2:1e99 with SMTP id 38308e7fff4ca-2f3aa1f9dcamr96771fa.44.1723568666421;
-        Tue, 13 Aug 2024 10:04:26 -0700 (PDT)
-Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5bd190ad1d3sm3081547a12.28.2024.08.13.10.04.24
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 13 Aug 2024 10:04:25 -0700 (PDT)
-From: Arend Van Spriel <arend.vanspriel@broadcom.com>
-To: Jacobe Zang <jacobe.zang@wesion.com>, <robh@kernel.org>, <krzk+dt@kernel.org>, <heiko@sntech.de>, <kvalo@kernel.org>, <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>, <conor+dt@kernel.org>
-CC: <efectn@protonmail.com>, <dsimic@manjaro.org>, <jagan@edgeble.ai>, <devicetree@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>, <linux-rockchip@lists.infradead.org>, <linux-kernel@vger.kernel.org>, <arend@broadcom.com>, <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>, <megi@xff.cz>, <duoming@zju.edu.cn>, <bhelgaas@google.com>, <minipli@grsecurity.net>, <brcm80211@lists.linux.dev>, <brcm80211-dev-list.pdl@broadcom.com>, <nick@khadas.com>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Tue, 13 Aug 2024 19:04:25 +0200
-Message-ID: <1914cb2b1a8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <20240813082007.2625841-2-jacobe.zang@wesion.com>
-References: <20240813082007.2625841-1-jacobe.zang@wesion.com>
- <20240813082007.2625841-2-jacobe.zang@wesion.com>
-User-Agent: AquaMail/1.51.5 (build: 105105504)
-Subject: Re: [PATCH v10 1/5] dt-bindings: net: wireless: brcm4329-fmac: add pci14e4,449d
+	s=arc-20240116; t=1723568758; c=relaxed/simple;
+	bh=p1NVT6nCxpHzkGkDjRiPmxqgd1Vk3IFMjCHasdXrTBQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Nb6BOSJuhg5fsM9nPFfBXK2flNDtfHRsqesFFvKHlApOV9WXrvs8XOLkQWmm4sCfYcgbN1VX5uGCKB/jed5P2ZrbbMEYsMNvMZ16eZMyDMaCh6UM84QculqP8WsgOzhUAAPGEYOvJMiKbkfCzrqVOIN03lBTM2x5mkJlP9bwnCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=QkI07sgh; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47DH1crP026758;
+	Tue, 13 Aug 2024 17:05:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	7DPn4V7xZH3wDuP8mYPCm8T5/CIOvrFsoU8orG75UZY=; b=QkI07sghUWuVcVEB
+	KXRJkdFYFMeH/FeQQfpx/ChEZT9bHkz/yd/Bsl3pveilc+4lq4t6PAYE1xx60oZJ
+	1gsb+WxV/ZwTTymKoZQzBwqEKPmAry2HV3KWFhWm0uLTbfs+E8sljTOCpiPWkXKF
+	pEwQDD5Yk/BGzm3SkkgrvZeMFckrG0/gTX1Rr6dPhrClDcd1d3VubWXR9Ftsi3AE
+	jsakImaAbPPAYJH7WJDsTu/gPI/IJ6qMDyV4MCTj75+PO8dM27HGQVhV43+DWFeT
+	9cHajJMbMkuIkcTAanMUD1Cs4q9sL3tX+xiaYsMKaKdPaGdRNagQMw+zTqDuYxEP
+	spgmqQ==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 410437ss93-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 13 Aug 2024 17:05:53 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47DH5qhd008050
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 13 Aug 2024 17:05:52 GMT
+Received: from [10.111.178.117] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 13 Aug
+ 2024 10:05:52 -0700
+Message-ID: <53e9f797-5db2-4ab3-9d06-6ae9bf6df29a@quicinc.com>
+Date: Tue, 13 Aug 2024 10:05:51 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset="us-ascii"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/4] wifi: ath12k: Add support for reading variant from
+ ACPI to download board data file
+To: Lingbo Kong <quic_lingbok@quicinc.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240809025055.6495-1-quic_lingbok@quicinc.com>
+ <20240809025055.6495-5-quic_lingbok@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <20240809025055.6495-5-quic_lingbok@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: Ud8s9hkVFV-8ZVe_QGhhMPqoLvoP17gj
+X-Proofpoint-GUID: Ud8s9hkVFV-8ZVe_QGhhMPqoLvoP17gj
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-13_07,2024-08-13_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
+ mlxlogscore=999 malwarescore=0 lowpriorityscore=0 phishscore=0 spamscore=0
+ bulkscore=0 suspectscore=0 adultscore=0 mlxscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
+ definitions=main-2408130124
 
-On August 13, 2024 10:20:24 AM Jacobe Zang <jacobe.zang@wesion.com> wrote:
-
-> It's the device id used by AP6275P which is the Wi-Fi module
-> used by Rockchip's RK3588 evaluation board and also used in
-> some other RK3588 boards.
-
-Hi Kalle,
-
-There probably will be a v11, but wanted to know how this series will be 
-handled as it involves device tree bindings, arm arch device tree spec, and 
-brcmfmac driver code. Can it all go through wireless-next?
-
-Regards,
-Arend
-
-> Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
-> ---
-> .../devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml      | 1 +
-> 1 file changed, 1 insertion(+)
-
+On 8/8/2024 7:50 PM, Lingbo Kong wrote:
+> Currently, ath12k does not support reading variant from ACPI board data
+> filename extension for downloading board data file.
+> 
+> To address this issue, obtain the string of the ACPI data filename
+> extension and use it as part of the string to search for the board data
+> file from board-2.bin.
+> 
+> This patch will not affect QCN9274, because only WCN7850 supports ACPI.
+> 
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> 
+> Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
 
