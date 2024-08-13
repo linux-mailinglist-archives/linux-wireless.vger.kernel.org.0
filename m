@@ -1,112 +1,150 @@
-Return-Path: <linux-wireless+bounces-11375-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11376-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6550950CF4
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 21:12:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E4F0950D44
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 21:40:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59A4F1F25642
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 19:12:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28D4F1F22E92
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 19:40:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C86CC1A4F3B;
-	Tue, 13 Aug 2024 19:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181B319CD13;
+	Tue, 13 Aug 2024 19:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="gMAPpRwn"
+	dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="CyJCNmmk";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="eRJFsJWA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from fout1-smtp.messagingengine.com (fout1-smtp.messagingengine.com [103.168.172.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7241A4F13
-	for <linux-wireless@vger.kernel.org>; Tue, 13 Aug 2024 19:12:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3300E43AB0
+	for <linux-wireless@vger.kernel.org>; Tue, 13 Aug 2024 19:40:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723576342; cv=none; b=hI/XoG4bugnLjc+GYtaHAsep940FNmHxGtSFKIMBb7s2V8ab7f9rhAz/LwyqcENzidjyTGqyk+HXEeKylC8QenZ5B+h9ZUdOfrcgIA8yy4H/7MbUIo8M15ACvJPPb2hxw8T0CCu1QEe8pdBtQsgcnfHg34lyuUygcCApdENCnbY=
+	t=1723578005; cv=none; b=mtmYxBQAy2/F/epRe4OaqVx3a77NGQ1O8AvjCh/yLj7Gv2UGvhMJoUyAzv2tmIuYRC4N1ZD0X/95kGcAdDJM9RTuim2gq+ME/61UKnMlkLL2jpCma48xMdMYo2sXRKmd2nOjqHCxC9MW3pB/0LqRPl0YFSOIm2cTrZY2tjiBaGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723576342; c=relaxed/simple;
-	bh=T0E/+Z0sATpq1yYb1guwXHEs2qNl1CK6tXA4/FSRjKk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=gfAMsCrr2hre07mo4july92A2IE4OnWEBDobWWc2XNRbKP+N0+PN0HEEirUQtasUmPeoWpURYNeDK0DWo1jeYrmVoCpDwxOF4VJXZUa5vpUshrc0dYRXd3yu80Rjn+B/WGzGsRDkE4V6wmHHtrUSALfJdTvcq2qgJqRqiqZy2/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=gMAPpRwn; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47DC8nAb005666;
-	Tue, 13 Aug 2024 19:12:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Jx3mnCJA+AL2fn/1qC4LOQ88tS8X3R+WfwGY5fOq5co=; b=gMAPpRwn1i6GjkbM
-	jDDWpxC8uUmc2Gu+mwNhwlOwArsu7/gJmEQqoHQ3P7Gq0Ey0A58uC8w5Qo+teyzb
-	bcQ2uKA9LyI5nv0X8ls10hagi+61yQz3REjs/REXP7tAkxGdiykijMmL5fEophGV
-	kxQEEmcmroUYGQA9iq5A3ejrcMS92detECvPDWWzQ3XRrJ69PEhCwk9CJWjgN26s
-	v/FxnYroPXVvfZbczBVHPKrWNunPccSOq8iywzFBh7fK8xOL3lHl+mAwz0yMKza5
-	YiBUUyh+HPV75/YVEGf2nxFB+AgfgtqhNnkzMjex347HgP7fkvRvgBO94OjHjBxx
-	Jhc9Dg==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40x18y0ya9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Aug 2024 19:12:15 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47DJCD8e028538
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Aug 2024 19:12:14 GMT
-Received: from [10.111.178.117] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 13 Aug
- 2024 12:12:13 -0700
-Message-ID: <4fc3d4a1-7dbe-412b-a6bc-72d0a5d13196@quicinc.com>
-Date: Tue, 13 Aug 2024 12:12:12 -0700
+	s=arc-20240116; t=1723578005; c=relaxed/simple;
+	bh=6FMkLcJgd4R3Of9SC8fwtAlhSNaCakdLaQa3MK25a4w=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=kT8PErrF2z7LDG88RcAr2FH8Uy02XXoQhVHSm4dBIxS2Mj8uVfXaoYTzC4HZ2shYJ/Y1K3XquVA7BJDo1oKZSVtQSklShCoo+uBqNHqI5MIeE9MO5CdbsRR6wP9qV/n4p5B+qo7oGnukVDypPlL0eD6hC7MhG7/U1OZJKk2fZ04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; spf=pass smtp.mailfrom=flygoat.com; dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b=CyJCNmmk; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=eRJFsJWA; arc=none smtp.client-ip=103.168.172.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flygoat.com
+Received: from phl-compute-05.internal (phl-compute-05.nyi.internal [10.202.2.45])
+	by mailfout.nyi.internal (Postfix) with ESMTP id 2D8EC138FCD2;
+	Tue, 13 Aug 2024 15:40:02 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Tue, 13 Aug 2024 15:40:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:message-id:mime-version:reply-to
+	:subject:subject:to:to; s=fm1; t=1723578002; x=1723664402; bh=EO
+	9Tqzsuwl3wxc931KiR+Wfse5DDcRMICDxmR2dliRA=; b=CyJCNmmk72cnm64tdF
+	aBdqCwEbJ5KEUuZwJK8NA7jV9M+Guy6h1mV2FQ7w4Em5ozWned2ng57Q6Xp+plb3
+	M1/rg/Ix3no8fG7MjfqCBaI3nQJeIj4Q06/w6GYmeTrVT86ckAj6OCUcNzv0saMZ
+	6CHKBDf9zIM5EAWWlcyOh2tys6pC3Jucy2K8i346d5huHm+FYRoK441tPqMly06c
+	Nf03kQUUtXOdO6vVj0ooH+qKflnsJQT2+zeHLJRxkOx3lC49yhJU1YVnc0SMz2aM
+	VhkNq0hkrHh5l2aUaQ3d6K6oivIRsLdlUN4w0MrYcJKw5DQ/PbdtOIQAEOoBkCt2
+	mMcw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+	:x-sasl-enc; s=fm3; t=1723578002; x=1723664402; bh=EO9Tqzsuwl3wx
+	c931KiR+Wfse5DDcRMICDxmR2dliRA=; b=eRJFsJWAe3tmgpRmb/Z3a6Lll4H/l
+	U04zqPZ2qLUNTTQq/Z/CGKPRh8+AmU5/B7Qmrm1T7RHHnLWFBIBK2dhgPB1VpJj2
+	trgTEqSQ3/LxrYgFKJm/KVY0AqErQ1MofXplL1JtCZ6xVREMMUMnp0N2iU+PgBAJ
+	/XdBXpI6c4VrdW+EH6urhVZ6MbO6+nRvN3kflx3V/9D2kT/t5Vk3lOFYrwa2hHdl
+	aowjzs0NtDIvQXQpjzRZytMs0cHXIvWM0hGrWWkDPT5x8M8VpvxeWc1OH6Vx/wIv
+	qVeNtfmeO8f9l2hMJ9WbkZAxaFq8AiMIkYHOn9Rywe7PYkBs9oAt4DHDw==
+X-ME-Sender: <xms:kra7ZpOyJjHTJ69EUbtC16SrkTxZthGQCjU7qog0oCeJJeYv7VIQuA>
+    <xme:kra7Zr82ZBOCm9sb-X-F-D2tl-ybAkAzVs2QHYePBKGczBf_Ud2dDROqvLUyXyVpc
+    C7urnnVH3CZuoYpFmU>
+X-ME-Received: <xmr:kra7ZoRBT1yWYGJLXk6Ik0wDvjfERXsX6XA-LMKYrl7PhDc-Kgatj3ZeqCUZz-wLXg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddruddtvddgudeflecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpefhufffkfggtgfgvfevofesthejredtredtjeen
+    ucfhrhhomheplfhirgiguhhnucgjrghnghcuoehjihgrgihunhdrhigrnhhgsehflhihgh
+    horghtrdgtohhmqeenucggtffrrghtthgvrhhnpefgveffjeetgeejfeelgfekteelkefh
+    uefggedvueeujeekjeetkeekvdffffefudenucffohhmrghinhepkhgvrhhnvghlrdhorh
+    hgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepjhhi
+    rgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomhdpnhgspghrtghpthhtohephedpmh
+    houggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhinhhugidqfihirhgvlhgvshhssehv
+    ghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhhirgiguhhnrdihrghnghesfh
+    hlhihgohgrthdrtghomhdprhgtphhtthhopeifvghnsheskhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtohepqhhuihgtpghjjhhohhhnshhonhesqhhuihgtihhntgdrtghomhdprhgtph
+    htthhopeifihhrvghlvghsshdqrhgvghgusgeslhhishhtshdrihhnfhhrrgguvggrugdr
+    ohhrgh
+X-ME-Proxy: <xmx:kra7ZlvpLqUIHZ5f00IUZu1JGmgpwjKHG_Fc8GIhSo-WjImgXHrzRA>
+    <xmx:kra7ZhfiyMD7OSIHgHr0t7zrj46MzKqnEAuFRDrE6KZ7xHSZr-ZZuA>
+    <xmx:kra7Zh2Kw3CnxIccyEPQ-odUWJWC-aDtDrVoqTiiILgTupGqluG2Yg>
+    <xmx:kra7Zt9tsZwmPuq5X3tfhIb3Um0YEZtaKQ-3F5HCa_K-Ja_NB7bfFQ>
+    <xmx:kra7ZqELFKnzwIVwaTN1Bhu7au8z4mTlg3z9RvokXExfVm3gC5yMGM2P>
+Feedback-ID: ifd894703:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 13 Aug 2024 15:39:59 -0400 (EDT)
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PATCH v2 0/2] wireless-regdb: Workflow updates
+Date: Tue, 13 Aug 2024 20:39:38 +0100
+Message-Id: <20240813-workflow-v2-0-6d8039283d45@flygoat.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/2] wifi: ath11k: Add firmware coredump collection
- support
-To: Miaoqing Pan <quic_miaoqing@quicinc.com>, <kvalo@kernel.org>
-CC: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20240813013028.2708111-1-quic_miaoqing@quicinc.com>
- <20240813013028.2708111-2-quic_miaoqing@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Content-Language: en-US
-In-Reply-To: <20240813013028.2708111-2-quic_miaoqing@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: gt2f_uhUvxjoFbzFBp7NpjG5qSDOlCB1
-X-Proofpoint-ORIG-GUID: gt2f_uhUvxjoFbzFBp7NpjG5qSDOlCB1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-13_10,2024-08-13_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=736
- suspectscore=0 phishscore=0 malwarescore=0 mlxscore=0 spamscore=0
- lowpriorityscore=0 impostorscore=0 clxscore=1015 priorityscore=1501
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2408130139
+X-B4-Tracking: v=1; b=H4sIAHq2u2YC/23MQQ6CMBCF4auQWVszbdGAK+9hWDR0BhqRmpYUC
+ endraxd/i8v3w6RgqMIt2qHQMlF5+cS6lRBP5p5IOFsaVCoamykFqsPT578KlppySJjY2sJ5f4
+ OxO5zUI+u9Oji4sN2yEn+1j9IkgKF5qtmJNPaC9952gZvlnPvX9DlnL/1Lv8NogAAAA==
+To: Chen-Yu Tsai <wens@kernel.org>
+Cc: linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org, 
+ Jeff Johnson <quic_jjohnson@quicinc.com>, 
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=750;
+ i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
+ bh=6FMkLcJgd4R3Of9SC8fwtAlhSNaCakdLaQa3MK25a4w=;
+ b=owGbwMvMwCXmXMhTe71c8zDjabUkhrTd2/pXOs95c/jdl1UyeWWn9E7dentQRjlnjt7zMNH3t
+ 2zWLON901HKwiDGxSArpsgSIqDUt6Hx4oLrD7L+wMxhZQIZwsDFKQAT0bVlZJh6wTnwRcKPytg6
+ vprwGxvLDuhuXC2y/xdD9oqHz5btW7OD4b/DiZ/FK70NfmQurigr3B3sseAgx/H0I5pbPaS+hE7
+ ews4JAA==
+X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
+ fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
 
-On 8/12/2024 6:30 PM, Miaoqing Pan wrote:
-> In case of firmware assert snapshot of firmware memory is essential for
-> debugging. Add firmware coredump collection support for PCI bus.
-> Collect RDDM and firmware paging dumps from MHI and pack them in TLV
-> format and also pack various memory shared during QMI phase in separate
-> TLVs.  Add necessary header and share the dumps to user space using dev
-> coredump framework. Coredump collection is controlled by
-> CONFIG_DEV_COREDUMP. Dump collected for a radio is 55 MB approximately.
-> 
-> The changeset is mostly copied from:
-> https://lore.kernel.org/all/20240325183414.4016663-1-quic_ssreeela@quicinc.com/.
-> 
-> Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-04358-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
-> 
-> Signed-off-by: Miaoqing Pan <quic_miaoqing@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Hi all,
 
-Kalle, are you able to test this? I don't currently have a HSP setup
+This series updated some workflow components to streamline
+wireless-regdb contributor experiences.
+
+Please review.
+
+Thanks
+
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+---
+Changes in v2:
+- v2: Swap Cc and to, Cc wireless-regdb@lists.infradead.org (Jeff)
+- Link to v1: https://lore.kernel.org/r/20240813-workflow-v1-0-3f63f0ea9d5f@flygoat.com
+
+---
+Jiaxun Yang (2):
+      wireless-regdb: Update .gitignore
+      wireless-regdb: Add .b4-config
+
+ .b4-config |  5 +++++
+ .gitignore | 11 +++++++++--
+ 2 files changed, 14 insertions(+), 2 deletions(-)
+---
+base-commit: 003c282a297f8cec06a576fe1434c94353d14610
+change-id: 20240813-workflow-91ded0f08d41
+
+Best regards,
+-- 
+Jiaxun Yang <jiaxun.yang@flygoat.com>
+
 
