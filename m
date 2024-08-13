@@ -1,91 +1,93 @@
-Return-Path: <linux-wireless+bounces-11381-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11382-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B1FB950E46
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 23:03:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8EE9950F07
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 23:19:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 424732846D7
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 21:03:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBA3C1C20BA4
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 21:19:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B5E01A705B;
-	Tue, 13 Aug 2024 21:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB4681AB523;
+	Tue, 13 Aug 2024 21:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h1JJQ8Ne"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cZnIOvir"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718961A2C22
-	for <linux-wireless@vger.kernel.org>; Tue, 13 Aug 2024 21:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458691AAE17
+	for <linux-wireless@vger.kernel.org>; Tue, 13 Aug 2024 21:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723583008; cv=none; b=D423rmqyn2UtvODLaQyvZNnNoxcWc1pdZGRiOtqFd/Aa3xO/H3bKhn2DWryXwkjqqO2HBo9HSOdtWks0YBKzMosc5uG4VE3yLbeatdXRbhl8/c/7k0wHxgDbHDXGRaM3/nsdMXcQJz2aPZnUx99atPecYw7MrCcrRTZ1NUqjjRY=
+	t=1723583647; cv=none; b=DvAV6ZMKlLL3fCk7p3EHfmdOJ86VVAl7Wqe5iDzUAhU3OxBaEo/N9geYWDu7+CygmGyJD2xIlluzVAIYTdETOd6W+DsgL2arb3+DWTG68FPDkUvVfQf/W33UCbjV/jie2fEKsM9YY7JHmEmyQ4uE2jD6AvnJ+BaHl1+kJgOLhYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723583008; c=relaxed/simple;
-	bh=S1wGFKTAEjSQsbf68k5RXdglIXflEszFnfO6eF1HbfI=;
+	s=arc-20240116; t=1723583647; c=relaxed/simple;
+	bh=3gSe/cVBbpVPgF+9SDAdjXm4H1D+qaetKJRmI3rmOnM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IWCX/mO9r1Om5aQY9vZjIibWP81WdchULTNpvQn4j8GOM5YAw8kFNR+orT6axqMRrQsoIFUf996rU40HN5MnrB4LOMOeOAN5cBmp0Xfux8HN5nKIaRqUm9hHsWLbqvjD1e87B+6AGQmNTV+gOqyUedD2FZT1MIh0vjmadwZGbkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h1JJQ8Ne; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=g9w5Iou5YIpi+6rJotsf8Fi6rYiKW8JLjDiQOB80FC/NzZoeIeL0VTcsTCVJi34TbBh7pSm/2Q83YKMEpEe7eMP13klLQHtPP65Ug3QDSM8IrjytPnlF8DLcGpZPy94MrMyiCOBznpUbcI5I4VjoNr0Ue6EpMlAEmknk60v0PuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cZnIOvir; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723583006;
+	s=mimecast20190719; t=1723583645;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1UOf/e3HcQ+l94OWXrCwdSK3TbHtvFPHwqfrVahjAnI=;
-	b=h1JJQ8NeKnYI+KpVrixAz35Kp9WMTMxgMjn5cXurb7JbDrj803gs1in0zc9mvV5epTMB18
-	LcB+sqy9x32axlag2ewlUFMUFJ7SPpn2LP3YLWJ9C4b5dKNwgUenInyAU65CFBqcbIruVT
-	a0b4CzCybZshBGeH7JZ8jYC2cMWQE6k=
-Received: from mail-io1-f72.google.com (mail-io1-f72.google.com
- [209.85.166.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=RLndxOVhMGnGk0ZQ33snLsOErJZzv8Txl/Ym94gCWEQ=;
+	b=cZnIOvirxhfADjqx3lB2xCkA5PYNgM8hWW4AR4ME7J9PJPQVHbyo96E8Qvkz3zo6GVTbiG
+	soVVW2W5pLB7/7L5C0XXih2c4a+aaqmnRyk5GkCbkPkzTnOOPlggbyaeeWLhDvg5LeiFEs
+	U++0aLk8+NMvGRTpTuC4OuuJJTHznng=
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com
+ [209.85.166.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-645-fjgsGiCaPZyLVvZL2Q1TYw-1; Tue, 13 Aug 2024 17:03:24 -0400
-X-MC-Unique: fjgsGiCaPZyLVvZL2Q1TYw-1
-Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-81f8c78cc66so773885739f.2
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Aug 2024 14:03:24 -0700 (PDT)
+ us-mta-17-N82F37hxOCGzq0t_CCS5-Q-1; Tue, 13 Aug 2024 17:14:04 -0400
+X-MC-Unique: N82F37hxOCGzq0t_CCS5-Q-1
+Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-39b391cf336so2701045ab.1
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Aug 2024 14:14:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723583004; x=1724187804;
+        d=1e100.net; s=20230601; t=1723583643; x=1724188443;
         h=content-transfer-encoding:mime-version:organization:references
          :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=1UOf/e3HcQ+l94OWXrCwdSK3TbHtvFPHwqfrVahjAnI=;
-        b=vDXV4I4rtb2eY18b9znHqj+f5iwOFtkTlMGySnM+nzqL8rQ7RBCIASDxJDYpIGAP7o
-         zg+e3WUlbMP8OciBclkW5RKASzLTl56cxcrIJMkxd9sJ2g6yu3JsKTFDctKCflZTtigS
-         3T/dnkTuPRHvenII9pue0nNDJK421bUGoCQVg75miy6Y9Mrazq2zJ5GMxQIF9YYrkLGS
-         fdSeIEK5/gQXDiBzeiQ3Aq2ZfADkZLS8JbLKm/P75gzTNkjj0O8trncSA+pD7957Ny0B
-         FzVxsNsu2dss3qT3dsa4wScPvtdDcRHvtkqfZv2dh4o0lW3y1NLmoqrquu2kvYF2XL6H
-         Hzcg==
-X-Forwarded-Encrypted: i=1; AJvYcCV3znL2NvMHy3J//EH5ExDsui1WqUxlH2XOLW1/naGtfUwL4GTnb8mSTTz5gP3XQTwMbQ1P8Us6bsiayxhNPA89rnW699VnFjp03brd7Vk=
-X-Gm-Message-State: AOJu0YxrjzoaMyj8MMBMEUx3S33BMpKRmnVLFIKjptYUl8okt1/nLNgU
-	lE5t679uD+oe/AsPKCC3U9k76c1mEvCRmp5YwFdZ8GaAboSxmkPg6fnTcZjB7f8tGmYSoCYMW10
-	IfG4bNad6MVmoTLoY9S4xySRHarP1V1YrjzVClwAJmhM55KVgblMPbEsy3XxwQp86
-X-Received: by 2002:a05:6602:14d2:b0:804:9972:2f8c with SMTP id ca18e2360f4ac-824dad04265mr122543539f.8.1723583003652;
-        Tue, 13 Aug 2024 14:03:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGUG+Ra/4MLDKrpbcdWTsiFMgCKM25UlSCbFVfALG5nTggblaB3Mjb05rv1rYcf1nGj/+3LVA==
-X-Received: by 2002:a05:6602:14d2:b0:804:9972:2f8c with SMTP id ca18e2360f4ac-824dad04265mr122539339f.8.1723583003274;
-        Tue, 13 Aug 2024 14:03:23 -0700 (PDT)
+        bh=RLndxOVhMGnGk0ZQ33snLsOErJZzv8Txl/Ym94gCWEQ=;
+        b=Hg9OWFQEdHdDJv1rMbg81Tiib3allT/5UoWRgZ6T0EGUmuv72nlyll+jFLVgiAZmVD
+         YGzx8bd+itIkH0Yl49Jficvw49A25KUHr2oGsqDMrhqE56n6tXn6oOK34miHk5cKVR7Q
+         s2pxT/MxkofYtStmzbNKRzEbQUAK4gUH7Qz8n929UPhrvZnfk8cUsF8q9N/xwCQ661nu
+         D62D5Og/iIJ6qm0q/Lm0rWTnXKjzT/sQkdPfkPmXu9JjM9EYwvcyS29J+okVolm2NsaL
+         5ioRcAkROjYoKKZ5eMD/MXij0dUI+TUOoQyP9W6wpqWbyR/200jz6RoD8xhOo/2q3kzx
+         w/qg==
+X-Forwarded-Encrypted: i=1; AJvYcCUJOS/s7BKbtPp4prsZOPeKzlfCAX2N+V8HwsBJYTi8oaEyLYZPDHvoNT+7djEpwMnXsba6vDAqmdURZaUcHSAkMJZo0IIggokXfRM34LQ=
+X-Gm-Message-State: AOJu0YzphLQIJ+ZC8CgJfqNpaHP5vl67U708alVL+d8/f3QzSqurnR2a
+	XD24pxjEiO614U0kzFLPjZyB7VDof2AQBnd68wCtFsTqTiLeDTuWg2BdVmuA0OlbZpJKhzYXn8N
+	t3mfv+arozIkufmMZrEz7esoXjVBjo1y4tx7J7a6rVqLB0heEl6OxTdO+Bp2DWYIn
+X-Received: by 2002:a05:6e02:1c48:b0:399:4525:c2bc with SMTP id e9e14a558f8ab-39c48dccd95mr35434795ab.10.1723583643363;
+        Tue, 13 Aug 2024 14:14:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG80cLRVSOvRn9w9qz+VrLxVLNgcf2C34EALlspiOzLOxMt0M7/SH6xPKbhukHFZiTHKZOB1A==
+X-Received: by 2002:a05:6e02:1c48:b0:399:4525:c2bc with SMTP id e9e14a558f8ab-39c48dccd95mr35434605ab.10.1723583642975;
+        Tue, 13 Aug 2024 14:14:02 -0700 (PDT)
 Received: from redhat.com ([38.15.36.11])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4ca76910393sm2733107173.7.2024.08.13.14.03.21
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4ca769102d4sm2731540173.36.2024.08.13.14.14.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Aug 2024 14:03:22 -0700 (PDT)
-Date: Tue, 13 Aug 2024 15:03:20 -0600
+        Tue, 13 Aug 2024 14:14:02 -0700 (PDT)
+Date: Tue, 13 Aug 2024 15:14:01 -0600
 From: Alex Williamson <alex.williamson@redhat.com>
 To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, quic_bqiang@quicinc.com,
- kvalo@kernel.org, prestwoj@gmail.com, linux-wireless@vger.kernel.org,
- ath11k@lists.infradead.org, dwmw2@infradead.org, iommu@lists.linux.dev,
- kernel@quicinc.com, johannes@sipsolutions.net, jtornosm@redhat.com
-Subject: Re: [PATCH RFC/RFT] vfio/pci-quirks: Quirk for ath wireless
-Message-ID: <20240813150320.73df43d7.alex.williamson@redhat.com>
-In-Reply-To: <20240813164341.GL1985367@ziepe.ca>
+Cc: Thomas Gleixner <tglx@linutronix.de>, kvm@vger.kernel.org,
+ quic_bqiang@quicinc.com, kvalo@kernel.org, prestwoj@gmail.com,
+ linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+ dwmw2@infradead.org, iommu@lists.linux.dev, kernel@quicinc.com,
+ johannes@sipsolutions.net, jtornosm@redhat.com
+Subject: Re: [PATCH RFC/RFT] vfio/pci: Create feature to disable MSI
+ virtualization
+Message-ID: <20240813151401.789c578f.alex.williamson@redhat.com>
+In-Reply-To: <20240813163053.GK1985367@ziepe.ca>
 References: <adcb785e-4dc7-4c4a-b341-d53b72e13467@gmail.com>
-	<20240812170045.1584000-1-alex.williamson@redhat.com>
-	<20240813164341.GL1985367@ziepe.ca>
+	<20240812170014.1583783-1-alex.williamson@redhat.com>
+	<20240813163053.GK1985367@ziepe.ca>
 Organization: Red Hat
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -96,72 +98,55 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 13 Aug 2024 13:43:41 -0300
+On Tue, 13 Aug 2024 13:30:53 -0300
 Jason Gunthorpe <jgg@ziepe.ca> wrote:
 
-> On Mon, Aug 12, 2024 at 11:00:40AM -0600, Alex Williamson wrote:
-> > These devices have an embedded interrupt controller which is programmed
-> > with guest physical MSI address/data, which doesn't work.  We need
-> > vfio-pci kernel support to provide a device feature which disables
-> > virtualization of the MSI capability registers.  Then we can do brute
-> > force testing for writes matching the MSI address, from which we can
-> > infer writes of the MSI data, replacing each with host physical values.
+> On Mon, Aug 12, 2024 at 10:59:12AM -0600, Alex Williamson wrote:
+> > vfio-pci has always virtualized the MSI address and data registers as
+> > MSI programming is performed through the SET_IRQS ioctl.  Often this
+> > virtualization is not used, and in specific cases can be unhelpful.
 > > 
-> > This has only been tested on ath11k (0x1103), ath12k support is
-> > speculative and requires testing.  Note that Windows guest drivers make
-> > use of multi-vector MSI which requires interrupt remapping support in
-> > the host.  
+> > One such case where the virtualization is a hinderance is when the
+> > device contains an onboard interrupt controller programmed by the guest
+> > driver.  Userspace VMMs have a chance to quirk this programming,
+> > injecting the host physical MSI information, but only if the userspace
+> > driver can get access to the host physical address and data registers.
+> > 
+> > This introduces a device feature which allows the userspace driver to
+> > disable virtualization of the MSI capability address and data registers
+> > in order to provide read-only access the the physical values.  
 > 
-> The way it is really supposed to work, is that the guest itself
-> controls/knows the MSI addr/data pairs and the interrupt remapping HW
-> makes that delegation safe since all the interrupt processing will be
-> qualified by the RID.
+> Personally, I very much dislike this. Encouraging such hacky driver
+> use of the interrupt subsystem is not a good direction. Enabling this
+> in VMs will further complicate fixing the IRQ usages in these drivers
+> over the long run.
+
+Clearly these _guest_ drivers are doing this regardless of the
+interfaces provided by vfio, so I don't see how we're encouraging hacky
+driver behavior, especially when it comes to Windows guest drivers.
+
+> If the device has it's own interrupt sources then the device needs to
+> create an irq_chip and related and hook them up properly. Not hackily
+> read the MSI-X registers and write them someplace else.
+
+This is how the hardware works, regardless of whether the guest driver
+represents the hardware using an irq_chip.
+
+> Thomas Gleixner has done alot of great work recently to clean this up.
 > 
-> Then the guest can make up the unique interrupts for MSI and any
-> internal "IMS" sources and we just let the guest directly write the
-> MSI/MSI-X and any IMS values however it wants.
-> 
-> This hackery to capture and substitute the IMS programming is neat and
-> will solve this one device, but there are more IMS style devices in
-> the pipeline than will really need a full solution.
+> So if you imagine the driver is fixed, then this is not necessary.
 
-How does the guest know to write a remappable vector format?  How does
-the guest know the host interrupt architecture?  For example why would
-an aarch64 guest program an MSI vector of 0xfee... if the host is x86?
+How so?  Regardless of the guest driver structure, something is writing
+the MSI address and data values elsewhere in the device.  AFAICT the
+only way to avoid needing to fixup those values is to give the guest
+ownership of the address space as you suggested in the other patch.
+That also seems to have a pile of issues though.
 
-The idea of guest owning the physical MSI address space sounds great,
-but is it practical?  Is it something that would be accomplished while
-this device is still relevant?
+> Howver, it will still not work in a VM. Making IMS and non-MSI
+> interrupt controlers work within VMs is still something that needs to
+> be done.
 
-> > + * The Windows driver makes use of multi-vector MSI, where our sanity test
-> > + * of the MSI data value must then mask off the vector offset for comparison
-> > + * and add it back to the host base data value on write.  
-> 
-> But is that really enough? If the vector offset is newly created then
-> that means the VM built a new interrupt that needs setup to be routed
-> into the VM?? Is that why you say it "requires interrupt remapping
-> support" because that setup is happening implicitly on x86?
-> 
-> It looks like Windows is acting as I said Linux should, with a
-> "irq_chip" and so on to get the unique interrupt source a proper
-> unique addr/data pair...
-
-The Windows driver is just programming the MSI capability to use 16
-vectors.  We configure those vectors on the host at the time the
-capability is written.  Whereas the Linux driver is only using a single
-vector and therefore writing the same MSI address and data at the
-locations noted in the trace, the Windows driver is writing different
-data values at different locations to make use of those vectors.  This
-note is simply describing that we can't directly write the physical
-data value into the device, we need to determine which vector offset
-the guest is using and provide the same offset from the host data
-register value.
-
-I don't know that interrupt remapping is specifically required, but the
-MSI domain needs to support MSI_FLAG_MULTI_PCI_MSI and AFAIK that's
-only available with interrupt remapping on x86, ie.
-pci_alloc_irq_vectors() with max_vecs >1 and PCI_IRQ_MSI flags needs to
-work on the host to mirror the guest MSI configuration.  Thanks,
+Making it work in a VM is sort of the point here.  Thanks,
 
 Alex
 
