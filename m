@@ -1,120 +1,126 @@
-Return-Path: <linux-wireless+bounces-11383-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11384-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 278CD950F96
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Aug 2024 00:19:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90B5195105D
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Aug 2024 01:16:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B77F3B24CE7
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 22:19:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1ED111F21E39
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 23:16:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 236A41AAE32;
-	Tue, 13 Aug 2024 22:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4183C1A707C;
+	Tue, 13 Aug 2024 23:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kaechele.ca header.i=@kaechele.ca header.b="X31WAc5P"
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="fpmwQCVN"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.kaechele.ca (mail.kaechele.ca [54.39.219.105])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com [209.85.222.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC73F56766;
-	Tue, 13 Aug 2024 22:19:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.39.219.105
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5695F153BF6
+	for <linux-wireless@vger.kernel.org>; Tue, 13 Aug 2024 23:16:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723587550; cv=none; b=nl/Kq5LUvnZOQi3a/TiBM23ZJhqS27zbfzPzfvncDa2H8kX8xOkHTbMg1veYn6zAE4wdVBMrqqQ5S4Dtk0rnk7HYwzwfB7PrbBtRsrAU8A5VxG1uBe+MzsE/O4FUJc1iz8bCpOGXxF451LShxZfPP7hvz503lnNW7iNV+aN+088=
+	t=1723591007; cv=none; b=qzVP/icNlxH5v+dUNv2foYO7kzmuP0IcipazA0Cs9FTAld/+Urf5ahxhsV3b5Pfbc/ZoeHU0nmToFSmQ07M0ANfN3i522ggTDPKL/qiFj4yvEA6I63cSljvZIVhg3LYvDWFgeWUXsq4BLpKeKH5wtEEzhlKfP5DaNWCKbkN1TnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723587550; c=relaxed/simple;
-	bh=KfcmEVu+HZN3haoP5owVL/609mGFgVEiDFltnwkD3rg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bSsCl4bnvcA+V9yFKyJ1FGJ1wv45uZo2fKb2MWnWAykbmZdQkqqmgRa2buwhJiUgdodlKCjzq8YZaMDxo3s6PCKUVU9J5nxv7BdlOYzEY8JmNrGsV5yMG3fhTuRMjE7RPrOlAF2XiotQMyPJxHoYBa4lOKFBgKCX7gieZ+GOtiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaechele.ca; spf=pass smtp.mailfrom=kaechele.ca; dkim=pass (1024-bit key) header.d=kaechele.ca header.i=@kaechele.ca header.b=X31WAc5P; arc=none smtp.client-ip=54.39.219.105
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaechele.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaechele.ca
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8089BC005F;
-	Tue, 13 Aug 2024 18:12:29 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaechele.ca; s=201907;
-	t=1723587153; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=usai6GDZhtLfh8rMim+JOkJ8cOVXwNu4QF1LRoNJ7R4=;
-	b=X31WAc5Pgn7ooRVy8pBWJ0IqGyZx0255faefKxRB02STw1Sr8VPWEX6v4N6BMq0sbmBOlA
-	2qho/rEMCN4T9zwQBkpiflVYW4IU67Xb3bpo6ssBr+JW5qLqo5Zxild3ydI2Xx/x4IPik+
-	0WwCtKmJ1JLMCatVXsDP0HfHuojO8RY=
-Message-ID: <3f16cd19-7609-4f97-bacd-9ab307bd8533@kaechele.ca>
-Date: Tue, 13 Aug 2024 18:11:45 -0400
+	s=arc-20240116; t=1723591007; c=relaxed/simple;
+	bh=52yg3c8Z+sROtWrD7KOvWboHFKaZJVMGxS4XIgnp2mE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FSapWgNR3AkeSELRfMFxlReE9PgZilZfSpnHIIfxKBIcTuGXL84GJtaoMLM1xT5z5oZ4QFuL6DcZJCtkphHC59WHq8JkvLnzk/wI4ac4w+tHpnOAFaFK/ZfsK7mzzhgQKnUexZNF4h/S+bw002FMQRH7weQUx+uGSglLdIwsVdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=fpmwQCVN; arc=none smtp.client-ip=209.85.222.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-810177d1760so1999140241.2
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Aug 2024 16:16:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1723591004; x=1724195804; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z9bxAIpVX1riLRh+ADxS60pDEc8y/s/U7SNAzk7+y9E=;
+        b=fpmwQCVNiXmLAACHcP4S1sg/TcoQz0k11HYk6h8t/lDfLwd9AfXPT4khXuxdvlvFi9
+         rXauFr9OunM/8+vlDt+vU+o/FijLpKtXfkJfdG2RUxQ5sUnxL65th8M7C1f797+SavAj
+         RbuYUmV0EUDFRTKVJJjDHAv523BXywdMj3YfS0tLujF8hLLlBdy8wvZJdNNKg7Wd9vQf
+         e+6GN6nPXoRKZS2Upww1Xj/4c+Q2FpgRrRU19FqcXZ8oPdLL19SVWJYPorpiAy9rQ2u0
+         WC6EC1JSL1/bTo8mnIy03DBAU8rx/jAjZiR1AvXvQWT4FcbO3zrc5oul2iREq/zM3kT+
+         UBGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723591004; x=1724195804;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Z9bxAIpVX1riLRh+ADxS60pDEc8y/s/U7SNAzk7+y9E=;
+        b=xMwrIRD7azDc3bi8pXztos4jSIpdxz2WEbMzW0vwfGc9twLojVZ2FyfNKxD1amg3FS
+         XjIwQT7+qxhKHpq8bX6ZKds2Fq4PnhrTEgQaireEshmEC8KzItyAYkmryx/F215baFMy
+         POdn/cbmIxuA3129UY8PXkrfNeBDnlr5goscI6NC/e6JTVHegFybqxWLXaHjwPCfmjDW
+         R18lYIeQz+uQoGHKe8cQRPKYveIi1YMX65WAwtS37GK+mV0DRXpyeNZkNY5UyVr9czl2
+         w2KENSwJ+BerJMajbgmZduqMracC9nPtfQQN18npAr3j8rkRWd4g2rhJECvn7AaFsRXt
+         VC1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVtyrKkdHhZMb3G7QO1MuvJhlNz76Kp1q9rzFZS0luvEnw2XEZIacGka7Fqq3/LLVSVitq4YPXdLsUvh6Ui8L0Pt502uza71mVRI/SjVP0=
+X-Gm-Message-State: AOJu0YxfLQdAxS4Fhf2hUHYFzcbiFp35J2J/WL3r5HleFlm0gdf2LYsE
+	cHwk2+rVD99n3dOUitss8BveqCWv5EDPnpB6ph6Wq+i4gAVKEEjiPVXkk6E6I8Q=
+X-Google-Smtp-Source: AGHT+IGoFDoTtoRoD3WRlWY/s4rTnkFYy3lRwr/J9OksbksRZd84IshvgLRkB13t/Qhd5u1Rki87Bw==
+X-Received: by 2002:a05:6102:c4c:b0:491:f22:3a8 with SMTP id ada2fe7eead31-497599bc0efmr1522313137.29.1723591004199;
+        Tue, 13 Aug 2024 16:16:44 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-68-80-239.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.80.239])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a4c7e0ddfasm379556485a.126.2024.08.13.16.16.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Aug 2024 16:16:43 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.95)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1se0ks-00AITY-S3;
+	Tue, 13 Aug 2024 20:16:42 -0300
+Date: Tue, 13 Aug 2024 20:16:42 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Alex Williamson <alex.williamson@redhat.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, kvm@vger.kernel.org,
+	quic_bqiang@quicinc.com, kvalo@kernel.org, prestwoj@gmail.com,
+	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+	dwmw2@infradead.org, iommu@lists.linux.dev, kernel@quicinc.com,
+	johannes@sipsolutions.net, jtornosm@redhat.com
+Subject: Re: [PATCH RFC/RFT] vfio/pci: Create feature to disable MSI
+ virtualization
+Message-ID: <20240813231642.GR1985367@ziepe.ca>
+References: <adcb785e-4dc7-4c4a-b341-d53b72e13467@gmail.com>
+ <20240812170014.1583783-1-alex.williamson@redhat.com>
+ <20240813163053.GK1985367@ziepe.ca>
+ <20240813151401.789c578f.alex.williamson@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] dt-bindings: net: bluetooth: qualcomm: add QCA9379
- compatible
-To: Krzysztof Kozlowski <krzk@kernel.org>,
- Marcel Holtmann <marcel@holtmann.org>,
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Kalle Valo <kvalo@kernel.org>,
- Jeff Johnson <jjohnson@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
- Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
- Rocky Liao <quic_rjliao@quicinc.com>
-Cc: linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
- linux-mmc@vger.kernel.org
-References: <20240805040131.450412-1-felix@kaechele.ca>
- <20240805040131.450412-4-felix@kaechele.ca>
- <645ae5c7-5421-4bf2-9aac-8151b7db4e0b@kernel.org>
-Content-Language: en-US
-From: Felix Kaechele <felix@kaechele.ca>
-In-Reply-To: <645ae5c7-5421-4bf2-9aac-8151b7db4e0b@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240813151401.789c578f.alex.williamson@redhat.com>
 
-Thanks for taking a look, Krzysztof.
+On Tue, Aug 13, 2024 at 03:14:01PM -0600, Alex Williamson wrote:
 
-In this case I think it would be easiest to just use the existing 
-qca9377 fallback and drop his part of the patchset.
-
-As for the supplies: For the particular module I am working with the 
-supplies are mostly shared with the WiFi side. So it "just works" 
-without taking care of supplies on the BT side.
-
-But I agree it would be more correct to add and handle these as well. 
-The documentation I have access to through the FCC filing of this module 
-is not really conclusive of how to correctly name them in this context.
-I would rather avoid submitting a patch with incorrect supply names.
-
-Thanks again,
-Felix
-
-On 2024-08-05 01:31, Krzysztof Kozlowski wrote:
-> On 05/08/2024 06:01, Felix Kaechele wrote:
->> Document that the QCA9379, as a member of the QCA6174 family, is
->> supported by the existing driver.
->>
->> Signed-off-by: Felix Kaechele <felix@kaechele.ca>
->> ---
->>   .../devicetree/bindings/net/bluetooth/qualcomm-bluetooth.yaml   | 2 ++
->>   1 file changed, 2 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/net/bluetooth/qualcomm-bluetooth.yaml b/Documentation/devicetree/bindings/net/bluetooth/qualcomm-bluetooth.yaml
->> index 68c5ed111417..f968b0d236e0 100644
->> --- a/Documentation/devicetree/bindings/net/bluetooth/qualcomm-bluetooth.yaml
->> +++ b/Documentation/devicetree/bindings/net/bluetooth/qualcomm-bluetooth.yaml
->> @@ -19,6 +19,7 @@ properties:
->>         - qcom,qca2066-bt
->>         - qcom,qca6174-bt
->>         - qcom,qca9377-bt
->> +      - qcom,qca9379-bt
+> > Personally, I very much dislike this. Encouraging such hacky driver
+> > use of the interrupt subsystem is not a good direction. Enabling this
+> > in VMs will further complicate fixing the IRQ usages in these drivers
+> > over the long run.
 > 
-> Then use fallback of 9377 or any other device. I still wonder why you do
-> not require any supplies.
+> Clearly these _guest_ drivers are doing this regardless of the
+> interfaces provided by vfio, so I don't see how we're encouraging hacky
+> driver behavior, especially when it comes to Windows guest drivers.
+
+Because people will then say the Linux driver can't be fixed to
+properly use an irq_domain/etc as the only option that works in VMs
+will be the hacky copy from MSI-X approach :\
+
+> > Thomas Gleixner has done alot of great work recently to clean this up.
+> > 
+> > So if you imagine the driver is fixed, then this is not necessary.
 > 
-> Best regards,
-> Krzysztof
-> 
-> 
+> How so? 
+
+Because if the driver is properly using the new irq_domain/etc
+infrastructure to model its additional interrupt source then this
+patch won't make it work in the VM anyhow, so it is not necessary..
+
+Your other patch would be the only short term answer.
+
+Jason
 
