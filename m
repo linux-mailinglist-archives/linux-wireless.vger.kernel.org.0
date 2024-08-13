@@ -1,122 +1,168 @@
-Return-Path: <linux-wireless+bounces-11380-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11381-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B695D950E38
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 22:59:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B1FB950E46
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 23:03:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 249E0B20FDB
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 20:59:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 424732846D7
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 21:03:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 435CE1A7049;
-	Tue, 13 Aug 2024 20:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B5E01A705B;
+	Tue, 13 Aug 2024 21:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NzFBZ6Yb"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h1JJQ8Ne"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5A244C61;
-	Tue, 13 Aug 2024 20:59:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718961A2C22
+	for <linux-wireless@vger.kernel.org>; Tue, 13 Aug 2024 21:03:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723582776; cv=none; b=qPQEGzSMg+q3WRBLsN5uJJEDwST63KnoqE6Xb8zA+2TPPh8g/h3SMB9CBSeCoWj3SMuud8fwarqqimFluKPhkKCL2F5FrMYMKJvEXvju1eUDVnHkS38D7UdmQPJ82GzpLyPazjO3WtFVC3tzjhqpsbxRv1r25+B7kqiMxbaEglU=
+	t=1723583008; cv=none; b=D423rmqyn2UtvODLaQyvZNnNoxcWc1pdZGRiOtqFd/Aa3xO/H3bKhn2DWryXwkjqqO2HBo9HSOdtWks0YBKzMosc5uG4VE3yLbeatdXRbhl8/c/7k0wHxgDbHDXGRaM3/nsdMXcQJz2aPZnUx99atPecYw7MrCcrRTZ1NUqjjRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723582776; c=relaxed/simple;
-	bh=n9dg36LXmN2upFJapMn9PpdzfL1juCkf2K9+76G+g80=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=qTRqK3PRqAkFdFB5vMQOB/3P9iDCB1A0vSa9JNEdjKrAIIQs00Sn/oBA45ILrfWzFBfO4HU6VKuXZA9ygP3oDJ8xMTGa/Lv+1WCvvNKrUzVywuFJTFxZaIjUxr5Xi8FQFaxjEQOm/fHEqf2mFFaLOAqXL/EtFvoUttK0sdtd1kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NzFBZ6Yb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16CD4C32782;
-	Tue, 13 Aug 2024 20:59:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723582775;
-	bh=n9dg36LXmN2upFJapMn9PpdzfL1juCkf2K9+76G+g80=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=NzFBZ6YbcMhvmgf7XIZ2DzmarlbrWhFmaDDbK97NoCOsjcPVuoabA2tAGqCPSNXyr
-	 RYbEj6H/qTw36+dVpoEkPVD82k/KRXLkfMSUEsZBBYwAWgyGCBRsIPS43oPRw++9l8
-	 kcYPGTN/HaOsDM164QtRaHiyZr7VSez2LjyjHiXxa7loxO2maFhTGSzb4QxVNGRwRR
-	 Tlk/tIUXJ0FRLiM/l93r/cZtQo6iJdOEd94Ys/klshVHxgLOQkgF0i0mWS8TTfcuNY
-	 dLd7sB42vcETMjCWuQO3/vF0e2lITU8fLY/1QgD+t4KxqGTybDOvo0adFSSRrdT84d
-	 WJIPrhQYf2zVg==
-Date: Tue, 13 Aug 2024 14:59:33 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1723583008; c=relaxed/simple;
+	bh=S1wGFKTAEjSQsbf68k5RXdglIXflEszFnfO6eF1HbfI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IWCX/mO9r1Om5aQY9vZjIibWP81WdchULTNpvQn4j8GOM5YAw8kFNR+orT6axqMRrQsoIFUf996rU40HN5MnrB4LOMOeOAN5cBmp0Xfux8HN5nKIaRqUm9hHsWLbqvjD1e87B+6AGQmNTV+gOqyUedD2FZT1MIh0vjmadwZGbkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h1JJQ8Ne; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1723583006;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1UOf/e3HcQ+l94OWXrCwdSK3TbHtvFPHwqfrVahjAnI=;
+	b=h1JJQ8NeKnYI+KpVrixAz35Kp9WMTMxgMjn5cXurb7JbDrj803gs1in0zc9mvV5epTMB18
+	LcB+sqy9x32axlag2ewlUFMUFJ7SPpn2LP3YLWJ9C4b5dKNwgUenInyAU65CFBqcbIruVT
+	a0b4CzCybZshBGeH7JZ8jYC2cMWQE6k=
+Received: from mail-io1-f72.google.com (mail-io1-f72.google.com
+ [209.85.166.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-645-fjgsGiCaPZyLVvZL2Q1TYw-1; Tue, 13 Aug 2024 17:03:24 -0400
+X-MC-Unique: fjgsGiCaPZyLVvZL2Q1TYw-1
+Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-81f8c78cc66so773885739f.2
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Aug 2024 14:03:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723583004; x=1724187804;
+        h=content-transfer-encoding:mime-version:organization:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1UOf/e3HcQ+l94OWXrCwdSK3TbHtvFPHwqfrVahjAnI=;
+        b=vDXV4I4rtb2eY18b9znHqj+f5iwOFtkTlMGySnM+nzqL8rQ7RBCIASDxJDYpIGAP7o
+         zg+e3WUlbMP8OciBclkW5RKASzLTl56cxcrIJMkxd9sJ2g6yu3JsKTFDctKCflZTtigS
+         3T/dnkTuPRHvenII9pue0nNDJK421bUGoCQVg75miy6Y9Mrazq2zJ5GMxQIF9YYrkLGS
+         fdSeIEK5/gQXDiBzeiQ3Aq2ZfADkZLS8JbLKm/P75gzTNkjj0O8trncSA+pD7957Ny0B
+         FzVxsNsu2dss3qT3dsa4wScPvtdDcRHvtkqfZv2dh4o0lW3y1NLmoqrquu2kvYF2XL6H
+         Hzcg==
+X-Forwarded-Encrypted: i=1; AJvYcCV3znL2NvMHy3J//EH5ExDsui1WqUxlH2XOLW1/naGtfUwL4GTnb8mSTTz5gP3XQTwMbQ1P8Us6bsiayxhNPA89rnW699VnFjp03brd7Vk=
+X-Gm-Message-State: AOJu0YxrjzoaMyj8MMBMEUx3S33BMpKRmnVLFIKjptYUl8okt1/nLNgU
+	lE5t679uD+oe/AsPKCC3U9k76c1mEvCRmp5YwFdZ8GaAboSxmkPg6fnTcZjB7f8tGmYSoCYMW10
+	IfG4bNad6MVmoTLoY9S4xySRHarP1V1YrjzVClwAJmhM55KVgblMPbEsy3XxwQp86
+X-Received: by 2002:a05:6602:14d2:b0:804:9972:2f8c with SMTP id ca18e2360f4ac-824dad04265mr122543539f.8.1723583003652;
+        Tue, 13 Aug 2024 14:03:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGUG+Ra/4MLDKrpbcdWTsiFMgCKM25UlSCbFVfALG5nTggblaB3Mjb05rv1rYcf1nGj/+3LVA==
+X-Received: by 2002:a05:6602:14d2:b0:804:9972:2f8c with SMTP id ca18e2360f4ac-824dad04265mr122539339f.8.1723583003274;
+        Tue, 13 Aug 2024 14:03:23 -0700 (PDT)
+Received: from redhat.com ([38.15.36.11])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4ca76910393sm2733107173.7.2024.08.13.14.03.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Aug 2024 14:03:22 -0700 (PDT)
+Date: Tue, 13 Aug 2024 15:03:20 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, quic_bqiang@quicinc.com,
+ kvalo@kernel.org, prestwoj@gmail.com, linux-wireless@vger.kernel.org,
+ ath11k@lists.infradead.org, dwmw2@infradead.org, iommu@lists.linux.dev,
+ kernel@quicinc.com, johannes@sipsolutions.net, jtornosm@redhat.com
+Subject: Re: [PATCH RFC/RFT] vfio/pci-quirks: Quirk for ath wireless
+Message-ID: <20240813150320.73df43d7.alex.williamson@redhat.com>
+In-Reply-To: <20240813164341.GL1985367@ziepe.ca>
+References: <adcb785e-4dc7-4c4a-b341-d53b72e13467@gmail.com>
+	<20240812170045.1584000-1-alex.williamson@redhat.com>
+	<20240813164341.GL1985367@ziepe.ca>
+Organization: Red Hat
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- "David S . Miller" <davem@davemloft.net>, Kalle Valo <kvalo@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Conor Dooley <conor+dt@kernel.org>, 
- Jeff Johnson <jjohnson@kernel.org>, Eric Dumazet <edumazet@google.com>, 
- linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
- Jakub Kicinski <kuba@kernel.org>, ath11k@lists.infradead.org, 
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
- netdev@vger.kernel.org, devicetree@vger.kernel.org
-In-Reply-To: <20240813190306.154943-1-brgl@bgdev.pl>
-References: <20240813190306.154943-1-brgl@bgdev.pl>
-Message-Id: <172358277338.2007176.5717215982820920385.robh@kernel.org>
-Subject: Re: [PATCH] dt-bindings: net: ath11k: document the inputs of the
- ath11k on WCN6855
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Tue, 13 Aug 2024 13:43:41 -0300
+Jason Gunthorpe <jgg@ziepe.ca> wrote:
 
-On Tue, 13 Aug 2024 21:03:05 +0200, Bartosz Golaszewski wrote:
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> On Mon, Aug 12, 2024 at 11:00:40AM -0600, Alex Williamson wrote:
+> > These devices have an embedded interrupt controller which is programmed
+> > with guest physical MSI address/data, which doesn't work.  We need
+> > vfio-pci kernel support to provide a device feature which disables
+> > virtualization of the MSI capability registers.  Then we can do brute
+> > force testing for writes matching the MSI address, from which we can
+> > infer writes of the MSI data, replacing each with host physical values.
+> > 
+> > This has only been tested on ath11k (0x1103), ath12k support is
+> > speculative and requires testing.  Note that Windows guest drivers make
+> > use of multi-vector MSI which requires interrupt remapping support in
+> > the host.  
 > 
-> Describe the inputs from the PMU of the ath11k module on WCN6855.
+> The way it is really supposed to work, is that the guest itself
+> controls/knows the MSI addr/data pairs and the interrupt remapping HW
+> makes that delegation safe since all the interrupt processing will be
+> qualified by the RID.
 > 
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> ---
->  .../net/wireless/qcom,ath11k-pci.yaml         | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
+> Then the guest can make up the unique interrupts for MSI and any
+> internal "IMS" sources and we just let the guest directly write the
+> MSI/MSI-X and any IMS values however it wants.
 > 
+> This hackery to capture and substitute the IMS programming is neat and
+> will solve this one device, but there are more IMS style devices in
+> the pipeline than will really need a full solution.
 
-My bot found errors running 'make dt_binding_check' on your patch:
+How does the guest know to write a remappable vector format?  How does
+the guest know the host interrupt architecture?  For example why would
+an aarch64 guest program an MSI vector of 0xfee... if the host is x86?
 
-yamllint warnings/errors:
+The idea of guest owning the physical MSI address space sounds great,
+but is it practical?  Is it something that would be accomplished while
+this device is still relevant?
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.example.dtb: wifi@0: 'vddrfacmn-supply' is a required property
-	from schema $id: http://devicetree.org/schemas/net/wireless/qcom,ath11k-pci.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.example.dtb: wifi@0: 'vddaon-supply' is a required property
-	from schema $id: http://devicetree.org/schemas/net/wireless/qcom,ath11k-pci.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.example.dtb: wifi@0: 'vddwlcx-supply' is a required property
-	from schema $id: http://devicetree.org/schemas/net/wireless/qcom,ath11k-pci.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.example.dtb: wifi@0: 'vddwlmx-supply' is a required property
-	from schema $id: http://devicetree.org/schemas/net/wireless/qcom,ath11k-pci.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.example.dtb: wifi@0: 'vddrfa0p8-supply' is a required property
-	from schema $id: http://devicetree.org/schemas/net/wireless/qcom,ath11k-pci.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.example.dtb: wifi@0: 'vddrfa1p2-supply' is a required property
-	from schema $id: http://devicetree.org/schemas/net/wireless/qcom,ath11k-pci.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.example.dtb: wifi@0: 'vddrfa1p8-supply' is a required property
-	from schema $id: http://devicetree.org/schemas/net/wireless/qcom,ath11k-pci.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.example.dtb: wifi@0: 'vddpcie0p9-supply' is a required property
-	from schema $id: http://devicetree.org/schemas/net/wireless/qcom,ath11k-pci.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.example.dtb: wifi@0: 'vddpcie1p8-supply' is a required property
-	from schema $id: http://devicetree.org/schemas/net/wireless/qcom,ath11k-pci.yaml#
+> > + * The Windows driver makes use of multi-vector MSI, where our sanity test
+> > + * of the MSI data value must then mask off the vector offset for comparison
+> > + * and add it back to the host base data value on write.  
+> 
+> But is that really enough? If the vector offset is newly created then
+> that means the VM built a new interrupt that needs setup to be routed
+> into the VM?? Is that why you say it "requires interrupt remapping
+> support" because that setup is happening implicitly on x86?
+> 
+> It looks like Windows is acting as I said Linux should, with a
+> "irq_chip" and so on to get the unique interrupt source a proper
+> unique addr/data pair...
 
-doc reference errors (make refcheckdocs):
+The Windows driver is just programming the MSI capability to use 16
+vectors.  We configure those vectors on the host at the time the
+capability is written.  Whereas the Linux driver is only using a single
+vector and therefore writing the same MSI address and data at the
+locations noted in the trace, the Windows driver is writing different
+data values at different locations to make use of those vectors.  This
+note is simply describing that we can't directly write the physical
+data value into the device, we need to determine which vector offset
+the guest is using and provide the same offset from the host data
+register value.
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240813190306.154943-1-brgl@bgdev.pl
+I don't know that interrupt remapping is specifically required, but the
+MSI domain needs to support MSI_FLAG_MULTI_PCI_MSI and AFAIK that's
+only available with interrupt remapping on x86, ie.
+pci_alloc_irq_vectors() with max_vecs >1 and PCI_IRQ_MSI flags needs to
+work on the host to mirror the guest MSI configuration.  Thanks,
 
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+Alex
 
 
