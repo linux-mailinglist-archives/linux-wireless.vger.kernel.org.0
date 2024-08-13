@@ -1,115 +1,144 @@
-Return-Path: <linux-wireless+bounces-11372-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11373-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3624950C81
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 20:49:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D2A4950CC3
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 21:03:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 533DB1F230B3
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 18:49:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B05671C22542
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 19:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B56BE1A0B06;
-	Tue, 13 Aug 2024 18:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076CC19D07B;
+	Tue, 13 Aug 2024 19:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="DoSsgHh+"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="g6hHk7Yx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 198971BF53
-	for <linux-wireless@vger.kernel.org>; Tue, 13 Aug 2024 18:49:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C341BF53
+	for <linux-wireless@vger.kernel.org>; Tue, 13 Aug 2024 19:03:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723574966; cv=none; b=C7997cWqj3LqlvGKyOrNdKSMz50i6N/3gIgdkTE3XfevH5yVkITN2MSYdBiWZRAIwRw1RX6yokIU+4H5Nz5S+CsA5UAHQ7HW884uJ0msqLX0PFy2MlnZbdtycCF+NDIn2exVvZRz2SV6MzSsQnBUMMyR0kACiK6u4rlhzfFhCgg=
+	t=1723575797; cv=none; b=sd+8G5li01sxaSXTdD7JSyqm69FLxZXvj4qfiYPMkGrNGbRYLpCZgBVKJ3Vpd4Z+VqY+WEri4vAlcCGQWxxVBBetQVsAgDD6gvTcXoPxt9cQPC0LcqFtx7Eqq4d0HZp3r/QiUZUbvlAde9UpbyXP2Z7YBPDi6kk6Dc1MaQ+eto4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723574966; c=relaxed/simple;
-	bh=ade7zht6zyDgUSNPQO+BUPUCZnYqW2Te1Y+1SiK3Kno=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=l9V0GCIUeDeYH9FeZMVi+yHphkgkIEycEfS91sztuQDTCAPHmFg2uefB4fjvw26yWQDOI95+Fa22+VLPcCHQhznejcCQGwwJo4edcdvXg8RaNEb97Zz9EuAXGFssac2S2Y+oOp9p0cub4ZSRpi9U3ise6C5erEoHrMQnICcA67U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=DoSsgHh+; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47DBUuvo019383;
-	Tue, 13 Aug 2024 18:49:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	18WA+z47Bl5MtV+s9lN9wU7l+iEIu5pbfYG4fsZTpoo=; b=DoSsgHh+nSmZ9jHJ
-	qhJFvbAl7ZA2qsn61eJ0BjnuKqpA+bqp/e2sQigsYaw2xz4IRehSirlONg7WmUPB
-	6ZEbfP6Rop4PYqkNISMOVzP0mKM9P4Yl0yNtdH/5t8KAxdoPX9Zrz4AIEP2VP538
-	394Y2P9wRjpPJlBYDLNvANgY3GlX9+XjhSagbMYjB2VnJc1Xm8ekDW39mgQLSvRs
-	itsSxHnassxyzk0HlDCXaPXwDtAPt7DRejBx6qa1iIfUTqplGom3QF3BLAIf1GmV
-	8zgUbbOZrlsKtBmdw3dN6QsiW9qq/VqYZjwc+mJJq2wS0lKitYHY7uy6U6Ya0g7c
-	hguDqA==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40x1d4gu1g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Aug 2024 18:49:19 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47DInIdT018082
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Aug 2024 18:49:18 GMT
-Received: from [10.111.178.117] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 13 Aug
- 2024 11:49:18 -0700
-Message-ID: <7febfda5-e735-4f91-b897-8cbd0f960d22@quicinc.com>
-Date: Tue, 13 Aug 2024 11:49:17 -0700
+	s=arc-20240116; t=1723575797; c=relaxed/simple;
+	bh=wZZi2FnrSd3Y6ntD+VqvzTWx0ibV9Sj/dK6MjW4hzrY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PjTwZRELHsqXm4jeK+ypr6P/qdb5rvsLS7L3y+9/cfLkoAz3ibd6XCTMAn5K/lyc2DN7PsLppsaFZ75IEH3tRT2P00c2zXAPbr8N97c1pE8+C9ETjLrGq816WtcraTu31MAGivQTN6lrAAJ3Lo+AjMNNS2T681ctZWYK4HLkBDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=g6hHk7Yx; arc=none smtp.client-ip=209.85.167.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-52efd08e6d9so7415613e87.1
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Aug 2024 12:03:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1723575794; x=1724180594; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fpSg/3y828Pw97blr6HDnxsdU+5aKQgCf2MNnTGXTPg=;
+        b=g6hHk7YxcXKw9XYZlz/rldPNPtP9sSxJ3sP5e9/TD+gaMjqzohmlaZeYju6RqwpK3s
+         EW0YwOgAKdyl9GFH5qavww7ownEi0yz+UHzqKtdW2ThprXl+rQQEditJeq3TgyjN2FUE
+         mbEd9Vk6WF/WHVu32tWpkTG7SA+mqCzGMXQhzZdKoXv9KRXYEtWTH7h1WOOIsIGKIRZM
+         uIT//+AZ2sQCMC9gON8jVUTrD+OewaVnYf48Rspq19wg5V6bSmNlcuuFLgNZ8a+SIlfG
+         Sya7cPzOOX29nHuhRPMkGljQIKFbJbYai10US3rO6qkz2NH5I8MdO3VfXUiDa2kpKFJv
+         JygQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723575794; x=1724180594;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fpSg/3y828Pw97blr6HDnxsdU+5aKQgCf2MNnTGXTPg=;
+        b=RFFnSiNZ3SOAGzwcdXx7aRxIT49cBoElPUeR+y4wuVqmBUhREkmIbFbum8TWqvLTcn
+         aC4Z21KqmHD2E7+wp03EggRT2LuA5dzbR+ES+8IdY9h5/fTi3rDSYeHznKr4AHu8jCHm
+         NSZ30FCvBY3NtJ9hnt/ht9YyvCcHtGrV1QJ6zXp0BYvM18mKlGWDOKVCujnvWQRzFuy+
+         X/NdsPpmWo8A0qGFvDJcBBsv9y8xWS6vMmugdogM55+MJtEIK0M9uXy18tj2gxvJoFQ3
+         61G/s/mXSp7XV0LxfpXKX3qzDgW8grEAcyhK5mAckulkIJQcsYCbf7K8LrOI8zt4tOar
+         59CA==
+X-Gm-Message-State: AOJu0YzisCY4z6BE77Yhz1olXjfneLDdNTwnEWmy2VfanIcWRWe2pOez
+	6NbdgYSz+FwkeXyfUF44mf/lELWZ2oHEBoGzGZCD80vR8IBkv5iKKW6n0yAvLSw=
+X-Google-Smtp-Source: AGHT+IH+VagueuQIXMxGnIX0w5CylWhKwU2nLQR+DMf+tI3DEgtgkMQnem1H9OyA00MT+ZbTBm902g==
+X-Received: by 2002:a05:6512:2351:b0:52c:b479:902d with SMTP id 2adb3069b0e04-532eda5b0famr222373e87.4.1723575794356;
+        Tue, 13 Aug 2024 12:03:14 -0700 (PDT)
+Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:3979:ff54:1b42:968a])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4290c72d8ffsm229487185e9.7.2024.08.13.12.03.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Aug 2024 12:03:14 -0700 (PDT)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+To: Kalle Valo <kvalo@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	ath11k@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH] dt-bindings: net: ath11k: document the inputs of the ath11k on WCN6855
+Date: Tue, 13 Aug 2024 21:03:05 +0200
+Message-ID: <20240813190306.154943-1-brgl@bgdev.pl>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] wireless-regdb: Add .b4-config
-To: Jiaxun Yang <jiaxun.yang@flygoat.com>, <linux-wireless@vger.kernel.org>
-CC: Chen-Yu Tsai <wens@kernel.org>
-References: <20240813-workflow-v1-0-3f63f0ea9d5f@flygoat.com>
- <20240813-workflow-v1-2-3f63f0ea9d5f@flygoat.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Content-Language: en-US
-In-Reply-To: <20240813-workflow-v1-2-3f63f0ea9d5f@flygoat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: d9_hBGQ-yVCYplQx_hR4C6Fyu8v2oqip
-X-Proofpoint-GUID: d9_hBGQ-yVCYplQx_hR4C6Fyu8v2oqip
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-13_09,2024-08-13_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
- adultscore=0 phishscore=0 suspectscore=0 mlxscore=0 mlxlogscore=404
- malwarescore=0 bulkscore=0 priorityscore=1501 clxscore=1015
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2408130136
+Content-Transfer-Encoding: 8bit
 
-On 8/13/2024 8:38 AM, Jiaxun Yang wrote:
-> Add .b4-config to provide default email To / Cc address.
-> 
-> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> ---
->  .b4-config | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/.b4-config b/.b4-config
-> new file mode 100644
-> index 000000000000..b9178abe3900
-> --- /dev/null
-> +++ b/.b4-config
-> @@ -0,0 +1,5 @@
-> +# Configuration for the `b4` tool
-> +# See https://b4.docs.kernel.org/en/latest/config.html
-> +[b4]
-> +    send-series-to = linux-wireless@vger.kernel.org
-> +    send-series-cc = Chen-Yu Tsai <wens@kernel.org>
-> 
-Normally you send to the maintainers and cc the mailing lists
-also missing CC: wireless-regdb@lists.infradead.org
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+
+Describe the inputs from the PMU of the ath11k module on WCN6855.
+
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+---
+ .../net/wireless/qcom,ath11k-pci.yaml         | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.yaml
+index 8675d7d0215c..404974d77826 100644
+--- a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.yaml
+@@ -50,6 +50,9 @@ properties:
+   vddrfa1p7-supply:
+     description: VDD_RFA_1P7 supply regulator handle
+ 
++  vddrfa1p8-supply:
++    description: VDD_RFA_1P8 supply regulator handle
++
+   vddpcie0p9-supply:
+     description: VDD_PCIE_0P9 supply regulator handle
+ 
+@@ -77,6 +80,22 @@ allOf:
+         - vddrfa1p7-supply
+         - vddpcie0p9-supply
+         - vddpcie1p8-supply
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: pci17cb,1103
++    then:
++      required:
++        - vddrfacmn-supply
++        - vddaon-supply
++        - vddwlcx-supply
++        - vddwlmx-supply
++        - vddrfa0p8-supply
++        - vddrfa1p2-supply
++        - vddrfa1p8-supply
++        - vddpcie0p9-supply
++        - vddpcie1p8-supply
+ 
+ additionalProperties: false
+ 
+-- 
+2.43.0
+
 
