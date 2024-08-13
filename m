@@ -1,68 +1,63 @@
-Return-Path: <linux-wireless+bounces-11332-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11333-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27F0094FD7D
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 07:59:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56D5A94FF67
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 10:13:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F96AB22E91
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 05:59:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE436B2263F
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 08:13:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744DA2E3EE;
-	Tue, 13 Aug 2024 05:59:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QJJtn6Fj"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78EA5136E28;
+	Tue, 13 Aug 2024 08:13:09 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA56A2D611
-	for <linux-wireless@vger.kernel.org>; Tue, 13 Aug 2024 05:59:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD3B3B192;
+	Tue, 13 Aug 2024 08:13:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723528788; cv=none; b=ZyGUXZLphhNkYYxMKxmkL20ASIgZa1Xb8WJhV3Xh10c+27J6beXGDfcFjdT6UMrzWiBVSstpzmfWJ7SCsO5IJooeto/xm/yMicom84cxz52iCqwPlAYjGXpMNEaMRcETle6PwJmSjJ/JabQ8YiscHRyRSGnmyDmtlilyM2snD54=
+	t=1723536789; cv=none; b=JfeP9yCHug4wI2YXuYOjxG93gZ9PT3RM0lW1MB8PYrIuUcqaZe9QeUCNpaNojDoHC9sJuKaP3aGAsF+96NqeIDhmFcm9jDykY3NtI8XNFkVHJ7EIvFldUnSmh7eSI0rMG4WOkP8EP6HD54yWmyKgL9TPYqAZidbKTC9AAOPEzr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723528788; c=relaxed/simple;
-	bh=0Pj9E0pZhdBb15PijwUttqpFabvQQcpqoEhFI0rrkv4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TuFUWuhMACKCgynH+3+KNxERwQi8GTil5ppWvr1Q4wtUiIfKxMQwWtS1P+Ut6p5L5zwGnzFW/3uMz0W4giR5+rXLJW6Kd7v5zEs06SGF4JK/VQWePn/QxdhqNKRzMT+Zy2J3GhslII51zM35yYWJGWbDA3fg/WMS5uyNcwypjQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=QJJtn6Fj; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47CMVFrK012643;
-	Tue, 13 Aug 2024 05:59:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=50Wh1MbICSA4vsfJ/L+YoH
-	Z3YqNGhafUHiyhtTD779k=; b=QJJtn6Fjf77WvbupQx9uuM3L2PsLacd/YBTfNC
-	59jN08CMwQ5kzLb9rO1BGBB4gRxQI3iIhorezmOxLClDvCV998QmtKLTD4RmOH4u
-	k6dRNrD7cTXJyZhYgFP7QoSp+EgM4/3FYQwY3GUmyCDrZ/TSuFwrDdFHIjLa3hk0
-	qu3Wyg+aw5nkgG0a9xdewFboUW21j8Yi4bNGELGG7GLpGp4PDNL0rVmN70idaVBb
-	qhAbnV176uZLC8jHaLDJ88/SovMi0ydFccagIA1zkTDYUdp1gONjTMYS1v5v2FCm
-	XIxPVmokNEvDthj+p8wxPV+pLFMyzhOdd5LSlVQG57o95lLA==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 40x167xcpg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Aug 2024 05:59:36 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47D5xZMr021838
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Aug 2024 05:59:35 GMT
-Received: from hu-periyasa-blr.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Mon, 12 Aug 2024 22:59:34 -0700
-From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-To: <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>,
-        Karthikeyan Periyasamy
-	<quic_periyasa@quicinc.com>
-Subject: [PATCH v2] wifi: cfg80211: check radio iface combination for multi radio per wiphy
-Date: Tue, 13 Aug 2024 11:29:17 +0530
-Message-ID: <20240813055917.2320582-1-quic_periyasa@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1723536789; c=relaxed/simple;
+	bh=BZ+tG3sPqkdp1r8WVl3AmA1qeUmicg7w7NSIoJ6H0IM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GWC6pi/DR889ir/EnJRP5M2WWEiXwicq/yX1zDLwqJHjNMbPwPNiuf8PySPyi4gqQdSMvUTCzVf96vtdtc6BlVWklXL2yVBjUaKendjfyMW1jcnTB4TArA265684bXy4ipBFfOJwtJy8/r07pF8VUTbV0BKVlceC6UHJ2VZeDnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-05 (Coremail) with SMTP id zQCowACXQEB7Fbtm6tXnBQ--.58923S2;
+	Tue, 13 Aug 2024 16:12:50 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: nbd@nbd.name,
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com,
+	sean.wang@mediatek.com,
+	kvalo@kernel.org,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	chui-hao.chiu@mediatek.com,
+	howard-yh.hsu@mediatek.com,
+	StanleyYP.Wang@mediatek.com,
+	benjamin-jw.lin@mediatek.com,
+	allen.ye@mediatek.com,
+	chank.chen@mediatek.com,
+	meichia.chiu@mediatek.com,
+	Bo.Jiao@mediatek.com
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] wifi: mt76: mt7996: fix NULL pointer dereference in mt7996_mcu_sta_bfer_he
+Date: Tue, 13 Aug 2024 16:12:42 +0800
+Message-Id: <20240813081242.3991814-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -70,100 +65,52 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: s8_PhDXq6rWxajp30U40WFg20bCmsiM3
-X-Proofpoint-ORIG-GUID: s8_PhDXq6rWxajp30U40WFg20bCmsiM3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-12_12,2024-08-12_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 clxscore=1011
- suspectscore=0 mlxlogscore=999 impostorscore=0 malwarescore=0 spamscore=0
- mlxscore=0 priorityscore=1501 phishscore=0 adultscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
- definitions=main-2408130041
+X-CM-TRANSID:zQCowACXQEB7Fbtm6tXnBQ--.58923S2
+X-Coremail-Antispam: 1UD129KBjvdXoWruw4DZw1UtrWxKF1xJr13Jwb_yoWDXrXE9r
+	n29FnIqw48Kw48Kr429wnxuryay3ykZF97Gay5tayfta97J3yUZF1IvFn3Ar13uFn7ZF1U
+	J3ZrJFy0y395WjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbfAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
+	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7V
+	AKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
+	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6x
+	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
+	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
+	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7sRiSfO3UUUUU==
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-Currently, wiphy_verify_combinations() fails for the multi-radio per wiphy
-due to the condition check on global interface combination that DFS only
-works on one channel. In a multi-radio scenario, global interface
-combination encompasses the capabilities of all radio combinations, so it
-supports more than one channel with DFS. For multi-radio per wiphy,
-interface combination verification needs to be performed for radio specific
-interface combinations. This is necessary as the global interface
-combination combines the capabilities of all radio combinations.
+Fix the NULL pointer dereference in mt7996_mcu_sta_bfer_he
+routine adding an sta interface to the mt7996 driver.
 
-Fixes: a01b1e9f9955 ("wifi: mac80211: add support for DFS with multiple radios")
-Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Found by code review.
+
+Cc: stable@vger.kernel.org
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
- v2:
-  - Rebased to ToT
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
- net/wireless/core.c | 32 +++++++++++++++++++++++++++++---
- 1 file changed, 29 insertions(+), 3 deletions(-)
-
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 4d5d351bd0b5..de33bdde1e29 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -603,16 +603,19 @@ struct wiphy *wiphy_new_nm(const struct cfg80211_ops *ops, int sizeof_priv,
- }
- EXPORT_SYMBOL(wiphy_new_nm);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 2e4fa9f48dfb..cba28d8d5562 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -1544,6 +1544,9 @@ mt7996_mcu_sta_bfer_he(struct ieee80211_sta *sta, struct ieee80211_vif *vif,
+ 	u8 nss_mcs = mt7996_mcu_get_sta_nss(mcs_map);
+ 	u8 snd_dim, sts;
  
--static int wiphy_verify_combinations(struct wiphy *wiphy)
-+static
-+int wiphy_verify_iface_combinations(struct wiphy *wiphy,
-+				    const struct ieee80211_iface_combination *iface_comb,
-+				    int n_iface_comb)
- {
- 	const struct ieee80211_iface_combination *c;
- 	int i, j;
- 
--	for (i = 0; i < wiphy->n_iface_combinations; i++) {
-+	for (i = 0; i < n_iface_comb; i++) {
- 		u32 cnt = 0;
- 		u16 all_iftypes = 0;
- 
--		c = &wiphy->iface_combinations[i];
-+		c = &iface_comb[i];
- 
- 		/*
- 		 * Combinations with just one interface aren't real,
-@@ -693,6 +696,29 @@ static int wiphy_verify_combinations(struct wiphy *wiphy)
- 	return 0;
- }
- 
-+static int wiphy_verify_combinations(struct wiphy *wiphy)
-+{
-+	int i, ret;
++	if (!vc)
++		return;
 +
-+	if (wiphy->n_radio) {
-+		for (i = 0; i < wiphy->n_radio; i++) {
-+			const struct wiphy_radio *radio = &wiphy->radio[i];
-+
-+			ret = wiphy_verify_iface_combinations(wiphy,
-+							      radio->iface_combinations,
-+							      radio->n_iface_combinations);
-+			if (ret)
-+				return ret;
-+		}
-+	} else {
-+		ret = wiphy_verify_iface_combinations(wiphy,
-+						      wiphy->iface_combinations,
-+						      wiphy->n_iface_combinations);
-+	}
-+
-+	return ret;
-+}
-+
- int wiphy_register(struct wiphy *wiphy)
- {
- 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
-
-base-commit: cc32e9fb380d8afdbf3486d7063d5520bfb0f071
+ 	bf->tx_mode = MT_PHY_TYPE_HE_SU;
+ 
+ 	mt7996_mcu_sta_sounding_rate(bf);
 -- 
-2.34.1
+2.25.1
 
 
