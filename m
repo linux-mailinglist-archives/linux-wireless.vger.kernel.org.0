@@ -1,109 +1,122 @@
-Return-Path: <linux-wireless+bounces-11367-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11368-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2838E950B22
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 19:06:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 822AC950B78
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 19:30:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF7381F234D2
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 17:06:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D48A1F23CF7
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 17:30:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4D671A2575;
-	Tue, 13 Aug 2024 17:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB0DE1991D8;
+	Tue, 13 Aug 2024 17:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QkI07sgh"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Mt41DhNp";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UUeC+kSb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FC201F959
-	for <linux-wireless@vger.kernel.org>; Tue, 13 Aug 2024 17:05:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9AC282E5;
+	Tue, 13 Aug 2024 17:30:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723568758; cv=none; b=Nlbx99R080MCPeMGBKSJncghXWoO55zqVtA48CPDuYbxzE6q8dkURaiMB6X/4ENM/K9tLokDFe/gbJGb53e8D8jJraSYtrXSegkNM/buMhHP5aSuGdWKFP8ArAbgtI09c7GFeljS9LvdjVIE4Ce/uH9LkWpxwG9iQ72zsD0opcg=
+	t=1723570245; cv=none; b=Xt1Ns9gD22GAEUktGUEoyfciEvPxr4QN2x53ylxD8IxRjNDVvr0gVoGp7e6SQllUx1MGv8snA6t9U9+IGuKv8DTGpQldJmV5iPYLw+4JUWWRjv3+tmD5mM5FE0BHYiFRYlfz7p1R4OBXYWu2E9RNtUBDoCQeKoMwOlAljoQDan8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723568758; c=relaxed/simple;
-	bh=p1NVT6nCxpHzkGkDjRiPmxqgd1Vk3IFMjCHasdXrTBQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Nb6BOSJuhg5fsM9nPFfBXK2flNDtfHRsqesFFvKHlApOV9WXrvs8XOLkQWmm4sCfYcgbN1VX5uGCKB/jed5P2ZrbbMEYsMNvMZ16eZMyDMaCh6UM84QculqP8WsgOzhUAAPGEYOvJMiKbkfCzrqVOIN03lBTM2x5mkJlP9bwnCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=QkI07sgh; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47DH1crP026758;
-	Tue, 13 Aug 2024 17:05:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	7DPn4V7xZH3wDuP8mYPCm8T5/CIOvrFsoU8orG75UZY=; b=QkI07sghUWuVcVEB
-	KXRJkdFYFMeH/FeQQfpx/ChEZT9bHkz/yd/Bsl3pveilc+4lq4t6PAYE1xx60oZJ
-	1gsb+WxV/ZwTTymKoZQzBwqEKPmAry2HV3KWFhWm0uLTbfs+E8sljTOCpiPWkXKF
-	pEwQDD5Yk/BGzm3SkkgrvZeMFckrG0/gTX1Rr6dPhrClDcd1d3VubWXR9Ftsi3AE
-	jsakImaAbPPAYJH7WJDsTu/gPI/IJ6qMDyV4MCTj75+PO8dM27HGQVhV43+DWFeT
-	9cHajJMbMkuIkcTAanMUD1Cs4q9sL3tX+xiaYsMKaKdPaGdRNagQMw+zTqDuYxEP
-	spgmqQ==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 410437ss93-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Aug 2024 17:05:53 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47DH5qhd008050
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Aug 2024 17:05:52 GMT
-Received: from [10.111.178.117] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 13 Aug
- 2024 10:05:52 -0700
-Message-ID: <53e9f797-5db2-4ab3-9d06-6ae9bf6df29a@quicinc.com>
-Date: Tue, 13 Aug 2024 10:05:51 -0700
+	s=arc-20240116; t=1723570245; c=relaxed/simple;
+	bh=CgPGSw4BGQN7J8xvALSQIjXECj3FjxVzt0UM38Sz2A4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=fm/iqNU8IgMIcVwpSFH2UgiXaI/llorfe0xNudh+5CyGb1b9VjSsEwLTXIER9tCHA8D38VGCjhNF8HC4SYsPoAK5qMFlnoPmy5nnrNR63h/AMx1cDkCl+2NB9Y2IbM/o57ebcUuFyMMY3ZE4nUGyxqbjpGuvOiVO4WYYP2bi4dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Mt41DhNp; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UUeC+kSb; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1723570241;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nLYNakiS7XZO9BB9N7Fyevs65e05aWL1XGxAXFuVTVk=;
+	b=Mt41DhNpxne5dyvSWgRTV6r+1D1ctf2j+254poZWoREb4GDghU04Y2szQGHLkI3gN7t4kM
+	v6wEkhb2pXN7567WzcsGBuMdCtGXkJwAmFVkrHczTaZuaDXITsJfa20vPfdyK0kksWotLb
+	c8Khw3bmVQBOyfxb/Qx5CnNyyZwU0Jl6DrVXgq5G//8pgMvoSFPBeDntPX/Sq1bqmLAfFi
+	3uc9S/l86hXzj0IgNLXdAD3y/0sl6+VKbknoEx/OnamdPsNtVl227kKLOgMbIKDWedXBPD
+	N2871RW+cIpw9nXcr5qrvIkzDDnToTwCEya6tLvbvzJdNnpGI4+cSYznQXAAsQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1723570241;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nLYNakiS7XZO9BB9N7Fyevs65e05aWL1XGxAXFuVTVk=;
+	b=UUeC+kSbV/jkQoPN5g2XCYL6IeWXke547KIvgCJIkeRYW1M/RBV5YV7R8JmQCcz7gS6exg
+	20LAmw5r7AVtNzCg==
+To: Jason Gunthorpe <jgg@ziepe.ca>, Alex Williamson
+ <alex.williamson@redhat.com>
+Cc: kvm@vger.kernel.org, quic_bqiang@quicinc.com, kvalo@kernel.org,
+ prestwoj@gmail.com, linux-wireless@vger.kernel.org,
+ ath11k@lists.infradead.org, dwmw2@infradead.org, iommu@lists.linux.dev,
+ kernel@quicinc.com, johannes@sipsolutions.net, jtornosm@redhat.com
+Subject: Re: [PATCH RFC/RFT] vfio/pci: Create feature to disable MSI
+ virtualization
+In-Reply-To: <20240813163053.GK1985367@ziepe.ca>
+References: <adcb785e-4dc7-4c4a-b341-d53b72e13467@gmail.com>
+ <20240812170014.1583783-1-alex.williamson@redhat.com>
+ <20240813163053.GK1985367@ziepe.ca>
+Date: Tue, 13 Aug 2024 19:30:41 +0200
+Message-ID: <87r0aspby6.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] wifi: ath12k: Add support for reading variant from
- ACPI to download board data file
-To: Lingbo Kong <quic_lingbok@quicinc.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240809025055.6495-1-quic_lingbok@quicinc.com>
- <20240809025055.6495-5-quic_lingbok@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Content-Language: en-US
-In-Reply-To: <20240809025055.6495-5-quic_lingbok@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: Ud8s9hkVFV-8ZVe_QGhhMPqoLvoP17gj
-X-Proofpoint-GUID: Ud8s9hkVFV-8ZVe_QGhhMPqoLvoP17gj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-13_07,2024-08-13_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
- mlxlogscore=999 malwarescore=0 lowpriorityscore=0 phishscore=0 spamscore=0
- bulkscore=0 suspectscore=0 adultscore=0 mlxscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
- definitions=main-2408130124
+Content-Type: text/plain
 
-On 8/8/2024 7:50 PM, Lingbo Kong wrote:
-> Currently, ath12k does not support reading variant from ACPI board data
-> filename extension for downloading board data file.
-> 
-> To address this issue, obtain the string of the ACPI data filename
-> extension and use it as part of the string to search for the board data
-> file from board-2.bin.
-> 
-> This patch will not affect QCN9274, because only WCN7850 supports ACPI.
-> 
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-> 
-> Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+On Tue, Aug 13 2024 at 13:30, Jason Gunthorpe wrote:
+> On Mon, Aug 12, 2024 at 10:59:12AM -0600, Alex Williamson wrote:
+>> vfio-pci has always virtualized the MSI address and data registers as
+>> MSI programming is performed through the SET_IRQS ioctl.  Often this
+>> virtualization is not used, and in specific cases can be unhelpful.
+>> 
+>> One such case where the virtualization is a hinderance is when the
+>> device contains an onboard interrupt controller programmed by the guest
+>> driver.  Userspace VMMs have a chance to quirk this programming,
+>> injecting the host physical MSI information, but only if the userspace
+>> driver can get access to the host physical address and data registers.
+>> 
+>> This introduces a device feature which allows the userspace driver to
+>> disable virtualization of the MSI capability address and data registers
+>> in order to provide read-only access the the physical values.
+>
+> Personally, I very much dislike this. Encouraging such hacky driver
+> use of the interrupt subsystem is not a good direction. Enabling this
+> in VMs will further complicate fixing the IRQ usages in these drivers
+> over the long run.
+>
+> If the device has it's own interrupt sources then the device needs to
+> create an irq_chip and related and hook them up properly. Not hackily
+> read the MSI-X registers and write them someplace else.
+>
+> Thomas Gleixner has done alot of great work recently to clean this up.
+>
+> So if you imagine the driver is fixed, then this is not necessary.
 
+Yes. I looked at the at11k driver when I was reworking the PCI/MSI
+subsystem and that's a perfect candidate for a proper device specific
+interrupt domain to replace the horrible MSI hackery it has.
+
+> Howver, it will still not work in a VM. Making IMS and non-MSI
+> interrupt controlers work within VMs is still something that needs to
+> be done.
+
+Sure, but we really want to do that in a generic way and not based on ad
+hoc workarounds.
+
+Did the debate around this go anywhere?
+
+Thanks,
+
+        tglx
 
