@@ -1,256 +1,151 @@
-Return-Path: <linux-wireless+bounces-11351-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11352-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1693950446
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 13:57:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F2B6950725
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 16:06:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98493285AEE
-	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 11:57:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 749C41C243BC
+	for <lists+linux-wireless@lfdr.de>; Tue, 13 Aug 2024 14:06:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6348E199250;
-	Tue, 13 Aug 2024 11:57:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="A4/6p/O3"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E952719D074;
+	Tue, 13 Aug 2024 14:03:29 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8D91991CB
-	for <linux-wireless@vger.kernel.org>; Tue, 13 Aug 2024 11:57:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521F619CCED
+	for <linux-wireless@vger.kernel.org>; Tue, 13 Aug 2024 14:03:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723550260; cv=none; b=L41lAJrS8qJMvZrCjuC0XJ5duTqo2q9sDCwOGipssjHAp3sBvXdLiukj672jtI5Kxd6uddDZou4VteczV+YP0RFZtvHU/nFkyj2kLGJeECxYnYAysJjEM/Y9g4e73kF4h3O6m/vBTt1/yK0We6faqJKtQTBR9vQdnCZPS87+9ZA=
+	t=1723557809; cv=none; b=TNulBzYLaAXXvT0lBPC/NfyrVQgpaTnFUAkEQZcFrKYycgqZgLAYLVHjjm/GzvVAA7A12ZxjMFqLCF6Yk2Dp35rwYk2YduKR9ZUDshA73o9hMMzYdVOuXwum0lSIpshOW+umUfPij5sYb7hhb/L+zaOT/x3S8PjARvTenbiREIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723550260; c=relaxed/simple;
-	bh=hpCWpHjKhZFIJtA8gW87bhIjf/SJHDylr8Z2rSUZJbA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RE6w47tiqYLf/AxCk+5zi7scnnlHh5TX5e+6V+ZgUtFtZa+EIMRgP8ADUM1708k1vWi9pAOEHlkuYFh9v2lstAvmlrIY1J+yDaXov3+Kl9j7EG9z03IXNN7y99RDv0FjP8vwJwBF9uaPu1SrDxBj8OQpY9j+NDRVaEj2FA48WaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=A4/6p/O3; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1fc60c3ead4so35573805ad.0
-        for <linux-wireless@vger.kernel.org>; Tue, 13 Aug 2024 04:57:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1723550258; x=1724155058; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=TXj6YrMtJ0gWFTWAL5SUSyJeDfI3jpHl1jV8Ck1Ub5w=;
-        b=A4/6p/O3k3S40EBMdVIoV15KHLntcRn6nog21Tgv4Lf/OvAmymNDMsQiA87kiuPx16
-         iJMeEleI0Zuf5WfeFMYz6K7Zs3sXfmbIOmWoV90QKh6WqFLa4qqKW11FfLIEzjah9Vko
-         92COAwABO2ndTJrmUHlZlsmFq/dwYqzeLWeho=
+	s=arc-20240116; t=1723557809; c=relaxed/simple;
+	bh=jXJdyGdz5F/bXB1OgmxS76BVgK2IRGBQeONSx/vTaGU=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=F0TasqvcQ5cTNSdAxbO9t1frelcXGdoO4LF78GUoz3ErlI9Mbyjpn7bj/fhLGJeOXj/vK462SmE/tkdlRvCzUId3LZeTZo/kRbRUOj6eLocqJXLyqsSChuaXR19owVy6WChyv+k177Ezr9ZJ1V0JtcxkdsCJpsNqI7hqIgmi35A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-39b64fd27c8so58958835ab.0
+        for <linux-wireless@vger.kernel.org>; Tue, 13 Aug 2024 07:03:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723550258; x=1724155058;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TXj6YrMtJ0gWFTWAL5SUSyJeDfI3jpHl1jV8Ck1Ub5w=;
-        b=dZEQxDXAUx+XdLAWwVyQscbWgq8DCKg+3ChVgxw5gKMSfPApHTWfGVFLaiIRHvfr8s
-         EJGiRtWCTogKzjseZ4ZiI/LOpLexOqzhsNTxJGt6yiui3Amjp61qJYCpojvjQh18Doxv
-         lTH6gyPvyIqW0dFXlZayoyHO5C4DAMioaKWeptaZJCAJAMMwRaavq+flyiHwMVyTPJGP
-         slgzzSqLtfjVxQAZQAA5iG91JZYe3CyHFgWLYvC3L9lOJIQ2GIDv8SBo/DVt/pPuc2OO
-         Ek4LYK5BKwpdADgSgMwuh2iGbqRYFSQF/xwRTf7D8Dxemtg/WqzKQJMQFVfyYuLaC7E1
-         0Bxg==
-X-Forwarded-Encrypted: i=1; AJvYcCVKkGPqS5HfVpOYbD6ijKCOohXKpzy8OvEZZ4a6Pnik66fXln9fq31tNjZvvY4J0n9laL4MzP0qjnrabpl4wg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwaVqFm7kHTfzhq6uGeJXf4aS4M1mSElpVIPQf3YZequ94Hz3uA
-	yG23ZUJAi/au2WY1X9ph6yVj4NzA6U+7HB504MvVp4W3M6UWP/mjsJv3B/QYfg==
-X-Google-Smtp-Source: AGHT+IFf7r4+eaG8ovXNz7tpTkFz5zRThgMupBmEqRawhnukS/bBcfpuDdGfM7AGPHQVhuvowwJO2w==
-X-Received: by 2002:a17:903:2345:b0:1fb:3b61:45aa with SMTP id d9443c01a7336-201ca1c0803mr35625745ad.40.1723550257889;
-        Tue, 13 Aug 2024 04:57:37 -0700 (PDT)
-Received: from [192.168.178.137] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-201cd132895sm12031645ad.9.2024.08.13.04.57.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Aug 2024 04:57:37 -0700 (PDT)
-Message-ID: <721da64c-42ec-4be6-8ad3-e2685a84823a@broadcom.com>
-Date: Tue, 13 Aug 2024 13:57:28 +0200
+        d=1e100.net; s=20230601; t=1723557807; x=1724162607;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iaLPu4URZsu69rGRW7v009pJWzPnMWEQOBvp+anP4Ds=;
+        b=Imz3PYlUDK9dUqFiOE6ivRxhM/DOT/9OsEdvcVvq8s68iZAH2WQe8JvipRoUg0o4Yv
+         SypE51k0/yJU8rXU3D7191XbLGuqOQYSBzqdH/hAztMCY0QRCQyVMgWd9vM/MRuDGB0g
+         YJFViquSPxZNFacMjsavARaDmBaTYSb17qQtNkTS6Aacig8i9O22q1VJQ0OPjfmIIpKa
+         n06e2O8XRvuw2MK/AK82NvXoeMLjkkPKaWOnsSe/3LT/wnzRRB0HjWeIM17Bz2NGpMqo
+         Uc6qxp3eVayEweH5GHA33IYE7kLEf/7MSzobXHoDJ34fslGkXOpo4Ua8qBrXq52VuAXY
+         Qedg==
+X-Forwarded-Encrypted: i=1; AJvYcCUjyHXX0fJbPoTqxwbniPicgt35nNGRtoxctWbo+EjBHYjvSueORGV1eB4idxSYZxd7/McMEG0YJQwsuPnv9ZlZx7Hp5gliwLgUbWV0oVc=
+X-Gm-Message-State: AOJu0Yz2bQwDSfUGZIUk96wvGnH8RVOC3Up7Fa0ciFOddpNbznsnYcMO
+	kP6qMW1Hr4BqLt+nB29juvPhCQIc7qfdYO2Z86BZCridw45/Qp9dcB8jc+3eJ2UUuntvJbEidUK
+	DmdaYIXVnr47Mm03x2r2x+hJHqSBMl3V8r2VaGarqyEOeOssHkSyIZcA=
+X-Google-Smtp-Source: AGHT+IFVSE/EmYdOFPDeZMHQzAPi3VPCmZtivc3OK6hQKFLNgOc8DSQRbVLJmJjLwm571DIfTz0VQrdlV6irBQrN/xUIUp0JVMk+
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 4/5] wifi: brcmfmac: Add optional lpo clock enable
- support
-To: Jacobe Zang <jacobe.zang@wesion.com>, robh@kernel.org,
- krzk+dt@kernel.org, heiko@sntech.de, kvalo@kernel.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, conor+dt@kernel.org
-Cc: efectn@protonmail.com, dsimic@manjaro.org, jagan@edgeble.ai,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
- arend@broadcom.com, linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- megi@xff.cz, duoming@zju.edu.cn, bhelgaas@google.com,
- minipli@grsecurity.net, brcm80211@lists.linux.dev,
- brcm80211-dev-list.pdl@broadcom.com, nick@khadas.com,
- Sai Krishna <saikrishnag@marvell.com>
-References: <20240813082007.2625841-1-jacobe.zang@wesion.com>
- <20240813082007.2625841-5-jacobe.zang@wesion.com>
-Content-Language: en-US
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
-Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
- xsFNBGP96SABEACfErEjSRi7TA1ttHYaUM3GuirbgqrNvQ41UJs1ag1T0TeyINqG+s6aFuO8
- evRHRnyAqTjMQoo4tkfy21XQX/OsBlgvMeNzfs6jnVwlCVrhqPkX5g5GaXJnO3c4AvXHyWik
- SOd8nOIwt9MNfGn99tkRAmmsLaMiVLzYfg+n3kNDsqgylcSahbd+gVMq+32q8QA+L1B9tAkM
- UccmSXuhilER70gFMJeM9ZQwD/WPOQ2jHpd0hDVoQsTbBxZZnr2GSjSNr7r5ilGV7a3uaRUU
- HLWPOuGUngSktUTpjwgGYZ87Edp+BpxO62h0aKMyjzWNTkt6UVnMPOwvb70hNA2v58Pt4kHh
- 8ApHky6IepI6SOCcMpUEHQuoKxTMw/pzmlb4A8PY//Xu/SJF8xpkpWPVcQxNTqkjbpazOUw3
- 12u4EK1lzwH7wjnhM3Fs5aNBgyg+STS1VWIwoXJ7Q2Z51odh0XecsjL8EkHbp9qHdRvZQmMu
- Ns8lBPBkzpS7y2Q6Sp7DcRvDfQQxPrE2sKxKLZVGcRYAD90r7NANryRA/i+785MSPUNSTWK3
- MGZ3Xv3fY7phISvYAklVn/tYRh88Zthf6iDuq86m5mr+qOO8s1JnCz6uxd/SSWLVOWov9Gx3
- uClOYpVsUSu3utTta3XVcKVMWG/M+dWkbdt2KES2cv4P5twxyQARAQABzS9BcmVuZCB2YW4g
- U3ByaWVsIDxhcmVuZC52YW5zcHJpZWxAYnJvYWRjb20uY29tPsLBhwQTAQgAMRYhBLX1Z69w
- T4l/vfdb0pZ6NOIYA/1RBQJj/ek9AhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQlno04hgD/VGw
- 8A//VEoGTamfCks+a12yFtT1d/GjDdf3i9agKMk3esn08JwjJ96x9OFFl2vFaQCSiefeXITR
- K4T/yT+n/IXntVWT3pOBfb343cAPjpaZvBMh8p32z3CuV1H0Y+753HX7gdWTEojGWaWmKkZh
- w3nGoRZQEeAcwcF3gMNwsM5Gemj7aInIhRLUeoKh/0yV85lNE1D7JkyNheQ+v91DWVj5/a9X
- 7kiL18fH1iC9kvP3lq5VE54okpGqUj5KE5pmHNFBp7HZO3EXFAd3Zxm9ol5ic9tggY0oET28
- ucARi1wXLD/oCf1R9sAoWfSTnvOcJjG+kUwK7T+ZHTF8YZ4GAT3k5EwZ2Mk3+Rt62R81gzRF
- A6+zsewqdymbpwgyPDKcJ8YUHbqvspMQnPTmXNk+7p7fXReVPOYFtzzfBGSCByIkh1bB45jO
- +TM5ZbMmhsUbqA0dFT5JMHjJIaGmcw21ocgBcLsJ730fbLP/L08udgWHywPoq7Ja7lj5W0io
- ZDLz5uQ6CEER6wzD07vZwSl/NokljVexnOrwbR3wIhdr6B0Hc/0Bh7T8gpeM+QcK6EwJBG7A
- xCHLEacOuKo4jinf94YQrOEMnOmvucuQRm9CIwZrQ69Mg6rLn32pA4cK4XWQN1N3wQXnRUnb
- MTymLAoxE4MInhDVsZCtIDFxMVvBUgZiZZszN33OwU0EY/3pIgEQAN35Ii1Hn90ghm/qlvz/
- L+wFi3PTQ90V6UKPv5Q5hq+1BtLA6aj2qmdFBO9lgO9AbzHo8Eizrgtxp41GkKTgHuYChijI
- kdhTVPm+Pv44N/3uHUeFhN3wQ3sTs1ZT/0HhwXt8JvjqbhvtNmoGosZvpUCTwiyM1VBF/ICT
- ltzFmXd5z7sEuDyZcz9Q1t1Bb2cmbhp3eIgLmVA4Lc9ZS3sK1UMgSDwaR4KYBhF0OKMC1OH8
- M5jfcPHR8OLTLIM/Thw0YIUiYfj6lWwWkb82qa4IQvIEmz0LwvHkaLU1TCXbehO0pLWB9HnK
- r3nofx5oMfhu+cMa5C6g3fBB8Z43mDi2m/xM6p5c3q/EybOxBzhujeKN7smBTlkvAdwQfvuD
- jKr9lvrC2oKIjcsO+MxSGY4zRU0WKr4KD720PV2DCn54ZcOxOkOGR624d5bhDbjw1l2r+89V
- WLRLirBZn7VmWHSdfq5Xl9CyHT1uY6X9FRr3sWde9kA/C7Z2tqy0MevXAz+MtavOJb9XDUlI
- 7Bm0OPe5BTIuhtLvVZiW4ivT2LJOpkokLy2K852u32Z1QlOYjsbimf77avcrLBplvms0D7j6
- OaKOq503UKfcSZo3lF70J5UtJfXy64noI4oyVNl1b+egkV2iSXifTGGzOjt50/efgm1bKNkX
- iCVOYt9sGTrVhiX1ABEBAAHCwXYEGAEIACAWIQS19WevcE+Jf733W9KWejTiGAP9UQUCY/3p
- PgIbDAAKCRCWejTiGAP9UaC/EACZvViKrMkFooyACGaukqIo/s94sGuqxj308NbZ4g5jgy/T
- +lYBzlurnFmIbJESFOEq0MBZorozDGk+/p8pfAh4S868i1HFeLivVIujkcL6unG1UYEnnJI9
- uSwUbEqgA8vwdUPEGewYkPH6AaQoh1DdYGOleQqDq1Mo62xu+bKstYHpArzT2islvLdrBtjD
- MEzYThskDgDUk/aGPgtPlU9mB7IiBnQcqbS/V5f01ZicI1esy9ywnlWdZCHy36uTUfacshpz
- LsTCSKICXRotA0p6ZiCQloW7uRH28JFDBEbIOgAcuXGojqYx5vSM6o+03W9UjKkBGYFCqjIy
- Ku843p86Ky4JBs5dAXN7msLGLhAhtiVx8ymeoLGMoYoxqIoqVNaovvH9y1ZHGqS/IYXWf+jE
- H4MX7ucv4N8RcsoMGzXyi4UbBjxgljAhTYs+c5YOkbXfkRqXQeECOuQ4prsc6/zxGJf7MlPy
- NKowQLrlMBGXT4NnRNV0+yHmusXPOPIqQCKEtbWSx9s2slQxmXukPYvLnuRJqkPkvrTgjn5d
- eSE0Dkhni4292/Nn/TnZf5mxCNWH1p3dz/vrT6EIYk2GSJgCLoTkCcqaM6+5E4IwgYOq3UYu
- AAgeEbPV1QeTVAPrntrLb0t0U5vdwG7Xl40baV9OydTv7ghjYZU349w1d5mdxg==
-In-Reply-To: <20240813082007.2625841-5-jacobe.zang@wesion.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-Received: by 2002:a05:6e02:18ca:b0:395:fa9a:318e with SMTP id
+ e9e14a558f8ab-39c476a3c9cmr2507215ab.0.1723557807372; Tue, 13 Aug 2024
+ 07:03:27 -0700 (PDT)
+Date: Tue, 13 Aug 2024 07:03:27 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000dbcd0f061f911231@google.com>
+Subject: [syzbot] [wireless?] WARNING in cfg80211_scan_done
+From: syzbot <syzbot+189dcafc06865d38178d@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, johannes@sipsolutions.net, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 8/13/2024 10:20 AM, Jacobe Zang wrote:
-> WiFi modules often require 32kHz clock to function. Add support to
-> enable the clock to PCIe driver and move "brcm,bcm4329-fmac" check
-> to the top of brcmf_of_probe. Change function prototypes from void
-> to int and add appropriate errno's for return values that will be
-> send to bus when error occurred.
+Hello,
 
-I was going to say it looks good to me, but....
+syzbot found the following issue on:
 
-> Co-developed-by: Ondrej Jirman <megi@xff.cz>
-> Signed-off-by: Ondrej Jirman <megi@xff.cz>
-> Co-developed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Reviewed-by: Sai Krishna <saikrishnag@marvell.com>
-> Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
-> ---
->   .../broadcom/brcm80211/brcmfmac/bcmsdh.c      |  4 +-
->   .../broadcom/brcm80211/brcmfmac/common.c      |  3 +-
->   .../wireless/broadcom/brcm80211/brcmfmac/of.c | 53 +++++++++++--------
->   .../wireless/broadcom/brcm80211/brcmfmac/of.h |  9 ++--
->   .../broadcom/brcm80211/brcmfmac/pcie.c        |  3 ++
->   .../broadcom/brcm80211/brcmfmac/sdio.c        | 22 +++++---
->   .../broadcom/brcm80211/brcmfmac/usb.c         |  3 ++
->   7 files changed, 61 insertions(+), 36 deletions(-)
+HEAD commit:    c912bf709078 Merge remote-tracking branches 'origin/arm64-..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
+console output: https://syzkaller.appspot.com/x/log.txt?x=12fa78ed980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=35545feca25ede03
+dashboard link: https://syzkaller.appspot.com/bug?extid=189dcafc06865d38178d
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+userspace arch: arm64
 
-[...]
+Unfortunately, I don't have any reproducer for this issue yet.
 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-> index e406e11481a62..f19dc7355e0e8 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/caeac6485006/disk-c912bf70.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/501c87f28da9/vmlinux-c912bf70.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/6812e99b7182/Image-c912bf70.gz.xz
 
-[...]
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+189dcafc06865d38178d@syzkaller.appspotmail.com
 
-> @@ -113,33 +118,39 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
->   		of_node_put(root);
->   	}
->   
-> -	if (!np || !of_device_is_compatible(np, "brcm,bcm4329-fmac"))
-> -		return;
-> -
->   	err = brcmf_of_get_country_codes(dev, settings);
->   	if (err)
->   		brcmf_err("failed to get OF country code map (err=%d)\n", err);
->   
->   	of_get_mac_address(np, settings->mac);
->   
-> -	if (bus_type != BRCMF_BUSTYPE_SDIO)
-> -		return;
-> +	if (bus_type == BRCMF_BUSTYPE_SDIO) {
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 709 at net/wireless/scan.c:1148 cfg80211_scan_done+0x2ec/0x51c net/wireless/scan.c:1147
+Modules linked in:
+CPU: 1 PID: 709 Comm: kworker/u8:8 Not tainted 6.10.0-rc7-syzkaller-gc912bf709078 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/27/2024
+Workqueue: events_unbound cfg80211_wiphy_work
+pstate: 80400005 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : cfg80211_scan_done+0x2ec/0x51c net/wireless/scan.c:1147
+lr : cfg80211_scan_done+0x2ec/0x51c net/wireless/scan.c:1147
+sp : ffff8000999f7780
+x29: ffff8000999f7810 x28: 1ffff0001333eef4 x27: dfff800000000000
+x26: ffff0000cc7601b8 x25: ffff0000d9271060 x24: ffff0000cc760700
+x23: 0000000000000000 x22: ffff0000d9271078 x21: ffff0000d9271070
+x20: 1fffe0001b24e20c x19: ffff0000d9271000 x18: 1fffe000367a85de
+x17: ffff80008f2dd000 x16: ffff80008054bde8 x15: ffff70001333eef8
+x14: 1ffff0001333eef8 x13: 0000000000000006 x12: ffffffffffffffff
+x11: ffff70001333eef8 x10: 0000000000ff0100 x9 : 0000000000000000
+x8 : ffff0000c712bc80 x7 : 0000000000000000 x6 : 0000000000000000
+x5 : ffff8000999f77c6 x4 : ffff0000d927107e x3 : ffff80008a7b1e94
+x2 : 0000000000000006 x1 : ffff80008b8023e0 x0 : 0000000000000001
+Call trace:
+ cfg80211_scan_done+0x2ec/0x51c net/wireless/scan.c:1147
+ __ieee80211_scan_completed+0x4e0/0xb30 net/mac80211/scan.c:486
+ ieee80211_scan_work+0x1b0/0x19ac net/mac80211/scan.c:1162
+ cfg80211_wiphy_work+0x1fc/0x240 net/wireless/core.c:437
+ process_one_work+0x79c/0x15b8 kernel/workqueue.c:3248
+ process_scheduled_works kernel/workqueue.c:3329 [inline]
+ worker_thread+0x938/0xecc kernel/workqueue.c:3409
+ kthread+0x288/0x310 kernel/kthread.c:389
+ ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:860
+irq event stamp: 2371456
+hardirqs last  enabled at (2371455): [<ffff800082f99ab0>] __free_object+0x1a8/0x83c lib/debugobjects.c:354
+hardirqs last disabled at (2371456): [<ffff80008b13d724>] el1_dbg+0x24/0x80 arch/arm64/kernel/entry-common.c:470
+softirqs last  enabled at (2371426): [<ffff80008ae7d078>] spin_unlock_bh include/linux/spinlock.h:396 [inline]
+softirqs last  enabled at (2371426): [<ffff80008ae7d078>] batadv_nc_purge_paths+0x2f4/0x378 net/batman-adv/network-coding.c:471
+softirqs last disabled at (2371424): [<ffff80008ae7ce54>] spin_lock_bh include/linux/spinlock.h:356 [inline]
+softirqs last disabled at (2371424): [<ffff80008ae7ce54>] batadv_nc_purge_paths+0xd0/0x378 net/batman-adv/network-coding.c:442
+---[ end trace 0000000000000000 ]---
 
-Don't like the fact that this now has an extra indentation level and it 
-offers no extra benefit. Just keep the original if-statement and return 
-0. Consequently the LPO clock code should move just before the if-statement.
 
-> +		if (of_property_read_u32(np, "brcm,drive-strength", &val) == 0)
-> +			sdio->drive_strength = val;
->   
-> -	if (of_property_read_u32(np, "brcm,drive-strength", &val) == 0)
-> -		sdio->drive_strength = val;
-> +		/* make sure there are interrupts defined in the node */
-> +		if (!of_property_present(np, "interrupts"))
-> +			return 0;
->   
-> -	/* make sure there are interrupts defined in the node */
-> -	if (!of_property_present(np, "interrupts"))
-> -		return;
-> +		irq = irq_of_parse_and_map(np, 0);
-> +		if (!irq) {
-> +			brcmf_err("interrupt could not be mapped\n");
-> +			return 0;
-> +		}
-> +		irqf = irqd_get_trigger_type(irq_get_irq_data(irq));
-> +
-> +		sdio->oob_irq_supported = true;
-> +		sdio->oob_irq_nr = irq;
-> +		sdio->oob_irq_flags = irqf;
-> +	}
->   
-> -	irq = irq_of_parse_and_map(np, 0);
-> -	if (!irq) {
-> -		brcmf_err("interrupt could not be mapped\n");
-> -		return;
-> +	clk = devm_clk_get_optional_enabled(dev, "lpo");
-> +	if (!IS_ERR_OR_NULL(clk)) {
-> +		brcmf_dbg(INFO, "enabling 32kHz clock\n");
-> +		return clk_set_rate(clk, 32768);
-> +	} else {
-> +		return PTR_ERR_OR_ZERO(clk);
->   	}
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-Change this to:
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
- > +	clk = devm_clk_get_optional_enabled(dev, "lpo");
- > +	if (IS_ERR_OR_NULL(clk)) {
- > +		return PTR_ERR_OR_ZERO(clk);
- > +	}
- > +	brcmf_dbg(INFO, "enabling 32kHz clock\n");
- > +	clk_set_rate(clk, 32768);
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-As said above this should be moved before the if-statement:
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
- > -	if (bus_type != BRCMF_BUSTYPE_SDIO)
- > -		return 0;
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
 
-> -	irqf = irqd_get_trigger_type(irq_get_irq_data(irq));
->   
-> -	sdio->oob_irq_supported = true;
-> -	sdio->oob_irq_nr = irq;
-> -	sdio->oob_irq_flags = irqf;
-> +	return 0;
->   }
-
-[...]
-
+If you want to undo deduplication, reply with:
+#syz undup
 
