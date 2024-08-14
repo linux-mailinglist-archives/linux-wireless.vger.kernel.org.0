@@ -1,301 +1,190 @@
-Return-Path: <linux-wireless+bounces-11400-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11401-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F0149517CC
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Aug 2024 11:36:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1CAC9517ED
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Aug 2024 11:44:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60485B23C72
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Aug 2024 09:36:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D9772814EE
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Aug 2024 09:44:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3C9214658F;
-	Wed, 14 Aug 2024 09:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A5FF166F38;
+	Wed, 14 Aug 2024 09:44:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="OClIq9ZK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from APC01-TYZ-obe.outbound.protection.outlook.com (mail-tyzapc01on2114.outbound.protection.outlook.com [40.107.117.114])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6D31448E1;
-	Wed, 14 Aug 2024 09:27:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.117.114
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723627625; cv=fail; b=DqthKXYtjeSr14WzvnG02664sRRks0FvSGriXVQFPuYIWuszSqcLFPPf8MSHHdl20oBF8rgqTJFR+l3oKalv6y5Ztzqo4eluA49QUPAwkVHGseUPnkvRu+PJX5baWKq1m1/MkEbd3mlVVF/wouv9nWgjhZsNzX87OlsdBdi3dck=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723627625; c=relaxed/simple;
-	bh=v0X8MLMKlOCYoJa6aRexeNnYQUMr+HrLPcCQNINRAOA=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=p4a9zJpJgye5yQUv3Vgqg9JlvVUz385fjFhpAe16lfnTEtRhTS06LlvgCd9GixtBjQSdlBP+QklnuA/+eA90AvmRZO7PzSC4P1tYLvCxvqMAq4RRfcAIy9oyzgbhhiOiSQVB9E+FkkseYSi7BSm1j3V/SiVJXIEwmWPBuHZ07nQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wesion.com; spf=pass smtp.mailfrom=wesion.com; arc=fail smtp.client-ip=40.107.117.114
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wesion.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wesion.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PW3hF2QkIjRCKJF8WkrUZ2wIBinmKidTZLq03ybLMl+RLiM3XDL1lOLf7DExC8gy+KgFW2SJtYy6Ua0aJhHoYASyhBUzlljPYx430qsfGGZrB4lGOk0TAUdfSRW8smSE3buLfcw67L8PiT5f8paEC5Xwk1GzppqqbvLrmQ4KaqzR/DxMQjbQmj+xHZ64F8UGW1RqnkwH3pL0TNKHS6Tm2M+CTH5fiAuwDulI2wlATWH1ZLgIOTs/cGcqD65KbqsNKbTa1+Zm89fYuilEg+f31UBdSdr5kISd2GmPisS0OUJ/W/WeJ/SpoiiJs0Ifc62lvmiF+eV3K2fX9+SqC8oiwQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rlLxjTwwGMWcFVvyf3jskWsnJNGBlBI3VMLO+42+7VY=;
- b=ye7YAKoXmXuDVCCJM2USzyZV1p+u/6HfoaBZyVxDIFGtY/RO5q3bTzGtaYPglotrMvmDXv9RSoE7fK+Lh3WxClPBx4sJzhRlme/brNQuV6oib/d2x2TUdXnML91IKM3hatlDbWTfKZeHPqpx7OKPx/2nOtWvncsk9zM3xybvf1HTfAqtHD5Utml/clWJMTb1F2svt3/ZmXrmTsgd7ECg9nWIGfZxEkvKXP+5GEyXPpDqnyox0QrC+vQxvWRVY8tizH5b6y/xQV89zEUPa7TybEBg3sviVDyUUrKXghna5UFTlLq1DfoJGwuwOKlvzXJCIWpwNEazP45tnXBCEeTY+w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=wesion.com; dmarc=pass action=none header.from=wesion.com;
- dkim=pass header.d=wesion.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=wesion.com;
-Received: from TYZPR03MB7001.apcprd03.prod.outlook.com (2603:1096:400:26a::14)
- by SEZPR03MB7486.apcprd03.prod.outlook.com (2603:1096:101:10d::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.20; Wed, 14 Aug
- 2024 09:26:57 +0000
-Received: from TYZPR03MB7001.apcprd03.prod.outlook.com
- ([fe80::78dd:5e68:1a9c:36c0]) by TYZPR03MB7001.apcprd03.prod.outlook.com
- ([fe80::78dd:5e68:1a9c:36c0%6]) with mapi id 15.20.7849.019; Wed, 14 Aug 2024
- 09:26:57 +0000
-Message-ID: <fa019ee9-3f4d-4bea-92a7-929713518dc9@wesion.com>
-Date: Wed, 14 Aug 2024 17:26:51 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 4/5] wifi: brcmfmac: Add optional lpo clock enable
- support
-To: Alexey Charkov <alchark@gmail.com>, robh@kernel.org, krzk+dt@kernel.org,
- heiko@sntech.de, kvalo@kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, conor+dt@kernel.org,
- linux-rockchip@lists.infradead.org
-Cc: efectn@protonmail.com, dsimic@manjaro.org, jagan@edgeble.ai,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, arend@broadcom.com,
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org, megi@xff.cz,
- duoming@zju.edu.cn, bhelgaas@google.com, minipli@grsecurity.net,
- brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
- nick@khadas.com, Sai Krishna <saikrishnag@marvell.com>,
- Arend van Spriel <arend.vanspriel@broadcom.com>
-References: <20240813082007.2625841-1-jacobe.zang@wesion.com>
- <20240813082007.2625841-5-jacobe.zang@wesion.com>
- <721da64c-42ec-4be6-8ad3-e2685a84823a@broadcom.com>
- <2269063.vFx2qVVIhK@latitude-fedora>
-Content-Language: en-US
-From: Jacobe Zang <jacobe.zang@wesion.com>
-In-Reply-To: <2269063.vFx2qVVIhK@latitude-fedora>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: TY1PR01CA0201.jpnprd01.prod.outlook.com (2603:1096:403::31)
- To TYZPR03MB7001.apcprd03.prod.outlook.com (2603:1096:400:26a::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A265914A60E
+	for <linux-wireless@vger.kernel.org>; Wed, 14 Aug 2024 09:44:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723628667; cv=none; b=HBv2kz+UCwtMp3DKzuyNj8u9rPeAvkV4Qo6mmb9xhUPAlRirMihelt/q08ye/K43XgDSyREcFwu6kftlzsnR0u0ZRtG2TAJ0gysyDEQxRsaRgy1DFwYkNR2vdgRa3LU6QjWXECaB/rq4uULGe9TGKiIFtpNw1BGClCOxdNndcHE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723628667; c=relaxed/simple;
+	bh=TGxKXmvUX6FCr07xiHj9PMvmLaePTOFO6h7c7/khNU0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=b6UomF4yak953jGKdiCKUq5GJ1Hf9L9O4RpV08EHXuEy647j9qDMmdaVu7Chv/M3rtI0ZFKxIwwhYooOYOwc5pVlRxIQw1euKJRuD8iLbwa2+MeGej/NHsggYPVtGHy7Bxeo5XQQnZBvfsLg1FV/uuFHRvIXICnxivPhR+ZDYxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=OClIq9ZK; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47DNAT0J009054;
+	Wed, 14 Aug 2024 09:44:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=f2ZukGABYXU+YZF2cvy5V6
+	Gbqu04XveWtelZ1jhfnq0=; b=OClIq9ZKKo9x4APXKwZn1Ae1QBqg8SpZ5zN0pD
+	rGJMKzTXJbw9TUDf5hURJ7zBew+PF2EFuHOQeFinVTrceITBbEtdGmI4cWslv/Ys
+	oMkDVJJQ6WjN5yzAfQATTf0ubYLNbCwYhkcLlXGOCaKj/I4WeJZJwsSuDUA8aV+Z
+	4+nnhmh9i49W7b/qaK2bAlmQ9jW3BB1oUPZGJ2jeBbqR+0CTLw2yyh6EuOYpaUAo
+	few1YxHOQ3X5VP87pwcbL63A3EjraaSZvJchLsCSW1RR6MNAqRqJoXF/M+TVbwgR
+	dGaRA0pTieFCZLc89aD/wixVveUIMPBWeYq1Ig6OKUPiOeBQ==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4108bc2vre-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 14 Aug 2024 09:44:20 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47E9iJlH021204
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 14 Aug 2024 09:44:19 GMT
+Received: from hu-rajkbhag-blr.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Wed, 14 Aug 2024 02:44:17 -0700
+From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Raj Kumar Bhagat
+	<quic_rajkbhag@quicinc.com>
+Subject: [RFC PATCH 00/18] wifi: ath12k: add Ath12k AHB driver support for IPQ5332
+Date: Wed, 14 Aug 2024 15:13:05 +0530
+Message-ID: <20240814094323.3927603-1-quic_rajkbhag@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYZPR03MB7001:EE_|SEZPR03MB7486:EE_
-X-MS-Office365-Filtering-Correlation-Id: 54935c16-6a7b-438c-22fa-08dcbc433e18
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|1800799024|7416014|921020;
-X-Microsoft-Antispam-Message-Info:
-	M99gbZqljmCwhryxh2XTlKZLHIonOZKR2SNmLdx7D4j3k4/6UdmEvJvU58THBpM+MsyGMTcGObY8/KfK8mcjPMkknexXYmwyOfoNDv22AADKmCGxW5pEvzmAkRf2uva15N8RDoDfTR+tXoqW5m+4WMRC6h9eqrbjQ83XHeaKLm9iZKo7xdMVBi+Vkh9xGg0PYpeuEX4nPTpT2n+9sey2PPzenBaQoEmrpy8rW2TUvSFqoqcpNVI3mkH2y5JO61xwAevDT1Sdrron5PrPHwYebZdlcnFfHnvThyn0mFrmZu7soYKNAT8oPW/pwR7LDJRwnOjh5A9whEaYsBgQf+7sNaOfGhiEpdvAvC8DAcVtsPzOOnEvRFENRWQNvpWxZVo6ZBw7sNEezrEqz+mCdyzEwBkcMKWG5cEk9Yd7NHCoatDwaPdu/3z/rRnirhnw+KARbCZKMfcL4hEI41gUUNjFWsjuShZMRYaQ42bBucBFp1Kz0OBGBENmCiPff/ZpSmcryIpNMAOfxvs2sosPku3Yc0eEUZtnRsl5u0nj6cAbSLKGgDCk6uYHa30oDhDfZ63METnXZC2Lfq5U94m6EpyGQgbnR1LQCJ596s0Zf+Pa6BM5D4RF/F5/ziOZoS9gnT4UZyuVdUfftEWpkXwcKfPTcIDzOqsA/rhWhE+qPPQJRIhQ9gbvWvZ33g5Xq5XYmaiTPsrqPumO1q8NpbMJR/IaOw==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYZPR03MB7001.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014)(921020);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ejhjcDJWOCt2aHdldkFzOHdqWVk4MVZnS0tKd1BwdXR5Vk5FMEQvTFd6bmds?=
- =?utf-8?B?cWNNdE54aWh1czc0MGozM0VwQUVEejRadXJ4TVlqY25xTTRhSThicFV6VFVi?=
- =?utf-8?B?VzlHa0pwMGFCeGFsckswY3lUNDd3UTFOTHMxUTQ0TTIxY2lQeko4cmZxSjVR?=
- =?utf-8?B?dkZySTFhK3dxeEVpWXZiTVRqR0hPNUY1bmpmaWV6QUJKOFVOeTNCdDZ2UGxh?=
- =?utf-8?B?TmlFTzlURVI0L1JJcmN1ejFORDNkeXJ2MG5ZczUxUENGbEc5MGxaNEpUZElp?=
- =?utf-8?B?MUhkb3FhUFliTEdYN2s2bUlpRkVPajdyNURCTG5kOXNpSGlFclFoY0hDT0Z1?=
- =?utf-8?B?N1JCNEJtNFlLSXFsVWRMaVBJNGFsSXU4VGtNWjl3bnZtZDFHRTBEaW5UUlFj?=
- =?utf-8?B?RUE5a1lCRVF1Y0RVUXlSQUlxZDNZUHNwQWRRTHk1eVQ2Wkp6N2o1WFhpaTEw?=
- =?utf-8?B?ZXFmUTZSMDEwdnZPSnJDaitnVWFaUXVGWkhsRU8vb2prUHFwVHFMTkRVcHZG?=
- =?utf-8?B?VTFmTExsbGJaNG1CaC9teTdXVkhIekkyVW5xdHZvclFEcDRaSnVLVktHbVo4?=
- =?utf-8?B?UXJFWS90VDd5bWlZaHlTK2k5RmthSWJYOFEvUGx5bGVsQUhwSWhWbDgzdkt1?=
- =?utf-8?B?UUxEZXBUOGtTQmkzWnNQeGNNRmF5c1FTcTVyYmFGOE5OazUwRGVrQzl0YnRa?=
- =?utf-8?B?Q05hVXo1UDM1ZEVkTjdmNnBERkFIRXJmdmZ4bTdyQkpJeWorTklWT3UzV0tV?=
- =?utf-8?B?S1ZlaXhJbXk4MTNPVXFIV0IzS3I3RE82ODU0T3diekE3eFBXMkJjbXdSL1Ew?=
- =?utf-8?B?S2ZtY0VxZVM4WjBuNFhocVBXTVArVG1XYTdsckRPeUFYWGhJSVhhUEE1LzZZ?=
- =?utf-8?B?TFd4a0VaSmY2QldNUGR0Z2JnaEluZlJYUnFKMkZBNnAwWTNMeUFSK1kwZmdL?=
- =?utf-8?B?KzI3cUQvaTZKMUtXMzBtY2xNbFpLYmxUSXptd2ttVUwwQ20ycFc1Mnp0TDVl?=
- =?utf-8?B?dkJHcTRDTUZ5LzVhOENXQUZYSC8wc3k2b1VZTzA5SFljdWE3azBNRWRWdmwr?=
- =?utf-8?B?KzhKYU1OeklIUFVmRDM4eEZWdlpOY0U1SkNYdlN0dCtmVWJTSUk0bnFEKzEx?=
- =?utf-8?B?N3BuZ2VLa0IrcHNkMzJsU1ppUEtTZlJQd3lKUjZnMEFCZWhXd2FTWFViN0xX?=
- =?utf-8?B?S3ljYk1QZWw0TFVhWElubU9VbW9ZcHZFZm1uSFlaY01OalZlTzlJVWZIOWdx?=
- =?utf-8?B?ck9zczBaMkx0OUMra3dtZzdOV3R3YXRGWmFCQWVNVTRReWx3Z25GTWtXaUlo?=
- =?utf-8?B?WGtrSURjK3RsNkl4N2VaZnFBUzNGRExoaSt0R241bzNXZWs0bmdHTkZFWjd3?=
- =?utf-8?B?RUdyTUk3ay93dXdnUlUzblNxcEU1QXA3Y2QxQ2o4M2hwRzlaN3BNYWxidklO?=
- =?utf-8?B?Y0wyYnRXRmJCZDdtVUJweGpBMW1neHluZEJTc2NpRC9JVm9weVNlRXFZV0lZ?=
- =?utf-8?B?RzBkcjNDSHAzL25BMno4RUNGQmdBcjN0SUJOYjBvOWhXa1ZMTDVEMnpSazZX?=
- =?utf-8?B?Q1NkUGdzMFV2WUFiRlphb3hDeDU4alZHSUVpY1BFUHhzWXhvMmd1cUxjbjUw?=
- =?utf-8?B?eHVEaVc1dHE3NUI4KzVDYy84SXlCaERZV3F1WTNVdk9KcThVdk5ZQ0hNK0NN?=
- =?utf-8?B?cW9uSm5FTmdTeWxxZnkzV0J6bm81MXVmWkVuOWc3TzdJUmkyV1h4RzRmU25p?=
- =?utf-8?B?NThiOENxSzl6ODlkREhqZ2dYQjI3SXJaOWFFUW5qK1NhQXJ4eWoxZktIajNF?=
- =?utf-8?B?NjlXVUI2Rm9XNW11MWJhT3Qxb2VDT1BkUG9lWUN0Z2dkVm5OQ1EwQ2wxdTFE?=
- =?utf-8?B?YlNLWkYzY0srVE1vSC9nZEcxZDQ4ejNYM081OTBEQituMlAvdFFoelJpNzdQ?=
- =?utf-8?B?ZjI4Qk5OUUZvMVJCYitTRFl3TElmVzhrSEZ0UnFzS3lFOW1uWHhCTXVDNW96?=
- =?utf-8?B?WWNmcDRiMUNUYWFreXZZOFhhbGY3aDNxeC9iYmlyZDhMNGVCZHFFME9ZMTF4?=
- =?utf-8?B?RVlWZ0VOU1pMODJKSXphZnU3aUlWaDl4MDY0b0wxVTl5N1lrdVpULytsMy95?=
- =?utf-8?B?bDhTdWphL00xQTh6OVorK1lXcldIWFFvdHlsMFRRN0NTZnE2SnR0T3VKUkdZ?=
- =?utf-8?B?Snc9PQ==?=
-X-OriginatorOrg: wesion.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 54935c16-6a7b-438c-22fa-08dcbc433e18
-X-MS-Exchange-CrossTenant-AuthSource: TYZPR03MB7001.apcprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2024 09:26:57.1229
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 2dc3bd76-7ac2-4780-a5b7-6c6cc6b5af9b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: w5fW5SUxFkY8d1j8XgTW0+aV3NQFQH6SHTkBh6aRzCx7dX4h2KSWW3AKGzni2rMCtP3X+H3fBwdbl/5OTBdFJQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEZPR03MB7486
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: i5CSvSrGrOA9Lrzg_MqGJ-CerNV2JgRg
+X-Proofpoint-GUID: i5CSvSrGrOA9Lrzg_MqGJ-CerNV2JgRg
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-14_07,2024-08-13_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ impostorscore=0 priorityscore=1501 phishscore=0 clxscore=1015 mlxscore=0
+ mlxlogscore=724 malwarescore=0 adultscore=0 bulkscore=0 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408140067
+
+Currently, Ath12k driver only supports WiFi devices that are based on
+PCI bus. New Ath12k device IPQ5332 is based on AHB bus. Hence, add
+Ath12k AHB support for IPQ5332.
+
+IPQ5332 is IEEE802.11be 2 GHz 2x2 Wifi device. To bring-up IPQ5332
+device:
+- Add hardware parameters for IPQ5332.
+- CE and CMEM register address space in IPQ5332 is separate from WCSS
+  register space. Hence, add logic to remap CE and CMEM register
+  address.
+- Add support for fixed QMI firmware memory for IPQ5332.
+- Add ath12k AHB support.
+
+Depends-On: [v6] Add multipd remoteproc support
+Link: https://lore.kernel.org/all/20231110091939.3025413-1-quic_mmanikan@quicinc.com/
+
+Note that the dependency patch series - [v6,00/11] Add multipd
+remoteproc support, has the below issues:
+
+1. The remoteproc maintainers don't want any userpd code in remoteproc.
+   As a result of this, the approach being taken by this series may
+   change.
+
+2. Due to latest changes in linux-next/ath ToT, [v6,00/11] Add multipd
+   remoteproc support is unable to compile. Below compilation fixes are
+   required in the file "drivers/remoteproc/qcom_q6v5_mpd.c":
+   - Add "#include <linux/of_platform.h>"
+   - Change "static int q6_wcss_remove" to "static void q6_wcss_remove"
+     and remove "return 0".
+
+3. The IPQ5332 firmware patch is pointing to ath11k firmware path, but
+   IPQ5332 is Ath12k chipset.
+   In patch [v6,10/11] arm64: dts: qcom: ipq5332: Add nodes to bringup
+   multipd, firmware path should be: ath12k/IPQ5332/hw1.0/
+
+Balamurugan S (9):
+  wifi: ath12k: add ath12k_hw_params for IPQ5332
+  wifi: ath12k: add ath12k_hw_hal_params for IPQ5332
+  wifi: ath12k: avoid m3 firmware download in AHB device IPQ5332
+  wifi: ath12k: add new CMEM read-write ath12k_hif_ops
+  wifi: ath12k: remap CMEM register space for IPQ5332
+  wifi: ath12k: fix incorrect CE addresses
+  wifi: ath12k: remap CE register space for IPQ5332
+  wifi: ath12k: add AHB driver support for IPQ5332
+  wifi: ath12k: enable ath12k AHB support
+
+P Praneesh (4):
+  wifi: ath12k: refactor ath12k_hw_regs structure
+  wifi: ath12k: add ath12k_hw_regs for IPQ5332
+  wifi: ath12k: add ath12k_hw_ring_mask for IPQ5332
+  wifi: ath12k: add CE configurations for IPQ5332
+
+Raj Kumar Bhagat (5):
+  dt-bindings: net: wireless: describe the ath12k AHB module
+  arm64: dts: qcom: add wifi node for IPQ5332 based RDP441
+  wifi: ath12k: add support for fixed QMI firmware memory
+  wifi: ath12k: add support to read board_id from device-tree
+  wifi: ath12k: convert tasklet to BH workqueue for CE interrupts
+
+ .../net/wireless/qcom,ath12k-ahb.yaml         |  325 ++++++
+ arch/arm64/boot/dts/qcom/ipq5332-rdp441.dts   |   56 +-
+ arch/arm64/boot/dts/qcom/ipq5332.dtsi         |  131 ++-
+ drivers/net/wireless/ath/ath12k/Kconfig       |    6 +
+ drivers/net/wireless/ath/ath12k/Makefile      |    1 +
+ drivers/net/wireless/ath/ath12k/ahb.c         | 1028 +++++++++++++++++
+ drivers/net/wireless/ath/ath12k/ahb.h         |   50 +
+ drivers/net/wireless/ath/ath12k/ce.c          |   90 ++
+ drivers/net/wireless/ath/ath12k/ce.h          |   18 +-
+ drivers/net/wireless/ath/ath12k/core.c        |   35 +-
+ drivers/net/wireless/ath/ath12k/core.h        |   19 +-
+ drivers/net/wireless/ath/ath12k/dp.c          |   10 +-
+ drivers/net/wireless/ath/ath12k/hal.c         |   82 +-
+ drivers/net/wireless/ath/ath12k/hal.h         |   69 +-
+ drivers/net/wireless/ath/ath12k/hif.h         |   13 +
+ drivers/net/wireless/ath/ath12k/hw.c          |  478 ++++++++
+ drivers/net/wireless/ath/ath12k/hw.h          |   14 +
+ drivers/net/wireless/ath/ath12k/pci.c         |   28 +-
+ drivers/net/wireless/ath/ath12k/pci.h         |    2 +
+ drivers/net/wireless/ath/ath12k/qmi.c         |  188 ++-
+ drivers/net/wireless/ath/ath12k/qmi.h         |    1 +
+ 21 files changed, 2525 insertions(+), 119 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/wireless/qcom,ath12k-ahb.yaml
+ create mode 100644 drivers/net/wireless/ath/ath12k/ahb.c
+ create mode 100644 drivers/net/wireless/ath/ath12k/ahb.h
 
 
-
-On 2024/8/14 16:47, Alexey Charkov wrote:
-> Hi Arend, Jacobe,
-> 
-> On Tuesday, August 13, 2024 2:57:28 PM GMT+3 Arend van Spriel wrote:
->> On 8/13/2024 10:20 AM, Jacobe Zang wrote:
->>> WiFi modules often require 32kHz clock to function. Add support to
->>> enable the clock to PCIe driver and move "brcm,bcm4329-fmac" check
->>> to the top of brcmf_of_probe. Change function prototypes from void
->>> to int and add appropriate errno's for return values that will be
->>> send to bus when error occurred.
->>
->> I was going to say it looks good to me, but....
->>
->>> Co-developed-by: Ondrej Jirman <megi@xff.cz>
->>> Signed-off-by: Ondrej Jirman <megi@xff.cz>
->>> Co-developed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
->>> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
->>> Reviewed-by: Sai Krishna <saikrishnag@marvell.com>
->>> Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
->>> ---
->>>
->>>    .../broadcom/brcm80211/brcmfmac/bcmsdh.c      |  4 +-
->>>    .../broadcom/brcm80211/brcmfmac/common.c      |  3 +-
->>>    .../wireless/broadcom/brcm80211/brcmfmac/of.c | 53 +++++++++++--------
->>>    .../wireless/broadcom/brcm80211/brcmfmac/of.h |  9 ++--
->>>    .../broadcom/brcm80211/brcmfmac/pcie.c        |  3 ++
->>>    .../broadcom/brcm80211/brcmfmac/sdio.c        | 22 +++++---
->>>    .../broadcom/brcm80211/brcmfmac/usb.c         |  3 ++
->>>    7 files changed, 61 insertions(+), 36 deletions(-)
->>
->> [...]
->>
->>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
->>> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c index
->>> e406e11481a62..f19dc7355e0e8 100644
->>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
->>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
->>
->> [...]
->>
->>> @@ -113,33 +118,39 @@ void brcmf_of_probe(struct device *dev, enum
->>> brcmf_bus_type bus_type,>
->>>    		of_node_put(root);
->>>    	
->>>    	}
->>>
->>> -	if (!np || !of_device_is_compatible(np, "brcm,bcm4329-fmac"))
->>> -		return;
->>> -
->>>
->>>    	err = brcmf_of_get_country_codes(dev, settings);
->>>    	if (err)
->>>    	
->>>    		brcmf_err("failed to get OF country code map (err=%d)
-> \n", err);
->>>    	
->>>    	of_get_mac_address(np, settings->mac);
->>>
->>> -	if (bus_type != BRCMF_BUSTYPE_SDIO)
->>> -		return;
->>> +	if (bus_type == BRCMF_BUSTYPE_SDIO) {
->>
->> Don't like the fact that this now has an extra indentation level and it
->> offers no extra benefit. Just keep the original if-statement and return
->> 0. Consequently the LPO clock code should move just before the if-statement.
->>> +		if (of_property_read_u32(np, "brcm,drive-strength",
-> &val) == 0)
->>> +			sdio->drive_strength = val;
->>>
->>> -	if (of_property_read_u32(np, "brcm,drive-strength", &val) == 0)
->>> -		sdio->drive_strength = val;
->>> +		/* make sure there are interrupts defined in the node */
->>> +		if (!of_property_present(np, "interrupts"))
->>> +			return 0;
->>>
->>> -	/* make sure there are interrupts defined in the node */
->>> -	if (!of_property_present(np, "interrupts"))
->>> -		return;
->>> +		irq = irq_of_parse_and_map(np, 0);
->>> +		if (!irq) {
->>> +			brcmf_err("interrupt could not be
-> mapped\n");
->>> +			return 0;
->>> +		}
->>> +		irqf = irqd_get_trigger_type(irq_get_irq_data(irq));
->>> +
->>> +		sdio->oob_irq_supported = true;
->>> +		sdio->oob_irq_nr = irq;
->>> +		sdio->oob_irq_flags = irqf;
->>> +	}
->>>
->>> -	irq = irq_of_parse_and_map(np, 0);
->>> -	if (!irq) {
->>> -		brcmf_err("interrupt could not be mapped\n");
->>> -		return;
->>> +	clk = devm_clk_get_optional_enabled(dev, "lpo");
->>> +	if (!IS_ERR_OR_NULL(clk)) {
->>> +		brcmf_dbg(INFO, "enabling 32kHz clock\n");
->>> +		return clk_set_rate(clk, 32768);
->>> +	} else {
->>> +		return PTR_ERR_OR_ZERO(clk);
->>>
->>>    	}
->>
->> Change this to:
->>   > +	clk = devm_clk_get_optional_enabled(dev, "lpo");
->>   > +	if (IS_ERR_OR_NULL(clk)) {
->>   > +		return PTR_ERR_OR_ZERO(clk);
-> 
-> Perhaps in this case we should go for IS_ERR and PTR_ERR respectively.
-> devm_clk_get_optional_enabled would return NULL when the optional clock is not
-> found, so NULL is not an error state but serves as a dummy clock that can be> used with clk_set_rate.
-
-I think we don't need to set clock rate for clock is NULL. So it should 
-be changed to:
-
-+	clk = devm_clk_get_optional_enabled(dev, "lpo");
-+	if (IS_ERR(clk)) {
-+		return PTR_ERR(clk);
-+	} else if (clk) {
-+		brcmf_dbg(INFO, "enabling 32kHz clock\n");
-+		clk_set_rate(clk, 32768);
-+	}
-
-> 
-> This way we won't skip over the interrupts initialization below in case the
-> clock is absent.
-> 
->>   > +	}
->>   > +	brcmf_dbg(INFO, "enabling 32kHz clock\n");
->>   > +	clk_set_rate(clk, 32768);
->>
->> As said above this should be moved before the if-statement:
->>   > -	if (bus_type != BRCMF_BUSTYPE_SDIO)
->>   > -		return 0;
->>>
->>> -	irqf = irqd_get_trigger_type(irq_get_irq_data(irq));
->>>
->>> -	sdio->oob_irq_supported = true;
->>> -	sdio->oob_irq_nr = irq;
->>> -	sdio->oob_irq_flags = irqf;
->>> +	return 0;
->>>
->>>    }
-> 
-> 
-
+base-commit: 1462e8e1c93ecb96b5820ec28f7cbbb8a5aeb732
+prerequisite-patch-id: 0c516eb530339e5398eaaf8ece5e72dfac419f93
+prerequisite-patch-id: bfefff55ba6a3fdf8930b3b4d48746bc9cd5a0a0
+prerequisite-patch-id: 9e143f9cd10add55d2fd52bac0e538b904d6dee5
+prerequisite-patch-id: cb987ee3dbc145fee1135307badb61c0e21f0ccd
+prerequisite-patch-id: 14b990ceacec658b924c78d91ce33b45f70ca112
+prerequisite-patch-id: b1f6cc6ae066f3e10b5626ff0af3267449d613d3
+prerequisite-patch-id: 06bbcd43424f4ee2f116372855665f7dc932158d
+prerequisite-patch-id: 73a4b0a87c136697874bb120a3bf0a7ec6e54a32
+prerequisite-patch-id: 6cab6a588aa5479276228e60693ea6d472e2f844
+prerequisite-patch-id: df1119a31756da103188d8880077ce0bcec3d352
+prerequisite-patch-id: cf47f0a66dbe5f11d50ce2e62682b0f48dfc4e76
 -- 
-Best Regards
-Jacobe
+2.34.1
+
 
